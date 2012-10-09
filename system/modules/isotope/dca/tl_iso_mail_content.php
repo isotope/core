@@ -161,6 +161,7 @@ $GLOBALS['TL_DCA']['tl_iso_mail_content'] = array
 		'attachments' => array
 		(
 		  	'label' 				  => &$GLOBALS['TL_LANG']['tl_iso_mail_content']['attachments'],
+			'exclude'                 => true,
 		  	'inputType' 			  => 'fileTree',
 		  	'eval' 					  => array('mandatory'=>false, 'files'=>true, 'filesOnly'=>true,'fieldType' => 'checkbox'),
 		),

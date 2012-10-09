@@ -131,6 +131,7 @@ $GLOBALS['TL_DCA']['tl_iso_tax_class'] = array
 		'name' => array
 		(
 			'label'                   => &$GLOBALS['TL_LANG']['tl_iso_tax_class']['name'],
+			'exclude'                 => true,
 			'search'                  => true,
 			'inputType'               => 'text',
 			'eval'                    => array('maxlength'=>255, 'mandatory'=>true, 'tl_class'=>'w50'),
@@ -145,6 +146,7 @@ $GLOBALS['TL_DCA']['tl_iso_tax_class'] = array
 		'includes' => array
 		(
 			'label'                   => &$GLOBALS['TL_LANG']['tl_iso_tax_class']['includes'],
+			'exclude'                 => true,
 			'inputType'               => 'select',
 			'options_callback'		  => array('tl_iso_tax_class', 'getTaxRates'),
 			'eval'                    => array('includeBlankOption'=>true, 'tl_class'=>'w50'),
@@ -152,6 +154,7 @@ $GLOBALS['TL_DCA']['tl_iso_tax_class'] = array
 		'label' => array
 		(
 			'label'                   => &$GLOBALS['TL_LANG']['tl_iso_tax_class']['label'],
+			'exclude'                 => true,
 			'search'                  => true,
 			'inputType'               => 'text',
 			'eval'                    => array('maxlength'=>255, 'tl_class'=>'w50'),
@@ -159,6 +162,7 @@ $GLOBALS['TL_DCA']['tl_iso_tax_class'] = array
 		'rates' => array
 		(
 			'label'                   => &$GLOBALS['TL_LANG']['tl_iso_tax_class']['rates'],
+			'exclude'                 => true,
 			'inputType'               => 'checkboxWizard',
 			'options_callback'		  => array('tl_iso_tax_class', 'getTaxRates'),
 			'eval'                    => array('multiple'=>true, 'tl_class'=>'clr w50 w50h'),

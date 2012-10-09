@@ -160,12 +160,14 @@ $GLOBALS['TL_DCA']['tl_iso_attributes'] = array
 		'name' => array
 		(
 			'label'					=> &$GLOBALS['TL_LANG']['tl_iso_attributes']['name'],
+			'exclude'				=> true,
 			'inputType'				=> 'text',
 			'eval'					=> array('mandatory'=>true, 'maxlength'=>255, 'tl_class'=>'w50'),
 		),
 		'field_name' => array
 		(
 			'label'					=> &$GLOBALS['TL_LANG']['tl_iso_attributes']['field_name'],
+			'exclude'				=> true,
 			'inputType'				=> 'text',
 			'eval'					=> array('mandatory'=>true, 'maxlength'=>30, 'unique'=>true, 'doNotCopy'=>true, 'doNotSaveEmpty'=>true, 'tl_class'=>'w50'),
 			'save_callback'			=> array
@@ -176,6 +178,7 @@ $GLOBALS['TL_DCA']['tl_iso_attributes'] = array
 		'type' => array
 		(
 			'label'					=> &$GLOBALS['TL_LANG']['tl_iso_attributes']['type'],
+			'exclude'				=> true,
 			'inputType'				=> 'select',
 			'options'				=> array_keys($GLOBALS['ISO_ATTR']),
 			'eval'					=> array('mandatory'=>true, 'includeBlankOption'=>true, 'submitOnChange'=>true, 'helpwizard'=>true, 'tl_class'=>'w50', 'chosen'=>true),
@@ -184,8 +187,9 @@ $GLOBALS['TL_DCA']['tl_iso_attributes'] = array
 		'legend' => array
 		(
 			'label'					=> &$GLOBALS['TL_LANG']['tl_iso_attributes']['legend'],
-			'inputType'				=> 'select',
+			'exclude'				=> true,
 			'default'				=> 'options_legend',
+			'inputType'				=> 'select',
 			'options'				=> array('general_legend', 'meta_legend', 'pricing_legend', 'inventory_legend', 'shipping_legend', 'options_legend', 'media_legend', 'expert_legend', 'publish_legend'),
 			'reference'				=> &$GLOBALS['TL_LANG']['tl_iso_products'],
 			'eval'					=> array('mandatory'=>true, 'tl_class'=>'w50', 'chosen'=>true)
@@ -193,6 +197,7 @@ $GLOBALS['TL_DCA']['tl_iso_attributes'] = array
 		'description' => array
 		(
 			'label'					=> &$GLOBALS['TL_LANG']['tl_iso_attributes']['description'],
+			'exclude'				=> true,
 			'inputType'				=> 'text',
 			'eval'					=> array('maxlength'=>255, 'tl_class'=>'clr long'),
 		),

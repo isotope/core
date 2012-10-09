@@ -188,6 +188,7 @@ $GLOBALS['TL_DCA']['tl_iso_orders'] = array
 		'status' => array
 		(
 			'label'                 => &$GLOBALS['TL_LANG']['tl_iso_orders']['status'],
+			'exclude'               => true,
 			'filter'                => true,
 			'sorting'				=> true,
 			'inputType'             => 'select',
@@ -208,12 +209,14 @@ $GLOBALS['TL_DCA']['tl_iso_orders'] = array
 		'date_paid' => array
 		(
 			'label'					=> &$GLOBALS['TL_LANG']['tl_iso_orders']['date_paid'],
+			'exclude'               => true,
 			'inputType'				=> 'text',
 			'eval'					=> array('rgxp'=>'date', 'datepicker'=>(method_exists($this,'getDatePickerString') ? $this->getDatePickerString() : true), 'tl_class'=>'w50 wizard'),
 		),
 		'date_shipped' => array
 		(
 			'label'					=> &$GLOBALS['TL_LANG']['tl_iso_orders']['date_shipped'],
+			'exclude'               => true,
 			'inputType'				=> 'text',
 			'eval'					=> array('rgxp'=>'date', 'datepicker'=>(method_exists($this,'getDatePickerString') ? $this->getDatePickerString() : true), 'tl_class'=>'w50 wizard'),
 		),
@@ -251,6 +254,7 @@ $GLOBALS['TL_DCA']['tl_iso_orders'] = array
 		'notes' => array
 		(
 			'label'					=> &$GLOBALS['TL_LANG']['tl_iso_orders']['notes'],
+			'exclude'               => true,
 			'inputType'				=> 'textarea',
 			'eval'					=> array('style'=>'height:80px;')
 		),

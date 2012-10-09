@@ -165,8 +165,8 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['iso_addProductJumpTo'] = array
 $GLOBALS['TL_DCA']['tl_module']['fields']['iso_cols'] = array
 (
 	'label'                   => &$GLOBALS['TL_LANG']['tl_module']['iso_cols'],
-	'default'				  => 1,
 	'exclude'                 => true,
+	'default'				  => 1,
 	'inputType'               => 'text',
 	'eval'                    => array('maxlength'=>1, 'rgxp'=>'digit', 'tl_class'=>'w50'),
 );
@@ -382,8 +382,8 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['iso_enableLimit'] = array
 $GLOBALS['TL_DCA']['tl_module']['fields']['iso_perPage'] = array
 (
 	'label'						=> &$GLOBALS['TL_LANG']['tl_module']['iso_perPage'],
-	'default'					=> '8,12,32,64',
 	'exclude'					=> true,
+	'default'					=> '8,12,32,64',
 	'inputType'					=> 'text',
 	'eval'						=> array('mandatory'=>true, 'maxlength'=>64, 'rgxp'=>'extnd', 'tl_class'=>'w50'),
 );

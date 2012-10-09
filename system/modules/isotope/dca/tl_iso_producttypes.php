@@ -243,6 +243,7 @@ $GLOBALS['TL_DCA']['tl_iso_producttypes'] = array
 		'shipping_exempt' => array
 		(
 			'label'					=> &$GLOBALS['TL_LANG']['tl_iso_producttypes']['shipping_exempt'],
+			'exclude'				=> true,
 			'inputType'				=> 'checkbox',
 			'eval'					=> array('tl_class'=>'w50'),
 		),

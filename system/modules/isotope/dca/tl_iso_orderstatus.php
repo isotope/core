@@ -138,24 +138,28 @@ $GLOBALS['TL_DCA']['tl_iso_orderstatus'] = array
 		'name' => array
 		(
 			'label'						=> &$GLOBALS['TL_LANG']['tl_iso_orderstatus']['name'],
+			'exclude'					=> true,
 			'inputType'					=> 'text',
 			'eval'						=> array('mandatory'=>true, 'maxlength'=>255, 'tl_class'=>'clr'),
 		),
 		'paid' => array
 		(
 			'label'						=> &$GLOBALS['TL_LANG']['tl_iso_orderstatus']['paid'],
+			'exclude'					=> true,
 			'inputType'					=> 'checkbox',
 			'eval'						=> array('tl_class'=>'w50'),
 		),
 		'welcomescreen' => array
 		(
 			'label'						=> &$GLOBALS['TL_LANG']['tl_iso_orderstatus']['welcomescreen'],
+			'exclude'					=> true,
 			'inputType'					=> 'checkbox',
 			'eval'						=> array('tl_class'=>'w50'),
 		),
 		'mail_customer' => array
 		(
 			'label'						=> &$GLOBALS['TL_LANG']['tl_iso_orderstatus']['mail_customer'],
+			'exclude'					=> true,
 			'inputType'					=> 'select',
 			'foreignKey'				=> 'tl_iso_mail.name',
 			'eval'						=> array('includeBlankOption'=>true)
@@ -163,6 +167,7 @@ $GLOBALS['TL_DCA']['tl_iso_orderstatus'] = array
 		'mail_admin' => array
 		(
 			'label'						=> &$GLOBALS['TL_LANG']['tl_iso_orderstatus']['mail_admin'],
+			'exclude'					=> true,
 			'inputType'					=> 'select',
 			'foreignKey'				=> 'tl_iso_mail.name',
 			'eval'						=> array('includeBlankOption'=>true, 'tl_class'=>'w50')

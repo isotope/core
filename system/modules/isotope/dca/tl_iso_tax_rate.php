@@ -132,18 +132,21 @@ $GLOBALS['TL_DCA']['tl_iso_tax_rate'] = array
 		'name' => array
 		(
 			'label'                   => &$GLOBALS['TL_LANG']['tl_iso_tax_rate']['name'],
+			'exclude'                 => true,
 			'inputType'               => 'text',
 			'eval'                    => array('mandatory'=>true, 'maxlength'=>255, 'tl_class'=>'w50'),
 		),
 		'label' => array
 		(
 			'label'                   => &$GLOBALS['TL_LANG']['tl_iso_tax_rate']['label'],
+			'exclude'                 => true,
 			'inputType'               => 'text',
 			'eval'                    => array('maxlength'=>255, 'tl_class'=>'w50'),
 		),
 		'address' => array
 		(
 			'label'                   => &$GLOBALS['TL_LANG']['tl_iso_tax_rate']['address'],
+			'exclude'                 => true,
 			'inputType'               => 'checkbox',
 			'options'				  => array('billing', 'shipping'),
 			'reference'				  => &$GLOBALS['TL_LANG']['tl_iso_tax_rate'],
@@ -152,6 +155,7 @@ $GLOBALS['TL_DCA']['tl_iso_tax_rate'] = array
 		'country' => array
 		(
 			'label'                   => &$GLOBALS['TL_LANG']['tl_iso_tax_rate']['country'],
+			'exclude'                 => true,
 			'inputType'               => 'select',
 			'options'                 => $this->getCountries(),
 			'eval'                    => array('includeBlankOption'=>true, 'tl_class'=>'w50', 'chosen'=>true)
@@ -175,6 +179,7 @@ $GLOBALS['TL_DCA']['tl_iso_tax_rate'] = array
 		'config' => array
 		(
 			'label'                   => &$GLOBALS['TL_LANG']['tl_iso_tax_rate']['config'],
+			'exclude'                 => true,
 			'inputType'               => 'select',
 			'foreignKey'			  => 'tl_iso_config.name',
 			'eval'                    => array('includeBlankOption'=>true, 'submitOnChange'=>true),
@@ -182,6 +187,7 @@ $GLOBALS['TL_DCA']['tl_iso_tax_rate'] = array
 		'rate' => array
 		(
 			'label'                   => &$GLOBALS['TL_LANG']['tl_iso_tax_rate']['rate'],
+			'exclude'                 => true,
 			'inputType'               => 'inputUnit',
 			'options'				  => array('%'=>'%'),
 			'eval'                    => array('mandatory'=>true, 'maxlength'=>255, 'rgxp'=>'price'),
@@ -189,12 +195,14 @@ $GLOBALS['TL_DCA']['tl_iso_tax_rate'] = array
 		'amount' => array
 		(
 			'label'                   => &$GLOBALS['TL_LANG']['tl_iso_tax_rate']['amount'],
+			'exclude'                 => true,
 			'inputType'               => 'text',
 			'eval'                    => array('multiple'=>true, 'size'=>2, 'maxlength'=>10, 'rgxp'=>'digit', 'tl_class'=>'w50'),
 		),
 		'stop' => array
 		(
 			'label'						=> &$GLOBALS['TL_LANG']['tl_iso_tax_rate']['stop'],
+			'exclude'					=> true,
 			'inputType'					=> 'checkbox',
 		),
 	)

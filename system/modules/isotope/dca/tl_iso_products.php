@@ -316,6 +316,7 @@ $GLOBALS['TL_DCA']['tl_iso_products'] = array
 		'type' => array
 		(
 			'label'					=> &$GLOBALS['TL_LANG']['tl_iso_products']['type'],
+			'exclude'               => true,
 			'filter'				=> true,
 			'inputType'				=> 'select',
 			'options_callback'		=> array('tl_iso_products', 'getProductTypes'),
@@ -326,6 +327,7 @@ $GLOBALS['TL_DCA']['tl_iso_products'] = array
 		'pages' => array
 		(
 			'label'					=> &$GLOBALS['TL_LANG']['tl_iso_products']['pages'],
+			'exclude'               => true,
 			'filter'				=> true,
 			'inputType'				=> 'pageTree',
 			'foreignKey'			=> 'tl_page.title',
@@ -343,12 +345,14 @@ $GLOBALS['TL_DCA']['tl_iso_products'] = array
 		'inherit' => array
 		(
 			'label'					=> &$GLOBALS['TL_LANG']['tl_iso_products']['inherit'],
+			'exclude'               => true,
 			'inputType'				=> 'inheritCheckbox',
 			'eval'					=> array('multiple'=>true, 'doNotShow'=>true),
 		),
 		'alias' => array
 		(
 			'label'					=> &$GLOBALS['TL_LANG']['tl_iso_products']['alias'],
+			'exclude'               => true,
 			'search'				=> true,
 			'sorting'				=> true,
 			'inputType'				=> 'text',
@@ -362,6 +366,7 @@ $GLOBALS['TL_DCA']['tl_iso_products'] = array
 		'sku' => array
 		(
 			'label'					=> &$GLOBALS['TL_LANG']['tl_iso_products']['sku'],
+			'exclude'               => true,
 			'search'				=> true,
 			'sorting'				=> true,
 			'inputType'				=> 'text',
@@ -371,6 +376,7 @@ $GLOBALS['TL_DCA']['tl_iso_products'] = array
 		'name' => array
 		(
 			'label'					=> &$GLOBALS['TL_LANG']['tl_iso_products']['name'],
+			'exclude'               => true,
 			'search'				=> true,
 			'sorting'				=> true,
 			'inputType'				=> 'text',
@@ -380,6 +386,7 @@ $GLOBALS['TL_DCA']['tl_iso_products'] = array
 		'teaser' => array
 		(
 			'label'					=> &$GLOBALS['TL_LANG']['tl_iso_products']['teaser'],
+			'exclude'               => true,
 			'search'				=> true,
 			'inputType'				=> 'textarea',
 			'eval'					=> array('style'=>'height:80px'),
@@ -388,6 +395,7 @@ $GLOBALS['TL_DCA']['tl_iso_products'] = array
 		'description' => array
 		(
 			'label'					=> &$GLOBALS['TL_LANG']['tl_iso_products']['description'],
+			'exclude'               => true,
 			'search'				=> true,
 			'inputType'				=> 'textarea',
 			'eval'					=> array('mandatory'=>true, 'rte'=>'tinyMCE', 'tl_class'=>'clr'),
@@ -396,6 +404,7 @@ $GLOBALS['TL_DCA']['tl_iso_products'] = array
 		'description_meta' => array
 		(
 			'label'					=> &$GLOBALS['TL_LANG']['tl_iso_products']['description_meta'],
+			'exclude'               => true,
 			'search'				=> true,
 			'inputType'				=> 'textarea',
 			'eval'					=> array('style'=>'height:60px'),
@@ -404,6 +413,7 @@ $GLOBALS['TL_DCA']['tl_iso_products'] = array
 		'keywords_meta' => array
 		(
 			'label'					=> &$GLOBALS['TL_LANG']['tl_iso_products']['keywords_meta'],
+			'exclude'               => true,
 			'search'				=> true,
 			'inputType'				=> 'textarea',
 			'eval'					=> array('style'=>'height:40px'),
@@ -412,6 +422,7 @@ $GLOBALS['TL_DCA']['tl_iso_products'] = array
 		'price' => array
 		(
 			'label'					=> &$GLOBALS['TL_LANG']['tl_iso_products']['price'],
+			'exclude'               => true,
 			'inputType'				=> 'text',
 			'eval'					=> array('mandatory'=>true, 'maxlength'=>13, 'rgxp'=>'price', 'tl_class'=>'w50'),
 			'attributes'			=> array('legend'=>'pricing_legend', 'fe_sorting'=>true, 'dynamic'=>true),
@@ -447,6 +458,7 @@ $GLOBALS['TL_DCA']['tl_iso_products'] = array
 		'tax_class' => array
 		(
 			'label'					=> &$GLOBALS['TL_LANG']['tl_iso_products']['tax_class'],
+			'exclude'               => true,
 			'inputType'				=> 'select',
 			'foreignKey'			=> 'tl_iso_tax_class.name',
 			'attributes'			=> array('legend'=>'pricing_legend', 'tl_class'=>'w50'),
@@ -455,6 +467,7 @@ $GLOBALS['TL_DCA']['tl_iso_products'] = array
 		'baseprice' => array
 		(
 			'label'					=> &$GLOBALS['TL_LANG']['tl_iso_products']['baseprice'],
+			'exclude'               => true,
 			'inputType'				=> 'timePeriod',
 			'foreignKey'			=> 'tl_iso_baseprice.name',
 			'attributes'			=> array('legend'=>'pricing_legend', 'tl_class'=>'w50'),
@@ -463,6 +476,7 @@ $GLOBALS['TL_DCA']['tl_iso_products'] = array
 		'shipping_weight' => array
 		(
 			'label'					=> &$GLOBALS['TL_LANG']['tl_iso_products']['shipping_weight'],
+			'exclude'               => true,
 			'inputType'				=> 'timePeriod',
 			'default'				=> array('', 'kg'),
 			'options'				=> array('mg', 'g', 'kg', 't', 'ct', 'oz', 'lb', 'st', 'grain'),
@@ -473,6 +487,7 @@ $GLOBALS['TL_DCA']['tl_iso_products'] = array
 		'shipping_exempt' => array
 		(
 			'label'					=> &$GLOBALS['TL_LANG']['tl_iso_products']['shipping_exempt'],
+			'exclude'               => true,
 			'inputType'				=> 'checkbox',
 			'eval'					=> array('tl_class'=>'w50'),
 			'attributes'			=> array('legend'=>'shipping_legend'),
@@ -480,6 +495,7 @@ $GLOBALS['TL_DCA']['tl_iso_products'] = array
 		'images' => array
 		(
 			'label'					=> &$GLOBALS['TL_LANG']['tl_iso_products']['images'],
+			'exclude'               => true,
 			'inputType'				=> 'mediaManager',
 			'explanation'			=> 'mediaManager',
 			'eval'					=> array('extensions'=>'jpeg,jpg,png,gif', 'helpwizard'=>true),
@@ -488,6 +504,7 @@ $GLOBALS['TL_DCA']['tl_iso_products'] = array
 		'protected' => array
 		(
 			'label'					=> &$GLOBALS['TL_LANG']['tl_iso_products']['protected'],
+			'exclude'               => true,
 			'inputType'				=> 'checkbox',
 			'eval'					=> array('submitOnChange'=>true, 'tl_class'=>'clr'),
 			'attributes'			=> array('legend'=>'expert_legend'),
@@ -495,6 +512,7 @@ $GLOBALS['TL_DCA']['tl_iso_products'] = array
 		'groups' => array
 		(
 			'label'					=> &$GLOBALS['TL_LANG']['tl_iso_products']['groups'],
+			'exclude'               => true,
 			'inputType'				=> 'checkbox',
 			'foreignKey'			=> 'tl_member_group.name',
 			'eval'					=> array('mandatory'=>true, 'multiple'=>true),
@@ -502,6 +520,7 @@ $GLOBALS['TL_DCA']['tl_iso_products'] = array
 		'guests' => array
 		(
 			'label'					=> &$GLOBALS['TL_LANG']['tl_iso_products']['guests'],
+			'exclude'               => true,
 			'inputType'				=> 'checkbox',
 			'eval'					=> array('tl_class'=>'w50'),
 			'attributes'			=> array('legend'=>'expert_legend'),
@@ -509,6 +528,7 @@ $GLOBALS['TL_DCA']['tl_iso_products'] = array
 		'cssID' => array
 		(
 			'label'					=> &$GLOBALS['TL_LANG']['tl_iso_products']['cssID'],
+			'exclude'               => true,
 			'inputType'				=> 'text',
 			'eval'					=> array('multiple'=>true, 'size'=>2, 'tl_class'=>'w50'),
 			'attributes'			=> array('legend'=>'expert_legend'),
@@ -516,6 +536,7 @@ $GLOBALS['TL_DCA']['tl_iso_products'] = array
 		'published' => array
 		(
 			'label'					=> &$GLOBALS['TL_LANG']['tl_iso_products']['published'],
+			'exclude'               => true,
 			'filter'				=> true,
 			'inputType'				=> 'checkbox',
 			'eval'					=> array('doNotCopy'=>true),
@@ -528,6 +549,7 @@ $GLOBALS['TL_DCA']['tl_iso_products'] = array
 		'start' => array
 		(
 			'label'					=> &$GLOBALS['TL_LANG']['tl_iso_products']['start'],
+			'exclude'               => true,
 			'inputType'				=> 'text',
 			'eval'					=> array('rgxp'=>'date', 'datepicker'=>(method_exists($this,'getDatePickerString') ? $this->getDatePickerString() : true), 'tl_class'=>'w50 wizard'),
 			'attributes'			=> array('legend'=>'publish_legend', 'fixed'=>true, 'variant_fixed'=>true),
@@ -535,6 +557,7 @@ $GLOBALS['TL_DCA']['tl_iso_products'] = array
 		'stop' => array
 		(
 			'label'					=> &$GLOBALS['TL_LANG']['tl_iso_products']['stop'],
+			'exclude'               => true,
 			'inputType'				=> 'text',
 			'eval'					=> array('rgxp'=>'date', 'datepicker'=>(method_exists($this,'getDatePickerString') ? $this->getDatePickerString() : true), 'tl_class'=>'w50 wizard'),
 			'attributes'			=> array('legend'=>'publish_legend', 'fixed'=>true, 'variant_fixed'=>true),
@@ -1992,6 +2015,7 @@ $strBuffer .= '<th style="text-align:center"><img src="system/themes/default/ima
 			$arrData = is_array($GLOBALS['TL_DCA']['tl_iso_products']['fields'][$objAttributes->field_name]) ? $GLOBALS['TL_DCA']['tl_iso_products']['fields'][$objAttributes->field_name] : array();
 
 			$arrData['label']		= array($objAttributes->name, $objAttributes->description);
+			$arrData['exclude']		= true;
 			$arrData['inputType']	= ((TL_MODE == 'BE' && $GLOBALS['ISO_ATTR'][$objAttributes->type]['backend'] != '') ? $GLOBALS['ISO_ATTR'][$objAttributes->type]['backend'] : ((TL_MODE == 'FE' && $GLOBALS['ISO_ATTR'][$objAttributes->type]['frontend'] != '') ? $GLOBALS['ISO_ATTR'][$objAttributes->type]['frontend'] : $objAttributes->type));
 			$arrData['attributes']	= $objAttributes->row();
 			$arrData['eval']		= is_array($arrData['eval']) ? array_merge($arrData['eval'], $arrData['attributes']) : $arrData['attributes'];
