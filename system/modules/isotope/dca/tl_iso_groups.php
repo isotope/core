@@ -127,7 +127,6 @@ $GLOBALS['TL_DCA']['tl_iso_groups'] = array
 		'name' => array
 		(
 			'label'						=> &$GLOBALS['TL_LANG']['tl_iso_groups']['name'],
-			'exclude'					=> true,
 			'inputType'					=> 'text',
 			'eval'						=> array('mandatory'=>true, 'maxlength'=>255, 'tl_class'=>'long'),
 		),
