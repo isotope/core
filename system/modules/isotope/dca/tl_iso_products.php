@@ -870,7 +870,7 @@ class tl_iso_products extends Backend
 
 		if (!$this->User->isAdmin && (!is_array($arrTypes) || empty($arrTypes)))
 		{
-			$arrTypes = array();
+			$arrTypes = array(0);
 		}
 
 		$arrProductTypes = array();
