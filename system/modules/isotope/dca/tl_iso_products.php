@@ -897,6 +897,10 @@ class tl_iso_products extends Backend
 		foreach ($this->Database->execute("SELECT page_id FROM tl_iso_product_categories WHERE pid=$intProduct")->fetchEach('page_id') as $intPage)
 		{
 			$objPage = $this->getPageDetails($intPage);
+
+			if (!$objPage->numRows)
+				continue;
+
 			$help = '';
 
 			if (count($objPage->trail)) // Can't use empty() because its an object property (using __get)
