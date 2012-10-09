@@ -192,11 +192,6 @@ $GLOBALS['TL_DCA']['tl_iso_tax_rate'] = array
 			'inputType'               => 'text',
 			'eval'                    => array('multiple'=>true, 'size'=>2, 'maxlength'=>10, 'rgxp'=>'digit', 'tl_class'=>'w50'),
 		),
-		'compound' => array
-		(
-			'label'						=> &$GLOBALS['TL_LANG']['tl_iso_tax_rate']['compound'],
-			'inputType'					=> 'checkbox',
-		),
 		'stop' => array
 		(
 			'label'						=> &$GLOBALS['TL_LANG']['tl_iso_tax_rate']['stop'],
