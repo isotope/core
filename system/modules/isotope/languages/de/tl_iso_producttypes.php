@@ -35,7 +35,7 @@
 $GLOBALS['TL_LANG']['tl_iso_producttypes']['name'][0] = 'Name';
 $GLOBALS['TL_LANG']['tl_iso_producttypes']['name'][1] = 'Bitte geben Sie einen Namen für diesen Produkttyp ein.';
 $GLOBALS['TL_LANG']['tl_iso_producttypes']['class'][0] = 'Produktklasse';
-$GLOBALS['TL_LANG']['tl_iso_producttypes']['class'][1] = 'Bitte wählen Sie eine Produktklasse.Verschiedene Produktklassen wirken sich unterschiedlich auf Produkte aus.';
+$GLOBALS['TL_LANG']['tl_iso_producttypes']['class'][1] = 'Bitte wählen Sie eine Produktklasse. Verschiedene Produktklassen wirken sich unterschiedlich auf Produkte aus.';
 $GLOBALS['TL_LANG']['tl_iso_producttypes']['fallback'][0] = 'Standard';
 $GLOBALS['TL_LANG']['tl_iso_producttypes']['fallback'][1] = 'Klicken Sie hier, wenn das der Standard-Produkttyp ist.';
 $GLOBALS['TL_LANG']['tl_iso_producttypes']['prices'][0] = 'Erweiterte Preisangaben';

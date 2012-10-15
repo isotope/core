@@ -242,7 +242,7 @@ $GLOBALS['TL_LANG']['ISO']['backendShippingNoInfo']			= 'This shipping module do
 $GLOBALS['ISO_LANG']['MSC']['useDefault']			= 'Use default value';
 $GLOBALS['ISO_LANG']['MSC']['activeStep']			= 'active step: ';
 $GLOBALS['ISO_LANG']['MSC']['productcacheLoading']	= 'Loading products...';
-$GLOBALS['ISO_LANG']['MSC']['productcacheNoscript']	= 'Your browser does not support javascript. Please <a href="%s">click here</a> to load the product list.';
+$GLOBALS['ISO_LANG']['MSC']['productcacheNoscript']	= 'Your browser does not support JavaScript. Please <a href="%s">click here</a> to load the product list.';
 $GLOBALS['ISO_LANG']['MSC']['noFilesInFolder']		= 'No files in this folder';
 $GLOBALS['ISO_LANG']['MSC']['loadingProductData']	= 'Loading product data …';
 $GLOBALS['ISO_LANG']['MSC']['templateConfig']		= '%s (Store Config: %s)';
@@ -277,7 +277,7 @@ $GLOBALS['ISO_LANG']['PAY']['cybersource']		= array('Cybersource','For Cybersour
 /**
  * Galleries
  */
-$GLOBALS['ISO_LANG']['GAL']['default']			= array('Default gallery (Lightbox/Mediabox)', '<p>Uses the lightbox/mediabox for full size images. Make sure you select the appropriate "moo_" template in your page layout configuration.</p><p>You can supply a "rel" attribute to the link target by using a pipe (eg. "tl_files/video.mov|lightbox[400 300]"). If no "rel" attribute is supplied, the link will be opened in a new window.</p>');
+$GLOBALS['ISO_LANG']['GAL']['default']			= array('Default gallery (Lightbox/Mediabox)', '<p>Uses the lightbox/mediabox for full size images. Make sure you select the appropriate "moo_" template in your page layout configuration.</p><p>You can supply a "rel" attribute to the link target by using a pipe (e.g. "tl_files/video.mov|lightbox[400 300]"). If no "rel" attribute is supplied, the link will be opened in a new window.</p>');
 $GLOBALS['ISO_LANG']['GAL']['inline']			= array('Inline gallery', 'Clicking on a gallery image will replace the main image.');
 $GLOBALS['ISO_LANG']['GAL']['zoom'] = array('Inline gallery with zoom effect', 'In addition to the behaviour of inline gallery, it also adds an image zoom feature to the main image.');
 

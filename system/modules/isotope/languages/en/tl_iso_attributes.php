@@ -107,7 +107,7 @@ $GLOBALS['TL_LANG']['tl_iso_attributes']['edit']					= array('Edit Attribute', '
 $GLOBALS['TL_LANG']['tl_iso_attributes']['copy']					= array('Copy Attribute', 'Copy attribute ID %s.');
 $GLOBALS['TL_LANG']['tl_iso_attributes']['delete']					= array('Delete Attribute', 'Delete attribute ID %s. The database column is not dropped, you need to manually update the database using the install tool or repository manager.');
 $GLOBALS['TL_LANG']['tl_iso_attributes']['show']					= array('Show Attribute Details', 'Show details for attribute ID %s.');
-$GLOBALS['TL_LANG']['tl_iso_attributes']['deleteConfirm']			= 'Do you really want to delete attribute ID %s. Database field is not dropped, you need to manually update the database using the install tool or repository manager.';
+$GLOBALS['TL_LANG']['tl_iso_attributes']['deleteConfirm']			= 'Do you really want to delete attribute ID %s? Database field is not dropped, you need to manually update the database using the install tool or repository manager.';
 
 
 /**

@@ -55,16 +55,16 @@ $GLOBALS['TL_LANG']['XPL']['isoMailTokens'][10][1] = 'Adresse de livraison au fo
 $GLOBALS['TL_LANG']['XPL']['isoMailTokens'][11][0] = '##shipping_method##';
 $GLOBALS['TL_LANG']['XPL']['isoMailTokens'][11][1] = 'Nom de la méthode de livraison (inscrite dans le back office)';
 $GLOBALS['TL_LANG']['XPL']['isoMailTokens'][12][0] = '##shipping_note##<br />##shipping_note_text##';
-$GLOBALS['TL_LANG']['XPL']['isoMailTokens'][12][1] = 'Notez le message pour le mode d\'expédition choisi (également disponible sous forme de texte ).';
+$GLOBALS['TL_LANG']['XPL']['isoMailTokens'][12][1] = 'Notez le message pour le mode d\'expédition choisi (également disponible sous forme de texte).';
 $GLOBALS['TL_LANG']['XPL']['isoMailTokens'][13][0] = '##payment_method##';
 $GLOBALS['TL_LANG']['XPL']['isoMailTokens'][13][1] = 'Nom du mode de paiement (comme inscrit dans le back office)';
 $GLOBALS['TL_LANG']['XPL']['isoMailTokens'][14][0] = '##payment_note##<br />##payment_note_text##';
-$GLOBALS['TL_LANG']['XPL']['isoMailTokens'][14][1] = 'Notez le message pour le mode de paiement choisi (également disponible sous forme de texte ).';
+$GLOBALS['TL_LANG']['XPL']['isoMailTokens'][14][1] = 'Notez le message pour le mode de paiement choisi (également disponible sous forme de texte).';
 $GLOBALS['TL_LANG']['XPL']['isoMailTokens'][15][0] = '##billing_firstname##<br />##billing_lastname##<br />...';
 $GLOBALS['TL_LANG']['XPL']['isoMailTokens'][15][1] = 'Champs individuels de l\'adresse de facturation.';
 $GLOBALS['TL_LANG']['XPL']['isoMailTokens'][16][0] = '##shipping_firstname##<br />##shipping_lastname##<br />...';
 $GLOBALS['TL_LANG']['XPL']['isoMailTokens'][16][1] = 'Champs individuels de l\'adresse de livraison.';
 $GLOBALS['TL_LANG']['XPL']['isoMailTokens'][17][0] = '##form_...##';
 $GLOBALS['TL_LANG']['XPL']['isoMailTokens'][17][1] = 'Récupérer des données de formulaire. Utiliser le préfixe "form_" et le nom du champ.';
-$GLOBALS['TL_LANG']['XPL']['mediaManager'] = '<p class="tl_help_table">Pour télécharger une nouvelle image, sélectionner le fichier et sauvegarder le produit. Après le téléchargement, un aperçu de l\'image, un texte alternatif et une description sont affichés. Pour plusieurs photos,cliquer sur les flèches à droite pour changer leur ordre, l\'image du haut est utilisée comme image principale de chaque produit.</p>';
+$GLOBALS['TL_LANG']['XPL']['mediaManager'] = '<p class="tl_help_table">Pour télécharger une nouvelle image, sélectionner le fichier et sauvegarder le produit. Après le téléchargement, un aperçu de l\'image, un texte alternatif et une description sont affichés. Si vous avez plusieurs photos, cliquez sur les flèches à droite pour changer leur ordre, l\'image du haut est utilisée comme image principale de chaque produit.</p>';
 

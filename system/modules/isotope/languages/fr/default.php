@@ -68,15 +68,15 @@ $GLOBALS['TL_LANG']['ERR']['cartMinSubtotal']             = 'Le montant minimum 
  */
 $GLOBALS['TL_LANG']['MSC']['editLanguage']                      = 'Éditer';
 $GLOBALS['TL_LANG']['MSC']['deleteLanguage']                    = 'Supprimer';
-$GLOBALS['TL_LANG']['MSC']['defaultLanguage']                   = 'De retour';
+$GLOBALS['TL_LANG']['MSC']['defaultLanguage']                   = 'Langue de secours';
 $GLOBALS['TL_LANG']['MSC']['editingLanguage']                   = 'ATTENTION : vous éditez des données spécifiques à la langue !';
 $GLOBALS['TL_LANG']['MSC']['deleteLanguageConfirm']             = 'Êtes-vous sûr de vouloir supprimer cette langue ? Il n\'y aura pas d\'annulation possible !';
 $GLOBALS['TL_LANG']['MSC']['undefinedLanguage']                 = 'Indéfini';
-$GLOBALS['TL_LANG']['MSC']['copyFallback']			= 'Duplicate Fallback';
+$GLOBALS['TL_LANG']['MSC']['copyFallback']			= 'Dupliquer la langue de secours';
 $GLOBALS['TL_LANG']['MSC']['noSurcharges']                      = 'Pas de surtaxes trouvées.';
 $GLOBALS['TL_LANG']['MSC']['ajaxLoadingMessage']                = 'Chargement...';
 $GLOBALS['TL_LANG']['MSC']['orderDetailsHeadline']              = 'Numéro de commande de %s / %s';
-$GLOBALS['TL_LANG']['MSC']['payment_processing']                = 'Votre paiement est en cours de traitement. Soyez patient...';
+$GLOBALS['TL_LANG']['MSC']['payment_processing']                = 'Votre paiement est en cours de traitement. Veuillez patienter...';
 $GLOBALS['TL_LANG']['MSC']['authorizedotnet_process_failed']    = 'Votre paiement n\'a pas pu être traité. <br /><br />Cause: %s';
 $GLOBALS['TL_LANG']['MSC']['mmNoUploads']                       = 'Aucun fichier envoyé.';
 $GLOBALS['TL_LANG']['MSC']['mmUpload']                          = 'Envoyer un nouveau fichier';
@@ -95,12 +95,12 @@ $GLOBALS['TL_LANG']['MSC']['searchTermsLabel']                  = 'Mots-clés';
 $GLOBALS['TL_LANG']['MSC']['submitLabel']                       = 'Valider';
 $GLOBALS['TL_LANG']['MSC']['clearFiltersLabel']                 = 'Effacer les filtres';
 $GLOBALS['TL_LANG']['MSC']['buttonLabel']['update']             = 'Mettre à jour';
-$GLOBALS['TL_LANG']['MSC']['buttonLabel']['add_to_cart']        = 'Mettre dans le panier';
+$GLOBALS['TL_LANG']['MSC']['buttonLabel']['add_to_cart']        = 'Ajouter au panier';
 $GLOBALS['TL_LANG']['MSC']['pagerSectionTitleLabel']            = 'Page :';
 $GLOBALS['TL_LANG']['MSC']['orderByLabel']                      = 'Trier par :';
 //$GLOBALS['TL_LANG']['MSC']['buttonActionString']['add_to_cart'] = 'Mettre le produit %s dans le panier';
 $GLOBALS['TL_LANG']['MSC']['noProducts']                        = 'Aucun produit trouvé.';
-$GLOBALS['TL_LANG']['MSC']['invalidProductInformation']         = 'Désolé, cette information de produit ne se trouve pas dans notre boutique. Pour obtenir de l\'aide, veuillez nous contacter.';
+$GLOBALS['TL_LANG']['MSC']['invalidProductInformation']         = 'Désolé, cette information de produit ne se trouve pas dans notre boutique. Pour obtenir de l\'aide, veuillez s\'il vous plaît nous contacter.';
 $GLOBALS['TL_LANG']['MSC']['productOptionsLabel']               = 'Options';
 $GLOBALS['TL_LANG']['MSC']['previousStep']                      = 'Retour';
 $GLOBALS['TL_LANG']['MSC']['nextStep']                          = 'Continuer';
@@ -111,10 +111,10 @@ $GLOBALS['TL_LANG']['MSC']['labelSortBy']                       = 'Trier par';
 $GLOBALS['TL_LANG']['MSC']['labelSubmit']                       = 'Soumettre';
 $GLOBALS['TL_LANG']['MSC']['labelProductVariants']              = 'Veuillez sélectionner';
 $GLOBALS['TL_LANG']['MSC']['removeProductLinkText']             = 'Supprimer';
-$GLOBALS['TL_LANG']['MSC']['noItemsInCart']                     = 'Il n\'y a pas d\'article dans votre panier';
+$GLOBALS['TL_LANG']['MSC']['noItemsInCart']                     = 'Il n\'y a pas d\'article dans votre panier.';
 $GLOBALS['TL_LANG']['MSC']['addedToCart']                       = 'Le produit sélectionné a bien été ajouté à votre panier.';
 $GLOBALS['TL_LANG']['MSC']['cartMerged']                        = 'The products from your last visit have been readded. Please review your shopping cart items.';
-$GLOBALS['TL_LANG']['MSC']['removeProductLinkTitle']            = 'Supprime %s de votre panier';
+$GLOBALS['TL_LANG']['MSC']['removeProductLinkTitle']            = 'Supprimer "%s" de votre panier';
 $GLOBALS['TL_LANG']['MSC']['subTotalLabel']                     = 'Sous-total de la commande :';
 $GLOBALS['TL_LANG']['MSC']['shippingLabel']                     = 'Livraison';
 $GLOBALS['TL_LANG']['MSC']['paymentLabel']                      = 'Paiement';
@@ -136,8 +136,8 @@ $GLOBALS['TL_LANG']['ISO']['couponsSubmitLabel']                = 'Appliquer';
 $GLOBALS['TL_LANG']['MSC']['cartBT']                            = 'Panier d\'achat';
 $GLOBALS['TL_LANG']['MSC']['checkoutBT']                        = 'Commander';
 $GLOBALS['TL_LANG']['MSC']['continueShoppingBT']                = 'Continuez vos achats';
-$GLOBALS['TL_LANG']['MSC']['updateCartBT']                      = 'Mettre le panier à jour';
-$GLOBALS['TL_LANG']['MSC']['orderStatusHeadline']               = 'Statut de commande: %s';
+$GLOBALS['TL_LANG']['MSC']['updateCartBT']                      = 'Mettre à jour le panier';
+$GLOBALS['TL_LANG']['MSC']['orderStatusHeadline']               = 'État de la commande: %s';
 $GLOBALS['TL_LANG']['MSC']['checkboutStepBack']                 = 'Retourner à l\'étape "%s"';
 
 //Addresses
@@ -153,7 +153,7 @@ $GLOBALS['TL_LANG']['MSC']['deleteAddressConfirm']              = 'Voulez-vous v
 
 //Invoice language Entries
 $GLOBALS['TL_LANG']['MSC']['iso_invoice_title']                 = 'Facture';
-$GLOBALS['TL_LANG']['MSC']['iso_order_status']                  = 'Statut';
+$GLOBALS['TL_LANG']['MSC']['iso_order_status']                  = 'État';
 $GLOBALS['TL_LANG']['MSC']['iso_order_date']                    = 'Date de la commande';
 $GLOBALS['TL_LANG']['MSC']['iso_billing_address_header']        = 'Adresse de facturation';
 $GLOBALS['TL_LANG']['MSC']['iso_shipping_address_header']       = 'Adresse de livraison';
@@ -169,12 +169,12 @@ $GLOBALS['TL_LANG']['MSC']['iso_sku_header']                    = 'Réf.';
 $GLOBALS['TL_LANG']['MSC']['iso_product_name_header']           = 'Nom de produit';
 $GLOBALS['TL_LANG']['MSC']['iso_card_name_title']               = 'Nom sur la carte de crédit';
 
-$GLOBALS['TL_LANG']['MSC']['low_to_high']                       = 'De bas en haut';
-$GLOBALS['TL_LANG']['MSC']['high_to_low']                       = 'De haut en bas';
-$GLOBALS['TL_LANG']['MSC']['a_to_z']                            = 'De A à Z';
-$GLOBALS['TL_LANG']['MSC']['z_to_a']                            = 'De Z à A';
-$GLOBALS['TL_LANG']['MSC']['old_to_new']                        = 'Du plus ancien au plus récent';
-$GLOBALS['TL_LANG']['MSC']['new_to_old']                        = 'Du plus récent au plus ancien';
+$GLOBALS['TL_LANG']['MSC']['low_to_high']                       = 'de bas en haut';
+$GLOBALS['TL_LANG']['MSC']['high_to_low']                       = 'de haut en bas';
+$GLOBALS['TL_LANG']['MSC']['a_to_z']                            = 'de A à Z';
+$GLOBALS['TL_LANG']['MSC']['z_to_a']                            = 'de Z à A';
+$GLOBALS['TL_LANG']['MSC']['old_to_new']                        = 'du plus ancien au plus récent';
+$GLOBALS['TL_LANG']['MSC']['new_to_old']                        = 'du plus récent au plus ancien';
 
 
 /**
@@ -206,7 +206,7 @@ $GLOBALS['TL_LANG']['ISO']['checkout_payment']                  = 'Paiement';
 $GLOBALS['TL_LANG']['ISO']['checkout_review']                   = 'Résumé';
 $GLOBALS['TL_LANG']['ISO']['billing_address']                   = 'Adresse de facturation';
 $GLOBALS['TL_LANG']['ISO']['shipping_address']                  = 'Adresse de livraison';
-$GLOBALS['TL_LANG']['ISO']['billing_shipping_address']          = 'Adresse de facturation & de livraison';
+$GLOBALS['TL_LANG']['ISO']['billing_shipping_address']          = 'Adresse de facturation &amp; de livraison';
 $GLOBALS['TL_LANG']['ISO']['customer_address']                  = 'Adresse du client';
 $GLOBALS['TL_LANG']['ISO']['shipping_method']                   = 'Mode de livraison';
 $GLOBALS['TL_LANG']['ISO']['payment_method']                    = 'Mode de facturation';
@@ -217,7 +217,7 @@ $GLOBALS['TL_LANG']['ISO']['cc_num']                            = 'Numéro de ca
 $GLOBALS['TL_LANG']['ISO']['cc_type']                           = 'Type de carte de crédit';
 $GLOBALS['TL_LANG']['ISO']['cc_ccv']                            = 'Numéro CCV (code de 3 ou 4 chiffres)';
 $GLOBALS['TL_LANG']['ISO']['cc_exp_paypal']                     = 'Date d\'expiration de la carte de crédit';
-$GLOBALS['TL_LANG']['ISO']['cc_exp_date']                       = 'Mois /année de l\'expiration';
+$GLOBALS['TL_LANG']['ISO']['cc_exp_date']                       = 'Mois/année de l\'expiration';
 $GLOBALS['TL_LANG']['ISO']['cc_exp_month']                      = 'Mois de l\'expiration';
 $GLOBALS['TL_LANG']['ISO']['cc_exp_year']                       = 'Année de l\'expiration';
 $GLOBALS['TL_LANG']['ISO']['cc_issue_number']                   = 'Numéro de parution de la carte de crédit, 2 chiffres (pour les cartes Maestro et Solo)';
@@ -241,14 +241,14 @@ $GLOBALS['TL_LANG']['ISO']['backendShippingNoInfo']             = 'Ce module de 
 $GLOBALS['ISO_LANG']['MSC']['useDefault']                       = 'Utiliser la valeur par défaut';
 $GLOBALS['ISO_LANG']['MSC']['activeStep']			= 'active step: ';
 $GLOBALS['ISO_LANG']['MSC']['productcacheLoading']	        = 'Loading products...';
-$GLOBALS['ISO_LANG']['MSC']['productcacheNoscript']	        = 'Your browser does not support javascript. Please <a href="%s">click here</a> to load the product list.';
-$GLOBALS['ISO_LANG']['MSC']['noFilesInFolder']		        = 'No files in this folder';
-$GLOBALS['ISO_LANG']['MSC']['loadingProductData']	        = 'Loading product data …';
+$GLOBALS['ISO_LANG']['MSC']['productcacheNoscript']	        = 'Votre navigateur ne supporte pas JavaScript. Veuillez, s\'il vous plaît, <a href="%s">cliquer ici</a> pour afficher la liste des produits.';
+$GLOBALS['ISO_LANG']['MSC']['noFilesInFolder']		        = 'Aucun fichier dans ce dossier';
+$GLOBALS['ISO_LANG']['MSC']['loadingProductData']	        = 'Loading product data…';
 $GLOBALS['ISO_LANG']['MSC']['templateConfig']		        = '%s (Store Config: %s)';
 $GLOBALS['ISO_LANG']['MSC']['templateTheme']		        = '%s (Theme: %s)';
 $GLOBALS['ISO_LANG']['MSC']['splittedTaxRate']		        = 'Splitted';
 $GLOBALS['ISO_LANG']['MSC']['newOrders']			= 'You have %s order(s) with status "%s"';
-$GLOBALS['ISO_LANG']['MSC']['checkoutStep']			= 'Step %s of %s (%s) - ';
+$GLOBALS['ISO_LANG']['MSC']['checkoutStep']			= 'Étape %s de %s (%s) - ';
 
 
 /**
@@ -266,9 +266,9 @@ $GLOBALS['ISO_LANG']['SHIP']['usps'][0]                         = 'Tarifs USPS e
  * Payment modules
  */
 $GLOBALS['ISO_LANG']['PAY']['cash'][0]                          = 'Paiement en espèces';
-$GLOBALS['ISO_LANG']['PAY']['cash'][1]                          = 'Choisissez cette option pour tous le paiements en mode hors connexion';
+$GLOBALS['ISO_LANG']['PAY']['cash'][1]                          = 'Choisissez cette option pour tous les paiements en mode hors connexion';
 $GLOBALS['ISO_LANG']['PAY']['paypal'][0]                        = 'Passage à la caisse standard PayPal';
-$GLOBALS['ISO_LANG']['PAY']['paypal'][1]                        = 'Ce module Paypal supporte IPN (notification instantanée de paiement)';
+$GLOBALS['ISO_LANG']['PAY']['paypal'][1]                        = 'Ce module PayPal supporte IPN (notification instantanée de paiement)';
 $GLOBALS['ISO_LANG']['PAY']['paypalpayflowpro'][0]              = 'PayPal Payflow Pro';
 $GLOBALS['ISO_LANG']['PAY']['paypalpayflowpro'][1]              = 'Le module PayPal Payflow offre un portail de service complet pour cartes de crédit, une solution robuste pour presque tous les sites de e-commerce';
 $GLOBALS['ISO_LANG']['PAY']['postfinance'][0]                   = 'Postfinance';
@@ -293,7 +293,7 @@ $GLOBALS['ISO_LANG']['GAL']['zoom']                             = array('Galerie
  * Product types
  */
 $GLOBALS['ISO_LANG']['PRODUCT']['regular'][0]                   = 'Produit standard';
-$GLOBALS['ISO_LANG']['PRODUCT']['regular'][1]                   = 'Produit standard. Sélectionner s\'il n\'y a pas d\'autres possibilité.';
+$GLOBALS['ISO_LANG']['PRODUCT']['regular'][1]                   = 'Produit standard. Sélectionnez-le s\'il n\'y a pas d\'autres possibilités.';
 
 
 /**

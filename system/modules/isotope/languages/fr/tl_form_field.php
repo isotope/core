@@ -29,5 +29,5 @@
  */
 
 $GLOBALS['TL_LANG']['FFL']['textCollection'][0] = 'Champ collection de texte';
-$GLOBALS['TL_LANG']['FFL']['textCollection'][1] = 'une ou plusieurs lignes de champ pour du texte court ou moyen.';
+$GLOBALS['TL_LANG']['FFL']['textCollection'][1] = 'Une ou plusieurs lignes de champ pour du texte court ou moyen.';
 

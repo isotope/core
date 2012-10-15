@@ -30,22 +30,22 @@
 /**
  * Fields
  */
-$GLOBALS['TL_LANG']['tl_iso_baseprice']['name']			= array('Name', 'Enter a name for this base price.');
-$GLOBALS['TL_LANG']['tl_iso_baseprice']['label']		= array('Label', 'Enter a label for this base price (e.g. "%s per ounce".)');
+$GLOBALS['TL_LANG']['tl_iso_baseprice']['name']  = array('Nom', 'Entrez un nom pour ce prix de base.');
+$GLOBALS['TL_LANG']['tl_iso_baseprice']['label'] = array('Label', 'Entrez un label pour ce prix de base (par exemple : "%s par gramme".)');
 
 
 /**
  * Buttons
  */
-$GLOBALS['TL_LANG']['tl_iso_baseprice']['new']			= array('New base price', 'Create a new base price');
-$GLOBALS['TL_LANG']['tl_iso_baseprice']['edit']			= array('Edit base price', 'Edit base price ID %s');
-$GLOBALS['TL_LANG']['tl_iso_baseprice']['copy']			= array('Duplicate base price', 'Duplicate base price ID %s');
-$GLOBALS['TL_LANG']['tl_iso_baseprice']['delete']		= array('Delete base price', 'Delete base price ID %s');
-$GLOBALS['TL_LANG']['tl_iso_baseprice']['show']			= array('Base price details', 'Show details of base price ID %s');
+$GLOBALS['TL_LANG']['tl_iso_baseprice']['new']    = array('Nouveau prix de base', 'Créer un nouveau prix de base');
+$GLOBALS['TL_LANG']['tl_iso_baseprice']['edit']   = array('Éditer un prix de base', 'Éditer le prix de base ID %s');
+$GLOBALS['TL_LANG']['tl_iso_baseprice']['copy']   = array('Dupliquer un prix de base', 'Dupliquer le prix de base ID %s');
+$GLOBALS['TL_LANG']['tl_iso_baseprice']['delete'] = array('Supprimer un prix de base', 'Supprimer le prix de base ID %s');
+$GLOBALS['TL_LANG']['tl_iso_baseprice']['show']   = array('Détails du prix de base', 'Afficher les détails du prix de base ID %s');
 
 
 /**
  * Legends
  */
-$GLOBALS['TL_LANG']['tl_iso_baseprice']['name_legend']	= 'Base price';
+$GLOBALS['TL_LANG']['tl_iso_baseprice']['name_legend'] = 'Prix de base';
 
