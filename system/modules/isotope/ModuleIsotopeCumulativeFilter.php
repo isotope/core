@@ -71,7 +71,7 @@ class ModuleIsotopeCumulativeFilter extends ModuleIsotopeProductFilter
 	{
 		$this->iso_filterFields = deserialize($this->iso_filterFields, true);
 
-		if(!empty($this->iso_filterFields))
+		if (!empty($this->iso_filterFields))
 		{
 			return true;
 		}
@@ -107,6 +107,8 @@ class ModuleIsotopeCumulativeFilter extends ModuleIsotopeProductFilter
 	 */
 	protected function generateFilter()
 	{
+		$arrFilters = array();
+
 		// get values
 		$strMode		= $this->Input->get('cfilter');
 		$strField		= $this->Input->get('attr');
@@ -114,9 +116,9 @@ class ModuleIsotopeCumulativeFilter extends ModuleIsotopeProductFilter
 		$strFilterKey	= $strField . '::' . $intValue;
 
 		// set filter values
-		if($this->blnCacheRequest)
+		if ($this->blnCacheRequest)
 		{
-			if($strMode == 'add')
+			if ($strMode == 'add')
 			{
 				$GLOBALS['ISO_FILTERS'][$this->id][$strFilterKey] = array
 				(
@@ -138,7 +140,7 @@ class ModuleIsotopeCumulativeFilter extends ModuleIsotopeProductFilter
 		}
 
 		// build filter
-		foreach($this->iso_filterFields as $strField)
+		foreach ($this->iso_filterFields as $strField)
 		{
 			$arrData = $GLOBALS['TL_DCA']['tl_iso_products']['fields'][$strField];
 
