@@ -857,6 +857,7 @@ abstract class IsotopeProductCollection extends Model
 			);
 		}
 
+		$objTemplate->collection = $this;
 		$objTemplate->config = $this->Isotope->Config->getData();
 		$objTemplate->info = deserialize($this->checkout_info);
 		$objTemplate->items = $arrItems;
