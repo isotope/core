@@ -198,6 +198,9 @@ class IsotopeCart extends IsotopeProductCollection
 				{
 					$this->arrSettings['billingAddress_id'] = $varValue;
 				}
+
+				$this->blnModified = true;
+				$this->arrCache = array();
 				break;
 
 			case 'shippingAddress':
@@ -211,14 +214,14 @@ class IsotopeCart extends IsotopeProductCollection
 				{
 					$this->arrSettings['shippingAddress_id'] = $varValue;
 				}
+
+				$this->blnModified = true;
+				$this->arrCache = array();
 				break;
 
 			default:
 				parent::__set($strKey, $varValue);
 		}
-
-		$this->blnModified = true;
-		$this->arrCache = array();
 	}
 
 

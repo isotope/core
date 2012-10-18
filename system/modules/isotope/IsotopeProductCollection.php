@@ -282,6 +282,13 @@ abstract class IsotopeProductCollection extends Model
 	 */
 	public function __set($strKey, $varValue)
 	{
+		// We dont want $this->import() objects to be in arrSettings
+		if (is_object($varValue))
+		{
+			$this->$strKey = $varValue;
+			return;
+		}
+
 		$this->arrCache = array();
 
 		if ($strKey == 'Shipping' || $strKey == 'Payment')
@@ -292,22 +299,14 @@ abstract class IsotopeProductCollection extends Model
 		elseif ($strKey == 'modified')
 		{
 			$this->blnModified = (bool) $varValue;
-			$this->arrCache = array();
 			$this->arrProducts = null;
 		}
 
 		// If there is a database field for that key, we store it there
-		if (array_key_exists($strKey, $this->arrData) || $this->Database->fieldExists($strKey, $this->strTable))
+		elseif (array_key_exists($strKey, $this->arrData) || $this->Database->fieldExists($strKey, $this->strTable))
 		{
 			$this->arrData[$strKey] = $varValue;
-			$this->arrCache = array();
 			$this->blnModified = true;
-		}
-
-		// We dont want $this->import() objects to be in arrSettings
-		elseif (is_object($varValue))
-		{
-			$this->$strKey = $varValue;
 		}
 
 		// Everything else goes into arrSettings and is serialized
@@ -322,7 +321,6 @@ abstract class IsotopeProductCollection extends Model
 				$this->arrSettings[$strKey] = $varValue;
 			}
 
-			$this->arrCache = array();
 			$this->blnModified = true;
 		}
 	}
