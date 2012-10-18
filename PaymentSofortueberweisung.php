@@ -63,7 +63,7 @@ class PaymentSofortueberweisung extends IsotopePayment
 
 	/**
 	 * Handle the server to server postsale request
-	 * 
+	 *
 	 * @param array $arrRow
 	 * @return void
 	 */
@@ -154,7 +154,7 @@ class PaymentSofortueberweisung extends IsotopePayment
 		$objOrder = new IsotopeOrder();
 		$objOrder->findBy('cart_id', $this->Isotope->Cart->id);
 
-		$strCountry = in_array($this->Isotope->Cart->billingAddress['country'], array('de','ch','at')) ? $this->Isotope->Cart->billingAddress['country'] : 'de';
+		$strCountry = in_array($this->Isotope->Cart->billing_address['country'], array('de','ch','at')) ? $this->Isotope->Cart->billing_address['country'] : 'de';
 		$strUrl = 'https://www.sofortueberweisung.'.$strCountry.'/payment/start';
 
 		$arrParam = array
@@ -164,7 +164,7 @@ class PaymentSofortueberweisung extends IsotopePayment
 			'sender_holder'			=> '',
 			'sender_account_number'	=> '',
 			'sender_bank_code'		=> '',
-			'sender_country_id'		=> $this->Isotope->Cart->billingAddress['country'],
+			'sender_country_id'		=> $this->Isotope->Cart->billing_address['country'],
 			'amount'				=> number_format($this->Isotope->Cart->grandTotal, 2, '.', ''),
 			'currency_id'			=> $this->Isotope->Config->currency,
 			'reason_1'				=> $this->Environment->host,
