@@ -98,7 +98,6 @@ class ModuleIsotopeOrderHistory extends ModuleIsotope
 
 		$this->import('Isotope');
 		$arrOrders = array();
-		$arrPage = $this->Database->execute("SELECT * FROM tl_page WHERE id=".$this->jumpTo)->fetchAssoc();
 
 		while ($objOrders->next())
 		{
@@ -116,7 +115,7 @@ class ModuleIsotopeOrderHistory extends ModuleIsotope
 				'items'			=> $objOrders->items,
 				'grandTotal'	=> $this->Isotope->formatPriceWithCurrency($objOrders->grandTotal),
 				'status'		=> $GLOBALS['TL_LANG']['ORDER'][$objOrders->status],
-				'link'			=> ($this->jumpTo ? ($this->generateFrontendUrl($arrPage) . '?uid=' . $objOrders->uniqid) : ''),
+				'link'			=> ($this->jumpTo ? (IsotopeFrontend::addQueryStringToUrl('uid=' . $objOrder->uniqid, $this->jumpTo)) : ''),
 			);
 		}
 

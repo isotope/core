@@ -262,7 +262,7 @@ class PaymentPaypal extends IsotopePayment
 <input type="hidden" name="no_note" value="1"' . $endTag . '
 <input type="hidden" name="currency_code" value="' . $this->Isotope->Config->currency . '"' . $endTag . '
 <input type="hidden" name="button_subtype" value="services"' . $endTag . '
-<input type="hidden" name="return" value="' . $this->Environment->base . $this->addToUrl('step=complete') . '?uid=' . $objOrder->uniqid . '"' . $endTag . '
+<input type="hidden" name="return" value="' . $this->Environment->base . IsotopeFrontend::addQueryStringToUrl('uid=' . $objOrder->uniqid, $this->addToUrl('step=complete')). '"' . $endTag . '
 <input type="hidden" name="cancel_return" value="' . $this->Environment->base . $this->addToUrl('step=failed') . '"' . $endTag . '
 <input type="hidden" name="rm" value="1"' . $endTag . '
 <input type="hidden" name="invoice" value="' . $objOrder->id . '"' . $endTag . '

@@ -7,6 +7,7 @@ Version 1.3.9 stable (2012-??-??)
 ### Fixed
 - Postfinance module did not correctly validate postsale data
 - Order was not visible after completing payment with Postfinance
+- Not all URLs were correctly generated when alias were disabled
 
 
 Version 1.3.8 stable (2012-09-11)
