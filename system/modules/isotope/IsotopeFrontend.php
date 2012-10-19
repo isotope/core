@@ -1445,7 +1445,7 @@ $endScript";
 		{
 			$objJump = Database::getInstance()->prepare("SELECT * FROM tl_page WHERE id=?")->execute($varUrl);
 
-			$varUrl = $this->generateFrontendUrl($objJump->row());
+			$varUrl = Isotope::getInstance()->generateFrontendUrl($objJump->row());
 		}
 
 		list($strScript, $strQueryString) = explode('?', $varUrl, 2);
