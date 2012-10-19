@@ -1430,6 +1430,52 @@ $endScript";
 
 
 	/**
+	 * Add a request string to the given URI string or page ID
+	 * @param string
+	 * @param mixed
+	 * @return string
+	 */
+	public static function addQueryStringToUrl($strRequest, $varUrl=null)
+	{
+		if ($varUrl === null)
+		{
+			$varUrl = Environment::getInstance()->request;
+		}
+		elseif (is_numeric($varUrl))
+		{
+			$objJump = Database::getInstance()->prepare("SELECT * FROM tl_page WHERE id=?")->execute($varUrl);
+
+			$varUrl = $this->generateFrontendUrl($objJump->row());
+		}
+
+		list($strScript, $strQueryString) = explode('?', $varUrl, 2);
+
+		$strRequest = preg_replace('/^&(amp;)?/i', '', $strRequest);
+		$queries = preg_split('/&(amp;)?/i', $strQueryString);
+
+		// Overwrite existing parameters
+		foreach ($queries as $k=>$v)
+		{
+			$explode = explode('=', $v);
+
+			if (preg_match('/(^|&(amp;)?)' . preg_quote($explode[0], '/') . '=/i', $strRequest))
+			{
+				unset($queries[$k]);
+			}
+		}
+
+		$href = '?';
+
+		if (!empty($queries))
+		{
+			$href .= implode('&amp;', $queries) . '&amp;';
+		}
+
+		return $strScript . $href . str_replace(' ', '%20', $strRequest);
+	}
+
+
+	/**
 	 * Wait for it
 	 * @return bool
 	 */
