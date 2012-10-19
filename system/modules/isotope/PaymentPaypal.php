@@ -75,9 +75,8 @@ class PaymentPaypal extends IsotopePayment
 			return $objTemplate->parse();
 		}
 
-		global $objPage;
 		$this->log('Payment could not be processed.', __METHOD__, TL_ERROR);
-		$this->redirect($this->generateFrontendUrl($objPage->row(), '/step/failed'));
+		$this->redirect($this->addToUrl('step=failed', true));
 	}
 
 

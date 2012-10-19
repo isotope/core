@@ -352,7 +352,7 @@ class ModuleIsotopeAddressBook extends ModuleIsotope
 			}
 
 			global $objPage;
-			$this->redirect($this->generateFrontendUrl(array('id'=>$objPage->id, 'alias'=>$objPage->alias)));
+			$this->redirect($this->generateFrontendUrl($objPage->row()));
 		}
 
 		$this->Template->addressDetails = $GLOBALS['TL_LANG']['tl_iso_addresses']['addressDetails'];

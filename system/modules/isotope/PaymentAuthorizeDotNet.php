@@ -95,9 +95,8 @@ class PaymentAuthorizeDotNet extends IsotopePayment
 		if($this->authCapturePayment($objOrder->id, $this->Isotope->Cart->grandTotal, true))
 			return true;
 
-		global $objPage;
 		$this->log('Invalid payment data received.', 'PaymentAuthorizeDotNet processPayment()', TL_ERROR);
-		$this->redirect($this->generateFrontendUrl($objPage->row(), '/step/failed'));
+		$this->redirect($this->addToUrl('step=failed', true));
 
 	}
 
