@@ -169,7 +169,7 @@ class Isotope extends Controller
 
 					if ($do == 'iso_products')
 					{
-						$this->redirect($this->Environment->script.'?do=iso_setup&mod=configs&table=tl_iso_config&act=create');
+						$this->redirect('contao/main.php?do=iso_setup&mod=configs&table=tl_iso_config&act=create');
 					}
 				}
 			}
