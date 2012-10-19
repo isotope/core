@@ -94,10 +94,16 @@ class ModuleIsotopeProductReader extends ModuleIsotope
 	 */
 	protected function compile()
 	{
+		global $objPage;
+
 		$objProduct = IsotopeFrontend::getProductByAlias($this->Input->get('product'), IsotopeFrontend::getReaderPageId());
 
 		if (!$objProduct)
 		{
+			// Do not index or cache the page
+			$objPage->noSearch = 1;
+			$objPage->cache = 0;
+
 			$this->Template = new FrontendTemplate('mod_message');
 			$this->Template->type = 'empty';
 			$this->Template->message = $GLOBALS['TL_LANG']['MSC']['invalidProductInformation'];
@@ -109,8 +115,6 @@ class ModuleIsotopeProductReader extends ModuleIsotope
 		$this->Template->product_class = trim('product ' . $objProduct->cssID[1]);
 		$this->Template->referer = 'javascript:history.go(-1)';
 		$this->Template->back = $GLOBALS['TL_LANG']['MSC']['goBack'];
-
-		global $objPage;
 
 		$objPage->pageTitle = strip_insert_tags($objProduct->name);
 		$objPage->description = $this->prepareMetaDescription($objProduct->description_meta);

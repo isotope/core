@@ -57,6 +57,11 @@ class PaymentPaypal extends IsotopePayment
 
 		if (IsotopeFrontend::setTimeout())
 		{
+			// Do not index or cache the page
+			global $objPage;
+			$objPage->noSearch = 1;
+			$objPage->cache = 0;
+
 			$objTemplate = new FrontendTemplate('mod_message');
 			$objTemplate->type = 'processing';
 			$objTemplate->message = $GLOBALS['TL_LANG']['MSC']['payment_processing'];

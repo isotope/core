@@ -4,6 +4,9 @@ Isotope eCommerce Changelog
 Version 1.4.? (2012-??-??)
 ------------------------------
 
+### Improved
+- Do not cache or search-index a page if user-centered content (filters, cart, checkout) is on it
+
 ### Fixed
 - Product was hidden if price was not an attribute
 - Tooltip was not available when product view was loaded with ajax in the backend

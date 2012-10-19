@@ -74,6 +74,11 @@ class ModuleIsotopeOrderHistory extends ModuleIsotope
 			return '';
 		}
 
+		// Do not index or cache the page
+		global $objPage;
+		$objPage->noSearch = 1;
+		$objPage->cache = 0;
+
 		$this->import('FrontendUser', 'User');
 		return parent::generate();
 	}

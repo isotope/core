@@ -127,6 +127,9 @@ class Isotope extends Controller
 						$GLOBALS['ISO_FILTERS'] = deserialize($objRequestCache->filters);
 						$GLOBALS['ISO_SORTING'] = deserialize($objRequestCache->sorting);
 						$GLOBALS['ISO_LIMIT'] = deserialize($objRequestCache->limits);
+
+						global $objPage;
+						$objPage->noSearch = 1;
 					}
 					else
 					{

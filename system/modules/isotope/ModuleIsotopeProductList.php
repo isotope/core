@@ -116,11 +116,11 @@ class ModuleIsotopeProductList extends ModuleIsotope
 	 */
 	protected function compile()
 	{
+		global $objPage;
 		$arrProducts = null;
 
 		if ($this->blnCacheProducts)
 		{
-			global $objPage;
 			$time = time();
 			$pageId = ($this->iso_category_scope == 'article' ? $GLOBALS['ISO_CONFIG']['current_article']['pid'] : $objPage->id);
 
@@ -173,6 +173,11 @@ class ModuleIsotopeProductList extends ModuleIsotope
 
 				if ($blnCacheMessage && !$this->Input->get('buildCache'))
 				{
+					// Do not index or cache the page
+					global $objPage;
+					$objPage->noSearch = 1;
+					$objPage->cache = 0;
+
 					$this->Template = new FrontendTemplate('mod_iso_productlist_caching');
 					$this->Template->message = $GLOBALS['ISO_LANG']['MSC']['productcacheLoading'];
 					return;
@@ -234,6 +239,10 @@ class ModuleIsotopeProductList extends ModuleIsotope
 		// No products found
 		if (!is_array($arrProducts) || empty($arrProducts))
 		{
+			// Do not index or cache the page
+			$objPage->noSearch = 1;
+			$objPage->cache = 0;
+
 			$this->Template = new FrontendTemplate('mod_message');
 			$this->Template->type = 'empty';
 			$this->Template->message = $this->iso_emptyMessage ? $this->iso_noProducts : $GLOBALS['TL_LANG']['MSC']['noProducts'];

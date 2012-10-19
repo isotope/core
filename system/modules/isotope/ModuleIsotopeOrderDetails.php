@@ -83,7 +83,11 @@ class ModuleIsotopeOrderDetails extends ModuleIsotope
 	 */
 	protected function compile()
 	{
+		// Do not index or cache the page
 		global $objPage;
+		$objPage->noSearch = 1;
+		$objPage->cache = 0;
+
 		$objOrder = new IsotopeOrder();
 
 		if (!$objOrder->findBy('uniqid', $this->Input->get('uid')))
