@@ -33,6 +33,13 @@ class ProductCallbacks extends Backend
 {
 
 	/**
+	 * Current object instance (Singleton)
+	 * @var object
+	 */
+	protected static $objInstance;
+
+
+	/**
 	 * paste_button_callback Provider
 	 * @var mixed
 	 */
@@ -40,15 +47,37 @@ class ProductCallbacks extends Backend
 
 
 	/**
+	 * Prevent cloning of the object (Singleton)
+	 */
+	final private function __clone() {}
+
+
+	/**
 	 * Import a back end user and Isotope objects
 	 */
-	public function __construct()
+	protected function __construct()
 	{
 		parent::__construct();
 
 		$this->import('BackendUser', 'User');
 		$this->import('Isotope');
 	}
+
+
+	/**
+	 * Instantiate the Isotope object
+	 * @return object
+	 */
+	public static function getInstance()
+	{
+		if (!is_object(self::$objInstance))
+		{
+			self::$objInstance = new ProductCallbacks();
+		}
+
+		return self::$objInstance;
+	}
+
 
 
 	///////////////////////
