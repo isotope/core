@@ -38,12 +38,30 @@ class ProductCallbacks extends Backend
 	 */
 	protected static $objInstance;
 
-
 	/**
 	 * paste_button_callback Provider
 	 * @var mixed
 	 */
 	protected $PasteProductButton;
+
+	/**
+	 * Product type cache
+	 * @var array
+	 */
+	protected $arrProductTypes;
+
+	/**
+	 * Cache if there are categories
+	 * @var bool
+	 */
+	protected $blnHasCategories;
+
+
+	/**
+	 * Cache number of downloads per product
+	 * @var array
+	 */
+	protected $arrDownloads;
 
 
 	/**
@@ -73,6 +91,34 @@ class ProductCallbacks extends Backend
 		if (!is_object(self::$objInstance))
 		{
 			self::$objInstance = new ProductCallbacks();
+
+
+			// Cache product types
+			self::$objInstance->arrProductTypes = array();
+
+			$objProductTypes = self::$objInstance->Database->query("SELECT t.id, t.variants, t.downloads, t.prices, t.attributes, t.variant_attributes FROM tl_iso_products p LEFT JOIN tl_iso_producttypes t ON p.type=t.id GROUP BY p.type");
+
+			while ($objProductTypes->next())
+			{
+				self::$objInstance->arrProductTypes[$objProductTypes->id] = $objProductTypes->row();
+				self::$objInstance->arrProductTypes[$objProductTypes->id]['attributes'] = deserialize($objProductTypes->attributes, true);
+				self::$objInstance->arrProductTypes[$objProductTypes->id]['variant_attributes'] = deserialize($objProductTypes->variant_attributes, true);
+			}
+
+
+			// Cache if tehre are categories
+			self::$objInstance->blnHasCategories = (self::$objInstance->Database->query("SELECT COUNT(id) AS total FROM tl_iso_related_categories")->total > 0);
+
+
+			// Cache number of downloads
+			self::$objInstance->arrDownloads = array();
+
+			$objDownloads = self::$objInstance->Database->query("SELECT pid, COUNT(id) AS total FROM tl_iso_downloads GROUP BY pid");
+
+			while ($objDownloads->next())
+			{
+				self::$objInstance->arrDownloads[$objDownloads->pid] = $objDownloads->total;
+			}
 		}
 
 		return self::$objInstance;
@@ -679,16 +725,7 @@ class ProductCallbacks extends Backend
 	 */
 	public function quickEditButton($row, $href, $label, $title, $icon, $attributes)
 	{
-		if ($row['pid'] > 0)
-		{
-			return '';
-		}
-
-		$objType = $this->Database->prepare("SELECT * FROM tl_iso_producttypes WHERE id=?")
-								  ->limit(1)
-								  ->execute($row['type']);
-
-		if (!$objType->variants)
+		if ($row['pid'] > 0 || !$this->arrProductTypes[$row['type']]['variants'])
 		{
 			return '';
 		}
@@ -709,16 +746,7 @@ class ProductCallbacks extends Backend
 	 */
 	public function generateButton($row, $href, $label, $title, $icon, $attributes)
 	{
-		if ($row['pid'] > 0)
-		{
-			return '';
-		}
-
-		$objType = $this->Database->prepare("SELECT * FROM tl_iso_producttypes WHERE id=?")
-								  ->limit(1)
-								  ->execute($row['type']);
-
-		if (!$objType->variants)
+		if ($row['pid'] > 0 || !$this->arrProductTypes[$row['type']]['variants'])
 		{
 			return '';
 		}
@@ -739,14 +767,7 @@ class ProductCallbacks extends Backend
 	 */
 	public function relatedButton($row, $href, $label, $title, $icon, $attributes)
 	{
-		if ($row['pid'] > 0)
-		{
-			return '';
-		}
-
-		$objCategories = $this->Database->execute("SELECT COUNT(id) AS total FROM tl_iso_related_categories");
-
-		if ($objCategories->total == 0)
+		if ($row['pid'] > 0 || $this->blnHasCategories)
 		{
 			return '';
 		}
@@ -767,15 +788,12 @@ class ProductCallbacks extends Backend
 	 */
 	public function downloadsButton($row, $href, $label, $title, $icon, $attributes)
 	{
-		$objType = $this->Database->execute("SELECT * FROM tl_iso_producttypes WHERE id={$row['type']}");
-
-		if (!$objType->downloads)
+		if (!$this->arrProductTypes[$row['type']]['downloads'])
 		{
 			return '';
 		}
 
-		$objDownloads = $this->Database->prepare("SELECT COUNT(*) AS total FROM tl_iso_downloads WHERE pid=?")->execute($row['id']);
-		return '<a href="'.$this->addToUrl($href.'&amp;id='.$row['id']).'" title="'.specialchars($title).'"'.$attributes.'>'.$this->generateImage($icon, $label).' '.$objDownloads->total.'</a> ';
+		return '<a href="'.$this->addToUrl($href.'&amp;id='.$row['id']).'" title="'.specialchars($title).'"'.$attributes.'>'.$this->generateImage($icon, $label).' '. (int) $this->arrDownloads[$row['id']] .'</a> ';
 	}
 
 
@@ -791,14 +809,12 @@ class ProductCallbacks extends Backend
 	 */
 	public function pricesButton($row, $href, $label, $title, $icon, $attributes)
 	{
-		$objType = $this->Database->execute("SELECT * FROM tl_iso_producttypes WHERE id={$row['type']}");
-
-		if (!$objType->prices)
+		if (!$this->arrProductTypes[$row['type']]['prices'])
 		{
 			return '';
 		}
 
-		$arrAttributes = deserialize(($row['pid'] > 0 ? $objType->variant_attributes : $objType->attributes), true);
+		$arrAttributes = $this->arrProductTypes[$row['type']][($row['pid'] > 0 ? 'variant_attributes' : 'attributes')];
 
 		if (!$arrAttributes['price']['enabled'])
 		{
