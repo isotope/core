@@ -212,7 +212,7 @@ $GLOBALS['TL_DCA']['tl_iso_products'] = array
 			),
 			'cut' => array
 			(
-				'label'				=> &$GLOBALS['TL_LANG']['tl_iso_products']['copy'],
+				'label'				=> &$GLOBALS['TL_LANG']['tl_iso_products']['cut'],
 				'href'				=> 'act=paste&amp;mode=cut',
 				'icon'				=> 'cut.gif',
 				'attributes'		=> 'onclick="Backend.getScrollOffset();"',
