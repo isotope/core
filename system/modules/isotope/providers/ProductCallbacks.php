@@ -554,7 +554,7 @@ class ProductCallbacks extends Backend
 			}
 		}
 
-		$objProductType = $this->Database->execute("SELECT * FROM tl_iso_producttypes WHERE id=".$row['type']);
+		$objProductType = $this->Database->execute("SELECT * FROM tl_iso_producttypes WHERE id=". (int) $row['type']);
 		$arrAttributes = deserialize($objProductType->attributes, true);
 
 		if ($row['pid'] > 0)

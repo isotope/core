@@ -1111,7 +1111,7 @@ $strBuffer .= '<th style="text-align:center"><img src="system/themes/default/ima
 		}
 */
 
-		$objProductType = $this->Database->execute("SELECT * FROM tl_iso_producttypes WHERE id=".$row['type']);
+		$objProductType = $this->Database->execute("SELECT * FROM tl_iso_producttypes WHERE id=" . (int) $row['type']);
 		$arrAttributes = $row['pid'] ? deserialize($objProductType->variant_attributes, true) : deserialize($objProductType->attributes, true);
 		$time = time();
 
