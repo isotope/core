@@ -45,9 +45,9 @@ class IsotopeBackend extends Backend
 	 * @param mixed
 	 * @return mixed
 	 */
-	public function truncateProductCache($varValue=null)
+	public static function truncateProductCache($varValue=null)
 	{
-		$this->Database->query("TRUNCATE tl_iso_productcache");
+		Database::getInstance()->query("TRUNCATE tl_iso_productcache");
 
 		return $varValue;
 	}
