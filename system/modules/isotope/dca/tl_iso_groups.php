@@ -131,14 +131,14 @@ $GLOBALS['TL_DCA']['tl_iso_groups'] = array
 		'name' => array
 		(
 			'label'						=> &$GLOBALS['TL_LANG']['tl_iso_groups']['name'],
-			'exclude'					=> false,
+			'exclude'					=> true,
 			'inputType'					=> 'text',
 			'eval'						=> array('mandatory'=>true, 'maxlength'=>255, 'tl_class'=>'w50'),
 		),
 		'product_type' => array
 		(
 			'label'						=> &$GLOBALS['TL_LANG']['tl_iso_groups']['product_type'],
-			'exclude'					=> false,
+			'exclude'					=> true,
 			'inputType'					=> 'select',
 			'options_callback'			=> array('ProductCallbacks', 'getProductTypes'),
 			'eval'						=> array('includeBlankOption'=>true, 'tl_class'=>'w50')
@@ -221,10 +221,10 @@ class tl_iso_groups extends Backend
 			$strProductType = '';
 
 			if (($intProductType = IsotopeBackend::getProductTypeForGroup($row['id'])) !== false)
-		{
+			{
 				$strProductType = $this->Database->execute("SELECT name FROM tl_iso_producttypes WHERE id=" . $intProductType)->name;
 				$strProductType = ' <span style="color:#b3b3b3; padding-left:3px;">[' . $strProductType . ']</span>';
-		}
+			}
 
 			return $this->generateImage('system/modules/isotope/html/folder-network.png', '', $imageAttribute) . ' ' . $label . $strProductType;
 		}
