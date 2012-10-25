@@ -450,6 +450,26 @@ class ProductCallbacks extends Backend
 	}
 
 
+	/**
+	 * Load the default product type
+	 * @param object
+	 * @return void
+	 */
+	public function loadDefaultProductType($dc)
+	{
+		if ($this->Input->get('act') !== 'create' && !$this->Input->get('gid'))
+		{
+			return;
+		}
+
+		if ($intProductTypeId = ProductCallbacks::getInstance()->getDefaultProductType($this->Input->get('gid')))
+		{
+			$GLOBALS['TL_DCA']['tl_iso_products']['fields']['type']['default'] = $intProductTypeId;
+		}
+	}
+
+
+
 
 	///////////////////////
 	//  !oncopy_callback
@@ -1002,6 +1022,70 @@ class ProductCallbacks extends Backend
 		}
 
 		return $GLOBALS['TL_LANG']['tl_iso_products']['pages'][0] . ': ' . implode(', ', $arrCategories);
+	}
+
+
+	/**
+	 * Check for inherited default product types
+	 * @param product group id
+	 * @param boolean true returns an array containing the id and the name of the product type. Default only returns the id.
+	 * @return int|array|false
+	 */
+	public function getDefaultProductType($intProdGroup, $blnAlsoLoadName=false)
+	{
+		$objGroup = $this->Database->query('SELECT pid,name,product_type FROM tl_iso_groups WHERE id=' . (int) $intProdGroup);
+
+		// if the reader page is set on the current page id we return this one
+		if ($objGroup->product_type > 0)
+		{
+			if ($blnAlsoLoadName)
+			{
+				return array
+				(
+					'id'	=> $objGroup->product_type,
+					'name'	=> $this->Database->query('SELECT name FROM tl_iso_producttypes WHERE id=' . $objGroup->product_type)->name
+				);
+			}
+			else
+			{
+				return $objGroup->product_type;
+			}
+		}
+
+		$pid = $objGroup->pid;
+
+		// now move up the group tree until we find a group where the product type is set
+		do
+		{
+			$objParentGroup = $this->Database->query('SELECT pid,name,product_type FROM tl_iso_groups WHERE id=' . $pid);
+
+			if (!$objParentGroup->numRows)
+			{
+				break;
+			}
+
+			if ($objParentGroup->product_type > 0)
+			{
+				if ($blnAlsoLoadName)
+				{
+					return array
+					(
+						'id'	=> $objParentGroup->product_type,
+						'name'	=> $this->Database->query('SELECT name FROM tl_iso_producttypes WHERE id=' . $objParentGroup->product_type)->name
+					);
+				}
+				else
+				{
+					return $objParentGroup->product_type;
+				}
+			}
+
+			$pid = $objParentGroup->pid;
+		}
+		while ($pid > 0);
+
+		// if there is no default type set we return false
+		return false;
 	}
 }
 

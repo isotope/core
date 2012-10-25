@@ -4,6 +4,9 @@ Isotope eCommerce Changelog
 Version 1.4.? (2012-??-??)
 ------------------------------
 
+### New
+- You can now optionally set a default product type per product group
+
 ### Improved
 - Do not cache or search-index a page if user-centered content (filters, cart, checkout) is on it
 

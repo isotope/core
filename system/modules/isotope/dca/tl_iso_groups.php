@@ -27,6 +27,10 @@
  * @license    http://opensource.org/licenses/lgpl-3.0.html
  */
 
+/**
+ * Include the callback provider
+ */
+require_once(TL_ROOT . '/system/modules/isotope/providers/ProductCallbacks.php');
 
 /**
  * Table tl_iso_groups
@@ -118,7 +122,7 @@ $GLOBALS['TL_DCA']['tl_iso_groups'] = array
 	// Palettes
 	'palettes' => array
 	(
-		'default'						=> '{name_legend},name',
+		'default'						=> '{group_legend},name,product_type;',
 	),
 
 	// Fields
@@ -129,7 +133,15 @@ $GLOBALS['TL_DCA']['tl_iso_groups'] = array
 			'label'						=> &$GLOBALS['TL_LANG']['tl_iso_groups']['name'],
 			'exclude'					=> false,
 			'inputType'					=> 'text',
-			'eval'						=> array('mandatory'=>true, 'maxlength'=>255, 'tl_class'=>'long'),
+			'eval'						=> array('mandatory'=>true, 'maxlength'=>255, 'tl_class'=>'w50'),
+		),
+		'product_type' => array
+		(
+			'label'						=> &$GLOBALS['TL_LANG']['tl_iso_groups']['product_type'],
+			'exclude'					=> false,
+			'inputType'					=> 'select',
+			'options_callback'			=> array('ProductCallbacks', 'getProductTypes'),
+			'eval'						=> array('includeBlankOption'=>true, 'tl_class'=>'w50')
 		),
 	)
 );
@@ -202,7 +214,13 @@ class tl_iso_groups extends Backend
 	{
 		$bold = $dc->table == 'tl_iso_products' ? ' style="font-weight:bold"' : '';
 
-		return $this->generateImage('system/modules/isotope/html/folder-network.png', '', $imageAttribute) . ' <span'.$bold.'>' . $label . '</span>';
+		$defaultProductType = '';
+		if ($arrResult = ProductCallbacks::getInstance()->getDefaultProductType($row['id'], true))
+		{
+			$defaultProductType .= sprintf(' <span style="color:#ccc">[%s]</span>', $arrResult['name']);
+		}
+
+		return $this->generateImage('system/modules/isotope/html/folder-network.png', '', $imageAttribute) . ' <span'.$bold.'>' . $label . '</span>' . $defaultProductType;
 		//return $this->generateImage('system/modules/isotope/html/folder-network.png', '', $imageAttribute) . ' <a href="' . $this->addToUrl('node='.$row['id']) . '"'.$bold.'>' . $label . '</a>';
 	}
 
