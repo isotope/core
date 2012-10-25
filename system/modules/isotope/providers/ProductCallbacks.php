@@ -457,7 +457,7 @@ class ProductCallbacks extends Backend
 	 */
 	public function loadDefaultProductType($dc)
 	{
-		if ($this->Input->get('act') !== 'create' && !$this->Input->get('gid'))
+		if ($this->Input->get('act') !== 'create' || !$this->Input->get('gid'))
 		{
 			return;
 		}
