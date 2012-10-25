@@ -191,6 +191,7 @@ CREATE TABLE `tl_iso_attributes` (
   `useHomeDir` char(1) NOT NULL default '',
   `doNotOverwrite` char(1) NOT NULL default '',
   `path` varchar(255) NOT NULL default '',
+  `datepicker` char(1) NOT NULL default '',
   PRIMARY KEY  (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 

@@ -134,7 +134,7 @@ $GLOBALS['TL_DCA']['tl_iso_attributes'] = array
 	(
 		'__selector__'				=> array('type', 'variant_option', 'storeFile'),
 		'default'					=> '{attribute_legend},name,field_name,type,legend',
-		'text'						=> '{attribute_legend},name,field_name,type,legend,customer_defined;{description_legend:hide},description;{config_legend},rgxp,maxlength,mandatory,multilingual;{search_filters_legend},fe_search,fe_sorting,be_search',
+		'text'						=> '{attribute_legend},name,field_name,type,legend,customer_defined;{description_legend:hide},description;{config_legend},rgxp,maxlength,mandatory,multilingual,datepicker;{search_filters_legend},fe_search,fe_sorting,be_search',
 		'textarea'					=> '{attribute_legend},name,field_name,type,legend,customer_defined;{description_legend:hide},description;{config_legend},rgxp,rte,mandatory,multilingual;{search_filters_legend},fe_search,fe_sorting,be_search',
 		'select'					=> '{attribute_legend},name,field_name,type,legend,variant_option,customer_defined;{description_legend:hide},description;{options_legend},options,foreignKey;{config_legend},mandatory,multiple,size;{search_filters_legend},fe_filter,fe_sorting,be_filter,fe_search',
 		'selectvariant_option'		=> '{attribute_legend},name,field_name,type,legend,variant_option;{description_legend:hide},description;{options_legend},options,foreignKey;{search_filters_legend},fe_filter,fe_sorting,be_filter',
@@ -439,7 +439,18 @@ $GLOBALS['TL_DCA']['tl_iso_attributes'] = array
 			'inputType'				=> 'checkbox',
 			'eval'					=> array('tl_class'=>'w50')
 		),
-	)
+		'datepicker' => array
+		(
+			'label'					=> &$GLOBALS['TL_LANG']['tl_iso_attributes']['datepicker'],
+			'exclude'				=> true,
+			'inputType'				=> 'checkbox',
+			'eval'					=> array('tl_class'=>'w50'),
+			'save_callback'			=> array
+			(
+				array('tl_iso_attributes', 'validateDatepicker'),
+			),
+		),
+	),
 );
 
 
@@ -643,6 +654,23 @@ class tl_iso_attributes extends Backend
 				list($strTable, $strField) = explode('.', $foreignKey, 2);
 				$this->Database->execute("SELECT $strField FROM $strTable");
 			}
+		}
+
+		return $varValue;
+	}
+
+
+	/**
+	 * To enable date picker, the rgxp must be date, time or datim
+	 * @param mixed
+	 * @param object
+	 * @return mixed
+	 */
+	public function validateDatepicker($varValue, $dc)
+	{
+		if ($varValue && !in_array($dc->activeRecord->rgxp, array('date', 'time', 'datim')))
+		{
+			throw new Exception($GLOBALS['ISO_LANG']['ERR']['datepickerRgxp']);
 		}
 
 		return $varValue;
