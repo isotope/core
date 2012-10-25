@@ -4,6 +4,9 @@ Isotope eCommerce Changelog
 Version 1.4.? (2012-??-??)
 ------------------------------
 
+### New
+- New attribute option to add date picker for frontend and backend
+
 ### Improved
 - Do not cache or search-index a page if user-centered content (filters, cart, checkout) is on it
 
