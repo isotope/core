@@ -770,16 +770,18 @@ class IsotopeProduct extends Controller
 
 		foreach ($this->getProductAndVariantAttributes() as $attribute)
 		{
-			if ($GLOBALS['TL_DCA']['tl_iso_products']['fields'][$attribute]['attributes']['customer_defined'] || $GLOBALS['TL_DCA']['tl_iso_products']['fields'][$attribute]['attributes']['variant_option'])
+			$arrData = $GLOBALS['TL_DCA']['tl_iso_products']['fields'][$attribute];
+
+			if ($arrData['attributes']['customer_defined'] || $arrData['attributes']['variant_option'])
 			{
 				$objTemplate->hasOptions = true;
-				$arrProductOptions[$attribute] = array_merge($GLOBALS['TL_DCA']['tl_iso_products']['fields'][$attribute], array
+				$arrProductOptions[$attribute] = array_merge($arrData, array
 				(
 					'name'	=> $attribute,
 					'html'	=> $this->generateProductOptionWidget($attribute),
 				));
 
-				if ($GLOBALS['TL_DCA']['tl_iso_products']['fields'][$attribute]['attributes']['variant_option'])
+				if ($arrData['attributes']['variant_option'] || $arrData['attributes']['ajax_option'])
 				{
 					$arrAjaxOptions[] = $attribute;
 				}
@@ -874,9 +876,11 @@ class IsotopeProduct extends Controller
 
 		foreach ($this->getProductAndVariantAttributes() as $attribute)
 		{
-			if ($GLOBALS['TL_DCA']['tl_iso_products']['fields'][$attribute]['attributes']['variant_option'])
+			$arrData = $GLOBALS['TL_DCA']['tl_iso_products']['fields'][$attribute];
+
+			if ($arrData['attributes']['variant_option'] || $arrData['attributes']['ajax_option'])
 			{
-				$arrOptions[] = array_merge($GLOBALS['TL_DCA']['tl_iso_products']['fields'][$attribute], array
+				$arrOptions[] = array_merge($arrData, array
 				(
 					'id'	=> ('ctrl_' . $attribute . '_' . $this->formSubmit),
 					'name'	=> $attribute,
@@ -891,13 +895,15 @@ class IsotopeProduct extends Controller
 
 		foreach($arrToGenerate as $attribute)
 		{
-			if ($GLOBALS['TL_DCA']['tl_iso_products']['fields'][$attribute]['inputType'] == 'mediaManager')
+			$arrData = $GLOBALS['TL_DCA']['tl_iso_products']['fields'][$attribute];
+
+			if ($arrData['inputType'] == 'mediaManager')
 			{
 				$objGallery = $this->$attribute;
 
 				foreach ((array) $this->Isotope->Config->imageSizes as $size)
 				{
-					$arrOptions[] = array_merge($GLOBALS['TL_DCA']['tl_iso_products']['fields'][$attribute], array
+					$arrOptions[] = array_merge($arrData, array
 					(
 						'id'	=> ($this->formSubmit . '_' . $attribute . '_' . $size['name'] . 'size'),
 						'name'	=> $attribute,
@@ -905,7 +911,7 @@ class IsotopeProduct extends Controller
 					));
 				}
 
-				$arrOptions[] = array_merge($GLOBALS['TL_DCA']['tl_iso_products']['fields'][$attribute], array
+				$arrOptions[] = array_merge($arrData, array
 				(
 					'id' => ($this->formSubmit . '_' . $attribute . '_gallery'),
 					'name'	=> $attribute,
@@ -914,7 +920,7 @@ class IsotopeProduct extends Controller
 			}
 			else
 			{
-				$arrOptions[] = array_merge($GLOBALS['TL_DCA']['tl_iso_products']['fields'][$attribute], array
+				$arrOptions[] = array_merge($arrData, array
 				(
 					'id' => ($this->formSubmit . '_' . $attribute),
 					'name'	=> $attribute,
