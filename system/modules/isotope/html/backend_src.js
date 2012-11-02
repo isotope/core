@@ -86,36 +86,31 @@ var Isotope =
 	attributeWizard: function(el, command, id)
 	{
 		var container = document.id(id);
-		var parent = document.id(el).getParent();
+		var parent = document.id(el).getParent('.row');
 
 		Backend.getScrollOffset();
 
 		switch (command)
 		{
 			case 'up':
-				if (!parent.getPrevious() || parent.getPrevious().hasClass('fixed'))
+				if (!parent.getPrevious('.row'))
 				{
 					parent.injectInside(container);
 				}
 				else
 				{
-					parent.injectBefore(parent.getPrevious());
+					parent.injectBefore(parent.getPrevious('.row'));
 				}
 				break;
 
 			case 'down':
-				if (parent.getNext())
+				if (parent.getNext('.row'))
 				{
-					parent.injectAfter(parent.getNext());
+					parent.injectAfter(parent.getNext('.row'));
 				}
 				else
 				{
-					var fel = container.getFirst();
-
-					if (fel.hasClass('fixed'))
-					{
-						fel = fel.getNext();
-					}
+					var fel = container.getFirst('.row');
 
 					parent.injectBefore(fel);
 				}

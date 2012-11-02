@@ -11,6 +11,7 @@ Version 1.3.9 stable (2012-??-??)
 - Fixed incorrect label for copy product button (#3387)
 - Fixed crashing search index when no products are available
 - Uploads with uppercase fiel names did not work correctly (#48)
+- Sorting of attributes did not correctly work
 
 
 Version 1.3.8 stable (2012-09-11)
