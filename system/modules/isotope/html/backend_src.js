@@ -482,19 +482,25 @@ var Isotope =
 				check.setStyle('float', 'right').inject(parent);
 				document.id('ctrl_inherit').getFirst(('label[for='+check.get('id')+']')).setStyles({'float':'right','padding-right':'5px', 'font-weight':'normal'}).set('text', label).inject(parent);
 
-				check.addEvent('change', function(event) {
+				check.addEvent('change', function(event)
+				{
 					var element = document.id(('ctrl_'+event.target.get('value')));
 
+					// Single checkbox
 					if (element.match('.tl_checkbox_single_container'))
 					{
 						element.getFirst('input[type=checkbox]').disabled = event.target.checked;
 					}
 					else
 					{
-						element.setStyle('display', (event.target.checked ? 'none' : 'initial'));
+						// textarea with TinyMCE
+						if (!element.getNext() || !element.getNext().get('id') || !element.getNext().get('id').test(/_parent$/))
+						{
+							element.setStyle('display', (event.target.checked ? 'none' : 'inherit'));
+						}
 
 						// Query would fail if there is no tooltip
-						try { element.getNext(':not(.tl_tip):not(script)').setStyle('display', (event.target.checked ? 'none' : 'initial')); } catch (e) {}
+						try { element.getNext(':not(.tl_tip):not(script)').setStyle('display', (event.target.checked ? 'none' : 'inherit')); } catch (e) {}
 					}
 				});
 
@@ -504,10 +510,10 @@ var Isotope =
 				}
 				else
 				{
-					el.setStyle('display', (check.checked ? 'none' : 'initial'));
+					el.setStyle('display', (check.checked ? 'none' : 'inherit'));
 
 					// Query would fail if there is no tooltip
-					try { el.getNext(':not(.tl_tip):not(script)').setStyle('display', (check.checked ? 'none' : 'initial')); } catch (e) {}
+					try { el.getNext(':not(.tl_tip):not(script)').setStyle('display', (check.checked ? 'none' : 'inherit')); } catch (e) {}
 				}
 			}
 		});

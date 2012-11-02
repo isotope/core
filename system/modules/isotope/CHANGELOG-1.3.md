@@ -12,6 +12,7 @@ Version 1.3.9 stable (2012-??-??)
 - Fixed crashing search index when no products are available
 - Uploads with uppercase fiel names did not work correctly (#48)
 - Sorting of attributes did not correctly work
+- Toggling "use default" did not work in Firefox and for TinyMCE fields
 
 
 Version 1.3.8 stable (2012-09-11)
