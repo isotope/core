@@ -31,7 +31,7 @@
 
 /**
  * Class ImageWatermarkWizard
- * 
+ *
  * Wizard that allows to define image sizes and watermark positions.
  * @copyright  Isotope eCommerce Workgroup 2009-2012
  * @author     Andreas Schempp <andreas@schempp.ch>
@@ -199,7 +199,7 @@ class ImageWatermarkWizard extends Widget
 			foreach ($this->arrOptions as $arrOption)
 			{
 				$arrModes[] = sprintf('<option value="%s"%s>%s</option>',
-									   specialchars($arrOption['value']),
+									   specialchars($arrOption['value'], true),
 									   ((is_array($this->varValue[$i]) && $this->varValue[$i]['mode'] == $arrOption['value']) ? ' selected="selected"' : ''),
 									   $arrOption['label']);
 			}
@@ -207,7 +207,7 @@ class ImageWatermarkWizard extends Widget
 			foreach (array('tl', 'tc', 'tr', 'bl', 'bc', 'br', 'cc') as $option)
 			{
 				$arrPositions[] = sprintf('<option value="%s"%s>%s</option>',
-										   specialchars($option),
+										   specialchars($option, true),
 										   ((is_array($this->varValue[$i]) && $this->varValue[$i]['position'] == $option) ? ' selected="selected"' : ''),
 										   $GLOBALS['TL_LANG'][$this->strTable][$option]);
 			}
@@ -216,11 +216,11 @@ class ImageWatermarkWizard extends Widget
 
 			$return .= '
     <tr>
-      <td><input type="text" name="'.$this->strName.'['.$i.'][name]" id="'.$this->strId.'_name_'.$i.'" class="tl_text_4" value="'.specialchars($this->varValue[$i]['name']).'""></td>
-      <td><input type="text" name="'.$this->strName.'['.$i.'][width]" id="'.$this->strId.'_width_'.$i.'" class="tl_text_4" value="'.specialchars($this->varValue[$i]['width']).'""></td>
-      <td><input type="text" name="'.$this->strName.'['.$i.'][height]" id="'.$this->strId.'_height_'.$i.'" class="tl_text_4" value="'.specialchars($this->varValue[$i]['height']).'""></td>
+      <td><input type="text" name="'.$this->strName.'['.$i.'][name]" id="'.$this->strId.'_name_'.$i.'" class="tl_text_4" value="'.specialchars($this->varValue[$i]['name'], true).'""></td>
+      <td><input type="text" name="'.$this->strName.'['.$i.'][width]" id="'.$this->strId.'_width_'.$i.'" class="tl_text_4" value="'.specialchars($this->varValue[$i]['width'], true).'""></td>
+      <td><input type="text" name="'.$this->strName.'['.$i.'][height]" id="'.$this->strId.'_height_'.$i.'" class="tl_text_4" value="'.specialchars($this->varValue[$i]['height'], true).'""></td>
       <td><select name="'.$this->strName.'['.$i.'][mode]" id="'.$this->strId.'_mode_'.$i.'" class="tl_select_interval" onfocus="Backend.getScrollOffset();">'.implode(' ', $arrModes).'</select></td>
-      <td><input type="text" name="'.$this->strName.'['.$i.'][watermark]" id="'.$this->strId.'_watermark_'.$i.'" class="tl_text_2" value="'.specialchars($this->varValue[$i]['watermark']).'"">'.$filepicker.'</td>
+      <td><input type="text" name="'.$this->strName.'['.$i.'][watermark]" id="'.$this->strId.'_watermark_'.$i.'" class="tl_text_2" value="'.specialchars($this->varValue[$i]['watermark'], true).'"">'.$filepicker.'</td>
       <td><select name="'.$this->strName.'['.$i.'][position]" id="'.$this->strId.'_position_'.$i.'" class="tl_select_unit" onfocus="Backend.getScrollOffset();">'.implode(' ', $arrPositions).'</select></td>';
 
       		$return .= '

@@ -989,16 +989,16 @@ class tl_iso_products extends Backend
 		if ($varValue == '')
 		{
 			$autoAlias = true;
-			$varValue = standardize($this->Input->post('name'), true);
+			$varValue = standardize($this->Input->post('name'));
 
 			if ($varValue == '')
 			{
-				$varValue = standardize($this->Input->post('sku'), true);
+				$varValue = standardize($this->Input->post('sku'));
 			}
 
 			if ($varValue == '')
 			{
-				$varValue = strlen($dc->activeRecord->name) ? standardize($dc->activeRecord->name, true) : standardize($dc->activeRecord->sku, true);
+				$varValue = strlen($dc->activeRecord->name) ? standardize($dc->activeRecord->name) : standardize($dc->activeRecord->sku);
 			}
 
 			if ($varValue == '')
@@ -1419,9 +1419,9 @@ $strBuffer .= '<th style="text-align:center"><img src="system/themes/default/ima
 				}
 
 				$arrPattern = array();
-				$arrPattern[] = $objProducts->alias ?  standardize($objProducts->alias, true) : null;
+				$arrPattern[] = $objProducts->alias ?  standardize($objProducts->alias) : null;
 				$arrPattern[] = $objProducts->sku ? $objProducts->sku : null;
-				$arrPattern[] = $objProducts->sku ? standardize($objProducts->sku, true) : null;
+				$arrPattern[] = $objProducts->sku ? standardize($objProducts->sku) : null;
 				$arrPattern[] = count($arrImageNames) ? implode('|', $arrImageNames) : null;
 
 				// HOOK: add custom import regex patterns

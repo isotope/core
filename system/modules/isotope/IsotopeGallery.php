@@ -30,7 +30,7 @@
 
 /**
  * Class IsotopeGallery
- * 
+ *
  * Provide methods to handle Isotope galleries.
  * @copyright  Isotope eCommerce Workgroup 2009-2012
  * @author     Andreas Schempp <andreas@schempp.ch>
@@ -122,8 +122,8 @@ class IsotopeGallery extends Frontend
 										$file[$size['name'] . '_size'] = $arrSize[3];
 									}
 
-									$file['alt'] = specialchars($file['alt']);
-									$file['desc'] = specialchars($file['desc']);
+									$file['alt'] = specialchars($file['alt'], true);
+									$file['desc'] = specialchars($file['desc'], true);
 
 									$file[$size['name']] = $strImage;
 								}
@@ -178,8 +178,8 @@ class IsotopeGallery extends Frontend
 				return $this->arrData[$strKey];
 		}
 	}
-	
-	
+
+
 	/**
 	 * Get the number of images
 	 * @return int
@@ -188,8 +188,8 @@ class IsotopeGallery extends Frontend
 	{
 		return count($this->arrFiles);
 	}
-	
-	
+
+
 	/**
 	 * Returns whether the gallery object has an image do display or not
 	 * @return boolean
@@ -304,8 +304,8 @@ window.addEvent('ajaxready', function() {
 $endScript
 ";
 	}
-	
-	
+
+
 	/**
 	 * Generate the HTML attribute container
 	 * @param string

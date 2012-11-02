@@ -370,7 +370,7 @@ class PaymentCybersource extends IsotopePayment
 
 			foreach(array_keys($arrResponses) as $key)
 			{
-				$arrReponseLabels[strtolower(standardize($key, true))] = $key;
+				$arrReponseLabels[standardize($key)] = $key;
 			}
 
 			$objTemplate->fields = $this->generateResponseString($arrResponses, $arrReponseLabels);
