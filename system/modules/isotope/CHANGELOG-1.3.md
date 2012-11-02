@@ -13,6 +13,7 @@ Version 1.3.9 stable (2012-??-??)
 - Uploads with uppercase fiel names did not work correctly (#48)
 - Sorting of attributes did not correctly work
 - Toggling "use default" did not work in Firefox and for TinyMCE fields
+- Automatic currency conversion for ECB was incorrect (#52)
 
 
 Version 1.3.8 stable (2012-09-11)
