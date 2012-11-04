@@ -21,7 +21,7 @@ namespace Isotope;
  * @author     Fred Bliss <fred.bliss@intelligentspark.com>
  * @author     Christian de la Haye <service@delahaye.de>
  */
-class ProductTree extends Widget
+class ProductTree extends \Widget
 {
 
 	/**

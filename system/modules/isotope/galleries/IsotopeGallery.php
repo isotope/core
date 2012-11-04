@@ -21,7 +21,7 @@
  * @author     Christian de la Haye <service@delahaye.de>
  * @author     Yanick Witschi <yanick.witschi@terminal42.ch>
  */
-class IsotopeGallery extends Frontend
+class IsotopeGallery extends \Frontend
 {
 
 	/**

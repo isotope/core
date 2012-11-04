@@ -43,7 +43,7 @@ $GLOBALS['TL_DCA']['tl_content']['fields']['iso_list_layout'] = array
  *
  * Provide miscellaneous methods that are used by the data configuration array.
  */
-class tl_content_isotope extends Backend
+class tl_content_isotope extends \Backend
 {
 
 	/**

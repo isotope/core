@@ -22,7 +22,7 @@ namespace Isotope;
  * @author     Fred Bliss <fred.bliss@intelligentspark.com>
  * @author     Christian de la Haye <service@delahaye.de>
  */
-class FieldWizard extends Widget
+class FieldWizard extends \Widget
 {
 
 	/**

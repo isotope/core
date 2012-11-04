@@ -165,7 +165,7 @@ $GLOBALS['TL_DCA']['tl_iso_shipping_options'] = array
  * Class tl_iso_shipping_options
  * Provide miscellaneous methods that are used by the data configuration array.
  */
-class tl_iso_shipping_options extends Backend
+class tl_iso_shipping_options extends \Backend
 {
 
 	/**

@@ -22,7 +22,7 @@ namespace Isotope;
  * @author     Fred Bliss <fred.bliss@intelligentspark.com>
  * @author     Yanick Witschi <yanick.witschi@terminal42.ch>
  */
-abstract class IsotopeProductCollection extends Model
+abstract class IsotopeProductCollection extends \Model
 {
 
 	/**

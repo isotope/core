@@ -19,7 +19,7 @@
  * @author     Andreas Schempp <andreas.schempp@terminal42.ch>
  * @author     Fred Bliss <fred.bliss@intelligentspark.com>
  */
-abstract class ContentIsotope extends ContentElement
+abstract class ContentIsotope extends \ContentElement
 {
 
 	/**

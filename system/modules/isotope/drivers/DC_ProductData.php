@@ -23,7 +23,7 @@ require_once(TL_ROOT . '/system/drivers/DC_Table.php');
  * @author     Fred Bliss <fred.bliss@intelligentspark.com>
  * @author     Andreas Schempp <andreas.schempp@terminal42.ch>
  */
-class DC_ProductData extends DC_Table
+class DC_ProductData extends \DC_Table
 {
 
 	/**

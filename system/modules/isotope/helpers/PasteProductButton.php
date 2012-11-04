@@ -19,7 +19,7 @@ namespace Isotope;
  * @copyright  Isotope eCommerce Workgroup 2009-2012
  * @author     Andreas Schempp <andreas.schempp@terminal42.ch>
  */
-class PasteProductButton extends Backend
+class PasteProductButton extends \Backend
 {
 	/**
 	 * True if group already added

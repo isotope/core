@@ -19,7 +19,7 @@ namespace Isotope;
  * @copyright  Isotope eCommerce Workgroup 2009-2012
  * @author     Andreas Schempp <andreas.schempp@terminal42.ch>
  */
-class IsotopeTranslation extends Controller
+class IsotopeTranslation extends \Controller
 {
 
 	public function loadLocalLanguageFiles($strName, $strLanguage)

@@ -23,7 +23,7 @@ namespace Isotope;
  * @author     Christian de la Haye <service@delahaye.de>
  * @author     Yanick Witschi <yanick.witschi@terminal42.ch>
  */
-class IsotopeFrontend extends Frontend
+class IsotopeFrontend extends \Frontend
 {
 
 	/**
@@ -871,7 +871,7 @@ $endScript";
 		if (is_numeric($objProductData))
 		{
 			$time = time();
-			$Database = Database::getInstance();
+			$Database = \Database::getInstance();
 
 			$objProductData = $Database->prepare(IsotopeProduct::getSelectStatement() . "
 													WHERE p1.language='' AND p1.id=?"
@@ -916,7 +916,7 @@ $endScript";
 	public static function getProductByAlias($strAlias, $intReaderPage=0, $blnCheckAvailability=true)
 	{
 		$time = time();
-		$Database = Database::getInstance();
+		$Database = \Database::getInstance();
 
 		$objProductData = $Database->prepare(IsotopeProduct::getSelectStatement() . "
 												WHERE p1.pid=0 AND p1.language='' AND p1." . (is_numeric($strAlias) ? 'id' : 'alias') . "=?"
@@ -943,7 +943,7 @@ $endScript";
 		if (is_array($objProductData) && !empty($objProductData))
 		{
 			$time = time();
-			$Database = Database::getInstance();
+			$Database = \Database::getInstance();
 
 			$objProductData = $Database->execute(IsotopeProduct::getSelectStatement() . "
 													WHERE p1.language='' AND p1.id IN (" . implode(',', array_map('intval', $objProductData)) . ")"
@@ -1357,7 +1357,7 @@ $endScript";
 			return self::$arrReaderPageIds[$intPage];
 		}
 
-		$objDatabase = Database::getInstance();
+		$objDatabase = \Database::getInstance();
 
 		if (!is_object($objOriginPage))
 		{
@@ -1450,7 +1450,7 @@ $endScript";
 		}
 		elseif (is_numeric($varUrl))
 		{
-			$objJump = Database::getInstance()->prepare("SELECT * FROM tl_page WHERE id=?")->execute($varUrl);
+			$objJump = \Database::getInstance()->prepare("SELECT * FROM tl_page WHERE id=?")->execute($varUrl);
 
 			$varUrl = Isotope::getInstance()->generateFrontendUrl($objJump->row());
 		}

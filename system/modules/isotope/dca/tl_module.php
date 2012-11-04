@@ -458,7 +458,7 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['iso_continueShopping'] = array
  * Class tl_module_isotope
  * Provide miscellaneous methods that are used by the data configuration array.
  */
-class tl_module_isotope extends Backend
+class tl_module_isotope extends \Backend
 {
 
 	/**

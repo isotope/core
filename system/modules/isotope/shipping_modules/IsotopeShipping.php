@@ -21,7 +21,7 @@ namespace Isotope;
  * @author     Andreas Schempp <andreas.schempp@terminal42.ch>
  * @author     Fred Bliss <fred.bliss@intelligentspark.com>
  */
-abstract class IsotopeShipping extends Frontend
+abstract class IsotopeShipping extends \Frontend
 {
 
 	/**

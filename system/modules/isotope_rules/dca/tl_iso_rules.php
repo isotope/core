@@ -492,7 +492,7 @@ $GLOBALS['TL_DCA']['tl_iso_rules'] = array
 );
 
 
-class tl_iso_rules extends Backend
+class tl_iso_rules extends \Backend
 {
 
 	public function __construct()

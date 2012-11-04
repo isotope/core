@@ -20,7 +20,7 @@ namespace Isotope;
  * @author     Andreas Schempp <andreas.schempp@terminal42.ch>
  * @author     Philipp Kaiblinger <philipp.kaiblinger@kaipo.at>
  */
-class ModuleIsotopeTranslation extends BackendModule
+class ModuleIsotopeTranslation extends \BackendModule
 {
 
 	/**

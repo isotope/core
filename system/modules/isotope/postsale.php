@@ -30,7 +30,7 @@ require('../../initialize.php');
  * @author     Andreas Schempp <andreas.schempp@terminal42.ch>
  * @author     Fred Bliss <fred.bliss@intelligentspark.com>
  */
-class PostSale extends Frontend
+class PostSale extends \Frontend
 {
 
 	/**

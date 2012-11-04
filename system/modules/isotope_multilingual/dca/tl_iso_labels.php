@@ -139,7 +139,7 @@ $GLOBALS['TL_DCA']['tl_iso_labels'] = array
 );
 
 
-class tl_iso_labels extends Backend
+class tl_iso_labels extends \Backend
 {
 
 	public function checkPermission($dc)

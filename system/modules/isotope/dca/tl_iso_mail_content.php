@@ -161,7 +161,7 @@ $GLOBALS['TL_DCA']['tl_iso_mail_content'] = array
  * Class tl_iso_mail_content
  * Provide miscellaneous methods that are used by the data configuration array.
  */
-class tl_iso_mail_content extends Backend
+class tl_iso_mail_content extends \Backend
 {
 
 	/**

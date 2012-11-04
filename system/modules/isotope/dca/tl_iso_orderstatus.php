@@ -171,7 +171,7 @@ $GLOBALS['TL_DCA']['tl_iso_orderstatus'] = array
 );
 
 
-class tl_iso_orderstatus extends Backend
+class tl_iso_orderstatus extends \Backend
 {
 
 	/**

@@ -19,7 +19,7 @@
  * @author     Fred Bliss <fred.bliss@intelligentspark.com>
  * @author     Christian de la Haye <service@delahaye.de>
  */
-class ProductCallbacks extends Backend
+class ProductCallbacks extends \Backend
 {
 
 	/**

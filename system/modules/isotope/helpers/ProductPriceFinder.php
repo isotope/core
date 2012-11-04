@@ -18,7 +18,7 @@
  * @copyright  Isotope eCommerce Workgroup 2009-2012
  * @author     Andreas Schempp <andreas.schempp@terminal42.ch>
  */
-class ProductPriceFinder extends System
+class ProductPriceFinder extends \System
 {
 
 	/**
@@ -92,7 +92,7 @@ class ProductPriceFinder extends System
 		// Only look for low price if no variant is selected
 		if ($objProduct->pid == 0)
 		{
-			$objResult = Database::getInstance()->execute("SELECT MIN(price) AS low_price, MAX(price) AS high_price FROM tl_iso_products
+			$objResult = \Database::getInstance()->execute("SELECT MIN(price) AS low_price, MAX(price) AS high_price FROM tl_iso_products
 															WHERE pid=" . ($objProduct->pid ? $objProduct->pid : $objProduct->id) . " AND language=''"
 															. (BE_USER_LOGGED_IN === true ? '' : " AND published='1' AND (start='' OR start<$time) AND (stop='' OR stop>$time)")
 															. " GROUP BY pid");
@@ -150,7 +150,7 @@ class ProductPriceFinder extends System
 		$blnPriceFound = false;
 		$arrGroups = self::getMemberGroups();
 
-		$objPrices = Database::getInstance()->execute("SELECT min, price, tax_class
+		$objPrices = \Database::getInstance()->execute("SELECT min, price, tax_class
 														FROM tl_iso_price_tiers t
 														LEFT JOIN tl_iso_prices p ON t.pid=p.id
 														WHERE
@@ -205,7 +205,7 @@ class ProductPriceFinder extends System
 
 		if ($blnShowPriceTiers)
 		{
-			$objResult = Database::getInstance()->execute("SELECT MIN(price) AS low_price, MAX(price) AS high_price
+			$objResult = \Database::getInstance()->execute("SELECT MIN(price) AS low_price, MAX(price) AS high_price
 															FROM tl_iso_price_tiers
 															WHERE pid IN
 															(
@@ -226,7 +226,7 @@ class ProductPriceFinder extends System
 		}
 		else
 		{
-			$objResult = Database::getInstance()->execute("SELECT MIN(price) AS low_price, MAX(price) AS high_price FROM tl_iso_price_tiers WHERE id IN (
+			$objResult = \Database::getInstance()->execute("SELECT MIN(price) AS low_price, MAX(price) AS high_price FROM tl_iso_price_tiers WHERE id IN (
 																SELECT id FROM tl_iso_price_tiers WHERE id IN (
 																	SELECT id
 																	FROM tl_iso_price_tiers

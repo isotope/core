@@ -23,7 +23,7 @@ namespace Isotope;
  * @author     Yanick Witschi <yanick.witschi@terminal42.ch>
  * @author     Christoph Wiechert <christoph.wiechert@4wardmedia.de>
  */
-class Isotope extends Controller
+class Isotope extends \Controller
 {
 
 	/**

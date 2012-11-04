@@ -22,7 +22,7 @@ namespace Isotope;
  * @author     Fred Bliss <fred.bliss@intelligentspark.com>
  * @author     Christian de la Haye <service@delahaye.de>
  */
-class IsotopeBackend extends Backend
+class IsotopeBackend extends \Backend
 {
 
 	/**
@@ -32,7 +32,7 @@ class IsotopeBackend extends Backend
 	 */
 	public static function truncateProductCache($varValue=null)
 	{
-		Database::getInstance()->query("TRUNCATE tl_iso_productcache");
+		\Database::getInstance()->query("TRUNCATE tl_iso_productcache");
 
 		return $varValue;
 	}
@@ -351,8 +351,8 @@ class IsotopeBackend extends Backend
 	 */
 	public static function getTemplates($strPrefix, $intTheme=0)
 	{
-		$objDatabase = Database::getInstance();
-		$objConfig = Config::getInstance();
+		$objDatabase = \Database::getInstance();
+		$objConfig = \Config::getInstance();
 
 		$arrThemes = array();
 		$arrStores = array();
@@ -432,7 +432,7 @@ class IsotopeBackend extends Backend
 	 */
 	public static function getTaxClassesWithSplit()
 	{
-		$objDatabase = Database::getInstance();
+		$objDatabase = \Database::getInstance();
 
 		$arrTaxes = array();
 		$objTaxes = $objDatabase->execute("SELECT * FROM tl_iso_tax_class ORDER BY name");
@@ -455,7 +455,7 @@ class IsotopeBackend extends Backend
 	 */
 	public static function getOrderStatus()
 	{
-		$objDatabase = Database::getInstance();
+		$objDatabase = \Database::getInstance();
 
 		$arrStatus = array();
 		$objStatus = $objDatabase->execute("SELECT id, name FROM tl_iso_orderstatus ORDER BY sorting");
@@ -525,7 +525,7 @@ class IsotopeBackend extends Backend
 	 */
 	public static function createGeneralGroup()
 	{
-		$objDatabase = Database::getInstance();
+		$objDatabase = \Database::getInstance();
 
 		$objGroups = $objDatabase->executeUncached("SELECT COUNT(id) AS total FROM tl_iso_groups");
 

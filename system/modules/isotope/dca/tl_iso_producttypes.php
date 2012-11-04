@@ -249,7 +249,7 @@ $GLOBALS['TL_DCA']['tl_iso_producttypes'] = array
  * Class tl_iso_producttypes
  * Provide miscellaneous methods that are used by the data configuration array.
  */
-class tl_iso_producttypes extends Backend
+class tl_iso_producttypes extends \Backend
 {
 
 	/**
