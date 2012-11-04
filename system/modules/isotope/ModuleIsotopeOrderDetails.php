@@ -135,7 +135,7 @@ class ModuleIsotopeOrderDetails extends ModuleIsotope
 				(
 					'raw'			=> $objDownloads->row(),
 					'title'			=> $objDownloads->title,
-					'href'			=> (TL_MODE == 'FE' ? ($this->generateFrontendUrl($objPage->row()) . '?uid=' . $this->Input->get('uid') . '&amp;file=' . $objDownloads->id) : ''),
+					'href'			=> (TL_MODE == 'FE' ? (IsotopeFrontend::addQueryStringToUrl('file=' . $objDownloads->id)) : ''),
 					'remaining'		=> ($objDownloads->downloads_allowed > 0 ? sprintf($GLOBALS['TL_LANG']['MSC']['downloadsRemaining'], intval($objDownloads->downloads_remaining)) : ''),
 					'downloadable'	=> $blnDownloadable,
 				);

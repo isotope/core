@@ -90,6 +90,15 @@ class Isotope extends Controller
 
 
 	/**
+	 * Allow access to all protected parent methods
+	 */
+	public function __call($name, $arguments)
+	{
+		return call_user_func_array(array($this, $name), $arguments);
+	}
+
+
+	/**
 	 * Instantiate the Isotope object
 	 * @return object
 	 */
@@ -178,7 +187,7 @@ class Isotope extends Controller
 
 					if ($do == 'iso_products')
 					{
-						$this->redirect($this->Environment->script.'?do=iso_setup&mod=configs&table=tl_iso_config&act=create');
+						$this->redirect('contao/main.php?do=iso_setup&mod=configs&table=tl_iso_config&act=create');
 					}
 				}
 			}
@@ -1175,15 +1184,5 @@ class Isotope extends Controller
 		trigger_error('Using Isotope::getProductSelect() is deprecated. Please use IsotopeProduct::getProductStatement()', E_USER_NOTICE);
 		return IsotopeProduct::getProductStatement();
 	}
-
-
-	/**
-	 * These functions need to be public for Models to access them
-	 */
-	public function replaceInsertTags($strBuffer, $blnCache=false) { return parent::replaceInsertTags($strBuffer, $blnCache); }
-	public function parseSimpleTokens($strBuffer, $arrData) { return parent::parseSimpleTokens($strBuffer, $arrData); }
-	public function convertRelativeUrls($strContent, $strBase='', $blnHrefOnly=false) { return parent::convertRelativeUrls($strContent, $strBase, $blnHrefOnly); }
-	public function loadDataContainer($strName, $blnNoCache=false) { parent::loadDataContainer($strName, $blnNoCache); }
-	public function getCountries() { return parent::getCountries(); }
 }
 

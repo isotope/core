@@ -127,19 +127,19 @@ class ModuleIsotopeTranslation extends BackendModule
 
 				foreach( array_keys($arrSource) as $key )
 				{
-					$value = trim($this->Input->postRaw(standardize($key, true)));
+					$value = trim($this->Input->postRaw(standardize($key)));
 
 					if (!strlen($value))
 						continue;
 
 					$value = str_replace(array("\r\n", "\n", "\r", '\n'), '\n', $value, $count);
-					
+
 					if ($value == $arrTranslation[$key])
 						continue;
 
 					$strData .= $key . ' = ' . ($count > 0 ? ('"' . str_replace('"', '\"', $value) . '";'."\n") : ("'" . str_replace("'", "\'", $value) . "';\n"));
 				}
-				
+
 				if ($strData == '')
 				{
 					$this->Files->delete('system/modules/' . $arrSession['module']. '/languages/' . $this->User->translation . '/local/' . $arrSession['file']);
@@ -202,17 +202,17 @@ class ModuleIsotopeTranslation extends BackendModule
 		foreach( $arrFiles as $file )
 		{
 			$strData = '';
-			
+
 			$arrSource = $this->parseFile(TL_ROOT . '/system/modules/' . $arrSession['module']. '/languages/en/' . $file);
 			$arrTranslation = array_merge($this->parseFile(TL_ROOT . '/system/modules/' . $arrSession['module']. '/languages/' . $this->User->translation . '/' . $file), $this->parseFile(TL_ROOT . '/system/modules/' . $arrSession['module']. '/languages/' . $this->User->translation . '/local/' . $file));
-			
+
 			foreach( array_keys($arrSource) as $key )
 			{
 				$value = str_replace(array("\r\n", "\n", "\r", '\n'), '\n', $arrTranslation[$key], $count);
-				
+
 				$strData .= $key . ' = ' . ($count > 0 ? ('"' . str_replace('"', '\"', $value) . '";'."\n") : ("'" . str_replace("'", "\'", $value) . "';\n"));
 			}
-			
+
 			$objZip->addString($strHeader . $strData . "\n", $strFolder . '/' . $file);
 		}
 
@@ -238,8 +238,8 @@ class ModuleIsotopeTranslation extends BackendModule
 		// Stop script
 		exit;
 	}
-	
-	
+
+
 	/**
 	 * Return the header for a language file
 	 * @return string

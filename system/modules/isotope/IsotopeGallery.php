@@ -328,8 +328,8 @@ $endScript
 						$file[$size['name'] . '_imageSize'] = $arrSize;
 					}
 
-					$file['alt'] = specialchars($file['alt']);
-					$file['desc'] = specialchars($file['desc']);
+					$file['alt'] = specialchars($file['alt'], true);
+					$file['desc'] = specialchars($file['desc'], true);
 
 					$file[$size['name']] = $strImage;
 				}

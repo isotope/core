@@ -929,16 +929,16 @@ class ProductCallbacks extends Backend
 		if ($varValue == '')
 		{
 			$autoAlias = true;
-			$varValue = standardize($this->Input->post('name'), true);
+			$varValue = standardize($this->Input->post('name'));
 
 			if ($varValue == '')
 			{
-				$varValue = standardize($this->Input->post('sku'), true);
+				$varValue = standardize($this->Input->post('sku'));
 			}
 
 			if ($varValue == '')
 			{
-				$varValue = strlen($dc->activeRecord->name) ? standardize($dc->activeRecord->name, true) : standardize($dc->activeRecord->sku, true);
+				$varValue = strlen($dc->activeRecord->name) ? standardize($dc->activeRecord->name) : standardize($dc->activeRecord->sku);
 			}
 
 			if ($varValue == '')
@@ -993,7 +993,7 @@ class ProductCallbacks extends Backend
 				$help = implode(' » ', $this->Database->execute("SELECT title FROM tl_page WHERE id IN (" . implode(',', $objPage->trail) . ") ORDER BY id=" . implode(' DESC, id=', $objPage->trail) . " DESC")->fetchEach('title'));
 			}
 
-			$arrCategories[] = '<a class="tl_tip" longdesc="' . $help . '" href="' . $this->Environment->script . '?do=iso_products&table=tl_iso_product_categories&id=' . $intPage . '">' . $objPage->title . '</a>';
+			$arrCategories[] = '<a class="tl_tip" longdesc="' . $help . '" href="contao/main.php?do=iso_products&table=tl_iso_product_categories&id=' . $intPage . '">' . $objPage->title . '</a>';
 		}
 
 		if (empty($arrCategories))

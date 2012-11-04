@@ -107,7 +107,7 @@ window.addEvent('domready', function() {
 		return sprintf('<input type="checkbox" name="%s" id="opt_%s" class="tl_checkbox" value="%s"%s%s onfocus="Backend.getScrollOffset();"> <label for="opt_%s">%s</label>',
 						$this->strName . '[]',
 						$this->strId.'_'.$i,
-						specialchars($arrOption['value']),
+						specialchars($arrOption['value'], true),
 						$this->isChecked($arrOption),
 						$this->getAttributes(),
 						$this->strId.'_'.$i,

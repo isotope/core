@@ -327,7 +327,7 @@ class tl_iso_orders extends Backend
 
 		if (!$objOrder->numRows)
 		{
-			$this->redirect($this->Environment->script . '?act=error');
+			$this->redirect('contao/main.php?act=error');
 		}
 
 		$GLOBALS['TL_CSS'][] = 'system/modules/isotope/html/print.css|print';
@@ -351,7 +351,7 @@ class tl_iso_orders extends Backend
 
 		if (!$objOrder->numRows)
 		{
-			$this->redirect($this->Environment->script . '?act=error');
+			$this->redirect('contao/main.php?act=error');
 		}
 
 		$arrSettings = deserialize($objOrder->settings, true);
@@ -486,7 +486,7 @@ class tl_iso_orders extends Backend
 		if ($this->Input->get('act') == 'delete' || $this->Input->get('act') == 'deleteAll')
 		{
 			$this->log('Only admin can delete orders!', __METHOD__, TL_ERROR);
-			$this->redirect($this->Environment->script.'?act=error');
+			$this->redirect('contao/main.php?act=error');
 		}
 
 		$arrIds = array(0);
@@ -678,7 +678,7 @@ class tl_iso_orders extends Backend
 		if (empty($arrIds))
 		{
 			$this->log('No order IDs passed to method.', __METHOD__, TL_ERROR);
-			$this->redirect($this->Environment->script . '?act=error');
+			$this->redirect('contao/main.php?act=error');
 		}
 
 		$pdf = null;
@@ -696,7 +696,7 @@ class tl_iso_orders extends Backend
 		if (!$pdf)
 		{
 			$this->log('No order IDs passed to method.', __METHOD__, TL_ERROR);
-			$this->redirect($this->Environment->script . '?act=error');
+			$this->redirect('contao/main.php?act=error');
 		}
 
 		// Close and output PDF document

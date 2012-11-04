@@ -148,9 +148,9 @@ class ModuleIsotopeCart extends ModuleIsotope
 		$blnInsufficientSubtotal = ($this->Isotope->Config->cartMinSubtotal > 0 && $this->Isotope->Config->cartMinSubtotal > $this->Isotope->Cart->subTotal) ? true : false;
 
 		// Redirect if the "checkout" button has been submitted and minimum order total is reached
-		if ($blnReload && $this->Input->post('checkout') != '' && $this->iso_checkout_jumpTo && !$blnInsufficientSubtotal)
+		if ($blnReload && $this->Input->post('checkout') != '' && !$blnInsufficientSubtotal)
 		{
-			$this->redirect($this->generateFrontendUrl($this->Database->execute("SELECT * FROM tl_page WHERE id={$this->iso_checkout_jumpTo}")->fetchAssoc()));
+			$this->jumpToOrReload($this->iso_checkout_jumpTo);
 		}
 
 		// Otherwise, just reload the page

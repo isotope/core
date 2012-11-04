@@ -110,16 +110,16 @@ class IsotopeAutomator extends Controller
 
 					$objXml = new SimpleXMLElement($objRequest->response);
 
-					foreach ($objXml->Cube->Cube->Cube as $rate)
+					foreach ($objXml->Cube->Cube->Cube as $currency)
 					{
-						if (!$fltCourse && $currency['code'] == strtolower($objConfigs->currency))
+						if (!$fltCourse && strtolower($currency['currency']) == strtolower($objConfigs->currency))
 						{
-							$fltCourse = (float) $currency->kurs;
+							$fltCourse = (float) $currency['rate'];
 						}
 
-						if (!$fltCourseOrigin && $currency['code'] == strtolower($objConfigs->currencyOrigin))
+						if (!$fltCourseOrigin && strtolower($currency['currency']) == strtolower($objConfigs->currencyOrigin))
 						{
-							$fltCourseOrigin = (float) $currency->kurs;
+							$fltCourseOrigin = (float) $currency['rate'];
 						}
 					}
 

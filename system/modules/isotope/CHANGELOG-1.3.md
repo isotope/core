@@ -1,6 +1,21 @@
 Isotope eCommerce Changelog
 ===========================
 
+Version 1.3.9 stable (2012-11-05)
+---------------------------------
+
+### Fixed
+- Postfinance module did not correctly validate postsale data
+- Order was not visible after completing payment with Postfinance
+- Not all URLs were correctly generated when alias were disabled
+- Fixed incorrect label for copy product button (#3387)
+- Fixed crashing search index when no products are available
+- Uploads with uppercase fiel names did not work correctly (#48)
+- Sorting of attributes did not correctly work
+- Toggling "use default" did not work in Firefox and for TinyMCE fields
+- Automatic currency conversion for ECB was incorrect (#52)
+
+
 Version 1.3.8 stable (2012-09-11)
 ---------------------------------
 

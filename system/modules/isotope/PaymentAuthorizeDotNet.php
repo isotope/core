@@ -95,9 +95,8 @@ class PaymentAuthorizeDotNet extends IsotopePayment
 		if($this->authCapturePayment($objOrder->id, $this->Isotope->Cart->grandTotal, true))
 			return true;
 
-		global $objPage;
 		$this->log('Invalid payment data received.', 'PaymentAuthorizeDotNet processPayment()', TL_ERROR);
-		$this->redirect($this->generateFrontendUrl($objPage->row(), '/step/failed'));
+		$this->redirect($this->addToUrl('step=failed', true));
 
 	}
 
@@ -501,7 +500,7 @@ $return .= '</div></div>';
 
 			foreach(array_keys($arrResponses) as $key)
 			{
-				$arrReponseLabels[strtolower(standardize($key))] = $key;
+				$arrReponseLabels[standardize($key)] = $key;
 			}
 
 			$this->loadLanguageFile('payment');
@@ -687,7 +686,7 @@ $return .= '</div></div>';
 							break;
 					}
 
-					$arrResponse[strtolower(standardize($ftitle))] = $fval;
+					$arrResponse[standardize($ftitle)] = $fval;
 				}
 
 			$i++;
