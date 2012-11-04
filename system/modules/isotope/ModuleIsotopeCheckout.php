@@ -131,7 +131,7 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 				{
 					IsotopeFrontend::clearTimeout();
 
-					$this->redirect($this->generateFrontendUrl($this->Database->prepare("SELECT * FROM tl_page WHERE id=?")->execute($this->orderCompleteJumpTo)->fetchAssoc()) . '?uid='.$objOrder->uniqid);
+					$this->redirect(IsotopeFrontend::addQueryStringToUrl('uid=' . $objOrder->uniqid, $this->orderCompleteJumpTo));
 				}
 
 				// Order is not complete, wait for it
@@ -287,7 +287,7 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 				// If checkout is successful, complete order and redirect to confirmation page
 				if ($objOrder->findBy('cart_id', $this->Isotope->Cart->id) && $objOrder->checkout($this->Isotope->Cart) && $objOrder->complete())
 				{
-					$this->redirect($this->generateFrontendUrl($this->Database->prepare("SELECT * FROM tl_page WHERE id=?")->execute($this->orderCompleteJumpTo)->fetchAssoc()) . '?uid='.$objOrder->uniqid);
+					$this->redirect(IsotopeFrontend::addQueryStringToUrl('uid=' . $objOrder->uniqid, $this->orderCompleteJumpTo));
 				}
 
 				// Checkout failed, show error message

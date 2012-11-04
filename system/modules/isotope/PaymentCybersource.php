@@ -264,13 +264,13 @@ class PaymentCybersource extends IsotopePayment
 							   ->set($arrSet)
 							   ->executeUncached();
 
-				if($blnFail)
+				if ($blnFail)
 				{
 					$this->log('Invalid payment data received.', 'PaymentCybersource checkoutForm()', TL_ERROR);
-					$this->redirect($this->Environment->request . (strpos($this->Environment->request, '?') === false ? '?' : '&') . 'error='.$objReply->reasonCode);
+					$this->redirect(IsotopeFrontend::addQueryStringToUrl('error=' . $objReply->reasonCode));
 				}
 
-				$this->redirect($this->addToUrl('step=complete'));
+				$this->redirect($this->addToUrl('step=complete', true));
 			}
 			catch (SoapFault $exception)
 			{
@@ -370,7 +370,7 @@ class PaymentCybersource extends IsotopePayment
 
 			foreach(array_keys($arrResponses) as $key)
 			{
-				$arrReponseLabels[strtolower(standardize($key, true))] = $key;
+				$arrReponseLabels[standardize($key)] = $key;
 			}
 
 			$objTemplate->fields = $this->generateResponseString($arrResponses, $arrReponseLabels);

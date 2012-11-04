@@ -166,15 +166,14 @@ class PaymentPaypalPayflowPro extends IsotopePayment
 		}
 
 
-		if (isset($arrResponse['RESULT']) && $arrResponse['RESULT'] == 0) {
-        	return true;
-      	} else {
-
+		if (!isset($arrResponse['RESULT']) || $arrResponse['RESULT'] != 0)
+		{
        		$_SESSION['CHECKOUT_DATA']['payment'][$this->id]['error'] = $arrResponse['RESPMSG'];
 
-        	$this->redirect($this->addToUrl('step=payment'));
+        	$this->redirect($this->addToUrl('step=payment', true));
       	}
 
+      	return true;
 	}
 
 

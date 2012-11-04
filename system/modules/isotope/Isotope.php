@@ -32,7 +32,7 @@
 
 /**
  * Class Isotope
- * 
+ *
  * The base class for all Isotope components.
  * @copyright  Isotope eCommerce Workgroup 2009-2012
  * @author     Andreas Schempp <andreas@schempp.ch>
@@ -90,6 +90,15 @@ class Isotope extends Controller
 
 
 	/**
+	 * Allow access to all protected parent methods
+	 */
+	public function __call($name, $arguments)
+	{
+		return call_user_func_array(array($this, $name), $arguments);
+	}
+
+
+	/**
 	 * Instantiate the Isotope object
 	 * @return object
 	 */
@@ -98,11 +107,11 @@ class Isotope extends Controller
 		if (!is_object(self::$objInstance))
 		{
 			self::$objInstance = new Isotope();
-			
+
 			// Make sure field data is available
 			self::$objInstance->loadDataContainer('tl_iso_products');
 			self::$objInstance->loadLanguageFile('tl_iso_products');
-	
+
 			if (strlen($_SESSION['ISOTOPE']['config_id']))
 			{
 				self::$objInstance->overrideConfig($_SESSION['ISOTOPE']['config_id']);
@@ -111,17 +120,17 @@ class Isotope extends Controller
 			{
 				self::$objInstance->resetConfig();
 			}
-	
+
 			if (TL_MODE == 'FE' && strpos(self::$objInstance->Environment->script, 'postsale.php') === false && strpos(self::$objInstance->Environment->script, 'cron.php') === false)
 			{
 				self::$objInstance->Cart = new IsotopeCart();
 				self::$objInstance->Cart->initializeCart((int)self::$objInstance->Config->id, (int)self::$objInstance->Config->store_id);
-	
+
 				// Initialize request cache for product list filters
 				if (self::$objInstance->Input->get('isorc') != '')
 				{
 					$objRequestCache = self::$objInstance->Database->prepare("SELECT * FROM tl_iso_requestcache WHERE id=? AND store_id=?")->execute(self::$objInstance->Input->get('isorc'), self::$objInstance->Config->store_id);
-	
+
 					if ($objRequestCache->numRows)
 					{
 						$GLOBALS['ISO_FILTERS'] = deserialize($objRequestCache->filters);
@@ -169,7 +178,7 @@ class Isotope extends Controller
 
 					if ($do == 'iso_products')
 					{
-						$this->redirect($this->Environment->script.'?do=iso_setup&mod=configs&table=tl_iso_config&act=create');
+						$this->redirect('contao/main.php?do=iso_setup&mod=configs&table=tl_iso_config&act=create');
 					}
 				}
 			}
@@ -248,8 +257,8 @@ class Isotope extends Controller
 
 		return $this->roundPrice($fltPrice);
 	}
-	
-	
+
+
 	/**
 	 * Calculate a product surcharge and apply taxes if necessary
 	 * @param string
@@ -265,12 +274,12 @@ class Isotope extends Controller
 		if ($blnPercentage)
 		{
 			$fltTotal = 0;
-			
+
 			foreach( $arrProducts as $objProduct )
 			{
 				$fltTotal += (float) $objProduct->total_price;
 			}
-			
+
 			$fltSurcharge = (float)substr($strPrice, 0, -1);
 			$fltPrice = $this->Isotope->roundPrice($fltTotal / 100 * $fltSurcharge);
 		}
@@ -278,7 +287,7 @@ class Isotope extends Controller
 		{
 			$fltPrice = $this->Isotope->calculatePrice((float)$strPrice, $objSource, 'price', $intTaxClass);;
 		}
-		
+
 		$arrSurcharge = array
 		(
 			'label'			=> $strLabel,
@@ -287,16 +296,16 @@ class Isotope extends Controller
 			'tax_class'		=> $intTaxClass,
 			'before_tax'	=> ($intTaxClass ? true : false),
 		);
-		
+
 		if ($intTaxClass == -1)
 		{
 			$fltTotal = 0;
-			
+
 			foreach( $arrProducts as $objProduct )
 			{
 				$fltTotal += (float) $objProduct->tax_free_total_price;
 			}
-			
+
 			$arrSubtract = array();
             foreach( $arrProducts as $objProduct )
             {
@@ -308,7 +317,7 @@ class Isotope extends Controller
             	{
 					$fltProductPrice = $fltPrice / 100 * (100 / $fltTotal * $objProduct->tax_free_total_price);
             	}
-            	
+
                 $fltProductPrice = $fltProductPrice > 0 ? (floor($fltProductPrice * 100) / 100) : (ceil($fltProductPrice * 100) / 100);
                 $arrSubtract[$objProduct->cart_id] = $fltProductPrice;
             }
@@ -317,7 +326,7 @@ class Isotope extends Controller
             $arrSurcharge['before_tax'] = true;
             $arrSurcharge['products'] = $arrSubtract;
 		}
-		
+
 		return $arrSurcharge;
 	}
 
@@ -503,12 +512,12 @@ class Isotope extends Controller
 				{
 					continue;
 				}
-				
+
 				// Check if address has a valid postal code
 				if ($objRate->postalCodes != '')
 				{
 					$arrCodes = IsotopeFrontend::parsePostalCodes($objRate->postalCodes);
-					
+
 					if (!in_array($arrAddress['postal'], $arrCodes))
 					{
 						continue;
@@ -534,11 +543,11 @@ class Isotope extends Controller
 						}
 					}
 				}
-				
+
 				// This address is valid, otherwise one of the check would have skipped this (continue)
 				return true;
 			}
-			
+
 			// No address has passed all checks and returned true
 			return false;
 		}
@@ -546,13 +555,13 @@ class Isotope extends Controller
 		// Addresses are not checked at all, return true
 		return true;
 	}
-	
-	
+
+
 	/**
 	 * Rounds a price according to store config settings
 	 * @param float original value
 	 * @param bool apply rounding increment
-	 * @return float rounded value 
+	 * @return float rounded value
 	 */
 	public function roundPrice($fltValue, $blnApplyRoundingIncrement=true)
 	{
@@ -789,7 +798,7 @@ class Isotope extends Controller
 	 * @param object
 	 */
 	public function sendMail($intId, $strRecipient, $strLanguage, $arrData, $strReplyTo='', $objCollection=null)
-	{				
+	{
 		try
 		{
 			$objEmail = new IsotopeEmail($intId, $strLanguage, $objCollection);
@@ -847,14 +856,14 @@ class Isotope extends Controller
 			$this->import('tl_iso_products');
 			$this->tl_iso_products->loadProductsDCA();
 		}
-		
+
 		// Limit the member countries to the selection in store config
 		elseif ($strTable == 'tl_member' && $this->Config->limitMemberCountries)
 		{
 			$arrCountries = array_unique(array_merge((array)deserialize($this->Config->billing_countries), (array)deserialize($this->Config->shipping_countries)));
 			$arrCountries = array_intersect_key($GLOBALS['TL_DCA']['tl_member']['fields']['country']['options'], array_flip($arrCountries));
 			$GLOBALS['TL_DCA']['tl_member']['fields']['country']['options'] = $arrCountries;
-			
+
 			if (count($arrCountries) == 1)
 			{
 				$arrCountryCodes = array_keys($arrCountries);
@@ -1237,13 +1246,5 @@ class Isotope extends Controller
 		trigger_error('Using Isotope::getProductSelect() is deprecated. Please use IsotopeProduct::getProductStatement()', E_USER_NOTICE);
 		return IsotopeProduct::getProductStatement();
 	}
-
-
-	/**
-	 * These functions need to be public for Models to access them
-	 */
-	public function replaceInsertTags($strBuffer, $blnCache=false) { return parent::replaceInsertTags($strBuffer, $blnCache); }
-	public function convertRelativeUrls($strContent, $strBase='', $blnHrefOnly=false) { return parent::convertRelativeUrls($strContent, $strBase, $blnHrefOnly); }
-	public function getCountries() { return parent::getCountries(); }
 }
 

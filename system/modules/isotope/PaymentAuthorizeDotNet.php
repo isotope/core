@@ -95,9 +95,8 @@ class PaymentAuthorizeDotNet extends IsotopePayment
 		if($this->authCapturePayment($objOrder->id, $this->Isotope->Cart->grandTotal, true))
 			return true;
 
-		global $objPage;
 		$this->log('Invalid payment data received.', 'PaymentAuthorizeDotNet processPayment()', TL_ERROR);
-		$this->redirect($this->generateFrontendUrl($objPage->row(), '/step/failed'));
+		$this->redirect($this->addToUrl('step=failed', true));
 
 	}
 
@@ -111,13 +110,13 @@ class PaymentAuthorizeDotNet extends IsotopePayment
 	 * @return string
 	 */
 	public function paymentForm(&$objModule)
-	{		
+	{
 		if($_SESSION['checkout']['grandTotal']!==$this->Isotope->Cart->grandTotal)
 			$_SESSION['checkout']['success']=false;
-	
+
 		//set/reset grand total.
 		$_SESSION['checkout']['grandTotal'] = $this->Isotope->Cart->grandTotal;
-	
+
 		$strBuffer = '';
 		$arrPayment = $this->Input->post('payment');
 
@@ -215,10 +214,10 @@ class PaymentAuthorizeDotNet extends IsotopePayment
 		}
 
 		if ($this->Input->post('FORM_SUBMIT') == 'iso_mod_checkout_payment' && !$objModule->doNotSubmit && $arrPayment['module']==$this->id && !$_SESSION['CHECKOUT_DATA']['payment']['request_lockout'])
-		{	
+		{
 			//Gather Order data and set IsotopeOrder object
 			$objOrder = new IsotopeOrder();
-	
+
 			if (!$objOrder->findBy('cart_id', $this->Isotope->Cart->id))
 			{
 				$objOrder->uniqid		= uniqid($this->Isotope->Config->orderPrefix, true);
@@ -227,18 +226,18 @@ class PaymentAuthorizeDotNet extends IsotopePayment
 			}
 
 			$_SESSION['CHECKOUT_DATA']['payment']['request_lockout'] = true;
-			
+
 			if($_SESSION['CHECKOUT_DATA']['payment']['success']!==true)
 				$blnResult = $this->authCapturePayment($objOrder->id, $this->Isotope->Cart->grandTotal, false);
 
 			if($blnResult)  //At this point the response data has been saved to the order and the auth was successful.
-			{					
+			{
 					unset($_SESSION['CHECKOUT_DATA']['responseMsg']);
 
 					$_SESSION['CHECKOUT_DATA']['payment']['card_accountNumber'] = $this->maskCC($arrPayment['card_accountNumber']); //PCI COMPLIANCE - MASK THE CC DATA
 					$_SESSION['CHECKOUT_DATA']['payment']['card_cvNumber'] = '***';
-					$_SESSION['CHECKOUT_DATA']['payment']['success'] = true;		
-					$objModule->doNotSubmit = false;			
+					$_SESSION['CHECKOUT_DATA']['payment']['success'] = true;
+					$objModule->doNotSubmit = false;
 			}
 			else
 			{
@@ -307,23 +306,23 @@ class PaymentAuthorizeDotNet extends IsotopePayment
 
 			$strResponse = '<p class="tl_info">' . sprintf("Transaction Status: %s, Reason: %s", $this->strStatus, $this->strReason) . '</p>';
 		}
-		
+
 		if($blnAuthCapture)
 		{
 			$objOrder = new IsotopeOrder();
 
 			if (!$objOrder->findBy('id', $intOrderId))
 			{
-				$objOrder->uniqid		= uniqid($this->Isotope->Config->orderPrefix, true);				
+				$objOrder->uniqid		= uniqid($this->Isotope->Config->orderPrefix, true);
 				$objOrder->findBy('id', $objOrder->save());
 			}
-			
+
 			$objOrder->status		= 'processing';
-			
+
 			$objOrder->save();
 
 		}
-		
+
 		$return = '<div id="tl_buttons">
 <input type="hidden" name="FORM_SUBMIT" value="be_pos_terminal">
 <input type="hidden" name="REQUEST_TOKEN" value="'.REQUEST_TOKEN.'">
@@ -358,7 +357,7 @@ $return .= '</div></div>';
 	 * @return bool
 	 */
 	public function authCapturePayment($intOrderId, $fltOrderTotal, $blnCapture=false)
-	{		
+	{
 		//Gather Order data and set IsotopeOrder object
 		$objOrder = new IsotopeOrder();
 
@@ -490,9 +489,9 @@ $return .= '</div></div>';
 		if(!count($arrOrderPaymentData) || $arrOrderPaymentData['transaction-status']!='Approved' || $blnCapture || (!$blnCapture && count($arrOrderPaymentData) && $fltOrderTotal>$arrOrderPaymentData['grand-total']))
 		{
 			$objRequest = new Request();
-	
+
 			$objRequest->send('https://'.($this->debug ? 'test' : 'secure').'.authorize.net/gateway/transact.dll', $fieldsFinal, 'post');
-	
+
 			$arrResponses = $this->handleResponse($objRequest->response);
 			$arrResponseCodes = $this->getResponseCodes($objRequest->response);
 
@@ -500,9 +499,9 @@ $return .= '</div></div>';
 
 			foreach(array_keys($arrResponses) as $key)
 			{
-				$arrReponseLabels[strtolower(standardize($key))] = $key;
+				$arrReponseLabels[standardize($key)] = $key;
 			}
-	
+
 			$this->loadLanguageFile('payment');
 			$this->strStatus = $arrResponses['transaction-status'];
 			$this->strReason = $GLOBALS['TL_LANG']['MSG']['authorizedotnet'][$arrResponseCodes['response_type']][$arrResponseCodes['response_code']];
@@ -512,7 +511,7 @@ $return .= '</div></div>';
 			//otherwise, if this isn't a capture, simply bypass/return true.  If it is, we need to do some additional work below.
 			if(!$blnCapture) return true;
 		}
-		
+
 		if(!$blnCapture)
 		{
 			switch($arrResponses['transaction-status'])
@@ -685,7 +684,7 @@ $return .= '</div></div>';
 							break;
 					}
 
-					$arrResponse[strtolower(standardize($ftitle))] = $fval;
+					$arrResponse[standardize($ftitle)] = $fval;
 				}
 
 			$i++;

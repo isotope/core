@@ -212,7 +212,7 @@ $GLOBALS['TL_DCA']['tl_iso_products'] = array
 			),
 			'cut' => array
 			(
-				'label'				=> &$GLOBALS['TL_LANG']['tl_iso_products']['copy'],
+				'label'				=> &$GLOBALS['TL_LANG']['tl_iso_products']['cut'],
 				'href'				=> 'act=paste&amp;mode=cut',
 				'icon'				=> 'cut.gif',
 				'attributes'		=> 'onclick="Backend.getScrollOffset();"',
@@ -834,7 +834,7 @@ class tl_iso_products extends Backend
 			$this->Session->set('tl_page_node', 0);
 
 			$this->log('Page ID '.$intNode.' was not mounted', 'tl_page addBreadcrumb', TL_ERROR);
-			$this->redirect($this->Environment->script.'?act=error');
+			$this->redirect('contao/main.php?act=error');
 		}
 
 		// Limit tree
@@ -989,16 +989,16 @@ class tl_iso_products extends Backend
 		if ($varValue == '')
 		{
 			$autoAlias = true;
-			$varValue = standardize($this->Input->post('name'), true);
+			$varValue = standardize($this->Input->post('name'));
 
 			if ($varValue == '')
 			{
-				$varValue = standardize($this->Input->post('sku'), true);
+				$varValue = standardize($this->Input->post('sku'));
 			}
 
 			if ($varValue == '')
 			{
-				$varValue = strlen($dc->activeRecord->name) ? standardize($dc->activeRecord->name, true) : standardize($dc->activeRecord->sku, true);
+				$varValue = strlen($dc->activeRecord->name) ? standardize($dc->activeRecord->name) : standardize($dc->activeRecord->sku);
 			}
 
 			if ($varValue == '')
@@ -1419,9 +1419,9 @@ $strBuffer .= '<th style="text-align:center"><img src="system/themes/default/ima
 				}
 
 				$arrPattern = array();
-				$arrPattern[] = $objProducts->alias ?  standardize($objProducts->alias, true) : null;
+				$arrPattern[] = $objProducts->alias ?  standardize($objProducts->alias) : null;
 				$arrPattern[] = $objProducts->sku ? $objProducts->sku : null;
-				$arrPattern[] = $objProducts->sku ? standardize($objProducts->sku, true) : null;
+				$arrPattern[] = $objProducts->sku ? standardize($objProducts->sku) : null;
 				$arrPattern[] = count($arrImageNames) ? implode('|', $arrImageNames) : null;
 
 				// HOOK: add custom import regex patterns
@@ -1817,7 +1817,7 @@ $strBuffer .= '<th style="text-align:center"><img src="system/themes/default/ima
 		if (!$this->User->isAdmin && !$this->User->hasAccess('tl_iso_products::published', 'alexf'))
 		{
 			$this->log('Not enough permissions to publish/unpublish product ID "'.$intId.'"', 'tl_iso_products toggleVisibility', TL_ERROR);
-			$this->redirect($this->Environment->script.'?act=error');
+			$this->redirect('contao/main.php?act=error');
 		}
 */
 
