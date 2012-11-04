@@ -349,10 +349,10 @@ abstract class IsotopeProductCollection extends \Model
 	 * @param string
 	 * @param string
 	 */
-	public function setFromRow(Database_Result $resResult, $strTable, $strRefField)
+	public function setRow(array $arrData)
 	{
-		parent::setFromRow($resResult, $strTable, $strRefField);
-		$this->arrSettings = deserialize($this->arrData['settings'], true);
+		parent::setRow($arrData);
+		$this->arrSettings = deserialize($arrData['settings'], true);
 	}
 
 

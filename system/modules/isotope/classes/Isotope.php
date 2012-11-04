@@ -198,7 +198,7 @@ class Isotope extends \Controller
 		}
 
 		$this->Config = new IsotopeConfig();
-		$this->Config->setFromRow($objConfig, 'tl_iso_config', 'id');
+		$this->Config->setRow($objConfig->row());
 	}
 
 

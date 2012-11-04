@@ -28,7 +28,7 @@ class IsotopeConfig extends \Model
 	 * Name of the current table
 	 * @var string
 	 */
-	protected $strTable = 'tl_iso_config';
+	protected static $strTable = 'tl_iso_config';
 
 
 	/**

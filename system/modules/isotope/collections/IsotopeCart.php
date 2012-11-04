@@ -239,7 +239,7 @@ class IsotopeCart extends IsotopeProductCollection
 		// Create new cart
 		if ($objCart->numRows)
 		{
-			$this->setFromRow($objCart, $this->strTable, 'id');
+			$this->setRow($objCart->row());
 			$this->tstamp = $time;
 		}
 		else
