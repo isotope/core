@@ -145,7 +145,7 @@ class PasteProductButton extends \Backend
 	 * Copy or paste a single product
 	 * @return string
 	 */
-	protected function pasteProduct(Database_Result $objProduct, $table, $row, $arrClipboard)
+	protected function pasteProduct($objProduct, $table, $row, $arrClipboard)
 	{
 		// Can't paste product in product or variant
 		if ($table == 'tl_iso_products' && $row['id'] > 0)
@@ -161,7 +161,7 @@ class PasteProductButton extends \Backend
 	 * Copy or paste a single variant
 	 * @return string
 	 */
-	protected function pasteVariant(Database_Result $objProduct, $table, $row, $arrClipboard)
+	protected function pasteVariant($objProduct, $table, $row, $arrClipboard)
 	{
 		// Can't paste variant in product group or root node or variant
 		if ($table == 'tl_iso_groups' || $row['id'] == 0 || $row['pid'] > 0)

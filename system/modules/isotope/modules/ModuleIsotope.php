@@ -44,7 +44,7 @@ abstract class ModuleIsotope extends \Module
 	 * @param string
 	 * @return void
 	 */
-	public function __construct(Database_Result $objModule, $strColumn='main')
+	public function __construct($objModule, $strColumn='main')
 	{
 		parent::__construct($objModule, $strColumn);
 

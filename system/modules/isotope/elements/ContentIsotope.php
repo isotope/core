@@ -33,7 +33,7 @@ abstract class ContentIsotope extends \ContentElement
 	 * Initialize the content element
 	 * @param object
 	 */
-	public function __construct(Database_Result $objElement)
+	public function __construct($objElement)
 	{
 		parent::__construct($objElement);
 
