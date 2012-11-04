@@ -22,7 +22,7 @@ namespace Isotope;
  * @author     Fred Bliss <fred.bliss@intelligentspark.com>
  * @author     Christian de la Haye <service@delahaye.de>
  */
-class MediaManager extends \Widget implements uploadable
+class MediaManager extends \Widget implements \uploadable
 {
 
 	/**

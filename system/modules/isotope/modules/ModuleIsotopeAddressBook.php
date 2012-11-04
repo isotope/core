@@ -304,7 +304,7 @@ class ModuleIsotopeAddressBook extends ModuleIsotope
 				}
 			}
 
-			if ($objWidget instanceof uploadable)
+			if ($objWidget instanceof \uploadable)
 			{
 				$hasUpload = true;
 			}

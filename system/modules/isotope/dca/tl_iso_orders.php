@@ -287,7 +287,7 @@ class tl_iso_orders extends \Backend
 	 * @param string
 	 * @return string
 	 */
-	public function getOrderLabel($row, $label, DataContainer $dc, $args)
+	public function getOrderLabel($row, $label, \DataContainer $dc, $args)
 	{
 		$this->Isotope->overrideConfig($row['config_id']);
 
@@ -514,7 +514,7 @@ class tl_iso_orders extends \Backend
 	 * @return string
 	 * @todo orders should be sorted, but by ID or date? also might want to respect user filter/search
 	 */
-	public function exportOrderEmails(DataContainer $dc)
+	public function exportOrderEmails(\DataContainer $dc)
 	{
 		if ($this->Input->get('key') != 'export_emails')
 		{
@@ -656,7 +656,7 @@ class tl_iso_orders extends \Backend
 	 * @param DataContainer
 	 * @return void
 	 */
-	public function printInvoice(DataContainer $dc)
+	public function printInvoice(\DataContainer $dc)
 	{
 		$this->generateInvoices(array($dc->id));
 	}

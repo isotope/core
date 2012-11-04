@@ -10,6 +10,8 @@
  * @license    http://opensource.org/licenses/lgpl-3.0.html LGPL
  */
 
+namespace Isotope;
+
 
 /**
  * Class ProductCallbacks
@@ -494,7 +496,7 @@ class ProductCallbacks extends \Backend
 	 * @param DataContainer
 	 * @return void
 	 */
-	public function storeDateAdded(DataContainer $dc)
+	public function storeDateAdded(\DataContainer $dc)
 	{
 		// Return if there is no active record (override all)
 		if (!$dc->activeRecord || $dc->activeRecord->dateAdded > 0)
@@ -846,7 +848,7 @@ class ProductCallbacks extends \Backend
 	 * @param DataContainer
 	 * @return array
 	 */
-	public function getProductTypes(DataContainer $dc)
+	public function getProductTypes(\DataContainer $dc)
 	{
 		$this->import('BackendUser', 'User');
 		$arrTypes = $this->User->iso_product_types;
@@ -880,7 +882,7 @@ class ProductCallbacks extends \Backend
 	 * @param DataContainer
 	 * @return mixed
 	 */
-	public function loadProductCategories($varValue, DataContainer $dc)
+	public function loadProductCategories($varValue, \DataContainer $dc)
 	{
 		return $this->Database->execute("SELECT page_id FROM tl_iso_product_categories WHERE pid={$dc->id}")->fetchEach('page_id');
 	}
@@ -898,7 +900,7 @@ class ProductCallbacks extends \Backend
 	 * @param DataContainer
 	 * @return mixed
 	 */
-	public function saveProductCategories($varValue, DataContainer $dc)
+	public function saveProductCategories($varValue, \DataContainer $dc)
 	{
 		$arrIds = deserialize($varValue);
 
@@ -931,7 +933,7 @@ class ProductCallbacks extends \Backend
 	 * @return string
 	 * @throws Exception
 	 */
-	public function generateAlias($varValue, DataContainer $dc)
+	public function generateAlias($varValue, \DataContainer $dc)
 	{
 		$autoAlias = false;
 

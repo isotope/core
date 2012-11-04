@@ -38,7 +38,7 @@ class PasteProductButton extends \Backend
 	 * @return string
 	 * @link http://www.contao.org/callbacks.html#paste_button_callback
 	 */
-	public function generate(DataContainer $dc, $row, $table, $cr, $arrClipboard=false)
+	public function generate(\DataContainer $dc, $row, $table, $cr, $arrClipboard=false)
 	{
 		// Disable all buttons if there is a circular reference
 		if ($arrClipboard !== false && ($arrClipboard['mode'] == 'cut' && ($cr == 1 || ($table == $dc->table && $arrClipboard['id'] == $row['id'])) || $arrClipboard['mode'] == 'cutAll' && ($cr == 1 || ($table == $dc->table && in_array($row['id'], $arrClipboard['id'])))))

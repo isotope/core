@@ -214,7 +214,7 @@ class ModuleIsotopeSetup extends \BackendModule
 
 			if (!strlen($act) || $act == 'paste' || $act == 'select')
 			{
-				$act = ($dc instanceof listable) ? 'showAll' : 'edit';
+				$act = ($dc instanceof \listable) ? 'showAll' : 'edit';
 			}
 
 			switch ($act)
@@ -223,7 +223,7 @@ class ModuleIsotopeSetup extends \BackendModule
 				case 'show':
 				case 'showAll':
 				case 'undo':
-					if (!$dc instanceof listable)
+					if (!$dc instanceof \listable)
 					{
 						$this->log('Data container ' . $strTable . ' is not listable', 'Backend getBackendModule()', TL_ERROR);
 						trigger_error('The current data container is not listable', E_USER_ERROR);
@@ -237,7 +237,7 @@ class ModuleIsotopeSetup extends \BackendModule
 				case 'copyAll':
 				case 'move':
 				case 'edit':
-					if (!$dc instanceof editable)
+					if (!$dc instanceof \editable)
 					{
 						$this->log('Data container ' . $strTable . ' is not editable', 'Backend getBackendModule()', TL_ERROR);
 						trigger_error('The current data container is not editable', E_USER_ERROR);

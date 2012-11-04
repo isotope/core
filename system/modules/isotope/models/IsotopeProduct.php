@@ -752,7 +752,7 @@ class IsotopeProduct extends \Controller
 	{
 		global $objPage;
 
-		$this->formSubmit = (($objModule instanceof ContentElement) ? 'cte' : 'fmd') . $objModule->id . '_product_' . ($this->pid ? $this->pid : $this->id);
+		$this->formSubmit = (($objModule instanceof \ContentElement) ? 'cte' : 'fmd') . $objModule->id . '_product_' . ($this->pid ? $this->pid : $this->id);
 		$this->validateVariant();
 
 		$objTemplate = new IsotopeTemplate($strTemplate);
@@ -836,7 +836,7 @@ class IsotopeProduct extends \Controller
 		$objTemplate->product = $this;
 
 		list(,$startScript, $endScript) = IsotopeFrontend::getElementAndScriptTags();
-		$GLOBALS['TL_MOOTOOLS'][] = $startScript."\nnew {$this->ajaxClass}('{$objModule->id}', '" . ($this->pid ? $this->pid : $this->id) . "', '{$this->formSubmit}', ['ctrl_" . implode("_".$this->formSubmit."', 'ctrl_", $arrAjaxOptions) . "_".$this->formSubmit."'], {language: '{$GLOBALS['TL_LANGUAGE']}', action: '".($objModule instanceof Module ? 'fmd' : 'cte')."', page: {$objPage->id}, loadMessage:'" . specialchars($GLOBALS['ISO_LANG']['MSC']['loadingProductData']) . "'});\n".$endScript;
+		$GLOBALS['TL_MOOTOOLS'][] = $startScript."\nnew {$this->ajaxClass}('{$objModule->id}', '" . ($this->pid ? $this->pid : $this->id) . "', '{$this->formSubmit}', ['ctrl_" . implode("_".$this->formSubmit."', 'ctrl_", $arrAjaxOptions) . "_".$this->formSubmit."'], {language: '{$GLOBALS['TL_LANGUAGE']}', action: '".($objModule instanceof \Module ? 'fmd' : 'cte')."', page: {$objPage->id}, loadMessage:'" . specialchars($GLOBALS['ISO_LANG']['MSC']['loadingProductData']) . "'});\n".$endScript;
 
 		// !HOOK: alter product data before output
 		if (isset($GLOBALS['ISO_HOOKS']['generateProduct']) && is_array($GLOBALS['ISO_HOOKS']['generateProduct']))
@@ -860,7 +860,7 @@ class IsotopeProduct extends \Controller
 	 */
 	public function generateAjax(&$objModule)
 	{
-		$this->formSubmit = (($objModule instanceof ContentElement) ? 'cte' : 'fmd') . $objModule->id . '_product_' . ($this->pid ? $this->pid : $this->id);
+		$this->formSubmit = (($objModule instanceof \ContentElement) ? 'cte' : 'fmd') . $objModule->id . '_product_' . ($this->pid ? $this->pid : $this->id);
 		$this->validateVariant();
 
 		$arrOptions = array();
@@ -1267,7 +1267,7 @@ class IsotopeProduct extends \Controller
 			}
 
 			// Store current value
-			elseif ($objWidget->submitInput() || $objWidget instanceof uploadable)
+			elseif ($objWidget->submitInput() || $objWidget instanceof \uploadable)
 			{
 				$varValue = $objWidget->value;
 
@@ -1363,7 +1363,7 @@ class IsotopeProduct extends \Controller
 			}
 		}
 
-		if ($objWidget instanceof uploadable)
+		if ($objWidget instanceof \uploadable)
 		{
 			$this->hasUpload = true;
 		}

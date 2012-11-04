@@ -390,7 +390,7 @@ class tl_iso_producttypes extends \Backend
 	 * @param DataContainer
 	 * @return array
 	 */
-	public function getListTemplates(DataContainer $dc)
+	public function getListTemplates(\DataContainer $dc)
 	{
 		return IsotopeBackend::getTemplates('iso_list_');
 	}
@@ -401,7 +401,7 @@ class tl_iso_producttypes extends \Backend
 	 * @param DataContainer
 	 * @return array
 	 */
-	public function getReaderTemplates(DataContainer $dc)
+	public function getReaderTemplates(\DataContainer $dc)
 	{
 		return IsotopeBackend::getTemplates('iso_reader_');
 	}

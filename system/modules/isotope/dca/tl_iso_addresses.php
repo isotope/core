@@ -301,7 +301,7 @@ class tl_iso_addresses extends \Backend
 	 */
 	public function updateDefault($varValue, $dc)
 	{
-		$objAddress = ($dc instanceOf DataContainer) ? $dc->activeRecord : $dc;
+		$objAddress = ($dc instanceof \DataContainer) ? $dc->activeRecord : $dc;
 
 		if ($varValue == '1' && $objAddress->{$dc->field} != $varValue)
 		{

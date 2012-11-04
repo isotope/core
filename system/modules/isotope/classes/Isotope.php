@@ -948,7 +948,7 @@ class Isotope extends \Controller
 	 * @param object
 	 * @return boolean
 	 */
-	public function validateRegexp($strRegexp, $varValue, Widget $objWidget)
+	public function validateRegexp($strRegexp, $varValue, \Widget $objWidget)
 	{
 		switch ($strRegexp)
 		{

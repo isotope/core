@@ -49,7 +49,7 @@ class tl_content_isotope extends \Backend
 	 * @param DataContainer
 	 * @return array
 	 */
-	public function getFilters(DataContainer $dc)
+	public function getFilters(\DataContainer $dc)
 	{
 		$objAttributeSet = $this->Database->prepare("SELECT iso_attribute_set FROM tl_content WHERE id=?")
 										  ->limit(1)
@@ -86,7 +86,7 @@ class tl_content_isotope extends \Backend
 	 * @param DataContainer
 	 * @return array
 	 */
-	public function getListTemplates(DataContainer $dc)
+	public function getListTemplates(\DataContainer $dc)
 	{
 		$intPid = $dc->activeRecord->pid;
 

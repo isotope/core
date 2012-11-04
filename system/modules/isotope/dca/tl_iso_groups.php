@@ -184,7 +184,7 @@ class tl_iso_groups extends \Backend
 	 * @return string
 	 * @todo add node filtering
 	 */
-	public function addIcon($row, $label, DataContainer $dc=null, $imageAttribute='', $blnReturnImage=false)
+	public function addIcon($row, $label, \DataContainer $dc=null, $imageAttribute='', $blnReturnImage=false)
 	{
 		$bold = $dc->table == 'tl_iso_products' ? ' style="font-weight:bold"' : '';
 

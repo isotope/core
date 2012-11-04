@@ -112,7 +112,7 @@ class tl_iso_product_categories extends \Backend
 	 * @param DataContainer
 	 * @return void
 	 */
-	public function updateFilterData(DataContainer $dc)
+	public function updateFilterData(\DataContainer $dc)
 	{
 		if ($this->Input->get('act') == '')
 		{

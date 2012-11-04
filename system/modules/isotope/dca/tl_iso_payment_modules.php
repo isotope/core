@@ -565,7 +565,7 @@ class tl_iso_payment_modules extends \Backend
 	 * @param DataContainer
 	 * @return array
 	 */
-	public function getAllowedCCTypes(DataContainer $dc)
+	public function getAllowedCCTypes(\DataContainer $dc)
 	{
 		$objModuleType = $this->Database->prepare("SELECT * FROM tl_iso_payment_modules WHERE id=?")->limit(1)->execute($dc->id);
 

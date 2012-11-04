@@ -667,7 +667,7 @@ $endScript";
 				}
 
 				// Store file uploads
-				elseif ($objWidget instanceof uploadable)
+				elseif ($objWidget instanceof \uploadable)
 				{
 					$objForm->arrFiles[$objFields->name]	= $_SESSION['FILES'][$objFields->name];
 				}
@@ -675,12 +675,12 @@ $endScript";
 				unset($_POST[$objFields->name]);
 			}
 
-			if ($objWidget instanceof uploadable)
+			if ($objWidget instanceof \uploadable)
 			{
 				$objForm->blnHasUploads = true;
 			}
 
-			if ($objWidget instanceof FormHidden)
+			if ($objWidget instanceof \FormHidden)
 			{
 				--$max_row;
 				$objForm->arrHidden[$arrData['name']]	= $objWidget;
@@ -880,7 +880,7 @@ $endScript";
 									   ->execute($objProductData);
 		}
 
-		if (!($objProductData instanceof Database_Result) || !$objProductData->numRows)
+		if (!($objProductData instanceof \Database_Result) || !$objProductData->numRows)
 		{
 			return null;
 		}
@@ -951,7 +951,7 @@ $endScript";
 													GROUP BY p1.id ORDER BY p1.id=" . implode(' DESC, p1.id=', $objProductData) . " DESC");
 		}
 
-		if (!($objProductData instanceof Database_Result) || !$objProductData->numRows)
+		if (!($objProductData instanceof \Database_Result) || !$objProductData->numRows)
 		{
 			return array();
 		}

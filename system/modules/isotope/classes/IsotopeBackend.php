@@ -537,7 +537,7 @@ class IsotopeBackend extends \Backend
 			$objDatabase->query("UPDATE tl_iso_products SET gid=$intGroup WHERE pid=0 AND language='' AND gid=0");
 
 			// toggle (open) the new group
-			Session::getInstance()->set('tl_iso_products_tl_iso_groups_tree', array($intGroup=>1));
+			\Session::getInstance()->set('tl_iso_products_tl_iso_groups_tree', array($intGroup=>1));
 
 			return true;
 		}

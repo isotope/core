@@ -200,7 +200,7 @@ class tl_iso_orderstatus extends \Backend
 	 * @param array
 	 * @return string
 	 */
-	public function pasteButton(DataContainer $dc, $row, $table, $cr, $arrClipboard=false)
+	public function pasteButton(\DataContainer $dc, $row, $table, $cr, $arrClipboard=false)
 	{
 		if ($row['id'] == 0)
 		{
