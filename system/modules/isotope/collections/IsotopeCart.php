@@ -34,7 +34,7 @@ class IsotopeCart extends IsotopeProductCollection
 	 * Name of the current table
 	 * @var string
 	 */
-	protected $strTable = 'tl_iso_cart';
+	protected static $strTable = 'tl_iso_cart';
 
 	/**
 	 * Name of the child table
@@ -52,9 +52,9 @@ class IsotopeCart extends IsotopeProductCollection
 	/**
 	 * Import a front end user
 	 */
-	public function __construct()
+	public function __construct(\Database\Result $objResult=null)
 	{
-		parent::__construct();
+		parent::__construct($objResult);
 
 		if (FE_USER_LOGGED_IN === true)
 		{

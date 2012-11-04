@@ -83,16 +83,22 @@ abstract class IsotopeProductCollection extends \Model
 	/**
 	 * Initialize the object
 	 */
-	public function __construct()
+	public function __construct(\Database\Result $objResult=null)
 	{
-		parent::__construct();
+		parent::__construct($objResult);
 
-		// Do not use __destruct, because Database object might be destructed first (see http://dev.contao.org/issues/2236)
+		if ($objResult !== null)
+		{
+			$this->arrSettings = deserialize($this->arrData['settings'], true);
+		}
+
+		// Do not use __destruct, because Database object might be destructed first (see http://github.com/contao/core/issues/2236)
 		if (!$this->blnLocked)
 		{
 			register_shutdown_function(array($this, 'saveDatabase'));
 		}
 
+		$this->import('Database');
 		$this->import('Isotope');
 	}
 
@@ -212,7 +218,6 @@ abstract class IsotopeProductCollection extends \Model
 					break;
 
 				case 'taxTotal':
-					$this->import('Isotope');
 					$intTaxTotal = 0;
 					$arrSurcharges = $this->getSurcharges();
 
@@ -228,7 +233,6 @@ abstract class IsotopeProductCollection extends \Model
 					break;
 
 				case 'grandTotal':
-					$this->import('Isotope');
 					$fltTotal = $this->subTotal;
 					$arrSurcharges = $this->getSurcharges();
 
@@ -318,24 +322,6 @@ abstract class IsotopeProductCollection extends \Model
 	{
 		if (isset($this->arrData[$strKey]) || isset($this->arrSettings[$strKey]))
 		{
-			return true;
-		}
-
-		return false;
-	}
-
-
-	/**
-	 * Load settings from database field
-	 * @param string
-	 * @param mixed
-	 * @return boolean
-	 */
-	public function findBy($strRefField, $varRefId)
-	{
-		if (parent::findBy($strRefField, $varRefId))
-		{
-			$this->arrSettings = deserialize($this->arrData['settings'], true);
 			return true;
 		}
 
@@ -785,7 +771,6 @@ abstract class IsotopeProductCollection extends \Model
 	 */
 	public function getShippingWeight($unit)
 	{
-		$this->import('Isotope');
 		$arrWeights = array();
 		$arrProducts = $this->getProducts();
 
@@ -819,8 +804,6 @@ abstract class IsotopeProductCollection extends \Model
 		{
 			$this->strTemplate = $strTemplate;
 		}
-
-		$this->import('Isotope');
 
 		// Set global config to this collection (if available)
 		if ($this->config_id > 0)

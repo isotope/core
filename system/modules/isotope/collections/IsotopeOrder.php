@@ -28,7 +28,7 @@ class IsotopeOrder extends IsotopeProductCollection
 	 * Name of the current table
 	 * @var string
 	 */
-	protected $strTable = 'tl_iso_orders';
+	protected static $strTable = 'tl_iso_orders';
 
 	/**
 	 * Name of the child table
