@@ -22,7 +22,7 @@
  *
  * PHP version 5
  * @copyright  Isotope eCommerce Workgroup 2009-2011
- * @author     Yanick Witschi <yanick.witschi@certo-net.ch>
+ * @author     Yanick Witschi <yanick.witschi@terminal42.ch>
  * @license    http://opensource.org/licenses/lgpl-3.0.html
  */
 

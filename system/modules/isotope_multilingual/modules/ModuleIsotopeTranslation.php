@@ -1,31 +1,23 @@
-<?php if (!defined('TL_ROOT')) die('You can not access this file directly!');
+<?php
 
 /**
- * TYPOlight Open Source CMS
- * Copyright (C) 2005-2010 Leo Feyer
+ * Isotope eCommerce for Contao Open Source CMS
  *
- * This program is free software: you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation, either
- * version 3 of the License, or (at your option) any later version.
+ * Copyright (C) 2009-2012 Isotope eCommerce Workgroup
  *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
- * Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public
- * License along with this program. If not, please visit the Free
- * Software Foundation website at <http://www.gnu.org/licenses/>.
- *
- * PHP version 5
- * @copyright  Isotope eCommerce Workgroup 2009-2012
- * @author     Andreas Schempp <andreas@schempp.ch>
- * @author     Philipp Kaiblinger <philipp.kaiblinger@kaipo.at>
- * @license    http://opensource.org/licenses/lgpl-3.0.html
+ * @package    Isotope
+ * @link       http://www.isotopeecommerce.com
+ * @license    http://opensource.org/licenses/lgpl-3.0.html LGPL
  */
 
 
+/**
+ * Class ModuleIsotopeTranslation
+ *
+ * @copyright  Isotope eCommerce Workgroup 2009-2012
+ * @author     Andreas Schempp <andreas.schempp@terminal42.ch>
+ * @author     Philipp Kaiblinger <philipp.kaiblinger@kaipo.at>
+ */
 class ModuleIsotopeTranslation extends BackendModule
 {
 
@@ -246,30 +238,17 @@ class ModuleIsotopeTranslation extends BackendModule
 	 */
 	private function getHeader()
 	{
-		$strHeader = "<?php if (!defined('TL_ROOT')) die('You can not access this file directly!');
+		$strHeader = "<?php
 
 /**
- * Contao Open Source CMS
- * Copyright (C) 2005-2010 Leo Feyer
+ * Isotope eCommerce for Contao Open Source CMS
  *
- * Formerly known as TYPOlight Open Source CMS.
+ * Copyright (C) 2009-2012 Isotope eCommerce Workgroup
  *
- * This program is free software: you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation, either
- * version 3 of the License, or (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
- * Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public
- * License along with this program. If not, please visit the Free
- * Software Foundation website at <http://www.gnu.org/licenses/>.
- *
- * PHP version 5
- * @copyright  Isotope eCommerce Workgroup 2009-2012";
+ * @package    Isotope
+ * @link       http://www.isotopeecommerce.com
+ * @license    http://opensource.org/licenses/lgpl-3.0.html LGPL
+ *";
 
  		$objAuthors = $this->Database->prepare("SELECT * FROM tl_user WHERE translation=?")->execute($this->User->translation);
 
@@ -280,7 +259,6 @@ class ModuleIsotopeTranslation extends BackendModule
 		}
 
 		$strHeader .= '
- * @license    http://opensource.org/licenses/lgpl-3.0.html
  */
 
 ';
