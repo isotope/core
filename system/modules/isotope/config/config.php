@@ -18,8 +18,8 @@
 /**
  * Isotope Version
  */
-@define('ISO_VERSION', '1.4');
-@define('ISO_BUILD', 'rc1');
+@define('ISO_VERSION', '2.0');
+@define('ISO_BUILD', 'dev');
 
 
 /**
