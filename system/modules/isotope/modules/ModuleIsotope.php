@@ -58,8 +58,8 @@ abstract class ModuleIsotope extends \Module
 			}
 
 			// Load Isotope javascript and css
-			$GLOBALS['TL_JAVASCRIPT'][] = 'system/modules/isotope/html/isotope.js';
-			$GLOBALS['TL_CSS'][] = 'system/modules/isotope/html/isotope.css';
+			$GLOBALS['TL_JAVASCRIPT'][] = 'system/modules/isotope/assets/isotope.min.js';
+			$GLOBALS['TL_CSS'][] = 'system/modules/isotope/assets/isotope.min.css';
 
 			// Disable caching for pages with certain modules (eg. Cart)
 			if ($this->blnDisableCache)

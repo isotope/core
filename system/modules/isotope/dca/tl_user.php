@@ -19,7 +19,7 @@ $this->loadLanguageFile('tl_iso_groups');
 /**
  * Add the Isotope style sheet
  */
-$GLOBALS['TL_CSS'][] = 'system/modules/isotope/html/backend.css';
+$GLOBALS['TL_CSS'][] = 'system/modules/isotope/assets/backend.min.css';
 
 /**
  * Extend tl_user palettes
@@ -192,7 +192,7 @@ $GLOBALS['TL_DCA']['tl_user']['fields']['iso_groups'] = array
 	(
 		'icon'	=> array
 		(
-			'tl_iso_groups'	=> array('system/modules/isotope/html/folders.png', 'system/modules/isotope/html/folder-network.png')
+			'tl_iso_groups'	=> array('system/modules/isotope/assets/folders.png', 'system/modules/isotope/assets/folder-network.png')
 		)
 	),
 	'eval'					=> array

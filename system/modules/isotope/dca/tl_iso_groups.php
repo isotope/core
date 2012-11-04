@@ -44,7 +44,7 @@ $GLOBALS['TL_DCA']['tl_iso_groups'] = array
 			'mode'						=> 5,
 			'fields'					=> array('sorting'),
 			'flag'						=> 1,
-			'icon'						=> 'system/modules/isotope/html/folders.png',
+			'icon'						=> 'system/modules/isotope/assets/folders.png',
 		),
 		'label' => array
 		(
@@ -188,8 +188,8 @@ class tl_iso_groups extends \Backend
 	{
 		$bold = $dc->table == 'tl_iso_products' ? ' style="font-weight:bold"' : '';
 
-		return $this->generateImage('system/modules/isotope/html/folder-network.png', '', $imageAttribute) . ' <span'.$bold.'>' . $label . '</span>';
-		//return $this->generateImage('system/modules/isotope/html/folder-network.png', '', $imageAttribute) . ' <a href="' . $this->addToUrl('node='.$row['id']) . '"'.$bold.'>' . $label . '</a>';
+		return $this->generateImage('system/modules/isotope/assets/folder-network.png', '', $imageAttribute) . ' <span'.$bold.'>' . $label . '</span>';
+		//return $this->generateImage('system/modules/isotope/assets/folder-network.png', '', $imageAttribute) . ' <a href="' . $this->addToUrl('node='.$row['id']) . '"'.$bold.'>' . $label . '</a>';
 	}
 
 

@@ -117,7 +117,7 @@ class AttributeWizard extends \Widget
 		$this->arrDisabledFields = (array) $GLOBALS['ISO_PRODUCT'][$this->objActiveRecord->class]['disabledFields'];
 		$this->arrOptions = $this->getOptions();
 
-		$GLOBALS['TL_JAVASCRIPT'][] = 'system/modules/isotope/html/backend.js';
+		$GLOBALS['TL_JAVASCRIPT'][] = 'system/modules/isotope/assets/backend.min.js';
 
 		$arrButtons = array('up', 'down');
 		$strCommand = 'cmd_' . $this->strField;

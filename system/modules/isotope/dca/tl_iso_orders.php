@@ -125,21 +125,21 @@ $GLOBALS['TL_DCA']['tl_iso_orders'] = array
 			(
 				'label'				=> &$GLOBALS['TL_LANG']['tl_iso_orders']['payment'],
 				'href'				=> 'key=payment',
-				'icon'				=> 'system/modules/isotope/html/money-coin.png',
+				'icon'				=> 'system/modules/isotope/assets/money-coin.png',
 				'attributes'		=> 'class="isotope-tools"',
 			),
 			'shipping' => array
 			(
 				'label'				=> &$GLOBALS['TL_LANG']['tl_iso_orders']['shipping'],
 				'href'				=> 'key=shipping',
-				'icon'				=> 'system/modules/isotope/html/box-label.png',
+				'icon'				=> 'system/modules/isotope/assets/box-label.png',
 				'attributes'		=> 'class="isotope-tools"',
 			),
 			'print_order' => array
 			(
 				'label'				=> &$GLOBALS['TL_LANG']['tl_iso_orders']['print_order'],
 				'href'				=> 'key=print_order',
-				'icon'				=> 'system/modules/isotope/html/document-pdf-text.png'
+				'icon'				=> 'system/modules/isotope/assets/document-pdf-text.png'
 			),
 		)
 	),
@@ -317,7 +317,7 @@ class tl_iso_orders extends \Backend
 			$this->redirect('contao/main.php?act=error');
 		}
 
-		$GLOBALS['TL_CSS'][] = 'system/modules/isotope/html/print.css|print';
+		$GLOBALS['TL_CSS'][] = 'system/modules/isotope/assets/print.min.css|print';
 
 		// Generate a regular order details module
 		$this->Input->setGet('uid', $objOrder->uniqid);

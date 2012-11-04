@@ -2044,7 +2044,7 @@ $(window).addEvents({
 		}
 		else
 		{
-			$return .= $this->generateImage('system/modules/isotope/html/folder-network.png', '', $folderAttribute) . ' ' . $label;
+			$return .= $this->generateImage('system/modules/isotope/assets/folder-network.png', '', $folderAttribute) . ' ' . $label;
 		}
 
 		$return .= '</div> <div class="tl_right">';

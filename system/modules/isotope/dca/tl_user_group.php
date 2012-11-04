@@ -178,7 +178,7 @@ $GLOBALS['TL_DCA']['tl_user_group']['fields']['iso_groups'] = array
 	(
 		'icon'	=> array
 		(
-			'tl_iso_groups'	=> array('system/modules/isotope/html/folders.png', 'system/modules/isotope/html/folder-network.png')
+			'tl_iso_groups'	=> array('system/modules/isotope/assets/folders.png', 'system/modules/isotope/assets/folder-network.png')
 		)
 	),
 	'eval'					=> array

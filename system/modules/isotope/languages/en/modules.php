@@ -16,7 +16,7 @@
 /**
  * Backend Modules
  */
-$GLOBALS['TL_LANG']['MOD']['isotope']					= ($_GET['do'] == '' ? '<a href="http://www.isotopeecommerce.com/"'.LINK_NEW_WINDOW.' class="isotope-logo" style="display:none"><img src="system/modules/isotope/html/isotope-logo.png" alt="Isotope eCommerce Logo" /></a><span class="isotope-title">Isotope eCommerce</span>' : 'Isotope eCommerce');
+$GLOBALS['TL_LANG']['MOD']['isotope']					= ($_GET['do'] == '' ? '<a href="http://www.isotopeecommerce.com/"'.LINK_NEW_WINDOW.' class="isotope-logo" style="display:none"><img src="system/modules/isotope/assets/isotope-logo.png" alt="Isotope eCommerce Logo" /></a><span class="isotope-title">Isotope eCommerce</span>' : 'Isotope eCommerce');
 $GLOBALS['TL_LANG']['MOD']['iso_products']				= array('Product management','');
 $GLOBALS['TL_LANG']['MOD']['iso_orders']				= array('Orders', '');
 $GLOBALS['TL_LANG']['MOD']['iso_setup']					= array('Store configuration','');

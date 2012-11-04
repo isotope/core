@@ -122,7 +122,7 @@ $GLOBALS['TL_DCA']['tl_iso_mail'] = array
 			(
 				'label'               => &$GLOBALS['TL_LANG']['tl_iso_mail']['exportMail'],
 				'href'                => 'key=exportMail',
-				'icon'                => 'system/modules/isotope/html/drive-download.png'
+				'icon'                => 'system/modules/isotope/assets/drive-download.png'
 			)
 		)
 	),

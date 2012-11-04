@@ -35,8 +35,8 @@ array_insert($GLOBALS['BE_MOD']['isotope'], 0, array
 	'iso_products' => array
 	(
 		'tables'					=> array('tl_iso_products', 'tl_iso_groups', 'tl_iso_product_categories', 'tl_iso_downloads', 'tl_iso_related_products', 'tl_iso_prices', 'tl_iso_price_tiers'),
-		'icon'						=> 'system/modules/isotope/html/store-open.png',
-		'javascript'				=> 'system/modules/isotope/html/backend.js',
+		'icon'						=> 'system/modules/isotope/assets/store-open.png',
+		'javascript'				=> 'system/modules/isotope/assets/backend.min.js',
 		'generate'					=> array('tl_iso_products', 'generateVariants'),
 		'quick_edit'				=> array('tl_iso_products', 'quickEditVariants'),
 		'import'					=> array('tl_iso_products', 'importAssets'),
@@ -44,8 +44,8 @@ array_insert($GLOBALS['BE_MOD']['isotope'], 0, array
 	'iso_orders' => array
 	(
 		'tables'					=> array('tl_iso_orders', 'tl_iso_order_items'),
-		'icon'						=> 'system/modules/isotope/html/shopping-basket.png',
-		'javascript'				=> 'system/modules/isotope/html/backend.js',
+		'icon'						=> 'system/modules/isotope/assets/shopping-basket.png',
+		'javascript'				=> 'system/modules/isotope/assets/backend.min.js',
 		'export_emails'     		=> array('tl_iso_orders', 'exportOrderEmails'),
 		'print_order'				=> array('tl_iso_orders', 'printInvoice'),
 		'print_invoices'			=> array('tl_iso_orders', 'printInvoices'),
@@ -56,8 +56,8 @@ array_insert($GLOBALS['BE_MOD']['isotope'], 0, array
 	(
 		'callback'					=> 'ModuleIsotopeSetup',
 		'tables'					=> array(),
-		'icon'						=> 'system/modules/isotope/html/application-monitor.png',
-		'javascript'				=> 'system/modules/isotope/html/backend.js',
+		'icon'						=> 'system/modules/isotope/assets/application-monitor.png',
+		'javascript'				=> 'system/modules/isotope/assets/backend.min.js',
 	),
 ));
 
@@ -65,7 +65,7 @@ $GLOBALS['BE_MOD']['accounts']['member']['tables'][] = 'tl_iso_addresses';
 
 if (TL_MODE == 'BE')
 {
-	$GLOBALS['TL_CSS'][] = 'system/modules/isotope/html/backend.css';
+	$GLOBALS['TL_CSS'][] = 'system/modules/isotope/assets/backend.min.css';
 }
 
 
@@ -79,17 +79,17 @@ $GLOBALS['ISO_MOD'] = array
 		'producttypes' => array
 		(
 			'tables'					=> array('tl_iso_producttypes'),
-			'icon'						=> 'system/modules/isotope/html/drawer.png'
+			'icon'						=> 'system/modules/isotope/assets/drawer.png'
 		),
 		'attributes' => array
 		(
 			'tables'					=> array('tl_iso_attributes'),
-			'icon'						=> 'system/modules/isotope/html/table-insert-column.png',
+			'icon'						=> 'system/modules/isotope/assets/table-insert-column.png',
 		),
 		'related_categories' => array
 		(
 			'tables'					=> array('tl_iso_related_categories'),
-			'icon'						=> 'system/modules/isotope/html/category.png',
+			'icon'						=> 'system/modules/isotope/assets/category.png',
 		),
 	),
 	'checkout' => array
@@ -97,22 +97,22 @@ $GLOBALS['ISO_MOD'] = array
 		'payment' => array
 		(
 			'tables'					=> array('tl_iso_payment_modules'),
-			'icon'						=> 'system/modules/isotope/html/money-coin.png',
+			'icon'						=> 'system/modules/isotope/assets/money-coin.png',
 		),
 		'shipping' => array
 		(
 				'tables'				=> array('tl_iso_shipping_modules','tl_iso_shipping_options'),
-				'icon'					=> 'system/modules/isotope/html/box-label.png',
+				'icon'					=> 'system/modules/isotope/assets/box-label.png',
 		),
 		'tax_class' => array
 		(
 			'tables'					=> array('tl_iso_tax_class'),
-			'icon'						=> 'system/modules/isotope/html/globe.png',
+			'icon'						=> 'system/modules/isotope/assets/globe.png',
 		),
 		'tax_rate' => array
 		(
 			'tables'					=> array('tl_iso_tax_rate'),
-			'icon'						=> 'system/modules/isotope/html/calculator.png',
+			'icon'						=> 'system/modules/isotope/assets/calculator.png',
 		),
 	),
 	'config' => array
@@ -120,24 +120,24 @@ $GLOBALS['ISO_MOD'] = array
 		'iso_mail' => array
 		(
 			'tables'					=> array('tl_iso_mail', 'tl_iso_mail_content'),
-			'icon'						=> 'system/modules/isotope/html/mail-open-document-text.png',
+			'icon'						=> 'system/modules/isotope/assets/mail-open-document-text.png',
 			'importMail'				=> array('IsotopeBackend', 'importMail'),
 			'exportMail'				=> array('IsotopeBackend', 'exportMail'),
 		),
 		'configs' => array
 		(
 			'tables'					=> array('tl_iso_config'),
-			'icon'						=> 'system/modules/isotope/html/construction.png',
+			'icon'						=> 'system/modules/isotope/assets/construction.png',
 		),
 		'baseprice' => array
 		(
 			'tables'					=> array('tl_iso_baseprice'),
-			'icon'						=> 'system/modules/isotope/html/sort-price-descending.png',
+			'icon'						=> 'system/modules/isotope/assets/sort-price-descending.png',
 		),
 		'orderstatus' => array
 		(
 			'tables'					=> array('tl_iso_orderstatus'),
-			'icon'						=> 'system/modules/isotope/html/traffic-light.png',
+			'icon'						=> 'system/modules/isotope/assets/traffic-light.png',
 		),
 	)
 );

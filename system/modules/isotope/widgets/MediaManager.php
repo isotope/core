@@ -173,7 +173,7 @@ class MediaManager extends \Widget implements \uploadable
 
 		$GLOBALS['TL_CSS'][] = TL_PLUGINS_URL . 'plugins/mediabox/'. MEDIABOX .'/css/mediaboxAdvBlack21.css|screen';
 		$GLOBALS['TL_JAVASCRIPT'][] = TL_PLUGINS_URL . 'plugins/mediabox/' . MEDIABOX . '/js/mediabox.js';
-		$GLOBALS['TL_JAVASCRIPT'][] = TL_PLUGINS_URL . 'system/modules/isotope/html/mediabox_init.js';
+		$GLOBALS['TL_JAVASCRIPT'][] = TL_PLUGINS_URL . 'system/modules/isotope/assets/mediabox_init.js';
 
 		$arrButtons = array('up', 'down', 'delete');
 		$strCommand = 'cmd_' . $this->strField;

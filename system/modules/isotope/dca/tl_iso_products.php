@@ -57,7 +57,7 @@ $GLOBALS['TL_DCA']['tl_iso_products'] = array
 			'fields'				=> array('name'),
 			'flag'					=> 1,
 			'panelLayout'			=> 'filter;sort,search',
-			'icon'					=> 'system/modules/isotope/html/store-open.png',
+			'icon'					=> 'system/modules/isotope/assets/store-open.png',
 			'paste_button_callback'	=> array('PasteProductButton', 'generate'),
 			'rootPaste'				=> true,
 		),
@@ -227,14 +227,14 @@ $GLOBALS['TL_DCA']['tl_iso_products'] = array
 			'tools' => array
 			(
 				'label'				=> &$GLOBALS['TL_LANG']['tl_iso_products']['tools'],
-				'icon'				=> 'system/modules/isotope/html/lightning.png',
+				'icon'				=> 'system/modules/isotope/assets/lightning.png',
 				'attributes'		=> 'class="invisible isotope-contextmenu"',
 			),
 			'quick_edit' => array
 			(
 				'label'				=> &$GLOBALS['TL_LANG']['tl_iso_products']['quick_edit'],
 				'href'				=> 'key=quick_edit',
-				'icon'				=> 'system/modules/isotope/html/table-select-cells.png',
+				'icon'				=> 'system/modules/isotope/assets/table-select-cells.png',
 				'button_callback'	=> array('ProductCallbacks', 'quickEditButton'),
 				'attributes'		=> 'class="isotope-tools"',
 			),
@@ -242,7 +242,7 @@ $GLOBALS['TL_DCA']['tl_iso_products'] = array
 			(
 				'label'				=> &$GLOBALS['TL_LANG']['tl_iso_products']['generate'],
 				'href'				=> 'key=generate',
-				'icon'				=> 'system/modules/isotope/html/table-insert-row.png',
+				'icon'				=> 'system/modules/isotope/assets/table-insert-row.png',
 				'button_callback'	=> array('ProductCallbacks', 'generateButton'),
 				'attributes'		=> 'class="isotope-tools"',
 			),
@@ -250,7 +250,7 @@ $GLOBALS['TL_DCA']['tl_iso_products'] = array
 			(
 				'label'				=> &$GLOBALS['TL_LANG']['tl_iso_products']['related'],
 				'href'				=> 'table=tl_iso_related_products',
-				'icon'				=> 'system/modules/isotope/html/sitemap.png',
+				'icon'				=> 'system/modules/isotope/assets/sitemap.png',
 				'button_callback'	=> array('ProductCallbacks', 'relatedButton'),
 				'attributes'		=> 'class="isotope-tools"',
 			),
@@ -258,7 +258,7 @@ $GLOBALS['TL_DCA']['tl_iso_products'] = array
 			(
 				'label'				=> &$GLOBALS['TL_LANG']['tl_iso_products']['downloads'],
 				'href'				=> 'table=tl_iso_downloads',
-				'icon'				=> 'system/modules/isotope/html/paper-clip.png',
+				'icon'				=> 'system/modules/isotope/assets/paper-clip.png',
 				'button_callback'	=> array('ProductCallbacks', 'downloadsButton'),
 				'attributes'		=> 'class="isotope-tools"',
 			),
@@ -266,7 +266,7 @@ $GLOBALS['TL_DCA']['tl_iso_products'] = array
 			(
 				'label'				=> &$GLOBALS['TL_LANG']['tl_iso_products']['prices'],
 				'href'				=> 'table=tl_iso_prices',
-				'icon'				=> 'system/modules/isotope/html/price-tag.png',
+				'icon'				=> 'system/modules/isotope/assets/price-tag.png',
 				'button_callback'	=> array('ProductCallbacks', 'pricesButton'),
 				'attributes'		=> 'class="isotope-tools"',
 			),
@@ -1084,7 +1084,7 @@ $strBuffer .= '<th style="text-align:center"><img src="system/themes/default/ima
 
 		if (($arrAttributes['start']['enabled'] && $row['start'] != '' && $row['start'] > $time) || ($arrAttributes['stop']['enabled'] && $row['stop'] != '' && $row['stop'] < $time))
 		{
-			return $this->generateImage('system/modules/isotope/html/invisible-startstop.png', $label).' ';
+			return $this->generateImage('system/modules/isotope/assets/invisible-startstop.png', $label).' ';
 		}
 		elseif ($row['published'] != '1')
 		{
