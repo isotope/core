@@ -13,6 +13,8 @@
  * @author     Philipp Kaiblinger <philipp.kaiblinger@kaipo.at>
  */
 
+namespace Isotope;
+
 
 /**
  * Table tl_iso_labels

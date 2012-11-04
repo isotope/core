@@ -13,6 +13,8 @@
  * @author     Fred Bliss <fred.bliss@intelligentspark.com>
  */
 
+namespace Isotope;
+
 
 /**
  * Add a child table to tl_member

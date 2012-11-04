@@ -13,6 +13,8 @@
  * @author     Fred Bliss <fred.bliss@intelligentspark.com>
  */
 
+namespace Isotope;
+
 
 /**
  * Add palettes to tl_module

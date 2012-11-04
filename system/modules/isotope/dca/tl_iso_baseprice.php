@@ -12,6 +12,8 @@
  * @author     Andreas Schempp <andreas.schempp@terminal42.ch>
  */
 
+namespace Isotope;
+
 
 /**
  * Table tl_iso_baseprice

@@ -13,6 +13,8 @@
  * @author     Fred Bliss <fred.bliss@intelligentspark.com>
  */
 
+namespace Isotope;
+
 
 /**
  * Extend a tl_settings default palette

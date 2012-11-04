@@ -10,6 +10,8 @@
  * @license    http://opensource.org/licenses/lgpl-3.0.html LGPL
  */
 
+namespace Isotope;
+
 
 /**
  * USPS-specific response rate codes
