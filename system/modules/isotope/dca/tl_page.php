@@ -13,8 +13,6 @@
  * @author     Fred Bliss <fred.bliss@intelligentspark.com>
  */
 
-namespace Isotope;
-
 
 /**
  * Extend tl_page palettes

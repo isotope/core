@@ -12,8 +12,6 @@
  * @author     Andreas Schempp <andreas.schempp@terminal42.ch>
  */
 
-namespace Isotope;
-
 
 /**
  * Palettes

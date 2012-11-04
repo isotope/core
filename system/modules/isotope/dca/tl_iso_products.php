@@ -14,8 +14,6 @@
  * @author     Christian de la Haye <service@delahaye.de>
  */
 
-namespace Isotope;
-
 
 /**
  * Include the callback provider

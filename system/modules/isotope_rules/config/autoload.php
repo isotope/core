@@ -28,9 +28,6 @@ ClassLoader::addClasses(array
 (
 	// Classes
 	'Isotope\IsotopeRules'             => 'system/modules/isotope_rules/classes/IsotopeRules.php',
-
-	// DCA Helpers
-	'Isotope\tl_iso_rules'             => 'system/modules/isotope_rules/dca/tl_iso_rules.php',
 ));
 
 

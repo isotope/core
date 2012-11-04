@@ -13,8 +13,6 @@
  * @author     Fred Bliss <fred.bliss@intelligentspark.com>
  */
 
-namespace Isotope;
-
 
 /**
  * Table tl_iso_groups

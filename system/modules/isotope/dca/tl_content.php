@@ -13,8 +13,6 @@
  * @author     Fred Bliss <fred.bliss@intelligentspark.com>
  */
 
-namespace Isotope;
-
 
 /**
  * Add fields to tl_content

@@ -13,8 +13,6 @@
  * @author     Fred Bliss <fred.bliss@intelligentspark.com>
  */
 
-namespace Isotope;
-
 
 /**
  * Load tl_iso_products data container and language files

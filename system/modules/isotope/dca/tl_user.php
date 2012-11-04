@@ -13,8 +13,6 @@
  * @author     Fred Bliss <fred.bliss@intelligentspark.com>
  */
 
-namespace Isotope;
-
 
 $this->loadLanguageFile('tl_iso_groups');
 

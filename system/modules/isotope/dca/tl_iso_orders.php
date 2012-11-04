@@ -14,8 +14,6 @@
  * @author     Christian de la Haye <service@delahaye.de>
  */
 
-namespace Isotope;
-
 
 /**
  * Load tl_iso_products data container and language files
