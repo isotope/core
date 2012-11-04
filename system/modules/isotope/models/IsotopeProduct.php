@@ -1377,8 +1377,6 @@ class IsotopeProduct extends \Controller
 	 */
 	protected function findPrice()
 	{
-		require_once(TL_ROOT . '/system/modules/isotope/providers/ProductPriceFinder.php');
-
 		$arrPrice = ProductPriceFinder::findPrice($this);
 
 		$this->arrData['price'] = $arrPrice['price'];

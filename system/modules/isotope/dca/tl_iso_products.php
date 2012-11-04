@@ -16,12 +16,6 @@
 
 
 /**
- * Include the callback provider
- */
-require_once(TL_ROOT . '/system/modules/isotope/providers/ProductCallbacks.php');
-
-
-/**
  * Table tl_iso_products
  */
 $GLOBALS['TL_DCA']['tl_iso_products'] = array
@@ -64,7 +58,7 @@ $GLOBALS['TL_DCA']['tl_iso_products'] = array
 			'flag'					=> 1,
 			'panelLayout'			=> 'filter;sort,search',
 			'icon'					=> 'system/modules/isotope/html/store-open.png',
-			'paste_button_callback'	=> array('ProductCallbacks', 'pasteProduct'),
+			'paste_button_callback'	=> array('PasteProductButton', 'generate'),
 			'rootPaste'				=> true,
 		),
 		'label' => array

@@ -213,7 +213,6 @@ class ProductCallbacks extends \Backend
 		}
 
 		$session = $this->Session->getData();
-		$this->import('BackendUser', 'User');
 
 		if ($this->User->isAdmin)
 		{
@@ -506,30 +505,6 @@ class ProductCallbacks extends \Backend
 
 		$this->Database->prepare("UPDATE tl_iso_products SET dateAdded=? WHERE id=?")
 					   ->execute(time(), $dc->id);
-	}
-
-
-	/////////////////////////////
-	//  !paste_button_callback
-	/////////////////////////////
-
-
-	/**
-	 * Return the paste button
-	 * @param DataContainer
-	 * @param array
-	 * @param string
-	 * @param bool
-	 * @param array
-	 * @return string
-	 * @link http://www.contao.org/callbacks.html#paste_button_callback
-	 */
-	public function pasteProduct(DataContainer $dc, $row, $table, $cr, $arrClipboard=false)
-	{
-		require_once(TL_ROOT . '/system/modules/isotope/providers/PasteProductButton.php');
-
-		$this->import('PasteProductButton');
-		return $this->PasteProductButton->generate($dc, $row, $table, $cr, $arrClipboard);
 	}
 
 

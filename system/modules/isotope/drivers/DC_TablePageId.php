@@ -13,9 +13,6 @@
 namespace Isotope;
 
 
-require_once(TL_ROOT . '/system/drivers/DC_Table.php');
-
-
 /**
  * Class DC_TablePageId
  *

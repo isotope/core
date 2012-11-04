@@ -183,7 +183,6 @@ class ModuleIsotopeSetup extends \BackendModule
 			}
 
 			$dataContainer = 'DC_' . $GLOBALS['TL_DCA'][$strTable]['config']['dataContainer'];
-			require_once(sprintf('%s/system/drivers/%s.php', TL_ROOT, $dataContainer));
 			$dc = new $dataContainer($strTable);
 		}
 
