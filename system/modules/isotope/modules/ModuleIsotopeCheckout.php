@@ -76,7 +76,7 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 	{
 		if (TL_MODE == 'BE')
 		{
-			$objTemplate = new BackendTemplate('be_wildcard');
+			$objTemplate = new \BackendTemplate('be_wildcard');
 
 			$objTemplate->wildcard = '### ISOTOPE CHECKOUT ###';
 			$objTemplate->title = $this->headline;
@@ -1417,7 +1417,7 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 	 * @param boolean
 	 * @return string
 	 */
-	protected function addToUrl($strRequest, $blnIgnoreParams=false)
+	public static function addToUrl($strRequest, $blnIgnoreParams=false)
 	{
 		if ($blnIgnoreParams)
 		{
@@ -1429,7 +1429,7 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 				$strRequest = str_replace('step=', '', $strRequest);
 			}
 
-			return $this->generateFrontendUrl($objPage->row(), '/' . str_replace(array('=', '&amp;', '&'), '/', $strRequest));
+			return \Controller::generateFrontendUrl($objPage->row(), '/' . str_replace(array('=', '&amp;', '&'), '/', $strRequest));
 		}
 
 		return parent::addToUrl($strRequest, $blnIgnoreParams);

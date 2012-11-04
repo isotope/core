@@ -46,7 +46,8 @@ class ModuleIsotopeCart extends ModuleIsotope
 	{
 		if (TL_MODE == 'BE')
 		{
-			$objTemplate = new BackendTemplate('be_wildcard');
+			$objTemplate = new \BackendTemplate('be_wildcard');
+
 			$objTemplate->wildcard = '### ISOTOPE ECOMMERCE: CART ###';
 			$objTemplate->title = $this->headline;
 			$objTemplate->id = $this->id;

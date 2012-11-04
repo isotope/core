@@ -45,9 +45,10 @@ class ModuleIsotopeOrderDetails extends ModuleIsotope
 	{
 		if (TL_MODE == 'BE' && !$blnBackend)
 		{
-			$objTemplate = new BackendTemplate('be_wildcard');
+			$objTemplate = new \BackendTemplate('be_wildcard');
 
 			$objTemplate->wildcard = '### ISOTOPE ECOMMERCE: ORDER DETAILS ###';
+
 			$objTemplate->title = $this->headline;
 			$objTemplate->id = $this->id;
 			$objTemplate->link = $this->name;

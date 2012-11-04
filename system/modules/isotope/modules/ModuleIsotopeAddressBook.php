@@ -51,7 +51,7 @@ class ModuleIsotopeAddressBook extends ModuleIsotope
 	{
 		if (TL_MODE == 'BE')
 		{
-			$objTemplate = new BackendTemplate('be_wildcard');
+			$objTemplate = new \BackendTemplate('be_wildcard');
 
 			$objTemplate->wildcard = '### ISOTOPE ECOMMERCE: ADDRESS BOOK ###';
 			$objTemplate->title = $this->headline;

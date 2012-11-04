@@ -39,7 +39,7 @@ class ModuleIsotopeRelatedProducts extends ModuleIsotopeProductList
 	{
 		if (TL_MODE == 'BE')
 		{
-			$objTemplate = new BackendTemplate('be_wildcard');
+			$objTemplate = new \BackendTemplate('be_wildcard');
 
 			$objTemplate->wildcard = '### ISOTOPE ECOMMERCE: RELATED PRODUCTS ###';
 			$objTemplate->title = $this->headline;
@@ -70,7 +70,7 @@ class ModuleIsotopeRelatedProducts extends ModuleIsotopeProductList
 	 * Find all products we need to list.
 	 * @return array
 	 */
-	protected function findProducts()
+	protected function findProducts($arrCacheIds=null)
 	{
 		$strAlias = $this->Input->get('product');
 		$arrIds = array(0);

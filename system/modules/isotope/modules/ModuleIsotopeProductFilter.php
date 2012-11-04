@@ -38,30 +38,6 @@ class ModuleIsotopeProductFilter extends ModuleIsotope
 
 
 	/**
-	 * Generate ajax
-	 * @return mixed
-	 */
-	public function generateAjax()
-	{
-		if ($this->iso_searchAutocomplete && $this->Input->get('autocomplete'))
-		{
-			$time = time();
-			$arrCategories = $this->findCategories($this->iso_category_scope);
-
-			$objProductData = $this->Database->execute(IsotopeProduct::getSelectStatement(array('p1.'.$this->iso_searchAutocomplete)) . "
-													WHERE p1.language=''"
-				. (BE_USER_LOGGED_IN === true ? '' : " AND p1.published='1' AND (p1.start='' OR p1.start<$time) AND (p1.stop='' OR p1.stop>$time)")
-				. " AND c.page_id IN (" . implode(',', $arrCategories) . ")"
-				. " GROUP BY p1.id ORDER BY c.sorting");
-
-			return $objProductData->fetchEach($this->iso_searchAutocomplete);
-		}
-
-		return '';
-	}
-
-
-	/**
 	 * Display a wildcard in the back end
 	 * @return string
 	 */
@@ -69,8 +45,9 @@ class ModuleIsotopeProductFilter extends ModuleIsotope
 	{
 		if (TL_MODE == 'BE')
 		{
-			$objTemplate = new BackendTemplate('be_wildcard');
+			$objTemplate = new \BackendTemplate('be_wildcard');
 			$objTemplate->wildcard = '### ISOTOPE ECOMMERCE: PRODUCT FILTERS ###';
+
 			$objTemplate->title = $this->headline;
 			$objTemplate->id = $this->id;
 			$objTemplate->link = $this->name;
@@ -126,6 +103,30 @@ class ModuleIsotopeProductFilter extends ModuleIsotope
 		}
 
 		return $strBuffer;
+	}
+
+
+	/**
+	 * Generate ajax
+	 * @return mixed
+	 */
+	public function generateAjax()
+	{
+		if ($this->iso_searchAutocomplete && $this->Input->get('autocomplete'))
+		{
+			$time = time();
+			$arrCategories = $this->findCategories($this->iso_category_scope);
+
+			$objProductData = $this->Database->execute(IsotopeProduct::getSelectStatement(array('p1.'.$this->iso_searchAutocomplete)) . "
+													WHERE p1.language=''"
+				. (BE_USER_LOGGED_IN === true ? '' : " AND p1.published='1' AND (p1.start='' OR p1.start<$time) AND (p1.stop='' OR p1.stop>$time)")
+				. " AND c.page_id IN (" . implode(',', $arrCategories) . ")"
+				. " GROUP BY p1.id ORDER BY c.sorting");
+
+			return $objProductData->fetchEach($this->iso_searchAutocomplete);
+		}
+
+		return '';
 	}
 
 
