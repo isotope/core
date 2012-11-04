@@ -70,12 +70,14 @@ class IsotopeCart extends IsotopeProductCollection
 	 */
 	public function __get($strKey)
 	{
+		$objDatabase = \Database::getInstance();
+
 		switch ($strKey)
 		{
 			case 'billing_address':
 				if ($this->arrSettings['billingAddress_id'] > 0)
 				{
-					$objAddress = $this->Database->prepare("SELECT * FROM tl_iso_addresses WHERE id=?")->limit(1)->execute($this->arrSettings['billingAddress_id']);
+					$objAddress = $objDatabase->prepare("SELECT * FROM tl_iso_addresses WHERE id=?")->limit(1)->execute($this->arrSettings['billingAddress_id']);
 
 					if ($objAddress->numRows)
 					{
@@ -91,7 +93,7 @@ class IsotopeCart extends IsotopeProductCollection
 
 				if (FE_USER_LOGGED_IN === true)
 				{
-					$objAddress = $this->Database->prepare("SELECT * FROM tl_iso_addresses WHERE pid={$this->User->id} AND store_id={$this->Isotope->Config->store_id} AND isDefaultBilling='1'")->limit(1)->execute();
+					$objAddress = $objDatabase->prepare("SELECT * FROM tl_iso_addresses WHERE pid={$this->User->id} AND store_id={$this->Isotope->Config->store_id} AND isDefaultBilling='1'")->limit(1)->execute();
 
 					if ($objAddress->numRows)
 					{
@@ -113,7 +115,7 @@ class IsotopeCart extends IsotopeProductCollection
 
 				if ($this->arrSettings['shippingAddress_id'] > 0)
 				{
-					$objAddress = $this->Database->prepare("SELECT * FROM tl_iso_addresses WHERE id=?")->limit(1)->execute($this->arrSettings['shippingAddress_id']);
+					$objAddress = $objDatabase->prepare("SELECT * FROM tl_iso_addresses WHERE id=?")->limit(1)->execute($this->arrSettings['shippingAddress_id']);
 
 					if ($objAddress->numRows)
 					{
@@ -130,7 +132,7 @@ class IsotopeCart extends IsotopeProductCollection
 				{
 					$this->import('Isotope');
 
-					$objAddress = $this->Database->prepare("SELECT * FROM tl_iso_addresses WHERE pid={$this->User->id} AND store_id={$this->Isotope->Config->store_id} AND isDefaultShipping='1'")->limit(1)->execute();
+					$objAddress = $objDatabase->prepare("SELECT * FROM tl_iso_addresses WHERE pid={$this->User->id} AND store_id={$this->Isotope->Config->store_id} AND isDefaultShipping='1'")->limit(1)->execute();
 
 					if ($objAddress->numRows)
 					{
