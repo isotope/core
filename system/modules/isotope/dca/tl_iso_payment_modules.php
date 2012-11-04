@@ -431,7 +431,7 @@ class tl_iso_payment_modules extends \Backend
 	public function checkPermission()
 	{
 		// Do not run the permission check on other Isotope modules
-		if ($this->Input->get('mod') != 'payment')
+		if (\Input::get('mod') != 'payment')
 		{
 			return;
 		}
@@ -464,7 +464,7 @@ class tl_iso_payment_modules extends \Backend
 		}
 
 		// Check current action
-		switch ($this->Input->get('act'))
+		switch (\Input::get('act'))
 		{
 			case 'create':
 			case 'select':
@@ -473,11 +473,11 @@ class tl_iso_payment_modules extends \Backend
 
 			case 'edit':
 				// Dynamically add the record to the user profile
-				if (!in_array($this->Input->get('id'), $root))
+				if (!in_array(\Input::get('id'), $root))
 				{
 					$arrNew = $this->Session->get('new_records');
 
-					if (is_array($arrNew['tl_iso_payment_modules']) && in_array($this->Input->get('id'), $arrNew['tl_iso_payment_modules']))
+					if (is_array($arrNew['tl_iso_payment_modules']) && in_array(\Input::get('id'), $arrNew['tl_iso_payment_modules']))
 					{
 						// Add permissions on user level
 						if ($this->User->inherit == 'custom' || !$this->User->groups[0])
@@ -491,7 +491,7 @@ class tl_iso_payment_modules extends \Backend
 							if (is_array($arrPermissions) && in_array('create', $arrPermissions))
 							{
 								$arrAccess = deserialize($objUser->iso_payment_modules);
-								$arrAccess[] = $this->Input->get('id');
+								$arrAccess[] = \Input::get('id');
 
 								$this->Database->prepare("UPDATE tl_user SET iso_payment_modules=? WHERE id=?")
 											   ->execute(serialize($arrAccess), $this->User->id);
@@ -510,7 +510,7 @@ class tl_iso_payment_modules extends \Backend
 							if (is_array($arrPermissions) && in_array('create', $arrPermissions))
 							{
 								$arrAccess = deserialize($objGroup->iso_payment_modules);
-								$arrAccess[] = $this->Input->get('id');
+								$arrAccess[] = \Input::get('id');
 
 								$this->Database->prepare("UPDATE tl_user_group SET iso_payment_modules=? WHERE id=?")
 											   ->execute(serialize($arrAccess), $this->User->groups[0]);
@@ -518,7 +518,7 @@ class tl_iso_payment_modules extends \Backend
 						}
 
 						// Add new element to the user object
-						$root[] = $this->Input->get('id');
+						$root[] = \Input::get('id');
 						$this->User->iso_payment_modules = $root;
 					}
 				}
@@ -527,9 +527,9 @@ class tl_iso_payment_modules extends \Backend
 			case 'copy':
 			case 'delete':
 			case 'show':
-				if (!in_array($this->Input->get('id'), $root) || ($this->Input->get('act') == 'delete' && !$this->User->hasAccess('delete', 'iso_payment_modulep')))
+				if (!in_array(\Input::get('id'), $root) || (\Input::get('act') == 'delete' && !$this->User->hasAccess('delete', 'iso_payment_modulep')))
 				{
-					$this->log('Not enough permissions to '.$this->Input->get('act').' payment module ID "'.$this->Input->get('id').'"', __METHOD__, TL_ERROR);
+					$this->log('Not enough permissions to '.\Input::get('act').' payment module ID "'.\Input::get('id').'"', __METHOD__, TL_ERROR);
 					$this->redirect('contao/main.php?act=error');
 				}
 				break;
@@ -538,7 +538,7 @@ class tl_iso_payment_modules extends \Backend
 			case 'deleteAll':
 			case 'overrideAll':
 				$session = $this->Session->getData();
-				if ($this->Input->get('act') == 'deleteAll' && !$this->User->hasAccess('delete', 'iso_payment_modulep'))
+				if (\Input::get('act') == 'deleteAll' && !$this->User->hasAccess('delete', 'iso_payment_modulep'))
 				{
 					$session['CURRENT']['IDS'] = array();
 				}
@@ -550,9 +550,9 @@ class tl_iso_payment_modules extends \Backend
 				break;
 
 			default:
-				if (strlen($this->Input->get('act')))
+				if (strlen(\Input::get('act')))
 				{
-					$this->log('Not enough permissions to '.$this->Input->get('act').' payment modules', __METHOD__, TL_ERROR);
+					$this->log('Not enough permissions to '.\Input::get('act').' payment modules', __METHOD__, TL_ERROR);
 					$this->redirect('contao/main.php?act=error');
 				}
 				break;

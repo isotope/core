@@ -58,14 +58,14 @@ class ModuleIsotopeConfigSwitcher extends ModuleIsotope
 			return '';
 		}
 
-		if (strlen($this->Input->get('config')))
+		if (strlen(\Input::get('config')))
 		{
-			if (in_array($this->Input->get('config'), $this->iso_config_ids))
+			if (in_array(\Input::get('config'), $this->iso_config_ids))
 			{
-				$_SESSION['ISOTOPE']['config_id'] = $this->Input->get('config');
+				$_SESSION['ISOTOPE']['config_id'] = \Input::get('config');
 			}
 
-			$this->redirect(preg_replace(('@[?|&]config='.$this->Input->get('config').'@'), '', $this->Environment->request));
+			$this->redirect(preg_replace(('@[?|&]config='.\Input::get('config').'@'), '', $this->Environment->request));
 		}
 
 		return parent::generate();

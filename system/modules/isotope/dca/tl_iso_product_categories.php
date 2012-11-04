@@ -114,7 +114,7 @@ class tl_iso_product_categories extends \Backend
 	 */
 	public function updateFilterData(\DataContainer $dc)
 	{
-		if ($this->Input->get('act') == '')
+		if (\Input::get('act') == '')
 		{
 			$arrCategories = $this->Database->execute("SELECT page_id FROM tl_iso_product_categories WHERE pid={$dc->id}");
 			$this->Database->query("UPDATE tl_iso_products SET pages='" . serialize($arrCategories) . "' WHERE id={$dc->id}");
@@ -135,7 +135,7 @@ class tl_iso_product_categories extends \Backend
 	 */
 	public function getPageViewButton($href, $label, $title, $class, $attributes, $table, $root)
 	{
-		$objPage = $this->getPageDetails($this->Input->get('id'));
+		$objPage = $this->getPageDetails(\Input::get('id'));
 
 		if (is_object($objPage))
 		{

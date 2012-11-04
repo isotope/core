@@ -166,7 +166,7 @@ class tl_iso_groups extends \Backend
 		}
 
 		// Check permission to delete item
-		if ($this->Input->get('act') == 'delete' && !in_array('delete', $this->User->iso_groupp))
+		if (\Input::get('act') == 'delete' && !in_array('delete', $this->User->iso_groupp))
 		{
 			$this->log('User is not allowed to delete groups', __METHOD__, TL_ERROR);
 			$this->redirect('contao/main.php?act=error');

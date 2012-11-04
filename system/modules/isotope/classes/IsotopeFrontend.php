@@ -87,7 +87,7 @@ class IsotopeFrontend extends \Frontend
 	 */
 	public function addToCart($objProduct, $objModule=null)
 	{
-		$intQuantity = ($objModule->iso_use_quantity && intval($this->Input->post('quantity_requested')) > 0) ? intval($this->Input->post('quantity_requested')) : 1;
+		$intQuantity = ($objModule->iso_use_quantity && intval(\Input::post('quantity_requested')) > 0) ? intval(\Input::post('quantity_requested')) : 1;
 
 		if ($this->Isotope->Cart->addProduct($objProduct, $intQuantity) !== false)
 		{
@@ -159,7 +159,7 @@ class IsotopeFrontend extends \Frontend
 		{
 			$objOrder = new IsotopeOrder();
 
-			if ($objOrder->findBy('uniqid', $this->Input->get('uid')))
+			if ($objOrder->findBy('uniqid', \Input::get('uid')))
 			{
 				return $objOrder->{$arrTag[1]};
 			}
@@ -172,7 +172,7 @@ class IsotopeFrontend extends \Frontend
 			// {{product::attribute}}				- gets the data of the current product (GET parameter "product")
 			// {{product::attribute::product_id}}	- gets the data of the specified product ID
 
-			$objProduct = (count($arrTag) == 3) ? self::getProduct($arrTag[2]) : self::getProductByAlias($this->Input->get('product'));
+			$objProduct = (count($arrTag) == 3) ? self::getProduct($arrTag[2]) : self::getProductByAlias(\Input::get('product'));
 
 			return ($objProduct !== null) ? $objProduct->{$arrTag[1]} : '';
 		}
@@ -189,7 +189,7 @@ class IsotopeFrontend extends \Frontend
 	public function addNavigationClass(&$objTemplate)
 	{
 		// Unset hook to prevent further execution on non-reader pages
-		if ($this->Input->get('product') == '')
+		if (\Input::get('product') == '')
 		{
 			unset($GLOBALS['TL_HOOKS']['parseTemplate'][array_search(array('IsotopeFrontend', 'fixNavigationTrail'), $GLOBALS['TL_HOOKS']['parseTemplate'])]);
 			return;
@@ -203,7 +203,7 @@ class IsotopeFrontend extends \Frontend
 			if ($arrTrail == null)
 			{
 				$arrTrail = array();
-				$objProduct = self::getProductByAlias($this->Input->get('product'));
+				$objProduct = self::getProductByAlias(\Input::get('product'));
 
                 // getProductByAlias will return null if the product is not found
                 if ($objProduct !== null)
@@ -452,17 +452,17 @@ class IsotopeFrontend extends \Frontend
 	 */
 	public function translateProductUrls($arrGet, $strLanguage, $arrRootPage)
 	{
-		if ($this->Input->get('product') != '')
+		if (\Input::get('product') != '')
 		{
-			$arrGet['url']['product'] = $this->Input->get('product');
+			$arrGet['url']['product'] = \Input::get('product');
 		}
-		elseif ($this->Input->get('step') != '')
+		elseif (\Input::get('step') != '')
 		{
-			$arrGet['url']['step'] = $this->Input->get('step');
+			$arrGet['url']['step'] = \Input::get('step');
 		}
-		elseif ($this->Input->get('uid') != '')
+		elseif (\Input::get('uid') != '')
 		{
-			$arrGet['get']['uid'] = $this->Input->get('uid');
+			$arrGet['get']['uid'] = \Input::get('uid');
 		}
 
 		return $arrGet;
@@ -639,7 +639,7 @@ $endScript";
 			}
 
 			// Validate input
-			if ($this->Input->post('FORM_SUBMIT') == $strFormId)
+			if (\Input::post('FORM_SUBMIT') == $strFormId)
 			{
 				$objForm->blnSubmitted = true;
 				$objWidget->validate();
@@ -724,7 +724,7 @@ $endScript";
 			return '';
 		}
 
-		$file = $this->Input->get('file', true);
+		$file = \Input::get('file', true);
 
 		// Send the file to the browser
 		if ($file != '' && (in_array($file, $arrFiles) || in_array(dirname($file), $arrFiles)) && !preg_match('/^meta(_[a-z]{2})?\.txt$/', basename($file)))

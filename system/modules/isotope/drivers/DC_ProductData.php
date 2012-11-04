@@ -93,21 +93,21 @@ class DC_ProductData extends \DC_Table
 		$this->reviseTable();
 
 		// Add to clipboard
-		if ($this->Input->get('act') == 'paste')
+		if (\Input::get('act') == 'paste')
 		{
 			$arrClipboard = $this->Session->get('CLIPBOARD');
 
 			$arrClipboard[$this->strTable] = array
 			(
-				'id' => $this->Input->get('id'),
-				'childs' => $this->Input->get('childs'),
-				'mode' => $this->Input->get('mode')
+				'id' => \Input::get('id'),
+				'childs' => \Input::get('childs'),
+				'mode' => \Input::get('mode')
 			);
 
 			$this->Session->set('CLIPBOARD', $arrClipboard);
 		}
 
-		if ($this->Input->get('table') && $GLOBALS['TL_DCA'][$this->strTable]['config']['ptable'] && $this->Database->fieldExists('pid', $this->strTable))
+		if (\Input::get('table') && $GLOBALS['TL_DCA'][$this->strTable]['config']['ptable'] && $this->Database->fieldExists('pid', $this->strTable))
 		{
 			$this->procedure[] = 'pid=?';
 			$this->values[] = CURRENT_ID;
@@ -147,7 +147,7 @@ class DC_ProductData extends \DC_Table
 			$set = array();
 		}
 
-		$set['gid'] = (int) $this->Input->get('gid');
+		$set['gid'] = (int) \Input::get('gid');
 
 		parent::create($set);
 	}
@@ -160,7 +160,7 @@ class DC_ProductData extends \DC_Table
 	public function cut($blnDoNotRedirect=false)
 	{
 		// ID and GID tell about paste into a group
-		if ($this->intId > 0 && $this->Input->get('gid') != '')
+		if ($this->intId > 0 && \Input::get('gid') != '')
 		{
 			// Empty clipboard
 			$arrClipboard = $this->Session->get('CLIPBOARD');
@@ -168,7 +168,7 @@ class DC_ProductData extends \DC_Table
 			$this->Session->set('CLIPBOARD', $arrClipboard);
 
 			// Update the record
-			$this->Database->prepare("UPDATE {$this->strTable} SET tstamp=?, gid=? WHERE id=?")->execute(time(), $this->Input->get('gid'), $this->intId);
+			$this->Database->prepare("UPDATE {$this->strTable} SET tstamp=?, gid=? WHERE id=?")->execute(time(), \Input::get('gid'), $this->intId);
 
 			if (!$blnDoNotRedirect)
 			{
@@ -189,7 +189,7 @@ class DC_ProductData extends \DC_Table
 	public function cutAll()
 	{
 		// GID tells about paste into a group
-		if ($this->Input->get('gid') != '')
+		if (\Input::get('gid') != '')
 		{
 			$arrClipboard = $this->Session->get('CLIPBOARD');
 
@@ -215,9 +215,9 @@ class DC_ProductData extends \DC_Table
 	 */
 	public function copy($blnDoNotRedirect=false)
 	{
-		if ($this->Input->get('gid') != '')
+		if (\Input::get('gid') != '')
 		{
-			$this->set['gid'] = (int) $this->Input->get('gid');
+			$this->set['gid'] = (int) \Input::get('gid');
 		}
 
 		return parent::copy($blnDoNotRedirect);
@@ -238,7 +238,7 @@ class DC_ProductData extends \DC_Table
 		$cctable = array();
 		$ctable = $GLOBALS['TL_DCA'][$table]['config']['ctable'];
 
-		if (!$GLOBALS['TL_DCA'][$table]['config']['ptable'] && $this->Input->get('childs') != '' && $this->Database->fieldExists('pid', $table))
+		if (!$GLOBALS['TL_DCA'][$table]['config']['ptable'] && \Input::get('childs') != '' && $this->Database->fieldExists('pid', $table))
 		{
 			$ctable[] = $table;
 		}
@@ -316,7 +316,7 @@ class DC_ProductData extends \DC_Table
 	public function copyAll()
 	{
 		// GID tells about paste into a group
-		if ($this->Input->get('gid') != '')
+		if (\Input::get('gid') != '')
 		{
 			$arrClipboard = $this->Session->get('CLIPBOARD');
 
@@ -330,7 +330,7 @@ class DC_ProductData extends \DC_Table
 					$arrIds[] = $this->copy(true);
 				}
 
-				$this->Database->query("UPDATE {$this->strTable} SET gid=" . (int)$this->Input->get('gid') . " WHERE id IN (" . implode(',', $arrIds) . ")");
+				$this->Database->query("UPDATE {$this->strTable} SET gid=" . (int)\Input::get('gid') . " WHERE id IN (" . implode(',', $arrIds) . ")");
 			}
 
 			$this->redirect($this->getReferer());
@@ -443,17 +443,17 @@ class DC_ProductData extends \DC_Table
 			$this->arrLanguageLabels = $this->getLanguages();
 			$this->arrLanguages = array_intersect(array_keys($this->arrLanguageLabels), $arrPageLanguages);
 
-			if ($this->Input->post('FORM_SUBMIT') == 'tl_language')
+			if (\Input::post('FORM_SUBMIT') == 'tl_language')
 			{
 				$session = $this->Session->getData();
 
-				if (in_array($this->Input->post('language'), $this->arrLanguages))
+				if (in_array(\Input::post('language'), $this->arrLanguages))
 				{
-					$session['language'][$this->strTable][$this->intId] = $this->Input->post('language');
+					$session['language'][$this->strTable][$this->intId] = \Input::post('language');
 
-					if ($this->Input->post('deleteLanguage') != '')
+					if (\Input::post('deleteLanguage') != '')
 					{
-						$this->Database->prepare("DELETE FROM " . $this->strTable . " WHERE pid=? AND language=?")->execute($this->intId, $this->Input->post('language'));
+						$this->Database->prepare("DELETE FROM " . $this->strTable . " WHERE pid=? AND language=?")->execute($this->intId, \Input::post('language'));
 						unset($session['language'][$this->strTable][$this->intId]);
 					}
 				}
@@ -488,11 +488,11 @@ class DC_ProductData extends \DC_Table
 		$this->createInitialVersion($this->strTable, $this->objActiveRecord->id);
 
 		// Change version
-		if ($GLOBALS['TL_DCA'][$this->strTable]['config']['enableVersioning'] && $this->Input->post('FORM_SUBMIT') == 'tl_version' && $this->Input->post('version') != '')
+		if ($GLOBALS['TL_DCA'][$this->strTable]['config']['enableVersioning'] && \Input::post('FORM_SUBMIT') == 'tl_version' && \Input::post('version') != '')
 		{
 			$objData = $this->Database->prepare("SELECT * FROM tl_version WHERE fromTable=? AND pid=? AND version=?")
 									  ->limit(1)
-									  ->execute($this->strTable, $this->objActiveRecord->id, $this->Input->post('version'));
+									  ->execute($this->strTable, $this->objActiveRecord->id, \Input::post('version'));
 
 			if ($objData->numRows)
 			{
@@ -508,9 +508,9 @@ class DC_ProductData extends \DC_Table
 								   ->execute($this->objActiveRecord->id);
 
 					$this->Database->prepare("UPDATE tl_version SET active=1 WHERE pid=? AND version=?")
-								   ->execute($this->objActiveRecord->id, $this->Input->post('version'));
+								   ->execute($this->objActiveRecord->id, \Input::post('version'));
 
-					$this->log(sprintf('Version %s of record ID %s (table %s) has been restored', $this->Input->post('version'), $this->objActiveRecord->id, $this->strTable), 'DC_ProductData edit()', TL_GENERAL);
+					$this->log(sprintf('Version %s of record ID %s (table %s) has been restored', \Input::post('version'), $this->objActiveRecord->id, $this->strTable), 'DC_ProductData edit()', TL_GENERAL);
 
 					// Trigger the onrestore_callback
 					if (is_array($GLOBALS['TL_DCA'][$this->strTable]['config']['onrestore_callback']))
@@ -520,7 +520,7 @@ class DC_ProductData extends \DC_Table
 							if (is_array($callback))
 							{
 								$this->import($callback[0]);
-								$this->$callback[0]->$callback[1]($this->objActiveRecord->id, $this->strTable, $data, $this->Input->post('version'));
+								$this->$callback[0]->$callback[1]($this->objActiveRecord->id, $this->strTable, $data, \Input::post('version'));
 							}
 						}
 					}
@@ -773,7 +773,7 @@ class DC_ProductData extends \DC_Table
 <div class="tl_submit_container">
 <input type="submit" name="save" id="save" class="tl_submit" accesskey="s" value="'.specialchars($GLOBALS['TL_LANG']['MSC']['save']).'">
 <input type="submit" name="saveNclose" id="saveNclose" class="tl_submit" accesskey="c" value="'.specialchars($GLOBALS['TL_LANG']['MSC']['saveNclose']).'">' . (!$GLOBALS['TL_DCA'][$this->strTable]['config']['closed'] ? '
-<input type="submit" name="saveNcreate" id="saveNcreate" class="tl_submit" accesskey="n" value="'.specialchars($GLOBALS['TL_LANG']['MSC']['saveNcreate']).'">' : '') . ($this->Input->get('s2e') ? '
+<input type="submit" name="saveNcreate" id="saveNcreate" class="tl_submit" accesskey="n" value="'.specialchars($GLOBALS['TL_LANG']['MSC']['saveNcreate']).'">' : '') . (\Input::get('s2e') ? '
 <input type="submit" name="saveNedit" id="saveNedit" class="tl_submit" accesskey="e" value="'.specialchars($GLOBALS['TL_LANG']['MSC']['saveNedit']).'">' : (($GLOBALS['TL_DCA'][$this->strTable]['list']['sorting']['mode'] == 4 || $this->ptable != '' || $GLOBALS['TL_DCA'][$this->strTable]['config']['switchToEdit']) ? '
 <input type="submit" name="saveNback" id="saveNback" class="tl_submit" accesskey="g" value="'.specialchars($GLOBALS['TL_LANG']['MSC']['saveNback']).'">' : '')) .'
 </div>
@@ -807,7 +807,7 @@ window.addEvent(\'domready\', function() {
 <p class="tl_error">'.$GLOBALS['TL_LANG']['ERR']['general'].'</p>' : '').$return;
 
 		// Reload the page to prevent _POST variables from being sent twice
-		if ($this->Input->post('FORM_SUBMIT') == $this->strTable && !$this->noReload)
+		if (\Input::post('FORM_SUBMIT') == $this->strTable && !$this->noReload)
 		{
 			$arrValues = $this->values;
 			array_unshift($arrValues, time());
@@ -823,7 +823,7 @@ window.addEvent(\'domready\', function() {
 			}
 
 			// Save the current version
-			if ($this->blnCreateNewVersion && $this->Input->post('SUBMIT_TYPE') != 'auto')
+			if ($this->blnCreateNewVersion && \Input::post('SUBMIT_TYPE') != 'auto')
 			{
 				$this->createNewVersion($this->strTable, $this->objActiveRecord->id);
 
@@ -880,7 +880,7 @@ window.addEvent(\'domready\', function() {
 
 				if ($this->ptable == '')
 				{
-					$this->redirect($this->Environment->script . '?do=' . $this->Input->get('do'));
+					$this->redirect($this->Environment->script . '?do=' . \Input::get('do'));
 				}
 				elseif ($this->ptable == 'tl_theme' && $this->strTable == 'tl_style_sheet') # TODO: try to abstract this
 				{
@@ -899,11 +899,11 @@ window.addEvent(\'domready\', function() {
 				$_SESSION['TL_CONFIRM'] = '';
 
 				setcookie('BE_PAGE_OFFSET', 0, 0, '/');
-				$strUrl = $this->Environment->script . '?do=' . $this->Input->get('do');
+				$strUrl = $this->Environment->script . '?do=' . \Input::get('do');
 
 				if (isset($_GET['table']))
 				{
-					$strUrl .= '&amp;table=' . $this->Input->get('table');
+					$strUrl .= '&amp;table=' . \Input::get('table');
 				}
 
 				// Tree view
@@ -979,16 +979,16 @@ window.addEvent(\'domready\', function() {
 		}
 
 		// Save field selection in session
-		if ($this->Input->post('FORM_SUBMIT') == $this->strTable.'_all' && $this->Input->get('fields'))
+		if (\Input::post('FORM_SUBMIT') == $this->strTable.'_all' && \Input::get('fields'))
 		{
-			$session['CURRENT'][$this->strTable] = deserialize($this->Input->post('all_fields'));
+			$session['CURRENT'][$this->strTable] = deserialize(\Input::post('all_fields'));
 			$this->Session->setData($session);
 		}
 
 		// Add fields
 		$fields = $session['CURRENT'][$this->strTable];
 
-		if (is_array($fields) && !empty($fields) && $this->Input->get('fields'))
+		if (is_array($fields) && !empty($fields) && \Input::get('fields'))
 		{
 			$class = 'tl_tbox block';
 			$this->checkForTinyMce();
@@ -1091,7 +1091,7 @@ window.addEvent(\'domready\', function() {
 </div>';
 
 				// Save record
-				if ($this->Input->post('FORM_SUBMIT') == $this->strTable && !$this->noReload)
+				if (\Input::post('FORM_SUBMIT') == $this->strTable && !$this->noReload)
 				{
 					// Call onsubmit_callback
 					if (is_array($GLOBALS['TL_DCA'][$this->strTable]['config']['onsubmit_callback']))
@@ -1104,7 +1104,7 @@ window.addEvent(\'domready\', function() {
 					}
 
 					// Create a new version
-					if ($this->blnCreateNewVersion && $this->Input->post('SUBMIT_TYPE') != 'auto')
+					if ($this->blnCreateNewVersion && \Input::post('SUBMIT_TYPE') != 'auto')
 					{
 						$this->createNewVersion($this->strTable, $this->intId);
 
@@ -1164,9 +1164,9 @@ window.addEvent(\'domready\', function() {
 			}
 
 			// Reload the page to prevent _POST variables from being sent twice
-			if ($this->Input->post('FORM_SUBMIT') == $this->strTable && !$this->noReload)
+			if (\Input::post('FORM_SUBMIT') == $this->strTable && !$this->noReload)
 			{
-				if ($this->Input->post('saveNclose'))
+				if (\Input::post('saveNclose'))
 				{
 					setcookie('BE_PAGE_OFFSET', 0, 0, '/');
 					$this->redirect($this->getReferer());
@@ -1266,23 +1266,23 @@ window.addEvent(\'domready\', function() {
 		$ids = $session['CURRENT']['IDS'];
 
 		// Save field selection in session
-		if ($this->Input->post('FORM_SUBMIT') == $this->strTable.'_all' && $this->Input->get('fields'))
+		if (\Input::post('FORM_SUBMIT') == $this->strTable.'_all' && \Input::get('fields'))
 		{
-			$session['CURRENT'][$this->strTable] = deserialize($this->Input->post('all_fields'));
+			$session['CURRENT'][$this->strTable] = deserialize(\Input::post('all_fields'));
 			$this->Session->setData($session);
 		}
 
 		// Add fields
 		$fields = $session['CURRENT'][$this->strTable];
 
-		if (is_array($fields) && !empty($fields) && $this->Input->get('fields'))
+		if (is_array($fields) && !empty($fields) && \Input::get('fields'))
 		{
 			$class = 'tl_tbox block';
 			$formFields = array();
 			$this->checkForTinyMce();
 
 			// Save record
-			if ($this->Input->post('FORM_SUBMIT') == $this->strTable)
+			if (\Input::post('FORM_SUBMIT') == $this->strTable)
 			{
 				foreach ($ids as $id)
 				{
@@ -1410,9 +1410,9 @@ window.addEvent(\'domready\', function() {
 			}
 
 			// Reload the page to prevent _POST variables from being sent twice
-			if ($this->Input->post('FORM_SUBMIT') == $this->strTable && !$this->noReload)
+			if (\Input::post('FORM_SUBMIT') == $this->strTable && !$this->noReload)
 			{
-				if ($this->Input->post('saveNclose'))
+				if (\Input::post('saveNclose'))
 				{
 					setcookie('BE_PAGE_OFFSET', 0, 0, '/');
 					$this->redirect($this->getReferer());
@@ -1510,10 +1510,10 @@ window.addEvent(\'domready\', function() {
 			return '<p class="tl_empty">DC_ProductData does only support sorting mode 5!</p>';
 		}
 
-		if ($this->Input->get('tid') != '' && class_exists($this->strTable, false) && method_exists($this->strTable, 'toggleVisibility'))
+		if (\Input::get('tid') != '' && class_exists($this->strTable, false) && method_exists($this->strTable, 'toggleVisibility'))
 		{
 			$this->import($this->strTable);
-			$this->{$this->strTable}->toggleVisibility($this->Input->get('tid'), ($this->Input->get('state') == 1));
+			$this->{$this->strTable}->toggleVisibility(\Input::get('tid'), (\Input::get('state') == 1));
 
 			// Stop the DC_ProductData overload detection
 			$this->Session->set('PRODUCTDATA_OVERLOAD', false);
@@ -1521,13 +1521,13 @@ window.addEvent(\'domready\', function() {
 			$this->redirect($this->getReferer());
 		}
 
-		if ($this->Input->get('loadDeferredProduct') > 0)
+		if (\Input::get('loadDeferredProduct') > 0)
 		{
-			$this->intId = (int) $this->Input->get('loadDeferredProduct');
-			$level = (int) $this->Input->get('level');
+			$this->intId = (int) \Input::get('loadDeferredProduct');
+			$level = (int) \Input::get('level');
 			$this->blnDeferredLoading = true;
-			$this->Input->setGet('loadDeferredProduct', null);
-			$this->Input->setGet('level', null);
+			\Input::setGet('loadDeferredProduct', null);
+			\Input::setGet('level', null);
 
 			while(ob_end_clean());
 			echo json_encode(array
@@ -1578,7 +1578,7 @@ window.addEvent(\'domready\', function() {
 		}
 
 		// Get session data and toggle nodes
-		if ($this->Input->get('ptg') == 'all')
+		if (\Input::get('ptg') == 'all')
 		{
 			$session = $this->Session->getData();
 			$node = $this->strTable.'_tree';
@@ -1606,7 +1606,7 @@ window.addEvent(\'domready\', function() {
 		}
 
 		// Get session data and toggle nodes
-		if ($this->Input->get('gtg') == 'all')
+		if (\Input::get('gtg') == 'all')
 		{
 			$session = $this->Session->getData();
 			$node = $this->strTable.'_'.$gtable.'_tree';
@@ -1663,9 +1663,9 @@ window.addEvent(\'domready\', function() {
 
 		// Begin buttons container
 		$return = '
-<div id="tl_buttons">'.(($this->Input->get('act') == 'select') ? '
-<a href="'.$this->getReferer(true).'" class="header_back" title="'.specialchars($GLOBALS['TL_LANG']['MSC']['backBT']).'" accesskey="b" onclick="Backend.getScrollOffset();">'.$GLOBALS['TL_LANG']['MSC']['backBT'].'</a>' : '') . (($this->Input->get('act') != 'select' && !$GLOBALS['TL_DCA'][$this->strTable]['config']['closed']) ? '
-<a href="'.$this->addToUrl('act=paste&amp;mode=create').'" class="header_new" title="'.specialchars($GLOBALS['TL_LANG'][$this->strTable]['new'][1]).'" accesskey="n" onclick="Backend.getScrollOffset();">'.$GLOBALS['TL_LANG'][$this->strTable]['new'][0].'</a>' : '') . (($this->Input->get('act') != 'select') ? $this->generateGlobalButtons() . ($blnClipboard ? ' &nbsp; :: &nbsp; <a href="'.$this->addToUrl('clipboard=1').'" class="header_clipboard" title="'.specialchars($GLOBALS['TL_LANG']['MSC']['clearClipboard']).'" accesskey="x">'.$GLOBALS['TL_LANG']['MSC']['clearClipboard'].'</a>' : '') : '') . '
+<div id="tl_buttons">'.((\Input::get('act') == 'select') ? '
+<a href="'.$this->getReferer(true).'" class="header_back" title="'.specialchars($GLOBALS['TL_LANG']['MSC']['backBT']).'" accesskey="b" onclick="Backend.getScrollOffset();">'.$GLOBALS['TL_LANG']['MSC']['backBT'].'</a>' : '') . ((\Input::get('act') != 'select' && !$GLOBALS['TL_DCA'][$this->strTable]['config']['closed']) ? '
+<a href="'.$this->addToUrl('act=paste&amp;mode=create').'" class="header_new" title="'.specialchars($GLOBALS['TL_LANG'][$this->strTable]['new'][1]).'" accesskey="n" onclick="Backend.getScrollOffset();">'.$GLOBALS['TL_LANG'][$this->strTable]['new'][0].'</a>' : '') . ((\Input::get('act') != 'select') ? $this->generateGlobalButtons() . ($blnClipboard ? ' &nbsp; :: &nbsp; <a href="'.$this->addToUrl('clipboard=1').'" class="header_clipboard" title="'.specialchars($GLOBALS['TL_LANG']['MSC']['clearClipboard']).'" accesskey="x">'.$GLOBALS['TL_LANG']['MSC']['clearClipboard'].'</a>' : '') : '') . '
 </div>' . $this->getMessages(true);
 
 		$tree = '';
@@ -1700,20 +1700,20 @@ window.addEvent(\'domready\', function() {
 		$this->Session->set('PRODUCTDATA_OVERLOAD', false);
 
 		// Return if there are no records
-		if ($tree == '' && $this->Input->get('act') != 'paste')
+		if ($tree == '' && \Input::get('act') != 'paste')
 		{
 			return $return . '
 <p class="tl_empty">'.$GLOBALS['TL_LANG']['MSC']['noResult'].'</p>';
 		}
 
-		$return .= (($this->Input->get('act') == 'select') ? '
+		$return .= ((\Input::get('act') == 'select') ? '
 
 <form action="'.ampersand($this->Environment->request, true).'" id="tl_select" class="tl_form" method="post">
 <div class="tl_formbody">
 <input type="hidden" name="FORM_SUBMIT" value="tl_select">
 <input type="hidden" name="REQUEST_TOKEN" value="'.REQUEST_TOKEN.'">' : '').'
 
-<div class="tl_listing_container tree_view" id="tl_listing">'.(isset($GLOBALS['TL_DCA'][$table]['list']['sorting']['breadcrumb']) ? $GLOBALS['TL_DCA'][$table]['list']['sorting']['breadcrumb'] : '').(($this->Input->get('act') == 'select') ? '
+<div class="tl_listing_container tree_view" id="tl_listing">'.(isset($GLOBALS['TL_DCA'][$table]['list']['sorting']['breadcrumb']) ? $GLOBALS['TL_DCA'][$table]['list']['sorting']['breadcrumb'] : '').((\Input::get('act') == 'select') ? '
 
 <div class="tl_select_trigger">
 <label for="tl_select_trigger" class="tl_select_label">'.$GLOBALS['TL_LANG']['MSC']['selectAll'].'</label> <input type="checkbox" id="tl_select_trigger" onclick="Backend.toggleCheckboxes(this)" class="tl_tree_checkbox">
@@ -1725,7 +1725,7 @@ window.addEvent(\'domready\', function() {
 		$_buttons = '&nbsp;';
 
 		// Show paste button only if there are no root records specified
-		if ($this->Input->get('act') != 'select' && $GLOBALS['TL_DCA'][$this->strTable]['list']['sorting']['mode'] == 5 && $blnClipboard && ((empty($GLOBALS['TL_DCA'][$table]['list']['sorting']['root']) && $GLOBALS['TL_DCA'][$table]['list']['sorting']['root'] !== false) || $GLOBALS['TL_DCA'][$table]['list']['sorting']['rootPaste']))
+		if (\Input::get('act') != 'select' && $GLOBALS['TL_DCA'][$this->strTable]['list']['sorting']['mode'] == 5 && $blnClipboard && ((empty($GLOBALS['TL_DCA'][$table]['list']['sorting']['root']) && $GLOBALS['TL_DCA'][$table]['list']['sorting']['root'] !== false) || $GLOBALS['TL_DCA'][$table]['list']['sorting']['rootPaste']))
 		{
 			// Call paste_button_callback (&$dc, $row, $table, $cr, $childs, $previous, $next)
 			if (is_array($GLOBALS['TL_DCA'][$this->strTable]['list']['sorting']['paste_button_callback']))
@@ -1764,7 +1764,7 @@ $(window).addEvents({
 		}
 
 		// Close form
-		if ($this->Input->get('act') == 'select')
+		if (\Input::get('act') == 'select')
 		{
 			$return .= '
 
@@ -1829,7 +1829,7 @@ $(window).addEvents({
 		}
 
 		// Load groups and products
-		elseif ($GLOBALS['TL_DCA'][$this->strTable]['config']['gtable'] != '' && $this->Input->post('id') != ($table.'_tree_'.$id))
+		elseif ($GLOBALS['TL_DCA'][$this->strTable]['config']['gtable'] != '' && \Input::post('id') != ($table.'_tree_'.$id))
 		{
 			$table = $GLOBALS['TL_DCA'][$this->strTable]['config']['gtable'];
 
@@ -1921,9 +1921,9 @@ $(window).addEvents({
 		$toggle = ($this->strTable != $table) ? 'gtg' : 'ptg';
 
 		// Toggle nodes
-		if ($this->Input->get($toggle))
+		if (\Input::get($toggle))
 		{
-			$session[$node][$this->Input->get($toggle)] = (isset($session[$node][$this->Input->get($toggle)]) && $session[$node][$this->Input->get($toggle)] == 1) ? 0 : 1;
+			$session[$node][\Input::get($toggle)] = (isset($session[$node][\Input::get($toggle)]) && $session[$node][\Input::get($toggle)] == 1) ? 0 : 1;
 			$this->Session->setData($session);
 
 			$this->redirect(preg_replace('/(&(amp;)?|\?)'.$toggle.'=[^& ]*/i', '', $this->Environment->request));
@@ -2055,11 +2055,11 @@ $(window).addEvents({
 		if ($this->strTable == $table)
 		{
 			// Regular buttons ($row, $table, $root, $blnCircularReference, $childs, $previous, $next)
-			$_buttons .= $this->Input->get('act') == 'select' ? ($row['pid'] == 0 ? '<input type="checkbox" name="IDS[]" id="ids_'.$row['id'].'" class="tl_tree_checkbox" value="'.$row['id'].'">' : '') : $this->generateButtons($row, $table, $this->root, $blnCircularReference, $childs, $previous, $next);
+			$_buttons .= \Input::get('act') == 'select' ? ($row['pid'] == 0 ? '<input type="checkbox" name="IDS[]" id="ids_'.$row['id'].'" class="tl_tree_checkbox" value="'.$row['id'].'">' : '') : $this->generateButtons($row, $table, $this->root, $blnCircularReference, $childs, $previous, $next);
 		}
 
 		// Paste buttons
-		if ($arrClipboard !== false && $this->Input->get('act') != 'select')
+		if ($arrClipboard !== false && \Input::get('act') != 'select')
 		{
 			$_buttons .= ' ';
 
@@ -2138,7 +2138,7 @@ $(window).addEvents({
 			return '';
 		}
 
-		if ($this->Input->post('FORM_SUBMIT') == 'tl_filters')
+		if (\Input::post('FORM_SUBMIT') == 'tl_filters')
 		{
 			$this->reload();
 		}
@@ -2225,9 +2225,9 @@ $(window).addEvents({
 		$firstOrderBy = preg_replace('/\s+.*$/i', '', $orderBy[0]);
 
 		// Set sorting from user input
-		if ($this->Input->post('FORM_SUBMIT') == 'tl_filters')
+		if (\Input::post('FORM_SUBMIT') == 'tl_filters')
 		{
-			$session['sorting'][$this->strTable] = in_array($GLOBALS['TL_DCA'][$this->strTable]['fields'][$this->Input->post('tl_sort')]['flag'], array(2, 4, 6, 8, 10, 12)) ? $this->Input->post('tl_sort').' DESC' : $this->Input->post('tl_sort');
+			$session['sorting'][$this->strTable] = in_array($GLOBALS['TL_DCA'][$this->strTable]['fields'][\Input::post('tl_sort')]['flag'], array(2, 4, 6, 8, 10, 12)) ? \Input::post('tl_sort').' DESC' : \Input::post('tl_sort');
 			$this->Session->setData($session);
 		}
 

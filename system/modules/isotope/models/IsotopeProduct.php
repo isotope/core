@@ -255,9 +255,9 @@ class IsotopeProduct extends \Controller
 				return $this->quantity_requested * $this->tax_free_price;
 
 			case 'quantity_requested':
-				if (!$this->arrCache[$strKey] && $this->Input->post('FORM_SUBMIT') == $this->formSubmit)
+				if (!$this->arrCache[$strKey] && \Input::post('FORM_SUBMIT') == $this->formSubmit)
 				{
-					$this->arrCache[$strKey] = (int) $this->Input->post('quantity_requested');
+					$this->arrCache[$strKey] = (int) \Input::post('quantity_requested');
 				}
 
 				return $this->arrCache[$strKey] ? $this->arrCache[$strKey] : 1;
@@ -803,11 +803,11 @@ class IsotopeProduct extends \Controller
 			$arrButtons = array_intersect_key($arrButtons, array_flip(deserialize($objModule->iso_buttons, true)));
 		}
 
-		if ($this->Input->post('FORM_SUBMIT') == $this->formSubmit && !$this->doNotSubmit)
+		if (\Input::post('FORM_SUBMIT') == $this->formSubmit && !$this->doNotSubmit)
 		{
 			foreach ($arrButtons as $button => $data)
 			{
-				if (strlen($this->Input->post($button)))
+				if (strlen(\Input::post($button)))
 				{
 					if (is_array($data['callback']) && count($data['callback']) == 2)
 					{
@@ -1189,12 +1189,12 @@ class IsotopeProduct extends \Controller
 
 			$arrField['options'] = array_values($arrField['options']);
 
-			if ($this->Input->get($strField) != '' && $this->Input->post('FORM_SUBMIT') != $this->formSubmit)
+			if (\Input::get($strField) != '' && \Input::post('FORM_SUBMIT') != $this->formSubmit)
 			{
-				if (in_array($this->Input->get($strField), (array)$this->arrVariantOptions['attributes'][$strField], true))
+				if (in_array(\Input::get($strField), (array)$this->arrVariantOptions['attributes'][$strField], true))
 				{
-					$arrField['value'] = $this->Input->get($strField);
-					$this->arrVariantOptions['current'][$strField] = $this->Input->get($strField);
+					$arrField['value'] = \Input::get($strField);
+					$this->arrVariantOptions['current'][$strField] = \Input::get($strField);
 				}
 			}
 			elseif ($this->pid > 0)
@@ -1257,7 +1257,7 @@ class IsotopeProduct extends \Controller
 		$objWidget->id .= "_" . $this->formSubmit;
 
 		// Validate input
-		if ($this->Input->post('FORM_SUBMIT') == $this->formSubmit)
+		if (\Input::post('FORM_SUBMIT') == $this->formSubmit)
 		{
 			$objWidget->validate();
 
@@ -1418,13 +1418,13 @@ class IsotopeProduct extends \Controller
 		{
 			if ($GLOBALS['TL_DCA']['tl_iso_products']['fields'][$attribute]['attributes']['variant_option'])
 			{
-				if ($this->Input->post('FORM_SUBMIT') == $this->formSubmit && in_array($this->Input->post($attribute), (array)$this->arrVariantOptions['attributes'][$attribute], true))
+				if (\Input::post('FORM_SUBMIT') == $this->formSubmit && in_array(\Input::post($attribute), (array)$this->arrVariantOptions['attributes'][$attribute], true))
 				{
-					$arrOptions[$attribute] = $this->Input->post($attribute);
+					$arrOptions[$attribute] = \Input::post($attribute);
 				}
-				elseif ($this->Input->post('FORM_SUBMIT') == '' && in_array($this->Input->get($attribute), (array)$this->arrVariantOptions['attributes'][$attribute], true))
+				elseif (\Input::post('FORM_SUBMIT') == '' && in_array(\Input::get($attribute), (array)$this->arrVariantOptions['attributes'][$attribute], true))
 				{
-					$arrOptions[$attribute] = $this->Input->get($attribute);
+					$arrOptions[$attribute] = \Input::get($attribute);
 				}
 				elseif (count((array) $this->arrVariantOptions['attributes'][$attribute]) == 1)
 				{

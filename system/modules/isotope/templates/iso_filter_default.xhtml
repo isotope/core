@@ -57,7 +57,7 @@
 <?php if ($this->hasSearch): ?>
 <div class="search">
 <form action="<?php echo $this->actionSearch; ?>" method="get">
-<input type="hidden" name="isorc" value="<?php echo $this->Input->get('isorc'); ?>" />
+<input type="hidden" name="isorc" value="<?php echo \Input::get('isorc'); ?>" />
 <label for="ctrl_keywords_<?php echo $this->id; ?>"><?php echo $this->keywordsLabel; ?></label>
 <input type="text" name="keywords" id="ctrl_keywords_<?php echo $this->id; ?>" class="text" value="<?php echo ($this->keywords ? $this->keywords : $this->defaultSearchText); ?>" onblur="if (this.value=='') { this.value='<?php echo $this->defaultSearchText; ?>'; }" onfocus="if (this.value=='<?php echo $this->defaultSearchText; ?>') { this.value=''; this.select(); }" />
 <input type="submit" class="submit" value="<?php echo $this->searchLabel; ?>" />

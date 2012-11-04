@@ -60,7 +60,7 @@ class IsotopeBackend extends \Backend
 	 */
 	public function initializeSetupModule($dc)
 	{
-		if ($this->Input->get('act') != '')
+		if (\Input::get('act') != '')
 		{
 			$GLOBALS['TL_DCA'][$dc->table]['config']['closed'] = false;
 		}
@@ -175,9 +175,9 @@ class IsotopeBackend extends \Backend
 	 */
 	public function importMail($dc)
 	{
-		if ($this->Input->post('FORM_SUBMIT') == 'tl_mail_import')
+		if (\Input::post('FORM_SUBMIT') == 'tl_mail_import')
 		{
-			$source = $this->Input->post('source', true);
+			$source = \Input::post('source', true);
 
 			// Check the file names
 			if (!$source || !is_array($source))

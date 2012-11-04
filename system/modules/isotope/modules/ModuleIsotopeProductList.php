@@ -58,13 +58,13 @@ class ModuleIsotopeProductList extends ModuleIsotope
 		}
 
 		// Hide product list in reader mode if the respective setting is enabled
-		if ($this->iso_hide_list && $this->Input->get('product') != '')
+		if ($this->iso_hide_list && \Input::get('product') != '')
 		{
 			return '';
 		}
 
 		// return message if no filter is set
-		if ($this->iso_emptyFilter && !$this->Input->get('isorc'))
+		if ($this->iso_emptyFilter && !\Input::get('isorc'))
 		{
 			return $this->iso_noFilter;
 		}
@@ -104,7 +104,7 @@ class ModuleIsotopeProductList extends ModuleIsotope
 	 */
 	public function generateAjax()
 	{
-		$objProduct = IsotopeFrontend::getProduct($this->Input->get('product'), IsotopeFrontend::getReaderPageId(null, $this->iso_reader_jumpTo), false);
+		$objProduct = IsotopeFrontend::getProduct(\Input::get('product'), IsotopeFrontend::getReaderPageId(null, $this->iso_reader_jumpTo), false);
 
 		if ($objProduct !== null)
 		{
@@ -137,7 +137,7 @@ class ModuleIsotopeProductList extends ModuleIsotope
 												  WHERE page_id=? AND module_id=? AND requestcache_id=? AND (keywords=? OR keywords='') AND (expires>$time OR expires=0)
 												  ORDER BY keywords=''")
 									   ->limit(1)
-									   ->execute($pageId, $this->id, (int)$this->Input->get('isorc'), (string)$this->Input->get('keywords'));
+									   ->execute($pageId, $this->id, (int)\Input::get('isorc'), (string)\Input::get('keywords'));
 
 			// Cache found
 			if ($objCache->numRows)
@@ -145,7 +145,7 @@ class ModuleIsotopeProductList extends ModuleIsotope
 				$arrCacheIds = $objCache->products == '' ? array() : explode(',', $objCache->products);
 
 				// Use the cache if keywords match. Otherwise we will use the product IDs as a "limit" for findProducts()
-				if ($objCache->keywords == $this->Input->get('keywords'))
+				if ($objCache->keywords == \Input::get('keywords'))
 				{
 					$total = count($arrCacheIds);
 
@@ -178,9 +178,9 @@ class ModuleIsotopeProductList extends ModuleIsotope
 			// Display "loading products" message and add cache flag
 			if ($this->blnCacheProducts)
 			{
-				$blnCacheMessage = (bool)$this->iso_productcache[$pageId][(int)$this->Input->get('isorc')];
+				$blnCacheMessage = (bool)$this->iso_productcache[$pageId][(int)\Input::get('isorc')];
 
-				if ($blnCacheMessage && !$this->Input->get('buildCache'))
+				if ($blnCacheMessage && !\Input::get('buildCache'))
 				{
 					// Do not index or cache the page
 					global $objPage;
@@ -205,7 +205,7 @@ class ModuleIsotopeProductList extends ModuleIsotope
 				if ($blnCacheMessage != $this->blnCacheProducts)
 				{
 					$arrCacheMessage = $this->iso_productcache;
-					$arrCacheMessage[$pageId][(int) $this->Input->get('isorc')] = $this->blnCacheProducts;
+					$arrCacheMessage[$pageId][(int) \Input::get('isorc')] = $this->blnCacheProducts;
 					$this->Database->prepare("UPDATE tl_module SET iso_productcache=? WHERE id=?")->execute(serialize($arrCacheMessage), $this->id);
 				}
 
@@ -225,10 +225,10 @@ class ModuleIsotopeProductList extends ModuleIsotope
 
 					// Also delete all expired caches if we run a delete anyway
 					$this->Database->prepare("DELETE FROM tl_iso_productcache WHERE (page_id=? AND module_id=? AND requestcache_id=? AND keywords=?) OR (expires>0 AND expires<$time)")
-								   ->executeUncached($pageId, $this->id, (int)$this->Input->get('isorc'), (string)$this->Input->get('keywords'));
+								   ->executeUncached($pageId, $this->id, (int)\Input::get('isorc'), (string)\Input::get('keywords'));
 
 					$this->Database->prepare("INSERT INTO tl_iso_productcache (page_id,module_id,requestcache_id,keywords,products,expires) VALUES (?,?,?,?,?,?)")
-								   ->executeUncached($pageId, $this->id, (int)$this->Input->get('isorc'), (string)$this->Input->get('keywords'), implode(',', $arrIds), $intExpires);
+								   ->executeUncached($pageId, $this->id, (int)\Input::get('isorc'), (string)\Input::get('keywords'), implode(',', $arrIds), $intExpires);
 
 					$this->Database->unlockTables();
 				}
@@ -258,7 +258,7 @@ class ModuleIsotopeProductList extends ModuleIsotope
 			return;
 		}
 
-		if ($this->iso_jump_first && $this->Input->get('product') == '')
+		if ($this->iso_jump_first && \Input::get('product') == '')
 		{
 			$objProduct = array_shift($arrProducts);
 			$this->redirect($objProduct->href_reader);
@@ -324,7 +324,7 @@ class ModuleIsotopeProductList extends ModuleIsotope
 		// Add pagination
 		if ($this->perPage > 0 && $total > 0)
 		{
-			$page = $this->Input->get('page') ? $this->Input->get('page') : 1;
+			$page = \Input::get('page') ? \Input::get('page') : 1;
 
 			// Check the maximum page number
 			if ($page > ($total/$this->perPage))

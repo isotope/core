@@ -172,7 +172,7 @@ class Isotope extends \Controller
 			// Display error message in Isotope related backend modules
 			if (TL_MODE == 'BE')
 			{
-				$do = $this->Input->get('do');
+				$do = \Input::get('do');
 
 				if ($GLOBALS['BE_MOD']['isotope'][$do] != '')
 				{

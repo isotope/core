@@ -129,9 +129,9 @@ class ProductCallbacks extends \Backend
 	 */
 	public function applyAdvancedFilters()
 	{
-		$arrFilters = $this->Input->get('filter');
+		$arrFilters = \Input::get('filter');
 
-		if ($this->Input->get('act') == '' && $this->Input->get('key') == '' && is_array($arrFilters))
+		if (\Input::get('act') == '' && \Input::get('key') == '' && is_array($arrFilters))
 		{
 			$arrProducts = null;
 			$arrNames = array();
@@ -201,7 +201,7 @@ class ProductCallbacks extends \Backend
 	 */
 	public function checkPermission()
 	{
-		if ($this->Input->get('act') != '' && ($this->Input->get('mode') == '' || is_numeric($this->Input->get('mode'))))
+		if (\Input::get('act') != '' && (\Input::get('mode') == '' || is_numeric(\Input::get('mode'))))
 		{
 			$GLOBALS['TL_DCA']['tl_iso_products']['config']['closed'] = false;
 		}
@@ -270,9 +270,9 @@ class ProductCallbacks extends \Backend
 		// Overwrite session
 		$this->Session->setData($session);
 
-		if ($this->Input->get('id') > 0 && !in_array($this->Input->get('id'), $GLOBALS['TL_DCA']['tl_iso_products']['list']['sorting']['root']))
+		if (\Input::get('id') > 0 && !in_array(\Input::get('id'), $GLOBALS['TL_DCA']['tl_iso_products']['list']['sorting']['root']))
 		{
-			$this->log('Cannot access product ID '.$this->Input->get('id'), __METHOD__, TL_ERROR);
+			$this->log('Cannot access product ID '.\Input::get('id'), __METHOD__, TL_ERROR);
 			$this->redirect('contao/main.php?act=error');
 		}
 	}
@@ -288,7 +288,7 @@ class ProductCallbacks extends \Backend
 		$this->import('Isotope');
 		$this->loadDataContainer('tl_iso_attributes');
 
-		if ($this->Input->get('act') == '' && $this->Input->get('key') == '' || $this->Input->get('act') == 'select')
+		if (\Input::get('act') == '' && \Input::get('key') == '' || \Input::get('act') == 'select')
 		{
 			return;
 		}
@@ -316,7 +316,7 @@ class ProductCallbacks extends \Backend
 					FROM tl_iso_products p1";
 
 
-		if ($this->Input->get('act') != 'editAll' && $dc->id > 0)
+		if (\Input::get('act') != 'editAll' && $dc->id > 0)
 		{
 			$strQuery .= ' WHERE id=' . $dc->id;
 			$blnEditAll = false;
@@ -587,7 +587,7 @@ class ProductCallbacks extends \Backend
 
 		if ($arrFilters === false)
 		{
-			$arrFilters = (array) $this->Input->get('filter');
+			$arrFilters = (array) \Input::get('filter');
 		}
 
 		$filter = str_replace('filter[]=', '', $href);
@@ -916,11 +916,11 @@ class ProductCallbacks extends \Backend
 		if ($varValue == '')
 		{
 			$autoAlias = true;
-			$varValue = standardize($this->Input->post('name'));
+			$varValue = standardize(\Input::post('name'));
 
 			if ($varValue == '')
 			{
-				$varValue = standardize($this->Input->post('sku'));
+				$varValue = standardize(\Input::post('sku'));
 			}
 
 			if ($varValue == '')

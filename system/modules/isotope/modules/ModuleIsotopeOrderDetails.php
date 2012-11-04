@@ -83,7 +83,7 @@ class ModuleIsotopeOrderDetails extends ModuleIsotope
 
 		$objOrder = new IsotopeOrder();
 
-		if (!$objOrder->findBy('uniqid', $this->Input->get('uid')))
+		if (!$objOrder->findBy('uniqid', \Input::get('uid')))
 		{
 			$this->Template = new FrontendTemplate('mod_message');
 			$this->Template->type = 'error';
@@ -221,7 +221,7 @@ class ModuleIsotopeOrderDetails extends ModuleIsotope
 		);
 
 		// Send file to the browser
-		if ($blnDownloadable && $this->Input->get('download') != '' && $this->Input->get('download') == $objDownload->id && ($objDownload->type == 'file' || ($this->Input->get('file') != '' && $this->Input->get('file') == $strFileName)))
+		if ($blnDownloadable && \Input::get('download') != '' && \Input::get('download') == $objDownload->id && ($objDownload->type == 'file' || (\Input::get('file') != '' && \Input::get('file') == $strFileName)))
 		{
 			if (!$this->backend && $objDownload->downloads_remaining !== '')
 			{

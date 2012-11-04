@@ -67,19 +67,19 @@ class ModuleIsotopeSetup extends \BackendModule
 		}
 
 		// Open module
-		if ($this->Input->get('mod') != '')
+		if (\Input::get('mod') != '')
 		{
-			return $this->getIsotopeModule($this->Input->get('mod'));
+			return $this->getIsotopeModule(\Input::get('mod'));
 		}
 
 		// Table set but module missing, fix the saveNcreate link
-		elseif ($this->Input->get('table') != '')
+		elseif (\Input::get('table') != '')
 		{
 			foreach ($GLOBALS['ISO_MOD'] as $arrGroup)
 			{
 				foreach( $arrGroup as $strModule => $arrConfig )
 				{
-					if (is_array($arrConfig['tables']) && in_array($this->Input->get('table'), $arrConfig['tables']))
+					if (is_array($arrConfig['tables']) && in_array(\Input::get('table'), $arrConfig['tables']))
 					{
 						$this->redirect($this->addToUrl('mod=' . $strModule));
 					}
@@ -126,14 +126,14 @@ class ModuleIsotopeSetup extends \BackendModule
 			$this->redirect($this->Environment->script.'?act=error');
 		}
 
-		$strTable = $this->Input->get('table');
+		$strTable = \Input::get('table');
 
 		if ($strTable == '' && $arrModule['callback'] == '')
 		{
 			$this->redirect($this->addToUrl('table='.$arrModule['tables'][0]));
 		}
 
-		$id = (!$this->Input->get('act') && $this->Input->get('id')) ? $this->Input->get('id') : $this->Session->get('CURRENT_ID');
+		$id = (!\Input::get('act') && \Input::get('id')) ? \Input::get('id') : $this->Session->get('CURRENT_ID');
 
 		// Add module style sheet
 		if (isset($arrModule['stylesheet']))
@@ -200,16 +200,16 @@ class ModuleIsotopeSetup extends \BackendModule
 		}
 
 		// Custom action (if key is not defined in config.php the default action will be called)
-		elseif ($this->Input->get('key') && isset($arrModule[$this->Input->get('key')]))
+		elseif (\Input::get('key') && isset($arrModule[\Input::get('key')]))
 		{
-			$objCallback = new $arrModule[$this->Input->get('key')][0]();
-			return $objCallback->$arrModule[$this->Input->get('key')][1]($dc, $strTable, $arrModule);
+			$objCallback = new $arrModule[\Input::get('key')][0]();
+			return $objCallback->$arrModule[\Input::get('key')][1]($dc, $strTable, $arrModule);
 		}
 
 		// Default action
 		elseif (is_object($dc))
 		{
-			$act = $this->Input->get('act');
+			$act = \Input::get('act');
 
 			if (!strlen($act) || $act == 'paste' || $act == 'select')
 			{

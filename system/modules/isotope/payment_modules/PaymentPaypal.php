@@ -79,26 +79,26 @@ class PaymentPaypal extends IsotopePayment
 			$this->log('Request Error: ' . $objRequest->error, __METHOD__, TL_ERROR);
 			exit;
 		}
-		elseif ($objRequest->response == 'VERIFIED' && ($this->Input->post('receiver_email', true) == $this->paypal_account || $this->debug))
+		elseif ($objRequest->response == 'VERIFIED' && (\Input::post('receiver_email', true) == $this->paypal_account || $this->debug))
 		{
 			$objOrder = new IsotopeOrder();
 
-			if (!$objOrder->findBy('id', $this->Input->post('invoice')))
+			if (!$objOrder->findBy('id', \Input::post('invoice')))
 			{
-				$this->log('Order ID "' . $this->Input->post('invoice') . '" not found', __METHOD__, TL_ERROR);
+				$this->log('Order ID "' . \Input::post('invoice') . '" not found', __METHOD__, TL_ERROR);
 				return;
 			}
 
 			// Validate payment data (see #2221)
-			if ($objOrder->currency != $this->Input->post('mc_currency') || $objOrder->grandTotal != $this->Input->post('mc_gross'))
+			if ($objOrder->currency != \Input::post('mc_currency') || $objOrder->grandTotal != \Input::post('mc_gross'))
 			{
-				$this->log('IPN manipulation in payment from "' . $this->Input->post('payer_email') . '" !', __METHOD__, TL_ERROR);
+				$this->log('IPN manipulation in payment from "' . \Input::post('payer_email') . '" !', __METHOD__, TL_ERROR);
 				return;
 			}
 
 			if (!$objOrder->checkout())
 			{
-				$this->log('IPN checkout for Order ID "' . $this->Input->post('invoice') . '" failed', __METHOD__, TL_ERROR);
+				$this->log('IPN checkout for Order ID "' . \Input::post('invoice') . '" failed', __METHOD__, TL_ERROR);
 				return;
 			}
 
@@ -112,7 +112,7 @@ class PaymentPaypal extends IsotopePayment
 			$arrData = $objOrder->getData();
 			$arrData['old_payment_status'] = $arrPayment['status'];
 
-			$arrPayment['status'] = $this->Input->post('payment_status');
+			$arrPayment['status'] = \Input::post('payment_status');
 			$arrData['new_payment_status'] = $arrPayment['status'];
 
 			// array('pending','processing','complete','on_hold', 'cancelled'),

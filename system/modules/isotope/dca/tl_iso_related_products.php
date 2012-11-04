@@ -160,7 +160,7 @@ class tl_iso_related_products extends \Backend
 	public function initDCA($dc)
 	{
 		$arrCategories = array();
-		$objCategories = $this->Database->prepare("SELECT * FROM tl_iso_related_categories WHERE id NOT IN (SELECT category FROM tl_iso_related_products WHERE pid=" . (strlen($this->Input->get('act')) ? "(SELECT pid FROM tl_iso_related_products WHERE id=?) AND id!=?" : '?') . ")")
+		$objCategories = $this->Database->prepare("SELECT * FROM tl_iso_related_categories WHERE id NOT IN (SELECT category FROM tl_iso_related_products WHERE pid=" . (strlen(\Input::get('act')) ? "(SELECT pid FROM tl_iso_related_products WHERE id=?) AND id!=?" : '?') . ")")
 										->execute($dc->id, $dc->id);
 
 		while ($objCategories->next())
@@ -173,7 +173,7 @@ class tl_iso_related_products extends \Backend
 			$GLOBALS['TL_DCA']['tl_iso_related_products']['config']['closed'] = true;
 		}
 
-		if ($this->Input->get('act') == 'edit')
+		if (\Input::get('act') == 'edit')
 		{
 			unset($GLOBALS['TL_DCA']['tl_iso_related_products']['fields']['category']['foreignKey']);
 			$GLOBALS['TL_DCA']['tl_iso_related_products']['fields']['category']['options'] = $arrCategories;

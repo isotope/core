@@ -163,7 +163,7 @@ abstract class ModuleIsotope extends \Module
 				break;
 
 			case 'product':
-				$objProduct = IsotopeFrontend::getProductByAlias($this->Input->get('product'));
+				$objProduct = IsotopeFrontend::getProductByAlias(\Input::get('product'));
 
 				if ($objProduct !== null)
 				{
@@ -191,7 +191,7 @@ abstract class ModuleIsotope extends \Module
 
 	/**
 	 * Generate the URL from existing $_GET parameters.
-	 * Use $this->Input->setGet('var', null) to remove a parameter from the final URL.
+	 * Use \Input::setGet('var', null) to remove a parameter from the final URL.
 	 * @return string
 	 */
 	protected function generateRequestUrl()
@@ -230,7 +230,7 @@ abstract class ModuleIsotope extends \Module
 			if (isset($_GET[$arrFragments[$i]]))
 			{
 				$key = urldecode($arrFragments[$i]);
-				$this->Input->setGet($key, null);
+				\Input::setGet($key, null);
 				$strParams .= '/' . $key . '/' . urldecode($arrFragments[$i+1]);
 			}
 		}

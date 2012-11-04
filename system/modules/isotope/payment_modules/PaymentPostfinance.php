@@ -32,17 +32,17 @@ class PaymentPostfinance extends IsotopePayment
 	 */
 	public function processPayment()
 	{
-		if ($this->Input->get('NCERROR') > 0)
+		if (\Input::get('NCERROR') > 0)
 		{
-			$this->log('Order ID "' . $this->Input->get('orderID') . '" has NCERROR ' . $this->Input->get('NCERROR'), __METHOD__, TL_ERROR);
+			$this->log('Order ID "' . \Input::get('orderID') . '" has NCERROR ' . \Input::get('NCERROR'), __METHOD__, TL_ERROR);
 			return false;
 		}
 
 		$objOrder = new IsotopeOrder();
 
-		if (!$objOrder->findBy('id', $this->Input->get('orderID')))
+		if (!$objOrder->findBy('id', \Input::get('orderID')))
 		{
-			$this->log('Order ID "' . $this->Input->get('orderID') . '" not found', __METHOD__, TL_ERROR);
+			$this->log('Order ID "' . \Input::get('orderID') . '" not found', __METHOD__, TL_ERROR);
 			return false;
 		}
 
@@ -181,9 +181,9 @@ class PaymentPostfinance extends IsotopePayment
 	private function getRequestData($strKey)
 	{
 		if ($this->postfinance_method == 'GET')
-			return $this->Input->get($strKey);
+			return \Input::get($strKey);
 
-		return $this->Input->post($strKey);
+		return \Input::post($strKey);
 	}
 
 

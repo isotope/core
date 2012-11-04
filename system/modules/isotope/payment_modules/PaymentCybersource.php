@@ -63,7 +63,7 @@ class PaymentCybersource extends IsotopePayment
 		$doNotSubmit = false;
 		$strBuffer = '';
 
-		$arrPayment = $this->Input->post('payment');
+		$arrPayment = \Input::post('payment');
 		$arrCCTypes = deserialize($this->allowed_cc_types);	//standard keys
 
 		foreach($arrCCTypes as $type)
@@ -129,7 +129,7 @@ class PaymentCybersource extends IsotopePayment
 			$objWidget = new $strClass($this->prepareForWidget($arrData, 'payment['.$field.']'));
 
 			// Validate input
-			if ($this->Input->post('FORM_SUBMIT') == 'iso_mod_checkout_payment' && $arrPayment['module'] == $this->id)
+			if (\Input::post('FORM_SUBMIT') == 'iso_mod_checkout_payment' && $arrPayment['module'] == $this->id)
 			{
 
 				$objWidget->validate();
@@ -157,7 +157,7 @@ class PaymentCybersource extends IsotopePayment
 
 		$arrSubdivision = explode('-', $objAddress->subdivision);
 
-		if(!$doNotSubmit && $this->Input->post('FORM_SUBMIT') == 'payment_form')
+		if(!$doNotSubmit && \Input::post('FORM_SUBMIT') == 'payment_form')
 		{
 
 			try
@@ -269,7 +269,7 @@ class PaymentCybersource extends IsotopePayment
 
 		return '
 <h2>' . $this->label . '</h2>'.
-($this->Input->get('error') == '' ? '' : '<p class="error message">'.$GLOBALS['TL_LANG']['CYB'][$this->Input->get('error')].'</p>').
+(\Input::get('error') == '' ? '' : '<p class="error message">'.$GLOBALS['TL_LANG']['CYB'][\Input::get('error')].'</p>').
 '<form id="payment_form" action="'.$this->Environment->request.'" method="post">
 <input type="hidden" name="FORM_SUBMIT" value="payment_form"' . $endTag . '
 <input type="hidden" name="REQUEST_TOKEN" value="'.REQUEST_TOKEN.'"' . $endTag
@@ -285,7 +285,7 @@ class PaymentCybersource extends IsotopePayment
 		$objOrder = new IsotopeOrder();
 		$objOrder->findBy('id', $intOrderId);
 
-		$this->Input->setGet('uid', $objOrder->uniqid);
+		\Input::setGet('uid', $objOrder->uniqid);
 		$objModule = new ModuleIsotopeOrderDetails($this->Database->execute("SELECT * FROM tl_module WHERE type='iso_orderdetails'"));
 
 		$arrPaymentInfo = $objOrder->payment_data;
@@ -313,7 +313,7 @@ class PaymentCybersource extends IsotopePayment
 			$strMode = ($objAIMConfig->debug ? "test" : "secure");
 		}
 
-		if ($this->Input->post('FORM_SUBMIT') == 'be_pos_terminal' && $arrPaymentInfo['x_trans_id'] !== '0')
+		if (\Input::post('FORM_SUBMIT') == 'be_pos_terminal' && $arrPaymentInfo['x_trans_id'] !== '0')
 		{
 			$cybersource_values = array
 			(

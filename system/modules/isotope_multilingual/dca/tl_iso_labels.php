@@ -142,7 +142,7 @@ class tl_iso_labels extends \Backend
 
 	public function checkPermission($dc)
 	{
-		if (strlen($this->Input->get('act')))
+		if (strlen(\Input::get('act')))
 		{
 			$GLOBALS['TL_DCA']['tl_iso_labels']['config']['closed'] = false;
 		}

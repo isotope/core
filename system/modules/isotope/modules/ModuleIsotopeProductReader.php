@@ -52,7 +52,7 @@ class ModuleIsotopeProductReader extends ModuleIsotope
 		}
 
 		// Return if no product has been specified
-		if ($this->Input->get('product') == '')
+		if (\Input::get('product') == '')
 		{
 			return '';
 		}
@@ -67,7 +67,7 @@ class ModuleIsotopeProductReader extends ModuleIsotope
 	 */
 	public function generateAjax()
 	{
-		$objProduct = IsotopeFrontend::getProduct($this->Input->get('product'), IsotopeFrontend::getReaderPageId(), false);
+		$objProduct = IsotopeFrontend::getProduct(\Input::get('product'), IsotopeFrontend::getReaderPageId(), false);
 
 		if ($objProduct)
 		{
@@ -86,7 +86,7 @@ class ModuleIsotopeProductReader extends ModuleIsotope
 	{
 		global $objPage;
 
-		$objProduct = IsotopeFrontend::getProductByAlias($this->Input->get('product'), IsotopeFrontend::getReaderPageId());
+		$objProduct = IsotopeFrontend::getProductByAlias(\Input::get('product'), IsotopeFrontend::getReaderPageId());
 
 		if (!$objProduct)
 		{

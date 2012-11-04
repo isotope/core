@@ -572,9 +572,9 @@ class tl_iso_rules extends \Backend
 	 */
 	public function toggleIcon($row, $href, $label, $title, $icon, $attributes)
 	{
-		if (strlen($this->Input->get('tid')))
+		if (strlen(\Input::get('tid')))
 		{
-			$this->toggleVisibility($this->Input->get('tid'), ($this->Input->get('state') == 1));
+			$this->toggleVisibility(\Input::get('tid'), (\Input::get('state') == 1));
 			$this->redirect($this->getReferer());
 		}
 
@@ -603,8 +603,8 @@ class tl_iso_rules extends \Backend
 	public function toggleVisibility($intId, $blnVisible)
 	{
 //		// Check permissions to edit
-//		$this->Input->setGet('id', $intId);
-//		$this->Input->setGet('act', 'toggle');
+//		\Input::setGet('id', $intId);
+//		\Input::setGet('act', 'toggle');
 //		$this->checkPermission();
 
 		// Check permissions to publish
@@ -668,7 +668,7 @@ class tl_iso_rules extends \Backend
 	 */
 	public function loadAttributeValues($dc)
 	{
-		if ($this->Input->get('act') == 'edit')
+		if (\Input::get('act') == 'edit')
 		{
 			$this->loadDataContainer('tl_iso_products');
 			$this->loadLanguageFile('tl_iso_products');

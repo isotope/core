@@ -170,7 +170,7 @@ class PaymentPaypalPayflowPro extends IsotopePayment
 	public function paymentForm($objCheckoutModule)
 	{
 		$strBuffer = '';
-		$arrPayment = $this->Input->post('payment');
+		$arrPayment = \Input::post('payment');
 		$arrCCTypes = deserialize($this->allowed_cc_types);
 
 		$intStartYear = (integer)date('Y', time());	//Requires 4-digit year
@@ -246,7 +246,7 @@ class PaymentPaypalPayflowPro extends IsotopePayment
 			$objWidget = new $strClass($this->prepareForWidget($arrData, 'payment['.$this->id.']['.$field.']', $_SESSION['CHECKOUT_DATA']['payment'][$this->id][$field]));
 
 			// Validate input
-			if ($this->Input->post('FORM_SUBMIT') == 'iso_mod_checkout_payment' && $arrPayment['module'] == $this->id)
+			if (\Input::post('FORM_SUBMIT') == 'iso_mod_checkout_payment' && $arrPayment['module'] == $this->id)
 			{
 				$objWidget->validate();
 
@@ -259,7 +259,7 @@ class PaymentPaypalPayflowPro extends IsotopePayment
 			$strBuffer .= $objWidget->parse();
 		}
 
-		if ($this->Input->post('FORM_SUBMIT') == 'iso_mod_checkout_payment' && $arrPayment['module'] == $this->id && !$objCheckoutModule->doNotSubmit)
+		if (\Input::post('FORM_SUBMIT') == 'iso_mod_checkout_payment' && $arrPayment['module'] == $this->id && !$objCheckoutModule->doNotSubmit)
 		{
 			$strCard = $this->validateCreditCard($arrPayment[$this->id]['cc_num']);
 

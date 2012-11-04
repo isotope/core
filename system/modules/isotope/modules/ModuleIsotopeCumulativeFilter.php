@@ -82,10 +82,10 @@ class ModuleIsotopeCumulativeFilter extends ModuleIsotopeProductFilter
 	 */
 	protected function compile()
 	{
-		$this->blnCacheRequest =	($this->Input->get('cfilter') &&
-									$this->Input->get('attr') &&
-									$this->Input->get('v') &&
-									$this->Input->get('mod') == $this->id) ? true : false;
+		$this->blnCacheRequest =	(\Input::get('cfilter') &&
+									\Input::get('attr') &&
+									\Input::get('v') &&
+									\Input::get('mod') == $this->id) ? true : false;
 
 		$this->generateFilter();
 
@@ -102,9 +102,9 @@ class ModuleIsotopeCumulativeFilter extends ModuleIsotopeProductFilter
 		$arrFilters = array();
 
 		// get values
-		$strMode		= $this->Input->get('cfilter');
-		$strField		= $this->Input->get('attr');
-		$intValue		= $this->Input->get('v');
+		$strMode		= \Input::get('cfilter');
+		$strField		= \Input::get('attr');
+		$intValue		= \Input::get('v');
 		$strFilterKey	= $strField . '::' . $intValue;
 
 		// set filter values
@@ -125,10 +125,10 @@ class ModuleIsotopeCumulativeFilter extends ModuleIsotopeProductFilter
 			}
 
 			// unset GET params because the rest is done by ModuleIsotopeProductFilter::generate()
-			$this->Input->setGet('mod', null);
-			$this->Input->setGet('cfilter', null);
-			$this->Input->setGet('attr', null);
-			$this->Input->setGet('v', null);
+			\Input::setGet('mod', null);
+			\Input::setGet('cfilter', null);
+			\Input::setGet('attr', null);
+			\Input::setGet('v', null);
 		}
 
 		// build filter

@@ -98,7 +98,7 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 		$objPage->noSearch = 1;
 		$objPage->cache = 0;
 
-		$this->strCurrentStep = $this->Input->get('step');
+		$this->strCurrentStep = \Input::get('step');
 		return parent::generate();
 	}
 
@@ -120,11 +120,11 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 	protected function compile()
 	{
 		// Order has been completed (postsale request)
-		if ($this->strCurrentStep == 'complete' && $this->Input->get('uid') != '')
+		if ($this->strCurrentStep == 'complete' && \Input::get('uid') != '')
 		{
 			$objOrder = new IsotopeOrder();
 
-			if ($objOrder->findBy('uniqid', $this->Input->get('uid')))
+			if ($objOrder->findBy('uniqid', \Input::get('uid')))
 			{
 				// Order is complete, forward to confirmation page
 				if ($objOrder->complete())
@@ -186,7 +186,7 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 			return;
 		}
 
-		if (!$this->iso_forward_review && !strlen($this->Input->get('step')))
+		if (!$this->iso_forward_review && !strlen(\Input::get('step')))
 		{
 			$this->redirectToNextStep();
 		}
@@ -219,7 +219,7 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 		{
 			$this->Database->prepare("UPDATE tl_iso_orders SET status=? WHERE cart_id=?")->execute($this->Isotope->Config->orderstatus_error, $this->Isotope->Cart->id);
 			$this->Template->mtype = 'error';
-			$this->Template->message = strlen($this->Input->get('reason')) ? $this->Input->get('reason') : $GLOBALS['TL_LANG']['ERR']['orderFailed'];
+			$this->Template->message = strlen(\Input::get('reason')) ? \Input::get('reason') : $GLOBALS['TL_LANG']['ERR']['orderFailed'];
 			$this->strCurrentStep = 'review';
 		}
 
@@ -362,13 +362,13 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 		}
 
 		// User pressed "back" button
-		if (strlen($this->Input->post('previousStep')))
+		if (strlen(\Input::post('previousStep')))
 		{
 			$this->redirectToPreviousStep();
 		}
 
 		// Valid input data, redirect to next step
-		elseif ($this->Input->post('FORM_SUBMIT') == $this->strFormId && !$this->doNotSubmit)
+		elseif (\Input::post('FORM_SUBMIT') == $this->strFormId && !$this->doNotSubmit)
 		{
 			$this->redirectToNextStep();
 		}
@@ -567,7 +567,7 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 
 		if (is_array($arrModuleIds) && !empty($arrModuleIds))
 		{
-			$arrData = $this->Input->post('shipping');
+			$arrData = \Input::post('shipping');
 			$arrModuleIds = array_map('intval', $arrModuleIds);
 
 			$objModules = $this->Database->execute("SELECT * FROM tl_iso_shipping_modules WHERE id IN (" . implode(',', $arrModuleIds) . ")" . (BE_USER_LOGGED_IN === true ? '' : " AND enabled='1'") . " ORDER BY " . $this->Database->findInSet('id', $arrModuleIds));
@@ -641,7 +641,7 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 		}
 		elseif (!$this->Isotope->Cart->hasShipping)
 		{
-			if ($this->Input->post('FORM_SUBMIT') != '')
+			if (\Input::post('FORM_SUBMIT') != '')
 			{
 				$objTemplate->error = $GLOBALS['TL_LANG']['ISO']['shipping_method_missing'];
 			}
@@ -702,7 +702,7 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 
 		if (is_array($arrModuleIds) && !empty($arrModuleIds))
 		{
-			$arrData = $this->Input->post('payment');
+			$arrData = \Input::post('payment');
 			$arrModuleIds = array_map('intval', $arrModuleIds);
 
 			$objModules = $this->Database->execute("SELECT * FROM tl_iso_payment_modules WHERE id IN (" . implode(',', $arrModuleIds) . ")" . (BE_USER_LOGGED_IN === true ? '' : " AND enabled='1'") . " ORDER BY " . $this->Database->findInSet('id', $arrModuleIds));
@@ -776,7 +776,7 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 		}
 		elseif (!$this->Isotope->Cart->hasPayment)
 		{
-			if ($this->Input->post('FORM_SUBMIT') != '')
+			if (\Input::post('FORM_SUBMIT') != '')
 			{
 				$objTemplate->error = $GLOBALS['TL_LANG']['ISO']['payment_method_missing'];
 			}
@@ -1174,7 +1174,7 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 			$objWidget->tableless = true;
 
 			// Validate input
-			if ($this->Input->post('FORM_SUBMIT') == $this->strFormId)
+			if (\Input::post('FORM_SUBMIT') == $this->strFormId)
 			{
 				$objWidget->validate();
 
@@ -1189,7 +1189,7 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 			}
 			elseif ($objWidget->value != '')
 			{
-				$this->Input->setPost($objWidget->name, $objWidget->value);
+				\Input::setPost($objWidget->name, $objWidget->value);
 
 				$objValidator = clone $objWidget;
 				$objValidator->validate();
@@ -1294,7 +1294,7 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 			$objWidget->storeValues = true;
 
 			// Validate input
-			if ($this->Input->post('FORM_SUBMIT') == $this->strFormId && ($this->Input->post($strAddressType) === '0' || $this->Input->post($strAddressType) == ''))
+			if (\Input::post('FORM_SUBMIT') == $this->strFormId && (\Input::post($strAddressType) === '0' || \Input::post($strAddressType) == ''))
 			{
 				$objWidget->validate();
 				$varValue = $objWidget->value;
@@ -1318,9 +1318,9 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 					$arrAddress[$field['value']] = $varValue;
 				}
 			}
-			elseif ($this->Input->post($strAddressType) === '0' || $this->Input->post($strAddressType) == '')
+			elseif (\Input::post($strAddressType) === '0' || \Input::post($strAddressType) == '')
 			{
-				$this->Input->setPost($objWidget->name, $objWidget->value);
+				\Input::setPost($objWidget->name, $objWidget->value);
 
 				$objValidator = clone $objWidget;
 				$objValidator->validate();
@@ -1337,7 +1337,7 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 		$arrWidgets = IsotopeFrontend::generateRowClass($arrWidgets, 'row', 'rowClass', 0, ISO_CLASS_COUNT|ISO_CLASS_FIRSTLAST|ISO_CLASS_EVENODD);
 
 		// Validate input
-		if ($this->Input->post('FORM_SUBMIT') == $this->strFormId && !$this->doNotSubmit && is_array($arrAddress) && !empty($arrAddress))
+		if (\Input::post('FORM_SUBMIT') == $this->strFormId && !$this->doNotSubmit && is_array($arrAddress) && !empty($arrAddress))
 		{
 			$arrAddress['id'] = 0;
 			$_SESSION['CHECKOUT_DATA'][$strAddressType] = $arrAddress;

@@ -177,10 +177,10 @@ class IsotopeRules extends \Controller
 	public function getCouponForm($objModule)
 	{
 		$arrCoupons = is_array(deserialize($this->Isotope->Cart->coupons)) ? deserialize($this->Isotope->Cart->coupons) : array();
-		$strCoupon = $this->Input->get('coupon_'.$objModule->id);
+		$strCoupon = \Input::get('coupon_'.$objModule->id);
 
 		if ($strCoupon == '')
-			$strCoupon = $this->Input->get('coupon');
+			$strCoupon = \Input::get('coupon');
 
 		if ($strCoupon != '')
 		{

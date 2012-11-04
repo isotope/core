@@ -66,7 +66,7 @@ class PasteProductButton extends \Backend
 		// Create a new product or variant
 		if ($arrClipboard['mode'] == 'create')
 		{
-			return $this->Input->get('type') == 'variant' ? $this->createVariant($table, $row, $arrClipboard) : $this->createProduct($table, $row, $arrClipboard);
+			return \Input::get('type') == 'variant' ? $this->createVariant($table, $row, $arrClipboard) : $this->createProduct($table, $row, $arrClipboard);
 		}
 
 		// Copy or cut a single product or variant

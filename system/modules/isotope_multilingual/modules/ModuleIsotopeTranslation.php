@@ -40,7 +40,7 @@ class ModuleIsotopeTranslation extends \BackendModule
 			return '<p class="tl_gerror">' . $GLOBALS['ISO_LANG']['ERR']['noLanguageForTranslation'] . '</p>';
 		}
 
-		if ($this->Input->get('act') == 'download')
+		if (\Input::get('act') == 'download')
 		{
 			return $this->export();
 		}
@@ -56,12 +56,12 @@ class ModuleIsotopeTranslation extends \BackendModule
 	{
 		$this->import('Session');
 
-		if ($this->Input->post('FORM_SUBMIT') == 'tl_translation_filters')
+		if (\Input::post('FORM_SUBMIT') == 'tl_translation_filters')
 		{
 			$arrFilter['filter_translation']['isotope_translation'] = array
 			(
-				'module'	=> $this->Input->post('module'),
-				'file'		=> $this->Input->post('file'),
+				'module'	=> \Input::post('module'),
+				'file'		=> \Input::post('file'),
 			);
 
 			$this->Session->appendData($arrFilter);
@@ -115,13 +115,13 @@ class ModuleIsotopeTranslation extends \BackendModule
 			$arrSource = $this->parseFile(TL_ROOT . '/system/modules/' . $arrSession['module']. '/languages/en/' . $arrSession['file']);
 			$arrTranslation = $this->parseFile(TL_ROOT . '/system/modules/' . $arrSession['module']. '/languages/' . $this->User->translation . '/' . $arrSession['file']);
 
-			if ($this->Input->post('FORM_SUBMIT') == 'isotope_translation')
+			if (\Input::post('FORM_SUBMIT') == 'isotope_translation')
 			{
 				$strData = '';
 
 				foreach( array_keys($arrSource) as $key )
 				{
-					$value = trim($this->Input->postRaw(standardize($key)));
+					$value = trim(\Input::postRaw(standardize($key)));
 
 					if (!strlen($value))
 						continue;

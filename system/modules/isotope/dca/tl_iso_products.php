@@ -86,7 +86,7 @@ $GLOBALS['TL_DCA']['tl_iso_products'] = array
 			'filter' => array
 			(
 				'label'				=> &$GLOBALS['TL_LANG']['tl_iso_products']['filter'],
-				'class'				=> ('header_iso_filter' . (is_array($this->Input->get('filter')) ? ' header_iso_filter_active' : '')),
+				'class'				=> ('header_iso_filter' . (is_array(\Input::get('filter')) ? ' header_iso_filter_active' : '')),
 				'attributes'		=> 'onclick="Backend.getScrollOffset();" style="display:none"',
 			),
 			'filter_noimages' => array
@@ -134,7 +134,7 @@ $GLOBALS['TL_DCA']['tl_iso_products'] = array
 				'label'				=> &$GLOBALS['TL_LANG']['tl_iso_products']['filter_remove'],
 				'href'				=> 'filter[]=test',
 				'class'				=> 'header_iso_filter_remove isotope-filter',
-				'attributes'		=> ('onclick="Backend.getScrollOffset();"' . (is_array($this->Input->get('filter')) ? '' : ' style="display:none"')),
+				'attributes'		=> ('onclick="Backend.getScrollOffset();"' . (is_array(\Input::get('filter')) ? '' : ' style="display:none"')),
 				'button_callback'	=> array('ProductCallbacks', 'filterRemoveButton'),
 			),
 			'tools' => array
@@ -307,7 +307,7 @@ $GLOBALS['TL_DCA']['tl_iso_products'] = array
 			'filter'				=> true,
 			'inputType'				=> 'select',
 			'options_callback'		=> array('ProductCallbacks', 'getProductTypes'),
-			'foreignKey'			=> (strlen($this->Input->get('table')) ? 'tl_iso_producttypes.name' : null),
+			'foreignKey'			=> (strlen(\Input::get('table')) ? 'tl_iso_producttypes.name' : null),
 			'eval'					=> array('mandatory'=>true, 'submitOnChange'=>true, 'includeBlankOption'=>true, 'tl_class'=>'clr'),
 			'attributes'			=> array('legend'=>'general_legend', 'fixed'=>true, 'inherit'=>true),
 		),
@@ -626,7 +626,7 @@ class tl_iso_products extends \Backend
 
 					$objWidget = new CheckBox($arrField);
 
-					if ($this->Input->post('FORM_SUBMIT') == 'tl_product_generate')
+					if (\Input::post('FORM_SUBMIT') == 'tl_product_generate')
 					{
 						$objWidget->validate();
 
@@ -644,7 +644,7 @@ class tl_iso_products extends \Backend
 				}
 			}
 
-			if ($this->Input->post('FORM_SUBMIT') == 'tl_product_generate' && !$doNotSubmit)
+			if (\Input::post('FORM_SUBMIT') == 'tl_product_generate' && !$doNotSubmit)
 			{
 				$time = time();
 				$arrCombinations = array();
@@ -806,7 +806,7 @@ $strBuffer .= '<th style="text-align:center"><img src="system/themes/default/ima
 						break;
 				}
 
-				if ($this->Input->post('FORM_SUBMIT') == 'tl_product_quick_edit')
+				if (\Input::post('FORM_SUBMIT') == 'tl_product_quick_edit')
 				{
 					$objWidget->validate();
 
@@ -823,9 +823,9 @@ $strBuffer .= '<th style="text-align:center"><img src="system/themes/default/ima
 			}
 
 
-			if ($this->Input->post('FORM_SUBMIT') == 'tl_product_quick_edit' && !$doNotSubmit)
+			if (\Input::post('FORM_SUBMIT') == 'tl_product_quick_edit' && !$doNotSubmit)
 			{
-				$arrPublished = $this->Input->post('published');
+				$arrPublished = \Input::post('published');
 				$arrSet['published'] = ($arrPublished[$objVariants->id] ? $arrPublished[$objVariants->id] : '');
 
 				$this->Database->prepare("UPDATE tl_iso_products %s WHERE id=?")
@@ -856,9 +856,9 @@ $strBuffer .= '<th style="text-align:center"><img src="system/themes/default/ima
 
 		}
 
-		if ($this->Input->post('FORM_SUBMIT') == 'tl_product_quick_edit' && !$globalDoNotSubmit)
+		if (\Input::post('FORM_SUBMIT') == 'tl_product_quick_edit' && !$globalDoNotSubmit)
 		{
-			if (strlen($this->Input->post('saveNclose')))
+			if (strlen(\Input::post('saveNclose')))
 			{
 				$this->redirect(str_replace('&key=quick_edit', '', $this->Environment->request));
 			}
@@ -897,11 +897,11 @@ $strBuffer .= '<th style="text-align:center"><img src="system/themes/default/ima
 		$objTree = new FileTree($this->prepareForWidget($GLOBALS['TL_DCA']['tl_iso_products']['fields']['source'], 'source', null, 'source', 'tl_iso_products'));
 
 		// Import assets
-		if ($this->Input->post('FORM_SUBMIT') == 'tl_iso_products_import' && $this->Input->post('source') != '')
+		if (\Input::post('FORM_SUBMIT') == 'tl_iso_products_import' && \Input::post('source') != '')
 		{
 			$this->import('Files');
 
-			$strPath = $this->Input->post('source');
+			$strPath = \Input::post('source');
 			$arrFiles = scan(TL_ROOT . '/' . $strPath);
 
 			if (empty($arrFiles))
@@ -1105,8 +1105,8 @@ $strBuffer .= '<th style="text-align:center"><img src="system/themes/default/ima
 	public function toggleVisibility($intId, $blnVisible)
 	{
 		// Check permissions to edit
-		$this->Input->setGet('id', $intId);
-		$this->Input->setGet('act', 'toggle');
+		\Input::setGet('id', $intId);
+		\Input::setGet('act', 'toggle');
 
 		$this->import('ProductCallbacks');
 		$this->ProductCallbacks->checkPermission();

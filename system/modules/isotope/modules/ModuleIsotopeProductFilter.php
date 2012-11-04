@@ -63,7 +63,7 @@ class ModuleIsotopeProductFilter extends ModuleIsotope
 		}
 
 		// Hide product list in reader mode if the respective setting is enabled
-		if ($this->iso_hide_list && $this->Input->get('product') != '')
+		if ($this->iso_hide_list && \Input::get('product') != '')
 		{
 			return '';
 		}
@@ -96,7 +96,7 @@ class ModuleIsotopeProductFilter extends ModuleIsotope
 												 ->insertId;
 				}
 
-				$this->Input->setGet('isorc', $intCacheId);
+				\Input::setGet('isorc', $intCacheId);
 			}
 
 			$this->redirect($this->generateRequestUrl());
@@ -112,7 +112,7 @@ class ModuleIsotopeProductFilter extends ModuleIsotope
 	 */
 	public function generateAjax()
 	{
-		if ($this->iso_searchAutocomplete && $this->Input->get('autocomplete'))
+		if ($this->iso_searchAutocomplete && \Input::get('autocomplete'))
 		{
 			$time = time();
 			$arrCategories = $this->findCategories($this->iso_category_scope);
@@ -160,7 +160,7 @@ class ModuleIsotopeProductFilter extends ModuleIsotope
 	 */
 	protected function compile()
 	{
-		$this->blnCacheRequest = $this->Input->post('FORM_SUBMIT') == 'iso_filter_'.$this->id ? true : false;
+		$this->blnCacheRequest = \Input::post('FORM_SUBMIT') == 'iso_filter_'.$this->id ? true : false;
 
 		$this->generateFilters();
 		$this->generateSorting();
@@ -193,9 +193,9 @@ class ModuleIsotopeProductFilter extends ModuleIsotope
 
 		if (is_array($this->iso_searchFields) && count($this->iso_searchFields)) // Can't use empty() because its an object property (using __get)
 		{
-			if ($this->Input->get('keywords') != '' && $this->Input->get('keywords') != $GLOBALS['TL_LANG']['MSC']['defaultSearchText'])
+			if (\Input::get('keywords') != '' && \Input::get('keywords') != $GLOBALS['TL_LANG']['MSC']['defaultSearchText'])
 			{
-				$arrKeywords = trimsplit(' ', $this->Input->get('keywords'));
+				$arrKeywords = trimsplit(' ', \Input::get('keywords'));
 
 				foreach ($arrKeywords as $keyword)
 				{
@@ -214,7 +214,7 @@ class ModuleIsotopeProductFilter extends ModuleIsotope
 
 			$this->Template->hasSearch = true;
 			$this->Template->keywordsLabel = $GLOBALS['TL_LANG']['MSC']['searchTermsLabel'];
-			$this->Template->keywords = $this->Input->get('keywords');
+			$this->Template->keywords = \Input::get('keywords');
 			$this->Template->searchLabel = $GLOBALS['TL_LANG']['MSC']['searchLabel'];
 			$this->Template->defaultSearchText = $GLOBALS['TL_LANG']['MSC']['defaultSearchText'];
 		}
@@ -233,7 +233,7 @@ class ModuleIsotopeProductFilter extends ModuleIsotope
 		{
 			$time = time();
 			$arrFilters = array();
-			$arrInput = $this->Input->post('filter');
+			$arrInput = \Input::post('filter');
 			$arrCategories = $this->findCategories($this->iso_category_scope);
 
 			foreach ($this->iso_filterFields as $strField)
@@ -267,7 +267,7 @@ class ModuleIsotopeProductFilter extends ModuleIsotope
 					$this->blnCacheRequest = true;
 					unset($GLOBALS['ISO_FILTERS'][$this->id][$strField]);
 
-					$this->Database->prepare("DELETE FROM tl_iso_requestcache WHERE id=?")->execute($this->Input->get('isorc'));
+					$this->Database->prepare("DELETE FROM tl_iso_requestcache WHERE id=?")->execute(\Input::get('isorc'));
 				}
 
 				// No need to generate options if we reload anyway
@@ -351,7 +351,7 @@ class ModuleIsotopeProductFilter extends ModuleIsotope
 
 			// Cache new request value
 			// @todo should support multiple sorting fields
-			list($sortingField, $sortingDirection) = explode(':', $this->Input->post('sorting'));
+			list($sortingField, $sortingDirection) = explode(':', \Input::post('sorting'));
 
 			if ($this->blnCacheRequest && in_array($sortingField, $this->iso_sortingFields))
 			{
@@ -364,7 +364,7 @@ class ModuleIsotopeProductFilter extends ModuleIsotope
 				$this->blnCacheRequest = true;
 				unset($GLOBALS['ISO_SORTING'][$this->id]);
 
-				$this->Database->prepare("DELETE FROM tl_iso_requestcache WHERE id=?")->execute($this->Input->get('isorc'));
+				$this->Database->prepare("DELETE FROM tl_iso_requestcache WHERE id=?")->execute(\Input::get('isorc'));
 			}
 
 			// No need to generate options if we reload anyway
@@ -414,9 +414,9 @@ class ModuleIsotopeProductFilter extends ModuleIsotope
 			sort($arrLimit);
 
 			// Cache new request value
-			if ($this->blnCacheRequest && in_array($this->Input->post('limit'), $arrLimit))
+			if ($this->blnCacheRequest && in_array(\Input::post('limit'), $arrLimit))
 			{
-				$GLOBALS['ISO_LIMIT'][$this->id] = (int)$this->Input->post('limit');
+				$GLOBALS['ISO_LIMIT'][$this->id] = (int)\Input::post('limit');
 			}
 
 			// Request cache contains wrong value, delete it!
@@ -425,7 +425,7 @@ class ModuleIsotopeProductFilter extends ModuleIsotope
 				$this->blnCacheRequest = true;
 				$GLOBALS['ISO_LIMIT'][$this->id] = $intLimit;
 
-				$this->Database->prepare("DELETE FROM tl_iso_requestcache WHERE id=?")->execute($this->Input->get('isorc'));
+				$this->Database->prepare("DELETE FROM tl_iso_requestcache WHERE id=?")->execute(\Input::get('isorc'));
 			}
 
 			// No need to generate options if we reload anyway

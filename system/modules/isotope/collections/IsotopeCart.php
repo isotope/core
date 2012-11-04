@@ -218,7 +218,7 @@ class IsotopeCart extends IsotopeProductCollection
 	public function initializeCart($intConfig, $intStore)
 	{
 		$time = time();
-		$this->strHash = $this->Input->cookie($this->strCookie);
+		$this->strHash = \Input::cookie($this->strCookie);
 
 		//  Check to see if the user is logged in.
 		if (FE_USER_LOGGED_IN !== true)

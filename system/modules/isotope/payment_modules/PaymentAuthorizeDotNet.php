@@ -110,7 +110,7 @@ class PaymentAuthorizeDotNet extends IsotopePayment
 		$_SESSION['checkout']['grandTotal'] = $this->Isotope->Cart->grandTotal;
 
 		$strBuffer = '';
-		$arrPayment = $this->Input->post('payment');
+		$arrPayment = \Input::post('payment');
 
 		$arrCCTypes = deserialize($this->allowed_cc_types);
 
@@ -178,7 +178,7 @@ class PaymentAuthorizeDotNet extends IsotopePayment
 			//$objWidget->value = $_SESSION['CHECKOUT_DATA']['payment'][$field];
 
 			// Validate input
-			if ($this->Input->post('FORM_SUBMIT') == 'payment_form' && $arrPayment['module']==$this->id)
+			if (\Input::post('FORM_SUBMIT') == 'payment_form' && $arrPayment['module']==$this->id)
 			{
 				$objWidget->validate();
 
@@ -205,7 +205,7 @@ class PaymentAuthorizeDotNet extends IsotopePayment
 			$strBuffer .= $objWidget->parse();
 		}
 
-		if ($this->Input->post('FORM_SUBMIT') == 'iso_mod_checkout_payment' && !$objModule->doNotSubmit && $arrPayment['module']==$this->id && !$_SESSION['CHECKOUT_DATA']['payment']['request_lockout'])
+		if (\Input::post('FORM_SUBMIT') == 'iso_mod_checkout_payment' && !$objModule->doNotSubmit && $arrPayment['module']==$this->id && !$_SESSION['CHECKOUT_DATA']['payment']['request_lockout'])
 		{
 			//Gather Order data and set IsotopeOrder object
 			$objOrder = new IsotopeOrder();
@@ -263,7 +263,7 @@ class PaymentAuthorizeDotNet extends IsotopePayment
 							   ->fetchAssoc();
 
 
-		$this->Input->setGet('uid', $arrOrderInfo['uniqid']);
+		\Input::setGet('uid', $arrOrderInfo['uniqid']);
 		$objModule = new ModuleIsotopeOrderDetails($this->Database->execute("SELECT * FROM tl_module WHERE type='iso_orderdetails'"));
 
 		$strOrderDetails = $objModule->generate(true);
@@ -292,7 +292,7 @@ class PaymentAuthorizeDotNet extends IsotopePayment
 		}
 
 
-		if ($this->Input->post('FORM_SUBMIT') == 'be_pos_terminal' && $arrPaymentData['transaction-id']!=="0")
+		if (\Input::post('FORM_SUBMIT') == 'be_pos_terminal' && $arrPaymentData['transaction-id']!=="0")
 		{
 			$blnAuthCapture = $this->authCapturePayment($arrOrderInfo['id'], $arrOrderInfo['grandTotal'], true);
 
@@ -458,7 +458,7 @@ $return .= '</div></div>';
 
 		if(!$blnCapture) //Gather CC Data from post
 		{
-			$arrPaymentInput = $this->Input->post('payment');
+			$arrPaymentInput = \Input::post('payment');
                         unset($_POST['payment']);
 			$authnet_values["x_method"] 	= "CC";
 			$authnet_values["x_card_num"]	= $arrPaymentInput['card_accountNumber'];

@@ -320,7 +320,7 @@ class tl_iso_orders extends \Backend
 		$GLOBALS['TL_CSS'][] = 'system/modules/isotope/assets/print.min.css|print';
 
 		// Generate a regular order details module
-		$this->Input->setGet('uid', $objOrder->uniqid);
+		\Input::setGet('uid', $objOrder->uniqid);
 		$objModule = new ModuleIsotopeOrderDetails($this->Database->execute("SELECT * FROM tl_module WHERE type='iso_orderdetails'"));
 		return $objModule->generate(true);
 	}
@@ -479,7 +479,7 @@ class tl_iso_orders extends \Backend
 
 		// Only admins can delete orders. Others should set the status to cancelled.
 		unset($GLOBALS['TL_DCA']['tl_iso_orders']['list']['operations']['delete']);
-		if ($this->Input->get('act') == 'delete' || $this->Input->get('act') == 'deleteAll')
+		if (\Input::get('act') == 'delete' || \Input::get('act') == 'deleteAll')
 		{
 			$this->log('Only admin can delete orders!', __METHOD__, TL_ERROR);
 			$this->redirect('contao/main.php?act=error');
@@ -500,9 +500,9 @@ class tl_iso_orders extends \Backend
 
 		$GLOBALS['TL_DCA']['tl_iso_orders']['list']['sorting']['root'] = $arrIds;
 
-		if ($this->Input->get('id') != '' && !in_array($this->Input->get('id'), $arrIds))
+		if (\Input::get('id') != '' && !in_array(\Input::get('id'), $arrIds))
 		{
-			$this->log('Trying to access disallowed order ID '.$this->Input->get('id'), __METHOD__, TL_ERROR);
+			$this->log('Trying to access disallowed order ID '.\Input::get('id'), __METHOD__, TL_ERROR);
 			$this->redirect($this->Environment->script.'?act=error');
 		}
 	}
@@ -516,7 +516,7 @@ class tl_iso_orders extends \Backend
 	 */
 	public function exportOrderEmails(\DataContainer $dc)
 	{
-		if ($this->Input->get('key') != 'export_emails')
+		if (\Input::get('key') != 'export_emails')
 		{
 			return '';
 		}
@@ -624,9 +624,9 @@ class tl_iso_orders extends \Backend
 
 		$objWidget = new SelectMenu($this->prepareForWidget($GLOBALS['TL_DCA']['tl_iso_orders']['fields']['status'], 'status'));
 
-		if ($this->Input->post('FORM_SUBMIT') == 'tl_print_invoices')
+		if (\Input::post('FORM_SUBMIT') == 'tl_print_invoices')
 		{
-			$objOrders = $this->Database->prepare("SELECT id FROM tl_iso_orders WHERE status=?")->execute($this->Input->post('status'));
+			$objOrders = $this->Database->prepare("SELECT id FROM tl_iso_orders WHERE status=?")->execute(\Input::post('status'));
 
 			if ($objOrders->numRows)
 			{

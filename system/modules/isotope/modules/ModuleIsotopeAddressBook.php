@@ -102,21 +102,21 @@ class ModuleIsotopeAddressBook extends ModuleIsotope
 		}
 
 		// Do not add a break statement. If ID is not available, it will show all addresses.
-		switch ($this->Input->get('act'))
+		switch (\Input::get('act'))
 		{
 			case 'create':
 				return $this->edit();
 
 			case 'edit':
-				if (strlen($this->Input->get('address')))
+				if (strlen(\Input::get('address')))
 				{
-					return $this->edit($this->Input->get('address'));
+					return $this->edit(\Input::get('address'));
 				}
 
 			case 'delete':
-				if (strlen($this->Input->get('address')))
+				if (strlen(\Input::get('address')))
 				{
-					return $this->delete($this->Input->get('address'));
+					return $this->delete(\Input::get('address'));
 				}
 
 			default:
@@ -248,7 +248,7 @@ class ModuleIsotopeAddressBook extends ModuleIsotope
 			$objWidget->rowClass = 'row_'.$row . (($row == 0) ? ' row_first' : '') . ((($row % 2) == 0) ? ' even' : ' odd');
 
 			// Validate input
-			if ($this->Input->post('FORM_SUBMIT') == 'tl_iso_addresses_' . $this->id)
+			if (\Input::post('FORM_SUBMIT') == 'tl_iso_addresses_' . $this->id)
 			{
 				$objWidget->validate();
 				$varValue = $objWidget->value;
@@ -319,7 +319,7 @@ class ModuleIsotopeAddressBook extends ModuleIsotope
 		$this->Template->hasError = $doNotSubmit;
 
 		// Redirect or reload if there was no error
-		if ($this->Input->post('FORM_SUBMIT') == 'tl_iso_addresses_' . $this->id && !$doNotSubmit)
+		if (\Input::post('FORM_SUBMIT') == 'tl_iso_addresses_' . $this->id && !$doNotSubmit)
 		{
 			if (!$objAddress->id)
 			{

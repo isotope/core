@@ -50,7 +50,7 @@ class ModuleIsotopeRelatedProducts extends ModuleIsotopeProductList
 			return $objTemplate->parse();
 		}
 
-		if (!strlen($this->Input->get('product')))
+		if (!strlen(\Input::get('product')))
 		{
 			return '';
 		}
@@ -72,7 +72,7 @@ class ModuleIsotopeRelatedProducts extends ModuleIsotopeProductList
 	 */
 	protected function findProducts($arrCacheIds=null)
 	{
-		$strAlias = $this->Input->get('product');
+		$strAlias = \Input::get('product');
 		$arrIds = array(0);
 		$arrJumpTo = array();
 

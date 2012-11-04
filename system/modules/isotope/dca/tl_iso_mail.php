@@ -242,7 +242,7 @@ class tl_iso_mail extends \Backend
 	public function checkPermission()
 	{
 		// Do not run the permission check on other Isotope modules
-		if ($this->Input->get('mod') != 'iso_mail')
+		if (\Input::get('mod') != 'iso_mail')
 		{
 			return;
 		}
@@ -274,7 +274,7 @@ class tl_iso_mail extends \Backend
 			unset($GLOBALS['TL_DCA']['tl_iso_mail']['list']['global_operations']['new']);
 			unset($GLOBALS['TL_DCA']['tl_iso_mail']['list']['global_operations']['importMail']);
 
-			if ($this->Input->get('key') == 'importMail')
+			if (\Input::get('key') == 'importMail')
 			{
 				$this->log('Not enough permissions to import mail templates', __METHOD__, TL_ERROR);
 				$this->redirect('contao/main.php?act=error');
@@ -282,7 +282,7 @@ class tl_iso_mail extends \Backend
 		}
 
 		// Check current action
-		switch ($this->Input->get('act'))
+		switch (\Input::get('act'))
 		{
 			case 'create':
 			case 'select':
@@ -291,11 +291,11 @@ class tl_iso_mail extends \Backend
 
 			case 'edit':
 				// Dynamically add the record to the user profile
-				if (!in_array($this->Input->get('id'), $root))
+				if (!in_array(\Input::get('id'), $root))
 				{
 					$arrNew = $this->Session->get('new_records');
 
-					if (is_array($arrNew['tl_iso_mail']) && in_array($this->Input->get('id'), $arrNew['tl_iso_mail']))
+					if (is_array($arrNew['tl_iso_mail']) && in_array(\Input::get('id'), $arrNew['tl_iso_mail']))
 					{
 						// Add permissions on user level
 						if ($this->User->inherit == 'custom' || !$this->User->groups[0])
@@ -309,7 +309,7 @@ class tl_iso_mail extends \Backend
 							if (is_array($arrPermissions) && in_array('create', $arrPermissions))
 							{
 								$arrAccess = deserialize($objUser->iso_mails);
-								$arrAccess[] = $this->Input->get('id');
+								$arrAccess[] = \Input::get('id');
 
 								$this->Database->prepare("UPDATE tl_user SET iso_mails=? WHERE id=?")
 											   ->execute(serialize($arrAccess), $this->User->id);
@@ -328,7 +328,7 @@ class tl_iso_mail extends \Backend
 							if (is_array($arrPermissions) && in_array('create', $arrPermissions))
 							{
 								$arrAccess = deserialize($objGroup->iso_mails);
-								$arrAccess[] = $this->Input->get('id');
+								$arrAccess[] = \Input::get('id');
 
 								$this->Database->prepare("UPDATE tl_user_group SET iso_mails=? WHERE id=?")
 											   ->execute(serialize($arrAccess), $this->User->groups[0]);
@@ -336,7 +336,7 @@ class tl_iso_mail extends \Backend
 						}
 
 						// Add new element to the user object
-						$root[] = $this->Input->get('id');
+						$root[] = \Input::get('id');
 						$this->User->iso_mails = $root;
 					}
 				}
@@ -345,9 +345,9 @@ class tl_iso_mail extends \Backend
 			case 'copy':
 			case 'delete':
 			case 'show':
-				if (!in_array($this->Input->get('id'), $root) || ($this->Input->get('act') == 'delete' && !$this->User->hasAccess('delete', 'iso_mailp')))
+				if (!in_array(\Input::get('id'), $root) || (\Input::get('act') == 'delete' && !$this->User->hasAccess('delete', 'iso_mailp')))
 				{
-					$this->log('Not enough permissions to '.$this->Input->get('act').' mail template ID "'.$this->Input->get('id').'"', __METHOD__, TL_ERROR);
+					$this->log('Not enough permissions to '.\Input::get('act').' mail template ID "'.\Input::get('id').'"', __METHOD__, TL_ERROR);
 					$this->redirect('contao/main.php?act=error');
 				}
 				break;
@@ -356,7 +356,7 @@ class tl_iso_mail extends \Backend
 			case 'deleteAll':
 			case 'overrideAll':
 				$session = $this->Session->getData();
-				if ($this->Input->get('act') == 'deleteAll' && !$this->User->hasAccess('delete', 'iso_mailp'))
+				if (\Input::get('act') == 'deleteAll' && !$this->User->hasAccess('delete', 'iso_mailp'))
 				{
 					$session['CURRENT']['IDS'] = array();
 				}
@@ -368,9 +368,9 @@ class tl_iso_mail extends \Backend
 				break;
 
 			default:
-				if (strlen($this->Input->get('act')))
+				if (strlen(\Input::get('act')))
 				{
-					$this->log('Not enough permissions to '.$this->Input->get('act').' mail templates', __METHOD__, TL_ERROR);
+					$this->log('Not enough permissions to '.\Input::get('act').' mail templates', __METHOD__, TL_ERROR);
 					$this->redirect('contao/main.php?act=error');
 				}
 				break;

@@ -56,8 +56,8 @@ class PostSale extends \Frontend
 	 */
 	public function run()
 	{
-		$strMod = strlen($this->Input->post('mod')) ? $this->Input->post('mod') : $this->Input->get('mod');
-		$strId = strlen($this->Input->post('id')) ? $this->Input->post('id') : $this->Input->get('id');
+		$strMod = strlen(\Input::post('mod')) ? \Input::post('mod') : \Input::get('mod');
+		$strId = strlen(\Input::post('id')) ? \Input::post('id') : \Input::get('id');
 
 		if (!strlen($strMod) || !strlen($strId))
 		{

@@ -123,18 +123,18 @@ class AttributeWizard extends \Widget
 		$strCommand = 'cmd_' . $this->strField;
 
 		// Change the order
-		if ($this->Input->get($strCommand) && is_numeric($this->Input->get('cid')) && $this->Input->get('id') == $this->currentRecord)
+		if (\Input::get($strCommand) && is_numeric(\Input::get('cid')) && \Input::get('id') == $this->currentRecord)
 		{
 			$this->import('Database');
 
-			switch ($this->Input->get($strCommand))
+			switch (\Input::get($strCommand))
 			{
 				case 'up':
-					$this->varValue = array_move_up($this->varValue, $this->Input->get('cid'));
+					$this->varValue = array_move_up($this->varValue, \Input::get('cid'));
 					break;
 
 				case 'down':
-					$this->varValue = array_move_down($this->varValue, $this->Input->get('cid'));
+					$this->varValue = array_move_down($this->varValue, \Input::get('cid'));
 					break;
 			}
 
@@ -147,9 +147,9 @@ class AttributeWizard extends \Widget
 		$state = $this->Session->get('checkbox_groups');
 
 		// Toggle checkbox group
-		if ($this->Input->get('cbc'))
+		if (\Input::get('cbc'))
 		{
-			$state[$this->Input->get('cbc')] = (isset($state[$this->Input->get('cbc')]) && $state[$this->Input->get('cbc')] == 1) ? 0 : 1;
+			$state[\Input::get('cbc')] = (isset($state[\Input::get('cbc')]) && $state[\Input::get('cbc')] == 1) ? 0 : 1;
 			$this->Session->set('checkbox_groups', $state);
 
 			$this->redirect(preg_replace('/(&(amp;)?|\?)cbc=[^& ]*/i', '', $this->Environment->request));

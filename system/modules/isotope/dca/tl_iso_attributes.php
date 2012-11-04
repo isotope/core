@@ -456,7 +456,7 @@ class tl_iso_attributes extends \Backend
 	public function disableFieldName($dc)
 	{
 		// Hide the field in editAll & overrideAll mode (Thanks to Yanick Witschi)
-		if ($this->Input->get('act') == 'editAll' || $this->Input->get('act') == 'overrideAll')
+		if (\Input::get('act') == 'editAll' || \Input::get('act') == 'overrideAll')
 		{
 			$GLOBALS['TL_DCA']['tl_iso_attributes']['fields']['field_name']['eval']['doNotShow'] = true;
 		}
@@ -507,7 +507,7 @@ class tl_iso_attributes extends \Backend
 
 		if ($varValue != '' && !$this->Database->fieldExists($varValue, 'tl_iso_products'))
 		{
-			$strType = $GLOBALS['ISO_ATTR'][$this->Input->post('type')]['sql'] == '' ? 'text' : $this->Input->post('type');
+			$strType = $GLOBALS['ISO_ATTR'][\Input::post('type')]['sql'] == '' ? 'text' : \Input::post('type');
 
 			$this->Database->query(sprintf("ALTER TABLE tl_iso_products ADD %s %s", $varValue, $GLOBALS['ISO_ATTR'][$strType]['sql']));
 		}

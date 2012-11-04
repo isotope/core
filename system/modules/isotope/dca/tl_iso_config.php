@@ -579,7 +579,7 @@ class tl_iso_config extends \Backend
 	public function checkPermission()
 	{
 		// Do not run the permission check on other Isotope modules
-		if ($this->Input->get('mod') != 'configs')
+		if (\Input::get('mod') != 'configs')
 		{
 			return;
 		}
@@ -620,7 +620,7 @@ class tl_iso_config extends \Backend
 		}
 
 		// Check current action
-		switch ($this->Input->get('act'))
+		switch (\Input::get('act'))
 		{
 			case 'create':
 			case 'select':
@@ -629,11 +629,11 @@ class tl_iso_config extends \Backend
 
 			case 'edit':
 				// Dynamically add the record to the user profile
-				if (!in_array($this->Input->get('id'), $root))
+				if (!in_array(\Input::get('id'), $root))
 				{
 					$arrNew = $this->Session->get('new_records');
 
-					if (is_array($arrNew['tl_iso_config']) && in_array($this->Input->get('id'), $arrNew['tl_iso_config']))
+					if (is_array($arrNew['tl_iso_config']) && in_array(\Input::get('id'), $arrNew['tl_iso_config']))
 					{
 						// Add permissions on user level
 						if ($this->User->inherit == 'custom' || !$this->User->groups[0])
@@ -647,7 +647,7 @@ class tl_iso_config extends \Backend
 							if (is_array($arrPermissions) && in_array('create', $arrPermissions))
 							{
 								$arrAccess = deserialize($objUser->iso_configs);
-								$arrAccess[] = $this->Input->get('id');
+								$arrAccess[] = \Input::get('id');
 
 								$this->Database->prepare("UPDATE tl_user SET iso_configs=? WHERE id=?")
 											   ->execute(serialize($arrAccess), $this->User->id);
@@ -666,7 +666,7 @@ class tl_iso_config extends \Backend
 							if (is_array($arrPermissions) && in_array('create', $arrPermissions))
 							{
 								$arrAccess = deserialize($objGroup->iso_configs);
-								$arrAccess[] = $this->Input->get('id');
+								$arrAccess[] = \Input::get('id');
 
 								$this->Database->prepare("UPDATE tl_user_group SET iso_configs=? WHERE id=?")
 											   ->execute(serialize($arrAccess), $this->User->groups[0]);
@@ -674,7 +674,7 @@ class tl_iso_config extends \Backend
 						}
 
 						// Add new element to the user object
-						$root[] = $this->Input->get('id');
+						$root[] = \Input::get('id');
 						$this->User->iso_configs = $root;
 					}
 				}
@@ -683,9 +683,9 @@ class tl_iso_config extends \Backend
 			case 'copy':
 			case 'delete':
 			case 'show':
-				if (!in_array($this->Input->get('id'), $root) || ($this->Input->get('act') == 'delete' && !$this->User->hasAccess('delete', 'iso_configp')))
+				if (!in_array(\Input::get('id'), $root) || (\Input::get('act') == 'delete' && !$this->User->hasAccess('delete', 'iso_configp')))
 				{
-					$this->log('Not enough permissions to '.$this->Input->get('act').' store configuration ID "'.$this->Input->get('id').'"', __METHOD__, TL_ERROR);
+					$this->log('Not enough permissions to '.\Input::get('act').' store configuration ID "'.\Input::get('id').'"', __METHOD__, TL_ERROR);
 					$this->redirect('contao/main.php?act=error');
 				}
 				break;
@@ -694,7 +694,7 @@ class tl_iso_config extends \Backend
 			case 'deleteAll':
 			case 'overrideAll':
 				$session = $this->Session->getData();
-				if ($this->Input->get('act') == 'deleteAll' && !$this->User->hasAccess('delete', 'iso_configp'))
+				if (\Input::get('act') == 'deleteAll' && !$this->User->hasAccess('delete', 'iso_configp'))
 				{
 					$session['CURRENT']['IDS'] = array();
 				}
@@ -706,9 +706,9 @@ class tl_iso_config extends \Backend
 				break;
 
 			default:
-				if (strlen($this->Input->get('act')))
+				if (strlen(\Input::get('act')))
 				{
-					$this->log('Not enough permissions to '.$this->Input->get('act').' store configurations', __METHOD__, TL_ERROR);
+					$this->log('Not enough permissions to '.\Input::get('act').' store configurations', __METHOD__, TL_ERROR);
 					$this->redirect('contao/main.php?act=error');
 				}
 				break;
@@ -835,7 +835,7 @@ class tl_iso_config extends \Backend
 	 */
 	public function filePicker(\DataContainer $dc)
 	{
-		$strField = 'ctrl_' . $dc->field . (($this->Input->get('act') == 'editAll') ? '_' . $dc->id : '');
+		$strField = 'ctrl_' . $dc->field . ((\Input::get('act') == 'editAll') ? '_' . $dc->id : '');
 		return ' ' . $this->generateImage('pickfile.gif', $GLOBALS['TL_LANG']['MSC']['filepicker'], 'style="vertical-align:top;cursor:pointer" onclick="Backend.pickFile(\'' . $strField . '\')"');
 	}
 }

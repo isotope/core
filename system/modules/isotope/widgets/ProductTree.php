@@ -123,7 +123,7 @@ class ProductTree extends \Widget
 	 */
 	protected function validator($varInput)
 	{
-		if (!$this->Input->post($this->strName.'_save'))
+		if (!\Input::post($this->strName.'_save'))
 		{
 			$this->mandatory = false;
 			$this->blnSubmitInput = false;
@@ -255,7 +255,7 @@ class ProductTree extends \Widget
 		$tree = '';
 		$level = $level * 20;
 
-		if (strpos($this->Input->post('id'), 'groups') === false)
+		if (strpos(\Input::post('id'), 'groups') === false)
 		{
 			$objProducts = $this->Database->prepare("SELECT id FROM tl_iso_products WHERE language='' AND pid=?".($this->User->isAdmin ? '' : " AND type IN ('','" . implode("','", $this->arrTypes) . "')")." ORDER BY name")->execute($id);
 
@@ -297,17 +297,17 @@ class ProductTree extends \Widget
 		{
 			// Toggle nodes of the product tree
 			case 'toggleProductTree':
-				$this->strAjaxId = preg_replace('/.*_([0-9a-zA-Z]+)$/i', '$1', $this->Input->post('id'));
-				$this->strAjaxKey = str_replace('_' . $this->strAjaxId, '', $this->Input->post('id'));
+				$this->strAjaxId = preg_replace('/.*_([0-9a-zA-Z]+)$/i', '$1', \Input::post('id'));
+				$this->strAjaxKey = str_replace('_' . $this->strAjaxId, '', \Input::post('id'));
 
-				if ($this->Input->get('act') == 'editAll')
+				if (\Input::get('act') == 'editAll')
 				{
 					$this->strAjaxKey = preg_replace('/(.*)_[0-9a-zA-Z]+$/i', '$1', $this->strAjaxKey);
-					$this->strAjaxName = preg_replace('/.*_([0-9a-zA-Z]+)$/i', '$1', $this->Input->post('name'));
+					$this->strAjaxName = preg_replace('/.*_([0-9a-zA-Z]+)$/i', '$1', \Input::post('name'));
 				}
 
 				$nodes = $this->Session->get($this->strAjaxKey);
-				$nodes[$this->strAjaxId] = intval($this->Input->post('state'));
+				$nodes[$this->strAjaxId] = intval(\Input::post('state'));
 
 				$this->Session->set($this->strAjaxKey, $nodes);
 				echo json_encode(array('token'=>REQUEST_TOKEN));
@@ -315,17 +315,17 @@ class ProductTree extends \Widget
 
 			// Load nodes of the product tree
 			case 'loadProductTree':
-				$this->strAjaxId = preg_replace('/.*_([0-9a-zA-Z]+)$/i', '$1', $this->Input->post('id'));
-				$this->strAjaxKey = str_replace('_' . $this->strAjaxId, '', $this->Input->post('id'));
+				$this->strAjaxId = preg_replace('/.*_([0-9a-zA-Z]+)$/i', '$1', \Input::post('id'));
+				$this->strAjaxKey = str_replace('_' . $this->strAjaxId, '', \Input::post('id'));
 
-				if ($this->Input->get('act') == 'editAll')
+				if (\Input::get('act') == 'editAll')
 				{
 					$this->strAjaxKey = preg_replace('/(.*)_[0-9a-zA-Z]+$/i', '$1', $this->strAjaxKey);
-					$this->strAjaxName = preg_replace('/.*_([0-9a-zA-Z]+)$/i', '$1', $this->Input->post('name'));
+					$this->strAjaxName = preg_replace('/.*_([0-9a-zA-Z]+)$/i', '$1', \Input::post('name'));
 				}
 
 				$nodes = $this->Session->get($this->strAjaxKey);
-				$nodes[$this->strAjaxId] = intval($this->Input->post('state'));
+				$nodes[$this->strAjaxId] = intval(\Input::post('state'));
 
 				$this->Session->set($this->strAjaxKey, $nodes);
 				break;
@@ -345,7 +345,7 @@ class ProductTree extends \Widget
 		{
 			$arrData['strTable'] = $dc->table;
 			$arrData['id'] = strlen($this->strAjaxName) ? $this->strAjaxName : $dc->id;
-			$arrData['name'] = $this->Input->post('name');
+			$arrData['name'] = \Input::post('name');
 
 			$this->loadDataContainer($dc->table);
 			$arrData = array_merge($GLOBALS['TL_DCA'][$dc->table]['fields'][$arrData['name']]['eval'], $arrData);
@@ -354,7 +354,7 @@ class ProductTree extends \Widget
 
 			echo json_encode(array
 			(
-				'content' => $objWidget->generateAjax($this->strAjaxId, $this->Input->post('field'), intval($this->Input->post('level'))),
+				'content' => $objWidget->generateAjax($this->strAjaxId, \Input::post('field'), intval(\Input::post('level'))),
 				'token'   => REQUEST_TOKEN
 			));
 			exit;
@@ -379,9 +379,9 @@ class ProductTree extends \Widget
 		$xtnode = 'tree_' . $this->strTable . '_' . $this->strName . '_groups';
 
 		// Get session data and toggle nodes
-		if ($this->Input->get($flag.'tg'))
+		if (\Input::get($flag.'tg'))
 		{
-			$session[$node][$this->Input->get($flag.'tg')] = (isset($session[$node][$this->Input->get($flag.'tg')]) && $session[$node][$this->Input->get($flag.'tg')] == 1) ? 0 : 1;
+			$session[$node][\Input::get($flag.'tg')] = (isset($session[$node][\Input::get($flag.'tg')]) && $session[$node][\Input::get($flag.'tg')] == 1) ? 0 : 1;
 			$this->Session->setData($session);
 
 			$this->redirect(preg_replace('/(&(amp;)?|\?)'.$flag.'tg=[^& ]*/i', '', $this->Environment->request));
@@ -483,9 +483,9 @@ class ProductTree extends \Widget
 		$xtnode = 'tree_' . $this->strTable . '_' . $this->strName;
 
 		// Get session data and toggle nodes
-		if ($this->Input->get($flag.'tg'))
+		if (\Input::get($flag.'tg'))
 		{
-			$session[$node][$this->Input->get($flag.'tg')] = (isset($session[$node][$this->Input->get($flag.'tg')]) && $session[$node][$this->Input->get($flag.'tg')] == 1) ? 0 : 1;
+			$session[$node][\Input::get($flag.'tg')] = (isset($session[$node][\Input::get($flag.'tg')]) && $session[$node][\Input::get($flag.'tg')] == 1) ? 0 : 1;
 			$this->Session->setData($session);
 
 			$this->redirect(preg_replace('/(&(amp;)?|\?)'.$flag.'tg=[^& ]*/i', '', $this->Environment->request));
