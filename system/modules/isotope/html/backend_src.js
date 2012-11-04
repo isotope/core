@@ -1,5 +1,3 @@
-<?php
-
 /**
  * Isotope eCommerce for Contao Open Source CMS
  *
@@ -275,47 +273,12 @@ var Isotope =
 	/**
 	 * Add the interactive help
 	 */
-	addInteractiveHelp: function()
-	{
-		document.getElements('a.tl_tip').each(function(el)
-		{
-			if (el.retrieve('complete'))
-			{
-				return;
+	addInteractiveHelp: function() {
+		new Tips.Contao('a.tl_tip', {
+			offset: {x:9, y:21},
+			text: function(e) {
+				return e.get('longdesc');
 			}
-
-			el.addEvent('mouseover', function()
-			{
-				el.timo = setTimeout(function()
-				{
-					var box = document.id('tl_helpBox');
-
-					if (!box)
-					{
-						box = new Element('div').setProperty('id', 'tl_helpBox').injectInside(document.id(document.body));
-					}
-
-					var scroll = el.getTop();
-
-					box.set('html', el.get('longdesc'));
-					box.setStyle('display', 'block');
-					box.setStyle('top', (scroll + 18) + 'px');
-				}, 1000);
-			});
-
-			el.addEvent('mouseout', function()
-			{
-				var box = document.id('tl_helpBox');
-
-				if (box)
-				{
-					box.setStyle('display', 'none');
-				}
-
-				clearTimeout(el.timo);
-			});
-
-			el.store('complete', true);
 		});
 	},
 
