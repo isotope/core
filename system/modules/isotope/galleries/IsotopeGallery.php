@@ -188,7 +188,7 @@ class IsotopeGallery extends \Frontend
 
 		$this->injectAjax();
 
-		$objTemplate = new IsotopeTemplate($this->strTemplate);
+		$objTemplate = new \IsotopeTemplate($this->strTemplate);
 
 		$objTemplate->setData($arrFile);
 		$objTemplate->id = 0;
@@ -221,7 +221,7 @@ class IsotopeGallery extends \Frontend
 				continue;
 			}
 
-			$objTemplate = new IsotopeTemplate($this->strTemplate);
+			$objTemplate = new \IsotopeTemplate($this->strTemplate);
 
 			$objTemplate->setData($arrFile);
 			$objTemplate->id = $i;

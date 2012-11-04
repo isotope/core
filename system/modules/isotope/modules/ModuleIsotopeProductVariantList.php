@@ -21,7 +21,7 @@ namespace Isotope;
  * @author     Andreas Schempp <andreas.schempp@terminal42.ch>
  * @author     Fred Bliss <fred.bliss@intelligentspark.com>
  */
-class ModuleIsotopeProductVariantList extends ModuleIsotopeProductList
+class ModuleIsotopeProductVariantList extends \ModuleIsotopeProductList
 {
 
 	/**

@@ -755,7 +755,7 @@ class IsotopeProduct extends \Controller
 		$this->formSubmit = (($objModule instanceof \ContentElement) ? 'cte' : 'fmd') . $objModule->id . '_product_' . ($this->pid ? $this->pid : $this->id);
 		$this->validateVariant();
 
-		$objTemplate = new IsotopeTemplate($strTemplate);
+		$objTemplate = new \IsotopeTemplate($strTemplate);
 		$arrProductOptions = array();
 		$arrAjaxOptions = array();
 		$arrToGenerate = array();

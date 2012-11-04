@@ -139,7 +139,7 @@ class ModuleIsotopeAddressBook extends ModuleIsotope
 
 		while ($objAddresses->next())
 		{
-			$objAddress = new IsotopeAddressModel();
+			$objAddress = new \IsotopeAddressModel();
 			$objAddress->setData($objAddresses->row());
 
 			$arrAddresses[] = array_merge($objAddress->getData(), array
@@ -183,7 +183,7 @@ class ModuleIsotopeAddressBook extends ModuleIsotope
 			$this->memberTpl = 'member_default';
 		}
 
-		$this->Template = new IsotopeTemplate($this->memberTpl);
+		$this->Template = new \IsotopeTemplate($this->memberTpl);
 		$this->Template->fields = '';
 		$this->Template->tableless = $this->tableless;
 

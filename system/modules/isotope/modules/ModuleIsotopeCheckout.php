@@ -122,7 +122,7 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 		// Order has been completed (postsale request)
 		if ($this->strCurrentStep == 'complete' && \Input::get('uid') != '')
 		{
-			if (($objOrder = IsotopeOrder::findOneByUniqid(\Input::get('uid'))) !== null)
+			if (($objOrder = \IsotopeOrder::findOneByUniqid(\Input::get('uid'))) !== null)
 			{
 				// Order is complete, forward to confirmation page
 				if ($objOrder->complete())
@@ -287,7 +287,7 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 			if ($strBuffer === true)
 			{
 				// If checkout is successful, complete order and redirect to confirmation page
-				if (($objOrder = IsotopeOrder::findOneBy('cart_id', $this->Isotope->Cart->id)) !== null && $objOrder->checkout($this->Isotope->Cart) && $objOrder->complete())
+				if (($objOrder = \IsotopeOrder::findOneBy('cart_id', $this->Isotope->Cart->id)) !== null && $objOrder->checkout($this->Isotope->Cart) && $objOrder->complete())
 				{
 					$this->redirect(IsotopeFrontend::addQueryStringToUrl('uid=' . $objOrder->uniqid, $this->orderCompleteJumpTo));
 				}
@@ -458,7 +458,7 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 			));
 		}
 
-		$objTemplate = new IsotopeTemplate('iso_checkout_billing_address');
+		$objTemplate = new \IsotopeTemplate('iso_checkout_billing_address');
 
 		$objTemplate->headline = $blnRequiresPayment ? $GLOBALS['TL_LANG']['ISO']['billing_address'] : $GLOBALS['TL_LANG']['ISO']['customer_address'];
 		$objTemplate->message = (FE_USER_LOGGED_IN === true ? $GLOBALS['TL_LANG']['ISO'][($blnRequiresPayment ? 'billing' : 'customer') . '_address_message'] : $GLOBALS['TL_LANG']['ISO'][($blnRequiresPayment ? 'billing' : 'customer') . '_address_guest_message']);
@@ -505,7 +505,7 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 			));
 		}
 
-		$objTemplate = new IsotopeTemplate('iso_checkout_shipping_address');
+		$objTemplate = new \IsotopeTemplate('iso_checkout_shipping_address');
 
 		$objTemplate->headline = $GLOBALS['TL_LANG']['ISO']['shipping_address'];
 		$objTemplate->message = $GLOBALS['TL_LANG']['ISO']['shipping_address_message'];
@@ -627,7 +627,7 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 			return $objTemplate->parse();
 		}
 
-		$objTemplate = new IsotopeTemplate('iso_checkout_shipping_method');
+		$objTemplate = new \IsotopeTemplate('iso_checkout_shipping_method');
 
 		if (!$this->Isotope->Cart->hasShipping && !strlen($_SESSION['CHECKOUT_DATA']['shipping']['module']) && count($arrModules) == 1)
 		{
@@ -762,7 +762,7 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 			return $objTemplate->parse();
 		}
 
-		$objTemplate = new IsotopeTemplate('iso_checkout_payment_method');
+		$objTemplate = new \IsotopeTemplate('iso_checkout_payment_method');
 
 		if (!$this->Isotope->Cart->hasPayment && !strlen($_SESSION['CHECKOUT_DATA']['payment']['module']) && count($arrModules) == 1)
 		{
@@ -905,7 +905,7 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 			}
 		}
 
-		$objTemplate = new IsotopeTemplate('iso_checkout_order_conditions');
+		$objTemplate = new \IsotopeTemplate('iso_checkout_order_conditions');
 		$objTemplate->attributes	= $objForm->attributes;
 		$objTemplate->tableless		= $objForm->arrData['tableless'];
 
@@ -929,7 +929,7 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 			return;
 		}
 
-		$objTemplate = new IsotopeTemplate('iso_checkout_order_info');
+		$objTemplate = new \IsotopeTemplate('iso_checkout_order_info');
 		$objTemplate->headline = $GLOBALS['TL_LANG']['ISO']['order_review'];
 		$objTemplate->message = $GLOBALS['TL_LANG']['ISO']['order_review_message'];
 		$objTemplate->summary = $GLOBALS['ISO_LANG']['MSC']['cartSummary'];
@@ -955,7 +955,7 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 			return;
 		}
 
-		$objTemplate = new IsotopeTemplate('iso_checkout_order_products');
+		$objTemplate = new \IsotopeTemplate('iso_checkout_order_products');
 
 		// Surcharges must be initialized before getProducts() to apply tax_id to each product
 		$arrSurcharges = $this->Isotope->Cart->getSurcharges();
@@ -997,14 +997,14 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 	 */
 	protected function writeOrder()
 	{
-		if (($objOrder = IsotopeOrder::findOneBy('cart_id', $this->Isotope->Cart->id)) === null)
+		if (($objOrder = \IsotopeOrder::findOneBy('cart_id', $this->Isotope->Cart->id)) === null)
 		{
 			$objOrder = new \IsotopeOrder();
 
 			$objOrder->uniqid		= uniqid($this->Isotope->Config->orderPrefix, true);
 			$objOrder->cart_id		= $this->Isotope->Cart->id;
 
-			$objOrder = IsotopeOrder::findByPk($objOrder->save()->id);
+			$objOrder = \IsotopeOrder::findByPk($objOrder->save()->id);
 		}
 
 		$objOrder->pid				= (FE_USER_LOGGED_IN === true ? $this->User->id : 0);
@@ -1099,7 +1099,7 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 					continue;
 				}
 
-				$objAddress = new IsotopeAddressModel();
+				$objAddress = new \IsotopeAddressModel();
 				$objAddress->setData($objAddresses->row());
 
 				$arrOptions[] = array

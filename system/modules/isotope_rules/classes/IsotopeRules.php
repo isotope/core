@@ -63,7 +63,7 @@ class IsotopeRules extends \Controller
 	{
 		if (!is_object(self::$objInstance))
 		{
-			self::$objInstance = new IsotopeRules();
+			self::$objInstance = new \IsotopeRules();
 		}
 
 		return self::$objInstance;
@@ -81,7 +81,7 @@ class IsotopeRules extends \Controller
 	 */
 	public function calculatePrice($fltPrice, $objSource, $strField, $intTaxClass)
 	{
-		if ($objSource instanceof IsotopeProduct && ($strField == 'price' || $strField == 'low_price'))
+		if ($objSource instanceof \IsotopeProduct && ($strField == 'price' || $strField == 'low_price'))
 		{
 			$objRules = $this->findRules(array("type='product'"), array(), array($objSource), ($strField == 'low_price' ? true : false), array($strField => $fltPrice));
 
@@ -308,7 +308,7 @@ class IsotopeRules extends \Controller
 	 */
 	public function transferCoupons($objOldCollection, $objNewCollection, $arrIds)
 	{
-		if ($objOldCollection instanceof IsotopeCart && $objNewCollection instanceof IsotopeCart)
+		if ($objOldCollection instanceof \IsotopeCart && $objNewCollection instanceof \IsotopeCart)
 		{
 			$objNewCollection->coupons = $objOldCollection->coupons;
 		}

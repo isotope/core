@@ -291,7 +291,7 @@ class tl_iso_orders extends \Backend
 	{
 		$this->Isotope->overrideConfig($row['config_id']);
 
-		$objAddress = new IsotopeAddressModel();
+		$objAddress = new \IsotopeAddressModel();
 		$objAddress->setData(deserialize($row['billing_address'], true));
 		$arrTokens = $objAddress->getTokens($this->Isotope->Config->billing_fields);
 

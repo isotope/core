@@ -1001,6 +1001,6 @@ CREATE TABLE `tl_iso_groups` (
 /**
  * Instantiate controller
  */
-$objIsotope = new IsotopeRunonce();
+$objIsotope = new \IsotopeRunonce();
 $objIsotope->run();
 

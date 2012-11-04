@@ -86,7 +86,7 @@ class Isotope extends \Controller
 	{
 		if (!is_object(self::$objInstance))
 		{
-			self::$objInstance = new Isotope();
+			self::$objInstance = new static();
 
 			// Make sure field data is available
 			self::$objInstance->loadDataContainer('tl_iso_products');
@@ -103,7 +103,7 @@ class Isotope extends \Controller
 
 			if (TL_MODE == 'FE' && strpos(self::$objInstance->Environment->script, 'postsale.php') === false && strpos(self::$objInstance->Environment->script, 'cron.php') === false)
 			{
-				self::$objInstance->Cart = IsotopeCart::getDefaultForStore((int)self::$objInstance->Config->id, (int)self::$objInstance->Config->store_id);
+				self::$objInstance->Cart = \IsotopeCart::getDefaultForStore((int)self::$objInstance->Config->id, (int)self::$objInstance->Config->store_id);
 
 				// Initialize request cache for product list filters
 				if (self::$objInstance->Input->get('isorc') != '')
@@ -191,7 +191,7 @@ class Isotope extends \Controller
 			return;
 		}
 
-		$this->Config = new IsotopeConfig($objConfig);
+		$this->Config = new \IsotopeConfig($objConfig);
 	}
 
 
@@ -732,7 +732,7 @@ class Isotope extends \Controller
 	{
 		trigger_error('Using Isotope::generateAddressString() is deprecated. Please use the IsotopeAddressModel class.', E_USER_NOTICE);
 
-		$objAddress = new IsotopeAddressModel();
+		$objAddress = new \IsotopeAddressModel();
 		$objAddress->setData($arrAddress);
 
 		return $objAddress->generateHtml($arrFields);
@@ -752,7 +752,7 @@ class Isotope extends \Controller
 	{
 		try
 		{
-			$objEmail = new IsotopeEmail($intId, $strLanguage, $objCollection);
+			$objEmail = new \IsotopeEmail($intId, $strLanguage, $objCollection);
 
 			if ($strReplyTo != '')
 			{

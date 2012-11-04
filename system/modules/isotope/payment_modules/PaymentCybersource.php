@@ -149,7 +149,7 @@ class PaymentCybersource extends IsotopePayment
 		}
 
 		// Get the order from cart id
-		$objOrder = IsotopeOrder::findOneBy('cart_id', $this->Isotope->Cart->id);
+		$objOrder = \IsotopeOrder::findOneBy('cart_id', $this->Isotope->Cart->id);
 
 		$objAddress = $this->Isotope->Cart->billingAddress;
 		$intTotal = round($this->Isotope->Cart->grandTotal, 2);
@@ -281,7 +281,7 @@ class PaymentCybersource extends IsotopePayment
 
 	public function backendInterface($intOrderId)
 	{
-		$objOrder = IsotopeOrder::findByPk($intOrderId);
+		$objOrder = \IsotopeOrder::findByPk($intOrderId);
 
 		\Input::setGet('uid', $objOrder->uniqid);
 		$objModule = new ModuleIsotopeOrderDetails($this->Database->execute("SELECT * FROM tl_module WHERE type='iso_orderdetails'"));

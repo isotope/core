@@ -148,12 +148,12 @@ class IsotopeCart extends IsotopeProductCollection
 				return array('id'=>-1, 'country' => $this->Isotope->Config->shipping_country);
 
 			case 'billingAddress':
-				$objAddress = new IsotopeAddressModel();
+				$objAddress = new \IsotopeAddressModel();
 				$objAddress->setData($this->billing_address);
 				return $objAddress;
 
 			case 'shippingAddress':
-				$objAddress = new IsotopeAddressModel();
+				$objAddress = new \IsotopeAddressModel();
 				$objAddress->setData($this->shipping_address);
 				return $objAddress;
 
@@ -218,28 +218,28 @@ class IsotopeCart extends IsotopeProductCollection
 	public static function getDefaultForStore($intConfig, $intStore)
 	{
 		$time = time();
-		$strHash = \Input::cookie(IsotopeCart::$strCookie);
+		$strHash = \Input::cookie(static::$strCookie);
 
 		//  Check to see if the user is logged in.
 		if (FE_USER_LOGGED_IN !== true)
 		{
 			if ($strHash == '')
 			{
-				$strHash = sha1(session_id() . (!$GLOBALS['TL_CONFIG']['disableIpCheck'] ? \Environment::get('ip') : '') . $intConfig . IsotopeCart::$strCookie);
-				$this->setCookie(IsotopeCart::$strCookie, $strHash, $time+$GLOBALS['TL_CONFIG']['iso_cartTimeout'], $GLOBALS['TL_CONFIG']['websitePath']);
+				$strHash = sha1(session_id() . (!$GLOBALS['TL_CONFIG']['disableIpCheck'] ? \Environment::get('ip') : '') . $intConfig . static::$strCookie);
+				$this->setCookie(static::$strCookie, $strHash, $time+$GLOBALS['TL_CONFIG']['iso_cartTimeout'], $GLOBALS['TL_CONFIG']['websitePath']);
 			}
 
-			$objCart = IsotopeCart::findOneBy(array('(session=? AND store_id=?)'), array($strHash, $intStore));
+			$objCart = static::findOneBy(array('(session=? AND store_id=?)'), array($strHash, $intStore));
 		}
 		else
 		{
-			$objCart = IsotopeCart::findOneBy(array('(pid=? AND store_id=?)'), array(\FrontendUser::getInstance()->id, $intStore));
+			$objCart = static::findOneBy(array('(pid=? AND store_id=?)'), array(\FrontendUser::getInstance()->id, $intStore));
 		}
 
 		// Create new cart
 		if ($objCart === null)
 		{
-			$objCart = new \IsotopeCart();
+			$objCart = new static();
 
 			$objCart->pid		= (\FrontendUser::getInstance()->id ?: 0);
 			$objCart->session	= (\FrontendUser::getInstance()->id ? '' : $strHash);
@@ -253,7 +253,7 @@ class IsotopeCart extends IsotopeProductCollection
  		{
  			$blnMerge = $objCart->products ? true : false;
 
-			if (($objTemp = IsotopeCart::findOneBy(array('(session=? AND store_id=?)'), array($strHash, $intStore))) !== null)
+			if (($objTemp = static::findOneBy(array('(session=? AND store_id=?)'), array($strHash, $intStore))) !== null)
 			{
 				$arrIds = $objCart->transferFromCollection($objTemp, false);
 
@@ -266,7 +266,7 @@ class IsotopeCart extends IsotopeProductCollection
 			}
 
 			// Delete cookie
-			\System::setCookie(IsotopeCart::$strCookie, '', ($time - 3600), $GLOBALS['TL_CONFIG']['websitePath']);
+			\System::setCookie(static::$strCookie, '', ($time - 3600), $GLOBALS['TL_CONFIG']['websitePath']);
 			\System::reload();
  		}
 	}

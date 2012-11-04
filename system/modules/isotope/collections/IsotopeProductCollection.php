@@ -467,12 +467,12 @@ abstract class IsotopeProductCollection extends \Model
 					}
 					catch (Exception $e)
 					{
-						$objProduct = new IsotopeProduct(array('id'=>$objItems->product_id, 'sku'=>$objItems->product_sku, 'name'=>$objItems->product_name, 'price'=>$objItems->price), deserialize($objItems->product_options), $this->blnLocked, $objItems->product_quantity);
+						$objProduct = new \IsotopeProduct(array('id'=>$objItems->product_id, 'sku'=>$objItems->product_sku, 'name'=>$objItems->product_name, 'price'=>$objItems->price), deserialize($objItems->product_options), $this->blnLocked, $objItems->product_quantity);
 					}
 				}
 				else
 				{
-					$objProduct = new IsotopeProduct(array('id'=>$objItems->product_id, 'sku'=>$objItems->product_sku, 'name'=>$objItems->product_name, 'price'=>$objItems->price), deserialize($objItems->product_options), $this->blnLocked, $objItems->product_quantity);
+					$objProduct = new \IsotopeProduct(array('id'=>$objItems->product_id, 'sku'=>$objItems->product_sku, 'name'=>$objItems->product_name, 'price'=>$objItems->price), deserialize($objItems->product_options), $this->blnLocked, $objItems->product_quantity);
 				}
 
 				// Remove product from collection if it is no longer available
@@ -500,7 +500,7 @@ abstract class IsotopeProductCollection extends \Model
 		if (strlen($strTemplate))
 		{
 			$this->import('Isotope');
-			$objTemplate = new IsotopeTemplate($strTemplate);
+			$objTemplate = new \IsotopeTemplate($strTemplate);
 
 			$objTemplate->products = $this->arrProducts;
 			$objTemplate->surcharges = IsotopeFrontend::formatSurcharges($this->getSurcharges());

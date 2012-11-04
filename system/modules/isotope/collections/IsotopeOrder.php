@@ -132,13 +132,13 @@ class IsotopeOrder extends IsotopeProductCollection
 					switch( $strKey )
 					{
 						case 'billingAddress':
-							$objAddress = new IsotopeAddressModel();
+							$objAddress = new \IsotopeAddressModel();
 							$objAddress->setData(deserialize($this->arrData['billing_address'], true));
 							$this->arrCache[$strKey] = $objAddress;
 							break;
 
 						case 'shippingAddress':
-							$objAddress = new IsotopeAddressModel();
+							$objAddress = new \IsotopeAddressModel();
 							$objAddress->setData(deserialize($this->arrData['shipping_address'], true));
 							$this->arrCache[$strKey] = $objAddress;
 							break;
@@ -290,7 +290,7 @@ class IsotopeOrder extends IsotopeProductCollection
 		// This is the case when not using ModuleIsotopeCheckout
 		if (!is_object($objCart))
 		{
-			if (($objCart = IsotopeCart::findByPk($this->cart_id)) === null)
+			if (($objCart = \IsotopeCart::findByPk($this->cart_id)) === null)
 			{
 				$this->log('Could not find Cart ID '.$this->cart_id.' for Order ID '.$this->id, __METHOD__, TL_ERROR);
 				return false;
