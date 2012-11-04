@@ -81,9 +81,7 @@ class ModuleIsotopeOrderDetails extends ModuleIsotope
 			$objPage->cache = 0;
 		}
 
-		$objOrder = new IsotopeOrder();
-
-		if (!$objOrder->findBy('uniqid', \Input::get('uid')))
+		if (($objOrder = IsotopeOrder::findOneByUniqid(\Input::get('uid'))) === null)
 		{
 			$this->Template = new FrontendTemplate('mod_message');
 			$this->Template->type = 'error';

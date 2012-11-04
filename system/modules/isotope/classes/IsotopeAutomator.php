@@ -37,15 +37,12 @@ class IsotopeAutomator extends \Controller
 		if ($objCarts->numRows)
 		{
 			$arrIds = array();
-			$objCart = new IsotopeCart();
 
 			foreach ($objCarts->fetchEach('id') as $id)
 			{
-				if ($objCart->findBy('id', $id))
+				if (($objCart = IsotopeCart::findByPk($id)) !== null)
 				{
-					$objOrder = new IsotopeOrder();
-
-					if ($objOrder->findBy('cart_id', $objCart->id))
+					if (($objOrder = IsotopeOrder::findOneBy('cart_id', $objCart->id)) !== null)
 					{
 						if ($objOrder->status == 0)
 						{

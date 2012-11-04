@@ -157,9 +157,7 @@ class IsotopeFrontend extends \Frontend
 		}
 		elseif ($arrTag[0] == 'order')
 		{
-			$objOrder = new IsotopeOrder();
-
-			if ($objOrder->findBy('uniqid', \Input::get('uid')))
+			if (($objOrder = IsotopeOrder::findOneByUniqid(\Input::get('uid'))) !== null)
 			{
 				return $objOrder->{$arrTag[1]};
 			}

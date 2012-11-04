@@ -38,9 +38,7 @@ class PaymentPostfinance extends IsotopePayment
 			return false;
 		}
 
-		$objOrder = new IsotopeOrder();
-
-		if (!$objOrder->findBy('id', \Input::get('orderID')))
+		if (($objOrder = IsotopeOrder::findByPk(\Input::get('orderID'))) === null)
 		{
 			$this->log('Order ID "' . \Input::get('orderID') . '" not found', __METHOD__, TL_ERROR);
 			return false;
@@ -82,9 +80,7 @@ class PaymentPostfinance extends IsotopePayment
 			return;
 		}
 
-		$objOrder = new IsotopeOrder();
-
-		if (!$objOrder->findBy('id', $this->getRequestData('orderID')))
+		if (($objOrder = IsotopeOrder::findByPk($this->getRequestData('orderID'))) === null)
 		{
 			$this->log('Order ID "' . $this->getRequestData('orderID') . '" not found', __METHOD__, TL_ERROR);
 			return;
@@ -122,9 +118,7 @@ class PaymentPostfinance extends IsotopePayment
 	 */
 	public function checkoutForm()
 	{
-		$objOrder = new IsotopeOrder();
-
-		if (!$objOrder->findBy('cart_id', $this->Isotope->Cart->id))
+		if (($objOrder = IsotopeOrder::findOneBy('cart_id', $this->Isotope->Cart->id)) === null)
 		{
 			$this->redirect($this->addToUrl('step=failed', true));
 		}

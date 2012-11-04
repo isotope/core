@@ -34,7 +34,7 @@ class IsotopeOrder extends IsotopeProductCollection
 	 * Name of the child table
 	 * @var string
 	 */
-	protected $ctable = 'tl_iso_order_items';
+	protected static $ctable = 'tl_iso_order_items';
 
 	/**
 	 * This current order's unique ID with eventual prefix
@@ -47,6 +47,51 @@ class IsotopeOrder extends IsotopeProductCollection
 	 * @var boolean
 	 */
 	protected $blnLocked = true;
+
+
+	public function __construct(\Database\Result $objResult=null)
+	{
+		parent::__construct($objResult);
+
+		if ($objResult !== null)
+		{
+			if ($this->payment_id > 0)
+			{
+				$objPayment = $this->Database->execute("SELECT * FROM tl_iso_payment_modules WHERE id=" . $this->payment_id);
+
+				if ($objPayment->numRows)
+				{
+					$strClass = $GLOBALS['ISO_PAY'][$objPayment->type];
+
+					try
+					{
+						$this->Payment = new $strClass($objPayment->row());
+					}
+					catch (Exception $e) {}
+				}
+			}
+
+			if ($this->shipping_id > 0)
+			{
+				$objShipping = $this->Database->execute("SELECT * FROM tl_iso_shipping_modules WHERE id=" . $this->shipping_id);
+
+				if ($objShipping->numRows)
+				{
+					$strClass = $GLOBALS['ISO_SHIP'][$objShipping->type];
+
+					try
+					{
+						$this->Shipping = new $strClass($objShipping->row());
+					}
+					catch (Exception $e) {}
+				}
+			}
+
+			// The order_id must not be stored in arrData, or it would overwrite the database on save().
+			$this->strOrderId = $this->arrData['order_id'];
+			unset($this->arrData['order_id']);
+		}
+	}
 
 
 	/**
@@ -138,7 +183,7 @@ class IsotopeOrder extends IsotopeProductCollection
 		$arrIds = parent::transferFromCollection($objCollection, $blnDuplicate);
 
 		// Add product downloads to the order
-		$objDownloads = $this->Database->execute("SELECT d.*, ct.product_quantity, ct.id AS item_id FROM tl_iso_order_items ct JOIN tl_iso_downloads d ON d.pid IN ((SELECT id FROM tl_iso_products WHERE id=ct.product_id), (SELECT pid FROM tl_iso_products WHERE id=ct.product_id)) WHERE ct.id IN (" . implode(',', $arrIds) . ") GROUP BY ct.id, d.id ORDER BY item_id, sorting");
+		$objDownloads = $this->Database->execute("SELECT d.*, ct.product_quantity, ct.id AS item_id FROM {static::$ctable} ct JOIN tl_iso_downloads d ON d.pid IN ((SELECT id FROM tl_iso_products WHERE id=ct.product_id), (SELECT pid FROM tl_iso_products WHERE id=ct.product_id)) WHERE ct.id IN (" . implode(',', $arrIds) . ") GROUP BY ct.id, d.id ORDER BY item_id, sorting");
 
 		while ($objDownloads->next())
 		{
@@ -193,59 +238,6 @@ class IsotopeOrder extends IsotopeProductCollection
 
 
 	/**
-	 * Find a record by its reference field and return true if it has been found
-	 * @param string
-	 * @param mixed
-	 * @return boolean
-	 */
-	public function findBy($strRefField, $varRefId)
-	{
-		if (parent::findBy($strRefField, $varRefId))
-		{
-			$this->Shipping = null;
-			$this->Payment = null;
-
-			$objPayment = $this->Database->execute("SELECT * FROM tl_iso_payment_modules WHERE id=" . $this->payment_id);
-
-			if ($objPayment->numRows)
-			{
-				$strClass = $GLOBALS['ISO_PAY'][$objPayment->type];
-
-				try
-				{
-					$this->Payment = new $strClass($objPayment->row());
-				}
-				catch (Exception $e) {}
-			}
-
-			if ($this->shipping_id > 0)
-			{
-				$objShipping = $this->Database->execute("SELECT * FROM tl_iso_shipping_modules WHERE id=" . $this->shipping_id);
-
-				if ($objShipping->numRows)
-				{
-					$strClass = $GLOBALS['ISO_SHIP'][$objShipping->type];
-
-					try
-					{
-						$this->Shipping = new $strClass($objShipping->row());
-					}
-					catch (Exception $e) {}
-				}
-			}
-
-			// The order_id must not be stored in arrData, or it would overwrite the database on save().
-			$this->strOrderId = $this->arrData['order_id'];
-			unset($this->arrData['order_id']);
-
-			return true;
-		}
-
-		return false;
-	}
-
-
-	/**
 	 * Remove downloads when removing a product
 	 * @param object
 	 * @return boolean
@@ -267,7 +259,7 @@ class IsotopeOrder extends IsotopeProductCollection
 	 */
 	public function delete()
 	{
-		$this->Database->query("DELETE FROM tl_iso_order_downloads WHERE pid IN (SELECT id FROM {$this->ctable} WHERE pid={$this->id})");
+		$this->Database->query("DELETE FROM tl_iso_order_downloads WHERE pid IN (SELECT id FROM {static::$ctable} WHERE pid={$this->id})");
 		return parent::delete();
 	}
 
@@ -298,9 +290,7 @@ class IsotopeOrder extends IsotopeProductCollection
 		// This is the case when not using ModuleIsotopeCheckout
 		if (!is_object($objCart))
 		{
-			$objCart = new IsotopeCart();
-
-			if (!$objCart->findBy('id', $this->cart_id))
+			if (($objCart = IsotopeCart::findByPk($this->cart_id)) === null)
 			{
 				$this->log('Could not find Cart ID '.$this->cart_id.' for Order ID '.$this->id, __METHOD__, TL_ERROR);
 				return false;

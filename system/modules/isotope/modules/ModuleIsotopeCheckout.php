@@ -122,9 +122,7 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 		// Order has been completed (postsale request)
 		if ($this->strCurrentStep == 'complete' && \Input::get('uid') != '')
 		{
-			$objOrder = new IsotopeOrder();
-
-			if ($objOrder->findBy('uniqid', \Input::get('uid')))
+			if (($objOrder = IsotopeOrder::findOneByUniqid(\Input::get('uid'))) !== null)
 			{
 				// Order is complete, forward to confirmation page
 				if ($objOrder->complete())
@@ -288,10 +286,8 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 
 			if ($strBuffer === true)
 			{
-				$objOrder = new IsotopeOrder();
-
 				// If checkout is successful, complete order and redirect to confirmation page
-				if ($objOrder->findBy('cart_id', $this->Isotope->Cart->id) && $objOrder->checkout($this->Isotope->Cart) && $objOrder->complete())
+				if (($objOrder = IsotopeOrder::findOneBy('cart_id', $this->Isotope->Cart->id)) !== null && $objOrder->checkout($this->Isotope->Cart) && $objOrder->complete())
 				{
 					$this->redirect(IsotopeFrontend::addQueryStringToUrl('uid=' . $objOrder->uniqid, $this->orderCompleteJumpTo));
 				}
@@ -1001,13 +997,14 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 	 */
 	protected function writeOrder()
 	{
-		$objOrder = new IsotopeOrder();
-
-		if (!$objOrder->findBy('cart_id', $this->Isotope->Cart->id))
+		if (($objOrder = IsotopeOrder::findOneBy('cart_id', $this->Isotope->Cart->id)) === null)
 		{
+			$objOrder = new \IsotopeOrder();
+
 			$objOrder->uniqid		= uniqid($this->Isotope->Config->orderPrefix, true);
 			$objOrder->cart_id		= $this->Isotope->Cart->id;
-			$objOrder->findBy('id', $objOrder->save());
+
+			$objOrder = IsotopeOrder::findByPk($objOrder->save()->id);
 		}
 
 		$objOrder->pid				= (FE_USER_LOGGED_IN === true ? $this->User->id : 0);

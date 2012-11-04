@@ -103,8 +103,7 @@ class Isotope extends \Controller
 
 			if (TL_MODE == 'FE' && strpos(self::$objInstance->Environment->script, 'postsale.php') === false && strpos(self::$objInstance->Environment->script, 'cron.php') === false)
 			{
-				self::$objInstance->Cart = new IsotopeCart();
-				self::$objInstance->Cart->initializeCart((int)self::$objInstance->Config->id, (int)self::$objInstance->Config->store_id);
+				self::$objInstance->Cart = IsotopeCart::getDefaultForStore((int)self::$objInstance->Config->id, (int)self::$objInstance->Config->store_id);
 
 				// Initialize request cache for product list filters
 				if (self::$objInstance->Input->get('isorc') != '')
@@ -192,8 +191,7 @@ class Isotope extends \Controller
 			return;
 		}
 
-		$this->Config = new IsotopeConfig();
-		$this->Config->setRow($objConfig->row());
+		$this->Config = new IsotopeConfig($objConfig);
 	}
 
 
@@ -203,9 +201,7 @@ class Isotope extends \Controller
 	 */
 	public function overrideConfig($intConfig)
     {
-		$this->Config = new IsotopeConfig();
-
-		if (!$this->Config->findBy('id', $intConfig))
+		if (($this->Config = IsotopeConfig::findByPk($intConfig)) === null)
 		{
 			$this->resetConfig();
 		}

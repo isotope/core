@@ -40,13 +40,13 @@ class IsotopeCart extends IsotopeProductCollection
 	 * Name of the child table
 	 * @var string
 	 */
-	protected $ctable = 'tl_iso_cart_items';
+	protected static $ctable = 'tl_iso_cart_items';
 
 	/**
 	 * Name of the temporary cart cookie
 	 * @var string
 	 */
-	protected $strCookie = 'ISOTOPE_TEMP_CART';
+	protected static $strCookie = 'ISOTOPE_TEMP_CART';
 
 
 	/**
@@ -215,65 +215,59 @@ class IsotopeCart extends IsotopeProductCollection
 	 * @param integer
 	 * @param integer
 	 */
-	public function initializeCart($intConfig, $intStore)
+	public static function getDefaultForStore($intConfig, $intStore)
 	{
 		$time = time();
-		$this->strHash = \Input::cookie($this->strCookie);
+		$strHash = \Input::cookie(IsotopeCart::$strCookie);
 
 		//  Check to see if the user is logged in.
 		if (FE_USER_LOGGED_IN !== true)
 		{
-			if (!strlen($this->strHash))
+			if ($strHash == '')
 			{
-				$this->strHash = sha1(session_id() . (!$GLOBALS['TL_CONFIG']['disableIpCheck'] ? $this->Environment->ip : '') . $intConfig . $this->strCookie);
-				$this->setCookie($this->strCookie, $this->strHash, $time+$GLOBALS['TL_CONFIG']['iso_cartTimeout'], $GLOBALS['TL_CONFIG']['websitePath']);
+				$strHash = sha1(session_id() . (!$GLOBALS['TL_CONFIG']['disableIpCheck'] ? \Environment::get('ip') : '') . $intConfig . IsotopeCart::$strCookie);
+				$this->setCookie(IsotopeCart::$strCookie, $strHash, $time+$GLOBALS['TL_CONFIG']['iso_cartTimeout'], $GLOBALS['TL_CONFIG']['websitePath']);
 			}
 
-			$objCart = $this->Database->execute("SELECT * FROM tl_iso_cart WHERE session='{$this->strHash}' AND store_id=" . (int) $intStore);
+			$objCart = IsotopeCart::findOneBy(array('(session=? AND store_id=?)'), array($strHash, $intStore));
 		}
 		else
 		{
-			$objCart = $this->Database->execute("SELECT * FROM tl_iso_cart WHERE pid=" . (int) $this->User->id . " AND store_id=" . (int) $intStore);
+			$objCart = IsotopeCart::findOneBy(array('(pid=? AND store_id=?)'), array(\FrontendUser::getInstance()->id, $intStore));
 		}
 
 		// Create new cart
-		if ($objCart->numRows)
+		if ($objCart === null)
 		{
-			$this->setRow($objCart->row());
-			$this->tstamp = $time;
+			$objCart = new \IsotopeCart();
+
+			$objCart->pid		= (\FrontendUser::getInstance()->id ?: 0);
+			$objCart->session	= (\FrontendUser::getInstance()->id ? '' : $strHash);
+			$objCart->store_id	= $intStore;
 		}
-		else
-		{
-			$this->setData(array
-			(
-				'pid'			=> ($this->User->id ? $this->User->id : 0),
-				'session'		=> ($this->User->id ? '' : $this->strHash),
-				'tstamp'		=> time(),
-				'store_id'		=> $intStore,
-			));
-		}
+
+		$objCart->tstamp = $time;
 
 		// Temporary cart available, move to this cart. Must be after creating a new cart!
- 		if (FE_USER_LOGGED_IN === true && $this->strHash != '')
+ 		if (FE_USER_LOGGED_IN === true && $strHash != '')
  		{
- 			$blnMerge = $this->products ? true : false;
-			$objCart = new IsotopeCart();
+ 			$blnMerge = $objCart->products ? true : false;
 
-			if ($objCart->findBy('session', $this->strHash))
+			if (($objTemp = IsotopeCart::findOneBy(array('(session=? AND store_id=?)'), array($strHash, $intStore))) !== null)
 			{
-				$arrIds = $this->transferFromCollection($objCart, false);
+				$arrIds = $objCart->transferFromCollection($objTemp, false);
 
 				if ($blnMerge && !empty($arrIds))
 				{
 					$_SESSION['ISO_CONFIRM'][] = $GLOBALS['TL_LANG']['MSC']['cartMerged'];
 				}
 
-				$objCart->delete();
+				$objTemp->delete();
 			}
 
 			// Delete cookie
-			$this->setCookie($this->strCookie, '', ($time - 3600), $GLOBALS['TL_CONFIG']['websitePath']);
-			$this->reload();
+			\System::setCookie(IsotopeCart::$strCookie, '', ($time - 3600), $GLOBALS['TL_CONFIG']['websitePath']);
+			\System::reload();
  		}
 	}
 

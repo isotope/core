@@ -29,7 +29,7 @@ abstract class IsotopeProductCollection extends \Model
 	 * Name of the child table
 	 * @var string
 	 */
-	protected $ctable;
+	protected static $ctable;
 
 	/**
 	 * Define if data should be threaded as "locked", eg. not apply discount rules to product prices
@@ -133,11 +133,11 @@ abstract class IsotopeProductCollection extends \Model
 			switch ($strKey)
 			{
 				case 'table':
-					return $this->strTable;
+					return static::$strTable;
 					break;
 
 				case 'ctable':
-					return  $this->ctable;
+					return  static::$ctable;
 					break;
 
 				case 'id':
@@ -375,15 +375,12 @@ abstract class IsotopeProductCollection extends \Model
 			}
 		}
 
-		if ($this->blnRecordExists && $this->blnModified && !$blnForceInsert)
+		if ($this->blnModified || $blnForceInsert)
 		{
-			return parent::save($blnForceInsert);
+			parent::save();
 		}
-		elseif ((!$this->blnRecordExists && $this->blnModified) || $blnForceInsert)
-		{
-			$this->findBy('id', parent::save($blnForceInsert));
-			return $this->id;
-		}
+
+		return $this;
 	}
 
 

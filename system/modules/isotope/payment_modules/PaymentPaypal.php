@@ -33,8 +33,7 @@ class PaymentPaypal extends IsotopePayment
 	 */
 	public function processPayment()
 	{
-		$objOrder = new IsotopeOrder();
-		if (!$objOrder->findBy('cart_id', $this->Isotope->Cart->id))
+		if (($objOrder = IsotopeOrder::findOneBy('cart_id', $this->Isotope->Cart->id)) === null)
 		{
 			return false;
 		}
@@ -81,9 +80,7 @@ class PaymentPaypal extends IsotopePayment
 		}
 		elseif ($objRequest->response == 'VERIFIED' && (\Input::post('receiver_email', true) == $this->paypal_account || $this->debug))
 		{
-			$objOrder = new IsotopeOrder();
-
-			if (!$objOrder->findBy('id', \Input::post('invoice')))
+			if (($objOrder = IsotopeOrder::findByPk(\Input::post('invoice'))) === null)
 			{
 				$this->log('Order ID "' . \Input::post('invoice') . '" not found', __METHOD__, TL_ERROR);
 				return;
@@ -164,9 +161,7 @@ class PaymentPaypal extends IsotopePayment
 	 */
 	public function checkoutForm()
 	{
-		$objOrder = new IsotopeOrder();
-
-		if (!$objOrder->findBy('cart_id', $this->Isotope->Cart->id))
+		if (($objOrder = IsotopeOrder::findOneBy('cart_id', $this->Isotope->Cart->id)) === null)
 		{
 			$this->redirect($this->addToUrl('step=failed', true));
 		}

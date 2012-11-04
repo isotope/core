@@ -681,9 +681,7 @@ class tl_iso_orders extends \Backend
 
 		foreach ($arrIds as $intId)
 		{
-			$objOrder = new IsotopeOrder();
-
-			if ($objOrder->findBy('id', $intId))
+			if (($objOrder = \IsotopeOrder::findByPk($intId)) !== null)
 			{
 				$pdf = $objOrder->generatePDF(null, $pdf, false);
 			}
@@ -722,9 +720,7 @@ class tl_iso_orders extends \Backend
 	{
 		if ($dc->activeRecord && $dc->activeRecord->status != $varValue)
 		{
-			$objOrder = new IsotopeOrder();
-
-			if ($objOrder->findBy('id', $dc->id))
+			if (($objOrder = \IsotopeOrder::findByPk($dc->id)) !== null)
 			{
 				// Status update has been cancelled, do not update
 				if (!$objOrder->updateOrderStatus($varValue))
@@ -745,9 +741,7 @@ class tl_iso_orders extends \Backend
 	 */
 	public function executeSaveHook($dc)
 	{
-		$objOrder = new IsotopeOrder();
-
-		if ($objOrder->findBy('id', $dc->id))
+		if (($objOrder = \IsotopeOrder::findByPk($dc->id)) !== null)
 		{
 			// !HOOK: add additional functionality when saving collection
 			if (isset($GLOBALS['ISO_HOOKS']['saveCollection']) && is_array($GLOBALS['ISO_HOOKS']['saveCollection']))
