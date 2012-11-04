@@ -39,12 +39,6 @@ class Isotope extends \Controller
 	protected $strSelect;
 
 	/**
-	 * Current config instance
-	 * @var object
-	 */
-	public $Config;
-
-	/**
 	 * Current cart instance
 	 * @var object
 	 */
@@ -69,6 +63,7 @@ class Isotope extends \Controller
 	protected function __construct()
 	{
 		parent::__construct();
+
 		$this->import('Database');
 		$this->import('FrontendUser', 'User');
 	}

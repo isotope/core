@@ -95,7 +95,7 @@ class IsotopeConfig extends \Model
 	 */
 	public function __call($name, $arguments)
 	{
-		return call_user_func_array(array($this->Config, $name), $arguments);
+		return call_user_func_array(array($this->arrObjects['Config'], $name), $arguments);
 	}
 }
 
