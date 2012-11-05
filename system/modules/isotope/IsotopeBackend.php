@@ -581,7 +581,7 @@ class IsotopeBackend extends Backend
 
 			$intGroup = $objGroup->pid;
 		}
-		while ($objGroup->numRows && $pid > 0);
+		while ($objGroup->numRows && $intGroup > 0);
 
 		// if there is no default type set we return false
 		return false;
