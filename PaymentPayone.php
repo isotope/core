@@ -157,15 +157,15 @@ class PaymentPayone extends IsotopePayment
 		$strBuffer .= '
 <input type="hidden" name="hash" value="' . $strHash . '" />
 
-<input type="hidden" name="company" value="' . $this->Isotope->Cart->billingAddress['company'] . '">
-<input type="hidden" name="firstname" value="' . $this->Isotope->Cart->billingAddress['firstname'] . '">
-<input type="hidden" name="lastname" value="' . $this->Isotope->Cart->billingAddress['lastname'] . '">
-<input type="hidden" name="street" value="' . $this->Isotope->Cart->billingAddress['street_1'] . '">
-<input type="hidden" name="zip" value="' . $this->Isotope->Cart->billingAddress['postal'] . '">
-<input type="hidden" name="city" value="' . $this->Isotope->Cart->billingAddress['city'] . '">
-<input type="hidden" name="country" value="' . strtoupper($this->Isotope->Cart->billingAddress['country']) . '">
-<input type="hidden" name="email" value="' . $this->Isotope->Cart->billingAddress['email'] . '">
-<input type="hidden" name="telephonenumber" value="' . $this->Isotope->Cart->billingAddress['phone'] . '">
+<input type="hidden" name="company" value="' . $this->Isotope->Cart->billing_address['company'] . '">
+<input type="hidden" name="firstname" value="' . $this->Isotope->Cart->billing_address['firstname'] . '">
+<input type="hidden" name="lastname" value="' . $this->Isotope->Cart->billing_address['lastname'] . '">
+<input type="hidden" name="street" value="' . $this->Isotope->Cart->billing_address['street_1'] . '">
+<input type="hidden" name="zip" value="' . $this->Isotope->Cart->billing_address['postal'] . '">
+<input type="hidden" name="city" value="' . $this->Isotope->Cart->billing_address['city'] . '">
+<input type="hidden" name="country" value="' . strtoupper($this->Isotope->Cart->billing_address['country']) . '">
+<input type="hidden" name="email" value="' . $this->Isotope->Cart->billing_address['email'] . '">
+<input type="hidden" name="telephonenumber" value="' . $this->Isotope->Cart->billing_address['phone'] . '">
 <input type="hidden" name="language" value="' . strtoupper($GLOBALS['TL_LANGUAGE']) . '" />
 
 <input type="submit" value="' . specialchars($GLOBALS['TL_LANG']['MSC']['pay_with_payone'][2]) . '">
