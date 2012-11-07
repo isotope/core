@@ -5,6 +5,7 @@ Version 1.3.10 stable (2012-??-??)
 ---------------------------------
 
 ### Fixed
+- Filter limits were not applied in pagination (#56)
 
 
 Version 1.3.9 stable (2012-11-05)
