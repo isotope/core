@@ -113,7 +113,7 @@ class PaymentPayone extends IsotopePayment
 			$strOptions = '';
 			$arrOptions = $objProduct->getOptions();
 
-			if (is_array($arrOptions) && count($arrOptions))
+			if (is_array($arrOptions) && !empty($arrOptions))
 			{
 				$options = array();
 
@@ -131,17 +131,20 @@ class PaymentPayone extends IsotopePayment
 			$arrData['de['.$i.']']		= specialchars($objProduct->name . $strOptions);
 		}
 
-		foreach( $this->Isotope->Cart->getSurcharges() as $arrSurcharge )
+		foreach( $this->Isotope->Cart->getSurcharges() as $k => $arrSurcharge )
 		{
 			if ($arrSurcharge['add'] === false)
 				continue;
 
-			$arrData['de['.++$i.']']	= $arrSurcharge['label'];
+			$arrData['id['.++$i.']']	= 'surcharge'.$k;
 			$arrData['pr['.$i.']']		= $arrSurcharge['total_price'] * 100;
+			$arrData['no['.$i.']']		= '1';
+			$arrData['de['.$i.']']		= $arrSurcharge['label'];
 		}
 
 
 		ksort($arrData);
+		$arrData = array_map('urlencode', $arrData);
 		$strHash = md5(implode('', $arrData) . $this->payone_key);
 
 		$strBuffer = '
