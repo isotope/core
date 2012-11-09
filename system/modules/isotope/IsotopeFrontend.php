@@ -1543,5 +1543,146 @@ $endScript";
 		$GLOBALS['ISO_CONFIG']['current_article']['id'] = $objRow->id;
 		$GLOBALS['ISO_CONFIG']['current_article']['pid'] = $objRow->pid;
 	}
+
+
+	/**
+	 * Manipulate the breadcrumb to show the page reader
+	 * @param  array
+	 * @param  object
+	 * @return array
+	 */
+	public function generateBreadcrumb($arrItems, $objModule)
+	{
+		if ($this->Input->get('product') != '')
+		{
+			$objProduct = IsotopeFrontend::getProductByAlias($this->Input->get('product'));
+
+			if ($objProduct !== null)
+			{
+				global $objPage;
+
+				$intPage = null;
+				$objParent = null;
+				$arrTrail = $objPage->trail;
+				$arrCategories = $objProduct->categories;
+
+				foreach (array_reverse($arrTrail) as $intTrail)
+				{
+					// Trail page is a category for this product
+					if (in_array($intTrail, $arrCategories))
+					{
+						$intPage = $intTrail;
+						$intParent = $intTrail;
+						break;
+					}
+
+					// Check if a child record of our trail is in categories
+					$arrChildren = $this->getChildRecords($intTrail, 'tl_page', true);
+					$arrMatch = array_intersect($arrChildren, $arrCategories);
+
+					if (!empty($arrMatch))
+					{
+						$intPage = array_shift($arrMatch);
+						$intParent = $intTrail;
+						break;
+					}
+				}
+
+				// If we still havent found a list page, don't alter the breadcrumb
+				if ($intPage === null)
+				{
+					return $arrItems;
+				}
+
+				$time = time();
+				$arrResult = array();
+
+				while ($intPage != $intParent)
+				{
+					$objResult = $this->Database->prepare("SELECT * FROM tl_page WHERE id=?" . (!BE_USER_LOGGED_IN ? " AND (start='' OR start<$time) AND (stop='' OR stop>$time) AND published=1" : ""))->execute($intPage);
+
+					if (!$objResult->numRows)
+					{
+						break;
+					}
+
+					$intPage = $objResult->pid;
+
+					if ($objResult->hide && !$objModule->showHidden)
+					{
+						continue;
+					}
+
+					// Get href
+					switch ($objResult->type)
+					{
+						case 'redirect':
+							$href = $objResult->url;
+
+							if (strncasecmp($href, 'mailto:', 7) === 0)
+							{
+								$this->import('String');
+								$href = $this->String->encodeEmail($href);
+							}
+							break;
+
+						case 'forward':
+							$objNext = $this->Database->prepare("SELECT id, alias FROM tl_page WHERE id=?")
+													  ->limit(1)
+													  ->execute($objResult->jumpTo);
+
+							if ($objNext->numRows)
+							{
+								$href = $this->generateFrontendUrl($objNext->fetchAssoc());
+								break;
+							}
+							// DO NOT ADD A break; STATEMENT
+
+						default:
+							$href = $this->generateFrontendUrl($objResult->row());
+							break;
+					}
+
+					$arrResult[] = array
+					(
+						'isRoot' => false,
+						'isActive' => false,
+						'href' => $href,
+						'title' => ($objResult->pageTitle != '' ? specialchars($objResult->pageTitle, true) : specialchars($objResult->title, true)),
+						'link' => $objResult->title,
+						'data' => $objResult->row()
+					);
+				}
+
+
+				$arrItems = array_reverse($arrItems);
+
+				// Remove wrong items from breadcrumb, but do not re-generate the correct ones
+				foreach ($arrItems as $i => $arrItem)
+				{
+					if ($arrItem['data']['id'] == $intParent)
+					{
+						break;
+					}
+
+					unset($arrItems[$i]);
+				}
+
+				$arrItems = array_reverse(array_merge($arrResult, $arrItems));
+
+				// Add the reader as breadcrumb item
+				$arrItems[] = array
+				(
+					'isRoot' => false,
+					'isActive' => true,
+					'title' => specialchars($objProduct->name, true),
+					'link' => $objProduct->name,
+					'data' => $objPage->row(),
+				);
+			}
+		}
+
+		return $arrItems;
+	}
 }
 
