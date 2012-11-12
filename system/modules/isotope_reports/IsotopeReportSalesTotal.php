@@ -95,7 +95,6 @@ class IsotopeReportSalesTotal extends IsotopeReportSales
 		// Apply formatting
 		$arrData = $this->formatValues($arrData, $arrCurrencies);
 
-		$this->Template->headline = 'Overall Sales Statistics';
 		$this->Template->data = $arrData;
 		$this->Template->addChart = true;
 		$this->Template->chart = $arrChart;

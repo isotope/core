@@ -117,7 +117,7 @@ abstract class IsotopeReport extends Backend
 		$this->Template->back_title = specialchars($GLOBALS['TL_LANG']['MSC']['backBT']);
 		$this->Template->back_button = $GLOBALS['TL_LANG']['MSC']['backBT'];
 
-		$this->Template->headline = $this->arrData['label'][0];
+		$this->Template->headline = $this->arrData['label'][1] ? $this->arrData['label'][1] : $this->arrData['label'][0];
 
 		$this->compile();
 
