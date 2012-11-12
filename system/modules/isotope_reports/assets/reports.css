@@ -13,8 +13,11 @@
 .iso_reports .item span {
 	display: block;
 }
-.iso_report {
-	width: 100%;
+table.iso_report {
+	border-collapse: separate;
+}
+.iso_report tfoot td {
+	border-top: 1px solid #bbb;
 }
 .tl_subpanel input.tl_text.datepicker {
 	width: 100px;
