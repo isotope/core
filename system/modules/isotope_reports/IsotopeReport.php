@@ -197,5 +197,31 @@ abstract class IsotopeReport extends Backend
 			'options'		=> $this->arrSortingOptions,
 		);
 	}
+
+
+	protected function getFilterByConfigPanel()
+	{
+		$arrConfigs = array(''=>&$GLOBALS['ISO_LANG']['REPORT']['all']);
+		$objConfigs = $this->Database->execute("SELECT id, name FROM tl_iso_config ORDER BY name");
+
+		while ($objConfigs->next())
+		{
+			$arrConfigs[$objConfigs->id] = $objConfigs->name;
+		}
+
+		$arrSession = $this->Session->get('iso_reports');
+		$varValue = (string) $arrSession[$this->name]['iso_config'];
+
+		return array
+		(
+			'name'			=> 'iso_config',
+			'label'			=> &$GLOBALS['ISO_LANG']['REPORT']['filter_config'],
+			'type'			=> 'filter',
+			'value'			=> $varValue,
+			'active'		=> ($varValue != ''),
+			'class'			=> 'iso_config',
+			'options'		=> $arrConfigs,
+		);
+	}
 }
 
