@@ -49,35 +49,7 @@ class IsotopeReportSalesProduct extends IsotopeReportSales
 		$intColumns = (int) $arrSession[$this->name]['columns'];
 		$blnVariants = (bool) $arrSession[$this->name]['variants'];
 
-		switch ($strPeriod)
-		{
-			case 'day':
-				$publicDate = 'd.m.Y';
-				$privateDate = 'Ymd';
-				$sqlDate = '%Y%m%d';
-				break;
-
-			case 'week':
-				$publicDate = 'W/Y';
-				$privateDate = 'YW';
-				$sqlDate = '%Y%u';
-				break;
-
-			case 'month':
-				$publicDate = 'M Y';
-				$privateDate = 'Ym';
-				$sqlDate = '%Y%m';
-				break;
-
-			case 'year':
-				$publicDate = 'Y';
-				$privateDate = 'Y';
-				$sqlDate = '%Y';
-				break;
-
-			default:
-				throw new Exception('Invalid period "' . $strPeriod . '". Reset your session to continue.');
-		}
+		list($publicDate, $privateDate, $sqlDate) = $this->getPeriodConfiguration($strPeriod);
 
 		$arrData = array('rows'=>array());
 		$arrData['header'] = $this->getHeader($strPeriod, $publicDate, $intStart, $intColumns);

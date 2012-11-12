@@ -112,5 +112,41 @@ abstract class IsotopeReportSales extends IsotopeReport
 
 		$this->Session->set('iso_reports', $arrSession);
 	}
+
+
+	protected function getPeriodConfiguration($strPeriod)
+	{
+		switch ($strPeriod)
+		{
+			case 'day':
+				$publicDate = 'd.m.Y';
+				$privateDate = 'Ymd';
+				$sqlDate = '%Y%m%d';
+				break;
+
+			case 'week':
+				$publicDate = 'W/Y';
+				$privateDate = 'YW';
+				$sqlDate = '%Y%u';
+				break;
+
+			case 'month':
+				$publicDate = 'M Y';
+				$privateDate = 'Ym';
+				$sqlDate = '%Y%m';
+				break;
+
+			case 'year':
+				$publicDate = 'Y';
+				$privateDate = 'Y';
+				$sqlDate = '%Y';
+				break;
+
+			default:
+				throw new Exception('Invalid period "' . $strPeriod . '". Reset your session to continue.');
+		}
+
+		return array($publicDate, $privateDate, $sqlDate);
+	}
 }
 
