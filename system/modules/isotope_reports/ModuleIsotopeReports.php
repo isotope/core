@@ -50,6 +50,8 @@ class ModuleIsotopeReports extends BackendModule
 			}
 		}
 
+		$this->import('Isotope');
+
 		return parent::generate();
 	}
 
@@ -79,6 +81,7 @@ class ModuleIsotopeReports extends BackendModule
 		}
 
 		$this->Template->reports = $arrReports;
+		$this->Template->summary = $this->getDailySummary();
 	}
 
 
@@ -97,6 +100,45 @@ class ModuleIsotopeReports extends BackendModule
 		}
 
 		return false;
+	}
+
+
+	/**
+	 * Generate a daily summary for the overview page
+	 * @return array
+	 */
+	protected function getDailySummary()
+	{
+		$arrSummary = array();
+
+		$objOrders = $this->Database->prepare("SELECT
+													c.id AS config_id,
+													c.name AS config_name,
+													c.currency,
+													COUNT(o.id) AS total_orders,
+													SUM(i.price * i.product_quantity) AS total_sales,
+													SUM(i.product_quantity) AS total_items
+												FROM tl_iso_orders o
+												LEFT JOIN tl_iso_order_items i ON o.id=i.pid
+												LEFT OUTER JOIN tl_iso_config c ON o.config_id=c.id
+												WHERE o.date>?
+												GROUP BY config_id")
+									->execute(strtotime('-24h'));
+
+
+		while ($objOrders->next())
+		{
+			$arrSummary[] = array
+			(
+				'name'			=> $objOrders->config_name,
+				'currency'		=> $objOrders->currency,
+				'total_orders'	=> $objOrders->total_orders,
+				'total_sales'	=> $this->Isotope->formatPrice($objOrders->total_sales),
+				'total_items'	=> $objOrders->total_items,
+			);
+		}
+
+		return $arrSummary;
 	}
 }
 

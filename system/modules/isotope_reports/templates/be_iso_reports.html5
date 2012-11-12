@@ -1,9 +1,36 @@
 <div class="tl_formbody_edit iso_reports">
 
-<?php $i=0; foreach($this->reports as $fieldset => $reports): ?>
-<fieldset class="<?php echo $i++==0 ? 'tl_tbox' : 'tl_box'; ?>">
+<fieldset class="tl_tbox">
+<legend style="cursor: default;"><?php echo $GLOBALS['ISO_LANG']['REPORT']['24h_summary']; ?></legend>
+<?php if($this->summary): ?>
+<br>
+<table class="tl_listing">
+<tr>
+	<th class="tl_folder_tlist"><?php echo $GLOBALS['ISO_LANG']['REPORT']['shop_config']; ?></th>
+	<th class="tl_folder_tlist"><?php echo $GLOBALS['ISO_LANG']['REPORT']['currency']; ?></th>
+	<th class="tl_folder_tlist"><?php echo $GLOBALS['ISO_LANG']['REPORT']['orders#']; ?></th>
+	<th class="tl_folder_tlist"><?php echo $GLOBALS['ISO_LANG']['REPORT']['products#']; ?></th>
+	<th class="tl_folder_tlist"><?php echo $GLOBALS['ISO_LANG']['REPORT']['sales#']; ?></th>
+</tr>
+<?php $i=-1; foreach($this->summary as $row): ?>
+<tr class="row_<?php echo ++$i; ?> <?php echo $i%2 ? 'odd' : 'even'; ?>">
+	<td class="tl_file_list"><?php echo $row['name']; ?></td>
+	<td class="tl_file_list"><?php echo $row['currency']; ?></td>
+	<td class="tl_file_list"><?php echo $row['total_orders']; ?></td>
+	<td class="tl_file_list"><?php echo $row['total_items']; ?></td>
+	<td class="tl_file_list"><?php echo $row['total_sales']; ?></td>
+</tr>
+<?php endforeach; ?>
+</table>
+<?php else: ?>
+<p class="tl_info" style="margin-top:10px">Sie haben in den letzten 24h keine Bestellungen erhalten.</p>
+<?php endif; ?>
+</fieldset>
+
+<?php foreach($this->reports as $fieldset => $reports): ?>
+<fieldset class="tl_box">
 <legend style="cursor: default;"><?php echo $fieldset; ?></legend>
-<?php foreach($reports as $i => $report): ?>
+<?php foreach($reports as $report): ?>
 <div class="item">
 	<a href="<?php echo $report['href']; ?>" title="<?php echo $report['title']; ?>">
 		<img src="<?php echo $report['icon']; ?>" alt="">

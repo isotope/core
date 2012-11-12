@@ -40,4 +40,10 @@ $GLOBALS['ISO_LANG']['REPORT']['members_registration'] = array('Registrations', 
 $GLOBALS['ISO_LANG']['REPORT']['members_guests'] = array('vs. Guest', 'Show sales comparison between members and guests.');
 $GLOBALS['ISO_LANG']['REPORT']['rules_usage'] = array('Rules Usage', 'Show statistics about rules usage.');
 $GLOBALS['ISO_LANG']['REPORT']['rules_coupons'] = array('Coupons', 'Show statistics about coupon usage.');
+$GLOBALS['ISO_LANG']['REPORT']['24h_summary'] = 'Sales in the last 24 hours';
+$GLOBALS['ISO_LANG']['REPORT']['shop_config'] = 'Shop Configuration';
+$GLOBALS['ISO_LANG']['REPORT']['currency'] = 'Currency';
+$GLOBALS['ISO_LANG']['REPORT']['orders#'] = 'Number of orders';
+$GLOBALS['ISO_LANG']['REPORT']['products#'] = 'Number of items';
+$GLOBALS['ISO_LANG']['REPORT']['sales#'] = 'Sales Total';
 
