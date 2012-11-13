@@ -240,6 +240,7 @@ $GLOBALS['TL_LANG']['ISO']['backendShippingNoInfo']			= 'This shipping module do
  * Errors
  */
 $GLOBALS['ISO_LANG']['ERR']['datepickerRgxp']		= 'Select an appropriate field validation (date, time, date and time) to enable the date picker.';
+$GLOBALS['ISO_LANG']['ERR']['emptyDownloadsFolder'] = 'The selected folder is empty.';
 
 
 /**

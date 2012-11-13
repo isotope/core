@@ -225,6 +225,11 @@ class tl_iso_downloads extends Backend
 				}
 			}
 
+			if (empty($arrDownloads))
+			{
+				return $GLOBALS['ISO_LANG']['ERR']['emptyDownloadsFolder'];
+			}
+
 			return implode("\n", $arrDownloads);
 		}
 
