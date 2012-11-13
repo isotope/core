@@ -242,6 +242,11 @@ class IsotopeReportSalesTotal extends IsotopeReportSales
 			$arrData['footer'][3]['value'][$currency] = $this->Isotope->formatPriceWithCurrency($varValue);
 		}
 
+		if (empty($arrData['footer'][3]['value']))
+		{
+			$arrData['footer'][3]['value'] = 0;
+		}
+
 		return $arrData;
 	}
 
