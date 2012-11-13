@@ -111,11 +111,14 @@ CREATE TABLE `tl_iso_price_tiers` (
 CREATE TABLE `tl_iso_downloads` (
   `id` int(10) unsigned NOT NULL auto_increment,
   `pid` int(10) unsigned NOT NULL default '0',
+  `sorting` int(10) unsigned NOT NULL default '0',
   `tstamp` int(10) unsigned NOT NULL default '0',
+  `type` varchar(8) NOT NULL default 'file',
   `singleSRC` varchar(255) NOT NULL default '',
   `title` varchar(255) NOT NULL default '',
   `description` text NULL,
   `downloads_allowed` int(5) unsigned NOT NULL default '0',
+  `expires` varchar(64) NOT NULL default '',
   PRIMARY KEY  (`id`),
   KEY `pid` (`pid`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
@@ -537,6 +540,7 @@ CREATE TABLE `tl_iso_order_downloads` (
   `tstamp` int(10) unsigned NOT NULL default '0',
   `download_id` int(10) unsigned NOT NULL default '0',
   `downloads_remaining` varchar(255) NOT NULL default '',
+  `expires` varchar(10) NOT NULL default '',
   PRIMARY KEY  (`id`),
   KEY `pid` (`pid`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
