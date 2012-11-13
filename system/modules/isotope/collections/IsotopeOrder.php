@@ -21,7 +21,7 @@ namespace Isotope;
  * @author     Andreas Schempp <andreas.schempp@terminal42.ch>
  * @author     Fred Bliss <fred.bliss@intelligentspark.com>
  */
-class IsotopeOrder extends IsotopeProductCollection
+class IsotopeOrder extends \IsotopeProductCollection
 {
 
 	/**
@@ -177,7 +177,7 @@ class IsotopeOrder extends IsotopeProductCollection
 	 * @param boolean
 	 * @return array
 	 */
-	public function transferFromCollection(IsotopeProductCollection $objCollection, $blnDuplicate=true)
+	public function transferFromCollection(\IsotopeProductCollection $objCollection, $blnDuplicate=true)
 	{
 		$time = time();
 		$arrIds = parent::transferFromCollection($objCollection, $blnDuplicate);
@@ -242,7 +242,7 @@ class IsotopeOrder extends IsotopeProductCollection
 	 * @param object
 	 * @return boolean
 	 */
-	public function deleteProduct(IsotopeProduct $objProduct)
+	public function deleteProduct(\IsotopeProduct $objProduct)
 	{
 		if (parent::deleteProduct($objProduct))
 		{

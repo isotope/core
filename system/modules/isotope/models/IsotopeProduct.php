@@ -502,7 +502,7 @@ class IsotopeProduct extends \Controller
 
 			// Find all possible variant options
 			$objVariant = clone $this;
-			$objVariants = $this->Database->execute(IsotopeProduct::getSelectStatement() . " WHERE p1.pid={$this->arrData['id']} AND p1.language=''"
+			$objVariants = $this->Database->execute(\IsotopeProduct::getSelectStatement() . " WHERE p1.pid={$this->arrData['id']} AND p1.language=''"
 													. (BE_USER_LOGGED_IN === true ? '' : " AND p1.published='1' AND (p1.start='' OR p1.start<$time) AND (p1.stop='' OR p1.stop>$time)"));
 
 			while ($objVariants->next())

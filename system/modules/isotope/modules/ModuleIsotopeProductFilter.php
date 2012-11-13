@@ -21,7 +21,7 @@ namespace Isotope;
  * @author     Andreas Schempp <andreas.schempp@terminal42.ch>
  * @author     Fred Bliss <fred.bliss@intelligentspark.com>
  */
-class ModuleIsotopeProductFilter extends ModuleIsotope
+class ModuleIsotopeProductFilter extends \ModuleIsotope
 {
 
 	/**
@@ -117,7 +117,7 @@ class ModuleIsotopeProductFilter extends ModuleIsotope
 			$time = time();
 			$arrCategories = $this->findCategories($this->iso_category_scope);
 
-			$objProductData = $this->Database->execute(IsotopeProduct::getSelectStatement(array('p1.'.$this->iso_searchAutocomplete)) . "
+			$objProductData = $this->Database->execute(\IsotopeProduct::getSelectStatement(array('p1.'.$this->iso_searchAutocomplete)) . "
 													WHERE p1.language=''"
 				. (BE_USER_LOGGED_IN === true ? '' : " AND p1.published='1' AND (p1.start='' OR p1.start<$time) AND (p1.stop='' OR p1.stop>$time)")
 				. " AND c.page_id IN (" . implode(',', $arrCategories) . ")"

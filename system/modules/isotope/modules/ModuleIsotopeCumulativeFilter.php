@@ -20,7 +20,7 @@ namespace Isotope;
  * @copyright  Isotope eCommerce Workgroup 2009-2011
  * @author     Yanick Witschi <yanick.witschi@terminal42.ch>
  */
-class ModuleIsotopeCumulativeFilter extends ModuleIsotopeProductFilter
+class ModuleIsotopeCumulativeFilter extends \ModuleIsotopeProductFilter
 {
 
 	/**

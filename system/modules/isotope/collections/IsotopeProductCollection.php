@@ -523,7 +523,7 @@ abstract class IsotopeProductCollection extends \Model
 	 * @param integer How many products to add
 	 * @return integer ID of database record added/updated
 	 */
-	public function addProduct(IsotopeProduct $objProduct, $intQuantity)
+	public function addProduct(\IsotopeProduct $objProduct, $intQuantity)
 	{
 		// !HOOK: additional functionality when adding product to collection
 		if (isset($GLOBALS['ISO_HOOKS']['addProductToCollection']) && is_array($GLOBALS['ISO_HOOKS']['addProductToCollection']))
@@ -587,7 +587,7 @@ abstract class IsotopeProductCollection extends \Model
 	 * @param array The property(ies) to adjust
 	 * @return integer ID of database record added/updated
 	 */
-	public function updateProduct(IsotopeProduct $objProduct, $arrSet)
+	public function updateProduct(\IsotopeProduct $objProduct, $arrSet)
 	{
 		if (!$objProduct->cart_id)
 		{
@@ -639,7 +639,7 @@ abstract class IsotopeProductCollection extends \Model
 	 * @param boolean force deleting the product even if the collection is locked
 	 * @return boolean
 	 */
-	public function deleteProduct(IsotopeProduct $objProduct)
+	public function deleteProduct(\IsotopeProduct $objProduct)
 	{
 		if (!$objProduct->cart_id)
 		{
@@ -673,7 +673,7 @@ abstract class IsotopeProductCollection extends \Model
 	 * @param boolean
 	 * @return array
 	 */
-	public function transferFromCollection(IsotopeProductCollection $objCollection, $blnDuplicate=true)
+	public function transferFromCollection(\IsotopeProductCollection $objCollection, $blnDuplicate=true)
 	{
 		if (!$this->blnRecordExists)
 		{

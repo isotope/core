@@ -1195,7 +1195,7 @@ class Isotope extends \Controller
 	public function getProductSelect()
 	{
 		trigger_error('Using Isotope::getProductSelect() is deprecated. Please use IsotopeProduct::getProductStatement()', E_USER_NOTICE);
-		return IsotopeProduct::getProductStatement();
+		return \IsotopeProduct::getProductStatement();
 	}
 }
 
