@@ -583,7 +583,7 @@ abstract class IsotopeProductCollection extends Model
 				'product_name'		=> (string) $objProduct->name,
 				'product_options'	=> $objProduct->getOptions(true),
 				'product_quantity'	=> (int) $intQuantity,
-				'price'				=> $objProduct->price,
+				'price'				=> (float) $objProduct->price,
 			);
 
 			if ($this->Database->fieldExists('href_reader', $this->ctable))
