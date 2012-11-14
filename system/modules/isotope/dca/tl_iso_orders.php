@@ -47,7 +47,7 @@ $GLOBALS['TL_DCA']['tl_iso_orders'] = array
 	(
 		'dataContainer'               => 'Table',
 		'enableVersioning'            => false,
-		'ptable'					  => 'tl_member', // DO NOT REMOVE. The last item can't be deleted if this is not set.
+		'ptable'					  => ($_GET['act'] == '' ? '' : 'tl_member'), // See #70
 		'ctable'					  => array('tl_iso_order_items'),
 		'closed'            		  => true,
 		'onload_callback' 			  => array
