@@ -1453,12 +1453,12 @@ $endScript";
 		$strRequest = preg_replace('/^&(amp;)?/i', '', $strRequest);
 		$queries = preg_split('/&(amp;)?/i', $strQueryString);
 
-		// Overwrite existing parameters
+		// Overwrite existing parameters and ignore "language", see #64
 		foreach ($queries as $k=>$v)
 		{
 			$explode = explode('=', $v);
 
-			if (preg_match('/(^|&(amp;)?)' . preg_quote($explode[0], '/') . '=/i', $strRequest))
+			if ($k === 'language' || preg_match('/(^|&(amp;)?)' . preg_quote($explode[0], '/') . '=/i', $strRequest))
 			{
 				unset($queries[$k]);
 			}

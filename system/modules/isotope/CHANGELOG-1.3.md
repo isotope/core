@@ -10,6 +10,7 @@ Version 1.3.10 stable (2012-??-??)
 - Exception if a product without price is added to the cart
 - Products were not translated in cart and other collections (#55)
 - Fixed unsupported $target parameter in IsotopeFrontend::watermarkImage() (#68)
+- Ignore "language" parameter in IsotopeFrontend::addQueryStringToUrl() (#64)
 
 
 Version 1.3.9 stable (2012-11-05)
