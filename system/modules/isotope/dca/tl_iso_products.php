@@ -55,6 +55,7 @@ $GLOBALS['TL_DCA']['tl_iso_products'] = array
 			array('ProductCallbacks', 'applyAdvancedFilters'),
 			array('ProductCallbacks', 'checkPermission'),
 			array('ProductCallbacks', 'buildPaletteString'),
+			array('ProductCallbacks', 'loadDefaultProductType')
 		),
 		'oncopy_callback' => array
 		(

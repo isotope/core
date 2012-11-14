@@ -450,6 +450,26 @@ class ProductCallbacks extends Backend
 	}
 
 
+	/**
+	 * Load the default product type
+	 * @param object
+	 * @return void
+	 */
+	public function loadDefaultProductType($dc)
+	{
+		if ($this->Input->get('act') !== 'create' || !$this->Input->get('gid'))
+		{
+			return;
+		}
+
+		if (($intProductTypeId = IsotopeBackend::getProductTypeForGroup($this->Input->get('gid'))) !== false)
+		{
+			$GLOBALS['TL_DCA']['tl_iso_products']['fields']['type']['default'] = $intProductTypeId;
+		}
+	}
+
+
+
 
 	///////////////////////
 	//  !oncopy_callback
@@ -847,7 +867,7 @@ class ProductCallbacks extends Backend
 		}
 
 		$arrProductTypes = array();
-		$objProductTypes = $this->Database->execute("SELECT id,name FROM tl_iso_producttypes" . ($this->User->isAdmin ? '' : (" WHERE id IN (" . implode(',', $arrTypes) . ")")) . " ORDER BY name");
+		$objProductTypes = $this->Database->execute("SELECT id,name FROM tl_iso_producttypes WHERE tstamp>0" . ($this->User->isAdmin ? '' : (" AND id IN (" . implode(',', $arrTypes) . ")")) . " ORDER BY name");
 
 		while ($objProductTypes->next())
 		{
