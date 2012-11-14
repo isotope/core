@@ -197,11 +197,11 @@ class IsotopeFrontend extends Frontend
 
 
 	/**
-	 * Add the navigation trail CSS class to pages belonging to the active product
+	 * Add the navigation CSS class to pages belonging to the active product
 	 * @param object
 	 * @link http://www.contao.org/hooks.html#parseTemplate
 	 */
-	public function fixNavigationTrail(&$objTemplate)
+	public function addNavigationClass(&$objTemplate)
 	{
 		// Unset hook to prevent further execution on non-reader pages
 		if ($this->Input->get('product') == '')
@@ -248,9 +248,9 @@ class IsotopeFrontend extends Frontend
 
 				foreach ($arrItems as $k => $arrItem)
 				{
-					if (in_array($arrItem['id'], $arrTrail) && strpos($arrItem['class'], 'trail') === false)
+					if (in_array($arrItem['id'], $arrTrail))
 					{
-						$arrItems[$k]['class'] .= ' trail';
+						$arrItems[$k]['class'] .= ' product';
 					}
 				}
 

@@ -303,7 +303,7 @@ $GLOBALS['ISO_HOOKS']['checkoutSurcharge'][]		= array('IsotopeFrontend', 'getShi
 if (TL_MODE == 'FE')
 {
 	// Do not parse backend templates
-	$GLOBALS['TL_HOOKS']['parseTemplate'][]			= array('IsotopeFrontend', 'fixNavigationTrail');
+	$GLOBALS['TL_HOOKS']['parseTemplate'][]			= array('IsotopeFrontend', 'addNavigationClass');
 }
 
 

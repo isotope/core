@@ -20,9 +20,12 @@ UPDATE FROM 1.3 to 1.4
     at all anymore. The update will take care of that for you.
 
 
-### Checkout ###
+### Frontend CSS ###
 
   * Addresses are now formatted using hCard markup. You might need to adjust the checkout review step using CSS.
+
+  * In 1.3, Isotope automatically added the class "trail" to pages in the navigation module, if that page belongs to the currently active product.
+    This caused issues because it was not possible to separate real trail and Isotope products. The class has been renamed to "product", you might need to update your CSS.
 
 
 ### Hooks ###
