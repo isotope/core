@@ -403,6 +403,13 @@ $GLOBALS['TL_DCA']['tl_iso_config'] = array
 			'label'					  => &$GLOBALS['TL_LANG']['tl_iso_config']['imageSizes'],
 			'exclude'                 => true,
 			'inputType'				  => 'multiColumnWizard',
+			'default'                 => array
+			(
+				array('name'=>'gallery'),
+				array('name'=>'thumbnail'),
+				array('name'=>'medium'),
+				array('name'=>'large'),
+			),
 			'eval'                    => array
 			(
 				'mandatory'           => true,
