@@ -1,15 +1,5 @@
-UPDATE FROM 1.3 to 1.4
-=======================
-
-### General ###
-
-  * A general info:
-
-    Lorem Ipsum
-
-  * Another one
-
-    Lorem Ipsum
+Update from Isotope 1.3 to Isotope 1.4
+======================================
 
 
 ### Products ###
@@ -26,6 +16,11 @@ UPDATE FROM 1.3 to 1.4
 
   * In 1.3, Isotope automatically added the class "trail" to pages in the navigation module, if that page belongs to the currently active product.
     This caused issues because it was not possible to separate real trail and Isotope products. The class has been renamed to "product", you might need to update your CSS.
+
+
+### Language Files ###
+
+  * The address formatting has been completly rewritten. If you adjusted your address formatting, you must update your file. Isotope is now using Simple Tokens instead of Insert Tags.
 
 
 ### Hooks ###
