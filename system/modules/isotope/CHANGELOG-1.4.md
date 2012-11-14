@@ -19,6 +19,7 @@ Version 1.4.? (2012-??-??)
 - PayPal checkout threw an exception because of the IsotopeAddressModel
 - Variants were not editable for regular users (permission issue)
 - Default values for image sizes got lost in the MCW migration (#61)
+- Regular users could not add/edit product variants (#60)
 
 
 Version 1.4.beta2 (2012-09-24)

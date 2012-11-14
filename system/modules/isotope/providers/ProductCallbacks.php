@@ -255,7 +255,7 @@ class ProductCallbacks extends Backend
 		// Need to fetch all variant IDs because they are editable too
 		if (!empty($GLOBALS['TL_DCA']['tl_iso_products']['list']['sorting']['root']))
 		{
-			$arrVariants = $this->Database->execute("SELECT id FROM tl_iso_products WHERE pid IN (" . implode(',', $GLOBALS['TL_DCA']['tl_iso_products']['list']['sorting']['root']) . ")")->fetchEach('id');
+			$arrVariants = $this->getChildRecords($GLOBALS['TL_DCA']['tl_iso_products']['list']['sorting']['root'], 'tl_iso_products');
 			$GLOBALS['TL_DCA']['tl_iso_products']['list']['sorting']['root'] = array_merge($GLOBALS['TL_DCA']['tl_iso_products']['list']['sorting']['root'], $arrVariants);
 		}
 
