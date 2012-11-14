@@ -8,6 +8,7 @@ Version 1.3.10 stable (2012-??-??)
 - Filter limits were not applied in pagination (#56)
 - Spelling mistakes in german language files (#62)
 - Exception if a product without price is added to the cart
+- Products were not translated in cart and other collections (#55)
 
 
 Version 1.3.9 stable (2012-11-05)
