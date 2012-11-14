@@ -265,8 +265,9 @@ class IsotopeFrontend extends Frontend
 	 * @param string
 	 * @param string
 	 * @param string
+	 * @param string
 	 */
-	public static function watermarkImage($image, $watermark, $position='br')
+	public static function watermarkImage($image, $watermark, $position='br', $target=null)
 	{
 		$image = urldecode($image);
 
@@ -279,7 +280,7 @@ class IsotopeFrontend extends Frontend
 		$strCacheName = 'system/html/' . $objFile->filename . '-' . substr(md5($watermark . '-' . $position . '-' . $objFile->mtime), 0, 8) . '.' . $objFile->extension;
 
 		// Return the path of the new image if it exists already
-		if (file_exists(TL_ROOT . '/' . $strCacheName))
+		if (is_file(TL_ROOT . '/' . $strCacheName))
 		{
 			return $strCacheName;
 		}
@@ -300,7 +301,6 @@ class IsotopeFrontend extends Frontend
 		}
 
 		$arrGdinfo = gd_info();
-		$strGdVersion = preg_replace('/[^0-9\.]+/', '', $arrGdinfo['GD Version']);
 
 		// Load image
 		switch ($objFile->extension)
@@ -440,7 +440,7 @@ class IsotopeFrontend extends Frontend
 		if ($target)
 		{
 			$objFiles = Files::getInstance();
-			$objFiles->rename($strCacheName, $target);
+			$objFiles->copy($strCacheName, $target);
 
 			return $target;
 		}

@@ -9,6 +9,7 @@ Version 1.3.10 stable (2012-??-??)
 - Spelling mistakes in german language files (#62)
 - Exception if a product without price is added to the cart
 - Products were not translated in cart and other collections (#55)
+- Fixed unsupported $target parameter in IsotopeFrontend::watermarkImage() (#68)
 
 
 Version 1.3.9 stable (2012-11-05)
