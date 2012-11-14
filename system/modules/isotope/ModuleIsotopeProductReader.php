@@ -61,6 +61,12 @@ class ModuleIsotopeProductReader extends ModuleIsotope
 			return $objTemplate->parse();
 		}
 
+		// Set the product from the auto_item parameter
+		if ($GLOBALS['TL_CONFIG']['useAutoItem'] && isset($_GET['auto_item']))
+		{
+			$this->Input->setGet('product', $this->Input->get('auto_item'));
+		}
+
 		// Return if no product has been specified
 		if ($this->Input->get('product') == '')
 		{
@@ -77,6 +83,12 @@ class ModuleIsotopeProductReader extends ModuleIsotope
 	 */
 	public function generateAjax()
 	{
+		// Set the item from the auto_item parameter
+		if ($GLOBALS['TL_CONFIG']['useAutoItem'] && isset($_GET['auto_item']))
+		{
+			$this->Input->setGet('product', $this->Input->get('auto_item'));
+		}
+
 		$objProduct = IsotopeFrontend::getProduct($this->Input->get('product'), IsotopeFrontend::getReaderPageId(), false);
 
 		if ($objProduct)

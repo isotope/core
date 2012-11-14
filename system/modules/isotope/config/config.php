@@ -401,6 +401,12 @@ $GLOBALS['URL_KEYWORDS'][] = 'step';
 
 
 /**
+ * Auto_item keywords
+ */
+$GLOBALS['TL_AUTO_ITEM'][] = 'product';
+
+
+/**
  * Default configuration
  */
 $GLOBALS['TL_CONFIG']['iso_cartTimeout'] = 2592000;
