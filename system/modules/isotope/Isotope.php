@@ -481,9 +481,32 @@ class Isotope extends Controller
 	 */
 	public function useTaxRate($objRate, $fltPrice, $arrAddresses)
 	{
+		// Tax rate is limited to another store config
 		if ($objRate->config > 0 && $objRate->config != $this->Config->id)
 		{
 			return false;
+		}
+
+		// Apply to guests only
+		if ($objRate->guests && FE_USER_LOGGED_IN && !BE_USER_LOGGED_IN && !$objRate->protected)
+		{
+			return false;
+		}
+
+		// Protected tax rate
+		if (!BE_USER_LOGGED_IN && $objRate->protected)
+		{
+			if (!FE_USER_LOGGED_IN)
+			{
+				return false;
+			}
+
+			$groups = deserialize($objRate->groups);
+
+			if (!is_array($groups) || empty($groups) || !count(array_intersect($groups, $this->User->groups)))
+			{
+				return false;
+			}
 		}
 
 		$objRate->address = deserialize($objRate->address);

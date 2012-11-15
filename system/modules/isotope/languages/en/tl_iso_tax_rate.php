@@ -41,6 +41,9 @@ $GLOBALS['TL_LANG']['tl_iso_tax_rate']['amount']		= array('Subtotal Amount Restr
 $GLOBALS['TL_LANG']['tl_iso_tax_rate']['rate']			= array('Tax Rate', 'A rate in percent this tax is set at.');
 $GLOBALS['TL_LANG']['tl_iso_tax_rate']['config'] 		= array('Store configuration', 'Select the store configuration that the tax rate applies to.');
 $GLOBALS['TL_LANG']['tl_iso_tax_rate']['stop'] 			= array('Stop Calculations on Trigger?', 'Stop other calculations if this tax rate is triggered.');
+$GLOBALS['TL_LANG']['tl_iso_tax_rate']['groups']		= array('Member Groups', 'Restrict this tax rate to certain member groups.');
+$GLOBALS['TL_LANG']['tl_iso_tax_rate']['protected']		= array('Protect module', 'Apply the tax rate to certain member groups only.');
+$GLOBALS['TL_LANG']['tl_iso_tax_rate']['guests']		= array('Apply to guests only', 'Do not apply tax rate if a member is logged in.');
 
 
 /**

@@ -585,6 +585,9 @@ CREATE TABLE `tl_iso_tax_rate` (
   `address` blob NULL,
   `amount` varchar(255) NOT NULL default '',
   `stop` char(1) NOT NULL default '',
+  `guests` char(1) NOT NULL default '',
+  `protected` char(1) NOT NULL default '',
+  `groups` blob NULL,
   PRIMARY KEY  (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
