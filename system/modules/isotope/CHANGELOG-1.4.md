@@ -12,6 +12,7 @@ Version 1.4.? (2012-??-??)
 ### Improved
 - Do not cache or search-index a page if user-centered content (filters, cart, checkout) is on it
 - Changed navigation CSS class for active product from "trail" to "product" (#49)
+- Sorting label for dates now work better (#72)
 
 ### Fixed
 - Product was hidden if price was not an attribute
