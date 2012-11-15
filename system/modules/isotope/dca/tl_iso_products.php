@@ -313,7 +313,7 @@ $GLOBALS['TL_DCA']['tl_iso_products'] = array
 			'inputType'				=> 'select',
 			'options_callback'		=> array('tl_iso_products', 'getProductTypes'),
 			'foreignKey'			=> (strlen($this->Input->get('table')) ? 'tl_iso_producttypes.name' : null),
-			'eval'					=> array('mandatory'=>true, 'submitOnChange'=>true),
+			'eval'					=> array('mandatory'=>true, 'submitOnChange'=>true, 'tl_class'=>'clr'),
 			'attributes'			=> array('legend'=>'general_legend', 'fixed'=>true, 'inherit'=>true),
 		),
 		'pages' => array
@@ -322,7 +322,7 @@ $GLOBALS['TL_DCA']['tl_iso_products'] = array
 			'filter'				=> true,
 			'inputType'				=> 'pageTree',
 			'foreignKey'			=> 'tl_page.title',
-			'eval'					=> array('mandatory'=>false, 'multiple'=>true, 'fieldType'=>'checkbox'),
+			'eval'					=> array('mandatory'=>false, 'multiple'=>true, 'fieldType'=>'checkbox', 'tl_class'=>'clr'),
 			'attributes'			=> array('legend'=>'general_legend', 'fixed'=>true, 'inherit'=>true),
 			'load_callback'			=> array
 			(
@@ -375,7 +375,7 @@ $GLOBALS['TL_DCA']['tl_iso_products'] = array
 			'label'					=> &$GLOBALS['TL_LANG']['tl_iso_products']['teaser'],
 			'search'				=> true,
 			'inputType'				=> 'textarea',
-			'eval'					=> array('style'=>'height:80px'),
+			'eval'					=> array('style'=>'height:80px', 'tl_class'=>'clr'),
 			'attributes'			=> array('legend'=>'general_legend', 'multilingual'=>true),
 		),
 		'description' => array
@@ -467,7 +467,7 @@ $GLOBALS['TL_DCA']['tl_iso_products'] = array
 			'label'					=> &$GLOBALS['TL_LANG']['tl_iso_products']['images'],
 			'inputType'				=> 'mediaManager',
 			'explanation'			=> 'mediaManager',
-			'eval'					=> array('extensions'=>'jpeg,jpg,png,gif', 'helpwizard'=>true),
+			'eval'					=> array('extensions'=>'jpeg,jpg,png,gif', 'helpwizard'=>true, 'tl_class'=>'clr'),
 			'attributes'			=> array('legend'=>'media_legend', 'fixed'=>true, 'multilingual'=>true, 'dynamic'=>true),
 		),
 		'published' => array
@@ -475,7 +475,7 @@ $GLOBALS['TL_DCA']['tl_iso_products'] = array
 			'label'					=> &$GLOBALS['TL_LANG']['tl_iso_products']['published'],
 			'filter'				=> true,
 			'inputType'				=> 'checkbox',
-			'eval'					=> array('doNotCopy'=>true),
+			'eval'					=> array('doNotCopy'=>true, 'tl_class'=>'clr'),
 			'attributes'			=> array('legend'=>'publish_legend', 'fixed'=>true, 'variant_fixed'=>true),
 			'save_callback' => array
 			(

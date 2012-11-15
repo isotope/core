@@ -197,17 +197,17 @@ $GLOBALS['TL_DCA']['tl_iso_producttypes'] = array
 			'inputType'				=> 'attributeWizard',
 			'default'				=> array
 			(
-				'type'				=> array('enabled'=>1, 'position'=>1, 'tl_class_select'=>'clr'),
-				'pages'				=> array('enabled'=>1, 'position'=>2, 'tl_class_select'=>'clr'),
-				'alias'				=> array('enabled'=>1, 'position'=>3, 'tl_class_select'=>'w50'),
-				'sku'				=> array('enabled'=>1, 'position'=>4, 'tl_class_select'=>'w50'),
-				'name'				=> array('enabled'=>1, 'position'=>5, 'tl_class_select'=>'clr long'),
-				'teaser'			=> array('enabled'=>1, 'position'=>6, 'tl_class_select'=>'clr'),
-				'description'		=> array('enabled'=>1, 'position'=>7, 'tl_class_select'=>'clr'),
-				'price'				=> array('enabled'=>1, 'position'=>8, 'tl_class_select'=>'w50'),
-				'tax_class'			=> array('enabled'=>1, 'position'=>9, 'tl_class_select'=>'w50'),
-				'images'			=> array('enabled'=>1, 'position'=>10, 'tl_class_select'=>'clr'),
-				'published'			=> array('enabled'=>1, 'position'=>11, 'tl_class_select'=>'clr'),
+				'type'				=> array('enabled'=>1, 'position'=>1),
+				'pages'				=> array('enabled'=>1, 'position'=>2),
+				'alias'				=> array('enabled'=>1, 'position'=>3),
+				'sku'				=> array('enabled'=>1, 'position'=>4),
+				'name'				=> array('enabled'=>1, 'position'=>5),
+				'teaser'			=> array('enabled'=>1, 'position'=>6),
+				'description'		=> array('enabled'=>1, 'position'=>7),
+				'price'				=> array('enabled'=>1, 'position'=>8),
+				'tax_class'			=> array('enabled'=>1, 'position'=>9),
+				'images'			=> array('enabled'=>1, 'position'=>10),
+				'published'			=> array('enabled'=>1, 'position'=>11),
 			),
 			'eval'					=> array('helpwizard'=>true, 'tl_class'=>'clr', 'tl_classes'=>array('clr', 'clr long', 'long', 'w50', 'w50 m12')),
 		),
@@ -261,9 +261,9 @@ class tl_iso_producttypes extends Backend
 		{
 			return;
 		}
-		
+
 		$this->import('BackendUser', 'User');
-		
+
 		if ($this->User->isAdmin)
 		{
 			return;
