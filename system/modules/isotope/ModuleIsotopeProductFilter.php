@@ -382,36 +382,18 @@ class ModuleIsotopeProductFilter extends ModuleIsotope
 			{
 				foreach ($this->iso_sortingFields as $field)
 				{
-					// @todo this must be dynamic
-					switch ($field)
-					{
-						case 'price':
-							$asc = $GLOBALS['TL_LANG']['MSC']['low_to_high'];
-							$desc = $GLOBALS['TL_LANG']['MSC']['high_to_low'];
-							break;
-
-						case 'datetime':
-							$asc = $GLOBALS['TL_LANG']['MSC']['old_to_new'];
-							$desc = $GLOBALS['TL_LANG']['MSC']['new_to_old'];
-							break;
-
-						case 'name':
-						default:
-							$asc = $GLOBALS['TL_LANG']['MSC']['a_to_z'];
-							$desc = $GLOBALS['TL_LANG']['MSC']['z_to_a'];
-							break;
-					}
+					list($asc, $desc) = $this->getSortingLabels($field);
 
 					$arrOptions[] = array
 					(
-						'label'		=> ($this->Isotope->formatLabel('tl_iso_products', $field) . ' ' . $asc),
+						'label'		=> ($this->Isotope->formatLabel('tl_iso_products', $field) . ', ' . $asc),
 						'value'		=> $field.':ASC',
 						'default'	=> ((is_array($GLOBALS['ISO_SORTING'][$this->id]) && $GLOBALS['ISO_SORTING'][$this->id][$field][0] == SORT_ASC) ? '1' : ''),
 					);
 
 					$arrOptions[] = array
 					(
-						'label'		=> ($this->Isotope->formatLabel('tl_iso_products', $field) . ' ' . $desc),
+						'label'		=> ($this->Isotope->formatLabel('tl_iso_products', $field) . ', ' . $desc),
 						'value'		=> $field.':DESC',
 						'default'	=> ((is_array($GLOBALS['ISO_SORTING'][$this->id]) && $GLOBALS['ISO_SORTING'][$this->id][$field][0] == SORT_DESC) ? '1' : ''),
 					);
@@ -474,6 +456,31 @@ class ModuleIsotopeProductFilter extends ModuleIsotope
 				$this->Template->limitOptions = $arrOptions;
 			}
 		}
+	}
+
+
+	/**
+	 * Get the sorting labels (asc/desc) for an attribute
+	 * @param string
+	 * @return array
+	 */
+	protected function getSortingLabels($field)
+	{
+		$arrData = $GLOBALS['TL_DCA']['tl_iso_products']['fields'][$field];
+
+		switch ($arrData['eval']['rgxp'])
+		{
+			case 'price':
+			case 'digit':
+				return array($GLOBALS['TL_LANG']['MSC']['low_to_high'], $GLOBALS['TL_LANG']['MSC']['high_to_low']);
+
+			case 'date':
+			case 'time':
+			case 'datim':
+				return array($GLOBALS['TL_LANG']['MSC']['old_to_new'], $GLOBALS['TL_LANG']['MSC']['new_to_old']);
+		}
+
+		return array($GLOBALS['TL_LANG']['MSC']['a_to_z'], $GLOBALS['TL_LANG']['MSC']['z_to_a']);
 	}
 }
 

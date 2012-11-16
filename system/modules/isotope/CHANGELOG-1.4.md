@@ -8,10 +8,12 @@ Version 1.4.? (2012-??-??)
 - New attribute option to add date picker for frontend and backend
 - The Contao core breadcrumb module now tries to show the correct trail on a product reader page
 - You can now optionally set a default product type per product group
+- Added option to limit tax rate to guests/member groups (#65)
 
 ### Improved
 - Do not cache or search-index a page if user-centered content (filters, cart, checkout) is on it
 - Changed navigation CSS class for active product from "trail" to "product" (#49)
+- Sorting label for dates now work better (#72)
 
 ### Fixed
 - Product was hidden if price was not an attribute

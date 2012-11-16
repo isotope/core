@@ -289,8 +289,9 @@ class IsotopeFrontend extends Frontend
 		{
 			foreach ($GLOBALS['ISO_HOOKS']['watermarkImage'] as $callback)
 			{
-				$this->import($callback[0]);
-				$return = $this->$callback[0]->$callback[1]($image, $watermark, $position);
+				// @todo: add $target here as soon as 1.3.10 is merged
+				$objCallback = (in_array('getInstance', get_class_methods($callback[0]))) ? call_user_func(array($callback[0], 'getInstance')) : new $callback[0]();
+				$return = $objCallback->$callback[1]($image, $watermark, $position);
 
 				if (is_string($return))
 				{
