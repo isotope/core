@@ -31,7 +31,7 @@
 
 /**
  * Class IsotopeProductCollection
- * 
+ *
  * Provide methods to handle Isotope product collections.
  * @copyright  Isotope eCommerce Workgroup 2009-2012
  * @author     Andreas Schempp <andreas@schempp.ch>
@@ -211,7 +211,7 @@ abstract class IsotopeProductCollection extends Model
 
 					$this->arrCache[$strKey] = $fltTotal;
 					break;
-				
+
 				case 'taxFreeSubTotal':
 					$fltTotal = 0;
 					$arrProducts = $this->getProducts();
@@ -471,7 +471,11 @@ abstract class IsotopeProductCollection extends Model
 
 			while ($objItems->next())
 			{
-				$objProductData = $this->Database->execute("SELECT *, (SELECT class FROM tl_iso_producttypes WHERE tl_iso_products.type=tl_iso_producttypes.id) AS product_class FROM tl_iso_products WHERE id={$objItems->product_id}");
+				$objProductData = $this->Database->prepare(IsotopeProduct::getSelectStatement() . "
+															WHERE p1.language='' AND p1.id=?")
+												 ->limit(1)
+												 ->execute($objItems->product_id);
+
 				$strClass = $GLOBALS['ISO_PRODUCT'][$objProductData->product_class]['class'];
 
 				if ($objProductData->numRows && $strClass != '')
@@ -518,7 +522,7 @@ abstract class IsotopeProductCollection extends Model
 		{
 			$this->import('Isotope');
 			$objTemplate = new IsotopeTemplate($strTemplate);
-			
+
 			$objTemplate->products = $this->arrProducts;
 			$objTemplate->surcharges = IsotopeFrontend::formatSurcharges($this->getSurcharges());
 			$objTemplate->subTotalLabel = $GLOBALS['TL_LANG']['MSC']['subTotalLabel'];
@@ -583,7 +587,7 @@ abstract class IsotopeProductCollection extends Model
 				'product_name'		=> (string) $objProduct->name,
 				'product_options'	=> $objProduct->getOptions(true),
 				'product_quantity'	=> (int) $intQuantity,
-				'price'				=> $objProduct->price,
+				'price'				=> (float) $objProduct->price,
 			);
 
 			if ($this->Database->fieldExists('href_reader', $this->ctable))
@@ -762,7 +766,7 @@ abstract class IsotopeProductCollection extends Model
 		{
 			$this->modified = true;
 		}
-		
+
 		// HOOK for adding additional functionality when adding product to collection
 		if (isset($GLOBALS['ISO_HOOKS']['transferredCollection']) && is_array($GLOBALS['ISO_HOOKS']['transferredCollection']))
 		{
@@ -833,8 +837,7 @@ abstract class IsotopeProductCollection extends Model
 
 		if ($this->Isotope->Config->invoiceLogo != '' && is_file(TL_ROOT . '/' . $this->Isotope->Config->invoiceLogo))
 		{
-		
-			$objTemplate->logoImage = '<img src="' . $this->Environment->base . '/' . $this->Isotope->Config->invoiceLogo . '" alt="" />';
+			$objTemplate->logoImage = '<img src="' . TL_ROOT . '/' . $this->Isotope->Config->invoiceLogo . '" alt="" />';
 		}
 
 		$objTemplate->invoiceTitle = $GLOBALS['TL_LANG']['MSC']['iso_invoice_title'] . ' ' . $this->order_id . ' – ' . date($GLOBALS['TL_CONFIG']['datimFormat'], $this->date);
@@ -855,8 +858,8 @@ abstract class IsotopeProductCollection extends Model
 				'tax_id'			=> $objProduct->tax_id,
 			);
 		}
-		
-		$objTemplate->config = $this->Isotope->Config->getData(); 	
+
+		$objTemplate->config = $this->Isotope->Config->getData();
 		$objTemplate->info = deserialize($this->checkout_info);
 		$objTemplate->items = $arrItems;
 		$objTemplate->raw = $this->arrData;
@@ -958,6 +961,9 @@ abstract class IsotopeProductCollection extends Model
 			// Include library
 			require_once(TL_ROOT . '/system/config/tcpdf.php');
 			require_once(TL_ROOT . '/plugins/tcpdf/tcpdf.php');
+			
+			// Prevent TCPDF from destroying absolute paths
+			unset($_SERVER['DOCUMENT_ROOT']);
 
 			// Create new PDF document
 			$pdf = new TCPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true);
