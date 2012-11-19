@@ -84,17 +84,7 @@ $GLOBALS['ISO_ADR']['gb'] =
 
 ##hcard_tel##
 
-##hcard_email##</div>
-
-<!--
-##city##
-##state##
-##postal##
-##country##
-
-##phone##
-##email##
--->';
+##hcard_email##</div>';
 
 $GLOBALS['ISO_ADR']['us'] =
 '<div class="vcard">{if hcard_org!=""}##hcard_org##
@@ -104,6 +94,44 @@ $GLOBALS['ISO_ADR']['us'] =
 {if hcard_adr=="1"}<div class="adr">##hcard_street_address##
 
 ##hcard_locality##, ##hcard_region_abbr## ##hcard_postal_code##
+
+##hcard_country_name##</div>{endif}
+
+
+##hcard_tel##
+
+##hcard_email##</div>';
+
+$GLOBALS['ISO_ADR']['eg'] =
+'<div class="vcard">{if hcard_org!=""}##hcard_org##
+{endif}
+{if hcard_n=="1"}<div class="n">##hcard_honorific_prefix## ##hcard_given_name## ##hcard_family_name##</div>{endif}
+
+{if hcard_adr=="1"}<div class="adr">##hcard_street_address##
+
+##hcard_postal_code## ##hcard_locality##{if hcard_region!=""}
+
+<br>##hcard_region##
+{endif}
+
+##hcard_country_name##</div>{endif}
+
+
+##hcard_tel##
+
+##hcard_email##</div>';
+
+$GLOBALS['ISO_ADR']['th'] =
+'<div class="vcard">{if hcard_org!=""}##hcard_org##
+{endif}
+{if hcard_n=="1"}<div class="n">##hcard_honorific_prefix## ##hcard_given_name## ##hcard_family_name##</div>{endif}
+
+{if hcard_adr=="1"}<div class="adr">##hcard_street_address##
+
+##hcard_postal_code## ##hcard_locality##{if hcard_region!=""}
+
+<br>##hcard_region##
+{endif}
 
 ##hcard_country_name##</div>{endif}
 

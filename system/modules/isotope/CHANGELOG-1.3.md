@@ -1,6 +1,24 @@
 Isotope eCommerce Changelog
 ===========================
 
+Version 1.3.10 stable (2012-11-19)
+----------------------------------
+
+### Improved
+- Show state in address for Egypt and Thailand (#58)
+- Do not set default tl_class in product type (#71)
+- TCPDF should now be able to handle images on all servers (#63)
+
+### Fixed
+- Filter limits were not applied in pagination (#56)
+- Spelling mistakes in german language files (#62)
+- Exception if a product without price is added to the cart
+- Products were not translated in cart and other collections (#55)
+- Fixed unsupported $target parameter in IsotopeFrontend::watermarkImage() (#68)
+- Ignore "language" parameter in IsotopeFrontend::addQueryStringToUrl() (#64)
+- Deleting order ID 7 deleted all orders from member ID 7 (#70)
+
+
 Version 1.3.9 stable (2012-11-05)
 ---------------------------------
 

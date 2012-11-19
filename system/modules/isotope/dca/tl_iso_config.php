@@ -598,12 +598,6 @@ class tl_iso_config extends Backend
 			$GLOBALS['TL_DCA']['tl_iso_config']['fields']['fallback']['default'] = '1';
 		}
 
-		// Disable the invoice image, this is a bug in TCPDF (see http://contao-forge.org/issues/3124)
-		if (ini_get('safe_mode') || ini_get('open_basedir') != '')
-		{
-			unset($GLOBALS['TL_DCA']['tl_iso_config']['fields']['invoiceLogo']);
-		}
-
 		$this->import('BackendUser', 'User');
 
 		// Return if user is admin

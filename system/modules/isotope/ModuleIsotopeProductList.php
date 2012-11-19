@@ -85,6 +85,22 @@ class ModuleIsotopeProductList extends ModuleIsotope
 			$this->blnCacheProducts = false;
 		}
 
+		// Apply limit from filter module
+		if (is_array($this->iso_filterModules))
+		{
+			// We only do this once. getFiltersAndSorting() then automatically has the correct sorting
+			$this->iso_filterModules = array_reverse($this->iso_filterModules);
+
+			foreach ($this->iso_filterModules as $module)
+			{
+				if ($GLOBALS['ISO_LIMIT'][$module] > 0)
+				{
+					$this->perPage = $GLOBALS['ISO_LIMIT'][$module];
+					break;
+				}
+			}
+		}
+
 		return parent::generate();
 	}
 
@@ -347,9 +363,7 @@ class ModuleIsotopeProductList extends ModuleIsotope
 
 		if (is_array($this->iso_filterModules))
 		{
-			$arrModules = array_reverse($this->iso_filterModules);
-
-			foreach ($arrModules as $module)
+			foreach ($this->iso_filterModules as $module)
 			{
 				if (is_array($GLOBALS['ISO_FILTERS'][$module]))
 				{
@@ -359,11 +373,6 @@ class ModuleIsotopeProductList extends ModuleIsotope
 				if (is_array($GLOBALS['ISO_SORTING'][$module]))
 				{
 					$arrSorting = array_merge($arrSorting, $GLOBALS['ISO_SORTING'][$module]);
-				}
-
-				if ($GLOBALS['ISO_LIMIT'][$module] > 0)
-				{
-					$this->perPage = $GLOBALS['ISO_LIMIT'][$module];
 				}
 			}
 		}
