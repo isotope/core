@@ -97,6 +97,12 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 
 			return $objTemplate->parse();
 		}
+		
+		// Set the step from the auto_item parameter
+		if ($GLOBALS['TL_CONFIG']['useAutoItem'] && isset($_GET['auto_item']))
+		{
+			$this->Input->setGet('step', $this->Input->get('auto_item'));
+		}
 
 		// Do not index or cache the page
 		global $objPage;
@@ -1420,6 +1426,10 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 		if ($blnIgnoreParams)
 		{
 			global $objPage;
+			
+			// Support for auto_item parameter
+			$strRequest = str_replace('step=', '', $strRequest);
+			
 			return $this->generateFrontendUrl($objPage->row(), '/' . str_replace(array('=', '&amp;', '&'), '/', $strRequest));
 		}
 

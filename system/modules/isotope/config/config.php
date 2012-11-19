@@ -404,6 +404,7 @@ $GLOBALS['URL_KEYWORDS'][] = 'step';
  * Auto_item keywords
  */
 $GLOBALS['TL_AUTO_ITEM'][] = 'product';
+$GLOBALS['TL_AUTO_ITEM'][] = 'step';
 
 
 /**
