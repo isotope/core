@@ -86,9 +86,9 @@ class ModuleIsotopeOrderDetails extends ModuleIsotope
 		// Do not index or cache the page
 		if (TL_MODE == 'FE')
 		{
-		global $objPage;
-		$objPage->noSearch = 1;
-		$objPage->cache = 0;
+			global $objPage;
+			$objPage->noSearch = 1;
+			$objPage->cache = 0;
 		}
 
 		$objOrder = new IsotopeOrder();
@@ -179,6 +179,7 @@ class ModuleIsotopeOrderDetails extends ModuleIsotope
 	protected function getDownloadsForProduct($objProduct, $blnOrderPaid=false)
 	{
 		$time = time();
+		$arrDownloads = array();
 		$objDownloads = $this->Database->prepare("SELECT p.*, o.* FROM tl_iso_order_downloads o LEFT OUTER JOIN tl_iso_downloads p ON o.download_id=p.id WHERE o.pid=?")->execute($objProduct->cart_id);
 
 		while ($objDownloads->next())
@@ -200,6 +201,8 @@ class ModuleIsotopeOrderDetails extends ModuleIsotope
 				$arrDownloads[] = $this->generateDownload($objDownloads->singleSRC, $objDownloads, $blnDownloadable);
 			}
 		}
+		
+		return $arrDownloads;
 	}
 
 
