@@ -143,6 +143,7 @@ class Isotope extends Controller
 					else
 					{
 						unset($_GET['isorc']);
+						unset($_GET['language']);
 						$strQuery = http_build_query($_GET);
 						self::$objInstance->redirect(preg_replace('/\?.*$/i', '', self::$objInstance->Environment->request) . (($strQuery) ? '?' . $strQuery : ''));
 					}
