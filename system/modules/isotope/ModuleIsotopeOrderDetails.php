@@ -84,9 +84,12 @@ class ModuleIsotopeOrderDetails extends ModuleIsotope
 	protected function compile()
 	{
 		// Do not index or cache the page
+		if (TL_MODE == 'FE')
+		{
 		global $objPage;
 		$objPage->noSearch = 1;
 		$objPage->cache = 0;
+		}
 
 		$objOrder = new IsotopeOrder();
 
