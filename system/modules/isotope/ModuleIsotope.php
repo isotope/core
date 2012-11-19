@@ -247,6 +247,9 @@ abstract class ModuleIsotope extends Module
 		{
 			foreach ($_GET as $key => $value)
 			{
+				if ($key == 'language')
+					continue;
+
 				$arrGet[] = $key . '=' . $value;
 			}
 		}
