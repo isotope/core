@@ -1,8 +1,8 @@
 Isotope eCommerce Changelog
 ===========================
 
-Version 1.3.10 stable (2012-??-??)
----------------------------------
+Version 1.3.10 stable (2012-11-19)
+----------------------------------
 
 ### Improved
 - Show state in address for Egypt and Thailand (#58)
@@ -16,6 +16,7 @@ Version 1.3.10 stable (2012-??-??)
 - Products were not translated in cart and other collections (#55)
 - Fixed unsupported $target parameter in IsotopeFrontend::watermarkImage() (#68)
 - Ignore "language" parameter in IsotopeFrontend::addQueryStringToUrl() (#64)
+- Deleting order ID 7 deleted all orders from member ID 7 (#70)
 
 
 Version 1.3.9 stable (2012-11-05)
@@ -31,7 +32,6 @@ Version 1.3.9 stable (2012-11-05)
 - Sorting of attributes did not correctly work
 - Toggling "use default" did not work in Firefox and for TinyMCE fields
 - Automatic currency conversion for ECB was incorrect (#52)
-- Deleting order ID 7 deleted all orders from member ID 7 (#70)
 
 
 Version 1.3.8 stable (2012-09-11)
