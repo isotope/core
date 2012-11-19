@@ -148,6 +148,12 @@ class Isotope extends Controller
 						self::$objInstance->redirect(preg_replace('/\?.*$/i', '', self::$objInstance->Environment->request) . (($strQuery) ? '?' . $strQuery : ''));
 					}
 				}
+				
+				// Set the product from the auto_item parameter
+				if ($GLOBALS['TL_CONFIG']['useAutoItem'] && isset($_GET['auto_item']))
+				{
+					Input::getInstance()->setGet('product', Input::getInstance()->get('auto_item'));
+				}
 			}
 		}
 
