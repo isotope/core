@@ -7,6 +7,7 @@ Version 1.3.10 stable (2012-??-??)
 ### Improved
 - Show state in address for Egypt and Thailand (#58)
 - Do not set default tl_class in product type (#71)
+- TCPDF should now be able to handle images on all servers (#63)
 
 ### Fixed
 - Filter limits were not applied in pagination (#56)

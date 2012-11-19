@@ -837,8 +837,7 @@ abstract class IsotopeProductCollection extends Model
 
 		if ($this->Isotope->Config->invoiceLogo != '' && is_file(TL_ROOT . '/' . $this->Isotope->Config->invoiceLogo))
 		{
-
-			$objTemplate->logoImage = '<img src="' . $this->Environment->base . '/' . $this->Isotope->Config->invoiceLogo . '" alt="" />';
+			$objTemplate->logoImage = '<img src="' . TL_ROOT . '/' . $this->Isotope->Config->invoiceLogo . '" alt="" />';
 		}
 
 		$objTemplate->invoiceTitle = $GLOBALS['TL_LANG']['MSC']['iso_invoice_title'] . ' ' . $this->order_id . ' – ' . date($GLOBALS['TL_CONFIG']['datimFormat'], $this->date);
@@ -962,6 +961,9 @@ abstract class IsotopeProductCollection extends Model
 			// Include library
 			require_once(TL_ROOT . '/system/config/tcpdf.php');
 			require_once(TL_ROOT . '/plugins/tcpdf/tcpdf.php');
+			
+			// Prevent TCPDF from destroying absolute paths
+			unset($_SERVER['DOCUMENT_ROOT']);
 
 			// Create new PDF document
 			$pdf = new TCPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true);
