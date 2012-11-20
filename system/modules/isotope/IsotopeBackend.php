@@ -586,5 +586,24 @@ class IsotopeBackend extends Backend
 		// if there is no default type set we return false
 		return false;
 	}
+	
+	
+	/**
+	 * Instantiate and return the uploader object.
+	 * This ugly method is necessary because FileUpload extends Backend but the constructor is not public...
+	 * @return object
+	 */
+	public static function getUploader()
+	{
+		// Instantiate the uploader
+		$class = BackendUser::getInstance()->uploader;
+
+		if (!class_exists($class))
+		{
+			$class = 'FileUpload';
+		}
+
+		return new $class();
+	}
 }
 
