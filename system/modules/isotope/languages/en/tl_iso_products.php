@@ -43,6 +43,7 @@ $GLOBALS['TL_LANG']['tl_iso_products']['description']			= array('Description', '
 $GLOBALS['TL_LANG']['tl_iso_products']['description_meta']		= array('Meta description', 'Meta description will be placed in the header on product detail page, for search engine optimization.');
 $GLOBALS['TL_LANG']['tl_iso_products']['keywords_meta']			= array('Meta keywords', 'Meta keywords will be placed in the header on product detail page, for search engine optimization.');
 $GLOBALS['TL_LANG']['tl_iso_products']['price']					= array('Price', 'Please enter the price(s) for this product.');
+$GLOBALS['TL_LANG']['tl_iso_products']['baseprice']             = array('Bundle size', 'Please enter the Bundle size of the product or the variation and choose the wished the base price amount. From bundle size and price the baseprice is automatically calculated for the base price amount (Example: Bundle size: 400 Gramm, price: 10 EUR, baseprice amount: 100 Gramm => (100g/400g)*10EUR=2,5 EUR');
 $GLOBALS['TL_LANG']['tl_iso_products']['shipping_exempt']		= array('Exempt from shipping', 'Check if item is not a shipped item (such as downloadable products).');
 $GLOBALS['TL_LANG']['tl_iso_products']['tax_class']				= array('Tax Class', 'Select your appropriate tax class.');
 $GLOBALS['TL_LANG']['tl_iso_products']['baseprice']				= array('Base price', 'Please enter your base price information.');
