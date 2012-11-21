@@ -117,7 +117,7 @@ $GLOBALS['TL_DCA']['tl_iso_baseprice'] = array
 	// Palettes
 	'palettes' => array
 	(
-		'default'						=> '{name_legend},name,label',
+		'default'						=> '{name_legend},name,amount,label',
 	),
 
 	// Fields
@@ -129,7 +129,14 @@ $GLOBALS['TL_DCA']['tl_iso_baseprice'] = array
 			'exclude'					=> true,
 			'search'					=> true,
 			'inputType'					=> 'text',
-			'eval'						=> array('mandatory'=>true, 'maxlength'=>255, 'tl_class'=>'clr'),
+			'eval'						=> array('mandatory'=>true, 'maxlength'=>255, 'tl_class'=>'w50'),
+		),
+		'amount' => array
+		(
+			'label'						=> &$GLOBALS['TL_LANG']['tl_iso_baseprice']['amount'],
+			'exclude'					=> true,
+			'inputType'					=> 'text',
+			'eval'						=> array('mandatory'=>true, 'rgxp'=>'digit', 'maxlength'=>32, 'tl_class'=>'w50'),
 		),
 		'label' => array
 		(
