@@ -692,6 +692,20 @@ abstract class IsotopeProductCollection extends Model
 
 
 	/**
+	 * Purge a collection
+	 * @param boolean force deleting all products even if the collection is locked
+	 */
+	public function purge($blnForce=false)
+	{
+		$arrProducts = $this->getProducts();
+		foreach ($arrProducts as $objProduct)
+		{
+			$this->deleteProduct($objProduct, $blnForce);
+		}
+	}
+
+
+	/**
 	 * Transfer products from another collection to this one (e.g. Cart to Order)
 	 * @param object
 	 * @param boolean
