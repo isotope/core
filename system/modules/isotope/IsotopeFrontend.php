@@ -121,7 +121,7 @@ class IsotopeFrontend extends Frontend
 	{
 		$arrTag = trimsplit('::', $strTag);
 
-		if ($arrTag[0] == 'isotope')
+		if ($arrTag[0] == 'isotope' || $arrTag[0] == 'cache_isotope')
 		{
 			switch ($arrTag[1])
 			{
@@ -197,11 +197,11 @@ class IsotopeFrontend extends Frontend
 
 
 	/**
-	 * Add the navigation trail CSS class to pages belonging to the active product
+	 * Add the navigation CSS class to pages belonging to the active product
 	 * @param object
 	 * @link http://www.contao.org/hooks.html#parseTemplate
 	 */
-	public function fixNavigationTrail(&$objTemplate)
+	public function addNavigationClass(&$objTemplate)
 	{
 		// Unset hook to prevent further execution on non-reader pages
 		if ($this->Input->get('product') == '')
@@ -248,9 +248,9 @@ class IsotopeFrontend extends Frontend
 
 				foreach ($arrItems as $k => $arrItem)
 				{
-					if (in_array($arrItem['id'], $arrTrail) && strpos($arrItem['class'], 'trail') === false)
+					if (in_array($arrItem['id'], $arrTrail))
 					{
-						$arrItems[$k]['class'] .= ' trail';
+						$arrItems[$k]['class'] .= ' product';
 					}
 				}
 
@@ -285,13 +285,14 @@ class IsotopeFrontend extends Frontend
 			return $strCacheName;
 		}
 
-		// HOOK: add custom logic
+		// !HOOK: override image watermark routine
 		if (isset($GLOBALS['ISO_HOOKS']['watermarkImage']) && is_array($GLOBALS['ISO_HOOKS']['watermarkImage']))
 		{
 			foreach ($GLOBALS['ISO_HOOKS']['watermarkImage'] as $callback)
 			{
+				// @todo: add $target here as soon as 1.3.10 is merged
 				$objCallback = (in_array('getInstance', get_class_methods($callback[0]))) ? call_user_func(array($callback[0], 'getInstance')) : new $callback[0]();
-				$return = $objCallback->$callback[1]($image, $watermark);
+				$return = $objCallback->$callback[1]($image, $watermark, $position);
 
 				if (is_string($return))
 				{
@@ -676,9 +677,8 @@ $endScript";
 				// Store current value in the session
 				elseif ($objWidget->submitInput())
 				{
-					$objForm->arrFormData[$objFields->name]	= $objWidget->value;
-					$_SESSION['FORM_DATA'][$objFields->name]		= $objWidget->value;
-
+					$objForm->arrFormData[$objFields->name] = $objWidget->value;
+					$_SESSION['FORM_DATA'][$objFields->name] = $objWidget->value;
 				}
 
 				// Store file uploads
@@ -734,7 +734,7 @@ $endScript";
 	public function generateDownloadAttribute($attribute, $arrData, $arrFiles)
 	{
 		// Return if there are no files
-		if (!is_array($arrFiles) || count($arrFiles) < 1)
+		if (!is_array($arrFiles) || empty($arrFiles))
 		{
 			return '';
 		}
@@ -784,7 +784,8 @@ $endScript";
 						'filesize' => $this->getReadableSize($objFile->filesize, 1),
 						'icon' => TL_FILES_URL . 'system/themes/' . $this->getTheme() . '/images/' . $objFile->icon,
 						'mime' => $objFile->mime,
-						'meta' => $arrMeta
+						'meta' => $arrMeta,
+						'extension' => $objFile->extension
 					);
 
 					$auxDate[] = $objFile->mtime;
@@ -823,7 +824,8 @@ $endScript";
 						'caption' => $arrMeta[2],
 						'filesize' => $this->getReadableSize($objFile->filesize, 1),
 						'icon' => 'system/themes/' . $this->getTheme() . '/images/' . $objFile->icon,
-						'meta' => $arrMeta
+						'meta' => $arrMeta,
+						'extension' => $objFile->extension
 					);
 
 					$auxDate[] = $objFile->mtime;
@@ -953,7 +955,7 @@ $endScript";
 	public static function getProducts($objProductData, $intReaderPage=0, $blnCheckAvailability=true, array $arrFilters=array(), array $arrSorting=array())
 	{
 		// $objProductData can also be an array of product ids
-		if (is_array($objProductData) && count($objProductData))
+		if (is_array($objProductData) && !empty($objProductData))
 		{
 			$time = time();
 			$Database = Database::getInstance();
@@ -1035,7 +1037,7 @@ $endScript";
 	{
 		global $filterConfig;
 
-		if (!is_array($filterConfig) || !count($filterConfig))
+		if (!is_array($filterConfig) || empty($filterConfig))
 		{
 			return true;
 		}
@@ -1044,36 +1046,43 @@ $endScript";
 
 		foreach ($filterConfig as $filter)
 		{
-			$varValue = $objProduct->{$filter['attribute']};
+			$varValues = $objProduct->{$filter['attribute']};
 			$blnMatch = false;
 
 			// If the attribute is not set for this product, we will ignore this attribute
-			if ($varValue === null)
+			if ($varValues === null)
 			{
 				continue;
 			}
-			elseif (is_array($varValue))
+			elseif (!is_array($varValues))
 			{
-				$varValue = http_build_query($varValue);
+				$varValues = array($varValues);
 			}
 
 			$operator = self::convertFilterOperator($filter['operator'], 'PHP');
 
-			switch( $operator )
+			foreach ($varValues as $varValue)
 			{
-				case 'stripos':
-					if (stripos($varValue, $filter['value']) !== false)
-					{
-						$blnMatch = true;
-					}
-					break;
+				$blnMatchOne = false;
 
-				default:
-					if (eval('return $varValue '.$operator.' $filter[\'value\'];'))
-					{
-						$blnMatch = true;
-					}
-					break;
+				switch( $operator )
+				{
+					case 'stripos':
+						if (stripos($varValue, $filter['value']) !== false)
+						{
+							$blnMatchOne = true;
+						}
+						break;
+
+					default:
+						if (eval('return $varValue '.$operator.' $filter[\'value\'];'))
+						{
+							$blnMatchOne = true;
+						}
+						break;
+				}
+
+				$blnMatch = $blnMatch ? $blnMatch : $blnMatchOne;
 			}
 
 			if ($filter['group'])
@@ -1086,7 +1095,7 @@ $endScript";
 			}
 		}
 
-		if (count($arrGroups) && in_array(false, $arrGroups))
+		if (!empty($arrGroups) && in_array(false, $arrGroups))
 		{
 			return false;
 		}
@@ -1210,16 +1219,16 @@ $endScript";
 
 			if (is_array($varValue))
 			{
-				$arrData[$k][$strKey] = trim($arrData[$k][$strKey] . ' ' . $class);
+				$arrData[$k][$strKey] = trim($arrData[$k][$strKey] . $class);
 			}
 			elseif (is_object($varValue))
 			{
-				$varValue->$strKey = trim($varValue->$strKey . ' ' . $class);
+				$varValue->$strKey = trim($varValue->$strKey . $class);
 				$arrData[$k] = $varValue;
 			}
 			else
 			{
-				$arrData[$k] = '<span class="' . $class . '">' . $varValue . '</span>';
+				$arrData[$k] = '<span class="' . trim($arrData[$k][$strKey] . $class) . '">' . $varValue . '</span>';
 			}
 
 			++$col;
@@ -1284,15 +1293,12 @@ $endScript";
 			$arrCategories = $objProduct->categories;
 
 			// filter those that are allowed
-			if(count($arrAllowedPageIds))
-				$arrCategories = array_intersect($arrCategories, $arrAllowedPageIds);
-
-			if (!is_array($arrCategories) || !count($arrCategories))
+			if (!empty($arrAllowedPageIds))
 			{
-				continue;
+				$arrCategories = array_intersect($arrCategories, $arrAllowedPageIds);
 			}
 
-			if (!is_array($arrCategories) || !count($arrCategories))
+			if (!is_array($arrCategories) || empty($arrCategories))
 			{
 				continue;
 			}
@@ -1320,6 +1326,22 @@ $endScript";
 		$arrIsotopeProductPages = array_unique($arrIsotopeProductPages);
 
 		return array_merge($arrPages, $arrIsotopeProductPages);
+	}
+
+
+	/**
+	 * save_callback for upload widget to store $_FILES data into the product
+	 * @param mixed
+	 * @param IsotopeProduct
+	 */
+	public function saveUpload($varValue, IsotopeProduct $objProduct, Widget $objWidget)
+	{
+		if (is_array($_SESSION['FILES'][$objWidget->name]) && $_SESSION['FILES'][$objWidget->name]['uploaded'] == '1' && $_SESSION['FILES'][$objWidget->name]['error'] == 0)
+		{
+			return $_SESSION['FILES'][$objWidget->name]['name'];
+		}
+
+		return $varValue;
 	}
 
 
@@ -1510,6 +1532,158 @@ $endScript";
 	public static function clearTimeout()
 	{
 		unset($_SESSION['ISO_TIMEOUT']);
+	}
+
+
+	/**
+	 * Store the current article ID so we know it for the product list
+	 * @param Database_Result
+	 */
+	public function storeCurrentArticle($objRow)
+	{
+		$GLOBALS['ISO_CONFIG']['current_article']['id'] = $objRow->id;
+		$GLOBALS['ISO_CONFIG']['current_article']['pid'] = $objRow->pid;
+	}
+
+
+	/**
+	 * Manipulate the breadcrumb to show the page reader
+	 * @param  array
+	 * @param  object
+	 * @return array
+	 */
+	public function generateBreadcrumb($arrItems, $objModule)
+	{
+		if ($this->Input->get('product') != '')
+		{
+			$objProduct = IsotopeFrontend::getProductByAlias($this->Input->get('product'));
+
+			if ($objProduct !== null)
+			{
+				global $objPage;
+
+				$intPage = null;
+				$objParent = null;
+				$arrTrail = $objPage->trail;
+				$arrCategories = $objProduct->categories;
+
+				foreach (array_reverse($arrTrail) as $intTrail)
+				{
+					// Trail page is a category for this product
+					if (in_array($intTrail, $arrCategories))
+					{
+						$intPage = $intTrail;
+						$intParent = $intTrail;
+						break;
+					}
+
+					// Check if a child record of our trail is in categories
+					$arrChildren = $this->getChildRecords($intTrail, 'tl_page', true);
+					$arrMatch = array_intersect($arrChildren, $arrCategories);
+
+					if (!empty($arrMatch))
+					{
+						$intPage = array_shift($arrMatch);
+						$intParent = $intTrail;
+						break;
+					}
+				}
+
+				// If we still havent found a list page, don't alter the breadcrumb
+				if ($intPage === null)
+				{
+					return $arrItems;
+				}
+
+				$time = time();
+				$arrResult = array();
+
+				while ($intPage != $intParent)
+				{
+					$objResult = $this->Database->prepare("SELECT * FROM tl_page WHERE id=?" . (!BE_USER_LOGGED_IN ? " AND (start='' OR start<$time) AND (stop='' OR stop>$time) AND published=1" : ""))->execute($intPage);
+
+					if (!$objResult->numRows)
+					{
+						break;
+					}
+
+					$intPage = $objResult->pid;
+
+					if ($objResult->hide && !$objModule->showHidden)
+					{
+						continue;
+					}
+
+					// Get href
+					switch ($objResult->type)
+					{
+						case 'redirect':
+							$href = $objResult->url;
+
+							if (strncasecmp($href, 'mailto:', 7) === 0)
+							{
+								$this->import('String');
+								$href = $this->String->encodeEmail($href);
+							}
+							break;
+
+						case 'forward':
+							$objNext = $this->Database->prepare("SELECT id, alias FROM tl_page WHERE id=?")
+													  ->limit(1)
+													  ->execute($objResult->jumpTo);
+
+							if ($objNext->numRows)
+							{
+								$href = $this->generateFrontendUrl($objNext->fetchAssoc());
+								break;
+							}
+							// DO NOT ADD A break; STATEMENT
+
+						default:
+							$href = $this->generateFrontendUrl($objResult->row());
+							break;
+					}
+
+					$arrResult[] = array
+					(
+						'isRoot' => false,
+						'isActive' => false,
+						'href' => $href,
+						'title' => ($objResult->pageTitle != '' ? specialchars($objResult->pageTitle, true) : specialchars($objResult->title, true)),
+						'link' => $objResult->title,
+						'data' => $objResult->row()
+					);
+				}
+
+
+				$arrItems = array_reverse($arrItems);
+
+				// Remove wrong items from breadcrumb, but do not re-generate the correct ones
+				foreach ($arrItems as $i => $arrItem)
+				{
+					if ($arrItem['data']['id'] == $intParent)
+					{
+						break;
+					}
+
+					unset($arrItems[$i]);
+				}
+
+				$arrItems = array_reverse(array_merge($arrResult, $arrItems));
+
+				// Add the reader as breadcrumb item
+				$arrItems[] = array
+				(
+					'isRoot' => false,
+					'isActive' => true,
+					'title' => specialchars($objProduct->name, true),
+					'link' => $objProduct->name,
+					'data' => $objPage->row(),
+				);
+			}
+		}
+
+		return $arrItems;
 	}
 }
 

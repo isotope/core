@@ -88,7 +88,6 @@ class IsotopeCart extends IsotopeProductCollection
 		switch ($strKey)
 		{
 			case 'billing_address':
-			case 'billingAddress':
 				if ($this->arrSettings['billingAddress_id'] > 0)
 				{
 					$objAddress = $this->Database->prepare("SELECT * FROM tl_iso_addresses WHERE id=?")->limit(1)->execute($this->arrSettings['billingAddress_id']);
@@ -119,13 +118,12 @@ class IsotopeCart extends IsotopeProductCollection
 					return array_intersect_key(array_merge($this->User->getData(), array('id'=>0, 'street_1'=>$this->User->street, 'subdivision'=>strtoupper($this->User->country . '-' . $this->User->state))), array_flip($this->Isotope->Config->billing_fields_raw));
 				}
 
-				return array('id'=>-1, 'postal'=>$this->Isotope->Config->postal, 'subdivision'=>$this->Isotope->Config->subdivision, 'country' => $this->Isotope->Config->country);
+				return array('id'=>-1, 'country' => $this->Isotope->Config->billing_country);
 
 			case 'shipping_address':
-			case 'shippingAddress':
 				if ($this->arrSettings['shippingAddress_id'] == -1)
 				{
-					return array_merge($this->billingAddress, array('id' => -1));
+					return array_merge($this->billing_address, array('id' => -1));
 				}
 
 				if ($this->arrSettings['shippingAddress_id'] > 0)
@@ -155,7 +153,24 @@ class IsotopeCart extends IsotopeProductCollection
 					}
 				}
 
-				return array_merge((is_array($this->billingAddress) ? $this->billingAddress : array()), array('id' => -1));
+				$arrBilling = $this->billing_address;
+
+				if ($arrBilling['id'] != -1)
+				{
+					return $arrBilling;
+				}
+
+				return array('id'=>-1, 'country' => $this->Isotope->Config->shipping_country);
+
+			case 'billingAddress':
+				$objAddress = new IsotopeAddressModel();
+				$objAddress->setData($this->billing_address);
+				return $objAddress;
+
+			case 'shippingAddress':
+				$objAddress = new IsotopeAddressModel();
+				$objAddress->setData($this->shipping_address);
+				return $objAddress;
 
 			default:
 				return parent::__get($strKey);
@@ -183,6 +198,9 @@ class IsotopeCart extends IsotopeProductCollection
 				{
 					$this->arrSettings['billingAddress_id'] = $varValue;
 				}
+
+				$this->blnModified = true;
+				$this->arrCache = array();
 				break;
 
 			case 'shippingAddress':
@@ -196,14 +214,14 @@ class IsotopeCart extends IsotopeProductCollection
 				{
 					$this->arrSettings['shippingAddress_id'] = $varValue;
 				}
+
+				$this->blnModified = true;
+				$this->arrCache = array();
 				break;
 
 			default:
 				parent::__set($strKey, $varValue);
 		}
-
-		$this->blnModified = true;
-		$this->arrCache = array();
 	}
 
 
@@ -286,12 +304,12 @@ class IsotopeCart extends IsotopeProductCollection
 			return $this->arrCache['surcharges'];
 		}
 
-		$this->import('Isotope');
 		$arrPreTax = array();
 		$arrPostTax = array();
 		$arrTaxes = array();
 		$arrSurcharges = array();
 
+		// !HOOK: get checkout surcharges
 		if (isset($GLOBALS['ISO_HOOKS']['checkoutSurcharge']) && is_array($GLOBALS['ISO_HOOKS']['checkoutSurcharge']))
 		{
 			foreach ($GLOBALS['ISO_HOOKS']['checkoutSurcharge'] as $callback)

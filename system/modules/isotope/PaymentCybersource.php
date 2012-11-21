@@ -39,7 +39,7 @@ class PaymentCybersource extends IsotopePayment
 		{
 			// Make sure at least one credit card is available
 			case 'available':
-				if (parent::__get($strKey) && is_array($this->allowed_cc_types) && count($this->allowed_cc_types))
+				if (parent::__get($strKey) && is_array($this->allowed_cc_types) && count($this->allowed_cc_types)) // Can't use empty() because its an object property (using __get)
 				{
 					return true;
 				}
@@ -65,12 +65,7 @@ class PaymentCybersource extends IsotopePayment
 
 	public function checkoutForm()
 	{
-		$this->import('Isotope');
-
 		$fields = '';
-
-		// Get the current order, review page will create the data
-		$objOrder = $this->Database->prepare("SELECT * FROM tl_iso_orders WHERE cart_id=?")->limit(1)->execute($this->Isotope->Cart->id);
 
 		$doNotSubmit = false;
 		$strBuffer = '';
@@ -160,14 +155,14 @@ class PaymentCybersource extends IsotopePayment
 			$strBuffer .= $objWidget->parse();
 		}
 
+		// Get the order from cart id
+		$objOrder = new IsotopeOrder();
+		$objOrder->findBy('cart_id', $this->Isotope->Cart->id);
 
-
-		global $objPage;
-
-		$objOrder = $this->Database->prepare("SELECT * FROM tl_iso_orders WHERE cart_id=?")->limit(1)->execute($this->Isotope->Cart->id);
+		$objAddress = $this->Isotope->Cart->billingAddress;
 		$intTotal = round($this->Isotope->Cart->grandTotal, 2);
 
-		$arrSubdivision = explode('-',$this->Isotope->Cart->billingAddress['subdivision']);
+		$arrSubdivision = explode('-', $objAddress->subdivision);
 
 		if(!$doNotSubmit && $this->Input->post('FORM_SUBMIT') == 'payment_form')
 		{
@@ -196,14 +191,14 @@ class PaymentCybersource extends IsotopePayment
 				$objRequest->ccAuthService = $objCCAuthService;
 
 				$objBillTo = new stdClass();
-				$objBillTo->firstName = $this->Isotope->Cart->billingAddress['firstname'];
-				$objBillTo->lastName = $this->Isotope->Cart->billingAddress['lastname'];
-				$objBillTo->street1 = $this->Isotope->Cart->billingAddress['street_1'];
-				$objBillTo->city = $this->Isotope->Cart->billingAddress['city'];
+				$objBillTo->firstName = $objAddress->firstname;
+				$objBillTo->lastName = $objAddress->lastname;
+				$objBillTo->street1 = $objAddress->street_1;
+				$objBillTo->city = $objAddress->city;
 				$objBillTo->state = $arrSubdivision[1];
-				$objBillTo->postalCode = $this->Isotope->Cart->billingAddress['postal'];
-				$objBillTo->country = $this->Isotope->Cart->billingAddress['country'];
-				$objBillTo->email = $this->Isotope->Cart->billingAddress['email'];
+				$objBillTo->postalCode = $objAddress->postal;
+				$objBillTo->country = $objAddress->country;
+				$objBillTo->email = $objAddress->email;
 				$objBillTo->ipAddress = $this->Environment->ip;
 				$objRequest->billTo = $objBillTo;
 
@@ -247,7 +242,7 @@ class PaymentCybersource extends IsotopePayment
 				$arrPaymentData['transaction_response_code'] = $objReply->reasonCode;
 				$arrPaymentData['request_id'] = $objReply->requestID;
 				$arrPaymentData['request_token'] = $objReply->requestToken;
-				$arrSet['payment_data'] = serialize($arrPaymentData);
+				$objOrder->payment_data = serialize($arrPaymentData);
 
 				switch($objReply->decision)
 				{
@@ -260,9 +255,7 @@ class PaymentCybersource extends IsotopePayment
 						break;
 				}
 
-				$this->Database->prepare("UPDATE tl_iso_orders %s WHERE id={$objOrder->id}")
-							   ->set($arrSet)
-							   ->executeUncached();
+				$objOrder->save();
 
 				if ($blnFail)
 				{
@@ -296,24 +289,13 @@ class PaymentCybersource extends IsotopePayment
 
 	public function backendInterface($intOrderId)
 	{
+		$objOrder = new IsotopeOrder();
+		$objOrder->findBy('id', $intOrderId);
 
-
-		$objOrderInfo = $this->Database->prepare("SELECT * FROM tl_iso_orders WHERE id=?")
-										   ->limit(1)
-										   ->execute($intOrderId);
-
-		$arrOrderInfo = $objOrderInfo->fetchAssoc();
-
-
-		$this->Input->setGet('uid', $arrOrderInfo['uniqid']);
+		$this->Input->setGet('uid', $objOrder->uniqid);
 		$objModule = new ModuleIsotopeOrderDetails($this->Database->execute("SELECT * FROM tl_module WHERE type='iso_orderdetails'"));
 
-		$strOrderDetails = $objModule->generate(true);
-
-
-		$arrPaymentInfo = deserialize($arrOrderInfo['payment_data'], true);
-
-		$this->fltOrderTotal = $arrOrderInfo['grandTotal'];
+		$arrPaymentInfo = $objOrder->payment_data;
 
 		//Get the authorize.net configuration data
 		$objAIMConfig = $this->Database->prepare("SELECT * FROM tl_iso_payment_modules WHERE type=?")
@@ -338,8 +320,7 @@ class PaymentCybersource extends IsotopePayment
 			$strMode = ($objAIMConfig->debug ? "test" : "secure");
 		}
 
-
-		if ($this->Input->post('FORM_SUBMIT') == 'be_pos_terminal' && $arrPaymentInfo['x_trans_id']!=="0")
+		if ($this->Input->post('FORM_SUBMIT') == 'be_pos_terminal' && $arrPaymentInfo['x_trans_id'] !== '0')
 		{
 			$cybersource_values = array
 			(
@@ -348,7 +329,7 @@ class PaymentCybersource extends IsotopePayment
 				"x_tran_key"						=> $transKey,
 				"x_type"							=> $transType,
 				"x_trans_id"						=> $arrPaymentInfo['x_trans_id'],
-				"x_amount"							=> number_format($this->fltOrderTotal, 2),
+				"x_amount"							=> number_format($objOrder->grandTotal, 2),
 				"x_delim_data"						=> 'TRUE',
 				"x_delim_char"						=> ',',
 				"x_encap_char"						=> '"',
@@ -379,37 +360,24 @@ class PaymentCybersource extends IsotopePayment
 
 			$strResponse = '<p class="tl_info">' . $arrPaymentInfo['authorize_response'] . ' - ' . $arrResponses['transaction-status'] . '</p>';
 
-			switch($arrResponses['transaction-status'])
+			switch ($arrResponses['transaction-status'])
 			{
 				case 'Approved':
 					$arrPaymentInfo['authorization_code'] = $arrResponses['authorization-code'];
-					$strPaymentInfo = serialize($arrPaymentInfo);
-
-					$this->Database->prepare("UPDATE tl_iso_orders SET status='processing', payment_data=? WHERE id=?")
-								   ->execute($strPaymentInfo, $intOrderId);
 					break;
 
 				default:
 					$arrPaymentInfo['authorize_reason'] = $arrResponses['reason'];
-					$strPaymentInfo = serialize($arrPaymentInfo);
-
-					$this->Database->prepare("UPDATE tl_iso_orders SET status='on_hold', cybersource_reason=? WHERE id=?")
-								   ->execute($strPaymentInfo, $intOrderId);
 					break;
 			}
 
-			$objTemplate->isConfirmation = true;
+			$objOrder->payment_info = serialize($arrPaymentInfo);
+			$objOrder->save();
 
-			//$objTemplate->showPrintLink = true;
+			$objTemplate->isConfirmation = true;
 		}
 
-
-		$action = ampersand($this->Environment->request, ENCODE_AMPERSANDS);
-
-		//$objTemplate->x_cust_id;
-
 		$objTemplate->formId = 'be_pos_terminal';
-
 		$objTemplate->slabel = specialchars($GLOBALS['TL_LANG']['MSC']['confirmOrder']);
 
 		$return = '<div id="tl_buttons">
@@ -417,22 +385,22 @@ class PaymentCybersource extends IsotopePayment
 <input type="hidden" name="REQUEST_TOKEN" value="'.REQUEST_TOKEN.'">
 <a href="'.ampersand(str_replace('&key=payment', '', $this->Environment->request)).'" class="header_back" title="'.specialchars($GLOBALS['TL_LANG']['MSC']['backBT']).'">'.$GLOBALS['TL_LANG']['MSC']['backBT'].'</a>
 </div>
-<h2 class="sub_headline">' . $GLOBALS['ISO_LANG']['PAY']['authorizedotnet'][0] . (!$arrPaymentInfo['x_trans_id'] || $arrPaymentInfo['x_trans_id']=="0" ? ' - ' . 'Test Transaction' : '') . '</h2>
+<h2 class="sub_headline">' . $GLOBALS['ISO_LANG']['PAY']['authorizedotnet'][0] . (!$arrPaymentInfo['x_trans_id'] || $arrPaymentInfo['x_trans_id'] == '0' ? ' - ' . 'Test Transaction' : '') . '</h2>
 <div class="tl_formbody_edit">
 <div class="tl_tbox block">';
 $return .= ($strResponse ? $strResponse : '');
-$return .= $strOrderDetails;
+$return .= $objModule->generate(true);
 $return .= '</div></div>';
-		if($arrOrderInfo['status']=='pending'){
+
+		if($objOrder->status == 'pending')
+		{
 			$return .= '<div class="tl_formbody_submit"><div class="tl_submit_container">';
 			$return .= '<input type="submit" class="submit" value="' . $objTemplate->slabel . '" /></div></div>';
 		}
 
 		$objTemplate->orderReview = $return;
-		$objTemplate->action = $action;
+		$objTemplate->action = ampersand($this->Environment->request, ENCODE_AMPERSANDS);
 		$objTemplate->rowLast = 'row_' . (count($this->editable) + 1) . ((($i % 2) == 0) ? ' odd' : ' even');
-
-
 
 		return $objTemplate->parse();
 	}

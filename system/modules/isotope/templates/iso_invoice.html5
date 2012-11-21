@@ -20,7 +20,7 @@
 		<tr>
 			<td width="60%">
 				<?php echo $item['name']; ?><br />
-				<?php if(is_array($item['product_options']) && count($item['product_options'])): ?>
+				<?php if(is_array($item['product_options']) && !empty($item['product_options'])): ?>
 				<ul>
 				<?php foreach($item['product_options'] as $option): ?>
 					<li><strong><?php echo $option['label']; ?>:</strong> <?php echo $option['value']; ?></li>

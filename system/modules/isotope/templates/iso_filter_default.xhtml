@@ -65,6 +65,51 @@
 </div>
 <?php endif; ?>
 
+<?php if ($this->hasAutocomplete):
+$GLOBALS['TL_CSS'][] = 'system/modules/isotope/html/Autocompleter.min.css';
+?>
+<script type="text/javascript" src="system/modules/isotope/html/Autocompleter.min.js"></script>
+<script type="text/javascript">
+<!--//--><![CDATA[//><!--
+window.addEvent('domready', function() {
+	var requested = false;
+	var searchField = document.id('ctrl_keywords_<?php echo $this->id; ?>').addEvent('keyup', function(e) {
+		if (requested)
+			return false;
+
+		requested = true;
+
+		new Request.JSON({
+			'url': 'ajax.php',
+			'method': 'get',
+			'data': {
+				'action': 'fmd',
+				'autocomplete': 1,
+				'pageId': <?php global $objPage; echo $objPage->id; ?>,
+				'id': <?php echo $this->id; ?>
+			},
+			onComplete: function(json) {
+				if (json && json.content)
+				{
+					new Autocompleter.Local(searchField, json.content, {
+						'minLength': 1,
+						'autoSubmit': true,
+						'selectMode': 'pick',
+						'filterSubset': true,
+						'onSelect': function(el)
+						{
+							el.getParent('form').submit();
+						}
+					}).query();
+				}
+			}
+		}).send();
+	});
+});
+//--><!]]>
+</script>
+<?php endif; ?>
+
 <a href="<?php echo $this->actionClear; ?>" class="clear_filters"><?php echo $this->clearLabel; ?></a>
 
 <div class="clear">&nbsp;</div>

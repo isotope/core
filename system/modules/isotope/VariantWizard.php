@@ -44,6 +44,12 @@ class VariantWizard extends Widget
 	 */
 	protected $strTemplate = 'be_widget';
 
+	/**
+	 * Options
+	 * @var array
+	 */
+	protected $arrOptions = array();
+
 
 	/**
 	 * Add specific attributes
@@ -140,7 +146,7 @@ class VariantWizard extends Widget
 	 */
 	public function generate()
 	{
-		if (!is_array($this->arrOptions) || !count($this->arrOptions))
+		if (!is_array($this->arrOptions) || empty($this->arrOptions))
 		{
 			return '';
 		}

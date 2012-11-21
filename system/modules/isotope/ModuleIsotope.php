@@ -186,6 +186,10 @@ abstract class ModuleIsotope extends Module
 				}
 				break;
 
+			case 'article':
+				$arrCategories = array($GLOBALS['ISO_CONFIG']['current_article']['pid'] > 0 ? $GLOBALS['ISO_CONFIG']['current_article']['pid'] : $objPage->id);
+				break;
+
 			case 'current_category':
 			default:
 				$arrCategories = array($objPage->id);
@@ -232,7 +236,7 @@ abstract class ModuleIsotope extends Module
 		$arrGet = array();
 
 		// Add fragments to URL params
-		for ($i=1; $i<count($arrFragments); $i+=2)
+		for ($i=1, $count=count($arrFragments); $i<$count; $i+=2)
 		{
 			if (isset($_GET[$arrFragments[$i]]))
 			{
@@ -243,7 +247,7 @@ abstract class ModuleIsotope extends Module
 		}
 
 		// Add get parameters to URL
-		if (is_array($_GET) && count($_GET))
+		if (is_array($_GET) && !empty($_GET))
 		{
 			foreach ($_GET as $key => $value)
 			{
@@ -255,7 +259,7 @@ abstract class ModuleIsotope extends Module
 		}
 
 		global $objPage;
-		return $this->generateFrontendUrl($objPage->row(), $strParams) . (count($arrGet) ? ('?'.implode('&', $arrGet)) : '');
+		return $this->generateFrontendUrl($objPage->row(), $strParams) . (!empty($arrGet) ? ('?'.implode('&', $arrGet)) : '');
 	}
 }
 

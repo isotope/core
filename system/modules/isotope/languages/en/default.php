@@ -175,15 +175,6 @@ $GLOBALS['TL_LANG']['MSC']['iso_sku_header'] = 'SKU';
 $GLOBALS['TL_LANG']['MSC']['iso_product_name_header'] = 'Product Name';
 $GLOBALS['TL_LANG']['MSC']['iso_card_name_title'] = 'Name on Credit Card';
 
-
-// Order status options
-$GLOBALS['TL_LANG']['ORDER']['pending']		= 'Pending';
-$GLOBALS['TL_LANG']['ORDER']['processing']	= 'Processing';
-$GLOBALS['TL_LANG']['ORDER']['complete']	= 'Complete';
-$GLOBALS['TL_LANG']['ORDER']['on_hold']		= 'On Hold';
-$GLOBALS['TL_LANG']['ORDER']['cancelled']	= 'Cancelled';
-
-
 $GLOBALS['TL_LANG']['MSC']['low_to_high'] = 'lo to hi';
 $GLOBALS['TL_LANG']['MSC']['high_to_low'] = 'hi to lo';
 $GLOBALS['TL_LANG']['MSC']['a_to_z'] = 'A to Z';
@@ -246,17 +237,26 @@ $GLOBALS['TL_LANG']['ISO']['backendShippingNoInfo']			= 'This shipping module do
 
 
 /**
+ * Errors
+ */
+$GLOBALS['ISO_LANG']['ERR']['datepickerRgxp']		= 'Select an appropriate field validation (date, time, date and time) to enable the date picker.';
+$GLOBALS['ISO_LANG']['ERR']['emptyDownloadsFolder'] = 'The selected folder is empty.';
+
+
+/**
  * Miscellaneous
  */
 $GLOBALS['ISO_LANG']['MSC']['useDefault']			= 'Use default value';
 $GLOBALS['ISO_LANG']['MSC']['activeStep']			= 'active step: ';
 $GLOBALS['ISO_LANG']['MSC']['productcacheLoading']	= 'Loading products...';
-$GLOBALS['ISO_LANG']['MSC']['productcacheNoscript']	= 'Your browser does not support javascript. Please <a href="%s">click here</a> to load the product list.';
+$GLOBALS['ISO_LANG']['MSC']['productcacheNoscript']	= 'Your browser does not support JavaScript. Please <a href="%s">click here</a> to load the product list.';
 $GLOBALS['ISO_LANG']['MSC']['noFilesInFolder']		= 'No files in this folder';
 $GLOBALS['ISO_LANG']['MSC']['loadingProductData']	= 'Loading product data …';
 $GLOBALS['ISO_LANG']['MSC']['templateConfig']		= '%s (Store Config: %s)';
 $GLOBALS['ISO_LANG']['MSC']['templateTheme']		= '%s (Theme: %s)';
 $GLOBALS['ISO_LANG']['MSC']['splittedTaxRate']		= 'Splitted';
+$GLOBALS['ISO_LANG']['MSC']['newOrders']			= 'You have %s order(s) with status "%s"';
+$GLOBALS['ISO_LANG']['MSC']['checkoutStep']			= 'Step %s of %s (%s) - ';
 
 
 /**
@@ -284,8 +284,9 @@ $GLOBALS['ISO_LANG']['PAY']['cybersource']		= array('Cybersource','For Cybersour
 /**
  * Galleries
  */
-$GLOBALS['ISO_LANG']['GAL']['default']			= array('Default gallery (Lightbox/Mediabox)', 'Uses the lightbox/mediabox for full size images. Make sure you select the appropriate moo_ template in your page layout configuration.</p><p>You can supply a "rel" attribute to the link target by using a pipe (eg. "tl_files/video.mov|lightbox[400 300]"). If no "rel" attribute is supplied, the link will be opened in a new window.');
+$GLOBALS['ISO_LANG']['GAL']['default']			= array('Default gallery (Lightbox/Mediabox)', '<p>Uses the lightbox/mediabox for full size images. Make sure you select the appropriate "moo_" template in your page layout configuration.</p><p>You can supply a "rel" attribute to the link target by using a pipe (e.g. "tl_files/video.mov|lightbox[400 300]"). If no "rel" attribute is supplied, the link will be opened in a new window.</p>');
 $GLOBALS['ISO_LANG']['GAL']['inline']			= array('Inline gallery', 'Clicking on a gallery image will replace the main image.');
+$GLOBALS['ISO_LANG']['GAL']['zoom'] = array('Inline gallery with zoom effect', 'In addition to the behaviour of inline gallery, it also adds an image zoom feature to the main image.');
 
 
 /**
@@ -346,7 +347,8 @@ $GLOBALS['ISO_LANG']['ATTR']['checkbox']			= array('Checkbox menu', 'A list of m
 $GLOBALS['ISO_LANG']['ATTR']['mediaManager']		= array('Media Manager', 'Upload images and other files to the Isotope eCommerce file system. Output is processed trough an IsotopeGallery class.');
 $GLOBALS['ISO_LANG']['ATTR']['conditionalselect']	= array('Conditional Select-Menu', 'show select-options based on another select menu.');
 $GLOBALS['ISO_LANG']['ATTR']['fileTree']			= array('File tree', 'A file tree for single or multiple files and folders.');
-$GLOBALS['ISO_LANG']['ATTR']['downloads']			= array('Downloads', 'Download files from the product, e.g. manuals, data sheets etc..');
+$GLOBALS['ISO_LANG']['ATTR']['downloads']			= array('Downloads', 'Download files from the product, e.g. manuals, data sheets etc.');
+$GLOBALS['ISO_LANG']['ATTR']['upload']				= array('File upload', 'A single-line input field to upload a local file to the server.');
 
 
 /**

@@ -30,7 +30,7 @@
 
 /**
  * Class IsotopePayment
- * 
+ *
  * Parent class for all payment gateway modules.
  * @copyright  Isotope eCommerce Workgroup 2009-2012
  * @author     Andreas Schempp <andreas@schempp.ch>
@@ -119,7 +119,7 @@ abstract class IsotopePayment extends Frontend
 					$this->import('FrontendUser', 'User');
 					$arrGroups = deserialize($this->groups);
 
-					if (!is_array($arrGroups) || !count($arrGroups) || !count(array_intersect($arrGroups, $this->User->groups)))
+					if (!is_array($arrGroups) || empty($arrGroups) || !count(array_intersect($arrGroups, $this->User->groups))) // Can't use empty() because its an object property (using __get)
 					{
 						return false;
 					}
@@ -132,21 +132,21 @@ abstract class IsotopePayment extends Frontend
 
 				$arrCountries = deserialize($this->countries);
 
-				if(is_array($arrCountries) && count($arrCountries) && !in_array($this->Isotope->Cart->billingAddress['country'], $arrCountries))
+				if(is_array($arrCountries) && !empty($arrCountries) && !in_array($this->Isotope->Cart->billingAddress->country, $arrCountries))
 				{
 					return false;
 				}
 
 				$arrShippings = deserialize($this->shipping_modules);
 
-				if (is_array($arrShippings) && count($arrShippings) && ((!$this->Isotope->Cart->hasShipping && !in_array(-1, $arrShippings)) || ($this->Isotope->Cart->hasShipping && !in_array($this->Isotope->Cart->Shipping->id, $arrShippings))))
+				if (is_array($arrShippings) && !empty($arrShippings) && ((!$this->Isotope->Cart->hasShipping && !in_array(-1, $arrShippings)) || ($this->Isotope->Cart->hasShipping && !in_array($this->Isotope->Cart->Shipping->id, $arrShippings))))
 				{
 					return false;
 				}
 
 				$arrTypes = deserialize($this->product_types);
 
-				if (is_array($arrTypes) && count($arrTypes))
+				if (is_array($arrTypes) && !empty($arrTypes))
 				{
 					$arrProducts = $this->Isotope->Cart->getProducts();
 
@@ -196,22 +196,6 @@ abstract class IsotopePayment extends Frontend
 	public function __isset($strKey)
 	{
 		return isset($this->arrData[$strKey]);
-	}
-
-
-	/**
-	 * Return a list of order status options
-	 * Allowed return values are ($GLOBALS['ISO_ORDER']):
-	 * - pending
-	 * - processing
-	 * - complete
-	 * - on_hold
-	 * - cancelled
-	 * @return array
-	 */
-	public function statusOptions()
-	{
-		return array('pending', 'processing');
 	}
 
 

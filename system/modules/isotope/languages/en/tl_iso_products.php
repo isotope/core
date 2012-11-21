@@ -32,7 +32,7 @@
  * Fields
  */
 $GLOBALS['TL_LANG']['tl_iso_products']['id']					= array('Product ID');
-$GLOBALS['TL_LANG']['tl_iso_products']['pages']					= array('Categories', 'Select a category (page-based categories take advantage of TYPOlight pages features such as navigation automation, protection, templates, and full integration with content elements.');
+$GLOBALS['TL_LANG']['tl_iso_products']['pages']					= array('Categories', 'Select a category (page-based categories take advantage of Contao pages features such as navigation automation, protection, templates, and full integration with content elements.');
 $GLOBALS['TL_LANG']['tl_iso_products']['type']					= array('Product Type', 'Select your product type. Product types are defined in the store configuration.');
 $GLOBALS['TL_LANG']['tl_iso_products']['alias']					= array('Alias', 'You can enter a unique alias for this product. It will be automatically generated from the name if empty.');
 $GLOBALS['TL_LANG']['tl_iso_products']['name']					= array('Name', 'Please enter the name of this product.');
@@ -43,9 +43,15 @@ $GLOBALS['TL_LANG']['tl_iso_products']['description']			= array('Description', '
 $GLOBALS['TL_LANG']['tl_iso_products']['description_meta']		= array('Meta description', 'Meta description will be placed in the header on product detail page, for search engine optimization.');
 $GLOBALS['TL_LANG']['tl_iso_products']['keywords_meta']			= array('Meta keywords', 'Meta keywords will be placed in the header on product detail page, for search engine optimization.');
 $GLOBALS['TL_LANG']['tl_iso_products']['price']					= array('Price', 'Please enter the price(s) for this product.');
+$GLOBALS['TL_LANG']['tl_iso_products']['baseprice']             = array('Bundle size', 'Please enter the Bundle size of the product or the variation and choose the wished the base price amount. From bundle size and price the baseprice is automatically calculated for the base price amount (Example: Bundle size: 400 Gramm, price: 10 EUR, baseprice amount: 100 Gramm => (100g/400g)*10EUR=2,5 EUR');
 $GLOBALS['TL_LANG']['tl_iso_products']['shipping_exempt']		= array('Exempt from shipping', 'Check if item is not a shipped item (such as downloadable products).');
 $GLOBALS['TL_LANG']['tl_iso_products']['tax_class']				= array('Tax Class', 'Select your appropriate tax class.');
+$GLOBALS['TL_LANG']['tl_iso_products']['baseprice']				= array('Base price', 'Please enter your base price information.');
 $GLOBALS['TL_LANG']['tl_iso_products']['images']				= array('Images', 'Upload images to this product. Please save the product after selecting a file.');
+$GLOBALS['TL_LANG']['tl_iso_products']['protected']				= array('Protect product', 'Restrict product access to certain member groups.');
+$GLOBALS['TL_LANG']['tl_iso_products']['groups']				= array('Allowed member groups', 'These groups will be able to access the product.');
+$GLOBALS['TL_LANG']['tl_iso_products']['guests']				= array('Show to guests only', 'Hide the product if there is an authenticated user.');
+$GLOBALS['TL_LANG']['tl_iso_products']['cssID']					= array('CSS ID/class', 'Here you can set an ID and one or more classes.');
 $GLOBALS['TL_LANG']['tl_iso_products']['published']				= array('Publish product', 'Click here to show this product on your website.');
 $GLOBALS['TL_LANG']['tl_iso_products']['start']					= array('Start date', 'Do not show this product before the date specified.');
 $GLOBALS['TL_LANG']['tl_iso_products']['stop']					= array('Stop date', 'Do not show this product after the date specified.');
@@ -119,6 +125,7 @@ $GLOBALS['TL_LANG']['tl_iso_products']['inventory_legend']	= 'Inventory Settings
 $GLOBALS['TL_LANG']['tl_iso_products']['shipping_legend']	= 'Shipping Settings';
 $GLOBALS['TL_LANG']['tl_iso_products']['options_legend']	= 'Product Options Settings';
 $GLOBALS['TL_LANG']['tl_iso_products']['media_legend']		= 'Media Management';
+$GLOBALS['TL_LANG']['tl_iso_products']['expert_legend']		= 'Expert settings';
 $GLOBALS['TL_LANG']['tl_iso_products']['publish_legend']	= 'Publishing';
 $GLOBALS['TL_LANG']['tl_iso_products']['variant_legend']	= 'Product variant setup';
 

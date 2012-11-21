@@ -67,6 +67,11 @@ class ModuleIsotopeCart extends ModuleIsotope
 			return $objTemplate->parse();
 		}
 
+		// Do not index or cache the page
+		global $objPage;
+		$objPage->noSearch = 1;
+		$objPage->cache = 0;
+
 		return parent::generate();
 	}
 
@@ -79,7 +84,7 @@ class ModuleIsotopeCart extends ModuleIsotope
 	{
 		$arrProducts = $this->Isotope->Cart->getProducts();
 
-		if (!count($arrProducts))
+		if (empty($arrProducts))
 		{
 			$this->Template->empty = true;
 			$this->Template->message = $this->iso_emptyMessage ? $this->iso_noProducts : $GLOBALS['TL_LANG']['MSC']['noItemsInCart'];
@@ -99,7 +104,7 @@ class ModuleIsotopeCart extends ModuleIsotope
 		$arrSurcharges = $this->Isotope->Cart->getSurcharges();
 
 		$arrProducts = $this->Isotope->Cart->getProducts();
-		$lastAdded = ($this->iso_continueShopping && count($_SESSION['ISO_CONFIRM'])) ? $this->Isotope->Cart->lastAdded : 0;
+		$lastAdded = ($this->iso_continueShopping && !empty($_SESSION['ISO_CONFIRM'])) ? $this->Isotope->Cart->lastAdded : 0;
 
 		foreach ($arrProducts as $i => $objProduct)
 		{
@@ -154,7 +159,7 @@ class ModuleIsotopeCart extends ModuleIsotope
 			$this->reload();
 		}
 
-		// HOOK for adding additional forms into the template
+		// !HOOK: add additional forms into the template
 		if (isset($GLOBALS['ISO_HOOKS']['compileCart']) && is_array($GLOBALS['ISO_HOOKS']['compileCart']))
 		{
 			foreach ($GLOBALS['ISO_HOOKS']['compileCart'] as $name => $callback)

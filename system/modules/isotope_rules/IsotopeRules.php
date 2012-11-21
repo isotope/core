@@ -142,7 +142,7 @@ class IsotopeRules extends Controller
 		}
 
 		$arrCoupons = deserialize($this->Isotope->Cart->coupons);
-		if (is_array($arrCoupons) && count($arrCoupons))
+		if (is_array($arrCoupons) && !empty($arrCoupons))
 		{
 			$arrDropped = array();
 
@@ -164,7 +164,7 @@ class IsotopeRules extends Controller
 				}
 			}
 
-			if (count($arrDropped))
+			if (!empty($arrDropped))
 			{
 				// @todo show dropped coupons
 				$arrCoupons = array_diff($arrCoupons, $arrDropped);
@@ -346,7 +346,6 @@ class IsotopeRules extends Controller
 			$arrProcedures[] = "(limitPerMember=0 OR limitPerMember>(SELECT COUNT(*) FROM tl_iso_rule_usage WHERE pid=r.id AND member_id=".(int)$this->User->id." AND order_id NOT IN (SELECT id FROM tl_iso_orders WHERE cart_id=".(int)$this->Isotope->Cart->id.")))";
 		}
 
-
 		// Store config restrictions
 		$arrProcedures[] = "(configRestrictions=''
 							OR (configRestrictions='1' AND configCondition='' AND (SELECT COUNT(*) FROM tl_iso_rule_restrictions WHERE pid=r.id AND type='configs' AND object_id=".(int)$this->Isotope->Config->id.")>0)
@@ -378,7 +377,7 @@ class IsotopeRules extends Controller
 			$arrProducts = $this->Isotope->Cart->getProducts();
 		}
 
-		if (count($arrProducts))
+		if (!empty($arrProducts))
 		{
 			$arrProductIds = array();
 			$arrVariantIds = array();
@@ -453,7 +452,7 @@ class IsotopeRules extends Controller
 
 			foreach( $arrAttributes as $restriction )
 			{
-				if (!count($restriction['values']))
+				if (empty($restriction['values']))
 					continue;
 
 				$strRestriction = "(productRestrictions='attribute' AND attributeName='" . $restriction['attribute'] . "' AND attributeCondition='" . $restriction['condition'] . "' AND ";
@@ -521,6 +520,12 @@ class IsotopeRules extends Controller
 	 */
 	protected function calculateProductSurcharge($arrRule)
 	{
+		// Cart subtotal
+		if (($arrRule['minSubtotal'] > 0 && $this->Isotope->Cart->subTotal < $arrRule['minSubtotal']) || ($arrRule['maxSubtotal'] > 0 && $this->Isotope->Cart->subTotal > $arrRule['maxSubtotal']))
+		{
+			return false;
+		}
+
 		$arrProducts = $this->Isotope->Cart->getProducts();
 
 		$blnMatch = false;
@@ -548,7 +553,7 @@ class IsotopeRules extends Controller
 		{
 			$arrLimit = $this->Database->execute("SELECT object_id FROM tl_iso_rule_restrictions WHERE pid={$arrRule['id']} AND type='{$arrRule['productRestrictions']}'")->fetchEach('object_id');
 
-			if ($arrRule['productRestrictions'] == 'pages' && count($arrLimit))
+			if ($arrRule['productRestrictions'] == 'pages' && !empty($arrLimit))
 			{
 				$arrLimit = $this->Database->execute("SELECT pid FROM tl_iso_product_categories WHERE page_id IN (" . implode(',', $arrLimit) . ")")->fetchEach('pid');
 			}

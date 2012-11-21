@@ -89,12 +89,12 @@ $GLOBALS['TL_LANG']['tl_iso_config']['bc']								= 'Dół';
 $GLOBALS['TL_LANG']['tl_iso_config']['br']								= 'Dół Prawo';
 $GLOBALS['TL_LANG']['tl_iso_config']['cc']								= 'Środek';
 
-$GLOBALS['TL_LANG']['tl_iso_config']['iwName']							= 'Nazwa';
-$GLOBALS['TL_LANG']['tl_iso_config']['iwWidth']							= 'Długość';
-$GLOBALS['TL_LANG']['tl_iso_config']['iwHeight']						= 'Wysokość';
-$GLOBALS['TL_LANG']['tl_iso_config']['iwMode']							= 'Tryb';
-$GLOBALS['TL_LANG']['tl_iso_config']['iwWatermark']						= 'Znak wodny';
-$GLOBALS['TL_LANG']['tl_iso_config']['iwPosition']						= 'Pozycja';
+$GLOBALS['TL_LANG']['tl_iso_config']['iwName'][0]						= 'Nazwa';
+$GLOBALS['TL_LANG']['tl_iso_config']['iwWidth'][0]						= 'Długość';
+$GLOBALS['TL_LANG']['tl_iso_config']['iwHeight'][0]						= 'Wysokość';
+$GLOBALS['TL_LANG']['tl_iso_config']['iwMode'][0]						= 'Tryb';
+$GLOBALS['TL_LANG']['tl_iso_config']['iwWatermark'][0]					= 'Znak wodny';
+$GLOBALS['TL_LANG']['tl_iso_config']['iwPosition'][0]					= 'Pozycja';
 
 $GLOBALS['TL_LANG']['tl_iso_config']['fwEnabled']						= 'Włącz pole';
 $GLOBALS['TL_LANG']['tl_iso_config']['fwLabel']							= 'Etykieta';
@@ -123,6 +123,5 @@ $GLOBALS['TL_LANG']['tl_iso_config']['config_legend']					= 'Konfiguracja';
 $GLOBALS['TL_LANG']['tl_iso_config']['price_legend']	    			= 'Ceny';
 $GLOBALS['TL_LANG']['tl_iso_config']['currency_legend']	    			= 'Formatowanie waluty';
 $GLOBALS['TL_LANG']['tl_iso_config']['converter_legend']	    		= 'Konwertowanie waluty';
-$GLOBALS['TL_LANG']['tl_iso_config']['invoice_legend']	    			= 'Faktury';
 $GLOBALS['TL_LANG']['tl_iso_config']['images_legend']	    			= 'Obrazki';
 

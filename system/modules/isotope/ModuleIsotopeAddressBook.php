@@ -81,7 +81,7 @@ class ModuleIsotopeAddressBook extends ModuleIsotope
 		$this->arrFields = array_unique(array_merge(deserialize($this->Isotope->Config->billing_fields_raw, true), deserialize($this->Isotope->Config->shipping_fields_raw, true)));
 
 		// Return if there are not editable fields
-		if (!count($this->arrFields) || (count($this->arrFields) == 1 && $this->arrFields[0] == ''))
+		if (($count = count($this->arrFields) == 0) || ($count == 1 && $this->arrFields[0] == ''))
 		{
 			return '';
 		}
@@ -146,15 +146,18 @@ class ModuleIsotopeAddressBook extends ModuleIsotope
 		global $objPage;
 		$arrAddresses = array();
 		$strUrl = $this->generateFrontendUrl($objPage->row()) . ($GLOBALS['TL_CONFIG']['disableAlias'] ? '&' : '?');
-		$objAddress = $this->Database->execute("SELECT * FROM tl_iso_addresses WHERE pid={$this->User->id} AND store_id={$this->Isotope->Config->store_id}");
+		$objAddresses = $this->Database->execute("SELECT * FROM tl_iso_addresses WHERE pid={$this->User->id} AND store_id={$this->Isotope->Config->store_id}");
 
-		while ($objAddress->next())
+		while ($objAddresses->next())
 		{
-			$arrAddresses[] = array_merge($objAddress->row(), array
+			$objAddress = new IsotopeAddressModel();
+			$objAddress->setData($objAddresses->row());
+
+			$arrAddresses[] = array_merge($objAddress->getData(), array
 			(
 				'id'				=> $objAddress->id,
 				'class'				=> (($objAddress->isDefaultBilling ? 'default_billing' : '') . ($objAddress->isDefaultShipping ? ' default_shipping' : '')),
-				'text'				=> $this->Isotope->generateAddressString($objAddress->row()),
+				'text'				=> $objAddress->generateHtml(),
 				'edit_url'			=> ampersand($strUrl . 'act=edit&address=' . $objAddress->id),
 				'delete_url'		=> ampersand($strUrl . 'act=delete&address=' . $objAddress->id),
 				'default_billing'	=> ($objAddress->isDefaultBilling ? true : false),
@@ -242,7 +245,7 @@ class ModuleIsotopeAddressBook extends ModuleIsotope
 				}
 
 				$arrData['options'] = array_values(array_intersect($arrData['options'], $arrCountries));
-				$arrData['default'] = $this->Isotope->Config->country;
+				$arrData['default'] = $this->Isotope->Config->billing_country;
 			}
 
 			$strGroup = $arrData['eval']['feGroup'];

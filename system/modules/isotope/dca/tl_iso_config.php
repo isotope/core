@@ -124,12 +124,13 @@ $GLOBALS['TL_DCA']['tl_iso_config'] = array
 		'__selector__'				  => array('currencySymbol', 'currencyAutomator'),
 		'default'                     => '
 			{name_legend},name,label,fallback,store_id;
-			{config_legend},shipping_countries,billing_countries,shipping_fields,billing_fields,orderPrefix,orderDigits,templateGroup,limitMemberCountries;
 			{address_legend:hide},firstname,lastname,company,street_1,street_2,street_3,postal,city,country,subdivision,email,phone;
+			{config_legend},orderPrefix,orderDigits,templateGroup;
+			{checkout_legend},billing_countries,shipping_countries,billing_fields,shipping_fields,billing_country,shipping_country,limitMemberCountries;
 			{price_legend},priceRoundPrecision,priceRoundIncrement,cartMinSubtotal;
 			{currency_legend},currency,currencyFormat,currencyPosition,currencySymbol;
 			{converter_legend:hide},priceCalculateFactor,priceCalculateMode,currencyAutomator;
-			{invoice_legend:hide},invoiceLogo;
+			{order_legend:hide},orderstatus_new,orderstatus_error,invoiceLogo;
 			{images_legend},gallery,missing_image_placeholder,imageSizes',
 	),
 
@@ -261,7 +262,7 @@ $GLOBALS['TL_DCA']['tl_iso_config'] = array
 			'inputType'               => 'select',
 			'default'				  => $this->User->country,
 			'options'                 => $this->getCountries(),
-			'eval'                    => array('mandatory'=>true, 'includeBlankOption'=>true, 'tl_class'=>'w50'),
+			'eval'                    => array('mandatory'=>true, 'includeBlankOption'=>true, 'tl_class'=>'w50', 'chosen'=>true),
 		),
 		'phone' => array
 		(
@@ -277,7 +278,7 @@ $GLOBALS['TL_DCA']['tl_iso_config'] = array
 			'exclude'                 => true,
 			'search'                  => true,
 			'inputType'               => 'text',
-			'eval'                    => array('maxlength'=>64, 'rgxp'=>'email', 'tl_class'=>'w50'),
+			'eval'                    => array('maxlength'=>64, 'rgxp'=>'email', 'tl_class'=>'w50')
 		),
 		'shipping_countries' => array
 		(
@@ -285,14 +286,22 @@ $GLOBALS['TL_DCA']['tl_iso_config'] = array
 			'exclude'                 => true,
 			'inputType'               => 'select',
 			'options'                 => $this->getCountries(),
-			'eval'                    => array('multiple'=>true, 'size'=>8, 'tl_class'=>'w50'),
+			'eval'                    => array('multiple'=>true, 'size'=>8, 'tl_class'=>'w50 w50h', 'chosen'=>true)
 		),
 		'shipping_fields' => array
 		(
 			'label'                   => &$GLOBALS['TL_LANG']['tl_iso_config']['shipping_fields'],
 			'exclude'                 => true,
 			'inputType'               => 'fieldWizard',
-			'eval'                    => array('mandatory'=>true, 'multiple'=>true, 'tl_class'=>'w50 w50h', 'table'=>'tl_iso_addresses'),
+			'eval'                    => array('mandatory'=>true, 'multiple'=>true, 'tl_class'=>'w50 w50h', 'table'=>'tl_iso_addresses')
+		),
+		'shipping_country' => array
+		(
+			'label'                   => &$GLOBALS['TL_LANG']['tl_iso_config']['shipping_country'],
+			'exclude'                 => true,
+			'inputType'               => 'select',
+			'options'                 => $this->getCountries(),
+			'eval'                    => array('includeBlankOption'=>true, 'tl_class'=>'w50', 'chosen'=>true)
 		),
 		'billing_countries' => array
 		(
@@ -300,14 +309,22 @@ $GLOBALS['TL_DCA']['tl_iso_config'] = array
 			'exclude'                 => true,
 			'inputType'               => 'select',
 			'options'                 => $this->getCountries(),
-			'eval'                    => array('multiple'=>true, 'size'=>8, 'tl_class'=>'w50 w50h'),
+			'eval'                    => array('multiple'=>true, 'size'=>8, 'tl_class'=>'w50 w50h', 'chosen'=>true)
 		),
 		'billing_fields' => array
 		(
 			'label'                   => &$GLOBALS['TL_LANG']['tl_iso_config']['billing_fields'],
 			'exclude'                 => true,
 			'inputType'               => 'fieldWizard',
-			'eval'                    => array('mandatory'=>true, 'multiple'=>true, 'table'=>'tl_iso_addresses', 'tl_class'=>'w50 w50h'),
+			'eval'                    => array('mandatory'=>true, 'multiple'=>true, 'table'=>'tl_iso_addresses', 'tl_class'=>'clr w50 w50h'),
+		),
+		'billing_country' => array
+		(
+			'label'                   => &$GLOBALS['TL_LANG']['tl_iso_config']['billing_country'],
+			'exclude'                 => true,
+			'inputType'               => 'select',
+			'options'                 => $this->getCountries(),
+			'eval'                    => array('includeBlankOption'=>true, 'tl_class'=>'w50', 'chosen'=>true)
 		),
 		'orderPrefix' => array
 		(
@@ -339,12 +356,30 @@ $GLOBALS['TL_DCA']['tl_iso_config'] = array
 			'inputType'               => 'checkbox',
 			'eval'					  => array('tl_class'=>'w50'),
 		),
+		'orderstatus_new' => array
+		(
+			'label'                   => &$GLOBALS['TL_LANG']['tl_iso_config']['orderstatus_new'],
+			'exclude'                 => true,
+			'filter'                  => true,
+			'inputType'               => 'select',
+			'options'                 => IsotopeBackend::getOrderStatus(),
+			'eval'                    => array('mandatory'=>true, 'includeBlankOption'=>true, 'tl_class'=>'w50'),
+		),
+		'orderstatus_error' => array
+		(
+			'label'                   => &$GLOBALS['TL_LANG']['tl_iso_config']['orderstatus_error'],
+			'exclude'                 => true,
+			'filter'                  => true,
+			'inputType'               => 'select',
+			'options'                 => IsotopeBackend::getOrderStatus(),
+			'eval'                    => array('mandatory'=>true, 'includeBlankOption'=>true, 'tl_class'=>'w50'),
+		),
 		'invoiceLogo' => array
 		(
 			'label'                   => &$GLOBALS['TL_LANG']['tl_iso_config']['invoiceLogo'],
 			'exclude'                 => true,
 			'inputType'               => 'fileTree',
-			'eval'                    => array('fieldType'=>'radio', 'files'=>true, 'filesOnly'=>true, 'extensions'=>'jpg,jpeg,gif,png,tif,tiff'),
+			'eval'                    => array('fieldType'=>'radio', 'files'=>true, 'filesOnly'=>true, 'extensions'=>'jpg,jpeg,gif,png,tif,tiff', 'tl_class'=>'clr'),
 		),
 		'gallery' => array
 		(
@@ -367,10 +402,64 @@ $GLOBALS['TL_DCA']['tl_iso_config'] = array
 		(
 			'label'					  => &$GLOBALS['TL_LANG']['tl_iso_config']['imageSizes'],
 			'exclude'                 => true,
-			'inputType'				  => 'imageWatermarkWizard',
-			'options'                 => array('crop', 'proportional', 'box'),
-			'reference'               => &$GLOBALS['TL_LANG']['MSC'],
-			'eval'                    => array('tl_class'=>'clr'),
+			'inputType'				  => 'multiColumnWizard',
+			'default'                 => array
+			(
+				array('name'=>'gallery'),
+				array('name'=>'thumbnail'),
+				array('name'=>'medium'),
+				array('name'=>'large'),
+			),
+			'eval'                    => array
+			(
+				'mandatory'           => true,
+				'tl_class'            => 'clr',
+				'disableSorting'      => true,
+				'columnFields' => array
+				(
+					'name' => array
+					(
+						'label'       => $GLOBALS['TL_LANG']['tl_iso_config']['iwName'],
+						'inputType'   => 'text',
+						'eval'        => array('mandatory'=>true, 'rgxp'=>'alpha', 'spaceToUnderscore'=>true, 'class'=>'tl_text_4'),
+					),
+					'width' => array
+					(
+						'label'       => $GLOBALS['TL_LANG']['tl_iso_config']['iwWidth'],
+						'inputType'   => 'text',
+						'eval'        => array('rgxp'=>'digit', 'class'=>'tl_text_4'),
+					),
+					'height' => array
+					(
+						'label'       => $GLOBALS['TL_LANG']['tl_iso_config']['iwHeight'],
+						'inputType'   => 'text',
+						'eval'        => array('rgxp'=>'digit', 'class'=>'tl_text_4'),
+					),
+					'mode' => array
+					(
+						'label'       => $GLOBALS['TL_LANG']['tl_iso_config']['iwMode'],
+						'inputType'   => 'select',
+						'options'     => $GLOBALS['TL_CROP'],
+						'reference'   => &$GLOBALS['TL_LANG']['MSC'],
+						'eval'        => array('style'=>'width:150px'),
+					),
+					'watermark' => array
+					(
+						'label'       => $GLOBALS['TL_LANG']['tl_iso_config']['iwWatermark'],
+						'inputType'   => 'text',
+						'eval'        => array('class'=>'tl_text_2'),
+						'wizard'      => array(array('tl_iso_config', 'filePicker')),
+					),
+					'position' => array
+					(
+						'label'       => $GLOBALS['TL_LANG']['tl_iso_config']['iwPosition'],
+						'inputType'   => 'select',
+						'options'     => array('tl', 'tc', 'tr', 'bl', 'bc', 'br', 'cc'),
+						'reference'   => $GLOBALS['TL_LANG']['tl_iso_config'],
+						'eval'        => array('style'=>'width:60px'),
+					),
+				),
+			),
 		),
 		'priceCalculateFactor' => array
 		(
@@ -518,7 +607,7 @@ class tl_iso_config extends Backend
 		}
 
 		// Set root IDs
-		if (!is_array($this->User->iso_configs) || count($this->User->iso_configs) < 1)
+		if (!is_array($this->User->iso_configs) || count($this->User->iso_configs) < 1) // Can't use empty() because its an object property (using __get)
 		{
 			$root = array(0);
 		}
@@ -742,6 +831,18 @@ class tl_iso_config extends Backend
 	public function deleteConfig($row, $href, $label, $title, $icon, $attributes)
 	{
 		return ($this->User->isAdmin || $this->User->hasAccess('delete', 'iso_configp')) ? '<a href="'.$this->addToUrl($href.'&amp;id='.$row['id']).'" title="'.specialchars($title).'"'.$attributes.'>'.$this->generateImage($icon, $label).'</a> ' : $this->generateImage(preg_replace('/\.gif$/i', '_.gif', $icon)).' ';
+	}
+
+
+	/**
+	 * Return the file picker wizard
+	 * @param DataContainer
+	 * @return string
+	 */
+	public function filePicker(DataContainer $dc)
+	{
+		$strField = 'ctrl_' . $dc->field . (($this->Input->get('act') == 'editAll') ? '_' . $dc->id : '');
+		return ' ' . $this->generateImage('pickfile.gif', $GLOBALS['TL_LANG']['MSC']['filepicker'], 'style="vertical-align:top;cursor:pointer" onclick="Backend.pickFile(\'' . $strField . '\')"');
 	}
 }
 

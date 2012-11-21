@@ -110,24 +110,26 @@ $GLOBALS['TL_DCA']['tl_iso_prices'] = array
 		'price_tiers' => array
 		(
 			'label'					=> &$GLOBALS['TL_LANG']['tl_iso_prices']['price_tiers'],
-			'inputType'				=> 'multitextWizard',
+			'exclude'               => true,
+			'inputType'				=> 'multiColumnWizard',
 			'eval'					=> array
 			(
 				'doNotSaveEmpty'	=> true,
 				'tl_class'			=> 'clr',
-				'columns'			=> array
+				'disableSorting'	=> true,
+				'columnFields'		=> array
 				(
 					'min' => array
 					(
 						'label'		=> &$GLOBALS['TL_LANG']['tl_iso_prices']['price_tier_columns']['min'],
-						'mandatory'	=> true,
-						'rgxp'		=> 'digit',
+						'inputType'	=> 'text',
+						'eval'		=> array('mandatory'=>true, 'rgxp'=>'digit', 'style'=>'width:100px'),
 					),
 					'price' => array
 					(
 						'label'		=> &$GLOBALS['TL_LANG']['tl_iso_prices']['price_tier_columns']['price'],
-						'mandatory'	=> true,
-						'rgxp'		=> 'price',
+						'inputType'	=> 'text',
+						'eval'		=> array('mandatory'=>true, 'rgxp'=>'price', 'style'=>'width:100px'),
 					),
 				),
 			),
@@ -143,6 +145,7 @@ $GLOBALS['TL_DCA']['tl_iso_prices'] = array
 		'tax_class' => array
 		(
 			'label'					=> &$GLOBALS['TL_LANG']['tl_iso_prices']['tax_class'],
+			'exclude'               => true,
 			'inputType'				=> 'select',
 			'default'				=> &$GLOBALS['TL_DCA']['tl_iso_products']['fields']['tax_class']['default'],
 			'foreignKey'			=> 'tl_iso_tax_class.name',
@@ -151,6 +154,7 @@ $GLOBALS['TL_DCA']['tl_iso_prices'] = array
 		'config_id' => array
 		(
 			'label'                   => &$GLOBALS['TL_LANG']['tl_iso_prices']['config_id'],
+			'exclude'               => true,
 			'inputType'               => 'select',
 			'foreignKey'			  => 'tl_iso_config.name',
 			'eval'					  => array('includeBlankOption'=>true, 'tl_class'=>'w50'),
@@ -158,19 +162,22 @@ $GLOBALS['TL_DCA']['tl_iso_prices'] = array
 		'member_group' => array
 		(
 			'label'					=> &$GLOBALS['TL_LANG']['tl_iso_prices']['member_group'],
+			'exclude'               => true,
 			'inputType'				=> 'select',
 			'foreignKey'			=> 'tl_member_group.name',
-			'eval'					=> array('includeBlankOption'=>true, 'tl_class'=>'w50'),
+			'eval'					=> array('includeBlankOption'=>true, 'tl_class'=>'w50', 'chosen'=>true)
 		),
 		'start' => array
 		(
 			'label'					=> &$GLOBALS['TL_LANG']['tl_iso_prices']['start'],
+			'exclude'               => true,
 			'inputType'				=> 'text',
 			'eval'					=> array('rgxp'=>'date', 'datepicker'=>(method_exists($this,'getDatePickerString') ? $this->getDatePickerString() : true), 'tl_class'=>'w50 wizard'),
 		),
 		'stop' => array
 		(
 			'label'					=> &$GLOBALS['TL_LANG']['tl_iso_prices']['stop'],
+			'exclude'               => true,
 			'inputType'				=> 'text',
 			'eval'					=> array('rgxp'=>'date', 'datepicker'=>(method_exists($this,'getDatePickerString') ? $this->getDatePickerString() : true), 'tl_class'=>'w50 wizard'),
 		),
@@ -244,17 +251,12 @@ class tl_iso_prices extends Backend
 			return array();
 		}
 
-		$arrTiers = array();
-		$objTiers = $this->Database->execute("SELECT * FROM tl_iso_price_tiers WHERE pid={$dc->id} ORDER BY min");
+		$arrTiers = $this->Database->execute("SELECT min, price FROM tl_iso_price_tiers WHERE pid={$dc->id} ORDER BY min")
+								   ->fetchAllAssoc();
 
-		while ($objTiers->next())
+		if (empty($arrTiers))
 		{
-			$arrTiers[] = array($objTiers->min, $objTiers->price);
-		}
-
-		if (!count($arrTiers))
-		{
-			return array(array(1, ''));
+			return array(array('min'=>1));
 		}
 
 		return $arrTiers;
@@ -271,7 +273,7 @@ class tl_iso_prices extends Backend
 	{
 		$arrNew = deserialize($varValue);
 
-		if (!is_array($arrNew) || !count($arrNew))
+		if (!is_array($arrNew) || empty($arrNew))
 		{
 			$this->Database->query("DELETE FROM tl_iso_price_tiers WHERE pid={$dc->id}");
 		}
@@ -284,25 +286,25 @@ class tl_iso_prices extends Backend
 
 			foreach ($arrNew as $new)
 			{
-				$pos = array_search($new[0], $arrDelete);
+				$pos = array_search($new['min'], $arrDelete);
 
 				if ($pos === false)
 				{
-					$arrInsert[$new[0]] = $new[1];
+					$arrInsert[$new['min']] = $new['price'];
 				}
 				else
 				{
-					$arrUpdate[$new[0]] = $new[1];
+					$arrUpdate[$new['min']] = $new['price'];
 					unset($arrDelete[$pos]);
 				}
 			}
 
-			if (count($arrDelete))
+			if (!empty($arrDelete))
 			{
 				$this->Database->query("DELETE FROM tl_iso_price_tiers WHERE pid={$dc->id} AND min IN (" . implode(',', $arrDelete) . ")");
 			}
 
-			if (count($arrUpdate))
+			if (!empty($arrUpdate))
 			{
 				foreach ($arrUpdate as $min => $price)
 				{
@@ -310,7 +312,7 @@ class tl_iso_prices extends Backend
 				}
 			}
 
-			if (count($arrInsert))
+			if (!empty($arrInsert))
 			{
 				foreach ($arrInsert as $min => $price)
 				{

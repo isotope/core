@@ -69,7 +69,7 @@ class ModuleIsotopeSetup extends BackendModule
 
 					$this->arrModules[$GLOBALS['TL_LANG']['IMD'][$strGroup]][$strModule] = array
 					(
-						'name' => $GLOBALS['TL_LANG']['IMD'][$strModule][0],
+						'name' => ($GLOBALS['TL_LANG']['IMD'][$strModule][0] ? $GLOBALS['TL_LANG']['IMD'][$strModule][0] : $strModule),
 						'description' => $GLOBALS['TL_LANG']['IMD'][$strModule][1],
 						'icon' => $arrConfig['icon']
 					);
@@ -82,7 +82,7 @@ class ModuleIsotopeSetup extends BackendModule
 		{
 			return $this->getIsotopeModule($this->Input->get('mod'));
 		}
-		
+
 		// Table set but module missing, fix the saveNcreate link
 		elseif ($this->Input->get('table') != '')
 		{
@@ -109,7 +109,7 @@ class ModuleIsotopeSetup extends BackendModule
 	{
 		$this->Template->modules = $this->arrModules;
 		$this->Template->script = $this->Environment->script;
-		$this->Template->welcome = $GLOBALS['TL_LANG']['ISO']['config_module'];
+		$this->Template->welcome = sprintf($GLOBALS['TL_LANG']['ISO']['config_module'], ISO_VERSION . '.' . ISO_BUILD);
 	}
 
 
@@ -124,7 +124,7 @@ class ModuleIsotopeSetup extends BackendModule
 
 		foreach ($GLOBALS['ISO_MOD'] as $arrGroup)
 		{
-			if (count($arrGroup) && in_array($module, array_keys($arrGroup)))
+			if (!empty($arrGroup) && in_array($module, array_keys($arrGroup)))
 			{
 				$arrModule =& $arrGroup[$module];
 			}

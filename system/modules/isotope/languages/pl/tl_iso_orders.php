@@ -52,16 +52,6 @@ $GLOBALS['TL_LANG']['tl_iso_orders']['cc_type'] = array('Typ karty', 'Typ karty 
 $GLOBALS['TL_LANG']['tl_iso_orders']['cc_exp'] = array('Wygasa', 'Data wygaśnięcia karty kredytowej');
 $GLOBALS['TL_LANG']['tl_iso_orders']['notes'] = array('Notatki','Jeśli chcesz przekazać dodatkowe informacje dla innych użytkowników, zrób to tutaj.');
 
-/**
- * Reference
- */
-$GLOBALS['TL_LANG']['tl_iso_orders']['shipping_method_labels']['ups_ground'] = 'UPS Ground';
-
-$GLOBALS['TL_LANG']['tl_iso_orders']['opLabel']					= 'Nazwa dopłaty';
-$GLOBALS['TL_LANG']['tl_iso_orders']['opPrice']					= 'Cena';
-$GLOBALS['TL_LANG']['tl_iso_orders']['opTaxClass']				= 'Klasa podatku';
-$GLOBALS['TL_LANG']['tl_iso_orders']['opAddTax']				= 'Dodać poaatek?';
-
 
 /**
  * Buttons
@@ -71,10 +61,7 @@ $GLOBALS['TL_LANG']['tl_iso_orders']['edit']				= array('Edytuj zamówienie', 'E
 $GLOBALS['TL_LANG']['tl_iso_orders']['copy']				= array('Kopiuj zamówienie', 'Kopiuj zamówienie ID %s');
 $GLOBALS['TL_LANG']['tl_iso_orders']['delete']				= array('Usuń zamówienie', 'Usuń zamówienie ID %s');
 $GLOBALS['TL_LANG']['tl_iso_orders']['show']				= array('Szczegóły zamówienia', 'Pokaż szczegóły zamówienia ID %s');
-$GLOBALS['TL_LANG']['tl_iso_orders']['edit_order']			= array('Edytuj zamówienie', 'Edytuj pozycje zamówienia, dodaj lub usuń produkty.');
-$GLOBALS['TL_LANG']['tl_iso_orders']['edit_order_items']	= array('Edytuj pozycje zamówienia', 'Edytuj pozycje zamówienia ID %s');
 $GLOBALS['TL_LANG']['tl_iso_orders']['print_order']			= array('Drukuj zamówienie', 'Drukuj fakturę dla tego zamówienia');
-$GLOBALS['TL_LANG']['tl_iso_orders']['authorize_process_payment'] = array('Authorizet.net Point-of-sale Terminal', 'Przperowadź transakcję używając terminalu Authorize.net point-of-sale');
 $GLOBALS['TL_LANG']['tl_iso_orders']['tools']				= array('Narzędzia', 'Więcej narzędzi do zarządzania zamówieniami.');
 $GLOBALS['TL_LANG']['tl_iso_orders']['export_emails']		= array('Eksportuj e-maile zamówień', 'Eksportuj wszystkie adresy e-mail klientów, którzy złożyli zamówienia.');
 $GLOBALS['TL_LANG']['tl_iso_orders']['print_invoices']		= array('Drukuj faktury', 'Drukuj jedną lub więcej faktur w jednym dokumencie o wybranym statusie zamówienia.');

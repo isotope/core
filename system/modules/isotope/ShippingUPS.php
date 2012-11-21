@@ -748,8 +748,8 @@ class ShippingUPS extends IsotopeShipping
 	protected function getRootNodeName() {
 		return NODE_NAME_ROOT_NODE;
 	} // end function getRootNodeName()
-	
-	
+
+
 	/**
 	 * Get the checkout surcharge for this shipping method
 	 */

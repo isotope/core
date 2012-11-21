@@ -69,10 +69,15 @@ class ModuleIsotopeOrderHistory extends ModuleIsotope
 
 		$this->iso_config_ids = deserialize($this->iso_config_ids);
 
-		if (FE_USER_LOGGED_IN !== true || !is_array($this->iso_config_ids) || !count($this->iso_config_ids))
+		if (FE_USER_LOGGED_IN !== true || !is_array($this->iso_config_ids) || !count($this->iso_config_ids)) // Can't use empty() because its an object property (using __get)
 		{
 			return '';
 		}
+
+		// Do not index or cache the page
+		global $objPage;
+		$objPage->noSearch = 1;
+		$objPage->cache = 0;
 
 		$this->import('FrontendUser', 'User');
 		return parent::generate();
@@ -85,7 +90,7 @@ class ModuleIsotopeOrderHistory extends ModuleIsotope
 	 */
 	protected function compile()
 	{
-		$objOrders = $this->Database->execute("SELECT *, (SELECT COUNT(*) FROM tl_iso_order_items WHERE pid=tl_iso_orders.id) AS items FROM tl_iso_orders WHERE status!='' AND pid=".$this->User->id." AND config_id IN (" . implode(',', $this->iso_config_ids) . ") ORDER BY date DESC");
+		$objOrders = $this->Database->execute("SELECT *, (SELECT COUNT(*) FROM tl_iso_order_items WHERE pid=tl_iso_orders.id) AS items, (SELECT name FROM tl_iso_orderstatus WHERE id=tl_iso_orders.status) AS statusLabel FROM tl_iso_orders WHERE status>0 AND pid=".$this->User->id." AND config_id IN (" . implode(',', $this->iso_config_ids) . ") ORDER BY date DESC");
 
 		// No orders found, just display an "empty" message
 		if (!$objOrders->numRows)
@@ -114,7 +119,7 @@ class ModuleIsotopeOrderHistory extends ModuleIsotope
 				'datime'		=> $this->parseDate($GLOBALS['TL_CONFIG']['datimeFormat'], $objOrders->date),
 				'items'			=> $objOrders->items,
 				'grandTotal'	=> $this->Isotope->formatPriceWithCurrency($objOrders->grandTotal),
-				'status'		=> $GLOBALS['TL_LANG']['ORDER'][$objOrders->status],
+				'status'		=> $objOrders->statusLabel,
 				'link'			=> ($this->jumpTo ? (IsotopeFrontend::addQueryStringToUrl('uid=' . $objOrders->uniqid, $this->jumpTo)) : ''),
 			);
 		}

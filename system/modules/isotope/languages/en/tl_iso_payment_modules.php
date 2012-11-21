@@ -41,13 +41,13 @@ $GLOBALS['TL_LANG']['tl_iso_payment_modules']['new_order_status']			= array('Sta
 $GLOBALS['TL_LANG']['tl_iso_payment_modules']['minimum_total']				= array('Minimum total', 'Enter a number greater zero to exclude this payment method for lower priced orders.');
 $GLOBALS['TL_LANG']['tl_iso_payment_modules']['maximum_total']				= array('Maximum total', 'Enter a number greater zero to exclude this payment method for higher priced orders.');
 $GLOBALS['TL_LANG']['tl_iso_payment_modules']['countries']					= array('Available countries', 'Select the countries where this payment method may be used (customer\'s billing address).');
-$GLOBALS['TL_LANG']['tl_iso_payment_modules']['shipping_modules']			= array('Shipping methods', 'You can restrict this payment method to certain shipping methods (eg. Cash only when picking up).');
+$GLOBALS['TL_LANG']['tl_iso_payment_modules']['shipping_modules']			= array('Shipping methods', 'You can restrict this payment method to certain shipping methods (e.g. Cash only when picking up).');
 $GLOBALS['TL_LANG']['tl_iso_payment_modules']['product_types']				= array('Product types', 'You can restrict this payment method to certain product types. If the cart contains a product type you have not selected, the payment module is not available.');
-$GLOBALS['TL_LANG']['tl_iso_payment_modules']['trans_type']					= array('Transaction type', 'Select if you want to instantly capture the money or authorize (and hold) for a later transaction (eg. when shipping).');
+$GLOBALS['TL_LANG']['tl_iso_payment_modules']['trans_type']					= array('Transaction type', 'Select if you want to instantly capture the money or authorize (and hold) for a later transaction (e.g. when shipping).');
 $GLOBALS['TL_LANG']['tl_iso_payment_modules']['paypal_account']				= array('PayPal Account', 'Enter your paypal account (email address).');
 $GLOBALS['TL_LANG']['tl_iso_payment_modules']['payflowpro_user']			= array('Paypal Payflow Pro username', '');
 $GLOBALS['TL_LANG']['tl_iso_payment_modules']['payflowpro_vendor']			= array('Paypal Payflow Pro vendor', 'An alphanumeric string of about 10 characters.');
-$GLOBALS['TL_LANG']['tl_iso_payment_modules']['payflowpro_partner']			= array('Paypal Payflow Pro partner', 'Case-sensitive!  Usual partner Ids are either "PayPal" or "PayPalUK".');
+$GLOBALS['TL_LANG']['tl_iso_payment_modules']['payflowpro_partner']			= array('Paypal Payflow Pro partner', 'Case-sensitive! Usual partner Ids are either "PayPal" or "PayPalUK".');
 $GLOBALS['TL_LANG']['tl_iso_payment_modules']['payflowpro_password']		= array('Paypal Payflow Pro api password', 'An alphanumeric string of about 11 characters');
 $GLOBALS['TL_LANG']['tl_iso_payment_modules']['payflowpro_transType']		= array('Paypal Payflow Pro transaction type', 'Please select a transaction type.');
 $GLOBALS['TL_LANG']['tl_iso_payment_modules']['postfinance_pspid']			= array('Postfinance PSPID', 'The PSPID is your unique identification for the Postfinance system.');
@@ -94,7 +94,7 @@ $GLOBALS['TL_LANG']['tl_payment_module']['payflowpro_transTypes']['Authorization
 /**
  * Legends
  */
-$GLOBALS['TL_LANG']['tl_iso_payment_modules']['type_legend']		= 'Name & Type';
+$GLOBALS['TL_LANG']['tl_iso_payment_modules']['type_legend']		= 'Name &amp; Type';
 $GLOBALS['TL_LANG']['tl_iso_payment_modules']['note_legend']		= 'Additional Notes';
 $GLOBALS['TL_LANG']['tl_iso_payment_modules']['config_legend']		= 'General Configuration';
 $GLOBALS['TL_LANG']['tl_iso_payment_modules']['gateway_legend']		= 'Payment Gateway Configuration';

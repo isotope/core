@@ -170,15 +170,6 @@ $GLOBALS['TL_LANG']['MSC']['iso_sku_header'] = 'SKU';
 $GLOBALS['TL_LANG']['MSC']['iso_product_name_header'] = 'Nazwa produktu';
 $GLOBALS['TL_LANG']['MSC']['iso_card_name_title'] = 'Posiadacz karty kredytowej';
 
-
-// Order status options
-$GLOBALS['TL_LANG']['ORDER']['pending']		= 'Oczekujące';
-$GLOBALS['TL_LANG']['ORDER']['processing']	= 'W trakcie realizacji';
-$GLOBALS['TL_LANG']['ORDER']['complete']	= 'Zrealizowane';
-$GLOBALS['TL_LANG']['ORDER']['on_hold']		= 'Wstrzymane';
-$GLOBALS['TL_LANG']['ORDER']['cancelled']	= 'Anulowane';
-
-
 $GLOBALS['TL_LANG']['MSC']['low_to_high'] = 'rosnąco';
 $GLOBALS['TL_LANG']['MSC']['high_to_low'] = 'malejąco';
 $GLOBALS['TL_LANG']['MSC']['a_to_z'] = 'A do Z';

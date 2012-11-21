@@ -30,6 +30,12 @@
 
 
 /**
+ * Include the callback provider
+ */
+require_once(TL_ROOT . '/system/modules/isotope/providers/ProductCallbacks.php');
+
+
+/**
  * Table tl_iso_products
  */
 $GLOBALS['TL_DCA']['tl_iso_products'] = array
@@ -46,19 +52,19 @@ $GLOBALS['TL_DCA']['tl_iso_products'] = array
 		'ctable'					=> array('tl_iso_downloads', 'tl_iso_product_categories', 'tl_iso_prices'),
 		'onload_callback' => array
 		(
-			array('tl_iso_products', 'applyAdvancedFilters'),
-			array('tl_iso_products', 'checkPermission'),
-			array('tl_iso_products', 'addBreadcrumb'),
-			array('tl_iso_products', 'buildPaletteString'),
+			array('ProductCallbacks', 'applyAdvancedFilters'),
+			array('ProductCallbacks', 'checkPermission'),
+			array('ProductCallbacks', 'buildPaletteString'),
+			array('ProductCallbacks', 'loadDefaultProductType')
+		),
+		'oncopy_callback' => array
+		(
+			array('ProductCallbacks', 'updateCategorySorting'),
 		),
 		'onsubmit_callback' => array
 		(
 			array('IsotopeBackend', 'truncateProductCache'),
-			array('tl_iso_products', 'storeDateAdded')
-		),
-		'oncopy_callback' => array
-		(
-			array('tl_iso_products', 'updateCategorySorting'),
+			array('ProductCallbacks', 'storeDateAdded')
 		),
 	),
 
@@ -72,14 +78,14 @@ $GLOBALS['TL_DCA']['tl_iso_products'] = array
 			'flag'					=> 1,
 			'panelLayout'			=> 'filter;sort,search',
 			'icon'					=> 'system/modules/isotope/html/store-open.png',
-			'paste_button_callback'	=> array('tl_iso_products', 'pasteProduct'),
+			'paste_button_callback'	=> array('ProductCallbacks', 'pasteProduct'),
 			'rootPaste'				=> true,
 		),
 		'label' => array
 		(
 			'fields'				=> array('name'),
 			'format'				=> '%s',
-			'label_callback'		=> array('tl_iso_products', 'getRowLabel'),
+			'label_callback'		=> array('ProductCallbacks', 'getRowLabel'),
 		),
 		'global_operations' => array
 		(
@@ -109,7 +115,7 @@ $GLOBALS['TL_DCA']['tl_iso_products'] = array
 				'href'				=> 'filter[]=noimages',
 				'class'				=> 'header_iso_filter_noimages isotope-filter',
 				'attributes'		=> 'onclick="Backend.getScrollOffset();"',
-				'button_callback'	=> array('tl_iso_products', 'filterButton'),
+				'button_callback'	=> array('ProductCallbacks', 'filterButton'),
 			),
 			'filter_nocategory' => array
 			(
@@ -117,7 +123,7 @@ $GLOBALS['TL_DCA']['tl_iso_products'] = array
 				'href'				=> 'filter[]=nocategory',
 				'class'				=> 'header_iso_filter_nocategory isotope-filter',
 				'attributes'		=> 'onclick="Backend.getScrollOffset();"',
-				'button_callback'	=> array('tl_iso_products', 'filterButton'),
+				'button_callback'	=> array('ProductCallbacks', 'filterButton'),
 			),
 			'filter_new_today' => array
 			(
@@ -125,7 +131,7 @@ $GLOBALS['TL_DCA']['tl_iso_products'] = array
 				'href'				=> 'filter[]=new_today',
 				'class'				=> 'header_iso_filter_new_today isotope-filter',
 				'attributes'		=> 'onclick="Backend.getScrollOffset();"',
-				'button_callback'	=> array('tl_iso_products', 'filterButton'),
+				'button_callback'	=> array('ProductCallbacks', 'filterButton'),
 			),
 			'filter_new_week' => array
 			(
@@ -133,7 +139,7 @@ $GLOBALS['TL_DCA']['tl_iso_products'] = array
 				'href'				=> 'filter[]=new_week',
 				'class'				=> 'header_iso_filter_new_week isotope-filter',
 				'attributes'		=> 'onclick="Backend.getScrollOffset();"',
-				'button_callback'	=> array('tl_iso_products', 'filterButton'),
+				'button_callback'	=> array('ProductCallbacks', 'filterButton'),
 			),
 			'filter_new_month' => array
 			(
@@ -141,7 +147,7 @@ $GLOBALS['TL_DCA']['tl_iso_products'] = array
 				'href'				=> 'filter[]=new_month',
 				'class'				=> 'header_iso_filter_new_month isotope-filter',
 				'attributes'		=> 'onclick="Backend.getScrollOffset();"',
-				'button_callback'	=> array('tl_iso_products', 'filterButton'),
+				'button_callback'	=> array('ProductCallbacks', 'filterButton'),
 			),
 			'filter_remove' => array
 			(
@@ -149,7 +155,7 @@ $GLOBALS['TL_DCA']['tl_iso_products'] = array
 				'href'				=> 'filter[]=test',
 				'class'				=> 'header_iso_filter_remove isotope-filter',
 				'attributes'		=> ('onclick="Backend.getScrollOffset();"' . (is_array($this->Input->get('filter')) ? '' : ' style="display:none"')),
-				'button_callback'	=> array('tl_iso_products', 'filterRemoveButton'),
+				'button_callback'	=> array('ProductCallbacks', 'filterRemoveButton'),
 			),
 			'tools' => array
 			(
@@ -170,7 +176,7 @@ $GLOBALS['TL_DCA']['tl_iso_products'] = array
 				'href'				=> 'gtg=all',
 				'class'				=> 'header_toggle isotope-tools',
 				'attributes'		=> 'onclick="Backend.getScrollOffset();"',
-				'button_callback'	=> array('tl_iso_products', 'toggleGroups')
+				'button_callback'	=> array('ProductCallbacks', 'toggleGroups')
 			),
 			'toggleVariants' => array
 			(
@@ -178,7 +184,7 @@ $GLOBALS['TL_DCA']['tl_iso_products'] = array
 				'href'				=> 'ptg=all',
 				'class'				=> 'header_toggle isotope-tools',
 				'attributes'		=> 'onclick="Backend.getScrollOffset();"',
-				'button_callback'	=> array('tl_iso_products', 'toggleVariants')
+				'button_callback'	=> array('ProductCallbacks', 'toggleVariants')
 			),
 			'groups' => array
 			(
@@ -186,6 +192,7 @@ $GLOBALS['TL_DCA']['tl_iso_products'] = array
 				'href'				=> 'table=tl_iso_groups',
 				'class'				=> 'header_iso_groups isotope-tools',
 				'attributes'		=> 'onclick="Backend.getScrollOffset();"',
+				'button_callback'	=> array('ProductCallbacks', 'groupsButton')
 			),
 			'import' => array
 			(
@@ -248,7 +255,7 @@ $GLOBALS['TL_DCA']['tl_iso_products'] = array
 				'label'				=> &$GLOBALS['TL_LANG']['tl_iso_products']['quick_edit'],
 				'href'				=> 'key=quick_edit',
 				'icon'				=> 'system/modules/isotope/html/table-select-cells.png',
-				'button_callback'	=> array('tl_iso_products', 'quickEditButton'),
+				'button_callback'	=> array('ProductCallbacks', 'quickEditButton'),
 				'attributes'		=> 'class="isotope-tools"',
 			),
 			'generate' => array
@@ -256,7 +263,7 @@ $GLOBALS['TL_DCA']['tl_iso_products'] = array
 				'label'				=> &$GLOBALS['TL_LANG']['tl_iso_products']['generate'],
 				'href'				=> 'key=generate',
 				'icon'				=> 'system/modules/isotope/html/table-insert-row.png',
-				'button_callback'	=> array('tl_iso_products', 'generateButton'),
+				'button_callback'	=> array('ProductCallbacks', 'generateButton'),
 				'attributes'		=> 'class="isotope-tools"',
 			),
 			'related' => array
@@ -264,7 +271,7 @@ $GLOBALS['TL_DCA']['tl_iso_products'] = array
 				'label'				=> &$GLOBALS['TL_LANG']['tl_iso_products']['related'],
 				'href'				=> 'table=tl_iso_related_products',
 				'icon'				=> 'system/modules/isotope/html/sitemap.png',
-				'button_callback'	=> array('tl_iso_products', 'relatedButton'),
+				'button_callback'	=> array('ProductCallbacks', 'relatedButton'),
 				'attributes'		=> 'class="isotope-tools"',
 			),
 			'downloads' => array
@@ -272,7 +279,7 @@ $GLOBALS['TL_DCA']['tl_iso_products'] = array
 				'label'				=> &$GLOBALS['TL_LANG']['tl_iso_products']['downloads'],
 				'href'				=> 'table=tl_iso_downloads',
 				'icon'				=> 'system/modules/isotope/html/paper-clip.png',
-				'button_callback'	=> array('tl_iso_products', 'downloadsButton'),
+				'button_callback'	=> array('ProductCallbacks', 'downloadsButton'),
 				'attributes'		=> 'class="isotope-tools"',
 			),
 			'prices' => array
@@ -280,7 +287,7 @@ $GLOBALS['TL_DCA']['tl_iso_products'] = array
 				'label'				=> &$GLOBALS['TL_LANG']['tl_iso_products']['prices'],
 				'href'				=> 'table=tl_iso_prices',
 				'icon'				=> 'system/modules/isotope/html/price-tag.png',
-				'button_callback'	=> array('tl_iso_products', 'pricesButton'),
+				'button_callback'	=> array('ProductCallbacks', 'pricesButton'),
 				'attributes'		=> 'class="isotope-tools"',
 			),
 		),
@@ -289,8 +296,14 @@ $GLOBALS['TL_DCA']['tl_iso_products'] = array
 	// Palettes
 	'palettes' => array
 	(
-		'__selector__'				=> array('type', 'pid'),
+		'__selector__'				=> array('type', 'pid', 'protected'),
 		'default'					=> '{general_legend},type',
+	),
+
+	// Subpalettes
+	'subpalettes' => array
+	(
+		'protected'					=> 'groups',
 	),
 
 	// Fields
@@ -305,20 +318,23 @@ $GLOBALS['TL_DCA']['tl_iso_products'] = array
 		(
 			'label'					=> &$GLOBALS['TL_LANG']['MSC']['dateAdded'],
 			'eval'					=> array('rgxp'=>'datim'),
+			'attributes'			=> array('fe_sorting'=>true),
 		),
 		'type' => array
 		(
 			'label'					=> &$GLOBALS['TL_LANG']['tl_iso_products']['type'],
+			'exclude'               => true,
 			'filter'				=> true,
 			'inputType'				=> 'select',
-			'options_callback'		=> array('tl_iso_products', 'getProductTypes'),
+			'options_callback'		=> array('ProductCallbacks', 'getProductTypes'),
 			'foreignKey'			=> (strlen($this->Input->get('table')) ? 'tl_iso_producttypes.name' : null),
-			'eval'					=> array('mandatory'=>true, 'submitOnChange'=>true, 'tl_class'=>'clr'),
+			'eval'					=> array('mandatory'=>true, 'submitOnChange'=>true, 'includeBlankOption'=>true, 'tl_class'=>'clr'),
 			'attributes'			=> array('legend'=>'general_legend', 'fixed'=>true, 'inherit'=>true),
 		),
 		'pages' => array
 		(
 			'label'					=> &$GLOBALS['TL_LANG']['tl_iso_products']['pages'],
+			'exclude'               => true,
 			'filter'				=> true,
 			'inputType'				=> 'pageTree',
 			'foreignKey'			=> 'tl_page.title',
@@ -326,22 +342,24 @@ $GLOBALS['TL_DCA']['tl_iso_products'] = array
 			'attributes'			=> array('legend'=>'general_legend', 'fixed'=>true, 'inherit'=>true),
 			'load_callback'			=> array
 			(
-				array('tl_iso_products', 'loadProductCategories'),
+				array('ProductCallbacks', 'loadProductCategories'),
 			),
 			'save_callback'			=> array
 			(
-				array('tl_iso_products', 'saveProductCategories'),
+				array('ProductCallbacks', 'saveProductCategories'),
 			),
 		),
 		'inherit' => array
 		(
 			'label'					=> &$GLOBALS['TL_LANG']['tl_iso_products']['inherit'],
+			'exclude'               => true,
 			'inputType'				=> 'inheritCheckbox',
 			'eval'					=> array('multiple'=>true, 'doNotShow'=>true),
 		),
 		'alias' => array
 		(
 			'label'					=> &$GLOBALS['TL_LANG']['tl_iso_products']['alias'],
+			'exclude'               => true,
 			'search'				=> true,
 			'sorting'				=> true,
 			'inputType'				=> 'text',
@@ -349,12 +367,13 @@ $GLOBALS['TL_DCA']['tl_iso_products'] = array
 			'attributes'			=> array('legend'=>'general_legend', 'fixed'=>true, 'inherit'=>true),
 			'save_callback' => array
 			(
-				array('tl_iso_products', 'generateAlias'),
+				array('ProductCallbacks', 'generateAlias'),
 			),
 		),
 		'sku' => array
 		(
 			'label'					=> &$GLOBALS['TL_LANG']['tl_iso_products']['sku'],
+			'exclude'               => true,
 			'search'				=> true,
 			'sorting'				=> true,
 			'inputType'				=> 'text',
@@ -364,6 +383,7 @@ $GLOBALS['TL_DCA']['tl_iso_products'] = array
 		'name' => array
 		(
 			'label'					=> &$GLOBALS['TL_LANG']['tl_iso_products']['name'],
+			'exclude'               => true,
 			'search'				=> true,
 			'sorting'				=> true,
 			'inputType'				=> 'text',
@@ -373,6 +393,7 @@ $GLOBALS['TL_DCA']['tl_iso_products'] = array
 		'teaser' => array
 		(
 			'label'					=> &$GLOBALS['TL_LANG']['tl_iso_products']['teaser'],
+			'exclude'               => true,
 			'search'				=> true,
 			'inputType'				=> 'textarea',
 			'eval'					=> array('style'=>'height:80px', 'tl_class'=>'clr'),
@@ -381,6 +402,7 @@ $GLOBALS['TL_DCA']['tl_iso_products'] = array
 		'description' => array
 		(
 			'label'					=> &$GLOBALS['TL_LANG']['tl_iso_products']['description'],
+			'exclude'               => true,
 			'search'				=> true,
 			'inputType'				=> 'textarea',
 			'eval'					=> array('mandatory'=>true, 'rte'=>'tinyMCE', 'tl_class'=>'clr'),
@@ -389,6 +411,7 @@ $GLOBALS['TL_DCA']['tl_iso_products'] = array
 		'description_meta' => array
 		(
 			'label'					=> &$GLOBALS['TL_LANG']['tl_iso_products']['description_meta'],
+			'exclude'               => true,
 			'search'				=> true,
 			'inputType'				=> 'textarea',
 			'eval'					=> array('style'=>'height:60px'),
@@ -397,6 +420,7 @@ $GLOBALS['TL_DCA']['tl_iso_products'] = array
 		'keywords_meta' => array
 		(
 			'label'					=> &$GLOBALS['TL_LANG']['tl_iso_products']['keywords_meta'],
+			'exclude'               => true,
 			'search'				=> true,
 			'inputType'				=> 'textarea',
 			'eval'					=> array('style'=>'height:40px'),
@@ -405,6 +429,7 @@ $GLOBALS['TL_DCA']['tl_iso_products'] = array
 		'price' => array
 		(
 			'label'					=> &$GLOBALS['TL_LANG']['tl_iso_products']['price'],
+			'exclude'               => true,
 			'inputType'				=> 'text',
 			'eval'					=> array('mandatory'=>true, 'maxlength'=>13, 'rgxp'=>'price', 'tl_class'=>'w50'),
 			'attributes'			=> array('legend'=>'pricing_legend', 'fe_sorting'=>true, 'dynamic'=>true),
@@ -440,14 +465,25 @@ $GLOBALS['TL_DCA']['tl_iso_products'] = array
 		'tax_class' => array
 		(
 			'label'					=> &$GLOBALS['TL_LANG']['tl_iso_products']['tax_class'],
+			'exclude'               => true,
 			'inputType'				=> 'select',
 			'foreignKey'			=> 'tl_iso_tax_class.name',
 			'attributes'			=> array('legend'=>'pricing_legend', 'tl_class'=>'w50'),
 			'eval'					=> array('includeBlankOption'=>true, 'dynamic'=>true),
 		),
+		'baseprice' => array
+		(
+			'label'					=> &$GLOBALS['TL_LANG']['tl_iso_products']['baseprice'],
+			'exclude'               => true,
+			'inputType'				=> 'timePeriod',
+			'foreignKey'			=> 'tl_iso_baseprice.name',
+			'attributes'			=> array('legend'=>'pricing_legend', 'tl_class'=>'w50'),
+			'eval'					=> array('includeBlankOption'=>true),
+		),
 		'shipping_weight' => array
 		(
 			'label'					=> &$GLOBALS['TL_LANG']['tl_iso_products']['shipping_weight'],
+			'exclude'               => true,
 			'inputType'				=> 'timePeriod',
 			'default'				=> array('', 'kg'),
 			'options'				=> array('mg', 'g', 'kg', 't', 'ct', 'oz', 'lb', 'st', 'grain'),
@@ -458,6 +494,7 @@ $GLOBALS['TL_DCA']['tl_iso_products'] = array
 		'shipping_exempt' => array
 		(
 			'label'					=> &$GLOBALS['TL_LANG']['tl_iso_products']['shipping_exempt'],
+			'exclude'               => true,
 			'inputType'				=> 'checkbox',
 			'eval'					=> array('tl_class'=>'w50'),
 			'attributes'			=> array('legend'=>'shipping_legend'),
@@ -465,14 +502,48 @@ $GLOBALS['TL_DCA']['tl_iso_products'] = array
 		'images' => array
 		(
 			'label'					=> &$GLOBALS['TL_LANG']['tl_iso_products']['images'],
+			'exclude'               => true,
 			'inputType'				=> 'mediaManager',
 			'explanation'			=> 'mediaManager',
 			'eval'					=> array('extensions'=>'jpeg,jpg,png,gif', 'helpwizard'=>true, 'tl_class'=>'clr'),
 			'attributes'			=> array('legend'=>'media_legend', 'fixed'=>true, 'multilingual'=>true, 'dynamic'=>true),
 		),
+		'protected' => array
+		(
+			'label'					=> &$GLOBALS['TL_LANG']['tl_iso_products']['protected'],
+			'exclude'               => true,
+			'inputType'				=> 'checkbox',
+			'eval'					=> array('submitOnChange'=>true, 'tl_class'=>'clr'),
+			'attributes'			=> array('legend'=>'expert_legend'),
+		),
+		'groups' => array
+		(
+			'label'					=> &$GLOBALS['TL_LANG']['tl_iso_products']['groups'],
+			'exclude'               => true,
+			'inputType'				=> 'checkbox',
+			'foreignKey'			=> 'tl_member_group.name',
+			'eval'					=> array('mandatory'=>true, 'multiple'=>true),
+		),
+		'guests' => array
+		(
+			'label'					=> &$GLOBALS['TL_LANG']['tl_iso_products']['guests'],
+			'exclude'               => true,
+			'inputType'				=> 'checkbox',
+			'eval'					=> array('tl_class'=>'w50'),
+			'attributes'			=> array('legend'=>'expert_legend'),
+		),
+		'cssID' => array
+		(
+			'label'					=> &$GLOBALS['TL_LANG']['tl_iso_products']['cssID'],
+			'exclude'               => true,
+			'inputType'				=> 'text',
+			'eval'					=> array('multiple'=>true, 'size'=>2, 'tl_class'=>'w50'),
+			'attributes'			=> array('legend'=>'expert_legend'),
+		),
 		'published' => array
 		(
 			'label'					=> &$GLOBALS['TL_LANG']['tl_iso_products']['published'],
+			'exclude'               => true,
 			'filter'				=> true,
 			'inputType'				=> 'checkbox',
 			'eval'					=> array('doNotCopy'=>true, 'tl_class'=>'clr'),
@@ -485,6 +556,7 @@ $GLOBALS['TL_DCA']['tl_iso_products'] = array
 		'start' => array
 		(
 			'label'					=> &$GLOBALS['TL_LANG']['tl_iso_products']['start'],
+			'exclude'               => true,
 			'inputType'				=> 'text',
 			'eval'					=> array('rgxp'=>'date', 'datepicker'=>(method_exists($this,'getDatePickerString') ? $this->getDatePickerString() : true), 'tl_class'=>'w50 wizard'),
 			'attributes'			=> array('legend'=>'publish_legend', 'fixed'=>true, 'variant_fixed'=>true),
@@ -492,6 +564,7 @@ $GLOBALS['TL_DCA']['tl_iso_products'] = array
 		'stop' => array
 		(
 			'label'					=> &$GLOBALS['TL_LANG']['tl_iso_products']['stop'],
+			'exclude'               => true,
 			'inputType'				=> 'text',
 			'eval'					=> array('rgxp'=>'date', 'datepicker'=>(method_exists($this,'getDatePickerString') ? $this->getDatePickerString() : true), 'tl_class'=>'w50 wizard'),
 			'attributes'			=> array('legend'=>'publish_legend', 'fixed'=>true, 'variant_fixed'=>true),
@@ -519,12 +592,6 @@ $GLOBALS['TL_DCA']['tl_iso_products'] = array
 class tl_iso_products extends Backend
 {
 
-	/**
-	 * paste_button_callback Provider
-	 * @var mixed
-	 */
-	protected $PasteProductButton;
-
 
 	/**
 	 * Import a back end user and Isotope objects
@@ -535,537 +602,6 @@ class tl_iso_products extends Backend
 
 		$this->import('BackendUser', 'User');
 		$this->import('Isotope');
-	}
-
-
-	/**
-	 * Store the date when the product has been added
-	 * @param DataContainer
-	 * @return void
-	 */
-	public function storeDateAdded(DataContainer $dc)
-	{
-		// Return if there is no active record (override all)
-		if (!$dc->activeRecord || $dc->activeRecord->dateAdded > 0)
-		{
-			return;
-		}
-
-		$this->Database->prepare("UPDATE tl_iso_products SET dateAdded=? WHERE id=?")
-					   ->execute(time(), $dc->id);
-	}
-
-
-	/**
-	 * Show/hide the downloads button
-	 * @param array
-	 * @param string
-	 * @param string
-	 * @param string
-	 * @param string
-	 * @param string
-	 * @return string
-	 */
-	public function downloadsButton($row, $href, $label, $title, $icon, $attributes)
-	{
-		$objType = $this->Database->execute("SELECT * FROM tl_iso_producttypes WHERE id={$row['type']}");
-
-		if (!$objType->downloads)
-		{
-			return '';
-		}
-
-		$objDownloads = $this->Database->prepare("SELECT COUNT(*) AS total FROM tl_iso_downloads WHERE pid=?")->execute($row['id']);
-		return '<a href="'.$this->addToUrl($href.'&amp;id='.$row['id']).'" title="'.specialchars($title).'"'.$attributes.'>'.$this->generateImage($icon, $label).' '.$objDownloads->total.'</a> ';
-	}
-
-
-	/**
-	 * Show/hide the prices button
-	 * @param array
-	 * @param string
-	 * @param string
-	 * @param string
-	 * @param string
-	 * @param string
-	 * @return string
-	 */
-	public function pricesButton($row, $href, $label, $title, $icon, $attributes)
-	{
-		$objType = $this->Database->execute("SELECT * FROM tl_iso_producttypes WHERE id={$row['type']}");
-
-		if (!$objType->prices)
-		{
-			return '';
-		}
-
-		$arrAttributes = deserialize(($row['pid'] > 0 ? $objType->variant_attributes : $objType->attributes), true);
-
-		if (!$arrAttributes['price']['enabled'])
-		{
-			return '';
-		}
-
-		return '<a href="'.$this->addToUrl($href.'&amp;id='.$row['id']).'" title="'.specialchars($title).'"'.$attributes.'>'.$this->generateImage($icon, $label).'</a> ';
-	}
-
-
-	/**
-	 * Apply advanced filters to product list view
-	 * @return void
-	 */
-	public function applyAdvancedFilters()
-	{
-		$arrFilters = $this->Input->get('filter');
-
-		if ($this->Input->get('act') == '' && $this->Input->get('key') == '' && is_array($arrFilters))
-		{
-			$arrProducts = null;
-			$arrNames = array();
-
-			foreach ($arrFilters as $filter)
-			{
-				switch ($filter)
-				{
-					case 'noimages':
-						$objProducts = $this->Database->execute("SELECT id FROM tl_iso_products WHERE pid=0 AND language='' AND images IS NULL");
-						$arrProducts = is_array($arrProducts) ? array_intersect($arrProducts, $objProducts->fetchEach('id')) : $objProducts->fetchEach('id');
-						break;
-
-					case 'nocategory':
-						$objProducts = $this->Database->execute("SELECT id FROM tl_iso_products p WHERE pid=0 AND language='' AND (SELECT COUNT(*) FROM tl_iso_product_categories c WHERE c.pid=p.id)=0");
-						$arrProducts = is_array($arrProducts) ? array_intersect($arrProducts, $objProducts->fetchEach('id')) : $objProducts->fetchEach('id');
-						break;
-
-					case 'new_today':
-						$objProducts = $this->Database->execute("SELECT id FROM tl_iso_products p WHERE pid=0 AND language='' AND dateAdded>=".strtotime('-1 day'));
-						$arrProducts = is_array($arrProducts) ? array_intersect($arrProducts, $objProducts->fetchEach('id')) : $objProducts->fetchEach('id');
-						break;
-
-					case 'new_week':
-						$objProducts = $this->Database->execute("SELECT id FROM tl_iso_products p WHERE pid=0 AND language='' AND dateAdded>=".strtotime('-1 week'));
-						$arrProducts = is_array($arrProducts) ? array_intersect($arrProducts, $objProducts->fetchEach('id')) : $objProducts->fetchEach('id');
-						break;
-
-					case 'new_month':
-						$objProducts = $this->Database->execute("SELECT id FROM tl_iso_products p WHERE pid=0 AND language='' AND dateAdded>=".strtotime('-1 month'));
-						$arrProducts = is_array($arrProducts) ? array_intersect($arrProducts, $objProducts->fetchEach('id')) : $objProducts->fetchEach('id');
-						break;
-
-					default:
-						// HOOK: add custom logic
-						if (isset($GLOBALS['ISO_HOOKS']['applyAdvancedFilters']) && is_array($GLOBALS['ISO_HOOKS']['applyAdvancedFilters']))
-						{
-							foreach ($GLOBALS['ISO_HOOKS']['applyAdvancedFilters'] as $callback)
-							{
-								$objCallback = (in_array('getInstance', get_class_methods($callback[0]))) ? call_user_func(array($callback[0], 'getInstance')) : new $callback[0]();
-								$arrReturn = $objCallback->$callback[1]($filter);
-
-								if (is_array($arrReturn))
-								{
-									$arrProducts = is_array($arrProducts) ? array_intersect($arrProducts, $arrReturn) : $arrReturn;
-									break;
-								}
-							}
-						}
-
-						$this->log('Advanced product filter "'.$filter.'" not found.', __METHOD__, TL_ERROR);
-						break;
-				}
-
-				$arrNames[] = $GLOBALS['TL_LANG']['tl_iso_products']['filter_'.$filter][0];
-			}
-
-			$GLOBALS['TL_DCA']['tl_iso_products']['list']['sorting']['root'] = $arrProducts;
-			$GLOBALS['TL_DCA']['tl_iso_products']['list']['sorting']['breadcrumb'] .= '<p class="tl_info">' . $GLOBALS['TL_LANG']['tl_iso_products']['filter'][0] . ': ' . implode(', ', $arrNames) . '</p><br>';
-		}
-	}
-
-
-	/**
-	 * Only list product types a user is allowed to see
-	 * @return void
-	 */
-	public function checkPermission()
-	{
-		if ($this->Input->get('act') != '' && ($this->Input->get('mode') == '' || is_numeric($this->Input->get('mode'))))
-		{
-			$GLOBALS['TL_DCA']['tl_iso_products']['config']['closed'] = false;
-		}
-
-		// Hide "add variant" button if no products with variants enabled exist
-		if ($this->Database->query("SELECT COUNT(*) AS total FROM tl_iso_products p LEFT JOIN tl_iso_producttypes t ON p.type=t.id WHERE t.variants='1'")->total == 0)
-		{
-			unset($GLOBALS['TL_DCA']['tl_iso_products']['list']['global_operations']['new_variant']);
-		}
-
-		$session = $this->Session->getData();
-		$this->import('BackendUser', 'User');
-
-		if ($this->User->isAdmin)
-		{
-			return;
-		}
-
-		if (!is_array($this->User->iso_product_types) || empty($this->User->iso_product_types))
-		{
-			$GLOBALS['TL_DCA']['tl_iso_products']['config']['closed'] = true;
-			unset($GLOBALS['TL_DCA']['tl_iso_products']['list']['global_operations']['new_product']);
-			unset($GLOBALS['TL_DCA']['tl_iso_products']['list']['global_operations']['new_variant']);
-			$GLOBALS['TL_DCA']['tl_iso_products']['list']['sorting']['root'] = array();
-		}
-		else
-		{
-			$objProducts = $this->Database->execute("SELECT id FROM tl_iso_products WHERE type IN ('','" . implode("','", $this->User->iso_product_types) . "')");
-
-			$arrProducts = $objProducts->numRows ? $objProducts->fetchEach('id') : array();
-
-			// Maybe another function has already set allowed product IDs
-			if (is_array($GLOBALS['TL_DCA']['tl_iso_products']['list']['sorting']['root']))
-			{
-				$arrProducts = array_intersect($GLOBALS['TL_DCA']['tl_iso_products']['list']['sorting']['root'], $arrProducts);
-			}
-
-			$GLOBALS['TL_DCA']['tl_iso_products']['list']['sorting']['root'] = $arrProducts;
-		}
-
-		// Set allowed product IDs (edit multiple)
-		if (is_array($session['CURRENT']['IDS']))
-		{
-			$session['CURRENT']['IDS'] = array_intersect($session['CURRENT']['IDS'], $GLOBALS['TL_DCA']['tl_iso_products']['list']['sorting']['root']);
-		}
-
-		// Set allowed clipboard IDs
-		if (is_array($session['CLIPBOARD']['tl_iso_products']['id']))
-		{
-			$session['CLIPBOARD']['tl_iso_products']['id'] = array_intersect($session['CLIPBOARD']['tl_iso_products']['id'], $GLOBALS['TL_DCA']['tl_iso_products']['list']['sorting']['root'], $this->Database->query("SELECT id FROM tl_iso_products WHERE pid=0")->fetchEach('id'));
-
-			if (empty($session['CLIPBOARD']['tl_iso_products']['id']))
-			{
-				unset($session['CLIPBOARD']['tl_iso_products']);
-			}
-		}
-
-		// Overwrite session
-		$this->Session->setData($session);
-
-		if ($this->Input->get('id') > 0 && !in_array($this->Input->get('id'), $GLOBALS['TL_DCA']['tl_iso_products']['list']['sorting']['root']))
-		{
-			$this->log('Cannot access product ID '.$this->Input->get('id'), __METHOD__, TL_ACCESS);
-			$this->redirect('contao/main.php?act=error');
-		}
-	}
-
-
-	/**
-	 * Add the breadcrumb menu
-	 * @return void
-	 */
-	public function addBreadcrumb()
-	{
-		// Set a new node
-		if (isset($_GET['node']))
-		{
-			$this->Session->set('tl_page_node', $this->Input->get('node'));
-			$this->redirect(preg_replace('/&node=[^&]*/', '', $this->Environment->request));
-		}
-
-		$intNode = $this->Session->get('tl_page_node');
-
-		if ($intNode < 1)
-		{
-			return;
-		}
-
-		$arrIds = array();
-		$arrLinks = array();
-
-		// Generate breadcrumb trail
-		if ($intNode)
-		{
-			$this->loadDataContainer('tl_page');
-			$tl_page = new tl_page();
-			$intId = $intNode;
-
-			do
-			{
-				$objPage = $this->Database->prepare("SELECT * FROM tl_page WHERE id=?")
-								->limit(1)
-								->execute($intId);
-
-				if ($objPage->numRows < 1)
-				{
-					// Currently selected page does not exits
-					if ($intId == $intNode)
-					{
-						$this->Session->set('tl_page_node', 0);
-						return;
-					}
-
-					break;
-				}
-
-				$arrIds[] = $intId;
-
-				// No link for the active page
-				if ($objPage->id == $intNode)
-				{
-					$arrLinks[] = $tl_page->addIcon($objPage->row(), '', null, '', true) . ' ' . $objPage->title;
-				}
-				else
-				{
-					$arrLinks[] = $tl_page->addIcon($objPage->row(), '', null, '', true) . ' <a href="' . $this->addToUrl('node='.$objPage->id) . '">' . $objPage->title . '</a>';
-				}
-
-				// Do not show the mounted pages
-				if (!$this->User->isAdmin && in_array($objPage->id, $this->User->pagemounts))
-				{
-					break;
-				}
-
-				$intId = $objPage->pid;
-			}
-			while ($intId > 0 && $objPage->type != 'root');
-		}
-
-		// Check whether the node is mounted
-		if (!$this->User->isAdmin && !$this->User->hasAccess($arrIds, 'pagemounts'))
-		{
-			$this->Session->set('tl_page_node', 0);
-
-			$this->log('Page ID '.$intNode.' was not mounted', 'tl_page addBreadcrumb', TL_ERROR);
-			$this->redirect('contao/main.php?act=error');
-		}
-
-		// Limit tree
-		$arrNodes = array_merge(array($intNode), $this->getChildRecords($intNode, 'tl_page'));
-		$objProducts = $this->Database->execute("SELECT pid FROM tl_iso_product_categories WHERE page_id IN (" . implode(',', $arrNodes) . ")");
-
-		if ($objProducts->numRows)
-		{
-			$GLOBALS['TL_DCA']['tl_iso_products']['list']['sorting']['root'] = $objProducts->fetchEach('pid');
-		}
-		else
-		{
-			$berror = '
-
-<ul id="tl_breadcrumb">
-  <li>' . $GLOBALS['TL_LANG']['ERR']['breadcrumbEmpty'] . '</li>
-</ul>';
-		}
-
-		// Add root link
-		$arrLinks[] = '<img src="system/themes/' . $this->getTheme() . '/images/pagemounts.gif" width="18" height="18" alt=""> <a href="' . $this->addToUrl('node=0') . '">' . $GLOBALS['TL_LANG']['MSC']['filterAll'] . '</a>';
-		$arrLinks = array_reverse($arrLinks);
-
-		// Insert breadcrumb menu
-		$GLOBALS['TL_DCA']['tl_iso_products']['list']['sorting']['breadcrumb'] = '
-
-<ul id="tl_breadcrumb">
-  <li>' . implode(' &gt; </li><li>', $arrLinks) . '</li>
-</ul>'.$berror;
-	}
-
-
-	/**
-	 * Generate a product label and return it as HTML string
-	 * @param array
-	 * @param string
-	 * @return string
-	 */
-	public function getRowLabel($row, $label = '')
-	{
-		$arrImages = deserialize($row['images']);
-		$thumbnail = '&nbsp;';
-
-		if (is_array($arrImages) && count($arrImages))
-		{
-			foreach ($arrImages as $image)
-			{
-				$strImage = 'isotope/' . strtolower(substr($image['src'], 0, 1)) . '/' . $image['src'];
-
-				if (!is_file(TL_ROOT . '/' . $strImage))
-				{
-					continue;
-				}
-
-				$thumbnail = sprintf('<img src="%s" alt="%s" align="left">', $this->getImage($strImage, 34, 34, 'proportional'), $image['alt']);
-				break;
-			}
-		}
-
-		$objProductType = $this->Database->execute("SELECT * FROM tl_iso_producttypes WHERE id=".$row['type']);
-		$arrAttributes = deserialize($objProductType->attributes, true);
-
-		if ($row['pid'] > 0)
-		{
-			$strBuffer = '<div class="iso_product"><div class="thumbnail">'.$thumbnail.'</div><ul>';
-
-			foreach ($arrAttributes as $attribute => $arrConfig)
-			{
-				if ($arrConfig['enabled'] && $GLOBALS['TL_DCA']['tl_iso_products']['fields'][$attribute]['attributes']['variant_option'])
-				{
-					$strBuffer .= '<li><strong>' . $this->Isotope->formatLabel('tl_iso_products', $attribute) . ':</strong> ' . $this->Isotope->formatValue('tl_iso_products', $attribute, $row[$attribute]) . '</li>';
-				}
-			}
-
-			return $strBuffer . '</ul></div>';
-		}
-
-		return '<div class="iso_product"><div class="thumbnail">'.$thumbnail.'</div><p>' . $row['name'] . (($row['sku'] != '' && $arrAttributes['sku']['enabled']) ? '<span style="color:#b3b3b3; padding-left:3px;">['.$row['sku'].']</span>' : '') . '</p><div>' . ($row['pid']==0 ? '<em>' . $this->getCategoryList($row['id']) . '</em>' : '') . '</div></div> ';
-	}
-
-
-	/**
-	 * Returns all allowed product types as array
-	 * @param DataContainer
-	 * @return array
-	 */
-	public function getProductTypes(DataContainer $dc)
-	{
-		$this->import('BackendUser', 'User');
-		$arrTypes = $this->User->iso_product_types;
-
-		if (!is_array($arrTypes) || !count($arrTypes))
-		{
-			$arrTypes = array(0);
-		}
-
-		$arrProductTypes = array();
-		$objProductTypes = $this->Database->execute("SELECT id,name FROM tl_iso_producttypes" . ($this->User->isAdmin ? '' : (" WHERE id IN (".implode(',', $arrTypes).")")) . " ORDER BY name");
-
-		while ($objProductTypes->next())
-		{
-			$arrProductTypes[$objProductTypes->id] = $objProductTypes->name;
-		}
-
-		return $arrProductTypes;
-	}
-
-
-	/**
-	 * Produce a list of categories for the backend listing
-	 * @param integer
-	 * @return string
-	 */
-	protected function getCategoryList($intProduct)
-	{
-		$arrCategories = array();
-
-		foreach ($this->Database->execute("SELECT page_id FROM tl_iso_product_categories WHERE pid=$intProduct")->fetchEach('page_id') as $intPage)
-		{
-			$objPage = $this->getPageDetails($intPage);
-			$help = '';
-
-			if (count($objPage->trail))
-			{
-				$help = implode(' » ', $this->Database->execute("SELECT title FROM tl_page WHERE id IN (" . implode(',', $objPage->trail) . ") ORDER BY id=" . implode(' DESC, id=', $objPage->trail) . " DESC")->fetchEach('title'));
-			}
-
-			$arrCategories[] = '<a class="tl_tip" longdesc="' . $help . '" href="' . $this->Environment->script . '?do=iso_products&table=tl_iso_product_categories&id=' . $intPage . '">' . $objPage->title . '</a>';
-		}
-
-		if (!count($arrCategories))
-		{
-			return $GLOBALS['TL_LANG']['MSC']['noCategoriesAssociated'];
-		}
-
-		return $GLOBALS['TL_LANG']['tl_iso_products']['pages'][0] . ': ' . implode(', ', $arrCategories);
-	}
-
-
-	/**
-	 * Autogenerate a product alias if it has not been set yet
-	 * @param mixed
-	 * @param DataContainer
-	 * @return string
-	 * @throws Exception
-	 */
-	public function generateAlias($varValue, DataContainer $dc)
-	{
-		$autoAlias = false;
-
-		// Generate alias if there is none
-		if ($varValue == '')
-		{
-			$autoAlias = true;
-			$varValue = standardize($this->Input->post('name'));
-
-			if ($varValue == '')
-			{
-				$varValue = standardize($this->Input->post('sku'));
-			}
-
-			if ($varValue == '')
-			{
-				$varValue = strlen($dc->activeRecord->name) ? standardize($dc->activeRecord->name) : standardize($dc->activeRecord->sku);
-			}
-
-			if ($varValue == '')
-			{
-				$varValue = $dc->id;
-			}
-		}
-
-		$objAlias = $this->Database->prepare("SELECT id FROM tl_iso_products WHERE id=? OR alias=?")
-								   ->execute($dc->id, $varValue);
-
-		// Check whether the product alias exists
-		if ($objAlias->numRows > 1)
-		{
-			if (!$autoAlias)
-			{
-				throw new Exception(sprintf($GLOBALS['TL_LANG']['ERR']['aliasExists'], $varValue));
-			}
-
-			$varValue .= '.' . $dc->id;
-		}
-
-		return $varValue;
-	}
-
-
-	/**
-	 * Load page IDs from tl_iso_product_categories table
-	 * @param mixed
-	 * @param DataContainer
-	 * @return mixed
-	 */
-	public function loadProductCategories($varValue, DataContainer $dc)
-	{
-		return $this->Database->execute("SELECT page_id FROM tl_iso_product_categories WHERE pid={$dc->id}")->fetchEach('page_id');
-	}
-
-
-	/**
-	 * Save page ids to tl_iso_product_categories table. This allows to retrieve all products associated to a page.
-	 * @param mixed
-	 * @param DataContainer
-	 * @return mixed
-	 */
-	public function saveProductCategories($varValue, DataContainer $dc)
-	{
-		$arrIds = deserialize($varValue);
-
-		if (is_array($arrIds) && !empty($arrIds))
-		{
-			$time = time();
-			$this->Database->query("DELETE FROM tl_iso_product_categories WHERE pid={$dc->id} AND page_id NOT IN (" . implode(',', $arrIds) . ")");
-			$objPages = $this->Database->execute("SELECT page_id FROM tl_iso_product_categories WHERE pid={$dc->id}");
-			$arrIds = array_diff($arrIds, $objPages->fetchEach('page_id'));
-
-			foreach ($arrIds as $id)
-			{
-				$sorting = $this->Database->executeUncached("SELECT MAX(sorting) AS sorting FROM tl_iso_product_categories WHERE page_id=$id")->sorting + 128;
-				$this->Database->query("INSERT INTO tl_iso_product_categories (pid,tstamp,page_id,sorting) VALUES ({$dc->id}, $time, $id, $sorting)");
-			}
-		}
-		else
-		{
-			$this->Database->query("DELETE FROM tl_iso_product_categories WHERE pid={$dc->id}");
-		}
-
-		return $varValue;
 	}
 
 
@@ -1140,7 +676,7 @@ class tl_iso_products extends Backend
 
 					foreach ($options as $option)
 					{
-						if (!count($arrTemp))
+						if (empty($arrTemp))
 						{
 							$arrCombinations[][$name] = $option;
 							continue;
@@ -1388,7 +924,7 @@ $strBuffer .= '<th style="text-align:center"><img src="system/themes/default/ima
 			$strPath = $this->Input->post('source');
 			$arrFiles = scan(TL_ROOT . '/' . $strPath);
 
-			if (!count($arrFiles))
+			if (empty($arrFiles))
 			{
 				$_SESSION['TL_ERROR'][] = $GLOBALS['ISO_LANG']['MSC']['noFilesInFolder'];
 				$this->reload();
@@ -1422,9 +958,9 @@ $strBuffer .= '<th style="text-align:center"><img src="system/themes/default/ima
 				$arrPattern[] = $objProducts->alias ?  standardize($objProducts->alias) : null;
 				$arrPattern[] = $objProducts->sku ? $objProducts->sku : null;
 				$arrPattern[] = $objProducts->sku ? standardize($objProducts->sku) : null;
-				$arrPattern[] = count($arrImageNames) ? implode('|', $arrImageNames) : null;
+				$arrPattern[] = !empty($arrImageNames) ? implode('|', $arrImageNames) : null;
 
-				// HOOK: add custom import regex patterns
+				// !HOOK: add custom import regex patterns
 				if (isset($GLOBALS['ISO_HOOKS']['addAssetImportRegexp']) && is_array($GLOBALS['ISO_HOOKS']['addAssetImportRegexp']))
 				{
 					foreach ($GLOBALS['ISO_HOOKS']['addAssetImportRegexp'] as $callback)
@@ -1439,7 +975,7 @@ $strBuffer .= '<th style="text-align:center"><img src="system/themes/default/ima
 
 				$arrMatches = preg_grep($strPattern, $arrFiles);
 
-				if (count($arrMatches))
+				if (!empty($arrMatches))
 				{
 					$arrNewImages = array();
 
@@ -1448,7 +984,7 @@ $strBuffer .= '<th style="text-align:center"><img src="system/themes/default/ima
 						if (is_dir(TL_ROOT . '/' . $strPath . '/' . $file))
 						{
 							$arrSubfiles = scan(TL_ROOT . '/' . $strPath . '/' . $file);
-							if (count($arrSubfiles))
+							if (!empty($arrSubfiles))
 							{
 								foreach ($arrSubfiles as $subfile)
 								{
@@ -1475,7 +1011,7 @@ $strBuffer .= '<th style="text-align:center"><img src="system/themes/default/ima
 						}
 					}
 
-					if (count($arrNewImages))
+					if (!empty($arrNewImages))
 					{
 						foreach ($arrNewImages as $strFile)
 						{
@@ -1499,7 +1035,7 @@ $strBuffer .= '<th style="text-align:center"><img src="system/themes/default/ima
 				}
 			}
 
-			if (count($arrDelete))
+			if (!empty($arrDelete))
 			{
 				$arrDelete = array_unique($arrDelete);
 
@@ -1545,209 +1081,6 @@ $strBuffer .= '<th style="text-align:center"><img src="system/themes/default/ima
 
 
 	/**
-	 * Hide "related" button for variants
-	 * @param array
-	 * @param string
-	 * @param string
-	 * @param string
-	 * @param string
-	 * @param string
-	 * @return string
-	 */
-	public function relatedButton($row, $href, $label, $title, $icon, $attributes)
-	{
-		if ($row['pid'] > 0)
-		{
-			return '';
-		}
-
-		return '<a href="'.$this->addToUrl($href.'&amp;id='.$row['id']).'" title="'.specialchars($title).'"'.$attributes.'>'.$this->generateImage($icon, $label).'</a> ';
-	}
-
-
-	/**
-	 * Hide generate button for variants and product types without variant support
-	 * @param array
-	 * @param string
-	 * @param string
-	 * @param string
-	 * @param string
-	 * @param string
-	 * @return string
-	 */
-	public function generateButton($row, $href, $label, $title, $icon, $attributes)
-	{
-		if ($row['pid'] > 0)
-		{
-			return '';
-		}
-
-		$objType = $this->Database->prepare("SELECT * FROM tl_iso_producttypes WHERE id=?")
-								  ->limit(1)
-								  ->execute($row['type']);
-
-		if (!$objType->variants)
-		{
-			return '';
-		}
-
-		return '<a href="'.$this->addToUrl($href.'&amp;id='.$row['id']).'" title="'.specialchars($title).'"'.$attributes.'>'.$this->generateImage($icon, $label).'</a> ';
-	}
-
-
-	/**
-	 * Hide generate button for variants and product types without variant support
-	 * @param array
-	 * @param string
-	 * @param string
-	 * @param string
-	 * @param string
-	 * @param string
-	 * @return string
-	 */
-	public function quickEditButton($row, $href, $label, $title, $icon, $attributes)
-	{
-		if ($row['pid'] > 0)
-		{
-			return '';
-		}
-
-		$objType = $this->Database->prepare("SELECT * FROM tl_iso_producttypes WHERE id=?")
-								  ->limit(1)
-								  ->execute($row['type']);
-
-		if (!$objType->variants)
-		{
-			return '';
-		}
-
-		return '<a href="'.$this->addToUrl($href.'&amp;id='.$row['id']).'" title="'.specialchars($title).'"'.$attributes.'>'.$this->generateImage($icon, $label).'</a> ';
-	}
-
-
-	/**
-	 * Return the paste button
-	 * @param DataContainer
-	 * @param array
-	 * @param string
-	 * @param bool
-	 * @param array
-	 * @return string
-	 * @link http://www.contao.org/callbacks.html#paste_button_callback
-	 */
-	public function pasteProduct(DataContainer $dc, $row, $table, $cr, $arrClipboard=false)
-	{
-		require_once(TL_ROOT . '/system/modules/isotope/providers/PasteProductButton.php');
-
-		$this->import('PasteProductButton');
-		return $this->PasteProductButton->generate($dc, $row, $table, $cr, $arrClipboard);
-	}
-
-
-	/**
-	 * Return the filter button, allow for multiple filters
-	 * @param string
-	 * @param string
-	 * @param string
-	 * @param string
-	 * @param string
-	 * @param string
-	 * @param array
-	 * @return string
-	 * @todo remove "isotope-filter" static class when Contao Defect #3504 has been implemented
-	 */
-	public function filterButton($href, $label, $title, $class, $attributes, $table, $root)
-	{
-		static $arrFilters = false;
-
-		if ($arrFilters === false)
-		{
-			$arrFilters = (array) $this->Input->get('filter');
-		}
-
-		$filter = str_replace('filter[]=', '', $href);
-
-		if (in_array($filter, $arrFilters))
-		{
-			$href = ampersand(str_replace('&'.$href, '', $this->Environment->request));
-		}
-		else
-		{
-			$href = ampersand($this->Environment->request . '&') . $href;
-		}
-
-		return ' &#160; :: &#160; <a href="'.$href.'" class="'.$class.' isotope-filter" title="'.specialchars($title).'"'.$attributes.'>'.$label.'</a> ';
-	}
-
-
-	/**
-	 * Return the "remove filter" button (unset url parameters)
-	 * @param string
-	 * @param string
-	 * @param string
-	 * @param string
-	 * @param string
-	 * @param string
-	 * @param array
-	 * @return string
-	 * @todo remove static classes when Contao Defect #3504 has been implemented
-	 */
-	public function filterRemoveButton($href, $label, $title, $class, $attributes, $table, $root)
-	{
-		$href = preg_replace('/&?filter\[\]=[^&]*/', '', $this->Environment->request);
-		return ' &#160; :: &#160; <a href="'.$href.'" class="header_iso_filter_remove isotope-filter" title="'.specialchars($title).'"'.$attributes.'>'.$label.'</a> ';
-	}
-
-
-	/**
-	 * Hide "toggle all variants" button if there are no variants at all
-	 * @param string
-	 * @param string
-	 * @param string
-	 * @param string
-	 * @param string
-	 * @param string
-	 * @param array
-	 * @return string
-	 */
-	public function toggleVariants($href, $label, $title, $class, $attributes, $table, $root)
-	{
-		$objVariants = $this->Database->query("SELECT COUNT(id) AS hasVariants FROM tl_iso_products WHERE pid>0 AND language=''");
-
-		if (!$objVariants->hasVariants)
-		{
-			return '';
-		}
-
-		return '<a href="' . $this->addToUrl('&amp;' . $href) . '" class="header_toggle isotope-tools" title="' . specialchars($title) . '"' . $attributes . '>' . specialchars($label) . '</a>';
-	}
-
-
-	/**
-	 * Hide "toggle all groups" button if there are no groups at all
-	 * @param string
-	 * @param string
-	 * @param string
-	 * @param string
-	 * @param string
-	 * @param string
-	 * @param array
-	 * @return string
-	 */
-	public function toggleGroups($href, $label, $title, $class, $attributes, $table, $root)
-	{
-		$objGroups = $this->Database->query("SELECT COUNT(id) AS hasGroups FROM tl_iso_groups");
-
-		if (!$objGroups->hasGroups)
-		{
-			return '';
-		}
-
-		return '<a href="' . $this->addToUrl('&amp;' . $href) . '" class="header_toggle isotope-tools" title="' . specialchars($title) . '"' . $attributes . '>' . specialchars($label) . '</a>';
-	}
-
-
-	/**
 	 * Return the "toggle visibility" button
 	 * @param array
 	 * @param string
@@ -1779,7 +1112,7 @@ $strBuffer .= '<th style="text-align:center"><img src="system/themes/default/ima
 		}
 */
 
-		$objProductType = $this->Database->execute("SELECT * FROM tl_iso_producttypes WHERE id=".$row['type']);
+		$objProductType = $this->Database->execute("SELECT * FROM tl_iso_producttypes WHERE id=" . (int) $row['type']);
 		$arrAttributes = $row['pid'] ? deserialize($objProductType->variant_attributes, true) : deserialize($objProductType->attributes, true);
 		$time = time();
 
@@ -1842,165 +1175,6 @@ $strBuffer .= '<th style="text-align:center"><img src="system/themes/default/ima
 
 
 	/**
-	 * Build palette for the current product type/variant
-	 * @param object
-	 * @return void
-	 */
-	public function buildPaletteString($dc)
-	{
-		$this->import('Isotope');
-
-		if ($this->Input->get('act') == '' && $this->Input->get('key') == '' || $this->Input->get('act') == 'select')
-		{
-			return;
-		}
-
-		$arrFields = &$GLOBALS['TL_DCA']['tl_iso_products']['fields'];
-
-		// Set default product type
-		$arrFields['type']['default'] = $this->Database->execute("SELECT id FROM tl_iso_producttypes ORDER BY fallback DESC, name")->id;
-
-		// Set default tax class
-		$arrFields['tax_class']['default'] = $this->Database->execute("SELECT id FROM tl_iso_tax_class WHERE fallback='1'")->id;
-
-		$blnEditAll = true;
-
-		$strQuery = "SELECT
-						id,
-						pid,
-						language,
-						type,
-						(SELECT type FROM tl_iso_products p2 WHERE p2.id=p1.pid) AS parent_type,
-						(SELECT attributes FROM tl_iso_producttypes WHERE id=p1.type) AS attributes,
-						(SELECT variant_attributes FROM tl_iso_producttypes WHERE id=p1.type) AS variant_attributes,
-						(SELECT prices FROM tl_iso_producttypes WHERE id=p1.type) AS prices
-					FROM tl_iso_products p1";
-
-
-		if ($this->Input->get('act') != 'editAll' && $dc->id > 0)
-		{
-			$strQuery .= ' WHERE id=' . $dc->id;
-			$blnEditAll = false;
-		}
-
-		$objProducts = $this->Database->execute($strQuery);
-		$blnReload = false;
-
-		while ($objProducts->next())
-		{
-			if ($objProducts->pid > 0 && $objProducts->parent_type != '' && $objProducts->type != $objProducts->parent_type)
-			{
-				$this->Database->query("UPDATE tl_iso_products SET type={$objProducts->parent_type} WHERE id={$objProducts->id}");
-				$blnReload = true;
-			}
-
-			if ($blnReload)
-			{
-				continue;
-			}
-
-			// Enable advanced prices
-			if ($objProducts->prices && !$blnEditAll)
-			{
-				$arrFields['prices']['attributes'] = $arrFields['price']['attributes'];
-				$arrFields['price'] = $arrFields['prices'];
-			}
-
-			$arrInherit = array();
-			$arrPalette = array();
-
-			$objProducts->attributes = deserialize($objProducts->attributes, true);
-
-			// Variant
-			if ($objProducts->pid > 0)
-			{
-				$arrPalette['variant_legend'][] = 'variant_attributes' . ($blnEditAll ? '' : ',inherit');
-
-				// @todo will not work in edit all, should use option_callback!
-				foreach ($objProducts->attributes as $attribute => $arrConfig)
-				{
-					if ($arrConfig['enabled'] && $arrFields[$attribute]['attributes']['variant_option'])
-					{
-						$arrFields['variant_attributes']['options'][] = $attribute;
-					}
-				}
-
-				$arrAttributes = deserialize($objProducts->variant_attributes, true);
-			}
-			else
-			{
-				$arrAttributes = $objProducts->attributes;
-			}
-
-			foreach ($arrAttributes as $attribute => $arrConfig)
-			{
-				// Field is disabled or not an attribute
-				if (!$arrConfig['enabled'] || !is_array($arrFields[$attribute]) || $arrFields[$attribute]['attributes']['legend'] == '')
-				{
-					continue;
-				}
-
-				// Do not show variant options & customer defined fields
-				if ($arrFields[$attribute]['attributes']['variant_option'] || $arrFields[$attribute]['attributes']['customer_defined'])
-				{
-					continue;
-				}
-
-				// Field cannot be edited in variant
-				if ($objProducts->pid > 0 && $arrFields[$attribute]['attributes']['inherit'])
-				{
-					continue;
-				}
-
-				$arrPalette[$arrFields[$attribute]['attributes']['legend']][$arrConfig['position']] = $attribute;
-
-				// Apply product type attribute config
-				if (($tl_class = trim($arrConfig['tl_class_select'] . ' ' . $arrConfig['tl_class_text'])) != '')
-				{
-					$arrFields[$attribute]['eval']['tl_class'] = $tl_class;
-				}
-
-				if ($arrConfig['mandatory'] > 0)
-				{
-					$arrFields[$attribute]['eval']['mandatory'] = $arrConfig['mandatory'] == 1 ? false : true;
-				}
-
-				if (!$blnEditAll && !in_array($attribute, array('sku', 'price', 'shipping_weight', 'published')) && $objProducts->attributes[$attribute]['enabled'])
-				{
-					$arrInherit[$attribute] = $this->Isotope->formatLabel('tl_iso_products', $attribute);
-				}
-			}
-
-			$arrLegends = array();
-
-			// Build
-			foreach ($arrPalette as $legend=>$fields)
-			{
-				ksort($fields);
-				$arrLegends[] = '{' . $legend . '},' . implode(',', $fields);
-			}
-
-			// Set inherit options
-			$arrFields['inherit']['options'] = $arrInherit;
-
-			// Add palettes
-			$GLOBALS['TL_DCA']['tl_iso_products']['palettes'][$objProducts->type . $objProducts->pid] = implode(';', $arrLegends);
-		}
-
-		if ($blnReload)
-		{
-			$this->reload();
-		}
-		elseif ($blnEditAll)
-		{
-			$arrFields['inherit']['exclude'] = true;
-			$arrFields['prices']['exclude'] = true;
-			$arrFields['variant_attributes']['exclude'] = true;
-		}
-	}
-
-
-	/**
 	 * Initialize the tl_iso_products DCA
 	 * @return void
 	 */
@@ -2014,6 +1188,7 @@ $strBuffer .= '<th style="text-align:center"><img src="system/themes/default/ima
 			$arrData = is_array($GLOBALS['TL_DCA']['tl_iso_products']['fields'][$objAttributes->field_name]) ? $GLOBALS['TL_DCA']['tl_iso_products']['fields'][$objAttributes->field_name] : array();
 
 			$arrData['label']		= array($objAttributes->name, $objAttributes->description);
+			$arrData['exclude']		= true;
 			$arrData['inputType']	= ((TL_MODE == 'BE' && $GLOBALS['ISO_ATTR'][$objAttributes->type]['backend'] != '') ? $GLOBALS['ISO_ATTR'][$objAttributes->type]['backend'] : ((TL_MODE == 'FE' && $GLOBALS['ISO_ATTR'][$objAttributes->type]['frontend'] != '') ? $GLOBALS['ISO_ATTR'][$objAttributes->type]['frontend'] : $objAttributes->type));
 			$arrData['attributes']	= $objAttributes->row();
 			$arrData['eval']		= is_array($arrData['eval']) ? array_merge($arrData['eval'], $arrData['attributes']) : $arrData['attributes'];
@@ -2039,12 +1214,25 @@ $strBuffer .= '<th style="text-align:center"><img src="system/themes/default/ima
 			// Add date picker
 			if ($objAttributes->rgxp == 'date')
 			{
-				$arrData['eval']['datepicker'] = (method_exists($this,'getDatePickerString') ? $this->getDatePickerString() : true);
+				$arrData['eval']['datepicker'] = (method_exists($this, 'getDatePickerString') ? $this->getDatePickerString() : true);
 			}
 
+			// Textarea cannot be w50
 			if ($objAttributes->type == 'textarea' || $objAttributes->rte != '')
 			{
 				$arrData['eval']['tl_class'] = 'clr';
+			}
+
+			// Customer defined widgets
+			if ($GLOBALS['ISO_ATTR'][$objAttributes->type]['customer_defined'])
+			{
+				$arrData['attributes']['customer_defined'] = true;
+			}
+
+			// Install save_callback for upload widgets
+			if ($objAttributes->type == 'upload')
+			{
+				$arrData['save_callback'][] = array('IsotopeFrontend', 'saveUpload');
 			}
 
 			// Parse multiline/multilingual foreignKey
@@ -2072,7 +1260,7 @@ $strBuffer .= '<th style="text-align:center"><img src="system/themes/default/ima
 					$arrOptions = deserialize($objAttributes->options);
 				}
 
-				if (is_array($arrOptions) && count($arrOptions))
+				if (is_array($arrOptions) && !empty($arrOptions))
 				{
 					$strGroup = '';
 
@@ -2107,7 +1295,7 @@ $strBuffer .= '<th style="text-align:center"><img src="system/themes/default/ima
 			unset($arrData['eval']['foreignKey']);
 			unset($arrData['eval']['options']);
 
-			if (is_array($GLOBALS['ISO_ATTR'][$objAttributes->type]['callback']) && count($GLOBALS['ISO_ATTR'][$objAttributes->type]['callback']))
+			if (is_array($GLOBALS['ISO_ATTR'][$objAttributes->type]['callback']) && !empty($GLOBALS['ISO_ATTR'][$objAttributes->type]['callback']))
 			{
 				foreach ($GLOBALS['ISO_ATTR'][$objAttributes->type]['callback'] as $callback)
 				{
@@ -2135,7 +1323,7 @@ $strBuffer .= '<th style="text-align:center"><img src="system/themes/default/ima
 				$GLOBALS['ISO_CONFIG']['multilingual'][] = $attribute;
 			}
 
-			if ($config['attributes']['dynamic'])
+			if ($config['attributes']['dynamic'] || $config['eval']['multiple'])
 			{
 				$GLOBALS['ISO_CONFIG']['dynamicAttributes'][] = $attribute;
 			}
@@ -2155,7 +1343,7 @@ $strBuffer .= '<th style="text-align:center"><img src="system/themes/default/ima
 		$arrLines = trimsplit('@\r\n|\n|\r@', $strSettings);
 
 		// Return false if there are no lines
-		if ($strSettings == '' || !is_array($arrLines) || !count($arrLines))
+		if ($strSettings == '' || !is_array($arrLines) || empty($arrLines))
 		{
 			return null;
 		}
@@ -2192,23 +1380,6 @@ $strBuffer .= '<th style="text-align:center"><img src="system/themes/default/ima
 		}
 
 		return $strFallback;
-	}
-
-
-	/**
-	 * Update sorting of product in categories when duplicating, move new product to the bottom
-	 * @param integer
-	 * @param object
-	 * @link http://www.contao.org/callbacks.html#oncopy_callback
-	 */
-	public function updateCategorySorting($insertId, $dc)
-	{
-		$objCategories = $this->Database->query("SELECT c1.*, MAX(c2.sorting) AS max_sorting FROM tl_iso_product_categories c1 LEFT JOIN tl_iso_product_categories c2 ON c1.page_id=c2.page_id WHERE c1.pid=" . (int) $insertId . " GROUP BY c1.page_id");
-
-		while ($objCategories->next())
-		{
-			$this->Database->query("UPDATE tl_iso_product_categories SET sorting=" . ($objCategories->max_sorting + 128) . " WHERE id=" . $objCategories->id);
-		}
 	}
 }
 

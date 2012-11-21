@@ -129,7 +129,7 @@ class AttributeWizard extends Widget
 		$this->import('Database');
 
 		$this->objActiveRecord = $this->Database->prepare("SELECT * FROM " . $this->strTable . " WHERE id=?")->execute($this->currentRecord);
-		$this->arrDisabledFields = $GLOBALS['ISO_PRODUCT'][$this->objActiveRecord->class]['disabledFields'];
+		$this->arrDisabledFields = (array) $GLOBALS['ISO_PRODUCT'][$this->objActiveRecord->class]['disabledFields'];
 		$this->arrOptions = $this->getOptions();
 
 		$GLOBALS['TL_JAVASCRIPT'][] = 'system/modules/isotope/html/backend.js';
@@ -236,7 +236,7 @@ class AttributeWizard extends Widget
 
 
 		// Add a "no entries found" message if there are no options
-		if (!count($arrOptions))
+		if (empty($arrOptions))
 		{
 			$arrOptions[]= '<p class="tl_noopt">'.$GLOBALS['TL_LANG']['MSC']['noResult'].'</p>';
 			$blnCheckAll = false;
@@ -322,7 +322,7 @@ class AttributeWizard extends Widget
 
 		foreach ($arrDca as $field => $arrData)
 		{
-			if (is_array($arrData['attributes']) && $arrData['attributes']['legend'] != '' && (!is_array($this->arrDisabledFields) || !in_array($field, $this->arrDisabledFields)))
+			if (is_array($arrData['attributes']) && $arrData['attributes']['legend'] != '' && !in_array($field, $this->arrDisabledFields))
 			{
 				// Variant options are not available
 				if ($this->variants && ($arrData['attributes']['variant_option'] || $arrData['attributes']['inherit']))

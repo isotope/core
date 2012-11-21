@@ -35,7 +35,7 @@
 $GLOBALS['TL_LANG']['tl_iso_producttypes']['name'][0] = 'Name';
 $GLOBALS['TL_LANG']['tl_iso_producttypes']['name'][1] = 'Bitte geben Sie einen Namen für diesen Produkttyp ein.';
 $GLOBALS['TL_LANG']['tl_iso_producttypes']['class'][0] = 'Produktklasse';
-$GLOBALS['TL_LANG']['tl_iso_producttypes']['class'][1] = 'Bitte wählen Sie eine Produktklasse.Verschiedene Produktklassen wirken sich unterschiedlich auf Produkte aus.';
+$GLOBALS['TL_LANG']['tl_iso_producttypes']['class'][1] = 'Bitte wählen Sie eine Produktklasse. Verschiedene Produktklassen wirken sich unterschiedlich auf Produkte aus.';
 $GLOBALS['TL_LANG']['tl_iso_producttypes']['fallback'][0] = 'Standard';
 $GLOBALS['TL_LANG']['tl_iso_producttypes']['fallback'][1] = 'Klicken Sie hier, wenn das der Standard-Produkttyp ist.';
 $GLOBALS['TL_LANG']['tl_iso_producttypes']['prices'][0] = 'Erweiterte Preisangaben';
@@ -52,6 +52,8 @@ $GLOBALS['TL_LANG']['tl_iso_producttypes']['variants'][0] = 'Varianten aktiviere
 $GLOBALS['TL_LANG']['tl_iso_producttypes']['variants'][1] = 'Klicken Sie hier, wenn dieser Produkttyp Varianten besitzt.';
 $GLOBALS['TL_LANG']['tl_iso_producttypes']['variant_attributes'][0] = 'Varianten-Attribute';
 $GLOBALS['TL_LANG']['tl_iso_producttypes']['variant_attributes'][1] = 'Wählen Sie eine Sammlung von Varianten-Attributen die zu diesem Produkttyp hinzugefügt werden soll. Unausgewählte Varianten-Attribute sind unsichtbar und werden nicht vom Elternprodukt vererbt.';
+$GLOBALS['TL_LANG']['tl_iso_producttypes']['shipping_exempt'][0] = 'Vom Versand ausschliessen';
+$GLOBALS['TL_LANG']['tl_iso_producttypes']['shipping_exempt'][1] = 'Klicken Sie hier wenn Produkte dieses Typs nicht versendet werden (z.B. Downloads).';
 $GLOBALS['TL_LANG']['tl_iso_producttypes']['downloads'][0] = 'Downloads aktivieren';
 $GLOBALS['TL_LANG']['tl_iso_producttypes']['downloads'][1] = 'Klicken Sie hier, wenn dieser Produkttyp Downloads hat.';
 $GLOBALS['TL_LANG']['tl_iso_producttypes']['new'][0] = 'Neuer Produkttyp';
@@ -68,5 +70,5 @@ $GLOBALS['TL_LANG']['tl_iso_producttypes']['name_legend'] = 'Produkttyp-Einstell
 $GLOBALS['TL_LANG']['tl_iso_producttypes']['description_legend'] = 'Beschreibungen';
 $GLOBALS['TL_LANG']['tl_iso_producttypes']['template_legend'] = 'Templates';
 $GLOBALS['TL_LANG']['tl_iso_producttypes']['attributes_legend'] = 'Produktattribute';
-$GLOBALS['TL_LANG']['tl_iso_producttypes']['download_legend'] = 'Downloads';
+$GLOBALS['TL_LANG']['tl_iso_producttypes']['expert_legend'] = 'Experten-Einstellungen';
 
