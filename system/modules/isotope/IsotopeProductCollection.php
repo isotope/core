@@ -454,6 +454,20 @@ abstract class IsotopeProductCollection extends Model
 
 
 	/**
+	 * Delete all products in the collection
+	 */
+	public function purge()
+	{
+		$arrProducts = $this->getProducts();
+
+		foreach ($arrProducts as $objProduct)
+		{
+			$this->deleteProduct($objProduct);
+		}
+	}
+
+
+	/**
 	 * Fetch products from database
 	 * @param string
 	 * @param boolean
@@ -658,14 +672,9 @@ abstract class IsotopeProductCollection extends Model
 	 * @param boolean force deleting the product even if the collection is locked
 	 * @return boolean
 	 */
-	public function deleteProduct(IsotopeProduct $objProduct, $blnForce=false)
+	public function deleteProduct(IsotopeProduct $objProduct)
 	{
 		if (!$objProduct->cart_id)
-		{
-			return false;
-		}
-
-		if ($this->blnLocked && !$blnForce)
 		{
 			return false;
 		}
@@ -688,20 +697,6 @@ abstract class IsotopeProductCollection extends Model
 		$this->modified = true;
 		$this->Database->query("DELETE FROM {$this->ctable} WHERE id={$objProduct->cart_id}");
 		return true;
-	}
-
-
-	/**
-	 * Purge a collection
-	 * @param boolean force deleting all products even if the collection is locked
-	 */
-	public function purge($blnForce=false)
-	{
-		$arrProducts = $this->getProducts();
-		foreach ($arrProducts as $objProduct)
-		{
-			$this->deleteProduct($objProduct, $blnForce);
-		}
 	}
 
 
@@ -991,7 +986,7 @@ abstract class IsotopeProductCollection extends Model
 			// Include library
 			require_once(TL_ROOT . '/system/config/tcpdf.php');
 			require_once(TL_ROOT . '/plugins/tcpdf/tcpdf.php');
-			
+
 			// Prevent TCPDF from destroying absolute paths
 			unset($_SERVER['DOCUMENT_ROOT']);
 
