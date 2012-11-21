@@ -366,11 +366,11 @@ class IsotopeProduct extends Controller
 				if (!$objPage)
 				{
 					$objTargetPage = $this->getPageDetails($varValue);
-					$strUrl  = $this->generateFrontendUrl($objTargetPage->row(), '/product/' . $strUrlKey, $objTargetPage->rootLanguage);
+					$strUrl  = $this->generateFrontendUrl($objTargetPage->row(), ($GLOBALS['TL_CONFIG']['useAutoItem'] ? '/' : '/product/') . $strUrlKey, $objTargetPage->rootLanguage);
 				}
 				else
 				{
-					$strUrl = $this->generateFrontendUrl($this->Database->prepare("SELECT * FROM tl_page WHERE id=?")->execute($varValue)->fetchAssoc(), '/product/' . $strUrlKey, $objPage->rootLanguage);
+					$strUrl = $this->generateFrontendUrl($this->Database->prepare("SELECT * FROM tl_page WHERE id=?")->execute($varValue)->fetchAssoc(), ($GLOBALS['TL_CONFIG']['useAutoItem'] ? '/' : '/product/') . $strUrlKey, $objPage->rootLanguage);
 				}
 
 				if ($this->arrData['pid'] > 0)
