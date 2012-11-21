@@ -31,7 +31,8 @@
  * Fields
  */
 $GLOBALS['TL_LANG']['tl_iso_baseprice']['name']			= array('Name', 'Enter a name for this base price.');
-$GLOBALS['TL_LANG']['tl_iso_baseprice']['label']		= array('Label', 'Enter a label for this base price (e.g. "%s per ounce".)');
+$GLOBALS['TL_LANG']['tl_iso_baseprice']['amount']		= array('Base amount', 'Enter the base amount (e.g. "100").');
+$GLOBALS['TL_LANG']['tl_iso_baseprice']['label']		= array('Label', 'Enter a label for this base price (e.g. "%s per 100g".)');
 
 
 /**
