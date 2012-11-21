@@ -47,6 +47,8 @@ $GLOBALS['TL_LANG']['tl_iso_products']['description'][0] = 'Beschreibung';
 $GLOBALS['TL_LANG']['tl_iso_products']['description_meta'][0] = 'Meta description';
 $GLOBALS['TL_LANG']['tl_iso_products']['keywords_meta'][0] = 'Meta keywords';
 $GLOBALS['TL_LANG']['tl_iso_products']['price'][0] = 'Preis';
+$GLOBALS['TL_LANG']['tl_iso_products']['baseprice'][0] = 'Gebindegröße';
+$GLOBALS['TL_LANG']['tl_iso_products']['baseprice'][1] = 'Tragen Sie hier die Gebindegröße des Produkt oder der Variante ein und wählen Sie die entsprechende Menge des Grundpreises aus. Aus Gebindegröße und Preis berechnet sich automatisch der Grundpreis für die ausgewählte Grundpreismenge (Beispiel: Gebindegröße 400 Gramm, Preis: 10 EUR, Grundpreismenge: 100 Gramm => (100g/400g)*10EUR=2,5 EUR';
 $GLOBALS['TL_LANG']['tl_iso_products']['shipping_exempt'][0] = 'Vom Versand ausschließen';
 $GLOBALS['TL_LANG']['tl_iso_products']['shipping_exempt'][1] = 'Klicken Sie hier wenn dieses Produkt nicht versendet wird (wie z.B. herunterladbare Produkte.';
 $GLOBALS['TL_LANG']['tl_iso_products']['tax_class'][0] = 'Steuerklasse';
