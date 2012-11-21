@@ -655,11 +655,17 @@ abstract class IsotopeProductCollection extends Model
 	/**
 	 * Delete a product in the collection
 	 * @param object
+	 * @param boolean force deleting the product even if the collection is locked
 	 * @return boolean
 	 */
-	public function deleteProduct(IsotopeProduct $objProduct)
+	public function deleteProduct(IsotopeProduct $objProduct, $blnForce=false)
 	{
 		if (!$objProduct->cart_id)
+		{
+			return false;
+		}
+
+		if ($this->blnLocked && !$blnForce)
 		{
 			return false;
 		}
