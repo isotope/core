@@ -10,11 +10,13 @@ Version 1.4.? (2012-??-??)
 - You can now optionally set a default product type per product group
 - Added option to limit tax rate to guests/member groups (#65)
 - Added method to purge a product collection
+- Added support for the auto_item parameter (#74)
 
 ### Improved
 - Do not cache or search-index a page if user-centered content (filters, cart, checkout) is on it
 - Changed navigation CSS class for active product from "trail" to "product" (#49)
 - Sorting label for dates now work better (#72)
+- Base prices are now calculated by amount and not a factor
 
 ### Fixed
 - Product was hidden if price was not an attribute
