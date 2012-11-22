@@ -143,12 +143,18 @@ class Isotope extends Controller
 					else
 					{
 						unset($_GET['isorc']);
-						unset($_GET['language']);
+
+						// Unset the language parameter
+						if ($GLOBALS['TL_CONFIG']['addLanguageToUrl'])
+						{
+							unset($_GET['language']);
+						}
+
 						$strQuery = http_build_query($_GET);
 						self::$objInstance->redirect(preg_replace('/\?.*$/i', '', self::$objInstance->Environment->request) . (($strQuery) ? '?' . $strQuery : ''));
 					}
 				}
-				
+
 				// Set the product from the auto_item parameter
 				if ($GLOBALS['TL_CONFIG']['useAutoItem'] && isset($_GET['auto_item']))
 				{
