@@ -1671,6 +1671,11 @@ $endScript";
 
 				$arrItems = array_reverse(array_merge($arrResult, $arrItems));
 
+				// Reconvert the last item into a link
+				$i = count($arrItems) - 1;
+				$arrItems[$i]['isActive'] = false;
+				$arrItems[$i]['href'] = $this->generateFrontendUrl($arrItems[$i]['data']);
+
 				// Add the reader as breadcrumb item
 				$arrItems[] = array
 				(
