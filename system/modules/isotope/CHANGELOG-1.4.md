@@ -11,6 +11,7 @@ Version 1.4.? (2012-??-??)
 - Added option to limit tax rate to guests/member groups (#65)
 - Added method to purge a product collection
 - Added support for the auto_item parameter (#74)
+- Can now upload multiple images and supports custom uploaders (#75)
 
 ### Improved
 - Do not cache or search-index a page if user-centered content (filters, cart, checkout) is on it

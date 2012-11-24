@@ -47,6 +47,24 @@ class MediaManager extends Widget implements uploadable
 	 * @var string
 	 */
 	protected $strTemplate = 'be_widget';
+	
+	
+	/**
+	 * Instance of the file uploader
+	 * @var object
+	 */
+	protected $objUploader;
+	
+	
+	/**
+	 * Instantiate widget and initialize uploader
+	 */
+	public function __construct($arrAttributes=false)
+	{
+		parent::__construct($arrAttributes);
+		
+		$this->objUploader = IsotopeBackend::getUploader();
+	}
 
 
 	/**
@@ -80,129 +98,67 @@ class MediaManager extends Widget implements uploadable
 	public function validate()
 	{
 		$this->varValue = $this->getPost($this->strName);
-
-		// No file specified
-		if (!isset($_FILES[$this->strName]) || empty($_FILES[$this->strName]['name']))
+		
+		if (!is_array($this->varValue))
 		{
-			if ($this->mandatory)
-			{
-				if (is_array($this->varValue))
-				{
-					foreach ($this->varValue as $file)
-					{
-						if (is_file(TL_ROOT . '/isotope/' . substr($file['src'], 0, 1) . '/' . $file['src']))
-						{
-							return;
-						}
-					}
-				}
-
-				$this->addError(sprintf($GLOBALS['TL_LANG']['ERR']['mandatory'], $this->strLabel));
-			}
-
-			return;
+			$this->varValue = array();
 		}
-
-		$file = $_FILES[$this->strName];
-		$maxlength_kb = number_format(($GLOBALS['TL_CONFIG']['maxFileSize']/1024), 1, $GLOBALS['TL_LANG']['MSC']['decimalSeparator'], $GLOBALS['TL_LANG']['MSC']['thousandsSeparator']);
-
-		// Romanize the filename
-		$file['name'] = utf8_romanize($file['name']);
-
-		// File was not uploaded
-		if (!is_uploaded_file($file['tmp_name']))
+		
+		
+		// Prepare system for the upload
+		$arrAllowedTypes = $GLOBALS['TL_CONFIG']['uploadTypes'];
+		
+		if ($this->extensions != '')
 		{
-			if (in_array($file['error'], array(1, 2)))
-			{
-				$this->addError(sprintf($GLOBALS['TL_LANG']['ERR']['filesize'], $maxlength_kb));
-				$this->log('File "'.$file['name'].'" exceeds the maximum file size of '.$maxlength_kb.' kB', __METHOD__, TL_ERROR);
-			}
-
-			if ($file['error'] == 3)
-			{
-				$this->addError(sprintf($GLOBALS['TL_LANG']['ERR']['filepartial'], $file['name']));
-				$this->log('File "'.$file['name'].'" was only partially uploaded', __METHOD__, TL_ERROR);
-			}
-
-			unset($_FILES[$this->strName]);
-			return;
+			$GLOBALS['TL_CONFIG']['uploadTypes'] = $this->extensions;
 		}
+		
+		// Process the uploaded files
+		$arrUploaded = $this->objUploader->uploadTo('isotope', 'files');
+		
+		// Reset system configuration
+		$GLOBALS['TL_CONFIG']['uploadTypes'] = $arrAllowedTypes;
 
-		// File is too big
-		if ($GLOBALS['TL_CONFIG']['maxFileSize'] > 0 && $file['size'] > $GLOBALS['TL_CONFIG']['maxFileSize'])
-		{
-			$this->addError(sprintf($GLOBALS['TL_LANG']['ERR']['filesize'], $maxlength_kb));
-			$this->log('File "'.$file['name'].'" exceeds the maximum file size of '.$maxlength_kb.' kB', __METHOD__, TL_ERROR);
 
-			unset($_FILES[$this->strName]);
-			return;
-		}
-
-		$pathinfo = pathinfo($file['name']);
-		$uploadTypes = trimsplit(',', $GLOBALS['TL_DCA'][$this->strTable]['fields'][$this->strField]['eval']['extensions']);
-
-		// File type is not allowed
-		if (!in_array(strtolower($pathinfo['extension']), $uploadTypes))
-		{
-			$this->addError(sprintf($GLOBALS['TL_LANG']['ERR']['filetype'], $pathinfo['extension']));
-			$this->log('File type "'.$pathinfo['extension'].'" is not allowed to be uploaded ('.$file['name'].')', __METHOD__, TL_ERROR);
-
-			unset($_FILES[$this->strName]);
-			return;
-		}
-
-		if (($arrImageSize = @getimagesize($file['tmp_name'])) != false)
-		{
-			// Image exceeds maximum image width
-			if ($arrImageSize[0] > $GLOBALS['TL_CONFIG']['imageWidth'] || $arrImageSize[0] > $GLOBALS['TL_CONFIG']['gdMaxImgWidth'])
-			{
-				$this->addError(sprintf($GLOBALS['TL_LANG']['ERR']['filewidth'], $file['name'], $GLOBALS['TL_CONFIG']['imageWidth']));
-				$this->log('File "'.$file['name'].'" exceeds the maximum image width of '.$GLOBALS['TL_CONFIG']['imageWidth'].' pixels', __METHOD__, TL_ERROR);
-
-				unset($_FILES[$this->strName]);
-				return;
-			}
-
-			// Image exceeds maximum image height
-			if ($arrImageSize[1] > $GLOBALS['TL_CONFIG']['imageHeight'] || $arrImageSize[1] > $GLOBALS['TL_CONFIG']['gdMaxImgHeight'])
-			{
-				$this->addError(sprintf($GLOBALS['TL_LANG']['ERR']['fileheight'], $file['name'], $GLOBALS['TL_CONFIG']['imageHeight']));
-				$this->log('File "'.$file['name'].'" exceeds the maximum image height of '.$GLOBALS['TL_CONFIG']['imageHeight'].' pixels', __METHOD__, TL_ERROR);
-
-				unset($_FILES[$this->strName]);
-				return;
-			}
-		}
 
 		// Save file in the isotope folder
-		if (!$this->hasErrors())
+		if (!empty($arrUploaded))
 		{
-			$this->import('Files');
-			$this->import('Database');
-
-			$pathinfo = pathinfo($file['name']);
-			$strCacheName = standardize($pathinfo['filename']) . '.' . $pathinfo['extension'];
-			$uploadFolder = 'isotope/' . substr($strCacheName, 0, 1);
-
-			if (is_file(TL_ROOT . '/' . $uploadFolder . '/' . $strCacheName) && md5_file($file['tmp_name']) != md5_file(TL_ROOT . '/' . $uploadFolder . '/' . $strCacheName))
+			foreach ($arrUploaded as $strFile)
 			{
-				$strCacheName = standardize($pathinfo['filename']) . '-' . substr(md5_file($file['tmp_name']), 0, 8) . '.' . $pathinfo['extension'];
+				$this->import('Files');
+				$this->import('Database');
+	
+				$pathinfo = pathinfo(strtolower($strFile));
+				$strCacheName = standardize($pathinfo['filename']) . '.' . $pathinfo['extension'];
 				$uploadFolder = 'isotope/' . substr($strCacheName, 0, 1);
+	
+				if (is_file(TL_ROOT . '/' . $uploadFolder . '/' . $strCacheName) && md5_file(TL_ROOT . '/' . $strFile) != md5_file(TL_ROOT . '/' . $uploadFolder . '/' . $strCacheName))
+				{
+					$strCacheName = standardize($pathinfo['filename']) . '-' . substr(md5_file(TL_ROOT . '/' . $strFile), 0, 8) . '.' . $pathinfo['extension'];
+					$uploadFolder = 'isotope/' . substr($strCacheName, 0, 1);
+				}
+	
+				// Make sure directory exists
+				$this->Files->mkdir($uploadFolder);
+				$this->Files->rename($strFile, $uploadFolder . '/' . $strCacheName);
+	
+				$this->varValue[] = array('src'=>$strCacheName, 'translate'=>(!$_SESSION['BE_DATA']['language'][$this->strTable][$this->currentRecord] ? '' : 'all'));
 			}
-
-			// Make sure directory exists
-			$this->Files->mkdir($uploadFolder);
-			$this->Files->move_uploaded_file($file['tmp_name'], $uploadFolder . '/' . $strCacheName);
-
-			if (!is_array($this->varValue))
-			{
-				$this->varValue = array();
-			}
-
-			$this->varValue[] = array('src'=>$strCacheName, 'translate'=>(!$_SESSION['BE_DATA']['language'][$this->strTable][$this->currentRecord] ? '' : 'all'));
 		}
 
-		unset($_FILES[$this->strName]);
+		if ($this->mandatory)
+		{
+			foreach ($this->varValue as $file)
+			{
+				if (is_file(TL_ROOT . '/isotope/' . substr($file['src'], 0, 1) . '/' . $file['src']))
+				{
+					return;
+				}
+			}
+
+			$this->addError(sprintf($GLOBALS['TL_LANG']['ERR']['mandatory'], $this->strLabel));
+		}
     }
 
 
@@ -257,7 +213,7 @@ class MediaManager extends Widget implements uploadable
 			$this->redirect(preg_replace('/&(amp;)?cid=[^&]*/i', '', preg_replace('/&(amp;)?' . preg_quote($strCommand, '/') . '=[^&]*/i', '', $this->Environment->request)));
 		}
 
-		$upload = sprintf('<h3><label for="ctrl_%s_upload">%s</label></h3><p><input type="file" name="%s" id="ctrl_%s_upload" class="upload%s"></p>',
+		$upload = sprintf('<h3><label for="ctrl_%s_upload">%s</label></h3>' . $this->objUploader->generateMarkup(),
 						$this->strId,
 						$GLOBALS['TL_LANG']['MSC']['mmUpload'],
 						$this->strName,
