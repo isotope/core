@@ -5,6 +5,7 @@ Version 1.3.11 stable (2012-??-??)
 ----------------------------------
 
 ### Fixed
+Potential error when missing reader page info (#88)
 
 
 Version 1.3.10 stable (2012-11-19)

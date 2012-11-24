@@ -465,6 +465,13 @@ class IsotopeProduct extends Controller
 				if (!$objPage)
 				{
 					$objTargetPage = $this->getPageDetails($varValue);
+
+					if ($objTargetPage === null)
+					{
+						$this->arrData['href_reader'] = '';
+						break;
+					}
+
 					$strUrl  = $this->generateFrontendUrl($objTargetPage->row(), '/product/' . $strUrlKey, $objTargetPage->rootLanguage);
 				}
 				else
