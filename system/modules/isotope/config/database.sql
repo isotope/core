@@ -225,7 +225,7 @@ CREATE TABLE `tl_iso_config` (
   `currencyAutomator` char(1) NOT NULL default '',
   `currencyOrigin` varchar(3) NOT NULL default '',
   `currencyProvider` varchar(32) NOT NULL default '',
-  `orderPrefix` varchar(5) NOT NULL default '',
+  `orderPrefix` varchar(255) NOT NULL default '',
   `orderDigits` int(1) unsigned NOT NULL default '4',
   `templateGroup` varchar(255) NOT NULL default '',
   `orderstatus_new` int(10) unsigned NOT NULL default '0',
