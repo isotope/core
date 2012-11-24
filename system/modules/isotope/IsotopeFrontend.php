@@ -1663,6 +1663,13 @@ $endScript";
 				{
 					if ($arrItem['data']['id'] == $intParent)
 					{
+						// Reconvert the last item into a link
+						if ($arrItem['isActive'])
+						{
+							$arrItems[$i]['isActive'] = false;
+							$arrItems[$i]['href'] = $this->generateFrontendUrl($arrItems[$i]['data']);
+						}
+
 						break;
 					}
 
