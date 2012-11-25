@@ -71,6 +71,7 @@ array_insert($GLOBALS['BE_MOD']['isotope'], 0, array
 		'callback'					=> 'ModuleIsotopeSetup',
 		'tables'					=> array(),
 		'icon'						=> 'system/modules/isotope/html/application-monitor.png',
+		'javascript'				=> 'system/modules/isotope/html/backend.js',
 	),
 ));
 
