@@ -1493,6 +1493,17 @@ window.addEvent(\'domready\', function() {
 			return '<p class="tl_empty">DC_ProductData does only support sorting mode 5!</p>';
 		}
 
+		if ($this->Input->get('tid') != '' && class_exists($this->strTable, false) && method_exists($this->strTable, 'toggleVisibility'))
+		{
+			$this->import($this->strTable);
+			$this->{$this->strTable}->toggleVisibility($this->Input->get('tid'), ($this->Input->get('state') == 1));
+
+			// Stop the DC_ProductData overload detection
+			$this->Session->set('PRODUCTDATA_OVERLOAD', false);
+
+			$this->redirect($this->getReferer());
+		}
+
 		if ($this->Input->get('loadDeferredProduct') > 0)
 		{
 			$this->intId = (int) $this->Input->get('loadDeferredProduct');

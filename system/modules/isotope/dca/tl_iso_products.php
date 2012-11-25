@@ -1092,25 +1092,11 @@ $strBuffer .= '<th style="text-align:center"><img src="system/themes/default/ima
 	 */
 	public function toggleIcon($row, $href, $label, $title, $icon, $attributes)
 	{
-		if (strlen($this->Input->get('tid')))
-		{
-			$this->toggleVisibility($this->Input->get('tid'), ($this->Input->get('state') == 1));
-
-			// Stop the DC_ProductData overload detection
-			$this->Session->set('PRODUCTDATA_OVERLOAD', false);
-
-			$this->redirect($this->getReferer());
-		}
-
-/**
- * @todo tl_iso_products is missing in groups settings
- *
 		// Check permissions AFTER checking the tid, so hacking attempts are logged
 		if (!$this->User->isAdmin && !$this->User->hasAccess('tl_iso_products::published', 'alexf'))
 		{
 			return '';
 		}
-*/
 
 		$objProductType = $this->Database->execute("SELECT * FROM tl_iso_producttypes WHERE id=" . (int) $row['type']);
 		$arrAttributes = $row['pid'] ? deserialize($objProductType->variant_attributes, true) : deserialize($objProductType->attributes, true);
@@ -1141,7 +1127,9 @@ $strBuffer .= '<th style="text-align:center"><img src="system/themes/default/ima
 		// Check permissions to edit
 		$this->Input->setGet('id', $intId);
 		$this->Input->setGet('act', 'toggle');
-		$this->checkPermission();
+
+		$this->import('ProductCallbacks');
+		$this->ProductCallbacks->checkPermission();
 
 /**
  * @todo tl_iso_products is missing in groups settings

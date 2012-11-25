@@ -28,6 +28,7 @@ Version 1.4.? (2012-??-??)
 - Default values for image sizes got lost in the MCW migration (#61)
 - Regular users could not add/edit product variants (#60)
 - Order id prefix was limited to 5 chars which made usage of insert tags impossible
+- Publishing toggle did not work in ajax mode (#77)
 
 
 Version 1.4.beta2 (2012-09-24)
