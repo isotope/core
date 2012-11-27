@@ -8,6 +8,7 @@ Version 1.3.11 stable (2012-??-??)
 Potential error when missing reader page info (#88)
 Sorting in shop config field wizard did not work (#97)
 Member address country was overwritten by store config (#95)
+Possible strip_tags() warning in tl_iso_orders (#104)
 
 
 Version 1.3.10 stable (2012-11-19)
