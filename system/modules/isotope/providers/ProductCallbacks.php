@@ -787,7 +787,7 @@ class ProductCallbacks extends Backend
 	 */
 	public function relatedButton($row, $href, $label, $title, $icon, $attributes)
 	{
-		if ($row['pid'] > 0 || $this->blnHasCategories)
+		if ($row['pid'] > 0 || !$this->blnHasCategories)
 		{
 			return '';
 		}
