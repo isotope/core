@@ -7,6 +7,7 @@ Version 1.3.11 stable (2012-??-??)
 ### Fixed
 Potential error when missing reader page info (#88)
 Sorting in shop config field wizard did not work (#97)
+Member address country was overwritten by store config (#95)
 
 
 Version 1.3.10 stable (2012-11-19)
