@@ -647,6 +647,19 @@ class DC_ProductData extends DC_Table
 					$this->strField = $vv;
 					$this->strInputName = $vv;
 					$this->varValue = $this->objActiveRecord->$vv;
+					
+					// Autofocus the first field
+					if ($blnIsFirst && $GLOBALS['TL_DCA'][$this->strTable]['fields'][$this->strField]['inputType'] == 'text')
+					{
+						$GLOBALS['TL_DCA'][$this->strTable]['fields'][$this->strField]['eval']['autofocus'] = 'autofocus';
+						$blnIsFirst = false;
+					}
+
+					// Convert CSV fields (see #2890)
+					if ($GLOBALS['TL_DCA'][$this->strTable]['fields'][$this->strField]['eval']['multiple'] && isset($GLOBALS['TL_DCA'][$this->strTable]['fields'][$this->strField]['eval']['csv']))
+					{
+						$this->varValue = trimsplit($GLOBALS['TL_DCA'][$this->strTable]['fields'][$this->strField]['eval']['csv'], $this->varValue);
+					}
 
 					// Call load_callback
 					if (is_array($GLOBALS['TL_DCA'][$this->strTable]['fields'][$this->strField]['load_callback']))
