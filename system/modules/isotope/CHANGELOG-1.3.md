@@ -10,6 +10,7 @@ Sorting in shop config field wizard did not work (#97)
 Member address country was overwritten by store config (#95)
 Possible strip_tags() warning in tl_iso_orders (#104)
 Possible warning when adding product to cart (#85)
+Limiting templates to a theme did not work (#108)
 
 
 Version 1.3.10 stable (2012-11-19)
