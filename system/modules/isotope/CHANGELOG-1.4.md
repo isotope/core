@@ -18,6 +18,7 @@ Version 1.4.? (2012-??-??)
 - Changed navigation CSS class for active product from "trail" to "product" (#49)
 - Sorting label for dates now work better (#72)
 - Base prices are now calculated by amount and not a factor
+- Added CSV support and autofocus in DC_ProductData (#103)
 
 ### Fixed
 - Product was hidden if price was not an attribute

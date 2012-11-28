@@ -587,6 +587,7 @@ class DC_ProductData extends DC_Table
 
 			$class = 'tl_tbox block';
 			$fs = $this->Session->get('fieldset_states');
+			$blnIsFirst = true;
 
 			// Render boxes
 			foreach ($boxes as $k=>$v)
@@ -647,7 +648,7 @@ class DC_ProductData extends DC_Table
 					$this->strField = $vv;
 					$this->strInputName = $vv;
 					$this->varValue = $this->objActiveRecord->$vv;
-					
+
 					// Autofocus the first field
 					if ($blnIsFirst && $GLOBALS['TL_DCA'][$this->strTable]['fields'][$this->strField]['inputType'] == 'text')
 					{
