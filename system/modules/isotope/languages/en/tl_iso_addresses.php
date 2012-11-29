@@ -37,6 +37,7 @@ $GLOBALS['TL_LANG']['tl_iso_addresses']['salutation']			= array('Salutation', 'P
 $GLOBALS['TL_LANG']['tl_iso_addresses']['firstname']			= array('First name', 'Please enter the first name.');
 $GLOBALS['TL_LANG']['tl_iso_addresses']['lastname']				= array('Last name', 'Please enter the last name.');
 $GLOBALS['TL_LANG']['tl_iso_addresses']['company']				= array('Company', 'You can enter a company name here.');
+$GLOBALS['TL_LANG']['tl_iso_addresses']['vat_no']				= array('VAT No.', 'Please enter a VAT number.');
 $GLOBALS['TL_LANG']['tl_iso_addresses']['street_1']				= array('Street', 'Please enter the street name and the street number.');
 $GLOBALS['TL_LANG']['tl_iso_addresses']['street_2']				= array('Street 2', 'Enter a second street info if there\'s any.');
 $GLOBALS['TL_LANG']['tl_iso_addresses']['street_3']				= array('Street 3', 'Enter a third street info if there\'s any.');
