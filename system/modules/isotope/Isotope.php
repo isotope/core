@@ -500,20 +500,21 @@ class Isotope extends Controller
 			return false;
 		}
 
-		// Apply to guests only
-		if ($objRate->guests && FE_USER_LOGGED_IN && !BE_USER_LOGGED_IN && !$objRate->protected)
+		// Tax rate is for guests only
+		if ($objRate->guests && FE_USER_LOGGED_IN === true && !$objRate->protected)
 		{
 			return false;
 		}
 
-		// Protected tax rate
-		if (!BE_USER_LOGGED_IN && $objRate->protected)
+		// Tax rate is protected but no member is logged in
+		elseif ($objRate->protected && FE_USER_LOGGED_IN !== true && !$objRate->guests)
 		{
-			if (!FE_USER_LOGGED_IN)
-			{
-				return false;
-			}
+			return false;
+		}
 
+		// Tax rate is protected and member logged in, check member groups
+		elseif ($objRate->protected && FE_USER_LOGGED_IN === true)
+		{
 			$groups = deserialize($objRate->groups);
 
 			if (!is_array($groups) || empty($groups) || !count(array_intersect($groups, $this->User->groups)))
@@ -548,12 +549,12 @@ class Isotope extends Controller
 					continue;
 				}
 
-				if (strlen($objRate->country) && $objRate->country != $arrAddress['country'])
+				if ($objRate->country != '' && $objRate->country != $arrAddress['country'])
 				{
 					continue;
 				}
 
-				if (strlen($objRate->subdivision) && $objRate->subdivision != $arrAddress['subdivision'])
+				if ($objRate->subdivision != '' && $objRate->subdivision != $arrAddress['subdivision'])
 				{
 					continue;
 				}
