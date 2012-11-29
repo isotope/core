@@ -232,6 +232,7 @@ CREATE TABLE `tl_iso_config` (
   `orderstatus_error` int(10) unsigned NOT NULL default '0',
   `invoiceLogo` varchar(255) NOT NULL default '',
   `company` varchar(255) NOT NULL default '',
+  `vat_no` varchar(255) NOT NULL default '',
   `firstname` varchar(255) NOT NULL default '',
   `lastname` varchar(255) NOT NULL default '',
   `street_1` varchar(255) NOT NULL default '',

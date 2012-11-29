@@ -12,7 +12,7 @@ Version 1.4.? (2012-??-??)
 - Added method to purge a product collection
 - Added support for the auto_item parameter (#74)
 - Can now upload multiple images and supports custom uploaders (#75)
-- Added VAT no field to addresses (#100)
+- Added VAT no field to addresses and store config (#100)
 
 ### Improved
 - Do not cache or search-index a page if user-centered content (filters, cart, checkout) is on it
