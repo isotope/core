@@ -139,6 +139,7 @@ class ModuleIsotopeOrderDetails extends ModuleIsotope
 		}
 
 		$this->Template->info = deserialize($objOrder->checkout_info, true);
+		$this->Template->collection = $objOrder;
 		$this->Template->items = IsotopeFrontend::generateRowClass($arrItems, 'row', 'rowClass', 0, ISO_CLASS_COUNT|ISO_CLASS_FIRSTLAST|ISO_CLASS_EVENODD);
 		$this->Template->downloads = $arrAllDownloads;
 		$this->Template->downloadsLabel = $GLOBALS['TL_LANG']['MSC']['downloadsLabel'];

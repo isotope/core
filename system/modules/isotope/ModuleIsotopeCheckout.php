@@ -994,6 +994,7 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 			));
 		}
 
+		$objTemplate->collection = $this->Isotope->Cart;
 		$objTemplate->products = IsotopeFrontend::generateRowClass($arrProductData, 'row', 'rowClass', 0, ISO_CLASS_COUNT|ISO_CLASS_FIRSTLAST|ISO_CLASS_EVENODD);
 		$objTemplate->surcharges = IsotopeFrontend::formatSurcharges($arrSurcharges);
 		$objTemplate->subTotalLabel = $GLOBALS['TL_LANG']['MSC']['subTotalLabel'];

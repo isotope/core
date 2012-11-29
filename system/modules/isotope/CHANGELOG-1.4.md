@@ -20,6 +20,7 @@ Version 1.4.? (2012-??-??)
 - Sorting label for dates now work better (#72)
 - Base prices are now calculated by amount and not a factor
 - Added CSV support and autofocus in DC_ProductData (#103)
+- Pass the product collection to cart, review and order history templates
 
 ### Fixed
 - Product was hidden if price was not an attribute
