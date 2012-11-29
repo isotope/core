@@ -127,7 +127,9 @@ class ModuleIsotopeOrderDetails extends ModuleIsotope
 				'product_options'	=> $objProduct->getOptions(),
 				'quantity'			=> $objProduct->quantity_requested,
 				'price'				=> $this->Isotope->formatPriceWithCurrency($objProduct->price),
+				'tax_free_price'	=> $this->Isotope->formatPriceWithCurrency($objProduct->tax_free_price),
 				'total'				=> $this->Isotope->formatPriceWithCurrency($objProduct->total_price),
+				'tax_free_total'	=> $this->Isotope->formatPriceWithCurrency($objProduct->tax_free_total_price),
 				'href'				=> ($this->jumpTo ? $this->generateFrontendUrl($arrPage, ($GLOBALS['TL_CONFIG']['useAutoItem'] ? '/' : '/product/') . $objProduct->alias) : ''),
 				'tax_id'			=> $objProduct->tax_id,
 				'downloads'			=> $arrDownloads,
@@ -201,7 +203,7 @@ class ModuleIsotopeOrderDetails extends ModuleIsotope
 				$arrDownloads[] = $this->generateDownload($objDownloads->singleSRC, $objDownloads, $blnDownloadable);
 			}
 		}
-		
+
 		return $arrDownloads;
 	}
 
