@@ -14,6 +14,7 @@ Version 1.4.? (2012-??-??)
 - Can now upload multiple images and supports custom uploaders (#75)
 - Added VAT no field to addresses and store config (#100)
 - Download can be all files from a given folder
+- Use web storage to improve speed of the backend view
 
 ### Improved
 - Do not cache or search-index a page if user-centered content (filters, cart, checkout) is on it

@@ -944,13 +944,19 @@ window.addEvent(\'domready\', function() {
 		if ($this->noReload)
 		{
 			$return .= '
-
 <script>
 window.addEvent(\'domready\', function() {
   Backend.vScrollTo(($(\'' . $this->strTable . '\').getElement(\'label.error\').getPosition().y - 20));
 });
 </script>';
 		}
+
+		$return .= '
+<script>
+window.addEvent(\'domready\', function() {
+  Isotope.removeProductFromStorage(' . $this->intId . ');
+});
+</script>';
 
 		return $return;
 	}
@@ -1238,7 +1244,14 @@ window.addEvent(\'domready\', function() {
 		return '
 <div id="tl_buttons">
 <a href="'.$this->getReferer(true).'" class="header_back" title="'.specialchars($GLOBALS['TL_LANG']['MSC']['backBT']).'" accesskey="b" onclick="Backend.getScrollOffset();">'.$GLOBALS['TL_LANG']['MSC']['backBT'].'</a>
-</div>'.$return;
+</div>' . $return . '
+
+<script>
+window.addEvent(\'domready\', function() {
+  Isotope.purgeProductsStorage();
+});
+</script>'
+;
 	}
 
 
@@ -1748,31 +1761,7 @@ window.addEvent(\'domready\', function() {
 
 		if ($GLOBALS['TL_CONFIG']['iso_deferProductLoading'])
 		{
-			$return .= "
-<script>
-function loadDeferredProducts() {
-	var scroll = window.getScroll().y + window.getSize().y;
-	$$('.deferred_product').each( function(el) {
-		if (scroll - el.getPosition().y > 0)
-		{
-			el.removeClass('deferred_product');
-			var productId = el.get('id').replace('product_', '');
-			var level = (el.getParent('ul').get('class').match(/level_/) ? el.getParent('ul').get('class').replace('level_', '').toInt() : -1);
-			new Request.Contao({
-				method: 'get',
-				url: (window.location.href+'&loadDeferredProduct='+productId+'&level='+level),
-				onComplete: function(html, text) {
-					var temp = new Element('div').set('html', html);
-					temp.getChildren().each( function(li) { li.inject(el.getParent('li'), 'before') });
-					el.getParent('li').destroy();
-					window.fireEvent('structure');
-				}
-			}).send();
-		}
-	});
-}
-$(window).addEvent('scroll', loadDeferredProducts).addEvent('domready', loadDeferredProducts).addEvent('ajax_change', loadDeferredProducts);
-</script>";
+			$return .= "<script>window.useProductsStorage=" . ($this->Input->get('act') == '' ? 'true' : 'false') . "; $(window).addEvent('scroll', Isotope.loadDeferredProducts).addEvent('domready', Isotope.loadDeferredProducts).addEvent('ajax_change', Isotope.loadDeferredProducts);</script>";
 		}
 
 		// Close form

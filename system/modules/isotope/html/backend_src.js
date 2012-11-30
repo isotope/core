@@ -575,6 +575,68 @@ var Isotope =
 				new Request({url: window.location.href, method: 'get', data: req}).send();
     		}
     	});
+	},
+
+	loadDeferredProducts: function()
+	{
+		var scroll = window.getScroll().y + window.getSize().y;
+		document.getElements('.deferred_product').each( function(el)
+		{
+			if (scroll - el.getPosition().y > 0)
+			{
+				el.removeClass('deferred_product');
+				var productId = el.get('id').replace('product_', '');
+				var level = (el.getParent('ul').get('class').match(/level_/) ? el.getParent('ul').get('class').replace('level_', '').toInt() : -1);
+
+				if (window.useProductsStorage && sessionStorage && sessionStorage.getItem(('product_'+productId))) {
+					Isotope.createDeferredProduct(sessionStorage.getItem(('product_'+productId)), el);
+				}
+				else {
+					new Request.Contao({
+						method: 'get',
+						url: (window.location.href+'&loadDeferredProduct='+productId+'&level='+level),
+						onComplete: function(html, text) {
+							Isotope.addProductToStorage(productId, html);
+							Isotope.createDeferredProduct(html, el);
+						}
+					}).send();
+				}
+			}
+		});
+	},
+
+	createDeferredProduct: function(html, el)
+	{
+		var temp = new Element('div').set('html', html);
+		temp.getChildren().each( function(li) { li.inject(el.getParent('li'), 'before') });
+		el.getParent('li').destroy();
+		window.fireEvent('structure');
+	},
+
+	addProductToStorage: function(id, html)
+	{
+		if (sessionStorage && window.useProductsStorage) {
+			try {
+				sessionStorage.setItem(('product_'+id), html);
+			}
+			catch (e) {
+				sessionStorage.clear();
+			}
+		}
+	},
+
+	removeProductFromStorage: function(id)
+	{
+		if (sessionStorage) {
+			sessionStorage.removeItem(('product_'+id));
+		}
+	},
+
+	purgeProductsStorage: function()
+	{
+		if (sessionStorage) {
+			sessionStorage.clear();
+		}
 	}
 };
 
