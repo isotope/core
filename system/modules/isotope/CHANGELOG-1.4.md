@@ -13,6 +13,7 @@ Version 1.4.? (2012-??-??)
 - Added support for the auto_item parameter (#74)
 - Can now upload multiple images and supports custom uploaders (#75)
 - Added VAT no field to addresses and store config (#100)
+- Download can be all files from a given folder
 
 ### Improved
 - Do not cache or search-index a page if user-centered content (filters, cart, checkout) is on it

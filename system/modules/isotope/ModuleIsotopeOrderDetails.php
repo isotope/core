@@ -183,7 +183,7 @@ class ModuleIsotopeOrderDetails extends ModuleIsotope
 	{
 		$time = time();
 		$arrDownloads = array();
-		$objDownloads = $this->Database->prepare("SELECT p.*, o.* FROM tl_iso_order_downloads o LEFT OUTER JOIN tl_iso_downloads p ON o.download_id=p.id WHERE o.pid=?")->execute($objProduct->cart_id);
+		$objDownloads = $this->Database->prepare("SELECT p.*, o.* FROM tl_iso_order_downloads o JOIN tl_iso_downloads p ON o.download_id=p.id WHERE o.pid=?")->execute($objProduct->cart_id);
 
 		while ($objDownloads->next())
 		{
@@ -195,7 +195,7 @@ class ModuleIsotopeOrderDetails extends ModuleIsotope
 				{
 					if (is_file(TL_ROOT . '/' . $objDownloads->singleSRC . '/' . $file))
 					{
-						$this->generateDownload($objDownloads->singleSRC . '/' . $file, $objDownloads, $blnDownloadable);
+						$arrDownloads[] = $this->generateDownload($objDownloads->singleSRC . '/' . $file, $objDownloads, $blnDownloadable);
 					}
 				}
 			}
