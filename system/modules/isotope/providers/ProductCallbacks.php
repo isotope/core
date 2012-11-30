@@ -51,10 +51,10 @@ class ProductCallbacks extends Backend
 	protected $arrProductTypes;
 
 	/**
-	 * Cache if there are categories
+	 * Cache if there are related categories
 	 * @var bool
 	 */
-	protected $blnHasCategories;
+	protected $blnHasRelated;
 
 
 	/**
@@ -107,7 +107,7 @@ class ProductCallbacks extends Backend
 
 
 			// Cache if tehre are categories
-			self::$objInstance->blnHasCategories = (self::$objInstance->Database->query("SELECT COUNT(id) AS total FROM tl_iso_related_categories")->total > 0);
+			self::$objInstance->blnHasRelated = (self::$objInstance->Database->query("SELECT COUNT(id) AS total FROM tl_iso_related_categories")->total > 0);
 
 
 			// Cache number of downloads
@@ -787,7 +787,7 @@ class ProductCallbacks extends Backend
 	 */
 	public function relatedButton($row, $href, $label, $title, $icon, $attributes)
 	{
-		if ($row['pid'] > 0 || !$this->blnHasCategories)
+		if ($row['pid'] > 0 || !$this->blnHasRelated)
 		{
 			return '';
 		}
