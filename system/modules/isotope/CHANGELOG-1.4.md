@@ -21,6 +21,7 @@ Version 1.4.? (2012-??-??)
 - Base prices are now calculated by amount and not a factor
 - Added CSV support and autofocus in DC_ProductData (#103)
 - Pass the product collection to cart, review and order history templates
+- Variant downloads are now inherited from parent product (#94)
 
 ### Fixed
 - Product was hidden if price was not an attribute
