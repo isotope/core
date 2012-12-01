@@ -1761,7 +1761,16 @@ window.addEvent(\'domready\', function() {
 
 		if ($GLOBALS['TL_CONFIG']['iso_deferProductLoading'])
 		{
-			$return .= "<script>window.useProductsStorage=" . ($this->Input->get('act') == '' ? 'true' : 'false') . "; $(window).addEvent('scroll', Isotope.loadDeferredProducts).addEvent('domready', Isotope.loadDeferredProducts).addEvent('ajax_change', Isotope.loadDeferredProducts);</script>";
+			$return .= "
+<script>
+window.useProductsStorage=" . ($this->Input->get('act') == '' ? 'true' : 'false') . ";
+$(window).addEvents({
+	'scroll': Isotope.loadDeferredProducts,
+	'domready': Isotope.loadDeferredProducts,
+	'ajax_change': Isotope.loadDeferredProducts,
+	'structure': Isotope.loadDeferredProducts
+});
+</script>";
 		}
 
 		// Close form
@@ -1935,7 +1944,7 @@ window.addEvent(\'domready\', function() {
 
 		$session[$node][$row['id']] = (is_int($session[$node][$row['id']])) ? $session[$node][$row['id']] : 0;
 
-		if ($GLOBALS['TL_CONFIG']['iso_deferProductLoading'] && $table == $this->strTable && !$this->blnDeferredLoading)
+		if ($GLOBALS['TL_CONFIG']['iso_deferProductLoading'] && $table == $this->strTable && (!$this->blnDeferredLoading || $this->intId != $row['id']))
 		{
 			return $return . '<div class="iso_product deferred_product" id="product_' . $row['id'] . '"><div class="thumbnail"><img src="system/themes/default/images/loading.gif" alt=""></div><p>&nbsp;</p></div></div></li>';
 		}
