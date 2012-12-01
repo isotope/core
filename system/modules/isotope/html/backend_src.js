@@ -586,28 +586,35 @@ var Isotope =
 			{
 				el.removeClass('deferred_product');
 				var productId = el.get('id').replace('product_', '');
-				var level = (el.getParent('ul').get('class').match(/level_/) ? el.getParent('ul').get('class').replace('level_', '').toInt() : -1);
 
-				if (window.useProductsStorage && sessionStorage && sessionStorage.getItem(('product_'+productId))) {
-					Isotope.createDeferredProduct(sessionStorage.getItem(('product_'+productId)), el);
+				if (window.useProductsStorage && sessionStorage) {
+					var html = sessionStorage.getItem(('product_'+productId));
+
+					if (html) {
+						Isotope.createDeferredProduct(productId, sessionStorage.getItem(('product_'+productId)), el);
+						return;
+					}
 				}
-				else {
-					new Request.Contao({
-						method: 'get',
-						url: (window.location.href+'&loadDeferredProduct='+productId+'&level='+level),
-						onComplete: function(html, text) {
-							Isotope.addProductToStorage(productId, html);
-							Isotope.createDeferredProduct(html, el);
-						}
-					}).send();
-				}
+
+
+				var level = (el.getParent('ul') && el.getParent('ul').get('class').match(/level_/)) ? el.getParent('ul').get('class').replace('level_', '').toInt() : -1;
+
+				new Request.Contao({
+					method: 'get',
+					url: (window.location.href+'&loadDeferredProduct='+productId+'&level='+level),
+					onComplete: function(html, text) {
+						Isotope.addProductToStorage(productId, html);
+						Isotope.createDeferredProduct(productId, html, el);
+					}
+				}).send();
 			}
 		});
 	},
 
-	createDeferredProduct: function(html, el)
+	createDeferredProduct: function(id, html, el)
 	{
 		var temp = new Element('div').set('html', html);
+		temp.getElements('a').addEvent('click', function() { Isotope.removeProductFromStorage(id) });
 		temp.getChildren().each( function(li) { li.inject(el.getParent('li'), 'before') });
 		el.getParent('li').destroy();
 		window.fireEvent('structure');

@@ -183,7 +183,7 @@ $GLOBALS['TL_DCA']['tl_iso_products'] = array
 				'label'				=> &$GLOBALS['TL_LANG']['tl_iso_products']['toggleVariants'],
 				'href'				=> 'ptg=all',
 				'class'				=> 'header_toggle isotope-tools',
-				'attributes'		=> 'onclick="Backend.getScrollOffset();"',
+				'attributes'		=> 'onclick="Backend.getScrollOffset(); Isotope.purgeProductsStorage();"',
 				'button_callback'	=> array('ProductCallbacks', 'toggleVariants')
 			),
 			'groups' => array
