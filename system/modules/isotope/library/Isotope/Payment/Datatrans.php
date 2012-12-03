@@ -1,35 +1,26 @@
-<?php if (!defined('TL_ROOT')) die('You cannot access this file directly!');
+<?php
 
 /**
- * Contao Open Source CMS
- * Copyright (C) 2005-2011 Leo Feyer
+ * Isotope eCommerce for Contao Open Source CMS
  *
- * Formerly known as TYPOlight Open Source CMS.
+ * Copyright (C) 2009-2012 Isotope eCommerce Workgroup
  *
- * This program is free software: you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation, either
- * version 3 of the License, or (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
- * Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public
- * License along with this program. If not, please visit the Free
- * Software Foundation website at <http://www.gnu.org/licenses/>.
- *
- * PHP version 5
- * @copyright  Isotope eCommerce Workgroup 2009-2011
- * @author     Andreas Schempp <andreas@schempp.ch>
- * @author     Leo Unglaub <leo@leo-unglaub.net>
- * @license    http://opensource.org/licenses/lgpl-3.0.html
- * @version    $Id: $
+ * @package    Isotope
+ * @link       http://www.isotopeecommerce.com
+ * @license    http://opensource.org/licenses/lgpl-3.0.html LGPL
  */
 
+namespace Isotope\Payment;
 
-class PaymentDatatrans extends IsotopePayment
+
+/**
+ * Class Datatrans
+ *
+ * @copyright  Isotope eCommerce Workgroup 2009-2012
+ * @author     Andreas Schempp <andreas@schempp.ch>
+ * @author     Leo Unglaub <leo@leo-unglaub.net>
+ */
+class Datatrans extends Payment
 {
 
 	/**
@@ -53,7 +44,7 @@ class PaymentDatatrans extends IsotopePayment
 			$this->log('Payment for order ID "' . $this->Input->post('refno') . '" failed.', __METHOD__, TL_ERROR);
 			return false;
 		}
-		
+
 		$objOrder = new IsotopeOrder();
 
 		if (!$objOrder->findBy('id', $this->Input->post('refno')))
@@ -80,7 +71,7 @@ class PaymentDatatrans extends IsotopePayment
 		{
 			return false;
 		}
-		
+
 		$objOrder->checkout();
 		$objOrder->date_payed = time();
 		$objOrder->save();
@@ -143,7 +134,7 @@ class PaymentDatatrans extends IsotopePayment
 		{
 			$this->redirect($this->addToUrl('step=failed', true));
 		}
-		
+
 		$arrAddress = $this->Isotope->Cart->billing_address;
 
 		$arrParams = array
@@ -167,11 +158,11 @@ class PaymentDatatrans extends IsotopePayment
 			'uppCustomerEmail'		=> $arrAddress['email'],
 			'successUrl'			=> ampersand($this->Environment->base . $this->addToUrl('step=complete', true)),
 			'errorUrl'				=> ampersand($this->Environment->base . $this->addToUrl('step=failed', true)),
-			'￼￼cancelUrl'				=> ampersand($this->Environment->base . $this->addToUrl('step=failed', true)),
+			'cancelUrl'				=> ampersand($this->Environment->base . $this->addToUrl('step=failed', true)),
 			'mod'					=> 'pay',
 			'id'					=> $this->id,
 		);
-		
+
 		// Security signature (see Security Level 2)
 		$arrParams['sign'] = hash_hmac('md5', $arrParams['merchantId'].$arrParams['amount'].$arrParams['currency'].$arrParams['refno'], $this->datatrans_sign);
 
@@ -185,8 +176,8 @@ class PaymentDatatrans extends IsotopePayment
 
 		return $objTemplate->parse();
 	}
-	
-	
+
+
 	/**
 	 * Validate array of post parameter agains required values
 	 * @param array
@@ -202,7 +193,7 @@ class PaymentDatatrans extends IsotopePayment
 				return false;
 			}
 		}
-		
+
 		return true;
 	}
 }
