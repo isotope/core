@@ -212,15 +212,14 @@ class ModuleIsotopeOrderDetails extends ModuleIsotope
 	protected function generateDownload($strFile, $objDownload, $blnDownloadable)
 	{
 		$strUrl = '';
+		$strFileName = basename($strFile);
 
 		if (TL_MODE == 'FE')
 		{
 			global $objPage;
 
-			$strUrl = IsotopeFrontend::addQueryStringToUrl('download=' . $objDownloads->id . ($objDownload->type == 'folder' ? '&amp;file='.$strFile : ''));
+			$strUrl = IsotopeFrontend::addQueryStringToUrl('download=' . $objDownload->id . ($objDownload->type == 'folder' ? '&amp;file='.$strFileName : ''));
 		}
-
-		$strFileName = basename($strFile);
 
 		$arrDownload = array
 		(
@@ -236,7 +235,7 @@ class ModuleIsotopeOrderDetails extends ModuleIsotope
 		{
 			if (!$this->backend && $objDownload->downloads_remaining !== '')
 			{
-				$this->Database->prepare("UPDATE tl_iso_order_downloads SET downloads_remaining=? WHERE id=?")->execute(($objDownloads->downloads_remaining-1), $objDownloads->id);
+				$this->Database->prepare("UPDATE tl_iso_order_downloads SET downloads_remaining=? WHERE id=?")->execute(($objDownload->downloads_remaining-1), $objDownload->id);
 			}
 
 			$this->sendFileToBrowser($strFile);
