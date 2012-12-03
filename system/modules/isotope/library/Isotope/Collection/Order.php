@@ -242,7 +242,7 @@ class Order extends Collection
 	 * @param object
 	 * @return boolean
 	 */
-	public function deleteProduct(\IsotopeProduct $objProduct)
+	public function deleteProduct(Isotope\Product\Standard $objProduct)
 	{
 		if (parent::deleteProduct($objProduct))
 		{

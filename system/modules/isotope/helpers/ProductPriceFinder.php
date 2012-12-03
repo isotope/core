@@ -12,6 +12,8 @@
 
 namespace Isotope;
 
+use \Isotope\Product\Standard as IsotopeProduct;
+
 
 /**
  * Class ProductPriceFinder
@@ -28,7 +30,7 @@ class ProductPriceFinder extends \System
 	 * @param IsotopeProduct
 	 * @return array
 	 */
-	public static function findPrice(\IsotopeProduct $objProduct)
+	public static function findPrice(IsotopeProduct $objProduct)
 	{
 		$blnAdvancedPrices = $objProduct->hasAdvancedPrices();
 		$blnVariantPrices = $objProduct->hasVariantPrices();
@@ -66,7 +68,7 @@ class ProductPriceFinder extends \System
 	 * @param IsotopeProduct
 	 * @return array
 	 */
-	protected static function findProductPrice(\IsotopeProduct $objProduct)
+	protected static function findProductPrice(IsotopeProduct $objProduct)
 	{
 		$arrData = $objProduct->getData();
 
@@ -83,7 +85,7 @@ class ProductPriceFinder extends \System
 	 * @param IsotopeProduct
 	 * @return array
 	 */
-	protected static function findVariantPrice(\IsotopeProduct $objProduct)
+	protected static function findVariantPrice(IsotopeProduct $objProduct)
 	{
 		$time = time();
 		$arrProduct = $objProduct->getData();
@@ -114,7 +116,7 @@ class ProductPriceFinder extends \System
 	 * @param IsotopeProduct
 	 * @return array
 	 */
-	protected static function findAdvancedProductPrice(\IsotopeProduct $objProduct)
+	protected static function findAdvancedProductPrice(IsotopeProduct $objProduct)
 	{
 		return self::getAdvancedPrices(array($objProduct->id), $objProduct->quantity_requested, $objProduct->show_price_tiers);
 	}
@@ -125,7 +127,7 @@ class ProductPriceFinder extends \System
 	 * @param IsotopeProduct
 	 * @return array
 	 */
-	protected static function findAdvancedVariantPrice(\IsotopeProduct $objProduct)
+	protected static function findAdvancedVariantPrice(IsotopeProduct $objProduct)
 	{
 		$arrIds = $objProduct->pid == 0 ? $objProduct->getVariantIds() : array($objProduct->id);
 		$arrData = self::getAdvancedPrices($arrIds, $objProduct->quantity_requested, $objProduct->show_price_tiers);

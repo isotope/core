@@ -12,6 +12,8 @@
 
 namespace Isotope;
 
+use \Isotope\Product\Standard as IsotopeProduct;
+
 
 /**
  * Class Isotope\Frontend
@@ -871,7 +873,7 @@ $endScript";
 			$time = time();
 			$Database = \Database::getInstance();
 
-			$objProductData = $Database->prepare(\IsotopeProduct::getSelectStatement() . "
+			$objProductData = $Database->prepare(IsotopeProduct::getSelectStatement() . "
 													WHERE p1.language='' AND p1.id=?"
 													. (BE_USER_LOGGED_IN === true ? '' : " AND p1.published='1' AND (p1.start='' OR p1.start<$time) AND (p1.stop='' OR p1.stop>$time)"))
 									   ->limit(1)
@@ -916,7 +918,7 @@ $endScript";
 		$time = time();
 		$Database = \Database::getInstance();
 
-		$objProductData = $Database->prepare(\IsotopeProduct::getSelectStatement() . "
+		$objProductData = $Database->prepare(IsotopeProduct::getSelectStatement() . "
 												WHERE p1.pid=0 AND p1.language='' AND p1." . (is_numeric($strAlias) ? 'id' : 'alias') . "=?"
 												. (BE_USER_LOGGED_IN === true ? '' : " AND p1.published='1' AND (p1.start='' OR p1.start<$time) AND (p1.stop='' OR p1.stop>$time)"))
 								   ->limit(1)
@@ -943,7 +945,7 @@ $endScript";
 			$time = time();
 			$Database = \Database::getInstance();
 
-			$objProductData = $Database->execute(\IsotopeProduct::getSelectStatement() . "
+			$objProductData = $Database->execute(IsotopeProduct::getSelectStatement() . "
 													WHERE p1.language='' AND p1.id IN (" . implode(',', array_map('intval', $objProductData)) . ")"
 													. (BE_USER_LOGGED_IN === true ? '' : " AND p1.published='1' AND (p1.start='' OR p1.start<$time) AND (p1.stop='' OR p1.stop>$time)") . "
 													GROUP BY p1.id ORDER BY p1.id=" . implode(' DESC, p1.id=', $objProductData) . " DESC");
@@ -1255,7 +1257,7 @@ $endScript";
 		$arrIsotopeProductPages = array();
 
 		// get all products available
-		$objProducts = $this->Database->execute(\IsotopeProduct::getSelectStatement() . " WHERE p1.language='' AND p1.pid=0 AND p1.published=1 AND (p1.start='' OR p1.start<$time) AND (p1.stop='' OR p1.stop>$time)");
+		$objProducts = $this->Database->execute(IsotopeProduct::getSelectStatement() . " WHERE p1.language='' AND p1.pid=0 AND p1.published=1 AND (p1.start='' OR p1.start<$time) AND (p1.stop='' OR p1.stop>$time)");
 		$arrProducts = self::getProducts($objProducts);
 
 		if (empty($arrProducts))
@@ -1317,7 +1319,7 @@ $endScript";
 	 * @param mixed
 	 * @param IsotopeProduct
 	 */
-	public function saveUpload($varValue, \IsotopeProduct $objProduct, Widget $objWidget)
+	public function saveUpload($varValue, IsotopeProduct $objProduct, Widget $objWidget)
 	{
 		if (is_array($_SESSION['FILES'][$objWidget->name]) && $_SESSION['FILES'][$objWidget->name]['uploaded'] == '1' && $_SESSION['FILES'][$objWidget->name]['error'] == 0)
 		{

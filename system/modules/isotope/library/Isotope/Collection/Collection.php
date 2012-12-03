@@ -12,6 +12,8 @@
 
 namespace Isotope\Collection;
 
+use \Isotope\Product\Standard as IsotopeProduct;
+
 
 /**
  * Class Collection
@@ -468,12 +470,12 @@ abstract class Collection extends \Model
 					}
 					catch (Exception $e)
 					{
-						$objProduct = new \IsotopeProduct(array('id'=>$objItems->product_id, 'sku'=>$objItems->product_sku, 'name'=>$objItems->product_name, 'price'=>$objItems->price), deserialize($objItems->product_options), $this->blnLocked, $objItems->product_quantity);
+						$objProduct = new IsotopeProduct(array('id'=>$objItems->product_id, 'sku'=>$objItems->product_sku, 'name'=>$objItems->product_name, 'price'=>$objItems->price), deserialize($objItems->product_options), $this->blnLocked, $objItems->product_quantity);
 					}
 				}
 				else
 				{
-					$objProduct = new \IsotopeProduct(array('id'=>$objItems->product_id, 'sku'=>$objItems->product_sku, 'name'=>$objItems->product_name, 'price'=>$objItems->price), deserialize($objItems->product_options), $this->blnLocked, $objItems->product_quantity);
+					$objProduct = new IsotopeProduct(array('id'=>$objItems->product_id, 'sku'=>$objItems->product_sku, 'name'=>$objItems->product_name, 'price'=>$objItems->price), deserialize($objItems->product_options), $this->blnLocked, $objItems->product_quantity);
 				}
 
 				// Remove product from collection if it is no longer available
@@ -522,7 +524,7 @@ abstract class Collection extends \Model
 	 * @param integer How many products to add
 	 * @return integer ID of database record added/updated
 	 */
-	public function addProduct(\IsotopeProduct $objProduct, $intQuantity)
+	public function addProduct(IsotopeProduct $objProduct, $intQuantity)
 	{
 		// !HOOK: additional functionality when adding product to collection
 		if (isset($GLOBALS['ISO_HOOKS']['addProductToCollection']) && is_array($GLOBALS['ISO_HOOKS']['addProductToCollection']))
@@ -586,7 +588,7 @@ abstract class Collection extends \Model
 	 * @param array The property(ies) to adjust
 	 * @return integer ID of database record added/updated
 	 */
-	public function updateProduct(\IsotopeProduct $objProduct, $arrSet)
+	public function updateProduct(IsotopeProduct $objProduct, $arrSet)
 	{
 		if (!$objProduct->cart_id)
 		{
@@ -638,7 +640,7 @@ abstract class Collection extends \Model
 	 * @param boolean force deleting the product even if the collection is locked
 	 * @return boolean
 	 */
-	public function deleteProduct(\IsotopeProduct $objProduct)
+	public function deleteProduct(IsotopeProduct $objProduct)
 	{
 		if (!$objProduct->cart_id)
 		{

@@ -10,11 +10,11 @@
  * @license    http://opensource.org/licenses/lgpl-3.0.html LGPL
  */
 
-namespace Isotope;
+namespace Isotope\Product;
 
 
 /**
- * Class IsotopeProduct
+ * Class Product
  *
  * Provide methods to handle Isotope products.
  * @copyright  Isotope eCommerce Workgroup 2009-2012
@@ -22,7 +22,7 @@ namespace Isotope;
  * @author     Fred Bliss <fred.bliss@intelligentspark.com>
  * @author     Christian de la Haye <service@delahaye.de>
  */
-class IsotopeProduct extends \Controller
+class Product extends \Controller
 {
 
 	/**
@@ -502,7 +502,7 @@ class IsotopeProduct extends \Controller
 
 			// Find all possible variant options
 			$objVariant = clone $this;
-			$objVariants = $this->Database->execute(\IsotopeProduct::getSelectStatement() . " WHERE p1.pid={$this->arrData['id']} AND p1.language=''"
+			$objVariants = $this->Database->execute(static::getSelectStatement() . " WHERE p1.pid={$this->arrData['id']} AND p1.language=''"
 													. (BE_USER_LOGGED_IN === true ? '' : " AND p1.published='1' AND (p1.start='' OR p1.start<$time) AND (p1.stop='' OR p1.stop>$time)"));
 
 			while ($objVariants->next())

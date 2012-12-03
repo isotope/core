@@ -58,8 +58,6 @@ ClassLoader::addClasses(array
 	'Isotope\Frontend'                  => 'system/modules/isotope/library/Isotope/Frontend.php',
 	'Isotope\Template'                  => 'system/modules/isotope/library/Isotope/Template.php',
 
-	// Models
-	'Isotope\IsotopeProduct'            => 'system/modules/isotope/models/IsotopeProduct.php',
 	// Library/Isotope/BackendModule
 	'Isotope\Module\Setup'                    => 'system/modules/isotope/library/Isotope/BackendModule/Setup.php',
 
@@ -89,22 +87,25 @@ ClassLoader::addClasses(array
 	'Isotope\Module\RelatedProducts'          => 'system/modules/isotope/library/Isotope/Module/RelatedProducts.php',
 
 	// Library/Isotope/Payment
-	'Isotope\Payment\Payment'                  => 'system/modules/isotope/library/Isotope/Payment/Payment.php',
-	'Isotope\Payment\AuthorizeDotNet'          => 'system/modules/isotope/library/Isotope/Payment/AuthorizeDotNet.php',
-	'Isotope\Payment\Cash'                     => 'system/modules/isotope/library/Isotope/Payment/Cash.php',
-	'Isotope\Payment\Cybersource'              => 'system/modules/isotope/library/Isotope/Payment/Cybersource.php',
-	'Isotope\Payment\Paypal'                   => 'system/modules/isotope/library/Isotope/Payment/Paypal.php',
-	'Isotope\Payment\PaypalPayflowPro'         => 'system/modules/isotope/library/Isotope/Payment/PaypalPayflowPro.php',
-	'Isotope\Payment\Postfinance'              => 'system/modules/isotope/library/Isotope/Payment/Postfinance.php',
-	'Isotope\Payment\CybersourceClient'        => 'system/modules/isotope/library/Isotope/Payment/CybersourceClient.php',
+	'Isotope\Payment\Payment'                 => 'system/modules/isotope/library/Isotope/Payment/Payment.php',
+	'Isotope\Payment\AuthorizeDotNet'         => 'system/modules/isotope/library/Isotope/Payment/AuthorizeDotNet.php',
+	'Isotope\Payment\Cash'                    => 'system/modules/isotope/library/Isotope/Payment/Cash.php',
+	'Isotope\Payment\Cybersource'             => 'system/modules/isotope/library/Isotope/Payment/Cybersource.php',
+	'Isotope\Payment\Paypal'                  => 'system/modules/isotope/library/Isotope/Payment/Paypal.php',
+	'Isotope\Payment\PaypalPayflowPro'        => 'system/modules/isotope/library/Isotope/Payment/PaypalPayflowPro.php',
+	'Isotope\Payment\Postfinance'             => 'system/modules/isotope/library/Isotope/Payment/Postfinance.php',
+	'Isotope\Payment\CybersourceClient'       => 'system/modules/isotope/library/Isotope/Payment/CybersourceClient.php',
+
+	// Library/Isotope/Product
+	'Isotope\Product\Standard'                => 'system/modules/isotope/library/Isotope/Product/Standard.php',
 
 	// Library/Isotope/Shipping
-	'Isotope\Shipping\Shipping'                => 'system/modules/isotope/library/Isotope/Shipping/Shipping.php',
-	'Isotope\Shipping\Flat'                    => 'system/modules/isotope/library/Isotope/Shipping/Flat.php',
-	'Isotope\Shipping\OrderTotal'              => 'system/modules/isotope/library/Isotope/Shipping/OrderTotal.php',
-	'Isotope\Shipping\UPS'                     => 'system/modules/isotope/library/Isotope/Shipping/UPS.php',
-	'Isotope\Shipping\USPS'                    => 'system/modules/isotope/library/Isotope/Shipping/USPS.php',
-	'Isotope\Shipping\WeightTotal'             => 'system/modules/isotope/library/Isotope/Shipping/WeightTotal.php',
+	'Isotope\Shipping\Shipping'               => 'system/modules/isotope/library/Isotope/Shipping/Shipping.php',
+	'Isotope\Shipping\Flat'                   => 'system/modules/isotope/library/Isotope/Shipping/Flat.php',
+	'Isotope\Shipping\OrderTotal'             => 'system/modules/isotope/library/Isotope/Shipping/OrderTotal.php',
+	'Isotope\Shipping\UPS'                    => 'system/modules/isotope/library/Isotope/Shipping/UPS.php',
+	'Isotope\Shipping\USPS'                   => 'system/modules/isotope/library/Isotope/Shipping/USPS.php',
+	'Isotope\Shipping\WeightTotal'            => 'system/modules/isotope/library/Isotope/Shipping/WeightTotal.php',
 
 	// Models
 	'Isotope\Model\Address'             => 'system/modules/isotope/library/Isotope/Model/Address.php',
