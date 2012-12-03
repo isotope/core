@@ -465,6 +465,13 @@ class IsotopeProduct extends Controller
 				if (!$objPage)
 				{
 					$objTargetPage = $this->getPageDetails($varValue);
+
+					if ($objTargetPage === null)
+					{
+						$this->arrData['href_reader'] = '';
+						break;
+					}
+
 					$strUrl  = $this->generateFrontendUrl($objTargetPage->row(), '/product/' . $strUrlKey, $objTargetPage->rootLanguage);
 				}
 				else
@@ -1099,7 +1106,7 @@ class IsotopeProduct extends Controller
 				$varValue = $objWidget->value;
 
 				// Convert date formats into timestamps
-				if (strlen($varValue) && in_array($arrData['eval']['rgxp'], array('date', 'time', 'datim')))
+				if ($varValue != '' && in_array($arrData['eval']['rgxp'], array('date', 'time', 'datim')))
 				{
 					$objDate = new Date($varValue, $GLOBALS['TL_CONFIG'][$arrData['eval']['rgxp'] . 'Format']);
 					$varValue = $objDate->tstamp;

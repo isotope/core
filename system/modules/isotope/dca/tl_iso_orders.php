@@ -423,10 +423,19 @@ class tl_iso_orders extends Backend
 		{
 			$strClass = ++$i%2 ? '' : ' class="tl_bg"';
 
+			if (is_array($v))
+			{
+				$strValue = implode(', ', $v);
+			}
+			else
+			{
+				$strValue = ((strip_tags($v) == $v) ? nl2br($v) : $v);
+			}
+
 			$strBuffer .= '
   <tr>
     <td' . $strClass . ' style="vertical-align:top"><span class="tl_label">'.$k.': </span></td>
-    <td' . $strClass . '>'.((strip_tags($v) == $v) ? nl2br($v) : $v).'</td>
+    <td' . $strClass . '>'.$strValue.'</td>
   </tr>';
 		}
 
