@@ -90,22 +90,22 @@ ClassLoader::addClasses(array
 	'Isotope\ModuleIsotopeSetup'               => 'system/modules/isotope/modules/ModuleIsotopeSetup.php',
 
 	// Payment modules
-	'Isotope\IsotopePayment'           => 'system/modules/isotope/payment_modules/IsotopePayment.php',
-	'Isotope\PaymentAuthorizeDotNet'   => 'system/modules/isotope/payment_modules/PaymentAuthorizeDotNet.php',
-	'Isotope\PaymentCash'              => 'system/modules/isotope/payment_modules/PaymentCash.php',
-	'Isotope\PaymentCybersource'       => 'system/modules/isotope/payment_modules/PaymentCybersource.php',
-	'Isotope\PaymentPaypal'            => 'system/modules/isotope/payment_modules/PaymentPaypal.php',
-	'Isotope\PaymentPaypalPayflowPro'  => 'system/modules/isotope/payment_modules/PaymentPaypalPayflowPro.php',
-	'Isotope\PaymentPostfinance'       => 'system/modules/isotope/payment_modules/PaymentPostfinance.php',
-	'Isotope\CybersourceClient'        => 'system/modules/isotope/payment_modules/CybersourceClient.php',
+	'Isotope\Payment\Payment'                  => 'system/modules/isotope/library/Isotope/Payment/Payment.php',
+	'Isotope\Payment\AuthorizeDotNet'          => 'system/modules/isotope/library/Isotope/Payment/AuthorizeDotNet.php',
+	'Isotope\Payment\Cash'                     => 'system/modules/isotope/library/Isotope/Payment/Cash.php',
+	'Isotope\Payment\Cybersource'              => 'system/modules/isotope/library/Isotope/Payment/Cybersource.php',
+	'Isotope\Payment\Paypal'                   => 'system/modules/isotope/library/Isotope/Payment/Paypal.php',
+	'Isotope\Payment\PaypalPayflowPro'         => 'system/modules/isotope/library/Isotope/Payment/PaypalPayflowPro.php',
+	'Isotope\Payment\Postfinance'              => 'system/modules/isotope/library/Isotope/Payment/Postfinance.php',
+	'Isotope\Payment\CybersourceClient'        => 'system/modules/isotope/library/Isotope/Payment/CybersourceClient.php',
 
 	// Shipping modules
-	'Isotope\IsotopeShipping'          => 'system/modules/isotope/shipping_modules/IsotopeShipping.php',
-	'Isotope\ShippingFlat'             => 'system/modules/isotope/shipping_modules/ShippingFlat.php',
-	'Isotope\ShippingOrderTotal'       => 'system/modules/isotope/shipping_modules/ShippingOrderTotal.php',
-	'Isotope\ShippingUPS'              => 'system/modules/isotope/shipping_modules/ShippingUPS.php',
-	'Isotope\ShippingUSPS'             => 'system/modules/isotope/shipping_modules/ShippingUSPS.php',
-	'Isotope\ShippingWeightTotal'      => 'system/modules/isotope/shipping_modules/ShippingWeightTotal.php',
+	'Isotope\Shipping\Shipping'                => 'system/modules/isotope/library/Isotope/Shipping/Shipping.php',
+	'Isotope\Shipping\Flat'                    => 'system/modules/isotope/library/Isotope/Shipping/Flat.php',
+	'Isotope\Shipping\OrderTotal'              => 'system/modules/isotope/library/Isotope/Shipping/OrderTotal.php',
+	'Isotope\Shipping\UPS'                     => 'system/modules/isotope/library/Isotope/Shipping/UPS.php',
+	'Isotope\Shipping\USPS'                    => 'system/modules/isotope/library/Isotope/Shipping/USPS.php',
+	'Isotope\Shipping\WeightTotal'             => 'system/modules/isotope/library/Isotope/Shipping/WeightTotal.php',
 
 	// Widgets
 	'Isotope\AttributeWizard'          => 'system/modules/isotope/widgets/AttributeWizard.php',

@@ -10,11 +10,13 @@
  * @license    http://opensource.org/licenses/lgpl-3.0.html LGPL
  */
 
-namespace Isotope;
+namespace Isotope\Payment;
+
+use \Isotope\Collection\Order;
 
 
 /**
- * Class PaymentPaypal
+ * Class Paypal
  *
  * Handle Paypal payments
  * @copyright  Isotope eCommerce Workgroup 2009-2012
@@ -22,7 +24,7 @@ namespace Isotope;
  * @author     Fred Bliss <fred.bliss@intelligentspark.com>
  * @author     Christian de la Haye <service@delahaye.de>
  */
-class PaymentPaypal extends IsotopePayment
+class Paypal extends Payment
 {
 
 	/**
@@ -33,7 +35,7 @@ class PaymentPaypal extends IsotopePayment
 	 */
 	public function processPayment()
 	{
-		if (($objOrder = \IsotopeOrder::findOneBy('cart_id', $this->Isotope->Cart->id)) === null)
+		if (($objOrder = \Isotope\Collection\Order::findOneBy('cart_id', $this->Isotope->Cart->id)) === null)
 		{
 			return false;
 		}
@@ -80,7 +82,7 @@ class PaymentPaypal extends IsotopePayment
 		}
 		elseif ($objRequest->response == 'VERIFIED' && (\Input::post('receiver_email', true) == $this->paypal_account || $this->debug))
 		{
-			if (($objOrder = \IsotopeOrder::findByPk(\Input::post('invoice'))) === null)
+			if (($objOrder = Order::findByPk(\Input::post('invoice'))) === null)
 			{
 				$this->log('Order ID "' . \Input::post('invoice') . '" not found', __METHOD__, TL_ERROR);
 				return;
@@ -161,7 +163,7 @@ class PaymentPaypal extends IsotopePayment
 	 */
 	public function checkoutForm()
 	{
-		if (($objOrder = \IsotopeOrder::findOneBy('cart_id', $this->Isotope->Cart->id)) === null)
+		if (($objOrder = Order::findOneBy('cart_id', $this->Isotope->Cart->id)) === null)
 		{
 			$this->redirect($this->addToUrl('step=failed', true));
 		}

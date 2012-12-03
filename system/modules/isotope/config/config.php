@@ -192,23 +192,23 @@ $GLOBALS['BE_FFL']['productTree']			= 'ProductTree';
 /**
  * Shipping modules
  */
-$GLOBALS['ISO_SHIP']['flat']		 = 'ShippingFlat';
-$GLOBALS['ISO_SHIP']['order_total']	 = 'ShippingOrderTotal';
-$GLOBALS['ISO_SHIP']['weight_total'] = 'ShippingWeightTotal';
-$GLOBALS['ISO_SHIP']['ups']			 = 'ShippingUPS';
-$GLOBALS['ISO_SHIP']['usps']		 = 'ShippingUSPS';
+$GLOBALS['ISO_SHIP']['flat']             = 'Isotope\Shipping\Flat';
+$GLOBALS['ISO_SHIP']['order_total']      = 'Isotope\Shipping\OrderTotal';
+$GLOBALS['ISO_SHIP']['weight_total']     = 'Isotope\Shipping\WeightTotal';
+$GLOBALS['ISO_SHIP']['ups']              = 'Isotope\Shipping\UPS';
+$GLOBALS['ISO_SHIP']['usps']             = 'Isotope\Shipping\USPS';
 
 
 /**
  * Payment modules
  */
-$GLOBALS['ISO_PAY']['cash']						= 'PaymentCash';
-$GLOBALS['ISO_PAY']['paypal']					= 'PaymentPaypal';
-$GLOBALS['ISO_PAY']['paypalpro']				= 'PaymentPaypalPro';
-$GLOBALS['ISO_PAY']['paypalpayflowpro']			= 'PaymentPaypalPayflowPro';
-$GLOBALS['ISO_PAY']['postfinance']				= 'PaymentPostfinance';
-$GLOBALS['ISO_PAY']['authorizedotnet']			= 'PaymentAuthorizeDotNet';
-$GLOBALS['ISO_PAY']['cybersource']				= 'PaymentCybersource';
+$GLOBALS['ISO_PAY']['cash']              = 'Isotope\Payment\Cash';
+$GLOBALS['ISO_PAY']['paypal']            = 'Isotope\Payment\Paypal';
+$GLOBALS['ISO_PAY']['paypalpro']         = 'Isotope\Payment\PaypalPro';
+$GLOBALS['ISO_PAY']['paypalpayflowpro']  = 'Isotope\Payment\PaypalPayflowPro';
+$GLOBALS['ISO_PAY']['postfinance']       = 'Isotope\Payment\Postfinance';
+$GLOBALS['ISO_PAY']['authorizedotnet']   = 'Isotope\Payment\AuthorizeDotNet';
+$GLOBALS['ISO_PAY']['cybersource']       = 'Isotope\Payment\Cybersource';
 
 
 /**

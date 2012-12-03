@@ -10,7 +10,9 @@
  * @license    http://opensource.org/licenses/lgpl-3.0.html LGPL
  */
 
-namespace Isotope;
+namespace Isotope\Payment;
+
+use \Isotope\Collection\Order;
 
 
 /**
@@ -22,7 +24,7 @@ namespace Isotope;
  * @author     Fred Bliss <fred.bliss@intelligentspark.com>
  * @author     Christian de la Haye <service@delahaye.de>
  */
-class PaymentCybersource extends IsotopePayment
+class Cybersource extends Payment
 {
 	private $arrCardTypes = array('visa'=>'001','mc'=>'002','amex'=>'003','discover'=>'004','diners'=>'005','carte_blanche'=>'006','jcb'=>'007','enroute'=>'014','jal'=>'021','maestro'=>'024','delta'=>'031','solo'=>'032','visa_electron'=>'033','dankort'=>'034','laser'=>'035','carte_bleue'=>'036','carta_si'=>'037','enc_acct_num'=>'039','uatp'=>'040','maestro_intl'=>'042','ge_money_uk'=>'043');
 
@@ -149,7 +151,7 @@ class PaymentCybersource extends IsotopePayment
 		}
 
 		// Get the order from cart id
-		$objOrder = \IsotopeOrder::findOneBy('cart_id', $this->Isotope->Cart->id);
+		$objOrder = \Isotope\Collection\Order::findOneBy('cart_id', $this->Isotope->Cart->id);
 
 		$objAddress = $this->Isotope->Cart->billingAddress;
 		$intTotal = round($this->Isotope->Cart->grandTotal, 2);
@@ -281,10 +283,10 @@ class PaymentCybersource extends IsotopePayment
 
 	public function backendInterface($intOrderId)
 	{
-		$objOrder = \IsotopeOrder::findByPk($intOrderId);
+		$objOrder = Order::findByPk($intOrderId);
 
 		\Input::setGet('uid', $objOrder->uniqid);
-		$objModule = new ModuleIsotopeOrderDetails($this->Database->execute("SELECT * FROM tl_module WHERE type='iso_orderdetails'"));
+		$objModule = new \Isotope\Module\OrderDetails($this->Database->execute("SELECT * FROM tl_module WHERE type='iso_orderdetails'"));
 
 		$arrPaymentInfo = $objOrder->payment_data;
 

@@ -10,7 +10,7 @@
  * @license    http://opensource.org/licenses/lgpl-3.0.html LGPL
  */
 
-namespace Isotope;
+namespace Isotope\Payment;
 
 
 /**
@@ -19,7 +19,7 @@ namespace Isotope;
  * @copyright  Isotope eCommerce Workgroup 2009-2012
  * @author     Fred Bliss <fred.bliss@intelligentspark.com>
  */
-class CybersourceClient extends SoapClient
+class CybersourceClient extends \SoapClient
 {
    protected $merchantId;
 

@@ -10,18 +10,18 @@
  * @license    http://opensource.org/licenses/lgpl-3.0.html LGPL
  */
 
-namespace Isotope;
+namespace Isotope\Shipping;
 
 
 /**
- * Class IsotopeShipping
+ * Class Shipping
  *
  * Parent class for all shipping gateway modules
  * @copyright  Isotope eCommerce Workgroup 2009-2012
  * @author     Andreas Schempp <andreas.schempp@terminal42.ch>
  * @author     Fred Bliss <fred.bliss@intelligentspark.com>
  */
-abstract class IsotopeShipping extends \Frontend
+abstract class Shipping extends \Frontend
 {
 
 	/**

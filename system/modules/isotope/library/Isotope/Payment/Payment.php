@@ -10,18 +10,18 @@
  * @license    http://opensource.org/licenses/lgpl-3.0.html LGPL
  */
 
-namespace Isotope;
+namespace Isotope\Payment;
 
 
 /**
- * Class IsotopePayment
+ * Class Payment
  *
  * Parent class for all payment gateway modules.
  * @copyright  Isotope eCommerce Workgroup 2009-2012
  * @author     Andreas Schempp <andreas.schempp@terminal42.ch>
  * @author     Fred Bliss <fred.bliss@intelligentspark.com>
  */
-abstract class IsotopePayment extends \Frontend
+abstract class Payment extends \Frontend
 {
 
 	/**

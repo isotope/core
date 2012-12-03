@@ -10,17 +10,17 @@
  * @license    http://opensource.org/licenses/lgpl-3.0.html LGPL
  */
 
-namespace Isotope;
+namespace Isotope\Payment;
 
 
 /**
- * Class PaymentPaypalPayflowPro
+ * Class PaypalPayflowPro
  *
  * Handle Paypal Payflow Pro payments
  * @copyright  Isotope eCommerce Workgroup 2009-2012
  * @author     Fred Bliss <fred.bliss@intelligentspark.com>
  */
-class PaymentPaypalPayflowPro extends IsotopePayment
+class PaypalPayflowPro extends Payment
 {
 
 	/**

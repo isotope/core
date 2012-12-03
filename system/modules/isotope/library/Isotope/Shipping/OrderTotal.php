@@ -10,7 +10,7 @@
  * @license    http://opensource.org/licenses/lgpl-3.0.html LGPL
  */
 
-namespace Isotope;
+namespace Isotope\Shipping;
 
 
 /**
@@ -21,8 +21,9 @@ namespace Isotope;
  * @author     Fred Bliss <fred.bliss@intelligentspark.com>
  * @author     Christian de la Haye <service@delahaye.de>
  */
-class ShippingOrderTotal extends IsotopeShipping
+class OrderTotal extends Shipping
 {
+
 	protected $shipping_options = array();
 
 

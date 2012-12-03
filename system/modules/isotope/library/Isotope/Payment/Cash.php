@@ -10,7 +10,7 @@
  * @license    http://opensource.org/licenses/lgpl-3.0.html LGPL
  */
 
-namespace Isotope;
+namespace Isotope\Payment;
 
 
 /**
@@ -21,7 +21,7 @@ namespace Isotope;
  * @author     Andreas Schempp <andreas.schempp@terminal42.ch>
  * @author     Fred Bliss <fred.bliss@intelligentspark.com>
  */
-class PaymentCash extends IsotopePayment
+class Cash extends Payment
 {
 
 	/**
