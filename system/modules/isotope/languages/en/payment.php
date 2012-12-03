@@ -213,3 +213,13 @@ $GLOBALS['TL_LANG']['MSG']['authorizedotnet']['2']['317']	= "The credit card has
 $GLOBALS['TL_LANG']['MSG']['authorizedotnet']['2']['318']	= "A duplicate transaction has been submitted. - This is a processor-issued decline.";
 $GLOBALS['TL_LANG']['MSG']['authorizedotnet']['2']['319']	= "The transaction cannot be found. - This is a processor-issued decline.";
 
+/**
+ * PAYONE Payment Type
+ */
+$GLOBALS['TL_LANG']['MSG']['payone']['elv']		= 'Debit withdrawal';
+$GLOBALS['TL_LANG']['MSG']['payone']['cc']		= 'Credit card';
+$GLOBALS['TL_LANG']['MSG']['payone']['dc']		= 'Debit card';
+$GLOBALS['TL_LANG']['MSG']['payone']['vor']		= 'Prepayment';
+$GLOBALS['TL_LANG']['MSG']['payone']['rec']		= 'Invoice';
+$GLOBALS['TL_LANG']['MSG']['payone']['sb']		= 'Online bank transfer';
+$GLOBALS['TL_LANG']['MSG']['payone']['wlt']		= 'e-Wallet';

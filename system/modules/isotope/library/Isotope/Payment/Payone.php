@@ -1,34 +1,25 @@
-<?php if (!defined('TL_ROOT')) die('You can not access this file directly!');
+<?php
 
 /**
- * Contao Open Source CMS
- * Copyright (C) 2005-2010 Leo Feyer
+ * Isotope eCommerce for Contao Open Source CMS
  *
- * Formerly known as TYPOlight Open Source CMS.
+ * Copyright (C) 2009-2012 Isotope eCommerce Workgroup
  *
- * This program is free software: you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation, either
- * version 3 of the License, or (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
- * Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public
- * License along with this program. If not, please visit the Free
- * Software Foundation website at <http://www.gnu.org/licenses/>.
- *
- * PHP version 5
- * @copyright  Andreas Schempp 2011
- * @author     Andreas Schempp <andreas@schempp.ch>
- * @license    http://opensource.org/licenses/lgpl-3.0.html
- * @version    $Id$
+ * @package    Isotope
+ * @link       http://www.isotopeecommerce.com
+ * @license    http://opensource.org/licenses/lgpl-3.0.html LGPL
  */
 
+namespace Isotope\Payment;
 
-class PaymentPayone extends IsotopePayment
+
+/**
+ * Class CybersourceClient
+ *
+ * @copyright  Isotope eCommerce Workgroup 2009-2012
+ * @author     Andreas Schempp <andreas.schempp@terminal42.ch>
+ */
+class Payone extends Payment
 {
 
 	/**
@@ -148,8 +139,8 @@ class PaymentPayone extends IsotopePayment
 		$strHash = md5(implode('', $arrData) . $this->payone_key);
 
 		$strBuffer = '
-<h2>' . $GLOBALS['TL_LANG']['MSC']['pay_with_payone'][0] . '</h2>
-<p class="message">' . $GLOBALS['TL_LANG']['MSC']['pay_with_payone'][1] . '</p>
+<h2>' . $GLOBALS['TL_LANG']['MSC']['pay_with_redirect'][0] . '</h2>
+<p class="message">' . $GLOBALS['TL_LANG']['MSC']['pay_with_redirect'][1] . '</p>
 <form id="payment_form" action="https://secure.pay1.de/frontend/" method="post">';
 
 		foreach( $arrData as $k => $v )
@@ -171,7 +162,7 @@ class PaymentPayone extends IsotopePayment
 <input type="hidden" name="telephonenumber" value="' . $this->Isotope->Cart->billing_address['phone'] . '">
 <input type="hidden" name="language" value="' . strtoupper($GLOBALS['TL_LANGUAGE']) . '" />
 
-<input type="submit" value="' . specialchars($GLOBALS['TL_LANG']['MSC']['pay_with_payone'][2]) . '">
+<input type="submit" value="' . specialchars($GLOBALS['TL_LANG']['MSC']['pay_with_redirect'][2]) . '">
 </form>
 
 <script type="text/javascript">

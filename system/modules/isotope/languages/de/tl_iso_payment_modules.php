@@ -106,6 +106,10 @@ $GLOBALS['TL_LANG']['tl_iso_payment_modules']['expercash_paymentMethod']['cc_buy
 $GLOBALS['TL_LANG']['tl_iso_payment_modules']['expercash_paymentMethod']['cc_authorize'] = 'Verbindliche Reservierung auf eine Kreditkarte zum späteren Einzug';
 $GLOBALS['TL_LANG']['tl_iso_payment_modules']['expercash_paymentMethod']['giropay'] = 'Transaktion über giropay';
 $GLOBALS['TL_LANG']['tl_iso_payment_modules']['expercash_paymentMethod']['sofortueberweisung'] = 'Transaktion über Sofortüberweisung';
+$GLOBALS['TL_LANG']['tl_iso_payment_modules']['payone_clearingtype'] = array('Zahlungsmethode', 'Wählen Sie eine Bezahlungsmethode.');
+$GLOBALS['TL_LANG']['tl_iso_payment_modules']['payone_aid'] = array('PAYONE Account-ID', 'Bitte geben Sie Ihre eindeutige PAYONE Account-ID ein.');
+$GLOBALS['TL_LANG']['tl_iso_payment_modules']['payone_portalid'] = array('PAYONE Portal-ID', 'Bitte geben Sie Ihre eindeutige PAYONE Account-ID ein.');
+$GLOBALS['TL_LANG']['tl_iso_payment_modules']['payone_key'] = array('Geheimschlüssel (Key)', 'Geben Sie die Key für dieses Portal ein.');
 $GLOBALS['TL_LANG']['tl_iso_payment_modules']['groups'][0] = 'Mitgliedergruppen';
 $GLOBALS['TL_LANG']['tl_iso_payment_modules']['groups'][1] = 'Diese Bezahlmethode auf bestimmte Mitgliedergruppen beschränken.';
 $GLOBALS['TL_LANG']['tl_iso_payment_modules']['protected'][0] = 'Modul schützen';

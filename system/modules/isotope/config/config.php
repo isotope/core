@@ -212,6 +212,7 @@ $GLOBALS['ISO_PAY']['cybersource']       = 'Isotope\Payment\Cybersource';
 $GLOBALS['ISO_PAY']['datatrans']         = 'Isotope\Payment\Datatrans';
 $GLOBALS['ISO_PAY']['sparkasse']         = 'Isotope\Payment\Sparkasse';
 $GLOBALS['ISO_PAY']['expercash']         = 'Isotope\Payment\Expercash';
+$GLOBALS['ISO_PAY']['payone']            = 'Isotope\Payment\Payone';
 
 
 /**

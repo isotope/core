@@ -220,6 +220,7 @@ $GLOBALS['ISO_LANG']['PAY']['datatrans'][0] = 'Datatrans';
 $GLOBALS['ISO_LANG']['PAY']['datatrans'][1] = 'Ein Zahlungsmodul für den Schweizer Anbieter "Datatrans".';
 $GLOBALS['ISO_LANG']['PAY']['sparkasse'] = array('Sparkasse');
 $GLOBALS['ISO_LANG']['PAY']['expercash'][0] = 'ExperCash';
+$GLOBALS['ISO_LANG']['PAY']['payone'] = array('PayOne');
 $GLOBALS['ISO_LANG']['GAL']['default'][0] = 'Standardgalerie (Lightbox/Mediabox)';
 $GLOBALS['ISO_LANG']['GAL']['default'][1] = '<p>Nutzt die Lightbox/Mediabox für die Vollansicht der Bilder. Wählen Sie das passende moo_-Template in Ihrer Seitenlayout-Konfiguration.</p><p>Sie können mit dem Senkrechtstrich | ein "rel"-Attribut zum Verlinkungsziel hinzufügen (z. B. "tl_files/video.mov|lightbox[400 300]"). Wenn kein "rel"-Attribut vorhanden ist, wird der Link in einem neuen Browser-Fenster geöffnet.';
 $GLOBALS['ISO_LANG']['GAL']['inline'][0] = 'Inline-Galerie';
