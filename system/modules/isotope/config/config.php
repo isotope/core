@@ -37,20 +37,20 @@ array_insert($GLOBALS['BE_MOD']['isotope'], 0, array
 		'tables'					=> array('tl_iso_products', 'tl_iso_groups', 'tl_iso_product_categories', 'tl_iso_downloads', 'tl_iso_related_products', 'tl_iso_prices', 'tl_iso_price_tiers'),
 		'icon'						=> 'system/modules/isotope/assets/store-open.png',
 		'javascript'				=> 'system/modules/isotope/assets/backend.min.js',
-		'generate'					=> array('tl_iso_products', 'generateVariants'),
-		'quick_edit'				=> array('tl_iso_products', 'quickEditVariants'),
-		'import'					=> array('tl_iso_products', 'importAssets'),
+		'generate'					=> array('Isotope\tl_iso_products', 'generateVariants'),
+		'quick_edit'				=> array('Isotope\tl_iso_products', 'quickEditVariants'),
+		'import'					=> array('Isotope\tl_iso_products', 'importAssets'),
 	),
 	'iso_orders' => array
 	(
 		'tables'					=> array('tl_iso_orders', 'tl_iso_order_items'),
 		'icon'						=> 'system/modules/isotope/assets/shopping-basket.png',
 		'javascript'				=> 'system/modules/isotope/assets/backend.min.js',
-		'export_emails'     		=> array('tl_iso_orders', 'exportOrderEmails'),
-		'print_order'				=> array('tl_iso_orders', 'printInvoice'),
-		'print_invoices'			=> array('tl_iso_orders', 'printInvoices'),
-		'payment'					=> array('tl_iso_orders', 'paymentInterface'),
-		'shipping'					=> array('tl_iso_orders', 'shippingInterface'),
+		'export_emails'     		=> array('Isotope\tl_iso_orders', 'exportOrderEmails'),
+		'print_order'				=> array('Isotope\tl_iso_orders', 'printInvoice'),
+		'print_invoices'			=> array('Isotope\tl_iso_orders', 'printInvoices'),
+		'payment'					=> array('Isotope\tl_iso_orders', 'paymentInterface'),
+		'shipping'					=> array('Isotope\tl_iso_orders', 'shippingInterface'),
 	),
 	'iso_setup' => array
 	(
@@ -272,33 +272,33 @@ $GLOBALS['ISO_NUM']["10'000.00"]	= array(2, '.', "'");
 /**
  * Hooks
  */
-$GLOBALS['TL_HOOKS']['loadDataContainer'][]			= array('Isotope', 'loadProductsDataContainer');
-$GLOBALS['TL_HOOKS']['addCustomRegexp'][]			= array('Isotope', 'validateRegexp');
-$GLOBALS['TL_HOOKS']['getSearchablePages'][]		= array('IsotopeFrontend', 'addProductsToSearchIndex');
-$GLOBALS['TL_HOOKS']['replaceInsertTags'][]			= array('IsotopeFrontend', 'replaceIsotopeTags');
-$GLOBALS['TL_HOOKS']['generatePage'][]				= array('IsotopeFrontend', 'injectMessages');
+$GLOBALS['TL_HOOKS']['loadDataContainer'][]			= array('Isotope\Isotope', 'loadProductsDataContainer');
+$GLOBALS['TL_HOOKS']['addCustomRegexp'][]			= array('Isotope\Isotope', 'validateRegexp');
+$GLOBALS['TL_HOOKS']['getSearchablePages'][]		= array('Isotope\Frontend', 'addProductsToSearchIndex');
+$GLOBALS['TL_HOOKS']['replaceInsertTags'][]			= array('Isotope\Frontend', 'replaceIsotopeTags');
+$GLOBALS['TL_HOOKS']['generatePage'][]				= array('Isotope\Frontend', 'injectMessages');
 $GLOBALS['TL_HOOKS']['executePreActions'][]			= array('ProductTree', 'executePreActions');
 $GLOBALS['TL_HOOKS']['executePostActions'][]		= array('ProductTree', 'executePostActions');
-$GLOBALS['TL_HOOKS']['translateUrlParameters'][]	= array('IsotopeFrontend', 'translateProductUrls');
-$GLOBALS['TL_HOOKS']['getSystemMessages'][]			= array('IsotopeBackend', 'getOrderMessages');
-$GLOBALS['TL_HOOKS']['sqlGetFromFile'][]			= array('IsotopeBackend', 'addAttributesToDBUpdate');
-$GLOBALS['TL_HOOKS']['getArticle'][]				= array('IsotopeFrontend', 'storeCurrentArticle');
-$GLOBALS['TL_HOOKS']['generateBreadcrumb'][]		= array('IsotopeFrontend', 'generateBreadcrumb');
-$GLOBALS['ISO_HOOKS']['buttons'][]					= array('Isotope', 'defaultButtons');
-$GLOBALS['ISO_HOOKS']['checkoutSurcharge'][]		= array('IsotopeFrontend', 'getShippingAndPaymentSurcharges');
+$GLOBALS['TL_HOOKS']['translateUrlParameters'][]	= array('Isotope\Frontend', 'translateProductUrls');
+$GLOBALS['TL_HOOKS']['getSystemMessages'][]			= array('Isotope\Backend', 'getOrderMessages');
+$GLOBALS['TL_HOOKS']['sqlGetFromFile'][]			= array('Isotope\Backend', 'addAttributesToDBUpdate');
+$GLOBALS['TL_HOOKS']['getArticle'][]				= array('Isotope\Frontend', 'storeCurrentArticle');
+$GLOBALS['TL_HOOKS']['generateBreadcrumb'][]		= array('Isotope\Frontend', 'generateBreadcrumb');
+$GLOBALS['ISO_HOOKS']['buttons'][]					= array('Isotope\Isotope', 'defaultButtons');
+$GLOBALS['ISO_HOOKS']['checkoutSurcharge'][]		= array('Isotope\Frontend', 'getShippingAndPaymentSurcharges');
 
 if (TL_MODE == 'FE')
 {
 	// Do not parse backend templates
-	$GLOBALS['TL_HOOKS']['parseTemplate'][]			= array('IsotopeFrontend', 'addNavigationClass');
+	$GLOBALS['TL_HOOKS']['parseTemplate'][]			= array('Isotope\Frontend', 'addNavigationClass');
 }
 
 
 /**
  * Cron Jobs
  */
-$GLOBALS['TL_CRON']['daily'][] = array('IsotopeAutomator', 'deleteOldCarts');
-$GLOBALS['TL_CRON']['daily'][] = array('IsotopeAutomator', 'convertCurrencies');
+$GLOBALS['TL_CRON']['daily'][] = array('Isotope\Automator', 'deleteOldCarts');
+$GLOBALS['TL_CRON']['daily'][] = array('Isotope\Automator', 'convertCurrencies');
 
 
 /**

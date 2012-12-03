@@ -56,7 +56,7 @@ class CumulativeFilter extends Module
 
 	/**
 	 * Override initializeFilters() to prevent module from not being shown in front end if there are no filter fields
-	 * @see ModuleIsotopeProductFilter::initializeFilters()
+	 * @see \Isotope\Module\ProductFilter::initializeFilters()
 	 * @return boolean
 	 */
 	protected function initializeFilters()
@@ -124,7 +124,7 @@ class CumulativeFilter extends Module
 				unset($GLOBALS['ISO_FILTERS'][$this->id][$strFilterKey]);
 			}
 
-			// unset GET params because the rest is done by ModuleIsotopeProductFilter::generate()
+			// unset GET params because the rest is done by Isotope\Module\ProductFilter::generate()
 			\Input::setGet('mod', null);
 			\Input::setGet('cfilter', null);
 			\Input::setGet('attr', null);

@@ -33,7 +33,7 @@ class tl_iso_products extends \Backend
 		parent::__construct();
 
 		$this->import('BackendUser', 'User');
-		$this->import('Isotope');
+		$this->import('Isotope\Isotope', 'Isotope');
 	}
 
 
@@ -560,7 +560,7 @@ $strBuffer .= '<th style="text-align:center"><img src="system/themes/default/ima
 		\Input::setGet('id', $intId);
 		\Input::setGet('act', 'toggle');
 
-		$this->import('ProductCallbacks');
+		$this->import('Isotope\ProductCallbacks', 'ProductCallbacks');
 		$this->ProductCallbacks->checkPermission();
 
 /**

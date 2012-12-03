@@ -191,6 +191,8 @@ class tl_iso_producttypes extends \Backend
 	 */
 	public function copyProductType($row, $href, $label, $title, $icon, $attributes)
 	{
+		$this->import('BackendUser', 'User');
+
 		return ($this->User->isAdmin || $this->User->hasAccess('create', 'iso_product_typep')) ? '<a href="'.$this->addToUrl($href.'&amp;id='.$row['id']).'" title="'.specialchars($title).'"'.$attributes.'>'.$this->generateImage($icon, $label).'</a> ' : $this->generateImage(preg_replace('/\.gif$/i', '_.gif', $icon)).' ';
 	}
 

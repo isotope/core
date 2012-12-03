@@ -14,7 +14,7 @@ namespace Isotope\Module;
 
 
 /**
- * Class ModuleIsotopeProductReader
+ * Class ProductReader
  *
  * Front end module Isotope "product reader".
  * @copyright  Isotope eCommerce Workgroup 2009-2012

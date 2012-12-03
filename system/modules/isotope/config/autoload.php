@@ -86,6 +86,10 @@ ClassLoader::addClasses(array
 	'Isotope\Module\ProductVariantList'       => 'system/modules/isotope/library/Isotope/Module/ProductVariantList.php',
 	'Isotope\Module\RelatedProducts'          => 'system/modules/isotope/library/Isotope/Module/RelatedProducts.php',
 
+	// Library/Isotope/Model
+	'Isotope\Model\Address'             => 'system/modules/isotope/library/Isotope/Model/Address.php',
+	'Isotope\Model\Config'              => 'system/modules/isotope/library/Isotope/Model/Config.php',
+
 	// Library/Isotope/Payment
 	'Isotope\Payment\Payment'                 => 'system/modules/isotope/library/Isotope/Payment/Payment.php',
 	'Isotope\Payment\AuthorizeDotNet'         => 'system/modules/isotope/library/Isotope/Payment/AuthorizeDotNet.php',
@@ -107,9 +111,6 @@ ClassLoader::addClasses(array
 	'Isotope\Shipping\USPS'                   => 'system/modules/isotope/library/Isotope/Shipping/USPS.php',
 	'Isotope\Shipping\WeightTotal'            => 'system/modules/isotope/library/Isotope/Shipping/WeightTotal.php',
 
-	// Models
-	'Isotope\Model\Address'             => 'system/modules/isotope/library/Isotope/Model/Address.php',
-	'Isotope\Model\Config'              => 'system/modules/isotope/library/Isotope/Model/Config.php',
 	// Widgets
 	'Isotope\Widget\AttributeWizard'          => 'system/modules/isotope/library/Isotope/Widget/AttributeWizard.php',
 	'Isotope\Widget\FieldWizard'              => 'system/modules/isotope/library/Isotope/Widget/FieldWizard.php',

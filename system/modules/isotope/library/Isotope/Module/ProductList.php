@@ -14,7 +14,7 @@ namespace Isotope\Module;
 
 
 /**
- * Class ModuleIsotopeProductList
+ * Class ProductList
  *
  * The mother of all product lists.
  * @copyright  Isotope eCommerce Workgroup 2009-2012

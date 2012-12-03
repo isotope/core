@@ -14,7 +14,7 @@ namespace Isotope\Module;
 
 
 /**
- * Class ModuleIsotopeProductVariantList
+ * Class ProductVariantList
  *
  * Front end module Isotope "product variant list".
  * @copyright  Isotope eCommerce Workgroup 2009-2012

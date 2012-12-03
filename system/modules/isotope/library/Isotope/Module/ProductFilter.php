@@ -14,7 +14,7 @@ namespace Isotope\Module;
 
 
 /**
- * Class ModuleIsotopeProductFilter
+ * Class ProductFilter
  *
  * Front end module Isotope "product filter".
  * @copyright  Isotope eCommerce Workgroup 2009-2012
