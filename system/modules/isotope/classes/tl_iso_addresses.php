@@ -31,7 +31,7 @@ class tl_iso_addresses extends \Backend
 	 */
 	public function renderLabel($arrAddress)
 	{
-		$this->import('Isotope');
+		$this->import('Isotope\Isotope', 'Isotope');
 
 		$objAddress = new \IsotopeAddressModel();
 		$objAddress->setData($arrAddress);

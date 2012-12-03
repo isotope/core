@@ -50,7 +50,7 @@ abstract class ModuleIsotope extends \Module
 
 		if (TL_MODE == 'FE')
 		{
-			$this->import('Isotope');
+			$this->import('Isotope\Isotope', 'Isotope');
 
 			if (FE_USER_LOGGED_IN === true)
 			{

@@ -32,19 +32,19 @@ $GLOBALS['TL_DCA']['tl_iso_products'] = array
 		'ctable'					=> array('tl_iso_downloads', 'tl_iso_product_categories', 'tl_iso_prices'),
 		'onload_callback' => array
 		(
-			array('ProductCallbacks', 'applyAdvancedFilters'),
-			array('ProductCallbacks', 'checkPermission'),
-			array('ProductCallbacks', 'buildPaletteString'),
-			array('ProductCallbacks', 'loadDefaultProductType')
+			array('Isotope\ProductCallbacks', 'applyAdvancedFilters'),
+			array('Isotope\ProductCallbacks', 'checkPermission'),
+			array('Isotope\ProductCallbacks', 'buildPaletteString'),
+			array('Isotope\ProductCallbacks', 'loadDefaultProductType')
 		),
 		'oncopy_callback' => array
 		(
-			array('ProductCallbacks', 'updateCategorySorting'),
+			array('Isotope\ProductCallbacks', 'updateCategorySorting'),
 		),
 		'onsubmit_callback' => array
 		(
 			array('IsotopeBackend', 'truncateProductCache'),
-			array('ProductCallbacks', 'storeDateAdded')
+			array('Isotope\ProductCallbacks', 'storeDateAdded')
 		),
 	),
 
@@ -65,7 +65,7 @@ $GLOBALS['TL_DCA']['tl_iso_products'] = array
 		(
 			'fields'				=> array('name'),
 			'format'				=> '%s',
-			'label_callback'		=> array('ProductCallbacks', 'getRowLabel'),
+			'label_callback'		=> array('Isotope\ProductCallbacks', 'getRowLabel'),
 		),
 		'global_operations' => array
 		(
@@ -95,7 +95,7 @@ $GLOBALS['TL_DCA']['tl_iso_products'] = array
 				'href'				=> 'filter[]=noimages',
 				'class'				=> 'header_iso_filter_noimages isotope-filter',
 				'attributes'		=> 'onclick="Backend.getScrollOffset();"',
-				'button_callback'	=> array('ProductCallbacks', 'filterButton'),
+				'button_callback'	=> array('Isotope\ProductCallbacks', 'filterButton'),
 			),
 			'filter_nocategory' => array
 			(
@@ -103,7 +103,7 @@ $GLOBALS['TL_DCA']['tl_iso_products'] = array
 				'href'				=> 'filter[]=nocategory',
 				'class'				=> 'header_iso_filter_nocategory isotope-filter',
 				'attributes'		=> 'onclick="Backend.getScrollOffset();"',
-				'button_callback'	=> array('ProductCallbacks', 'filterButton'),
+				'button_callback'	=> array('Isotope\ProductCallbacks', 'filterButton'),
 			),
 			'filter_new_today' => array
 			(
@@ -111,7 +111,7 @@ $GLOBALS['TL_DCA']['tl_iso_products'] = array
 				'href'				=> 'filter[]=new_today',
 				'class'				=> 'header_iso_filter_new_today isotope-filter',
 				'attributes'		=> 'onclick="Backend.getScrollOffset();"',
-				'button_callback'	=> array('ProductCallbacks', 'filterButton'),
+				'button_callback'	=> array('Isotope\ProductCallbacks', 'filterButton'),
 			),
 			'filter_new_week' => array
 			(
@@ -119,7 +119,7 @@ $GLOBALS['TL_DCA']['tl_iso_products'] = array
 				'href'				=> 'filter[]=new_week',
 				'class'				=> 'header_iso_filter_new_week isotope-filter',
 				'attributes'		=> 'onclick="Backend.getScrollOffset();"',
-				'button_callback'	=> array('ProductCallbacks', 'filterButton'),
+				'button_callback'	=> array('Isotope\ProductCallbacks', 'filterButton'),
 			),
 			'filter_new_month' => array
 			(
@@ -127,7 +127,7 @@ $GLOBALS['TL_DCA']['tl_iso_products'] = array
 				'href'				=> 'filter[]=new_month',
 				'class'				=> 'header_iso_filter_new_month isotope-filter',
 				'attributes'		=> 'onclick="Backend.getScrollOffset();"',
-				'button_callback'	=> array('ProductCallbacks', 'filterButton'),
+				'button_callback'	=> array('Isotope\ProductCallbacks', 'filterButton'),
 			),
 			'filter_remove' => array
 			(
@@ -135,7 +135,7 @@ $GLOBALS['TL_DCA']['tl_iso_products'] = array
 				'href'				=> 'filter[]=test',
 				'class'				=> 'header_iso_filter_remove isotope-filter',
 				'attributes'		=> ('onclick="Backend.getScrollOffset();"' . (is_array(\Input::get('filter')) ? '' : ' style="display:none"')),
-				'button_callback'	=> array('ProductCallbacks', 'filterRemoveButton'),
+				'button_callback'	=> array('Isotope\ProductCallbacks', 'filterRemoveButton'),
 			),
 			'tools' => array
 			(
@@ -156,7 +156,7 @@ $GLOBALS['TL_DCA']['tl_iso_products'] = array
 				'href'				=> 'gtg=all',
 				'class'				=> 'header_toggle isotope-tools',
 				'attributes'		=> 'onclick="Backend.getScrollOffset();"',
-				'button_callback'	=> array('ProductCallbacks', 'toggleGroups')
+				'button_callback'	=> array('Isotope\ProductCallbacks', 'toggleGroups')
 			),
 			'toggleVariants' => array
 			(
@@ -164,7 +164,7 @@ $GLOBALS['TL_DCA']['tl_iso_products'] = array
 				'href'				=> 'ptg=all',
 				'class'				=> 'header_toggle isotope-tools',
 				'attributes'		=> 'onclick="Backend.getScrollOffset(); Isotope.purgeProductsStorage();"',
-				'button_callback'	=> array('ProductCallbacks', 'toggleVariants')
+				'button_callback'	=> array('Isotope\ProductCallbacks', 'toggleVariants')
 			),
 			'groups' => array
 			(
@@ -172,7 +172,7 @@ $GLOBALS['TL_DCA']['tl_iso_products'] = array
 				'href'				=> 'table=tl_iso_groups',
 				'class'				=> 'header_iso_groups isotope-tools',
 				'attributes'		=> 'onclick="Backend.getScrollOffset();"',
-				'button_callback'	=> array('ProductCallbacks', 'groupsButton')
+				'button_callback'	=> array('Isotope\ProductCallbacks', 'groupsButton')
 			),
 			'import' => array
 			(
@@ -235,7 +235,7 @@ $GLOBALS['TL_DCA']['tl_iso_products'] = array
 				'label'				=> &$GLOBALS['TL_LANG']['tl_iso_products']['quick_edit'],
 				'href'				=> 'key=quick_edit',
 				'icon'				=> 'system/modules/isotope/assets/table-select-cells.png',
-				'button_callback'	=> array('ProductCallbacks', 'quickEditButton'),
+				'button_callback'	=> array('Isotope\ProductCallbacks', 'quickEditButton'),
 				'attributes'		=> 'class="isotope-tools"',
 			),
 			'generate' => array
@@ -243,7 +243,7 @@ $GLOBALS['TL_DCA']['tl_iso_products'] = array
 				'label'				=> &$GLOBALS['TL_LANG']['tl_iso_products']['generate'],
 				'href'				=> 'key=generate',
 				'icon'				=> 'system/modules/isotope/assets/table-insert-row.png',
-				'button_callback'	=> array('ProductCallbacks', 'generateButton'),
+				'button_callback'	=> array('Isotope\ProductCallbacks', 'generateButton'),
 				'attributes'		=> 'class="isotope-tools"',
 			),
 			'related' => array
@@ -251,7 +251,7 @@ $GLOBALS['TL_DCA']['tl_iso_products'] = array
 				'label'				=> &$GLOBALS['TL_LANG']['tl_iso_products']['related'],
 				'href'				=> 'table=tl_iso_related_products',
 				'icon'				=> 'system/modules/isotope/assets/sitemap.png',
-				'button_callback'	=> array('ProductCallbacks', 'relatedButton'),
+				'button_callback'	=> array('Isotope\ProductCallbacks', 'relatedButton'),
 				'attributes'		=> 'class="isotope-tools"',
 			),
 			'downloads' => array
@@ -259,7 +259,7 @@ $GLOBALS['TL_DCA']['tl_iso_products'] = array
 				'label'				=> &$GLOBALS['TL_LANG']['tl_iso_products']['downloads'],
 				'href'				=> 'table=tl_iso_downloads',
 				'icon'				=> 'system/modules/isotope/assets/paper-clip.png',
-				'button_callback'	=> array('ProductCallbacks', 'downloadsButton'),
+				'button_callback'	=> array('Isotope\ProductCallbacks', 'downloadsButton'),
 				'attributes'		=> 'class="isotope-tools"',
 			),
 			'prices' => array
@@ -267,7 +267,7 @@ $GLOBALS['TL_DCA']['tl_iso_products'] = array
 				'label'				=> &$GLOBALS['TL_LANG']['tl_iso_products']['prices'],
 				'href'				=> 'table=tl_iso_prices',
 				'icon'				=> 'system/modules/isotope/assets/price-tag.png',
-				'button_callback'	=> array('ProductCallbacks', 'pricesButton'),
+				'button_callback'	=> array('Isotope\ProductCallbacks', 'pricesButton'),
 				'attributes'		=> 'class="isotope-tools"',
 			),
 		),
@@ -306,7 +306,7 @@ $GLOBALS['TL_DCA']['tl_iso_products'] = array
 			'exclude'               => true,
 			'filter'				=> true,
 			'inputType'				=> 'select',
-			'options_callback'		=> array('ProductCallbacks', 'getProductTypes'),
+			'options_callback'		=> array('Isotope\ProductCallbacks', 'getProductTypes'),
 			'foreignKey'			=> (strlen(\Input::get('table')) ? 'tl_iso_producttypes.name' : null),
 			'eval'					=> array('mandatory'=>true, 'submitOnChange'=>true, 'includeBlankOption'=>true, 'tl_class'=>'clr'),
 			'attributes'			=> array('legend'=>'general_legend', 'fixed'=>true, 'inherit'=>true),
@@ -322,11 +322,11 @@ $GLOBALS['TL_DCA']['tl_iso_products'] = array
 			'attributes'			=> array('legend'=>'general_legend', 'fixed'=>true, 'inherit'=>true),
 			'load_callback'			=> array
 			(
-				array('ProductCallbacks', 'loadProductCategories'),
+				array('Isotope\ProductCallbacks', 'loadProductCategories'),
 			),
 			'save_callback'			=> array
 			(
-				array('ProductCallbacks', 'saveProductCategories'),
+				array('Isotope\ProductCallbacks', 'saveProductCategories'),
 			),
 		),
 		'inherit' => array
@@ -347,7 +347,7 @@ $GLOBALS['TL_DCA']['tl_iso_products'] = array
 			'attributes'			=> array('legend'=>'general_legend', 'fixed'=>true, 'inherit'=>true),
 			'save_callback' => array
 			(
-				array('ProductCallbacks', 'generateAlias'),
+				array('Isotope\ProductCallbacks', 'generateAlias'),
 			),
 		),
 		'sku' => array

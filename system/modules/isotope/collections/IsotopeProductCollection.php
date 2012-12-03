@@ -98,7 +98,7 @@ abstract class IsotopeProductCollection extends \Model
 			register_shutdown_function(array($this, 'saveDatabase'));
 		}
 
-		$this->import('Isotope');
+		$this->import('Isotope\Isotope', 'Isotope');
 	}
 
 
@@ -500,7 +500,6 @@ abstract class IsotopeProductCollection extends \Model
 
 		if (strlen($strTemplate))
 		{
-			$this->import('Isotope');
 			$objTemplate = new \IsotopeTemplate($strTemplate);
 
 			$objTemplate->products = $this->arrProducts;

@@ -167,7 +167,7 @@ class MediaManager extends \Widget implements \uploadable
 			$objParent = $this->Database->execute("SELECT * FROM {$this->strTable} WHERE id={$this->currentRecord}");
 			$arrParent = deserialize($objParent->{$this->strField});
 
-			$this->import('Isotope');
+			$this->import('Isotope\Isotope', 'Isotope');
 			$this->varValue = $this->Isotope->mergeMediaData($this->varValue, $arrParent);
 		}
 

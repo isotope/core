@@ -30,7 +30,7 @@ class tl_iso_orders extends \Backend
 	public function __construct()
 	{
 		parent::__construct();
-		$this->import('Isotope');
+		$this->import('Isotope\Isotope', 'Isotope');
 	}
 
 
@@ -422,8 +422,6 @@ class tl_iso_orders extends \Backend
 	 */
 	public function generateInvoices(array $arrIds)
 	{
-		$this->import('Isotope');
-
 		if (empty($arrIds))
 		{
 			$this->log('No order IDs passed to method.', __METHOD__, TL_ERROR);

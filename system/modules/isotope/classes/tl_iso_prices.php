@@ -36,7 +36,7 @@ class tl_iso_prices extends \Backend
 			return '';
 		}
 
-		$this->import('Isotope');
+		$this->import('Isotope\Isotope', 'Isotope');
 
 		$arrTiers = array();
 		$objTiers = $this->Database->execute("SELECT * FROM tl_iso_price_tiers WHERE pid={$row['id']} ORDER BY min");

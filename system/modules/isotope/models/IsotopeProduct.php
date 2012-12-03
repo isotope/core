@@ -120,7 +120,7 @@ class IsotopeProduct extends \Controller
 	{
 		parent::__construct();
 		$this->import('Database');
-		$this->import('Isotope');
+		$this->import('Isotope\Isotope', 'Isotope');
 
 		if (FE_USER_LOGGED_IN === true)
 		{

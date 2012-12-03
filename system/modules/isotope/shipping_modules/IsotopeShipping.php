@@ -51,7 +51,7 @@ abstract class IsotopeShipping extends \Frontend
 	{
 		parent::__construct();
 
-		$this->import('Isotope');
+		$this->import('Isotope\Isotope', 'Isotope');
 		$this->arrData = $arrRow;
 	}
 

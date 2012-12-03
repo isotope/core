@@ -50,7 +50,7 @@ class IsotopeRules extends \Controller
 
 		$this->import('Database');
 		$this->import('FrontendUser', 'User');
-		$this->import('Isotope');
+		$this->import('Isotope\Isotope', 'Isotope');
 	}
 
 

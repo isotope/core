@@ -91,7 +91,7 @@ class ModuleIsotopeOrderHistory extends ModuleIsotope
 			return;
 		}
 
-		$this->import('Isotope');
+		$this->import('Isotope\Isotope', 'Isotope');
 		$arrOrders = array();
 
 		while ($objOrders->next())

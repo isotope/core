@@ -42,7 +42,7 @@ class IsotopeAddressModel extends \Model
 	{
 		parent::__construct();
 
-		$this->import('Isotope');
+		$this->import('Isotope\Isotope', 'Isotope');
 
 		if (!is_array($GLOBALS['ISO_ADR']))
 		{

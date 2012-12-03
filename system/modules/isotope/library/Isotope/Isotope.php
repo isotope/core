@@ -804,7 +804,7 @@ class Isotope extends \Controller
 	{
 		if ($strTable == 'tl_iso_products')
 		{
-			$this->import('tl_iso_products');
+			$this->import('Isotope\tl_iso_products', 'tl_iso_products');
 			$this->tl_iso_products->loadProductsDCA();
 		}
 

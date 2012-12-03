@@ -169,7 +169,7 @@ class tl_iso_tax_rate extends \Backend
 
 		if ($row['config'] && !$arrRate['unit'])
 		{
-			$this->import('Isotope');
+			$this->import('Isotope\Isotope', 'Isotope');
 			$this->Isotope->overrideConfig($row['config']);
 
 			$strRate = $this->Isotope->formatPriceWithCurrency($arrRate['value'], false);

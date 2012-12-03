@@ -92,7 +92,7 @@ class ModuleIsotopeOrderDetails extends ModuleIsotope
 		$arrOrder = $objOrder->getData();
 		$this->Template->setData($arrOrder);
 
-		$this->import('Isotope');
+		$this->import('Isotope\Isotope', 'Isotope');
 		$this->Isotope->overrideConfig($objOrder->config_id);
 
 		// Article reader

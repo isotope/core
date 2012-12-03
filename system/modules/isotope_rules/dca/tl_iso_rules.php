@@ -642,7 +642,7 @@ class tl_iso_rules extends \Backend
 	 */
 	public function getAttributeNames($dc)
 	{
-		$this->import('Isotope');
+		$this->import('Isotope\Isotope', 'Isotope');
 
 		$arrAttributes = array();
 
