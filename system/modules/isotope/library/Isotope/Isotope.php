@@ -725,21 +725,6 @@ class Isotope extends \Controller
 
 
 	/**
-	 * Generate an address string
-	 * @deprecated Please use the IsotopeAddressModel class
-	 */
-	public function generateAddressString($arrAddress, $arrFields=null)
-	{
-		trigger_error('Using Isotope::generateAddressString() is deprecated. Please use the IsotopeAddressModel class.', E_USER_NOTICE);
-
-		$objAddress = new \IsotopeAddressModel();
-		$objAddress->setData($arrAddress);
-
-		return $objAddress->generateHtml($arrFields);
-	}
-
-
-	/**
 	 * Send an email using the isotope e-mail templates
 	 * @param integer
 	 * @param string
@@ -1184,18 +1169,6 @@ class Isotope extends \Controller
 		}
 
 		return $arrCurrent;
-	}
-
-
-	/**
-	 * Return select statement to load product data including multilingual fields
-	 * @deprecated Moved to static function IsotopeProduct::getProductStatement()
-	 * @see	IsotopeProduct::getProductStatement()
-	 */
-	public function getProductSelect()
-	{
-		trigger_error('Using Isotope::getProductSelect() is deprecated. Please use IsotopeProduct::getProductStatement()', E_USER_NOTICE);
-		return \IsotopeProduct::getProductStatement();
 	}
 }
 

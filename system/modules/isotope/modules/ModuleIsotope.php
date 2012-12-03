@@ -90,42 +90,6 @@ abstract class ModuleIsotope extends \Module
 
 
 	/**
-	 * Shortcut for a single product by ID or from database result
-	 * @deprecated
-	 * @see IsotopeFrontend::getProduct()
-	 */
-	protected function getProduct($objProductData, $blnCheckAvailability=true)
-	{
-		trigger_error('Using ModuleIsotope::getProduct() is deprecated. Please use IsotopeFrontend::getProduct()', E_USER_NOTICE);
-		return IsotopeFrontend::getProduct($objProductData, IsotopeFrontend::getReaderPageId(null, $this->iso_reader_jumpTo), $blnCheckAvailability);
-	}
-
-
-	/**
-	 * Shortcut for a single product by alias (from url?)
-	 * @deprecated
-	 * @see IsotopeFrontend::getProducts()
-	 */
-	protected function getProductByAlias($strAlias, $blnCheckAvailability=true)
-	{
-		trigger_error('Using ModuleIsotope::getProductByAlias() is deprecated. Please use IsotopeFrontend::getProductByAlias()', E_USER_NOTICE);
-		return IsotopeFrontend::getProductByAlias($strAlias, IsotopeFrontend::getReaderPageId(null, $this->iso_reader_jumpTo), $blnCheckAvailability);
-	}
-
-
-	/**
-	 * Generate products from database result or array of IDs
-	 * @deprecated
-	 * @see IsotopeFrontend::getProducts()
-	 */
-	protected function getProducts($objProductData, $blnCheckAvailability=true, array $arrFilters=array(), array $arrSorting=array())
-	{
-		trigger_error('Using ModuleIsotope::getProducts() is deprecated. Please use IsotopeFrontend::getProducts()', E_USER_NOTICE);
-		return IsotopeFrontend::getProducts($objProductData, IsotopeFrontend::getReaderPageId(null, $this->iso_reader_jumpTo), $blnCheckAvailability, $arrFilters, $arrSorting);
-	}
-
-
-	/**
 	 * The ids of all pages we take care of. This is what should later be used eg. for filter data.
 	 * @param string
 	 * @return array
