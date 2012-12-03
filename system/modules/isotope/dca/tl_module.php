@@ -54,7 +54,7 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['iso_list_layout'] = array
 	'label'						=> &$GLOBALS['TL_LANG']['tl_module']['iso_list_layout'],
 	'exclude'					=> true,
 	'inputType'					=> 'select',
-	'options_callback'			=> array('tl_module_isotope', 'getListTemplates'),
+	'options_callback'			=> array('Isotope\tl_module', 'getListTemplates'),
 	'eval'						=> array('includeBlankOption'=>true, 'tl_class'=>'w50', 'chosen'=>true)
 );
 
@@ -63,7 +63,7 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['iso_reader_layout'] = array
 	'label'						=> &$GLOBALS['TL_LANG']['tl_module']['iso_reader_layout'],
 	'exclude'					=> true,
 	'inputType'					=> 'select',
-	'options_callback'			=> array('tl_module_isotope', 'getReaderTemplates'),
+	'options_callback'			=> array('Isotope\tl_module', 'getReaderTemplates'),
 	'eval'						=> array('includeBlankOption'=>true, 'chosen'=>true, 'tl_class'=>'w50')
 );
 
@@ -72,7 +72,7 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['iso_cart_layout'] = array
 	'label'						=> &$GLOBALS['TL_LANG']['tl_module']['iso_cart_layout'],
 	'exclude'					=> true,
 	'inputType'					=> 'select',
-	'options_callback'			=> array('tl_module_isotope', 'getCartTemplates'),
+	'options_callback'			=> array('Isotope\tl_module', 'getCartTemplates'),
 	'eval'						=> array('tl_class'=>'w50', 'chosen'=>true)
 );
 
@@ -82,7 +82,7 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['iso_filterTpl'] = array
 	'exclude'					=> true,
 	'default'					=> 'iso_filter_default',
 	'inputType'					=> 'select',
-	'options_callback'			=> array('tl_module_isotope', 'getFilterTemplates'),
+	'options_callback'			=> array('Isotope\tl_module', 'getFilterTemplates'),
 	'eval'						=> array('mandatory'=>true, 'tl_class'=>'w50', 'chosen'=>true)
 );
 
@@ -181,7 +181,7 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['iso_payment_modules'] = array
 	'exclude'                 => true,
 	'inputType'               => 'checkboxWizard',
 	'eval'					  => array('multiple'=>true),
-	'options_callback'		  => array('tl_module_isotope','getPaymentModules')
+	'options_callback'		  => array('Isotope\tl_module','getPaymentModules')
 );
 
 $GLOBALS['TL_DCA']['tl_module']['fields']['iso_shipping_modules'] = array
@@ -190,7 +190,7 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['iso_shipping_modules'] = array
 	'exclude'                 => true,
 	'inputType'               => 'checkboxWizard',
 	'eval'					  => array('multiple'=>true),
-	'options_callback'		  => array('tl_module_isotope','getShippingModules')
+	'options_callback'		  => array('Isotope\tl_module','getShippingModules')
 );
 
 $GLOBALS['TL_DCA']['tl_module']['fields']['orderCompleteJumpTo'] = array
@@ -317,7 +317,7 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['iso_filterModules'] = array
 	'label'                   => &$GLOBALS['TL_LANG']['tl_module']['iso_filterModules'],
 	'exclude'                 => true,
 	'inputType'               => 'checkboxWizard',
-	'options_callback'		  => array('tl_module_isotope', 'getFilterModules'),
+	'options_callback'		  => array('Isotope\tl_module', 'getFilterModules'),
 	'eval'					  => array('multiple'=>true, 'tl_class'=>'clr'),
 );
 
@@ -326,7 +326,7 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['iso_filterFields'] = array
 	'label'                   => &$GLOBALS['TL_LANG']['tl_module']['iso_filterFields'],
 	'exclude'                 => true,
 	'inputType'               => 'checkboxWizard',
-	'options_callback'		  => array('tl_module_isotope', 'getFilterFields'),
+	'options_callback'		  => array('Isotope\tl_module', 'getFilterFields'),
 	'eval'					  => array('multiple'=>true, 'tl_class'=>'clr'),
 );
 
@@ -335,7 +335,7 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['iso_searchFields'] = array
 	'label'                   => &$GLOBALS['TL_LANG']['tl_module']['iso_searchFields'],
 	'exclude'                 => true,
 	'inputType'               => 'checkboxWizard',
-	'options_callback'		  => array('tl_module_isotope', 'getSearchFields'),
+	'options_callback'		  => array('Isotope\tl_module', 'getSearchFields'),
 	'eval'					  => array('multiple'=>true, 'tl_class'=>'w50 w50h'),
 );
 
@@ -344,7 +344,7 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['iso_searchAutocomplete'] = array
 	'label'                   => &$GLOBALS['TL_LANG']['tl_module']['iso_searchAutocomplete'],
 	'exclude'                 => true,
 	'inputType'               => 'select',
-	'options_callback'		  => array('tl_module_isotope', 'getAutocompleteFields'),
+	'options_callback'		  => array('Isotope\tl_module', 'getAutocompleteFields'),
 	'eval'					  => array('tl_class'=>'w50', 'includeBlankOption'=>true),
 );
 
@@ -353,7 +353,7 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['iso_sortingFields'] = array
 	'label'                   => &$GLOBALS['TL_LANG']['tl_module']['iso_sortingFields'],
 	'exclude'                 => true,
 	'inputType'               => 'checkboxWizard',
-	'options_callback'		  => array('tl_module_isotope', 'getSortingFields'),
+	'options_callback'		  => array('Isotope\tl_module', 'getSortingFields'),
 	'eval'					  => array('multiple'=>true, 'tl_class'=>'clr'),
 );
 
@@ -397,7 +397,7 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['iso_listingSortField'] = array
 	'label'                   => &$GLOBALS['TL_LANG']['tl_module']['iso_listingSortField'],
 	'exclude'                 => true,
 	'inputType'               => 'select',
-	'options_callback'		  => array('tl_module_isotope', 'getSortingFields'),
+	'options_callback'		  => array('Isotope\tl_module', 'getSortingFields'),
 	'eval'					  => array('includeBlankOption'=>true, 'tl_class'=>'clr w50'),
 	'save_callback' => array
 	(
@@ -422,7 +422,7 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['iso_buttons'] = array
 	'exclude'                 => true,
 	'inputType'               => 'checkboxWizard',
 	'default'				  => array('add_to_cart'),
-	'options_callback'		  => array('tl_module_isotope', 'getButtons'),
+	'options_callback'		  => array('Isotope\tl_module', 'getButtons'),
 	'eval'					  => array('multiple'=>true, 'tl_class'=>'clr'),
 );
 
@@ -450,294 +450,4 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['iso_continueShopping'] = array
 	'inputType'               => 'checkbox',
 	'eval'					  => array('tl_class'=>'w50 m12'),
 );
-
-
-/**
- * Class tl_module_isotope
- * Provide miscellaneous methods that are used by the data configuration array.
- */
-class tl_module_isotope extends \Backend
-{
-
-	/**
-	 * Load tl_iso_products data container and language file
-	 */
-	public function __construct()
-	{
-		parent::__construct();
-		$this->loadDataContainer('tl_iso_products');
-		$this->loadLanguageFile('tl_iso_products');
-	}
-
-
-	/**
-	 * Get the attribute filter fields and return them as array
-	 * @return array
-	 */
-	public function getFilterFields()
-	{
-		$arrAttributes = array();
-
-		foreach ($GLOBALS['TL_DCA']['tl_iso_products']['fields'] as $field => $arrData)
-		{
-			if ($arrData['attributes']['fe_filter'])
-			{
-				$arrAttributes[$field] = strlen($arrData['label'][0]) ? $arrData['label'][0] : $field;
-			}
-		}
-
-		return $arrAttributes;
-	}
-
-
-	/**
-	 * Get the attribute sorting fields and return them as array
-	 * @return array
-	 */
-	public function getSortingFields()
-	{
-		$arrAttributes = array();
-
-		foreach ($GLOBALS['TL_DCA']['tl_iso_products']['fields'] as $field => $arrData)
-		{
-			if ($arrData['attributes']['fe_sorting'])
-			{
-				$arrAttributes[$field] = strlen($arrData['label'][0]) ? $arrData['label'][0] : $field;
-			}
-		}
-
-		return $arrAttributes;
-	}
-
-
-	/**
-	 * Get the attribute search fields and return them as array
-	 * @return array
-	 */
-	public function getSearchFields()
-	{
-		$arrAttributes = array();
-
-		foreach ($GLOBALS['TL_DCA']['tl_iso_products']['fields'] as $field => $arrData)
-		{
-			if ($arrData['attributes']['fe_search'])
-			{
-				$arrAttributes[$field] = strlen($arrData['label'][0]) ? $arrData['label'][0] : $field;
-			}
-		}
-
-		return $arrAttributes;
-	}
-
-
-	/**
-	 * Get the attribute autocomplete fields and return them as array
-	 * @return array
-	 */
-	public function getAutocompleteFields()
-	{
-		$arrAttributes = array();
-
-		foreach ($GLOBALS['TL_DCA']['tl_iso_products']['fields'] as $field => $arrData)
-		{
-			if ($arrData['attributes']['fe_search'] && !$arrData['attributes']['dynamic'])
-			{
-				$arrAttributes[$field] = strlen($arrData['label'][0]) ? $arrData['label'][0] : $field;
-			}
-		}
-
-		return $arrAttributes;
-	}
-
-
-	/**
-	 * Returns a list of all payment modules
-	 * @return array
-	 */
-	public function getPaymentModules()
-	{
-		$arrPaymentModules = array();
-		$objPaymentModules = $this->Database->execute("SELECT * FROM tl_iso_payment_modules");
-
-		while ($objPaymentModules->next())
-		{
-			$arrPaymentModules[$objPaymentModules->id] = $objPaymentModules->name;
-		}
-
-		return $arrPaymentModules;
-	}
-
-
-	/**
-	 * Get all enabled shipping modules and return them as array
-	 * @return array
-	 */
-	public function getShippingModules()
-	{
-		$arrModules = array();
-		$objModules = $this->Database->execute("SELECT * FROM tl_iso_shipping_modules WHERE enabled=1");
-
-		while ($objModules->next())
-		{
-			$arrModules[$objModules->id] = $objModules->name;
-		}
-
-		return $arrModules;
-	}
-
-
-	/**
-	 * Get all login modules and return them as array
-	 * @return array
-	 */
-	public function getLoginModuleList()
-	{
-		$arrModules = array();
-		$objModules = $this->Database->execute("SELECT id, name FROM tl_module WHERE type='login'");
-
-		while ($objModules->next())
-		{
-			$arrModules[$objModules->id] = $objModules->name;
-		}
-
-		return $arrModules;
-	}
-
-
-	/**
-	 * Get all buttons and return them as array
-	 * @return array
-	 */
-	public function getButtons()
-	{
-		$arrOptions = array();
-		$arrButtons = array();
-
-		// !HOOK: add product buttons
-		if (isset($GLOBALS['ISO_HOOKS']['buttons']) && is_array($GLOBALS['ISO_HOOKS']['buttons']))
-		{
-			foreach ($GLOBALS['ISO_HOOKS']['buttons'] as $callback)
-			{
-				$this->import($callback[0]);
-				$arrButtons = $this->$callback[0]->$callback[1]($arrButtons);
-			}
-		}
-
-		foreach ($arrButtons as $button => $data)
-		{
-			$arrOptions[$button] = $data['label'];
-		}
-
-		return $arrOptions;
-	}
-
-
-	/**
-	 * Return list templates as array
-	 * @param DataContainer
-	 * @return array
-	 */
-	public function getListTemplates(\DataContainer $dc)
-	{
-		$intPid = $dc->activeRecord->pid;
-
-		if (\Input::get('act') == 'overrideAll')
-		{
-			$intPid = \Input::get('id');
-		}
-
-		return IsotopeBackend::getTemplates('iso_list_', $intPid);
-	}
-
-
-	/**
-	 * Return reader templates as array
-	 * @param DataContainer
-	 * @return array
-	 */
-	public function getReaderTemplates(\DataContainer $dc)
-	{
-		$intPid = $dc->activeRecord->pid;
-
-		if (\Input::get('act') == 'overrideAll')
-		{
-			$intPid = \Input::get('id');
-		}
-
-		return IsotopeBackend::getTemplates('iso_reader_', $intPid);
-	}
-
-
-	/**
-	 * Return cart templates as array
-	 * @param DataContainer
-	 * @return array
-	 */
-	public function getCartTemplates(\DataContainer $dc)
-	{
-		$intPid = $dc->activeRecord->pid;
-
-		if (\Input::get('act') == 'overrideAll')
-		{
-			$intPid = \Input::get('id');
-		}
-
-		return IsotopeBackend::getTemplates('iso_cart_', $intPid);
-	}
-
-
-	/**
-	 * Return filter templates as array
-	 * @param DataContainer
-	 * @return array
-	 */
-	public function getFilterTemplates(\DataContainer $dc)
-	{
-		$intPid = $dc->activeRecord->pid;
-
-		if (\Input::get('act') == 'overrideAll')
-		{
-			$intPid = \Input::get('id');
-		}
-
-		return IsotopeBackend::getTemplates('iso_filter_', $intPid);
-	}
-
-
-	/**
-	 * Get all filter modules and return them as array
-	 * @param DataContainer
-	 * @return array
-	 */
-	public function getFilterModules(\DataContainer $dc)
-	{
-		$arrClasses = array();
-
-		foreach ($GLOBALS['FE_MOD'] as $strGroup => $arrModules)
-		{
-			foreach ($arrModules as $strName => $strClass)
-			{
-				if ($strClass != '' && !$this->classFileExists($strClass))
-				{
-					continue;
-				}
-
-				if ($strClass == 'ModuleIsotopeProductFilter' || is_subclass_of($strClass, 'ModuleIsotopeProductFilter'))
-				{
-					$arrClasses[] = $strName;
-				}
-			}
-		}
-
-		$arrModules = array();
-		$objModules = $this->Database->execute("SELECT * FROM tl_module WHERE type IN ('" . implode("','", $arrClasses) . "')");
-
-		while ($objModules->next())
-		{
-			$arrModules[$objModules->id] = $objModules->name;
-		}
-
-		return $arrModules;
-	}
-}
 

@@ -40,7 +40,7 @@ $GLOBALS['TL_DCA']['tl_iso_mail_content'] = array
 			'panelLayout'             => 'filter;search,limit',
 			'headerFields'            => array('name', 'senderName', 'sender'),
 			'disableGrouping'		  => true,
-			'child_record_callback'   => array('tl_iso_mail_content', 'listRows'),
+			'child_record_callback'   => array('Isotope\tl_iso_mail_content', 'listRows'),
 		),
 		'label' => array
 		(
@@ -153,40 +153,3 @@ $GLOBALS['TL_DCA']['tl_iso_mail_content'] = array
 		),
 	)
 );
-
-
-/**
- * Class tl_iso_mail_content
- * Provide miscellaneous methods that are used by the data configuration array.
- */
-class tl_iso_mail_content extends \Backend
-{
-
-	/**
-	 * Available languages
-	 * @var array
-	 */
-	protected $arrLanguages;
-
-
-	/**
-	 * List contents of the e-mail
-	 * @param array
-	 * @return string
-	 */
-	public function listRows($arrRow)
-	{
-		if (!is_array($this->arrLanguages))
-		{
-			$arrLanguages = $this->getLanguages();
-		}
-
-		return '
-<div class="cte_type published"><strong>' . $arrRow['subject'] . '</strong> - ' . $arrLanguages[$arrRow['language']] . ($arrRow['fallback'] ? (' (' . $GLOBALS['TL_LANG']['tl_iso_mail_content']['fallback'][0] . ')') : '') . '</div>
-<div class="limit_height' . (!$GLOBALS['TL_CONFIG']['doNotCollapse'] ? ' h64' : '') . ' block">
-' . $arrRow['html'] . '
-<hr>
-' . nl2br($arrRow['text']) . '
-</div>' . "\n";
-	}
-}

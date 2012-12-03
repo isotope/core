@@ -26,6 +26,28 @@ ClassLoader::addNamespaces(array
  */
 ClassLoader::addClasses(array
 (
+	// Classes
+	'Isotope\tl_content'                => 'system/modules/isotope/classes/tl_content.php',
+	'Isotope\tl_iso_addresses'          => 'system/modules/isotope/classes/tl_iso_addresses.php',
+	'Isotope\tl_iso_config'             => 'system/modules/isotope/classes/tl_iso_config.php',
+	'Isotope\tl_iso_downloads'          => 'system/modules/isotope/classes/tl_iso_downloads.php',
+	'Isotope\tl_iso_groups'             => 'system/modules/isotope/classes/tl_iso_groups.php',
+	'Isotope\tl_iso_mail'               => 'system/modules/isotope/classes/tl_iso_mail.php',
+	'Isotope\tl_iso_mail_content'       => 'system/modules/isotope/classes/tl_iso_mail_content.php',
+	'Isotope\tl_iso_orders'             => 'system/modules/isotope/classes/tl_iso_orders.php',
+	'Isotope\tl_iso_orderstatus'        => 'system/modules/isotope/classes/tl_iso_orderstatus.php',
+	'Isotope\tl_iso_payment_modules'    => 'system/modules/isotope/classes/tl_iso_payment_modules.php',
+	'Isotope\tl_iso_prices'             => 'system/modules/isotope/classes/tl_iso_prices.php',
+	'Isotope\tl_iso_product_categories' => 'system/modules/isotope/classes/tl_iso_product_categories.php',
+	'Isotope\tl_iso_products'           => 'system/modules/isotope/classes/tl_iso_products.php',
+	'Isotope\tl_iso_producttypes'       => 'system/modules/isotope/classes/tl_iso_producttypes.php',
+	'Isotope\tl_iso_related_products'   => 'system/modules/isotope/classes/tl_iso_related_products.php',
+	'Isotope\tl_iso_shipping_modules'   => 'system/modules/isotope/classes/tl_iso_shipping_modules.php',
+	'Isotope\tl_iso_shipping_options'   => 'system/modules/isotope/classes/tl_iso_shipping_options.php',
+	'Isotope\tl_iso_tax_class'          => 'system/modules/isotope/classes/tl_iso_tax_class.php',
+	'Isotope\tl_iso_tax_rate'           => 'system/modules/isotope/classes/tl_iso_tax_rate.php',
+	'Isotope\tl_module'                 => 'system/modules/isotope/classes/tl_module.php',
+
 	// Collections
 	'Isotope\IsotopeProductCollection' => 'system/modules/isotope/collections/IsotopeProductCollection.php',
 	'Isotope\IsotopeCart'              => 'system/modules/isotope/collections/IsotopeCart.php',

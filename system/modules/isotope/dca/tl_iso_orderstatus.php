@@ -40,7 +40,7 @@ $GLOBALS['TL_DCA']['tl_iso_orderstatus'] = array
 			'mode'						=> 5,
 			'fields'					=> array('name'),
 			'panelLayout'				=> 'filter;search,limit',
-			'paste_button_callback'		=> array('tl_iso_orderstatus', 'pasteButton'),
+			'paste_button_callback'		=> array('Isotope\tl_iso_orderstatus', 'pasteButton'),
 			'icon'						=> 'system/modules/isotope/assets/traffic-light.png',
 		),
 		'label' => array
@@ -49,7 +49,7 @@ $GLOBALS['TL_DCA']['tl_iso_orderstatus'] = array
 			'format'					=> '%s',
 //			'format'					=> '%s <span style="color:#b3b3b3; padding-left:3px;">[%s]</span>',
 //			'maxCharacters'				=> 100,
-//			'label_callback'			=> array('tl_iso_orderstatus', 'addIcon'),
+//			'label_callback'			=> array('Isotope\tl_iso_orderstatus', 'addIcon'),
 		),
 		'global_operations' => array
 		(
@@ -167,51 +167,3 @@ $GLOBALS['TL_DCA']['tl_iso_orderstatus'] = array
 		),
 	)
 );
-
-
-class tl_iso_orderstatus extends \Backend
-{
-
-	/**
-	 * Add an image to each record
-	 * @param array
-	 * @param string
-	 * @return string
-	 */
-	public function addIcon($row, $label)
-	{
-		$image = 'published';
-
-		if (!$row['published'] || (strlen($row['start']) && $row['start'] > time()) || (strlen($row['stop']) && $row['stop'] < time()))
-		{
-			$image = 'un'.$image;
-		}
-
-		return sprintf('<div class="list_icon" style="background-image:url(\'system/themes/%s/images/%s.gif\');">%s</div>', $this->getTheme(), $image, $label);
-	}
-
-
-	/**
-	 * Return the paste button
-	 * @param object
-	 * @param array
-	 * @param string
-	 * @param boolean
-	 * @param array
-	 * @return string
-	 */
-	public function pasteButton(\DataContainer $dc, $row, $table, $cr, $arrClipboard=false)
-	{
-		if ($row['id'] == 0)
-		{
-			$imagePasteInto = $this->generateImage('pasteinto.gif', sprintf($GLOBALS['TL_LANG'][$dc->table]['pasteinto'][1], $row['id']));
-
-			return $cr ? $this->generateImage('pasteinto_.gif').' ' : '<a href="'.$this->addToUrl('act='.$arrClipboard['mode'].'&mode=2&pid='.$row['id'].'&id='.$arrClipboard['id']).'" title="'.specialchars(sprintf($GLOBALS['TL_LANG'][$dc->table]['pasteinto'][1], $row['id'])).'" onclick="Backend.getScrollOffset();">'.$imagePasteInto.'</a> ';
-		}
-
-		$imagePasteAfter = $this->generateImage('pasteafter.gif', sprintf($GLOBALS['TL_LANG'][$dc->table]['pasteafter'][1], $row['id']));
-
-		return (($arrClipboard['mode'] == 'cut' && $arrClipboard['id'] == $row['id']) || $cr) ? $this->generateImage('pasteafter_.gif').' ' : '<a href="'.$this->addToUrl('act='.$arrClipboard['mode'].'&mode=1&pid='.$row['id'].'&id='.$arrClipboard['id']).'" title="'.specialchars(sprintf($GLOBALS['TL_LANG'][$dc->table]['pasteafter'][1], $row['id'])).'" onclick="Backend.getScrollOffset();">'.$imagePasteAfter.'</a> ';
-	}
-}
-
