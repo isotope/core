@@ -26,14 +26,6 @@ ClassLoader::addNamespaces(array
  */
 ClassLoader::addClasses(array
 (
-	// Classes
-	'Isotope\Isotope'                  => 'system/modules/isotope/classes/Isotope.php',
-	'Isotope\IsotopeAutomator'         => 'system/modules/isotope/classes/IsotopeAutomator.php',
-	'Isotope\IsotopeBackend'           => 'system/modules/isotope/classes/IsotopeBackend.php',
-	'Isotope\IsotopeEmail'             => 'system/modules/isotope/classes/IsotopeEmail.php',
-	'Isotope\IsotopeFrontend'          => 'system/modules/isotope/classes/IsotopeFrontend.php',
-	'Isotope\IsotopeTemplate'          => 'system/modules/isotope/classes/IsotopeTemplate.php',
-
 	// Collections
 	'Isotope\IsotopeProductCollection' => 'system/modules/isotope/collections/IsotopeProductCollection.php',
 	'Isotope\IsotopeCart'              => 'system/modules/isotope/collections/IsotopeCart.php',
@@ -55,6 +47,14 @@ ClassLoader::addClasses(array
 	'Isotope\PasteProductButton'       => 'system/modules/isotope/helpers/PasteProductButton.php',
 	'Isotope\ProductCallbacks'         => 'system/modules/isotope/helpers/ProductCallbacks.php',
 	'Isotope\ProductPriceFinder'       => 'system/modules/isotope/helpers/ProductPriceFinder.php',
+
+	// Library/Isotope
+	'Isotope\Isotope'                  => 'system/modules/isotope/library/Isotope/Isotope.php',
+	'Isotope\IsotopeAutomator'         => 'system/modules/isotope/library/Isotope/IsotopeAutomator.php',
+	'Isotope\IsotopeBackend'           => 'system/modules/isotope/library/Isotope/IsotopeBackend.php',
+	'Isotope\IsotopeEmail'             => 'system/modules/isotope/library/Isotope/IsotopeEmail.php',
+	'Isotope\IsotopeFrontend'          => 'system/modules/isotope/library/Isotope/IsotopeFrontend.php',
+	'Isotope\IsotopeTemplate'          => 'system/modules/isotope/library/Isotope/IsotopeTemplate.php',
 
 	// Models
 	'Isotope\IsotopeAddressModel'      => 'system/modules/isotope/models/IsotopeAddressModel.php',
