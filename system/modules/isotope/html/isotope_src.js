@@ -111,19 +111,22 @@ var Isotope =
 };
 
 
-var IsotopeProduct = new Class({
+var IsotopeProduct = new Class(
+{
 	
 	Implements: Options,
 	Binds: [ 'refresh' ],
 	
-	options: {
+	options:
+	{
 		language: 'en',
 		action: 'fmd',
 		page: 0,
 		loadMessage: 'Loading product data …'
 	},
 
-	initialize: function(ajaxid, product, formId, attributes, options) {
+	initialize: function(ajaxid, product, formId, attributes, options)
+	{
 		var self = this;
 		self.setOptions(options);
 
@@ -131,7 +134,8 @@ var IsotopeProduct = new Class({
 		if(!self.form) return;
 
 		// MooTools handles IE compat for change event on radio and checkbox
-		self.form.addEvent('change', self.refresh).set('send', {
+		self.form.addEvent('change', self.refresh).set('send',
+		{
 			url: 'ajax.php?' + Object.toQueryString({
 				action: self.options.action,
 				id: ajaxid,
@@ -141,7 +145,8 @@ var IsotopeProduct = new Class({
 			}),
 			link: 'cancel',
 			onRequest: Isotope.displayBox.pass(self.options.loadMessage),
-			onSuccess: function(txt, xml) {
+			onSuccess: function(txt, xml)
+			{
 				Isotope.hideBox();
 
 				var json = JSON.decode(txt);
@@ -172,7 +177,8 @@ var IsotopeProduct = new Class({
 		});
 	},
 
-	refresh: function(event) {
+	refresh: function(event)
+	{
 		this.form.send();
 	}
 	
