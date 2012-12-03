@@ -162,7 +162,7 @@ $GLOBALS['TL_DCA']['tl_iso_rules'] = array
 			'exclude'					=> true,
 			'filter'					=> true,
 			'inputType'					=> 'select',
-			'options_callback'			=> array('IsotopeBackend', 'getTaxClassesWithSplit'),
+			'options_callback'			=> array('Isotope\Backend', 'getTaxClassesWithSplit'),
 			'eval'						=> array('includeBlankOption'=>true, 'tl_class'=>'w50'),
 		),
 		'applyTo' => array

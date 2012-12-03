@@ -37,7 +37,7 @@ $GLOBALS['TL_DCA']['tl_iso_shipping_modules'] = array
 		'closed'					  => true,
 		'onload_callback' => array
 		(
-			array('IsotopeBackend', 'initializeSetupModule'),
+			array('Isotope\Backend', 'initializeSetupModule'),
 			array('Isotope\tl_iso_shipping_modules', 'checkPermission'),
 		)
 	),
@@ -56,7 +56,7 @@ $GLOBALS['TL_DCA']['tl_iso_shipping_modules'] = array
 		(
 			'fields'                  => array('name', 'type'),
 			'format'                  => '%s <span style="color:#b3b3b3; padding-left:3px;">[%s]</span>',
-			'label_callback'		  => array('IsotopeBackend', 'addPublishIcon'),
+			'label_callback'		  => array('Isotope\Backend', 'addPublishIcon'),
 		),
 		'global_operations' => array
 		(
@@ -237,7 +237,7 @@ $GLOBALS['TL_DCA']['tl_iso_shipping_modules'] = array
 			'exclude'                 => true,
 			'sorting'                 => true,
 			'inputType'               => 'conditionalselect',
-			'options_callback'		  => array('IsotopeBackend', 'getSubdivisions'),
+			'options_callback'		  => array('Isotope\Backend', 'getSubdivisions'),
 			'eval'                    => array('multiple'=>true, 'size'=>8, 'conditionField'=>'countries', 'tl_class'=>'w50 w50h'),
 		),
 		'postalCodes' => array
@@ -282,7 +282,7 @@ $GLOBALS['TL_DCA']['tl_iso_shipping_modules'] = array
 			'exclude'                 => true,
 			'filter'                  => true,
 			'inputType'               => 'select',
-			'options'                 => IsotopeBackend::getTaxClassesWithSplit(),
+			'options'                 => \Isotope\Backend::getTaxClassesWithSplit(),
 			'eval'                    => array('includeBlankOption'=>true, 'tl_class'=>'w50'),
 		),
 		'flatCalculation' => array

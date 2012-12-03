@@ -81,7 +81,7 @@ class ModuleIsotopeCart extends ModuleIsotope
 			return;
 		}
 
-		$objTemplate = new \IsotopeTemplate($this->iso_cart_layout);
+		$objTemplate = new \Isotope\Template($this->iso_cart_layout);
 
 		global $objPage;
 		$strUrl = $this->generateFrontendUrl($objPage->row());
@@ -179,14 +179,14 @@ class ModuleIsotopeCart extends ModuleIsotope
 		$objTemplate->continueLabel = $GLOBALS['TL_LANG']['MSC']['continueShoppingBT'];
 
 		$objTemplate->collection = $this->Isotope->Cart;
-		$objTemplate->products = IsotopeFrontend::generateRowClass($arrProductData, 'row', 'rowClass', 0, ISO_CLASS_COUNT|ISO_CLASS_FIRSTLAST|ISO_CLASS_EVENODD);
+		$objTemplate->products = \Isotope\Frontend::generateRowClass($arrProductData, 'row', 'rowClass', 0, ISO_CLASS_COUNT|ISO_CLASS_FIRSTLAST|ISO_CLASS_EVENODD);
 		$objTemplate->subTotalLabel = $GLOBALS['TL_LANG']['MSC']['subTotalLabel'];
 		$objTemplate->grandTotalLabel = $GLOBALS['TL_LANG']['MSC']['grandTotalLabel'];
 		$objTemplate->subTotalPrice = $this->Isotope->formatPriceWithCurrency($this->Isotope->Cart->subTotal);
 		$objTemplate->grandTotalPrice = $this->Isotope->formatPriceWithCurrency($this->Isotope->Cart->grandTotal);
 		// @todo make a module option.
 		$objTemplate->showOptions = false;
-		$objTemplate->surcharges = IsotopeFrontend::formatSurcharges($arrSurcharges);
+		$objTemplate->surcharges = \Isotope\Frontend::formatSurcharges($arrSurcharges);
 		$objTemplate->forms = $arrForms;
 
 		$this->Template->empty = false;

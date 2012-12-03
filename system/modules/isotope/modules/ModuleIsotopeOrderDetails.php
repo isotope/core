@@ -128,7 +128,7 @@ class ModuleIsotopeOrderDetails extends ModuleIsotope
 
 		$this->Template->info = deserialize($objOrder->checkout_info, true);
 		$this->Template->collection = $objOrder;
-		$this->Template->items = IsotopeFrontend::generateRowClass($arrItems, 'row', 'rowClass', 0, ISO_CLASS_COUNT|ISO_CLASS_FIRSTLAST|ISO_CLASS_EVENODD);
+		$this->Template->items = \Isotope\Frontend::generateRowClass($arrItems, 'row', 'rowClass', 0, ISO_CLASS_COUNT|ISO_CLASS_FIRSTLAST|ISO_CLASS_EVENODD);
 		$this->Template->downloads = $arrAllDownloads;
 		$this->Template->downloadsLabel = $GLOBALS['TL_LANG']['MSC']['downloadsLabel'];
 
@@ -144,7 +144,7 @@ class ModuleIsotopeOrderDetails extends ModuleIsotope
 		$this->Template->grandTotal = $this->Isotope->formatPriceWithCurrency($objOrder->grandTotal);
 		$this->Template->subTotalLabel = $GLOBALS['TL_LANG']['MSC']['subTotalLabel'];
 		$this->Template->grandTotalLabel = $GLOBALS['TL_LANG']['MSC']['grandTotalLabel'];
-		$this->Template->surcharges = IsotopeFrontend::formatSurcharges($objOrder->getSurcharges());
+		$this->Template->surcharges = \Isotope\Frontend::formatSurcharges($objOrder->getSurcharges());
 		$this->Template->billing_label = $GLOBALS['TL_LANG']['ISO']['billing_address'];
 		$this->Template->billing_address = $objOrder->billingAddress->generateHtml($this->Isotope->Config->billing_fields);
 
@@ -206,7 +206,7 @@ class ModuleIsotopeOrderDetails extends ModuleIsotope
 		{
 			global $objPage;
 
-			$strUrl = IsotopeFrontend::addQueryStringToUrl('download=' . $objDownload->id . ($objDownload->type == 'folder' ? '&amp;file='.$strFileName : ''));
+			$strUrl = \Isotope\Frontend::addQueryStringToUrl('download=' . $objDownload->id . ($objDownload->type == 'folder' ? '&amp;file='.$strFileName : ''));
 		}
 
 		$arrDownload = array

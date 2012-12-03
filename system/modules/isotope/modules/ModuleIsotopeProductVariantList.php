@@ -70,7 +70,7 @@ class ModuleIsotopeProductVariantList extends \ModuleIsotopeProductList
 													. "$strWhere GROUP BY p1.id ORDER BY c.sorting")
 										 ->execute($arrValues);
 
-		return IsotopeFrontend::getProducts($objProductData, IsotopeFrontend::getReaderPageId(null, $this->iso_reader_jumpTo), true, $arrFilters, $arrSorting);
+		return \Isotope\Frontend::getProducts($objProductData, \Isotope\Frontend::getReaderPageId(null, $this->iso_reader_jumpTo), true, $arrFilters, $arrSorting);
 	}
 }
 

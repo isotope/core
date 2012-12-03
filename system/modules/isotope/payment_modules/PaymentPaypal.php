@@ -40,11 +40,11 @@ class PaymentPaypal extends IsotopePayment
 
 		if ($objOrder->date_paid > 0 && $objOrder->date_paid <= time())
 		{
-			IsotopeFrontend::clearTimeout();
+			\Isotope\Frontend::clearTimeout();
 			return true;
 		}
 
-		if (IsotopeFrontend::setTimeout())
+		if (\Isotope\Frontend::setTimeout())
 		{
 			// Do not index or cache the page
 			global $objPage;
@@ -167,7 +167,7 @@ class PaymentPaypal extends IsotopePayment
 		}
 
 		$objAddress = $this->Isotope->Cart->billingAddress;
-		list($endTag, $startScript, $endScript) = IsotopeFrontend::getElementAndScriptTags();
+		list($endTag, $startScript, $endScript) = \Isotope\Frontend::getElementAndScriptTags();
 
 		$strBuffer = '
 <h2>' . $GLOBALS['TL_LANG']['MSC']['pay_with_redirect'][0] . '</h2>
@@ -233,7 +233,7 @@ class PaymentPaypal extends IsotopePayment
 <input type="hidden" name="no_note" value="1"' . $endTag . '
 <input type="hidden" name="currency_code" value="' . $this->Isotope->Config->currency . '"' . $endTag . '
 <input type="hidden" name="button_subtype" value="services"' . $endTag . '
-<input type="hidden" name="return" value="' . $this->Environment->base . IsotopeFrontend::addQueryStringToUrl('uid=' . $objOrder->uniqid, $this->addToUrl('step=complete')). '"' . $endTag . '
+<input type="hidden" name="return" value="' . $this->Environment->base . \Isotope\Frontend::addQueryStringToUrl('uid=' . $objOrder->uniqid, $this->addToUrl('step=complete')). '"' . $endTag . '
 <input type="hidden" name="cancel_return" value="' . $this->Environment->base . $this->addToUrl('step=failed') . '"' . $endTag . '
 <input type="hidden" name="rm" value="1"' . $endTag . '
 <input type="hidden" name="invoice" value="' . $objOrder->id . '"' . $endTag . '

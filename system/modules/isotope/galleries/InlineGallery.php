@@ -55,7 +55,7 @@ class InlineGallery extends IsotopeGallery
 				continue;
 			}
 
-			$objTemplate = new \IsotopeTemplate($this->strTemplate);
+			$objTemplate = new \Isotope\Template($this->strTemplate);
 
 			$objTemplate->setData($arrFile);
 			$objTemplate->id = $i;

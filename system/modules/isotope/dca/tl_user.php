@@ -36,7 +36,7 @@ $GLOBALS['TL_DCA']['tl_user']['fields']['iso_modules'] = array
 	'exclude'				=> true,
 	'filter'				=> true,
 	'inputType'				=> 'checkbox',
-	'options_callback'		=> array('IsotopeBackend', 'getIsotopeModules'),
+	'options_callback'		=> array('Isotope\Backend', 'getIsotopeModules'),
 	'reference'				=> &$GLOBALS['TL_LANG']['IMD'],
 	'eval'					=> array('multiple'=>true, 'helpwizard'=>true),
 );

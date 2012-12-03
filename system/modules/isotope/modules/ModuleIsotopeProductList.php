@@ -104,7 +104,7 @@ class ModuleIsotopeProductList extends \ModuleIsotope
 	 */
 	public function generateAjax()
 	{
-		$objProduct = IsotopeFrontend::getProduct(\Input::get('product'), IsotopeFrontend::getReaderPageId(null, $this->iso_reader_jumpTo), false);
+		$objProduct = \Isotope\Frontend::getProduct(\Input::get('product'), \Isotope\Frontend::getReaderPageId(null, $this->iso_reader_jumpTo), false);
 
 		if ($objProduct !== null)
 		{
@@ -156,11 +156,11 @@ class ModuleIsotopeProductList extends \ModuleIsotope
 						$total = $total - $offset;
 						$total = $total > $this->perPage ? $this->perPage : $total;
 
-						$arrProducts = IsotopeFrontend::getProducts(array_slice($arrCacheIds, $offset, $this->perPage), IsotopeFrontend::getReaderPageId(null, $this->iso_reader_jumpTo));
+						$arrProducts = \Isotope\Frontend::getProducts(array_slice($arrCacheIds, $offset, $this->perPage), \Isotope\Frontend::getReaderPageId(null, $this->iso_reader_jumpTo));
 					}
 					else
 					{
-						$arrProducts = IsotopeFrontend::getProducts($arrCacheIds, IsotopeFrontend::getReaderPageId(null, $this->iso_reader_jumpTo));
+						$arrProducts = \Isotope\Frontend::getProducts($arrCacheIds, \Isotope\Frontend::getReaderPageId(null, $this->iso_reader_jumpTo));
 					}
 
 					// Cache is wrong, drop everything and run findProducts()
@@ -286,7 +286,7 @@ class ModuleIsotopeProductList extends \ModuleIsotope
 			}
 		}
 
-		$this->Template->products = IsotopeFrontend::generateRowClass($arrBuffer, 'product', 'class', $this->iso_cols);
+		$this->Template->products = \Isotope\Frontend::generateRowClass($arrBuffer, 'product', 'class', $this->iso_cols);
 	}
 
 
@@ -310,7 +310,7 @@ class ModuleIsotopeProductList extends \ModuleIsotope
 													. "$strWhere GROUP BY p1.id ORDER BY c.sorting")
 										 ->execute($arrValues);
 
-		return IsotopeFrontend::getProducts($objProductData, IsotopeFrontend::getReaderPageId(null, $this->iso_reader_jumpTo), true, $arrFilters, $arrSorting);
+		return \Isotope\Frontend::getProducts($objProductData, \Isotope\Frontend::getReaderPageId(null, $this->iso_reader_jumpTo), true, $arrFilters, $arrSorting);
 	}
 
 
@@ -387,7 +387,7 @@ class ModuleIsotopeProductList extends \ModuleIsotope
 			{
 				if ($filter['group'] == '' && !in_array($filter['attribute'], $GLOBALS['ISO_CONFIG']['dynamicAttributes']))
 				{
-					$operator = IsotopeFrontend::convertFilterOperator($filter['operator'], 'SQL');
+					$operator = \Isotope\Frontend::convertFilterOperator($filter['operator'], 'SQL');
 					$arrWhere[] = "{$filter['attribute']} $operator ?";
 					$arrValues[] = $filter['value'];
 					unset($arrFilters[$k]);

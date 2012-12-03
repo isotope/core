@@ -14,14 +14,14 @@ namespace Isotope;
 
 
 /**
- * Class IsotopeTemplate
+ * Class Isotope\Template
  *
  * Provide methods to handle Isotope templates.
  * @copyright  Isotope eCommerce Workgroup 2009-2012
  * @author     Andreas Schempp <andreas.schempp@terminal42.ch>
  * @author     Fred Bliss <fred.bliss@intelligentspark.com>
  */
-class IsotopeTemplate extends \FrontendTemplate
+class Template extends \FrontendTemplate
 {
 
 	/**
@@ -32,7 +32,7 @@ class IsotopeTemplate extends \FrontendTemplate
 	public function __construct($strTemplate='', $strContentType='text/html')
 	{
 		parent::__construct($strTemplate, $strContentType);
-		$this->import('Isotope');
+		$this->import('Isotope\Isotope', 'Isotope');
 	}
 
 

@@ -127,13 +127,13 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 				// Order is complete, forward to confirmation page
 				if ($objOrder->complete())
 				{
-					IsotopeFrontend::clearTimeout();
+					\Isotope\Frontend::clearTimeout();
 
-					$this->redirect(IsotopeFrontend::addQueryStringToUrl('uid=' . $objOrder->uniqid, $this->orderCompleteJumpTo));
+					$this->redirect(\Isotope\Frontend::addQueryStringToUrl('uid=' . $objOrder->uniqid, $this->orderCompleteJumpTo));
 				}
 
 				// Order is not complete, wait for it
-				if (IsotopeFrontend::setTimeout())
+				if (\Isotope\Frontend::setTimeout())
 				{
 					$this->Template = new FrontendTemplate('mod_message');
 					$this->Template->type = 'processing';
@@ -289,7 +289,7 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 				// If checkout is successful, complete order and redirect to confirmation page
 				if (($objOrder = \IsotopeOrder::findOneBy('cart_id', $this->Isotope->Cart->id)) !== null && $objOrder->checkout($this->Isotope->Cart) && $objOrder->complete())
 				{
-					$this->redirect(IsotopeFrontend::addQueryStringToUrl('uid=' . $objOrder->uniqid, $this->orderCompleteJumpTo));
+					$this->redirect(\Isotope\Frontend::addQueryStringToUrl('uid=' . $objOrder->uniqid, $this->orderCompleteJumpTo));
 				}
 
 				// Checkout failed, show error message
@@ -458,7 +458,7 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 			));
 		}
 
-		$objTemplate = new \IsotopeTemplate('iso_checkout_billing_address');
+		$objTemplate = new \Isotope\Template('iso_checkout_billing_address');
 
 		$objTemplate->headline = $blnRequiresPayment ? $GLOBALS['TL_LANG']['ISO']['billing_address'] : $GLOBALS['TL_LANG']['ISO']['customer_address'];
 		$objTemplate->message = (FE_USER_LOGGED_IN === true ? $GLOBALS['TL_LANG']['ISO'][($blnRequiresPayment ? 'billing' : 'customer') . '_address_message'] : $GLOBALS['TL_LANG']['ISO'][($blnRequiresPayment ? 'billing' : 'customer') . '_address_guest_message']);
@@ -505,7 +505,7 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 			));
 		}
 
-		$objTemplate = new \IsotopeTemplate('iso_checkout_shipping_address');
+		$objTemplate = new \Isotope\Template('iso_checkout_shipping_address');
 
 		$objTemplate->headline = $GLOBALS['TL_LANG']['ISO']['shipping_address'];
 		$objTemplate->message = $GLOBALS['TL_LANG']['ISO']['shipping_address_message'];
@@ -627,7 +627,7 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 			return $objTemplate->parse();
 		}
 
-		$objTemplate = new \IsotopeTemplate('iso_checkout_shipping_method');
+		$objTemplate = new \Isotope\Template('iso_checkout_shipping_method');
 
 		if (!$this->Isotope->Cart->hasShipping && !strlen($_SESSION['CHECKOUT_DATA']['shipping']['module']) && count($arrModules) == 1)
 		{
@@ -762,7 +762,7 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 			return $objTemplate->parse();
 		}
 
-		$objTemplate = new \IsotopeTemplate('iso_checkout_payment_method');
+		$objTemplate = new \Isotope\Template('iso_checkout_payment_method');
 
 		if (!$this->Isotope->Cart->hasPayment && !strlen($_SESSION['CHECKOUT_DATA']['payment']['module']) && count($arrModules) == 1)
 		{
@@ -880,7 +880,7 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 			return '';
 		}
 
-		$this->import('IsotopeFrontend');
+		$this->import('Isotope\Frontend', 'IsotopeFrontend');
 		$objForm = $this->IsotopeFrontend->prepareForm($this->iso_order_conditions, $this->strFormId);
 
 		// Form not found
@@ -905,7 +905,7 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 			}
 		}
 
-		$objTemplate = new \IsotopeTemplate('iso_checkout_order_conditions');
+		$objTemplate = new \Isotope\Template('iso_checkout_order_conditions');
 		$objTemplate->attributes	= $objForm->attributes;
 		$objTemplate->tableless		= $objForm->arrData['tableless'];
 
@@ -929,7 +929,7 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 			return;
 		}
 
-		$objTemplate = new \IsotopeTemplate('iso_checkout_order_info');
+		$objTemplate = new \Isotope\Template('iso_checkout_order_info');
 		$objTemplate->headline = $GLOBALS['TL_LANG']['ISO']['order_review'];
 		$objTemplate->message = $GLOBALS['TL_LANG']['ISO']['order_review_message'];
 		$objTemplate->summary = $GLOBALS['ISO_LANG']['MSC']['cartSummary'];
@@ -955,7 +955,7 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 			return;
 		}
 
-		$objTemplate = new \IsotopeTemplate('iso_checkout_order_products');
+		$objTemplate = new \Isotope\Template('iso_checkout_order_products');
 
 		// Surcharges must be initialized before getProducts() to apply tax_id to each product
 		$arrSurcharges = $this->Isotope->Cart->getSurcharges();
@@ -980,8 +980,8 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 		}
 
 		$objTemplate->collection = $this->Isotope->Cart;
-		$objTemplate->products = IsotopeFrontend::generateRowClass($arrProductData, 'row', 'rowClass', 0, ISO_CLASS_COUNT|ISO_CLASS_FIRSTLAST|ISO_CLASS_EVENODD);
-		$objTemplate->surcharges = IsotopeFrontend::formatSurcharges($arrSurcharges);
+		$objTemplate->products = \Isotope\Frontend::generateRowClass($arrProductData, 'row', 'rowClass', 0, ISO_CLASS_COUNT|ISO_CLASS_FIRSTLAST|ISO_CLASS_EVENODD);
+		$objTemplate->surcharges = \Isotope\Frontend::formatSurcharges($arrSurcharges);
 		$objTemplate->subTotalLabel = $GLOBALS['TL_LANG']['MSC']['subTotalLabel'];
 		$objTemplate->grandTotalLabel = $GLOBALS['TL_LANG']['MSC']['grandTotalLabel'];
 		$objTemplate->subTotalPrice = $this->Isotope->formatPriceWithCurrency($this->Isotope->Cart->subTotal);
@@ -1053,7 +1053,7 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 
 		if (trim($strCustomerName) != '')
 		{
-			$strCustomerEmail = sprintf('"%s" <%s>', IsotopeEmail::romanizeFriendlyName($strCustomerName), $strCustomerEmail);
+			$strCustomerEmail = sprintf('"%s" <%s>', \Isotope\Email::romanizeFriendlyName($strCustomerName), $strCustomerEmail);
 		}
 
 		$objOrder->iso_customer_email	= $strCustomerEmail;
@@ -1331,7 +1331,7 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 			$arrWidgets[] = $objWidget;
 		}
 
-		$arrWidgets = IsotopeFrontend::generateRowClass($arrWidgets, 'row', 'rowClass', 0, ISO_CLASS_COUNT|ISO_CLASS_FIRSTLAST|ISO_CLASS_EVENODD);
+		$arrWidgets = \Isotope\Frontend::generateRowClass($arrWidgets, 'row', 'rowClass', 0, ISO_CLASS_COUNT|ISO_CLASS_FIRSTLAST|ISO_CLASS_EVENODD);
 
 		// Validate input
 		if (\Input::post('FORM_SUBMIT') == $this->strFormId && !$this->doNotSubmit && is_array($arrAddress) && !empty($arrAddress))

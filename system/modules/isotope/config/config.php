@@ -121,8 +121,8 @@ $GLOBALS['ISO_MOD'] = array
 		(
 			'tables'					=> array('tl_iso_mail', 'tl_iso_mail_content'),
 			'icon'						=> 'system/modules/isotope/assets/mail-open-document-text.png',
-			'importMail'				=> array('IsotopeBackend', 'importMail'),
-			'exportMail'				=> array('IsotopeBackend', 'exportMail'),
+			'importMail'				=> array('Isotope\Backend', 'importMail'),
+			'exportMail'				=> array('Isotope\Backend', 'exportMail'),
 		),
 		'configs' => array
 		(

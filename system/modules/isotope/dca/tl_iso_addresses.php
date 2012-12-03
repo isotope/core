@@ -196,7 +196,7 @@ $GLOBALS['TL_DCA']['tl_iso_addresses'] = array
 			'exclude'				=> true,
 			'sorting'				=> true,
 			'inputType'				=> 'conditionalselect',
-			'options_callback'		=> array('IsotopeBackend', 'getSubdivisions'),
+			'options_callback'		=> array('Isotope\Backend', 'getSubdivisions'),
 			'eval'					=> array('feEditable'=>true, 'feGroup'=>'address', 'conditionField'=>'country', 'includeBlankOption'=>true, 'tl_class'=>'w50'),
 		),
 		'country' => array

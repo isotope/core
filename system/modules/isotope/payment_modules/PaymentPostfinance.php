@@ -141,7 +141,7 @@ class PaymentPostfinance extends IsotopePayment
 			'ownercty'		=> $objAddress->country,
 			'ownertown'		=> $objAddress->city,
 			'ownertelno'	=> $objAddress->phone,
-			'accepturl'		=> $this->Environment->base . IsotopeFrontend::addQueryStringToUrl('uid=' . $objOrder->uniqid, $this->addToUrl('step=complete')),
+			'accepturl'		=> $this->Environment->base . \Isotope\Frontend::addQueryStringToUrl('uid=' . $objOrder->uniqid, $this->addToUrl('step=complete')),
 			'declineurl'	=> $strFailedUrl,
 			'exceptionurl'	=> $strFailedUrl,
 			'paramplus'		=> 'mod=pay&id=' . $this->id,

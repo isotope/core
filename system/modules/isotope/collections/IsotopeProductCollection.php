@@ -500,10 +500,10 @@ abstract class IsotopeProductCollection extends \Model
 
 		if (strlen($strTemplate))
 		{
-			$objTemplate = new \IsotopeTemplate($strTemplate);
+			$objTemplate = new \Isotope\Template($strTemplate);
 
 			$objTemplate->products = $this->arrProducts;
-			$objTemplate->surcharges = IsotopeFrontend::formatSurcharges($this->getSurcharges());
+			$objTemplate->surcharges = \Isotope\Frontend::formatSurcharges($this->getSurcharges());
 			$objTemplate->subTotalLabel = $GLOBALS['TL_LANG']['MSC']['subTotalLabel'];
 			$objTemplate->subTotalPrice = $this->Isotope->formatPriceWithCurrency($this->subTotal, false);
 			$objTemplate->grandTotalLabel = $GLOBALS['TL_LANG']['MSC']['grandTotalLabel'];
@@ -852,7 +852,7 @@ abstract class IsotopeProductCollection extends \Model
 		$objTemplate->subTotalLabel = $GLOBALS['TL_LANG']['MSC']['subTotalLabel'];
 		$objTemplate->grandTotalLabel = $GLOBALS['TL_LANG']['MSC']['grandTotalLabel'];
 
-		$objTemplate->surcharges = IsotopeFrontend::formatSurcharges($this->getSurcharges());
+		$objTemplate->surcharges = \Isotope\Frontend::formatSurcharges($this->getSurcharges());
 		$objTemplate->billing_label = $GLOBALS['TL_LANG']['ISO']['billing_address'];
 		$objTemplate->billing_address = $this->billingAddress->generateText($this->Isotope->Config->billing_fields);
 

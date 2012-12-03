@@ -28,7 +28,7 @@ $GLOBALS['TL_DCA']['tl_iso_orderstatus'] = array
 		'closed'						=> true,
 		'onload_callback'				=> array
 		(
-			array('IsotopeBackend', 'initializeSetupModule'),
+			array('Isotope\Backend', 'initializeSetupModule'),
 		)
 	),
 

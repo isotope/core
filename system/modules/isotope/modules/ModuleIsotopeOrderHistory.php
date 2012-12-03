@@ -110,7 +110,7 @@ class ModuleIsotopeOrderHistory extends ModuleIsotope
 				'items'			=> $objOrders->items,
 				'grandTotal'	=> $this->Isotope->formatPriceWithCurrency($objOrders->grandTotal),
 				'status'		=> $objOrders->statusLabel,
-				'link'			=> ($this->jumpTo ? (IsotopeFrontend::addQueryStringToUrl('uid=' . $objOrders->uniqid, $this->jumpTo)) : ''),
+				'link'			=> ($this->jumpTo ? (\Isotope\Frontend::addQueryStringToUrl('uid=' . $objOrders->uniqid, $this->jumpTo)) : ''),
 			);
 		}
 

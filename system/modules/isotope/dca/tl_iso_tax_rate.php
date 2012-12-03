@@ -28,7 +28,7 @@ $GLOBALS['TL_DCA']['tl_iso_tax_rate'] = array
 		'closed'					  => true,
 		'onload_callback'			  => array
 		(
-			array('IsotopeBackend', 'initializeSetupModule'),
+			array('Isotope\Backend', 'initializeSetupModule'),
 			array('Isotope\tl_iso_tax_rate', 'checkPermission'),
 			array('Isotope\tl_iso_tax_rate', 'addCurrencyRate'),
 		),
@@ -158,7 +158,7 @@ $GLOBALS['TL_DCA']['tl_iso_tax_rate'] = array
 			'exclude'                 => true,
 			'sorting'                 => true,
 			'inputType'               => 'conditionalselect',
-			'options_callback'		  => array('IsotopeBackend', 'getSubdivisions'),
+			'options_callback'		  => array('Isotope\Backend', 'getSubdivisions'),
 			'eval'                    => array('conditionField'=>'country', 'includeBlankOption'=>true, 'tl_class'=>'w50'),
 		),
 		'postalCodes' => array

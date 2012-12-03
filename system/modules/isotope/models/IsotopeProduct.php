@@ -755,7 +755,7 @@ class IsotopeProduct extends \Controller
 		$this->formSubmit = (($objModule instanceof \ContentElement) ? 'cte' : 'fmd') . $objModule->id . '_product_' . ($this->pid ? $this->pid : $this->id);
 		$this->validateVariant();
 
-		$objTemplate = new \IsotopeTemplate($strTemplate);
+		$objTemplate = new \Isotope\Template($strTemplate);
 		$arrProductOptions = array();
 		$arrAjaxOptions = array();
 		$arrToGenerate = array();
@@ -827,7 +827,7 @@ class IsotopeProduct extends \Controller
 		$objTemplate->raw_options = $this->arrOptions;
 		$objTemplate->href_reader = $this->href_reader;
 		$objTemplate->label_detail = $GLOBALS['TL_LANG']['MSC']['detailLabel'];
-		$objTemplate->options = IsotopeFrontend::generateRowClass($arrProductOptions, 'product_option');
+		$objTemplate->options = \Isotope\Frontend::generateRowClass($arrProductOptions, 'product_option');
 		$objTemplate->hasOptions = !empty($arrProductOptions) ? true : false;
 		$objTemplate->enctype = $this->hasUpload ? 'multipart/form-data' : 'application/x-www-form-urlencoded';
 		$objTemplate->formId = $this->formSubmit;
@@ -835,7 +835,7 @@ class IsotopeProduct extends \Controller
 		$objTemplate->formSubmit = $this->formSubmit;
 		$objTemplate->product = $this;
 
-		list(,$startScript, $endScript) = IsotopeFrontend::getElementAndScriptTags();
+		list(,$startScript, $endScript) = \Isotope\Frontend::getElementAndScriptTags();
 		$GLOBALS['TL_MOOTOOLS'][] = $startScript."\nnew {$this->ajaxClass}('{$objModule->id}', '" . ($this->pid ? $this->pid : $this->id) . "', '{$this->formSubmit}', ['ctrl_" . implode("_".$this->formSubmit."', 'ctrl_", $arrAjaxOptions) . "_".$this->formSubmit."'], {language: '{$GLOBALS['TL_LANGUAGE']}', action: '".($objModule instanceof \Module ? 'fmd' : 'cte')."', page: {$objPage->id}, loadMessage:'" . specialchars($GLOBALS['ISO_LANG']['MSC']['loadingProductData']) . "'});\n".$endScript;
 
 		// !HOOK: alter product data before output
@@ -1001,7 +1001,7 @@ class IsotopeProduct extends \Controller
 		// Generate download attributes
 		elseif ($arrData['inputType'] == 'downloads')
 		{
-			$this->import('IsotopeFrontend');
+			$this->import('Isotope\Frontend', 'IsotopeFrontend');
 			$strBuffer = $this->IsotopeFrontend->generateDownloadAttribute($attribute, $arrData, $varValue);
 		}
 

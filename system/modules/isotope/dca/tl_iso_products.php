@@ -43,7 +43,7 @@ $GLOBALS['TL_DCA']['tl_iso_products'] = array
 		),
 		'onsubmit_callback' => array
 		(
-			array('IsotopeBackend', 'truncateProductCache'),
+			array('Isotope\Backend', 'truncateProductCache'),
 			array('Isotope\ProductCallbacks', 'storeDateAdded')
 		),
 	),
@@ -530,7 +530,7 @@ $GLOBALS['TL_DCA']['tl_iso_products'] = array
 			'attributes'			=> array('legend'=>'publish_legend', 'fixed'=>true, 'variant_fixed'=>true),
 			'save_callback' => array
 			(
-				array('IsotopeBackend', 'truncateProductCache'),
+				array('Isotope\Backend', 'truncateProductCache'),
 			),
 		),
 		'start' => array

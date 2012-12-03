@@ -62,11 +62,11 @@ ClassLoader::addClasses(array
 
 	// Library/Isotope
 	'Isotope\Isotope'                   => 'system/modules/isotope/library/Isotope/Isotope.php',
-	'Isotope\IsotopeAutomator'          => 'system/modules/isotope/library/Isotope/IsotopeAutomator.php',
-	'Isotope\IsotopeBackend'            => 'system/modules/isotope/library/Isotope/IsotopeBackend.php',
-	'Isotope\IsotopeEmail'              => 'system/modules/isotope/library/Isotope/IsotopeEmail.php',
-	'Isotope\IsotopeFrontend'           => 'system/modules/isotope/library/Isotope/IsotopeFrontend.php',
-	'Isotope\IsotopeTemplate'           => 'system/modules/isotope/library/Isotope/IsotopeTemplate.php',
+	'Isotope\Automator'                 => 'system/modules/isotope/library/Isotope/Automator.php',
+	'Isotope\Backend'                   => 'system/modules/isotope/library/Isotope/Backend.php',
+	'Isotope\Email'                     => 'system/modules/isotope/library/Isotope/Email.php',
+	'Isotope\Frontend'                  => 'system/modules/isotope/library/Isotope/Frontend.php',
+	'Isotope\Template'                  => 'system/modules/isotope/library/Isotope/Template.php',
 
 	// Models
 	'Isotope\IsotopeAddressModel'       => 'system/modules/isotope/models/IsotopeAddressModel.php',

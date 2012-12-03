@@ -210,7 +210,7 @@ class tl_module extends \Backend
 			$intPid = \Input::get('id');
 		}
 
-		return IsotopeBackend::getTemplates('iso_list_', $intPid);
+		return \Isotope\Backend::getTemplates('iso_list_', $intPid);
 	}
 
 
@@ -228,7 +228,7 @@ class tl_module extends \Backend
 			$intPid = \Input::get('id');
 		}
 
-		return IsotopeBackend::getTemplates('iso_reader_', $intPid);
+		return \Isotope\Backend::getTemplates('iso_reader_', $intPid);
 	}
 
 
@@ -246,7 +246,7 @@ class tl_module extends \Backend
 			$intPid = \Input::get('id');
 		}
 
-		return IsotopeBackend::getTemplates('iso_cart_', $intPid);
+		return \Isotope\Backend::getTemplates('iso_cart_', $intPid);
 	}
 
 
@@ -264,7 +264,7 @@ class tl_module extends \Backend
 			$intPid = \Input::get('id');
 		}
 
-		return IsotopeBackend::getTemplates('iso_filter_', $intPid);
+		return \Isotope\Backend::getTemplates('iso_filter_', $intPid);
 	}
 
 

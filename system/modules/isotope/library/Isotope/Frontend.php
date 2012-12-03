@@ -14,7 +14,7 @@ namespace Isotope;
 
 
 /**
- * Class IsotopeFrontend
+ * Class Isotope\Frontend
  *
  * Provide methods to handle Isotope front end components.
  * @copyright  Isotope eCommerce Workgroup 2009-2012
@@ -23,7 +23,7 @@ namespace Isotope;
  * @author     Christian de la Haye <service@delahaye.de>
  * @author     Yanick Witschi <yanick.witschi@terminal42.ch>
  */
-class IsotopeFrontend extends \Frontend
+class Frontend extends \Frontend
 {
 
 	/**
@@ -45,7 +45,7 @@ class IsotopeFrontend extends \Frontend
 	public function __construct()
 	{
 		parent::__construct();
-		$this->import('Isotope');
+		$this->import('Isotope\Isotope', 'Isotope');
 	}
 
 
@@ -189,7 +189,7 @@ class IsotopeFrontend extends \Frontend
 		// Unset hook to prevent further execution on non-reader pages
 		if (\Input::get('product') == '')
 		{
-			unset($GLOBALS['TL_HOOKS']['parseTemplate'][array_search(array('IsotopeFrontend', 'fixNavigationTrail'), $GLOBALS['TL_HOOKS']['parseTemplate'])]);
+			unset($GLOBALS['TL_HOOKS']['parseTemplate'][array_search(array('Isotope\Frontend', 'fixNavigationTrail'), $GLOBALS['TL_HOOKS']['parseTemplate'])]);
 			return;
 		}
 
@@ -472,11 +472,11 @@ class IsotopeFrontend extends \Frontend
 	 */
 	public function injectMessages()
 	{
-		$strMessages = IsotopeFrontend::getIsotopeMessages();
+		$strMessages = \Isotope\Frontend::getIsotopeMessages();
 
 		if ($strMessages != '')
 		{
-			list(,$startScript, $endScript) = IsotopeFrontend::getElementAndScriptTags();
+			list(,$startScript, $endScript) = \Isotope\Frontend::getElementAndScriptTags();
 
 			$GLOBALS['TL_MOOTOOLS'][] = "
 $startScript
@@ -958,7 +958,7 @@ $endScript";
 
 		while ($objProductData->next())
 		{
-			$objProduct = IsotopeFrontend::getProduct($objProductData, $intReaderPage, $blnCheckAvailability);
+			$objProduct = \Isotope\Frontend::getProduct($objProductData, $intReaderPage, $blnCheckAvailability);
 
 			if ($objProduct !== null)
 			{
@@ -1539,7 +1539,7 @@ $endScript";
 	{
 		if ($this->Input->get('product') != '')
 		{
-			$objProduct = IsotopeFrontend::getProductByAlias($this->Input->get('product'));
+			$objProduct = static::getProductByAlias($this->Input->get('product'));
 
 			if ($objProduct !== null)
 			{

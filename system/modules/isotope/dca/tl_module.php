@@ -401,7 +401,7 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['iso_listingSortField'] = array
 	'eval'					  => array('includeBlankOption'=>true, 'tl_class'=>'clr w50'),
 	'save_callback' => array
 	(
-		array('IsotopeBackend', 'truncateProductCache'),
+		array('Isotope\Backend', 'truncateProductCache'),
 	),
 );
 

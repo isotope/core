@@ -12,9 +12,11 @@
 
 namespace Isotope;
 
+use \Contao\Backend as Contao_Backend;
+
 
 /**
- * Class IsotopeBackend
+ * Class Isotope\Backend
  *
  * Provide methods to handle Isotope back end components.
  * @copyright  Isotope eCommerce Workgroup 2009-2012
@@ -22,7 +24,7 @@ namespace Isotope;
  * @author     Fred Bliss <fred.bliss@intelligentspark.com>
  * @author     Christian de la Haye <service@delahaye.de>
  */
-class IsotopeBackend extends \Backend
+class Backend extends Contao_Backend
 {
 
 	/**

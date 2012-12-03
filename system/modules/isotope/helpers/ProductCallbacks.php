@@ -453,7 +453,7 @@ class ProductCallbacks extends \Backend
 			return;
 		}
 
-		if (($intProductTypeId = IsotopeBackend::getProductTypeForGroup($this->Input->get('gid'))) !== false)
+		if (($intProductTypeId = \Isotope\Backend::getProductTypeForGroup($this->Input->get('gid'))) !== false)
 		{
 			$GLOBALS['TL_DCA']['tl_iso_products']['fields']['type']['default'] = $intProductTypeId;
 		}

@@ -82,7 +82,7 @@ abstract class ModuleIsotope extends \Module
 		// Prepend any messages to the module output
 		if ($this->iso_includeMessages)
 		{
-			$strBuffer = IsotopeFrontend::getIsotopeMessages() . $strBuffer;
+			$strBuffer = \Isotope\Frontend::getIsotopeMessages() . $strBuffer;
 		}
 
 		return $strBuffer;
@@ -163,7 +163,7 @@ abstract class ModuleIsotope extends \Module
 				break;
 
 			case 'product':
-				$objProduct = IsotopeFrontend::getProductByAlias(\Input::get('product'));
+				$objProduct = \Isotope\Frontend::getProductByAlias(\Input::get('product'));
 
 				if ($objProduct !== null)
 				{

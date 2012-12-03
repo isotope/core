@@ -188,7 +188,7 @@ class IsotopeGallery extends \Frontend
 
 		$this->injectAjax();
 
-		$objTemplate = new \IsotopeTemplate($this->strTemplate);
+		$objTemplate = new \Isotope\Template($this->strTemplate);
 
 		$objTemplate->setData($arrFile);
 		$objTemplate->id = 0;
@@ -221,7 +221,7 @@ class IsotopeGallery extends \Frontend
 				continue;
 			}
 
-			$objTemplate = new \IsotopeTemplate($this->strTemplate);
+			$objTemplate = new \Isotope\Template($this->strTemplate);
 
 			$objTemplate->setData($arrFile);
 			$objTemplate->id = $i;
@@ -246,7 +246,7 @@ class IsotopeGallery extends \Frontend
 	 */
 	protected function injectAjax()
 	{
-		list(,$startScript, $endScript) = IsotopeFrontend::getElementAndScriptTags();
+		list(,$startScript, $endScript) = \Isotope\Frontend::getElementAndScriptTags();
 
 		$GLOBALS['TL_MOOTOOLS'][get_class($this).'_ajax'] = "
 $startScript
@@ -300,7 +300,7 @@ $endScript
 
 					if ($size['watermark'] != '' && $blnWatermark)
 					{
-						$strImage = IsotopeFrontend::watermarkImage($strImage, $size['watermark'], $size['position']);
+						$strImage = \Isotope\Frontend::watermarkImage($strImage, $size['watermark'], $size['position']);
 					}
 
 					$arrSize = @getimagesize(TL_ROOT . '/' . $strImage);

@@ -28,7 +28,7 @@ $GLOBALS['TL_DCA']['tl_iso_config'] = array
 		'closed'					  => true,
 		'onload_callback' => array
 		(
-			array('IsotopeBackend', 'initializeSetupModule'),
+			array('Isotope\Backend', 'initializeSetupModule'),
 			array('tl_iso_config', 'checkPermission'),
 		)
 	),
@@ -244,7 +244,7 @@ $GLOBALS['TL_DCA']['tl_iso_config'] = array
 			'exclude'                 => true,
 			'sorting'                 => true,
 			'inputType'               => 'conditionalselect',
-			'options_callback'		  => array('IsotopeBackend', 'getSubdivisions'),
+			'options_callback'		  => array('Isotope\Backend', 'getSubdivisions'),
 			'eval'                    => array('conditionField'=>'country', 'includeBlankOption'=>true, 'tl_class'=>'w50'),
 		),
 		'country' => array
@@ -356,7 +356,7 @@ $GLOBALS['TL_DCA']['tl_iso_config'] = array
 			'exclude'                 => true,
 			'filter'                  => true,
 			'inputType'               => 'select',
-			'options'                 => IsotopeBackend::getOrderStatus(),
+			'options'                 => \Isotope\Backend::getOrderStatus(),
 			'eval'                    => array('mandatory'=>true, 'includeBlankOption'=>true, 'tl_class'=>'w50'),
 		),
 		'orderstatus_error' => array
@@ -365,7 +365,7 @@ $GLOBALS['TL_DCA']['tl_iso_config'] = array
 			'exclude'                 => true,
 			'filter'                  => true,
 			'inputType'               => 'select',
-			'options'                 => IsotopeBackend::getOrderStatus(),
+			'options'                 => \Isotope\Backend::getOrderStatus(),
 			'eval'                    => array('mandatory'=>true, 'includeBlankOption'=>true, 'tl_class'=>'w50'),
 		),
 		'invoiceLogo' => array

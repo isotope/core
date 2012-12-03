@@ -652,7 +652,7 @@ $strBuffer .= '<th style="text-align:center"><img src="system/themes/default/ima
 			// Install save_callback for upload widgets
 			if ($objAttributes->type == 'upload')
 			{
-				$arrData['save_callback'][] = array('IsotopeFrontend', 'saveUpload');
+				$arrData['save_callback'][] = array('Isotope\Frontend', 'saveUpload');
 			}
 
 			// Parse multiline/multilingual foreignKey

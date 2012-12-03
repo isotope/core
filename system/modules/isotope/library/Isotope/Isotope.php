@@ -538,7 +538,7 @@ class Isotope extends \Controller
 				// Check if address has a valid postal code
 				if ($objRate->postalCodes != '')
 				{
-					$arrCodes = IsotopeFrontend::parsePostalCodes($objRate->postalCodes);
+					$arrCodes = \Isotope\Frontend::parsePostalCodes($objRate->postalCodes);
 
 					if (!in_array($arrAddress['postal'], $arrCodes))
 					{
@@ -752,7 +752,7 @@ class Isotope extends \Controller
 	{
 		try
 		{
-			$objEmail = new \IsotopeEmail($intId, $strLanguage, $objCollection);
+			$objEmail = new \Isotope\Email($intId, $strLanguage, $objCollection);
 
 			if ($strReplyTo != '')
 			{
@@ -790,7 +790,7 @@ class Isotope extends \Controller
 	public function defaultButtons($arrButtons)
 	{
 		$arrButtons['update'] = array('label'=>$GLOBALS['TL_LANG']['MSC']['buttonLabel']['update']);
-		$arrButtons['add_to_cart'] = array('label'=>$GLOBALS['TL_LANG']['MSC']['buttonLabel']['add_to_cart'], 'callback'=>array('IsotopeFrontend', 'addToCart'));
+		$arrButtons['add_to_cart'] = array('label'=>$GLOBALS['TL_LANG']['MSC']['buttonLabel']['add_to_cart'], 'callback'=>array('Isotope\Frontend', 'addToCart'));
 
 		return $arrButtons;
 	}

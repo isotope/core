@@ -14,14 +14,14 @@ namespace Isotope;
 
 
 /**
- * Class IsotopeAutomator
+ * Class Isotope\Automator
  *
  * Provide methods to run Isotope automated jobs.
  * @copyright  Isotope eCommerce Workgroup 2009-2012
  * @author     Andreas Schempp <andreas.schempp@terminal42.ch>
  * @author     Fred Bliss <fred.bliss@intelligentspark.com>
  */
-class IsotopeAutomator extends \Controller
+class Automator extends \Controller
 {
 
 	/**

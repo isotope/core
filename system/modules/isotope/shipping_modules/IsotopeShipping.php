@@ -124,7 +124,7 @@ abstract class IsotopeShipping extends \Frontend
 				// Check if address has a valid postal code
 				if ($this->postalCodes != '')
 				{
-					$arrCodes = IsotopeFrontend::parsePostalCodes($this->postalCodes);
+					$arrCodes = \Isotope\Frontend::parsePostalCodes($this->postalCodes);
 
 					if (!in_array($objAddress->postal, $arrCodes))
 					{

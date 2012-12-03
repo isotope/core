@@ -100,7 +100,7 @@ class tl_iso_groups extends \Backend
 
 		$this->Database->query("UPDATE tl_iso_products SET gid=0 WHERE gid IN (" . implode(',', $arrGroups) . ")");
 
-		IsotopeBackend::createGeneralGroup();
+		\Isotope\Backend::createGeneralGroup();
 	}
 
 

@@ -35,7 +35,7 @@ $GLOBALS['TL_DCA']['tl_iso_attributes'] = array
 		'closed'					=> true,
 		'onload_callback'			=> array
 		(
-			array('IsotopeBackend', 'initializeSetupModule'),
+			array('Isotope\Backend', 'initializeSetupModule'),
 			array('Isotope\tl_iso_attributes', 'disableFieldName'),
 			array('Isotope\tl_iso_attributes', 'prepareForVariantOptions'),
 		),

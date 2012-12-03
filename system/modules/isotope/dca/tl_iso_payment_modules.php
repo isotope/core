@@ -28,7 +28,7 @@ $GLOBALS['TL_DCA']['tl_iso_payment_modules'] = array
 		'closed'					  => true,
 		'onload_callback'			  => array
 		(
-			array('IsotopeBackend', 'initializeSetupModule'),
+			array('Isotope\Backend', 'initializeSetupModule'),
 			array('Isotope\tl_iso_payment_modules', 'checkPermission'),
 			array('Isotope\tl_iso_payment_modules', 'loadShippingModules'),
 		)
@@ -48,7 +48,7 @@ $GLOBALS['TL_DCA']['tl_iso_payment_modules'] = array
 		(
 			'fields'                  => array('name', 'type'),
 			'format'                  => '%s <span style="color:#b3b3b3; padding-left:3px;">[%s]</span>',
-			'label_callback'		  => array('IsotopeBackend', 'addPublishIcon'),
+			'label_callback'		  => array('Isotope\Backend', 'addPublishIcon'),
 
 		),
 		'global_operations' => array
@@ -167,7 +167,7 @@ $GLOBALS['TL_DCA']['tl_iso_payment_modules'] = array
 			'label'                   => &$GLOBALS['TL_LANG']['tl_iso_payment_modules']['new_order_status'],
 			'exclude'                 => true,
 			'inputType'               => 'select',
-			'options'                 => IsotopeBackend::getOrderStatus(),
+			'options'                 => \Isotope\Backend::getOrderStatus(),
 			'eval'                    => array('mandatory'=>true, 'includeBlankOption'=>true, 'tl_class'=>'w50'),
 		),
 		'price' => array
@@ -183,7 +183,7 @@ $GLOBALS['TL_DCA']['tl_iso_payment_modules'] = array
 			'exclude'                 => true,
 			'filter'                  => true,
 			'inputType'               => 'select',
-			'options'                 => IsotopeBackend::getTaxClassesWithSplit(),
+			'options'                 => \Isotope\Backend::getTaxClassesWithSplit(),
 			'eval'                    => array('includeBlankOption'=>true, 'tl_class'=>'w50'),
 		),
 		'allowed_cc_types' => array

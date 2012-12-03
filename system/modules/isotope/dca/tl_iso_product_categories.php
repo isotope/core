@@ -34,7 +34,7 @@ $GLOBALS['TL_DCA']['tl_iso_product_categories'] = array
 		),
 		'oncut_callback' => array
 		(
-			array('IsotopeBackend', 'truncateProductCache'),
+			array('Isotope\Backend', 'truncateProductCache'),
 		),
 	),
 

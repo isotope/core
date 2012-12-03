@@ -30,7 +30,7 @@ $GLOBALS['TL_DCA']['tl_iso_mail'] = array
 		'ctable'					=> array('tl_iso_mail_content'),
 		'onload_callback' => array
 		(
-			array('IsotopeBackend', 'initializeSetupModule'),
+			array('Isotope\Backend', 'initializeSetupModule'),
 			array('Isotope\tl_iso_mail', 'checkPermission'),
 		),
 	),
@@ -184,7 +184,7 @@ $GLOBALS['TL_DCA']['tl_iso_mail'] = array
 			'exclude'                 => true,
 			'inputType'               => 'select',
 			'default'                 => 'mail_default',
-			'options'                 => IsotopeBackend::getTemplates('mail_'),
+			'options'                 => \Isotope\Backend::getTemplates('mail_'),
 			'eval'                    => array('mandatory'=>true, 'tl_class'=>'w50', 'chosen'=>true)
 		),
 		'priority' => array
@@ -209,7 +209,7 @@ $GLOBALS['TL_DCA']['tl_iso_mail'] = array
 			'label'					  => &$GLOBALS['TL_LANG']['tl_iso_mail']['documentTemplate'],
 			'exclude'                 => true,
 			'inputType'				  => 'select',
-			'options'				  => IsotopeBackend::getTemplates('iso_invoice'),
+			'options'				  => \Isotope\Backend::getTemplates('iso_invoice'),
 			'eval'					  => array('includeBlankOption'=>true, 'tl_class'=>'w50', 'chosen'=>true)
 		),
 		'documentTitle'		=> array

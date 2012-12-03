@@ -252,7 +252,7 @@ class PaymentCybersource extends IsotopePayment
 				if ($blnFail)
 				{
 					$this->log('Invalid payment data received.', 'PaymentCybersource checkoutForm()', TL_ERROR);
-					$this->redirect(IsotopeFrontend::addQueryStringToUrl('error=' . $objReply->reasonCode));
+					$this->redirect(\Isotope\Frontend::addQueryStringToUrl('error=' . $objReply->reasonCode));
 				}
 
 				$this->redirect($this->addToUrl('step=complete', true));
@@ -264,7 +264,7 @@ class PaymentCybersource extends IsotopePayment
 			}
 		}
 
-		list($endTag) = IsotopeFrontend::getElementAndScriptTags();
+		list($endTag) = \Isotope\Frontend::getElementAndScriptTags();
 
 		return '
 <h2>' . $this->label . '</h2>'.

@@ -93,7 +93,7 @@ class ModuleIsotopeRelatedProducts extends \ModuleIsotopeProductList
 			}
 		}
 
-		return IsotopeFrontend::getProducts($arrIds, IsotopeFrontend::getReaderPageId(null, $this->iso_reader_jumpTo));
+		return \Isotope\Frontend::getProducts($arrIds, \Isotope\Frontend::getReaderPageId(null, $this->iso_reader_jumpTo));
 	}
 }
 

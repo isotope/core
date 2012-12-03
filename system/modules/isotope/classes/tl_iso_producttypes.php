@@ -164,7 +164,7 @@ class tl_iso_producttypes extends \Backend
 	 */
 	public function getListTemplates(\DataContainer $dc)
 	{
-		return IsotopeBackend::getTemplates('iso_list_');
+		return \Isotope\Backend::getTemplates('iso_list_');
 	}
 
 
@@ -175,7 +175,7 @@ class tl_iso_producttypes extends \Backend
 	 */
 	public function getReaderTemplates(\DataContainer $dc)
 	{
-		return IsotopeBackend::getTemplates('iso_reader_');
+		return \Isotope\Backend::getTemplates('iso_reader_');
 	}
 
 

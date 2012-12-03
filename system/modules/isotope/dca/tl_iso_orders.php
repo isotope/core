@@ -179,7 +179,7 @@ $GLOBALS['TL_DCA']['tl_iso_orders'] = array
 			'filter'                => true,
 			'sorting'				=> true,
 			'inputType'             => 'select',
-			'options'         		=> IsotopeBackend::getOrderStatus(),
+			'options'         		=> \Isotope\Backend::getOrderStatus(),
 			'save_callback'			=> array
 			(
 				array('Isotope\tl_iso_orders', 'updateStatus'),
