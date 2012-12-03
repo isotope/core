@@ -10,9 +10,10 @@
  * @license    http://opensource.org/licenses/lgpl-3.0.html LGPL
  */
 
+namespace Isotope\Gallery;
 
 /**
- * Class IsotopeGallery
+ * Class Standard
  *
  * Provide methods to handle Isotope galleries.
  * @copyright  Isotope eCommerce Workgroup 2009-2012
@@ -21,14 +22,14 @@
  * @author     Christian de la Haye <service@delahaye.de>
  * @author     Yanick Witschi <yanick.witschi@terminal42.ch>
  */
-class IsotopeGallery extends \Frontend
+class Standard extends \Frontend
 {
 
 	/**
 	 * Template
 	 * @var string
 	 */
-	protected $strTemplate = 'iso_gallery_default';
+	protected $strTemplate = 'iso_gallery_standard';
 
 	/**
 	 * Data storage
@@ -58,7 +59,7 @@ class IsotopeGallery extends \Frontend
 	{
 		parent::__construct();
 
-		$this->import('Isotope');
+		$this->import('Isotope\Isotope', 'Isotope');
 		$this->name = $strName;
 		$this->files = $arrFiles;
 	}

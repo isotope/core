@@ -287,7 +287,7 @@ class IsotopeProduct extends \Controller
 
 						if (!strlen($strClass) || !$this->classFileExists($strClass))
 						{
-							$strClass = 'IsotopeGallery';
+							$strClass = 'Isotope\Gallery\Default';
 						}
 
 						$objGallery = new $strClass($this->formSubmit . '_' . $strKey, deserialize($this->arrData[$strKey]));
@@ -939,14 +939,14 @@ class IsotopeProduct extends \Controller
 	 * Generate an atrtibute and return it as HTML string
 	 * @param string
 	 * @param mixed
-	 * @return string|IsotopeGallery
+	 * @return string|\Isotope\Gallery\Default
 	 */
 	protected function generateAttribute($attribute, $varValue)
 	{
 		$strBuffer = '';
 		$arrData = $GLOBALS['TL_DCA']['tl_iso_products']['fields'][$attribute];
 
-		// Return the IsotopeGallery object
+		// Return the \Isotope\Gallery object
 		if ($arrData['inputType'] == 'mediaManager')
 		{
 			return $this->$attribute;

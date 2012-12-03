@@ -10,6 +10,8 @@
  * @license    http://opensource.org/licenses/lgpl-3.0.html LGPL
  */
 
+namespace Isotope\Gallery;
+
 
 /**
  * Class InlineGallery
@@ -19,7 +21,7 @@
  * @author     Andreas Schempp <andreas.schempp@terminal42.ch>
  * @author     Fred Bliss <fred.bliss@intelligentspark.com>
  */
-class InlineGallery extends IsotopeGallery
+class Inline extends Standard
 {
 
 	/**

@@ -214,9 +214,9 @@ $GLOBALS['ISO_PAY']['cybersource']       = 'Isotope\Payment\Cybersource';
 /**
  * Galleries
  */
-$GLOBALS['ISO_GAL']['default']					= 'IsotopeGallery';
-$GLOBALS['ISO_GAL']['inline']					= 'InlineGallery';
-$GLOBALS['ISO_GAL']['zoom']						= 'ZoomGallery';
+$GLOBALS['ISO_GAL']['standard']          = 'Isotope\Gallery\Standard';
+$GLOBALS['ISO_GAL']['inline']            = 'Isotope\Gallery\Inline';
+$GLOBALS['ISO_GAL']['zoom']              = 'Isotope\Gallery\Zoom';
 
 
 /**

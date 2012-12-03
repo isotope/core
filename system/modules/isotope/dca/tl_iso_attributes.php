@@ -353,7 +353,7 @@ $GLOBALS['TL_DCA']['tl_iso_attributes'] = array
 			'label'					=> &$GLOBALS['TL_LANG']['tl_iso_attributes']['gallery'],
 			'exclude'				=> true,
 			'inputType'				=> 'select',
-			'default'				=> 'default',
+			'default'				=> 'standard',
 			'options'				=> array_keys($GLOBALS['ISO_GAL']),
 			'reference'				=> &$GLOBALS['ISO_LANG']['GAL'],
 			'eval'					=> array('includeBlankOption'=>true, 'tl_class'=>'w50', 'helpwizard'=>true),

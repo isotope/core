@@ -45,11 +45,6 @@ ClassLoader::addClasses(array
 	// Elements
 	'Isotope\ContentIsotope'            => 'system/modules/isotope/elements/ContentAccordion.php',
 
-	// Galleries
-	'Isotope\IsotopeGallery'            => 'system/modules/isotope/galleries/IsotopeGallery.php',
-	'Isotope\InlineGallery'             => 'system/modules/isotope/galleries/InlineGallery.php',
-	'Isotope\ZoomGallery'               => 'system/modules/isotope/galleries/ZoomGallery.php',
-
 	// Helpers
 	'Isotope\PasteProductButton'        => 'system/modules/isotope/helpers/PasteProductButton.php',
 	'Isotope\ProductCallbacks'          => 'system/modules/isotope/helpers/ProductCallbacks.php',
@@ -90,6 +85,11 @@ ClassLoader::addClasses(array
 	'Isotope\ModuleIsotopeSetup'               => 'system/modules/isotope/modules/ModuleIsotopeSetup.php',
 
 	// Payment modules
+	// Library/Isotope/Gallery
+	'Isotope\Gallery\Standard'                => 'system/modules/isotope/library/Isotope/Gallery/Standard.php',
+	'Isotope\Gallery\Inline'                  => 'system/modules/isotope/library/Isotope/Gallery/Inline.php',
+	'Isotope\Gallery\Zoom'                    => 'system/modules/isotope/library/Isotope/Gallery/Zoom.php',
+
 	'Isotope\Payment\Payment'                  => 'system/modules/isotope/library/Isotope/Payment/Payment.php',
 	'Isotope\Payment\AuthorizeDotNet'          => 'system/modules/isotope/library/Isotope/Payment/AuthorizeDotNet.php',
 	'Isotope\Payment\Cash'                     => 'system/modules/isotope/library/Isotope/Payment/Cash.php',
@@ -136,7 +136,7 @@ TemplateLoader::addFiles(array
 	'iso_checkout_shipping_method'  => 'system/modules/isotope/templates',
 	'iso_filter_cumulative'         => 'system/modules/isotope/templates',
 	'iso_filter_default'            => 'system/modules/isotope/templates',
-	'iso_gallery_default'           => 'system/modules/isotope/templates',
+	'iso_gallery_standard'          => 'system/modules/isotope/templates',
 	'iso_gallery_inline'            => 'system/modules/isotope/templates',
 	'iso_gallery_zoom'              => 'system/modules/isotope/templates',
 	'iso_invoice'                   => 'system/modules/isotope/templates',
