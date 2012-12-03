@@ -12,6 +12,8 @@
 
 namespace Isotope\Payment;
 
+use Isotope\Collection\Order;
+
 
 /**
  * Class Expercash
@@ -30,8 +32,7 @@ class Expercash extends Payment
 	 */
 	public function processPayment()
 	{
-		$objOrder = new IsotopeOrder();
-		$objOrder->findBy('cart_id', $this->Isotope->Cart->id);
+		$objOrder = Order::findOneBy('cart_id', $this->Isotope->Cart->id);
 
 		if ($this->validateUrlParams($objOrder))
 		{
@@ -50,8 +51,7 @@ class Expercash extends Payment
 	 */
 	public function processPostSale()
 	{
-		$objOrder = new IsotopeOrder();
-		$objOrder->findBy('cart_id', $this->Isotope->Cart->id);
+		$objOrder = Order::findOneBy('cart_id', $this->Isotope->Cart->id);
 
 		if ($this->validateUrlParams($objOrder))
 		{
@@ -64,11 +64,11 @@ class Expercash extends Payment
 
 			$objOrder->save();
 
-			$this->log('ExperCash: data accepted', __METHOD__, TL_GENERAL);
+			\System::log('ExperCash: data accepted', __METHOD__, TL_GENERAL);
 		}
 		else
 		{
-			$this->log('ExperCash: data rejected' . print_r($_POST, true), __METHOD__, TL_GENERAL);
+			\System::log('ExperCash: data rejected' . print_r($_POST, true), __METHOD__, TL_GENERAL);
 		}
 
 		header('HTTP/1.1 200 OK');
@@ -84,8 +84,10 @@ class Expercash extends Payment
 	 */
 	public function checkoutForm()
 	{
-		$objOrder = new IsotopeOrder();
-		$objOrder->findBy('cart_id', $this->Isotope->Cart->id);
+		if (($objOrder = Order::findOneBy('cart_id', $this->Isotope->Cart->id)) === null)
+		{
+    		$this->redirect($this->addToUrl('step=failed', true));
+		}
 
 		$arrData = array
 		(
@@ -134,29 +136,34 @@ class Expercash extends Payment
 
 	private function validateUrlParams($objOrder)
 	{
-		$strKey = md5($this->Input->get('amount') . $this->Input->get('currency') . $this->Input->get('paymentMethod') . $this->Input->get('transactionId') . $this->Input->get('GuTID') . $this->expercash_popupKey);
+	    if ($objOrder === null)
+	    {
+    	    return false;
+	    }
 
-		if ($this->Input->get('exportKey') != $strKey)
+		$strKey = md5(\Input::get('amount') . \Input::get('currency') . \Input::get('paymentMethod') . \Input::get('transactionId') . \Input::get('GuTID') . $this->expercash_popupKey);
+
+		if (\Input::get('exportKey') != $strKey)
 		{
-			$this->log('ExperCash: exportKey was incorrect. Possible data manipulation!', __METHOD__, TL_ERROR);
+			\System::log('ExperCash: exportKey was incorrect. Possible data manipulation!', __METHOD__, TL_ERROR);
 			return false;
 		}
 
-		if ($this->Input->get('amount') != (round($this->Isotope->Cart->grandTotal, 2)*100))
+		if (\Input::get('amount') != (round($this->Isotope->Cart->grandTotal, 2)*100))
 		{
-			$this->log('ExperCash: amount is incorrect. Possible data manipulation!', __METHOD__, TL_ERROR);
+			\System::log('ExperCash: amount is incorrect. Possible data manipulation!', __METHOD__, TL_ERROR);
 			return false;
 		}
 
-		if ($this->Input->get('currency') != $this->Isotope->Config->currency)
+		if (\Input::get('currency') != $this->Isotope->Config->currency)
 		{
-			$this->log('ExperCash: currency is incorrect. Possible data manipulation!', __METHOD__, TL_ERROR);
+			\System::log('ExperCash: currency is incorrect. Possible data manipulation!', __METHOD__, TL_ERROR);
 			return false;
 		}
 
-		if ($this->Input->get('transactionId') != $objOrder->id)
+		if (\Input::get('transactionId') != $objOrder->id)
 		{
-			$this->log('ExperCash: transactionId is incorrect. Possible data manipulation!', __METHOD__, TL_ERROR);
+			\System::log('ExperCash: transactionId is incorrect. Possible data manipulation!', __METHOD__, TL_ERROR);
 			return false;
 		}
 
