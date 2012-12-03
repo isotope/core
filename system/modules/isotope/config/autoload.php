@@ -44,8 +44,8 @@ ClassLoader::addClasses(array
 	'Isotope\IsotopeOrder'              => 'system/modules/isotope/collections/IsotopeOrder.php',
 
 	// Drivers
-	'Isotope\DC_ProductData'            => 'system/modules/isotope/drivers/DC_ProductData.php',
-	'Isotope\DC_TablePageId'            => 'system/modules/isotope/drivers/DC_TablePageId.php',
+	'DC_ProductData'                    => 'system/modules/isotope/drivers/DC_ProductData.php',
+	'DC_TablePageId'                    => 'system/modules/isotope/drivers/DC_TablePageId.php',
 
 	// Elements
 	'Isotope\ContentIsotope'            => 'system/modules/isotope/elements/ContentAccordion.php',
