@@ -135,7 +135,7 @@ CREATE TABLE `tl_iso_producttypes` (
   `id` int(10) unsigned NOT NULL auto_increment,
   `tstamp` int(10) unsigned NOT NULL default '0',
   `name` varchar(255) NOT NULL default '',
-  `class` varchar(32) NOT NULL default 'regular',
+  `class` varchar(32) NOT NULL default 'standard',
   `fallback` char(1) NOT NULL default '',
   `description` text NULL,
   `prices` char(1) NOT NULL default '',

@@ -278,8 +278,8 @@ $GLOBALS['ISO_LANG']['GAL']['zoom']                             = array('Galerie
 /**
  * Product types
  */
-$GLOBALS['ISO_LANG']['PRODUCT']['regular'][0]                   = 'Produit standard';
-$GLOBALS['ISO_LANG']['PRODUCT']['regular'][1]                   = 'Produit standard. Sélectionnez-le s\'il n\'y a pas d\'autres possibilités.';
+$GLOBALS['ISO_LANG']['PRODUCT']['standard'][0]                   = 'Produit standard';
+$GLOBALS['ISO_LANG']['PRODUCT']['standard'][1]                   = 'Produit standard. Sélectionnez-le s\'il n\'y a pas d\'autres possibilités.';
 
 
 /**

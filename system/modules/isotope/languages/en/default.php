@@ -277,7 +277,7 @@ $GLOBALS['ISO_LANG']['GAL']['zoom'] = array('Inline gallery with zoom effect', '
 /**
  * Product types
  */
-$GLOBALS['ISO_LANG']['PRODUCT']['regular']			= array('Regular product', 'A default product. Select this if nothing else matches.');
+$GLOBALS['ISO_LANG']['PRODUCT']['standard']			= array('Standard product', 'A default product. Select this if nothing else matches.');
 
 
 /**

@@ -107,7 +107,7 @@ $GLOBALS['TL_DCA']['tl_iso_producttypes'] = array
 	(
 		'__selector__'				=> array('class', 'prices', 'variants'),
 		'default'					=> '{name_legend},name,class',
-		'regular'					=> '{name_legend},name,class,fallback;{description_legend:hide},description;{prices_legend:hide},prices;{template_legend},list_template,reader_template;{attributes_legend},attributes;{variants_legend:hide},variants;{expert_legend:hide},shipping_exempt,downloads',
+		'standard'					=> '{name_legend},name,class,fallback;{description_legend:hide},description;{prices_legend:hide},prices;{template_legend},list_template,reader_template;{attributes_legend},attributes;{variants_legend:hide},variants;{expert_legend:hide},shipping_exempt,downloads',
 	),
 
 	// Subpalettes
@@ -132,7 +132,7 @@ $GLOBALS['TL_DCA']['tl_iso_producttypes'] = array
 			'label'					=> &$GLOBALS['TL_LANG']['tl_iso_producttypes']['class'],
 			'exclude'				=> true,
 			'inputType'				=> 'select',
-			'default'				=> 'regular',
+			'default'				=> 'standard',
 			'options'				=> array_keys($GLOBALS['ISO_PRODUCT']),
 			'reference'				=> &$GLOBALS['ISO_LANG']['PRODUCT'],
 			'eval'					=> array('mandatory'=>true, 'submitOnChange'=>true, 'helpwizard'=>true, 'tl_class'=>'w50'),
