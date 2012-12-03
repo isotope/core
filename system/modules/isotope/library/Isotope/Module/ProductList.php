@@ -10,7 +10,7 @@
  * @license    http://opensource.org/licenses/lgpl-3.0.html LGPL
  */
 
-namespace Isotope;
+namespace Isotope\Module;
 
 
 /**
@@ -21,7 +21,7 @@ namespace Isotope;
  * @author     Fred Bliss <fred.bliss@intelligentspark.com>
  * @author     Andreas Schempp <andreas.schempp@terminal42.ch>
  */
-class ModuleIsotopeProductList extends \ModuleIsotope
+class ProductList extends Module
 {
 
 	/**
@@ -301,7 +301,7 @@ class ModuleIsotopeProductList extends \ModuleIsotope
 
 		list($arrFilters, $arrSorting, $strWhere, $arrValues) = $this->getFiltersAndSorting();
 
-		$objProductData = $this->Database->prepare(\IsotopeProduct::getSelectStatement() . "
+		$objProductData = $this->Database->prepare(\Isotope\IsotopeProduct::getSelectStatement() . "
 													WHERE p1.language=''"
 													. (BE_USER_LOGGED_IN === true ? '' : " AND p1.published='1' AND (p1.start='' OR p1.start<$time) AND (p1.stop='' OR p1.stop>$time)")
 													. "AND c.page_id IN (" . implode(',', $arrCategories) . ")"

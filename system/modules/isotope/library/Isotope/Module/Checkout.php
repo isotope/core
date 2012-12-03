@@ -10,7 +10,9 @@
  * @license    http://opensource.org/licenses/lgpl-3.0.html LGPL
  */
 
-namespace Isotope;
+namespace Isotope\Module;
+
+use \Isotope\Collection\Order;
 
 
 /**
@@ -22,7 +24,7 @@ namespace Isotope;
  * @author     Fred Bliss <fred.bliss@intelligentspark.com>
  * @author     Yanick Witschi <yanick.witschi@terminal42.ch>
  */
-class ModuleIsotopeCheckout extends ModuleIsotope
+class Checkout extends Module
 {
 
 	/**
@@ -122,7 +124,7 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 		// Order has been completed (postsale request)
 		if ($this->strCurrentStep == 'complete' && \Input::get('uid') != '')
 		{
-			if (($objOrder = \IsotopeOrder::findOneByUniqid(\Input::get('uid'))) !== null)
+			if (($objOrder = \Isotope\Collection\Order::findOneByUniqid(\Input::get('uid'))) !== null)
 			{
 				// Order is complete, forward to confirmation page
 				if ($objOrder->complete())
@@ -287,7 +289,7 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 			if ($strBuffer === true)
 			{
 				// If checkout is successful, complete order and redirect to confirmation page
-				if (($objOrder = \IsotopeOrder::findOneBy('cart_id', $this->Isotope->Cart->id)) !== null && $objOrder->checkout($this->Isotope->Cart) && $objOrder->complete())
+				if (($objOrder = \Isotope\Collection\Order::findOneBy('cart_id', $this->Isotope->Cart->id)) !== null && $objOrder->checkout($this->Isotope->Cart) && $objOrder->complete())
 				{
 					$this->redirect(\Isotope\Frontend::addQueryStringToUrl('uid=' . $objOrder->uniqid, $this->orderCompleteJumpTo));
 				}
@@ -997,14 +999,14 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 	 */
 	protected function writeOrder()
 	{
-		if (($objOrder = \IsotopeOrder::findOneBy('cart_id', $this->Isotope->Cart->id)) === null)
+		if (($objOrder = Order::findOneBy('cart_id', $this->Isotope->Cart->id)) === null)
 		{
-			$objOrder = new \IsotopeOrder();
+			$objOrder = new Order();
 
 			$objOrder->uniqid		= uniqid($this->Isotope->Config->orderPrefix, true);
 			$objOrder->cart_id		= $this->Isotope->Cart->id;
 
-			$objOrder = \IsotopeOrder::findByPk($objOrder->save()->id);
+			$objOrder = Order::findByPk($objOrder->save()->id);
 		}
 
 		$objOrder->pid				= (FE_USER_LOGGED_IN === true ? $this->User->id : 0);

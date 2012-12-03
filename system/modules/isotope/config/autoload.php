@@ -62,34 +62,35 @@ ClassLoader::addClasses(array
 	'Isotope\IsotopeAddressModel'       => 'system/modules/isotope/models/IsotopeAddressModel.php',
 	'Isotope\IsotopeConfig'             => 'system/modules/isotope/models/IsotopeConfig.php',
 	'Isotope\IsotopeProduct'            => 'system/modules/isotope/models/IsotopeProduct.php',
+	// Library/Isotope/BackendModule
+	'Isotope\Module\Setup'                    => 'system/modules/isotope/library/Isotope/BackendModule/Setup.php',
 
 	// Library/Isotope/Collection
 	'Isotope\Collection\Collection'           => 'system/modules/isotope/library/Isotope/Collection/Collection.php',
 	'Isotope\Collection\Cart'                 => 'system/modules/isotope/library/Isotope/Collection/Cart.php',
 	'Isotope\Collection\Order'                => 'system/modules/isotope/library/Isotope/Collection/Order.php',
 
-	// Modules
-	'Isotope\ModuleIsotope'                    => 'system/modules/isotope/modules/ModuleIsotope.php',
-	'Isotope\ModuleIsotopeAddressBook'         => 'system/modules/isotope/modules/ModuleIsotopeAddressBook.php',
-	'Isotope\ModuleIsotopeCart'                => 'system/modules/isotope/modules/ModuleIsotopeCart.php',
-	'Isotope\ModuleIsotopeCheckout'            => 'system/modules/isotope/modules/ModuleIsotopeCheckout.php',
-	'Isotope\ModuleIsotopeConfigSwitcher'      => 'system/modules/isotope/modules/ModuleIsotopeConfigSwitcher.php',
-	'Isotope\ModuleIsotopeCumulativeFilter'    => 'system/modules/isotope/modules/ModuleIsotopeCumulativeFilter.php',
-	'Isotope\ModuleIsotopeOrderDetails'        => 'system/modules/isotope/modules/ModuleIsotopeOrderDetails.php',
-	'Isotope\ModuleIsotopeOrderHistory'        => 'system/modules/isotope/modules/ModuleIsotopeOrderHistory.php',
-	'Isotope\ModuleIsotopeProductFilter'       => 'system/modules/isotope/modules/ModuleIsotopeProductFilter.php',
-	'Isotope\ModuleIsotopeProductList'         => 'system/modules/isotope/modules/ModuleIsotopeProductList.php',
-	'Isotope\ModuleIsotopeProductReader'       => 'system/modules/isotope/modules/ModuleIsotopeProductReader.php',
-	'Isotope\ModuleIsotopeProductVariantList'  => 'system/modules/isotope/modules/ModuleIsotopeProductVariantList.php',
-	'Isotope\ModuleIsotopeRelatedProducts'     => 'system/modules/isotope/modules/ModuleIsotopeRelatedProducts.php',
-	'Isotope\ModuleIsotopeSetup'               => 'system/modules/isotope/modules/ModuleIsotopeSetup.php',
-
-	// Payment modules
 	// Library/Isotope/Gallery
 	'Isotope\Gallery\Standard'                => 'system/modules/isotope/library/Isotope/Gallery/Standard.php',
 	'Isotope\Gallery\Inline'                  => 'system/modules/isotope/library/Isotope/Gallery/Inline.php',
 	'Isotope\Gallery\Zoom'                    => 'system/modules/isotope/library/Isotope/Gallery/Zoom.php',
 
+	// Library/Isotope/Module
+	'Isotope\Module\Module'                   => 'system/modules/isotope/library/Isotope/Module/Module.php',
+	'Isotope\Module\AddressBook'              => 'system/modules/isotope/library/Isotope/Module/AddressBook.php',
+	'Isotope\Module\Cart'                     => 'system/modules/isotope/library/Isotope/Module/Cart.php',
+	'Isotope\Module\Checkout'                 => 'system/modules/isotope/library/Isotope/Module/Checkout.php',
+	'Isotope\Module\ConfigSwitcher'           => 'system/modules/isotope/library/Isotope/Module/ConfigSwitcher.php',
+	'Isotope\Module\CumulativeFilter'         => 'system/modules/isotope/library/Isotope/Module/CumulativeFilter.php',
+	'Isotope\Module\OrderDetails'             => 'system/modules/isotope/library/Isotope/Module/OrderDetails.php',
+	'Isotope\Module\OrderHistory'             => 'system/modules/isotope/library/Isotope/Module/OrderHistory.php',
+	'Isotope\Module\ProductFilter'            => 'system/modules/isotope/library/Isotope/Module/ProductFilter.php',
+	'Isotope\Module\ProductList'              => 'system/modules/isotope/library/Isotope/Module/ProductList.php',
+	'Isotope\Module\ProductReader'            => 'system/modules/isotope/library/Isotope/Module/ProductReader.php',
+	'Isotope\Module\ProductVariantList'       => 'system/modules/isotope/library/Isotope/Module/ProductVariantList.php',
+	'Isotope\Module\RelatedProducts'          => 'system/modules/isotope/library/Isotope/Module/RelatedProducts.php',
+
+	// Library/Isotope/Payment
 	'Isotope\Payment\Payment'                  => 'system/modules/isotope/library/Isotope/Payment/Payment.php',
 	'Isotope\Payment\AuthorizeDotNet'          => 'system/modules/isotope/library/Isotope/Payment/AuthorizeDotNet.php',
 	'Isotope\Payment\Cash'                     => 'system/modules/isotope/library/Isotope/Payment/Cash.php',
@@ -99,7 +100,7 @@ ClassLoader::addClasses(array
 	'Isotope\Payment\Postfinance'              => 'system/modules/isotope/library/Isotope/Payment/Postfinance.php',
 	'Isotope\Payment\CybersourceClient'        => 'system/modules/isotope/library/Isotope/Payment/CybersourceClient.php',
 
-	// Shipping modules
+	// Library/Isotope/Shipping
 	'Isotope\Shipping\Shipping'                => 'system/modules/isotope/library/Isotope/Shipping/Shipping.php',
 	'Isotope\Shipping\Flat'                    => 'system/modules/isotope/library/Isotope/Shipping/Flat.php',
 	'Isotope\Shipping\OrderTotal'              => 'system/modules/isotope/library/Isotope/Shipping/OrderTotal.php',

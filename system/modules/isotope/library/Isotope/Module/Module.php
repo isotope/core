@@ -10,7 +10,9 @@
  * @license    http://opensource.org/licenses/lgpl-3.0.html LGPL
  */
 
-namespace Isotope;
+namespace Isotope\Module;
+
+use \Module as Contao_Module;
 
 
 /**
@@ -21,7 +23,7 @@ namespace Isotope;
  * @author     Andreas Schempp <andreas.schempp@terminal42.ch>
  * @author     Fred Bliss <fred.bliss@intelligentspark.com>
  */
-abstract class ModuleIsotope extends \Module
+abstract class Module extends Contao_Module
 {
 
 	/**

@@ -10,18 +10,18 @@
  * @license    http://opensource.org/licenses/lgpl-3.0.html LGPL
  */
 
-namespace Isotope;
+namespace Isotope\Module;
 
 
 /**
- * Class ModuleIsotopeOrderHistory
+ * Class OrderHistory
  *
  * Front end module Isotope "order history".
  * @copyright  Isotope eCommerce Workgroup 2009-2012
  * @author     Andreas Schempp <andreas.schempp@terminal42.ch>
  * @author     Fred Bliss <fred.bliss@intelligentspark.com>
  */
-class ModuleIsotopeOrderHistory extends ModuleIsotope
+class OrderHistory extends Module
 {
 
 	/**

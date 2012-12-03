@@ -74,7 +74,7 @@ class tl_iso_orders extends \Backend
 
 		// Generate a regular order details module
 		\Input::setGet('uid', $objOrder->uniqid);
-		$objModule = new ModuleIsotopeOrderDetails($this->Database->execute("SELECT * FROM tl_module WHERE type='iso_orderdetails'"));
+		$objModule = new \Isotope\Module\OrderDetails($this->Database->execute("SELECT * FROM tl_module WHERE type='iso_orderdetails'"));
 		return $objModule->generate(true);
 	}
 

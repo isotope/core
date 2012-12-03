@@ -10,7 +10,7 @@
  * @license    http://opensource.org/licenses/lgpl-3.0.html LGPL
  */
 
-namespace Isotope;
+namespace Isotope\Module;
 
 
 /**
@@ -20,7 +20,7 @@ namespace Isotope;
  * @copyright  Isotope eCommerce Workgroup 2009-2011
  * @author     Yanick Witschi <yanick.witschi@terminal42.ch>
  */
-class ModuleIsotopeCumulativeFilter extends \ModuleIsotopeProductFilter
+class CumulativeFilter extends Module
 {
 
 	/**

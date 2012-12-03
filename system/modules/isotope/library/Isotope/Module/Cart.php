@@ -10,11 +10,11 @@
  * @license    http://opensource.org/licenses/lgpl-3.0.html LGPL
  */
 
-namespace Isotope;
+namespace Isotope\Module;
 
 
 /**
- * Class ModuleIsotopeCart
+ * Class Cart
  *
  * Front end module Isotope "cart".
  * @copyright  Isotope eCommerce Workgroup 2009-2012
@@ -22,7 +22,7 @@ namespace Isotope;
  * @author     Fred Bliss <fred.bliss@intelligentspark.com>
  * @author     Christian de la Haye <service@delahaye.de>
  */
-class ModuleIsotopeCart extends ModuleIsotope
+class Cart extends Module
 {
 
 	/**

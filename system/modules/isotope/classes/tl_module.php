@@ -286,7 +286,7 @@ class tl_module extends \Backend
 					continue;
 				}
 
-				if ($strClass == 'ModuleIsotopeProductFilter' || is_subclass_of($strClass, 'ModuleIsotopeProductFilter'))
+				if ($strClass == 'Isotope\Module\ProductFilter' || is_subclass_of($strClass, 'Isotope\Module\ProductFilter'))
 				{
 					$arrClasses[] = $strName;
 				}

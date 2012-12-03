@@ -163,18 +163,18 @@ if ($_GET['do'] == 'iso_setup')
  */
 $GLOBALS['FE_MOD']['isotope'] = array
 (
-	'iso_productlist'			=> 'Isotope\ModuleIsotopeProductList',
-	'iso_productvariantlist'	=> 'Isotope\ModuleIsotopeProductVariantList',
-	'iso_productreader'			=> 'Isotope\ModuleIsotopeProductReader',
-	'iso_cart'					=> 'Isotope\ModuleIsotopeCart',
-	'iso_checkout'				=> 'Isotope\ModuleIsotopeCheckout',
-	'iso_productfilter'			=> 'Isotope\ModuleIsotopeProductFilter',
-	'iso_cumulativefilter'		=> 'Isotope\ModuleIsotopeCumulativeFilter',
-	'iso_orderhistory'			=> 'Isotope\ModuleIsotopeOrderHistory',
-	'iso_orderdetails'			=> 'Isotope\ModuleIsotopeOrderDetails',
-	'iso_configswitcher'		=> 'Isotope\ModuleIsotopeConfigSwitcher',
-	'iso_addressbook'			=> 'Isotope\ModuleIsotopeAddressBook',
-	'iso_relatedproducts'		=> 'Isotope\ModuleIsotopeRelatedProducts'
+	'iso_productlist'			=> 'Isotope\Module\ProductList',
+	'iso_productvariantlist'	=> 'Isotope\Module\ProductVariantList',
+	'iso_productreader'			=> 'Isotope\Module\ProductReader',
+	'iso_cart'					=> 'Isotope\Module\Cart',
+	'iso_checkout'				=> 'Isotope\Module\Checkout',
+	'iso_productfilter'			=> 'Isotope\Module\ProductFilter',
+	'iso_cumulativefilter'		=> 'Isotope\Module\CumulativeFilter',
+	'iso_orderhistory'			=> 'Isotope\Module\OrderHistory',
+	'iso_orderdetails'			=> 'Isotope\Module\OrderDetails',
+	'iso_configswitcher'		=> 'Isotope\Module\ConfigSwitcher',
+	'iso_addressbook'			=> 'Isotope\Module\AddressBook',
+	'iso_relatedproducts'		=> 'Isotope\Module\RelatedProducts'
 );
 
 

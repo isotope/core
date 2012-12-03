@@ -10,18 +10,18 @@
  * @license    http://opensource.org/licenses/lgpl-3.0.html LGPL
  */
 
-namespace Isotope;
+namespace Isotope\Module;
 
 
 /**
- * Class ModuleIsotopeOrderDetails
+ * Class OrderDetails
  *
  * Front end module Isotope "order details".
  * @copyright  Isotope eCommerce Workgroup 2009-2012
  * @author     Andreas Schempp <andreas.schempp@terminal42.ch>
  * @author     Fred Bliss <fred.bliss@intelligentspark.com>
  */
-class ModuleIsotopeOrderDetails extends ModuleIsotope
+class OrderDetails extends Module
 {
 
 	/**
@@ -81,7 +81,7 @@ class ModuleIsotopeOrderDetails extends ModuleIsotope
 			$objPage->cache = 0;
 		}
 
-		if (($objOrder = \IsotopeOrder::findOneByUniqid(\Input::get('uid'))) === null)
+		if (($objOrder = \Isotope\Collection\Order::findOneByUniqid(\Input::get('uid'))) === null)
 		{
 			$this->Template = new FrontendTemplate('mod_message');
 			$this->Template->type = 'error';
