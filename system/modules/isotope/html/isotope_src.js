@@ -111,10 +111,11 @@ var Isotope =
 };
 
 
-var IsotopeProduct = new Class(
-{
+var IsotopeProduct = new Class({
+	
 	Implements: Options,
-	Binds: ['refresh'],
+	Binds: [ 'refresh' ],
+	
 	options: {
 		language: 'en',
 		action: 'fmd',
@@ -122,89 +123,58 @@ var IsotopeProduct = new Class(
 		loadMessage: 'Loading product data …'
 	},
 
-	initialize: function(ajaxid, product, formId, attributes, options)
-	{
-		this.setOptions(options);
+	initialize: function(ajaxid, product, formId, attributes, options) {
+		var self = this;
+		self.setOptions(options);
 
-		this.form = document.id(formId);
+		self.form = document.id(formId);
+		if(!self.form) return;
 
-		if (this.form)
-		{
-			this.form.set('send',
-			{
-				url: ('ajax.php?action='+this.options.action+'&id='+ajaxid+'&language='+this.options.language+'&page='+this.options.page+'&product='+product),
-				link: 'cancel',
-				onRequest: function()
-				{
-					Isotope.displayBox(this.options.loadMessage);
-				}.bind(this),
-				onSuccess: function(txt, xml)
-				{
-					Isotope.hideBox();
+		// MooTools handles IE compat for change event on radio and checkbox
+		self.form.addEvent('change', self.refresh).set('send', {
+			url: 'ajax.php?' + Object.toQueryString({
+				action: self.options.action,
+				id: ajaxid,
+				language: self.options.language,
+				page: self.options.page,
+				product: product
+			}),
+			link: 'cancel',
+			onRequest: Isotope.displayBox.pass(self.options.loadMessage),
+			onSuccess: function(txt, xml) {
+				Isotope.hideBox();
 
-					var json = JSON.decode(txt);
+				var json = JSON.decode(txt);
+				if(!json) return;
+				
+				// Update request token
+				REQUEST_TOKEN = json.token;
+				document.getElements('input[type="hidden"][name="REQUEST_TOKEN"]').set('value', json.token);
 
-					// Update request token
-					REQUEST_TOKEN = json.token;
-					document.getElements('input[type="hidden"][name="REQUEST_TOKEN"]').set('value', json.token);
+				json.content.each(function(option) {
+					var old = document.id(option.id), js, html, el;
+					if(!old) return;
+					
+					html = option.html.stripScripts(function(scripts) {
+						js = scripts.replace(/<!--|\/\/-->|<!\[CDATA\[\/\/>|<!\]\]>/g, '');
+					});
+					el = new Element('div').set('html', html).getElement('*[id="' + option.id + '"]');
+					
+					if(el) el.replaces(old);
+					if(js) Browser.exec(js);
+				});
 
-					json.content.each( function(option)
-					{
-						var oldEl = document.id(option.id);
-						if (oldEl)
-						{
-							var newEl = null;
-							new Element('div').set('html', option.html).getElements('*').each( function(child) {
-								if (child.get('id') == option.id)
-								{
-									newEl = child;
-								}
-							});
-
-							if (newEl)
-							{
-								if (newEl.hasClass('radio_container'))
-								{
-									newEl.getElements('input.radio').each( function(option, index) {
-										option.addEvent('click', this.refresh);
-									}.bind(this));
-								}
-
-								newEl.cloneEvents(oldEl).replaces(oldEl);
-							}
-						}
-					}.bind(this));
-
-					// Update conditionalselect
-					window.fireEvent('ajaxready');
-					$$(('#'+formId+' p.error')).destroy();
-				}.bind(this),
-				onFailure: function()
-				{
-					Isotope.hideBox();
-				}
-			});
-
-			attributes.each( function(el,index)
-			{
-				el = document.id(el);
-				if (el && el.hasClass('radio_container'))
-				{
-					el.getElements('input.radio').each( function(option) {
-						option.addEvent('click', this.refresh);
-					}.bind(this));
-				}
-				else if(el)
-				{
-					el.addEvent('change', this.refresh);
-				}
-			}.bind(this));
-		}
+				// Update conditionalselect
+				window.fireEvent('ajaxready');
+				self.form.getElements('p.error').destroy();
+			},
+			onFailure: Isotope.hideBox
+		});
 	},
 
-	refresh: function(event)
-	{
+	refresh: function(event) {
 		this.form.send();
 	}
+	
 });
 
