@@ -21,7 +21,7 @@ namespace Isotope;
  * @author     Andreas Schempp <andreas.schempp@terminal42.ch>
  * @author     Fred Bliss <fred.bliss@intelligentspark.com>
  */
-class IsotopeRunonce extends \Controller
+class Runonce extends \Controller
 {
 
 	/**
@@ -1001,6 +1001,6 @@ CREATE TABLE `tl_iso_groups` (
 /**
  * Instantiate controller
  */
-$objIsotope = new \IsotopeRunonce();
+$objIsotope = new \Isotope\Runonce();
 $objIsotope->run();
 
