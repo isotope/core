@@ -302,13 +302,13 @@ class IsotopeRules extends \Controller
 
 	/**
 	 * Transfer coupons from one cart to another. This happens if a guest cart is moved to user cart.
-	 * @param IsotopeProductCollection
-	 * @param IsotopeProductCollection
+	 * @param Isotope\Collection\Collection
+	 * @param Isotope\Collection\Collection
 	 * @param array
 	 */
 	public function transferCoupons($objOldCollection, $objNewCollection, $arrIds)
 	{
-		if ($objOldCollection instanceof \IsotopeCart && $objNewCollection instanceof \IsotopeCart)
+		if ($objOldCollection instanceof \Isotope\Collection\Cart && $objNewCollection instanceof \Isotope\Collection\Cart)
 		{
 			$objNewCollection->coupons = $objOldCollection->coupons;
 		}

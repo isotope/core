@@ -12,6 +12,9 @@
 
 namespace Isotope;
 
+use \Isotope\Collection\Cart;
+use \Isotope\Collection\Order;
+
 
 /**
  * Class Isotope\Automator
@@ -40,9 +43,9 @@ class Automator extends \Controller
 
 			foreach ($objCarts->fetchEach('id') as $id)
 			{
-				if (($objCart = \IsotopeCart::findByPk($id)) !== null)
+				if (($objCart = Cart::findByPk($id)) !== null)
 				{
-					if (($objOrder = \IsotopeOrder::findOneBy('cart_id', $objCart->id)) !== null)
+					if (($objOrder = Order::findOneBy('cart_id', $objCart->id)) !== null)
 					{
 						if ($objOrder->status == 0)
 						{

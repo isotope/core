@@ -10,18 +10,18 @@
  * @license    http://opensource.org/licenses/lgpl-3.0.html LGPL
  */
 
-namespace Isotope;
+namespace Isotope\Collection;
 
 
 /**
- * Class IsotopeCart
+ * Class Cart
  *
  * Provide methods to handle Isotope cart.
  * @copyright  Isotope eCommerce Workgroup 2009-2012
  * @author     Andreas Schempp <andreas.schempp@terminal42.ch>
  * @author     Fred Bliss <fred.bliss@intelligentspark.com>
  */
-class IsotopeCart extends \IsotopeProductCollection
+class Cart extends Collection
 {
 
 	/**
@@ -291,7 +291,7 @@ class IsotopeCart extends \IsotopeProductCollection
 		{
 			foreach ($GLOBALS['ISO_HOOKS']['checkoutSurcharge'] as $callback)
 			{
-				if ($callback[0] == 'IsotopeCart')
+				if ($callback[0] == '\Isotope\Collection\Cart')
 				{
 					$arrSurcharges = $this->{$callback[1]}($arrSurcharges);
 				}

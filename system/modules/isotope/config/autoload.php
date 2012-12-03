@@ -38,11 +38,6 @@ ClassLoader::addClasses(array
 	'Isotope\tl_iso_tax_rate'           => 'system/modules/isotope/classes/tl_iso_tax_rate.php',
 	'Isotope\tl_module'                 => 'system/modules/isotope/classes/tl_module.php',
 
-	// Collections
-	'Isotope\IsotopeProductCollection'  => 'system/modules/isotope/collections/IsotopeProductCollection.php',
-	'Isotope\IsotopeCart'               => 'system/modules/isotope/collections/IsotopeCart.php',
-	'Isotope\IsotopeOrder'              => 'system/modules/isotope/collections/IsotopeOrder.php',
-
 	// Drivers
 	'DC_ProductData'                    => 'system/modules/isotope/drivers/DC_ProductData.php',
 	'DC_TablePageId'                    => 'system/modules/isotope/drivers/DC_TablePageId.php',
@@ -72,6 +67,11 @@ ClassLoader::addClasses(array
 	'Isotope\IsotopeAddressModel'       => 'system/modules/isotope/models/IsotopeAddressModel.php',
 	'Isotope\IsotopeConfig'             => 'system/modules/isotope/models/IsotopeConfig.php',
 	'Isotope\IsotopeProduct'            => 'system/modules/isotope/models/IsotopeProduct.php',
+
+	// Library/Isotope/Collection
+	'Isotope\Collection\Collection'           => 'system/modules/isotope/library/Isotope/Collection/Collection.php',
+	'Isotope\Collection\Cart'                 => 'system/modules/isotope/library/Isotope/Collection/Cart.php',
+	'Isotope\Collection\Order'                => 'system/modules/isotope/library/Isotope/Collection/Order.php',
 
 	// Modules
 	'Isotope\ModuleIsotope'                    => 'system/modules/isotope/modules/ModuleIsotope.php',

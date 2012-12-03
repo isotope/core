@@ -91,7 +91,7 @@ class Email extends \Controller
 		$this->import('Database');
 
 		// Verify collection object type
-		if (!($objCollection instanceof \IsotopeProductCollection))
+		if (!($objCollection instanceof \Isotope\Collection\Collection))
 		{
 			$objCollection = null;
 		}
@@ -138,7 +138,7 @@ class Email extends \Controller
 				break;
 
 			case 'collection':
-				if ($varValue instanceof \IsotopeProductCollection)
+				if ($varValue instanceof \Isotope\Collection\Collection)
 				{
 					$this->initializeTemplate($this->strLanguage, $objCollection);
 				}
@@ -330,7 +330,7 @@ class Email extends \Controller
 
 		$this->strTemplate = $objTemplate->template ? $objTemplate->template : 'mail_default';
 
-		if ($objTemplate->attachDocument && $objCollection instanceof \IsotopeProductCollection)
+		if ($objTemplate->attachDocument && $objCollection instanceof \Isotope\Collection\Collection)
 		{
 			$objPdf = $objCollection->generatePDF(($objTemplate->documentTemplate ? $objTemplate->documentTemplate : null), null, false);
 			$objPdf->lastPage();

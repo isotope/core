@@ -10,18 +10,18 @@
  * @license    http://opensource.org/licenses/lgpl-3.0.html LGPL
  */
 
-namespace Isotope;
+namespace Isotope\Collection;
 
 
 /**
- * Class IsotopeOrder
+ * Class Order
  *
  * Provide methods to handle Isotope orders.
  * @copyright  Isotope eCommerce Workgroup 2009-2012
  * @author     Andreas Schempp <andreas.schempp@terminal42.ch>
  * @author     Fred Bliss <fred.bliss@intelligentspark.com>
  */
-class IsotopeOrder extends \IsotopeProductCollection
+class Order extends Collection
 {
 
 	/**
@@ -160,9 +160,9 @@ class IsotopeOrder extends \IsotopeProductCollection
 	{
 		switch ($strKey)
 		{
-			// Order ID cannot be changed, it is created through IsotopeOrder::generateOrderId on checkout
+			// Order ID cannot be changed, it is created through Isotope\Collection\Order::generateOrderId on checkout
 			case 'order_id':
-				throw new Exception('IsotopeOrder order_id cannot be changed trough __set().');
+				throw new Exception('order_id cannot be changed trough __set().');
 				break;
 
 			default:
@@ -177,7 +177,7 @@ class IsotopeOrder extends \IsotopeProductCollection
 	 * @param boolean
 	 * @return array
 	 */
-	public function transferFromCollection(\IsotopeProductCollection $objCollection, $blnDuplicate=true)
+	public function transferFromCollection(Collection $objCollection, $blnDuplicate=true)
 	{
 		$time = time();
 		$arrIds = parent::transferFromCollection($objCollection, $blnDuplicate);
@@ -290,7 +290,7 @@ class IsotopeOrder extends \IsotopeProductCollection
 		// This is the case when not using ModuleIsotopeCheckout
 		if (!is_object($objCart))
 		{
-			if (($objCart = \IsotopeCart::findByPk($this->cart_id)) === null)
+			if (($objCart = Cart::findByPk($this->cart_id)) === null)
 			{
 				$this->log('Could not find Cart ID '.$this->cart_id.' for Order ID '.$this->id, __METHOD__, TL_ERROR);
 				return false;

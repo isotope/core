@@ -10,11 +10,11 @@
  * @license    http://opensource.org/licenses/lgpl-3.0.html LGPL
  */
 
-namespace Isotope;
+namespace Isotope\Collection;
 
 
 /**
- * Class IsotopeProductCollection
+ * Class Collection
  *
  * Provide methods to handle Isotope product collections.
  * @copyright  Isotope eCommerce Workgroup 2009-2012
@@ -22,7 +22,7 @@ namespace Isotope;
  * @author     Fred Bliss <fred.bliss@intelligentspark.com>
  * @author     Yanick Witschi <yanick.witschi@terminal42.ch>
  */
-abstract class IsotopeProductCollection extends \Model
+abstract class Collection extends \Model
 {
 
 	/**
@@ -672,7 +672,7 @@ abstract class IsotopeProductCollection extends \Model
 	 * @param boolean
 	 * @return array
 	 */
-	public function transferFromCollection(\IsotopeProductCollection $objCollection, $blnDuplicate=true)
+	public function transferFromCollection(Collection $objCollection, $blnDuplicate=true)
 	{
 		if (!$this->blnRecordExists)
 		{
