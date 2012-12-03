@@ -12,6 +12,8 @@
 
 namespace Isotope\Payment;
 
+use \Isotope\Collection\Order;
+
 
 /**
  * Class Sparkasse
@@ -43,19 +45,19 @@ class Sparkasse extends Payment
 	public function processPostSale()
 	{
 		// Sparkasse system sent error message
-		if ($this->Input->post('directPosErrorCode') > 0)
+		if (\Input::post('directPosErrorCode') > 0)
 		{
-			$this->postsaleFailed($this->Input->post('directPosErrorMessage'));
+			$this->postsaleFailed(\Input::post('directPosErrorMessage'));
 		}
 
-		echo 'redirecturls='.$this->Environment->base . $this->generateFrontendUrl($this->Database->execute("SELECT * FROM tl_page WHERE id=".(int)$this->Input->post('sessionid'))->fetchAssoc(), '/step/complete');
+		echo 'redirecturls='.$this->Environment->base . $this->generateFrontendUrl($this->Database->execute("SELECT * FROM tl_page WHERE id=".(int)\Input::post('sessionid'))->fetchAssoc(), '/step/complete');
 		exit;
 	}
 
 
 	private function postsaleFailed($strReason='')
 	{
-		echo 'redirecturlf='.$this->Environment->base . $this->generateFrontendUrl($this->Database->execute("SELECT * FROM tl_page WHERE id=".(int)$this->Input->post('sessionid'))->fetchAssoc(), '/step/failed') . ($strReason != '' ? '?reason='.$strReason : '');
+		echo 'redirecturlf='.$this->Environment->base . $this->generateFrontendUrl($this->Database->execute("SELECT * FROM tl_page WHERE id=".(int)\Input::post('sessionid'))->fetchAssoc(), '/step/failed') . ($strReason != '' ? '?reason='.$strReason : '');
 		exit;
 	}
 
@@ -70,8 +72,11 @@ class Sparkasse extends Payment
 	{
 		global $objPage;
 
-		$objOrder = new IsotopeOrder();
-		$objOrder->findBy('cart_id', $this->Isotope->Cart->id);
+		if (($objOrder = Order::findOneBy('cart_id', $this->Isotope->Cart->id)) === null)
+		{
+    		$this->redirect($this->addToUrl('step=failed', true));
+		}
+
 
 		$arrUrl = array();
 		$strUrl = 'https://' . ($this->debug ? 'test' : '') . 'system.sparkassen-internetkasse.de/vbv/mpi_legacy?';
