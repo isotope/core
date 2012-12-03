@@ -265,6 +265,7 @@ $GLOBALS['ISO_LANG']['PAY']['postfinance']		= array('Postfinance', 'Payment gate
 $GLOBALS['ISO_LANG']['PAY']['authorizedotnet']	= array('Authorize.net', 'An Authorize.net payment gateway.');
 $GLOBALS['ISO_LANG']['PAY']['cybersource']		= array('Cybersource','For Cybersource users. Uses the Simple Order API method.');
 $GLOBALS['ISO_LANG']['PAY']['datatrans']        = array('Datatrans', 'A payment module for the swiss payment gateway "Datatrans".');
+$GLOBALS['ISO_LANG']['PAY']['sparkasse']        = array('Sparkasse');
 
 
 /**

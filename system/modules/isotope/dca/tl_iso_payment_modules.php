@@ -119,6 +119,8 @@ $GLOBALS['TL_DCA']['tl_iso_payment_modules'] = array
 		'authorizedotnet'		=> '{type_legend},name,label,type;{note_legend:hide},note;{config_legend},new_order_status,allowed_cc_types,requireCCV,minimum_total,maximum_total,countries,shipping_modules,product_types;{gateway_legend},authorize_login,authorize_trans_key,authorize_trans_type,authorize_delimiter;{price_legend:hide},price,tax_class;{expert_legend:hide},guests,protected;{enabled_legend},debug,enabled',
 		'cybersource'			=> '{type_legend},name,label,type;{note_legend:hide},note;{config_legend},new_order_status,minimum_total,maximum_total,countries,shipping_modules,product_types;{gateway_legend},cybersource_merchant_id,cybersource_trans_key,cybersource_trans_type;{price_legend:hide},price,tax_class;{expert_legend:hide},guests,protected;{enabled_legend},debug,enabled',
 		'datatrans'             => '{type_legend},name,label,type;{note_legend:hide},note;{config_legend},new_order_status,trans_type,minimum_total,maximum_total,countries,shipping_modules,product_types;{gateway_legend},datatrans_id,datatrans_sign;{price_legend:hide},price,tax_class;{expert_legend:hide},guests,protected;{enabled_legend},debug,enabled',
+		'sparkasse'             => '{type_legend},name,label,type;{note_legend:hide},note;{config_legend:hide},new_order_status,minimum_total,maximum_total,countries,shipping_modules,product_types;{gateway_legend},sparkasse_paymentmethod,trans_type,sparkasse_sslmerchant,sparkasse_sslpassword,sparkasse_merchantref;{price_legend:hide},price,tax_class;{expert_legend:hide},guests,protected;{enabled_legend},debug,enabled',
+
 	),
 
 	// Subpalettes
@@ -382,6 +384,32 @@ $GLOBALS['TL_DCA']['tl_iso_payment_modules'] = array
 			'inputType'               => 'text',
 			'eval'                    => array('mandatory'=>true, 'decodeEntities'=>true, 'tl_class'=>'w50')
 		),
+        'sparkasse_paymentmethod' => array
+        (
+        	'label'                   => &$GLOBALS['TL_LANG']['tl_iso_payment_modules']['sparkasse_paymentmethod'],
+        	'inputType'               => 'select',
+        	'options'                 => array('creditcard', 'maestro', 'directdebit'),
+        	'reference'               => &$GLOBALS['TL_LANG']['tl_iso_payment_modules']['sparkasse_paymentmethod'],
+        	'eval'                    => array('mandatory'=>true, 'tl_class'=>'w50'),
+        ),
+        'sparkasse_sslmerchant' => array
+        (
+        	'label'                   => &$GLOBALS['TL_LANG']['tl_iso_payment_modules']['sparkasse_sslmerchant'],
+        	'inputType'               => 'text',
+        	'eval'                    => array('mandatory'=>true, 'maxlength'=>16, 'tl_class'=>'w50'),
+        ),
+        'sparkasse_sslpassword' => array
+        (
+        	'label'                   => &$GLOBALS['TL_LANG']['tl_iso_payment_modules']['sparkasse_sslpassword'],
+        	'inputType'               => 'text',
+        	'eval'                    => array('mandatory'=>true, 'maxlength'=>255, 'hideInput'=>true, 'tl_class'=>'w50'),
+        ),
+        'sparkasse_merchantref' => array
+        (
+        	'label'                   => &$GLOBALS['TL_LANG']['tl_iso_payment_modules']['sparkasse_merchantref'],
+        	'inputType'               => 'text',
+        	'eval'                    => array('mandatory'=>true, 'maxlength'=>255, 'decodeEntities'=>true, 'tl_class'=>'clr long'),
+        ),
 		'requireCCV' => array
 		(
 			'label'                   => &$GLOBALS['TL_LANG']['tl_iso_payment_modules']['requireCCV'],
