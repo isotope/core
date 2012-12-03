@@ -97,7 +97,7 @@ class ProductTree extends Widget
 
 		$this->import('Database');
 		$this->import('BackendUser', 'User');
-		$this->import('tl_iso_products');
+		$this->import('ProductCallbacks');
 		$this->import('tl_iso_groups');
 
 		$this->arrTypes = is_array($this->User->iso_product_types) ? $this->User->iso_product_types : array(0);
@@ -541,7 +541,7 @@ class ProductTree extends Widget
 		$sub = 0;
 
 		// Add product name
-		$return .= $this->tl_iso_products->getRowLabel($objProduct->row()).'</div> <div class="tl_right">';
+		$return .= $this->ProductCallbacks->getRowLabel($objProduct->row()).'</div> <div class="tl_right">';
 
 		if (empty($childs) || $objProduct->pid > 0 || !$this->variantsOnly)
 		{

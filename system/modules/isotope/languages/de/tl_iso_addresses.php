@@ -32,6 +32,9 @@
  * @license    http://opensource.org/licenses/lgpl-3.0.html
  */
 
+
+$GLOBALS['TL_LANG']['tl_iso_addresses']['label'][0] = 'Bezeichnung';
+$GLOBALS['TL_LANG']['tl_iso_addresses']['label'][1] = 'Sie können dieser Adresse eine Bezeichnung geben.';
 $GLOBALS['TL_LANG']['tl_iso_addresses']['store_id'][0] = 'Shop-ID';
 $GLOBALS['TL_LANG']['tl_iso_addresses']['store_id'][1] = 'Nutzen Sie verschiedene Shop-IDs um mehrere Shop-Konfigurationen zu gruppieren. Der Warenkorb und die Adressen des Nutzers werden übergreifend zwischen Shops mit identischer ID genutzt.';
 $GLOBALS['TL_LANG']['tl_iso_addresses']['salutation'][0] = 'Anrede';
@@ -43,6 +46,8 @@ $GLOBALS['TL_LANG']['tl_iso_addresses']['lastname'][0] = 'Nachname';
 $GLOBALS['TL_LANG']['tl_iso_addresses']['lastname'][1] = 'Bitte geben Sie den Nachnamen ein.';
 $GLOBALS['TL_LANG']['tl_iso_addresses']['company'][0] = 'Firma';
 $GLOBALS['TL_LANG']['tl_iso_addresses']['company'][1] = 'Hier können Sie einen Firmennamen eingeben.';
+$GLOBALS['TL_LANG']['tl_iso_addresses']['vat_no'][0] = 'Ust-ID Nr.';
+$GLOBALS['TL_LANG']['tl_iso_addresses']['vat_no'][1] = 'Bitte geben Sie ihre Umsatzsteuer-ID Nummer ein.';
 $GLOBALS['TL_LANG']['tl_iso_addresses']['street_1'][0] = 'Straße';
 $GLOBALS['TL_LANG']['tl_iso_addresses']['street_1'][1] = 'Bitte geben Sie den Straßennamen und die Hausnummer ein.';
 $GLOBALS['TL_LANG']['tl_iso_addresses']['street_2'][0] = 'Straße 2';

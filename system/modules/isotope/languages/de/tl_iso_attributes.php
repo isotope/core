@@ -64,7 +64,7 @@ $GLOBALS['TL_LANG']['tl_iso_attributes']['rgxp'][0] = 'Eingabeprüfung';
 $GLOBALS['TL_LANG']['tl_iso_attributes']['rgxp'][1] = 'Prüft den eingegebenen Inhalt auf Basis einer Regular Expression.';
 $GLOBALS['TL_LANG']['tl_iso_attributes']['maxlength'][0] = 'Maximallänge';
 $GLOBALS['TL_LANG']['tl_iso_attributes']['maxlength'][1] = 'Schränke die Feldlänge auf eine bestimmte Zeichenanzahl (Text) oder Bytes (Datei-Upload) ein.';
-$GLOBALS['TL_LANG']['tl_iso_attributes']['foreignKey'][1] = 'Anstatt Optionen hinzuzufügen, können Sie hier eine table.field Kombination eingeben um Daten aus der Datenbank auszuwählen.';
+$GLOBALS['TL_LANG']['tl_iso_attributes']['foreignKey'][1] = 'Anstatt Optionen hinzuzufügen, können Sie hier eine table.field Kombination eingeben um Daten aus der Datenbank auszuwählen. Mehrsprachigkeit lässt sich durch Angabe der Sprache pro Zeile realisieren (Beispiel: en=table.field)';
 $GLOBALS['TL_LANG']['tl_iso_attributes']['conditionField'][0] = 'Übergeordnetes Feld';
 $GLOBALS['TL_LANG']['tl_iso_attributes']['conditionField'][1] = 'Bitte wählen Sie das übergeordnete Feld, welches vom Typ "Select-Menü" sein muss. Damit die Relation funktioniert, definieren Sie die Optionen des übergeordneten Feldes als Gruppe des abhängigen Select-Menüs.';
 $GLOBALS['TL_LANG']['tl_iso_attributes']['gallery'][0] = 'Bildergalerie';

@@ -51,10 +51,10 @@ class ProductCallbacks extends Backend
 	protected $arrProductTypes;
 
 	/**
-	 * Cache if there are categories
+	 * Cache if there are related categories
 	 * @var bool
 	 */
-	protected $blnHasCategories;
+	protected $blnHasRelated;
 
 
 	/**
@@ -107,7 +107,7 @@ class ProductCallbacks extends Backend
 
 
 			// Cache if tehre are categories
-			self::$objInstance->blnHasCategories = (self::$objInstance->Database->query("SELECT COUNT(id) AS total FROM tl_iso_related_categories")->total > 0);
+			self::$objInstance->blnHasRelated = (self::$objInstance->Database->query("SELECT COUNT(id) AS total FROM tl_iso_related_categories")->total > 0);
 
 
 			// Cache number of downloads
@@ -787,7 +787,7 @@ class ProductCallbacks extends Backend
 	 */
 	public function relatedButton($row, $href, $label, $title, $icon, $attributes)
 	{
-		if ($row['pid'] > 0 || $this->blnHasCategories)
+		if ($row['pid'] > 0 || !$this->blnHasRelated)
 		{
 			return '';
 		}
@@ -997,31 +997,56 @@ class ProductCallbacks extends Backend
 	 */
 	protected function getCategoryList($intProduct)
 	{
-		$arrCategories = array();
+		static $arrCategoriesByProduct;
+		static $arrCategories = array();
 
-		foreach ($this->Database->execute("SELECT page_id FROM tl_iso_product_categories WHERE pid=$intProduct")->fetchEach('page_id') as $intPage)
+		if ($arrCategoriesByProduct === null)
 		{
-			$objPage = $this->getPageDetails($intPage);
+			$arrCategoriesByProduct = array();
+			$objCategories = $this->Database->query("SELECT pid, GROUP_CONCAT(page_id) AS categories FROM tl_iso_product_categories GROUP BY pid");
 
-			if (!$objPage->numRows)
-				continue;
-
-			$help = '';
-
-			if (count($objPage->trail)) // Can't use empty() because its an object property (using __get)
+			while ($objCategories->next())
 			{
-				$help = implode(' » ', $this->Database->execute("SELECT title FROM tl_page WHERE id IN (" . implode(',', $objPage->trail) . ") ORDER BY id=" . implode(' DESC, id=', $objPage->trail) . " DESC")->fetchEach('title'));
+				$arrCategoriesByProduct[$objCategories->pid] = explode(',', $objCategories->categories);
 			}
-
-			$arrCategories[] = '<a class="tl_tip" longdesc="' . $help . '" href="contao/main.php?do=iso_products&table=tl_iso_product_categories&id=' . $intPage . '">' . $objPage->title . '</a>';
 		}
 
-		if (empty($arrCategories))
+		$arrResult = array();
+
+		foreach ((array) $arrCategoriesByProduct[$intProduct] as $intPage)
+		{
+			if (!isset($arrPageDetails[$intPage]))
+			{
+				$arrHelp = array();
+				$pid = $intPage;
+
+				do
+				{
+					$objParent = $this->Database->execute("SELECT id, pid, title, type FROM tl_page WHERE id=" . $pid);
+
+					if (!$objParent->numRows)
+						break;
+
+					$pid = $objParent->pid;
+					$arrHelp[] = $objParent->title;
+				}
+				while ($pid > 0 && $objParent->type != 'root');
+
+				$arrCategories[$intPage] = empty($arrHelp) ? false : '<a class="tl_tip" longdesc="' . implode(' » ', array_reverse($arrHelp)) . '" href="contao/main.php?do=iso_products&table=tl_iso_product_categories&id=' . $intPage . '">' . reset($arrHelp) . '</a>';
+			}
+
+			if ($arrCategories[$intPage] === false)
+				continue;
+
+			$arrResult[] = $arrCategories[$intPage];
+		}
+
+		if (empty($arrResult))
 		{
 			return $GLOBALS['TL_LANG']['MSC']['noCategoriesAssociated'];
 		}
 
-		return $GLOBALS['TL_LANG']['tl_iso_products']['pages'][0] . ': ' . implode(', ', $arrCategories);
+		return $GLOBALS['TL_LANG']['tl_iso_products']['pages'][0] . ': ' . implode(', ', $arrResult);
 	}
 }
 

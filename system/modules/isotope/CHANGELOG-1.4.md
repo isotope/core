@@ -1,7 +1,7 @@
 Isotope eCommerce Changelog
 ===========================
 
-Version 1.4.? (2012-??-??)
+Version 1.4.rc1 (2012-12-03)
 ------------------------------
 
 ### New
@@ -11,12 +11,20 @@ Version 1.4.? (2012-??-??)
 - Added option to limit tax rate to guests/member groups (#65)
 - Added method to purge a product collection
 - Added support for the auto_item parameter (#74)
+- Can now upload multiple images and supports custom uploaders (#75)
+- Added VAT no field to addresses and store config (#100)
+- Download can be all files from a given folder
+- Use web storage to improve speed of the backend view
 
 ### Improved
 - Do not cache or search-index a page if user-centered content (filters, cart, checkout) is on it
 - Changed navigation CSS class for active product from "trail" to "product" (#49)
 - Sorting label for dates now work better (#72)
 - Base prices are now calculated by amount and not a factor
+- Added CSV support and autofocus in DC_ProductData (#103)
+- Pass the product collection to cart, review and order history templates
+- Variant downloads are now inherited from parent product (#94)
+- Better performance for the backend product view
 
 ### Fixed
 - Product was hidden if price was not an attribute
@@ -26,6 +34,9 @@ Version 1.4.? (2012-??-??)
 - Variants were not editable for regular users (permission issue)
 - Default values for image sizes got lost in the MCW migration (#61)
 - Regular users could not add/edit product variants (#60)
+- Order id prefix was limited to 5 chars which made usage of insert tags impossible
+- Publishing toggle did not work in ajax mode (#77)
+- Value field for attribute restrictions in rules was not visible
 
 
 Version 1.4.beta2 (2012-09-24)

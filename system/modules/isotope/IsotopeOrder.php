@@ -149,35 +149,35 @@ class IsotopeOrder extends IsotopeProductCollection
 	 */
 	public function transferFromCollection(IsotopeProductCollection $objCollection, $blnDuplicate=true)
 	{
+		$time = time();
 		$arrIds = parent::transferFromCollection($objCollection, $blnDuplicate);
 
-		foreach ($arrIds as $id)
+		// Add product downloads to the order
+		$objDownloads = $this->Database->execute("SELECT d.*, ct.product_quantity, ct.id AS item_id FROM tl_iso_order_items ct JOIN tl_iso_downloads d ON d.pid IN ((SELECT id FROM tl_iso_products WHERE id=ct.product_id), (SELECT pid FROM tl_iso_products WHERE id=ct.product_id)) WHERE ct.id IN (" . implode(',', $arrIds) . ") GROUP BY ct.id, d.id ORDER BY item_id, sorting");
+
+		while ($objDownloads->next())
 		{
-			$objDownloads = $this->Database->execute("SELECT *, (SELECT product_quantity FROM {$this->ctable} WHERE id=$id) AS product_quantity FROM tl_iso_downloads WHERE pid=(SELECT product_id FROM {$this->ctable} WHERE id=$id)");
+			$expires = '';
 
-			while ($objDownloads->next())
+			if ($objDownloads->expires != '')
 			{
-				$expires = '';
-				if ($objDownloads->expires != '')
+				$arrExpires = deserialize($objDownloads->expires, true);
+				if ($arrExpires['value'] > 0 && $arrExpires['unit'] != '')
 				{
-					$arrExpires = deserialize($objDownloads->expires, true);
-					if ($arrExpires['value'] > 0 && $arrExpires['unit'] != '')
-					{
-						$expires = strtotime('+' . $arrExpires['value'] . ' ' . $arrExpires['unit']);
-					}
+					$expires = strtotime('+' . $arrExpires['value'] . ' ' . $arrExpires['unit']);
 				}
-
-				$arrSet = array
-				(
-					'pid'					=> $id,
-					'tstamp'				=> time(),
-					'download_id'			=> $objDownloads->id,
-					'downloads_remaining'	=> ($objDownloads->downloads_allowed > 0 ? ($objDownloads->downloads_allowed * $objDownloads->product_quantity) : ''),
-					'expires'				=> $expires,
-				);
-
-				$this->Database->prepare("INSERT INTO tl_iso_order_downloads %s")->set($arrSet)->executeUncached();
 			}
+
+			$arrSet = array
+			(
+				'pid'					=> $objDownloads->item_id,
+				'tstamp'				=> $time,
+				'download_id'			=> $objDownloads->id,
+				'downloads_remaining'	=> ($objDownloads->downloads_allowed > 0 ? ($objDownloads->downloads_allowed * $objDownloads->product_quantity) : ''),
+				'expires'				=> $expires,
+			);
+
+			$this->Database->prepare("INSERT INTO tl_iso_order_downloads %s")->set($arrSet)->executeUncached();
 		}
 
 		// Update the product IDs of surcharges (see #3029)

@@ -251,8 +251,11 @@ abstract class ModuleIsotope extends Module
 		{
 			foreach ($_GET as $key => $value)
 			{
-				if ($key == 'language')
+				// Ignore the language parameter
+				if ($key == 'language' && $GLOBALS['TL_CONFIG']['addLanguageToUrl'])
+				{
 					continue;
+				}
 
 				$arrGet[] = $key . '=' . $value;
 			}

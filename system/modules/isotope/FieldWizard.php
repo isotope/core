@@ -229,7 +229,7 @@ class FieldWizard extends Widget
 			$return .= '
     <tr>
       <td><input type="hidden" name="'.$this->strId.'['.$i.'][enabled]" value=""><input type="checkbox" name="'.$this->strId.'['.$i.'][enabled]" id="'.$this->strId.'_enabled_'.$i.'" class="fw_checkbox" tabindex="'.++$tabindex.'" value="1"'.($this->varValue[$i]['enabled'] ? ' checked="checked"' : '').'></td>
-      <td><input type="hidden" name="'.$this->strId.'['.$i.'][value]" value="'.$option.'">'.$GLOBALS['TL_DCA'][$this->table]['fields'][$option]['label'][0].'</td>
+      <td><input type="hidden" name="'.$this->strId.'['.$i.'][value]" value="'.$option.'">'.($GLOBALS['TL_DCA'][$this->table]['fields'][$option]['label'][0] ? $GLOBALS['TL_DCA'][$this->table]['fields'][$option]['label'][0] : $option).'</td>
       <td><input type="text" name="'.$this->strId.'['.$i.'][label]" id="'.$this->strId.'_label_'.$i.'" class="tl_text_4" tabindex="'.++$tabindex.'" value="'.specialchars($this->varValue[$i]['label']).'"></td>
       <td><input type="hidden" name="'.$this->strId.'['.$i.'][mandatory]" value=""><input type="checkbox" name="'.$this->strId.'['.$i.'][mandatory]" id="'.$this->strId.'_mandatory_'.$i.'" class="fw_checkbox" tabindex="'.++$tabindex.'" value="1"'.($this->varValue[$i]['mandatory'] ? ' checked="checked"' : '').'> <label for="'.$this->strId.'_mandatory_'.$i.'"></label></td>';
 

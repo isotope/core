@@ -127,7 +127,9 @@ class ModuleIsotopeOrderDetails extends ModuleIsotope
 				'product_options'	=> $objProduct->getOptions(),
 				'quantity'			=> $objProduct->quantity_requested,
 				'price'				=> $this->Isotope->formatPriceWithCurrency($objProduct->price),
+				'tax_free_price'	=> $this->Isotope->formatPriceWithCurrency($objProduct->tax_free_price),
 				'total'				=> $this->Isotope->formatPriceWithCurrency($objProduct->total_price),
+				'tax_free_total'	=> $this->Isotope->formatPriceWithCurrency($objProduct->tax_free_total_price),
 				'href'				=> ($this->jumpTo ? $this->generateFrontendUrl($arrPage, ($GLOBALS['TL_CONFIG']['useAutoItem'] ? '/' : '/product/') . $objProduct->alias) : ''),
 				'tax_id'			=> $objProduct->tax_id,
 				'downloads'			=> $arrDownloads,
@@ -137,6 +139,7 @@ class ModuleIsotopeOrderDetails extends ModuleIsotope
 		}
 
 		$this->Template->info = deserialize($objOrder->checkout_info, true);
+		$this->Template->collection = $objOrder;
 		$this->Template->items = IsotopeFrontend::generateRowClass($arrItems, 'row', 'rowClass', 0, ISO_CLASS_COUNT|ISO_CLASS_FIRSTLAST|ISO_CLASS_EVENODD);
 		$this->Template->downloads = $arrAllDownloads;
 		$this->Template->downloadsLabel = $GLOBALS['TL_LANG']['MSC']['downloadsLabel'];
@@ -180,7 +183,7 @@ class ModuleIsotopeOrderDetails extends ModuleIsotope
 	{
 		$time = time();
 		$arrDownloads = array();
-		$objDownloads = $this->Database->prepare("SELECT p.*, o.* FROM tl_iso_order_downloads o LEFT OUTER JOIN tl_iso_downloads p ON o.download_id=p.id WHERE o.pid=?")->execute($objProduct->cart_id);
+		$objDownloads = $this->Database->prepare("SELECT p.*, o.* FROM tl_iso_order_downloads o JOIN tl_iso_downloads p ON o.download_id=p.id WHERE o.pid=?")->execute($objProduct->cart_id);
 
 		while ($objDownloads->next())
 		{
@@ -192,7 +195,7 @@ class ModuleIsotopeOrderDetails extends ModuleIsotope
 				{
 					if (is_file(TL_ROOT . '/' . $objDownloads->singleSRC . '/' . $file))
 					{
-						$this->generateDownload($objDownloads->singleSRC . '/' . $file, $objDownloads, $blnDownloadable);
+						$arrDownloads[] = $this->generateDownload($objDownloads->singleSRC . '/' . $file, $objDownloads, $blnDownloadable);
 					}
 				}
 			}
@@ -201,7 +204,7 @@ class ModuleIsotopeOrderDetails extends ModuleIsotope
 				$arrDownloads[] = $this->generateDownload($objDownloads->singleSRC, $objDownloads, $blnDownloadable);
 			}
 		}
-		
+
 		return $arrDownloads;
 	}
 
@@ -209,15 +212,14 @@ class ModuleIsotopeOrderDetails extends ModuleIsotope
 	protected function generateDownload($strFile, $objDownload, $blnDownloadable)
 	{
 		$strUrl = '';
+		$strFileName = basename($strFile);
 
 		if (TL_MODE == 'FE')
 		{
 			global $objPage;
 
-			$strUrl = IsotopeFrontend::addQueryStringToUrl('download=' . $objDownloads->id . ($objDownload->type == 'folder' ? '&amp;file='.$strFile : ''));
+			$strUrl = IsotopeFrontend::addQueryStringToUrl('download=' . $objDownload->id . ($objDownload->type == 'folder' ? '&amp;file='.$strFileName : ''));
 		}
-
-		$strFileName = basename($strFile);
 
 		$arrDownload = array
 		(
@@ -233,7 +235,7 @@ class ModuleIsotopeOrderDetails extends ModuleIsotope
 		{
 			if (!$this->backend && $objDownload->downloads_remaining !== '')
 			{
-				$this->Database->prepare("UPDATE tl_iso_order_downloads SET downloads_remaining=? WHERE id=?")->execute(($objDownloads->downloads_remaining-1), $objDownloads->id);
+				$this->Database->prepare("UPDATE tl_iso_order_downloads SET downloads_remaining=? WHERE id=?")->execute(($objDownload->downloads_remaining-1), $objDownload->id);
 			}
 
 			$this->sendFileToBrowser($strFile);

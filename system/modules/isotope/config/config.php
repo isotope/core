@@ -33,7 +33,7 @@
  * Isotope Version
  */
 @define('ISO_VERSION', '1.4');
-@define('ISO_BUILD', 'beta2');
+@define('ISO_BUILD', 'rc1');
 
 
 /**
@@ -71,6 +71,7 @@ array_insert($GLOBALS['BE_MOD']['isotope'], 0, array
 		'callback'					=> 'ModuleIsotopeSetup',
 		'tables'					=> array(),
 		'icon'						=> 'system/modules/isotope/html/application-monitor.png',
+		'javascript'				=> 'system/modules/isotope/html/backend.js',
 	),
 ));
 

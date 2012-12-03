@@ -587,6 +587,7 @@ class DC_ProductData extends DC_Table
 
 			$class = 'tl_tbox block';
 			$fs = $this->Session->get('fieldset_states');
+			$blnIsFirst = true;
 
 			// Render boxes
 			foreach ($boxes as $k=>$v)
@@ -647,6 +648,19 @@ class DC_ProductData extends DC_Table
 					$this->strField = $vv;
 					$this->strInputName = $vv;
 					$this->varValue = $this->objActiveRecord->$vv;
+
+					// Autofocus the first field
+					if ($blnIsFirst && $GLOBALS['TL_DCA'][$this->strTable]['fields'][$this->strField]['inputType'] == 'text')
+					{
+						$GLOBALS['TL_DCA'][$this->strTable]['fields'][$this->strField]['eval']['autofocus'] = 'autofocus';
+						$blnIsFirst = false;
+					}
+
+					// Convert CSV fields (see #2890)
+					if ($GLOBALS['TL_DCA'][$this->strTable]['fields'][$this->strField]['eval']['multiple'] && isset($GLOBALS['TL_DCA'][$this->strTable]['fields'][$this->strField]['eval']['csv']))
+					{
+						$this->varValue = trimsplit($GLOBALS['TL_DCA'][$this->strTable]['fields'][$this->strField]['eval']['csv'], $this->varValue);
+					}
 
 					// Call load_callback
 					if (is_array($GLOBALS['TL_DCA'][$this->strTable]['fields'][$this->strField]['load_callback']))
@@ -930,13 +944,19 @@ window.addEvent(\'domready\', function() {
 		if ($this->noReload)
 		{
 			$return .= '
-
 <script>
 window.addEvent(\'domready\', function() {
   Backend.vScrollTo(($(\'' . $this->strTable . '\').getElement(\'label.error\').getPosition().y - 20));
 });
 </script>';
 		}
+
+		$return .= '
+<script>
+window.addEvent(\'domready\', function() {
+  Isotope.removeProductFromStorage(' . $this->intId . ');
+});
+</script>';
 
 		return $return;
 	}
@@ -1224,7 +1244,14 @@ window.addEvent(\'domready\', function() {
 		return '
 <div id="tl_buttons">
 <a href="'.$this->getReferer(true).'" class="header_back" title="'.specialchars($GLOBALS['TL_LANG']['MSC']['backBT']).'" accesskey="b" onclick="Backend.getScrollOffset();">'.$GLOBALS['TL_LANG']['MSC']['backBT'].'</a>
-</div>'.$return;
+</div>' . $return . '
+
+<script>
+window.addEvent(\'domready\', function() {
+  Isotope.purgeProductsStorage();
+});
+</script>'
+;
 	}
 
 
@@ -1493,6 +1520,17 @@ window.addEvent(\'domready\', function() {
 			return '<p class="tl_empty">DC_ProductData does only support sorting mode 5!</p>';
 		}
 
+		if ($this->Input->get('tid') != '' && class_exists($this->strTable, false) && method_exists($this->strTable, 'toggleVisibility'))
+		{
+			$this->import($this->strTable);
+			$this->{$this->strTable}->toggleVisibility($this->Input->get('tid'), ($this->Input->get('state') == 1));
+
+			// Stop the DC_ProductData overload detection
+			$this->Session->set('PRODUCTDATA_OVERLOAD', false);
+
+			$this->redirect($this->getReferer());
+		}
+
 		if ($this->Input->get('loadDeferredProduct') > 0)
 		{
 			$this->intId = (int) $this->Input->get('loadDeferredProduct');
@@ -1725,28 +1763,13 @@ window.addEvent(\'domready\', function() {
 		{
 			$return .= "
 <script>
-function loadDeferredProducts() {
-	var scroll = window.getScroll().y + window.getSize().y;
-	$$('.deferred_product').each( function(el) {
-		if (scroll - el.getPosition().y > 0)
-		{
-			el.removeClass('deferred_product');
-			var productId = el.get('id').replace('product_', '');
-			var level = (el.getParent('ul').get('class').match(/level_/) ? el.getParent('ul').get('class').replace('level_', '').toInt() : -1);
-			new Request.Contao({
-				method: 'get',
-				url: (window.location.href+'&loadDeferredProduct='+productId+'&level='+level),
-				onComplete: function(html, text) {
-					var temp = new Element('div').set('html', html);
-					temp.getChildren().each( function(li) { li.inject(el.getParent('li'), 'before') });
-					el.getParent('li').destroy();
-					window.fireEvent('structure');
-				}
-			}).send();
-		}
-	});
-}
-$(window).addEvent('scroll', loadDeferredProducts).addEvent('domready', loadDeferredProducts).addEvent('ajax_change', loadDeferredProducts);
+window.useProductsStorage=" . ($this->Input->get('act') == '' ? 'true' : 'false') . ";
+$(window).addEvents({
+	'scroll': Isotope.loadDeferredProducts,
+	'domready': Isotope.loadDeferredProducts,
+	'ajax_change': Isotope.loadDeferredProducts,
+	'structure': Isotope.loadDeferredProducts
+});
 </script>";
 		}
 
@@ -1921,7 +1944,7 @@ $(window).addEvent('scroll', loadDeferredProducts).addEvent('domready', loadDefe
 
 		$session[$node][$row['id']] = (is_int($session[$node][$row['id']])) ? $session[$node][$row['id']] : 0;
 
-		if ($GLOBALS['TL_CONFIG']['iso_deferProductLoading'] && $table == $this->strTable && !$this->blnDeferredLoading)
+		if ($GLOBALS['TL_CONFIG']['iso_deferProductLoading'] && $table == $this->strTable && (!$this->blnDeferredLoading || $this->intId != $row['id']))
 		{
 			return $return . '<div class="iso_product deferred_product" id="product_' . $row['id'] . '"><div class="thumbnail"><img src="system/themes/default/images/loading.gif" alt=""></div><p>&nbsp;</p></div></div></li>';
 		}

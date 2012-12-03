@@ -378,8 +378,8 @@ class IsotopeBackend extends Backend
 		$arrFolders[] = TL_ROOT . '/templates';
 
 		// Add theme templates folder
-		$objTheme = $objDatabase->execute("SELECT name, templates FROM tl_theme" . ($intPid>0 ? " WHERE id=$intPid" : ''));
-		while( $objTheme->next() )
+		$objTheme = $objDatabase->execute("SELECT name, templates FROM tl_theme" . ($intTheme>0 ? " WHERE id=$intTheme" : ''));
+		while ($objTheme->next())
 		{
 			if ($objTheme->templates != '' && is_dir(TL_ROOT .'/'. $objTheme->templates))
 			{
@@ -390,7 +390,7 @@ class IsotopeBackend extends Backend
 
 		// Add Isotope config templates folder
 		$objStore = $objDatabase->execute("SELECT name, templateGroup FROM tl_iso_config");
-		while( $objStore->next() )
+		while ($objStore->next())
 		{
 			if ($objStore->templateGroup != '' && is_dir(TL_ROOT .'/'. $objStore->templateGroup))
 			{
@@ -585,6 +585,25 @@ class IsotopeBackend extends Backend
 
 		// if there is no default type set we return false
 		return false;
+	}
+	
+	
+	/**
+	 * Instantiate and return the uploader object.
+	 * This ugly method is necessary because FileUpload extends Backend but the constructor is not public...
+	 * @return object
+	 */
+	public static function getUploader()
+	{
+		// Instantiate the uploader
+		$class = BackendUser::getInstance()->uploader;
+
+		if (!class_exists($class))
+		{
+			$class = 'FileUpload';
+		}
+
+		return new $class();
 	}
 }
 

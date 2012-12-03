@@ -985,13 +985,16 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 				'image'				=> $objProduct->images->main_image,
 				'link'				=> $objProduct->href_reader,
 				'price'				=> $this->Isotope->formatPriceWithCurrency($objProduct->price),
+				'tax_free_price'	=> $this->Isotope->formatPriceWithCurrency($objProduct->tax_free_price),
 				'total_price'		=> $this->Isotope->formatPriceWithCurrency($objProduct->total_price),
+				'tax_free_total_price'	=> $this->Isotope->formatPriceWithCurrency($objProduct->tax_free_total_price),
 				'quantity'			=> $objProduct->quantity_requested,
 				'tax_id'			=> $objProduct->tax_id,
 				'product_options'	=> $objProduct->getOptions(),
 			));
 		}
 
+		$objTemplate->collection = $this->Isotope->Cart;
 		$objTemplate->products = IsotopeFrontend::generateRowClass($arrProductData, 'row', 'rowClass', 0, ISO_CLASS_COUNT|ISO_CLASS_FIRSTLAST|ISO_CLASS_EVENODD);
 		$objTemplate->surcharges = IsotopeFrontend::formatSurcharges($arrSurcharges);
 		$objTemplate->subTotalLabel = $GLOBALS['TL_LANG']['MSC']['subTotalLabel'];
@@ -1274,7 +1277,11 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 			{
 				$arrCountries = ($strAddressType == 'billing_address' ? $this->Isotope->Config->billing_countries : $this->Isotope->Config->shipping_countries);
 				$arrData['options'] = array_values(array_intersect($arrData['options'], $arrCountries));
-				$arrDefault['country'] = ($strAddressType == 'billing_address' ? $this->Isotope->Config->billing_country : $this->Isotope->Config->shipping_country);
+
+				if ($arrDefault['country'] == '')
+				{
+					$arrDefault['country'] = ($strAddressType == 'billing_address' ? $this->Isotope->Config->billing_country : $this->Isotope->Config->shipping_country);
+				}
 			}
 
 			// Special field type "conditionalselect"

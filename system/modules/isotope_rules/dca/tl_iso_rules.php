@@ -473,6 +473,7 @@ $GLOBALS['TL_DCA']['tl_iso_rules'] = array
 		'attributeName' => array
 		(
 			'label'						=> &$GLOBALS['TL_LANG']['tl_iso_rules']['attributeName'],
+			'exclude'					=> true,
 			'inputType'					=> 'select',
 			'options_callback'			=> array('tl_iso_rules', 'getAttributeNames'),
 			'eval'						=> array('mandatory'=>true, 'includeBlankOption'=>true, 'submitOnChange'=>true, 'tl_class'=>'clr w50'),
@@ -480,6 +481,7 @@ $GLOBALS['TL_DCA']['tl_iso_rules'] = array
 		'attributeCondition' => array
 		(
 			'label'						=> &$GLOBALS['TL_LANG']['tl_iso_rules']['attributeCondition'],
+			'exclude'					=> true,
 			'inputType'					=> 'select',
 			'options'					=> array('eq', 'neq', 'lt', 'gt', 'elt', 'egt', 'starts', 'ends', 'contains'),
 			'reference'					=> &$GLOBALS['TL_LANG']['tl_iso_rules']['attributeCondition'],
@@ -487,11 +489,13 @@ $GLOBALS['TL_DCA']['tl_iso_rules'] = array
 		),
 		'attributeValue' => array
 		(
+			'exclude'					=> true,
 			'eval'						=> array('decodeEntities'=>true, 'tl_class'=>'clr'),
 		),
 		'enabled'	=> array
 		(
 			'label'						=> &$GLOBALS['TL_LANG']['tl_iso_rules']['enabled'],
+			'exclude'					=> true,
 			'inputType'					=> 'checkbox',
 			'exclude'					=> true,
 			'filter'					=> true,

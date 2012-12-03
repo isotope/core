@@ -96,7 +96,7 @@ $GLOBALS['TL_DCA']['tl_iso_addresses'] = array
 	// Palettes
 	'palettes' => array
 	(
-		'default'					  => '{store_legend},label,store_id;{personal_legend},salutation,firstname,lastname;{address_legend},company,street_1,street_2,street_3,postal,city,subdivision,country;{contact_legend},email,phone;{default_legend:hide},isDefaultBilling,isDefaultShipping',
+		'default'					  => '{store_legend},label,store_id;{personal_legend},salutation,firstname,lastname,company,vat_no;{address_legend},street_1,street_2,street_3,postal,city,subdivision,country;{contact_legend},email,phone;{default_legend:hide},isDefaultBilling,isDefaultShipping',
 	),
 
 	// Fields
@@ -154,6 +154,14 @@ $GLOBALS['TL_DCA']['tl_iso_addresses'] = array
 			'inputType'				=> 'text',
 			'eval'					=> array('maxlength'=>255, 'feEditable'=>true, 'feGroup'=>'address', 'tl_class'=>'w50'),
 		),
+		'vat_no' => array
+		(
+			'label'					=> &$GLOBALS['TL_LANG']['tl_iso_addresses']['vat_no'],
+			'exclude'				=> true,
+			'search'				=> true,
+			'inputType'				=> 'text',
+			'eval'					=> array('maxlength'=>255, 'feEditable'=>true, 'feGroup'=>'address', 'tl_class'=>'w50'),
+		),
 		'street_1' => array
 		(
 			'label'					=> &$GLOBALS['TL_LANG']['tl_iso_addresses']['street_1'],
@@ -184,7 +192,7 @@ $GLOBALS['TL_DCA']['tl_iso_addresses'] = array
 			'exclude'				=> true,
 			'search'				=> true,
 			'inputType'				=> 'text',
-			'eval'					=> array('mandatory'=>true, 'maxlength'=>32, 'feEditable'=>true, 'feGroup'=>'address', 'tl_class'=>'w50'),
+			'eval'					=> array('mandatory'=>true, 'maxlength'=>32, 'feEditable'=>true, 'feGroup'=>'address', 'tl_class'=>'clr w50'),
 		),
 		'city' => array
 		(
