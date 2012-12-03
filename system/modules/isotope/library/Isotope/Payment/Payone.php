@@ -12,6 +12,8 @@
 
 namespace Isotope\Payment;
 
+use \Isotope\Collection\Order;
+
 
 /**
  * Class CybersourceClient
@@ -42,17 +44,15 @@ class Payone extends Payment
 	 */
 	public function processPostSale()
 	{
-		if ($this->Input->post('aid') == $this->payone_aid
-			&& $this->Input->post('portalid') == $this->payone_portalid
-			&& (($this->input->post('mode') == 'test' && $this->debug) || ($this->input->post('mode') == 'live' && !$this->debug)))
+		if (\Input::post('aid') == $this->payone_aid
+			&& \Input::post('portalid') == $this->payone_portalid
+			&& ((\Input::post('mode') == 'test' && $this->debug) || (\Input::post('mode') == 'live' && !$this->debug)))
 		{
-			$objOrder = new IsotopeOrder();
-
-			if ($objOrder->findBy('id', $this->Input->post('reference')))
+			if (($objOrder = Order::findByPk(\Input::post('reference'))) !== null)
 			{
-				if ($this->Input->post('txaction') == 'paid'
-					&& $this->Input->post('currency') == $objOrder->currency
-					&& $this->Input->post('balance') <= 0)
+				if (\Input::post('txaction') == 'paid'
+					&& \Input::post('currency') == $objOrder->currency
+					&& \Input::post('balance') <= 0)
 				{
 					$objOrder->date_payed = time();
 
@@ -79,8 +79,11 @@ class Payone extends Payment
 	public function checkoutForm()
 	{
 		$i = 0;
-		$objOrder = new IsotopeOrder();
-		$objOrder->findBy('cart_id', $this->Isotope->Cart->id);
+
+		if (($objOrder = Order::findOneBy('cart_id', $this->Isotope->Cart->id)) === null)
+		{
+			$this->redirect($this->addToUrl('step=failed', true));
+		}
 
 		$arrData = array
 		(
