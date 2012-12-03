@@ -209,6 +209,7 @@ $GLOBALS['ISO_PAY']['paypalpayflowpro']  = 'Isotope\Payment\PaypalPayflowPro';
 $GLOBALS['ISO_PAY']['postfinance']       = 'Isotope\Payment\Postfinance';
 $GLOBALS['ISO_PAY']['authorizedotnet']   = 'Isotope\Payment\AuthorizeDotNet';
 $GLOBALS['ISO_PAY']['cybersource']       = 'Isotope\Payment\Cybersource';
+$GLOBALS['ISO_PAY']['datatrans']         = 'Isotope\Payment\Datatrans';
 
 
 /**
