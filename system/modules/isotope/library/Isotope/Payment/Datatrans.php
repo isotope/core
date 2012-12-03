@@ -12,6 +12,8 @@
 
 namespace Isotope\Payment;
 
+use Isotope\Collection\Order;
+
 
 /**
  * Class Datatrans
@@ -24,39 +26,27 @@ class Datatrans extends Payment
 {
 
 	/**
-	 * Return a list of status options.
-	 * @return array
-	 */
-	public function statusOptions()
-	{
-		return array('pending', 'processing', 'complete', 'on_hold');
-	}
-
-
-	/**
 	 * Perform server to server data check
 	 */
 	public function processPostSale()
 	{
 		// Verify payment status
-		if ($this->Input->post('status') != 'success')
+		if (\Input::post('status') != 'success')
 		{
-			$this->log('Payment for order ID "' . $this->Input->post('refno') . '" failed.', __METHOD__, TL_ERROR);
+			$this->log('Payment for order ID "' . \Input::post('refno') . '" failed.', __METHOD__, TL_ERROR);
 			return false;
 		}
 
-		$objOrder = new IsotopeOrder();
-
-		if (!$objOrder->findBy('id', $this->Input->post('refno')))
+		if (($objOrder = Order::findByPk(\Input::post('refno'))) === null)
 		{
-			$this->log('Order ID "' . $this->Input->post('refno') . '" not found', __METHOD__, TL_ERROR);
+			$this->log('Order ID "' . \Input::post('refno') . '" not found', __METHOD__, TL_ERROR);
 			return false;
 		}
 
 		// Validate HMAC sign
-		if ($this->Input->post('sign2') != hash_hmac('md5', $this->datatrans_id.$this->Input->post('amount').$this->Input->post('currency').$this->Input->post('uppTransactionId'), $this->datatrans_sign))
+		if (\Input::post('sign2') != hash_hmac('md5', $this->datatrans_id.\Input::post('amount').\Input::post('currency').\Input::post('uppTransactionId'), $this->datatrans_sign))
 		{
-			$this->log('Invalid HMAC signature for Order ID ' . $this->Input->post('refno'), __METHOD__, TL_ERROR);
+			$this->log('Invalid HMAC signature for Order ID ' . \Input::post('refno'), __METHOD__, TL_ERROR);
 			return false;
 		}
 
@@ -84,8 +74,7 @@ class Datatrans extends Payment
 	 */
 	public function processPayment()
 	{
-		$objOrder = new IsotopeOrder();
-		if (!$objOrder->findBy('cart_id', $this->Isotope->Cart->id))
+		if (($objOrder = Order::findOneBy('cart_id', $this->Isotope->Cart->id)) === null)
 		{
 			return false;
 		}
@@ -130,7 +119,7 @@ class Datatrans extends Payment
 	{
 		$objOrder = new IsotopeOrder();
 
-		if (!$objOrder->findBy('cart_id', $this->Isotope->Cart->id))
+		if (($objOrder = Order::findOneBy('cart_id', $this->Isotope->Cart->id)) === null)
 		{
 			$this->redirect($this->addToUrl('step=failed', true));
 		}
@@ -187,9 +176,9 @@ class Datatrans extends Payment
 	{
 		foreach ($arrData as $key => $value)
 		{
-			if ($this->Input->post($key) != $value)
+			if (\Input::post($key) != $value)
 			{
-				$this->log('Wrong data for parameter "' . $key . '" (Order ID "' . $this->Input->post('refno') . ').', __METHOD__, TL_ERROR);
+				$this->log('Wrong data for parameter "' . $key . '" (Order ID "' . \Input::post('refno') . ').', __METHOD__, TL_ERROR);
 				return false;
 			}
 		}
