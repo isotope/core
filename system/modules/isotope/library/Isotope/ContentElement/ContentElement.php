@@ -10,6 +10,10 @@
  * @license    http://opensource.org/licenses/lgpl-3.0.html LGPL
  */
 
+namespace Isotope\ContentElement;
+
+use \Contao\ContentElement as Contao_ContentElement;
+
 
 /**
  * Class ContentIsotope
@@ -19,7 +23,7 @@
  * @author     Andreas Schempp <andreas.schempp@terminal42.ch>
  * @author     Fred Bliss <fred.bliss@intelligentspark.com>
  */
-abstract class ContentIsotope extends \ContentElement
+abstract class ContentElement extends Contao_ContentElement
 {
 
 	/**

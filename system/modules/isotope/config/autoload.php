@@ -42,9 +42,6 @@ ClassLoader::addClasses(array
 	'DC_ProductData'                    => 'system/modules/isotope/drivers/DC_ProductData.php',
 	'DC_TablePageId'                    => 'system/modules/isotope/drivers/DC_TablePageId.php',
 
-	// Elements
-	'Isotope\ContentIsotope'            => 'system/modules/isotope/elements/ContentAccordion.php',
-
 	// Helpers
 	'Isotope\PasteProductButton'        => 'system/modules/isotope/helpers/PasteProductButton.php',
 	'Isotope\ProductCallbacks'          => 'system/modules/isotope/helpers/ProductCallbacks.php',
@@ -65,6 +62,9 @@ ClassLoader::addClasses(array
 	'Isotope\Collection\Collection'           => 'system/modules/isotope/library/Isotope/Collection/Collection.php',
 	'Isotope\Collection\Cart'                 => 'system/modules/isotope/library/Isotope/Collection/Cart.php',
 	'Isotope\Collection\Order'                => 'system/modules/isotope/library/Isotope/Collection/Order.php',
+
+	// Library/Isotope/ContentElement
+	'Isotope\ContentElement\ContentElement'   => 'system/modules/isotope/library/Isotope/ContentElement/ContentElement.php',
 
 	// Library/Isotope/Gallery
 	'Isotope\Gallery\Standard'                => 'system/modules/isotope/library/Isotope/Gallery/Standard.php',
@@ -111,7 +111,7 @@ ClassLoader::addClasses(array
 	'Isotope\Shipping\USPS'                   => 'system/modules/isotope/library/Isotope/Shipping/USPS.php',
 	'Isotope\Shipping\WeightTotal'            => 'system/modules/isotope/library/Isotope/Shipping/WeightTotal.php',
 
-	// Widgets
+	// Library/Isotope/Widgets
 	'Isotope\Widget\AttributeWizard'          => 'system/modules/isotope/library/Isotope/Widget/AttributeWizard.php',
 	'Isotope\Widget\FieldWizard'              => 'system/modules/isotope/library/Isotope/Widget/FieldWizard.php',
 	'Isotope\Widget\InheritCheckBox'          => 'system/modules/isotope/library/Isotope/Widget/InheritCheckBox.php',
