@@ -100,6 +100,7 @@ ClassLoader::addClasses(array
 	'Isotope\Payment\Postfinance'             => 'system/modules/isotope/library/Isotope/Payment/Postfinance.php',
 	'Isotope\Payment\Datatrans'               => 'system/modules/isotope/library/Isotope/Payment/Datatrans.php',
 	'Isotope\Payment\Sparkasse'               => 'system/modules/isotope/library/Isotope/Payment/Sparkasse.php',
+	'Isotope\Payment\Expercash'               => 'system/modules/isotope/library/Isotope/Payment/Expercash.php',
 	'Isotope\Payment\CybersourceClient'       => 'system/modules/isotope/library/Isotope/Payment/CybersourceClient.php',
 
 	// Library/Isotope/Product

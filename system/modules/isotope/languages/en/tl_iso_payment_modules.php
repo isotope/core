@@ -55,6 +55,11 @@ $GLOBALS['TL_LANG']['tl_iso_payment_modules']['sparkasse_paymentmethod']	= array
 $GLOBALS['TL_LANG']['tl_iso_payment_modules']['sparkasse_sslmerchant']		= array('Seller ID', 'Please enter your seller ID (Händlerkennung).');
 $GLOBALS['TL_LANG']['tl_iso_payment_modules']['sparkasse_sslpassword']		= array('Password', 'Please enter your SSL-Password.');
 $GLOBALS['TL_LANG']['tl_iso_payment_modules']['sparkasse_merchantref']		= array('Reference', 'A reference that will be shown on the seller details page instead of the cart ID.');
+$GLOBALS['TL_LANG']['tl_iso_payment_modules']['expercash_popupId']			= array('ExperCash Popup-ID', 'Geben Sie die Popup-ID aus Ihrem ExperCash Portal ein.');
+$GLOBALS['TL_LANG']['tl_iso_payment_modules']['expercash_profile']			= array('ExperCash Profile', 'Geben Sie die dreistellige Profilnummer ein.');
+$GLOBALS['TL_LANG']['tl_iso_payment_modules']['expercash_popupKey']			= array('ExperCash Popup-Key', 'Geben Sie den Popup-Key aus Ihrem ExperCash Portal ein.');
+$GLOBALS['TL_LANG']['tl_iso_payment_modules']['expercash_paymentMethod']	= array('Transaktionsart', 'Sie können eine Transaktionsart vordefinieren oder den Kunden wählen lassen.');
+$GLOBALS['TL_LANG']['tl_iso_payment_modules']['expercash_css']				= array('CSS-Vorlage', 'Wählen Sie eine CSS-Datei für die Übergabe an ExperCash.');
 $GLOBALS['TL_LANG']['tl_iso_payment_modules']['groups']						= array('Member Groups', 'Restrict this payment method to certain member groups.');
 $GLOBALS['TL_LANG']['tl_iso_payment_modules']['protected']      			= array('Protect module', 'Show the payment method to certain member groups only.');
 $GLOBALS['TL_LANG']['tl_iso_payment_modules']['guests']         			= array('Show to guests only', 'Hide the payment method if a member is logged in.');
@@ -82,6 +87,14 @@ $GLOBALS['TL_LANG']['tl_iso_payment_modules']['PRIOR_AUTH_CAPTURE']		= array('Pr
 $GLOBALS['TL_LANG']['tl_iso_payment_modules']['sparkasse_paymentmethod']['creditcard'] = 'Credit card';
 $GLOBALS['TL_LANG']['tl_iso_payment_modules']['sparkasse_paymentmethod']['maestro'] = 'Debig card';
 $GLOBALS['TL_LANG']['tl_iso_payment_modules']['sparkasse_paymentmethod']['directdebit'] = 'Direct debit';
+
+$GLOBALS['TL_LANG']['tl_iso_payment_modules']['expercash_paymentMethod']['automatic_payment_method'] = 'Auswahl der Zahlart durch den Endkunden';
+$GLOBALS['TL_LANG']['tl_iso_payment_modules']['expercash_paymentMethod']['elv_buy'] = 'Zahlung per Lastschrift (ELV)';
+$GLOBALS['TL_LANG']['tl_iso_payment_modules']['expercash_paymentMethod']['elv_authorize'] = 'Prüfung und Speicherung von Kontodaten zum späteren Einzug';
+$GLOBALS['TL_LANG']['tl_iso_payment_modules']['expercash_paymentMethod']['cc_buy'] = 'Kreditkartenzahlung';
+$GLOBALS['TL_LANG']['tl_iso_payment_modules']['expercash_paymentMethod']['cc_authorize'] = 'verbindliche Reservierung auf eine Kreditkarte zum späteren Einzug';
+$GLOBALS['TL_LANG']['tl_iso_payment_modules']['expercash_paymentMethod']['giropay'] = 'Transaktion über giropay';
+$GLOBALS['TL_LANG']['tl_iso_payment_modules']['expercash_paymentMethod']['sofortueberweisung'] = 'Transaktion über Sofortüberweisung';
 
 //Paypal Payflow Pro
 $GLOBALS['TL_LANG']['tl_payment_module']['payflowpro_transTypes']['Sale'] = 'Authorization and Capture';
