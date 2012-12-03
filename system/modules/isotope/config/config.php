@@ -54,7 +54,7 @@ array_insert($GLOBALS['BE_MOD']['isotope'], 0, array
 	),
 	'iso_setup' => array
 	(
-		'callback'					=> 'ModuleIsotopeSetup',
+		'callback'					=> 'Isotope\BackendModule\Setup',
 		'tables'					=> array(),
 		'icon'						=> 'system/modules/isotope/assets/application-monitor.png',
 		'javascript'				=> 'system/modules/isotope/assets/backend.min.js',
@@ -224,9 +224,9 @@ $GLOBALS['ISO_GAL']['zoom']              = 'Isotope\Gallery\Zoom';
  */
 $GLOBALS['ISO_PRODUCT'] = array
 (
-	'regular' => array
+	'standard' => array
 	(
-		'class'	=> 'IsotopeProduct',
+		'class'	=> 'Isotope\Product\Standard',
 	),
 );
 
@@ -277,8 +277,8 @@ $GLOBALS['TL_HOOKS']['addCustomRegexp'][]			= array('Isotope\Isotope', 'validate
 $GLOBALS['TL_HOOKS']['getSearchablePages'][]		= array('Isotope\Frontend', 'addProductsToSearchIndex');
 $GLOBALS['TL_HOOKS']['replaceInsertTags'][]			= array('Isotope\Frontend', 'replaceIsotopeTags');
 $GLOBALS['TL_HOOKS']['generatePage'][]				= array('Isotope\Frontend', 'injectMessages');
-$GLOBALS['TL_HOOKS']['executePreActions'][]			= array('ProductTree', 'executePreActions');
-$GLOBALS['TL_HOOKS']['executePostActions'][]		= array('ProductTree', 'executePostActions');
+$GLOBALS['TL_HOOKS']['executePreActions'][]			= array('Isotope\Widget\ProductTree', 'executePreActions');
+$GLOBALS['TL_HOOKS']['executePostActions'][]		= array('Isotope\Widget\ProductTree', 'executePostActions');
 $GLOBALS['TL_HOOKS']['translateUrlParameters'][]	= array('Isotope\Frontend', 'translateProductUrls');
 $GLOBALS['TL_HOOKS']['getSystemMessages'][]			= array('Isotope\Backend', 'getOrderMessages');
 $GLOBALS['TL_HOOKS']['sqlGetFromFile'][]			= array('Isotope\Backend', 'addAttributesToDBUpdate');

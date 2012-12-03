@@ -90,7 +90,7 @@ class ProductTree extends \Widget
 		$this->import('Database');
 		$this->import('BackendUser', 'User');
 		$this->import('Isotope\ProductCallbacks', 'ProductCallbacks');
-		$this->import('tl_iso_groups');
+		$this->import('Isotope\tl_iso_groups');
 
 		$this->arrTypes = is_array($this->User->iso_product_types) ? $this->User->iso_product_types : array(0);
 	}

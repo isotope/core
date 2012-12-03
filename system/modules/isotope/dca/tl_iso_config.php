@@ -29,7 +29,7 @@ $GLOBALS['TL_DCA']['tl_iso_config'] = array
 		'onload_callback' => array
 		(
 			array('Isotope\Backend', 'initializeSetupModule'),
-			array('tl_iso_config', 'checkPermission'),
+			array('Isotope\tl_iso_config', 'checkPermission'),
 		)
 	),
 

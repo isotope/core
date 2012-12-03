@@ -24,17 +24,6 @@ namespace Isotope;
 class Template extends \FrontendTemplate
 {
 
-	/**
-	 * Initialize the template
-	 * @param string
-	 * @param string
-	 */
-	public function __construct($strTemplate='', $strContentType='text/html')
-	{
-		parent::__construct($strTemplate, $strContentType);
-		$this->import('Isotope\Isotope', 'Isotope');
-	}
-
 
 	/**
 	 * Check the Isotope config directory for a particular template
@@ -42,7 +31,7 @@ class Template extends \FrontendTemplate
 	 * @return string
 	 * @throws Exception
 	 */
-	protected function getTemplate($strTemplate, $strFormat='html5')
+	public static function getTemplate($strTemplate, $strFormat='html5')
 	{
 		$arrAllowed = trimsplit(',', $GLOBALS['TL_CONFIG']['templateFiles']);
 
@@ -59,7 +48,7 @@ class Template extends \FrontendTemplate
 		if (TL_MODE == 'FE')
 		{
 			global $objPage;
-			$strTemplateGroup = str_replace(array('../', 'templates/'), '', $this->Isotope->Config->templateGroup);
+			$strTemplateGroup = str_replace(array('../', 'templates/'), '', Isotope::getInstance()->Config->templateGroup);
 
 			if ($strTemplateGroup != '')
 			{

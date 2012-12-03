@@ -22,7 +22,7 @@ namespace Isotope\Product;
  * @author     Fred Bliss <fred.bliss@intelligentspark.com>
  * @author     Christian de la Haye <service@delahaye.de>
  */
-class Product extends \Controller
+class Standard extends \Controller
 {
 
 	/**
@@ -119,12 +119,13 @@ class Product extends \Controller
 	public function __construct($arrData, $arrOptions=null, $blnLocked=false, $intQuantity=1)
 	{
 		parent::__construct();
-		$this->import('Database');
-		$this->import('Isotope\Isotope', 'Isotope');
+
+		$this->Database = \Database::getInstance();
+		$this->Isotope = \Isotope\Isotope::getInstance();
 
 		if (FE_USER_LOGGED_IN === true)
 		{
-			$this->import('FrontendUser', 'User');
+			$this->User = \FrontendUser::getInstance();
 		}
 
 		$this->blnLocked = $blnLocked;
@@ -158,8 +159,8 @@ class Product extends \Controller
 		{
 			foreach ($GLOBALS['ISO_HOOKS']['productAttributes'] as $callback)
 			{
-				$this->import($callback[0]);
-				$this->$callback[0]->$callback[1]($this->arrAttributes, $this->arrVariantAttributes, $this);
+				$objCallback = \System::importStatic($callback[0]);
+				$objCallback->$callback[1]($this->arrAttributes, $this->arrVariantAttributes, $this);
 			}
 		}
 
@@ -285,9 +286,9 @@ class Product extends \Controller
 					{
 						$strClass = $GLOBALS['ISO_GAL'][(strlen($GLOBALS['TL_DCA'][$this->strTable]['fields'][$strKey]['attributes']['gallery']) ? $GLOBALS['TL_DCA'][$this->strTable]['fields'][$strKey]['attributes']['gallery'] : $this->Isotope->Config->gallery)];
 
-						if (!strlen($strClass) || !$this->classFileExists($strClass))
+						if (!class_exists($strClass))
 						{
-							$strClass = 'Isotope\Gallery\Default';
+							$strClass = 'Isotope\Gallery\Standard';
 						}
 
 						$objGallery = new $strClass($this->formSubmit . '_' . $strKey, deserialize($this->arrData[$strKey]));
@@ -796,8 +797,8 @@ class Product extends \Controller
 		{
 			foreach ($GLOBALS['ISO_HOOKS']['buttons'] as $callback)
 			{
-				$this->import($callback[0]);
-				$arrButtons = $this->$callback[0]->$callback[1]($arrButtons);
+				$objCallback = \System::importStatic($callback[0]);
+				$arrButtons = $objCallback->$callback[1]($arrButtons);
 			}
 
 			$arrButtons = array_intersect_key($arrButtons, array_flip(deserialize($objModule->iso_buttons, true)));
@@ -811,8 +812,8 @@ class Product extends \Controller
 				{
 					if (is_array($data['callback']) && count($data['callback']) == 2)
 					{
-						$this->import($data['callback'][0]);
-						$this->{$data['callback'][0]}->{$data['callback'][1]}($this, $objModule);
+						$objCallback = \System::importStatic($data['callback'][0]);
+						$objCallback->{$data['callback'][1]}($this, $objModule);
 					}
 					break;
 				}
@@ -843,8 +844,8 @@ class Product extends \Controller
 		{
 			foreach ($GLOBALS['ISO_HOOKS']['generateProduct'] as $callback)
 			{
-				$this->import($callback[0]);
-				$this->$callback[0]->$callback[1]($objTemplate, $this);
+				$objCallback = \System::importStatic($callback[0]);
+				$objCallback->$callback[1]($objTemplate, $this);
 			}
 		}
 
@@ -926,8 +927,8 @@ class Product extends \Controller
 		{
 			foreach ($GLOBALS['ISO_HOOKS']['generateAjaxProduct'] as $callback)
 			{
-				$this->import($callback[0]);
-				$arrOptions = $this->$callback[0]->$callback[1]($arrOptions, $this);
+				$objCallback = \System::importStatic($callback[0]);
+				$arrOptions = $objCallback->$callback[1]($arrOptions, $this);
 			}
 		}
 
@@ -1001,8 +1002,8 @@ class Product extends \Controller
 		// Generate download attributes
 		elseif ($arrData['inputType'] == 'downloads')
 		{
-			$this->import('Isotope\Frontend', 'IsotopeFrontend');
-			$strBuffer = $this->IsotopeFrontend->generateDownloadAttribute($attribute, $arrData, $varValue);
+			$IsotopeFrontend = \System::importStatic('IsotopeFrontend');
+			$strBuffer = $IsotopeFrontend->generateDownloadAttribute($attribute, $arrData, $varValue);
 		}
 
 		// Generate a HTML table for associative arrays
@@ -1100,8 +1101,8 @@ class Product extends \Controller
 		{
 			foreach ($GLOBALS['ISO_HOOKS']['generateAttribute'] as $callback)
 			{
-				$this->import($callback[0]);
-				$strBuffer = $this->$callback[0]->$callback[1]($attribute, $varValue, $strBuffer, $this);
+				$objCallback = \System::importStatic($callback[0]);
+				$strBuffer = $objCallback->$callback[1]($attribute, $varValue, $strBuffer, $this);
 			}
 		}
 
@@ -1209,8 +1210,8 @@ class Product extends \Controller
 			{
 				foreach ($GLOBALS['ISO_ATTR'][$arrData['attributes']['type']]['callback'] as $callback)
 				{
-					$this->import($callback[0]);
-					$arrData = $this->{$callback[0]}->{$callback[1]}($strField, $arrData, $this);
+					$objCallback = \System::importStatic($callback[0]);
+					$arrData = $objCallback->{$callback[1]}($strField, $arrData, $this);
 				}
 			}
 
@@ -1283,11 +1284,11 @@ class Product extends \Controller
 				{
 					foreach ($arrData['save_callback'] as $callback)
 					{
-						$this->import($callback[0]);
+						$objCallback = \System::importStatic($callback[0]);
 
 						try
 						{
-							$varValue = $this->$callback[0]->$callback[1]($varValue, $this, $objWidget);
+							$varValue = $objCallback->$callback[1]($varValue, $this, $objWidget);
 						}
 						catch (Exception $e)
 						{
@@ -1358,8 +1359,8 @@ class Product extends \Controller
 		{
 			foreach ($arrData['wizard'] as $callback)
 			{
-				$this->import($callback[0]);
-				$wizard .= $this->$callback[0]->$callback[1]($this);
+				$objCallback = \System::importStatic($callback[0]);
+				$wizard .= $objCallback->$callback[1]($this);
 			}
 		}
 
@@ -1377,7 +1378,7 @@ class Product extends \Controller
 	 */
 	protected function findPrice()
 	{
-		$arrPrice = ProductPriceFinder::findPrice($this);
+		$arrPrice = \Isotope\ProductPriceFinder::findPrice($this);
 
 		$this->arrData['price'] = $arrPrice['price'];
 		$this->arrData['tax_class'] = $arrPrice['tax_class'];

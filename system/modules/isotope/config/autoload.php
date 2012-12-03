@@ -56,7 +56,7 @@ ClassLoader::addClasses(array
 	'Isotope\Template'                  => 'system/modules/isotope/library/Isotope/Template.php',
 
 	// Library/Isotope/BackendModule
-	'Isotope\Module\Setup'                    => 'system/modules/isotope/library/Isotope/BackendModule/Setup.php',
+	'Isotope\BackendModule\Setup'             => 'system/modules/isotope/library/Isotope/BackendModule/Setup.php',
 
 	// Library/Isotope/Collection
 	'Isotope\Collection\Collection'           => 'system/modules/isotope/library/Isotope/Collection/Collection.php',

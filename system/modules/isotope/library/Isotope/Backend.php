@@ -555,7 +555,7 @@ class Backend extends Contao_Backend
 	 */
 	public static function getProductTypeForGroup($intGroup)
 	{
-		$objDatabase = Database::getInstance();
+		$objDatabase = \Database::getInstance();
 
 		do
 		{

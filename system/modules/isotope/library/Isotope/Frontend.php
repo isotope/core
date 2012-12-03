@@ -887,6 +887,11 @@ $endScript";
 
 		$strClass = $GLOBALS['ISO_PRODUCT'][$objProductData->product_class]['class'];
 
+		if (!class_exists($strClass))
+		{
+			$strClass = 'Isotope\Product\Standard';
+		}
+
 		try
 		{
 			$objProduct = new $strClass($objProductData->row());

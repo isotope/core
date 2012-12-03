@@ -58,7 +58,7 @@ $GLOBALS['TL_DCA']['tl_iso_products'] = array
 			'flag'					=> 1,
 			'panelLayout'			=> 'filter;sort,search',
 			'icon'					=> 'system/modules/isotope/assets/store-open.png',
-			'paste_button_callback'	=> array('PasteProductButton', 'generate'),
+			'paste_button_callback'	=> array('Isotope\PasteProductButton', 'generate'),
 			'rootPaste'				=> true,
 		),
 		'label' => array
