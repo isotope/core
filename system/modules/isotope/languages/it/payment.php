@@ -359,3 +359,12 @@ $GLOBALS['TL_LANG']['MSG']['authorizedotnet']['2']['317'] = 'La carta di credito
 $GLOBALS['TL_LANG']['MSG']['authorizedotnet']['2']['318'] = 'Una transazione duplicato è stata inviata. - Questo è un rifiuto da parte del processore.';
 $GLOBALS['TL_LANG']['MSG']['authorizedotnet']['2']['319'] = 'La transazione non è stata trovata. - Questo è un rifiuto da parte del processore.';
 
+
+$GLOBALS['TL_LANG']['MSG']['payone']['elv'] = 'Prelievo debito';
+$GLOBALS['TL_LANG']['MSG']['payone']['cc'] = 'Carta di credito';
+$GLOBALS['TL_LANG']['MSG']['payone']['dc'] = 'Carta di debito';
+$GLOBALS['TL_LANG']['MSG']['payone']['vor'] = 'Prepagamento';
+$GLOBALS['TL_LANG']['MSG']['payone']['rec'] = 'Fattura';
+$GLOBALS['TL_LANG']['MSG']['payone']['sb'] = 'Trasferimento bancario online';
+$GLOBALS['TL_LANG']['MSG']['payone']['wlt'] = 'e-Wallet';
+

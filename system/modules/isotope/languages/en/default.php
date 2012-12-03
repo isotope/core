@@ -267,6 +267,7 @@ $GLOBALS['ISO_LANG']['PAY']['cybersource']		= array('Cybersource','For Cybersour
 $GLOBALS['ISO_LANG']['PAY']['datatrans']        = array('Datatrans', 'A payment module for the swiss payment gateway "Datatrans".');
 $GLOBALS['ISO_LANG']['PAY']['sparkasse']        = array('Sparkasse');
 $GLOBALS['ISO_LANG']['PAY']['expercash']        = array('ExperCash');
+$GLOBALS['ISO_LANG']['PAY']['payone']           = array('PayOne');
 
 
 /**

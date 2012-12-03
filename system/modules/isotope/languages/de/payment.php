@@ -217,3 +217,14 @@ $GLOBALS['TL_LANG']['MSG']['authorizedotnet']['2']['45'] = 'Die Transaktion wurd
 $GLOBALS['TL_LANG']['MSG']['authorizedotnet']['3']['46'] = 'Ihre Session ist abgelaufen oder existiert nicht. Sie müssen sich anmelden um den Vorgang fortzusetzen.';
 $GLOBALS['TL_LANG']['MSG']['authorizedotnet']['3']['47'] = 'Der Wert der für die Abrechnung angefragt wird, darf nicht höher sein als der ursprünglich authorisierte Wert - Dies geschieht, wenn der Händler Finanzmittel anfordert, die höher sind als der ursprüngliche Wert der authorisierten Transaktion.';
 
+/**
+ * PAYONE Payment Type
+ */
+$GLOBALS['TL_LANG']['MSG']['payone']['elv']		= 'Lastschrift';
+$GLOBALS['TL_LANG']['MSG']['payone']['cc']		= 'Kreditkarte';
+$GLOBALS['TL_LANG']['MSG']['payone']['dc']		= 'Debitkarte';
+$GLOBALS['TL_LANG']['MSG']['payone']['vor']		= 'Vorkasse';
+$GLOBALS['TL_LANG']['MSG']['payone']['rec']		= 'Rechnung';
+$GLOBALS['TL_LANG']['MSG']['payone']['sb']		= 'Online-Überweisung';
+$GLOBALS['TL_LANG']['MSG']['payone']['wlt']		= 'e-Wallet';
+

@@ -121,6 +121,8 @@ $GLOBALS['TL_DCA']['tl_iso_payment_modules'] = array
 		'datatrans'             => '{type_legend},name,label,type;{note_legend:hide},note;{config_legend},new_order_status,trans_type,minimum_total,maximum_total,countries,shipping_modules,product_types;{gateway_legend},datatrans_id,datatrans_sign;{price_legend:hide},price,tax_class;{expert_legend:hide},guests,protected;{enabled_legend},debug,enabled',
 		'sparkasse'             => '{type_legend},name,label,type;{note_legend:hide},note;{config_legend:hide},new_order_status,minimum_total,maximum_total,countries,shipping_modules,product_types;{gateway_legend},sparkasse_paymentmethod,trans_type,sparkasse_sslmerchant,sparkasse_sslpassword,sparkasse_merchantref;{price_legend:hide},price,tax_class;{expert_legend:hide},guests,protected;{enabled_legend},debug,enabled',
 		'expercash'             => '{type_legend},name,label,type;{note_legend:hide},note;{config_legend},new_order_status,minimum_total,maximum_total,countries,shipping_modules,product_types;{gateway_legend},expercash_popupId,expercash_profile,expercash_popupKey,expercash_paymentMethod;{price_legend:hide},price,tax_class;{template_legend},expercash_css;{expert_legend:hide},guests,protected;{enabled_legend},enabled',
+		'payone'                => '{type_legend},type,name,label;{note_legend:hide},note;{config_legend},new_order_status,minimum_total,maximum_total,countries,shipping_modules,product_types;{gateway_legend},trans_type,payone_clearingtype,payone_aid,payone_portalid,payone_key;{price_legend:hide},price,tax_class;{enabled_legend},debug,enabled',
+
 	),
 
 	// Subpalettes
@@ -387,6 +389,7 @@ $GLOBALS['TL_DCA']['tl_iso_payment_modules'] = array
         'sparkasse_paymentmethod' => array
         (
         	'label'                   => &$GLOBALS['TL_LANG']['tl_iso_payment_modules']['sparkasse_paymentmethod'],
+			'exclude'                 => true,
         	'inputType'               => 'select',
         	'options'                 => array('creditcard', 'maestro', 'directdebit'),
         	'reference'               => &$GLOBALS['TL_LANG']['tl_iso_payment_modules']['sparkasse_paymentmethod'],
@@ -395,42 +398,49 @@ $GLOBALS['TL_DCA']['tl_iso_payment_modules'] = array
         'sparkasse_sslmerchant' => array
         (
         	'label'                   => &$GLOBALS['TL_LANG']['tl_iso_payment_modules']['sparkasse_sslmerchant'],
+			'exclude'                 => true,
         	'inputType'               => 'text',
         	'eval'                    => array('mandatory'=>true, 'maxlength'=>16, 'tl_class'=>'w50'),
         ),
         'sparkasse_sslpassword' => array
         (
         	'label'                   => &$GLOBALS['TL_LANG']['tl_iso_payment_modules']['sparkasse_sslpassword'],
+			'exclude'                 => true,
         	'inputType'               => 'text',
         	'eval'                    => array('mandatory'=>true, 'maxlength'=>255, 'hideInput'=>true, 'tl_class'=>'w50'),
         ),
         'sparkasse_merchantref' => array
         (
         	'label'                   => &$GLOBALS['TL_LANG']['tl_iso_payment_modules']['sparkasse_merchantref'],
+			'exclude'                 => true,
         	'inputType'               => 'text',
         	'eval'                    => array('mandatory'=>true, 'maxlength'=>255, 'decodeEntities'=>true, 'tl_class'=>'clr long'),
         ),
         'expercash_popupId' => array
         (
         	'label'                   => &$GLOBALS['TL_LANG']['tl_iso_payment_modules']['expercash_popupId'],
+			'exclude'                 => true,
         	'inputType'               => 'text',
         	'eval'                    => array('mandatory'=>true, 'maxlength'=>10, 'decodeEntities'=>true, 'tl_class'=>'w50'),
         ),
         'expercash_profile' => array
         (
         	'label'                   => &$GLOBALS['TL_LANG']['tl_iso_payment_modules']['expercash_profile'],
+			'exclude'                 => true,
         	'inputType'               => 'text',
         	'eval'                    => array('mandatory'=>true, 'maxlength'=>3, 'rgxp'=>'digit', 'tl_class'=>'w50'),
         ),
         'expercash_popupKey' => array
         (
         	'label'                   => &$GLOBALS['TL_LANG']['tl_iso_payment_modules']['expercash_popupKey'],
+			'exclude'                 => true,
         	'inputType'               => 'text',
         	'eval'                    => array('mandatory'=>true, 'maxlength'=>32, 'decodeEntities'=>true, 'tl_class'=>'w50'),
         ),
         'expercash_paymentMethod' => array
         (
         	'label'                   => &$GLOBALS['TL_LANG']['tl_iso_payment_modules']['expercash_paymentMethod'],
+			'exclude'                 => true,
         	'inputType'               => 'select',
         	'options'                 => array('automatic_payment_method', 'elv_buy', 'elv_authorize', 'cc_buy', 'cc_authorize', 'giropay', 'sofortueberweisung'),
         	'reference'               => &$GLOBALS['TL_LANG']['tl_iso_payment_modules']['expercash_paymentMethod'],
@@ -439,8 +449,39 @@ $GLOBALS['TL_DCA']['tl_iso_payment_modules'] = array
         'expercash_css' => array
         (
         	'label'                   => &$GLOBALS['TL_LANG']['tl_iso_payment_modules']['expercash_css'],
+			'exclude'                 => true,
         	'inputType'               => 'fileTree',
         	'eval'                    => array('fieldType'=>'radio', 'files'=>true, 'filesOnly'=>true, 'extensions'=>'css', 'tl_class'=>'clr'),
+        ),
+        'payone_clearingtype' => array
+        (
+        	'label'                   => &$GLOBALS['TL_LANG']['tl_iso_payment_modules']['payone_clearingtype'],
+			'exclude'                 => true,
+        	'inputType'               => 'select',
+        	'options'                 => array('elv', 'cc', 'dc', 'vor', 'rec', 'sb', 'wlt'),
+        	'reference'               => &$GLOBALS['TL_LANG']['MSG']['payone'],
+        	'eval'                    => array('mandatory'=>true, 'includeBlankOption'=>true, 'tl_class'=>'w50'),
+        ),
+        'payone_aid' => array
+        (
+        	'label'                   => &$GLOBALS['TL_LANG']['tl_iso_payment_modules']['payone_aid'],
+			'exclude'                 => true,
+        	'inputType'               => 'text',
+        	'eval'                    => array('mandatory'=>true, 'maxlength'=>6, 'rgxp'=>'digit', 'tl_class'=>'w50'),
+        ),
+        'payone_portalid' => array
+        (
+        	'label'                   => &$GLOBALS['TL_LANG']['tl_iso_payment_modules']['payone_portalid'],
+			'exclude'                 => true,
+        	'inputType'               => 'text',
+        	'eval'                    => array('mandatory'=>true, 'maxlength'=>7, 'rgxp'=>'digit', 'tl_class'=>'w50'),
+        ),
+        'payone_key' => array
+        (
+        	'label'                   => &$GLOBALS['TL_LANG']['tl_iso_payment_modules']['payone_key'],
+			'exclude'                 => true,
+        	'inputType'               => 'text',
+        	'eval'                    => array('mandatory'=>true, 'maxlength'=>255, 'tl_class'=>'w50'),
         ),
 		'requireCCV' => array
 		(
