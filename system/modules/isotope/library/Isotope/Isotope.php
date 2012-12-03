@@ -193,7 +193,7 @@ class Isotope extends \Controller
 			return;
 		}
 
-		$this->Config = new \IsotopeConfig($objConfig);
+		$this->Config = new \Isotope\Model\Config($objConfig);
 	}
 
 
@@ -203,7 +203,7 @@ class Isotope extends \Controller
 	 */
 	public function overrideConfig($intConfig)
     {
-		if (($this->Config = IsotopeConfig::findByPk($intConfig)) === null)
+		if (($this->Config = \Isotope\Model\Config::findByPk($intConfig)) === null)
 		{
 			$this->resetConfig();
 		}

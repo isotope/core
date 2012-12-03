@@ -10,7 +10,7 @@
  * @license    http://opensource.org/licenses/lgpl-3.0.html LGPL
  */
 
-namespace Isotope;
+namespace Isotope\Model;
 
 
 /**
@@ -22,7 +22,7 @@ namespace Isotope;
  * @author     Yanick Witschi <yanick.witschi@terminal42.ch>
  * @author     Christoph Wiechert <christoph.wiechert@4wardmedia.de>
  */
-class IsotopeAddressModel extends \Model
+class Address extends \Model
 {
 
 	/**
