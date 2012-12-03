@@ -110,12 +110,12 @@ ClassLoader::addClasses(array
 	'Isotope\Model\Address'             => 'system/modules/isotope/library/Isotope/Model/Address.php',
 	'Isotope\Model\Config'              => 'system/modules/isotope/library/Isotope/Model/Config.php',
 	// Widgets
-	'Isotope\AttributeWizard'          => 'system/modules/isotope/widgets/AttributeWizard.php',
-	'Isotope\FieldWizard'              => 'system/modules/isotope/widgets/FieldWizard.php',
-	'Isotope\InheritCheckBox'          => 'system/modules/isotope/widgets/InheritCheckBox.php',
-	'Isotope\MediaManager'             => 'system/modules/isotope/widgets/MediaManager.php',
-	'Isotope\ProductTree'              => 'system/modules/isotope/widgets/ProductTree.php',
-	'Isotope\VariantWizard'            => 'system/modules/isotope/widgets/VariantWizard.php',
+	'Isotope\Widget\AttributeWizard'          => 'system/modules/isotope/library/Isotope/Widget/AttributeWizard.php',
+	'Isotope\Widget\FieldWizard'              => 'system/modules/isotope/library/Isotope/Widget/FieldWizard.php',
+	'Isotope\Widget\InheritCheckBox'          => 'system/modules/isotope/library/Isotope/Widget/InheritCheckBox.php',
+	'Isotope\Widget\MediaManager'             => 'system/modules/isotope/library/Isotope/Widget/MediaManager.php',
+	'Isotope\Widget\ProductTree'              => 'system/modules/isotope/library/Isotope/Widget/ProductTree.php',
+	'Isotope\Widget\VariantWizard'            => 'system/modules/isotope/library/Isotope/Widget/VariantWizard.php',
 ));
 
 
