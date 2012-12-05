@@ -54,7 +54,7 @@ class IsotopeAddressModel extends Model
 
 		if (!is_array($GLOBALS['ISO_ADR']))
 		{
-			$this->Isotope->loadDataContainer('tl_iso_addresses');
+			$this->Isotope->call('loadDataContainer', 'tl_iso_addresses');
 			$this->loadLanguageFile('addresses');
 		}
 	}
@@ -85,7 +85,7 @@ class IsotopeAddressModel extends Model
 		$strFormat = $GLOBALS['ISO_ADR'][$strCountry] != '' ? $GLOBALS['ISO_ADR'][$strCountry] : $GLOBALS['ISO_ADR']['generic'];
 
 		$arrTokens = $this->getTokens($arrFields);
-		$strAddress = $this->Isotope->parseSimpleTokens($strFormat, $arrTokens);
+		$strAddress = $this->Isotope->call('parseSimpleTokens', array($strFormat, $arrTokens));
 
 		return $strAddress;
 	}

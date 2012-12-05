@@ -628,7 +628,7 @@ class IsotopeBackend extends Backend
         	return array();
     	}
 
-    	$arrGroups = array_merge($arrGroups, Isotope::getInstance()->__call('getChildRecords', array($arrGroups, 'tl_iso_groups')));
+    	$arrGroups = array_merge($arrGroups, Isotope::getInstance()->call('getChildRecords', array($arrGroups, 'tl_iso_groups')));
 
 		$objProducts = Database::getInstance()->execute("SELECT id FROM tl_iso_products
 		                                                 WHERE pid=0 AND language='' AND
@@ -642,7 +642,7 @@ class IsotopeBackend extends Backend
 		}
 
 		$arrProducts = $objProducts->fetchEach('id');
-		$arrProducts = array_merge($arrProducts, Isotope::getInstance()->__call('getChildRecords', array($arrProducts, 'tl_iso_products')));
+		$arrProducts = array_merge($arrProducts, Isotope::getInstance()->call('getChildRecords', array($arrProducts, 'tl_iso_products')));
 
 		// HOOK: allow extensions to define allowed products
 		if (isset($GLOBALS['ISO_HOOKS']['getAllowedProductIds']) && is_array($GLOBALS['ISO_HOOKS']['getAllowedProductIds']))

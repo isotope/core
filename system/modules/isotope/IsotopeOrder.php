@@ -587,7 +587,7 @@ class IsotopeOrder extends IsotopeProductCollection
 
 		if ($this->strOrderId == '')
 		{
-			$strPrefix = $this->Isotope->replaceInsertTags($this->Isotope->Config->orderPrefix);
+			$strPrefix = $this->Isotope->call('replaceInsertTags', $this->Isotope->Config->orderPrefix);
 			$intPrefix = utf8_strlen($strPrefix);
 			$arrConfigIds = $this->Database->execute("SELECT id FROM tl_iso_config WHERE store_id=" . $this->Isotope->Config->store_id)->fetchEach('id');
 
