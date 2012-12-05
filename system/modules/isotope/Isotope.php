@@ -92,8 +92,10 @@ class Isotope extends Controller
 	/**
 	 * Allow access to all protected parent methods
 	 */
-	public function __call($name, $arguments)
+	public function call($name, $arguments=null)
 	{
+	    $arguments = $arguments === null ? array() : (is_array($arguments) ? $arguments : array($arguments));
+
 		return call_user_func_array(array($this, $name), $arguments);
 	}
 
