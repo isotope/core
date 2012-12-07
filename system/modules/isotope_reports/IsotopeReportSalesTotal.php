@@ -41,9 +41,9 @@ class IsotopeReportSalesTotal extends IsotopeReportSales
 
 		list($publicDate, $privateDate, $sqlDate) = $this->getPeriodConfiguration($strPeriod);
 
-
 		$dateFrom = date($privateDate, $intStart);
 		$dateTo = date($privateDate, $intStop);
+		$arrAllowedProducts = IsotopeBackend::getAllowedProductIds();
 
 		$objData = $this->Database->prepare("SELECT
 												c.id AS config_id,
@@ -57,6 +57,7 @@ class IsotopeReportSalesTotal extends IsotopeReportSales
 											LEFT JOIN tl_iso_order_items i ON o.id=i.pid
 											LEFT OUTER JOIN tl_iso_config c ON o.config_id=c.id
 											WHERE 1=1
+											" . ($arrAllowedProducts === false ? '' : (" AND i.product_id IN (" . (empty($arrAllowedProducts) ? '0' : implode(',', $arrAllowedProducts)) . ")")) . "
 											" . ($intConfig > 0 ? " AND c.id=".$intConfig : '') . "
 											GROUP BY config_id, dateGroup
 											HAVING dateGroup>=$dateFrom AND dateGroup<=$dateTo")

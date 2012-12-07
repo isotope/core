@@ -57,6 +57,7 @@ class IsotopeReportSalesProduct extends IsotopeReportSales
 		$dateFrom = date($privateDate, $intStart);
 		$dateTo = date($privateDate, strtotime('+ ' . ($intColumns-1) . ' ' . $strPeriod, $intStart));
 		$groupVariants = $blnVariants ? 'p1.id' : 'IF(p1.pid=0, p1.id, p1.pid)';
+		$arrAllowedProducts = IsotopeBackend::getAllowedProductIds();
 
 		$objProducts = $this->Database->query("
 			SELECT
@@ -76,6 +77,7 @@ class IsotopeReportSalesProduct extends IsotopeReportSales
 			LEFT OUTER JOIN tl_iso_products p1 ON i.product_id=p1.id
 			LEFT OUTER JOIN tl_iso_products p2 ON p1.pid=p2.id
 			LEFT OUTER JOIN tl_iso_producttypes t ON p1.type=t.id
+			" . ($arrAllowedProducts === false ? '' : (" WHERE p1.id IN (" . (empty($arrAllowedProducts) ? '0' : implode(',', $arrAllowedProducts)) . ")")) . "
 			GROUP BY dateGroup, product_id
 			HAVING dateGroup>=$dateFrom AND dateGroup<=$dateTo");
 
