@@ -70,7 +70,7 @@ class ModuleIsotopeReports extends BackendModule
 
 			foreach ($arrGroup as $strName => $arrConfig)
 			{
-				$arrReports[$strLegend][] = array
+				$arrReports[$strLegend][$strName] = array
 				(
 					'label'		=> ($arrConfig['label'][0] ? $arrConfig['label'][0] : $strName),
 					'title'		=> specialchars($arrConfig['label'][1]),

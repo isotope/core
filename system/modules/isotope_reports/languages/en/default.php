@@ -31,7 +31,7 @@
  * Isotope Reports
  */
 $GLOBALS['ISO_LANG']['REPORT']['sales'] = 'Sales Statistics';
-$GLOBALS['ISO_LANG']['REPORT']['members'] = 'Member Statistics';
+$GLOBALS['ISO_LANG']['REPORT']['member'] = 'Member Statistics';
 $GLOBALS['ISO_LANG']['REPORT']['rules'] = 'Rules Statistics';
 $GLOBALS['ISO_LANG']['REPORT']['sales_total'] = array('Total', 'Sales total statistics');
 $GLOBALS['ISO_LANG']['REPORT']['sales_product'] = array('per Product', 'Sales statistics per product');
