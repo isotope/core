@@ -195,7 +195,7 @@ class IsotopeReportSalesTotal extends IsotopeReportSales
 
 
 		$arrData = array('header'=>array(), 'rows'=>array(), 'footer'=>array());
-		$arrCurrencies = $this->Database->execute("SELECT DISTINCT currency FROM tl_iso_config" . ($intConfig > 0 ? ' WHERE id='.$intConfig : ''))->fetchEach('currency');
+		$arrCurrencies = $this->Database->execute("SELECT DISTINCT currency FROM tl_iso_config WHERE currency!=''" . ($intConfig > 0 ? ' AND id='.$intConfig : ''))->fetchEach('currency');
 
 		foreach ($arrCurrencies as $currency)
 		{
