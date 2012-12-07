@@ -652,7 +652,7 @@ class IsotopeBackend extends Backend
 				$objCallback = (method_exists($callback[0], 'getInstance') ? call_user_func(array($callback[0], 'getInstance')) : new $callback[0]());
 				$arrAllowed = $objCallback->$callback[1]();
 
-				if ($arrAllowed !== false)
+				if (is_array($arrAllowed))
 				{
     				$arrProducts = array_intersect($arrProducts, $arrAllowed);
 				}
