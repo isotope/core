@@ -94,3 +94,9 @@ array_insert($GLOBALS['BE_MOD']['isotope'], 2, array
 	),
 ));
 
+
+/**
+ * Permissions are access settings for user and groups (fields in tl_user and tl_user_group)
+ */
+$GLOBALS['TL_PERMISSIONS'][] = 'iso_reports';
+

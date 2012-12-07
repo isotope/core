@@ -39,6 +39,9 @@ class ModuleIsotopeReports extends BackendModule
 
 	public function generate()
 	{
+	    $this->import('BackendUser', 'User');
+	    $this->import('Isotope');
+
 		if ($this->Input->get('report') != '')
 		{
 			$arrReport = $this->findReport($this->Input->get('report'));
@@ -49,8 +52,6 @@ class ModuleIsotopeReports extends BackendModule
 				return $objCallback->generate();
 			}
 		}
-
-		$this->import('Isotope');
 
 		return parent::generate();
 	}
@@ -70,6 +71,11 @@ class ModuleIsotopeReports extends BackendModule
 
 			foreach ($arrGroup as $strName => $arrConfig)
 			{
+			    if (!$this->User->isAdmin && !in_array($strName, $this->User->iso_reports))
+			    {
+    			    continue;
+			    }
+
 				$arrReports[$strLegend][$strName] = array
 				(
 					'label'		=> ($arrConfig['label'][0] ? $arrConfig['label'][0] : $strName),
@@ -87,6 +93,11 @@ class ModuleIsotopeReports extends BackendModule
 
 	protected function findReport($strName)
 	{
+	    if (!$this->User->isAdmin && !in_array($strName, $this->User->iso_reports))
+	    {
+    	    return false;
+	    }
+
 		foreach ($GLOBALS['BE_MOD']['isotope']['reports']['modules'] as $strGroup => $arrReports)
 		{
 			if (isset($arrReports[$strName]))
