@@ -131,7 +131,7 @@ abstract class IsotopeReportSales extends IsotopeReport
 				break;
 
 			case 'month':
-				$publicDate = 'M Y';
+				$publicDate = 'F Y';
 				$privateDate = 'Ym';
 				$sqlDate = '%Y%m';
 				break;
