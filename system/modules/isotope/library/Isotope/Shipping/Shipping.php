@@ -12,6 +12,8 @@
 
 namespace Isotope\Shipping;
 
+use Isotope\Interfaces\IsotopeShipping;
+
 
 /**
  * Class Shipping
@@ -21,7 +23,7 @@ namespace Isotope\Shipping;
  * @author     Andreas Schempp <andreas.schempp@terminal42.ch>
  * @author     Fred Bliss <fred.bliss@intelligentspark.com>
  */
-abstract class Shipping extends \Frontend
+abstract class Shipping extends \Frontend implements IsotopeShipping
 {
 
 	/**

@@ -67,6 +67,7 @@ $GLOBALS['TL_LANG']['ISO']['MSC']['USPS']['INTERNATIONAL']['RRC'][''] = '';*/
  */
 class USPS extends Shipping
 {
+
 	protected $shipping_options = array();
 
 	/**
