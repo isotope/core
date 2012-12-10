@@ -55,6 +55,13 @@ ClassLoader::addClasses(array
 	'Isotope\Frontend'                  => 'system/modules/isotope/library/Isotope/Frontend.php',
 	'Isotope\Template'                  => 'system/modules/isotope/library/Isotope/Template.php',
 
+	// Library/Isotope/Interfaces
+	'Isotope\Interfaces\IsotopeGallery'              => 'system/modules/isotope/library/Isotope/Interfaces/IsotopeGallery.php',
+	'Isotope\Interfaces\IsotopePayment'              => 'system/modules/isotope/library/Isotope/Interfaces/IsotopePayment.php',
+	'Isotope\Interfaces\IsotopeProduct'              => 'system/modules/isotope/library/Isotope/Interfaces/IsotopeProduct.php',
+	'Isotope\Interfaces\IsotopeProductCollection'    => 'system/modules/isotope/library/Isotope/Interfaces/IsotopeProductCollection.php',
+	'Isotope\Interfaces\IsotopeShipping'             => 'system/modules/isotope/library/Isotope/Interfaces/IsotopeShipping.php',
+
 	// Library/Isotope/BackendModule
 	'Isotope\BackendModule\Setup'             => 'system/modules/isotope/library/Isotope/BackendModule/Setup.php',
 
