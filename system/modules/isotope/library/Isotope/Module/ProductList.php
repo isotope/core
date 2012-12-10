@@ -189,7 +189,7 @@ class ProductList extends Module
 					$objPage->noSearch = 1;
 					$objPage->cache = 0;
 
-					$this->Template = new FrontendTemplate('mod_iso_productlist_caching');
+					$this->Template = new \FrontendTemplate('mod_iso_productlist_caching');
 					$this->Template->message = $GLOBALS['ISO_LANG']['MSC']['productcacheLoading'];
 					return;
 				}
@@ -254,7 +254,7 @@ class ProductList extends Module
 			$objPage->noSearch = 1;
 			$objPage->cache = 0;
 
-			$this->Template = new FrontendTemplate('mod_message');
+			$this->Template = new \FrontendTemplate('mod_message');
 			$this->Template->type = 'empty';
 			$this->Template->message = $this->iso_emptyMessage ? $this->iso_noProducts : $GLOBALS['TL_LANG']['MSC']['noProducts'];
 			return;
@@ -336,7 +336,7 @@ class ProductList extends Module
 
 			$offset = ($page - 1) * $this->perPage;
 
-			$objPagination = new Pagination($total, $this->perPage);
+			$objPagination = new \Pagination($total, $this->perPage);
 			$this->Template->pagination = $objPagination->generate("\n  ");
 
 			return $offset;

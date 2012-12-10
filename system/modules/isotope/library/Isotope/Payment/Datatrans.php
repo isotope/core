@@ -104,7 +104,7 @@ class Datatrans extends Payment
 		// Reload page every 5 seconds and check if payment was successful
 		$GLOBALS['TL_HEAD'][] = '<meta http-equiv="refresh" content="5,' . $this->Environment->base . $this->Environment->request . '">';
 
-		$objTemplate = new FrontendTemplate('mod_message');
+		$objTemplate = new \FrontendTemplate('mod_message');
 		$objTemplate->type = 'processing';
 		$objTemplate->message = $GLOBALS['TL_LANG']['MSC']['payment_processing'];
 		return $objTemplate->parse();
@@ -155,7 +155,7 @@ class Datatrans extends Payment
 		// Security signature (see Security Level 2)
 		$arrParams['sign'] = hash_hmac('md5', $arrParams['merchantId'].$arrParams['amount'].$arrParams['currency'].$arrParams['refno'], $this->datatrans_sign);
 
-		$objTemplate = new FrontendTemplate('iso_payment_datatrans');
+		$objTemplate = new \FrontendTemplate('iso_payment_datatrans');
 		$objTemplate->id = $this->id;
 		$objTemplate->action = ('https://' . ($this->debug ? 'pilot' : 'payment') . '.datatrans.biz/upp/jsp/upStart.jsp');
 		$objTemplate->params = $arrParams;

@@ -137,7 +137,7 @@ class Checkout extends Module
 				// Order is not complete, wait for it
 				if (\Isotope\Frontend::setTimeout())
 				{
-					$this->Template = new FrontendTemplate('mod_message');
+					$this->Template = new \FrontendTemplate('mod_message');
 					$this->Template->type = 'processing';
 					$this->Template->message = $GLOBALS['TL_LANG']['MSC']['payment_processing'];
 					return;
@@ -148,7 +148,7 @@ class Checkout extends Module
 		// Return error message if cart is empty
 		if (!$this->Isotope->Cart->items)
 		{
-			$this->Template = new FrontendTemplate('mod_message');
+			$this->Template = new \FrontendTemplate('mod_message');
 			$this->Template->type = 'empty';
 			$this->Template->message = $GLOBALS['TL_LANG']['MSC']['noItemsInCart'];
 			return;
@@ -157,7 +157,7 @@ class Checkout extends Module
 		// Insufficient cart subtotal
 		if ($this->Isotope->Config->cartMinSubtotal > 0 && $this->Isotope->Config->cartMinSubtotal > $this->Isotope->Cart->subTotal)
 		{
-			$this->Template = new FrontendTemplate('mod_message');
+			$this->Template = new \FrontendTemplate('mod_message');
 			$this->Template->type = 'error';
 			$this->Template->message = sprintf($GLOBALS['TL_LANG']['ERR']['cartMinSubtotal'], $this->Isotope->formatPriceWithCurrency($this->Isotope->Config->cartMinSubtotal));
 			return;
@@ -170,7 +170,7 @@ class Checkout extends Module
 
 			if (!$objPage->numRows)
 			{
-				$this->Template = new FrontendTemplate('mod_message');
+				$this->Template = new \FrontendTemplate('mod_message');
 				$this->Template->type = 'error';
 				$this->Template->message = $GLOBALS['TL_LANG']['ERR']['isoLoginRequired'];
 				return;
@@ -180,7 +180,7 @@ class Checkout extends Module
 		}
 		elseif ($this->iso_checkout_method == 'guest' && FE_USER_LOGGED_IN === true)
 		{
-			$this->Template = new FrontendTemplate('mod_message');
+			$this->Template = new \FrontendTemplate('mod_message');
 			$this->Template->type = 'error';
 			$this->Template->message = 'User checkout not allowed';
 			return;
@@ -619,7 +619,7 @@ class Checkout extends Module
 			$this->doNotSubmit = true;
 			$this->Template->showNext = false;
 
-			$objTemplate = new FrontendTemplate('mod_message');
+			$objTemplate = new \FrontendTemplate('mod_message');
 			$objTemplate->class = 'shipping_method';
 			$objTemplate->hl = 'h2';
 			$objTemplate->headline = $GLOBALS['TL_LANG']['ISO']['shipping_method'];
@@ -754,7 +754,7 @@ class Checkout extends Module
 			$this->doNotSubmit = true;
 			$this->Template->showNext = false;
 
-			$objTemplate = new FrontendTemplate('mod_message');
+			$objTemplate = new \FrontendTemplate('mod_message');
 			$objTemplate->class = 'payment_method';
 			$objTemplate->hl = 'h2';
 			$objTemplate->headline = $GLOBALS['TL_LANG']['ISO']['payment_method'];
@@ -1301,7 +1301,7 @@ class Checkout extends Module
 				// Convert date formats into timestamps
 				if (strlen($varValue) && in_array($arrData['eval']['rgxp'], array('date', 'time', 'datim')))
 				{
-					$objDate = new Date($varValue, $GLOBALS['TL_CONFIG'][$arrData['eval']['rgxp'] . 'Format']);
+					$objDate = new \Date($varValue, $GLOBALS['TL_CONFIG'][$arrData['eval']['rgxp'] . 'Format']);
 					$varValue = $objDate->tstamp;
 				}
 

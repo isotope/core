@@ -163,7 +163,7 @@ class Postfinance extends Payment
 
 		$arrParam['SHASign'] = sha1($strSHASign);
 
-		$objTemplate = new FrontendTemplate('iso_payment_postfinance');
+		$objTemplate = new \FrontendTemplate('iso_payment_postfinance');
 
 		$objTemplate->action = 'https://e-payment.postfinance.ch/ncol/' . ($this->debug ? 'test' : 'prod') . '/orderstandard.asp';
 		$objTemplate->params = $arrParam;

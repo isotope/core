@@ -103,7 +103,7 @@ class VariantWizard extends \Widget
 				case 'date':
 				case 'time':
 				case 'datim':
-					$objDate = new Date($v, $GLOBALS['TL_CONFIG'][$arrData['eval']['rgxp'] . 'Format']);
+					$objDate = new \Date($v, $GLOBALS['TL_CONFIG'][$arrData['eval']['rgxp'] . 'Format']);
 					$v = $objDate->tstamp;
 					break;
 			}
@@ -160,7 +160,7 @@ class VariantWizard extends \Widget
 			switch($arrData['inputType'])
 			{
 				case 'text':
-					$objWidget = new TextField($this->prepareForWidget($arrData, $this->strId.'['.$option['value'].']', $objVariant->{$option['value']}));
+					$objWidget = new \TextField($this->prepareForWidget($arrData, $this->strId.'['.$option['value'].']', $objVariant->{$option['value']}));
 
 					if ($arrData['eval']['datepicker'])
 					{
@@ -183,7 +183,7 @@ class VariantWizard extends \Widget
 							unset($arrField['options'][$k]);
 					}
 
-					$objWidget = new SelectMenu($arrField);
+					$objWidget = new \SelectMenu($arrField);
 					break;
 			}
 

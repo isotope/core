@@ -299,7 +299,7 @@ class Cybersource extends Payment
 		}
 
 		//Code specific to Authorize.net!
-		$objTemplate = new BackendTemplate('be_pos_terminal');
+		$objTemplate = new \BackendTemplate('be_pos_terminal');
 
 		if($objAIMConfig->numRows > 0)
 		{
@@ -336,7 +336,7 @@ class Cybersource extends Payment
 
 			$fieldsFinal = rtrim($fields, '&');
 
-			$objRequest = new Request();
+			$objRequest = new \Request();
 
 			$objRequest->send('https://secure.authorize.net/gateway/transact.dll', $fieldsFinal, 'post');
 

@@ -263,7 +263,7 @@ class Frontend extends \Frontend
 			return $image;
 		}
 
-		$objFile = new File($image);
+		$objFile = new \File($image);
 		$strCacheName = 'system/html/' . $objFile->filename . '-' . substr(md5($watermark . '-' . $position . '-' . $objFile->mtime), 0, 8) . '.' . $objFile->extension;
 
 		// Return the path of the new image if it exists already
@@ -322,7 +322,7 @@ class Frontend extends \Frontend
 			return $image;
 		}
 
-		$objWatermark = new File($watermark);
+		$objWatermark = new \File($watermark);
 
 		// Load watermark
 		switch ($objWatermark->extension)
@@ -427,7 +427,7 @@ class Frontend extends \Frontend
 		// Resize the original image
 		if ($target)
 		{
-			$objFiles = Files::getInstance();
+			$objFiles = \Files::getInstance();
 			$objFiles->copy($strCacheName, $target);
 
 			return $target;
@@ -436,7 +436,7 @@ class Frontend extends \Frontend
 		// Set the file permissions when the Safe Mode Hack is used
 		if ($GLOBALS['TL_CONFIG']['useFTP'])
 		{
-			$objFiles = Files::getInstance();
+			$objFiles = \Files::getInstance();
 			$objFiles->chmod($strCacheName, 0644);
 		}
 
@@ -853,7 +853,7 @@ $endScript";
 				break;
 		}
 
-		$objTemplate = new FrontendTemplate('ce_downloads');
+		$objTemplate = new \FrontendTemplate('ce_downloads');
 		$objTemplate->class = $attribute;
 		$objTemplate->files = array_values($files);
 

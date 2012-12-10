@@ -259,7 +259,7 @@ class Email extends \Controller
 				$arrData['head_css'] = $css;
 			}
 
-			$objTemplate = new FrontendTemplate($this->strTemplate);
+			$objTemplate = new \FrontendTemplate($this->strTemplate);
 			$objTemplate->body = $objLanguage->html;
 			$objTemplate->charset = $GLOBALS['TL_CONFIG']['characterSet'];
 			$objTemplate->css = '##head_css##';
@@ -308,7 +308,7 @@ class Email extends \Controller
 	 */
 	protected function initializeTemplate($strLanguage, $objCollection)
 	{
-		$this->objEmail = new Email();
+		$this->objEmail = new \Email();
 		$this->attachmentsDone = false;
 
 		$objTemplate = $this->Database->execute("SELECT * FROM tl_iso_mail WHERE id=" . $this->intId);

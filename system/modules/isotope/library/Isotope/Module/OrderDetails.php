@@ -85,7 +85,7 @@ class OrderDetails extends Module
 
 		if (($objOrder = Order::findOneByUniqid(\Input::get('uid'))) === null)
 		{
-			$this->Template = new FrontendTemplate('mod_message');
+			$this->Template = new \FrontendTemplate('mod_message');
 			$this->Template->type = 'error';
 			$this->Template->message = $GLOBALS['TL_LANG']['ERR']['orderNotFound'];
 			return;

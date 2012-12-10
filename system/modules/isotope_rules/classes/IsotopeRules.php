@@ -221,7 +221,7 @@ class IsotopeRules extends \Controller
 
 
 		//build template
-		$objTemplate = new FrontendTemplate('iso_coupons');
+		$objTemplate = new \FrontendTemplate('iso_coupons');
 
 		$objTemplate->id = $objModule->id;
 		$objTemplate->action = $this->Environment->request;

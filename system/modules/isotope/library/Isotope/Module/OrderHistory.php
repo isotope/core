@@ -85,7 +85,7 @@ class OrderHistory extends Module
 		// No orders found, just display an "empty" message
 		if (!$objOrders->numRows)
 		{
-			$this->Template = new FrontendTemplate('mod_message');
+			$this->Template = new \FrontendTemplate('mod_message');
 			$this->Template->type = 'empty';
 			$this->Template->message = $GLOBALS['TL_LANG']['ERR']['emptyOrderHistory'];
 			return;

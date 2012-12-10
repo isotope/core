@@ -61,7 +61,7 @@ class tl_iso_downloads extends \Backend
 			{
 				if (is_file(TL_ROOT . '/' . $row['singleSRC'] . '/' . $file))
 				{
-					$objFile = new File($row['singleSRC'] . '/' . $file);
+					$objFile = new \File($row['singleSRC'] . '/' . $file);
 					$icon = 'background:url(system/themes/' . $this->getTheme() . '/images/' . $objFile->icon . ') left center no-repeat; padding-left: 22px';
 					$arrDownloads[] = sprintf('<div style="margin-bottom:5px;height:16px;%s">%s</div>', $icon, $row['singleSRC'] . '/' . $file);
 				}
@@ -77,7 +77,7 @@ class tl_iso_downloads extends \Backend
 
 		if (is_file(TL_ROOT . '/' . $row['singleSRC']))
 		{
-			$objFile = new File($row['singleSRC']);
+			$objFile = new \File($row['singleSRC']);
 			$icon = 'background: url(system/themes/' . $this->getTheme() . '/images/' . $objFile->icon . ') left center no-repeat; padding-left: 22px';
 		}
 

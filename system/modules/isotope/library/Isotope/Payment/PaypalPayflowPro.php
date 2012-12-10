@@ -122,7 +122,7 @@ class PaypalPayflowPro extends Payment
       	$request_id = md5($tempstr);
 
 
-		$objRequest = new Request();
+		$objRequest = new \Request();
 
 		$arrHeaders = array
 		(

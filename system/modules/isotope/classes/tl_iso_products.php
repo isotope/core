@@ -76,7 +76,7 @@ class tl_iso_products extends \Backend
 						}
 					}
 
-					$objWidget = new CheckBox($arrField);
+					$objWidget = new \CheckBox($arrField);
 
 					if (\Input::post('FORM_SUBMIT') == 'tl_product_generate')
 					{
@@ -346,7 +346,7 @@ $strBuffer .= '<th style="text-align:center"><img src="system/themes/default/ima
 	 */
 	public function importAssets($dc, $arrNewImages=array())
 	{
-		$objTree = new FileTree($this->prepareForWidget($GLOBALS['TL_DCA']['tl_iso_products']['fields']['source'], 'source', null, 'source', 'tl_iso_products'));
+		$objTree = new \FileTree($this->prepareForWidget($GLOBALS['TL_DCA']['tl_iso_products']['fields']['source'], 'source', null, 'source', 'tl_iso_products'));
 
 		// Import assets
 		if (\Input::post('FORM_SUBMIT') == 'tl_iso_products_import' && \Input::post('source') != '')

@@ -239,7 +239,7 @@ class MediaManager extends \Widget implements \uploadable
 				continue;
 			}
 
-			$objFile = new File($strFile);
+			$objFile = new \File($strFile);
 
 			if ($objFile->isGdImage)
 			{

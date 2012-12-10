@@ -294,7 +294,7 @@ $endScript
 
 		if (is_file(TL_ROOT . '/' . $strFile))
 		{
-			$objFile = new File($strFile);
+			$objFile = new \File($strFile);
 
 			if ($objFile->isGdImage)
 			{

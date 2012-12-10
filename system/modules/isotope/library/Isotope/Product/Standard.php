@@ -1277,7 +1277,7 @@ class Standard extends \Controller implements IsotopeProduct
 				// Convert date formats into timestamps
 				if ($varValue != '' && in_array($arrData['eval']['rgxp'], array('date', 'time', 'datim')))
 				{
-					$objDate = new Date($varValue, $GLOBALS['TL_CONFIG'][$arrData['eval']['rgxp'] . 'Format']);
+					$objDate = new \Date($varValue, $GLOBALS['TL_CONFIG'][$arrData['eval']['rgxp'] . 'Format']);
 					$varValue = $objDate->tstamp;
 				}
 

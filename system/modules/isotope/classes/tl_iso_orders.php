@@ -46,7 +46,7 @@ class tl_iso_orders extends \Backend
 	{
 		$this->Isotope->overrideConfig($row['config_id']);
 
-		$objAddress = new Isotope\Model\Address();
+		$objAddress = new \Isotope\Model\Address();
 		$objAddress->setData(deserialize($row['billing_address'], true));
 		$arrTokens = $objAddress->getTokens($this->Isotope->Config->billing_fields);
 
@@ -377,7 +377,7 @@ class tl_iso_orders extends \Backend
 <div class="tl_formbody_edit">
 <div class="tl_tbox block">';
 
-		$objWidget = new SelectMenu($this->prepareForWidget($GLOBALS['TL_DCA']['tl_iso_orders']['fields']['status'], 'status'));
+		$objWidget = new \SelectMenu($this->prepareForWidget($GLOBALS['TL_DCA']['tl_iso_orders']['fields']['status'], 'status'));
 
 		if (\Input::post('FORM_SUBMIT') == 'tl_print_invoices')
 		{
