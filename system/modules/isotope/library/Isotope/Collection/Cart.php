@@ -224,7 +224,7 @@ class Cart extends Collection
 			if ($strHash == '')
 			{
 				$strHash = sha1(session_id() . (!$GLOBALS['TL_CONFIG']['disableIpCheck'] ? \Environment::get('ip') : '') . $intConfig . static::$strCookie);
-				$this->setCookie(static::$strCookie, $strHash, $time+$GLOBALS['TL_CONFIG']['iso_cartTimeout'], $GLOBALS['TL_CONFIG']['websitePath']);
+				\System::setCookie(static::$strCookie, $strHash, $time+$GLOBALS['TL_CONFIG']['iso_cartTimeout'], $GLOBALS['TL_CONFIG']['websitePath']);
 			}
 
 			$objCart = static::findOneBy(array('(session=? AND store_id=?)'), array($strHash, $intStore));
