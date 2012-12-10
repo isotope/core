@@ -459,6 +459,12 @@ class Backend extends Contao_Backend
 	{
 		$objDatabase = \Database::getInstance();
 
+		// When running install tool
+		if (!$objDatabase->tableExists('tl_iso_orderstatus'))
+		{
+    		return array();
+		}
+
 		$arrStatus = array();
 		$objStatus = $objDatabase->execute("SELECT id, name FROM tl_iso_orderstatus ORDER BY sorting");
 

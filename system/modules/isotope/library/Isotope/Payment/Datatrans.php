@@ -117,7 +117,7 @@ class Datatrans extends Payment
 	 */
 	public function checkoutForm()
 	{
-		$objOrder = new IsotopeOrder();
+		$objOrder = new Order();
 
 		if (($objOrder = Order::findOneBy('cart_id', $this->Isotope->Cart->id)) === null)
 		{

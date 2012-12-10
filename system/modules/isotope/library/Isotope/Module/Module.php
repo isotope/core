@@ -52,7 +52,7 @@ abstract class Module extends Contao_Module
 
 		if (TL_MODE == 'FE')
 		{
-			$this->import('Isotope\Isotope', 'Isotope');
+		    $this->Isotope = \System::importStatic('Isotope\Isotope');
 
 			if (FE_USER_LOGGED_IN === true)
 			{

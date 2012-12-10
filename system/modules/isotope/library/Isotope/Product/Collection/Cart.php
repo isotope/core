@@ -267,6 +267,8 @@ class Cart extends Collection
 			\System::setCookie(static::$strCookie, '', ($time - 3600), $GLOBALS['TL_CONFIG']['websitePath']);
 			\System::reload();
  		}
+
+ 		return $objCart;
 	}
 
 
