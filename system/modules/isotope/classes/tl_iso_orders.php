@@ -16,6 +16,8 @@
 
 namespace Isotope;
 
+use Isotope\Product\Collection\Order;
+
 
 /**
  * Class tl_iso_orders
@@ -44,7 +46,7 @@ class tl_iso_orders extends \Backend
 	{
 		$this->Isotope->overrideConfig($row['config_id']);
 
-		$objAddress = new \IsotopeAddressModel();
+		$objAddress = new Isotope\Model\Address();
 		$objAddress->setData(deserialize($row['billing_address'], true));
 		$arrTokens = $objAddress->getTokens($this->Isotope->Config->billing_fields);
 
@@ -432,7 +434,7 @@ class tl_iso_orders extends \Backend
 
 		foreach ($arrIds as $intId)
 		{
-			if (($objOrder = \Isotope\Collection\Order::findByPk($intId)) !== null)
+			if (($objOrder = Order::findByPk($intId)) !== null)
 			{
 				$pdf = $objOrder->generatePDF(null, $pdf, false);
 			}
@@ -471,7 +473,7 @@ class tl_iso_orders extends \Backend
 	{
 		if ($dc->activeRecord && $dc->activeRecord->status != $varValue)
 		{
-			if (($objOrder = \Isotope\Collection\Order::findByPk($dc->id)) !== null)
+			if (($objOrder = Order::findByPk($dc->id)) !== null)
 			{
 				// Status update has been cancelled, do not update
 				if (!$objOrder->updateOrderStatus($varValue))
@@ -492,7 +494,7 @@ class tl_iso_orders extends \Backend
 	 */
 	public function executeSaveHook($dc)
 	{
-		if (($objOrder = \Isotope\Collection\Order::findByPk($dc->id)) !== null)
+		if (($objOrder = Order::findByPk($dc->id)) !== null)
 		{
 			// !HOOK: add additional functionality when saving collection
 			if (isset($GLOBALS['ISO_HOOKS']['saveCollection']) && is_array($GLOBALS['ISO_HOOKS']['saveCollection']))

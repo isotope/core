@@ -33,7 +33,7 @@ class tl_iso_addresses extends \Backend
 	{
 		$this->import('Isotope\Isotope', 'Isotope');
 
-		$objAddress = new \IsotopeAddressModel();
+		$objAddress = new Isotope\Model\Address();
 		$objAddress->setData($arrAddress);
 		$strBuffer = $objAddress->generateHtml();
 
