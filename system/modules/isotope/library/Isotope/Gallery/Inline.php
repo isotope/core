@@ -84,8 +84,6 @@ class Inline extends Standard
 	/**
 	 * Inject AJAX script
 	 */
-	protected function injectAjax()
-	{
-	}
+	protected function injectAjax() {}
 }
 

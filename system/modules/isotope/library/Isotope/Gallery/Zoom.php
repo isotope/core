@@ -10,6 +10,8 @@
  * @license    http://opensource.org/licenses/lgpl-3.0.html LGPL
  */
 
+namespace Isotope\Gallery;
+
 
 /**
  * Class ZoomGallery
@@ -18,7 +20,7 @@
  * @author     Andreas Schempp <andreas.schempp@terminal42.ch>
  * @author     Kamil Kuźmiński <kamil.kuzminski@gmail.com>
  */
-class ZoomGallery extends InlineGallery
+class Zoom extends Inline
 {
 
 	/**

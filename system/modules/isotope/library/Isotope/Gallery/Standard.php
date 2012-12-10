@@ -12,6 +12,9 @@
 
 namespace Isotope\Gallery;
 
+use Isotope\Interfaces\IsotopeGallery;
+
+
 /**
  * Class Standard
  *
@@ -22,7 +25,7 @@ namespace Isotope\Gallery;
  * @author     Christian de la Haye <service@delahaye.de>
  * @author     Yanick Witschi <yanick.witschi@terminal42.ch>
  */
-class Standard extends \Frontend
+class Standard extends \Frontend implements IsotopeGallery
 {
 
 	/**
