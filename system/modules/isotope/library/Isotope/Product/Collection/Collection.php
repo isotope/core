@@ -13,6 +13,7 @@
 namespace Isotope\Product\Collection;
 
 use Isotope\Interfaces\IsotopeProduct;
+use Isotope\Interfaces\IsotopeProductCollection;
 use Isotope\Product\Standard as StandardProduct;
 
 
