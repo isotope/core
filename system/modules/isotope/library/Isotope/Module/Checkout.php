@@ -12,7 +12,7 @@
 
 namespace Isotope\Module;
 
-use \Isotope\Collection\Order;
+use Isotope\Product\Collection\Order;
 
 
 /**
@@ -124,7 +124,7 @@ class Checkout extends Module
 		// Order has been completed (postsale request)
 		if ($this->strCurrentStep == 'complete' && \Input::get('uid') != '')
 		{
-			if (($objOrder = \Isotope\Collection\Order::findOneByUniqid(\Input::get('uid'))) !== null)
+			if (($objOrder = Order::findOneByUniqid(\Input::get('uid'))) !== null)
 			{
 				// Order is complete, forward to confirmation page
 				if ($objOrder->complete())
@@ -289,7 +289,7 @@ class Checkout extends Module
 			if ($strBuffer === true)
 			{
 				// If checkout is successful, complete order and redirect to confirmation page
-				if (($objOrder = \Isotope\Collection\Order::findOneBy('cart_id', $this->Isotope->Cart->id)) !== null && $objOrder->checkout($this->Isotope->Cart) && $objOrder->complete())
+				if (($objOrder = Order::findOneBy('cart_id', $this->Isotope->Cart->id)) !== null && $objOrder->checkout($this->Isotope->Cart) && $objOrder->complete())
 				{
 					$this->redirect(\Isotope\Frontend::addQueryStringToUrl('uid=' . $objOrder->uniqid, $this->orderCompleteJumpTo));
 				}

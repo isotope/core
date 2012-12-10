@@ -12,7 +12,7 @@
 
 namespace Isotope\Payment;
 
-use \Isotope\Collection\Order;
+use Isotope\Product\Collection\Order;
 
 
 /**
@@ -35,7 +35,7 @@ class Paypal extends Payment
 	 */
 	public function processPayment()
 	{
-		if (($objOrder = \Isotope\Collection\Order::findOneBy('cart_id', $this->Isotope->Cart->id)) === null)
+		if (($objOrder = Order::findOneBy('cart_id', $this->Isotope->Cart->id)) === null)
 		{
 			return false;
 		}

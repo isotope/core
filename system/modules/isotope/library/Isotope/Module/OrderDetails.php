@@ -12,6 +12,8 @@
 
 namespace Isotope\Module;
 
+use Isotope\Product\Collection\Order;
+
 
 /**
  * Class OrderDetails
@@ -81,7 +83,7 @@ class OrderDetails extends Module
 			$objPage->cache = 0;
 		}
 
-		if (($objOrder = \Isotope\Collection\Order::findOneByUniqid(\Input::get('uid'))) === null)
+		if (($objOrder = Order::findOneByUniqid(\Input::get('uid'))) === null)
 		{
 			$this->Template = new FrontendTemplate('mod_message');
 			$this->Template->type = 'error';

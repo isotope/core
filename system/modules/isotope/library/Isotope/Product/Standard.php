@@ -12,6 +12,8 @@
 
 namespace Isotope\Product;
 
+use Isotope\Interfaces\IsotopeProduct;
+
 
 /**
  * Class Product
@@ -22,7 +24,7 @@ namespace Isotope\Product;
  * @author     Fred Bliss <fred.bliss@intelligentspark.com>
  * @author     Christian de la Haye <service@delahaye.de>
  */
-class Standard extends \Controller
+class Standard extends \Controller implements IsotopeProduct
 {
 
 	/**

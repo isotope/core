@@ -10,7 +10,9 @@
  * @license    http://opensource.org/licenses/lgpl-3.0.html LGPL
  */
 
-namespace Isotope\Collection;
+namespace Isotope\Product\Collection;
+
+use Isotope\Interfaces\IsotopeProduct;
 
 
 /**
@@ -160,7 +162,7 @@ class Order extends Collection
 	{
 		switch ($strKey)
 		{
-			// Order ID cannot be changed, it is created through Isotope\Collection\Order::generateOrderId on checkout
+			// Order ID cannot be changed, it is created through Isotope\Product\Collection\Order::generateOrderId on checkout
 			case 'order_id':
 				throw new Exception('order_id cannot be changed trough __set().');
 				break;
@@ -242,7 +244,7 @@ class Order extends Collection
 	 * @param object
 	 * @return boolean
 	 */
-	public function deleteProduct(Isotope\Product\Standard $objProduct)
+	public function deleteProduct(IsotopeProduct $objProduct)
 	{
 		if (parent::deleteProduct($objProduct))
 		{

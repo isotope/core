@@ -12,7 +12,7 @@
 
 namespace Isotope\Payment;
 
-use \Isotope\Collection\Order;
+use Isotope\Product\Collection\Order;
 
 
 /**
@@ -40,7 +40,7 @@ class Postfinance extends Payment
 			return false;
 		}
 
-		if (($objOrder = \Isotope\Collection\Order::findByPk(\Input::get('orderID'))) === null)
+		if (($objOrder = Order::findByPk(\Input::get('orderID'))) === null)
 		{
 			$this->log('Order ID "' . \Input::get('orderID') . '" not found', __METHOD__, TL_ERROR);
 			return false;

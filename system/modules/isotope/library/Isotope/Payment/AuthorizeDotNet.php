@@ -12,7 +12,7 @@
 
 namespace Isotope\Payment;
 
-use Isotope\Collection\Order;
+use Isotope\Product\Collection\Order;
 
 
 /**

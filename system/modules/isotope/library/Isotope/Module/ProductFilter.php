@@ -12,6 +12,8 @@
 
 namespace Isotope\Module;
 
+use Isotope\Product\Standard as StandardProduct;
+
 
 /**
  * Class ProductFilter
@@ -117,7 +119,7 @@ class ProductFilter extends Module
 			$time = time();
 			$arrCategories = $this->findCategories($this->iso_category_scope);
 
-			$objProductData = $this->Database->execute(\Isotope\Product\Standard::getSelectStatement(array('p1.'.$this->iso_searchAutocomplete)) . "
+			$objProductData = $this->Database->execute(StandardProduct::getSelectStatement(array('p1.'.$this->iso_searchAutocomplete)) . "
 													WHERE p1.language=''"
 				. (BE_USER_LOGGED_IN === true ? '' : " AND p1.published='1' AND (p1.start='' OR p1.start<$time) AND (p1.stop='' OR p1.stop>$time)")
 				. " AND c.page_id IN (" . implode(',', $arrCategories) . ")"

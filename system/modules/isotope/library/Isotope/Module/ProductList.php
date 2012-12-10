@@ -12,6 +12,8 @@
 
 namespace Isotope\Module;
 
+use Isotope\Product\Standard as StandardProduct;
+
 
 /**
  * Class ProductList
@@ -301,7 +303,7 @@ class ProductList extends Module
 
 		list($arrFilters, $arrSorting, $strWhere, $arrValues) = $this->getFiltersAndSorting();
 
-		$objProductData = $this->Database->prepare(\Isotope\Product\Standard::getSelectStatement() . "
+		$objProductData = $this->Database->prepare(StandardProduct::getSelectStatement() . "
 													WHERE p1.language=''"
 													. (BE_USER_LOGGED_IN === true ? '' : " AND p1.published='1' AND (p1.start='' OR p1.start<$time) AND (p1.stop='' OR p1.stop>$time)")
 													. "AND c.page_id IN (" . implode(',', $arrCategories) . ")"

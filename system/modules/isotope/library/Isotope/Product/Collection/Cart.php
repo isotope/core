@@ -10,7 +10,7 @@
  * @license    http://opensource.org/licenses/lgpl-3.0.html LGPL
  */
 
-namespace Isotope\Collection;
+namespace Isotope\Product\Collection;
 
 
 /**
@@ -291,7 +291,7 @@ class Cart extends Collection
 		{
 			foreach ($GLOBALS['ISO_HOOKS']['checkoutSurcharge'] as $callback)
 			{
-				if ($callback[0] == '\Isotope\Collection\Cart')
+				if ($callback[0] == 'Isotope\Product\Collection\Cart')
 				{
 					$arrSurcharges = $this->{$callback[1]}($arrSurcharges);
 				}

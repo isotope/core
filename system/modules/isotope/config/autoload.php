@@ -65,11 +65,6 @@ ClassLoader::addClasses(array
 	// Library/Isotope/BackendModule
 	'Isotope\BackendModule\Setup'             => 'system/modules/isotope/library/Isotope/BackendModule/Setup.php',
 
-	// Library/Isotope/Collection
-	'Isotope\Collection\Collection'           => 'system/modules/isotope/library/Isotope/Collection/Collection.php',
-	'Isotope\Collection\Cart'                 => 'system/modules/isotope/library/Isotope/Collection/Cart.php',
-	'Isotope\Collection\Order'                => 'system/modules/isotope/library/Isotope/Collection/Order.php',
-
 	// Library/Isotope/ContentElement
 	'Isotope\ContentElement\ContentElement'   => 'system/modules/isotope/library/Isotope/ContentElement/ContentElement.php',
 
@@ -113,6 +108,11 @@ ClassLoader::addClasses(array
 
 	// Library/Isotope/Product
 	'Isotope\Product\Standard'                => 'system/modules/isotope/library/Isotope/Product/Standard.php',
+
+	// Library/Isotope/Product/Collection
+	'Isotope\Product\Collection\Collection'          => 'system/modules/isotope/library/Isotope/Product/Collection/Collection.php',
+	'Isotope\Product\Collection\Cart'                => 'system/modules/isotope/library/Isotope/Product/Collection/Cart.php',
+	'Isotope\Product\Collection\Order'               => 'system/modules/isotope/library/Isotope/Product/Collection/Order.php',
 
 	// Library/Isotope/Shipping
 	'Isotope\Shipping\Shipping'               => 'system/modules/isotope/library/Isotope/Shipping/Shipping.php',

@@ -12,7 +12,7 @@
 
 namespace Isotope;
 
-use \Isotope\Product\Standard as IsotopeProduct;
+use Isotope\Interfaces\IsotopeProduct;
 
 
 /**

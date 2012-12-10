@@ -12,6 +12,8 @@
 
 namespace Isotope;
 
+use Isotope\Interfaces\IsotopeCollection;
+
 
 /**
  * Class Isotope\Email
@@ -91,7 +93,7 @@ class Email extends \Controller
 		$this->import('Database');
 
 		// Verify collection object type
-		if (!($objCollection instanceof \Isotope\Collection\Collection))
+		if (!($objCollection instanceof IsotopeCollection))
 		{
 			$objCollection = null;
 		}
@@ -138,7 +140,7 @@ class Email extends \Controller
 				break;
 
 			case 'collection':
-				if ($varValue instanceof \Isotope\Collection\Collection)
+				if ($varValue instanceof IsotopeCollection)
 				{
 					$this->initializeTemplate($this->strLanguage, $objCollection);
 				}
@@ -330,7 +332,7 @@ class Email extends \Controller
 
 		$this->strTemplate = $objTemplate->template ? $objTemplate->template : 'mail_default';
 
-		if ($objTemplate->attachDocument && $objCollection instanceof \Isotope\Collection\Collection)
+		if ($objTemplate->attachDocument && $objCollection instanceof IsotopeCollection)
 		{
 			$objPdf = $objCollection->generatePDF(($objTemplate->documentTemplate ? $objTemplate->documentTemplate : null), null, false);
 			$objPdf->lastPage();

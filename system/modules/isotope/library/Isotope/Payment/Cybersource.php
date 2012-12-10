@@ -12,7 +12,7 @@
 
 namespace Isotope\Payment;
 
-use \Isotope\Collection\Order;
+use Isotope\Product\Collection\Order;
 
 
 /**
@@ -151,7 +151,7 @@ class Cybersource extends Payment
 		}
 
 		// Get the order from cart id
-		$objOrder = \Isotope\Collection\Order::findOneBy('cart_id', $this->Isotope->Cart->id);
+		$objOrder = Order::findOneBy('cart_id', $this->Isotope->Cart->id);
 
 		$objAddress = $this->Isotope->Cart->billingAddress;
 		$intTotal = round($this->Isotope->Cart->grandTotal, 2);

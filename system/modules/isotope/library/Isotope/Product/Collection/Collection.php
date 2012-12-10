@@ -10,9 +10,10 @@
  * @license    http://opensource.org/licenses/lgpl-3.0.html LGPL
  */
 
-namespace Isotope\Collection;
+namespace Isotope\Product\Collection;
 
-use \Isotope\Product\Standard as IsotopeProduct;
+use Isotope\Interfaces\IsotopeProduct;
+use Isotope\Product\Standard as StandardProduct;
 
 
 /**
@@ -24,7 +25,7 @@ use \Isotope\Product\Standard as IsotopeProduct;
  * @author     Fred Bliss <fred.bliss@intelligentspark.com>
  * @author     Yanick Witschi <yanick.witschi@terminal42.ch>
  */
-abstract class Collection extends \Model
+abstract class Collection extends \Model implements IsotopeProductCollection
 {
 
 	/**
@@ -454,7 +455,7 @@ abstract class Collection extends \Model
 
 			while ($objItems->next())
 			{
-				$objProductData = $objDatabase->prepare(IsotopeProduct::getSelectStatement() . "
+				$objProductData = $objDatabase->prepare(StandardProduct::getSelectStatement() . "
 															WHERE p1.language='' AND p1.id=?")
 											  ->limit(1)
 											  ->execute($objItems->product_id);
@@ -470,12 +471,12 @@ abstract class Collection extends \Model
 					}
 					catch (Exception $e)
 					{
-						$objProduct = new IsotopeProduct(array('id'=>$objItems->product_id, 'sku'=>$objItems->product_sku, 'name'=>$objItems->product_name, 'price'=>$objItems->price), deserialize($objItems->product_options), $this->blnLocked, $objItems->product_quantity);
+						$objProduct = new StandardProduct(array('id'=>$objItems->product_id, 'sku'=>$objItems->product_sku, 'name'=>$objItems->product_name, 'price'=>$objItems->price), deserialize($objItems->product_options), $this->blnLocked, $objItems->product_quantity);
 					}
 				}
 				else
 				{
-					$objProduct = new IsotopeProduct(array('id'=>$objItems->product_id, 'sku'=>$objItems->product_sku, 'name'=>$objItems->product_name, 'price'=>$objItems->price), deserialize($objItems->product_options), $this->blnLocked, $objItems->product_quantity);
+					$objProduct = new StandardProduct(array('id'=>$objItems->product_id, 'sku'=>$objItems->product_sku, 'name'=>$objItems->product_name, 'price'=>$objItems->price), deserialize($objItems->product_options), $this->blnLocked, $objItems->product_quantity);
 				}
 
 				// Remove product from collection if it is no longer available

@@ -12,6 +12,9 @@
 
 namespace Isotope;
 
+use Isotope\Interfaces\IsotopeProduct;
+use Isotope\Product\Collection\Cart;
+
 
 /**
  * Class IsotopeRules
@@ -81,7 +84,7 @@ class IsotopeRules extends \Controller
 	 */
 	public function calculatePrice($fltPrice, $objSource, $strField, $intTaxClass)
 	{
-		if ($objSource instanceof \Isotope\Product\Standard && ($strField == 'price' || $strField == 'low_price'))
+		if ($objSource instanceof IsotopeProduct && ($strField == 'price' || $strField == 'low_price'))
 		{
 			$objRules = $this->findRules(array("type='product'"), array(), array($objSource), ($strField == 'low_price' ? true : false), array($strField => $fltPrice));
 
@@ -302,13 +305,13 @@ class IsotopeRules extends \Controller
 
 	/**
 	 * Transfer coupons from one cart to another. This happens if a guest cart is moved to user cart.
-	 * @param Isotope\Collection\Collection
-	 * @param Isotope\Collection\Collection
+	 * @param IsotopeProductCollection
+	 * @param IsotopeProductCollection
 	 * @param array
 	 */
 	public function transferCoupons($objOldCollection, $objNewCollection, $arrIds)
 	{
-		if ($objOldCollection instanceof \Isotope\Collection\Cart && $objNewCollection instanceof \Isotope\Collection\Cart)
+		if ($objOldCollection instanceof Cart && $objNewCollection instanceof Cart)
 		{
 			$objNewCollection->coupons = $objOldCollection->coupons;
 		}
