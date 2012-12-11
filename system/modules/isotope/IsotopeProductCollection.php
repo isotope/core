@@ -916,9 +916,9 @@ abstract class IsotopeProductCollection extends Model
 			}
 		}
 
-		$strArticle = $this->Isotope->replaceInsertTags($objTemplate->parse());
+		$strArticle = $this->Isotope->call('replaceInsertTags', array($objTemplate->parse()));
 		$strArticle = html_entity_decode($strArticle, ENT_QUOTES, $GLOBALS['TL_CONFIG']['characterSet']);
-		$strArticle = $this->Isotope->convertRelativeUrls($strArticle, '', true);
+		$strArticle = $this->Isotope->call('convertRelativeUrls', array($strArticle, '', true));
 
 		// Remove form elements and JavaScript links
 		$arrSearch = array

@@ -1,6 +1,14 @@
 Isotope eCommerce Changelog
 ===========================
 
+Version 1.3.12 stable (2012-12-11)
+----------------------------------
+
+### Fixed
+- Compatibiliy issues with PHP 5.2
+- Encoding issues in Postfinance payment method
+
+
 Version 1.3.11 stable (2012-12-03)
 ----------------------------------
 

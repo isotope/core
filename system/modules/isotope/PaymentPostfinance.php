@@ -147,26 +147,26 @@ class PaymentPostfinance extends IsotopePayment
 		$arrParam = array
 		(
 			'PSPID'			=> $this->postfinance_pspid,
-			'orderID'		=> $objOrder->id,
-			'amount'		=> round(($this->Isotope->Cart->grandTotal * 100)),
-			'currency'		=> $this->Isotope->Config->currency,
-			'language'		=> $GLOBALS['TL_LANGUAGE'] . '_' . strtoupper($GLOBALS['TL_LANGUAGE']),
+			'ORDERID'		=> $objOrder->id,
+			'AMOUNT'		=> round(($this->Isotope->Cart->grandTotal * 100)),
+			'CURRENCY'		=> $this->Isotope->Config->currency,
+			'LANGUAGE'		=> $GLOBALS['TL_LANGUAGE'] . '_' . strtoupper($GLOBALS['TL_LANGUAGE']),
 			'CN'			=> $objAddress->firstname . ' ' . $objAddress->lastname,
 			'EMAIL'			=> $objAddress->email,
-			'ownerZIP'		=> $objAddress->postal,
-			'owneraddress'	=> $objAddress->street_1,
-			'owneraddress2'	=> $objAddress->street_2,
-			'ownercty'		=> $objAddress->country,
-			'ownertown'		=> $objAddress->city,
-			'ownertelno'	=> $objAddress->phone,
-			'accepturl'		=> $this->Environment->base . IsotopeFrontend::addQueryStringToUrl('uid=' . $objOrder->uniqid, $this->addToUrl('step=complete')),
-			'declineurl'	=> $strFailedUrl,
-			'exceptionurl'	=> $strFailedUrl,
-			'paramplus'		=> 'mod=pay&id=' . $this->id,
+			'OWNERZIP'		=> $objAddress->postal,
+			'OWNERADDRESS'	=> $objAddress->street_1,
+			'OWNERADDRESS2'	=> $objAddress->street_2,
+			'OWNERCTY'		=> $objAddress->country,
+			'OWNERTOWN'		=> $objAddress->city,
+			'OWNERTELNO'	=> $objAddress->phone,
+			'ACCEPTURL'		=> $this->Environment->base . IsotopeFrontend::addQueryStringToUrl('uid=' . $objOrder->uniqid, $this->addToUrl('step=complete')),
+			'DECLINEURL'	=> $strFailedUrl,
+			'EXCEPTIONURL'	=> $strFailedUrl,
+			'PARAMPLUS'		=> 'mod=pay&amp;id=' . $this->id,
 		);
 
-		// SHA-1 must be generated on alphabetically sorted keys. Cant use ksort because it does not ignore key case.
-		uksort($arrParam, 'strcasecmp');
+		// SHA-1 must be generated on alphabetically sorted keys.
+		ksort($arrParam);
 
 		$strSHASign = '';
 		foreach( $arrParam as $k => $v )
@@ -174,10 +174,10 @@ class PaymentPostfinance extends IsotopePayment
 			if ($v == '')
 				continue;
 
-			$strSHASign .= strtoupper($k) . '=' . $v . $this->postfinance_secret;
+			$strSHASign .= $k . '=' . htmlspecialchars_decode($v) . $this->postfinance_secret;
 		}
 
-		$arrParam['SHASign'] = sha1($strSHASign);
+		$arrParam['SHASIGN'] = sha1($strSHASign);
 
 		$objTemplate = new FrontendTemplate('iso_payment_postfinance');
 
@@ -193,7 +193,9 @@ class PaymentPostfinance extends IsotopePayment
 	private function getRequestData($strKey)
 	{
 		if ($this->postfinance_method == 'GET')
+		{
 			return $this->Input->get($strKey);
+		}
 
 		return $this->Input->post($strKey);
 	}
