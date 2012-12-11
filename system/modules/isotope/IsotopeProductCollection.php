@@ -893,9 +893,9 @@ abstract class IsotopeProductCollection extends Model
 			}
 		}
 
-		$strArticle = $this->Isotope->replaceInsertTags($objTemplate->parse());
+		$strArticle = $this->Isotope->call('replaceInsertTags', array($objTemplate->parse()));
 		$strArticle = html_entity_decode($strArticle, ENT_QUOTES, $GLOBALS['TL_CONFIG']['characterSet']);
-		$strArticle = $this->Isotope->convertRelativeUrls($strArticle, '', true);
+		$strArticle = $this->Isotope->call('convertRelativeUrls', array($strArticle, '', true));
 
 		// Remove form elements and JavaScript links
 		$arrSearch = array
@@ -961,7 +961,7 @@ abstract class IsotopeProductCollection extends Model
 			// Include library
 			require_once(TL_ROOT . '/system/config/tcpdf.php');
 			require_once(TL_ROOT . '/plugins/tcpdf/tcpdf.php');
-			
+
 			// Prevent TCPDF from destroying absolute paths
 			unset($_SERVER['DOCUMENT_ROOT']);
 

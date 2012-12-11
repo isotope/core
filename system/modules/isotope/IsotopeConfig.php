@@ -30,7 +30,7 @@
 
 /**
  * Class IsotopeConfig
- * 
+ *
  * Provide methods to handle Isotope configuration.
  * @copyright  Isotope eCommerce Workgroup 2009-2012
  * @author     Andreas Schempp <andreas@schempp.ch>
@@ -74,17 +74,17 @@ class IsotopeConfig extends Model
 				}
 
 				return $this->arrCache[$strKey];
-			
+
 			case 'billing_countries':
 			case 'shipping_countries':
 				$arrCountries = deserialize(parent::__get($strKey));
-				
+
 				if (!is_array($arrCountries) || empty($arrCountries))
 				{
 					$this->import('Isotope');
-					$arrCountries = array_keys($this->Isotope->getCountries());
+					$arrCountries = array_keys($this->Isotope->call('getCountries'));
 				}
-				
+
 				return $arrCountries;
 				break;
 
