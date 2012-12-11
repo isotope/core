@@ -540,6 +540,7 @@ abstract class IsotopeProductCollection extends Model
 			$objTemplate->subTotalPrice = $this->Isotope->formatPriceWithCurrency($this->subTotal, false);
 			$objTemplate->grandTotalLabel = $GLOBALS['TL_LANG']['MSC']['grandTotalLabel'];
 			$objTemplate->grandTotalPrice = $this->Isotope->formatPriceWithCurrency($this->grandTotal, false);
+			$objTemplate->collection = $this;
 
 			return $objTemplate->parse();
 		}
