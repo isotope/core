@@ -37,7 +37,7 @@ Version 1.4.rc1 (2012-12-03)
 - Order id prefix was limited to 5 chars which made usage of insert tags impossible
 - Publishing toggle did not work in ajax mode (#77)
 - Value field for attribute restrictions in rules was not visible
-
+- Fixed that ProductList-noFilter message is showen when keywords are used
 
 Version 1.4.beta2 (2012-09-24)
 ------------------------------

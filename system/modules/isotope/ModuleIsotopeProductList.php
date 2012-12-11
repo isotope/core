@@ -71,7 +71,7 @@ class ModuleIsotopeProductList extends ModuleIsotope
 		}
 
 		// return message if no filter is set
-		if ($this->iso_emptyFilter && !$this->Input->get('isorc'))
+		if ($this->iso_emptyFilter && !$this->Input->get('isorc') && !$this->Input->get('keywords'))
 		{
 			return $this->iso_noFilter;
 		}
