@@ -24,8 +24,8 @@
  * @author     Andreas Schempp <andreas@schempp.ch>
  * @license    http://opensource.org/licenses/lgpl-3.0.html
  */
- 
- 
+
+
 class IsotopeGA extends IsotopeFrontend
 {
 
@@ -40,7 +40,7 @@ class IsotopeGA extends IsotopeFrontend
 
 		$blnCompatible = version_compare(ISO_VERSION, '1.3', '<');
 		$arrParam = func_get_args();
-		
+
 		if($blnCompatible)
 		{
 			return call_user_func_array(array($this, 'postCheckoutCompatible'), $arrParam);
@@ -50,15 +50,15 @@ class IsotopeGA extends IsotopeFrontend
 			return call_user_func_array(array($this, 'postCheckout'), $arrParam);
 		}
 	}
-	
-	
+
+
 	/**
 	 * Process checkout in Isotope 1.3+
 	 */
 	public function postCheckout($objOrder, $arrItemIds, $arrData)
 	{
 		$objConfig = new IsotopeConfig();
-		
+
 		if ($objConfig->findBy('id', $objOrder->config_id))
 		{
 			if ($objConfig->ga_enable)
@@ -66,7 +66,7 @@ class IsotopeGA extends IsotopeFrontend
 				$this->trackGATransaction($objConfig,$objOrder);
 			}
 		}
-		
+
 		return true;
 	}
 
@@ -74,27 +74,27 @@ class IsotopeGA extends IsotopeFrontend
 	/**
 	 * Process checkout in Isotope 0.2
 	 */
-	public function postCheckoutCompatible($orderId, $blnCheckout, $objModule)	
+	public function postCheckoutCompatible($orderId, $blnCheckout, $objModule)
 	{
 		$objOrder = new IsotopeOrder();
-			
+
 		if ($objOrder->findBy('id', $orderId))
 		{
 			$objConfig = new IsotopeConfig();
-			
+
 			if ($objConfig->findBy('id', $objOrder->config_id))
 			{
 				if ($objConfig->ga_enable)
-				{	
+				{
 					$this->trackGATransaction($objConfig, $objOrder);
 				}
 			}
 		}
-		
+
 		return $blnCheckout;
 	}
 
-	
+
 	/**
 	 * Actually execute the GoogleAnalytics tracking
 	 * @param Database_Result
@@ -104,70 +104,70 @@ class IsotopeGA extends IsotopeFrontend
 	{
 		// Initilize GA Tracker
 		$tracker = new GoogleAnalyticsTracker($objConfig->ga_account, $this->Environment->base);
-		
+
 		// Assemble Visitor information
 		// (could also get unserialized from database)
 		$visitor = new GoogleAnalyticsVisitor();
 		$visitor->setIpAddress($this->Environment->ip);
 		$visitor->setUserAgent($this->Environment->httpUserAgent);
-			
+
 		$transaction = new GoogleAnalyticsTransaction();
-		
+
 		$transaction->setOrderId($objOrder->order_id);
 		$transaction->setAffiliation($objConfig->name);
 		$transaction->setTotal($objOrder->grandTotal);
 		$transaction->setTax($objOrder->taxTotal);
 		$transaction->setShipping($objOrder->shippingTotal);
-		$transaction->setCity($objOrder->billingAddress['city']);
-		
-		if($objOrder->billingAddress['subdivision'])
+		$transaction->setCity($objOrder->billing_address['city']);
+
+		if($objOrder->billing_address['subdivision'])
 		{
-			$arrSub = explode("-",$objOrder->billingAddress['subdivision']);
+			$arrSub = explode("-",$objOrder->billing_address['subdivision']);
 			$transaction->setRegion($arrSub[1]);
 		}
-		
-		$transaction->setCountry($objOrder->billingAddress['country']);
-		
+
+		$transaction->setCountry($objOrder->billing_address['country']);
+
 		$arrProducts = $objOrder->getProducts();
-			
-		
-		
+
+
+
 		foreach($arrProducts as $i=>$objProduct)
-		{	
+		{
 			$item = new GoogleAnalyticsItem();
-		
+
 			$arrOptions = array();
 			$arrOptionValues = array();
-	
+
 			if($objProduct->sku)
 				$item->setSku($objProduct->sku);
-	
+
 			$item->setName($objProduct->name);
 			$item->setPrice($objProduct->price);
 			$item->setQuantity($objProduct->quantity_requested);
-			
+
 			//Do we also potentially have options?
 			$arrOptions = $objProduct->getOptions(true);
-									
+
 			foreach ($arrOptions as $field => $value)
 			{
 				if ($value == '')
 					continue;
-				
+
 				$arrOptionValues[] = $this->Isotope->formatValue('tl_iso_products', $field, $value);
-				
+
 			}
-			
+
 			if(count($arrOptionValues))
 				$item->setVariation(implode(' ',$arrOptionValues));
-				
+
 			$transaction->addItem($item);
 		}
-		
+
 		// Assemble Session information
 		// (could also get unserialized from PHP session)
 		$session = new GoogleAnalyticsSession();
-		
-		$tracker->trackTransaction($transaction, $session, $visitor);	
+
+		$tracker->trackTransaction($transaction, $session, $visitor);
 	}
 }
