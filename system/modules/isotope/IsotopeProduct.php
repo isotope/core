@@ -1232,31 +1232,6 @@ class IsotopeProduct extends Controller
 			$arrField = $this->prepareForWidget($arrData, $strField, $arrData['default']);
 		}
 
-		// Translate widget
-		$arrField['label'] = $this->Isotope->translate($arrField['label']);
-
-		// Translate widget options
-		if (is_array($arrField['options']))
-		{
-			foreach ($arrField['options'] as $k => $v)
-			{
-				if ($v['label'])
-				{
-					$arrField['options'][$k]['label'] = $this->Isotope->translate($v['label']);
-				}
-				elseif (is_array($v))
-				{
-					foreach ($v as $kk => $vv)
-					{
-						if ($k['label'])
-						{
-							$arrField['options'][$k][$kk]['label'] = $this->Isotope->translate($vv['label']);
-						}
-					}
-				}
-			}
-		}
-
 		$strClass = strlen($GLOBALS['ISO_ATTR'][$arrData['attributes']['type']]['class']) ? $GLOBALS['ISO_ATTR'][$arrData['attributes']['type']]['class'] : $GLOBALS['TL_FFL'][$arrData['inputType']];
 
 		// Continue if the class is not defined

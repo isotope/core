@@ -1175,7 +1175,7 @@ $strBuffer .= '<th style="text-align:center"><img src="system/themes/default/ima
 			// Keep field settings made through DCA code
 			$arrData = is_array($GLOBALS['TL_DCA']['tl_iso_products']['fields'][$objAttributes->field_name]) ? $GLOBALS['TL_DCA']['tl_iso_products']['fields'][$objAttributes->field_name] : array();
 
-			$arrData['label']		= array($objAttributes->name, $objAttributes->description);
+			$arrData['label']		= $this->Isotope->translate(array($objAttributes->name, $objAttributes->description));
 			$arrData['exclude']		= true;
 			$arrData['inputType']	= ((TL_MODE == 'BE' && $GLOBALS['ISO_ATTR'][$objAttributes->type]['backend'] != '') ? $GLOBALS['ISO_ATTR'][$objAttributes->type]['backend'] : ((TL_MODE == 'FE' && $GLOBALS['ISO_ATTR'][$objAttributes->type]['frontend'] != '') ? $GLOBALS['ISO_ATTR'][$objAttributes->type]['frontend'] : $objAttributes->type));
 			$arrData['attributes']	= $objAttributes->row();
@@ -1262,7 +1262,7 @@ $strBuffer .= '<th style="text-align:center"><img src="system/themes/default/ima
 						}
 						elseif ($option['group'])
 						{
-							$strGroup = $option['value'];
+							$strGroup = $this->Isotope->translate($option['label']);
 							continue;
 						}
 
@@ -1272,10 +1272,10 @@ $strBuffer .= '<th style="text-align:center"><img src="system/themes/default/ima
 						}
 						else
 						{
-							$arrData['options'][$option['value']] = $option['label'];
+							$arrData['options'][$option['value']] = $this->Isotope->translate($option['label']);
 						}
 
-						$arrData['reference'][$option['value']] = $option['label'];
+						$arrData['reference'][$option['value']] = $this->Isotope->translate($option['label']);
 					}
 				}
 			}
