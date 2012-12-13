@@ -34,6 +34,7 @@
  */
 $GLOBALS['TL_LANG']['tl_iso_config']['ga_enable']							= array('Enable Google Analytics', 'Enable e-commerce tracking with Google Analytics.');
 $GLOBALS['TL_LANG']['tl_iso_config']['ga_account']							= array('Account', 'Please provde the account key (UA-XXXXXXX-X).');
+$GLOBALS['TL_LANG']['tl_iso_config']['ga_trackMember']						= array('Track member', 'Track logged in member (username). ATTENTION: make sure you\'re allowed to do this!');
 
 /**
  * Legends

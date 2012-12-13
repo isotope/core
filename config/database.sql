@@ -15,4 +15,5 @@
 CREATE TABLE `tl_iso_config` (
   `ga_enable` char(1) NOT NULL default '',
   `ga_account` varchar(64) NOT NULL default ''
+  `ga_trackMember` char(1) NOT NULL default ''
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;

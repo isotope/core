@@ -33,14 +33,14 @@
  */
 $GLOBALS['TL_DCA']['tl_iso_config']['palettes']['__selector__'][] = 'ga_enable';
 $GLOBALS['TL_DCA']['tl_iso_config']['palettes']['default'] .= ';{ga_legend},ga_enable';
-$GLOBALS['TL_DCA']['tl_iso_config']['subpalettes']['ga_enable'] = 'ga_account';
+$GLOBALS['TL_DCA']['tl_iso_config']['subpalettes']['ga_enable'] = 'ga_account,ga_trackMember';
 
 $GLOBALS['TL_DCA']['tl_iso_config']['fields']['ga_enable'] = array
 (
 	'label'                   => &$GLOBALS['TL_LANG']['tl_iso_config']['ga_enable'],
 	'exclude'                 => true,
 	'inputType'               => 'checkbox',
-	'eval'						=> array('submitOnChange'=>true, 'doNotCopy'=>true, 'tl_class'=>'w50'),
+	'eval'						=> array('submitOnChange'=>true, 'doNotCopy'=>true, 'tl_class'=>'clr'),
 );
 
 $GLOBALS['TL_DCA']['tl_iso_config']['fields']['ga_account'] = array
@@ -49,4 +49,12 @@ $GLOBALS['TL_DCA']['tl_iso_config']['fields']['ga_account'] = array
 	'exclude'                 => true,
 	'inputType'               => 'text',
 	'eval'                    => array('mandatory'=>true, 'unique'=>true, 'maxlength'=>64, 'tl_class'=>'w50'),
+);
+
+$GLOBALS['TL_DCA']['tl_iso_config']['fields']['ga_trackMember'] = array
+(
+	'label'                   => &$GLOBALS['TL_LANG']['tl_iso_config']['ga_trackMember'],
+	'exclude'                 => true,
+	'inputType'               => 'checkbox',
+	'eval'					  => array('tl_class'=>'w50 m12'),
 );
