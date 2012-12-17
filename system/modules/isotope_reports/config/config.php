@@ -90,6 +90,7 @@ array_insert($GLOBALS['BE_MOD']['isotope'], 2, array
 					'icon'		=> 'system/modules/isotope_reports/assets/generic.png',
 				),
 			),
+			'custom' => array(),
 		),
 	),
 ));
