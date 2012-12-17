@@ -70,7 +70,7 @@ window.addEvent("domready", function() {
 <?php endif; ?>
 
 <div id="tl_buttons">
-<a href="<?php echo $this->back_href; ?>" class="header_back" title="<?php echo $this->back_title; ?>"><?php echo $this->back_button; ?></a>
+<?php echo implode('&nbsp;&nbsp;::&nbsp;&nbsp;', $this->buttons); ?>
 </div>
 
 <h2 class="sub_headline"><?php echo $this->headline; ?></h2>

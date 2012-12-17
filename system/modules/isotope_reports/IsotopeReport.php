@@ -112,10 +112,8 @@ abstract class IsotopeReport extends Backend
 		$this->Template->action = ampersand($this->Environment->request);
 		$this->Template->panels = $this->getPanels();
 
-		// Back button
-		$this->Template->back_href = 'contao/main.php?do=reports';
-		$this->Template->back_title = specialchars($GLOBALS['TL_LANG']['MSC']['backBT']);
-		$this->Template->back_button = $GLOBALS['TL_LANG']['MSC']['backBT'];
+		// Buttons
+		$this->Template->buttons = $this->getButtons();
 
 		$this->Template->headline = $this->arrData['label'][1] ? $this->arrData['label'][1] : $this->arrData['label'][0];
 
@@ -130,6 +128,12 @@ abstract class IsotopeReport extends Backend
 	protected function getPanels()
 	{
 		return array(array($this->getLimitPanel(), $this->getSearchPanel(), $this->getSortingPanel()));
+	}
+
+
+	protected function getButtons()
+	{
+    	return array('<a href="contao/main.php?do=reports" class="header_back" title="' . specialchars($GLOBALS['TL_LANG']['MSC']['backBT']) . '">' . $GLOBALS['TL_LANG']['MSC']['backBT'] . '</a>');
 	}
 
 
