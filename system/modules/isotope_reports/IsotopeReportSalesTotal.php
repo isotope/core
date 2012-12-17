@@ -153,7 +153,7 @@ class IsotopeReportSalesTotal extends IsotopeReportSales
 			),
 		);
 
-		while ($intStart < $intStop)
+		while ($intStart <= $intStop)
 		{
 			$arrData['rows'][date($privateDate, $intStart)] = array
 			(
@@ -203,7 +203,7 @@ class IsotopeReportSalesTotal extends IsotopeReportSales
 			$arrData['header'][$currency]['value'] = $currency;
 		}
 
-		while ($intStart < $intStop)
+		while ($intStart <= $intStop)
 		{
 			$arrData['footer'][date($privateDate, $intStart)]['value'] = $this->parseDate($publicDate, $intStart);
 
