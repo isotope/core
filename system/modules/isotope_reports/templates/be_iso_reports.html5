@@ -23,7 +23,7 @@
 <?php endforeach; ?>
 </table>
 <?php else: ?>
-<p class="tl_info" style="margin-top:10px">Sie haben in den letzten 24h keine Bestellungen erhalten.</p>
+<p class="tl_info" style="margin-top:10px"><?php echo $GLOBALS['ISO_LANG']['REPORT']['24h_empty']; ?></p>
 <?php endif; ?>
 </fieldset>
 
