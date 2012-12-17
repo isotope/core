@@ -130,6 +130,7 @@ class PaymentPaypal extends IsotopePayment
 			{
 				case 'Completed':
 					$objOrder->date_paid = time();
+					$objOrder->updateOrderStatus($this->new_order_status);
 					break;
 
 				case 'Canceled_Reversal':
@@ -138,7 +139,7 @@ class PaymentPaypal extends IsotopePayment
 				case 'Failed':
 				case 'Voided':
 					$objOrder->date_paid = '';
-					$objOrder->status = $this->Isotope->Config->orderstatus_error;
+					$objOrder->updateOrderStatus($this->Isotope->Config->orderstatus_error);
 					break;
 
 				case 'In-Progress':

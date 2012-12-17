@@ -1041,7 +1041,6 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 		$objOrder->iso_mail_admin		= $this->iso_mail_admin;
 		$objOrder->iso_mail_customer	= $this->iso_mail_customer;
 		$objOrder->iso_addToAddressbook	= $this->iso_addToAddressbook;
-		$objOrder->new_order_status		= ($this->Isotope->Cart->hasPayment ? $this->Isotope->Cart->Payment->new_order_status : '');
 
 		$strCustomerName = '';
 		$strCustomerEmail = '';

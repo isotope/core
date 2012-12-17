@@ -350,7 +350,7 @@ class IsotopeOrder extends IsotopeProductCollection
 		$objCart->delete();
 
 		$this->checkout_complete = true;
-		$this->status = ($this->new_order_status ? $this->new_order_status : $this->Isotope->Config->orderstatus_new);
+		$this->status = $this->Isotope->Config->orderstatus_new;
 
 		$this->generateOrderId();
 		$arrData = $this->getEmailData();

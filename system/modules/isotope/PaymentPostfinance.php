@@ -122,6 +122,8 @@ class PaymentPostfinance extends IsotopePayment
 		}
 
 		$objOrder->date_paid = time();
+		$objOrder->updateOrderStatus($this->new_order_status);
+
 		$objOrder->save();
 	}
 
