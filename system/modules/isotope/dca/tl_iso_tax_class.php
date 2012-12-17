@@ -148,7 +148,7 @@ $GLOBALS['TL_DCA']['tl_iso_tax_class'] = array
 			'label'                   => &$GLOBALS['TL_LANG']['tl_iso_tax_class']['includes'],
 			'exclude'                 => true,
 			'inputType'               => 'select',
-			'options_callback'		  => array('tl_iso_tax_class', 'getTaxRates'),
+			'foreignKey'              => 'tl_iso_tax_rate.name',
 			'eval'                    => array('includeBlankOption'=>true, 'tl_class'=>'w50'),
 		),
 		'label' => array
@@ -164,7 +164,7 @@ $GLOBALS['TL_DCA']['tl_iso_tax_class'] = array
 			'label'                   => &$GLOBALS['TL_LANG']['tl_iso_tax_class']['rates'],
 			'exclude'                 => true,
 			'inputType'               => 'checkboxWizard',
-			'options_callback'		  => array('tl_iso_tax_class', 'getTaxRates'),
+			'foreignKey'              => 'tl_iso_tax_rate.name',
 			'eval'                    => array('multiple'=>true, 'tl_class'=>'clr w50 w50h'),
 		),
 		'applyRoundingIncrement' => array
@@ -317,25 +317,6 @@ class tl_iso_tax_class extends Backend
 				}
 				break;
 		}
-	}
-
-
-	/**
-	 * Get all tax rates sorted by country and name
-	 * @return array
-	 */
-	public function getTaxRates()
-	{
-		$arrCountries = $this->getCountries();
-		$arrRates = array();
-		$objRates = $this->Database->execute("SELECT * FROM tl_iso_tax_rate ORDER BY country, name");
-
-		while ($objRates->next())
-		{
-			$arrRates[$objRates->id] = $arrCountries[$objRates->country] . ' - ' . $objRates->name;
-		}
-
-		return $arrRates;
 	}
 
 

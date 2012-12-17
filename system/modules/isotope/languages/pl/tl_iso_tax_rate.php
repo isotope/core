@@ -33,8 +33,6 @@
 $GLOBALS['TL_LANG']['tl_iso_tax_rate']['name']			= array('Nazwa stawki podatku','Wprowadź nazwę stawki podatku.');
 $GLOBALS['TL_LANG']['tl_iso_tax_rate']['label']			= array('Etykieta stawki podatku','Ta etykieta zostanie używa we frontendzie przy składaniu zamówienia.');
 $GLOBALS['TL_LANG']['tl_iso_tax_rate']['address']		= array('Adres do użycia w kalkulacji', 'Wybierz, który adres powinien zostać użyty do kalkulacji.');
-$GLOBALS['TL_LANG']['tl_iso_tax_rate']['country']		= array('Kraj', 'Wybierz kraj, ktorego dotyczy ta stawka podatku.');
-$GLOBALS['TL_LANG']['tl_iso_tax_rate']['subdivision']	= array('Stan/region', 'Wybierz stan lub region, którego dotyczy ta stawka podatku.');
 $GLOBALS['TL_LANG']['tl_iso_tax_rate']['postalCodes']	= array('Kody pocztowe', 'Ogranicz tę stawkę podatku do kodów pocztowych. Możesz wprowadzić wiele kodów oraz zakresy, oddzielając je przecinkami (np. 1234,1235,1236-1239,1100-1200).');
 $GLOBALS['TL_LANG']['tl_iso_tax_rate']['amount']		= array('Ograniczenie wartości podsumy', 'Opcjonalne: Zastrzeż tę stawkę podatku do określonej wartości podsumy.');
 $GLOBALS['TL_LANG']['tl_iso_tax_rate']['rate']			= array('Stawka podatku', 'Stawka podatku w procentach.');

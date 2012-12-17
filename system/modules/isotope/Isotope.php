@@ -551,12 +551,12 @@ class Isotope extends Controller
 					continue;
 				}
 
-				if ($objRate->country != '' && $objRate->country != $arrAddress['country'])
+				if ($objRate->countries != '' && !in_array($arrAddress['country'], trimsplit(',', $objRate->countries)))
 				{
 					continue;
 				}
 
-				if ($objRate->subdivision != '' && $objRate->subdivision != $arrAddress['subdivision'])
+				if ($objRate->subdivisions != '' && !in_array($arrAddress['subdivision'], trimsplit(',', $objRate->subdivisions)))
 				{
 					continue;
 				}

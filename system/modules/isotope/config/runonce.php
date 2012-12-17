@@ -384,6 +384,18 @@ h1 { font-size:18px; font-weight:normal; margin:0 0 18px; }
 			$this->Database->query("ALTER TABLE tl_iso_tax_rate CHANGE COLUMN store config int(10) unsigned NOT NULL default '0'");
 		}
 
+		// tl_iso_tax_rate.country has been renamed to tl_iso_tax_rate.countries
+		if ($this->Database->fieldExists('country', 'tl_iso_tax_rate') && !$this->Database->fieldExists('countries', 'tl_iso_tax_rate'))
+		{
+			$this->Database->query("ALTER TABLE tl_iso_tax_rate CHANGE COLUMN country countries text NULL");
+		}
+
+		// tl_iso_tax_rate.subdivision has been renamed to tl_iso_tax_rate.subdivisions
+		if ($this->Database->fieldExists('subdivision', 'tl_iso_tax_rate') && !$this->Database->fieldExists('subdivisions', 'tl_iso_tax_rate'))
+		{
+			$this->Database->query("ALTER TABLE tl_iso_tax_rate CHANGE COLUMN subdivision subdivisions text NULL");
+		}
+
 		// tl_page.isotopeStoreConfig has been renamed to tl_page.iso_config
 		if ($this->Database->fieldExists('isotopeStoreConfig', 'tl_page') && !$this->Database->fieldExists('iso_config', 'tl_page'))
 		{
