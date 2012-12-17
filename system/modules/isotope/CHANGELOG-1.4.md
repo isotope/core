@@ -14,6 +14,7 @@ Version 1.4.x (201?-??-??)
 ### Fixed
 - Attributes were not translated in filters etc.
 - Payment modules did not correctly handle the auto_item parameter (#113)
+- ProductList-noFilter message is shown when keywords are used (#120)
 
 
 Version 1.4.rc1 (2012-12-03)
