@@ -70,7 +70,7 @@ class IsotopeReportSalesProduct extends IsotopeReportSales
 				t.attributes,
 				t.variants,
 				t.variant_attributes,
-				SUM(i.price*i.product_quantity) AS total,
+				SUM(i.tax_free_price * i.product_quantity) AS total,
 				DATE_FORMAT(FROM_UNIXTIME(o.date), '$sqlDate') AS dateGroup
 			FROM tl_iso_order_items i
 			LEFT JOIN tl_iso_orders o ON i.pid=o.id

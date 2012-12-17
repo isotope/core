@@ -51,7 +51,7 @@ class IsotopeReportSalesTotal extends IsotopeReportSales
 												o.date AS date,
 												COUNT(o.id) AS total_orders,
 												SUM(i.product_quantity) AS total_items,
-												SUM(i.price * i.product_quantity) AS total_sales,
+												SUM(i.tax_free_price * i.product_quantity) AS total_sales,
 												DATE_FORMAT(FROM_UNIXTIME(o.date), ?) AS dateGroup
 											FROM tl_iso_orders o
 											LEFT JOIN tl_iso_order_items i ON o.id=i.pid
