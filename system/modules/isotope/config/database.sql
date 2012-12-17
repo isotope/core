@@ -310,6 +310,7 @@ CREATE TABLE `tl_iso_cart_items` (
   `product_options` blob NULL,
   `product_quantity` int(10) unsigned NOT NULL default '0',
   `price` decimal(12,2) NOT NULL default '0.00',
+  `tax_free_price` decimal(12,2) NOT NULL default '0.00',
   `tax_id` varchar(32) NOT NULL default '',
   `href_reader` varchar(255) NOT NULL default '',
   PRIMARY KEY  (`id`),
@@ -525,6 +526,7 @@ CREATE TABLE `tl_iso_order_items` (
   `product_options` blob NULL,
   `product_quantity` int(10) unsigned NOT NULL default '0',
   `price` decimal(12,2) NOT NULL default '0.00',
+  `tax_free_price` decimal(12,2) NOT NULL default '0.00',
   `tax_id` varchar(32) NOT NULL default '',
   PRIMARY KEY  (`id`),
   KEY `pid` (`pid`)

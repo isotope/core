@@ -57,7 +57,7 @@ class IsotopeRunonce extends Controller
 		$this->exec('renameTables');
 		$this->exec('renameFields');
 		$this->exec('updateStoreConfigurations');
-		$this->exec('updateOrders');
+		$this->exec('updateCollections');
 		$this->exec('initializeOrderStatus');
 		$this->exec('updateImageSizes');
 		$this->exec('updateAttributes');
@@ -534,7 +534,7 @@ h1 { font-size:18px; font-weight:normal; margin:0 0 18px; }
 	}
 
 
-	private function updateOrders()
+	private function updateCollections()
 	{
 		if (!$this->Database->fieldExists('date_shipped', 'tl_iso_orders'))
 		{
@@ -545,6 +545,20 @@ h1 { font-size:18px; font-weight:normal; margin:0 0 18px; }
 
 		// Fix for Ticket #383
 		$this->Database->query("UPDATE tl_iso_order_downloads SET downloads_remaining='' WHERE downloads_remaining='-1'");
+
+		// Add tax_free_price to tl_iso_order_items
+		if (!$this->Database->fieldExists('tax_free_price', 'tl_iso_order_items'))
+		{
+			$this->Database->query("ALTER TABLE tl_iso_order_items ADD COLUMN tax_free_price decimal(12,2) NOT NULL default '0.00'");
+			$this->Database->query("UPDATE tl_iso_order_items SET tax_free_price=price");
+		}
+
+		// Add tax_free_price to tl_iso_cart_items
+		if (!$this->Database->fieldExists('tax_free_price', 'tl_iso_cart_items'))
+		{
+			$this->Database->query("ALTER TABLE tl_iso_cart_items ADD COLUMN tax_free_price decimal(12,2) NOT NULL default '0.00'");
+			$this->Database->query("UPDATE tl_iso_cart_items SET tax_free_price=price");
+		}
 	}
 
 

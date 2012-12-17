@@ -390,7 +390,7 @@ abstract class IsotopeProductCollection extends Model
 		{
 			foreach ($arrProducts as $objProduct)
 			{
-				$this->Database->prepare("UPDATE {$this->ctable} SET price=? WHERE id=?")->execute($objProduct->price, $objProduct->cart_id);
+   				$this->Database->prepare("UPDATE {$this->ctable} SET price=?, tax_free_price=? WHERE id=?")->execute($objProduct->price, $objProduct->tax_free_price, $objProduct->cart_id);
 			}
 		}
 
@@ -489,22 +489,23 @@ abstract class IsotopeProductCollection extends Model
 												 ->execute($objItems->product_id);
 
 				$strClass = $GLOBALS['ISO_PRODUCT'][$objProductData->product_class]['class'];
+				$arrData = array('sku'=>$objItems->product_sku, 'name'=>$objItems->product_name, 'price'=>$objItems->price, 'tax_free_price'=>$objItems->tax_free_price);
 
 				if ($objProductData->numRows && $strClass != '')
 				{
 					try
 					{
-						$arrData = $this->blnLocked ? array_merge($objProductData->row(), array('sku'=>$objItems->product_sku, 'name'=>$objItems->product_name, 'price'=>$objItems->price)) : $objProductData->row();
+						$arrData = $this->blnLocked ? array_merge($objProductData->row(), $arrData) : $objProductData->row();
 						$objProduct = new $strClass($arrData, deserialize($objItems->product_options), $this->blnLocked, $objItems->product_quantity);
 					}
 					catch (Exception $e)
 					{
-						$objProduct = new IsotopeProduct(array('id'=>$objItems->product_id, 'sku'=>$objItems->product_sku, 'name'=>$objItems->product_name, 'price'=>$objItems->price), deserialize($objItems->product_options), $this->blnLocked, $objItems->product_quantity);
+						$objProduct = new IsotopeProduct($arrData, deserialize($objItems->product_options), $this->blnLocked, $objItems->product_quantity);
 					}
 				}
 				else
 				{
-					$objProduct = new IsotopeProduct(array('id'=>$objItems->product_id, 'sku'=>$objItems->product_sku, 'name'=>$objItems->product_name, 'price'=>$objItems->price), deserialize($objItems->product_options), $this->blnLocked, $objItems->product_quantity);
+					$objProduct = new IsotopeProduct($arrData, deserialize($objItems->product_options), $this->blnLocked, $objItems->product_quantity);
 				}
 
 				// Remove product from collection if it is no longer available
@@ -600,6 +601,7 @@ abstract class IsotopeProductCollection extends Model
 				'product_options'	=> $objProduct->getOptions(true),
 				'product_quantity'	=> (int) $intQuantity,
 				'price'				=> (float) $objProduct->price,
+				'tax_free_price'    => (float) $objProduct->tax_free_price,
 			);
 
 			if ($this->Database->fieldExists('href_reader', $this->ctable))
@@ -713,7 +715,7 @@ abstract class IsotopeProductCollection extends Model
 		}
 
 		// Make sure database table has the latest prices
-//		$objCollection->save();
+		$objCollection->save();
 
 		$time = time();
 		$arrIds = array();

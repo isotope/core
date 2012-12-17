@@ -200,9 +200,10 @@ class IsotopeProduct extends Controller
 		// Make sure the locked attributes are set
 		if ($this->isLocked())
 		{
-			$this->arrData['sku']	= $arrData['sku'];
-			$this->arrData['name']	= $arrData['name'];
-			$this->arrData['price']	= $arrData['price'];
+			$this->arrData['sku']            = $arrData['sku'];
+			$this->arrData['name']           = $arrData['name'];
+			$this->arrData['price']          = $arrData['price'];
+			$this->arrData['tax_free_price'] = $arrData['tax_free_price'];
 		}
 	}
 
@@ -238,7 +239,13 @@ class IsotopeProduct extends Controller
 				return $this->quantity_requested * $this->price;
 
 			case 'tax_free_price':
-				$fltPrice = $this->isLocked() ? $this->arrData['price'] : $this->Isotope->calculatePrice($this->arrData['price'], $this, 'price');
+
+			    if ($this->isLocked())
+			    {
+    			    return $this->arrData['tax_free_price'] ? $this->arrData['tax_free_price'] : $this->arrData['price'];
+			    }
+
+				$fltPrice = $this->Isotope->calculatePrice($this->arrData['price'], $this, 'price');
 
 				if ($this->arrData['tax_class'] > 0)
 				{
