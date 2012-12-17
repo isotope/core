@@ -214,8 +214,8 @@ $GLOBALS['TL_DCA']['tl_iso_payment_modules'] = array
 			'default'				  => 'capture',
 			'inputType'				  => 'select',
 			'options'				  => array('capture', 'auth'),
-			'eval'                    => array('mandatory'=>true, 'tl_class'=>'w50'),
 			'reference'				  => $GLOBALS['TL_LANG']['tl_iso_payment_modules'],
+			'eval'                    => array('mandatory'=>true, 'tl_class'=>'w50'),
 		),
 		'minimum_total' => array
 		(
@@ -307,8 +307,8 @@ $GLOBALS['TL_DCA']['tl_iso_payment_modules'] = array
 			'default'				  => 'AUTH_CAPTURE',
 			'inputType'               => 'select',
 			'options'				  => array('AUTH_CAPTURE', 'AUTH_ONLY'),
-			'eval'                    => array('mandatory'=>true, 'maxlength'=>255),
-			'reference'				  => $GLOBALS['TL_LANG']['ISO_PAY']['authorizedotnet']['modes']
+			'reference'				  => &$GLOBALS['TL_LANG']['tl_iso_payment_modules'],
+			'eval'                    => array('mandatory'=>true, 'maxlength'=>255, 'helpwizard'=>true),
 		),
 		'authorize_delimiter' => array
 		(

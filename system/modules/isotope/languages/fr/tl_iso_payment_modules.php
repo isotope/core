@@ -93,10 +93,6 @@ $GLOBALS['TL_LANG']['tl_iso_payment_modules']['enabled'][1]                 = 'C
  */
 $GLOBALS['TL_LANG']['tl_iso_payment_modules']['capture'] = 'Autorise et Capture';
 $GLOBALS['TL_LANG']['tl_iso_payment_modules']['auth']    = 'Autorise seulement';
-
-$GLOBALS['TL_LANG']['ISO_PAY']['authorizedotnet']['modes']['AUTH_CAPTURE'] = 'Autorise et Capture';
-$GLOBALS['TL_LANG']['ISO_PAY']['authorizedotnet']['modes']['AUTH_ONLY']    = 'Autorise seulement';
-
 $GLOBALS['TL_LANG']['tl_iso_payment_modules']['no_shipping']        = 'Commandes sans livraison';
 $GLOBALS['TL_LANG']['tl_iso_payment_modules']['AUTH_CAPTURE'][0]    = 'Autorise et Capture';
 $GLOBALS['TL_LANG']['tl_iso_payment_modules']['AUTH_CAPTURE'][1]    = 'Les transactions de ce type seront envoyées pour autorisation. La transaction sera automatiquement prise pour le réglement si elle est approuvée. C\'est le type de transaction par défaut de la passerelle. Si aucun type n\'est indiqué lors de la présentation des transactions à la passerelle, la passerelle présume que la transaction est de ce type';
