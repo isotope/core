@@ -61,14 +61,6 @@ $GLOBALS['TL_LANG']['tl_iso_payment_modules']['trans_type'][0]              = 'T
 $GLOBALS['TL_LANG']['tl_iso_payment_modules']['trans_type'][1]              = 'Sélectionner un encaissement immédiat ou autoriser (et maintenir) en différé (par exemple lors de l\'expédition).';
 $GLOBALS['TL_LANG']['tl_iso_payment_modules']['paypal_account'][0]          = 'Compte PayPal';
 $GLOBALS['TL_LANG']['tl_iso_payment_modules']['paypal_account'][1]          = 'Entrez votre nom d\'utilisateur PayPal (adresse e-mail).';
-$GLOBALS['TL_LANG']['tl_iso_payment_modules']['payflowpro_user'][0]         = 'PayPal Payflow Pro username PayPal Payflow Pro';
-$GLOBALS['TL_LANG']['tl_iso_payment_modules']['payflowpro_vendor'][0]       = 'Vendeur PayPal Payflow Pro';
-$GLOBALS['TL_LANG']['tl_iso_payment_modules']['payflowpro_vendor'][1]       = 'Une chaîne alphanumérique d\'environ 10 caractères.';
-$GLOBALS['TL_LANG']['tl_iso_payment_modules']['payflowpro_partner']         = array('Partenaire PayPal Payflow Pro', 'Case-sensitive! Usual partner Ids are either "PayPal" or "PayPalUK".');
-$GLOBALS['TL_LANG']['tl_iso_payment_modules']['payflowpro_password'][0]     = 'Mot de passe api PayPal Payflow Pro';
-$GLOBALS['TL_LANG']['tl_iso_payment_modules']['payflowpro_password'][1]     = 'Une chaîne alphanumérique d\'environ 11 caractères.';
-$GLOBALS['TL_LANG']['tl_iso_payment_modules']['payflowpro_transType'][0]    = 'Type de transaction PayPal Payflow Pro';
-$GLOBALS['TL_LANG']['tl_iso_payment_modules']['payflowpro_transType'][1]    = 'Sélectionner un type de transaction';
 $GLOBALS['TL_LANG']['tl_iso_payment_modules']['postfinance_pspid']          = array('Postfinance PSPID', 'The PSPID is your unique identification for the Postfinance system.');
 $GLOBALS['TL_LANG']['tl_iso_payment_modules']['postfinance_secret']         = array('Postfinance SHA-1-IN signature', 'This will be used to validate the server communication.');
 $GLOBALS['TL_LANG']['tl_iso_payment_modules']['postfinance_method']         = array('Postfinance method', 'Type of data transfer from postfinance.');
@@ -76,11 +68,6 @@ $GLOBALS['TL_LANG']['tl_iso_payment_modules']['button'][0]                  = 'B
 $GLOBALS['TL_LANG']['tl_iso_payment_modules']['button'][1]                  = 'Afficher un bouton personnalisé au lieu de celui par défaut.';
 $GLOBALS['TL_LANG']['tl_iso_payment_modules']['requireCCV'][0]              = 'Code de vérification de la carte (cryptogramme)';
 $GLOBALS['TL_LANG']['tl_iso_payment_modules']['requireCCV'][1]              = 'Choisir cette option pour augmenter la sécurité des transactions en exigeant que le numéro de vérification de carte soit saisi.';
-$GLOBALS['TL_LANG']['tl_iso_payment_modules']['cybersource_merchant_id'][0] = 'Identifiant commerçant Cybersource';
-$GLOBALS['TL_LANG']['tl_iso_payment_modules']['cybersource_merchant_id'][1] = 'Saisir votre identifiant commerçant Cybersource ici';
-$GLOBALS['TL_LANG']['tl_iso_payment_modules']['cybersource_trans_key'][0]   = 'Clé de transaction Cybersource';
-$GLOBALS['TL_LANG']['tl_iso_payment_modules']['cybersource_trans_key'][1]   = 'Fournie lorsque vous avez terminé l\'inscription pour votre passerelle';
-$GLOBALS['TL_LANG']['tl_iso_payment_modules']['cybersource_trans_type']     = array('Type de transaction Cybersource', 'Authorize and Capture, for example - the first stage is authorizing by validating the data entered by the customer and the next step is submitting for settlement, which is called "capture".');
 $GLOBALS['TL_LANG']['tl_iso_payment_modules']['allowed_cc_types'][0]        = 'Cartes de crédit acceptés';
 $GLOBALS['TL_LANG']['tl_iso_payment_modules']['allowed_cc_types'][1]        = 'Sélectionner quelles cartes de crédits sont acceptées par le module.';
 $GLOBALS['TL_LANG']['tl_iso_payment_modules']['authorize_login'][0]         = 'Identifiant Authorize.net';
@@ -121,10 +108,6 @@ $GLOBALS['TL_LANG']['tl_iso_payment_modules']['CREDIT'][0]          = 'Crédit';
 $GLOBALS['TL_LANG']['tl_iso_payment_modules']['CREDIT'][1]          = 'Cette opération est également appelée «remboursement» et indique à la passerelle que l\'argent doit circuler à partir du commerçant vers la clientèle. La passerelle acceptera un crédit ou une demande de remboursement si la transaction soumise remplit les conditions suivantes: <ul><li>La transaction est soumise avec l\'ID de la transaction initiale contre laquelle le crédit a été émis.</li><li>La passerelle a un dossier de la transaction originale.</li><li>L\'opération initiale a été réglée.</li><li>La somme du montant soumis dans la transaction de crédit et tous les crédits présentées contre l\'opération initiale est inférieure au montant de la transaction originale.</li><li>La totalité ou les quatre derniers chiffres du numéro de carte de crédit soumis à la transaction de crédit correspondent à la totalité ou aux quatre derniers chiffres du numéro de carte de crédit utilisée lors de la transaction originale.</li><li>La transaction est soumise à moins de 120 jours à compter de la date de règlement et l\'heure de la transaction originale.</li></ul>Une clé de transaction est tenue de présenter un crédit au système.';
 $GLOBALS['TL_LANG']['tl_iso_payment_modules']['VOID']               = array('Void', 'This transaction is an action on a previous transaction and is used to cancel the previous transaction and ensure it does not get sent for settlement. It can be done on any type of transaction (i.e., CREDIT, AUTH_CAPTURE, CAPTURE_ONLY, and AUTH_ONLY). The transaction will be accepted by the gateway if the following conditions are met: <ul><li>The transaction is submitted with the ID of the transaction that has to be voided.</li><li>The gateway has a record of the transaction referenced by the ID.</li><li>The transaction has not been sent for settlement.</li></ul>');
 $GLOBALS['TL_LANG']['tl_iso_payment_modules']['PRIOR_AUTH_CAPTURE'] = array('Prior Authorization and Capture', 'This transaction is used to request settlement for a transaction that was previously submitted as an AUTH_ONLY. The gateway will accept this transaction and initiate settlement if the following conditions are met: <ul> <li>The transaction is submitted with the ID of the original authorization-only transaction, which needs to be settled.</li> <li>The transaction ID is valid and the system has a record of the original authorization-only transaction being submitted.</li> <li>The original transaction referred to is not already settled or expired or errored.</li><li>The amount being requested for settlement in this transaction is less than or equal to the original authorized amount.</li></ul>If no amount is submitted in this transaction, the gateway will initiate settlement for the amount of the originally authorized transaction. <em>Note: If extended line item, tax, freight, and/or duty information was submitted with the original transaction, adjusted information may be submitted in the event that the transaction amount changed. If no adjusted line item, tax, freight, and/or duty information is submitted, the information submitted with the original transaction will apply.</em>');
-
-//PayPal Payflow Pro
-$GLOBALS['TL_LANG']['tl_payment_module']['payflowpro_transTypes']['Sale']          = 'Autorisation et Capture';
-$GLOBALS['TL_LANG']['tl_payment_module']['payflowpro_transTypes']['Authorization'] = 'Autorise seulement';
 
 
 /**

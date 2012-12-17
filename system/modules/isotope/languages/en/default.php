@@ -275,10 +275,8 @@ $GLOBALS['ISO_LANG']['SHIP']['usps']				= array('USPS Live Rates and Service shi
  */
 $GLOBALS['ISO_LANG']['PAY']['cash']				= array('Cash', 'Use this for all offline processed payment.');
 $GLOBALS['ISO_LANG']['PAY']['paypal']			= array('PayPal Standard Checkout', 'This PayPal module supports IPN (Instant Payment Notifications).');
-$GLOBALS['ISO_LANG']['PAY']['paypalpayflowpro']	= array('PayPal Payflow Pro', 'The PayPal Payflow module is a full service credit card gateway, a more robust solution for most e-commerce sites.');
 $GLOBALS['ISO_LANG']['PAY']['postfinance']		= array('Postfinance', 'Payment gateway for the swiss post payment system that supports various card types. The store will be instantly notified about successfull transactions.');
 $GLOBALS['ISO_LANG']['PAY']['authorizedotnet']	= array('Authorize.net', 'An Authorize.net payment gateway.');
-$GLOBALS['ISO_LANG']['PAY']['cybersource']		= array('Cybersource','For Cybersource users. Uses the Simple Order API method.');
 
 
 /**

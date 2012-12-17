@@ -128,10 +128,8 @@ $GLOBALS['TL_DCA']['tl_iso_payment_modules'] = array
 		'default'				=> '{type_legend},name,type',
 		'cash'					=> '{type_legend},name,label,type;{note_legend:hide},note;{config_legend},new_order_status,minimum_total,maximum_total,countries,shipping_modules,product_types;{price_legend:hide},price,tax_class;{expert_legend:hide},guests,protected;{enabled_legend},enabled',
 		'paypal'				=> '{type_legend},name,label,type;{note_legend:hide},note;{config_legend},new_order_status,minimum_total,maximum_total,countries,shipping_modules,product_types;{gateway_legend},paypal_account;{price_legend:hide},price,tax_class;{template_legend},button;{expert_legend:hide},guests,protected;{enabled_legend},debug,enabled',
-		'paypalpayflowpro'		=> '{type_legend},name,label,type;{note_legend:hide},note;{config_legend},new_order_status,allowed_cc_types,requireCCV,minimum_total,maximum_total,countries,shipping_modules,product_types;{gateway_legend},payflowpro_user,payflowpro_vendor,payflowpro_partner,payflowpro_password,payflowpro_transType;{price_legend:hide},price,tax_class;{template_legend},button;{expert_legend:hide},guests,protected;{enabled_legend},debug,enabled',
 		'postfinance'			=> '{type_legend},name,label,type;{note_legend:hide},note;{config_legend},new_order_status,minimum_total,maximum_total,countries,shipping_modules,product_types;{gateway_legend},postfinance_pspid,postfinance_secret,postfinance_method;{price_legend:hide},price,tax_class;{expert_legend:hide},guests,protected;{enabled_legend},debug,enabled',
 		'authorizedotnet'		=> '{type_legend},name,label,type;{note_legend:hide},note;{config_legend},new_order_status,allowed_cc_types,requireCCV,minimum_total,maximum_total,countries,shipping_modules,product_types;{gateway_legend},authorize_login,authorize_trans_key,authorize_trans_type,authorize_delimiter;{price_legend:hide},price,tax_class;{expert_legend:hide},guests,protected;{enabled_legend},debug,enabled',
-		'cybersource'			=> '{type_legend},name,label,type;{note_legend:hide},note;{config_legend},new_order_status,minimum_total,maximum_total,countries,shipping_modules,product_types;{gateway_legend},cybersource_merchant_id,cybersource_trans_key,cybersource_trans_type;{price_legend:hide},price,tax_class;{expert_legend:hide},guests,protected;{enabled_legend},debug,enabled'
 	),
 
 	// Subpalettes
@@ -265,44 +263,6 @@ $GLOBALS['TL_DCA']['tl_iso_payment_modules'] = array
 			'inputType'               => 'text',
 			'eval'                    => array('mandatory'=>true, 'maxlength'=>255, 'rgxp'=>'email', 'tl_class'=>'w50'),
 		),
-		'payflowpro_user' => array
-		(
-			'label'                   => &$GLOBALS['TL_LANG']['tl_iso_payment_modules']['payflowpro_user'],
-			'exclude'                 => true,
-			'inputType'               => 'text',
-			'eval'                    => array('mandatory'=>true, 'maxlength'=>255),
-		),
-		'payflowpro_vendor' => array
-		(
-			'label'                   => &$GLOBALS['TL_LANG']['tl_iso_payment_modules']['payflowpro_vendor'],
-			'exclude'                 => true,
-			'inputType'               => 'text',
-			'eval'                    => array('mandatory'=>true, 'maxlength'=>255),
-		),
-		'payflowpro_partner' => array
-		(
-			'label'                   => &$GLOBALS['TL_LANG']['tl_iso_payment_modules']['payflowpro_partner'],
-			'exclude'                 => true,
-			'inputType'               => 'text',
-			'eval'                    => array('mandatory'=>true, 'maxlength'=>255),
-		),
-		'payflowpro_password' => array
-		(
-			'label'                   => &$GLOBALS['TL_LANG']['tl_iso_payment_modules']['payflowpro_password'],
-			'exclude'                 => true,
-			'inputType'               => 'text',
-			'eval'                    => array('mandatory'=>true, 'maxlength'=>255, 'hideInput'=>true),
-		),
-		'payflowpro_transType' => array
-		(
-			'label'                   => &$GLOBALS['TL_LANG']['tl_iso_payment_modules']['payflowpro_transType'],
-			'exclude'                 => true,
-			'default'				  => 'Sale',
-			'inputType'               => 'select',
-			'options'				  => array('Sale', 'Authorization'),
-			'eval'                    => array('mandatory'=>true, 'maxlength'=>255),
-			'reference'				  => &$GLOBALS['TL_LANG']['tl_payment_module']['payflowpro_transTypes']
-		),
 		'postfinance_pspid' => array
 		(
 			'label'                   => &$GLOBALS['TL_LANG']['tl_iso_payment_modules']['postfinance_pspid'],
@@ -345,30 +305,6 @@ $GLOBALS['TL_DCA']['tl_iso_payment_modules'] = array
 			'label'                   => &$GLOBALS['TL_LANG']['tl_iso_payment_modules']['authorize_trans_type'],
 			'exclude'                 => true,
 			'default'				  => 'AUTH_CAPTURE',
-			'inputType'               => 'select',
-			'options'				  => array('AUTH_CAPTURE', 'AUTH_ONLY'),
-			'eval'                    => array('mandatory'=>true, 'maxlength'=>255),
-			'reference'				  => $GLOBALS['TL_LANG']['ISO_PAY']['authorizedotnet']['modes']
-		),
-		'cybersource_merchant_id' => array
-		(
-			'label'                   => &$GLOBALS['TL_LANG']['tl_iso_payment_modules']['cybersource_merchant_id'],
-			'exclude'                 => true,
-			'inputType'               => 'text',
-			'eval'                    => array('mandatory'=>true, 'maxlength'=>255)
-		),
-		'cybersource_trans_key' => array
-		(
-			'label'                   => &$GLOBALS['TL_LANG']['tl_iso_payment_modules']['cybersource_trans_key'],
-			'exclude'                 => true,
-			'inputType'               => 'textarea',
-			'eval'                    => array('mandatory'=>true, 'style'=>'height: 60px;')
-		),
-		'cybersource_trans_type' => array
-		(
-			'label'                   => &$GLOBALS['TL_LANG']['tl_iso_payment_modules']['cybersource_trans_type'],
-			'exclude'                 => true,
-			'default'				  => 'AUTH_ONLY',
 			'inputType'               => 'select',
 			'options'				  => array('AUTH_CAPTURE', 'AUTH_ONLY'),
 			'eval'                    => array('mandatory'=>true, 'maxlength'=>255),

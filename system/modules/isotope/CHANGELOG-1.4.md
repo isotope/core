@@ -7,6 +7,7 @@ Version 1.4.x (201?-??-??)
 ### New
 - Tax rates can now be applied to multiple countries
 - Added hook to check for product access permissions
+- Removed PaypalPayflowPro and Cybersource payment methods. They were not maintained anymore.
 
 ### Improved
 - Better german translations

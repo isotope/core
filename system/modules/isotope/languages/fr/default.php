@@ -269,14 +269,10 @@ $GLOBALS['ISO_LANG']['PAY']['cash'][0]                          = 'Paiement en e
 $GLOBALS['ISO_LANG']['PAY']['cash'][1]                          = 'Choisissez cette option pour tous les paiements en mode hors connexion';
 $GLOBALS['ISO_LANG']['PAY']['paypal'][0]                        = 'Passage à la caisse standard PayPal';
 $GLOBALS['ISO_LANG']['PAY']['paypal'][1]                        = 'Ce module PayPal supporte IPN (notification instantanée de paiement)';
-$GLOBALS['ISO_LANG']['PAY']['paypalpayflowpro'][0]              = 'PayPal Payflow Pro';
-$GLOBALS['ISO_LANG']['PAY']['paypalpayflowpro'][1]              = 'Le module PayPal Payflow offre un portail de service complet pour cartes de crédit, une solution robuste pour presque tous les sites de e-commerce';
 $GLOBALS['ISO_LANG']['PAY']['postfinance'][0]                   = 'Postfinance';
 $GLOBALS['ISO_LANG']['PAY']['postfinance'][1]                   = 'Portail du service de paiement du système de la poste Suisse pour différents types de cartes. Le Webshop est instantanément informé de toute transaction réussie';
 $GLOBALS['ISO_LANG']['PAY']['authorizedotnet'][0]               = 'Authorize.net';
 $GLOBALS['ISO_LANG']['PAY']['authorizedotnet'][1]               = 'Portail de paiement Authorize.net';
-$GLOBALS['ISO_LANG']['PAY']['cybersource'][0]                   = 'Cybersource';
-$GLOBALS['ISO_LANG']['PAY']['cybersource'][1]                   = 'Pour les utilisateurs de Cybersource. Utilise Simple Order API.';
 
 
 /**
