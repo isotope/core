@@ -278,5 +278,70 @@ window.addEvent( \'domready\' , function() {
 
 		return $strBuffer;
 	}
+
+
+	/**
+	 * Return information or advanced features in the backend.
+	 *
+	 * Use this function to present advanced features or basic payment information for an order in the backend.
+	 * @param integer Order ID
+	 * @return string
+	 */
+	public function backendInterface($orderId)
+	{
+	    $objOrder = new IsotopeOrder();
+
+        if (!$objOrder->findBy('id', $orderId))
+        {
+            return parent::backendInterface($orderId);
+        }
+
+        $arrPayment = $objOrder->payment_data;
+
+        if (!is_array($arrPayment['POSTSALE']) || empty($arrPayment['POSTSALE']))
+        {
+            return parent::backendInterface($orderId);
+        }
+
+        $arrPayment = array_pop($arrPayment['POSTSALE']);
+        ksort($arrPayment);
+        $i = 0;
+
+		$strBuffer = '
+<div id="tl_buttons">
+<a href="'.ampersand(str_replace('&key=payment', '', $this->Environment->request)).'" class="header_back" title="'.specialchars($GLOBALS['TL_LANG']['MSC']['backBT']).'">'.$GLOBALS['TL_LANG']['MSC']['backBT'].'</a>
+</div>
+
+<h2 class="sub_headline">' . $this->name . ' (' . $GLOBALS['ISO_LANG']['PAY'][$this->type][0] . ')' . '</h2>
+
+<div id="tl_soverview">
+<div id="tl_messages">
+<p class="tl_info"><a href="https://www.paypal.com/' . strtolower($arrPayment['residence_country']) . '/cgi-bin/webscr?cmd=_view-a-trans&id=' . $arrPayment['txn_id'] . '" target="_blank">' . $GLOBALS['TL_LANG']['MSC']['paypalTransactionOnline'] . '</a></p>
+</div>
+</div>
+
+<table class="tl_show">
+  <tbody>';
+
+        foreach ($arrPayment as $k => $v)
+        {
+            if (is_array($v))
+                continue;
+
+            $strBuffer .= '
+  <tr>
+    <td' . ($i%2 ? '' : ' class="tl_bg"') . '><span class="tl_label">' . $k . ': </span></td>
+    <td' . ($i%2 ? '' : ' class="tl_bg"') . '>' . $v . '</td>
+  </tr>';
+
+            ++$i;
+        }
+
+        $strBuffer .= '
+</tbody></table>
+</div>';
+
+        return $strBuffer;
+	}
 }
 
