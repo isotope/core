@@ -1,8 +1,22 @@
 Isotope eCommerce Changelog
 ===========================
 
+Version 1.4.x (201?-??-??)
+--------------------------
+
+### New
+- Tax rates can now be applied to multiple countries
+- Added hook to check for product access permissions
+
+### Improved
+- Better german translations
+
+### Fixed
+- Attributes were not translated in filters etc.
+
+
 Version 1.4.rc1 (2012-12-03)
-------------------------------
+----------------------------
 
 ### New
 - New attribute option to add date picker for frontend and backend
