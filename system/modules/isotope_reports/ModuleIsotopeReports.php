@@ -121,21 +121,22 @@ class ModuleIsotopeReports extends BackendModule
 	protected function getDailySummary()
 	{
 		$arrSummary = array();
+		$arrAllowedProducts = IsotopeBackend::getAllowedProductIds();
 
 		$objOrders = $this->Database->prepare("SELECT
 													c.id AS config_id,
 													c.name AS config_name,
 													c.currency,
 													COUNT(o.id) AS total_orders,
-													SUM(i.price * i.product_quantity) AS total_sales,
+													SUM(i.tax_free_price * i.product_quantity) AS total_sales,
 													SUM(i.product_quantity) AS total_items
 												FROM tl_iso_orders o
 												LEFT JOIN tl_iso_order_items i ON o.id=i.pid
 												LEFT OUTER JOIN tl_iso_config c ON o.config_id=c.id
 												WHERE o.date>?
+												" . ($arrAllowedProducts === false ? '' : (" AND i.product_id IN (" . (empty($arrAllowedProducts) ? '0' : implode(',', $arrAllowedProducts)) . ")")) . "
 												GROUP BY config_id")
-									->execute(strtotime('-24h'));
-
+									->execute(strtotime('-24 hours'));
 
 		while ($objOrders->next())
 		{
