@@ -271,7 +271,7 @@ class IsotopeProduct extends Controller
 					}
 				}
 
-				return $fltPrice;
+				return round($varPrice, 2);
 
 			case 'tax_free_total_price':
 				return $this->quantity_requested * $this->tax_free_price;
