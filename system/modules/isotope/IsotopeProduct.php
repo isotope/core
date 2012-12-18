@@ -236,7 +236,8 @@ class IsotopeProduct extends Controller
 				return $this->isLocked() ? $this->arrData['price'] : $this->Isotope->calculatePrice($this->arrData['price'], $this, 'price', $this->arrData['tax_class']);
 
 			case 'total_price':
-				return $this->quantity_requested * $this->price;
+			    $varPrice = $this->price;
+				return $varPrice === null ? null : ($this->quantity_requested * $varPrice);
 
 			case 'tax_free_price':
 
@@ -245,9 +246,9 @@ class IsotopeProduct extends Controller
     			    return $this->arrData['tax_free_price'] ? $this->arrData['tax_free_price'] : $this->arrData['price'];
 			    }
 
-				$fltPrice = $this->Isotope->calculatePrice($this->arrData['price'], $this, 'price');
+				$varPrice = $this->Isotope->calculatePrice($this->arrData['price'], $this, 'price');
 
-				if ($this->arrData['tax_class'] > 0)
+				if ($varPrice !== null && $this->arrData['tax_class'] > 0)
 				{
 					$objIncludes = $this->Database->prepare("SELECT r.* FROM tl_iso_tax_rate r LEFT JOIN tl_iso_tax_class c ON c.includes=r.id WHERE c.id=?")->execute($this->arrData['tax_class']);
 
@@ -258,7 +259,7 @@ class IsotopeProduct extends Controller
 						// Final price / (1 + (tax / 100)
 						if (strlen($arrTaxRate['unit']))
 						{
-							$fltTax = $fltPrice - ($fltPrice / (1 + (floatval($arrTaxRate['value']) / 100)));
+							$fltTax = $varPrice - ($varPrice / (1 + (floatval($arrTaxRate['value']) / 100)));
 						}
 
 						// Full amount
@@ -267,14 +268,15 @@ class IsotopeProduct extends Controller
 							$fltTax = floatval($arrTaxRate['value']);
 						}
 
-						$fltPrice -= $fltTax;
+						$varPrice -= $fltTax;
 					}
 				}
 
 				return round($varPrice, 2);
 
 			case 'tax_free_total_price':
-				return $this->quantity_requested * $this->tax_free_price;
+			    $varPrice = $this->tax_free_price;
+				return $varPrice === null ? null : ($this->quantity_requested * $varPrice);
 
 			case 'quantity_requested':
 				if (!$this->arrCache[$strKey] && $this->Input->post('FORM_SUBMIT') == $this->formSubmit)

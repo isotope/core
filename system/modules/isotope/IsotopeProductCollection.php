@@ -208,7 +208,12 @@ abstract class IsotopeProductCollection extends Model
 
 					foreach ($arrProducts as $objProduct)
 					{
-						$fltTotal += (float) $objProduct->total_price;
+					    $varPrice = $objProduct->total_price;
+
+					    if ($varPrice !== null)
+					    {
+    						$fltTotal += $varPrice;
+    				    }
 					}
 
 					$this->arrCache[$strKey] = $fltTotal;
@@ -220,7 +225,12 @@ abstract class IsotopeProductCollection extends Model
 
 					foreach ($arrProducts as $objProduct)
 					{
-						$fltTotal += (float) $objProduct->tax_free_total_price;
+					    $varPrice = $objProduct->tax_free_total_price;
+
+					    if ($varPrice !== null)
+					    {
+    						$fltTotal += $varPrice;
+    				    }
 					}
 
 					$this->arrCache[$strKey] = $fltTotal;
