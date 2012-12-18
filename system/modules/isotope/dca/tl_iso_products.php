@@ -1257,7 +1257,7 @@ $strBuffer .= '<th style="text-align:center"><img src="system/themes/default/ima
 						if (!strlen($option['value']))
 						{
 							$arrData['eval']['includeBlankOption'] = true;
-							$arrData['eval']['blankOptionLabel'] = $option['label'];
+							$arrData['eval']['blankOptionLabel'] = $this->Isotope->translate($option['label']);
 							continue;
 						}
 						elseif ($option['group'])
@@ -1268,7 +1268,7 @@ $strBuffer .= '<th style="text-align:center"><img src="system/themes/default/ima
 
 						if (strlen($strGroup))
 						{
-							$arrData['options'][$strGroup][$option['value']] = $option['label'];
+							$arrData['options'][$strGroup][$option['value']] = $this->Isotope->translate($option['label']);
 						}
 						else
 						{
