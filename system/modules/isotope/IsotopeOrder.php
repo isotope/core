@@ -512,6 +512,20 @@ class IsotopeOrder extends IsotopeProductCollection
 
 
 	/**
+	 * Add additional information to the order data
+	 * @return array
+	 */
+	public function getData()
+	{
+    	$arrData = parent::getData();
+
+    	$arrData['order_id'] = $this->strOrderId;
+
+    	return $arrData;
+	}
+
+
+	/**
 	 * Retrieve the array of email data for parsing simple tokens
 	 * @return array
 	 */
