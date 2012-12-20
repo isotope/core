@@ -13,6 +13,7 @@ Version 1.4.x (201?-??-??)
 ### Improved
 - Better german translations
 - Payment module will send status email if configured
+- Added default value for base price label field
 
 ### Fixed
 - Attributes were not translated in filters etc.

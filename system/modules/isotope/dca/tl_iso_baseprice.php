@@ -143,6 +143,7 @@ $GLOBALS['TL_DCA']['tl_iso_baseprice'] = array
 			'label'						=> &$GLOBALS['TL_LANG']['tl_iso_baseprice']['label'],
 			'exclude'					=> true,
 			'search'					=> true,
+			'default'                   => '%s',
 			'inputType'					=> 'text',
 			'eval'						=> array('mandatory'=>true, 'maxlength'=>255, 'tl_class'=>'long'),
 		),
