@@ -55,8 +55,9 @@ class IsotopeReportSalesTotal extends IsotopeReportSales
 												DATE_FORMAT(FROM_UNIXTIME(o.date), ?) AS dateGroup
 											FROM tl_iso_orders o
 											LEFT JOIN tl_iso_order_items i ON o.id=i.pid
+											LEFT JOIN tl_iso_orderstatus os ON os.id=o.status
 											LEFT OUTER JOIN tl_iso_config c ON o.config_id=c.id
-											WHERE 1=1
+											WHERE os.showInReports='1'
 											" . ($arrAllowedProducts === false ? '' : (" AND i.product_id IN (" . (empty($arrAllowedProducts) ? '0' : implode(',', $arrAllowedProducts)) . ")")) . "
 											" . ($intConfig > 0 ? " AND c.id=".$intConfig : '') . "
 											GROUP BY config_id, dateGroup

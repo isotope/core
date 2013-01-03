@@ -74,10 +74,12 @@ class IsotopeReportSalesProduct extends IsotopeReportSales
 				DATE_FORMAT(FROM_UNIXTIME(o.date), '$sqlDate') AS dateGroup
 			FROM tl_iso_order_items i
 			LEFT JOIN tl_iso_orders o ON i.pid=o.id
+			LEFT JOIN tl_iso_orderstatus os ON os.id=o.status
 			LEFT OUTER JOIN tl_iso_products p1 ON i.product_id=p1.id
 			LEFT OUTER JOIN tl_iso_products p2 ON p1.pid=p2.id
 			LEFT OUTER JOIN tl_iso_producttypes t ON p1.type=t.id
-			" . ($arrAllowedProducts === false ? '' : (" WHERE p1.id IN (" . (empty($arrAllowedProducts) ? '0' : implode(',', $arrAllowedProducts)) . ")")) . "
+			WHERE os.showInReports='1'
+			" . ($arrAllowedProducts === false ? '' : (" AND p1.id IN (" . (empty($arrAllowedProducts) ? '0' : implode(',', $arrAllowedProducts)) . ")")) . "
 			GROUP BY dateGroup, product_id
 			HAVING dateGroup>=$dateFrom AND dateGroup<=$dateTo");
 
