@@ -165,11 +165,11 @@ class IsotopeGA extends IsotopeFrontend
 		}
 
 		// Track logged-in member as custom variable
-		if ($objConfig->ga_trackMember && FE_USER_LOGGED_IN)
+		if ($objConfig->ga_member != '' && FE_USER_LOGGED_IN)
 		{
 			$this->import('FrontendUser', 'User');
 
-			$customVar = new GoogleAnalyticsCustomVariable(1, 'Member', $this->User->username, GoogleAnalyticsCustomVariable::SCOPE_VISITOR);
+			$customVar = new GoogleAnalyticsCustomVariable(1, 'Member', $this->parseSimpleTokens($objConfig->ga_member, $this->User->getData()), GoogleAnalyticsCustomVariable::SCOPE_VISITOR);
 
 			$tracker->addCustomVariable($customVar);
 		}
