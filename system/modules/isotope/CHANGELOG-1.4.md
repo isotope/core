@@ -19,6 +19,7 @@ Version 1.4.x (201?-??-??)
 - Prevent access to other users' order when logged in (#126)
 - Load page object on postsale order checkout if necessary (#123)
 - Price tiers were not calculated through shop config (#431)
+- Can disable shipping address in shop config (#129)
 
 ### Fixed
 - Attributes were not translated in filters etc.

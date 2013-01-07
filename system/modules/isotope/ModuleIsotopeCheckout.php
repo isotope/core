@@ -498,7 +498,7 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 	 */
 	protected function getShippingAddressInterface($blnReview=false)
 	{
-		if (!$this->Isotope->Cart->requiresShipping)
+		if (!$this->Isotope->Cart->requiresShipping || count($this->Isotope->Config->shipping_fields_raw) == 0)
 		{
 			return '';
 		}

@@ -301,7 +301,7 @@ $GLOBALS['TL_DCA']['tl_iso_config'] = array
 			'label'                   => &$GLOBALS['TL_LANG']['tl_iso_config']['shipping_fields'],
 			'exclude'                 => true,
 			'inputType'               => 'fieldWizard',
-			'eval'                    => array('mandatory'=>true, 'multiple'=>true, 'tl_class'=>'w50 w50h', 'table'=>'tl_iso_addresses')
+			'eval'                    => array('multiple'=>true, 'tl_class'=>'w50 w50h', 'table'=>'tl_iso_addresses')
 		),
 		'shipping_country' => array
 		(
