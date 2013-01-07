@@ -1692,7 +1692,7 @@ window.addEvent(\'domready\', function() {
 
 		$this->root = array();
 		$arrRows = array();
-		$objRows = $this->Database->query("SELECT * FROM $gtable WHERE  pid=0$strWhere ORDER BY sorting");
+		$objRows = $this->Database->query("SELECT * FROM $gtable WHERE pid=0$strWhere ORDER BY sorting");
 
 		while ($objRows->next())
 		{

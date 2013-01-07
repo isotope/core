@@ -114,8 +114,8 @@ class tl_iso_product_categories extends Backend
 
 		$objProduct = $this->Database->prepare("SELECT * FROM tl_iso_products WHERE id=?")->limit(1)->execute($row['pid']);
 
-		$this->import('tl_iso_products');
-		return $this->tl_iso_products->getRowLabel($objProduct->row());
+		$this->import('ProductCallbacks');
+		return $this->ProductCallbacks->getRowLabel($objProduct->row());
 	}
 
 
@@ -149,15 +149,15 @@ class tl_iso_product_categories extends Backend
 	public function getPageViewButton($href, $label, $title, $class, $attributes, $table, $root)
 	{
 		$objPage = $this->getPageDetails($this->Input->get('id'));
-		
+
 		if (is_object($objPage))
 		{
 			$href  = ($this->Environment->ssl ? 'https://' : 'http://') . ($objPage->dns == '' ? $this->Environment->host : $objPage->dns) . (TL_PATH == '' ? '' : TL_PATH) . '/';
 			$href .= $this->generateFrontendUrl($objPage->row());
-	
+
 			return ' &#160; :: &#160; <a href="'.$href.'" target="_blank" class="header_preview" title="'.specialchars($title).'"'.$attributes.'>'.$label.'</a> ';
 		}
-		
+
 		return '';
 	}
 }
