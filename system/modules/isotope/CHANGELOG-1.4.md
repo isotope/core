@@ -15,6 +15,7 @@ Version 1.4.x (201?-??-??)
 - Payment module will send status email if configured
 - Added default value for base price label field
 - Show "filesOnly" attribute option only if "files" is checked (#481)
+- Added german translations for download attribute fields (#480)
 
 ### Fixed
 - Attributes were not translated in filters etc.
