@@ -164,7 +164,7 @@ class Order extends Collection
 		{
 			// Order ID cannot be changed, it is created through Isotope\Product\Collection\Order::generateOrderId on checkout
 			case 'order_id':
-				throw new Exception('order_id cannot be changed trough __set().');
+				throw new InvalidArgumentException('order_id cannot be changed trough __set().');
 				break;
 
 			default:

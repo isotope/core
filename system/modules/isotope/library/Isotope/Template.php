@@ -37,7 +37,7 @@ class Template extends \FrontendTemplate
 
 		if (is_array($GLOBALS['TL_CONFIG']['templateFiles']) && !in_array($strFormat, $arrAllowed))
 		{
-			throw new Exception("Invalid output format $strFormat");
+			throw new InvalidArgumentException("Invalid output format $strFormat");
 		}
 
 		$strKey = $strTemplate . '.' . $strFormat;

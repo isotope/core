@@ -892,7 +892,7 @@ class Isotope extends \Controller
 						return $fltWeight / 64.79891 * 1000000;
 
 					default:
-						throw new Exception('Unknown target weight unit "' . $strTargetUnit . '"');
+                        throw new InvalidArgumentException('Unknown target weight unit "' . $strTargetUnit . '"');
 				}
 
 			case 't':
@@ -914,7 +914,7 @@ class Isotope extends \Controller
 				return $this->convertWeight(($fltWeight * 64.79891 / 1000000), 'kg', $strTargetUnit);
 
 			default:
-				throw new Exception('Unknown source weight unit "' . $strSourceUnit . '"');
+                throw new InvalidArgumentException('Unknown source weight unit "' . $strSourceUnit . '"');
 		}
 	}
 

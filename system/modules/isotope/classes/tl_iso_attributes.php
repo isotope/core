@@ -79,7 +79,7 @@ class tl_iso_attributes extends \Backend
 
 		if (in_array($varValue, array('id', 'pid', 'tstamp', 'dateAdded', 'type', 'language', 'pages', 'inherit')))
 		{
-			throw new Exception(sprintf($GLOBALS['TL_LANG']['ERR']['systemColumn'], $varValue));
+			throw new InvalidArgumentException(sprintf($GLOBALS['TL_LANG']['ERR']['systemColumn'], $varValue));
 		}
 
 		if ($varValue != '' && !$this->Database->fieldExists($varValue, 'tl_iso_products'))
@@ -234,7 +234,7 @@ class tl_iso_attributes extends \Backend
 	{
 		if ($varValue && !in_array($dc->activeRecord->rgxp, array('date', 'time', 'datim')))
 		{
-			throw new Exception($GLOBALS['ISO_LANG']['ERR']['datepickerRgxp']);
+			throw new UnexpectedValueException($GLOBALS['ISO_LANG']['ERR']['datepickerRgxp']);
 		}
 
 		return $varValue;
