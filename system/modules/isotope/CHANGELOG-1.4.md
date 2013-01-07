@@ -20,6 +20,7 @@ Version 1.4.x (201?-??-??)
 - Payment modules did not correctly handle the auto_item parameter (#113)
 - ProductList-noFilter message is shown when keywords are used (#120)
 - reviewTable for tl_iso_orders was triggered when multi-edit was clicked (#128)
+- Replace inserttags in order prefix when generating unique ID (#510)
 
 
 Version 1.4.rc1 (2012-12-03)

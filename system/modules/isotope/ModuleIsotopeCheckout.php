@@ -1016,7 +1016,7 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 
 		if (!$objOrder->findBy('cart_id', $this->Isotope->Cart->id))
 		{
-			$objOrder->uniqid		= uniqid($this->Isotope->Config->orderPrefix, true);
+			$objOrder->uniqid		= uniqid($this->replaceInsertTags($this->Isotope->Config->orderPrefix), true);
 			$objOrder->cart_id		= $this->Isotope->Cart->id;
 			$objOrder->findBy('id', $objOrder->save());
 		}
