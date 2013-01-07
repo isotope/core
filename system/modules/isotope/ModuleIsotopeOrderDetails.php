@@ -93,7 +93,8 @@ class ModuleIsotopeOrderDetails extends ModuleIsotope
 
 		$objOrder = new IsotopeOrder();
 
-		if (!$objOrder->findBy('uniqid', $this->Input->get('uid')))
+		// Also check owner (see #126)
+		if (!$objOrder->findBy('uniqid', $this->Input->get('uid')) || (FE_USER_LOGGED_IN === true && $objOrder->pid > 0 && FrontendUser::getInstance()->id != $objOrder->pid))
 		{
 			$this->Template = new FrontendTemplate('mod_message');
 			$this->Template->type = 'error';

@@ -16,6 +16,7 @@ Version 1.4.x (201?-??-??)
 - Added default value for base price label field
 - Show "filesOnly" attribute option only if "files" is checked (#481)
 - Added german translations for download attribute fields (#480)
+- Prevent access to other users' order when logged in (#126)
 
 ### Fixed
 - Attributes were not translated in filters etc.
