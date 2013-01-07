@@ -125,10 +125,11 @@ class ModuleIsotopeOrderHistory extends ModuleIsotope
 				'grandTotal'	=> $this->Isotope->formatPriceWithCurrency($objOrder->grandTotal),
 				'status'		=> $objOrder->statusLabel,
 				'link'			=> ($this->jumpTo ? (IsotopeFrontend::addQueryStringToUrl('uid=' . $objOrder->uniqid, $this->jumpTo)) : ''),
+				'class'         => $objOrder->statusAlias,
 			);
 		}
 
-		$this->Template->orders = $arrOrders;
+		$this->Template->orders = IsotopeFrontend::generateRowClass($arrOrders, '', 'class', 0, ISO_CLASS_FIRSTLAST|ISO_CLASS_EVENODD);
 		$this->Template->dateLabel = $GLOBALS['TL_LANG']['MSC']['iso_order_date'];
 		$this->Template->statusLabel = $GLOBALS['TL_LANG']['MSC']['iso_order_status'];
 		$this->Template->subTotalLabel = $GLOBALS['TL_LANG']['MSC']['subTotalLabel'];
