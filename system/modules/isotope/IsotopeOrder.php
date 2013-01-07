@@ -89,11 +89,13 @@ class IsotopeOrder extends IsotopeProductCollection
 				return $objStatus->paid ? true : false;
 
 			case 'statusLabel':
-				$strStatus = $this->Database->prepare("SELECT name FROM tl_iso_orderstatus WHERE id=?")
-											->execute($this->arrData['status'])
-											->name;
+			    $objStatus = $this->Database->execute("SELECT * FROM tl_iso_orderstatus WHERE id=" . (int) $this->status);
+				return $this->Isotope->translate($objStatus->name);
+				break;
 
-				return $this->Isotope->translate($strStatus);
+			case 'statusAlias':
+			    $objStatus = $this->Database->execute("SELECT * FROM tl_iso_orderstatus WHERE id=" . (int) $this->status);
+				return standardize($objStatus->name);
 				break;
 
 			default:
