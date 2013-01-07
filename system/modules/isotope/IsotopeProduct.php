@@ -960,7 +960,7 @@ class IsotopeProduct extends Controller
 
 
 	/**
-	 * Generate an atrtibute and return it as HTML string
+	 * Generate an attribute and return it as HTML string
 	 * @param string
 	 * @param mixed
 	 * @return string|IsotopeGallery
@@ -1075,7 +1075,7 @@ class IsotopeProduct extends Controller
 
     				if ($arrFormat[$name]['rgxp'] == 'price')
     				{
-    					$value = $this->Isotope->formatPriceWithCurrency($value);
+    					$value = $this->Isotope->formatPriceWithCurrency($this->Isotope->calculatePrice($value, $this, 'price_tiers', $this->arrData['tax_class']));
     				}
     				else
     				{
