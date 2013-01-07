@@ -312,6 +312,15 @@ class IsotopeOrder extends IsotopeProductCollection
 			return true;
 		}
 
+		global $objPage;
+
+		// Load page configuration
+		if (!is_object($objPage) && $this->pageId > 0)
+		{
+			$objPage = $this->getPageDetails($this->pageId);
+			$objPage = IsotopeFrontend::loadPageConfig($objPage);
+		}
+
 		// This is the case when not using ModuleIsotopeCheckout
 		if (!is_object($objCart))
 		{

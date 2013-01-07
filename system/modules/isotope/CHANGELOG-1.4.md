@@ -17,6 +17,7 @@ Version 1.4.x (201?-??-??)
 - Show "filesOnly" attribute option only if "files" is checked (#481)
 - Added german translations for download attribute fields (#480)
 - Prevent access to other users' order when logged in (#126)
+- Load page object on postsale order checkout if necessary (#123)
 
 ### Fixed
 - Attributes were not translated in filters etc.
