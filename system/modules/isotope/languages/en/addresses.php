@@ -36,8 +36,8 @@
  */
 $GLOBALS['ISO_ADR']['generic'] =
 '<div class="vcard">{if hcard_org!=""}##hcard_org##
-{endif}
-{if hcard_n=="1"}<div class="n">##hcard_honorific_prefix## ##hcard_given_name## ##hcard_family_name##</div>{endif}
+
+{endif}{if hcard_n=="1"}<div class="n">##hcard_honorific_prefix## ##hcard_given_name## ##hcard_family_name##</div>{endif}
 
 {if hcard_adr=="1"}<div class="adr">##hcard_street_address##
 
@@ -52,8 +52,8 @@ $GLOBALS['ISO_ADR']['generic'] =
 
 $GLOBALS['ISO_ADR']['it'] =
 '<div class="vcard">{if hcard_org!=""}##hcard_org##
-{endif}
-{if hcard_n=="1"}<div class="n">##hcard_honorific_prefix## ##hcard_given_name## ##hcard_family_name##</div>{endif}
+
+{endif}{if hcard_n=="1"}<div class="n">##hcard_honorific_prefix## ##hcard_given_name## ##hcard_family_name##</div>{endif}
 
 {if hcard_adr=="1"}<div class="adr">##hcard_street_address##
 
@@ -68,8 +68,8 @@ $GLOBALS['ISO_ADR']['it'] =
 
 $GLOBALS['ISO_ADR']['gb'] =
 '<div class="vcard">{if hcard_org!=""}##hcard_org##
-{endif}
-{if hcard_n=="1"}<div class="n">##hcard_honorific_prefix## ##hcard_given_name## ##hcard_family_name##</div>{endif}
+
+{endif}{if hcard_n=="1"}<div class="n">##hcard_honorific_prefix## ##hcard_given_name## ##hcard_family_name##</div>{endif}
 
 {if hcard_adr=="1"}<div class="adr">##hcard_street_address##
 
@@ -88,8 +88,8 @@ $GLOBALS['ISO_ADR']['gb'] =
 
 $GLOBALS['ISO_ADR']['us'] =
 '<div class="vcard">{if hcard_org!=""}##hcard_org##
-{endif}
-{if hcard_n=="1"}<div class="n">##hcard_honorific_prefix## ##hcard_given_name## ##hcard_family_name##</div>{endif}
+
+{endif}{if hcard_n=="1"}<div class="n">##hcard_honorific_prefix## ##hcard_given_name## ##hcard_family_name##</div>{endif}
 
 {if hcard_adr=="1"}<div class="adr">##hcard_street_address##
 
@@ -104,8 +104,8 @@ $GLOBALS['ISO_ADR']['us'] =
 
 $GLOBALS['ISO_ADR']['eg'] =
 '<div class="vcard">{if hcard_org!=""}##hcard_org##
-{endif}
-{if hcard_n=="1"}<div class="n">##hcard_honorific_prefix## ##hcard_given_name## ##hcard_family_name##</div>{endif}
+
+{endif}{if hcard_n=="1"}<div class="n">##hcard_honorific_prefix## ##hcard_given_name## ##hcard_family_name##</div>{endif}
 
 {if hcard_adr=="1"}<div class="adr">##hcard_street_address##
 
@@ -123,8 +123,8 @@ $GLOBALS['ISO_ADR']['eg'] =
 
 $GLOBALS['ISO_ADR']['th'] =
 '<div class="vcard">{if hcard_org!=""}##hcard_org##
-{endif}
-{if hcard_n=="1"}<div class="n">##hcard_honorific_prefix## ##hcard_given_name## ##hcard_family_name##</div>{endif}
+
+{endif}{if hcard_n=="1"}<div class="n">##hcard_honorific_prefix## ##hcard_given_name## ##hcard_family_name##</div>{endif}
 
 {if hcard_adr=="1"}<div class="adr">##hcard_street_address##
 
