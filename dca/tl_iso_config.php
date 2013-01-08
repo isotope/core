@@ -56,5 +56,5 @@ $GLOBALS['TL_DCA']['tl_iso_config']['fields']['ga_member'] = array
 	'label'                   => &$GLOBALS['TL_LANG']['tl_iso_config']['ga_member'],
 	'exclude'                 => true,
 	'inputType'               => 'text',
-	'eval'					  => array('maxlength'=>255, 'tl_class'=>'w50'),
+	'eval'					  => array('maxlength'=>255, 'decodeEntities'=>true, 'tl_class'=>'w50'),
 );
