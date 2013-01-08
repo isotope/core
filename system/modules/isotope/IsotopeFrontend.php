@@ -1013,14 +1013,8 @@ $endScript";
 				}
 			}
 
-			$strEval = '';
-			foreach( $arrParam as $k => $v )
-			{
-				$strEval .= '$arrParam[' . $k . '], ';
-			}
-
 			// Add product array as the last item. This will sort the products array based on the sorting of the passed in arguments.
-			eval('array_multisort(' . $strEval . '$arrProducts);');
+			eval('array_multisort($arrParam[' . implode('], $arrParam[', array_keys($arrParam)) . '], $arrProducts);');
 		}
 
 		return $arrProducts;
