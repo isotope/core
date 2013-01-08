@@ -389,7 +389,7 @@ class IsotopeProduct extends Controller
 					$strUrl = $this->generateFrontendUrl($this->Database->prepare("SELECT * FROM tl_page WHERE id=?")->execute($varValue)->fetchAssoc(), ($GLOBALS['TL_CONFIG']['useAutoItem'] ? '/' : '/product/') . $strUrlKey, $objPage->rootLanguage);
 				}
 
-				if ($this->arrData['pid'] > 0)
+				if (!empty($this->arrOptions))
 				{
 					$arrOptions = array();
 
