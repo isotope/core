@@ -302,6 +302,7 @@ class ModuleIsotopeProductFilter extends ModuleIsotope
 					// Use the default routine to initialize options data
 					$arrWidget = $this->prepareForWidget($arrData, $strField);
 
+					// Must have options to apply the filter
 					if (!is_array($arrWidget['options']))
 					{
 						continue;
@@ -322,6 +323,12 @@ class ModuleIsotopeProductFilter extends ModuleIsotope
 						}
 
 						$arrWidget['options'][$k]['default'] = $option['value'] == $GLOBALS['ISO_FILTERS'][$this->id][$strField]['value'] ? '1' : '';
+					}
+
+					// Filter with just one option does not make sense
+					if (count($arrWidget['options']) < 2)
+					{
+						continue;
 					}
 
 					$arrFilters[$strField] = $arrWidget;
