@@ -133,7 +133,8 @@ class ModuleIsotopeProductFilter extends ModuleIsotope
 				$this->Input->setGet('isorc', $intCacheId);
 			}
 
-			$this->redirect($this->generateRequestUrl());
+			// Include Environment::base or the URL would not work on the index page
+			$this->redirect($this->Environment->base . $this->generateRequestUrl());
 		}
 
 		return $strBuffer;

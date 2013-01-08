@@ -20,6 +20,8 @@ Version 1.4.x (201?-??-??)
 - Load page object on postsale order checkout if necessary (#123)
 - Price tiers were not calculated through shop config (#431)
 - Can disable shipping address in shop config (#129)
+- Do not show filter options with just one option (#42)
+- Filtered options are now passed as pre-selections to the product reader (#42)
 
 ### Fixed
 - Attributes were not translated in filters etc.
@@ -30,6 +32,7 @@ Version 1.4.x (201?-??-??)
 - Company and name was on same line in textual address representation (#127)
 - Labels for rule minimum subtotal fields (#491)
 - Exception when manually sorting products in the backend (#124)
+- The filter module did not work on the index page (#42)
 
 
 Version 1.4.rc1 (2012-12-03)
