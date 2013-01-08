@@ -307,24 +307,24 @@ class ModuleIsotopeProductFilter extends ModuleIsotope
 						continue;
 					}
 
-					$arrOptions = $arrWidget['options'];
-
 					foreach ($arrWidget['options'] as $k => $option)
 					{
-						if (!in_array($option['value'], $arrValues))
+					    if ($option['value'] == '')
+					    {
+    					    $arrWidget['blankOptionLabel'] = $option['label'];
+    					    unset($arrWidget['options'][$k]);
+    					    continue;
+					    }
+						elseif (!in_array($option['value'], $arrValues) || $option['value'] == '-')
 						{
-							unset($arrOptions[$k]);
+							unset($arrWidget['options'][$k]);
 							continue;
 						}
 
-						$arrOptions[$k]['default'] = $option['value'] == $GLOBALS['ISO_FILTERS'][$this->id][$strField]['value'] ? '1' : '';
+						$arrWidget['options'][$k]['default'] = $option['value'] == $GLOBALS['ISO_FILTERS'][$this->id][$strField]['value'] ? '1' : '';
 					}
 
-					$arrFilters[$strField] = array
-					(
-						'label'		=> $arrWidget['label'],
-						'options'	=> $arrOptions,
-					);
+					$arrFilters[$strField] = $arrWidget;
 				}
 			}
 
