@@ -163,11 +163,11 @@ class ModuleIsotopeProductList extends ModuleIsotope
 						$total = $total - $offset;
 						$total = $total > $this->perPage ? $this->perPage : $total;
 
-						$arrProducts = IsotopeFrontend::getProducts(array_slice($arrCacheIds, $offset, $this->perPage), IsotopeFrontend::getReaderPageId(null, $this->iso_reader_jumpTo));
+						$arrProducts = IsotopeFrontend::getProducts(array_slice($arrCacheIds, $offset, $this->perPage));
 					}
 					else
 					{
-						$arrProducts = IsotopeFrontend::getProducts($arrCacheIds, IsotopeFrontend::getReaderPageId(null, $this->iso_reader_jumpTo));
+						$arrProducts = IsotopeFrontend::getProducts($arrCacheIds);
 					}
 
 					// Cache is wrong, drop everything and run findProducts()
@@ -272,9 +272,14 @@ class ModuleIsotopeProductList extends ModuleIsotope
 		}
 
 		$arrBuffer = array();
+		$intReaderPage = IsotopeFrontend::getReaderPageId(null, $this->iso_reader_jumpTo);
+		$arrDefaultOptions = $this->getDefaultProductOptions();
 
 		foreach ($arrProducts as $objProduct)
 		{
+		    $objProduct->setOptions($arrDefaultOptions);
+    		$objProduct->reader_jumpTo = $intReaderPage;
+
 			$arrBuffer[] = array
 			(
 				'cssID'	=> ($objProduct->cssID[0] != '') ? ' id="' . $objProduct->cssID[0] . '"' : '',
@@ -317,7 +322,7 @@ class ModuleIsotopeProductList extends ModuleIsotope
 													. "$strWhere GROUP BY p1.id ORDER BY c.sorting")
 										 ->execute($arrValues);
 
-		return IsotopeFrontend::getProducts($objProductData, IsotopeFrontend::getReaderPageId(null, $this->iso_reader_jumpTo), true, $arrFilters, $arrSorting);
+		return IsotopeFrontend::getProducts($objProductData, 0, true, $arrFilters, $arrSorting);
 	}
 
 
@@ -413,6 +418,35 @@ class ModuleIsotopeProductList extends ModuleIsotope
 		}
 
 		return array($arrFilters, $arrSorting);
+	}
+
+
+	/**
+	 * Get a list of default options based on filter attributes
+	 * @return array
+	 */
+	protected function getDefaultProductOptions()
+	{
+    	$arrOptions = array();
+
+    	if (is_array($this->iso_filterModules))
+		{
+			foreach ($this->iso_filterModules as $module)
+			{
+				if (is_array($GLOBALS['ISO_FILTERS'][$module]))
+				{
+				    foreach ($GLOBALS['ISO_FILTERS'][$module] as $arrConfig)
+				    {
+    				    if ($arrConfig['operator'] == '=' || $arrConfig['operator'] == '==' || $arrConfig['operator'] == 'eq')
+    				    {
+        				    $arrOptions[$arrConfig['attribute']] = $arrConfig['value'];
+    				    }
+				    }
+				}
+			}
+		}
+
+		return $arrOptions;
 	}
 }
 
