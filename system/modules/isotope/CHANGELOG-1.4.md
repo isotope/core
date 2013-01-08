@@ -27,7 +27,6 @@ Version 1.4.x (201?-??-??)
 - Attributes were not translated in filters etc.
 - Payment modules did not correctly handle the auto_item parameter (#113)
 - ProductList-noFilter message is shown when keywords are used (#120)
-- reviewTable for tl_iso_orders was triggered when multi-edit was clicked (#128)
 - Replace inserttags in order prefix when generating unique ID (#510)
 - Company and name was on same line in textual address representation (#127)
 - Labels for rule minimum subtotal fields (#491)
