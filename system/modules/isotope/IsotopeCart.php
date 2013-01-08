@@ -238,7 +238,7 @@ class IsotopeCart extends IsotopeProductCollection
 		//  Check to see if the user is logged in.
 		if (FE_USER_LOGGED_IN !== true)
 		{
-			if (!strlen($this->strHash))
+			if ($this->strHash == '')
 			{
 				$this->strHash = sha1(session_id() . (!$GLOBALS['TL_CONFIG']['disableIpCheck'] ? $this->Environment->ip : '') . $intConfig . $this->strCookie);
 				$this->setCookie($this->strCookie, $this->strHash, $time+$GLOBALS['TL_CONFIG']['iso_cartTimeout'], $GLOBALS['TL_CONFIG']['websitePath']);
@@ -261,8 +261,8 @@ class IsotopeCart extends IsotopeProductCollection
 		{
 			$this->setData(array
 			(
-				'pid'			=> ($this->User->id ? $this->User->id : 0),
-				'session'		=> ($this->User->id ? '' : $this->strHash),
+				'pid'			=> (FE_USER_LOGGED_IN === true ? $this->User->id : 0),
+				'session'		=> (FE_USER_LOGGED_IN === true ? '' : $this->strHash),
 				'tstamp'		=> time(),
 				'store_id'		=> $intStore,
 			));
