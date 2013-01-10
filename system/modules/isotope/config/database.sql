@@ -538,6 +538,78 @@ CREATE TABLE `tl_iso_orderstatus` (
 -- --------------------------------------------------------
 
 --
+-- Table `tl_iso_collection`
+--
+
+CREATE TABLE `tl_iso_collection` (
+  `id` int(10) unsigned NOT NULL auto_increment,
+  `tstamp` int(10) unsigned NOT NULL default '0',
+  `type` varchar(10) NOT NULL default '',
+  `member` int(10) unsigned NOT NULL default '0',
+  `uniqid` varchar(64) NOT NULL default '',
+  `settings` blob NULL,
+  `date` int(10) unsigned NOT NULL default '0',
+  `date_paid` varchar(10) NOT NULL default '',
+  `date_shipped` varchar(10) NOT NULL default '',
+  `status` int(10) unsigned NOT NULL default '0',
+  `order_id` varchar(14) NOT NULL default '',
+  `config_id` int(10) unsigned NOT NULL default '0',
+  `source_collection_id` int(10) unsigned NOT NULL default '0',
+  `payment_id` int(10) unsigned NOT NULL default '0',
+  `shipping_id` int(10) unsigned NOT NULL default '0',
+  `language` varchar(2) NOT NULL default '',
+  `shipping_address` blob NULL,
+  `billing_address` blob NULL,
+  `checkout_info` blob NULL,
+  `payment_data` blob NULL,
+  `shipping_data` blob NULL,
+  `subTotal` decimal(12,2) NOT NULL default '0.00',
+  `taxTotal` decimal(12,2) NOT NULL default '0.00',
+  `grandTotal` decimal(12,2) NOT NULL default '0.00',
+  `currency` varchar(4) NOT NULL default '',
+  `notes` text NULL,
+  PRIMARY KEY  (`id`),
+  KEY `member` (`member`, `store_id`)
+  KEY `uniqid` (`uniqid`, `store_id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- Table `tl_iso_collection_item`
+--
+
+CREATE TABLE `tl_iso_collection_item` (
+  `id` int(10) unsigned NOT NULL auto_increment,
+  `pid` int(10) unsigned NOT NULL default '0',
+  `tstamp` int(10) unsigned NOT NULL default '0',
+  `product_id` int(10) unsigned NOT NULL default '0',
+  `product_sku` varchar(128) NOT NULL default '',
+  `product_name` varchar(255) NOT NULL default '',
+  `product_options` blob NULL,
+  `quantity` int(10) unsigned NOT NULL default '0',
+  `price` decimal(12,2) NOT NULL default '0.00',
+  `tax_id` varchar(32) NOT NULL default '',
+  `href_reader` varchar(255) NOT NULL default '',
+  PRIMARY KEY  (`id`),
+  KEY `pid` (`pid`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- Table `tl_iso_collection_surcharge`
+--
+
+-- --------------------------------------------------------
+
+--
+-- Table `tl_iso_collection_coupon`
+--
+
+-- --------------------------------------------------------
+
+--
 -- Table `tl_iso_cart`
 --
 
