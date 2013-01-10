@@ -337,4 +337,14 @@ $endScript
 
         return false;
     }
+
+
+    /**
+     * Return the name and description for this gallery
+     * @return array
+     */
+    public static function getLabel()
+    {
+        return $GLOBALS['ISO_LANG']['GAL'][strtolower(str_replace('Isotope\Gallery\\', '', get_called_class()))];
+    }
 }

@@ -190,14 +190,6 @@ $GLOBALS['BE_FFL']['productTree']			= 'Isotope\Widget\ProductTree';
 
 
 /**
- * Galleries
- */
-$GLOBALS['ISO_GAL']['standard']          = 'Isotope\Gallery\Standard';
-$GLOBALS['ISO_GAL']['inline']            = 'Isotope\Gallery\Inline';
-$GLOBALS['ISO_GAL']['zoom']              = 'Isotope\Gallery\Zoom';
-
-
-/**
  * Product types
  */
 $GLOBALS['ISO_PRODUCT'] = array
