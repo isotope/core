@@ -24,12 +24,13 @@ class Shipping
 
     /**
      * Build a shipping method based on row data
+     * @param  string
      * @param  array
      * @return Isotope\Interface\IsotopeShipping
      */
-    public static function build(array $arrData)
+    public static function build($strClass, array $arrData=array())
     {
-        $strClass = '\Isotope\Shipping\\' . $arrData['type'];
+        $strClass = '\Isotope\Shipping\\' . $strClass;
 
         return new $strClass($arrData);
     }

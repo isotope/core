@@ -24,12 +24,13 @@ class Payment
 
     /**
      * Build a payment method based on row data
+     * @param  string
      * @param  array
      * @return Isotope\Interface\IsotopePayment
      */
-    public static function build(array $arrData)
+    public static function build($strClass, array $arrData=array())
     {
-        $strClass = '\Isotope\Payment\\' . $arrData['type'];
+        $strClass = '\Isotope\Payment\\' . $strClass;
 
         return new $strClass($arrData);
     }
