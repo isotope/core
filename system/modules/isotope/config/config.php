@@ -200,22 +200,6 @@ $GLOBALS['ISO_SHIP']['usps']             = 'Isotope\Shipping\USPS';
 
 
 /**
- * Payment modules
- */
-$GLOBALS['ISO_PAY']['cash']              = 'Isotope\Payment\Cash';
-$GLOBALS['ISO_PAY']['paypal']            = 'Isotope\Payment\Paypal';
-$GLOBALS['ISO_PAY']['paypalpro']         = 'Isotope\Payment\PaypalPro';
-$GLOBALS['ISO_PAY']['paypalpayflowpro']  = 'Isotope\Payment\PaypalPayflowPro';
-$GLOBALS['ISO_PAY']['postfinance']       = 'Isotope\Payment\Postfinance';
-$GLOBALS['ISO_PAY']['authorizedotnet']   = 'Isotope\Payment\AuthorizeDotNet';
-$GLOBALS['ISO_PAY']['cybersource']       = 'Isotope\Payment\Cybersource';
-$GLOBALS['ISO_PAY']['datatrans']         = 'Isotope\Payment\Datatrans';
-$GLOBALS['ISO_PAY']['sparkasse']         = 'Isotope\Payment\Sparkasse';
-$GLOBALS['ISO_PAY']['expercash']         = 'Isotope\Payment\Expercash';
-$GLOBALS['ISO_PAY']['payone']            = 'Isotope\Payment\Payone';
-
-
-/**
  * Galleries
  */
 $GLOBALS['ISO_GAL']['standard']          = 'Isotope\Gallery\Standard';

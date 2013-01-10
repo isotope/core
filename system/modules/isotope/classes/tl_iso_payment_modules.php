@@ -193,26 +193,6 @@ class tl_iso_payment_modules extends \Backend
 
 
     /**
-     * Return a list of all payment modules available
-     * @return array
-     */
-    public function getModules()
-    {
-        $arrModules = array();
-
-        if (is_array($GLOBALS['ISO_PAY']) && !empty($GLOBALS['ISO_PAY']))
-        {
-            foreach ($GLOBALS['ISO_PAY'] as $module => $class)
-            {
-                $arrModules[$module] = (strlen($GLOBALS['ISO_LANG']['PAY'][$module][0]) ? $GLOBALS['ISO_LANG']['PAY'][$module][0] : $module);
-            }
-        }
-
-        return $arrModules;
-    }
-
-
-    /**
      * Load shipping modules into the DCA (options_callback would not work due to numeric array keys)
      * @param object
      * @return void
