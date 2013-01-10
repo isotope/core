@@ -12,6 +12,7 @@
 
 namespace Isotope\Payment;
 
+use Isotope\Interfaces\IsotopePayment;
 use Isotope\Product\Collection\Order;
 
 
@@ -22,7 +23,7 @@ use Isotope\Product\Collection\Order;
  * @author     Andreas Schempp <andreas@schempp.ch>
  * @author     Leo Unglaub <leo@leo-unglaub.net>
  */
-class Datatrans extends Payment
+class Datatrans extends Payment implements IsotopePayment
 {
 
     /**

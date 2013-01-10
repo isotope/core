@@ -12,6 +12,8 @@
 
 namespace Isotope\Shipping;
 
+use Isotope\Interfaces\IsotopeShipping;
+
 
 /**
  * Class ShippingOrderTotal
@@ -21,7 +23,7 @@ namespace Isotope\Shipping;
  * @author     Fred Bliss <fred.bliss@intelligentspark.com>
  * @author     Christian de la Haye <service@delahaye.de>
  */
-class OrderTotal extends Shipping
+class OrderTotal extends Shipping implements IsotopeShipping
 {
 
     protected $shipping_options = array();

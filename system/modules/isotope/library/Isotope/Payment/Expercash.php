@@ -12,6 +12,7 @@
 
 namespace Isotope\Payment;
 
+use Isotope\Interfaces\IsotopePayment;
 use Isotope\Product\Collection\Order;
 
 
@@ -21,7 +22,7 @@ use Isotope\Product\Collection\Order;
  * @copyright Isotope eCommerce Workgroup 2009-2012
  * @author    Andreas Schempp <andreas.schempp@terminal42.ch>
  */
-class Expercash extends Payment
+class Expercash extends Payment implements IsotopePayment
 {
 
     /**

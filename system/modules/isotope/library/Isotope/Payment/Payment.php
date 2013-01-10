@@ -12,8 +12,6 @@
 
 namespace Isotope\Payment;
 
-use Isotope\Interfaces\IsotopePayment;
-
 
 /**
  * Class Payment
@@ -23,7 +21,7 @@ use Isotope\Interfaces\IsotopePayment;
  * @author     Andreas Schempp <andreas.schempp@terminal42.ch>
  * @author     Fred Bliss <fred.bliss@intelligentspark.com>
  */
-abstract class Payment extends \Frontend implements IsotopePayment
+abstract class Payment extends \Frontend
 {
 
     /**
@@ -184,14 +182,6 @@ abstract class Payment extends \Frontend implements IsotopePayment
     {
         return isset($this->arrData[$strKey]);
     }
-
-
-    /**
-     * Process checkout payment. Must be implemented in each payment module
-     * @access public
-     * @return mixed
-     */
-    abstract public function processPayment();
 
 
     /**

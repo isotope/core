@@ -12,6 +12,8 @@
 
 namespace Isotope\Shipping;
 
+use Isotope\Interfaces\IsotopeShipping;
+
 
 /**
  * USPS-specific response rate codes
@@ -65,7 +67,7 @@ $GLOBALS['TL_LANG']['ISO']['MSC']['USPS']['INTERNATIONAL']['RRC'][''] = '';*/
  * @copyright  Isotope eCommerce Workgroup 2009-2012
  * @author     Fred Bliss <fred.bliss@intelligentspark.com>
  */
-class USPS extends Shipping
+class USPS extends Shipping implements IsotopeShipping
 {
 
     protected $shipping_options = array();

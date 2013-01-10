@@ -12,6 +12,7 @@
 
 namespace Isotope\Payment;
 
+use Isotope\Interfaces\IsotopePayment;
 use Isotope\Product\Collection\Order;
 
 
@@ -24,7 +25,7 @@ use Isotope\Product\Collection\Order;
  * @author	   Blair Winans <blair@winanscreative.com>
  * @author     Christian de la Haye <service@delahaye.de>
  */
-class AuthorizeDotNet extends Payment
+class AuthorizeDotNet extends Payment implements IsotopePayment
 {
 
     /**

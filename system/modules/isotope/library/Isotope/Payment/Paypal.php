@@ -12,6 +12,7 @@
 
 namespace Isotope\Payment;
 
+use Isotope\Interfaces\IsotopePayment;
 use Isotope\Product\Collection\Order;
 
 
@@ -24,7 +25,7 @@ use Isotope\Product\Collection\Order;
  * @author     Fred Bliss <fred.bliss@intelligentspark.com>
  * @author     Christian de la Haye <service@delahaye.de>
  */
-class Paypal extends Payment
+class Paypal extends Payment implements IsotopePayment
 {
 
     /**

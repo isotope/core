@@ -12,6 +12,7 @@
 
 namespace Isotope\Payment;
 
+use Isotope\Interfaces\IsotopePayment;
 use Isotope\Product\Collection\Order;
 
 
@@ -24,7 +25,7 @@ use Isotope\Product\Collection\Order;
  * @author     Fred Bliss <fred.bliss@intelligentspark.com>
  * @author     Christian de la Haye <service@delahaye.de>
  */
-class Cybersource extends Payment
+class Cybersource extends Payment implements IsotopePayment
 {
     private $arrCardTypes = array('visa'=>'001','mc'=>'002','amex'=>'003','discover'=>'004','diners'=>'005','carte_blanche'=>'006','jcb'=>'007','enroute'=>'014','jal'=>'021','maestro'=>'024','delta'=>'031','solo'=>'032','visa_electron'=>'033','dankort'=>'034','laser'=>'035','carte_bleue'=>'036','carta_si'=>'037','enc_acct_num'=>'039','uatp'=>'040','maestro_intl'=>'042','ge_money_uk'=>'043');
 

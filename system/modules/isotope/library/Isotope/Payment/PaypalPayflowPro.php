@@ -12,6 +12,8 @@
 
 namespace Isotope\Payment;
 
+use Isotope\Interfaces\IsotopePayment;
+
 
 /**
  * Class PaypalPayflowPro
@@ -20,7 +22,7 @@ namespace Isotope\Payment;
  * @copyright  Isotope eCommerce Workgroup 2009-2012
  * @author     Fred Bliss <fred.bliss@intelligentspark.com>
  */
-class PaypalPayflowPro extends Payment
+class PaypalPayflowPro extends Payment implements IsotopePayment
 {
 
     /**

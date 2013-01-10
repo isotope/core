@@ -12,6 +12,8 @@
 
 namespace Isotope\Shipping;
 
+use Isotope\Interfaces\IsotopeShipping;
+
 
 /**
  * Class ShippingUPS
@@ -20,7 +22,7 @@ namespace Isotope\Shipping;
  * @author     Andreas Schempp <andreas.schempp@terminal42.ch>
  * @author     Fred Bliss <fred.bliss@intelligentspark.com>
  */
-class UPS extends Shipping
+class UPS extends Shipping implements IsotopeShipping
 {
     protected $shipping_options = array();
 

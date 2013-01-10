@@ -12,6 +12,8 @@
 
 namespace Isotope\Shipping;
 
+use Isotope\Interfaces\IsotopeShipping;
+
 
 /**
  * Class ShippingWeightTotal
@@ -20,7 +22,7 @@ namespace Isotope\Shipping;
  * @author     Andreas Schempp <andreas.schempp@terminal42.ch>
  * @author     Fred Bliss <fred.bliss@intelligentspark.com>
  */
-class WeightTotal extends Shipping
+class WeightTotal extends Shipping implements IsotopeShipping
 {
 
     /**

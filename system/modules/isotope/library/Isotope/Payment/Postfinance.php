@@ -12,6 +12,7 @@
 
 namespace Isotope\Payment;
 
+use Isotope\Interfaces\IsotopePayment;
 use Isotope\Product\Collection\Order;
 
 
@@ -23,7 +24,7 @@ use Isotope\Product\Collection\Order;
  * @author     Andreas Schempp <andreas.schempp@terminal42.ch>
  * @author     Fred Bliss <fred.bliss@intelligentspark.com>
  */
-class Postfinance extends Payment
+class Postfinance extends Payment implements IsotopePayment
 {
 
     /**
