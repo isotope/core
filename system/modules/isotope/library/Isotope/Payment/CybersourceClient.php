@@ -34,7 +34,7 @@ class CybersourceClient extends \SoapClient
    }
 
 // This section inserts the UsernameToken information in the outgoing SOAP message.
-   public function __doRequest($objRequest, $strLocation, $strAction, $strVersion)
+   public function __doRequest($objRequest, $strLocation, $strAction, $strVersion, $one_way = NULL)
    {
      $user = $this->merchantId;
      $password = $this->transactionKey;
@@ -60,7 +60,7 @@ class CybersourceClient extends \SoapClient
          die( 'Error adding UsernameToken: ' . $e->code);
      }
 
-     return parent::__doRequest($objSOAPRequest, $strLocation, $strAction, $strVersion);
+     return parent::__doRequest($objSOAPRequest, $strLocation, $strAction, $strVersion, $one_way);
    }
 }
 

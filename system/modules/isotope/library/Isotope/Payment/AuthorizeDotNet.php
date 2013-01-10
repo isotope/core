@@ -103,7 +103,7 @@ class AuthorizeDotNet extends Payment implements IsotopePayment
      * @param object
      * @return string
      */
-    public function paymentForm(&$objModule)
+    public function paymentForm($objModule)
     {
         if($_SESSION['checkout']['grandTotal']!==$this->Isotope->Cart->grandTotal)
             $_SESSION['checkout']['success']=false;
