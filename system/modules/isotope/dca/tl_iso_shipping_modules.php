@@ -163,10 +163,10 @@ $GLOBALS['TL_DCA']['tl_iso_shipping_modules'] = array
             'exclude'                 => true,
             'filter'                  => true,
             'inputType'               => 'select',
-            'default'				  => 'flat',
+            'default'				  => 'Flat',
             'options'                 => array_keys(\Isotope\Factory\Shipping::getClasses()),
             'reference'               => \Isotope\Factory\Shipping::getLabels(),
-            'eval'                    => array('helpwizard'=>true, 'submitOnChange'=>true, 'includeBlankOption'=>true, 'chosen'=>true, 'tl_class'=>'w50')
+            'eval'                    => array('helpwizard'=>true, 'submitOnChange'=>true, 'chosen'=>true, 'tl_class'=>'w50')
         ),
         'note' => array
         (
