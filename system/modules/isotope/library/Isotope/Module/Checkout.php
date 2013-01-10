@@ -572,14 +572,11 @@ class Checkout extends Module
 
             while ($objModules->next())
             {
-                $strClass = $GLOBALS['ISO_SHIP'][$objModules->type];
-
-                if (!strlen($strClass) || !$this->classFileExists($strClass))
-                {
+                try {
+                    $objModule = \Isotope\Payment\Factory::build($objModules->type, $objModules->row());
+                } catch (Exception $e) {
                     continue;
                 }
-
-                $objModule = new $strClass($objModules->row());
 
                 if (!$objModule->available)
                 {
@@ -705,16 +702,13 @@ class Checkout extends Module
 
             $objModules = $this->Database->execute("SELECT * FROM tl_iso_payment_modules WHERE id IN (" . implode(',', $arrModuleIds) . ")" . (BE_USER_LOGGED_IN === true ? '' : " AND enabled='1'") . " ORDER BY " . $this->Database->findInSet('id', $arrModuleIds));
 
-            while ($objModules->next())
-            {
-                $strClass = $GLOBALS['ISO_PAY'][$objModules->type];
+            while ($objModules->next()) {
 
-                if (!strlen($strClass) || !$this->classFileExists($strClass))
-                {
+                try {
+                    $objModule = \Isotope\Payment\Factory::build($objModules->type, $objModules->row());
+                } catch (Exception $e) {
                     continue;
                 }
-
-                $objModule = new $strClass($objModules->row());
 
                 if (!$objModule->available)
                 {

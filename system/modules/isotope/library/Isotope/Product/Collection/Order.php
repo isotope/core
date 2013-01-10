@@ -61,15 +61,10 @@ class Order extends Collection
             {
                 $objPayment = $this->Database->execute("SELECT * FROM tl_iso_payment_modules WHERE id=" . $this->payment_id);
 
-                if ($objPayment->numRows)
-                {
-                    $strClass = $GLOBALS['ISO_PAY'][$objPayment->type];
-
-                    try
-                    {
-                        $this->Payment = new $strClass($objPayment->row());
-                    }
-                    catch (Exception $e) {}
+                if ($objPayment->numRows) {
+                    try {
+                        $this->Payment = \Isotope\Factory\Payment::build($objPayment->type, $objPayment->row());
+                    } catch (Exception $e) {}
                 }
             }
 
@@ -77,15 +72,10 @@ class Order extends Collection
             {
                 $objShipping = $this->Database->execute("SELECT * FROM tl_iso_shipping_modules WHERE id=" . $this->shipping_id);
 
-                if ($objShipping->numRows)
-                {
-                    $strClass = $GLOBALS['ISO_SHIP'][$objShipping->type];
-
-                    try
-                    {
-                        $this->Shipping = new $strClass($objShipping->row());
-                    }
-                    catch (Exception $e) {}
+                if ($objShipping->numRows) {
+                    try {
+                        $this->Shipping = \Isotope\Factory\Shipping::build($objShipping->type, $objShipping->row());
+                    } catch (Exception $e) {}
                 }
             }
 

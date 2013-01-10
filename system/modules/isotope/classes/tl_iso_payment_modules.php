@@ -168,24 +168,19 @@ class tl_iso_payment_modules extends \Backend
     {
         $objModuleType = $this->Database->prepare("SELECT * FROM tl_iso_payment_modules WHERE id=?")->limit(1)->execute($dc->id);
 
-        if (!$objModuleType->numRows)
-        {
-            return array();
-        }
+        if ($objModuleType->numRows) {
+            try {
+                $arrCCTypes = array();
+                $objMethod = \Isotope\Factory\Payment::build($objPayment->type, $objPayment->row());
 
-        $strClass = $GLOBALS['ISO_PAY'][$objModuleType->type];
+                foreach ($objMethod->getAllowedCCTypes() as $type)
+                {
+                    $arrCCTypes[$type] = $GLOBALS['ISO_LANG']['CCT'][$type];
+                }
 
-        if (!strlen($strClass) || !$this->classFileExists($strClass))
-        {
-            return array();
-        }
+                return $arrCCTypes;
 
-        $arrCCTypes = array();
-        $objModule = new $strClass($objModuleType->row());
-
-        foreach ($objModule->getAllowedCCTypes() as $type)
-        {
-            $arrCCTypes[$type] = $GLOBALS['ISO_LANG']['CCT'][$type];
+            } catch (Exception $e) {}
         }
 
         return $arrCCTypes;
