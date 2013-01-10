@@ -37,17 +37,14 @@ class tl_iso_shipping_options extends \Backend
      */
     public function getModulePalette($dc)
     {
-        if (\Input::get('act') == 'create')
-        {
+        if (\Input::get('act') == 'create') {
+
             return;
         }
 
-        if (!strlen(\Input::get('act')) && !strlen(\Input::get('key')))
-        {
+        if (!strlen(\Input::get('act')) && !strlen(\Input::get('key'))) {
             $objModule = $this->Database->execute("SELECT * FROM tl_iso_shipping_modules WHERE id=".$dc->id);
-        }
-        else
-        {
+        } else {
             $objModule = $this->Database->execute("SELECT m.* FROM tl_iso_shipping_modules m, tl_iso_shipping_options o WHERE o.pid=m.id AND o.id=".$dc->id);
         }
 

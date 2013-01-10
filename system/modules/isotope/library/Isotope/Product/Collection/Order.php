@@ -55,10 +55,8 @@ class Order extends Collection
     {
         parent::__construct($objResult);
 
-        if ($objResult !== null)
-        {
-            if ($this->payment_id > 0)
-            {
+        if ($objResult !== null) {
+            if ($this->payment_id > 0) {
                 $objPayment = $this->Database->execute("SELECT * FROM tl_iso_payment_modules WHERE id=" . $this->payment_id);
 
                 if ($objPayment->numRows) {
@@ -68,8 +66,7 @@ class Order extends Collection
                 }
             }
 
-            if ($this->shipping_id > 0)
-            {
+            if ($this->shipping_id > 0) {
                 $objShipping = $this->Database->execute("SELECT * FROM tl_iso_shipping_modules WHERE id=" . $this->shipping_id);
 
                 if ($objShipping->numRows) {

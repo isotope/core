@@ -357,6 +357,7 @@ abstract class Payment extends \Frontend
      * @param boolean
      * @return string
      */
+/*
     protected function addToUrl($strRequest, $blnIgnoreParams=false)
     {
         if ($blnIgnoreParams)
@@ -374,6 +375,7 @@ abstract class Payment extends \Frontend
 
         return parent::addToUrl($strRequest, $blnIgnoreParams);
     }
+*/
 
 
     /**
