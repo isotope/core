@@ -1712,11 +1712,11 @@ $endScript";
 		// Set the admin e-mail address
 		if ($objPage->adminEmail != '')
 		{
-			list($GLOBALS['TL_ADMIN_NAME'], $GLOBALS['TL_ADMIN_EMAIL']) = $this->splitFriendlyName($objPage->adminEmail);
+			list($GLOBALS['TL_ADMIN_NAME'], $GLOBALS['TL_ADMIN_EMAIL']) = Isotope::getInstance()->call('splitFriendlyName', $objPage->adminEmail);
 		}
 		else
 		{
-			list($GLOBALS['TL_ADMIN_NAME'], $GLOBALS['TL_ADMIN_EMAIL']) = $this->splitFriendlyName($GLOBALS['TL_CONFIG']['adminEmail']);
+			list($GLOBALS['TL_ADMIN_NAME'], $GLOBALS['TL_ADMIN_EMAIL']) = Isotope::getInstance()->call('splitFriendlyName', $GLOBALS['TL_CONFIG']['adminEmail']);
 		}
 
 		// Define the static URL constants
@@ -1724,7 +1724,7 @@ $endScript";
 		define('TL_SCRIPT_URL', ($objPage->staticSystem != '' && !$GLOBALS['TL_CONFIG']['debugMode']) ? $objPage->staticSystem . TL_PATH . '/' : '');
 		define('TL_PLUGINS_URL', ($objPage->staticPlugins != '' && !$GLOBALS['TL_CONFIG']['debugMode']) ? $objPage->staticPlugins . TL_PATH . '/' : '');
 
-		$objLayout = $this->Database->prepare("SELECT l.*, t.templates FROM tl_layout l LEFT JOIN tl_theme t ON l.pid=t.id WHERE l.id=? OR l.fallback=1 ORDER BY l.id=? DESC")
+		$objLayout = Database::getInstance()->prepare("SELECT l.*, t.templates FROM tl_layout l LEFT JOIN tl_theme t ON l.pid=t.id WHERE l.id=? OR l.fallback=1 ORDER BY l.id=? DESC")
 							->limit(1)
 							->execute($objPage->layout, $objPage->layout);
 
