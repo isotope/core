@@ -190,16 +190,6 @@ $GLOBALS['BE_FFL']['productTree']			= 'Isotope\Widget\ProductTree';
 
 
 /**
- * Shipping modules
- */
-$GLOBALS['ISO_SHIP']['flat']             = 'Isotope\Shipping\Flat';
-$GLOBALS['ISO_SHIP']['order_total']      = 'Isotope\Shipping\OrderTotal';
-$GLOBALS['ISO_SHIP']['weight_total']     = 'Isotope\Shipping\WeightTotal';
-$GLOBALS['ISO_SHIP']['ups']              = 'Isotope\Shipping\UPS';
-$GLOBALS['ISO_SHIP']['usps']             = 'Isotope\Shipping\USPS';
-
-
-/**
  * Galleries
  */
 $GLOBALS['ISO_GAL']['standard']          = 'Isotope\Gallery\Standard';

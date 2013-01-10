@@ -234,8 +234,8 @@ $GLOBALS['ISO_LANG']['MSC']['templateTheme']		= '%s (Motyw: %s)';
  * Shipping modules
  */
 $GLOBALS['ISO_LANG']['SHIP']['flat']				= array('Stała cena dostawy');
-$GLOBALS['ISO_LANG']['SHIP']['weight_total']		= array('Koszt odstawy wg. wagi całkowitej');
-$GLOBALS['ISO_LANG']['SHIP']['order_total']			= array('Koszt wg. wagi zamówienia');
+$GLOBALS['ISO_LANG']['SHIP']['weighttotal']		= array('Koszt odstawy wg. wagi całkowitej');
+$GLOBALS['ISO_LANG']['SHIP']['ordertotal']			= array('Koszt wg. wagi zamówienia');
 $GLOBALS['ISO_LANG']['SHIP']['collection']			= array('Kolekcja');
 $GLOBALS['ISO_LANG']['SHIP']['ups']					= array('Dostawa UPS Live Rates and Service');
 $GLOBALS['ISO_LANG']['SHIP']['usps']				= array('Dostawa USPS Live Rates and Service');

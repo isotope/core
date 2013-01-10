@@ -241,8 +241,8 @@ $GLOBALS['ISO_LANG']['MSC']['checkoutStep']			= 'Étape %s de %s (%s) - ';
  * Shipping modules
  */
 $GLOBALS['ISO_LANG']['SHIP']['flat'][0]                         = 'Livraison à bas prix';
-$GLOBALS['ISO_LANG']['SHIP']['weight_total'][0]                 = 'Poids total de la livraison';
-$GLOBALS['ISO_LANG']['SHIP']['order_total'][0]                  = 'Commande totale de la livraison';
+$GLOBALS['ISO_LANG']['SHIP']['weighttotal'][0]                 = 'Poids total de la livraison';
+$GLOBALS['ISO_LANG']['SHIP']['ordertotal'][0]                  = 'Commande totale de la livraison';
 $GLOBALS['ISO_LANG']['SHIP']['collection'][0]                   = 'Collection';
 $GLOBALS['ISO_LANG']['SHIP']['ups'][0]                          = 'Tarifs UPS et service de livraison';
 $GLOBALS['ISO_LANG']['SHIP']['usps'][0]                         = 'Tarifs USPS et service de livraison';

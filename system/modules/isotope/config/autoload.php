@@ -15,6 +15,7 @@
  * Register PSR-0 namespace
  */
 NamespaceClassLoader::add('Isotope/Payment', 'system/modules/isotope/library');
+NamespaceClassLoader::add('Isotope/Shipping', 'system/modules/isotope/library');
 NamespaceClassLoader::add('Isotope', 'system/modules/isotope/library');
 
 

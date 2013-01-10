@@ -20,6 +20,12 @@ interface IsotopeShipping
 {
 
     /**
+     * Return the name and description for this shipping method
+     * @return array
+     */
+    public static function getLabel();
+
+    /**
      * Return information or advanced features in the backend.
      * Use this function to present advanced features or basic shipping information for an order in the backend.
      * @param integer
