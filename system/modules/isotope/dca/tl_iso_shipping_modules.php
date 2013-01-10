@@ -126,11 +126,11 @@ $GLOBALS['TL_DCA']['tl_iso_shipping_modules'] = array
     (
         '__selector__'					=> array('type', 'protected'),
         'default'						=> '{title_legend},name,label,type',
-        'flat'							=> '{title_legend},name,label,type;{note_legend:hide},note;{price_legend},price,tax_class,flatCalculation,surcharge_field;{config_legend},countries,subdivisions,postalCodes,minimum_total,maximum_total,product_types;{expert_legend:hide},guests,protected;{enabled_legend},enabled',
-        'order_total'					=> '{title_legend},name,label,type;{note_legend:hide},note;{price_legend},price,tax_class;{config_legend},countries,subdivisions,postalCodes,minimum_total,maximum_total,product_types;{expert_legend:hide},guests,protected;{enabled_legend},enabled',
-        'weight_total'					=> '{title_legend},name,label,type;{note_legend:hide},note;{price_legend},tax_class;{config_legend},weight_unit,countries,subdivisions,postalCodes,minimum_total,maximum_total,product_types;{expert_legend:hide},guests,protected;{enabled_legend},enabled',
-        'ups'							=> '{title_legend},name,label,type;{note_legend:hide},note;{price_legend},tax_class;{ups_legend},ups_enabledService,ups_accessKey,ups_userName,ups_password;{config_legend},weight_unit,countries,subdivisions,minimum_total,maximum_total,product_types;{expert_legend:hide},guests,protected;{enabled_legend},enabled',
-        'usps'							=> '{title_legend},name,label,type;{note_legend:hide},note;{price_legend},tax_class;{usps_legend},usps_enabledService,usps_userName;{config_legend},countries,subdivisions,minimum_total,maximum_total,product_types;{expert_legend:hide},guests,protected;{enabled_legend},enabled'
+        'Flat'							=> '{title_legend},name,label,type;{note_legend:hide},note;{price_legend},price,tax_class,flatCalculation,surcharge_field;{config_legend},countries,subdivisions,postalCodes,minimum_total,maximum_total,product_types;{expert_legend:hide},guests,protected;{enabled_legend},enabled',
+        'OrderTotal'					=> '{title_legend},name,label,type;{note_legend:hide},note;{price_legend},price,tax_class;{config_legend},countries,subdivisions,postalCodes,minimum_total,maximum_total,product_types;{expert_legend:hide},guests,protected;{enabled_legend},enabled',
+        'WeightTotal'					=> '{title_legend},name,label,type;{note_legend:hide},note;{price_legend},tax_class;{config_legend},weight_unit,countries,subdivisions,postalCodes,minimum_total,maximum_total,product_types;{expert_legend:hide},guests,protected;{enabled_legend},enabled',
+        'UPS'							=> '{title_legend},name,label,type;{note_legend:hide},note;{price_legend},tax_class;{ups_legend},ups_enabledService,ups_accessKey,ups_userName,ups_password;{config_legend},weight_unit,countries,subdivisions,minimum_total,maximum_total,product_types;{expert_legend:hide},guests,protected;{enabled_legend},enabled',
+        'USPS'							=> '{title_legend},name,label,type;{note_legend:hide},note;{price_legend},tax_class;{usps_legend},usps_enabledService,usps_userName;{config_legend},countries,subdivisions,minimum_total,maximum_total,product_types;{expert_legend:hide},guests,protected;{enabled_legend},enabled'
     ),
 
     // Subpalettes
@@ -163,9 +163,9 @@ $GLOBALS['TL_DCA']['tl_iso_shipping_modules'] = array
             'exclude'                 => true,
             'filter'                  => true,
             'inputType'               => 'select',
-            'default'				  => 'flat',
-            'options_callback'        => array('Isotope\tl_iso_shipping_modules', 'getModules'),
-            'reference'               => &$GLOBALS['ISO_LANG']['SHIP'],
+            'default'				  => 'Flat',
+            'options'                 => array_keys(\Isotope\Factory\Shipping::getClasses()),
+            'reference'               => \Isotope\Factory\Shipping::getLabels(),
             'eval'                    => array('helpwizard'=>true, 'submitOnChange'=>true, 'chosen'=>true, 'tl_class'=>'w50')
         ),
         'note' => array

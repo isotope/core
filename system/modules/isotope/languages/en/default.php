@@ -248,8 +248,8 @@ $GLOBALS['ISO_LANG']['MSC']['checkoutStep']			= 'Step %s of %s (%s) - ';
  * Shipping modules
  */
 $GLOBALS['ISO_LANG']['SHIP']['flat']				= array('Flat-price shipping');
-$GLOBALS['ISO_LANG']['SHIP']['weight_total']		= array('Weight total-based shipping');
-$GLOBALS['ISO_LANG']['SHIP']['order_total']		= array('Order total-based shipping');
+$GLOBALS['ISO_LANG']['SHIP']['weighttotal']		= array('Weight total-based shipping');
+$GLOBALS['ISO_LANG']['SHIP']['ordertotal']		= array('Order total-based shipping');
 $GLOBALS['ISO_LANG']['SHIP']['collection']		= array('Collection');
 $GLOBALS['ISO_LANG']['SHIP']['ups']				= array('UPS Live Rates and Service shipping');
 $GLOBALS['ISO_LANG']['SHIP']['usps']				= array('USPS Live Rates and Service shipping');

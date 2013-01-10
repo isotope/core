@@ -20,6 +20,12 @@ interface IsotopePayment
 {
 
     /**
+     * Return the name and description for this payment method
+     * @return array
+     */
+    public static function getLabel();
+
+    /**
      * Process checkout payment. Must be implemented in each payment module
      * @access public
      * @return mixed

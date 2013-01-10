@@ -380,9 +380,9 @@ $GLOBALS['TL_DCA']['tl_iso_config'] = array
             'label'                   => &$GLOBALS['TL_LANG']['tl_iso_config']['gallery'],
             'exclude'                 => true,
             'inputType'               => 'select',
-            'default'				  => 'default',
-            'options'				  => array_keys($GLOBALS['ISO_GAL']),
-            'reference'				  => &$GLOBALS['ISO_LANG']['GAL'],
+            'default'                 => 'default',
+            'options'                 => array_keys(\Isotope\Factory\Gallery::getClasses()),
+            'reference'               => \Isotope\Factory\Gallery::getLabels(),
             'eval'                    => array('mandatory'=>true, 'tl_class'=>'clr', 'helpwizard'=>true),
         ),
         'missing_image_placeholder' => array

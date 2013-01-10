@@ -278,4 +278,14 @@ abstract class Shipping extends \Frontend
                                 $objCollection->getProducts(),
                                 $this);
     }
+
+
+    /**
+     * Return the name and description for this shipping method
+     * @return array
+     */
+    public static function getLabel()
+    {
+        return $GLOBALS['ISO_LANG']['SHIP'][strtolower(str_replace('Isotope\Shipping\\', '', get_called_class()))];
+    }
 }

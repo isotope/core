@@ -357,6 +357,7 @@ abstract class Payment extends \Frontend
      * @param boolean
      * @return string
      */
+/*
     protected function addToUrl($strRequest, $blnIgnoreParams=false)
     {
         if ($blnIgnoreParams)
@@ -373,5 +374,16 @@ abstract class Payment extends \Frontend
         }
 
         return parent::addToUrl($strRequest, $blnIgnoreParams);
+    }
+*/
+
+
+    /**
+     * Return the name and description for this payment method
+     * @return array
+     */
+    public static function getLabel()
+    {
+        return $GLOBALS['ISO_LANG']['PAY'][strtolower(str_replace('Isotope\Payment\\', '', get_called_class()))];
     }
 }

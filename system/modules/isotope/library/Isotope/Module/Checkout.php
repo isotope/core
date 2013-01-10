@@ -563,8 +563,8 @@ class Checkout extends Module
         $arrModules = array();
         $arrModuleIds = deserialize($this->iso_shipping_modules);
 
-        if (is_array($arrModuleIds) && !empty($arrModuleIds))
-        {
+        if (is_array($arrModuleIds) && !empty($arrModuleIds)) {
+
             $arrData = \Input::post('shipping');
             $arrModuleIds = array_map('intval', $arrModuleIds);
 
@@ -572,50 +572,42 @@ class Checkout extends Module
 
             while ($objModules->next())
             {
-                $strClass = $GLOBALS['ISO_SHIP'][$objModules->type];
-
-                if (!strlen($strClass) || !$this->classFileExists($strClass))
-                {
+                try {
+                    $objModule = \Isotope\Payment\Factory::build($objModules->type, $objModules->row());
+                } catch (Exception $e) {
                     continue;
                 }
 
-                $objModule = new $strClass($objModules->row());
-
-                if (!$objModule->available)
-                {
+                if (!$objModule->available) {
                     continue;
                 }
 
-                if (is_array($arrData) && $arrData['module'] == $objModule->id)
-                 {
-                     $_SESSION['CHECKOUT_DATA']['shipping'] = $arrData;
-                 }
+                if (is_array($arrData) && $arrData['module'] == $objModule->id) {
+                    $_SESSION['CHECKOUT_DATA']['shipping'] = $arrData;
+                }
 
-                 if (is_array($_SESSION['CHECKOUT_DATA']['shipping']) && $_SESSION['CHECKOUT_DATA']['shipping']['module'] == $objModule->id)
-                 {
-                     $this->Isotope->Cart->Shipping = $objModule;
-                 }
+                if (is_array($_SESSION['CHECKOUT_DATA']['shipping']) && $_SESSION['CHECKOUT_DATA']['shipping']['module'] == $objModule->id) {
+                    $this->Isotope->Cart->Shipping = $objModule;
+                }
 
-                 $fltPrice = $objModule->price;
-                 $strSurcharge = $objModule->surcharge;
-                 $strPrice = $fltPrice != 0 ? (($strSurcharge == '' ? '' : ' ('.$strSurcharge.')') . ': '.$this->Isotope->formatPriceWithCurrency($fltPrice)) : '';
+                $fltPrice = $objModule->price;
+                $strSurcharge = $objModule->surcharge;
+                $strPrice = $fltPrice != 0 ? (($strSurcharge == '' ? '' : ' ('.$strSurcharge.')') . ': '.$this->Isotope->formatPriceWithCurrency($fltPrice)) : '';
 
-                 $arrModules[] = array
-                 (
-                     'id'		=> $objModule->id,
-                     'label'		=> $objModule->label,
-                     'price'		=> $strPrice,
-                     'checked'	=> (($this->Isotope->Cart->Shipping->id == $objModule->id || $objModules->numRows == 1) ? ' checked="checked"' : ''),
-                     'note'		=> $objModule->note,
-                     'form'		=> $objModule->getShippingOptions($this),
-                 );
+                $arrModules[] = array(
+                    'id'		=> $objModule->id,
+                    'label'		=> $objModule->label,
+                    'price'		=> $strPrice,
+                    'checked'	=> (($this->Isotope->Cart->Shipping->id == $objModule->id || $objModules->numRows == 1) ? ' checked="checked"' : ''),
+                    'note'		=> $objModule->note,
+                    'form'		=> $objModule->getShippingOptions($this),
+                );
 
-                 $objLastModule = $objModule;
+                $objLastModule = $objModule;
             }
         }
 
-        if (empty($arrModules))
-        {
+        if (empty($arrModules)) {
             $this->doNotSubmit = true;
             $this->Template->showNext = false;
 
@@ -631,16 +623,15 @@ class Checkout extends Module
 
         $objTemplate = new \Isotope\Template('iso_checkout_shipping_method');
 
-        if (!$this->Isotope->Cart->hasShipping && !strlen($_SESSION['CHECKOUT_DATA']['shipping']['module']) && count($arrModules) == 1)
-        {
+        if (!$this->Isotope->Cart->hasShipping && !strlen($_SESSION['CHECKOUT_DATA']['shipping']['module']) && count($arrModules) == 1) {
+
             $this->Isotope->Cart->Shipping = $objLastModule;
             $_SESSION['CHECKOUT_DATA']['shipping']['module'] = $this->Isotope->Cart->Shipping->id;
             $arrModules[0]['checked'] = ' checked="checked"';
-        }
-        elseif (!$this->Isotope->Cart->hasShipping)
-        {
-            if (\Input::post('FORM_SUBMIT') != '')
-            {
+
+        } elseif (!$this->Isotope->Cart->hasShipping) {
+
+            if (\Input::post('FORM_SUBMIT') != '') {
                 $objTemplate->error = $GLOBALS['TL_LANG']['ISO']['shipping_method_missing'];
             }
 
@@ -651,8 +642,7 @@ class Checkout extends Module
         $objTemplate->message = $GLOBALS['TL_LANG']['ISO']['shipping_method_message'];
         $objTemplate->shippingMethods = $arrModules;
 
-        if (!$this->doNotSubmit)
-        {
+        if (!$this->doNotSubmit) {
             $this->arrOrderData['shipping_method_id']	= $this->Isotope->Cart->Shipping->id;
             $this->arrOrderData['shipping_method']		= $this->Isotope->Cart->Shipping->label;
             $this->arrOrderData['shipping_note']		= $this->Isotope->Cart->Shipping->note;
@@ -660,8 +650,7 @@ class Checkout extends Module
         }
 
         // Remove payment step if items are free of charge
-        if (!$this->Isotope->Cart->requiresPayment)
-        {
+        if (!$this->Isotope->Cart->requiresPayment) {
             unset($GLOBALS['ISO_CHECKOUT_STEPS']['payment']);
         }
 
@@ -676,17 +665,13 @@ class Checkout extends Module
      */
     protected function getPaymentModulesInterface($blnReview=false)
     {
-        if ($blnReview)
-        {
-            if (!$this->Isotope->Cart->hasPayment)
-            {
+        if ($blnReview) {
+            if (!$this->Isotope->Cart->hasPayment) {
                 return false;
             }
 
-            return array
-            (
-                'payment_method' => array
-                (
+            return array(
+                'payment_method' => array(
                     'headline'	=> $GLOBALS['TL_LANG']['ISO']['payment_method'],
                     'info'		=> $this->Isotope->Cart->Payment->checkoutReview(),
                     'note'		=> $this->Isotope->Cart->Payment->note,
@@ -698,59 +683,51 @@ class Checkout extends Module
         $arrModules = array();
         $arrModuleIds = deserialize($this->iso_payment_modules);
 
-        if (is_array($arrModuleIds) && !empty($arrModuleIds))
-        {
+        if (is_array($arrModuleIds) && !empty($arrModuleIds)) {
+
             $arrData = \Input::post('payment');
             $arrModuleIds = array_map('intval', $arrModuleIds);
 
             $objModules = $this->Database->execute("SELECT * FROM tl_iso_payment_modules WHERE id IN (" . implode(',', $arrModuleIds) . ")" . (BE_USER_LOGGED_IN === true ? '' : " AND enabled='1'") . " ORDER BY " . $this->Database->findInSet('id', $arrModuleIds));
 
-            while ($objModules->next())
-            {
-                $strClass = $GLOBALS['ISO_PAY'][$objModules->type];
+            while ($objModules->next()) {
 
-                if (!strlen($strClass) || !$this->classFileExists($strClass))
-                {
+                try {
+                    $objModule = \Isotope\Payment\Factory::build($objModules->type, $objModules->row());
+                } catch (Exception $e) {
                     continue;
                 }
 
-                $objModule = new $strClass($objModules->row());
-
-                if (!$objModule->available)
-                {
+                if (!$objModule->available) {
                     continue;
                 }
 
-                if (is_array($arrData) && $arrData['module'] == $objModule->id)
-                 {
-                     $_SESSION['CHECKOUT_DATA']['payment'] = $arrData;
-                 }
+                if (is_array($arrData) && $arrData['module'] == $objModule->id) {
+                    $_SESSION['CHECKOUT_DATA']['payment'] = $arrData;
+                }
 
-                 if (is_array($_SESSION['CHECKOUT_DATA']['payment']) && $_SESSION['CHECKOUT_DATA']['payment']['module'] == $objModule->id)
-                 {
-                     $this->Isotope->Cart->Payment = $objModule;
-                 }
+                if (is_array($_SESSION['CHECKOUT_DATA']['payment']) && $_SESSION['CHECKOUT_DATA']['payment']['module'] == $objModule->id) {
+                    $this->Isotope->Cart->Payment = $objModule;
+                }
 
-                 $fltPrice = $objModule->price;
-                 $strSurcharge = $objModule->surcharge;
-                 $strPrice = ($fltPrice != 0) ? (($strSurcharge == '' ? '' : ' ('.$strSurcharge.')') . ': '.$this->Isotope->formatPriceWithCurrency($fltPrice)) : '';
+                $fltPrice = $objModule->price;
+                $strSurcharge = $objModule->surcharge;
+                $strPrice = ($fltPrice != 0) ? (($strSurcharge == '' ? '' : ' ('.$strSurcharge.')') . ': '.$this->Isotope->formatPriceWithCurrency($fltPrice)) : '';
 
-                 $arrModules[] = array
-                 (
-                     'id'		=> $objModule->id,
-                     'label'		=> $objModule->label,
-                     'price'		=> $strPrice,
-                     'checked'	=> (($this->Isotope->Cart->Payment->id == $objModule->id || $objModules->numRows == 1) ? ' checked="checked"' : ''),
-                     'note'		=> $objModule->note,
-                     'form'		=> $objModule->paymentForm($this),
-                 );
+                $arrModules[] = array(
+                    'id'		=> $objModule->id,
+                    'label'		=> $objModule->label,
+                    'price'		=> $strPrice,
+                    'checked'	=> (($this->Isotope->Cart->Payment->id == $objModule->id || $objModules->numRows == 1) ? ' checked="checked"' : ''),
+                    'note'		=> $objModule->note,
+                    'form'		=> $objModule->paymentForm($this),
+                );
 
-                 $objLastModule = $objModule;
+                $objLastModule = $objModule;
             }
         }
 
-        if (empty($arrModules))
-        {
+        if (empty($arrModules)) {
             $this->doNotSubmit = true;
             $this->Template->showNext = false;
 
@@ -766,16 +743,15 @@ class Checkout extends Module
 
         $objTemplate = new \Isotope\Template('iso_checkout_payment_method');
 
-        if (!$this->Isotope->Cart->hasPayment && !strlen($_SESSION['CHECKOUT_DATA']['payment']['module']) && count($arrModules) == 1)
-        {
+        if (!$this->Isotope->Cart->hasPayment && !strlen($_SESSION['CHECKOUT_DATA']['payment']['module']) && count($arrModules) == 1) {
+
             $this->Isotope->Cart->Payment = $objLastModule;
             $_SESSION['CHECKOUT_DATA']['payment']['module'] = $this->Isotope->Cart->Payment->id;
             $arrModules[0]['checked'] = ' checked="checked"';
-        }
-        elseif (!$this->Isotope->Cart->hasPayment)
-        {
-            if (\Input::post('FORM_SUBMIT') != '')
-            {
+
+        } elseif (!$this->Isotope->Cart->hasPayment) {
+
+            if (\Input::post('FORM_SUBMIT') != '') {
                 $objTemplate->error = $GLOBALS['TL_LANG']['ISO']['payment_method_missing'];
             }
 
@@ -786,8 +762,7 @@ class Checkout extends Module
         $objTemplate->message = $GLOBALS['TL_LANG']['ISO']['payment_method_message'];
         $objTemplate->paymentMethods = $arrModules;
 
-        if (!$this->doNotSubmit)
-        {
+        if (!$this->doNotSubmit) {
             $this->arrOrderData['payment_method_id']	= $this->Isotope->Cart->Payment->id;
             $this->arrOrderData['payment_method']		= $this->Isotope->Cart->Payment->label;
             $this->arrOrderData['payment_note']			= $this->Isotope->Cart->Payment->note;
@@ -805,8 +780,7 @@ class Checkout extends Module
      */
     protected function getOrderConditionsOnTop($blnReview=false)
     {
-        if ($this->iso_order_conditions_position == 'top')
-        {
+        if ($this->iso_order_conditions_position == 'top') {
             return $this->getOrderConditionsInterface($blnReview);
         }
 
@@ -821,8 +795,7 @@ class Checkout extends Module
      */
     protected function getOrderConditionsBeforeProducts($blnReview=false)
     {
-        if ($this->iso_order_conditions_position == 'before')
-        {
+        if ($this->iso_order_conditions_position == 'before') {
             return $this->getOrderConditionsInterface($blnReview);
         }
 
@@ -837,8 +810,7 @@ class Checkout extends Module
      */
     protected function getOrderConditionsAfterProducts($blnReview=false)
     {
-        if ($this->iso_order_conditions_position == 'after')
-        {
+        if ($this->iso_order_conditions_position == 'after') {
             return $this->getOrderConditionsInterface($blnReview);
         }
 
@@ -853,8 +825,7 @@ class Checkout extends Module
      */
     protected function getOrderConditionsInterface($blnReview=false)
     {
-        if (!$this->iso_order_conditions)
-        {
+        if (!$this->iso_order_conditions) {
             return '';
         }
 

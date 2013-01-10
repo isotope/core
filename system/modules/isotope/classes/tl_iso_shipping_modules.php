@@ -159,26 +159,6 @@ class tl_iso_shipping_modules extends \Backend
 
 
     /**
-     * Get a list of all shipping modules available
-     * @return array
-     */
-    public function getModules()
-    {
-        $arrModules = array();
-
-        if (is_array($GLOBALS['ISO_SHIP']) && !empty($GLOBALS['ISO_SHIP']))
-        {
-            foreach ($GLOBALS['ISO_SHIP'] as $module => $class)
-            {
-                $arrModules[$module] = (strlen($GLOBALS['ISO_LANG']['SHIP'][$module][0]) ? $GLOBALS['ISO_LANG']['SHIP'][$module][0] : $module);
-            }
-        }
-
-        return $arrModules;
-    }
-
-
-    /**
      * Callback for options button
      * @param array
      * @param string
@@ -192,8 +172,8 @@ class tl_iso_shipping_modules extends \Backend
     {
         switch ($row['type'])
         {
-            case 'order_total':
-            case 'weight_total':
+            case 'OrderTotal':
+            case 'WeightTotal':
                 return '<a href="'.$this->addToUrl($href.'&amp;id='.$row['id']).'" title="'.specialchars($title).'"'.$attributes.'>'.$this->generateImage($icon, $label).'</a> ';
 
             default:

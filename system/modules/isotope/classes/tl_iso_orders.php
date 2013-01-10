@@ -324,16 +324,16 @@ class tl_iso_orders extends \Backend
      */
     public function paymentInterface($dc)
     {
-        $objPayment = $this->Database->execute("SELECT p.* FROM tl_iso_payment_modules p, tl_iso_orders o WHERE p.id=o.payment_id AND o.id=".$dc->id);
-        $strClass = $GLOBALS['ISO_PAY'][$objPayment->type];
+        $objPayment = $this->Database->execute("SELECT p.* FROM tl_iso_payment_modules m, tl_iso_orders o WHERE m.id=o.payment_id AND m.id=".$dc->id);
 
-        if (!$objPayment->numRows || !strlen($strClass) || !$this->classFileExists($strClass))
-        {
+        try {
+            $objMethod = \Isotope\Factory\Payment::build($objPayment->type, $objPayment->row());
+
+            return $objMethod->backendInterface($dc->id);
+        } catch (Exception $e) {
+
             return '<p class="tl_gerror">'.$GLOBALS['TL_LANG']['ISO']['backendPaymentNotFound'].'</p>';
         }
-
-        $objModule = new $strClass($objPayment->row());
-        return $objModule->backendInterface($dc->id);
     }
 
 
@@ -344,16 +344,16 @@ class tl_iso_orders extends \Backend
      */
     public function shippingInterface($dc)
     {
-        $objShipping = $this->Database->execute("SELECT p.* FROM tl_iso_shipping_modules p, tl_iso_orders o WHERE p.id=o.shipping_id AND o.id=".$dc->id);
-        $strClass = $GLOBALS['ISO_SHIP'][$objShipping->type];
+        $objShipping = $this->Database->execute("SELECT p.* FROM tl_iso_shipping_modules m, tl_iso_orders o WHERE m.id=o.shipping_id AND m.id=".$dc->id);
 
-        if (!$objShipping->numRows || !strlen($strClass) || !$this->classFileExists($strClass))
-        {
+        try {
+            $objMethod = \Isotope\Factory\Payment::build($objShipping->type, $objShipping->row());
+
+            return $objMethod->backendInterface($dc->id);
+        } catch (Exception $e) {
+
             return '<p class="tl_gerror">'.$GLOBALS['TL_LANG']['ISO']['backendShippingNotFound'].'</p>';
         }
-
-        $objModule = new $strClass($objShipping->row());
-        return $objModule->backendInterface($dc->id);
     }
 
 

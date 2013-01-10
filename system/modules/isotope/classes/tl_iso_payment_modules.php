@@ -166,49 +166,24 @@ class tl_iso_payment_modules extends \Backend
      */
     public function getAllowedCCTypes(\DataContainer $dc)
     {
-        $objModuleType = $this->Database->prepare("SELECT * FROM tl_iso_payment_modules WHERE id=?")->limit(1)->execute($dc->id);
-
-        if (!$objModuleType->numRows)
-        {
-            return array();
-        }
-
-        $strClass = $GLOBALS['ISO_PAY'][$objModuleType->type];
-
-        if (!strlen($strClass) || !$this->classFileExists($strClass))
-        {
-            return array();
-        }
-
         $arrCCTypes = array();
-        $objModule = new $strClass($objModuleType->row());
+        $objPayment = $this->Database->prepare("SELECT * FROM tl_iso_payment_modules WHERE id=?")->limit(1)->execute($dc->id);
 
-        foreach ($objModule->getAllowedCCTypes() as $type)
-        {
-            $arrCCTypes[$type] = $GLOBALS['ISO_LANG']['CCT'][$type];
+        if ($objPayment->numRows) {
+            try {
+                $objMethod = \Isotope\Factory\Payment::build($objPayment->type, $objPayment->row());
+
+                foreach ($objMethod->getAllowedCCTypes() as $type)
+                {
+                    $arrCCTypes[$type] = $GLOBALS['ISO_LANG']['CCT'][$type];
+                }
+
+                return $arrCCTypes;
+
+            } catch (Exception $e) {}
         }
 
         return $arrCCTypes;
-    }
-
-
-    /**
-     * Return a list of all payment modules available
-     * @return array
-     */
-    public function getModules()
-    {
-        $arrModules = array();
-
-        if (is_array($GLOBALS['ISO_PAY']) && !empty($GLOBALS['ISO_PAY']))
-        {
-            foreach ($GLOBALS['ISO_PAY'] as $module => $class)
-            {
-                $arrModules[$module] = (strlen($GLOBALS['ISO_LANG']['PAY'][$module][0]) ? $GLOBALS['ISO_LANG']['PAY'][$module][0] : $module);
-            }
-        }
-
-        return $arrModules;
     }
 
 
