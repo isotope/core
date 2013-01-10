@@ -10,9 +10,14 @@
  * @license    http://opensource.org/licenses/lgpl-3.0.html LGPL
  */
 
+namespace Isotope\Upgrade;
 
-/**
- * Instantiate controller
- */
-$objIsotopeRunonce = new \Isotope\Runonce();
-$objIsotopeRunonce->run();
+
+class To0020000000 extends \System
+{
+
+    public function run()
+    {
+        $this->import('Database');
+    }
+}
