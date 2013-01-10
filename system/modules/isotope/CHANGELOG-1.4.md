@@ -32,6 +32,7 @@ Version 1.4.x (201?-??-??)
 - Labels for rule minimum subtotal fields (#491)
 - Exception when manually sorting products in the backend (#124)
 - The filter module did not work on the index page (#42)
+- Fixed missing parameter "$target" in watermarkImage hook (#67)
 
 
 Version 1.4.rc1 (2012-12-03)
