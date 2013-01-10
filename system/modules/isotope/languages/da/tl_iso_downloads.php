@@ -33,4 +33,3 @@ $GLOBALS['TL_LANG']['tl_iso_downloads']['show'][1] = 'Vis detaljer for filen med
 $GLOBALS['TL_LANG']['tl_iso_downloads']['file_legend'] = 'Vedhæftet fil';
 $GLOBALS['TL_LANG']['tl_iso_downloads']['name_legend'] = 'Titel og beskrivelse';
 $GLOBALS['TL_LANG']['tl_iso_downloads']['limit_legend'] = 'Begrænsninger';
-

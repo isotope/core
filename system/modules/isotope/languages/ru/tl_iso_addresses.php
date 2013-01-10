@@ -65,4 +65,3 @@ $GLOBALS['TL_LANG']['tl_iso_addresses']['copy'][0] = 'Копировать ад�
 $GLOBALS['TL_LANG']['tl_iso_addresses']['copy'][1] = 'Копировать адрес ID %s';
 $GLOBALS['TL_LANG']['tl_iso_addresses']['delete'][0] = 'Удалить адрес';
 $GLOBALS['TL_LANG']['tl_iso_addresses']['delete'][1] = 'Удалить адрес ID %s';
-

@@ -36,4 +36,3 @@ $GLOBALS['TL_LANG']['tl_iso_labels']['show']			= array('Label details', 'Show de
  * Legends
  */
 $GLOBALS['TL_LANG']['tl_iso_labels']['label_legend']	= 'Label translation';
-

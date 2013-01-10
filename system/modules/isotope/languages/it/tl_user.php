@@ -20,4 +20,3 @@ $GLOBALS['TL_LANG']['tl_user']['iso_configs'][1] = 'Gli utilizzatori possono vis
 $GLOBALS['TL_LANG']['tl_user']['iso_modules'][0] = 'Moduli isotope';
 $GLOBALS['TL_LANG']['tl_user']['iso_modules'][1] = 'Selezioni quali moduli configurazione negozio sono disponibile per questo utente.';
 $GLOBALS['TL_LANG']['tl_user']['isotope_legend'] = 'Isotope eCommerce';
-

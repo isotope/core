@@ -16,4 +16,3 @@
 
 $GLOBALS['TL_LANG']['tl_user']['translation'][0] = 'Язык перевода';
 $GLOBALS['TL_LANG']['tl_user']['translation'][1] = 'Выберите за какой язык этот человек отвечает.';
-

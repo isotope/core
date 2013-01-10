@@ -119,4 +119,3 @@ $GLOBALS['TL_LANG']['tl_iso_config']['currency_legend']	    			= 'Currency forma
 $GLOBALS['TL_LANG']['tl_iso_config']['converter_legend']	    		= 'Currency conversion';
 $GLOBALS['TL_LANG']['tl_iso_config']['order_legend']	    			= 'Orders';
 $GLOBALS['TL_LANG']['tl_iso_config']['images_legend']	    			= 'Images';
-

@@ -14,4 +14,3 @@
 
 $GLOBALS['TL_LANG']['tl_content']['iso_list_layout'][0] = 'Шаблон списка товаров';
 $GLOBALS['TL_LANG']['tl_content']['iso_attribute_set'][0] = 'Набор атрибутов товара';
-

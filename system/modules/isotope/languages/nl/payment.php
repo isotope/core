@@ -264,4 +264,3 @@ $GLOBALS['TL_LANG']['MSG']['authorizedotnet']['3']['180'] = 'Er is een fout opge
 $GLOBALS['TL_LANG']['MSG']['authorizedotnet']['4']['193'] = 'Deze transactie wordt momenteel gecontroleerd - De transactie is aangeduid als "hoog risico"  en wordt gecontroleerd.';
 $GLOBALS['TL_LANG']['MSG']['authorizedotnet']['2']['200'] = 'Deze transactie is afgekeurd - Deze fout is alleen voor FDC Omaha klanten. Het creditcard nummer is ongeldig.';
 $GLOBALS['TL_LANG']['MSG']['authorizedotnet']['2']['201'] = 'Deze transactie is afgekeurd - Deze fout is alleen voor FDC Omaha klanten. De vervaldatum is ongeldig.';
-

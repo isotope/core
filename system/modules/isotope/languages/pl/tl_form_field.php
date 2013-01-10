@@ -17,4 +17,3 @@
  * Fields
  */
 $GLOBALS['TL_LANG']['FFL']['textCollection'] = array('Kolekcja tekstów', 'jedno lub więcej linii z polami dla krótkich tekstów.');
-

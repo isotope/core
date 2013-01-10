@@ -19,4 +19,3 @@ $GLOBALS['TL_LANG']['tl_user_group']['iso_configs'][1] = 'Пользовател
 $GLOBALS['TL_LANG']['tl_user_group']['iso_modules'][0] = 'Модули Isotope';
 $GLOBALS['TL_LANG']['tl_user_group']['iso_modules'][1] = 'Выберите к каким модулям конфигурации магазина пользователь этой группы может получить доступ.';
 $GLOBALS['TL_LANG']['tl_user_group']['isotope_legend'] = 'Isotope eCommerce';
-

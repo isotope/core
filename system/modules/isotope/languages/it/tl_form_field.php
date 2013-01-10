@@ -16,4 +16,3 @@
 
 $GLOBALS['TL_LANG']['FFL']['textCollection'][0] = 'Campo collezione testo';
 $GLOBALS['TL_LANG']['FFL']['textCollection'][1] = 'una o più righe di campi inserimento per testi di piccola o media dimensione.';
-

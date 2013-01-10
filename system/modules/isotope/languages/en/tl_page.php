@@ -26,4 +26,3 @@ $GLOBALS['TL_LANG']['tl_page']['iso_readerJumpTo']		= array('Choose the reader p
  * Legends
  */
 $GLOBALS['TL_LANG']['tl_page']['isotope_legend'] = 'Isotope eCommerce';
-

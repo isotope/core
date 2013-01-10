@@ -19,18 +19,18 @@
  */
 $GLOBALS['TL_DCA']['tl_content']['fields']['iso_reader_jumpTo'] = array
 (
-	'label'                   => &$GLOBALS['TL_LANG']['tl_content']['iso_reader_jumpTo'],
-	'exclude'                 => true,
-	'inputType'               => 'pageTree',
-	'explanation'             => 'jumpTo',
-	'eval'                    => array('fieldType'=>'radio'),
+    'label'                   => &$GLOBALS['TL_LANG']['tl_content']['iso_reader_jumpTo'],
+    'exclude'                 => true,
+    'inputType'               => 'pageTree',
+    'explanation'             => 'jumpTo',
+    'eval'                    => array('fieldType'=>'radio'),
 );
 
 $GLOBALS['TL_DCA']['tl_content']['fields']['iso_list_layout'] = array
 (
-	'label'                   => &$GLOBALS['TL_LANG']['tl_content']['iso_list_layout'],
-	'exclude'                 => true,
-	'inputType'               => 'select',
-	'options_callback'		  => array('Isotope\tl_content', 'getListTemplates'),
-	'eval'					  => array('includeBlankOption'=>true),
+    'label'                   => &$GLOBALS['TL_LANG']['tl_content']['iso_list_layout'],
+    'exclude'                 => true,
+    'inputType'               => 'select',
+    'options_callback'		  => array('Isotope\tl_content', 'getListTemplates'),
+    'eval'					  => array('includeBlankOption'=>true),
 );

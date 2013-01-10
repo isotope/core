@@ -15,4 +15,3 @@
 $GLOBALS['TL_LANG']['tl_page']['iso_config'][0] = 'Winkel instellingen';
 $GLOBALS['TL_LANG']['tl_page']['iso_config'][1] = 'Selecteer een winkelinstelling voor deze pagina structuur';
 $GLOBALS['TL_LANG']['tl_page']['isotope_legend'] = 'Isotope Webwinkel';
-

@@ -49,4 +49,3 @@ $GLOBALS['TL_LANG']['XPL']['isoMailTokens'][16][1] = 'Aparte velden van het afle
 $GLOBALS['TL_LANG']['XPL']['isoMailTokens'][17][0] = '##form_...##';
 $GLOBALS['TL_LANG']['XPL']['isoMailTokens'][17][1] = 'Voorwaarde voor ophalen gegevens is het gebruik  van het voorvoegsel "form_" en de naam van het veld.';
 $GLOBALS['TL_LANG']['XPL']['mediaManager'] = '<p class="tl_help_table">Om een nieuwe afbeelding te uploaden het bestand kiezen en product opslaan. Als het product succesvol opgeslagen is wordt de afbeelding getoond en dan kunt u een \'alt\' tekst en beschrijving opgeven. Indien er meerdere afbeeldingen zijn kan u de volgorde wijzigen door op de pijlen rechts van de afbeelding te klikken. De bovenste afbeelding is de hoofd-afbeelding van elk product.</p>';
-

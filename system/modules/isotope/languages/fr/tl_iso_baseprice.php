@@ -34,4 +34,3 @@ $GLOBALS['TL_LANG']['tl_iso_baseprice']['show']   = array('Détails du prix de b
  * Legends
  */
 $GLOBALS['TL_LANG']['tl_iso_baseprice']['name_legend'] = 'Prix de base';
-

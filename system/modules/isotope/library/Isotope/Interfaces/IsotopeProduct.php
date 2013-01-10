@@ -32,10 +32,10 @@ interface IsotopeProduct
     public function isLocked();
 
     /**
-	 * Returns true if the product is published, otherwise returns false
-	 * @bool
-	 */
-	public function isPublished();
+     * Returns true if the product is published, otherwise returns false
+     * @bool
+     */
+    public function isPublished();
 
     /**
      * Generate a product template

@@ -25,9 +25,9 @@ $GLOBALS['TL_DCA']['tl_member']['config']['ctable'][] = 'tl_iso_addresses';
  */
 $GLOBALS['TL_DCA']['tl_member']['list']['operations']['address_book'] = array
 (
-	'label'               => &$GLOBALS['TL_LANG']['tl_member']['address_book'],
-	'href'                => 'table=tl_iso_addresses',
-	'icon'                => 'system/modules/isotope/assets/cards-address.png',
+    'label'               => &$GLOBALS['TL_LANG']['tl_member']['address_book'],
+    'href'                => 'table=tl_iso_addresses',
+    'icon'                => 'system/modules/isotope/assets/cards-address.png',
 );
 
 
@@ -35,4 +35,3 @@ $GLOBALS['TL_DCA']['tl_member']['list']['operations']['address_book'] = array
  * Force the "country" field to be mandatory
  */
 $GLOBALS['TL_DCA']['tl_member']['fields']['country']['eval']['mandatory'] = true;
-

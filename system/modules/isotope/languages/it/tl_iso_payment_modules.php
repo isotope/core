@@ -130,4 +130,3 @@ $GLOBALS['TL_LANG']['tl_iso_payment_modules']['delete'][0] = 'Cancella metodo di
 $GLOBALS['TL_LANG']['tl_iso_payment_modules']['delete'][1] = 'Cancella metodo di pagamento ID %s';
 $GLOBALS['TL_LANG']['tl_iso_payment_modules']['show'][0] = 'Dettagli Metodo di Pagamento';
 $GLOBALS['TL_LANG']['tl_iso_payment_modules']['show'][1] = 'Mostra dettagli metodo di pagamento ID %s';
-

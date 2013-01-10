@@ -109,4 +109,3 @@ $GLOBALS['TL_LANG']['tl_iso_rules']['copy']   = array('Dupliquer une règle', 'D
 $GLOBALS['TL_LANG']['tl_iso_rules']['delete'] = array('Supprimer une règle', 'Supprimer la règle ID %s');
 $GLOBALS['TL_LANG']['tl_iso_rules']['toggle'] = array('Publier/dé-publier une règle', 'Publier/dé-publier la règle ID %s');
 $GLOBALS['TL_LANG']['tl_iso_rules']['show']   = array('Détails de la règle', 'Afficher les détails de la règle ID %s');
-

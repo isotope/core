@@ -178,4 +178,3 @@ $GLOBALS['TL_LANG']['MSG']['authorizedotnet']['3']['60'] = 'Une erreur est surve
 $GLOBALS['TL_LANG']['MSG']['authorizedotnet']['3']['61'] = 'Une erreur est survenue pendant le traitement. Merci d\'essayer de nouveau dans 5 minutes.';
 $GLOBALS['TL_LANG']['MSG']['authorizedotnet']['3']['62'] = 'Une erreur est survenue pendant le traitement. Merci d\'essayer de nouveau dans 5 minutes.';
 $GLOBALS['TL_LANG']['MSG']['authorizedotnet']['3']['63'] = 'Une erreur est survenue pendant le traitement. Merci d\'essayer de nouveau dans 5 minutes.';
-

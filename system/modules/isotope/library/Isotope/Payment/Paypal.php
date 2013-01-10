@@ -27,151 +27,151 @@ use Isotope\Product\Collection\Order;
 class Paypal extends Payment
 {
 
-	/**
-	 * processPayment function.
-	 *
-	 * @access public
-	 * @return void
-	 */
-	public function processPayment()
-	{
-		if (($objOrder = Order::findOneBy('cart_id', $this->Isotope->Cart->id)) === null)
-		{
-			return false;
-		}
+    /**
+     * processPayment function.
+     *
+     * @access public
+     * @return void
+     */
+    public function processPayment()
+    {
+        if (($objOrder = Order::findOneBy('cart_id', $this->Isotope->Cart->id)) === null)
+        {
+            return false;
+        }
 
-		if ($objOrder->date_paid > 0 && $objOrder->date_paid <= time())
-		{
-			\Isotope\Frontend::clearTimeout();
-			return true;
-		}
+        if ($objOrder->date_paid > 0 && $objOrder->date_paid <= time())
+        {
+            \Isotope\Frontend::clearTimeout();
+            return true;
+        }
 
-		if (\Isotope\Frontend::setTimeout())
-		{
-			// Do not index or cache the page
-			global $objPage;
-			$objPage->noSearch = 1;
-			$objPage->cache = 0;
+        if (\Isotope\Frontend::setTimeout())
+        {
+            // Do not index or cache the page
+            global $objPage;
+            $objPage->noSearch = 1;
+            $objPage->cache = 0;
 
-			$objTemplate = new \FrontendTemplate('mod_message');
-			$objTemplate->type = 'processing';
-			$objTemplate->message = $GLOBALS['TL_LANG']['MSC']['payment_processing'];
-			return $objTemplate->parse();
-		}
+            $objTemplate = new \FrontendTemplate('mod_message');
+            $objTemplate->type = 'processing';
+            $objTemplate->message = $GLOBALS['TL_LANG']['MSC']['payment_processing'];
+            return $objTemplate->parse();
+        }
 
-		$this->log('Payment could not be processed.', __METHOD__, TL_ERROR);
-		$this->redirect($this->addToUrl('step=failed', true));
-	}
-
-
-	/**
-	 * Process PayPal Instant Payment Notifications (IPN)
-	 *
-	 * @access public
-	 * @return void
-	 */
-	public function processPostSale()
-	{
-		$objRequest = new Request();
-		$objRequest->send(('https://www.' . ($this->debug ? 'sandbox.' : '') . 'paypal.com/cgi-bin/webscr?cmd=_notify-validate'), http_build_query($_POST), 'post');
-
-		if ($objRequest->hasError())
-		{
-			$this->log('Request Error: ' . $objRequest->error, __METHOD__, TL_ERROR);
-			exit;
-		}
-		elseif ($objRequest->response == 'VERIFIED' && (\Input::post('receiver_email', true) == $this->paypal_account || $this->debug))
-		{
-			if (($objOrder = Order::findByPk(\Input::post('invoice'))) === null)
-			{
-				$this->log('Order ID "' . \Input::post('invoice') . '" not found', __METHOD__, TL_ERROR);
-				return;
-			}
-
-			// Validate payment data (see #2221)
-			if ($objOrder->currency != \Input::post('mc_currency') || $objOrder->grandTotal != \Input::post('mc_gross'))
-			{
-				$this->log('IPN manipulation in payment from "' . \Input::post('payer_email') . '" !', __METHOD__, TL_ERROR);
-				return;
-			}
-
-			if (!$objOrder->checkout())
-			{
-				$this->log('IPN checkout for Order ID "' . \Input::post('invoice') . '" failed', __METHOD__, TL_ERROR);
-				return;
-			}
-
-			// Load / initialize data
-			$arrPayment = deserialize($objOrder->payment_data, true);
-
-			// Store request data in order for future references
-			$arrPayment['POSTSALE'][] = $_POST;
+        $this->log('Payment could not be processed.', __METHOD__, TL_ERROR);
+        $this->redirect($this->addToUrl('step=failed', true));
+    }
 
 
-			$arrData = $objOrder->getData();
-			$arrData['old_payment_status'] = $arrPayment['status'];
+    /**
+     * Process PayPal Instant Payment Notifications (IPN)
+     *
+     * @access public
+     * @return void
+     */
+    public function processPostSale()
+    {
+        $objRequest = new Request();
+        $objRequest->send(('https://www.' . ($this->debug ? 'sandbox.' : '') . 'paypal.com/cgi-bin/webscr?cmd=_notify-validate'), http_build_query($_POST), 'post');
 
-			$arrPayment['status'] = \Input::post('payment_status');
-			$arrData['new_payment_status'] = $arrPayment['status'];
+        if ($objRequest->hasError())
+        {
+            $this->log('Request Error: ' . $objRequest->error, __METHOD__, TL_ERROR);
+            exit;
+        }
+        elseif ($objRequest->response == 'VERIFIED' && (\Input::post('receiver_email', true) == $this->paypal_account || $this->debug))
+        {
+            if (($objOrder = Order::findByPk(\Input::post('invoice'))) === null)
+            {
+                $this->log('Order ID "' . \Input::post('invoice') . '" not found', __METHOD__, TL_ERROR);
+                return;
+            }
 
-			// array('pending','processing','complete','on_hold', 'cancelled'),
-			switch( $arrPayment['status'] )
-			{
-				case 'Completed':
-					$objOrder->date_paid = time();
-					break;
+            // Validate payment data (see #2221)
+            if ($objOrder->currency != \Input::post('mc_currency') || $objOrder->grandTotal != \Input::post('mc_gross'))
+            {
+                $this->log('IPN manipulation in payment from "' . \Input::post('payer_email') . '" !', __METHOD__, TL_ERROR);
+                return;
+            }
 
-				case 'Canceled_Reversal':
-				case 'Denied':
-				case 'Expired':
-				case 'Failed':
-				case 'Voided':
-					$objOrder->date_paid = '';
-					$objOrder->status = $this->Isotope->Config->orderstatus_error;
-					break;
+            if (!$objOrder->checkout())
+            {
+                $this->log('IPN checkout for Order ID "' . \Input::post('invoice') . '" failed', __METHOD__, TL_ERROR);
+                return;
+            }
 
-				case 'In-Progress':
-				case 'Partially_Refunded':
-				case 'Pending':
-				case 'Processed':
-				case 'Refunded':
-				case 'Reversed':
-					break;
-			}
+            // Load / initialize data
+            $arrPayment = deserialize($objOrder->payment_data, true);
 
-			$objOrder->payment_data = $arrPayment;
-
-			$objOrder->save();
-
-			$this->log('PayPal IPN: data accepted', __METHOD__, TL_GENERAL);
-		}
-		else
-		{
-			$this->log('PayPal IPN: data rejected (' . $objRequest->response . ')', __METHOD__, TL_ERROR);
-		}
-
-		header('HTTP/1.1 200 OK');
-		exit;
-	}
+            // Store request data in order for future references
+            $arrPayment['POSTSALE'][] = $_POST;
 
 
-	/**
-	 * Return the PayPal form.
-	 *
-	 * @access public
-	 * @return string
-	 */
-	public function checkoutForm()
-	{
-		if (($objOrder = Order::findOneBy('cart_id', $this->Isotope->Cart->id)) === null)
-		{
-			$this->redirect($this->addToUrl('step=failed', true));
-		}
+            $arrData = $objOrder->getData();
+            $arrData['old_payment_status'] = $arrPayment['status'];
 
-		$objAddress = $this->Isotope->Cart->billingAddress;
-		list($endTag, $startScript, $endScript) = \Isotope\Frontend::getElementAndScriptTags();
+            $arrPayment['status'] = \Input::post('payment_status');
+            $arrData['new_payment_status'] = $arrPayment['status'];
 
-		$strBuffer = '
+            // array('pending','processing','complete','on_hold', 'cancelled'),
+            switch( $arrPayment['status'] )
+            {
+                case 'Completed':
+                    $objOrder->date_paid = time();
+                    break;
+
+                case 'Canceled_Reversal':
+                case 'Denied':
+                case 'Expired':
+                case 'Failed':
+                case 'Voided':
+                    $objOrder->date_paid = '';
+                    $objOrder->status = $this->Isotope->Config->orderstatus_error;
+                    break;
+
+                case 'In-Progress':
+                case 'Partially_Refunded':
+                case 'Pending':
+                case 'Processed':
+                case 'Refunded':
+                case 'Reversed':
+                    break;
+            }
+
+            $objOrder->payment_data = $arrPayment;
+
+            $objOrder->save();
+
+            $this->log('PayPal IPN: data accepted', __METHOD__, TL_GENERAL);
+        }
+        else
+        {
+            $this->log('PayPal IPN: data rejected (' . $objRequest->response . ')', __METHOD__, TL_ERROR);
+        }
+
+        header('HTTP/1.1 200 OK');
+        exit;
+    }
+
+
+    /**
+     * Return the PayPal form.
+     *
+     * @access public
+     * @return string
+     */
+    public function checkoutForm()
+    {
+        if (($objOrder = Order::findOneBy('cart_id', $this->Isotope->Cart->id)) === null)
+        {
+            $this->redirect($this->addToUrl('step=failed', true));
+        }
+
+        $objAddress = $this->Isotope->Cart->billingAddress;
+        list($endTag, $startScript, $endScript) = \Isotope\Frontend::getElementAndScriptTags();
+
+        $strBuffer = '
 <h2>' . $GLOBALS['TL_LANG']['MSC']['pay_with_redirect'][0] . '</h2>
 <p class="message">' . $GLOBALS['TL_LANG']['MSC']['pay_with_redirect'][1] . '</p>
 <form id="payment_form" action="https://www.' . ($this->debug ? 'sandbox.' : '') . 'paypal.com/cgi-bin/webscr" method="post">
@@ -181,56 +181,56 @@ class Paypal extends Payment
 <input type="hidden" name="business" value="' . $this->paypal_account . '"' . $endTag . '
 <input type="hidden" name="lc" value="' . strtoupper($GLOBALS['TL_LANGUAGE']) . '"' . $endTag;
 
-		foreach( $this->Isotope->Cart->getProducts() as $objProduct )
-		{
-			$strOptions = '';
-			$arrOptions = $objProduct->getOptions();
+        foreach( $this->Isotope->Cart->getProducts() as $objProduct )
+        {
+            $strOptions = '';
+            $arrOptions = $objProduct->getOptions();
 
-			if (is_array($arrOptions) && !empty($arrOptions))
-			{
-				$options = array();
+            if (is_array($arrOptions) && !empty($arrOptions))
+            {
+                $options = array();
 
-				foreach( $arrOptions as $option )
-				{
-					$options[] = $option['label'] . ': ' . $option['value'];
-				}
+                foreach( $arrOptions as $option )
+                {
+                    $options[] = $option['label'] . ': ' . $option['value'];
+                }
 
-				$strOptions = ' ('.implode(', ', $options).')';
-			}
+                $strOptions = ' ('.implode(', ', $options).')';
+            }
 
-			$strBuffer .= '
+            $strBuffer .= '
 <input type="hidden" name="item_number_'.++$i.'" value="' . $objProduct->sku . '"' . $endTag . '
 <input type="hidden" name="item_name_'.$i.'" value="' . $objProduct->name . $strOptions . '"' . $endTag . '
 <input type="hidden" name="amount_'.$i.'" value="' . $objProduct->price . '"/>
 <input type="hidden" name="quantity_'.$i.'" value="' . $objProduct->quantity_requested . '"' . $endTag;
-		}
+        }
 
-		$fltDiscount = 0;
+        $fltDiscount = 0;
 
-		foreach( $this->Isotope->Cart->getSurcharges() as $arrSurcharge )
-		{
-			if ($arrSurcharge['add'] === false)
-				continue;
+        foreach( $this->Isotope->Cart->getSurcharges() as $arrSurcharge )
+        {
+            if ($arrSurcharge['add'] === false)
+                continue;
 
-			// PayPal does only support one single discount item
-			if ($arrSurcharge['total_price'] < 0)
-			{
-				$fltDiscount -= $arrSurcharge['total_price'];
-				continue;
-			}
+            // PayPal does only support one single discount item
+            if ($arrSurcharge['total_price'] < 0)
+            {
+                $fltDiscount -= $arrSurcharge['total_price'];
+                continue;
+            }
 
-			$strBuffer .= '
+            $strBuffer .= '
 <input type="hidden" name="item_name_'.++$i.'" value="' . $arrSurcharge['label'] . '"' . $endTag . '
 <input type="hidden" name="amount_'.$i.'" value="' . $arrSurcharge['total_price'] . '"' . $endTag;
-		}
+        }
 
-		if ($fltDiscount > 0)
-		{
-			$strBuffer .= '
+        if ($fltDiscount > 0)
+        {
+            $strBuffer .= '
 <input type="hidden" name="discount_amount_cart" value="' . $fltDiscount . '"' . $endTag;
-		}
+        }
 
-		$strBuffer .= '
+        $strBuffer .= '
 <input type="hidden" name="no_shipping" value="1"' . $endTag . '
 <input type="hidden" name="no_note" value="1"' . $endTag . '
 <input type="hidden" name="currency_code" value="' . $this->Isotope->Config->currency . '"' . $endTag . '
@@ -262,7 +262,6 @@ window.addEvent( \'domready\' , function() {
 });
 ' . $endScript;
 
-		return $strBuffer;
-	}
+        return $strBuffer;
+    }
 }
-

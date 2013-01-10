@@ -25,45 +25,45 @@ namespace Isotope\Widget;
 class InheritCheckBox extends \CheckBox
 {
 
-	/**
-	 * Disable mandatory validation for inherited attributes
-	 */
-	public function validate()
-	{
-		parent::validate();
+    /**
+     * Disable mandatory validation for inherited attributes
+     */
+    public function validate()
+    {
+        parent::validate();
 
-		if (is_array($this->varValue) && !empty($this->varValue))
-		{
-			foreach ($this->varValue as $field)
-			{
-				$GLOBALS['TL_DCA']['tl_iso_products']['fields'][$field]['eval']['mandatory'] = false;
-			}
-		}
-	}
+        if (is_array($this->varValue) && !empty($this->varValue))
+        {
+            foreach ($this->varValue as $field)
+            {
+                $GLOBALS['TL_DCA']['tl_iso_products']['fields'][$field]['eval']['mandatory'] = false;
+            }
+        }
+    }
 
 
-	/**
-	 * Generate the widget and return it as string
-	 * @return string
-	 */
-	public function generate()
-	{
-		$arrFields = array();
-		$arrOptions = array();
+    /**
+     * Generate the widget and return it as string
+     * @return string
+     */
+    public function generate()
+    {
+        $arrFields = array();
+        $arrOptions = array();
 
-		foreach ($this->arrOptions as $i=>$arrOption)
-		{
-			$arrFields[] = $arrOption['value'];
-			$arrOptions[] = $this->generateCheckbox($arrOption, $i);
-		}
+        foreach ($this->arrOptions as $i=>$arrOption)
+        {
+            $arrFields[] = $arrOption['value'];
+            $arrOptions[] = $this->generateCheckbox($arrOption, $i);
+        }
 
-		// Add a "no entries found" message if there are no options
-		if (empty($arrOptions))
-		{
-			$arrOptions[]= '<p class="tl_noopt">'.$GLOBALS['TL_LANG']['MSC']['noResult'].'</p>';
-		}
+        // Add a "no entries found" message if there are no options
+        if (empty($arrOptions))
+        {
+            $arrOptions[]= '<p class="tl_noopt">'.$GLOBALS['TL_LANG']['MSC']['noResult'].'</p>';
+        }
 
-		$strJS = "
+        $strJS = "
 <script>
 window.addEvent('domready', function() {
   Isotope.inheritFields(['" . implode("','", $arrFields) . "'], '" . str_replace("'", "\'", $GLOBALS['ISO_LANG']['MSC']['useDefault']) . "');
@@ -72,30 +72,30 @@ window.addEvent('domready', function() {
 ";
 
         return sprintf('<div id="ctrl_%s" class="%s%s">%s</div>%s%s',
-						$this->strId,
-						'tl_checkbox_container',
-						(strlen($this->strClass) ? ' ' . $this->strClass : ''),
-						str_replace('<br></div><br>', '</div>', implode('<br>', $arrOptions)),
-						$this->wizard,
-						$strJS);
-	}
+                        $this->strId,
+                        'tl_checkbox_container',
+                        (strlen($this->strClass) ? ' ' . $this->strClass : ''),
+                        str_replace('<br></div><br>', '</div>', implode('<br>', $arrOptions)),
+                        $this->wizard,
+                        $strJS);
+    }
 
 
-	/**
-	 * Generate a checkbox and return it as string
-	 * @param array
-	 * @param integer
-	 * @return string
-	 */
-	protected function generateCheckbox($arrOption, $i)
-	{
-		return sprintf('<input type="checkbox" name="%s" id="opt_%s" class="tl_checkbox" value="%s"%s%s onfocus="Backend.getScrollOffset();"> <label for="opt_%s">%s</label>',
-						$this->strName . '[]',
-						$this->strId.'_'.$i,
-						specialchars($arrOption['value'], true),
-						$this->isChecked($arrOption),
-						$this->getAttributes(),
-						$this->strId.'_'.$i,
-						$arrOption['label']);
-	}
+    /**
+     * Generate a checkbox and return it as string
+     * @param array
+     * @param integer
+     * @return string
+     */
+    protected function generateCheckbox($arrOption, $i)
+    {
+        return sprintf('<input type="checkbox" name="%s" id="opt_%s" class="tl_checkbox" value="%s"%s%s onfocus="Backend.getScrollOffset();"> <label for="opt_%s">%s</label>',
+                        $this->strName . '[]',
+                        $this->strId.'_'.$i,
+                        specialchars($arrOption['value'], true),
+                        $this->isChecked($arrOption),
+                        $this->getAttributes(),
+                        $this->strId.'_'.$i,
+                        $arrOption['label']);
+    }
 }

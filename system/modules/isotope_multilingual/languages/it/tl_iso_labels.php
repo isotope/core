@@ -31,4 +31,3 @@ $GLOBALS['TL_LANG']['tl_iso_labels']['delete'][1] = 'Cancella etichetta ID %s';
 $GLOBALS['TL_LANG']['tl_iso_labels']['show'][0] = 'Dettagli etichetta';
 $GLOBALS['TL_LANG']['tl_iso_labels']['show'][1] = 'Mostra i dettagli etichetta ID %s';
 $GLOBALS['TL_LANG']['tl_iso_labels']['label_legend'] = 'Traduzione etichetta';
-

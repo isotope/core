@@ -20,4 +20,3 @@
 
 $GLOBALS['TL_LANG']['MOD']['isotope_rules'][0] = 'Isotope eCommerce: Regeln & Gutscheine';
 $GLOBALS['TL_LANG']['MOD']['iso_rules'][0] = 'Regeln & Gutscheine';
-

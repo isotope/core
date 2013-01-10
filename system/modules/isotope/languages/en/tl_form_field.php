@@ -18,4 +18,3 @@
  * Fields
  */
 $GLOBALS['TL_LANG']['FFL']['textCollection']        = array('Text collection field', 'one or more lines of input fields for a short or medium text entries.');
-

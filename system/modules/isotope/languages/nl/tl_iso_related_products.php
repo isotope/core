@@ -36,4 +36,3 @@ $GLOBALS['TL_LANG']['tl_iso_related_products']['pastenew'][0] = 'Voeg nieuw toe 
 $GLOBALS['TL_LANG']['tl_iso_related_products']['pastenew'][1] = 'Voeg nieuw to na categorie ID %s';
 $GLOBALS['TL_LANG']['tl_iso_related_products']['category_legend'] = 'Categorie';
 $GLOBALS['TL_LANG']['tl_iso_related_products']['products_legend'] = 'Gerelateerde producten';
-

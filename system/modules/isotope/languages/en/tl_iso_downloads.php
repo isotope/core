@@ -54,4 +54,3 @@ $GLOBALS['TL_LANG']['tl_iso_downloads']['years']				= 'Years';
 $GLOBALS['TL_LANG']['tl_iso_downloads']['file_legend']			= 'Attachement';
 $GLOBALS['TL_LANG']['tl_iso_downloads']['name_legend']			= 'Title & Description';
 $GLOBALS['TL_LANG']['tl_iso_downloads']['limit_legend']			= 'Limits';
-

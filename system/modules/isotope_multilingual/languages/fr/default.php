@@ -31,4 +31,3 @@ $GLOBALS['ISO_LANG']['MSC']['translationEdit']        = 'Modifier le fichier %s 
 $GLOBALS['ISO_LANG']['MSC']['translationSelect']      = 'Sélectionnez une extension et un fichier.';
 $GLOBALS['ISO_LANG']['MSC']['translationError']       = 'Le fichier cible ne peut être analysé.';
 $GLOBALS['ISO_LANG']['MSC']['translationErrorSource'] = 'Le fichier source ne peut être analysé.';
-

@@ -42,4 +42,3 @@ $GLOBALS['TL_LANG']['tl_iso_related_categories']['pasteinto'][0] = 'Darin einfü
 $GLOBALS['TL_LANG']['tl_iso_related_categories']['pasteinto'][1] = 'In Kategorie ID %s einfügen';
 $GLOBALS['TL_LANG']['tl_iso_related_categories']['name_legend'] = 'Name';
 $GLOBALS['TL_LANG']['tl_iso_related_categories']['redirect_legend'] = 'Weiterleitungs-Einstellungen';
-

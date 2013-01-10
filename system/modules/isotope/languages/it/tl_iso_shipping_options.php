@@ -37,4 +37,3 @@ $GLOBALS['TL_LANG']['tl_iso_shipping_options']['delete'][0] = 'Cancella la Tarif
 $GLOBALS['TL_LANG']['tl_iso_shipping_options']['delete'][1] = 'Cancella la Tariffa Spedizione ID %';
 $GLOBALS['TL_LANG']['tl_iso_shipping_options']['show'][0] = 'Dettagli Tariffa Spedizione';
 $GLOBALS['TL_LANG']['tl_iso_shipping_options']['show'][1] = 'Visualizza i dettagli Tariffa Spedizione ID %s';
-

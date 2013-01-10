@@ -23,29 +23,28 @@ namespace Isotope\Gallery;
 class Zoom extends Inline
 {
 
-	/**
-	 * Template
-	 * @var string
-	 */
-	protected $strTemplate = 'iso_gallery_zoom';
+    /**
+     * Template
+     * @var string
+     */
+    protected $strTemplate = 'iso_gallery_zoom';
 
 
-	/**
-	 * Generate gallery
-	 * @param string
-	 * @param integer
-	 * @param boolean
-	 */
-	public function generateGallery($strType='gallery', $intSkip=0, $blnForce=false)
-	{
-		// Include scripts and styles
-		if (version_compare(MOOTOOLS_CORE, '1.3.0') >= 0)
-		{
-			$GLOBALS['TL_JAVASCRIPT'][] = 'system/modules/isotope/assets/zoomgallery.min.js';
-			$GLOBALS['TL_CSS'][] = 'system/modules/isotope/assets/zoomgallery.min.css';
-		}
+    /**
+     * Generate gallery
+     * @param string
+     * @param integer
+     * @param boolean
+     */
+    public function generateGallery($strType='gallery', $intSkip=0, $blnForce=false)
+    {
+        // Include scripts and styles
+        if (version_compare(MOOTOOLS_CORE, '1.3.0') >= 0)
+        {
+            $GLOBALS['TL_JAVASCRIPT'][] = 'system/modules/isotope/assets/zoomgallery.min.js';
+            $GLOBALS['TL_CSS'][] = 'system/modules/isotope/assets/zoomgallery.min.css';
+        }
 
-		return parent::generateGallery($strType, $intSkip, $blnForce);
-	}
+        return parent::generateGallery($strType, $intSkip, $blnForce);
+    }
 }
-

@@ -50,4 +50,3 @@ $GLOBALS['TL_LANG']['XPL']['isoMailTokens'][16][1] = 'Campi individuali per l\'i
 $GLOBALS['TL_LANG']['XPL']['isoMailTokens'][17][0] = '##form_...##';
 $GLOBALS['TL_LANG']['XPL']['isoMailTokens'][17][1] = 'Recupera i dati del form condizionale. Usa il prefisso "form_" e il nome del campo.';
 $GLOBALS['TL_LANG']['XPL']['mediaManager'] = '<p class="tl_help_table">Per caricare una nuova immagine selezioni il file e salvi il prodotto. Dopo aver caricato con successo, viene visualizzata un\'anteprima del messaggio e vicino ad essa puo\' inserire il testo alternativo e una descrizione. Per immagini multipli, puo\' fare click sulle frecce e cambiare la loro posizione, l\'immagine in cima è quella usata come immagine principale per ogni prodotto.</p>';
-

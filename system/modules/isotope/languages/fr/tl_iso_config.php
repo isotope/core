@@ -162,4 +162,3 @@ $GLOBALS['TL_LANG']['tl_iso_config']['currency_legend']  = 'Formatage de la monn
 $GLOBALS['TL_LANG']['tl_iso_config']['converter_legend'] = 'Conversion de la monnaie';
 $GLOBALS['TL_LANG']['tl_iso_config']['order_legend']     = 'Commandes';
 $GLOBALS['TL_LANG']['tl_iso_config']['images_legend']    = 'Images';
-

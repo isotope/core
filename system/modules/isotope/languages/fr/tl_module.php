@@ -116,5 +116,3 @@ $GLOBALS['TL_LANG']['tl_module']['sortingDirection']['DESC']                    
 $GLOBALS['TL_LANG']['tl_module']['iso_order_conditions_position']['top']               = 'Dessus (avant l\'adresse)';
 $GLOBALS['TL_LANG']['tl_module']['iso_order_conditions_position']['before']            = 'Avant la liste des produits';
 $GLOBALS['TL_LANG']['tl_module']['iso_order_conditions_position']['after']             = 'Après la liste des produits';
-
-

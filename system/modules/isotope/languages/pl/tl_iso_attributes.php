@@ -98,4 +98,3 @@ $GLOBALS['TL_LANG']['tl_iso_attributes']['options_legend']			= 'Opcje';
 $GLOBALS['TL_LANG']['tl_iso_attributes']['config_legend']			= 'Konfiguracja atrybutu';
 $GLOBALS['TL_LANG']['tl_iso_attributes']['validation_legend']		= 'Walidacja inputu';
 $GLOBALS['TL_LANG']['tl_iso_attributes']['search_filters_legend']	= 'Ustawienia wyszukiwania i filtrowania';
-

@@ -30,9 +30,8 @@ $GLOBALS['TL_DCA']['tl_user']['fields']['admin']['eval']['tl_class'] = 'w50';
 
 $GLOBALS['TL_DCA']['tl_user']['fields']['translation'] = array
 (
-	'label'		=> &$GLOBALS['TL_LANG']['tl_user']['translation'],
-	'inputType'	=> 'select',
-	'options'	=> array_diff_key($this->getLanguages(), array('en'=>'English')),
-	'eval'		=> array('includeBlankOption'=>true, 'tl_class'=>'w50'),
+    'label'		=> &$GLOBALS['TL_LANG']['tl_user']['translation'],
+    'inputType'	=> 'select',
+    'options'	=> array_diff_key($this->getLanguages(), array('en'=>'English')),
+    'eval'		=> array('includeBlankOption'=>true, 'tl_class'=>'w50'),
 );
-

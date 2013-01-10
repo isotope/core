@@ -47,4 +47,3 @@ $GLOBALS['TL_LANG']['tl_iso_shipping_options']['edit']				= array('Edit Shipping
 $GLOBALS['TL_LANG']['tl_iso_shipping_options']['copy']				= array('Copy Shipping Rate', 'Copy Shipping Rate ID %s');
 $GLOBALS['TL_LANG']['tl_iso_shipping_options']['delete']			= array('Delete Shipping Rate', 'Delete Shipping Rate ID %s');
 $GLOBALS['TL_LANG']['tl_iso_shipping_options']['show']				= array('Shipping Rate Details', 'Show details of Shipping Rate ID %s');
-

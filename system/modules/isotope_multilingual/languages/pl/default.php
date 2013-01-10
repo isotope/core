@@ -17,4 +17,3 @@ $GLOBALS['ISO_LANG']['MSC']['translationEdit'] = 'Edytuj plik %s dla rozrzerzeni
 $GLOBALS['ISO_LANG']['MSC']['translationSelect'] = 'Prosze wybrać rozszerzenie i plik.';
 $GLOBALS['ISO_LANG']['MSC']['translationError'] = 'Plik docelowy nie mógł zostać (pharsed?)';
 $GLOBALS['ISO_LANG']['MSC']['translationErrorSource'] = 'Plik docelowy nie mógł zostać (pharsed?)';
-

@@ -61,4 +61,3 @@ $GLOBALS['TL_LANG']['DIV']['nl']['NL-OV'] = 'Overijssel';
 $GLOBALS['TL_LANG']['DIV']['nl']['NL-UT'] = 'Utrecht';
 $GLOBALS['TL_LANG']['DIV']['nl']['NL-ZE'] = 'Zeeland';
 $GLOBALS['TL_LANG']['DIV']['nl']['NL-ZH'] = 'Zuid-Holland';
-

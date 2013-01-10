@@ -26,4 +26,3 @@ $GLOBALS['TL_LANG']['MOD']['isotope_multilingual'] = array('Isotope eCommerce: M
 $GLOBALS['TL_LANG']['IMD']['translation']		= 'Multilingual Support';
 $GLOBALS['TL_LANG']['IMD']['iso_labels']		= array('Translate Labels', 'Various labels in Isotope eCommerce should be translated to support a multilingual shop. Few examples are payment module names and product attribute options. Using this tool you can translate the label to multiple languages. Most of the fields will show an autocomplete-list of available labels. Additionally, you can use the InsertTag {{isolabel::???}} to replace a label.');
 $GLOBALS['TL_LANG']['IMD']['iso_translation']	= array('Translate Core', 'This tool allows you to directly create and edit language files for all Isotope eCommerce extensions.<br>Use this tool with caution, it has not been fully tested!');
-

@@ -41,4 +41,3 @@ $GLOBALS['TL_LANG']['tl_iso_related_products']['pastenew']			= array('Add new at
  */
 $GLOBALS['TL_LANG']['tl_iso_related_products']['category_legend']	= 'Category';
 $GLOBALS['TL_LANG']['tl_iso_related_products']['products_legend']	= 'Related products';
-

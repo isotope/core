@@ -72,4 +72,3 @@ $GLOBALS['TL_LANG']['tl_iso_tax_rate']['rate_legend']      = 'Taux';
 $GLOBALS['TL_LANG']['tl_iso_tax_rate']['location_legend']  = 'Lieu';
 $GLOBALS['TL_LANG']['tl_iso_tax_rate']['condition_legend'] = 'Conditions';
 $GLOBALS['TL_LANG']['tl_iso_tax_rate']['config_legend']    = 'Configuration';
-

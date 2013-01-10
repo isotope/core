@@ -16,8 +16,8 @@
  */
 ClassLoader::addClasses(array
 (
-	// Classes
-	'Isotope\IsotopeRules'             => 'system/modules/isotope_rules/classes/IsotopeRules.php',
+    // Classes
+    'Isotope\IsotopeRules'             => 'system/modules/isotope_rules/classes/IsotopeRules.php',
 ));
 
 
@@ -26,5 +26,5 @@ ClassLoader::addClasses(array
  */
 TemplateLoader::addFiles(array
 (
-	'iso_coupons'    => 'system/modules/isotope_rules/templates',
+    'iso_coupons'    => 'system/modules/isotope_rules/templates',
 ));

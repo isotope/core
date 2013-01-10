@@ -60,4 +60,3 @@ $GLOBALS['TL_LANG']['tl_iso_addresses']['copy'][0] = 'Duplica indirizzo';
 $GLOBALS['TL_LANG']['tl_iso_addresses']['copy'][1] = 'Duplica indirizzo ID %s';
 $GLOBALS['TL_LANG']['tl_iso_addresses']['delete'][0] = 'Cancella indirizzo';
 $GLOBALS['TL_LANG']['tl_iso_addresses']['delete'][1] = 'Cancella indirizzo ID %s';
-

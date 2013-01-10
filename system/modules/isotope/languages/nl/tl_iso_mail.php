@@ -39,4 +39,3 @@ $GLOBALS['TL_LANG']['tl_iso_mail']['show'][1] = 'Details voor e-mail template ID
 $GLOBALS['TL_LANG']['tl_iso_mail']['name_legend'] = 'Naam';
 $GLOBALS['TL_LANG']['tl_iso_mail']['address_legend'] = 'Adres';
 $GLOBALS['TL_LANG']['tl_iso_mail']['expert_legend'] = 'Expert Legend';
-

@@ -88,4 +88,3 @@ $GLOBALS['TL_LANG']['tl_iso_products']['options_legend'] = 'Produkt valgmulighed
 $GLOBALS['TL_LANG']['tl_iso_products']['media_legend'] = 'Billedindstillinger';
 $GLOBALS['TL_LANG']['tl_iso_products']['publish_legend'] = 'Publiseringsindstillinger';
 $GLOBALS['TL_LANG']['tl_iso_products']['variant_legend'] = 'Produkt variant indstillinger';
-

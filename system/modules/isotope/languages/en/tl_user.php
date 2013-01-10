@@ -40,4 +40,3 @@ $GLOBALS['TL_LANG']['tl_user']['iso_groupp']			= array('Product group permission
  * Legends
  */
 $GLOBALS['TL_LANG']['tl_user']['isotope_legend']		= 'Isotope eCommerce';
-

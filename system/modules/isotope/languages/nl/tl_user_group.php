@@ -19,4 +19,3 @@ $GLOBALS['TL_LANG']['tl_user_group']['iso_configs'][1] = 'Gebruikers kunnen de b
 $GLOBALS['TL_LANG']['tl_user_group']['iso_modules'][0] = 'Isotope Webwinkel Modules';
 $GLOBALS['TL_LANG']['tl_user_group']['iso_modules'][1] = 'Selecteer welke modules van de winkelinstellingen gebruikers van deze groep toegang tot hebben.';
 $GLOBALS['TL_LANG']['tl_user_group']['isotope_legend'] = 'Isotope Webwinkel';
-

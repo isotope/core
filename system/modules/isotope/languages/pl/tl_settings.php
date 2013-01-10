@@ -17,4 +17,3 @@
  * Fields
  */
 $GLOBALS['TL_LANG']['tl_settings']['iso_cartTimeout'] = array('Okres ważności koszyka gości', 'Tutaj możesz wprowadzić maksymalny czas ważności koszyka gości w sekundach (30 dni = 2592000 sekund).');
-

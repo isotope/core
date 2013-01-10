@@ -17,4 +17,3 @@
  * Fields
  */
 $GLOBALS['TL_LANG']['tl_member']['address_book'] = array('Książka adresowa', 'Zarządzaj tą książką adresową.');
-

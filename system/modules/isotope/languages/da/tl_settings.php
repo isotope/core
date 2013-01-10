@@ -14,4 +14,3 @@
 
 $GLOBALS['TL_LANG']['tl_settings']['iso_cartTimeout'][0] = 'Levetid for gæsters kurv';
 $GLOBALS['TL_LANG']['tl_settings']['iso_cartTimeout'][1] = 'Her kan du indtaste levetiden for gæsters indkøbskurv i sekunder (3o dage = 2592000 sekunder).';
-

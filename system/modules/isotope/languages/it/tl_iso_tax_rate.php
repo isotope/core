@@ -51,4 +51,3 @@ $GLOBALS['TL_LANG']['tl_iso_tax_rate']['rate_legend'] = 'Legenda Tariffa';
 $GLOBALS['TL_LANG']['tl_iso_tax_rate']['location_legend'] = 'Legenda Collocazione';
 $GLOBALS['TL_LANG']['tl_iso_tax_rate']['condition_legend'] = 'Legenda Condizioni';
 $GLOBALS['TL_LANG']['tl_iso_tax_rate']['config_legend'] = 'Legenda Configurazioni';
-

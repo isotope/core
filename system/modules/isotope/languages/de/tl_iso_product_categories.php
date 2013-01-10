@@ -22,4 +22,3 @@ $GLOBALS['TL_LANG']['tl_iso_product_categories']['cut'][0] = 'Produkt verschiebe
 $GLOBALS['TL_LANG']['tl_iso_product_categories']['cut'][1] = 'Verschiebe Produkt ID %s';
 $GLOBALS['TL_LANG']['tl_iso_product_categories']['pasteafter'][0] = 'Oben hinzufügen';
 $GLOBALS['TL_LANG']['tl_iso_product_categories']['pasteafter'][1] = 'Füge es nach dem Produkt ID %s ein';
-

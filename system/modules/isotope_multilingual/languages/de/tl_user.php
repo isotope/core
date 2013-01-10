@@ -20,4 +20,3 @@
 
 $GLOBALS['TL_LANG']['tl_user']['translation'][0] = 'Übersetzungs-Sprache';
 $GLOBALS['TL_LANG']['tl_user']['translation'][1] = 'Wählen Sie die Sprache für die dieses Mitglied zuständig ist.';
-

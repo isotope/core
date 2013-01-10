@@ -39,4 +39,3 @@ $GLOBALS['TL_LANG']['tl_user']['iso_configp']			= array('Uprawnienia dla konfigu
  * Legends
  */
 $GLOBALS['TL_LANG']['tl_user']['isotope_legend']		= 'Isotope eCommerce';
-

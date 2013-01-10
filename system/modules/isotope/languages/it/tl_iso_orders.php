@@ -58,4 +58,3 @@ $GLOBALS['TL_LANG']['tl_iso_orders']['print_invoices'][0] = 'Stampa Fatture';
 $GLOBALS['TL_LANG']['tl_iso_orders']['print_invoices'][1] = 'Stampa una o più fatture in un solo documento di un certo stato dell\'ordine.';
 $GLOBALS['TL_LANG']['tl_iso_orders']['status_legend'] = 'Stato ordine';
 $GLOBALS['TL_LANG']['tl_iso_orders']['details_legend'] = 'Dettagli ordine';
-

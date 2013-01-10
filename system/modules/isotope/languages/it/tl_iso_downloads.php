@@ -35,4 +35,3 @@ $GLOBALS['TL_LANG']['tl_iso_downloads']['show'][1] = 'Mostra i dettagli del down
 $GLOBALS['TL_LANG']['tl_iso_downloads']['file_legend'] = 'Allegato';
 $GLOBALS['TL_LANG']['tl_iso_downloads']['name_legend'] = 'Titolo & Descrizione';
 $GLOBALS['TL_LANG']['tl_iso_downloads']['limit_legend'] = 'Limiti';
-

@@ -160,4 +160,3 @@ $GLOBALS['TL_LANG']['tl_iso_payment_modules']['delete'][0] = 'Zahlungsart lösch
 $GLOBALS['TL_LANG']['tl_iso_payment_modules']['delete'][1] = 'Zahlungsart ID %s löschen';
 $GLOBALS['TL_LANG']['tl_iso_payment_modules']['show'][0] = 'Zahlungsart-Details';
 $GLOBALS['TL_LANG']['tl_iso_payment_modules']['show'][1] = 'Details der Zahlungsart ID %s anzeigen';
-

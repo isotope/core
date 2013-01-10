@@ -29,8 +29,8 @@ class CybersourceClient extends \SoapClient
    {
      parent::__construct($wsdl, $options);
 
-   	 $this->merchantId = $strMerchantId;
-	 $this->transactionKey = $strTransactionKey;
+        $this->merchantId = $strMerchantId;
+     $this->transactionKey = $strTransactionKey;
    }
 
 // This section inserts the UsernameToken information in the outgoing SOAP message.
@@ -45,19 +45,19 @@ class CybersourceClient extends \SoapClient
      $objSoapHeaderDOM = new DOMDocument('1.0');
 
      try
-	 {
+     {
         $objRequestDOM->loadXML($objRequest);
-		$objSoapHeaderDOM->loadXML($strSoapHeader);
+        $objSoapHeaderDOM->loadXML($strSoapHeader);
 
-		$node = $objRequestDOM->importNode($objSoapHeaderDOM->firstChild, true);
-		$objRequestDOM->firstChild->insertBefore($node, $objRequestDOM->firstChild->firstChild);
+        $node = $objRequestDOM->importNode($objSoapHeaderDOM->firstChild, true);
+        $objRequestDOM->firstChild->insertBefore($node, $objRequestDOM->firstChild->firstChild);
 
         $objSOAPRequest = $objRequestDOM->saveXML();
 
      }
-	 catch (DOMException $e)
-	 {
-     	die( 'Error adding UsernameToken: ' . $e->code);
+     catch (DOMException $e)
+     {
+         die( 'Error adding UsernameToken: ' . $e->code);
      }
 
      return parent::__doRequest($objSOAPRequest, $strLocation, $strAction, $strVersion);
@@ -65,4 +65,3 @@ class CybersourceClient extends \SoapClient
 }
 
 
-?>

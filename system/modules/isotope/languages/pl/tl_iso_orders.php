@@ -61,4 +61,3 @@ $GLOBALS['TL_LANG']['tl_iso_orders']['details_legend']	= 'Szczegóły zamówieni
 $GLOBALS['TL_LANG']['tl_iso_orders']['email_legend']	= 'Informacje e-mail';
 $GLOBALS['TL_LANG']['tl_iso_orders']['billing_address_legend']	= 'Adres rozliczeniowy';
 $GLOBALS['TL_LANG']['tl_iso_orders']['shipping_address_legend']	= 'Adres dostawy';
-

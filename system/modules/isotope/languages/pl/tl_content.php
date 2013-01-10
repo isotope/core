@@ -19,4 +19,3 @@
 $GLOBALS['TL_LANG']['tl_content']['iso_reader_jumpTo']	= array('Strona czytnika produktów', 'Wybierz stronę, na którą zostanie przekierowany użytkownik, gdy kliknie link produktu.');
 $GLOBALS['TL_LANG']['tl_content']['iso_list_layout']	= array('Szablon listy produktów', 'Proszę wybrać szablon listy.');
 $GLOBALS['TL_LANG']['tl_content']['iso_attribute_set']	= array('Zestaw atrybutów produktu', 'Wybierz zestaw atrybutów produktu do ustawienia filtrowania listy na tej stronie.');
-

@@ -125,4 +125,3 @@ $GLOBALS['TL_LANG']['tl_iso_config']['config_legend'] = 'Instellingen';
 $GLOBALS['TL_LANG']['tl_iso_config']['price_legend'] = 'Prijzen';
 $GLOBALS['TL_LANG']['tl_iso_config']['currency_legend'] = 'Valutaopmaak';
 $GLOBALS['TL_LANG']['tl_iso_config']['images_legend'] = 'Afbeeldingen';
-

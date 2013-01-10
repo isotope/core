@@ -19,4 +19,3 @@ $GLOBALS['ISO_LANG']['MSC']['translationEdit'] = 'Modifichi il file %s dall\'est
 $GLOBALS['ISO_LANG']['MSC']['translationSelect'] = 'Per cortesia selezioni un\'estensione e un file.';
 $GLOBALS['ISO_LANG']['MSC']['translationError'] = 'E\' stato impossibile analizzare Il file destinazione';
 $GLOBALS['ISO_LANG']['MSC']['translationErrorSource'] = 'E\' stato impossibile analizzare Il file sorgente';
-

@@ -97,4 +97,3 @@ $GLOBALS['TL_LANG']['tl_iso_payment_modules']['edit']   			= array('Edytuj metod
 $GLOBALS['TL_LANG']['tl_iso_payment_modules']['copy']   			= array('Kopiuj metodę płatności', 'Kopiuj metodę płatności ID %s');
 $GLOBALS['TL_LANG']['tl_iso_payment_modules']['delete'] 			= array('Usuń metodę płatności', 'Usuń metodę płatności ID %s');
 $GLOBALS['TL_LANG']['tl_iso_payment_modules']['show']   			= array('Szczegóły metody płatności', 'Pokaż szczegóły metody płatności ID %s');
-

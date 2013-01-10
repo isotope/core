@@ -13,4 +13,3 @@
  */
 
 $GLOBALS['TL_LANG']['FFL']['textCollection'][0] = 'Поле текстовой коллекции';
-

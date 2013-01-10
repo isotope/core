@@ -367,4 +367,3 @@ $GLOBALS['TL_LANG']['MSG']['payone']['vor'] = 'Prepagamento';
 $GLOBALS['TL_LANG']['MSG']['payone']['rec'] = 'Fattura';
 $GLOBALS['TL_LANG']['MSG']['payone']['sb'] = 'Trasferimento bancario online';
 $GLOBALS['TL_LANG']['MSG']['payone']['wlt'] = 'e-Wallet';
-

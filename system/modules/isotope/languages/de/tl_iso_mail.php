@@ -65,4 +65,3 @@ $GLOBALS['TL_LANG']['tl_iso_mail']['mail_imported'] = 'Template "%s" wurde impor
  * Legends
  */
 $GLOBALS['TL_LANG']['tl_iso_mail']['document_legend']	= 'Bestelldokument';
-

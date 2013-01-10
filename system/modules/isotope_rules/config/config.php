@@ -19,12 +19,12 @@
  */
 array_insert($GLOBALS['BE_MOD']['isotope'], 2, array
 (
-	'iso_rules' => array
-	(
-		'tables'					=> array('tl_iso_rules'),
-		'javsacript'				=> 'system/modules/isotope/assets/backend.min.js',
-		'icon'						=> 'system/modules/isotope_rules/assets/auction-hammer-gavel.png'
-	),
+    'iso_rules' => array
+    (
+        'tables'					=> array('tl_iso_rules'),
+        'javsacript'				=> 'system/modules/isotope/assets/backend.min.js',
+        'icon'						=> 'system/modules/isotope_rules/assets/auction-hammer-gavel.png'
+    ),
 ));
 
 
@@ -42,4 +42,3 @@ $GLOBALS['ISO_HOOKS']['compileCart'][] 					= array('IsotopeRules', 'getCouponFo
 $GLOBALS['ISO_HOOKS']['checkoutSurcharge'][]			= array('IsotopeRules', 'getSurcharges');
 $GLOBALS['ISO_HOOKS']['preCheckout'][]					= array('IsotopeRules', 'writeRuleUsages');
 $GLOBALS['ISO_HOOKS']['transferredCollection'][]		= array('IsotopeRules', 'transferCoupons');
-

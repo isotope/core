@@ -20,4 +20,3 @@
 
 $GLOBALS['TL_LANG']['FFL']['textCollection'][0] = 'Text-Sammelfeld';
 $GLOBALS['TL_LANG']['FFL']['textCollection'][1] = 'Ein oder mehrere Zeilen eines Eingabefeldes für kurze oder mittellange Texteingaben';
-

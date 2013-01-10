@@ -62,4 +62,3 @@ $GLOBALS['TL_LANG']['tl_iso_addresses']['show']		= array('Szczegóły adresu', '
 $GLOBALS['TL_LANG']['tl_iso_addresses']['edit']		= array('Edytuj adres', 'Edytuj adres ID %s');
 $GLOBALS['TL_LANG']['tl_iso_addresses']['copy']		= array('Duplikuj adres', 'Duplikuj adres ID %s');
 $GLOBALS['TL_LANG']['tl_iso_addresses']['delete']	= array('Usuń adres', 'Usuń adres ID %s');
-

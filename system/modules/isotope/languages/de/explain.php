@@ -37,4 +37,3 @@ $GLOBALS['TL_LANG']['XPL']['isoMailTokens'][15][1] = 'Einzelne Felder der Rechnu
 $GLOBALS['TL_LANG']['XPL']['isoMailTokens'][16][1] = 'Einzelne Felder der Versandadresse.';
 $GLOBALS['TL_LANG']['XPL']['isoMailTokens'][17][1] = 'Verwenden Sie den Präfix "form_" und den Feldnamen, um Daten aus dem Formular der Bestellbestätigung zu verwenden.';
 $GLOBALS['TL_LANG']['XPL']['mediaManager'] = '<p class="tl_help_table">Wenn Sie ein neues Bild hochladen möchten, wählen Sie die Datei aus und speichern Sie das Produkt. Nach dem Sie das Bild erfolgreich hochgeladen haben, wird ein Vorschaubild angezeigt neben dem Sie den Alternativtext und eine Beschreibung eingeben können. Wenn Sie mehrere Bilder nutzen, können Sie ihre Reihenfolge durch Klicken auf die Pfeile rechts verändern. Das oberste Bild wird als Hauptbild des Produktes genutzt.';
-

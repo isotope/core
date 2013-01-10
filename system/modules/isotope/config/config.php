@@ -27,45 +27,45 @@
  */
 if (!is_array($GLOBALS['BE_MOD']['isotope']))
 {
-	array_insert($GLOBALS['BE_MOD'], 1, array('isotope' => array()));
+    array_insert($GLOBALS['BE_MOD'], 1, array('isotope' => array()));
 }
 
 array_insert($GLOBALS['BE_MOD']['isotope'], 0, array
 (
-	'iso_products' => array
-	(
-		'tables'					=> array('tl_iso_products', 'tl_iso_groups', 'tl_iso_product_categories', 'tl_iso_downloads', 'tl_iso_related_products', 'tl_iso_prices', 'tl_iso_price_tiers'),
-		'icon'						=> 'system/modules/isotope/assets/store-open.png',
-		'javascript'				=> 'system/modules/isotope/assets/backend.min.js',
-		'generate'					=> array('Isotope\tl_iso_products', 'generateVariants'),
-		'quick_edit'				=> array('Isotope\tl_iso_products', 'quickEditVariants'),
-		'import'					=> array('Isotope\tl_iso_products', 'importAssets'),
-	),
-	'iso_orders' => array
-	(
-		'tables'					=> array('tl_iso_orders', 'tl_iso_order_items'),
-		'icon'						=> 'system/modules/isotope/assets/shopping-basket.png',
-		'javascript'				=> 'system/modules/isotope/assets/backend.min.js',
-		'export_emails'     		=> array('Isotope\tl_iso_orders', 'exportOrderEmails'),
-		'print_order'				=> array('Isotope\tl_iso_orders', 'printInvoice'),
-		'print_invoices'			=> array('Isotope\tl_iso_orders', 'printInvoices'),
-		'payment'					=> array('Isotope\tl_iso_orders', 'paymentInterface'),
-		'shipping'					=> array('Isotope\tl_iso_orders', 'shippingInterface'),
-	),
-	'iso_setup' => array
-	(
-		'callback'					=> 'Isotope\BackendModule\Setup',
-		'tables'					=> array(),
-		'icon'						=> 'system/modules/isotope/assets/application-monitor.png',
-		'javascript'				=> 'system/modules/isotope/assets/backend.min.js',
-	),
+    'iso_products' => array
+    (
+        'tables'					=> array('tl_iso_products', 'tl_iso_groups', 'tl_iso_product_categories', 'tl_iso_downloads', 'tl_iso_related_products', 'tl_iso_prices', 'tl_iso_price_tiers'),
+        'icon'						=> 'system/modules/isotope/assets/store-open.png',
+        'javascript'				=> 'system/modules/isotope/assets/backend.min.js',
+        'generate'					=> array('Isotope\tl_iso_products', 'generateVariants'),
+        'quick_edit'				=> array('Isotope\tl_iso_products', 'quickEditVariants'),
+        'import'					=> array('Isotope\tl_iso_products', 'importAssets'),
+    ),
+    'iso_orders' => array
+    (
+        'tables'					=> array('tl_iso_orders', 'tl_iso_order_items'),
+        'icon'						=> 'system/modules/isotope/assets/shopping-basket.png',
+        'javascript'				=> 'system/modules/isotope/assets/backend.min.js',
+        'export_emails'     		=> array('Isotope\tl_iso_orders', 'exportOrderEmails'),
+        'print_order'				=> array('Isotope\tl_iso_orders', 'printInvoice'),
+        'print_invoices'			=> array('Isotope\tl_iso_orders', 'printInvoices'),
+        'payment'					=> array('Isotope\tl_iso_orders', 'paymentInterface'),
+        'shipping'					=> array('Isotope\tl_iso_orders', 'shippingInterface'),
+    ),
+    'iso_setup' => array
+    (
+        'callback'					=> 'Isotope\BackendModule\Setup',
+        'tables'					=> array(),
+        'icon'						=> 'system/modules/isotope/assets/application-monitor.png',
+        'javascript'				=> 'system/modules/isotope/assets/backend.min.js',
+    ),
 ));
 
 $GLOBALS['BE_MOD']['accounts']['member']['tables'][] = 'tl_iso_addresses';
 
 if (TL_MODE == 'BE')
 {
-	$GLOBALS['TL_CSS'][] = 'system/modules/isotope/assets/backend.min.css';
+    $GLOBALS['TL_CSS'][] = 'system/modules/isotope/assets/backend.min.css';
 }
 
 
@@ -74,87 +74,87 @@ if (TL_MODE == 'BE')
  */
 $GLOBALS['ISO_MOD'] = array
 (
-	'product' => array
-	(
-		'producttypes' => array
-		(
-			'tables'					=> array('tl_iso_producttypes'),
-			'icon'						=> 'system/modules/isotope/assets/drawer.png'
-		),
-		'attributes' => array
-		(
-			'tables'					=> array('tl_iso_attributes'),
-			'icon'						=> 'system/modules/isotope/assets/table-insert-column.png',
-		),
-		'related_categories' => array
-		(
-			'tables'					=> array('tl_iso_related_categories'),
-			'icon'						=> 'system/modules/isotope/assets/category.png',
-		),
-	),
-	'checkout' => array
-	(
-		'payment' => array
-		(
-			'tables'					=> array('tl_iso_payment_modules'),
-			'icon'						=> 'system/modules/isotope/assets/money-coin.png',
-		),
-		'shipping' => array
-		(
-				'tables'				=> array('tl_iso_shipping_modules','tl_iso_shipping_options'),
-				'icon'					=> 'system/modules/isotope/assets/box-label.png',
-		),
-		'tax_class' => array
-		(
-			'tables'					=> array('tl_iso_tax_class'),
-			'icon'						=> 'system/modules/isotope/assets/globe.png',
-		),
-		'tax_rate' => array
-		(
-			'tables'					=> array('tl_iso_tax_rate'),
-			'icon'						=> 'system/modules/isotope/assets/calculator.png',
-		),
-	),
-	'config' => array
-	(
-		'iso_mail' => array
-		(
-			'tables'					=> array('tl_iso_mail', 'tl_iso_mail_content'),
-			'icon'						=> 'system/modules/isotope/assets/mail-open-document-text.png',
-			'importMail'				=> array('Isotope\Backend', 'importMail'),
-			'exportMail'				=> array('Isotope\Backend', 'exportMail'),
-		),
-		'configs' => array
-		(
-			'tables'					=> array('tl_iso_config'),
-			'icon'						=> 'system/modules/isotope/assets/construction.png',
-		),
-		'baseprice' => array
-		(
-			'tables'					=> array('tl_iso_baseprice'),
-			'icon'						=> 'system/modules/isotope/assets/sort-price-descending.png',
-		),
-		'orderstatus' => array
-		(
-			'tables'					=> array('tl_iso_orderstatus'),
-			'icon'						=> 'system/modules/isotope/assets/traffic-light.png',
-		),
-	)
+    'product' => array
+    (
+        'producttypes' => array
+        (
+            'tables'					=> array('tl_iso_producttypes'),
+            'icon'						=> 'system/modules/isotope/assets/drawer.png'
+        ),
+        'attributes' => array
+        (
+            'tables'					=> array('tl_iso_attributes'),
+            'icon'						=> 'system/modules/isotope/assets/table-insert-column.png',
+        ),
+        'related_categories' => array
+        (
+            'tables'					=> array('tl_iso_related_categories'),
+            'icon'						=> 'system/modules/isotope/assets/category.png',
+        ),
+    ),
+    'checkout' => array
+    (
+        'payment' => array
+        (
+            'tables'					=> array('tl_iso_payment_modules'),
+            'icon'						=> 'system/modules/isotope/assets/money-coin.png',
+        ),
+        'shipping' => array
+        (
+                'tables'				=> array('tl_iso_shipping_modules','tl_iso_shipping_options'),
+                'icon'					=> 'system/modules/isotope/assets/box-label.png',
+        ),
+        'tax_class' => array
+        (
+            'tables'					=> array('tl_iso_tax_class'),
+            'icon'						=> 'system/modules/isotope/assets/globe.png',
+        ),
+        'tax_rate' => array
+        (
+            'tables'					=> array('tl_iso_tax_rate'),
+            'icon'						=> 'system/modules/isotope/assets/calculator.png',
+        ),
+    ),
+    'config' => array
+    (
+        'iso_mail' => array
+        (
+            'tables'					=> array('tl_iso_mail', 'tl_iso_mail_content'),
+            'icon'						=> 'system/modules/isotope/assets/mail-open-document-text.png',
+            'importMail'				=> array('Isotope\Backend', 'importMail'),
+            'exportMail'				=> array('Isotope\Backend', 'exportMail'),
+        ),
+        'configs' => array
+        (
+            'tables'					=> array('tl_iso_config'),
+            'icon'						=> 'system/modules/isotope/assets/construction.png',
+        ),
+        'baseprice' => array
+        (
+            'tables'					=> array('tl_iso_baseprice'),
+            'icon'						=> 'system/modules/isotope/assets/sort-price-descending.png',
+        ),
+        'orderstatus' => array
+        (
+            'tables'					=> array('tl_iso_orderstatus'),
+            'icon'						=> 'system/modules/isotope/assets/traffic-light.png',
+        ),
+    )
 );
 
 // Enable tables in iso_setup
 if ($_GET['do'] == 'iso_setup')
 {
-	foreach ($GLOBALS['ISO_MOD'] as $strGroup=>$arrModules)
-	{
-		foreach ($arrModules as $strModule => $arrConfig)
-		{
-			if (is_array($arrConfig['tables']))
-			{
-				$GLOBALS['BE_MOD']['isotope']['iso_setup']['tables'] = array_merge($GLOBALS['BE_MOD']['isotope']['iso_setup']['tables'], $arrConfig['tables']);
-			}
-		}
-	}
+    foreach ($GLOBALS['ISO_MOD'] as $strGroup=>$arrModules)
+    {
+        foreach ($arrModules as $strModule => $arrConfig)
+        {
+            if (is_array($arrConfig['tables']))
+            {
+                $GLOBALS['BE_MOD']['isotope']['iso_setup']['tables'] = array_merge($GLOBALS['BE_MOD']['isotope']['iso_setup']['tables'], $arrConfig['tables']);
+            }
+        }
+    }
 }
 
 
@@ -163,18 +163,18 @@ if ($_GET['do'] == 'iso_setup')
  */
 $GLOBALS['FE_MOD']['isotope'] = array
 (
-	'iso_productlist'			=> 'Isotope\Module\ProductList',
-	'iso_productvariantlist'	=> 'Isotope\Module\ProductVariantList',
-	'iso_productreader'			=> 'Isotope\Module\ProductReader',
-	'iso_cart'					=> 'Isotope\Module\Cart',
-	'iso_checkout'				=> 'Isotope\Module\Checkout',
-	'iso_productfilter'			=> 'Isotope\Module\ProductFilter',
-	'iso_cumulativefilter'		=> 'Isotope\Module\CumulativeFilter',
-	'iso_orderhistory'			=> 'Isotope\Module\OrderHistory',
-	'iso_orderdetails'			=> 'Isotope\Module\OrderDetails',
-	'iso_configswitcher'		=> 'Isotope\Module\ConfigSwitcher',
-	'iso_addressbook'			=> 'Isotope\Module\AddressBook',
-	'iso_relatedproducts'		=> 'Isotope\Module\RelatedProducts'
+    'iso_productlist'			=> 'Isotope\Module\ProductList',
+    'iso_productvariantlist'	=> 'Isotope\Module\ProductVariantList',
+    'iso_productreader'			=> 'Isotope\Module\ProductReader',
+    'iso_cart'					=> 'Isotope\Module\Cart',
+    'iso_checkout'				=> 'Isotope\Module\Checkout',
+    'iso_productfilter'			=> 'Isotope\Module\ProductFilter',
+    'iso_cumulativefilter'		=> 'Isotope\Module\CumulativeFilter',
+    'iso_orderhistory'			=> 'Isotope\Module\OrderHistory',
+    'iso_orderdetails'			=> 'Isotope\Module\OrderDetails',
+    'iso_configswitcher'		=> 'Isotope\Module\ConfigSwitcher',
+    'iso_addressbook'			=> 'Isotope\Module\AddressBook',
+    'iso_relatedproducts'		=> 'Isotope\Module\RelatedProducts'
 );
 
 
@@ -228,10 +228,10 @@ $GLOBALS['ISO_GAL']['zoom']              = 'Isotope\Gallery\Zoom';
  */
 $GLOBALS['ISO_PRODUCT'] = array
 (
-	'standard' => array
-	(
-		'class'	=> 'Isotope\Product\Standard',
-	),
+    'standard' => array
+    (
+        'class'	=> 'Isotope\Product\Standard',
+    ),
 );
 
 
@@ -293,8 +293,8 @@ $GLOBALS['ISO_HOOKS']['checkoutSurcharge'][]		= array('Isotope\Frontend', 'getSh
 
 if (TL_MODE == 'FE')
 {
-	// Do not parse backend templates
-	$GLOBALS['TL_HOOKS']['parseTemplate'][]			= array('Isotope\Frontend', 'addNavigationClass');
+    // Do not parse backend templates
+    $GLOBALS['TL_HOOKS']['parseTemplate'][]			= array('Isotope\Frontend', 'addNavigationClass');
 }
 
 
@@ -310,77 +310,77 @@ $GLOBALS['TL_CRON']['daily'][] = array('Isotope\Automator', 'convertCurrencies')
  */
 $GLOBALS['ISO_CHECKOUT_STEPS'] = array
 (
-	'address' => array
-	(
-		array('ModuleIsotopeCheckout', 'getBillingAddressInterface'),
-		array('ModuleIsotopeCheckout', 'getShippingAddressInterface'),
-	),
-	'shipping' => array
-	(
-		array('ModuleIsotopeCheckout', 'getShippingModulesInterface'),
-	),
-	'payment' => array
-	(
-		array('ModuleIsotopeCheckout', 'getPaymentModulesInterface'),
-	),
-	'review' => array
-	(
-		array('ModuleIsotopeCheckout', 'getOrderConditionsOnTop'),
-		array('ModuleIsotopeCheckout', 'getOrderInfoInterface'),
-		array('ModuleIsotopeCheckout', 'getOrderConditionsBeforeProducts'),
-		array('ModuleIsotopeCheckout', 'getOrderProductsInterface'),
-		array('ModuleIsotopeCheckout', 'getOrderConditionsAfterProducts'),
-	)
+    'address' => array
+    (
+        array('ModuleIsotopeCheckout', 'getBillingAddressInterface'),
+        array('ModuleIsotopeCheckout', 'getShippingAddressInterface'),
+    ),
+    'shipping' => array
+    (
+        array('ModuleIsotopeCheckout', 'getShippingModulesInterface'),
+    ),
+    'payment' => array
+    (
+        array('ModuleIsotopeCheckout', 'getPaymentModulesInterface'),
+    ),
+    'review' => array
+    (
+        array('ModuleIsotopeCheckout', 'getOrderConditionsOnTop'),
+        array('ModuleIsotopeCheckout', 'getOrderInfoInterface'),
+        array('ModuleIsotopeCheckout', 'getOrderConditionsBeforeProducts'),
+        array('ModuleIsotopeCheckout', 'getOrderProductsInterface'),
+        array('ModuleIsotopeCheckout', 'getOrderConditionsAfterProducts'),
+    )
 );
 
 $GLOBALS['ISO_ATTR'] = array
 (
-	'text' => array
-	(
-		'sql'		=> "varchar(255) NOT NULL default ''",
-		'useIndex'	=> true,
-	),
-	'textarea' => array
-	(
-		'sql'		=> "text NULL",
-	),
-	'select' => array
-	(
-		'sql'		=> "blob NULL",
-	),
-	'radio' => array
-	(
-		'sql'		=> "varchar(255) NOT NULL default ''",
-		'useIndex'	=> true,
-	),
-	'checkbox' => array
-	(
-		'sql'		=> "blob NULL",
-	),
-	'conditionalselect' => array
-	(
-		'sql'		=> "blob NULL",
-		'callback'	=> array(array('Isotope', 'mergeConditionalOptionData')),
-	),
-	'mediaManager' => array
-	(
-		'sql'		=> "blob NULL",
-	),
-	'fileTree' => array
-	(
-		'sql'		=> "blob NULL",
-	),
-	'downloads' => array
-	(
-		'sql'		=> "blob NULL",
-		'backend'	=> 'fileTree',
-	),
-	'upload' => array
-	(
-		'sql'				=> "varchar(255) NOT NULL default ''",
-		'backend'			=> false,
-		'customer_defined'	=> true,
-	),
+    'text' => array
+    (
+        'sql'		=> "varchar(255) NOT NULL default ''",
+        'useIndex'	=> true,
+    ),
+    'textarea' => array
+    (
+        'sql'		=> "text NULL",
+    ),
+    'select' => array
+    (
+        'sql'		=> "blob NULL",
+    ),
+    'radio' => array
+    (
+        'sql'		=> "varchar(255) NOT NULL default ''",
+        'useIndex'	=> true,
+    ),
+    'checkbox' => array
+    (
+        'sql'		=> "blob NULL",
+    ),
+    'conditionalselect' => array
+    (
+        'sql'		=> "blob NULL",
+        'callback'	=> array(array('Isotope', 'mergeConditionalOptionData')),
+    ),
+    'mediaManager' => array
+    (
+        'sql'		=> "blob NULL",
+    ),
+    'fileTree' => array
+    (
+        'sql'		=> "blob NULL",
+    ),
+    'downloads' => array
+    (
+        'sql'		=> "blob NULL",
+        'backend'	=> 'fileTree',
+    ),
+    'upload' => array
+    (
+        'sql'				=> "varchar(255) NOT NULL default ''",
+        'backend'			=> false,
+        'customer_defined'	=> true,
+    ),
 );
 
 
@@ -414,4 +414,3 @@ define('ISO_CLASS_EVENODD', 8);
 define('ISO_CLASS_FIRSTLAST', 16);
 define('ISO_CLASS_ROW', 32);
 define('ISO_CLASS_COL', 64);
-

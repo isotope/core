@@ -58,4 +58,3 @@ $GLOBALS['TL_LANG']['tl_iso_addresses']['copy'][0] = 'Kopier adres';
 $GLOBALS['TL_LANG']['tl_iso_addresses']['copy'][1] = 'Kopier adres id %s';
 $GLOBALS['TL_LANG']['tl_iso_addresses']['delete'][0] = 'Verwijder adres';
 $GLOBALS['TL_LANG']['tl_iso_addresses']['delete'][1] = 'Verwijder adres id %s';
-

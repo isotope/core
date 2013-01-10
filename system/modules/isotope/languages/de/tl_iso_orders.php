@@ -76,4 +76,3 @@ $GLOBALS['TL_LANG']['tl_iso_orders']['details_legend'] = 'Bestelldetails';
 $GLOBALS['TL_LANG']['tl_iso_orders']['email_legend']	= 'E-Mail Daten';
 $GLOBALS['TL_LANG']['tl_iso_orders']['billing_address_legend']	= 'Rechnungsadress-Daten';
 $GLOBALS['TL_LANG']['tl_iso_orders']['shipping_address_legend']	= 'Versandadress-Daten';
-

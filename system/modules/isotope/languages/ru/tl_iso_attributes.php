@@ -37,4 +37,3 @@ $GLOBALS['TL_LANG']['tl_iso_attributes']['discount'][0] = 'Скидка';
 $GLOBALS['TL_LANG']['tl_iso_attributes']['random'] = 'Случайный порядок';
 $GLOBALS['TL_LANG']['tl_iso_attributes']['description_legend'] = 'Описание';
 $GLOBALS['TL_LANG']['tl_iso_attributes']['options_legend'] = 'Опции';
-

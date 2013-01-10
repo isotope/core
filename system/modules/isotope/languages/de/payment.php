@@ -227,4 +227,3 @@ $GLOBALS['TL_LANG']['MSG']['payone']['vor']		= 'Vorkasse';
 $GLOBALS['TL_LANG']['MSG']['payone']['rec']		= 'Rechnung';
 $GLOBALS['TL_LANG']['MSG']['payone']['sb']		= 'Online-Überweisung';
 $GLOBALS['TL_LANG']['MSG']['payone']['wlt']		= 'e-Wallet';
-

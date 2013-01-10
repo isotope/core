@@ -106,4 +106,3 @@ $GLOBALS['TL_LANG']['tl_iso_attributes']['options_legend'] = 'Opties';
 $GLOBALS['TL_LANG']['tl_iso_attributes']['config_legend'] = 'Attribuut instellingen';
 $GLOBALS['TL_LANG']['tl_iso_attributes']['validation_legend'] = 'Invoercontrole';
 $GLOBALS['TL_LANG']['tl_iso_attributes']['search_filters_legend'] = 'Zoek en sorteerinstellingen';
-

@@ -24,4 +24,3 @@ $GLOBALS['TL_LANG']['tl_user_group']['iso_configs'][1] = 'Nutzer können Bestell
 $GLOBALS['TL_LANG']['tl_user_group']['iso_modules'][0] = 'Isotope-Module';
 $GLOBALS['TL_LANG']['tl_user_group']['iso_modules'][1] = 'Wählen Sie auf welche Shop-Konfigurationsmodule Nutzer dieser Gruppe zugreifen können.';
 $GLOBALS['TL_LANG']['tl_user_group']['isotope_legend'] = 'Isotope eCommerce';
-

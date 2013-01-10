@@ -30,4 +30,3 @@ $GLOBALS['TL_LANG']['tl_module']['iso_buttons'][0] = 'Кнопки';
 $GLOBALS['TL_LANG']['tl_module']['iso_buttons'][1] = 'Выберите кнопки для отображения.';
 $GLOBALS['TL_LANG']['tl_module']['iso_category_scope_ref']['global'][0] = 'Все категории';
 $GLOBALS['TL_LANG']['tl_module']['iso_category_scope_ref']['current_category'][0] = 'Текущая категория';
-

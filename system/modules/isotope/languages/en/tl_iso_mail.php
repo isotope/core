@@ -62,4 +62,3 @@ $GLOBALS['TL_LANG']['tl_iso_mail']['priority_ref']['2'] = 'high';
 $GLOBALS['TL_LANG']['tl_iso_mail']['priority_ref']['3'] = 'normal';
 $GLOBALS['TL_LANG']['tl_iso_mail']['priority_ref']['4'] = 'low';
 $GLOBALS['TL_LANG']['tl_iso_mail']['priority_ref']['5'] = 'very low';
-

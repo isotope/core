@@ -35,4 +35,3 @@ $GLOBALS['TL_LANG']['tl_iso_tax_class']['show'][0] = 'Dettagli Ordini';
 $GLOBALS['TL_LANG']['tl_iso_tax_class']['show'][1] = 'Mostra i dettagli della classe ID %s';
 $GLOBALS['TL_LANG']['tl_iso_tax_class']['name_legend'] = 'Nome';
 $GLOBALS['TL_LANG']['tl_iso_tax_class']['rate_legend'] = 'Aliquota d\'imposta';
-

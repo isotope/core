@@ -106,4 +106,3 @@ $GLOBALS['TL_LANG']['tl_iso_shipping_modules']['usps_service']['EXPRESS HFP COMM
 $GLOBALS['TL_LANG']['tl_iso_shipping_modules']['usps_service']['BPM'] = 'USPS Bound Printed Matter';
 $GLOBALS['TL_LANG']['tl_iso_shipping_modules']['usps_service']['MEDIA'] = 'USPS Media Mail';
 $GLOBALS['TL_LANG']['tl_iso_shipping_modules']['usps_service']['LIBRARY'] = 'USPS Library Mail';
-

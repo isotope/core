@@ -136,4 +136,3 @@ $GLOBALS['TL_LANG']['tl_iso_config']['config_legend'] = 'Konfiguration';
 $GLOBALS['TL_LANG']['tl_iso_config']['price_legend'] = 'Preise';
 $GLOBALS['TL_LANG']['tl_iso_config']['currency_legend'] = 'Währungs-Formattierung';
 $GLOBALS['TL_LANG']['tl_iso_config']['images_legend'] = 'Bilder';
-

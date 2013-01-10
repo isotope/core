@@ -23,57 +23,56 @@ namespace Isotope;
 class tl_iso_shipping_options extends \Backend
 {
 
-	/**
-	 * The current shipping class. Instantiated by the onload_callback.
-	 * @param object
-	 */
-	protected $Shipping;
+    /**
+     * The current shipping class. Instantiated by the onload_callback.
+     * @param object
+     */
+    protected $Shipping;
 
 
-	/**
-	 * Instantiate the shipping module and set the palette
-	 * @param object
-	 * @return void
-	 */
-	public function getModulePalette($dc)
-	{
-		if (\Input::get('act') == 'create')
-		{
-			return;
-		}
+    /**
+     * Instantiate the shipping module and set the palette
+     * @param object
+     * @return void
+     */
+    public function getModulePalette($dc)
+    {
+        if (\Input::get('act') == 'create')
+        {
+            return;
+        }
 
-		if (!strlen(\Input::get('act')) && !strlen(\Input::get('key')))
-		{
-			$objModule = $this->Database->execute("SELECT * FROM tl_iso_shipping_modules WHERE id=".$dc->id);
-		}
-		else
-		{
-			$objModule = $this->Database->execute("SELECT m.* FROM tl_iso_shipping_modules m, tl_iso_shipping_options o WHERE o.pid=m.id AND o.id=".$dc->id);
-		}
+        if (!strlen(\Input::get('act')) && !strlen(\Input::get('key')))
+        {
+            $objModule = $this->Database->execute("SELECT * FROM tl_iso_shipping_modules WHERE id=".$dc->id);
+        }
+        else
+        {
+            $objModule = $this->Database->execute("SELECT m.* FROM tl_iso_shipping_modules m, tl_iso_shipping_options o WHERE o.pid=m.id AND o.id=".$dc->id);
+        }
 
-		$strClass = $GLOBALS['ISO_SHIP'][$objModule->type];
+        $strClass = $GLOBALS['ISO_SHIP'][$objModule->type];
 
-		if ($strClass != '' && $this->classFileExists($strClass))
-		{
-			$this->Shipping = new $strClass($objModule->row());
-			$this->Shipping->moduleOptionsLoad();
-		}
-	}
+        if ($strClass != '' && $this->classFileExists($strClass))
+        {
+            $this->Shipping = new $strClass($objModule->row());
+            $this->Shipping->moduleOptionsLoad();
+        }
+    }
 
 
-	/**
-	 * Get a formatted listing for this row from shipping module class
-	 * @param array
-	 * @return string
-	 */
-	public function listRow($row)
-	{
-		if (!is_object($this->Shipping))
-		{
-			return '';
-		}
+    /**
+     * Get a formatted listing for this row from shipping module class
+     * @param array
+     * @return string
+     */
+    public function listRow($row)
+    {
+        if (!is_object($this->Shipping))
+        {
+            return '';
+        }
 
-		return $this->Shipping->moduleOptionsList($row);
-	}
+        return $this->Shipping->moduleOptionsList($row);
+    }
 }
-

@@ -31,4 +31,3 @@ $GLOBALS['TL_LANG']['tl_iso_labels']['delete'][1] = 'Удалить метку';
 $GLOBALS['TL_LANG']['tl_iso_labels']['show'][0] = 'Описание метки';
 $GLOBALS['TL_LANG']['tl_iso_labels']['show'][1] = 'Показать описание метки ID %s';
 $GLOBALS['TL_LANG']['tl_iso_labels']['label_legend'] = 'Перевод метки';
-

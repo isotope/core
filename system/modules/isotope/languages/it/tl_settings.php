@@ -15,4 +15,3 @@
 
 $GLOBALS['TL_LANG']['tl_settings']['iso_cartTimeout'][0] = 'Tempo scaduto carrello ospite';
 $GLOBALS['TL_LANG']['tl_settings']['iso_cartTimeout'][1] = 'Qui puo\' inserire il tempo massimo di vita per il carrello ospite in secondi (30 giorni = 2592000 secondi).';
-

@@ -120,4 +120,3 @@ $GLOBALS['TL_LANG']['tl_iso_products']['variant_legend']	= 'Warianty produktu';
 $GLOBALS['TL_LANG']['tl_iso_products']['price_tiers']['min']		= 'Ilość';
 $GLOBALS['TL_LANG']['tl_iso_products']['price_tiers']['min_format']	= 'od %s szt.';
 $GLOBALS['TL_LANG']['tl_iso_products']['price_tiers']['price']		= 'cena';
-

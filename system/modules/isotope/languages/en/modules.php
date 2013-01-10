@@ -58,4 +58,3 @@ $GLOBALS['TL_LANG']['IMD']['orderstatus']				= array('Order status', 'Define ord
 $GLOBALS['TL_LANG']['IMD']['baseprice']					= array('Base prices', 'Define base price.');
 $GLOBALS['TL_LANG']['IMD']['iso_mail']					= array('E-Mail manager', 'Customize Admin and Customer Notification Emails.');
 $GLOBALS['TL_LANG']['IMD']['configs']					= array('Store configurations', 'Configure general settings for this store.');
-

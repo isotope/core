@@ -99,4 +99,3 @@ $GLOBALS['TL_LANG']['tl_module']['iso_category_scope_ref']['parent'][0] = 'Paren
 $GLOBALS['TL_LANG']['tl_module']['iso_category_scope_ref']['product'][0] = 'Huidige product categoriën';
 $GLOBALS['TL_LANG']['tl_module']['sortingDirection']['ASC'] = 'oplopende';
 $GLOBALS['TL_LANG']['tl_module']['sortingDirection']['DESC'] = 'aflopende';
-

@@ -33,4 +33,3 @@ $GLOBALS['TL_LANG']['tl_iso_downloads']['show'][1] = 'Ton details van download I
 $GLOBALS['TL_LANG']['tl_iso_downloads']['file_legend'] = 'Bijlage';
 $GLOBALS['TL_LANG']['tl_iso_downloads']['name_legend'] = 'Titel en omschrijving';
 $GLOBALS['TL_LANG']['tl_iso_downloads']['limit_legend'] = 'Limieten';
-

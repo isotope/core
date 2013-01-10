@@ -80,4 +80,3 @@ $GLOBALS['TL_LANG']['tl_iso_producttypes']['attrwiz']['tl_class_text']     = 'Ic
 $GLOBALS['TL_LANG']['tl_iso_producttypes']['attrwiz']['mandatory_default'] = 'Obligatoire : Prendre la valeur par défaut';
 $GLOBALS['TL_LANG']['tl_iso_producttypes']['attrwiz']['mandatory_no']      = 'Obligatoire : Non, jamais';
 $GLOBALS['TL_LANG']['tl_iso_producttypes']['attrwiz']['mandatory_yes']     = 'Obligatoire : Oui, toujours';
-

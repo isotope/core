@@ -83,4 +83,3 @@ $GLOBALS['TL_LANG']['IMD']['iso_mail'][0]               = 'Gestion des e-mails';
 $GLOBALS['TL_LANG']['IMD']['iso_mail'][1]               = 'Personnaliser les e-mails de notification de l\'administrateur et des clients.';
 $GLOBALS['TL_LANG']['IMD']['configs'][0]                = 'Configuration de boutique';
 $GLOBALS['TL_LANG']['IMD']['configs'][1]                = 'Configurer les paramètres généraux de la boutique.';
-

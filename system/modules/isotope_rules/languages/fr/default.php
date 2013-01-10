@@ -27,4 +27,3 @@ $GLOBALS['TL_LANG']['MSC']['couponApply']     = 'Appliquer';
 $GLOBALS['TL_LANG']['MSC']['couponInvalid']   = 'Votre coupon %s n\'est pas valide.';
 $GLOBALS['TL_LANG']['MSC']['couponApplied']   = 'Votre coupon %s a été ajouté.';
 $GLOBALS['TL_LANG']['MSC']['couponDuplicate'] = 'Votre coupon %s a déjà été ajouté.';
-

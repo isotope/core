@@ -39,4 +39,3 @@ $GLOBALS['TL_LANG']['tl_iso_downloads']['show'][1] = 'Details vom Download mit d
 $GLOBALS['TL_LANG']['tl_iso_downloads']['file_legend'] = 'Anhang';
 $GLOBALS['TL_LANG']['tl_iso_downloads']['name_legend'] = 'Titel & Beschreibung';
 $GLOBALS['TL_LANG']['tl_iso_downloads']['limit_legend'] = 'Limitierungen';
-

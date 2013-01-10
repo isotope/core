@@ -45,4 +45,3 @@ $GLOBALS['TL_LANG']['tl_iso_shipping_options']['edit']		= array('Edytuj stawkę 
 $GLOBALS['TL_LANG']['tl_iso_shipping_options']['copy']		= array('Kopiuj stawkę wysyłki', 'Kopiuj stawkę wysyłki ID %s');
 $GLOBALS['TL_LANG']['tl_iso_shipping_options']['delete']	= array('Usuń stawkę wysyłki', 'Usuń stawkę wysyłki ID %s');
 $GLOBALS['TL_LANG']['tl_iso_shipping_options']['show']		= array('Szczegóły stawki wysyłki', 'Pokaż szczegóły stawki wysyłki ID %s');
-

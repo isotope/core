@@ -103,4 +103,3 @@ $GLOBALS['TL_LANG']['tl_iso_products']['options_legend'] = 'Product optie instel
 $GLOBALS['TL_LANG']['tl_iso_products']['media_legend'] = 'Media Management';
 $GLOBALS['TL_LANG']['tl_iso_products']['publish_legend'] = 'Beschikbaar maken';
 $GLOBALS['TL_LANG']['tl_iso_products']['variant_legend'] = 'Product variant instellingen';
-

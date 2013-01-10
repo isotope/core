@@ -41,4 +41,3 @@ $GLOBALS['TL_LANG']['tl_iso_groups']['name_legend'] = 'Nom';
  * References
  */
 $GLOBALS['TL_LANG']['tl_iso_groups']['label'] = 'Groupes de produits';
-

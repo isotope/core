@@ -39,4 +39,3 @@ $GLOBALS['TL_LANG']['tl_iso_related_categories']['pasteinto']		= array('Wklej w'
  */
 $GLOBALS['TL_LANG']['tl_iso_related_categories']['name_legend']		= 'Nazwa';
 $GLOBALS['TL_LANG']['tl_iso_related_categories']['redirect_legend']	= 'Strona przekierowania';
-

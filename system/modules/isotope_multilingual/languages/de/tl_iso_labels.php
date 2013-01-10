@@ -35,4 +35,3 @@ $GLOBALS['TL_LANG']['tl_iso_labels']['delete'][1] = 'Beschriftung ID %s löschen
 $GLOBALS['TL_LANG']['tl_iso_labels']['show'][0] = 'Beschriftungsdetails';
 $GLOBALS['TL_LANG']['tl_iso_labels']['show'][1] = 'Details der Beschriftung ID %s anzeigen';
 $GLOBALS['TL_LANG']['tl_iso_labels']['label_legend'] = 'Beschriftungs-Übersetzung';
-

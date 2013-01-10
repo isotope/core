@@ -22,4 +22,3 @@
  * Legends
  */
 $GLOBALS['TL_LANG']['tl_user_group']['isotope_legend'] = 'Isotope eCommerce';
-

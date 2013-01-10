@@ -39,4 +39,3 @@ $GLOBALS['TL_LANG']['tl_iso_tax_class']['show'][0] = 'Bestelldetails';
 $GLOBALS['TL_LANG']['tl_iso_tax_class']['show'][1] = 'Details der Steuerklasse ID %s anzeigen';
 $GLOBALS['TL_LANG']['tl_iso_tax_class']['name_legend'] = 'Name';
 $GLOBALS['TL_LANG']['tl_iso_tax_class']['rate_legend'] = 'Steuersätze';
-

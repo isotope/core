@@ -49,4 +49,3 @@ $GLOBALS['TL_LANG']['tl_iso_downloads']['show'][1]   = 'Afficher les détails du
 $GLOBALS['TL_LANG']['tl_iso_downloads']['file_legend']  = 'Fichier joint';
 $GLOBALS['TL_LANG']['tl_iso_downloads']['name_legend']  = 'Titre et description';
 $GLOBALS['TL_LANG']['tl_iso_downloads']['limit_legend'] = 'Limites';
-

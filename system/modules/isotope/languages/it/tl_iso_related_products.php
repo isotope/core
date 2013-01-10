@@ -37,4 +37,3 @@ $GLOBALS['TL_LANG']['tl_iso_related_products']['pastenew'][0] = 'Aggiungi nuovo 
 $GLOBALS['TL_LANG']['tl_iso_related_products']['pastenew'][1] = 'Aggiungi nuovo dopo categoria ID %s';
 $GLOBALS['TL_LANG']['tl_iso_related_products']['category_legend'] = 'Categoria';
 $GLOBALS['TL_LANG']['tl_iso_related_products']['products_legend'] = 'Prodotti correlati';
-

@@ -24,31 +24,31 @@ namespace Isotope;
 class tl_iso_mail_content extends \Backend
 {
 
-	/**
-	 * Available languages
-	 * @var array
-	 */
-	protected $arrLanguages;
+    /**
+     * Available languages
+     * @var array
+     */
+    protected $arrLanguages;
 
 
-	/**
-	 * List contents of the e-mail
-	 * @param array
-	 * @return string
-	 */
-	public function listRows($arrRow)
-	{
-		if (!is_array($this->arrLanguages))
-		{
-			$arrLanguages = $this->getLanguages();
-		}
+    /**
+     * List contents of the e-mail
+     * @param array
+     * @return string
+     */
+    public function listRows($arrRow)
+    {
+        if (!is_array($this->arrLanguages))
+        {
+            $arrLanguages = $this->getLanguages();
+        }
 
-		return '
+        return '
 <div class="cte_type published"><strong>' . $arrRow['subject'] . '</strong> - ' . $arrLanguages[$arrRow['language']] . ($arrRow['fallback'] ? (' (' . $GLOBALS['TL_LANG']['tl_iso_mail_content']['fallback'][0] . ')') : '') . '</div>
 <div class="limit_height' . (!$GLOBALS['TL_CONFIG']['doNotCollapse'] ? ' h64' : '') . ' block">
 ' . $arrRow['html'] . '
 <hr>
 ' . nl2br($arrRow['text']) . '
 </div>' . "\n";
-	}
+    }
 }

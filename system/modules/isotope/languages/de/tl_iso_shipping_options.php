@@ -43,4 +43,3 @@ $GLOBALS['TL_LANG']['tl_iso_shipping_options']['delete'][0] = 'Versandkosten lö
 $GLOBALS['TL_LANG']['tl_iso_shipping_options']['delete'][1] = 'Versandkosten-Regel ID %s löschen';
 $GLOBALS['TL_LANG']['tl_iso_shipping_options']['show'][0] = 'Versandkosten-Details';
 $GLOBALS['TL_LANG']['tl_iso_shipping_options']['show'][1] = 'Details der Versandkosten-Regel ID %s anzeigen';
-

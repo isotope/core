@@ -61,4 +61,3 @@ $GLOBALS['TL_LANG']['IMD']['iso_mail'][0] = 'E-mail beheer';
 $GLOBALS['TL_LANG']['IMD']['iso_mail'][1] = 'Stel hier de standaard e-mails van het Isotope systeem in';
 $GLOBALS['TL_LANG']['IMD']['configs'][0] = 'Winkelinstellingen';
 $GLOBALS['TL_LANG']['IMD']['configs'][1] = 'Stel hier de algemene instellingen voor deze webwinkel in';
-

@@ -49,4 +49,3 @@ $GLOBALS['TL_LANG']['tl_iso_producttypes']['description_legend'] = 'Beschrijving
 $GLOBALS['TL_LANG']['tl_iso_producttypes']['template_legend'] = 'Templates';
 $GLOBALS['TL_LANG']['tl_iso_producttypes']['language_legend'] = 'Taal instellingen';
 $GLOBALS['TL_LANG']['tl_iso_producttypes']['attributes_legend'] = 'Product attributen';
-

@@ -57,4 +57,3 @@ $GLOBALS['TL_LANG']['tl_iso_tax_rate']['rate_legend']		= 'Rate Legend';
 $GLOBALS['TL_LANG']['tl_iso_tax_rate']['location_legend']	= 'Location Legend';
 $GLOBALS['TL_LANG']['tl_iso_tax_rate']['condition_legend']	= 'Conditions Legend';
 $GLOBALS['TL_LANG']['tl_iso_tax_rate']['config_legend']		= 'Configuration Legend';
-

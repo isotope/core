@@ -24,76 +24,75 @@ namespace Isotope\Module;
 class RelatedProducts extends ProductList
 {
 
-	/**
-	 * Do not cache related products cause the list is different depending on URL parameters
-	 * @var boolean
-	 */
-	protected $blnCacheProducts = false;
+    /**
+     * Do not cache related products cause the list is different depending on URL parameters
+     * @var boolean
+     */
+    protected $blnCacheProducts = false;
 
 
-	/**
-	 * Generate the module
-	 * @return string
-	 */
-	public function generate()
-	{
-		if (TL_MODE == 'BE')
-		{
-			$objTemplate = new \BackendTemplate('be_wildcard');
+    /**
+     * Generate the module
+     * @return string
+     */
+    public function generate()
+    {
+        if (TL_MODE == 'BE')
+        {
+            $objTemplate = new \BackendTemplate('be_wildcard');
 
-			$objTemplate->wildcard = '### ISOTOPE ECOMMERCE: RELATED PRODUCTS ###';
-			$objTemplate->title = $this->headline;
-			$objTemplate->id = $this->id;
-			$objTemplate->link = $this->name;
-			$objTemplate->href = 'contao/main.php?do=themes&amp;table=tl_module&amp;act=edit&amp;id=' . $this->id;
+            $objTemplate->wildcard = '### ISOTOPE ECOMMERCE: RELATED PRODUCTS ###';
+            $objTemplate->title = $this->headline;
+            $objTemplate->id = $this->id;
+            $objTemplate->link = $this->name;
+            $objTemplate->href = 'contao/main.php?do=themes&amp;table=tl_module&amp;act=edit&amp;id=' . $this->id;
 
-			return $objTemplate->parse();
-		}
+            return $objTemplate->parse();
+        }
 
-		if (!strlen(\Input::get('product')))
-		{
-			return '';
-		}
+        if (!strlen(\Input::get('product')))
+        {
+            return '';
+        }
 
-		$this->iso_related_categories = deserialize($this->iso_related_categories);
+        $this->iso_related_categories = deserialize($this->iso_related_categories);
 
-		if (!is_array($this->iso_related_categories) || !count($this->iso_related_categories)) // Can't use empty() because its an object property (using __get)
-		{
-			return '';
-		}
+        if (!is_array($this->iso_related_categories) || !count($this->iso_related_categories)) // Can't use empty() because its an object property (using __get)
+        {
+            return '';
+        }
 
-		return parent::generate();
-	}
+        return parent::generate();
+    }
 
 
-	/**
-	 * Find all products we need to list.
-	 * @return array
-	 */
-	protected function findProducts($arrCacheIds=null)
-	{
-		$strAlias = \Input::get('product');
-		$arrIds = array(0);
-		$arrJumpTo = array();
+    /**
+     * Find all products we need to list.
+     * @return array
+     */
+    protected function findProducts($arrCacheIds=null)
+    {
+        $strAlias = \Input::get('product');
+        $arrIds = array(0);
+        $arrJumpTo = array();
 
-		$objCategories = $this->Database->prepare("SELECT *, (SELECT jumpTo FROM tl_iso_related_categories WHERE id=category) AS jumpTo FROM tl_iso_related_products WHERE pid IN (SELECT id FROM tl_iso_products WHERE " . (is_numeric($strAlias) ? 'id' : 'alias') . "=?" . ($this->iso_list_where != '' ? ' AND '.$this->iso_list_where : '') . ") AND category IN (" . implode(',', $this->iso_related_categories) . ") ORDER BY id=" . implode(' DESC, id=', $this->iso_related_categories) . " DESC")->execute($strAlias);
+        $objCategories = $this->Database->prepare("SELECT *, (SELECT jumpTo FROM tl_iso_related_categories WHERE id=category) AS jumpTo FROM tl_iso_related_products WHERE pid IN (SELECT id FROM tl_iso_products WHERE " . (is_numeric($strAlias) ? 'id' : 'alias') . "=?" . ($this->iso_list_where != '' ? ' AND '.$this->iso_list_where : '') . ") AND category IN (" . implode(',', $this->iso_related_categories) . ") ORDER BY id=" . implode(' DESC, id=', $this->iso_related_categories) . " DESC")->execute($strAlias);
 
-		while ($objCategories->next())
-		{
-			$ids = deserialize($objCategories->products);
+        while ($objCategories->next())
+        {
+            $ids = deserialize($objCategories->products);
 
-			if (is_array($ids) && !empty($ids))
-			{
-				$arrIds = array_unique(array_merge($arrIds, $ids));
+            if (is_array($ids) && !empty($ids))
+            {
+                $arrIds = array_unique(array_merge($arrIds, $ids));
 
-				if ($objCategories->jumpTo)
-				{
-					$arrJumpTo = array_fill_keys($ids, $objCategories->jumpTo) + $arrJumpTo;
-				}
-			}
-		}
+                if ($objCategories->jumpTo)
+                {
+                    $arrJumpTo = array_fill_keys($ids, $objCategories->jumpTo) + $arrJumpTo;
+                }
+            }
+        }
 
-		return \Isotope\Frontend::getProducts($arrIds, \Isotope\Frontend::getReaderPageId(null, $this->iso_reader_jumpTo));
-	}
+        return \Isotope\Frontend::getProducts($arrIds, \Isotope\Frontend::getReaderPageId(null, $this->iso_reader_jumpTo));
+    }
 }
-

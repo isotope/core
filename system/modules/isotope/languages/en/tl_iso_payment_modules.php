@@ -125,4 +125,3 @@ $GLOBALS['TL_LANG']['tl_iso_payment_modules']['edit']   			= array('Edit payment
 $GLOBALS['TL_LANG']['tl_iso_payment_modules']['copy']   			= array('Copy payment method', 'Copy payment method ID %s');
 $GLOBALS['TL_LANG']['tl_iso_payment_modules']['delete'] 			= array('Delete payment method', 'Delete payment method ID %s');
 $GLOBALS['TL_LANG']['tl_iso_payment_modules']['show']   			= array('Payment Method Details', 'Show details of payment method ID %s');
-

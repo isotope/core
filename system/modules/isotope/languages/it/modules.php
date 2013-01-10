@@ -62,4 +62,3 @@ $GLOBALS['TL_LANG']['IMD']['iso_mail'][0] = 'E-mail manager';
 $GLOBALS['TL_LANG']['IMD']['iso_mail'][1] = 'Email cliente e amministratore (English Language error?)';
 $GLOBALS['TL_LANG']['IMD']['configs'][0] = 'Configurazioni negozio';
 $GLOBALS['TL_LANG']['IMD']['configs'][1] = 'Configura le impostazioni generali per questo negozio.';
-

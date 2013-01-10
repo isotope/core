@@ -20,17 +20,17 @@ interface IsotopeGallery
 {
 
     /**
-	 * Generate main image and return it as HTML string
-	 * @param string
-	 * @return string
-	 */
-	public function generateMainImage($strType='medium');
+     * Generate main image and return it as HTML string
+     * @param string
+     * @return string
+     */
+    public function generateMainImage($strType='medium');
 
-	/**
-	 * Generate gallery and return it as HTML string
-	 * @param string
-	 * @param integer
-	 * @return string
-	 */
-	public function generateGallery($strType='gallery', $intSkip=1);
+    /**
+     * Generate gallery and return it as HTML string
+     * @param string
+     * @param integer
+     * @return string
+     */
+    public function generateGallery($strType='gallery', $intSkip=1);
 }

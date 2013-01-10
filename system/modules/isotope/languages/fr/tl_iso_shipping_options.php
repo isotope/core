@@ -51,4 +51,3 @@ $GLOBALS['TL_LANG']['tl_iso_shipping_options']['delete'][0] = 'Supprimer un taux
 $GLOBALS['TL_LANG']['tl_iso_shipping_options']['delete'][1] = 'Supprimer le taux de livraison ID %s';
 $GLOBALS['TL_LANG']['tl_iso_shipping_options']['show'][0]   = 'Détails du taux de livraison';
 $GLOBALS['TL_LANG']['tl_iso_shipping_options']['show'][1]   = 'Afficher les détails du taux de livraison ID %s';
-

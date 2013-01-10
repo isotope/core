@@ -55,4 +55,3 @@ $GLOBALS['TL_LANG']['tl_iso_mail_content']['show'][1]   = 'Afficher les détails
 $GLOBALS['TL_LANG']['tl_iso_mail_content']['settings_legend'] = 'Configuration';
 $GLOBALS['TL_LANG']['tl_iso_mail_content']['content_legend']  = 'Contenu';
 $GLOBALS['TL_LANG']['tl_iso_mail_content']['html_legend']     = 'Contenu HTML';
-

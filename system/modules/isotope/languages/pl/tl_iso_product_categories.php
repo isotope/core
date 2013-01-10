@@ -18,4 +18,3 @@
  */
 $GLOBALS['TL_LANG']['tl_iso_product_categories']['cut']			= array('Przenieś produkt', 'Przenieś produkt ID %s');
 $GLOBALS['TL_LANG']['tl_iso_product_categories']['pasteafter']	= array('Wklej na początku', 'Wklej po produkcie ID %s');
-

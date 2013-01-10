@@ -18,4 +18,3 @@
  * Fields
  */
 $GLOBALS['TL_LANG']['tl_settings']['iso_cartTimeout'] = array('Guest cart timeout', 'Here you can enter the maximum lifetime of a guest cart in seconds (30 days = 2592000 seconds).');
-

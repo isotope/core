@@ -36,4 +36,3 @@ $GLOBALS['TL_LANG']['tl_iso_shipping_options']['delete'][0] = 'Verwijder verzend
 $GLOBALS['TL_LANG']['tl_iso_shipping_options']['delete'][1] = 'Verwijder verzendtarief ID %s';
 $GLOBALS['TL_LANG']['tl_iso_shipping_options']['show'][0] = 'Verzendtarief details';
 $GLOBALS['TL_LANG']['tl_iso_shipping_options']['show'][1] = 'Toon details van verzendtarief ID %s';
-

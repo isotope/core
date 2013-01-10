@@ -39,4 +39,3 @@ $GLOBALS['TL_LANG']['tl_iso_tax_class']['show']   = array('Szczegóły zamówien
  */
 $GLOBALS['TL_LANG']['tl_iso_tax_class']['name_legend']	= 'Nazwa';
 $GLOBALS['TL_LANG']['tl_iso_tax_class']['rate_legend']	= 'Stawki podatkowe';
-

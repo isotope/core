@@ -17,4 +17,3 @@ $GLOBALS['ISO_LANG']['MSC']['translationEdit'] = 'Bewerk bestand %s van uitbreid
 $GLOBALS['ISO_LANG']['MSC']['translationSelect'] = 'Selecteer een uitbreiding en een bestand';
 $GLOBALS['ISO_LANG']['MSC']['translationError'] = 'Het doelbestand kan niet worden verwerkt.';
 $GLOBALS['ISO_LANG']['MSC']['translationErrorSource'] = 'Het bronbestand kan niet worden verwerkt.';
-

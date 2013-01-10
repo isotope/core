@@ -47,4 +47,3 @@ $GLOBALS['TL_LANG']['tl_iso_labels']['show'][1]   = 'Afficher les détails du li
  * Legends
  */
 $GLOBALS['TL_LANG']['tl_iso_labels']['label_legend'] = 'Traduction du libellé';
-

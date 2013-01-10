@@ -38,4 +38,3 @@ $GLOBALS['TL_LANG']['tl_iso_downloads']['show']					= array('Szczegóły pliku',
 $GLOBALS['TL_LANG']['tl_iso_downloads']['file_legend']			= 'Załącznik';
 $GLOBALS['TL_LANG']['tl_iso_downloads']['name_legend']			= 'Tytuł i opis';
 $GLOBALS['TL_LANG']['tl_iso_downloads']['limit_legend']			= 'Limity';
-

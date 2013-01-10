@@ -36,4 +36,3 @@ $GLOBALS['TL_LANG']['tl_iso_related_categories']['pasteinto'][0] = 'Plakken in';
 $GLOBALS['TL_LANG']['tl_iso_related_categories']['pasteinto'][1] = 'Plakken in categorie ID %s';
 $GLOBALS['TL_LANG']['tl_iso_related_categories']['name_legend'] = 'Naam';
 $GLOBALS['TL_LANG']['tl_iso_related_categories']['redirect_legend'] = 'Herleidingsinstellingen';
-

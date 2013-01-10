@@ -40,4 +40,3 @@ $GLOBALS['TL_LANG']['tl_iso_related_categories']['pasteinto']		= array('Paste in
  */
 $GLOBALS['TL_LANG']['tl_iso_related_categories']['name_legend']		= 'Name';
 $GLOBALS['TL_LANG']['tl_iso_related_categories']['redirect_legend']	= 'Redirect settings';
-

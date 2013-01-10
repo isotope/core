@@ -49,4 +49,3 @@ $GLOBALS['TL_LANG']['tl_iso_tax_rate']['rate_legend'] = 'Tarief legenda';
 $GLOBALS['TL_LANG']['tl_iso_tax_rate']['location_legend'] = 'Locatie legenda';
 $GLOBALS['TL_LANG']['tl_iso_tax_rate']['condition_legend'] = 'Voorwaarden legenda';
 $GLOBALS['TL_LANG']['tl_iso_tax_rate']['config_legend'] = 'Configuratie legenda';
-

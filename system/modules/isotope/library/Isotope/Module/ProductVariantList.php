@@ -26,53 +26,52 @@ use Isotope\Product\Standard as StandardProduct;
 class ProductVariantList extends ProductList
 {
 
-	/**
-	 * Display a wildcard in the back end
-	 * @return string
-	 */
-	public function generate()
-	{
-		if (TL_MODE == 'BE')
-		{
-			$objTemplate = new \BackendTemplate('be_wildcard');
+    /**
+     * Display a wildcard in the back end
+     * @return string
+     */
+    public function generate()
+    {
+        if (TL_MODE == 'BE')
+        {
+            $objTemplate = new \BackendTemplate('be_wildcard');
 
-			$objTemplate->wildcard = '### ISOTOPE ECOMMERCE: PRODUCT VARIANT LIST ###';
+            $objTemplate->wildcard = '### ISOTOPE ECOMMERCE: PRODUCT VARIANT LIST ###';
 
-			$objTemplate->title = $this->headline;
-			$objTemplate->id = $this->id;
-			$objTemplate->link = $this->name;
-			$objTemplate->href = 'contao/main.php?do=themes&amp;table=tl_module&amp;act=edit&amp;id=' . $this->id;
+            $objTemplate->title = $this->headline;
+            $objTemplate->id = $this->id;
+            $objTemplate->link = $this->name;
+            $objTemplate->href = 'contao/main.php?do=themes&amp;table=tl_module&amp;act=edit&amp;id=' . $this->id;
 
-			return $objTemplate->parse();
-		}
+            return $objTemplate->parse();
+        }
 
-		return parent::generate();
-	}
+        return parent::generate();
+    }
 
 
-	/**
-	 * Fill the object's arrProducts array
-	 * @param array|null
-	 * @return array
-	 */
-	protected function findProducts($arrCacheIds=null)
-	{
-		$time = time();
-		$arrCategories = $this->findCategories($this->iso_category_scope);
+    /**
+     * Fill the object's arrProducts array
+     * @param array|null
+     * @return array
+     */
+    protected function findProducts($arrCacheIds=null)
+    {
+        $time = time();
+        $arrCategories = $this->findCategories($this->iso_category_scope);
 
-		list($arrFilters, $arrSorting, $strWhere, $arrValues) = $this->getFiltersAndSorting();
+        list($arrFilters, $arrSorting, $strWhere, $arrValues) = $this->getFiltersAndSorting();
 
-		$objProductData = $this->Database->prepare(StandardProduct::getSelectStatement() . "
-													WHERE p1.language=''"
-													. (BE_USER_LOGGED_IN === true ? '' : " AND p1.published='1' AND (p1.start='' OR p1.start<$time) AND (p1.stop='' OR p1.stop>$time)")
-													. "AND (p1.id IN (SELECT pid FROM tl_iso_product_categories WHERE page_id IN (" . implode(',', $arrCategories) . "))
-														OR p1.pid IN (SELECT pid FROM tl_iso_product_categories WHERE page_id IN (" . implode(',', $arrCategories) . ")))"
-													. (is_array($arrCacheIds) ? ("AND (p1.id IN (" . implode(',', $arrCacheIds) . ") OR p1.pid IN (" . implode(',', $arrCacheIds) . "))") : '')
-													. ($this->iso_list_where == '' ? '' : " AND {$this->iso_list_where}")
-													. "$strWhere GROUP BY p1.id ORDER BY c.sorting")
-										 ->execute($arrValues);
+        $objProductData = $this->Database->prepare(StandardProduct::getSelectStatement() . "
+                                                    WHERE p1.language=''"
+                                                    . (BE_USER_LOGGED_IN === true ? '' : " AND p1.published='1' AND (p1.start='' OR p1.start<$time) AND (p1.stop='' OR p1.stop>$time)")
+                                                    . "AND (p1.id IN (SELECT pid FROM tl_iso_product_categories WHERE page_id IN (" . implode(',', $arrCategories) . "))
+                                                        OR p1.pid IN (SELECT pid FROM tl_iso_product_categories WHERE page_id IN (" . implode(',', $arrCategories) . ")))"
+                                                    . (is_array($arrCacheIds) ? ("AND (p1.id IN (" . implode(',', $arrCacheIds) . ") OR p1.pid IN (" . implode(',', $arrCacheIds) . "))") : '')
+                                                    . ($this->iso_list_where == '' ? '' : " AND {$this->iso_list_where}")
+                                                    . "$strWhere GROUP BY p1.id ORDER BY c.sorting")
+                                         ->execute($arrValues);
 
-		return \Isotope\Frontend::getProducts($objProductData, \Isotope\Frontend::getReaderPageId(null, $this->iso_reader_jumpTo), true, $arrFilters, $arrSorting);
-	}
+        return \Isotope\Frontend::getProducts($objProductData, \Isotope\Frontend::getReaderPageId(null, $this->iso_reader_jumpTo), true, $arrFilters, $arrSorting);
+    }
 }
-

@@ -40,4 +40,3 @@ $GLOBALS['TL_LANG']['tl_iso_tax_class']['show']   = array('Order Details', 'Show
  */
 $GLOBALS['TL_LANG']['tl_iso_tax_class']['name_legend']	= 'Name';
 $GLOBALS['TL_LANG']['tl_iso_tax_class']['rate_legend']	= 'Tax rates';
-

@@ -16,11 +16,11 @@
  */
 ClassLoader::addClasses(array
 (
-	// Classes
-	'Isotope\IsotopeTranslation'             => 'system/modules/isotope_multilingual/classes/IsotopeTranslation.php',
+    // Classes
+    'Isotope\IsotopeTranslation'             => 'system/modules/isotope_multilingual/classes/IsotopeTranslation.php',
 
-	// Modules
-	'Isotope\ModuleIsotopeTranslation'       => 'system/modules/isotope_multilingual/modules/ModuleIsotope.php',
+    // Modules
+    'Isotope\ModuleIsotopeTranslation'       => 'system/modules/isotope_multilingual/modules/ModuleIsotope.php',
 ));
 
 
@@ -29,5 +29,5 @@ ClassLoader::addClasses(array
  */
 TemplateLoader::addFiles(array
 (
-	'be_isotope_translation'    => 'system/modules/isotope_multilingual/templates',
+    'be_isotope_translation'    => 'system/modules/isotope_multilingual/templates',
 ));

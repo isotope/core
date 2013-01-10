@@ -40,4 +40,3 @@ $GLOBALS['TL_LANG']['tl_iso_mail_content']['show']			= array('Szczegóły wersji
 $GLOBALS['TL_LANG']['tl_iso_mail_content']['settings_legend']	= 'Konfiguracja';
 $GLOBALS['TL_LANG']['tl_iso_mail_content']['content_legend']	= 'Zawartość';
 $GLOBALS['TL_LANG']['tl_iso_mail_content']['html_legend']		= 'Zawartość HTML';
-

@@ -29,4 +29,3 @@ $GLOBALS['TL_LANG']['MSC']['couponApply']		= 'Apply';
 $GLOBALS['TL_LANG']['MSC']['couponInvalid']		= 'Your coupon %s is not valid.';
 $GLOBALS['TL_LANG']['MSC']['couponApplied']		= 'Your coupon %s has been applied.';
 $GLOBALS['TL_LANG']['MSC']['couponDuplicate']	= 'Your coupon %s has already been applied.';
-

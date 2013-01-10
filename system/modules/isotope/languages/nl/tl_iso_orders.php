@@ -56,4 +56,3 @@ $GLOBALS['TL_LANG']['tl_iso_orders']['print_invoices'][0] = 'Druk facturen af';
 $GLOBALS['TL_LANG']['tl_iso_orders']['print_invoices'][1] = 'Druk één of meer facturen af in één enkel document voor een gegeven bestel-status.';
 $GLOBALS['TL_LANG']['tl_iso_orders']['status_legend'] = 'Bestel status';
 $GLOBALS['TL_LANG']['tl_iso_orders']['details_legend'] = 'Details van de bestelling';
-

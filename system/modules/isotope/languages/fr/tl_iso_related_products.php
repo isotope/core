@@ -55,4 +55,3 @@ $GLOBALS['TL_LANG']['tl_iso_related_products']['pastenew'][1]   = 'Ajouter nouve
  */
 $GLOBALS['TL_LANG']['tl_iso_related_products']['category_legend'] = 'Catégorie';
 $GLOBALS['TL_LANG']['tl_iso_related_products']['products_legend'] = 'Produits similaires';
-

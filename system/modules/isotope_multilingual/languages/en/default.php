@@ -28,4 +28,3 @@ $GLOBALS['ISO_LANG']['MSC']['translationEdit']			= 'Edit file %s from extension 
 $GLOBALS['ISO_LANG']['MSC']['translationSelect']		= 'Please select an extension and a file.';
 $GLOBALS['ISO_LANG']['MSC']['translationError']			= 'The target file could not be parsed.';
 $GLOBALS['ISO_LANG']['MSC']['translationErrorSource']	= 'The source file could not be parsed.';
-

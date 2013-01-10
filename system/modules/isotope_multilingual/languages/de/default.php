@@ -23,4 +23,3 @@ $GLOBALS['ISO_LANG']['MSC']['translationEdit'] = 'Datei %s aus Modul "%s" bearbe
 $GLOBALS['ISO_LANG']['MSC']['translationSelect'] = 'Bitte wählen Sie ein Modul und eine Datei.';
 $GLOBALS['ISO_LANG']['MSC']['translationError'] = 'Die Zieldatei konnte nicht verarbeitet werden.';
 $GLOBALS['ISO_LANG']['MSC']['translationErrorSource'] = 'Die Quelldatei konnte nicht verarbeitet werden.';
-

@@ -14,4 +14,3 @@
 
 $GLOBALS['TL_LANG']['tl_member']['address_book'][0] = 'Adressebog';
 $GLOBALS['TL_LANG']['tl_member']['address_book'][1] = 'Rediger adressebog';
-

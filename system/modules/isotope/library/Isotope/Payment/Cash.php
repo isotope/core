@@ -24,15 +24,14 @@ namespace Isotope\Payment;
 class Cash extends Payment
 {
 
-	/**
-	 * processPayment function.
-	 *
-	 * @access public
-	 * @return void
-	 */
-	public function processPayment()
-	{
-		return true;
-	}
+    /**
+     * processPayment function.
+     *
+     * @access public
+     * @return void
+     */
+    public function processPayment()
+    {
+        return true;
+    }
 }
-

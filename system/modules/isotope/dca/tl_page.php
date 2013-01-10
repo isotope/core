@@ -38,28 +38,28 @@ $GLOBALS['TL_DCA']['tl_page']['subpalettes']['iso_setReaderJumpTo'] = 'iso_reade
  */
 $GLOBALS['TL_DCA']['tl_page']['fields']['iso_config'] = array
 (
-	'label'                   => &$GLOBALS['TL_LANG']['tl_page']['iso_config'],
-	'exclude'                 => true,
-	'inputType'               => 'select',
-	'foreignKey'			  => 'tl_iso_config.name',
-	'eval'                    => array('includeBlankOption'=>true, 'tl_class'=>'w50'),
+    'label'                   => &$GLOBALS['TL_LANG']['tl_page']['iso_config'],
+    'exclude'                 => true,
+    'inputType'               => 'select',
+    'foreignKey'			  => 'tl_iso_config.name',
+    'eval'                    => array('includeBlankOption'=>true, 'tl_class'=>'w50'),
 );
 
 $GLOBALS['TL_DCA']['tl_page']['fields']['iso_setReaderJumpTo'] = array
 (
-	'label'                   => &$GLOBALS['TL_LANG']['tl_page']['iso_setReaderJumpTo'],
-	'exclude'                 => true,
-	'inputType'               => 'checkbox',
-	'eval'                    => array('submitOnChange'=>true, 'tl_class'=>'clr')
+    'label'                   => &$GLOBALS['TL_LANG']['tl_page']['iso_setReaderJumpTo'],
+    'exclude'                 => true,
+    'inputType'               => 'checkbox',
+    'eval'                    => array('submitOnChange'=>true, 'tl_class'=>'clr')
 );
 
 $GLOBALS['TL_DCA']['tl_page']['fields']['iso_readerJumpTo'] = array
 (
-	'label'                   => &$GLOBALS['TL_LANG']['tl_page']['iso_readerJumpTo'],
-	'exclude'                 => true,
-	'inputType'               => 'pageTree',
-	// @todo: only show the pages from this page root (a reader page in a different page tree than the current doesn't make sense) as soon as http://dev.contao.org/issues/3563 is implemented
-	'eval'					  => array('fieldType'=>'radio', 'mandatory'=>true)
+    'label'                   => &$GLOBALS['TL_LANG']['tl_page']['iso_readerJumpTo'],
+    'exclude'                 => true,
+    'inputType'               => 'pageTree',
+    // @todo: only show the pages from this page root (a reader page in a different page tree than the current doesn't make sense) as soon as http://dev.contao.org/issues/3563 is implemented
+    'eval'					  => array('fieldType'=>'radio', 'mandatory'=>true)
 );
 
 
@@ -68,6 +68,5 @@ $GLOBALS['TL_DCA']['tl_page']['fields']['iso_readerJumpTo'] = array
  */
 if ($_GET['table'] == 'tl_iso_product_categories')
 {
-	$GLOBALS['TL_DCA']['tl_page']['config']['notEditable'] = true;
+    $GLOBALS['TL_DCA']['tl_page']['config']['notEditable'] = true;
 }
-

@@ -42,4 +42,3 @@ $GLOBALS['TL_LANG']['tl_iso_orderstatus']['pasteinto']		= array('Paste into', 'P
  */
 $GLOBALS['TL_LANG']['tl_iso_orderstatus']['name_legend']	= 'Name';
 $GLOBALS['TL_LANG']['tl_iso_orderstatus']['email_legend']	= 'E-Mail Notification';
-

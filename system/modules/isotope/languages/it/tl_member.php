@@ -15,4 +15,3 @@
 
 $GLOBALS['TL_LANG']['tl_member']['address_book'][0] = 'Rubrica';
 $GLOBALS['TL_LANG']['tl_member']['address_book'][1] = 'Gestisca questa rubrica.';
-

@@ -116,4 +116,3 @@ $GLOBALS['TL_LANG']['tl_iso_attributes']['uploadFolder']   = array('Zielverzeich
 $GLOBALS['TL_LANG']['tl_iso_attributes']['useHomeDir']     = array('Benutzerverzeichnis verwenden', 'Die Datei im Benutzerverzeichnis speichern, wenn sich ein Benutzer angemeldet hat.');
 $GLOBALS['TL_LANG']['tl_iso_attributes']['doNotOverwrite'] = array('Bestehende Dateien erhalten', 'Der neuen Datei ein numerisches Suffix hinzufügen, wenn der Dateiname bereits existiert.');
 $GLOBALS['TL_LANG']['tl_iso_attributes']['store_legend']   = 'Datei speichern';
-

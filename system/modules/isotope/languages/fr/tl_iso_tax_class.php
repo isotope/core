@@ -50,4 +50,3 @@ $GLOBALS['TL_LANG']['tl_iso_tax_class']['show'][1]   = 'Afficher les détails de
  */
 $GLOBALS['TL_LANG']['tl_iso_tax_class']['name_legend'] = 'Nom';
 $GLOBALS['TL_LANG']['tl_iso_tax_class']['rate_legend'] = 'Taux de taxe';
-

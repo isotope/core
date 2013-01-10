@@ -26,4 +26,3 @@ $GLOBALS['TL_LANG']['XPL']['isoMailTokens'][5][0] = '##ForsendelsesGebyr##';
 $GLOBALS['TL_LANG']['XPL']['isoMailTokens'][5][1] = 'Forsendelsesgebyr';
 $GLOBALS['TL_LANG']['XPL']['isoMailTokens'][6][0] = '##Total##';
 $GLOBALS['TL_LANG']['XPL']['isoMailTokens'][6][1] = 'Total';
-

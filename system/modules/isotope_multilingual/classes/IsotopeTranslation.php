@@ -22,18 +22,17 @@ namespace Isotope;
 class IsotopeTranslation extends \Controller
 {
 
-	public function loadLocalLanguageFiles($strName, $strLanguage)
-	{
-		// Parse all active modules
-		foreach ($this->Config->getActiveModules() as $strModule)
-		{
-			$strFile = sprintf('%s/system/modules/%s/languages/%s/local/%s.php', TL_ROOT, $strModule, $strLanguage, $strName);
+    public function loadLocalLanguageFiles($strName, $strLanguage)
+    {
+        // Parse all active modules
+        foreach ($this->Config->getActiveModules() as $strModule)
+        {
+            $strFile = sprintf('%s/system/modules/%s/languages/%s/local/%s.php', TL_ROOT, $strModule, $strLanguage, $strName);
 
-			if (is_file($strFile))
-			{
-				@include($strFile);
-			}
-		}
-	}
+            if (is_file($strFile))
+            {
+                @include($strFile);
+            }
+        }
+    }
 }
-

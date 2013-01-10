@@ -20,4 +20,3 @@
 $GLOBALS['TL_LANG']['tl_page']['iso_config'][0] = 'Shop-Konfiguration';
 $GLOBALS['TL_LANG']['tl_page']['iso_config'][1] = 'Eine Shop-Konfiguration für diese Seitenstruktur wählen.';
 $GLOBALS['TL_LANG']['tl_page']['isotope_legend'] = 'Isotope eCommerce';
-

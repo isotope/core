@@ -19,4 +19,3 @@ $GLOBALS['ISO_LANG']['MSC']['translationEdit'] = 'Изменить файл% и�
 $GLOBALS['ISO_LANG']['MSC']['translationSelect'] = 'Пожалуйста, выберите расширение и файл.';
 $GLOBALS['ISO_LANG']['MSC']['translationError'] = 'Целевой файл не может быть разобран.';
 $GLOBALS['ISO_LANG']['MSC']['translationErrorSource'] = 'Исходный файл не может быть разобран.';
-

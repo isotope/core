@@ -36,4 +36,3 @@ $GLOBALS['TL_LANG']['tl_iso_related_products']['pastenew'][0] = 'Tilføj ny kate
 $GLOBALS['TL_LANG']['tl_iso_related_products']['pastenew'][1] = 'Tilføj ny kategori efter ID %s';
 $GLOBALS['TL_LANG']['tl_iso_related_products']['category_legend'] = 'Kategori';
 $GLOBALS['TL_LANG']['tl_iso_related_products']['products_legend'] = 'Relaterede produkter';
-

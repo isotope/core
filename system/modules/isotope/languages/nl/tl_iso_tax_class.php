@@ -34,4 +34,3 @@ $GLOBALS['TL_LANG']['tl_iso_tax_class']['show'][0] = 'Bestel details';
 $GLOBALS['TL_LANG']['tl_iso_tax_class']['show'][1] = 'Toon details van belasting categorie ID %s';
 $GLOBALS['TL_LANG']['tl_iso_tax_class']['name_legend'] = 'Naam';
 $GLOBALS['TL_LANG']['tl_iso_tax_class']['rate_legend'] = 'Belastingtarief';
-

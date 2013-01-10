@@ -114,4 +114,3 @@ $GLOBALS['TL_LANG']['tl_module']['sortingDirection']['DESC'] = 'Abwärts';
  */
 $GLOBALS['TL_LANG']['tl_module']['iso_list_where']				= array('Bedingung', 'Geben Sie eine SQL-Bedingung zum filtern der Liste ein. Sie müssen die Felder mit "p1." beginnen (z.B. <em>p1.featured=1</em> oder <em>p1.color!=\'red\'</em>)!');
 $GLOBALS['TL_LANG']['tl_module']['iso_hide_list']				= array('Ausblenden bei Produktansicht', 'Blendet die Liste aus, wenn ein Produkt-Alias in der URL gefunden wird.');
-

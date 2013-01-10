@@ -26,34 +26,33 @@ use \Contao\ContentElement as Contao_ContentElement;
 abstract class ContentElement extends Contao_ContentElement
 {
 
-	/**
-	 * Isotope object
-	 * @var object
-	 */
-	protected $Isotope;
+    /**
+     * Isotope object
+     * @var object
+     */
+    protected $Isotope;
 
 
-	/**
-	 * Initialize the content element
-	 * @param object
-	 */
-	public function __construct($objElement)
-	{
-		parent::__construct($objElement);
+    /**
+     * Initialize the content element
+     * @param object
+     */
+    public function __construct($objElement)
+    {
+        parent::__construct($objElement);
 
-		if (TL_MODE == 'FE')
-		{
-			$this->import('Isotope\Isotope', 'Isotope');
+        if (TL_MODE == 'FE')
+        {
+            $this->import('Isotope\Isotope', 'Isotope');
 
-			if (FE_USER_LOGGED_IN === true)
-			{
-				$this->import('FrontendUser', 'User');
-			}
+            if (FE_USER_LOGGED_IN === true)
+            {
+                $this->import('FrontendUser', 'User');
+            }
 
-			// Load Isotope javascript and css
-			$GLOBALS['TL_JAVASCRIPT'][] = 'system/modules/isotope/assets/isotope.min.js';
-			$GLOBALS['TL_CSS'][] = 'system/modules/isotope/assets/isotope.min.css';
-		}
-	}
+            // Load Isotope javascript and css
+            $GLOBALS['TL_JAVASCRIPT'][] = 'system/modules/isotope/assets/isotope.min.js';
+            $GLOBALS['TL_CSS'][] = 'system/modules/isotope/assets/isotope.min.css';
+        }
+    }
 }
-

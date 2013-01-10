@@ -39,4 +39,3 @@ $GLOBALS['TL_LANG']['tl_iso_mail_content']['show'][1] = 'Details voor taal ID %s
 $GLOBALS['TL_LANG']['tl_iso_mail_content']['settings_legend'] = 'Instellingen';
 $GLOBALS['TL_LANG']['tl_iso_mail_content']['content_legend'] = 'Inhoud';
 $GLOBALS['TL_LANG']['tl_iso_mail_content']['html_legend'] = 'HTML inhoud';
-

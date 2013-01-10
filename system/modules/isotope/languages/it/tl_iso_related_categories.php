@@ -37,4 +37,3 @@ $GLOBALS['TL_LANG']['tl_iso_related_categories']['pasteinto'][0] = 'Incolla nell
 $GLOBALS['TL_LANG']['tl_iso_related_categories']['pasteinto'][1] = 'Incolla nella categoria ID %s';
 $GLOBALS['TL_LANG']['tl_iso_related_categories']['name_legend'] = 'Nome';
 $GLOBALS['TL_LANG']['tl_iso_related_categories']['redirect_legend'] = 'Impostazioni reindirizzamento';
-

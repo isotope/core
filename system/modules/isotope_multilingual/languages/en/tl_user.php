@@ -18,4 +18,3 @@
  * Fields
  */
 $GLOBALS['TL_LANG']['tl_user']['translation'] = array('Translation Language', 'Select the language this member is responsible for.');
-

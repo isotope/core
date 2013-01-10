@@ -51,4 +51,3 @@ $GLOBALS['TL_LANG']['tl_iso_producttypes']['description_legend'] = 'Descrizione'
 $GLOBALS['TL_LANG']['tl_iso_producttypes']['template_legend'] = 'Template';
 $GLOBALS['TL_LANG']['tl_iso_producttypes']['language_legend'] = 'Impostazioni multilingua';
 $GLOBALS['TL_LANG']['tl_iso_producttypes']['attributes_legend'] = 'Attributi prodotto';
-

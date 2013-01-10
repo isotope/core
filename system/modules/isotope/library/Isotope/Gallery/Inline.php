@@ -24,66 +24,65 @@ namespace Isotope\Gallery;
 class Inline extends Standard
 {
 
-	/**
-	 * Template
-	 * @var string
-	 */
-	protected $strTemplate = 'iso_gallery_inline';
+    /**
+     * Template
+     * @var string
+     */
+    protected $strTemplate = 'iso_gallery_inline';
 
 
-	/**
-	 * Generate gallery and return it as HTML string
-	 * @param string
-	 * @param integer
-	 * @param boolean
-	 * @return string
-	 */
-	public function generateGallery($strType='gallery', $intSkip=0, $blnForce=false)
-	{
-		// Do not render gallery if there are no additional image
-		$total = count($this->arrFiles);
+    /**
+     * Generate gallery and return it as HTML string
+     * @param string
+     * @param integer
+     * @param boolean
+     * @return string
+     */
+    public function generateGallery($strType='gallery', $intSkip=0, $blnForce=false)
+    {
+        // Do not render gallery if there are no additional image
+        $total = count($this->arrFiles);
 
-		if (($total == 1 || $total <= $intSkip) && !$blnForce)
-		{
-			return $this->generateAttribute($this->name . '_gallery', ' ', $strType);
-		}
+        if (($total == 1 || $total <= $intSkip) && !$blnForce)
+        {
+            return $this->generateAttribute($this->name . '_gallery', ' ', $strType);
+        }
 
-		$strGallery = '';
+        $strGallery = '';
 
-		foreach ($this->arrFiles as $i => $arrFile)
-		{
-			if ($i < $intSkip)
-			{
-				continue;
-			}
+        foreach ($this->arrFiles as $i => $arrFile)
+        {
+            if ($i < $intSkip)
+            {
+                continue;
+            }
 
-			$objTemplate = new \Isotope\Template($this->strTemplate);
+            $objTemplate = new \Isotope\Template($this->strTemplate);
 
-			$objTemplate->setData($arrFile);
-			$objTemplate->id = $i;
-			$objTemplate->mode = 'gallery';
-			$objTemplate->type = $strType;
-			$objTemplate->name = $this->name;
-			$objTemplate->product_id = $this->product_id;
-			$objTemplate->href_reader = $this->href_reader;
+            $objTemplate->setData($arrFile);
+            $objTemplate->id = $i;
+            $objTemplate->mode = 'gallery';
+            $objTemplate->type = $strType;
+            $objTemplate->name = $this->name;
+            $objTemplate->product_id = $this->product_id;
+            $objTemplate->href_reader = $this->href_reader;
 
-			list($objTemplate->link, $objTemplate->rel) = explode('|', $arrFile['link']);
+            list($objTemplate->link, $objTemplate->rel) = explode('|', $arrFile['link']);
 
-			if ($i == 0)
-			{
-				$objTemplate->class = 'active';
-			}
+            if ($i == 0)
+            {
+                $objTemplate->class = 'active';
+            }
 
-			$strGallery .= $objTemplate->parse();
-		}
+            $strGallery .= $objTemplate->parse();
+        }
 
-		return $this->generateAttribute($this->name . '_gallery', $strGallery, $strType);
-	}
+        return $this->generateAttribute($this->name . '_gallery', $strGallery, $strType);
+    }
 
 
-	/**
-	 * Inject AJAX script
-	 */
-	protected function injectAjax() {}
+    /**
+     * Inject AJAX script
+     */
+    protected function injectAjax() {}
 }
-

@@ -55,4 +55,3 @@ $GLOBALS['TL_LANG']['IMD']['producttypes']				= array('Typy produktów', 'Dodawa
 $GLOBALS['TL_LANG']['IMD']['related_categories']		= array('Powiązane kategorie', 'Swórz nowe kategorie i powiaż ze sobą produkty lub grupy produktów.');
 $GLOBALS['TL_LANG']['IMD']['iso_mail']					= array('Zarządzanie E-mail','Ustaw i dostosuj szablony powiadomień e mail do administracji sklepu i klientów.');
 $GLOBALS['TL_LANG']['IMD']['configs']					= array('Konfiguracje sklepów', 'Skonfiguruj najważniejsze ustawienia dla swoich sklepów.');
-

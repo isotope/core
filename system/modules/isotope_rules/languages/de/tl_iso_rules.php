@@ -109,4 +109,3 @@ $GLOBALS['TL_LANG']['tl_iso_rules']['delete'][0] = 'Regel löschen';
 $GLOBALS['TL_LANG']['tl_iso_rules']['delete'][1] = 'Lösche die Regel mit der ID %s';
 $GLOBALS['TL_LANG']['tl_iso_rules']['show'][0] = 'Regeldetails';
 $GLOBALS['TL_LANG']['tl_iso_rules']['show'][1] = 'Zeige die Details der Regel mit der ID %s';
-

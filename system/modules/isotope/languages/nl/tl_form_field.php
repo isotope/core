@@ -14,4 +14,3 @@
 
 $GLOBALS['TL_LANG']['FFL']['textCollection'][0] = 'Tekstcollectie veld';
 $GLOBALS['TL_LANG']['FFL']['textCollection'][1] = 'een of meer regels van de invoer velden voor een korte of middellange tekstinvoer.';
-

@@ -92,4 +92,3 @@ $GLOBALS['TL_LANG']['tl_module']['iso_category_scope_ref']['parent'][0] = 'Categ
 $GLOBALS['TL_LANG']['tl_module']['iso_category_scope_ref']['product'][0] = 'Categorie prodotti correnti';
 $GLOBALS['TL_LANG']['tl_module']['sortingDirection']['ASC'] = 'ASC';
 $GLOBALS['TL_LANG']['tl_module']['sortingDirection']['DESC'] = 'DISC';
-

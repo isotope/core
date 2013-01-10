@@ -105,4 +105,3 @@ $GLOBALS['TL_LANG']['tl_iso_products']['options_legend'] = 'Impostazioni Opzioni
 $GLOBALS['TL_LANG']['tl_iso_products']['media_legend'] = 'Gestione Media';
 $GLOBALS['TL_LANG']['tl_iso_products']['publish_legend'] = 'Pubblicazione';
 $GLOBALS['TL_LANG']['tl_iso_products']['variant_legend'] = 'Impostazioni versione prodotto';
-

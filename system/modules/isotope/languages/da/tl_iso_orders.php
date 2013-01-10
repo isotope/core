@@ -57,4 +57,3 @@ $GLOBALS['TL_LANG']['tl_iso_orders']['print_invoices'][0] = 'Hent fakturaer (PDF
 $GLOBALS['TL_LANG']['tl_iso_orders']['print_invoices'][1] = 'Hent en eller flere fakturaer i en samlet PDF for en bestemt ordrestatus.';
 $GLOBALS['TL_LANG']['tl_iso_orders']['status_legend'] = 'Ordrestatus';
 $GLOBALS['TL_LANG']['tl_iso_orders']['details_legend'] = 'Ordredetaljer';
-

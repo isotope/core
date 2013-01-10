@@ -121,4 +121,3 @@ $GLOBALS['TL_LANG']['tl_iso_products']['variant_legend']	= 'Product variant setu
 $GLOBALS['TL_LANG']['tl_iso_products']['price_tiers']['min']		= 'Quantity';
 $GLOBALS['TL_LANG']['tl_iso_products']['price_tiers']['min_format']	= 'from %s pcs.';
 $GLOBALS['TL_LANG']['tl_iso_products']['price_tiers']['price']		= 'Price';
-

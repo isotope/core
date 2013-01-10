@@ -124,4 +124,3 @@ $GLOBALS['ISO_ADR']['th'] =
 ##hcard_tel##
 
 ##hcard_email##</div>';
-
