@@ -197,8 +197,8 @@ $GLOBALS['TL_DCA']['tl_iso_payment_modules'] = array
             'exclude'                 => true,
             'filter'                  => true,
             'inputType'               => 'checkbox',
+            'options_callback'		  => array('Isotope\tl_iso_payment_modules', 'getAllowedCCTypes'),
             'eval'					  => array('multiple'=>true, 'tl_class'=>'clr'),
-            'options_callback'		  => array('Isotope\tl_iso_payment_modules', 'getAllowedCCTypes')
         ),
         'trans_type' => array
         (
