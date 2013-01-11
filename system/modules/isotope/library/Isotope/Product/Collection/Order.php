@@ -62,7 +62,9 @@ class Order extends Collection
                 if ($objPayment->numRows) {
                     try {
                         $this->Payment = \Isotope\Factory\Payment::build($objPayment->type, $objPayment->row());
-                    } catch (Exception $e) {}
+                    } catch (Exception $e) {
+                        trigger_error($e->getMessage());
+                    }
                 }
             }
 
@@ -72,7 +74,9 @@ class Order extends Collection
                 if ($objShipping->numRows) {
                     try {
                         $this->Shipping = \Isotope\Factory\Shipping::build($objShipping->type, $objShipping->row());
-                    } catch (Exception $e) {}
+                    } catch (Exception $e) {
+                        trigger_error($e->getMessage());
+                    }
                 }
             }
 
