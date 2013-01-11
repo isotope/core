@@ -99,9 +99,9 @@ class Expercash extends Payment implements IsotopePayment
             'amount'			=> (round($this->Isotope->Cart->grandTotal, 2)*100),
             'currency'			=> $this->Isotope->Config->currency,
             'paymentMethod'		=> $this->expercash_paymentMethod,
-            'returnUrl'			=> $this->Environment->base . $this->addToUrl('step=complete', true) . '?uid=' . $objOrder->uniqid,
-            'errorUrl'			=> $this->Environment->base . $this->addToUrl('step=failed', true),
-            'notifyUrl'			=> $this->Environment->base . 'system/modules/isotope/postsale.php?mod=pay&id=' . $this->id,
+            'returnUrl'			=> Environment::get('base') . $this->addToUrl('step=complete', true) . '?uid=' . $objOrder->uniqid,
+            'errorUrl'			=> Environment::get('base') . $this->addToUrl('step=failed', true),
+            'notifyUrl'			=> Environment::get('base') . 'system/modules/isotope/postsale.php?mod=pay&id=' . $this->id,
             'profile'			=> $this->expercash_profile,
         );
 
@@ -116,7 +116,7 @@ class Expercash extends Payment implements IsotopePayment
 
         if (is_file(TL_ROOT . '/' . $this->expercash_css))
         {
-            $strUrl .= 'cssUrl=' . urlencode($this->Environment->base . $this->expercash_css) . '&amp;';
+            $strUrl .= 'cssUrl=' . urlencode(Environment::get('base') . $this->expercash_css) . '&amp;';
         }
 
         $strUrl .= 'language=' . strtoupper($GLOBALS['TL_LANGUAGE']) . '&amp;popupKey=' . md5($strKey.$this->expercash_popupKey);

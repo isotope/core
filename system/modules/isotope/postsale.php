@@ -61,12 +61,12 @@ class PostSale extends \Frontend
 
         if (!strlen($strMod) || !strlen($strId))
         {
-            $this->log('Invalid post-sale request (param error): '.$this->Environment->request, __METHOD__, TL_ERROR);
+            $this->log('Invalid post-sale request (param error): '.Environment::get('request'), __METHOD__, TL_ERROR);
 
             return;
         }
 
-        $this->log('New post-sale request: '.$this->Environment->request, __METHOD__, TL_ACCESS);
+        $this->log('New post-sale request: '.Environment::get('request'), __METHOD__, TL_ACCESS);
 
         switch( strtolower($strMod) )
         {
@@ -81,7 +81,7 @@ class PostSale extends \Frontend
 
         if (!$objModule->numRows)
         {
-            $this->log('Invalid post-sale request (module not found): '.$this->Environment->request, __METHOD__, TL_ERROR);
+            $this->log('Invalid post-sale request (module not found): '.Environment::get('request'), __METHOD__, TL_ERROR);
 
             return;
         }
@@ -89,7 +89,7 @@ class PostSale extends \Frontend
         $strClass = $GLOBALS['ISO_'.strtoupper($strMod)][$objModule->type];
         if (!strlen($strClass) || !$this->classFileExists($strClass))
         {
-            $this->log('Invalid post-sale request (class not found): '.$this->Environment->request, __METHOD__, TL_ERROR);
+            $this->log('Invalid post-sale request (class not found): '.Environment::get('request'), __METHOD__, TL_ERROR);
 
             return;
         }

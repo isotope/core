@@ -89,7 +89,7 @@ class CumulativeFilter extends Module
 
         $this->generateFilter();
 
-        $this->Template->linkClearAll	= ampersand(preg_replace('/\?.*/', '', $this->Environment->request));
+        $this->Template->linkClearAll	= ampersand(preg_replace('/\?.*/', '', Environment::get('request')));
         $this->Template->labelClearAll	= $GLOBALS['TL_LANG']['MSC']['clearFiltersLabel'];
     }
 
@@ -191,7 +191,7 @@ class CumulativeFilter extends Module
      */
     protected function addToCurrentUrl($arrParams)
     {
-        $strUrl = $this->Environment->request;
+        $strUrl = Environment::get('request');
 
         foreach($arrParams as $arrParam)
         {

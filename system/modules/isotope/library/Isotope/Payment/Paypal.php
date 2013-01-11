@@ -242,8 +242,8 @@ class Paypal extends Payment implements IsotopePayment
 <input type="hidden" name="no_note" value="1"' . $endTag . '
 <input type="hidden" name="currency_code" value="' . $this->Isotope->Config->currency . '"' . $endTag . '
 <input type="hidden" name="button_subtype" value="services"' . $endTag . '
-<input type="hidden" name="return" value="' . $this->Environment->base . \Isotope\Frontend::addQueryStringToUrl('uid=' . $objOrder->uniqid, $this->addToUrl('step=complete', true)). '"' . $endTag . '
-<input type="hidden" name="cancel_return" value="' . $this->Environment->base . $this->addToUrl('step=failed', true) . '"' . $endTag . '
+<input type="hidden" name="return" value="' . Environment::get('base') . \Isotope\Frontend::addQueryStringToUrl('uid=' . $objOrder->uniqid, $this->addToUrl('step=complete', true)). '"' . $endTag . '
+<input type="hidden" name="cancel_return" value="' . Environment::get('base') . $this->addToUrl('step=failed', true) . '"' . $endTag . '
 <input type="hidden" name="rm" value="1"' . $endTag . '
 <input type="hidden" name="invoice" value="' . $objOrder->id . '"' . $endTag . '
 
@@ -258,7 +258,7 @@ class Paypal extends Payment implements IsotopePayment
 <input type="hidden" name="email" value="' . $objAddress->email . '"' . $endTag . '
 <input type="hidden" name="night_phone_b" value="' . $objAddress->phone . '"' . $endTag . '
 
-<input type="hidden" name="notify_url" value="' . $this->Environment->base . 'system/modules/isotope/postsale.php?mod=pay&id=' . $this->id . '"' . $endTag . '
+<input type="hidden" name="notify_url" value="' . Environment::get('base') . 'system/modules/isotope/postsale.php?mod=pay&id=' . $this->id . '"' . $endTag . '
 <input type="hidden" name="bn" value="PP-BuyNowBF:btn_paynowCC_LG.gif:NonHosted"' . $endTag . '
 <input type="' . (strlen($this->button) ? 'image" src="'.$this->button.'" border="0"' : 'submit" value="'.specialchars($GLOBALS['TL_LANG']['MSC']['pay_with_redirect'][2]).'"') . ' alt="PayPal - The safer, easier way to pay online!"' . $endTag . '
 </form>
@@ -301,7 +301,7 @@ window.addEvent( \'domready\' , function() {
 
         $strBuffer = '
 <div id="tl_buttons">
-<a href="'.ampersand(str_replace('&key=payment', '', $this->Environment->request)).'" class="header_back" title="'.specialchars($GLOBALS['TL_LANG']['MSC']['backBT']).'">'.$GLOBALS['TL_LANG']['MSC']['backBT'].'</a>
+<a href="'.ampersand(str_replace('&key=payment', '', Environment::get('request'))).'" class="header_back" title="'.specialchars($GLOBALS['TL_LANG']['MSC']['backBT']).'">'.$GLOBALS['TL_LANG']['MSC']['backBT'].'</a>
 </div>
 
 <h2 class="sub_headline">' . $this->name . ' (' . $GLOBALS['ISO_LANG']['PAY'][$this->type][0] . ')' . '</h2>

@@ -198,7 +198,7 @@ class Checkout extends Module
         }
 
         // Default template settings. Must be set at beginning so they can be overwritten later (eg. trough callback)
-        $this->Template->action = ampersand($this->Environment->request, ENCODE_AMPERSANDS);
+        $this->Template->action = ampersand(Environment::get('request'), ENCODE_AMPERSANDS);
         $this->Template->formId = $this->strFormId;
         $this->Template->formSubmit = $this->strFormId;
         $this->Template->enctype = 'application/x-www-form-urlencoded';
@@ -851,7 +851,7 @@ class Checkout extends Module
                 {
                     foreach( $_SESSION['FILES'] as $name => $file )
                     {
-                        $this->arrOrderData['form_' . $name] = $this->Environment->base . str_replace(TL_ROOT . '/', '', dirname($file['tmp_name'])) . '/' . rawurlencode($file['name']);
+                        $this->arrOrderData['form_' . $name] = Environment::get('base') . str_replace(TL_ROOT . '/', '', dirname($file['tmp_name'])) . '/' . rawurlencode($file['name']);
                     }
                 }
             }
@@ -880,7 +880,7 @@ class Checkout extends Module
 
             foreach ($objForm->arrFiles as $name => $file)
             {
-                $this->arrOrderData['form_' . $name] = $this->Environment->base . str_replace(TL_ROOT . '/', '', dirname($file['tmp_name'])) . '/' . rawurlencode($file['name']);
+                $this->arrOrderData['form_' . $name] = Environment::get('base') . str_replace(TL_ROOT . '/', '', dirname($file['tmp_name'])) . '/' . rawurlencode($file['name']);
             }
         }
 

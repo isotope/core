@@ -141,7 +141,7 @@ class AttributeWizard extends \Widget
             $this->Database->prepare("UPDATE " . $this->strTable . " SET " . $this->strField . "=? WHERE id=?")
                            ->execute(serialize($this->varValue), $this->currentRecord);
 
-            $this->redirect(preg_replace('/&(amp;)?cid=[^&]*/i', '', preg_replace('/&(amp;)?' . preg_quote($strCommand, '/') . '=[^&]*/i', '', $this->Environment->request)));
+            $this->redirect(preg_replace('/&(amp;)?cid=[^&]*/i', '', preg_replace('/&(amp;)?' . preg_quote($strCommand, '/') . '=[^&]*/i', '', Environment::get('request'))));
         }
 
         $state = $this->Session->get('checkbox_groups');
@@ -152,7 +152,7 @@ class AttributeWizard extends \Widget
             $state[\Input::get('cbc')] = (isset($state[\Input::get('cbc')]) && $state[\Input::get('cbc')] == 1) ? 0 : 1;
             $this->Session->set('checkbox_groups', $state);
 
-            $this->redirect(preg_replace('/(&(amp;)?|\?)cbc=[^& ]*/i', '', $this->Environment->request));
+            $this->redirect(preg_replace('/(&(amp;)?|\?)cbc=[^& ]*/i', '', Environment::get('request')));
         }
 
         // Sort options

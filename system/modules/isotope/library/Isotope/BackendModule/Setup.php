@@ -97,7 +97,7 @@ class Setup extends \BackendModule
     protected function compile()
     {
         $this->Template->modules = $this->arrModules;
-        $this->Template->script = $this->Environment->script;
+        $this->Template->script = Environment::get('script');
         $this->Template->welcome = sprintf($GLOBALS['TL_LANG']['ISO']['config_module'], ISO_VERSION . '.' . ISO_BUILD);
     }
 
@@ -123,7 +123,7 @@ class Setup extends \BackendModule
         if (!$this->User->isAdmin && !$this->User->hasAccess($module, 'iso_modules'))
         {
             $this->log('Isotope module "' . $module . '" was not allowed for user "' . $this->User->username . '"', 'ModuleIsotopeSetup getIsotopeModule()', TL_ERROR);
-            $this->redirect($this->Environment->script.'?act=error');
+            $this->redirect(Environment::get('script').'?act=error');
         }
 
         $strTable = \Input::get('table');
@@ -187,7 +187,7 @@ class Setup extends \BackendModule
         }
 
         // AJAX request
-        if ($_POST && $this->Environment->isAjaxRequest)
+        if ($_POST && Environment::get('isAjaxRequest'))
         {
             $this->objAjax->executePostActions($dc);
         }

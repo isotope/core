@@ -584,11 +584,11 @@ class ProductCallbacks extends \Backend
 
         if (in_array($filter, $arrFilters))
         {
-            $href = ampersand(str_replace('&'.$href, '', $this->Environment->request));
+            $href = ampersand(str_replace('&'.$href, '', Environment::get('request')));
         }
         else
         {
-            $href = ampersand($this->Environment->request . '&') . $href;
+            $href = ampersand(Environment::get('request') . '&') . $href;
         }
 
         return ' &#160; :: &#160; <a href="'.$href.'" class="'.$class.' isotope-filter" title="'.specialchars($title).'"'.$attributes.'>'.$label.'</a> ';
@@ -609,7 +609,7 @@ class ProductCallbacks extends \Backend
      */
     public function filterRemoveButton($href, $label, $title, $class, $attributes, $table, $root)
     {
-        $href = preg_replace('/&?filter\[\]=[^&]*/', '', $this->Environment->request);
+        $href = preg_replace('/&?filter\[\]=[^&]*/', '', Environment::get('request'));
 
         return ' &#160; :: &#160; <a href="'.$href.'" class="header_iso_filter_remove isotope-filter" title="'.specialchars($title).'"'.$attributes.'>'.$label.'</a> ';
     }

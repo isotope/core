@@ -91,7 +91,7 @@ class DC_TablePageId extends \DC_Table
             {
                 $return .= '
 
-<form action="'.ampersand($this->Environment->request, true).'" class="tl_form" method="post">
+<form action="'.ampersand(Environment::get('request'), true).'" class="tl_form" method="post">
 <div class="tl_formbody">
 <input type="hidden" name="FORM_SUBMIT" value="tl_filters_limit">
 <input type="hidden" name="REQUEST_TOKEN" value="'.REQUEST_TOKEN.'">
@@ -593,7 +593,7 @@ class DC_TablePageId extends \DC_Table
 
         $return .= ((\Input::get('act') == 'select') ? '
 
-<form action="'.ampersand($this->Environment->request, true).'" id="tl_select" class="tl_form" method="post">
+<form action="'.ampersand(Environment::get('request'), true).'" id="tl_select" class="tl_form" method="post">
 <div class="tl_formbody">
 <input type="hidden" name="FORM_SUBMIT" value="tl_select">
 <input type="hidden" name="REQUEST_TOKEN" value="'.REQUEST_TOKEN.'">' : '').'
@@ -1032,7 +1032,7 @@ Isotope.makePageViewSortable("ul_' . CURRENT_ID . '");
             $result = $objRow->fetchAllAssoc();
             $return .= ((\Input::get('act') == 'select') ? '
 
-<form action="'.ampersand($this->Environment->request, true).'" id="tl_select" class="tl_form" method="post">
+<form action="'.ampersand(Environment::get('request'), true).'" id="tl_select" class="tl_form" method="post">
 <div class="tl_formbody">
 <input type="hidden" name="FORM_SUBMIT" value="tl_select">
 <input type="hidden" name="REQUEST_TOKEN" value="'.REQUEST_TOKEN.'">' : '').'

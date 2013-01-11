@@ -65,7 +65,7 @@ class ConfigSwitcher extends Module
                 $_SESSION['ISOTOPE']['config_id'] = \Input::get('config');
             }
 
-            $this->redirect(preg_replace(('@[?|&]config='.\Input::get('config').'@'), '', $this->Environment->request));
+            $this->redirect(preg_replace(('@[?|&]config='.\Input::get('config').'@'), '', Environment::get('request')));
         }
 
         return parent::generate();
@@ -90,7 +90,7 @@ class ConfigSwitcher extends Module
                 'label'		=> (strlen($objConfigs->label) ? $objConfigs->label : $objConfigs->name),
                 'class'		=> (($c == 0) ? 'first' : ''),
                 'active'	=> ($this->Isotope->Config->id == $objConfigs->id ? true : false),
-                'href'		=> ($this->Environment->request . ((strpos($this->Environment->request, '?') === false) ? '?' : '&amp;') . 'config=' . $objConfigs->id),
+                'href'		=> (Environment::get('request') . ((strpos(Environment::get('request'), '?') === false) ? '?' : '&amp;') . 'config=' . $objConfigs->id),
             );
 
             $c++;

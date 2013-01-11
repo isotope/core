@@ -127,7 +127,7 @@ class Cart extends Module
                 'quantity'			=> $objProduct->quantity_requested,
                 'cart_item_id'		=> $objProduct->cart_id,
                 'product_options'	=> $objProduct->getOptions(),
-                'remove_link'		=> ampersand($strUrl . ($GLOBALS['TL_CONFIG']['disableAlias'] ? '&' : '?') . 'remove='.$objProduct->cart_id.'&referer='.base64_encode($this->Environment->request)),
+                'remove_link'		=> ampersand($strUrl . ($GLOBALS['TL_CONFIG']['disableAlias'] ? '&' : '?') . 'remove='.$objProduct->cart_id.'&referer='.base64_encode(Environment::get('request'))),
                 'remove_link_text'  => $GLOBALS['TL_LANG']['MSC']['removeProductLinkText'],
                 'remove_link_title' => specialchars(sprintf($GLOBALS['TL_LANG']['MSC']['removeProductLinkTitle'], $objProduct->name)),
             ));
@@ -172,7 +172,7 @@ class Cart extends Module
         $objTemplate->formId = 'iso_cart_update_'.$this->id;
         $objTemplate->formSubmit = 'iso_cart_update_'.$this->id;
         $objTemplate->summary = $GLOBALS['ISO_LANG']['MSC']['cartSummary'];
-        $objTemplate->action = $this->Environment->request;
+        $objTemplate->action = Environment::get('request');
         $objTemplate->cartJumpTo = $this->iso_cart_jumpTo ? $this->generateFrontendUrl($this->Database->execute("SELECT * FROM tl_page WHERE id={$this->iso_cart_jumpTo}")->fetchAssoc()) : '';
         $objTemplate->cartLabel = $GLOBALS['TL_LANG']['MSC']['cartBT'];
         $objTemplate->checkoutJumpToLabel = $GLOBALS['TL_LANG']['MSC']['checkoutBT'];

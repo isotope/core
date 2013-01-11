@@ -199,7 +199,7 @@ class MediaManager extends \Widget implements \uploadable
             $this->Database->prepare("UPDATE " . $this->strTable . " SET " . $this->strField . "=? WHERE id=?")
                            ->execute(serialize($this->varValue), $this->currentRecord);
 
-            $this->redirect(preg_replace('/&(amp;)?cid=[^&]*/i', '', preg_replace('/&(amp;)?' . preg_quote($strCommand, '/') . '=[^&]*/i', '', $this->Environment->request)));
+            $this->redirect(preg_replace('/&(amp;)?cid=[^&]*/i', '', preg_replace('/&(amp;)?' . preg_quote($strCommand, '/') . '=[^&]*/i', '', Environment::get('request'))));
         }
 
         $upload = sprintf('<h3><label for="ctrl_%s_upload">%s</label></h3>' . $this->objUploader->generateMarkup(),

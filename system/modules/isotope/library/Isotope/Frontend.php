@@ -769,7 +769,7 @@ $endScript";
                     (
                         'link' => $arrMeta[0],
                         'title' => $arrMeta[0],
-                        'href' => $this->Environment->request . (($GLOBALS['TL_CONFIG']['disableAlias'] || strpos($this->Environment->request, '?') !== false) ? '&amp;' : '?') . 'file=' . $this->urlEncode($file),
+                        'href' => Environment::get('request') . (($GLOBALS['TL_CONFIG']['disableAlias'] || strpos(Environment::get('request'), '?') !== false) ? '&amp;' : '?') . 'file=' . $this->urlEncode($file),
                         'caption' => $arrMeta[2],
                         'filesize' => $this->getReadableSize($objFile->filesize, 1),
                         'icon' => TL_FILES_URL . 'system/themes/' . $this->getTheme() . '/images/' . $objFile->icon,
@@ -810,7 +810,7 @@ $endScript";
                     (
                         'link' => $arrMeta[0],
                         'title' => $arrMeta[0],
-                        'href' => $this->Environment->request . (($GLOBALS['TL_CONFIG']['disableAlias'] || strpos($this->Environment->request, '?') !== false) ? '&amp;' : '?') . 'file=' . $this->urlEncode($file . '/' . $subfile),
+                        'href' => Environment::get('request') . (($GLOBALS['TL_CONFIG']['disableAlias'] || strpos(Environment::get('request'), '?') !== false) ? '&amp;' : '?') . 'file=' . $this->urlEncode($file . '/' . $subfile),
                         'caption' => $arrMeta[2],
                         'filesize' => $this->getReadableSize($objFile->filesize, 1),
                         'icon' => 'system/themes/' . $this->getTheme() . '/images/' . $objFile->icon,
@@ -1307,7 +1307,7 @@ $endScript";
 
                 if ($strUrl != '')
                 {
-                    $arrIsotopeProductPages[] = $this->Environment->base . ltrim($strUrl, '/');
+                    $arrIsotopeProductPages[] = Environment::get('base') . ltrim($strUrl, '/');
                 }
             }
         }
