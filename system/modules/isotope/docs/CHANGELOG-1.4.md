@@ -1,8 +1,41 @@
 Isotope eCommerce Changelog
 ===========================
 
+Version 1.4.x (201?-??-??)
+--------------------------
+
+### New
+- Tax rates can now be applied to multiple countries
+- Added hook to check for product access permissions
+- Removed PaypalPayflowPro and Cybersource payment methods. They were not maintained anymore.
+- PayPal Standard payment now shows additional information in the order payment info
+
+### Improved
+- Better german translations
+- Payment module will send status email if configured
+- Added default value for base price label field
+- Show "filesOnly" attribute option only if "files" is checked (#481)
+- Added german translations for download attribute fields (#480)
+- Prevent access to other users' order when logged in (#126)
+- Load page object on postsale order checkout if necessary (#123)
+- Price tiers were not calculated through shop config (#431)
+- Can disable shipping address in shop config (#129)
+- Do not show filter options with just one option (#42)
+- Filtered options are now passed as pre-selections to the product reader (#42)
+
+### Fixed
+- Attributes were not translated in filters etc.
+- Payment modules did not correctly handle the auto_item parameter (#113)
+- ProductList-noFilter message is shown when keywords are used (#120)
+- Replace inserttags in order prefix when generating unique ID (#510)
+- Company and name was on same line in textual address representation (#127)
+- Labels for rule minimum subtotal fields (#491)
+- Exception when manually sorting products in the backend (#124)
+- The filter module did not work on the index page (#42)
+
+
 Version 1.4.rc1 (2012-12-03)
-------------------------------
+----------------------------
 
 ### New
 - New attribute option to add date picker for frontend and backend

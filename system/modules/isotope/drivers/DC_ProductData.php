@@ -1675,12 +1675,12 @@ window.addEvent(\'domready\', function() {
 
         if (is_array($GLOBALS['TL_DCA'][$gtable]['list']['sorting']['root']))
         {
-            $strWhere = "id IN (0," . implode(',', $GLOBALS['TL_DCA'][$gtable]['list']['sorting']['root']) . " AND";
+            $strWhere = " AND id IN (" . (empty($GLOBALS['TL_DCA'][$gtable]['list']['sorting']['root']) ? '0' : implode(',', $GLOBALS['TL_DCA'][$gtable]['list']['sorting']['root'])) . ")";
         }
 
         $this->root = array();
         $arrRows = array();
-        $objRows = $this->Database->query("SELECT * FROM $gtable WHERE $strWhere pid=0 ORDER BY sorting");
+        $objRows = $this->Database->query("SELECT * FROM $gtable WHERE pid=0$strWhere ORDER BY sorting");
 
         while ($objRows->next())
         {

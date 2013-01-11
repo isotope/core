@@ -66,7 +66,7 @@ class ProductList extends Module
         }
 
         // return message if no filter is set
-        if ($this->iso_emptyFilter && !\Input::get('isorc'))
+        if ($this->iso_emptyFilter && !\Input::get('isorc') && !\Input::get('keywords'))
         {
             return $this->iso_noFilter;
         }
@@ -158,11 +158,11 @@ class ProductList extends Module
                         $total = $total - $offset;
                         $total = $total > $this->perPage ? $this->perPage : $total;
 
-                        $arrProducts = \Isotope\Frontend::getProducts(array_slice($arrCacheIds, $offset, $this->perPage), \Isotope\Frontend::getReaderPageId(null, $this->iso_reader_jumpTo));
+                        $arrProducts = \Isotope\Frontend::getProducts(array_slice($arrCacheIds, $offset, $this->perPage));
                     }
                     else
                     {
-                        $arrProducts = \Isotope\Frontend::getProducts($arrCacheIds, \Isotope\Frontend::getReaderPageId(null, $this->iso_reader_jumpTo));
+                        $arrProducts = \Isotope\Frontend::getProducts($arrCacheIds);
                     }
 
                     // Cache is wrong, drop everything and run findProducts()
@@ -267,9 +267,14 @@ class ProductList extends Module
         }
 
         $arrBuffer = array();
+        $intReaderPage = \Isotope\Frontend::getReaderPageId(null, $this->iso_reader_jumpTo);
+		$arrDefaultOptions = $this->getDefaultProductOptions();
 
         foreach ($arrProducts as $objProduct)
         {
+            $objProduct->setOptions($arrDefaultOptions);
+    		$objProduct->reader_jumpTo = $intReaderPage;
+
             $arrBuffer[] = array
             (
                 'cssID'	=> ($objProduct->cssID[0] != '') ? ' id="' . $objProduct->cssID[0] . '"' : '',
@@ -312,7 +317,7 @@ class ProductList extends Module
                                                     . "$strWhere GROUP BY p1.id ORDER BY c.sorting")
                                          ->execute($arrValues);
 
-        return \Isotope\Frontend::getProducts($objProductData, \Isotope\Frontend::getReaderPageId(null, $this->iso_reader_jumpTo), true, $arrFilters, $arrSorting);
+        return \Isotope\Frontend::getProducts($objProductData, 0, true, $arrFilters, $arrSorting);
     }
 
 
@@ -409,4 +414,32 @@ class ProductList extends Module
 
         return array($arrFilters, $arrSorting);
     }
+
+    /**
+	 * Get a list of default options based on filter attributes
+	 * @return array
+	 */
+	protected function getDefaultProductOptions()
+	{
+    	$arrOptions = array();
+
+    	if (is_array($this->iso_filterModules))
+		{
+			foreach ($this->iso_filterModules as $module)
+			{
+				if (is_array($GLOBALS['ISO_FILTERS'][$module]))
+				{
+				    foreach ($GLOBALS['ISO_FILTERS'][$module] as $arrConfig)
+				    {
+    				    if ($arrConfig['operator'] == '=' || $arrConfig['operator'] == '==' || $arrConfig['operator'] == 'eq')
+    				    {
+        				    $arrOptions[$arrConfig['attribute']] = $arrConfig['value'];
+    				    }
+				    }
+				}
+			}
+		}
+
+		return $arrOptions;
+	}
 }

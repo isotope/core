@@ -159,25 +159,6 @@ class tl_iso_tax_class extends \Backend
 
 
     /**
-     * Get all tax rates sorted by country and name
-     * @return array
-     */
-    public function getTaxRates()
-    {
-        $arrCountries = $this->getCountries();
-        $arrRates = array();
-        $objRates = $this->Database->execute("SELECT * FROM tl_iso_tax_rate ORDER BY country, name");
-
-        while ($objRates->next())
-        {
-            $arrRates[$objRates->id] = $arrCountries[$objRates->country] . ' - ' . $objRates->name;
-        }
-
-        return $arrRates;
-    }
-
-
-    /**
      * Return the copy tax class button
      * @param array
      * @param string

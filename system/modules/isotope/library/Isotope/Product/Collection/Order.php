@@ -112,11 +112,13 @@ class Order extends Collection
                 return $objStatus->paid ? true : false;
 
             case 'statusLabel':
-                $strStatus = $this->Database->prepare("SELECT name FROM tl_iso_orderstatus WHERE id=?")
-                                            ->execute($this->arrData['status'])
-                                            ->name;
+                $objStatus = $this->Database->execute("SELECT * FROM tl_iso_orderstatus WHERE id=" . (int) $this->status);
+                return $this->Isotope->translate($objStatus->name);
+                break;
 
-                return $this->Isotope->translate($strStatus);
+            case 'statusAlias':
+                $objStatus = $this->Database->execute("SELECT * FROM tl_iso_orderstatus WHERE id=" . (int) $this->status);
+                return standardize($objStatus->name);
                 break;
 
             default:
@@ -193,11 +195,11 @@ class Order extends Collection
 
             $arrSet = array
             (
-                'pid'					=> $objDownloads->item_id,
-                'tstamp'				=> $time,
-                'download_id'			=> $objDownloads->id,
-                'downloads_remaining'	=> ($objDownloads->downloads_allowed > 0 ? ($objDownloads->downloads_allowed * $objDownloads->product_quantity) : ''),
-                'expires'				=> $expires,
+                'pid'                    => $objDownloads->item_id,
+                'tstamp'                => $time,
+                'download_id'            => $objDownloads->id,
+                'downloads_remaining'    => ($objDownloads->downloads_allowed > 0 ? ($objDownloads->downloads_allowed * $objDownloads->product_quantity) : ''),
+                'expires'                => $expires,
             );
 
             $this->Database->prepare("INSERT INTO tl_iso_order_downloads %s")->set($arrSet)->executeUncached();
@@ -280,6 +282,16 @@ class Order extends Collection
             return true;
         }
 
+           global $objPage;
+
+        // Load page configuration
+        if (!is_object($objPage) && $this->pageId > 0)
+        {
+            $objPage = $this->getPageDetails($this->pageId);
+            $objPage = IsotopeFrontend::loadPageConfig($objPage);
+        }
+
+
         // This is the case when not using ModuleIsotopeCheckout
         if (!is_object($objCart))
         {
@@ -318,7 +330,7 @@ class Order extends Collection
         $objCart->delete();
 
         $this->checkout_complete = true;
-        $this->status = ($this->new_order_status ? $this->new_order_status : $this->Isotope->Config->orderstatus_new);
+        $this->status = $this->Isotope->Config->orderstatus_new;
 
         $this->generateOrderId();
         $arrData = $this->getEmailData();
@@ -480,6 +492,20 @@ class Order extends Collection
 
 
     /**
+     * Add additional information to the order data
+     * @return array
+     */
+    public function getData()
+    {
+        $arrData = parent::getData();
+
+        $arrData['order_id'] = $this->strOrderId;
+
+        return $arrData;
+    }
+
+
+    /**
      * Retrieve the array of email data for parsing simple tokens
      * @return array
      */
@@ -555,7 +581,7 @@ class Order extends Collection
 
         if ($this->strOrderId == '')
         {
-            $strPrefix = $this->Isotope->replaceInsertTags($this->Isotope->Config->orderPrefix);
+            $strPrefix = $this->Isotope->call('replaceInsertTags', $this->Isotope->Config->orderPrefix);
             $intPrefix = utf8_strlen($strPrefix);
             $arrConfigIds = $this->Database->execute("SELECT id FROM tl_iso_config WHERE store_id=" . $this->Isotope->Config->store_id)->fetchEach('id');
 

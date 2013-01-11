@@ -101,7 +101,8 @@ class ProductFilter extends Module
                 \Input::setGet('isorc', $intCacheId);
             }
 
-            $this->redirect($this->generateRequestUrl());
+			// Include Environment::base or the URL would not work on the index page
+			$this->redirect($this->Environment->base . $this->generateRequestUrl());
         }
 
         return $strBuffer;
@@ -294,29 +295,36 @@ class ProductFilter extends Module
                     // Use the default routine to initialize options data
                     $arrWidget = $this->prepareForWidget($arrData, $strField);
 
+					// Must have options to apply the filter
                     if (!is_array($arrWidget['options']))
                     {
                         continue;
                     }
 
-                    $arrOptions = $arrWidget['options'];
-
                     foreach ($arrWidget['options'] as $k => $option)
                     {
-                        if (!in_array($option['value'], $arrValues))
-                        {
-                            unset($arrOptions[$k]);
-                            continue;
-                        }
+					    if ($option['value'] == '')
+					    {
+    					    $arrWidget['blankOptionLabel'] = $option['label'];
+    					    unset($arrWidget['options'][$k]);
+    					    continue;
+					    }
+						elseif (!in_array($option['value'], $arrValues) || $option['value'] == '-')
+						{
+							unset($arrWidget['options'][$k]);
+							continue;
+						}
 
-                        $arrOptions[$k]['default'] = $option['value'] == $GLOBALS['ISO_FILTERS'][$this->id][$strField]['value'] ? '1' : '';
-                    }
+						$arrWidget['options'][$k]['default'] = $option['value'] == $GLOBALS['ISO_FILTERS'][$this->id][$strField]['value'] ? '1' : '';
+					}
 
-                    $arrFilters[$strField] = array
-                    (
-                        'label'		=> $arrWidget['label'],
-                        'options'	=> $arrOptions,
-                    );
+					// Filter with just one option does not make sense
+					if (count($arrWidget['options']) < 2)
+					{
+						continue;
+					}
+
+					$arrFilters[$strField] = $arrWidget;
                 }
             }
 

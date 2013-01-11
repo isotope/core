@@ -77,9 +77,6 @@ $GLOBALS['TL_LANG']['tl_iso_payment_modules']['enabled']					= array('Enabled', 
 $GLOBALS['TL_LANG']['tl_iso_payment_modules']['capture']	= 'Authorize and Capture';
 $GLOBALS['TL_LANG']['tl_iso_payment_modules']['auth']		= 'Authorize Only';
 
-$GLOBALS['TL_LANG']['ISO_PAY']['authorizedotnet']['modes']['AUTH_CAPTURE']	= 'Authorize and Capture';
-$GLOBALS['TL_LANG']['ISO_PAY']['authorizedotnet']['modes']['AUTH_ONLY']		= 'Authorize Only';
-
 $GLOBALS['TL_LANG']['tl_iso_payment_modules']['no_shipping']			= 'Orders without shipping';
 $GLOBALS['TL_LANG']['tl_iso_payment_modules']['AUTH_CAPTURE']			= array('Authorize and Capture', 'Transactions of this type will be sent for authorization. The transaction will be automatically picked up for settlement if approved. This is the default transaction type in the gateway. If no type is indicated when submitting transactions to the gateway, the gateway will assume that the transaction is of the type');
 $GLOBALS['TL_LANG']['tl_iso_payment_modules']['AUTH_ONLY']				= array('Authorize Only', 'Transactions of this type are submitted if the merchant wishes to validate the credit card for the amount of the goods sold. If the merchant does not have goods in stock or wishes to review orders before shipping the goods, this transaction type should be submitted. The gateway will send this type of transaction to the financial institution for approval. However this transaction will not be sent for settlement. If the merchant does not act on the transaction within 30 days, the transaction will no longer be available for capture.');

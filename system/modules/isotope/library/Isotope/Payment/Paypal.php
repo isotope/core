@@ -120,6 +120,7 @@ class Paypal extends Payment implements IsotopePayment
             {
                 case 'Completed':
                     $objOrder->date_paid = time();
+					$objOrder->updateOrderStatus($this->new_order_status);
                     break;
 
                 case 'Canceled_Reversal':
@@ -128,7 +129,7 @@ class Paypal extends Payment implements IsotopePayment
                 case 'Failed':
                 case 'Voided':
                     $objOrder->date_paid = '';
-                    $objOrder->status = $this->Isotope->Config->orderstatus_error;
+					$objOrder->updateOrderStatus($this->Isotope->Config->orderstatus_error);
                     break;
 
                 case 'In-Progress':
@@ -236,8 +237,8 @@ class Paypal extends Payment implements IsotopePayment
 <input type="hidden" name="no_note" value="1"' . $endTag . '
 <input type="hidden" name="currency_code" value="' . $this->Isotope->Config->currency . '"' . $endTag . '
 <input type="hidden" name="button_subtype" value="services"' . $endTag . '
-<input type="hidden" name="return" value="' . $this->Environment->base . \Isotope\Frontend::addQueryStringToUrl('uid=' . $objOrder->uniqid, $this->addToUrl('step=complete')). '"' . $endTag . '
-<input type="hidden" name="cancel_return" value="' . $this->Environment->base . $this->addToUrl('step=failed') . '"' . $endTag . '
+<input type="hidden" name="return" value="' . $this->Environment->base . \Isotope\Frontend::addQueryStringToUrl('uid=' . $objOrder->uniqid, $this->addToUrl('step=complete', true)). '"' . $endTag . '
+<input type="hidden" name="cancel_return" value="' . $this->Environment->base . $this->addToUrl('step=failed', true) . '"' . $endTag . '
 <input type="hidden" name="rm" value="1"' . $endTag . '
 <input type="hidden" name="invoice" value="' . $objOrder->id . '"' . $endTag . '
 
@@ -265,4 +266,68 @@ window.addEvent( \'domready\' , function() {
 
         return $strBuffer;
     }
+
+	/**
+	 * Return information or advanced features in the backend.
+	 *
+	 * Use this function to present advanced features or basic payment information for an order in the backend.
+	 * @param integer Order ID
+	 * @return string
+	 */
+	public function backendInterface($orderId)
+	{
+	    $objOrder = new IsotopeOrder();
+
+        if (!$objOrder->findBy('id', $orderId))
+        {
+            return parent::backendInterface($orderId);
+        }
+
+        $arrPayment = $objOrder->payment_data;
+
+        if (!is_array($arrPayment['POSTSALE']) || empty($arrPayment['POSTSALE']))
+        {
+            return parent::backendInterface($orderId);
+        }
+
+        $arrPayment = array_pop($arrPayment['POSTSALE']);
+        ksort($arrPayment);
+        $i = 0;
+
+		$strBuffer = '
+<div id="tl_buttons">
+<a href="'.ampersand(str_replace('&key=payment', '', $this->Environment->request)).'" class="header_back" title="'.specialchars($GLOBALS['TL_LANG']['MSC']['backBT']).'">'.$GLOBALS['TL_LANG']['MSC']['backBT'].'</a>
+</div>
+
+<h2 class="sub_headline">' . $this->name . ' (' . $GLOBALS['ISO_LANG']['PAY'][$this->type][0] . ')' . '</h2>
+
+<div id="tl_soverview">
+<div id="tl_messages">
+<p class="tl_info"><a href="https://www.paypal.com/' . strtolower($arrPayment['residence_country']) . '/cgi-bin/webscr?cmd=_view-a-trans&id=' . $arrPayment['txn_id'] . '" target="_blank">' . $GLOBALS['TL_LANG']['MSC']['paypalTransactionOnline'] . '</a></p>
+</div>
+</div>
+
+<table class="tl_show">
+  <tbody>';
+
+        foreach ($arrPayment as $k => $v)
+        {
+            if (is_array($v))
+                continue;
+
+            $strBuffer .= '
+  <tr>
+    <td' . ($i%2 ? '' : ' class="tl_bg"') . '><span class="tl_label">' . $k . ': </span></td>
+    <td' . ($i%2 ? '' : ' class="tl_bg"') . '>' . $v . '</td>
+  </tr>';
+
+            ++$i;
+        }
+
+        $strBuffer .= '
+</tbody></table>
+</div>';
+
+        return $strBuffer;
+	}
 }

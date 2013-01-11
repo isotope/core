@@ -44,7 +44,7 @@ class Upgrade extends \Controller
         $this->renameTables();
         $this->renameFields();
         $this->updateStoreConfigurations();
-        $this->updateOrders();
+        $this->updateCollections();
         $this->initializeOrderStatus();
         $this->updateImageSizes();
         $this->updateAttributes();
@@ -321,6 +321,18 @@ class Upgrade extends \Controller
             $this->Database->query("ALTER TABLE tl_iso_tax_rate CHANGE COLUMN store config int(10) unsigned NOT NULL default '0'");
         }
 
+		// tl_iso_tax_rate.country has been renamed to tl_iso_tax_rate.countries
+		if ($this->Database->fieldExists('country', 'tl_iso_tax_rate') && !$this->Database->fieldExists('countries', 'tl_iso_tax_rate'))
+		{
+			$this->Database->query("ALTER TABLE tl_iso_tax_rate CHANGE COLUMN country countries text NULL");
+		}
+
+		// tl_iso_tax_rate.subdivision has been renamed to tl_iso_tax_rate.subdivisions
+		if ($this->Database->fieldExists('subdivision', 'tl_iso_tax_rate') && !$this->Database->fieldExists('subdivisions', 'tl_iso_tax_rate'))
+		{
+			$this->Database->query("ALTER TABLE tl_iso_tax_rate CHANGE COLUMN subdivision subdivisions text NULL");
+		}
+
         // tl_page.isotopeStoreConfig has been renamed to tl_page.iso_config
         if ($this->Database->fieldExists('isotopeStoreConfig', 'tl_page') && !$this->Database->fieldExists('iso_config', 'tl_page'))
         {
@@ -459,7 +471,7 @@ class Upgrade extends \Controller
     }
 
 
-    private function updateOrders()
+    private function updateCollections()
     {
         if (!$this->Database->fieldExists('date_shipped', 'tl_iso_orders'))
         {
@@ -470,6 +482,20 @@ class Upgrade extends \Controller
 
         // Fix for Ticket #383
         $this->Database->query("UPDATE tl_iso_order_downloads SET downloads_remaining='' WHERE downloads_remaining='-1'");
+
+		// Add tax_free_price to tl_iso_order_items
+		if (!$this->Database->fieldExists('tax_free_price', 'tl_iso_order_items'))
+		{
+			$this->Database->query("ALTER TABLE tl_iso_order_items ADD COLUMN tax_free_price decimal(12,2) NOT NULL default '0.00'");
+			$this->Database->query("UPDATE tl_iso_order_items SET tax_free_price=price");
+		}
+
+		// Add tax_free_price to tl_iso_cart_items
+		if (!$this->Database->fieldExists('tax_free_price', 'tl_iso_cart_items'))
+		{
+			$this->Database->query("ALTER TABLE tl_iso_cart_items ADD COLUMN tax_free_price decimal(12,2) NOT NULL default '0.00'");
+			$this->Database->query("UPDATE tl_iso_cart_items SET tax_free_price=price");
+		}
     }
 
 

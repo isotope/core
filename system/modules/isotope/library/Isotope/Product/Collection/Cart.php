@@ -239,8 +239,8 @@ class Cart extends Collection
         {
             $objCart = new static();
 
-            $objCart->pid		= (\FrontendUser::getInstance()->id ?: 0);
-            $objCart->session	= (\FrontendUser::getInstance()->id ? '' : $strHash);
+            $objCart->pid		= (FE_USER_LOGGED_IN === true ? $this->User->id : 0);
+            $objCart->session	= (FE_USER_LOGGED_IN === true ? '' : $strHash);
             $objCart->store_id	= $intStore;
         }
 

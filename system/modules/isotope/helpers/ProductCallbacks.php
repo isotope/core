@@ -219,8 +219,10 @@ class ProductCallbacks extends \Backend
             return;
         }
 
+        $arrProducts = IsotopeBackend::getAllowedProductIds();
+
         // Filter by product type and group permissions
-        if (!is_array($this->User->iso_product_types) || empty($this->User->iso_product_types) || !is_array($this->User->iso_groups) || empty($this->User->iso_groups))
+		if (empty($arrProducts))
         {
             $GLOBALS['TL_DCA']['tl_iso_products']['config']['closed'] = true;
             unset($GLOBALS['TL_DCA']['tl_iso_products']['list']['global_operations']['new_product']);
@@ -229,11 +231,6 @@ class ProductCallbacks extends \Backend
         }
         else
         {
-            $arrGroups = array_merge($this->User->iso_groups, $this->getChildRecords($this->User->iso_groups, 'tl_iso_groups'));
-
-            $objProducts = $this->Database->execute("SELECT id FROM tl_iso_products WHERE type IN (0," . implode(',', $this->User->iso_product_types) . ") AND gid IN (" . implode(',', $arrGroups) . ") AND pid=0 AND language=''");
-            $arrProducts = $objProducts->numRows ? $objProducts->fetchEach('id') : array();
-
             // Maybe another function has already set allowed product IDs
             if (is_array($GLOBALS['TL_DCA']['tl_iso_products']['list']['sorting']['root']))
             {
@@ -241,13 +238,6 @@ class ProductCallbacks extends \Backend
             }
 
             $GLOBALS['TL_DCA']['tl_iso_products']['list']['sorting']['root'] = $arrProducts;
-        }
-
-        // Need to fetch all variant IDs because they are editable too
-        if (!empty($GLOBALS['TL_DCA']['tl_iso_products']['list']['sorting']['root']))
-        {
-            $arrVariants = $this->getChildRecords($GLOBALS['TL_DCA']['tl_iso_products']['list']['sorting']['root'], 'tl_iso_products');
-            $GLOBALS['TL_DCA']['tl_iso_products']['list']['sorting']['root'] = array_merge($GLOBALS['TL_DCA']['tl_iso_products']['list']['sorting']['root'], $arrVariants);
         }
 
         // Set allowed product IDs (edit multiple)

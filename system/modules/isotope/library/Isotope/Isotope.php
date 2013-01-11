@@ -74,8 +74,10 @@ class Isotope extends \Controller
     /**
      * Allow access to all protected parent methods
      */
-    public function __call($name, $arguments)
+    public function call($name, $arguments=null)
     {
+	    $arguments = $arguments === null ? array() : (is_array($arguments) ? $arguments : array($arguments));
+
         return call_user_func_array(array($this, $name), $arguments);
     }
 
@@ -527,12 +529,12 @@ class Isotope extends \Controller
                     continue;
                 }
 
-                if ($objRate->country != '' && $objRate->country != $arrAddress['country'])
+				if ($objRate->countries != '' && !in_array($arrAddress['country'], trimsplit(',', $objRate->countries)))
                 {
                     continue;
                 }
 
-                if ($objRate->subdivision != '' && $objRate->subdivision != $arrAddress['subdivision'])
+				if ($objRate->subdivisions != '' && !in_array($arrAddress['subdivision'], trimsplit(',', $objRate->subdivisions)))
                 {
                     continue;
                 }

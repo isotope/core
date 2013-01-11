@@ -40,7 +40,8 @@ $GLOBALS['TL_DCA']['tl_iso_tax_rate'] = array
         'sorting' => array
         (
             'mode'                    => 1,
-            'fields'                  => array('country', 'name'),
+			'flag'                    => 1,
+			'fields'                  => array('name'),
             'panelLayout'             => 'filter;search,limit',
         ),
         'label' => array
@@ -109,7 +110,7 @@ $GLOBALS['TL_DCA']['tl_iso_tax_rate'] = array
     'palettes' => array
     (
         '__selector__'                => array('protected'),
-        'default'                     => '{name_legend},name,label;{rate_legend},rate;{location_legend},address,country,subdivision,postalCodes;{condition_legend},amount;{config_legend:hide},config,stop,guests,protected',
+		'default'                     => '{name_legend},name,label;{rate_legend},rate;{location_legend},address,countries,subdivisions,postalCodes;{condition_legend},amount;{config_legend:hide},config,stop,guests,protected',
     ),
 
     // Subpalettes
@@ -125,6 +126,7 @@ $GLOBALS['TL_DCA']['tl_iso_tax_rate'] = array
         (
             'label'                   => &$GLOBALS['TL_LANG']['tl_iso_tax_rate']['name'],
             'exclude'                 => true,
+			'search'                  => true,
             'inputType'               => 'text',
             'eval'                    => array('mandatory'=>true, 'maxlength'=>255, 'tl_class'=>'w50'),
         ),
@@ -139,28 +141,30 @@ $GLOBALS['TL_DCA']['tl_iso_tax_rate'] = array
         (
             'label'                   => &$GLOBALS['TL_LANG']['tl_iso_tax_rate']['address'],
             'exclude'                 => true,
+			'filter'                  => true,
             'inputType'               => 'checkbox',
             'options'                 => array('billing', 'shipping'),
             'reference'               => &$GLOBALS['TL_LANG']['tl_iso_tax_rate'],
             'eval'                    => array('mandatory'=>true, 'multiple'=>true)
         ),
-        'country' => array
-        (
-            'label'                   => &$GLOBALS['TL_LANG']['tl_iso_tax_rate']['country'],
-            'exclude'                 => true,
-            'inputType'               => 'select',
-            'options'                 => $this->getCountries(),
-            'eval'                    => array('includeBlankOption'=>true, 'tl_class'=>'w50', 'chosen'=>true)
-        ),
-        'subdivision' => array
-        (
-            'label'                   => &$GLOBALS['TL_LANG']['tl_iso_tax_rate']['subdivision'],
-            'exclude'                 => true,
-            'sorting'                 => true,
-            'inputType'               => 'conditionalselect',
-            'options_callback'		  => array('Isotope\Backend', 'getSubdivisions'),
-            'eval'                    => array('conditionField'=>'country', 'includeBlankOption'=>true, 'tl_class'=>'w50'),
-        ),
+        'countries' => array
+		(
+			'label'                   => &$GLOBALS['TL_LANG']['tl_iso_tax_rate']['countries'],
+			'exclude'                 => true,
+			'filter'                  => true,
+			'inputType'               => 'select',
+			'options'                 => $this->getCountries(),
+			'eval'                    => array('multiple'=>true, 'size'=>10, 'csv'=>',', 'tl_class'=>'w50 w50h', 'chosen'=>true)
+		),
+		'subdivisions' => array
+		(
+			'label'                   => &$GLOBALS['TL_LANG']['tl_iso_tax_rate']['subdivisions'],
+			'exclude'                 => true,
+			'filter'                  => true,
+			'inputType'               => 'conditionalselect',
+			'options_callback'		  => array('IsotopeBackend', 'getSubdivisions'),
+			'eval'                    => array('conditionField'=>'countries', 'multiple'=>true, 'size'=>10, 'csv'=>',', 'tl_class'=>'w50 w50h'),
+		),
         'postalCodes' => array
         (
             'label'                   => &$GLOBALS['TL_LANG']['tl_iso_tax_rate']['postalCodes'],
@@ -187,6 +191,7 @@ $GLOBALS['TL_DCA']['tl_iso_tax_rate'] = array
         (
             'label'                   => &$GLOBALS['TL_LANG']['tl_iso_tax_rate']['config'],
             'exclude'                 => true,
+			'filter'                  => true,
             'inputType'               => 'select',
             'foreignKey'              => 'tl_iso_config.name',
             'eval'                    => array('includeBlankOption'=>true, 'submitOnChange'=>true, 'tl_class'=>'w50'),

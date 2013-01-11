@@ -188,9 +188,10 @@ class Standard extends \Controller implements IsotopeProduct
         // Make sure the locked attributes are set
         if ($this->isLocked())
         {
-            $this->arrData['sku']	= $arrData['sku'];
-            $this->arrData['name']	= $arrData['name'];
-            $this->arrData['price']	= $arrData['price'];
+			$this->arrData['sku']            = $arrData['sku'];
+			$this->arrData['name']           = $arrData['name'];
+			$this->arrData['price']          = $arrData['price'];
+			$this->arrData['tax_free_price'] = $arrData['tax_free_price'];
         }
     }
 
@@ -223,12 +224,17 @@ class Standard extends \Controller implements IsotopeProduct
                 return $this->isLocked() ? $this->arrData['price'] : $this->Isotope->calculatePrice($this->arrData['price'], $this, 'price', $this->arrData['tax_class']);
 
             case 'total_price':
-                return $this->quantity_requested * $this->price;
+			    $varPrice = $this->price;
+				return $varPrice === null ? null : ($this->quantity_requested * $varPrice);
 
             case 'tax_free_price':
-                $fltPrice = $this->isLocked() ? $this->arrData['price'] : $this->Isotope->calculatePrice($this->arrData['price'], $this, 'price');
+			    if ($this->isLocked()) {
+    			    return $this->arrData['tax_free_price'] ? $this->arrData['tax_free_price'] : $this->arrData['price'];
+			    }
 
-                if ($this->arrData['tax_class'] > 0)
+				$varPrice = $this->Isotope->calculatePrice($this->arrData['price'], $this, 'price');
+
+				if ($varPrice !== null && $this->arrData['tax_class'] > 0)
                 {
                     $objIncludes = $this->Database->prepare("SELECT r.* FROM tl_iso_tax_rate r LEFT JOIN tl_iso_tax_class c ON c.includes=r.id WHERE c.id=?")->execute($this->arrData['tax_class']);
 
@@ -237,25 +243,24 @@ class Standard extends \Controller implements IsotopeProduct
                         $arrTaxRate = deserialize($objIncludes->rate);
 
                         // Final price / (1 + (tax / 100)
-                        if (strlen($arrTaxRate['unit']))
-                        {
-                            $fltTax = $fltPrice - ($fltPrice / (1 + (floatval($arrTaxRate['value']) / 100)));
+                        if (strlen($arrTaxRate['unit'])) {
+							$fltTax = $varPrice - ($varPrice / (1 + (floatval($arrTaxRate['value']) / 100)));
                         }
 
                         // Full amount
-                        else
-                        {
+                        else {
                             $fltTax = floatval($arrTaxRate['value']);
                         }
 
-                        $fltPrice -= $fltTax;
+						$varPrice -= $fltTax;
                     }
                 }
 
-                return $fltPrice;
+                return round($fltPrice, 2);
 
             case 'tax_free_total_price':
-                return $this->quantity_requested * $this->tax_free_price;
+			    $varPrice = $this->tax_free_price;
+				return $varPrice === null ? null : ($this->quantity_requested * $varPrice);
 
             case 'quantity_requested':
                 if (!$this->arrCache[$strKey] && \Input::post('FORM_SUBMIT') == $this->formSubmit)
@@ -361,11 +366,11 @@ class Standard extends \Controller implements IsotopeProduct
                     $strUrl = $this->generateFrontendUrl($this->Database->prepare("SELECT * FROM tl_page WHERE id=?")->execute($varValue)->fetchAssoc(), ($GLOBALS['TL_CONFIG']['useAutoItem'] ? '/' : '/product/') . $strUrlKey, $objPage->rootLanguage);
                 }
 
-                if ($this->arrData['pid'] > 0)
+                if (!empty($this->arrOptions))
                 {
                     $arrOptions = array();
 
-                    foreach( $this->arrOptions as $k => $v )
+                    foreach ($this->arrOptions as $k => $v)
                     {
                         $arrOptions[] = $k . '=' . urlencode($v);
                     }
@@ -932,7 +937,7 @@ class Standard extends \Controller implements IsotopeProduct
 
 
     /**
-     * Generate an atrtibute and return it as HTML string
+     * Generate an arttibute and return it as HTML string
      * @param string
      * @param mixed
      * @return string|\Isotope\Gallery\Default
@@ -1047,7 +1052,7 @@ class Standard extends \Controller implements IsotopeProduct
 
                     if ($arrFormat[$name]['rgxp'] == 'price')
                     {
-                        $value = $this->Isotope->formatPriceWithCurrency($value);
+                        $value = $this->Isotope->formatPriceWithCurrency($this->Isotope->calculatePrice($value, $this, 'price_tiers', $this->arrData['tax_class']));
                     }
                     else
                     {
@@ -1211,31 +1216,6 @@ class Standard extends \Controller implements IsotopeProduct
             }
 
             $arrField = $this->prepareForWidget($arrData, $strField, $arrData['default']);
-        }
-
-        // Translate widget
-        $arrField['label'] = $this->Isotope->translate($arrField['label']);
-
-        // Translate widget options
-        if (is_array($arrField['options']))
-        {
-            foreach ($arrField['options'] as $k => $v)
-            {
-                if ($v['label'])
-                {
-                    $arrField['options'][$k]['label'] = $this->Isotope->translate($v['label']);
-                }
-                elseif (is_array($v))
-                {
-                    foreach ($v as $kk => $vv)
-                    {
-                        if ($k['label'])
-                        {
-                            $arrField['options'][$k][$kk]['label'] = $this->Isotope->translate($vv['label']);
-                        }
-                    }
-                }
-            }
         }
 
         $strClass = strlen($GLOBALS['ISO_ATTR'][$arrData['attributes']['type']]['class']) ? $GLOBALS['ISO_ATTR'][$arrData['attributes']['type']]['class'] : $GLOBALS['TL_FFL'][$arrData['inputType']];

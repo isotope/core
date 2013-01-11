@@ -38,7 +38,7 @@ $GLOBALS['TL_DCA']['tl_user']['fields']['iso_modules'] = array
     'inputType'				=> 'checkbox',
     'options_callback'		=> array('Isotope\Backend', 'getIsotopeModules'),
     'reference'				=> &$GLOBALS['TL_LANG']['IMD'],
-    'eval'					=> array('multiple'=>true, 'helpwizard'=>true),
+    'eval'                    => array('multiple'=>true, 'helpwizard'=>true, 'tl_class'=>'clr w50 w50h'),
 );
 
 $GLOBALS['TL_DCA']['tl_user']['fields']['iso_product_types'] = array
@@ -47,16 +47,7 @@ $GLOBALS['TL_DCA']['tl_user']['fields']['iso_product_types'] = array
     'exclude'                 => true,
     'inputType'               => 'checkbox',
     'foreignKey'			  => 'tl_iso_producttypes.name',
-    'eval'                    => array('multiple'=>true),
-);
-
-$GLOBALS['TL_DCA']['tl_user']['fields']['iso_product_types'] = array
-(
-    'label'					=> &$GLOBALS['TL_LANG']['tl_user']['iso_product_types'],
-    'exclude'				=> true,
-    'inputType'				=> 'checkbox',
-    'foreignKey'			=> 'tl_iso_producttypes.name',
-    'eval'					=> array('multiple'=>true, 'tl_class'=>'clr w50 w50h'),
+    'eval'                    => array('multiple'=>true, 'helpwizard'=>true, 'tl_class'=>'clr w50 w50h'),
 );
 
 $GLOBALS['TL_DCA']['tl_user']['fields']['iso_product_typep'] = array

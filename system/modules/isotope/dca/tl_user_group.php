@@ -33,7 +33,7 @@ $GLOBALS['TL_DCA']['tl_user_group']['fields']['iso_modules'] = array
     'inputType'				=> 'checkbox',
     'options_callback'		=> array('Isotope\Backend', 'getIsotopeModules'),
     'reference'				=> &$GLOBALS['TL_LANG']['IMD'],
-    'eval'					=> array('multiple'=>true, 'helpwizard'=>true),
+	'eval'					=> array('multiple'=>true, 'helpwizard'=>true, 'tl_class'=>'clr w50 w50h'),
 );
 
 $GLOBALS['TL_DCA']['tl_user_group']['fields']['iso_product_types'] = array

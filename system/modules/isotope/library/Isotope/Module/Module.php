@@ -162,7 +162,7 @@ abstract class Module extends Contao_Module
      */
     protected function generateRequestUrl()
     {
-        if (!strlen($this->Environment->request))
+        if ($this->Environment->request == '')
         {
             return '';
         }
@@ -217,6 +217,7 @@ abstract class Module extends Contao_Module
         }
 
         global $objPage;
+
         return $this->generateFrontendUrl($objPage->row(), $strParams) . (!empty($arrGet) ? ('?'.implode('&', $arrGet)) : '');
     }
 }

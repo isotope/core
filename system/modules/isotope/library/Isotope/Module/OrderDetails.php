@@ -83,7 +83,8 @@ class OrderDetails extends Module
             $objPage->cache = 0;
         }
 
-        if (($objOrder = Order::findOneByUniqid(\Input::get('uid'))) === null)
+		// Also check owner (see #126)
+        if (($objOrder = Order::findOneByUniqid(\Input::get('uid'))) === null || (FE_USER_LOGGED_IN === true && $objOrder->pid > 0 && \FrontendUser::getInstance()->id != $objOrder->pid))
         {
             $this->Template = new \FrontendTemplate('mod_message');
             $this->Template->type = 'error';
@@ -141,7 +142,7 @@ class OrderDetails extends Module
         $this->Template->datim = $this->parseDate($GLOBALS['TL_CONFIG']['datimFormat'], $objOrder->date);
         $this->Template->orderDetailsHeadline = sprintf($GLOBALS['TL_LANG']['MSC']['orderDetailsHeadline'], $objOrder->order_id, $this->Template->datim);
         $this->Template->orderStatus = sprintf($GLOBALS['TL_LANG']['MSC']['orderStatusHeadline'], $objOrder->statusLabel);
-        $this->Template->orderStatusKey = standardize($objOrder->statusLabel);
+        $this->Template->orderStatusKey = $objOrder->statusAlias;
         $this->Template->subTotalPrice = $this->Isotope->formatPriceWithCurrency($objOrder->subTotal);
         $this->Template->grandTotal = $this->Isotope->formatPriceWithCurrency($objOrder->grandTotal);
         $this->Template->subTotalLabel = $GLOBALS['TL_LANG']['MSC']['subTotalLabel'];

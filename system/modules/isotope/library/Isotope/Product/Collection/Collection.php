@@ -200,9 +200,12 @@ abstract class Collection extends \Model implements IsotopeProductCollection
                     $fltTotal = 0;
                     $arrProducts = $this->getProducts();
 
-                    foreach ($arrProducts as $objProduct)
-                    {
-                        $fltTotal += (float) $objProduct->total_price;
+                    foreach ($arrProducts as $objProduct) {
+					    $varPrice = $objProduct->total_price;
+
+					    if ($varPrice !== null) {
+    						$fltTotal += $varPrice;
+    				    }
                     }
 
                     $this->arrCache[$strKey] = $fltTotal;
@@ -212,9 +215,12 @@ abstract class Collection extends \Model implements IsotopeProductCollection
                     $fltTotal = 0;
                     $arrProducts = $this->getProducts();
 
-                    foreach ($arrProducts as $objProduct)
-                    {
-                        $fltTotal += (float) $objProduct->tax_free_total_price;
+                    foreach ($arrProducts as $objProduct) {
+					    $varPrice = $objProduct->tax_free_total_price;
+
+					    if ($varPrice !== null) {
+    						$fltTotal += $varPrice;
+    				    }
                     }
 
                     $this->arrCache[$strKey] = $fltTotal;
@@ -364,7 +370,7 @@ abstract class Collection extends \Model implements IsotopeProductCollection
         {
             foreach ($arrProducts as $objProduct)
             {
-                \Database::getInstance()->prepare("UPDATE {static::$ctable} SET price=? WHERE id=?")->execute($objProduct->price, $objProduct->cart_id);
+                \Database::getInstance()->prepare("UPDATE {static::$ctable} SET price=?, tax_free_price=? WHERE id=?")->execute($objProduct->price, $objProduct->tax_free_price, $objProduct->cart_id);
             }
         }
 
@@ -462,22 +468,23 @@ abstract class Collection extends \Model implements IsotopeProductCollection
                                               ->execute($objItems->product_id);
 
                 $strClass = $GLOBALS['ISO_PRODUCT'][$objProductData->product_class]['class'];
+                $arrData = array('sku'=>$objItems->product_sku, 'name'=>$objItems->product_name, 'price'=>$objItems->price, 'tax_free_price'=>$objItems->tax_free_price);
 
                 if ($objProductData->numRows && $strClass != '')
                 {
                     try
                     {
-                        $arrData = $this->blnLocked ? array_merge($objProductData->row(), array('sku'=>$objItems->product_sku, 'name'=>$objItems->product_name, 'price'=>$objItems->price)) : $objProductData->row();
+                        $arrData = $this->blnLocked ? array_merge($objProductData->row(), $arrData) : $objProductData->row();
                         $objProduct = new $strClass($arrData, deserialize($objItems->product_options), $this->blnLocked, $objItems->product_quantity);
                     }
                     catch (Exception $e)
                     {
-                        $objProduct = new StandardProduct(array('id'=>$objItems->product_id, 'sku'=>$objItems->product_sku, 'name'=>$objItems->product_name, 'price'=>$objItems->price), deserialize($objItems->product_options), $this->blnLocked, $objItems->product_quantity);
+                        $objProduct = new StandardProduct($arrData, deserialize($objItems->product_options), $this->blnLocked, $objItems->product_quantity);
                     }
                 }
                 else
                 {
-                    $objProduct = new StandardProduct(array('id'=>$objItems->product_id, 'sku'=>$objItems->product_sku, 'name'=>$objItems->product_name, 'price'=>$objItems->price), deserialize($objItems->product_options), $this->blnLocked, $objItems->product_quantity);
+                    $objProduct = new StandardProduct($arrData, deserialize($objItems->product_options), $this->blnLocked, $objItems->product_quantity);
                 }
 
                 // Remove product from collection if it is no longer available
@@ -512,6 +519,7 @@ abstract class Collection extends \Model implements IsotopeProductCollection
             $objTemplate->subTotalPrice = $this->Isotope->formatPriceWithCurrency($this->subTotal, false);
             $objTemplate->grandTotalLabel = $GLOBALS['TL_LANG']['MSC']['grandTotalLabel'];
             $objTemplate->grandTotalPrice = $this->Isotope->formatPriceWithCurrency($this->grandTotal, false);
+			$objTemplate->collection = $this;
 
             return $objTemplate->parse();
         }
@@ -571,6 +579,7 @@ abstract class Collection extends \Model implements IsotopeProductCollection
                 'product_options'	=> $objProduct->getOptions(true),
                 'product_quantity'	=> (int) $intQuantity,
                 'price'				=> (float) $objProduct->price,
+				'tax_free_price'    => (float) $objProduct->tax_free_price,
             );
 
             if ($objDatabase->fieldExists('href_reader', static::$ctable))
@@ -684,7 +693,7 @@ abstract class Collection extends \Model implements IsotopeProductCollection
         }
 
         // Make sure database table has the latest prices
-//		$objCollection->save();
+		$objCollection->save();
 
         $objDatabase = \Database::getInstance();
 
@@ -887,9 +896,9 @@ abstract class Collection extends \Model implements IsotopeProductCollection
             }
         }
 
-        $strArticle = $this->Isotope->replaceInsertTags($objTemplate->parse());
+		$strArticle = $this->Isotope->call('replaceInsertTags', array($objTemplate->parse()));
         $strArticle = html_entity_decode($strArticle, ENT_QUOTES, $GLOBALS['TL_CONFIG']['characterSet']);
-        $strArticle = $this->Isotope->convertRelativeUrls($strArticle, '', true);
+		$strArticle = $this->Isotope->call('convertRelativeUrls', array($strArticle, '', true));
 
         // Remove form elements and JavaScript links
         $arrSearch = array

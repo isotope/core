@@ -20,8 +20,8 @@
 $GLOBALS['TL_LANG']['tl_iso_tax_rate']['name']			= array('Tax Rate Name','Enter a name for your tax rate.');
 $GLOBALS['TL_LANG']['tl_iso_tax_rate']['label']			= array('Tax Rate Label','This label will be used on the front-end in the checkout process.');
 $GLOBALS['TL_LANG']['tl_iso_tax_rate']['address']		= array('Address to Use for Calculation', 'Select which address this rate should use to apply its calculation.');
-$GLOBALS['TL_LANG']['tl_iso_tax_rate']['country']		= array('Country', 'Select a country this tax class applies to.');
-$GLOBALS['TL_LANG']['tl_iso_tax_rate']['subdivision']	= array('State/Region', 'Select a state or region this tax class applies to.');
+$GLOBALS['TL_LANG']['tl_iso_tax_rate']['countries']		= array('Countries', 'Select the countriees this tax class applies to.');
+$GLOBALS['TL_LANG']['tl_iso_tax_rate']['subdivisions']	= array('States/Regions', 'Select the states or regions this tax class applies to.');
 $GLOBALS['TL_LANG']['tl_iso_tax_rate']['postalCodes']	= array('Postal codes', 'Limit the tax rate to postal codes. You can enter a comma separated list and ranges (e.g. 1234,1235,1236-1239,1100-1200).');
 $GLOBALS['TL_LANG']['tl_iso_tax_rate']['amount']		= array('Subtotal Amount Restriction', 'Optional: Restrict this tax rate to specific subtotal amount (such as for a luxury tax.)');
 $GLOBALS['TL_LANG']['tl_iso_tax_rate']['rate']			= array('Tax Rate', 'A rate in percent this tax is set at.');

@@ -485,7 +485,7 @@ class Checkout extends Module
      */
     protected function getShippingAddressInterface($blnReview=false)
     {
-        if (!$this->Isotope->Cart->requiresShipping)
+		if (!$this->Isotope->Cart->requiresShipping || count($this->Isotope->Config->shipping_fields_raw) == 0)
         {
             return '';
         }
@@ -974,33 +974,35 @@ class Checkout extends Module
         {
             $objOrder = new Order();
 
-            $objOrder->uniqid		= uniqid($this->Isotope->Config->orderPrefix, true);
+			$objOrder->uniqid		= uniqid($this->replaceInsertTags($this->Isotope->Config->orderPrefix), true);
             $objOrder->cart_id		= $this->Isotope->Cart->id;
 
             $objOrder = Order::findByPk($objOrder->save()->id);
         }
 
-        $objOrder->pid				= (FE_USER_LOGGED_IN === true ? $this->User->id : 0);
-        $objOrder->date				= time();
-        $objOrder->config_id		= (int) $this->Isotope->Config->id;
-        $objOrder->shipping_id		= ($this->Isotope->Cart->hasShipping ? $this->Isotope->Cart->Shipping->id : 0);
-        $objOrder->payment_id		= ($this->Isotope->Cart->hasPayment ? $this->Isotope->Cart->Payment->id : 0);
-        $objOrder->subTotal			= $this->Isotope->Cart->subTotal;
-        $objOrder->taxTotal			= $this->Isotope->Cart->taxTotal;
-        $objOrder->shippingTotal	= $this->Isotope->Cart->shippingTotal;
-        $objOrder->grandTotal		= $this->Isotope->Cart->grandTotal;
-        $objOrder->surcharges		= $this->Isotope->Cart->getSurcharges();
-        $objOrder->checkout_info	= $this->getCheckoutInfo();
-        $objOrder->status			= 0;
-        $objOrder->language			= $GLOBALS['TL_LANGUAGE'];
-        $objOrder->billing_address	= $this->Isotope->Cart->billing_address;
-        $objOrder->shipping_address	= $this->Isotope->Cart->shipping_address;
-        $objOrder->currency			= $this->Isotope->Config->currency;
-        $objOrder->iso_sales_email		= $this->iso_sales_email ? $this->iso_sales_email : (($GLOBALS['TL_ADMIN_NAME'] != '') ? sprintf('%s <%s>', $GLOBALS['TL_ADMIN_NAME'], $GLOBALS['TL_ADMIN_EMAIL']) : $GLOBALS['TL_ADMIN_EMAIL']);
-        $objOrder->iso_mail_admin		= $this->iso_mail_admin;
-        $objOrder->iso_mail_customer	= $this->iso_mail_customer;
-        $objOrder->iso_addToAddressbook	= $this->iso_addToAddressbook;
-        $objOrder->new_order_status		= ($this->Isotope->Cart->hasPayment ? $this->Isotope->Cart->Payment->new_order_status : '');
+        global $objPage;
+
+        $objOrder->pid                  = (FE_USER_LOGGED_IN === true ? $this->User->id : 0);
+        $objOrder->date                 = time();
+        $objOrder->config_id            = (int) $this->Isotope->Config->id;
+        $objOrder->shipping_id          = ($this->Isotope->Cart->hasShipping ? $this->Isotope->Cart->Shipping->id : 0);
+        $objOrder->payment_id           = ($this->Isotope->Cart->hasPayment ? $this->Isotope->Cart->Payment->id : 0);
+        $objOrder->subTotal             = $this->Isotope->Cart->subTotal;
+        $objOrder->taxTotal             = $this->Isotope->Cart->taxTotal;
+        $objOrder->shippingTotal        = $this->Isotope->Cart->shippingTotal;
+        $objOrder->grandTotal           = $this->Isotope->Cart->grandTotal;
+        $objOrder->surcharges           = $this->Isotope->Cart->getSurcharges();
+        $objOrder->checkout_info        = $this->getCheckoutInfo();
+        $objOrder->status               = 0;
+        $objOrder->language             = $GLOBALS['TL_LANGUAGE'];
+        $objOrder->billing_address      = $this->Isotope->Cart->billing_address;
+        $objOrder->shipping_address     = $this->Isotope->Cart->shipping_address;
+        $objOrder->currency             = $this->Isotope->Config->currency;
+        $objOrder->iso_sales_email      = $this->iso_sales_email ? $this->iso_sales_email : (($GLOBALS['TL_ADMIN_NAME'] != '') ? sprintf('%s <%s>', $GLOBALS['TL_ADMIN_NAME'], $GLOBALS['TL_ADMIN_EMAIL']) : $GLOBALS['TL_ADMIN_EMAIL']);
+        $objOrder->iso_mail_admin       = $this->iso_mail_admin;
+        $objOrder->iso_mail_customer    = $this->iso_mail_customer;
+        $objOrder->iso_addToAddressbook = $this->iso_addToAddressbook;
+		$objOrder->pageId               = (int) $objPage->id;
 
         $strCustomerName = '';
         $strCustomerEmail = '';

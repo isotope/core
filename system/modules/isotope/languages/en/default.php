@@ -219,6 +219,7 @@ $GLOBALS['TL_LANG']['ISO']['backendPaymentNotFound']		= 'Payment module not foun
 $GLOBALS['TL_LANG']['ISO']['backendShippingNotFound']		= 'Shipping module not found!';
 $GLOBALS['TL_LANG']['ISO']['backendPaymentNoInfo']			= 'This payment module does not provide additional information.';
 $GLOBALS['TL_LANG']['ISO']['backendShippingNoInfo']			= 'This shipping module does not provide additional information.';
+$GLOBALS['TL_LANG']['MSC']['paypalTransactionOnline']       = 'Click here to view this PayPal transaction online';
 
 
 /**

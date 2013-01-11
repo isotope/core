@@ -246,10 +246,8 @@ $GLOBALS['ISO_LANG']['SHIP']['usps']				= array('Dostawa USPS Live Rates and Ser
  */
 $GLOBALS['ISO_LANG']['PAY']['cash']				= array('Gotówka', 'Użyj tego w przypadku rozliczeń gotówkowych');
 $GLOBALS['ISO_LANG']['PAY']['paypal']			= array('PayPal Standard Checkout', 'Ten moduł Paypal wspiera IPN (Instant Payment Notifications).');
-$GLOBALS['ISO_LANG']['PAY']['paypalpayflowpro']	= array('PayPal Payflow Pro', 'Moduł PayPal Payflow wspiera w całości płatności kartą kredytową.');
 $GLOBALS['ISO_LANG']['PAY']['postfinance']		= array('Postfinance', 'Metoda płatności dla szwajcarskiego system płatności. Sklep będzie natychmiast powiadamiany o pomyślnych transakcjach.');
 $GLOBALS['ISO_LANG']['PAY']['authorizedotnet']	= array('Authorize.net', 'Metoda płatności Authorize.net.');
-$GLOBALS['ISO_LANG']['PAY']['cybersource']		= array('Cybersource', 'Dla użytkowników Cybersource. Używa metody Simple Order API.');
 
 
 /**
