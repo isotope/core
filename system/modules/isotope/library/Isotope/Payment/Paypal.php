@@ -44,6 +44,7 @@ class Paypal extends Payment implements IsotopePayment
         if ($objOrder->date_paid > 0 && $objOrder->date_paid <= time())
         {
             \Isotope\Frontend::clearTimeout();
+
             return true;
         }
 
@@ -57,6 +58,7 @@ class Paypal extends Payment implements IsotopePayment
             $objTemplate = new \FrontendTemplate('mod_message');
             $objTemplate->type = 'processing';
             $objTemplate->message = $GLOBALS['TL_LANG']['MSC']['payment_processing'];
+
             return $objTemplate->parse();
         }
 
@@ -86,6 +88,7 @@ class Paypal extends Payment implements IsotopePayment
             if (($objOrder = Order::findByPk(\Input::post('invoice'))) === null)
             {
                 $this->log('Order ID "' . \Input::post('invoice') . '" not found', __METHOD__, TL_ERROR);
+
                 return;
             }
 
@@ -93,12 +96,14 @@ class Paypal extends Payment implements IsotopePayment
             if ($objOrder->currency != \Input::post('mc_currency') || $objOrder->grandTotal != \Input::post('mc_gross'))
             {
                 $this->log('IPN manipulation in payment from "' . \Input::post('payer_email') . '" !', __METHOD__, TL_ERROR);
+
                 return;
             }
 
             if (!$objOrder->checkout())
             {
                 $this->log('IPN checkout for Order ID "' . \Input::post('invoice') . '" failed', __METHOD__, TL_ERROR);
+
                 return;
             }
 
@@ -120,7 +125,7 @@ class Paypal extends Payment implements IsotopePayment
             {
                 case 'Completed':
                     $objOrder->date_paid = time();
-					$objOrder->updateOrderStatus($this->new_order_status);
+                    $objOrder->updateOrderStatus($this->new_order_status);
                     break;
 
                 case 'Canceled_Reversal':
@@ -129,7 +134,7 @@ class Paypal extends Payment implements IsotopePayment
                 case 'Failed':
                 case 'Voided':
                     $objOrder->date_paid = '';
-					$objOrder->updateOrderStatus($this->Isotope->Config->orderstatus_error);
+                    $objOrder->updateOrderStatus($this->Isotope->Config->orderstatus_error);
                     break;
 
                 case 'In-Progress':
@@ -267,16 +272,16 @@ window.addEvent( \'domready\' , function() {
         return $strBuffer;
     }
 
-	/**
-	 * Return information or advanced features in the backend.
-	 *
-	 * Use this function to present advanced features or basic payment information for an order in the backend.
-	 * @param integer Order ID
-	 * @return string
-	 */
-	public function backendInterface($orderId)
-	{
-	    $objOrder = new IsotopeOrder();
+    /**
+     * Return information or advanced features in the backend.
+     *
+     * Use this function to present advanced features or basic payment information for an order in the backend.
+     * @param integer Order ID
+     * @return string
+     */
+    public function backendInterface($orderId)
+    {
+        $objOrder = new IsotopeOrder();
 
         if (!$objOrder->findBy('id', $orderId))
         {
@@ -294,7 +299,7 @@ window.addEvent( \'domready\' , function() {
         ksort($arrPayment);
         $i = 0;
 
-		$strBuffer = '
+        $strBuffer = '
 <div id="tl_buttons">
 <a href="'.ampersand(str_replace('&key=payment', '', $this->Environment->request)).'" class="header_back" title="'.specialchars($GLOBALS['TL_LANG']['MSC']['backBT']).'">'.$GLOBALS['TL_LANG']['MSC']['backBT'].'</a>
 </div>
@@ -329,5 +334,5 @@ window.addEvent( \'domready\' , function() {
 </div>';
 
         return $strBuffer;
-	}
+    }
 }

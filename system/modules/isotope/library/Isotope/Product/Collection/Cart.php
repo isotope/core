@@ -148,11 +148,13 @@ class Cart extends Collection
             case 'billingAddress':
                 $objAddress = new \IsotopeAddressModel();
                 $objAddress->setData($this->billing_address);
+
                 return $objAddress;
 
             case 'shippingAddress':
                 $objAddress = new \IsotopeAddressModel();
                 $objAddress->setData($this->shipping_address);
+
                 return $objAddress;
 
             default:
@@ -404,6 +406,7 @@ class Cart extends Collection
         }
 
         $this->arrCache['surcharges'] = array_merge($arrPreTax, $arrTaxes, $arrPostTax);
+
         return $this->arrCache['surcharges'];
     }
 }

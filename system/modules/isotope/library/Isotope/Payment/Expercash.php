@@ -147,24 +147,28 @@ class Expercash extends Payment implements IsotopePayment
         if (\Input::get('exportKey') != $strKey)
         {
             \System::log('ExperCash: exportKey was incorrect. Possible data manipulation!', __METHOD__, TL_ERROR);
+
             return false;
         }
 
         if (\Input::get('amount') != (round($this->Isotope->Cart->grandTotal, 2)*100))
         {
             \System::log('ExperCash: amount is incorrect. Possible data manipulation!', __METHOD__, TL_ERROR);
+
             return false;
         }
 
         if (\Input::get('currency') != $this->Isotope->Config->currency)
         {
             \System::log('ExperCash: currency is incorrect. Possible data manipulation!', __METHOD__, TL_ERROR);
+
             return false;
         }
 
         if (\Input::get('transactionId') != $objOrder->id)
         {
             \System::log('ExperCash: transactionId is incorrect. Possible data manipulation!', __METHOD__, TL_ERROR);
+
             return false;
         }
 

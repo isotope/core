@@ -62,6 +62,7 @@ class AuthorizeDotNet extends Payment implements IsotopePayment
                 {
                     return true;
                 }
+
                 return false;
                 break;
 
@@ -81,12 +82,14 @@ class AuthorizeDotNet extends Payment implements IsotopePayment
     {
         //We have already done the Authorization - go to Complete step
         if($this->authorize_trans_type =='AUTH_ONLY')
+
             return true;
 
         $objOrder = Order::findOneBy('cart_id', $this->Isotope->Cart->id);
 
         //$arrPaymentData = deserialize($objOrder->payment_data);
         if($this->authCapturePayment($objOrder->id, $this->Isotope->Cart->grandTotal, true))
+
             return true;
 
         $this->log('Invalid payment data received.', 'PaymentAuthorizeDotNet processPayment()', TL_ERROR);
@@ -540,6 +543,7 @@ $return .= '</div></div>';
         if($blnFail)
         {
             $this->log(sprintf("Transaction failure. Transaction Status: %s, Reason: %s", $this->strStatus, $this->strReason), 'PaymentAuthorizeDotNet capturePayment()', TL_ERROR);
+
             return false;
         }
 

@@ -577,6 +577,7 @@ class UPS extends Shipping implements IsotopeShipping
         // check to see if we have service options
         if (!$service_options->hasChildNodes()) {
             $dom_element->removeChild($service_options);
+
             return false;
         } // end if we do not have service options
 

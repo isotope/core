@@ -196,6 +196,7 @@ class Setup extends \BackendModule
         elseif ($this->classFileExists($arrModule['callback']))
         {
             $objCallback = new $arrModule['callback']($dc);
+
             return $objCallback->generate();
         }
 
@@ -203,6 +204,7 @@ class Setup extends \BackendModule
         elseif (\Input::get('key') && isset($arrModule[\Input::get('key')]))
         {
             $objCallback = new $arrModule[\Input::get('key')][0]();
+
             return $objCallback->$arrModule[\Input::get('key')][1]($dc, $strTable, $arrModule);
         }
 

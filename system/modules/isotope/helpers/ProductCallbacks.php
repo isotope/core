@@ -222,7 +222,7 @@ class ProductCallbacks extends \Backend
         $arrProducts = IsotopeBackend::getAllowedProductIds();
 
         // Filter by product type and group permissions
-		if (empty($arrProducts))
+        if (empty($arrProducts))
         {
             $GLOBALS['TL_DCA']['tl_iso_products']['config']['closed'] = true;
             unset($GLOBALS['TL_DCA']['tl_iso_products']['list']['global_operations']['new_product']);
@@ -610,6 +610,7 @@ class ProductCallbacks extends \Backend
     public function filterRemoveButton($href, $label, $title, $class, $attributes, $table, $root)
     {
         $href = preg_replace('/&?filter\[\]=[^&]*/', '', $this->Environment->request);
+
         return ' &#160; :: &#160; <a href="'.$href.'" class="header_iso_filter_remove isotope-filter" title="'.specialchars($title).'"'.$attributes.'>'.$label.'</a> ';
     }
 

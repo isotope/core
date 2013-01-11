@@ -201,11 +201,11 @@ abstract class Collection extends \Model implements IsotopeProductCollection
                     $arrProducts = $this->getProducts();
 
                     foreach ($arrProducts as $objProduct) {
-					    $varPrice = $objProduct->total_price;
+                        $varPrice = $objProduct->total_price;
 
-					    if ($varPrice !== null) {
-    						$fltTotal += $varPrice;
-    				    }
+                        if ($varPrice !== null) {
+                            $fltTotal += $varPrice;
+                        }
                     }
 
                     $this->arrCache[$strKey] = $fltTotal;
@@ -216,11 +216,11 @@ abstract class Collection extends \Model implements IsotopeProductCollection
                     $arrProducts = $this->getProducts();
 
                     foreach ($arrProducts as $objProduct) {
-					    $varPrice = $objProduct->tax_free_total_price;
+                        $varPrice = $objProduct->tax_free_total_price;
 
-					    if ($varPrice !== null) {
-    						$fltTotal += $varPrice;
-    				    }
+                        if ($varPrice !== null) {
+                            $fltTotal += $varPrice;
+                        }
                     }
 
                     $this->arrCache[$strKey] = $fltTotal;
@@ -519,7 +519,7 @@ abstract class Collection extends \Model implements IsotopeProductCollection
             $objTemplate->subTotalPrice = $this->Isotope->formatPriceWithCurrency($this->subTotal, false);
             $objTemplate->grandTotalLabel = $GLOBALS['TL_LANG']['MSC']['grandTotalLabel'];
             $objTemplate->grandTotalPrice = $this->Isotope->formatPriceWithCurrency($this->grandTotal, false);
-			$objTemplate->collection = $this;
+            $objTemplate->collection = $this;
 
             return $objTemplate->parse();
         }
@@ -565,6 +565,7 @@ abstract class Collection extends \Model implements IsotopeProductCollection
         if ($objItem->numRows)
         {
             $objDatabase->query("UPDATE {static::$ctable} SET tstamp=$time, product_quantity=(product_quantity+$intQuantity) WHERE id={$objItem->id}");
+
             return $objItem->id;
         }
         else
@@ -579,7 +580,7 @@ abstract class Collection extends \Model implements IsotopeProductCollection
                 'product_options'	=> $objProduct->getOptions(true),
                 'product_quantity'	=> (int) $intQuantity,
                 'price'				=> (float) $objProduct->price,
-				'tax_free_price'    => (float) $objProduct->tax_free_price,
+                'tax_free_price'    => (float) $objProduct->tax_free_price,
             );
 
             if ($objDatabase->fieldExists('href_reader', static::$ctable))
@@ -588,6 +589,7 @@ abstract class Collection extends \Model implements IsotopeProductCollection
             }
 
             $intInsertId = $objDatabase->prepare("INSERT INTO {static::$ctable} %s")->set($arrSet)->executeUncached()->insertId;
+
             return $intInsertId;
         }
     }
@@ -638,6 +640,7 @@ abstract class Collection extends \Model implements IsotopeProductCollection
         if ($intAffectedRows > 0)
         {
             $this->modified = true;
+
             return true;
         }
 
@@ -675,6 +678,7 @@ abstract class Collection extends \Model implements IsotopeProductCollection
 
         $this->modified = true;
         \Database::getInstance()->query("DELETE FROM {static::$ctable} WHERE id={$objProduct->cart_id}");
+
         return true;
     }
 
@@ -693,7 +697,7 @@ abstract class Collection extends \Model implements IsotopeProductCollection
         }
 
         // Make sure database table has the latest prices
-		$objCollection->save();
+        $objCollection->save();
 
         $objDatabase = \Database::getInstance();
 
@@ -896,9 +900,9 @@ abstract class Collection extends \Model implements IsotopeProductCollection
             }
         }
 
-		$strArticle = $this->Isotope->call('replaceInsertTags', array($objTemplate->parse()));
+        $strArticle = $this->Isotope->call('replaceInsertTags', array($objTemplate->parse()));
         $strArticle = html_entity_decode($strArticle, ENT_QUOTES, $GLOBALS['TL_CONFIG']['characterSet']);
-		$strArticle = $this->Isotope->call('convertRelativeUrls', array($strArticle, '', true));
+        $strArticle = $this->Isotope->call('convertRelativeUrls', array($strArticle, '', true));
 
         // Remove form elements and JavaScript links
         $arrSearch = array

@@ -83,12 +83,13 @@ class OrderDetails extends Module
             $objPage->cache = 0;
         }
 
-		// Also check owner (see #126)
+        // Also check owner (see #126)
         if (($objOrder = Order::findOneByUniqid(\Input::get('uid'))) === null || (FE_USER_LOGGED_IN === true && $objOrder->pid > 0 && \FrontendUser::getInstance()->id != $objOrder->pid))
         {
             $this->Template = new \FrontendTemplate('mod_message');
             $this->Template->type = 'error';
             $this->Template->message = $GLOBALS['TL_LANG']['ERR']['orderNotFound'];
+
             return;
         }
 

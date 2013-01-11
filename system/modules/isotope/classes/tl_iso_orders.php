@@ -77,6 +77,7 @@ class tl_iso_orders extends \Backend
         // Generate a regular order details module
         \Input::setGet('uid', $objOrder->uniqid);
         $objModule = new \Isotope\Module\OrderDetails($this->Database->execute("SELECT * FROM tl_module WHERE type='iso_orderdetails'"));
+
         return $objModule->generate(true);
     }
 
@@ -331,7 +332,6 @@ class tl_iso_orders extends \Backend
 
             return $objMethod->backendInterface($dc->id);
         } catch (Exception $e) {
-
             return '<p class="tl_gerror">'.$GLOBALS['TL_LANG']['ISO']['backendPaymentNotFound'].'</p>';
         }
     }
@@ -351,7 +351,6 @@ class tl_iso_orders extends \Backend
 
             return $objMethod->backendInterface($dc->id);
         } catch (Exception $e) {
-
             return '<p class="tl_gerror">'.$GLOBALS['TL_LANG']['ISO']['backendShippingNotFound'].'</p>';
         }
     }

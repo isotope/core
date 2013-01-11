@@ -328,6 +328,7 @@ class ModuleIsotopeTranslation extends \BackendModule
             {
                 $this->parseVar($v, $strKey.'['.$k.']', $arrVariables);
             }
+
             return;
         }
 

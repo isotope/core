@@ -46,7 +46,7 @@ class Address extends \Model
 
         if (!is_array($GLOBALS['ISO_ADR']))
         {
-			$this->Isotope->call('loadDataContainer', 'tl_iso_addresses');
+            $this->Isotope->call('loadDataContainer', 'tl_iso_addresses');
             $this->loadLanguageFile('addresses');
         }
     }

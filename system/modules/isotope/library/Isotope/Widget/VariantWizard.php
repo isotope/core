@@ -91,6 +91,7 @@ class VariantWizard extends \Widget
         if (!is_array($arrValue))
         {
             $this->addError(sprintf($GLOBALS['TL_LANG']['ERR']['mandatory'], $this->strLabel));
+
             return;
         }
 

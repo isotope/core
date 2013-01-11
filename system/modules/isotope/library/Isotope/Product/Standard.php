@@ -188,10 +188,10 @@ class Standard extends \Controller implements IsotopeProduct
         // Make sure the locked attributes are set
         if ($this->isLocked())
         {
-			$this->arrData['sku']            = $arrData['sku'];
-			$this->arrData['name']           = $arrData['name'];
-			$this->arrData['price']          = $arrData['price'];
-			$this->arrData['tax_free_price'] = $arrData['tax_free_price'];
+            $this->arrData['sku']            = $arrData['sku'];
+            $this->arrData['name']           = $arrData['name'];
+            $this->arrData['price']          = $arrData['price'];
+            $this->arrData['tax_free_price'] = $arrData['tax_free_price'];
         }
     }
 
@@ -224,17 +224,18 @@ class Standard extends \Controller implements IsotopeProduct
                 return $this->isLocked() ? $this->arrData['price'] : $this->Isotope->calculatePrice($this->arrData['price'], $this, 'price', $this->arrData['tax_class']);
 
             case 'total_price':
-			    $varPrice = $this->price;
-				return $varPrice === null ? null : ($this->quantity_requested * $varPrice);
+                $varPrice = $this->price;
+
+                return $varPrice === null ? null : ($this->quantity_requested * $varPrice);
 
             case 'tax_free_price':
-			    if ($this->isLocked()) {
-    			    return $this->arrData['tax_free_price'] ? $this->arrData['tax_free_price'] : $this->arrData['price'];
-			    }
+                if ($this->isLocked()) {
+                    return $this->arrData['tax_free_price'] ? $this->arrData['tax_free_price'] : $this->arrData['price'];
+                }
 
-				$varPrice = $this->Isotope->calculatePrice($this->arrData['price'], $this, 'price');
+                $varPrice = $this->Isotope->calculatePrice($this->arrData['price'], $this, 'price');
 
-				if ($varPrice !== null && $this->arrData['tax_class'] > 0)
+                if ($varPrice !== null && $this->arrData['tax_class'] > 0)
                 {
                     $objIncludes = $this->Database->prepare("SELECT r.* FROM tl_iso_tax_rate r LEFT JOIN tl_iso_tax_class c ON c.includes=r.id WHERE c.id=?")->execute($this->arrData['tax_class']);
 
@@ -244,7 +245,7 @@ class Standard extends \Controller implements IsotopeProduct
 
                         // Final price / (1 + (tax / 100)
                         if (strlen($arrTaxRate['unit'])) {
-							$fltTax = $varPrice - ($varPrice / (1 + (floatval($arrTaxRate['value']) / 100)));
+                            $fltTax = $varPrice - ($varPrice / (1 + (floatval($arrTaxRate['value']) / 100)));
                         }
 
                         // Full amount
@@ -252,15 +253,16 @@ class Standard extends \Controller implements IsotopeProduct
                             $fltTax = floatval($arrTaxRate['value']);
                         }
 
-						$varPrice -= $fltTax;
+                        $varPrice -= $fltTax;
                     }
                 }
 
                 return round($fltPrice, 2);
 
             case 'tax_free_total_price':
-			    $varPrice = $this->tax_free_price;
-				return $varPrice === null ? null : ($this->quantity_requested * $varPrice);
+                $varPrice = $this->tax_free_price;
+
+                return $varPrice === null ? null : ($this->quantity_requested * $varPrice);
 
             case 'quantity_requested':
                 if (!$this->arrCache[$strKey] && \Input::post('FORM_SUBMIT') == $this->formSubmit)
@@ -1426,6 +1428,7 @@ class Standard extends \Controller implements IsotopeProduct
                     else
                     {
                         $this->doNotSubmit = true;
+
                         return;
                     }
                 }
@@ -1435,6 +1438,7 @@ class Standard extends \Controller implements IsotopeProduct
             if ($intVariant === false || !is_array($this->arrVariantOptions['variants'][$intVariant]))
             {
                 $this->doNotSubmit = true;
+
                 return;
             }
 

@@ -101,6 +101,7 @@ class Checkout extends Module
         $objPage->cache = 0;
 
         $this->strCurrentStep = \Input::get('step');
+
         return parent::generate();
     }
 
@@ -140,6 +141,7 @@ class Checkout extends Module
                     $this->Template = new \FrontendTemplate('mod_message');
                     $this->Template->type = 'processing';
                     $this->Template->message = $GLOBALS['TL_LANG']['MSC']['payment_processing'];
+
                     return;
                 }
             }
@@ -151,6 +153,7 @@ class Checkout extends Module
             $this->Template = new \FrontendTemplate('mod_message');
             $this->Template->type = 'empty';
             $this->Template->message = $GLOBALS['TL_LANG']['MSC']['noItemsInCart'];
+
             return;
         }
 
@@ -160,6 +163,7 @@ class Checkout extends Module
             $this->Template = new \FrontendTemplate('mod_message');
             $this->Template->type = 'error';
             $this->Template->message = sprintf($GLOBALS['TL_LANG']['ERR']['cartMinSubtotal'], $this->Isotope->formatPriceWithCurrency($this->Isotope->Config->cartMinSubtotal));
+
             return;
         }
 
@@ -173,6 +177,7 @@ class Checkout extends Module
                 $this->Template = new \FrontendTemplate('mod_message');
                 $this->Template->type = 'error';
                 $this->Template->message = $GLOBALS['TL_LANG']['ERR']['isoLoginRequired'];
+
                 return;
             }
 
@@ -183,6 +188,7 @@ class Checkout extends Module
             $this->Template = new \FrontendTemplate('mod_message');
             $this->Template->type = 'error';
             $this->Template->message = 'User checkout not allowed';
+
             return;
         }
 
@@ -485,7 +491,7 @@ class Checkout extends Module
      */
     protected function getShippingAddressInterface($blnReview=false)
     {
-		if (!$this->Isotope->Cart->requiresShipping || count($this->Isotope->Config->shipping_fields_raw) == 0)
+        if (!$this->Isotope->Cart->requiresShipping || count($this->Isotope->Config->shipping_fields_raw) == 0)
         {
             return '';
         }
@@ -974,7 +980,7 @@ class Checkout extends Module
         {
             $objOrder = new Order();
 
-			$objOrder->uniqid		= uniqid($this->replaceInsertTags($this->Isotope->Config->orderPrefix), true);
+            $objOrder->uniqid		= uniqid($this->replaceInsertTags($this->Isotope->Config->orderPrefix), true);
             $objOrder->cart_id		= $this->Isotope->Cart->id;
 
             $objOrder = Order::findByPk($objOrder->save()->id);
@@ -1002,7 +1008,7 @@ class Checkout extends Module
         $objOrder->iso_mail_admin       = $this->iso_mail_admin;
         $objOrder->iso_mail_customer    = $this->iso_mail_customer;
         $objOrder->iso_addToAddressbook = $this->iso_addToAddressbook;
-		$objOrder->pageId               = (int) $objPage->id;
+        $objOrder->pageId               = (int) $objPage->id;
 
         $strCustomerName = '';
         $strCustomerEmail = '';
@@ -1188,6 +1194,7 @@ class Checkout extends Module
         $strBuffer .= '<div id="' . $field . '_new" class="address_new"' . (((FE_USER_LOGGED_IN !== true && $field == 'billing_address') || $objWidget->value == 0) ? '>' : ' style="display:none">');
         $strBuffer .= '<span>' . $this->generateAddressWidgets($field, count($arrOptions)) . '</span>';
         $strBuffer .= '</div>';
+
         return $strBuffer;
     }
 

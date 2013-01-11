@@ -278,6 +278,7 @@ class IsotopeRules extends \Controller
             if ($blnError)
             {
                 $objCart->coupons = $arrCoupons;
+
                 return false;
             }
         }
@@ -506,6 +507,7 @@ class IsotopeRules extends \Controller
     protected function findCoupon($strCode, $arrProducts)
     {
         $objRules = $this->findRules(array("type='cart'", "enableCode='1'", "code=?"), array($strCode), $arrProducts);
+
         return $objRules->numRows ? $objRules->row() : false;
     }
 

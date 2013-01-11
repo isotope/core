@@ -67,7 +67,7 @@ class Config extends \Model
                 if (!is_array($arrCountries) || empty($arrCountries))
                 {
                     $this->import('Isotope\Isotope', 'Isotope');
-					$arrCountries = array_keys($this->Isotope->call('getCountries'));
+                    $arrCountries = array_keys($this->Isotope->call('getCountries'));
                 }
 
                 return $arrCountries;

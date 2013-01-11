@@ -118,7 +118,7 @@ $GLOBALS['TL_DCA']['tl_iso_attributes'] = array
     // Palettes
     'palettes' => array
     (
-		'__selector__'				=> array('type', 'variant_option', 'storeFile', 'files'),
+        '__selector__'				=> array('type', 'variant_option', 'storeFile', 'files'),
         'default'					=> '{attribute_legend},name,field_name,type,legend',
         'text'						=> '{attribute_legend},name,field_name,type,legend,customer_defined;{description_legend:hide},description;{config_legend},rgxp,maxlength,mandatory,multilingual,datepicker;{search_filters_legend},fe_search,fe_sorting,be_search',
         'textarea'					=> '{attribute_legend},name,field_name,type,legend,customer_defined;{description_legend:hide},description;{config_legend},rgxp,rte,mandatory,multilingual;{search_filters_legend},fe_search,fe_sorting,be_search',
@@ -129,8 +129,8 @@ $GLOBALS['TL_DCA']['tl_iso_attributes'] = array
         'checkbox'					=> '{attribute_legend},name,field_name,type,legend,customer_defined;{description_legend:hide},description;{options_legend},options,foreignKey;{config_legend},mandatory,multiple;{search_filters_legend},fe_filter,fe_sorting',
         'conditionalselect'			=> '{attribute_legend},name,field_name,type,legend,customer_defined;{description_legend:hide},description;{options_legend},options,foreignKey;{config_legend},mandatory,multiple,size,conditionField;{search_filters_legend},fe_filter,fe_sorting',
         'mediaManager'				=> '{attribute_legend},name,field_name,type,legend;{description_legend:hide},description;{config_legend},gallery,extensions,mandatory',
-		'fileTree'					=> '{attribute_legend},name,field_name,type,legend;{description_legend:hide},description;{config_legend},fieldType,extensions,path,mandatory,files',
-		'downloads'					=> '{attribute_legend},name,field_name,type,legend;{description_legend:hide},description;{config_legend},fieldType,extensions,sortBy,path,mandatory,files',
+        'fileTree'					=> '{attribute_legend},name,field_name,type,legend;{description_legend:hide},description;{config_legend},fieldType,extensions,path,mandatory,files',
+        'downloads'					=> '{attribute_legend},name,field_name,type,legend;{description_legend:hide},description;{config_legend},fieldType,extensions,sortBy,path,mandatory,files',
         'upload'					=> '{attribute_legend},name,field_name,type,legend;{description_legend:hide},description;{config_legend},extensions,maxlength,mandatory;{store_legend:hide},storeFile',
     ),
 
@@ -138,7 +138,7 @@ $GLOBALS['TL_DCA']['tl_iso_attributes'] = array
     'subpalettes' => array
     (
         'storeFile'					=> 'uploadFolder,useHomeDir,doNotOverwrite',
-		'files'                     => 'filesOnly',
+        'files'                     => 'filesOnly',
     ),
 
     // Fields
@@ -373,7 +373,7 @@ $GLOBALS['TL_DCA']['tl_iso_attributes'] = array
             'label'					=> &$GLOBALS['TL_LANG']['tl_iso_attributes']['files'],
             'exclude'				=> true,
             'inputType'				=> 'checkbox',
-			'eval'					=> array('submitOnChange'=>true, 'tl_class'=>'w50'),
+            'eval'					=> array('submitOnChange'=>true, 'tl_class'=>'w50'),
         ),
         'filesOnly' => array
         (

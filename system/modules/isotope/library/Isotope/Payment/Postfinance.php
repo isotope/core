@@ -38,12 +38,14 @@ class Postfinance extends Payment implements IsotopePayment
         if (\Input::get('NCERROR') > 0)
         {
             $this->log('Order ID "' . \Input::get('orderID') . '" has NCERROR ' . \Input::get('NCERROR'), __METHOD__, TL_ERROR);
+
             return false;
         }
 
         if (($objOrder = Order::findByPk(\Input::get('orderID'))) === null)
         {
             $this->log('Order ID "' . \Input::get('orderID') . '" not found', __METHOD__, TL_ERROR);
+
             return false;
         }
 
@@ -52,6 +54,7 @@ class Postfinance extends Payment implements IsotopePayment
         if (!$this->validateSHASign())
         {
             $this->log('Received invalid postsale data for order ID "' . $objOrder->id . '"', __METHOD__, TL_ERROR);
+
             return false;
         }
 
@@ -63,7 +66,7 @@ class Postfinance extends Payment implements IsotopePayment
         }
 
         $objOrder->date_paid = time();
-		$objOrder->updateOrderStatus($this->new_order_status);
+        $objOrder->updateOrderStatus($this->new_order_status);
 
         $objOrder->save();
 
@@ -82,18 +85,21 @@ class Postfinance extends Payment implements IsotopePayment
         if ($this->getRequestData('NCERROR') > 0)
         {
             $this->log('Order ID "' . $this->getRequestData('orderID') . '" has NCERROR ' . $this->getRequestData('NCERROR'), __METHOD__, TL_ERROR);
+
             return;
         }
 
         if (($objOrder = Order::findByPk($this->getRequestData('orderID'))) === null)
         {
             $this->log('Order ID "' . $this->getRequestData('orderID') . '" not found', __METHOD__, TL_ERROR);
+
             return;
         }
 
         if (!$this->validateSHASign())
         {
             $this->log('Received invalid postsale data for order ID "' . $objOrder->id . '"', __METHOD__, TL_ERROR);
+
             return;
         }
 
@@ -101,12 +107,14 @@ class Postfinance extends Payment implements IsotopePayment
         if ($objOrder->currency != $this->getRequestData('currency') || $objOrder->grandTotal != $this->getRequestData('amount'))
         {
             $this->log('Postsale checkout manipulation in payment for Order ID ' . $objOrder->id . '!', __METHOD__, TL_ERROR);
+
             return;
         }
 
         if (!$objOrder->checkout())
         {
             $this->log('Post-Sale checkout for Order ID "' . $objOrder->id . '" failed', __METHOD__, TL_ERROR);
+
             return;
         }
 
@@ -134,22 +142,22 @@ class Postfinance extends Payment implements IsotopePayment
         $arrParam = array
         (
             'PSPID'			=> $this->postfinance_pspid,
-			'ORDERID'		=> $objOrder->id,
-			'AMOUNT'		=> round(($this->Isotope->Cart->grandTotal * 100)),
-			'CURRENCY'		=> $this->Isotope->Config->currency,
-			'LANGUAGE'		=> $GLOBALS['TL_LANGUAGE'] . '_' . strtoupper($GLOBALS['TL_LANGUAGE']),
-			'CN'			=> $objAddress->firstname . ' ' . $objAddress->lastname,
-			'EMAIL'			=> $objAddress->email,
-			'OWNERZIP'		=> $objAddress->postal,
-			'OWNERADDRESS'	=> $objAddress->street_1,
-			'OWNERADDRESS2'	=> $objAddress->street_2,
-			'OWNERCTY'		=> $objAddress->country,
-			'OWNERTOWN'		=> $objAddress->city,
-			'OWNERTELNO'	=> $objAddress->phone,
-			'ACCEPTURL'		=> $this->Environment->base . IsotopeFrontend::addQueryStringToUrl('uid=' . $objOrder->uniqid, $this->addToUrl('step=complete', true)),
-			'DECLINEURL'	=> $strFailedUrl,
-			'EXCEPTIONURL'	=> $strFailedUrl,
-			'PARAMPLUS'		=> 'mod=pay&amp;id=' . $this->id,
+            'ORDERID'		=> $objOrder->id,
+            'AMOUNT'		=> round(($this->Isotope->Cart->grandTotal * 100)),
+            'CURRENCY'		=> $this->Isotope->Config->currency,
+            'LANGUAGE'		=> $GLOBALS['TL_LANGUAGE'] . '_' . strtoupper($GLOBALS['TL_LANGUAGE']),
+            'CN'			=> $objAddress->firstname . ' ' . $objAddress->lastname,
+            'EMAIL'			=> $objAddress->email,
+            'OWNERZIP'		=> $objAddress->postal,
+            'OWNERADDRESS'	=> $objAddress->street_1,
+            'OWNERADDRESS2'	=> $objAddress->street_2,
+            'OWNERCTY'		=> $objAddress->country,
+            'OWNERTOWN'		=> $objAddress->city,
+            'OWNERTELNO'	=> $objAddress->phone,
+            'ACCEPTURL'		=> $this->Environment->base . IsotopeFrontend::addQueryStringToUrl('uid=' . $objOrder->uniqid, $this->addToUrl('step=complete', true)),
+            'DECLINEURL'	=> $strFailedUrl,
+            'EXCEPTIONURL'	=> $strFailedUrl,
+            'PARAMPLUS'		=> 'mod=pay&amp;id=' . $this->id,
         );
 
         // SHA-1 must be generated on alphabetically sorted keys.
@@ -161,7 +169,7 @@ class Postfinance extends Payment implements IsotopePayment
             if ($v == '')
                 continue;
 
-			$strSHASign .= $k . '=' . htmlspecialchars_decode($v) . $this->postfinance_secret;
+            $strSHASign .= $k . '=' . htmlspecialchars_decode($v) . $this->postfinance_secret;
         }
 
         $arrParam['SHASIGN'] = sha1($strSHASign);

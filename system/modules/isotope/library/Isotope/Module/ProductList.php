@@ -191,6 +191,7 @@ class ProductList extends Module
 
                     $this->Template = new \FrontendTemplate('mod_iso_productlist_caching');
                     $this->Template->message = $GLOBALS['ISO_LANG']['MSC']['productcacheLoading'];
+
                     return;
                 }
 
@@ -257,6 +258,7 @@ class ProductList extends Module
             $this->Template = new \FrontendTemplate('mod_message');
             $this->Template->type = 'empty';
             $this->Template->message = $this->iso_emptyMessage ? $this->iso_noProducts : $GLOBALS['TL_LANG']['MSC']['noProducts'];
+
             return;
         }
 
@@ -268,12 +270,12 @@ class ProductList extends Module
 
         $arrBuffer = array();
         $intReaderPage = \Isotope\Frontend::getReaderPageId(null, $this->iso_reader_jumpTo);
-		$arrDefaultOptions = $this->getDefaultProductOptions();
+        $arrDefaultOptions = $this->getDefaultProductOptions();
 
         foreach ($arrProducts as $objProduct)
         {
             $objProduct->setOptions($arrDefaultOptions);
-    		$objProduct->reader_jumpTo = $intReaderPage;
+            $objProduct->reader_jumpTo = $intReaderPage;
 
             $arrBuffer[] = array
             (
@@ -416,30 +418,30 @@ class ProductList extends Module
     }
 
     /**
-	 * Get a list of default options based on filter attributes
-	 * @return array
-	 */
-	protected function getDefaultProductOptions()
-	{
-    	$arrOptions = array();
+     * Get a list of default options based on filter attributes
+     * @return array
+     */
+    protected function getDefaultProductOptions()
+    {
+        $arrOptions = array();
 
-    	if (is_array($this->iso_filterModules))
-		{
-			foreach ($this->iso_filterModules as $module)
-			{
-				if (is_array($GLOBALS['ISO_FILTERS'][$module]))
-				{
-				    foreach ($GLOBALS['ISO_FILTERS'][$module] as $arrConfig)
-				    {
-    				    if ($arrConfig['operator'] == '=' || $arrConfig['operator'] == '==' || $arrConfig['operator'] == 'eq')
-    				    {
-        				    $arrOptions[$arrConfig['attribute']] = $arrConfig['value'];
-    				    }
-				    }
-				}
-			}
-		}
+        if (is_array($this->iso_filterModules))
+        {
+            foreach ($this->iso_filterModules as $module)
+            {
+                if (is_array($GLOBALS['ISO_FILTERS'][$module]))
+                {
+                    foreach ($GLOBALS['ISO_FILTERS'][$module] as $arrConfig)
+                    {
+                        if ($arrConfig['operator'] == '=' || $arrConfig['operator'] == '==' || $arrConfig['operator'] == 'eq')
+                        {
+                            $arrOptions[$arrConfig['attribute']] = $arrConfig['value'];
+                        }
+                    }
+                }
+            }
+        }
 
-		return $arrOptions;
-	}
+        return $arrOptions;
+    }
 }

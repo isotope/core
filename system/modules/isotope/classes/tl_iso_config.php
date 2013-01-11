@@ -287,6 +287,7 @@ class tl_iso_config extends \Backend
     public function filePicker(\DataContainer $dc)
     {
         $strField = 'ctrl_' . $dc->field . ((\Input::get('act') == 'editAll') ? '_' . $dc->id : '');
+
         return ' ' . $this->generateImage('pickfile.gif', $GLOBALS['TL_LANG']['MSC']['filepicker'], 'style="vertical-align:top;cursor:pointer" onclick="Backend.pickFile(\'' . $strField . '\')"');
     }
 }

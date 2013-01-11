@@ -423,6 +423,7 @@ class Backend extends Contao_Backend
         }
 
         natcasesort($arrTemplates);
+
         return $arrTemplates;
     }
 
@@ -599,58 +600,58 @@ class Backend extends Contao_Backend
         return new $class();
     }
 
-	/**
-	 * Returns an array of all allowed product IDs and variant IDs for the current backend user
-	 * @return array|false
-	 */
-	public static function getAllowedProductIds()
-	{
-    	$objUser = BackendUser::getInstance();
+    /**
+     * Returns an array of all allowed product IDs and variant IDs for the current backend user
+     * @return array|false
+     */
+    public static function getAllowedProductIds()
+    {
+        $objUser = BackendUser::getInstance();
 
-    	if ($objUser->isAdmin)
-    	{
-        	return false;
-    	}
+        if ($objUser->isAdmin)
+        {
+            return false;
+        }
 
-    	$arrProductTypes =  (array) $objUser->iso_product_types;
-    	$arrGroups = (array) $objUser->iso_groups;
+        $arrProductTypes =  (array) $objUser->iso_product_types;
+        $arrGroups = (array) $objUser->iso_groups;
 
-    	if (empty($arrProductTypes) || empty($arrGroups))
-    	{
-        	return array();
-    	}
+        if (empty($arrProductTypes) || empty($arrGroups))
+        {
+            return array();
+        }
 
-    	$arrGroups = array_merge($arrGroups, Isotope::getInstance()->call('getChildRecords', array($arrGroups, 'tl_iso_groups')));
+        $arrGroups = array_merge($arrGroups, Isotope::getInstance()->call('getChildRecords', array($arrGroups, 'tl_iso_groups')));
 
-		$objProducts = Database::getInstance()->execute("SELECT id FROM tl_iso_products
-		                                                 WHERE pid=0 AND language='' AND
-		                                                 type IN (" . implode(',', $arrProductTypes) . ") AND
-		                                                 gid IN (" . implode(',', $arrGroups) . ")" .
-		                                                 ($strWhere != '' ? " AND $strWhere" : ''));
+        $objProducts = Database::getInstance()->execute("SELECT id FROM tl_iso_products
+                                                         WHERE pid=0 AND language='' AND
+                                                         type IN (" . implode(',', $arrProductTypes) . ") AND
+                                                         gid IN (" . implode(',', $arrGroups) . ")" .
+                                                         ($strWhere != '' ? " AND $strWhere" : ''));
 
-		if ($objProducts->numRows == 0)
-		{
-    		return array();
-		}
+        if ($objProducts->numRows == 0)
+        {
+            return array();
+        }
 
-		$arrProducts = $objProducts->fetchEach('id');
-		$arrProducts = array_merge($arrProducts, Isotope::getInstance()->call('getChildRecords', array($arrProducts, 'tl_iso_products')));
+        $arrProducts = $objProducts->fetchEach('id');
+        $arrProducts = array_merge($arrProducts, Isotope::getInstance()->call('getChildRecords', array($arrProducts, 'tl_iso_products')));
 
-		// HOOK: allow extensions to define allowed products
-		if (isset($GLOBALS['ISO_HOOKS']['getAllowedProductIds']) && is_array($GLOBALS['ISO_HOOKS']['getAllowedProductIds']))
-		{
-			foreach ($GLOBALS['ISO_HOOKS']['getAllowedProductIds'] as $callback)
-			{
-				$objCallback = (method_exists($callback[0], 'getInstance') ? call_user_func(array($callback[0], 'getInstance')) : new $callback[0]());
-				$arrAllowed = $objCallback->$callback[1]();
+        // HOOK: allow extensions to define allowed products
+        if (isset($GLOBALS['ISO_HOOKS']['getAllowedProductIds']) && is_array($GLOBALS['ISO_HOOKS']['getAllowedProductIds']))
+        {
+            foreach ($GLOBALS['ISO_HOOKS']['getAllowedProductIds'] as $callback)
+            {
+                $objCallback = (method_exists($callback[0], 'getInstance') ? call_user_func(array($callback[0], 'getInstance')) : new $callback[0]());
+                $arrAllowed = $objCallback->$callback[1]();
 
-				if (is_array($arrAllowed))
-				{
-    				$arrProducts = array_intersect($arrProducts, $arrAllowed);
-				}
-			}
-		}
+                if (is_array($arrAllowed))
+                {
+                    $arrProducts = array_intersect($arrProducts, $arrAllowed);
+                }
+            }
+        }
 
-		return $arrProducts;
-	}
+        return $arrProducts;
+    }
 }

@@ -78,6 +78,7 @@ class Cart extends Module
         {
             $this->Template->empty = true;
             $this->Template->message = $this->iso_emptyMessage ? $this->iso_noProducts : $GLOBALS['TL_LANG']['MSC']['noItemsInCart'];
+
             return;
         }
 

@@ -2117,6 +2117,7 @@ $(window).addEvents({
         }
 
         $this->Session->setData($session);
+
         return $return . $group;
     }
 

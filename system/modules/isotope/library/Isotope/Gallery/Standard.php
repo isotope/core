@@ -103,6 +103,7 @@ class Standard extends \Frontend implements IsotopeGallery
 
             case 'main_image':
                 $file = is_array($varValue) ? $varValue : array('src'=>$file);
+
                 return $this->addImage($file, true, true);
                 break;
 
@@ -241,6 +242,7 @@ class Standard extends \Frontend implements IsotopeGallery
         }
 
         $this->injectAjax();
+
         return $this->generateAttribute($this->name . '_gallery', $strGallery, $strType);
     }
 

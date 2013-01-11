@@ -37,6 +37,7 @@ class tl_iso_product_categories extends \Backend
         $objProduct = $this->Database->prepare("SELECT * FROM tl_iso_products WHERE id=?")->limit(1)->execute($row['pid']);
 
         $this->import('Isotope\ProductCallbacks', 'ProductCallbacks');
+
         return $this->ProductCallbacks->getRowLabel($objProduct->row());
     }
 

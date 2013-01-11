@@ -97,6 +97,7 @@ class ProductReader extends Module
             $this->Template = new \FrontendTemplate('mod_message');
             $this->Template->type = 'empty';
             $this->Template->message = $GLOBALS['TL_LANG']['MSC']['invalidProductInformation'];
+
             return;
         }
 

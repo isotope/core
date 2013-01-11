@@ -76,7 +76,7 @@ class Isotope extends \Controller
      */
     public function call($name, $arguments=null)
     {
-	    $arguments = $arguments === null ? array() : (is_array($arguments) ? $arguments : array($arguments));
+        $arguments = $arguments === null ? array() : (is_array($arguments) ? $arguments : array($arguments));
 
         return call_user_func_array(array($this, $name), $arguments);
     }
@@ -529,12 +529,12 @@ class Isotope extends \Controller
                     continue;
                 }
 
-				if ($objRate->countries != '' && !in_array($arrAddress['country'], trimsplit(',', $objRate->countries)))
+                if ($objRate->countries != '' && !in_array($arrAddress['country'], trimsplit(',', $objRate->countries)))
                 {
                     continue;
                 }
 
-				if ($objRate->subdivisions != '' && !in_array($arrAddress['subdivision'], trimsplit(',', $objRate->subdivisions)))
+                if ($objRate->subdivisions != '' && !in_array($arrAddress['subdivision'], trimsplit(',', $objRate->subdivisions)))
                 {
                     continue;
                 }
@@ -767,6 +767,7 @@ class Isotope extends \Controller
     public function mergeConditionalOptionData($strField, $arrData, &$objProduct=null)
     {
         $arrData['eval']['conditionField'] = $arrData['attributes']['conditionField'] . (is_object($objProduct) ? '_' . $objProduct->formSubmit : '');
+
         return $arrData;
     }
 
@@ -937,6 +938,7 @@ class Isotope extends \Controller
                 {
                     $objWidget->addError(sprintf($GLOBALS['TL_LANG']['ERR']['digit'], $objWidget->label));
                 }
+
                 return true;
                 break;
 
@@ -945,6 +947,7 @@ class Isotope extends \Controller
                 {
                     $objWidget->addError(sprintf($GLOBALS['TL_LANG']['ERR']['discount'], $objWidget->label));
                 }
+
                 return true;
                 break;
 
@@ -953,6 +956,7 @@ class Isotope extends \Controller
                 {
                     $objWidget->addError(sprintf($GLOBALS['TL_LANG']['ERR']['surcharge'], $objWidget->label));
                 }
+
                 return true;
                 break;
         }
@@ -1004,6 +1008,7 @@ class Isotope extends \Controller
         }
 
         $label = $this->String->decodeEntities($label);
+
         return $GLOBALS['ISO_LANG']['TBL'][$language][$label] ? $GLOBALS['ISO_LANG']['TBL'][$language][$label] : $label;
     }
 

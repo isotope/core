@@ -109,15 +109,18 @@ class Order extends Collection
 
                 // Otherwise we check the orderstatus checkbox
                 $objStatus = $this->Database->execute("SELECT * FROM tl_iso_orderstatus WHERE id=" . (int) $this->status);
+
                 return $objStatus->paid ? true : false;
 
             case 'statusLabel':
                 $objStatus = $this->Database->execute("SELECT * FROM tl_iso_orderstatus WHERE id=" . (int) $this->status);
+
                 return $this->Isotope->translate($objStatus->name);
                 break;
 
             case 'statusAlias':
                 $objStatus = $this->Database->execute("SELECT * FROM tl_iso_orderstatus WHERE id=" . (int) $this->status);
+
                 return standardize($objStatus->name);
                 break;
 
@@ -255,6 +258,7 @@ class Order extends Collection
     public function delete()
     {
         $this->Database->query("DELETE FROM tl_iso_order_downloads WHERE pid IN (SELECT id FROM {static::$ctable} WHERE pid={$this->id})");
+
         return parent::delete();
     }
 
@@ -266,6 +270,7 @@ class Order extends Collection
     public function getSurcharges()
     {
         $arrSurcharges = deserialize($this->arrData['surcharges']);
+
         return is_array($arrSurcharges) ? $arrSurcharges : array();
     }
 
@@ -298,6 +303,7 @@ class Order extends Collection
             if (($objCart = Cart::findByPk($this->cart_id)) === null)
             {
                 $this->log('Could not find Cart ID '.$this->cart_id.' for Order ID '.$this->id, __METHOD__, TL_ERROR);
+
                 return false;
             }
 
@@ -321,6 +327,7 @@ class Order extends Collection
                 if ($this->$callback[0]->$callback[1]($this, $objCart) === false)
                 {
                     $this->log('Callback ' . $callback[0] . '::' . $callback[1] . '() cancelled checkout for Order ID ' . $this->id, __METHOD__, TL_ERROR);
+
                     return false;
                 }
             }
@@ -383,6 +390,7 @@ class Order extends Collection
         }
 
         $this->save();
+
         return true;
     }
 

@@ -115,10 +115,12 @@ class Frontend extends \Frontend
             switch ($arrTag[1])
             {
                 case 'cart_items';
+
                     return $this->Isotope->Cart->items;
                     break;
 
                 case 'cart_products';
+
                     return $this->Isotope->Cart->products;
                     break;
 
@@ -194,6 +196,7 @@ class Frontend extends \Frontend
         if (\Input::get('product') == '')
         {
             unset($GLOBALS['TL_HOOKS']['parseTemplate'][array_search(array('Isotope\Frontend', 'fixNavigationTrail'), $GLOBALS['TL_HOOKS']['parseTemplate'])]);
+
             return;
         }
 
@@ -909,6 +912,7 @@ $endScript";
         }
 
         $objProduct->reader_jumpTo = $intReaderPage;
+
         return $objProduct;
     }
 
@@ -1006,7 +1010,7 @@ $endScript";
             }
 
             // Add product array as the last item. This will sort the products array based on the sorting of the passed in arguments.
-			eval('array_multisort($arrParam[' . implode('], $arrParam[', array_keys($arrParam)) . '], $arrProducts);');
+            eval('array_multisort($arrParam[' . implode('], $arrParam[', array_keys($arrParam)) . '], $arrProducts);');
         }
 
         return $arrProducts;
@@ -1369,6 +1373,7 @@ $endScript";
         if ($objOriginPage->iso_setReaderJumpTo > 0)
         {
             self::$arrReaderPageIds[$intPage] = $objOriginPage->iso_readerJumpTo;
+
             return $objOriginPage->iso_readerJumpTo;
         }
 
@@ -1679,61 +1684,61 @@ $endScript";
         return $arrItems;
     }
 
-	/**
-	 * Load system configuration into page object
-	 * @param Database_Result
-	 */
-	public static function loadPageConfig($objPage)
-	{
-		// Use the global date format if none is set
-		if ($objPage->dateFormat == '')
-		{
-			$objPage->dateFormat = $GLOBALS['TL_CONFIG']['dateFormat'];
-		}
+    /**
+     * Load system configuration into page object
+     * @param Database_Result
+     */
+    public static function loadPageConfig($objPage)
+    {
+        // Use the global date format if none is set
+        if ($objPage->dateFormat == '')
+        {
+            $objPage->dateFormat = $GLOBALS['TL_CONFIG']['dateFormat'];
+        }
 
-		if ($objPage->timeFormat == '')
-		{
-			$objPage->timeFormat = $GLOBALS['TL_CONFIG']['timeFormat'];
-		}
+        if ($objPage->timeFormat == '')
+        {
+            $objPage->timeFormat = $GLOBALS['TL_CONFIG']['timeFormat'];
+        }
 
-		if ($objPage->datimFormat == '')
-		{
-			$objPage->datimFormat = $GLOBALS['TL_CONFIG']['datimFormat'];
-		}
+        if ($objPage->datimFormat == '')
+        {
+            $objPage->datimFormat = $GLOBALS['TL_CONFIG']['datimFormat'];
+        }
 
-		// Set the admin e-mail address
-		if ($objPage->adminEmail != '')
-		{
-			list($GLOBALS['TL_ADMIN_NAME'], $GLOBALS['TL_ADMIN_EMAIL']) = $this->splitFriendlyName($objPage->adminEmail);
-		}
-		else
-		{
-			list($GLOBALS['TL_ADMIN_NAME'], $GLOBALS['TL_ADMIN_EMAIL']) = $this->splitFriendlyName($GLOBALS['TL_CONFIG']['adminEmail']);
-		}
+        // Set the admin e-mail address
+        if ($objPage->adminEmail != '')
+        {
+            list($GLOBALS['TL_ADMIN_NAME'], $GLOBALS['TL_ADMIN_EMAIL']) = $this->splitFriendlyName($objPage->adminEmail);
+        }
+        else
+        {
+            list($GLOBALS['TL_ADMIN_NAME'], $GLOBALS['TL_ADMIN_EMAIL']) = $this->splitFriendlyName($GLOBALS['TL_CONFIG']['adminEmail']);
+        }
 
-		// Define the static URL constants
-		define('TL_FILES_URL', ($objPage->staticFiles != '' && !$GLOBALS['TL_CONFIG']['debugMode']) ? $objPage->staticFiles . TL_PATH . '/' : '');
-		define('TL_SCRIPT_URL', ($objPage->staticSystem != '' && !$GLOBALS['TL_CONFIG']['debugMode']) ? $objPage->staticSystem . TL_PATH . '/' : '');
-		define('TL_PLUGINS_URL', ($objPage->staticPlugins != '' && !$GLOBALS['TL_CONFIG']['debugMode']) ? $objPage->staticPlugins . TL_PATH . '/' : '');
+        // Define the static URL constants
+        define('TL_FILES_URL', ($objPage->staticFiles != '' && !$GLOBALS['TL_CONFIG']['debugMode']) ? $objPage->staticFiles . TL_PATH . '/' : '');
+        define('TL_SCRIPT_URL', ($objPage->staticSystem != '' && !$GLOBALS['TL_CONFIG']['debugMode']) ? $objPage->staticSystem . TL_PATH . '/' : '');
+        define('TL_PLUGINS_URL', ($objPage->staticPlugins != '' && !$GLOBALS['TL_CONFIG']['debugMode']) ? $objPage->staticPlugins . TL_PATH . '/' : '');
 
-		$objLayout = $this->Database->prepare("SELECT l.*, t.templates FROM tl_layout l LEFT JOIN tl_theme t ON l.pid=t.id WHERE l.id=? OR l.fallback=1 ORDER BY l.id=? DESC")
-							->limit(1)
-							->execute($objPage->layout, $objPage->layout);
+        $objLayout = $this->Database->prepare("SELECT l.*, t.templates FROM tl_layout l LEFT JOIN tl_theme t ON l.pid=t.id WHERE l.id=? OR l.fallback=1 ORDER BY l.id=? DESC")
+                            ->limit(1)
+                            ->execute($objPage->layout, $objPage->layout);
 
-		if ($objLayout->numRows)
-		{
-    		// Get the page layout
-    		$objPage->template = strlen($objLayout->template) ? $objLayout->template : 'fe_page';
-    		$objPage->templateGroup = $objLayout->templates;
+        if ($objLayout->numRows)
+        {
+            // Get the page layout
+            $objPage->template = strlen($objLayout->template) ? $objLayout->template : 'fe_page';
+            $objPage->templateGroup = $objLayout->templates;
 
-    		// Store the output format
-    		list($strFormat, $strVariant) = explode('_', $objLayout->doctype);
-    		$objPage->outputFormat = $strFormat;
-    		$objPage->outputVariant = $strVariant;
-    	}
+            // Store the output format
+            list($strFormat, $strVariant) = explode('_', $objLayout->doctype);
+            $objPage->outputFormat = $strFormat;
+            $objPage->outputVariant = $strVariant;
+        }
 
-		$GLOBALS['TL_LANGUAGE'] = $objPage->language;
+        $GLOBALS['TL_LANGUAGE'] = $objPage->language;
 
-		return $objPage;
-	}
+        return $objPage;
+    }
 }

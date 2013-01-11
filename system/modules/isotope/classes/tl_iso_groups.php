@@ -44,6 +44,7 @@ class tl_iso_groups extends \Backend
         if ($dc->table == 'tl_iso_products')
         {
             $GLOBALS['TL_DCA']['tl_iso_groups']['list']['sorting']['root'] = (array) $this->User->iso_groups;
+
             return;
         }
 

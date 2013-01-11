@@ -38,7 +38,6 @@ class tl_iso_shipping_options extends \Backend
     public function getModulePalette($dc)
     {
         if (\Input::get('act') == 'create') {
-
             return;
         }
 

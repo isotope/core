@@ -50,6 +50,7 @@ class tl_iso_addresses extends \Backend
         }
 
         $strBuffer .= '</div>';
+
         return $strBuffer;
     }
 

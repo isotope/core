@@ -62,6 +62,7 @@ class PostSale extends \Frontend
         if (!strlen($strMod) || !strlen($strId))
         {
             $this->log('Invalid post-sale request (param error): '.$this->Environment->request, __METHOD__, TL_ERROR);
+
             return;
         }
 
@@ -81,6 +82,7 @@ class PostSale extends \Frontend
         if (!$objModule->numRows)
         {
             $this->log('Invalid post-sale request (module not found): '.$this->Environment->request, __METHOD__, TL_ERROR);
+
             return;
         }
 
@@ -88,12 +90,14 @@ class PostSale extends \Frontend
         if (!strlen($strClass) || !$this->classFileExists($strClass))
         {
             $this->log('Invalid post-sale request (class not found): '.$this->Environment->request, __METHOD__, TL_ERROR);
+
             return;
         }
 
         try
         {
             $objModule = new $strClass($objModule->row());
+
             return $objModule->processPostSale();
         }
         catch (Exception $e)

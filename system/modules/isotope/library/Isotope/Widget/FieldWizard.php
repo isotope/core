@@ -236,4 +236,3 @@ class FieldWizard extends \Widget
   </table>';
     }
 }
-

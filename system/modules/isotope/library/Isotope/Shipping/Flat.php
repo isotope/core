@@ -12,7 +12,6 @@
 
 namespace Isotope\Shipping;
 
-use Isotope\Interfaces\IsotopeShipping;
 
 
 /**
