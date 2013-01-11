@@ -837,11 +837,38 @@ $strBuffer .= '<th style="text-align:center"><img src="system/themes/default/ima
 					}
 					else
 					{
-						$arrSet[$key] = $objWidget->value;
+						if (isset($GLOBALS['TL_DCA']['tl_iso_products']['fields'][$key]['save_callback']))
+						{
+							$varValue = $objWidget->value;
+
+							if (is_array($GLOBALS['TL_DCA']['tl_iso_products']['fields'][$key]['save_callback']))
+							{
+								foreach ($GLOBALS['TL_DCA']['tl_iso_products']['fields'][$key]['save_callback'] as $callback)
+								{
+									$this->import($callback[0]);
+
+									try
+									{
+										$varValue = $this->$callback[0]->$callback[1]($varValue);
+									}
+									catch (Exception $e)
+									{
+										$objWidget->addError($e->getMessage());
+										$doNotSubmit = true;
+										$globalDoNotSubmit = true;
+									}
+								}
+							}
+
+							$arrSet[$key] = $varValue;
+						}
+						else
+						{
+							$arrSet[$key] = $objWidget->value;
+						}
 					}
 				}
 			}
-
 
 			if ($this->Input->post('FORM_SUBMIT') == 'tl_product_quick_edit' && !$doNotSubmit)
 			{
@@ -867,7 +894,7 @@ $strBuffer .= '<th style="text-align:center"><img src="system/themes/default/ima
 	{
 		if ($arrVarAttributes[$field]['enabled'])
 		{
-			$strBuffer .= '<td>'.$arrWidgets[$field]->generate().'</td>';
+			$strBuffer .= '<td>'.$arrWidgets[$field]->generateWithError(true).'</td>';
 		}
 	}
 
