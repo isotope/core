@@ -837,11 +837,38 @@ $strBuffer .= '<th style="text-align:center"><img src="system/themes/default/ima
 					}
 					else
 					{
-						$arrSet[$key] = $objWidget->value;
+						if (isset($GLOBALS['TL_DCA']['tl_iso_products']['fields'][$key]['save_callback']))
+						{
+							$varValue = $objWidget->value;
+
+							if (is_array($GLOBALS['TL_DCA']['tl_iso_products']['fields'][$key]['save_callback']))
+							{
+								foreach ($GLOBALS['TL_DCA']['tl_iso_products']['fields'][$key]['save_callback'] as $callback)
+								{
+									$this->import($callback[0]);
+
+									try
+									{
+										$varValue = $this->$callback[0]->$callback[1]($varValue);
+									}
+									catch (Exception $e)
+									{
+										$objWidget->addError($e->getMessage());
+										$doNotSubmit = true;
+										$globalDoNotSubmit = true;
+									}
+								}
+							}
+
+							$arrSet[$key] = $varValue;
+						}
+						else
+						{
+							$arrSet[$key] = $objWidget->value;
+						}
 					}
 				}
 			}
-
 
 			if ($this->Input->post('FORM_SUBMIT') == 'tl_product_quick_edit' && !$doNotSubmit)
 			{
@@ -867,7 +894,7 @@ $strBuffer .= '<th style="text-align:center"><img src="system/themes/default/ima
 	{
 		if ($arrVarAttributes[$field]['enabled'])
 		{
-			$strBuffer .= '<td>'.$arrWidgets[$field]->generate().'</td>';
+			$strBuffer .= '<td>'.$arrWidgets[$field]->generateWithError(true).'</td>';
 		}
 	}
 
@@ -1175,7 +1202,7 @@ $strBuffer .= '<th style="text-align:center"><img src="system/themes/default/ima
 			// Keep field settings made through DCA code
 			$arrData = is_array($GLOBALS['TL_DCA']['tl_iso_products']['fields'][$objAttributes->field_name]) ? $GLOBALS['TL_DCA']['tl_iso_products']['fields'][$objAttributes->field_name] : array();
 
-			$arrData['label']		= array($objAttributes->name, $objAttributes->description);
+			$arrData['label']		= $this->Isotope->translate(array($objAttributes->name, $objAttributes->description));
 			$arrData['exclude']		= true;
 			$arrData['inputType']	= ((TL_MODE == 'BE' && $GLOBALS['ISO_ATTR'][$objAttributes->type]['backend'] != '') ? $GLOBALS['ISO_ATTR'][$objAttributes->type]['backend'] : ((TL_MODE == 'FE' && $GLOBALS['ISO_ATTR'][$objAttributes->type]['frontend'] != '') ? $GLOBALS['ISO_ATTR'][$objAttributes->type]['frontend'] : $objAttributes->type));
 			$arrData['attributes']	= $objAttributes->row();
@@ -1257,25 +1284,25 @@ $strBuffer .= '<th style="text-align:center"><img src="system/themes/default/ima
 						if (!strlen($option['value']))
 						{
 							$arrData['eval']['includeBlankOption'] = true;
-							$arrData['eval']['blankOptionLabel'] = $option['label'];
+							$arrData['eval']['blankOptionLabel'] = $this->Isotope->translate($option['label']);
 							continue;
 						}
 						elseif ($option['group'])
 						{
-							$strGroup = $option['value'];
+							$strGroup = $this->Isotope->translate($option['label']);
 							continue;
 						}
 
 						if (strlen($strGroup))
 						{
-							$arrData['options'][$strGroup][$option['value']] = $option['label'];
+							$arrData['options'][$strGroup][$option['value']] = $this->Isotope->translate($option['label']);
 						}
 						else
 						{
-							$arrData['options'][$option['value']] = $option['label'];
+							$arrData['options'][$option['value']] = $this->Isotope->translate($option['label']);
 						}
 
-						$arrData['reference'][$option['value']] = $option['label'];
+						$arrData['reference'][$option['value']] = $this->Isotope->translate($option['label']);
 					}
 				}
 			}
