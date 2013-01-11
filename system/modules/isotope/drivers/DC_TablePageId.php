@@ -634,15 +634,15 @@ class DC_TablePageId extends \DC_Table
                 }
                 elseif ($_v && $GLOBALS['TL_DCA'][$this->ptable]['fields'][$v]['eval']['rgxp'] == 'date')
                 {
-                    $_v = $this->parseDate($GLOBALS['TL_CONFIG']['dateFormat'], $_v);
+                    $_v = \System::parseDate($GLOBALS['TL_CONFIG']['dateFormat'], $_v);
                 }
                 elseif ($_v && $GLOBALS['TL_DCA'][$this->ptable]['fields'][$v]['eval']['rgxp'] == 'time')
                 {
-                    $_v = $this->parseDate($GLOBALS['TL_CONFIG']['timeFormat'], $_v);
+                    $_v = \System::parseDate($GLOBALS['TL_CONFIG']['timeFormat'], $_v);
                 }
                 elseif ($_v && $GLOBALS['TL_DCA'][$this->ptable]['fields'][$v]['eval']['rgxp'] == 'datim')
                 {
-                    $_v = $this->parseDate($GLOBALS['TL_CONFIG']['datimFormat'], $_v);
+                    $_v = \System::parseDate($GLOBALS['TL_CONFIG']['datimFormat'], $_v);
                 }
                 elseif ($v == 'tstamp')
                 {
@@ -654,7 +654,7 @@ class DC_TablePageId extends \DC_Table
                         $objMaxTstamp->tstamp = $objParent->tstamp;
                     }
 
-                    $_v = $this->parseDate($GLOBALS['TL_CONFIG']['datimFormat'], max($objParent->tstamp, $objMaxTstamp->tstamp));
+                    $_v = \System::parseDate($GLOBALS['TL_CONFIG']['datimFormat'], max($objParent->tstamp, $objMaxTstamp->tstamp));
                 }
                 elseif (isset($GLOBALS['TL_DCA'][$this->ptable]['fields'][$v]['foreignKey']))
                 {
@@ -1107,15 +1107,15 @@ Isotope.makePageViewSortable("ul_' . CURRENT_ID . '");
                     {
                         if ($GLOBALS['TL_DCA'][$this->strTable]['fields'][$v]['eval']['rgxp'] == 'date')
                         {
-                            $args[$k] = $this->parseDate($GLOBALS['TL_CONFIG']['dateFormat'], $row[$v]);
+                            $args[$k] = \System::parseDate($GLOBALS['TL_CONFIG']['dateFormat'], $row[$v]);
                         }
                         elseif ($GLOBALS['TL_DCA'][$this->strTable]['fields'][$v]['eval']['rgxp'] == 'time')
                         {
-                            $args[$k] = $this->parseDate($GLOBALS['TL_CONFIG']['timeFormat'], $row[$v]);
+                            $args[$k] = \System::parseDate($GLOBALS['TL_CONFIG']['timeFormat'], $row[$v]);
                         }
                         else
                         {
-                            $args[$k] = $this->parseDate($GLOBALS['TL_CONFIG']['datimFormat'], $row[$v]);
+                            $args[$k] = \System::parseDate($GLOBALS['TL_CONFIG']['datimFormat'], $row[$v]);
                         }
                     }
                     elseif ($GLOBALS['TL_DCA'][$this->strTable]['fields'][$v]['inputType'] == 'checkbox' && !$GLOBALS['TL_DCA'][$this->strTable]['fields'][$v]['eval']['multiple'])

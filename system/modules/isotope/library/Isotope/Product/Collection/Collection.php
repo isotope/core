@@ -860,9 +860,9 @@ abstract class Collection extends \Model implements IsotopeProductCollection
         $objTemplate->info = deserialize($this->checkout_info);
         $objTemplate->items = $arrItems;
         $objTemplate->raw = $this->arrData;
-        $objTemplate->date = $this->parseDate($GLOBALS['TL_CONFIG']['dateFormat'], $this->date);
-        $objTemplate->time = $this->parseDate($GLOBALS['TL_CONFIG']['timeFormat'], $this->date);
-        $objTemplate->datim = $this->parseDate($GLOBALS['TL_CONFIG']['datimFormat'], $this->date);
+        $objTemplate->date = \System::parseDate($GLOBALS['TL_CONFIG']['dateFormat'], $this->date);
+        $objTemplate->time = \System::parseDate($GLOBALS['TL_CONFIG']['timeFormat'], $this->date);
+        $objTemplate->datim = \System::parseDate($GLOBALS['TL_CONFIG']['datimFormat'], $this->date);
         $objTemplate->datimLabel = $GLOBALS['TL_LANG']['MSC']['datimLabel'];
         $objTemplate->subTotalPrice = $this->Isotope->formatPriceWithCurrency($this->subTotal);
         $objTemplate->grandTotal = $this->Isotope->formatPriceWithCurrency($this->grandTotal);
@@ -902,7 +902,7 @@ abstract class Collection extends \Model implements IsotopeProductCollection
 
         $strArticle = $this->Isotope->call('replaceInsertTags', array($objTemplate->parse()));
         $strArticle = html_entity_decode($strArticle, ENT_QUOTES, $GLOBALS['TL_CONFIG']['characterSet']);
-        $strArticle = $this->Isotope->call('convertRelativeUrls', array($strArticle, '', true));
+        $strArticle = \Controller::convertRelativeUrls($strArticle, '', true);
 
         // Remove form elements and JavaScript links
         $arrSearch = array

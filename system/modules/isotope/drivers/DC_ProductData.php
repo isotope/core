@@ -697,7 +697,7 @@ class DC_ProductData extends \DC_Table
                 while ($objVersion->next())
                 {
                     $versions .= '
-  <option value="'.$objVersion->version.'"'.($objVersion->active ? ' selected="selected"' : '').'>'.$GLOBALS['TL_LANG']['MSC']['version'].' '.$objVersion->version.' ('.$this->parseDate($GLOBALS['TL_CONFIG']['datimFormat'], $objVersion->tstamp).') '.$objVersion->username.'</option>';
+  <option value="'.$objVersion->version.'"'.($objVersion->active ? ' selected="selected"' : '').'>'.$GLOBALS['TL_LANG']['MSC']['version'].' '.$objVersion->version.' ('.\System::parseDate($GLOBALS['TL_CONFIG']['datimFormat'], $objVersion->tstamp).') '.$objVersion->username.'</option>';
                 }
 
                 $version = '<form action="'.ampersand(Environment::get('request'), true).'" id="tl_version" class="tl_form" method="post" style="float:right;">
@@ -2008,7 +2008,7 @@ $(window).addEvents({
             }
             elseif (in_array($GLOBALS['TL_DCA'][$table]['fields'][$v]['flag'], array(5, 6, 7, 8, 9, 10)))
             {
-                $args[$k] = $this->parseDate($GLOBALS['TL_CONFIG']['datimFormat'], $row[$v]);
+                $args[$k] = \System::parseDate($GLOBALS['TL_CONFIG']['datimFormat'], $row[$v]);
             }
             elseif ($GLOBALS['TL_DCA'][$table]['fields'][$v]['inputType'] == 'checkbox' && !$GLOBALS['TL_DCA'][$table]['fields'][$v]['eval']['multiple'])
             {

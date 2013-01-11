@@ -108,16 +108,16 @@ class OrderHistory extends Module
 
             $arrOrders[] = array
             (
-                'collection'    => $objOrder,
-                'raw'			=> $objOrder->getData(),
-                'date'			=> $this->parseDate($GLOBALS['TL_CONFIG']['dateFormat'], $objOrder->date),
-                'time'			=> $this->parseDate($GLOBALS['TL_CONFIG']['timeFormat'], $objOrder->date),
-                'datime'		=> $this->parseDate($GLOBALS['TL_CONFIG']['datimeFormat'], $objOrder->date),
-                'items'			=> $objOrders->items,
-                'grandTotal'	=> $this->Isotope->formatPriceWithCurrency($objOrder->grandTotal),
-                'status'		=> $objOrder->statusLabel,
-                'link'			=> ($this->jumpTo ? (\Isotope\Frontend::addQueryStringToUrl('uid=' . $objOrder->uniqid, $this->jumpTo)) : ''),
-                'class'         => $objOrder->statusAlias,
+                'collection' => $objOrder,
+                'raw'        => $objOrder->getData(),
+                'date'       => \System::parseDate($GLOBALS['TL_CONFIG']['dateFormat'], $objOrder->date),
+                'time'       => \System::parseDate($GLOBALS['TL_CONFIG']['timeFormat'], $objOrder->date),
+                'datime'     => \System::parseDate($GLOBALS['TL_CONFIG']['datimeFormat'], $objOrder->date),
+                'items'      => $objOrders->items,
+                'grandTotal' => $this->Isotope->formatPriceWithCurrency($objOrder->grandTotal),
+                'status'     => $objOrder->statusLabel,
+                'link'       => ($this->jumpTo ? (\Isotope\Frontend::addQueryStringToUrl('uid=' . $objOrder->uniqid, $this->jumpTo)) : ''),
+                'class'      => $objOrder->statusAlias,
             );
         }
 

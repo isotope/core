@@ -1052,17 +1052,17 @@ class Isotope extends \Controller
 
         elseif ($GLOBALS['TL_DCA'][$strTable]['fields'][$strField]['eval']['rgxp'] == 'date')
         {
-            return $this->parseDate($GLOBALS['TL_CONFIG']['dateFormat'], $varValue);
+            return \System::parseDate($GLOBALS['TL_CONFIG']['dateFormat'], $varValue);
         }
 
         elseif ($GLOBALS['TL_DCA'][$strTable]['fields'][$strField]['eval']['rgxp'] == 'time')
         {
-            return $this->parseDate($GLOBALS['TL_CONFIG']['timeFormat'], $varValue);
+            return \System::parseDate($GLOBALS['TL_CONFIG']['timeFormat'], $varValue);
         }
 
         elseif ($GLOBALS['TL_DCA'][$strTable]['fields'][$strField]['eval']['rgxp'] == 'datim' || in_array($GLOBALS['TL_DCA'][$strTable]['fields'][$strField]['flag'], array(5, 6, 7, 8, 9, 10)) || $strField == 'tstamp')
         {
-            return $this->parseDate($GLOBALS['TL_CONFIG']['datimFormat'], $varValue);
+            return \System::parseDate($GLOBALS['TL_CONFIG']['datimFormat'], $varValue);
         }
 
         elseif ($GLOBALS['TL_DCA'][$strTable]['fields'][$strField]['inputType'] == 'checkbox' && !$GLOBALS['TL_DCA'][$strTable]['fields'][$strField]['eval']['multiple'])

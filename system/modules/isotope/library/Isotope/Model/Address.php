@@ -77,7 +77,7 @@ class Address extends \Model
         $strFormat = $GLOBALS['ISO_ADR'][$strCountry] != '' ? $GLOBALS['ISO_ADR'][$strCountry] : $GLOBALS['ISO_ADR']['generic'];
 
         $arrTokens = $this->getTokens($arrFields);
-        $strAddress = $this->Isotope->call('parseSimpleTokens', array($strFormat, $arrTokens));
+        $strAddress = \String::parseSimpleTokens($strFormat, $arrTokens);
 
         return $strAddress;
     }
