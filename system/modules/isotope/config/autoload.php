@@ -28,6 +28,7 @@ NamespaceClassLoader::addClassMap(array
     // DCA Helpers
     'Isotope\tl_content'                => 'system/modules/isotope/classes/tl_content.php',
     'Isotope\tl_iso_addresses'          => 'system/modules/isotope/classes/tl_iso_addresses.php',
+    'Isotope\tl_iso_attributes'         => 'system/modules/isotope/classes/tl_iso_attributes.php',
     'Isotope\tl_iso_config'             => 'system/modules/isotope/classes/tl_iso_config.php',
     'Isotope\tl_iso_downloads'          => 'system/modules/isotope/classes/tl_iso_downloads.php',
     'Isotope\tl_iso_groups'             => 'system/modules/isotope/classes/tl_iso_groups.php',
