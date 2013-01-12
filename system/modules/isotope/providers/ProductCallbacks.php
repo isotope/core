@@ -223,12 +223,13 @@ class ProductCallbacks extends Backend
 		$session = $this->Session->getData();
 		$this->import('BackendUser', 'User');
 
-		if ($this->User->isAdmin)
+		$arrProducts = IsotopeBackend::getAllowedProductIds();
+
+		// Method will return false if no limits should be applied (e.g. user is admin)
+		if (false === $arrProducts)
 		{
 			return;
 		}
-
-		$arrProducts = IsotopeBackend::getAllowedProductIds();
 
 		// Filter by product type and group permissions
 		if (empty($arrProducts))

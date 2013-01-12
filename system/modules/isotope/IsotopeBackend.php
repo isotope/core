@@ -659,6 +659,12 @@ class IsotopeBackend extends Backend
 			}
 		}
 
+		// If all product are allowed, we don't need to filter
+		if (count($arrProducts) == Database::getInstance()->execute("SELECT COUNT(id) as total FROM tl_iso_product")->total)
+		{
+    		return false;
+		}
+
 		return $arrProducts;
 	}
 }
