@@ -787,34 +787,6 @@ class Isotope extends \Controller
 
 
     /**
-     * Intermediate-Function to allow DCA class to be loaded
-     * @param string
-     */
-    public function loadProductsDataContainer($strTable)
-    {
-        if ($strTable == 'tl_iso_products')
-        {
-            $this->import('Isotope\tl_iso_products', 'tl_iso_products');
-            $this->tl_iso_products->loadProductsDCA();
-        }
-
-        // Limit the member countries to the selection in store config
-        elseif ($strTable == 'tl_member' && $this->Config->limitMemberCountries)
-        {
-            $arrCountries = array_unique(array_merge((array) deserialize($this->Config->billing_countries), (array) deserialize($this->Config->shipping_countries)));
-            $arrCountries = array_intersect_key($GLOBALS['TL_DCA']['tl_member']['fields']['country']['options'], array_flip($arrCountries));
-            $GLOBALS['TL_DCA']['tl_member']['fields']['country']['options'] = $arrCountries;
-
-            if (count($arrCountries) == 1)
-            {
-                $arrCountryCodes = array_keys($arrCountries);
-                $GLOBALS['TL_DCA']['tl_member']['fields']['country']['default'] = $arrCountryCodes[0];
-            }
-        }
-    }
-
-
-    /**
      * Standardize and calculate the total of multiple weights
      *
      * It's probably faster in theory to convert only the total to the final unit, and not each product weight.

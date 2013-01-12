@@ -242,7 +242,8 @@ $GLOBALS['ISO_NUM']["10'000.00"]	= array(2, '.', "'");
 /**
  * Hooks
  */
-$GLOBALS['TL_HOOKS']['loadDataContainer'][]			= array('Isotope\Isotope', 'loadProductsDataContainer');
+$GLOBALS['TL_HOOKS']['loadDataContainer'][]			= array('Isotope\tl_iso_products', 'loadProductsDCA');
+$GLOBALS['TL_HOOKS']['loadDataContainer'][]			= array('Isotope\tl_member', 'limitCountries');
 $GLOBALS['TL_HOOKS']['addCustomRegexp'][]			= array('Isotope\Isotope', 'validateRegexp');
 $GLOBALS['TL_HOOKS']['getSearchablePages'][]		= array('Isotope\Frontend', 'addProductsToSearchIndex');
 $GLOBALS['TL_HOOKS']['replaceInsertTags'][]			= array('Isotope\Frontend', 'replaceIsotopeTags');

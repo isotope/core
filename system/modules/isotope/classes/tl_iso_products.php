@@ -619,8 +619,12 @@ $strBuffer .= '<th style="text-align:center"><img src="system/themes/default/ima
      * Initialize the tl_iso_products DCA
      * @return void
      */
-    public function loadProductsDCA()
+    public function loadProductsDCA($strTable)
     {
+        if ($strTable != 'tl_iso_products') {
+            return;
+        }
+
         $objAttributes = $this->Database->execute("SELECT * FROM tl_iso_attributes");
 
         while ($objAttributes->next())

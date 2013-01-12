@@ -46,6 +46,7 @@ NamespaceClassLoader::addClassMap(array
     'Isotope\tl_iso_shipping_options'   => 'system/modules/isotope/classes/tl_iso_shipping_options.php',
     'Isotope\tl_iso_tax_class'          => 'system/modules/isotope/classes/tl_iso_tax_class.php',
     'Isotope\tl_iso_tax_rate'           => 'system/modules/isotope/classes/tl_iso_tax_rate.php',
+    'Isotope\tl_member'                 => 'system/modules/isotope/classes/tl_member.php',
     'Isotope\tl_module'                 => 'system/modules/isotope/classes/tl_module.php',
 
     // Drivers
