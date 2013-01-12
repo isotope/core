@@ -214,12 +214,13 @@ class ProductCallbacks extends \Backend
 
         $session = $this->Session->getData();
 
-        if ($this->User->isAdmin)
-        {
-            return;
-        }
-
         $arrProducts = IsotopeBackend::getAllowedProductIds();
+
+        // Method will return false if no limits should be applied (e.g. user is admin)
+		if (false === $arrProducts)
+		{
+			return;
+		}
 
         // Filter by product type and group permissions
         if (empty($arrProducts))
@@ -227,7 +228,7 @@ class ProductCallbacks extends \Backend
             $GLOBALS['TL_DCA']['tl_iso_products']['config']['closed'] = true;
             unset($GLOBALS['TL_DCA']['tl_iso_products']['list']['global_operations']['new_product']);
             unset($GLOBALS['TL_DCA']['tl_iso_products']['list']['global_operations']['new_variant']);
-            $GLOBALS['TL_DCA']['tl_iso_products']['list']['sorting']['root'] = array();
+            $GLOBALS['TL_DCA']['tl_iso_products']['list']['sorting']['root'] = array(0);
         }
         else
         {
