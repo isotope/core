@@ -33,7 +33,6 @@ $GLOBALS['TL_LANG']['tl_iso_payment_modules']['paypal_account']				= array('PayP
 $GLOBALS['TL_LANG']['tl_iso_payment_modules']['postfinance_pspid']			= array('Postfinance PSPID', 'The PSPID is your unique identification for the Postfinance system.');
 $GLOBALS['TL_LANG']['tl_iso_payment_modules']['postfinance_secret']			= array('Postfinance SHA-1-IN signature', 'This will be used to validate the server communication.');
 $GLOBALS['TL_LANG']['tl_iso_payment_modules']['postfinance_method']			= array('Postfinance method', 'Type of data transfer from postfinance.');
-$GLOBALS['TL_LANG']['tl_iso_payment_modules']['button']						= array('Przycisk kasy', 'Możesz zastąpić domyślny przycisk kasy wybranym przez siebie obrazkiem.');
 $GLOBALS['TL_LANG']['tl_iso_payment_modules']['requireCCV'] 				= array('Require Card Code Verification (CCV) Number', 'Choose this option if you would like to increase transaction security by requiring the card code verification number.');
 $GLOBALS['TL_LANG']['tl_iso_payment_modules']['allowed_cc_types']			= array('Allowed Credit Card Types', 'Select which credit cards the payment module accepts.');
 $GLOBALS['TL_LANG']['tl_iso_payment_modules']['authorize_login']			= array('Authorize.net Login', 'Provided when you have completed signup for your gateway');

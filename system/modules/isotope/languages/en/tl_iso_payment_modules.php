@@ -39,7 +39,6 @@ $GLOBALS['TL_LANG']['tl_iso_payment_modules']['payflowpro_transType']		= array('
 $GLOBALS['TL_LANG']['tl_iso_payment_modules']['postfinance_pspid']			= array('Postfinance PSPID', 'The PSPID is your unique identification for the Postfinance system.');
 $GLOBALS['TL_LANG']['tl_iso_payment_modules']['postfinance_secret']			= array('Postfinance SHA-1-IN signature', 'This will be used to validate the server communication.');
 $GLOBALS['TL_LANG']['tl_iso_payment_modules']['postfinance_method']			= array('Postfinance method', 'Type of data transfer from postfinance.');
-$GLOBALS['TL_LANG']['tl_iso_payment_modules']['button']						= array('Checkout button', 'You can show a custom checkout button instead of the default one.');
 $GLOBALS['TL_LANG']['tl_iso_payment_modules']['requireCCV'] 				= array('Require Card Code Verification (CCV) Number', 'Choose this option if you would like to increase transaction security by requiring the card code verification number.');
 $GLOBALS['TL_LANG']['tl_iso_payment_modules']['cybersource_merchant_id']	= array('Cybersource merchant id', 'Enter your Cybersource merchant id here.');
 $GLOBALS['TL_LANG']['tl_iso_payment_modules']['cybersource_trans_key']		= array('Cybersource transaction key', 'Provided when you have completed signup for your gateway');

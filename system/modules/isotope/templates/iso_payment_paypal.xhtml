@@ -1,0 +1,46 @@
+<h2><?php echo $this->headline; ?></h2>
+<p class="message"><?php echo $this->message; ?></p>
+<form id="paypal<?php echo $this->id; ?>" action="<?php echo $this->action; ?>" method="post">
+<input type="hidden" name="cmd" value="_cart" />
+<input type="hidden" name="upload" value="1" />
+<input type="hidden" name="charset" value="UTF-8" />
+<input type="hidden" name="business" value="<?php echo $this->account; ?>" />
+<input type="hidden" name="lc" value="<?php echo strtoupper($GLOBALS['TL_LANGUAGE']); ?>" />
+<?php foreach ($this->data as $k => $v): ?>
+<input type="hidden" name="<?php echo $k; ?>" value="<?php echo $v; ?>" />
+<?php endforeach; ?>
+<?php if ($fltDiscount > 0): ?>
+<input type="hidden" name="discount_amount_cart" value="<?php echo $this->discount; ?>" />
+<?php endif; ?>
+
+<input type="hidden" name="no_shipping" value="1" />
+<input type="hidden" name="no_note" value="1" />
+<input type="hidden" name="currency_code" value="<?php echo $this->currency; ?>" />
+<input type="hidden" name="button_subtype" value="services" />
+<input type="hidden" name="return" value="<?php echo $this->return; ?>" />
+<input type="hidden" name="cancel_return" value="<?php echo $this->cancel_return; ?>" />
+<input type="hidden" name="rm" value="1" />
+<input type="hidden" name="invoice" value="<?php echo $this->invoice; ?>" />
+
+<input type="hidden" name="address_override" value="<?php echo $this->debug ? '0' : '1'; ?>" />
+<input type="hidden" name="first_name" value="<?php echo $this->address->firstname; ?>" />
+<input type="hidden" name="last_name" value="<?php echo $this->address->lastname; ?>" />
+<input type="hidden" name="address1" value="<?php echo $this->address->street_1; ?>" />
+<input type="hidden" name="address2" value="<?php echo $this->address->street_2; ?>" />
+<input type="hidden" name="zip" value="<?php echo $this->address->postal; ?>" />
+<input type="hidden" name="city" value="<?php echo $this->address->city; ?>" />
+<input type="hidden" name="country" value="<?php echo strtoupper($this->address->country); ?>" />
+<input type="hidden" name="email" value="<?php echo $this->address->email; ?>" />
+<input type="hidden" name="night_phone_b" value="<?php echo $this->address->phone; ?>" />
+
+<input type="hidden" name="notify_url" value="<?php echo $this->notify_url; ?>" />
+
+<noscript>
+<input type="submit" value="<?php echo $this->slabel; ?>" />
+</noscript>
+</form>
+<script type="text/javascript">
+window.addEvent('domready' , function() {
+  document.id('paypal<?php echo $this->id; ?>').submit();
+});
+</script>

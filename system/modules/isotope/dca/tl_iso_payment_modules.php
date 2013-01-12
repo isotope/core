@@ -113,7 +113,7 @@ $GLOBALS['TL_DCA']['tl_iso_payment_modules'] = array
         '__selector__'			=> array('type', 'protected'),
         'default'				=> '{type_legend},name,label,type',
         'Cash'					=> '{type_legend},name,label,type;{note_legend:hide},note;{config_legend},minimum_total,maximum_total,countries,shipping_modules,product_types;{price_legend:hide},price,tax_class;{expert_legend:hide},guests,protected;{enabled_legend},enabled',
-        'Paypal'				=> '{type_legend},name,label,type;{note_legend:hide},note;{config_legend},new_order_status,minimum_total,maximum_total,countries,shipping_modules,product_types;{gateway_legend},paypal_account;{price_legend:hide},price,tax_class;{template_legend},button;{expert_legend:hide},guests,protected;{enabled_legend},debug,enabled',
+        'Paypal'				=> '{type_legend},name,label,type;{note_legend:hide},note;{config_legend},new_order_status,minimum_total,maximum_total,countries,shipping_modules,product_types;{gateway_legend},paypal_account;{price_legend:hide},price,tax_class;{expert_legend:hide},guests,protected;{enabled_legend},debug,enabled',
         'Postfinance'			=> '{type_legend},name,label,type;{note_legend:hide},note;{config_legend},new_order_status,minimum_total,maximum_total,countries,shipping_modules,product_types;{gateway_legend},postfinance_pspid,postfinance_secret,postfinance_method;{price_legend:hide},price,tax_class;{expert_legend:hide},guests,protected;{enabled_legend},debug,enabled',
         'AuthorizeDotNet'		=> '{type_legend},name,label,type;{note_legend:hide},note;{config_legend},new_order_status,allowed_cc_types,requireCCV,minimum_total,maximum_total,countries,shipping_modules,product_types;{gateway_legend},authorize_login,authorize_trans_key,authorize_trans_type,authorize_delimiter;{price_legend:hide},price,tax_class;{expert_legend:hide},guests,protected;{enabled_legend},debug,enabled',
         'Datatrans'             => '{type_legend},name,label,type;{note_legend:hide},note;{config_legend},new_order_status,trans_type,minimum_total,maximum_total,countries,shipping_modules,product_types;{gateway_legend},datatrans_id,datatrans_sign;{price_legend:hide},price,tax_class;{expert_legend:hide},guests,protected;{enabled_legend},debug,enabled',
@@ -424,13 +424,6 @@ $GLOBALS['TL_DCA']['tl_iso_payment_modules'] = array
             'label'                   => &$GLOBALS['TL_LANG']['tl_iso_payment_modules']['requireCCV'],
             'exclude'                 => true,
             'inputType'               => 'checkbox',
-        ),
-        'button' => array
-        (
-            'label'					  => &$GLOBALS['TL_LANG']['tl_iso_payment_modules']['button'],
-            'exclude'				  => true,
-            'inputType'				  => 'fileTree',
-            'eval'					  => array('fieldType'=>'radio', 'files'=>true, 'filesOnly'=>true, 'extensions'=>'jpg,jpeg,png,gif'),
         ),
         'guests' => array
         (

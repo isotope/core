@@ -289,7 +289,6 @@ CREATE TABLE `tl_iso_payment_modules` (
   `payone_portalid` varchar(7) NOT NULL default '',
   `payone_key` varchar(255) NOT NULL default '',
   `requireCCV` char(1) NOT NULL default '',
-  `button` varchar(255) NOT NULL default '',
   `guests` char(1) NOT NULL default '',
   `protected` char(1) NOT NULL default '',
   `groups` blob NULL,
