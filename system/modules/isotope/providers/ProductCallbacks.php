@@ -237,7 +237,7 @@ class ProductCallbacks extends Backend
 			$GLOBALS['TL_DCA']['tl_iso_products']['config']['closed'] = true;
 			unset($GLOBALS['TL_DCA']['tl_iso_products']['list']['global_operations']['new_product']);
 			unset($GLOBALS['TL_DCA']['tl_iso_products']['list']['global_operations']['new_variant']);
-			$GLOBALS['TL_DCA']['tl_iso_products']['list']['sorting']['root'] = array();
+			$GLOBALS['TL_DCA']['tl_iso_products']['list']['sorting']['root'] = array(0);
 		}
 		else
 		{
