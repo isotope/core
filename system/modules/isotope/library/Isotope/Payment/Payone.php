@@ -142,42 +142,16 @@ class Payone extends Payment implements IsotopePayment
         $arrData = array_map('urlencode', $arrData);
         $strHash = md5(implode('', $arrData) . $this->payone_key);
 
-        $strBuffer = '
-<h2>' . $GLOBALS['TL_LANG']['MSC']['pay_with_redirect'][0] . '</h2>
-<p class="message">' . $GLOBALS['TL_LANG']['MSC']['pay_with_redirect'][1] . '</p>
-<form id="payment_form" action="https://secure.pay1.de/frontend/" method="post">';
+        $objTemplate = new \FrontendTemplate('iso_payment_payone');
+        $objTemplate->id = $this->id;
+        $objTemplate->data = $arrData;
+        $objTemplate->hash = $strHasn;
+        $objTemplate->billing_address = $this->Isotope->Cart->billing_address;
+        $objTemplate->headline = $GLOBALS['TL_LANG']['MSC']['pay_with_redirect'][0];
+        $objTemplate->message = $GLOBALS['TL_LANG']['MSC']['pay_with_redirect'][1];
+        $objTemplate->slabel = specialchars($GLOBALS['TL_LANG']['MSC']['pay_with_redirect'][2]);
 
-        foreach( $arrData as $k => $v )
-        {
-            $strBuffer .= "\n" . '<input type="hidden" name="' . $k . '" value="' . $v . '" />';
-        }
-
-        $strBuffer .= '
-<input type="hidden" name="hash" value="' . $strHash . '" />
-
-<input type="hidden" name="company" value="' . $this->Isotope->Cart->billing_address['company'] . '">
-<input type="hidden" name="firstname" value="' . $this->Isotope->Cart->billing_address['firstname'] . '">
-<input type="hidden" name="lastname" value="' . $this->Isotope->Cart->billing_address['lastname'] . '">
-<input type="hidden" name="street" value="' . $this->Isotope->Cart->billing_address['street_1'] . '">
-<input type="hidden" name="zip" value="' . $this->Isotope->Cart->billing_address['postal'] . '">
-<input type="hidden" name="city" value="' . $this->Isotope->Cart->billing_address['city'] . '">
-<input type="hidden" name="country" value="' . strtoupper($this->Isotope->Cart->billing_address['country']) . '">
-<input type="hidden" name="email" value="' . $this->Isotope->Cart->billing_address['email'] . '">
-<input type="hidden" name="telephonenumber" value="' . $this->Isotope->Cart->billing_address['phone'] . '">
-<input type="hidden" name="language" value="' . strtoupper($GLOBALS['TL_LANGUAGE']) . '" />
-
-<input type="submit" value="' . specialchars($GLOBALS['TL_LANG']['MSC']['pay_with_redirect'][2]) . '">
-</form>
-
-<script type="text/javascript">
-<!--//--><![CDATA[//><!--
-window.addEvent( \'domready\' , function() {
-  $(\'payment_form\').submit();
-});
-//--><!]]>
-</script>';
-
-        return $strBuffer;
+        return $objTemplate->parse();
     }
 
 

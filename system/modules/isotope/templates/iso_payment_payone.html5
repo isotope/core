@@ -1,0 +1,26 @@
+<h2><?php echo $this->headline; ?></h2>
+<p class="message"><?php echo $this->message; ?></p>
+<form id="payone<?php echo $this->id; ?>" action="https://secure.pay1.de/frontend/" method="post">
+<?php foreach ($this->data as $k => $v): ?>
+<input type="hidden" name="<?php echo $k; ?>" value="<?php echo $v; ?>">
+<?php endforeach; ?>
+<input type="hidden" name="hash" value="<?php echo $this->hash; ?>">
+<input type="hidden" name="company" value="<?php echo $this->billing_address['company']; ?>">
+<input type="hidden" name="firstname" value="<?php echo $this->billing_address['firstname']; ?>">
+<input type="hidden" name="lastname" value="<?php echo $this->billing_address['lastname']; ?>">
+<input type="hidden" name="street" value="<?php echo $this->billing_address['street_1']; ?>">
+<input type="hidden" name="zip" value="<?php echo $this->billing_address['postal']; ?>">
+<input type="hidden" name="city" value="<?php echo $this->billing_address['city']; ?>">
+<input type="hidden" name="country" value="<?php echo strtoupper($this->billing_address['country']); ?>">
+<input type="hidden" name="email" value="<?php echo $this->billing_address['email']; ?>">
+<input type="hidden" name="telephonenumber" value="<?php echo $this->billing_address['phone']; ?>">
+<input type="hidden" name="language" value="<?php echo strtoupper($GLOBALS['TL_LANGUAGE']); ?>">
+<noscript>
+<input type="submit" value="<?php echo $this->slabel; ?>">
+</noscript>
+</form>
+<script>
+window.addEvent('domready' , function() {
+  document.id('payone<?php echo $this->id; ?>').submit();
+});
+</script>
