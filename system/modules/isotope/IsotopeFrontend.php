@@ -1261,6 +1261,7 @@ $endScript";
 	{
 		$time = time();
 		$arrJump = array();
+		$arrRoot = array();
 		$strAllowedPages = '';
 
 		// if we have a root page id (sitemap.xml e.g.) we have to make sure we only consider categories in this tree
@@ -1288,15 +1289,28 @@ $endScript";
         while ($objProducts->next())
         {
             // Cache redirect page with a placeholder, so we only need to replace the string
-            if (!isset($arrJump[$objProducts->page_id]))
+            if (!isset($arrJump[$objProducts->id]))
             {
                 // we need the root page language if we dont have it (maintenance module)
                 $intJump = self::getReaderPageId($objProducts);
-                $objJump = null === $strLanguage ? $this->getPageDetails($intJump) : $this->Database->execute("SELECT * FROM tl_page WHERE AND published=1 AND (start='' OR start<$time) AND (stop='' OR stop>$time) AND id=" . $intJump);
+                $objJump = null === $strLanguage ? $this->getPageDetails($intJump) : $this->Database->execute("SELECT *, '$intRoot' AS rootId FROM tl_page WHERE published=1 AND (start='' OR start<$time) AND (stop='' OR stop>$time) AND id=" . (int) $intJump);
 
                 if ($objJump->numRows)
                 {
-                    $arrJump[$objProducts->page_id] = $this->generateFrontendUrl($objJump->row(), '/product/##alias##', ($strLanguage=='' ? $GLOBALS['TL_LANGUAGE'] : $strLanguage));
+                    if (!isset($arrRoot[$objJump->rootId]))
+                    {
+                        $arrRoot[$objJump->rootId] = $this->Database->prepare("SELECT * FROM tl_page WHERE id=" . (int) $objJump->rootId);
+                    }
+
+                    $strDomain = '';
+
+        			// Overwrite the domain
+        			if ($arrRoot[$objJump->rootId]->dns != '')
+        			{
+        				$strDomain = ($arrRoot[$objJump->rootId]->useSSL ? 'https://' : 'http://') . $arrRoot[$objJump->rootId]->dns . TL_PATH . '/';
+        			}
+
+                    $arrJump[$objProducts->page_id] = $strDomain . $this->generateFrontendUrl($objJump->row(), '/product/##alias##', ($strLanguage=='' ? $GLOBALS['TL_LANGUAGE'] : $strLanguage));
                 }
                 else
                 {
@@ -1307,7 +1321,7 @@ $endScript";
             if (false !== $arrJump[$objProducts->page_id])
             {
                 $strAlias = $objProducts->product_alias == '' ? $objProducts->product_id : $objProducts->product_alias;
-                $arrPages[] = str_replace('##alias', $strAlias, $arrJump[$objProducts->page_id]);
+                $arrPages[] = str_replace('##alias##', $strAlias, $arrJump[$objProducts->page_id]);
             }
 	    }
 
