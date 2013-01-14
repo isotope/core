@@ -317,7 +317,7 @@ class IsotopeOrder extends IsotopeProductCollection
 		// Load page configuration
 		if (!is_object($objPage) && $this->pageId > 0)
 		{
-			$objPage = $this->getPageDetails($this->pageId);
+			$objPage = $this->Isotope->call('getPageDetails', $this->pageId);
 			$objPage = IsotopeFrontend::loadPageConfig($objPage);
 		}
 
