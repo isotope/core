@@ -26,3 +26,8 @@ Update from Isotope 1.3 to Isotope 1.4
 ### Hooks ###
 
   * The parameter list of "addCustomAddress" hook has changed! The third parameter is now the default address, the module ($this) has moved to the fourth position.
+
+
+### Email Templates ###
+
+  * Placeholders ##shippingTotal## and ##taxTotal## have been removed. They never returned useful values.

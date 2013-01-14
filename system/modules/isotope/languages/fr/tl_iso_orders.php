@@ -37,8 +37,6 @@ $GLOBALS['TL_LANG']['tl_iso_orders']['shipping_address'][0] = 'Adresse de livrai
 $GLOBALS['TL_LANG']['tl_iso_orders']['billing_address'][0]  = 'Adresse de facturation';
 
 $GLOBALS['TL_LANG']['tl_iso_orders']['order_subtotal'][0]   = 'Sous-total';
-$GLOBALS['TL_LANG']['tl_iso_orders']['order_tax'][0]        = 'Coût des taxes';
-$GLOBALS['TL_LANG']['tl_iso_orders']['shippingTotal'][0]    = 'Coût de la livrasion';
 $GLOBALS['TL_LANG']['tl_iso_orders']['shipping_method'][0]  = 'Mode de livraison';
 $GLOBALS['TL_LANG']['tl_iso_orders']['surcharges'][0]       = 'Surtaxes';
 $GLOBALS['TL_LANG']['tl_iso_orders']['cc_num'][0]           = 'Numéro de carte';

@@ -178,10 +178,6 @@ abstract class Collection extends \Model implements IsotopeProductCollection
                     return $this->grandTotal > 0 ? true : false;
                     break;
 
-                case 'shippingTotal':
-                    return $this->hasShipping ? (float) $this->Shipping->price : 0.00;
-                    break;
-
                 case 'items':
                     $this->arrCache[$strKey] = \Database::getInstance()->execute("SELECT SUM(product_quantity) AS items FROM {static::$ctable} WHERE pid={$this->id}")->items;
                     break;
@@ -224,21 +220,6 @@ abstract class Collection extends \Model implements IsotopeProductCollection
                     }
 
                     $this->arrCache[$strKey] = $fltTotal;
-                    break;
-
-                case 'taxTotal':
-                    $intTaxTotal = 0;
-                    $arrSurcharges = $this->getSurcharges();
-
-                    foreach ($arrSurcharges as $arrSurcharge)
-                    {
-                        if ($arrSurcharge['add'])
-                        {
-                            $intTaxTotal += $arrSurcharge['total_price'];
-                        }
-                    }
-
-                    $this->arrCache[$strKey] = $intTaxTotal;
                     break;
 
                 case 'grandTotal':

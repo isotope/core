@@ -994,8 +994,6 @@ class Checkout extends Module
         $objOrder->shipping_id          = ($this->Isotope->Cart->hasShipping ? $this->Isotope->Cart->Shipping->id : 0);
         $objOrder->payment_id           = ($this->Isotope->Cart->hasPayment ? $this->Isotope->Cart->Payment->id : 0);
         $objOrder->subTotal             = $this->Isotope->Cart->subTotal;
-        $objOrder->taxTotal             = $this->Isotope->Cart->taxTotal;
-        $objOrder->shippingTotal        = $this->Isotope->Cart->shippingTotal;
         $objOrder->grandTotal           = $this->Isotope->Cart->grandTotal;
         $objOrder->surcharges           = $this->Isotope->Cart->getSurcharges();
         $objOrder->checkout_info        = $this->getCheckoutInfo();
@@ -1044,9 +1042,6 @@ class Checkout extends Module
             'items'				=> $this->Isotope->Cart->items,
             'products'			=> $this->Isotope->Cart->products,
             'subTotal'			=> $this->Isotope->formatPriceWithCurrency($this->Isotope->Cart->subTotal, false),
-            'taxTotal'			=> $this->Isotope->formatPriceWithCurrency($this->Isotope->Cart->taxTotal, false),
-            'shippingPrice'		=> $this->Isotope->formatPriceWithCurrency($this->Isotope->Cart->Shipping->price, false),
-            'paymentPrice'		=> $this->Isotope->formatPriceWithCurrency($this->Isotope->Cart->Payment->price, false),
             'grandTotal'		=> $this->Isotope->formatPriceWithCurrency($this->Isotope->Cart->grandTotal, false),
             'cart_text'			=> strip_tags($this->replaceInsertTags($this->Isotope->Cart->getProducts('iso_products_text'))),
             'cart_html'			=> $this->replaceInsertTags($this->Isotope->Cart->getProducts('iso_products_html')),

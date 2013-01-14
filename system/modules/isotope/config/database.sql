@@ -607,8 +607,6 @@ CREATE TABLE `tl_iso_orders` (
   `payment_data` blob NULL,
   `shipping_data` blob NULL,
   `subTotal` decimal(12,2) NOT NULL default '0.00',
-  `taxTotal` decimal(12,2) NOT NULL default '0.00',
-  `shippingTotal` decimal(12,2) NOT NULL default '0.00',
   `grandTotal` decimal(12,2) NOT NULL default '0.00',
   `cc_num` varchar(64) NOT NULL default '',
   `cc_type` varchar(32) NOT NULL default '',

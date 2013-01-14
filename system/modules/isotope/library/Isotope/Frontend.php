@@ -1255,66 +1255,75 @@ $endScript";
      * @param int root page id
      * @return array extended array of absolute page urls
      */
-    public function addProductsToSearchIndex($arrPages, $intRootPageId=0)
-    {
-        $time = time();
-        $arrIsotopeProductPages = array();
+	public function addProductsToSearchIndex($arrPages, $intRoot=0, $blnSitemap=false, $strLanguage=null)
+	{
+		$time = time();
+		$arrJump = array();
+		$arrRoot = array();
+		$strAllowedPages = '';
 
-        // get all products available
-        $objProducts = $this->Database->execute(StandardProduct::getSelectStatement() . " WHERE p1.language='' AND p1.pid=0 AND p1.published=1 AND (p1.start='' OR p1.start<$time) AND (p1.stop='' OR p1.stop>$time)");
-        $arrProducts = self::getProducts($objProducts);
+		// if we have a root page id (sitemap.xml e.g.) we have to make sure we only consider categories in this tree
+		if ($intRoot > 0)
+		{
+			$strAllowedPages = ' AND c.page_id IN (' . implode(',', $this->Database->getChildRecords($intRoot, 'tl_page', false)) . ')';
+		}
 
-        if (empty($arrProducts))
+	    $objProducts = $this->Database->query("
+	        SELECT tl_page.*, p.id AS product_id, p.alias AS product_alias FROM tl_iso_product_categories c
+	            JOIN tl_iso_products p ON p.id=c.pid
+    	        JOIN tl_iso_producttypes t ON t.id=p.type
+                JOIN tl_page ON tl_page.id=c.page_id
+            WHERE
+                t.class='regular'
+                AND p.language=''
+                AND p.pid=0
+                AND p.published=1
+                AND (p.start='' OR p.start<$time)
+                AND (p.stop='' OR p.stop>$time)"
+                . $strAllowedPages
+        );
+
+        while ($objProducts->next())
         {
-            return $arrPages;
-        }
-
-        // if we have a root page id (sitemap.xml e.g.) we have to make sure we only consider categories in this tree
-        $arrAllowedPageIds = array();
-        if ($intRootPageId > 0)
-        {
-            $arrAllowedPageIds = $this->getChildRecords($intRootPageId, 'tl_page');
-        }
-
-        // get all the categories for every product
-        foreach ($arrProducts as $objProduct)
-        {
-            $arrCategories = $objProduct->categories;
-
-            // filter those that are allowed
-            if (!empty($arrAllowedPageIds))
+            // Cache redirect page with a placeholder, so we only need to replace the string
+            if (!isset($arrJump[$objProducts->id]))
             {
-                $arrCategories = array_intersect($arrCategories, $arrAllowedPageIds);
-            }
+                // we need the root page language if we dont have it (maintenance module)
+                $intJump = static::getReaderPageId($objProducts);
+                $objJump = null === $strLanguage ? $this->getPageDetails($intJump) : $this->Database->execute("SELECT *, '$intRoot' AS rootId FROM tl_page WHERE published=1 AND (start='' OR start<$time) AND (stop='' OR stop>$time) AND id=" . (int) $intJump);
 
-            if (!is_array($arrCategories) || empty($arrCategories))
-            {
-                continue;
-            }
-
-            $objCategoryPages = $this->Database->execute('SELECT * FROM tl_page WHERE id IN(' . implode(',', $arrCategories) . ')');
-
-            if (!$objCategoryPages->numRows)
-            {
-                continue;
-            }
-
-            while($objCategoryPages->next())
-            {
-                $objProduct->reader_jumpTo = self::getReaderPageId($objCategoryPages);
-                $strUrl = $objProduct->href_reader;
-
-                if ($strUrl != '')
+                if ($objJump->numRows)
                 {
-                    $arrIsotopeProductPages[] = Environment::get('base') . ltrim($strUrl, '/');
+                    if (!isset($arrRoot[$objJump->rootId]))
+                    {
+                        $arrRoot[$objJump->rootId] = $this->Database->prepare("SELECT * FROM tl_page WHERE id=" . (int) $objJump->rootId);
+                    }
+
+                    $strDomain = $this->Environment->base;
+
+        			// Overwrite the domain
+        			if ($arrRoot[$objJump->rootId]->dns != '')
+        			{
+        				$strDomain = ($arrRoot[$objJump->rootId]->useSSL ? 'https://' : 'http://') . $arrRoot[$objJump->rootId]->dns . TL_PATH . '/';
+        			}
+
+                    $arrJump[$objProducts->page_id] = $strDomain . Controller::generateFrontendUrl($objJump->row(), '/product/##alias##', ($strLanguage=='' ? $GLOBALS['TL_LANGUAGE'] : $strLanguage));
+                }
+                else
+                {
+                    $arrJump[$objProducts->page_id] = false;
                 }
             }
-        }
+
+            if (false !== $arrJump[$objProducts->page_id])
+            {
+                $strAlias = $objProducts->product_alias == '' ? $objProducts->product_id : $objProducts->product_alias;
+                $arrPages[] = str_replace('##alias##', $strAlias, $arrJump[$objProducts->page_id]);
+            }
+	    }
 
         // the reader page id can be the same for several categories so we have to make sure we only index the product once
-        $arrIsotopeProductPages = array_unique($arrIsotopeProductPages);
-
-        return array_merge($arrPages, $arrIsotopeProductPages);
+        return array_unique($arrPages);
     }
 
 

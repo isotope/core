@@ -30,8 +30,6 @@ $GLOBALS['TL_LANG']['tl_iso_orders']['shipping_address']	= array('Shipping Addre
 $GLOBALS['TL_LANG']['tl_iso_orders']['billing_address']		= array('Billing Address');
 
 $GLOBALS['TL_LANG']['tl_iso_orders']['order_subtotal']		= array('Subtotal');
-$GLOBALS['TL_LANG']['tl_iso_orders']['order_tax']			= array('Tax Cost');
-$GLOBALS['TL_LANG']['tl_iso_orders']['shippingTotal']		= array('Shipping Cost');
 $GLOBALS['TL_LANG']['tl_iso_orders']['shipping_method']		= array('Shipping Method');
 $GLOBALS['TL_LANG']['tl_iso_orders']['surcharges']			= array('Surcharges');
 $GLOBALS['TL_LANG']['tl_iso_orders']['cc_num']				= array('Card Number', 'The credit card number');

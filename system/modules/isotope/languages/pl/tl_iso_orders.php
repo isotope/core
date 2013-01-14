@@ -28,8 +28,6 @@ $GLOBALS['TL_LANG']['tl_iso_orders']['shipping_address']	= array('Adres dostawy'
 $GLOBALS['TL_LANG']['tl_iso_orders']['billing_address']		= array('Adres rozliczeniowy');
 
 $GLOBALS['TL_LANG']['tl_iso_orders']['order_subtotal'] = array('Podsuma');
-$GLOBALS['TL_LANG']['tl_iso_orders']['order_tax'] = array('Podatek');
-$GLOBALS['TL_LANG']['tl_iso_orders']['shippingTotal'] = array('Koszt dostawy');
 $GLOBALS['TL_LANG']['tl_iso_orders']['shipping_method'] = array('Metoda dostawy');
 $GLOBALS['TL_LANG']['tl_iso_orders']['surcharges'] = array('Dopłaty');
 $GLOBALS['TL_LANG']['tl_iso_orders']['cc_num'] = array('Numer karty', 'Numer karty kredytowej');
