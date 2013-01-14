@@ -1285,7 +1285,6 @@ $endScript";
                 . $strAllowedPages
         );
 
-
         while ($objProducts->next())
         {
             // Cache redirect page with a placeholder, so we only need to replace the string
@@ -1302,7 +1301,7 @@ $endScript";
                         $arrRoot[$objJump->rootId] = $this->Database->prepare("SELECT * FROM tl_page WHERE id=" . (int) $objJump->rootId);
                     }
 
-                    $strDomain = '';
+                    $strDomain = $this->Environment->base;
 
         			// Overwrite the domain
         			if ($arrRoot[$objJump->rootId]->dns != '')
