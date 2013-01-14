@@ -1288,18 +1288,27 @@ $endScript";
         while ($objProducts->next())
         {
             // Cache redirect page with a placeholder, so we only need to replace the string
-            if ($arrJump[$objProducts->page_id] == '')
+            if (!isset($arrJump[$objProducts->page_id]))
             {
                 // we need the root page language if we dont have it (maintenance module)
                 $intJump = self::getReaderPageId($objProducts);
-                $objJump = null === $strLanguage ? $this->getPageDetails($intJump) : $this->Database->execute("SELECT * FROM tl_page WHERE id=" . $intJump);
+                $objJump = null === $strLanguage ? $this->getPageDetails($intJump) : $this->Database->execute("SELECT * FROM tl_page WHERE AND published=1 AND (start='' OR start<$time) AND (stop='' OR stop>$time) AND id=" . $intJump);
 
-                // Cache result
-                $arrJump[$objProducts->page_id] = $this->generateFrontendUrl($objJump->row(), '/product/##alias##', ($strLanguage=='' ? $GLOBALS['TL_LANGUAGE'] : $strLanguage));
+                if ($objJump->numRows)
+                {
+                    $arrJump[$objProducts->page_id] = $this->generateFrontendUrl($objJump->row(), '/product/##alias##', ($strLanguage=='' ? $GLOBALS['TL_LANGUAGE'] : $strLanguage));
+                }
+                else
+                {
+                    $arrJump[$objProducts->page_id] = false;
+                }
             }
 
-            $strAlias = $objProducts->product_alias == '' ? $objProducts->product_id : $objProducts->product_alias;
-            $arrPages[] = str_replace('##alias', $strAlias, $arrJump[$objProducts->page_id]);
+            if (false !== $arrJump[$objProducts->page_id])
+            {
+                $strAlias = $objProducts->product_alias == '' ? $objProducts->product_id : $objProducts->product_alias;
+                $arrPages[] = str_replace('##alias', $strAlias, $arrJump[$objProducts->page_id]);
+            }
 	    }
 
         // the reader page id can be the same for several categories so we have to make sure we only index the product once
