@@ -356,7 +356,7 @@ class IsotopeRules extends Controller
 		// Member restrictions
 		if (FE_USER_LOGGED_IN === true && TL_MODE=='FE')
 		{
-			$arrGroups = array_map('intval', $this->User->groups);
+			$arrGroups = array_map('intval', (array) $this->User->groups);
 
 			$arrProcedures[] = "(memberRestrictions='none'
 								OR (memberRestrictions='guests' AND memberCondition='1')
