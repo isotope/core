@@ -953,7 +953,7 @@ $endScript";
 	public static function getProducts($objProductData, $intReaderPage=0, $blnCheckAvailability=true, array $arrFilters=array(), array $arrSorting=array())
 	{
 		// $objProductData can also be an array of product ids
-		if (is_array($objProductData) && count($objProductData))
+		if (is_array($objProductData) && !empty($objProductData))
 		{
 			$time = time();
 			$Database = Database::getInstance();
@@ -1257,69 +1257,53 @@ $endScript";
 	 * @param int root page id
 	 * @return array extended array of absolute page urls
 	 */
-	public function addProductsToSearchIndex($arrPages, $intRootPageId=0)
+	public function addProductsToSearchIndex($arrPages, $intRoot=0, $blnSitemap=false, $strLanguage=null)
 	{
 		$time = time();
-		$arrIsotopeProductPages = array();
-
-		// get all products available
-		$objProducts = $this->Database->execute(IsotopeProduct::getSelectStatement() . " WHERE p1.language='' AND p1.pid=0 AND p1.published=1 AND (p1.start='' OR p1.start<$time) AND (p1.stop='' OR p1.stop>$time)");
-		$arrProducts = self::getProducts($objProducts);
-
-		if (empty($arrProducts))
-		{
-			return $arrPages;
-		}
+		$arrJump = array();
+		$strAllowedPages = '';
 
 		// if we have a root page id (sitemap.xml e.g.) we have to make sure we only consider categories in this tree
-		$arrAllowedPageIds = array();
-		if ($intRootPageId > 0)
+		if ($intRoot > 0)
 		{
-			$arrAllowedPageIds = $this->getChildRecords($intRootPageId, 'tl_page');
+			$strAllowedPages = ' AND c.page_id IN (' . implode(',', $this->getChildRecords($intRoot, 'tl_page', false)) . ')';
 		}
 
-		// get all the categories for every product
-		foreach ($arrProducts as $objProduct)
-		{
-			$arrCategories = $objProduct->categories;
+	    $objProducts = $this->Database->query("
+	        SELECT tl_page.*, p.id AS product_id, p.alias AS product_alias FROM tl_iso_product_categories c
+	            JOIN tl_iso_products p ON p.id=c.pid
+    	        JOIN tl_iso_producttypes t ON t.id=p.type
+                JOIN tl_page ON tl_page.id=c.page_id
+            WHERE
+                t.class='regular'
+                AND p.language=''
+                AND p.pid=0
+                AND p.published=1
+                AND (p.start='' OR p.start<$time)
+                AND (p.stop='' OR p.stop>$time)"
+                . $strAllowedPages
+        );
 
-			// filter those that are allowed
-			if(count($arrAllowedPageIds))
-				$arrCategories = array_intersect($arrCategories, $arrAllowedPageIds);
 
-			if (!is_array($arrCategories) || !count($arrCategories))
-			{
-				continue;
-			}
+        while ($objProducts->next())
+        {
+            // Cache redirect page with a placeholder, so we only need to replace the string
+            if ($arrJump[$objProducts->page_id] == '')
+            {
+                // we need the root page language if we dont have it (maintenance module)
+                $intJump = self::getReaderPageId($objProducts);
+                $objJump = null === $strLanguage ? $this->getPageDetails($intJump) : $this->Database->execute("SELECT * FROM tl_page WHERE id=" . $intJump);
 
-			if (!is_array($arrCategories) || !count($arrCategories))
-			{
-				continue;
-			}
+                // Cache result
+                $arrJump[$objProducts->page_id] = $this->generateFrontendUrl($objJump->row(), '/product/##alias##', ($strLanguage=='' ? $GLOBALS['TL_LANGUAGE'] : $strLanguage));
+            }
 
-			$objCategoryPages = $this->Database->execute('SELECT * FROM tl_page WHERE id IN(' . implode(',', $arrCategories) . ')');
+            $strAlias = $objProducts->product_alias == '' ? $objProducts->product_id : $objProducts->product_alias;
+            $arrPages[] = str_replace('##alias', $strAlias, $arrJump[$objProducts->page_id]);
+	    }
 
-			if (!$objCategoryPages->numRows)
-			{
-				continue;
-			}
-
-			while($objCategoryPages->next())
-			{
-				$objProduct->reader_jumpTo = self::getReaderPageId($objCategoryPages);
-				$strUrl = $objProduct->href_reader;
-
-				if ($strUrl != '')
-				{
-					$arrIsotopeProductPages[] = $this->Environment->base . ltrim($strUrl, '/');
-				}
-			}
-		}
-
-		// the reader page id can be the same for several categories so we have to make sure we only index the product once
-		$arrIsotopeProductPages = array_unique($arrIsotopeProductPages);
-
-		return array_merge($arrPages, $arrIsotopeProductPages);
+        // the reader page id can be the same for several categories so we have to make sure we only index the product once
+        return array_unique($arrPages);
 	}
 
 
