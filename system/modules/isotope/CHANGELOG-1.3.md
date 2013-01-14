@@ -1,6 +1,16 @@
 Isotope eCommerce Changelog
 ===========================
 
+Version 1.3.13 stable (2013-01-14)
+----------------------------------
+
+### Improved
+- Better performance for search index and XML sitemap (#517)
+
+### Fixed
+- All orders were deleted when "edit all" was clicked (#128)
+
+
 Version 1.3.12 stable (2012-12-11)
 ----------------------------------
 

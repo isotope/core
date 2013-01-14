@@ -33,7 +33,7 @@
  * Isotope Version
  */
 @define('ISO_VERSION', '1.3');
-@define('ISO_BUILD', '12');
+@define('ISO_BUILD', '13');
 
 
 /**
