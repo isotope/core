@@ -235,7 +235,9 @@ class ProductCallbacks extends Backend
 		if (empty($arrProducts))
 		{
 			unset($GLOBALS['TL_DCA']['tl_iso_products']['list']['global_operations']['new_variant']);
-			$GLOBALS['TL_DCA']['tl_iso_products']['list']['sorting']['root'] = array(0);
+			unset($session['CLIPBOARD']['tl_iso_products']);
+			$session['CURRENT']['IDS'] = array();
+			$GLOBALS['TL_DCA']['tl_iso_products']['list']['sorting']['filter'][] = array('id=?', 0);
 		}
 		else
 		{
@@ -246,24 +248,24 @@ class ProductCallbacks extends Backend
 			}
 
 			$GLOBALS['TL_DCA']['tl_iso_products']['list']['sorting']['root'] = $arrProducts;
-		}
 
-		// Set allowed product IDs (edit multiple)
-		if (is_array($session['CURRENT']['IDS']))
-		{
-			$session['CURRENT']['IDS'] = array_intersect($session['CURRENT']['IDS'], $GLOBALS['TL_DCA']['tl_iso_products']['list']['sorting']['root']);
-		}
+    		// Set allowed product IDs (edit multiple)
+    		if (is_array($session['CURRENT']['IDS']))
+    		{
+    			$session['CURRENT']['IDS'] = array_intersect($session['CURRENT']['IDS'], $GLOBALS['TL_DCA']['tl_iso_products']['list']['sorting']['root']);
+    		}
 
-		// Set allowed clipboard IDs
-		if (is_array($session['CLIPBOARD']['tl_iso_products']['id']))
-		{
-			$session['CLIPBOARD']['tl_iso_products']['id'] = array_intersect($session['CLIPBOARD']['tl_iso_products']['id'], $GLOBALS['TL_DCA']['tl_iso_products']['list']['sorting']['root'], $this->Database->query("SELECT id FROM tl_iso_products WHERE pid=0")->fetchEach('id'));
+    		// Set allowed clipboard IDs
+    		if (is_array($session['CLIPBOARD']['tl_iso_products']['id']))
+    		{
+    			$session['CLIPBOARD']['tl_iso_products']['id'] = array_intersect($session['CLIPBOARD']['tl_iso_products']['id'], $GLOBALS['TL_DCA']['tl_iso_products']['list']['sorting']['root'], $this->Database->query("SELECT id FROM tl_iso_products WHERE pid=0")->fetchEach('id'));
 
-			if (empty($session['CLIPBOARD']['tl_iso_products']['id']))
-			{
-				unset($session['CLIPBOARD']['tl_iso_products']);
-			}
-		}
+    			if (empty($session['CLIPBOARD']['tl_iso_products']['id']))
+    			{
+    				unset($session['CLIPBOARD']['tl_iso_products']);
+    			}
+    		}
+        }
 
 		// Overwrite session
 		$this->Session->setData($session);
