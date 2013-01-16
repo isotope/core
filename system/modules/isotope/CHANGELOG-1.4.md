@@ -23,6 +23,7 @@ Version 1.4.x (201?-??-??)
 - Do not show filter options with just one option (#42)
 - Filtered options are now passed as pre-selections to the product reader (#42)
 - Do not filter products if everything is allowed (#125)
+- Added support for list->sorting->filter in DC_ProductData
 
 ### Fixed
 - Attributes were not translated in filters etc.

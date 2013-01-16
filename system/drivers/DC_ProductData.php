@@ -117,6 +117,16 @@ class DC_ProductData extends DC_Table
 			$this->Session->set('CLIPBOARD', $arrClipboard);
 		}
 
+		// Custom filter
+		if (is_array($GLOBALS['TL_DCA'][$this->strTable]['list']['sorting']['filter']) && !empty($GLOBALS['TL_DCA'][$this->strTable]['list']['sorting']['filter']))
+		{
+			foreach ($GLOBALS['TL_DCA'][$this->strTable]['list']['sorting']['filter'] as $filter)
+			{
+				$this->procedure[] = $filter[0];
+				$this->values[] = $filter[1];
+			}
+		}
+
 		if ($this->Input->get('table') && $GLOBALS['TL_DCA'][$this->strTable]['config']['ptable'] && $this->Database->fieldExists('pid', $this->strTable))
 		{
 			$this->procedure[] = 'pid=?';
