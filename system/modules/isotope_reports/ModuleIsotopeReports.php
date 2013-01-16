@@ -134,7 +134,7 @@ class ModuleIsotopeReports extends BackendModule
 												LEFT JOIN tl_iso_order_items i ON o.id=i.pid
 												LEFT OUTER JOIN tl_iso_config c ON o.config_id=c.id
 												WHERE o.date>?
-												" . ($arrAllowedProducts === false ? '' : (" AND i.product_id IN (" . (empty($arrAllowedProducts) ? '0' : implode(',', $arrAllowedProducts)) . ")")) . "
+												" . ($arrAllowedProducts === true ? '' : (" AND i.product_id IN (" . (empty($arrAllowedProducts) ? '0' : implode(',', $arrAllowedProducts)) . ")")) . "
 												GROUP BY config_id")
 									->execute(strtotime('-24 hours'));
 
