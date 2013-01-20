@@ -125,7 +125,7 @@ class IsotopeReportSalesProduct extends IsotopeReportSales
 			$strName = '<p class="tl_help tl_tip">' . implode('<br>', $arrOptions) . '</p>';
 
 			$arrRaw[$objProducts->product_id]['name'] = $strName;
-			$arrRaw[$objProducts->product_id][$objProducts->dateGroup] = $objProducts->total;
+			$arrRaw[$objProducts->product_id][$objProducts->dateGroup] = (float) $arrRaw[$objProducts->product_id][$objProducts->dateGroup] + (float) $objProducts->total;
 			$arrRaw[$objProducts->product_id]['total'] = (float) $arrRaw[$objProducts->product_id]['total'] + (float) $objProducts->total;
 		}
 
