@@ -24,6 +24,7 @@ Version 1.4.x (201?-??-??)
 - Filtered options are now passed as pre-selections to the product reader (#42)
 - Do not filter products if everything is allowed (#125)
 - Added support for list->sorting->filter in DC_ProductData
+- Invoices are now created in the user's language (#524)
 
 ### Fixed
 - Attributes were not translated in filters etc.

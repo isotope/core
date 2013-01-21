@@ -836,6 +836,12 @@ abstract class IsotopeProductCollection extends Model
 			$this->Isotope->overrideConfig($this->config_id);
 		}
 
+		// Load language files for the order
+		if ($this->language != '')
+		{
+    		$this->loadLanguageFile('default', $this->language);
+		}
+
 		$objTemplate = new BackendTemplate($this->strTemplate);
 		$objTemplate->setData($this->arrData);
 		$objTemplate->logoImage = '';
@@ -952,6 +958,7 @@ abstract class IsotopeProductCollection extends Model
 		if ($blnResetConfig)
 		{
 			$this->Isotope->resetConfig(true);
+			$this->loadLanguageFile('default', $GLOBALS['TL_LANGUAGE']);
 		}
 
 		return $strArticle;
