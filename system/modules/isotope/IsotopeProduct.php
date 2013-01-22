@@ -1536,6 +1536,14 @@ class IsotopeProduct extends Controller
 				$arrSelect[] = "IFNULL(p2.$attribute, p1.$attribute) AS {$attribute}";
 			}
 
+			foreach ($GLOBALS['ISO_CONFIG']['fetch_fallback'] as $attribute)
+			{
+				if ($arrColumns !== false && !in_array('p1.'.$attribute, $arrColumns))
+					continue;
+
+				$arrSelect[] = "p1.$attribute AS {$attribute}_fallback";
+			}
+
 			$strQuery = "
 SELECT
 	" . implode(', ', $arrSelect) . ",

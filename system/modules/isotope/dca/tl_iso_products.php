@@ -506,7 +506,7 @@ $GLOBALS['TL_DCA']['tl_iso_products'] = array
 			'inputType'				=> 'mediaManager',
 			'explanation'			=> 'mediaManager',
 			'eval'					=> array('extensions'=>'jpeg,jpg,png,gif', 'helpwizard'=>true, 'tl_class'=>'clr'),
-			'attributes'			=> array('legend'=>'media_legend', 'fixed'=>true, 'multilingual'=>true, 'dynamic'=>true),
+			'attributes'			=> array('legend'=>'media_legend', 'fixed'=>true, 'multilingual'=>true, 'dynamic'=>true, 'fetch_fallback'=>true),
 		),
 		'protected' => array
 		(
@@ -1317,6 +1317,7 @@ $strBuffer .= '<th style="text-align:center"><img src="system/themes/default/ima
 
 		$GLOBALS['ISO_CONFIG']['variant_options'] = array();
 		$GLOBALS['ISO_CONFIG']['multilingual'] = array();
+		$GLOBALS['ISO_CONFIG']['fetch_fallback'] = array();
 		$GLOBALS['ISO_CONFIG']['dynamicAttributes'] = array();
 
 		foreach ($GLOBALS['TL_DCA']['tl_iso_products']['fields'] as $attribute => $config)
@@ -1329,6 +1330,11 @@ $strBuffer .= '<th style="text-align:center"><img src="system/themes/default/ima
 			if ($config['attributes']['multilingual'])
 			{
 				$GLOBALS['ISO_CONFIG']['multilingual'][] = $attribute;
+			}
+
+			if ($config['attributes']['fetch_fallback'])
+			{
+    			$GLOBALS['ISO_CONFIG']['fetch_fallback'][] = $attribute;
 			}
 
 			if ($config['attributes']['dynamic'] || $config['eval']['multiple'])
