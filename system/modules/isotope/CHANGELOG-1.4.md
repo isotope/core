@@ -1,8 +1,8 @@
 Isotope eCommerce Changelog
 ===========================
 
-Version 1.4.x (201?-??-??)
---------------------------
+Version 1.4.rc2 (2013-01-22)
+----------------------------
 
 ### New
 - Tax rates can now be applied to multiple countries
