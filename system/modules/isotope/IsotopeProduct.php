@@ -314,7 +314,7 @@ class IsotopeProduct extends Controller
 							$strClass = 'IsotopeGallery';
 						}
 
-						$objGallery = new $strClass($this->formSubmit . '_' . $strKey, deserialize($this->arrData[$strKey]));
+						$objGallery = new $strClass($this->formSubmit . '_' . $strKey, $this->Isotope->mergeMediaData(deserialize($this->arrData[$strKey]), deserialize($this->arrData[$strKey.'_fallback'])));
 						$objGallery->product_id = ($this->pid ? $this->pid : $this->id);
 						$objGallery->href_reader = $this->href_reader;
 						$this->arrCache[$strKey] = $objGallery;
