@@ -62,6 +62,8 @@ class MediaManager extends Widget implements uploadable
 	{
 		parent::__construct($arrAttributes);
 
+		$this->import('Database');
+
 		$this->objUploader = IsotopeBackend::getUploader();
 	}
 
@@ -117,6 +119,20 @@ class MediaManager extends Widget implements uploadable
 		// Reset system configuration
 		$GLOBALS['TL_CONFIG']['uploadTypes'] = $arrAllowedTypes;
 
+		// Fetch fallback language record
+		$arrFallback = $this->getFallbackData();
+
+		if (is_array($arrFallback))
+		{
+    		foreach ($arrFallback as $k => $arrImage)
+    		{
+    		    if ($arrImage['translate'] == 'all')
+    		    {
+        			unset($arrFallback[$k]);
+                }
+    		}
+        }
+
 		// Save file in the isotope folder
 		if (!empty($arrUploaded))
 		{
@@ -134,11 +150,19 @@ class MediaManager extends Widget implements uploadable
 					$uploadFolder = 'isotope/' . substr($strCacheName, 0, 1);
 				}
 
-				// Make sure directory exists
-				$this->Files->mkdir($uploadFolder);
-				$this->Files->rename($strFile, $uploadFolder . '/' . $strCacheName);
+				// Check that image is not assigned in fallback language
+				if (is_array($arrFallback) && in_array($strCacheName, $arrFallback))
+				{
+    				$this->addError($GLOBALS['ISO_LANG']['ERR']['imageInFallback']);
+				}
+				else
+				{
+    				// Make sure directory exists
+    				$this->Files->mkdir($uploadFolder);
+    				$this->Files->rename($strFile, $uploadFolder . '/' . $strCacheName);
 
-				$this->varValue[] = array('src'=>$strCacheName, 'translate'=>(!$_SESSION['BE_DATA']['language'][$this->strTable][$this->currentRecord] ? '' : 'all'));
+    				$this->varValue[] = array('src'=>$strCacheName, 'translate'=>($arrFallback === false ? '' : 'all'));
+    			}
 			}
 		}
 
@@ -152,7 +176,10 @@ class MediaManager extends Widget implements uploadable
 				}
 			}
 
-			$this->addError(sprintf($GLOBALS['TL_LANG']['ERR']['mandatory'], $this->strLabel));
+			if (!is_array($arrFallback) || empty($arrFallback))
+			{
+    			$this->addError(sprintf($GLOBALS['TL_LANG']['ERR']['mandatory'], $this->strLabel));
+    		}
 		}
     }
 
@@ -163,19 +190,15 @@ class MediaManager extends Widget implements uploadable
 	 */
 	public function generate()
 	{
-		$this->import('Database');
-
-		$blnLanguage = false;
+	    $arrFallback = $this->getFallbackData();
 
 		// Merge parent record data
-		if ($_SESSION['BE_DATA']['language'][$this->strTable][$this->currentRecord] != '')
+		if ($arrFallback !== false)
 		{
 			$blnLanguage = true;
-			$objParent = $this->Database->execute("SELECT * FROM {$this->strTable} WHERE id={$this->currentRecord}");
-			$arrParent = deserialize($objParent->{$this->strField});
 
 			$this->import('Isotope');
-			$this->varValue = $this->Isotope->mergeMediaData($this->varValue, $arrParent);
+			$this->varValue = $this->Isotope->mergeMediaData($this->varValue, $arrFallback);
 		}
 
 		$GLOBALS['TL_CSS'][] = TL_PLUGINS_URL . 'plugins/mediabox/'. MEDIABOX .'/css/mediaboxAdvBlack21.css|screen';
@@ -298,5 +321,21 @@ class MediaManager extends Widget implements uploadable
 		return $return.'
   </tbody>
   </table>' . $upload . '</div>';
+	}
+
+
+	/**
+	 * Retrieve image data from fallback language
+	 * @return array|false
+	 */
+	protected function getFallbackData()
+	{
+		// Fetch fallback language record
+		if ($_SESSION['BE_DATA']['language'][$this->strTable][$this->currentRecord] != '')
+		{
+			return deserialize($this->Database->execute("SELECT * FROM {$this->strTable} WHERE id={$this->currentRecord}")->{$this->strField});
+		}
+
+		return false;
 	}
 }
