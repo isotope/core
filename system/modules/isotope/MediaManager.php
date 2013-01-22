@@ -47,22 +47,21 @@ class MediaManager extends Widget implements uploadable
 	 * @var string
 	 */
 	protected $strTemplate = 'be_widget';
-	
-	
+
 	/**
 	 * Instance of the file uploader
 	 * @var object
 	 */
 	protected $objUploader;
-	
-	
+
+
 	/**
 	 * Instantiate widget and initialize uploader
 	 */
 	public function __construct($arrAttributes=false)
 	{
 		parent::__construct($arrAttributes);
-		
+
 		$this->objUploader = IsotopeBackend::getUploader();
 	}
 
@@ -98,51 +97,47 @@ class MediaManager extends Widget implements uploadable
 	public function validate()
 	{
 		$this->varValue = $this->getPost($this->strName);
-		
+
 		if (!is_array($this->varValue))
 		{
 			$this->varValue = array();
 		}
-		
-		
+
 		// Prepare system for the upload
 		$arrAllowedTypes = $GLOBALS['TL_CONFIG']['uploadTypes'];
-		
+
 		if ($this->extensions != '')
 		{
 			$GLOBALS['TL_CONFIG']['uploadTypes'] = $this->extensions;
 		}
-		
+
 		// Process the uploaded files
 		$arrUploaded = $this->objUploader->uploadTo('isotope', 'files');
-		
+
 		// Reset system configuration
 		$GLOBALS['TL_CONFIG']['uploadTypes'] = $arrAllowedTypes;
-
-
 
 		// Save file in the isotope folder
 		if (!empty($arrUploaded))
 		{
+			$this->import('Files');
+
 			foreach ($arrUploaded as $strFile)
 			{
-				$this->import('Files');
-				$this->import('Database');
-	
 				$pathinfo = pathinfo(strtolower($strFile));
 				$strCacheName = standardize($pathinfo['filename']) . '.' . $pathinfo['extension'];
 				$uploadFolder = 'isotope/' . substr($strCacheName, 0, 1);
-	
+
 				if (is_file(TL_ROOT . '/' . $uploadFolder . '/' . $strCacheName) && md5_file(TL_ROOT . '/' . $strFile) != md5_file(TL_ROOT . '/' . $uploadFolder . '/' . $strCacheName))
 				{
 					$strCacheName = standardize($pathinfo['filename']) . '-' . substr(md5_file(TL_ROOT . '/' . $strFile), 0, 8) . '.' . $pathinfo['extension'];
 					$uploadFolder = 'isotope/' . substr($strCacheName, 0, 1);
 				}
-	
+
 				// Make sure directory exists
 				$this->Files->mkdir($uploadFolder);
 				$this->Files->rename($strFile, $uploadFolder . '/' . $strCacheName);
-	
+
 				$this->varValue[] = array('src'=>$strCacheName, 'translate'=>(!$_SESSION['BE_DATA']['language'][$this->strTable][$this->currentRecord] ? '' : 'all'));
 			}
 		}
@@ -168,8 +163,9 @@ class MediaManager extends Widget implements uploadable
 	 */
 	public function generate()
 	{
-		$blnLanguage = false;
 		$this->import('Database');
+
+		$blnLanguage = false;
 
 		// Merge parent record data
 		if ($_SESSION['BE_DATA']['language'][$this->strTable][$this->currentRecord] != '')
