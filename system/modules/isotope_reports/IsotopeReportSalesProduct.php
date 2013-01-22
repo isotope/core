@@ -137,6 +137,8 @@ class IsotopeReportSalesProduct extends IsotopeReportSales
 			$intStart = strtotime('+1 ' . $strPeriod, $intStart);
 		}
 
+		$arrFooter = array();
+
 		// Sort the data
 		usort($arrRaw, array($this, ($arrSession[$this->name]['tl_sort'] == 'product_name' ? 'sortProductsByName' : 'sortProductsByTotal')));
 
@@ -144,19 +146,32 @@ class IsotopeReportSalesProduct extends IsotopeReportSales
 		foreach ($arrRaw as $arrProduct)
 		{
 			$arrRow = array(array('value'=>$arrProduct['name']));
+			$arrFooter[0]['value'] = $GLOBALS['ISO_LANG']['REPORT']['sums'];
 
-			foreach ($arrColumns as $column)
+			foreach ($arrColumns as $i=>$column)
 			{
-				$arrRow[] = array
+				$arrRow[$i+1] = array
 				(
 					'value'			=> $this->Isotope->formatPrice($arrProduct[$column]),
 					'attributes'	=> ' style="text-align:right"',
 				);
+
+				$arrFooter[$i+1] = array
+				(
+					'value'         => $arrFooter[$i+1]['value'] + $arrProduct[$column],
+					'attributes'	=> ' style="text-align:right"',
+				);
 			}
 
-			$arrRow[] = array
+			$arrRow[$i+2] = array
 			(
 				'value'			=> $this->Isotope->formatPrice($arrProduct['total']),
+				'attributes'	=> ' style="text-align:right"',
+			);
+
+			$arrFooter[$i+2] = array
+			(
+				'value'         => $arrFooter[$i+2]['value'] + $arrProduct['total'],
 				'attributes'	=> ' style="text-align:right"',
 			);
 
@@ -166,6 +181,12 @@ class IsotopeReportSalesProduct extends IsotopeReportSales
 			);
 		}
 
+		foreach (array_keys($arrFooter) as $i)
+		{
+			$arrFooter[$i]['value'] = $this->Isotope->formatPrice($arrFooter[$i]['value']);
+		}
+
+		$arrData['footer'] = $arrFooter;
 		$this->Template->data = $arrData;
 	}
 
