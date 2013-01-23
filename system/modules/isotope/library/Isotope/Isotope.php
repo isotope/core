@@ -1098,10 +1098,10 @@ class Isotope extends \Controller
      */
     public function mergeMediaData($arrCurrent, $arrParent)
     {
+        $arrTranslate = array();
+
         if (is_array($arrParent) && !empty($arrParent))
         {
-            $arrTranslate = array();
-
             // Create an array of images where key = image name
             foreach( $arrParent as $i => $image)
             {
@@ -1110,43 +1110,43 @@ class Isotope extends \Controller
                     $arrTranslate[$image['src']] = $image;
                 }
             }
+        }
 
-            if (is_array($arrCurrent) && !empty($arrCurrent))
+        if (is_array($arrCurrent) && !empty($arrCurrent))
+        {
+            foreach ($arrCurrent as $i => $image)
             {
-                foreach ($arrCurrent as $i => $image)
+                if (isset($arrTranslate[$image['src']]))
                 {
-                    if (isset($arrTranslate[$image['src']]))
+                    if ($arrTranslate[$image['src']]['translate'] == '')
                     {
-                        if ($arrTranslate[$image['src']]['translate'] == '')
-                        {
-                            $arrCurrent[$i] = $arrTranslate[$image['src']];
-                        }
-                        else
-                        {
-                            $arrCurrent[$i]['link'] = $arrTranslate[$image['src']]['link'];
-                            $arrCurrent[$i]['translate'] = $arrTranslate[$image['src']]['translate'];
-                        }
+                        $arrCurrent[$i] = $arrTranslate[$image['src']];
+                    }
+                    else
+                    {
+                        $arrCurrent[$i]['link'] = $arrTranslate[$image['src']]['link'];
+                        $arrCurrent[$i]['translate'] = $arrTranslate[$image['src']]['translate'];
+                    }
 
-                        unset($arrTranslate[$image['src']]);
-                    }
-                    elseif ($arrCurrent[$i]['translate'] != 'all')
-                    {
-                        unset($arrCurrent[$i]);
-                    }
+                    unset($arrTranslate[$image['src']]);
                 }
-
-                // Add remaining parent image to the list
-                if (!empty($arrTranslate))
+                elseif ($arrCurrent[$i]['translate'] != 'all')
                 {
-                    $arrCurrent = array_merge($arrCurrent, array_values($arrTranslate));
+                    unset($arrCurrent[$i]);
                 }
-
-                $arrCurrent = array_values($arrCurrent);
             }
-            else
+
+            // Add remaining parent image to the list
+            if (!empty($arrTranslate))
             {
-                $arrCurrent = array_values($arrTranslate);
+                $arrCurrent = array_merge($arrCurrent, array_values($arrTranslate));
             }
+
+            $arrCurrent = array_values($arrCurrent);
+        }
+        else
+        {
+            $arrCurrent = array_values($arrTranslate);
         }
 
         return $arrCurrent;

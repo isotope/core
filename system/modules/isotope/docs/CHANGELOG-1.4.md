@@ -1,8 +1,8 @@
 Isotope eCommerce Changelog
 ===========================
 
-Version 1.4.x (201?-??-??)
---------------------------
+Version 1.4.rc2 (2013-01-22)
+----------------------------
 
 ### New
 - Tax rates can now be applied to multiple countries
@@ -23,6 +23,8 @@ Version 1.4.x (201?-??-??)
 - Do not show filter options with just one option (#42)
 - Filtered options are now passed as pre-selections to the product reader (#42)
 - Do not filter products if everything is allowed (#125)
+- Added support for list->sorting->filter in DC_ProductData
+- Invoices are now created in the user's language (#524)
 
 ### Fixed
 - Attributes were not translated in filters etc.
@@ -35,6 +37,7 @@ Version 1.4.x (201?-??-??)
 - The filter module did not work on the index page (#42)
 - Fixed missing parameter "$target" in watermarkImage hook (#67)
 - Fixed using $this in static method in IsotopeFrontend::loadPageConfig()
+- Media data was not correctly merged from fallback language (#465)
 
 
 Version 1.4.rc1 (2012-12-03)

@@ -43,7 +43,16 @@ class tl_iso_groups extends \Backend
         // Load permissions in tl_iso_products
         if ($dc->table == 'tl_iso_products')
         {
-            $GLOBALS['TL_DCA']['tl_iso_groups']['list']['sorting']['root'] = (array) $this->User->iso_groups;
+            $arrGroups = $this->User->iso_groups;
+
+    		if (!is_array($arrGroups) || empty($arrGroups))
+    		{
+        		$GLOBALS['TL_DCA']['tl_iso_groups']['list']['sorting']['filter'][] = array('id=?', 0);
+    		}
+    		else
+    		{
+    			$GLOBALS['TL_DCA']['tl_iso_groups']['list']['sorting']['root'] = $arrGroups;
+    		}
 
             return;
         }

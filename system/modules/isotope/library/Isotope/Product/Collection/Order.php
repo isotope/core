@@ -292,7 +292,7 @@ class Order extends Collection
         // Load page configuration
         if (!is_object($objPage) && $this->pageId > 0)
         {
-            $objPage = $this->getPageDetails($this->pageId);
+            $objPage = \Controller::getPageDetails($this->pageId);
             $objPage = IsotopeFrontend::loadPageConfig($objPage);
         }
 

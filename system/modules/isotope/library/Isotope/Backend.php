@@ -602,7 +602,7 @@ class Backend extends Contao_Backend
 
     /**
      * Returns an array of all allowed product IDs and variant IDs for the current backend user
-     * @return array|false
+     * @return array|bool
      */
     public static function getAllowedProductIds()
     {
@@ -610,24 +610,25 @@ class Backend extends Contao_Backend
 
         if ($objUser->isAdmin)
         {
-            return false;
+            return true;
         }
 
-        $arrProductTypes =  (array) $objUser->iso_product_types;
-        $arrGroups = (array) $objUser->iso_groups;
+   		$arrNewRecords = $_SESSION['BE_DATA']['new_records']['tl_iso_products'];
+    	$arrProductTypes = $objUser->iso_product_types;
+    	$arrGroups = $objUser->iso_groups;
 
-        if (empty($arrProductTypes) || empty($arrGroups))
-        {
-            return array();
+    	if (!is_array($arrProductTypes) || empty($arrProductTypes) || !is_array($arrGroups) || empty($arrGroups))
+    	{
+        	return false;
         }
 
         $arrGroups = array_merge($arrGroups, Isotope::getInstance()->call('getChildRecords', array($arrGroups, 'tl_iso_groups')));
 
         $objProducts = Database::getInstance()->execute("SELECT id FROM tl_iso_products
-                                                         WHERE pid=0 AND language='' AND
-                                                         type IN (" . implode(',', $arrProductTypes) . ") AND
-                                                         gid IN (" . implode(',', $arrGroups) . ")" .
-                                                         ($strWhere != '' ? " AND $strWhere" : ''));
+		                                                 WHERE pid=0 AND language='' AND
+		                                                 gid IN (" . implode(',', $arrGroups) . ") AND
+		                                                 (type IN (" . implode(',', $arrProductTypes) . ")" .
+		                                                 ((is_array($arrNewRecords) && !empty($arrNewRecords)) ? " OR id IN (".implode(',', $arrNewRecords)."))" : ')'));
 
         if ($objProducts->numRows == 0)
         {
@@ -645,7 +646,11 @@ class Backend extends Contao_Backend
                 $objCallback = (method_exists($callback[0], 'getInstance') ? call_user_func(array($callback[0], 'getInstance')) : new $callback[0]());
                 $arrAllowed = $objCallback->$callback[1]();
 
-                if (is_array($arrAllowed))
+                if ($arrAllowed === false)
+				{
+    				return false;
+				}
+				elseif (is_array($arrAllowed))
                 {
                     $arrProducts = array_intersect($arrProducts, $arrAllowed);
                 }
@@ -653,9 +658,9 @@ class Backend extends Contao_Backend
         }
 
         // If all product are allowed, we don't need to filter
-		if (count($arrProducts) == Database::getInstance()->execute("SELECT COUNT(id) as total FROM tl_iso_product")->total)
+		if (count($arrProducts) == Database::getInstance()->execute("SELECT COUNT(id) as total FROM tl_iso_products")->total)
 		{
-    		return false;
+    		return true;
 		}
 
         return $arrProducts;

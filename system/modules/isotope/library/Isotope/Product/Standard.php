@@ -293,7 +293,7 @@ class Standard extends \Controller implements IsotopeProduct
                 {
                     if ($GLOBALS['TL_DCA'][$this->strTable]['fields'][$strKey]['inputType'] == 'mediaManager')
                     {
-                        $objGallery = \Isotope\Factory\Gallery::build($GLOBALS['TL_DCA'][$this->strTable]['fields'][$strKey]['attributes']['gallery'], $this->formSubmit . '_' . $strKey, deserialize($this->arrData[$strKey]));
+                        $objGallery = \Isotope\Factory\Gallery::build($GLOBALS['TL_DCA'][$this->strTable]['fields'][$strKey]['attributes']['gallery'], $this->formSubmit . '_' . $strKey, $this->Isotope->mergeMediaData(deserialize($this->arrData[$strKey]), deserialize($this->arrData[$strKey.'_fallback'])));
                         $objGallery->product_id = ($this->pid ? $this->pid : $this->id);
                         $objGallery->href_reader = $this->href_reader;
                         $this->arrCache[$strKey] = $objGallery;
@@ -1514,6 +1514,14 @@ class Standard extends \Controller implements IsotopeProduct
 
                 $arrSelect[] = "IFNULL(p2.$attribute, p1.$attribute) AS {$attribute}";
             }
+
+            foreach ($GLOBALS['ISO_CONFIG']['fetch_fallback'] as $attribute)
+			{
+				if ($arrColumns !== false && !in_array('p1.'.$attribute, $arrColumns))
+					continue;
+
+				$arrSelect[] = "p1.$attribute AS {$attribute}_fallback";
+			}
 
             $strQuery = "
 SELECT

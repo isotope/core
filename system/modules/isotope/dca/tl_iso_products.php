@@ -486,7 +486,7 @@ $GLOBALS['TL_DCA']['tl_iso_products'] = array
             'inputType'				=> 'mediaManager',
             'explanation'			=> 'mediaManager',
             'eval'					=> array('extensions'=>'jpeg,jpg,png,gif', 'helpwizard'=>true, 'tl_class'=>'clr'),
-            'attributes'			=> array('legend'=>'media_legend', 'fixed'=>true, 'multilingual'=>true, 'dynamic'=>true),
+            'attributes'			=> array('legend'=>'media_legend', 'fixed'=>true, 'multilingual'=>true, 'dynamic'=>true, 'fetch_fallback'=>true),
         ),
         'protected' => array
         (

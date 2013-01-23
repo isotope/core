@@ -216,8 +216,8 @@ class ProductCallbacks extends \Backend
 
         $arrProducts = IsotopeBackend::getAllowedProductIds();
 
-        // Method will return false if no limits should be applied (e.g. user is admin)
-		if (false === $arrProducts)
+        // Method will return true if no limits should be applied (e.g. user is admin)
+		if (true === $arrProducts)
 		{
 			return;
 		}
@@ -225,10 +225,15 @@ class ProductCallbacks extends \Backend
         // Filter by product type and group permissions
         if (empty($arrProducts))
         {
-            $GLOBALS['TL_DCA']['tl_iso_products']['config']['closed'] = true;
-            unset($GLOBALS['TL_DCA']['tl_iso_products']['list']['global_operations']['new_product']);
             unset($GLOBALS['TL_DCA']['tl_iso_products']['list']['global_operations']['new_variant']);
-            $GLOBALS['TL_DCA']['tl_iso_products']['list']['sorting']['root'] = array(0);
+            unset($session['CLIPBOARD']['tl_iso_products']);
+            $session['CURRENT']['IDS'] = array();
+            $GLOBALS['TL_DCA']['tl_iso_products']['list']['sorting']['filter'][] = array('id=?', 0);
+
+			if (false === $arrProducts)
+			{
+    			unset($GLOBALS['TL_DCA']['tl_iso_products']['list']['global_operations']['new_product']);
+            }
         }
         else
         {
@@ -239,32 +244,32 @@ class ProductCallbacks extends \Backend
             }
 
             $GLOBALS['TL_DCA']['tl_iso_products']['list']['sorting']['root'] = $arrProducts;
-        }
 
-        // Set allowed product IDs (edit multiple)
-        if (is_array($session['CURRENT']['IDS']))
-        {
-            $session['CURRENT']['IDS'] = array_intersect($session['CURRENT']['IDS'], $GLOBALS['TL_DCA']['tl_iso_products']['list']['sorting']['root']);
-        }
-
-        // Set allowed clipboard IDs
-        if (is_array($session['CLIPBOARD']['tl_iso_products']['id']))
-        {
-            $session['CLIPBOARD']['tl_iso_products']['id'] = array_intersect($session['CLIPBOARD']['tl_iso_products']['id'], $GLOBALS['TL_DCA']['tl_iso_products']['list']['sorting']['root'], $this->Database->query("SELECT id FROM tl_iso_products WHERE pid=0")->fetchEach('id'));
-
-            if (empty($session['CLIPBOARD']['tl_iso_products']['id']))
+            // Set allowed product IDs (edit multiple)
+            if (is_array($session['CURRENT']['IDS']))
             {
-                unset($session['CLIPBOARD']['tl_iso_products']);
+                $session['CURRENT']['IDS'] = array_intersect($session['CURRENT']['IDS'], $GLOBALS['TL_DCA']['tl_iso_products']['list']['sorting']['root']);
             }
-        }
 
-        // Overwrite session
-        $this->Session->setData($session);
+            // Set allowed clipboard IDs
+            if (is_array($session['CLIPBOARD']['tl_iso_products']['id']))
+            {
+                $session['CLIPBOARD']['tl_iso_products']['id'] = array_intersect($session['CLIPBOARD']['tl_iso_products']['id'], $GLOBALS['TL_DCA']['tl_iso_products']['list']['sorting']['root'], $this->Database->query("SELECT id FROM tl_iso_products WHERE pid=0")->fetchEach('id'));
 
-        if (\Input::get('id') > 0 && !in_array(\Input::get('id'), $GLOBALS['TL_DCA']['tl_iso_products']['list']['sorting']['root']))
-        {
-            $this->log('Cannot access product ID '.\Input::get('id'), __METHOD__, TL_ERROR);
-            $this->redirect('contao/main.php?act=error');
+                if (empty($session['CLIPBOARD']['tl_iso_products']['id']))
+                {
+                    unset($session['CLIPBOARD']['tl_iso_products']);
+                }
+            }
+
+            // Overwrite session
+            $this->Session->setData($session);
+
+            if (\Input::get('id') > 0 && !in_array(\Input::get('id'), $GLOBALS['TL_DCA']['tl_iso_products']['list']['sorting']['root']))
+            {
+                $this->log('Cannot access product ID '.\Input::get('id'), __METHOD__, TL_ERROR);
+                $this->redirect('contao/main.php?act=error');
+            }
         }
     }
 

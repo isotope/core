@@ -37,7 +37,6 @@ class MediaManager extends \Widget implements \uploadable
      */
     protected $strTemplate = 'be_widget';
 
-
     /**
      * Instance of the file uploader
      * @var object
@@ -51,6 +50,8 @@ class MediaManager extends \Widget implements \uploadable
     public function __construct($arrAttributes=false)
     {
         parent::__construct($arrAttributes);
+
+        $this->import('Database');
 
         $this->objUploader = \Isotope\Backend::getUploader();
     }
@@ -93,7 +94,6 @@ class MediaManager extends \Widget implements \uploadable
             $this->varValue = array();
         }
 
-
         // Prepare system for the upload
         $arrAllowedTypes = $GLOBALS['TL_CONFIG']['uploadTypes'];
 
@@ -108,16 +108,27 @@ class MediaManager extends \Widget implements \uploadable
         // Reset system configuration
         $GLOBALS['TL_CONFIG']['uploadTypes'] = $arrAllowedTypes;
 
+        // Fetch fallback language record
+		$arrFallback = $this->getFallbackData();
 
+		if (is_array($arrFallback))
+		{
+    		foreach ($arrFallback as $k => $arrImage)
+    		{
+    		    if ($arrImage['translate'] == 'all')
+    		    {
+        			unset($arrFallback[$k]);
+                }
+    		}
+        }
 
         // Save file in the isotope folder
         if (!empty($arrUploaded))
         {
+            $this->import('Files');
+
             foreach ($arrUploaded as $strFile)
             {
-                $this->import('Files');
-                $this->import('Database');
-
                 $pathinfo = pathinfo(strtolower($strFile));
                 $strCacheName = standardize($pathinfo['filename']) . '.' . $pathinfo['extension'];
                 $uploadFolder = 'isotope/' . substr($strCacheName, 0, 1);
@@ -128,11 +139,19 @@ class MediaManager extends \Widget implements \uploadable
                     $uploadFolder = 'isotope/' . substr($strCacheName, 0, 1);
                 }
 
-                // Make sure directory exists
-                $this->Files->mkdir($uploadFolder);
-                $this->Files->rename($strFile, $uploadFolder . '/' . $strCacheName);
+                // Check that image is not assigned in fallback language
+				if (is_array($arrFallback) && in_array($strCacheName, $arrFallback))
+				{
+    				$this->addError($GLOBALS['ISO_LANG']['ERR']['imageInFallback']);
+				}
+				else
+				{
+                    // Make sure directory exists
+                    $this->Files->mkdir($uploadFolder);
+                    $this->Files->rename($strFile, $uploadFolder . '/' . $strCacheName);
 
-                $this->varValue[] = array('src'=>$strCacheName, 'translate'=>(!$_SESSION['BE_DATA']['language'][$this->strTable][$this->currentRecord] ? '' : 'all'));
+                    $this->varValue[] = array('src'=>$strCacheName, 'translate'=>($arrFallback === false ? '' : 'all'));
+                }
             }
         }
 
@@ -146,7 +165,10 @@ class MediaManager extends \Widget implements \uploadable
                 }
             }
 
-            $this->addError(sprintf($GLOBALS['TL_LANG']['ERR']['mandatory'], $this->strLabel));
+            if (!is_array($arrFallback) || empty($arrFallback))
+			{
+                $this->addError(sprintf($GLOBALS['TL_LANG']['ERR']['mandatory'], $this->strLabel));
+            }
         }
     }
 
@@ -157,18 +179,15 @@ class MediaManager extends \Widget implements \uploadable
      */
     public function generate()
     {
-        $blnLanguage = false;
-        $this->import('Database');
+        $arrFallback = $this->getFallbackData();
 
         // Merge parent record data
-        if ($_SESSION['BE_DATA']['language'][$this->strTable][$this->currentRecord] != '')
+        if ($arrFallback !== false)
         {
             $blnLanguage = true;
-            $objParent = $this->Database->execute("SELECT * FROM {$this->strTable} WHERE id={$this->currentRecord}");
-            $arrParent = deserialize($objParent->{$this->strField});
 
             $this->import('Isotope\Isotope', 'Isotope');
-            $this->varValue = $this->Isotope->mergeMediaData($this->varValue, $arrParent);
+            $this->varValue = $this->Isotope->mergeMediaData($this->varValue, $arrFallback);
         }
 
         $GLOBALS['TL_CSS'][] = TL_PLUGINS_URL . 'plugins/mediabox/'. MEDIABOX .'/css/mediaboxAdvBlack21.css|screen';
@@ -259,7 +278,7 @@ class MediaManager extends \Widget implements \uploadable
     <td class="col_1"><input type="text" class="tl_text_2" name="' . $this->strName . '['.$i.'][alt]" value="' . specialchars($this->varValue[$i]['alt'], true) . '"'.$strTranslateNone.'><br><input type="text" class="tl_text_2" name="' . $this->strName . '['.$i.'][link]" value="' . specialchars($this->varValue[$i]['link'], true) . '"'.$strTranslateText.'></td>
     <td class="col_2"><textarea name="' . $this->strName . '['.$i.'][desc]" cols="40" rows="3" class="tl_textarea"'.$strTranslateNone.' >' . specialchars($this->varValue[$i]['desc']) . '</textarea></td>
     <td class="col_3">
-        '.($blnLanguage ? ('<input type="hidden" name="' . $this->strName . '['.$i.'][translate]" value="'.$this->varValue[$i]['translate'].'"') : '').'
+        '.($blnLanguage ? ('<input type="hidden" name="' . $this->strName . '['.$i.'][translate]" value="'.$this->varValue[$i]['translate'].'">') : '').'
         <fieldset class="radio_container">
             <span>
                 <input id="' . $this->strName . '_'.$i.'_translate_none" name="' . $this->strName . '['.$i.'][translate]" type="radio" class="tl_radio" value=""'.$this->optionChecked('', $this->varValue[$i]['translate']).($blnLanguage ? ' disabled="disabled"' : '').'>
@@ -292,4 +311,20 @@ class MediaManager extends \Widget implements \uploadable
   </tbody>
   </table>' . $upload . '</div>';
     }
+
+
+	/**
+	 * Retrieve image data from fallback language
+	 * @return array|false
+	 */
+	protected function getFallbackData()
+	{
+		// Fetch fallback language record
+		if ($_SESSION['BE_DATA']['language'][$this->strTable][$this->currentRecord] != '')
+		{
+			return deserialize($this->Database->execute("SELECT * FROM {$this->strTable} WHERE id={$this->currentRecord}")->{$this->strField});
+		}
+
+		return false;
+	}
 }
