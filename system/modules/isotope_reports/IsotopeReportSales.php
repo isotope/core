@@ -60,7 +60,7 @@ abstract class IsotopeReportSales extends IsotopeReport
 					'label'			=> 'Ab:',
 					'type'			=> 'date',
 					'format'		=> $GLOBALS['TL_CONFIG']['dateFormat'],
-					'value'			=> $this->parseDate($GLOBALS['TL_CONFIG']['dateFormat'], (int) $arrSession[$this->name]['from']),
+					'value'			=> ($arrSession[$this->name]['from'] ? $this->parseDate($GLOBALS['TL_CONFIG']['dateFormat'], (int) $arrSession[$this->name]['from']) : ''),
 					'class'			=> 'tl_from',
 				),
 				array
@@ -101,7 +101,7 @@ abstract class IsotopeReportSales extends IsotopeReport
 
 		if ($arrSession[$this->name]['from'] == '')
 		{
-			$arrSession[$this->name]['from'] = strtotime('-5 months');
+			$arrSession[$this->name]['from'] = '';
 		}
 		elseif (!is_numeric($arrSession[$this->name]['from']))
 		{
@@ -119,19 +119,19 @@ abstract class IsotopeReportSales extends IsotopeReport
 		switch ($strPeriod)
 		{
 			case 'day':
-				$publicDate = 'd.m.Y';
+				$publicDate = 'd.m.y';
 				$privateDate = 'Ymd';
 				$sqlDate = '%Y%m%d';
 				break;
 
 			case 'week':
-				$publicDate = 'W/Y';
+				$publicDate = '\K\W W/y';
 				$privateDate = 'YW';
 				$sqlDate = '%Y%u';
 				break;
 
 			case 'month':
-				$publicDate = 'F Y';
+				$publicDate = 'm/Y';
 				$privateDate = 'Ym';
 				$sqlDate = '%Y%m';
 				break;

@@ -45,9 +45,17 @@ class IsotopeReportSalesProduct extends IsotopeReportSales
 	{
 		$arrSession = $this->Session->get('iso_reports');
 		$strPeriod = (string) $arrSession[$this->name]['period'];
-		$intStart = (int) $arrSession[$this->name]['from'];
 		$intColumns = (int) $arrSession[$this->name]['columns'];
 		$blnVariants = (bool) $arrSession[$this->name]['variants'];
+
+		if ($arrSession[$this->name]['from'] == '')
+		{
+			$intStart = strtotime('-' . ($intColumns-1) . ' ' . $strPeriod);
+		}
+		else
+		{
+			$intStart = (int) $arrSession[$this->name]['from'];
+		}
 
 		list($publicDate, $privateDate, $sqlDate) = $this->getPeriodConfiguration($strPeriod);
 
@@ -148,7 +156,12 @@ class IsotopeReportSalesProduct extends IsotopeReportSales
 		// Generate data
 		foreach ($arrRaw as $arrProduct)
 		{
-			$arrRow = array(array('value'=>$arrProduct['name']));
+			$arrRow = array(array
+			(
+				'value'      => $arrProduct['name'],
+				'attributes' => ' style="white-space:nowrap"'
+			));
+
 			$arrFooter[0]['value'] = $GLOBALS['ISO_LANG']['REPORT']['sums'];
 
 			foreach ($arrColumns as $i=>$column)
@@ -156,28 +169,28 @@ class IsotopeReportSalesProduct extends IsotopeReportSales
 				$arrRow[$i+1] = array
 				(
 					'value'			=> $this->Isotope->formatPriceWithCurrency($arrProduct[$column]) . (($arrProduct[$column.'_quantity'] !== null) ? '<br><span class="variant">' . $this->Isotope->formatItemsString($arrProduct[$column.'_quantity']) . '</span>' : ''),
-					'attributes'	=> ' style="text-align:right"',
+					'attributes'	=> ' style="text-align:right;white-space:nowrap"',
 				);
 
 				$arrFooter[$i+1] = array
 				(
 					'total'         => $arrFooter[$i+1]['total'] + $arrProduct[$column],
 					'quantity'      => $arrFooter[$i+1]['quantity'] + $arrProduct[$column.'_quantity'],
-					'attributes'	=> ' style="text-align:right"',
+					'attributes'	=> ' style="text-align:right;white-space:nowrap"',
 				);
 			}
 
 			$arrRow[$i+2] = array
 			(
 				'value'			=> $this->Isotope->formatPriceWithCurrency($arrProduct['total']) . (($arrProduct['quantity'] !== null) ? '<br><span class="variant">' . $this->Isotope->formatItemsString($arrProduct['quantity']) . '</span>' : ''),
-				'attributes'	=> ' style="text-align:right"',
+				'attributes'	=> ' style="text-align:right;white-space:nowrap"',
 			);
 
 			$arrFooter[$i+2] = array
 			(
 				'total'         => $arrFooter[$i+2]['total'] + $arrProduct['total'],
 				'quantity'      => $arrFooter[$i+2]['quantity'] + $arrProduct['quantity'],
-				'attributes'	=> ' style="text-align:right"',
+				'attributes'	=> ' style="text-align:right;white-space:nowrap"',
 			);
 
 			$arrData['rows'][] = array
