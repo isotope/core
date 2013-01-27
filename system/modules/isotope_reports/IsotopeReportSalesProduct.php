@@ -67,6 +67,7 @@ class IsotopeReportSalesProduct extends IsotopeReportSales
 				p1.sku AS product_sku,
 				p2.sku AS variant_sku,
 				i.product_options,
+				SUM(i.product_quantity) AS quantity,
 				t.attributes,
 				t.variants,
 				t.variant_attributes,
@@ -100,7 +101,7 @@ class IsotopeReportSalesProduct extends IsotopeReportSales
 
 			if ($arrAttributes['sku']['enabled'])
 			{
-				$arrOptions['name'] = sprintf('%s <span style="color:#b3b3b3; padding-left:3px;">[%s]</span>', $arrOptions['name'], ($objProduct->variants ? $objProducts->variant_sku : $objProducts->product_sku));
+				$arrOptions['name'] = sprintf('%s <span style="color:#b3b3b3; padding-left:3px;">[%s]</span>', $arrOptions['name'], ($objProducts->variants ? $objProducts->variant_sku : $objProducts->product_sku));
 			}
 
 			if ($blnVariants && $objProducts->variants)
@@ -118,15 +119,17 @@ class IsotopeReportSalesProduct extends IsotopeReportSales
 						$strName = $GLOBALS['TL_DCA']['tl_iso_products']['fields'][$strName]['label'][0] ? $GLOBALS['TL_DCA']['tl_iso_products']['fields'][$strName]['label'][0] : $strName;
 					}
 
-					$arrOptions[] = $strName . ': ' . $strValue;
+					$arrOptions[] = '<span class="variant">' . $strName . ': ' . $strValue . '</span>';
 				}
 			}
 
-			$strName = '<p class="tl_help tl_tip">' . implode('<br>', $arrOptions) . '</p>';
+			$arrOptions['name'] = '<span class="product">' . $arrOptions['name'] . '</span>';
 
-			$arrRaw[$objProducts->product_id]['name'] = $strName;
+			$arrRaw[$objProducts->product_id]['name'] = implode('<br>', $arrOptions);
 			$arrRaw[$objProducts->product_id][$objProducts->dateGroup] = (float) $arrRaw[$objProducts->product_id][$objProducts->dateGroup] + (float) $objProducts->total;
+			$arrRaw[$objProducts->product_id][$objProducts->dateGroup.'_quantity'] = (int) $arrRaw[$objProducts->product_id][$objProducts->dateGroup.'_quantity'] + (int) $objProducts->quantity;
 			$arrRaw[$objProducts->product_id]['total'] = (float) $arrRaw[$objProducts->product_id]['total'] + (float) $objProducts->total;
+			$arrRaw[$objProducts->product_id]['quantity'] = (int) $arrRaw[$objProducts->product_id]['quantity'] + (int) $objProducts->quantity;
 		}
 
 		// Prepare columns
@@ -152,26 +155,28 @@ class IsotopeReportSalesProduct extends IsotopeReportSales
 			{
 				$arrRow[$i+1] = array
 				(
-					'value'			=> $this->Isotope->formatPrice($arrProduct[$column]),
+					'value'			=> $this->Isotope->formatPriceWithCurrency($arrProduct[$column]) . (($arrProduct[$column.'_quantity'] !== null) ? '<br><span class="variant">' . $this->Isotope->formatItemsString($arrProduct[$column.'_quantity']) . '</span>' : ''),
 					'attributes'	=> ' style="text-align:right"',
 				);
 
 				$arrFooter[$i+1] = array
 				(
-					'value'         => $arrFooter[$i+1]['value'] + $arrProduct[$column],
+					'total'         => $arrFooter[$i+1]['total'] + $arrProduct[$column],
+					'quantity'      => $arrFooter[$i+1]['quantity'] + $arrProduct[$column.'_quantity'],
 					'attributes'	=> ' style="text-align:right"',
 				);
 			}
 
 			$arrRow[$i+2] = array
 			(
-				'value'			=> $this->Isotope->formatPrice($arrProduct['total']),
+				'value'			=> $this->Isotope->formatPriceWithCurrency($arrProduct['total']) . (($arrProduct['quantity'] !== null) ? '<br><span class="variant">' . $this->Isotope->formatItemsString($arrProduct['quantity']) . '</span>' : ''),
 				'attributes'	=> ' style="text-align:right"',
 			);
 
 			$arrFooter[$i+2] = array
 			(
-				'value'         => $arrFooter[$i+2]['value'] + $arrProduct['total'],
+				'total'         => $arrFooter[$i+2]['total'] + $arrProduct['total'],
+				'quantity'      => $arrFooter[$i+2]['quantity'] + $arrProduct['quantity'],
 				'attributes'	=> ' style="text-align:right"',
 			);
 
@@ -181,9 +186,10 @@ class IsotopeReportSalesProduct extends IsotopeReportSales
 			);
 		}
 
-		foreach (array_keys($arrFooter) as $i)
+		for ($i=1; $i<count($arrFooter); $i++)
 		{
-			$arrFooter[$i]['value'] = $this->Isotope->formatPrice($arrFooter[$i]['value']);
+			$arrFooter[$i]['value'] = $this->Isotope->formatPriceWithCurrency($arrFooter[$i]['total']) . '<br><span class="variant">' . $this->Isotope->formatItemsString($arrFooter[$i]['quantity']) . '</span>';
+			unset($arrFooter[$i]['total'], $arrFooter[$i]['quantity']);
 		}
 
 		$arrData['footer'] = $arrFooter;

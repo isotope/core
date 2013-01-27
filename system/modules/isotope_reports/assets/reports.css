@@ -1,6 +1,6 @@
 .iso_reports .item a {
 	display: block;
-	width:80px;
+	width:120px;
 	height: 70px;
 	margin-right: 8px;
 	margin-bottom: 5px;
@@ -16,8 +16,20 @@
 table.iso_report {
 	border-collapse: separate;
 }
+table.iso_report .tl_file_list {
+	line-height:1.5;
+}
+table.iso_report .tl_file_list .variant {
+	font-size:10px;
+	color:#999;
+}
 .iso_report tfoot td {
 	border-top: 1px solid #bbb;
+}
+.iso_report tfoot .variant {
+	font-size:10px;
+	color:#999;
+	font-weight:normal;
 }
 .tl_subpanel input.tl_text.datepicker {
 	width: 100px;

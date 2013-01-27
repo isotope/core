@@ -70,7 +70,7 @@ window.addEvent("domready", function() {
 <?php endif; ?>
 
 <div id="tl_buttons">
-<?php echo implode('&nbsp;&nbsp;::&nbsp;&nbsp;', $this->buttons); ?>
+<?php echo implode(' &nbsp; :: &nbsp ', $this->buttons); ?>
 </div>
 
 <h2 class="sub_headline"><?php echo $this->headline; ?></h2>

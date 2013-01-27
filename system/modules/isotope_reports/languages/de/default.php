@@ -34,8 +34,8 @@ $GLOBALS['ISO_LANG']['REPORT']['sales'] = 'Verkaufs-Statistiken';
 $GLOBALS['ISO_LANG']['REPORT']['member'] = 'Mitglieder-Statistiken';
 $GLOBALS['ISO_LANG']['REPORT']['rules'] = 'Regel-Statistiken';
 $GLOBALS['ISO_LANG']['REPORT']['custom'] = 'Eigene Auswertungen';
-$GLOBALS['ISO_LANG']['REPORT']['sales_total'] = array('Gesamt', 'Gesamte Verkaufsstatistik');
-$GLOBALS['ISO_LANG']['REPORT']['sales_product'] = array('pro Produkt', 'Verkaufsstatistik nach Produkt');
+$GLOBALS['ISO_LANG']['REPORT']['sales_total'] = array('Umsatz gesamt', 'Umsatz aller Produkte');
+$GLOBALS['ISO_LANG']['REPORT']['sales_product'] = array('Umsatz pro Produkt', 'Umsatz pro Produkt');
 $GLOBALS['ISO_LANG']['REPORT']['members_total'] = array('Total', 'Verkaufsstatistik nach Mitglied');
 $GLOBALS['ISO_LANG']['REPORT']['members_registration'] = array('Registrierungen', 'Statistiken über neue Mitglieder');
 $GLOBALS['ISO_LANG']['REPORT']['members_guests'] = array('vs. Gast', 'Vergleich zwischen Gast- und Mitgliederverkäufen');
@@ -51,4 +51,5 @@ $GLOBALS['ISO_LANG']['REPORT']['sales#'] = 'Umsatz-Total';
 $GLOBALS['ISO_LANG']['REPORT']['filter_config'] = 'Shop-Konfiguration:';
 $GLOBALS['ISO_LANG']['REPORT']['all'] = 'Alle';
 $GLOBALS['ISO_LANG']['REPORT']['sums'] = 'Summen';
+$GLOBALS['ISO_LANG']['REPORT']['num_items'] = '%s Artikel';
 

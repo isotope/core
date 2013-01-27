@@ -34,8 +34,8 @@ $GLOBALS['ISO_LANG']['REPORT']['sales'] = 'Sales Statistics';
 $GLOBALS['ISO_LANG']['REPORT']['member'] = 'Member Statistics';
 $GLOBALS['ISO_LANG']['REPORT']['rules'] = 'Rules Statistics';
 $GLOBALS['ISO_LANG']['REPORT']['custom'] = 'Custom Reports';
-$GLOBALS['ISO_LANG']['REPORT']['sales_total'] = array('Total', 'Sales total statistics');
-$GLOBALS['ISO_LANG']['REPORT']['sales_product'] = array('per Product', 'Sales statistics per product');
+$GLOBALS['ISO_LANG']['REPORT']['sales_total'] = array('Sales total', 'Total sales of all products');
+$GLOBALS['ISO_LANG']['REPORT']['sales_product'] = array('Sales per product', 'Sales per product');
 $GLOBALS['ISO_LANG']['REPORT']['members_total'] = array('Total', 'Sales statistics by member');
 $GLOBALS['ISO_LANG']['REPORT']['members_registration'] = array('Registrations', 'Statistics about member registrations');
 $GLOBALS['ISO_LANG']['REPORT']['members_guests'] = array('vs. Guest', 'Sales comparison between members and guests');
@@ -51,4 +51,5 @@ $GLOBALS['ISO_LANG']['REPORT']['sales#'] = 'Sales Total';
 $GLOBALS['ISO_LANG']['REPORT']['filter_config'] = 'Shop-Config:';
 $GLOBALS['ISO_LANG']['REPORT']['all'] = 'All';
 $GLOBALS['ISO_LANG']['REPORT']['sums'] = 'Sums';
+$GLOBALS['ISO_LANG']['REPORT']['num_items'] = '%s item(s)';
 
