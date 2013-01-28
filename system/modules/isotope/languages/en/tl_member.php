@@ -16,4 +16,4 @@
 /**
  * Fields
  */
-$GLOBALS['TL_LANG']['tl_member']['address_book']       = array('Address Book', 'Manage this address book.');
+$GLOBALS['TL_LANG']['tl_member']['address_book'] = array('Address Book', 'Manage the address book for member ID %s.');

@@ -52,10 +52,10 @@ $GLOBALS['TL_LANG']['tl_iso_producttypes']['variants_legend']		= 'Variant attrib
 $GLOBALS['TL_LANG']['tl_iso_producttypes']['expert_legend']			= 'Expert settings';
 
 /**
- * AttributeWizard
+ * Attribute Wizard
  */
-$GLOBALS['TL_LANG']['tl_iso_producttypes']['attrwiz']['tl_class_select']	= 'Here you can choose from a few predefined Contao CSS classes';
-$GLOBALS['TL_LANG']['tl_iso_producttypes']['attrwiz']['tl_class_text']		= 'Here you can write your own CSS classes that should be applied to the field';
-$GLOBALS['TL_LANG']['tl_iso_producttypes']['attrwiz']['mandatory_default']	= 'Mandatory: Take the default value';
+$GLOBALS['TL_LANG']['tl_iso_producttypes']['attrwiz']['tl_class_select']	= 'Choose from a few predefined Contao CSS classes';
+$GLOBALS['TL_LANG']['tl_iso_producttypes']['attrwiz']['tl_class_text']		= 'Write your own CSS classes that should be applied to the field';
+$GLOBALS['TL_LANG']['tl_iso_producttypes']['attrwiz']['mandatory_default']	= 'Mandatory: Use default value';
 $GLOBALS['TL_LANG']['tl_iso_producttypes']['attrwiz']['mandatory_no']		= 'Mandatory: No, never';
 $GLOBALS['TL_LANG']['tl_iso_producttypes']['attrwiz']['mandatory_yes']		= 'Mandatory: Yes, always';

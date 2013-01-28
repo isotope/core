@@ -29,8 +29,6 @@ $GLOBALS['TL_LANG']['tl_iso_related_products']['cut']				= array('Move category'
 $GLOBALS['TL_LANG']['tl_iso_related_products']['delete']			= array('Delete category', 'Delete category ID %s');
 $GLOBALS['TL_LANG']['tl_iso_related_products']['show']				= array('Category details', 'Show details of category ID %s');
 $GLOBALS['TL_LANG']['tl_iso_related_products']['editheader']		= array('Edit product', 'Edit this product');
-$GLOBALS['TL_LANG']['tl_iso_related_products']['pasteafter']		= array('Paste after', 'Paste after category ID %s');
-$GLOBALS['TL_LANG']['tl_iso_related_products']['pastenew']			= array('Add new at the top', 'Add new after category ID %s');
 
 /**
  * Legends

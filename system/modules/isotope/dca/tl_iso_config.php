@@ -111,12 +111,11 @@ $GLOBALS['TL_DCA']['tl_iso_config'] = array
         'default'                     => '
             {name_legend},name,label,fallback,store_id;
             {address_legend:hide},firstname,lastname,company,vat_no,street_1,street_2,street_3,postal,city,country,subdivision,email,phone;
-            {config_legend},orderPrefix,orderDigits,templateGroup;
             {checkout_legend},billing_countries,shipping_countries,billing_fields,shipping_fields,billing_country,shipping_country,limitMemberCountries;
-            {price_legend},priceRoundPrecision,priceRoundIncrement,cartMinSubtotal;
-            {currency_legend},currency,currencyFormat,currencyPosition,currencySymbol;
+            {currency_legend},priceRoundPrecision,priceRoundIncrement,currency,currencyFormat,currencyPosition,currencySymbol;
             {converter_legend:hide},priceCalculateFactor,priceCalculateMode,currencyAutomator;
-            {order_legend:hide},orderstatus_new,orderstatus_error,invoiceLogo;
+            {order_legend:hide},orderPrefix,orderDigits,orderstatus_new,orderstatus_error,invoiceLogo;
+            {config_legend},templateGroup,cartMinSubtotal;
             {images_legend},gallery,missing_image_placeholder,imageSizes',
     ),
 
@@ -320,6 +319,119 @@ $GLOBALS['TL_DCA']['tl_iso_config'] = array
             'options'                 => $this->getCountries(),
             'eval'                    => array('includeBlankOption'=>true, 'tl_class'=>'w50', 'chosen'=>true)
         ),
+        'limitMemberCountries' => array
+        (
+            'label'                   => &$GLOBALS['TL_LANG']['tl_iso_config']['limitMemberCountries'],
+            'exclude'                 => true,
+            'inputType'               => 'checkbox',
+            'eval'					  => array('tl_class'=>'w50'),
+        ),
+        'priceRoundPrecision' => array
+        (
+            'label'                   => &$GLOBALS['TL_LANG']['tl_iso_config']['priceRoundPrecision'],
+            'exclude'                 => true,
+            'default'				  => '2',
+            'inputType'               => 'text',
+            'eval'                    => array('mandatory'=>true, 'maxlength'=>1, 'rgpx'=>'digit', 'tl_class'=>'w50'),
+        ),
+        'priceRoundIncrement' => array
+        (
+            'label'                   => &$GLOBALS['TL_LANG']['tl_iso_config']['priceRoundIncrement'],
+            'exclude'                 => true,
+            'inputType'               => 'select',
+            'options'				  => array('0.01', '0.05'),
+            'eval'                    => array('mandatory'=>true, 'tl_class'=>'w50'),
+        ),
+        'cartMinSubtotal' => array
+        (
+            'label'                   => &$GLOBALS['TL_LANG']['tl_iso_config']['cartMinSubtotal'],
+            'exclude'                 => true,
+            'default'				  => '',
+            'inputType'               => 'text',
+            'eval'                    => array('mandatory'=>true, 'maxlength'=>13, 'rgpx'=>'price', 'tl_class'=>'w50'),
+        ),
+        'currency' => array
+        (
+            'label'                   => &$GLOBALS['TL_LANG']['tl_iso_config']['currency'],
+            'exclude'                 => true,
+            'inputType'               => 'select',
+            'options'				  => &$GLOBALS['ISO_LANG']['CUR'],
+            'eval'                    => array('includeBlankOption'=>true, 'mandatory'=>true, 'tl_class'=>'w50'),
+        ),
+        'currencySymbol' => array
+        (
+            'label'                   => &$GLOBALS['TL_LANG']['tl_iso_config']['currencySymbol'],
+            'exclude'                 => true,
+            'inputType'               => 'checkbox',
+            'eval'					  => array('submitOnChange'=>true, 'tl_class'=>'w50'),
+        ),
+        'currencySpace' => array
+        (
+            'label'                   => &$GLOBALS['TL_LANG']['tl_iso_config']['currencySpace'],
+            'exclude'                 => true,
+            'inputType'               => 'checkbox',
+            'eval'					  => array('tl_class'=>'w50'),
+        ),
+        'currencyPosition' => array
+        (
+            'label'                   => &$GLOBALS['TL_LANG']['tl_iso_config']['currencyPosition'],
+            'exclude'                 => true,
+            'inputType'               => 'radio',
+            'default'				  => 'left',
+            'options'				  => array('left', 'right'),
+            'reference'				  => &$GLOBALS['TL_LANG']['tl_iso_config'],
+            'eval'					  => array('tl_class'=>'w50'),
+        ),
+        'currencyFormat' => array
+        (
+            'label'                   => &$GLOBALS['TL_LANG']['tl_iso_config']['currencyFormat'],
+            'exclude'                 => true,
+            'inputType'               => 'select',
+            'options'				  => array_keys($GLOBALS['ISO_NUM']),
+            'eval'                    => array('includeBlankOption'=>true, 'mandatory'=>true, 'tl_class'=>'w50'),
+        ),
+        'priceCalculateFactor' => array
+        (
+            'label'                   => &$GLOBALS['TL_LANG']['tl_iso_config']['priceCalculateFactor'],
+            'exclude'                 => true,
+            'default'				  => 1,
+            'inputType'               => 'text',
+            'eval'                    => array('mandatory'=>true, 'maxlength'=>10, 'rgxp'=>'digit', 'tl_class'=>'w50'),
+        ),
+        'priceCalculateMode' => array
+        (
+            'label'                   => &$GLOBALS['TL_LANG']['tl_iso_config']['priceCalculateMode'],
+            'exclude'                 => true,
+            'default'				  => 'mul',
+            'inputType'               => 'radio',
+            'options'				  => array('mul', 'div'),
+            'reference'				  => &$GLOBALS['TL_LANG']['tl_iso_config'],
+            'eval'                    => array('mandatory'=>true, 'tl_class'=>'w50'),
+        ),
+        'currencyAutomator' => array
+        (
+            'label'                   => &$GLOBALS['TL_LANG']['tl_iso_config']['currencyAutomator'],
+            'exclude'                 => true,
+            'inputType'               => 'checkbox',
+            'eval'					  => array('submitOnChange'=>true, 'tl_class'=>'clr', 'helpwizard'=>true),
+        ),
+        'currencyOrigin' => array
+        (
+            'label'                   => &$GLOBALS['TL_LANG']['tl_iso_config']['currencyOrigin'],
+            'exclude'                 => true,
+            'inputType'               => 'select',
+            'options'				  => &$GLOBALS['ISO_LANG']['CUR'],
+            'eval'                    => array('includeBlankOption'=>true, 'mandatory'=>true, 'tl_class'=>'w50'),
+        ),
+        'currencyProvider' => array
+        (
+            'label'                   => &$GLOBALS['TL_LANG']['tl_iso_config']['currencyProvider'],
+            'exclude'                 => true,
+            'inputType'               => 'select',
+            'options'				  => array('ecb.int', 'admin.ch'),
+            'reference'				  => &$GLOBALS['TL_LANG']['tl_iso_config'],
+            'eval'                    => array('mandatory'=>true, 'tl_class'=>'w50'),
+        ),
         'orderPrefix' => array
         (
             'label'                   => &$GLOBALS['TL_LANG']['tl_iso_config']['orderPrefix'],
@@ -336,19 +448,12 @@ $GLOBALS['TL_DCA']['tl_iso_config'] = array
             'options'				  => range(1, 9),
             'eval'                    => array('tl_class'=>'w50'),
         ),
-        'templateGroup' => array
+        'invoiceLogo' => array
         (
-            'label'                   => &$GLOBALS['TL_LANG']['tl_iso_config']['templateGroup'],
+            'label'                   => &$GLOBALS['TL_LANG']['tl_iso_config']['invoiceLogo'],
             'exclude'                 => true,
             'inputType'               => 'fileTree',
-            'eval'                    => array('fieldType'=>'radio', 'path'=>'templates', 'tl_class'=>'clr')
-        ),
-        'limitMemberCountries' => array
-        (
-            'label'                   => &$GLOBALS['TL_LANG']['tl_iso_config']['limitMemberCountries'],
-            'exclude'                 => true,
-            'inputType'               => 'checkbox',
-            'eval'					  => array('tl_class'=>'w50'),
+            'eval'                    => array('fieldType'=>'radio', 'files'=>true, 'filesOnly'=>true, 'extensions'=>'jpg,jpeg,gif,png,tif,tiff', 'tl_class'=>'clr'),
         ),
         'orderstatus_new' => array
         (
@@ -368,12 +473,12 @@ $GLOBALS['TL_DCA']['tl_iso_config'] = array
             'options'                 => \Isotope\Backend::getOrderStatus(),
             'eval'                    => array('mandatory'=>true, 'includeBlankOption'=>true, 'tl_class'=>'w50'),
         ),
-        'invoiceLogo' => array
+        'templateGroup' => array
         (
-            'label'                   => &$GLOBALS['TL_LANG']['tl_iso_config']['invoiceLogo'],
+            'label'                   => &$GLOBALS['TL_LANG']['tl_iso_config']['templateGroup'],
             'exclude'                 => true,
             'inputType'               => 'fileTree',
-            'eval'                    => array('fieldType'=>'radio', 'files'=>true, 'filesOnly'=>true, 'extensions'=>'jpg,jpeg,gif,png,tif,tiff', 'tl_class'=>'clr'),
+            'eval'                    => array('fieldType'=>'radio', 'path'=>'templates', 'tl_class'=>'clr')
         ),
         'gallery' => array
         (
@@ -442,124 +547,18 @@ $GLOBALS['TL_DCA']['tl_iso_config'] = array
                         'label'       => $GLOBALS['TL_LANG']['tl_iso_config']['iwWatermark'],
                         'inputType'   => 'text',
                         'eval'        => array('class'=>'tl_text_2'),
-                        'wizard'      => array(array('tl_iso_config', 'filePicker')),
+//                        'wizard'      => array(array('tl_iso_config', 'filePicker')),
                     ),
                     'position' => array
                     (
                         'label'       => $GLOBALS['TL_LANG']['tl_iso_config']['iwPosition'],
                         'inputType'   => 'select',
                         'options'     => array('tl', 'tc', 'tr', 'bl', 'bc', 'br', 'cc'),
-                        'reference'   => $GLOBALS['TL_LANG']['tl_iso_config'],
+                        'reference'   => array('tl'=>&$GLOBALS['TL_LANG']['MSC']['left_top'], 'tc'=>&$GLOBALS['TL_LANG']['MSC']['center_top'], 'tr'=>&$GLOBALS['TL_LANG']['MSC']['right_top'], 'bl'=>&$GLOBALS['TL_LANG']['MSC']['left_bottom'], 'bc'=>&$GLOBALS['TL_LANG']['MSC']['center_bottom'], 'br'=>&$GLOBALS['TL_LANG']['MSC']['right_bottom'], 'cc'=>&$GLOBALS['TL_LANG']['MSC']['center_center']),
                         'eval'        => array('style'=>'width:60px'),
                     ),
                 ),
             ),
-        ),
-        'priceCalculateFactor' => array
-        (
-            'label'                   => &$GLOBALS['TL_LANG']['tl_iso_config']['priceCalculateFactor'],
-            'exclude'                 => true,
-            'default'				  => 1,
-            'inputType'               => 'text',
-            'eval'                    => array('mandatory'=>true, 'maxlength'=>10, 'rgxp'=>'digit', 'tl_class'=>'w50'),
-        ),
-        'priceCalculateMode' => array
-        (
-            'label'                   => &$GLOBALS['TL_LANG']['tl_iso_config']['priceCalculateMode'],
-            'exclude'                 => true,
-            'default'				  => 'mul',
-            'inputType'               => 'radio',
-            'options'				  => array('mul', 'div'),
-            'reference'				  => &$GLOBALS['TL_LANG']['tl_iso_config'],
-            'eval'                    => array('mandatory'=>true, 'tl_class'=>'w50'),
-        ),
-        'priceRoundPrecision' => array
-        (
-            'label'                   => &$GLOBALS['TL_LANG']['tl_iso_config']['priceRoundPrecision'],
-            'exclude'                 => true,
-            'default'				  => '2',
-            'inputType'               => 'text',
-            'eval'                    => array('mandatory'=>true, 'maxlength'=>1, 'rgpx'=>'digit', 'tl_class'=>'w50'),
-        ),
-        'priceRoundIncrement' => array
-        (
-            'label'                   => &$GLOBALS['TL_LANG']['tl_iso_config']['priceRoundIncrement'],
-            'exclude'                 => true,
-            'inputType'               => 'select',
-            'options'				  => array('0.01', '0.05'),
-            'eval'                    => array('mandatory'=>true, 'tl_class'=>'w50'),
-        ),
-        'cartMinSubtotal' => array
-        (
-            'label'                   => &$GLOBALS['TL_LANG']['tl_iso_config']['cartMinSubtotal'],
-            'exclude'                 => true,
-            'default'				  => '',
-            'inputType'               => 'text',
-            'eval'                    => array('mandatory'=>true, 'maxlength'=>13, 'rgpx'=>'price', 'tl_class'=>'w50'),
-        ),
-        'currency' => array
-        (
-            'label'                   => &$GLOBALS['TL_LANG']['tl_iso_config']['currency'],
-            'exclude'                 => true,
-            'inputType'               => 'select',
-            'options'				  => &$GLOBALS['ISO_LANG']['CUR'],
-            'eval'                    => array('includeBlankOption'=>true, 'mandatory'=>true, 'tl_class'=>'w50'),
-        ),
-        'currencySymbol' => array
-        (
-            'label'                   => &$GLOBALS['TL_LANG']['tl_iso_config']['currencySymbol'],
-            'exclude'                 => true,
-            'inputType'               => 'checkbox',
-            'eval'					  => array('submitOnChange'=>true, 'tl_class'=>'w50'),
-        ),
-        'currencySpace' => array
-        (
-            'label'                   => &$GLOBALS['TL_LANG']['tl_iso_config']['currencySpace'],
-            'exclude'                 => true,
-            'inputType'               => 'checkbox',
-            'eval'					  => array('tl_class'=>'w50'),
-        ),
-        'currencyPosition' => array
-        (
-            'label'                   => &$GLOBALS['TL_LANG']['tl_iso_config']['currencyPosition'],
-            'exclude'                 => true,
-            'inputType'               => 'radio',
-            'default'				  => 'left',
-            'options'				  => array('left', 'right'),
-            'reference'				  => &$GLOBALS['TL_LANG']['tl_iso_config'],
-            'eval'					  => array('tl_class'=>'w50'),
-        ),
-        'currencyFormat' => array
-        (
-            'label'                   => &$GLOBALS['TL_LANG']['tl_iso_config']['currencyFormat'],
-            'exclude'                 => true,
-            'inputType'               => 'select',
-            'options'				  => array_keys($GLOBALS['ISO_NUM']),
-            'eval'                    => array('includeBlankOption'=>true, 'mandatory'=>true, 'tl_class'=>'w50'),
-        ),
-        'currencyAutomator' => array
-        (
-            'label'                   => &$GLOBALS['TL_LANG']['tl_iso_config']['currencyAutomator'],
-            'exclude'                 => true,
-            'inputType'               => 'checkbox',
-            'eval'					  => array('submitOnChange'=>true, 'tl_class'=>'clr', 'helpwizard'=>true),
-        ),
-        'currencyOrigin' => array
-        (
-            'label'                   => &$GLOBALS['TL_LANG']['tl_iso_config']['currencyOrigin'],
-            'exclude'                 => true,
-            'inputType'               => 'select',
-            'options'				  => &$GLOBALS['ISO_LANG']['CUR'],
-            'eval'                    => array('includeBlankOption'=>true, 'mandatory'=>true, 'tl_class'=>'w50'),
-        ),
-        'currencyProvider' => array
-        (
-            'label'                   => &$GLOBALS['TL_LANG']['tl_iso_config']['currencyProvider'],
-            'exclude'                 => true,
-            'inputType'               => 'select',
-            'options'				  => array('ecb.int', 'admin.ch'),
-            'reference'				  => &$GLOBALS['TL_LANG']['tl_iso_config'],
-            'eval'                    => array('mandatory'=>true, 'tl_class'=>'w50'),
         ),
     )
 );

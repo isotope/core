@@ -32,8 +32,8 @@ $GLOBALS['TL_LANG']['tl_iso_addresses']['subdivision']			= array('State', 'Plase
 $GLOBALS['TL_LANG']['tl_iso_addresses']['country']				= array('Country', 'Please select a country.');
 $GLOBALS['TL_LANG']['tl_iso_addresses']['phone']				= array('Phone number', 'Please enter the phone number.');
 $GLOBALS['TL_LANG']['tl_iso_addresses']['email']				= array('E-mail address', 'Please enter a valid e-mail address.');
-$GLOBALS['TL_LANG']['tl_iso_addresses']['isDefaultBilling']		= array('Default Billing Address', 'Is this your default billing address?');
-$GLOBALS['TL_LANG']['tl_iso_addresses']['isDefaultShipping']	= array('Default Shipping Address', 'Is this your default shipping address?');
+$GLOBALS['TL_LANG']['tl_iso_addresses']['isDefaultBilling']		= array('Default billing address', 'Is this your default billing address?');
+$GLOBALS['TL_LANG']['tl_iso_addresses']['isDefaultShipping']	= array('Default shipping address', 'Is this your default shipping address?');
 
 /**
  * Legends
@@ -56,7 +56,7 @@ $GLOBALS['TL_LANG']['tl_iso_addresses']['loginDetails']			= 'Default address';
  * Buttons
  */
 $GLOBALS['TL_LANG']['tl_iso_addresses']['new']		= array('New address', 'Create a new address');
-$GLOBALS['TL_LANG']['tl_iso_addresses']['show']		= array('Address details', 'Show details of address ID %s');
 $GLOBALS['TL_LANG']['tl_iso_addresses']['edit']		= array('Edit address', 'Edit address ID %s');
 $GLOBALS['TL_LANG']['tl_iso_addresses']['copy']		= array('Duplicate address', 'Duplicate address ID %s');
 $GLOBALS['TL_LANG']['tl_iso_addresses']['delete']	= array('Delete address', 'Delete address ID %s');
+$GLOBALS['TL_LANG']['tl_iso_addresses']['show']		= array('Address details', 'Show details of address ID %s');

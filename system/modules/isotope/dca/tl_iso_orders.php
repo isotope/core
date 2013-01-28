@@ -229,6 +229,11 @@ $GLOBALS['TL_DCA']['tl_iso_orders'] = array
             'label'					=> &$GLOBALS['TL_LANG']['tl_iso_orders']['billing_address'],
             'search'				=> true,
         ),
+        'shipping_address' => array
+        (
+            'label'					=> &$GLOBALS['TL_LANG']['tl_iso_orders']['shipping_address'],
+            'search'				=> true,
+        ),
         'details' => array
         (
             'input_field_callback'	=> array('Isotope\tl_iso_orders', 'generateOrderDetails'),

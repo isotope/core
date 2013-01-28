@@ -46,15 +46,6 @@ $GLOBALS['TL_LANG']['tl_iso_products']['inherit']				= array('Inherited attribut
  * Reference
  */
 $GLOBALS['TL_LANG']['tl_iso_products']['source']				= array('Source folder', 'Please choose the folder where product assets are located.');
-$GLOBALS['TL_LANG']['tl_iso_products']['internal']				= array('Internal file', 'Select a media file existing on the web server (flash or mp3 file).');
-$GLOBALS['TL_LANG']['tl_iso_products']['external']				= array('External file', 'Specify a video from an external source (such as Youtube).');
-$GLOBALS['TL_LANG']['tl_iso_products']['opAttribute']			= 'Product Attribute';
-$GLOBALS['TL_LANG']['tl_iso_products']['opValueSets']			= 'Option Values';
-$GLOBALS['TL_LANG']['tl_iso_products']['opValue']				= 'Value';
-$GLOBALS['TL_LANG']['tl_iso_products']['opLabel']				= 'Label';
-$GLOBALS['TL_LANG']['tl_iso_products']['opPrice']				= 'Price (Surcharge)';
-$GLOBALS['TL_LANG']['tl_iso_products']['opDisable']				= 'Disable';
-$GLOBALS['TL_LANG']['tl_iso_products']['opInherit']				= 'Inherit label';
 $GLOBALS['TL_LANG']['tl_iso_products']['mmSrc']					= 'Preview';
 $GLOBALS['TL_LANG']['tl_iso_products']['mmAlt']					= 'Alternate text';
 $GLOBALS['TL_LANG']['tl_iso_products']['mmLink']				= 'Link target';
@@ -63,8 +54,6 @@ $GLOBALS['TL_LANG']['tl_iso_products']['mmTranslate']			= 'Translate';
 $GLOBALS['TL_LANG']['tl_iso_products']['mmTranslateNone']		= array('None', 'Do not translate this image.');
 $GLOBALS['TL_LANG']['tl_iso_products']['mmTranslateText']		= array('Text', 'Translate alt text and description for this image.');
 $GLOBALS['TL_LANG']['tl_iso_products']['mmTranslateAll']		= array('All', 'Do not include this image in translated version.');
-$GLOBALS['TL_LANG']['tl_iso_products']['existing_option_set']	= 'Select an existing product option set';
-$GLOBALS['TL_LANG']['tl_iso_products']['new_option_set']		= 'Create a new product option set';
 $GLOBALS['TL_LANG']['tl_iso_products']['variantValuesLabel']	= 'Variant';
 
 /**
@@ -78,8 +67,6 @@ $GLOBALS['TL_LANG']['tl_iso_products']['cut']				= array('Move product', 'Move p
 $GLOBALS['TL_LANG']['tl_iso_products']['delete']			= array('Delete product', 'Delete product ID %s');
 $GLOBALS['TL_LANG']['tl_iso_products']['toggle']			= array('Publish/unpublish product', 'Publish/unpublish product ID %s');
 $GLOBALS['TL_LANG']['tl_iso_products']['show']				= array('Product details', 'Show details of product ID %s');
-$GLOBALS['TL_LANG']['tl_iso_products']['generate']			= array('Generate variants', 'Generate variants for product ID %s');
-$GLOBALS['TL_LANG']['tl_iso_products']['related']			= array('Related products', 'Manage related products for product ID %s');
 $GLOBALS['TL_LANG']['tl_iso_products']['filter']			= array('Advanced Filters', 'Apply advanced filters');
 $GLOBALS['TL_LANG']['tl_iso_products']['filter_remove']		= array('Remove filters', 'Remove active filters');
 $GLOBALS['TL_LANG']['tl_iso_products']['filter_noimages']	= array('Products without images', 'Show products with no images assigned');
@@ -90,25 +77,27 @@ $GLOBALS['TL_LANG']['tl_iso_products']['filter_new_month']	= array('Added this m
 $GLOBALS['TL_LANG']['tl_iso_products']['tools']				= array('Tools', 'More options for product management');
 $GLOBALS['TL_LANG']['tl_iso_products']['toggleGroups']		= array('Toggle all groups', 'Toggle all groups');
 $GLOBALS['TL_LANG']['tl_iso_products']['toggleVariants']	= array('Toggle all variants', 'Toggle all variants');
+$GLOBALS['TL_LANG']['tl_iso_products']['groups']			= array('Product groups', 'Manage product groups');
 $GLOBALS['TL_LANG']['tl_iso_products']['import']			= array('Import assets', 'Import images and other media from a folder');
-$GLOBALS['TL_LANG']['tl_iso_products']['groups']			= array('Product Groups', 'Manage product groups');
-$GLOBALS['TL_LANG']['tl_iso_products']['quick_edit']		= array('Quick-edit variants', 'Quick-edit variants for product ID %s');
-$GLOBALS['TL_LANG']['tl_iso_products']['downloads']			= array('Downloads', 'Edit downloads for product ID %s');
 $GLOBALS['TL_LANG']['tl_iso_products']['prices']			= array('Manage prices', 'Manage prices for product ID %s');
+$GLOBALS['TL_LANG']['tl_iso_products']['downloads']			= array('Downloads', 'Edit downloads for product ID %s');
+$GLOBALS['TL_LANG']['tl_iso_products']['generate']			= array('Generate variants', 'Generate variants for product ID %s');
+$GLOBALS['TL_LANG']['tl_iso_products']['quick_edit']		= array('Quick-edit variants', 'Quick-edit variants for product ID %s');
+$GLOBALS['TL_LANG']['tl_iso_products']['related']			= array('Related products', 'Manage related products for product ID %s');
 
 /**
  * Legends
  */
-$GLOBALS['TL_LANG']['tl_iso_products']['general_legend']	= "General Settings";
+$GLOBALS['TL_LANG']['tl_iso_products']['variant_legend']	= 'Product variant setup';
+$GLOBALS['TL_LANG']['tl_iso_products']['general_legend']	= 'General Settings';
 $GLOBALS['TL_LANG']['tl_iso_products']['meta_legend']		= 'Meta data';
-$GLOBALS['TL_LANG']['tl_iso_products']['pricing_legend']	= "Pricing Settings";
+$GLOBALS['TL_LANG']['tl_iso_products']['pricing_legend']	= 'Pricing Settings';
 $GLOBALS['TL_LANG']['tl_iso_products']['inventory_legend']	= 'Inventory Settings';
 $GLOBALS['TL_LANG']['tl_iso_products']['shipping_legend']	= 'Shipping Settings';
 $GLOBALS['TL_LANG']['tl_iso_products']['options_legend']	= 'Product Options Settings';
 $GLOBALS['TL_LANG']['tl_iso_products']['media_legend']		= 'Media Management';
 $GLOBALS['TL_LANG']['tl_iso_products']['expert_legend']		= 'Expert settings';
 $GLOBALS['TL_LANG']['tl_iso_products']['publish_legend']	= 'Publishing';
-$GLOBALS['TL_LANG']['tl_iso_products']['variant_legend']	= 'Product variant setup';
 
 /**
  * Table format
