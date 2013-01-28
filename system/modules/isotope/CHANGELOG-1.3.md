@@ -7,6 +7,7 @@ Version 1.3.14 stable (2013-??-??)
 
 ### Fixed
 - Potential warning in rules when user has no groups
+- Incorrect rounding for product discount on cart subtotal rules
 
 
 Version 1.3.13 stable (2013-01-14)

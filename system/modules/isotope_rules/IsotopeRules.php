@@ -645,7 +645,7 @@ class IsotopeRules extends Controller
 		{
 			// discount total! not related to tax subtraction
 			$fltPrice = $blnPercentage ? ($arrSurcharge['total_price'] / 100 * $fltDiscount) : $arrRule['discount'];
-			$arrSurcharge['total_price'] = $fltPrice > 0 ? (floor($fltPrice * 100) / 100) : (ceil($fltPrice * 100) / 100);
+			$arrSurcharge['total_price'] = $fltPrice > 0 ? (floor(round($fltPrice * 100, 4)) / 100) : (ceil(round($fltPrice * 100, 4)) / 100);
 			$arrSurcharge['before_tax'] = ($arrRule['tax_class'] != 0 ? true : false);
 			$arrSurcharge['tax_class'] = ($arrRule['tax_class'] > 0 ? $arrRule['tax_class'] : 0);
 
