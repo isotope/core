@@ -57,11 +57,11 @@ class DC_ProductData extends \DC_Table
      */
     public function __construct($strTable)
     {
-        $this->import('Environment');
+        $this->import('\Environment');
 
-        Environment::set('request', preg_replace('/&loadDeferredProduct=[^&]*&level=[^&]*/', '', Environment::get('request')));
-        Environment::set('requestUri', preg_replace('/&loadDeferredProduct=[^&]*&level=[^&]*/', '', Environment::get('requestUri')));
-        Environment::set('queryString', preg_replace('/&loadDeferredProduct=[^&]*&level=[^&]*/', '', Environment::get('queryString')));
+        \Environment::set('request', preg_replace('/&loadDeferredProduct=[^&]*&level=[^&]*/', '', \Environment::get('request')));
+        \Environment::set('requestUri', preg_replace('/&loadDeferredProduct=[^&]*&level=[^&]*/', '', \Environment::get('requestUri')));
+        \Environment::set('queryString', preg_replace('/&loadDeferredProduct=[^&]*&level=[^&]*/', '', \Environment::get('queryString')));
 
         parent::__construct($strTable);
     }
@@ -626,7 +626,7 @@ class DC_ProductData extends \DC_Table
                 {
                     if ($vv == '[EOF]')
                     {
-                        if ($blnAjax && Environment::get('isAjaxRequest'))
+                        if ($blnAjax && \Environment::get('isAjaxRequest'))
                         {
                             return $strAjax . '<input type="hidden" name="FORM_FIELDS[]" value="'.specialchars($this->strPalette).'">';
                         }
@@ -640,7 +640,7 @@ class DC_ProductData extends \DC_Table
                     if (preg_match('/^\[.*\]$/i', $vv))
                     {
                         $thisId = 'sub_' . substr($vv, 1, -1);
-                        $blnAjax = ($ajaxId == $thisId && Environment::get('isAjaxRequest')) ? true : false;
+                        $blnAjax = ($ajaxId == $thisId && \Environment::get('isAjaxRequest')) ? true : false;
                         $return .= "\n" . '<div id="'.$thisId.'">';
 
                         continue;
@@ -713,7 +713,7 @@ class DC_ProductData extends \DC_Table
   <option value="'.$objVersion->version.'"'.($objVersion->active ? ' selected="selected"' : '').'>'.$GLOBALS['TL_LANG']['MSC']['version'].' '.$objVersion->version.' ('.\System::parseDate($GLOBALS['TL_CONFIG']['datimFormat'], $objVersion->tstamp).') '.$objVersion->username.'</option>';
                 }
 
-                $version = '<form action="'.ampersand(Environment::get('request'), true).'" id="tl_version" class="tl_form" method="post" style="float:right;">
+                $version = '<form action="'.ampersand(\Environment::get('request'), true).'" id="tl_version" class="tl_form" method="post" style="float:right;">
 <div class="tl_formbody">
 <input type="hidden" name="FORM_SUBMIT" value="tl_version">
 <input type="hidden" name="REQUEST_TOKEN" value="'.REQUEST_TOKEN.'">
@@ -752,7 +752,7 @@ class DC_ProductData extends \DC_Table
                 }
             }
 
-            $version .= '<form action="'.ampersand(Environment::get('request'), true).'" id="tl_language" class="tl_form" method="post" style="float:left;margin-left:20px;">
+            $version .= '<form action="'.ampersand(\Environment::get('request'), true).'" id="tl_language" class="tl_form" method="post" style="float:left;margin-left:20px;">
 <div class="tl_formbody">
 <input type="hidden" name="FORM_SUBMIT" value="tl_language">
 <input type="hidden" name="REQUEST_TOKEN" value="'.REQUEST_TOKEN.'">
@@ -809,7 +809,7 @@ window.addEvent(\'domready\', function() {
 
 <h2 class="sub_headline">'.sprintf($GLOBALS['TL_LANG']['MSC']['editRecord'], ($this->intId ? 'ID '.$this->intId : '')).'</h2>
 '.$this->getMessages().'
-<form action="'.ampersand(Environment::get('request'), true).'" id="'.$this->strTable.'" class="tl_form" method="post" enctype="' . ($this->blnUploadable ? 'multipart/form-data' : 'application/x-www-form-urlencoded') . '"'.(count($this->onsubmit) ? ' onsubmit="'.implode(' ', $this->onsubmit).'"' : '').'>
+<form action="'.ampersand(\Environment::get('request'), true).'" id="'.$this->strTable.'" class="tl_form" method="post" enctype="' . ($this->blnUploadable ? 'multipart/form-data' : 'application/x-www-form-urlencoded') . '"'.(count($this->onsubmit) ? ' onsubmit="'.implode(' ', $this->onsubmit).'"' : '').'>
 <div class="tl_formbody_edit">
 <input type="hidden" name="FORM_SUBMIT" value="'.specialchars($this->strTable).'">
 <input type="hidden" name="REQUEST_TOKEN" value="'.REQUEST_TOKEN.'">
@@ -891,7 +891,7 @@ window.addEvent(\'domready\', function() {
 
                 if ($this->ptable == '')
                 {
-                    $this->redirect(Environment::get('script') . '?do=' . \Input::get('do'));
+                    $this->redirect(\Environment::get('script') . '?do=' . \Input::get('do'));
                 }
                 elseif ($this->ptable == 'tl_theme' && $this->strTable == 'tl_style_sheet') # TODO: try to abstract this
                 {
@@ -910,7 +910,7 @@ window.addEvent(\'domready\', function() {
                 $_SESSION['TL_CONFIRM'] = '';
 
                 setcookie('BE_PAGE_OFFSET', 0, 0, '/');
-                $strUrl = Environment::get('script') . '?do=' . \Input::get('do');
+                $strUrl = \Environment::get('script') . '?do=' . \Input::get('do');
 
                 if (isset($_GET['table']))
                 {
@@ -984,7 +984,7 @@ window.addEvent(\'domready\', function() {
         $session = $this->Session->getData();
         $ids = $session['CURRENT']['IDS'];
 
-        if (Environment::get('isAjaxRequest'))
+        if (\Environment::get('isAjaxRequest'))
         {
             $ids = array($intId);
         }
@@ -1042,7 +1042,7 @@ window.addEvent(\'domready\', function() {
 
                     if ($v == '[EOF]')
                     {
-                        if ($blnAjax && Environment::get('isAjaxRequest'))
+                        if ($blnAjax && \Environment::get('isAjaxRequest'))
                         {
                             return $strAjax . '<input type="hidden" name="FORM_FIELDS_'.$id.'[]" value="'.specialchars(implode(',', $formFields)).'">';
                         }
@@ -1056,7 +1056,7 @@ window.addEvent(\'domready\', function() {
                     if (preg_match('/^\[.*\]$/i', $v))
                     {
                         $thisId = 'sub_' . substr($v, 1, -1) . '_' . $id;
-                        $blnAjax = ($ajaxId == $thisId && Environment::get('isAjaxRequest')) ? true : false;
+                        $blnAjax = ($ajaxId == $thisId && \Environment::get('isAjaxRequest')) ? true : false;
                         $return .= "\n  " . '<div id="'.$thisId.'">';
 
                         continue;
@@ -1143,7 +1143,7 @@ window.addEvent(\'domready\', function() {
 
 <h2 class="sub_headline_all">'.sprintf($GLOBALS['TL_LANG']['MSC']['all_info'], $this->strTable).'</h2>
 
-<form action="'.ampersand(Environment::get('request'), true).'" id="'.$this->strTable.'" class="tl_form" method="post" enctype="' . ($this->blnUploadable ? 'multipart/form-data' : 'application/x-www-form-urlencoded') . '">
+<form action="'.ampersand(\Environment::get('request'), true).'" id="'.$this->strTable.'" class="tl_form" method="post" enctype="' . ($this->blnUploadable ? 'multipart/form-data' : 'application/x-www-form-urlencoded') . '">
 <div class="tl_formbody_edit">
 <input type="hidden" name="FORM_SUBMIT" value="'.$this->strTable.'">
 <input type="hidden" name="REQUEST_TOKEN" value="'.REQUEST_TOKEN.'">'.($this->noReload ? '
@@ -1213,7 +1213,7 @@ window.addEvent(\'domready\', function() {
 
 <h2 class="sub_headline_all">'.sprintf($GLOBALS['TL_LANG']['MSC']['all_info'], $this->strTable).'</h2>
 
-<form action="'.ampersand(Environment::get('request'), true).'&amp;fields=1" id="'.$this->strTable.'_all" class="tl_form" method="post">
+<form action="'.ampersand(\Environment::get('request'), true).'&amp;fields=1" id="'.$this->strTable.'_all" class="tl_form" method="post">
 <div class="tl_formbody_edit">
 <input type="hidden" name="FORM_SUBMIT" value="'.$this->strTable.'_all">
 <input type="hidden" name="REQUEST_TOKEN" value="'.REQUEST_TOKEN.'">'.($blnIsError ? '
@@ -1389,7 +1389,7 @@ window.addEvent(\'domready\', function() {
 
 <h2 class="sub_headline_all">'.sprintf($GLOBALS['TL_LANG']['MSC']['all_info'], $this->strTable).'</h2>
 
-<form action="'.ampersand(Environment::get('request'), true).'" id="'.$this->strTable.'" class="tl_form" method="post" enctype="' . ($this->blnUploadable ? 'multipart/form-data' : 'application/x-www-form-urlencoded') . '">
+<form action="'.ampersand(\Environment::get('request'), true).'" id="'.$this->strTable.'" class="tl_form" method="post" enctype="' . ($this->blnUploadable ? 'multipart/form-data' : 'application/x-www-form-urlencoded') . '">
 <div class="tl_formbody_edit">
 <input type="hidden" name="FORM_SUBMIT" value="'.$this->strTable.'">
 <input type="hidden" name="REQUEST_TOKEN" value="'.REQUEST_TOKEN.'">'.($this->noReload ? '
@@ -1473,7 +1473,7 @@ window.addEvent(\'domready\', function() {
 
 <h2 class="sub_headline_all">'.sprintf($GLOBALS['TL_LANG']['MSC']['all_info'], $this->strTable).'</h2>
 
-<form action="'.ampersand(Environment::get('request'), true).'&amp;fields=1" id="'.$this->strTable.'_all" class="tl_form" method="post">
+<form action="'.ampersand(\Environment::get('request'), true).'&amp;fields=1" id="'.$this->strTable.'_all" class="tl_form" method="post">
 <div class="tl_formbody_edit">
 <input type="hidden" name="FORM_SUBMIT" value="'.$this->strTable.'_all">
 <input type="hidden" name="REQUEST_TOKEN" value="'.REQUEST_TOKEN.'">'.($blnIsError ? '
@@ -1613,7 +1613,7 @@ window.addEvent(\'domready\', function() {
             }
 
             $this->Session->setData($session);
-            $this->redirect(preg_replace('/(&(amp;)?|\?)(ptg)=[^& ]*/i', '', Environment::get('request')));
+            $this->redirect(preg_replace('/(&(amp;)?|\?)(ptg)=[^& ]*/i', '', \Environment::get('request')));
         }
 
         // Get session data and toggle nodes
@@ -1641,7 +1641,7 @@ window.addEvent(\'domready\', function() {
             }
 
             $this->Session->setData($session);
-            $this->redirect(preg_replace('/(&(amp;)?|\?)(gtg)=[^& ]*/i', '', Environment::get('request')));
+            $this->redirect(preg_replace('/(&(amp;)?|\?)(gtg)=[^& ]*/i', '', \Environment::get('request')));
         }
 
         // Handle overload detection. This variable is only true if the previous rendering was not successful
@@ -1719,7 +1719,7 @@ window.addEvent(\'domready\', function() {
 
         $return .= ((\Input::get('act') == 'select') ? '
 
-<form action="'.ampersand(Environment::get('request'), true).'" id="tl_select" class="tl_form" method="post">
+<form action="'.ampersand(\Environment::get('request'), true).'" id="tl_select" class="tl_form" method="post">
 <div class="tl_formbody">
 <input type="hidden" name="FORM_SUBMIT" value="tl_select">
 <input type="hidden" name="REQUEST_TOKEN" value="'.REQUEST_TOKEN.'">' : '').'
@@ -1806,7 +1806,7 @@ $(window).addEvents({
      */
     public function ajaxTreeView($id, $level)
     {
-        if (!Environment::get('isAjaxRequest') && !$this->blnDeferredLoading)
+        if (!\Environment::get('isAjaxRequest') && !$this->blnDeferredLoading)
         {
             return '';
         }
@@ -1937,7 +1937,7 @@ $(window).addEvents({
             $session[$node][\Input::get($toggle)] = (isset($session[$node][\Input::get($toggle)]) && $session[$node][\Input::get($toggle)] == 1) ? 0 : 1;
             $this->Session->setData($session);
 
-            $this->redirect(preg_replace('/(&(amp;)?|\?)'.$toggle.'=[^& ]*/i', '', Environment::get('request')));
+            $this->redirect(preg_replace('/(&(amp;)?|\?)'.$toggle.'=[^& ]*/i', '', \Environment::get('request')));
         }
 
         $intSpacing = 20;
@@ -2195,7 +2195,7 @@ $(window).addEvents({
         }
 
         $return = '
-<form action="'.ampersand(Environment::get('request'), true).'" class="tl_form" method="post">
+<form action="'.ampersand(\Environment::get('request'), true).'" class="tl_form" method="post">
 <div class="tl_formbody">
 <input type="hidden" name="FORM_SUBMIT" value="tl_filters">
 <input type="hidden" name="REQUEST_TOKEN" value="'.REQUEST_TOKEN.'">

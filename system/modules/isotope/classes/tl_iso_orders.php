@@ -259,7 +259,7 @@ class tl_iso_orders extends \Backend
         if (\Input::get('id') != '' && !in_array(\Input::get('id'), $arrIds))
         {
             $this->log('Trying to access disallowed order ID '.\Input::get('id'), __METHOD__, TL_ERROR);
-            $this->redirect(Environment::get('script').'?act=error');
+            $this->redirect(\Environment::get('script').'?act=error');
         }
     }
 
@@ -294,7 +294,7 @@ class tl_iso_orders extends \Backend
         {
             return '
 <div id="tl_buttons">
-<a href="'.ampersand(str_replace('&key=export_emails', '', Environment::get('request'))).'" class="header_back" title="'.specialchars($GLOBALS['TL_LANG']['MSC']['backBT']).'">'.$GLOBALS['TL_LANG']['MSC']['backBT'].'</a>
+<a href="'.ampersand(str_replace('&key=export_emails', '', \Environment::get('request'))).'" class="header_back" title="'.specialchars($GLOBALS['TL_LANG']['MSC']['backBT']).'">'.$GLOBALS['TL_LANG']['MSC']['backBT'].'</a>
 </div>
 <p class="tl_gerror">'. $GLOBALS['TL_LANG']['MSC']['noOrderEmails'] .'</p>';
         }
@@ -366,11 +366,11 @@ class tl_iso_orders extends \Backend
 
         $strReturn = '
 <div id="tl_buttons">
-<a href="'.ampersand(str_replace('&key=print_invoices', '', Environment::get('request'))).'" class="header_back" title="'.specialchars($GLOBALS['TL_LANG']['MSC']['backBT']).'">'.$GLOBALS['TL_LANG']['MSC']['backBT'].'</a>
+<a href="'.ampersand(str_replace('&key=print_invoices', '', \Environment::get('request'))).'" class="header_back" title="'.specialchars($GLOBALS['TL_LANG']['MSC']['backBT']).'">'.$GLOBALS['TL_LANG']['MSC']['backBT'].'</a>
 </div>
 
 <h2 class="sub_headline">'.$GLOBALS['TL_LANG']['tl_iso_orders']['print_invoices'][0].'</h2>
-<form action="'.Environment::get('request').'"  id="tl_print_invoices" class="tl_form" method="post">
+<form action="'.\Environment::get('request').'"  id="tl_print_invoices" class="tl_form" method="post">
 <input type="hidden" name="FORM_SUBMIT" value="tl_print_invoices">
 <input type="hidden" name="REQUEST_TOKEN" value="'.REQUEST_TOKEN.'">
 <div class="tl_formbody_edit">

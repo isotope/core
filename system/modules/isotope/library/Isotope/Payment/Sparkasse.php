@@ -51,14 +51,14 @@ class Sparkasse extends Payment implements IsotopePayment
             $this->postsaleFailed(\Input::post('directPosErrorMessage'));
         }
 
-        echo 'redirecturls='.Environment::get('base') . $this->generateFrontendUrl($this->Database->execute("SELECT * FROM tl_page WHERE id=".(int) \Input::post('sessionid'))->fetchAssoc(), '/step/complete');
+        echo 'redirecturls='.\Environment::get('base') . $this->generateFrontendUrl($this->Database->execute("SELECT * FROM tl_page WHERE id=".(int) \Input::post('sessionid'))->fetchAssoc(), '/step/complete');
         exit;
     }
 
 
     private function postsaleFailed($strReason='')
     {
-        echo 'redirecturlf='.Environment::get('base') . $this->generateFrontendUrl($this->Database->execute("SELECT * FROM tl_page WHERE id=".(int) \Input::post('sessionid'))->fetchAssoc(), '/step/failed') . ($strReason != '' ? '?reason='.$strReason : '');
+        echo 'redirecturlf='.\Environment::get('base') . $this->generateFrontendUrl($this->Database->execute("SELECT * FROM tl_page WHERE id=".(int) \Input::post('sessionid'))->fetchAssoc(), '/step/failed') . ($strReason != '' ? '?reason='.$strReason : '');
         exit;
     }
 

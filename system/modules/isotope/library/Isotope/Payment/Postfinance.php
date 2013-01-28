@@ -137,7 +137,7 @@ class Postfinance extends Payment implements IsotopePayment
         }
 
         $objAddress = $this->Isotope->Cart->billingAddress;
-        $strFailedUrl = Environment::get('base') . $this->addToUrl('step=failed', true);
+        $strFailedUrl = \Environment::get('base') . $this->addToUrl('step=failed', true);
 
         $arrParam = array
         (
@@ -154,7 +154,7 @@ class Postfinance extends Payment implements IsotopePayment
             'OWNERCTY'		=> $objAddress->country,
             'OWNERTOWN'		=> $objAddress->city,
             'OWNERTELNO'	=> $objAddress->phone,
-            'ACCEPTURL'		=> Environment::get('base') . IsotopeFrontend::addQueryStringToUrl('uid=' . $objOrder->uniqid, $this->addToUrl('step=complete', true)),
+            'ACCEPTURL'		=> \Environment::get('base') . IsotopeFrontend::addQueryStringToUrl('uid=' . $objOrder->uniqid, $this->addToUrl('step=complete', true)),
             'DECLINEURL'	=> $strFailedUrl,
             'EXCEPTIONURL'	=> $strFailedUrl,
             'PARAMPLUS'		=> 'mod=pay&amp;id=' . $this->id,

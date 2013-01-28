@@ -210,7 +210,7 @@ class IsotopeRules extends \Controller
                 }
             }
 
-            $this->redirect(preg_replace('@[?&]coupon(_[0-9]+)?=[^&]*@', '', Environment::get('request')));
+            $this->redirect(preg_replace('@[?&]coupon(_[0-9]+)?=[^&]*@', '', \Environment::get('request')));
         }
 
 
@@ -224,7 +224,7 @@ class IsotopeRules extends \Controller
         $objTemplate = new \FrontendTemplate('iso_coupons');
 
         $objTemplate->id = $objModule->id;
-        $objTemplate->action = Environment::get('request');
+        $objTemplate->action = \Environment::get('request');
         $objTemplate->headline = $GLOBALS['TL_LANG']['MSC']['couponHeadline'];
         $objTemplate->inputLabel = $GLOBALS['TL_LANG']['MSC']['couponLabel'];
         $objTemplate->sLabel = $GLOBALS['TL_LANG']['MSC']['couponApply'];

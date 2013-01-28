@@ -214,7 +214,7 @@ class ProductTree extends \Widget
      */
     public function generateAjax($id, $strField, $level)
     {
-        if (!Environment::get('isAjaxRequest'))
+        if (!\Environment::get('isAjaxRequest'))
         {
             return '';
         }
@@ -384,7 +384,7 @@ class ProductTree extends \Widget
             $session[$node][\Input::get($flag.'tg')] = (isset($session[$node][\Input::get($flag.'tg')]) && $session[$node][\Input::get($flag.'tg')] == 1) ? 0 : 1;
             $this->Session->setData($session);
 
-            $this->redirect(preg_replace('/(&(amp;)?|\?)'.$flag.'tg=[^& ]*/i', '', Environment::get('request')));
+            $this->redirect(preg_replace('/(&(amp;)?|\?)'.$flag.'tg=[^& ]*/i', '', \Environment::get('request')));
         }
 
         $objGroup = $this->Database->execute("SELECT * FROM tl_iso_groups WHERE id=$id");
@@ -488,7 +488,7 @@ class ProductTree extends \Widget
             $session[$node][\Input::get($flag.'tg')] = (isset($session[$node][\Input::get($flag.'tg')]) && $session[$node][\Input::get($flag.'tg')] == 1) ? 0 : 1;
             $this->Session->setData($session);
 
-            $this->redirect(preg_replace('/(&(amp;)?|\?)'.$flag.'tg=[^& ]*/i', '', Environment::get('request')));
+            $this->redirect(preg_replace('/(&(amp;)?|\?)'.$flag.'tg=[^& ]*/i', '', \Environment::get('request')));
         }
 
         $objProduct = $this->Database->prepare("SELECT * FROM tl_iso_products WHERE id=?".($this->User->isAdmin ? '' : " AND type IN ('','" . implode("','", $this->arrTypes) . "')"))->execute($id);

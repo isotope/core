@@ -227,12 +227,12 @@ class Backend extends Contao_Backend
         // Return the form
         return '
 <div id="tl_buttons">
-<a href="'.ampersand(str_replace('&key=importMail', '', Environment::get('request'))).'" class="header_back" title="'.specialchars($GLOBALS['TL_LANG']['MSC']['backBT']).'" accesskey="b">'.$GLOBALS['TL_LANG']['MSC']['backBT'].'</a>
+<a href="'.ampersand(str_replace('&key=importMail', '', \Environment::get('request'))).'" class="header_back" title="'.specialchars($GLOBALS['TL_LANG']['MSC']['backBT']).'" accesskey="b">'.$GLOBALS['TL_LANG']['MSC']['backBT'].'</a>
 </div>
 
 <h2 class="sub_headline">'.$GLOBALS['TL_LANG']['tl_iso_mail']['importMail'][1].'</h2>'.$this->getMessages().'
 
-<form action="'.ampersand(Environment::get('request'), true).'" id="tl_mail_import" class="tl_form" method="post">
+<form action="'.ampersand(\Environment::get('request'), true).'" id="tl_mail_import" class="tl_form" method="post">
 <div class="tl_formbody_edit">
 <input type="hidden" name="FORM_SUBMIT" value="tl_mail_import">
 <input type="hidden" name="REQUEST_TOKEN" value="'.REQUEST_TOKEN.'">
@@ -324,7 +324,7 @@ class Backend extends Contao_Backend
 
         // Redirect
         setcookie('BE_PAGE_OFFSET', 0, 0, '/');
-        $this->redirect(str_replace('&key=importMail', '', Environment::get('request')));
+        $this->redirect(str_replace('&key=importMail', '', \Environment::get('request')));
     }
 
 
@@ -606,7 +606,7 @@ class Backend extends Contao_Backend
      */
     public static function getAllowedProductIds()
     {
-        $objUser = BackendUser::getInstance();
+        $objUser = \BackendUser::getInstance();
 
         if ($objUser->isAdmin)
         {

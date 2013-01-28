@@ -226,9 +226,9 @@ class Paypal extends Payment implements IsotopePayment
         $objTemplate->discount = $fltDiscount;
         $objTemplate->address = $this->Isotope->Cart->billingAddress;
         $objTemplate->currency = $this->Isotope->Config->currency;
-        $objTemplate->return = Environment::get('base') . \Isotope\Frontend::addQueryStringToUrl('uid=' . $objOrder->uniqid, $this->addToUrl('step=complete', true));
-        $objTemplate->cancel_return = Environment::get('base') . $this->addToUrl('step=failed', true);
-        $objTemplate->notify_url = Environment::get('base') . 'system/modules/isotope/postsale.php?mod=pay&id=' . $this->id;
+        $objTemplate->return = \Environment::get('base') . \Isotope\Frontend::addQueryStringToUrl('uid=' . $objOrder->uniqid, $this->addToUrl('step=complete', true));
+        $objTemplate->cancel_return = \Environment::get('base') . $this->addToUrl('step=failed', true);
+        $objTemplate->notify_url = \Environment::get('base') . 'system/modules/isotope/postsale.php?mod=pay&id=' . $this->id;
         $objTemplate->headline = $GLOBALS['TL_LANG']['MSC']['pay_with_redirect'][0];
         $objTemplate->message = $GLOBALS['TL_LANG']['MSC']['pay_with_redirect'][1];
         $objTemplate->slabel = specialchars($GLOBALS['TL_LANG']['MSC']['pay_with_redirect'][2]);
@@ -265,7 +265,7 @@ class Paypal extends Payment implements IsotopePayment
 
         $strBuffer = '
 <div id="tl_buttons">
-<a href="'.ampersand(str_replace('&key=payment', '', Environment::get('request'))).'" class="header_back" title="'.specialchars($GLOBALS['TL_LANG']['MSC']['backBT']).'">'.$GLOBALS['TL_LANG']['MSC']['backBT'].'</a>
+<a href="'.ampersand(str_replace('&key=payment', '', \Environment::get('request'))).'" class="header_back" title="'.specialchars($GLOBALS['TL_LANG']['MSC']['backBT']).'">'.$GLOBALS['TL_LANG']['MSC']['backBT'].'</a>
 </div>
 
 <h2 class="sub_headline">' . $this->name . ' (' . $GLOBALS['ISO_LANG']['PAY'][$this->type][0] . ')' . '</h2>

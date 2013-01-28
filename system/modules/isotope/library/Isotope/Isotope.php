@@ -105,7 +105,7 @@ class Isotope extends \Controller
                 self::$objInstance->resetConfig();
             }
 
-            if (TL_MODE == 'FE' && strpos(self::$objInstance->Environment->script, 'postsale.php') === false && strpos(self::$objInstance->Environment->script, 'cron.php') === false)
+            if (TL_MODE == 'FE' && strpos(\Environment::get('script'), 'postsale.php') === false && strpos(self::$objInstance->Environment->script, 'cron.php') === false)
             {
                 self::$objInstance->Cart = Cart::getDefaultForStore((int) self::$objInstance->Config->id, (int) self::$objInstance->Config->store_id);
 
@@ -134,7 +134,7 @@ class Isotope extends \Controller
                         }
 
                         $strQuery = http_build_query($_GET);
-                        self::$objInstance->redirect(preg_replace('/\?.*$/i', '', self::$objInstance->Environment->request) . (($strQuery) ? '?' . $strQuery : ''));
+                        self::$objInstance->redirect(preg_replace('/\?.*$/i', '', \Environment::get('request')) . (($strQuery) ? '?' . $strQuery : ''));
                     }
                 }
 

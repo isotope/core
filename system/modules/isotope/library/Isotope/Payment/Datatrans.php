@@ -107,7 +107,7 @@ class Datatrans extends Payment implements IsotopePayment
         }
 
         // Reload page every 5 seconds and check if payment was successful
-        $GLOBALS['TL_HEAD'][] = '<meta http-equiv="refresh" content="5,' . Environment::get('base') . Environment::get('request') . '">';
+        $GLOBALS['TL_HEAD'][] = '<meta http-equiv="refresh" content="5,' . \Environment::get('base') . \Environment::get('request') . '">';
 
         $objTemplate = new \FrontendTemplate('mod_message');
         $objTemplate->type = 'processing';
@@ -151,9 +151,9 @@ class Datatrans extends Payment implements IsotopePayment
             'uppCustomerZipCode'	=> $arrAddress['postal'],
             'uppCustomerPhone'		=> $arrAddress['phone'],
             'uppCustomerEmail'		=> $arrAddress['email'],
-            'successUrl'			=> ampersand(Environment::get('base') . $this->addToUrl('step=complete', true)),
-            'errorUrl'				=> ampersand(Environment::get('base') . $this->addToUrl('step=failed', true)),
-            'cancelUrl'				=> ampersand(Environment::get('base') . $this->addToUrl('step=failed', true)),
+            'successUrl'			=> ampersand(\Environment::get('base') . $this->addToUrl('step=complete', true)),
+            'errorUrl'				=> ampersand(\Environment::get('base') . $this->addToUrl('step=failed', true)),
+            'cancelUrl'				=> ampersand(\Environment::get('base') . $this->addToUrl('step=failed', true)),
             'mod'					=> 'pay',
             'id'					=> $this->id,
         );

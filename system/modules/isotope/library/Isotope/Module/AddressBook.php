@@ -360,7 +360,7 @@ class AddressBook extends Module
 
         $this->Template->formId = 'tl_iso_addresses_' . $this->id;
         $this->Template->slabel = specialchars($GLOBALS['TL_LANG']['MSC']['saveData']);
-        $this->Template->action = ampersand(Environment::get('request'), true);
+        $this->Template->action = ampersand(\Environment::get('request'), true);
         $this->Template->enctype = $hasUpload ? 'multipart/form-data' : 'application/x-www-form-urlencoded';
         $this->Template->rowLast = 'row_' . $row . ((($row % 2) == 0) ? ' even' : ' odd');
     }

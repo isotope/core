@@ -768,7 +768,7 @@ $endScript";
                     (
                         'link' => $arrMeta[0],
                         'title' => $arrMeta[0],
-                        'href' => Environment::get('request') . (($GLOBALS['TL_CONFIG']['disableAlias'] || strpos(Environment::get('request'), '?') !== false) ? '&amp;' : '?') . 'file=' . $this->urlEncode($file),
+                        'href' => \Environment::get('request') . (($GLOBALS['TL_CONFIG']['disableAlias'] || strpos(\Environment::get('request'), '?') !== false) ? '&amp;' : '?') . 'file=' . $this->urlEncode($file),
                         'caption' => $arrMeta[2],
                         'filesize' => $this->getReadableSize($objFile->filesize, 1),
                         'icon' => TL_FILES_URL . 'system/themes/' . $this->getTheme() . '/images/' . $objFile->icon,
@@ -809,7 +809,7 @@ $endScript";
                     (
                         'link' => $arrMeta[0],
                         'title' => $arrMeta[0],
-                        'href' => Environment::get('request') . (($GLOBALS['TL_CONFIG']['disableAlias'] || strpos(Environment::get('request'), '?') !== false) ? '&amp;' : '?') . 'file=' . $this->urlEncode($file . '/' . $subfile),
+                        'href' => \Environment::get('request') . (($GLOBALS['TL_CONFIG']['disableAlias'] || strpos(\Environment::get('request'), '?') !== false) ? '&amp;' : '?') . 'file=' . $this->urlEncode($file . '/' . $subfile),
                         'caption' => $arrMeta[2],
                         'filesize' => $this->getReadableSize($objFile->filesize, 1),
                         'icon' => 'system/themes/' . $this->getTheme() . '/images/' . $objFile->icon,
@@ -1299,7 +1299,7 @@ $endScript";
                         $arrRoot[$objJump->rootId] = $this->Database->prepare("SELECT * FROM tl_page WHERE id=" . (int) $objJump->rootId);
                     }
 
-                    $strDomain = $this->Environment->base;
+                    $strDomain = $this->\Environment->base;
 
         			// Overwrite the domain
         			if ($arrRoot[$objJump->rootId]->dns != '')
@@ -1460,7 +1460,7 @@ $endScript";
     {
         if ($varUrl === null)
         {
-            $varUrl = Environment::getInstance()->request;
+            $varUrl = \Environment::getInstance()->request;
         }
         elseif (is_numeric($varUrl))
         {
@@ -1513,10 +1513,10 @@ $endScript";
 
         if ($_SESSION['ISO_TIMEOUT'] > 0)
         {
-            $objEnvironment = Environment::getInstance();
+            $obj\Environment = \Environment::getInstance();
 
             // Reload page every 5 seconds
-            $GLOBALS['TL_HEAD'][] = '<meta http-equiv="refresh" content="' . $intSeconds . ',' . $objEnvironment->base . $objEnvironment->request . '">';
+            $GLOBALS['TL_HEAD'][] = '<meta http-equiv="refresh" content="' . $intSeconds . ',' . $obj\Environment->base . $obj\Environment->request . '">';
 
             return true;
         }

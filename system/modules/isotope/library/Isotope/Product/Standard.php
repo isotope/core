@@ -834,7 +834,7 @@ class Standard extends \Controller implements IsotopeProduct
         $objTemplate->hasOptions = !empty($arrProductOptions) ? true : false;
         $objTemplate->enctype = $this->hasUpload ? 'multipart/form-data' : 'application/x-www-form-urlencoded';
         $objTemplate->formId = $this->formSubmit;
-        $objTemplate->action = ampersand(Environment::get('request'), true);
+        $objTemplate->action = ampersand(\Environment::get('request'), true);
         $objTemplate->formSubmit = $this->formSubmit;
         $objTemplate->product = $this;
 

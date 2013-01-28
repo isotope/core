@@ -214,7 +214,7 @@ class ProductCallbacks extends \Backend
 
         $session = $this->Session->getData();
 
-        $arrProducts = IsotopeBackend::getAllowedProductIds();
+        $arrProducts = \Isotope\Backend::getAllowedProductIds();
 
         // Method will return true if no limits should be applied (e.g. user is admin)
 		if (true === $arrProducts)
@@ -590,11 +590,11 @@ class ProductCallbacks extends \Backend
 
         if (in_array($filter, $arrFilters))
         {
-            $href = ampersand(str_replace('&'.$href, '', Environment::get('request')));
+            $href = ampersand(str_replace('&'.$href, '', \Environment::get('request')));
         }
         else
         {
-            $href = ampersand(Environment::get('request') . '&') . $href;
+            $href = ampersand(\Environment::get('request') . '&') . $href;
         }
 
         return ' &#160; :: &#160; <a href="'.$href.'" class="'.$class.' isotope-filter" title="'.specialchars($title).'"'.$attributes.'>'.$label.'</a> ';
@@ -615,7 +615,7 @@ class ProductCallbacks extends \Backend
      */
     public function filterRemoveButton($href, $label, $title, $class, $attributes, $table, $root)
     {
-        $href = preg_replace('/&?filter\[\]=[^&]*/', '', Environment::get('request'));
+        $href = preg_replace('/&?filter\[\]=[^&]*/', '', \Environment::get('request'));
 
         return ' &#160; :: &#160; <a href="'.$href.'" class="header_iso_filter_remove isotope-filter" title="'.specialchars($title).'"'.$attributes.'>'.$label.'</a> ';
     }
@@ -822,16 +822,16 @@ class ProductCallbacks extends \Backend
      */
     public function getProductTypes(\DataContainer $dc)
     {
-        $this->import('BackendUser', 'User');
-        $arrTypes = $this->User->iso_product_types;
+        $objUser = \BackendUser::getInstance();
+        $arrTypes = $objUser->iso_product_types;
 
-        if (!$this->User->isAdmin && (!is_array($arrTypes) || empty($arrTypes)))
+        if (!$objUser->isAdmin && (!is_array($arrTypes) || empty($arrTypes)))
         {
             $arrTypes = array(0);
         }
 
         $arrProductTypes = array();
-        $objProductTypes = $this->Database->execute("SELECT id,name FROM tl_iso_producttypes WHERE tstamp>0" . ($this->User->isAdmin ? '' : (" AND id IN (" . implode(',', $arrTypes) . ")")) . " ORDER BY name");
+        $objProductTypes = $this->Database->execute("SELECT id,name FROM tl_iso_producttypes WHERE tstamp>0" . ($objUser->isAdmin ? '' : (" AND id IN (" . implode(',', $arrTypes) . ")")) . " ORDER BY name");
 
         while ($objProductTypes->next())
         {

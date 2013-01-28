@@ -162,12 +162,12 @@ abstract class Module extends Contao_Module
      */
     protected function generateRequestUrl()
     {
-        if (Environment::get('request') == '')
+        if (\Environment::get('request') == '')
         {
             return '';
         }
 
-        $strRequest = preg_replace('/\?.*$/i', '', Environment::get('request'));
+        $strRequest = preg_replace('/\?.*$/i', '', \Environment::get('request'));
         $strRequest = preg_replace('/' . preg_quote($GLOBALS['TL_CONFIG']['urlSuffix'], '/') . '$/i', '', $strRequest);
         $arrFragments = explode('/', $strRequest);
 
