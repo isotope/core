@@ -51,5 +51,4 @@ $GLOBALS['ISO_LANG']['REPORT']['sales#'] = 'Umsatz-Total';
 $GLOBALS['ISO_LANG']['REPORT']['filter_config'] = 'Shop-Konfiguration:';
 $GLOBALS['ISO_LANG']['REPORT']['all'] = 'Alle';
 $GLOBALS['ISO_LANG']['REPORT']['sums'] = 'Summen';
-$GLOBALS['ISO_LANG']['REPORT']['num_items'] = '%s Artikel';
 
