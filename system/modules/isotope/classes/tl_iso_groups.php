@@ -91,10 +91,24 @@ class tl_iso_groups extends \Backend
      */
     public function addIcon($row, $label, \DataContainer $dc=null, $imageAttribute='', $blnReturnImage=false)
     {
-        $bold = $dc->table == 'tl_iso_products' ? ' style="font-weight:bold"' : '';
+		if ($dc->table == 'tl_iso_products')
+		{
+			return $this->generateImage('system/modules/isotope/html/folder-network.png', '', $imageAttribute) . ' <span style="font-weight:bold">' . $label . '</span>';
+		}
+		else
+		{
+			$strProductType = '';
 
-        return $this->generateImage('system/modules/isotope/assets/folder-network.png', '', $imageAttribute) . ' <span'.$bold.'>' . $label . '</span>';
-        //return $this->generateImage('system/modules/isotope/assets/folder-network.png', '', $imageAttribute) . ' <a href="' . $this->addToUrl('node='.$row['id']) . '"'.$bold.'>' . $label . '</a>';
+			if (($intProductType = \Isotope\Backend::getProductTypeForGroup($row['id'])) !== false)
+			{
+				$strProductType = $this->Database->execute("SELECT name FROM tl_iso_producttypes WHERE id=" . $intProductType)->name;
+				$strProductType = ' <span style="color:#b3b3b3; padding-left:3px;">[' . $strProductType . ']</span>';
+			}
+
+			return $this->generateImage('system/modules/isotope/html/folder-network.png', '', $imageAttribute) . ' ' . $label . $strProductType;
+		}
+
+		return ;
     }
 
 

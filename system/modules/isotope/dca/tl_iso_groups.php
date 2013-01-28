@@ -13,7 +13,6 @@
  * @author     Fred Bliss <fred.bliss@intelligentspark.com>
  */
 
-
 /**
  * Table tl_iso_groups
  */
@@ -104,18 +103,26 @@ $GLOBALS['TL_DCA']['tl_iso_groups'] = array
     // Palettes
     'palettes' => array
     (
-        'default'						=> '{name_legend},name',
+		'default'						=> '{group_legend},name,product_type;',
     ),
 
     // Fields
     'fields' => array
     (
-        'name' => array
-        (
-            'label'						=> &$GLOBALS['TL_LANG']['tl_iso_groups']['name'],
-            'exclude'					=> false,
-            'inputType'					=> 'text',
-            'eval'						=> array('mandatory'=>true, 'maxlength'=>255, 'tl_class'=>'long'),
-        ),
+ 		'name' => array
+ 		(
+ 			'label'						=> &$GLOBALS['TL_LANG']['tl_iso_groups']['name'],
+			'exclude'					=> true,
+			'inputType'					=> 'text',
+			'eval'						=> array('mandatory'=>true, 'maxlength'=>255, 'tl_class'=>'w50'),
+		),
+		'product_type' => array
+		(
+			'label'						=> &$GLOBALS['TL_LANG']['tl_iso_groups']['product_type'],
+			'exclude'					=> true,
+			'inputType'					=> 'select',
+			'options_callback'			=> array('Isotope\ProductCallbacks', 'getProductTypes'),
+			'eval'						=> array('includeBlankOption'=>true, 'tl_class'=>'w50')
+ 		),
     )
 );
