@@ -1,6 +1,13 @@
 Isotope eCommerce Changelog
 ===========================
 
+Version 1.4.? (2013-??-??)
+----------------------------
+
+### Fixed
+- Price was 0.00 if there is only one product variant
+
+
 Version 1.4.rc2 (2013-01-22)
 ----------------------------
 
