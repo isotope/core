@@ -517,8 +517,11 @@ $GLOBALS['ISO_LANG']['CUR']['ZWL'] = 'ZWL - Zimbabwe Dollar';
 /**
  * Currency symbols
  */
-$GLOBALS['ISO_LANG']['CUR_SYMBOL']['USD'] = '$';
+$GLOBALS['ISO_LANG']['CUR_SYMBOL']['CHF'] = 'Fr.';
+$GLOBALS['ISO_LANG']['CUR_SYMBOL']['DKK'] = 'Kr.';
 $GLOBALS['ISO_LANG']['CUR_SYMBOL']['EUR'] = '€';
 $GLOBALS['ISO_LANG']['CUR_SYMBOL']['GBP'] = '£';
 $GLOBALS['ISO_LANG']['CUR_SYMBOL']['JPY'] = '¥';
-
+$GLOBALS['ISO_LANG']['CUR_SYMBOL']['NOK'] = 'Kr.';
+$GLOBALS['ISO_LANG']['CUR_SYMBOL']['SEK'] = 'Kr.';
+$GLOBALS['ISO_LANG']['CUR_SYMBOL']['USD'] = '$';

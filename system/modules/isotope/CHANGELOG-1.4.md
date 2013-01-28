@@ -4,6 +4,9 @@ Isotope eCommerce Changelog
 Version 1.4.? (2013-??-??)
 ----------------------------
 
+### Improved
+- Added short name for known "Krone" and "Franc" currencies
+
 ### Fixed
 - Price was 0.00 if there is only one product variant
 
