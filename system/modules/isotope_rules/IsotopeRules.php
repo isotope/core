@@ -95,11 +95,23 @@ class IsotopeRules extends Controller
 
 			while( $objRules->next() )
 			{
-				// Cart item quantity
-				if ($objRules->quantityMode == 'product_quantity' && (($objRules->minItemQuantity > 0 && $objRules->minItemQuantity > $objSource->quantity_requested) || ($objRules->maxItemQuantity > 0 && $objRules->maxItemQuantity < $objSource->quantity_requested)))
-				{
-					continue;
-				}
+    			// Check cart quantity
+    			if ($objRules->minItemQuantity > 0 || $objRules->maxItemQuantity > 0)
+    			{
+        			if ($objRules->quantityMode == 'cart_products' || $objRules->quantityMode == 'cart_items')
+        			{
+        				$intTotal = 0;
+        				foreach ($this->Isotope->Cart->getProducts() as $objProduct)
+        				{
+      						$intTotal += $objRules->quantityMode == 'cart_items' ? $objProduct->quantity_requested : 1;
+        				}
+        			}
+
+    				if (($objRules->minItemQuantity > 0 && $objRules->minItemQuantity > $intTotal) || ($objRules->maxItemQuantity > 0 && $objRules->maxItemQuantity < $intTotal))
+    				{
+    					continue;
+    				}
+    			}
 
 				// We're unable to apply variant price rules to low_price (see #3189)
 				if ($strField == 'low_price' && $objRules->productRestrictions == 'variants')
