@@ -13,14 +13,12 @@
  * @author     Fred Bliss <fred.bliss@intelligentspark.com>
  */
 
-
 /**
  * Fields
  */
 $GLOBALS['TL_LANG']['tl_iso_related_categories']['name']			= array('Category name', 'Please enter a name for this category.');
 $GLOBALS['TL_LANG']['tl_iso_related_categories']['label']			= array('Label', 'The label is an alternative name for frontend display.');
 $GLOBALS['TL_LANG']['tl_iso_related_categories']['jumpTo']			= array('Redirect page', 'Select the page where product reader is available. If you don\'t select one, the current page will be used.');
-
 
 /**
  * Buttons
@@ -33,7 +31,6 @@ $GLOBALS['TL_LANG']['tl_iso_related_categories']['delete']			= array('Delete cat
 $GLOBALS['TL_LANG']['tl_iso_related_categories']['show']			= array('Category details', 'Show details of category ID %s');
 $GLOBALS['TL_LANG']['tl_iso_related_categories']['pasteafter']		= array('Paste after', 'Paste after category ID %s');
 $GLOBALS['TL_LANG']['tl_iso_related_categories']['pasteinto']		= array('Paste into', 'Paste into category ID %s');
-
 
 /**
  * Legends

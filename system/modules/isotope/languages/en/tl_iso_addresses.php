@@ -13,7 +13,6 @@
  * @author     Fred Bliss <fred.bliss@intelligentspark.com>
  */
 
-
 /**
  * Fields
  */
@@ -36,7 +35,6 @@ $GLOBALS['TL_LANG']['tl_iso_addresses']['email']				= array('E-mail address', 'P
 $GLOBALS['TL_LANG']['tl_iso_addresses']['isDefaultBilling']		= array('Default Billing Address', 'Is this your default billing address?');
 $GLOBALS['TL_LANG']['tl_iso_addresses']['isDefaultShipping']	= array('Default Shipping Address', 'Is this your default shipping address?');
 
-
 /**
  * Legends
  */
@@ -46,7 +44,6 @@ $GLOBALS['TL_LANG']['tl_iso_addresses']['address_legend']		= 'Address details';
 $GLOBALS['TL_LANG']['tl_iso_addresses']['contact_legend']		= 'Contact details';
 $GLOBALS['TL_LANG']['tl_iso_addresses']['default_legend']		= 'Default address';
 
-
 /**
  * Reference
  */
@@ -54,7 +51,6 @@ $GLOBALS['TL_LANG']['tl_iso_addresses']['personalData']			= 'Personal data';
 $GLOBALS['TL_LANG']['tl_iso_addresses']['addressDetails']		= 'Address details';
 $GLOBALS['TL_LANG']['tl_iso_addresses']['contactDetails']		= 'Contact details';
 $GLOBALS['TL_LANG']['tl_iso_addresses']['loginDetails']			= 'Default address';
-
 
 /**
  * Buttons

@@ -14,7 +14,6 @@
  * @author     Christian de la Haye <service@delahaye.de>
  */
 
-
 /**
  * Fields
  */
@@ -65,7 +64,6 @@ $GLOBALS['TL_LANG']['tl_iso_config']['limitMemberCountries']			= array('Limit me
 $GLOBALS['TL_LANG']['tl_iso_config']['gallery']							= array('Product image gallery', 'Different image galleries can be developed to present media files in a custom style.');
 $GLOBALS['TL_LANG']['tl_iso_config']['imageSizes']						= array('Image sizes', 'You can create custom image sizes for use in your templates. The default sizes are "gallery", "thumbnail", "medium" and "large".');
 
-
 /**
  * Reference
  */
@@ -96,7 +94,6 @@ $GLOBALS['TL_LANG']['tl_iso_config']['fwMandatory']						= 'Mandatory';
 $GLOBALS['TL_LANG']['tl_iso_config']['ecb.int']							= 'European Central Bank';
 $GLOBALS['TL_LANG']['tl_iso_config']['admin.ch']						= 'Swiss Federal Department of Finance';
 
-
 /**
  * Buttons
  */
@@ -105,7 +102,6 @@ $GLOBALS['TL_LANG']['tl_iso_config']['edit']   							= array('Edit configuratio
 $GLOBALS['TL_LANG']['tl_iso_config']['copy']   							= array('Copy configuration', 'Copy store configuration ID %s.');
 $GLOBALS['TL_LANG']['tl_iso_config']['delete'] 							= array('Delete configuration', 'Delete store configuration ID %s.');
 $GLOBALS['TL_LANG']['tl_iso_config']['show']   							= array('Show configuration details', 'Show details for store configuration ID %s.');
-
 
 /**
  * Legends

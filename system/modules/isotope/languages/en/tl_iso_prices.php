@@ -13,7 +13,6 @@
  * @author     Fred Bliss <fred.bliss@intelligentspark.com>
  */
 
-
 /**
  * Fields
  */
@@ -24,7 +23,6 @@ $GLOBALS['TL_LANG']['tl_iso_prices']['member_group']	= array('Member group', 'Se
 $GLOBALS['TL_LANG']['tl_iso_prices']['start']			= array('Use from', 'Do not use the price on the website before this day.');
 $GLOBALS['TL_LANG']['tl_iso_prices']['stop']			= array('Use until', 'Do not use the price on the website after this day.');
 
-
 /**
  * Buttons
  */
@@ -34,13 +32,11 @@ $GLOBALS['TL_LANG']['tl_iso_prices']['copy']			= array('Duplicate price', 'Dupli
 $GLOBALS['TL_LANG']['tl_iso_prices']['delete']			= array('Delete price', 'Delete price ID %s');
 $GLOBALS['TL_LANG']['tl_iso_prices']['show']			= array('Price details', 'Show details of price ID %s');
 
-
 /**
  * References
  */
 $GLOBALS['TL_LANG']['tl_iso_prices']['price_tier_columns']['min']	= array('Quantity (min)');
 $GLOBALS['TL_LANG']['tl_iso_prices']['price_tier_columns']['price']	= array('Price');
-
 
 /**
  * Legends

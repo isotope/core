@@ -13,7 +13,6 @@
  * @author     Fred Bliss <fred.bliss@intelligentspark.com>
  */
 
-
 /**
  * Fields
  */
@@ -69,7 +68,6 @@ $GLOBALS['TL_LANG']['tl_iso_payment_modules']['guests']         			= array('Show
 $GLOBALS['TL_LANG']['tl_iso_payment_modules']['debug']						= array('Debug mode', 'For testing without actually capturing for payment.');
 $GLOBALS['TL_LANG']['tl_iso_payment_modules']['enabled']					= array('Enabled', 'Check here if the payment module should be enabled in the store.');
 
-
 /**
  * References
  */
@@ -111,7 +109,6 @@ $GLOBALS['TL_LANG']['tl_iso_payment_modules']['price_legend']		= 'Price';
 $GLOBALS['TL_LANG']['tl_iso_payment_modules']['template_legend']	= 'Template';
 $GLOBALS['TL_LANG']['tl_iso_payment_modules']['expert_legend']		= 'Expert settings';
 $GLOBALS['TL_LANG']['tl_iso_payment_modules']['enabled_legend']		= 'Enabled settings';
-
 
 /**
  * Buttons

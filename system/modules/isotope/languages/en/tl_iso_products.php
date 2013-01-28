@@ -13,7 +13,6 @@
  * @author     Fred Bliss <fred.bliss@intelligentspark.com>
  */
 
-
 /**
  * Fields
  */
@@ -43,7 +42,6 @@ $GLOBALS['TL_LANG']['tl_iso_products']['stop']					= array('Stop date', 'Do not 
 $GLOBALS['TL_LANG']['tl_iso_products']['variant_attributes']	= array('Variant setup', 'Please select the combination of values for this variant.');
 $GLOBALS['TL_LANG']['tl_iso_products']['inherit']				= array('Inherited attributes', 'Check the fields you want to inherit from base product.');
 
-
 /**
  * Reference
  */
@@ -68,7 +66,6 @@ $GLOBALS['TL_LANG']['tl_iso_products']['mmTranslateAll']		= array('All', 'Do not
 $GLOBALS['TL_LANG']['tl_iso_products']['existing_option_set']	= 'Select an existing product option set';
 $GLOBALS['TL_LANG']['tl_iso_products']['new_option_set']		= 'Create a new product option set';
 $GLOBALS['TL_LANG']['tl_iso_products']['variantValuesLabel']	= 'Variant';
-
 
 /**
  * Buttons
@@ -99,7 +96,6 @@ $GLOBALS['TL_LANG']['tl_iso_products']['quick_edit']		= array('Quick-edit varian
 $GLOBALS['TL_LANG']['tl_iso_products']['downloads']			= array('Downloads', 'Edit downloads for product ID %s');
 $GLOBALS['TL_LANG']['tl_iso_products']['prices']			= array('Manage prices', 'Manage prices for product ID %s');
 
-
 /**
  * Legends
  */
@@ -113,7 +109,6 @@ $GLOBALS['TL_LANG']['tl_iso_products']['media_legend']		= 'Media Management';
 $GLOBALS['TL_LANG']['tl_iso_products']['expert_legend']		= 'Expert settings';
 $GLOBALS['TL_LANG']['tl_iso_products']['publish_legend']	= 'Publishing';
 $GLOBALS['TL_LANG']['tl_iso_products']['variant_legend']	= 'Product variant setup';
-
 
 /**
  * Table format

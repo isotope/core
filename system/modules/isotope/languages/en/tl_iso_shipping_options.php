@@ -13,8 +13,6 @@
  * @author     Fred Bliss <fred.bliss@intelligentspark.com>
  */
 
-
-
 /**
  * Fields
  */
@@ -27,7 +25,6 @@ $GLOBALS['TL_LANG']['tl_iso_shipping_options']['weight_from']		= array('Weight f
 $GLOBALS['TL_LANG']['tl_iso_shipping_options']['weight_to']			= array('Weight to', 'If overall weight of all products in cart is less than this, the rate will match. Make sure you set the correct weight unit in module settings.');
 $GLOBALS['TL_LANG']['tl_iso_shipping_options']['enabled']			= array('Enabled', 'Is the rate available for use in the store?');
 
-
 /**
  * Reference
  */
@@ -37,7 +34,6 @@ $GLOBALS['TL_LANG']['tl_iso_shipping_options']['enabled']			= array('Enabled', '
  */
 $GLOBALS['TL_LANG']['tl_iso_shipping_options']['general_legend']	= 'General information';
 $GLOBALS['TL_LANG']['tl_iso_shipping_options']['config_legend']		= 'Configuration';
-
 
 /**
  * Buttons

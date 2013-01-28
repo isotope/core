@@ -13,7 +13,6 @@
  * @author     Christian de la Haye <service@delahaye.de>
  */
 
-
 /**
  * Errors
  */
@@ -46,7 +45,6 @@ $GLOBALS['TL_LANG']['ERR']['addressDoesNotExist']			= 'This address does not exi
 $GLOBALS['TL_LANG']['ERR']['noAddressBookEntries']			= 'You have no address book entries.';
 $GLOBALS['TL_LANG']['ERR']['cartMinSubtotal']				= 'The minimum order amount is %s. Please add more products before checkout.';
 $GLOBALS['ISO_LANG']['ERR']['imageInFallback']              = 'This image has already been assigned to the fallback language.';
-
 
 /**
  * Miscellaneous
@@ -131,7 +129,6 @@ $GLOBALS['TL_LANG']['MSC']['updateCartBT']				= 'Update Cart';
 $GLOBALS['TL_LANG']['MSC']['orderStatusHeadline']		= 'Order Status: %s';
 $GLOBALS['TL_LANG']['MSC']['checkboutStepBack']			= 'Go back to step "%s"';
 
-
 //Addresses
 $GLOBALS['TL_LANG']['MSC']['createNewAddressLabel']		= 'Create New Address';
 $GLOBALS['TL_LANG']['MSC']['useBillingAddress']			= 'Use billing address';
@@ -168,12 +165,10 @@ $GLOBALS['TL_LANG']['MSC']['z_to_a'] = 'Z to A';
 $GLOBALS['TL_LANG']['MSC']['old_to_new'] = 'earlier to later';
 $GLOBALS['TL_LANG']['MSC']['new_to_old'] = 'later to earlier';
 
-
 /**
  * Content elements
  */
 $GLOBALS['TL_LANG']['CTE']['isotope']	= 'Isotope eCommerce';
-
 
 /**
  * Isotope module labels
@@ -222,13 +217,11 @@ $GLOBALS['TL_LANG']['ISO']['backendPaymentNoInfo']			= 'This payment module does
 $GLOBALS['TL_LANG']['ISO']['backendShippingNoInfo']			= 'This shipping module does not provide additional information.';
 $GLOBALS['TL_LANG']['MSC']['paypalTransactionOnline']       = 'Click here to view this PayPal transaction online';
 
-
 /**
  * Errors
  */
 $GLOBALS['ISO_LANG']['ERR']['datepickerRgxp']		= 'Select an appropriate field validation (date, time, date and time) to enable the date picker.';
 $GLOBALS['ISO_LANG']['ERR']['emptyDownloadsFolder'] = 'The selected folder is empty.';
-
 
 /**
  * Miscellaneous
@@ -245,7 +238,6 @@ $GLOBALS['ISO_LANG']['MSC']['splittedTaxRate']		= 'Splitted';
 $GLOBALS['ISO_LANG']['MSC']['newOrders']			= 'You have %s order(s) with status "%s"';
 $GLOBALS['ISO_LANG']['MSC']['checkoutStep']			= 'Step %s of %s (%s) - ';
 
-
 /**
  * Shipping modules
  */
@@ -255,7 +247,6 @@ $GLOBALS['ISO_LANG']['SHIP']['ordertotal']		= array('Order total-based shipping'
 $GLOBALS['ISO_LANG']['SHIP']['collection']		= array('Collection');
 $GLOBALS['ISO_LANG']['SHIP']['ups']				= array('UPS Live Rates and Service shipping');
 $GLOBALS['ISO_LANG']['SHIP']['usps']				= array('USPS Live Rates and Service shipping');
-
 
 /**
  * Payment modules
@@ -271,7 +262,6 @@ $GLOBALS['ISO_LANG']['PAY']['sparkasse']        = array('Sparkasse');
 $GLOBALS['ISO_LANG']['PAY']['expercash']        = array('ExperCash');
 $GLOBALS['ISO_LANG']['PAY']['payone']           = array('PayOne');
 
-
 /**
  * Galleries
  */
@@ -279,12 +269,10 @@ $GLOBALS['ISO_LANG']['GAL']['default']			= array('Default gallery (Lightbox/Medi
 $GLOBALS['ISO_LANG']['GAL']['inline']			= array('Inline gallery', 'Clicking on a gallery image will replace the main image.');
 $GLOBALS['ISO_LANG']['GAL']['zoom'] = array('Inline gallery with zoom effect', 'In addition to the behaviour of inline gallery, it also adds an image zoom feature to the main image.');
 
-
 /**
  * Product types
  */
 $GLOBALS['ISO_LANG']['PRODUCT']['standard']			= array('Standard product', 'A default product. Select this if nothing else matches.');
-
 
 /**
  * Credit card types
@@ -311,7 +299,6 @@ $GLOBALS['ISO_LANG']['CCT']['uatp']					= 'Universal Air Travel Program';
 $GLOBALS['ISO_LANG']['CCT']['maestro_intl']			= 'Maestro International';
 $GLOBALS['ISO_LANG']['CCT']['ge_money_uk']			= 'GE Money UK';
 
-
 /**
  * Weight Units
  * http://www.metric-conversions.org/weight/weight-conversions.htm
@@ -326,7 +313,6 @@ $GLOBALS['ISO_LANG']['WGT']['lb']					= array('Pound (lb)', 'A unit of mass equa
 $GLOBALS['ISO_LANG']['WGT']['st']					= array('Stone (st)', 'A British measurement of mass that equals fourteen pounds.');
 $GLOBALS['ISO_LANG']['WGT']['grain']				= array('Grain', '1/7000 pound; equals a troy grain or 64.799 milligrams.');
 
-
 /**
  * Attributes
  */
@@ -340,7 +326,6 @@ $GLOBALS['ISO_LANG']['ATTR']['conditionalselect']	= array('Conditional Select-Me
 $GLOBALS['ISO_LANG']['ATTR']['fileTree']			= array('File tree', 'A file tree for single or multiple files and folders.');
 $GLOBALS['ISO_LANG']['ATTR']['downloads']			= array('Downloads', 'Download files from the product, e.g. manuals, data sheets etc.');
 $GLOBALS['ISO_LANG']['ATTR']['upload']				= array('File upload', 'A single-line input field to upload a local file to the server.');
-
 
 /**
  * Currencies
@@ -503,7 +488,6 @@ $GLOBALS['ISO_LANG']['CUR']['YER'] = 'YER - Yemeni Riyal';
 $GLOBALS['ISO_LANG']['CUR']['ZAR'] = 'ZAR - Rand';
 $GLOBALS['ISO_LANG']['CUR']['ZMK'] = 'ZMK - Zambian Kwacha';
 $GLOBALS['ISO_LANG']['CUR']['ZWL'] = 'ZWL - Zimbabwe Dollar';
-
 
 /**
  * Currency symbols

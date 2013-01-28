@@ -12,7 +12,6 @@
  * @author     Fred Bliss <fred.bliss@intelligentspark.com>
  */
 
-
 /**
  * Backend Modules
  */
@@ -20,7 +19,6 @@ $GLOBALS['TL_LANG']['MOD']['isotope']					= 'Isotope eCommerce';
 $GLOBALS['TL_LANG']['MOD']['iso_products']				= array('Product management','');
 $GLOBALS['TL_LANG']['MOD']['iso_orders']				= array('Orders', '');
 $GLOBALS['TL_LANG']['MOD']['iso_setup']					= array('Store configuration','');
-
 
 /**
  * Frontend modules
@@ -38,7 +36,6 @@ $GLOBALS['TL_LANG']['FMD']['iso_orderhistory']			= array('Order History', 'Order
 $GLOBALS['TL_LANG']['FMD']['iso_orderdetails']			= array('Order Details', 'Order reader that allows customers to view order history details');
 $GLOBALS['TL_LANG']['FMD']['iso_configswitcher']		= array('Store Config Switcher', 'Switch between store configuration to change currency and other settings.');
 $GLOBALS['TL_LANG']['FMD']['iso_relatedproducts']		= array('Related products', 'List products related to the current one.');
-
 
 /**
  * Isotope Modules

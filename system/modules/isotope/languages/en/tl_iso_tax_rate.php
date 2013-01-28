@@ -13,7 +13,6 @@
  * @author     Fred Bliss <fred.bliss@intelligentspark.com>
  */
 
-
 /**
  * Fields
  */
@@ -31,7 +30,6 @@ $GLOBALS['TL_LANG']['tl_iso_tax_rate']['groups']		= array('Member Groups', 'Rest
 $GLOBALS['TL_LANG']['tl_iso_tax_rate']['protected']		= array('Protect module', 'Apply the tax rate to certain member groups only.');
 $GLOBALS['TL_LANG']['tl_iso_tax_rate']['guests']		= array('Apply to guests only', 'Do not apply tax rate if a member is logged in.');
 
-
 /**
  * Buttons
  */
@@ -41,13 +39,11 @@ $GLOBALS['TL_LANG']['tl_iso_tax_rate']['copy']			= array('Copy tax rate', 'Copy 
 $GLOBALS['TL_LANG']['tl_iso_tax_rate']['delete']		= array('Delete tax rate', 'Delete tax rate ID %s');
 $GLOBALS['TL_LANG']['tl_iso_tax_rate']['show']			= array('Order Details', 'Show details of tax rate ID %s');
 
-
 /**
  * Reference
  */
 $GLOBALS['TL_LANG']['tl_iso_tax_rate']['billing']		= 'Billing Address';
 $GLOBALS['TL_LANG']['tl_iso_tax_rate']['shipping']		= 'Shipping Address';
-
 
 /**
  * Legends

@@ -13,13 +13,11 @@
  * @author     Fred Bliss <fred.bliss@intelligentspark.com>
  */
 
-
 /**
  * Fields
  */
 $GLOBALS['TL_LANG']['tl_iso_related_products']['category']			= array('Category', 'Select a category.');
 $GLOBALS['TL_LANG']['tl_iso_related_products']['products']			= array('Products', 'Search for your products by keywords (found in name, alias, sku or description) and add products by checking the checkbox.');
-
 
 /**
  * Buttons
@@ -33,8 +31,6 @@ $GLOBALS['TL_LANG']['tl_iso_related_products']['show']				= array('Category deta
 $GLOBALS['TL_LANG']['tl_iso_related_products']['editheader']		= array('Edit product', 'Edit this product');
 $GLOBALS['TL_LANG']['tl_iso_related_products']['pasteafter']		= array('Paste after', 'Paste after category ID %s');
 $GLOBALS['TL_LANG']['tl_iso_related_products']['pastenew']			= array('Add new at the top', 'Add new after category ID %s');
-
-
 
 /**
  * Legends

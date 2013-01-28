@@ -13,7 +13,6 @@
  * @author     Fred Bliss <fred.bliss@intelligentspark.com>
  */
 
-
 /**
  * Fields
  */
@@ -29,7 +28,6 @@ $GLOBALS['TL_LANG']['tl_iso_mail']['documentTemplate']	= array('Document templat
 $GLOBALS['TL_LANG']['tl_iso_mail']['documentTitle']		= array('Document title', 'Please specify a title for the attached document.');
 $GLOBALS['TL_LANG']['tl_iso_mail']['source']			= array('Source files', 'Please choose one or more .imt files from the files directory.');
 
-
 /**
  * Buttons
  */
@@ -42,7 +40,6 @@ $GLOBALS['TL_LANG']['tl_iso_mail']['show']			= array('Details', 'Details for e-m
 $GLOBALS['TL_LANG']['tl_iso_mail']['importMail']	= array('Import', 'Import email template');
 $GLOBALS['TL_LANG']['tl_iso_mail']['exportMail']	= array('Export', 'Export e-mail template ID %s');
 
-
 /**
  * Legends
  */
@@ -50,7 +47,6 @@ $GLOBALS['TL_LANG']['tl_iso_mail']['name_legend']		= 'Name';
 $GLOBALS['TL_LANG']['tl_iso_mail']['address_legend']	= 'Address';
 $GLOBALS['TL_LANG']['tl_iso_mail']['document_legend']	= 'Attachment';
 $GLOBALS['TL_LANG']['tl_iso_mail']['expert_legend']		= 'Expert Legend';
-
 
 /**
  * References

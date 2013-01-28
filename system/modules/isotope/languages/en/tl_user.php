@@ -13,7 +13,6 @@
  * @author     Fred Bliss <fred.bliss@intelligentspark.com>
  */
 
-
 /**
  * Fields
  */
@@ -34,7 +33,6 @@ $GLOBALS['TL_LANG']['tl_user']['iso_configs']			= array('Allowed store configura
 $GLOBALS['TL_LANG']['tl_user']['iso_configp']			= array('Store configuration permissions', 'Her you can define the store configuration permissions.');
 $GLOBALS['TL_LANG']['tl_user']['iso_groups']			= array('Allowed product groups', 'Limit access to product groups for this user group. Gets inherited.');
 $GLOBALS['TL_LANG']['tl_user']['iso_groupp']			= array('Product group permissions', 'Here you can define the product group permissions.');
-
 
 /**
  * Legends

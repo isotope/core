@@ -14,7 +14,6 @@
  * @author     Blair Winans <blair@winanscreative.com>
  */
 
-
 /**
  * Fields
  */
@@ -63,7 +62,6 @@ $GLOBALS['TL_LANG']['tl_module']['iso_forward_review']			= array('Forward to rev
 $GLOBALS['TL_LANG']['tl_module']['iso_related_categories']		= array('Related categories', 'Select the categories to show products of.');
 $GLOBALS['TL_LANG']['tl_module']['iso_includeMessages']			= array('Include messaging', 'This setting allows the module to include any errors, notifications, or confirmations the visitor should be aware of.');
 $GLOBALS['TL_LANG']['tl_module']['iso_continueShopping']		= array('Enable "Continue shopping" button', 'Add a link to the currently added product to the cart.');
-
 
 /**
  * References

@@ -13,7 +13,6 @@
  * @author     Fred Bliss <fred.bliss@intelligentspark.com>
  */
 
-
 /**
  * Fields
  */
@@ -24,7 +23,6 @@ $GLOBALS['TL_LANG']['tl_iso_tax_class']['includes']					= array('Tax rate includ
 $GLOBALS['TL_LANG']['tl_iso_tax_class']['label']					= array('Include label', 'A label for orders to present for subtracted taxes (if included tax does not match). Default tax rate label will be used if this is blank.');
 $GLOBALS['TL_LANG']['tl_iso_tax_class']['rates']					= array('Apply tax rates', 'Add these tax rates to products with this tax class.');
 
-
 /**
  * Buttons
  */
@@ -33,7 +31,6 @@ $GLOBALS['TL_LANG']['tl_iso_tax_class']['edit']   = array('Edit tax class', 'Edi
 $GLOBALS['TL_LANG']['tl_iso_tax_class']['copy']   = array('Copy tax class', 'Copy tax class ID %s');
 $GLOBALS['TL_LANG']['tl_iso_tax_class']['delete'] = array('Delete tax class', 'Delete tax class ID %s');
 $GLOBALS['TL_LANG']['tl_iso_tax_class']['show']   = array('Order Details', 'Show details of tax class ID %s');
-
 
 /**
  * Legends

@@ -13,7 +13,6 @@
  * @author     Fred Bliss <fred.bliss@intelligentspark.com>
  */
 
-
 /**
  * Fields
  */
@@ -24,7 +23,6 @@ $GLOBALS['TL_LANG']['tl_iso_downloads']['description']			= array('Description', 
 $GLOBALS['TL_LANG']['tl_iso_downloads']['downloads_allowed']	= array('Downloads allowed', 'The number of times these file(s) can be downloaded per order (multiplied by the quantity sold). Enter 0 for unlimited downloads.');
 $GLOBALS['TL_LANG']['tl_iso_downloads']['expires']				= array('Expiration', 'Define if the download(s) expires after a certain time period.');
 
-
 /**
  * Buttons
  */
@@ -33,7 +31,6 @@ $GLOBALS['TL_LANG']['tl_iso_downloads']['edit']					= array('Edit download', 'Ed
 $GLOBALS['TL_LANG']['tl_iso_downloads']['copy']					= array('Duplicate download', 'Duplicate download ID %s');
 $GLOBALS['TL_LANG']['tl_iso_downloads']['delete']				= array('Delete download', 'Delete download ID %s');
 $GLOBALS['TL_LANG']['tl_iso_downloads']['show']					= array('Download details', 'Show details of download ID %s');
-
 
 /**
  * Reference
@@ -46,7 +43,6 @@ $GLOBALS['TL_LANG']['tl_iso_downloads']['days']					= 'Days';
 $GLOBALS['TL_LANG']['tl_iso_downloads']['weeks']				= 'Weeks';
 $GLOBALS['TL_LANG']['tl_iso_downloads']['months']				= 'Months';
 $GLOBALS['TL_LANG']['tl_iso_downloads']['years']				= 'Years';
-
 
 /**
  * Legends

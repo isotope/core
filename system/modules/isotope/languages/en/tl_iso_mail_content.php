@@ -13,7 +13,6 @@
  * @author     Fred Bliss <fred.bliss@intelligentspark.com>
  */
 
-
 /**
  * Fields
  */
@@ -33,7 +32,6 @@ $GLOBALS['TL_LANG']['tl_iso_mail_content']['edit']			= array('Edit Language', 'E
 $GLOBALS['TL_LANG']['tl_iso_mail_content']['copy']			= array('Copy Language', 'Copy Language ID %s');
 $GLOBALS['TL_LANG']['tl_iso_mail_content']['delete']		= array('Delete Language', 'Delete Language ID %s');
 $GLOBALS['TL_LANG']['tl_iso_mail_content']['show']			= array('Details', 'Details for Language ID %s');
-
 
 /**
  * Legends

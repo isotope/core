@@ -13,7 +13,6 @@
  * @author     Fred Bliss <fred.bliss@intelligentspark.com>
  */
 
-
 /**
  * Fields
  */
@@ -38,12 +37,10 @@ $GLOBALS['TL_LANG']['tl_iso_orders']['cc_type']				= array('Card Type', 'The typ
 $GLOBALS['TL_LANG']['tl_iso_orders']['cc_exp']				= array('Expiration', 'The expiration date of the credit card');
 $GLOBALS['TL_LANG']['tl_iso_orders']['notes']				= array('Order notes','If you would like to convey information to other backend users, please do so here.');
 
-
 /**
  * Reference
  */
 $GLOBALS['TL_LANG']['tl_iso_orders']['orderStatusEmail']		= 'The status of your order has been updated and the client has been notified by email.';
-
 
 /**
  * Buttons
@@ -59,7 +56,6 @@ $GLOBALS['TL_LANG']['tl_iso_orders']['print_order']			= array('Print this order'
 $GLOBALS['TL_LANG']['tl_iso_orders']['tools']				= array('Tools', 'More options for order management.');
 $GLOBALS['TL_LANG']['tl_iso_orders']['export_emails']		= array('Export Order Emails','Export all emails for those who have ordered.');
 $GLOBALS['TL_LANG']['tl_iso_orders']['print_invoices']		= array('Print Invoices','Print one or more invoices into a single document of a certain order status.');
-
 
 /**
  * Legends
