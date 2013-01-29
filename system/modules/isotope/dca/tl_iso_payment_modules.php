@@ -395,7 +395,7 @@ $GLOBALS['TL_DCA']['tl_iso_payment_modules'] = array
             'exclude'                 => true,
             'inputType'               => 'select',
             'options'                 => array('elv', 'cc', 'dc', 'vor', 'rec', 'sb', 'wlt'),
-            'reference'               => &$GLOBALS['TL_LANG']['MSG']['payone'],
+            'reference'               => &$GLOBALS['TL_LANG']['tl_iso_payment_modules']['payone'],
             'eval'                    => array('mandatory'=>true, 'includeBlankOption'=>true, 'tl_class'=>'w50'),
         ),
         'payone_aid' => array
