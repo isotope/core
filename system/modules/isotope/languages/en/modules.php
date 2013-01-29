@@ -40,7 +40,7 @@ $GLOBALS['TL_LANG']['FMD']['iso_relatedproducts']		= array('Related products', '
 /**
  * Isotope Modules
  */
-$GLOBALS['TL_LANG']['ISO']['config_module']				= 'Isotope eCommerce configuration (Version: %s)';
+$GLOBALS['TL_LANG']['IMD']['config_module']				= 'Isotope eCommerce configuration (Version: %s)';
 $GLOBALS['TL_LANG']['IMD']['product']					= 'Products';
 $GLOBALS['TL_LANG']['IMD']['attributes']				= array('Attributes', 'Manage and create product attributes such as size, color, etc.');
 $GLOBALS['TL_LANG']['IMD']['producttypes']				= array('Product types', 'Manage and create product types from sets of attributes.');

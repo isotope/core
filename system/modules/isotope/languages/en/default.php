@@ -16,19 +16,19 @@
 /**
  * Errors
  */
-$GLOBALS['TL_LANG']['ERR']['systemColumn']					= 'Name "%s" is reserved for system use. Please choose a different name.';
-$GLOBALS['TL_LANG']['ERR']['noStoreConfigurationSet']		= 'No store configuration available';
-$GLOBALS['TL_LANG']['ERR']['noDefaultStoreConfiguration']	= 'Please create a default store configuration.';
-$GLOBALS['TL_LANG']['ERR']['emptyOrderHistory']				= 'You have not yet placed any orders.';
-$GLOBALS['TL_LANG']['ERR']['orderNotFound']					= 'The requested order was not found.';
-$GLOBALS['TL_LANG']['ERR']['isoLoginRequired']				= 'You must be logged in to checkout.';
-$GLOBALS['TL_LANG']['ERR']['variantDuplicate']				= 'A variant with this attributes is already available. Please select another combination.';
-$GLOBALS['TL_LANG']['ERR']['discount']						= 'Please enter whole numbers or decimals signed with + or - and optionally with a percentage.';
-$GLOBALS['TL_LANG']['ERR']['surcharge']						= 'Please enter whole numbers or decimals optionally with a percentage.';
-$GLOBALS['TL_LANG']['ERR']['orderFailed']					= 'Checkout failed. Please try again or choose another payment method.';
-$GLOBALS['TL_LANG']['ERR']['noAddressBookEntries']			= 'You have no address book entries.';
-$GLOBALS['TL_LANG']['ERR']['cartMinSubtotal']				= 'The minimum order amount is %s. Please add more products before checkout.';
-$GLOBALS['TL_LANG']['ERR']['imageInFallback']              = 'This image has already been assigned to the fallback language.';
+$GLOBALS['TL_LANG']['ERR']['systemColumn']                  = 'Name "%s" is reserved for system use. Please choose a different name.';
+$GLOBALS['TL_LANG']['ERR']['noStoreConfigurationSet']       = 'No store configuration available';
+$GLOBALS['TL_LANG']['ERR']['noDefaultStoreConfiguration']   = 'Please create a default store configuration.';
+$GLOBALS['TL_LANG']['ERR']['emptyOrderHistory']             = 'You have not yet placed any orders.';
+$GLOBALS['TL_LANG']['ERR']['orderNotFound']                 = 'The requested order was not found.';
+$GLOBALS['TL_LANG']['ERR']['isoLoginRequired']              = 'You must be logged in to checkout.';
+$GLOBALS['TL_LANG']['ERR']['variantDuplicate']              = 'A variant with this attributes is already available. Please select another combination.';
+$GLOBALS['TL_LANG']['ERR']['discount']                      = 'Please enter whole numbers or decimals signed with + or - and optionally with a percentage.';
+$GLOBALS['TL_LANG']['ERR']['surcharge']                     = 'Please enter whole numbers or decimals optionally with a percentage.';
+$GLOBALS['TL_LANG']['ERR']['orderFailed']                   = 'Checkout failed. Please try again or choose another payment method.';
+$GLOBALS['TL_LANG']['ERR']['noAddressBookEntries']          = 'You have no address book entries.';
+$GLOBALS['TL_LANG']['ERR']['cartMinSubtotal']               = 'The minimum order amount is %s. Please add more products before checkout.';
+$GLOBALS['TL_LANG']['ERR']['imageInFallback']               = 'This image has already been assigned to the fallback language.';
 $GLOBALS['TL_LANG']['ERR']['datepickerRgxp']                = 'Select an appropriate field validation (date, time, date and time) to enable the date picker.';
 $GLOBALS['TL_LANG']['ERR']['emptyDownloadsFolder']          = 'The selected folder is empty.';
 
@@ -36,154 +36,131 @@ $GLOBALS['TL_LANG']['ERR']['emptyDownloadsFolder']          = 'The selected fold
 /**
  * Miscellaneous
  */
-$GLOBALS['TL_LANG']['MSC']['editLanguage']			= 'Edit';
-$GLOBALS['TL_LANG']['MSC']['deleteLanguage']		= 'Delete';
-$GLOBALS['TL_LANG']['MSC']['defaultLanguage']		= 'Fallback language';
-$GLOBALS['TL_LANG']['MSC']['editingLanguage']		= 'ATTENTION: You are editing language-specific data!';
-$GLOBALS['TL_LANG']['MSC']['deleteLanguageConfirm']	= 'Are you sure you want to delete this language? There is no undo!';
-$GLOBALS['TL_LANG']['MSC']['undefinedLanguage']		= 'undefined';
-$GLOBALS['TL_LANG']['MSC']['copyFallback']			= 'Duplicate Fallback';
-$GLOBALS['TL_LANG']['MSC']['orderDetailsHeadline']	= 'Order no %s / %s';
-$GLOBALS['TL_LANG']['MSC']['payment_processing']	= 'Your payment is being processed. Please be patient...';
-$GLOBALS['TL_LANG']['MSC']['mmNoUploads']			= 'No files uploaded.';
-$GLOBALS['TL_LANG']['MSC']['mmUpload']				= 'Upload new file';
-$GLOBALS['TL_LANG']['MSC']['quantity']				= 'Quantity';
+$GLOBALS['TL_LANG']['MSC']['editLanguage']                      = 'Edit';
+$GLOBALS['TL_LANG']['MSC']['deleteLanguage']                    = 'Delete';
+$GLOBALS['TL_LANG']['MSC']['defaultLanguage']                   = 'Fallback language';
+$GLOBALS['TL_LANG']['MSC']['editingLanguage']                   = 'ATTENTION: You are editing language-specific data!';
+$GLOBALS['TL_LANG']['MSC']['deleteLanguageConfirm']             = 'Are you sure you want to delete this language? There is no undo!';
+$GLOBALS['TL_LANG']['MSC']['undefinedLanguage']                 = 'undefined';
+$GLOBALS['TL_LANG']['MSC']['copyFallback']                      = 'Duplicate Fallback';
+$GLOBALS['TL_LANG']['MSC']['orderDetailsHeadline']              = 'Order no %s / %s';
+$GLOBALS['TL_LANG']['MSC']['payment_processing']                = 'Your payment is being processed. Please be patient...';
+$GLOBALS['TL_LANG']['MSC']['mmNoUploads']                       = 'No files uploaded.';
+$GLOBALS['TL_LANG']['MSC']['mmUpload']                          = 'Upload new file';
+$GLOBALS['TL_LANG']['MSC']['quantity']                          = 'Quantity';
+$GLOBALS['TL_LANG']['MSC']['defaultSearchText']                 = 'search products';
+$GLOBALS['TL_LANG']['MSC']['downloadsLabel']                    = 'Your downloadable products';
+$GLOBALS['TL_LANG']['MSC']['priceRangeLabel']                   = '<span class="from">From</span> %s';
+$GLOBALS['TL_LANG']['MSC']['detailLabel']                       = 'View Details';
+$GLOBALS['TL_LANG']['MSC']['perPageLabel']                      = 'Products Per Page';
+$GLOBALS['TL_LANG']['MSC']['searchTermsLabel']                  = 'Keywords';
+$GLOBALS['TL_LANG']['MSC']['submitLabel']                       = 'Submit';
+$GLOBALS['TL_LANG']['MSC']['clearFiltersLabel']                 = 'Clear Filters';
+$GLOBALS['TL_LANG']['MSC']['buttonLabel']['update']             = 'Update';
+$GLOBALS['TL_LANG']['MSC']['buttonLabel']['add_to_cart']        = 'Add To Cart';
+$GLOBALS['TL_LANG']['MSC']['orderByLabel']                      = 'Order By:';
+$GLOBALS['TL_LANG']['MSC']['noProducts']                        = 'No products have been found.';
+$GLOBALS['TL_LANG']['MSC']['invalidProductInformation']         = "We're sorry, the product information you have requested is not showing up in our store. For further assistance please contact us.";
+$GLOBALS['TL_LANG']['MSC']['previousStep']                      = 'Back';
+$GLOBALS['TL_LANG']['MSC']['nextStep']                          = 'Continue';
+$GLOBALS['TL_LANG']['MSC']['confirmOrder']                      = 'Order';
+$GLOBALS['TL_LANG']['MSC']['noCategoriesAssociated']            = 'No categories are associated with this product.';
+$GLOBALS['TL_LANG']['MSC']['labelSubmit']                       = 'Submit';
+$GLOBALS['TL_LANG']['MSC']['removeProductLinkText']             = 'Remove';
+$GLOBALS['TL_LANG']['MSC']['noItemsInCart']                     = 'There are no items in your cart.';
+$GLOBALS['TL_LANG']['MSC']['addedToCart']                       = 'The selected product has been added to your shopping cart.';
+$GLOBALS['TL_LANG']['MSC']['cartMerged']                        = 'The products from your last visit have been readded. Please review your shopping cart items.';
+$GLOBALS['TL_LANG']['MSC']['removeProductLinkTitle']            = 'Remove %s from your cart';
+$GLOBALS['TL_LANG']['MSC']['subTotalLabel']                     = 'Order Subtotal: ';
+$GLOBALS['TL_LANG']['MSC']['shippingLabel']                     = 'Shipping';
+$GLOBALS['TL_LANG']['MSC']['paymentLabel']                      = 'Payment';
+$GLOBALS['TL_LANG']['MSC']['grandTotalLabel']                   = 'Order Total: ';
+$GLOBALS['TL_LANG']['MSC']['noPaymentModules']                  = 'No payment options are currently available';
+$GLOBALS['TL_LANG']['MSC']['noShippingModules']                 = 'No shipping options are currently available.';
+$GLOBALS['TL_LANG']['MSC']['noOrderEmails']                     = 'No orders emails found.';
+$GLOBALS['TL_LANG']['MSC']['noOrders']                          = 'No orders found.';
+$GLOBALS['TL_LANG']['MSC']['downloadsRemaining']                = '<br />%s downloads remaining';
+$GLOBALS['TL_LANG']['MSC']['cartBT']                            = 'Shopping Cart';
+$GLOBALS['TL_LANG']['MSC']['checkoutBT']                        = 'Proceed to Checkout';
+$GLOBALS['TL_LANG']['MSC']['continueShoppingBT']                = 'Continue shopping';
+$GLOBALS['TL_LANG']['MSC']['updateCartBT']                      = 'Update Cart';
+$GLOBALS['TL_LANG']['MSC']['orderStatusHeadline']               = 'Order Status: %s';
+$GLOBALS['TL_LANG']['MSC']['checkboutStepBack']                 = 'Go back to step "%s"';
+$GLOBALS['TL_LANG']['MSC']['createNewAddressLabel']             = 'Create New Address';
+$GLOBALS['TL_LANG']['MSC']['useBillingAddress']                 = 'Use billing address';
+$GLOBALS['TL_LANG']['MSC']['useCustomerAddress']                = 'Use customer address';
+$GLOBALS['TL_LANG']['MSC']['differentShippingAddress']          = 'Different shipping address';
+$GLOBALS['TL_LANG']['MSC']['editAddressLabel']                  = 'Edit';
+$GLOBALS['TL_LANG']['MSC']['deleteAddressLabel']                = 'Delete';
+$GLOBALS['TL_LANG']['MSC']['deleteAddressConfirm']              = 'Do you really want to delete this address? This cannot be undone.';
+$GLOBALS['TL_LANG']['MSC']['iso_invoice_title']                 = 'Invoice';
+$GLOBALS['TL_LANG']['MSC']['iso_order_status']                  = 'Status';
+$GLOBALS['TL_LANG']['MSC']['iso_order_date']                    = 'Order date';
+$GLOBALS['TL_LANG']['MSC']['iso_subtotal_header']               = 'Subtotal';
+$GLOBALS['TL_LANG']['MSC']['iso_order_items']                   = 'Items';
+$GLOBALS['TL_LANG']['MSC']['iso_order_sku']                     = 'SKU';
+$GLOBALS['TL_LANG']['MSC']['iso_quantity_header']               = 'Quantity';
+$GLOBALS['TL_LANG']['MSC']['iso_price_header']                  = 'Price';
+$GLOBALS['TL_LANG']['MSC']['low_to_high']                       = 'lo to hi';
+$GLOBALS['TL_LANG']['MSC']['high_to_low']                       = 'hi to lo';
+$GLOBALS['TL_LANG']['MSC']['a_to_z']                            = 'A to Z';
+$GLOBALS['TL_LANG']['MSC']['z_to_a']                            = 'Z to A';
+$GLOBALS['TL_LANG']['MSC']['old_to_new']                        = 'earlier to later';
+$GLOBALS['TL_LANG']['MSC']['new_to_old']                        = 'later to earlier';
+$GLOBALS['TL_LANG']['MSC']['pay_with_redirect'][0]              = 'Processing payment';
+$GLOBALS['TL_LANG']['MSC']['pay_with_redirect'][1]              = 'You will be redirected to the payment gateway website. If you are not automatically redirected, please click on the "Pay now" button.';
+$GLOBALS['TL_LANG']['MSC']['pay_with_redirect'][2]              = 'Pay now';
+$GLOBALS['TL_LANG']['MSC']['paypalTransactionOnline']           = 'Click here to view this PayPal transaction online';
+$GLOBALS['TL_LANG']['MSC']['productSingle']                     = '1 Product';
+$GLOBALS['TL_LANG']['MSC']['productMultiple']                   = '%s Products';
 
-$GLOBALS['TL_LANG']['MSC']['defaultSearchText'] = 'search products';
-$GLOBALS['TL_LANG']['MSC']['downloadsLabel']			= 'Your downloadable products';
-$GLOBALS['TL_LANG']['MSC']['priceRangeLabel'] = '<span class="from">From</span> %s';
-$GLOBALS['TL_LANG']['MSC']['detailLabel'] = 'View Details';
-$GLOBALS['TL_LANG']['MSC']['perPageLabel'] = 'Products Per Page';
-$GLOBALS['TL_LANG']['MSC']['searchTermsLabel'] = 'Keywords';
-$GLOBALS['TL_LANG']['MSC']['submitLabel'] = 'Submit';
-$GLOBALS['TL_LANG']['MSC']['clearFiltersLabel'] = 'Clear Filters';
-$GLOBALS['TL_LANG']['MSC']['buttonLabel']['update'] = 'Update';
-$GLOBALS['TL_LANG']['MSC']['buttonLabel']['add_to_cart'] = 'Add To Cart';
-$GLOBALS['TL_LANG']['MSC']['orderByLabel'] = 'Order By:';
+$GLOBALS['TL_LANG']['MSC']['shipping_address_message']          = 'Enter your shipping information or select an existing address.';
+$GLOBALS['TL_LANG']['MSC']['billing_address_message']           = 'Enter your billing information or select an existing address.';
+$GLOBALS['TL_LANG']['MSC']['billing_address_guest_message']     = 'Enter your billing information';
+$GLOBALS['TL_LANG']['MSC']['customer_address_message']          = 'Enter your customer information or select an existing address.';
+$GLOBALS['TL_LANG']['MSC']['customer_address_guest_message']    = 'Enter your customer information';
+$GLOBALS['TL_LANG']['MSC']['shipping_method_message']           = 'Select a shipping method.';
+$GLOBALS['TL_LANG']['MSC']['shipping_method_missing']           = 'Please select a shipping method.';
+$GLOBALS['TL_LANG']['MSC']['payment_method_message']            = 'Enter your payment information.';
+$GLOBALS['TL_LANG']['MSC']['payment_method_missing']            = 'Please select a payment method.';
+$GLOBALS['TL_LANG']['MSC']['order_review_message']              = 'Review and confirm your order details.';
+$GLOBALS['TL_LANG']['MSC']['checkout_shipping']                 = 'Shipping';
+$GLOBALS['TL_LANG']['MSC']['checkout_payment']                  = 'Payment';
+$GLOBALS['TL_LANG']['MSC']['checkout_review']                   = 'Review';
+$GLOBALS['TL_LANG']['MSC']['billing_address']                   = 'Billing Address';
+$GLOBALS['TL_LANG']['MSC']['shipping_address']                  = 'Shipping Address';
+$GLOBALS['TL_LANG']['MSC']['billing_shipping_address']          = 'Billing & Shipping Address';
+$GLOBALS['TL_LANG']['MSC']['customer_address']                  = 'Customer Address';
+$GLOBALS['TL_LANG']['MSC']['shipping_method']                   = 'Shipping Method';
+$GLOBALS['TL_LANG']['MSC']['payment_method']                    = 'Payment Method';
+$GLOBALS['TL_LANG']['MSC']['order_review']                      = 'Order Review';
+$GLOBALS['TL_LANG']['MSC']['changeCheckoutInfo']                = 'Change';
+$GLOBALS['TL_LANG']['MSC']['cc_num']                            = 'Credit card number';
+$GLOBALS['TL_LANG']['MSC']['cc_type']                           = 'Credit card type';
+$GLOBALS['TL_LANG']['MSC']['cc_ccv']                            = 'CCV number (3 or 4 digit code)';
+$GLOBALS['TL_LANG']['MSC']['cc_exp_month']                      = 'Expiration month';
+$GLOBALS['TL_LANG']['MSC']['cc_exp_year']                       = 'Expiration year';
+$GLOBALS['TL_LANG']['MSC']['backendPaymentNotFound']            = 'Payment module not found!';
+$GLOBALS['TL_LANG']['MSC']['backendShippingNotFound']           = 'Shipping module not found!';
+$GLOBALS['TL_LANG']['MSC']['backendPaymentNoInfo']              = 'This payment module does not provide additional information.';
+$GLOBALS['TL_LANG']['MSC']['backendShippingNoInfo']             = 'This shipping module does not provide additional information.';
 
-$GLOBALS['TL_LANG']['MSC']['noProducts'] = 'No products have been found.';
-$GLOBALS['TL_LANG']['MSC']['invalidProductInformation'] = "We're sorry, the product information you have requested is not showing up in our store. For further assistance please contact us.";
-
-$GLOBALS['TL_LANG']['MSC']['previousStep']	= 'Back';
-$GLOBALS['TL_LANG']['MSC']['nextStep']		= 'Continue';
-$GLOBALS['TL_LANG']['MSC']['confirmOrder']	= 'Order';
-
-$GLOBALS['TL_LANG']['MSC']['noCategoriesAssociated'] = 'No categories are associated with this product.';
-$GLOBALS['TL_LANG']['MSC']['labelSubmit'] = 'Submit';
-$GLOBALS['TL_LANG']['MSC']['removeProductLinkText'] = 'Remove';
-$GLOBALS['TL_LANG']['MSC']['noItemsInCart'] = 'There are no items in your cart.';
-$GLOBALS['TL_LANG']['MSC']['addedToCart'] = 'The selected product has been added to your shopping cart.';
-$GLOBALS['TL_LANG']['MSC']['cartMerged'] = 'The products from your last visit have been readded. Please review your shopping cart items.';
-$GLOBALS['TL_LANG']['MSC']['removeProductLinkTitle'] = 'Remove %s from your cart';
-$GLOBALS['TL_LANG']['MSC']['subTotalLabel'] = 'Order Subtotal: ';
-$GLOBALS['TL_LANG']['MSC']['shippingLabel'] = 'Shipping';
-$GLOBALS['TL_LANG']['MSC']['paymentLabel'] = 'Payment';
-$GLOBALS['TL_LANG']['MSC']['grandTotalLabel'] = 'Order Total: ';
-$GLOBALS['TL_LANG']['MSC']['noPaymentModules'] = 'No payment options are currently available';
-$GLOBALS['TL_LANG']['MSC']['noShippingModules'] = 'No shipping options are currently available.';
-$GLOBALS['TL_LANG']['MSC']['noOrderEmails'] = 'No orders emails found.';
-$GLOBALS['TL_LANG']['MSC']['noOrders'] = 'No orders found.';
-$GLOBALS['TL_LANG']['MSC']['downloadsRemaining'] = '<br />%s downloads remaining';
-
-$GLOBALS['TL_LANG']['MSC']['cartBT']					= 'Shopping Cart';
-$GLOBALS['TL_LANG']['MSC']['checkoutBT']				= 'Proceed to Checkout';
-$GLOBALS['TL_LANG']['MSC']['continueShoppingBT']		= 'Continue shopping';
-$GLOBALS['TL_LANG']['MSC']['updateCartBT']				= 'Update Cart';
-$GLOBALS['TL_LANG']['MSC']['orderStatusHeadline']		= 'Order Status: %s';
-$GLOBALS['TL_LANG']['MSC']['checkboutStepBack']			= 'Go back to step "%s"';
-
-//Addresses
-$GLOBALS['TL_LANG']['MSC']['createNewAddressLabel']		= 'Create New Address';
-$GLOBALS['TL_LANG']['MSC']['useBillingAddress']			= 'Use billing address';
-$GLOBALS['TL_LANG']['MSC']['useCustomerAddress']		= 'Use customer address';
-$GLOBALS['TL_LANG']['MSC']['differentShippingAddress']	= 'Different shipping address';
-
-$GLOBALS['TL_LANG']['MSC']['editAddressLabel'] = 'Edit';
-$GLOBALS['TL_LANG']['MSC']['deleteAddressLabel'] = 'Delete';
-$GLOBALS['TL_LANG']['MSC']['deleteAddressConfirm'] = 'Do you really want to delete this address? This cannot be undone.';
-
-//Invoice language Entries
-$GLOBALS['TL_LANG']['MSC']['iso_invoice_title'] = 'Invoice';
-$GLOBALS['TL_LANG']['MSC']['iso_order_status'] = 'Status';
-$GLOBALS['TL_LANG']['MSC']['iso_order_date'] = 'Order date';
-$GLOBALS['TL_LANG']['MSC']['iso_subtotal_header'] = 'Subtotal';
-$GLOBALS['TL_LANG']['MSC']['iso_order_items'] = 'Items';
-$GLOBALS['TL_LANG']['MSC']['iso_order_sku'] = 'SKU';
-$GLOBALS['TL_LANG']['MSC']['iso_quantity_header'] = 'Quantity';
-$GLOBALS['TL_LANG']['MSC']['iso_price_header'] = 'Price';
-
-$GLOBALS['TL_LANG']['MSC']['low_to_high'] = 'lo to hi';
-$GLOBALS['TL_LANG']['MSC']['high_to_low'] = 'hi to lo';
-$GLOBALS['TL_LANG']['MSC']['a_to_z'] = 'A to Z';
-$GLOBALS['TL_LANG']['MSC']['z_to_a'] = 'Z to A';
-$GLOBALS['TL_LANG']['MSC']['old_to_new'] = 'earlier to later';
-$GLOBALS['TL_LANG']['MSC']['new_to_old'] = 'later to earlier';
+$GLOBALS['ISO_LANG']['MSC']['useDefault']                       = 'Use default value';
+$GLOBALS['ISO_LANG']['MSC']['activeStep']                       = 'active step: ';
+$GLOBALS['ISO_LANG']['MSC']['productcacheLoading']              = 'Loading products...';
+$GLOBALS['ISO_LANG']['MSC']['productcacheNoscript']             = 'Your browser does not support JavaScript. Please <a href="%s">click here</a> to load the product list.';
+$GLOBALS['ISO_LANG']['MSC']['noFilesInFolder']                  = 'No files in this folder';
+$GLOBALS['ISO_LANG']['MSC']['loadingProductData']               = 'Loading product data …';
+$GLOBALS['ISO_LANG']['MSC']['templateConfig']                   = '%s (Store Config: %s)';
+$GLOBALS['ISO_LANG']['MSC']['templateTheme']                    = '%s (Theme: %s)';
+$GLOBALS['ISO_LANG']['MSC']['splittedTaxRate']                  = 'Splitted';
+$GLOBALS['ISO_LANG']['MSC']['newOrders']                        = 'You have %s order(s) with status "%s"';
+$GLOBALS['ISO_LANG']['MSC']['checkoutStep']                     = 'Step %s of %s (%s) - ';
 
 /**
  * Content elements
  */
 $GLOBALS['TL_LANG']['CTE']['isotope']	= 'Isotope eCommerce';
-
-/**
- * Isotope module labels
- */
-$GLOBALS['TL_LANG']['ISO']['productSingle']		= '1 Product';
-$GLOBALS['TL_LANG']['ISO']['productMultiple']	= '%s Products';
-
-$GLOBALS['TL_LANG']['ISO']['shipping_address_message']			= 'Enter your shipping information or select an existing address.';
-$GLOBALS['TL_LANG']['ISO']['billing_address_message']			= 'Enter your billing information or select an existing address.';
-$GLOBALS['TL_LANG']['ISO']['billing_address_guest_message']		= 'Enter your billing information';
-$GLOBALS['TL_LANG']['ISO']['customer_address_message']			= 'Enter your customer information or select an existing address.';
-$GLOBALS['TL_LANG']['ISO']['customer_address_guest_message']	= 'Enter your customer information';
-$GLOBALS['TL_LANG']['ISO']['shipping_method_message']	= 'Select a shipping method.';
-$GLOBALS['TL_LANG']['ISO']['shipping_method_missing']	= 'Please select a shipping method.';
-$GLOBALS['TL_LANG']['ISO']['payment_method_message']	= 'Enter your payment information.';
-$GLOBALS['TL_LANG']['ISO']['payment_method_missing']	= 'Please select a payment method.';
-$GLOBALS['TL_LANG']['ISO']['order_review_message']		= 'Review and confirm your order details.';
-
-$GLOBALS['TL_LANG']['ISO']['checkout_shipping']				= 'Shipping';
-$GLOBALS['TL_LANG']['ISO']['checkout_payment']				= 'Payment';
-$GLOBALS['TL_LANG']['ISO']['checkout_review']				= 'Review';
-$GLOBALS['TL_LANG']['ISO']['billing_address']				= 'Billing Address';
-$GLOBALS['TL_LANG']['ISO']['shipping_address']				= 'Shipping Address';
-$GLOBALS['TL_LANG']['ISO']['billing_shipping_address']		= 'Billing & Shipping Address';
-$GLOBALS['TL_LANG']['ISO']['customer_address']				= 'Customer Address';
-$GLOBALS['TL_LANG']['ISO']['shipping_method']				= 'Shipping Method';
-$GLOBALS['TL_LANG']['ISO']['payment_method']				= 'Payment Method';
-$GLOBALS['TL_LANG']['ISO']['order_review']					= 'Order Review';
-$GLOBALS['TL_LANG']['ISO']['changeCheckoutInfo']			= 'Change';
-$GLOBALS['TL_LANG']['ISO']['cc_num']						= 'Credit card number';
-$GLOBALS['TL_LANG']['ISO']['cc_type']						= 'Credit card type';
-$GLOBALS['TL_LANG']['ISO']['cc_ccv']						= 'CCV number (3 or 4 digit code)';
-$GLOBALS['TL_LANG']['ISO']['cc_exp_month']					= 'Expiration month';
-$GLOBALS['TL_LANG']['ISO']['cc_exp_year']					= 'Expiration year';
-$GLOBALS['TL_LANG']['MSC']['pay_with_redirect']				= array('Processing payment', 'You will be redirected to the payment gateway website. If you are not automatically redirected, please click on the "Pay now" button.', 'Pay now');
-$GLOBALS['TL_LANG']['ISO']['backendPaymentNotFound']		= 'Payment module not found!';
-$GLOBALS['TL_LANG']['ISO']['backendShippingNotFound']		= 'Shipping module not found!';
-$GLOBALS['TL_LANG']['ISO']['backendPaymentNoInfo']			= 'This payment module does not provide additional information.';
-$GLOBALS['TL_LANG']['ISO']['backendShippingNoInfo']			= 'This shipping module does not provide additional information.';
-$GLOBALS['TL_LANG']['MSC']['paypalTransactionOnline']       = 'Click here to view this PayPal transaction online';
-
-/**
- * Errors
- */
-$GLOBALS['ISO_LANG']['ERR']['datepickerRgxp']		= 'Select an appropriate field validation (date, time, date and time) to enable the date picker.';
-$GLOBALS['ISO_LANG']['ERR']['emptyDownloadsFolder'] = 'The selected folder is empty.';
-
-/**
- * Miscellaneous
- */
-$GLOBALS['ISO_LANG']['MSC']['useDefault']			= 'Use default value';
-$GLOBALS['ISO_LANG']['MSC']['activeStep']			= 'active step: ';
-$GLOBALS['ISO_LANG']['MSC']['productcacheLoading']	= 'Loading products...';
-$GLOBALS['ISO_LANG']['MSC']['productcacheNoscript']	= 'Your browser does not support JavaScript. Please <a href="%s">click here</a> to load the product list.';
-$GLOBALS['ISO_LANG']['MSC']['noFilesInFolder']		= 'No files in this folder';
-$GLOBALS['ISO_LANG']['MSC']['loadingProductData']	= 'Loading product data …';
-$GLOBALS['ISO_LANG']['MSC']['templateConfig']		= '%s (Store Config: %s)';
-$GLOBALS['ISO_LANG']['MSC']['templateTheme']		= '%s (Theme: %s)';
-$GLOBALS['ISO_LANG']['MSC']['splittedTaxRate']		= 'Splitted';
-$GLOBALS['ISO_LANG']['MSC']['newOrders']			= 'You have %s order(s) with status "%s"';
-$GLOBALS['ISO_LANG']['MSC']['checkoutStep']			= 'Step %s of %s (%s) - ';
 
 /**
  * Shipping modules

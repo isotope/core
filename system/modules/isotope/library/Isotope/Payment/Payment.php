@@ -238,7 +238,7 @@ abstract class Payment extends \Frontend
 
 <div class="tl_formbody_edit">
 <div class="tl_tbox block">
-<p class="tl_info">' . $GLOBALS['TL_LANG']['ISO']['backendPaymentNoInfo'] . '</p>
+<p class="tl_info">' . $GLOBALS['TL_LANG']['MSC']['backendPaymentNoInfo'] . '</p>
 </div>
 </div>';
     }

@@ -122,8 +122,8 @@ class Expercash extends Payment implements IsotopePayment
         $strUrl .= 'language=' . strtoupper($GLOBALS['TL_LANGUAGE']) . '&amp;popupKey=' . md5($strKey.$this->expercash_popupKey);
 
         $strBuffer = '
-<h2>' . $GLOBALS['TL_LANG']['ISO']['pay_with_redirect'][0] . '</h2>
-<p class="message">' . $GLOBALS['TL_LANG']['ISO']['pay_with_redirect'][1] . '</p>
+<h2>' . $GLOBALS['TL_LANG']['MSC']['pay_with_redirect'][0] . '</h2>
+<p class="message">' . $GLOBALS['TL_LANG']['MSC']['pay_with_redirect'][1] . '</p>
 
 <iframe src="' . $strUrl . '" width="100%" height="500">
   <p>Ihr Browser kann leider keine eingebetteten Frames anzeigen:

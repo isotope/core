@@ -98,7 +98,7 @@ class Setup extends \BackendModule
     {
         $this->Template->modules = $this->arrModules;
         $this->Template->script = \Environment::get('script');
-        $this->Template->welcome = sprintf($GLOBALS['TL_LANG']['ISO']['config_module'], ISO_VERSION . '.' . ISO_BUILD);
+        $this->Template->welcome = sprintf($GLOBALS['TL_LANG']['IMD']['config_module'], ISO_VERSION . '.' . ISO_BUILD);
     }
 
 

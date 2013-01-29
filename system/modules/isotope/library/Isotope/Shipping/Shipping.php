@@ -221,7 +221,7 @@ abstract class Shipping extends \Frontend
 
 <div class="tl_formbody_edit">
 <div class="tl_tbox block">
-<p class="tl_info">' . $GLOBALS['TL_LANG']['ISO']['backendShippingNoInfo'] . '</p>
+<p class="tl_info">' . $GLOBALS['TL_LANG']['MSC']['backendShippingNoInfo'] . '</p>
 </div>
 </div>';
     }

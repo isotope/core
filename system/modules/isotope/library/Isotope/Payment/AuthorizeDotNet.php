@@ -130,13 +130,13 @@ class AuthorizeDotNet extends Payment implements IsotopePayment
         (
             'card_accountNumber'	=> array
             (
-                'label'				=> &$GLOBALS['TL_LANG']['ISO']['cc_num'],
+                'label'				=> &$GLOBALS['TL_LANG']['MSC']['cc_num'],
                 'inputType'			=> 'text',
                 'eval'				=> array('mandatory'=>true, 'tableless'=>true),
             ),
             'card_cardType' 		=> array
             (
-                'label'				=> &$GLOBALS['TL_LANG']['ISO']['cc_type'],
+                'label'				=> &$GLOBALS['TL_LANG']['MSC']['cc_type'],
                 'inputType'			=> 'select',
                 'options'			=> $arrCCTypes,
                 'eval'				=> array('mandatory'=>true, 'tableless'=>true),
@@ -144,14 +144,14 @@ class AuthorizeDotNet extends Payment implements IsotopePayment
             ),
             'card_expirationMonth' => array
             (
-                'label'			=> &$GLOBALS['TL_LANG']['ISO']['cc_exp_month'],
+                'label'			=> &$GLOBALS['TL_LANG']['MSC']['cc_exp_month'],
                 'inputType'		=> 'select',
                 'options'		=> array('01','02','03','04','05','06','07','08','09','10','11','12'),
                 'eval'			=> array('mandatory'=>true, 'tableless'=>true, 'includeBlankOption'=>true)
             ),
             'card_expirationYear'  => array
             (
-                'label'			=> &$GLOBALS['TL_LANG']['ISO']['cc_exp_year'],
+                'label'			=> &$GLOBALS['TL_LANG']['MSC']['cc_exp_year'],
                 'inputType'		=> 'select',
                 'options'		=> $arrYears,
                 'eval'			=> array('mandatory'=>true, 'tableless'=>true, 'includeBlankOption'=>true)
@@ -162,7 +162,7 @@ class AuthorizeDotNet extends Payment implements IsotopePayment
         {
             $arrFields['card_cvNumber'] = array
             (
-                'label'			=> &$GLOBALS['TL_LANG']['ISO']['cc_ccv'],
+                'label'			=> &$GLOBALS['TL_LANG']['MSC']['cc_ccv'],
                 'inputType'		=> 'text',
                 'eval'			=> array('mandatory'=>true, 'tableless'=>true, 'class'=>'ccv')
             );
