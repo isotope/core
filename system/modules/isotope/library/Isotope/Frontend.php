@@ -1299,7 +1299,7 @@ $endScript";
                         $arrRoot[$objJump->rootId] = $this->Database->prepare("SELECT * FROM tl_page WHERE id=" . (int) $objJump->rootId);
                     }
 
-                    $strDomain = $this->\Environment->base;
+                    $strDomain = Environment::get('base');
 
         			// Overwrite the domain
         			if ($arrRoot[$objJump->rootId]->dns != '')
@@ -1513,10 +1513,8 @@ $endScript";
 
         if ($_SESSION['ISO_TIMEOUT'] > 0)
         {
-            $obj\Environment = \Environment::getInstance();
-
             // Reload page every 5 seconds
-            $GLOBALS['TL_HEAD'][] = '<meta http-equiv="refresh" content="' . $intSeconds . ',' . $obj\Environment->base . $obj\Environment->request . '">';
+            $GLOBALS['TL_HEAD'][] = '<meta http-equiv="refresh" content="' . $intSeconds . ',' . \Environment::get('base') . \Environment::get('request') . '">';
 
             return true;
         }
