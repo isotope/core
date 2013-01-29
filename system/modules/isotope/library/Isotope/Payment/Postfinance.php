@@ -178,7 +178,7 @@ class Postfinance extends Payment implements IsotopePayment
 
         $objTemplate->action = 'https://e-payment.postfinance.ch/ncol/' . ($this->debug ? 'test' : 'prod') . '/orderstandard.asp';
         $objTemplate->params = $arrParam;
-        $objTemplate->slabel = $GLOBALS['TL_LANG']['MSC']['pay_with_cc'][2];
+        $objTemplate->slabel = $GLOBALS['TL_LANG']['MSC']['pay_with_redirect'][2];
         $objTemplate->id = $this->id;
 
         return $objTemplate->parse();

@@ -16,9 +16,9 @@
  * Backend Modules
  */
 $GLOBALS['TL_LANG']['MOD']['isotope']					= 'Isotope eCommerce';
-$GLOBALS['TL_LANG']['MOD']['iso_products']				= array('Product management','');
-$GLOBALS['TL_LANG']['MOD']['iso_orders']				= array('Orders', '');
-$GLOBALS['TL_LANG']['MOD']['iso_setup']					= array('Store configuration','');
+$GLOBALS['TL_LANG']['MOD']['iso_products']				= array('Product management', 'Manage products for your Isotope eCommerce shop');
+$GLOBALS['TL_LANG']['MOD']['iso_orders']				= array('Orders', 'See and manage orders for your shop');
+$GLOBALS['TL_LANG']['MOD']['iso_setup']					= array('Store configuration', 'Setup and configure Isotope eCommerce to your needs');
 
 /**
  * Frontend modules
