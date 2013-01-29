@@ -179,11 +179,11 @@ abstract class Collection extends \Model implements IsotopeProductCollection
                     break;
 
                 case 'items':
-                    $this->arrCache[$strKey] = \Database::getInstance()->execute("SELECT SUM(product_quantity) AS items FROM {static::$ctable} WHERE pid={$this->id}")->items;
+                    $this->arrCache[$strKey] = \Database::getInstance()->execute("SELECT SUM(product_quantity) AS items FROM " . static::$ctable . " WHERE pid={$this->id}")->items;
                     break;
 
                 case 'products':
-                    $this->arrCache[$strKey] = \Database::getInstance()->execute("SELECT COUNT(*) AS items FROM {static::$ctable} WHERE pid={$this->id}")->items;
+                    $this->arrCache[$strKey] = \Database::getInstance()->execute("SELECT COUNT(*) AS items FROM " . static::$ctable . " WHERE pid={$this->id}")->items;
                     break;
 
                 case 'lastAdded':
@@ -351,7 +351,7 @@ abstract class Collection extends \Model implements IsotopeProductCollection
         {
             foreach ($arrProducts as $objProduct)
             {
-                \Database::getInstance()->prepare("UPDATE {static::$ctable} SET price=?, tax_free_price=? WHERE id=?")->execute($objProduct->price, $objProduct->tax_free_price, $objProduct->cart_id);
+                \Database::getInstance()->prepare("UPDATE " . static::$ctable . " SET price=?, tax_free_price=? WHERE id=?")->execute($objProduct->price, $objProduct->tax_free_price, $objProduct->cart_id);
             }
         }
 
@@ -542,11 +542,11 @@ abstract class Collection extends \Model implements IsotopeProductCollection
             $this->save();
         }
 
-        $objItem = $objDatabase->prepare("SELECT * FROM {static::$ctable} WHERE pid={$this->id} AND product_id={$objProduct->id} AND product_options=?")->limit(1)->execute(serialize($objProduct->getOptions(true)));
+        $objItem = $objDatabase->prepare("SELECT * FROM " . static::$ctable . " WHERE pid={$this->id} AND product_id={$objProduct->id} AND product_options=?")->limit(1)->execute(serialize($objProduct->getOptions(true)));
 
         if ($objItem->numRows)
         {
-            $objDatabase->query("UPDATE {static::$ctable} SET tstamp=$time, product_quantity=(product_quantity+$intQuantity) WHERE id={$objItem->id}");
+            $objDatabase->query("UPDATE " . static::$ctable . " SET tstamp=$time, product_quantity=(product_quantity+$intQuantity) WHERE id={$objItem->id}");
 
             return $objItem->id;
         }
@@ -570,7 +570,7 @@ abstract class Collection extends \Model implements IsotopeProductCollection
                 $arrSet['href_reader'] = $objProduct->href_reader;
             }
 
-            $intInsertId = $objDatabase->prepare("INSERT INTO {static::$ctable} %s")->set($arrSet)->executeUncached()->insertId;
+            $intInsertId = $objDatabase->prepare("INSERT INTO " . static::$ctable . " %s")->set($arrSet)->executeUncached()->insertId;
 
             return $intInsertId;
         }
@@ -614,7 +614,7 @@ abstract class Collection extends \Model implements IsotopeProductCollection
         // Modify timestamp when updating a product
         $arrSet['tstamp'] = time();
 
-        $intAffectedRows = \Database::getInstance()->prepare("UPDATE {static::$ctable} %s WHERE id={$objProduct->cart_id}")
+        $intAffectedRows = \Database::getInstance()->prepare("UPDATE " . static::$ctable . " %s WHERE id={$objProduct->cart_id}")
                                                    ->set($arrSet)
                                                    ->executeUncached()
                                                    ->affectedRows;
@@ -659,7 +659,7 @@ abstract class Collection extends \Model implements IsotopeProductCollection
         }
 
         $this->modified = true;
-        \Database::getInstance()->query("DELETE FROM {static::$ctable} WHERE id={$objProduct->cart_id}");
+        \Database::getInstance()->query("DELETE FROM " . static::$ctable . " WHERE id={$objProduct->cart_id}");
 
         return true;
     }
@@ -690,7 +690,7 @@ abstract class Collection extends \Model implements IsotopeProductCollection
         while ($objOldItems->next())
         {
             $blnTransfer = true;
-            $objNewItems = $objDatabase->prepare("SELECT * FROM {static::$ctable} WHERE pid={$this->id} AND product_id={$objOldItems->product_id} AND product_options=?")->execute($objOldItems->product_options);
+            $objNewItems = $objDatabase->prepare("SELECT * FROM " . static::$ctable . " WHERE pid={$this->id} AND product_id={$objOldItems->product_id} AND product_options=?")->execute($objOldItems->product_options);
 
             // !HOOK: additional functionality when adding product to collection
             if (isset($GLOBALS['ISO_HOOKS']['transferCollection']) && is_array($GLOBALS['ISO_HOOKS']['transferCollection']))
@@ -710,14 +710,14 @@ abstract class Collection extends \Model implements IsotopeProductCollection
             // Product exists in target table. Increase amount.
             if ($objNewItems->numRows)
             {
-                $objDatabase->query("UPDATE {static::$ctable} SET tstamp=$time, product_quantity=(product_quantity+{$objOldItems->product_quantity}) WHERE id={$objNewItems->id}");
+                $objDatabase->query("UPDATE " . static::$ctable . " SET tstamp=$time, product_quantity=(product_quantity+{$objOldItems->product_quantity}) WHERE id={$objNewItems->id}");
                 $arrIds[$objOldItems->id] = $objNewItems->id;
             }
 
             // Product does not exist in this collection, we don't duplicate and are on the same table. Simply change parent id.
             elseif (!$objNewItems->numRows && !$blnDuplicate && static::$ctable == $objCollection->ctable)
             {
-                $objDatabase->query("UPDATE {static::$ctable} SET tstamp=$time, pid={$this->id} WHERE id={$objOldItems->id}");
+                $objDatabase->query("UPDATE " . static::$ctable . " SET tstamp=$time, pid={$this->id} WHERE id={$objOldItems->id}");
                 $arrIds[$objOldItems->id] = $objOldItems->id;
             }
 
@@ -739,7 +739,7 @@ abstract class Collection extends \Model implements IsotopeProductCollection
                     }
                 }
 
-                $arrIds[$objOldItems->id] = $objDatabase->prepare("INSERT INTO {static::$ctable} %s")->set($arrSet)->executeUncached()->insertId;
+                $arrIds[$objOldItems->id] = $objDatabase->prepare("INSERT INTO " . static::$ctable . " %s")->set($arrSet)->executeUncached()->insertId;
             }
         }
 
