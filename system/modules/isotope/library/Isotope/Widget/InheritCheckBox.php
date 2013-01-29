@@ -66,7 +66,7 @@ class InheritCheckBox extends \CheckBox
         $strJS = "
 <script>
 window.addEvent('domready', function() {
-  Isotope.inheritFields(['" . implode("','", $arrFields) . "'], '" . str_replace("'", "\'", $GLOBALS['ISO_LANG']['MSC']['useDefault']) . "');
+  Isotope.inheritFields(['" . implode("','", $arrFields) . "'], '" . str_replace("'", "\'", $GLOBALS['TL_LANG']['MSC']['useDefault']) . "');
 });
 </script>
 ";

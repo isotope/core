@@ -378,7 +378,7 @@ $strBuffer .= '<th style="text-align:center"><img src="system/themes/default/ima
 
             if (empty($arrFiles))
             {
-                $_SESSION['TL_ERROR'][] = $GLOBALS['ISO_LANG']['MSC']['noFilesInFolder'];
+                $_SESSION['TL_ERROR'][] = $GLOBALS['TL_LANG']['MSC']['noFilesInFolder'];
                 $this->reload();
             }
 

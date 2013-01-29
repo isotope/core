@@ -113,7 +113,6 @@ $GLOBALS['TL_LANG']['MSC']['pay_with_redirect'][2]              = 'Pay now';
 $GLOBALS['TL_LANG']['MSC']['paypalTransactionOnline']           = 'Click here to view this PayPal transaction online';
 $GLOBALS['TL_LANG']['MSC']['productSingle']                     = '1 Product';
 $GLOBALS['TL_LANG']['MSC']['productMultiple']                   = '%s Products';
-
 $GLOBALS['TL_LANG']['MSC']['shipping_address_message']          = 'Enter your shipping information or select an existing address.';
 $GLOBALS['TL_LANG']['MSC']['billing_address_message']           = 'Enter your billing information or select an existing address.';
 $GLOBALS['TL_LANG']['MSC']['billing_address_guest_message']     = 'Enter your billing information';
@@ -144,18 +143,17 @@ $GLOBALS['TL_LANG']['MSC']['backendPaymentNotFound']            = 'Payment modul
 $GLOBALS['TL_LANG']['MSC']['backendShippingNotFound']           = 'Shipping module not found!';
 $GLOBALS['TL_LANG']['MSC']['backendPaymentNoInfo']              = 'This payment module does not provide additional information.';
 $GLOBALS['TL_LANG']['MSC']['backendShippingNoInfo']             = 'This shipping module does not provide additional information.';
-
-$GLOBALS['ISO_LANG']['MSC']['useDefault']                       = 'Use default value';
-$GLOBALS['ISO_LANG']['MSC']['activeStep']                       = 'active step: ';
-$GLOBALS['ISO_LANG']['MSC']['productcacheLoading']              = 'Loading products...';
-$GLOBALS['ISO_LANG']['MSC']['productcacheNoscript']             = 'Your browser does not support JavaScript. Please <a href="%s">click here</a> to load the product list.';
-$GLOBALS['ISO_LANG']['MSC']['noFilesInFolder']                  = 'No files in this folder';
-$GLOBALS['ISO_LANG']['MSC']['loadingProductData']               = 'Loading product data …';
-$GLOBALS['ISO_LANG']['MSC']['templateConfig']                   = '%s (Store Config: %s)';
-$GLOBALS['ISO_LANG']['MSC']['templateTheme']                    = '%s (Theme: %s)';
-$GLOBALS['ISO_LANG']['MSC']['splittedTaxRate']                  = 'Splitted';
-$GLOBALS['ISO_LANG']['MSC']['newOrders']                        = 'You have %s order(s) with status "%s"';
-$GLOBALS['ISO_LANG']['MSC']['checkoutStep']                     = 'Step %s of %s (%s) - ';
+$GLOBALS['TL_LANG']['MSC']['useDefault']                       = 'Use default value';
+$GLOBALS['TL_LANG']['MSC']['activeStep']                       = 'active step: ';
+$GLOBALS['TL_LANG']['MSC']['productcacheLoading']              = 'Loading products...';
+$GLOBALS['TL_LANG']['MSC']['productcacheNoscript']             = 'Your browser does not support JavaScript. Please <a href="%s">click here</a> to load the product list.';
+$GLOBALS['TL_LANG']['MSC']['noFilesInFolder']                  = 'No files in this folder';
+$GLOBALS['TL_LANG']['MSC']['loadingProductData']               = 'Loading product data …';
+$GLOBALS['TL_LANG']['MSC']['templateConfig']                   = '%s (Store Config: %s)';
+$GLOBALS['TL_LANG']['MSC']['templateTheme']                    = '%s (Theme: %s)';
+$GLOBALS['TL_LANG']['MSC']['splittedTaxRate']                  = 'Splitted';
+$GLOBALS['TL_LANG']['MSC']['newOrders']                        = 'You have %s order(s) with status "%s"';
+$GLOBALS['TL_LANG']['MSC']['checkoutStep']                     = 'Step %s of %s (%s) - ';
 
 /**
  * Content elements

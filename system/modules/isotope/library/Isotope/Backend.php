@@ -409,11 +409,11 @@ class Backend extends Contao_Backend
 
                 if (isset($arrThemes[$strFolder]))
                 {
-                    $arrTemplates[$strName] = sprintf($GLOBALS['ISO_LANG']['MSC']['templateTheme'], $strName, $arrThemes[$strFolder]);
+                    $arrTemplates[$strName] = sprintf($GLOBALS['TL_LANG']['MSC']['templateTheme'], $strName, $arrThemes[$strFolder]);
                 }
                 elseif (isset($arrStores[$strFolder]))
                 {
-                    $arrTemplates[$strName] = sprintf($GLOBALS['ISO_LANG']['MSC']['templateConfig'], $strName, $arrStores[$strFolder]);
+                    $arrTemplates[$strName] = sprintf($GLOBALS['TL_LANG']['MSC']['templateConfig'], $strName, $arrStores[$strFolder]);
                 }
                 else
                 {
@@ -445,7 +445,7 @@ class Backend extends Contao_Backend
             $arrTaxes[$objTaxes->id] = $objTaxes->name;
         }
 
-        $arrTaxes[-1] = $GLOBALS['ISO_LANG']['MSC']['splittedTaxRate'];
+        $arrTaxes[-1] = $GLOBALS['TL_LANG']['MSC']['splittedTaxRate'];
 
         return $arrTaxes;
     }
@@ -521,7 +521,7 @@ class Backend extends Contao_Backend
 
         while ($objOrders->next())
         {
-            $arrMessages[] = '<p class="tl_new">' . sprintf($GLOBALS['ISO_LANG']['MSC']['newOrders'], $objOrders->total, $objOrders->name) . '</p>';
+            $arrMessages[] = '<p class="tl_new">' . sprintf($GLOBALS['TL_LANG']['MSC']['newOrders'], $objOrders->total, $objOrders->name) . '</p>';
         }
 
         return implode("\n", $arrMessages);

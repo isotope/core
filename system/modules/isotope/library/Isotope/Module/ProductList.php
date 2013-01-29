@@ -190,7 +190,7 @@ class ProductList extends Module
                     $objPage->cache = 0;
 
                     $this->Template = new \FrontendTemplate('mod_iso_productlist_caching');
-                    $this->Template->message = $GLOBALS['ISO_LANG']['MSC']['productcacheLoading'];
+                    $this->Template->message = $GLOBALS['TL_LANG']['MSC']['productcacheLoading'];
 
                     return;
                 }

@@ -272,7 +272,7 @@ class Checkout extends Module
             if ($step == $this->strCurrentStep)
             {
                 global $objPage;
-                $objPage->pageTitle = sprintf($GLOBALS['ISO_LANG']['MSC']['checkoutStep'], $intCurrentStep, $intTotalSteps, (strlen($GLOBALS['TL_LANG']['MSC']['checkout_' . $step]) ? $GLOBALS['TL_LANG']['MSC']['checkout_' . $step] : $step)) . ($objPage->pageTitle ? $objPage->pageTitle : $objPage->title);
+                $objPage->pageTitle = sprintf($GLOBALS['TL_LANG']['MSC']['checkoutStep'], $intCurrentStep, $intTotalSteps, (strlen($GLOBALS['TL_LANG']['MSC']['checkout_' . $step]) ? $GLOBALS['TL_LANG']['MSC']['checkout_' . $step] : $step)) . ($objPage->pageTitle ? $objPage->pageTitle : $objPage->title);
                 break;
             }
         }
@@ -353,7 +353,7 @@ class Checkout extends Module
         }
 
         $this->Template->steps = $arrSteps;
-        $this->Template->activeStep = $GLOBALS['ISO_LANG']['MSC']['activeStep'];
+        $this->Template->activeStep = $GLOBALS['TL_LANG']['MSC']['activeStep'];
 
         // Hide back buttons it this is the first step
         if (array_search($this->strCurrentStep, $arrStepKeys) === 0)
@@ -914,7 +914,7 @@ class Checkout extends Module
         $objTemplate = new \Isotope\Template('iso_checkout_order_info');
         $objTemplate->headline = $GLOBALS['TL_LANG']['MSC']['order_review'];
         $objTemplate->message = $GLOBALS['TL_LANG']['MSC']['order_review_message'];
-        $objTemplate->summary = $GLOBALS['ISO_LANG']['MSC']['cartSummary'];
+        $objTemplate->summary = $GLOBALS['TL_LANG']['MSC']['cartSummary'];
 
 
 

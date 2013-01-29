@@ -171,7 +171,7 @@ class Cart extends Module
         $objTemplate->minSubtotalError = sprintf($GLOBALS['TL_LANG']['ERR']['cartMinSubtotal'], $this->Isotope->formatPriceWithCurrency($this->Isotope->Config->cartMinSubtotal));
         $objTemplate->formId = 'iso_cart_update_'.$this->id;
         $objTemplate->formSubmit = 'iso_cart_update_'.$this->id;
-        $objTemplate->summary = $GLOBALS['ISO_LANG']['MSC']['cartSummary'];
+        $objTemplate->summary = $GLOBALS['TL_LANG']['MSC']['cartSummary'];
         $objTemplate->action = \Environment::get('request');
         $objTemplate->cartJumpTo = $this->iso_cart_jumpTo ? $this->generateFrontendUrl($this->Database->execute("SELECT * FROM tl_page WHERE id={$this->iso_cart_jumpTo}")->fetchAssoc()) : '';
         $objTemplate->cartLabel = $GLOBALS['TL_LANG']['MSC']['cartBT'];
