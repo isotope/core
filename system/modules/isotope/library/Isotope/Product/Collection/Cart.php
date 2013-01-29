@@ -12,6 +12,8 @@
 
 namespace Isotope\Product\Collection;
 
+use Isotope\Model\Address;
+
 
 /**
  * Class Cart
@@ -146,14 +148,14 @@ class Cart extends Collection
                 return array('id'=>-1, 'country' => $this->Isotope->Config->shipping_country);
 
             case 'billingAddress':
-                $objAddress = new \IsotopeAddressModel();
-                $objAddress->setData($this->billing_address);
+                $objAddress = new Address();
+                $objAddress->setRow($this->billing_address);
 
                 return $objAddress;
 
             case 'shippingAddress':
-                $objAddress = new \IsotopeAddressModel();
-                $objAddress->setData($this->shipping_address);
+                $objAddress = new Address();
+                $objAddress->setRow($this->shipping_address);
 
                 return $objAddress;
 

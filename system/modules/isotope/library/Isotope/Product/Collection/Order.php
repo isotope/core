@@ -13,6 +13,7 @@
 namespace Isotope\Product\Collection;
 
 use Isotope\Interfaces\IsotopeProduct;
+use Isotope\Model\Address;
 
 
 /**
@@ -130,14 +131,14 @@ class Order extends Collection
                     switch( $strKey )
                     {
                         case 'billingAddress':
-                            $objAddress = new \IsotopeAddressModel();
-                            $objAddress->setData(deserialize($this->arrData['billing_address'], true));
+                            $objAddress = new Address();
+                            $objAddress->setRow(deserialize($this->arrData['billing_address'], true));
                             $this->arrCache[$strKey] = $objAddress;
                             break;
 
                         case 'shippingAddress':
-                            $objAddress = new \IsotopeAddressModel();
-                            $objAddress->setData(deserialize($this->arrData['shipping_address'], true));
+                            $objAddress = new Address();
+                            $objAddress->setRow(deserialize($this->arrData['shipping_address'], true));
                             $this->arrCache[$strKey] = $objAddress;
                             break;
                     }

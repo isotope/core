@@ -16,6 +16,7 @@
 
 namespace Isotope;
 
+use Isotope\Model\Address;
 use Isotope\Product\Collection\Order;
 
 
@@ -46,8 +47,8 @@ class tl_iso_orders extends \Backend
     {
         $this->Isotope->overrideConfig($row['config_id']);
 
-        $objAddress = new \Isotope\Model\Address();
-        $objAddress->setData(deserialize($row['billing_address'], true));
+        $objAddress = new Address();
+        $objAddress->setRow(deserialize($row['billing_address'], true));
         $arrTokens = $objAddress->getTokens($this->Isotope->Config->billing_fields);
 
         $args[2] = $arrTokens['hcard_fn'];

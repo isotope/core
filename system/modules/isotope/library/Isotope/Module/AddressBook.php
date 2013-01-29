@@ -12,6 +12,7 @@
 
 namespace Isotope\Module;
 
+use Isotope\Model\Address;
 
 /**
  * Class ModuleIsotopeAddressBook
@@ -139,8 +140,8 @@ class AddressBook extends Module
 
         while ($objAddresses->next())
         {
-            $objAddress = new \IsotopeAddressModel();
-            $objAddress->setData($objAddresses->row());
+            $objAddress = new Address();
+            $objAddress->setRow($objAddresses->row());
 
             $arrAddresses[] = array_merge($objAddress->getData(), array
             (

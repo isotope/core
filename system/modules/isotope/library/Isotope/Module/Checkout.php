@@ -12,6 +12,7 @@
 
 namespace Isotope\Module;
 
+use Isotope\Model\Address;
 use Isotope\Product\Collection\Order;
 
 
@@ -1075,8 +1076,8 @@ class Checkout extends Module
                     continue;
                 }
 
-                $objAddress = new \IsotopeAddressModel();
-                $objAddress->setData($objAddresses->row());
+                $objAddress = new Address();
+                $objAddress->setRow($objAddresses->row());
 
                 $arrOptions[] = array
                 (
