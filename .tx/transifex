@@ -250,9 +250,9 @@ class Transifex
 					// Add a short header with links to transifex.com
 					fputs($fh, "<?php\n\n");
 					fputs($fh, "/**\n");
-					fputs($fh, " * Contao Open Source CMS\n");
+					fputs($fh, " * Isotope eCommerce for Contao Open Source CMS\n");
 					fputs($fh, " * \n");
-					fputs($fh, " * Copyright (C) 2005-2012 Leo Feyer\n");
+					fputs($fh, " * Copyright (C) 2009-2013 Isotope eCommerce Workgroup\n");
 					fputs($fh, " * \n");
 					fputs($fh, " * Core translations are managed using Transifex. To create a new translation\n");
 					fputs($fh, " * or to help to maintain an existing one, please register at transifex.com.\n");
