@@ -14,6 +14,8 @@ namespace Isotope\Module;
 
 use Isotope\Model\Address;
 use Isotope\Product\Collection\Order;
+use Isotope\Factory\Payment as PaymentFactory;
+use Isotope\Factory\Shipping as ShippingFactory;
 
 
 /**
@@ -580,7 +582,7 @@ class Checkout extends Module
             while ($objModules->next())
             {
                 try {
-                    $objModule = \Isotope\Payment\Factory::build($objModules->type, $objModules->row());
+                    $objModule = ShippingFactory::build($objModules->type, $objModules->row());
                 } catch (Exception $e) {
                     continue;
                 }
@@ -700,7 +702,7 @@ class Checkout extends Module
             while ($objModules->next()) {
 
                 try {
-                    $objModule = \Isotope\Payment\Factory::build($objModules->type, $objModules->row());
+                    $objModule = PaymentFactory::build($objModules->type, $objModules->row());
                 } catch (Exception $e) {
                     continue;
                 }
