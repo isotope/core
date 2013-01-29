@@ -12,6 +12,7 @@
 
 namespace Isotope\Module;
 
+use Isotope\Isotope;
 use Isotope\Product\Collection\Order;
 
 
@@ -96,7 +97,6 @@ class OrderDetails extends Module
         $arrOrder = $objOrder->getData();
         $this->Template->setData($arrOrder);
 
-        $this->import('Isotope\Isotope', 'Isotope');
         $this->Isotope->overrideConfig($objOrder->config_id);
 
         // Article reader

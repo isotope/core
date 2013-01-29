@@ -12,6 +12,7 @@
 
 namespace Isotope\Product;
 
+use Isotope\Isotope;
 use Isotope\Interfaces\IsotopeProduct;
 
 
@@ -123,7 +124,7 @@ class Standard extends \Controller implements IsotopeProduct
         parent::__construct();
 
         $this->Database = \Database::getInstance();
-        $this->Isotope = \Isotope\Isotope::getInstance();
+        $this->Isotope = Isotope::getInstance();
 
         if (FE_USER_LOGGED_IN === true)
         {

@@ -12,6 +12,8 @@
 
 namespace Isotope\Model;
 
+use Isotope\Isotope;
+
 
 /**
  * Class Address
@@ -29,24 +31,16 @@ class Address extends \Model
      * Table
      * @var string
      */
-    protected $strTable = 'tl_iso_addresses';
-
-    /**
-     * Isotope singleton
-     * @var object
-     */
-    protected $Isotope;
+    protected static $strTable = 'tl_iso_addresses';
 
 
     public function __construct()
     {
         parent::__construct();
 
-        $this->import('Isotope\Isotope', 'Isotope');
-
         if (!is_array($GLOBALS['ISO_ADR']))
         {
-            $this->Isotope->call('loadDataContainer', 'tl_iso_addresses');
+            Isotope::getInstance()->call('loadDataContainer', 'tl_iso_addresses');
             $this->loadLanguageFile('addresses');
         }
     }
@@ -71,7 +65,7 @@ class Address extends \Model
     public function generateHtml($arrFields=null)
     {
         // We need a country to format the address, use default country if none is available
-        $strCountry = $this->country != '' ? $this->country :  $this->Isotope->Config->country;
+        $strCountry = $this->country != '' ? $this->country :  Isotope::getInstance()->Config->country;
 
         // Use generic format if no country specific format is available
         $strFormat = $GLOBALS['ISO_ADR'][$strCountry] != '' ? $GLOBALS['ISO_ADR'][$strCountry] : $GLOBALS['ISO_ADR']['generic'];
@@ -94,7 +88,7 @@ class Address extends \Model
 
         if (!is_array($arrFields))
         {
-            $arrFields = deserialize($this->Isotope->Config->billing_fields, true);
+            $arrFields = deserialize(Isotope::getInstance()->Config->billing_fields, true);
         }
 
         $arrTokens = array('outputFormat'=>$objPage->outputFormat);
@@ -125,7 +119,7 @@ class Address extends \Model
                 continue;
             }
 
-            $arrTokens[$strField] = $this->Isotope->formatValue('tl_iso_addresses', $strField, $this->$strField);
+            $arrTokens[$strField] = Isotope::getInstance()->formatValue('tl_iso_addresses', $strField, $this->$strField);
         }
 
 

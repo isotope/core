@@ -51,7 +51,8 @@ abstract class Payment extends \Frontend
     {
         parent::__construct();
 
-        $this->import('Isotope\Isotope', 'Isotope');
+        $this->Isotope = \System::importStatic('Isotope\Isotope');
+
         $this->loadLanguageFile('payment');
         $arrRow['allowed_cc_types'] = deserialize($arrRow['allowed_cc_types']);
 

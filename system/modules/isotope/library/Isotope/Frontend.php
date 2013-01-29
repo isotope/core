@@ -93,7 +93,7 @@ class Frontend extends \Frontend
     {
         $intQuantity = ($objModule->iso_use_quantity && intval(\Input::post('quantity_requested')) > 0) ? intval(\Input::post('quantity_requested')) : 1;
 
-        if ($this->Isotope->Cart->addProduct($objProduct, $intQuantity) !== false)
+        if (Isotope::getInstance()->Cart->addProduct($objProduct, $intQuantity) !== false)
         {
             $_SESSION['ISO_CONFIRM'][] = $GLOBALS['TL_LANG']['MSC']['addedToCart'];
             $this->jumpToOrReload($objModule->iso_addProductJumpTo);

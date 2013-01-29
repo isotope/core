@@ -12,6 +12,7 @@
 
 namespace Isotope\Product\Collection;
 
+use Isotope\Isotope;
 use Isotope\Model\Address;
 
 
@@ -336,7 +337,7 @@ class Cart extends Collection
             }
 
             $arrTaxIds = array();
-            $arrTax = $this->Isotope->calculateTax($objProduct->tax_class, $fltPrice, true, null, false);
+            $arrTax = Isotope::getInstance()->calculateTax($objProduct->tax_class, $fltPrice, true, null, false);
 
             if (is_array($arrTax))
             {

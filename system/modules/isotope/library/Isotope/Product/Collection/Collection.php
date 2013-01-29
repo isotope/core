@@ -12,6 +12,7 @@
 
 namespace Isotope\Product\Collection;
 
+use Isotope\Isotope;
 use Isotope\Interfaces\IsotopeProduct;
 use Isotope\Interfaces\IsotopeProductCollection;
 use Isotope\Product\Standard as StandardProduct;
@@ -102,7 +103,7 @@ abstract class Collection extends \Model implements IsotopeProductCollection
             register_shutdown_function(array($this, 'saveDatabase'));
         }
 
-        $this->import('Isotope\Isotope', 'Isotope');
+        $this->Isotope = \System::importStatic('Isotope\Isotope');
     }
 
 
@@ -234,7 +235,7 @@ abstract class Collection extends \Model implements IsotopeProductCollection
                         }
                     }
 
-                    $this->arrCache[$strKey] = $fltTotal > 0 ? $this->Isotope->roundPrice($fltTotal) : 0;
+                    $this->arrCache[$strKey] = $fltTotal > 0 ? Isotope::getInstance()->roundPrice($fltTotal) : 0;
                     break;
 
                 default:
