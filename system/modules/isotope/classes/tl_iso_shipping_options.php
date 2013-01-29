@@ -31,11 +31,11 @@ class tl_iso_shipping_options extends \Backend
 
 
     /**
-     * Instantiate the shipping module and set the palette
+     * Instantiate the shipping module and load options
      * @param object
      * @return void
      */
-    public function getModulePalette($dc)
+    public function loadModuleOptions($dc)
     {
         if (\Input::get('act') == 'create') {
             return;
