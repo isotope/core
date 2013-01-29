@@ -39,7 +39,7 @@ $GLOBALS['TL_DCA']['tl_iso_shipping_options'] = array
         (
             'mode'                    => 4,
             'fields'                  => array('name'),
-            'panelLayout'             => 'sort,filter;search,limit',
+            'panelLayout'             => 'filter,search,limit',
             'headerFields'            => array('name', 'type'),
             'disableGrouping'		  => true,
             'child_record_callback'   => array('Isotope\tl_iso_shipping_options', 'listRow')
@@ -100,15 +100,24 @@ $GLOBALS['TL_DCA']['tl_iso_shipping_options'] = array
         (
             'label'                   => &$GLOBALS['TL_LANG']['tl_iso_shipping_options']['name'],
             'exclude'                 => true,
+            'search'                  => true,
             'inputType'               => 'text',
-            'eval'                    => array('mandatory'=>true, 'maxlength'=>255)
+            'eval'                    => array('mandatory'=>true, 'maxlength'=>255, 'tl_class'=>'long')
         ),
         'description' => array
         (
             'label'                   => &$GLOBALS['TL_LANG']['tl_iso_shipping_options']['description'],
             'exclude'                 => true,
+            'search'                  => true,
             'inputType'               => 'textarea',
-            'eval'                    => array('maxlength'=>255)
+            'eval'                    => array('style'=>'height:80px'),
+        ),
+        'rate' => array
+        (
+            'label'                   => &$GLOBALS['TL_LANG']['tl_iso_shipping_options']['rate'],
+            'exclude'                 => true,
+            'inputType'               => 'text',
+            'eval'                    => array('mandatory'=>true, 'rgxp'=>'price', 'tl_class'=>'clr'),
         ),
         'minimum_total' => array
         (
@@ -125,13 +134,6 @@ $GLOBALS['TL_DCA']['tl_iso_shipping_options'] = array
             'default'                 => 0,
             'inputType'               => 'text',
             'eval'                    => array('mandatory'=>true, 'maxlength'=>32, 'rgxp'=>'price', 'tl_class'=>'w50'),
-        ),
-        'rate' => array
-        (
-            'label'                   => &$GLOBALS['TL_LANG']['tl_iso_shipping_options']['rate'],
-            'exclude'                 => true,
-            'inputType'               => 'text',
-            'eval'                    => array('mandatory'=>true, 'rgxp'=>'price', 'tl_class'=>'w50'),
         ),
         'weight_from' => array
         (
@@ -153,6 +155,7 @@ $GLOBALS['TL_DCA']['tl_iso_shipping_options'] = array
         (
             'label'                   => &$GLOBALS['TL_LANG']['tl_iso_shipping_options']['enabled'],
             'exclude'                 => true,
+            'filter'                  => true,
             'inputType'               => 'checkbox',
         ),
     )

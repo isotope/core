@@ -131,7 +131,7 @@ $GLOBALS['TL_DCA']['tl_iso_baseprice'] = array
             'search'					=> true,
             'default'                   => '%s',
             'inputType'					=> 'text',
-            'eval'						=> array('mandatory'=>true, 'maxlength'=>255, 'tl_class'=>'long'),
+            'eval'						=> array('mandatory'=>true, 'maxlength'=>255, 'tl_class'=>'clr long'),
         ),
     )
 );

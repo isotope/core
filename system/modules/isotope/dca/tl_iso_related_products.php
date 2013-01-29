@@ -42,6 +42,7 @@ $GLOBALS['TL_DCA']['tl_iso_related_products'] = array
             'flag'						=> 1,
             'panelLayout'				=> 'filter,limit',
             'headerFields'				=> array('type', 'name', 'alias', 'sku'),
+            'disableGrouping'           => true,
             'child_record_callback'		=> array('Isotope\tl_iso_related_products', 'listRows')
         ),
         'global_operations' => array
