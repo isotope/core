@@ -80,15 +80,6 @@ class Config extends \Model
 
 
     /**
-     * Initialize the config
-     */
-    public function __construct()
-    {
-        return parent::__construct();
-    }
-
-
-    /**
      * Transparently map calls to core config class, because Isotope->Config has the same name
      * @param string
      * @param array
