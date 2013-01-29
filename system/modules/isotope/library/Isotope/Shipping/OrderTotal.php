@@ -50,29 +50,12 @@ class OrderTotal extends Shipping implements IsotopeShipping
         }
     }
 
-    /* protected function getRateLabel($strOptionName)
-    {
-        $arrOptionInfo = split('_', $strOptionName);
-
-        $objRateLabel = $this->Database->prepare("SELECT name FROM tl_iso_shipping_options WHERE pid=? AND id=?")
-                                       ->limit(1)
-                                       ->execute($arrOptionInfo[2], $arrOptionInfo[3]);
-
-        if($objRateLabel->numRows < 1)
-        {
-            return false;
-        }
-
-        return $objRateLabel->name;
-    }*/
-
-
     public function calculateShippingRate($intPid, $fltCartSubTotal)
     {
         $objRates = $this->Database->prepare("SELECT * FROM tl_iso_shipping_options WHERE pid=? AND enabled='1'")
                                    ->execute($intPid);
 
-        if($objRates->numRows < 1)
+        if ($objRates->numRows < 1)
         {
             return 0;
         }
@@ -80,19 +63,19 @@ class OrderTotal extends Shipping implements IsotopeShipping
         $arrData = $objRates->fetchAllAssoc();
 
         //get the basic rate - calculate it based on group '0' first, which is the default, then any group NOT 0.
-        foreach($arrData as $row)
+        foreach ($arrData as $row)
         {
             //determine value ranges
-            if((float) $row['minimum_total']>0 && $fltCartSubTotal>=(float) $row['minimum_total'])
+            if ((float) $row['minimum_total']>0 && $fltCartSubTotal>=(float) $row['minimum_total'])
             {
-                if($fltCartSubTotal<=(float) $row['maximum_total'] || $row['maximum_total']==0)
+                if ($fltCartSubTotal<=(float) $row['maximum_total'] || $row['maximum_total']==0)
                 {
                     $fltRate = $row['rate'];
                 }
             }
-            elseif((float) $row['maximum_total']>0 && $fltCartSubTotal<=(float) $row['maximum_total'])
+            elseif ((float) $row['maximum_total']>0 && $fltCartSubTotal<=(float) $row['maximum_total'])
             {
-                if($fltCartSubTotal>=(float) $row['minimum_total'])
+                if ($fltCartSubTotal>=(float) $row['minimum_total'])
                 {
                     $fltRate = $row['rate'];
                 }
@@ -114,9 +97,9 @@ class OrderTotal extends Shipping implements IsotopeShipping
 
         $arrProducts = (TL_MODE=='FE' ? $this->Isotope->Cart->getProducts() : $this->Isotope->Order->getProducts());
 
-        foreach($arrProducts as $objProduct)
+        foreach ($arrProducts as $objProduct)
         {
-            if($objProduct->shipping_exempt)
+            if ($objProduct->shipping_exempt)
             {
                 $fltSubtotal -= ($objProduct->price * $objProduct->quantity_requested);
             }

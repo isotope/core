@@ -176,7 +176,7 @@ class Isotope extends \Controller
             {
                 $do = \Input::get('do');
 
-                if ($GLOBALS['BE_MOD']['isotope'][$do] != '')
+                if (isset($GLOBALS['BE_MOD']['isotope'][$do]))
                 {
                     $_SESSION['TL_ERROR'][] = $GLOBALS['TL_LANG']['ERR']['noDefaultStoreConfiguration'];
 
