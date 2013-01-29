@@ -12,6 +12,7 @@
 
 namespace Isotope;
 
+use Isotope\Model\Config;
 use Isotope\Product\Collection\Cart;
 
 
@@ -155,14 +156,12 @@ class Isotope extends \Controller
      */
     public function resetConfig()
     {
-        $intConfig = null;
-
         if ($this->Database->tableExists('tl_iso_config'))
         {
             if (TL_MODE == 'FE')
             {
                 global $objPage;
-                $objConfig = $this->Database->prepare("SELECT c.* FROM tl_iso_config c LEFT OUTER JOIN tl_page p ON p.iso_config=c.id WHERE (p.id=" . (int) $objPage->rootId . " OR c.fallback='1') ORDER BY c.fallback")->limit(1)->execute();
+                $objConfig = $this->Database->prepare("SELECT c.* FROM tl_iso_config c LEFT OUTER JOIN tl_page p ON p.iso_config=c.id WHERE p.id=" . (int) $objPage->rootId . " OR c.fallback='1' ORDER BY c.fallback")->limit(1)->execute();
             }
             else
             {
@@ -195,7 +194,7 @@ class Isotope extends \Controller
             return;
         }
 
-        $this->Config = new \Isotope\Model\Config($objConfig);
+        $this->Config = new Config($objConfig);
     }
 
 
@@ -205,7 +204,7 @@ class Isotope extends \Controller
      */
     public function overrideConfig($intConfig)
     {
-        if (($this->Config = \Isotope\Model\Config::findByPk($intConfig)) === null)
+        if (($this->Config = Config::findByPk($intConfig)) === null)
         {
             $this->resetConfig();
         }
