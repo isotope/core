@@ -501,7 +501,7 @@ $return .= '</div></div>';
                 $arrReponseLabels[standardize($key)] = $key;
             }
 
-            $this->loadLanguageFile('payment');
+            $this->loadLanguageFile('authorize_net');
             $this->strStatus = $arrResponses['transaction-status'];
             $this->strReason = $GLOBALS['TL_LANG']['MSG']['authorizedotnet'][$arrResponseCodes['response_type']][$arrResponseCodes['response_code']];
         }

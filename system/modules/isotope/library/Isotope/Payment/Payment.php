@@ -53,7 +53,6 @@ abstract class Payment extends \Frontend
 
         $this->Isotope = \System::importStatic('Isotope\Isotope');
 
-        $this->loadLanguageFile('payment');
         $arrRow['allowed_cc_types'] = deserialize($arrRow['allowed_cc_types']);
 
         if (is_array($arrRow['allowed_cc_types']))
