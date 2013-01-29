@@ -50,10 +50,10 @@ abstract class Module extends Contao_Module
     {
         parent::__construct($objModule, $strColumn);
 
+        $this->Isotope = \System::importStatic('Isotope\Isotope');
+
         if (TL_MODE == 'FE')
         {
-            $this->Isotope = \System::importStatic('Isotope\Isotope');
-
             if (FE_USER_LOGGED_IN === true)
             {
                 $this->import('FrontendUser', 'User');
