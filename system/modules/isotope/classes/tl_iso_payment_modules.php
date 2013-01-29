@@ -175,7 +175,7 @@ class tl_iso_payment_modules extends \Backend
 
                 foreach ($objMethod->getAllowedCCTypes() as $type)
                 {
-                    $arrCCTypes[$type] = $GLOBALS['ISO_LANG']['CCT'][$type];
+                    $arrCCTypes[$type] = $GLOBALS['TL_LANG']['CCT'][$type];
                 }
 
                 return $arrCCTypes;

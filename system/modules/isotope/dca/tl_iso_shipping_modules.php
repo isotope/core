@@ -310,8 +310,8 @@ $GLOBALS['TL_DCA']['tl_iso_shipping_modules'] = array
             'default'				  => 'kg',
             'inputType'               => 'select',
             'options'				  => array('mg', 'g', 'kg', 't', 'ct', 'oz', 'lb', 'st', 'grain'),
-            'reference'				  => &$GLOBALS['ISO_LANG']['WGT'],
-            'eval'                    => array('tl_class'=>'clr', 'helpwizard'=>&$GLOBALS['ISO_LANG']['WGT']),
+            'reference'				  => &$GLOBALS['TL_LANG']['WGT'],
+            'eval'                    => array('tl_class'=>'clr', 'helpwizard'=>&$GLOBALS['TL_LANG']['WGT']),
         ),
         'guests' => array
         (

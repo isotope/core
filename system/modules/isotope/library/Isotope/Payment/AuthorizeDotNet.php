@@ -140,7 +140,7 @@ class AuthorizeDotNet extends Payment implements IsotopePayment
                 'inputType'			=> 'select',
                 'options'			=> $arrCCTypes,
                 'eval'				=> array('mandatory'=>true, 'tableless'=>true),
-                'reference'			=> &$GLOBALS['ISO_LANG']['CCT'],
+                'reference'			=> &$GLOBALS['TL_LANG']['CCT'],
             ),
             'card_expirationMonth' => array
             (
@@ -326,7 +326,7 @@ class AuthorizeDotNet extends Payment implements IsotopePayment
 <input type="hidden" name="REQUEST_TOKEN" value="'.REQUEST_TOKEN.'">
 <a href="'.ampersand(str_replace('&key=payment', '', \Environment::get('request'))).'" class="header_back" title="'.specialchars($GLOBALS['TL_LANG']['MSC']['backBT']).'">'.$GLOBALS['TL_LANG']['MSC']['backBT'].'</a>
 </div>
-<h2 class="sub_headline">' . $GLOBALS['ISO_LANG']['PAY']['authorizedotnet'][0] . (!$arrPaymentData['transaction-id'] || $arrPaymentData['transaction-id']=="0" ? ' - ' . 'Test Transaction' : '') . '</h2>
+<h2 class="sub_headline">' . $GLOBALS['TL_LANG']['PAY']['authorizedotnet'][0] . (!$arrPaymentData['transaction-id'] || $arrPaymentData['transaction-id']=="0" ? ' - ' . 'Test Transaction' : '') . '</h2>
 <div class="tl_formbody_edit">
 <div class="tl_tbox block">';
 $return .= ($strResponse ? $strResponse : '');
@@ -476,7 +476,7 @@ $return .= '</div></div>';
             }
 
             $arrPaymentInfo["x_card_num"]	= $this->maskCC($arrData['card_accountNumber']); //PCI COMPLIANCE - MASK THE CC DATA
-            $arrPaymentInfo["x_card_type"]	= $GLOBALS['ISO_LANG']['CCT'][$arrData['card_cardType']];
+            $arrPaymentInfo["x_card_type"]	= $GLOBALS['TL_LANG']['CCT'][$arrData['card_cardType']];
         }
 
 
