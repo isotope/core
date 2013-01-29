@@ -23,4 +23,4 @@ $GLOBALS['TL_LANG']['MOD']['isotope_rules'] = array('Isotope eCommerce: Rules &a
 /**
  * Backend Modules
  */
-$GLOBALS['TL_LANG']['MOD']['iso_rules'] = array('Rules &amp; Coupons', '');
+$GLOBALS['TL_LANG']['MOD']['iso_rules'] = array('Rules &amp; Coupons');

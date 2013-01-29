@@ -265,7 +265,7 @@ class IsotopeRules extends \Controller
 
                 if ($arrRule === false)
                 {
-                    $_SESSION['ISO_ERROR'][] = sprintf($GLOBALS['ISO_LANG']['ERR']['couponCodeDropped'], $code);
+                    $_SESSION['ISO_ERROR'][] = sprintf($GLOBALS['TL_LANG']['ERR']['couponCodeDropped'], $code);
                     unset($arrCoupons[$k]);
                     $blnError = true;
                 }
