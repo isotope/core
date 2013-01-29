@@ -69,7 +69,7 @@ class OrderTotal extends Shipping implements IsotopeShipping
 
     public function calculateShippingRate($intPid, $fltCartSubTotal)
     {
-        $objRates = $this->Database->prepare("SELECT * FROM tl_iso_shipping_options WHERE pid=?")
+        $objRates = $this->Database->prepare("SELECT * FROM tl_iso_shipping_options WHERE pid=? AND enabled='1'")
                                    ->execute($intPid);
 
         if($objRates->numRows < 1)
@@ -135,7 +135,7 @@ class OrderTotal extends Shipping implements IsotopeShipping
      */
     public function moduleOptionsLoad()
     {
-        $GLOBALS['TL_DCA']['tl_iso_shipping_options']['palettes']['default'] = '{general_legend},name,description;{config_legend},rate,minimum_total,maximum_total';
+        $GLOBALS['TL_DCA']['tl_iso_shipping_options']['palettes']['default'] = '{general_legend},name,description;{config_legend},rate,minimum_total,maximum_total;{publishing_legend},enabled';
     }
 
 
