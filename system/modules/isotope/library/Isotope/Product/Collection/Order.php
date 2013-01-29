@@ -58,7 +58,7 @@ class Order extends Collection
 
         if ($objResult !== null) {
             if ($this->payment_id > 0) {
-                $objPayment = $this->Database->execute("SELECT * FROM tl_iso_payment_modules WHERE id=" . $this->payment_id);
+                $objPayment = \Database::getInstance()->execute("SELECT * FROM tl_iso_payment_modules WHERE id=" . $this->payment_id);
 
                 if ($objPayment->numRows) {
                     try {
@@ -70,7 +70,7 @@ class Order extends Collection
             }
 
             if ($this->shipping_id > 0) {
-                $objShipping = $this->Database->execute("SELECT * FROM tl_iso_shipping_modules WHERE id=" . $this->shipping_id);
+                $objShipping = \Database::getInstance()->execute("SELECT * FROM tl_iso_shipping_modules WHERE id=" . $this->shipping_id);
 
                 if ($objShipping->numRows) {
                     try {
@@ -109,18 +109,18 @@ class Order extends Collection
                 }
 
                 // Otherwise we check the orderstatus checkbox
-                $objStatus = $this->Database->execute("SELECT * FROM tl_iso_orderstatus WHERE id=" . (int) $this->status);
+                $objStatus = \Database::getInstance()->execute("SELECT * FROM tl_iso_orderstatus WHERE id=" . (int) $this->status);
 
                 return $objStatus->paid ? true : false;
 
             case 'statusLabel':
-                $objStatus = $this->Database->execute("SELECT * FROM tl_iso_orderstatus WHERE id=" . (int) $this->status);
+                $objStatus = \Database::getInstance()->execute("SELECT * FROM tl_iso_orderstatus WHERE id=" . (int) $this->status);
 
                 return $this->Isotope->translate($objStatus->name);
                 break;
 
             case 'statusAlias':
-                $objStatus = $this->Database->execute("SELECT * FROM tl_iso_orderstatus WHERE id=" . (int) $this->status);
+                $objStatus = \Database::getInstance()->execute("SELECT * FROM tl_iso_orderstatus WHERE id=" . (int) $this->status);
 
                 return standardize($objStatus->name);
                 break;
@@ -182,7 +182,7 @@ class Order extends Collection
         $arrIds = parent::transferFromCollection($objCollection, $blnDuplicate);
 
         // Add product downloads to the order
-        $objDownloads = $this->Database->execute("SELECT d.*, ct.product_quantity, ct.id AS item_id FROM {static::$ctable} ct JOIN tl_iso_downloads d ON d.pid IN ((SELECT id FROM tl_iso_products WHERE id=ct.product_id), (SELECT pid FROM tl_iso_products WHERE id=ct.product_id)) WHERE ct.id IN (" . implode(',', $arrIds) . ") GROUP BY ct.id, d.id ORDER BY item_id, sorting");
+        $objDownloads = \Database::getInstance()->execute("SELECT d.*, ct.product_quantity, ct.id AS item_id FROM " . static::$ctable . " ct JOIN tl_iso_downloads d ON d.pid IN ((SELECT id FROM tl_iso_products WHERE id=ct.product_id), (SELECT pid FROM tl_iso_products WHERE id=ct.product_id)) WHERE ct.id IN (" . implode(',', $arrIds) . ") GROUP BY ct.id, d.id ORDER BY item_id, sorting");
 
         while ($objDownloads->next())
         {
@@ -206,7 +206,7 @@ class Order extends Collection
                 'expires'                => $expires,
             );
 
-            $this->Database->prepare("INSERT INTO tl_iso_order_downloads %s")->set($arrSet)->executeUncached();
+            \Database::getInstance()->prepare("INSERT INTO tl_iso_order_downloads %s")->set($arrSet)->executeUncached();
         }
 
         // Update the product IDs of surcharges (see #3029)
@@ -245,7 +245,7 @@ class Order extends Collection
     {
         if (parent::deleteProduct($objProduct))
         {
-            $this->Database->query("DELETE FROM tl_iso_order_downloads WHERE pid={$objProduct->cart_id}");
+            \Database::getInstance()->query("DELETE FROM tl_iso_order_downloads WHERE pid={$objProduct->cart_id}");
         }
 
         return false;
@@ -258,7 +258,7 @@ class Order extends Collection
      */
     public function delete()
     {
-        $this->Database->query("DELETE FROM tl_iso_order_downloads WHERE pid IN (SELECT id FROM {static::$ctable} WHERE pid={$this->id})");
+        \Database::getInstance()->query("DELETE FROM tl_iso_order_downloads WHERE pid IN (SELECT id FROM " . static::$ctable . " WHERE pid={$this->id})");
 
         return parent::delete();
     }
@@ -375,7 +375,7 @@ class Order extends Collection
                     $arrAddress['tstamp'] = $time;
                     $arrAddress['store_id'] = $this->Isotope->Config->store_id;
 
-                    $this->Database->prepare("INSERT INTO tl_iso_addresses %s")->set($arrAddress)->execute();
+                    \Database::getInstance()->prepare("INSERT INTO tl_iso_addresses %s")->set($arrAddress)->execute();
                 }
             }
         }
@@ -436,7 +436,7 @@ class Order extends Collection
             return true;
         }
 
-        $objNewStatus = $this->Database->execute("SELECT * FROM tl_iso_orderstatus WHERE id=" . (int) $intNewStatus);
+        $objNewStatus = \Database::getInstance()->execute("SELECT * FROM tl_iso_orderstatus WHERE id=" . (int) $intNewStatus);
 
         if ($objNewStatus->numRows == 0)
         {
@@ -539,7 +539,7 @@ class Order extends Collection
 
         if ($this->pid > 0)
         {
-            $objUser = $this->Database->execute("SELECT * FROM tl_member WHERE id=" . (int) $this->pid);
+            $objUser = \Database::getInstance()->execute("SELECT * FROM tl_member WHERE id=" . (int) $this->pid);
 
             foreach ($objUser->row() as $k => $v)
             {
@@ -590,22 +590,23 @@ class Order extends Collection
 
         if ($this->strOrderId == '')
         {
+            $objDatabase = \Database::getInstance();
             $strPrefix = $this->Isotope->call('replaceInsertTags', $this->Isotope->Config->orderPrefix);
             $intPrefix = utf8_strlen($strPrefix);
-            $arrConfigIds = $this->Database->execute("SELECT id FROM tl_iso_config WHERE store_id=" . $this->Isotope->Config->store_id)->fetchEach('id');
+            $arrConfigIds = $objDatabase->execute("SELECT id FROM tl_iso_config WHERE store_id=" . $this->Isotope->Config->store_id)->fetchEach('id');
 
             // Lock tables so no other order can get the same ID
-            $this->Database->lockTables(array('tl_iso_orders'=>'WRITE'));
+            $objDatabase->lockTables(array('tl_iso_orders'=>'WRITE'));
 
             // Retrieve the highest available order ID
-            $objMax = $this->Database->prepare("SELECT order_id FROM tl_iso_orders WHERE " . ($strPrefix != '' ? "order_id LIKE '$strPrefix%' AND " : '') . "config_id IN (" . implode(',', $arrConfigIds) . ") ORDER BY CAST(" . ($strPrefix != '' ? "SUBSTRING(order_id, " . ($intPrefix+1) . ")" : 'order_id') . " AS UNSIGNED) DESC")->limit(1)->executeUncached();
+            $objMax = $objDatabase->prepare("SELECT order_id FROM tl_iso_orders WHERE " . ($strPrefix != '' ? "order_id LIKE '$strPrefix%' AND " : '') . "config_id IN (" . implode(',', $arrConfigIds) . ") ORDER BY CAST(" . ($strPrefix != '' ? "SUBSTRING(order_id, " . ($intPrefix+1) . ")" : 'order_id') . " AS UNSIGNED) DESC")->limit(1)->executeUncached();
             $intMax = (int) substr($objMax->order_id, $intPrefix);
 
             $this->strOrderId = $strPrefix . str_pad($intMax+1, $this->Isotope->Config->orderDigits, '0', STR_PAD_LEFT);
         }
 
-        $this->Database->prepare("UPDATE tl_iso_orders SET order_id=? WHERE id={$this->id}")->executeUncached($this->strOrderId);
-        $this->Database->unlockTables();
+        $objDatabase->prepare("UPDATE tl_iso_orders SET order_id=? WHERE id={$this->id}")->executeUncached($this->strOrderId);
+        $objDatabase->unlockTables();
 
         return $this->strOrderId;
     }

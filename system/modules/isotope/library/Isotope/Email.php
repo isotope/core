@@ -226,9 +226,9 @@ class Email extends \Controller
         }
 
         // Get the data for the active language
-        $objLanguage = $this->Database->prepare("SELECT * FROM tl_iso_mail_content WHERE pid={$this->intId} AND (language='{$this->strLanguage}' OR fallback='1') ORDER BY fallback")
-                                      ->limit(1)
-                                      ->execute();
+        $objLanguage = \Database::getInstance()->prepare("SELECT * FROM tl_iso_mail_content WHERE pid={$this->intId} AND (language='{$this->strLanguage}' OR fallback='1') ORDER BY fallback")
+                                               ->limit(1)
+                                               ->execute();
 
         if (!$objLanguage->numRows)
         {
@@ -311,7 +311,7 @@ class Email extends \Controller
         $this->objEmail = new \Email();
         $this->attachmentsDone = false;
 
-        $objTemplate = $this->Database->execute("SELECT * FROM tl_iso_mail WHERE id=" . $this->intId);
+        $objTemplate = \Database::getInstance()->execute("SELECT * FROM tl_iso_mail WHERE id=" . $this->intId);
 
         if ($objTemplate->numRows < 1)
         {

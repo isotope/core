@@ -162,7 +162,7 @@ $GLOBALS['TL_DCA']['tl_iso_tax_rate'] = array
             'exclude'                 => true,
             'filter'                  => true,
             'inputType'               => 'conditionalselect',
-            'options_callback'		  => array('IsotopeBackend', 'getSubdivisions'),
+            'options_callback'		  => array('\Isotope\Backend', 'getSubdivisions'),
             'eval'                    => array('conditionField'=>'countries', 'multiple'=>true, 'size'=>10, 'csv'=>',', 'tl_class'=>'w50 w50h'),
         ),
         'postalCodes' => array

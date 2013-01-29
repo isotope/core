@@ -28,7 +28,7 @@ $GLOBALS['TL_DCA']['tl_iso_shipping_options'] = array
         'enableVersioning'            => true,
         'onload_callback'			  => array
         (
-            array('Isotope\tl_iso_shipping_options', 'getModulePalette'),
+            array('Isotope\tl_iso_shipping_options', 'loadModuleOptions'),
         ),
     ),
 

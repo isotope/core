@@ -303,8 +303,8 @@ class Cart extends Collection
                 }
                 else
                 {
-                    $this->import($callback[0]);
-                    $arrSurcharges = $this->{$callback[0]}->{$callback[1]}($arrSurcharges);
+                    $objCallback = \System::importStatic($callback[0]);
+                    $arrSurcharges = $objCallback->{$callback[1]}($arrSurcharges);
                 }
             }
         }

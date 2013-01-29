@@ -534,6 +534,7 @@ abstract class Collection extends \Model implements IsotopeProductCollection
 
         $time = time();
         $this->modified = true;
+        $objDatabase = \Database::getInstance();
 
         // Make sure collection is in DB before adding product
         if (!$this->blnRecordExists)
