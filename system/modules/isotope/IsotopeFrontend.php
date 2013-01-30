@@ -1300,7 +1300,7 @@ $endScript";
                 {
                     if (!isset($arrRoot[$objJump->rootId]))
                     {
-                        $arrRoot[$objJump->rootId] = $this->Database->prepare("SELECT * FROM tl_page WHERE id=" . (int) $objJump->rootId);
+                        $arrRoot[$objJump->rootId] = $this->Database->execute("SELECT * FROM tl_page WHERE id=" . (int) $objJump->rootId);
                     }
 
                     $strDomain = $this->Environment->base;
@@ -1311,7 +1311,7 @@ $endScript";
         				$strDomain = ($arrRoot[$objJump->rootId]->useSSL ? 'https://' : 'http://') . $arrRoot[$objJump->rootId]->dns . TL_PATH . '/';
         			}
 
-                    $arrJump[$objProducts->page_id] = $strDomain . $this->generateFrontendUrl($objJump->row(), '/product/##alias##', ($strLanguage=='' ? $GLOBALS['TL_LANGUAGE'] : $strLanguage));
+                    $arrJump[$objProducts->page_id] = $strDomain . $this->generateFrontendUrl($objJump->row(), '/product/##alias##', ($strLanguage=='' ? $arrRoot[$objJump->rootId]->language : $strLanguage));
                 }
                 else
                 {
