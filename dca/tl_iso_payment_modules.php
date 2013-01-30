@@ -64,6 +64,6 @@ $GLOBALS['TL_DCA']['tl_iso_payment_modules']['fields']['sparkasse_merchantref'] 
 (
 	'label'				=> &$GLOBALS['TL_LANG']['tl_iso_payment_modules']['sparkasse_merchantref'],
 	'inputType'			=> 'text',
-	'eval'				=> array('mandatory'=>true, 'maxlength'=>255, 'decodeEntities'=>true, 'tl_class'=>'clr long'),
+	'eval'				=> array('maxlength'=>255, 'decodeEntities'=>true, 'tl_class'=>'clr long'),
 );
 
