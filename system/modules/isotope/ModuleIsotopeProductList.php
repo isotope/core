@@ -73,7 +73,7 @@ class ModuleIsotopeProductList extends ModuleIsotope
 		// return message if no filter is set
 		if ($this->iso_emptyFilter && !$this->Input->get('isorc') && !$this->Input->get('keywords'))
 		{
-			return $this->iso_noFilter;
+			return $this->replaceInsertTags($this->iso_noFilter);
 		}
 
 		$this->iso_filterModules = deserialize($this->iso_filterModules, true);
