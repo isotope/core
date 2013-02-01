@@ -45,6 +45,16 @@ class IsotopeReportSalesTotal extends IsotopeReportSales
 		$dateTo = date($privateDate, $intStop);
 		$arrAllowedProducts = IsotopeBackend::getAllowedProductIds();
 
+		// HOOK: allow extensions to filter the allowed products
+		if (isset($GLOBALS['ISO_HOOKS']['filterAllowedProductIds']) && is_array($GLOBALS['ISO_HOOKS']['filterAllowedProductIds']))
+		{
+			foreach ($GLOBALS['ISO_HOOKS']['filterAllowedProductIds'] as $callback)
+			{
+				$objCallback = (method_exists($callback[0], 'getInstance') ? call_user_func(array($callback[0], 'getInstance')) : new $callback[0]());
+				$arrAllowedProducts = $objCallback->$callback[1]($arrAllowedProducts);
+			}
+		}
+
 		$objData = $this->Database->prepare("SELECT
 												c.id AS config_id,
 												c.currency,

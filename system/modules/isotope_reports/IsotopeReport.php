@@ -139,9 +139,19 @@ abstract class IsotopeReport extends Backend
 		{
 			foreach ($callbacks as $callback)
 			{
-				if (($buffer = $this->$callback()) !== null)
+				if (is_array($callback))
 				{
-					$return[$group][] = $this->$callback();
+					$this->import($callback[0]);
+					$buffer = $this->$callback[0]->$callback[1]();
+				}
+				else
+				{
+					$buffer = $this->$callback();
+				}
+
+				if ($buffer !== null)
+				{
+					$return[$group][] = $buffer;
 				}
 			}
 		}
