@@ -35,6 +35,21 @@ table.iso_report .tl_file_list .variant {
 	font-size: 10px;
 	color: #999;
 }
+table.iso_report tbody .fix-height {
+	line-height: 33px;
+}
+table.iso_report tfoot .fix-height {
+	line-height: 26px;
+}
+.chrome table.iso_report tbody .fix-height, .safari table.iso_report tbody .fix-height {
+	line-height: 32px;
+}
+.ie table.iso_report tfoot .fix-height {
+	line-height: 27px;
+}
+.mac.firefox table.iso_report tfoot .fix-height {
+	line-height: 30px;
+}
 .iso_report tfoot td {
 	border-top: 1px solid #bbb;
 }
