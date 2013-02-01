@@ -68,16 +68,6 @@ class IsotopeReportSalesProduct extends IsotopeReportSales
 		$groupVariants = $blnVariants ? 'p1.id' : 'IF(p1.pid=0, p1.id, p1.pid)';
 		$arrAllowedProducts = IsotopeBackend::getAllowedProductIds();
 
-		// HOOK: allow extensions to filter the allowed products
-		if (isset($GLOBALS['ISO_HOOKS']['filterAllowedProductIds']) && is_array($GLOBALS['ISO_HOOKS']['filterAllowedProductIds']))
-		{
-			foreach ($GLOBALS['ISO_HOOKS']['filterAllowedProductIds'] as $callback)
-			{
-				$objCallback = (method_exists($callback[0], 'getInstance') ? call_user_func(array($callback[0], 'getInstance')) : new $callback[0]());
-				$arrAllowedProducts = $objCallback->$callback[1]($arrAllowedProducts);
-			}
-		}
-
 		$objProducts = $this->Database->query("
 			SELECT
 				IFNULL($groupVariants, i.product_id) AS product_id,
@@ -171,7 +161,7 @@ class IsotopeReportSalesProduct extends IsotopeReportSales
 			$arrRow = array(array
 			(
 				'value'      => $arrProduct['name'],
-				'attributes' => ' style="white-space:nowrap"'
+				'attributes' => ' style="white-space:nowrap' . (!$blnVariants ? ';line-height:32px' : '') . '"'
 			));
 
 			$arrFooter[0] = array

@@ -54,7 +54,7 @@ abstract class IsotopeReportSales extends IsotopeReport
 
 		if ($arrSession[$this->name]['columns'] == '')
 		{
-			$arrSession[$this->name]['columns'] = '4';
+			$arrSession[$this->name]['columns'] = '6';
 		}
 
 		if ($arrSession[$this->name]['from'] == '')

@@ -17,15 +17,16 @@
 	overflow: auto;
 }
 .iso_report_container {
-	margin-left: 281px;
+	margin-left: 280px;
 }
 table.iso_report {
+	width: 100%;
 	border-collapse: separate;
 }
 table.iso_report tr th:first-child, table.iso_report tr td:first-child {
 	width: 270px;
 	position: absolute;
-	margin-left: -281px;
+	margin-left: -280px;
 }
 table.iso_report .tl_file_list {
 	line-height: 1.5;
