@@ -111,13 +111,13 @@ window.addEvent("domready", function() {
 <script src="system/modules/isotope_reports/assets/MilkChart.min.js"></script>
 <script>
 window.addEvent('domready', function() {
-    new MilkChart.Line('report-data', {
-		lineWeight: 2,
-		rotateLabels: 90,
-		padding: 18,<?php if($this->chart['footer']): ?>
-		useFooter: true,<?php endif; ?>
-	    width: 690<?php if($this->chartHeight): ?>,
-	    height: <?php echo $this->chartHeight; ?><?php endif; ?>
+    new MilkChart.Column('report-data', {
+	    width:690,
+		padding:20,
+<?php if($this->chartHeight): ?>
+	    height: <?php echo $this->chartHeight; ?>,
+<?php endif; ?>
+		lineWeight:2
     });
 })
 </script>

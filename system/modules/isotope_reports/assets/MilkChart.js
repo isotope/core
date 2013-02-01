@@ -175,7 +175,8 @@ provides: [MilkChart.Column, MilkChart.Bar, MilkChart.Line, MilkChart.Scatter, M
             
             if (this.options.border) {
                 var strokeOffset = 0.5;
-                this.ctx.lineWeight = this.options.borderWeight;
+				this.ctx.strokeStyle = this.options.borderColor; // PATCH
+				this.ctx.lineWeight = this.options.borderWeight;
                 this.ctx.strokeRect(strokeOffset, strokeOffset, this.width-1, this.height-1);
             }
             
