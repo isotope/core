@@ -28,12 +28,6 @@
 
 
 /**
- * Fields
- */
-$GLOBALS['TL_LANG']['tl_iso_orderstatus']['showInReports'] = array('In den Auswertungen anzeigen', 'Bestellungen mit diesem Status in den Auswertungen anzeigen.');
-
-
-/**
  * Legends
  */
 $GLOBALS['TL_LANG']['tl_iso_orderstatus']['reports_legend'] = 'Auswertungen &amp; Statistik';

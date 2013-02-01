@@ -28,12 +28,6 @@
 
 
 /**
- * Fields
- */
-$GLOBALS['TL_LANG']['tl_iso_orderstatus']['showInReports'] = array('Show in reports', 'Show orders with this status in reports.');
-
-
-/**
  * Legends
  */
 $GLOBALS['TL_LANG']['tl_iso_orderstatus']['reports_legend'] = 'Reports &amp; Statistics';

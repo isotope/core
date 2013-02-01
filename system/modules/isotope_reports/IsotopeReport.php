@@ -248,7 +248,7 @@ abstract class IsotopeReport extends Backend
 		return array
 		(
 			'name'			=> 'iso_config',
-			'label'			=> &$GLOBALS['ISO_LANG']['REPORT']['filter_config'],
+			'label'			=> 'Konfiguration: ',
 			'type'			=> 'filter',
 			'value'			=> $varValue,
 			'active'		=> ($varValue != ''),

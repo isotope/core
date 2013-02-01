@@ -30,6 +30,10 @@
 abstract class IsotopeReportSales extends IsotopeReport
 {
 
+	// Allow extensions to use date_paid or date_shipped
+	protected $strDateField = 'date';
+
+
 	public function generate()
 	{
 		$this->initializeDefaultValues();
@@ -50,7 +54,7 @@ abstract class IsotopeReportSales extends IsotopeReport
 
 		if ($arrSession[$this->name]['columns'] == '')
 		{
-			$arrSession[$this->name]['columns'] = '6';
+			$arrSession[$this->name]['columns'] = '4';
 		}
 
 		if ($arrSession[$this->name]['from'] == '')
@@ -62,6 +66,12 @@ abstract class IsotopeReportSales extends IsotopeReport
 			// Convert date formats into timestamps
 			$objDate = new Date($arrSession[$this->name]['from'], $GLOBALS['TL_CONFIG']['dateFormat']);
 			$arrSession[$this->name]['from'] = $objDate->tstamp;
+		}
+
+		if (!isset($arrSession[$this->name]['iso_status']))
+		{
+			$objStatus = $this->Database->query("SELECT id FROM tl_iso_orderstatus WHERE paid=1 ORDER BY sorting");
+			$arrSession[$this->name]['iso_status'] = $objStatus->id;
 		}
 
 		$this->Session->set('iso_reports', $arrSession);
@@ -132,6 +142,32 @@ abstract class IsotopeReportSales extends IsotopeReport
 		}
 
 		return array($publicDate, $privateDate, $sqlDate);
+	}
+
+
+	protected function getStatusPanel()
+	{
+		$arrStatus = array(''=>&$GLOBALS['ISO_LANG']['REPORT']['all']);
+		$objStatus = $this->Database->execute("SELECT id, name, paid FROM tl_iso_orderstatus ORDER BY sorting");
+
+		while ($objStatus->next())
+		{
+			$arrStatus[$objStatus->id] = $this->Isotope->translate($objStatus->name);
+		}
+
+		$arrSession = $this->Session->get('iso_reports');
+		$varValue = (int) $arrSession[$this->name]['iso_status'];
+
+		return array
+		(
+			'name'			=> 'iso_status',
+			'label'			=> 'Status: ',
+			'type'			=> 'filter',
+			'value'			=> $varValue,
+			'active'		=> ($varValue != ''),
+			'class'			=> 'iso_status',
+			'options'		=> $arrStatus,
+		);
 	}
 }
 

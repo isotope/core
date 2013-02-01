@@ -38,6 +38,7 @@ class IsotopeReportSalesTotal extends IsotopeReportSales
 		$strPeriod = (string) $arrSession[$this->name]['period'];
 		$intStart = (int) $arrSession[$this->name]['start'];
 		$intStop = (int) $arrSession[$this->name]['stop'];
+		$intStatus = (int) $arrSession[$this->name]['iso_status'];
 
 		list($publicDate, $privateDate, $sqlDate) = $this->getPeriodConfiguration($strPeriod);
 
@@ -62,12 +63,13 @@ class IsotopeReportSalesTotal extends IsotopeReportSales
 												COUNT(o.id) AS total_orders,
 												SUM(i.product_quantity) AS total_items,
 												SUM(i.tax_free_price * i.product_quantity) AS total_sales,
-												DATE_FORMAT(FROM_UNIXTIME(o.date), ?) AS dateGroup
+												DATE_FORMAT(FROM_UNIXTIME(o.{$this->strDateField}), ?) AS dateGroup
 											FROM tl_iso_orders o
 											LEFT JOIN tl_iso_order_items i ON o.id=i.pid
 											LEFT JOIN tl_iso_orderstatus os ON os.id=o.status
 											LEFT OUTER JOIN tl_iso_config c ON o.config_id=c.id
-											WHERE os.showInReports='1'
+											WHERE 1
+											" . ($intStatus > 0 ? " AND o.status=".$intStatus : '') . "
 											" . ($arrAllowedProducts === true ? '' : (" AND i.product_id IN (" . (empty($arrAllowedProducts) ? '0' : implode(',', $arrAllowedProducts)) . ")")) . "
 											" . ($intConfig > 0 ? " AND c.id=".$intConfig : '') . "
 											GROUP BY config_id, dateGroup
@@ -295,6 +297,8 @@ class IsotopeReportSalesTotal extends IsotopeReportSales
 		}
 
 		$this->Session->set('iso_reports', $arrSession);
+
+		parent::initializeDefaultValues();
 	}
 }
 

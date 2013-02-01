@@ -47,6 +47,7 @@ class IsotopeReportSalesProduct extends IsotopeReportSales
 		$strPeriod = (string) $arrSession[$this->name]['period'];
 		$intColumns = (int) $arrSession[$this->name]['columns'];
 		$blnVariants = (bool) $arrSession[$this->name]['variants'];
+		$intStatus = (int) $arrSession[$this->name]['iso_status'];
 
 		if ($arrSession[$this->name]['from'] == '')
 		{
@@ -67,6 +68,16 @@ class IsotopeReportSalesProduct extends IsotopeReportSales
 		$groupVariants = $blnVariants ? 'p1.id' : 'IF(p1.pid=0, p1.id, p1.pid)';
 		$arrAllowedProducts = IsotopeBackend::getAllowedProductIds();
 
+		// HOOK: allow extensions to filter the allowed products
+		if (isset($GLOBALS['ISO_HOOKS']['filterAllowedProductIds']) && is_array($GLOBALS['ISO_HOOKS']['filterAllowedProductIds']))
+		{
+			foreach ($GLOBALS['ISO_HOOKS']['filterAllowedProductIds'] as $callback)
+			{
+				$objCallback = (method_exists($callback[0], 'getInstance') ? call_user_func(array($callback[0], 'getInstance')) : new $callback[0]());
+				$arrAllowedProducts = $objCallback->$callback[1]($arrAllowedProducts);
+			}
+		}
+
 		$objProducts = $this->Database->query("
 			SELECT
 				IFNULL($groupVariants, i.product_id) AS product_id,
@@ -80,15 +91,16 @@ class IsotopeReportSalesProduct extends IsotopeReportSales
 				t.variants,
 				t.variant_attributes,
 				SUM(i.tax_free_price * i.product_quantity) AS total,
-				DATE_FORMAT(FROM_UNIXTIME(o.date), '$sqlDate') AS dateGroup
+				DATE_FORMAT(FROM_UNIXTIME(o.{$this->strDateField}), '$sqlDate') AS dateGroup
 			FROM tl_iso_order_items i
 			LEFT JOIN tl_iso_orders o ON i.pid=o.id
 			LEFT JOIN tl_iso_orderstatus os ON os.id=o.status
 			LEFT OUTER JOIN tl_iso_products p1 ON i.product_id=p1.id
 			LEFT OUTER JOIN tl_iso_products p2 ON p1.pid=p2.id
 			LEFT OUTER JOIN tl_iso_producttypes t ON p1.type=t.id
-			WHERE os.showInReports='1'
-			" . ($arrAllowedProducts === true ? '' : (" AND p1.id IN (" . (empty($arrAllowedProducts) ? '0' : implode(',', $arrAllowedProducts)) . ")")) . "
+			WHERE 1
+				" . ($intStatus > 0 ? " AND o.status=".$intStatus : '') . "
+				" . ($arrAllowedProducts === true ? '' : (" AND p1.id IN (" . (empty($arrAllowedProducts) ? '0' : implode(',', $arrAllowedProducts)) . ")")) . "
 			GROUP BY dateGroup, product_id
 			HAVING dateGroup>=$dateFrom AND dateGroup<=$dateTo");
 
