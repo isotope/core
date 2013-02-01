@@ -122,12 +122,31 @@ abstract class IsotopeReport extends Backend
 		return $this->Template->parse();
 	}
 
+
 	abstract protected function compile();
 
 
 	protected function getPanels()
 	{
-		return array(array($this->getLimitPanel(), $this->getSearchPanel(), $this->getSortingPanel()));
+		if (!is_array($this->arrData['panels']))
+		{
+			return array();
+		}
+
+		$return = array();
+
+		foreach ($this->arrData['panels'] as $group=>$callbacks)
+		{
+			foreach ($callbacks as $callback)
+			{
+				if (($buffer = $this->$callback()) !== null)
+				{
+					$return[$group][] = $this->$callback();
+				}
+			}
+		}
+
+		return $return;
 	}
 
 
@@ -225,6 +244,60 @@ abstract class IsotopeReport extends Backend
 			'active'		=> ($varValue != ''),
 			'class'			=> 'iso_config',
 			'options'		=> $arrConfigs,
+		);
+	}
+
+
+	protected function getSelectPeriodPanel()
+	{
+		$arrSession = $this->Session->get('iso_reports');
+
+		return array
+		(
+			'name'			=> 'period',
+			'label'			=> 'Zeitraum:',
+			'type'			=> 'filter',
+			'value'			=> (string) $arrSession[$this->name]['period'],
+			'class'			=> 'tl_period',
+			'options'		=> array
+			(
+				'day'		=> 'Tag',
+				'week'		=> 'Woche',
+				'month'		=> 'Monat',
+				'year'		=> 'Jahr',
+			),
+		);
+	}
+
+
+	protected function getSelectStartPanel()
+	{
+		$arrSession = $this->Session->get('iso_reports');
+
+		return array
+		(
+			'name'			=> 'start',
+			'label'			=> 'Von:',
+			'type'			=> 'date',
+			'format'		=> $GLOBALS['TL_CONFIG']['dateFormat'],
+			'value'			=> $this->parseDate($GLOBALS['TL_CONFIG']['dateFormat'], (int) $arrSession[$this->name]['start']),
+			'class'			=> 'tl_start',
+		);
+	}
+
+
+	protected function getSelectStopPanel()
+	{
+		$arrSession = $this->Session->get('iso_reports');
+
+		return array
+		(
+			'name'			=> 'stop',
+			'label'			=> 'Bis:',
+			'type'			=> 'date',
+			'format'		=> $GLOBALS['TL_CONFIG']['dateFormat'],
+			'value'			=> $this->parseDate($GLOBALS['TL_CONFIG']['dateFormat'], (int) $arrSession[$this->name]['stop']),
+			'class'			=> 'tl_stop',
 		);
 	}
 }

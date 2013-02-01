@@ -195,7 +195,6 @@ class IsotopeReportSalesTotal extends IsotopeReportSales
 		$arrSession = $this->Session->get('iso_reports');
 		$intConfig = (int) $arrSession[$this->name]['iso_config'];
 
-
 		$arrData = array('header'=>array(), 'rows'=>array(), 'footer'=>array());
 		$arrCurrencies = $this->Database->execute("SELECT DISTINCT currency FROM tl_iso_config WHERE currency!=''" . ($intConfig > 0 ? ' AND id='.$intConfig : ''))->fetchEach('currency');
 
@@ -286,53 +285,6 @@ class IsotopeReportSalesTotal extends IsotopeReportSales
 		}
 
 		$this->Session->set('iso_reports', $arrSession);
-	}
-
-
-	protected function getPanels()
-	{
-		$arrSession = $this->Session->get('iso_reports');
-
-		return array
-		(
-			array
-			(
-				array
-				(
-					'name'			=> 'stop',
-					'label'			=> 'Bis:',
-					'type'			=> 'date',
-					'format'		=> $GLOBALS['TL_CONFIG']['dateFormat'],
-					'value'			=> $this->parseDate($GLOBALS['TL_CONFIG']['dateFormat'], (int) $arrSession[$this->name]['stop']),
-					'class'			=> 'tl_stop',
-				),
-				array
-				(
-					'name'			=> 'start',
-					'label'			=> 'Von:',
-					'type'			=> 'date',
-					'format'		=> $GLOBALS['TL_CONFIG']['dateFormat'],
-					'value'			=> $this->parseDate($GLOBALS['TL_CONFIG']['dateFormat'], (int) $arrSession[$this->name]['start']),
-					'class'			=> 'tl_start',
-				),
-				array
-				(
-					'name'			=> 'period',
-					'label'			=> 'Zeitraum:',
-					'type'			=> 'filter',
-					'value'			=> (string) $arrSession[$this->name]['period'],
-					'class'			=> 'tl_period',
-					'options'		=> array
-					(
-						'day'		=> 'Tag',
-						'week'		=> 'Woche',
-						'month'		=> 'Monat',
-						'year'		=> 'Jahr',
-					),
-				),
-			),
-			array($this->getFilterByConfigPanel(), /*$this->getLimitPanel(), $this->getSearchPanel(), */$this->getSortingPanel())
-		);
 	}
 }
 

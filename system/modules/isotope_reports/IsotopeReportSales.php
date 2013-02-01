@@ -38,52 +38,6 @@ abstract class IsotopeReportSales extends IsotopeReport
 	}
 
 
-	protected function getPanels()
-	{
-		$arrSession = $this->Session->get('iso_reports');
-
-		return array
-		(
-			array
-			(
-				array
-				(
-					'name'			=> 'columns',
-					'label'			=> 'Spalten:',
-					'type'			=> 'text',
-					'value'			=> (int) $arrSession[$this->name]['columns'],
-					'class'			=> 'tl_columns',
-				),
-				array
-				(
-					'name'			=> 'from',
-					'label'			=> 'Ab:',
-					'type'			=> 'date',
-					'format'		=> $GLOBALS['TL_CONFIG']['dateFormat'],
-					'value'			=> ($arrSession[$this->name]['from'] ? $this->parseDate($GLOBALS['TL_CONFIG']['dateFormat'], (int) $arrSession[$this->name]['from']) : ''),
-					'class'			=> 'tl_from',
-				),
-				array
-				(
-					'name'			=> 'period',
-					'label'			=> 'Zeitraum:',
-					'type'			=> 'filter',
-					'value'			=> (string) $arrSession[$this->name]['period'],
-					'class'			=> 'tl_period',
-					'options'		=> array
-					(
-						'day'		=> 'Tag',
-						'week'		=> 'Woche',
-						'month'		=> 'Monat',
-						'year'		=> 'Jahr',
-					),
-				),
-			),
-			array(/*$this->getLimitPanel(), $this->getSearchPanel(), */$this->getSortingPanel())
-		);
-	}
-
-
 	protected function initializeDefaultValues()
 	{
 		// Set default session data
@@ -111,6 +65,37 @@ abstract class IsotopeReportSales extends IsotopeReport
 		}
 
 		$this->Session->set('iso_reports', $arrSession);
+	}
+
+
+	protected function getSelectFromPanel()
+	{
+		$arrSession = $this->Session->get('iso_reports');
+
+		return array
+		(
+			'name'			=> 'from',
+			'label'			=> 'Ab:',
+			'type'			=> 'date',
+			'format'		=> $GLOBALS['TL_CONFIG']['dateFormat'],
+			'value'			=> ($arrSession[$this->name]['from'] ? $this->parseDate($GLOBALS['TL_CONFIG']['dateFormat'], (int) $arrSession[$this->name]['from']) : ''),
+			'class'			=> 'tl_from',
+		);
+	}
+
+
+	protected function getSelectColumnsPanel()
+	{
+		$arrSession = $this->Session->get('iso_reports');
+
+		return array
+		(
+			'name'			=> 'columns',
+			'label'			=> 'Spalten:',
+			'type'			=> 'text',
+			'value'			=> (int) $arrSession[$this->name]['columns'],
+			'class'			=> 'tl_columns',
+		);
 	}
 
 

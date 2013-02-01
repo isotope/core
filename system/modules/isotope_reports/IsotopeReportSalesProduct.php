@@ -210,12 +210,11 @@ class IsotopeReportSalesProduct extends IsotopeReportSales
 	}
 
 
-	protected function getPanels()
+	protected function getSelectVariantsPanel()
 	{
 		$arrSession = $this->Session->get('iso_reports');
-		$arrPanels = parent::getPanels();
 
-		$arrPanels[0][] = array
+		return array
 		(
 			'name'			=> 'variants',
 			'label'			=> 'Varianten:',
@@ -227,10 +226,8 @@ class IsotopeReportSalesProduct extends IsotopeReportSales
 				'1'			=> &$GLOBALS['TL_LANG']['MSC']['yes'],
 				''			=> &$GLOBALS['TL_LANG']['MSC']['no'],
 			),
-			'attributes'	=> ' onchange="this.form.submit()"',
+			'attributes'	=> ' onchange="this.form.submit()"'
 		);
-
-		return $arrPanels;
 	}
 
 
