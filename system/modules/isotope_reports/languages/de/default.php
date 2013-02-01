@@ -30,7 +30,7 @@
 /**
  * Isotope Reports
  */
-$GLOBALS['ISO_LANG']['REPORT']['sales'] = 'Verkaufs-Statistiken';
+$GLOBALS['ISO_LANG']['REPORT']['sales'] = 'Umsatz-Statistiken';
 $GLOBALS['ISO_LANG']['REPORT']['member'] = 'Mitglieder-Statistiken';
 $GLOBALS['ISO_LANG']['REPORT']['rules'] = 'Regel-Statistiken';
 $GLOBALS['ISO_LANG']['REPORT']['custom'] = 'Eigene Auswertungen';

@@ -35,5 +35,5 @@ $GLOBALS['TL_LANG']['MOD']['isotope_reports'] = array('Isotope eCommerce: Auswer
 /**
  * Backend modules
  */
-$GLOBALS['TL_LANG']['MOD']['reports'] = array('Auswertungen &amp; Statistik');
+$GLOBALS['TL_LANG']['MOD']['reports'] = array('Auswertung &amp; Statistik');
 
