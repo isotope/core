@@ -75,7 +75,7 @@ window.addEvent("domready", function() {
 
 <h2 class="sub_headline"><?php echo $this->headline; ?></h2>
 
-<div class="tl_listing_container list_view">
+<div class="tl_listing_container list_view mod_iso_reports">
 
 
 
@@ -126,7 +126,7 @@ window.addEvent('domready', function() {
 
 
 
-
+<div class="iso_report_container">
 <table class="iso_report tl_listing showColumns">
 <?php if($this->data['header']): ?>
 <thead>
@@ -156,5 +156,6 @@ window.addEvent('domready', function() {
 <?php endforeach; ?>
 </tbody>
 </table>
+</div>
 
 </div>

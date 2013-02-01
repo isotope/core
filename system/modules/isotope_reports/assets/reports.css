@@ -13,23 +13,34 @@
 .iso_reports .item span {
 	display: block;
 }
+.mod_iso_reports {
+	overflow: auto;
+}
+.iso_report_container {
+	margin-left: 281px;
+}
 table.iso_report {
 	border-collapse: separate;
 }
+table.iso_report tr th:first-child, table.iso_report tr td:first-child {
+	width: 270px;
+	position: absolute;
+	margin-left: -281px;
+}
 table.iso_report .tl_file_list {
-	line-height:1.5;
+	line-height: 1.5;
 }
 table.iso_report .tl_file_list .variant {
-	font-size:10px;
-	color:#999;
+	font-size: 10px;
+	color: #999;
 }
 .iso_report tfoot td {
 	border-top: 1px solid #bbb;
 }
 .iso_report tfoot .variant {
-	font-size:10px;
-	color:#999;
-	font-weight:normal;
+	font-size: 10px;
+	color: #999;
+	font-weight: normal;
 }
 .tl_subpanel input.tl_text.datepicker {
 	width: 100px;

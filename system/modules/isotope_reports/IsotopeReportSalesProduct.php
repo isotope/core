@@ -174,7 +174,11 @@ class IsotopeReportSalesProduct extends IsotopeReportSales
 				'attributes' => ' style="white-space:nowrap"'
 			));
 
-			$arrFooter[0]['value'] = $GLOBALS['ISO_LANG']['REPORT']['sums'];
+			$arrFooter[0] = array
+			(
+				'value'      => $GLOBALS['ISO_LANG']['REPORT']['sums'],
+				'attributes' => ' style="line-height:26px"'
+			);
 
 			foreach ($arrColumns as $i=>$column)
 			{
