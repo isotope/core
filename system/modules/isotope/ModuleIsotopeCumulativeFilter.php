@@ -37,7 +37,7 @@ class ModuleIsotopeCumulativeFilter extends ModuleIsotopeProductFilter
 	 * Template
 	 * @var string
 	 */
-	protected $strTemplate = 'iso_filter_cumulative';
+	protected $strTemplate = 'mod_iso_cumulativefilter';
 
 
 	/**
@@ -58,30 +58,11 @@ class ModuleIsotopeCumulativeFilter extends ModuleIsotopeProductFilter
 			return $objTemplate->parse();
 		}
 
+		// Remove setting to prevent override of the module template
+		$this->iso_filterTpl = '';
+		$this->navigationTpl = $this->navigationTpl ? $this->navigationTpl : 'nav_default';
+
 		return parent::generate();
-	}
-
-
-	/**
-	 * Override initializeFilters() to prevent module from not being shown in front end if there are no filter fields
-	 * @see ModuleIsotopeProductFilter::initializeFilters()
-	 * @return boolean
-	 */
-	protected function initializeFilters()
-	{
-		$this->iso_filterFields = deserialize($this->iso_filterFields, true);
-
-		if (!empty($this->iso_filterFields))
-		{
-			return true;
-		}
-
-		if ($this->iso_filterTpl)
-		{
-			$this->strTemplate = $this->iso_filterTpl;
-		}
-
-		return false;
 	}
 
 
@@ -90,15 +71,39 @@ class ModuleIsotopeCumulativeFilter extends ModuleIsotopeProductFilter
 	 */
 	protected function compile()
 	{
-		$this->blnCacheRequest =	($this->Input->get('cfilter') &&
-									$this->Input->get('attr') &&
-									$this->Input->get('v') &&
-									$this->Input->get('mod') == $this->id) ? true : false;
+	    $arrFilter = explode(';', base64_decode($this->Input->get('cumulativefilter', true)), 4);
 
-		$this->generateFilter();
+	    if ($arrFilter[0] == $this->id && in_array($arrFilter[2], $this->iso_filterFields))
+	    {
+    	    $this->blnCacheRequest = true;
 
-		$this->Template->linkClearAll	= ampersand(preg_replace('/\?.*/', '', $this->Environment->request));
-		$this->Template->labelClearAll	= $GLOBALS['TL_LANG']['MSC']['clearFiltersLabel'];
+    	    // Unique filter key is necessary to unset the filter
+    	    $strFilterKey = $arrFilter[2].'='.$arrFilter[3];
+
+    	    if ($arrFilter[1] == 'add')
+			{
+				$GLOBALS['ISO_FILTERS'][$this->id][$strFilterKey] = array
+				(
+					'operator'		=> '==',
+					'attribute'		=> $arrFilter[2],
+					'value'			=> $arrFilter[3]
+				);
+			}
+			else
+			{
+				unset($GLOBALS['ISO_FILTERS'][$this->id][$strFilterKey]);
+			}
+
+			// unset GET parameter or it would be included in the redirect URL
+			$this->Input->setGet('cumulativefilter', null);
+	    }
+	    else
+	    {
+    		$this->generateFilter();
+
+    		$this->Template->linkClearAll = ampersand(preg_replace('/\?.*/', '', $this->Environment->request));
+    		$this->Template->labelClearAll = $GLOBALS['TL_LANG']['MSC']['clearFiltersLabel'];
+    	}
 	}
 
 
@@ -107,107 +112,57 @@ class ModuleIsotopeCumulativeFilter extends ModuleIsotopeProductFilter
 	 */
 	protected function generateFilter()
 	{
+	    $blnShowClear = false;
 		$arrFilters = array();
 
-		// get values
-		$strMode		= $this->Input->get('cfilter');
-		$strField		= $this->Input->get('attr');
-		$intValue		= $this->Input->get('v');
-		$strFilterKey	= $strField . '::' . $intValue;
-
-		// set filter values
-		if ($this->blnCacheRequest)
-		{
-			if ($strMode == 'add')
-			{
-				$GLOBALS['ISO_FILTERS'][$this->id][$strFilterKey] = array
-				(
-					'operator'		=> '==',
-					'attribute'		=> $strField,
-					'value'			=> $intValue
-				);
-			}
-			else
-			{
-				unset($GLOBALS['ISO_FILTERS'][$this->id][$strFilterKey]);
-			}
-
-			// unset GET params because the rest is done by ModuleIsotopeProductFilter::generate()
-			$this->Input->setGet('mod', null);
-			$this->Input->setGet('cfilter', null);
-			$this->Input->setGet('attr', null);
-			$this->Input->setGet('v', null);
-		}
-
-		// build filter
 		foreach ($this->iso_filterFields as $strField)
 		{
-			$arrData = $GLOBALS['TL_DCA']['tl_iso_products']['fields'][$strField];
+		    $blnTrail = false;
+			$arrItems = array();
+			$arrWidget = $this->prepareForWidget($GLOBALS['TL_DCA']['tl_iso_products']['fields'][$strField], $strField); // Use the default routine to initialize options data
 
-			// Use the default routine to initialize options data
-			$arrWidget = $this->prepareForWidget($arrData, $strField);
-
-			$arrOptions = array();
-
-			foreach($arrWidget['options'] as $k => $option)
+			foreach ($arrWidget['options'] as $option)
 			{
-				$intValue = (int) $option['value'];
-				$strFilterKey = $strField . '::' . $intValue;
+				$varValue = $option['value'];
 
 				// skip zero values (includeBlankOption)
-				if($intValue == 0)
+				if ($varValue === '' || $varValue === '-') {
 					continue;
-
-				$blnIsActive = ($GLOBALS['ISO_FILTERS'][$this->id][$strFilterKey]['value'] == $intValue);
-
-				$arrParams		= array();
-				$arrParams[]	= array('mod', $this->id);
-				$arrParams[]	= array('attr', $strField);
-				$arrParams[]	= array('v', $intValue);
-
-				// add or remove mode
-				if($blnIsActive)
-				{
-					$arrParams[]	= array('cfilter', 'remove');
-				}
-				else
-				{
-					$arrParams[]	= array('cfilter', 'add');
 				}
 
-				$arrOptions[$k]['label']	= $arrWidget['options'][$k]['label'];
-				$arrOptions[$k]['default']	= $GLOBALS['ISO_FILTERS'][$this->id][$strField]['value'] ? '1' : '';
-				$arrOptions[$k]['url']		= $this->addToCurrentUrl($arrParams);
-				$arrOptions[$k]['isActive']	= $blnIsActive;
+				$strFilterKey = $strField . '=' . $varValue;
+				$blnActive = isset($GLOBALS['ISO_FILTERS'][$this->id][$strFilterKey]);
+				$blnTrail = $blnActive ? true : $blnTrail;
+
+				$arrItems[] = array
+				(
+				    'href'  => IsotopeFrontend::addQueryStringToUrl('cumulativefilter=' . base64_encode($this->id . ';' . ($blnActive ? 'del' : 'add') . ';' . $strField . ';' . $varValue)),
+				    'class' => ($blnActive ? 'active' : ''),
+				    'title' => specialchars($option['label']),
+				    'link'  => $option['label'],
+				);
 			}
 
-			$arrFilters[$strField] = array
-			(
-				'label'		=> $arrWidget['label'],
-				'options'	=> $arrOptions
-			);
+			if (!empty($arrItems) || ($this->iso_iso_filterHideSingle && count($arrItems) < 2))
+			{
+    			$objTemplate = new FrontendTemplate($this->navigationTpl);
+
+    			$objTemplate->level = 'level_2';
+    			$objTemplate->items = IsotopeFrontend::generateRowClass($arrItems, ($blnTrail ? 'sibling' : ''), 'class', 0, ISO_CLASS_NAME & ISO_CLASS_FIRSTLAST);
+
+    			$arrFilters[$strField] = array
+    			(
+    				'label'     => $arrWidget['label'],
+    				'subitems'  => $objTemplate->parse(),
+    				'isActive'  => $blnTrail,
+    			);
+    			
+    			$blnShowClear = $blnTrail ? true : $blnShowClear;
+			}
 		}
 
-		$this->Template->filterData = $arrFilters;
-	}
-
-
-	/**
-	 * Checks whether there is a ? in the url already and and adds a param to the current url
-	 * @param array
-	 * @return string
-	 */
-	protected function addToCurrentUrl($arrParams)
-	{
-		$strUrl = $this->Environment->request;
-
-		foreach($arrParams as $arrParam)
-		{
-			$strUrl .= (strpos($strUrl, '?') !== false) ? '&' : '?';
-			$strUrl .= $arrParam[0] . '=' . $arrParam[1];
-		}
-
-		return $strUrl;
+		$this->Template->filters = $arrFilters;
+		$this->Template->showClear = $blnShowClear;
 	}
 }
 
