@@ -683,6 +683,31 @@ class Isotope extends Controller
 
 
 	/**
+	 * Format the number of items and return the items string
+	 * @param integer
+	 * @return string
+	 */
+	public function formatItemsString($intItems)
+	{
+		if ($intItems == 1)
+		{
+			return $GLOBALS['TL_LANG']['ISO']['productSingle'];
+		}
+		else
+		{
+			$arrFormat = $GLOBALS['ISO_NUM'][$this->Config->currencyFormat];
+
+			if (is_array($arrFormat))
+			{
+				$intItems = number_format($intItems, 0, $arrFormat[1], $arrFormat[2]);
+			}
+
+			return sprintf($GLOBALS['TL_LANG']['ISO']['productMultiple'], $intItems);
+		}
+	}
+
+
+	/**
 	 * Get the address details and return it as array
 	 * @todo clean up all getAddress stuff...
 	 * @param string
