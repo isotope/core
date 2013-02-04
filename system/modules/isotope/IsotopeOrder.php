@@ -481,6 +481,15 @@ class IsotopeOrder extends IsotopeProductCollection
 			}
 		}
 
+		// Add the payment date if there is none
+		if ($objNewStatus->paid)
+		{
+			if ($this->date_paid == '')
+			{
+				$this->date_paid = time();
+			}
+		}
+
 		// Trigger email actions
 		if ($objNewStatus->mail_customer > 0 || $objNewStatus->mail_admin > 0)
 		{

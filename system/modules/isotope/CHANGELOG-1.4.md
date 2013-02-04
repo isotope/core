@@ -7,6 +7,7 @@ Version 1.4.? (2013-??-??)
 ### Improved
 - Added short name for known "Krone" and "Franc" currencies
 - noFilter message in product list is now generated inside the productlist template (#530)
+- Automatically set payment date when order status is set to completed
 
 ### Fixed
 - Price was 0.00 if there is only one product variant
