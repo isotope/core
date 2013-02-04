@@ -617,37 +617,39 @@ class IsotopeBackend extends Backend
 	 */
 	public static function getAllowedProductIds()
 	{
-    	$objUser = BackendUser::getInstance();
+		$objUser = BackendUser::getInstance();
 
-    	if ($objUser->isAdmin)
-    	{
-        	return true;
-    	}
-
-   		$arrNewRecords = $_SESSION['BE_DATA']['new_records']['tl_iso_products'];
-    	$arrProductTypes = $objUser->iso_product_types;
-    	$arrGroups = $objUser->iso_groups;
-
-    	if (!is_array($arrProductTypes) || empty($arrProductTypes) || !is_array($arrGroups) || empty($arrGroups))
-    	{
-        	return false;
-    	}
-
-    	$arrGroups = array_merge($arrGroups, Isotope::getInstance()->call('getChildRecords', array($arrGroups, 'tl_iso_groups')));
-
-		$objProducts = Database::getInstance()->execute("SELECT id FROM tl_iso_products
-		                                                 WHERE pid=0 AND language='' AND
-		                                                 gid IN (" . implode(',', $arrGroups) . ") AND
-		                                                 (type IN (" . implode(',', $arrProductTypes) . ")" .
-		                                                 ((is_array($arrNewRecords) && !empty($arrNewRecords)) ? " OR id IN (".implode(',', $arrNewRecords)."))" : ')'));
-
-		if ($objProducts->numRows == 0)
+		if ($objUser->isAdmin)
 		{
-    		return array();
+			$arrProducts = true;
 		}
+		else
+		{
+   			$arrNewRecords = $_SESSION['BE_DATA']['new_records']['tl_iso_products'];
+	    	$arrProductTypes = $objUser->iso_product_types;
+	    	$arrGroups = $objUser->iso_groups;
 
-		$arrProducts = $objProducts->fetchEach('id');
-		$arrProducts = array_merge($arrProducts, Isotope::getInstance()->call('getChildRecords', array($arrProducts, 'tl_iso_products')));
+    		if (!is_array($arrProductTypes) || empty($arrProductTypes) || !is_array($arrGroups) || empty($arrGroups))
+	    	{
+	        	return false;
+	    	}
+
+    		$arrGroups = array_merge($arrGroups, Isotope::getInstance()->call('getChildRecords', array($arrGroups, 'tl_iso_groups')));
+
+			$objProducts = Database::getInstance()->execute("SELECT id FROM tl_iso_products
+			                                                 WHERE pid=0 AND language='' AND
+			                                                 gid IN (" . implode(',', $arrGroups) . ") AND
+			                                                 (type IN (" . implode(',', $arrProductTypes) . ")" .
+		    	                                             ((is_array($arrNewRecords) && !empty($arrNewRecords)) ? " OR id IN (".implode(',', $arrNewRecords)."))" : ')'));
+
+			if ($objProducts->numRows == 0)
+			{
+	    		return array();
+			}
+
+			$arrProducts = $objProducts->fetchEach('id');
+			$arrProducts = array_merge($arrProducts, Isotope::getInstance()->call('getChildRecords', array($arrProducts, 'tl_iso_products')));
+		}
 
 		// HOOK: allow extensions to define allowed products
 		if (isset($GLOBALS['ISO_HOOKS']['getAllowedProductIds']) && is_array($GLOBALS['ISO_HOOKS']['getAllowedProductIds']))
@@ -663,13 +665,20 @@ class IsotopeBackend extends Backend
 				}
 				elseif (is_array($arrAllowed))
 				{
-    				$arrProducts = array_intersect($arrProducts, $arrAllowed);
+					if ($arrProducts === true)
+					{
+						$arrProducts = $arrAllowed;
+					}
+					else
+					{
+    					$arrProducts = array_intersect($arrProducts, $arrAllowed);
+					}
 				}
 			}
 		}
 
 		// If all product are allowed, we don't need to filter
-		if (count($arrProducts) == Database::getInstance()->execute("SELECT COUNT(id) as total FROM tl_iso_products")->total)
+		if ($arrProducts === true || count($arrProducts) == Database::getInstance()->execute("SELECT COUNT(id) as total FROM tl_iso_products")->total)
 		{
     		return true;
 		}
