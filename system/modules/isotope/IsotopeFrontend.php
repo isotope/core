@@ -1480,7 +1480,7 @@ $endScript";
 		// Overwrite existing parameters and ignore "language", see #64
 		foreach ($queries as $k=>$v)
 		{
-			$explode = explode('=', $v);
+			$explode = explode('=', $v, 2);
 
 			if ($k === 'language' || preg_match('/(^|&(amp;)?)' . preg_quote($explode[0], '/') . '=/i', $strRequest))
 			{
