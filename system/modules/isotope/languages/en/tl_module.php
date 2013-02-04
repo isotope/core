@@ -62,6 +62,7 @@ $GLOBALS['TL_LANG']['tl_module']['iso_list_where']				= array('Condition', 'Here
 $GLOBALS['TL_LANG']['tl_module']['iso_use_quantity'] 			= array('Enable quantity', 'Allow users to specify 1 or more of a product to be purchased.');
 $GLOBALS['TL_LANG']['tl_module']['iso_filterModules']			= array('Filter modules', 'Select the filter modules you want to consider for this product list.');
 $GLOBALS['TL_LANG']['tl_module']['iso_filterFields']			= array('Enabled filters', 'Please select filters to enable.');
+$GLOBALS['TL_LANG']['tl_module']['iso_filterHideSingle']        = array('Hide on single option', 'Hide filter field if there is just one option.');
 $GLOBALS['TL_LANG']['tl_module']['iso_sortingFields']			= array('Enabled sorting fields', 'Please select orderable fields to enable.');
 $GLOBALS['TL_LANG']['tl_module']['iso_searchFields']			= array('Enabled search fields', 'Please select search fields to enable.');
 $GLOBALS['TL_LANG']['tl_module']['iso_searchAutocomplete']		= array('Autocomplete search field', 'If you select a field here, the search will be autocompleted by the values of that field.');

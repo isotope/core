@@ -326,8 +326,8 @@ class ModuleIsotopeProductFilter extends ModuleIsotope
 						$arrWidget['options'][$k]['default'] = $option['value'] == $GLOBALS['ISO_FILTERS'][$this->id][$strField]['value'] ? '1' : '';
 					}
 
-					// Filter with just one option does not make sense
-					if (count($arrWidget['options']) < 2)
+					// Hide fields with just one option (if enabled)
+					if ($this->iso_filterHideSingle && count($arrWidget['options']) < 2)
 					{
 						continue;
 					}
