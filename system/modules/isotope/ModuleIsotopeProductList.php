@@ -70,12 +70,6 @@ class ModuleIsotopeProductList extends ModuleIsotope
 			return '';
 		}
 
-		// return message if no filter is set
-		if ($this->iso_emptyFilter && !$this->Input->get('isorc') && !$this->Input->get('keywords'))
-		{
-			return $this->replaceInsertTags($this->iso_noFilter);
-		}
-
 		$this->iso_filterModules = deserialize($this->iso_filterModules, true);
 		$this->iso_productcache = deserialize($this->iso_productcache, true);
 
@@ -132,6 +126,15 @@ class ModuleIsotopeProductList extends ModuleIsotope
 	 */
 	protected function compile()
 	{
+		// return message if no filter is set
+		if ($this->iso_emptyFilter && !$this->Input->get('isorc') && !$this->Input->get('keywords'))
+		{
+			$this->Template->message = $this->replaceInsertTags($this->iso_noFilter);
+			$this->Template->type = 'noFilter';
+			$this->Template->products = array();
+			return;
+		}
+
 		global $objPage;
 		$arrProducts = null;
 
