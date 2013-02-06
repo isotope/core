@@ -108,9 +108,14 @@ class PaymentSparkasse extends IsotopePayment
 		}
 
 		// Validate payment data
-		if ($objOrder->currency != $arrData['currency'] || $objOrder->grandTotal != $arrData['amount'])
+		if ($objOrder->currency != $arrData['currency'])
 		{
-			$this->log('Data manipulation in Sparkasse payment!', __METHOD__, TL_ERROR);
+			$this->log(sprintf('Data manipulation: currency mismatch ("%s" != "%s")', $objOrder->currency, $arrdata['currency']), __METHOD__, TL_ERROR);
+			$this->redirectError($arrData);
+		}
+		elseif ($objOrder->grandTotal != $arrData['amount'])
+		{
+    		$this->log(sprintf('Data manipulation: amount mismatch ("%s" != "%s")', $objOrder->grandTotal, $arrData['amount']), __METHOD__, TL_ERROR);
 			$this->redirectError($arrData);
 		}
 
