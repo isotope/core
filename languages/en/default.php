@@ -32,8 +32,3 @@
  * Payment modules
  */
 $GLOBALS['ISO_LANG']['PAY']['sparkasse'] = array('Sparkasse');
-
-
-$GLOBALS['TL_LANG']['MSC']['pay_with_redirect'][0]		= 'Zahlung ausführen';
-$GLOBALS['TL_LANG']['MSC']['pay_with_redirect'][1]		= 'Sie werden nun zum Zahlunganbieter weitergeleitet. Falls die Weiterleitung nicht automatisch funktioniert, klicken Sie auf "Bezahlen".';
-$GLOBALS['TL_LANG']['MSC']['pay_with_redirect'][2]		= 'Bezahlen';
