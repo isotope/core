@@ -31,96 +31,158 @@
 class PaymentSparkasse extends IsotopePayment
 {
 
-	/**
-	 * processPayment function.
-	 *
-	 * @access public
-	 * @return void
-	 */
-	public function processPayment()
-	{
-		return true;
-	}
+    /**
+     * processPayment function.
+     *
+     * @access public
+     * @return void
+     */
+    public function processPayment()
+    {
+        $objOrder = new IsotopeOrder();
 
-
-	/**
-	 * Process PayPal Instant Payment Notifications (IPN)
-	 *
-	 * @access public
-	 * @return void
-	 */
-	public function processPostSale()
-	{
-		// Sparkasse system sent error message
-		if ($this->Input->post('directPosErrorCode') > 0)
+		if (!$objOrder->findBy('cart_id', $this->Isotope->Cart->id))
 		{
-			$this->postsaleFailed($this->Input->post('directPosErrorMessage'));
+			return false;
 		}
 
-		echo 'redirecturls='.$this->Environment->base . $this->generateFrontendUrl($this->Database->execute("SELECT * FROM tl_page WHERE id=".(int)$this->Input->post('sessionid'))->fetchAssoc(), '/step/complete');
-		exit;
-	}
-
-
-	private function postsaleFailed($strReason='')
-	{
-		echo 'redirecturlf='.$this->Environment->base . $this->generateFrontendUrl($this->Database->execute("SELECT * FROM tl_page WHERE id=".(int)$this->Input->post('sessionid'))->fetchAssoc(), '/step/failed') . ($strReason != '' ? '?reason='.$strReason : '');
-		exit;
-	}
-
-
-	/**
-	 * Return the payment form.
-	 *
-	 * @access public
-	 * @return string
-	 */
-	public function checkoutForm()
-	{
-		global $objPage;
-
-		$objOrder = new IsotopeOrder();
-		$objOrder->findBy('cart_id', $this->Isotope->Cart->id);
-
-		$arrUrl = array();
-		$strUrl = 'https://' . ($this->debug ? 'test' : '') . 'system.sparkassen-internetkasse.de/vbv/mpi_legacy?';
-
-		$arrParam = array
-		(
-			'amount'				=> number_format($this->Isotope->Cart->grandTotal, 2, ',', ''),
-			'basketid'				=> $this->Isotope->Cart->id,
-			'command'				=> 'sslform',
-			'currency'				=> $this->Isotope->Config->currency,
-//			'customer_addr_city'	=> urlencode($this->Isotope->Cart->billingAddress['city']),
-//			'customer_addr_street'	=> urlencode($this->Isotope->Cart->billingAddress['street_1']),
-//			'customer_addr_zip'		=> urlencode($this->Isotope->Cart->billingAddress['postal']),
-//			'deliverycountry'		=> urlencode($this->Isotope->Cart->billingAddress['country']),
-			'locale'				=> $GLOBALS['TL_LANGUAGE'],
-			'orderid'				=> $objOrder->id,
-			'paymentmethod'			=> $this->sparkasse_paymentmethod,
-			'sessionid'				=> $objPage->id,
-			'sslmerchant'			=> $this->sparkasse_sslmerchant,
-			'transactiontype'		=> ($this->trans_type == 'auth' ? 'preauthorization' : 'authorization'),
-			'version'				=> '1.5',
-		);
-
-		if ($this->sparkasse_merchantref != '')
+		if ($objOrder->date_paid > 0 && $objOrder->date_paid <= time())
 		{
-			$arrParam['merchantref'] = substr($this->replaceInsertTags($this->sparkasse_merchantref), 0, 30);
+			IsotopeFrontend::clearTimeout();
+			return true;
 		}
 
-		ksort($arrParam);
-
-		$arrParam['mac'] = hash_hmac('sha1', implode('', $arrParam), $this->sparkasse_sslpassword);
-
-		foreach( $arrParam as $k => $v )
+		if (IsotopeFrontend::setTimeout())
 		{
-			$arrUrl[] = $k . '=' . $v;
+			// Do not index or cache the page
+			global $objPage;
+			$objPage->noSearch = 1;
+			$objPage->cache = 0;
+
+			$objTemplate = new FrontendTemplate('mod_message');
+			$objTemplate->type = 'processing';
+			$objTemplate->message = $GLOBALS['TL_LANG']['MSC']['payment_processing'];
+			return $objTemplate->parse();
 		}
 
-		$strUrl .= implode('&', $arrUrl);
+		$this->log('Payment could not be processed.', __METHOD__, TL_ERROR);
 
-		return "
+		$this->redirect($this->addToUrl('step=failed', true));
+    }
+
+
+    /**
+     * Server to server communication
+     *
+     * @access public
+     * @return void
+     */
+    public function processPostSale()
+    {
+        $arrData = array();
+
+        foreach (array('aid', 'amount', 'basketid', 'currency', 'directPosErrorCode', 'directPosErrorMessage', 'orderid', 'rc', 'retrefnum', 'sessionid', 'trefnum') as $strKey)
+        {
+            $arrData[$strKey] = $this->Input->post($strKey);
+        }
+
+        // Sparkasse system sent error message
+        if ($arrData['directPosErrorCode'] > 0)
+        {
+            $this->redirectError($arrData);
+        }
+
+        // Check the data hash to prevent manipulations
+        if ($this->Input->post('mac') != $this->calculateHash($arrData))
+        {
+            $this->log('Security hash mismatch in Sparkasse payment!', __METHOD__, TL_ERROR);
+            $this->redirectError($arrData);
+        }
+
+        $objOrder = new IsotopeOrder();
+
+		if (!$objOrder->findBy('id', $arrData['orderid']))
+		{
+			$this->log('Order ID "' . $arrData['orderid'] . '" not found', __METHOD__, TL_ERROR);
+			$this->redirectError($arrData);
+		}
+
+		// Validate payment data
+		if ($objOrder->currency != $arrData['currency'] || $objOrder->grandTotal != $arrData['amount'])
+		{
+			$this->log('Data manipulation in Sparkasse payment!', __METHOD__, TL_ERROR);
+			$this->redirectError($arrData);
+		}
+
+		if (!$objOrder->checkout())
+		{
+			$this->log('Postsale checkout for order ID "' . $objOrder->id . '" failed', __METHOD__, TL_ERROR);
+			$this->redirectError($arrData);
+		}
+
+		// Store request data in order for future references
+		$arrPayment = deserialize($objOrder->payment_data, true);
+		$arrPayment['POSTSALE'][] = $_POST;
+		$objOrder->payment_data = $arrPayment;
+
+		$objOrder->date_paid = time();
+		$objOrder->updateOrderStatus($this->new_order_status);
+
+		$objOrder->save();
+
+		$objPage = $this->getPageDetails((int) $arrData['sessionid']);
+
+        echo 'redirecturls=' . $this->Environment->base . $this->generateFrontendUrl($objPage->row(), '/step/complete', $objPage->language);
+        exit;
+    }
+
+
+    /**
+     * Return the payment form.
+     *
+     * @access public
+     * @return string
+     */
+    public function checkoutForm()
+    {
+        global $objPage;
+
+        $objOrder = new IsotopeOrder();
+        $objOrder->findBy('cart_id', $this->Isotope->Cart->id);
+
+        $arrUrl = array();
+        $strUrl = 'https://' . ($this->debug ? 'test' : '') . 'system.sparkassen-internetkasse.de/vbv/mpi_legacy?';
+
+        $arrParam = array
+        (
+            'amount'                    => number_format($this->Isotope->Cart->grandTotal, 2, ',', ''),
+            'basketid'                  => $this->Isotope->Cart->id,
+            'command'                   => 'sslform',
+            'currency'                  => $this->Isotope->Config->currency,
+            'locale'                    => $GLOBALS['TL_LANGUAGE'],
+            'orderid'                   => $objOrder->id,
+            'paymentmethod'             => $this->sparkasse_paymentmethod,
+            'sessionid'                 => $objPage->id,
+            'sslmerchant'               => $this->sparkasse_sslmerchant,
+            'transactiontype'           => ($this->trans_type == 'auth' ? 'preauthorization' : 'authorization'),
+            'version'                   => '1.5',
+        );
+
+        if ($this->sparkasse_merchantref != '')
+        {
+            $arrParam['merchantref'] = substr($this->replaceInsertTags($this->sparkasse_merchantref), 0, 30);
+        }
+
+        $arrParam['mac'] = $this->calculateHash($arrParam);
+
+        foreach( $arrParam as $k => $v )
+        {
+            $arrUrl[] = $k . '=' . $v;
+        }
+
+        $strUrl .= implode('&', $arrUrl);
+
+        return "
 <script type=\"text/javascript\">
 <!--//--><![CDATA[//><!--
 window.location.href = '" . $strUrl . "';
@@ -129,6 +191,32 @@ window.location.href = '" . $strUrl . "';
 <h3>" . $GLOBALS['TL_LANG']['MSC']['pay_with_redirect'][0] . "</h3>
 <p>" . $GLOBALS['TL_LANG']['MSC']['pay_with_redirect'][1] . "</p>
 <p><a href=\"" . $strUrl . "\">" . $GLOBALS['TL_LANG']['MSC']['pay_with_redirect'][2] . "</a>";
-	}
+    }
+
+
+    /**
+     * Calculate hash
+     * @param  array
+     * @return string
+     */
+    private function calculateHash($arrData)
+    {
+        ksort($arrData);
+
+        return hash_hmac('sha1', implode('', $arrData), $this->sparkasse_sslpassword);
+    }
+
+
+    /**
+     * Redirect the Sparkasse server to our error page
+     * @param arary
+     */
+    private function redirectError($arrData)
+    {
+        $objPage = $this->getPageDetails((int) $arrData['sessionid']);
+
+        echo 'redirecturlf=' . $this->Environment->base . $this->generateFrontendUrl($objPage->row(), '/step/failed', $objPage->language) . '?reason=' . $arrData['directPosErrorMessage'];
+        exit;
+    }
 }
 
