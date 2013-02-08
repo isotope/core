@@ -86,9 +86,6 @@ class PaymentSparkasse extends IsotopePayment
             $arrData[$strKey] = $this->Input->post($strKey);
         }
 
-        // Convert amount, Sparkasse is using comma instead of dot as decimal separator
-        $arrData['amount'] = str_replace(',', '.', preg_replace('/[^0-9,]/', '', $arrData['amount']));
-
         // Sparkasse system sent error message
         if ($arrData['directPosErrorCode'] > 0)
         {
@@ -109,6 +106,9 @@ class PaymentSparkasse extends IsotopePayment
 			$this->log('Order ID "' . $arrData['orderid'] . '" not found', __METHOD__, TL_ERROR);
 			$this->redirectError($arrData);
 		}
+
+		// Convert amount, Sparkasse is using comma instead of dot as decimal separator
+        $arrData['amount'] = str_replace(',', '.', preg_replace('/[^0-9,]/', '', $arrData['amount']));
 
 		// Validate payment data
 		if ($objOrder->currency != $arrData['currency'])
