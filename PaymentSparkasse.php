@@ -140,7 +140,7 @@ class PaymentSparkasse extends IsotopePayment
 
 		$objPage = $this->getPageDetails((int) $arrData['sessionid']);
 
-        echo 'redirecturls=' . $this->Environment->base . $this->generateFrontendUrl($objPage->row(), '/step/complete', $objPage->language);
+        echo 'redirecturls=' . $this->Environment->base . $this->generateFrontendUrl($objPage->row(), '/step/complete/uid/' . $objOrder->uniqid, $objPage->language);
         exit;
     }
 
