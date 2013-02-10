@@ -4,6 +4,9 @@ Isotope eCommerce Changelog
 Version 1.4.? (2013-??-??)
 ----------------------------
 
+### New
+- Standalone front end module to display Isotope messages (#101)
+
 ### Improved
 - Added short name for known "Krone" and "Franc" currencies
 - noFilter message in product list is now generated inside the productlist template (#530)
