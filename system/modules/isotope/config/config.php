@@ -105,6 +105,11 @@ $GLOBALS['ISO_MOD'] = array
 			'tables'					=> array('tl_iso_related_categories'),
 			'icon'						=> 'system/modules/isotope/html/category.png',
 		),
+		'baseprice' => array
+		(
+			'tables'					=> array('tl_iso_baseprice'),
+			'icon'						=> 'system/modules/isotope/html/sort-price-descending.png',
+		),
 	),
 	'checkout' => array
 	(
@@ -142,11 +147,6 @@ $GLOBALS['ISO_MOD'] = array
 		(
 			'tables'					=> array('tl_iso_config'),
 			'icon'						=> 'system/modules/isotope/html/construction.png',
-		),
-		'baseprice' => array
-		(
-			'tables'					=> array('tl_iso_baseprice'),
-			'icon'						=> 'system/modules/isotope/html/sort-price-descending.png',
 		),
 		'orderstatus' => array
 		(
