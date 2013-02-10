@@ -988,40 +988,44 @@ class IsotopeProduct extends Controller
 
 			$arrField = $this->prepareForWidget($arrData, $strField, $arrData['default']);
 
-			// Unset if no variant has this option
-			foreach ($arrField['options'] as $k => $option)
+			// Necessary, because prepareForData can unset the options
+			if (is_array($arrData['options']))
 			{
-				// Keep groups and blankOptionLabels
-				if (!$option['group'] && $option['value'] != '')
-				{
-					// Unset option if no attribute has this option at all (in any enabled variant)
-					if (!in_array((string) $option['value'], (array) $this->arrVariantOptions['attributes'][$strField], true))
-					{
-						unset($arrField['options'][$k]);
-					}
+    			// Unset if no variant has this option
+    			foreach ($arrField['options'] as $k => $option)
+    			{
+    				// Keep groups and blankOptionLabels
+    				if (!$option['group'] && $option['value'] != '')
+    				{
+    					// Unset option if no attribute has this option at all (in any enabled variant)
+    					if (!in_array((string) $option['value'], (array) $this->arrVariantOptions['attributes'][$strField], true))
+    					{
+    						unset($arrField['options'][$k]);
+    					}
 
-					// Check each variant if it is found trough the url
-					else
-					{
-						$blnValid = false;
+    					// Check each variant if it is found trough the url
+    					else
+    					{
+    						$blnValid = false;
 
-						foreach ((array) $this->arrVariantOptions['options'] as $arrVariant)
-						{
-							if ($arrVariant[$strField] == $option['value'] && count($this->arrVariantOptions['current']) == count(array_intersect_assoc($this->arrVariantOptions['current'], $arrVariant)))
-							{
-								$blnValid = true;
-							}
-						}
+    						foreach ((array) $this->arrVariantOptions['options'] as $arrVariant)
+    						{
+    							if ($arrVariant[$strField] == $option['value'] && count($this->arrVariantOptions['current']) == count(array_intersect_assoc($this->arrVariantOptions['current'], $arrVariant)))
+    							{
+    								$blnValid = true;
+    							}
+    						}
 
-						if (!$blnValid)
-						{
-							unset($arrField['options'][$k]);
-						}
-					}
-				}
-			}
+    						if (!$blnValid)
+    						{
+    							unset($arrField['options'][$k]);
+    						}
+    					}
+    				}
+    			}
 
-			$arrField['options'] = array_values($arrField['options']);
+    			$arrField['options'] = array_values($arrField['options']);
+    		}
 
 			if ($this->Input->get($strField) != '' && $this->Input->post('FORM_SUBMIT') != $this->formSubmit)
 			{
