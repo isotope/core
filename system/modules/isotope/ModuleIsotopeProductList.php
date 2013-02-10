@@ -262,9 +262,10 @@ class ModuleIsotopeProductList extends ModuleIsotope
 			$objPage->noSearch = 1;
 			$objPage->cache = 0;
 
-			$this->Template = new FrontendTemplate('mod_message');
+			$this->Template->empty = true;
 			$this->Template->type = 'empty';
 			$this->Template->message = $this->iso_emptyMessage ? $this->iso_noProducts : $GLOBALS['TL_LANG']['MSC']['noProducts'];
+			$this->Template->products = array();
 			return;
 		}
 

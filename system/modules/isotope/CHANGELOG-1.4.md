@@ -13,6 +13,7 @@ Version 1.4.? (2013-??-??)
 - Automatically set payment date when order status is set to completed
 - `getAllowedProductIds` hook can now override "allow all" permissions
 - Added checkbox to hide filter option when there is just one option (#42)
+- Empty message is now rendered inside product list template (#543)
 
 ### Fixed
 - Price was 0.00 if there is only one product variant
