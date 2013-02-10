@@ -61,6 +61,7 @@ class ModuleIsotopeMessages extends ModuleIsotope
 
 		// Never prepend messages
 		$this->iso_includeMessages = false;
+
         return parent::generate();
 	}
 

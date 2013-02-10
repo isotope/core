@@ -53,7 +53,7 @@ $GLOBALS['TL_LANG']['FMD']['iso_orderhistory']			= array('Order History', 'Order
 $GLOBALS['TL_LANG']['FMD']['iso_orderdetails']			= array('Order Details', 'Order reader that allows customers to view order history details');
 $GLOBALS['TL_LANG']['FMD']['iso_configswitcher']		= array('Store Config Switcher', 'Switch between store configuration to change currency and other settings.');
 $GLOBALS['TL_LANG']['FMD']['iso_relatedproducts']		= array('Related products', 'List products related to the current one.');
-$GLOBALS['TL_LANG']['FMD']['iso_messages']		        = array('Messages', 'Displays all Isotope messages unless they have not been displayed elsewhere.');
+$GLOBALS['TL_LANG']['FMD']['iso_messages']		        = array('Messages', 'Displays all Isotope messages if they have not been displayed elsewhere.');
 
 
 /**
