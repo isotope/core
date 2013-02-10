@@ -16,6 +16,7 @@ Version 1.4.? (2013-??-??)
 - Access rightis on advanced price were not correctly handled
 - preOrderStatusUpdate and postOrderStatusUpdate were not triggered correctly
 - Labels for addresses were not shown in the order details (#538)
+- Do not show filter options of product variant if base product is disabled (#529)
 
 
 Version 1.4.rc2 (2013-01-22)
