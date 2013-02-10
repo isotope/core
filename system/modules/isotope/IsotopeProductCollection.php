@@ -842,7 +842,7 @@ abstract class IsotopeProductCollection extends Model
     		$this->loadLanguageFile('default', $this->language);
 		}
 
-		$objTemplate = new BackendTemplate($this->strTemplate);
+		$objTemplate = new IsotopeTemplate($this->strTemplate);
 		$objTemplate->setData($this->arrData);
 		$objTemplate->logoImage = '';
 

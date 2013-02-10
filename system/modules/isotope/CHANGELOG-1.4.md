@@ -17,6 +17,7 @@ Version 1.4.? (2013-??-??)
 - preOrderStatusUpdate and postOrderStatusUpdate were not triggered correctly
 - Labels for addresses were not shown in the order details (#538)
 - Do not show filter options of product variant if base product is disabled (#529)
+- Invoice PDF did not consider shop config template folder (#534)
 
 
 Version 1.4.rc2 (2013-01-22)
