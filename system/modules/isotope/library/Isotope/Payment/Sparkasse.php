@@ -33,32 +33,108 @@ class Sparkasse extends Payment implements IsotopePayment
      */
     public function processPayment()
     {
-        return true;
+        $objOrder = new IsotopeOrder();
+
+		if (!$objOrder->findBy('cart_id', $this->Isotope->Cart->id))
+		{
+			return false;
+		}
+
+		if ($objOrder->date_paid > 0 && $objOrder->date_paid <= time())
+		{
+			IsotopeFrontend::clearTimeout();
+			return true;
+		}
+
+		if (IsotopeFrontend::setTimeout())
+		{
+			// Do not index or cache the page
+			global $objPage;
+			$objPage->noSearch = 1;
+			$objPage->cache = 0;
+
+			$objTemplate = new FrontendTemplate('mod_message');
+			$objTemplate->type = 'processing';
+			$objTemplate->message = $GLOBALS['TL_LANG']['MSC']['payment_processing'];
+			return $objTemplate->parse();
+		}
+
+		$this->log('Payment could not be processed.', __METHOD__, TL_ERROR);
+
+		$this->redirect($this->addToUrl('step=failed', true));
     }
 
 
     /**
-     * Process PayPal Instant Payment Notifications (IPN)
+     * Server to server communication
      *
      * @access public
      * @return void
      */
     public function processPostSale()
     {
-        // Sparkasse system sent error message
-        if (\Input::post('directPosErrorCode') > 0)
+        $arrData = array();
+
+        foreach (array('aid', 'amount', 'basketid', 'currency', 'directPosErrorCode', 'directPosErrorMessage', 'orderid', 'rc', 'retrefnum', 'sessionid', 'trefnum') as $strKey)
         {
-            $this->postsaleFailed(\Input::post('directPosErrorMessage'));
+            $arrData[$strKey] = $this->Input->post($strKey);
         }
 
-        echo 'redirecturls='.\Environment::get('base') . $this->generateFrontendUrl($this->Database->execute("SELECT * FROM tl_page WHERE id=".(int) \Input::post('sessionid'))->fetchAssoc(), '/step/complete');
-        exit;
-    }
+        // Sparkasse system sent error message
+        if ($arrData['directPosErrorCode'] > 0)
+        {
+            $this->redirectError($arrData);
+        }
 
+        // Check the data hash to prevent manipulations
+        if ($this->Input->post('mac') != $this->calculateHash($arrData))
+        {
+            $this->log('Security hash mismatch in Sparkasse payment!', __METHOD__, TL_ERROR);
+            $this->redirectError($arrData);
+        }
 
-    private function postsaleFailed($strReason='')
-    {
-        echo 'redirecturlf='.\Environment::get('base') . $this->generateFrontendUrl($this->Database->execute("SELECT * FROM tl_page WHERE id=".(int) \Input::post('sessionid'))->fetchAssoc(), '/step/failed') . ($strReason != '' ? '?reason='.$strReason : '');
+        $objOrder = new IsotopeOrder();
+
+		if (!$objOrder->findBy('id', $arrData['orderid']))
+		{
+			$this->log('Order ID "' . $arrData['orderid'] . '" not found', __METHOD__, TL_ERROR);
+			$this->redirectError($arrData);
+		}
+
+        // Convert amount, Sparkasse is using comma instead of dot as decimal separator
+        $arrData['amount'] = str_replace(',', '.', preg_replace('/[^0-9,]/', '', $arrData['amount']));
+
+		// Validate payment data
+		if ($objOrder->currency != $arrData['currency'])
+		{
+			$this->log(sprintf('Data manipulation: currency mismatch ("%s" != "%s")', $objOrder->currency, $arrdata['currency']), __METHOD__, TL_ERROR);
+			$this->redirectError($arrData);
+		}
+		elseif ($objOrder->grandTotal != $arrData['amount'])
+		{
+    		$this->log(sprintf('Data manipulation: amount mismatch ("%s" != "%s")', $objOrder->grandTotal, $arrData['amount']), __METHOD__, TL_ERROR);
+			$this->redirectError($arrData);
+		}
+
+		if (!$objOrder->checkout())
+		{
+			$this->log('Postsale checkout for order ID "' . $objOrder->id . '" failed', __METHOD__, TL_ERROR);
+			$this->redirectError($arrData);
+		}
+
+		// Store request data in order for future references
+		$arrPayment = deserialize($objOrder->payment_data, true);
+		$arrPayment['POSTSALE'][] = $_POST;
+		$objOrder->payment_data = $arrPayment;
+
+		$objOrder->date_paid = time();
+		$objOrder->updateOrderStatus($this->new_order_status);
+
+		$objOrder->save();
+
+		$objPage = $this->getPageDetails((int) $arrData['sessionid']);
+
+        echo 'redirecturls=' . $this->Environment->base . $this->generateFrontendUrl($objPage->row(), '/step/complete/uid/' . $objOrder->uniqid, $objPage->language);
         exit;
     }
 
@@ -88,10 +164,6 @@ class Sparkasse extends Payment implements IsotopePayment
             'basketid'				=> $this->Isotope->Cart->id,
             'command'				=> 'sslform',
             'currency'				=> $this->Isotope->Config->currency,
-//			'customer_addr_city'	=> urlencode($this->Isotope->Cart->billingAddress['city']),
-//			'customer_addr_street'	=> urlencode($this->Isotope->Cart->billingAddress['street_1']),
-//			'customer_addr_zip'		=> urlencode($this->Isotope->Cart->billingAddress['postal']),
-//			'deliverycountry'		=> urlencode($this->Isotope->Cart->billingAddress['country']),
             'locale'				=> $GLOBALS['TL_LANGUAGE'],
             'orderid'				=> $objOrder->id,
             'paymentmethod'			=> $this->sparkasse_paymentmethod,
@@ -106,9 +178,7 @@ class Sparkasse extends Payment implements IsotopePayment
             $arrParam['merchantref'] = substr($this->replaceInsertTags($this->sparkasse_merchantref), 0, 30);
         }
 
-        ksort($arrParam);
-
-        $arrParam['mac'] = hash_hmac('sha1', implode('', $arrParam), $this->sparkasse_sslpassword);
+        $arrParam['mac'] = $this->calculateHash($arrParam);
 
         foreach( $arrParam as $k => $v )
         {
@@ -126,5 +196,31 @@ window.location.href = '" . $strUrl . "';
 <h3>" . $GLOBALS['TL_LANG']['MSC']['pay_with_redirect'][0] . "</h3>
 <p>" . $GLOBALS['TL_LANG']['MSC']['pay_with_redirect'][1] . "</p>
 <p><a href=\"" . $strUrl . "\">" . $GLOBALS['TL_LANG']['MSC']['pay_with_redirect'][2] . "</a>";
+    }
+
+
+    /**
+     * Calculate hash
+     * @param  array
+     * @return string
+     */
+    private function calculateHash($arrData)
+    {
+        ksort($arrData);
+
+        return hash_hmac('sha1', implode('', $arrData), $this->sparkasse_sslpassword);
+    }
+
+
+    /**
+     * Redirect the Sparkasse server to our error page
+     * @param arary
+     */
+    private function redirectError($arrData)
+    {
+        $objPage = $this->getPageDetails((int) $arrData['sessionid']);
+
+        echo 'redirecturlf=' . $this->Environment->base . $this->generateFrontendUrl($objPage->row(), '/step/failed', $objPage->language) . '?reason=' . $arrData['directPosErrorMessage'];
+        exit;
     }
 }

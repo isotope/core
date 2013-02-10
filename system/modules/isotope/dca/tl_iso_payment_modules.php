@@ -343,14 +343,14 @@ $GLOBALS['TL_DCA']['tl_iso_payment_modules'] = array
             'label'                   => &$GLOBALS['TL_LANG']['tl_iso_payment_modules']['sparkasse_sslpassword'],
             'exclude'                 => true,
             'inputType'               => 'text',
-            'eval'                    => array('mandatory'=>true, 'maxlength'=>255, 'hideInput'=>true, 'tl_class'=>'w50'),
+            'eval'                    => array('mandatory'=>true, 'maxlength'=>255, 'hideInput'=>true, 'decodeEntities'=>true, 'tl_class'=>'w50'),
         ),
         'sparkasse_merchantref' => array
         (
             'label'                   => &$GLOBALS['TL_LANG']['tl_iso_payment_modules']['sparkasse_merchantref'],
             'exclude'                 => true,
             'inputType'               => 'text',
-            'eval'                    => array('mandatory'=>true, 'maxlength'=>255, 'decodeEntities'=>true, 'tl_class'=>'clr long'),
+            'eval'                    => array('maxlength'=>255, 'decodeEntities'=>true, 'tl_class'=>'clr long'),
         ),
         'expercash_popupId' => array
         (
