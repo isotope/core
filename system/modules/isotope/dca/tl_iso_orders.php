@@ -717,10 +717,6 @@ class tl_iso_orders extends Backend
 		$strInvoiceTitle = 'invoice_' . $objOrder->order_id;
 		$pdf->Output(standardize(ampersand($strInvoiceTitle, false), true) . '.pdf', 'D');
 
-		// Set config back to default
-		// @todo do we need that? The PHP session is ended anyway...
-		$this->Isotope->resetConfig(true);
-
 		// Stop script execution
 		exit;
 	}
