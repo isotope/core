@@ -14,7 +14,6 @@ namespace Isotope\Product\Collection;
 
 use Isotope\Isotope;
 use Isotope\Interfaces\IsotopeProduct;
-use Isotope\Interfaces\IsotopeProductCollection;
 use Isotope\Product\Standard as StandardProduct;
 
 
@@ -27,7 +26,7 @@ use Isotope\Product\Standard as StandardProduct;
  * @author     Fred Bliss <fred.bliss@intelligentspark.com>
  * @author     Yanick Witschi <yanick.witschi@terminal42.ch>
  */
-abstract class Collection extends \Model implements IsotopeProductCollection
+abstract class Collection extends \Model
 {
 
     /**

@@ -13,6 +13,7 @@
 namespace Isotope\Product\Collection;
 
 use Isotope\Interfaces\IsotopeProduct;
+use Isotope\Interfaces\IsotopeProductCollection;
 use Isotope\Model\Address;
 
 
@@ -24,7 +25,7 @@ use Isotope\Model\Address;
  * @author     Andreas Schempp <andreas.schempp@terminal42.ch>
  * @author     Fred Bliss <fred.bliss@intelligentspark.com>
  */
-class Order extends Collection
+class Order extends Collection implements IsotopeProductCollection
 {
 
     /**
