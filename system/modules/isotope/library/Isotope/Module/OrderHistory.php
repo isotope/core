@@ -81,7 +81,7 @@ class OrderHistory extends Module
      */
     protected function compile()
     {
-        $objOrders = $this->Database->execute("SELECT id, (SELECT COUNT(*) FROM tl_iso_order_items WHERE pid=tl_iso_orders.id) AS items FROM tl_iso_orders WHERE status>0 AND pid=".$this->User->id." AND config_id IN (" . implode(',', $this->iso_config_ids) . ") ORDER BY date DESC");
+        $objOrders = $this->Database->execute("SELECT id, (SELECT COUNT(*) FROM tl_iso_order_items WHERE pid=tl_iso_orders.id) AS items FROM tl_iso_orders WHERE order_status>0 AND pid=".$this->User->id." AND config_id IN (" . implode(',', $this->iso_config_ids) . ") ORDER BY date DESC");
 
         // No orders found, just display an "empty" message
         if (!$objOrders->numRows)

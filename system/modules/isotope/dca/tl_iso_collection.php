@@ -53,11 +53,11 @@ $GLOBALS['TL_DCA']['tl_iso_collection'] = array
             'mode'					=> 2,
             'fields'				=> array('date DESC'),
             'panelLayout'			=> 'filter;sort,search,limit',
-            'filter'				=> array(array('status>?', '0')),
+            'filter'				=> array(array('order_status>?', '0')),
         ),
         'label' => array
         (
-            'fields'				=> array('order_id', 'date', 'billing_address', 'grandTotal', 'status'),
+            'fields'				=> array('order_id', 'date', 'billing_address', 'grandTotal', 'order_status'),
             'showColumns'			=> true,
             'label_callback'		=> array('Isotope\tl_iso_collection', 'getOrderLabel')
         ),
@@ -146,7 +146,7 @@ $GLOBALS['TL_DCA']['tl_iso_collection'] = array
     // Palettes
     'palettes' => array
     (
-        'default'					=> '{status_legend},status,date_paid,date_shipped;{details_legend},details,notes;{email_legend:hide},email_data;{billing_address_legend:hide},billing_address_data;{shipping_address_legend:hide},shipping_address_data',
+        'default'					=> '{status_legend},order_status,date_paid,date_shipped;{details_legend},details,notes;{email_legend:hide},email_data;{billing_address_legend:hide},billing_address_data;{shipping_address_legend:hide},shipping_address_data',
     ),
 
     // Fields
@@ -171,9 +171,9 @@ $GLOBALS['TL_DCA']['tl_iso_collection'] = array
             'label'					=> &$GLOBALS['TL_LANG']['tl_iso_collection']['uniqid'],
             'search'				=> true,
         ),
-        'status' => array
+        'order_status' => array
         (
-            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_collection']['status'],
+            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_collection']['order_status'],
             'exclude'               => true,
             'filter'                => true,
             'sorting'				=> true,
@@ -181,7 +181,7 @@ $GLOBALS['TL_DCA']['tl_iso_collection'] = array
             'options'         		=> \Isotope\Backend::getOrderStatus(),
             'save_callback'			=> array
             (
-                array('Isotope\tl_iso_collection', 'updateStatus'),
+                array('Isotope\tl_iso_collection', 'updateOrderStatus'),
             ),
         ),
         'date' => array

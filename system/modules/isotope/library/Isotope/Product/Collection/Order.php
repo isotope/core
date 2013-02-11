@@ -109,18 +109,18 @@ class Order extends Collection
                 }
 
                 // Otherwise we check the orderstatus checkbox
-                $objStatus = \Database::getInstance()->execute("SELECT * FROM tl_iso_orderstatus WHERE id=" . (int) $this->status);
+                $objStatus = \Database::getInstance()->execute("SELECT * FROM tl_iso_orderstatus WHERE id=" . (int) $this->order_status);
 
                 return $objStatus->paid ? true : false;
 
             case 'statusLabel':
-                $objStatus = \Database::getInstance()->execute("SELECT * FROM tl_iso_orderstatus WHERE id=" . (int) $this->status);
+                $objStatus = \Database::getInstance()->execute("SELECT * FROM tl_iso_orderstatus WHERE id=" . (int) $this->order_status);
 
                 return $this->Isotope->translate($objStatus->name);
                 break;
 
             case 'statusAlias':
-                $objStatus = \Database::getInstance()->execute("SELECT * FROM tl_iso_orderstatus WHERE id=" . (int) $this->status);
+                $objStatus = \Database::getInstance()->execute("SELECT * FROM tl_iso_orderstatus WHERE id=" . (int) $this->order_status);
 
                 return standardize($objStatus->name);
                 break;
@@ -338,7 +338,7 @@ class Order extends Collection
         $objCart->delete();
 
         $this->checkout_complete = true;
-        $this->status = $this->Isotope->Config->orderstatus_new;
+        $this->order_status = $this->Isotope->Config->orderstatus_new;
 
         $this->generateOrderId();
         $arrData = $this->getEmailData();
@@ -431,7 +431,7 @@ class Order extends Collection
     public function updateOrderStatus($intNewStatus, $blnActions=true)
     {
         // Status already set, nothing to do
-        if ($this->status == $intNewStatus)
+        if ($this->order_status == $intNewStatus)
         {
             return true;
         }
@@ -491,8 +491,8 @@ class Order extends Collection
         }
 
         // Store old status and set the new one
-        $intOldStatus = $this->status;
-        $this->status = $objNewStatus->id;
+        $intOldStatus = $this->order_status;
+        $this->order_status = $objNewStatus->id;
         $this->save();
 
         // !HOOK: order status has been updated

@@ -226,7 +226,7 @@ class Checkout extends Module
 
         if ($this->strCurrentStep == 'failed')
         {
-            $this->Database->prepare("UPDATE tl_iso_orders SET status=? WHERE cart_id=?")->execute($this->Isotope->Config->orderstatus_error, $this->Isotope->Cart->id);
+            $this->Database->prepare("UPDATE tl_iso_orders SET order_status=? WHERE cart_id=?")->execute($this->Isotope->Config->orderstatus_error, $this->Isotope->Cart->id);
             $this->Template->mtype = 'error';
             $this->Template->message = strlen(\Input::get('reason')) ? \Input::get('reason') : $GLOBALS['TL_LANG']['ERR']['orderFailed'];
             $this->strCurrentStep = 'review';
@@ -1000,7 +1000,7 @@ class Checkout extends Module
         $objOrder->grandTotal           = $this->Isotope->Cart->grandTotal;
         $objOrder->surcharges           = $this->Isotope->Cart->getSurcharges();
         $objOrder->checkout_info        = $this->getCheckoutInfo();
-        $objOrder->status               = 0;
+        $objOrder->order_status         = 0;
         $objOrder->language             = $GLOBALS['TL_LANGUAGE'];
         $objOrder->billing_address      = $this->Isotope->Cart->billing_address;
         $objOrder->shipping_address     = $this->Isotope->Cart->shipping_address;

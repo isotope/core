@@ -18,7 +18,7 @@
  */
 $GLOBALS['TL_LANG']['tl_iso_collection']['order_id']                = array('Order ID');
 $GLOBALS['TL_LANG']['tl_iso_collection']['uniqid']                  = array('Unique ID');
-$GLOBALS['TL_LANG']['tl_iso_collection']['status']                  = array('Order Status', 'Select the status of this order.');
+$GLOBALS['TL_LANG']['tl_iso_collection']['order_status']            = array('Order Status', 'Select the status of this order.');
 $GLOBALS['TL_LANG']['tl_iso_collection']['date']                    = array('Date');
 $GLOBALS['TL_LANG']['tl_iso_collection']['date_paid']               = array('Payment date', 'Enter a date when this order has been paid.');
 $GLOBALS['TL_LANG']['tl_iso_collection']['date_shipped']            = array('Shipped date', 'Enter a date when this order has been shipped.');

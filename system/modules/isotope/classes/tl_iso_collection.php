@@ -235,7 +235,7 @@ class tl_iso_collection extends \Backend
             return;
         }
 
-        // Only admins can delete orders. Others should set the status to cancelled.
+        // Only admins can delete orders. Others should set the order_status to cancelled.
         unset($GLOBALS['TL_DCA']['tl_iso_collection']['list']['operations']['delete']);
         if (\Input::get('act') == 'delete' || \Input::get('act') == 'deleteAll')
         {
@@ -378,11 +378,11 @@ class tl_iso_collection extends \Backend
 <div class="tl_formbody_edit">
 <div class="tl_tbox block">';
 
-        $objWidget = new \SelectMenu($this->prepareForWidget($GLOBALS['TL_DCA']['tl_iso_collection']['fields']['status'], 'status'));
+        $objWidget = new \SelectMenu($this->prepareForWidget($GLOBALS['TL_DCA']['tl_iso_collection']['fields']['order_status'], 'order_status'));
 
         if (\Input::post('FORM_SUBMIT') == 'tl_print_invoices')
         {
-            $objOrders = $this->Database->prepare("SELECT id FROM tl_iso_collection WHERE status=?")->execute(\Input::post('status'));
+            $objOrders = $this->Database->prepare("SELECT id FROM tl_iso_collection WHERE order_status=?")->execute(\Input::post('order_status'));
 
             if ($objOrders->numRows)
             {
@@ -466,7 +466,7 @@ class tl_iso_collection extends \Backend
      * @return string
      * @link http://www.contao.org/callbacks.html#save_callback
      */
-    public function updateStatus($varValue, $dc)
+    public function updateOrderStatus($varValue, $dc)
     {
         if ($dc->activeRecord && $dc->activeRecord->status != $varValue)
         {
@@ -475,7 +475,7 @@ class tl_iso_collection extends \Backend
                 // Status update has been cancelled, do not update
                 if (!$objOrder->updateOrderStatus($varValue))
                 {
-                    return $dc->activeRecord->status;
+                    return $dc->activeRecord->order_status;
                 }
             }
         }
@@ -485,7 +485,7 @@ class tl_iso_collection extends \Backend
 
 
     /**
-     * Execute the saveCollection hook when an order is saved
+     * Execute the saveCollection hook when a collection is saved
      * @param object
      * @return void
      */

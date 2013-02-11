@@ -553,7 +553,7 @@ CREATE TABLE `tl_iso_collection` (
   `date` int(10) unsigned NOT NULL default '0',
   `date_paid` varchar(10) NOT NULL default '',
   `date_shipped` varchar(10) NOT NULL default '',
-  `status` int(10) unsigned NOT NULL default '0',
+  `order_status` int(10) unsigned NOT NULL default '0',
   `order_id` varchar(14) NOT NULL default '',
   `payment_id` int(10) unsigned NOT NULL default '0',
   `shipping_id` int(10) unsigned NOT NULL default '0',
