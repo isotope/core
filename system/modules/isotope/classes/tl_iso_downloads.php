@@ -28,7 +28,7 @@ class tl_iso_downloads extends \Backend
      */
     public function prepareSRC($dc)
     {
-        if ($this->Input->get('act') == 'edit')
+        if (\Input::get('act') == 'edit')
         {
             $objDownload = $this->Database->prepare("SELECT * FROM tl_iso_downloads WHERE id=?")->execute($dc->id);
 

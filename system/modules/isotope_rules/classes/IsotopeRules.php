@@ -221,7 +221,7 @@ class IsotopeRules extends \Controller
 
 
         //build template
-        $objTemplate = new \FrontendTemplate('iso_coupons');
+        $objTemplate = new \Isotope\Template('iso_coupons');
 
         $objTemplate->id = $objModule->id;
         $objTemplate->action = \Environment::get('request');
@@ -298,7 +298,7 @@ class IsotopeRules extends \Controller
      */
     public function cleanRuleUsages(&$objModule)
     {
-        $this->Database->query("DELETE FROM tl_iso_rule_usage WHERE pid=(SELECT id FROM tl_iso_orders WHERE cart_id=".(int) $this->Isotope->Cart->id.")");
+        $this->Database->query("DELETE FROM tl_iso_rule_usage WHERE pid=(SELECT id FROM tl_iso_collection WHERE type='Order' AND source_collection_id=".(int) $this->Isotope->Cart->id.")");
 
         return '';
     }
@@ -335,11 +335,11 @@ class IsotopeRules extends \Controller
 
 
         // Limits
-        $arrProcedures[] = "(limitPerConfig=0 OR limitPerConfig>(SELECT COUNT(*) FROM tl_iso_rule_usage WHERE pid=r.id AND config_id=".(int) $this->Isotope->Config->id." AND order_id NOT IN (SELECT id FROM tl_iso_orders WHERE cart_id=".(int) $this->Isotope->Cart->id.")))";
+        $arrProcedures[] = "(limitPerConfig=0 OR limitPerConfig>(SELECT COUNT(*) FROM tl_iso_rule_usage WHERE pid=r.id AND config_id=".(int) $this->Isotope->Config->id." AND order_id NOT IN (SELECT id FROM tl_iso_collection WHERE type='Order' AND source_collection_id=".(int) $this->Isotope->Cart->id.")))";
 
         if (FE_USER_LOGGED_IN === true && TL_MODE=='FE')
         {
-            $arrProcedures[] = "(limitPerMember=0 OR limitPerMember>(SELECT COUNT(*) FROM tl_iso_rule_usage WHERE pid=r.id AND member_id=".(int) $this->User->id." AND order_id NOT IN (SELECT id FROM tl_iso_orders WHERE cart_id=".(int) $this->Isotope->Cart->id.")))";
+            $arrProcedures[] = "(limitPerMember=0 OR limitPerMember>(SELECT COUNT(*) FROM tl_iso_rule_usage WHERE pid=r.id AND member_id=".(int) $this->User->id." AND order_id NOT IN (SELECT id FROM tl_iso_collection WHERE type='Order' AND source_collection_id=".(int) $this->Isotope->Cart->id.")))";
         }
 
         // Store config restrictions
@@ -612,14 +612,14 @@ class IsotopeRules extends \Controller
                     $fltPrice = $blnPercentage ? ($objProduct->total_price / 100 * $fltDiscount) : $arrRule['discount'];
                     $fltPrice = $fltPrice > 0 ? (floor($fltPrice * 100) / 100) : (ceil($fltPrice * 100) / 100);
                     $arrSurcharge['total_price'] += $fltPrice;
-                    $arrSurcharge['products'][$objProduct->cart_id] = $fltPrice;
+                    $arrSurcharge['products'][$objProduct->collection_id] = $fltPrice;
                     break;
 
                 case 'items':
                     $fltPrice = ($blnPercentage ? ($objProduct->price / 100 * $fltDiscount) : $arrRule['discount']) * $objProduct->quantity_requested;
                     $fltPrice = $fltPrice > 0 ? (floor($fltPrice * 100) / 100) : (ceil($fltPrice * 100) / 100);
                     $arrSurcharge['total_price'] += $fltPrice;
-                    $arrSurcharge['products'][$objProduct->cart_id] = $fltPrice;
+                    $arrSurcharge['products'][$objProduct->collection_id] = $fltPrice;
                     break;
 
                 case 'subtotal':
@@ -631,7 +631,7 @@ class IsotopeRules extends \Controller
                         if ($blnPercentage)
                         {
                             $fltPrice = $objProduct->total_price / 100 * $fltDiscount;
-                            $arrSurcharge['products'][$objProduct->cart_id] = $fltPrice;
+                            $arrSurcharge['products'][$objProduct->collection_id] = $fltPrice;
                         }
                         else
                         {
@@ -657,7 +657,7 @@ class IsotopeRules extends \Controller
                 $fltPrice = 0;
                 foreach( $arrSubtract as $objProduct )
                 {
-                    $arrSurcharge['products'][$objProduct->cart_id] = $arrRule['discount'] / 100 * (100 / $fltTotal * $objProduct->tax_free_total_price);
+                    $arrSurcharge['products'][$objProduct->collection_id] = $arrRule['discount'] / 100 * (100 / $fltTotal * $objProduct->tax_free_total_price);
                 }
             }
         }

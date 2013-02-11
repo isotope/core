@@ -87,7 +87,7 @@ class OrderDetails extends Module
         // Also check owner (see #126)
         if (($objOrder = Order::findOneByUniqid(\Input::get('uid'))) === null || (FE_USER_LOGGED_IN === true && $objOrder->pid > 0 && \FrontendUser::getInstance()->id != $objOrder->pid))
         {
-            $this->Template = new \FrontendTemplate('mod_message');
+            $this->Template = new \Isotope\Template('mod_message');
             $this->Template->type = 'error';
             $this->Template->message = $GLOBALS['TL_LANG']['ERR']['orderNotFound'];
 
@@ -175,7 +175,7 @@ class OrderDetails extends Module
     {
         $time = time();
         $arrDownloads = array();
-        $objDownloads = $this->Database->prepare("SELECT p.*, o.* FROM tl_iso_order_downloads o JOIN tl_iso_downloads p ON o.download_id=p.id WHERE o.pid=?")->execute($objProduct->cart_id);
+        $objDownloads = $this->Database->prepare("SELECT p.*, c.* FROM tl_iso_collection_download c JOIN tl_iso_downloads p ON c.download_id=p.id WHERE c.pid=?")->execute($objProduct->collection_id);
 
         while ($objDownloads->next())
         {
@@ -227,7 +227,7 @@ class OrderDetails extends Module
         {
             if (!$this->backend && $objDownload->downloads_remaining !== '')
             {
-                $this->Database->prepare("UPDATE tl_iso_order_downloads SET downloads_remaining=? WHERE id=?")->execute(($objDownload->downloads_remaining-1), $objDownload->id);
+                $this->Database->prepare("UPDATE tl_iso_collection_download SET downloads_remaining=? WHERE id=?")->execute(($objDownload->downloads_remaining-1), $objDownload->id);
             }
 
             $this->sendFileToBrowser($strFile);

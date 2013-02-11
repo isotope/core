@@ -122,7 +122,7 @@ class ProductList extends Module
     protected function compile()
     {
 		// return message if no filter is set
-		if ($this->iso_emptyFilter && !$this->Input->get('isorc') && !$this->Input->get('keywords'))
+		if ($this->iso_emptyFilter && !\Input::get('isorc') && !\Input::get('keywords'))
 		{
 			$this->Template->message = $this->replaceInsertTags($this->iso_noFilter);
 			$this->Template->type = 'noFilter';
@@ -192,7 +192,7 @@ class ProductList extends Module
                     $objPage->noSearch = 1;
                     $objPage->cache = 0;
 
-                    $this->Template = new \FrontendTemplate('mod_iso_productlist_caching');
+                    $this->Template = new \Isotope\Template('mod_iso_productlist_caching');
                     $this->Template->message = $GLOBALS['TL_LANG']['MSC']['productcacheLoading'];
 
                     return;

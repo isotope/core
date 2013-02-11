@@ -445,12 +445,12 @@ class ProductCallbacks extends \Backend
      */
     public function loadDefaultProductType($dc)
     {
-        if ($this->Input->get('act') !== 'create' || !$this->Input->get('gid'))
+        if (\Input::get('act') !== 'create' || !\Input::get('gid'))
         {
             return;
         }
 
-        if (($intProductTypeId = \Isotope\Backend::getProductTypeForGroup($this->Input->get('gid'))) !== false)
+        if (($intProductTypeId = \Isotope\Backend::getProductTypeForGroup(\Input::get('gid'))) !== false)
         {
             $GLOBALS['TL_DCA']['tl_iso_products']['fields']['type']['default'] = $intProductTypeId;
         }

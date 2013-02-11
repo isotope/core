@@ -13,6 +13,7 @@
 namespace Isotope\Product\Collection;
 
 use Isotope\Interfaces\IsotopeProduct;
+use Isotope\Interfaces\IsotopeProductCollection;
 use Isotope\Model\Address;
 
 
@@ -24,20 +25,8 @@ use Isotope\Model\Address;
  * @author     Andreas Schempp <andreas.schempp@terminal42.ch>
  * @author     Fred Bliss <fred.bliss@intelligentspark.com>
  */
-class Order extends Collection
+class Order extends Collection implements IsotopeProductCollection
 {
-
-    /**
-     * Name of the current table
-     * @var string
-     */
-    protected static $strTable = 'tl_iso_orders';
-
-    /**
-     * Name of the child table
-     * @var string
-     */
-    protected static $ctable = 'tl_iso_order_items';
 
     /**
      * This current order's unique ID with eventual prefix
@@ -109,18 +98,18 @@ class Order extends Collection
                 }
 
                 // Otherwise we check the orderstatus checkbox
-                $objStatus = \Database::getInstance()->execute("SELECT * FROM tl_iso_orderstatus WHERE id=" . (int) $this->status);
+                $objStatus = \Database::getInstance()->execute("SELECT * FROM tl_iso_orderstatus WHERE id=" . (int) $this->order_status);
 
                 return $objStatus->paid ? true : false;
 
             case 'statusLabel':
-                $objStatus = \Database::getInstance()->execute("SELECT * FROM tl_iso_orderstatus WHERE id=" . (int) $this->status);
+                $objStatus = \Database::getInstance()->execute("SELECT * FROM tl_iso_orderstatus WHERE id=" . (int) $this->order_status);
 
                 return $this->Isotope->translate($objStatus->name);
                 break;
 
             case 'statusAlias':
-                $objStatus = \Database::getInstance()->execute("SELECT * FROM tl_iso_orderstatus WHERE id=" . (int) $this->status);
+                $objStatus = \Database::getInstance()->execute("SELECT * FROM tl_iso_orderstatus WHERE id=" . (int) $this->order_status);
 
                 return standardize($objStatus->name);
                 break;
@@ -182,7 +171,7 @@ class Order extends Collection
         $arrIds = parent::transferFromCollection($objCollection, $blnDuplicate);
 
         // Add product downloads to the order
-        $objDownloads = \Database::getInstance()->execute("SELECT d.*, ct.product_quantity, ct.id AS item_id FROM " . static::$ctable . " ct JOIN tl_iso_downloads d ON d.pid IN ((SELECT id FROM tl_iso_products WHERE id=ct.product_id), (SELECT pid FROM tl_iso_products WHERE id=ct.product_id)) WHERE ct.id IN (" . implode(',', $arrIds) . ") GROUP BY ct.id, d.id ORDER BY item_id, sorting");
+        $objDownloads = \Database::getInstance()->execute("SELECT d.*, ct.quantity, ct.id AS item_id FROM " . static::$ctable . " ct JOIN tl_iso_downloads d ON d.pid IN ((SELECT id FROM tl_iso_products WHERE id=ct.product_id), (SELECT pid FROM tl_iso_products WHERE id=ct.product_id)) WHERE ct.id IN (" . implode(',', $arrIds) . ") GROUP BY ct.id, d.id ORDER BY item_id, sorting");
 
         while ($objDownloads->next())
         {
@@ -202,11 +191,11 @@ class Order extends Collection
                 'pid'                    => $objDownloads->item_id,
                 'tstamp'                => $time,
                 'download_id'            => $objDownloads->id,
-                'downloads_remaining'    => ($objDownloads->downloads_allowed > 0 ? ($objDownloads->downloads_allowed * $objDownloads->product_quantity) : ''),
+                'downloads_remaining'    => ($objDownloads->downloads_allowed > 0 ? ($objDownloads->downloads_allowed * $objDownloads->quantity) : ''),
                 'expires'                => $expires,
             );
 
-            \Database::getInstance()->prepare("INSERT INTO tl_iso_order_downloads %s")->set($arrSet)->executeUncached();
+            \Database::getInstance()->prepare("INSERT INTO tl_iso_collection_download %s")->set($arrSet)->executeUncached();
         }
 
         // Update the product IDs of surcharges (see #3029)
@@ -245,7 +234,7 @@ class Order extends Collection
     {
         if (parent::deleteProduct($objProduct))
         {
-            \Database::getInstance()->query("DELETE FROM tl_iso_order_downloads WHERE pid={$objProduct->cart_id}");
+            \Database::getInstance()->query("DELETE FROM tl_iso_collection_download WHERE pid={$objProduct->collection_id}");
         }
 
         return false;
@@ -258,7 +247,7 @@ class Order extends Collection
      */
     public function delete()
     {
-        \Database::getInstance()->query("DELETE FROM tl_iso_order_downloads WHERE pid IN (SELECT id FROM " . static::$ctable . " WHERE pid={$this->id})");
+        \Database::getInstance()->query("DELETE FROM tl_iso_collection_download WHERE pid IN (SELECT id FROM " . static::$ctable . " WHERE pid={$this->id})");
 
         return parent::delete();
     }
@@ -301,9 +290,9 @@ class Order extends Collection
         // This is the case when not using ModuleIsotopeCheckout
         if (!is_object($objCart))
         {
-            if (($objCart = Cart::findByPk($this->cart_id)) === null)
+            if (($objCart = Cart::findByPk($this->source_collection_id)) === null)
             {
-                $this->log('Could not find Cart ID '.$this->cart_id.' for Order ID '.$this->id, __METHOD__, TL_ERROR);
+                $this->log('Could not find Cart ID '.$this->source_collection_id.' for Order ID '.$this->id, __METHOD__, TL_ERROR);
 
                 return false;
             }
@@ -338,7 +327,7 @@ class Order extends Collection
         $objCart->delete();
 
         $this->checkout_complete = true;
-        $this->status = $this->Isotope->Config->orderstatus_new;
+        $this->order_status = $this->Isotope->Config->orderstatus_new;
 
         $this->generateOrderId();
         $arrData = $this->getEmailData();
@@ -431,7 +420,7 @@ class Order extends Collection
     public function updateOrderStatus($intNewStatus, $blnActions=true)
     {
         // Status already set, nothing to do
-        if ($this->status == $intNewStatus)
+        if ($this->order_status == $intNewStatus)
         {
             return true;
         }
@@ -479,7 +468,7 @@ class Order extends Collection
 
                 if (TL_MODE == 'BE')
                 {
-                    $this->addConfirmationMessage($GLOBALS['TL_LANG']['tl_iso_orders']['orderStatusEmail']);
+                    $this->addConfirmationMessage($GLOBALS['TL_LANG']['tl_iso_collection']['orderStatusEmail']);
                 }
             }
 
@@ -491,8 +480,8 @@ class Order extends Collection
         }
 
         // Store old status and set the new one
-        $intOldStatus = $this->status;
-        $this->status = $objNewStatus->id;
+        $intOldStatus = $this->order_status;
+        $this->order_status = $objNewStatus->id;
         $this->save();
 
         // !HOOK: order status has been updated
@@ -603,16 +592,16 @@ class Order extends Collection
             $arrConfigIds = $objDatabase->execute("SELECT id FROM tl_iso_config WHERE store_id=" . $this->Isotope->Config->store_id)->fetchEach('id');
 
             // Lock tables so no other order can get the same ID
-            $objDatabase->lockTables(array('tl_iso_orders'=>'WRITE'));
+            $objDatabase->lockTables(array(static::$strTable => 'WRITE'));
 
             // Retrieve the highest available order ID
-            $objMax = $objDatabase->prepare("SELECT order_id FROM tl_iso_orders WHERE " . ($strPrefix != '' ? "order_id LIKE '$strPrefix%' AND " : '') . "config_id IN (" . implode(',', $arrConfigIds) . ") ORDER BY CAST(" . ($strPrefix != '' ? "SUBSTRING(order_id, " . ($intPrefix+1) . ")" : 'order_id') . " AS UNSIGNED) DESC")->limit(1)->executeUncached();
+            $objMax = $objDatabase->prepare("SELECT order_id FROM " . static::$strTable . " WHERE " . ($strPrefix != '' ? "order_id LIKE '$strPrefix%' AND " : '') . "config_id IN (" . implode(',', $arrConfigIds) . ") ORDER BY CAST(" . ($strPrefix != '' ? "SUBSTRING(order_id, " . ($intPrefix+1) . ")" : 'order_id') . " AS UNSIGNED) DESC")->limit(1)->executeUncached();
             $intMax = (int) substr($objMax->order_id, $intPrefix);
 
             $this->strOrderId = $strPrefix . str_pad($intMax+1, $this->Isotope->Config->orderDigits, '0', STR_PAD_LEFT);
         }
 
-        $objDatabase->prepare("UPDATE tl_iso_orders SET order_id=? WHERE id={$this->id}")->executeUncached($this->strOrderId);
+        $objDatabase->prepare("UPDATE " . static::$strTable . " SET order_id=? WHERE id={$this->id}")->executeUncached($this->strOrderId);
         $objDatabase->unlockTables();
 
         return $this->strOrderId;

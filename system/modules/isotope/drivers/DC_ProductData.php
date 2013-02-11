@@ -1764,7 +1764,7 @@ window.addEvent(\'domready\', function() {
         {
             $return .= "
 <script>
-window.useProductsStorage=" . ($this->Input->get('act') == '' ? 'true' : 'false') . ";
+window.useProductsStorage=" . (\Input::get('act') == '' ? 'true' : 'false') . ";
 $(window).addEvents({
     'scroll': Isotope.loadDeferredProducts,
     'domready': Isotope.loadDeferredProducts,

@@ -35,7 +35,7 @@ class Messages extends Module
 	{
 		if (TL_MODE == 'BE')
 		{
-			$objTemplate = new BackendTemplate('be_wildcard');
+			$objTemplate = new \BackendTemplate('be_wildcard');
 			$objTemplate->wildcard = '### ISOTOPE ECOMMERCE: MESSAGES ###';
 			$objTemplate->title = $this->headline;
 			$objTemplate->id = $this->id;

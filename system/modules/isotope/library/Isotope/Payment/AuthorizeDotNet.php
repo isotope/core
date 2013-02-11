@@ -85,7 +85,7 @@ class AuthorizeDotNet extends Payment implements IsotopePayment
 
             return true;
 
-        $objOrder = Order::findOneBy('cart_id', $this->Isotope->Cart->id);
+        $objOrder = Order::findOneBy('source_collection_id', $this->Isotope->Cart->id);
 
         //$arrPaymentData = deserialize($objOrder->payment_data);
         if($this->authCapturePayment($objOrder->id, $this->Isotope->Cart->grandTotal, true))
@@ -212,14 +212,14 @@ class AuthorizeDotNet extends Payment implements IsotopePayment
 
         if (\Input::post('FORM_SUBMIT') == 'iso_mod_checkout_payment' && !$objModule->doNotSubmit && $arrPayment['module']==$this->id && !$_SESSION['CHECKOUT_DATA']['payment']['request_lockout'])
         {
-            if (($objOrder = Order::findOneBy('cart_id', $this->Isotope->Cart->id)) === null)
+            if (($objOrder = Order::findOneBy('source_collection_id', $this->Isotope->Cart->id)) === null)
             {
                 $objOrder = new Order();
 
-                $objOrder->uniqid		= uniqid($this->Isotope->Config->orderPrefix, true);
-                $objOrder->cart_id		= $this->Isotope->Cart->id;
+                $objOrder->uniqid = uniqid($this->Isotope->Config->orderPrefix, true);
+                $objOrder->source_collection_id = $this->Isotope->Cart->id;
 
-                $objOrder = Order::findByPk($objOrder->save()->id);
+                $objOrder->save();
             }
 
             $_SESSION['CHECKOUT_DATA']['payment']['request_lockout'] = true;
@@ -262,7 +262,7 @@ class AuthorizeDotNet extends Payment implements IsotopePayment
      */
     public function backendInterface($intOrderId)
     {
-        $arrOrderInfo = $this->Database->prepare("SELECT * FROM tl_iso_orders WHERE id=?")
+        $arrOrderInfo = $this->Database->prepare("SELECT * FROM tl_iso_collection WHERE type='Order' AND id=?")
                                ->limit(1)
                                ->execute($intOrderId)
                                ->fetchAssoc();
@@ -284,7 +284,7 @@ class AuthorizeDotNet extends Payment implements IsotopePayment
         }
 
         //Code specific to Authorize.net!
-        $objTemplate = new BackendTemplate('be_pos_terminal');
+        $objTemplate = new \BackendTemplate('be_pos_terminal');
 
         if($objAIMConfig->numRows > 0)
         {
@@ -360,10 +360,10 @@ $return .= '</div></div>';
         {
             $objOrder = new Order();
 
-            $objOrder->uniqid		= uniqid($this->Isotope->Config->orderPrefix, true);
-            $objOrder->cart_id		= $this->Isotope->Cart->id;
+            $objOrder->uniqid = uniqid($this->Isotope->Config->orderPrefix, true);
+            $objOrder->source_collection_id = $this->Isotope->Cart->id;
 
-            $objOrder = Order::findByPk($objOrder->save()->id);
+            $objOrder->save();
         }
 
         $strLineItems = '';

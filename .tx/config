@@ -72,10 +72,10 @@ source_file = .tx/source/en/isotope/tl_iso_mail_content.xlf
 source_lang = en
 file_filter = .tx/source/<lang>/isotope/tl_iso_mail_content.xlf
 
-[isotope.develop-isotope-tl_iso_orders]
-source_file = .tx/source/en/isotope/tl_iso_orders.xlf
+[isotope.develop-isotope-tl_iso_collection]
+source_file = .tx/source/en/isotope/tl_iso_collection.xlf
 source_lang = en
-file_filter = .tx/source/<lang>/isotope/tl_iso_orders.xlf
+file_filter = .tx/source/<lang>/isotope/tl_iso_collection.xlf
 
 [isotope.develop-isotope-tl_iso_orderstatus]
 source_file = .tx/source/en/isotope/tl_iso_orderstatus.xlf

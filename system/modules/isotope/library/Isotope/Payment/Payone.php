@@ -81,7 +81,7 @@ class Payone extends Payment implements IsotopePayment
     {
         $i = 0;
 
-        if (($objOrder = Order::findOneBy('cart_id', $this->Isotope->Cart->id)) === null)
+        if (($objOrder = Order::findOneBy('source_collection_id', $this->Isotope->Cart->id)) === null)
         {
             $this->redirect($this->addToUrl('step=failed', true));
         }
@@ -142,7 +142,7 @@ class Payone extends Payment implements IsotopePayment
         $arrData = array_map('urlencode', $arrData);
         $strHash = md5(implode('', $arrData) . $this->payone_key);
 
-        $objTemplate = new \FrontendTemplate('iso_payment_payone');
+        $objTemplate = new \Isotope\Template('iso_payment_payone');
         $objTemplate->id = $this->id;
         $objTemplate->data = $arrData;
         $objTemplate->hash = $strHasn;

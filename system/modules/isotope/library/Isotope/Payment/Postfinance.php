@@ -131,7 +131,7 @@ class Postfinance extends Payment implements IsotopePayment
      */
     public function checkoutForm()
     {
-        if (($objOrder = Order::findOneBy('cart_id', $this->Isotope->Cart->id)) === null)
+        if (($objOrder = Order::findOneBy('source_collection_id', $this->Isotope->Cart->id)) === null)
         {
             $this->redirect($this->addToUrl('step=failed', true));
         }
@@ -174,7 +174,7 @@ class Postfinance extends Payment implements IsotopePayment
 
         $arrParam['SHASIGN'] = sha1($strSHASign);
 
-        $objTemplate = new \FrontendTemplate('iso_payment_postfinance');
+        $objTemplate = new \Isotope\Template('iso_payment_postfinance');
 
         $objTemplate->action = 'https://e-payment.postfinance.ch/ncol/' . ($this->debug ? 'test' : 'prod') . '/orderstandard.asp';
         $objTemplate->params = $arrParam;

@@ -35,7 +35,7 @@ class Sparkasse extends Payment implements IsotopePayment
     {
         $objOrder = new IsotopeOrder();
 
-		if (!$objOrder->findBy('cart_id', $this->Isotope->Cart->id))
+		if (!$objOrder->findBy('source_collection_id', $this->Isotope->Cart->id))
 		{
 			return false;
 		}
@@ -53,7 +53,7 @@ class Sparkasse extends Payment implements IsotopePayment
 			$objPage->noSearch = 1;
 			$objPage->cache = 0;
 
-			$objTemplate = new FrontendTemplate('mod_message');
+			$objTemplate = new \Isotope\Template('mod_message');
 			$objTemplate->type = 'processing';
 			$objTemplate->message = $GLOBALS['TL_LANG']['MSC']['payment_processing'];
 			return $objTemplate->parse();
@@ -77,7 +77,7 @@ class Sparkasse extends Payment implements IsotopePayment
 
         foreach (array('aid', 'amount', 'basketid', 'currency', 'directPosErrorCode', 'directPosErrorMessage', 'orderid', 'rc', 'retrefnum', 'sessionid', 'trefnum') as $strKey)
         {
-            $arrData[$strKey] = $this->Input->post($strKey);
+            $arrData[$strKey] = \Input::post($strKey);
         }
 
         // Sparkasse system sent error message
@@ -87,7 +87,7 @@ class Sparkasse extends Payment implements IsotopePayment
         }
 
         // Check the data hash to prevent manipulations
-        if ($this->Input->post('mac') != $this->calculateHash($arrData))
+        if (\Input::post('mac') != $this->calculateHash($arrData))
         {
             $this->log('Security hash mismatch in Sparkasse payment!', __METHOD__, TL_ERROR);
             $this->redirectError($arrData);
@@ -134,7 +134,7 @@ class Sparkasse extends Payment implements IsotopePayment
 
 		$objPage = $this->getPageDetails((int) $arrData['sessionid']);
 
-        echo 'redirecturls=' . $this->Environment->base . $this->generateFrontendUrl($objPage->row(), '/step/complete/uid/' . $objOrder->uniqid, $objPage->language);
+        echo 'redirecturls=' . \Environment::get('base') . $this->generateFrontendUrl($objPage->row(), '/step/complete/uid/' . $objOrder->uniqid, $objPage->language);
         exit;
     }
 
@@ -149,7 +149,7 @@ class Sparkasse extends Payment implements IsotopePayment
     {
         global $objPage;
 
-        if (($objOrder = Order::findOneBy('cart_id', $this->Isotope->Cart->id)) === null)
+        if (($objOrder = Order::findOneBy('source_collection_id', $this->Isotope->Cart->id)) === null)
         {
             $this->redirect($this->addToUrl('step=failed', true));
         }
@@ -220,7 +220,7 @@ window.location.href = '" . $strUrl . "';
     {
         $objPage = $this->getPageDetails((int) $arrData['sessionid']);
 
-        echo 'redirecturlf=' . $this->Environment->base . $this->generateFrontendUrl($objPage->row(), '/step/failed', $objPage->language) . '?reason=' . $arrData['directPosErrorMessage'];
+        echo 'redirecturlf=' . \Environment::get('base') . $this->generateFrontendUrl($objPage->row(), '/step/failed', $objPage->language) . '?reason=' . $arrData['directPosErrorMessage'];
         exit;
     }
 }

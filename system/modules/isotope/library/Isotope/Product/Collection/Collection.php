@@ -14,7 +14,6 @@ namespace Isotope\Product\Collection;
 
 use Isotope\Isotope;
 use Isotope\Interfaces\IsotopeProduct;
-use Isotope\Interfaces\IsotopeProductCollection;
 use Isotope\Product\Standard as StandardProduct;
 
 
@@ -27,14 +26,20 @@ use Isotope\Product\Standard as StandardProduct;
  * @author     Fred Bliss <fred.bliss@intelligentspark.com>
  * @author     Yanick Witschi <yanick.witschi@terminal42.ch>
  */
-abstract class Collection extends \Model implements IsotopeProductCollection
+abstract class Collection extends \Model
 {
+
+    /**
+     * Name of the current table
+     * @var string
+     */
+    protected static $strTable = 'tl_iso_collection';
 
     /**
      * Name of the child table
      * @var string
      */
-    protected static $ctable;
+    protected static $ctable = 'tl_iso_collection_product';
 
     /**
      * Define if data should be threaded as "locked", eg. not apply discount rules to product prices
@@ -96,6 +101,8 @@ abstract class Collection extends \Model implements IsotopeProductCollection
         {
             $this->arrSettings = deserialize($this->arrData['settings'], true);
         }
+
+        $this->arrData['type'] = substr(get_called_class(), strrpos(get_called_class(), '\\')+1);
 
         // Do not use __destruct, because Database object might be destructed first (see http://github.com/contao/core/issues/2236)
         if (!$this->blnLocked)
@@ -180,7 +187,7 @@ abstract class Collection extends \Model implements IsotopeProductCollection
                     break;
 
                 case 'items':
-                    $this->arrCache[$strKey] = \Database::getInstance()->execute("SELECT SUM(product_quantity) AS items FROM " . static::$ctable . " WHERE pid={$this->id}")->items;
+                    $this->arrCache[$strKey] = \Database::getInstance()->execute("SELECT SUM(quantity) AS items FROM " . static::$ctable . " WHERE pid={$this->id}")->items;
                     break;
 
                 case 'products':
@@ -352,7 +359,7 @@ abstract class Collection extends \Model implements IsotopeProductCollection
         {
             foreach ($arrProducts as $objProduct)
             {
-                \Database::getInstance()->prepare("UPDATE " . static::$ctable . " SET price=?, tax_free_price=? WHERE id=?")->execute($objProduct->price, $objProduct->tax_free_price, $objProduct->cart_id);
+                \Database::getInstance()->prepare("UPDATE " . static::$ctable . " SET price=?, tax_free_price=? WHERE id=?")->execute($objProduct->price, $objProduct->tax_free_price, $objProduct->collection_id);
             }
         }
 
@@ -450,34 +457,34 @@ abstract class Collection extends \Model implements IsotopeProductCollection
                                               ->execute($objItems->product_id);
 
                 $strClass = $GLOBALS['ISO_PRODUCT'][$objProductData->product_class]['class'];
-                $arrData = array('sku'=>$objItems->product_sku, 'name'=>$objItems->product_name, 'price'=>$objItems->price, 'tax_free_price'=>$objItems->tax_free_price);
+                $arrData = array('sku'=>$objItems->sku, 'name'=>$objItems->name, 'price'=>$objItems->price, 'tax_free_price'=>$objItems->tax_free_price);
 
                 if ($objProductData->numRows && $strClass != '')
                 {
                     try
                     {
                         $arrData = $this->blnLocked ? array_merge($objProductData->row(), $arrData) : $objProductData->row();
-                        $objProduct = new $strClass($arrData, deserialize($objItems->product_options), $this->blnLocked, $objItems->product_quantity);
+                        $objProduct = new $strClass($arrData, deserialize($objItems->options), $this->blnLocked, $objItems->quantity);
                     }
                     catch (Exception $e)
                     {
-                        $objProduct = new StandardProduct($arrData, deserialize($objItems->product_options), $this->blnLocked, $objItems->product_quantity);
+                        $objProduct = new StandardProduct($arrData, deserialize($objItems->options), $this->blnLocked, $objItems->quantity);
                     }
                 }
                 else
                 {
-                    $objProduct = new StandardProduct($arrData, deserialize($objItems->product_options), $this->blnLocked, $objItems->product_quantity);
+                    $objProduct = new StandardProduct($arrData, deserialize($objItems->options), $this->blnLocked, $objItems->quantity);
                 }
 
                 // Remove product from collection if it is no longer available
                 if (!$objProduct->isAvailable())
                 {
-                    $objProduct->cart_id = $objItems->id;
+                    $objProduct->collection_id = $objItems->id;
                     $this->deleteProduct($objProduct);
                     continue;
                 }
 
-                $objProduct->cart_id = $objItems->id;
+                $objProduct->collection_id = $objItems->id;
                 $objProduct->tax_id = $objItems->tax_id;
                 $objProduct->reader_jumpTo_Override = $objItems->href_reader;
 
@@ -534,6 +541,7 @@ abstract class Collection extends \Model implements IsotopeProductCollection
         }
 
         $time = time();
+        $strType = substr(get_class($objProduct), strrpos(get_class($objProduct), '\\')+1);
         $this->modified = true;
         $objDatabase = \Database::getInstance();
 
@@ -543,11 +551,11 @@ abstract class Collection extends \Model implements IsotopeProductCollection
             $this->save();
         }
 
-        $objItem = $objDatabase->prepare("SELECT * FROM " . static::$ctable . " WHERE pid={$this->id} AND product_id={$objProduct->id} AND product_options=?")->limit(1)->execute(serialize($objProduct->getOptions(true)));
+        $objItem = $objDatabase->prepare("SELECT * FROM " . static::$ctable . " WHERE pid={$this->id} AND type='$strType' AND product_id={$objProduct->id} AND options=?")->limit(1)->execute(serialize($objProduct->getOptions(true)));
 
         if ($objItem->numRows)
         {
-            $objDatabase->query("UPDATE " . static::$ctable . " SET tstamp=$time, product_quantity=(product_quantity+$intQuantity) WHERE id={$objItem->id}");
+            $objDatabase->query("UPDATE " . static::$ctable . " SET tstamp=$time, quantity=(quantity+$intQuantity) WHERE id={$objItem->id}");
 
             return $objItem->id;
         }
@@ -555,14 +563,15 @@ abstract class Collection extends \Model implements IsotopeProductCollection
         {
             $arrSet = array
             (
-                'pid'				=> $this->id,
-                'tstamp'			=> $time,
-                'product_id'		=> (int) $objProduct->id,
-                'product_sku'		=> (string) $objProduct->sku,
-                'product_name'		=> (string) $objProduct->name,
-                'product_options'	=> $objProduct->getOptions(true),
-                'product_quantity'	=> (int) $intQuantity,
-                'price'				=> (float) $objProduct->price,
+                'pid'               => $this->id,
+                'tstamp'            => $time,
+                'type'              => $strType,
+                'product_id'        => (int) $objProduct->id,
+                'sku'               => (string) $objProduct->sku,
+                'name'              => (string) $objProduct->name,
+                'options'           => $objProduct->getOptions(true),
+                'quantity'          => (int) $intQuantity,
+                'price'             => (float) $objProduct->price,
                 'tax_free_price'    => (float) $objProduct->tax_free_price,
             );
 
@@ -586,7 +595,7 @@ abstract class Collection extends \Model implements IsotopeProductCollection
      */
     public function updateProduct(IsotopeProduct $objProduct, $arrSet)
     {
-        if (!$objProduct->cart_id)
+        if (!$objProduct->collection_id)
         {
             return false;
         }
@@ -607,7 +616,7 @@ abstract class Collection extends \Model implements IsotopeProductCollection
         }
 
         // Quantity set to 0, delete product
-        if (isset($arrSet['product_quantity']) && $arrSet['product_quantity'] == 0)
+        if (isset($arrSet['quantity']) && $arrSet['quantity'] == 0)
         {
             return $this->deleteProduct($objProduct);
         }
@@ -615,7 +624,7 @@ abstract class Collection extends \Model implements IsotopeProductCollection
         // Modify timestamp when updating a product
         $arrSet['tstamp'] = time();
 
-        $intAffectedRows = \Database::getInstance()->prepare("UPDATE " . static::$ctable . " %s WHERE id={$objProduct->cart_id}")
+        $intAffectedRows = \Database::getInstance()->prepare("UPDATE " . static::$ctable . " %s WHERE id={$objProduct->collection_id}")
                                                    ->set($arrSet)
                                                    ->executeUncached()
                                                    ->affectedRows;
@@ -639,7 +648,7 @@ abstract class Collection extends \Model implements IsotopeProductCollection
      */
     public function deleteProduct(IsotopeProduct $objProduct)
     {
-        if (!$objProduct->cart_id)
+        if (!$objProduct->collection_id)
         {
             return false;
         }
@@ -660,7 +669,7 @@ abstract class Collection extends \Model implements IsotopeProductCollection
         }
 
         $this->modified = true;
-        \Database::getInstance()->query("DELETE FROM " . static::$ctable . " WHERE id={$objProduct->cart_id}");
+        \Database::getInstance()->query("DELETE FROM " . static::$ctable . " WHERE id={$objProduct->collection_id}");
 
         return true;
     }
@@ -691,7 +700,7 @@ abstract class Collection extends \Model implements IsotopeProductCollection
         while ($objOldItems->next())
         {
             $blnTransfer = true;
-            $objNewItems = $objDatabase->prepare("SELECT * FROM " . static::$ctable . " WHERE pid={$this->id} AND product_id={$objOldItems->product_id} AND product_options=?")->execute($objOldItems->product_options);
+            $objNewItems = $objDatabase->prepare("SELECT * FROM " . static::$ctable . " WHERE pid={$this->id} AND product_id={$objOldItems->product_id} AND options=?")->execute($objOldItems->options);
 
             // !HOOK: additional functionality when adding product to collection
             if (isset($GLOBALS['ISO_HOOKS']['transferCollection']) && is_array($GLOBALS['ISO_HOOKS']['transferCollection']))
@@ -711,7 +720,7 @@ abstract class Collection extends \Model implements IsotopeProductCollection
             // Product exists in target table. Increase amount.
             if ($objNewItems->numRows)
             {
-                $objDatabase->query("UPDATE " . static::$ctable . " SET tstamp=$time, product_quantity=(product_quantity+{$objOldItems->product_quantity}) WHERE id={$objNewItems->id}");
+                $objDatabase->query("UPDATE " . static::$ctable . " SET tstamp=$time, quantity=(quantity+{$objOldItems->quantity}) WHERE id={$objNewItems->id}");
                 $arrIds[$objOldItems->id] = $objNewItems->id;
             }
 
@@ -834,13 +843,13 @@ abstract class Collection extends \Model implements IsotopeProductCollection
         {
             $arrItems[] = array
             (
-                'raw'				=> $objProduct->getData(),
-                'product_options' 	=> $objProduct->getOptions(),
-                'name'				=> $objProduct->name,
-                'quantity'			=> $objProduct->quantity_requested,
-                'price'				=> $objProduct->formatted_price,
-                'total'				=> $objProduct->formatted_total_price,
-                'tax_id'			=> $objProduct->tax_id,
+                'raw'       => $objProduct->getData(),
+                'options'   => $objProduct->getOptions(),
+                'name'      => $objProduct->name,
+                'quantity'  => $objProduct->quantity_requested,
+                'price'     => $objProduct->formatted_price,
+                'total'     => $objProduct->formatted_total_price,
+                'tax_id'    => $objProduct->tax_id,
             );
         }
 
@@ -1015,5 +1024,24 @@ abstract class Collection extends \Model implements IsotopeProductCollection
         }
 
         return $pdf;
+    }
+
+
+    /**
+     * Make sure we only return results of the given model type
+     */
+    public static function find(array $arrOptions)
+    {
+        // Convert to array if necessary
+        $arrOptions['value'] = (array) $arrOptions['value'];
+        if (!is_array($arrOptions['column']))
+        {
+            $arrOptions['column'] = array($arrOptions['column'].'=?');
+        }
+
+        $arrOptions['column'][] = 'type=?';
+        $arrOptions['value'][] = substr(get_called_class(), strrpos(get_called_class(), '\\')+1);
+
+        return parent::find($arrOptions);
     }
 }

@@ -36,7 +36,7 @@ class Paypal extends Payment implements IsotopePayment
      */
     public function processPayment()
     {
-        if (($objOrder = Order::findOneBy('cart_id', $this->Isotope->Cart->id)) === null)
+        if (($objOrder = Order::findOneBy('source_collection_id', $this->Isotope->Cart->id)) === null)
         {
             return false;
         }
@@ -55,7 +55,7 @@ class Paypal extends Payment implements IsotopePayment
             $objPage->noSearch = 1;
             $objPage->cache = 0;
 
-            $objTemplate = new \FrontendTemplate('mod_message');
+            $objTemplate = new \Isotope\Template('mod_message');
             $objTemplate->type = 'processing';
             $objTemplate->message = $GLOBALS['TL_LANG']['MSC']['payment_processing'];
 
@@ -170,7 +170,7 @@ class Paypal extends Payment implements IsotopePayment
      */
     public function checkoutForm()
     {
-        if (($objOrder = Order::findOneBy('cart_id', $this->Isotope->Cart->id)) === null) {
+        if (($objOrder = Order::findOneBy('source_collection_id', $this->Isotope->Cart->id)) === null) {
             $this->redirect($this->addToUrl('step=failed', true));
         }
 
@@ -216,7 +216,7 @@ class Paypal extends Payment implements IsotopePayment
         }
 
 
-        $objTemplate = new \FrontendTemplate('iso_payment_datatrans');
+        $objTemplate = new \Isotope\Template('iso_payment_datatrans');
         $objTemplate->setData($this->arrData);
 
         $objTemplate->id = $this->id;

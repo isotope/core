@@ -95,7 +95,7 @@ class Checkout extends Module
         // Set the step from the auto_item parameter
         if ($GLOBALS['TL_CONFIG']['useAutoItem'] && isset($_GET['auto_item']))
         {
-            $this->Input->setGet('step', $this->Input->get('auto_item'));
+            \Input::setGet('step', \Input::get('auto_item'));
         }
 
         // Do not index or cache the page
@@ -141,7 +141,7 @@ class Checkout extends Module
                 // Order is not complete, wait for it
                 if (\Isotope\Frontend::setTimeout())
                 {
-                    $this->Template = new \FrontendTemplate('mod_message');
+                    $this->Template = new \Isotope\Template('mod_message');
                     $this->Template->type = 'processing';
                     $this->Template->message = $GLOBALS['TL_LANG']['MSC']['payment_processing'];
 
@@ -153,7 +153,7 @@ class Checkout extends Module
         // Return error message if cart is empty
         if (!$this->Isotope->Cart->items)
         {
-            $this->Template = new \FrontendTemplate('mod_message');
+            $this->Template = new \Isotope\Template('mod_message');
             $this->Template->type = 'empty';
             $this->Template->message = $GLOBALS['TL_LANG']['MSC']['noItemsInCart'];
 
@@ -163,7 +163,7 @@ class Checkout extends Module
         // Insufficient cart subtotal
         if ($this->Isotope->Config->cartMinSubtotal > 0 && $this->Isotope->Config->cartMinSubtotal > $this->Isotope->Cart->subTotal)
         {
-            $this->Template = new \FrontendTemplate('mod_message');
+            $this->Template = new \Isotope\Template('mod_message');
             $this->Template->type = 'error';
             $this->Template->message = sprintf($GLOBALS['TL_LANG']['ERR']['cartMinSubtotal'], $this->Isotope->formatPriceWithCurrency($this->Isotope->Config->cartMinSubtotal));
 
@@ -177,7 +177,7 @@ class Checkout extends Module
 
             if (!$objPage->numRows)
             {
-                $this->Template = new \FrontendTemplate('mod_message');
+                $this->Template = new \Isotope\Template('mod_message');
                 $this->Template->type = 'error';
                 $this->Template->message = $GLOBALS['TL_LANG']['ERR']['isoLoginRequired'];
 
@@ -188,7 +188,7 @@ class Checkout extends Module
         }
         elseif ($this->iso_checkout_method == 'guest' && FE_USER_LOGGED_IN === true)
         {
-            $this->Template = new \FrontendTemplate('mod_message');
+            $this->Template = new \Isotope\Template('mod_message');
             $this->Template->type = 'error';
             $this->Template->message = 'User checkout not allowed';
 
@@ -226,7 +226,7 @@ class Checkout extends Module
 
         if ($this->strCurrentStep == 'failed')
         {
-            $this->Database->prepare("UPDATE tl_iso_orders SET status=? WHERE cart_id=?")->execute($this->Isotope->Config->orderstatus_error, $this->Isotope->Cart->id);
+            $this->Database->prepare("UPDATE tl_iso_collection SET order_status=? WHERE source_collection_id=?")->execute($this->Isotope->Config->orderstatus_error, $this->Isotope->Cart->id);
             $this->Template->mtype = 'error';
             $this->Template->message = strlen(\Input::get('reason')) ? \Input::get('reason') : $GLOBALS['TL_LANG']['ERR']['orderFailed'];
             $this->strCurrentStep = 'review';
@@ -298,7 +298,7 @@ class Checkout extends Module
             if ($strBuffer === true)
             {
                 // If checkout is successful, complete order and redirect to confirmation page
-                if (($objOrder = Order::findOneBy('cart_id', $this->Isotope->Cart->id)) !== null && $objOrder->checkout($this->Isotope->Cart) && $objOrder->complete())
+                if (($objOrder = Order::findOneBy('source_collection_id', $this->Isotope->Cart->id)) !== null && $objOrder->checkout($this->Isotope->Cart) && $objOrder->complete())
                 {
                     $this->redirect(\Isotope\Frontend::addQueryStringToUrl('uid=' . $objOrder->uniqid, $this->orderCompleteJumpTo));
                 }
@@ -620,7 +620,7 @@ class Checkout extends Module
             $this->doNotSubmit = true;
             $this->Template->showNext = false;
 
-            $objTemplate = new \FrontendTemplate('mod_message');
+            $objTemplate = new \Isotope\Template('mod_message');
             $objTemplate->class = 'shipping_method';
             $objTemplate->hl = 'h2';
             $objTemplate->headline = $GLOBALS['TL_LANG']['MSC']['shipping_method'];
@@ -740,7 +740,7 @@ class Checkout extends Module
             $this->doNotSubmit = true;
             $this->Template->showNext = false;
 
-            $objTemplate = new \FrontendTemplate('mod_message');
+            $objTemplate = new \Isotope\Template('mod_message');
             $objTemplate->class = 'payment_method';
             $objTemplate->hl = 'h2';
             $objTemplate->headline = $GLOBALS['TL_LANG']['MSC']['payment_method'];
@@ -979,14 +979,12 @@ class Checkout extends Module
      */
     protected function writeOrder()
     {
-        if (($objOrder = Order::findOneBy('cart_id', $this->Isotope->Cart->id)) === null)
+        if (($objOrder = Order::findOneBy('source_collection_id', $this->Isotope->Cart->id)) === null)
         {
             $objOrder = new Order();
 
-            $objOrder->uniqid		= uniqid($this->replaceInsertTags($this->Isotope->Config->orderPrefix), true);
-            $objOrder->cart_id		= $this->Isotope->Cart->id;
-
-            $objOrder = Order::findByPk($objOrder->save()->id);
+            $objOrder->uniqid = uniqid($this->replaceInsertTags($this->Isotope->Config->orderPrefix), true);
+            $objOrder->source_collection_id = $this->Isotope->Cart->id;
         }
 
         global $objPage;
@@ -1000,7 +998,7 @@ class Checkout extends Module
         $objOrder->grandTotal           = $this->Isotope->Cart->grandTotal;
         $objOrder->surcharges           = $this->Isotope->Cart->getSurcharges();
         $objOrder->checkout_info        = $this->getCheckoutInfo();
-        $objOrder->status               = 0;
+        $objOrder->order_status         = 0;
         $objOrder->language             = $GLOBALS['TL_LANGUAGE'];
         $objOrder->billing_address      = $this->Isotope->Cart->billing_address;
         $objOrder->shipping_address     = $this->Isotope->Cart->shipping_address;

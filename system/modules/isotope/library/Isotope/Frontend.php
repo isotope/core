@@ -855,7 +855,7 @@ $endScript";
                 break;
         }
 
-        $objTemplate = new \FrontendTemplate('ce_downloads');
+        $objTemplate = new \Isotope\Template('ce_downloads');
         $objTemplate->class = $attribute;
         $objTemplate->files = array_values($files);
 
@@ -1551,9 +1551,9 @@ $endScript";
      */
     public function generateBreadcrumb($arrItems, $objModule)
     {
-        if ($this->Input->get('product') != '')
+        if (\Input::get('product') != '')
         {
-            $objProduct = static::getProductByAlias($this->Input->get('product'));
+            $objProduct = static::getProductByAlias(\Input::get('product'));
 
             if ($objProduct !== null)
             {

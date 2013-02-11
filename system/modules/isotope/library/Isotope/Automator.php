@@ -32,36 +32,23 @@ class Automator extends \Controller
      */
     public function deleteOldCarts()
     {
-        $this->import('Database');
+        $intPurged = 0;
+        $objCarts = Cart::findBy(array('member=0', 'tstamp<?'), array(time() - $GLOBALS['TL_CONFIG']['iso_cartTimeout']));
 
-        $time = time() - $GLOBALS['TL_CONFIG']['iso_cartTimeout'];
-        $objCarts = $this->Database->execute("SELECT id FROM tl_iso_cart WHERE tstamp<$time");
-
-        if ($objCarts->numRows)
+        while ($objCarts->next())
         {
-            $arrIds = array();
-
-            foreach ($objCarts->fetchEach('id') as $id)
+            if (($objOrder = Order::findOneBy('source_collection_id', $objCart->id)) !== null && $objOrder->status == 0)
             {
-                if (($objCart = Cart::findByPk($id)) !== null)
-                {
-                    if (($objOrder = Order::findOneBy('cart_id', $objCart->id)) !== null)
-                    {
-                        if ($objOrder->status == 0)
-                        {
-                            $objOrder->delete();
-                        }
-                    }
-
-                    $objCart->delete();
-                    $arrIds[] = $id;
-                }
+                $objOrder->delete();
             }
 
-            if (!empty($arrIds))
-            {
-                $this->log('Purged ' . count($arrIds) . ' old guest carts', __METHOD__, TL_CRON);
-            }
+            $objCart->delete();
+            $intPurged += 1;
+        }
+
+        if ($intPurged > 0)
+        {
+            $this->log('Purged ' . $intPurged . ' old guest carts', __METHOD__, TL_CRON);
         }
     }
 
