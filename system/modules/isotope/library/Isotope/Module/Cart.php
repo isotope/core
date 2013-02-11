@@ -101,7 +101,7 @@ class Cart extends Module
         foreach ($arrProducts as $i => $objProduct)
         {
             // Remove product from cart
-            if (\Input::get('remove') == $objProduct->cart_id && $this->Isotope->Cart->deleteProduct($objProduct))
+            if (\Input::get('remove') == $objProduct->collection_id && $this->Isotope->Cart->deleteProduct($objProduct))
             {
                 $this->redirect((strlen(\Input::get('referer')) ? base64_decode(\Input::get('referer', true)) : $strUrl));
             }
@@ -110,7 +110,7 @@ class Cart extends Module
             elseif (\Input::post('FORM_SUBMIT') == ('iso_cart_update_'.$this->id) && is_array($arrQuantity))
             {
                 $blnReload = true;
-                $this->Isotope->Cart->updateProduct($objProduct, array('quantity'=>$arrQuantity[$objProduct->cart_id]));
+                $this->Isotope->Cart->updateProduct($objProduct, array('quantity'=>$arrQuantity[$objProduct->collection_id]));
                 continue; // no need to generate $arrProductData, we reload anyway
             }
 
@@ -126,14 +126,14 @@ class Cart extends Module
                 'tax_free_total_price'	=> $this->Isotope->formatPriceWithCurrency($objProduct->tax_free_total_price),
                 'tax_id'			=> $objProduct->tax_id,
                 'quantity'			=> $objProduct->quantity_requested,
-                'cart_item_id'		=> $objProduct->cart_id,
+                'collection_id'		=> $objProduct->collection_id,
                 'product_options'	=> $objProduct->getOptions(),
-                'remove_link'		=> ampersand($strUrl . ($GLOBALS['TL_CONFIG']['disableAlias'] ? '&' : '?') . 'remove='.$objProduct->cart_id.'&referer='.base64_encode(\Environment::get('request'))),
+                'remove_link'		=> ampersand($strUrl . ($GLOBALS['TL_CONFIG']['disableAlias'] ? '&' : '?') . 'remove='.$objProduct->collection_id.'&referer='.base64_encode(\Environment::get('request'))),
                 'remove_link_text'  => $GLOBALS['TL_LANG']['MSC']['removeProductLinkText'],
                 'remove_link_title' => specialchars(sprintf($GLOBALS['TL_LANG']['MSC']['removeProductLinkTitle'], $objProduct->name)),
             ));
 
-            if ($lastAdded == $objProduct->cart_id)
+            if ($lastAdded == $objProduct->collection_id)
             {
                 $objTemplate->continueJumpTo = $objProduct->href_reader;
             }

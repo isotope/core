@@ -319,9 +319,9 @@ class Cart extends Collection implements IsotopeProductCollection
 
             foreach ($arrPreTax as $tax)
             {
-                if (isset($tax['products'][$objProduct->cart_id]))
+                if (isset($tax['products'][$objProduct->collection_id]))
                 {
-                    $fltPrice += $tax['products'][$objProduct->cart_id];
+                    $fltPrice += $tax['products'][$objProduct->collection_id];
                 }
             }
 

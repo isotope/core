@@ -175,7 +175,7 @@ class OrderDetails extends Module
     {
         $time = time();
         $arrDownloads = array();
-        $objDownloads = $this->Database->prepare("SELECT p.*, o.* FROM tl_iso_order_downloads o JOIN tl_iso_downloads p ON o.download_id=p.id WHERE o.pid=?")->execute($objProduct->cart_id);
+        $objDownloads = $this->Database->prepare("SELECT p.*, c.* FROM tl_iso_collection_download c JOIN tl_iso_downloads p ON c.download_id=p.id WHERE c.pid=?")->execute($objProduct->collection_id);
 
         while ($objDownloads->next())
         {

@@ -320,7 +320,7 @@ class Isotope extends \Controller
                 }
 
                 $fltProductPrice = $fltProductPrice > 0 ? (floor($fltProductPrice * 100) / 100) : (ceil($fltProductPrice * 100) / 100);
-                $arrSubtract[$objProduct->cart_id] = $fltProductPrice;
+                $arrSubtract[$objProduct->collection_id] = $fltProductPrice;
             }
 
             $arrSurcharge['tax_class'] = 0;

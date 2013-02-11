@@ -359,7 +359,7 @@ abstract class Collection extends \Model
         {
             foreach ($arrProducts as $objProduct)
             {
-                \Database::getInstance()->prepare("UPDATE " . static::$ctable . " SET price=?, tax_free_price=? WHERE id=?")->execute($objProduct->price, $objProduct->tax_free_price, $objProduct->cart_id);
+                \Database::getInstance()->prepare("UPDATE " . static::$ctable . " SET price=?, tax_free_price=? WHERE id=?")->execute($objProduct->price, $objProduct->tax_free_price, $objProduct->collection_id);
             }
         }
 
@@ -479,12 +479,12 @@ abstract class Collection extends \Model
                 // Remove product from collection if it is no longer available
                 if (!$objProduct->isAvailable())
                 {
-                    $objProduct->cart_id = $objItems->id;
+                    $objProduct->collection_id = $objItems->id;
                     $this->deleteProduct($objProduct);
                     continue;
                 }
 
-                $objProduct->cart_id = $objItems->id;
+                $objProduct->collection_id = $objItems->id;
                 $objProduct->tax_id = $objItems->tax_id;
                 $objProduct->reader_jumpTo_Override = $objItems->href_reader;
 
@@ -595,7 +595,7 @@ abstract class Collection extends \Model
      */
     public function updateProduct(IsotopeProduct $objProduct, $arrSet)
     {
-        if (!$objProduct->cart_id)
+        if (!$objProduct->collection_id)
         {
             return false;
         }
@@ -624,7 +624,7 @@ abstract class Collection extends \Model
         // Modify timestamp when updating a product
         $arrSet['tstamp'] = time();
 
-        $intAffectedRows = \Database::getInstance()->prepare("UPDATE " . static::$ctable . " %s WHERE id={$objProduct->cart_id}")
+        $intAffectedRows = \Database::getInstance()->prepare("UPDATE " . static::$ctable . " %s WHERE id={$objProduct->collection_id}")
                                                    ->set($arrSet)
                                                    ->executeUncached()
                                                    ->affectedRows;
@@ -648,7 +648,7 @@ abstract class Collection extends \Model
      */
     public function deleteProduct(IsotopeProduct $objProduct)
     {
-        if (!$objProduct->cart_id)
+        if (!$objProduct->collection_id)
         {
             return false;
         }
@@ -669,7 +669,7 @@ abstract class Collection extends \Model
         }
 
         $this->modified = true;
-        \Database::getInstance()->query("DELETE FROM " . static::$ctable . " WHERE id={$objProduct->cart_id}");
+        \Database::getInstance()->query("DELETE FROM " . static::$ctable . " WHERE id={$objProduct->collection_id}");
 
         return true;
     }

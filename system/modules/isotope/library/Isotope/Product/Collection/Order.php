@@ -234,7 +234,7 @@ class Order extends Collection implements IsotopeProductCollection
     {
         if (parent::deleteProduct($objProduct))
         {
-            \Database::getInstance()->query("DELETE FROM tl_iso_order_downloads WHERE pid={$objProduct->cart_id}");
+            \Database::getInstance()->query("DELETE FROM tl_iso_order_downloads WHERE pid={$objProduct->collection_id}");
         }
 
         return false;

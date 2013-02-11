@@ -612,14 +612,14 @@ class IsotopeRules extends \Controller
                     $fltPrice = $blnPercentage ? ($objProduct->total_price / 100 * $fltDiscount) : $arrRule['discount'];
                     $fltPrice = $fltPrice > 0 ? (floor($fltPrice * 100) / 100) : (ceil($fltPrice * 100) / 100);
                     $arrSurcharge['total_price'] += $fltPrice;
-                    $arrSurcharge['products'][$objProduct->cart_id] = $fltPrice;
+                    $arrSurcharge['products'][$objProduct->collection_id] = $fltPrice;
                     break;
 
                 case 'items':
                     $fltPrice = ($blnPercentage ? ($objProduct->price / 100 * $fltDiscount) : $arrRule['discount']) * $objProduct->quantity_requested;
                     $fltPrice = $fltPrice > 0 ? (floor($fltPrice * 100) / 100) : (ceil($fltPrice * 100) / 100);
                     $arrSurcharge['total_price'] += $fltPrice;
-                    $arrSurcharge['products'][$objProduct->cart_id] = $fltPrice;
+                    $arrSurcharge['products'][$objProduct->collection_id] = $fltPrice;
                     break;
 
                 case 'subtotal':
@@ -631,7 +631,7 @@ class IsotopeRules extends \Controller
                         if ($blnPercentage)
                         {
                             $fltPrice = $objProduct->total_price / 100 * $fltDiscount;
-                            $arrSurcharge['products'][$objProduct->cart_id] = $fltPrice;
+                            $arrSurcharge['products'][$objProduct->collection_id] = $fltPrice;
                         }
                         else
                         {
@@ -657,7 +657,7 @@ class IsotopeRules extends \Controller
                 $fltPrice = 0;
                 foreach( $arrSubtract as $objProduct )
                 {
-                    $arrSurcharge['products'][$objProduct->cart_id] = $arrRule['discount'] / 100 * (100 / $fltTotal * $objProduct->tax_free_total_price);
+                    $arrSurcharge['products'][$objProduct->collection_id] = $arrRule['discount'] / 100 * (100 / $fltTotal * $objProduct->tax_free_total_price);
                 }
             }
         }
