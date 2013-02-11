@@ -13,6 +13,8 @@
 namespace Isotope;
 
 use Isotope\Model\Config;
+use Isotope\Model\TaxClass;
+use Isotope\Model\TaxRate;
 use Isotope\Product\Collection\Cart;
 
 
@@ -342,6 +344,7 @@ class Isotope extends \Controller
      */
     public function calculateTax($intTaxClass, $fltPrice, $blnAdd=true, $arrAddresses=null, $blnSubtract=true)
     {
+        // Splitted would be -1, can't be calculated here
         if ($intTaxClass < 1)
         {
             return $fltPrice;
@@ -352,9 +355,9 @@ class Isotope extends \Controller
             $arrAddresses = array('billing'=>$this->Cart->billing_address, 'shipping'=>$this->Cart->shipping_address);
         }
 
-        $objTaxClass = $this->Database->prepare("SELECT * FROM tl_iso_tax_class WHERE id=?")->limit(1)->execute($intTaxClass);
+        $objTaxClass = TaxClass::findByPk($intTaxClass);
 
-        if (!$objTaxClass->numRows)
+        if (null === $objTaxClass)
         {
             return $fltPrice;
         }
@@ -375,25 +378,13 @@ class Isotope extends \Controller
         }
 
         $arrTaxes = array();
-        $objIncludes = $this->Database->prepare("SELECT * FROM tl_iso_tax_rate WHERE id=?")->execute($objTaxClass->includes);
+        $objIncludes = $objTaxClass->getIncludedTaxRate();
 
-        if ($objIncludes->numRows)
+        if (null !== $objIncludes)
         {
-            $arrTaxRate = deserialize($objIncludes->rate);
+            $fltTax = $objIncludes->calculateTaxAmount($fltPrice);
 
-            // Final price / (1 + (tax / 100)
-            if (strlen($arrTaxRate['unit']))
-            {
-                $fltTax = $fltPrice - ($fltPrice / (1 + (floatval($arrTaxRate['value']) / 100)));
-            }
-
-            // Full amount
-            else
-            {
-                $fltTax = floatval($arrTaxRate['value']);
-            }
-
-            if (!$this->useTaxRate($objIncludes, $fltPrice, $arrAddresses))
+            if (!$objIncludes::isApplicable($fltPrice, $arrAddresses))
             {
                 if ($blnSubtract)
                 {
@@ -402,9 +393,11 @@ class Isotope extends \Controller
             }
             else
             {
+                $arrTaxRate = $objIncludes->rate;
+
                 $arrTaxes[$objTaxClass->id . '_' . $objIncludes->id] = array
                 (
-                    'label'			=> $this->translate($objTaxClass->label ? $objTaxClass->label : ($objIncludes->label ? $objIncludes->label : $objIncludes->name)),
+                    'label'			=> $objTaxClass->label ?: $objIncludes->label,
                     'price'			=> $arrTaxRate['value'] . $arrTaxRate['unit'],
                     'total_price'	=> $this->roundPrice($fltTax, $objTaxClass->applyRoundingIncrement),
                     'add'			=> false,
@@ -417,43 +410,24 @@ class Isotope extends \Controller
             return $fltPrice;
         }
 
-        $arrRates = deserialize($objTaxClass->rates);
+        $arrRates = $objTaxClass->getAddedTaxRates();
 
-        // Return if there are no rates
-        if (!is_array($arrRates) || empty($arrRates))
+        foreach ($arrRates as $objTaxRate)
         {
-            return $arrTaxes;
-        }
-
-        $objRates = $this->Database->execute("SELECT * FROM tl_iso_tax_rate WHERE id IN (" . implode(',', $arrRates) . ") ORDER BY id=" . implode(" DESC, id=", $arrRates) . " DESC");
-
-        while ($objRates->next())
-        {
-            if ($this->useTaxRate($objRates, $fltPrice, $arrAddresses))
+            if ($objTaxRate->isApplicable($fltPrice, $arrAddresses))
             {
-                $arrTaxRate = deserialize($objRates->rate);
+                $fltTax = $objTaxRate->calculateTaxAmount($fltPrice);
+                $arrTaxRate = $objTaxRate->rate;
 
-                // Final price * (1 + (tax / 100)
-                if (strlen($arrTaxRate['unit']))
-                {
-                    $fltTax = ($fltPrice * (1 + (floatval($arrTaxRate['value']) / 100))) - $fltPrice;
-                }
-
-                // Full amount
-                else
-                {
-                    $fltTax = floatval($arrTaxRate['value']);
-                }
-
-                $arrTaxes[$objRates->id] = array
+                $arrTaxes[$objTaxRate->id] = array
                 (
-                    'label'			=> $this->translate($objRates->label ? $objRates->label : $objRates->name),
+                    'label'			=> $objTaxRate->label,
                     'price'			=> $arrTaxRate['value'] . $arrTaxRate['unit'],
                     'total_price'	=> $this->roundPrice($fltTax, $objTaxClass->applyRoundingIncrement),
                     'add'			=> true,
                 );
 
-                if ($objRates->stop)
+                if ($objTaxRate->stop)
                 {
                     break;
                 }
@@ -461,124 +435,6 @@ class Isotope extends \Controller
         }
 
         return $arrTaxes;
-    }
-
-
-    /**
-     * Determine whether to use the tax rate or not
-     * @param object
-     * @param float
-     * @param array
-     * @return boolean
-     */
-    public function useTaxRate($objRate, $fltPrice, $arrAddresses)
-    {
-        // Tax rate is limited to another store config
-        if ($objRate->config > 0 && $objRate->config != $this->Config->id)
-        {
-            return false;
-        }
-
-        // Tax rate is for guests only
-        if ($objRate->guests && FE_USER_LOGGED_IN === true && !$objRate->protected)
-        {
-            return false;
-        }
-
-        // Tax rate is protected but no member is logged in
-        elseif ($objRate->protected && FE_USER_LOGGED_IN !== true && !$objRate->guests)
-        {
-            return false;
-        }
-
-        // Tax rate is protected and member logged in, check member groups
-        elseif ($objRate->protected && FE_USER_LOGGED_IN === true)
-        {
-            $groups = deserialize($objRate->groups);
-
-            if (!is_array($groups) || empty($groups) || !count(array_intersect($groups, $this->User->groups)))
-            {
-                return false;
-            }
-        }
-
-        $objRate->address = deserialize($objRate->address);
-
-        // !HOOK: use tax rate
-        if (isset($GLOBALS['ISO_HOOKS']['useTaxRate']) && is_array($GLOBALS['ISO_HOOKS']['useTaxRate']))
-        {
-            foreach ($GLOBALS['ISO_HOOKS']['useTaxRate'] as $callback)
-            {
-                $this->import($callback[0]);
-                $varValue = $this->$callback[0]->$callback[1]($objRate, $fltPrice, $arrAddresses);
-
-                if ($varValue !== true)
-                {
-                    return false;
-                }
-            }
-        }
-
-        if (is_array($objRate->address) && count($objRate->address)) // Can't use empty() because its an object property (using __get)
-        {
-            foreach ($arrAddresses as $name => $arrAddress)
-            {
-                if (!in_array($name, $objRate->address))
-                {
-                    continue;
-                }
-
-                if ($objRate->countries != '' && !in_array($arrAddress['country'], trimsplit(',', $objRate->countries)))
-                {
-                    continue;
-                }
-
-                if ($objRate->subdivisions != '' && !in_array($arrAddress['subdivision'], trimsplit(',', $objRate->subdivisions)))
-                {
-                    continue;
-                }
-
-                // Check if address has a valid postal code
-                if ($objRate->postalCodes != '')
-                {
-                    $arrCodes = \Isotope\Frontend::parsePostalCodes($objRate->postalCodes);
-
-                    if (!in_array($arrAddress['postal'], $arrCodes))
-                    {
-                        continue;
-                    }
-                }
-
-                $arrPrice = deserialize($objRate->amount);
-
-                if (is_array($arrPrice) && !empty($arrPrice) && strlen($arrPrice[0]))
-                {
-                    if (strlen($arrPrice[1]))
-                    {
-                        if ($arrPrice[0] > $fltPrice || $arrPrice[1] < $fltPrice)
-                        {
-                            continue;
-                        }
-                    }
-                    else
-                    {
-                        if ($arrPrice[0] != $fltPrice)
-                        {
-                            continue;
-                        }
-                    }
-                }
-
-                // This address is valid, otherwise one of the check would have skipped this (continue)
-                return true;
-            }
-
-            // No address has passed all checks and returned true
-            return false;
-        }
-
-        // Addresses are not checked at all, return true
-        return true;
     }
 
 

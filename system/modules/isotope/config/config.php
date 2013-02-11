@@ -195,6 +195,8 @@ $GLOBALS['BE_FFL']['productTree']			= 'Isotope\Widget\ProductTree';
  */
 $GLOBALS['TL_MODELS']['tl_iso_config'] = 'Isotope\Model\Config';
 $GLOBALS['TL_MODELS']['tl_iso_addresses'] = 'Isotope\Model\Address';
+$GLOBALS['TL_MODELS']['tl_iso_tax_class'] = 'Isotope\Model\TaxClass';
+$GLOBALS['TL_MODELS']['tl_iso_tax_rate'] = 'Isotope\Model\TaxRate';
 
 
 /**
