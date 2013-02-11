@@ -605,11 +605,6 @@ CREATE TABLE `tl_iso_collection_product` (
 -- Table `tl_iso_collection_surcharge`
 --
 
--- --------------------------------------------------------
-
---
--- Table `tl_iso_collection_coupon`
---
 
 -- --------------------------------------------------------
 
