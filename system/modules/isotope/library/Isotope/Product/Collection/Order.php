@@ -195,7 +195,7 @@ class Order extends Collection implements IsotopeProductCollection
                 'expires'                => $expires,
             );
 
-            \Database::getInstance()->prepare("INSERT INTO tl_iso_order_downloads %s")->set($arrSet)->executeUncached();
+            \Database::getInstance()->prepare("INSERT INTO tl_iso_collection_download %s")->set($arrSet)->executeUncached();
         }
 
         // Update the product IDs of surcharges (see #3029)
@@ -234,7 +234,7 @@ class Order extends Collection implements IsotopeProductCollection
     {
         if (parent::deleteProduct($objProduct))
         {
-            \Database::getInstance()->query("DELETE FROM tl_iso_order_downloads WHERE pid={$objProduct->collection_id}");
+            \Database::getInstance()->query("DELETE FROM tl_iso_collection_download WHERE pid={$objProduct->collection_id}");
         }
 
         return false;
@@ -247,7 +247,7 @@ class Order extends Collection implements IsotopeProductCollection
      */
     public function delete()
     {
-        \Database::getInstance()->query("DELETE FROM tl_iso_order_downloads WHERE pid IN (SELECT id FROM " . static::$ctable . " WHERE pid={$this->id})");
+        \Database::getInstance()->query("DELETE FROM tl_iso_collection_download WHERE pid IN (SELECT id FROM " . static::$ctable . " WHERE pid={$this->id})");
 
         return parent::delete();
     }
@@ -468,7 +468,7 @@ class Order extends Collection implements IsotopeProductCollection
 
                 if (TL_MODE == 'BE')
                 {
-                    $this->addConfirmationMessage($GLOBALS['TL_LANG']['tl_iso_orders']['orderStatusEmail']);
+                    $this->addConfirmationMessage($GLOBALS['TL_LANG']['tl_iso_collection']['orderStatusEmail']);
                 }
             }
 

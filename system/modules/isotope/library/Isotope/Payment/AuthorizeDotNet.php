@@ -262,7 +262,7 @@ class AuthorizeDotNet extends Payment implements IsotopePayment
      */
     public function backendInterface($intOrderId)
     {
-        $arrOrderInfo = $this->Database->prepare("SELECT * FROM tl_iso_orders WHERE id=?")
+        $arrOrderInfo = $this->Database->prepare("SELECT * FROM tl_iso_collection WHERE type='Order' AND id=?")
                                ->limit(1)
                                ->execute($intOrderId)
                                ->fetchAssoc();

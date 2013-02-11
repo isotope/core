@@ -227,7 +227,7 @@ class OrderDetails extends Module
         {
             if (!$this->backend && $objDownload->downloads_remaining !== '')
             {
-                $this->Database->prepare("UPDATE tl_iso_order_downloads SET downloads_remaining=? WHERE id=?")->execute(($objDownload->downloads_remaining-1), $objDownload->id);
+                $this->Database->prepare("UPDATE tl_iso_collection_download SET downloads_remaining=? WHERE id=?")->execute(($objDownload->downloads_remaining-1), $objDownload->id);
             }
 
             $this->sendFileToBrowser($strFile);
