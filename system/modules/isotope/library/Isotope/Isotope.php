@@ -384,7 +384,7 @@ class Isotope extends \Controller
         {
             $fltTax = $objIncludes->calculateTaxAmount($fltPrice);
 
-            if (!$objIncludes::isApplicable($fltPrice, $arrAddresses))
+            if (!$objIncludes->isApplicable($fltPrice, $arrAddresses))
             {
                 if ($blnSubtract)
                 {
