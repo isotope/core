@@ -549,6 +549,7 @@ CREATE TABLE `tl_iso_collection` (
   `uniqid` varchar(64) NOT NULL default '',
   `config_id` int(10) unsigned NOT NULL default '0',
   `store_id` int(2) unsigned NOT NULL default '0',
+  `source_collection_id` int(10) unsigned NOT NULL default '0',
   `settings` blob NULL,
   `date` int(10) unsigned NOT NULL default '0',
   `date_paid` varchar(10) NOT NULL default '',

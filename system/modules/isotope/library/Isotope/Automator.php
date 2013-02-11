@@ -45,7 +45,7 @@ class Automator extends \Controller
             {
                 if (($objCart = Cart::findByPk($id)) !== null)
                 {
-                    if (($objOrder = Order::findOneBy('cart_id', $objCart->id)) !== null)
+                    if (($objOrder = Order::findOneBy('source_collection_id', $objCart->id)) !== null)
                     {
                         if ($objOrder->status == 0)
                         {

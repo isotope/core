@@ -226,7 +226,7 @@ class Checkout extends Module
 
         if ($this->strCurrentStep == 'failed')
         {
-            $this->Database->prepare("UPDATE tl_iso_orders SET order_status=? WHERE cart_id=?")->execute($this->Isotope->Config->orderstatus_error, $this->Isotope->Cart->id);
+            $this->Database->prepare("UPDATE tl_iso_collection SET order_status=? WHERE source_collection_id=?")->execute($this->Isotope->Config->orderstatus_error, $this->Isotope->Cart->id);
             $this->Template->mtype = 'error';
             $this->Template->message = strlen(\Input::get('reason')) ? \Input::get('reason') : $GLOBALS['TL_LANG']['ERR']['orderFailed'];
             $this->strCurrentStep = 'review';
@@ -298,7 +298,7 @@ class Checkout extends Module
             if ($strBuffer === true)
             {
                 // If checkout is successful, complete order and redirect to confirmation page
-                if (($objOrder = Order::findOneBy('cart_id', $this->Isotope->Cart->id)) !== null && $objOrder->checkout($this->Isotope->Cart) && $objOrder->complete())
+                if (($objOrder = Order::findOneBy('source_collection_id', $this->Isotope->Cart->id)) !== null && $objOrder->checkout($this->Isotope->Cart) && $objOrder->complete())
                 {
                     $this->redirect(\Isotope\Frontend::addQueryStringToUrl('uid=' . $objOrder->uniqid, $this->orderCompleteJumpTo));
                 }
@@ -979,7 +979,7 @@ class Checkout extends Module
      */
     protected function writeOrder()
     {
-        if (($objOrder = Order::findOneBy('cart_id', $this->Isotope->Cart->id)) === null)
+        if (($objOrder = Order::findOneBy('source_collection_id', $this->Isotope->Cart->id)) === null)
         {
             $objOrder = new Order();
 

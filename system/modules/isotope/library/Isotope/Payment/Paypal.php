@@ -36,7 +36,7 @@ class Paypal extends Payment implements IsotopePayment
      */
     public function processPayment()
     {
-        if (($objOrder = Order::findOneBy('cart_id', $this->Isotope->Cart->id)) === null)
+        if (($objOrder = Order::findOneBy('source_collection_id', $this->Isotope->Cart->id)) === null)
         {
             return false;
         }
@@ -170,7 +170,7 @@ class Paypal extends Payment implements IsotopePayment
      */
     public function checkoutForm()
     {
-        if (($objOrder = Order::findOneBy('cart_id', $this->Isotope->Cart->id)) === null) {
+        if (($objOrder = Order::findOneBy('source_collection_id', $this->Isotope->Cart->id)) === null) {
             $this->redirect($this->addToUrl('step=failed', true));
         }
 

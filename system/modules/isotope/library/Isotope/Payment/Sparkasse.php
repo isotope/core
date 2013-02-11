@@ -35,7 +35,7 @@ class Sparkasse extends Payment implements IsotopePayment
     {
         $objOrder = new IsotopeOrder();
 
-		if (!$objOrder->findBy('cart_id', $this->Isotope->Cart->id))
+		if (!$objOrder->findBy('source_collection_id', $this->Isotope->Cart->id))
 		{
 			return false;
 		}
@@ -149,7 +149,7 @@ class Sparkasse extends Payment implements IsotopePayment
     {
         global $objPage;
 
-        if (($objOrder = Order::findOneBy('cart_id', $this->Isotope->Cart->id)) === null)
+        if (($objOrder = Order::findOneBy('source_collection_id', $this->Isotope->Cart->id)) === null)
         {
             $this->redirect($this->addToUrl('step=failed', true));
         }

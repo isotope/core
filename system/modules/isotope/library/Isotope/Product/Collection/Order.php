@@ -290,9 +290,9 @@ class Order extends Collection implements IsotopeProductCollection
         // This is the case when not using ModuleIsotopeCheckout
         if (!is_object($objCart))
         {
-            if (($objCart = Cart::findByPk($this->cart_id)) === null)
+            if (($objCart = Cart::findByPk($this->source_collection_id)) === null)
             {
-                $this->log('Could not find Cart ID '.$this->cart_id.' for Order ID '.$this->id, __METHOD__, TL_ERROR);
+                $this->log('Could not find Cart ID '.$this->source_collection_id.' for Order ID '.$this->id, __METHOD__, TL_ERROR);
 
                 return false;
             }

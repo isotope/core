@@ -85,7 +85,7 @@ class AuthorizeDotNet extends Payment implements IsotopePayment
 
             return true;
 
-        $objOrder = Order::findOneBy('cart_id', $this->Isotope->Cart->id);
+        $objOrder = Order::findOneBy('source_collection_id', $this->Isotope->Cart->id);
 
         //$arrPaymentData = deserialize($objOrder->payment_data);
         if($this->authCapturePayment($objOrder->id, $this->Isotope->Cart->grandTotal, true))
@@ -212,7 +212,7 @@ class AuthorizeDotNet extends Payment implements IsotopePayment
 
         if (\Input::post('FORM_SUBMIT') == 'iso_mod_checkout_payment' && !$objModule->doNotSubmit && $arrPayment['module']==$this->id && !$_SESSION['CHECKOUT_DATA']['payment']['request_lockout'])
         {
-            if (($objOrder = Order::findOneBy('cart_id', $this->Isotope->Cart->id)) === null)
+            if (($objOrder = Order::findOneBy('source_collection_id', $this->Isotope->Cart->id)) === null)
             {
                 $objOrder = new Order();
 
