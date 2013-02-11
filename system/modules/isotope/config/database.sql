@@ -576,17 +576,17 @@ CREATE TABLE `tl_iso_collection` (
 -- --------------------------------------------------------
 
 --
--- Table `tl_iso_collection_item`
+-- Table `tl_iso_collection_product`
 --
 
-CREATE TABLE `tl_iso_collection_item` (
+CREATE TABLE `tl_iso_collection_product` (
   `id` int(10) unsigned NOT NULL auto_increment,
   `pid` int(10) unsigned NOT NULL default '0',
   `tstamp` int(10) unsigned NOT NULL default '0',
   `product_id` int(10) unsigned NOT NULL default '0',
-  `product_sku` varchar(128) NOT NULL default '',
-  `product_name` varchar(255) NOT NULL default '',
-  `product_options` blob NULL,
+  `sku` varchar(128) NOT NULL default '',
+  `name` varchar(255) NOT NULL default '',
+  `options` blob NULL,
   `quantity` int(10) unsigned NOT NULL default '0',
   `price` decimal(12,2) NOT NULL default '0.00',
   `tax_free_price` decimal(12,2) NOT NULL default '0.00',

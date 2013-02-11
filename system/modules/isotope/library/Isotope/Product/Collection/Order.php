@@ -182,7 +182,7 @@ class Order extends Collection
         $arrIds = parent::transferFromCollection($objCollection, $blnDuplicate);
 
         // Add product downloads to the order
-        $objDownloads = \Database::getInstance()->execute("SELECT d.*, ct.product_quantity, ct.id AS item_id FROM " . static::$ctable . " ct JOIN tl_iso_downloads d ON d.pid IN ((SELECT id FROM tl_iso_products WHERE id=ct.product_id), (SELECT pid FROM tl_iso_products WHERE id=ct.product_id)) WHERE ct.id IN (" . implode(',', $arrIds) . ") GROUP BY ct.id, d.id ORDER BY item_id, sorting");
+        $objDownloads = \Database::getInstance()->execute("SELECT d.*, ct.quantity, ct.id AS item_id FROM " . static::$ctable . " ct JOIN tl_iso_downloads d ON d.pid IN ((SELECT id FROM tl_iso_products WHERE id=ct.product_id), (SELECT pid FROM tl_iso_products WHERE id=ct.product_id)) WHERE ct.id IN (" . implode(',', $arrIds) . ") GROUP BY ct.id, d.id ORDER BY item_id, sorting");
 
         while ($objDownloads->next())
         {
@@ -202,7 +202,7 @@ class Order extends Collection
                 'pid'                    => $objDownloads->item_id,
                 'tstamp'                => $time,
                 'download_id'            => $objDownloads->id,
-                'downloads_remaining'    => ($objDownloads->downloads_allowed > 0 ? ($objDownloads->downloads_allowed * $objDownloads->product_quantity) : ''),
+                'downloads_remaining'    => ($objDownloads->downloads_allowed > 0 ? ($objDownloads->downloads_allowed * $objDownloads->quantity) : ''),
                 'expires'                => $expires,
             );
 

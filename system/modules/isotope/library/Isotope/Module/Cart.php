@@ -110,7 +110,7 @@ class Cart extends Module
             elseif (\Input::post('FORM_SUBMIT') == ('iso_cart_update_'.$this->id) && is_array($arrQuantity))
             {
                 $blnReload = true;
-                $this->Isotope->Cart->updateProduct($objProduct, array('product_quantity'=>$arrQuantity[$objProduct->cart_id]));
+                $this->Isotope->Cart->updateProduct($objProduct, array('quantity'=>$arrQuantity[$objProduct->cart_id]));
                 continue; // no need to generate $arrProductData, we reload anyway
             }
 
