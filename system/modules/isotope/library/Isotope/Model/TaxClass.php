@@ -29,18 +29,6 @@ class TaxClass extends \Model
      */
     protected static $strTable = 'tl_iso_tax_class';
 
-    /**
-     * Included tax rate
-     * @var TaxRate
-     */
-    protected $objIncluded = false;
-
-    /**
-     * Additionaly tax rates
-     * @var array
-     */
-    protected $arrAdded = false;
-
 
     /**
      * Get a property, unserialize appropriate fields
@@ -60,55 +48,5 @@ class TaxClass extends \Model
             default:
                 return parent::__get($strKey);
         }
-    }
-
-
-    /**
-     * Return the included tax rate
-     * @return TaxRate
-     */
-    public function getIncludedTaxRate()
-    {
-        if (!$this->includes)
-        {
-            return null;
-        }
-
-        if (false === $this->objIncluded)
-        {
-            $this->objIncluded = TaxRate::findByPk($this->includes);
-        }
-
-        return $this->objIncluded;
-    }
-
-
-    /**
-     * Get included tax rates
-     * return array
-     */
-    public function getAddedTaxRates()
-    {
-        if (false === $this->arrAdded)
-        {
-            $this->arrAdded = array();
-
-            $arrRates = $this->rates;
-
-            if (is_array($arrRates) && !empty($arrRates))
-            {
-                $objTaxRates = TaxRate::findBy(array("id IN (" . implode(',', $arrRates) . ")"), array(), array('order'=>"id=" . implode(" DESC, id=", $arrRates) . " DESC"));
-
-                if (null !== $objTaxRates)
-                {
-                    while ($objTaxRates->next())
-                    {
-                        $this->arrAdded[$objTaxRates->id] = $objTaxRates->current();
-                    }
-                }
-            }
-        }
-
-        return $this->arrAdded;
     }
 }

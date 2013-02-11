@@ -378,9 +378,9 @@ class Isotope extends \Controller
         }
 
         $arrTaxes = array();
-        $objIncludes = $objTaxClass->getIncludedTaxRate();
+        $objIncludes = $objTaxClass->getRelated('includes');
 
-        if (null !== $objIncludes)
+        if ($objIncludes->id > 0)
         {
             $fltTax = $objIncludes->calculateTaxAmount($fltPrice);
 
@@ -410,10 +410,12 @@ class Isotope extends \Controller
             return $fltPrice;
         }
 
-        $arrRates = $objTaxClass->getAddedTaxRates();
+        $objRates = $objTaxClass->getRelated('rates');
 
-        foreach ($arrRates as $objTaxRate)
+        while ($objRates->next())
         {
+            $objTaxRate = $objRates->current();
+
             if ($objTaxRate->isApplicable($fltPrice, $arrAddresses))
             {
                 $fltTax = $objTaxRate->calculateTaxAmount($fltPrice);

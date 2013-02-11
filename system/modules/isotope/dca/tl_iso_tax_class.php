@@ -136,6 +136,7 @@ $GLOBALS['TL_DCA']['tl_iso_tax_class'] = array
             'inputType'               => 'select',
             'foreignKey'              => 'tl_iso_tax_rate.name',
             'eval'                    => array('includeBlankOption'=>true, 'tl_class'=>'w50'),
+            'relation'                => array('type'=>'hasOne', 'load'=>'eager'),
         ),
         'label' => array
         (
@@ -152,6 +153,7 @@ $GLOBALS['TL_DCA']['tl_iso_tax_class'] = array
             'inputType'               => 'checkboxWizard',
             'foreignKey'              => 'tl_iso_tax_rate.name',
             'eval'                    => array('multiple'=>true, 'tl_class'=>'clr w50 w50h'),
+            'relation'                => array('type'=>'hasMany', 'load'=>'lazy'),
         ),
         'applyRoundingIncrement' => array
         (
