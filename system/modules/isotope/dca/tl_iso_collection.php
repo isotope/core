@@ -33,7 +33,7 @@ $GLOBALS['TL_DCA']['tl_iso_collection'] = array
     (
         'dataContainer'               => 'Table',
         'enableVersioning'            => false,
-        'ctable'					  => array('tl_iso_collection_item'),
+        'ctable'					  => array('tl_iso_collection_item', 'tl_iso_collection_surcharge', 'tl_iso_collection_coupon', 'tl_iso_collection_download'),
         'closed'            		  => true,
         'onload_callback' 			  => array
         (

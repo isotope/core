@@ -43,7 +43,7 @@ array_insert($GLOBALS['BE_MOD']['isotope'], 0, array
     ),
     'iso_orders' => array
     (
-        'tables'					=> array('tl_iso_collection', 'tl_iso_collection_item'),
+        'tables'					=> array('tl_iso_collection', 'tl_iso_collection_item', 'tl_iso_collection_surcharge', 'tl_iso_collection_coupon', 'tl_iso_collection_download'),
         'icon'						=> 'system/modules/isotope/assets/shopping-basket.png',
         'javascript'				=> 'system/modules/isotope/assets/backend.min.js',
         'export_emails'     		=> array('Isotope\tl_iso_collection', 'exportOrderEmails'),
