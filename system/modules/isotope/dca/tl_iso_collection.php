@@ -33,7 +33,6 @@ $GLOBALS['TL_DCA']['tl_iso_collection'] = array
     (
         'dataContainer'               => 'Table',
         'enableVersioning'            => false,
-        'ptable'					  => ($_GET['act'] == 'delete' ? 'tl_member' : ''), // See #70
         'ctable'					  => array('tl_iso_collection_item'),
         'closed'            		  => true,
         'onload_callback' 			  => array
