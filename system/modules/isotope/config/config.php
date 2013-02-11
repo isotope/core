@@ -191,6 +191,13 @@ $GLOBALS['BE_FFL']['productTree']			= 'Isotope\Widget\ProductTree';
 
 
 /**
+ * Models
+ */
+$GLOBALS['TL_MODELS']['tl_iso_config'] = 'Isotope\Model\Config';
+$GLOBALS['TL_MODELS']['tl_iso_addresses'] = 'Isotope\Model\Address';
+
+
+/**
  * Product types
  */
 $GLOBALS['ISO_PRODUCT'] = array
@@ -350,13 +357,6 @@ $GLOBALS['ISO_ATTR'] = array
         'customer_defined'	=> true,
     ),
 );
-
-
-/**
- * URL Keywords for FolderURL extension
- */
-$GLOBALS['URL_KEYWORDS'][] = 'product';
-$GLOBALS['URL_KEYWORDS'][] = 'step';
 
 
 /**
