@@ -605,6 +605,23 @@ CREATE TABLE `tl_iso_collection_product` (
 -- Table `tl_iso_collection_surcharge`
 --
 
+CREATE TABLE `tl_iso_collection_surcharge` (
+  `id` int(10) unsigned NOT NULL auto_increment,
+  `pid` int(10) unsigned NOT NULL default '0',
+  `sorting` int(10) unsigned NOT NULL default '0',
+  `tstamp` int(10) unsigned NOT NULL default '0',
+  `type` varchar(32) NOT NULL default '',
+  `label` varchar(255) NOT NULL default '',
+  `price` varchar(32) NOT NULL default '',
+  `total_price` decimal(12,2) NOT NULL default '0.00',
+  `tax_free_total_price` decimal(12,2) NOT NULL default '0.00',
+  `tax_class` int(10) unsigned NOT NULL default '0',
+  `tax_id` varchar(32) NOT NULL default '',
+  `before_tax` char(1) NOT NULL default '',
+  `add` char(1) NOT NULL default '',
+  PRIMARY KEY  (`id`),
+  KEY `pid` (`pid`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
