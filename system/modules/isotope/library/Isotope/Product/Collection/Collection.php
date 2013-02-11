@@ -30,10 +30,16 @@ abstract class Collection extends \Model
 {
 
     /**
+     * Name of the current table
+     * @var string
+     */
+    protected static $strTable = 'tl_iso_collection';
+
+    /**
      * Name of the child table
      * @var string
      */
-    protected static $ctable;
+    protected static $ctable = 'tl_iso_collection_product';
 
     /**
      * Define if data should be threaded as "locked", eg. not apply discount rules to product prices

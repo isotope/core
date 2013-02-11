@@ -35,18 +35,6 @@ class Cart extends Collection implements IsotopeProductCollection
     protected $strHash = '';
 
     /**
-     * Name of the current table
-     * @var string
-     */
-    protected static $strTable = 'tl_iso_cart';
-
-    /**
-     * Name of the child table
-     * @var string
-     */
-    protected static $ctable = 'tl_iso_cart_items';
-
-    /**
      * Name of the temporary cart cookie
      * @var string
      */

@@ -29,18 +29,6 @@ class Order extends Collection implements IsotopeProductCollection
 {
 
     /**
-     * Name of the current table
-     * @var string
-     */
-    protected static $strTable = 'tl_iso_orders';
-
-    /**
-     * Name of the child table
-     * @var string
-     */
-    protected static $ctable = 'tl_iso_order_items';
-
-    /**
      * This current order's unique ID with eventual prefix
      * @param string
      */
@@ -604,16 +592,16 @@ class Order extends Collection implements IsotopeProductCollection
             $arrConfigIds = $objDatabase->execute("SELECT id FROM tl_iso_config WHERE store_id=" . $this->Isotope->Config->store_id)->fetchEach('id');
 
             // Lock tables so no other order can get the same ID
-            $objDatabase->lockTables(array('tl_iso_orders'=>'WRITE'));
+            $objDatabase->lockTables(array(static::strTable => 'WRITE'));
 
             // Retrieve the highest available order ID
-            $objMax = $objDatabase->prepare("SELECT order_id FROM tl_iso_orders WHERE " . ($strPrefix != '' ? "order_id LIKE '$strPrefix%' AND " : '') . "config_id IN (" . implode(',', $arrConfigIds) . ") ORDER BY CAST(" . ($strPrefix != '' ? "SUBSTRING(order_id, " . ($intPrefix+1) . ")" : 'order_id') . " AS UNSIGNED) DESC")->limit(1)->executeUncached();
+            $objMax = $objDatabase->prepare("SELECT order_id FROM " . static::strTable . " WHERE " . ($strPrefix != '' ? "order_id LIKE '$strPrefix%' AND " : '') . "config_id IN (" . implode(',', $arrConfigIds) . ") ORDER BY CAST(" . ($strPrefix != '' ? "SUBSTRING(order_id, " . ($intPrefix+1) . ")" : 'order_id') . " AS UNSIGNED) DESC")->limit(1)->executeUncached();
             $intMax = (int) substr($objMax->order_id, $intPrefix);
 
             $this->strOrderId = $strPrefix . str_pad($intMax+1, $this->Isotope->Config->orderDigits, '0', STR_PAD_LEFT);
         }
 
-        $objDatabase->prepare("UPDATE tl_iso_orders SET order_id=? WHERE id={$this->id}")->executeUncached($this->strOrderId);
+        $objDatabase->prepare("UPDATE " . static::strTable . " SET order_id=? WHERE id={$this->id}")->executeUncached($this->strOrderId);
         $objDatabase->unlockTables();
 
         return $this->strOrderId;
