@@ -13,7 +13,6 @@
  * @author     Fred Bliss <fred.bliss@intelligentspark.com>
  */
 
-
 /**
  * Fields
  */

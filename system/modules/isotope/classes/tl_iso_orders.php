@@ -333,7 +333,7 @@ class tl_iso_orders extends \Backend
 
             return $objMethod->backendInterface($dc->id);
         } catch (Exception $e) {
-            return '<p class="tl_gerror">'.$GLOBALS['TL_LANG']['ISO']['backendPaymentNotFound'].'</p>';
+            return '<p class="tl_gerror">'.$GLOBALS['TL_LANG']['MSC']['backendPaymentNotFound'].'</p>';
         }
     }
 
@@ -352,7 +352,7 @@ class tl_iso_orders extends \Backend
 
             return $objMethod->backendInterface($dc->id);
         } catch (Exception $e) {
-            return '<p class="tl_gerror">'.$GLOBALS['TL_LANG']['ISO']['backendShippingNotFound'].'</p>';
+            return '<p class="tl_gerror">'.$GLOBALS['TL_LANG']['MSC']['backendShippingNotFound'].'</p>';
         }
     }
 

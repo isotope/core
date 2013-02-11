@@ -12,7 +12,6 @@
  * @author     Andreas Schempp <andreas.schempp@terminal42.ch>
  */
 
-
 /**
  * Fields
  */
@@ -22,7 +21,6 @@ $GLOBALS['TL_LANG']['tl_iso_orderstatus']['welcomescreen']	= array('Show on welc
 $GLOBALS['TL_LANG']['tl_iso_orderstatus']['mail_customer']	= array('E-Mail to customer', 'Select an email template to notify the customer when this status is assigned to an order.');
 $GLOBALS['TL_LANG']['tl_iso_orderstatus']['mail_admin']		= array('E-Mail to admin', 'Select an email template to notify the admin when this status is assigned to an order.');
 $GLOBALS['TL_LANG']['tl_iso_orderstatus']['sales_email']	= array('Sales admin email address', 'Enter an email address for status notifications to be sent to. If you dont enter anything, the checkout modules sales admin or system admin will be notified.');
-
 
 /**
  * Buttons
@@ -35,7 +33,6 @@ $GLOBALS['TL_LANG']['tl_iso_orderstatus']['delete']			= array('Delete order stat
 $GLOBALS['TL_LANG']['tl_iso_orderstatus']['show']			= array('Order status details', 'Show details of order status ID %s');
 $GLOBALS['TL_LANG']['tl_iso_orderstatus']['pasteafter']		= array('Paste after', 'Paste after order status ID %s');
 $GLOBALS['TL_LANG']['tl_iso_orderstatus']['pasteinto']		= array('Paste into', 'Paste into order status ID %s');
-
 
 /**
  * Legends

@@ -12,15 +12,13 @@
  * @author     Fred Bliss <fred.bliss@intelligentspark.com>
  */
 
-
 /**
  * Backend Modules
  */
 $GLOBALS['TL_LANG']['MOD']['isotope']					= 'Isotope eCommerce';
-$GLOBALS['TL_LANG']['MOD']['iso_products']				= array('Product management','');
-$GLOBALS['TL_LANG']['MOD']['iso_orders']				= array('Orders', '');
-$GLOBALS['TL_LANG']['MOD']['iso_setup']					= array('Store configuration','');
-
+$GLOBALS['TL_LANG']['MOD']['iso_products']				= array('Product management', 'Manage products for your Isotope eCommerce shop');
+$GLOBALS['TL_LANG']['MOD']['iso_orders']				= array('Orders', 'See and manage orders for your shop');
+$GLOBALS['TL_LANG']['MOD']['iso_setup']					= array('Store configuration', 'Setup and configure Isotope eCommerce to your needs');
 
 /**
  * Frontend modules
@@ -39,11 +37,10 @@ $GLOBALS['TL_LANG']['FMD']['iso_orderdetails']			= array('Order Details', 'Order
 $GLOBALS['TL_LANG']['FMD']['iso_configswitcher']		= array('Store Config Switcher', 'Switch between store configuration to change currency and other settings.');
 $GLOBALS['TL_LANG']['FMD']['iso_relatedproducts']		= array('Related products', 'List products related to the current one.');
 
-
 /**
  * Isotope Modules
  */
-$GLOBALS['TL_LANG']['ISO']['config_module']				= 'Isotope eCommerce configuration (Version: %s)';
+$GLOBALS['TL_LANG']['IMD']['config_module']				= 'Isotope eCommerce configuration (Version: %s)';
 $GLOBALS['TL_LANG']['IMD']['product']					= 'Products';
 $GLOBALS['TL_LANG']['IMD']['attributes']				= array('Attributes', 'Manage and create product attributes such as size, color, etc.');
 $GLOBALS['TL_LANG']['IMD']['producttypes']				= array('Product types', 'Manage and create product types from sets of attributes.');

@@ -217,11 +217,11 @@ abstract class Shipping extends \Frontend
 <a href="' . ampersand(str_replace('&key=shipping', '', \Environment::get('request'))) . '" class="header_back" title="' . specialchars($GLOBALS['TL_LANG']['MSC']['backBT']) . '">' . $GLOBALS['TL_LANG']['MSC']['backBT'] . '</a>
 </div>
 
-<h2 class="sub_headline">' . $this->name . ' (' . $GLOBALS['ISO_LANG']['SHIP'][$this->type][0] . ')' . '</h2>
+<h2 class="sub_headline">' . $this->name . ' (' . $GLOBALS['TL_LANG']['SHIP'][$this->type][0] . ')' . '</h2>
 
 <div class="tl_formbody_edit">
 <div class="tl_tbox block">
-<p class="tl_info">' . $GLOBALS['TL_LANG']['ISO']['backendShippingNoInfo'] . '</p>
+<p class="tl_info">' . $GLOBALS['TL_LANG']['MSC']['backendShippingNoInfo'] . '</p>
 </div>
 </div>';
     }
@@ -286,6 +286,6 @@ abstract class Shipping extends \Frontend
      */
     public static function getLabel()
     {
-        return $GLOBALS['ISO_LANG']['SHIP'][strtolower(str_replace('Isotope\Shipping\\', '', get_called_class()))];
+        return $GLOBALS['TL_LANG']['SHIP'][strtolower(str_replace('Isotope\Shipping\\', '', get_called_class()))];
     }
 }

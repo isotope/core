@@ -234,7 +234,7 @@ class tl_iso_attributes extends \Backend
     {
         if ($varValue && !in_array($dc->activeRecord->rgxp, array('date', 'time', 'datim')))
         {
-            throw new UnexpectedValueException($GLOBALS['ISO_LANG']['ERR']['datepickerRgxp']);
+            throw new UnexpectedValueException($GLOBALS['TL_LANG']['ERR']['datepickerRgxp']);
         }
 
         return $varValue;

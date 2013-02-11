@@ -26,7 +26,6 @@ NamespaceClassLoader::add('Isotope', 'system/modules/isotope/library');
 NamespaceClassLoader::addClassMap(array
 (
     // DCA Helpers
-    'Isotope\tl_content'                => 'system/modules/isotope/classes/tl_content.php',
     'Isotope\tl_iso_addresses'          => 'system/modules/isotope/classes/tl_iso_addresses.php',
     'Isotope\tl_iso_attributes'         => 'system/modules/isotope/classes/tl_iso_attributes.php',
     'Isotope\tl_iso_config'             => 'system/modules/isotope/classes/tl_iso_config.php',

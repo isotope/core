@@ -13,7 +13,6 @@
  * @author     Fred Bliss <fred.bliss@intelligentspark.com>
  */
 
-
 /**
  * Fields
  */
@@ -32,7 +31,6 @@ $GLOBALS['TL_LANG']['tl_iso_producttypes']['force_variant_options']	= array('Alw
 $GLOBALS['TL_LANG']['tl_iso_producttypes']['shipping_exempt']		= array('Exempt from shipping', 'Check if items of this product type are not a shipped item (such as downloadable products).');
 $GLOBALS['TL_LANG']['tl_iso_producttypes']['downloads']				= array('Enable downloads', 'Check here if this product type has downloads.');
 
-
 /**
  * Buttons
  */
@@ -41,7 +39,6 @@ $GLOBALS['TL_LANG']['tl_iso_producttypes']['edit']   				= array('Edit product t
 $GLOBALS['TL_LANG']['tl_iso_producttypes']['copy']   				= array('Copy product type definiton', 'Copy definition of product type ID %s');
 $GLOBALS['TL_LANG']['tl_iso_producttypes']['delete'] 				= array('Delete product type', 'Delete product type ID %s');
 $GLOBALS['TL_LANG']['tl_iso_producttypes']['show']   				= array('product type details', 'Show details of product type ID %s');
-
 
 /**
  * Legends
@@ -54,12 +51,11 @@ $GLOBALS['TL_LANG']['tl_iso_producttypes']['attributes_legend']		= 'Product attr
 $GLOBALS['TL_LANG']['tl_iso_producttypes']['variants_legend']		= 'Variant attributes';
 $GLOBALS['TL_LANG']['tl_iso_producttypes']['expert_legend']			= 'Expert settings';
 
-
 /**
- * AttributeWizard
+ * Attribute Wizard
  */
-$GLOBALS['TL_LANG']['tl_iso_producttypes']['attrwiz']['tl_class_select']	= 'Here you can choose from a few predefined Contao CSS classes';
-$GLOBALS['TL_LANG']['tl_iso_producttypes']['attrwiz']['tl_class_text']		= 'Here you can write your own CSS classes that should be applied to the field';
-$GLOBALS['TL_LANG']['tl_iso_producttypes']['attrwiz']['mandatory_default']	= 'Mandatory: Take the default value';
+$GLOBALS['TL_LANG']['tl_iso_producttypes']['attrwiz']['tl_class_select']	= 'Choose from a few predefined Contao CSS classes';
+$GLOBALS['TL_LANG']['tl_iso_producttypes']['attrwiz']['tl_class_text']		= 'Write your own CSS classes that should be applied to the field';
+$GLOBALS['TL_LANG']['tl_iso_producttypes']['attrwiz']['mandatory_default']	= 'Mandatory: Use default value';
 $GLOBALS['TL_LANG']['tl_iso_producttypes']['attrwiz']['mandatory_no']		= 'Mandatory: No, never';
 $GLOBALS['TL_LANG']['tl_iso_producttypes']['attrwiz']['mandatory_yes']		= 'Mandatory: Yes, always';

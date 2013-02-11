@@ -53,7 +53,6 @@ abstract class Payment extends \Frontend
 
         $this->Isotope = \System::importStatic('Isotope\Isotope');
 
-        $this->loadLanguageFile('payment');
         $arrRow['allowed_cc_types'] = deserialize($arrRow['allowed_cc_types']);
 
         if (is_array($arrRow['allowed_cc_types']))
@@ -235,11 +234,11 @@ abstract class Payment extends \Frontend
 <a href="'.ampersand(str_replace('&key=payment', '', \Environment::get('request'))).'" class="header_back" title="'.specialchars($GLOBALS['TL_LANG']['MSC']['backBT']).'">'.$GLOBALS['TL_LANG']['MSC']['backBT'].'</a>
 </div>
 
-<h2 class="sub_headline">' . $this->name . ' (' . $GLOBALS['ISO_LANG']['PAY'][$this->type][0] . ')' . '</h2>
+<h2 class="sub_headline">' . $this->name . ' (' . $GLOBALS['TL_LANG']['PAY'][$this->type][0] . ')' . '</h2>
 
 <div class="tl_formbody_edit">
 <div class="tl_tbox block">
-<p class="tl_info">' . $GLOBALS['TL_LANG']['ISO']['backendPaymentNoInfo'] . '</p>
+<p class="tl_info">' . $GLOBALS['TL_LANG']['MSC']['backendPaymentNoInfo'] . '</p>
 </div>
 </div>';
     }
@@ -385,6 +384,6 @@ abstract class Payment extends \Frontend
      */
     public static function getLabel()
     {
-        return $GLOBALS['ISO_LANG']['PAY'][strtolower(str_replace('Isotope\Payment\\', '', get_called_class()))];
+        return $GLOBALS['TL_LANG']['PAY'][strtolower(str_replace('Isotope\Payment\\', '', get_called_class()))];
     }
 }

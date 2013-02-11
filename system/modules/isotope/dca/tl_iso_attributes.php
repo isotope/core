@@ -169,7 +169,7 @@ $GLOBALS['TL_DCA']['tl_iso_attributes'] = array
             'inputType'				=> 'select',
             'options'				=> array_keys($GLOBALS['ISO_ATTR']),
             'eval'					=> array('mandatory'=>true, 'includeBlankOption'=>true, 'submitOnChange'=>true, 'helpwizard'=>true, 'tl_class'=>'w50', 'chosen'=>true),
-            'reference'				=> &$GLOBALS['ISO_LANG']['ATTR']
+            'reference'				=> &$GLOBALS['TL_LANG']['ATTR']
         ),
         'legend' => array
         (

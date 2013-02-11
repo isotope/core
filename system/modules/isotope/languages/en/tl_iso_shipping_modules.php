@@ -13,7 +13,6 @@
  * @author     Fred Bliss <fred.bliss@intelligentspark.com>
  */
 
-
 /**
  * Fields
  */
@@ -43,7 +42,6 @@ $GLOBALS['TL_LANG']['tl_iso_shipping_modules']['ups_enabledService']	= array('UP
 $GLOBALS['TL_LANG']['tl_iso_shipping_modules']['usps_enabledService']	= array('USPS Service Type','Select a USPS shipping service to offer.');
 $GLOBALS['TL_LANG']['tl_iso_shipping_modules']['usps_userName']			= array('USPS username','This is the USPS account username that you chose while signing up on the USPS website.');
 
-
 /**
  * Legends
  */
@@ -56,7 +54,6 @@ $GLOBALS['TL_LANG']['tl_iso_shipping_modules']['price_legend']		= 'Pricing thres
 $GLOBALS['TL_LANG']['tl_iso_shipping_modules']['expert_legend']		= 'Expert settings';
 $GLOBALS['TL_LANG']['tl_iso_shipping_modules']['enabled_legend']	= 'Enabled settings';
 
-
 /**
  * Buttons
  */
@@ -66,7 +63,6 @@ $GLOBALS['TL_LANG']['tl_iso_shipping_modules']['copy']				= array('Copy shipping
 $GLOBALS['TL_LANG']['tl_iso_shipping_modules']['delete']			= array('Delete shipping', 'Delete shipping method ID %s');
 $GLOBALS['TL_LANG']['tl_iso_shipping_modules']['show']				= array('shipping Details', 'Show details of shipping method ID %s');
 $GLOBALS['TL_LANG']['tl_iso_shipping_modules']['shipping_rates']	= array('Edit Rules', 'Edit the shipping rates');
-
 
 /**
  * References

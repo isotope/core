@@ -149,7 +149,7 @@ class OrderDetails extends Module
         $this->Template->subTotalLabel = $GLOBALS['TL_LANG']['MSC']['subTotalLabel'];
         $this->Template->grandTotalLabel = $GLOBALS['TL_LANG']['MSC']['grandTotalLabel'];
         $this->Template->surcharges = \Isotope\Frontend::formatSurcharges($objOrder->getSurcharges());
-        $this->Template->billing_label = $GLOBALS['TL_LANG']['ISO']['billing_address'];
+        $this->Template->billing_label = $GLOBALS['TL_LANG']['MSC']['billing_address'];
         $this->Template->billing_address = $objOrder->billingAddress->generateHtml($this->Isotope->Config->billing_fields);
 
         if (strlen($objOrder->shipping_method))
@@ -159,12 +159,12 @@ class OrderDetails extends Module
             if (!is_array($arrShippingAddress) || $arrShippingAddress['id'] == -1)
             {
                 $this->Template->has_shipping = false;
-                $this->Template->billing_label = $GLOBALS['TL_LANG']['ISO']['billing_shipping_address'];
+                $this->Template->billing_label = $GLOBALS['TL_LANG']['MSC']['billing_shipping_address'];
             }
             else
             {
                 $this->Template->has_shipping = true;
-                $this->Template->shipping_label = $GLOBALS['TL_LANG']['ISO']['shipping_address'];
+                $this->Template->shipping_label = $GLOBALS['TL_LANG']['MSC']['shipping_address'];
                 $this->Template->shipping_address = $objOrder->shippingAddress->generateHtml($this->Isotope->Config->shipping_fields);
             }
         }

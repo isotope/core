@@ -272,7 +272,7 @@ class Checkout extends Module
             if ($step == $this->strCurrentStep)
             {
                 global $objPage;
-                $objPage->pageTitle = sprintf($GLOBALS['ISO_LANG']['MSC']['checkoutStep'], $intCurrentStep, $intTotalSteps, (strlen($GLOBALS['TL_LANG']['ISO']['checkout_' . $step]) ? $GLOBALS['TL_LANG']['ISO']['checkout_' . $step] : $step)) . ($objPage->pageTitle ? $objPage->pageTitle : $objPage->title);
+                $objPage->pageTitle = sprintf($GLOBALS['TL_LANG']['MSC']['checkoutStep'], $intCurrentStep, $intTotalSteps, (strlen($GLOBALS['TL_LANG']['MSC']['checkout_' . $step]) ? $GLOBALS['TL_LANG']['MSC']['checkout_' . $step] : $step)) . ($objPage->pageTitle ? $objPage->pageTitle : $objPage->title);
                 break;
             }
         }
@@ -345,15 +345,15 @@ class Checkout extends Module
                 (
                     'isActive'	=> $blnActive,
                     'class'		=> 'step_' . $i . (($i == 0) ? ' first' : '') . ($i == $total ? ' last' : '') . ($blnActive ? ' active' : '') . ($blnPassed ? ' passed' : '') . ((!$blnPassed && !$blnActive) ? ' upcoming' : '') . ' '. $step,
-                    'label'		=> (strlen($GLOBALS['TL_LANG']['ISO']['checkout_' . $step]) ? $GLOBALS['TL_LANG']['ISO']['checkout_' . $step] : $step),
+                    'label'		=> (strlen($GLOBALS['TL_LANG']['MSC']['checkout_' . $step]) ? $GLOBALS['TL_LANG']['MSC']['checkout_' . $step] : $step),
                     'href'		=> ($blnPassed ? $this->addToUrl('step=' . $step, true) : ''),
-                    'title'		=> specialchars(sprintf($GLOBALS['TL_LANG']['MSC']['checkboutStepBack'], (strlen($GLOBALS['TL_LANG']['ISO']['checkout_' . $step]) ? $GLOBALS['TL_LANG']['ISO']['checkout_' . $step] : $step))),
+                    'title'		=> specialchars(sprintf($GLOBALS['TL_LANG']['MSC']['checkboutStepBack'], (strlen($GLOBALS['TL_LANG']['MSC']['checkout_' . $step]) ? $GLOBALS['TL_LANG']['MSC']['checkout_' . $step] : $step))),
                 );
             }
         }
 
         $this->Template->steps = $arrSteps;
-        $this->Template->activeStep = $GLOBALS['ISO_LANG']['MSC']['activeStep'];
+        $this->Template->activeStep = $GLOBALS['TL_LANG']['MSC']['activeStep'];
 
         // Hide back buttons it this is the first step
         if (array_search($this->strCurrentStep, $arrStepKeys) === 0)
@@ -446,19 +446,19 @@ class Checkout extends Module
             $blnRequiresShipping = $this->Isotope->Cart->requiresShipping;
             $objAddress = $this->Isotope->Cart->shippingAddress;
 
-            $strHeadline = $GLOBALS['TL_LANG']['ISO']['billing_address'];
+            $strHeadline = $GLOBALS['TL_LANG']['MSC']['billing_address'];
 
             if ($blnRequiresPayment && $blnRequiresShipping && $objAddress->id == -1)
             {
-                $strHeadline = $GLOBALS['TL_LANG']['ISO']['billing_shipping_address'];
+                $strHeadline = $GLOBALS['TL_LANG']['MSC']['billing_shipping_address'];
             }
             elseif ($blnRequiresShipping && $objAddress->id == -1)
             {
-                $strHeadline = $GLOBALS['TL_LANG']['ISO']['shipping_address'];
+                $strHeadline = $GLOBALS['TL_LANG']['MSC']['shipping_address'];
             }
             elseif (!$blnRequiresPayment && !$blnRequiresShipping)
             {
-                $strHeadline = $GLOBALS['TL_LANG']['ISO']['customer_address'];
+                $strHeadline = $GLOBALS['TL_LANG']['MSC']['customer_address'];
             }
 
             return array('billing_address' => array
@@ -471,8 +471,8 @@ class Checkout extends Module
 
         $objTemplate = new \Isotope\Template('iso_checkout_billing_address');
 
-        $objTemplate->headline = $blnRequiresPayment ? $GLOBALS['TL_LANG']['ISO']['billing_address'] : $GLOBALS['TL_LANG']['ISO']['customer_address'];
-        $objTemplate->message = (FE_USER_LOGGED_IN === true ? $GLOBALS['TL_LANG']['ISO'][($blnRequiresPayment ? 'billing' : 'customer') . '_address_message'] : $GLOBALS['TL_LANG']['ISO'][($blnRequiresPayment ? 'billing' : 'customer') . '_address_guest_message']);
+        $objTemplate->headline = $blnRequiresPayment ? $GLOBALS['TL_LANG']['MSC']['billing_address'] : $GLOBALS['TL_LANG']['MSC']['customer_address'];
+        $objTemplate->message = (FE_USER_LOGGED_IN === true ? $GLOBALS['TL_LANG']['MSC'][($blnRequiresPayment ? 'billing' : 'customer') . '_address_message'] : $GLOBALS['TL_LANG']['MSC'][($blnRequiresPayment ? 'billing' : 'customer') . '_address_guest_message']);
         $objTemplate->fields = $this->generateAddressWidget('billing_address');
 
         if (!$this->doNotSubmit)
@@ -510,7 +510,7 @@ class Checkout extends Module
 
             return array('shipping_address' => array
             (
-                'headline'	=> $GLOBALS['TL_LANG']['ISO']['shipping_address'],
+                'headline'	=> $GLOBALS['TL_LANG']['MSC']['shipping_address'],
                 'info'		=> $objAddress->generateHtml($this->Isotope->Config->shipping_fields),
                 'edit'		=> $this->addToUrl('step=address', true),
             ));
@@ -518,8 +518,8 @@ class Checkout extends Module
 
         $objTemplate = new \Isotope\Template('iso_checkout_shipping_address');
 
-        $objTemplate->headline = $GLOBALS['TL_LANG']['ISO']['shipping_address'];
-        $objTemplate->message = $GLOBALS['TL_LANG']['ISO']['shipping_address_message'];
+        $objTemplate->headline = $GLOBALS['TL_LANG']['MSC']['shipping_address'];
+        $objTemplate->message = $GLOBALS['TL_LANG']['MSC']['shipping_address_message'];
         $objTemplate->fields =  $this->generateAddressWidget('shipping_address');
 
         if (!$this->doNotSubmit)
@@ -561,7 +561,7 @@ class Checkout extends Module
             (
                 'shipping_method' => array
                 (
-                    'headline'	=> $GLOBALS['TL_LANG']['ISO']['shipping_method'],
+                    'headline'	=> $GLOBALS['TL_LANG']['MSC']['shipping_method'],
                     'info'		=> $this->Isotope->Cart->Shipping->checkoutReview(),
                     'note'		=> $this->Isotope->Cart->Shipping->note,
                     'edit'		=> $this->addToUrl('step=shipping', true),
@@ -623,7 +623,7 @@ class Checkout extends Module
             $objTemplate = new \FrontendTemplate('mod_message');
             $objTemplate->class = 'shipping_method';
             $objTemplate->hl = 'h2';
-            $objTemplate->headline = $GLOBALS['TL_LANG']['ISO']['shipping_method'];
+            $objTemplate->headline = $GLOBALS['TL_LANG']['MSC']['shipping_method'];
             $objTemplate->type = 'error';
             $objTemplate->message = $GLOBALS['TL_LANG']['MSC']['noShippingModules'];
 
@@ -641,14 +641,14 @@ class Checkout extends Module
         } elseif (!$this->Isotope->Cart->hasShipping) {
 
             if (\Input::post('FORM_SUBMIT') != '') {
-                $objTemplate->error = $GLOBALS['TL_LANG']['ISO']['shipping_method_missing'];
+                $objTemplate->error = $GLOBALS['TL_LANG']['MSC']['shipping_method_missing'];
             }
 
             $this->doNotSubmit = true;
         }
 
-        $objTemplate->headline = $GLOBALS['TL_LANG']['ISO']['shipping_method'];
-        $objTemplate->message = $GLOBALS['TL_LANG']['ISO']['shipping_method_message'];
+        $objTemplate->headline = $GLOBALS['TL_LANG']['MSC']['shipping_method'];
+        $objTemplate->message = $GLOBALS['TL_LANG']['MSC']['shipping_method_message'];
         $objTemplate->shippingMethods = $arrModules;
 
         if (!$this->doNotSubmit) {
@@ -681,7 +681,7 @@ class Checkout extends Module
 
             return array(
                 'payment_method' => array(
-                    'headline'	=> $GLOBALS['TL_LANG']['ISO']['payment_method'],
+                    'headline'	=> $GLOBALS['TL_LANG']['MSC']['payment_method'],
                     'info'		=> $this->Isotope->Cart->Payment->checkoutReview(),
                     'note'		=> $this->Isotope->Cart->Payment->note,
                     'edit'		=> $this->addToUrl('step=payment', true),
@@ -743,7 +743,7 @@ class Checkout extends Module
             $objTemplate = new \FrontendTemplate('mod_message');
             $objTemplate->class = 'payment_method';
             $objTemplate->hl = 'h2';
-            $objTemplate->headline = $GLOBALS['TL_LANG']['ISO']['payment_method'];
+            $objTemplate->headline = $GLOBALS['TL_LANG']['MSC']['payment_method'];
             $objTemplate->type = 'error';
             $objTemplate->message = $GLOBALS['TL_LANG']['MSC']['noPaymentModules'];
 
@@ -761,14 +761,14 @@ class Checkout extends Module
         } elseif (!$this->Isotope->Cart->hasPayment) {
 
             if (\Input::post('FORM_SUBMIT') != '') {
-                $objTemplate->error = $GLOBALS['TL_LANG']['ISO']['payment_method_missing'];
+                $objTemplate->error = $GLOBALS['TL_LANG']['MSC']['payment_method_missing'];
             }
 
             $this->doNotSubmit = true;
         }
 
-        $objTemplate->headline = $GLOBALS['TL_LANG']['ISO']['payment_method'];
-        $objTemplate->message = $GLOBALS['TL_LANG']['ISO']['payment_method_message'];
+        $objTemplate->headline = $GLOBALS['TL_LANG']['MSC']['payment_method'];
+        $objTemplate->message = $GLOBALS['TL_LANG']['MSC']['payment_method_message'];
         $objTemplate->paymentMethods = $arrModules;
 
         if (!$this->doNotSubmit) {
@@ -912,14 +912,14 @@ class Checkout extends Module
         }
 
         $objTemplate = new \Isotope\Template('iso_checkout_order_info');
-        $objTemplate->headline = $GLOBALS['TL_LANG']['ISO']['order_review'];
-        $objTemplate->message = $GLOBALS['TL_LANG']['ISO']['order_review_message'];
-        $objTemplate->summary = $GLOBALS['ISO_LANG']['MSC']['cartSummary'];
+        $objTemplate->headline = $GLOBALS['TL_LANG']['MSC']['order_review'];
+        $objTemplate->message = $GLOBALS['TL_LANG']['MSC']['order_review_message'];
+        $objTemplate->summary = $GLOBALS['TL_LANG']['MSC']['cartSummary'];
 
 
 
         $objTemplate->info = $this->getCheckoutInfo();
-        $objTemplate->edit_info = $GLOBALS['TL_LANG']['ISO']['changeCheckoutInfo'];
+        $objTemplate->edit_info = $GLOBALS['TL_LANG']['MSC']['changeCheckoutInfo'];
 
         return $objTemplate->parse();
     }

@@ -13,7 +13,6 @@
  * @author     Fred Bliss <fred.bliss@intelligentspark.com>
  */
 
-
 //Regions, by country code
 $GLOBALS['TL_LANG']['DIV']['af']['AF-BDS'] = 'Badakhsh_n';
 $GLOBALS['TL_LANG']['DIV']['af']['AF-BDG'] = 'B_dgh_s';
@@ -1286,7 +1285,6 @@ $GLOBALS['TL_LANG']['DIV']['gh']['GH-UE'] = 'Upper East';
 $GLOBALS['TL_LANG']['DIV']['gh']['GH-UW'] = 'Upper West';
 $GLOBALS['TL_LANG']['DIV']['gh']['GH-TV'] = 'Volta';
 $GLOBALS['TL_LANG']['DIV']['gh']['GH-WP'] = 'Western';
-
 
 /**
  * UK Countries

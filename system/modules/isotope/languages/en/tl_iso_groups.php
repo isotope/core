@@ -13,13 +13,11 @@
  * @author     Fred Bliss <fred.bliss@intelligentspark.com>
  */
 
-
 /**
  * Fields
  */
 $GLOBALS['TL_LANG']['tl_iso_groups']['name']			= array('Group name', 'Please enter a name for this group.');
 $GLOBALS['TL_LANG']['tl_iso_groups']['product_type']	= array('Default product type', 'Here you can specify a default product type for this product group.');
-
 
 /**
  * Buttons
@@ -33,12 +31,10 @@ $GLOBALS['TL_LANG']['tl_iso_groups']['show']			= array('Group details', 'Show de
 $GLOBALS['TL_LANG']['tl_iso_groups']['pasteafter']		= array('Paste after', 'Paste after group ID %s');
 $GLOBALS['TL_LANG']['tl_iso_groups']['pasteinto']		= array('Paste into', 'Paste into group ID %s');
 
-
 /**
  * Legends
  */
 $GLOBALS['TL_LANG']['tl_iso_groups']['group_legend']	= 'Product group settings';
-
 
 /**
  * References

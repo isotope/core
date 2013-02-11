@@ -734,18 +734,6 @@ CREATE TABLE `tl_page` (
 -- --------------------------------------------------------
 
 --
--- Table `tl_content`
---
-
-CREATE TABLE `tl_content` (
-  `iso_reader_jumpTo` int(10) unsigned NOT NULL default '0',
-  `iso_list_layout` varchar(64) NOT NULL default '',
-  `iso_attribute_set` int(10) unsigned NOT NULL default '0',
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-
--- --------------------------------------------------------
-
---
 -- Table `tl_module`
 --
 

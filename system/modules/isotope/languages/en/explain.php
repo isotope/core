@@ -12,7 +12,6 @@
  * @author     Fred Bliss <fred.bliss@intelligentspark.com>
  */
 
-
 /**
  * Help Wizard explanations
  */

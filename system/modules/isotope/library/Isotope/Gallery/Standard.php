@@ -347,6 +347,6 @@ $endScript
      */
     public static function getLabel()
     {
-        return $GLOBALS['ISO_LANG']['GAL'][strtolower(str_replace('Isotope\Gallery\\', '', get_called_class()))];
+        return $GLOBALS['TL_LANG']['GAL'][strtolower(str_replace('Isotope\Gallery\\', '', get_called_class()))];
     }
 }

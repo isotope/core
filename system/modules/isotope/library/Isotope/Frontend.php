@@ -132,7 +132,7 @@ class Frontend extends \Frontend
                         return '';
                     }
 
-                    return $intCount == 1 ? ('('.$GLOBALS['TL_LANG']['ISO']['productSingle'].')') : sprintf(('('.$GLOBALS['TL_LANG']['ISO']['productMultiple'].')'), $intCount);
+                    return $intCount == 1 ? ('('.$GLOBALS['TL_LANG']['MSC']['productSingle'].')') : sprintf(('('.$GLOBALS['TL_LANG']['MSC']['productMultiple'].')'), $intCount);
                     break;
 
                 case 'cart_products_label';
@@ -143,7 +143,7 @@ class Frontend extends \Frontend
                         return '';
                     }
 
-                    return $intCount == 1 ? ('('.$GLOBALS['TL_LANG']['ISO']['productSingle'].')') : sprintf(('('.$GLOBALS['TL_LANG']['ISO']['productMultiple'].')'), $intCount);
+                    return $intCount == 1 ? ('('.$GLOBALS['TL_LANG']['MSC']['productSingle'].')') : sprintf(('('.$GLOBALS['TL_LANG']['MSC']['productMultiple'].')'), $intCount);
                     break;
 
                 case 'cart_total':

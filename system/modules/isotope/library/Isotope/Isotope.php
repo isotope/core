@@ -641,9 +641,9 @@ class Isotope extends \Controller
         $strCurrency = ($strCurrencyCode != '' ? $strCurrencyCode : $this->Config->currency);
         $strPrice = $this->formatPrice($fltPrice);
 
-        if ($this->Config->currencySymbol && $GLOBALS['ISO_LANG']['CUR_SYMBOL'][$strCurrency] != '')
+        if ($this->Config->currencySymbol && $GLOBALS['TL_LANG']['CUR_SYMBOL'][$strCurrency] != '')
         {
-            $strCurrency = (($this->Config->currencyPosition == 'right' && $this->Config->currencySpace) ? ' ' : '') . ($blnHtml ? '<span class="currency">' : '') . $GLOBALS['ISO_LANG']['CUR_SYMBOL'][$strCurrency] . ($blnHtml ? '</span>' : '') . (($this->Config->currencyPosition == 'left' && $this->Config->currencySpace) ? ' ' : '');
+            $strCurrency = (($this->Config->currencyPosition == 'right' && $this->Config->currencySpace) ? ' ' : '') . ($blnHtml ? '<span class="currency">' : '') . $GLOBALS['TL_LANG']['CUR_SYMBOL'][$strCurrency] . ($blnHtml ? '</span>' : '') . (($this->Config->currencyPosition == 'left' && $this->Config->currencySpace) ? ' ' : '');
         }
         else
         {
@@ -899,20 +899,20 @@ class Isotope extends \Controller
 
         $this->import('String');
 
-        if (!is_array($GLOBALS['ISO_LANG']['TBL'][$language]))
+        if (!is_array($GLOBALS['TL_LANG']['TBL'][$language]))
         {
-            $GLOBALS['ISO_LANG']['TBL'][$language] = array();
+            $GLOBALS['TL_LANG']['TBL'][$language] = array();
             $objLabels = $this->Database->execute("SELECT * FROM tl_iso_labels WHERE language='$language'");
 
             while ($objLabels->next())
             {
-                $GLOBALS['ISO_LANG']['TBL'][$language][$this->String->decodeEntities($objLabels->label)] = $objLabels->replacement;
+                $GLOBALS['TL_LANG']['TBL'][$language][$this->String->decodeEntities($objLabels->label)] = $objLabels->replacement;
             }
         }
 
         $label = $this->String->decodeEntities($label);
 
-        return $GLOBALS['ISO_LANG']['TBL'][$language][$label] ? $GLOBALS['ISO_LANG']['TBL'][$language][$label] : $label;
+        return $GLOBALS['TL_LANG']['TBL'][$language][$label] ? $GLOBALS['TL_LANG']['TBL'][$language][$label] : $label;
     }
 
 

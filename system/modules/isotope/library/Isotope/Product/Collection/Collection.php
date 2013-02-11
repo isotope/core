@@ -859,7 +859,7 @@ abstract class Collection extends \Model implements IsotopeProductCollection
         $objTemplate->grandTotalLabel = $GLOBALS['TL_LANG']['MSC']['grandTotalLabel'];
 
         $objTemplate->surcharges = \Isotope\Frontend::formatSurcharges($this->getSurcharges());
-        $objTemplate->billing_label = $GLOBALS['TL_LANG']['ISO']['billing_address'];
+        $objTemplate->billing_label = $GLOBALS['TL_LANG']['MSC']['billing_address'];
         $objTemplate->billing_address = $this->billingAddress->generateText($this->Isotope->Config->billing_fields);
 
         if (strlen($this->shipping_method))
@@ -869,12 +869,12 @@ abstract class Collection extends \Model implements IsotopeProductCollection
             if (!is_array($arrShippingAddress) || $arrShippingAddress['id'] == -1)
             {
                 $objTemplate->has_shipping = false;
-                $objTemplate->billing_label = $GLOBALS['TL_LANG']['ISO']['billing_shipping_address'];
+                $objTemplate->billing_label = $GLOBALS['TL_LANG']['MSC']['billing_shipping_address'];
             }
             else
             {
                 $objTemplate->has_shipping = true;
-                $objTemplate->shipping_label = $GLOBALS['TL_LANG']['ISO']['shipping_address'];
+                $objTemplate->shipping_label = $GLOBALS['TL_LANG']['MSC']['shipping_address'];
                 $objTemplate->shipping_address = $this->shippingAddress->generateText($this->Isotope->Config->shipping_fields);
             }
         }
