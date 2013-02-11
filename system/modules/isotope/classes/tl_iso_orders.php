@@ -186,6 +186,7 @@ class tl_iso_orders extends \Backend
             return '<div class="tl_gerror">No address data available.</div>';
         }
 
+        $this->loadLanguageFile('tl_iso_addresses');
         $this->loadDataContainer('tl_iso_addresses');
 
         $strBuffer = '
@@ -452,10 +453,6 @@ class tl_iso_orders extends \Backend
         // @todo make things like this configurable in a further version of Isotope
         $strInvoiceTitle = 'invoice_' . $objOrder->order_id;
         $pdf->Output(standardize(ampersand($strInvoiceTitle, false), true) . '.pdf', 'D');
-
-        // Set config back to default
-        // @todo do we need that? The PHP session is ended anyway...
-        $this->Isotope->resetConfig(true);
 
         // Stop script execution
         exit;

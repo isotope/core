@@ -91,6 +91,11 @@ $GLOBALS['ISO_MOD'] = array
             'tables'					=> array('tl_iso_related_categories'),
             'icon'						=> 'system/modules/isotope/assets/category.png',
         ),
+        'baseprice' => array
+        (
+            'tables'					=> array('tl_iso_baseprice'),
+            'icon'						=> 'system/modules/isotope/assets/sort-price-descending.png',
+        ),
     ),
     'checkout' => array
     (
@@ -128,11 +133,6 @@ $GLOBALS['ISO_MOD'] = array
         (
             'tables'					=> array('tl_iso_config'),
             'icon'						=> 'system/modules/isotope/assets/construction.png',
-        ),
-        'baseprice' => array
-        (
-            'tables'					=> array('tl_iso_baseprice'),
-            'icon'						=> 'system/modules/isotope/assets/sort-price-descending.png',
         ),
         'orderstatus' => array
         (
@@ -174,7 +174,8 @@ $GLOBALS['FE_MOD']['isotope'] = array
     'iso_orderdetails'			=> 'Isotope\Module\OrderDetails',
     'iso_configswitcher'		=> 'Isotope\Module\ConfigSwitcher',
     'iso_addressbook'			=> 'Isotope\Module\AddressBook',
-    'iso_relatedproducts'		=> 'Isotope\Module\RelatedProducts'
+    'iso_relatedproducts'		=> 'Isotope\Module\RelatedProducts',
+	'iso_messages'		        => 'Isotope\Module\Messages',
 );
 
 

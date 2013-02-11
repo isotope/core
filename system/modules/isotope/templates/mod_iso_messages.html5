@@ -5,12 +5,8 @@
 
 <<?php echo $this->hl; ?>><?php echo $this->headline; ?></<?php echo $this->hl; ?>>
 <?php endif; ?>
-<?php if($this->message): ?>
 
-<p class="<?php echo $this->type; ?> message"><?php echo $this->message; ?></p>
-<?php endif; ?>
-
-<?php echo $this->cart; ?>
+<?php echo $this->messages; ?>
 
 </div>
 <!-- indexer::continue -->

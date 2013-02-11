@@ -816,7 +816,7 @@ abstract class Collection extends \Model implements IsotopeProductCollection
     		$this->loadLanguageFile('default', $this->language);
 		}
 
-        $objTemplate = new BackendTemplate($this->strTemplate);
+        $objTemplate = new \Isotope\Template($this->strTemplate);
         $objTemplate->setData($this->arrData);
         $objTemplate->logoImage = '';
 

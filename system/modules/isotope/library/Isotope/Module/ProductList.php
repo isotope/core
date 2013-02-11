@@ -65,12 +65,6 @@ class ProductList extends Module
             return '';
         }
 
-        // return message if no filter is set
-        if ($this->iso_emptyFilter && !\Input::get('isorc') && !\Input::get('keywords'))
-        {
-            return $this->iso_noFilter;
-        }
-
         $this->iso_filterModules = deserialize($this->iso_filterModules, true);
         $this->iso_productcache = deserialize($this->iso_productcache, true);
 
@@ -127,6 +121,15 @@ class ProductList extends Module
      */
     protected function compile()
     {
+		// return message if no filter is set
+		if ($this->iso_emptyFilter && !$this->Input->get('isorc') && !$this->Input->get('keywords'))
+		{
+			$this->Template->message = $this->replaceInsertTags($this->iso_noFilter);
+			$this->Template->type = 'noFilter';
+			$this->Template->products = array();
+			return;
+		}
+
         global $objPage;
         $arrProducts = null;
 
@@ -255,9 +258,10 @@ class ProductList extends Module
             $objPage->noSearch = 1;
             $objPage->cache = 0;
 
-            $this->Template = new \FrontendTemplate('mod_message');
+            $this->Template->empty = true;
             $this->Template->type = 'empty';
             $this->Template->message = $this->iso_emptyMessage ? $this->iso_noProducts : $GLOBALS['TL_LANG']['MSC']['noProducts'];
+			$this->Template->products = array();
 
             return;
         }

@@ -680,6 +680,12 @@ $strBuffer .= '<th style="text-align:center"><img src="system/themes/default/ima
                 $arrData['save_callback'][] = array('Isotope\Frontend', 'saveUpload');
             }
 
+			// Media Manager must fetch fallback
+			if ($objAttributes->type == 'mediaManager')
+			{
+				$arrData['attributes']['fetch_fallback'] = true;
+			}
+
             // Parse multiline/multilingual foreignKey
             $objAttributes->foreignKey = $this->parseForeignKey($objAttributes->foreignKey, $GLOBALS['TL_LANGUAGE']);
 

@@ -1,6 +1,29 @@
 Isotope eCommerce Changelog
 ===========================
 
+Version 1.4.? (2013-??-??)
+----------------------------
+
+### New
+- Standalone front end module to display Isotope messages (#101)
+
+### Improved
+- Added short name for known "Krone" and "Franc" currencies
+- noFilter message in product list is now generated inside the productlist template (#530)
+- Automatically set payment date when order status is set to completed
+- `getAllowedProductIds` hook can now override "allow all" permissions
+- Added checkbox to hide filter option when there is just one option (#42)
+- Empty message is now rendered inside product list template (#543)
+
+### Fixed
+- Price was 0.00 if there is only one product variant
+- Access rightis on advanced price were not correctly handled
+- preOrderStatusUpdate and postOrderStatusUpdate were not triggered correctly
+- Labels for addresses were not shown in the order details (#538)
+- Do not show filter options of product variant if base product is disabled (#529)
+- Invoice PDF did not consider shop config template folder (#534)
+
+
 Version 1.4.rc2 (2013-01-22)
 ----------------------------
 

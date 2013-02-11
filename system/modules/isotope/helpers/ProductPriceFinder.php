@@ -101,6 +101,9 @@ class ProductPriceFinder extends \System
                                                             . (BE_USER_LOGGED_IN === true ? '' : " AND published='1' AND (start='' OR start<$time) AND (stop='' OR stop>$time)")
                                                             . " GROUP BY pid");
 
+			// Must inherit price from any variant found
+            $arrData['price'] = $objResult->low_price;
+
             if ($objResult->low_price > 0 && $objResult->low_price < $objResult->high_price)
             {
                 $arrData['from_price'] = $objResult->low_price;

@@ -18,6 +18,13 @@ Update from Isotope 1.3 to Isotope 1.4
     This caused issues because it was not possible to separate real trail and Isotope products. The class has been renamed to "product", you might need to update your CSS.
 
 
+### Templates ###
+
+  * The following templates have been adjusted since 1.3. Make sure you update them:
+
+    - mod_iso_productlist
+
+
 ### Language Files ###
 
   * The address formatting has been completly rewritten. If you adjusted your address formatting, you must update your file. Isotope is now using Simple Tokens instead of Insert Tags.

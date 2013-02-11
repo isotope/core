@@ -77,6 +77,7 @@ class Cart extends Module
         if (empty($arrProducts))
         {
             $this->Template->empty = true;
+            $this->Template->type = 'empty';
             $this->Template->message = $this->iso_emptyMessage ? $this->iso_noProducts : $GLOBALS['TL_LANG']['MSC']['noItemsInCart'];
 
             return;

@@ -1296,7 +1296,7 @@ $endScript";
                 {
                     if (!isset($arrRoot[$objJump->rootId]))
                     {
-                        $arrRoot[$objJump->rootId] = $this->Database->prepare("SELECT * FROM tl_page WHERE id=" . (int) $objJump->rootId);
+                        $arrRoot[$objJump->rootId] = $this->Database->execute("SELECT * FROM tl_page WHERE id=" . (int) $objJump->rootId);
                     }
 
                     $strDomain = Environment::get('base');
@@ -1307,7 +1307,7 @@ $endScript";
         				$strDomain = ($arrRoot[$objJump->rootId]->useSSL ? 'https://' : 'http://') . $arrRoot[$objJump->rootId]->dns . TL_PATH . '/';
         			}
 
-                    $arrJump[$objProducts->page_id] = $strDomain . Controller::generateFrontendUrl($objJump->row(), '/product/##alias##', ($strLanguage=='' ? $GLOBALS['TL_LANGUAGE'] : $strLanguage));
+                    $arrJump[$objProducts->page_id] = $strDomain . Controller::generateFrontendUrl($objJump->row(), '/product/##alias##', ($strLanguage=='' ? $arrRoot[$objJump->rootId]->language : $strLanguage));
                 }
                 else
                 {
@@ -1477,7 +1477,7 @@ $endScript";
         // Overwrite existing parameters and ignore "language", see #64
         foreach ($queries as $k=>$v)
         {
-            $explode = explode('=', $v);
+            $explode = explode('=', $v, 2);
 
             if ($k === 'language' || preg_match('/(^|&(amp;)?)' . preg_quote($explode[0], '/') . '=/i', $strRequest))
             {

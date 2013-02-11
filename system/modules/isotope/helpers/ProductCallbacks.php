@@ -337,6 +337,7 @@ class ProductCallbacks extends \Backend
             // Enable advanced prices
             if ($objProducts->prices && !$blnEditAll)
             {
+			    $arrFields['prices']['exclude'] = $arrFields['price']['exclude'];
                 $arrFields['prices']['attributes'] = $arrFields['price']['attributes'];
                 $arrFields['price'] = $arrFields['prices'];
             }
