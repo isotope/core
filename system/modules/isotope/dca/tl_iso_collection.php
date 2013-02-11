@@ -156,10 +156,6 @@ $GLOBALS['TL_DCA']['tl_iso_collection'] = array
         (
             'eval'					=> array('doNotShow'=>true),
         ),
-        'pid' => array
-        (
-            'eval'					=> array('doNotShow'=>true),
-        ),
         'order_id' => array
         (
             'label'					=> &$GLOBALS['TL_LANG']['tl_iso_collection']['order_id'],
