@@ -544,7 +544,7 @@ CREATE TABLE `tl_iso_orderstatus` (
 CREATE TABLE `tl_iso_collection` (
   `id` int(10) unsigned NOT NULL auto_increment,
   `tstamp` int(10) unsigned NOT NULL default '0',
-  `type` varchar(10) NOT NULL default '',
+  `type` varchar(32) NOT NULL default '',
   `member` int(10) unsigned NOT NULL default '0',
   `uniqid` varchar(64) NOT NULL default '',
   `config_id` int(10) unsigned NOT NULL default '0',
@@ -583,6 +583,7 @@ CREATE TABLE `tl_iso_collection_product` (
   `id` int(10) unsigned NOT NULL auto_increment,
   `pid` int(10) unsigned NOT NULL default '0',
   `tstamp` int(10) unsigned NOT NULL default '0',
+  `type` varchar(32) NOT NULL default '',
   `product_id` int(10) unsigned NOT NULL default '0',
   `sku` varchar(128) NOT NULL default '',
   `name` varchar(255) NOT NULL default '',

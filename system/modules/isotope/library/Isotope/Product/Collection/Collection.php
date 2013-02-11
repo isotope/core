@@ -97,6 +97,8 @@ abstract class Collection extends \Model implements IsotopeProductCollection
             $this->arrSettings = deserialize($this->arrData['settings'], true);
         }
 
+        $this->arrData['type'] = substr(get_called_class(), strrpos(get_called_class(), '\\')+1);
+
         // Do not use __destruct, because Database object might be destructed first (see http://github.com/contao/core/issues/2236)
         if (!$this->blnLocked)
         {
@@ -534,6 +536,7 @@ abstract class Collection extends \Model implements IsotopeProductCollection
         }
 
         $time = time();
+        $strType = substr(get_class($objProduct), strrpos(get_class($objProduct), '\\')+1);
         $this->modified = true;
         $objDatabase = \Database::getInstance();
 
@@ -557,6 +560,7 @@ abstract class Collection extends \Model implements IsotopeProductCollection
             (
                 'pid'               => $this->id,
                 'tstamp'            => $time,
+                'type'              => $strType,
                 'product_id'        => (int) $objProduct->id,
                 'sku'               => (string) $objProduct->sku,
                 'name'              => (string) $objProduct->name,
