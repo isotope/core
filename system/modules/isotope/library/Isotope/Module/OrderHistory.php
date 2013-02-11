@@ -12,6 +12,8 @@
 
 namespace Isotope\Module;
 
+use Isotope\Product\Collection\Order;
+
 
 /**
  * Class OrderHistory
@@ -64,13 +66,6 @@ class OrderHistory extends Module
             return '';
         }
 
-        // Do not index or cache the page
-        global $objPage;
-        $objPage->noSearch = 1;
-        $objPage->cache = 0;
-
-        $this->import('FrontendUser', 'User');
-
         return parent::generate();
     }
 
@@ -81,43 +76,38 @@ class OrderHistory extends Module
      */
     protected function compile()
     {
-        $objOrders = $this->Database->execute("SELECT id, (SELECT COUNT(*) FROM tl_iso_order_items WHERE pid=tl_iso_orders.id) AS items FROM tl_iso_orders WHERE order_status>0 AND pid=".$this->User->id." AND config_id IN (" . implode(',', $this->iso_config_ids) . ") ORDER BY date DESC");
+        $arrOrders = array();
+        $objOrders = Order::findBy(array('order_status>0', 'pid=?', 'config_id IN (?)'), array($this->User->id, implode("','", $this->iso_config_ids)), array('order'=>'date DESC'));
 
         // No orders found, just display an "empty" message
-        if (!$objOrders->numRows)
+        if ($objOrders->count() == 0)
         {
-            $this->Template = new \FrontendTemplate('mod_message');
+            $this->Template = new \Isotope\Template('mod_message');
             $this->Template->type = 'empty';
             $this->Template->message = $GLOBALS['TL_LANG']['ERR']['emptyOrderHistory'];
 
             return;
         }
 
-        $this->import('Isotope\Isotope', 'Isotope');
-        $arrOrders = array();
-
         while ($objOrders->next())
         {
-            $objOrder = new IsotopeOrder();
-            $objOrder->findBy('id', $objOrders->id);
-
-            if ($this->Isotope->Config->id != $objOrder->config_id)
+            if ($this->Isotope->Config->id != $objOrders->config_id)
             {
-                $this->Isotope->overrideConfig($objOrder->config_id);
+                $this->Isotope->overrideConfig($objOrders->config_id);
             }
 
             $arrOrders[] = array
             (
-                'collection' => $objOrder,
-                'raw'        => $objOrder->getData(),
-                'date'       => \System::parseDate($GLOBALS['TL_CONFIG']['dateFormat'], $objOrder->date),
-                'time'       => \System::parseDate($GLOBALS['TL_CONFIG']['timeFormat'], $objOrder->date),
-                'datime'     => \System::parseDate($GLOBALS['TL_CONFIG']['datimeFormat'], $objOrder->date),
+                'collection' => $objOrders->current(),
+                'raw'        => $objOrders->row(),
+                'date'       => \System::parseDate($GLOBALS['TL_CONFIG']['dateFormat'], $objOrders->date),
+                'time'       => \System::parseDate($GLOBALS['TL_CONFIG']['timeFormat'], $objOrders->date),
+                'datime'     => \System::parseDate($GLOBALS['TL_CONFIG']['datimeFormat'], $objOrders->date),
                 'items'      => $objOrders->items,
-                'grandTotal' => $this->Isotope->formatPriceWithCurrency($objOrder->grandTotal),
-                'status'     => $objOrder->statusLabel,
-                'link'       => ($this->jumpTo ? (\Isotope\Frontend::addQueryStringToUrl('uid=' . $objOrder->uniqid, $this->jumpTo)) : ''),
-                'class'      => $objOrder->statusAlias,
+                'grandTotal' => $this->Isotope->formatPriceWithCurrency($objOrders->grandTotal),
+                'status'     => $objOrders->statusLabel,
+                'link'       => ($this->jumpTo ? (\Isotope\Frontend::addQueryStringToUrl('uid=' . $objOrders->uniqid, $this->jumpTo)) : ''),
+                'class'      => $objOrders->statusAlias,
             );
         }
 
