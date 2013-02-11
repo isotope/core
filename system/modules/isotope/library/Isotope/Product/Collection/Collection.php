@@ -1025,4 +1025,23 @@ abstract class Collection extends \Model
 
         return $pdf;
     }
+
+
+    /**
+     * Make sure we only return results of the given model type
+     */
+    public static function find(array $arrOptions)
+    {
+        // Convert to array if necessary
+        if (!is_array($arrOptions['column']))
+        {
+            $arrOptions['column'] = array($arrOptions['column'].'=?');
+            $arrOptions['value'] = array($arrOptions['value']);
+        }
+
+        $arrOptions['column'][] = 'type=?';
+        $arrOptions['value'][] = substr(get_called_class(), strrpos(get_called_class(), '\\')+1);
+
+        return parent::find($arrOptions);
+    }
 }
