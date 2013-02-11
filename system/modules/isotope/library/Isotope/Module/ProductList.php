@@ -192,7 +192,7 @@ class ProductList extends Module
                     $objPage->noSearch = 1;
                     $objPage->cache = 0;
 
-                    $this->Template = new \FrontendTemplate('mod_iso_productlist_caching');
+                    $this->Template = new \Isotope\Template('mod_iso_productlist_caching');
                     $this->Template->message = $GLOBALS['TL_LANG']['MSC']['productcacheLoading'];
 
                     return;

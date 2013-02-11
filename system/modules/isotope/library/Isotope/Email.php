@@ -259,7 +259,7 @@ class Email extends \Controller
                 $arrData['head_css'] = $css;
             }
 
-            $objTemplate = new \FrontendTemplate($this->strTemplate);
+            $objTemplate = new \Isotope\Template($this->strTemplate);
             $objTemplate->body = $objLanguage->html;
             $objTemplate->charset = $GLOBALS['TL_CONFIG']['characterSet'];
             $objTemplate->css = '##head_css##';

@@ -53,7 +53,7 @@ class Sparkasse extends Payment implements IsotopePayment
 			$objPage->noSearch = 1;
 			$objPage->cache = 0;
 
-			$objTemplate = new FrontendTemplate('mod_message');
+			$objTemplate = new \Isotope\Template('mod_message');
 			$objTemplate->type = 'processing';
 			$objTemplate->message = $GLOBALS['TL_LANG']['MSC']['payment_processing'];
 			return $objTemplate->parse();

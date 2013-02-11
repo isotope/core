@@ -142,7 +142,7 @@ class Payone extends Payment implements IsotopePayment
         $arrData = array_map('urlencode', $arrData);
         $strHash = md5(implode('', $arrData) . $this->payone_key);
 
-        $objTemplate = new \FrontendTemplate('iso_payment_payone');
+        $objTemplate = new \Isotope\Template('iso_payment_payone');
         $objTemplate->id = $this->id;
         $objTemplate->data = $arrData;
         $objTemplate->hash = $strHasn;

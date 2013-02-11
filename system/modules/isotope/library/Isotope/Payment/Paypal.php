@@ -55,7 +55,7 @@ class Paypal extends Payment implements IsotopePayment
             $objPage->noSearch = 1;
             $objPage->cache = 0;
 
-            $objTemplate = new \FrontendTemplate('mod_message');
+            $objTemplate = new \Isotope\Template('mod_message');
             $objTemplate->type = 'processing';
             $objTemplate->message = $GLOBALS['TL_LANG']['MSC']['payment_processing'];
 
@@ -216,7 +216,7 @@ class Paypal extends Payment implements IsotopePayment
         }
 
 
-        $objTemplate = new \FrontendTemplate('iso_payment_datatrans');
+        $objTemplate = new \Isotope\Template('iso_payment_datatrans');
         $objTemplate->setData($this->arrData);
 
         $objTemplate->id = $this->id;

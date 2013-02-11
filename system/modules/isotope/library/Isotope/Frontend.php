@@ -855,7 +855,7 @@ $endScript";
                 break;
         }
 
-        $objTemplate = new \FrontendTemplate('ce_downloads');
+        $objTemplate = new \Isotope\Template('ce_downloads');
         $objTemplate->class = $attribute;
         $objTemplate->files = array_values($files);
 

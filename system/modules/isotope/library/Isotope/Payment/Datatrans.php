@@ -109,7 +109,7 @@ class Datatrans extends Payment implements IsotopePayment
         // Reload page every 5 seconds and check if payment was successful
         $GLOBALS['TL_HEAD'][] = '<meta http-equiv="refresh" content="5,' . \Environment::get('base') . \Environment::get('request') . '">';
 
-        $objTemplate = new \FrontendTemplate('mod_message');
+        $objTemplate = new \Isotope\Template('mod_message');
         $objTemplate->type = 'processing';
         $objTemplate->message = $GLOBALS['TL_LANG']['MSC']['payment_processing'];
 
@@ -161,7 +161,7 @@ class Datatrans extends Payment implements IsotopePayment
         // Security signature (see Security Level 2)
         $arrParams['sign'] = hash_hmac('md5', $arrParams['merchantId'].$arrParams['amount'].$arrParams['currency'].$arrParams['refno'], $this->datatrans_sign);
 
-        $objTemplate = new \FrontendTemplate('iso_payment_datatrans');
+        $objTemplate = new \Isotope\Template('iso_payment_datatrans');
         $objTemplate->id = $this->id;
         $objTemplate->action = ('https://' . ($this->debug ? 'pilot' : 'payment') . '.datatrans.biz/upp/jsp/upStart.jsp');
         $objTemplate->params = $arrParams;
