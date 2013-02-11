@@ -53,7 +53,7 @@ $GLOBALS['TL_DCA']['tl_iso_collection'] = array
             'mode'					=> 2,
             'fields'				=> array('date DESC'),
             'panelLayout'			=> 'filter;sort,search,limit',
-            'filter'				=> array(array('order_status>?', '0')),
+            'filter'				=> array(array('type=?', 'Order'), array('order_status>?', '0')),
         ),
         'label' => array
         (
