@@ -216,10 +216,10 @@ class AuthorizeDotNet extends Payment implements IsotopePayment
             {
                 $objOrder = new Order();
 
-                $objOrder->uniqid		= uniqid($this->Isotope->Config->orderPrefix, true);
-                $objOrder->cart_id		= $this->Isotope->Cart->id;
+                $objOrder->uniqid = uniqid($this->Isotope->Config->orderPrefix, true);
+                $objOrder->source_collection_id = $this->Isotope->Cart->id;
 
-                $objOrder = Order::findByPk($objOrder->save()->id);
+                $objOrder->save();
             }
 
             $_SESSION['CHECKOUT_DATA']['payment']['request_lockout'] = true;
@@ -360,10 +360,10 @@ $return .= '</div></div>';
         {
             $objOrder = new Order();
 
-            $objOrder->uniqid		= uniqid($this->Isotope->Config->orderPrefix, true);
-            $objOrder->cart_id		= $this->Isotope->Cart->id;
+            $objOrder->uniqid = uniqid($this->Isotope->Config->orderPrefix, true);
+            $objOrder->source_collection_id = $this->Isotope->Cart->id;
 
-            $objOrder = Order::findByPk($objOrder->save()->id);
+            $objOrder->save();
         }
 
         $strLineItems = '';

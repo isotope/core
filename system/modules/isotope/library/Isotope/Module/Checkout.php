@@ -983,10 +983,8 @@ class Checkout extends Module
         {
             $objOrder = new Order();
 
-            $objOrder->uniqid		= uniqid($this->replaceInsertTags($this->Isotope->Config->orderPrefix), true);
-            $objOrder->cart_id		= $this->Isotope->Cart->id;
-
-            $objOrder = Order::findByPk($objOrder->save()->id);
+            $objOrder->uniqid = uniqid($this->replaceInsertTags($this->Isotope->Config->orderPrefix), true);
+            $objOrder->source_collection_id = $this->Isotope->Cart->id;
         }
 
         global $objPage;
