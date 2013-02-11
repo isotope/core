@@ -95,7 +95,7 @@ class Checkout extends Module
         // Set the step from the auto_item parameter
         if ($GLOBALS['TL_CONFIG']['useAutoItem'] && isset($_GET['auto_item']))
         {
-            $this->Input->setGet('step', $this->Input->get('auto_item'));
+            \Input::setGet('step', \Input::get('auto_item'));
         }
 
         // Do not index or cache the page
