@@ -43,14 +43,14 @@ array_insert($GLOBALS['BE_MOD']['isotope'], 0, array
     ),
     'iso_orders' => array
     (
-        'tables'					=> array('tl_iso_orders', 'tl_iso_order_items'),
+        'tables'					=> array('tl_iso_collection', 'tl_iso_collection_item'),
         'icon'						=> 'system/modules/isotope/assets/shopping-basket.png',
         'javascript'				=> 'system/modules/isotope/assets/backend.min.js',
-        'export_emails'     		=> array('Isotope\tl_iso_orders', 'exportOrderEmails'),
-        'print_order'				=> array('Isotope\tl_iso_orders', 'printInvoice'),
-        'print_invoices'			=> array('Isotope\tl_iso_orders', 'printInvoices'),
-        'payment'					=> array('Isotope\tl_iso_orders', 'paymentInterface'),
-        'shipping'					=> array('Isotope\tl_iso_orders', 'shippingInterface'),
+        'export_emails'     		=> array('Isotope\tl_iso_collection', 'exportOrderEmails'),
+        'print_order'				=> array('Isotope\tl_iso_collection', 'printInvoice'),
+        'print_invoices'			=> array('Isotope\tl_iso_collection', 'printInvoices'),
+        'payment'					=> array('Isotope\tl_iso_collection', 'paymentInterface'),
+        'shipping'					=> array('Isotope\tl_iso_collection', 'shippingInterface'),
     ),
     'iso_setup' => array
     (
@@ -136,7 +136,7 @@ $GLOBALS['ISO_MOD'] = array
         ),
         'orderstatus' => array
         (
-            'tables'					=> array('tl_iso_orderstatus'),
+            'tables'					=> array('tl_iso_collectiontatus'),
             'icon'						=> 'system/modules/isotope/assets/traffic-light.png',
         ),
     )

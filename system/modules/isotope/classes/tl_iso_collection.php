@@ -21,10 +21,10 @@ use Isotope\Product\Collection\Order;
 
 
 /**
- * Class tl_iso_orders
+ * Class tl_iso_collection
  * Provide miscellaneous methods that are used by the data configuration array.
  */
-class tl_iso_orders extends \Backend
+class tl_iso_collection extends \Backend
 {
 
     /**
@@ -66,7 +66,7 @@ class tl_iso_orders extends \Backend
      */
     public function generateOrderDetails($dc, $xlabel)
     {
-        $objOrder = $this->Database->execute("SELECT * FROM tl_iso_orders WHERE id=".$dc->id);
+        $objOrder = $this->Database->execute("SELECT * FROM tl_iso_collection WHERE id=".$dc->id);
 
         if (!$objOrder->numRows)
         {
@@ -91,7 +91,7 @@ class tl_iso_orders extends \Backend
      */
     public function generateEmailData($dc, $xlabel)
     {
-        $objOrder = $this->Database->execute("SELECT * FROM tl_iso_orders WHERE id=" . $dc->id);
+        $objOrder = $this->Database->execute("SELECT * FROM tl_iso_collection WHERE id=" . $dc->id);
 
         if (!$objOrder->numRows)
         {
@@ -172,7 +172,7 @@ class tl_iso_orders extends \Backend
      */
     protected function generateAddressData($intId, $strField)
     {
-        $objOrder = $this->Database->execute("SELECT * FROM tl_iso_orders WHERE id=".$intId);
+        $objOrder = $this->Database->execute("SELECT * FROM tl_iso_collection WHERE id=".$intId);
 
         if (!$objOrder->numRows)
         {
@@ -236,7 +236,7 @@ class tl_iso_orders extends \Backend
         }
 
         // Only admins can delete orders. Others should set the status to cancelled.
-        unset($GLOBALS['TL_DCA']['tl_iso_orders']['list']['operations']['delete']);
+        unset($GLOBALS['TL_DCA']['tl_iso_collection']['list']['operations']['delete']);
         if (\Input::get('act') == 'delete' || \Input::get('act') == 'deleteAll')
         {
             $this->log('Only admin can delete orders!', __METHOD__, TL_ERROR);
@@ -248,7 +248,7 @@ class tl_iso_orders extends \Backend
 
         if (is_array($arrConfigs) && !empty($arrConfigs))
         {
-            $objOrders = $this->Database->query("SELECT id FROM tl_iso_orders WHERE config_id IN (" . implode(',', $arrConfigs) . ")");
+            $objOrders = $this->Database->query("SELECT id FROM tl_iso_collection WHERE config_id IN (" . implode(',', $arrConfigs) . ")");
 
             if ($objOrders->numRows)
             {
@@ -256,7 +256,7 @@ class tl_iso_orders extends \Backend
             }
         }
 
-        $GLOBALS['TL_DCA']['tl_iso_orders']['list']['sorting']['root'] = $arrIds;
+        $GLOBALS['TL_DCA']['tl_iso_collection']['list']['sorting']['root'] = $arrIds;
 
         if (\Input::get('id') != '' && !in_array(\Input::get('id'), $arrIds))
         {
@@ -280,7 +280,7 @@ class tl_iso_orders extends \Backend
         }
 
         $arrExport = array();
-        $objOrders = $this->Database->execute("SELECT billing_address FROM tl_iso_orders");
+        $objOrders = $this->Database->execute("SELECT billing_address FROM tl_iso_collection");
 
         while ($objOrders->next())
         {
@@ -327,7 +327,7 @@ class tl_iso_orders extends \Backend
      */
     public function paymentInterface($dc)
     {
-        $objPayment = $this->Database->execute("SELECT p.* FROM tl_iso_payment_modules m, tl_iso_orders o WHERE m.id=o.payment_id AND m.id=".$dc->id);
+        $objPayment = $this->Database->execute("SELECT p.* FROM tl_iso_payment_modules m, tl_iso_collection o WHERE m.id=o.payment_id AND m.id=".$dc->id);
 
         try {
             $objMethod = \Isotope\Factory\Payment::build($objPayment->type, $objPayment->row());
@@ -346,7 +346,7 @@ class tl_iso_orders extends \Backend
      */
     public function shippingInterface($dc)
     {
-        $objShipping = $this->Database->execute("SELECT p.* FROM tl_iso_shipping_modules m, tl_iso_orders o WHERE m.id=o.shipping_id AND m.id=".$dc->id);
+        $objShipping = $this->Database->execute("SELECT p.* FROM tl_iso_shipping_modules m, tl_iso_collection o WHERE m.id=o.shipping_id AND m.id=".$dc->id);
 
         try {
             $objMethod = \Isotope\Factory\Payment::build($objShipping->type, $objShipping->row());
@@ -371,18 +371,18 @@ class tl_iso_orders extends \Backend
 <a href="'.ampersand(str_replace('&key=print_invoices', '', \Environment::get('request'))).'" class="header_back" title="'.specialchars($GLOBALS['TL_LANG']['MSC']['backBT']).'">'.$GLOBALS['TL_LANG']['MSC']['backBT'].'</a>
 </div>
 
-<h2 class="sub_headline">'.$GLOBALS['TL_LANG']['tl_iso_orders']['print_invoices'][0].'</h2>
+<h2 class="sub_headline">'.$GLOBALS['TL_LANG']['tl_iso_collection']['print_invoices'][0].'</h2>
 <form action="'.\Environment::get('request').'"  id="tl_print_invoices" class="tl_form" method="post">
 <input type="hidden" name="FORM_SUBMIT" value="tl_print_invoices">
 <input type="hidden" name="REQUEST_TOKEN" value="'.REQUEST_TOKEN.'">
 <div class="tl_formbody_edit">
 <div class="tl_tbox block">';
 
-        $objWidget = new \SelectMenu($this->prepareForWidget($GLOBALS['TL_DCA']['tl_iso_orders']['fields']['status'], 'status'));
+        $objWidget = new \SelectMenu($this->prepareForWidget($GLOBALS['TL_DCA']['tl_iso_collection']['fields']['status'], 'status'));
 
         if (\Input::post('FORM_SUBMIT') == 'tl_print_invoices')
         {
-            $objOrders = $this->Database->prepare("SELECT id FROM tl_iso_orders WHERE status=?")->execute(\Input::post('status'));
+            $objOrders = $this->Database->prepare("SELECT id FROM tl_iso_collection WHERE status=?")->execute(\Input::post('status'));
 
             if ($objOrders->numRows)
             {

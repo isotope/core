@@ -23,9 +23,9 @@ $this->loadLanguageFile('tl_iso_products');
 
 
 /**
- * Table tl_iso_orders
+ * Table tl_iso_collection
  */
-$GLOBALS['TL_DCA']['tl_iso_orders'] = array
+$GLOBALS['TL_DCA']['tl_iso_collection'] = array
 (
 
     // Config
@@ -34,15 +34,15 @@ $GLOBALS['TL_DCA']['tl_iso_orders'] = array
         'dataContainer'               => 'Table',
         'enableVersioning'            => false,
         'ptable'					  => ($_GET['act'] == 'delete' ? 'tl_member' : ''), // See #70
-        'ctable'					  => array('tl_iso_order_items'),
+        'ctable'					  => array('tl_iso_collection_item'),
         'closed'            		  => true,
         'onload_callback' 			  => array
         (
-            array('Isotope\tl_iso_orders', 'checkPermission'),
+            array('Isotope\tl_iso_collection', 'checkPermission'),
         ),
         'onsubmit_callback' => array
         (
-            array('Isotope\tl_iso_orders', 'executeSaveHook'),
+            array('Isotope\tl_iso_collection', 'executeSaveHook'),
         ),
     ),
 
@@ -60,7 +60,7 @@ $GLOBALS['TL_DCA']['tl_iso_orders'] = array
         (
             'fields'				=> array('order_id', 'date', 'billing_address', 'grandTotal', 'status'),
             'showColumns'			=> true,
-            'label_callback'		=> array('Isotope\tl_iso_orders', 'getOrderLabel')
+            'label_callback'		=> array('Isotope\tl_iso_collection', 'getOrderLabel')
         ),
         'global_operations' => array
         (
@@ -73,21 +73,21 @@ $GLOBALS['TL_DCA']['tl_iso_orders'] = array
             ),
             'tools' => array
             (
-                'label'				=> &$GLOBALS['TL_LANG']['tl_iso_orders']['tools'],
+                'label'				=> &$GLOBALS['TL_LANG']['tl_iso_collection']['tools'],
                 'href'				=> '',
                 'class'				=> 'header_isotope_tools',
                 'attributes'		=> 'onclick="Backend.getScrollOffset();" style="display:none"',
             ),
             'export_emails' => array
             (
-                'label'				=> &$GLOBALS['TL_LANG']['tl_iso_orders']['export_emails'],
+                'label'				=> &$GLOBALS['TL_LANG']['tl_iso_collection']['export_emails'],
                 'href'				=> 'key=export_emails',
                 'class'				=> 'header_iso_export_csv isotope-tools',
                 'attributes'		=> 'onclick="Backend.getScrollOffset();"'
             ),
             'print_invoices' => array
             (
-                'label'				=> &$GLOBALS['TL_LANG']['tl_iso_orders']['print_invoices'],
+                'label'				=> &$GLOBALS['TL_LANG']['tl_iso_collection']['print_invoices'],
                 'href'				=> 'key=print_invoices',
                 'class'				=> 'header_print_invoices isotope-tools',
                 'attributes'		=> 'onclick="Backend.getScrollOffset();"'
@@ -97,47 +97,47 @@ $GLOBALS['TL_DCA']['tl_iso_orders'] = array
         (
             'edit' => array
             (
-                'label'				=> &$GLOBALS['TL_LANG']['tl_iso_orders']['edit'],
+                'label'				=> &$GLOBALS['TL_LANG']['tl_iso_collection']['edit'],
                 'href'				=> 'act=edit',
                 'icon'				=> 'edit.gif'
             ),
             'delete' => array
             (
-                'label'				=> &$GLOBALS['TL_LANG']['tl_iso_orders']['delete'],
+                'label'				=> &$GLOBALS['TL_LANG']['tl_iso_collection']['delete'],
                 'href'				=> 'act=delete',
                 'icon'				=> 'delete.gif',
                 'attributes'		=> 'onclick="if (!confirm(\'' . $GLOBALS['TL_LANG']['MSC']['deleteConfirm'] . '\')) return false; Backend.getScrollOffset();"'
             ),
             'info' => array
             (
-                'label'				=> &$GLOBALS['TL_LANG']['tl_iso_orders']['info'],
+                'label'				=> &$GLOBALS['TL_LANG']['tl_iso_collection']['info'],
                 'icon'				=> 'show.gif',
                 'attributes'		=> 'class="invisible isotope-contextmenu"',
             ),
             'show' => array
             (
-                'label'				=> &$GLOBALS['TL_LANG']['tl_iso_orders']['show'],
+                'label'				=> &$GLOBALS['TL_LANG']['tl_iso_collection']['show'],
                 'href'				=> 'act=show',
                 'icon'				=> 'show.gif',
                 'attributes'		=> 'class="isotope-tools"',
             ),
             'payment' => array
             (
-                'label'				=> &$GLOBALS['TL_LANG']['tl_iso_orders']['payment'],
+                'label'				=> &$GLOBALS['TL_LANG']['tl_iso_collection']['payment'],
                 'href'				=> 'key=payment',
                 'icon'				=> 'system/modules/isotope/assets/money-coin.png',
                 'attributes'		=> 'class="isotope-tools"',
             ),
             'shipping' => array
             (
-                'label'				=> &$GLOBALS['TL_LANG']['tl_iso_orders']['shipping'],
+                'label'				=> &$GLOBALS['TL_LANG']['tl_iso_collection']['shipping'],
                 'href'				=> 'key=shipping',
                 'icon'				=> 'system/modules/isotope/assets/box-label.png',
                 'attributes'		=> 'class="isotope-tools"',
             ),
             'print_order' => array
             (
-                'label'				=> &$GLOBALS['TL_LANG']['tl_iso_orders']['print_order'],
+                'label'				=> &$GLOBALS['TL_LANG']['tl_iso_collection']['print_order'],
                 'href'				=> 'key=print_order',
                 'icon'				=> 'system/modules/isotope/assets/document-pdf-text.png'
             ),
@@ -163,18 +163,18 @@ $GLOBALS['TL_DCA']['tl_iso_orders'] = array
         ),
         'order_id' => array
         (
-            'label'					=> &$GLOBALS['TL_LANG']['tl_iso_orders']['order_id'],
+            'label'					=> &$GLOBALS['TL_LANG']['tl_iso_collection']['order_id'],
             'search'				=> true,
             'sorting'				=> true,
         ),
         'uniqid' => array
         (
-            'label'					=> &$GLOBALS['TL_LANG']['tl_iso_orders']['uniqid'],
+            'label'					=> &$GLOBALS['TL_LANG']['tl_iso_collection']['uniqid'],
             'search'				=> true,
         ),
         'status' => array
         (
-            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_orders']['status'],
+            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_collection']['status'],
             'exclude'               => true,
             'filter'                => true,
             'sorting'				=> true,
@@ -182,12 +182,12 @@ $GLOBALS['TL_DCA']['tl_iso_orders'] = array
             'options'         		=> \Isotope\Backend::getOrderStatus(),
             'save_callback'			=> array
             (
-                array('Isotope\tl_iso_orders', 'updateStatus'),
+                array('Isotope\tl_iso_collection', 'updateStatus'),
             ),
         ),
         'date' => array
         (
-            'label'					=> &$GLOBALS['TL_LANG']['tl_iso_orders']['date'],
+            'label'					=> &$GLOBALS['TL_LANG']['tl_iso_collection']['date'],
             'flag'					=> 8,
             'filter'				=> true,
             'sorting'				=> true,
@@ -195,48 +195,48 @@ $GLOBALS['TL_DCA']['tl_iso_orders'] = array
         ),
         'date_paid' => array
         (
-            'label'					=> &$GLOBALS['TL_LANG']['tl_iso_orders']['date_paid'],
+            'label'					=> &$GLOBALS['TL_LANG']['tl_iso_collection']['date_paid'],
             'exclude'               => true,
             'inputType'				=> 'text',
             'eval'					=> array('rgxp'=>'date', 'datepicker'=>(method_exists($this,'getDatePickerString') ? $this->getDatePickerString() : true), 'tl_class'=>'w50 wizard'),
         ),
         'date_shipped' => array
         (
-            'label'					=> &$GLOBALS['TL_LANG']['tl_iso_orders']['date_shipped'],
+            'label'					=> &$GLOBALS['TL_LANG']['tl_iso_collection']['date_shipped'],
             'exclude'               => true,
             'inputType'				=> 'text',
             'eval'					=> array('rgxp'=>'date', 'datepicker'=>(method_exists($this,'getDatePickerString') ? $this->getDatePickerString() : true), 'tl_class'=>'w50 wizard'),
         ),
         'config_id' => array
         (
-            'label'					=> &$GLOBALS['TL_LANG']['tl_iso_orders']['config_id'],
+            'label'					=> &$GLOBALS['TL_LANG']['tl_iso_collection']['config_id'],
             'foreignKey'			=> 'tl_iso_config.name',
         ),
         'payment_id' => array
         (
-            'label'					=> &$GLOBALS['TL_LANG']['tl_iso_orders']['payment_id'],
+            'label'					=> &$GLOBALS['TL_LANG']['tl_iso_collection']['payment_id'],
             'filter'				=> true,
             'foreignKey'			=> 'tl_iso_payment_modules.name',
         ),
         'shipping_id' => array
         (
-            'label'					=> &$GLOBALS['TL_LANG']['tl_iso_orders']['shipping_id'],
+            'label'					=> &$GLOBALS['TL_LANG']['tl_iso_collection']['shipping_id'],
             'filter'				=> true,
             'foreignKey'			=> 'tl_iso_shipping_modules.name',
         ),
         'billing_address' => array
         (
-            'label'					=> &$GLOBALS['TL_LANG']['tl_iso_orders']['billing_address'],
+            'label'					=> &$GLOBALS['TL_LANG']['tl_iso_collection']['billing_address'],
             'search'				=> true,
         ),
         'shipping_address' => array
         (
-            'label'					=> &$GLOBALS['TL_LANG']['tl_iso_orders']['shipping_address'],
+            'label'					=> &$GLOBALS['TL_LANG']['tl_iso_collection']['shipping_address'],
             'search'				=> true,
         ),
         'details' => array
         (
-            'input_field_callback'	=> array('Isotope\tl_iso_orders', 'generateOrderDetails'),
+            'input_field_callback'	=> array('Isotope\tl_iso_collection', 'generateOrderDetails'),
             'eval'					=> array('doNotShow'=>true),
         ),
         'grandTotal' => array
@@ -245,24 +245,24 @@ $GLOBALS['TL_DCA']['tl_iso_orders'] = array
         ),
         'notes' => array
         (
-            'label'					=> &$GLOBALS['TL_LANG']['tl_iso_orders']['notes'],
+            'label'					=> &$GLOBALS['TL_LANG']['tl_iso_collection']['notes'],
             'exclude'               => true,
             'inputType'				=> 'textarea',
             'eval'					=> array('style'=>'height:80px;')
         ),
         'email_data' => array
         (
-            'input_field_callback'	=> array('Isotope\tl_iso_orders', 'generateEmailData'),
+            'input_field_callback'	=> array('Isotope\tl_iso_collection', 'generateEmailData'),
             'eval'					=> array('doNotShow'=>true),
         ),
         'billing_address_data' => array
         (
-            'input_field_callback'	=> array('Isotope\tl_iso_orders', 'generateBillingAddressData'),
+            'input_field_callback'	=> array('Isotope\tl_iso_collection', 'generateBillingAddressData'),
             'eval'					=> array('doNotShow'=>true),
         ),
         'shipping_address_data' => array
         (
-            'input_field_callback'	=> array('Isotope\tl_iso_orders', 'generateShippingAddressData'),
+            'input_field_callback'	=> array('Isotope\tl_iso_collection', 'generateShippingAddressData'),
             'eval'					=> array('doNotShow'=>true),
         ),
     )
