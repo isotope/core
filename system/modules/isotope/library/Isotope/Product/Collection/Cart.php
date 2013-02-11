@@ -221,11 +221,11 @@ class Cart extends Collection implements IsotopeProductCollection
                 \System::setCookie(static::$strCookie, $strHash, $time+$GLOBALS['TL_CONFIG']['iso_cartTimeout'], $GLOBALS['TL_CONFIG']['websitePath']);
             }
 
-            $objCart = static::findOneBy(array('(session=? AND store_id=?)'), array($strHash, $intStore));
+            $objCart = static::findOneBy(array('(uniqid=? AND store_id=?)'), array($strHash, $intStore));
         }
         else
         {
-            $objCart = static::findOneBy(array('(pid=? AND store_id=?)'), array(\FrontendUser::getInstance()->id, $intStore));
+            $objCart = static::findOneBy(array('(member=? AND store_id=?)'), array(\FrontendUser::getInstance()->id, $intStore));
         }
 
         // Create new cart
@@ -233,9 +233,9 @@ class Cart extends Collection implements IsotopeProductCollection
         {
             $objCart = new static();
 
-            $objCart->pid		= (FE_USER_LOGGED_IN === true ? $this->User->id : 0);
-            $objCart->session	= (FE_USER_LOGGED_IN === true ? '' : $strHash);
-            $objCart->store_id	= $intStore;
+            $objCart->member    = (FE_USER_LOGGED_IN === true ? $this->User->id : 0);
+            $objCart->uniqid    = (FE_USER_LOGGED_IN === true ? '' : $strHash);
+            $objCart->store_id  = $intStore;
         }
 
         $objCart->tstamp = $time;
@@ -245,7 +245,7 @@ class Cart extends Collection implements IsotopeProductCollection
          {
              $blnMerge = $objCart->products ? true : false;
 
-            if (($objTemp = static::findOneBy(array('(session=? AND store_id=?)'), array($strHash, $intStore))) !== null)
+            if (($objTemp = static::findOneBy(array('(uniqid=? AND store_id=?)'), array($strHash, $intStore))) !== null)
             {
                 $arrIds = $objCart->transferFromCollection($objTemp, false);
 
