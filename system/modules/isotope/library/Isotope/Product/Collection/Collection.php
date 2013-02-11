@@ -1030,7 +1030,7 @@ abstract class Collection extends \Model
     /**
      * Make sure we only return results of the given model type
      */
-    public static function find(array $arrOptions)
+    protected static function find(array $arrOptions)
     {
         // Convert to array if necessary
         $arrOptions['value'] = (array) $arrOptions['value'];
