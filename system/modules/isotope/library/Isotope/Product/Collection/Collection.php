@@ -1033,10 +1033,10 @@ abstract class Collection extends \Model
     public static function find(array $arrOptions)
     {
         // Convert to array if necessary
+        $arrOptions['value'] = (array) $arrOptions['value'];
         if (!is_array($arrOptions['column']))
         {
             $arrOptions['column'] = array($arrOptions['column'].'=?');
-            $arrOptions['value'] = array($arrOptions['value']);
         }
 
         $arrOptions['column'][] = 'type=?';
