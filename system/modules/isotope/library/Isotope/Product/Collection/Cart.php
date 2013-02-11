@@ -287,15 +287,8 @@ class Cart extends Collection implements IsotopeProductCollection
         {
             foreach ($GLOBALS['ISO_HOOKS']['checkoutSurcharge'] as $callback)
             {
-                if ($callback[0] == 'Isotope\Product\Collection\Cart')
-                {
-                    $arrSurcharges = $this->{$callback[1]}($arrSurcharges);
-                }
-                else
-                {
-                    $objCallback = \System::importStatic($callback[0]);
-                    $arrSurcharges = $objCallback->{$callback[1]}($arrSurcharges);
-                }
+                $objCallback = \System::importStatic($callback[0]);
+                $arrSurcharges = $objCallback->{$callback[1]}($arrSurcharges);
             }
         }
 
