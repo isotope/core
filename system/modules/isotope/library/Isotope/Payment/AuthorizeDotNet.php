@@ -284,7 +284,7 @@ class AuthorizeDotNet extends Payment implements IsotopePayment
         }
 
         //Code specific to Authorize.net!
-        $objTemplate = new BackendTemplate('be_pos_terminal');
+        $objTemplate = new \BackendTemplate('be_pos_terminal');
 
         if($objAIMConfig->numRows > 0)
         {
