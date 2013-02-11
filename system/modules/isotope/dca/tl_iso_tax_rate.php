@@ -122,6 +122,11 @@ $GLOBALS['TL_DCA']['tl_iso_tax_rate'] = array
     // Fields
     'fields' => array
     (
+        'pid' => array
+        (
+            'foreignKey'              => 'tl_iso_tax_class.name',
+			'relation'                => array('type'=>'belongsTo', 'load'=>'lazy')
+        ),
         'name' => array
         (
             'label'                   => &$GLOBALS['TL_LANG']['tl_iso_tax_rate']['name'],
@@ -195,6 +200,7 @@ $GLOBALS['TL_DCA']['tl_iso_tax_rate'] = array
             'inputType'               => 'select',
             'foreignKey'              => 'tl_iso_config.name',
             'eval'                    => array('includeBlankOption'=>true, 'submitOnChange'=>true, 'tl_class'=>'w50'),
+			'relation'                => array('type'=>'hasOne', 'load'=>'lazy')
         ),
         'stop' => array
         (
@@ -223,7 +229,8 @@ $GLOBALS['TL_DCA']['tl_iso_tax_rate'] = array
             'exclude'                 => true,
             'inputType'               => 'checkbox',
             'foreignKey'              => 'tl_member_group.name',
-            'eval'                    => array('multiple'=>true)
+            'eval'                    => array('multiple'=>true),
+			'relation'                => array('type'=>'hasMany', 'load'=>'lazy'),
         ),
     )
 );

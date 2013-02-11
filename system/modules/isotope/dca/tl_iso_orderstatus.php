@@ -148,7 +148,8 @@ $GLOBALS['TL_DCA']['tl_iso_orderstatus'] = array
             'exclude'					=> true,
             'inputType'					=> 'select',
             'foreignKey'				=> 'tl_iso_mail.name',
-            'eval'						=> array('includeBlankOption'=>true)
+            'eval'						=> array('includeBlankOption'=>true),
+            'relation'                  => array('type'=>'hasOne', 'load'=>'lazy'),
         ),
         'mail_admin' => array
         (
@@ -156,7 +157,8 @@ $GLOBALS['TL_DCA']['tl_iso_orderstatus'] = array
             'exclude'					=> true,
             'inputType'					=> 'select',
             'foreignKey'				=> 'tl_iso_mail.name',
-            'eval'						=> array('includeBlankOption'=>true, 'tl_class'=>'w50')
+            'eval'						=> array('includeBlankOption'=>true, 'tl_class'=>'w50'),
+            'relation'                  => array('type'=>'hasOne', 'load'=>'lazy'),
         ),
         'sales_email' => array
         (

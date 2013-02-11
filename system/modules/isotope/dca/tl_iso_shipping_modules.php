@@ -268,6 +268,7 @@ $GLOBALS['TL_DCA']['tl_iso_shipping_modules'] = array
             'inputType'               => 'select',
             'foreignKey'			  => 'tl_iso_producttypes.name',
             'eval'                    => array('multiple'=>true, 'size'=>8, 'tl_class'=>'clr'),
+            'relation'                => array('type'=>'hasMany', 'load'=>'lazy'),
         ),
         'price' => array
         (
@@ -282,8 +283,10 @@ $GLOBALS['TL_DCA']['tl_iso_shipping_modules'] = array
             'exclude'                 => true,
             'filter'                  => true,
             'inputType'               => 'select',
+            'foreignKey'              => 'tl_iso_tax_class.name',
             'options'                 => \Isotope\Backend::getTaxClassesWithSplit(),
             'eval'                    => array('includeBlankOption'=>true, 'tl_class'=>'w50'),
+            'relation'                => array('type'=>'hasOne', 'load'=>'lazy'),
         ),
         'flatCalculation' => array
         (
@@ -332,7 +335,8 @@ $GLOBALS['TL_DCA']['tl_iso_shipping_modules'] = array
             'exclude'                 => true,
             'inputType'               => 'checkbox',
             'foreignKey'              => 'tl_member_group.name',
-            'eval'                    => array('multiple'=>true)
+            'eval'                    => array('multiple'=>true),
+            'relation'                => array('type'=>'hasMany', 'load'=>'lazy'),
         ),
         'enabled' => array
         (

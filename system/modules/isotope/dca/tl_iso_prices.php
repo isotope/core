@@ -136,6 +136,7 @@ $GLOBALS['TL_DCA']['tl_iso_prices'] = array
             'default'				=> &$GLOBALS['TL_DCA']['tl_iso_products']['fields']['tax_class']['default'],
             'foreignKey'			=> 'tl_iso_tax_class.name',
             'eval'					=> array('includeBlankOption'=>true, 'tl_class'=>'clr'),
+            'relation'              => array('type'=>'hasOne', 'load'=>'lazy'),
         ),
         'config_id' => array
         (
@@ -144,6 +145,7 @@ $GLOBALS['TL_DCA']['tl_iso_prices'] = array
             'inputType'               => 'select',
             'foreignKey'			  => 'tl_iso_config.name',
             'eval'					  => array('includeBlankOption'=>true, 'tl_class'=>'w50'),
+            'relation'              => array('type'=>'hasOne', 'load'=>'lazy'),
         ),
         'member_group' => array
         (
@@ -151,7 +153,8 @@ $GLOBALS['TL_DCA']['tl_iso_prices'] = array
             'exclude'               => true,
             'inputType'				=> 'select',
             'foreignKey'			=> 'tl_member_group.name',
-            'eval'					=> array('includeBlankOption'=>true, 'tl_class'=>'w50', 'chosen'=>true)
+            'eval'					=> array('includeBlankOption'=>true, 'tl_class'=>'w50', 'chosen'=>true),
+            'relation'              => array('type'=>'hasOne', 'load'=>'lazy'),
         ),
         'start' => array
         (

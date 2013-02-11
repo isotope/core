@@ -98,6 +98,11 @@ $GLOBALS['TL_DCA']['tl_iso_mail_content'] = array
     // Fields
     'fields' => array
     (
+        'pid' => array
+        (
+            'foreignKey'              => 'tl_iso_mail.name',
+            'relation'                => array('type'=>'belongsTo', 'load'=>'lazy'),
+        ),
         'language' => array
         (
             'label'                   => &$GLOBALS['TL_LANG']['tl_iso_mail_content']['language'],

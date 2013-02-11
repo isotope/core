@@ -43,6 +43,7 @@ $GLOBALS['TL_DCA']['tl_page']['fields']['iso_config'] = array
     'inputType'               => 'select',
     'foreignKey'			  => 'tl_iso_config.name',
     'eval'                    => array('includeBlankOption'=>true, 'tl_class'=>'w50'),
+    'relation'                => array('type'=>'hasOne', 'load'=>'lazy'),
 );
 
 $GLOBALS['TL_DCA']['tl_page']['fields']['iso_setReaderJumpTo'] = array
@@ -58,8 +59,10 @@ $GLOBALS['TL_DCA']['tl_page']['fields']['iso_readerJumpTo'] = array
     'label'                   => &$GLOBALS['TL_LANG']['tl_page']['iso_readerJumpTo'],
     'exclude'                 => true,
     'inputType'               => 'pageTree',
+    'foreignKey'              => 'tl_page.title',
     // @todo: only show the pages from this page root (a reader page in a different page tree than the current doesn't make sense) as soon as http://dev.contao.org/issues/3563 is implemented
-    'eval'					  => array('fieldType'=>'radio', 'mandatory'=>true)
+    'eval'					  => array('fieldType'=>'radio', 'mandatory'=>true),
+    'relation'                => array('type'=>'hasOne', 'load'=>'lazy'),
 );
 
 

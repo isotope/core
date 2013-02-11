@@ -96,6 +96,11 @@ $GLOBALS['TL_DCA']['tl_iso_shipping_options'] = array
     // Fields
     'fields' => array
     (
+        'pid' => array
+        (
+            'foreignKey'              => 'tl_iso_shipping_module.name',
+            'relation'                => array('type'=>'belongsTo', 'load'=>'lazy'),
+        ),
         'name' => array
         (
             'label'                   => &$GLOBALS['TL_LANG']['tl_iso_shipping_options']['name'],

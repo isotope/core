@@ -178,7 +178,9 @@ $GLOBALS['TL_DCA']['tl_iso_collection'] = array
             'filter'                => true,
             'sorting'				=> true,
             'inputType'             => 'select',
+            'foreignKey'            => 'tl_iso_orderstatus.name',
             'options'         		=> \Isotope\Backend::getOrderStatus(),
+            'relation'              => array('type'=>'hasOne', 'load'=>'lazy'),
             'save_callback'			=> array
             (
                 array('Isotope\tl_iso_collection', 'updateOrderStatus'),
@@ -210,18 +212,21 @@ $GLOBALS['TL_DCA']['tl_iso_collection'] = array
         (
             'label'					=> &$GLOBALS['TL_LANG']['tl_iso_collection']['config_id'],
             'foreignKey'			=> 'tl_iso_config.name',
+            'relation'              => array('type'=>'hasOne', 'load'=>'lazy'),
         ),
         'payment_id' => array
         (
             'label'					=> &$GLOBALS['TL_LANG']['tl_iso_collection']['payment_id'],
             'filter'				=> true,
             'foreignKey'			=> 'tl_iso_payment_modules.name',
+            'relation'              => array('type'=>'hasOne', 'load'=>'lazy'),
         ),
         'shipping_id' => array
         (
             'label'					=> &$GLOBALS['TL_LANG']['tl_iso_collection']['shipping_id'],
             'filter'				=> true,
             'foreignKey'			=> 'tl_iso_shipping_modules.name',
+            'relation'              => array('type'=>'hasOne', 'load'=>'lazy'),
         ),
         'billing_address' => array
         (

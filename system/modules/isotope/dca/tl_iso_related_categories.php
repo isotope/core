@@ -121,7 +121,9 @@ $GLOBALS['TL_DCA']['tl_iso_related_categories'] = array
             'label'						=> &$GLOBALS['TL_LANG']['tl_iso_related_categories']['jumpTo'],
             'exclude'					=> true,
             'inputType'					=> 'pageTree',
+            'foreignKey'                => 'tl_page.title',
             'eval'						=> array('fieldType'=>'radio'),
+            'relation'                  => array('type'=>'hasOne', 'load'=>'lazy'),
         ),
     )
 );

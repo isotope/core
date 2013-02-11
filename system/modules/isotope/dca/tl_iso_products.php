@@ -319,6 +319,7 @@ $GLOBALS['TL_DCA']['tl_iso_products'] = array
             'inputType'				=> 'pageTree',
             'foreignKey'			=> 'tl_page.title',
             'eval'					=> array('mandatory'=>false, 'multiple'=>true, 'fieldType'=>'checkbox', 'tl_class'=>'clr'),
+            'relation'              => array('type'=>'hasMany', 'load'=>'lazy'),
             'attributes'			=> array('legend'=>'general_legend', 'fixed'=>true, 'inherit'=>true),
             'load_callback'			=> array
             (
@@ -450,6 +451,7 @@ $GLOBALS['TL_DCA']['tl_iso_products'] = array
             'foreignKey'			=> 'tl_iso_tax_class.name',
             'attributes'			=> array('legend'=>'pricing_legend', 'tl_class'=>'w50'),
             'eval'					=> array('includeBlankOption'=>true, 'dynamic'=>true),
+            'relation'              => array('type'=>'hasOne', 'load'=>'lazy'),
         ),
         'baseprice' => array
         (
@@ -503,6 +505,7 @@ $GLOBALS['TL_DCA']['tl_iso_products'] = array
             'inputType'				=> 'checkbox',
             'foreignKey'			=> 'tl_member_group.name',
             'eval'					=> array('mandatory'=>true, 'multiple'=>true),
+            'relation'              => array('type'=>'hasMany', 'load'=>'lazy'),
         ),
         'guests' => array
         (

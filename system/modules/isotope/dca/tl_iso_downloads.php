@@ -110,6 +110,11 @@ $GLOBALS['TL_DCA']['tl_iso_downloads'] = array
     // Fields
     'fields' => array
     (
+        'pid' => array
+        (
+            'foreignKey'                => 'tl_iso_product.name',
+            'relation'                  => array('type'=>'belongsTo', 'load'=>'lazy'),
+        ),
         'type' => array
         (
             'label'						=> &$GLOBALS['TL_LANG']['tl_iso_downloads']['type'],

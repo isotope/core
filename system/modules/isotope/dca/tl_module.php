@@ -127,8 +127,10 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['iso_reader_jumpTo'] = array
     'label'                   => &$GLOBALS['TL_LANG']['tl_module']['iso_reader_jumpTo'],
     'exclude'                 => true,
     'inputType'               => 'pageTree',
-    'explanation'             => 'jumpTo',
+    'foreignKey'              => 'tl_page.title',
     'eval'                    => array('fieldType'=>'radio', 'tl_class'=>'clr'),
+    'explanation'             => 'jumpTo',
+    'relation'                => array('type'=>'hasOne', 'load'=>'lazy'),
 );
 
 $GLOBALS['TL_DCA']['tl_module']['fields']['iso_login_jumpTo'] = array
@@ -136,8 +138,10 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['iso_login_jumpTo'] = array
     'label'                   => &$GLOBALS['TL_LANG']['tl_module']['iso_login_jumpTo'],
     'exclude'                 => true,
     'inputType'               => 'pageTree',
+    'foreignKey'              => 'tl_page.title',
+    'eval'                    => array('fieldType'=>'radio', 'mandatory'=>true, 'tl_class'=>'clr'),
     'explanation'             => 'jumpTo',
-    'eval'                    => array('fieldType'=>'radio', 'mandatory'=>true, 'tl_class'=>'clr')
+    'relation'                => array('type'=>'hasOne', 'load'=>'lazy'),
 );
 
 $GLOBALS['TL_DCA']['tl_module']['fields']['iso_addProductJumpTo'] = array
@@ -145,8 +149,10 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['iso_addProductJumpTo'] = array
     'label'                   => &$GLOBALS['TL_LANG']['tl_module']['iso_addProductJumpTo'],
     'exclude'                 => true,
     'inputType'               => 'pageTree',
+    'foreignKey'              => 'tl_page.title',
+    'eval'                    => array('fieldType'=>'radio', 'tl_class'=>'clr'),
     'explanation'             => 'jumpTo',
-    'eval'                    => array('fieldType'=>'radio', 'tl_class'=>'clr')
+    'relation'                => array('type'=>'hasOne', 'load'=>'lazy'),
 );
 
 $GLOBALS['TL_DCA']['tl_module']['fields']['iso_cols'] = array
@@ -165,6 +171,7 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['iso_config_id'] = array
     'inputType'               => 'select',
     'foreignKey'			  => 'tl_iso_config.name',
     'eval'					  => array('includeBlankOption'=>true, 'mandatory'=>true, 'tl_class'=>'w50'),
+    'relation'                => array('type'=>'hasOne', 'load'=>'lazy'),
 );
 
 $GLOBALS['TL_DCA']['tl_module']['fields']['iso_config_ids'] = array
@@ -174,6 +181,7 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['iso_config_ids'] = array
     'inputType'               => 'checkboxWizard',
     'foreignKey'			  => 'tl_iso_config.name',
     'eval'					  => array('multiple'=>true, 'mandatory'=>true, 'tl_class'=>'clr'),
+    'relation'                => array('type'=>'hasMany', 'load'=>'lazy'),
 );
 
 $GLOBALS['TL_DCA']['tl_module']['fields']['iso_payment_modules'] = array
@@ -181,8 +189,10 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['iso_payment_modules'] = array
     'label'                   => &$GLOBALS['TL_LANG']['tl_module']['iso_payment_modules'],
     'exclude'                 => true,
     'inputType'               => 'checkboxWizard',
+    'foreignKey'			  => 'tl_iso_payment_modules.name',
+    'options_callback'		  => array('Isotope\tl_module', 'getPaymentModules'),
     'eval'					  => array('multiple'=>true),
-    'options_callback'		  => array('Isotope\tl_module','getPaymentModules')
+    'relation'                => array('type'=>'hasMany', 'load'=>'lazy'),
 );
 
 $GLOBALS['TL_DCA']['tl_module']['fields']['iso_shipping_modules'] = array
@@ -190,8 +200,10 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['iso_shipping_modules'] = array
     'label'                   => &$GLOBALS['TL_LANG']['tl_module']['iso_shipping_modules'],
     'exclude'                 => true,
     'inputType'               => 'checkboxWizard',
+    'foreignKey'			  => 'tl_iso_shipping_modules.name',
+    'options_callback'		  => array('Isotope\tl_module','getShippingModules'),
     'eval'					  => array('multiple'=>true),
-    'options_callback'		  => array('Isotope\tl_module','getShippingModules')
+    'relation'                => array('type'=>'hasMany', 'load'=>'lazy'),
 );
 
 $GLOBALS['TL_DCA']['tl_module']['fields']['orderCompleteJumpTo'] = array
@@ -199,8 +211,10 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['orderCompleteJumpTo'] = array
     'label'                   => &$GLOBALS['TL_LANG']['tl_module']['orderCompleteJumpTo'],
     'exclude'                 => true,
     'inputType'               => 'pageTree',
+    'foreignKey'              => 'tl_page.title',
+    'eval'                    => array('mandatory'=>true, 'fieldType'=>'radio', 'tl_class'=>'clr'),
     'explanation'             => 'jumpTo',
-    'eval'                    => array('mandatory'=>true, 'fieldType'=>'radio', 'tl_class'=>'clr')
+    'relation'                => array('type'=>'hasOne', 'load'=>'lazy'),
 );
 
 $GLOBALS['TL_DCA']['tl_module']['fields']['iso_forward_review'] = array
@@ -216,7 +230,8 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['iso_mail_customer'] = array
     'exclude'                 => true,
     'inputType'               => 'select',
     'foreignKey'              => 'tl_iso_mail.name',
-    'eval'					  => array('includeBlankOption'=>true, 'mandatory'=>true, 'chosen'=>true)
+    'eval'					  => array('includeBlankOption'=>true, 'mandatory'=>true, 'chosen'=>true),
+    'relation'                => array('type'=>'hasOne', 'load'=>'lazy'),
 );
 
 $GLOBALS['TL_DCA']['tl_module']['fields']['iso_mail_admin'] = array
@@ -225,7 +240,8 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['iso_mail_admin'] = array
     'exclude'                 => true,
     'inputType'               => 'select',
     'foreignKey'              => 'tl_iso_mail.name',
-    'eval'					  => array('includeBlankOption'=>true, 'mandatory'=>true, 'tl_class'=>'w50', 'chosen'=>true)
+    'eval'					  => array('includeBlankOption'=>true, 'mandatory'=>true, 'tl_class'=>'w50', 'chosen'=>true),
+    'relation'                => array('type'=>'hasOne', 'load'=>'lazy'),
 );
 
 $GLOBALS['TL_DCA']['tl_module']['fields']['iso_sales_email'] = array
@@ -242,7 +258,8 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['iso_order_conditions'] = array
     'exclude'                 => true,
     'inputType'               => 'select',
     'foreignKey'			  => 'tl_form.title',
-    'eval'                    => array('includeBlankOption'=>true, 'tl_class'=>'w50', 'chosen'=>true)
+    'eval'                    => array('includeBlankOption'=>true, 'tl_class'=>'w50', 'chosen'=>true),
+    'relation'                => array('type'=>'hasOne', 'load'=>'lazy'),
 );
 
 $GLOBALS['TL_DCA']['tl_module']['fields']['iso_order_conditions_position'] = array
@@ -318,8 +335,10 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['iso_filterModules'] = array
     'label'                   => &$GLOBALS['TL_LANG']['tl_module']['iso_filterModules'],
     'exclude'                 => true,
     'inputType'               => 'checkboxWizard',
+    'foreignKey'              => 'tl_module.name',
     'options_callback'		  => array('Isotope\tl_module', 'getFilterModules'),
     'eval'					  => array('multiple'=>true, 'tl_class'=>'clr'),
+    'relation'                => array('type'=>'hasMany', 'load'=>'lazy'),
 );
 
 $GLOBALS['TL_DCA']['tl_module']['fields']['iso_filterFields'] = array
@@ -388,8 +407,10 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['iso_cart_jumpTo'] = array
     'label'                   => &$GLOBALS['TL_LANG']['tl_module']['iso_cart_jumpTo'],
     'exclude'                 => true,
     'inputType'               => 'pageTree',
+    'foreignKey'              => 'tl_page.title',
+    'eval'                    => array('fieldType'=>'radio', 'tl_class'=>'clr'),
     'explanation'             => 'jumpTo',
-    'eval'                    => array('fieldType'=>'radio', 'tl_class'=>'clr')
+    'relation'                => array('type'=>'hasOne', 'load'=>'lazy'),
 );
 
 $GLOBALS['TL_DCA']['tl_module']['fields']['iso_checkout_jumpTo'] = array
@@ -397,8 +418,10 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['iso_checkout_jumpTo'] = array
     'label'                   => &$GLOBALS['TL_LANG']['tl_module']['iso_checkout_jumpTo'],
     'exclude'                 => true,
     'inputType'               => 'pageTree',
+    'foreignKey'              => 'tl_page.title',
+    'eval'                    => array('fieldType'=>'radio', 'tl_class'=>'clr'),
     'explanation'             => 'jumpTo',
-    'eval'                    => array('fieldType'=>'radio', 'tl_class'=>'clr')
+    'relation'                => array('type'=>'hasOne', 'load'=>'lazy'),
 );
 
 $GLOBALS['TL_DCA']['tl_module']['fields']['iso_listingSortField'] = array
@@ -442,6 +465,7 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['iso_related_categories'] = array
     'inputType'               => 'checkboxWizard',
     'foreignKey'			  => 'tl_iso_related_categories.name',
     'eval'					  => array('mandatory'=>true, 'multiple'=>true, 'tl_class'=>'w50 w50h'),
+    'relation'                => array('type'=>'hasMany', 'load'=>'lazy'),
 );
 
 $GLOBALS['TL_DCA']['tl_module']['fields']['iso_includeMessages'] = array

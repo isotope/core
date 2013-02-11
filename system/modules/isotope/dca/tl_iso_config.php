@@ -461,8 +461,10 @@ $GLOBALS['TL_DCA']['tl_iso_config'] = array
             'exclude'                 => true,
             'filter'                  => true,
             'inputType'               => 'select',
+            'foreignKey'              => 'tl_iso_orderstatus.name',
             'options'                 => \Isotope\Backend::getOrderStatus(),
             'eval'                    => array('mandatory'=>true, 'includeBlankOption'=>true, 'tl_class'=>'w50'),
+            'relation'                => array('type'=>'hasOne', 'load'=>'lazy'),
         ),
         'orderstatus_error' => array
         (
@@ -470,8 +472,10 @@ $GLOBALS['TL_DCA']['tl_iso_config'] = array
             'exclude'                 => true,
             'filter'                  => true,
             'inputType'               => 'select',
+            'foreignKey'              => 'tl_iso_orderstatus.name',
             'options'                 => \Isotope\Backend::getOrderStatus(),
             'eval'                    => array('mandatory'=>true, 'includeBlankOption'=>true, 'tl_class'=>'w50'),
+            'relation'                => array('type'=>'hasOne', 'load'=>'lazy'),
         ),
         'templateGroup' => array
         (

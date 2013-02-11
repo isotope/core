@@ -170,8 +170,10 @@ $GLOBALS['TL_DCA']['tl_iso_payment_modules'] = array
             'label'                   => &$GLOBALS['TL_LANG']['tl_iso_payment_modules']['new_order_status'],
             'exclude'                 => true,
             'inputType'               => 'select',
+            'foreignKey'              => 'tl_iso_orderstatus.name',
             'options'                 => \Isotope\Backend::getOrderStatus(),
             'eval'                    => array('mandatory'=>true, 'includeBlankOption'=>true, 'tl_class'=>'w50'),
+            'relation'                => array('type'=>'hasOne', 'load'=>'lazy'),
         ),
         'price' => array
         (
@@ -186,8 +188,10 @@ $GLOBALS['TL_DCA']['tl_iso_payment_modules'] = array
             'exclude'                 => true,
             'filter'                  => true,
             'inputType'               => 'select',
+            'foreignKey'              => 'tl_iso_tax_class.name',
             'options'                 => \Isotope\Backend::getTaxClassesWithSplit(),
             'eval'                    => array('includeBlankOption'=>true, 'tl_class'=>'w50'),
+            'relation'                => array('type'=>'hasOne', 'load'=>'lazy'),
         ),
         'allowed_cc_types' => array
         (
@@ -245,7 +249,8 @@ $GLOBALS['TL_DCA']['tl_iso_payment_modules'] = array
             'exclude'                 => true,
             'inputType'               => 'select',
             'foreignKey'			  => 'tl_iso_producttypes.name',
-            'eval'                    => array('multiple'=>true, 'size'=>8, 'tl_class'=>'clr w50 w50h', 'chosen'=>true)
+            'eval'                    => array('multiple'=>true, 'size'=>8, 'tl_class'=>'clr w50 w50h', 'chosen'=>true),
+            'relation'                => array('type'=>'hasMany', 'load'=>'lazy'),
         ),
         'paypal_account' => array
         (
@@ -444,7 +449,8 @@ $GLOBALS['TL_DCA']['tl_iso_payment_modules'] = array
             'exclude'                 => true,
             'inputType'               => 'checkbox',
             'foreignKey'              => 'tl_member_group.name',
-            'eval'                    => array('multiple'=>true)
+            'eval'                    => array('multiple'=>true),
+			'relation'                => array('type'=>'hasMany', 'load'=>'lazy'),
         ),
         'debug' => array
         (
