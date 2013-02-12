@@ -47,6 +47,11 @@ source_file = .tx/source/en/isotope/tl_iso_baseprice.xlf
 source_lang = en
 file_filter = .tx/source/<lang>/isotope/tl_iso_baseprice.xlf
 
+[isotope.develop-isotope-tl_iso_collection]
+source_file = .tx/source/en/isotope/tl_iso_collection.xlf
+source_lang = en
+file_filter = .tx/source/<lang>/isotope/tl_iso_collection.xlf
+
 [isotope.develop-isotope-tl_iso_config]
 source_file = .tx/source/en/isotope/tl_iso_config.xlf
 source_lang = en
@@ -71,11 +76,6 @@ file_filter = .tx/source/<lang>/isotope/tl_iso_mail.xlf
 source_file = .tx/source/en/isotope/tl_iso_mail_content.xlf
 source_lang = en
 file_filter = .tx/source/<lang>/isotope/tl_iso_mail_content.xlf
-
-[isotope.develop-isotope-tl_iso_collection]
-source_file = .tx/source/en/isotope/tl_iso_collection.xlf
-source_lang = en
-file_filter = .tx/source/<lang>/isotope/tl_iso_collection.xlf
 
 [isotope.develop-isotope-tl_iso_orderstatus]
 source_file = .tx/source/en/isotope/tl_iso_orderstatus.xlf
