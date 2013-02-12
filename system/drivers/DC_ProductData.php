@@ -1972,7 +1972,7 @@ $(window).addEvents({
 		$childs = array();
 		$childRows = array();
 
-		$objChilds = $this->Database->query("SELECT * FROM " . $table . " WHERE pid={$row['id']}" . ($this->strTable == $table ? " AND language='' AND id IN (" . implode(',', $this->products) . ") ORDER BY id=" . implode(' DESC, id=', $this->products) . " DESC" : " ORDER BY sorting"));
+		$objChilds = $this->Database->query("SELECT * FROM " . $table . " WHERE pid={$row['id']}" . ($this->strTable == $table ? " AND language='' AND id IN (" . implode(',', $this->products) . ") ORDER BY " . $this->Database->findInSet('id', $this->products) . " DESC" : " ORDER BY sorting"));
 
 		while ($objChilds->next())
 		{
@@ -1983,7 +1983,7 @@ $(window).addEvents({
 		// Check wether there are group child records
 		if ($table != $this->strTable)
 		{
-			$objChilds = $this->Database->query("SELECT * FROM " . $this->strTable . " WHERE gid={$row['id']} AND id IN (" . implode(',', $this->products) . ") ORDER BY id=" . implode(' DESC, id=', $this->products) . " DESC");
+			$objChilds = $this->Database->query("SELECT * FROM " . $this->strTable . " WHERE gid={$row['id']} AND id IN (" . implode(',', $this->products) . ") ORDER BY " . $this->Database->findInSet('id', $this->products) . " DESC");
 
 			if ($objChilds->numRows)
 			{
