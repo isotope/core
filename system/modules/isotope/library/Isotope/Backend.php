@@ -356,6 +356,12 @@ class Backend extends Contao_Backend
         $objDatabase = \Database::getInstance();
         $objConfig = \Config::getInstance();
 
+		// Method could be triggered before Isotope is installed
+		if (!$objDatabase->tableExists('tl_iso_config'))
+		{
+			return array();
+		}
+
         $arrThemes = array();
         $arrStores = array();
         $arrTemplates = array();

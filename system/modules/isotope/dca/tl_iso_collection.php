@@ -175,7 +175,7 @@ $GLOBALS['TL_DCA']['tl_iso_collection'] = array
             'sorting'				=> true,
             'inputType'             => 'select',
             'foreignKey'            => 'tl_iso_orderstatus.name',
-            'options'         		=> \Isotope\Backend::getOrderStatus(),
+            'options_callback'      => array('\Isotope\Backend', 'getOrderStatus'),
             'relation'              => array('type'=>'hasOne', 'load'=>'lazy'),
             'save_callback'			=> array
             (

@@ -284,7 +284,7 @@ $GLOBALS['TL_DCA']['tl_iso_shipping_modules'] = array
             'filter'                  => true,
             'inputType'               => 'select',
             'foreignKey'              => 'tl_iso_tax_class.name',
-            'options'                 => \Isotope\Backend::getTaxClassesWithSplit(),
+            'options_callback'        => array('\Isotope\Backend', 'getTaxClassesWithSplit'),
             'eval'                    => array('includeBlankOption'=>true, 'tl_class'=>'w50'),
             'relation'                => array('type'=>'hasOne', 'load'=>'lazy'),
         ),

@@ -621,7 +621,7 @@ $strBuffer .= '<th style="text-align:center"><img src="system/themes/default/ima
      */
     public function loadProductsDCA($strTable)
     {
-        if ($strTable != 'tl_iso_products') {
+        if ($strTable != 'tl_iso_products' || !$this->Database->tableExists('tl_iso_attributes')) {
             return;
         }
 
