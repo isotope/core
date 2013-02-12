@@ -61,7 +61,7 @@ CREATE TABLE `tl_iso_products` (
   `stop` varchar(10) NOT NULL default '',
   PRIMARY KEY  (`id`),
   KEY `gid` (`gid`),
-  KEY `pid` (`pid`, `language`, `published`)
+#  KEY `pid` (`pid`, `language`, `published`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -570,9 +570,9 @@ CREATE TABLE `tl_iso_collection` (
   `currency` varchar(4) NOT NULL default '',
   `notes` text NULL,
   PRIMARY KEY  (`id`),
-  KEY `member` (`member`, `store_id`, `type`),
-  KEY `uniqid` (`uniqid`, `store_id`, `type`),
-  KEY `source_collection_id` (`source_collection_id`, `type`),
+#  KEY `member` (`member`, `store_id`, `type`),
+#  KEY `uniqid` (`uniqid`, `store_id`, `type`),
+#  KEY `source_collection_id` (`source_collection_id`, `type`),
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -669,7 +669,7 @@ CREATE TABLE `tl_iso_addresses` (
   `isDefaultShipping` char(1) NOT NULL default '',
   `isDefaultBilling` char(1) NOT NULL default '',
   PRIMARY KEY  (`id`),
-  KEY `pid` (`pid`, `store_id`),
+#  KEY `pid` (`pid`, `store_id`),
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
