@@ -16,22 +16,22 @@
 /**
  * Fields
  */
-$GLOBALS['TL_LANG']['tl_iso_related_products']['category']			= array('Category', 'Select a category.');
-$GLOBALS['TL_LANG']['tl_iso_related_products']['products']			= array('Products', 'Search for your products by keywords (found in name, alias, sku or description) and add products by checking the checkbox.');
+$GLOBALS['TL_LANG']['tl_iso_related_products']['category']            = array('Category', 'Select a category.');
+$GLOBALS['TL_LANG']['tl_iso_related_products']['products']            = array('Products', 'Search for your products by keywords (found in name, alias, sku or description) and add products by checking the checkbox.');
 
 /**
  * Buttons
  */
-$GLOBALS['TL_LANG']['tl_iso_related_products']['new']				= array('Add category', 'Add a new category with products');
-$GLOBALS['TL_LANG']['tl_iso_related_products']['edit']				= array('Edit category', 'Edit category ID %s');
-$GLOBALS['TL_LANG']['tl_iso_related_products']['copy']				= array('Duplicate category', 'Duplicate category ID %s');
-$GLOBALS['TL_LANG']['tl_iso_related_products']['cut']				= array('Move category', 'Move category ID %s');
-$GLOBALS['TL_LANG']['tl_iso_related_products']['delete']			= array('Delete category', 'Delete category ID %s');
-$GLOBALS['TL_LANG']['tl_iso_related_products']['show']				= array('Category details', 'Show details of category ID %s');
-$GLOBALS['TL_LANG']['tl_iso_related_products']['editheader']		= array('Edit product', 'Edit this product');
+$GLOBALS['TL_LANG']['tl_iso_related_products']['new']                = array('Add category', 'Add a new category with products');
+$GLOBALS['TL_LANG']['tl_iso_related_products']['edit']                = array('Edit category', 'Edit category ID %s');
+$GLOBALS['TL_LANG']['tl_iso_related_products']['copy']                = array('Duplicate category', 'Duplicate category ID %s');
+$GLOBALS['TL_LANG']['tl_iso_related_products']['cut']                = array('Move category', 'Move category ID %s');
+$GLOBALS['TL_LANG']['tl_iso_related_products']['delete']            = array('Delete category', 'Delete category ID %s');
+$GLOBALS['TL_LANG']['tl_iso_related_products']['show']                = array('Category details', 'Show details of category ID %s');
+$GLOBALS['TL_LANG']['tl_iso_related_products']['editheader']        = array('Edit product', 'Edit this product');
 
 /**
  * Legends
  */
-$GLOBALS['TL_LANG']['tl_iso_related_products']['category_legend']	= 'Category';
-$GLOBALS['TL_LANG']['tl_iso_related_products']['products_legend']	= 'Related products';
+$GLOBALS['TL_LANG']['tl_iso_related_products']['category_legend']    = 'Category';
+$GLOBALS['TL_LANG']['tl_iso_related_products']['products_legend']    = 'Related products';

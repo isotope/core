@@ -24,9 +24,9 @@ $GLOBALS['TL_DCA']['tl_iso_shipping_options'] = array
     'config' => array
     (
         'dataContainer'               => 'Table',
-        'ptable'					  => 'tl_iso_shipping_modules',
+        'ptable'                      => 'tl_iso_shipping_modules',
         'enableVersioning'            => true,
-        'onload_callback'			  => array
+        'onload_callback'              => array
         (
             array('Isotope\tl_iso_shipping_options', 'loadModuleOptions'),
         ),
@@ -41,7 +41,7 @@ $GLOBALS['TL_DCA']['tl_iso_shipping_options'] = array
             'fields'                  => array('name'),
             'panelLayout'             => 'filter,search,limit',
             'headerFields'            => array('name', 'type'),
-            'disableGrouping'		  => true,
+            'disableGrouping'          => true,
             'child_record_callback'   => array('Isotope\tl_iso_shipping_options', 'listRow')
         ),
         'global_operations' => array

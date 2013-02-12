@@ -39,7 +39,7 @@ $GLOBALS['TL_DCA']['tl_iso_mail_content'] = array
             'flag'                    => 1,
             'panelLayout'             => 'filter;search,limit',
             'headerFields'            => array('name', 'senderName', 'sender'),
-            'disableGrouping'		  => true,
+            'disableGrouping'          => true,
             'child_record_callback'   => array('Isotope\tl_iso_mail_content', 'listRows'),
         ),
         'label' => array
@@ -90,9 +90,9 @@ $GLOBALS['TL_DCA']['tl_iso_mail_content'] = array
     // Palettes
     'palettes' => array
     (
-        '__selector__'	=> array('textOnly'),
-        'default'		=> '{settings_legend},language,fallback;{content_legend},subject,html,text,textOnly,attachments',
-        'textOnly'		=> '{settings_legend},language,fallback;{content_legend},subject,text,textOnly,attachments'
+        '__selector__'    => array('textOnly'),
+        'default'        => '{settings_legend},language,fallback;{content_legend},subject,html,text,textOnly,attachments',
+        'textOnly'        => '{settings_legend},language,fallback;{content_legend},subject,text,textOnly,attachments'
     ),
 
     // Fields
@@ -151,10 +151,10 @@ $GLOBALS['TL_DCA']['tl_iso_mail_content'] = array
         ),
         'attachments' => array
         (
-              'label' 				  => &$GLOBALS['TL_LANG']['tl_iso_mail_content']['attachments'],
+              'label'                   => &$GLOBALS['TL_LANG']['tl_iso_mail_content']['attachments'],
             'exclude'                 => true,
-              'inputType' 			  => 'fileTree',
-              'eval' 					  => array('mandatory'=>false, 'files'=>true, 'filesOnly'=>true,'fieldType' => 'checkbox'),
+              'inputType'               => 'fileTree',
+              'eval'                       => array('mandatory'=>false, 'files'=>true, 'filesOnly'=>true,'fieldType' => 'checkbox'),
         ),
     )
 );

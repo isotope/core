@@ -35,33 +35,33 @@ class Sparkasse extends Payment implements IsotopePayment
     {
         $objOrder = new IsotopeOrder();
 
-		if (!$objOrder->findBy('source_collection_id', $this->Isotope->Cart->id))
-		{
-			return false;
-		}
+        if (!$objOrder->findBy('source_collection_id', $this->Isotope->Cart->id))
+        {
+            return false;
+        }
 
-		if ($objOrder->date_paid > 0 && $objOrder->date_paid <= time())
-		{
-			IsotopeFrontend::clearTimeout();
-			return true;
-		}
+        if ($objOrder->date_paid > 0 && $objOrder->date_paid <= time())
+        {
+            IsotopeFrontend::clearTimeout();
+            return true;
+        }
 
-		if (IsotopeFrontend::setTimeout())
-		{
-			// Do not index or cache the page
-			global $objPage;
-			$objPage->noSearch = 1;
-			$objPage->cache = 0;
+        if (IsotopeFrontend::setTimeout())
+        {
+            // Do not index or cache the page
+            global $objPage;
+            $objPage->noSearch = 1;
+            $objPage->cache = 0;
 
-			$objTemplate = new \Isotope\Template('mod_message');
-			$objTemplate->type = 'processing';
-			$objTemplate->message = $GLOBALS['TL_LANG']['MSC']['payment_processing'];
-			return $objTemplate->parse();
-		}
+            $objTemplate = new \Isotope\Template('mod_message');
+            $objTemplate->type = 'processing';
+            $objTemplate->message = $GLOBALS['TL_LANG']['MSC']['payment_processing'];
+            return $objTemplate->parse();
+        }
 
-		$this->log('Payment could not be processed.', __METHOD__, TL_ERROR);
+        $this->log('Payment could not be processed.', __METHOD__, TL_ERROR);
 
-		$this->redirect($this->addToUrl('step=failed', true));
+        $this->redirect($this->addToUrl('step=failed', true));
     }
 
 
@@ -95,44 +95,44 @@ class Sparkasse extends Payment implements IsotopePayment
 
         $objOrder = new IsotopeOrder();
 
-		if (!$objOrder->findBy('id', $arrData['orderid']))
-		{
-			$this->log('Order ID "' . $arrData['orderid'] . '" not found', __METHOD__, TL_ERROR);
-			$this->redirectError($arrData);
-		}
+        if (!$objOrder->findBy('id', $arrData['orderid']))
+        {
+            $this->log('Order ID "' . $arrData['orderid'] . '" not found', __METHOD__, TL_ERROR);
+            $this->redirectError($arrData);
+        }
 
         // Convert amount, Sparkasse is using comma instead of dot as decimal separator
         $arrData['amount'] = str_replace(',', '.', preg_replace('/[^0-9,]/', '', $arrData['amount']));
 
-		// Validate payment data
-		if ($objOrder->currency != $arrData['currency'])
-		{
-			$this->log(sprintf('Data manipulation: currency mismatch ("%s" != "%s")', $objOrder->currency, $arrdata['currency']), __METHOD__, TL_ERROR);
-			$this->redirectError($arrData);
-		}
-		elseif ($objOrder->grandTotal != $arrData['amount'])
-		{
-    		$this->log(sprintf('Data manipulation: amount mismatch ("%s" != "%s")', $objOrder->grandTotal, $arrData['amount']), __METHOD__, TL_ERROR);
-			$this->redirectError($arrData);
-		}
+        // Validate payment data
+        if ($objOrder->currency != $arrData['currency'])
+        {
+            $this->log(sprintf('Data manipulation: currency mismatch ("%s" != "%s")', $objOrder->currency, $arrdata['currency']), __METHOD__, TL_ERROR);
+            $this->redirectError($arrData);
+        }
+        elseif ($objOrder->grandTotal != $arrData['amount'])
+        {
+            $this->log(sprintf('Data manipulation: amount mismatch ("%s" != "%s")', $objOrder->grandTotal, $arrData['amount']), __METHOD__, TL_ERROR);
+            $this->redirectError($arrData);
+        }
 
-		if (!$objOrder->checkout())
-		{
-			$this->log('Postsale checkout for order ID "' . $objOrder->id . '" failed', __METHOD__, TL_ERROR);
-			$this->redirectError($arrData);
-		}
+        if (!$objOrder->checkout())
+        {
+            $this->log('Postsale checkout for order ID "' . $objOrder->id . '" failed', __METHOD__, TL_ERROR);
+            $this->redirectError($arrData);
+        }
 
-		// Store request data in order for future references
-		$arrPayment = deserialize($objOrder->payment_data, true);
-		$arrPayment['POSTSALE'][] = $_POST;
-		$objOrder->payment_data = $arrPayment;
+        // Store request data in order for future references
+        $arrPayment = deserialize($objOrder->payment_data, true);
+        $arrPayment['POSTSALE'][] = $_POST;
+        $objOrder->payment_data = $arrPayment;
 
-		$objOrder->date_paid = time();
-		$objOrder->updateOrderStatus($this->new_order_status);
+        $objOrder->date_paid = time();
+        $objOrder->updateOrderStatus($this->new_order_status);
 
-		$objOrder->save();
+        $objOrder->save();
 
-		$objPage = $this->getPageDetails((int) $arrData['sessionid']);
+        $objPage = $this->getPageDetails((int) $arrData['sessionid']);
 
         echo 'redirecturls=' . \Environment::get('base') . $this->generateFrontendUrl($objPage->row(), '/step/complete/uid/' . $objOrder->uniqid, $objPage->language);
         exit;
@@ -160,17 +160,17 @@ class Sparkasse extends Payment implements IsotopePayment
 
         $arrParam = array
         (
-            'amount'				=> number_format($this->Isotope->Cart->grandTotal, 2, ',', ''),
-            'basketid'				=> $this->Isotope->Cart->id,
-            'command'				=> 'sslform',
-            'currency'				=> $this->Isotope->Config->currency,
-            'locale'				=> $GLOBALS['TL_LANGUAGE'],
-            'orderid'				=> $objOrder->id,
-            'paymentmethod'			=> $this->sparkasse_paymentmethod,
-            'sessionid'				=> $objPage->id,
-            'sslmerchant'			=> $this->sparkasse_sslmerchant,
-            'transactiontype'		=> ($this->trans_type == 'auth' ? 'preauthorization' : 'authorization'),
-            'version'				=> '1.5',
+            'amount'                => number_format($this->Isotope->Cart->grandTotal, 2, ',', ''),
+            'basketid'                => $this->Isotope->Cart->id,
+            'command'                => 'sslform',
+            'currency'                => $this->Isotope->Config->currency,
+            'locale'                => $GLOBALS['TL_LANGUAGE'],
+            'orderid'                => $objOrder->id,
+            'paymentmethod'            => $this->sparkasse_paymentmethod,
+            'sessionid'                => $objPage->id,
+            'sslmerchant'            => $this->sparkasse_sslmerchant,
+            'transactiontype'        => ($this->trans_type == 'auth' ? 'preauthorization' : 'authorization'),
+            'version'                => '1.5',
         );
 
         if ($this->sparkasse_merchantref != '')

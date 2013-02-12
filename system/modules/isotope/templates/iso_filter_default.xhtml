@@ -72,39 +72,39 @@ $GLOBALS['TL_CSS'][] = 'system/modules/isotope/assets/Autocompleter.min.css';
 <script type="text/javascript">
 <!--//--><![CDATA[//><!--
 window.addEvent('domready', function() {
-	var requested = false;
-	var searchField = document.id('ctrl_keywords_<?php echo $this->id; ?>').addEvent('keyup', function(e) {
-		if (requested)
-			return false;
+    var requested = false;
+    var searchField = document.id('ctrl_keywords_<?php echo $this->id; ?>').addEvent('keyup', function(e) {
+        if (requested)
+            return false;
 
-		requested = true;
+        requested = true;
 
-		new Request.JSON({
-			'url': 'ajax.php',
-			'method': 'get',
-			'data': {
-				'action': 'fmd',
-				'autocomplete': 1,
-				'pageId': <?php global $objPage; echo $objPage->id; ?>,
-				'id': <?php echo $this->id; ?>
-			},
-			onComplete: function(json) {
-				if (json && json.content)
-				{
-					new Autocompleter.Local(searchField, json.content, {
-						'minLength': 1,
-						'autoSubmit': true,
-						'selectMode': 'pick',
-						'filterSubset': true,
-						'onSelect': function(el)
-						{
-							el.getParent('form').submit();
-						}
-					}).query();
-				}
-			}
-		}).send();
-	});
+        new Request.JSON({
+            'url': 'ajax.php',
+            'method': 'get',
+            'data': {
+                'action': 'fmd',
+                'autocomplete': 1,
+                'pageId': <?php global $objPage; echo $objPage->id; ?>,
+                'id': <?php echo $this->id; ?>
+            },
+            onComplete: function(json) {
+                if (json && json.content)
+                {
+                    new Autocompleter.Local(searchField, json.content, {
+                        'minLength': 1,
+                        'autoSubmit': true,
+                        'selectMode': 'pick',
+                        'filterSubset': true,
+                        'onSelect': function(el)
+                        {
+                            el.getParent('form').submit();
+                        }
+                    }).query();
+                }
+            }
+        }).send();
+    });
 });
 //--><!]]>
 </script>

@@ -16,9 +16,9 @@
 /**
  * Fields
  */
-$GLOBALS['TL_LANG']['tl_page']['iso_config']			= array('Store Configuration', 'Select a store configuration for this page structure.');
-$GLOBALS['TL_LANG']['tl_page']['iso_setReaderJumpTo']	= array('Configure a reader page for this Isotope category', 'Every page containing a product listing module must have a reader page assigned (gets inherited).');
-$GLOBALS['TL_LANG']['tl_page']['iso_readerJumpTo']		= array('Choose the reader page', 'Select the target page products from this page should forwarded to.');
+$GLOBALS['TL_LANG']['tl_page']['iso_config']            = array('Store Configuration', 'Select a store configuration for this page structure.');
+$GLOBALS['TL_LANG']['tl_page']['iso_setReaderJumpTo']    = array('Configure a reader page for this Isotope category', 'Every page containing a product listing module must have a reader page assigned (gets inherited).');
+$GLOBALS['TL_LANG']['tl_page']['iso_readerJumpTo']        = array('Choose the reader page', 'Select the target page products from this page should forwarded to.');
 
 /**
  * Legends

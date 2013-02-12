@@ -60,8 +60,8 @@ class ModuleIsotopeTranslation extends \BackendModule
         {
             $arrFilter['filter_translation']['isotope_translation'] = array
             (
-                'module'	=> \Input::post('module'),
-                'file'		=> \Input::post('file'),
+                'module'    => \Input::post('module'),
+                'file'        => \Input::post('file'),
             );
 
             $this->Session->appendData($arrFilter);

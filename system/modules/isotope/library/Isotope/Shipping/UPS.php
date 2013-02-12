@@ -52,17 +52,17 @@ class UPS extends Shipping implements IsotopeShipping
      *
      * Should be in the format:
      * $destination = array(
-     * 	'name' => '',
-     * 	'attn' => '',
-     * 	'phone' => '1234567890',
-     * 	'address' => array(
-     * 		'street1' => '',
-     * 		'street2' => '',
-     * 		'city' => '',
-     * 		'state' => '**',
-     * 		'zip' => 12345,
-     * 		'country' => '',
-     * 	),
+     *     'name' => '',
+     *     'attn' => '',
+     *     'phone' => '1234567890',
+     *     'address' => array(
+     *         'street1' => '',
+     *         'street2' => '',
+     *         'city' => '',
+     *         'state' => '**',
+     *         'zip' => 12345,
+     *         'country' => '',
+     *     ),
      * );
      *
      * @access protected
@@ -122,55 +122,55 @@ class UPS extends Shipping implements IsotopeShipping
 
                 $arrDestination = array
                 (
-                    'name'			=> $this->Isotope->Cart->shippingAddress['firstname'] . ' ' . $this->Isotope->Cart->shippingAddress['lastname'],
-                    'phone'			=> $this->Isotope->Cart->shippingAddress['phone'],
-                    'company'		=> $this->Isotope->Cart->shippingAddress['company'],
-                    'street'		=> $this->Isotope->Cart->shippingAddress['street_1'],
-                    'street2'		=> $this->Isotope->Cart->shippingAddress['street_2'],
-                    'street3'		=> $this->Isotope->Cart->shippingAddress['street_3'],
-                    'city'			=> $this->Isotope->Cart->shippingAddress['city'],
-                    'state'			=> $arrSubDivisionShipping[1],
-                    'zip'			=> $this->Isotope->Cart->shippingAddress['postal'],
-                    'country'		=> $this->Isotope->Cart->shippingAddress['country']
+                    'name'            => $this->Isotope->Cart->shippingAddress['firstname'] . ' ' . $this->Isotope->Cart->shippingAddress['lastname'],
+                    'phone'            => $this->Isotope->Cart->shippingAddress['phone'],
+                    'company'        => $this->Isotope->Cart->shippingAddress['company'],
+                    'street'        => $this->Isotope->Cart->shippingAddress['street_1'],
+                    'street2'        => $this->Isotope->Cart->shippingAddress['street_2'],
+                    'street3'        => $this->Isotope->Cart->shippingAddress['street_3'],
+                    'city'            => $this->Isotope->Cart->shippingAddress['city'],
+                    'state'            => $arrSubDivisionShipping[1],
+                    'zip'            => $this->Isotope->Cart->shippingAddress['postal'],
+                    'country'        => $this->Isotope->Cart->shippingAddress['country']
                 );
 
                 $arrSubDivisionStore = explode(',',$this->Isotope->Config->subdivision);
 
                 $arrOrigin = array
                 (
-                    'name'			=> $this->Isotope->Config->firstname . ' ' . $this->Isotope->Config->lastname,
-                    'phone'			=> $this->Isotope->Config->phone,
-                    'company'		=> $this->Isotope->Config->company,
-                    'street'		=> $this->Isotope->Config->street_1,
-                    'street2'		=> $this->Isotope->Config->street_2,
-                    'street3'		=> $this->Isotope->Config->street_3,
-                    'city'			=> $this->Isotope->Config->city,
-                    'state'			=> $arrSubDivisionStore[1],
-                    'zip'			=> $this->Isotope->Config->postal,
-                    'country'		=> $this->Isotope->Config->country
+                    'name'            => $this->Isotope->Config->firstname . ' ' . $this->Isotope->Config->lastname,
+                    'phone'            => $this->Isotope->Config->phone,
+                    'company'        => $this->Isotope->Config->company,
+                    'street'        => $this->Isotope->Config->street_1,
+                    'street2'        => $this->Isotope->Config->street_2,
+                    'street3'        => $this->Isotope->Config->street_3,
+                    'city'            => $this->Isotope->Config->city,
+                    'state'            => $arrSubDivisionStore[1],
+                    'zip'            => $this->Isotope->Config->postal,
+                    'country'        => $this->Isotope->Config->country
                 );
 
-                $arrShipment['service'] = ((integer) $this->ups_enabledService < 10 ? "0" . $this->ups_enabledService : $this->ups_enabledService);		//Ground for now
+                $arrShipment['service'] = ((integer) $this->ups_enabledService < 10 ? "0" . $this->ups_enabledService : $this->ups_enabledService);        //Ground for now
 
 
-                $arrShipment['pickup_type']	= array
+                $arrShipment['pickup_type']    = array
                 (
-                    'code'			=> '03',		//default to one-time, but needs perhaps to be chosen by store admin.
-                    'description'	=> ''
+                    'code'            => '03',        //default to one-time, but needs perhaps to be chosen by store admin.
+                    'description'    => ''
                 );
 
                 $fltWeight = $this->Isotope->Cart->getShippingWeight('lb');
 
                 $arrShipment['packages'][] = array
                 (
-                    'packaging'		=> array
+                    'packaging'        => array
                     (
-                        'code'			=> '02',	//counter
-                        'description'	=> ''
+                        'code'            => '02',    //counter
+                        'description'    => ''
                     ),
-                    'description'	=> '',
-                    'units'			=> 'LBS',
-                    'weight'		=> ceil($fltWeight),
+                    'description'    => '',
+                    'units'            => 'LBS',
+                    'weight'        => ceil($fltWeight),
 
                 );
 
@@ -179,7 +179,7 @@ class UPS extends Shipping implements IsotopeShipping
 
                 $this->shipment = $arrShipment;
 
-                $this->shipper = $arrOrigin;	//FOR NOW, This is assumed to be the same for origin and shipping info
+                $this->shipper = $arrOrigin;    //FOR NOW, This is assumed to be the same for origin and shipping info
                 $this->ship_from = $arrOrigin;  //FOR NOW, This is assumed to be the same for origin and shipping info.  Could be used to ship from multiple fulfillment places, drop shipping, etc.
 
                 $this->destination = $arrDestination;
@@ -195,7 +195,7 @@ class UPS extends Shipping implements IsotopeShipping
 
     public function calculateShippingRate()
     {
-        if($_SESSION['CHECKOUT_DATA']['shipping']['modules'][$this->id]['price'])	//to avoid calling the CURL multiple times which slows us down.
+        if($_SESSION['CHECKOUT_DATA']['shipping']['modules'][$this->id]['price'])    //to avoid calling the CURL multiple times which slows us down.
         {
              $fltPrice = $_SESSION['CHECKOUT_DATA']['shipping']['modules'][$this->id]['price'];
         }

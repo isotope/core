@@ -16,20 +16,20 @@
 /**
  * Fields
  */
-$GLOBALS['TL_LANG']['tl_iso_related_categories']['name']			= array('Category name', 'Please enter a name for this category.');
-$GLOBALS['TL_LANG']['tl_iso_related_categories']['jumpTo']			= array('Redirect page', 'Select the page where product reader is available. If you don\'t select one, the current page will be used.');
+$GLOBALS['TL_LANG']['tl_iso_related_categories']['name']            = array('Category name', 'Please enter a name for this category.');
+$GLOBALS['TL_LANG']['tl_iso_related_categories']['jumpTo']            = array('Redirect page', 'Select the page where product reader is available. If you don\'t select one, the current page will be used.');
 
 /**
  * Buttons
  */
-$GLOBALS['TL_LANG']['tl_iso_related_categories']['new']				= array('New category', 'Create a new category');
-$GLOBALS['TL_LANG']['tl_iso_related_categories']['edit']			= array('Edit category', 'Edit category ID %s');
-$GLOBALS['TL_LANG']['tl_iso_related_categories']['copy']			= array('Duplicate category', 'Duplicate category ID %s');
-$GLOBALS['TL_LANG']['tl_iso_related_categories']['delete']			= array('Delete category', 'Delete category ID %s');
-$GLOBALS['TL_LANG']['tl_iso_related_categories']['show']			= array('Category details', 'Show details of category ID %s');
+$GLOBALS['TL_LANG']['tl_iso_related_categories']['new']                = array('New category', 'Create a new category');
+$GLOBALS['TL_LANG']['tl_iso_related_categories']['edit']            = array('Edit category', 'Edit category ID %s');
+$GLOBALS['TL_LANG']['tl_iso_related_categories']['copy']            = array('Duplicate category', 'Duplicate category ID %s');
+$GLOBALS['TL_LANG']['tl_iso_related_categories']['delete']            = array('Delete category', 'Delete category ID %s');
+$GLOBALS['TL_LANG']['tl_iso_related_categories']['show']            = array('Category details', 'Show details of category ID %s');
 
 /**
  * Legends
  */
-$GLOBALS['TL_LANG']['tl_iso_related_categories']['name_legend']		= 'Name';
-$GLOBALS['TL_LANG']['tl_iso_related_categories']['redirect_legend']	= 'Redirect settings';
+$GLOBALS['TL_LANG']['tl_iso_related_categories']['name_legend']        = 'Name';
+$GLOBALS['TL_LANG']['tl_iso_related_categories']['redirect_legend']    = 'Redirect settings';

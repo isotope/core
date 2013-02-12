@@ -271,26 +271,26 @@ $strBuffer .= '<th style="text-align:center"><img src="system/themes/default/ima
                     {
                         $varValue = $objWidget->value;
 
-						if (is_array($GLOBALS['TL_DCA']['tl_iso_products']['fields'][$key]['save_callback']))
-						{
-							foreach ($GLOBALS['TL_DCA']['tl_iso_products']['fields'][$key]['save_callback'] as $callback)
-							{
-								$this->import($callback[0]);
+                        if (is_array($GLOBALS['TL_DCA']['tl_iso_products']['fields'][$key]['save_callback']))
+                        {
+                            foreach ($GLOBALS['TL_DCA']['tl_iso_products']['fields'][$key]['save_callback'] as $callback)
+                            {
+                                $this->import($callback[0]);
 
-								try
-								{
-									$varValue = $this->$callback[0]->$callback[1]($varValue);
-								}
-								catch (Exception $e)
-								{
-									$objWidget->addError($e->getMessage());
-									$doNotSubmit = true;
-									$globalDoNotSubmit = true;
-								}
-							}
-						}
+                                try
+                                {
+                                    $varValue = $this->$callback[0]->$callback[1]($varValue);
+                                }
+                                catch (Exception $e)
+                                {
+                                    $objWidget->addError($e->getMessage());
+                                    $doNotSubmit = true;
+                                    $globalDoNotSubmit = true;
+                                }
+                            }
+                        }
 
-						$arrSet[$key] = $varValue;
+                        $arrSet[$key] = $varValue;
                     }
                 }
             }
@@ -632,11 +632,11 @@ $strBuffer .= '<th style="text-align:center"><img src="system/themes/default/ima
             // Keep field settings made through DCA code
             $arrData = is_array($GLOBALS['TL_DCA']['tl_iso_products']['fields'][$objAttributes->field_name]) ? $GLOBALS['TL_DCA']['tl_iso_products']['fields'][$objAttributes->field_name] : array();
 
-            $arrData['label']		= $this->Isotope->translate(array($objAttributes->name, $objAttributes->description));
-            $arrData['exclude']		= true;
-            $arrData['inputType']	= ((TL_MODE == 'BE' && $GLOBALS['ISO_ATTR'][$objAttributes->type]['backend'] != '') ? $GLOBALS['ISO_ATTR'][$objAttributes->type]['backend'] : ((TL_MODE == 'FE' && $GLOBALS['ISO_ATTR'][$objAttributes->type]['frontend'] != '') ? $GLOBALS['ISO_ATTR'][$objAttributes->type]['frontend'] : $objAttributes->type));
-            $arrData['attributes']	= $objAttributes->row();
-            $arrData['eval']		= is_array($arrData['eval']) ? array_merge($arrData['eval'], $arrData['attributes']) : $arrData['attributes'];
+            $arrData['label']        = $this->Isotope->translate(array($objAttributes->name, $objAttributes->description));
+            $arrData['exclude']        = true;
+            $arrData['inputType']    = ((TL_MODE == 'BE' && $GLOBALS['ISO_ATTR'][$objAttributes->type]['backend'] != '') ? $GLOBALS['ISO_ATTR'][$objAttributes->type]['backend'] : ((TL_MODE == 'FE' && $GLOBALS['ISO_ATTR'][$objAttributes->type]['frontend'] != '') ? $GLOBALS['ISO_ATTR'][$objAttributes->type]['frontend'] : $objAttributes->type));
+            $arrData['attributes']    = $objAttributes->row();
+            $arrData['eval']        = is_array($arrData['eval']) ? array_merge($arrData['eval'], $arrData['attributes']) : $arrData['attributes'];
 
             if ($objAttributes->be_filter)
             {
@@ -680,11 +680,11 @@ $strBuffer .= '<th style="text-align:center"><img src="system/themes/default/ima
                 $arrData['save_callback'][] = array('Isotope\Frontend', 'saveUpload');
             }
 
-			// Media Manager must fetch fallback
-			if ($objAttributes->type == 'mediaManager')
-			{
-				$arrData['attributes']['fetch_fallback'] = true;
-			}
+            // Media Manager must fetch fallback
+            if ($objAttributes->type == 'mediaManager')
+            {
+                $arrData['attributes']['fetch_fallback'] = true;
+            }
 
             // Parse multiline/multilingual foreignKey
             $objAttributes->foreignKey = $this->parseForeignKey($objAttributes->foreignKey, $GLOBALS['TL_LANGUAGE']);
@@ -775,10 +775,10 @@ $strBuffer .= '<th style="text-align:center"><img src="system/themes/default/ima
                 $GLOBALS['ISO_CONFIG']['multilingual'][] = $attribute;
             }
 
-			if ($config['attributes']['fetch_fallback'])
-			{
-    			$GLOBALS['ISO_CONFIG']['fetch_fallback'][] = $attribute;
-			}
+            if ($config['attributes']['fetch_fallback'])
+            {
+                $GLOBALS['ISO_CONFIG']['fetch_fallback'][] = $attribute;
+            }
 
             if ($config['attributes']['dynamic'] || $config['eval']['multiple'])
             {

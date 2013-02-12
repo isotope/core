@@ -45,14 +45,14 @@ class tl_iso_groups extends \Backend
         {
             $arrGroups = $this->User->iso_groups;
 
-    		if (!is_array($arrGroups) || empty($arrGroups))
-    		{
-        		$GLOBALS['TL_DCA']['tl_iso_groups']['list']['sorting']['filter'][] = array('id=?', 0);
-    		}
-    		else
-    		{
-    			$GLOBALS['TL_DCA']['tl_iso_groups']['list']['sorting']['root'] = $arrGroups;
-    		}
+            if (!is_array($arrGroups) || empty($arrGroups))
+            {
+                $GLOBALS['TL_DCA']['tl_iso_groups']['list']['sorting']['filter'][] = array('id=?', 0);
+            }
+            else
+            {
+                $GLOBALS['TL_DCA']['tl_iso_groups']['list']['sorting']['root'] = $arrGroups;
+            }
 
             return;
         }
@@ -91,24 +91,24 @@ class tl_iso_groups extends \Backend
      */
     public function addIcon($row, $label, \DataContainer $dc=null, $imageAttribute='', $blnReturnImage=false)
     {
-		if ($dc->table == 'tl_iso_products')
-		{
-			return $this->generateImage('system/modules/isotope/html/folder-network.png', '', $imageAttribute) . ' <span style="font-weight:bold">' . $label . '</span>';
-		}
-		else
-		{
-			$strProductType = '';
+        if ($dc->table == 'tl_iso_products')
+        {
+            return $this->generateImage('system/modules/isotope/html/folder-network.png', '', $imageAttribute) . ' <span style="font-weight:bold">' . $label . '</span>';
+        }
+        else
+        {
+            $strProductType = '';
 
-			if (($intProductType = \Isotope\Backend::getProductTypeForGroup($row['id'])) !== false)
-			{
-				$strProductType = $this->Database->execute("SELECT name FROM tl_iso_producttypes WHERE id=" . $intProductType)->name;
-				$strProductType = ' <span style="color:#b3b3b3; padding-left:3px;">[' . $strProductType . ']</span>';
-			}
+            if (($intProductType = \Isotope\Backend::getProductTypeForGroup($row['id'])) !== false)
+            {
+                $strProductType = $this->Database->execute("SELECT name FROM tl_iso_producttypes WHERE id=" . $intProductType)->name;
+                $strProductType = ' <span style="color:#b3b3b3; padding-left:3px;">[' . $strProductType . ']</span>';
+            }
 
-			return $this->generateImage('system/modules/isotope/html/folder-network.png', '', $imageAttribute) . ' ' . $label . $strProductType;
-		}
+            return $this->generateImage('system/modules/isotope/html/folder-network.png', '', $imageAttribute) . ' ' . $label . $strProductType;
+        }
 
-		return ;
+        return ;
     }
 
 

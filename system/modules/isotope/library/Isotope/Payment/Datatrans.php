@@ -57,10 +57,10 @@ class Datatrans extends Payment implements IsotopePayment
         // For maximum security, also validate individual parameters
         if (!$this->validateParameters(array
         (
-            'refno'		=> $objOrder->id,
-            'currency'	=> $objOrder->currency,
-            'amount'	=> round($objOrder->grandTotal * 100),
-            'reqtype'	=> ($this->trans_type == 'auth' ? 'NOA' : 'CAA'),
+            'refno'        => $objOrder->id,
+            'currency'    => $objOrder->currency,
+            'amount'    => round($objOrder->grandTotal * 100),
+            'reqtype'    => ($this->trans_type == 'auth' ? 'NOA' : 'CAA'),
         )))
         {
             return false;
@@ -134,28 +134,28 @@ class Datatrans extends Payment implements IsotopePayment
 
         $arrParams = array
         (
-            'merchantId'			=> $this->datatrans_id,
-            'amount'				=> round($this->Isotope->Cart->grandTotal * 100),
-            'currency'				=> $this->Isotope->Config->currency,
-            'refno'					=> $objOrder->id,
-            'language'				=> $GLOBALS['TL_LANGUAGE'],
-            'reqtype'				=> ($this->trans_type == 'auth' ? 'NOA' : 'CAA'),
-            'uppCustomerDetails'	=> 'yes',
-            'uppCustomerTitle'		=> $arrAddress['salutation'],
-            'uppCustomerFirstName'	=> $arrAddress['firstname'],
-            'uppCustomerLastName'	=> $arrAddress['lastname'],
-            'uppCustomerStreet'		=> $arrAddress['street_1'],
-            'uppCustomerStreet2'	=> $arrAddress['street_2'],
-            'uppCustomerCity'		=> $arrAddress['city'],
-            'uppCustomerCountry'	=> $arrAddress['country'],
-            'uppCustomerZipCode'	=> $arrAddress['postal'],
-            'uppCustomerPhone'		=> $arrAddress['phone'],
-            'uppCustomerEmail'		=> $arrAddress['email'],
-            'successUrl'			=> ampersand(\Environment::get('base') . $this->addToUrl('step=complete', true)),
-            'errorUrl'				=> ampersand(\Environment::get('base') . $this->addToUrl('step=failed', true)),
-            'cancelUrl'				=> ampersand(\Environment::get('base') . $this->addToUrl('step=failed', true)),
-            'mod'					=> 'pay',
-            'id'					=> $this->id,
+            'merchantId'            => $this->datatrans_id,
+            'amount'                => round($this->Isotope->Cart->grandTotal * 100),
+            'currency'                => $this->Isotope->Config->currency,
+            'refno'                    => $objOrder->id,
+            'language'                => $GLOBALS['TL_LANGUAGE'],
+            'reqtype'                => ($this->trans_type == 'auth' ? 'NOA' : 'CAA'),
+            'uppCustomerDetails'    => 'yes',
+            'uppCustomerTitle'        => $arrAddress['salutation'],
+            'uppCustomerFirstName'    => $arrAddress['firstname'],
+            'uppCustomerLastName'    => $arrAddress['lastname'],
+            'uppCustomerStreet'        => $arrAddress['street_1'],
+            'uppCustomerStreet2'    => $arrAddress['street_2'],
+            'uppCustomerCity'        => $arrAddress['city'],
+            'uppCustomerCountry'    => $arrAddress['country'],
+            'uppCustomerZipCode'    => $arrAddress['postal'],
+            'uppCustomerPhone'        => $arrAddress['phone'],
+            'uppCustomerEmail'        => $arrAddress['email'],
+            'successUrl'            => ampersand(\Environment::get('base') . $this->addToUrl('step=complete', true)),
+            'errorUrl'                => ampersand(\Environment::get('base') . $this->addToUrl('step=failed', true)),
+            'cancelUrl'                => ampersand(\Environment::get('base') . $this->addToUrl('step=failed', true)),
+            'mod'                    => 'pay',
+            'id'                    => $this->id,
         );
 
         // Security signature (see Security Level 2)

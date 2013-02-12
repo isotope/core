@@ -145,13 +145,13 @@ class AddressBook extends Module
 
             $arrAddresses[] = array_merge($objAddress->getData(), array
             (
-                'id'				=> $objAddress->id,
-                'class'				=> (($objAddress->isDefaultBilling ? 'default_billing' : '') . ($objAddress->isDefaultShipping ? ' default_shipping' : '')),
-                'text'				=> $objAddress->generateHtml(),
-                'edit_url'			=> ampersand($strUrl . 'act=edit&address=' . $objAddress->id),
-                'delete_url'		=> ampersand($strUrl . 'act=delete&address=' . $objAddress->id),
-                'default_billing'	=> ($objAddress->isDefaultBilling ? true : false),
-                'default_shipping'	=> ($objAddress->isDefaultShipping ? true : false),
+                'id'                => $objAddress->id,
+                'class'                => (($objAddress->isDefaultBilling ? 'default_billing' : '') . ($objAddress->isDefaultShipping ? ' default_shipping' : '')),
+                'text'                => $objAddress->generateHtml(),
+                'edit_url'            => ampersand($strUrl . 'act=edit&address=' . $objAddress->id),
+                'delete_url'        => ampersand($strUrl . 'act=delete&address=' . $objAddress->id),
+                'default_billing'    => ($objAddress->isDefaultBilling ? true : false),
+                'default_shipping'    => ($objAddress->isDefaultShipping ? true : false),
             ));
         }
 

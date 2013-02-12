@@ -121,14 +121,14 @@ class ProductList extends Module
      */
     protected function compile()
     {
-		// return message if no filter is set
-		if ($this->iso_emptyFilter && !\Input::get('isorc') && !\Input::get('keywords'))
-		{
-			$this->Template->message = $this->replaceInsertTags($this->iso_noFilter);
-			$this->Template->type = 'noFilter';
-			$this->Template->products = array();
-			return;
-		}
+        // return message if no filter is set
+        if ($this->iso_emptyFilter && !\Input::get('isorc') && !\Input::get('keywords'))
+        {
+            $this->Template->message = $this->replaceInsertTags($this->iso_noFilter);
+            $this->Template->type = 'noFilter';
+            $this->Template->products = array();
+            return;
+        }
 
         global $objPage;
         $arrProducts = null;
@@ -261,7 +261,7 @@ class ProductList extends Module
             $this->Template->empty = true;
             $this->Template->type = 'empty';
             $this->Template->message = $this->iso_emptyMessage ? $this->iso_noProducts : $GLOBALS['TL_LANG']['MSC']['noProducts'];
-			$this->Template->products = array();
+            $this->Template->products = array();
 
             return;
         }
@@ -283,9 +283,9 @@ class ProductList extends Module
 
             $arrBuffer[] = array
             (
-                'cssID'	=> ($objProduct->cssID[0] != '') ? ' id="' . $objProduct->cssID[0] . '"' : '',
-                'class'	=> $objProduct->cssID[1],
-                'html'	=> $objProduct->generate((strlen($this->iso_list_layout) ? $this->iso_list_layout : $objProduct->list_template), $this),
+                'cssID'    => ($objProduct->cssID[0] != '') ? ' id="' . $objProduct->cssID[0] . '"' : '',
+                'class'    => $objProduct->cssID[1],
+                'html'    => $objProduct->generate((strlen($this->iso_list_layout) ? $this->iso_list_layout : $objProduct->list_template), $this),
             );
         }
 

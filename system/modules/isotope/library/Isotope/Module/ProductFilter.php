@@ -206,10 +206,10 @@ class ProductFilter extends Module
                     {
                         $GLOBALS['ISO_FILTERS'][$this->id][] = array
                         (
-                            'group'		=> ('keyword: '.$keyword),
-                            'operator'	=> 'search',
-                            'attribute'	=> $field,
-                            'value'		=> $keyword,
+                            'group'        => ('keyword: '.$keyword),
+                            'operator'    => 'search',
+                            'attribute'    => $field,
+                            'value'        => $keyword,
                         );
                     }
                 }
@@ -260,9 +260,9 @@ class ProductFilter extends Module
                 {
                     $GLOBALS['ISO_FILTERS'][$this->id][$strField] = array
                     (
-                        'operator'		=> '==',
-                        'attribute'		=> $strField,
-                        'value'			=> $arrInput[$strField],
+                        'operator'        => '==',
+                        'attribute'        => $strField,
+                        'value'            => $arrInput[$strField],
                     );
                 }
 
@@ -321,7 +321,7 @@ class ProductFilter extends Module
                     }
 
                     // Hide fields with just one option (if enabled)
-					if ($this->iso_filterHideSingle && count($arrWidget['options']) < 2)
+                    if ($this->iso_filterHideSingle && count($arrWidget['options']) < 2)
                     {
                         continue;
                     }
@@ -388,16 +388,16 @@ class ProductFilter extends Module
 
                     $arrOptions[] = array
                     (
-                        'label'		=> ($this->Isotope->formatLabel('tl_iso_products', $field) . ', ' . $asc),
-                        'value'		=> $field.':ASC',
-                        'default'	=> ((is_array($GLOBALS['ISO_SORTING'][$this->id]) && $GLOBALS['ISO_SORTING'][$this->id][$field][0] == SORT_ASC) ? '1' : ''),
+                        'label'        => ($this->Isotope->formatLabel('tl_iso_products', $field) . ', ' . $asc),
+                        'value'        => $field.':ASC',
+                        'default'    => ((is_array($GLOBALS['ISO_SORTING'][$this->id]) && $GLOBALS['ISO_SORTING'][$this->id][$field][0] == SORT_ASC) ? '1' : ''),
                     );
 
                     $arrOptions[] = array
                     (
-                        'label'		=> ($this->Isotope->formatLabel('tl_iso_products', $field) . ', ' . $desc),
-                        'value'		=> $field.':DESC',
-                        'default'	=> ((is_array($GLOBALS['ISO_SORTING'][$this->id]) && $GLOBALS['ISO_SORTING'][$this->id][$field][0] == SORT_DESC) ? '1' : ''),
+                        'label'        => ($this->Isotope->formatLabel('tl_iso_products', $field) . ', ' . $desc),
+                        'value'        => $field.':DESC',
+                        'default'    => ((is_array($GLOBALS['ISO_SORTING'][$this->id]) && $GLOBALS['ISO_SORTING'][$this->id][$field][0] == SORT_DESC) ? '1' : ''),
                     );
                 }
             }
@@ -447,9 +447,9 @@ class ProductFilter extends Module
                 {
                     $arrOptions[] = array
                     (
-                        'label'		=> $limit,
-                        'value'		=> $limit,
-                        'default'	=> ($intLimit == $limit ? '1' : ''),
+                        'label'        => $limit,
+                        'value'        => $limit,
+                        'default'    => ($intLimit == $limit ? '1' : ''),
                     );
                 }
 

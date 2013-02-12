@@ -820,10 +820,10 @@ abstract class Collection extends \Model
         }
 
         // Load language files for the order
-		if ($this->language != '')
-		{
-    		$this->loadLanguageFile('default', $this->language);
-		}
+        if ($this->language != '')
+        {
+            $this->loadLanguageFile('default', $this->language);
+        }
 
         $objTemplate = new \Isotope\Template($this->strTemplate);
         $objTemplate->setData($this->arrData);
@@ -979,9 +979,9 @@ abstract class Collection extends \Model
             $pdf->SetAuthor(PDF_AUTHOR);
 
 // @todo $objInvoice is not defined
-//			$pdf->SetTitle($objInvoice->title);
-//			$pdf->SetSubject($objInvoice->title);
-//			$pdf->SetKeywords($objInvoice->keywords);
+//            $pdf->SetTitle($objInvoice->title);
+//            $pdf->SetSubject($objInvoice->title);
+//            $pdf->SetKeywords($objInvoice->keywords);
 
             // Remove default header/footer
             $pdf->setPrintHeader(false);

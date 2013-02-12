@@ -14,14 +14,14 @@
 <select name="module" id="module" class="tl_select<?php echo $this->moduleClass; ?>" onChange="document.tl_select_translation.submit();">
   <option value="">Modul</option>
 <?php foreach( $this->modules as $module ): ?>
-	<option value="<?php echo $module['value']; ?>"<?php echo $module['default'] ? ' selected="selected"' : ''; ?>><?php echo $module['label']; ?></option>
+    <option value="<?php echo $module['value']; ?>"<?php echo $module['default'] ? ' selected="selected"' : ''; ?>><?php echo $module['label']; ?></option>
 <?php endforeach; ?>
 </select>
 
 <select name="file" id="file" class="tl_select<?php echo $this->fileClass; ?>" onChange="document.tl_select_translation.submit();">
-	<option value="">-File-</option>
+    <option value="">-File-</option>
 <?php foreach( $this->files as $file ): ?>
-	<option value="<?php echo $file['value']; ?>"<?php echo $file['default'] ? ' selected="selected"' : ''; ?>><?php echo $file['label']; ?></option>
+    <option value="<?php echo $file['value']; ?>"<?php echo $file['default'] ? ' selected="selected"' : ''; ?>><?php echo $file['label']; ?></option>
 <?php endforeach; ?>
 </select>
 
@@ -48,11 +48,11 @@
 <table cellpadding="0" cellspacing="0" class="tl_listing" summary="Table lists records">
 
 <?php foreach ( $this->source as $key => $value): ?>
-	  <tr onmouseover="Theme.hoverRow(this, 1);" onmouseout="Theme.hoverRow(this, 0);">
+      <tr onmouseover="Theme.hoverRow(this, 1);" onmouseout="Theme.hoverRow(this, 0);">
     <td class="tl_file_list" style="width: 48%"><?php echo htmlspecialchars($value, ENT_COMPAT, 'UTF-8'); ?></td>
     <td class="tl_file_list" style="width: 2%">=</td>
     <td class="tl_file_list" style="width: 48%"><?php if(strlen($value)>50):?><textarea name="<?php echo standardize($key); ?>" class="tl_text" onfocus="Backend.getScrollOffset();" style="height:60px;overflow:auto;"><?php echo str_replace(array('"', '\n'), array('&quot;', "\n"), $this->translation[$key]); ?></textarea><?php else: ?><input type="text" name="<?php echo standardize($key); ?>" class="tl_text" value="<?php echo str_replace('"', '&quot;', $this->translation[$key]); ?>" onfocus="Backend.getScrollOffset();"><?php endif; ?></td>
-	<td class="tl_file_list" style="width: 2%"><a title="<?php echo $key; ?>"><img src="system/themes/<?php echo $this->theme; ?>/images/show.gif" alt=""></a></td>
+    <td class="tl_file_list" style="width: 2%"><a title="<?php echo $key; ?>"><img src="system/themes/<?php echo $this->theme; ?>/images/show.gif" alt=""></a></td>
   </tr>
 <?php endforeach; ?>
 

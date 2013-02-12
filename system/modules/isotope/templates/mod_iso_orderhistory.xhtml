@@ -7,21 +7,21 @@
 <?php endif; ?>
 
 <table cellspacing="0" cellpadding="0" summary="Shop Orders">
-	<tr>
-		<th><?php echo $this->dateLabel; ?></th>
-		<th><?php echo $this->quantityLabel; ?></th>
-		<th><?php echo $this->subTotalLabel; ?></th>
-		<th><?php echo $this->statusLabel; ?></th>
-		<th>&nbsp;</th>
-	</tr>
+    <tr>
+        <th><?php echo $this->dateLabel; ?></th>
+        <th><?php echo $this->quantityLabel; ?></th>
+        <th><?php echo $this->subTotalLabel; ?></th>
+        <th><?php echo $this->statusLabel; ?></th>
+        <th>&nbsp;</th>
+    </tr>
 <?php foreach( $this->orders as $order ): ?>
-	<tr class="<?php echo $order['class']; ?>">
-		<td class="col_0 col_first"><?php echo $order['date']; ?></td>
-		<td class="col_1"><?php echo $order['items']; ?></td>
-		<td class="col_2"><?php echo $order['grandTotal']; ?></td>
-		<td class="col_3"><?php echo $order['status']; ?></td>
-		<td class="col_4 col_last"><?php if (strlen($order['link'])): ?><a href="<?php echo $order['link']; ?>"><?php echo $this->detailsLabel; ?></a><?php endif; ?></td>
-	</tr>
+    <tr class="<?php echo $order['class']; ?>">
+        <td class="col_0 col_first"><?php echo $order['date']; ?></td>
+        <td class="col_1"><?php echo $order['items']; ?></td>
+        <td class="col_2"><?php echo $order['grandTotal']; ?></td>
+        <td class="col_3"><?php echo $order['status']; ?></td>
+        <td class="col_4 col_last"><?php if (strlen($order['link'])): ?><a href="<?php echo $order['link']; ?>"><?php echo $this->detailsLabel; ?></a><?php endif; ?></td>
+    </tr>
 <?php endforeach; ?>
 </table>
 

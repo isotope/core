@@ -16,5 +16,5 @@
 /**
  * Buttons
  */
-$GLOBALS['TL_LANG']['tl_iso_product_categories']['cut']			= array('Move product', 'Move product ID %s');
-$GLOBALS['TL_LANG']['tl_iso_product_categories']['pasteafter']	= array('Paste at the top', 'Paste after product ID %s');
+$GLOBALS['TL_LANG']['tl_iso_product_categories']['cut']            = array('Move product', 'Move product ID %s');
+$GLOBALS['TL_LANG']['tl_iso_product_categories']['pasteafter']    = array('Paste at the top', 'Paste after product ID %s');

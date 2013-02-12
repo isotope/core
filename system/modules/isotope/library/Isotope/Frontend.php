@@ -173,8 +173,8 @@ class Frontend extends \Frontend
         elseif ($arrTag[0] == 'product')
         {
             // 2 possible use cases:
-            // {{product::attribute}}				- gets the data of the current product (GET parameter "product")
-            // {{product::attribute::product_id}}	- gets the data of the specified product ID
+            // {{product::attribute}}                - gets the data of the current product (GET parameter "product")
+            // {{product::attribute::product_id}}    - gets the data of the specified product ID
 
             $objProduct = (count($arrTag) == 3) ? self::getProduct($arrTag[2]) : self::getProductByAlias(\Input::get('product'));
 
@@ -569,7 +569,7 @@ $endScript";
      * Useful if you want to give the user the possibility to use a custom form for a certain action (e.g. order conditions)
      * @param integer Database ID
      * @param string Form ID (FORM SUBMIT)
-     * @param array	Form config that gets merged with the form data from the database
+     * @param array    Form config that gets merged with the form data from the database
      * @return object|null
      */
     public function prepareForm($intId, $strFormId, $arrConfig=array())
@@ -579,12 +579,12 @@ $endScript";
 
         $objForm = new stdClass();
         $objForm->arrHidden     = array();
-        $objForm->arrFields	    = array();
+        $objForm->arrFields        = array();
         $objForm->arrFormData   = array();
         $objForm->arrFiles      = array();
         $objForm->blnSubmitted  = false;
         $objForm->blnHasErrors  = false;
-        $objForm->blnHasUploads	= false;
+        $objForm->blnHasUploads    = false;
 
         $objForm->arrData = array_merge($this->Database->execute("SELECT * FROM tl_form WHERE id=".(int) $intId)->fetchAssoc(), $arrConfig);
 
@@ -673,7 +673,7 @@ $endScript";
                 // Store file uploads
                 elseif ($objWidget instanceof \uploadable)
                 {
-                    $objForm->arrFiles[$objFields->name]	= $_SESSION['FILES'][$objFields->name];
+                    $objForm->arrFiles[$objFields->name]    = $_SESSION['FILES'][$objFields->name];
                 }
 
                 unset($_POST[$objFields->name]);
@@ -687,11 +687,11 @@ $endScript";
             if ($objWidget instanceof \FormHidden)
             {
                 --$max_row;
-                $objForm->arrHidden[$arrData['name']]	= $objWidget;
+                $objForm->arrHidden[$arrData['name']]    = $objWidget;
                 continue;
             }
 
-            $objForm->arrFields[$arrData['name']]		= $objWidget;
+            $objForm->arrFields[$arrData['name']]        = $objWidget;
 
             ++$row;
         }
@@ -1240,9 +1240,9 @@ $endScript";
 
         foreach ($arrSurcharges as $k => $arrSurcharge)
         {
-            $arrSurcharges[$k]['price']			= $Isotope->formatPriceWithCurrency($arrSurcharge['price']);
-            $arrSurcharges[$k]['total_price']	= $Isotope->formatPriceWithCurrency($arrSurcharge['total_price']);
-            $arrSurcharges[$k]['rowClass']		= trim('foot_'.(++$i) . ' ' . $arrSurcharge[$k]['rowClass']);
+            $arrSurcharges[$k]['price']            = $Isotope->formatPriceWithCurrency($arrSurcharge['price']);
+            $arrSurcharges[$k]['total_price']    = $Isotope->formatPriceWithCurrency($arrSurcharge['total_price']);
+            $arrSurcharges[$k]['rowClass']        = trim('foot_'.(++$i) . ' ' . $arrSurcharge[$k]['rowClass']);
         }
 
         return $arrSurcharges;
@@ -1255,23 +1255,23 @@ $endScript";
      * @param int root page id
      * @return array extended array of absolute page urls
      */
-	public function addProductsToSearchIndex($arrPages, $intRoot=0, $blnSitemap=false, $strLanguage=null)
-	{
-		$time = time();
-		$arrJump = array();
-		$arrRoot = array();
-		$strAllowedPages = '';
+    public function addProductsToSearchIndex($arrPages, $intRoot=0, $blnSitemap=false, $strLanguage=null)
+    {
+        $time = time();
+        $arrJump = array();
+        $arrRoot = array();
+        $strAllowedPages = '';
 
-		// if we have a root page id (sitemap.xml e.g.) we have to make sure we only consider categories in this tree
-		if ($intRoot > 0)
-		{
-			$strAllowedPages = ' AND c.page_id IN (' . implode(',', $this->Database->getChildRecords($intRoot, 'tl_page', false)) . ')';
-		}
+        // if we have a root page id (sitemap.xml e.g.) we have to make sure we only consider categories in this tree
+        if ($intRoot > 0)
+        {
+            $strAllowedPages = ' AND c.page_id IN (' . implode(',', $this->Database->getChildRecords($intRoot, 'tl_page', false)) . ')';
+        }
 
-	    $objProducts = $this->Database->query("
-	        SELECT tl_page.*, p.id AS product_id, p.alias AS product_alias FROM tl_iso_product_categories c
-	            JOIN tl_iso_products p ON p.id=c.pid
-    	        JOIN tl_iso_producttypes t ON t.id=p.type
+        $objProducts = $this->Database->query("
+            SELECT tl_page.*, p.id AS product_id, p.alias AS product_alias FROM tl_iso_product_categories c
+                JOIN tl_iso_products p ON p.id=c.pid
+                JOIN tl_iso_producttypes t ON t.id=p.type
                 JOIN tl_page ON tl_page.id=c.page_id
             WHERE
                 t.class='regular'
@@ -1301,11 +1301,11 @@ $endScript";
 
                     $strDomain = Environment::get('base');
 
-        			// Overwrite the domain
-        			if ($arrRoot[$objJump->rootId]->dns != '')
-        			{
-        				$strDomain = ($arrRoot[$objJump->rootId]->useSSL ? 'https://' : 'http://') . $arrRoot[$objJump->rootId]->dns . TL_PATH . '/';
-        			}
+                    // Overwrite the domain
+                    if ($arrRoot[$objJump->rootId]->dns != '')
+                    {
+                        $strDomain = ($arrRoot[$objJump->rootId]->useSSL ? 'https://' : 'http://') . $arrRoot[$objJump->rootId]->dns . TL_PATH . '/';
+                    }
 
                     $arrJump[$objProducts->page_id] = $strDomain . Controller::generateFrontendUrl($objJump->row(), '/product/##alias##', ($strLanguage=='' ? $arrRoot[$objJump->rootId]->language : $strLanguage));
                 }
@@ -1320,7 +1320,7 @@ $endScript";
                 $strAlias = $objProducts->product_alias == '' ? $objProducts->product_id : $objProducts->product_alias;
                 $arrPages[] = str_replace('##alias##', $strAlias, $arrJump[$objProducts->page_id]);
             }
-	    }
+        }
 
         // the reader page id can be the same for several categories so we have to make sure we only index the product once
         return array_unique($arrPages);
@@ -1345,8 +1345,8 @@ $endScript";
 
     /**
      * Gets the product reader of a certain page
-     * @param Database_Result|int	page object or page ID
-     * @param int	override setting from a module or content element
+     * @param Database_Result|int    page object or page ID
+     * @param int    override setting from a module or content element
      * @return int reader page id
      */
     public static function getReaderPageId($objOriginPage=null, $intOverride=0)

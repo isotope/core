@@ -106,14 +106,14 @@ class DC_ProductData extends \DC_Table
         }
 
         // Custom filter
-		if (is_array($GLOBALS['TL_DCA'][$this->strTable]['list']['sorting']['filter']) && !empty($GLOBALS['TL_DCA'][$this->strTable]['list']['sorting']['filter']))
-		{
-			foreach ($GLOBALS['TL_DCA'][$this->strTable]['list']['sorting']['filter'] as $filter)
-			{
-				$this->procedure[] = $filter[0];
-				$this->values[] = $filter[1];
-			}
-		}
+        if (is_array($GLOBALS['TL_DCA'][$this->strTable]['list']['sorting']['filter']) && !empty($GLOBALS['TL_DCA'][$this->strTable]['list']['sorting']['filter']))
+        {
+            foreach ($GLOBALS['TL_DCA'][$this->strTable]['list']['sorting']['filter'] as $filter)
+            {
+                $this->procedure[] = $filter[0];
+                $this->values[] = $filter[1];
+            }
+        }
 
         if (\Input::get('table') && $GLOBALS['TL_DCA'][$this->strTable]['config']['ptable'] && $this->Database->fieldExists('pid', $this->strTable))
         {
@@ -448,8 +448,8 @@ class DC_ProductData extends \DC_Table
                 $arrPageLanguages = $this->Database->execute("SELECT DISTINCT language FROM tl_page")->fetchEach('language');
             }
 
-			if (count($arrPageLanguages) > 1)
-			{
+            if (count($arrPageLanguages) > 1)
+            {
                 $this->arrLanguageLabels = $this->getLanguages();
                 $this->arrLanguages = array_intersect(array_keys($this->arrLanguageLabels), $arrPageLanguages);
 
@@ -1543,8 +1543,8 @@ window.addEvent(\'domready\', function() {
             while(ob_end_clean());
             echo json_encode(array
             (
-                'content'	=> $this->ajaxTreeView($this->intId, $level),
-                'token'		=> REQUEST_TOKEN,
+                'content'    => $this->ajaxTreeView($this->intId, $level),
+                'token'        => REQUEST_TOKEN,
             ));
             exit;
         }

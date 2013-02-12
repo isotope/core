@@ -356,11 +356,11 @@ class Backend extends Contao_Backend
         $objDatabase = \Database::getInstance();
         $objConfig = \Config::getInstance();
 
-		// Method could be triggered before Isotope is installed
-		if (!$objDatabase->tableExists('tl_iso_config'))
-		{
-			return array();
-		}
+        // Method could be triggered before Isotope is installed
+        if (!$objDatabase->tableExists('tl_iso_config'))
+        {
+            return array();
+        }
 
         $arrThemes = array();
         $arrStores = array();
@@ -441,12 +441,10 @@ class Backend extends Contao_Backend
      */
     public static function getTaxClassesWithSplit()
     {
-        $objDatabase = \Database::getInstance();
-
         $arrTaxes = array();
-        $objTaxes = $objDatabase->execute("SELECT * FROM tl_iso_tax_class ORDER BY name");
+        $objTaxes = \Database::getInstance()->execute("SELECT * FROM tl_iso_tax_class ORDER BY name");
 
-        while( $objTaxes->next() )
+        while ($objTaxes->next())
         {
             $arrTaxes[$objTaxes->id] = $objTaxes->name;
         }
@@ -464,18 +462,10 @@ class Backend extends Contao_Backend
      */
     public static function getOrderStatus()
     {
-        $objDatabase = \Database::getInstance();
-
-        // When running install tool
-        if (!$objDatabase->tableExists('tl_iso_orderstatus'))
-        {
-            return array();
-        }
-
         $arrStatus = array();
-        $objStatus = $objDatabase->execute("SELECT id, name FROM tl_iso_orderstatus ORDER BY sorting");
+        $objStatus = \Database::getInstance()->execute("SELECT id, name FROM tl_iso_orderstatus ORDER BY sorting");
 
-        while( $objStatus->next() )
+        while ($objStatus->next())
         {
             $arrStatus[$objStatus->id] = $objStatus->name;
         }

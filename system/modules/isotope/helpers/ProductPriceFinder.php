@@ -54,11 +54,11 @@ class ProductPriceFinder extends \System
 
         return array_merge(array
         (
-            'price'				=> null,
-            'tax_class'			=> null,
-            'from_price'		=> null,
-            'high_price'		=> null,
-            'price_tiers'		=> null,
+            'price'                => null,
+            'tax_class'            => null,
+            'from_price'        => null,
+            'high_price'        => null,
+            'price_tiers'        => null,
         ), $arrData);
     }
 
@@ -74,8 +74,8 @@ class ProductPriceFinder extends \System
 
         return array
         (
-            'price'		=> $arrData['price'],
-            'tax_class'	=> $arrData['tax_class'],
+            'price'        => $arrData['price'],
+            'tax_class'    => $arrData['tax_class'],
         );
     }
 
@@ -101,7 +101,7 @@ class ProductPriceFinder extends \System
                                                             . (BE_USER_LOGGED_IN === true ? '' : " AND published='1' AND (start='' OR start<$time) AND (stop='' OR stop>$time)")
                                                             . " GROUP BY pid");
 
-			// Must inherit price from any variant found
+            // Must inherit price from any variant found
             $arrData['price'] = $objResult->low_price;
 
             if ($objResult->low_price > 0 && $objResult->low_price < $objResult->high_price)

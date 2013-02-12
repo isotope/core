@@ -15,17 +15,17 @@
 </div>
 <script>
 window.addEvent('domready', function() {
-	Isotope.displayBox('<?php echo $this->message; ?>')
-	new Request({
-		url: window.location.href,
-		method: 'get',
-		data: {
-			'buildCache': '1'
-		},
-		onComplete: function() {
-			window.location.reload();
-		}
-	}).send();
+    Isotope.displayBox('<?php echo $this->message; ?>')
+    new Request({
+        url: window.location.href,
+        method: 'get',
+        data: {
+            'buildCache': '1'
+        },
+        onComplete: function() {
+            window.location.reload();
+        }
+    }).send();
 });
 </script>
 <!-- indexer::continue -->

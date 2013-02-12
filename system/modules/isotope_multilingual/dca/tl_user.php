@@ -16,11 +16,11 @@
 /**
  * Palettes
  */
-$GLOBALS['TL_DCA']['tl_user']['palettes']['extend']	= str_replace(';{password_legend:hide}', ',translation;{password_legend:hide}', $GLOBALS['TL_DCA']['tl_user']['palettes']['extend']);
-$GLOBALS['TL_DCA']['tl_user']['palettes']['group']	= str_replace(';{password_legend:hide}', ',translation;{password_legend:hide}', $GLOBALS['TL_DCA']['tl_user']['palettes']['group']);
-$GLOBALS['TL_DCA']['tl_user']['palettes']['extend']	= str_replace(';{password_legend:hide}', ',translation;{password_legend:hide}', $GLOBALS['TL_DCA']['tl_user']['palettes']['extend']);
-$GLOBALS['TL_DCA']['tl_user']['palettes']['custom']	= str_replace(';{password_legend:hide}', ',translation;{password_legend:hide}', $GLOBALS['TL_DCA']['tl_user']['palettes']['custom']);
-$GLOBALS['TL_DCA']['tl_user']['palettes']['admin']	= str_replace(';{password_legend:hide}', ',translation;{password_legend:hide}', $GLOBALS['TL_DCA']['tl_user']['palettes']['admin']);
+$GLOBALS['TL_DCA']['tl_user']['palettes']['extend']    = str_replace(';{password_legend:hide}', ',translation;{password_legend:hide}', $GLOBALS['TL_DCA']['tl_user']['palettes']['extend']);
+$GLOBALS['TL_DCA']['tl_user']['palettes']['group']    = str_replace(';{password_legend:hide}', ',translation;{password_legend:hide}', $GLOBALS['TL_DCA']['tl_user']['palettes']['group']);
+$GLOBALS['TL_DCA']['tl_user']['palettes']['extend']    = str_replace(';{password_legend:hide}', ',translation;{password_legend:hide}', $GLOBALS['TL_DCA']['tl_user']['palettes']['extend']);
+$GLOBALS['TL_DCA']['tl_user']['palettes']['custom']    = str_replace(';{password_legend:hide}', ',translation;{password_legend:hide}', $GLOBALS['TL_DCA']['tl_user']['palettes']['custom']);
+$GLOBALS['TL_DCA']['tl_user']['palettes']['admin']    = str_replace(';{password_legend:hide}', ',translation;{password_legend:hide}', $GLOBALS['TL_DCA']['tl_user']['palettes']['admin']);
 
 
 /**
@@ -30,8 +30,8 @@ $GLOBALS['TL_DCA']['tl_user']['fields']['admin']['eval']['tl_class'] = 'w50';
 
 $GLOBALS['TL_DCA']['tl_user']['fields']['translation'] = array
 (
-    'label'		=> &$GLOBALS['TL_LANG']['tl_user']['translation'],
-    'inputType'	=> 'select',
-    'options'	=> array_diff_key($this->getLanguages(), array('en'=>'English')),
-    'eval'		=> array('includeBlankOption'=>true, 'tl_class'=>'w50'),
+    'label'        => &$GLOBALS['TL_LANG']['tl_user']['translation'],
+    'inputType'    => 'select',
+    'options'    => array_diff_key($this->getLanguages(), array('en'=>'English')),
+    'eval'        => array('includeBlankOption'=>true, 'tl_class'=>'w50'),
 );

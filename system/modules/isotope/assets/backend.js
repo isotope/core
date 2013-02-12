@@ -15,598 +15,598 @@
 var Isotope =
 {
 
-	/**
-	 * Media Manager
-	 * @param object
-	 * @param string
-	 * @param string
-	 */
-	mediaManager: function(el, command, id)
-	{
-		var table = document.id(id).getFirst('table');
-		var tbody = table.getFirst('tbody');
-		var parent = document.id(el).getParent('tr');
-		var rows = tbody.getChildren();
-
-		Backend.getScrollOffset();
-
-		switch (command)
-		{
-			case 'up':
-				parent.getPrevious() ? parent.injectBefore(parent.getPrevious()) : parent.injectInside(tbody);
-				break;
-
-			case 'down':
-				parent.getNext() ? parent.injectAfter(parent.getNext()) : parent.injectBefore(tbody.getFirst());
-				break;
-
-			case 'delete':
-				parent.destroy();
-				break;
-		}
-
-		rows = tbody.getChildren();
-
-		for (var i=0; i<rows.length; i++)
-		{
-			var childs = rows[i].getChildren();
-
-			for (var j=0; j<childs.length; j++)
-			{
-				var first = childs[j].getFirst();
-
-				if (first.type == 'hidden' || first.type == 'text' || first.type == 'textarea')
-				{
-					first.name = first.name.replace(/\[[0-9]+\]/ig, '[' + i + ']');
-				}
-			}
-		}
-	},
-
-	/**
-	 * Attribute wizard
-	 * @param object
-	 * @param string
-	 * @param string
-	 */
-	attributeWizard: function(el, command, id)
-	{
-		var container = document.id(id);
-		var parent = document.id(el).getParent('.row');
-
-		Backend.getScrollOffset();
-
-		switch (command)
-		{
-			case 'up':
-				if (!parent.getPrevious('.row'))
-				{
-					parent.injectInside(container);
-				}
-				else
-				{
-					parent.injectBefore(parent.getPrevious('.row'));
-				}
-				break;
-
-			case 'down':
-				if (parent.getNext('.row'))
-				{
-					parent.injectAfter(parent.getNext('.row'));
-				}
-				else
-				{
-					var fel = container.getFirst('.row');
-
-					parent.injectBefore(fel);
-				}
-				break;
-
-		}
-	},
-
-	/**
-	 * Field wizard
-	 * @param object
-	 * @param string
-	 * @param string
-	 */
-	fieldWizard: function(el, command, id)
-	{
-		var table = document.id(id);
-		var tbody = table.getFirst().getNext();
-		var parent = document.id(el).getParent('tr');
-		var rows = tbody.getChildren();
-
-		Backend.getScrollOffset();
-
-		switch (command)
-		{
-			case 'copy':
-				var tr = new Element('tr');
-				var childs = parent.getChildren();
-
-				for (var i=0; i<childs.length; i++)
-				{
-					var next = childs[i].clone(true).injectInside(tr);
-					next.getFirst().value = childs[i].getFirst().value;
-
-					if (next.getFirst().type == 'checkbox')
-					{
-						next.getFirst().checked = childs[i].getFirst().checked ? 'checked' : '';
-						if (Browser.Engine.trident && Browser.Engine.version < 5) next.innerHTML = next.innerHTML.replace(/CHECKED/ig, 'checked="checked"');
-					}
-				}
-
-				tr.injectAfter(parent);
-				break;
-
-			case 'up':
-				parent.getPrevious() ? parent.injectBefore(parent.getPrevious()) : parent.injectInside(tbody);
-				break;
-
-			case 'down':
-				parent.getNext() ? parent.injectAfter(parent.getNext()) : parent.injectBefore(tbody.getFirst());
-				break;
-
-			case 'delete':
-				(rows.length > 1) ? parent.destroy() : null;
-				break;
-		}
-
-		rows = tbody.getChildren();
-		var fieldnames = new Array('value', 'label', 'default');
-
-		for (var i=0; i<rows.length; i++)
-		{
-			var childs = rows[i].getChildren();
-
-			for (var j=0; j<childs.length; j++)
-			{
-				var first = childs[j].getFirst();
-
-				if (first.type == 'text' || first.type == 'checkbox' || first.type == 'hidden')
-				{
-					first.name = first.name.replace(/\[[0-9]+\]/ig, '[' + i + ']')
-				}
-			}
-		}
-	},
-
-
-	/**
-	 * Toggle checkbox group
-	 * @param object
-	 * @param string
-	 */
-	toggleCheckboxGroup: function(el, id)
-	{
-		var cls = document.id(el).className;
-		var status = document.id(el).checked ? 'checked' : '';
-
-		if (cls == 'tl_checkbox')
-		{
-			$$('#' + id + ' .tl_checkbox').each(function(checkbox)
-			{
-				if (!checkbox.disabled)
-					checkbox.checked = status;
-			});
-		}
-		else if (cls == 'tl_tree_checkbox')
-		{
-			$$('#' + id + ' .parent .tl_tree_checkbox').each(function(checkbox)
-			{
-				if (!checkbox.disabled)
-					checkbox.checked = status;
-			});
-		}
-
-		Backend.getScrollOffset();
-	},
-
-	/**
-	 * Toggle the product tree (input field)
-	 * @param object
-	 * @param string
-	 * @param string
-	 * @param string
-	 * @param integer
-	 * @return boolean
-	 */
-	toggleProductTree: function (el, id, field, name, level)
-	{
-		el.blur();
-		var item = document.id(id);
-		var image = document.id(el).getFirst();
-
-		if (item)
-		{
-			if (item.getStyle('display') == 'none')
-			{
-				item.setStyle('display', 'inline');
-				image.src = image.src.replace('folPlus.gif', 'folMinus.gif');
-				document.id(el).title = CONTAO_COLLAPSE;
-				new Request.Contao().post({'action':'toggleProductTree', 'id':id, 'state':1, 'REQUEST_TOKEN':REQUEST_TOKEN});
-			}
-			else
-			{
-				item.setStyle('display', 'none');
-				image.src = image.src.replace('folMinus.gif', 'folPlus.gif');
-				document.id(el).title = CONTAO_EXPAND;
-				new Request.Contao().post({'action':'toggleProductTree', 'id':id, 'state':0, 'REQUEST_TOKEN':REQUEST_TOKEN});
-			}
-
-			return false;
-		}
-
-		new Request.Contao(
-		{
-			onRequest: AjaxRequest.displayBox('Loading data …'),
-			onSuccess: function(txt, json)
-			{
-				var ul = new Element('ul');
-
-				ul.addClass('level_' + level);
-				ul.set('html', txt);
-
-				item = new Element('li');
-
-				item.addClass('parent');
-				item.setProperty('id', id);
-				item.setStyle('display', 'inline');
-
-				ul.injectInside(item);
-				item.injectAfter(document.id(el).getParent('li'));
-
-				document.id(el).title = CONTAO_COLLAPSE;
-				image.src = image.src.replace('folPlus.gif', 'folMinus.gif');
-				AjaxRequest.hideBox();
-
-				// HOOK
-				window.fireEvent('ajax_change');
-   			}
-		}).post({'action':'loadProductTree', 'id':id, 'level':level, 'field':field, 'name':name, 'state':1, 'REQUEST_TOKEN':REQUEST_TOKEN});
-
-		return false;
-	},
-
-	/**
-	 * Add the interactive help
-	 */
-	addInteractiveHelp: function() {
-		new Tips.Contao('a.tl_tip', {
-			offset: {x:9, y:21},
-			text: function(e) {
-				return e.get('longdesc');
-			}
-		});
-	},
-
-
-	inheritFields: function(fields, label)
-	{
-		var injectError = false;
-
-		fields.each(function(name, i)
-		{
-			var el = document.id(('ctrl_'+name));
-
-			if (el)
-			{
-				var parent = el.getParent('div').getFirst('h3');
-
-				if (!parent && el.match('.tl_checkbox_single_container'))
-				{
-					parent = el;
-				}
-
-				if (!parent)
-				{
-					injectError = true;
-					return;
-				}
-
-				parent.addClass('inherit');
-
-				var check = document.id('ctrl_inherit').getFirst(('input[value='+name+']'));
-
-				check.setStyle('float', 'right').inject(parent);
-				document.id('ctrl_inherit').getFirst(('label[for='+check.get('id')+']')).setStyles({'float':'right','padding-right':'5px', 'font-weight':'normal'}).set('text', label).inject(parent);
-
-				check.addEvent('change', function(event)
-				{
-					var element = document.id(('ctrl_'+event.target.get('value')));
-
-					// Single checkbox
-					if (element.match('.tl_checkbox_single_container'))
-					{
-						element.getFirst('input[type=checkbox]').disabled = event.target.checked;
-					}
-					else
-					{
-						// textarea with TinyMCE
-						if (!element.getNext() || !element.getNext().get('id') || !element.getNext().get('id').test(/_parent$/))
-						{
-							element.setStyle('display', (event.target.checked ? 'none' : 'inherit'));
-						}
-
-						// Query would fail if there is no tooltip
-						try { element.getNext(':not(.tl_tip):not(script)').setStyle('display', (event.target.checked ? 'none' : 'inherit')); } catch (e) {}
-					}
-				});
-
-				if (el.match('.tl_checkbox_single_container'))
-				{
-					el.getFirst('input[type=checkbox]').disabled = check.checked;
-				}
-				else
-				{
-					el.setStyle('display', (check.checked ? 'none' : 'inherit'));
-
-					// Query would fail if there is no tooltip
-					try { el.getNext(':not(.tl_tip):not(script)').setStyle('display', (check.checked ? 'none' : 'inherit')); } catch (e) {}
-				}
-			}
-		});
-
-		if (!injectError)
-		{
-			document.id('ctrl_inherit').getParent('div').setStyle('display', 'none');
-		}
-	},
-
-	initializeToolsMenu: function()
-	{
-		var tools = document.getElements('#tl_buttons .isotope-tools');
-
-		if (tools.length < 1)
-			return;
-
-		// Remove the separators between each button
-		tools.each(function(node) {
-			node.previousSibling.nodeValue = '';
-		});
-
-		// Add trigger to tools buttons
-		document.getElement('a.header_isotope_tools').addEvent('click', function(e)
-		{
-			document.id('isotopetoolsmenu').setStyle('display', 'block');
-			return false;
-		})
-		.setStyle('display', 'inline');
-
-		var div = new Element('div',
-		{
-			'id': 'isotopetoolsmenu',
-			'styles': {
-				'top': ($$('a.header_isotope_tools')[0].getPosition().y + 22)
-			}
-		})
-		.adopt(tools)
-		.inject(document.id(document.body))
-		.setStyle('left', $$('a.header_isotope_tools')[0].getPosition().x - 7);
-
-		// Hide context menu
-		document.id(document.body).addEvent('click', function()
-		{
-			document.id('isotopetoolsmenu').setStyle('display', 'none');
-		});
-	},
-
-	initializeFilterMenu: function()
-	{
-		var tools = document.getElements('#tl_buttons .isotope-filter');
-
-		if (tools.length < 1)
-			return;
-
-		// Remove the separators between each button
-		tools.each(function(node) {
-			node.previousSibling.nodeValue = '';
-		});
-
-		// Add trigger to tools buttons
-		document.getElement('a.header_iso_filter').addEvent('click', function(e)
-		{
-			document.id('isotopefiltermenu').setStyle('display', 'block');
-			return false;
-		})
-		.setStyle('display', 'inline');
-
-		var div = new Element('div',
-		{
-			'id': 'isotopefiltermenu',
-			'styles': {
-				'top': ($$('a.header_iso_filter')[0].getPosition().y + 22)
-			}
-		})
-		.adopt(tools)
-		.inject(document.id(document.body))
-		.setStyle('left', $$('a.header_iso_filter')[0].getPosition().x - 7);
-
-		// Hide context menu
-		document.id(document.body).addEvent('click', function()
-		{
-			document.id('isotopefiltermenu').setStyle('display', 'none');
-		});
-	},
-
-	initializeToolsButton: function()
-	{
-		// Hide the tool buttons
-		document.getElements('#tl_listing .isotope-tools, .tl_listing .isotope-tools').addClass('invisible');
-
-		// Add trigger to edit buttons
-		document.getElements('a.isotope-contextmenu').each(function(el)
-		{
-			if (el.getNext('a.isotope-tools'))
-			{
-				el.removeClass('invisible').addEvent('click', function(e)
-				{
-					if ($defined(document.id('isotope-contextmenu')))
-					{
-						document.id('isotope-contextmenu').destroy();
-					}
-
-					var div = new Element('div',
-					{
-						'id': 'isotope-contextmenu',
-						'styles': {
-							'top': (el.getPosition().y + 22),
-							'display': 'block'
-						}
-					});
-
-					el.getAllNext('a.isotope-tools').each( function(el2)
-					{
-						var im2 = el2.getFirst('img');
-						new Element('a', {
-							'href': el2.get('href'),
-							'title': el2.get('title'),
-							'html': (el2.get('html') +' '+ im2.get('alt'))
-						}).inject(div);
-					});
-
-					div.inject(document.id(document.body));
-					div.setStyle('left', el.getPosition().x - (div.getSize().x / 2));
-
-					return false;
-				});
-			}
-		});
-
-		// Hide context menu
-		document.id(document.body).addEvent('click', function(e)
-		{
-			if ($defined(document.id('isotope-contextmenu')) && !e.target.getParent('#isotope-contextmenu'))
-			{
-				document.id('isotope-contextmenu').destroy();
-			}
-		});
-	},
-
-	/**
-	 * Make parent view items sortable
-	 * @param object
-	 */
-	makePageViewSortable: function(ul)
-	{
-		var list = new Sortables(ul,
-		{
-			contstrain: true,
-			opacity: 0.6
-		});
-
-		list.active = false;
-
-		list.addEvent('start', function()
-		{
-			list.active = true;
-		});
-
-		list.addEvent('complete', function(el)
-		{
-	    	if (!list.active)
-	    	{
-    			return;
-    		}
-
-    		if (el.getPrevious())
-    		{
-    			var id = el.get('id').replace(/li_/, '');
-    			var pid = el.getPrevious().get('id').replace(/li_/, '');
-    			var req = window.location.search.replace(/id=[0-9]*/, 'id=' + id) + '&act=cut&mode=1&page_id=' + pid;
-    			new Request({url: window.location.href, method: 'get', data: req}).send();
-    		}
-    		else if (el.getParent())
-    		{
-    			var id = el.get('id').replace(/li_/, '');
-    			var pid = el.getParent().get('id').replace(/ul_/, '');
-    			var req = window.location.search.replace(/id=[0-9]*/, 'id=' + id) + '&act=cut&mode=2&page_id=' + pid;
-				new Request({url: window.location.href, method: 'get', data: req}).send();
-    		}
-    	});
-	},
-
-	loadDeferredProducts: function()
-	{
-		var scroll = window.getScroll().y + window.getSize().y;
-		document.getElements('.deferred_product').each( function(el)
-		{
-			if (scroll - el.getPosition().y > 0)
-			{
-				el.removeClass('deferred_product');
-				var productId = el.get('id').replace('product_', '');
-
-				if (window.useProductsStorage && sessionStorage) {
-					var html = sessionStorage.getItem(('product_'+productId));
-
-					if (html) {
-						Isotope.createDeferredProduct(productId, sessionStorage.getItem(('product_'+productId)), el);
-						return;
-					}
-				}
-
-
-				var level = (el.getParent('ul') && el.getParent('ul').get('class').match(/level_/)) ? el.getParent('ul').get('class').replace('level_', '').toInt() : -1;
-
-				new Request.Contao({
-					method: 'get',
-					url: (window.location.href+'&loadDeferredProduct='+productId+'&level='+level),
-					onComplete: function(html, text) {
-						Isotope.addProductToStorage(productId, html);
-						Isotope.createDeferredProduct(productId, html, el);
-					}
-				}).send();
-			}
-		});
-	},
-
-	createDeferredProduct: function(id, html, el)
-	{
-		var temp = new Element('div').set('html', html);
-		temp.getElements('a').addEvent('click', function() { Isotope.removeProductFromStorage(id) });
-		temp.getChildren().each( function(li) { li.inject(el.getParent('li'), 'before') });
-		el.getParent('li').destroy();
-		window.fireEvent('structure');
-	},
-
-	addProductToStorage: function(id, html)
-	{
-		if (sessionStorage && window.useProductsStorage) {
-			try {
-				sessionStorage.setItem(('product_'+id), html);
-			}
-			catch (e) {
-				sessionStorage.clear();
-			}
-		}
-	},
-
-	removeProductFromStorage: function(id)
-	{
-		if (sessionStorage) {
-			sessionStorage.removeItem(('product_'+id));
-		}
-	},
-
-	purgeProductsStorage: function()
-	{
-		if (sessionStorage) {
-			sessionStorage.clear();
-		}
-	}
+    /**
+     * Media Manager
+     * @param object
+     * @param string
+     * @param string
+     */
+    mediaManager: function(el, command, id)
+    {
+        var table = document.id(id).getFirst('table');
+        var tbody = table.getFirst('tbody');
+        var parent = document.id(el).getParent('tr');
+        var rows = tbody.getChildren();
+
+        Backend.getScrollOffset();
+
+        switch (command)
+        {
+            case 'up':
+                parent.getPrevious() ? parent.injectBefore(parent.getPrevious()) : parent.injectInside(tbody);
+                break;
+
+            case 'down':
+                parent.getNext() ? parent.injectAfter(parent.getNext()) : parent.injectBefore(tbody.getFirst());
+                break;
+
+            case 'delete':
+                parent.destroy();
+                break;
+        }
+
+        rows = tbody.getChildren();
+
+        for (var i=0; i<rows.length; i++)
+        {
+            var childs = rows[i].getChildren();
+
+            for (var j=0; j<childs.length; j++)
+            {
+                var first = childs[j].getFirst();
+
+                if (first.type == 'hidden' || first.type == 'text' || first.type == 'textarea')
+                {
+                    first.name = first.name.replace(/\[[0-9]+\]/ig, '[' + i + ']');
+                }
+            }
+        }
+    },
+
+    /**
+     * Attribute wizard
+     * @param object
+     * @param string
+     * @param string
+     */
+    attributeWizard: function(el, command, id)
+    {
+        var container = document.id(id);
+        var parent = document.id(el).getParent('.row');
+
+        Backend.getScrollOffset();
+
+        switch (command)
+        {
+            case 'up':
+                if (!parent.getPrevious('.row'))
+                {
+                    parent.injectInside(container);
+                }
+                else
+                {
+                    parent.injectBefore(parent.getPrevious('.row'));
+                }
+                break;
+
+            case 'down':
+                if (parent.getNext('.row'))
+                {
+                    parent.injectAfter(parent.getNext('.row'));
+                }
+                else
+                {
+                    var fel = container.getFirst('.row');
+
+                    parent.injectBefore(fel);
+                }
+                break;
+
+        }
+    },
+
+    /**
+     * Field wizard
+     * @param object
+     * @param string
+     * @param string
+     */
+    fieldWizard: function(el, command, id)
+    {
+        var table = document.id(id);
+        var tbody = table.getFirst().getNext();
+        var parent = document.id(el).getParent('tr');
+        var rows = tbody.getChildren();
+
+        Backend.getScrollOffset();
+
+        switch (command)
+        {
+            case 'copy':
+                var tr = new Element('tr');
+                var childs = parent.getChildren();
+
+                for (var i=0; i<childs.length; i++)
+                {
+                    var next = childs[i].clone(true).injectInside(tr);
+                    next.getFirst().value = childs[i].getFirst().value;
+
+                    if (next.getFirst().type == 'checkbox')
+                    {
+                        next.getFirst().checked = childs[i].getFirst().checked ? 'checked' : '';
+                        if (Browser.Engine.trident && Browser.Engine.version < 5) next.innerHTML = next.innerHTML.replace(/CHECKED/ig, 'checked="checked"');
+                    }
+                }
+
+                tr.injectAfter(parent);
+                break;
+
+            case 'up':
+                parent.getPrevious() ? parent.injectBefore(parent.getPrevious()) : parent.injectInside(tbody);
+                break;
+
+            case 'down':
+                parent.getNext() ? parent.injectAfter(parent.getNext()) : parent.injectBefore(tbody.getFirst());
+                break;
+
+            case 'delete':
+                (rows.length > 1) ? parent.destroy() : null;
+                break;
+        }
+
+        rows = tbody.getChildren();
+        var fieldnames = new Array('value', 'label', 'default');
+
+        for (var i=0; i<rows.length; i++)
+        {
+            var childs = rows[i].getChildren();
+
+            for (var j=0; j<childs.length; j++)
+            {
+                var first = childs[j].getFirst();
+
+                if (first.type == 'text' || first.type == 'checkbox' || first.type == 'hidden')
+                {
+                    first.name = first.name.replace(/\[[0-9]+\]/ig, '[' + i + ']')
+                }
+            }
+        }
+    },
+
+
+    /**
+     * Toggle checkbox group
+     * @param object
+     * @param string
+     */
+    toggleCheckboxGroup: function(el, id)
+    {
+        var cls = document.id(el).className;
+        var status = document.id(el).checked ? 'checked' : '';
+
+        if (cls == 'tl_checkbox')
+        {
+            $$('#' + id + ' .tl_checkbox').each(function(checkbox)
+            {
+                if (!checkbox.disabled)
+                    checkbox.checked = status;
+            });
+        }
+        else if (cls == 'tl_tree_checkbox')
+        {
+            $$('#' + id + ' .parent .tl_tree_checkbox').each(function(checkbox)
+            {
+                if (!checkbox.disabled)
+                    checkbox.checked = status;
+            });
+        }
+
+        Backend.getScrollOffset();
+    },
+
+    /**
+     * Toggle the product tree (input field)
+     * @param object
+     * @param string
+     * @param string
+     * @param string
+     * @param integer
+     * @return boolean
+     */
+    toggleProductTree: function (el, id, field, name, level)
+    {
+        el.blur();
+        var item = document.id(id);
+        var image = document.id(el).getFirst();
+
+        if (item)
+        {
+            if (item.getStyle('display') == 'none')
+            {
+                item.setStyle('display', 'inline');
+                image.src = image.src.replace('folPlus.gif', 'folMinus.gif');
+                document.id(el).title = CONTAO_COLLAPSE;
+                new Request.Contao().post({'action':'toggleProductTree', 'id':id, 'state':1, 'REQUEST_TOKEN':REQUEST_TOKEN});
+            }
+            else
+            {
+                item.setStyle('display', 'none');
+                image.src = image.src.replace('folMinus.gif', 'folPlus.gif');
+                document.id(el).title = CONTAO_EXPAND;
+                new Request.Contao().post({'action':'toggleProductTree', 'id':id, 'state':0, 'REQUEST_TOKEN':REQUEST_TOKEN});
+            }
+
+            return false;
+        }
+
+        new Request.Contao(
+        {
+            onRequest: AjaxRequest.displayBox('Loading data …'),
+            onSuccess: function(txt, json)
+            {
+                var ul = new Element('ul');
+
+                ul.addClass('level_' + level);
+                ul.set('html', txt);
+
+                item = new Element('li');
+
+                item.addClass('parent');
+                item.setProperty('id', id);
+                item.setStyle('display', 'inline');
+
+                ul.injectInside(item);
+                item.injectAfter(document.id(el).getParent('li'));
+
+                document.id(el).title = CONTAO_COLLAPSE;
+                image.src = image.src.replace('folPlus.gif', 'folMinus.gif');
+                AjaxRequest.hideBox();
+
+                // HOOK
+                window.fireEvent('ajax_change');
+               }
+        }).post({'action':'loadProductTree', 'id':id, 'level':level, 'field':field, 'name':name, 'state':1, 'REQUEST_TOKEN':REQUEST_TOKEN});
+
+        return false;
+    },
+
+    /**
+     * Add the interactive help
+     */
+    addInteractiveHelp: function() {
+        new Tips.Contao('a.tl_tip', {
+            offset: {x:9, y:21},
+            text: function(e) {
+                return e.get('longdesc');
+            }
+        });
+    },
+
+
+    inheritFields: function(fields, label)
+    {
+        var injectError = false;
+
+        fields.each(function(name, i)
+        {
+            var el = document.id(('ctrl_'+name));
+
+            if (el)
+            {
+                var parent = el.getParent('div').getFirst('h3');
+
+                if (!parent && el.match('.tl_checkbox_single_container'))
+                {
+                    parent = el;
+                }
+
+                if (!parent)
+                {
+                    injectError = true;
+                    return;
+                }
+
+                parent.addClass('inherit');
+
+                var check = document.id('ctrl_inherit').getFirst(('input[value='+name+']'));
+
+                check.setStyle('float', 'right').inject(parent);
+                document.id('ctrl_inherit').getFirst(('label[for='+check.get('id')+']')).setStyles({'float':'right','padding-right':'5px', 'font-weight':'normal'}).set('text', label).inject(parent);
+
+                check.addEvent('change', function(event)
+                {
+                    var element = document.id(('ctrl_'+event.target.get('value')));
+
+                    // Single checkbox
+                    if (element.match('.tl_checkbox_single_container'))
+                    {
+                        element.getFirst('input[type=checkbox]').disabled = event.target.checked;
+                    }
+                    else
+                    {
+                        // textarea with TinyMCE
+                        if (!element.getNext() || !element.getNext().get('id') || !element.getNext().get('id').test(/_parent$/))
+                        {
+                            element.setStyle('display', (event.target.checked ? 'none' : 'inherit'));
+                        }
+
+                        // Query would fail if there is no tooltip
+                        try { element.getNext(':not(.tl_tip):not(script)').setStyle('display', (event.target.checked ? 'none' : 'inherit')); } catch (e) {}
+                    }
+                });
+
+                if (el.match('.tl_checkbox_single_container'))
+                {
+                    el.getFirst('input[type=checkbox]').disabled = check.checked;
+                }
+                else
+                {
+                    el.setStyle('display', (check.checked ? 'none' : 'inherit'));
+
+                    // Query would fail if there is no tooltip
+                    try { el.getNext(':not(.tl_tip):not(script)').setStyle('display', (check.checked ? 'none' : 'inherit')); } catch (e) {}
+                }
+            }
+        });
+
+        if (!injectError)
+        {
+            document.id('ctrl_inherit').getParent('div').setStyle('display', 'none');
+        }
+    },
+
+    initializeToolsMenu: function()
+    {
+        var tools = document.getElements('#tl_buttons .isotope-tools');
+
+        if (tools.length < 1)
+            return;
+
+        // Remove the separators between each button
+        tools.each(function(node) {
+            node.previousSibling.nodeValue = '';
+        });
+
+        // Add trigger to tools buttons
+        document.getElement('a.header_isotope_tools').addEvent('click', function(e)
+        {
+            document.id('isotopetoolsmenu').setStyle('display', 'block');
+            return false;
+        })
+        .setStyle('display', 'inline');
+
+        var div = new Element('div',
+        {
+            'id': 'isotopetoolsmenu',
+            'styles': {
+                'top': ($$('a.header_isotope_tools')[0].getPosition().y + 22)
+            }
+        })
+        .adopt(tools)
+        .inject(document.id(document.body))
+        .setStyle('left', $$('a.header_isotope_tools')[0].getPosition().x - 7);
+
+        // Hide context menu
+        document.id(document.body).addEvent('click', function()
+        {
+            document.id('isotopetoolsmenu').setStyle('display', 'none');
+        });
+    },
+
+    initializeFilterMenu: function()
+    {
+        var tools = document.getElements('#tl_buttons .isotope-filter');
+
+        if (tools.length < 1)
+            return;
+
+        // Remove the separators between each button
+        tools.each(function(node) {
+            node.previousSibling.nodeValue = '';
+        });
+
+        // Add trigger to tools buttons
+        document.getElement('a.header_iso_filter').addEvent('click', function(e)
+        {
+            document.id('isotopefiltermenu').setStyle('display', 'block');
+            return false;
+        })
+        .setStyle('display', 'inline');
+
+        var div = new Element('div',
+        {
+            'id': 'isotopefiltermenu',
+            'styles': {
+                'top': ($$('a.header_iso_filter')[0].getPosition().y + 22)
+            }
+        })
+        .adopt(tools)
+        .inject(document.id(document.body))
+        .setStyle('left', $$('a.header_iso_filter')[0].getPosition().x - 7);
+
+        // Hide context menu
+        document.id(document.body).addEvent('click', function()
+        {
+            document.id('isotopefiltermenu').setStyle('display', 'none');
+        });
+    },
+
+    initializeToolsButton: function()
+    {
+        // Hide the tool buttons
+        document.getElements('#tl_listing .isotope-tools, .tl_listing .isotope-tools').addClass('invisible');
+
+        // Add trigger to edit buttons
+        document.getElements('a.isotope-contextmenu').each(function(el)
+        {
+            if (el.getNext('a.isotope-tools'))
+            {
+                el.removeClass('invisible').addEvent('click', function(e)
+                {
+                    if ($defined(document.id('isotope-contextmenu')))
+                    {
+                        document.id('isotope-contextmenu').destroy();
+                    }
+
+                    var div = new Element('div',
+                    {
+                        'id': 'isotope-contextmenu',
+                        'styles': {
+                            'top': (el.getPosition().y + 22),
+                            'display': 'block'
+                        }
+                    });
+
+                    el.getAllNext('a.isotope-tools').each( function(el2)
+                    {
+                        var im2 = el2.getFirst('img');
+                        new Element('a', {
+                            'href': el2.get('href'),
+                            'title': el2.get('title'),
+                            'html': (el2.get('html') +' '+ im2.get('alt'))
+                        }).inject(div);
+                    });
+
+                    div.inject(document.id(document.body));
+                    div.setStyle('left', el.getPosition().x - (div.getSize().x / 2));
+
+                    return false;
+                });
+            }
+        });
+
+        // Hide context menu
+        document.id(document.body).addEvent('click', function(e)
+        {
+            if ($defined(document.id('isotope-contextmenu')) && !e.target.getParent('#isotope-contextmenu'))
+            {
+                document.id('isotope-contextmenu').destroy();
+            }
+        });
+    },
+
+    /**
+     * Make parent view items sortable
+     * @param object
+     */
+    makePageViewSortable: function(ul)
+    {
+        var list = new Sortables(ul,
+        {
+            contstrain: true,
+            opacity: 0.6
+        });
+
+        list.active = false;
+
+        list.addEvent('start', function()
+        {
+            list.active = true;
+        });
+
+        list.addEvent('complete', function(el)
+        {
+            if (!list.active)
+            {
+                return;
+            }
+
+            if (el.getPrevious())
+            {
+                var id = el.get('id').replace(/li_/, '');
+                var pid = el.getPrevious().get('id').replace(/li_/, '');
+                var req = window.location.search.replace(/id=[0-9]*/, 'id=' + id) + '&act=cut&mode=1&page_id=' + pid;
+                new Request({url: window.location.href, method: 'get', data: req}).send();
+            }
+            else if (el.getParent())
+            {
+                var id = el.get('id').replace(/li_/, '');
+                var pid = el.getParent().get('id').replace(/ul_/, '');
+                var req = window.location.search.replace(/id=[0-9]*/, 'id=' + id) + '&act=cut&mode=2&page_id=' + pid;
+                new Request({url: window.location.href, method: 'get', data: req}).send();
+            }
+        });
+    },
+
+    loadDeferredProducts: function()
+    {
+        var scroll = window.getScroll().y + window.getSize().y;
+        document.getElements('.deferred_product').each( function(el)
+        {
+            if (scroll - el.getPosition().y > 0)
+            {
+                el.removeClass('deferred_product');
+                var productId = el.get('id').replace('product_', '');
+
+                if (window.useProductsStorage && sessionStorage) {
+                    var html = sessionStorage.getItem(('product_'+productId));
+
+                    if (html) {
+                        Isotope.createDeferredProduct(productId, sessionStorage.getItem(('product_'+productId)), el);
+                        return;
+                    }
+                }
+
+
+                var level = (el.getParent('ul') && el.getParent('ul').get('class').match(/level_/)) ? el.getParent('ul').get('class').replace('level_', '').toInt() : -1;
+
+                new Request.Contao({
+                    method: 'get',
+                    url: (window.location.href+'&loadDeferredProduct='+productId+'&level='+level),
+                    onComplete: function(html, text) {
+                        Isotope.addProductToStorage(productId, html);
+                        Isotope.createDeferredProduct(productId, html, el);
+                    }
+                }).send();
+            }
+        });
+    },
+
+    createDeferredProduct: function(id, html, el)
+    {
+        var temp = new Element('div').set('html', html);
+        temp.getElements('a').addEvent('click', function() { Isotope.removeProductFromStorage(id) });
+        temp.getChildren().each( function(li) { li.inject(el.getParent('li'), 'before') });
+        el.getParent('li').destroy();
+        window.fireEvent('structure');
+    },
+
+    addProductToStorage: function(id, html)
+    {
+        if (sessionStorage && window.useProductsStorage) {
+            try {
+                sessionStorage.setItem(('product_'+id), html);
+            }
+            catch (e) {
+                sessionStorage.clear();
+            }
+        }
+    },
+
+    removeProductFromStorage: function(id)
+    {
+        if (sessionStorage) {
+            sessionStorage.removeItem(('product_'+id));
+        }
+    },
+
+    purgeProductsStorage: function()
+    {
+        if (sessionStorage) {
+            sessionStorage.clear();
+        }
+    }
 };
 
 window.addEvent('domready', function()
 {
-	Isotope.addInteractiveHelp();
-	Isotope.initializeToolsMenu();
-	Isotope.initializeFilterMenu();
-	Isotope.initializeToolsButton();
+    Isotope.addInteractiveHelp();
+    Isotope.initializeToolsMenu();
+    Isotope.initializeFilterMenu();
+    Isotope.initializeToolsButton();
 }).addEvent('structure', function()
 {
-	Isotope.addInteractiveHelp();
-	Isotope.initializeToolsButton();
+    Isotope.addInteractiveHelp();
+    Isotope.initializeToolsButton();
 });
 

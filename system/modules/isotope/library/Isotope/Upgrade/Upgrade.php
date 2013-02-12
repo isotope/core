@@ -538,11 +538,11 @@ CREATE TABLE `tl_iso_orderstatus` (
                 $this->Database->query("ALTER TABLE tl_iso_config ADD COLUMN orderstatus_error int(10) unsigned NOT NULL default '0'");
             }
 
-            $GLOBALS['TL_LANG']['ORDER']['pending']		= 'Pending';
-            $GLOBALS['TL_LANG']['ORDER']['processing']	= 'Processing';
-            $GLOBALS['TL_LANG']['ORDER']['complete']	= 'Complete';
-            $GLOBALS['TL_LANG']['ORDER']['on_hold']		= 'On Hold';
-            $GLOBALS['TL_LANG']['ORDER']['cancelled']	= 'Cancelled';
+            $GLOBALS['TL_LANG']['ORDER']['pending']        = 'Pending';
+            $GLOBALS['TL_LANG']['ORDER']['processing']    = 'Processing';
+            $GLOBALS['TL_LANG']['ORDER']['complete']    = 'Complete';
+            $GLOBALS['TL_LANG']['ORDER']['on_hold']        = 'On Hold';
+            $GLOBALS['TL_LANG']['ORDER']['cancelled']    = 'Cancelled';
 
             $time = time();
             $arrStatus = array_unique(array_merge
@@ -713,39 +713,39 @@ CREATE TABLE `tl_iso_orderstatus` (
                 (
                     array
                     (
-                        'name'		=> 'gallery',
-                        'width'		=> $arrGallery[0],
-                        'height'	=> $arrGallery[1],
-                        'mode'		=> $arrGallery[2],
-                        'watermark'	=> $objConfigs->gallery_watermark,
-                        'position'	=> $objConfigs->watermark_position,
+                        'name'        => 'gallery',
+                        'width'        => $arrGallery[0],
+                        'height'    => $arrGallery[1],
+                        'mode'        => $arrGallery[2],
+                        'watermark'    => $objConfigs->gallery_watermark,
+                        'position'    => $objConfigs->watermark_position,
                     ),
                     array
                     (
-                        'name'		=> 'thumbnail',
-                        'width'		=> $arrThumbnail[0],
-                        'height'	=> $arrThumbnail[1],
-                        'mode'		=> $arrThumbnail[2],
-                        'watermark'	=> $objConfigs->thumbnail_watermark,
-                        'position'	=> $objConfigs->watermark_position,
+                        'name'        => 'thumbnail',
+                        'width'        => $arrThumbnail[0],
+                        'height'    => $arrThumbnail[1],
+                        'mode'        => $arrThumbnail[2],
+                        'watermark'    => $objConfigs->thumbnail_watermark,
+                        'position'    => $objConfigs->watermark_position,
                     ),
                     array
                     (
-                        'name'		=> 'medium',
-                        'width'		=> $arrMedium[0],
-                        'height'	=> $arrMedium[1],
-                        'mode'		=> $arrMedium[2],
-                        'watermark'	=> $objConfigs->medium_watermark,
-                        'position'	=> $objConfigs->watermark_position,
+                        'name'        => 'medium',
+                        'width'        => $arrMedium[0],
+                        'height'    => $arrMedium[1],
+                        'mode'        => $arrMedium[2],
+                        'watermark'    => $objConfigs->medium_watermark,
+                        'position'    => $objConfigs->watermark_position,
                     ),
                     array
                     (
-                        'name'		=> 'large',
-                        'width'		=> $arrLarge[0],
-                        'height'	=> $arrLarge[1],
-                        'mode'		=> $arrLarge[2],
-                        'watermark'	=> $objConfigs->large_watermark,
-                        'position'	=> $objConfigs->watermark_position,
+                        'name'        => 'large',
+                        'width'        => $arrLarge[0],
+                        'height'    => $arrLarge[1],
+                        'mode'        => $arrLarge[2],
+                        'watermark'    => $objConfigs->large_watermark,
+                        'position'    => $objConfigs->watermark_position,
                     ),
                 );
 
@@ -759,16 +759,16 @@ CREATE TABLE `tl_iso_orderstatus` (
     {
         $arrUpdate = array
         (
-            'isoProductLister'			=> 'iso_productlist',
-            'isoProductReader'			=> 'iso_productreader',
-            'isoShoppingCart'			=> 'iso_cart',
-            'isoCheckout'				=> 'iso_checkout',
-            'isoFilterModule'			=> 'iso_productfilter',
-            'isoOrderHistory'			=> 'iso_orderhistory',
-            'isoOrderDetails'			=> 'iso_orderdetails',
-            'isoStoreSwitcher'			=> 'iso_storeswitcher',
-            'isoAddressBook'			=> 'iso_addressbook',
-            'iso_storeswitcher'			=> 'iso_configswitcher',
+            'isoProductLister'            => 'iso_productlist',
+            'isoProductReader'            => 'iso_productreader',
+            'isoShoppingCart'            => 'iso_cart',
+            'isoCheckout'                => 'iso_checkout',
+            'isoFilterModule'            => 'iso_productfilter',
+            'isoOrderHistory'            => 'iso_orderhistory',
+            'isoOrderDetails'            => 'iso_orderdetails',
+            'isoStoreSwitcher'            => 'iso_storeswitcher',
+            'isoAddressBook'            => 'iso_addressbook',
+            'iso_storeswitcher'            => 'iso_configswitcher',
         );
 
         foreach( $arrUpdate as $old => $new )
@@ -824,15 +824,15 @@ CREATE TABLE `tl_iso_orderstatus` (
     {
         $arrUpdate = array
         (
-            'mod_shopping_cart'			=> 'mod_iso_cart',
-            'mod_filters'				=> 'mod_iso_productfilter',
-            'mod_orderdetails'			=> 'mod_iso_orderdetails',
-            'mod_orderhistory'			=> 'mod_iso_orderhistory',
-            'mod_productlist'			=> 'mod_iso_productlist',
-            'mod_productreader'			=> 'mod_iso_productreader',
-            'mod_storeswitcher'			=> 'mod_iso_storeswitcher',
-            'iso_address_book_list'		=> 'mod_iso_addressbook',
-            'mod_iso_storeswitcher'		=> 'mod_iso_configswitcher',
+            'mod_shopping_cart'            => 'mod_iso_cart',
+            'mod_filters'                => 'mod_iso_productfilter',
+            'mod_orderdetails'            => 'mod_iso_orderdetails',
+            'mod_orderhistory'            => 'mod_iso_orderhistory',
+            'mod_productlist'            => 'mod_iso_productlist',
+            'mod_productreader'            => 'mod_iso_productreader',
+            'mod_storeswitcher'            => 'mod_iso_storeswitcher',
+            'iso_address_book_list'        => 'mod_iso_addressbook',
+            'mod_iso_storeswitcher'        => 'mod_iso_configswitcher',
         );
 
         $this->import('Files');

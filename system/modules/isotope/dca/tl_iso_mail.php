@@ -23,11 +23,11 @@ $GLOBALS['TL_DCA']['tl_iso_mail'] = array
     // Config
     'config' => array
     (
-        'dataContainer'				=> 'Table',
-        'enableVersioning'			=> true,
-        'closed'					=> true,
-        'switchToEdit'				=> true,
-        'ctable'					=> array('tl_iso_mail_content'),
+        'dataContainer'                => 'Table',
+        'enableVersioning'            => true,
+        'closed'                    => true,
+        'switchToEdit'                => true,
+        'ctable'                    => array('tl_iso_mail_content'),
         'onload_callback' => array
         (
             array('Isotope\Backend', 'initializeSetupModule'),
@@ -130,14 +130,14 @@ $GLOBALS['TL_DCA']['tl_iso_mail'] = array
     // Palettes
     'palettes' => array
     (
-        '__selector__'				  => array('attachDocument'),
+        '__selector__'                  => array('attachDocument'),
         'default'                     => '{name_legend},name;{address_legend},senderName,sender,cc,bcc;{document_legend:hide},attachDocument;{expert_legend:hide},template,priority',
     ),
 
     // Subpalettes
     'subpalettes' => array
     (
-        'attachDocument'			  => 'documentTemplate,documentTitle',
+        'attachDocument'              => 'documentTemplate,documentTitle',
     ),
 
     // Fields
@@ -189,35 +189,35 @@ $GLOBALS['TL_DCA']['tl_iso_mail'] = array
         ),
         'priority' => array
         (
-            'label'						=> &$GLOBALS['TL_LANG']['tl_iso_mail']['priority'],
-            'exclude'					=> true,
-            'inputType'					=> 'select',
-            'options'					=> array(1,2,3,4,5),
-            'default'					=> 3,
-            'reference'					=> &$GLOBALS['TL_LANG']['tl_iso_mail']['priority_ref'],
-            'eval'						=> array('tl_class'=>'w50'),
+            'label'                        => &$GLOBALS['TL_LANG']['tl_iso_mail']['priority'],
+            'exclude'                    => true,
+            'inputType'                    => 'select',
+            'options'                    => array(1,2,3,4,5),
+            'default'                    => 3,
+            'reference'                    => &$GLOBALS['TL_LANG']['tl_iso_mail']['priority_ref'],
+            'eval'                        => array('tl_class'=>'w50'),
         ),
         'attachDocument' => array
         (
-            'label'					  => &$GLOBALS['TL_LANG']['tl_iso_mail']['attachDocument'],
+            'label'                      => &$GLOBALS['TL_LANG']['tl_iso_mail']['attachDocument'],
             'exclude'                 => true,
-            'inputType'				  => 'checkbox',
-            'eval'					  => array('submitOnChange'=>true, 'tl_class'=>'clr'),
+            'inputType'                  => 'checkbox',
+            'eval'                      => array('submitOnChange'=>true, 'tl_class'=>'clr'),
         ),
-        'documentTemplate'	=> array
+        'documentTemplate'    => array
         (
-            'label'					  => &$GLOBALS['TL_LANG']['tl_iso_mail']['documentTemplate'],
+            'label'                      => &$GLOBALS['TL_LANG']['tl_iso_mail']['documentTemplate'],
             'exclude'                 => true,
-            'inputType'				  => 'select',
-            'options'				  => \Isotope\Backend::getTemplates('iso_invoice'),
-            'eval'					  => array('includeBlankOption'=>true, 'tl_class'=>'w50', 'chosen'=>true)
+            'inputType'                  => 'select',
+            'options'                  => \Isotope\Backend::getTemplates('iso_invoice'),
+            'eval'                      => array('includeBlankOption'=>true, 'tl_class'=>'w50', 'chosen'=>true)
         ),
-        'documentTitle'		=> array
+        'documentTitle'        => array
         (
-            'label'					  => &$GLOBALS['TL_LANG']['tl_iso_mail']['documentTitle'],
+            'label'                      => &$GLOBALS['TL_LANG']['tl_iso_mail']['documentTitle'],
             'exclude'                 => true,
-            'inputType'				  => 'text',
-            'eval'					  => array('mandatory'=>true, 'maxlength'=>255, 'decodeEntities'=>true, 'tl_class'=>'w50'),
+            'inputType'                  => 'text',
+            'eval'                      => array('mandatory'=>true, 'maxlength'=>255, 'decodeEntities'=>true, 'tl_class'=>'w50'),
         ),
         'source' => array
         (

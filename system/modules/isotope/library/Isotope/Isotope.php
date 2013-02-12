@@ -293,11 +293,11 @@ class Isotope extends \Controller
 
         $arrSurcharge = array
         (
-            'label'			=> $strLabel,
-            'price'			=> ($blnPercentage ? $strPrice : '&nbsp;'),
-            'total_price'	=> $fltPrice,
-            'tax_class'		=> $intTaxClass,
-            'before_tax'	=> ($intTaxClass ? true : false),
+            'label'            => $strLabel,
+            'price'            => ($blnPercentage ? $strPrice : '&nbsp;'),
+            'total_price'    => $fltPrice,
+            'tax_class'        => $intTaxClass,
+            'before_tax'    => ($intTaxClass ? true : false),
         );
 
         if ($intTaxClass == -1)
@@ -397,10 +397,10 @@ class Isotope extends \Controller
 
                 $arrTaxes[$objTaxClass->id . '_' . $objIncludes->id] = array
                 (
-                    'label'			=> $objTaxClass->label ?: $objIncludes->label,
-                    'price'			=> $arrTaxRate['value'] . $arrTaxRate['unit'],
-                    'total_price'	=> $this->roundPrice($fltTax, $objTaxClass->applyRoundingIncrement),
-                    'add'			=> false,
+                    'label'            => $objTaxClass->label ?: $objIncludes->label,
+                    'price'            => $arrTaxRate['value'] . $arrTaxRate['unit'],
+                    'total_price'    => $this->roundPrice($fltTax, $objTaxClass->applyRoundingIncrement),
+                    'add'            => false,
                 );
             }
         }
@@ -423,10 +423,10 @@ class Isotope extends \Controller
 
                 $arrTaxes[$objTaxRate->id] = array
                 (
-                    'label'			=> $objTaxRate->label,
-                    'price'			=> $arrTaxRate['value'] . $arrTaxRate['unit'],
-                    'total_price'	=> $this->roundPrice($fltTax, $objTaxClass->applyRoundingIncrement),
-                    'add'			=> true,
+                    'label'            => $objTaxRate->label,
+                    'price'            => $arrTaxRate['value'] . $arrTaxRate['unit'],
+                    'total_price'    => $this->roundPrice($fltTax, $objTaxClass->applyRoundingIncrement),
+                    'add'            => true,
                 );
 
                 if ($objTaxRate->stop)
@@ -517,29 +517,29 @@ class Isotope extends \Controller
     }
 
 
-	/**
-	 * Format the number of items and return the items string
-	 * @param integer
-	 * @return string
-	 */
-	public function formatItemsString($intItems)
-	{
-		if ($intItems == 1)
-		{
-			return $GLOBALS['TL_LANG']['ISO']['productSingle'];
-		}
-		else
-		{
-			$arrFormat = $GLOBALS['ISO_NUM'][$this->Config->currencyFormat];
+    /**
+     * Format the number of items and return the items string
+     * @param integer
+     * @return string
+     */
+    public function formatItemsString($intItems)
+    {
+        if ($intItems == 1)
+        {
+            return $GLOBALS['TL_LANG']['ISO']['productSingle'];
+        }
+        else
+        {
+            $arrFormat = $GLOBALS['ISO_NUM'][$this->Config->currencyFormat];
 
-			if (is_array($arrFormat))
-			{
-				$intItems = number_format($intItems, 0, $arrFormat[1], $arrFormat[2]);
-			}
+            if (is_array($arrFormat))
+            {
+                $intItems = number_format($intItems, 0, $arrFormat[1], $arrFormat[2]);
+            }
 
-			return sprintf($GLOBALS['TL_LANG']['ISO']['productMultiple'], $intItems);
-		}
-	}
+            return sprintf($GLOBALS['TL_LANG']['ISO']['productMultiple'], $intItems);
+        }
+    }
 
 
     /**

@@ -109,17 +109,17 @@ class MediaManager extends \Widget implements \uploadable
         $GLOBALS['TL_CONFIG']['uploadTypes'] = $arrAllowedTypes;
 
         // Fetch fallback language record
-		$arrFallback = $this->getFallbackData();
+        $arrFallback = $this->getFallbackData();
 
-		if (is_array($arrFallback))
-		{
-    		foreach ($arrFallback as $k => $arrImage)
-    		{
-    		    if ($arrImage['translate'] == 'all')
-    		    {
-        			unset($arrFallback[$k]);
+        if (is_array($arrFallback))
+        {
+            foreach ($arrFallback as $k => $arrImage)
+            {
+                if ($arrImage['translate'] == 'all')
+                {
+                    unset($arrFallback[$k]);
                 }
-    		}
+            }
         }
 
         // Save file in the isotope folder
@@ -140,12 +140,12 @@ class MediaManager extends \Widget implements \uploadable
                 }
 
                 // Check that image is not assigned in fallback language
-				if (is_array($arrFallback) && in_array($strCacheName, $arrFallback))
-				{
-    				$this->addError($GLOBALS['TL_LANG']['ERR']['imageInFallback']);
-				}
-				else
-				{
+                if (is_array($arrFallback) && in_array($strCacheName, $arrFallback))
+                {
+                    $this->addError($GLOBALS['TL_LANG']['ERR']['imageInFallback']);
+                }
+                else
+                {
                     // Make sure directory exists
                     $this->Files->mkdir($uploadFolder);
                     $this->Files->rename($strFile, $uploadFolder . '/' . $strCacheName);
@@ -166,7 +166,7 @@ class MediaManager extends \Widget implements \uploadable
             }
 
             if (!is_array($arrFallback) || empty($arrFallback))
-			{
+            {
                 $this->addError(sprintf($GLOBALS['TL_LANG']['ERR']['mandatory'], $this->strLabel));
             }
         }
@@ -313,18 +313,18 @@ class MediaManager extends \Widget implements \uploadable
     }
 
 
-	/**
-	 * Retrieve image data from fallback language
-	 * @return array|false
-	 */
-	protected function getFallbackData()
-	{
-		// Fetch fallback language record
-		if ($_SESSION['BE_DATA']['language'][$this->strTable][$this->currentRecord] != '')
-		{
-			return deserialize($this->Database->execute("SELECT * FROM {$this->strTable} WHERE id={$this->currentRecord}")->{$this->strField});
-		}
+    /**
+     * Retrieve image data from fallback language
+     * @return array|false
+     */
+    protected function getFallbackData()
+    {
+        // Fetch fallback language record
+        if ($_SESSION['BE_DATA']['language'][$this->strTable][$this->currentRecord] != '')
+        {
+            return deserialize($this->Database->execute("SELECT * FROM {$this->strTable} WHERE id={$this->currentRecord}")->{$this->strField});
+        }
 
-		return false;
-	}
+        return false;
+    }
 }

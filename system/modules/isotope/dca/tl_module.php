@@ -17,34 +17,34 @@
 /**
  * Add palettes to tl_module
  */
-$GLOBALS['TL_DCA']['tl_module']['palettes']['__selector__'][]			= 'iso_checkout_method';
-$GLOBALS['TL_DCA']['tl_module']['palettes']['__selector__'][]			= 'iso_enableLimit';
-$GLOBALS['TL_DCA']['tl_module']['palettes']['__selector__'][]			= 'iso_emptyMessage';
-$GLOBALS['TL_DCA']['tl_module']['palettes']['__selector__'][]			= 'iso_emptyFilter';
-$GLOBALS['TL_DCA']['tl_module']['palettes']['iso_productlist']			= '{title_legend},name,headline,type;{config_legend},perPage,iso_cols,iso_category_scope,iso_list_where,iso_filterModules,iso_listingSortField,iso_listingSortDirection;{redirect_legend},iso_reader_jumpTo,iso_addProductJumpTo,iso_jump_first;{reference_legend:hide},defineRoot;{template_legend:hide},iso_list_layout,iso_use_quantity,iso_hide_list,iso_includeMessages,iso_emptyMessage,iso_emptyFilter,iso_buttons;{protected_legend:hide},protected;{expert_legend:hide},guests,cssID,space';
-$GLOBALS['TL_DCA']['tl_module']['palettes']['iso_productvariantlist']	= '{title_legend},name,headline,type;{config_legend},perPage,iso_cols,iso_category_scope,iso_list_where,iso_filterModules,iso_listingSortField,iso_listingSortDirection;{redirect_legend},iso_reader_jumpTo,iso_addProductJumpTo,iso_jump_first;{reference_legend:hide},defineRoot;{template_legend:hide},iso_list_layout,iso_use_quantity,iso_hide_list,,iso_includeMessages,iso_emptyMessage,iso_emptyFilter,iso_buttons;{protected_legend:hide},protected;{expert_legend:hide},guests,cssID,space';
-$GLOBALS['TL_DCA']['tl_module']['palettes']['iso_productreader']		= '{title_legend},name,headline,type;{config_legend},iso_use_quantity;{redirect_legend},iso_addProductJumpTo;{template_legend:hide},iso_includeMessages,iso_reader_layout,iso_buttons;{protected_legend:hide},protected;{expert_legend:hide},guests,cssID,space';
-$GLOBALS['TL_DCA']['tl_module']['palettes']['iso_cart']					= '{title_legend},name,headline,type;{redirect_legend},iso_cart_jumpTo,iso_checkout_jumpTo;{template_legend},iso_cart_layout,iso_continueShopping,iso_includeMessages,iso_emptyMessage;{protected_legend:hide},protected;{expert_legend:hide},guests,cssID,space';
-$GLOBALS['TL_DCA']['tl_module']['palettes']['iso_checkout']				= '{title_legend},name,headline,type;{config_legend},iso_checkout_method,iso_payment_modules,iso_shipping_modules;{email_legend},iso_mail_customer,iso_mail_admin,iso_sales_email;{redirect_legend},iso_forward_review,orderCompleteJumpTo;{template_legend},iso_order_conditions,iso_order_conditions_position,tableless,iso_includeMessages;{protected_legend:hide},protected;{expert_legend:hide},guests,cssID,space';
-$GLOBALS['TL_DCA']['tl_module']['palettes']['iso_checkoutmember']		= '{title_legend},name,headline,type;{config_legend},iso_checkout_method,iso_payment_modules,iso_shipping_modules,iso_addToAddressbook;{email_legend},iso_mail_customer,iso_mail_admin,iso_sales_email;{redirect_legend},iso_forward_review,orderCompleteJumpTo,iso_login_jumpTo;{template_legend},iso_order_conditions,iso_order_conditions_position,tableless,iso_includeMessages;{protected_legend:hide},protected;{expert_legend:hide},guests,cssID,space';
-$GLOBALS['TL_DCA']['tl_module']['palettes']['iso_checkoutguest']		= '{title_legend},name,headline,type;{config_legend},iso_checkout_method,iso_payment_modules,iso_shipping_modules;{email_legend},iso_mail_customer,iso_mail_admin,iso_sales_email;{redirect_legend},iso_forward_review,orderCompleteJumpTo;{template_legend},iso_order_conditions,iso_order_conditions_position,tableless,iso_includeMessages;{protected_legend:hide},protected;{expert_legend:hide},guests,cssID,space';
-$GLOBALS['TL_DCA']['tl_module']['palettes']['iso_checkoutboth']			= '{title_legend},name,headline,type;{config_legend},iso_checkout_method,iso_payment_modules,iso_shipping_modules,iso_addToAddressbook;{email_legend},iso_mail_customer,iso_mail_admin,iso_sales_email;{redirect_legend},iso_forward_review,orderCompleteJumpTo,iso_login_jumpTo;{template_legend},iso_order_conditions,iso_order_conditions_position,tableless,iso_includeMessages;{protected_legend:hide},protected;{expert_legend:hide},guests,cssID,space';
-$GLOBALS['TL_DCA']['tl_module']['palettes']['iso_orderhistory']			= '{title_legend},name,headline,type;{config_legend},iso_config_ids;{redirect_legend},jumpTo;{template_legend},iso_includeMessages;{protected_legend:hide},protected;{expert_legend:hide},guests,cssID,space';
-$GLOBALS['TL_DCA']['tl_module']['palettes']['iso_orderdetails']			= '{title_legend},name,headline,type;{redirect_legend},jumpTo;{template_legend},iso_includeMessages;{protected_legend:hide},protected;{expert_legend:hide},guests,cssID,space';
-$GLOBALS['TL_DCA']['tl_module']['palettes']['iso_configswitcher']		= '{title_legend},name,headline,type;{config_legend},iso_config_ids;{template_legend},iso_includeMessages;{protected_legend:hide},protected;{expert_legend:hide},guests,cssID,space';
-$GLOBALS['TL_DCA']['tl_module']['palettes']['iso_productfilter']		= '{title_legend},name,headline,type;{config_legend},iso_category_scope,iso_list_where,iso_enableLimit,iso_filterFields,iso_filterHideSingle,iso_searchFields,iso_searchAutocomplete,iso_sortingFields;{template_legend},iso_filterTpl,iso_includeMessages,iso_hide_list;{protected_legend:hide},protected;{expert_legend:hide},guests,cssID,space';
-$GLOBALS['TL_DCA']['tl_module']['palettes']['iso_cumulativefilter']		= '{title_legend},name,headline,type;{config_legend},iso_filterFields,iso_filterHideSingle;{template_legend},navigationTpl;{protected_legend:hide},protected;{expert_legend:hide},guests,cssID,space';
-$GLOBALS['TL_DCA']['tl_module']['palettes']['iso_addressbook']			= '{title_legend},name,headline,type;{template_legend},iso_includeMessages,memberTpl,tableless;{protected_legend:hide},protected;{expert_legend:hide},guests,cssID,space';
-$GLOBALS['TL_DCA']['tl_module']['palettes']['iso_relatedproducts']		= '{title_legend},name,headline,type;{config_legend},iso_related_categories,iso_list_where,perPage,iso_cols;{redirect_legend},iso_reader_jumpTo,iso_addProductJumpTo;{template_legend:hide},iso_list_layout,iso_use_quantity,iso_includeMessages,iso_emptyMessage,iso_buttons;{protected_legend:hide},protected;{expert_legend:hide},guests,cssID,space';
-$GLOBALS['TL_DCA']['tl_module']['palettes']['iso_message']		        = '{title_legend},name,headline,type;{protected_legend:hide},protected;{expert_legend:hide},guests,cssID,space';
+$GLOBALS['TL_DCA']['tl_module']['palettes']['__selector__'][]            = 'iso_checkout_method';
+$GLOBALS['TL_DCA']['tl_module']['palettes']['__selector__'][]            = 'iso_enableLimit';
+$GLOBALS['TL_DCA']['tl_module']['palettes']['__selector__'][]            = 'iso_emptyMessage';
+$GLOBALS['TL_DCA']['tl_module']['palettes']['__selector__'][]            = 'iso_emptyFilter';
+$GLOBALS['TL_DCA']['tl_module']['palettes']['iso_productlist']            = '{title_legend},name,headline,type;{config_legend},perPage,iso_cols,iso_category_scope,iso_list_where,iso_filterModules,iso_listingSortField,iso_listingSortDirection;{redirect_legend},iso_reader_jumpTo,iso_addProductJumpTo,iso_jump_first;{reference_legend:hide},defineRoot;{template_legend:hide},iso_list_layout,iso_use_quantity,iso_hide_list,iso_includeMessages,iso_emptyMessage,iso_emptyFilter,iso_buttons;{protected_legend:hide},protected;{expert_legend:hide},guests,cssID,space';
+$GLOBALS['TL_DCA']['tl_module']['palettes']['iso_productvariantlist']    = '{title_legend},name,headline,type;{config_legend},perPage,iso_cols,iso_category_scope,iso_list_where,iso_filterModules,iso_listingSortField,iso_listingSortDirection;{redirect_legend},iso_reader_jumpTo,iso_addProductJumpTo,iso_jump_first;{reference_legend:hide},defineRoot;{template_legend:hide},iso_list_layout,iso_use_quantity,iso_hide_list,,iso_includeMessages,iso_emptyMessage,iso_emptyFilter,iso_buttons;{protected_legend:hide},protected;{expert_legend:hide},guests,cssID,space';
+$GLOBALS['TL_DCA']['tl_module']['palettes']['iso_productreader']        = '{title_legend},name,headline,type;{config_legend},iso_use_quantity;{redirect_legend},iso_addProductJumpTo;{template_legend:hide},iso_includeMessages,iso_reader_layout,iso_buttons;{protected_legend:hide},protected;{expert_legend:hide},guests,cssID,space';
+$GLOBALS['TL_DCA']['tl_module']['palettes']['iso_cart']                    = '{title_legend},name,headline,type;{redirect_legend},iso_cart_jumpTo,iso_checkout_jumpTo;{template_legend},iso_cart_layout,iso_continueShopping,iso_includeMessages,iso_emptyMessage;{protected_legend:hide},protected;{expert_legend:hide},guests,cssID,space';
+$GLOBALS['TL_DCA']['tl_module']['palettes']['iso_checkout']                = '{title_legend},name,headline,type;{config_legend},iso_checkout_method,iso_payment_modules,iso_shipping_modules;{email_legend},iso_mail_customer,iso_mail_admin,iso_sales_email;{redirect_legend},iso_forward_review,orderCompleteJumpTo;{template_legend},iso_order_conditions,iso_order_conditions_position,tableless,iso_includeMessages;{protected_legend:hide},protected;{expert_legend:hide},guests,cssID,space';
+$GLOBALS['TL_DCA']['tl_module']['palettes']['iso_checkoutmember']        = '{title_legend},name,headline,type;{config_legend},iso_checkout_method,iso_payment_modules,iso_shipping_modules,iso_addToAddressbook;{email_legend},iso_mail_customer,iso_mail_admin,iso_sales_email;{redirect_legend},iso_forward_review,orderCompleteJumpTo,iso_login_jumpTo;{template_legend},iso_order_conditions,iso_order_conditions_position,tableless,iso_includeMessages;{protected_legend:hide},protected;{expert_legend:hide},guests,cssID,space';
+$GLOBALS['TL_DCA']['tl_module']['palettes']['iso_checkoutguest']        = '{title_legend},name,headline,type;{config_legend},iso_checkout_method,iso_payment_modules,iso_shipping_modules;{email_legend},iso_mail_customer,iso_mail_admin,iso_sales_email;{redirect_legend},iso_forward_review,orderCompleteJumpTo;{template_legend},iso_order_conditions,iso_order_conditions_position,tableless,iso_includeMessages;{protected_legend:hide},protected;{expert_legend:hide},guests,cssID,space';
+$GLOBALS['TL_DCA']['tl_module']['palettes']['iso_checkoutboth']            = '{title_legend},name,headline,type;{config_legend},iso_checkout_method,iso_payment_modules,iso_shipping_modules,iso_addToAddressbook;{email_legend},iso_mail_customer,iso_mail_admin,iso_sales_email;{redirect_legend},iso_forward_review,orderCompleteJumpTo,iso_login_jumpTo;{template_legend},iso_order_conditions,iso_order_conditions_position,tableless,iso_includeMessages;{protected_legend:hide},protected;{expert_legend:hide},guests,cssID,space';
+$GLOBALS['TL_DCA']['tl_module']['palettes']['iso_orderhistory']            = '{title_legend},name,headline,type;{config_legend},iso_config_ids;{redirect_legend},jumpTo;{template_legend},iso_includeMessages;{protected_legend:hide},protected;{expert_legend:hide},guests,cssID,space';
+$GLOBALS['TL_DCA']['tl_module']['palettes']['iso_orderdetails']            = '{title_legend},name,headline,type;{redirect_legend},jumpTo;{template_legend},iso_includeMessages;{protected_legend:hide},protected;{expert_legend:hide},guests,cssID,space';
+$GLOBALS['TL_DCA']['tl_module']['palettes']['iso_configswitcher']        = '{title_legend},name,headline,type;{config_legend},iso_config_ids;{template_legend},iso_includeMessages;{protected_legend:hide},protected;{expert_legend:hide},guests,cssID,space';
+$GLOBALS['TL_DCA']['tl_module']['palettes']['iso_productfilter']        = '{title_legend},name,headline,type;{config_legend},iso_category_scope,iso_list_where,iso_enableLimit,iso_filterFields,iso_filterHideSingle,iso_searchFields,iso_searchAutocomplete,iso_sortingFields;{template_legend},iso_filterTpl,iso_includeMessages,iso_hide_list;{protected_legend:hide},protected;{expert_legend:hide},guests,cssID,space';
+$GLOBALS['TL_DCA']['tl_module']['palettes']['iso_cumulativefilter']        = '{title_legend},name,headline,type;{config_legend},iso_filterFields,iso_filterHideSingle;{template_legend},navigationTpl;{protected_legend:hide},protected;{expert_legend:hide},guests,cssID,space';
+$GLOBALS['TL_DCA']['tl_module']['palettes']['iso_addressbook']            = '{title_legend},name,headline,type;{template_legend},iso_includeMessages,memberTpl,tableless;{protected_legend:hide},protected;{expert_legend:hide},guests,cssID,space';
+$GLOBALS['TL_DCA']['tl_module']['palettes']['iso_relatedproducts']        = '{title_legend},name,headline,type;{config_legend},iso_related_categories,iso_list_where,perPage,iso_cols;{redirect_legend},iso_reader_jumpTo,iso_addProductJumpTo;{template_legend:hide},iso_list_layout,iso_use_quantity,iso_includeMessages,iso_emptyMessage,iso_buttons;{protected_legend:hide},protected;{expert_legend:hide},guests,cssID,space';
+$GLOBALS['TL_DCA']['tl_module']['palettes']['iso_message']                = '{title_legend},name,headline,type;{protected_legend:hide},protected;{expert_legend:hide},guests,cssID,space';
 
 
 /**
  * Add subpalettes to tl_module
  */
-$GLOBALS['TL_DCA']['tl_module']['subpalettes']['iso_enableLimit']		= 'iso_perPage';
-$GLOBALS['TL_DCA']['tl_module']['subpalettes']['iso_emptyMessage']		= 'iso_noProducts';
-$GLOBALS['TL_DCA']['tl_module']['subpalettes']['iso_emptyFilter']		= 'iso_noFilter';
+$GLOBALS['TL_DCA']['tl_module']['subpalettes']['iso_enableLimit']        = 'iso_perPage';
+$GLOBALS['TL_DCA']['tl_module']['subpalettes']['iso_emptyMessage']        = 'iso_noProducts';
+$GLOBALS['TL_DCA']['tl_module']['subpalettes']['iso_emptyFilter']        = 'iso_noFilter';
 
 
 /**
@@ -52,39 +52,39 @@ $GLOBALS['TL_DCA']['tl_module']['subpalettes']['iso_emptyFilter']		= 'iso_noFilt
  */
 $GLOBALS['TL_DCA']['tl_module']['fields']['iso_list_layout'] = array
 (
-    'label'						=> &$GLOBALS['TL_LANG']['tl_module']['iso_list_layout'],
-    'exclude'					=> true,
-    'inputType'					=> 'select',
-    'options_callback'			=> array('Isotope\tl_module', 'getListTemplates'),
-    'eval'						=> array('includeBlankOption'=>true, 'tl_class'=>'w50', 'chosen'=>true)
+    'label'                        => &$GLOBALS['TL_LANG']['tl_module']['iso_list_layout'],
+    'exclude'                    => true,
+    'inputType'                    => 'select',
+    'options_callback'            => array('Isotope\tl_module', 'getListTemplates'),
+    'eval'                        => array('includeBlankOption'=>true, 'tl_class'=>'w50', 'chosen'=>true)
 );
 
 $GLOBALS['TL_DCA']['tl_module']['fields']['iso_reader_layout'] = array
 (
-    'label'						=> &$GLOBALS['TL_LANG']['tl_module']['iso_reader_layout'],
-    'exclude'					=> true,
-    'inputType'					=> 'select',
-    'options_callback'			=> array('Isotope\tl_module', 'getReaderTemplates'),
-    'eval'						=> array('includeBlankOption'=>true, 'chosen'=>true, 'tl_class'=>'w50')
+    'label'                        => &$GLOBALS['TL_LANG']['tl_module']['iso_reader_layout'],
+    'exclude'                    => true,
+    'inputType'                    => 'select',
+    'options_callback'            => array('Isotope\tl_module', 'getReaderTemplates'),
+    'eval'                        => array('includeBlankOption'=>true, 'chosen'=>true, 'tl_class'=>'w50')
 );
 
 $GLOBALS['TL_DCA']['tl_module']['fields']['iso_cart_layout'] = array
 (
-    'label'						=> &$GLOBALS['TL_LANG']['tl_module']['iso_cart_layout'],
-    'exclude'					=> true,
-    'inputType'					=> 'select',
-    'options_callback'			=> array('Isotope\tl_module', 'getCartTemplates'),
-    'eval'						=> array('tl_class'=>'w50', 'chosen'=>true)
+    'label'                        => &$GLOBALS['TL_LANG']['tl_module']['iso_cart_layout'],
+    'exclude'                    => true,
+    'inputType'                    => 'select',
+    'options_callback'            => array('Isotope\tl_module', 'getCartTemplates'),
+    'eval'                        => array('tl_class'=>'w50', 'chosen'=>true)
 );
 
 $GLOBALS['TL_DCA']['tl_module']['fields']['iso_filterTpl'] = array
 (
-    'label'						=> &$GLOBALS['TL_LANG']['tl_module']['iso_filterTpl'],
-    'exclude'					=> true,
-    'default'					=> 'iso_filter_default',
-    'inputType'					=> 'select',
-    'options_callback'			=> array('Isotope\tl_module', 'getFilterTemplates'),
-    'eval'						=> array('mandatory'=>true, 'tl_class'=>'w50', 'chosen'=>true)
+    'label'                        => &$GLOBALS['TL_LANG']['tl_module']['iso_filterTpl'],
+    'exclude'                    => true,
+    'default'                    => 'iso_filter_default',
+    'inputType'                    => 'select',
+    'options_callback'            => array('Isotope\tl_module', 'getFilterTemplates'),
+    'eval'                        => array('mandatory'=>true, 'tl_class'=>'w50', 'chosen'=>true)
 );
 
 $GLOBALS['TL_DCA']['tl_module']['fields']['iso_jump_first'] = array
@@ -92,7 +92,7 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['iso_jump_first'] = array
     'label'                   => &$GLOBALS['TL_LANG']['tl_module']['iso_jump_first'],
     'exclude'                 => true,
     'inputType'               => 'checkbox',
-    'eval'					  => array('tl_class'=>'w50')
+    'eval'                      => array('tl_class'=>'w50')
 );
 
 $GLOBALS['TL_DCA']['tl_module']['fields']['iso_hide_list'] = array
@@ -100,7 +100,7 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['iso_hide_list'] = array
     'label'                   => &$GLOBALS['TL_LANG']['tl_module']['iso_hide_list'],
     'exclude'                 => true,
     'inputType'               => 'checkbox',
-    'eval'					  => array('tl_class'=>'w50')
+    'eval'                      => array('tl_class'=>'w50')
 );
 
 $GLOBALS['TL_DCA']['tl_module']['fields']['iso_use_quantity'] = array
@@ -108,7 +108,7 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['iso_use_quantity'] = array
     'label'                   => &$GLOBALS['TL_LANG']['tl_module']['iso_use_quantity'],
     'exclude'                 => true,
     'inputType'               => 'checkbox',
-    'eval'					  => array('tl_class'=>'w50 m12'),
+    'eval'                      => array('tl_class'=>'w50 m12'),
 );
 
 $GLOBALS['TL_DCA']['tl_module']['fields']['iso_checkout_method'] = array
@@ -116,10 +116,10 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['iso_checkout_method'] = array
     'label'                   => &$GLOBALS['TL_LANG']['tl_module']['iso_checkout_method'],
     'exclude'                 => true,
     'inputType'               => 'radio',
-    'default'				  => 'member',
-    'options'				  => array('member', 'guest', 'both'),
-    'reference'				  => &$GLOBALS['TL_LANG']['tl_module']['iso_checkout_method_ref'],
-    'eval'					  => array('mandatory'=>true, 'submitOnChange'=>true),
+    'default'                  => 'member',
+    'options'                  => array('member', 'guest', 'both'),
+    'reference'                  => &$GLOBALS['TL_LANG']['tl_module']['iso_checkout_method_ref'],
+    'eval'                      => array('mandatory'=>true, 'submitOnChange'=>true),
 );
 
 $GLOBALS['TL_DCA']['tl_module']['fields']['iso_reader_jumpTo'] = array
@@ -159,7 +159,7 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['iso_cols'] = array
 (
     'label'                   => &$GLOBALS['TL_LANG']['tl_module']['iso_cols'],
     'exclude'                 => true,
-    'default'				  => 1,
+    'default'                  => 1,
     'inputType'               => 'text',
     'eval'                    => array('maxlength'=>1, 'rgxp'=>'digit', 'tl_class'=>'w50'),
 );
@@ -169,8 +169,8 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['iso_config_id'] = array
     'label'                   => &$GLOBALS['TL_LANG']['tl_module']['iso_config_id'],
     'exclude'                 => true,
     'inputType'               => 'select',
-    'foreignKey'			  => 'tl_iso_config.name',
-    'eval'					  => array('includeBlankOption'=>true, 'mandatory'=>true, 'tl_class'=>'w50'),
+    'foreignKey'              => 'tl_iso_config.name',
+    'eval'                      => array('includeBlankOption'=>true, 'mandatory'=>true, 'tl_class'=>'w50'),
     'relation'                => array('type'=>'hasOne', 'load'=>'lazy'),
 );
 
@@ -179,8 +179,8 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['iso_config_ids'] = array
     'label'                   => &$GLOBALS['TL_LANG']['tl_module']['iso_config_ids'],
     'exclude'                 => true,
     'inputType'               => 'checkboxWizard',
-    'foreignKey'			  => 'tl_iso_config.name',
-    'eval'					  => array('multiple'=>true, 'mandatory'=>true, 'tl_class'=>'clr'),
+    'foreignKey'              => 'tl_iso_config.name',
+    'eval'                      => array('multiple'=>true, 'mandatory'=>true, 'tl_class'=>'clr'),
     'relation'                => array('type'=>'hasMany', 'load'=>'lazy'),
 );
 
@@ -189,9 +189,9 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['iso_payment_modules'] = array
     'label'                   => &$GLOBALS['TL_LANG']['tl_module']['iso_payment_modules'],
     'exclude'                 => true,
     'inputType'               => 'checkboxWizard',
-    'foreignKey'			  => 'tl_iso_payment_modules.name',
-    'options_callback'		  => array('Isotope\tl_module', 'getPaymentModules'),
-    'eval'					  => array('multiple'=>true),
+    'foreignKey'              => 'tl_iso_payment_modules.name',
+    'options_callback'          => array('Isotope\tl_module', 'getPaymentModules'),
+    'eval'                      => array('multiple'=>true),
     'relation'                => array('type'=>'hasMany', 'load'=>'lazy'),
 );
 
@@ -200,9 +200,9 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['iso_shipping_modules'] = array
     'label'                   => &$GLOBALS['TL_LANG']['tl_module']['iso_shipping_modules'],
     'exclude'                 => true,
     'inputType'               => 'checkboxWizard',
-    'foreignKey'			  => 'tl_iso_shipping_modules.name',
-    'options_callback'		  => array('Isotope\tl_module','getShippingModules'),
-    'eval'					  => array('multiple'=>true),
+    'foreignKey'              => 'tl_iso_shipping_modules.name',
+    'options_callback'          => array('Isotope\tl_module','getShippingModules'),
+    'eval'                      => array('multiple'=>true),
     'relation'                => array('type'=>'hasMany', 'load'=>'lazy'),
 );
 
@@ -230,7 +230,7 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['iso_mail_customer'] = array
     'exclude'                 => true,
     'inputType'               => 'select',
     'foreignKey'              => 'tl_iso_mail.name',
-    'eval'					  => array('includeBlankOption'=>true, 'mandatory'=>true, 'chosen'=>true),
+    'eval'                      => array('includeBlankOption'=>true, 'mandatory'=>true, 'chosen'=>true),
     'relation'                => array('type'=>'hasOne', 'load'=>'lazy'),
 );
 
@@ -240,7 +240,7 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['iso_mail_admin'] = array
     'exclude'                 => true,
     'inputType'               => 'select',
     'foreignKey'              => 'tl_iso_mail.name',
-    'eval'					  => array('includeBlankOption'=>true, 'mandatory'=>true, 'tl_class'=>'w50', 'chosen'=>true),
+    'eval'                      => array('includeBlankOption'=>true, 'mandatory'=>true, 'tl_class'=>'w50', 'chosen'=>true),
     'relation'                => array('type'=>'hasOne', 'load'=>'lazy'),
 );
 
@@ -257,7 +257,7 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['iso_order_conditions'] = array
     'label'                   => &$GLOBALS['TL_LANG']['tl_module']['iso_order_conditions'],
     'exclude'                 => true,
     'inputType'               => 'select',
-    'foreignKey'			  => 'tl_form.title',
+    'foreignKey'              => 'tl_form.title',
     'eval'                    => array('includeBlankOption'=>true, 'tl_class'=>'w50', 'chosen'=>true),
     'relation'                => array('type'=>'hasOne', 'load'=>'lazy'),
 );
@@ -267,8 +267,8 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['iso_order_conditions_position'] = arr
     'label'                   => &$GLOBALS['TL_LANG']['tl_module']['iso_order_conditions_position'],
     'exclude'                 => true,
     'inputType'               => 'radio',
-    'options'				  => array('top', 'before', 'after'),
-    'reference'				  => &$GLOBALS['TL_LANG']['tl_module']['iso_order_conditions_position'],
+    'options'                  => array('top', 'before', 'after'),
+    'reference'                  => &$GLOBALS['TL_LANG']['tl_module']['iso_order_conditions_position'],
     'eval'                    => array('tl_class'=>'w50'),
 );
 
@@ -284,7 +284,7 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['iso_emptyMessage'] = array
     'label'                   => &$GLOBALS['TL_LANG']['tl_module']['iso_emptyMessage'],
     'exclude'                 => true,
     'inputType'               => 'checkbox',
-    'eval'					  => array('submitOnChange'=>true, 'tl_class'=>'clr'),
+    'eval'                      => array('submitOnChange'=>true, 'tl_class'=>'clr'),
 );
 
 $GLOBALS['TL_DCA']['tl_module']['fields']['iso_noProducts'] = array
@@ -300,7 +300,7 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['iso_emptyFilter'] = array
     'label'                   => &$GLOBALS['TL_LANG']['tl_module']['iso_emptyFilter'],
     'exclude'                 => true,
     'inputType'               => 'checkbox',
-    'eval'					  => array('submitOnChange'=>true, 'tl_class'=>'clr'),
+    'eval'                      => array('submitOnChange'=>true, 'tl_class'=>'clr'),
 );
 
 $GLOBALS['TL_DCA']['tl_module']['fields']['iso_noFilter'] = array
@@ -316,10 +316,10 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['iso_category_scope'] = array
     'label'                   => &$GLOBALS['TL_LANG']['tl_module']['iso_category_scope'],
     'exclude'                 => true,
     'inputType'               => 'radio',
-    'default'				  => 'current_category',
-    'options'				  => array('current_category', 'current_and_first_child', 'current_and_all_children', 'parent', 'product', 'article', 'global'),
-    'reference'				  => &$GLOBALS['TL_LANG']['tl_module']['iso_category_scope_ref'],
-    'eval'					  => array('tl_class'=>'w50 w50h', 'helpwizard'=>true),
+    'default'                  => 'current_category',
+    'options'                  => array('current_category', 'current_and_first_child', 'current_and_all_children', 'parent', 'product', 'article', 'global'),
+    'reference'                  => &$GLOBALS['TL_LANG']['tl_module']['iso_category_scope_ref'],
+    'eval'                      => array('tl_class'=>'w50 w50h', 'helpwizard'=>true),
 );
 
 $GLOBALS['TL_DCA']['tl_module']['fields']['iso_list_where'] = array
@@ -336,8 +336,8 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['iso_filterModules'] = array
     'exclude'                 => true,
     'inputType'               => 'checkboxWizard',
     'foreignKey'              => 'tl_module.name',
-    'options_callback'		  => array('Isotope\tl_module', 'getFilterModules'),
-    'eval'					  => array('multiple'=>true, 'tl_class'=>'clr'),
+    'options_callback'          => array('Isotope\tl_module', 'getFilterModules'),
+    'eval'                      => array('multiple'=>true, 'tl_class'=>'clr'),
     'relation'                => array('type'=>'hasMany', 'load'=>'lazy'),
 );
 
@@ -346,16 +346,16 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['iso_filterFields'] = array
     'label'                   => &$GLOBALS['TL_LANG']['tl_module']['iso_filterFields'],
     'exclude'                 => true,
     'inputType'               => 'checkboxWizard',
-    'options_callback'		  => array('Isotope\tl_module', 'getFilterFields'),
-    'eval'					  => array('multiple'=>true, 'tl_class'=>'clr w50 w50h'),
+    'options_callback'          => array('Isotope\tl_module', 'getFilterFields'),
+    'eval'                      => array('multiple'=>true, 'tl_class'=>'clr w50 w50h'),
 );
 
 $GLOBALS['TL_DCA']['tl_module']['fields']['iso_filterHideSingle'] = array
 (
-	'label'                   => &$GLOBALS['TL_LANG']['tl_module']['iso_filterHideSingle'],
-	'exclude'                 => true,
-	'inputType'               => 'checkbox',
-	'eval'					  => array('tl_class'=>'w50 m12'),
+    'label'                   => &$GLOBALS['TL_LANG']['tl_module']['iso_filterHideSingle'],
+    'exclude'                 => true,
+    'inputType'               => 'checkbox',
+    'eval'                      => array('tl_class'=>'w50 m12'),
 );
 
 $GLOBALS['TL_DCA']['tl_module']['fields']['iso_searchFields'] = array
@@ -363,8 +363,8 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['iso_searchFields'] = array
     'label'                   => &$GLOBALS['TL_LANG']['tl_module']['iso_searchFields'],
     'exclude'                 => true,
     'inputType'               => 'checkboxWizard',
-    'options_callback'		  => array('Isotope\tl_module', 'getSearchFields'),
-    'eval'					  => array('multiple'=>true, 'tl_class'=>'w50 w50h'),
+    'options_callback'          => array('Isotope\tl_module', 'getSearchFields'),
+    'eval'                      => array('multiple'=>true, 'tl_class'=>'w50 w50h'),
 );
 
 $GLOBALS['TL_DCA']['tl_module']['fields']['iso_searchAutocomplete'] = array
@@ -372,8 +372,8 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['iso_searchAutocomplete'] = array
     'label'                   => &$GLOBALS['TL_LANG']['tl_module']['iso_searchAutocomplete'],
     'exclude'                 => true,
     'inputType'               => 'select',
-    'options_callback'		  => array('Isotope\tl_module', 'getAutocompleteFields'),
-    'eval'					  => array('tl_class'=>'w50', 'includeBlankOption'=>true),
+    'options_callback'          => array('Isotope\tl_module', 'getAutocompleteFields'),
+    'eval'                      => array('tl_class'=>'w50', 'includeBlankOption'=>true),
 );
 
 $GLOBALS['TL_DCA']['tl_module']['fields']['iso_sortingFields'] = array
@@ -381,8 +381,8 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['iso_sortingFields'] = array
     'label'                   => &$GLOBALS['TL_LANG']['tl_module']['iso_sortingFields'],
     'exclude'                 => true,
     'inputType'               => 'checkboxWizard',
-    'options_callback'		  => array('Isotope\tl_module', 'getSortingFields'),
-    'eval'					  => array('multiple'=>true, 'tl_class'=>'clr'),
+    'options_callback'          => array('Isotope\tl_module', 'getSortingFields'),
+    'eval'                      => array('multiple'=>true, 'tl_class'=>'clr'),
 );
 
 $GLOBALS['TL_DCA']['tl_module']['fields']['iso_enableLimit'] = array
@@ -390,16 +390,16 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['iso_enableLimit'] = array
     'label'                   => &$GLOBALS['TL_LANG']['tl_module']['iso_enableLimit'],
     'exclude'                 => true,
     'inputType'               => 'checkbox',
-    'eval'					  => array('submitOnChange'=>true, 'tl_class'=>'clr w50 m12'),
+    'eval'                      => array('submitOnChange'=>true, 'tl_class'=>'clr w50 m12'),
 );
 
 $GLOBALS['TL_DCA']['tl_module']['fields']['iso_perPage'] = array
 (
-    'label'						=> &$GLOBALS['TL_LANG']['tl_module']['iso_perPage'],
-    'exclude'					=> true,
-    'default'					=> '8,12,32,64',
-    'inputType'					=> 'text',
-    'eval'						=> array('mandatory'=>true, 'maxlength'=>64, 'rgxp'=>'extnd', 'tl_class'=>'w50'),
+    'label'                        => &$GLOBALS['TL_LANG']['tl_module']['iso_perPage'],
+    'exclude'                    => true,
+    'default'                    => '8,12,32,64',
+    'inputType'                    => 'text',
+    'eval'                        => array('mandatory'=>true, 'maxlength'=>64, 'rgxp'=>'extnd', 'tl_class'=>'w50'),
 );
 
 $GLOBALS['TL_DCA']['tl_module']['fields']['iso_cart_jumpTo'] = array
@@ -429,8 +429,8 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['iso_listingSortField'] = array
     'label'                   => &$GLOBALS['TL_LANG']['tl_module']['iso_listingSortField'],
     'exclude'                 => true,
     'inputType'               => 'select',
-    'options_callback'		  => array('Isotope\tl_module', 'getSortingFields'),
-    'eval'					  => array('includeBlankOption'=>true, 'tl_class'=>'clr w50'),
+    'options_callback'          => array('Isotope\tl_module', 'getSortingFields'),
+    'eval'                      => array('includeBlankOption'=>true, 'tl_class'=>'clr w50'),
     'save_callback' => array
     (
         array('Isotope\Backend', 'truncateProductCache'),
@@ -441,11 +441,11 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['iso_listingSortDirection'] = array
 (
     'label'                   => &$GLOBALS['TL_LANG']['tl_module']['iso_listingSortDirection'],
     'exclude'                 => true,
-    'default'				  => 'DESC',
+    'default'                  => 'DESC',
     'inputType'               => 'select',
-    'options'				  => array('DESC','ASC'),
-    'reference'				  => &$GLOBALS['TL_LANG']['tl_module']['sortingDirection'],
-    'eval'					  => array('tl_class'=>'w50'),
+    'options'                  => array('DESC','ASC'),
+    'reference'                  => &$GLOBALS['TL_LANG']['tl_module']['sortingDirection'],
+    'eval'                      => array('tl_class'=>'w50'),
 );
 
 $GLOBALS['TL_DCA']['tl_module']['fields']['iso_buttons'] = array
@@ -453,9 +453,9 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['iso_buttons'] = array
     'label'                   => &$GLOBALS['TL_LANG']['tl_module']['iso_buttons'],
     'exclude'                 => true,
     'inputType'               => 'checkboxWizard',
-    'default'				  => array('add_to_cart'),
-    'options_callback'		  => array('Isotope\tl_module', 'getButtons'),
-    'eval'					  => array('multiple'=>true, 'tl_class'=>'clr'),
+    'default'                  => array('add_to_cart'),
+    'options_callback'          => array('Isotope\tl_module', 'getButtons'),
+    'eval'                      => array('multiple'=>true, 'tl_class'=>'clr'),
 );
 
 $GLOBALS['TL_DCA']['tl_module']['fields']['iso_related_categories'] = array
@@ -463,8 +463,8 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['iso_related_categories'] = array
     'label'                   => &$GLOBALS['TL_LANG']['tl_module']['iso_related_categories'],
     'exclude'                 => true,
     'inputType'               => 'checkboxWizard',
-    'foreignKey'			  => 'tl_iso_related_categories.name',
-    'eval'					  => array('mandatory'=>true, 'multiple'=>true, 'tl_class'=>'w50 w50h'),
+    'foreignKey'              => 'tl_iso_related_categories.name',
+    'eval'                      => array('mandatory'=>true, 'multiple'=>true, 'tl_class'=>'w50 w50h'),
     'relation'                => array('type'=>'hasMany', 'load'=>'lazy'),
 );
 
@@ -473,7 +473,7 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['iso_includeMessages'] = array
     'label'                   => &$GLOBALS['TL_LANG']['tl_module']['iso_includeMessages'],
     'exclude'                 => true,
     'inputType'               => 'checkbox',
-    'eval'					  => array('doNotCopy'=>true, 'tl_class'=>'w50'),
+    'eval'                      => array('doNotCopy'=>true, 'tl_class'=>'w50'),
 );
 
 $GLOBALS['TL_DCA']['tl_module']['fields']['iso_continueShopping'] = array
@@ -481,5 +481,5 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['iso_continueShopping'] = array
     'label'                   => &$GLOBALS['TL_LANG']['tl_module']['iso_continueShopping'],
     'exclude'                 => true,
     'inputType'               => 'checkbox',
-    'eval'					  => array('tl_class'=>'w50 m12'),
+    'eval'                      => array('tl_class'=>'w50 m12'),
 );

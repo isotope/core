@@ -23,10 +23,10 @@ $GLOBALS['TL_DCA']['tl_iso_product_categories'] = array
     // Config
     'config' => array
     (
-        'dataContainer'					=> 'TablePageId',
-        'ptable'						=> 'tl_page',
-        'closed'						=> true,
-        'notEditable'					=> true,
+        'dataContainer'                    => 'TablePageId',
+        'ptable'                        => 'tl_page',
+        'closed'                        => true,
+        'notEditable'                    => true,
         'onload_callback' => array
         (
 
@@ -43,36 +43,36 @@ $GLOBALS['TL_DCA']['tl_iso_product_categories'] = array
     (
         'sorting' => array
         (
-            'mode'						=> 4,
-            'fields'					=> array('sorting'),
-            'panelLayout'				=> 'limit',
-            'headerFields'				=> array('title', 'type'),
-            'child_record_callback'		=> array('Isotope\tl_iso_product_categories', 'listRows')
+            'mode'                        => 4,
+            'fields'                    => array('sorting'),
+            'panelLayout'                => 'limit',
+            'headerFields'                => array('title', 'type'),
+            'child_record_callback'        => array('Isotope\tl_iso_product_categories', 'listRows')
         ),
         'global_operations' => array
         (
             'view' => array
             (
-                'label'					=> &$GLOBALS['TL_LANG']['MSC']['fePreview'],
-                'class'					=> 'header_preview',
-                'button_callback'		=> array('Isotope\tl_iso_product_categories', 'getPageViewButton'),
+                'label'                    => &$GLOBALS['TL_LANG']['MSC']['fePreview'],
+                'class'                    => 'header_preview',
+                'button_callback'        => array('Isotope\tl_iso_product_categories', 'getPageViewButton'),
             ),
             'all' => array
             (
-                'label'					=> &$GLOBALS['TL_LANG']['MSC']['all'],
-                'href'					=> 'act=select',
-                'class'					=> 'header_edit_all',
-                'attributes'			=> 'onclick="Backend.getScrollOffset();"'
+                'label'                    => &$GLOBALS['TL_LANG']['MSC']['all'],
+                'href'                    => 'act=select',
+                'class'                    => 'header_edit_all',
+                'attributes'            => 'onclick="Backend.getScrollOffset();"'
             ),
         ),
         'operations' => array
         (
             'cut' => array
             (
-                'label'					=> &$GLOBALS['TL_LANG']['tl_iso_product_categories']['cut'],
-                'href'					=> 'act=paste&amp;mode=cut',
-                'icon'					=> 'cut.gif',
-                'attributes'			=> 'onclick="Backend.getScrollOffset();"'
+                'label'                    => &$GLOBALS['TL_LANG']['tl_iso_product_categories']['cut'],
+                'href'                    => 'act=paste&amp;mode=cut',
+                'icon'                    => 'cut.gif',
+                'attributes'            => 'onclick="Backend.getScrollOffset();"'
             ),
         )
     ),

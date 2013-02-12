@@ -27,7 +27,7 @@
 </div>
 <?php endif; ?>
 <?php foreach( $this->buttons as $name => $button ): ?>
-	<input type="submit" class="submit <?php echo $name; ?>" name="<?php echo $name; ?>" value="<?php echo $button['label']; ?>">
+    <input type="submit" class="submit <?php echo $name; ?>" name="<?php echo $name; ?>" value="<?php echo $button['label']; ?>">
 <?php endforeach; ?>
 </div>
 <?php endif; ?>

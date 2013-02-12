@@ -25,7 +25,7 @@ $GLOBALS['TL_DCA']['tl_iso_tax_class'] = array
     (
         'dataContainer'               => 'Table',
         'enableVersioning'            => true,
-        'closed'					  => true,
+        'closed'                      => true,
         'onload_callback' => array
         (
             array('Isotope\Backend', 'initializeSetupModule'),
@@ -53,17 +53,17 @@ $GLOBALS['TL_DCA']['tl_iso_tax_class'] = array
         (
             'back' => array
             (
-                'label'					=> &$GLOBALS['TL_LANG']['MSC']['backBT'],
-                'href'					=> 'mod=&table=',
-                'class'					=> 'header_back',
-                'attributes'			=> 'onclick="Backend.getScrollOffset();"',
+                'label'                    => &$GLOBALS['TL_LANG']['MSC']['backBT'],
+                'href'                    => 'mod=&table=',
+                'class'                    => 'header_back',
+                'attributes'            => 'onclick="Backend.getScrollOffset();"',
             ),
             'new' => array
             (
-                'label'					=> &$GLOBALS['TL_LANG']['tl_iso_tax_class']['new'],
-                'href'					=> 'act=create',
-                'class'					=> 'header_new',
-                'attributes'			=> 'onclick="Backend.getScrollOffset();"',
+                'label'                    => &$GLOBALS['TL_LANG']['tl_iso_tax_class']['new'],
+                'href'                    => 'act=create',
+                'class'                    => 'header_new',
+                'attributes'            => 'onclick="Backend.getScrollOffset();"',
             ),
             'all' => array
             (
@@ -124,10 +124,10 @@ $GLOBALS['TL_DCA']['tl_iso_tax_class'] = array
         ),
         'fallback' => array
         (
-            'label'					=> &$GLOBALS['TL_LANG']['tl_iso_tax_class']['fallback'],
-            'exclude'				=> true,
-            'inputType'				=> 'checkbox',
-            'eval'					=> array('fallback'=>true, 'tl_class'=>'w50 m12'),
+            'label'                    => &$GLOBALS['TL_LANG']['tl_iso_tax_class']['fallback'],
+            'exclude'                => true,
+            'inputType'                => 'checkbox',
+            'eval'                    => array('fallback'=>true, 'tl_class'=>'w50 m12'),
         ),
         'includes' => array
         (
@@ -157,10 +157,10 @@ $GLOBALS['TL_DCA']['tl_iso_tax_class'] = array
         ),
         'applyRoundingIncrement' => array
         (
-            'label'					=> &$GLOBALS['TL_LANG']['tl_iso_tax_class']['applyRoundingIncrement'],
-            'exclude'				=> true,
-            'inputType'				=> 'checkbox',
-            'eval'					=> array('tl_class'=>'w50'),
+            'label'                    => &$GLOBALS['TL_LANG']['tl_iso_tax_class']['applyRoundingIncrement'],
+            'exclude'                => true,
+            'inputType'                => 'checkbox',
+            'eval'                    => array('tl_class'=>'w50'),
         ),
     )
 );

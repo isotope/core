@@ -88,19 +88,19 @@ class Payone extends Payment implements IsotopePayment
 
         $arrData = array
         (
-            'aid'				=> $this->payone_aid,
-            'portalid'			=> $this->payone_portalid,
-            'mode'				=> ($this->debug ? 'test' : 'live'),
-            'request'			=> ($this->trans_type=='auth' ? 'preauthorization' : 'authorization'),
-            'encoding'			=> 'UTF-8',
-            'clearingtype'		=> $this->payone_clearingtype,
-            'reference'			=> $objOrder->id,
-            'display_name'		=> 'no',
-            'display_address'	=> 'no',
-            'successurl'		=> \Environment::get('base') . $this->addToUrl('step=complete', true) . '?uid=' . $objOrder->uniqid,
-            'backurl'			=> \Environment::get('base') . $this->addToUrl('step=failed', true),
-            'amount'			=> ($this->Isotope->Cart->grandTotal * 100),
-            'currency'			=> $this->Isotope->Config->currency,
+            'aid'                => $this->payone_aid,
+            'portalid'            => $this->payone_portalid,
+            'mode'                => ($this->debug ? 'test' : 'live'),
+            'request'            => ($this->trans_type=='auth' ? 'preauthorization' : 'authorization'),
+            'encoding'            => 'UTF-8',
+            'clearingtype'        => $this->payone_clearingtype,
+            'reference'            => $objOrder->id,
+            'display_name'        => 'no',
+            'display_address'    => 'no',
+            'successurl'        => \Environment::get('base') . $this->addToUrl('step=complete', true) . '?uid=' . $objOrder->uniqid,
+            'backurl'            => \Environment::get('base') . $this->addToUrl('step=failed', true),
+            'amount'            => ($this->Isotope->Cart->grandTotal * 100),
+            'currency'            => $this->Isotope->Config->currency,
         );
 
         foreach( $this->Isotope->Cart->getProducts() as $objProduct )
@@ -120,10 +120,10 @@ class Payone extends Payment implements IsotopePayment
                 $strOptions = ' ('.implode(', ', $options).')';
             }
 
-            $arrData['id['.++$i.']']	= $objProduct->sku;
-            $arrData['pr['.$i.']']		= round($objProduct->price, 2) * 100;
-            $arrData['no['.$i.']']		= $objProduct->quantity_requested;
-            $arrData['de['.$i.']']		= specialchars($objProduct->name . $strOptions);
+            $arrData['id['.++$i.']']    = $objProduct->sku;
+            $arrData['pr['.$i.']']        = round($objProduct->price, 2) * 100;
+            $arrData['no['.$i.']']        = $objProduct->quantity_requested;
+            $arrData['de['.$i.']']        = specialchars($objProduct->name . $strOptions);
         }
 
         foreach( $this->Isotope->Cart->getSurcharges() as $k => $arrSurcharge )
@@ -131,10 +131,10 @@ class Payone extends Payment implements IsotopePayment
             if ($arrSurcharge['add'] === false)
                 continue;
 
-            $arrData['id['.++$i.']']	= 'surcharge'.$k;
-            $arrData['pr['.$i.']']		= $arrSurcharge['total_price'] * 100;
-            $arrData['no['.$i.']']		= '1';
-            $arrData['de['.$i.']']		= $arrSurcharge['label'];
+            $arrData['id['.++$i.']']    = 'surcharge'.$k;
+            $arrData['pr['.$i.']']        = $arrSurcharge['total_price'] * 100;
+            $arrData['no['.$i.']']        = '1';
+            $arrData['de['.$i.']']        = $arrSurcharge['label'];
         }
 
 

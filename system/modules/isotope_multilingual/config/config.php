@@ -19,15 +19,15 @@
  */
 $GLOBALS['ISO_MOD']['translation']['iso_labels'] = array
 (
-    'tables'	=> array('tl_iso_labels'),
-    'icon'		=> 'system/modules/isotope_multilingual/assets/balloons.png',
+    'tables'    => array('tl_iso_labels'),
+    'icon'        => 'system/modules/isotope_multilingual/assets/balloons.png',
 );
 
 $GLOBALS['ISO_MOD']['translation']['iso_translation'] = array
 (
-    'callback'	=> 'ModuleIsotopeTranslation',
-    'icon'		=> 'system/modules/isotope_multilingual/assets/locale.png',
-    'export'	=> array('ModuleIsotopeTranslation', 'export'),
+    'callback'    => 'ModuleIsotopeTranslation',
+    'icon'        => 'system/modules/isotope_multilingual/assets/locale.png',
+    'export'    => array('ModuleIsotopeTranslation', 'export'),
 );
 
 $GLOBALS['BE_MOD']['isotope']['iso_setup']['tables'][] = 'tl_iso_labels';

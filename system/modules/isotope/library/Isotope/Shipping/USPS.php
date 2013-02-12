@@ -89,30 +89,30 @@ class USPS extends Shipping implements IsotopeShipping
             case 'price':
                 /*$arrDestination = array
                 (
-                    'name'			=> $this->Isotope->Cart->shippingAddress['firstname'] . ' ' . $this->Isotope->Cart->shippingAddress['lastname'],
-                    'phone'			=> $this->Isotope->Cart->shippingAddress['phone'],
-                    'company'		=> $this->Isotope->Cart->shippingAddress['company'],
-                    'street'		=> $this->Isotope->Cart->shippingAddress['street_1'],
-                    'street2'		=> $this->Isotope->Cart->shippingAddress['street_2'],
-                    'street3'		=> $this->Isotope->Cart->shippingAddress['street_3'],
-                    'city'			=> $this->Isotope->Cart->shippingAddress['city'],
-                    'state'			=> $this->Isotope->Cart->shippingAddress['subdivision'],
-                    'zip'			=> $this->Isotope->Cart->shippingAddress['postal'],
-                    'country'		=> $this->Isotope->Cart->shippingAddress['country']
+                    'name'            => $this->Isotope->Cart->shippingAddress['firstname'] . ' ' . $this->Isotope->Cart->shippingAddress['lastname'],
+                    'phone'            => $this->Isotope->Cart->shippingAddress['phone'],
+                    'company'        => $this->Isotope->Cart->shippingAddress['company'],
+                    'street'        => $this->Isotope->Cart->shippingAddress['street_1'],
+                    'street2'        => $this->Isotope->Cart->shippingAddress['street_2'],
+                    'street3'        => $this->Isotope->Cart->shippingAddress['street_3'],
+                    'city'            => $this->Isotope->Cart->shippingAddress['city'],
+                    'state'            => $this->Isotope->Cart->shippingAddress['subdivision'],
+                    'zip'            => $this->Isotope->Cart->shippingAddress['postal'],
+                    'country'        => $this->Isotope->Cart->shippingAddress['country']
                 );*/
 
                 /*$arrOrigin = array
                 (
-                    'name'			=> $this->Isotope->Config->firstname . ' ' . $this->Isotope->Config->lastname,
-                    'phone'			=> $this->Isotope->Config->phone,
-                    'company'		=> $this->Isotope->Config->company,
-                    'street'		=> $this->Isotope->Config->street_1,
-                    'street2'		=> $this->Isotope->Config->street_2,
-                    'street3'		=> $this->Isotope->Config->street_3,
-                    'city'			=> $this->Isotope->Config->city,
-                    'state'			=> $this->Isotope->Config->state,
-                    'zip'			=> $this->Isotope->Config->postal,
-                    'country'		=> $this->Isotope->Config->country
+                    'name'            => $this->Isotope->Config->firstname . ' ' . $this->Isotope->Config->lastname,
+                    'phone'            => $this->Isotope->Config->phone,
+                    'company'        => $this->Isotope->Config->company,
+                    'street'        => $this->Isotope->Config->street_1,
+                    'street2'        => $this->Isotope->Config->street_2,
+                    'street3'        => $this->Isotope->Config->street_3,
+                    'city'            => $this->Isotope->Config->city,
+                    'state'            => $this->Isotope->Config->state,
+                    'zip'            => $this->Isotope->Config->postal,
+                    'country'        => $this->Isotope->Config->country
                 );*/
 
                 $arrCountries = $this->getCountries();
@@ -136,8 +136,8 @@ class USPS extends Shipping implements IsotopeShipping
 
                 $this->arrWeightData = array
                 (
-                    'pounds'		=> $arrWeight[0],
-                    'ounces'		=> ((integer) $arrWeight[1] / 100) * 16
+                    'pounds'        => $arrWeight[0],
+                    'ounces'        => ((integer) $arrWeight[1] / 100) * 16
                 );
 
                 return $this->calculateShippingRate();
@@ -151,7 +151,7 @@ class USPS extends Shipping implements IsotopeShipping
 
     public function calculateShippingRate()
     {
-        if($_SESSION['CHECKOUT_DATA']['shipping']['modules'][$this->id]['price'])	//to avoid calling the CURL multiple times which slows us down.
+        if($_SESSION['CHECKOUT_DATA']['shipping']['modules'][$this->id]['price'])    //to avoid calling the CURL multiple times which slows us down.
         {
              $fltPrice = $_SESSION['CHECKOUT_DATA']['shipping']['modules'][$this->id]['price'];
         }

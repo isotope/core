@@ -2,21 +2,21 @@
 <div class="cart_mini_table">
 
 <table class="productWrapper" summary="<?php echo $this->summary; ?>">
-	<tfoot>
-		<tr class="subtotal">
-			<td colspan="2"><?php echo $this->subTotalLabel; ?></td>
-			<td><?php echo $this->subTotalPrice; ?></td>
-		</tr>
-	</tfoot>
-	<tbody>
+    <tfoot>
+        <tr class="subtotal">
+            <td colspan="2"><?php echo $this->subTotalLabel; ?></td>
+            <td><?php echo $this->subTotalPrice; ?></td>
+        </tr>
+    </tfoot>
+    <tbody>
 <?php foreach($this->products as $product): ?>
-		<tr class="product">
-			<td class="quantity"><?php echo $product['quantity']; ?>x</td>
-	        <td class="productName"><?php echo $product['name']; ?></td>
-			<td class="price"><?php echo $product['total_price']; ?></td>
-		</tr>
+        <tr class="product">
+            <td class="quantity"><?php echo $product['quantity']; ?>x</td>
+            <td class="productName"><?php echo $product['name']; ?></td>
+            <td class="price"><?php echo $product['total_price']; ?></td>
+        </tr>
 <?php endforeach; ?>
-	</tbody>
+    </tbody>
 </table>
 <?php if ($this->checkoutJumpTo): ?>
 <a class="checkout" style="float:right" href="<?php echo $this->checkoutJumpTo; ?>"><span><?php echo $this->checkoutJumpToLabel; ?></span></a><?php endif; if ($this->cartJumpTo): ?>

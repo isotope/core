@@ -597,8 +597,8 @@ class Standard extends \Controller implements IsotopeProduct
 
             $arrOptions[$field] = array
             (
-                'label'	=> $this->Isotope->formatLabel('tl_iso_products', $field),
-                'value'	=> $this->Isotope->formatValue('tl_iso_products', $field, $value),
+                'label'    => $this->Isotope->formatLabel('tl_iso_products', $field),
+                'value'    => $this->Isotope->formatValue('tl_iso_products', $field, $value),
             );
         }
 
@@ -773,8 +773,8 @@ class Standard extends \Controller implements IsotopeProduct
                 $objTemplate->hasOptions = true;
                 $arrProductOptions[$attribute] = array_merge($arrData, array
                 (
-                    'name'	=> $attribute,
-                    'html'	=> $this->generateProductOptionWidget($attribute),
+                    'name'    => $attribute,
+                    'html'    => $this->generateProductOptionWidget($attribute),
                 ));
 
                 if ($arrData['attributes']['variant_option'] || $arrData['attributes']['ajax_option'])
@@ -878,9 +878,9 @@ class Standard extends \Controller implements IsotopeProduct
             {
                 $arrOptions[] = array_merge($arrData, array
                 (
-                    'id'	=> ('ctrl_' . $attribute . '_' . $this->formSubmit),
-                    'name'	=> $attribute,
-                    'html'	=> $this->generateProductOptionWidget($attribute, true),
+                    'id'    => ('ctrl_' . $attribute . '_' . $this->formSubmit),
+                    'name'    => $attribute,
+                    'html'    => $this->generateProductOptionWidget($attribute, true),
                 ));
             }
             elseif (in_array($attribute, $this->arrVariantAttributes))
@@ -901,16 +901,16 @@ class Standard extends \Controller implements IsotopeProduct
                 {
                     $arrOptions[] = array_merge($arrData, array
                     (
-                        'id'	=> ($this->formSubmit . '_' . $attribute . '_' . $size['name'] . 'size'),
-                        'name'	=> $attribute,
-                        'html'	=> $objGallery->generateMainImage($size['name']),
+                        'id'    => ($this->formSubmit . '_' . $attribute . '_' . $size['name'] . 'size'),
+                        'name'    => $attribute,
+                        'html'    => $objGallery->generateMainImage($size['name']),
                     ));
                 }
 
                 $arrOptions[] = array_merge($arrData, array
                 (
                     'id' => ($this->formSubmit . '_' . $attribute . '_gallery'),
-                    'name'	=> $attribute,
+                    'name'    => $attribute,
                     'html' => $objGallery->generateGallery(),
                 ));
             }
@@ -919,7 +919,7 @@ class Standard extends \Controller implements IsotopeProduct
                 $arrOptions[] = array_merge($arrData, array
                 (
                     'id' => ($this->formSubmit . '_' . $attribute),
-                    'name'	=> $attribute,
+                    'name'    => $attribute,
                     'html' => $this->generateAttribute($attribute, $this->$attribute),
                 ));
             }
@@ -1517,12 +1517,12 @@ class Standard extends \Controller implements IsotopeProduct
             }
 
             foreach ($GLOBALS['ISO_CONFIG']['fetch_fallback'] as $attribute)
-			{
-				if ($arrColumns !== false && !in_array('p1.'.$attribute, $arrColumns))
-					continue;
+            {
+                if ($arrColumns !== false && !in_array('p1.'.$attribute, $arrColumns))
+                    continue;
 
-				$arrSelect[] = "p1.$attribute AS {$attribute}_fallback";
-			}
+                $arrSelect[] = "p1.$attribute AS {$attribute}_fallback";
+            }
 
             $strQuery = "
 SELECT

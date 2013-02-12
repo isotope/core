@@ -199,7 +199,7 @@ class AttributeWizard extends \Widget
                 $display = 'block';
             }
 
-            $arrOptions[] = '<div class="checkbox_toggler' . ($blnFirst ? '_first' : '') . '"><a href="' . $this->addToUrl('cbc=' . $id) . '" onclick="AjaxRequest.toggleCheckboxGroup(this, \'' . $id . '\'); Backend.getScrollOffset(); return false;"><img src="system/themes/' . $this->getTheme() . '/images/' . $img . '.gif" alt="toggle checkbox group"></a>' . $GLOBALS['TL_LANG']['tl_iso_products'][$i] .	'</div><div id="' . $id . '" class="checkbox_options" style="display:' . $display . ';"><span class="fixed"><input type="checkbox" id="check_all_' . $id . '" class="tl_checkbox" onclick="Isotope.toggleCheckboxGroup(this, \'' . $id . '\')"> <label for="check_all_' . $id . '" style="color:#a6a6a6;"><em>' . $GLOBALS['TL_LANG']['MSC']['selectAll'] . '</em></label></span>';
+            $arrOptions[] = '<div class="checkbox_toggler' . ($blnFirst ? '_first' : '') . '"><a href="' . $this->addToUrl('cbc=' . $id) . '" onclick="AjaxRequest.toggleCheckboxGroup(this, \'' . $id . '\'); Backend.getScrollOffset(); return false;"><img src="system/themes/' . $this->getTheme() . '/images/' . $img . '.gif" alt="toggle checkbox group"></a>' . $GLOBALS['TL_LANG']['tl_iso_products'][$i] .    '</div><div id="' . $id . '" class="checkbox_options" style="display:' . $display . ';"><span class="fixed"><input type="checkbox" id="check_all_' . $id . '" class="tl_checkbox" onclick="Isotope.toggleCheckboxGroup(this, \'' . $id . '\')"> <label for="check_all_' . $id . '" style="color:#a6a6a6;"><em>' . $GLOBALS['TL_LANG']['MSC']['selectAll'] . '</em></label></span>';
 
             foreach ($arrOptionGroup as $arrOption)
             {
@@ -317,9 +317,9 @@ class AttributeWizard extends \Widget
 
                 $arrAttributes[$arrData['attributes']['legend']][] = array
                 (
-                    'label'		=> (strlen($arrData['label'][0]) ? $arrData['label'][0] : $field),
-                    'value'		=> $field,
-                    'disabled'	=> ($this->variants ? $arrData['attributes']['variant_fixed'] : $arrData['attributes']['fixed']),
+                    'label'        => (strlen($arrData['label'][0]) ? $arrData['label'][0] : $field),
+                    'value'        => $field,
+                    'disabled'    => ($this->variants ? $arrData['attributes']['variant_fixed'] : $arrData['attributes']['fixed']),
                 );
             }
         }

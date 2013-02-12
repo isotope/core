@@ -25,8 +25,8 @@ $GLOBALS['TL_DCA']['tl_iso_payment_modules'] = array
     (
         'dataContainer'               => 'Table',
         'enableVersioning'            => true,
-        'closed'					  => true,
-        'onload_callback'			  => array
+        'closed'                      => true,
+        'onload_callback'              => array
         (
             array('Isotope\Backend', 'initializeSetupModule'),
             array('Isotope\tl_iso_payment_modules', 'checkPermission'),
@@ -48,7 +48,7 @@ $GLOBALS['TL_DCA']['tl_iso_payment_modules'] = array
         (
             'fields'                  => array('name', 'type'),
             'format'                  => '%s <span style="color:#b3b3b3; padding-left:3px;">[%s]</span>',
-            'label_callback'		  => array('Isotope\Backend', 'addPublishIcon'),
+            'label_callback'          => array('Isotope\Backend', 'addPublishIcon'),
 
         ),
         'global_operations' => array
@@ -110,12 +110,12 @@ $GLOBALS['TL_DCA']['tl_iso_payment_modules'] = array
     // Palettes
     'palettes' => array
     (
-        '__selector__'			=> array('type', 'protected'),
-        'default'				=> '{type_legend},name,label,type',
-        'Cash'					=> '{type_legend},name,label,type;{note_legend:hide},note;{config_legend},minimum_total,maximum_total,countries,shipping_modules,product_types;{price_legend:hide},price,tax_class;{expert_legend:hide},guests,protected;{enabled_legend},enabled',
-        'Paypal'				=> '{type_legend},name,label,type;{note_legend:hide},note;{config_legend},new_order_status,minimum_total,maximum_total,countries,shipping_modules,product_types;{gateway_legend},paypal_account;{price_legend:hide},price,tax_class;{expert_legend:hide},guests,protected;{enabled_legend},debug,enabled',
-        'Postfinance'			=> '{type_legend},name,label,type;{note_legend:hide},note;{config_legend},new_order_status,minimum_total,maximum_total,countries,shipping_modules,product_types;{gateway_legend},postfinance_pspid,postfinance_secret,postfinance_method;{price_legend:hide},price,tax_class;{expert_legend:hide},guests,protected;{enabled_legend},debug,enabled',
-        'AuthorizeDotNet'		=> '{type_legend},name,label,type;{note_legend:hide},note;{config_legend},new_order_status,allowed_cc_types,requireCCV,minimum_total,maximum_total,countries,shipping_modules,product_types;{gateway_legend},authorize_login,authorize_trans_key,authorize_trans_type,authorize_delimiter;{price_legend:hide},price,tax_class;{expert_legend:hide},guests,protected;{enabled_legend},debug,enabled',
+        '__selector__'            => array('type', 'protected'),
+        'default'                => '{type_legend},name,label,type',
+        'Cash'                    => '{type_legend},name,label,type;{note_legend:hide},note;{config_legend},minimum_total,maximum_total,countries,shipping_modules,product_types;{price_legend:hide},price,tax_class;{expert_legend:hide},guests,protected;{enabled_legend},enabled',
+        'Paypal'                => '{type_legend},name,label,type;{note_legend:hide},note;{config_legend},new_order_status,minimum_total,maximum_total,countries,shipping_modules,product_types;{gateway_legend},paypal_account;{price_legend:hide},price,tax_class;{expert_legend:hide},guests,protected;{enabled_legend},debug,enabled',
+        'Postfinance'            => '{type_legend},name,label,type;{note_legend:hide},note;{config_legend},new_order_status,minimum_total,maximum_total,countries,shipping_modules,product_types;{gateway_legend},postfinance_pspid,postfinance_secret,postfinance_method;{price_legend:hide},price,tax_class;{expert_legend:hide},guests,protected;{enabled_legend},debug,enabled',
+        'AuthorizeDotNet'        => '{type_legend},name,label,type;{note_legend:hide},note;{config_legend},new_order_status,allowed_cc_types,requireCCV,minimum_total,maximum_total,countries,shipping_modules,product_types;{gateway_legend},authorize_login,authorize_trans_key,authorize_trans_type,authorize_delimiter;{price_legend:hide},price,tax_class;{expert_legend:hide},guests,protected;{enabled_legend},debug,enabled',
         'Datatrans'             => '{type_legend},name,label,type;{note_legend:hide},note;{config_legend},new_order_status,trans_type,minimum_total,maximum_total,countries,shipping_modules,product_types;{gateway_legend},datatrans_id,datatrans_sign;{price_legend:hide},price,tax_class;{expert_legend:hide},guests,protected;{enabled_legend},debug,enabled',
         'Sparkasse'             => '{type_legend},name,label,type;{note_legend:hide},note;{config_legend:hide},new_order_status,minimum_total,maximum_total,countries,shipping_modules,product_types;{gateway_legend},sparkasse_paymentmethod,trans_type,sparkasse_sslmerchant,sparkasse_sslpassword,sparkasse_merchantref;{price_legend:hide},price,tax_class;{expert_legend:hide},guests,protected;{enabled_legend},debug,enabled',
         'Expercash'             => '{type_legend},name,label,type;{note_legend:hide},note;{config_legend},new_order_status,minimum_total,maximum_total,countries,shipping_modules,product_types;{gateway_legend},expercash_popupId,expercash_profile,expercash_popupKey,expercash_paymentMethod;{price_legend:hide},price,tax_class;{template_legend},expercash_css;{expert_legend:hide},guests,protected;{enabled_legend},enabled',
@@ -126,7 +126,7 @@ $GLOBALS['TL_DCA']['tl_iso_payment_modules'] = array
     // Subpalettes
     'subpalettes' => array
     (
-        'protected'				=> 'groups',
+        'protected'                => 'groups',
     ),
 
     // Fields
@@ -153,7 +153,7 @@ $GLOBALS['TL_DCA']['tl_iso_payment_modules'] = array
             'exclude'                 => true,
             'filter'                  => true,
             'inputType'               => 'select',
-            'default'				  => 'Cash',
+            'default'                  => 'Cash',
             'options'                 => array_keys(\Isotope\Factory\Payment::getClasses()),
             'reference'               => \Isotope\Factory\Payment::getLabels(),
             'eval'                    => array('helpwizard'=>true, 'submitOnChange'=>true, 'chosen'=>true, 'tl_class'=>'w50')
@@ -199,18 +199,18 @@ $GLOBALS['TL_DCA']['tl_iso_payment_modules'] = array
             'exclude'                 => true,
             'filter'                  => true,
             'inputType'               => 'checkbox',
-            'options_callback'		  => array('Isotope\tl_iso_payment_modules', 'getAllowedCCTypes'),
-            'eval'					  => array('multiple'=>true, 'tl_class'=>'clr'),
+            'options_callback'          => array('Isotope\tl_iso_payment_modules', 'getAllowedCCTypes'),
+            'eval'                      => array('multiple'=>true, 'tl_class'=>'clr'),
         ),
         'trans_type' => array
         (
             'label'                   => &$GLOBALS['TL_LANG']['tl_iso_payment_modules']['trans_type'],
             'exclude'                 => true,
-            'default'				  => 'capture',
-            'inputType'				  => 'select',
-            'options'				  => array('capture', 'auth'),
+            'default'                  => 'capture',
+            'inputType'                  => 'select',
+            'options'                  => array('capture', 'auth'),
             'eval'                    => array('mandatory'=>true, 'tl_class'=>'w50', 'helpwizard'=>true),
-            'reference'				  => $GLOBALS['TL_LANG']['tl_iso_payment_modules'],
+            'reference'                  => $GLOBALS['TL_LANG']['tl_iso_payment_modules'],
         ),
         'minimum_total' => array
         (
@@ -248,7 +248,7 @@ $GLOBALS['TL_DCA']['tl_iso_payment_modules'] = array
             'label'                   => &$GLOBALS['TL_LANG']['tl_iso_payment_modules']['product_types'],
             'exclude'                 => true,
             'inputType'               => 'select',
-            'foreignKey'			  => 'tl_iso_producttypes.name',
+            'foreignKey'              => 'tl_iso_producttypes.name',
             'eval'                    => array('multiple'=>true, 'size'=>8, 'tl_class'=>'clr w50 w50h', 'chosen'=>true),
             'relation'                => array('type'=>'hasMany', 'load'=>'lazy'),
         ),
@@ -300,10 +300,10 @@ $GLOBALS['TL_DCA']['tl_iso_payment_modules'] = array
         (
             'label'                   => &$GLOBALS['TL_LANG']['tl_iso_payment_modules']['authorize_trans_type'],
             'exclude'                 => true,
-            'default'				  => 'AUTH_CAPTURE',
+            'default'                  => 'AUTH_CAPTURE',
             'inputType'               => 'select',
-            'options'				  => array('AUTH_CAPTURE', 'AUTH_ONLY'),
-            'reference'				  => array('AUTH_CAPTURE'=>&$GLOBALS['TL_LANG']['tl_iso_payment_modules']['capture'], 'AUTH_ONLY'=>&$GLOBALS['TL_LANG']['tl_iso_payment_modules']['auth']),
+            'options'                  => array('AUTH_CAPTURE', 'AUTH_ONLY'),
+            'reference'                  => array('AUTH_CAPTURE'=>&$GLOBALS['TL_LANG']['tl_iso_payment_modules']['capture'], 'AUTH_ONLY'=>&$GLOBALS['TL_LANG']['tl_iso_payment_modules']['auth']),
             'eval'                    => array('mandatory'=>true, 'maxlength'=>255, 'helpwizard'=>true),
         ),
         'authorize_delimiter' => array
@@ -450,7 +450,7 @@ $GLOBALS['TL_DCA']['tl_iso_payment_modules'] = array
             'inputType'               => 'checkbox',
             'foreignKey'              => 'tl_member_group.name',
             'eval'                    => array('multiple'=>true),
-			'relation'                => array('type'=>'hasMany', 'load'=>'lazy'),
+            'relation'                => array('type'=>'hasMany', 'load'=>'lazy'),
         ),
         'debug' => array
         (

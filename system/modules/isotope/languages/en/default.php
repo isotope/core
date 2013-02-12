@@ -158,25 +158,25 @@ $GLOBALS['TL_LANG']['MSC']['checkoutStep']                     = 'Step %s of %s 
 /**
  * Content elements
  */
-$GLOBALS['TL_LANG']['CTE']['isotope']	= 'Isotope eCommerce';
+$GLOBALS['TL_LANG']['CTE']['isotope']    = 'Isotope eCommerce';
 
 /**
  * Shipping modules
  */
-$GLOBALS['TL_LANG']['SHIP']['flat']				= array('Flat-price shipping');
-$GLOBALS['TL_LANG']['SHIP']['weighttotal']		= array('Weight total-based shipping');
-$GLOBALS['TL_LANG']['SHIP']['ordertotal']		= array('Order total-based shipping');
-$GLOBALS['TL_LANG']['SHIP']['collection']		= array('Collection');
-$GLOBALS['TL_LANG']['SHIP']['ups']				= array('UPS Live Rates and Service shipping');
-$GLOBALS['TL_LANG']['SHIP']['usps']				= array('USPS Live Rates and Service shipping');
+$GLOBALS['TL_LANG']['SHIP']['flat']                = array('Flat-price shipping');
+$GLOBALS['TL_LANG']['SHIP']['weighttotal']        = array('Weight total-based shipping');
+$GLOBALS['TL_LANG']['SHIP']['ordertotal']        = array('Order total-based shipping');
+$GLOBALS['TL_LANG']['SHIP']['collection']        = array('Collection');
+$GLOBALS['TL_LANG']['SHIP']['ups']                = array('UPS Live Rates and Service shipping');
+$GLOBALS['TL_LANG']['SHIP']['usps']                = array('USPS Live Rates and Service shipping');
 
 /**
  * Payment modules
  */
-$GLOBALS['TL_LANG']['PAY']['cash']				= array('Cash', 'Use this for all offline processed payment.');
-$GLOBALS['TL_LANG']['PAY']['paypal']			= array('PayPal Standard Checkout', 'This PayPal module supports IPN (Instant Payment Notifications).');
-$GLOBALS['TL_LANG']['PAY']['postfinance']		= array('Postfinance', 'Payment gateway for the swiss post payment system that supports various card types. The store will be instantly notified about successfull transactions.');
-$GLOBALS['TL_LANG']['PAY']['authorizedotnet']	= array('Authorize.net', 'An Authorize.net payment gateway.');
+$GLOBALS['TL_LANG']['PAY']['cash']                = array('Cash', 'Use this for all offline processed payment.');
+$GLOBALS['TL_LANG']['PAY']['paypal']            = array('PayPal Standard Checkout', 'This PayPal module supports IPN (Instant Payment Notifications).');
+$GLOBALS['TL_LANG']['PAY']['postfinance']        = array('Postfinance', 'Payment gateway for the swiss post payment system that supports various card types. The store will be instantly notified about successfull transactions.');
+$GLOBALS['TL_LANG']['PAY']['authorizedotnet']    = array('Authorize.net', 'An Authorize.net payment gateway.');
 $GLOBALS['TL_LANG']['PAY']['datatrans']        = array('Datatrans', 'A payment module for the swiss payment gateway "Datatrans".');
 $GLOBALS['TL_LANG']['PAY']['sparkasse']        = array('Sparkasse');
 $GLOBALS['TL_LANG']['PAY']['expercash']        = array('ExperCash');
@@ -185,67 +185,67 @@ $GLOBALS['TL_LANG']['PAY']['payone']           = array('PayOne');
 /**
  * Galleries
  */
-$GLOBALS['TL_LANG']['GAL']['standard']			= array('Default gallery (Lightbox/Mediabox)', '<p>Uses the lightbox/mediabox for full size images. Make sure you select the appropriate "moo_" template in your page layout configuration.</p><p>You can supply a "rel" attribute to the link target by using a pipe (e.g. "tl_files/video.mov|lightbox[400 300]"). If no "rel" attribute is supplied, the link will be opened in a new window.</p>');
-$GLOBALS['TL_LANG']['GAL']['inline']			= array('Inline gallery', 'Clicking on a gallery image will replace the main image.');
+$GLOBALS['TL_LANG']['GAL']['standard']            = array('Default gallery (Lightbox/Mediabox)', '<p>Uses the lightbox/mediabox for full size images. Make sure you select the appropriate "moo_" template in your page layout configuration.</p><p>You can supply a "rel" attribute to the link target by using a pipe (e.g. "tl_files/video.mov|lightbox[400 300]"). If no "rel" attribute is supplied, the link will be opened in a new window.</p>');
+$GLOBALS['TL_LANG']['GAL']['inline']            = array('Inline gallery', 'Clicking on a gallery image will replace the main image.');
 $GLOBALS['TL_LANG']['GAL']['zoom'] = array('Inline gallery with zoom effect', 'In addition to the behaviour of inline gallery, it also adds an image zoom feature to the main image.');
 
 /**
  * Product types
  */
-$GLOBALS['TL_LANG']['PRODUCT']['standard']			= array('Standard product', 'A default product. Select this if nothing else matches.');
+$GLOBALS['TL_LANG']['PRODUCT']['standard']            = array('Standard product', 'A default product. Select this if nothing else matches.');
 
 /**
  * Credit card types
  */
-$GLOBALS['TL_LANG']['CCT']['mc']					= 'MasterCard';
-$GLOBALS['TL_LANG']['CCT']['visa']					= 'Visa';
-$GLOBALS['TL_LANG']['CCT']['amex']					= 'American Express';
-$GLOBALS['TL_LANG']['CCT']['discover']				= 'Discover';
-$GLOBALS['TL_LANG']['CCT']['jcb']					= 'JCB';
-$GLOBALS['TL_LANG']['CCT']['diners']				= 'Diner\'s Club';
-$GLOBALS['TL_LANG']['CCT']['enroute']				= 'EnRoute';
-$GLOBALS['TL_LANG']['CCT']['carte_blanche']		= 'Carte Blanche';
-$GLOBALS['TL_LANG']['CCT']['jal']					= 'JAL';
-$GLOBALS['TL_LANG']['CCT']['maestro']				= 'Maestro UK';
-$GLOBALS['TL_LANG']['CCT']['delta']				= 'Delta';
-$GLOBALS['TL_LANG']['CCT']['solo']					= 'Solo';
-$GLOBALS['TL_LANG']['CCT']['visa_electron']		= 'Visa Electron';
-$GLOBALS['TL_LANG']['CCT']['dankort']				= 'Dankort';
-$GLOBALS['TL_LANG']['CCT']['laser']				= 'Laser';
-$GLOBALS['TL_LANG']['CCT']['carte_bleue']			= 'Carte Bleue';
-$GLOBALS['TL_LANG']['CCT']['carta_si']				= 'Carta Si';
-$GLOBALS['TL_LANG']['CCT']['enc_acct_num']			= 'Encoded Account Number';
-$GLOBALS['TL_LANG']['CCT']['uatp']					= 'Universal Air Travel Program';
-$GLOBALS['TL_LANG']['CCT']['maestro_intl']			= 'Maestro International';
-$GLOBALS['TL_LANG']['CCT']['ge_money_uk']			= 'GE Money UK';
+$GLOBALS['TL_LANG']['CCT']['mc']                    = 'MasterCard';
+$GLOBALS['TL_LANG']['CCT']['visa']                    = 'Visa';
+$GLOBALS['TL_LANG']['CCT']['amex']                    = 'American Express';
+$GLOBALS['TL_LANG']['CCT']['discover']                = 'Discover';
+$GLOBALS['TL_LANG']['CCT']['jcb']                    = 'JCB';
+$GLOBALS['TL_LANG']['CCT']['diners']                = 'Diner\'s Club';
+$GLOBALS['TL_LANG']['CCT']['enroute']                = 'EnRoute';
+$GLOBALS['TL_LANG']['CCT']['carte_blanche']        = 'Carte Blanche';
+$GLOBALS['TL_LANG']['CCT']['jal']                    = 'JAL';
+$GLOBALS['TL_LANG']['CCT']['maestro']                = 'Maestro UK';
+$GLOBALS['TL_LANG']['CCT']['delta']                = 'Delta';
+$GLOBALS['TL_LANG']['CCT']['solo']                    = 'Solo';
+$GLOBALS['TL_LANG']['CCT']['visa_electron']        = 'Visa Electron';
+$GLOBALS['TL_LANG']['CCT']['dankort']                = 'Dankort';
+$GLOBALS['TL_LANG']['CCT']['laser']                = 'Laser';
+$GLOBALS['TL_LANG']['CCT']['carte_bleue']            = 'Carte Bleue';
+$GLOBALS['TL_LANG']['CCT']['carta_si']                = 'Carta Si';
+$GLOBALS['TL_LANG']['CCT']['enc_acct_num']            = 'Encoded Account Number';
+$GLOBALS['TL_LANG']['CCT']['uatp']                    = 'Universal Air Travel Program';
+$GLOBALS['TL_LANG']['CCT']['maestro_intl']            = 'Maestro International';
+$GLOBALS['TL_LANG']['CCT']['ge_money_uk']            = 'GE Money UK';
 
 /**
  * Weight Units
  * http://www.metric-conversions.org/weight/weight-conversions.htm
  */
-$GLOBALS['TL_LANG']['WGT']['mg']					= array('Milligram (mg)', 'A unit of mass equal to one-thousandth of a gram.');
-$GLOBALS['TL_LANG']['WGT']['g']					= array('Gram (g)', 'A metric unit of weight equal to one thousandth of a kilogram.');
-$GLOBALS['TL_LANG']['WGT']['kg']					= array('Kilogram (kg)', 'One kilogram is equivalent to 1,000 grams or 2.2 pounds; the mass of a liter of water.');
-$GLOBALS['TL_LANG']['WGT']['t']					= array('Metric Ton (t)', 'A unit of weight equal to 1,000 kilograms, or 2,204.6 pounds.');
-$GLOBALS['TL_LANG']['WGT']['ct']					= array('Carats (ct)', 'A measure of weight used for gemstones. One carat is equal to 1/5 of a gram (200 milligrams). Note that karat with a "K" is a measure of the purity of a gold alloy.');
-$GLOBALS['TL_LANG']['WGT']['oz']					= array('Ounce (oz)', 'A unit of weight equal to one sixteenth of a pound or 28.35 grams.');
-$GLOBALS['TL_LANG']['WGT']['lb']					= array('Pound (lb)', 'A unit of mass equal to 16 ounces');
-$GLOBALS['TL_LANG']['WGT']['st']					= array('Stone (st)', 'A British measurement of mass that equals fourteen pounds.');
-$GLOBALS['TL_LANG']['WGT']['grain']				= array('Grain', '1/7000 pound; equals a troy grain or 64.799 milligrams.');
+$GLOBALS['TL_LANG']['WGT']['mg']                    = array('Milligram (mg)', 'A unit of mass equal to one-thousandth of a gram.');
+$GLOBALS['TL_LANG']['WGT']['g']                    = array('Gram (g)', 'A metric unit of weight equal to one thousandth of a kilogram.');
+$GLOBALS['TL_LANG']['WGT']['kg']                    = array('Kilogram (kg)', 'One kilogram is equivalent to 1,000 grams or 2.2 pounds; the mass of a liter of water.');
+$GLOBALS['TL_LANG']['WGT']['t']                    = array('Metric Ton (t)', 'A unit of weight equal to 1,000 kilograms, or 2,204.6 pounds.');
+$GLOBALS['TL_LANG']['WGT']['ct']                    = array('Carats (ct)', 'A measure of weight used for gemstones. One carat is equal to 1/5 of a gram (200 milligrams). Note that karat with a "K" is a measure of the purity of a gold alloy.');
+$GLOBALS['TL_LANG']['WGT']['oz']                    = array('Ounce (oz)', 'A unit of weight equal to one sixteenth of a pound or 28.35 grams.');
+$GLOBALS['TL_LANG']['WGT']['lb']                    = array('Pound (lb)', 'A unit of mass equal to 16 ounces');
+$GLOBALS['TL_LANG']['WGT']['st']                    = array('Stone (st)', 'A British measurement of mass that equals fourteen pounds.');
+$GLOBALS['TL_LANG']['WGT']['grain']                = array('Grain', '1/7000 pound; equals a troy grain or 64.799 milligrams.');
 
 /**
  * Attributes
  */
-$GLOBALS['TL_LANG']['ATTR']['text']				= array('Text field', 'A single-line input field for a short or medium text.');
-$GLOBALS['TL_LANG']['ATTR']['textarea']			= array('Textarea', 'A multi-line input field for a medium or long text.');
-$GLOBALS['TL_LANG']['ATTR']['select']				= array('Select menu', 'A single- or multi-line drop-down menu.<br /><i>This field type is suitable for product variants.</i>');
-$GLOBALS['TL_LANG']['ATTR']['radio']				= array('Radio button menu', 'A list of multiple options from which one can be selected.<br /><i>This field type is suitable for product variants.</i>');
-$GLOBALS['TL_LANG']['ATTR']['checkbox']			= array('Checkbox menu', 'A list of multiple options from which any can be selected.');
-$GLOBALS['TL_LANG']['ATTR']['mediaManager']		= array('Media Manager', 'Upload images and other files to the Isotope eCommerce file system. Output is processed trough an IsotopeGallery class.');
-$GLOBALS['TL_LANG']['ATTR']['conditionalselect']	= array('Conditional Select-Menu', 'show select-options based on another select menu.');
-$GLOBALS['TL_LANG']['ATTR']['fileTree']			= array('File tree', 'A file tree for single or multiple files and folders.');
-$GLOBALS['TL_LANG']['ATTR']['downloads']			= array('Downloads', 'Download files from the product, e.g. manuals, data sheets etc.');
-$GLOBALS['TL_LANG']['ATTR']['upload']				= array('File upload', 'A single-line input field to upload a local file to the server.');
+$GLOBALS['TL_LANG']['ATTR']['text']                = array('Text field', 'A single-line input field for a short or medium text.');
+$GLOBALS['TL_LANG']['ATTR']['textarea']            = array('Textarea', 'A multi-line input field for a medium or long text.');
+$GLOBALS['TL_LANG']['ATTR']['select']                = array('Select menu', 'A single- or multi-line drop-down menu.<br /><i>This field type is suitable for product variants.</i>');
+$GLOBALS['TL_LANG']['ATTR']['radio']                = array('Radio button menu', 'A list of multiple options from which one can be selected.<br /><i>This field type is suitable for product variants.</i>');
+$GLOBALS['TL_LANG']['ATTR']['checkbox']            = array('Checkbox menu', 'A list of multiple options from which any can be selected.');
+$GLOBALS['TL_LANG']['ATTR']['mediaManager']        = array('Media Manager', 'Upload images and other files to the Isotope eCommerce file system. Output is processed trough an IsotopeGallery class.');
+$GLOBALS['TL_LANG']['ATTR']['conditionalselect']    = array('Conditional Select-Menu', 'show select-options based on another select menu.');
+$GLOBALS['TL_LANG']['ATTR']['fileTree']            = array('File tree', 'A file tree for single or multiple files and folders.');
+$GLOBALS['TL_LANG']['ATTR']['downloads']            = array('Downloads', 'Download files from the product, e.g. manuals, data sheets etc.');
+$GLOBALS['TL_LANG']['ATTR']['upload']                = array('File upload', 'A single-line input field to upload a local file to the server.');
 
 /**
  * Currencies

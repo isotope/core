@@ -76,10 +76,10 @@ class IsotopeRules extends \Controller
     /**
      * Calculate the price for a product, applying rules and coupons
      *
-     * @param	float
-     * @param	object
-     * @param	string
-     * @param	int
+     * @param    float
+     * @param    object
+     * @param    string
+     * @param    int
      * @return float
      */
     public function calculatePrice($fltPrice, $objSource, $strField, $intTaxClass)
@@ -386,9 +386,9 @@ class IsotopeRules extends \Controller
             {
                 $arrAttributes[] = array
                 (
-                    'attribute'	=> $objAttributeRules->attributeName,
-                    'condition'	=> $objAttributeRules->attributeCondition,
-                    'values'	=> array(),
+                    'attribute'    => $objAttributeRules->attributeName,
+                    'condition'    => $objAttributeRules->attributeCondition,
+                    'values'    => array(),
                 );
             }
 
@@ -537,12 +537,12 @@ class IsotopeRules extends \Controller
 
         $arrSurcharge = array
         (
-            'label'			=> $this->Isotope->translate(($arrRule['label'] ? $arrRule['label'] : $arrRule['name'])),
-            'price'			=> ($blnPercentage ? $fltDiscount.'%' : ''),
-            'total_price'	=> 0,
-            'tax_class'		=> 0,
-            'before_tax'	=> true,
-            'products'		=> array(),
+            'label'            => $this->Isotope->translate(($arrRule['label'] ? $arrRule['label'] : $arrRule['name'])),
+            'price'            => ($blnPercentage ? $fltDiscount.'%' : ''),
+            'total_price'    => 0,
+            'tax_class'        => 0,
+            'before_tax'    => true,
+            'products'        => array(),
         );
 
         // Product or producttype restrictions

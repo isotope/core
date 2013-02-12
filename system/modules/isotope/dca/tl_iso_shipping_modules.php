@@ -34,7 +34,7 @@ $GLOBALS['TL_DCA']['tl_iso_shipping_modules'] = array
         'ctable'                      => array('tl_iso_shipping_options'),
         'switchToEdit'                => true,
         'enableVersioning'            => true,
-        'closed'					  => true,
+        'closed'                      => true,
         'onload_callback' => array
         (
             array('Isotope\Backend', 'initializeSetupModule'),
@@ -56,23 +56,23 @@ $GLOBALS['TL_DCA']['tl_iso_shipping_modules'] = array
         (
             'fields'                  => array('name', 'type'),
             'format'                  => '%s <span style="color:#b3b3b3; padding-left:3px;">[%s]</span>',
-            'label_callback'		  => array('Isotope\Backend', 'addPublishIcon'),
+            'label_callback'          => array('Isotope\Backend', 'addPublishIcon'),
         ),
         'global_operations' => array
         (
             'back' => array
             (
-                'label'					=> &$GLOBALS['TL_LANG']['MSC']['backBT'],
-                'href'					=> 'mod=&table=',
-                'class'					=> 'header_back',
-                'attributes'			=> 'onclick="Backend.getScrollOffset();"',
+                'label'                    => &$GLOBALS['TL_LANG']['MSC']['backBT'],
+                'href'                    => 'mod=&table=',
+                'class'                    => 'header_back',
+                'attributes'            => 'onclick="Backend.getScrollOffset();"',
             ),
             'new' => array
             (
-                'label'					=> &$GLOBALS['TL_LANG']['tl_iso_shipping_modules']['new'],
-                'href'					=> 'act=create',
-                'class'					=> 'header_new',
-                'attributes'			=> 'onclick="Backend.getScrollOffset();"',
+                'label'                    => &$GLOBALS['TL_LANG']['tl_iso_shipping_modules']['new'],
+                'href'                    => 'act=create',
+                'class'                    => 'header_new',
+                'attributes'            => 'onclick="Backend.getScrollOffset();"',
             ),
             'all' => array
             (
@@ -124,19 +124,19 @@ $GLOBALS['TL_DCA']['tl_iso_shipping_modules'] = array
     // Palettes
     'palettes' => array
     (
-        '__selector__'					=> array('type', 'protected'),
-        'default'						=> '{title_legend},name,label,type',
-        'Flat'							=> '{title_legend},name,label,type;{note_legend:hide},note;{price_legend},price,tax_class,flatCalculation,surcharge_field;{config_legend},countries,subdivisions,postalCodes,minimum_total,maximum_total,product_types;{expert_legend:hide},guests,protected;{enabled_legend},enabled',
-        'OrderTotal'					=> '{title_legend},name,label,type;{note_legend:hide},note;{price_legend},price,tax_class;{config_legend},countries,subdivisions,postalCodes,minimum_total,maximum_total,product_types;{expert_legend:hide},guests,protected;{enabled_legend},enabled',
-        'WeightTotal'					=> '{title_legend},name,label,type;{note_legend:hide},note;{price_legend},tax_class;{config_legend},weight_unit,countries,subdivisions,postalCodes,minimum_total,maximum_total,product_types;{expert_legend:hide},guests,protected;{enabled_legend},enabled',
-        'UPS'							=> '{title_legend},name,label,type;{note_legend:hide},note;{price_legend},tax_class;{ups_legend},ups_enabledService,ups_accessKey,ups_userName,ups_password;{config_legend},weight_unit,countries,subdivisions,minimum_total,maximum_total,product_types;{expert_legend:hide},guests,protected;{enabled_legend},enabled',
-        'USPS'							=> '{title_legend},name,label,type;{note_legend:hide},note;{price_legend},tax_class;{usps_legend},usps_enabledService,usps_userName;{config_legend},countries,subdivisions,minimum_total,maximum_total,product_types;{expert_legend:hide},guests,protected;{enabled_legend},enabled'
+        '__selector__'                    => array('type', 'protected'),
+        'default'                        => '{title_legend},name,label,type',
+        'Flat'                            => '{title_legend},name,label,type;{note_legend:hide},note;{price_legend},price,tax_class,flatCalculation,surcharge_field;{config_legend},countries,subdivisions,postalCodes,minimum_total,maximum_total,product_types;{expert_legend:hide},guests,protected;{enabled_legend},enabled',
+        'OrderTotal'                    => '{title_legend},name,label,type;{note_legend:hide},note;{price_legend},price,tax_class;{config_legend},countries,subdivisions,postalCodes,minimum_total,maximum_total,product_types;{expert_legend:hide},guests,protected;{enabled_legend},enabled',
+        'WeightTotal'                    => '{title_legend},name,label,type;{note_legend:hide},note;{price_legend},tax_class;{config_legend},weight_unit,countries,subdivisions,postalCodes,minimum_total,maximum_total,product_types;{expert_legend:hide},guests,protected;{enabled_legend},enabled',
+        'UPS'                            => '{title_legend},name,label,type;{note_legend:hide},note;{price_legend},tax_class;{ups_legend},ups_enabledService,ups_accessKey,ups_userName,ups_password;{config_legend},weight_unit,countries,subdivisions,minimum_total,maximum_total,product_types;{expert_legend:hide},guests,protected;{enabled_legend},enabled',
+        'USPS'                            => '{title_legend},name,label,type;{note_legend:hide},note;{price_legend},tax_class;{usps_legend},usps_enabledService,usps_userName;{config_legend},countries,subdivisions,minimum_total,maximum_total,product_types;{expert_legend:hide},guests,protected;{enabled_legend},enabled'
     ),
 
     // Subpalettes
     'subpalettes' => array
     (
-        'protected'						=> 'groups',
+        'protected'                        => 'groups',
     ),
 
     // Fields
@@ -163,7 +163,7 @@ $GLOBALS['TL_DCA']['tl_iso_shipping_modules'] = array
             'exclude'                 => true,
             'filter'                  => true,
             'inputType'               => 'select',
-            'default'				  => 'Flat',
+            'default'                  => 'Flat',
             'options'                 => array_keys(\Isotope\Factory\Shipping::getClasses()),
             'reference'               => \Isotope\Factory\Shipping::getLabels(),
             'eval'                    => array('helpwizard'=>true, 'submitOnChange'=>true, 'chosen'=>true, 'tl_class'=>'w50')
@@ -177,11 +177,11 @@ $GLOBALS['TL_DCA']['tl_iso_shipping_modules'] = array
         ),
         'ups_enabledService' => array
         (
-            'label'					  => &$GLOBALS['TL_LANG']['tl_iso_shipping_modules']['ups_enabledService'],
-            'exclude'				  => true,
-            'inputType'				  => 'select',
-            'options'				  => $GLOBALS['TL_LANG']['tl_iso_shipping_modules']['ups_service'],
-            'eval'					  => array('mandatory'=>true)
+            'label'                      => &$GLOBALS['TL_LANG']['tl_iso_shipping_modules']['ups_enabledService'],
+            'exclude'                  => true,
+            'inputType'                  => 'select',
+            'options'                  => $GLOBALS['TL_LANG']['tl_iso_shipping_modules']['ups_service'],
+            'eval'                      => array('mandatory'=>true)
         ),
         'ups_accessKey' => array
         (
@@ -209,11 +209,11 @@ $GLOBALS['TL_DCA']['tl_iso_shipping_modules'] = array
         ),
         'usps_enabledService' => array
         (
-            'label'					  => &$GLOBALS['TL_LANG']['tl_iso_shipping_modules']['usps_enabledService'],
-            'exclude'				  => true,
-            'inputType'				  => 'select',
-            'options'				  => $GLOBALS['TL_LANG']['tl_iso_shipping_modules']['usps_service'],
-            'eval'					  => array('mandatory'=>true)
+            'label'                      => &$GLOBALS['TL_LANG']['tl_iso_shipping_modules']['usps_enabledService'],
+            'exclude'                  => true,
+            'inputType'                  => 'select',
+            'options'                  => $GLOBALS['TL_LANG']['tl_iso_shipping_modules']['usps_service'],
+            'eval'                      => array('mandatory'=>true)
         ),
         'usps_userName' => array
         (
@@ -237,7 +237,7 @@ $GLOBALS['TL_DCA']['tl_iso_shipping_modules'] = array
             'exclude'                 => true,
             'sorting'                 => true,
             'inputType'               => 'conditionalselect',
-            'options_callback'		  => array('Isotope\Backend', 'getSubdivisions'),
+            'options_callback'          => array('Isotope\Backend', 'getSubdivisions'),
             'eval'                    => array('multiple'=>true, 'size'=>8, 'conditionField'=>'countries', 'tl_class'=>'w50 w50h'),
         ),
         'postalCodes' => array
@@ -266,7 +266,7 @@ $GLOBALS['TL_DCA']['tl_iso_shipping_modules'] = array
             'label'                   => &$GLOBALS['TL_LANG']['tl_iso_shipping_modules']['product_types'],
             'exclude'                 => true,
             'inputType'               => 'select',
-            'foreignKey'			  => 'tl_iso_producttypes.name',
+            'foreignKey'              => 'tl_iso_producttypes.name',
             'eval'                    => array('multiple'=>true, 'size'=>8, 'tl_class'=>'clr'),
             'relation'                => array('type'=>'hasMany', 'load'=>'lazy'),
         ),
@@ -310,10 +310,10 @@ $GLOBALS['TL_DCA']['tl_iso_shipping_modules'] = array
         (
             'label'                   => &$GLOBALS['TL_LANG']['tl_iso_shipping_modules']['weight_unit'],
             'exclude'                 => true,
-            'default'				  => 'kg',
+            'default'                  => 'kg',
             'inputType'               => 'select',
-            'options'				  => array('mg', 'g', 'kg', 't', 'ct', 'oz', 'lb', 'st', 'grain'),
-            'reference'				  => &$GLOBALS['TL_LANG']['WGT'],
+            'options'                  => array('mg', 'g', 'kg', 't', 'ct', 'oz', 'lb', 'st', 'grain'),
+            'reference'                  => &$GLOBALS['TL_LANG']['WGT'],
             'eval'                    => array('tl_class'=>'clr', 'helpwizard'=>&$GLOBALS['TL_LANG']['WGT']),
         ),
         'guests' => array

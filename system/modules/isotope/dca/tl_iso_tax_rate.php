@@ -25,8 +25,8 @@ $GLOBALS['TL_DCA']['tl_iso_tax_rate'] = array
     (
         'dataContainer'               => 'Table',
         'enableVersioning'            => true,
-        'closed'					  => true,
-        'onload_callback'			  => array
+        'closed'                      => true,
+        'onload_callback'              => array
         (
             array('Isotope\Backend', 'initializeSetupModule'),
             array('Isotope\tl_iso_tax_rate', 'checkPermission'),
@@ -46,25 +46,25 @@ $GLOBALS['TL_DCA']['tl_iso_tax_rate'] = array
         ),
         'label' => array
         (
-            'fields'				  => array('name'),
-            'format'				  => '%s',
-            'label_callback'		  => array('Isotope\tl_iso_tax_rate', 'listRow'),
+            'fields'                  => array('name'),
+            'format'                  => '%s',
+            'label_callback'          => array('Isotope\tl_iso_tax_rate', 'listRow'),
         ),
         'global_operations' => array
         (
             'back' => array
             (
-                'label'					=> &$GLOBALS['TL_LANG']['MSC']['backBT'],
-                'href'					=> 'mod=&table=',
-                'class'					=> 'header_back',
-                'attributes'			=> 'onclick="Backend.getScrollOffset();"',
+                'label'                    => &$GLOBALS['TL_LANG']['MSC']['backBT'],
+                'href'                    => 'mod=&table=',
+                'class'                    => 'header_back',
+                'attributes'            => 'onclick="Backend.getScrollOffset();"',
             ),
             'new' => array
             (
-                'label'					=> &$GLOBALS['TL_LANG']['tl_iso_tax_rate']['new'],
-                'href'					=> 'act=create',
-                'class'					=> 'header_new',
-                'attributes'			=> 'onclick="Backend.getScrollOffset();"',
+                'label'                    => &$GLOBALS['TL_LANG']['tl_iso_tax_rate']['new'],
+                'href'                    => 'act=create',
+                'class'                    => 'header_new',
+                'attributes'            => 'onclick="Backend.getScrollOffset();"',
             ),
             'all' => array
             (
@@ -125,7 +125,7 @@ $GLOBALS['TL_DCA']['tl_iso_tax_rate'] = array
         'pid' => array
         (
             'foreignKey'              => 'tl_iso_tax_class.name',
-			'relation'                => array('type'=>'belongsTo', 'load'=>'lazy')
+            'relation'                => array('type'=>'belongsTo', 'load'=>'lazy')
         ),
         'name' => array
         (
@@ -167,7 +167,7 @@ $GLOBALS['TL_DCA']['tl_iso_tax_rate'] = array
             'exclude'                 => true,
             'filter'                  => true,
             'inputType'               => 'conditionalselect',
-            'options_callback'		  => array('\Isotope\Backend', 'getSubdivisions'),
+            'options_callback'          => array('\Isotope\Backend', 'getSubdivisions'),
             'eval'                    => array('conditionField'=>'countries', 'multiple'=>true, 'size'=>10, 'csv'=>',', 'tl_class'=>'w50 w50h'),
         ),
         'postalCodes' => array
@@ -200,7 +200,7 @@ $GLOBALS['TL_DCA']['tl_iso_tax_rate'] = array
             'inputType'               => 'select',
             'foreignKey'              => 'tl_iso_config.name',
             'eval'                    => array('includeBlankOption'=>true, 'submitOnChange'=>true, 'tl_class'=>'w50'),
-			'relation'                => array('type'=>'hasOne', 'load'=>'lazy')
+            'relation'                => array('type'=>'hasOne', 'load'=>'lazy')
         ),
         'stop' => array
         (
@@ -230,7 +230,7 @@ $GLOBALS['TL_DCA']['tl_iso_tax_rate'] = array
             'inputType'               => 'checkbox',
             'foreignKey'              => 'tl_member_group.name',
             'eval'                    => array('multiple'=>true),
-			'relation'                => array('type'=>'hasMany', 'load'=>'lazy'),
+            'relation'                => array('type'=>'hasMany', 'load'=>'lazy'),
         ),
     )
 );

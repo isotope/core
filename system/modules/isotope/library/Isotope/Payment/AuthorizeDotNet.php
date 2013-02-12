@@ -22,7 +22,7 @@ use Isotope\Product\Collection\Order;
  * Handle Authorize.NET payments
  * @copyright  Isotope eCommerce Workgroup 2009-2012
  * @author     Fred Bliss <fred.bliss@intelligentspark.com>
- * @author	   Blair Winans <blair@winanscreative.com>
+ * @author       Blair Winans <blair@winanscreative.com>
  * @author     Christian de la Haye <service@delahaye.de>
  */
 class AuthorizeDotNet extends Payment implements IsotopePayment
@@ -52,7 +52,7 @@ class AuthorizeDotNet extends Payment implements IsotopePayment
      * @param string
      * @param mixed
      */
-/*	public function __get($strKey)
+/*    public function __get($strKey)
     {
         switch( $strKey )
         {
@@ -128,33 +128,33 @@ class AuthorizeDotNet extends Payment implements IsotopePayment
         //Build form fields
         $arrFields = array
         (
-            'card_accountNumber'	=> array
+            'card_accountNumber'    => array
             (
-                'label'				=> &$GLOBALS['TL_LANG']['MSC']['cc_num'],
-                'inputType'			=> 'text',
-                'eval'				=> array('mandatory'=>true, 'tableless'=>true),
+                'label'                => &$GLOBALS['TL_LANG']['MSC']['cc_num'],
+                'inputType'            => 'text',
+                'eval'                => array('mandatory'=>true, 'tableless'=>true),
             ),
-            'card_cardType' 		=> array
+            'card_cardType'         => array
             (
-                'label'				=> &$GLOBALS['TL_LANG']['MSC']['cc_type'],
-                'inputType'			=> 'select',
-                'options'			=> $arrCCTypes,
-                'eval'				=> array('mandatory'=>true, 'tableless'=>true),
-                'reference'			=> &$GLOBALS['TL_LANG']['CCT'],
+                'label'                => &$GLOBALS['TL_LANG']['MSC']['cc_type'],
+                'inputType'            => 'select',
+                'options'            => $arrCCTypes,
+                'eval'                => array('mandatory'=>true, 'tableless'=>true),
+                'reference'            => &$GLOBALS['TL_LANG']['CCT'],
             ),
             'card_expirationMonth' => array
             (
-                'label'			=> &$GLOBALS['TL_LANG']['MSC']['cc_exp_month'],
-                'inputType'		=> 'select',
-                'options'		=> array('01','02','03','04','05','06','07','08','09','10','11','12'),
-                'eval'			=> array('mandatory'=>true, 'tableless'=>true, 'includeBlankOption'=>true)
+                'label'            => &$GLOBALS['TL_LANG']['MSC']['cc_exp_month'],
+                'inputType'        => 'select',
+                'options'        => array('01','02','03','04','05','06','07','08','09','10','11','12'),
+                'eval'            => array('mandatory'=>true, 'tableless'=>true, 'includeBlankOption'=>true)
             ),
             'card_expirationYear'  => array
             (
-                'label'			=> &$GLOBALS['TL_LANG']['MSC']['cc_exp_year'],
-                'inputType'		=> 'select',
-                'options'		=> $arrYears,
-                'eval'			=> array('mandatory'=>true, 'tableless'=>true, 'includeBlankOption'=>true)
+                'label'            => &$GLOBALS['TL_LANG']['MSC']['cc_exp_year'],
+                'inputType'        => 'select',
+                'options'        => $arrYears,
+                'eval'            => array('mandatory'=>true, 'tableless'=>true, 'includeBlankOption'=>true)
             )
         );
 
@@ -162,9 +162,9 @@ class AuthorizeDotNet extends Payment implements IsotopePayment
         {
             $arrFields['card_cvNumber'] = array
             (
-                'label'			=> &$GLOBALS['TL_LANG']['MSC']['cc_ccv'],
-                'inputType'		=> 'text',
-                'eval'			=> array('mandatory'=>true, 'tableless'=>true, 'class'=>'ccv')
+                'label'            => &$GLOBALS['TL_LANG']['MSC']['cc_ccv'],
+                'inputType'        => 'text',
+                'eval'            => array('mandatory'=>true, 'tableless'=>true, 'class'=>'ccv')
             );
         }
 
@@ -288,11 +288,11 @@ class AuthorizeDotNet extends Payment implements IsotopePayment
 
         if($objAIMConfig->numRows > 0)
         {
-            $this->authorize_delimiter 	= $objAIMConfig->authorize_delimiter;
-            $this->authorize_login 		= $objAIMConfig->authorize_login;
-            $this->authorize_trans_key 	= $objAIMConfig->authorize_trans_key;
-            $this->debug 				= $objAIMConfig->debug;
-            $this->new_order_status 	= $objAIMConfig->new_order_status;
+            $this->authorize_delimiter     = $objAIMConfig->authorize_delimiter;
+            $this->authorize_login         = $objAIMConfig->authorize_login;
+            $this->authorize_trans_key     = $objAIMConfig->authorize_trans_key;
+            $this->debug                 = $objAIMConfig->debug;
+            $this->new_order_status     = $objAIMConfig->new_order_status;
             $this->authorize_trans_type = $objAIMConfig->authorize_trans_type;
         }
 
@@ -310,12 +310,12 @@ class AuthorizeDotNet extends Payment implements IsotopePayment
             {
                 $objOrder = new Order();
 
-                $objOrder->uniqid		= uniqid($this->Isotope->Config->orderPrefix, true);
+                $objOrder->uniqid        = uniqid($this->Isotope->Config->orderPrefix, true);
 
                 $objOrder = Order::findByPk($objOrder->save()->id);
             }
 
-            $objOrder->status		= 'processing';
+            $objOrder->status        = 'processing';
 
             $objOrder->save();
 
@@ -412,43 +412,43 @@ $return .= '</div></div>';
         //Set up basic request fields required by all transactions
         $authnet_values_default = array
         (
-            "x_version"							=> '3.1',
-            "x_login"							=> $this->authorize_login,
-            "x_tran_key"						=> $this->authorize_trans_key,
-            "x_type"							=> $strAuthType,
-            "x_delim_char"						=> $this->authorize_delimiter,
-            "x_delim_data"						=> "TRUE",
-            "x_relay_response" 					=> "FALSE",
-            "x_amount"							=> $fltOrderTotal,
-            "x_test_request"					=> ($this->debug ? "TRUE" : "FALSE")
+            "x_version"                            => '3.1',
+            "x_login"                            => $this->authorize_login,
+            "x_tran_key"                        => $this->authorize_trans_key,
+            "x_type"                            => $strAuthType,
+            "x_delim_char"                        => $this->authorize_delimiter,
+            "x_delim_data"                        => "TRUE",
+            "x_relay_response"                     => "FALSE",
+            "x_amount"                            => $fltOrderTotal,
+            "x_test_request"                    => ($this->debug ? "TRUE" : "FALSE")
         );
 
         switch($strAuthType)
         {
             case 'AUTH_ONLY':
                 $authnet_values_authonly = array(
-                    "x_url"								=> "FALSE",
-                    "x_description"						=> "Order Number " . $this->Isotope->Config->orderPrefix . $objOrder->order_id,
-                    "x_invoice_num"						=> $objOrder->order_id,
-                    "x_first_name"						=> $arrBilling['firstname'],
-                    "x_last_name"						=> $arrBilling['lastname'],
-                    "x_company"							=> $arrBilling['company'],
-                    "x_address"							=> $arrBilling['street_1']."\n".$arrBilling['street_2']."\n".$arrBilling['street_3'],
-                    "x_city"							=> $arrBilling['city'],
-                    "x_state"							=> $arrBillingSubdivision[1],
-                    "x_zip"								=> $arrBilling['postal'],
-                    "x_email_customer"					=> "FALSE",
-                    "x_email"							=> $arrBilling['email'],
-                    "x_country"							=> $arrBilling['country'],
-                    "x_phone"							=> $arrBilling['phone'],
-                    "x_ship_to_first_name"				=> $arrShipping['firstname'],
-                    "x_ship_to_last_name"				=> $arrShipping['lastname'],
-                    "x_ship_to_company"					=> $arrShipping['company'],
-                    "x_ship_to_address"					=> $arrShipping['street_1']."\n".$arrShipping['street_2']."\n".$arrShipping['street_3'],
-                    "x_ship_to_city"					=> $arrShipping['city'],
-                    "x_ship_to_state"					=> $arrShippingSubdivision[1],
-                    "x_ship_to_zip"						=> $arrShipping['postal'],
-                    "x_ship_to_country"					=> $arrShipping['country'],
+                    "x_url"                                => "FALSE",
+                    "x_description"                        => "Order Number " . $this->Isotope->Config->orderPrefix . $objOrder->order_id,
+                    "x_invoice_num"                        => $objOrder->order_id,
+                    "x_first_name"                        => $arrBilling['firstname'],
+                    "x_last_name"                        => $arrBilling['lastname'],
+                    "x_company"                            => $arrBilling['company'],
+                    "x_address"                            => $arrBilling['street_1']."\n".$arrBilling['street_2']."\n".$arrBilling['street_3'],
+                    "x_city"                            => $arrBilling['city'],
+                    "x_state"                            => $arrBillingSubdivision[1],
+                    "x_zip"                                => $arrBilling['postal'],
+                    "x_email_customer"                    => "FALSE",
+                    "x_email"                            => $arrBilling['email'],
+                    "x_country"                            => $arrBilling['country'],
+                    "x_phone"                            => $arrBilling['phone'],
+                    "x_ship_to_first_name"                => $arrShipping['firstname'],
+                    "x_ship_to_last_name"                => $arrShipping['lastname'],
+                    "x_ship_to_company"                    => $arrShipping['company'],
+                    "x_ship_to_address"                    => $arrShipping['street_1']."\n".$arrShipping['street_2']."\n".$arrShipping['street_3'],
+                    "x_ship_to_city"                    => $arrShipping['city'],
+                    "x_ship_to_state"                    => $arrShippingSubdivision[1],
+                    "x_ship_to_zip"                        => $arrShipping['postal'],
+                    "x_ship_to_country"                    => $arrShipping['country'],
                 );
 
                 $authnet_values = array_merge($authnet_values_default,$authnet_values_authonly);
@@ -466,17 +466,17 @@ $return .= '</div></div>';
         {
             $arrPaymentInput = \Input::post('payment');
                         unset($_POST['payment']);
-            $authnet_values["x_method"] 	= "CC";
-            $authnet_values["x_card_num"]	= $arrPaymentInput['card_accountNumber'];
-            $authnet_values["x_exp_date"]	= ($arrPaymentInput['card_expirationMonth'].substr($arrPaymentInput['card_expirationYear'], 2, 2));
+            $authnet_values["x_method"]     = "CC";
+            $authnet_values["x_card_num"]    = $arrPaymentInput['card_accountNumber'];
+            $authnet_values["x_exp_date"]    = ($arrPaymentInput['card_expirationMonth'].substr($arrPaymentInput['card_expirationYear'], 2, 2));
 
             if($this->requireCCV)
             {
                 $authnet_values["x_card_code"] = $arrPaymentInput['card_cvNumber'];
             }
 
-            $arrPaymentInfo["x_card_num"]	= $this->maskCC($arrData['card_accountNumber']); //PCI COMPLIANCE - MASK THE CC DATA
-            $arrPaymentInfo["x_card_type"]	= $GLOBALS['TL_LANG']['CCT'][$arrData['card_cardType']];
+            $arrPaymentInfo["x_card_num"]    = $this->maskCC($arrData['card_accountNumber']); //PCI COMPLIANCE - MASK THE CC DATA
+            $arrPaymentInfo["x_card_type"]    = $GLOBALS['TL_LANG']['CCT'][$arrData['card_cardType']];
         }
 
 
@@ -564,8 +564,8 @@ $return .= '</div></div>';
         $arrResponseString = explode($this->authorize_delimiter, $strResp);
         $arrResponseCodes = array
         (
-            'response_type'	=> $arrResponseString[0],
-            'response_code'	=> $arrResponseString[2]
+            'response_type'    => $arrResponseString[0],
+            'response_code'    => $arrResponseString[2]
         );
 
         return $arrResponseCodes;
@@ -584,7 +584,7 @@ $return .= '</div></div>';
         $strResp = str_replace('"', '', $strResp);
         $arrResponseString = explode($this->authorize_delimiter, $strResp);
         $i=1;
-        $arrFieldsToDisplay = array(1, 2, 3, 4, 5, 7, 9, 10, 11, 14, 15, 16, 17, 18, 19, 20, 22, 23, 24, 47);	//Dynamic Later
+        $arrFieldsToDisplay = array(1, 2, 3, 4, 5, 7, 9, 10, 11, 14, 15, 16, 17, 18, 19, 20, 22, 23, 24, 47);    //Dynamic Later
 
         foreach($arrResponseString as $currResponseString)
         {
@@ -610,7 +610,7 @@ $return .= '</div></div>';
                                 $fval="Error";
                             }
                             break;
-                        case 3:	//response reason code.
+                        case 3:    //response reason code.
                             $ftitle = "Reason Code";
                             $fval = $pstr_trimmed;
                             break;

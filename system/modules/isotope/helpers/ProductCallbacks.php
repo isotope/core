@@ -217,10 +217,10 @@ class ProductCallbacks extends \Backend
         $arrProducts = \Isotope\Backend::getAllowedProductIds();
 
         // Method will return true if no limits should be applied (e.g. user is admin)
-		if (true === $arrProducts)
-		{
-			return;
-		}
+        if (true === $arrProducts)
+        {
+            return;
+        }
 
         // Filter by product type and group permissions
         if (empty($arrProducts))
@@ -230,9 +230,9 @@ class ProductCallbacks extends \Backend
             $session['CURRENT']['IDS'] = array();
             $GLOBALS['TL_DCA']['tl_iso_products']['list']['sorting']['filter'][] = array('id=?', 0);
 
-			if (false === $arrProducts)
-			{
-    			unset($GLOBALS['TL_DCA']['tl_iso_products']['list']['global_operations']['new_product']);
+            if (false === $arrProducts)
+            {
+                unset($GLOBALS['TL_DCA']['tl_iso_products']['list']['global_operations']['new_product']);
             }
         }
         else
@@ -337,7 +337,7 @@ class ProductCallbacks extends \Backend
             // Enable advanced prices
             if ($objProducts->prices && !$blnEditAll)
             {
-			    $arrFields['prices']['exclude'] = $arrFields['price']['exclude'];
+                $arrFields['prices']['exclude'] = $arrFields['price']['exclude'];
                 $arrFields['prices']['attributes'] = $arrFields['price']['attributes'];
                 $arrFields['price'] = $arrFields['prices'];
             }

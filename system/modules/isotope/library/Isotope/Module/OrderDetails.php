@@ -112,19 +112,19 @@ class OrderDetails extends Module
 
             $arrItems[] = array
             (
-                'raw'				=> $objProduct->getData(),
-                'sku'				=> $objProduct->sku,
-                'name'				=> $objProduct->name,
-                'image'				=> $objProduct->images->main_image,
-                'product_options'	=> $objProduct->getOptions(),
-                'quantity'			=> $objProduct->quantity_requested,
-                'price'				=> $this->Isotope->formatPriceWithCurrency($objProduct->price),
-                'tax_free_price'	=> $this->Isotope->formatPriceWithCurrency($objProduct->tax_free_price),
-                'total'				=> $this->Isotope->formatPriceWithCurrency($objProduct->total_price),
-                'tax_free_total'	=> $this->Isotope->formatPriceWithCurrency($objProduct->tax_free_total_price),
-                'href'				=> ($this->jumpTo ? $this->generateFrontendUrl($arrPage, ($GLOBALS['TL_CONFIG']['useAutoItem'] ? '/' : '/product/') . $objProduct->alias) : ''),
-                'tax_id'			=> $objProduct->tax_id,
-                'downloads'			=> $arrDownloads,
+                'raw'                => $objProduct->getData(),
+                'sku'                => $objProduct->sku,
+                'name'                => $objProduct->name,
+                'image'                => $objProduct->images->main_image,
+                'product_options'    => $objProduct->getOptions(),
+                'quantity'            => $objProduct->quantity_requested,
+                'price'                => $this->Isotope->formatPriceWithCurrency($objProduct->price),
+                'tax_free_price'    => $this->Isotope->formatPriceWithCurrency($objProduct->tax_free_price),
+                'total'                => $this->Isotope->formatPriceWithCurrency($objProduct->total_price),
+                'tax_free_total'    => $this->Isotope->formatPriceWithCurrency($objProduct->tax_free_total_price),
+                'href'                => ($this->jumpTo ? $this->generateFrontendUrl($arrPage, ($GLOBALS['TL_CONFIG']['useAutoItem'] ? '/' : '/product/') . $objProduct->alias) : ''),
+                'tax_id'            => $objProduct->tax_id,
+                'downloads'            => $arrDownloads,
             );
 
             $arrAllDownloads = array_merge($arrAllDownloads, $arrDownloads);
@@ -215,11 +215,11 @@ class OrderDetails extends Module
 
         $arrDownload = array
         (
-            'raw'			=> $objDownload->row(),
-            'title'			=> ($objDownload->type == 'folder' ? $strFileName : $objDownload->title),
-            'href'			=> $strUrl,
-            'remaining'		=> ($objDownload->downloads_allowed > 0 ? sprintf($GLOBALS['TL_LANG']['MSC']['downloadsRemaining'], intval($objDownload->downloads_remaining)) : ''),
-            'downloadable'	=> $blnDownloadable,
+            'raw'            => $objDownload->row(),
+            'title'            => ($objDownload->type == 'folder' ? $strFileName : $objDownload->title),
+            'href'            => $strUrl,
+            'remaining'        => ($objDownload->downloads_allowed > 0 ? sprintf($GLOBALS['TL_LANG']['MSC']['downloadsRemaining'], intval($objDownload->downloads_remaining)) : ''),
+            'downloadable'    => $blnDownloadable,
         );
 
         // Send file to the browser

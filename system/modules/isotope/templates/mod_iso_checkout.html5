@@ -36,10 +36,10 @@
 </div>
 <div class="clear">&nbsp;</div>
 <?php if ($this->showPrevious || $this->showNext): ?>
-	<div class="submit_container">
-		<?php if ($this->showPrevious): ?><input type="submit" class="submit previous button" name="previousStep" value="<?php echo $this->previousLabel; ?>"><?php endif; if ($this->showNext): ?>
-		<input type="submit" class="submit <?php echo $this->nextClass; ?> button" name="nextStep" value="<?php echo $this->nextLabel; ?>"><?php endif; ?>
-	</div>
+    <div class="submit_container">
+        <?php if ($this->showPrevious): ?><input type="submit" class="submit previous button" name="previousStep" value="<?php echo $this->previousLabel; ?>"><?php endif; if ($this->showNext): ?>
+        <input type="submit" class="submit <?php echo $this->nextClass; ?> button" name="nextStep" value="<?php echo $this->nextLabel; ?>"><?php endif; ?>
+    </div>
 <?php endif; ?>
 </form>
 <?php else: ?>
@@ -49,10 +49,10 @@
 </div>
 <script>
 window.addEvent('domready', function() {
-	document.getElements('.mod_iso_checkout form').addEvent('submit', function() {
-		document.getElement('.mod_iso_checkout input[name=nextStep]').set('disabled', true);
-		(function() { window.location.reload() }).delay(30000);
-	});
+    document.getElements('.mod_iso_checkout form').addEvent('submit', function() {
+        document.getElement('.mod_iso_checkout input[name=nextStep]').set('disabled', true);
+        (function() { window.location.reload() }).delay(30000);
+    });
 });
 </script>
 <!-- indexer::continue -->
