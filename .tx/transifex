@@ -291,7 +291,7 @@ class Transifex
 							$value = str_replace('</ em>', '</em>', $value);
 						}
 
-						$chunks = explode('.', $unit->getAttribute('id'), 2);
+						$chunks = explode('.', $unit->getAttribute('id'));
 
 						switch (count($chunks))
 						{
@@ -306,6 +306,9 @@ class Transifex
 							case 4:
 								fputs($fh, "\$GLOBALS['TL_LANG']['" . $chunks[0] . "'][" . $this->quote($chunks[1]) . "][" . $this->quote($chunks[2]) . "][" . $this->quote($chunks[3]) . "] = $value;\n");
 								break;
+
+							default:
+							    throw new OutOfBoundsException('Can\'t handle more than 4 keys!');
 						}
 					}
 
