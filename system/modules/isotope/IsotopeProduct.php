@@ -146,7 +146,7 @@ class IsotopeProduct extends Controller
 
 		if ($arrData['pid'] > 0)
 		{
-			$this->arrData = $this->Database->execute("SELECT * FROM tl_iso_products WHERE id={$arrData['pid']}")->fetchAssoc();
+			$this->arrData = $this->Database->execute(IsotopeProduct::getSelectStatement() . " WHERE p1.id={$arrData['pid']}")->fetchAssoc();
 		}
 		else
 		{
@@ -1494,6 +1494,11 @@ class IsotopeProduct extends Controller
 			}
 
 			$this->arrData[$attribute] = $arrData[$attribute];
+
+			if (in_array($attribute, $GLOBALS['ISO_CONFIG']['fetch_fallback']))
+			{
+    			$this->arrData[$attribute.'_fallback'] = $arrData[$attribute.'_fallback'];
+			}
 
 			if (is_array($this->arrCache) && isset($this->arrCache[$attribute]))
 			{

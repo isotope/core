@@ -22,6 +22,7 @@ Version 1.4.? (2013-??-??)
 - Labels for addresses were not shown in the order details (#538)
 - Do not show filter options of product variant if base product is disabled (#529)
 - Invoice PDF did not consider shop config template folder (#534)
+- Product translations were not correctly fetched in variants (#465)
 
 
 Version 1.4.rc2 (2013-01-22)
