@@ -214,7 +214,6 @@ class ModuleIsotopeProductFilter extends ModuleIsotope
 					{
 						$GLOBALS['ISO_FILTERS'][$this->id][] = array
 						(
-							'group'		=> ('keyword: '.$keyword),
 							'operator'	=> 'search',
 							'attribute'	=> $field,
 							'value'		=> $keyword,
