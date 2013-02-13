@@ -281,7 +281,7 @@ class ModuleIsotopeProductList extends ModuleIsotope
 
 		foreach ($arrProducts as $objProduct)
 		{
-		    $objProduct->setOptions($arrDefaultOptions);
+		    $objProduct->setOptions(array_merge($arrDefaultOptions, $objProduct->getOptions(true)));
     		$objProduct->reader_jumpTo = $intReaderPage;
 
 			$arrBuffer[] = array
