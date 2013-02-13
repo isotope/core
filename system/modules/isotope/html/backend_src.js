@@ -591,7 +591,7 @@ var Isotope =
 					var html = sessionStorage.getItem(('product_'+productId));
 
 					if (html) {
-						Isotope.createDeferredProduct(productId, sessionStorage.getItem(('product_'+productId)), el);
+						Isotope.createDeferredProduct(productId, html, el);
 						return;
 					}
 				}
