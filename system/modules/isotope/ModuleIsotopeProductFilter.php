@@ -214,6 +214,7 @@ class ModuleIsotopeProductFilter extends ModuleIsotope
 					{
 						$GLOBALS['ISO_FILTERS'][$this->id][] = array
 						(
+							'group'		=> ('keyword: '.$keyword), // Must create an OR group because multiple fields can be searched for
 							'operator'	=> 'search',
 							'attribute'	=> $field,
 							'value'		=> $keyword,
