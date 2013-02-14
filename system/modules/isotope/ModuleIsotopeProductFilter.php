@@ -206,7 +206,7 @@ class ModuleIsotopeProductFilter extends ModuleIsotope
 		{
 			if ($this->Input->get('keywords') != '' && $this->Input->get('keywords') != $GLOBALS['TL_LANG']['MSC']['defaultSearchText'])
 			{
-				$arrKeywords = trimsplit(' ', $this->Input->get('keywords'));
+				$arrKeywords = trimsplit(' |-', $this->Input->get('keywords'));
 
 				foreach ($arrKeywords as $keyword)
 				{
