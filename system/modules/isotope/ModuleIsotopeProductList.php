@@ -397,23 +397,55 @@ class ModuleIsotopeProductList extends ModuleIsotope
 			$strWhere = '';
 			$arrWhere = array();
 			$arrValues = array();
+			$arrGroups = array();
 
 			// Initiate native SQL filtering
 			foreach ($arrFilters as $k => $filter)
 			{
-				if ($filter['group'] == '' && !in_array($filter['attribute'], $GLOBALS['ISO_CONFIG']['dynamicAttributes']))
+    			if ($filter['group'] != '' && $arrGroups[$filter['group']] !== false)
+    			{
+        			if (in_array($filter['attribute'], $GLOBALS['ISO_CONFIG']['dynamicAttributes']))
+        			{
+            			$arrGroups[$filter['group']] = false;
+        			}
+        			else
+        			{
+            			$arrGroups[$filter['group']][] = $k;
+            		}
+    			}
+				elseif ($filter['group'] == '' && !in_array($filter['attribute'], $GLOBALS['ISO_CONFIG']['dynamicAttributes']))
 				{
 					$operator = IsotopeFrontend::convertFilterOperator($filter['operator'], 'SQL');
-					$arrWhere[] = "{$filter['attribute']} $operator ?";
+					$arrWhere[] = "p1.{$filter['attribute']} $operator ?";
 					$arrValues[] = $filter['value'];
 					unset($arrFilters[$k]);
 				}
 			}
 
+			if (!empty($arrGroups))
+			{
+    			foreach ($arrGroups as $arrGroup)
+    			{
+        			$arrGroupWhere = array();
+
+           			foreach ($arrGroup as $k)
+        			{
+            			$filter = $arrFilters[$k];
+
+            			$operator = IsotopeFrontend::convertFilterOperator($filter['operator'], 'SQL');
+    					$arrGroupWhere[] = "p1.{$filter['attribute']} $operator ?";
+    					$arrValues[] = $filter['value'];
+    					unset($arrFilters[$k]);
+        			}
+
+        			$arrWhere[] = '(' . implode(' OR ', $arrGroupWhere) . ')';
+    			}
+			}
+
 			if (!empty($arrWhere))
 			{
 				$time = time();
-				$strWhere = " AND ((p1." . implode(' AND p1.', $arrWhere) . ") OR p1.id IN (SELECT pid FROM tl_iso_products WHERE language='' AND " . implode(' AND ', $arrWhere)
+				$strWhere = " AND ((" . implode(' AND ', $arrWhere) . ") OR p1.id IN (SELECT pid FROM tl_iso_products WHERE language='' AND " . implode(' AND ', $arrWhere)
 							. (BE_USER_LOGGED_IN === true ? '' : " AND published='1' AND (start='' OR start<$time) AND (stop='' OR stop>$time)") . "))";
 				$arrValues = array_merge($arrValues, $arrValues);
 			}
