@@ -106,14 +106,11 @@ class Address extends \Model
 
             if ($strField == 'subdivision' && $this->subdivision != '')
             {
-                if (!is_array($GLOBALS['TL_LANG']['DIV']))
-                {
-                    $this->loadLanguageFile('subdivisions');
-                }
+                $arrSubdivisions = \Isotope\Backend::getSubdivisons();
 
                 list($country, $subdivion) = explode('-', $this->subdivision);
 
-                $arrTokens['subdivision'] = $GLOBALS['TL_LANG']['DIV'][strtolower($country)][$this->subdivision];
+                $arrTokens['subdivision'] = $arrSubdivisions[strtolower($country)][$this->subdivision];
                 $arrTokens['subdivision_abbr'] = $subdivion;
 
                 continue;
