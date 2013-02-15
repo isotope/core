@@ -13,8 +13,11 @@
  * @author     Fred Bliss <fred.bliss@intelligentspark.com>
  */
 
-//Regions, by country code
-
+/**
+ * Subdivisions (regions) by country code
+ * @see http://en.wikipedia.org/wiki/ISO_3166-2
+ * @see http://docs.equest.com/eQuestCountryAndStateCodes.xls
+ */
 $GLOBALS['TL_LANG']['DIV']['af']['AF-BDS'] = 'Badakhshān';
 $GLOBALS['TL_LANG']['DIV']['af']['AF-BDG'] = 'Bādghīs';
 $GLOBALS['TL_LANG']['DIV']['af']['AF-BGL'] = 'Baghlān';
