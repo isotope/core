@@ -1286,10 +1286,6 @@ $GLOBALS['TL_LANG']['DIV']['gh']['GH-UW'] = 'Upper West';
 $GLOBALS['TL_LANG']['DIV']['gh']['GH-TV'] = 'Volta';
 $GLOBALS['TL_LANG']['DIV']['gh']['GH-WP'] = 'Western';
 
-/**
- * UK Countries
- * @author    Ben Kenyon <ben@360fusion.co.uk>
- */
 $GLOBALS['TL_LANG']['DIV']['gi']['GI-GI'] = 'Gibraltar';
 $GLOBALS['TL_LANG']['DIV']['gb']['GB-CHA'] = 'Channel Islands';
 $GLOBALS['TL_LANG']['DIV']['gb']['GB-GSY'] = 'Guernsey';
