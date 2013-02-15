@@ -199,13 +199,13 @@ $GLOBALS['TL_LANG']['DIV']['am']['AM-VD'] = 'Vayoc Jor';
 
 $GLOBALS['TL_LANG']['DIV']['aw']['AW-AW'] = 'Aruba';
 
-$GLOBALS['TL_LANG']['DIV']['au']['AU-NS'] = 'New South Wales';
-$GLOBALS['TL_LANG']['DIV']['au']['AU-QL'] = 'Queensland';
+$GLOBALS['TL_LANG']['DIV']['au']['AU-NSW'] = 'New South Wales';
+$GLOBALS['TL_LANG']['DIV']['au']['AU-QLD'] = 'Queensland';
 $GLOBALS['TL_LANG']['DIV']['au']['AU-SA'] = 'South Australia';
-$GLOBALS['TL_LANG']['DIV']['au']['AU-TS'] = 'Tasmania';
-$GLOBALS['TL_LANG']['DIV']['au']['AU-VI'] = 'Victoria';
+$GLOBALS['TL_LANG']['DIV']['au']['AU-TAS'] = 'Tasmania';
+$GLOBALS['TL_LANG']['DIV']['au']['AU-VIC'] = 'Victoria';
 $GLOBALS['TL_LANG']['DIV']['au']['AU-WA'] = 'Western Australia';
-$GLOBALS['TL_LANG']['DIV']['au']['AU-CT'] = 'Australian Capital Territory';
+$GLOBALS['TL_LANG']['DIV']['au']['AU-ACT'] = 'Australian Capital Territory';
 $GLOBALS['TL_LANG']['DIV']['au']['AU-NT'] = 'Northern Territory';
 
 $GLOBALS['TL_LANG']['DIV']['at']['AT-1'] = 'Burgenland';
