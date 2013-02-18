@@ -41,16 +41,15 @@ class tl_iso_shipping_options extends \Backend
             return;
         }
 
-        if (!strlen(\Input::get('act')) && !strlen(\Input::get('key'))) {
-            $objModule = $this->Database->execute("SELECT * FROM tl_iso_shipping_modules WHERE id=".$dc->id);
+        if (\Input::get('act') == '' && \Input::get('key') == '') {
+            $this->Shipping = Shipping::findByPk($dc->id);
         } else {
-            $objModule = $this->Database->execute("SELECT m.* FROM tl_iso_shipping_modules m, tl_iso_shipping_options o WHERE o.pid=m.id AND o.id=".$dc->id);
+            $this->Shipping = Shipping::findOneBy('id=(SELECT pid FROM tl_iso_shipping_options WHERE id=?)', $dc->id);
         }
 
-        try {
-            $this->Shipping = \Isotope\Factory\Shipping::build($objModule->type, $objModule->row());
+        if (null !== $this->Shipping) {
             $this->Shipping->moduleOptionsLoad();
-        } catch (Exception $e) {}
+        }
     }
 
 

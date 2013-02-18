@@ -15,6 +15,8 @@ namespace Isotope\Product\Collection;
 use Isotope\Interfaces\IsotopeProduct;
 use Isotope\Interfaces\IsotopeProductCollection;
 use Isotope\Model\Address;
+use Isotope\Payment\Payment;
+use Isotope\Shipping\Shipping;
 
 
 /**
@@ -47,27 +49,11 @@ class Order extends Collection implements IsotopeProductCollection
 
         if ($objResult !== null) {
             if ($this->payment_id > 0) {
-                $objPayment = \Database::getInstance()->execute("SELECT * FROM tl_iso_payment_modules WHERE id=" . $this->payment_id);
-
-                if ($objPayment->numRows) {
-                    try {
-                        $this->Payment = \Isotope\Factory\Payment::build($objPayment->type, $objPayment->row());
-                    } catch (Exception $e) {
-                        trigger_error($e->getMessage());
-                    }
-                }
+                $this->Payment = $this->getRelated('payment_id');
             }
 
             if ($this->shipping_id > 0) {
-                $objShipping = \Database::getInstance()->execute("SELECT * FROM tl_iso_shipping_modules WHERE id=" . $this->shipping_id);
-
-                if ($objShipping->numRows) {
-                    try {
-                        $this->Shipping = \Isotope\Factory\Shipping::build($objShipping->type, $objShipping->row());
-                    } catch (Exception $e) {
-                        trigger_error($e->getMessage());
-                    }
-                }
+                $this->Shipping = $this->getRelated('shipping_id');
             }
 
             // The order_id must not be stored in arrData, or it would overwrite the database on save().

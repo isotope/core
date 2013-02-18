@@ -167,13 +167,11 @@ class tl_iso_payment_modules extends \Backend
     public function getAllowedCCTypes(\DataContainer $dc)
     {
         $arrCCTypes = array();
-        $objPayment = $this->Database->prepare("SELECT * FROM tl_iso_payment_modules WHERE id=?")->limit(1)->execute($dc->id);
 
-        if ($objPayment->numRows) {
+        if (($objPayment = Payment::findByPk($dc->id)) !== null) {
+
             try {
-                $objMethod = \Isotope\Factory\Payment::build($objPayment->type, $objPayment->row());
-
-                foreach ($objMethod->getAllowedCCTypes() as $type)
+                foreach ($objPayment->getAllowedCCTypes() as $type)
                 {
                     $arrCCTypes[$type] = $GLOBALS['TL_LANG']['CCT'][$type];
                 }

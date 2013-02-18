@@ -14,8 +14,8 @@ namespace Isotope\Module;
 
 use Isotope\Model\Address;
 use Isotope\Product\Collection\Order;
-use Isotope\Factory\Payment as PaymentFactory;
-use Isotope\Factory\Shipping as ShippingFactory;
+use Isotope\Payment\Payment;
+use Isotope\Shipping\Shipping;
 
 
 /**
@@ -577,17 +577,13 @@ class Checkout extends Module
             $arrData = \Input::post('shipping');
             $arrModuleIds = array_map('intval', $arrModuleIds);
 
-            $objModules = $this->Database->execute("SELECT * FROM tl_iso_shipping_modules WHERE id IN (" . implode(',', $arrModuleIds) . ")" . (BE_USER_LOGGED_IN === true ? '' : " AND enabled='1'") . " ORDER BY " . $this->Database->findInSet('id', $arrModuleIds));
+            $objModules = Shipping::findBy(array('id IN (' . implode(',', $arrModuleIds) . ')', (BE_USER_LOGGED_IN === true ? '' : "enabled='1'")), null, array('order'=>$this->Database->findInSet('id', $arrModuleIds)));
 
             while ($objModules->next())
             {
-                try {
-                    $objModule = ShippingFactory::build($objModules->type, $objModules->row());
-                } catch (Exception $e) {
-                    continue;
-                }
+                $objModule = $objModules->current();
 
-                if (!$objModule->available) {
+                if (!$objModule->isAvailable()) {
                     continue;
                 }
 
@@ -697,17 +693,13 @@ class Checkout extends Module
             $arrData = \Input::post('payment');
             $arrModuleIds = array_map('intval', $arrModuleIds);
 
-            $objModules = $this->Database->execute("SELECT * FROM tl_iso_payment_modules WHERE id IN (" . implode(',', $arrModuleIds) . ")" . (BE_USER_LOGGED_IN === true ? '' : " AND enabled='1'") . " ORDER BY " . $this->Database->findInSet('id', $arrModuleIds));
+            $objModules = Payment::findBy(array('id IN (' . implode(',', $arrModuleIds) . ')', (BE_USER_LOGGED_IN === true ? '' : "enabled='1'")), null, array('order'=>$this->Database->findInSet('id', $arrModuleIds)));
 
             while ($objModules->next()) {
 
-                try {
-                    $objModule = PaymentFactory::build($objModules->type, $objModules->row());
-                } catch (Exception $e) {
-                    continue;
-                }
+                $objModule = $objModules->current();
 
-                if (!$objModule->available) {
+                if (!$objModule->isAvailable()) {
                     continue;
                 }
 

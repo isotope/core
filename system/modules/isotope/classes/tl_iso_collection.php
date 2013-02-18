@@ -327,12 +327,10 @@ class tl_iso_collection extends \Backend
      */
     public function paymentInterface($dc)
     {
-        $objPayment = $this->Database->execute("SELECT p.* FROM tl_iso_payment_modules m, tl_iso_collection o WHERE m.id=o.payment_id AND m.id=".$dc->id);
-
         try {
-            $objMethod = \Isotope\Factory\Payment::build($objPayment->type, $objPayment->row());
+            $objPayment = Order::findByPk($dc->id)->getRelated('payment_id');
 
-            return $objMethod->backendInterface($dc->id);
+            return $objPayment->backendInterface($dc->id);
         } catch (Exception $e) {
             return '<p class="tl_gerror">'.$GLOBALS['TL_LANG']['MSC']['backendPaymentNotFound'].'</p>';
         }
@@ -346,12 +344,10 @@ class tl_iso_collection extends \Backend
      */
     public function shippingInterface($dc)
     {
-        $objShipping = $this->Database->execute("SELECT p.* FROM tl_iso_shipping_modules m, tl_iso_collection o WHERE m.id=o.shipping_id AND m.id=".$dc->id);
-
         try {
-            $objMethod = \Isotope\Factory\Payment::build($objShipping->type, $objShipping->row());
+            $objShipping = Order::findByPk($dc->id)->getRelated('shipping_id');
 
-            return $objMethod->backendInterface($dc->id);
+            return $objShipping->backendInterface($dc->id);
         } catch (Exception $e) {
             return '<p class="tl_gerror">'.$GLOBALS['TL_LANG']['MSC']['backendShippingNotFound'].'</p>';
         }
