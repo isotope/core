@@ -49,4 +49,93 @@ class TaxClass extends \Model
                 return parent::__get($strKey);
         }
     }
+
+
+    /**
+     * Calculate a price, removing tax if included but not applicable
+     * @param  float
+     * @param  array|null
+     * @return float
+     */
+    public function calculatePrice($fltPrice, $arrAddresses=null)
+    {
+        if (!is_array($arrAddresses))
+        {
+            $arrAddresses = array('billing'=>Isotope::getInstance()->Cart->billing_address, 'shipping'=>Isotope::getInstance()->Cart->shipping_address);
+        }
+
+        $objIncludes = $this->getRelated('includes');
+
+        if ($objIncludes->id > 0 && !$objIncludes->isApplicable($fltPrice, $arrAddresses))
+        {
+            $fltPrice -= $objIncludes->calculateAmountIncludedInPrice($fltPrice);
+        }
+
+        return $fltPrice;
+    }
+
+
+    /**
+     * Calculate a price, remove tax if included
+     * @param  float
+     * @param  array|null
+     * @return float
+     */
+    public function calculateNetPrice($fltPrice, $arrAddresses=null)
+    {
+        if (!is_array($arrAddresses))
+        {
+            $arrAddresses = array('billing'=>Isotope::getInstance()->Cart->billing_address, 'shipping'=>Isotope::getInstance()->Cart->shipping_address);
+        }
+
+        $objIncludes = $this->getRelated('includes');
+
+        if ($objIncludes->id > 0)
+        {
+            $fltPrice -= $objIncludes->calculateAmountIncludedInPrice($fltPrice);
+        }
+
+        return $fltPrice;
+    }
+
+
+    /**
+     * Calculate a price, add all applicable taxes
+     * @param  float
+     * @param  array|null
+     * @return float
+     */
+    public function calculateGrossPrice($fltPrice, $arrAddresses=null)
+    {
+        if (!is_array($arrAddresses))
+        {
+            $arrAddresses = array('billing'=>Isotope::getInstance()->Cart->billing_address, 'shipping'=>Isotope::getInstance()->Cart->shipping_address);
+        }
+
+        $objIncludes = $this->getRelated('includes');
+
+        if ($objIncludes->id > 0 && !$objIncludes->isApplicable($fltPrice, $arrAddresses))
+        {
+            $fltPrice -= $objIncludes->calculateAmountIncludedInPrice($fltPrice);
+        }
+
+        $objRates = $this->getRelated('rates');
+
+        while ($objRates->next())
+        {
+            $objTaxRate = $objRates->current();
+
+            if ($objTaxRate->isApplicable($fltPrice, $arrAddresses))
+            {
+                $fltPrice += $objTaxRate->calculateAmountAddedToPrice($fltPrice);
+
+                if ($objTaxRate->stop)
+                {
+                    break;
+                }
+            }
+        }
+
+        return $fltPrice;
+    }
 }
