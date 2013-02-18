@@ -34,7 +34,7 @@ class Payment extends \Model\Collection
             return false;
         }
 
-        $strClass = $strClass = '\Isotope\Payment\\' . $this->objResult->type;
+        $strClass = $strClass = '\Isotope\Model\Payment\\' . $this->objResult->type;
         $this->arrModels[$this->intIndex + 1] = new $strClass($this->objResult);
 
         return true;
@@ -51,12 +51,12 @@ class Payment extends \Model\Collection
             static::$arrClasses = array();
             $arrNamespaces = \NamespaceClassLoader::getClassLoader()->getPrefixes();
 
-            if (is_array($arrNamespaces['Isotope/Payment'])) {
-                foreach ($arrNamespaces['Isotope/Payment'] as $strPath) {
-                    foreach (scan($strPath . '/Isotope/Payment') as $strFile) {
+            if (is_array($arrNamespaces['Isotope/Model/Payment'])) {
+                foreach ($arrNamespaces['Isotope/Model/Payment'] as $strPath) {
+                    foreach (scan($strPath . '/Isotope/Model/Payment') as $strFile) {
 
                         $strClass = pathinfo($strFile, PATHINFO_FILENAME);
-                        $strNamespacedClass = '\Isotope\Payment\\' . $strClass;
+                        $strNamespacedClass = '\Isotope\Model\Payment\\' . $strClass;
 
                         if (is_a($strNamespacedClass, 'Isotope\Interfaces\IsotopePayment', true)) {
                             static::$arrClasses[$strClass] = $strNamespacedClass;

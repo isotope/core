@@ -10,7 +10,7 @@
  * @license    http://opensource.org/licenses/lgpl-3.0.html LGPL
  */
 
-namespace Isotope\Shipping;
+namespace Isotope\Model;
 
 
 /**
@@ -69,7 +69,7 @@ abstract class Shipping extends \Model
                 break;
 
             case 'available':
-                throw new BadFunctionCallException('Your shipping method does not work with Isotope 2.0');
+                throw new BadFunctionCallException('Your shipping method does not work with Isotope 2.x');
                 break;
 
             case 'price':
@@ -274,7 +274,7 @@ abstract class Shipping extends \Model
      */
     public static function getLabel()
     {
-        return $GLOBALS['TL_LANG']['SHIP'][strtolower(str_replace('Isotope\Shipping\\', '', get_called_class()))];
+        return $GLOBALS['TL_LANG']['SHIP'][strtolower(str_replace('Isotope\Model\Shipping\\', '', get_called_class()))];
     }
 
 
@@ -320,7 +320,7 @@ abstract class Shipping extends \Model
         $objResult = static::postFind($objResult);
 
         if ($arrOptions['return'] == 'Model') {
-            $strClass = '\Isotope\Shipping\\' . $objResult->type;
+            $strClass = '\Isotope\Model\Shipping\\' . $objResult->type;
 
             return new $strClass($objResult);
         } else {

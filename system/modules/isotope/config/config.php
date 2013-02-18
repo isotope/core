@@ -197,8 +197,8 @@ $GLOBALS['TL_MODELS']['tl_iso_config'] = 'Isotope\Model\Config';
 $GLOBALS['TL_MODELS']['tl_iso_addresses'] = 'Isotope\Model\Address';
 $GLOBALS['TL_MODELS']['tl_iso_tax_class'] = 'Isotope\Model\TaxClass';
 $GLOBALS['TL_MODELS']['tl_iso_tax_rate'] = 'Isotope\Model\TaxRate';
-$GLOBALS['TL_MODELS']['tl_iso_payment_modules'] = 'Isotope\Payment\Payment';
-$GLOBALS['TL_MODELS']['tl_iso_shipping_modules'] = 'Isotope\Shipping\Shipping';
+$GLOBALS['TL_MODELS']['tl_iso_payment_modules'] = 'Isotope\Model\Payment';
+$GLOBALS['TL_MODELS']['tl_iso_shipping_modules'] = 'Isotope\Model\Shipping';
 
 
 /**

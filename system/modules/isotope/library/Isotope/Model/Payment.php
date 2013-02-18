@@ -10,7 +10,7 @@
  * @license    http://opensource.org/licenses/lgpl-3.0.html LGPL
  */
 
-namespace Isotope\Payment;
+namespace Isotope\Model;
 
 
 /**
@@ -76,7 +76,7 @@ abstract class Payment extends \Model
                 break;
 
             case 'available':
-                throw new BadFunctionCallException('Your payment method does not work with Isotope 2.0');
+                throw new BadFunctionCallException('Your payment method does not work with Isotope 2.x');
                 break;
 
             case 'price':
@@ -371,7 +371,7 @@ abstract class Payment extends \Model
      */
     public static function getLabel()
     {
-        return $GLOBALS['TL_LANG']['PAY'][strtolower(str_replace('Isotope\Payment\\', '', get_called_class()))];
+        return $GLOBALS['TL_LANG']['PAY'][strtolower(str_replace('Isotope\Model\Payment\\', '', get_called_class()))];
     }
 
 
@@ -417,7 +417,7 @@ abstract class Payment extends \Model
         $objResult = static::postFind($objResult);
 
         if ($arrOptions['return'] == 'Model') {
-            $strClass = '\Isotope\Payment\\' . $objResult->type;
+            $strClass = '\Isotope\Model\Payment\\' . $objResult->type;
 
             return new $strClass($objResult);
         } else {

@@ -34,7 +34,7 @@ class Shipping extends \Model\Collection
             return false;
         }
 
-        $strClass = $strClass = '\Isotope\Shipping\\' . $this->objResult->type;
+        $strClass = $strClass = '\Isotope\Model\Shipping\\' . $this->objResult->type;
         $this->arrModels[$this->intIndex + 1] = new $strClass($this->objResult);
 
         return true;
@@ -51,12 +51,12 @@ class Shipping extends \Model\Collection
             static::$arrClasses = array();
             $arrNamespaces = \NamespaceClassLoader::getClassLoader()->getPrefixes();
 
-            if (is_array($arrNamespaces['Isotope/Shipping'])) {
-                foreach ($arrNamespaces['Isotope/Shipping'] as $strPath) {
-                    foreach (scan($strPath . '/Isotope/Shipping') as $strFile) {
+            if (is_array($arrNamespaces['Isotope/Model/Shipping'])) {
+                foreach ($arrNamespaces['Isotope/Model/Shipping'] as $strPath) {
+                    foreach (scan($strPath . '/Isotope/Model/Shipping') as $strFile) {
 
                         $strClass = pathinfo($strFile, PATHINFO_FILENAME);
-                        $strNamespacedClass = '\Isotope\Shipping\\' . $strClass;
+                        $strNamespacedClass = '\Isotope\Model\Shipping\\' . $strClass;
 
                         if (is_a($strNamespacedClass, 'Isotope\Interfaces\IsotopeShipping', true)) {
                             static::$arrClasses[$strClass] = $strNamespacedClass;

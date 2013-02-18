@@ -10,8 +10,9 @@
  * @license    http://opensource.org/licenses/lgpl-3.0.html LGPL
  */
 
-namespace Isotope\Shipping;
+namespace Isotope\Model\Shipping;
 
+use Isotope\Model\Shipping;
 
 
 /**

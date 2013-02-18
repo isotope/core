@@ -10,9 +10,10 @@
  * @license    http://opensource.org/licenses/lgpl-3.0.html LGPL
  */
 
-namespace Isotope\Payment;
+namespace Isotope\Model\Payment;
 
 use Isotope\Interfaces\IsotopePayment;
+use Isotope\Model\Payment;
 
 
 /**
