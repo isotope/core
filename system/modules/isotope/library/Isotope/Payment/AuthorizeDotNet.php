@@ -701,7 +701,7 @@ $return .= '</div></div>';
      * @access public
      * @return array
      */
-    public function getAllowedCCTypes()
+    public static function getAllowedCCTypes()
     {
         return array('mc', 'visa', 'amex', 'discover', 'jcb', 'diners', 'enroute');
     }

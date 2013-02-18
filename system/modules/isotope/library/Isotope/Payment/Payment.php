@@ -245,16 +245,6 @@ abstract class Payment extends \Frontend
 
 
     /**
-     * Return a list of valid credit card types for this payment module
-     * @return array
-     */
-    public function getAllowedCCTypes()
-    {
-        return array();
-    }
-
-
-    /**
      * Return the checkout review information.
      *
      * Use this to return custom checkout information about this payment module.
@@ -294,7 +284,7 @@ abstract class Payment extends \Frontend
      * @param string
      * @return mixed
      */
-    protected function validateCreditCard($strNumber)
+    protected static function validateCreditCard($strNumber)
     {
         $strNumber = preg_replace('@[^0-9]+@', '', $strNumber);
 
@@ -348,6 +338,16 @@ abstract class Payment extends \Frontend
         }
 
         return false;
+    }
+
+
+    /**
+     * Return a list of valid credit card types for this payment module
+     * @return array
+     */
+    public static function getAllowedCCTypes()
+    {
+        return array();
     }
 
 

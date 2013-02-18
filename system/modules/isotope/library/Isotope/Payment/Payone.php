@@ -153,13 +153,4 @@ class Payone extends Payment implements IsotopePayment
 
         return $objTemplate->parse();
     }
-
-
-    /**
-     * Return a list of valid credit card types for this payment module
-     */
-    public function getAllowedCCTypes()
-    {
-        return array();
-    }
 }

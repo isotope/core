@@ -288,7 +288,7 @@ class Isotope extends \Controller
         }
         else
         {
-            $fltPrice = $this->Isotope->calculatePrice((float) $strPrice, $objSource, 'price', $intTaxClass);;
+            $fltPrice = $this->Isotope->calculatePrice((float) $strPrice, $objSource, 'price', $intTaxClass);
         }
 
         $arrSurcharge = array
