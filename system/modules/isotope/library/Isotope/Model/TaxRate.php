@@ -168,24 +168,67 @@ class TaxRate extends \Model
 
 
     /**
-     * Calculate tax amount
-     * @param  float
-     * @return float
+     * Return true if the tax rate is a percentage (not fixed) amount
+     * @return bool
      */
-    public function calculateTaxAmount($fltPrice)
+    public function isPercentage()
     {
         $arrTaxRate = $this->rate;
 
+        return ($arrTaxRate['unit'] == '%');
+    }
+
+
+    /**
+     * Get amount of tax rate
+     * @return float
+     */
+    public function getAmount()
+    {
+        $arrTaxRate = $this->rate;
+
+        return (float) $arrTaxRate['value'];
+    }
+
+
+    /**
+     * Calculate tax amount when included in a price
+     * @param  float
+     * @return float
+     */
+    public function calculateAmountIncludedInPrice($fltPrice)
+    {
         // Percentual amount. Final price / (1 + (tax / 100)
-        if ($arrTaxRate['unit'] != '')
+        if ($this->isPercentage())
         {
-            return $fltPrice - ($fltPrice / (1 + (floatval($arrTaxRate['value']) / 100)));
+            return $fltPrice - ($fltPrice / (1 + ($this->getAmount() / 100)));
         }
 
         // Full amount
         else
         {
-            return floatval($arrTaxRate['value']);
+            return $this->getAmount();
+        }
+    }
+
+
+    /**
+     * Calculate tax amount when added to a price
+     * @param  float
+     * @return float
+     */
+    public function calculateAmountAddedToPrice($fltPrice)
+    {
+        // Final price * (1 + (tax / 100)
+        if ($this->isPercentage())
+        {
+            return ($fltPrice * (1 + ($this->getAmount() / 100))) - $fltPrice;
+        }
+
+        // Full amount
+        else
+        {
+            return $this->getAmount();
         }
     }
 }

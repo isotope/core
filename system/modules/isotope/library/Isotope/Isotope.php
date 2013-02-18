@@ -382,7 +382,7 @@ class Isotope extends \Controller
 
         if ($objIncludes->id > 0)
         {
-            $fltTax = $objIncludes->calculateTaxAmount($fltPrice);
+            $fltTax = $objIncludes->calculateAmountIncludedInPrice($fltPrice);
 
             if (!$objIncludes->isApplicable($fltPrice, $arrAddresses))
             {
@@ -418,7 +418,7 @@ class Isotope extends \Controller
 
             if ($objTaxRate->isApplicable($fltPrice, $arrAddresses))
             {
-                $fltTax = $objTaxRate->calculateTaxAmount($fltPrice);
+                $fltTax = $objTaxRate->calculateAmountAddedToPrice($fltPrice);
                 $arrTaxRate = $objTaxRate->rate;
 
                 $arrTaxes[$objTaxRate->id] = array
