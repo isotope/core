@@ -10,29 +10,34 @@
  * @license    http://opensource.org/licenses/lgpl-3.0.html LGPL
  */
 
-namespace Isotope\Factory;
+namespace Isotope\Model\Collection;
 
 
-class Payment
+class Shipping extends \Model\Collection
 {
 
     /**
-     * Cache of payment method classes
+     * Cache of shipping method classes
      * @var array
      */
     private static $arrClasses;
 
     /**
-     * Build a payment method based on row data
-     * @param  string
-     * @param  array
-     * @return Isotope\Interface\IsotopePayment
+     * Fetch the next result row and create the model
+     *
+     * @return boolean True if there was another row
      */
-    public static function build($strClass, array $arrData=array())
+    protected function fetchNext()
     {
-        $strClass = '\Isotope\Payment\\' . $strClass;
+        if ($this->objResult->next() == false)
+        {
+            return false;
+        }
 
-        return new $strClass($arrData);
+        $strClass = $strClass = '\Isotope\Shipping\\' . $this->objResult->type;
+        $this->arrModels[$this->intIndex + 1] = new $strClass($this->objResult);
+
+        return true;
     }
 
     /**
@@ -46,14 +51,14 @@ class Payment
             static::$arrClasses = array();
             $arrNamespaces = \NamespaceClassLoader::getClassLoader()->getPrefixes();
 
-            if (is_array($arrNamespaces['Isotope/Payment'])) {
-                foreach ($arrNamespaces['Isotope/Payment'] as $strPath) {
-                    foreach (scan($strPath . '/Isotope/Payment') as $strFile) {
+            if (is_array($arrNamespaces['Isotope/Shipping'])) {
+                foreach ($arrNamespaces['Isotope/Shipping'] as $strPath) {
+                    foreach (scan($strPath . '/Isotope/Shipping') as $strFile) {
 
                         $strClass = pathinfo($strFile, PATHINFO_FILENAME);
-                        $strNamespacedClass = '\Isotope\Payment\\' . $strClass;
+                        $strNamespacedClass = '\Isotope\Shipping\\' . $strClass;
 
-                        if (is_a($strNamespacedClass, 'Isotope\Interfaces\IsotopePayment', true)) {
+                        if (is_a($strNamespacedClass, 'Isotope\Interfaces\IsotopeShipping', true)) {
                             static::$arrClasses[$strClass] = $strNamespacedClass;
                         }
                     }
@@ -65,7 +70,7 @@ class Payment
     }
 
     /**
-     * Return labels for all payment methods
+     * Return labels for all shipping methods
      * @return array
      */
     public static function getLabels()

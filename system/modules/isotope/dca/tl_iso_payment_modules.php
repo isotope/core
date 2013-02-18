@@ -154,8 +154,8 @@ $GLOBALS['TL_DCA']['tl_iso_payment_modules'] = array
             'filter'                  => true,
             'inputType'               => 'select',
             'default'                  => 'Cash',
-            'options'                 => array_keys(\Isotope\Factory\Payment::getClasses()),
-            'reference'               => \Isotope\Factory\Payment::getLabels(),
+            'options'                 => array_keys(\Isotope\Model\Collection\Payment::getClasses()),
+            'reference'               => \Isotope\Model\Collection\Payment::getLabels(),
             'eval'                    => array('helpwizard'=>true, 'submitOnChange'=>true, 'chosen'=>true, 'tl_class'=>'w50')
         ),
         'note' => array
