@@ -21,20 +21,20 @@ namespace Isotope\Payment;
  * @author     Andreas Schempp <andreas.schempp@terminal42.ch>
  * @author     Fred Bliss <fred.bliss@intelligentspark.com>
  */
-abstract class Payment extends \Frontend
+abstract class Payment extends \Model
 {
+
+    /**
+     * Table name
+     * @var string
+     */
+    protected static $strTable = 'tl_iso_payment_modules';
 
     /**
      * Template
      * @var string
      */
     protected $strTemplate;
-
-    /**
-     * Current record
-     * @var array
-     */
-    protected $arrData = array();
 
     /**
      * Isotope object
@@ -47,31 +47,18 @@ abstract class Payment extends \Frontend
      * Initialize the object
      * @param array
      */
-    public function __construct($arrRow)
+    public function __construct(\Database\Result $objResult=null)
     {
-        parent::__construct();
+        parent::__construct($objResult);
 
         $this->Isotope = \System::importStatic('Isotope\Isotope');
 
-        $arrRow['allowed_cc_types'] = deserialize($arrRow['allowed_cc_types']);
+        $this->arrData['allowed_cc_types'] = deserialize($this->arrData['allowed_cc_types']);
 
-        if (is_array($arrRow['allowed_cc_types']))
+        if (is_array($this->arrData['allowed_cc_types']))
         {
-            $arrRow['allowed_cc_types'] = array_intersect($this->getAllowedCCTypes(), $arrRow['allowed_cc_types']);
+            $this->arrData['allowed_cc_types'] = array_intersect(static::getAllowedCCTypes(), $this->arrData['allowed_cc_types']);
         }
-
-        $this->arrData = $arrRow;
-    }
-
-
-    /**
-     * Set an object property
-     * @param string
-     * @param mixed
-     */
-    public function __set($strKey, $varValue)
-    {
-        $this->arrData[$strKey] = $varValue;
     }
 
 
@@ -89,62 +76,7 @@ abstract class Payment extends \Frontend
                 break;
 
             case 'available':
-                if (!$this->enabled && BE_USER_LOGGED_IN !== true)
-                {
-                    return false;
-                }
-
-                if (($this->guests && FE_USER_LOGGED_IN === true) || ($this->protected && FE_USER_LOGGED_IN !== true))
-                {
-                    return false;
-                }
-
-                if ($this->protected)
-                {
-                    $this->import('FrontendUser', 'User');
-                    $arrGroups = deserialize($this->groups);
-
-                    if (!is_array($arrGroups) || empty($arrGroups) || !count(array_intersect($arrGroups, $this->User->groups))) // Can't use empty() because its an object property (using __get)
-                    {
-                        return false;
-                    }
-                }
-
-                if (($this->minimum_total > 0 && $this->minimum_total > $this->Isotope->Cart->subTotal) || ($this->maximum_total > 0 && $this->maximum_total < $this->Isotope->Cart->subTotal))
-                {
-                    return false;
-                }
-
-                $arrCountries = deserialize($this->countries);
-
-                if(is_array($arrCountries) && !empty($arrCountries) && !in_array($this->Isotope->Cart->billingAddress->country, $arrCountries))
-                {
-                    return false;
-                }
-
-                $arrShippings = deserialize($this->shipping_modules);
-
-                if (is_array($arrShippings) && !empty($arrShippings) && ((!$this->Isotope->Cart->hasShipping && !in_array(-1, $arrShippings)) || ($this->Isotope->Cart->hasShipping && !in_array($this->Isotope->Cart->Shipping->id, $arrShippings))))
-                {
-                    return false;
-                }
-
-                $arrTypes = deserialize($this->product_types);
-
-                if (is_array($arrTypes) && !empty($arrTypes))
-                {
-                    $arrProducts = $this->Isotope->Cart->getProducts();
-
-                    foreach ($arrProducts as $objProduct)
-                    {
-                        if (!in_array($objProduct->type, $arrTypes))
-                        {
-                            return false;
-                        }
-                    }
-                }
-
-                return true;
+                throw new BadFunctionCallException('Your payment method does not work with Isotope 2.0');
                 break;
 
             case 'price':
@@ -167,20 +99,75 @@ abstract class Payment extends \Frontend
             case 'surcharge':
                 return substr($this->arrData['price'], -1) == '%' ? $this->arrData['price'] : '';
                 break;
-        }
 
-        return $this->arrData[$strKey];
+            default:
+                return parent::__get($strKey);
+        }
     }
 
 
     /**
-     * Check whether a property is set
-     * @param string
-     * @return boolean
+     * Return true or false depending on availability of the payment method
+     * @return bool
      */
-    public function __isset($strKey)
+    public function isAvailable()
     {
-        return isset($this->arrData[$strKey]);
+        if (!$this->enabled && BE_USER_LOGGED_IN !== true)
+        {
+            return false;
+        }
+
+        if (($this->guests && FE_USER_LOGGED_IN === true) || ($this->protected && FE_USER_LOGGED_IN !== true))
+        {
+            return false;
+        }
+
+        if ($this->protected)
+        {
+            $this->import('FrontendUser', 'User');
+            $arrGroups = deserialize($this->groups);
+
+            if (!is_array($arrGroups) || empty($arrGroups) || !count(array_intersect($arrGroups, $this->User->groups))) // Can't use empty() because its an object property (using __get)
+            {
+                return false;
+            }
+        }
+
+        if (($this->minimum_total > 0 && $this->minimum_total > $this->Isotope->Cart->subTotal) || ($this->maximum_total > 0 && $this->maximum_total < $this->Isotope->Cart->subTotal))
+        {
+            return false;
+        }
+
+        $arrCountries = deserialize($this->countries);
+
+        if(is_array($arrCountries) && !empty($arrCountries) && !in_array($this->Isotope->Cart->billingAddress->country, $arrCountries))
+        {
+            return false;
+        }
+
+        $arrShippings = deserialize($this->shipping_modules);
+
+        if (is_array($arrShippings) && !empty($arrShippings) && ((!$this->Isotope->Cart->hasShipping && !in_array(-1, $arrShippings)) || ($this->Isotope->Cart->hasShipping && !in_array($this->Isotope->Cart->Shipping->id, $arrShippings))))
+        {
+            return false;
+        }
+
+        $arrTypes = deserialize($this->product_types);
+
+        if (is_array($arrTypes) && !empty($arrTypes))
+        {
+            $arrProducts = $this->Isotope->Cart->getProducts();
+
+            foreach ($arrProducts as $objProduct)
+            {
+                if (!in_array($objProduct->type, $arrTypes))
+                {
+                    return false;
+                }
+            }
+        }
+
+        return true;
     }
 
 
@@ -385,5 +372,57 @@ abstract class Payment extends \Frontend
     public static function getLabel()
     {
         return $GLOBALS['TL_LANG']['PAY'][strtolower(str_replace('Isotope\Payment\\', '', get_called_class()))];
+    }
+
+
+    /**
+     * Return a model or collection based on the database result type
+     */
+    protected static function find(array $arrOptions)
+    {
+        if (static::$strTable == '')
+        {
+            return null;
+        }
+
+        $arrOptions['table'] = static::$strTable;
+        $strQuery = \Model\QueryBuilder::find($arrOptions);
+
+        $objStatement = \Database::getInstance()->prepare($strQuery);
+
+        // Defaults for limit and offset
+        if (!isset($arrOptions['limit']))
+        {
+            $arrOptions['limit'] = 0;
+        }
+        if (!isset($arrOptions['offset']))
+        {
+            $arrOptions['offset'] = 0;
+        }
+
+        // Limit
+        if ($arrOptions['limit'] > 0 || $arrOptions['offset'] > 0)
+        {
+            $objStatement->limit($arrOptions['limit'], $arrOptions['offset']);
+        }
+
+        $objStatement = static::preFind($objStatement);
+        $objResult = $objStatement->execute($arrOptions['value']);
+
+        if ($objResult->numRows < 1)
+        {
+            return null;
+        }
+
+        $objResult = static::postFind($objResult);
+
+        if ($arrOptions['return'] == 'Model') {
+            $strClass = '\Isotope\Payment\\' . $objResult->type;
+
+            return new $strClass($objResult);
+        } else {
+
+            return new \Isotope\Model\Collection\Payment($objResult, static::$strTable);
+        }
     }
 }
