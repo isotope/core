@@ -253,9 +253,9 @@ class Isotope extends \Controller
         }
 
         // Possibly add/subtract tax
-        if ($intTaxClass > 0)
+        if (($objTaxClass = TaxClass::findByPk($intTaxClass)) !== null)
         {
-            $fltPrice = $this->calculateTax($intTaxClass, $fltPrice, false);
+            $fltPrice = $objTaxClass->calculatePrice($fltPrice);
         }
 
         return $this->roundPrice($fltPrice);
@@ -377,6 +377,11 @@ class Isotope extends \Controller
             }
         }
 
+        if (!$blnAdd)
+        {
+            return $objTaxClass->calculatePrice($fltPrice, $arrAddresses);
+        }
+
         $arrTaxes = array();
         $objIncludes = $objTaxClass->getRelated('includes');
 
@@ -403,11 +408,6 @@ class Isotope extends \Controller
                     'add'            => false,
                 );
             }
-        }
-
-        if (!$blnAdd)
-        {
-            return $fltPrice;
         }
 
         $objRates = $objTaxClass->getRelated('rates');
