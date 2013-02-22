@@ -2038,8 +2038,7 @@ $(window).addEvents({
         // Shorten label it if it is too long
         if ($GLOBALS['TL_DCA'][$table]['list']['label']['maxCharacters'] > 0 && $GLOBALS['TL_DCA'][$table]['list']['label']['maxCharacters'] < strlen(strip_tags($label)))
         {
-            $this->import('String');
-            $label = trim($this->String->substrHtml($label, $GLOBALS['TL_DCA'][$table]['list']['label']['maxCharacters'])) . ' …';
+            $label = trim(\String::substrHtml($label, $GLOBALS['TL_DCA'][$table]['list']['label']['maxCharacters'])) . ' …';
         }
 
         $label = preg_replace('/\(\) ?|\[\] ?|\{\} ?|<> ?/i', '', $label);

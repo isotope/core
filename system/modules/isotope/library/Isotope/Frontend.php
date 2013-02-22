@@ -1619,8 +1619,7 @@ $endScript";
 
                             if (strncasecmp($href, 'mailto:', 7) === 0)
                             {
-                                $this->import('String');
-                                $href = $this->String->encodeEmail($href);
+                                $href = \String::encodeEmail($href);
                             }
                             break;
 

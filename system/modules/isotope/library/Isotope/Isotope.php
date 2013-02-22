@@ -113,7 +113,7 @@ class Isotope extends \Controller
                 self::$objInstance->Cart = Cart::getDefaultForStore((int) self::$objInstance->Config->id, (int) self::$objInstance->Config->store_id);
 
                 // Initialize request cache for product list filters
-                if (self::$objInstance->Input->get('isorc') != '')
+                if (\Input::get('isorc') != '')
                 {
                     $objRequestCache = self::$objInstance->Database->prepare("SELECT * FROM tl_iso_requestcache WHERE id=? AND store_id=?")->execute(self::$objInstance->Input->get('isorc'), self::$objInstance->Config->store_id);
 
@@ -233,8 +233,8 @@ class Isotope extends \Controller
         {
             foreach ($GLOBALS['ISO_HOOKS']['calculatePrice'] as $callback)
             {
-                $this->import($callback[0]);
-                $fltPrice = $this->$callback[0]->$callback[1]($fltPrice, $objSource, $strField, $intTaxClass);
+                $objCallback = \System::importStatic($callback[0]);
+                $fltPrice = $objCallback->$callback[1]($fltPrice, $objSource, $strField, $intTaxClass);
             }
         }
 
@@ -566,7 +566,7 @@ class Isotope extends \Controller
         }
         catch (Exception $e)
         {
-            $this->log('Isotope email error: '.$e->getMessage(), __METHOD__, TL_ERROR);
+            \System::log('Isotope email error: '.$e->getMessage(), __METHOD__, TL_ERROR);
         }
     }
 
@@ -780,8 +780,6 @@ class Isotope extends \Controller
             $language = $GLOBALS['TL_LANGUAGE'];
         }
 
-        $this->import('String');
-
         if (!is_array($GLOBALS['TL_LANG']['TBL'][$language]))
         {
             $GLOBALS['TL_LANG']['TBL'][$language] = array();
@@ -789,11 +787,11 @@ class Isotope extends \Controller
 
             while ($objLabels->next())
             {
-                $GLOBALS['TL_LANG']['TBL'][$language][$this->String->decodeEntities($objLabels->label)] = $objLabels->replacement;
+                $GLOBALS['TL_LANG']['TBL'][$language][\String::decodeEntities($objLabels->label)] = $objLabels->replacement;
             }
         }
 
-        $label = $this->String->decodeEntities($label);
+        $label = \String::decodeEntities($label);
 
         return $GLOBALS['TL_LANG']['TBL'][$language][$label] ? $GLOBALS['TL_LANG']['TBL'][$language][$label] : $label;
     }

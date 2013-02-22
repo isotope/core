@@ -1157,8 +1157,7 @@ Isotope.makePageViewSortable("ul_' . CURRENT_ID . '");
 
                 if ($GLOBALS['TL_DCA'][$this->strTable]['list']['label']['maxCharacters'] > 0 && $GLOBALS['TL_DCA'][$this->strTable]['list']['label']['maxCharacters'] < strlen(strip_tags($label)))
                 {
-                    $this->import('String');
-                    $label = trim($this->String->substrHtml($label, $GLOBALS['TL_DCA'][$this->strTable]['list']['label']['maxCharacters'])) . ' …';
+                    $label = trim(\String::substrHtml($label, $GLOBALS['TL_DCA'][$this->strTable]['list']['label']['maxCharacters'])) . ' …';
                 }
 
                 // Remove empty brackets (), [], {}, <> and empty tags from the label
