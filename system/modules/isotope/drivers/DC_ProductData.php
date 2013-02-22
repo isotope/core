@@ -434,7 +434,7 @@ class DC_ProductData extends \DC_Table
         $this->objActiveRecord = $objRow;
 
         // Load and/or change language
-        $arrActiveModules = $this->Config->getActiveModules();
+        $arrActiveModules = \Config::getInstance()->getActiveModules();
 
         if (in_array('isotope_multilingual', $arrActiveModules))
         {

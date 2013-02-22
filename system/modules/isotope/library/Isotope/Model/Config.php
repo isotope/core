@@ -77,15 +77,4 @@ class Config extends \Model
                 return deserialize(parent::__get($strKey));
         }
     }
-
-
-    /**
-     * Transparently map calls to core config class, because Isotope->Config has the same name
-     * @param string
-     * @param array
-     */
-    public function __call($name, $arguments)
-    {
-        return call_user_func_array(array($this->arrObjects['Config'], $name), $arguments);
-    }
 }

@@ -81,7 +81,7 @@ class ModuleIsotopeTranslation extends \BackendModule
 
         // get modules
         $arrModules = array();
-        foreach( $this->Config->getActiveModules() as $module )
+        foreach( \Config::getInstance()->getActiveModules() as $module )
         {
             if (strpos($module, 'isotope') === false)
                 continue;
