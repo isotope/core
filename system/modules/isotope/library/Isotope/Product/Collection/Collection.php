@@ -97,16 +97,14 @@ abstract class Collection extends \Model
     {
         parent::__construct($objResult);
 
-        if ($objResult !== null)
-        {
+        if ($objResult !== null) {
             $this->arrSettings = deserialize($this->arrData['settings'], true);
         }
 
         $this->arrData['type'] = substr(get_called_class(), strrpos(get_called_class(), '\\')+1);
 
         // Do not use __destruct, because Database object might be destructed first (see http://github.com/contao/core/issues/2236)
-        if (!$this->blnLocked)
-        {
+        if (!$this->blnLocked) {
             register_shutdown_function(array($this, 'saveDatabase'));
         }
 
@@ -132,12 +130,12 @@ abstract class Collection extends \Model
     {
         if (!isset($this->arrCache[$strKey]))
         {
-            if ($this->blnLocked && array_key_exists($strKey, $this->arrData))
-            {
+            if ($this->blnLocked && array_key_exists($strKey, $this->arrData)) {
+
                 return deserialize($this->arrData[$strKey]);
-            }
-            elseif ($this->blnLocked && array_key_exists($strKey, $this->arrSettings))
-            {
+
+            } elseif ($this->blnLocked && array_key_exists($strKey, $this->arrSettings)) {
+
                 return deserialize($this->arrSettings[$strKey]);
             }
 
@@ -173,10 +171,9 @@ abstract class Collection extends \Model
                     $this->arrCache[$strKey] = false;
                     $arrProducts = $this->getProducts();
 
-                    foreach ($arrProducts as $objProduct)
-                    {
-                        if (!$objProduct->shipping_exempt)
-                        {
+                    foreach ($arrProducts as $objProduct) {
+
+                        if (!$objProduct->shipping_exempt) {
                             $this->arrCache[$strKey] = true;
                         }
                     }
@@ -205,6 +202,7 @@ abstract class Collection extends \Model
                     $arrProducts = $this->getProducts();
 
                     foreach ($arrProducts as $objProduct) {
+
                         $varPrice = $objProduct->total_price;
 
                         if ($varPrice !== null) {
@@ -246,13 +244,14 @@ abstract class Collection extends \Model
                     break;
 
                 default:
-                    if (array_key_exists($strKey, $this->arrData))
-                    {
+                    if (array_key_exists($strKey, $this->arrData)) {
+
                         return deserialize($this->arrData[$strKey]);
-                    }
-                    else
-                    {
+
+                    } else {
+
                         return deserialize($this->arrSettings[$strKey]);
+
                     }
                     break;
             }
@@ -297,12 +296,9 @@ abstract class Collection extends \Model
         // Everything else goes into arrSettings and is serialized
         else
         {
-            if ($varValue === null)
-            {
+            if ($varValue === null) {
                 unset($this->arrSettings[$strKey]);
-            }
-            else
-            {
+            } else {
                 $this->arrSettings[$strKey] = $varValue;
             }
 
@@ -318,8 +314,8 @@ abstract class Collection extends \Model
      */
     public function __isset($strKey)
     {
-        if (isset($this->arrData[$strKey]) || isset($this->arrSettings[$strKey]))
-        {
+        if (isset($this->arrData[$strKey]) || isset($this->arrSettings[$strKey])) {
+
             return true;
         }
 
@@ -347,8 +343,7 @@ abstract class Collection extends \Model
      */
     public function save($blnForceInsert=false)
     {
-        if ($this->blnModified)
-        {
+        if ($this->blnModified) {
             $this->arrData['tstamp'] = time();
             $this->arrData['settings'] = serialize($this->arrSettings);
         }
@@ -373,8 +368,7 @@ abstract class Collection extends \Model
             }
         }
 
-        if ($this->blnModified || $blnForceInsert)
-        {
+        if ($this->blnModified || $blnForceInsert) {
             parent::save();
         }
 
@@ -405,8 +399,7 @@ abstract class Collection extends \Model
 
         $intAffectedRows = parent::delete();
 
-        if ($intAffectedRows > 0)
-        {
+        if ($intAffectedRows > 0) {
             \Database::getInstance()->prepare("DELETE FROM " . static::$ctable . " WHERE pid=?")->execute($this->id);
         }
 
@@ -424,8 +417,7 @@ abstract class Collection extends \Model
     {
         $arrProducts = $this->getProducts();
 
-        foreach ($arrProducts as $objProduct)
-        {
+        foreach ($arrProducts as $objProduct) {
             $this->deleteProduct($objProduct);
         }
     }
@@ -535,8 +527,7 @@ abstract class Collection extends \Model
             }
         }
 
-        if ($intQuantity == 0)
-        {
+        if ($intQuantity == 0) {
             return false;
         }
 
@@ -546,8 +537,7 @@ abstract class Collection extends \Model
         $objDatabase = \Database::getInstance();
 
         // Make sure collection is in DB before adding product
-        if (!$this->blnRecordExists)
-        {
+        if (!$this->blnRecordExists) {
             $this->save();
         }
 
@@ -595,8 +585,7 @@ abstract class Collection extends \Model
      */
     public function updateProduct(IsotopeProduct $objProduct, $arrSet)
     {
-        if (!$objProduct->collection_id)
-        {
+        if (!$objProduct->collection_id) {
             return false;
         }
 
@@ -616,8 +605,7 @@ abstract class Collection extends \Model
         }
 
         // Quantity set to 0, delete product
-        if (isset($arrSet['quantity']) && $arrSet['quantity'] == 0)
-        {
+        if (isset($arrSet['quantity']) && $arrSet['quantity'] == 0) {
             return $this->deleteProduct($objProduct);
         }
 
@@ -629,8 +617,7 @@ abstract class Collection extends \Model
                                                    ->executeUncached()
                                                    ->affectedRows;
 
-        if ($intAffectedRows > 0)
-        {
+        if ($intAffectedRows > 0) {
             $this->modified = true;
 
             return true;
@@ -648,8 +635,7 @@ abstract class Collection extends \Model
      */
     public function deleteProduct(IsotopeProduct $objProduct)
     {
-        if (!$objProduct->collection_id)
-        {
+        if (!$objProduct->collection_id) {
             return false;
         }
 
@@ -695,7 +681,7 @@ abstract class Collection extends \Model
 
         $time = time();
         $arrIds = array();
-         $objOldItems = $objDatabase->execute("SELECT * FROM {$objCollection->ctable} WHERE pid={$objCollection->id}");
+        $objOldItems = $objDatabase->execute("SELECT * FROM {$objCollection->ctable} WHERE pid={$objCollection->id}");
 
         while ($objOldItems->next())
         {
