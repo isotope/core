@@ -15,6 +15,8 @@
 
 namespace Isotope;
 
+use Isotope\Model\Payment;
+
 
 /**
  * Class tl_iso_payment_modules
