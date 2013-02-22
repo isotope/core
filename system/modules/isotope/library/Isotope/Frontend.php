@@ -60,7 +60,7 @@ class Frontend extends \Frontend
      */
     public function getShippingAndPaymentSurcharges($arrSurcharges)
     {
-        if ($this->Isotope->Cart->hasShipping)
+        if ($objCollection->hasShipping())
         {
             $arrSurcharge = $this->Isotope->Cart->Shipping->getSurcharge($this->Isotope->Cart);
 
@@ -70,7 +70,7 @@ class Frontend extends \Frontend
             }
         }
 
-        if ($this->Isotope->Cart->hasPayment)
+        if ($objCollection->hasPayment())
         {
             $arrSurcharge = $this->Isotope->Cart->Payment->getSurcharge($this->Isotope->Cart);
 

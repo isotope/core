@@ -160,14 +160,6 @@ abstract class ProductCollection extends \Model
                     return $this->$strKey;
                     break;
 
-                case 'hasPayment':
-                    return (is_object($this->Payment) ? true : false);
-                    break;
-
-                case 'hasShipping':
-                    return (is_object($this->Shipping) ? true : false);
-                    break;
-
                 case 'requiresShipping':
                     $this->arrCache[$strKey] = false;
                     $arrProducts = $this->getProducts();
@@ -321,6 +313,34 @@ abstract class ProductCollection extends \Model
         }
 
         return false;
+    }
+
+
+    /**
+     * Return true if collection is locked
+     * @return bool
+     */
+    public function isLocked()
+    {
+        return $this->blnLocked;
+    }
+
+    /**
+     * Return boolean wether collection has payment
+     * @return bool
+     */
+    public function hasPayment()
+    {
+        return (is_object($this->Payment) ? true : false);
+    }
+
+    /**
+     * Return boolean wether collection has shipping
+     * @return bool
+     */
+    public function hasShipping()
+    {
+        return (is_object($this->Shipping) ? true : false);
     }
 
 

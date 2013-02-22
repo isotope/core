@@ -280,7 +280,7 @@ class Checkout extends Module
         if ($this->strCurrentStep == 'process')
         {
             $this->writeOrder();
-            $strBuffer = $this->Isotope->Cart->hasPayment ? $this->Isotope->Cart->Payment->checkoutForm($this) : false;
+            $strBuffer = $this->Isotope->Cart->hasPayment() ? $this->Isotope->Cart->Payment->checkoutForm($this) : false;
 
             if ($strBuffer === false)
             {
@@ -293,7 +293,7 @@ class Checkout extends Module
 
         if ($this->strCurrentStep == 'complete')
         {
-            $strBuffer = $this->Isotope->Cart->hasPayment ? $this->Isotope->Cart->Payment->processPayment() : true;
+            $strBuffer = $this->Isotope->Cart->hasPayment() ? $this->Isotope->Cart->Payment->processPayment() : true;
 
             if ($strBuffer === true)
             {
@@ -552,7 +552,7 @@ class Checkout extends Module
     {
         if ($blnReview)
         {
-            if (!$this->Isotope->Cart->hasShipping)
+            if (!$this->Isotope->Cart->hasShipping())
             {
                 return false;
             }
@@ -628,13 +628,13 @@ class Checkout extends Module
 
         $objTemplate = new \Isotope\Template('iso_checkout_shipping_method');
 
-        if (!$this->Isotope->Cart->hasShipping && !strlen($_SESSION['CHECKOUT_DATA']['shipping']['module']) && count($arrModules) == 1) {
+        if (!$this->Isotope->Cart->hasShipping() && !strlen($_SESSION['CHECKOUT_DATA']['shipping']['module']) && count($arrModules) == 1) {
 
             $this->Isotope->Cart->Shipping = $objLastModule;
             $_SESSION['CHECKOUT_DATA']['shipping']['module'] = $this->Isotope->Cart->Shipping->id;
             $arrModules[0]['checked'] = ' checked="checked"';
 
-        } elseif (!$this->Isotope->Cart->hasShipping) {
+        } elseif (!$this->Isotope->Cart->hasShipping()) {
 
             if (\Input::post('FORM_SUBMIT') != '') {
                 $objTemplate->error = $GLOBALS['TL_LANG']['MSC']['shipping_method_missing'];
@@ -671,7 +671,7 @@ class Checkout extends Module
     protected function getPaymentModulesInterface($blnReview=false)
     {
         if ($blnReview) {
-            if (!$this->Isotope->Cart->hasPayment) {
+            if (!$this->Isotope->Cart->hasPayment()) {
                 return false;
             }
 
@@ -744,13 +744,13 @@ class Checkout extends Module
 
         $objTemplate = new \Isotope\Template('iso_checkout_payment_method');
 
-        if (!$this->Isotope->Cart->hasPayment && !strlen($_SESSION['CHECKOUT_DATA']['payment']['module']) && count($arrModules) == 1) {
+        if (!$this->Isotope->Cart->hasPayment() && !strlen($_SESSION['CHECKOUT_DATA']['payment']['module']) && count($arrModules) == 1) {
 
             $this->Isotope->Cart->Payment = $objLastModule;
             $_SESSION['CHECKOUT_DATA']['payment']['module'] = $this->Isotope->Cart->Payment->id;
             $arrModules[0]['checked'] = ' checked="checked"';
 
-        } elseif (!$this->Isotope->Cart->hasPayment) {
+        } elseif (!$this->Isotope->Cart->hasPayment()) {
 
             if (\Input::post('FORM_SUBMIT') != '') {
                 $objTemplate->error = $GLOBALS['TL_LANG']['MSC']['payment_method_missing'];
@@ -984,8 +984,8 @@ class Checkout extends Module
         $objOrder->pid                  = (FE_USER_LOGGED_IN === true ? $this->User->id : 0);
         $objOrder->date                 = time();
         $objOrder->config_id            = (int) $this->Isotope->Config->id;
-        $objOrder->shipping_id          = ($this->Isotope->Cart->hasShipping ? $this->Isotope->Cart->Shipping->id : 0);
-        $objOrder->payment_id           = ($this->Isotope->Cart->hasPayment ? $this->Isotope->Cart->Payment->id : 0);
+        $objOrder->shipping_id          = ($this->Isotope->Cart->hasShipping() ? $this->Isotope->Cart->Shipping->id : 0);
+        $objOrder->payment_id           = ($this->Isotope->Cart->hasPayment() ? $this->Isotope->Cart->Payment->id : 0);
         $objOrder->subTotal             = $this->Isotope->Cart->subTotal;
         $objOrder->grandTotal           = $this->Isotope->Cart->grandTotal;
         $objOrder->surcharges           = $this->Isotope->Cart->getSurcharges();
