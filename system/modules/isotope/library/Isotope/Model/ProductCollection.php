@@ -10,10 +10,11 @@
  * @license    http://opensource.org/licenses/lgpl-3.0.html LGPL
  */
 
-namespace Isotope\Product\Collection;
+namespace Isotope\Model;
 
 use Isotope\Isotope;
 use Isotope\Interfaces\IsotopeProduct;
+use Isotope\Interfaces\IsotopeProductCollection;
 use Isotope\Product\Standard as StandardProduct;
 
 
@@ -26,7 +27,7 @@ use Isotope\Product\Standard as StandardProduct;
  * @author     Fred Bliss <fred.bliss@intelligentspark.com>
  * @author     Yanick Witschi <yanick.witschi@terminal42.ch>
  */
-abstract class Collection extends \Model
+abstract class ProductCollection extends \Model
 {
 
     /**
@@ -667,7 +668,7 @@ abstract class Collection extends \Model
      * @param boolean
      * @return array
      */
-    public function transferFromCollection(Collection $objCollection, $blnDuplicate=true)
+    public function transferFromCollection(IsotopeProductCollection $objCollection, $blnDuplicate=true)
     {
         if (!$this->blnRecordExists)
         {

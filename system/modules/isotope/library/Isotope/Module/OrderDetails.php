@@ -13,7 +13,7 @@
 namespace Isotope\Module;
 
 use Isotope\Isotope;
-use Isotope\Product\Collection\Order;
+use Isotope\Model\ProductCollection\Order;
 
 
 /**

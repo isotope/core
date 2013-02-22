@@ -17,7 +17,7 @@
 namespace Isotope;
 
 use Isotope\Model\Address;
-use Isotope\Product\Collection\Order;
+use Isotope\Model\ProductCollection\Order;
 
 
 /**

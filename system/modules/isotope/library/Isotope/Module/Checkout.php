@@ -15,7 +15,7 @@ namespace Isotope\Module;
 use Isotope\Model\Address;
 use Isotope\Model\Payment;
 use Isotope\Model\Shipping;
-use Isotope\Product\Collection\Order;
+use Isotope\Model\ProductCollection\Order;
 
 
 /**

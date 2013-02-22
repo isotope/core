@@ -10,12 +10,13 @@
  * @license    http://opensource.org/licenses/lgpl-3.0.html LGPL
  */
 
-namespace Isotope\Product\Collection;
+namespace Isotope\Model\ProductCollection;
 
 use Isotope\Interfaces\IsotopeProduct;
 use Isotope\Interfaces\IsotopeProductCollection;
 use Isotope\Model\Address;
 use Isotope\Model\Payment;
+use Isotope\Model\ProductCollection;
 use Isotope\Model\Shipping;
 
 
@@ -27,7 +28,7 @@ use Isotope\Model\Shipping;
  * @author     Andreas Schempp <andreas.schempp@terminal42.ch>
  * @author     Fred Bliss <fred.bliss@intelligentspark.com>
  */
-class Order extends Collection implements IsotopeProductCollection
+class Order extends ProductCollection implements IsotopeProductCollection
 {
 
     /**
@@ -134,7 +135,7 @@ class Order extends Collection implements IsotopeProductCollection
     {
         switch ($strKey)
         {
-            // Order ID cannot be changed, it is created through Isotope\Product\Collection\Order::generateOrderId on checkout
+            // Order ID cannot be changed, it is created through Isotope\Model\ProductCollection\Order::generateOrderId on checkout
             case 'order_id':
                 throw new InvalidArgumentException('order_id cannot be changed trough __set().');
                 break;
@@ -151,7 +152,7 @@ class Order extends Collection implements IsotopeProductCollection
      * @param boolean
      * @return array
      */
-    public function transferFromCollection(Collection $objCollection, $blnDuplicate=true)
+    public function transferFromCollection(IsotopeProductCollection $objCollection, $blnDuplicate=true)
     {
         $time = time();
         $arrIds = parent::transferFromCollection($objCollection, $blnDuplicate);

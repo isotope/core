@@ -10,11 +10,12 @@
  * @license    http://opensource.org/licenses/lgpl-3.0.html LGPL
  */
 
-namespace Isotope\Product\Collection;
+namespace Isotope\Model\ProductCollection;
 
 use Isotope\Isotope;
 use Isotope\Interfaces\IsotopeProductCollection;
 use Isotope\Model\Address;
+use Isotope\Model\ProductCollection;
 
 
 /**
@@ -25,7 +26,7 @@ use Isotope\Model\Address;
  * @author     Andreas Schempp <andreas.schempp@terminal42.ch>
  * @author     Fred Bliss <fred.bliss@intelligentspark.com>
  */
-class Cart extends Collection implements IsotopeProductCollection
+class Cart extends ProductCollection implements IsotopeProductCollection
 {
 
     /**

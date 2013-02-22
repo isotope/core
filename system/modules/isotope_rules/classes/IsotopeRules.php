@@ -13,7 +13,7 @@
 namespace Isotope;
 
 use Isotope\Interfaces\IsotopeProduct;
-use Isotope\Product\Collection\Cart;
+use Isotope\Model\ProductCollection\Cart;
 
 
 /**

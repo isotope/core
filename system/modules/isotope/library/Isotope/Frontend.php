@@ -13,8 +13,8 @@
 namespace Isotope;
 
 use Isotope\Interfaces\IsotopeProduct;
+use Isotope\Model\ProductCollection\Order;
 use Isotope\Product\Standard as StandardProduct;
-use Isotope\Product\Collection\Order;
 
 
 /**

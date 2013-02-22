@@ -12,8 +12,8 @@
 
 namespace Isotope;
 
-use Isotope\Product\Collection\Cart;
-use Isotope\Product\Collection\Order;
+use Isotope\Model\ProductCollection\Cart;
+use Isotope\Model\ProductCollection\Order;
 
 
 /**
