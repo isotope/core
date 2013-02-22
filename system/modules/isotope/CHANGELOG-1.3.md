@@ -9,6 +9,7 @@ Version 1.3.14 stable (2013-??-??)
 - Potential warning in rules when user has no groups
 - Incorrect rounding for product discount on cart subtotal rules
 - Products in cart limit was not applied for product rules
+- Fixed error in IsotopeEmail class when passing an array of recipients
 
 
 Version 1.3.13 stable (2013-01-14)

@@ -793,13 +793,13 @@ class Isotope extends Controller
 	/**
 	 * Send an email using the isotope e-mail templates
 	 * @param integer
-	 * @param string
+	 * @param mixed
 	 * @param string
 	 * @param array
 	 * @param string
 	 * @param object
 	 */
-	public function sendMail($intId, $strRecipient, $strLanguage, $arrData, $strReplyTo='', $objCollection=null)
+	public function sendMail($intId, $varRecipient, $strLanguage, $arrData, $strReplyTo='', $objCollection=null)
 	{
 		try
 		{
@@ -810,7 +810,7 @@ class Isotope extends Controller
 				$objEmail->replyTo($strReplyTo);
 			}
 
-			$objEmail->send($strRecipient, $arrData);
+			$objEmail->send($varRecipient, $arrData);
 		}
 		catch (Exception $e)
 		{
