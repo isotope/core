@@ -12,6 +12,8 @@
 
 namespace Isotope\Module;
 
+use Isotope\Isotope;
+
 
 /**
  * Class Cart
@@ -72,7 +74,7 @@ class Cart extends Module
      */
     protected function compile()
     {
-        $arrProducts = $this->Isotope->Cart->getProducts();
+        $arrProducts = Isotope::getCart()->getProducts();
 
         if (empty($arrProducts))
         {
@@ -93,15 +95,15 @@ class Cart extends Module
         $arrProductData = array();
 
         // Surcharges must be initialized before getProducts() to apply tax_id to each product
-        $arrSurcharges = $this->Isotope->Cart->getSurcharges();
+        $arrSurcharges = Isotope::getCart()->getSurcharges();
 
-        $arrProducts = $this->Isotope->Cart->getProducts();
-        $lastAdded = ($this->iso_continueShopping && !empty($_SESSION['ISO_CONFIRM'])) ? $this->Isotope->Cart->lastAdded : 0;
+        $arrProducts = Isotope::getCart()->getProducts();
+        $lastAdded = ($this->iso_continueShopping && !empty($_SESSION['ISO_CONFIRM'])) ? Isotope::getCart()->lastAdded : 0;
 
         foreach ($arrProducts as $i => $objProduct)
         {
             // Remove product from cart
-            if (\Input::get('remove') == $objProduct->collection_id && $this->Isotope->Cart->deleteProduct($objProduct))
+            if (\Input::get('remove') == $objProduct->collection_id && Isotope::getCart()->deleteProduct($objProduct))
             {
                 $this->redirect((strlen(\Input::get('referer')) ? base64_decode(\Input::get('referer', true)) : $strUrl));
             }
@@ -110,7 +112,7 @@ class Cart extends Module
             elseif (\Input::post('FORM_SUBMIT') == ('iso_cart_update_'.$this->id) && is_array($arrQuantity))
             {
                 $blnReload = true;
-                $this->Isotope->Cart->updateProduct($objProduct, array('quantity'=>$arrQuantity[$objProduct->collection_id]));
+                Isotope::getCart()->updateProduct($objProduct, array('quantity'=>$arrQuantity[$objProduct->collection_id]));
                 continue; // no need to generate $arrProductData, we reload anyway
             }
 
@@ -119,11 +121,11 @@ class Cart extends Module
                 'id'                => $objProduct->id,
                 'image'                => $objProduct->images->main_image,
                 'link'                => $objProduct->href_reader,
-                'original_price'    => $this->Isotope->formatPriceWithCurrency($objProduct->original_price),
-                'price'                => $this->Isotope->formatPriceWithCurrency($objProduct->price),
-                'tax_free_price'    => $this->Isotope->formatPriceWithCurrency($objProduct->tax_free_price),
-                'total_price'        => $this->Isotope->formatPriceWithCurrency($objProduct->total_price),
-                'tax_free_total_price'    => $this->Isotope->formatPriceWithCurrency($objProduct->tax_free_total_price),
+                'original_price'    => Isotope::formatPriceWithCurrency($objProduct->original_price),
+                'price'                => Isotope::formatPriceWithCurrency($objProduct->price),
+                'tax_free_price'    => Isotope::formatPriceWithCurrency($objProduct->tax_free_price),
+                'total_price'        => Isotope::formatPriceWithCurrency($objProduct->total_price),
+                'tax_free_total_price'    => Isotope::formatPriceWithCurrency($objProduct->tax_free_total_price),
                 'tax_id'            => $objProduct->tax_id,
                 'quantity'            => $objProduct->quantity_requested,
                 'collection_id'        => $objProduct->collection_id,
@@ -139,7 +141,7 @@ class Cart extends Module
             }
         }
 
-        $blnInsufficientSubtotal = ($this->Isotope->Config->cartMinSubtotal > 0 && $this->Isotope->Config->cartMinSubtotal > $this->Isotope->Cart->subTotal) ? true : false;
+        $blnInsufficientSubtotal = (Isotope::getConfig()->cartMinSubtotal > 0 && Isotope::getConfig()->cartMinSubtotal > Isotope::getCart()->subTotal) ? true : false;
 
         // Redirect if the "checkout" button has been submitted and minimum order total is reached
         if ($blnReload && \Input::post('checkout') != '' && !$blnInsufficientSubtotal)
@@ -169,7 +171,7 @@ class Cart extends Module
         }
 
         $objTemplate->hasError = $blnInsufficientSubtotal ? true : false;
-        $objTemplate->minSubtotalError = sprintf($GLOBALS['TL_LANG']['ERR']['cartMinSubtotal'], $this->Isotope->formatPriceWithCurrency($this->Isotope->Config->cartMinSubtotal));
+        $objTemplate->minSubtotalError = sprintf($GLOBALS['TL_LANG']['ERR']['cartMinSubtotal'], Isotope::formatPriceWithCurrency(Isotope::getConfig()->cartMinSubtotal));
         $objTemplate->formId = 'iso_cart_update_'.$this->id;
         $objTemplate->formSubmit = 'iso_cart_update_'.$this->id;
         $objTemplate->summary = $GLOBALS['TL_LANG']['MSC']['cartSummary'];
@@ -180,12 +182,12 @@ class Cart extends Module
         $objTemplate->checkoutJumpTo = ($this->iso_checkout_jumpTo && !$blnInsufficientSubtotal) ? $this->generateFrontendUrl($this->Database->execute("SELECT * FROM tl_page WHERE id={$this->iso_checkout_jumpTo}")->fetchAssoc()) : '';
         $objTemplate->continueLabel = $GLOBALS['TL_LANG']['MSC']['continueShoppingBT'];
 
-        $objTemplate->collection = $this->Isotope->Cart;
+        $objTemplate->collection = Isotope::getCart();
         $objTemplate->products = \Isotope\Frontend::generateRowClass($arrProductData, 'row', 'rowClass', 0, ISO_CLASS_COUNT|ISO_CLASS_FIRSTLAST|ISO_CLASS_EVENODD);
         $objTemplate->subTotalLabel = $GLOBALS['TL_LANG']['MSC']['subTotalLabel'];
         $objTemplate->grandTotalLabel = $GLOBALS['TL_LANG']['MSC']['grandTotalLabel'];
-        $objTemplate->subTotalPrice = $this->Isotope->formatPriceWithCurrency($this->Isotope->Cart->subTotal);
-        $objTemplate->grandTotalPrice = $this->Isotope->formatPriceWithCurrency($this->Isotope->Cart->grandTotal);
+        $objTemplate->subTotalPrice = Isotope::formatPriceWithCurrency(Isotope::getCart()->subTotal);
+        $objTemplate->grandTotalPrice = Isotope::formatPriceWithCurrency(Isotope::getCart()->grandTotal);
         // @todo make a module option.
         $objTemplate->showOptions = false;
         $objTemplate->surcharges = \Isotope\Frontend::formatSurcharges($arrSurcharges);

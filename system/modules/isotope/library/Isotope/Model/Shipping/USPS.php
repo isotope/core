@@ -12,6 +12,7 @@
 
 namespace Isotope\Model\Shipping;
 
+use Isotope\Isotope;
 use Isotope\Interfaces\IsotopeShipping;
 use Isotope\Model\Shipping;
 
@@ -116,22 +117,23 @@ class USPS extends Shipping implements IsotopeShipping
                     'country'        => $this->Isotope->Config->country
                 );*/
 
+                $objCart = Isotope::getCart();
                 $arrCountries = $this->getCountries();
-                $destCountryText = $arrCountries[$this->Isotope->Cart->shippingAddress['country']];
+                $destCountryText = $arrCountries[$objCart->shippingAddress->country];
 
-                $this->strOriginZip = $this->Isotope->Config->postal;
-                $this->strDestinationZip = $this->Isotope->Cart->shippingAddress['postal'];
-                $this->strDestinationCountry = $this->Isotope->Cart->shippingAddress['country'];
-                $this->strDestinationCountryText = ($this->Isotope->Cart->shippingAddress['country']=='uk') ? 'Great Britain' : $destCountryText;
-                $this->strShippingMode = $this->getShippingMode($this->Isotope->Cart->shippingAddress['country']);
-                $this->blnDomestic = ($this->Isotope->Cart->shippingAddress['country']!='us' ? false : true);
+                $this->strOriginZip = Isotope::getConfig()->postal;
+                $this->strDestinationZip = $objCart->shippingAddress->postal;
+                $this->strDestinationCountry = $objCart->shippingAddress->country;
+                $this->strDestinationCountryText = ($objCart->shippingAddress->country == 'uk') ? 'Great Britain' : $destCountryText;
+                $this->strShippingMode = $this->getShippingMode($objCart->shippingAddress->country);
+                $this->blnDomestic = ($objCart->shippingAddress->country!='us' ? false : true);
 
                 if(!$this->blnDomestic)
                 {
                     $this->strAPIMode = 'IntlRate';
                 }
 
-                $fltWeight = $this->Isotope->Cart->getShippingWeight('lb');
+                $fltWeight = $objCart->getShippingWeight('lb');
 
                 $arrWeight = explode('.', (string) $fltWeight);
 
@@ -251,7 +253,7 @@ class USPS extends Shipping implements IsotopeShipping
             return false;
         }
 
-        return $this->Isotope->calculateSurcharge(
+        return Isotope::getInstance()->calculateSurcharge(
                                 $fltPrice,
                                 ($GLOBALS['TL_LANG']['MSC']['shippingLabel'] . ' (' . $this->label . ')'),
                                 $this->arrData['tax_class'],

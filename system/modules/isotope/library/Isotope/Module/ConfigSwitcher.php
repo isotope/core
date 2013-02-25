@@ -12,6 +12,7 @@
 
 namespace Isotope\Module;
 
+use Isotope\Isotope;
 
 /**
  * Class ModuleIsotopeConfigSwitcher
@@ -89,7 +90,7 @@ class ConfigSwitcher extends Module
             (
                 'label'        => (strlen($objConfigs->label) ? $objConfigs->label : $objConfigs->name),
                 'class'        => (($c == 0) ? 'first' : ''),
-                'active'    => ($this->Isotope->Config->id == $objConfigs->id ? true : false),
+                'active'    => (Isotope::getConfig()->id == $objConfigs->id ? true : false),
                 'href'        => (\Environment::get('request') . ((strpos(\Environment::get('request'), '?') === false) ? '?' : '&amp;') . 'config=' . $objConfigs->id),
             );
 

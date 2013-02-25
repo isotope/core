@@ -518,9 +518,9 @@ abstract class ProductCollection extends \Model
             $objTemplate->products = $this->arrProducts;
             $objTemplate->surcharges = \Isotope\Frontend::formatSurcharges($this->getSurcharges());
             $objTemplate->subTotalLabel = $GLOBALS['TL_LANG']['MSC']['subTotalLabel'];
-            $objTemplate->subTotalPrice = $this->Isotope->formatPriceWithCurrency($this->subTotal, false);
+            $objTemplate->subTotalPrice = Isotope::formatPriceWithCurrency($this->subTotal, false);
             $objTemplate->grandTotalLabel = $GLOBALS['TL_LANG']['MSC']['grandTotalLabel'];
-            $objTemplate->grandTotalPrice = $this->Isotope->formatPriceWithCurrency($this->grandTotal, false);
+            $objTemplate->grandTotalPrice = Isotope::formatPriceWithCurrency($this->grandTotal, false);
             $objTemplate->collection = $this;
 
             return $objTemplate->parse();
@@ -797,7 +797,7 @@ abstract class ProductCollection extends \Model
             $arrWeights[] = $arrWeight;
         }
 
-        return $this->Isotope->calculateWeight($arrWeights, $unit);
+        return Isotope::calculateWeight($arrWeights, $unit);
     }
 
 
@@ -823,7 +823,7 @@ abstract class ProductCollection extends \Model
         // Set global config to this collection (if available)
         if ($this->config_id > 0)
         {
-            $this->Isotope->overrideConfig($this->config_id);
+            Isotope::overrideConfig($this->config_id);
         }
 
         // Load language files for the order
@@ -836,9 +836,9 @@ abstract class ProductCollection extends \Model
         $objTemplate->setData($this->arrData);
         $objTemplate->logoImage = '';
 
-        if ($this->Isotope->Config->invoiceLogo != '' && is_file(TL_ROOT . '/' . $this->Isotope->Config->invoiceLogo))
+        if (Isotope::getConfig()->invoiceLogo != '' && is_file(TL_ROOT . '/' . Isotope::getConfig()->invoiceLogo))
         {
-            $objTemplate->logoImage = '<img src="' . TL_ROOT . '/' . $this->Isotope->Config->invoiceLogo . '" alt="" />';
+            $objTemplate->logoImage = '<img src="' . TL_ROOT . '/' . Isotope::getConfig()->invoiceLogo . '" alt="" />';
         }
 
         $objTemplate->invoiceTitle = $GLOBALS['TL_LANG']['MSC']['iso_invoice_title'] . ' ' . $this->order_id . ' – ' . date($GLOBALS['TL_CONFIG']['datimFormat'], $this->date);
@@ -861,7 +861,7 @@ abstract class ProductCollection extends \Model
         }
 
         $objTemplate->collection = $this;
-        $objTemplate->config = $this->Isotope->Config->getData();
+        $objTemplate->config = Isotope::getConfig()->getData();
         $objTemplate->info = deserialize($this->checkout_info);
         $objTemplate->items = $arrItems;
         $objTemplate->raw = $this->arrData;
@@ -869,14 +869,14 @@ abstract class ProductCollection extends \Model
         $objTemplate->time = \System::parseDate($GLOBALS['TL_CONFIG']['timeFormat'], $this->date);
         $objTemplate->datim = \System::parseDate($GLOBALS['TL_CONFIG']['datimFormat'], $this->date);
         $objTemplate->datimLabel = $GLOBALS['TL_LANG']['MSC']['datimLabel'];
-        $objTemplate->subTotalPrice = $this->Isotope->formatPriceWithCurrency($this->subTotal);
-        $objTemplate->grandTotal = $this->Isotope->formatPriceWithCurrency($this->grandTotal);
+        $objTemplate->subTotalPrice = Isotope::formatPriceWithCurrency($this->subTotal);
+        $objTemplate->grandTotal = Isotope::formatPriceWithCurrency($this->grandTotal);
         $objTemplate->subTotalLabel = $GLOBALS['TL_LANG']['MSC']['subTotalLabel'];
         $objTemplate->grandTotalLabel = $GLOBALS['TL_LANG']['MSC']['grandTotalLabel'];
 
         $objTemplate->surcharges = \Isotope\Frontend::formatSurcharges($this->getSurcharges());
         $objTemplate->billing_label = $GLOBALS['TL_LANG']['MSC']['billing_address'];
-        $objTemplate->billing_address = $this->billingAddress->generateText($this->Isotope->Config->billing_fields);
+        $objTemplate->billing_address = $this->billingAddress->generateText(Isotope::getConfig()->billing_fields);
 
         if (strlen($this->shipping_method))
         {
@@ -891,7 +891,7 @@ abstract class ProductCollection extends \Model
             {
                 $objTemplate->has_shipping = true;
                 $objTemplate->shipping_label = $GLOBALS['TL_LANG']['MSC']['shipping_address'];
-                $objTemplate->shipping_address = $this->shippingAddress->generateText($this->Isotope->Config->shipping_fields);
+                $objTemplate->shipping_address = $this->shippingAddress->generateText(Isotope::getConfig()->shipping_fields);
             }
         }
 
@@ -905,7 +905,7 @@ abstract class ProductCollection extends \Model
             }
         }
 
-        $strArticle = $this->Isotope->call('replaceInsertTags', array($objTemplate->parse()));
+        $strArticle = Isotope::getInstance()->call('replaceInsertTags', array($objTemplate->parse()));
         $strArticle = html_entity_decode($strArticle, ENT_QUOTES, $GLOBALS['TL_CONFIG']['characterSet']);
         $strArticle = \Controller::convertRelativeUrls($strArticle, '', true);
 
@@ -947,8 +947,8 @@ abstract class ProductCollection extends \Model
         // Set config back to default
         if ($blnResetConfig)
         {
-            $this->Isotope->resetConfig(true);
-            $this->loadLanguageFile('default', $GLOBALS['TL_LANGUAGE']);
+            Isotope::resetConfig();
+            \System::loadLanguageFile('default', $GLOBALS['TL_LANGUAGE']);
         }
 
         return $strArticle;

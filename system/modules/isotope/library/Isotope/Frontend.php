@@ -93,7 +93,7 @@ class Frontend extends \Frontend
     {
         $intQuantity = ($objModule->iso_use_quantity && intval(\Input::post('quantity_requested')) > 0) ? intval(\Input::post('quantity_requested')) : 1;
 
-        if (Isotope::getInstance()->Cart->addProduct($objProduct, $intQuantity) !== false)
+        if (Isotope::getCart()->addProduct($objProduct, $intQuantity) !== false)
         {
             $_SESSION['ISO_CONFIRM'][] = $GLOBALS['TL_LANG']['MSC']['addedToCart'];
             $this->jumpToOrReload($objModule->iso_addProductJumpTo);
@@ -116,16 +116,16 @@ class Frontend extends \Frontend
             {
                 case 'cart_items';
 
-                    return $this->Isotope->Cart->items;
+                    return Isotope::getCart()->items;
                     break;
 
                 case 'cart_products';
 
-                    return $this->Isotope->Cart->products;
+                    return Isotope::getCart()->products;
                     break;
 
                 case 'cart_items_label';
-                    $intCount = $this->Isotope->Cart->items;
+                    $intCount = Isotope::getCart()->items;
 
                     if (!$intCount)
                     {
@@ -136,7 +136,7 @@ class Frontend extends \Frontend
                     break;
 
                 case 'cart_products_label';
-                    $intCount = $this->Isotope->Cart->products;
+                    $intCount = Isotope::getCart()->products;
 
                     if (!$intCount)
                     {
@@ -147,11 +147,11 @@ class Frontend extends \Frontend
                     break;
 
                 case 'cart_total':
-                    return $this->Isotope->formatPriceWithCurrency($this->Isotope->Cart->grandTotal);
+                    return Isotope::formatPriceWithCurrency(Isotope::getCart()->grandTotal);
                     break;
 
                 case 'cart_subtotal':
-                    return $this->Isotope->formatPriceWithCurrency($this->Isotope->Cart->subTotal);
+                    return Isotope::formatPriceWithCurrency(Isotope::getCart()->subTotal);
                     break;
             }
 
@@ -159,7 +159,7 @@ class Frontend extends \Frontend
         }
         elseif ($arrTag[0] == 'isolabel')
         {
-            return $this->Isotope->translate($arrTag[1], $arrTag[2]);
+            return Isotope::translate($arrTag[1], $arrTag[2]);
         }
         elseif ($arrTag[0] == 'order')
         {

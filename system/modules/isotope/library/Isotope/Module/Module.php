@@ -13,6 +13,7 @@
 namespace Isotope\Module;
 
 use \Module as Contao_Module;
+use Isotope\Isotope;
 
 
 /**
@@ -25,12 +26,6 @@ use \Module as Contao_Module;
  */
 abstract class Module extends Contao_Module
 {
-
-    /**
-     * Isotope object
-     * @var object
-     */
-    protected $Isotope;
 
     /**
      * Disable caching of the frontend page if this module is in use.
@@ -50,7 +45,7 @@ abstract class Module extends Contao_Module
     {
         parent::__construct($objModule, $strColumn);
 
-        $this->Isotope = \System::importStatic('Isotope\Isotope');
+        Isotope::initialize();
 
         if (TL_MODE == 'FE')
         {

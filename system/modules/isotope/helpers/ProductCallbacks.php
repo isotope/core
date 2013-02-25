@@ -403,7 +403,7 @@ class ProductCallbacks extends \Backend
 
                 if (!$blnEditAll && !in_array($attribute, array('sku', 'price', 'shipping_weight', 'published')) && $objProducts->attributes[$attribute]['enabled'])
                 {
-                    $arrInherit[$attribute] = $this->Isotope->formatLabel('tl_iso_products', $attribute);
+                    $arrInherit[$attribute] = Isotope::formatLabel('tl_iso_products', $attribute);
                 }
             }
 
@@ -549,7 +549,7 @@ class ProductCallbacks extends \Backend
             {
                 if ($arrConfig['enabled'] && $GLOBALS['TL_DCA']['tl_iso_products']['fields'][$attribute]['attributes']['variant_option'])
                 {
-                    $strBuffer .= '<li><strong>' . $this->Isotope->formatLabel('tl_iso_products', $attribute) . ':</strong> ' . $this->Isotope->formatValue('tl_iso_products', $attribute, $row[$attribute]) . '</li>';
+                    $strBuffer .= '<li><strong>' . Isotope::formatLabel('tl_iso_products', $attribute) . ':</strong> ' . Isotope::formatValue('tl_iso_products', $attribute, $row[$attribute]) . '</li>';
                 }
             }
 

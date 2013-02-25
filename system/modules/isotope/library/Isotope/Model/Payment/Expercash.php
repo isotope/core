@@ -12,6 +12,7 @@
 
 namespace Isotope\Model\Payment;
 
+use Isotope\Isotope;
 use Isotope\Interfaces\IsotopePayment;
 use Isotope\Model\Payment;
 use Isotope\Model\ProductCollection\Order;
@@ -34,7 +35,7 @@ class Expercash extends Payment implements IsotopePayment
      */
     public function processPayment()
     {
-        $objOrder = Order::findOneBy('source_collection_id', $this->Isotope->Cart->id);
+        $objOrder = Order::findOneBy('source_collection_id', Isotope::getCart()->id);
 
         if ($this->validateUrlParams($objOrder))
         {
@@ -53,7 +54,7 @@ class Expercash extends Payment implements IsotopePayment
      */
     public function processPostSale()
     {
-        $objOrder = Order::findOneBy('source_collection_id', $this->Isotope->Cart->id);
+        $objOrder = Order::findOneBy('source_collection_id', Isotope::getCart()->id);
 
         if ($this->validateUrlParams($objOrder))
         {
@@ -86,7 +87,7 @@ class Expercash extends Payment implements IsotopePayment
      */
     public function checkoutForm()
     {
-        if (($objOrder = Order::findOneBy('source_collection_id', $this->Isotope->Cart->id)) === null)
+        if (($objOrder = Order::findOneBy('source_collection_id', Isotope::getCart()->id)) === null)
         {
             $this->redirect($this->addToUrl('step=failed', true));
         }
@@ -95,10 +96,10 @@ class Expercash extends Payment implements IsotopePayment
         (
             'popupId'            => $this->expercash_popupId,
             'jobId'                => microtime(),
-            'functionId'        => (FE_USER_LOGGED_IN ? $this->User->id : $this->Isotope->Cart->session),
+            'functionId'        => (FE_USER_LOGGED_IN ? $this->User->id : Isotope::getCart()->session),
             'transactionId'        => $objOrder->id,
-            'amount'            => (round($this->Isotope->Cart->grandTotal, 2)*100),
-            'currency'            => $this->Isotope->Config->currency,
+            'amount'            => (round(Isotope::getCart()->grandTotal, 2)*100),
+            'currency'            => Isotope::getConfig()->currency,
             'paymentMethod'        => $this->expercash_paymentMethod,
             'returnUrl'            => \Environment::get('base') . $this->addToUrl('step=complete', true) . '?uid=' . $objOrder->uniqid,
             'errorUrl'            => \Environment::get('base') . $this->addToUrl('step=failed', true),
@@ -152,14 +153,14 @@ class Expercash extends Payment implements IsotopePayment
             return false;
         }
 
-        if (\Input::get('amount') != (round($this->Isotope->Cart->grandTotal, 2)*100))
+        if (\Input::get('amount') != (round(Isotope::getCart()->grandTotal, 2)*100))
         {
             \System::log('ExperCash: amount is incorrect. Possible data manipulation!', __METHOD__, TL_ERROR);
 
             return false;
         }
 
-        if (\Input::get('currency') != $this->Isotope->Config->currency)
+        if (\Input::get('currency') != Isotope::getConfig()->currency)
         {
             \System::log('ExperCash: currency is incorrect. Possible data manipulation!', __METHOD__, TL_ERROR);
 

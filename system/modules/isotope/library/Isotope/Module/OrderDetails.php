@@ -97,7 +97,7 @@ class OrderDetails extends Module
         $arrOrder = $objOrder->getData();
         $this->Template->setData($arrOrder);
 
-        $this->Isotope->overrideConfig($objOrder->config_id);
+        Isotope::overrideConfig($objOrder->config_id);
 
         // Article reader
         $arrPage = $this->Database->prepare("SELECT * FROM tl_page WHERE id=?")->limit(1)->execute($this->jumpTo)->fetchAssoc();
@@ -118,10 +118,10 @@ class OrderDetails extends Module
                 'image'                => $objProduct->images->main_image,
                 'product_options'    => $objProduct->getOptions(),
                 'quantity'            => $objProduct->quantity_requested,
-                'price'                => $this->Isotope->formatPriceWithCurrency($objProduct->price),
-                'tax_free_price'    => $this->Isotope->formatPriceWithCurrency($objProduct->tax_free_price),
-                'total'                => $this->Isotope->formatPriceWithCurrency($objProduct->total_price),
-                'tax_free_total'    => $this->Isotope->formatPriceWithCurrency($objProduct->tax_free_total_price),
+                'price'                => Isotope::formatPriceWithCurrency($objProduct->price),
+                'tax_free_price'    => Isotope::formatPriceWithCurrency($objProduct->tax_free_price),
+                'total'                => Isotope::formatPriceWithCurrency($objProduct->total_price),
+                'tax_free_total'    => Isotope::formatPriceWithCurrency($objProduct->tax_free_total_price),
                 'href'                => ($this->jumpTo ? $this->generateFrontendUrl($arrPage, ($GLOBALS['TL_CONFIG']['useAutoItem'] ? '/' : '/product/') . $objProduct->alias) : ''),
                 'tax_id'            => $objProduct->tax_id,
                 'downloads'            => $arrDownloads,
@@ -144,13 +144,13 @@ class OrderDetails extends Module
         $this->Template->orderDetailsHeadline = sprintf($GLOBALS['TL_LANG']['MSC']['orderDetailsHeadline'], $objOrder->order_id, $this->Template->datim);
         $this->Template->orderStatus = sprintf($GLOBALS['TL_LANG']['MSC']['orderStatusHeadline'], $objOrder->statusLabel);
         $this->Template->orderStatusKey = $objOrder->statusAlias;
-        $this->Template->subTotalPrice = $this->Isotope->formatPriceWithCurrency($objOrder->subTotal);
-        $this->Template->grandTotal = $this->Isotope->formatPriceWithCurrency($objOrder->grandTotal);
+        $this->Template->subTotalPrice = Isotope::formatPriceWithCurrency($objOrder->subTotal);
+        $this->Template->grandTotal = Isotope::formatPriceWithCurrency($objOrder->grandTotal);
         $this->Template->subTotalLabel = $GLOBALS['TL_LANG']['MSC']['subTotalLabel'];
         $this->Template->grandTotalLabel = $GLOBALS['TL_LANG']['MSC']['grandTotalLabel'];
         $this->Template->surcharges = \Isotope\Frontend::formatSurcharges($objOrder->getSurcharges());
         $this->Template->billing_label = $GLOBALS['TL_LANG']['MSC']['billing_address'];
-        $this->Template->billing_address = $objOrder->billingAddress->generateHtml($this->Isotope->Config->billing_fields);
+        $this->Template->billing_address = $objOrder->billingAddress->generateHtml(Isotope::getConfig()->billing_fields);
 
         if (strlen($objOrder->shipping_method))
         {
@@ -165,7 +165,7 @@ class OrderDetails extends Module
             {
                 $this->Template->has_shipping = true;
                 $this->Template->shipping_label = $GLOBALS['TL_LANG']['MSC']['shipping_address'];
-                $this->Template->shipping_address = $objOrder->shippingAddress->generateHtml($this->Isotope->Config->shipping_fields);
+                $this->Template->shipping_address = $objOrder->shippingAddress->generateHtml(Isotope::getConfig()->shipping_fields);
             }
         }
     }

@@ -12,6 +12,7 @@
 
 namespace Isotope\Model\Payment;
 
+use Isotope\Isotope;
 use Isotope\Interfaces\IsotopePayment;
 use Isotope\Model\Payment;
 use Isotope\Model\ProductCollection\Order;
@@ -132,20 +133,20 @@ class Postfinance extends Payment implements IsotopePayment
      */
     public function checkoutForm()
     {
-        if (($objOrder = Order::findOneBy('source_collection_id', $this->Isotope->Cart->id)) === null)
+        if (($objOrder = Order::findOneBy('source_collection_id', Isotope::getCart()->id)) === null)
         {
             $this->redirect($this->addToUrl('step=failed', true));
         }
 
-        $objAddress = $this->Isotope->Cart->billingAddress;
+        $objAddress = Isotope::getCart()->billingAddress;
         $strFailedUrl = \Environment::get('base') . $this->addToUrl('step=failed', true);
 
         $arrParam = array
         (
             'PSPID'            => $this->postfinance_pspid,
             'ORDERID'        => $objOrder->id,
-            'AMOUNT'        => round(($this->Isotope->Cart->grandTotal * 100)),
-            'CURRENCY'        => $this->Isotope->Config->currency,
+            'AMOUNT'        => round((Isotope::getCart()->grandTotal * 100)),
+            'CURRENCY'        => Isotope::getConfig()->currency,
             'LANGUAGE'        => $GLOBALS['TL_LANGUAGE'] . '_' . strtoupper($GLOBALS['TL_LANGUAGE']),
             'CN'            => $objAddress->firstname . ' ' . $objAddress->lastname,
             'EMAIL'            => $objAddress->email,

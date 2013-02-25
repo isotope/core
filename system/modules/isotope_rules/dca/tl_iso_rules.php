@@ -650,7 +650,7 @@ class tl_iso_rules extends \Backend
         {
             if ($config['attributes']['legend'] != '' && $attribute != 'pages' && $config['inputType'] != 'mediaManager')
             {
-                $arrAttributes[$attribute] = $this->Isotope->formatLabel('tl_iso_products', $attribute);
+                $arrAttributes[$attribute] = Isotope::formatLabel('tl_iso_products', $attribute);
             }
         }
 

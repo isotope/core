@@ -45,14 +45,14 @@ class tl_iso_collection extends \Backend
      */
     public function getOrderLabel($row, $label, \DataContainer $dc, $args)
     {
-        $this->Isotope->overrideConfig($row['config_id']);
+        Isotope::overrideConfig($row['config_id']);
 
         $objAddress = new Address();
         $objAddress->setRow(deserialize($row['billing_address'], true));
-        $arrTokens = $objAddress->getTokens($this->Isotope->Config->billing_fields);
+        $arrTokens = $objAddress->getTokens(Isotope::getConfig()->billing_fields);
 
         $args[2] = $arrTokens['hcard_fn'];
-        $args[3] = $this->Isotope->formatPriceWithCurrency($row['grandTotal']);
+        $args[3] = Isotope::formatPriceWithCurrency($row['grandTotal']);
 
         return $args;
     }
@@ -208,8 +208,8 @@ class tl_iso_collection extends \Backend
 
             $strBuffer .= '
   <tr>
-    <td' . $strClass . ' style="vertical-align:top"><span class="tl_label">'.$this->Isotope->formatLabel('tl_iso_addresses', $k).': </span></td>
-    <td' . $strClass . '>'.$this->Isotope->formatValue('tl_iso_addresses', $k, $v).'</td>
+    <td' . $strClass . ' style="vertical-align:top"><span class="tl_label">'.Isotope::formatLabel('tl_iso_addresses', $k).': </span></td>
+    <td' . $strClass . '>'.Isotope::formatValue('tl_iso_addresses', $k, $v).'</td>
   </tr>';
         }
 

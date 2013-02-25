@@ -12,6 +12,7 @@
 
 namespace Isotope\Model\Payment;
 
+use Isotope\Isotope;
 use Isotope\Interfaces\IsotopePayment;
 use Isotope\Model\Payment;
 use Isotope\Model\ProductCollection\Order;
@@ -86,10 +87,10 @@ class AuthorizeDotNet extends Payment implements IsotopePayment
 
             return true;
 
-        $objOrder = Order::findOneBy('source_collection_id', $this->Isotope->Cart->id);
+        $objOrder = Order::findOneBy('source_collection_id', Isotope::getCart()->id);
 
         //$arrPaymentData = deserialize($objOrder->payment_data);
-        if($this->authCapturePayment($objOrder->id, $this->Isotope->Cart->grandTotal, true))
+        if($this->authCapturePayment($objOrder->id, Isotope::getCart()->grandTotal, true))
 
             return true;
 
@@ -109,11 +110,11 @@ class AuthorizeDotNet extends Payment implements IsotopePayment
      */
     public function paymentForm($objModule)
     {
-        if($_SESSION['checkout']['grandTotal']!==$this->Isotope->Cart->grandTotal)
+        if($_SESSION['checkout']['grandTotal']!==Isotope::getCart()->grandTotal)
             $_SESSION['checkout']['success']=false;
 
         //set/reset grand total.
-        $_SESSION['checkout']['grandTotal'] = $this->Isotope->Cart->grandTotal;
+        $_SESSION['checkout']['grandTotal'] = Isotope::getCart()->grandTotal;
 
         $strBuffer = '';
         $arrPayment = \Input::post('payment');
@@ -213,12 +214,12 @@ class AuthorizeDotNet extends Payment implements IsotopePayment
 
         if (\Input::post('FORM_SUBMIT') == 'iso_mod_checkout_payment' && !$objModule->doNotSubmit && $arrPayment['module']==$this->id && !$_SESSION['CHECKOUT_DATA']['payment']['request_lockout'])
         {
-            if (($objOrder = Order::findOneBy('source_collection_id', $this->Isotope->Cart->id)) === null)
+            if (($objOrder = Order::findOneBy('source_collection_id', Isotope::getCart()->id)) === null)
             {
                 $objOrder = new Order();
 
-                $objOrder->uniqid = uniqid($this->Isotope->Config->orderPrefix, true);
-                $objOrder->source_collection_id = $this->Isotope->Cart->id;
+                $objOrder->uniqid = uniqid(Isotope::getConfig()->orderPrefix, true);
+                $objOrder->source_collection_id = Isotope::getCart()->id;
 
                 $objOrder->save();
             }
@@ -226,7 +227,7 @@ class AuthorizeDotNet extends Payment implements IsotopePayment
             $_SESSION['CHECKOUT_DATA']['payment']['request_lockout'] = true;
 
             if($_SESSION['CHECKOUT_DATA']['payment']['success']!==true)
-                $blnResult = $this->authCapturePayment($objOrder->id, $this->Isotope->Cart->grandTotal, false);
+                $blnResult = $this->authCapturePayment($objOrder->id, Isotope::getCart()->grandTotal, false);
 
             if($blnResult)  //At this point the response data has been saved to the order and the auth was successful.
             {
@@ -311,7 +312,7 @@ class AuthorizeDotNet extends Payment implements IsotopePayment
             {
                 $objOrder = new Order();
 
-                $objOrder->uniqid        = uniqid($this->Isotope->Config->orderPrefix, true);
+                $objOrder->uniqid        = uniqid(Isotope::getConfig()->orderPrefix, true);
 
                 $objOrder = Order::findByPk($objOrder->save()->id);
             }
@@ -361,8 +362,8 @@ $return .= '</div></div>';
         {
             $objOrder = new Order();
 
-            $objOrder->uniqid = uniqid($this->Isotope->Config->orderPrefix, true);
-            $objOrder->source_collection_id = $this->Isotope->Cart->id;
+            $objOrder->uniqid = uniqid(Isotope::getConfig()->orderPrefix, true);
+            $objOrder->source_collection_id = Isotope::getCart()->id;
 
             $objOrder->save();
         }
@@ -380,9 +381,9 @@ $return .= '</div></div>';
         //Gather product and address data depending on FE(Cart) or BE(Order)
         if (TL_MODE=='FE')
         {
-            $arrBilling = $this->Isotope->Cart->billing_address;
-            $arrShipping = $this->Isotope->Cart->shipping_address;
-            $arrProducts = $this->Isotope->Cart->getProducts();
+            $arrBilling = Isotope::getCart()->billing_address;
+            $arrShipping = Isotope::getCart()->shipping_address;
+            $arrProducts = Isotope::getCart()->getProducts();
         }
         else
         {
@@ -429,7 +430,7 @@ $return .= '</div></div>';
             case 'AUTH_ONLY':
                 $authnet_values_authonly = array(
                     "x_url"                                => "FALSE",
-                    "x_description"                        => "Order Number " . $this->Isotope->Config->orderPrefix . $objOrder->order_id,
+                    "x_description"                        => "Order Number " . Isotope::getConfig()->orderPrefix . $objOrder->order_id,
                     "x_invoice_num"                        => $objOrder->order_id,
                     "x_first_name"                        => $arrBilling['firstname'],
                     "x_last_name"                        => $arrBilling['lastname'],
@@ -517,12 +518,12 @@ $return .= '</div></div>';
             switch($arrResponses['transaction-status'])
             {
                 case 'Approved':
-                    $objOrder->status = ($this->new_order_status ? $this->new_order_status : $this->Isotope->Config->orderstatus_new);
+                    $objOrder->status = ($this->new_order_status ? $this->new_order_status : Isotope::getConfig()->orderstatus_new);
                     $blnFail = false;
                     break;
 
                 default:
-                    $objOrder->status = $this->Isotope->Config->orderstatus_error;
+                    $objOrder->status = Isotope::getConfig()->orderstatus_error;
                     $blnFail = true;
                     break;
 

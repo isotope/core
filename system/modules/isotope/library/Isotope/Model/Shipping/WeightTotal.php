@@ -12,6 +12,7 @@
 
 namespace Isotope\Model\Shipping;
 
+use Isotope\Isotope;
 use Isotope\Interfaces\IsotopeShipping;
 use Isotope\Model\Shipping;
 
@@ -51,7 +52,7 @@ class WeightTotal extends Shipping implements IsotopeShipping
             case 'price':
                 $objOptions = $this->getOptions();
 
-                return $this->Isotope->calculatePrice($objOptions->rate, $this, 'price', $this->arrData['tax_class']);
+                return Isotope::getInstance()->calculatePrice($objOptions->rate, $this, 'price', $this->arrData['tax_class']);
 
             default:
                 return parent::__get($strKey);
@@ -61,7 +62,7 @@ class WeightTotal extends Shipping implements IsotopeShipping
 
     protected function getOptions()
     {
-        $fltWeight = $this->Isotope->Cart->getShippingWeight($this->weight_unit);
+        $fltWeight = Isotope::getCart()->getShippingWeight($this->weight_unit);
 
         return $this->Database->execute("SELECT * FROM tl_iso_shipping_options WHERE pid={$this->id} AND enabled='1' AND (weight_from=0 OR weight_from <= $fltWeight) AND (weight_to=0 OR weight_to >= $fltWeight) ORDER BY rate");
     }
@@ -125,7 +126,7 @@ class WeightTotal extends Shipping implements IsotopeShipping
             return false;
         }
 
-        return $this->Isotope->calculateSurcharge(
+        return Isotope::getInstance()->calculateSurcharge(
                                 $objOptions->rate,
                                 ($GLOBALS['TL_LANG']['MSC']['shippingLabel'] . ' (' . $this->label . ')'),
                                 $this->arrData['tax_class'],

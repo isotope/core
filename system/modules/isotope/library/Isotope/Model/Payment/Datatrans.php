@@ -12,6 +12,7 @@
 
 namespace Isotope\Model\Payment;
 
+use Isotope\Isotope;
 use Isotope\Interfaces\IsotopePayment;
 use Isotope\Model\Payment;
 use Isotope\Model\ProductCollection\Order;
@@ -79,7 +80,7 @@ class Datatrans extends Payment implements IsotopePayment
      */
     public function processPayment()
     {
-        if (($objOrder = Order::findOneBy('source_collection_id', $this->Isotope->Cart->id)) === null)
+        if (($objOrder = Order::findOneBy('source_collection_id', Isotope::getCart()->id)) === null)
         {
             return false;
         }
@@ -126,18 +127,18 @@ class Datatrans extends Payment implements IsotopePayment
     {
         $objOrder = new Order();
 
-        if (($objOrder = Order::findOneBy('source_collection_id', $this->Isotope->Cart->id)) === null)
+        if (($objOrder = Order::findOneBy('source_collection_id', Isotope::getCart()->id)) === null)
         {
             $this->redirect($this->addToUrl('step=failed', true));
         }
 
-        $arrAddress = $this->Isotope->Cart->billing_address;
+        $arrAddress = Isotope::getCart()->billing_address;
 
         $arrParams = array
         (
             'merchantId'            => $this->datatrans_id,
-            'amount'                => round($this->Isotope->Cart->grandTotal * 100),
-            'currency'                => $this->Isotope->Config->currency,
+            'amount'                => round(Isotope::getCart()->grandTotal * 100),
+            'currency'                => Isotope::getConfig()->currency,
             'refno'                    => $objOrder->id,
             'language'                => $GLOBALS['TL_LANGUAGE'],
             'reqtype'                => ($this->trans_type == 'auth' ? 'NOA' : 'CAA'),

@@ -12,6 +12,7 @@
 
 namespace Isotope\Module;
 
+use Isotope\Isotope;
 use Isotope\Model\Address;
 
 /**
@@ -68,7 +69,7 @@ class AddressBook extends Module
             return '';
         }
 
-        $this->arrFields = array_unique(array_merge(deserialize($this->Isotope->Config->billing_fields_raw, true), deserialize($this->Isotope->Config->shipping_fields_raw, true)));
+        $this->arrFields = array_unique(array_merge(deserialize(Isotope::getConfig()->billing_fields_raw, true), deserialize(Isotope::getConfig()->shipping_fields_raw, true)));
 
         // Return if there are not editable fields
         if (($count = count($this->arrFields) == 0) || ($count == 1 && $this->arrFields[0] == ''))
@@ -136,7 +137,7 @@ class AddressBook extends Module
         global $objPage;
         $arrAddresses = array();
         $strUrl = $this->generateFrontendUrl($objPage->row()) . ($GLOBALS['TL_CONFIG']['disableAlias'] ? '&' : '?');
-        $objAddresses = $this->Database->execute("SELECT * FROM tl_iso_addresses WHERE pid={$this->User->id} AND store_id={$this->Isotope->Config->store_id}");
+        $objAddresses = $this->Database->prepare("SELECT * FROM tl_iso_addresses WHERE pid=? AND store_id=?")->execute($this->User->id, Isotope::getConfig()->store_id);
 
         while ($objAddresses->next())
         {
@@ -195,10 +196,10 @@ class AddressBook extends Module
         $row = 0;
 
         // No need to check: if the address does not exist, fields will be empty and a new address will be created
-        $objAddress = $this->Database->prepare("SELECT * FROM tl_iso_addresses WHERE id=? AND pid={$this->User->id} AND store_id={$this->Isotope->Config->store_id}")->execute($intAddressId);
+        $objAddress = $this->Database->prepare("SELECT * FROM tl_iso_addresses WHERE id=? AND pid=? AND store_id=?")->execute($intAddressId, $this->User->id, Isotope::getConfig()->store_id);
 
         $objAddress->pid = $this->User->id;
-        $objAddress->store_id = $this->Isotope->Config->store_id;
+        $objAddress->store_id = Isotope::getConfig()->store_id;
 
         // Build form
         foreach ($this->arrFields as $field)
@@ -227,7 +228,7 @@ class AddressBook extends Module
             if ($field == 'country')
             {
                 $arrCountries = array();
-                $objConfigs = $this->Database->execute("SELECT billing_countries, shipping_countries FROM tl_iso_config WHERE store_id={$this->Isotope->Config->store_id}");
+                $objConfigs = $this->Database->prepare("SELECT billing_countries, shipping_countries FROM tl_iso_config WHERE store_id=?")->execute(Isotope::getConfig()->store_id);
 
                 while( $objConfigs->next() )
                 {
@@ -235,7 +236,7 @@ class AddressBook extends Module
                 }
 
                 $arrData['options'] = array_values(array_intersect($arrData['options'], $arrCountries));
-                $arrData['default'] = $this->Isotope->Config->billing_country;
+                $arrData['default'] = Isotope::getConfig()->billing_country;
             }
 
             $strGroup = $arrData['eval']['feGroup'];
@@ -326,7 +327,7 @@ class AddressBook extends Module
             {
                 $arrSet['pid'] = $this->User->id;
                 $arrSet['tstamp'] = time();
-                $arrSet['store_id'] = $this->Isotope->Config->store_id;
+                $arrSet['store_id'] = Isotope::getConfig()->store_id;
 
                 $objAddress->id = $this->Database->prepare("INSERT INTO tl_iso_addresses %s")->set($arrSet)->execute()->insertId;
             }

@@ -219,10 +219,10 @@ class Standard extends \Controller implements IsotopeProduct
                 return $this->formSubmit;
 
             case 'original_price':
-                return $this->isLocked() ? $this->arrData['price'] : $this->Isotope->calculatePrice($this->arrData['price'], $this, 'original_price', $this->arrData['tax_class']);
+                return $this->isLocked() ? $this->arrData['price'] : Isotope::calculatePrice($this->arrData['price'], $this, 'original_price', $this->arrData['tax_class']);
 
             case 'price':
-                return $this->isLocked() ? $this->arrData['price'] : $this->Isotope->calculatePrice($this->arrData['price'], $this, 'price', $this->arrData['tax_class']);
+                return $this->isLocked() ? $this->arrData['price'] : Isotope::calculatePrice($this->arrData['price'], $this, 'price', $this->arrData['tax_class']);
 
             case 'total_price':
                 $varPrice = $this->price;
@@ -234,7 +234,7 @@ class Standard extends \Controller implements IsotopeProduct
                     return $this->arrData['tax_free_price'] ? $this->arrData['tax_free_price'] : $this->arrData['price'];
                 }
 
-                $varPrice = $this->Isotope->calculatePrice($this->arrData['price'], $this, 'price');
+                $varPrice = Isotope::calculatePrice($this->arrData['price'], $this, 'price');
 
                 if ($varPrice !== null && $this->arrData['tax_class'] > 0)
                 {
@@ -294,7 +294,7 @@ class Standard extends \Controller implements IsotopeProduct
                 {
                     if ($GLOBALS['TL_DCA'][$this->strTable]['fields'][$strKey]['inputType'] == 'mediaManager')
                     {
-                        $objGallery = \Isotope\Factory\Gallery::build($GLOBALS['TL_DCA'][$this->strTable]['fields'][$strKey]['attributes']['gallery'], $this->formSubmit . '_' . $strKey, $this->Isotope->mergeMediaData(deserialize($this->arrData[$strKey]), deserialize($this->arrData[$strKey.'_fallback'])));
+                        $objGallery = \Isotope\Factory\Gallery::build($GLOBALS['TL_DCA'][$this->strTable]['fields'][$strKey]['attributes']['gallery'], $this->formSubmit . '_' . $strKey, Isotope::mergeMediaData(deserialize($this->arrData[$strKey]), deserialize($this->arrData[$strKey.'_fallback'])));
                         $objGallery->product_id = ($this->pid ? $this->pid : $this->id);
                         $objGallery->href_reader = $this->href_reader;
                         $this->arrCache[$strKey] = $objGallery;
@@ -304,15 +304,15 @@ class Standard extends \Controller implements IsotopeProduct
                         switch ($strKey)
                         {
                             case 'formatted_price':
-                                $this->arrCache[$strKey] = $this->Isotope->formatPriceWithCurrency($this->price, false);
+                                $this->arrCache[$strKey] = Isotope::formatPriceWithCurrency($this->price, false);
                                 break;
 
                             case 'formatted_original_price':
-                                $this->arrCache[$strKey] = $this->Isotope->formatPriceWithCurrency($this->original_price, false);
+                                $this->arrCache[$strKey] = Isotope::formatPriceWithCurrency($this->original_price, false);
                                 break;
 
                             case 'formatted_total_price':
-                                $this->arrCache[$strKey] = $this->Isotope->formatPriceWithCurrency($this->total_price, false);
+                                $this->arrCache[$strKey] = Isotope::formatPriceWithCurrency($this->total_price, false);
                                 break;
 
                             case 'categories':
@@ -597,8 +597,8 @@ class Standard extends \Controller implements IsotopeProduct
 
             $arrOptions[$field] = array
             (
-                'label'    => $this->Isotope->formatLabel('tl_iso_products', $field),
-                'value'    => $this->Isotope->formatValue('tl_iso_products', $field, $value),
+                'label'    => Isotope::formatLabel('tl_iso_products', $field),
+                'value'    => Isotope::formatValue('tl_iso_products', $field, $value),
             );
         }
 
@@ -897,7 +897,7 @@ class Standard extends \Controller implements IsotopeProduct
             {
                 $objGallery = $this->$attribute;
 
-                foreach ((array) $this->Isotope->Config->imageSizes as $size)
+                foreach ((array) Isotope::getConfig()->imageSizes as $size)
                 {
                     $arrOptions[] = array_merge($arrData, array
                     (
@@ -964,16 +964,16 @@ class Standard extends \Controller implements IsotopeProduct
 
             if ($this->arrCache['from_price'] !== null)
             {
-                $fltPrice = $this->Isotope->calculatePrice($this->arrCache['from_price'], $this, 'price', $this->arrData['tax_class']);
-                $fltOriginalPrice = $this->Isotope->calculatePrice($this->arrCache['from_price'], $this, 'original_price', $this->arrData['tax_class']);
+                $fltPrice = Isotope::calculatePrice($this->arrCache['from_price'], $this, 'price', $this->arrData['tax_class']);
+                $fltOriginalPrice = Isotope::calculatePrice($this->arrCache['from_price'], $this, 'original_price', $this->arrData['tax_class']);
 
-                $strBuffer = sprintf($GLOBALS['TL_LANG']['MSC']['priceRangeLabel'], $this->Isotope->formatPriceWithCurrency($fltPrice));
-                $strOriginalPrice = sprintf($GLOBALS['TL_LANG']['MSC']['priceRangeLabel'], $this->Isotope->formatPriceWithCurrency($fltOriginalPrice));
+                $strBuffer = sprintf($GLOBALS['TL_LANG']['MSC']['priceRangeLabel'], Isotope::formatPriceWithCurrency($fltPrice));
+                $strOriginalPrice = sprintf($GLOBALS['TL_LANG']['MSC']['priceRangeLabel'], Isotope::formatPriceWithCurrency($fltOriginalPrice));
             }
             else
             {
-                $strBuffer = $this->Isotope->formatPriceWithCurrency($fltPrice);
-                $strOriginalPrice = $this->Isotope->formatPriceWithCurrency($fltOriginalPrice);
+                $strBuffer = Isotope::formatPriceWithCurrency($fltPrice);
+                $strOriginalPrice = Isotope::formatPriceWithCurrency($fltOriginalPrice);
             }
 
             if ($fltPrice != $fltOriginalPrice)
@@ -991,7 +991,7 @@ class Standard extends \Controller implements IsotopeProduct
 
                 if ($objBasePrice->numRows)
                 {
-                    $strBuffer = sprintf($objBasePrice->label, $this->Isotope->formatPriceWithCurrency($this->price / $varValue['value'] * $objBasePrice->amount), $varValue['value']);
+                    $strBuffer = sprintf($objBasePrice->label, Isotope::formatPriceWithCurrency($this->price / $varValue['value'] * $objBasePrice->amount), $varValue['value']);
                 }
             }
         }
@@ -1055,7 +1055,7 @@ class Standard extends \Controller implements IsotopeProduct
 
                     if ($arrFormat[$name]['rgxp'] == 'price')
                     {
-                        $value = $this->Isotope->formatPriceWithCurrency($this->Isotope->calculatePrice($value, $this, 'price_tiers', $this->arrData['tax_class']));
+                        $value = Isotope::formatPriceWithCurrency(Isotope::calculatePrice($value, $this, 'price_tiers', $this->arrData['tax_class']));
                     }
                     else
                     {
@@ -1096,7 +1096,7 @@ class Standard extends \Controller implements IsotopeProduct
         }
         else
         {
-            $strBuffer = $this->Isotope->formatValue('tl_iso_products', $attribute, $varValue);
+            $strBuffer = Isotope::formatValue('tl_iso_products', $attribute, $varValue);
         }
 
         // !HOOK: allow for custom attribute types to modify their output

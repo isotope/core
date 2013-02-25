@@ -84,7 +84,7 @@ class Cart extends ProductCollection implements IsotopeProductCollection
 
                 if (FE_USER_LOGGED_IN === true)
                 {
-                    $objAddress = $objDatabase->prepare("SELECT * FROM tl_iso_addresses WHERE pid={$this->User->id} AND store_id={$this->Isotope->Config->store_id} AND isDefaultBilling='1'")->limit(1)->execute();
+                    $objAddress = $objDatabase->prepare("SELECT * FROM tl_iso_addresses WHERE pid=? AND store_id=? AND isDefaultBilling='1'")->limit(1)->execute($this->User->id, Isotope::getConfig()->store_id);
 
                     if ($objAddress->numRows)
                     {
@@ -93,10 +93,10 @@ class Cart extends ProductCollection implements IsotopeProductCollection
 
                     // Return the default user data, but ID should be 0 to know that it is a custom/new address
                     // Trying to guess subdivision by country and state
-                    return array_intersect_key(array_merge($this->User->getData(), array('id'=>0, 'street_1'=>$this->User->street, 'subdivision'=>strtoupper($this->User->country . '-' . $this->User->state))), array_flip($this->Isotope->Config->billing_fields_raw));
+                    return array_intersect_key(array_merge($this->User->getData(), array('id'=>0, 'street_1'=>$this->User->street, 'subdivision'=>strtoupper($this->User->country . '-' . $this->User->state))), array_flip(Isotope::getConfig()->billing_fields_raw));
                 }
 
-                return array('id'=>-1, 'country' => $this->Isotope->Config->billing_country);
+                return array('id'=>-1, 'country' => Isotope::getConfig()->billing_country);
 
             case 'shipping_address':
                 if ($this->arrSettings['shippingAddress_id'] == -1)
@@ -121,7 +121,7 @@ class Cart extends ProductCollection implements IsotopeProductCollection
 
                 if (FE_USER_LOGGED_IN === true)
                 {
-                    $objAddress = $objDatabase->prepare("SELECT * FROM tl_iso_addresses WHERE pid={$this->User->id} AND store_id={$this->Isotope->Config->store_id} AND isDefaultShipping='1'")->limit(1)->execute();
+                    $objAddress = $objDatabase->prepare("SELECT * FROM tl_iso_addresses WHERE pid=? AND store_id=? AND isDefaultShipping='1'")->limit(1)->execute($this->User->id, Isotope::getConfig()->store_id);
 
                     if ($objAddress->numRows)
                     {
@@ -136,7 +136,7 @@ class Cart extends ProductCollection implements IsotopeProductCollection
                     return $arrBilling;
                 }
 
-                return array('id'=>-1, 'country' => $this->Isotope->Config->shipping_country);
+                return array('id'=>-1, 'country' => Isotope::getConfig()->shipping_country);
 
             case 'billingAddress':
                 $objAddress = new Address();

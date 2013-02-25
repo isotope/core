@@ -12,6 +12,7 @@
 
 namespace Isotope\Gallery;
 
+use Isotope\Isotope;
 use Isotope\Interfaces\IsotopeGallery;
 
 
@@ -92,11 +93,11 @@ class Standard extends \Frontend implements IsotopeGallery
                 // No image available, add placeholder from store configuration
                 if (empty($this->arrFiles))
                 {
-                    $strPlaceholder = $this->Isotope->Config->missing_image_placeholder;
+                    $strPlaceholder = Isotope::getConfig()->missing_image_placeholder;
 
                     if ($strPlaceholder != '' && is_file(TL_ROOT . '/' . $strPlaceholder))
                     {
-                        $this->addImage(array('src'=>$this->Isotope->Config->missing_image_placeholder), false);
+                        $this->addImage(array('src'=>Isotope::getConfig()->missing_image_placeholder), false);
                     }
                 }
                 break;
@@ -300,7 +301,7 @@ $endScript
 
             if ($objFile->isGdImage)
             {
-                foreach ((array) $this->Isotope->Config->imageSizes as $size)
+                foreach ((array) Isotope::getConfig()->imageSizes as $size)
                 {
                     $strImage = $this->getImage($strFile, $size['width'], $size['height'], $size['mode']);
 

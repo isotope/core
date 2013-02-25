@@ -60,7 +60,7 @@ class tl_iso_prices extends \Backend
                 default:
                     if ($value != '' && $value > 0)
                     {
-                        $arrInfo[] = '<strong>' . $this->Isotope->formatLabel('tl_iso_prices', $name) . '</strong>: ' . $this->Isotope->formatValue('tl_iso_prices', $name, $value);
+                        $arrInfo[] = '<strong>' . Isotope::formatLabel('tl_iso_prices', $name) . '</strong>: ' . Isotope::formatValue('tl_iso_prices', $name, $value);
                     }
                     break;
             }

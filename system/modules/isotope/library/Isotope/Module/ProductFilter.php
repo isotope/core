@@ -83,8 +83,8 @@ class ProductFilter extends Module
             // if all filters are null we don't have to cache (this will prevent useless isorc params from being generated)
             if ($varFilter !== null || $varLimit !== null || $varSorting !== null)
             {
-                $intCacheId = $this->Database->prepare("SELECT id FROM tl_iso_requestcache WHERE store_id={$this->Isotope->Config->store_id} AND filters" . ($varFilter ? '=' : ' IS ') . "? AND sorting" . ($varSorting ? '=' : ' IS ') . "? AND limits" . ($varLimit ? '=' : ' IS ') . "?")
-                                             ->execute($varFilter, $varSorting, $varLimit)
+                $intCacheId = $this->Database->prepare("SELECT id FROM tl_iso_requestcache WHERE store_id=? AND filters" . ($varFilter ? '=' : ' IS ') . "? AND sorting" . ($varSorting ? '=' : ' IS ') . "? AND limits" . ($varLimit ? '=' : ' IS ') . "?")
+                                             ->execute(Isotope::getConfig()->store_id, $varFilter, $varSorting, $varLimit)
                                              ->id;
 
                 if ($intCacheId)
@@ -93,8 +93,8 @@ class ProductFilter extends Module
                 }
                 else
                 {
-                    $intCacheId = $this->Database->prepare("INSERT INTO tl_iso_requestcache (tstamp,store_id,filters,sorting,limits) VALUES ($time, {$this->Isotope->Config->store_id}, ?, ?, ?)")
-                                                 ->execute($varFilter, $varSorting, $varLimit)
+                    $intCacheId = $this->Database->prepare("INSERT INTO tl_iso_requestcache (tstamp,store_id,filters,sorting,limits) VALUES ($time, ?, ?, ?, ?)")
+                                                 ->execute(Isotope::getConfig()->store_id, $varFilter, $varSorting, $varLimit)
                                                  ->insertId;
                 }
 
@@ -388,14 +388,14 @@ class ProductFilter extends Module
 
                     $arrOptions[] = array
                     (
-                        'label'        => ($this->Isotope->formatLabel('tl_iso_products', $field) . ', ' . $asc),
+                        'label'        => (Isotope::formatLabel('tl_iso_products', $field) . ', ' . $asc),
                         'value'        => $field.':ASC',
                         'default'    => ((is_array($GLOBALS['ISO_SORTING'][$this->id]) && $GLOBALS['ISO_SORTING'][$this->id][$field][0] == SORT_ASC) ? '1' : ''),
                     );
 
                     $arrOptions[] = array
                     (
-                        'label'        => ($this->Isotope->formatLabel('tl_iso_products', $field) . ', ' . $desc),
+                        'label'        => (Isotope::formatLabel('tl_iso_products', $field) . ', ' . $desc),
                         'value'        => $field.':DESC',
                         'default'    => ((is_array($GLOBALS['ISO_SORTING'][$this->id]) && $GLOBALS['ISO_SORTING'][$this->id][$field][0] == SORT_DESC) ? '1' : ''),
                     );

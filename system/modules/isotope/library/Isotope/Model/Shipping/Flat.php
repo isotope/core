@@ -12,6 +12,7 @@
 
 namespace Isotope\Model\Shipping;
 
+use Isotope\Isotope;
 use Isotope\Model\Shipping;
 
 
@@ -37,7 +38,7 @@ class Flat extends Shipping
         switch( $strKey )
         {
             case 'price':
-                return $this->Isotope->calculatePrice($this->getPrice(), $this, 'price', $this->arrData['tax_class']);
+                return Isotope::getInstance()->calculatePrice($this->getPrice(), $this, 'price', $this->arrData['tax_class']);
                 break;
         }
 
@@ -57,7 +58,7 @@ class Flat extends Shipping
             return false;
         }
 
-        return $this->Isotope->calculateSurcharge(
+        return Isotope::getInstance()->calculateSurcharge(
                                 $fltPrice,
                                 ($GLOBALS['TL_LANG']['MSC']['shippingLabel'] . ' (' . $this->label . ')'),
                                 $this->arrData['tax_class'],
@@ -78,7 +79,7 @@ class Flat extends Shipping
         if ($blnPercentage)
         {
             $fltSurcharge = (float) substr($strPrice, 0, -1);
-            $fltPrice = $this->Isotope->Cart->subTotal / 100 * $fltSurcharge;
+            $fltPrice = Isotope::getCart()->subTotal / 100 * $fltSurcharge;
         }
         else
         {
@@ -88,10 +89,10 @@ class Flat extends Shipping
         switch( $this->flatCalculation )
         {
             case 'perProduct':
-                return (($fltPrice * $this->Isotope->Cart->products) + $this->calculateSurcharge());
+                return (($fltPrice * Isotope::getCart()->products) + $this->calculateSurcharge());
 
             case 'perItem':
-                return (($fltPrice * $this->Isotope->Cart->items) + $this->calculateSurcharge());
+                return (($fltPrice * Isotope::getCart()->items) + $this->calculateSurcharge());
 
             default:
                 return ($fltPrice + $this->calculateSurcharge());
@@ -109,7 +110,7 @@ class Flat extends Shipping
             return 0;
 
         $intSurcharge = 0;
-        $arrProducts = $this->Isotope->Cart->getProducts();
+        $arrProducts = Isotope::getCart()->getProducts();
 
         foreach( $arrProducts as $objProduct )
         {

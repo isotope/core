@@ -187,7 +187,7 @@ class MediaManager extends \Widget implements \uploadable
             $blnLanguage = true;
 
             $this->import('Isotope\Isotope', 'Isotope');
-            $this->varValue = $this->Isotope->mergeMediaData($this->varValue, $arrFallback);
+            $this->varValue = Isotope::mergeMediaData($this->varValue, $arrFallback);
         }
 
         $GLOBALS['TL_CSS'][] = TL_PLUGINS_URL . 'plugins/mediabox/'. MEDIABOX .'/css/mediaboxAdvBlack21.css|screen';

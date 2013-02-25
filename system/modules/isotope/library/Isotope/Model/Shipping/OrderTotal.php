@@ -12,6 +12,7 @@
 
 namespace Isotope\Model\Shipping;
 
+use Isotope\Isotope;
 use Isotope\Interfaces\IsotopeShipping;
 use Isotope\Model\Shipping;
 
@@ -42,9 +43,9 @@ class OrderTotal extends Shipping implements IsotopeShipping
         switch( $strKey )
         {
             case 'price':
-                $fltEligibleSubTotal = $this->getAdjustedSubTotal((TL_MODE=='FE' ? $this->Isotope->Cart->subTotal : $this->Isotope->Order->subTotal));
+                $fltEligibleSubTotal = $this->getAdjustedSubTotal((TL_MODE=='FE' ? Isotope::getCart()->subTotal : Isotope::getInstance()->Order->subTotal));
 
-                return $fltEligibleSubTotal <= 0 ? 0.00 : $this->Isotope->calculatePrice($this->calculateShippingRate($this->id, $fltEligibleSubTotal), $this, 'price', $this->arrData['tax_class']);
+                return $fltEligibleSubTotal <= 0 ? 0.00 : Isotope::getInstance()->calculatePrice($this->calculateShippingRate($this->id, $fltEligibleSubTotal), $this, 'price', $this->arrData['tax_class']);
 
             default:
                 return parent::__get($strKey);
@@ -96,7 +97,7 @@ class OrderTotal extends Shipping implements IsotopeShipping
     public function getAdjustedSubTotal($fltSubtotal)
     {
 
-        $arrProducts = (TL_MODE=='FE' ? $this->Isotope->Cart->getProducts() : $this->Isotope->Order->getProducts());
+        $arrProducts = (TL_MODE=='FE' ? Isotope::getCart()->getProducts() : Isotope::getInstance()->Order->getProducts());
 
         foreach ($arrProducts as $objProduct)
         {
@@ -143,14 +144,14 @@ class OrderTotal extends Shipping implements IsotopeShipping
      */
     public function getSurcharge($objCollection)
     {
-        $fltEligibleSubTotal = $this->getAdjustedSubTotal((TL_MODE=='FE' ? $this->Isotope->Cart->subTotal : $this->Isotope->Order->subTotal));
+        $fltEligibleSubTotal = $this->getAdjustedSubTotal((TL_MODE=='FE' ? Isotope::getCart()->subTotal : Isotope::getInstance()->Order->subTotal));
 
         if ($fltEligibleSubTotal <= 0)
         {
             return false;
         }
 
-        return $this->Isotope->calculateSurcharge(
+        return Isotope::getInstance()->calculateSurcharge(
                                 $this->calculateShippingRate($this->id, $fltEligibleSubTotal),
                                 ($GLOBALS['TL_LANG']['MSC']['shippingLabel'] . ' (' . $this->label . ')'),
                                 $this->arrData['tax_class'],

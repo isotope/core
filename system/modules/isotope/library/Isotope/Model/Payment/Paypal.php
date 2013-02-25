@@ -12,6 +12,7 @@
 
 namespace Isotope\Model\Payment;
 
+use Isotope\Isotope;
 use Isotope\Interfaces\IsotopePayment;
 use Isotope\Model\Payment;
 use Isotope\Model\ProductCollection\Order;
@@ -37,7 +38,7 @@ class Paypal extends Payment implements IsotopePayment
      */
     public function processPayment()
     {
-        if (($objOrder = Order::findOneBy('source_collection_id', $this->Isotope->Cart->id)) === null)
+        if (($objOrder = Order::findOneBy('source_collection_id', Isotope::getCart()->id)) === null)
         {
             return false;
         }
@@ -135,7 +136,7 @@ class Paypal extends Payment implements IsotopePayment
                 case 'Failed':
                 case 'Voided':
                     $objOrder->date_paid = '';
-                    $objOrder->updateOrderStatus($this->Isotope->Config->orderstatus_error);
+                    $objOrder->updateOrderStatus(Isotope::getConfig()->orderstatus_error);
                     break;
 
                 case 'In-Progress':
@@ -171,14 +172,14 @@ class Paypal extends Payment implements IsotopePayment
      */
     public function checkoutForm()
     {
-        if (($objOrder = Order::findOneBy('source_collection_id', $this->Isotope->Cart->id)) === null) {
+        if (($objOrder = Order::findOneBy('source_collection_id', Isotope::getCart()->id)) === null) {
             $this->redirect($this->addToUrl('step=failed', true));
         }
 
         $arrData = array();
         $fltDiscount = 0;
 
-        foreach ($this->Isotope->Cart->getProducts() as $objProduct) {
+        foreach (Isotope::getCart()->getProducts() as $objProduct) {
 
             $strOptions = '';
             $arrOptions = $objProduct->getOptions();
@@ -200,7 +201,7 @@ class Paypal extends Payment implements IsotopePayment
         }
 
 
-        foreach( $this->Isotope->Cart->getSurcharges() as $arrSurcharge ) {
+        foreach( Isotope::getCart()->getSurcharges() as $arrSurcharge ) {
 
             if ($arrSurcharge['add'] === false) {
                 continue;
@@ -225,8 +226,8 @@ class Paypal extends Payment implements IsotopePayment
         $objTemplate->invoice = $objOrder->id;
         $objTemplate->data = $arrData;
         $objTemplate->discount = $fltDiscount;
-        $objTemplate->address = $this->Isotope->Cart->billingAddress;
-        $objTemplate->currency = $this->Isotope->Config->currency;
+        $objTemplate->address = Isotope::getCart()->billingAddress;
+        $objTemplate->currency = Isotope::getConfig()->currency;
         $objTemplate->return = \Environment::get('base') . \Isotope\Frontend::addQueryStringToUrl('uid=' . $objOrder->uniqid, $this->addToUrl('step=complete', true));
         $objTemplate->cancel_return = \Environment::get('base') . $this->addToUrl('step=failed', true);
         $objTemplate->notify_url = \Environment::get('base') . 'system/modules/isotope/postsale.php?mod=pay&id=' . $this->id;

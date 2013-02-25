@@ -136,7 +136,7 @@ class IsotopeRules extends \Controller
                 $arrSurcharges[] = $arrSurcharge;
         }
 
-        $arrCoupons = deserialize($this->Isotope->Cart->coupons);
+        $arrCoupons = deserialize(Isotope::getCart()->coupons);
         if (is_array($arrCoupons) && !empty($arrCoupons))
         {
             $arrDropped = array();
@@ -163,7 +163,7 @@ class IsotopeRules extends \Controller
             {
                 // @todo show dropped coupons
                 $arrCoupons = array_diff($arrCoupons, $arrDropped);
-                $this->Database->query("UPDATE tl_iso_cart SET coupons='" . serialize($arrCoupons) . "' WHERE id=".(int) $this->Isotope->Cart->id);
+                $this->Database->query("UPDATE tl_iso_cart SET coupons='" . serialize($arrCoupons) . "' WHERE id=".(int) Isotope::getCart()->id);
             }
         }
 
@@ -179,7 +179,7 @@ class IsotopeRules extends \Controller
      */
     public function getCouponForm($objModule)
     {
-        $arrCoupons = is_array(deserialize($this->Isotope->Cart->coupons)) ? deserialize($this->Isotope->Cart->coupons) : array();
+        $arrCoupons = is_array(deserialize(Isotope::getCart()->coupons)) ? deserialize(Isotope::getCart()->coupons) : array();
         $strCoupon = \Input::get('coupon_'.$objModule->id);
 
         if ($strCoupon == '')
@@ -187,7 +187,7 @@ class IsotopeRules extends \Controller
 
         if ($strCoupon != '')
         {
-            $arrRule = $this->findCoupon($strCoupon, $this->Isotope->Cart->getProducts());
+            $arrRule = $this->findCoupon($strCoupon, Isotope::getCart()->getProducts());
 
             if ($arrRule === false)
             {
@@ -203,8 +203,8 @@ class IsotopeRules extends \Controller
                 {
                     $arrCoupons[] = $arrRule['code'];
 
-                    $this->Isotope->Cart->coupons = serialize($arrCoupons);
-                    $this->Isotope->Cart->save();
+                    Isotope::getCart()->coupons = serialize($arrCoupons);
+                    Isotope::getCart()->save();
 
                     $_SESSION['COUPON_SUCCESS'][$objModule->id] = sprintf($GLOBALS['TL_LANG']['MSC']['couponApplied'], $arrRule['code']);
                 }
@@ -287,7 +287,7 @@ class IsotopeRules extends \Controller
         {
             $time = time();
 
-            $this->Database->query("INSERT INTO tl_iso_rule_usage (pid,tstamp,order_id,config_id,member_id) VALUES (" . implode(", $time, {$objOrder->id}, ".(int) $this->Isotope->Config->id.", {$objOrder->pid}), (", $arrRules) . ", $time, {$objOrder->id}, ".(int) $this->Isotope->Config->id.", {$objOrder->pid})");
+            $this->Database->query("INSERT INTO tl_iso_rule_usage (pid,tstamp,order_id,config_id,member_id) VALUES (" . implode(", $time, {$objOrder->id}, ".(int) Isotope::getConfig()->id.", {$objOrder->pid}), (", $arrRules) . ", $time, {$objOrder->id}, ".(int) Isotope::getConfig()->id.", {$objOrder->pid})");
         }
 
         return true;
@@ -298,7 +298,7 @@ class IsotopeRules extends \Controller
      */
     public function cleanRuleUsages(&$objModule)
     {
-        $this->Database->query("DELETE FROM tl_iso_rule_usage WHERE pid=(SELECT id FROM tl_iso_collection WHERE type='Order' AND source_collection_id=".(int) $this->Isotope->Cart->id.")");
+        $this->Database->query("DELETE FROM tl_iso_rule_usage WHERE pid=(SELECT id FROM tl_iso_collection WHERE type='Order' AND source_collection_id=".(int) Isotope::getCart()->id.")");
 
         return '';
     }
@@ -335,17 +335,17 @@ class IsotopeRules extends \Controller
 
 
         // Limits
-        $arrProcedures[] = "(limitPerConfig=0 OR limitPerConfig>(SELECT COUNT(*) FROM tl_iso_rule_usage WHERE pid=r.id AND config_id=".(int) $this->Isotope->Config->id." AND order_id NOT IN (SELECT id FROM tl_iso_collection WHERE type='Order' AND source_collection_id=".(int) $this->Isotope->Cart->id.")))";
+        $arrProcedures[] = "(limitPerConfig=0 OR limitPerConfig>(SELECT COUNT(*) FROM tl_iso_rule_usage WHERE pid=r.id AND config_id=".(int) Isotope::getConfig()->id." AND order_id NOT IN (SELECT id FROM tl_iso_collection WHERE type='Order' AND source_collection_id=".(int) Isotope::getCart()->id.")))";
 
         if (FE_USER_LOGGED_IN === true && TL_MODE=='FE')
         {
-            $arrProcedures[] = "(limitPerMember=0 OR limitPerMember>(SELECT COUNT(*) FROM tl_iso_rule_usage WHERE pid=r.id AND member_id=".(int) $this->User->id." AND order_id NOT IN (SELECT id FROM tl_iso_collection WHERE type='Order' AND source_collection_id=".(int) $this->Isotope->Cart->id.")))";
+            $arrProcedures[] = "(limitPerMember=0 OR limitPerMember>(SELECT COUNT(*) FROM tl_iso_rule_usage WHERE pid=r.id AND member_id=".(int) $this->User->id." AND order_id NOT IN (SELECT id FROM tl_iso_collection WHERE type='Order' AND source_collection_id=".(int) Isotope::getCart()->id.")))";
         }
 
         // Store config restrictions
         $arrProcedures[] = "(configRestrictions=''
-                            OR (configRestrictions='1' AND configCondition='' AND (SELECT COUNT(*) FROM tl_iso_rule_restrictions WHERE pid=r.id AND type='configs' AND object_id=".(int) $this->Isotope->Config->id.")>0)
-                            OR (configRestrictions='1' AND configCondition='1' AND (SELECT COUNT(*) FROM tl_iso_rule_restrictions WHERE pid=r.id AND type='configs' AND object_id=".(int) $this->Isotope->Config->id.")=0))";
+                            OR (configRestrictions='1' AND configCondition='' AND (SELECT COUNT(*) FROM tl_iso_rule_restrictions WHERE pid=r.id AND type='configs' AND object_id=".(int) Isotope::getConfig()->id.")>0)
+                            OR (configRestrictions='1' AND configCondition='1' AND (SELECT COUNT(*) FROM tl_iso_rule_restrictions WHERE pid=r.id AND type='configs' AND object_id=".(int) Isotope::getConfig()->id.")=0))";
 
 
         // Member restrictions
@@ -370,7 +370,7 @@ class IsotopeRules extends \Controller
         // Product restrictions
         if (!is_array($arrProducts))
         {
-            $arrProducts = $this->Isotope->Cart->getProducts();
+            $arrProducts = Isotope::getCart()->getProducts();
         }
 
         if (!empty($arrProducts))
@@ -518,12 +518,12 @@ class IsotopeRules extends \Controller
     protected function calculateProductSurcharge($arrRule)
     {
         // Cart subtotal
-        if (($arrRule['minSubtotal'] > 0 && $this->Isotope->Cart->subTotal < $arrRule['minSubtotal']) || ($arrRule['maxSubtotal'] > 0 && $this->Isotope->Cart->subTotal > $arrRule['maxSubtotal']))
+        if (($arrRule['minSubtotal'] > 0 && Isotope::getCart()->subTotal < $arrRule['minSubtotal']) || ($arrRule['maxSubtotal'] > 0 && Isotope::getCart()->subTotal > $arrRule['maxSubtotal']))
         {
             return false;
         }
 
-        $arrProducts = $this->Isotope->Cart->getProducts();
+        $arrProducts = Isotope::getCart()->getProducts();
 
         $blnMatch = false;
         $blnPercentage = false;
@@ -537,7 +537,7 @@ class IsotopeRules extends \Controller
 
         $arrSurcharge = array
         (
-            'label'            => $this->Isotope->translate(($arrRule['label'] ? $arrRule['label'] : $arrRule['name'])),
+            'label'            => Isotope::translate(($arrRule['label'] ? $arrRule['label'] : $arrRule['name'])),
             'price'            => ($blnPercentage ? $fltDiscount.'%' : ''),
             'total_price'    => 0,
             'tax_class'        => 0,
@@ -574,11 +574,11 @@ class IsotopeRules extends \Controller
             switch( $arrRule['quantityMode'] )
             {
                 case 'cart_products':
-                    $intTotal = $this->Isotope->Cart->products;
+                    $intTotal = Isotope::getCart()->products;
                     break;
 
                 case 'cart_items':
-                    $intTotal = $this->Isotope->Cart->items;
+                    $intTotal = Isotope::getCart()->items;
                     break;
             }
         }

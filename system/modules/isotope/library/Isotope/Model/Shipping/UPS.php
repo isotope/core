@@ -12,6 +12,7 @@
 
 namespace Isotope\Model\Shipping;
 
+use Isotope\Isotope;
 use Isotope\Interfaces\IsotopeShipping;
 use Isotope\Model\Shipping;
 
@@ -119,36 +120,38 @@ class UPS extends Shipping implements IsotopeShipping
         switch( $strKey )
         {
             case 'price':
-                $arrSubDivisionShipping = explode(',',$this->Isotope->Cart->shippingAddress['subdivision']);
+                $objConfig = Isotope::getConfig();
+                $objCart = Isotope::getCart();
+                $arrSubDivisionShipping = explode(',', $objCart->shippingAddress->subdivision);
 
                 $arrDestination = array
                 (
-                    'name'            => $this->Isotope->Cart->shippingAddress['firstname'] . ' ' . $this->Isotope->Cart->shippingAddress['lastname'],
-                    'phone'            => $this->Isotope->Cart->shippingAddress['phone'],
-                    'company'        => $this->Isotope->Cart->shippingAddress['company'],
-                    'street'        => $this->Isotope->Cart->shippingAddress['street_1'],
-                    'street2'        => $this->Isotope->Cart->shippingAddress['street_2'],
-                    'street3'        => $this->Isotope->Cart->shippingAddress['street_3'],
-                    'city'            => $this->Isotope->Cart->shippingAddress['city'],
-                    'state'            => $arrSubDivisionShipping[1],
-                    'zip'            => $this->Isotope->Cart->shippingAddress['postal'],
-                    'country'        => $this->Isotope->Cart->shippingAddress['country']
+                    'name'              => $objCart->shippingAddress->firstname . ' ' . $objCart->shippingAddress->lastname,
+                    'phone'             => $objCart->shippingAddress->phone,
+                    'company'           => $objCart->shippingAddress->company,
+                    'street'            => $objCart->shippingAddress->street_1,
+                    'street2'           => $objCart->shippingAddress->street_2,
+                    'street3'           => $objCart->shippingAddress->street_3,
+                    'city'              => $objCart->shippingAddress->city,
+                    'state'             => $arrSubDivisionShipping[1],
+                    'zip'               => $objCart->shippingAddress->postal,
+                    'country'           => $objCart->shippingAddress->country
                 );
 
-                $arrSubDivisionStore = explode(',',$this->Isotope->Config->subdivision);
+                $arrSubDivisionStore = explode(',',Isotope::getInstance()->Config->subdivision);
 
                 $arrOrigin = array
                 (
-                    'name'            => $this->Isotope->Config->firstname . ' ' . $this->Isotope->Config->lastname,
-                    'phone'            => $this->Isotope->Config->phone,
-                    'company'        => $this->Isotope->Config->company,
-                    'street'        => $this->Isotope->Config->street_1,
-                    'street2'        => $this->Isotope->Config->street_2,
-                    'street3'        => $this->Isotope->Config->street_3,
-                    'city'            => $this->Isotope->Config->city,
-                    'state'            => $arrSubDivisionStore[1],
-                    'zip'            => $this->Isotope->Config->postal,
-                    'country'        => $this->Isotope->Config->country
+                    'name'              => $objConfig->firstname . ' ' . $objConfig->lastname,
+                    'phone'             => $objConfig->phone,
+                    'company'           => $objConfig->company,
+                    'street'            => $objConfig->street_1,
+                    'street2'           => $objConfig->street_2,
+                    'street3'           => $objConfig->street_3,
+                    'city'              => $objConfig->city,
+                    'state'             => $arrSubDivisionStore[1],
+                    'zip'               => $objConfig->postal,
+                    'country'           => $objConfig->country
                 );
 
                 $arrShipment['service'] = ((integer) $this->ups_enabledService < 10 ? "0" . $this->ups_enabledService : $this->ups_enabledService);        //Ground for now
@@ -160,7 +163,7 @@ class UPS extends Shipping implements IsotopeShipping
                     'description'    => ''
                 );
 
-                $fltWeight = $this->Isotope->Cart->getShippingWeight('lb');
+                $fltWeight = $objCart->getShippingWeight('lb');
 
                 $arrShipment['packages'][] = array
                 (
@@ -758,7 +761,7 @@ class UPS extends Shipping implements IsotopeShipping
             return false;
         }
 
-        return $this->Isotope->calculateSurcharge(
+        return Isotope::getInstance()->calculateSurcharge(
                                 $fltPrice,
                                 ($GLOBALS['TL_LANG']['MSC']['shippingLabel'] . ' (' . $this->label . ')'),
                                 $this->arrData['tax_class'],

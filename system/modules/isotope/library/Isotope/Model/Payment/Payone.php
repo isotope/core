@@ -12,6 +12,7 @@
 
 namespace Isotope\Model\Payment;
 
+use Isotope\Isotope;
 use Isotope\Interfaces\IsotopePayment;
 use Isotope\Model\Payment;
 use Isotope\Model\ProductCollection\Order;
@@ -82,7 +83,7 @@ class Payone extends Payment implements IsotopePayment
     {
         $i = 0;
 
-        if (($objOrder = Order::findOneBy('source_collection_id', $this->Isotope->Cart->id)) === null)
+        if (($objOrder = Order::findOneBy('source_collection_id', Isotope::getCart()->id)) === null)
         {
             $this->redirect($this->addToUrl('step=failed', true));
         }
@@ -100,11 +101,11 @@ class Payone extends Payment implements IsotopePayment
             'display_address'    => 'no',
             'successurl'        => \Environment::get('base') . $this->addToUrl('step=complete', true) . '?uid=' . $objOrder->uniqid,
             'backurl'            => \Environment::get('base') . $this->addToUrl('step=failed', true),
-            'amount'            => ($this->Isotope->Cart->grandTotal * 100),
-            'currency'            => $this->Isotope->Config->currency,
+            'amount'            => (Isotope::getCart()->grandTotal * 100),
+            'currency'            => Isotope::getConfig()->currency,
         );
 
-        foreach( $this->Isotope->Cart->getProducts() as $objProduct )
+        foreach( Isotope::getCart()->getProducts() as $objProduct )
         {
             $strOptions = '';
             $arrOptions = $objProduct->getOptions();
@@ -127,7 +128,7 @@ class Payone extends Payment implements IsotopePayment
             $arrData['de['.$i.']']        = specialchars($objProduct->name . $strOptions);
         }
 
-        foreach( $this->Isotope->Cart->getSurcharges() as $k => $arrSurcharge )
+        foreach( Isotope::getCart()->getSurcharges() as $k => $arrSurcharge )
         {
             if ($arrSurcharge['add'] === false)
                 continue;
@@ -147,7 +148,7 @@ class Payone extends Payment implements IsotopePayment
         $objTemplate->id = $this->id;
         $objTemplate->data = $arrData;
         $objTemplate->hash = $strHasn;
-        $objTemplate->billing_address = $this->Isotope->Cart->billing_address;
+        $objTemplate->billing_address = Isotope::getCart()->billing_address;
         $objTemplate->headline = $GLOBALS['TL_LANG']['MSC']['pay_with_redirect'][0];
         $objTemplate->message = $GLOBALS['TL_LANG']['MSC']['pay_with_redirect'][1];
         $objTemplate->slabel = specialchars($GLOBALS['TL_LANG']['MSC']['pay_with_redirect'][2]);

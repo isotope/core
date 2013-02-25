@@ -72,7 +72,7 @@ abstract class Payment extends \Model
         switch ($strKey)
         {
             case 'label':
-                return $this->Isotope->translate($this->arrData['label'] ? $this->arrData['label'] : $this->arrData['name']);
+                return Isotope::translate($this->arrData['label'] ? $this->arrData['label'] : $this->arrData['name']);
                 break;
 
             case 'available':
@@ -86,14 +86,14 @@ abstract class Payment extends \Model
                 if ($blnPercentage)
                 {
                     $fltSurcharge = (float) substr($strPrice, 0, -1);
-                    $fltPrice = $this->Isotope->Cart->subTotal / 100 * $fltSurcharge;
+                    $fltPrice = Isotope::getCart()->subTotal / 100 * $fltSurcharge;
                 }
                 else
                 {
                     $fltPrice = (float) $strPrice;
                 }
 
-                return $this->Isotope->calculatePrice($fltPrice, $this, 'price', $this->arrData['tax_class']);
+                return Isotope::calculatePrice($fltPrice, $this, 'price', $this->arrData['tax_class']);
                 break;
 
             case 'surcharge':
@@ -133,21 +133,21 @@ abstract class Payment extends \Model
             }
         }
 
-        if (($this->minimum_total > 0 && $this->minimum_total > $this->Isotope->Cart->subTotal) || ($this->maximum_total > 0 && $this->maximum_total < $this->Isotope->Cart->subTotal))
+        if (($this->minimum_total > 0 && $this->minimum_total > Isotope::getCart()->subTotal) || ($this->maximum_total > 0 && $this->maximum_total < Isotope::getCart()->subTotal))
         {
             return false;
         }
 
         $arrCountries = deserialize($this->countries);
 
-        if(is_array($arrCountries) && !empty($arrCountries) && !in_array($this->Isotope->Cart->billingAddress->country, $arrCountries))
+        if(is_array($arrCountries) && !empty($arrCountries) && !in_array(Isotope::getCart()->billingAddress->country, $arrCountries))
         {
             return false;
         }
 
         $arrShippings = deserialize($this->shipping_modules);
 
-        if (is_array($arrShippings) && !empty($arrShippings) && ((!$this->Isotope->Cart->hasShipping() && !in_array(-1, $arrShippings)) || ($this->Isotope->Cart->hasShipping() && !in_array($this->Isotope->Cart->Shipping->id, $arrShippings))))
+        if (is_array($arrShippings) && !empty($arrShippings) && ((!Isotope::getCart()->hasShipping() && !in_array(-1, $arrShippings)) || (Isotope::getCart()->hasShipping() && !in_array(Isotope::getCart()->Shipping->id, $arrShippings))))
         {
             return false;
         }
@@ -156,7 +156,7 @@ abstract class Payment extends \Model
 
         if (is_array($arrTypes) && !empty($arrTypes))
         {
-            $arrProducts = $this->Isotope->Cart->getProducts();
+            $arrProducts = Isotope::getCart()->getProducts();
 
             foreach ($arrProducts as $objProduct)
             {
@@ -255,12 +255,12 @@ abstract class Payment extends \Model
             return false;
         }
 
-        return $this->Isotope->calculateSurcharge(
-                                $this->arrData['price'],
-                                ($GLOBALS['TL_LANG']['MSC']['paymentLabel'] . ' (' . $this->label . ')'),
-                                $this->arrData['tax_class'],
-                                $objCollection->getProducts(),
-                                $this);
+        return Isotope::calculateSurcharge(
+                   $this->arrData['price'],
+                   ($GLOBALS['TL_LANG']['MSC']['paymentLabel'] . ' (' . $this->label . ')'),
+                   $this->arrData['tax_class'],
+                   $objCollection->getProducts(),
+                   $this);
     }
 
 

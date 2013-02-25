@@ -12,6 +12,7 @@
 
 namespace Isotope\Module;
 
+use Isotope\Isotope;
 use Isotope\Model\ProductCollection\Order;
 
 
@@ -91,10 +92,7 @@ class OrderHistory extends Module
 
         while ($objOrders->next())
         {
-            if ($this->Isotope->Config->id != $objOrders->config_id)
-            {
-                $this->Isotope->overrideConfig($objOrders->config_id);
-            }
+            Isotope::overrideConfig($objOrders->config_id);
 
             $arrOrders[] = array
             (
@@ -104,7 +102,7 @@ class OrderHistory extends Module
                 'time'       => \System::parseDate($GLOBALS['TL_CONFIG']['timeFormat'], $objOrders->date),
                 'datime'     => \System::parseDate($GLOBALS['TL_CONFIG']['datimeFormat'], $objOrders->date),
                 'items'      => $objOrders->items,
-                'grandTotal' => $this->Isotope->formatPriceWithCurrency($objOrders->grandTotal),
+                'grandTotal' => Isotope::formatPriceWithCurrency($objOrders->grandTotal),
                 'status'     => $objOrders->statusLabel,
                 'link'       => ($this->jumpTo ? (\Isotope\Frontend::addQueryStringToUrl('uid=' . $objOrders->uniqid, $this->jumpTo)) : ''),
                 'class'      => $objOrders->statusAlias,

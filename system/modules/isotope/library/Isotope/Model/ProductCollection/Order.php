@@ -12,6 +12,7 @@
 
 namespace Isotope\Model\ProductCollection;
 
+use Isotope\Isotope;
 use Isotope\Interfaces\IsotopeProduct;
 use Isotope\Interfaces\IsotopeProductCollection;
 use Isotope\Model\Address;
@@ -92,7 +93,7 @@ class Order extends ProductCollection implements IsotopeProductCollection
             case 'statusLabel':
                 $objStatus = \Database::getInstance()->execute("SELECT * FROM tl_iso_orderstatus WHERE id=" . (int) $this->order_status);
 
-                return $this->Isotope->translate($objStatus->name);
+                return Isotope::translate($objStatus->name);
                 break;
 
             case 'statusAlias':
@@ -290,8 +291,8 @@ class Order extends ProductCollection implements IsotopeProductCollection
             $this->loadLanguageFile('default');
 
             // Initialize system
-            $this->Isotope->overrideConfig($this->config_id);
-            $this->Isotope->Cart = $objCart;
+            Isotope::overrideConfig($this->config_id);
+            Isotope::setCart($objCart);
         }
 
         // !HOOK: pre-process checkout
@@ -314,7 +315,7 @@ class Order extends ProductCollection implements IsotopeProductCollection
         $objCart->delete();
 
         $this->checkout_complete = true;
-        $this->order_status = $this->Isotope->Config->orderstatus_new;
+        $this->order_status = Isotope::getConfig()->orderstatus_new;
 
         $this->generateOrderId();
         $arrData = $this->getEmailData();
@@ -323,12 +324,12 @@ class Order extends ProductCollection implements IsotopeProductCollection
 
         if ($this->iso_mail_admin && $this->iso_sales_email != '')
         {
-            $this->Isotope->sendMail($this->iso_mail_admin, $this->iso_sales_email, $this->language, $arrData, $this->iso_customer_email, $this);
+            Isotope::sendMail($this->iso_mail_admin, $this->iso_sales_email, $this->language, $arrData, $this->iso_customer_email, $this);
         }
 
         if ($this->iso_mail_customer && $this->iso_customer_email != '')
         {
-            $this->Isotope->sendMail($this->iso_mail_customer, $this->iso_customer_email, $this->language, $arrData, '', $this);
+            Isotope::sendMail($this->iso_mail_customer, $this->iso_customer_email, $this->language, $arrData, '', $this);
         }
         else
         {
@@ -346,10 +347,10 @@ class Order extends ProductCollection implements IsotopeProductCollection
 
                 if ($arrAddress['id'] == 0)
                 {
-                    $arrAddress = array_intersect_key($arrAddress, array_flip($this->Isotope->Config->{$address . '_fields_raw'}));
+                    $arrAddress = array_intersect_key($arrAddress, array_flip(Isotope::getConfig()->{$address . '_fields_raw'}));
                     $arrAddress['pid'] = $this->pid;
                     $arrAddress['tstamp'] = $time;
-                    $arrAddress['store_id'] = $this->Isotope->Config->store_id;
+                    $arrAddress['store_id'] = Isotope::getConfig()->store_id;
 
                     \Database::getInstance()->prepare("INSERT INTO tl_iso_addresses %s")->set($arrAddress)->execute();
                 }
@@ -451,7 +452,7 @@ class Order extends ProductCollection implements IsotopeProductCollection
 
             if ($objNewStatus->mail_customer && $this->iso_customer_email != '')
             {
-                $this->Isotope->sendMail($objNewStatus->mail_customer, $this->iso_customer_email, $this->language, $arrData, '', $this);
+                Isotope::sendMail($objNewStatus->mail_customer, $this->iso_customer_email, $this->language, $arrData, '', $this);
 
                 if (TL_MODE == 'BE')
                 {
@@ -462,7 +463,7 @@ class Order extends ProductCollection implements IsotopeProductCollection
             $strSalesEmail = $objNewStatus->sales_email ? $objNewStatus->sales_email : $this->iso_sales_email;
             if ($objNewStatus->mail_admin && $strSalesEmail != '')
             {
-                $this->Isotope->sendMail($objNewStatus->mail_admin, $strSalesEmail, $this->language, $arrData, $this->iso_customer_email, $this);
+                Isotope::sendMail($objNewStatus->mail_admin, $strSalesEmail, $this->language, $arrData, $this->iso_customer_email, $this);
             }
         }
 
@@ -512,12 +513,12 @@ class Order extends ProductCollection implements IsotopeProductCollection
 
         foreach ($this->billing_address as $k => $v)
         {
-            $arrData['billing_' . $k] = $this->Isotope->formatValue('tl_iso_addresses', $k, $v);
+            $arrData['billing_' . $k] = Isotope::formatValue('tl_iso_addresses', $k, $v);
         }
 
         foreach ($this->shipping_address as $k => $v)
         {
-            $arrData['shipping_' . $k] = $this->Isotope->formatValue('tl_iso_addresses', $k, $v);
+            $arrData['shipping_' . $k] = Isotope::formatValue('tl_iso_addresses', $k, $v);
         }
 
         if ($this->pid > 0)
@@ -526,7 +527,7 @@ class Order extends ProductCollection implements IsotopeProductCollection
 
             foreach ($objUser->row() as $k => $v)
             {
-                $arrData['member_' . $k] = $this->Isotope->formatValue('tl_member', $k, $v);
+                $arrData['member_' . $k] = Isotope::formatValue('tl_member', $k, $v);
             }
         }
 
@@ -574,9 +575,9 @@ class Order extends ProductCollection implements IsotopeProductCollection
         if ($this->strOrderId == '')
         {
             $objDatabase = \Database::getInstance();
-            $strPrefix = $this->Isotope->call('replaceInsertTags', $this->Isotope->Config->orderPrefix);
+            $strPrefix = Isotope::getInstance()->call('replaceInsertTags', Isotope::getConfig()->orderPrefix);
             $intPrefix = utf8_strlen($strPrefix);
-            $arrConfigIds = $objDatabase->execute("SELECT id FROM tl_iso_config WHERE store_id=" . $this->Isotope->Config->store_id)->fetchEach('id');
+            $arrConfigIds = $objDatabase->prepare("SELECT id FROM tl_iso_config WHERE store_id=?")->execute(Isotope::getConfig()->store_id)->fetchEach('id');
 
             // Lock tables so no other order can get the same ID
             $objDatabase->lockTables(array(static::$strTable => 'WRITE'));
@@ -585,7 +586,7 @@ class Order extends ProductCollection implements IsotopeProductCollection
             $objMax = $objDatabase->prepare("SELECT order_id FROM " . static::$strTable . " WHERE " . ($strPrefix != '' ? "order_id LIKE '$strPrefix%' AND " : '') . "config_id IN (" . implode(',', $arrConfigIds) . ") ORDER BY CAST(" . ($strPrefix != '' ? "SUBSTRING(order_id, " . ($intPrefix+1) . ")" : 'order_id') . " AS UNSIGNED) DESC")->limit(1)->executeUncached();
             $intMax = (int) substr($objMax->order_id, $intPrefix);
 
-            $this->strOrderId = $strPrefix . str_pad($intMax+1, $this->Isotope->Config->orderDigits, '0', STR_PAD_LEFT);
+            $this->strOrderId = $strPrefix . str_pad($intMax+1, Isotope::getConfig()->orderDigits, '0', STR_PAD_LEFT);
         }
 
         $objDatabase->prepare("UPDATE " . static::$strTable . " SET order_id=? WHERE id={$this->id}")->executeUncached($this->strOrderId);

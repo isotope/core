@@ -12,6 +12,7 @@
 
 namespace Isotope\Model\Payment;
 
+use Isotope\Isotope;
 use Isotope\Interfaces\IsotopePayment;
 use Isotope\Model\Payment;
 use Isotope\Model\ProductCollection\Order;
@@ -36,7 +37,7 @@ class Sparkasse extends Payment implements IsotopePayment
     {
         $objOrder = new IsotopeOrder();
 
-        if (!$objOrder->findBy('source_collection_id', $this->Isotope->Cart->id))
+        if (!$objOrder->findBy('source_collection_id', Isotope::getCart()->id))
         {
             return false;
         }
@@ -150,7 +151,7 @@ class Sparkasse extends Payment implements IsotopePayment
     {
         global $objPage;
 
-        if (($objOrder = Order::findOneBy('source_collection_id', $this->Isotope->Cart->id)) === null)
+        if (($objOrder = Order::findOneBy('source_collection_id', Isotope::getCart()->id)) === null)
         {
             $this->redirect($this->addToUrl('step=failed', true));
         }
@@ -161,10 +162,10 @@ class Sparkasse extends Payment implements IsotopePayment
 
         $arrParam = array
         (
-            'amount'                => number_format($this->Isotope->Cart->grandTotal, 2, ',', ''),
-            'basketid'                => $this->Isotope->Cart->id,
+            'amount'                => number_format(Isotope::getCart()->grandTotal, 2, ',', ''),
+            'basketid'                => Isotope::getCart()->id,
             'command'                => 'sslform',
-            'currency'                => $this->Isotope->Config->currency,
+            'currency'                => Isotope::getConfig()->currency,
             'locale'                => $GLOBALS['TL_LANGUAGE'],
             'orderid'                => $objOrder->id,
             'paymentmethod'            => $this->sparkasse_paymentmethod,
