@@ -34,7 +34,7 @@ class Shipping extends \Model\Collection
             return false;
         }
 
-        $strClass = $strClass = '\Isotope\Model\Shipping\\' . $this->objResult->type;
+        $strClass = '\Isotope\Model\Shipping\\' . $this->objResult->type;
 
         if (!class_exists($strClass)) {
             throw new \UnexpectedValueException('Class "' . $this->objResult->type . '" for shipping method ID ' . $this->objResult->id . ' not found.');
