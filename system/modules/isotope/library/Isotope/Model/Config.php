@@ -77,4 +77,36 @@ class Config extends \Model
                 return deserialize(parent::__get($strKey));
         }
     }
+
+    /**
+     * Find config set in root page or the fallback
+     * @param  int
+     * @return object|null
+     */
+    public static function findByRootPageOrFallback($intRoot)
+    {
+        $arrOptions = array(
+			'column' => "(id=(SELECT iso_config FROM tl_page WHERE id=?) OR fallback='1')",
+			'value'  => $intRoot,
+			'order'  => 'fallback',
+			'return' => 'Model'
+		);
+
+		return static::find($arrOptions);
+    }
+
+    /**
+     * Find the fallback config
+     * @return object|null
+     */
+    public static function findByFallback()
+    {
+        $arrOptions = array(
+			'column' => 'fallback',
+			'value'  => '1',
+			'return' => 'Model'
+		);
+
+		return static::find($arrOptions);
+    }
 }

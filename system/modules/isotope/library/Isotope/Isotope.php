@@ -163,11 +163,12 @@ class Isotope extends \Controller
             if (TL_MODE == 'FE')
             {
                 global $objPage;
-                $objConfig = $this->Database->prepare("SELECT c.* FROM tl_iso_config c LEFT OUTER JOIN tl_page p ON p.iso_config=c.id WHERE p.id=" . (int) $objPage->rootId . " OR c.fallback='1' ORDER BY c.fallback")->limit(1)->execute();
+
+                $objConfig = Config::findByRootPageOrFallback($objPage->rootId);
             }
             else
             {
-                $objConfig = $this->Database->execute("SELECT * FROM tl_iso_config WHERE fallback='1'");
+                $objConfig = Config::findByFallback();
             }
         }
 
