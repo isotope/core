@@ -29,6 +29,12 @@ abstract class ProductCollectionSurcharge extends \Model
 {
 
     /**
+     * Table name
+     * @var string
+     */
+    protected static $strTable = 'tl_iso_collection_surcharge';
+
+    /**
      * Tax amount for individual products
      * @var array
      */
