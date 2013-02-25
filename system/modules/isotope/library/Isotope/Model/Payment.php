@@ -170,6 +170,16 @@ abstract class Payment extends \Model
         return true;
     }
 
+    /**
+     * Return true if the payment has a percentage (not fixed) amount
+     * @return bool
+     */
+    public function isPercentage()
+    {
+        substr($this->arrData['price'], -1) == '%' ? true : false;
+    }
+
+
 
     /**
      * Process post-sale requests. Does nothing by default.

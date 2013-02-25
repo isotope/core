@@ -175,6 +175,15 @@ abstract class Shipping extends \Model
         return true;
     }
 
+    /**
+     * Return true if the shipping has a percentage (not fixed) amount
+     * @return bool
+     */
+    public function isPercentage()
+    {
+        substr($this->arrData['price'], -1) == '%' ? true : false;
+    }
+
 
     /**
      * Initialize the module options DCA in backend
