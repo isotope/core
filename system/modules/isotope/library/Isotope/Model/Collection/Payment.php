@@ -35,6 +35,11 @@ class Payment extends \Model\Collection
         }
 
         $strClass = $strClass = '\Isotope\Model\Payment\\' . $this->objResult->type;
+
+        if (!class_exists($strClass)) {
+            throw new \UnexpectedValueException('Class "' . $this->objResult->type . '" for payment method ID ' . $this->objResult->id . ' not found.');
+        }
+
         $this->arrModels[$this->intIndex + 1] = new $strClass($this->objResult);
 
         return true;

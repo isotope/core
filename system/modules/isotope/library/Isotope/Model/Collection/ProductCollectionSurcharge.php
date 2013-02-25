@@ -29,6 +29,11 @@ class ProductCollectionSurcharge extends \Model\Collection
         }
 
         $strClass = $strClass = '\Isotope\Model\ProductCollectionSurcharge\\' . $this->objResult->type;
+
+        if (!class_exists($strClass)) {
+            throw new \UnexpectedValueException('Class "' . $this->objResult->type . '" for product collection surcharge ID ' . $this->objResult->id . ' not found.');
+        }
+
         $this->arrModels[$this->intIndex + 1] = new $strClass($this->objResult);
 
         return true;
