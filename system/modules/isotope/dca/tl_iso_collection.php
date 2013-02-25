@@ -156,6 +156,11 @@ $GLOBALS['TL_DCA']['tl_iso_collection'] = array
         (
             'eval'                    => array('doNotShow'=>true),
         ),
+        'source_collection_id' => array
+        (
+            'foreignKey'              => 'tl_collection.order_id',
+            'relation'                => array('type'=>'hasOne', 'load'=>'lazy'),
+        ),
         'order_id' => array
         (
             'label'                    => &$GLOBALS['TL_LANG']['tl_iso_collection']['order_id'],
