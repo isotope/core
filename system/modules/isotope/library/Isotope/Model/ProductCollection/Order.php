@@ -138,7 +138,7 @@ class Order extends ProductCollection implements IsotopeProductCollection
         {
             // Order ID cannot be changed, it is created through Isotope\Model\ProductCollection\Order::generateOrderId on checkout
             case 'order_id':
-                throw new InvalidArgumentException('order_id cannot be changed trough __set().');
+                throw new \InvalidArgumentException('order_id cannot be changed trough __set().');
                 break;
 
             default:

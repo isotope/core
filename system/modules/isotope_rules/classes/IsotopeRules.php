@@ -486,7 +486,7 @@ class IsotopeRules extends \Controller
                         break;
 
                     default:
-                        throw new InvalidArgumentException('Unknown rule condition "' . $restrictions['condition'] . '"');
+                        throw new \InvalidArgumentException('Unknown rule condition "' . $restrictions['condition'] . '"');
                 }
 
                 $arrRestrictions[] = $strRestriction . ')';

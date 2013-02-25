@@ -94,7 +94,7 @@ class PasteProductButton extends \Backend
         }
 
         $this->Session->set('CLIPBOARD', null);
-        throw new InvalidArgumentException('Unhandled paste_button_callback mode "' . $arrClipboard['mode'] . '"');
+        throw new \InvalidArgumentException('Unhandled paste_button_callback mode "' . $arrClipboard['mode'] . '"');
     }
 
 
