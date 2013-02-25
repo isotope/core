@@ -89,34 +89,6 @@ class USPS extends Shipping implements IsotopeShipping
         switch( $strKey )
         {
             case 'price':
-                /*$arrDestination = array
-                (
-                    'name'            => $this->Isotope->Cart->shippingAddress['firstname'] . ' ' . $this->Isotope->Cart->shippingAddress['lastname'],
-                    'phone'            => $this->Isotope->Cart->shippingAddress['phone'],
-                    'company'        => $this->Isotope->Cart->shippingAddress['company'],
-                    'street'        => $this->Isotope->Cart->shippingAddress['street_1'],
-                    'street2'        => $this->Isotope->Cart->shippingAddress['street_2'],
-                    'street3'        => $this->Isotope->Cart->shippingAddress['street_3'],
-                    'city'            => $this->Isotope->Cart->shippingAddress['city'],
-                    'state'            => $this->Isotope->Cart->shippingAddress['subdivision'],
-                    'zip'            => $this->Isotope->Cart->shippingAddress['postal'],
-                    'country'        => $this->Isotope->Cart->shippingAddress['country']
-                );*/
-
-                /*$arrOrigin = array
-                (
-                    'name'            => $this->Isotope->Config->firstname . ' ' . $this->Isotope->Config->lastname,
-                    'phone'            => $this->Isotope->Config->phone,
-                    'company'        => $this->Isotope->Config->company,
-                    'street'        => $this->Isotope->Config->street_1,
-                    'street2'        => $this->Isotope->Config->street_2,
-                    'street3'        => $this->Isotope->Config->street_3,
-                    'city'            => $this->Isotope->Config->city,
-                    'state'            => $this->Isotope->Config->state,
-                    'zip'            => $this->Isotope->Config->postal,
-                    'country'        => $this->Isotope->Config->country
-                );*/
-
                 $objCart = Isotope::getCart();
                 $arrCountries = $this->getCountries();
                 $destCountryText = $arrCountries[$objCart->shippingAddress->country];

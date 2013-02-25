@@ -254,21 +254,21 @@ $GLOBALS['ISO_NUM']["10'000.00"]    = array(2, '.', "'");
 /**
  * Hooks
  */
-$GLOBALS['TL_HOOKS']['loadDataContainer'][]            = array('Isotope\tl_iso_products', 'loadProductsDCA');
-$GLOBALS['TL_HOOKS']['loadDataContainer'][]            = array('Isotope\tl_member', 'limitCountries');
-$GLOBALS['TL_HOOKS']['addCustomRegexp'][]            = array('Isotope\Isotope', 'validateRegexp');
-$GLOBALS['TL_HOOKS']['getSearchablePages'][]        = array('Isotope\Frontend', 'addProductsToSearchIndex');
-$GLOBALS['TL_HOOKS']['replaceInsertTags'][]            = array('Isotope\Frontend', 'replaceIsotopeTags');
-$GLOBALS['TL_HOOKS']['generatePage'][]                = array('Isotope\Frontend', 'injectMessages');
-$GLOBALS['TL_HOOKS']['executePreActions'][]            = array('Isotope\Widget\ProductTree', 'executePreActions');
-$GLOBALS['TL_HOOKS']['executePostActions'][]        = array('Isotope\Widget\ProductTree', 'executePostActions');
-$GLOBALS['TL_HOOKS']['translateUrlParameters'][]    = array('Isotope\Frontend', 'translateProductUrls');
-$GLOBALS['TL_HOOKS']['getSystemMessages'][]            = array('Isotope\Backend', 'getOrderMessages');
-$GLOBALS['TL_HOOKS']['sqlGetFromFile'][]            = array('Isotope\Backend', 'addAttributesToDBUpdate');
-$GLOBALS['TL_HOOKS']['getArticle'][]                = array('Isotope\Frontend', 'storeCurrentArticle');
-$GLOBALS['TL_HOOKS']['generateBreadcrumb'][]        = array('Isotope\Frontend', 'generateBreadcrumb');
-$GLOBALS['ISO_HOOKS']['buttons'][]                    = array('Isotope\Isotope', 'defaultButtons');
 $GLOBALS['ISO_HOOKS']['checkoutSurcharge'][]        = array('Isotope\Frontend', 'getShippingAndPaymentSurcharges');
+$GLOBALS['TL_HOOKS']['loadDataContainer'][]             = array('Isotope\tl_iso_products', 'loadProductsDCA');
+$GLOBALS['TL_HOOKS']['loadDataContainer'][]             = array('Isotope\tl_member', 'limitCountries');
+$GLOBALS['TL_HOOKS']['addCustomRegexp'][]               = array('Isotope\Isotope', 'validateRegexp');
+$GLOBALS['TL_HOOKS']['getSearchablePages'][]            = array('Isotope\Frontend', 'addProductsToSearchIndex');
+$GLOBALS['TL_HOOKS']['replaceInsertTags'][]             = array('Isotope\Frontend', 'replaceIsotopeTags');
+$GLOBALS['TL_HOOKS']['generatePage'][]                  = array('Isotope\Frontend', 'injectMessages');
+$GLOBALS['TL_HOOKS']['executePreActions'][]             = array('Isotope\Widget\ProductTree', 'executePreActions');
+$GLOBALS['TL_HOOKS']['executePostActions'][]            = array('Isotope\Widget\ProductTree', 'executePostActions');
+$GLOBALS['TL_HOOKS']['translateUrlParameters'][]        = array('Isotope\Frontend', 'translateProductUrls');
+$GLOBALS['TL_HOOKS']['getSystemMessages'][]             = array('Isotope\Backend', 'getOrderMessages');
+$GLOBALS['TL_HOOKS']['sqlGetFromFile'][]                = array('Isotope\Backend', 'addAttributesToDBUpdate');
+$GLOBALS['TL_HOOKS']['getArticle'][]                    = array('Isotope\Frontend', 'storeCurrentArticle');
+$GLOBALS['TL_HOOKS']['generateBreadcrumb'][]            = array('Isotope\Frontend', 'generateBreadcrumb');
+$GLOBALS['ISO_HOOKS']['buttons'][]                      = array('Isotope\Isotope', 'defaultButtons');
 
 if (TL_MODE == 'FE')
 {

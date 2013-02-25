@@ -12,14 +12,11 @@
 
 namespace Isotope\Model;
 
-
 /**
- * Class IsotopeConfig
+ * Isotope\Model\Config represents an Isotope config model
  *
- * Provide methods to handle Isotope configuration.
  * @copyright  Isotope eCommerce Workgroup 2009-2012
  * @author     Andreas Schempp <andreas.schempp@terminal42.ch>
- * @author     Fred Bliss <fred.bliss@intelligentspark.com>
  */
 class Config extends \Model
 {
@@ -29,7 +26,6 @@ class Config extends \Model
      * @var string
      */
     protected static $strTable = 'tl_iso_config';
-
 
     /**
      * Return custom options or table row data
@@ -42,15 +38,14 @@ class Config extends \Model
         {
             case 'billing_fields_raw':
             case 'shipping_fields_raw':
-                if (!is_array($this->arrCache[$strKey]))
-                {
+                if (!is_array($this->arrCache[$strKey])) {
+
                     $strField = str_replace('_raw', '', $strKey);
                     $arrFields = array();
 
-                    foreach( $this->$strField as $field )
-                    {
-                        if ($field['enabled'])
-                        {
+                    foreach( $this->$strField as $field ) {
+
+                        if ($field['enabled']) {
                             $arrFields[] = $field['value'];
                         }
                     }
@@ -64,8 +59,7 @@ class Config extends \Model
             case 'shipping_countries':
                 $arrCountries = deserialize(parent::__get($strKey));
 
-                if (!is_array($arrCountries) || empty($arrCountries))
-                {
+                if (!is_array($arrCountries) || empty($arrCountries)) {
                     $this->import('Isotope\Isotope', 'Isotope');
                     $arrCountries = array_keys(\System::getCountries());
                 }
@@ -86,7 +80,7 @@ class Config extends \Model
     public static function findByRootPageOrFallback($intRoot)
     {
         $arrOptions = array(
-			'column' => "(id=(SELECT iso_config FROM tl_page WHERE id=?) OR fallback='1')",
+			'column' => array("(id=(SELECT iso_config FROM tl_page WHERE id=?) OR fallback='1')"),
 			'value'  => $intRoot,
 			'order'  => 'fallback',
 			'return' => 'Model'
