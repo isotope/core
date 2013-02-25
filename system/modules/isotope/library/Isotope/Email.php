@@ -232,7 +232,7 @@ class Email extends \Controller
 
         if (!$objLanguage->numRows)
         {
-            throw new UnderflowException('No fallback language found for mail template ID '.$this->intId);
+            throw new \UnderflowException('No fallback language found for mail template ID '.$this->intId);
         }
 
         $this->strLanguage = $objLanguage->language;
@@ -315,7 +315,7 @@ class Email extends \Controller
 
         if ($objTemplate->numRows < 1)
         {
-            throw new UnderflowException('No mail template with ID "' . $this->intId . '" found.');
+            throw new \UnderflowException('No mail template with ID "' . $this->intId . '" found.');
         }
 
         $this->strLanguage = $strLanguage;
