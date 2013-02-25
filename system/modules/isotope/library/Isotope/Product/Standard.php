@@ -106,12 +106,6 @@ class Standard extends \Controller implements IsotopeProduct
      */
     protected $blnLocked = false;
 
-    /**
-     * Isotope object
-     * @var object
-     */
-    protected $Isotope;
-
 
     /**
      * Construct the object
@@ -124,7 +118,6 @@ class Standard extends \Controller implements IsotopeProduct
         parent::__construct();
 
         $this->Database = \Database::getInstance();
-        $this->Isotope = Isotope::getInstance();
 
         if (FE_USER_LOGGED_IN === true)
         {

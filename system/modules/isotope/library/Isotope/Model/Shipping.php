@@ -37,24 +37,6 @@ abstract class Shipping extends \Model
      */
     protected $strTemplate;
 
-    /**
-     * Isotope object
-     * @var object
-     */
-    protected $Isotope;
-
-
-    /**
-     * Initialize the object
-     * @param array
-     */
-    public function __construct(\Database\Result $objResult=null)
-    {
-        parent::__construct($objResult);
-
-        $this->Isotope = \System::importStatic('Isotope\Isotope');
-    }
-
 
     /**
      * Return an object property

@@ -47,12 +47,6 @@ class Standard extends \Frontend implements IsotopeGallery
      */
     protected $arrFiles = array();
 
-    /**
-     * Isotope object
-     * @var object
-     */
-    protected $Isotope;
-
 
     /**
      * Construct the object

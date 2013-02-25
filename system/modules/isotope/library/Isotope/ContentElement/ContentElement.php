@@ -27,13 +27,6 @@ abstract class ContentElement extends Contao_ContentElement
 {
 
     /**
-     * Isotope object
-     * @var object
-     */
-    protected $Isotope;
-
-
-    /**
      * Initialize the content element
      * @param object
      */
@@ -43,8 +36,6 @@ abstract class ContentElement extends Contao_ContentElement
 
         if (TL_MODE == 'FE')
         {
-            $this->import('Isotope\Isotope', 'Isotope');
-
             if (FE_USER_LOGGED_IN === true)
             {
                 $this->import('FrontendUser', 'User');

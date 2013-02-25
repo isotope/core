@@ -36,12 +36,6 @@ abstract class Payment extends \Model
      */
     protected $strTemplate;
 
-    /**
-     * Isotope object
-     * @var object
-     */
-    protected $Isotope;
-
 
     /**
      * Initialize the object
@@ -50,8 +44,6 @@ abstract class Payment extends \Model
     public function __construct(\Database\Result $objResult=null)
     {
         parent::__construct($objResult);
-
-        $this->Isotope = \System::importStatic('Isotope\Isotope');
 
         $this->arrData['allowed_cc_types'] = deserialize($this->arrData['allowed_cc_types']);
 

@@ -55,12 +55,6 @@ abstract class ProductCollection extends \Model
     protected $arrProducts;
 
     /**
-     * Isotope object
-     * @var object
-     */
-    protected $Isotope;
-
-    /**
      * Shipping object if shipping module is set in product collection
      * @var object
      */

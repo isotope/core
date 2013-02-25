@@ -33,12 +33,6 @@ class IsotopeRules extends \Controller
     protected static $objInstance;
 
     /**
-     * Isotope object
-     * @var object
-     */
-    protected $Isotope;
-
-    /**
      * Prevent cloning of the object (Singleton)
      */
     final private function __clone() {}
@@ -53,7 +47,6 @@ class IsotopeRules extends \Controller
 
         $this->import('Database');
         $this->import('FrontendUser', 'User');
-        $this->import('Isotope\Isotope', 'Isotope');
     }
 
 

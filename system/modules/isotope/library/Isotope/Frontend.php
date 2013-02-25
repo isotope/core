@@ -31,12 +31,6 @@ class Frontend extends \Frontend
 {
 
     /**
-     * Isotope object
-     * @var object
-     */
-    protected $Isotope;
-
-    /**
      * Cached reader page id's
      * @var array
      */
@@ -49,7 +43,6 @@ class Frontend extends \Frontend
     public function __construct()
     {
         parent::__construct();
-        $this->import('Isotope\Isotope', 'Isotope');
     }
 
 
