@@ -28,6 +28,15 @@ abstract class ProductCollectionSurcharge extends \Model
 {
 
     /**
+     * Return if the surcharge has tax
+     * @return bool
+     */
+    public function hasTax()
+    {
+        return ($this->tax_class === '0') ? false : true;
+    }
+
+    /**
      * Return a model or collection based on the database result type
      */
     protected static function find(array $arrOptions)

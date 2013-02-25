@@ -18,4 +18,6 @@ namespace Isotope\Interfaces;
  */
 interface IsotopeProductCollectionSurcharge
 {
+
+    public function hasTax();
 }

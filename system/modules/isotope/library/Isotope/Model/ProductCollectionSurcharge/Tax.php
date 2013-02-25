@@ -23,4 +23,13 @@ use Isotope\Interfaces\IsotopeProductCollectionSurcharge;
  */
 class Tax extends ProductCollectionSurcharge implements IsotopeProductCollectionSurcharge
 {
+
+    /**
+     * A tax class can never have tax!
+     * @return bool
+     */
+    public function hasTax()
+    {
+        return false;
+    }
 }
