@@ -137,27 +137,25 @@ class AddressBook extends Module
         global $objPage;
         $arrAddresses = array();
         $strUrl = $this->generateFrontendUrl($objPage->row()) . ($GLOBALS['TL_CONFIG']['disableAlias'] ? '&' : '?');
-        $objAddresses = $this->Database->prepare("SELECT * FROM tl_iso_addresses WHERE pid=? AND store_id=?")->execute($this->User->id, Isotope::getConfig()->store_id);
+        $objAddresses = Address::findBy(array('pid=?', 'store_id=?'), array($this->User->id, Isotope::getConfig()->store_id));
 
-        while ($objAddresses->next())
-        {
-            $objAddress = new Address();
-            $objAddress->setRow($objAddresses->row());
+        if (null !== $objAddresses) {
+            while ($objAddresses->next()) {
+                $objAddress = $objAddresses->current();
 
-            $arrAddresses[] = array_merge($objAddress->getData(), array
-            (
-                'id'                => $objAddress->id,
-                'class'                => (($objAddress->isDefaultBilling ? 'default_billing' : '') . ($objAddress->isDefaultShipping ? ' default_shipping' : '')),
-                'text'                => $objAddress->generateHtml(),
-                'edit_url'            => ampersand($strUrl . 'act=edit&address=' . $objAddress->id),
-                'delete_url'        => ampersand($strUrl . 'act=delete&address=' . $objAddress->id),
-                'default_billing'    => ($objAddress->isDefaultBilling ? true : false),
-                'default_shipping'    => ($objAddress->isDefaultShipping ? true : false),
-            ));
+                $arrAddresses[] = array_merge($objAddress->getData(), array(
+                    'id'                => $objAddresses->id,
+                    'class'             => (($objAddress->isDefaultBilling ? 'default_billing' : '') . ($objAddress->isDefaultShipping ? ' default_shipping' : '')),
+                    'text'              => $objAddress->generateHtml(),
+                    'edit_url'          => ampersand($strUrl . 'act=edit&address=' . $objAddress->id),
+                    'delete_url'        => ampersand($strUrl . 'act=delete&address=' . $objAddress->id),
+                    'default_billing'   => ($objAddress->isDefaultBilling ? true : false),
+                    'default_shipping'  => ($objAddress->isDefaultShipping ? true : false),
+                ));
+            }
         }
 
-        if (empty($arrAddresses))
-        {
+        if (empty($arrAddresses)) {
             $this->Template->mtype = 'empty';
             $this->Template->message = $GLOBALS['TL_LANG']['ERR']['noAddressBookEntries'];
         }
@@ -195,11 +193,14 @@ class AddressBook extends Module
         $hasUpload = false;
         $row = 0;
 
-        // No need to check: if the address does not exist, fields will be empty and a new address will be created
-        $objAddress = $this->Database->prepare("SELECT * FROM tl_iso_addresses WHERE id=? AND pid=? AND store_id=?")->execute($intAddressId, $this->User->id, Isotope::getConfig()->store_id);
+        $objAddress = Address::findOneBy(array('id=?', 'pid=?', 'store_id=?'), array($intAddressId, $this->User->id, Isotope::getConfig()->store_id));
 
-        $objAddress->pid = $this->User->id;
-        $objAddress->store_id = Isotope::getConfig()->store_id;
+        if (null === $objAddress) {
+            $objAddress = new Address();
+            $objAddress->pid = $this->User->id;
+            $objAddress->tstamp = time();
+            $objAddress->store_id = Isotope::getConfig()->store_id;
+        }
 
         // Build form
         foreach ($this->arrFields as $field)
@@ -293,16 +294,6 @@ class AddressBook extends Module
                     // Set new value
                     $varSave = is_array($varValue) ? serialize($varValue) : $varValue;
                     $objAddress->$field = $varSave;
-
-                    // Save field
-                    if ($objAddress->id > 0)
-                    {
-                        $this->Database->prepare("UPDATE tl_iso_addresses SET " . $field . "=? WHERE pid={$this->User->id} AND id={$objAddress->id}")->executeUncached($varSave);
-                    }
-                    else
-                    {
-                        $arrSet[$field] = $varSave;
-                    }
                 }
             }
 
@@ -323,14 +314,7 @@ class AddressBook extends Module
         // Redirect or reload if there was no error
         if (\Input::post('FORM_SUBMIT') == 'tl_iso_addresses_' . $this->id && !$doNotSubmit)
         {
-            if (!$objAddress->id)
-            {
-                $arrSet['pid'] = $this->User->id;
-                $arrSet['tstamp'] = time();
-                $arrSet['store_id'] = Isotope::getConfig()->store_id;
-
-                $objAddress->id = $this->Database->prepare("INSERT INTO tl_iso_addresses %s")->set($arrSet)->execute()->insertId;
-            }
+            $objAddress->save();
 
             // Call onsubmit_callback
             if (is_array($GLOBALS['TL_DCA']['tl_iso_addresses']['config']['onsubmit_callback']))
@@ -375,7 +359,9 @@ class AddressBook extends Module
      */
     protected function delete($intAddressId)
     {
-        $this->Database->prepare("DELETE FROM tl_iso_addresses WHERE id=? AND pid={$this->User->id}")->executeUncached($intAddressId);
+        if (($objAddress = Address::findOneBy(array('id=?', 'pid=?'), array($intAddressId, $this->User->id))) !== null) {
+            $objAddress->delete();
+        }
 
         global $objPage;
         $this->redirect($this->generateFrontendUrl($objPage->row()));

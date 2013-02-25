@@ -1060,25 +1060,25 @@ class Checkout extends Module
 
         if (FE_USER_LOGGED_IN === true)
         {
-            $objAddresses = $this->Database->execute("SELECT * FROM tl_iso_addresses WHERE pid={$this->User->id} AND store_id={->store_id} ORDER BY isDefaultBilling DESC, isDefaultShipping DESC");
+            $objAddresses = Address::findBy(array('pid=?', 'store_id='), array($this->User->id, Isotope::getConfig()->store_id), array('order'=>'isDefaultBilling DESC, isDefaultShipping DESC'));
 
-            while ($objAddresses->next())
-            {
-                if (is_array($arrCountries) && !in_array($objAddresses->country, $arrCountries))
-                {
-                    continue;
+            if (null !== $objAddresses) {
+                while ($objAddresses->next()) {
+
+                    if (is_array($arrCountries) && !in_array($objAddresses->country, $arrCountries)) {
+                        continue;
+                    }
+
+                    $objAddress = $objAddresses->current();
+
+                    $arrOptions[] = array
+                    (
+                        'value'        => $objAddress->id,
+                        'label'        => $objAddress->generateHtml(($field == 'billing_address' ? Isotope::getConfig()->billing_fields : Isotope::getConfig()->shipping_fields)),
+                    );
+
+                    $blnHasAddress = true;
                 }
-
-                $objAddress = new Address();
-                $objAddress->setRow($objAddresses->row());
-
-                $arrOptions[] = array
-                (
-                    'value'        => $objAddress->id,
-                    'label'        => $objAddress->generateHtml(($field == 'billing_address' ? Isotope::getConfig()->billing_fields : Isotope::getConfig()->shipping_fields)),
-                );
-
-                $blnHasAddress = true;
             }
         }
 
