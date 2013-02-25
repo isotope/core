@@ -23,7 +23,7 @@ interface IsotopeGallery
      * Return the name and description for this gallery
      * @return array
      */
-    public static function getLabel();
+    public static function getClassLabel();
 
     /**
      * Generate main image and return it as HTML string

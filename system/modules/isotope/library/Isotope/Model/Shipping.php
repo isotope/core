@@ -273,7 +273,7 @@ abstract class Shipping extends \Model
      * Return the name and description for this shipping method
      * @return array
      */
-    public static function getLabel()
+    public static function getClassLabel()
     {
         return $GLOBALS['TL_LANG']['SHIP'][strtolower(str_replace('Isotope\Model\Shipping\\', '', get_called_class()))];
     }

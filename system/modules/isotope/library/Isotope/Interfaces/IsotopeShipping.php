@@ -23,7 +23,7 @@ interface IsotopeShipping
      * Return the name and description for this shipping method
      * @return array
      */
-    public static function getLabel();
+    public static function getClassLabel();
 
     /**
      * Return information or advanced features in the backend.

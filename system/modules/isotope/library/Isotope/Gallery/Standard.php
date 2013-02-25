@@ -346,7 +346,7 @@ $endScript
      * Return the name and description for this gallery
      * @return array
      */
-    public static function getLabel()
+    public static function getClassLabel()
     {
         return $GLOBALS['TL_LANG']['GAL'][strtolower(str_replace('Isotope\Gallery\\', '', get_called_class()))];
     }

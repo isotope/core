@@ -491,7 +491,7 @@ $GLOBALS['TL_DCA']['tl_iso_config'] = array
             'inputType'               => 'select',
             'default'                 => 'default',
             'options'                 => array_keys(\Isotope\Factory\Gallery::getClasses()),
-            'reference'               => \Isotope\Factory\Gallery::getLabels(),
+            'reference'               => \Isotope\Factory\Gallery::getClassLabels(),
             'eval'                    => array('mandatory'=>true, 'tl_class'=>'clr', 'helpwizard'=>true),
         ),
         'missing_image_placeholder' => array

@@ -73,12 +73,12 @@ class Payment extends \Model\Collection
      * Return labels for all payment methods
      * @return array
      */
-    public static function getLabels()
+    public static function getClassLabels()
     {
         $arrLabels = array();
 
         foreach (static::getCLasses() as $strClass => $strNamespacedClass) {
-            $arrLabels[$strClass] = call_user_func(array($strNamespacedClass, 'getLabel'));
+            $arrLabels[$strClass] = call_user_func(array($strNamespacedClass, 'getClassLabel'));
         }
 
         return $arrLabels;

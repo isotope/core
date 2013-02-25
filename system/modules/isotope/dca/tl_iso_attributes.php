@@ -356,7 +356,7 @@ $GLOBALS['TL_DCA']['tl_iso_attributes'] = array
             'inputType'                => 'select',
             'default'                => 'standard',
             'options'                => array_keys(\Isotope\Factory\Gallery::getClasses()),
-            'reference'                => \Isotope\Factory\Gallery::getLabels(),
+            'reference'                => \Isotope\Factory\Gallery::getClassLabels(),
             'eval'                    => array('includeBlankOption'=>true, 'tl_class'=>'w50', 'helpwizard'=>true),
         ),
         'fieldType' => array

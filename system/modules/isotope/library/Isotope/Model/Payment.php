@@ -369,7 +369,7 @@ abstract class Payment extends \Model
      * Return the name and description for this payment method
      * @return array
      */
-    public static function getLabel()
+    public static function getClassLabel()
     {
         return $GLOBALS['TL_LANG']['PAY'][strtolower(str_replace('Isotope\Model\Payment\\', '', get_called_class()))];
     }
