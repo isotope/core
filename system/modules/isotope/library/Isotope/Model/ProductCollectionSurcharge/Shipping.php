@@ -13,6 +13,7 @@
 namespace Isotope\Model\ProductCollectionSurcharge;
 
 use Isotope\Interfaces\IsotopeProductCollectionSurcharge;
+use Isotope\Model\ProductCollectionSurcharge;
 
 /**
  * Class Shipping
