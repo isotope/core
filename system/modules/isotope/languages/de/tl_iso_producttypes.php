@@ -83,10 +83,10 @@ $GLOBALS['TL_LANG']['tl_iso_producttypes']['show'][1]                       = 'Z
  */
 $GLOBALS['TL_LANG']['tl_iso_producttypes']['name_legend']                   = 'Produkttyp-Einstellungen';
 $GLOBALS['TL_LANG']['tl_iso_producttypes']['description_legend']            = 'Beschreibungen';
-$GLOBALS['TL_LANG']['tl_iso_producttypes']['prices_legend']  		        = 'Preise';
+$GLOBALS['TL_LANG']['tl_iso_producttypes']['prices_legend']                 = 'Preise';
 $GLOBALS['TL_LANG']['tl_iso_producttypes']['template_legend']               = 'Templates';
 $GLOBALS['TL_LANG']['tl_iso_producttypes']['attributes_legend']             = 'Produktattribute';
-$GLOBALS['TL_LANG']['tl_iso_producttypes']['variants_legend']		        = 'Variantenattribute';
+$GLOBALS['TL_LANG']['tl_iso_producttypes']['variants_legend']               = 'Variantenattribute';
 $GLOBALS['TL_LANG']['tl_iso_producttypes']['expert_legend']                 = 'Experten-Einstellungen';
 
 
