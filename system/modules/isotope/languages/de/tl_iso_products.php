@@ -133,16 +133,16 @@ $GLOBALS['TL_LANG']['tl_iso_products']['generate'][0]               = 'Varianten
 $GLOBALS['TL_LANG']['tl_iso_products']['generate'][1]               = 'Generiere Varianten für das Produkt ID %s';
 $GLOBALS['TL_LANG']['tl_iso_products']['related'][0]                = 'Ähnliche Produkte';
 $GLOBALS['TL_LANG']['tl_iso_products']['related'][1]                = 'Ähnliche Produkte für das Produkt ID %s verwalten';
-$GLOBALS['TL_LANG']['tl_iso_products']['filter']  		              = array('Erweiterte Filter', 'Erweiterte Filter anwenden');
-$GLOBALS['TL_LANG']['tl_iso_products']['filter_remove']		          = array('Filter entfernen', 'Erweiterte Filter zurücksetzen');
-$GLOBALS['TL_LANG']['tl_iso_products']['filter_noimages']	          = array('Produkte ohne Bilder', 'Zeit nur Produkte ohne Produktbilder');
-$GLOBALS['TL_LANG']['tl_iso_products']['filter_nocategory']	        = array('Produkte ohne Kategorie', 'Zeigt zur Produkte die keiner Kategorie zugeordnet sind');
-$GLOBALS['TL_LANG']['tl_iso_products']['filter_new_today']	        = array('Heute hinzugefügt', 'Zeigt nur Produkte welche heute hinzugefügt wurden');
-$GLOBALS['TL_LANG']['tl_iso_products']['filter_new_week']	          = array('Diese Woche hinzugefügt', 'Zeigt nur Produkte welche in den letzten 7 Tagen hinzugefügt wurden');
-$GLOBALS['TL_LANG']['tl_iso_products']['filter_new_month']	        = array('Diesen Monat hinzugefügt', 'Zeigt nur Produkte welche in den letzten 30 Tagen hinzugefügt wurden');
-$GLOBALS['TL_LANG']['tl_iso_products']['toggleGroups']		          = array('Alle Gruppen öffnen/schließen', 'Alle Gruppen öffnen/schließen');
-$GLOBALS['TL_LANG']['tl_iso_products']['toggleVariants']	          = array('Alle Varianten öffnen/schließen', 'Alle Varianten öffnen/schließen');
-$GLOBALS['TL_LANG']['tl_iso_products']['groups']			              = array('Produktgruppen', 'Produktgruppen verwalten');
+$GLOBALS['TL_LANG']['tl_iso_products']['filter']                    = array('Erweiterte Filter', 'Erweiterte Filter anwenden');
+$GLOBALS['TL_LANG']['tl_iso_products']['filter_remove']             = array('Filter entfernen', 'Erweiterte Filter zurücksetzen');
+$GLOBALS['TL_LANG']['tl_iso_products']['filter_noimages']           = array('Produkte ohne Bilder', 'Zeit nur Produkte ohne Produktbilder');
+$GLOBALS['TL_LANG']['tl_iso_products']['filter_nocategory']         = array('Produkte ohne Kategorie', 'Zeigt zur Produkte die keiner Kategorie zugeordnet sind');
+$GLOBALS['TL_LANG']['tl_iso_products']['filter_new_today']          = array('Heute hinzugefügt', 'Zeigt nur Produkte welche heute hinzugefügt wurden');
+$GLOBALS['TL_LANG']['tl_iso_products']['filter_new_week']           = array('Diese Woche hinzugefügt', 'Zeigt nur Produkte welche in den letzten 7 Tagen hinzugefügt wurden');
+$GLOBALS['TL_LANG']['tl_iso_products']['filter_new_month']          = array('Diesen Monat hinzugefügt', 'Zeigt nur Produkte welche in den letzten 30 Tagen hinzugefügt wurden');
+$GLOBALS['TL_LANG']['tl_iso_products']['toggleGroups']              = array('Alle Gruppen öffnen/schließen', 'Alle Gruppen öffnen/schließen');
+$GLOBALS['TL_LANG']['tl_iso_products']['toggleVariants']            = array('Alle Varianten öffnen/schließen', 'Alle Varianten öffnen/schließen');
+$GLOBALS['TL_LANG']['tl_iso_products']['groups']                    = array('Produktgruppen', 'Produktgruppen verwalten');
 $GLOBALS['TL_LANG']['tl_iso_products']['tools'][0]                  = 'Werkzeuge';
 $GLOBALS['TL_LANG']['tl_iso_products']['tools'][1]                  = 'Weitere Optionen für die Produktverwaltung';
 $GLOBALS['TL_LANG']['tl_iso_products']['import'][0]                 = 'Anlagen importieren';
@@ -173,6 +173,6 @@ $GLOBALS['TL_LANG']['tl_iso_products']['variant_legend']            = 'Produktva
 /**
  * Table format
  */
-$GLOBALS['TL_LANG']['tl_iso_products']['price_tiers']['min']		    = 'Anzahl';
+$GLOBALS['TL_LANG']['tl_iso_products']['price_tiers']['min']        = 'Anzahl';
 $GLOBALS['TL_LANG']['tl_iso_products']['price_tiers']['min_format'] = 'ab %s Stück';
-$GLOBALS['TL_LANG']['tl_iso_products']['price_tiers']['price']		  = 'Preis';
+$GLOBALS['TL_LANG']['tl_iso_products']['price_tiers']['price']      = 'Preis';
