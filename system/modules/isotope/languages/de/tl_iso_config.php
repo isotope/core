@@ -176,6 +176,6 @@ $GLOBALS['TL_LANG']['tl_iso_config']['address_legend']                  = 'Adres
 $GLOBALS['TL_LANG']['tl_iso_config']['config_legend']                   = 'Konfiguration';
 $GLOBALS['TL_LANG']['tl_iso_config']['price_legend']                    = 'Preise';
 $GLOBALS['TL_LANG']['tl_iso_config']['currency_legend']                 = 'Währungs-Formatierung';
-$GLOBALS['TL_LANG']['tl_iso_config']['converter_legend']	    		      = 'Währungsumrechnung';
+$GLOBALS['TL_LANG']['tl_iso_config']['converter_legend']                = 'Währungsumrechnung';
 $GLOBALS['TL_LANG']['tl_iso_config']['order_legend']                    = 'Bestellungen';
 $GLOBALS['TL_LANG']['tl_iso_config']['images_legend']                   = 'Bilder';
