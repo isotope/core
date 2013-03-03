@@ -97,6 +97,6 @@ $GLOBALS['TL_LANG']['IMD']['iso_mail'][0]               = 'E-Mail Vorlagen';
 $GLOBALS['TL_LANG']['IMD']['iso_mail'][1]               = 'E-Mail Vorlagen werden für den Versand von Bestellbestätigungen und anderen Nachrichten an Kunden und Shopbetreiber verwendet. Jede Vorlage kann in mehrere Sprachen angelegt werden. Vergessen Sie nicht bei der Hauptsprache den Sprachen-Fallback zu aktivieren!';
 $GLOBALS['TL_LANG']['IMD']['configs'][0]                = 'Konfigurationen';
 $GLOBALS['TL_LANG']['IMD']['configs'][1]                = 'Konfigurationen umfassen Einstellungen bezüglich Währung, Preisberechnung, Adressaufbereitung, Produktbildgrössen und anderem. Sie können mehrere Konfigurationen anlegen und diese im Shop-Betrieb (über das entsprechende Frontend-Modul) wechseln, um z.B. eine Umschaltung zwischen mehreren Währungen zu ermöglichen.';
-$GLOBALS['TL_LANG']['IMD']['orderstatus']  			        = array('Bestellstatus', 'Verschieden Statusbezeichnungen für die Bestellungen anlegen.');
-$GLOBALS['TL_LANG']['IMD']['baseprice']					        = array('Grundpreis', 'Grundpres festlegen.');
+$GLOBALS['TL_LANG']['IMD']['orderstatus']  			  = array('Bestellstatus', 'Verschieden Statusbezeichnungen für die Bestellungen anlegen.');
+$GLOBALS['TL_LANG']['IMD']['baseprice']					  = array('Grundpreis', 'Grundpres festlegen.');
 
