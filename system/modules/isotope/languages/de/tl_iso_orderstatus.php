@@ -31,7 +31,7 @@
  * Fields
  */
 $GLOBALS['TL_LANG']['tl_iso_orderstatus']['name']  		= array('Name', 'Bitte geben Sie den Namen für den Status ein.');
-$GLOBALS['TL_LANG']['tl_iso_orderstatus']['paid']			= array('Die Bestellung wurde bezahlt', 'Bei diesem Status wurde die Bestellung bezahlt, daß ermöglicht das herunterladen von Dateien.');
+$GLOBALS['TL_LANG']['tl_iso_orderstatus']['paid']    	= array('Die Bestellung wurde bezahlt', 'Bei diesem Status wurde die Bestellung bezahlt, daß ermöglicht das herunterladen von Dateien.');
 $GLOBALS['TL_LANG']['tl_iso_orderstatus']['welcomescreen']	= array('Auf der Willkommensseite anzeigen', 'Zeigt die Anzahl von Bestellungen mit diesem Status auf der Willkommensseite im Backend an');
 $GLOBALS['TL_LANG']['tl_iso_orderstatus']['mail_customer']	= array('E-Mail an die Kunden', 'Wählen Sie eine E-Mail-Vorlage aus um den Kunden zu informieren, wenn die Bestellung den Status erreicht hat.');
 $GLOBALS['TL_LANG']['tl_iso_orderstatus']['mail_admin']		= array('E-Mail an den Administrator', 'Wählen Sie eine E-Mail-Vorlage aus um den Administrator zu informieren, wenn die Bestellung den Status erreicht hat.');
@@ -45,7 +45,7 @@ $GLOBALS['TL_LANG']['tl_iso_orderstatus']['new']			= array('Neuer Bestellstatus'
 $GLOBALS['TL_LANG']['tl_iso_orderstatus']['edit']			= array('Bestellstatus bearbeiten', 'Bestellstatus ID %s bearbeiten');
 $GLOBALS['TL_LANG']['tl_iso_orderstatus']['copy']			= array('Bestellstatus duplizieren', 'Bestellstatus ID %s duplizieren');
 $GLOBALS['TL_LANG']['tl_iso_orderstatus']['cut']			= array('Bestellstatus verschieben', 'Bestellstatus ID %s verschieben');
-$GLOBALS['TL_LANG']['tl_iso_orderstatus']['delete']			= array('Bestellstatus löschen', 'Bestellstatus ID %s löschen');
+$GLOBALS['TL_LANG']['tl_iso_orderstatus']['delete']		= array('Bestellstatus löschen', 'Bestellstatus ID %s löschen');
 $GLOBALS['TL_LANG']['tl_iso_orderstatus']['show']			= array('Bestellstatusdetails', 'Details des Bestellstatus ID %s anzeigen');
 $GLOBALS['TL_LANG']['tl_iso_orderstatus']['pasteafter']		= array('Danach einfügen', 'Nach dem Bestellstatus ID %s einfügen');
 $GLOBALS['TL_LANG']['tl_iso_orderstatus']['pasteinto']		= array('Am Anfang einfügen', 'Am Anfang einfügen');
