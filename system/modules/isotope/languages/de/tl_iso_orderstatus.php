@@ -54,5 +54,5 @@ $GLOBALS['TL_LANG']['tl_iso_orderstatus']['pasteinto']      = array('Am Anfang e
 /**
  * Legends
  */
-$GLOBALS['TL_LANG']['tl_iso_orderstatus']['name_legend']  = 'Name';
-$GLOBALS['TL_LANG']['tl_iso_orderstatus']['email_legend']	= 'E-Mail-Mitteilung';
+$GLOBALS['TL_LANG']['tl_iso_orderstatus']['name_legend']    = 'Name';
+$GLOBALS['TL_LANG']['tl_iso_orderstatus']['email_legend']   = 'E-Mail-Mitteilung';
