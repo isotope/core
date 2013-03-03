@@ -48,7 +48,7 @@ $GLOBALS['TL_LANG']['tl_iso_mail']['bcc'][0]                = 'Blinkkopie senden
 $GLOBALS['TL_LANG']['tl_iso_mail']['bcc'][1]                = 'Empfänger welche eine Blindkopie der Nachricht erhalten sollen. Trennen Sie mehrere E-Mail Adressen mit einem Komma.';
 $GLOBALS['TL_LANG']['tl_iso_mail']['template'][0]           = 'E-Mail-Template';
 $GLOBALS['TL_LANG']['tl_iso_mail']['template'][1]           = 'Hier können Sie das E-Mail-Template für HTML-Inhalte auswählen.';
-$GLOBALS['TL_LANG']['tl_iso_mail']['priority']  		        = array('Dringlichkeit', 'Bitte wählen Sie die Dringlichkeit aus.');
+$GLOBALS['TL_LANG']['tl_iso_mail']['priority']              = array('Dringlichkeit', 'Bitte wählen Sie die Dringlichkeit aus.');
 $GLOBALS['TL_LANG']['tl_iso_mail']['attachDocument'][0]     = 'Ein Bestelldokument anhängen';
 $GLOBALS['TL_LANG']['tl_iso_mail']['attachDocument'][1]     = 'Ermöglicht es Ihnen ein ergänzendes Dokument als PDF-Anhang für diese E-Mail zu generieren.';
 $GLOBALS['TL_LANG']['tl_iso_mail']['documentTemplate'][0]   = 'Dokumenten-Template';
@@ -86,7 +86,7 @@ $GLOBALS['TL_LANG']['tl_iso_mail']['exportMail'][1]         = 'E-Mail-Template I
 $GLOBALS['TL_LANG']['tl_iso_mail']['name_legend']           = 'Name';
 $GLOBALS['TL_LANG']['tl_iso_mail']['address_legend']        = 'Adresse';
 $GLOBALS['TL_LANG']['tl_iso_mail']['expert_legend']         = 'Experten-Einstellungen';
-$GLOBALS['TL_LANG']['tl_iso_mail']['document_legend']	      = 'Bestelldokument';
+$GLOBALS['TL_LANG']['tl_iso_mail']['document_legend']       = 'Bestelldokument';
 
 
 /**
