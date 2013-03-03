@@ -93,8 +93,8 @@ $GLOBALS['TL_LANG']['tl_iso_producttypes']['expert_legend']                 = 'E
 /**
  * AttributeWizard
  */
-$GLOBALS['TL_LANG']['tl_iso_producttypes']['attrwiz']['tl_class_select']	= 'Aus ein paar vordefinierten Contao-CSS-Klassen auswählen';
-$GLOBALS['TL_LANG']['tl_iso_producttypes']['attrwiz']['tl_class_text']		= 'Hier können Sie Ihre eigene CSS-Klassen für das Feld schreiben';
-$GLOBALS['TL_LANG']['tl_iso_producttypes']['attrwiz']['mandatory_default']	= 'Pflichtfeld: Den Standardwert nehmen';
-$GLOBALS['TL_LANG']['tl_iso_producttypes']['attrwiz']['mandatory_no']		= 'Pflichtfeld: Nein, nie';
-$GLOBALS['TL_LANG']['tl_iso_producttypes']['attrwiz']['mandatory_yes']		= 'Pflichtfeld: Ja, immer';
+$GLOBALS['TL_LANG']['tl_iso_producttypes']['attrwiz']['tl_class_select']    = 'Aus ein paar vordefinierten Contao-CSS-Klassen auswählen';
+$GLOBALS['TL_LANG']['tl_iso_producttypes']['attrwiz']['tl_class_text']      = 'Hier können Sie Ihre eigene CSS-Klassen für das Feld schreiben';
+$GLOBALS['TL_LANG']['tl_iso_producttypes']['attrwiz']['mandatory_default']  = 'Pflichtfeld: Den Standardwert nehmen';
+$GLOBALS['TL_LANG']['tl_iso_producttypes']['attrwiz']['mandatory_no']       = 'Pflichtfeld: Nein, nie';
+$GLOBALS['TL_LANG']['tl_iso_producttypes']['attrwiz']['mandatory_yes']      = 'Pflichtfeld: Ja, immer';
