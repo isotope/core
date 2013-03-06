@@ -502,6 +502,27 @@ class Isotope extends Controller
 			return false;
 		}
 
+		// !HOOK: force2TaxRate
+		// Inserted by delahaye for german shops.
+		// 'true' forces to use this tax rate, 'false' denies it, both end the check. Other values skip to the next check routine.
+		if (isset($GLOBALS['ISO_HOOKS']['force2TaxRate']) && is_array($GLOBALS['ISO_HOOKS']['force2TaxRate']))
+		{
+			foreach ($GLOBALS['ISO_HOOKS']['force2TaxRate'] as $callback)
+			{
+				$this->import($callback[0]);
+				$varValue = $this->$callback[0]->$callback[1]($objRate, $fltPrice, $arrAddresses);
+
+				if ($varValue === true)
+				{
+					return true;
+				}
+				elseif($varValue === false)
+				{
+					return false;
+				}
+			}
+		}
+
 		// Tax rate is for guests only
 		if ($objRate->guests && FE_USER_LOGGED_IN === true && !$objRate->protected)
 		{
@@ -1249,4 +1270,3 @@ class Isotope extends Controller
 		return IsotopeProduct::getProductStatement();
 	}
 }
-
