@@ -14,6 +14,7 @@ namespace Isotope\Product;
 
 use Isotope\Isotope;
 use Isotope\Interfaces\IsotopeProduct;
+use Isotope\Model\TaxClass;
 
 
 /**
@@ -227,31 +228,10 @@ class Standard extends \Controller implements IsotopeProduct
                     return $this->arrData['tax_free_price'] ? $this->arrData['tax_free_price'] : $this->arrData['price'];
                 }
 
-                $varPrice = Isotope::calculatePrice($this->arrData['price'], $this, 'price');
+                $objTaxClass = TaxClass::findByPk($this->arrData['tax_class']);
+                $fltPrice = $objTaxClass === null ? $this->arrData['price'] : $objTaxClass->calculateNetPrice($this->arrData['price']);
 
-                if ($varPrice !== null && $this->arrData['tax_class'] > 0)
-                {
-                    $objIncludes = $this->Database->prepare("SELECT r.* FROM tl_iso_tax_rate r LEFT JOIN tl_iso_tax_class c ON c.includes=r.id WHERE c.id=?")->execute($this->arrData['tax_class']);
-
-                    if ($objIncludes->numRows)
-                    {
-                        $arrTaxRate = deserialize($objIncludes->rate);
-
-                        // Final price / (1 + (tax / 100)
-                        if (strlen($arrTaxRate['unit'])) {
-                            $fltTax = $varPrice - ($varPrice / (1 + (floatval($arrTaxRate['value']) / 100)));
-                        }
-
-                        // Full amount
-                        else {
-                            $fltTax = floatval($arrTaxRate['value']);
-                        }
-
-                        $varPrice -= $fltTax;
-                    }
-                }
-
-                return round($fltPrice, 2);
+                return Isotope::calculatePrice($fltPrice, $this, 'tax_free_price', $this->arrData['tax_class']);
 
             case 'tax_free_total_price':
                 $varPrice = $this->tax_free_price;
