@@ -1069,9 +1069,9 @@ $endScript";
 
 					default:
 						if (eval('return $varValue '.$operator.' $filter[\'value\'];'))
-						{
-							$blnMatchOne = true;
-						}
+				{
+					$blnMatchOne = true;
+				}
 						break;
 				}
 
@@ -1109,7 +1109,7 @@ $endScript";
 		{
 			case 'like':
 			case 'search':
-				return $mode == 'SQL' ? 'REGEXP' : 'stripos';
+				return $mode == 'SQL' ? 'LIKE' : 'stripos';
 
 			case '>':
 			case 'gt':

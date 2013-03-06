@@ -417,7 +417,7 @@ class ModuleIsotopeProductList extends ModuleIsotope
 				{
 					$operator = IsotopeFrontend::convertFilterOperator($filter['operator'], 'SQL');
 					$arrWhere[] = "p1.{$filter['attribute']} $operator ?";
-					$arrValues[] = $filter['value'];
+					$arrValues[] = ($operator == 'LIKE' ? '%'.$filter['value'].'%' : $filter['value']);
 					unset($arrFilters[$k]);
 				}
 			}
@@ -434,7 +434,7 @@ class ModuleIsotopeProductList extends ModuleIsotope
 
             			$operator = IsotopeFrontend::convertFilterOperator($filter['operator'], 'SQL');
     					$arrGroupWhere[] = "p1.{$filter['attribute']} $operator ?";
-    					$arrValues[] = $filter['value'];
+    					$arrValues[] = ($operator == 'LIKE' ? '%'.$filter['value'].'%' : $filter['value']);
     					unset($arrFilters[$k]);
         			}
 
