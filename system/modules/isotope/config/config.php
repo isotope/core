@@ -256,7 +256,6 @@ $GLOBALS['ISO_NUM']["10'000.00"]    = array(2, '.', "'");
 /**
  * Hooks
  */
-$GLOBALS['ISO_HOOKS']['checkoutSurcharge'][]        = array('Isotope\Frontend', 'getShippingAndPaymentSurcharges');
 $GLOBALS['TL_HOOKS']['loadDataContainer'][]             = array('Isotope\tl_iso_products', 'loadProductsDCA');
 $GLOBALS['TL_HOOKS']['loadDataContainer'][]             = array('Isotope\tl_member', 'limitCountries');
 $GLOBALS['TL_HOOKS']['addCustomRegexp'][]               = array('Isotope\Isotope', 'validateRegexp');
@@ -271,6 +270,7 @@ $GLOBALS['TL_HOOKS']['sqlGetFromFile'][]                = array('Isotope\Backend
 $GLOBALS['TL_HOOKS']['getArticle'][]                    = array('Isotope\Frontend', 'storeCurrentArticle');
 $GLOBALS['TL_HOOKS']['generateBreadcrumb'][]            = array('Isotope\Frontend', 'generateBreadcrumb');
 $GLOBALS['ISO_HOOKS']['buttons'][]                      = array('Isotope\Isotope', 'defaultButtons');
+$GLOBALS['ISO_HOOKS']['findSurchargesForCollection'][]  = array('Isotope\Frontend', 'findShippingAndPaymentSurcharges');
 
 if (TL_MODE == 'FE')
 {

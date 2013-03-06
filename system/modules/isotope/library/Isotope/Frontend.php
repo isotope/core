@@ -13,6 +13,8 @@
 namespace Isotope;
 
 use Isotope\Interfaces\IsotopeProduct;
+use Isotope\Interfaces\IsotopeProductCollection;
+use Isotope\Interfaces\IsotopeProductCollectionSurcharge;
 use Isotope\Model\ProductCollection\Order;
 use Isotope\Product\Standard as StandardProduct;
 
@@ -47,29 +49,31 @@ class Frontend extends \Frontend
 
 
     /**
-     * Get shipping and payment surcharges from cart object
-     * @param array
+     * Get shipping and payment surcharges for given collection
+     * @param IsotopeProductCollection
      * @return array
      */
-    public function getShippingAndPaymentSurcharges($arrSurcharges)
+    public function findShippingAndPaymentSurcharges(IsotopeProductCollection $objCollection)
     {
+        $arrSurcharges = array();
+
         if ($objCollection->hasShipping())
         {
-            $arrSurcharge = $this->Isotope->Cart->Shipping->getSurcharge($this->Isotope->Cart);
+            $objSurcharge = $objCollection->Shipping->getSurcharge($objCollection);
 
-            if ($arrSurcharge !== false)
+            if ($objSurcharge instanceof IsotopeProductCollectionSurcharge)
             {
-                $arrSurcharges[] = $arrSurcharge;
+                $arrSurcharges[] = $objSurcharge;
             }
         }
 
         if ($objCollection->hasPayment())
         {
-            $arrSurcharge = $this->Isotope->Cart->Payment->getSurcharge($this->Isotope->Cart);
+            $objSurcharge = $objCollection->Payment->getSurcharge($objCollection);
 
-            if ($arrSurcharge !== false)
+            if ($objSurcharge instanceof IsotopeProductCollectionSurcharge)
             {
-                $arrSurcharges[] = $arrSurcharge;
+                $arrSurcharges[] = $objSurcharge;
             }
         }
 
