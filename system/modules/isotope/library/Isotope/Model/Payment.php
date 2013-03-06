@@ -12,6 +12,9 @@
 
 namespace Isotope\Model;
 
+use Isotope\Isotope;
+use Isotope\Interfaces\IsotopeProductCollection;
+
 
 /**
  * Class Payment
@@ -63,29 +66,8 @@ abstract class Payment extends \Model
     {
         switch ($strKey)
         {
-            case 'label':
-                return Isotope::translate($this->arrData['label'] ? $this->arrData['label'] : $this->arrData['name']);
-                break;
-
             case 'available':
                 throw new BadFunctionCallException('Your payment method does not work with Isotope 2.x');
-                break;
-
-            case 'price':
-                $strPrice = $this->arrData['price'];
-                $blnPercentage = substr($strPrice, -1) == '%' ? true : false;
-
-                if ($blnPercentage)
-                {
-                    $fltSurcharge = (float) substr($strPrice, 0, -1);
-                    $fltPrice = Isotope::getCart()->subTotal / 100 * $fltSurcharge;
-                }
-                else
-                {
-                    $fltPrice = (float) $strPrice;
-                }
-
-                return Isotope::calculatePrice($fltPrice, $this, 'price', $this->arrData['tax_class']);
                 break;
 
             case 'surcharge':
@@ -172,6 +154,51 @@ abstract class Payment extends \Model
     }
 
 
+    /**
+     * Return percentage amount (if applicable)
+     * @return float
+     * @throws UnexpectedValueException
+     */
+    public function getPercentage()
+    {
+        if (!$this->isPercentage())
+        {
+            throw new \UnexpectedValueException('Payment method does not have a percentage amount.');
+        }
+        
+        return (float) substr($this->arrData['price'], 0, -1);
+    }
+
+
+    /**
+     * Return calculated price for this payment method
+     * @return float
+     */
+    public function getPrice(IsotopeProductCollection $objCollection=null)
+    {
+        if (null === $objCollection) {
+            $objCollection = Isotope::getCart();
+        }
+
+        if ($this->isPercentage()) {
+            $fltPrice = $objCollection->subTotal / 100 * $this->getPercentage();
+        } else {
+            $fltPrice = (float) $this->arrData['price'];
+        }
+
+        return Isotope::calculatePrice($fltPrice, $this, 'price', $this->arrData['tax_class']);
+    }
+
+
+    /**
+     * Return translated label for this payment method
+     * @return string
+     */
+    public function getLabel()
+    {
+        return Isotope::translate($this->arrData['label'] ? $this->arrData['label'] : $this->arrData['name']);
+    }
+
 
     /**
      * Process post-sale requests. Does nothing by default.
@@ -252,7 +279,7 @@ abstract class Payment extends \Model
      */
     public function getSurcharge($objCollection)
     {
-        if ($this->arrData['price'] == 0)
+        if ($this->getPrice() == 0)
         {
             return false;
         }
