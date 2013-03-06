@@ -115,7 +115,7 @@ abstract class Payment extends \Model
 
         $arrCountries = deserialize($this->countries);
 
-        if(is_array($arrCountries) && !empty($arrCountries) && !in_array(Isotope::getCart()->billingAddress->country, $arrCountries))
+        if (is_array($arrCountries) && !empty($arrCountries) && !in_array(Isotope::getCart()->billingAddress->country, $arrCountries))
         {
             return false;
         }
@@ -153,8 +153,8 @@ abstract class Payment extends \Model
     {
         substr($this->arrData['price'], -1) == '%' ? true : false;
     }
-
-
+    
+    
     /**
      * Return percentage amount (if applicable)
      * @return float
@@ -276,7 +276,7 @@ abstract class Payment extends \Model
 
 
     /**
-     * Get the checkout surcharge for this shipping method
+     * Get the checkout surcharge for this payment method
      */
     public function getSurcharge($objCollection)
     {

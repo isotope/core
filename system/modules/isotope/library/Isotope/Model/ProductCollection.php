@@ -703,8 +703,7 @@ abstract class ProductCollection extends \Model
      */
     public function transferFromCollection(IsotopeProductCollection $objCollection, $blnDuplicate=true)
     {
-        if (!$this->blnRecordExists)
-        {
+        if (!$this->blnRecordExists) {
             $this->save(true);
         }
 
