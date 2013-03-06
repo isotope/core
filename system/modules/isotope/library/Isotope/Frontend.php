@@ -1233,16 +1233,19 @@ $endScript";
     public static function formatSurcharges($arrSurcharges)
     {
         $i = 0;
-        $Isotope = Isotope::getInstance();
+        $arrReturn = array();
 
-        foreach ($arrSurcharges as $k => $arrSurcharge)
+        foreach ($arrSurcharges as $k => $objSurcharge)
         {
-            $arrSurcharges[$k]['price']            = $Isotope->formatPriceWithCurrency($arrSurcharge['price']);
-            $arrSurcharges[$k]['total_price']    = $Isotope->formatPriceWithCurrency($arrSurcharge['total_price']);
-            $arrSurcharges[$k]['rowClass']        = trim('foot_'.(++$i) . ' ' . $arrSurcharge[$k]['rowClass']);
+            $arrReturn[$k] = $objSurcharge->row();
+            $arrReturn[$k]['price']          = Isotope::formatPriceWithCurrency($objSurcharge->price);
+            $arrReturn[$k]['total_price']    = Isotope::formatPriceWithCurrency($objSurcharge->total_price);
+            $arrReturn[$k]['rowClass']       = trim('foot_'.(++$i) . ' ' . $objSurcharge->rowClass);
+            $arrReturn[$k]['tax_id']         = $objSurcharge->getTaxNumbers();
+
         }
 
-        return $arrSurcharges;
+        return $arrReturn;
     }
 
 
