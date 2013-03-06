@@ -13,6 +13,7 @@
 namespace Isotope\Model;
 
 use Isotope\Isotope;
+use Isotope\Factory\ProductCollectionSurcharge as SurchargeFactory;
 use Isotope\Interfaces\IsotopeProductCollection;
 
 
@@ -284,12 +285,7 @@ abstract class Payment extends \Model
             return false;
         }
 
-        return Isotope::calculateSurcharge(
-                   $this->arrData['price'],
-                   ($GLOBALS['TL_LANG']['MSC']['paymentLabel'] . ' (' . $this->label . ')'),
-                   $this->arrData['tax_class'],
-                   $objCollection->getProducts(),
-                   $this);
+        return SurchargeFactory::buildPaymentSurcharge($this, $objCollection);
     }
 
 
