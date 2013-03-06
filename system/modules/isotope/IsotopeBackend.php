@@ -599,15 +599,7 @@ class IsotopeBackend extends Backend
 	 */
 	public static function getUploader()
 	{
-		// Instantiate the uploader
-		$class = BackendUser::getInstance()->uploader;
-
-		if (!class_exists($class))
-		{
-			$class = 'FileUpload';
-		}
-
-		return new $class();
+		return new FileUpload();
 	}
 
 

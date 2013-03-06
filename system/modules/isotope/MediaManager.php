@@ -114,7 +114,7 @@ class MediaManager extends Widget implements uploadable
 		}
 
 		// Process the uploaded files
-		$arrUploaded = $this->objUploader->uploadTo('isotope', 'files');
+		$arrUploaded = $this->objUploader->uploadTo('isotope', $this->strName);
 
 		// Reset system configuration
 		$GLOBALS['TL_CONFIG']['uploadTypes'] = $arrAllowedTypes;
@@ -232,7 +232,7 @@ class MediaManager extends Widget implements uploadable
 			$this->redirect(preg_replace('/&(amp;)?cid=[^&]*/i', '', preg_replace('/&(amp;)?' . preg_quote($strCommand, '/') . '=[^&]*/i', '', $this->Environment->request)));
 		}
 
-		$upload = sprintf('<h3><label for="ctrl_%s_upload">%s</label></h3>' . $this->objUploader->generateMarkup(),
+		$upload = sprintf('<h3><label for="ctrl_%s_upload">%s</label></h3>' . $this->generateMarkup(),
 						$this->strId,
 						$GLOBALS['TL_LANG']['MSC']['mmUpload'],
 						$this->strName,
@@ -337,5 +337,36 @@ class MediaManager extends Widget implements uploadable
 		}
 
 		return false;
+	}
+
+
+	/**
+	 * Generate file upload markup.
+	 * Can't use FileUpload::generateMarkup() because it does not support multiple widgets on the same page.
+	 */
+	public function generateMarkup()
+	{
+		$fields = '';
+
+		for ($i=0; $i<$GLOBALS['TL_CONFIG']['uploadFields']; $i++)
+		{
+			$fields .= '
+  <input type="file" name="' . $this->strName . '[]" class="tl_upload_field" onfocus="Backend.getScrollOffset()"><br>';
+		}
+
+		return '
+  <div id="' . $this->strName . '_upload-fields">'.$fields.'
+  </div>
+  <script>
+  window.addEvent("domready", function() {
+    if ("multiple" in document.createElement("input")) {
+      var div = $("' . $this->strName . '_upload-fields");
+      var input = div.getElement("input");
+      div.empty();
+      input.set("multiple", true);
+      input.inject(div);
+    }
+  });
+  </script>';
 	}
 }
