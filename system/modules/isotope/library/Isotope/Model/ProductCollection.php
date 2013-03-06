@@ -55,6 +55,12 @@ abstract class ProductCollection extends \Model
     protected $arrProducts;
 
     /**
+     * Cache all surcharges for speed improvements
+     * @var array
+     */
+    protected $arrSurcharges;
+
+    /**
      * Shipping object if shipping module is set in product collection
      * @var object
      */
@@ -219,11 +225,11 @@ abstract class ProductCollection extends \Model
                     $fltTotal = $this->subTotal;
                     $arrSurcharges = $this->getSurcharges();
 
-                    foreach ($arrSurcharges as $arrSurcharge)
+                    foreach ($arrSurcharges as $objSurcharge)
                     {
-                        if ($arrSurcharge['add'] !== false)
+                        if ($objSurcharge->add !== false)
                         {
-                            $fltTotal += $arrSurcharge['total_price'];
+                            $fltTotal += $objSurcharge->total_price;
                         }
                     }
 
@@ -260,11 +266,13 @@ abstract class ProductCollection extends \Model
         if ($strKey == 'Shipping' || $strKey == 'Payment')
         {
             $this->$strKey = $varValue;
+            $this->arrSurcharges = null;
         }
         elseif ($strKey == 'modified')
         {
             $this->blnModified = (bool) $varValue;
             $this->arrProducts = null;
+            $this->arrSurcharges = null;
         }
 
         // We dont want $this->import() objects to be in arrSettings
@@ -420,6 +428,7 @@ abstract class ProductCollection extends \Model
 
         $this->arrCache = array();
         $this->arrProducts = null;
+        $this->arrSurcharges = null;
 
         return $intAffectedRows;
     }
@@ -676,6 +685,16 @@ abstract class ProductCollection extends \Model
     }
 
 
+    public function getSurcharges()
+    {
+        if (null === $this->arrSurcharges) {
+            $this->arrSurcharges = $this->isLocked() ? ProductCollectionSurcharge::findByPid($this->id) : ProductCollectionSurcharge::findForCollection($this);
+        }
+
+        return $this->arrSurcharges;
+    }
+
+
     /**
      * Transfer products from another collection to this one (e.g. Cart to Order)
      * @param object
@@ -793,12 +812,6 @@ abstract class ProductCollection extends \Model
 
         return Isotope::calculateWeight($arrWeights, $unit);
     }
-
-
-    /**
-     * Must be implemented by child class
-     */
-    abstract public function getSurcharges();
 
 
     /**
