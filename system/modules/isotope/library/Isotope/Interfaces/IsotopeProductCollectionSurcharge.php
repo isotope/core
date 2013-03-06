@@ -25,4 +25,8 @@ interface IsotopeProductCollectionSurcharge
     public function getAmountForProduct(IsotopeProduct $objProduct);
 
     public function setAmountForProduct($fltAmount, IsotopeProduct $objProduct);
+
+    public function addTaxNumber($intTax);
+
+    public function getTaxNumbers();
 }

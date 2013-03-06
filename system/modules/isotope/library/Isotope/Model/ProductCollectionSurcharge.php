@@ -41,6 +41,13 @@ abstract class ProductCollectionSurcharge extends \Model
     protected $arrProducts = array();
 
     /**
+     * IDs of applicable taxes
+     * @var array
+     */
+    protected $arrTaxIds = array();
+
+
+    /**
      * Return if the surcharge has tax
      * @return bool
      */
@@ -82,6 +89,26 @@ abstract class ProductCollectionSurcharge extends \Model
     }
 
     /**
+     * Add a tax number
+     * @param int
+     */
+    public function addTaxNumber($intId)
+    {
+        if (!in_array($intId, $this->arrTaxIds)) {
+            $this->arrTaxIds[] = $intId;
+        }
+    }
+
+    /**
+     * Get comma separated list of tax ids
+     * @return string
+     */
+    public function getTaxNumbers()
+    {
+        return implode(',', $this->arrTaxIds);
+    }
+
+    /**
      * Set the current record from an array
      *
      * @param array $arrData The data record
@@ -91,11 +118,17 @@ abstract class ProductCollectionSurcharge extends \Model
     public function setRow(array $arrData)
     {
         $this->arrProducts = deserialize($arrData['products']);
-        unset($arrData['products']);
+        $this->arrTaxIds = deserialize($arrData['tax_ids']);
 
         if (!is_array($this->arrProducts)) {
             $this->arrProducts = array();
         }
+
+        if (!is_array($this->arrTaxIds)) {
+            $this->arrTaxIds = array();
+        }
+
+        unset($arrData['products'], $arrData['tax_ids']);
 
         return parent::setRow($arrData);
     }
