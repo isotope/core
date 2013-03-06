@@ -89,6 +89,42 @@ abstract class ProductCollectionSurcharge extends \Model
     }
 
     /**
+     * Split tax amount amongst collection products
+     * @param IsotopeProductCollection
+     */
+    public function applySplittedTax(IsotopeProductCollection $objCollection)
+    {
+        $this->tax_class = 0;
+        $this->before_tax = true;
+
+        $arrProducts = $objCollection->getProducts();
+
+        if (!$blnPercentage) {
+            $fltTotal = $objCollection->taxFreeSubTotal;
+
+            if ($fltTotal == 0) {
+                return;
+            }
+        }
+
+        foreach ($arrProducts as $objProduct)
+        {
+            if ($blnPercentage)
+            {
+                $fltProductPrice = $objProduct->total_price / 100 * $fltSurcharge;
+            }
+            else
+            {
+                $fltProductPrice = $this->total_price / 100 * (100 / $fltTotal * $objProduct->tax_free_total_price);
+            }
+
+            $fltProductPrice = $fltProductPrice > 0 ? (floor($fltProductPrice * 100) / 100) : (ceil($fltProductPrice * 100) / 100);
+
+            $this->setAmountForProduct($fltProductPrice, $objProduct);
+        }
+    }
+
+    /**
      * Add a tax number
      * @param int
      */
