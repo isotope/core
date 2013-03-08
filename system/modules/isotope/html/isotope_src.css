@@ -40,6 +40,7 @@
 	text-align:left;
 	color:#000;
 	padding-right: 50px;
+	z-index: 9999;
 }
 
 #iso_ajaxBox.btnClose {
@@ -74,6 +75,7 @@
 	top:0;
 	left:0;
 	background-color:#000;
+	z-index: 9998;
 	-moz-opacity:0.5;
 	opacity:0.5;
 	_display:none;
