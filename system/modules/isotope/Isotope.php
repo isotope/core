@@ -1031,7 +1031,7 @@ class Isotope extends Controller
 	 */
 	public function translate($label, $language=false)
 	{
-		if (!in_array('isotope_multilingual', $this->Config->getActiveModules()))
+		if (!$this->Database->tableExists('tl_iso_labels'))
 		{
 			return $label;
 		}
