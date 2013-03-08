@@ -6,6 +6,7 @@ Version 1.4.? (2013-??-??)
 
 ### New
 - Standalone front end module to display Isotope messages (#101)
+- Added all missing german translations (#567)
 
 ### Improved
 - Added short name for known "Krone" and "Franc" currencies
