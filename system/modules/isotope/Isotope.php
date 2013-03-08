@@ -196,7 +196,7 @@ class Isotope extends Controller
 			{
 				$do = $this->Input->get('do');
 
-				if ($GLOBALS['BE_MOD']['isotope'][$do] != '')
+				if ($do != 'iso_setup' && $GLOBALS['BE_MOD']['isotope'][$do] != '')
 				{
 					$_SESSION['TL_ERROR'][] = $GLOBALS['TL_LANG']['ERR']['noDefaultStoreConfiguration'];
 
