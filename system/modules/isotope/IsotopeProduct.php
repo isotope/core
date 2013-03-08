@@ -790,17 +790,21 @@ class IsotopeProduct extends Controller
 
 			if ($arrData['attributes']['customer_defined'] || $arrData['attributes']['variant_option'])
 			{
-				$objTemplate->hasOptions = true;
-				$arrProductOptions[$attribute] = array_merge($arrData, array
-				(
-					'name'	=> $attribute,
-					'html'	=> $this->generateProductOptionWidget($attribute),
-				));
+    			$strWidget = $this->generateProductOptionWidget($attribute);
 
-				if ($arrData['attributes']['variant_option'] || $arrData['attributes']['ajax_option'])
-				{
-					$arrAjaxOptions[] = $attribute;
-				}
+    			if ($strWidget != '')
+    			{
+    				$arrProductOptions[$attribute] = array_merge($arrData, array
+    				(
+    					'name'	=> $attribute,
+    					'html'	=> $strWidget,
+    				));
+
+    				if ($arrData['attributes']['variant_option'] || $arrData['attributes']['ajax_option'])
+    				{
+    					$arrAjaxOptions[] = $attribute;
+    				}
+    			}
 			}
 			else
 			{
@@ -852,7 +856,7 @@ class IsotopeProduct extends Controller
 		$objTemplate->href_reader = $this->href_reader;
 		$objTemplate->label_detail = $GLOBALS['TL_LANG']['MSC']['detailLabel'];
 		$objTemplate->options = IsotopeFrontend::generateRowClass($arrProductOptions, 'product_option');
-		$objTemplate->hasOptions = !empty($arrProductOptions) ? true : false;
+		$objTemplate->hasOptions = !empty($arrProductOptions);
 		$objTemplate->enctype = $this->hasUpload ? 'multipart/form-data' : 'application/x-www-form-urlencoded';
 		$objTemplate->formId = $this->formSubmit;
 		$objTemplate->action = ampersand($this->Environment->request, true);
