@@ -44,7 +44,7 @@ $GLOBALS['TL_DCA']['tl_iso_prices'] = array
         'ctable'                    => array('tl_iso_price_tiers'),
         'onload_callback' => array
         (
-            array('tl_iso_prices', 'initilizeDCA'),
+            array('tl_iso_prices', 'initializeDCA'),
         ),
     ),
 
@@ -198,7 +198,7 @@ class tl_iso_prices extends Backend
     /**
      * Load default values for the DCA
      */
-    public function initilizeDCA()
+    public function initializeDCA()
     {
         // Set default tax class
 		$GLOBALS['TL_DCA']['tl_iso_prices']['fields']['tax_class']['default'] = (int) $this->Database->execute("SELECT id FROM tl_iso_tax_class WHERE fallback='1'")->id;
