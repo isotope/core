@@ -15,6 +15,7 @@ Version 1.4.? (2013-??-??)
 - `getAllowedProductIds` hook can now override "allow all" permissions
 - Added checkbox to hide filter option when there is just one option (#42)
 - Empty message is now rendered inside product list template (#543)
+- Add default order status when installing Isotope eCommerce (#558)
 
 ### Fixed
 - Price was 0.00 if there is only one product variant
