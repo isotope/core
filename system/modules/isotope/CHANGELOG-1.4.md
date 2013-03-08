@@ -25,6 +25,7 @@ Version 1.4.? (2013-??-??)
 - Invoice PDF did not consider shop config template folder (#534)
 - Product translations were not correctly fetched in variants (#465)
 - Custom mediamanager widgets now work again (#555)
+- Default tax class was not applied for advanced prices (#553)
 
 
 Version 1.4.rc2 (2013-01-22)

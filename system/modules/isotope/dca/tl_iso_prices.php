@@ -42,6 +42,10 @@ $GLOBALS['TL_DCA']['tl_iso_prices'] = array
         'enableVersioning'          => true,
         'ptable'                    => 'tl_iso_products',
         'ctable'                    => array('tl_iso_price_tiers'),
+        'onload_callback' => array
+        (
+            array('tl_iso_prices', 'initilizeDCA'),
+        ),
     ),
 
     // List
@@ -147,7 +151,6 @@ $GLOBALS['TL_DCA']['tl_iso_prices'] = array
             'label'                 => &$GLOBALS['TL_LANG']['tl_iso_prices']['tax_class'],
             'exclude'               => true,
             'inputType'             => 'select',
-            'default'               => &$GLOBALS['TL_DCA']['tl_iso_products']['fields']['tax_class']['default'],
             'foreignKey'            => 'tl_iso_tax_class.name',
             'eval'                  => array('includeBlankOption'=>true, 'tl_class'=>'clr'),
         ),
@@ -191,6 +194,16 @@ $GLOBALS['TL_DCA']['tl_iso_prices'] = array
  */
 class tl_iso_prices extends Backend
 {
+
+    /**
+     * Load default values for the DCA
+     */
+    public function initilizeDCA()
+    {
+        // Set default tax class
+		$GLOBALS['TL_DCA']['tl_iso_prices']['fields']['tax_class']['default'] = (int) $this->Database->execute("SELECT id FROM tl_iso_tax_class WHERE fallback='1'")->id;
+    }
+
 
     /**
      * List all price rows
