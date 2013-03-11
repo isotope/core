@@ -731,7 +731,7 @@ class ProductCallbacks extends Backend
 
 
 	/**
-	 * Hide generate button for variants and product types without variant support
+	 * Hide generate and quick edit button for variants and product types without variant support
 	 * @param array
 	 * @param string
 	 * @param string
@@ -740,28 +740,7 @@ class ProductCallbacks extends Backend
 	 * @param string
 	 * @return string
 	 */
-	public function quickEditButton($row, $href, $label, $title, $icon, $attributes)
-	{
-		if ($row['pid'] > 0 || !$this->arrProductTypes[$row['type']]['variants'])
-		{
-			return '';
-		}
-
-		return '<a href="'.$this->addToUrl($href.'&amp;id='.$row['id']).'" title="'.specialchars($title).'"'.$attributes.'>'.$this->generateImage($icon, $label).'</a> ';
-	}
-
-
-	/**
-	 * Hide generate button for variants and product types without variant support
-	 * @param array
-	 * @param string
-	 * @param string
-	 * @param string
-	 * @param string
-	 * @param string
-	 * @return string
-	 */
-	public function generateButton($row, $href, $label, $title, $icon, $attributes)
+	public function variantsButton($row, $href, $label, $title, $icon, $attributes)
 	{
 		if ($row['pid'] > 0 || !$this->arrProductTypes[$row['type']]['variants'])
 		{

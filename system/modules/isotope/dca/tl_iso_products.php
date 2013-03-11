@@ -256,7 +256,7 @@ $GLOBALS['TL_DCA']['tl_iso_products'] = array
 				'label'				=> &$GLOBALS['TL_LANG']['tl_iso_products']['quick_edit'],
 				'href'				=> 'key=quick_edit',
 				'icon'				=> 'system/modules/isotope/html/table-select-cells.png',
-				'button_callback'	=> array('ProductCallbacks', 'quickEditButton'),
+				'button_callback'	=> array('ProductCallbacks', 'variantsButton'),
 				'attributes'		=> 'class="isotope-tools"',
 			),
 			'generate' => array
@@ -264,7 +264,7 @@ $GLOBALS['TL_DCA']['tl_iso_products'] = array
 				'label'				=> &$GLOBALS['TL_LANG']['tl_iso_products']['generate'],
 				'href'				=> 'key=generate',
 				'icon'				=> 'system/modules/isotope/html/table-insert-row.png',
-				'button_callback'	=> array('ProductCallbacks', 'generateButton'),
+				'button_callback'	=> array('ProductCallbacks', 'variantsButton'),
 				'attributes'		=> 'class="isotope-tools"',
 			),
 			'related' => array
