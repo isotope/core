@@ -1269,7 +1269,10 @@ $endScript";
 		// if we have a root page id (sitemap.xml e.g.) we have to make sure we only consider categories in this tree
 		if ($intRoot > 0)
 		{
-			$strAllowedPages = ' AND c.page_id IN (' . implode(',', $this->getChildRecords($intRoot, 'tl_page', false)) . ')';
+    		$arrPageIds = $this->getChildRecords($intRoot, 'tl_page', false);
+    		$arrPageIds[] = $intRoot;
+
+			$strAllowedPages = ' AND c.page_id IN (' . implode(',', $arrPageIds) . ')';
 		}
 
 	    $objProducts = $this->Database->query("

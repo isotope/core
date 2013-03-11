@@ -31,6 +31,7 @@ Version 1.4.? (2013-??-??)
 - Default tax class was not applied for advanced prices (#553)
 - Default group was not created when groups existed (#554)
 - Allow users to create groups in the root node (#535)
+- Potential issue when generating sitemap XML file (#556)
 
 
 Version 1.4.rc2 (2013-01-22)
