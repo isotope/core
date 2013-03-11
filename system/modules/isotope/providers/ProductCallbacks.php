@@ -715,7 +715,7 @@ class ProductCallbacks extends Backend
 	 */
 	public function groupsButton($href, $label, $title, $class, $attributes, $table, $root)
 	{
-		if (!$this->User->isAdmin && (!is_array($this->User->iso_groupp) || empty($this->User->iso_groupp) || !is_array($this->User->iso_groups) || empty($this->User->iso_groups)))
+		if (!$this->User->isAdmin && (!is_array($this->User->iso_groupp) || empty($this->User->iso_groupp)))
 		{
 			return '';
 		}

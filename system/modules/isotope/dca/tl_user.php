@@ -214,7 +214,7 @@ $GLOBALS['TL_DCA']['tl_user']['fields']['iso_groupp'] = array
 	'label'					=> &$GLOBALS['TL_LANG']['tl_user']['iso_groupp'],
 	'exclude'				=> true,
 	'inputType'				=> 'checkbox',
-	'options'				=> array('create', 'delete'),
+	'options'				=> array('create', 'delete', 'rootPaste'),
 	'reference'				=> &$GLOBALS['TL_LANG']['MSC'],
 	'eval'					=> array('multiple'=>true, 'tl_class'=>'clr')
 );

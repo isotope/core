@@ -29,6 +29,7 @@ Version 1.4.? (2013-??-??)
 - Product translations were not correctly fetched in variants (#465)
 - Custom mediamanager widgets now work again (#555)
 - Default tax class was not applied for advanced prices (#553)
+- Allow users to create groups in the root node (#535)
 
 
 Version 1.4.rc2 (2013-01-22)

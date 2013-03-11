@@ -42,3 +42,5 @@ $GLOBALS['TL_LANG']['tl_user']['iso_groups'][0] = 'Erlaubte Produktgruppen';
 $GLOBALS['TL_LANG']['tl_user']['iso_groups'][1] = 'Zugriff auf Produktegruppen für diese Benutzergruppe limitieren. Wird vererbt.';
 $GLOBALS['TL_LANG']['tl_user']['isotope_legend'] = 'Isotope eCommerce';
 
+$GLOBALS['TL_LANG']['MSC']['rootPaste'] = 'Zugriff auf oberste Ebene';
+
