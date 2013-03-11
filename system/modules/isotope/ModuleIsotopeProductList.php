@@ -415,8 +415,10 @@ class ModuleIsotopeProductList extends ModuleIsotope
     			}
 				elseif ($filter['group'] == '' && !in_array($filter['attribute'], $GLOBALS['ISO_CONFIG']['dynamicAttributes']))
 				{
+				    $blnMultilingual = in_array($filter['attribute'], $GLOBALS['ISO_CONFIG']['multilingual']);
 					$operator = IsotopeFrontend::convertFilterOperator($filter['operator'], 'SQL');
-					$arrWhere[] = "p1.{$filter['attribute']} $operator ?";
+
+    				$arrWhere[] = ($blnMultilingual ? "IFNULL(p2.{$filter['attribute']}, p1.{$filter['attribute']})" : "p1.{$filter['attribute']}") . " $operator ?";
 					$arrValues[] = ($operator == 'LIKE' ? '%'.$filter['value'].'%' : $filter['value']);
 					unset($arrFilters[$k]);
 				}
@@ -432,8 +434,10 @@ class ModuleIsotopeProductList extends ModuleIsotope
         			{
             			$filter = $arrFilters[$k];
 
+            			$blnMultilingual = in_array($filter['attribute'], $GLOBALS['ISO_CONFIG']['multilingual']);
             			$operator = IsotopeFrontend::convertFilterOperator($filter['operator'], 'SQL');
-    					$arrGroupWhere[] = "p1.{$filter['attribute']} $operator ?";
+
+    					$arrGroupWhere[] = ($blnMultilingual ? "IFNULL(p2.{$filter['attribute']}, p1.{$filter['attribute']})" : "p1.{$filter['attribute']}") . " $operator ?";
     					$arrValues[] = ($operator == 'LIKE' ? '%'.$filter['value'].'%' : $filter['value']);
     					unset($arrFilters[$k]);
         			}

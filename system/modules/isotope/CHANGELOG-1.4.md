@@ -32,6 +32,7 @@ Version 1.4.? (2013-??-??)
 - Default group was not created when groups existed (#554)
 - Allow users to create groups in the root node (#535)
 - Potential issue when generating sitemap XML file (#556)
+- Product search did not consider translated fields (#551)
 
 
 Version 1.4.rc2 (2013-01-22)
