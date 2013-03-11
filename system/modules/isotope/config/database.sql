@@ -554,6 +554,7 @@ CREATE TABLE `tl_iso_tax_class` (
   `label` varchar(255) NOT NULL default '',
   `fallback` char(1) NOT NULL default '',
   `applyRoundingIncrement` char(1) NOT NULL default '',
+  `notNegative` char(1) NOT NULL default '',
   `includes` int(10) unsigned NOT NULL default '0',
   `rates` blob NULL,
   PRIMARY KEY  (`id`)

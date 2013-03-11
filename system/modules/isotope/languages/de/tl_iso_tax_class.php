@@ -41,6 +41,7 @@ $GLOBALS['TL_LANG']['tl_iso_tax_class']['name'][1]                  = 'Legen Sie
 $GLOBALS['TL_LANG']['tl_iso_tax_class']['fallback'][0]              = 'Standard';
 $GLOBALS['TL_LANG']['tl_iso_tax_class']['fallback'][1]              = 'Klicken Sie hier, wenn es sich um die Standard-Steuerklasse handelt.';
 $GLOBALS['TL_LANG']['tl_iso_tax_class']['applyRoundingIncrement']   = array('Rundungszuschlag verwenden', 'Rundungszuschlag der Shop-Konfiguration verwenden.');
+$GLOBALS['TL_LANG']['tl_iso_tax_class']['notNegative']              = array('Nicht negativ', 'Verhindert negative Beträge für diese Steuer (negative Zahl wird auf 0.00 aufgerundet).');
 $GLOBALS['TL_LANG']['tl_iso_tax_class']['includes'][0]              = 'Steuerklasse im Produktpreis enthalten';
 $GLOBALS['TL_LANG']['tl_iso_tax_class']['includes'][1]              = 'Wählen Sie ob Produktpreise mit dieser Steuerklasse einen Steuersatz enthalten. Dieser Steuersatz wird vom Produktpreis abgezogen, wenn sie nicht passt.';
 $GLOBALS['TL_LANG']['tl_iso_tax_class']['label'][0]                 = 'Beschriftung einbinden';

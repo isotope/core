@@ -432,6 +432,11 @@ class Isotope extends Controller
 					'total_price'	=> $this->roundPrice($fltTax, $objTaxClass->applyRoundingIncrement),
 					'add'			=> false,
 				);
+
+				if ($objTaxClass->notNegative && $arrTaxes[$objTaxClass->id . '_' . $objIncludes->id]['total_price'] < 0)
+				{
+    				$arrTaxes[$objTaxClass->id . '_' . $objIncludes->id]['total_price'] = 0;
+				}
 			}
 		}
 
@@ -475,6 +480,11 @@ class Isotope extends Controller
 					'total_price'	=> $this->roundPrice($fltTax, $objTaxClass->applyRoundingIncrement),
 					'add'			=> true,
 				);
+
+				if ($objTaxClass->notNegative && $arrTaxes[$objRates->id]['total_price'] < 0)
+				{
+    				$arrTaxes[$objRates->id]['total_price'] = 0;
+				}
 
 				if ($objRates->stop)
 				{
