@@ -1372,7 +1372,7 @@ $endScript";
 
 		// now move up the page tree until we find a page where the reader is set
 		$trail = array();
-		$pid = $objOriginPage->pid;
+		$pid = (int) $objOriginPage->pid;
 
 		do
 		{
@@ -1393,7 +1393,7 @@ $endScript";
 				return $objParentPage->iso_readerJumpTo;
 			}
 
-			$pid = $objParentPage->pid;
+			$pid = (int) $objParentPage->pid;
 		}
 		while ($pid > 0 && $objParentPage->type != 'root');
 
