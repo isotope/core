@@ -609,7 +609,6 @@ class ProductCallbacks extends Backend
 	 * @param string
 	 * @param array
 	 * @return string
-	 * @todo remove "isotope-filter" static class when Contao Defect #3504 has been implemented
 	 */
 	public function filterButton($href, $label, $title, $class, $attributes, $table, $root)
 	{
@@ -631,7 +630,7 @@ class ProductCallbacks extends Backend
 			$href = ampersand($this->Environment->request . '&') . $href;
 		}
 
-		return ' &#160; :: &#160; <a href="'.$href.'" class="'.$class.' isotope-filter" title="'.specialchars($title).'"'.$attributes.'>'.$label.'</a> ';
+		return ' &#160; :: &#160; <a href="'.$href.'" class="'.$class.'" title="'.specialchars($title).'"'.$attributes.'>'.$label.'</a> ';
 	}
 
 
