@@ -957,19 +957,13 @@ window.addEvent(\'domready\', function() {
 		if ($this->noReload)
 		{
 			$return .= '
+
 <script>
 window.addEvent(\'domready\', function() {
   Backend.vScrollTo(($(\'' . $this->strTable . '\').getElement(\'label.error\').getPosition().y - 20));
 });
 </script>';
 		}
-
-		$return .= '
-<script>
-window.addEvent(\'domready\', function() {
-  Isotope.removeProductFromStorage(' . $this->intId . ');
-});
-</script>';
 
 		return $return;
 	}
@@ -1257,14 +1251,7 @@ window.addEvent(\'domready\', function() {
 		return '
 <div id="tl_buttons">
 <a href="'.$this->getReferer(true).'" class="header_back" title="'.specialchars($GLOBALS['TL_LANG']['MSC']['backBT']).'" accesskey="b" onclick="Backend.getScrollOffset();">'.$GLOBALS['TL_LANG']['MSC']['backBT'].'</a>
-</div>' . $return . '
-
-<script>
-window.addEvent(\'domready\', function() {
-  Isotope.purgeProductsStorage();
-});
-</script>'
-;
+</div>'.$return;
 	}
 
 
@@ -1776,7 +1763,6 @@ window.addEvent(\'domready\', function() {
 		{
 			$return .= "
 <script>
-window.useProductsStorage=" . ($this->Input->get('act') == '' ? 'true' : 'false') . ";
 $(window).addEvents({
 	'scroll': Isotope.loadDeferredProducts,
 	'domready': Isotope.loadDeferredProducts,

@@ -33,6 +33,7 @@ Version 1.4.? (2013-??-??)
 - Allow users to create groups in the root node (#535)
 - Potential issue when generating sitemap XML file (#556)
 - Product search did not consider translated fields (#551)
+- Removed session storage for backend, it does not work :-(
 
 
 Version 1.4.rc2 (2013-01-22)
