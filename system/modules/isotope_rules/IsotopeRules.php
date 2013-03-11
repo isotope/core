@@ -95,11 +95,23 @@ class IsotopeRules extends Controller
 
 			while( $objRules->next() )
 			{
-				// Cart item quantity
-				if ($objRules->quantityMode == 'product_quantity' && (($objRules->minItemQuantity > 0 && $objRules->minItemQuantity > $objSource->quantity_requested) || ($objRules->maxItemQuantity > 0 && $objRules->maxItemQuantity < $objSource->quantity_requested)))
-				{
-					continue;
-				}
+    			// Check cart quantity
+    			if ($objRules->minItemQuantity > 0 || $objRules->maxItemQuantity > 0)
+    			{
+        			if ($objRules->quantityMode == 'cart_products' || $objRules->quantityMode == 'cart_items')
+        			{
+        				$intTotal = 0;
+        				foreach ($this->Isotope->Cart->getProducts() as $objProduct)
+        				{
+      						$intTotal += $objRules->quantityMode == 'cart_items' ? $objProduct->quantity_requested : 1;
+        				}
+        			}
+
+    				if (($objRules->minItemQuantity > 0 && $objRules->minItemQuantity > $intTotal) || ($objRules->maxItemQuantity > 0 && $objRules->maxItemQuantity < $intTotal))
+    				{
+    					continue;
+    				}
+    			}
 
 				// We're unable to apply variant price rules to low_price (see #3189)
 				if ($strField == 'low_price' && $objRules->productRestrictions == 'variants')
@@ -355,7 +367,7 @@ class IsotopeRules extends Controller
 		// Member restrictions
 		if (FE_USER_LOGGED_IN === true && TL_MODE=='FE')
 		{
-			$arrGroups = array_map('intval', $this->User->groups);
+			$arrGroups = array_map('intval', (array) $this->User->groups);
 
 			$arrProcedures[] = "(memberRestrictions='none'
 								OR (memberRestrictions='guests' AND memberCondition='1')
@@ -650,7 +662,7 @@ class IsotopeRules extends Controller
 		{
 			// discount total! not related to tax subtraction
 			$fltPrice = $blnPercentage ? ($arrSurcharge['total_price'] / 100 * $fltDiscount) : $arrRule['discount'];
-			$arrSurcharge['total_price'] = $fltPrice > 0 ? (floor($fltPrice * 100) / 100) : (ceil($fltPrice * 100) / 100);
+			$arrSurcharge['total_price'] = $fltPrice > 0 ? (floor(round($fltPrice * 100, 4)) / 100) : (ceil(round($fltPrice * 100, 4)) / 100);
 			$arrSurcharge['before_tax'] = ($arrRule['tax_class'] != 0 ? true : false);
 			$arrSurcharge['tax_class'] = ($arrRule['tax_class'] > 0 ? $arrRule['tax_class'] : 0);
 
