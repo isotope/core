@@ -334,7 +334,7 @@ class tl_iso_producttypes extends Backend
 								$arrAccess[] = $this->Input->get('id');
 
 								$this->Database->prepare("UPDATE tl_user SET iso_product_types=? WHERE id=?")
-											   ->execute(serialize($arrAccess), $this->User->id);
+											   ->executeUncached(serialize($arrAccess), $this->User->id);
 							}
 						}
 
@@ -353,7 +353,7 @@ class tl_iso_producttypes extends Backend
 								$arrAccess[] = $this->Input->get('id');
 
 								$this->Database->prepare("UPDATE tl_user_group SET iso_product_types=? WHERE id=?")
-											   ->execute(serialize($arrAccess), $this->User->groups[0]);
+											   ->executeUncached(serialize($arrAccess), $this->User->groups[0]);
 							}
 						}
 

@@ -260,7 +260,7 @@ class tl_iso_groups extends Backend
 
 						// Add permissions on group level
 						elseif ($this->User->groups[0] > 0)
-		{
+						{
 							$objGroup = $this->Database->prepare("SELECT iso_groups, iso_groupp FROM tl_user_group WHERE id=?")
 													   ->limit(1)
 													   ->executeUncached($this->User->groups[0]);
@@ -290,8 +290,8 @@ class tl_iso_groups extends Backend
 				if (!in_array($this->Input->get('id'), $root) || ($this->Input->get('act') == 'delete' && !$this->User->hasAccess('delete', 'iso_groupp')))
 				{
 					$this->log('Not enough permissions to '.$this->Input->get('act').' group ID "'.$this->Input->get('id').'"', __METHOD__, TL_ERROR);
-			$this->redirect('contao/main.php?act=error');
-		}
+					$this->redirect('contao/main.php?act=error');
+				}
 				break;
 
 			case 'editAll':
@@ -364,8 +364,6 @@ class tl_iso_groups extends Backend
 		$arrGroups[] = $dc->id;
 
 		$this->Database->query("UPDATE tl_iso_products SET gid=0 WHERE gid IN (" . implode(',', $arrGroups) . ")");
-
-		IsotopeBackend::createGeneralGroup();
 	}
 
 

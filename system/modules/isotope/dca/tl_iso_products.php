@@ -52,6 +52,7 @@ $GLOBALS['TL_DCA']['tl_iso_products'] = array
 		'ctable'					=> array('tl_iso_downloads', 'tl_iso_product_categories', 'tl_iso_prices'),
 		'onload_callback' => array
 		(
+		    array('IsotopeBackend', 'createGeneralGroup'),
 			array('ProductCallbacks', 'applyAdvancedFilters'),
 			array('ProductCallbacks', 'checkPermission'),
 			array('ProductCallbacks', 'buildPaletteString'),
