@@ -576,11 +576,23 @@ abstract class IsotopeProductCollection extends Model
 
 		if ($objItem->numRows)
 		{
+    		if (($objItem->product_quantity + $intQuantity) < $objProduct->minimum_quantity)
+    		{
+        		$_SESSION['ISO_INFO'][] = sprintf($GLOBALS['TL_LANG']['ERR']['productMinimumQuantity'], $objProduct->name, $objProduct->minimum_quantity);
+        		$intQuantity = $objProduct->minimum_quantity - $objItem->product_quantity;
+    		}
+
 			$this->Database->query("UPDATE {$this->ctable} SET tstamp=$time, product_quantity=(product_quantity+$intQuantity) WHERE id={$objItem->id}");
 			return $objItem->id;
 		}
 		else
 		{
+    		if ($intQuantity < $objProduct->minimum_quantity)
+    		{
+        		$_SESSION['ISO_INFO'][] = sprintf($GLOBALS['TL_LANG']['ERR']['productMinimumQuantity'], $objProduct->name, $objProduct->minimum_quantity);
+        		$intQuantity = $objProduct->minimum_quantity;
+    		}
+
 			$arrSet = array
 			(
 				'pid'				=> $this->id,
@@ -637,6 +649,12 @@ abstract class IsotopeProductCollection extends Model
 		if (isset($arrSet['product_quantity']) && $arrSet['product_quantity'] == 0)
 		{
 			return $this->deleteProduct($objProduct);
+		}
+
+		if (isset($arrSet['product_quantity']) && $arrSet['product_quantity'] < $objProduct->minimum_quantity)
+		{
+    		$_SESSION['ISO_INFO'][] = sprintf($GLOBALS['TL_LANG']['ERR']['productMinimumQuantity'], $objProduct->name, $objProduct->minimum_quantity);
+    		$arrSet['product_quantity'] = $objProduct->minimum_quantity;
 		}
 
 		// Modify timestamp when updating a product

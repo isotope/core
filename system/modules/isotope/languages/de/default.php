@@ -60,6 +60,7 @@ $GLOBALS['TL_LANG']['ERR']['cc_match'] = 'Ihre Kreditkarten-Nummer stimmt nicht 
 $GLOBALS['TL_LANG']['ERR']['addressDoesNotExist'] = 'Diese Adresse ist nicht in Ihrem Adressbuch.';
 $GLOBALS['TL_LANG']['ERR']['noAddressBookEntries'] = 'Sie haben keine Adressbuch-Einträge.';
 $GLOBALS['TL_LANG']['ERR']['cartMinSubtotal'] = 'Der Mindestbestellwert beträgt %s. Bitte legen Sie weitere Produkte in den Warenkorb.';
+$GLOBALS['TL_LANG']['ERR']['productMinimumQuantity'] = 'Die Mindestbestellmenge für "%s" ist %s Stück. Bitte prüfen Sie ihren Warenkorb.';
 $GLOBALS['TL_LANG']['MSC']['editLanguage'] = 'Bearbeiten';
 $GLOBALS['TL_LANG']['MSC']['deleteLanguage'] = 'Löschen';
 $GLOBALS['TL_LANG']['MSC']['defaultLanguage'] = 'Fallback-Sprache';

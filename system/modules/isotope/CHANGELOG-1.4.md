@@ -8,6 +8,7 @@ Version 1.4.? (2013-??-??)
 - Standalone front end module to display Isotope messages (#101)
 - Added all missing german translations (#567)
 - Added option to prevent negative taxes (#536)
+- Added minimum product quantity support (through advanced prices)
 
 ### Improved
 - Added short name for known "Krone" and "Franc" currencies
