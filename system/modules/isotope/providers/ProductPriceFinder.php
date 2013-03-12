@@ -59,6 +59,7 @@ class ProductPriceFinder extends System
 
 		return array_merge(array
 		(
+		    'min'               => 1,
 			'price'				=> null,
 			'tax_class'			=> null,
 			'from_price'		=> null,
@@ -188,6 +189,7 @@ class ProductPriceFinder extends System
 		{
 			if (!$blnPriceFound && $arrPrice['min'] <= $intQuantity)
 			{
+    			$arrData['min'] = (int) $arrPrice['min'];
 				$arrData['price'] = $arrPrice['price'];
 				$arrData['tax_class'] = $arrPrice['tax_class'];
 				$blnPriceFound = true;
@@ -200,6 +202,13 @@ class ProductPriceFinder extends System
 		}
 
 		$arrData['price_tiers'] = array_reverse($arrPrices);
+
+		if (!$blnPriceFound && !empty($arrPrices))
+		{
+    		$arrData['min'] = (int) $arrData['price_tiers'][0]['min'];
+    		$arrData['price'] = $arrData['price_tiers'][0]['price'];
+    		$arrData['tax_class'] = $arrData['price_tiers'][0]['tax_class'];
+		}
 
 		return $arrData;
 	}
