@@ -28,7 +28,7 @@
 
 #iso_ajaxBox {
 	width:20%;
-	padding:24px;
+	padding:9px 24px;
 	position:absolute;
 	top:30px;
 	left:40%;
@@ -49,7 +49,7 @@
 }
 
 #iso_ajaxBox p {
-	margin:0;
+	margin:1em 0;
 	padding:0;
 }
 
