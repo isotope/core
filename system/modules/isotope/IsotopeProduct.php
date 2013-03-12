@@ -286,6 +286,14 @@ class IsotopeProduct extends Controller
 
 				return $this->arrCache[$strKey] ? $this->arrCache[$strKey] : 1;
 
+			case 'minimum_quantity':
+			    if (!isset($this->arrCache[$strKey]))
+			    {
+    			    $this->findPrice();
+    			}
+
+				return $this->arrCache[$strKey] ? $this->arrCache[$strKey] : 1;
+
 			case 'shipping_exempt':
 				return ($this->arrData['shipping_exempt'] || $this->arrType['shipping_exempt']) ? true : false;
 
@@ -851,6 +859,7 @@ class IsotopeProduct extends Controller
 		$objTemplate->quantityLabel = $GLOBALS['TL_LANG']['MSC']['quantity'];
 		$objTemplate->useQuantity = $objModule->iso_use_quantity;
 		$objTemplate->quantity_requested = $this->quantity_requested;
+		$objTemplate->minimum_quantity = $this->minimum_quantity;
 		$objTemplate->raw = array_merge($this->arrData, $this->arrCache);
 		$objTemplate->raw_options = $this->arrOptions;
 		$objTemplate->href_reader = $this->href_reader;
@@ -1391,6 +1400,7 @@ class IsotopeProduct extends Controller
 		$this->arrData['price'] = $arrPrice['price'];
 		$this->arrData['tax_class'] = $arrPrice['tax_class'];
 		$this->arrCache['from_price'] = $arrPrice['from_price'];
+		$this->arrCache['minimum_quantity'] = $arrPrice['min'];
 
 		// Add "price_tiers" to attributes, so the field is available in the template
 		if ($this->hasAdvancedPrices())
