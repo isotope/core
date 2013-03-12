@@ -19,6 +19,7 @@ Version 1.4.? (2013-??-??)
 - Empty message is now rendered inside product list template (#543)
 - Add default order status when installing Isotope eCommerce (#558)
 - Do not generate options container if no frontend attributes are available (#533)
+- Base price label can now be translated
 
 ### Fixed
 - Price was 0.00 if there is only one product variant
