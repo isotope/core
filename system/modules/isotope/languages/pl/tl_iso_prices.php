@@ -51,8 +51,8 @@ $GLOBALS['TL_LANG']['tl_iso_prices']['show']			= array('Szczegóły ceny', 'Poka
 /**
  * References
  */
-$GLOBALS['TL_LANG']['tl_iso_prices']['price_tier_columns']['min']	= 'Ilość (min)';
-$GLOBALS['TL_LANG']['tl_iso_prices']['price_tier_columns']['price']	= 'Cena';
+$GLOBALS['TL_LANG']['tl_iso_prices']['price_tier_columns']['min']	= array('Ilość (min)');
+$GLOBALS['TL_LANG']['tl_iso_prices']['price_tier_columns']['price']	= array('Cena');
 
 
 /**

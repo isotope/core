@@ -40,6 +40,10 @@ $GLOBALS['TL_DCA']['tl_iso_downloads'] = array
 		'dataContainer'					=> 'Table',
 		'enableVersioning'				=> true,
 		'ptable'						=> 'tl_iso_products',
+		'onload_callback' => array
+		(
+			array('tl_iso_downloads', 'prepareSRC'),
+		),
 	),
 
 	// List
@@ -48,11 +52,12 @@ $GLOBALS['TL_DCA']['tl_iso_downloads'] = array
 		'sorting' => array
 		(
 			'mode'						=> 4,
-			'fields'					=> array('title'),
+			'fields'					=> array('sorting'),
 			'flag'						=> 1,
 			'panelLayout'				=> 'filter;search,limit',
 			'headerFields'				=> array('name', 'alias', 'sku'),
-			'child_record_callback'		=> array('tl_iso_downloads', 'listRows')
+			'child_record_callback'		=> array('tl_iso_downloads', 'listRows'),
+			'disableGrouping'			=> true,
 		),
 		'label' => array
 		(
@@ -80,8 +85,16 @@ $GLOBALS['TL_DCA']['tl_iso_downloads'] = array
 			'copy' => array
 			(
 				'label'					=> &$GLOBALS['TL_LANG']['tl_iso_downloads']['copy'],
-				'href'					=> 'act=copy',
-				'icon'					=> 'copy.gif'
+				'href'					=> 'act=paste&amp;mode=copy',
+				'icon'					=> 'copy.gif',
+				'attributes'			=> 'onclick="Backend.getScrollOffset();"'
+			),
+			'cut' => array
+			(
+				'label'					=> &$GLOBALS['TL_LANG']['tl_iso_downloads']['cut'],
+				'href'					=> 'act=paste&amp;mode=cut',
+				'icon'					=> 'cut.gif',
+				'attributes'			=> 'onclick="Backend.getScrollOffset();"'
 			),
 			'delete' => array
 			(
@@ -102,12 +115,24 @@ $GLOBALS['TL_DCA']['tl_iso_downloads'] = array
 	// Palettes
 	'palettes' => array
 	(
-		'default'						=> '{file_legend},singleSRC;{name_legend},title,description;{limit_legend},downloads_allowed',
+		'__selector__'					=> array('type'),
+		'default'						=> '{file_legend},type,',
+		'file'							=> '{file_legend},type,singleSRC;{name_legend},title,description;{limit_legend},downloads_allowed,expires',
+		'folder'						=> '{file_legend},type,singleSRC;{limit_legend},downloads_allowed,expires',
 	),
 
 	// Fields
 	'fields' => array
 	(
+		'type' => array
+		(
+			'label'						=> &$GLOBALS['TL_LANG']['tl_iso_downloads']['type'],
+			'exclude'					=> true,
+			'inputType'					=> 'select',
+			'options'					=> array('file', 'folder'),
+			'reference'					=> &$GLOBALS['TL_LANG']['tl_iso_downloads'],
+			'eval'						=> array('mandatory'=>true, 'submitOnChange'=>true),
+		),
 		'singleSRC' => array
 		(
 			'label'						=> &$GLOBALS['TL_LANG']['tl_iso_downloads']['singleSRC'],
@@ -136,6 +161,15 @@ $GLOBALS['TL_DCA']['tl_iso_downloads'] = array
 			'inputType'					=> 'text',
 			'eval'						=> array('mandatory'=>true, 'maxlength'=>5, 'rgxp'=>'digit', 'tl_class'=>'w50'),
 		),
+		'expires' => array
+		(
+			'label'						=> &$GLOBALS['TL_LANG']['tl_iso_downloads']['expires'],
+			'exclude'					=> true,
+			'inputType'					=> 'timePeriod',
+			'options'					=> array('minutes', 'hours', 'days', 'weeks', 'months', 'years'),
+			'reference'					=> &$GLOBALS['TL_LANG']['tl_iso_downloads'],
+			'eval'						=> array('rgxp'=>'digit', 'tl_class'=>'w50'),
+		),
 	)
 );
 
@@ -148,12 +182,57 @@ class tl_iso_downloads extends Backend
 {
 
 	/**
+	 * Update singleSRC field depending on type
+	 */
+	public function prepareSRC($dc)
+	{
+		if ($this->Input->get('act') == 'edit')
+		{
+			$objDownload = $this->Database->prepare("SELECT * FROM tl_iso_downloads WHERE id=?")->execute($dc->id);
+
+			if ($objDownload->type == 'folder')
+			{
+				$GLOBALS['TL_DCA']['tl_iso_downloads']['fields']['singleSRC']['eval']['files'] = false;
+				$GLOBALS['TL_DCA']['tl_iso_downloads']['fields']['singleSRC']['eval']['filesOnly'] = false;
+			}
+		}
+	}
+
+
+	/**
 	 * Add an image to each record
 	 * @param array
 	 * @return string
 	 */
 	public function listRows($row)
 	{
+		if ($row['type'] == 'folder')
+		{
+			if (!is_dir(TL_ROOT . '/' . $row['singleSRC']))
+			{
+				return '';
+			}
+
+			$arrDownloads = array();
+
+			foreach (scan(TL_ROOT . '/' . $row['singleSRC']) as $file)
+			{
+				if (is_file(TL_ROOT . '/' . $row['singleSRC'] . '/' . $file))
+				{
+					$objFile = new File($row['singleSRC'] . '/' . $file);
+					$icon = 'background:url(system/themes/' . $this->getTheme() . '/images/' . $objFile->icon . ') left center no-repeat; padding-left: 22px';
+					$arrDownloads[] = sprintf('<div style="margin-bottom:5px;height:16px;%s">%s</div>', $icon, $row['singleSRC'] . '/' . $file);
+				}
+			}
+
+			if (empty($arrDownloads))
+			{
+				return $GLOBALS['ISO_LANG']['ERR']['emptyDownloadsFolder'];
+			}
+
+			return implode("\n", $arrDownloads);
+		}
+
 		if (is_file(TL_ROOT . '/' . $row['singleSRC']))
 		{
 			$objFile = new File($row['singleSRC']);

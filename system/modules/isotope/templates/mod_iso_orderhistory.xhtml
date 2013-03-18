@@ -15,12 +15,12 @@
 		<th>&nbsp;</th>
 	</tr>
 <?php foreach( $this->orders as $order ): ?>
-	<tr>
-		<td><?php echo $order['date']; ?></td>
-		<td><?php echo $order['items']; ?></td>
-		<td><?php echo $order['grandTotal']; ?></td>
-		<td><?php echo $order['status']; ?></td>
-		<td><?php if (strlen($order['link'])): ?><a href="<?php echo $order['link']; ?>"><?php echo $this->detailsLabel; ?></a><?php endif; ?></td>
+	<tr class="<?php echo $order['class']; ?>">
+		<td class="col_0 col_first"><?php echo $order['date']; ?></td>
+		<td class="col_1"><?php echo $order['items']; ?></td>
+		<td class="col_2"><?php echo $order['grandTotal']; ?></td>
+		<td class="col_3"><?php echo $order['status']; ?></td>
+		<td class="col_4 col_last"><?php if (strlen($order['link'])): ?><a href="<?php echo $order['link']; ?>"><?php echo $this->detailsLabel; ?></a><?php endif; ?></td>
 	</tr>
 <?php endforeach; ?>
 </table>

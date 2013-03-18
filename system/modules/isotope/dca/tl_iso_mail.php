@@ -101,7 +101,15 @@ $GLOBALS['TL_DCA']['tl_iso_mail'] = array
 			(
 				'label'               => &$GLOBALS['TL_LANG']['tl_iso_mail']['edit'],
 				'href'                => 'table=tl_iso_mail_content',
-				'icon'                => 'edit.gif'
+				'icon'                => 'edit.gif',
+				'attributes'          => 'class="contextmenu"'
+			),
+			'editheader' => array
+			(
+				'label'               => &$GLOBALS['TL_LANG']['tl_iso_mail']['editheader'],
+				'href'                => 'act=edit',
+				'icon'                => 'header.gif',
+				'attributes'          => 'class="edit-header"'
 			),
 			'copy' => array
 			(
@@ -191,7 +199,7 @@ $GLOBALS['TL_DCA']['tl_iso_mail'] = array
 			'inputType'               => 'select',
 			'default'                 => 'mail_default',
 			'options'                 => IsotopeBackend::getTemplates('mail_'),
-			'eval'                    => array('mandatory'=>true, 'tl_class'=>'w50'),
+			'eval'                    => array('mandatory'=>true, 'tl_class'=>'w50', 'chosen'=>true)
 		),
 		'priority' => array
 		(
@@ -216,7 +224,7 @@ $GLOBALS['TL_DCA']['tl_iso_mail'] = array
 			'exclude'                 => true,
 			'inputType'				  => 'select',
 			'options'				  => IsotopeBackend::getTemplates('iso_invoice'),
-			'eval'					  => array('includeBlankOption'=>true, 'tl_class'=>'w50'),
+			'eval'					  => array('includeBlankOption'=>true, 'tl_class'=>'w50', 'chosen'=>true)
 		),
 		'documentTitle'		=> array
 		(
@@ -240,7 +248,7 @@ $GLOBALS['TL_DCA']['tl_iso_mail'] = array
  */
 class tl_iso_mail extends Backend
 {
-	
+
 	/**
 	 * Check permissions to edit table tl_iso_mail
 	 * @return void
@@ -262,7 +270,7 @@ class tl_iso_mail extends Backend
 		}
 
 		// Set root IDs
-		if (!is_array($this->User->iso_mails) || count($this->User->iso_mails) < 1)
+		if (!is_array($this->User->iso_mails) || count($this->User->iso_mails) < 1) // Can't use empty() because its an object property (using __get)
 		{
 			$root = array(0);
 		}
@@ -279,7 +287,7 @@ class tl_iso_mail extends Backend
 			$GLOBALS['TL_DCA']['tl_iso_mail']['config']['closed'] = true;
 			unset($GLOBALS['TL_DCA']['tl_iso_mail']['list']['global_operations']['new']);
 			unset($GLOBALS['TL_DCA']['tl_iso_mail']['list']['global_operations']['importMail']);
-			
+
 			if ($this->Input->get('key') == 'importMail')
 			{
 				$this->log('Not enough permissions to import mail templates', __METHOD__, TL_ERROR);

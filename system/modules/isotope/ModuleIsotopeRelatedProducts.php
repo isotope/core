@@ -68,7 +68,7 @@ class ModuleIsotopeRelatedProducts extends ModuleIsotopeProductList
 
 		$this->iso_related_categories = deserialize($this->iso_related_categories);
 
-		if (!is_array($this->iso_related_categories) || !count($this->iso_related_categories))
+		if (!is_array($this->iso_related_categories) || !count($this->iso_related_categories)) // Can't use empty() because its an object property (using __get)
 		{
 			return '';
 		}
@@ -93,7 +93,7 @@ class ModuleIsotopeRelatedProducts extends ModuleIsotopeProductList
 		{
 			$ids = deserialize($objCategories->products);
 
-			if (is_array($ids) && count($ids))
+			if (is_array($ids) && !empty($ids))
 			{
 				$arrIds = array_unique(array_merge($arrIds, $ids));
 

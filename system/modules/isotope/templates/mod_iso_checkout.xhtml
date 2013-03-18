@@ -8,7 +8,7 @@
 
 <?php if (is_array($this->steps) && count($this->steps)): ?>
 <div class="steps block">
-<ul class="level_1 steps<?php echo count($this->steps); ?>">
+<ol class="level_1 steps<?php echo count($this->steps); ?>">
 <?php foreach( $this->steps as $step ): ?>
 <li class="<?php echo $step['class']; ?>">
 <?php if (strlen($step['href'])): ?>
@@ -18,7 +18,7 @@
 <?php endif; ?>
 </li>
 <?php endforeach; ?>
-</ul>
+</ol>
 </div>
 <?php endif; ?>
 
@@ -46,7 +46,13 @@
 <?php echo $this->fields; ?>
 <?php endif; ?>
 
-<?php if (strlen($this->checkoutForm)): ?><div class="checkout_form"><?php echo $this->checkoutForm; ?></div><?php endif; ?>
-
 </div>
+<script type="text/javascript">
+window.addEvent('domready', function() {
+	document.getElements('.mod_iso_checkout form').addEvent('submit', function() {
+		document.getElement('.mod_iso_checkout input[name=nextStep]').set('disabled', true);
+		(function() { window.location.reload() }).delay(30000);
+	});
+});
+</script>
 <!-- indexer::continue -->

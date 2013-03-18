@@ -32,6 +32,7 @@
  * Fields
  */
 $GLOBALS['TL_LANG']['tl_iso_groups']['name']			= array('Group name', 'Please enter a name for this group.');
+$GLOBALS['TL_LANG']['tl_iso_groups']['product_type']	= array('Default product type', 'Here you can specify a default product type for this product group.');
 
 
 /**
@@ -50,7 +51,7 @@ $GLOBALS['TL_LANG']['tl_iso_groups']['pasteinto']		= array('Paste into', 'Paste 
 /**
  * Legends
  */
-$GLOBALS['TL_LANG']['tl_iso_groups']['name_legend']		= 'Name';
+$GLOBALS['TL_LANG']['tl_iso_groups']['group_legend']	= 'Product group settings';
 
 
 /**

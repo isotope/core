@@ -63,7 +63,7 @@ class ModuleIsotopeConfigSwitcher extends ModuleIsotope
 
 		$this->iso_config_ids = deserialize($this->iso_config_ids);
 
-		if (!is_array($this->iso_config_ids) || !count($this->iso_config_ids))
+		if (!is_array($this->iso_config_ids) || !count($this->iso_config_ids)) // Can't use empty() because its an object property (using __get)
 		{
 			return '';
 		}
@@ -106,7 +106,8 @@ class ModuleIsotopeConfigSwitcher extends ModuleIsotope
 			$c++;
 		}
 
-		$arrConfigs[count($arrConfigs)-1]['class'] = trim($arrConfigs[count($arrConfigs)-1]['class'] . ' last');
+		$last = count($arrConfigs)-1;
+		$arrConfigs[$last]['class'] = trim($arrConfigs[$last]['class'] . ' last');
 		$this->Template->configs = $arrConfigs;
 	}
 }

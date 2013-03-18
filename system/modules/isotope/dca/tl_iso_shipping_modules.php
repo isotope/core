@@ -139,12 +139,12 @@ $GLOBALS['TL_DCA']['tl_iso_shipping_modules'] = array
 	'palettes' => array
 	(
 		'__selector__'					=> array('type', 'protected'),
-		'default'						=> '{title_legend},type,name',
-		'flat'							=> '{title_legend},type,name,label;{note_legend:hide},note;{price_legend},price,tax_class,flatCalculation,surcharge_field;{config_legend},countries,subdivisions,postalCodes,minimum_total,maximum_total,product_types;{expert_legend:hide},guests,protected;{enabled_legend},enabled',
-		'order_total'					=> '{title_legend},type,name,label;{note_legend:hide},note;{price_legend},price,tax_class;{config_legend},countries,subdivisions,postalCodes,minimum_total,maximum_total,product_types;{expert_legend:hide},guests,protected;{enabled_legend},enabled',
-		'weight_total'					=> '{title_legend},type,name,label;{note_legend:hide},note;{price_legend},tax_class;{config_legend},weight_unit,countries,subdivisions,postalCodes,minimum_total,maximum_total,product_types;{expert_legend:hide},guests,protected;{enabled_legend},enabled',
-		'ups'							=> '{title_legend},type,name,label;{note_legend:hide},note;{price_legend},tax_class;{ups_legend},ups_enabledService,ups_accessKey,ups_userName,ups_password;{config_legend},weight_unit,countries,subdivisions,minimum_total,maximum_total,product_types;{expert_legend:hide},guests,protected;{enabled_legend},enabled',
-		'usps'							=> '{title_legend},type,name,label;{note_legend:hide},note;{price_legend},tax_class;{usps_legend},usps_enabledService,usps_userName;{config_legend},countries,subdivisions,minimum_total,maximum_total,product_types;{expert_legend:hide},guests,protected;{enabled_legend},enabled'
+		'default'						=> '{title_legend},name,label,type',
+		'flat'							=> '{title_legend},name,label,type;{note_legend:hide},note;{price_legend},price,tax_class,flatCalculation,surcharge_field;{config_legend},countries,subdivisions,postalCodes,minimum_total,maximum_total,product_types;{expert_legend:hide},guests,protected;{enabled_legend},enabled',
+		'order_total'					=> '{title_legend},name,label,type;{note_legend:hide},note;{price_legend},price,tax_class;{config_legend},countries,subdivisions,postalCodes,minimum_total,maximum_total,product_types;{expert_legend:hide},guests,protected;{enabled_legend},enabled',
+		'weight_total'					=> '{title_legend},name,label,type;{note_legend:hide},note;{price_legend},tax_class;{config_legend},weight_unit,countries,subdivisions,postalCodes,minimum_total,maximum_total,product_types;{expert_legend:hide},guests,protected;{enabled_legend},enabled',
+		'ups'							=> '{title_legend},name,label,type;{note_legend:hide},note;{price_legend},tax_class;{ups_legend},ups_enabledService,ups_accessKey,ups_userName,ups_password;{config_legend},weight_unit,countries,subdivisions,minimum_total,maximum_total,product_types;{expert_legend:hide},guests,protected;{enabled_legend},enabled',
+		'usps'							=> '{title_legend},name,label,type;{note_legend:hide},note;{price_legend},tax_class;{usps_legend},usps_enabledService,usps_userName;{config_legend},countries,subdivisions,minimum_total,maximum_total,product_types;{expert_legend:hide},guests,protected;{enabled_legend},enabled'
 	),
 
 	// Subpalettes
@@ -156,17 +156,6 @@ $GLOBALS['TL_DCA']['tl_iso_shipping_modules'] = array
 	// Fields
 	'fields' => array
 	(
-		'type' => array
-		(
-			'label'                   => &$GLOBALS['TL_LANG']['tl_iso_shipping_modules']['type'],
-			'exclude'                 => true,
-			'filter'                  => true,
-			'inputType'               => 'select',
-			'default'				  => 'flat',
-			'options_callback'        => array('tl_iso_shipping_modules', 'getModules'),
-			'reference'               => &$GLOBALS['ISO_LANG']['SHIP'],
-			'eval'                    => array('helpwizard'=>true, 'submitOnChange'=>true, 'tl_class'=>'clr')
-		),
 		'name' => array
 		(
 			'label'                   => &$GLOBALS['TL_LANG']['tl_iso_shipping_modules']['name'],
@@ -181,6 +170,17 @@ $GLOBALS['TL_DCA']['tl_iso_shipping_modules'] = array
 			'exclude'                 => true,
 			'inputType'               => 'text',
 			'eval'                    => array('maxlength'=>255, 'tl_class'=>'w50'),
+		),
+		'type' => array
+		(
+			'label'                   => &$GLOBALS['TL_LANG']['tl_iso_shipping_modules']['type'],
+			'exclude'                 => true,
+			'filter'                  => true,
+			'inputType'               => 'select',
+			'default'				  => 'flat',
+			'options_callback'        => array('tl_iso_shipping_modules', 'getModules'),
+			'reference'               => &$GLOBALS['ISO_LANG']['SHIP'],
+			'eval'                    => array('helpwizard'=>true, 'submitOnChange'=>true, 'chosen'=>true, 'tl_class'=>'w50')
 		),
 		'note' => array
 		(
@@ -243,7 +243,7 @@ $GLOBALS['TL_DCA']['tl_iso_shipping_modules'] = array
 			'exclude'                 => true,
 			'inputType'               => 'select',
 			'options'                 => $this->getCountries(),
-			'eval'                    => array('multiple'=>true, 'size'=>8, 'tl_class'=>'w50 w50h'),
+			'eval'                    => array('multiple'=>true, 'size'=>8, 'tl_class'=>'w50 w50h', 'chosen'=>true)
 		),
 		'subdivisions' => array
 		(
@@ -315,7 +315,7 @@ $GLOBALS['TL_DCA']['tl_iso_shipping_modules'] = array
 			'inputType'               => 'select',
 			'options'                 => array_keys($GLOBALS['TL_DCA']['tl_iso_products']['fields']),
 			'reference'               => &$GLOBALS['TL_LANG']['tl_iso_products'],
-			'eval'                    => array('includeBlankOption'=>true, 'tl_class'=>'w50'),
+			'eval'                    => array('includeBlankOption'=>true, 'tl_class'=>'w50', 'chosen'=>true)
 		),
 		'weight_unit' => array
 		(
@@ -376,16 +376,16 @@ class tl_iso_shipping_modules extends Backend
 		{
 			return;
 		}
-		
+
 		$this->import('BackendUser', 'User');
-		
+
 		if ($this->User->isAdmin)
 		{
 			return;
 		}
 
 		// Set root IDs
-		if (!is_array($this->User->iso_shipping_modules) || count($this->User->iso_shipping_modules) < 1)
+		if (!is_array($this->User->iso_shipping_modules) || count($this->User->iso_shipping_modules) < 1) // Can't use empty() because its an object property (using __get)
 		{
 			$root = array(0);
 		}
@@ -508,7 +508,7 @@ class tl_iso_shipping_modules extends Backend
 	{
 		$arrModules = array();
 
-		if (is_array($GLOBALS['ISO_SHIP']) && count($GLOBALS['ISO_SHIP']))
+		if (is_array($GLOBALS['ISO_SHIP']) && !empty($GLOBALS['ISO_SHIP']))
 		{
 			foreach ($GLOBALS['ISO_SHIP'] as $module => $class)
 			{
@@ -542,8 +542,8 @@ class tl_iso_shipping_modules extends Backend
 				return '';
 		}
 	}
-	
-	
+
+
 	/**
 	 * Return the copy shipping module button
 	 * @param array

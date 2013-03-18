@@ -49,6 +49,30 @@ class ModuleIsotopeProductFilter extends ModuleIsotope
 
 
 	/**
+	 * Generate ajax
+	 * @return mixed
+	 */
+	public function generateAjax()
+	{
+		if ($this->iso_searchAutocomplete && $this->Input->get('autocomplete'))
+		{
+			$time = time();
+			$arrCategories = $this->findCategories($this->iso_category_scope);
+
+			$objProductData = $this->Database->execute(IsotopeProduct::getSelectStatement(array('p1.'.$this->iso_searchAutocomplete)) . "
+													WHERE p1.language=''"
+				. (BE_USER_LOGGED_IN === true ? '' : " AND p1.published='1' AND (p1.start='' OR p1.start<$time) AND (p1.stop='' OR p1.stop>$time)")
+				. " AND c.page_id IN (" . implode(',', $arrCategories) . ")"
+				. " GROUP BY p1.id ORDER BY c.sorting");
+
+			return $objProductData->fetchEach($this->iso_searchAutocomplete);
+		}
+
+		return '';
+	}
+
+
+	/**
 	 * Display a wildcard in the back end
 	 * @return string
 	 */
@@ -107,8 +131,10 @@ class ModuleIsotopeProductFilter extends ModuleIsotope
 				}
 
 				$this->Input->setGet('isorc', $intCacheId);
-				$this->redirect($this->generateRequestUrl());
 			}
+
+			// Include Environment::base or the URL would not work on the index page
+			$this->redirect($this->Environment->base . $this->generateRequestUrl());
 		}
 
 		return $strBuffer;
@@ -174,12 +200,14 @@ class ModuleIsotopeProductFilter extends ModuleIsotope
 	protected function generateSearch()
 	{
 		$this->Template->hasSearch = false;
+		$this->Template->hasAutocomplete = ($this->iso_searchAutocomplete) ? true : false;
 
-		if (is_array($this->iso_searchFields) && count($this->iso_searchFields))
+		if (is_array($this->iso_searchFields) && count($this->iso_searchFields)) // Can't use empty() because its an object property (using __get)
 		{
 			if ($this->Input->get('keywords') != '' && $this->Input->get('keywords') != $GLOBALS['TL_LANG']['MSC']['defaultSearchText'])
 			{
-				$arrKeywords = trimsplit(' ', $this->Input->get('keywords'));
+				$arrKeywords = trimsplit(' |-', $this->Input->get('keywords'));
+				$arrKeywords = array_filter(array_unique($arrKeywords));
 
 				foreach ($arrKeywords as $keyword)
 				{
@@ -187,7 +215,7 @@ class ModuleIsotopeProductFilter extends ModuleIsotope
 					{
 						$GLOBALS['ISO_FILTERS'][$this->id][] = array
 						(
-							'group'		=> ('keyword: '.$keyword),
+							'group'		=> ('keyword: '.$keyword), // Must create an OR group because multiple fields can be searched for
 							'operator'	=> 'search',
 							'attribute'	=> $field,
 							'value'		=> $keyword,
@@ -213,7 +241,7 @@ class ModuleIsotopeProductFilter extends ModuleIsotope
 	{
 		$this->Template->hasFilters = false;
 
-		if (is_array($this->iso_filterFields) && count($this->iso_filterFields))
+		if (is_array($this->iso_filterFields) && count($this->iso_filterFields)) // Can't use empty() because its an object property (using __get)
 		{
 			$time = time();
 			$arrFilters = array();
@@ -222,13 +250,20 @@ class ModuleIsotopeProductFilter extends ModuleIsotope
 
 			foreach ($this->iso_filterFields as $strField)
 			{
-				$arrValues = $this->Database->execute("SELECT DISTINCT $strField FROM tl_iso_products p1
+				$arrValues = array();
+				$objValues = $this->Database->execute("SELECT DISTINCT p1.$strField FROM tl_iso_products p1
+				                                        LEFT OUTER JOIN tl_iso_products p2 ON p1.pid=p2.id
 														WHERE p1.language='' AND p1.$strField!=''"
 														. (BE_USER_LOGGED_IN === true ? '' : " AND p1.published='1' AND (p1.start='' OR p1.start<$time) AND (p1.stop='' OR p1.stop>$time)")
 														. "AND (p1.id IN (SELECT pid FROM tl_iso_product_categories WHERE page_id IN (" . implode(',', $arrCategories) . "))
-														   OR pid IN (SELECT pid FROM tl_iso_product_categories WHERE page_id IN (" . implode(',', $arrCategories) . ")))"
-														. ($this->iso_list_where == '' ? '' : " AND {$this->iso_list_where}"))
-											->fetchEach($strField);
+														   OR p1.pid IN (SELECT pid FROM tl_iso_product_categories WHERE page_id IN (" . implode(',', $arrCategories) . ")))"
+														. (BE_USER_LOGGED_IN === true ? '' : " AND (p1.pid=0 OR (p2.published='1' AND (p2.start='' OR p2.start<$time) AND (p2.stop='' OR p2.stop>$time)))")
+														. ($this->iso_list_where == '' ? '' : " AND {$this->iso_list_where}"));
+
+				while ($objValues->next())
+				{
+					$arrValues = array_merge($arrValues, deserialize($objValues->$strField, true));
+				}
 
 				if ($this->blnCacheRequest && in_array($arrInput[$strField], $arrValues))
 				{
@@ -252,14 +287,14 @@ class ModuleIsotopeProductFilter extends ModuleIsotope
 				// No need to generate options if we reload anyway
 				elseif (!$this->blnCacheRequest)
 				{
-					if (!count($arrValues))
+					if (empty($arrValues))
 					{
 						continue;
 					}
 
 					$arrData = $GLOBALS['TL_DCA']['tl_iso_products']['fields'][$strField];
 
-					if (is_array($GLOBALS['ISO_ATTR'][$arrData['inputType']]['callback']) && count($GLOBALS['ISO_ATTR'][$arrData['inputType']]['callback']))
+					if (is_array($GLOBALS['ISO_ATTR'][$arrData['inputType']]['callback']) && !empty($GLOBALS['ISO_ATTR'][$arrData['inputType']]['callback']))
 					{
 						foreach ($GLOBALS['ISO_ATTR'][$arrData['inputType']]['callback'] as $callback)
 						{
@@ -271,33 +306,40 @@ class ModuleIsotopeProductFilter extends ModuleIsotope
 					// Use the default routine to initialize options data
 					$arrWidget = $this->prepareForWidget($arrData, $strField);
 
+					// Must have options to apply the filter
 					if (!is_array($arrWidget['options']))
 					{
 						continue;
 					}
 
-					$arrOptions = $arrWidget['options'];
-
 					foreach ($arrWidget['options'] as $k => $option)
 					{
-						if (!in_array($option['value'], $arrValues))
+					    if ($option['value'] == '')
+					    {
+    					    $arrWidget['blankOptionLabel'] = $option['label'];
+    					    unset($arrWidget['options'][$k]);
+    					    continue;
+					    }
+						elseif (!in_array($option['value'], $arrValues) || $option['value'] == '-')
 						{
-							unset($arrOptions[$k]);
+							unset($arrWidget['options'][$k]);
 							continue;
 						}
 
-						$arrOptions[$k]['default'] = $option['value'] == $GLOBALS['ISO_FILTERS'][$this->id][$strField]['value'] ? '1' : '';
+						$arrWidget['options'][$k]['default'] = $option['value'] == $GLOBALS['ISO_FILTERS'][$this->id][$strField]['value'] ? '1' : '';
 					}
 
-					$arrFilters[$strField] = array
-					(
-						'label'		=> $arrWidget['label'],
-						'options'	=> $arrOptions,
-					);
+					// Hide fields with just one option (if enabled)
+					if ($this->iso_filterHideSingle && count($arrWidget['options']) < 2)
+					{
+						continue;
+					}
+
+					$arrFilters[$strField] = $arrWidget;
 				}
 			}
 
-			// HOOK for altering the filters
+			// !HOOK: alter the filters
 			if (isset($GLOBALS['ISO_HOOKS']['generateFilters']) && is_array($GLOBALS['ISO_HOOKS']['generateFilters']))
 			{
 				foreach ($GLOBALS['ISO_HOOKS']['generateFilters'] as $callback)
@@ -307,7 +349,7 @@ class ModuleIsotopeProductFilter extends ModuleIsotope
 				}
 			}
 
-			if (count($arrFilters))
+			if (!empty($arrFilters))
 			{
 				$this->Template->hasFilters = true;
 				$this->Template->filterOptions = $arrFilters;
@@ -324,7 +366,7 @@ class ModuleIsotopeProductFilter extends ModuleIsotope
 	{
 		$this->Template->hasSorting = false;
 
-		if (is_array($this->iso_sortingFields) && count($this->iso_sortingFields))
+		if (is_array($this->iso_sortingFields) && count($this->iso_sortingFields)) // Can't use empty() because its an object property (using __get)
 		{
 			$arrOptions = array();
 
@@ -351,36 +393,18 @@ class ModuleIsotopeProductFilter extends ModuleIsotope
 			{
 				foreach ($this->iso_sortingFields as $field)
 				{
-					// @todo this must be dynamic
-					switch ($field)
-					{
-						case 'price':
-							$asc = $GLOBALS['TL_LANG']['MSC']['low_to_high'];
-							$desc = $GLOBALS['TL_LANG']['MSC']['high_to_low'];
-							break;
-
-						case 'datetime':
-							$asc = $GLOBALS['TL_LANG']['MSC']['old_to_new'];
-							$desc = $GLOBALS['TL_LANG']['MSC']['new_to_old'];
-							break;
-
-						case 'name':
-						default:
-							$asc = $GLOBALS['TL_LANG']['MSC']['a_to_z'];
-							$desc = $GLOBALS['TL_LANG']['MSC']['z_to_a'];
-							break;
-					}
+					list($asc, $desc) = $this->getSortingLabels($field);
 
 					$arrOptions[] = array
 					(
-						'label'		=> ($this->Isotope->formatLabel('tl_iso_products', $field) . ' ' . $asc),
+						'label'		=> ($this->Isotope->formatLabel('tl_iso_products', $field) . ', ' . $asc),
 						'value'		=> $field.':ASC',
 						'default'	=> ((is_array($GLOBALS['ISO_SORTING'][$this->id]) && $GLOBALS['ISO_SORTING'][$this->id][$field][0] == SORT_ASC) ? '1' : ''),
 					);
 
 					$arrOptions[] = array
 					(
-						'label'		=> ($this->Isotope->formatLabel('tl_iso_products', $field) . ' ' . $desc),
+						'label'		=> ($this->Isotope->formatLabel('tl_iso_products', $field) . ', ' . $desc),
 						'value'		=> $field.':DESC',
 						'default'	=> ((is_array($GLOBALS['ISO_SORTING'][$this->id]) && $GLOBALS['ISO_SORTING'][$this->id][$field][0] == SORT_DESC) ? '1' : ''),
 					);
@@ -443,6 +467,31 @@ class ModuleIsotopeProductFilter extends ModuleIsotope
 				$this->Template->limitOptions = $arrOptions;
 			}
 		}
+	}
+
+
+	/**
+	 * Get the sorting labels (asc/desc) for an attribute
+	 * @param string
+	 * @return array
+	 */
+	protected function getSortingLabels($field)
+	{
+		$arrData = $GLOBALS['TL_DCA']['tl_iso_products']['fields'][$field];
+
+		switch ($arrData['eval']['rgxp'])
+		{
+			case 'price':
+			case 'digit':
+				return array($GLOBALS['TL_LANG']['MSC']['low_to_high'], $GLOBALS['TL_LANG']['MSC']['high_to_low']);
+
+			case 'date':
+			case 'time':
+			case 'datim':
+				return array($GLOBALS['TL_LANG']['MSC']['old_to_new'], $GLOBALS['TL_LANG']['MSC']['new_to_old']);
+		}
+
+		return array($GLOBALS['TL_LANG']['MSC']['a_to_z'], $GLOBALS['TL_LANG']['MSC']['z_to_a']);
 	}
 }
 

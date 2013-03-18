@@ -128,10 +128,8 @@ $GLOBALS['TL_DCA']['tl_iso_payment_modules'] = array
 		'default'				=> '{type_legend},name,type',
 		'cash'					=> '{type_legend},name,label,type;{note_legend:hide},note;{config_legend},new_order_status,minimum_total,maximum_total,countries,shipping_modules,product_types;{price_legend:hide},price,tax_class;{expert_legend:hide},guests,protected;{enabled_legend},enabled',
 		'paypal'				=> '{type_legend},name,label,type;{note_legend:hide},note;{config_legend},new_order_status,minimum_total,maximum_total,countries,shipping_modules,product_types;{gateway_legend},paypal_account;{price_legend:hide},price,tax_class;{template_legend},button;{expert_legend:hide},guests,protected;{enabled_legend},debug,enabled',
-		'paypalpayflowpro'		=> '{type_legend},name,label,type;{note_legend:hide},note;{config_legend},new_order_status,allowed_cc_types,requireCCV,minimum_total,maximum_total,countries,shipping_modules,product_types;{gateway_legend},payflowpro_user,payflowpro_vendor,payflowpro_partner,payflowpro_password,payflowpro_transType;{price_legend:hide},price,tax_class;{template_legend},button;{expert_legend:hide},guests,protected;{enabled_legend},debug,enabled',
 		'postfinance'			=> '{type_legend},name,label,type;{note_legend:hide},note;{config_legend},new_order_status,minimum_total,maximum_total,countries,shipping_modules,product_types;{gateway_legend},postfinance_pspid,postfinance_secret,postfinance_method;{price_legend:hide},price,tax_class;{expert_legend:hide},guests,protected;{enabled_legend},debug,enabled',
 		'authorizedotnet'		=> '{type_legend},name,label,type;{note_legend:hide},note;{config_legend},new_order_status,allowed_cc_types,requireCCV,minimum_total,maximum_total,countries,shipping_modules,product_types;{gateway_legend},authorize_login,authorize_trans_key,authorize_trans_type,authorize_delimiter;{price_legend:hide},price,tax_class;{expert_legend:hide},guests,protected;{enabled_legend},debug,enabled',
-		'cybersource'			=> '{type_legend},name,label,type;{note_legend:hide},note;{config_legend},new_order_status,minimum_total,maximum_total,countries,shipping_modules,product_types;{gateway_legend},cybersource_merchant_id,cybersource_trans_key,cybersource_trans_type;{price_legend:hide},price,tax_class;{expert_legend:hide},guests,protected;{enabled_legend},debug,enabled'
 	),
 
 	// Subpalettes
@@ -143,17 +141,6 @@ $GLOBALS['TL_DCA']['tl_iso_payment_modules'] = array
 	// Fields
 	'fields' => array
 	(
-		'type' => array
-		(
-			'label'                   => &$GLOBALS['TL_LANG']['tl_iso_payment_modules']['type'],
-			'exclude'                 => true,
-			'filter'                  => true,
-			'inputType'               => 'select',
-			'default'				  => 'cash',
-			'options_callback'        => array('tl_iso_payment_modules', 'getModules'),
-			'reference'               => &$GLOBALS['ISO_LANG']['PAY'],
-			'eval'                    => array('helpwizard'=>true, 'submitOnChange'=>true, 'tl_class'=>'clr')
-		),
 		'name' => array
 		(
 			'label'                   => &$GLOBALS['TL_LANG']['tl_iso_payment_modules']['name'],
@@ -169,6 +156,17 @@ $GLOBALS['TL_DCA']['tl_iso_payment_modules'] = array
 			'inputType'               => 'text',
 			'eval'                    => array('maxlength'=>255, 'tl_class'=>'w50'),
 		),
+		'type' => array
+		(
+			'label'                   => &$GLOBALS['TL_LANG']['tl_iso_payment_modules']['type'],
+			'exclude'                 => true,
+			'filter'                  => true,
+			'inputType'               => 'select',
+			'default'				  => 'cash',
+			'options_callback'        => array('tl_iso_payment_modules', 'getModules'),
+			'reference'               => &$GLOBALS['ISO_LANG']['PAY'],
+			'eval'                    => array('helpwizard'=>true, 'submitOnChange'=>true, 'chosen'=>true, 'tl_class'=>'w50')
+		),
 		'note' => array
 		(
 			'label'                   => &$GLOBALS['TL_LANG']['tl_iso_payment_modules']['note'],
@@ -181,10 +179,8 @@ $GLOBALS['TL_DCA']['tl_iso_payment_modules'] = array
 			'label'                   => &$GLOBALS['TL_LANG']['tl_iso_payment_modules']['new_order_status'],
 			'exclude'                 => true,
 			'inputType'               => 'select',
-			'default'                 => 'pending',
-			'options_callback'        => array('tl_iso_payment_modules', 'getOrderStatus'),
-			'reference'               => &$GLOBALS['TL_LANG']['ORDER'],
-			'eval'                    => array('includeBlankOption'=>true, 'mandatory'=>true, 'tl_class'=>'w50'),
+			'options'                 => IsotopeBackend::getOrderStatus(),
+			'eval'                    => array('mandatory'=>true, 'includeBlankOption'=>true, 'tl_class'=>'w50'),
 		),
 		'price' => array
 		(
@@ -218,8 +214,8 @@ $GLOBALS['TL_DCA']['tl_iso_payment_modules'] = array
 			'default'				  => 'capture',
 			'inputType'				  => 'select',
 			'options'				  => array('capture', 'auth'),
-			'eval'                    => array('mandatory'=>true, 'tl_class'=>'w50'),
 			'reference'				  => $GLOBALS['TL_LANG']['tl_iso_payment_modules'],
+			'eval'                    => array('mandatory'=>true, 'tl_class'=>'w50'),
 		),
 		'minimum_total' => array
 		(
@@ -243,14 +239,14 @@ $GLOBALS['TL_DCA']['tl_iso_payment_modules'] = array
 			'exclude'                 => true,
 			'inputType'               => 'select',
 			'options'                 => $this->getCountries(),
-			'eval'                    => array('multiple'=>true, 'size'=>8, 'tl_class'=>'clr'),
+			'eval'                    => array('multiple'=>true, 'size'=>8, 'tl_class'=>'w50 w50h', 'chosen'=>true)
 		),
 		'shipping_modules' => array
 		(
 			'label'                   => &$GLOBALS['TL_LANG']['tl_iso_payment_modules']['shipping_modules'],
 			'exclude'                 => true,
 			'inputType'               => 'select',
-			'eval'                    => array('multiple'=>true, 'size'=>8, 'tl_class'=>'clr'),
+			'eval'                    => array('multiple'=>true, 'size'=>8, 'tl_class'=>'w50 w50h', 'chosen'=>true)
 		),
 		'product_types' => array
 		(
@@ -258,7 +254,7 @@ $GLOBALS['TL_DCA']['tl_iso_payment_modules'] = array
 			'exclude'                 => true,
 			'inputType'               => 'select',
 			'foreignKey'			  => 'tl_iso_producttypes.name',
-			'eval'                    => array('multiple'=>true, 'size'=>8, 'tl_class'=>'clr'),
+			'eval'                    => array('multiple'=>true, 'size'=>8, 'tl_class'=>'clr w50 w50h', 'chosen'=>true)
 		),
 		'paypal_account' => array
 		(
@@ -266,44 +262,6 @@ $GLOBALS['TL_DCA']['tl_iso_payment_modules'] = array
 			'exclude'                 => true,
 			'inputType'               => 'text',
 			'eval'                    => array('mandatory'=>true, 'maxlength'=>255, 'rgxp'=>'email', 'tl_class'=>'w50'),
-		),
-		'payflowpro_user' => array
-		(
-			'label'                   => &$GLOBALS['TL_LANG']['tl_iso_payment_modules']['payflowpro_user'],
-			'exclude'                 => true,
-			'inputType'               => 'text',
-			'eval'                    => array('mandatory'=>true, 'maxlength'=>255),
-		),
-		'payflowpro_vendor' => array
-		(
-			'label'                   => &$GLOBALS['TL_LANG']['tl_iso_payment_modules']['payflowpro_vendor'],
-			'exclude'                 => true,
-			'inputType'               => 'text',
-			'eval'                    => array('mandatory'=>true, 'maxlength'=>255),
-		),
-		'payflowpro_partner' => array
-		(
-			'label'                   => &$GLOBALS['TL_LANG']['tl_iso_payment_modules']['payflowpro_partner'],
-			'exclude'                 => true,
-			'inputType'               => 'text',
-			'eval'                    => array('mandatory'=>true, 'maxlength'=>255),
-		),
-		'payflowpro_password' => array
-		(
-			'label'                   => &$GLOBALS['TL_LANG']['tl_iso_payment_modules']['payflowpro_password'],
-			'exclude'                 => true,
-			'inputType'               => 'text',
-			'eval'                    => array('mandatory'=>true, 'maxlength'=>255, 'hideInput'=>true),
-		),
-		'payflowpro_transType' => array
-		(
-			'label'                   => &$GLOBALS['TL_LANG']['tl_iso_payment_modules']['payflowpro_transType'],
-			'exclude'                 => true,
-			'default'				  => 'Sale',
-			'inputType'               => 'select',
-			'options'				  => array('Sale', 'Authorization'),
-			'eval'                    => array('mandatory'=>true, 'maxlength'=>255),
-			'reference'				  => &$GLOBALS['TL_LANG']['tl_payment_module']['payflowpro_transTypes']
 		),
 		'postfinance_pspid' => array
 		(
@@ -349,32 +307,8 @@ $GLOBALS['TL_DCA']['tl_iso_payment_modules'] = array
 			'default'				  => 'AUTH_CAPTURE',
 			'inputType'               => 'select',
 			'options'				  => array('AUTH_CAPTURE', 'AUTH_ONLY'),
-			'eval'                    => array('mandatory'=>true, 'maxlength'=>255),
-			'reference'				  => $GLOBALS['TL_LANG']['ISO_PAY']['authorizedotnet']['modes']
-		),
-		'cybersource_merchant_id' => array
-		(
-			'label'                   => &$GLOBALS['TL_LANG']['tl_iso_payment_modules']['cybersource_merchant_id'],
-			'exclude'                 => true,
-			'inputType'               => 'text',
-			'eval'                    => array('mandatory'=>true, 'maxlength'=>255)
-		),
-		'cybersource_trans_key' => array
-		(
-			'label'                   => &$GLOBALS['TL_LANG']['tl_iso_payment_modules']['cybersource_trans_key'],
-			'exclude'                 => true,
-			'inputType'               => 'textarea',
-			'eval'                    => array('mandatory'=>true, 'style'=>'height: 60px;')
-		),
-		'cybersource_trans_type' => array
-		(
-			'label'                   => &$GLOBALS['TL_LANG']['tl_iso_payment_modules']['cybersource_trans_type'],
-			'exclude'                 => true,
-			'default'				  => 'AUTH_ONLY',
-			'inputType'               => 'select',
-			'options'				  => array('AUTH_CAPTURE', 'AUTH_ONLY'),
-			'eval'                    => array('mandatory'=>true, 'maxlength'=>255),
-			'reference'				  => $GLOBALS['TL_LANG']['ISO_PAY']['authorizedotnet']['modes']
+			'reference'				  => &$GLOBALS['TL_LANG']['tl_iso_payment_modules'],
+			'eval'                    => array('mandatory'=>true, 'maxlength'=>255, 'helpwizard'=>true),
 		),
 		'authorize_delimiter' => array
 		(
@@ -461,7 +395,7 @@ class tl_iso_payment_modules extends Backend
 		}
 
 		// Set root IDs
-		if (!is_array($this->User->iso_payment_modules) || count($this->User->iso_payment_modules) < 1)
+		if (!is_array($this->User->iso_payment_modules) || count($this->User->iso_payment_modules) < 1) // Can't use empty() because its an object property (using __get)
 		{
 			$root = array(0);
 		}
@@ -574,7 +508,7 @@ class tl_iso_payment_modules extends Backend
 				break;
 		}
 	}
-	
+
 
 	/**
 	 * Get allowed CC types and return them as array
@@ -610,32 +544,6 @@ class tl_iso_payment_modules extends Backend
 
 
 	/**
-	 * Get order status and return it as array
-	 * @param object
-	 * @return array
-	 */
-	public function getOrderStatus($dc)
-	{
-		$objModule = $this->Database->prepare("SELECT * FROM tl_iso_payment_modules WHERE id=?")->limit(1)->execute($dc->id);
-		$strClass = $GLOBALS['ISO_PAY'][$objModule->type];
-
-		if (!strlen($strClass) || !$this->classFileExists($strClass))
-		{
-			return array();
-		}
-
-		try
-		{
-			$objModule = new $strClass($objModule->row());
-			return $objModule->statusOptions();
-		}
-		catch (Exception $e) {}
-
-		return array();
-	}
-
-
-	/**
 	 * Return a list of all payment modules available
 	 * @return array
 	 */
@@ -643,7 +551,7 @@ class tl_iso_payment_modules extends Backend
 	{
 		$arrModules = array();
 
-		if (is_array($GLOBALS['ISO_PAY']) && count($GLOBALS['ISO_PAY']))
+		if (is_array($GLOBALS['ISO_PAY']) && !empty($GLOBALS['ISO_PAY']))
 		{
 			foreach ($GLOBALS['ISO_PAY'] as $module => $class)
 			{

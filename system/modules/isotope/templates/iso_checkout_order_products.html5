@@ -1,17 +1,6 @@
 
-<div class="order_review">
-<h2><?php echo $this->headline; ?></h2>
-<p><?php echo $this->message; ?></p>
-
-<?php foreach( $this->info as $type => $data ): ?>
-<div class="info_container <?php echo $type . $data['class']; ?>"><?php if ($data['edit']): ?>
-	<a href="<?php echo $data['edit']; ?>" class="edit"><?php echo $this->edit_info; ?></a><?php endif; ?>
-	<h3><?php echo $data['headline']; ?></h3>
-	<div class="info"><?php echo $data['info']; ?></div>
-</div>
-<?php endforeach; ?>
-<div class="clear">&nbsp;</div>
-<table cellpadding="0" cellspacing="0" summary="<?php echo $this->summary; ?>">
+<div class="order_products">
+<table>
 <tfoot>
 	<tr class="foot_0 foot_first subtotal">
 		<td class="col_first">&nbsp;</td>
@@ -39,10 +28,10 @@
 <tbody>
 <?php foreach($this->products as $product): ?>
     <tr class="<?php echo $product['rowClass']; ?>">
-		<td class="col_0 col_first image"><img src="<?php echo $product['image']['gallery']; ?>" alt="<?php echo $product['image']['alt']; ?>" class="thumbnail" <?php echo $product['image']['gallery_size']; ?> /></td>
+		<td class="col_0 col_first image"><img src="<?php echo $product['image']['gallery']; ?>" alt="<?php echo $product['image']['alt']; ?>" class="thumbnail" <?php echo $product['image']['gallery_size']; ?>></td>
    		<td class="col_1 name">
    			<?php echo $product['name']; ?>
-			<?php if(is_array($product['product_options']) && count($product['product_options'])): ?>
+			<?php if(is_array($product['product_options']) && !empty($product['product_options'])): ?>
 			<div class="optionswrapper">
 				<ul class="productOptions">
 				<?php foreach($product['product_options'] as $option): ?>
@@ -61,4 +50,3 @@
 </tbody>
 </table>
 </div>
-

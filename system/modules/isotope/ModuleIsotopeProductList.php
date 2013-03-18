@@ -126,18 +126,28 @@ class ModuleIsotopeProductList extends ModuleIsotope
 	 */
 	protected function compile()
 	{
+		// return message if no filter is set
+		if ($this->iso_emptyFilter && !$this->Input->get('isorc') && !$this->Input->get('keywords'))
+		{
+			$this->Template->message = $this->replaceInsertTags($this->iso_noFilter);
+			$this->Template->type = 'noFilter';
+			$this->Template->products = array();
+			return;
+		}
+
+		global $objPage;
 		$arrProducts = null;
 
 		if ($this->blnCacheProducts)
 		{
-			global $objPage;
 			$time = time();
+			$pageId = ($this->iso_category_scope == 'article' ? $GLOBALS['ISO_CONFIG']['current_article']['pid'] : $objPage->id);
 
 			$objCache = $this->Database->prepare("SELECT * FROM tl_iso_productcache
 												  WHERE page_id=? AND module_id=? AND requestcache_id=? AND (keywords=? OR keywords='') AND (expires>$time OR expires=0)
 												  ORDER BY keywords=''")
 									   ->limit(1)
-									   ->execute($objPage->id, $this->id, (int)$this->Input->get('isorc'), (string)$this->Input->get('keywords'));
+									   ->execute($pageId, $this->id, (int)$this->Input->get('isorc'), (string)$this->Input->get('keywords'));
 
 			// Cache found
 			if ($objCache->numRows)
@@ -156,11 +166,11 @@ class ModuleIsotopeProductList extends ModuleIsotope
 						$total = $total - $offset;
 						$total = $total > $this->perPage ? $this->perPage : $total;
 
-						$arrProducts = IsotopeFrontend::getProducts(array_slice($arrCacheIds, $offset, $this->perPage), IsotopeFrontend::getReaderPageId(null, $this->iso_reader_jumpTo));
+						$arrProducts = IsotopeFrontend::getProducts(array_slice($arrCacheIds, $offset, $this->perPage));
 					}
 					else
 					{
-						$arrProducts = IsotopeFrontend::getProducts($arrCacheIds, IsotopeFrontend::getReaderPageId(null, $this->iso_reader_jumpTo));
+						$arrProducts = IsotopeFrontend::getProducts($arrCacheIds);
 					}
 
 					// Cache is wrong, drop everything and run findProducts()
@@ -178,10 +188,15 @@ class ModuleIsotopeProductList extends ModuleIsotope
 			// Display "loading products" message and add cache flag
 			if ($this->blnCacheProducts)
 			{
-				$blnCacheMessage = (bool)$this->iso_productcache[$objPage->id][(int)$this->Input->get('isorc')];
+				$blnCacheMessage = (bool)$this->iso_productcache[$pageId][(int)$this->Input->get('isorc')];
 
 				if ($blnCacheMessage && !$this->Input->get('buildCache'))
 				{
+					// Do not index or cache the page
+					global $objPage;
+					$objPage->noSearch = 1;
+					$objPage->cache = 0;
+
 					$this->Template = new FrontendTemplate('mod_iso_productlist_caching');
 					$this->Template->message = $GLOBALS['ISO_LANG']['MSC']['productcacheLoading'];
 					return;
@@ -200,7 +215,7 @@ class ModuleIsotopeProductList extends ModuleIsotope
 				if ($blnCacheMessage != $this->blnCacheProducts)
 				{
 					$arrCacheMessage = $this->iso_productcache;
-					$arrCacheMessage[$objPage->id][(int) $this->Input->get('isorc')] = $this->blnCacheProducts;
+					$arrCacheMessage[$pageId][(int) $this->Input->get('isorc')] = $this->blnCacheProducts;
 					$this->Database->prepare("UPDATE tl_module SET iso_productcache=? WHERE id=?")->execute(serialize($arrCacheMessage), $this->id);
 				}
 
@@ -220,10 +235,10 @@ class ModuleIsotopeProductList extends ModuleIsotope
 
 					// Also delete all expired caches if we run a delete anyway
 					$this->Database->prepare("DELETE FROM tl_iso_productcache WHERE (page_id=? AND module_id=? AND requestcache_id=? AND keywords=?) OR (expires>0 AND expires<$time)")
-								   ->executeUncached($objPage->id, $this->id, (int)$this->Input->get('isorc'), (string)$this->Input->get('keywords'));
+								   ->executeUncached($pageId, $this->id, (int)$this->Input->get('isorc'), (string)$this->Input->get('keywords'));
 
 					$this->Database->prepare("INSERT INTO tl_iso_productcache (page_id,module_id,requestcache_id,keywords,products,expires) VALUES (?,?,?,?,?,?)")
-								   ->executeUncached($objPage->id, $this->id, (int)$this->Input->get('isorc'), (string)$this->Input->get('keywords'), implode(',', $arrIds), $intExpires);
+								   ->executeUncached($pageId, $this->id, (int)$this->Input->get('isorc'), (string)$this->Input->get('keywords'), implode(',', $arrIds), $intExpires);
 
 					$this->Database->unlockTables();
 				}
@@ -241,11 +256,16 @@ class ModuleIsotopeProductList extends ModuleIsotope
 		}
 
 		// No products found
-		if (!is_array($arrProducts) || !count($arrProducts))
+		if (!is_array($arrProducts) || empty($arrProducts))
 		{
-			$this->Template = new FrontendTemplate('mod_message');
+			// Do not index or cache the page
+			$objPage->noSearch = 1;
+			$objPage->cache = 0;
+
+			$this->Template->empty = true;
 			$this->Template->type = 'empty';
 			$this->Template->message = $this->iso_emptyMessage ? $this->iso_noProducts : $GLOBALS['TL_LANG']['MSC']['noProducts'];
+			$this->Template->products = array();
 			return;
 		}
 
@@ -256,13 +276,30 @@ class ModuleIsotopeProductList extends ModuleIsotope
 		}
 
 		$arrBuffer = array();
+		$intReaderPage = IsotopeFrontend::getReaderPageId(null, $this->iso_reader_jumpTo);
+		$arrDefaultOptions = $this->getDefaultProductOptions();
 
 		foreach ($arrProducts as $objProduct)
 		{
+		    $objProduct->setOptions(array_merge($arrDefaultOptions, $objProduct->getOptions(true)));
+    		$objProduct->reader_jumpTo = $intReaderPage;
+
 			$arrBuffer[] = array
 			(
-				'html' => $objProduct->generate((strlen($this->iso_list_layout) ? $this->iso_list_layout : $objProduct->list_template), $this),
+				'cssID'	=> ($objProduct->cssID[0] != '') ? ' id="' . $objProduct->cssID[0] . '"' : '',
+				'class'	=> $objProduct->cssID[1],
+				'html'	=> $objProduct->generate((strlen($this->iso_list_layout) ? $this->iso_list_layout : $objProduct->list_template), $this),
 			);
+		}
+
+		// HOOK: to add any product field or attribute to mod_iso_productlist template
+		if (isset($GLOBALS['ISO_HOOKS']['generateProductList']) && is_array($GLOBALS['ISO_HOOKS']['generateProductList']))
+		{
+			foreach ($GLOBALS['ISO_HOOKS']['generateProductList'] as $callback)
+			{
+				$this->import($callback[0]);
+				$arrBuffer = $this->$callback[0]->$callback[1]($arrBuffer, $arrProducts, $this->Template, $this);
+			}
 		}
 
 		$this->Template->products = IsotopeFrontend::generateRowClass($arrBuffer, 'product', 'class', $this->iso_cols);
@@ -284,12 +321,12 @@ class ModuleIsotopeProductList extends ModuleIsotope
 													WHERE p1.language=''"
 													. (BE_USER_LOGGED_IN === true ? '' : " AND p1.published='1' AND (p1.start='' OR p1.start<$time) AND (p1.stop='' OR p1.stop>$time)")
 													. "AND c.page_id IN (" . implode(',', $arrCategories) . ")"
-													. (is_array($arrCacheIds) ? ("AND p1.id IN (" . implode(',', $arrCacheIds) . ")") : '')
+													. ((is_array($arrCacheIds) && !empty($arrCacheIds)) ? (" AND p1.id IN (" . implode(',', $arrCacheIds) . ")") : '')
 													. ($this->iso_list_where == '' ? '' : " AND {$this->iso_list_where}")
 													. "$strWhere GROUP BY p1.id ORDER BY c.sorting")
 										 ->execute($arrValues);
 
-		return IsotopeFrontend::getProducts($objProductData, IsotopeFrontend::getReaderPageId(null, $this->iso_reader_jumpTo), true, $arrFilters, $arrSorting);
+		return IsotopeFrontend::getProducts($objProductData, 0, true, $arrFilters, $arrSorting);
 	}
 
 
@@ -360,23 +397,59 @@ class ModuleIsotopeProductList extends ModuleIsotope
 			$strWhere = '';
 			$arrWhere = array();
 			$arrValues = array();
+			$arrGroups = array();
 
 			// Initiate native SQL filtering
 			foreach ($arrFilters as $k => $filter)
 			{
-				if ($filter['group'] == '' && !in_array($filter['attribute'], $GLOBALS['ISO_CONFIG']['dynamicAttributes']))
+    			if ($filter['group'] != '' && $arrGroups[$filter['group']] !== false)
+    			{
+        			if (in_array($filter['attribute'], $GLOBALS['ISO_CONFIG']['dynamicAttributes']))
+        			{
+            			$arrGroups[$filter['group']] = false;
+        			}
+        			else
+        			{
+            			$arrGroups[$filter['group']][] = $k;
+            		}
+    			}
+				elseif ($filter['group'] == '' && !in_array($filter['attribute'], $GLOBALS['ISO_CONFIG']['dynamicAttributes']))
 				{
+				    $blnMultilingual = in_array($filter['attribute'], $GLOBALS['ISO_CONFIG']['multilingual']);
 					$operator = IsotopeFrontend::convertFilterOperator($filter['operator'], 'SQL');
-					$arrWhere[] = "{$filter['attribute']} $operator ?";
-					$arrValues[] = $filter['value'];
+
+    				$arrWhere[] = ($blnMultilingual ? "IFNULL(p2.{$filter['attribute']}, p1.{$filter['attribute']})" : "p1.{$filter['attribute']}") . " $operator ?";
+					$arrValues[] = ($operator == 'LIKE' ? '%'.$filter['value'].'%' : $filter['value']);
 					unset($arrFilters[$k]);
 				}
 			}
 
-			if (count($arrWhere))
+			if (!empty($arrGroups))
+			{
+    			foreach ($arrGroups as $arrGroup)
+    			{
+        			$arrGroupWhere = array();
+
+           			foreach ($arrGroup as $k)
+        			{
+            			$filter = $arrFilters[$k];
+
+            			$blnMultilingual = in_array($filter['attribute'], $GLOBALS['ISO_CONFIG']['multilingual']);
+            			$operator = IsotopeFrontend::convertFilterOperator($filter['operator'], 'SQL');
+
+    					$arrGroupWhere[] = ($blnMultilingual ? "IFNULL(p2.{$filter['attribute']}, p1.{$filter['attribute']})" : "p1.{$filter['attribute']}") . " $operator ?";
+    					$arrValues[] = ($operator == 'LIKE' ? '%'.$filter['value'].'%' : $filter['value']);
+    					unset($arrFilters[$k]);
+        			}
+
+        			$arrWhere[] = '(' . implode(' OR ', $arrGroupWhere) . ')';
+    			}
+			}
+
+			if (!empty($arrWhere))
 			{
 				$time = time();
-				$strWhere = " AND ((p1." . implode(' AND p1.', $arrWhere) . ") OR p1.id IN (SELECT pid FROM tl_iso_products WHERE language='' AND " . implode(' AND ', $arrWhere)
+				$strWhere = " AND ((" . implode(' AND ', $arrWhere) . ") OR p1.id IN (SELECT pid FROM tl_iso_products WHERE language='' AND " . implode(' AND ', $arrWhere)
 							. (BE_USER_LOGGED_IN === true ? '' : " AND published='1' AND (start='' OR start<$time) AND (stop='' OR stop>$time)") . "))";
 				$arrValues = array_merge($arrValues, $arrValues);
 			}
@@ -385,6 +458,35 @@ class ModuleIsotopeProductList extends ModuleIsotope
 		}
 
 		return array($arrFilters, $arrSorting);
+	}
+
+
+	/**
+	 * Get a list of default options based on filter attributes
+	 * @return array
+	 */
+	protected function getDefaultProductOptions()
+	{
+    	$arrOptions = array();
+
+    	if (is_array($this->iso_filterModules))
+		{
+			foreach ($this->iso_filterModules as $module)
+			{
+				if (is_array($GLOBALS['ISO_FILTERS'][$module]))
+				{
+				    foreach ($GLOBALS['ISO_FILTERS'][$module] as $arrConfig)
+				    {
+    				    if ($arrConfig['operator'] == '=' || $arrConfig['operator'] == '==' || $arrConfig['operator'] == 'eq')
+    				    {
+        				    $arrOptions[$arrConfig['attribute']] = $arrConfig['value'];
+    				    }
+				    }
+				}
+			}
+		}
+
+		return $arrOptions;
 	}
 }
 

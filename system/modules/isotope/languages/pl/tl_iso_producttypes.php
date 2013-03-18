@@ -61,7 +61,6 @@ $GLOBALS['TL_LANG']['tl_iso_producttypes']['name_legend']			= 'Ustawienia typu p
 $GLOBALS['TL_LANG']['tl_iso_producttypes']['description_legend']	= 'Opis';
 $GLOBALS['TL_LANG']['tl_iso_producttypes']['template_legend']		= 'Szablony';
 $GLOBALS['TL_LANG']['tl_iso_producttypes']['attributes_legend']		= 'Atrbyuty produktu';
-$GLOBALS['TL_LANG']['tl_iso_producttypes']['download_legend']		= 'Pliki do pobrania';
 
 
 /**

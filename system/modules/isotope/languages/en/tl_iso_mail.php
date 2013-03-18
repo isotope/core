@@ -48,9 +48,10 @@ $GLOBALS['TL_LANG']['tl_iso_mail']['source']			= array('Source files', 'Please c
  * Buttons
  */
 $GLOBALS['TL_LANG']['tl_iso_mail']['new']			= array('New Template', 'Create a new e-mail template');
-$GLOBALS['TL_LANG']['tl_iso_mail']['edit']			= array('Edit Template', 'Edit e-mail template ID %s');
-$GLOBALS['TL_LANG']['tl_iso_mail']['copy']			= array('Copy Template', 'Copy e-mail template ID %s');
-$GLOBALS['TL_LANG']['tl_iso_mail']['delete']		= array('Delete Template', 'Delete e-mail template ID %s');
+$GLOBALS['TL_LANG']['tl_iso_mail']['edit']			= array('Edit template', 'Edit e-mail template ID %s');
+$GLOBALS['TL_LANG']['tl_iso_mail']['editheader']	= array('Edit template settings', 'Edit the settings for e-mail template ID %s');
+$GLOBALS['TL_LANG']['tl_iso_mail']['copy']			= array('Copy template', 'Copy e-mail template ID %s');
+$GLOBALS['TL_LANG']['tl_iso_mail']['delete']		= array('Delete template', 'Delete e-mail template ID %s');
 $GLOBALS['TL_LANG']['tl_iso_mail']['show']			= array('Details', 'Details for e-mail template ID %s');
 $GLOBALS['TL_LANG']['tl_iso_mail']['importMail']	= array('Import', 'Import email template');
 $GLOBALS['TL_LANG']['tl_iso_mail']['exportMail']	= array('Export', 'Export e-mail template ID %s');

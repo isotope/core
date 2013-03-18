@@ -69,10 +69,15 @@ class ModuleIsotopeOrderHistory extends ModuleIsotope
 
 		$this->iso_config_ids = deserialize($this->iso_config_ids);
 
-		if (FE_USER_LOGGED_IN !== true || !is_array($this->iso_config_ids) || !count($this->iso_config_ids))
+		if (FE_USER_LOGGED_IN !== true || !is_array($this->iso_config_ids) || !count($this->iso_config_ids)) // Can't use empty() because its an object property (using __get)
 		{
 			return '';
 		}
+
+		// Do not index or cache the page
+		global $objPage;
+		$objPage->noSearch = 1;
+		$objPage->cache = 0;
 
 		$this->import('FrontendUser', 'User');
 		return parent::generate();
@@ -85,7 +90,7 @@ class ModuleIsotopeOrderHistory extends ModuleIsotope
 	 */
 	protected function compile()
 	{
-		$objOrders = $this->Database->execute("SELECT *, (SELECT COUNT(*) FROM tl_iso_order_items WHERE pid=tl_iso_orders.id) AS items FROM tl_iso_orders WHERE status!='' AND pid=".$this->User->id." AND config_id IN (" . implode(',', $this->iso_config_ids) . ") ORDER BY date DESC");
+		$objOrders = $this->Database->execute("SELECT id, (SELECT COUNT(*) FROM tl_iso_order_items WHERE pid=tl_iso_orders.id) AS items FROM tl_iso_orders WHERE status>0 AND pid=".$this->User->id." AND config_id IN (" . implode(',', $this->iso_config_ids) . ") ORDER BY date DESC");
 
 		// No orders found, just display an "empty" message
 		if (!$objOrders->numRows)
@@ -101,25 +106,30 @@ class ModuleIsotopeOrderHistory extends ModuleIsotope
 
 		while ($objOrders->next())
 		{
-			if ($this->Isotope->Config->id != $objOrders->config_id)
+    		$objOrder = new IsotopeOrder();
+    		$objOrder->findBy('id', $objOrders->id);
+
+			if ($this->Isotope->Config->id != $objOrder->config_id)
 			{
-				$this->Isotope->overrideConfig($objOrders->config_id);
+				$this->Isotope->overrideConfig($objOrder->config_id);
 			}
 
 			$arrOrders[] = array
 			(
-				'raw'			=> $objOrders->row(),
-				'date'			=> $this->parseDate($GLOBALS['TL_CONFIG']['dateFormat'], $objOrders->date),
-				'time'			=> $this->parseDate($GLOBALS['TL_CONFIG']['timeFormat'], $objOrders->date),
-				'datime'		=> $this->parseDate($GLOBALS['TL_CONFIG']['datimeFormat'], $objOrders->date),
+			    'collection'    => $objOrder,
+				'raw'			=> $objOrder->getData(),
+				'date'			=> $this->parseDate($GLOBALS['TL_CONFIG']['dateFormat'], $objOrder->date),
+				'time'			=> $this->parseDate($GLOBALS['TL_CONFIG']['timeFormat'], $objOrder->date),
+				'datime'		=> $this->parseDate($GLOBALS['TL_CONFIG']['datimeFormat'], $objOrder->date),
 				'items'			=> $objOrders->items,
-				'grandTotal'	=> $this->Isotope->formatPriceWithCurrency($objOrders->grandTotal),
-				'status'		=> $GLOBALS['TL_LANG']['ORDER'][$objOrders->status],
-				'link'			=> ($this->jumpTo ? (IsotopeFrontend::addQueryStringToUrl('uid=' . $objOrders->uniqid, $this->jumpTo)) : ''),
+				'grandTotal'	=> $this->Isotope->formatPriceWithCurrency($objOrder->grandTotal),
+				'status'		=> $objOrder->statusLabel,
+				'link'			=> ($this->jumpTo ? (IsotopeFrontend::addQueryStringToUrl('uid=' . $objOrder->uniqid, $this->jumpTo)) : ''),
+				'class'         => $objOrder->statusAlias,
 			);
 		}
 
-		$this->Template->orders = $arrOrders;
+		$this->Template->orders = IsotopeFrontend::generateRowClass($arrOrders, '', 'class', 0, ISO_CLASS_FIRSTLAST|ISO_CLASS_EVENODD);
 		$this->Template->dateLabel = $GLOBALS['TL_LANG']['MSC']['iso_order_date'];
 		$this->Template->statusLabel = $GLOBALS['TL_LANG']['MSC']['iso_order_status'];
 		$this->Template->subTotalLabel = $GLOBALS['TL_LANG']['MSC']['subTotalLabel'];

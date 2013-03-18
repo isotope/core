@@ -122,7 +122,7 @@ $GLOBALS['TL_DCA']['tl_iso_tax_class'] = array
 	// Palettes
 	'palettes' => array
 	(
-		'default'                     => '{name_legend},name,fallback;{rate_legend},includes,label,rates,applyRoundingIncrement',
+		'default'                     => '{name_legend},name,fallback;{rate_legend},includes,label,rates,applyRoundingIncrement,notNegative',
 	),
 
 	// Fields
@@ -131,6 +131,7 @@ $GLOBALS['TL_DCA']['tl_iso_tax_class'] = array
 		'name' => array
 		(
 			'label'                   => &$GLOBALS['TL_LANG']['tl_iso_tax_class']['name'],
+			'exclude'                 => true,
 			'search'                  => true,
 			'inputType'               => 'text',
 			'eval'                    => array('maxlength'=>255, 'mandatory'=>true, 'tl_class'=>'w50'),
@@ -145,13 +146,15 @@ $GLOBALS['TL_DCA']['tl_iso_tax_class'] = array
 		'includes' => array
 		(
 			'label'                   => &$GLOBALS['TL_LANG']['tl_iso_tax_class']['includes'],
+			'exclude'                 => true,
 			'inputType'               => 'select',
-			'options_callback'		  => array('tl_iso_tax_class', 'getTaxRates'),
+			'foreignKey'              => 'tl_iso_tax_rate.name',
 			'eval'                    => array('includeBlankOption'=>true, 'tl_class'=>'w50'),
 		),
 		'label' => array
 		(
 			'label'                   => &$GLOBALS['TL_LANG']['tl_iso_tax_class']['label'],
+			'exclude'                 => true,
 			'search'                  => true,
 			'inputType'               => 'text',
 			'eval'                    => array('maxlength'=>255, 'tl_class'=>'w50'),
@@ -159,13 +162,21 @@ $GLOBALS['TL_DCA']['tl_iso_tax_class'] = array
 		'rates' => array
 		(
 			'label'                   => &$GLOBALS['TL_LANG']['tl_iso_tax_class']['rates'],
+			'exclude'                 => true,
 			'inputType'               => 'checkboxWizard',
-			'options_callback'		  => array('tl_iso_tax_class', 'getTaxRates'),
+			'foreignKey'              => 'tl_iso_tax_rate.name',
 			'eval'                    => array('multiple'=>true, 'tl_class'=>'clr w50 w50h'),
 		),
 		'applyRoundingIncrement' => array
 		(
 			'label'					=> &$GLOBALS['TL_LANG']['tl_iso_tax_class']['applyRoundingIncrement'],
+			'exclude'				=> true,
+			'inputType'				=> 'checkbox',
+			'eval'					=> array('tl_class'=>'w50'),
+		),
+		'notNegative' => array
+		(
+			'label'					=> &$GLOBALS['TL_LANG']['tl_iso_tax_class']['notNegative'],
 			'exclude'				=> true,
 			'inputType'				=> 'checkbox',
 			'eval'					=> array('tl_class'=>'w50'),
@@ -192,16 +203,16 @@ class tl_iso_tax_class extends Backend
 		{
 			return;
 		}
-		
+
 		$this->import('BackendUser', 'User');
-		
+
 		if ($this->User->isAdmin)
 		{
 			return;
 		}
 
 		// Set root IDs
-		if (!is_array($this->User->iso_tax_classes) || count($this->User->iso_tax_classes) < 1)
+		if (!is_array($this->User->iso_tax_classes) || count($this->User->iso_tax_classes) < 1) // Can't use empty() because its an object property (using __get)
 		{
 			$root = array(0);
 		}
@@ -313,25 +324,6 @@ class tl_iso_tax_class extends Backend
 				}
 				break;
 		}
-	}
-	
-
-	/**
-	 * Get all tax rates sorted by country and name
-	 * @return array
-	 */
-	public function getTaxRates()
-	{
-		$arrCountries = $this->getCountries();
-		$arrRates = array();
-		$objRates = $this->Database->execute("SELECT * FROM tl_iso_tax_rate ORDER BY country, name");
-
-		while ($objRates->next())
-		{
-			$arrRates[$objRates->id] = $arrCountries[$objRates->country] . ' - ' . $objRates->name;
-		}
-
-		return $arrRates;
 	}
 
 

@@ -27,19 +27,18 @@
  * @license    http://opensource.org/licenses/lgpl-3.0.html
  */
 
+$this->loadLanguageFile('tl_iso_groups');
 
 /**
  * Add the Isotope style sheet
  */
 $GLOBALS['TL_CSS'][] = 'system/modules/isotope/html/backend.css';
 
-
 /**
  * Extend tl_user palettes
  */
-$GLOBALS['TL_DCA']['tl_user']['palettes']['extend'] = str_replace('{account_legend}', '{isotope_legend},iso_modules,iso_product_types,iso_product_typep,iso_payment_modules,iso_payment_modulep,iso_shipping_modules,iso_shipping_modulep,iso_tax_classes,iso_tax_classp,iso_tax_rates,iso_tax_ratep,iso_mails,iso_mailp,iso_configs,iso_configp;{account_legend}', $GLOBALS['TL_DCA']['tl_user']['palettes']['extend']);
-$GLOBALS['TL_DCA']['tl_user']['palettes']['custom'] = str_replace('{account_legend}', '{isotope_legend},iso_modules,iso_product_types,iso_product_typep,iso_payment_modules,iso_payment_modulep,iso_shipping_modules,iso_shipping_modulep,iso_tax_classes,iso_tax_classp,iso_tax_rates,iso_tax_ratep,iso_mails,iso_mailp,iso_configs,iso_configp;{account_legend}', $GLOBALS['TL_DCA']['tl_user']['palettes']['custom']);
-
+$GLOBALS['TL_DCA']['tl_user']['palettes']['extend'] = str_replace('{account_legend}', '{isotope_legend},iso_modules,iso_product_types,iso_product_typep,iso_payment_modules,iso_payment_modulep,iso_shipping_modules,iso_shipping_modulep,iso_tax_classes,iso_tax_classp,iso_tax_rates,iso_tax_ratep,iso_mails,iso_mailp,iso_configs,iso_configp,iso_groups,iso_groupp;{account_legend}', $GLOBALS['TL_DCA']['tl_user']['palettes']['extend']);
+$GLOBALS['TL_DCA']['tl_user']['palettes']['custom'] = str_replace('{account_legend}', '{isotope_legend},iso_modules,iso_product_types,iso_product_typep,iso_payment_modules,iso_payment_modulep,iso_shipping_modules,iso_shipping_modulep,iso_tax_classes,iso_tax_classp,iso_tax_rates,iso_tax_ratep,iso_mails,iso_mailp,iso_configs,iso_configp,iso_groups,iso_groupp;{account_legend}', $GLOBALS['TL_DCA']['tl_user']['palettes']['custom']);
 
 /**
  * Add fields to tl_user
@@ -52,16 +51,7 @@ $GLOBALS['TL_DCA']['tl_user']['fields']['iso_modules'] = array
 	'inputType'				=> 'checkbox',
 	'options_callback'		=> array('IsotopeBackend', 'getIsotopeModules'),
 	'reference'				=> &$GLOBALS['TL_LANG']['IMD'],
-	'eval'					=> array('multiple'=>true, 'helpwizard'=>true),
-);
-
-$GLOBALS['TL_DCA']['tl_user']['fields']['iso_product_types'] = array
-(
-	'label'                   => &$GLOBALS['TL_LANG']['tl_user']['iso_product_types'],
-	'exclude'                 => true,
-	'inputType'               => 'checkbox',
-	'foreignKey'			  => 'tl_iso_producttypes.name',
-	'eval'                    => array('multiple'=>true),
+	'eval'					=> array('multiple'=>true, 'helpwizard'=>true, 'tl_class'=>'clr w50 w50h'),
 );
 
 $GLOBALS['TL_DCA']['tl_user']['fields']['iso_product_types'] = array
@@ -197,3 +187,34 @@ $GLOBALS['TL_DCA']['tl_user']['fields']['iso_configp'] = array
 	'eval'					=> array('multiple'=>true, 'tl_class'=>'w50 w50h')
 );
 
+$GLOBALS['TL_DCA']['tl_user']['fields']['iso_groups'] = array
+(
+	'label'					=> &$GLOBALS['TL_LANG']['tl_user']['iso_groups'],
+	'exclude'				=> true,
+	'inputType'				=> 'tableTree',
+	'reference'				=> array
+	(
+		'icon'	=> array
+		(
+			'tl_iso_groups'	=> array('system/modules/isotope/html/folders.png', 'system/modules/isotope/html/folder-network.png')
+		)
+	),
+	'eval'					=> array
+	(
+		'tableColumn'	=>'tl_iso_groups.name',
+		'fieldType'		=>'checkbox',
+		'title'			=> &$GLOBALS['TL_LANG']['tl_iso_groups']['label'],
+		'children'		=> true,
+		'tl_class'		=>'clr'
+	)
+);
+
+$GLOBALS['TL_DCA']['tl_user']['fields']['iso_groupp'] = array
+(
+	'label'					=> &$GLOBALS['TL_LANG']['tl_user']['iso_groupp'],
+	'exclude'				=> true,
+	'inputType'				=> 'checkbox',
+	'options'				=> array('create', 'delete', 'rootPaste'),
+	'reference'				=> &$GLOBALS['TL_LANG']['MSC'],
+	'eval'					=> array('multiple'=>true, 'tl_class'=>'clr')
+);

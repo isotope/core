@@ -1,6 +1,6 @@
 
 <!-- indexer::stop -->
-<section class="<?php echo $this->class; ?> block"<?php echo $this->cssID; ?><?php if ($this->style): ?> style="<?php echo $this->style; ?>"<?php endif; ?>>
+<div class="<?php echo $this->class; ?> block"<?php echo $this->cssID; ?><?php if ($this->style): ?> style="<?php echo $this->style; ?>"<?php endif; ?>>
 <?php if ($this->headline): ?>
 
 <<?php echo $this->hl; ?>><?php echo $this->headline; ?></<?php echo $this->hl; ?>>
@@ -8,7 +8,7 @@
 
 <?php if (is_array($this->steps) && count($this->steps)): ?>
 <div class="steps block">
-<ul class="level_1 steps<?php echo count($this->steps); ?>">
+<ol class="level_1 steps<?php echo count($this->steps); ?>">
 <?php foreach( $this->steps as $step ): ?>
 <li class="<?php echo $step['class']; ?>">
 <?php if (strlen($step['href'])): ?>
@@ -18,7 +18,7 @@
 <?php endif; ?>
 </li>
 <?php endforeach; ?>
-</ul>
+</ol>
 </div>
 <?php endif; ?>
 
@@ -37,7 +37,7 @@
 <div class="clear">&nbsp;</div>
 <?php if ($this->showPrevious || $this->showNext): ?>
 	<div class="submit_container">
-		<?php if ($this->showPrevious): ?><input type="submit" class="submit previous button" name="previousStep" value="<?php echo $this->previousLabel; ?>" /><?php endif; if ($this->showNext): ?>
+		<?php if ($this->showPrevious): ?><input type="submit" class="submit previous button" name="previousStep" value="<?php echo $this->previousLabel; ?>"><?php endif; if ($this->showNext): ?>
 		<input type="submit" class="submit <?php echo $this->nextClass; ?> button" name="nextStep" value="<?php echo $this->nextLabel; ?>"><?php endif; ?>
 	</div>
 <?php endif; ?>
@@ -46,7 +46,13 @@
 <?php echo $this->fields; ?>
 <?php endif; ?>
 
-<?php if (strlen($this->checkoutForm)): ?><div class="checkout_form"><?php echo $this->checkoutForm; ?></div><?php endif; ?>
-
-</section>
+</div>
+<script>
+window.addEvent('domready', function() {
+	document.getElements('.mod_iso_checkout form').addEvent('submit', function() {
+		document.getElement('.mod_iso_checkout input[name=nextStep]').set('disabled', true);
+		(function() { window.location.reload() }).delay(30000);
+	});
+});
+</script>
 <!-- indexer::continue -->

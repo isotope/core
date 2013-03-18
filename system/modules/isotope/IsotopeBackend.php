@@ -30,7 +30,7 @@
 
 /**
  * Class IsotopeBackend
- * 
+ *
  * Provide methods to handle Isotope back end components.
  * @copyright  Isotope eCommerce Workgroup 2009-2012
  * @author     Andreas Schempp <andreas@schempp.ch>
@@ -45,9 +45,9 @@ class IsotopeBackend extends Backend
 	 * @param mixed
 	 * @return mixed
 	 */
-	public function truncateProductCache($varValue=null)
+	public static function truncateProductCache($varValue=null)
 	{
-		$this->Database->query("TRUNCATE tl_iso_productcache");
+		Database::getInstance()->query("TRUNCATE tl_iso_productcache");
 
 		return $varValue;
 	}
@@ -226,7 +226,7 @@ class IsotopeBackend extends Backend
 			}
 
 			// Check wether there are any files left
-			if (count($arrFiles) < 1)
+			if (empty($arrFiles))
 			{
 				$_SESSION['TL_ERROR'][] = $GLOBALS['TL_LANG']['ERR']['all_fields'];
 				$this->reload();
@@ -339,10 +339,10 @@ class IsotopeBackend extends Backend
 		setcookie('BE_PAGE_OFFSET', 0, 0, '/');
 		$this->redirect(str_replace('&key=importMail', '', $this->Environment->request));
 	}
-	
-	
+
+
 	/**
-	 * Return all Isotope modules 
+	 * Return all Isotope modules
 	 * @return array
 	 */
 	public function getIsotopeModules()
@@ -356,8 +356,8 @@ class IsotopeBackend extends Backend
 
 		return $arrModules;
 	}
-	
-	
+
+
 	/**
 	 * List template from all themes, show theme name
 	 * @param string
@@ -387,7 +387,7 @@ class IsotopeBackend extends Backend
 				$arrThemes[TL_ROOT .'/'. $objTheme->templates] = $objTheme->name;
 			}
 		}
-		
+
 		// Add Isotope config templates folder
 		$objStore = $objDatabase->execute("SELECT name, templateGroup FROM tl_iso_config");
 		while ($objStore->next())
@@ -419,7 +419,7 @@ class IsotopeBackend extends Backend
 			{
 				$strName = basename($strTemplate);
 				$strName = substr($strName, 0, strrpos($strName, '.'));
-				
+
 				if (isset($arrThemes[$strFolder]))
 				{
 					$arrTemplates[$strName] = sprintf($GLOBALS['ISO_LANG']['MSC']['templateTheme'], $strName, $arrThemes[$strFolder]);
@@ -438,8 +438,8 @@ class IsotopeBackend extends Backend
 		natcasesort($arrTemplates);
 		return $arrTemplates;
 	}
-	
-	
+
+
 	/**
 	 * Get all tax classes, including a "split amonst products" option
 	 * @param DataContainer
@@ -448,18 +448,264 @@ class IsotopeBackend extends Backend
 	public static function getTaxClassesWithSplit()
 	{
 		$objDatabase = Database::getInstance();
-		
+
 		$arrTaxes = array();
 		$objTaxes = $objDatabase->execute("SELECT * FROM tl_iso_tax_class ORDER BY name");
-		
+
 		while( $objTaxes->next() )
 		{
 			$arrTaxes[$objTaxes->id] = $objTaxes->name;
 		}
-		
+
 		$arrTaxes[-1] = $GLOBALS['ISO_LANG']['MSC']['splittedTaxRate'];
-		
+
 		return $arrTaxes;
+	}
+
+
+	/**
+	 * Get order status and return it as array
+	 * @param object
+	 * @return array
+	 */
+	public static function getOrderStatus()
+	{
+		$objDatabase = Database::getInstance();
+
+		$arrStatus = array();
+		$objStatus = $objDatabase->execute("SELECT id, name FROM tl_iso_orderstatus ORDER BY sorting");
+
+		while( $objStatus->next() )
+		{
+			$arrStatus[$objStatus->id] = $objStatus->name;
+		}
+
+		return $arrStatus;
+	}
+
+
+	/**
+	 * Add the product attributes to the db updater array so the users don't delete them while updating
+	 * @param array
+	 * @return array
+	 */
+	public function addAttributesToDBUpdate($arrData)
+	{
+		if ($this->Database->tableExists('tl_iso_attributes'))
+		{
+			$objAttributes = $this->Database->execute("SELECT * FROM tl_iso_attributes");
+
+			while ($objAttributes->next())
+			{
+				if ($objAttributes->field_name == '' || $objAttributes->type == '' || $GLOBALS['ISO_ATTR'][$objAttributes->type]['sql'] == '')
+				{
+					continue;
+				}
+
+				$arrData['tl_iso_products']['TABLE_FIELDS'][$objAttributes->field_name] = sprintf('`%s` %s', $objAttributes->field_name, $GLOBALS['ISO_ATTR'][$objAttributes->type]['sql']);
+
+				// Also check indexes
+				if ($objAttributes->fe_filter && $GLOBALS['ISO_ATTR'][$objAttributes->type]['useIndex'])
+				{
+					$arrData['tl_iso_products']['TABLE_CREATE_DEFINITIONS'][$objAttributes->field_name] = sprintf('KEY `%s` (`%s`)', $objAttributes->field_name, $objAttributes->field_name);
+				}
+			}
+		}
+
+		return $arrData;
+	}
+
+
+	/**
+	 * Show messages for new order status
+	 * @return string
+	 */
+	public function getOrderMessages()
+	{
+	    if (!$this->Database->tableExists('tl_iso_orderstatus')) {
+    	    return '';
+	    }
+
+		$arrMessages = array();
+		$objOrders = $this->Database->query("SELECT COUNT(*) AS total, s.name FROM tl_iso_orders o LEFT JOIN tl_iso_orderstatus s ON o.status=s.id WHERE s.welcomescreen='1' GROUP BY s.id");
+
+		while ($objOrders->next())
+		{
+			$arrMessages[] = '<p class="tl_new">' . sprintf($GLOBALS['ISO_LANG']['MSC']['newOrders'], $objOrders->total, $objOrders->name) . '</p>';
+		}
+
+		return implode("\n", $arrMessages);
+	}
+
+
+	/**
+	 * Generate the GENERAL group if there is none
+	 * @return boolean
+	 */
+	public static function createGeneralGroup()
+	{
+		$objDatabase = Database::getInstance();
+
+		$blnHasGroups = $objDatabase->executeUncached("SELECT COUNT(id) AS total FROM tl_iso_groups")->total > 0;
+		$blnHasUnassigned = $objDatabase->executeUncached("SELECT COUNT(id) AS total FROM tl_iso_products WHERE pid=0 AND language='' AND gid=0")->total > 0;
+
+		if (!$blnHasGroups || $blnHasUnassigned)
+		{
+			$intGroup = $objDatabase->executeUncached("INSERT INTO tl_iso_groups (pid,sorting,tstamp,name) VALUES (0, 0, " . time() . ", '### GENERAL ###')")->insertId;
+
+			// add all products to that new folder
+			$objDatabase->query("UPDATE tl_iso_products SET gid=$intGroup WHERE pid=0 AND language='' AND gid=0");
+
+			// toggle (open) the new group
+			Session::getInstance()->set('tl_iso_products_tl_iso_groups_tree', array($intGroup=>1));
+
+			$objUser = BackendUser::getInstance();
+
+			if (TL_MODE == 'BE' && !$objUser->isAdmin)
+			{
+				// Add permissions on user level
+				if ($objUser->inherit == 'custom' || !$objUser->groups[0])
+				{
+					$arrAccess = deserialize($objUser->iso_groups);
+					$arrAccess[] = $intGroup;
+
+					Database::getInstance()->prepare("UPDATE tl_user SET iso_groups=? WHERE id=?")
+        								   ->execute(serialize($arrAccess), $objUser->id);
+				}
+
+				// Add permissions on group level
+				elseif ($objUser->groups[0] > 0)
+				{
+					$objGroup = Database::getInstance()->prepare("SELECT iso_groups FROM tl_user_group WHERE id=?")
+        											   ->limit(1)
+        											   ->executeUncached($objUser->groups[0]);
+
+					$arrAccess = deserialize($objGroup->iso_groups);
+					$arrAccess[] = $intGroup;
+
+					Database::getInstance()->prepare("UPDATE tl_user_group SET iso_groups=? WHERE id=?")
+					                       ->execute(serialize($arrAccess), $objUser->groups[0]);
+				}
+			}
+
+			Isotope::getInstance()->call('reload');
+		}
+
+		return false;
+	}
+
+
+	/**
+	 * Get product type for a given group
+	 * @param product group id
+	 * @return int|false
+	 */
+	public static function getProductTypeForGroup($intGroup)
+	{
+		$objDatabase = Database::getInstance();
+
+		do
+		{
+			$objGroup = $objDatabase->query('SELECT pid, product_type FROM tl_iso_groups WHERE id=' . (int) $intGroup);
+
+			if ($objGroup->product_type > 0)
+			{
+				return $objGroup->product_type;
+			}
+
+			$intGroup = $objGroup->pid;
+		}
+		while ($objGroup->numRows && $intGroup > 0);
+
+		// if there is no default type set we return false
+		return false;
+	}
+
+
+	/**
+	 * Instantiate and return the uploader object.
+	 * This ugly method is necessary because FileUpload extends Backend but the constructor is not public...
+	 * @return object
+	 */
+	public static function getUploader()
+	{
+		return new FileUpload();
+	}
+
+
+	/**
+	 * Returns an array of all allowed product IDs and variant IDs for the current backend user
+	 * @return array|bool
+	 */
+	public static function getAllowedProductIds()
+	{
+		$objUser = BackendUser::getInstance();
+
+		if ($objUser->isAdmin)
+		{
+			$arrProducts = true;
+		}
+		else
+		{
+   			$arrNewRecords = $_SESSION['BE_DATA']['new_records']['tl_iso_products'];
+	    	$arrProductTypes = $objUser->iso_product_types;
+	    	$arrGroups = $objUser->iso_groups;
+
+    		if (!is_array($arrProductTypes) || empty($arrProductTypes) || !is_array($arrGroups) || empty($arrGroups))
+	    	{
+	        	return false;
+	    	}
+
+    		$arrGroups = array_merge($arrGroups, Isotope::getInstance()->call('getChildRecords', array($arrGroups, 'tl_iso_groups')));
+
+			$objProducts = Database::getInstance()->execute("SELECT id FROM tl_iso_products
+			                                                 WHERE pid=0 AND language='' AND
+			                                                 gid IN (" . implode(',', $arrGroups) . ") AND
+			                                                 (type IN (" . implode(',', $arrProductTypes) . ")" .
+		    	                                             ((is_array($arrNewRecords) && !empty($arrNewRecords)) ? " OR id IN (".implode(',', $arrNewRecords)."))" : ')'));
+
+			if ($objProducts->numRows == 0)
+			{
+	    		return array();
+			}
+
+			$arrProducts = $objProducts->fetchEach('id');
+			$arrProducts = array_merge($arrProducts, Isotope::getInstance()->call('getChildRecords', array($arrProducts, 'tl_iso_products')));
+		}
+
+		// HOOK: allow extensions to define allowed products
+		if (isset($GLOBALS['ISO_HOOKS']['getAllowedProductIds']) && is_array($GLOBALS['ISO_HOOKS']['getAllowedProductIds']))
+		{
+			foreach ($GLOBALS['ISO_HOOKS']['getAllowedProductIds'] as $callback)
+			{
+				$objCallback = (method_exists($callback[0], 'getInstance') ? call_user_func(array($callback[0], 'getInstance')) : new $callback[0]());
+				$arrAllowed = $objCallback->$callback[1]();
+
+				if ($arrAllowed === false)
+				{
+    				return false;
+				}
+				elseif (is_array($arrAllowed))
+				{
+					if ($arrProducts === true)
+					{
+						$arrProducts = $arrAllowed;
+					}
+					else
+					{
+    					$arrProducts = array_intersect($arrProducts, $arrAllowed);
+					}
+				}
+			}
+		}
+
+		// If all product are allowed, we don't need to filter
+		if ($arrProducts === true || count($arrProducts) == Database::getInstance()->execute("SELECT COUNT(id) as total FROM tl_iso_products")->total)
+		{
+    		return true;
+		}
+
+		return $arrProducts;
 	}
 }
 

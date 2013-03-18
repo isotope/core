@@ -1,6 +1,6 @@
 
 <!-- indexer::stop -->
-<section class="<?php echo $this->class; ?> block"<?php echo $this->cssID; ?><?php if ($this->style): ?> style="<?php echo $this->style; ?>"<?php endif; ?>>
+<div class="<?php echo $this->class; ?> block"<?php echo $this->cssID; ?><?php if ($this->style): ?> style="<?php echo $this->style; ?>"<?php endif; ?>>
 <?php if ($this->headline): ?>
 
 <<?php echo $this->hl; ?>><?php echo $this->headline; ?></<?php echo $this->hl; ?>>
@@ -43,7 +43,7 @@
 		<tr class="<?php echo $item['rowClass']; ?>">
 			<td class="col_0 col_first sku"><?php echo $item['sku']; ?></td>
 			<td class="col_1 name"><?php if (strlen($item['href'])): ?><a href="<?php echo $item['href']; ?>"><?php endif; echo $item['name']; if (strlen($item['href'])): ?></a><?php endif; ?>
-				<?php if(is_array($item['product_options']) && count($item['product_options'])): ?>
+				<?php if(is_array($item['product_options']) && !empty($item['product_options'])): ?>
 				<div class="optionswrapper">
 					<ul class="productOptions">
 					<?php foreach($item['product_options'] as $option): ?>
@@ -69,5 +69,5 @@
 <div class="download"><?php if ($download['downloadable']): ?><a href="<?php echo $download['href']; ?>" /><?php endif; echo $download['title']; if ($download['downloadable']): ?></a><?php endif; echo $download['remaining']; ?></div>
 <?php endforeach; endif; ?>
 
-</section>
+</div>
 <!-- indexer::continue -->

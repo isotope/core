@@ -96,7 +96,7 @@ $GLOBALS['TL_DCA']['tl_iso_addresses'] = array
 	// Palettes
 	'palettes' => array
 	(
-		'default'					  => '{store_legend},label,store_id;{personal_legend},salutation,firstname,lastname;{address_legend},company,street_1,street_2,street_3,postal,city,subdivision,country;{contact_legend},email,phone;{default_legend:hide},isDefaultBilling,isDefaultShipping',
+		'default'					  => '{store_legend},label,store_id;{personal_legend},salutation,firstname,lastname,company,vat_no;{address_legend},street_1,street_2,street_3,postal,city,subdivision,country;{contact_legend},email,phone;{default_legend:hide},isDefaultBilling,isDefaultShipping',
 	),
 
 	// Fields
@@ -154,6 +154,14 @@ $GLOBALS['TL_DCA']['tl_iso_addresses'] = array
 			'inputType'				=> 'text',
 			'eval'					=> array('maxlength'=>255, 'feEditable'=>true, 'feGroup'=>'address', 'tl_class'=>'w50'),
 		),
+		'vat_no' => array
+		(
+			'label'					=> &$GLOBALS['TL_LANG']['tl_iso_addresses']['vat_no'],
+			'exclude'				=> true,
+			'search'				=> true,
+			'inputType'				=> 'text',
+			'eval'					=> array('maxlength'=>255, 'feEditable'=>true, 'feGroup'=>'address', 'tl_class'=>'w50'),
+		),
 		'street_1' => array
 		(
 			'label'					=> &$GLOBALS['TL_LANG']['tl_iso_addresses']['street_1'],
@@ -184,7 +192,7 @@ $GLOBALS['TL_DCA']['tl_iso_addresses'] = array
 			'exclude'				=> true,
 			'search'				=> true,
 			'inputType'				=> 'text',
-			'eval'					=> array('mandatory'=>true, 'maxlength'=>32, 'feEditable'=>true, 'feGroup'=>'address', 'tl_class'=>'w50'),
+			'eval'					=> array('mandatory'=>true, 'maxlength'=>32, 'feEditable'=>true, 'feGroup'=>'address', 'tl_class'=>'clr w50'),
 		),
 		'city' => array
 		(
@@ -214,7 +222,7 @@ $GLOBALS['TL_DCA']['tl_iso_addresses'] = array
 			'inputType'				=> 'select',
 			'options'				=> array_keys($this->getCountries()),
 			'reference'				=> $this->getCountries(),
-			'eval'					=> array('mandatory'=>true, 'feEditable'=>true, 'feGroup'=>'address', 'tl_class'=>'w50'),
+			'eval'					=> array('mandatory'=>true, 'feEditable'=>true, 'feGroup'=>'address', 'tl_class'=>'w50', 'chosen'=>true),
 		),
 		'phone' => array
 		(
@@ -276,7 +284,10 @@ class tl_iso_addresses extends Backend
 	{
 		$this->import('Isotope');
 
-		$strBuffer = $this->Isotope->generateAddressString($arrAddress);
+		$objAddress = new IsotopeAddressModel();
+		$objAddress->setData($arrAddress);
+		$strBuffer = $objAddress->generateHtml();
+
 		$strBuffer .= '<div style="color:#b3b3b3;margin-top:8px">' . $GLOBALS['TL_LANG']['tl_iso_addresses']['store_id'][0] . ' ' . $arrAddress['store_id'];
 
 		if ($arrAddress['isDefaultBilling'])
@@ -292,8 +303,8 @@ class tl_iso_addresses extends Backend
 		$strBuffer .= '</div>';
 		return $strBuffer;
 	}
-	
-	
+
+
 	/**
 	 * Reset all default checkboxes when setting a new address as default
 	 * @param mixed
@@ -304,12 +315,12 @@ class tl_iso_addresses extends Backend
 	public function updateDefault($varValue, $dc)
 	{
 		$objAddress = ($dc instanceOf DataContainer) ? $dc->activeRecord : $dc;
-		
+
 		if ($varValue == '1' && $objAddress->{$dc->field} != $varValue)
 		{
 			$this->Database->execute("UPDATE tl_iso_addresses SET {$dc->field}='' WHERE pid={$objAddress->pid} AND store_id={$objAddress->store_id}");
 		}
-		
+
 		return $varValue;
 	}
 }

@@ -17,7 +17,8 @@
 <?php if ($this->sku): ?>
 <div class="sku"><?php echo $this->sku; ?></div><?php endif; if ($this->description): ?>
 <div class="description"><?php echo $this->description; ?></div><?php endif; ?>
-<div class="price"><?php echo $this->price; ?></div>
+<div class="price"><?php echo $this->price; ?></div><?php if($this->baseprice): ?>
+<div class="baseprice"><?php echo $this->baseprice; ?></div><?php endif; ?>
 <?php if($this->buttons): ?>
 <div class="submit_container">
 <?php if ($this->useQuantity): ?>

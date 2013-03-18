@@ -115,8 +115,8 @@ class ShippingWeightTotal extends IsotopeShipping
 </table>
 </div>';
 	}
-	
-	
+
+
 	/**
 	 * Get the checkout surcharge for this shipping method
 	 */

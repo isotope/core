@@ -47,7 +47,7 @@ class InheritCheckBox extends CheckBox
 	{
 		parent::validate();
 
-		if (is_array($this->varValue) && count($this->varValue))
+		if (is_array($this->varValue) && !empty($this->varValue))
 		{
 			foreach ($this->varValue as $field)
 			{
@@ -73,7 +73,7 @@ class InheritCheckBox extends CheckBox
 		}
 
 		// Add a "no entries found" message if there are no options
-		if (!count($arrOptions))
+		if (empty($arrOptions))
 		{
 			$arrOptions[]= '<p class="tl_noopt">'.$GLOBALS['TL_LANG']['MSC']['noResult'].'</p>';
 		}

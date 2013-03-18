@@ -64,10 +64,10 @@ $GLOBALS['TL_LANG']['tl_iso_attributes']['fe_search']				= array('Wyszukiwanie f
 /**
  * Reference
  */
-$GLOBALS['TL_LANG']['tl_iso_attributes']['opValue']					= 'Wartość';
-$GLOBALS['TL_LANG']['tl_iso_attributes']['opLabel']					= 'Etykieta';
-$GLOBALS['TL_LANG']['tl_iso_attributes']['opDefault']				= 'Domyślny';
-$GLOBALS['TL_LANG']['tl_iso_attributes']['opGroup']					= 'Grupa';
+$GLOBALS['TL_LANG']['tl_iso_attributes']['options']['value']		= array('Wartość');
+$GLOBALS['TL_LANG']['tl_iso_attributes']['options']['label']		= array('Etykieta');
+$GLOBALS['TL_LANG']['tl_iso_attributes']['options']['default']		= array('Domyślny');
+$GLOBALS['TL_LANG']['tl_iso_attributes']['options']['group']		= array('Grupa');
 $GLOBALS['TL_LANG']['tl_iso_attributes']['checkbox']				= 'Checkbox';
 $GLOBALS['TL_LANG']['tl_iso_attributes']['radio']					= 'Radio';
 $GLOBALS['TL_LANG']['tl_iso_attributes']['digit']					= array('Znaki numeryczne', 'Dozwolone cyfry, minus (-), kropka (.) i spacja ( ).');

@@ -138,7 +138,29 @@ class Isotope extends Controller
 						$GLOBALS['ISO_FILTERS'] = deserialize($objRequestCache->filters);
 						$GLOBALS['ISO_SORTING'] = deserialize($objRequestCache->sorting);
 						$GLOBALS['ISO_LIMIT'] = deserialize($objRequestCache->limits);
+
+						global $objPage;
+						$objPage->noSearch = 1;
 					}
+					else
+					{
+						unset($_GET['isorc']);
+
+						// Unset the language parameter
+						if ($GLOBALS['TL_CONFIG']['addLanguageToUrl'])
+						{
+							unset($_GET['language']);
+						}
+
+						$strQuery = http_build_query($_GET);
+						self::$objInstance->redirect(preg_replace('/\?.*$/i', '', self::$objInstance->Environment->request) . (($strQuery) ? '?' . $strQuery : ''));
+					}
+				}
+
+				// Set the product from the auto_item parameter
+				if ($GLOBALS['TL_CONFIG']['useAutoItem'] && isset($_GET['auto_item']))
+				{
+					Input::getInstance()->setGet('product', Input::getInstance()->get('auto_item'));
 				}
 			}
 		}
@@ -174,7 +196,7 @@ class Isotope extends Controller
 			{
 				$do = $this->Input->get('do');
 
-				if ($GLOBALS['BE_MOD']['isotope'][$do] != '')
+				if ($do != 'iso_setup' && $GLOBALS['BE_MOD']['isotope'][$do] != '')
 				{
 					$_SESSION['TL_ERROR'][] = $GLOBALS['TL_LANG']['ERR']['noDefaultStoreConfiguration'];
 
@@ -227,7 +249,7 @@ class Isotope extends Controller
 			return $fltPrice;
 		}
 
-		// HOOK for altering prices
+		// !HOOK: calculate price
 		if (isset($GLOBALS['ISO_HOOKS']['calculatePrice']) && is_array($GLOBALS['ISO_HOOKS']['calculatePrice']))
 		{
 			foreach ($GLOBALS['ISO_HOOKS']['calculatePrice'] as $callback)
@@ -350,7 +372,7 @@ class Isotope extends Controller
 
 		if (!is_array($arrAddresses))
 		{
-			$arrAddresses = array('billing'=>$this->Cart->billingAddress, 'shipping'=>$this->Cart->shippingAddress);
+			$arrAddresses = array('billing'=>$this->Cart->billing_address, 'shipping'=>$this->Cart->shipping_address);
 		}
 
 		$objTaxClass = $this->Database->prepare("SELECT * FROM tl_iso_tax_class WHERE id=?")->limit(1)->execute($intTaxClass);
@@ -360,7 +382,7 @@ class Isotope extends Controller
 			return $fltPrice;
 		}
 
-		// HOOK for altering taxes
+		// !HOOK: calculate taxes
 		if (isset($GLOBALS['ISO_HOOKS']['calculateTax']) && is_array($GLOBALS['ISO_HOOKS']['calculateTax']))
 		{
 			foreach ($GLOBALS['ISO_HOOKS']['calculateTax'] as $callback)
@@ -410,6 +432,11 @@ class Isotope extends Controller
 					'total_price'	=> $this->roundPrice($fltTax, $objTaxClass->applyRoundingIncrement),
 					'add'			=> false,
 				);
+
+				if ($objTaxClass->notNegative && $arrTaxes[$objTaxClass->id . '_' . $objIncludes->id]['total_price'] < 0)
+				{
+    				$arrTaxes[$objTaxClass->id . '_' . $objIncludes->id]['total_price'] = 0;
+				}
 			}
 		}
 
@@ -421,7 +448,7 @@ class Isotope extends Controller
 		$arrRates = deserialize($objTaxClass->rates);
 
 		// Return if there are no rates
-		if (!is_array($arrRates) || !count($arrRates))
+		if (!is_array($arrRates) || empty($arrRates))
 		{
 			return $arrTaxes;
 		}
@@ -454,6 +481,11 @@ class Isotope extends Controller
 					'add'			=> true,
 				);
 
+				if ($objTaxClass->notNegative && $arrTaxes[$objRates->id]['total_price'] < 0)
+				{
+    				$arrTaxes[$objRates->id]['total_price'] = 0;
+				}
+
 				if ($objRates->stop)
 				{
 					break;
@@ -474,14 +506,38 @@ class Isotope extends Controller
 	 */
 	public function useTaxRate($objRate, $fltPrice, $arrAddresses)
 	{
+		// Tax rate is limited to another store config
 		if ($objRate->config > 0 && $objRate->config != $this->Config->id)
 		{
 			return false;
 		}
 
+		// Tax rate is for guests only
+		if ($objRate->guests && FE_USER_LOGGED_IN === true && !$objRate->protected)
+		{
+			return false;
+		}
+
+		// Tax rate is protected but no member is logged in
+		elseif ($objRate->protected && FE_USER_LOGGED_IN !== true && !$objRate->guests)
+		{
+			return false;
+		}
+
+		// Tax rate is protected and member logged in, check member groups
+		elseif ($objRate->protected && FE_USER_LOGGED_IN === true)
+		{
+			$groups = deserialize($objRate->groups);
+
+			if (!is_array($groups) || empty($groups) || !count(array_intersect($groups, $this->User->groups)))
+			{
+				return false;
+			}
+		}
+
 		$objRate->address = deserialize($objRate->address);
 
-		// HOOK for altering taxes
+		// !HOOK: use tax rate
 		if (isset($GLOBALS['ISO_HOOKS']['useTaxRate']) && is_array($GLOBALS['ISO_HOOKS']['useTaxRate']))
 		{
 			foreach ($GLOBALS['ISO_HOOKS']['useTaxRate'] as $callback)
@@ -496,7 +552,7 @@ class Isotope extends Controller
 			}
 		}
 
-		if (is_array($objRate->address) && count($objRate->address))
+		if (is_array($objRate->address) && count($objRate->address)) // Can't use empty() because its an object property (using __get)
 		{
 			foreach ($arrAddresses as $name => $arrAddress)
 			{
@@ -505,12 +561,12 @@ class Isotope extends Controller
 					continue;
 				}
 
-				if (strlen($objRate->country) && $objRate->country != $arrAddress['country'])
+				if ($objRate->countries != '' && !in_array($arrAddress['country'], trimsplit(',', $objRate->countries)))
 				{
 					continue;
 				}
 
-				if (strlen($objRate->subdivision) && $objRate->subdivision != $arrAddress['subdivision'])
+				if ($objRate->subdivisions != '' && !in_array($arrAddress['subdivision'], trimsplit(',', $objRate->subdivisions)))
 				{
 					continue;
 				}
@@ -528,7 +584,7 @@ class Isotope extends Controller
 
 				$arrPrice = deserialize($objRate->amount);
 
-				if (is_array($arrPrice) && count($arrPrice) && strlen($arrPrice[0]))
+				if (is_array($arrPrice) && !empty($arrPrice) && strlen($arrPrice[0]))
 				{
 					if (strlen($arrPrice[1]))
 					{
@@ -591,7 +647,7 @@ class Isotope extends Controller
 
 		$arrFormat = $GLOBALS['ISO_NUM'][$this->Config->currencyFormat];
 
-		if (!is_array($arrFormat) || !count($arrFormat) == 3)
+		if (!is_array($arrFormat))
 		{
 			return $fltPrice;
 		}
@@ -633,6 +689,31 @@ class Isotope extends Controller
 		}
 
 		return $strCurrency . $strPrice;
+	}
+
+
+	/**
+	 * Format the number of items and return the items string
+	 * @param integer
+	 * @return string
+	 */
+	public function formatItemsString($intItems)
+	{
+		if ($intItems == 1)
+		{
+			return $GLOBALS['TL_LANG']['ISO']['productSingle'];
+		}
+		else
+		{
+			$arrFormat = $GLOBALS['ISO_NUM'][$this->Config->currencyFormat];
+
+			if (is_array($arrFormat))
+			{
+				$intItems = number_format($intItems, 0, $arrFormat[1], $arrFormat[2]);
+			}
+
+			return sprintf($GLOBALS['TL_LANG']['ISO']['productMultiple'], $intItems);
+		}
 	}
 
 
@@ -706,87 +787,16 @@ class Isotope extends Controller
 
 	/**
 	 * Generate an address string
-	 * @param array
-	 * @param array
-	 * @return string
+	 * @deprecated Please use the IsotopeAddressModel class
 	 */
 	public function generateAddressString($arrAddress, $arrFields=null)
 	{
-		if (!is_array($arrAddress) || !count($arrAddress))
-		{
-			return $arrAddress;
-		}
+		trigger_error('Using Isotope::generateAddressString() is deprecated. Please use the IsotopeAddressModel class.', E_USER_NOTICE);
 
-		if (!is_array($GLOBALS['ISO_ADR']))
-		{
-			$this->loadLanguageFile('countries');
-		}
+		$objAddress = new IsotopeAddressModel();
+		$objAddress->setData($arrAddress);
 
-		if (!is_array($arrFields))
-		{
-			$arrFields = deserialize($this->Config->billing_fields, true);
-		}
-
-		// We need a country to format the address, user default country if none is available
-		if (!strlen($arrAddress['country']))
-		{
-			$arrAddress['country'] = $this->Config->country;
-		}
-
-		$arrSearch = array();
-		$arrReplace = array();
-
-		foreach ($arrFields as $arrField)
-		{
-			$strField = $arrField['value'];
-
-			if ($strField == 'subdivision' && strlen($arrAddress['subdivision']))
-			{
-				if (!is_array($GLOBALS['TL_LANG']['DIV']))
-				{
-					$this->loadLanguageFile('subdivisions');
-				}
-
-				list($country, $subdivion) = explode('-', $arrAddress['subdivision']);
-				$arrAddress['subdivision'] = $GLOBALS['TL_LANG']['DIV'][$country][$arrAddress['subdivision']];
-
-				$arrSearch[] = '{subdivision-abbr}';
-				$arrReplace[] = $subdivion;
-			}
-
-			$arrSearch[] = '{' . $strField . '}';
-			$arrReplace[] = $this->formatValue('tl_iso_addresses', $strField, $arrAddress[$strField]);
-		}
-
-		// Parse format
-		$strAddress = str_replace($arrSearch, $arrReplace, $GLOBALS['ISO_ADR'][$arrAddress['country']]);
-
-		// Remove empty tags
-		$strAddress = preg_replace('(\{[^}]+\})', '', $strAddress);
-
-		// Remove empty brackets
-		$strAddress = str_replace('()', '', $strAddress);
-
-		// Remove double line breaks
-		do
-		{
-			$strAddress = str_replace('<br /><br />', '<br />', trim($strAddress), $found);
-		}
-		while ($found > 0);
-
-		// Remove line break at beginning of address
-		if (strpos($strAddress, '<br />') === 0)
-		{
-			$strAddress = substr($strAddress, 6);
-		}
-
-		// Remove line break at end of address
-		if (substr($strAddress, -6) == '<br />')
-		{
-			$strAddress = substr($strAddress, 0, -6);
-		}
-
-		return $strAddress;
+		return $objAddress->generateHtml($arrFields);
 	}
 
 
@@ -887,7 +897,7 @@ class Isotope extends Controller
 	 */
 	public function calculateWeight($arrWeights, $strUnit)
 	{
-		if (!is_array($arrWeights) || !count($arrWeights))
+		if (!is_array($arrWeights) || empty($arrWeights))
 		{
 			return 0;
 		}
@@ -1031,7 +1041,7 @@ class Isotope extends Controller
 	 */
 	public function translate($label, $language=false)
 	{
-		if (!in_array('isotope_multilingual', $this->Config->getActiveModules()))
+		if (!$this->Database->tableExists('tl_iso_labels'))
 		{
 			return $label;
 		}
@@ -1156,7 +1166,7 @@ class Isotope extends Controller
 		}
 
 		// Label
-		if (count($GLOBALS['TL_DCA'][$strTable]['fields'][$strField]['label']))
+		if (!empty($GLOBALS['TL_DCA'][$strTable]['fields'][$strField]['label']))
 		{
 			$strLabel = is_array($GLOBALS['TL_DCA'][$strTable]['fields'][$strField]['label']) ? $GLOBALS['TL_DCA'][$strTable]['fields'][$strField]['label'][0] : $GLOBALS['TL_DCA'][$strTable]['fields'][$strField]['label'];
 		}
@@ -1183,10 +1193,10 @@ class Isotope extends Controller
 	 */
 	public function mergeMediaData($arrCurrent, $arrParent)
 	{
-		if (is_array($arrParent) && count($arrParent))
-		{
-			$arrTranslate = array();
+	    $arrTranslate = array();
 
+		if (is_array($arrParent) && !empty($arrParent))
+		{
 			// Create an array of images where key = image name
 			foreach( $arrParent as $i => $image)
 			{
@@ -1195,43 +1205,43 @@ class Isotope extends Controller
 					$arrTranslate[$image['src']] = $image;
 				}
 			}
+		}
 
-			if (is_array($arrCurrent) && count($arrCurrent))
+		if (is_array($arrCurrent) && !empty($arrCurrent))
+		{
+			foreach ($arrCurrent as $i => $image)
 			{
-				foreach ($arrCurrent as $i => $image)
+				if (isset($arrTranslate[$image['src']]))
 				{
-					if (isset($arrTranslate[$image['src']]))
+					if ($arrTranslate[$image['src']]['translate'] == '')
 					{
-						if ($arrTranslate[$image['src']]['translate'] == '')
-						{
-							$arrCurrent[$i] = $arrTranslate[$image['src']];
-						}
-						else
-						{
-							$arrCurrent[$i]['link'] = $arrTranslate[$image['src']]['link'];
-							$arrCurrent[$i]['translate'] = $arrTranslate[$image['src']]['translate'];
-						}
+						$arrCurrent[$i] = $arrTranslate[$image['src']];
+					}
+					else
+					{
+						$arrCurrent[$i]['link'] = $arrTranslate[$image['src']]['link'];
+						$arrCurrent[$i]['translate'] = $arrTranslate[$image['src']]['translate'];
+					}
 
-						unset($arrTranslate[$image['src']]);
-					}
-					elseif ($arrCurrent[$i]['translate'] != 'all')
-					{
-						unset($arrCurrent[$i]);
-					}
+					unset($arrTranslate[$image['src']]);
 				}
-
-				// Add remaining parent image to the list
-				if (count($arrTranslate))
+				elseif ($arrCurrent[$i]['translate'] != 'all')
 				{
-					$arrCurrent = array_merge($arrCurrent, array_values($arrTranslate));
+					unset($arrCurrent[$i]);
 				}
-
-				$arrCurrent = array_values($arrCurrent);
 			}
-			else
+
+			// Add remaining parent image to the list
+			if (!empty($arrTranslate))
 			{
-				$arrCurrent = array_values($arrTranslate);
+				$arrCurrent = array_merge($arrCurrent, array_values($arrTranslate));
 			}
+
+			$arrCurrent = array_values($arrCurrent);
+		}
+		else
+		{
+			$arrCurrent = array_values($arrTranslate);
 		}
 
 		return $arrCurrent;

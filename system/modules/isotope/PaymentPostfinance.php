@@ -122,6 +122,8 @@ class PaymentPostfinance extends IsotopePayment
 		}
 
 		$objOrder->date_paid = time();
+		$objOrder->updateOrderStatus($this->new_order_status);
+
 		$objOrder->save();
 	}
 
@@ -141,8 +143,8 @@ class PaymentPostfinance extends IsotopePayment
 			$this->redirect($this->addToUrl('step=failed', true));
 		}
 
-		$arrAddress = $this->Isotope->Cart->billingAddress;
-		$strFailedUrl = $this->Environment->base . $this->addToUrl('step=failed');
+		$objAddress = $this->Isotope->Cart->billingAddress;
+		$strFailedUrl = $this->Environment->base . $this->addToUrl('step=failed', true);
 
 		$arrParam = array
 		(
@@ -159,7 +161,7 @@ class PaymentPostfinance extends IsotopePayment
 			'OWNERCTY'		=> $objAddress->country,
 			'OWNERTOWN'		=> $objAddress->city,
 			'OWNERTELNO'	=> $objAddress->phone,
-			'ACCEPTURL'		=> $this->Environment->base . IsotopeFrontend::addQueryStringToUrl('uid=' . $objOrder->uniqid, $this->addToUrl('step=complete')),
+			'ACCEPTURL'		=> $this->Environment->base . IsotopeFrontend::addQueryStringToUrl('uid=' . $objOrder->uniqid, $this->addToUrl('step=complete', true)),
 			'DECLINEURL'	=> $strFailedUrl,
 			'EXCEPTIONURL'	=> $strFailedUrl,
 			'PARAMPLUS'		=> 'mod=pay&amp;id=' . $this->id,

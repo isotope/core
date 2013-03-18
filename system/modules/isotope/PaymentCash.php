@@ -37,18 +37,6 @@ class PaymentCash extends IsotopePayment
 {
 
 	/**
-	 * Return a list of status options.
-	 *
-	 * @access public
-	 * @return array
-	 */
-	public function statusOptions()
-	{
-		return array('pending', 'processing', 'complete', 'on_hold');
-	}
-
-
-	/**
 	 * processPayment function.
 	 *
 	 * @access public
@@ -56,6 +44,12 @@ class PaymentCash extends IsotopePayment
 	 */
 	public function processPayment()
 	{
+        $objOrder = new IsotopeOrder();
+        if ($objOrder->findBy('cart_id', $this->Isotope->Cart->id))
+        {
+            $objOrder->updateOrderStatus($this->new_order_status);
+        }
+
 		return true;
 	}
 }

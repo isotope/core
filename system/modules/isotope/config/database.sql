@@ -34,6 +34,11 @@ CREATE TABLE `tl_iso_products` (
   `shipping_weight` varchar(255) NOT NULL default '',
   `shipping_exempt` char(1) NOT NULL default '',
   `tax_class` int(10) unsigned NOT NULL default '0',
+  `baseprice` varchar(255) NOT NULL default '',
+  `protected` char(1) NOT NULL default '',
+  `groups` blob NULL,
+  `guests` char(1) NOT NULL default '',
+  `cssID` varchar(255) NOT NULL default '',
   `published` char(1) NOT NULL default '',
   `start` varchar(10) NOT NULL default '',
   `stop` varchar(10) NOT NULL default '',
@@ -55,6 +60,7 @@ CREATE TABLE `tl_iso_groups` (
   `sorting` int(10) unsigned NOT NULL default '0',
   `tstamp` int(10) unsigned NOT NULL default '0',
   `name` varchar(255) NOT NULL default '',
+  `product_type` int(10) unsigned NOT NULL default '0',
   PRIMARY KEY  (`id`),
   KEY `pid` (`pid`),
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
@@ -106,11 +112,14 @@ CREATE TABLE `tl_iso_price_tiers` (
 CREATE TABLE `tl_iso_downloads` (
   `id` int(10) unsigned NOT NULL auto_increment,
   `pid` int(10) unsigned NOT NULL default '0',
+  `sorting` int(10) unsigned NOT NULL default '0',
   `tstamp` int(10) unsigned NOT NULL default '0',
+  `type` varchar(8) NOT NULL default 'file',
   `singleSRC` varchar(255) NOT NULL default '',
   `title` varchar(255) NOT NULL default '',
   `description` text NULL,
   `downloads_allowed` int(5) unsigned NOT NULL default '0',
+  `expires` varchar(64) NOT NULL default '',
   PRIMARY KEY  (`id`),
   KEY `pid` (`pid`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
@@ -128,14 +137,16 @@ CREATE TABLE `tl_iso_producttypes` (
   `name` varchar(255) NOT NULL default '',
   `class` varchar(32) NOT NULL default 'regular',
   `fallback` char(1) NOT NULL default '',
+  `description` text NULL,
   `prices` char(1) NOT NULL default '',
+  `show_price_tiers` char(1) NOT NULL default '',
   `list_template` varchar(255) NOT NULL default '',
   `reader_template` varchar(255) NOT NULL default '',
-  `description` text NULL,
   `attributes` blob NULL,
   `variants` char(1) NOT NULL default '',
   `variant_attributes` blob NULL,
   `force_variant_options` char(1) NOT NULL default '',
+  `shipping_exempt` char(1) NOT NULL default '',
   `downloads` char(1) NOT NULL default '',
   PRIMARY KEY  (`id`),
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
@@ -179,6 +190,12 @@ CREATE TABLE `tl_iso_attributes` (
   `filesOnly` char(1) NOT NULL default '',
   `fieldType` varchar(8) NOT NULL default '',
   `sortBy` varchar(32) NOT NULL default '',
+  `storeFile` char(1) NOT NULL default '',
+  `uploadFolder` varchar(255) NOT NULL default '',
+  `useHomeDir` char(1) NOT NULL default '',
+  `doNotOverwrite` char(1) NOT NULL default '',
+  `path` varchar(255) NOT NULL default '',
+  `datepicker` char(1) NOT NULL default '',
   PRIMARY KEY  (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
@@ -208,11 +225,14 @@ CREATE TABLE `tl_iso_config` (
   `currencyAutomator` char(1) NOT NULL default '',
   `currencyOrigin` varchar(3) NOT NULL default '',
   `currencyProvider` varchar(32) NOT NULL default '',
-  `orderPrefix` varchar(5) NOT NULL default '',
+  `orderPrefix` varchar(255) NOT NULL default '',
   `orderDigits` int(1) unsigned NOT NULL default '4',
   `templateGroup` varchar(255) NOT NULL default '',
+  `orderstatus_new` int(10) unsigned NOT NULL default '0',
+  `orderstatus_error` int(10) unsigned NOT NULL default '0',
   `invoiceLogo` varchar(255) NOT NULL default '',
   `company` varchar(255) NOT NULL default '',
+  `vat_no` varchar(255) NOT NULL default '',
   `firstname` varchar(255) NOT NULL default '',
   `lastname` varchar(255) NOT NULL default '',
   `street_1` varchar(255) NOT NULL default '',
@@ -224,8 +244,10 @@ CREATE TABLE `tl_iso_config` (
   `country` varchar(2) NOT NULL default '',
   `shipping_countries` blob NULL,
   `shipping_fields` blob NULL,
+  `shipping_country` varchar(2) NOT NULL default '',
   `billing_countries` blob NULL,
   `billing_fields` blob NULL,
+  `billing_country` varchar(2) NOT NULL default '',
   `phone` varchar(64) NOT NULL default '',
   `email` varchar(255) NOT NULL default '',
   `limitMemberCountries` char(1) NOT NULL default '',
@@ -288,6 +310,7 @@ CREATE TABLE `tl_iso_cart_items` (
   `product_options` blob NULL,
   `product_quantity` int(10) unsigned NOT NULL default '0',
   `price` decimal(12,2) NOT NULL default '0.00',
+  `tax_free_price` decimal(12,2) NOT NULL default '0.00',
   `tax_id` varchar(32) NOT NULL default '',
   `href_reader` varchar(255) NOT NULL default '',
   PRIMARY KEY  (`id`),
@@ -309,6 +332,7 @@ CREATE TABLE `tl_iso_addresses` (
   `label` varchar(255) NOT NULL default '',
   `salutation` varchar(255) NOT NULL default '',
   `company` varchar(255) NOT NULL default '',
+  `vat_no` varchar(255) NOT NULL default '',
   `firstname` varchar(255) NOT NULL default '',
   `lastname` varchar(255) NOT NULL default '',
   `street_1` varchar(255) NOT NULL default '',
@@ -348,14 +372,9 @@ CREATE TABLE `tl_iso_payment_modules` (
   `allowed_cc_types` text NULL,
   `minimum_total` decimal(12,2) NOT NULL default '0.00',
   `maximum_total` decimal(12,2) NOT NULL default '0.00',
-  `new_order_status` varchar(255) NOT NULL default '',
+  `new_order_status` int(10) unsigned NOT NULL default '0',
   `trans_type` varchar(8) NOT NULL default '',
   `paypal_account` varchar(255) NOT NULL default '',
-  `payflowpro_user` varchar(255) NOT NULL default '',
-  `payflowpro_vendor` varchar(255) NOT NULL default '',
-  `payflowpro_password` varchar(255) NOT NULL default '',
-  `payflowpro_transType` varchar(255) NOT NULL default '',
-  `payflowpro_partner` varchar(255) NOT NULL default '',
   `postfinance_pspid` varchar(255) NOT NULL default '',
   `postfinance_secret` varchar(255) NOT NULL default '',
   `postfinance_method` varchar(4) NOT NULL default '',
@@ -365,9 +384,6 @@ CREATE TABLE `tl_iso_payment_modules` (
   `authorize_trans_type` varchar(32) NOT NULL default '',
   `authorize_relay_response` char(1) NOT NULL default '',
   `authorize_email_customer` char(1) NOT NULL default '',
-  `cybersource_merchant_id` varchar(255) NOT NULL default '',
-  `cybersource_trans_key` text NULL,
-  `cybersource_trans_type` varchar(32) NOT NULL default '',
   `requireCCV` char(1) NOT NULL default '',
   `button` varchar(255) NOT NULL default '',
   `guests` char(1) NOT NULL default '',
@@ -454,7 +470,7 @@ CREATE TABLE `tl_iso_orders` (
   `date` int(10) unsigned NOT NULL default '0',
   `date_paid` varchar(10) NOT NULL default '',
   `date_shipped` varchar(10) NOT NULL default '',
-  `status` varchar(32) NOT NULL default '',
+  `status` int(10) unsigned NOT NULL default '0',
 
   `order_id` varchar(14) NOT NULL default '',
   `uniqid` varchar(27) NOT NULL default '',
@@ -472,8 +488,6 @@ CREATE TABLE `tl_iso_orders` (
   `payment_data` blob NULL,
   `shipping_data` blob NULL,
   `subTotal` decimal(12,2) NOT NULL default '0.00',
-  `taxTotal` decimal(12,2) NOT NULL default '0.00',
-  `shippingTotal` decimal(12,2) NOT NULL default '0.00',
   `grandTotal` decimal(12,2) NOT NULL default '0.00',
   `cc_num` varchar(64) NOT NULL default '',
   `cc_type` varchar(32) NOT NULL default '',
@@ -502,6 +516,7 @@ CREATE TABLE `tl_iso_order_items` (
   `product_options` blob NULL,
   `product_quantity` int(10) unsigned NOT NULL default '0',
   `price` decimal(12,2) NOT NULL default '0.00',
+  `tax_free_price` decimal(12,2) NOT NULL default '0.00',
   `tax_id` varchar(32) NOT NULL default '',
   PRIMARY KEY  (`id`),
   KEY `pid` (`pid`)
@@ -520,6 +535,7 @@ CREATE TABLE `tl_iso_order_downloads` (
   `tstamp` int(10) unsigned NOT NULL default '0',
   `download_id` int(10) unsigned NOT NULL default '0',
   `downloads_remaining` varchar(255) NOT NULL default '',
+  `expires` varchar(10) NOT NULL default '',
   PRIMARY KEY  (`id`),
   KEY `pid` (`pid`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
@@ -538,6 +554,7 @@ CREATE TABLE `tl_iso_tax_class` (
   `label` varchar(255) NOT NULL default '',
   `fallback` char(1) NOT NULL default '',
   `applyRoundingIncrement` char(1) NOT NULL default '',
+  `notNegative` char(1) NOT NULL default '',
   `includes` int(10) unsigned NOT NULL default '0',
   `rates` blob NULL,
   PRIMARY KEY  (`id`)
@@ -555,16 +572,56 @@ CREATE TABLE `tl_iso_tax_rate` (
   `tstamp` int(10) unsigned NOT NULL default '0',
   `name` varchar(255) NOT NULL default '',
   `label` varchar(255) NOT NULL default '',
-  `country` varchar(2) NOT NULL default '',
-  `subdivision` varchar(10) NOT NULL default '',
+  `countries` text NULL,
+  `subdivisions` text NULL,
   `postalCodes` text NULL,
   `config` int(10) unsigned NOT NULL default '0',
   `rate` varchar(255) NOT NULL default '',
   `address` blob NULL,
   `amount` varchar(255) NOT NULL default '',
-  `compound` char(1) NOT NULL default '',
   `stop` char(1) NOT NULL default '',
+  `guests` char(1) NOT NULL default '',
+  `protected` char(1) NOT NULL default '',
+  `groups` blob NULL,
   PRIMARY KEY  (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+
+-- --------------------------------------------------------
+
+--
+-- Table `tl_iso_orderstatus`
+--
+
+CREATE TABLE `tl_iso_orderstatus` (
+  `id` int(10) unsigned NOT NULL auto_increment,
+  `pid` int(10) unsigned NOT NULL default '0',
+  `tstamp` int(10) unsigned NOT NULL default '0',
+  `sorting` int(10) unsigned NOT NULL default '0',
+  `name` varchar(255) NOT NULL default '',
+  `paid` char(1) NOT NULL default '',
+  `welcomescreen` char(1) NOT NULL default '',
+  `mail_customer` int(10) unsigned NOT NULL default '0',
+  `mail_admin` int(10) unsigned NOT NULL default '0',
+  `sales_email` varchar(255) NOT NULL default '',
+  PRIMARY KEY  (`id`),
+  KEY `pid` (`pid`),
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+
+-- --------------------------------------------------------
+
+--
+-- Table `tl_iso_base_price`
+--
+
+CREATE TABLE `tl_iso_baseprice` (
+  `id` int(10) unsigned NOT NULL auto_increment,
+  `tstamp` int(10) unsigned NOT NULL default '0',
+  `name` varchar(255) NOT NULL default '',
+  `amount` varchar(32) NOT NULL default '',
+  `label` varchar(255) NOT NULL default '',
+  PRIMARY KEY  (`id`),
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 
@@ -733,6 +790,7 @@ CREATE TABLE `tl_module` (
   `iso_mail_admin` int(10) unsigned NOT NULL default '0',
   `iso_sales_email` varchar(255) NOT NULL default '',
   `iso_order_conditions` int(10) unsigned NOT NULL default '0',
+  `iso_order_conditions_position` varchar(6) NOT NULL default 'after',
   `iso_addToAddressbook` char(1) NOT NULL default '',
   `iso_category_scope` varchar(64) NOT NULL default '',
   `iso_list_where` varchar(255) NOT NULL default '',
@@ -742,8 +800,10 @@ CREATE TABLE `tl_module` (
   `iso_perPage` varchar(64) NOT NULL default '',
   `iso_filterTpl` varchar(64) NOT NULL default '',
   `iso_filterFields` blob NULL,
+  `iso_filterHideSingle` char(1) NOT NULL default '',
   `iso_sortingFields` blob NULL,
   `iso_searchFields` blob NULL,
+  `iso_searchAutocomplete` varchar(255) NOT NULL default '',
   `iso_enableLimit` char(1) NOT NULL default '',
   `iso_cart_jumpTo` int(10) unsigned NOT NULL default '0',
   `iso_checkout_jumpTo` int(10) unsigned NOT NULL default '0',
@@ -753,8 +813,10 @@ CREATE TABLE `tl_module` (
   `iso_listingSortDirection` varchar(8) NOT NULL default '',
   `iso_buttons` blob NULL,
   `iso_related_categories` blob NULL,
-  `iso_noProducts` varchar(255) NOT NULL default '',
   `iso_emptyMessage` char(1) NOT NULL default '',
+  `iso_noProducts` varchar(255) NOT NULL default '',
+  `iso_emptyFilter` char(1) NOT NULL default '',
+  `iso_noFilter` varchar(255) NOT NULL default '',
   `iso_includeMessages` char(1) NOT NULL default '',
   `iso_productcache` blob NULL,
   `iso_continueShopping` char(1) NOT NULL default '',
@@ -783,6 +845,8 @@ CREATE TABLE `tl_user` (
  `iso_mailp` blob NULL,
  `iso_configs` blob NULL,
  `iso_configp` blob NULL,
+ `iso_groups` blob NULL
+ `iso_groupp` blob NULL,
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 
@@ -808,10 +872,9 @@ CREATE TABLE `tl_user_group` (
  `iso_mailp` blob NULL,
  `iso_configs` blob NULL,
  `iso_configp` blob NULL,
+ `iso_groups` blob NULL
+ `iso_groupp` blob NULL,
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-
--- PRODUCT ATTRIBUTES START --
--- PRODUCT ATTRIBUTES STOP --
 
 
 

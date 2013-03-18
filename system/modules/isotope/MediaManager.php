@@ -48,6 +48,25 @@ class MediaManager extends Widget implements uploadable
 	 */
 	protected $strTemplate = 'be_widget';
 
+	/**
+	 * Instance of the file uploader
+	 * @var object
+	 */
+	protected $objUploader;
+
+
+	/**
+	 * Instantiate widget and initialize uploader
+	 */
+	public function __construct($arrAttributes=false)
+	{
+		parent::__construct($arrAttributes);
+
+		$this->import('Database');
+
+		$this->objUploader = IsotopeBackend::getUploader();
+	}
+
 
 	/**
 	 * Add specific attributes
@@ -81,128 +100,87 @@ class MediaManager extends Widget implements uploadable
 	{
 		$this->varValue = $this->getPost($this->strName);
 
-		// No file specified
-		if (!isset($_FILES[$this->strName]) || empty($_FILES[$this->strName]['name']))
+		if (!is_array($this->varValue))
 		{
-			if ($this->mandatory)
-			{
-				if (is_array($this->varValue))
-				{
-					foreach ($this->varValue as $file)
-					{
-						if (is_file(TL_ROOT . '/isotope/' . substr($file['src'], 0, 1) . '/' . $file['src']))
-						{
-							return;
-						}
-					}
-				}
-
-				$this->addError(sprintf($GLOBALS['TL_LANG']['ERR']['mandatory'], $this->strLabel));
-			}
-
-			return;
+			$this->varValue = array();
 		}
 
-		$file = $_FILES[$this->strName];
-		$maxlength_kb = number_format(($GLOBALS['TL_CONFIG']['maxFileSize']/1024), 1, $GLOBALS['TL_LANG']['MSC']['decimalSeparator'], $GLOBALS['TL_LANG']['MSC']['thousandsSeparator']);
+		// Prepare system for the upload
+		$arrAllowedTypes = $GLOBALS['TL_CONFIG']['uploadTypes'];
 
-		// Romanize the filename
-		$file['name'] = utf8_romanize($file['name']);
-
-		// File was not uploaded
-		if (!is_uploaded_file($file['tmp_name']))
+		if ($this->extensions != '')
 		{
-			if (in_array($file['error'], array(1, 2)))
-			{
-				$this->addError(sprintf($GLOBALS['TL_LANG']['ERR']['filesize'], $maxlength_kb));
-				$this->log('File "'.$file['name'].'" exceeds the maximum file size of '.$maxlength_kb.' kB', __METHOD__, TL_ERROR);
-			}
-
-			if ($file['error'] == 3)
-			{
-				$this->addError(sprintf($GLOBALS['TL_LANG']['ERR']['filepartial'], $file['name']));
-				$this->log('File "'.$file['name'].'" was only partially uploaded', __METHOD__, TL_ERROR);
-			}
-
-			unset($_FILES[$this->strName]);
-			return;
+			$GLOBALS['TL_CONFIG']['uploadTypes'] = $this->extensions;
 		}
 
-		// File is too big
-		if ($GLOBALS['TL_CONFIG']['maxFileSize'] > 0 && $file['size'] > $GLOBALS['TL_CONFIG']['maxFileSize'])
+		// Process the uploaded files
+		$arrUploaded = $this->objUploader->uploadTo('isotope', $this->strName);
+
+		// Reset system configuration
+		$GLOBALS['TL_CONFIG']['uploadTypes'] = $arrAllowedTypes;
+
+		// Fetch fallback language record
+		$arrFallback = $this->getFallbackData();
+
+		if (is_array($arrFallback))
 		{
-			$this->addError(sprintf($GLOBALS['TL_LANG']['ERR']['filesize'], $maxlength_kb));
-			$this->log('File "'.$file['name'].'" exceeds the maximum file size of '.$maxlength_kb.' kB', __METHOD__, TL_ERROR);
-
-			unset($_FILES[$this->strName]);
-			return;
-		}
-
-		$pathinfo = pathinfo($file['name']);
-		$uploadTypes = trimsplit(',', $GLOBALS['TL_DCA'][$this->strTable]['fields'][$this->strField]['eval']['extensions']);
-
-		// File type is not allowed
-		if (!in_array(strtolower($pathinfo['extension']), $uploadTypes))
-		{
-			$this->addError(sprintf($GLOBALS['TL_LANG']['ERR']['filetype'], $pathinfo['extension']));
-			$this->log('File type "'.$pathinfo['extension'].'" is not allowed to be uploaded ('.$file['name'].')', __METHOD__, TL_ERROR);
-
-			unset($_FILES[$this->strName]);
-			return;
-		}
-
-		if (($arrImageSize = @getimagesize($file['tmp_name'])) != false)
-		{
-			// Image exceeds maximum image width
-			if ($arrImageSize[0] > $GLOBALS['TL_CONFIG']['imageWidth'] || $arrImageSize[0] > $GLOBALS['TL_CONFIG']['gdMaxImgWidth'])
-			{
-				$this->addError(sprintf($GLOBALS['TL_LANG']['ERR']['filewidth'], $file['name'], $GLOBALS['TL_CONFIG']['imageWidth']));
-				$this->log('File "'.$file['name'].'" exceeds the maximum image width of '.$GLOBALS['TL_CONFIG']['imageWidth'].' pixels', __METHOD__, TL_ERROR);
-
-				unset($_FILES[$this->strName]);
-				return;
-			}
-
-			// Image exceeds maximum image height
-			if ($arrImageSize[1] > $GLOBALS['TL_CONFIG']['imageHeight'] || $arrImageSize[1] > $GLOBALS['TL_CONFIG']['gdMaxImgHeight'])
-			{
-				$this->addError(sprintf($GLOBALS['TL_LANG']['ERR']['fileheight'], $file['name'], $GLOBALS['TL_CONFIG']['imageHeight']));
-				$this->log('File "'.$file['name'].'" exceeds the maximum image height of '.$GLOBALS['TL_CONFIG']['imageHeight'].' pixels', __METHOD__, TL_ERROR);
-
-				unset($_FILES[$this->strName]);
-				return;
-			}
-		}
+    		foreach ($arrFallback as $k => $arrImage)
+    		{
+    		    if ($arrImage['translate'] == 'all')
+    		    {
+        			unset($arrFallback[$k]);
+                }
+    		}
+        }
 
 		// Save file in the isotope folder
-		if (!$this->hasErrors())
+		if (!empty($arrUploaded))
 		{
 			$this->import('Files');
-			$this->import('Database');
 
-			$pathinfo = pathinfo($file['name']);
-			$strCacheName = standardize($pathinfo['filename']) . '.' . $pathinfo['extension'];
-			$uploadFolder = 'isotope/' . substr($strCacheName, 0, 1);
-
-			if (is_file(TL_ROOT . '/' . $uploadFolder . '/' . $strCacheName) && md5_file($file['tmp_name']) != md5_file(TL_ROOT . '/' . $uploadFolder . '/' . $strCacheName))
+			foreach ($arrUploaded as $strFile)
 			{
-				$strCacheName = standardize($pathinfo['filename']) . '-' . substr(md5_file($file['tmp_name']), 0, 8) . '.' . $pathinfo['extension'];
+				$pathinfo = pathinfo(strtolower($strFile));
+				$strCacheName = standardize($pathinfo['filename']) . '.' . $pathinfo['extension'];
 				$uploadFolder = 'isotope/' . substr($strCacheName, 0, 1);
+
+				if (is_file(TL_ROOT . '/' . $uploadFolder . '/' . $strCacheName) && md5_file(TL_ROOT . '/' . $strFile) != md5_file(TL_ROOT . '/' . $uploadFolder . '/' . $strCacheName))
+				{
+					$strCacheName = standardize($pathinfo['filename']) . '-' . substr(md5_file(TL_ROOT . '/' . $strFile), 0, 8) . '.' . $pathinfo['extension'];
+					$uploadFolder = 'isotope/' . substr($strCacheName, 0, 1);
+				}
+
+				// Check that image is not assigned in fallback language
+				if (is_array($arrFallback) && in_array($strCacheName, $arrFallback))
+				{
+    				$this->addError($GLOBALS['ISO_LANG']['ERR']['imageInFallback']);
+				}
+				else
+				{
+    				// Make sure directory exists
+    				$this->Files->mkdir($uploadFolder);
+    				$this->Files->rename($strFile, $uploadFolder . '/' . $strCacheName);
+
+    				$this->varValue[] = array('src'=>$strCacheName, 'translate'=>($arrFallback === false ? '' : 'all'));
+    			}
 			}
-
-			// Make sure directory exists
-			$this->Files->mkdir($uploadFolder);
-			$this->Files->move_uploaded_file($file['tmp_name'], $uploadFolder . '/' . $strCacheName);
-
-			if (!is_array($this->varValue))
-			{
-				$this->varValue = array();
-			}
-
-			$this->varValue[] = array('src'=>$strCacheName, 'translate'=>(!$_SESSION['BE_DATA']['language'][$this->strTable][$this->currentRecord] ? '' : 'all'));
 		}
 
-		unset($_FILES[$this->strName]);
+		if ($this->mandatory)
+		{
+			foreach ($this->varValue as $file)
+			{
+				if (is_file(TL_ROOT . '/isotope/' . substr($file['src'], 0, 1) . '/' . $file['src']))
+				{
+					return;
+				}
+			}
+
+			if (!is_array($arrFallback) || empty($arrFallback))
+			{
+    			$this->addError(sprintf($GLOBALS['TL_LANG']['ERR']['mandatory'], $this->strLabel));
+    		}
+		}
     }
 
 
@@ -212,18 +190,15 @@ class MediaManager extends Widget implements uploadable
 	 */
 	public function generate()
 	{
-		$blnLanguage = false;
-		$this->import('Database');
+	    $arrFallback = $this->getFallbackData();
 
 		// Merge parent record data
-		if ($_SESSION['BE_DATA']['language'][$this->strTable][$this->currentRecord] != '')
+		if ($arrFallback !== false)
 		{
 			$blnLanguage = true;
-			$objParent = $this->Database->execute("SELECT * FROM {$this->strTable} WHERE id={$this->currentRecord}");
-			$arrParent = deserialize($objParent->{$this->strField});
 
 			$this->import('Isotope');
-			$this->varValue = $this->Isotope->mergeMediaData($this->varValue, $arrParent);
+			$this->varValue = $this->Isotope->mergeMediaData($this->varValue, $arrFallback);
 		}
 
 		$GLOBALS['TL_CSS'][] = TL_PLUGINS_URL . 'plugins/mediabox/'. MEDIABOX .'/css/mediaboxAdvBlack21.css|screen';
@@ -257,7 +232,7 @@ class MediaManager extends Widget implements uploadable
 			$this->redirect(preg_replace('/&(amp;)?cid=[^&]*/i', '', preg_replace('/&(amp;)?' . preg_quote($strCommand, '/') . '=[^&]*/i', '', $this->Environment->request)));
 		}
 
-		$upload = sprintf('<h3><label for="ctrl_%s_upload">%s</label></h3><p><input type="file" name="%s" id="ctrl_%s_upload" class="upload%s"></p>',
+		$upload = sprintf('<h3><label for="ctrl_%s_upload">%s</label></h3>' . $this->generateMarkup(),
 						$this->strId,
 						$GLOBALS['TL_LANG']['MSC']['mmUpload'],
 						$this->strName,
@@ -266,7 +241,7 @@ class MediaManager extends Widget implements uploadable
 
 		$return = '<div id="ctrl_' . $this->strId . '">';
 
-		if (!is_array($this->varValue) || !count($this->varValue))
+		if (!is_array($this->varValue) || empty($this->varValue))
 		{
 			return $return . $GLOBALS['TL_LANG']['MSC']['mmNoUploads'] . $upload . '</div>';
 		}
@@ -285,7 +260,7 @@ class MediaManager extends Widget implements uploadable
   <tbody>';
 
 		// Add input fields
-		for ($i=0; $i<count($this->varValue); $i++)
+		for ($i=0, $count=count($this->varValue); $i<$count; $i++)
 		{
 			$strFile = 'isotope/' . strtolower(substr($this->varValue[$i]['src'], 0, 1)) . '/' . $this->varValue[$i]['src'];
 
@@ -314,7 +289,7 @@ class MediaManager extends Widget implements uploadable
     <td class="col_1"><input type="text" class="tl_text_2" name="' . $this->strName . '['.$i.'][alt]" value="' . specialchars($this->varValue[$i]['alt'], true) . '"'.$strTranslateNone.'><br><input type="text" class="tl_text_2" name="' . $this->strName . '['.$i.'][link]" value="' . specialchars($this->varValue[$i]['link'], true) . '"'.$strTranslateText.'></td>
     <td class="col_2"><textarea name="' . $this->strName . '['.$i.'][desc]" cols="40" rows="3" class="tl_textarea"'.$strTranslateNone.' >' . specialchars($this->varValue[$i]['desc']) . '</textarea></td>
     <td class="col_3">
-    	'.($blnLanguage ? ('<input type="hidden" name="' . $this->strName . '['.$i.'][translate]" value="'.$this->varValue[$i]['translate'].'"') : '').'
+    	'.($blnLanguage ? ('<input type="hidden" name="' . $this->strName . '['.$i.'][translate]" value="'.$this->varValue[$i]['translate'].'">') : '').'
     	<fieldset class="radio_container">
 	    	<span>
 	    		<input id="' . $this->strName . '_'.$i.'_translate_none" name="' . $this->strName . '['.$i.'][translate]" type="radio" class="tl_radio" value=""'.$this->optionChecked('', $this->varValue[$i]['translate']).($blnLanguage ? ' disabled="disabled"' : '').'>
@@ -346,5 +321,52 @@ class MediaManager extends Widget implements uploadable
 		return $return.'
   </tbody>
   </table>' . $upload . '</div>';
+	}
+
+
+	/**
+	 * Retrieve image data from fallback language
+	 * @return array|false
+	 */
+	protected function getFallbackData()
+	{
+		// Fetch fallback language record
+		if ($_SESSION['BE_DATA']['language'][$this->strTable][$this->currentRecord] != '')
+		{
+			return deserialize($this->Database->execute("SELECT * FROM {$this->strTable} WHERE id={$this->currentRecord}")->{$this->strField});
+		}
+
+		return false;
+	}
+
+
+	/**
+	 * Generate file upload markup.
+	 * Can't use FileUpload::generateMarkup() because it does not support multiple widgets on the same page.
+	 */
+	public function generateMarkup()
+	{
+		$fields = '';
+
+		for ($i=0; $i<$GLOBALS['TL_CONFIG']['uploadFields']; $i++)
+		{
+			$fields .= '
+  <input type="file" name="' . $this->strName . '[]" class="tl_upload_field" onfocus="Backend.getScrollOffset()"><br>';
+		}
+
+		return '
+  <div id="' . $this->strName . '_upload-fields">'.$fields.'
+  </div>
+  <script>
+  window.addEvent("domready", function() {
+    if ("multiple" in document.createElement("input")) {
+      var div = $("' . $this->strName . '_upload-fields");
+      var input = div.getElement("input");
+      div.empty();
+      input.set("multiple", true);
+      input.inject(div);
+    }
+  });
+  </script>';
 	}
 }

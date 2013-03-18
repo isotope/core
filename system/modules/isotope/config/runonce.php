@@ -49,15 +49,17 @@ class IsotopeRunonce extends Controller
 	 */
 	public function run()
 	{
-		// Cancel if shop has not yet been installed
+		$this->exec('createIsotopeFolder');
+		$this->exec('initializeOrderStatus');
+
+		// Cancel all updates if shop has not yet been installed
 		if (!$this->Database->tableExists('tl_iso_config') && !$this->Database->tableExists('tl_store'))
 			return;
 
-		$this->exec('createIsotopeFolder');
 		$this->exec('renameTables');
 		$this->exec('renameFields');
 		$this->exec('updateStoreConfigurations');
-		$this->exec('updateOrders');
+		$this->exec('updateCollections');
 		$this->exec('updateImageSizes');
 		$this->exec('updateAttributes');
 		$this->exec('updateFrontendModules');
@@ -65,7 +67,7 @@ class IsotopeRunonce extends Controller
 		$this->exec('updateProductTypes');
 		$this->exec('updateRules');
 		$this->exec('generateCategoryGroups');
-		$this->exec('refreshDatabaseFile');
+		$this->exec('createGroupForAllNonAssignedProducts');
 
 		// Make sure file extension .imt (Isotope Mail Template) is allowed for up- and download
 		if (!in_array('imt', trimsplit(',', $GLOBALS['TL_CONFIG']['uploadTypes'])))
@@ -107,7 +109,7 @@ h1 { font-size:18px; font-weight:normal; margin:0 0 18px; }
 
 <h1>Isotope eCommerce Update was not run successfully!</h1>
 
-<pre>' . $e->getMessage() . '</pre>
+<pre style="white-space:normal">' . $e->getMessage() . '</pre>
 
 </div>
 
@@ -120,13 +122,15 @@ h1 { font-size:18px; font-weight:normal; margin:0 0 18px; }
 
 
 	/**
-	 * Creates the isotope media folder if it doesn't exist yet
+	 * delete the "isotope" folder from ER2 database table so they don't get deleted while updating or uninstalling Isotope.
+	 * IMPORTANT: don't remove the TL_ROOT/isotope directory from the ER package
 	 */
 	private function createIsotopeFolder()
 	{
-		// delete the "isotope" folder from ER2 database table so they don't get deleted while updating or uninstalling Isotope.
-		// IMPORTANT: don't remove the TL_ROOT/isotope directory from the ER package
-		$this->Database->query("DELETE FROM tl_repository_instfiles WHERE filename='isotope' OR filename='isotope/index.html'");
+		if ($this->Database->tableExists('tl_repository_instfiles'))
+		{
+    		$this->Database->query("DELETE FROM tl_repository_instfiles WHERE filename='isotope' OR filename='isotope/index.html'");
+    	}
 	}
 
 
@@ -383,6 +387,18 @@ h1 { font-size:18px; font-weight:normal; margin:0 0 18px; }
 			$this->Database->query("ALTER TABLE tl_iso_tax_rate CHANGE COLUMN store config int(10) unsigned NOT NULL default '0'");
 		}
 
+		// tl_iso_tax_rate.country has been renamed to tl_iso_tax_rate.countries
+		if ($this->Database->fieldExists('country', 'tl_iso_tax_rate') && !$this->Database->fieldExists('countries', 'tl_iso_tax_rate'))
+		{
+			$this->Database->query("ALTER TABLE tl_iso_tax_rate CHANGE COLUMN country countries text NULL");
+		}
+
+		// tl_iso_tax_rate.subdivision has been renamed to tl_iso_tax_rate.subdivisions
+		if ($this->Database->fieldExists('subdivision', 'tl_iso_tax_rate') && !$this->Database->fieldExists('subdivisions', 'tl_iso_tax_rate'))
+		{
+			$this->Database->query("ALTER TABLE tl_iso_tax_rate CHANGE COLUMN subdivision subdivisions text NULL");
+		}
+
 		// tl_page.isotopeStoreConfig has been renamed to tl_page.iso_config
 		if ($this->Database->fieldExists('isotopeStoreConfig', 'tl_page') && !$this->Database->fieldExists('iso_config', 'tl_page'))
 		{
@@ -477,6 +493,15 @@ h1 { font-size:18px; font-weight:normal; margin:0 0 18px; }
 			$this->Database->query("UPDATE tl_iso_config SET billing_fields=shipping_fields");
 		}
 
+		foreach( array('billing_country', 'shipping_country') as $field )
+		{
+			if (!$this->Database->fieldExists($field, 'tl_iso_config'))
+			{
+				$this->Database->query("ALTER TABLE tl_iso_config ADD COLUMN `" . $field . "` varchar(2) NOT NULL default ''");
+				$this->Database->query("UPDATE tl_iso_config SET `" . $field . "`=country");
+			}
+		}
+
 		$this->loadDataContainer('tl_iso_addresses');
 		$objConfigs = $this->Database->execute("SELECT * FROM tl_iso_config");
 
@@ -485,7 +510,7 @@ h1 { font-size:18px; font-weight:normal; margin:0 0 18px; }
 			$arrBilling = deserialize($objConfigs->billing_fields);
 			$arrShipping = deserialize($objConfigs->shipping_fields);
 
-			if (is_array($arrBilling) && count($arrBilling) && !is_array($arrBilling[0]))
+			if (is_array($arrBilling) && !empty($arrBilling) && !is_array($arrBilling[0]))
 			{
 				$arrNew = array();
 
@@ -497,7 +522,7 @@ h1 { font-size:18px; font-weight:normal; margin:0 0 18px; }
 				$this->Database->prepare("UPDATE tl_iso_config SET billing_fields=? WHERE id=?")->execute(serialize($arrNew), $objConfigs->id);
 			}
 
-			if (is_array($arrShipping) && count($arrShipping) && !is_array($arrShipping[0]))
+			if (is_array($arrShipping) && !empty($arrShipping) && !is_array($arrShipping[0]))
 			{
 				$arrNew = array();
 
@@ -512,7 +537,7 @@ h1 { font-size:18px; font-weight:normal; margin:0 0 18px; }
 	}
 
 
-	private function updateOrders()
+	private function updateCollections()
 	{
 		if (!$this->Database->fieldExists('date_shipped', 'tl_iso_orders'))
 		{
@@ -523,6 +548,105 @@ h1 { font-size:18px; font-weight:normal; margin:0 0 18px; }
 
 		// Fix for Ticket #383
 		$this->Database->query("UPDATE tl_iso_order_downloads SET downloads_remaining='' WHERE downloads_remaining='-1'");
+
+		// Add tax_free_price to tl_iso_order_items
+		if (!$this->Database->fieldExists('tax_free_price', 'tl_iso_order_items'))
+		{
+			$this->Database->query("ALTER TABLE tl_iso_order_items ADD COLUMN tax_free_price decimal(12,2) NOT NULL default '0.00'");
+			$this->Database->query("UPDATE tl_iso_order_items SET tax_free_price=price");
+		}
+
+		// Add tax_free_price to tl_iso_cart_items
+		if (!$this->Database->fieldExists('tax_free_price', 'tl_iso_cart_items'))
+		{
+			$this->Database->query("ALTER TABLE tl_iso_cart_items ADD COLUMN tax_free_price decimal(12,2) NOT NULL default '0.00'");
+			$this->Database->query("UPDATE tl_iso_cart_items SET tax_free_price=price");
+		}
+	}
+
+
+	private function initializeOrderStatus()
+	{
+		if (!$this->Database->tableExists('tl_iso_orderstatus'))
+		{
+			$this->Database->query("
+CREATE TABLE `tl_iso_orderstatus` (
+  `id` int(10) unsigned NOT NULL auto_increment,
+  `pid` int(10) unsigned NOT NULL default '0',
+  `tstamp` int(10) unsigned NOT NULL default '0',
+  `sorting` int(10) unsigned NOT NULL default '0',
+  `name` varchar(255) NOT NULL default '',
+  `paid` char(1) NOT NULL default '',
+  `welcomescreen` char(1) NOT NULL default '',
+  `mail_customer` int(10) unsigned NOT NULL default '0',
+  `mail_admin` int(10) unsigned NOT NULL default '0',
+  PRIMARY KEY  (`id`),
+  KEY `pid` (`pid`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;");
+
+			$blnEmpty = true;
+		}
+		else
+		{
+			$objRecords = $this->Database->query("SELECT COUNT(id) AS total FROM tl_iso_orderstatus");
+			$blnEmpty = $objRecords->total > 0 ? false : true;
+		}
+
+		if ($blnEmpty)
+		{
+    		$blnUpdate = $this->Database->tableExists('tl_iso_config');
+
+			// Make sure the required fields are added in the store configuration
+			if ($blnUpdate && !$this->Database->fieldExists('orderstatus_new', 'tl_iso_config'))
+			{
+				$this->Database->query("ALTER TABLE tl_iso_config ADD COLUMN orderstatus_new int(10) unsigned NOT NULL default '0'");
+			}
+			if ($blnUpdate && !$this->Database->fieldExists('orderstatus_error', 'tl_iso_config'))
+			{
+				$this->Database->query("ALTER TABLE tl_iso_config ADD COLUMN orderstatus_error int(10) unsigned NOT NULL default '0'");
+			}
+
+			$GLOBALS['TL_LANG']['ORDER']['pending']		= 'Pending';
+			$GLOBALS['TL_LANG']['ORDER']['processing']	= 'Processing';
+			$GLOBALS['TL_LANG']['ORDER']['complete']	= 'Complete';
+			$GLOBALS['TL_LANG']['ORDER']['on_hold']		= 'On Hold';
+			$GLOBALS['TL_LANG']['ORDER']['cancelled']	= 'Cancelled';
+
+			$time = time();
+			$arrStatus = array('pending', 'processing', 'complete', 'on_hold', 'cancelled');
+
+			if ($blnUpdate)
+			{
+    			$arrStatus = array_unique(array_merge
+    			(
+    				$arrStatus,
+    				$this->Database->execute("SELECT DISTINCT status FROM tl_iso_orders WHERE status!=''")->fetchEach('status'),
+    				$this->Database->execute("SELECT DISTINCT new_order_status FROM tl_iso_payment_modules WHERE new_order_status!=''")->fetchEach('new_order_status')
+    			));
+    		}
+
+			foreach( $arrStatus as $i => $status )
+			{
+				$strLabel = $GLOBALS['TL_LANG']['ORDER'][$status] == '' ? $status : $GLOBALS['TL_LANG']['ORDER'][$status];
+				$intId = $this->Database->prepare("INSERT INTO tl_iso_orderstatus (tstamp,sorting,name,paid,welcomescreen) VALUES ($time,?,?,?,?)")->executeUncached(($i*128), $strLabel, ($status == 'complete' ? '1' : ''), ($status == 'pending' ? '1' : ''))->insertId;
+
+				if ($blnUpdate)
+				{
+    				// Update existing store configurations
+    				if ($status == 'pending')
+    				{
+    					$this->Database->prepare("UPDATE tl_iso_config SET orderstatus_new=$intId WHERE orderstatus_new=0");
+    				}
+    				elseif ($status == 'on_hold')
+    				{
+    					$this->Database->prepare("UPDATE tl_iso_config SET orderstatus_error=$intId WHERE orderstatus_error=0");
+    				}
+
+    				$this->Database->prepare("UPDATE tl_iso_orders SET status=? WHERE status=?")->executeUncached($intId, $status);
+    				$this->Database->prepare("UPDATE tl_iso_payment_modules SET new_order_status=? WHERE new_order_status=?")->executeUncached($intId, $status);
+    			}
+			}
+		}
 	}
 
 
@@ -623,7 +747,7 @@ h1 { font-size:18px; font-weight:normal; margin:0 0 18px; }
 		}
 
 
-		if (count($arrUpdate))
+		if (!empty($arrUpdate))
 		{
 			$objStores = $this->Database->query("SELECT * FROM tl_iso_config");
 
@@ -896,29 +1020,26 @@ CREATE TABLE `tl_iso_groups` (
 
 
 	/**
-	 * Regenerate the database.sql to include custom attributes.
-	 * This info might have been lost when updating the file via FTP.
+	 * In Isotope 1.4 every product has to be assigned to a product groups for access permissions
 	 */
-	private function refreshDatabaseFile()
+	private function createGroupForAllNonAssignedProducts()
 	{
-		$this->import('IsotopeDatabase');
-
-		$objAttributes = $this->Database->execute("SELECT * FROM tl_iso_attributes");
-
-		while( $objAttributes->next() )
+		if (!$this->Database->tableExists('tl_iso_groups') || !$this->Database->tableExists('tl_iso_products'))
 		{
-			// Skip empty lines
-			if ($objAttributes->field_name == '' || $GLOBALS['ISO_ATTR'][$objAttributes->type]['sql'] == '')
-				continue;
-
-			$this->IsotopeDatabase->add($objAttributes->field_name, $GLOBALS['ISO_ATTR'][$objAttributes->type]['sql']);
-
-			// Add indexes
-			if ($objAttributes->fe_filter && $GLOBALS['ISO_ATTR'][$objAttributes->type]['useIndex'])
-			{
-				$this->IsotopeDatabase->add("KEY `{$objAttributes->field_name}`", "(`{$objAttributes->field_name}`)");
-			}
+			return;
 		}
+
+		$objNoGroupProducts = $this->Database->executeUncached("SELECT COUNT(id) AS total FROM tl_iso_products WHERE pid=0 AND language='' AND gid=0");
+
+		if ($objNoGroupProducts->total < 1)
+		{
+			return;
+		}
+
+		// generate a group, we can't take an existing one because we dont know which one to use
+		$intGroup = $this->Database->executeUncached("INSERT INTO tl_iso_groups (pid,sorting,tstamp,name) VALUES (0, 0, " . time() . ", '### GENERAL ###')")->insertId;
+
+		$this->Database->query("UPDATE tl_iso_products SET gid=$intGroup WHERE pid=0 AND language='' AND gid=0");
 	}
 }
 

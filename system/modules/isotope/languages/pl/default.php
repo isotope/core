@@ -170,15 +170,6 @@ $GLOBALS['TL_LANG']['MSC']['iso_sku_header'] = 'SKU';
 $GLOBALS['TL_LANG']['MSC']['iso_product_name_header'] = 'Nazwa produktu';
 $GLOBALS['TL_LANG']['MSC']['iso_card_name_title'] = 'Posiadacz karty kredytowej';
 
-
-// Order status options
-$GLOBALS['TL_LANG']['ORDER']['pending']		= 'Oczekujące';
-$GLOBALS['TL_LANG']['ORDER']['processing']	= 'W trakcie realizacji';
-$GLOBALS['TL_LANG']['ORDER']['complete']	= 'Zrealizowane';
-$GLOBALS['TL_LANG']['ORDER']['on_hold']		= 'Wstrzymane';
-$GLOBALS['TL_LANG']['ORDER']['cancelled']	= 'Anulowane';
-
-
 $GLOBALS['TL_LANG']['MSC']['low_to_high'] = 'rosnąco';
 $GLOBALS['TL_LANG']['MSC']['high_to_low'] = 'malejąco';
 $GLOBALS['TL_LANG']['MSC']['a_to_z'] = 'A do Z';
@@ -267,10 +258,8 @@ $GLOBALS['ISO_LANG']['SHIP']['usps']				= array('Dostawa USPS Live Rates and Ser
  */
 $GLOBALS['ISO_LANG']['PAY']['cash']				= array('Gotówka', 'Użyj tego w przypadku rozliczeń gotówkowych');
 $GLOBALS['ISO_LANG']['PAY']['paypal']			= array('PayPal Standard Checkout', 'Ten moduł Paypal wspiera IPN (Instant Payment Notifications).');
-$GLOBALS['ISO_LANG']['PAY']['paypalpayflowpro']	= array('PayPal Payflow Pro', 'Moduł PayPal Payflow wspiera w całości płatności kartą kredytową.');
 $GLOBALS['ISO_LANG']['PAY']['postfinance']		= array('Postfinance', 'Metoda płatności dla szwajcarskiego system płatności. Sklep będzie natychmiast powiadamiany o pomyślnych transakcjach.');
 $GLOBALS['ISO_LANG']['PAY']['authorizedotnet']	= array('Authorize.net', 'Metoda płatności Authorize.net.');
-$GLOBALS['ISO_LANG']['PAY']['cybersource']		= array('Cybersource', 'Dla użytkowników Cybersource. Używa metody Simple Order API.');
 
 
 /**

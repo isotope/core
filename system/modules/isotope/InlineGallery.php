@@ -30,7 +30,7 @@
 
 /**
  * Class InlineGallery
- * 
+ *
  * Provide methods to handle inline gallery.
  * @copyright  Isotope eCommerce Workgroup 2009-2012
  * @author     Andreas Schempp <andreas@schempp.ch>
