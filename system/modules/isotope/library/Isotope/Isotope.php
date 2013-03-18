@@ -230,7 +230,7 @@ class Isotope extends \Controller
             {
                 $do = \Input::get('do');
 
-                if (isset($GLOBALS['BE_MOD']['isotope'][$do]))
+                if ($do != 'iso_setup' && isset($GLOBALS['BE_MOD']['isotope'][$do]))
                 {
                     $_SESSION['TL_ERROR'][] = $GLOBALS['TL_LANG']['ERR']['noDefaultStoreConfiguration'];
 
@@ -422,13 +422,13 @@ class Isotope extends \Controller
     /**
      * Send an email using the isotope e-mail templates
      * @param integer
-     * @param string
+     * @param mixed
      * @param string
      * @param array
      * @param string
      * @param object
      */
-    public static function sendMail($intId, $strRecipient, $strLanguage, $arrData, $strReplyTo='', $objCollection=null)
+    public static function sendMail($intId, $varRecipient, $strLanguage, $arrData, $strReplyTo='', $objCollection=null)
     {
         try
         {
@@ -439,7 +439,7 @@ class Isotope extends \Controller
                 $objEmail->replyTo($strReplyTo);
             }
 
-            $objEmail->send($strRecipient, $arrData);
+            $objEmail->send($varRecipient, $arrData);
         }
         catch (Exception $e)
         {
@@ -636,9 +636,14 @@ class Isotope extends \Controller
      */
     public static function translate($label, $language=false)
     {
-        if (!in_array('isotope_multilingual', \Config::getInstance()->getActiveModules()))
-        {
+        static $blnInstalled = null;
+
+        if (false === $blnInstalled) {
+
             return $label;
+
+        } elseif (null === $blnInstalled) {
+            $blnInstalled = $this->Database->tableExists('tl_iso_labels');
         }
 
         // Recursively translate label array

@@ -14,6 +14,7 @@ namespace Isotope\Model\Payment;
 
 use Isotope\Interfaces\IsotopePayment;
 use Isotope\Model\Payment;
+use Isotope\Model\ProductCollection\Order;
 
 
 /**
@@ -35,6 +36,11 @@ class Cash extends Payment implements IsotopePayment
      */
     public function processPayment()
     {
+        if (($objOrder = Order::findOneBy('source_collection_id', Isotope::getCart()->id)) === null)
+        {
+            $objOrder->updateOrderStatus($this->new_order_status);
+        }
+
         return true;
     }
 }

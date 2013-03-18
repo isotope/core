@@ -28,6 +28,7 @@ $GLOBALS['TL_LANG']['ERR']['surcharge']                     = 'Please enter whol
 $GLOBALS['TL_LANG']['ERR']['orderFailed']                   = 'Checkout failed. Please try again or choose another payment method.';
 $GLOBALS['TL_LANG']['ERR']['noAddressBookEntries']          = 'You have no address book entries.';
 $GLOBALS['TL_LANG']['ERR']['cartMinSubtotal']               = 'The minimum order amount is %s. Please add more products before checkout.';
+$GLOBALS['TL_LANG']['ERR']['productMinimumQuantity']        = 'The minimum quantity for "%s" is %s items. Please check your shopping cart.';
 $GLOBALS['TL_LANG']['ERR']['imageInFallback']               = 'This image has already been assigned to the fallback language.';
 $GLOBALS['TL_LANG']['ERR']['datepickerRgxp']                = 'Select an appropriate field validation (date, time, date and time) to enable the date picker.';
 $GLOBALS['TL_LANG']['ERR']['emptyDownloadsFolder']          = 'The selected folder is empty.';

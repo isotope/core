@@ -42,12 +42,6 @@ class ProductCallbacks extends \Backend
      */
     protected $arrProductTypes;
 
-    /**
-     * Cache if there are related categories
-     * @var bool
-     */
-    protected $blnHasRelated;
-
 
     /**
      * Cache number of downloads per product
@@ -84,9 +78,10 @@ class ProductCallbacks extends \Backend
         {
             self::$objInstance = new \Isotope\ProductCallbacks();
 
-
-            // Cache product types
             self::$objInstance->arrProductTypes = array();
+            $blnDownloads = false;
+            $blnVariants = false;
+            $blnAdvancedPrices = false;
 
             $objProductTypes = self::$objInstance->Database->query("SELECT t.id, t.variants, t.downloads, t.prices, t.attributes, t.variant_attributes FROM tl_iso_products p LEFT JOIN tl_iso_producttypes t ON p.type=t.id GROUP BY p.type");
 
@@ -95,21 +90,59 @@ class ProductCallbacks extends \Backend
                 self::$objInstance->arrProductTypes[$objProductTypes->id] = $objProductTypes->row();
                 self::$objInstance->arrProductTypes[$objProductTypes->id]['attributes'] = deserialize($objProductTypes->attributes, true);
                 self::$objInstance->arrProductTypes[$objProductTypes->id]['variant_attributes'] = deserialize($objProductTypes->variant_attributes, true);
+
+                if ($objProductTypes->downloads)
+                {
+                    $blnDownloads = true;
+                }
+
+                if ($objProductTypes->variants)
+                {
+                    $blnVariants = true;
+                }
+
+                if ($objProductTypes->prices)
+                {
+                    $blnAdvancedPrices = true;
+                }
             }
 
-
-            // Cache if tehre are categories
-            self::$objInstance->blnHasRelated = (self::$objInstance->Database->query("SELECT COUNT(id) AS total FROM tl_iso_related_categories")->total > 0);
-
-
-            // Cache number of downloads
-            self::$objInstance->arrDownloads = array();
-
-            $objDownloads = self::$objInstance->Database->query("SELECT pid, COUNT(id) AS total FROM tl_iso_downloads GROUP BY pid");
-
-            while ($objDownloads->next())
+            // If no downloads are enabled in any product type, we do not need the option
+            if (!$blnDownloads)
             {
-                self::$objInstance->arrDownloads[$objDownloads->pid] = $objDownloads->total;
+                unset($GLOBALS['TL_DCA']['tl_iso_products']['list']['operations']['downloads']);
+            }
+            else
+            {
+                // Cache number of downloads
+                self::$objInstance->arrDownloads = array();
+
+                $objDownloads = self::$objInstance->Database->query("SELECT pid, COUNT(id) AS total FROM tl_iso_downloads GROUP BY pid");
+
+                while ($objDownloads->next())
+                {
+                    self::$objInstance->arrDownloads[$objDownloads->pid] = $objDownloads->total;
+                }
+            }
+
+            // Disable all variant related operations
+            if (!$blnVariants)
+            {
+                unset($GLOBALS['TL_DCA']['tl_iso_products']['list']['global_operations']['toggleVariants']);
+                unset($GLOBALS['TL_DCA']['tl_iso_products']['list']['operations']['quick_edit']);
+                unset($GLOBALS['TL_DCA']['tl_iso_products']['list']['operations']['generate']);
+            }
+
+            // Disable prices button if not enabled in any product type
+            if (!$blnAdvancedPrices)
+            {
+                unset($GLOBALS['TL_DCA']['tl_iso_products']['list']['operations']['prices']);
+            }
+
+            // Disable related categories if none are defined
+            if (self::$objInstance->Database->query("SELECT COUNT(id) AS total FROM tl_iso_related_categories")->total == 0)
+            {
+                unset($GLOBALS['TL_DCA']['tl_iso_products']['list']['operations']['related']);
             }
         }
 
@@ -539,7 +572,7 @@ class ProductCallbacks extends \Backend
         }
 
         $objProductType = $this->Database->execute("SELECT * FROM tl_iso_producttypes WHERE id=". (int) $row['type']);
-        $arrAttributes = deserialize($objProductType->attributes, true);
+        $arrAttributes = $this->arrProductTypes[$row['type']]['attributes'];
 
         if ($row['pid'] > 0)
         {
@@ -547,7 +580,7 @@ class ProductCallbacks extends \Backend
 
             foreach ($arrAttributes as $attribute => $arrConfig)
             {
-                if ($arrConfig['enabled'] && $GLOBALS['TL_DCA']['tl_iso_products']['fields'][$attribute]['attributes']['variant_option'])
+                if ($arrConfig['enabled'] && in_array($attribute, $GLOBALS['ISO_CONFIG']['variant_options']))
                 {
                     $strBuffer .= '<li><strong>' . Isotope::formatLabel('tl_iso_products', $attribute) . ':</strong> ' . Isotope::formatValue('tl_iso_products', $attribute, $row[$attribute]) . '</li>';
                 }
@@ -576,7 +609,6 @@ class ProductCallbacks extends \Backend
      * @param string
      * @param array
      * @return string
-     * @todo remove "isotope-filter" static class when Contao Defect #3504 has been implemented
      */
     public function filterButton($href, $label, $title, $class, $attributes, $table, $root)
     {
@@ -598,7 +630,7 @@ class ProductCallbacks extends \Backend
             $href = ampersand(\Environment::get('request') . '&') . $href;
         }
 
-        return ' &#160; :: &#160; <a href="'.$href.'" class="'.$class.' isotope-filter" title="'.specialchars($title).'"'.$attributes.'>'.$label.'</a> ';
+        return ' &#160; :: &#160; <a href="'.$href.'" class="'.$class.'" title="'.specialchars($title).'"'.$attributes.'>'.$label.'</a> ';
     }
 
 
@@ -612,13 +644,12 @@ class ProductCallbacks extends \Backend
      * @param string
      * @param array
      * @return string
-     * @todo remove static classes when Contao Defect #3504 has been implemented
      */
     public function filterRemoveButton($href, $label, $title, $class, $attributes, $table, $root)
     {
         $href = preg_replace('/&?filter\[\]=[^&]*/', '', \Environment::get('request'));
 
-        return ' &#160; :: &#160; <a href="'.$href.'" class="header_iso_filter_remove isotope-filter" title="'.specialchars($title).'"'.$attributes.'>'.$label.'</a> ';
+        return ' &#160; :: &#160; <a href="'.$href.'" class="header_iso_filter_remove" title="'.specialchars($title).'"'.$attributes.'>'.$label.'</a> ';
     }
 
 
@@ -683,7 +714,7 @@ class ProductCallbacks extends \Backend
      */
     public function groupsButton($href, $label, $title, $class, $attributes, $table, $root)
     {
-        if (!$this->User->isAdmin && (!is_array($this->User->iso_groupp) || empty($this->User->iso_groupp) || !is_array($this->User->iso_groups) || empty($this->User->iso_groups)))
+        if (!$this->User->isAdmin && (!is_array($this->User->iso_groupp) || empty($this->User->iso_groupp)))
         {
             return '';
         }
@@ -699,8 +730,7 @@ class ProductCallbacks extends \Backend
 
 
     /**
-     * Hide generate button for variants and product types without variant support
-     * @param array
+     * Hide generate and quick edit button for variants and product types without variant support     * @param array
      * @param string
      * @param string
      * @param string
@@ -708,28 +738,7 @@ class ProductCallbacks extends \Backend
      * @param string
      * @return string
      */
-    public function quickEditButton($row, $href, $label, $title, $icon, $attributes)
-    {
-        if ($row['pid'] > 0 || !$this->arrProductTypes[$row['type']]['variants'])
-        {
-            return '';
-        }
-
-        return '<a href="'.$this->addToUrl($href.'&amp;id='.$row['id']).'" title="'.specialchars($title).'"'.$attributes.'>'.$this->generateImage($icon, $label).'</a> ';
-    }
-
-
-    /**
-     * Hide generate button for variants and product types without variant support
-     * @param array
-     * @param string
-     * @param string
-     * @param string
-     * @param string
-     * @param string
-     * @return string
-     */
-    public function generateButton($row, $href, $label, $title, $icon, $attributes)
+    public function variantsButton($row, $href, $label, $title, $icon, $attributes)
     {
         if ($row['pid'] > 0 || !$this->arrProductTypes[$row['type']]['variants'])
         {
@@ -752,7 +761,7 @@ class ProductCallbacks extends \Backend
      */
     public function relatedButton($row, $href, $label, $title, $icon, $attributes)
     {
-        if ($row['pid'] > 0 || !$this->blnHasRelated)
+        if ($row['pid'] > 0)
         {
             return '';
         }

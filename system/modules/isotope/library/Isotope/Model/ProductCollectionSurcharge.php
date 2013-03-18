@@ -364,6 +364,11 @@ abstract class ProductCollectionSurcharge extends \Model
                         }
                     }
 
+                    if ($objTaxClass->notNegative && $arrTaxes[$objTaxClass->id . '_' . $objIncludes->id]->total_price < 0)
+                    {
+                        $arrTaxes[$objTaxClass->id . '_' . $objIncludes->id]->total_price = 0;
+                    }
+
                     $taxId = array_search($objTaxClass->id . '_' . $objIncludes->id, array_keys($arrTaxes)) + 1;
                     $arrTaxes[$objTaxClass->id . '_' . $objIncludes->id]->addTaxNumber($taxId);
                     $objSurcharge->addTaxNumber($taxId);
@@ -400,8 +405,12 @@ abstract class ProductCollectionSurcharge extends \Model
                             }
                         }
 
-                        $taxId = array_search($objTaxRate->id, array_keys($arrTaxes)) + 1;
+                        if ($objTaxClass->notNegative && $arrTaxes[$objTaxRate->id]->total_price < 0)
+                        {
+                            $arrTaxes[$objTaxRate->id]->total_price = 0;
+                        }
 
+                        $taxId = array_search($objTaxRate->id, array_keys($arrTaxes)) + 1;
                         $arrTaxes[$objTaxRate->id]->addTaxNumber($taxId);
                         $objSurcharge->addTaxNumber($taxId);
 

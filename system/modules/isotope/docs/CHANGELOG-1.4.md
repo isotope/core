@@ -1,11 +1,14 @@
 Isotope eCommerce Changelog
 ===========================
 
-Version 1.4.? (2013-??-??)
-----------------------------
+Version 1.4.0 (2013-03-18)
+--------------------------
 
 ### New
 - Standalone front end module to display Isotope messages (#101)
+- Added all missing german translations (#567)
+- Added option to prevent negative taxes (#536)
+- Added minimum product quantity support (through advanced prices)
 
 ### Improved
 - Added short name for known "Krone" and "Franc" currencies
@@ -14,6 +17,10 @@ Version 1.4.? (2013-??-??)
 - `getAllowedProductIds` hook can now override "allow all" permissions
 - Added checkbox to hide filter option when there is just one option (#42)
 - Empty message is now rendered inside product list template (#543)
+- Add default order status when installing Isotope eCommerce (#558)
+- Do not generate options container if no frontend attributes are available (#533)
+- Base price label can now be translated
+- New order status can also be set for cash payment method (#571)
 
 ### Fixed
 - Price was 0.00 if there is only one product variant
@@ -22,6 +29,14 @@ Version 1.4.? (2013-??-??)
 - Labels for addresses were not shown in the order details (#538)
 - Do not show filter options of product variant if base product is disabled (#529)
 - Invoice PDF did not consider shop config template folder (#534)
+- Product translations were not correctly fetched in variants (#465)
+- Custom mediamanager widgets now work again (#555)
+- Default tax class was not applied for advanced prices (#553)
+- Default group was not created when groups existed (#554)
+- Allow users to create groups in the root node (#535)
+- Potential issue when generating sitemap XML file (#556)
+- Product search did not consider translated fields (#551)
+- Removed session storage for backend, it does not work :-(
 
 
 Version 1.4.rc2 (2013-01-22)

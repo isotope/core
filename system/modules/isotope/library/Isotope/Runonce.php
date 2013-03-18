@@ -44,12 +44,12 @@ class Runonce extends \Controller
     {
         $this->upgradeSystemConfiguration();
 
-        // Cancel if shop has not yet been installed (tl_store is the name for config table in version < 0.2)
-        if (!$this->Database->tableExists('tl_iso_config') && !$this->Database->tableExists('tl_store'))
-            return;
+        // Check if shop has been installed (tl_store is the name for config table in version < 0.2)
+        $blnInstalled = ($this->Database->tableExists('tl_iso_config') || $this->Database->tableExists('tl_store'));
 
         try {
             $objUpgrade = new \Isotope\Upgrade\Upgrade();
+            $objUpgrade->run($blnInstalled);
         } catch (Exception $e) {
             $this->handleException('Pre-2.0', $e);
         }
@@ -62,7 +62,7 @@ class Runonce extends \Controller
                 try {
                     $step = 'Version ' . \Repository::formatVersion(substr($strVersion, 2));
                     $objUpgrade = new $strClass();
-                    $objUpgrade->run();
+                    $objUpgrade->run($blnInstalled);
                 } catch (Exception $e) {
                     $this->handleException($step, $e);
                 }

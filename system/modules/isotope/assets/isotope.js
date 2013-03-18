@@ -57,7 +57,6 @@ var Isotope =
         if (Browser.Engine.trident && Browser.Engine.version < 5) { var sel = $$('select'); for (var i=0; i<sel.length; i++) { sel[i].setStyle('visibility', 'hidden'); } }
 
         overlay.setStyle('display', 'block');
-        overlay.setStyle('top', scroll + 'px');
 
         box.set('html', message);
         box.setStyle('display', 'block');

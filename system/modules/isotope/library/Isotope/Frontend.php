@@ -1102,7 +1102,7 @@ $endScript";
         {
             case 'like':
             case 'search':
-                return $mode == 'SQL' ? 'REGEXP' : 'stripos';
+                return $mode == 'SQL' ? 'LIKE' : 'stripos';
 
             case '>':
             case 'gt':
@@ -1265,7 +1265,10 @@ $endScript";
         // if we have a root page id (sitemap.xml e.g.) we have to make sure we only consider categories in this tree
         if ($intRoot > 0)
         {
-            $strAllowedPages = ' AND c.page_id IN (' . implode(',', $this->Database->getChildRecords($intRoot, 'tl_page', false)) . ')';
+    		$arrPageIds = $this->getChildRecords($intRoot, 'tl_page', false);
+    		$arrPageIds[] = $intRoot;
+
+			$strAllowedPages = ' AND c.page_id IN (' . implode(',', $arrPageIds) . ')';
         }
 
         $objProducts = $this->Database->query("
@@ -1387,7 +1390,7 @@ $endScript";
 
         // now move up the page tree until we find a page where the reader is set
         $trail = array();
-        $pid = $objOriginPage->pid;
+        $pid = (int) $objOriginPage->pid;
 
         do
         {
@@ -1408,7 +1411,7 @@ $endScript";
                 return $objParentPage->iso_readerJumpTo;
             }
 
-            $pid = $objParentPage->pid;
+            $pid = (int) $objParentPage->pid;
         }
         while ($pid > 0 && $objParentPage->type != 'root');
 

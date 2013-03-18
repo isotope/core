@@ -38,33 +38,39 @@ class Upgrade extends \Controller
     /**
      * Run the controller
      */
-    public function run()
+    public function run($blnInstalled)
     {
         $this->createIsotopeFolder();
-        $this->renameTables();
-        $this->renameFields();
-        $this->updateStoreConfigurations();
-        $this->updateCollections();
-        $this->initializeOrderStatus();
-        $this->updateImageSizes();
-        $this->updateAttributes();
-        $this->updateFrontendModules();
-        $this->updateFrontendTemplates();
-        $this->updateProductTypes();
-        $this->updateRules();
-        $this->generateCategoryGroups();
-        $this->createGroupForAllNonAssignedProducts();
+        $this->initializeOrderStatus($blnInstalled);
+
+        if ($blnInstalled)
+        {
+            $this->renameTables();
+            $this->renameFields();
+            $this->updateStoreConfigurations();
+            $this->updateCollections();
+            $this->updateImageSizes();
+            $this->updateAttributes();
+            $this->updateFrontendModules();
+            $this->updateFrontendTemplates();
+            $this->updateProductTypes();
+            $this->updateRules();
+            $this->generateCategoryGroups();
+            $this->createGroupForAllNonAssignedProducts();
+        }
     }
 
 
     /**
-     * Creates the isotope media folder if it doesn't exist yet
+     * delete the "isotope" folder from ER2 database table so they don't get deleted while updating or uninstalling Isotope.
+     * IMPORTANT: don't remove the TL_ROOT/isotope directory from the ER package
      */
     private function createIsotopeFolder()
     {
-        // delete the "isotope" folder from ER2 database table so they don't get deleted while updating or uninstalling Isotope.
-        // IMPORTANT: don't remove the TL_ROOT/isotope directory from the ER package
-        $this->Database->query("DELETE FROM tl_repository_instfiles WHERE filename='isotope' OR filename='isotope/index.html'");
+        if ($this->Database->tableExists('tl_repository_instfiles'))
+        {
+            $this->Database->query("DELETE FROM tl_repository_instfiles WHERE filename='isotope' OR filename='isotope/index.html'");
+        }
     }
 
 
@@ -499,10 +505,9 @@ class Upgrade extends \Controller
     }
 
 
-    private function initializeOrderStatus()
+    private function initializeOrderStatus($blnInstalled)
     {
-        if (!$this->Database->tableExists('tl_iso_orderstatus'))
-        {
+        if (!$this->Database->tableExists('tl_iso_orderstatus')) {
             $this->Database->query("
 CREATE TABLE `tl_iso_orderstatus` (
   `id` int(10) unsigned NOT NULL auto_increment,
@@ -518,23 +523,20 @@ CREATE TABLE `tl_iso_orderstatus` (
   KEY `pid` (`pid`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;");
 
-            $blnUpdate = true;
-        }
-        else
-        {
+            $blnEmpty = true;
+        } else {
             $objRecords = $this->Database->query("SELECT COUNT(id) AS total FROM tl_iso_orderstatus");
-            $blnUpdate = $objRecords->total > 0 ? false : true;
+            $blnEmpty = $objRecords->total > 0 ? false : true;
         }
 
-        if ($blnUpdate)
-        {
+        if ($blnEmpty) {
+
             // Make sure the required fields are added in the store configuration
-            if (!$this->Database->fieldExists('orderstatus_new', 'tl_iso_config'))
-            {
+            if ($blnInstalled && !$this->Database->fieldExists('orderstatus_new', 'tl_iso_config')) {
                 $this->Database->query("ALTER TABLE tl_iso_config ADD COLUMN orderstatus_new int(10) unsigned NOT NULL default '0'");
             }
-            if (!$this->Database->fieldExists('orderstatus_error', 'tl_iso_config'))
-            {
+
+            if ($blnInstalled && !$this->Database->fieldExists('orderstatus_error', 'tl_iso_config')) {
                 $this->Database->query("ALTER TABLE tl_iso_config ADD COLUMN orderstatus_error int(10) unsigned NOT NULL default '0'");
             }
 
@@ -545,30 +547,33 @@ CREATE TABLE `tl_iso_orderstatus` (
             $GLOBALS['TL_LANG']['ORDER']['cancelled']    = 'Cancelled';
 
             $time = time();
-            $arrStatus = array_unique(array_merge
-            (
-                array('pending', 'processing', 'complete', 'on_hold', 'cancelled'),
-                $this->Database->execute("SELECT DISTINCT status FROM tl_iso_orders WHERE status!=''")->fetchEach('status'),
-                $this->Database->execute("SELECT DISTINCT new_order_status FROM tl_iso_payment_modules WHERE new_order_status!=''")->fetchEach('new_order_status')
-            ));
+            $arrStatus = array('pending', 'processing', 'complete', 'on_hold', 'cancelled');
 
-            foreach( $arrStatus as $i => $status )
-            {
+            if ($blnInstalled) {
+                $arrStatus = array_unique(array_merge(
+                    $arrStatus,
+                    $this->Database->query("SELECT DISTINCT status FROM tl_iso_orders WHERE status!=''")->fetchEach('status'),
+                    $this->Database->query("SELECT DISTINCT new_order_status FROM tl_iso_payment_modules WHERE new_order_status!=''")->fetchEach('new_order_status')
+                ));
+            }
+
+            foreach ($arrStatus as $i => $status) {
+
                 $strLabel = $GLOBALS['TL_LANG']['ORDER'][$status] == '' ? $status : $GLOBALS['TL_LANG']['ORDER'][$status];
                 $intId = $this->Database->prepare("INSERT INTO tl_iso_orderstatus (tstamp,sorting,name,paid,welcomescreen) VALUES ($time,?,?,?,?)")->executeUncached(($i*128), $strLabel, ($status == 'complete' ? '1' : ''), ($status == 'pending' ? '1' : ''))->insertId;
 
-                // Update existing store configurations
-                if ($status == 'pending')
-                {
-                    $this->Database->prepare("UPDATE tl_iso_config SET orderstatus_new=$intId WHERE orderstatus_new=0");
-                }
-                elseif ($status == 'on_hold')
-                {
-                    $this->Database->prepare("UPDATE tl_iso_config SET orderstatus_error=$intId WHERE orderstatus_error=0");
-                }
+                if ($blnInstalled) {
 
-                $this->Database->prepare("UPDATE tl_iso_orders SET status=? WHERE status=?")->executeUncached($intId, $status);
-                $this->Database->prepare("UPDATE tl_iso_payment_modules SET new_order_status=? WHERE new_order_status=?")->executeUncached($intId, $status);
+                    // Update existing store configurations
+                    if ($status == 'pending') {
+                        $this->Database->prepare("UPDATE tl_iso_config SET orderstatus_new=$intId WHERE orderstatus_new=0");
+                    } elseif ($status == 'on_hold') {
+                        $this->Database->prepare("UPDATE tl_iso_config SET orderstatus_error=$intId WHERE orderstatus_error=0");
+                    }
+
+                    $this->Database->prepare("UPDATE tl_iso_orders SET status=? WHERE status=?")->executeUncached($intId, $status);
+                    $this->Database->prepare("UPDATE tl_iso_payment_modules SET new_order_status=? WHERE new_order_status=?")->executeUncached($intId, $status);
+                }
             }
         }
     }

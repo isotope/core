@@ -57,24 +57,134 @@ class tl_iso_groups extends \Backend
             return;
         }
 
-        if (!is_array($this->User->iso_groupp) || empty($this->User->iso_groupp) || !is_array($this->User->iso_groups) || empty($this->User->iso_groups))
+        if (!is_array($this->User->iso_groupp) || empty($this->User->iso_groupp))
         {
             $this->log('Unallowed access to product groups!', __METHOD__, TL_ERROR);
             $this->redirect('contao/main.php?act=error');
         }
 
-        $GLOBALS['TL_DCA']['tl_iso_groups']['list']['sorting']['root'] = $this->User->iso_groups;
+        // Set root IDs
+        if (!is_array($this->User->iso_groups) || count($this->User->iso_groups) < 1) // Can't use empty() because its an object property (using __get)
+        {
+            $root = array();
+        }
+        else
+        {
+            try {
+                $root = $this->eliminateNestedPages($this->User->iso_groups, 'tl_iso_groups');
+            }
+            catch (Exception $e) {
+                $root = array();
+            }
+        }
 
+        $GLOBALS['TL_DCA']['tl_iso_groups']['list']['sorting']['root'] = (empty($root) ? true : $root);
+
+        if (in_array('rootPaste', $this->User->iso_groupp))
+        {
+            $GLOBALS['TL_DCA']['tl_iso_groups']['list']['sorting']['rootPaste'] = true;
+        }
+
+        // Check permissions to add product group
         if (!in_array('create', $this->User->iso_groupp))
         {
             $GLOBALS['TL_DCA']['tl_iso_groups']['config']['closed'] = true;
         }
 
-        // Check permission to delete item
-        if (\Input::get('act') == 'delete' && !in_array('delete', $this->User->iso_groupp))
+        // Check current action
+        switch (\Input::get('act'))
         {
-            $this->log('User is not allowed to delete groups', __METHOD__, TL_ERROR);
-            $this->redirect('contao/main.php?act=error');
+            case 'create':
+            case 'select':
+            case 'paste':
+                // Allow
+                break;
+
+            case 'edit':
+                // Dynamically add the record to the user profile
+                if (!in_array(\Input::get('id'), $root))
+                {
+                    $arrNew = $this->Session->get('new_records');
+
+                    if (is_array($arrNew['tl_iso_groups']) && in_array(\Input::get('id'), $arrNew['tl_iso_groups']))
+                    {
+                        // Add permissions on user level
+                        if ($this->User->inherit == 'custom' || !$this->User->groups[0])
+                        {
+                            $objUser = $this->Database->prepare("SELECT iso_groups, iso_groupp FROM tl_user WHERE id=?")
+                                                       ->limit(1)
+                                                       ->executeUncached($this->User->id);
+
+                            $arrPermissions = deserialize($objUser->iso_groupp);
+
+                            if (is_array($arrPermissions) && in_array('create', $arrPermissions))
+                            {
+                                $arrAccess = deserialize($objUser->iso_groups);
+                                $arrAccess[] = \Input::get('id');
+
+                                $this->Database->prepare("UPDATE tl_user SET iso_groups=? WHERE id=?")
+                                               ->execute(serialize($arrAccess), $this->User->id);
+                            }
+                        }
+
+                        // Add permissions on group level
+                        elseif ($this->User->groups[0] > 0)
+                        {
+                            $objGroup = $this->Database->prepare("SELECT iso_groups, iso_groupp FROM tl_user_group WHERE id=?")
+                                                       ->limit(1)
+                                                       ->executeUncached($this->User->groups[0]);
+
+                            $arrPermissions = deserialize($objGroup->iso_groupp);
+
+                            if (is_array($arrPermissions) && in_array('create', $arrPermissions))
+                            {
+                                $arrAccess = deserialize($objGroup->iso_groups);
+                                $arrAccess[] = \Input::get('id');
+
+                                $this->Database->prepare("UPDATE tl_user_group SET iso_groups=? WHERE id=?")
+                                               ->execute(serialize($arrAccess), $this->User->groups[0]);
+                            }
+                        }
+
+                        // Add new element to the user object
+                        $root[] = \Input::get('id');
+                        $this->User->iso_groups = $root;
+                    }
+                }
+                // No break;
+
+            case 'copy':
+            case 'delete':
+            case 'show':
+                if (!in_array(\Input::get('id'), $root) || (\Input::get('act') == 'delete' && !$this->User->hasAccess('delete', 'iso_groupp')))
+                {
+                    $this->log('Not enough permissions to '.\Input::get('act').' group ID "'.\Input::get('id').'"', __METHOD__, TL_ERROR);
+                    $this->redirect('contao/main.php?act=error');
+                }
+                break;
+
+            case 'editAll':
+            case 'deleteAll':
+            case 'overrideAll':
+                $session = $this->Session->getData();
+                if (\Input::get('act') == 'deleteAll' && !$this->User->hasAccess('delete', 'iso_groupp'))
+                {
+                    $session['CURRENT']['IDS'] = array();
+                }
+                else
+                {
+                    $session['CURRENT']['IDS'] = array_intersect($session['CURRENT']['IDS'], $root);
+                }
+                $this->Session->setData($session);
+                break;
+
+            default:
+                if (strlen(\Input::get('act')))
+                {
+                    $this->log('Not enough permissions to '.\Input::get('act').' groups', __METHOD__, TL_ERROR);
+                    $this->redirect('contao/main.php?act=error');
+                }
+                break;
         }
     }
 
@@ -123,8 +233,6 @@ class tl_iso_groups extends \Backend
         $arrGroups[] = $dc->id;
 
         $this->Database->query("UPDATE tl_iso_products SET gid=0 WHERE gid IN (" . implode(',', $arrGroups) . ")");
-
-        \Isotope\Backend::createGeneralGroup();
     }
 
 

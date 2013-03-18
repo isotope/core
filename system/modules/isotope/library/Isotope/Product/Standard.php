@@ -129,7 +129,7 @@ class Standard extends \Controller implements IsotopeProduct
 
         if ($arrData['pid'] > 0)
         {
-            $this->arrData = $this->Database->execute("SELECT * FROM tl_iso_products WHERE id={$arrData['pid']}")->fetchAssoc();
+            $this->arrData = $this->Database->execute(IsotopeProduct::getSelectStatement() . " WHERE id={$arrData['pid']}")->fetchAssoc();
         }
         else
         {
@@ -242,6 +242,14 @@ class Standard extends \Controller implements IsotopeProduct
                 if (!$this->arrCache[$strKey] && \Input::post('FORM_SUBMIT') == $this->formSubmit)
                 {
                     $this->arrCache[$strKey] = (int) \Input::post('quantity_requested');
+                }
+
+                return $this->arrCache[$strKey] ? $this->arrCache[$strKey] : 1;
+
+            case 'minimum_quantity':
+                if (!isset($this->arrCache[$strKey]))
+                {
+                    $this->findPrice();
                 }
 
                 return $this->arrCache[$strKey] ? $this->arrCache[$strKey] : 1;
@@ -741,22 +749,25 @@ class Standard extends \Controller implements IsotopeProduct
         {
             $arrData = $GLOBALS['TL_DCA']['tl_iso_products']['fields'][$attribute];
 
-            if ($arrData['attributes']['customer_defined'] || $arrData['attributes']['variant_option'])
-            {
-                $objTemplate->hasOptions = true;
-                $arrProductOptions[$attribute] = array_merge($arrData, array
-                (
-                    'name'    => $attribute,
-                    'html'    => $this->generateProductOptionWidget($attribute),
-                ));
+            if ($arrData['attributes']['customer_defined'] || $arrData['attributes']['variant_option']) {
 
-                if ($arrData['attributes']['variant_option'] || $arrData['attributes']['ajax_option'])
+                $strWidget = $this->generateProductOptionWidget($attribute);
+
+                if ($strWidget != '')
                 {
-                    $arrAjaxOptions[] = $attribute;
+                    $objTemplate->hasOptions = true;
+                    $arrProductOptions[$attribute] = array_merge($arrData, array
+                    (
+                        'name'    => $attribute,
+                        'html'    => $strWidget,
+                    ));
+
+                    if ($arrData['attributes']['variant_option'] || $arrData['attributes']['ajax_option']) {
+                        $arrAjaxOptions[] = $attribute;
+                    }
                 }
-            }
-            else
-            {
+
+            } else {
                 $arrToGenerate[] = $attribute;
             }
         }
@@ -800,12 +811,13 @@ class Standard extends \Controller implements IsotopeProduct
         $objTemplate->quantityLabel = $GLOBALS['TL_LANG']['MSC']['quantity'];
         $objTemplate->useQuantity = $objModule->iso_use_quantity;
         $objTemplate->quantity_requested = $this->quantity_requested;
+        $objTemplate->minimum_quantity = $this->minimum_quantity;
         $objTemplate->raw = array_merge($this->arrData, $this->arrCache);
         $objTemplate->raw_options = $this->arrOptions;
         $objTemplate->href_reader = $this->href_reader;
         $objTemplate->label_detail = $GLOBALS['TL_LANG']['MSC']['detailLabel'];
         $objTemplate->options = \Isotope\Frontend::generateRowClass($arrProductOptions, 'product_option');
-        $objTemplate->hasOptions = !empty($arrProductOptions) ? true : false;
+        $objTemplate->hasOptions = !empty($arrProductOptions);
         $objTemplate->enctype = $this->hasUpload ? 'multipart/form-data' : 'application/x-www-form-urlencoded';
         $objTemplate->formId = $this->formSubmit;
         $objTemplate->action = ampersand(\Environment::get('request'), true);
@@ -964,7 +976,7 @@ class Standard extends \Controller implements IsotopeProduct
 
                 if ($objBasePrice->numRows)
                 {
-                    $strBuffer = sprintf($objBasePrice->label, Isotope::formatPriceWithCurrency($this->price / $varValue['value'] * $objBasePrice->amount), $varValue['value']);
+                    $strBuffer = sprintf(Isotope::translate($objBasePrice->label), Isotope::formatPriceWithCurrency($this->price / $varValue['value'] * $objBasePrice->amount), $varValue['value']);
                 }
             }
         }
@@ -1131,34 +1143,38 @@ class Standard extends \Controller implements IsotopeProduct
 
             $arrField = $this->prepareForWidget($arrData, $strField, $arrData['default']);
 
-            // Unset if no variant has this option
-            foreach ($arrField['options'] as $k => $option)
+            // Necessary, because prepareForData can unset the options
+            if (is_array($arrData['options']))
             {
-                // Keep groups and blankOptionLabels
-                if (!$option['group'] && $option['value'] != '')
+                // Unset if no variant has this option
+                foreach ($arrField['options'] as $k => $option)
                 {
-                    // Unset option if no attribute has this option at all (in any enabled variant)
-                    if (!in_array((string) $option['value'], (array) $this->arrVariantOptions['attributes'][$strField], true))
+                    // Keep groups and blankOptionLabels
+                    if (!$option['group'] && $option['value'] != '')
                     {
-                        unset($arrField['options'][$k]);
-                    }
-
-                    // Check each variant if it is found trough the url
-                    else
-                    {
-                        $blnValid = false;
-
-                        foreach ((array) $this->arrVariantOptions['options'] as $arrVariant)
-                        {
-                            if ($arrVariant[$strField] == $option['value'] && count($this->arrVariantOptions['current']) == count(array_intersect_assoc($this->arrVariantOptions['current'], $arrVariant)))
-                            {
-                                $blnValid = true;
-                            }
-                        }
-
-                        if (!$blnValid)
+                        // Unset option if no attribute has this option at all (in any enabled variant)
+                        if (!in_array((string) $option['value'], (array) $this->arrVariantOptions['attributes'][$strField], true))
                         {
                             unset($arrField['options'][$k]);
+                        }
+
+                        // Check each variant if it is found trough the url
+                        else
+                        {
+                            $blnValid = false;
+
+                            foreach ((array) $this->arrVariantOptions['options'] as $arrVariant)
+                            {
+                                if ($arrVariant[$strField] == $option['value'] && count($this->arrVariantOptions['current']) == count(array_intersect_assoc($this->arrVariantOptions['current'], $arrVariant)))
+                                {
+                                    $blnValid = true;
+                                }
+                            }
+
+                            if (!$blnValid)
+                            {
+                                unset($arrField['options'][$k]);
+                            }
                         }
                     }
                 }
@@ -1334,6 +1350,7 @@ class Standard extends \Controller implements IsotopeProduct
         $this->arrData['price'] = $arrPrice['price'];
         $this->arrData['tax_class'] = $arrPrice['tax_class'];
         $this->arrCache['from_price'] = $arrPrice['from_price'];
+        $this->arrCache['minimum_quantity'] = $arrPrice['min'];
 
         // Add "price_tiers" to attributes, so the field is available in the template
         if ($this->hasAdvancedPrices())
@@ -1447,6 +1464,11 @@ class Standard extends \Controller implements IsotopeProduct
             }
 
             $this->arrData[$attribute] = $arrData[$attribute];
+
+            if (in_array($attribute, $GLOBALS['ISO_CONFIG']['fetch_fallback']))
+            {
+                $this->arrData[$attribute.'_fallback'] = $arrData[$attribute.'_fallback'];
+            }
 
             if (is_array($this->arrCache) && isset($this->arrCache[$attribute]))
             {

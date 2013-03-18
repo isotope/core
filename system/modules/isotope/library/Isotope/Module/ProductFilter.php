@@ -198,7 +198,8 @@ class ProductFilter extends Module
         {
             if (\Input::get('keywords') != '' && \Input::get('keywords') != $GLOBALS['TL_LANG']['MSC']['defaultSearchText'])
             {
-                $arrKeywords = trimsplit(' ', \Input::get('keywords'));
+                $arrKeywords = trimsplit(' |-', \Input::get('keywords'));
+                $arrKeywords = array_filter(array_unique($arrKeywords));
 
                 foreach ($arrKeywords as $keyword)
                 {

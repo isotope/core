@@ -364,7 +364,7 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['iso_searchFields'] = array
     'exclude'                 => true,
     'inputType'               => 'checkboxWizard',
     'options_callback'          => array('Isotope\tl_module', 'getSearchFields'),
-    'eval'                      => array('multiple'=>true, 'tl_class'=>'w50 w50h'),
+    'eval'                      => array('multiple'=>true, 'tl_class'=>'clr w50 w50h'),
 );
 
 $GLOBALS['TL_DCA']['tl_module']['fields']['iso_searchAutocomplete'] = array

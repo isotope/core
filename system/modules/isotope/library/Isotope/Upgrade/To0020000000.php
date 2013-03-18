@@ -16,11 +16,13 @@ namespace Isotope\Upgrade;
 class To0020000000 extends \System
 {
 
-    public function run()
+    public function run($blnInstalled)
     {
-        $this->import('Database');
+        if ($blnInstalled) {
+            $this->import('Database');
 
-        $this->convertToClassType();
+            $this->convertToClassType();
+        }
     }
 
     /**

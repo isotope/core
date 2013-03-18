@@ -16,7 +16,7 @@
 
 #iso_ajaxBox {
     width:20%;
-    padding:24px;
+    padding:9px 50px 9px 24px;
     position:absolute;
     top:30px;
     left:40%;
@@ -27,7 +27,7 @@
     line-height: 18px;
     text-align:left;
     color:#000;
-    padding-right: 50px;
+    z-index: 9999;
 }
 
 #iso_ajaxBox.btnClose {
@@ -36,7 +36,7 @@
 }
 
 #iso_ajaxBox p {
-    margin:0;
+    margin:1em 0;
     padding:0;
 }
 
@@ -62,6 +62,7 @@
     top:0;
     left:0;
     background-color:#000;
+    z-index: 9998;
     -moz-opacity:0.5;
     opacity:0.5;
     _display:none;

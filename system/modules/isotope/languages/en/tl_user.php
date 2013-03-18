@@ -38,3 +38,8 @@ $GLOBALS['TL_LANG']['tl_user']['iso_groupp']            = array('Product group p
  * Legends
  */
 $GLOBALS['TL_LANG']['tl_user']['isotope_legend']        = 'Isotope eCommerce';
+
+/**
+ * Miscellaneous
+ */
+$GLOBALS['TL_LANG']['MSC']['rootPaste']                 = 'Access to root node';

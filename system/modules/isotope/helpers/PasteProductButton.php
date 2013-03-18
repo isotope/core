@@ -49,10 +49,7 @@ class PasteProductButton extends \Backend
         // make sure there's at least one product group
         if (!self::$blnHasGroup)
         {
-            if (\Isotope\Backend::createGeneralGroup())
-            {
-                $this->reload();
-            }
+            \Isotope\Backend::createGeneralGroup();
 
             self::$blnHasGroup = true;
         }

@@ -945,19 +945,13 @@ window.addEvent(\'domready\', function() {
         if ($this->noReload)
         {
             $return .= '
+
 <script>
 window.addEvent(\'domready\', function() {
   Backend.vScrollTo(($(\'' . $this->strTable . '\').getElement(\'label.error\').getPosition().y - 20));
 });
 </script>';
         }
-
-        $return .= '
-<script>
-window.addEvent(\'domready\', function() {
-  Isotope.removeProductFromStorage(' . $this->intId . ');
-});
-</script>';
 
         return $return;
     }
@@ -1245,14 +1239,7 @@ window.addEvent(\'domready\', function() {
         return '
 <div id="tl_buttons">
 <a href="'.$this->getReferer(true).'" class="header_back" title="'.specialchars($GLOBALS['TL_LANG']['MSC']['backBT']).'" accesskey="b" onclick="Backend.getScrollOffset();">'.$GLOBALS['TL_LANG']['MSC']['backBT'].'</a>
-</div>' . $return . '
-
-<script>
-window.addEvent(\'domready\', function() {
-  Isotope.purgeProductsStorage();
-});
-</script>'
-;
+</div>' . $return;
     }
 
 
@@ -1764,7 +1751,6 @@ window.addEvent(\'domready\', function() {
         {
             $return .= "
 <script>
-window.useProductsStorage=" . (\Input::get('act') == '' ? 'true' : 'false') . ";
 $(window).addEvents({
     'scroll': Isotope.loadDeferredProducts,
     'domready': Isotope.loadDeferredProducts,
@@ -1926,6 +1912,12 @@ $(window).addEvents({
         }
 
         static $session;
+        static $arrHasChildren;
+
+        if (null === $arrHasChildren)
+        {
+            $arrHasChildren = $this->Database->query("SELECT pid FROM " . $this->strTable . " WHERE pid>0 AND language=''")->fetchEach('pid');
+        }
 
         $session = $this->Session->getData();
         $node = ($this->strTable != $table) ? $this->strTable.'_'.$table.'_tree' : $this->strTable.'_tree';
@@ -1960,18 +1952,21 @@ $(window).addEvents({
         $childs = array();
         $childRows = array();
 
-        $objChilds = $this->Database->query("SELECT * FROM " . $table . " WHERE pid={$row['id']}" . ($this->strTable == $table ? " AND language='' AND id IN (" . implode(',', $this->products) . ") ORDER BY id=" . implode(' DESC, id=', $this->products) . " DESC" : " ORDER BY sorting"));
-
-        while ($objChilds->next())
+        if ($table != $strTable || in_array($row['id'], $arrHasChildren))
         {
-            $childs[] = $objChilds->id;
-            $childRows[] = $objChilds->row();
+            $objChilds = $this->Database->execute("SELECT * FROM " . $table . " WHERE pid={$row['id']}" . ($this->strTable == $table ? " AND language='' AND id IN (" . implode(',', $this->products) . ") ORDER BY " . $this->Database->findInSet('id', $this->products) . " DESC" : " ORDER BY sorting"));
+
+            while ($objChilds->next())
+            {
+                $childs[] = $objChilds->id;
+                $childRows[] = $objChilds->row();
+            }
         }
 
         // Check wether there are group child records
         if ($table != $this->strTable)
         {
-            $objChilds = $this->Database->query("SELECT * FROM " . $this->strTable . " WHERE gid={$row['id']} AND id IN (" . implode(',', $this->products) . ") ORDER BY id=" . implode(' DESC, id=', $this->products) . " DESC");
+            $objChilds = $this->Database->execute("SELECT * FROM " . $this->strTable . " WHERE gid={$row['id']} AND id IN (" . implode(',', $this->products) . ") ORDER BY " . $this->Database->findInSet('id', $this->products) . " DESC");
 
             if ($objChilds->numRows)
             {

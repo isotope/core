@@ -32,6 +32,7 @@ $GLOBALS['TL_DCA']['tl_iso_products'] = array
         'ctable'                    => array('tl_iso_downloads', 'tl_iso_product_categories', 'tl_iso_prices'),
         'onload_callback' => array
         (
+            array('Isotope\Backend', 'createGeneralGroup'),
             array('Isotope\ProductCallbacks', 'applyAdvancedFilters'),
             array('Isotope\ProductCallbacks', 'checkPermission'),
             array('Isotope\ProductCallbacks', 'buildPaletteString'),
@@ -163,7 +164,7 @@ $GLOBALS['TL_DCA']['tl_iso_products'] = array
                 'label'                => &$GLOBALS['TL_LANG']['tl_iso_products']['toggleVariants'],
                 'href'                => 'ptg=all',
                 'class'                => 'header_toggle isotope-tools',
-                'attributes'        => 'onclick="Backend.getScrollOffset(); Isotope.purgeProductsStorage();"',
+                'attributes'        => 'onclick="Backend.getScrollOffset();"',
                 'button_callback'    => array('Isotope\ProductCallbacks', 'toggleVariants')
             ),
             'groups' => array
@@ -235,7 +236,7 @@ $GLOBALS['TL_DCA']['tl_iso_products'] = array
                 'label'                => &$GLOBALS['TL_LANG']['tl_iso_products']['quick_edit'],
                 'href'                => 'key=quick_edit',
                 'icon'                => 'system/modules/isotope/assets/table-select-cells.png',
-                'button_callback'    => array('Isotope\ProductCallbacks', 'quickEditButton'),
+                'button_callback'    => array('Isotope\ProductCallbacks', 'variantsButton'),
                 'attributes'        => 'class="isotope-tools"',
             ),
             'generate' => array
@@ -243,7 +244,7 @@ $GLOBALS['TL_DCA']['tl_iso_products'] = array
                 'label'                => &$GLOBALS['TL_LANG']['tl_iso_products']['generate'],
                 'href'                => 'key=generate',
                 'icon'                => 'system/modules/isotope/assets/table-insert-row.png',
-                'button_callback'    => array('Isotope\ProductCallbacks', 'generateButton'),
+                'button_callback'    => array('Isotope\ProductCallbacks', 'variantsButton'),
                 'attributes'        => 'class="isotope-tools"',
             ),
             'related' => array

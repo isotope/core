@@ -25,6 +25,16 @@ class tl_iso_prices extends \Backend
 {
 
     /**
+     * Load default values for the DCA
+     */
+    public function initializeDCA()
+    {
+        // Set default tax class
+        $GLOBALS['TL_DCA']['tl_iso_prices']['fields']['tax_class']['default'] = (int) \Database::getInstance()->execute("SELECT id FROM tl_iso_tax_class WHERE fallback='1'")->id;
+    }
+
+
+    /**
      * List all price rows
      * @param array
      * @return string
@@ -39,7 +49,7 @@ class tl_iso_prices extends \Backend
         $this->import('Isotope\Isotope', 'Isotope');
 
         $arrTiers = array();
-        $objTiers = $this->Database->execute("SELECT * FROM tl_iso_price_tiers WHERE pid={$row['id']} ORDER BY min");
+        $objTiers = \Database::getInstance()->execute("SELECT * FROM tl_iso_price_tiers WHERE pid={$row['id']} ORDER BY min");
 
         while ($objTiers->next())
         {
@@ -83,8 +93,8 @@ class tl_iso_prices extends \Backend
             return array();
         }
 
-        $arrTiers = $this->Database->execute("SELECT min, price FROM tl_iso_price_tiers WHERE pid={$dc->id} ORDER BY min")
-                                   ->fetchAllAssoc();
+        $arrTiers = \Database::getInstance()->execute("SELECT min, price FROM tl_iso_price_tiers WHERE pid={$dc->id} ORDER BY min")
+                                            ->fetchAllAssoc();
 
         if (empty($arrTiers))
         {

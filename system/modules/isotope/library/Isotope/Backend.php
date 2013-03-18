@@ -536,9 +536,10 @@ class Backend extends Contao_Backend
     {
         $objDatabase = \Database::getInstance();
 
-        $objGroups = $objDatabase->executeUncached("SELECT COUNT(id) AS total FROM tl_iso_groups");
+        $blnHasGroups = $objDatabase->executeUncached("SELECT COUNT(id) AS total FROM tl_iso_groups")->total > 0;
+        $blnHasUnassigned = $objDatabase->executeUncached("SELECT COUNT(id) AS total FROM tl_iso_products WHERE pid=0 AND language='' AND gid=0")->total > 0;
 
-        if ($objGroups->total == 0)
+        if (!$blnHasGroups || $blnHasUnassigned)
         {
             $intGroup = $objDatabase->executeUncached("INSERT INTO tl_iso_groups (pid,sorting,tstamp,name) VALUES (0, 0, " . time() . ", '### GENERAL ###')")->insertId;
 
@@ -548,7 +549,36 @@ class Backend extends Contao_Backend
             // toggle (open) the new group
             \Session::getInstance()->set('tl_iso_products_tl_iso_groups_tree', array($intGroup=>1));
 
-            return true;
+            $objUser = BackendUser::getInstance();
+
+			if (TL_MODE == 'BE' && !$objUser->isAdmin)
+			{
+				// Add permissions on user level
+				if ($objUser->inherit == 'custom' || !$objUser->groups[0])
+				{
+					$arrAccess = deserialize($objUser->iso_groups);
+					$arrAccess[] = $intGroup;
+
+					Database::getInstance()->prepare("UPDATE tl_user SET iso_groups=? WHERE id=?")
+        								   ->execute(serialize($arrAccess), $objUser->id);
+				}
+
+				// Add permissions on group level
+				elseif ($objUser->groups[0] > 0)
+				{
+					$objGroup = Database::getInstance()->prepare("SELECT iso_groups FROM tl_user_group WHERE id=?")
+        											   ->limit(1)
+        											   ->executeUncached($objUser->groups[0]);
+
+					$arrAccess = deserialize($objGroup->iso_groups);
+					$arrAccess[] = $intGroup;
+
+					Database::getInstance()->prepare("UPDATE tl_user_group SET iso_groups=? WHERE id=?")
+					                       ->execute(serialize($arrAccess), $objUser->groups[0]);
+				}
+			}
+
+			Isotope::getInstance()->call('reload');
         }
 
         return false;
@@ -589,15 +619,7 @@ class Backend extends Contao_Backend
      */
     public static function getUploader()
     {
-        // Instantiate the uploader
-        $class = \BackendUser::getInstance()->uploader;
-
-        if (!class_exists($class))
-        {
-            $class = 'FileUpload';
-        }
-
-        return new $class();
+        return new FileUpload();
     }
 
     /**
