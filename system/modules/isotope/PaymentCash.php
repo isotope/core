@@ -44,6 +44,8 @@ class PaymentCash extends IsotopePayment
 	 */
 	public function processPayment()
 	{
+    	$objOrder->updateOrderStatus($this->new_order_status);
+
 		return true;
 	}
 }

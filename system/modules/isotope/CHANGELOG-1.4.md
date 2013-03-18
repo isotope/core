@@ -20,6 +20,7 @@ Version 1.4.? (2013-??-??)
 - Add default order status when installing Isotope eCommerce (#558)
 - Do not generate options container if no frontend attributes are available (#533)
 - Base price label can now be translated
+- New order status can also be set for cash payment method (#571)
 
 ### Fixed
 - Price was 0.00 if there is only one product variant
