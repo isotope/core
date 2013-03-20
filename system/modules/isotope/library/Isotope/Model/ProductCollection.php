@@ -15,6 +15,7 @@ namespace Isotope\Model;
 use Isotope\Isotope;
 use Isotope\Interfaces\IsotopeProduct;
 use Isotope\Interfaces\IsotopeProductCollection;
+use Isotope\Model\ProductCollectionItem;
 use Isotope\Product\Standard as StandardProduct;
 
 
@@ -455,54 +456,26 @@ abstract class ProductCollection extends \Model
             $this->arrCache['lastAdded'] = 0;
             $lastAdded = 0;
 
-            $objItems = $objDatabase->prepare("SELECT * FROM " . static::$ctable . " WHERE pid=?")->executeUncached($this->id);
+            if (($objItems = ProductCollectionItem::findByPid($this->id)) !== null) {
+                while ($objItems->next()) {
 
-            while ($objItems->next())
-            {
-                $objProductData = $objDatabase->prepare(StandardProduct::getSelectStatement() . "
-                                                            WHERE p1.language='' AND p1.id=?")
-                                              ->limit(1)
-                                              ->execute($objItems->product_id);
+                    $objProduct = $objItems->current()->getProduct();
 
-                $strClass = $GLOBALS['ISO_PRODUCT'][$objProductData->product_class]['class'];
-                $arrData = array('sku'=>$objItems->sku, 'name'=>$objItems->name, 'price'=>$objItems->price, 'tax_free_price'=>$objItems->tax_free_price);
-
-                if ($objProductData->numRows && $strClass != '')
-                {
-                    try
+                    // Remove product from collection if it is no longer available
+                    if (!$objProduct->isAvailable())
                     {
-                        $arrData = $this->blnLocked ? array_merge($objProductData->row(), $arrData) : $objProductData->row();
-                        $objProduct = new $strClass($arrData, deserialize($objItems->options), $this->blnLocked, $objItems->quantity);
+                        $this->deleteProduct($objProduct);
+                        continue;
                     }
-                    catch (Exception $e)
+
+                    if ($objItems->tstamp > $lastAdded)
                     {
-                        $objProduct = new StandardProduct($arrData, deserialize($objItems->options), $this->blnLocked, $objItems->quantity);
+                        $this->arrCache['lastAdded'] = $objItems->id;
+                        $lastAdded = $objItems->tstamp;
                     }
-                }
-                else
-                {
-                    $objProduct = new StandardProduct($arrData, deserialize($objItems->options), $this->blnLocked, $objItems->quantity);
-                }
 
-                // Remove product from collection if it is no longer available
-                if (!$objProduct->isAvailable())
-                {
-                    $objProduct->collection_id = $objItems->id;
-                    $this->deleteProduct($objProduct);
-                    continue;
+                    $this->arrProducts[] = $objProduct;
                 }
-
-                $objProduct->collection_id = $objItems->id;
-                $objProduct->tax_id = $objItems->tax_id;
-                $objProduct->reader_jumpTo_Override = $objItems->href_reader;
-
-                if ($objItems->tstamp > $lastAdded)
-                {
-                    $this->arrCache['lastAdded'] = $objItems->id;
-                    $lastAdded = $objItems->tstamp;
-                }
-
-                $this->arrProducts[] = $objProduct;
             }
         }
 
