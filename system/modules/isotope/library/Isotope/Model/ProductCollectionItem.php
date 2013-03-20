@@ -12,8 +12,6 @@
 
 namespace Isotope\Model;
 
-use Isotope\Product\Standard as StandardProduct;
-
 
 /**
  * ProductCollectionItem represents an item in a product collection.
