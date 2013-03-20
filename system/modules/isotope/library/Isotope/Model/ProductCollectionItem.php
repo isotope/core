@@ -45,8 +45,8 @@ class ProductCollectionItem extends \Model
 
         $arrData = array('sku'=>$this->sku, 'name'=>$this->name, 'price'=>$this->price, 'tax_free_price'=>$this->tax_free_price);
 
-        $objProductData = $objDatabase->prepare($strClass::getSelectStatement() . " WHERE p1.language='' AND p1.id=?")
-                                      ->execute($this->product_id);
+        $objProductData = \Database::getInstance()->prepare($strClass::getSelectStatement() . " WHERE p1.language='' AND p1.id=?")
+                                                  ->execute($this->product_id);
 
         if ($objProductData->numRows) {
             $arrData = $this->blnLocked ? array_merge($objProductData->row(), $arrData) : $objProductData->row();
