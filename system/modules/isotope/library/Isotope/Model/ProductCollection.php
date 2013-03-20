@@ -275,12 +275,6 @@ abstract class ProductCollection extends \Model
             $this->arrSurcharges = null;
         }
 
-        // We dont want $this->import() objects to be in arrSettings
-        elseif (is_object($varValue))
-        {
-            $this->$strKey = $varValue;
-        }
-
         // If there is a database field for that key, we store it there
         elseif (array_key_exists($strKey, $this->arrData) || \Database::getInstance()->fieldExists($strKey, static::$strTable))
         {
@@ -386,8 +380,8 @@ abstract class ProductCollection extends \Model
         {
             foreach ($GLOBALS['ISO_HOOKS']['saveCollection'] as $callback)
             {
-                $this->import($callback[0]);
-                $this->$callback[0]->$callback[1]($this);
+                $objCallback = \System::importStatic($callback[0]);
+                $objCallback->$callback[1]($this);
             }
         }
 
@@ -410,8 +404,8 @@ abstract class ProductCollection extends \Model
         {
             foreach ($GLOBALS['ISO_HOOKS']['deleteCollection'] as $callback)
             {
-                $this->import($callback[0]);
-                $blnRemove = $this->$callback[0]->$callback[1]($this);
+                $objCallback = \System::importStatic($callback[0]);
+                $blnRemove = $objCallback->$callback[1]($this);
 
                 if ($blnRemove === false)
                 {
@@ -546,8 +540,8 @@ abstract class ProductCollection extends \Model
         {
             foreach ($GLOBALS['ISO_HOOKS']['addProductToCollection'] as $callback)
             {
-                $this->import($callback[0]);
-                $intQuantity = $this->$callback[0]->$callback[1]($objProduct, $intQuantity, $this);
+                $objCallback = \System::importStatic($callback[0]);
+                $intQuantity = $objCallback->$callback[1]($objProduct, $intQuantity, $this);
             }
         }
 
@@ -630,8 +624,8 @@ abstract class ProductCollection extends \Model
         {
             foreach ($GLOBALS['ISO_HOOKS']['updateProductInCollection'] as $callback)
             {
-                $this->import($callback[0]);
-                $arrSet = $this->$callback[0]->$callback[1]($objProduct, $arrSet, $this);
+                $objCallback = \System::importStatic($callback[0]);
+                $arrSet = $objCallback->$callback[1]($objProduct, $arrSet, $this);
 
                 if (is_array($arrSet) && empty($arrSet))
                 {
@@ -685,8 +679,8 @@ abstract class ProductCollection extends \Model
         {
             foreach ($GLOBALS['ISO_HOOKS']['deleteProductFromCollection'] as $callback)
             {
-                $this->import($callback[0]);
-                $blnRemove = $this->$callback[0]->$callback[1]($objProduct, $this);
+                $objCallback = \System::importStatic($callback[0]);
+                $blnRemove = $objCallback->$callback[1]($objProduct, $this);
 
                 if ($blnRemove === false)
                 {
@@ -743,8 +737,8 @@ abstract class ProductCollection extends \Model
             {
                 foreach ($GLOBALS['ISO_HOOKS']['transferCollection'] as $callback)
                 {
-                    $this->import($callback[0]);
-                    $blnTransfer = $this->$callback[0]->$callback[1]($objOldItems, $objNewItems, $objCollection, $this, $blnTransfer);
+                    $objCallback = \System::importStatic($callback[0]);
+                    $blnTransfer = $objCallback->$callback[1]($objOldItems, $objNewItems, $objCollection, $this, $blnTransfer);
                 }
             }
 
@@ -799,8 +793,8 @@ abstract class ProductCollection extends \Model
         {
             foreach ($GLOBALS['ISO_HOOKS']['transferredCollection'] as $callback)
             {
-                $this->import($callback[0]);
-                $this->$callback[0]->$callback[1]($objCollection, $this, $arrIds);
+                $objCallback = \System::importStatic($callback[0]);
+                $objCallback->$callback[1]($objCollection, $this, $arrIds);
             }
         }
 
@@ -925,8 +919,8 @@ abstract class ProductCollection extends \Model
         {
             foreach ($GLOBALS['ISO_HOOKS']['generateCollection'] as $callback)
             {
-                $this->import($callback[0]);
-                $this->$callback[0]->$callback[1]($objTemplate, $arrItems, $this);
+                $objCallback = \System::importStatic($callback[0]);
+                $objCallback->$callback[1]($objTemplate, $arrItems, $this);
             }
         }
 
