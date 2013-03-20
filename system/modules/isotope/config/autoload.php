@@ -28,7 +28,6 @@ NamespaceClassLoader::addClassMap(array
     // DCA Helpers
     'Isotope\tl_iso_addresses'          => 'system/modules/isotope/classes/tl_iso_addresses.php',
     'Isotope\tl_iso_attributes'         => 'system/modules/isotope/classes/tl_iso_attributes.php',
-    'Isotope\tl_iso_collection'         => 'system/modules/isotope/classes/tl_iso_collection.php',
     'Isotope\tl_iso_config'             => 'system/modules/isotope/classes/tl_iso_config.php',
     'Isotope\tl_iso_downloads'          => 'system/modules/isotope/classes/tl_iso_downloads.php',
     'Isotope\tl_iso_groups'             => 'system/modules/isotope/classes/tl_iso_groups.php',
@@ -38,6 +37,7 @@ NamespaceClassLoader::addClassMap(array
     'Isotope\tl_iso_payment_modules'    => 'system/modules/isotope/classes/tl_iso_payment_modules.php',
     'Isotope\tl_iso_prices'             => 'system/modules/isotope/classes/tl_iso_prices.php',
     'Isotope\tl_iso_product_categories' => 'system/modules/isotope/classes/tl_iso_product_categories.php',
+    'Isotope\tl_iso_product_collection' => 'system/modules/isotope/classes/tl_iso_product_collection.php',
     'Isotope\tl_iso_products'           => 'system/modules/isotope/classes/tl_iso_products.php',
     'Isotope\tl_iso_producttypes'       => 'system/modules/isotope/classes/tl_iso_producttypes.php',
     'Isotope\tl_iso_related_products'   => 'system/modules/isotope/classes/tl_iso_related_products.php',

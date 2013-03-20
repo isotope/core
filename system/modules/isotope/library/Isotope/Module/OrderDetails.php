@@ -175,7 +175,7 @@ class OrderDetails extends Module
     {
         $time = time();
         $arrDownloads = array();
-        $objDownloads = $this->Database->prepare("SELECT p.*, c.* FROM tl_iso_collection_download c JOIN tl_iso_downloads p ON c.download_id=p.id WHERE c.pid=?")->execute($objProduct->collection_id);
+        $objDownloads = $this->Database->prepare("SELECT p.*, c.* FROM tl_iso_product_collection_download c JOIN tl_iso_downloads p ON c.download_id=p.id WHERE c.pid=?")->execute($objProduct->collection_id);
 
         while ($objDownloads->next())
         {
@@ -227,7 +227,7 @@ class OrderDetails extends Module
         {
             if (!$this->backend && $objDownload->downloads_remaining !== '')
             {
-                $this->Database->prepare("UPDATE tl_iso_collection_download SET downloads_remaining=? WHERE id=?")->execute(($objDownload->downloads_remaining-1), $objDownload->id);
+                $this->Database->prepare("UPDATE tl_iso_product_collection_download SET downloads_remaining=? WHERE id=?")->execute(($objDownload->downloads_remaining-1), $objDownload->id);
             }
 
             $this->sendFileToBrowser($strFile);

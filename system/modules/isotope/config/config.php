@@ -43,14 +43,14 @@ array_insert($GLOBALS['BE_MOD']['isotope'], 0, array
     ),
     'iso_orders' => array
     (
-        'tables'                    => array('tl_iso_collection', 'tl_iso_collection_product', 'tl_iso_collection_surcharge', 'tl_iso_collection_download'),
+        'tables'                    => array('tl_iso_product_collection', 'tl_iso_product_collection_item', 'tl_iso_product_collection_surcharge', 'tl_iso_product_collection_download'),
         'icon'                        => 'system/modules/isotope/assets/shopping-basket.png',
         'javascript'                => 'system/modules/isotope/assets/backend.min.js',
-        'export_emails'             => array('Isotope\tl_iso_collection', 'exportOrderEmails'),
-        'print_order'                => array('Isotope\tl_iso_collection', 'printInvoice'),
-        'print_invoices'            => array('Isotope\tl_iso_collection', 'printInvoices'),
-        'payment'                    => array('Isotope\tl_iso_collection', 'paymentInterface'),
-        'shipping'                    => array('Isotope\tl_iso_collection', 'shippingInterface'),
+        'export_emails'             => array('Isotope\tl_iso_product_collection', 'exportOrderEmails'),
+        'print_order'                => array('Isotope\tl_iso_product_collection', 'printInvoice'),
+        'print_invoices'            => array('Isotope\tl_iso_product_collection', 'printInvoices'),
+        'payment'                    => array('Isotope\tl_iso_product_collection', 'paymentInterface'),
+        'shipping'                    => array('Isotope\tl_iso_product_collection', 'shippingInterface'),
     ),
     'iso_setup' => array
     (
@@ -195,8 +195,8 @@ $GLOBALS['BE_FFL']['productTree']            = 'Isotope\Widget\ProductTree';
  */
 $GLOBALS['TL_MODELS']['tl_iso_config'] = 'Isotope\Model\Config';
 $GLOBALS['TL_MODELS']['tl_iso_addresses'] = 'Isotope\Model\Address';
-$GLOBALS['TL_MODELS']['tl_iso_collection'] = 'Isotope\Model\ProductCollection';
-$GLOBALS['TL_MODELS']['tl_iso_collection_surcharge'] = 'Isotope\Model\ProductCollectionSurcharge';
+$GLOBALS['TL_MODELS']['tl_iso_product_collection']              = 'Isotope\Model\ProductCollection';
+$GLOBALS['TL_MODELS']['tl_iso_product_collection_surcharge']    = 'Isotope\Model\ProductCollectionSurcharge';
 $GLOBALS['TL_MODELS']['tl_iso_tax_class'] = 'Isotope\Model\TaxClass';
 $GLOBALS['TL_MODELS']['tl_iso_tax_rate'] = 'Isotope\Model\TaxRate';
 $GLOBALS['TL_MODELS']['tl_iso_payment_modules'] = 'Isotope\Model\Payment';

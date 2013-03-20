@@ -539,10 +539,10 @@ CREATE TABLE `tl_iso_orderstatus` (
 -- --------------------------------------------------------
 
 --
--- Table `tl_iso_collection`
+-- Table `tl_iso_product_collection`
 --
 
-CREATE TABLE `tl_iso_collection` (
+CREATE TABLE `tl_iso_product_collection` (
   `id` int(10) unsigned NOT NULL auto_increment,
   `tstamp` int(10) unsigned NOT NULL default '0',
   `type` varchar(32) NOT NULL default '',
@@ -579,10 +579,10 @@ CREATE TABLE `tl_iso_collection` (
 -- --------------------------------------------------------
 
 --
--- Table `tl_iso_collection_product`
+-- Table `tl_iso_product_collection_item`
 --
 
-CREATE TABLE `tl_iso_collection_product` (
+CREATE TABLE `tl_iso_product_collection_item` (
   `id` int(10) unsigned NOT NULL auto_increment,
   `pid` int(10) unsigned NOT NULL default '0',
   `tstamp` int(10) unsigned NOT NULL default '0',
@@ -603,10 +603,10 @@ CREATE TABLE `tl_iso_collection_product` (
 -- --------------------------------------------------------
 
 --
--- Table `tl_iso_collection_surcharge`
+-- Table `tl_iso_product_collection_surcharge`
 --
 
-CREATE TABLE `tl_iso_collection_surcharge` (
+CREATE TABLE `tl_iso_product_collection_surcharge` (
   `id` int(10) unsigned NOT NULL auto_increment,
   `pid` int(10) unsigned NOT NULL default '0',
   `sorting` int(10) unsigned NOT NULL default '0',
@@ -627,10 +627,10 @@ CREATE TABLE `tl_iso_collection_surcharge` (
 -- --------------------------------------------------------
 
 --
--- Table `tl_iso_collection_download`
+-- Table `tl_iso_product_collection_download`
 --
 
-CREATE TABLE `tl_iso_collection_download` (
+CREATE TABLE `tl_iso_product_collection_download` (
   `id` int(10) unsigned NOT NULL auto_increment,
   `pid` int(10) unsigned NOT NULL default '0',
   `tstamp` int(10) unsigned NOT NULL default '0',

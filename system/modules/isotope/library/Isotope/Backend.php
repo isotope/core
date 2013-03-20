@@ -517,7 +517,7 @@ class Backend extends Contao_Backend
         }
 
         $arrMessages = array();
-        $objOrders = $this->Database->query("SELECT COUNT(*) AS total, s.name FROM tl_iso_collection c LEFT JOIN tl_iso_orderstatus s ON c.order_status=s.id WHERE c.type='Order' AND s.welcomescreen='1' GROUP BY s.id");
+        $objOrders = $this->Database->query("SELECT COUNT(*) AS total, s.name FROM tl_iso_product_collection c LEFT JOIN tl_iso_orderstatus s ON c.order_status=s.id WHERE c.type='Order' AND s.welcomescreen='1' GROUP BY s.id");
 
         while ($objOrders->next())
         {

@@ -34,13 +34,13 @@ abstract class ProductCollection extends \Model
      * Name of the current table
      * @var string
      */
-    protected static $strTable = 'tl_iso_collection';
+    protected static $strTable = 'tl_iso_product_collection';
 
     /**
      * Name of the child table
      * @var string
      */
-    protected static $ctable = 'tl_iso_collection_product';
+    protected static $ctable = 'tl_iso_product_collection_item';
 
     /**
      * Define if data should be threaded as "locked", eg. not apply discount rules to product prices
@@ -522,6 +522,32 @@ abstract class ProductCollection extends \Model
         }
 
         return $this->arrProducts;
+    }
+
+
+    /**
+     * Check if a given product is already in the collection
+     * @param  IsotopeProduct
+     * @param  bool
+     * @return bool
+     */
+    public function hasProduct(IsotopeProduct $objProduct, $blnIdentical=true)
+    {
+        // !HOOK: additional functionality to check if product is in collection
+        if (isset($GLOBALS['ISO_HOOKS']['hasProductInCollection']) && is_array($GLOBALS['ISO_HOOKS']['hasProductInCollection']))
+        {
+            foreach ($GLOBALS['ISO_HOOKS']['hasProductInCollection'] as $callback)
+            {
+                $objCallback = \System::importStatic($callback[0]);
+                $intQuantity = $objCallback->$callback[1]($objProduct, $intQuantity, $this);
+            }
+        }
+
+        if (true === $blnIdentical) {
+
+        } else {
+
+        }
     }
 
 

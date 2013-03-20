@@ -303,7 +303,7 @@ class IsotopeRules extends \Controller
      */
     public function cleanRuleUsages(&$objModule)
     {
-        $this->Database->query("DELETE FROM tl_iso_rule_usage WHERE pid=(SELECT id FROM tl_iso_collection WHERE type='Order' AND source_collection_id=".(int) Isotope::getCart()->id.")");
+        $this->Database->query("DELETE FROM tl_iso_rule_usage WHERE pid=(SELECT id FROM tl_iso_product_collection WHERE type='Order' AND source_collection_id=".(int) Isotope::getCart()->id.")");
 
         return '';
     }
@@ -340,11 +340,11 @@ class IsotopeRules extends \Controller
 
 
         // Limits
-        $arrProcedures[] = "(limitPerConfig=0 OR limitPerConfig>(SELECT COUNT(*) FROM tl_iso_rule_usage WHERE pid=r.id AND config_id=".(int) Isotope::getConfig()->id." AND order_id NOT IN (SELECT id FROM tl_iso_collection WHERE type='Order' AND source_collection_id=".(int) Isotope::getCart()->id.")))";
+        $arrProcedures[] = "(limitPerConfig=0 OR limitPerConfig>(SELECT COUNT(*) FROM tl_iso_rule_usage WHERE pid=r.id AND config_id=".(int) Isotope::getConfig()->id." AND order_id NOT IN (SELECT id FROM tl_iso_product_collection WHERE type='Order' AND source_collection_id=".(int) Isotope::getCart()->id.")))";
 
         if (FE_USER_LOGGED_IN === true && TL_MODE=='FE')
         {
-            $arrProcedures[] = "(limitPerMember=0 OR limitPerMember>(SELECT COUNT(*) FROM tl_iso_rule_usage WHERE pid=r.id AND member_id=".(int) $this->User->id." AND order_id NOT IN (SELECT id FROM tl_iso_collection WHERE type='Order' AND source_collection_id=".(int) Isotope::getCart()->id.")))";
+            $arrProcedures[] = "(limitPerMember=0 OR limitPerMember>(SELECT COUNT(*) FROM tl_iso_rule_usage WHERE pid=r.id AND member_id=".(int) $this->User->id." AND order_id NOT IN (SELECT id FROM tl_iso_product_collection WHERE type='Order' AND source_collection_id=".(int) Isotope::getCart()->id.")))";
         }
 
         // Store config restrictions

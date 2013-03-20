@@ -227,7 +227,7 @@ class Checkout extends Module
 
         if ($this->strCurrentStep == 'failed')
         {
-            $this->Database->prepare("UPDATE tl_iso_collection SET order_status=? WHERE source_collection_id=?")->execute(Isotope::getConfig()->orderstatus_error, Isotope::getCart()->id);
+            $this->Database->prepare("UPDATE tl_iso_product_collection SET order_status=? WHERE source_collection_id=?")->execute(Isotope::getConfig()->orderstatus_error, Isotope::getCart()->id);
             $this->Template->mtype = 'error';
             $this->Template->message = strlen(\Input::get('reason')) ? \Input::get('reason') : $GLOBALS['TL_LANG']['ERR']['orderFailed'];
             $this->strCurrentStep = 'review';
