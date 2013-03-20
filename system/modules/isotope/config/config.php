@@ -193,14 +193,15 @@ $GLOBALS['BE_FFL']['productTree']            = 'Isotope\Widget\ProductTree';
 /**
  * Models
  */
-$GLOBALS['TL_MODELS']['tl_iso_config'] = 'Isotope\Model\Config';
-$GLOBALS['TL_MODELS']['tl_iso_addresses'] = 'Isotope\Model\Address';
+$GLOBALS['TL_MODELS']['tl_iso_config']                          = 'Isotope\Model\Config';
+$GLOBALS['TL_MODELS']['tl_iso_addresses']                       = 'Isotope\Model\Address';
 $GLOBALS['TL_MODELS']['tl_iso_product_collection']              = 'Isotope\Model\ProductCollection';
+$GLOBALS['TL_MODELS']['tl_iso_product_collection_item']         = 'Isotope\Model\ProductCollectionItem';
 $GLOBALS['TL_MODELS']['tl_iso_product_collection_surcharge']    = 'Isotope\Model\ProductCollectionSurcharge';
-$GLOBALS['TL_MODELS']['tl_iso_tax_class'] = 'Isotope\Model\TaxClass';
-$GLOBALS['TL_MODELS']['tl_iso_tax_rate'] = 'Isotope\Model\TaxRate';
-$GLOBALS['TL_MODELS']['tl_iso_payment_modules'] = 'Isotope\Model\Payment';
-$GLOBALS['TL_MODELS']['tl_iso_shipping_modules'] = 'Isotope\Model\Shipping';
+$GLOBALS['TL_MODELS']['tl_iso_tax_class']                       = 'Isotope\Model\TaxClass';
+$GLOBALS['TL_MODELS']['tl_iso_tax_rate']                        = 'Isotope\Model\TaxRate';
+$GLOBALS['TL_MODELS']['tl_iso_payment_modules']                 = 'Isotope\Model\Payment';
+$GLOBALS['TL_MODELS']['tl_iso_shipping_modules']                = 'Isotope\Model\Shipping';
 
 
 /**
