@@ -136,7 +136,7 @@ $GLOBALS['ISO_MOD'] = array
         ),
         'orderstatus' => array
         (
-            'tables'                    => array('tl_iso_collectiontatus'),
+            'tables'                    => array('tl_iso_orderstatus'),
             'icon'                        => 'system/modules/isotope/assets/traffic-light.png',
         ),
     )
