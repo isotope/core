@@ -108,8 +108,6 @@ abstract class ProductCollection extends \Model
         if (!$this->blnLocked) {
             register_shutdown_function(array($this, 'saveDatabase'));
         }
-
-        $this->Isotope = \System::importStatic('Isotope\Isotope');
     }
 
 
@@ -872,9 +870,9 @@ abstract class ProductCollection extends \Model
                 'name'              => $objProduct->name,
                 'quantity'          => $objProduct->quantity_requested,
                 'price'             => $objProduct->formatted_price,
-                'tax_free_price'    => $this->Isotope->formatPriceWithCurrency($objProduct->tax_free_price),
+                'tax_free_price'    => Isotope::formatPriceWithCurrency($objProduct->tax_free_price),
                 'total'             => $objProduct->formatted_total_price,
-                'tax_free_total'    => $this->Isotope->formatPriceWithCurrency($objProduct->tax_free_total_price),
+                'tax_free_total'    => Isotope::formatPriceWithCurrency($objProduct->tax_free_total_price),
                 'tax_id'            => $objProduct->tax_id,
             );
         }
