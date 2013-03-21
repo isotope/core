@@ -34,6 +34,31 @@ class ProductCollectionItem extends \Model
      */
     protected $objProduct;
 
+    /**
+     * True if product collection is locked
+     * @var bool
+     */
+    protected $blnLocked = false;
+
+
+    /**
+     * Return true if product collection item is locked
+     */
+    public function isLocked()
+    {
+        return $this->blnLocked;
+    }
+
+
+    /**
+     * Lock item, necessary if product collection is locked
+     */
+    public function lock()
+    {
+        $this->blnLocked = true;
+        $this->objProduct = null;
+    }
+
 
     /**
      * Get the product related to this item

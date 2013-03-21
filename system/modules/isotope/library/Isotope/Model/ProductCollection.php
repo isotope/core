@@ -459,6 +459,10 @@ abstract class ProductCollection extends \Model
             if (($objItems = ProductCollectionItem::findByPid($this->id)) !== null) {
                 while ($objItems->next()) {
 
+                    if ($this->isLocked()) {
+                        $objItems->current()->lock();
+                    }
+
                     $objProduct = $objItems->current()->getProduct();
 
                     // Remove product from collection if it is no longer available
