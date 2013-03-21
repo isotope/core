@@ -91,4 +91,64 @@ class ProductCollectionItem extends \Model
 
         return $this->objProduct;
     }
+
+
+    /**
+     * Get product SKU. Automatically falls back to the collection item table if product is not found.
+     * @return string;
+     */
+    public function getSku()
+    {
+        $objProduct = $this->getProduct();
+
+        return (string) (null === $objProduct || $this->isLocked()) ? $this->sku : $objProduct->sku;
+    }
+
+
+    /**
+     * Get product name. Automatically falls back to the collection item table if product is not found.
+     * @return string;
+     */
+    public function getName()
+    {
+        $objProduct = $this->getProduct();
+
+        return (string) (null === $objProduct || $this->isLocked()) ? $this->name : $objProduct->name;
+    }
+
+
+    /**
+     * Get product options. Automatically falls back to the collection item table if product is not found.
+     * @return string;
+     */
+    public function getOptions()
+    {
+        $objProduct = $this->getProduct();
+
+        return (string) (null === $objProduct || $this->isLocked()) ? deserialize($this->options) : $objProduct->getOptions(true);
+    }
+
+
+    /**
+     * Get product price. Automatically falls back to the collection item table if product is not found.
+     * @return string;
+     */
+    public function getPrice()
+    {
+        $objProduct = $this->getProduct();
+
+        return (string) (null === $objProduct || $this->isLocked()) ? $this->price : $objProduct->price;
+    }
+
+
+    /**
+     * Get tax free product price. Automatically falls back to the collection item table if product is not found.
+     * @return string;
+     */
+    public function getTaxFreePrice()
+    {
+        $objProduct = $this->getProduct();
+
+        return (string) (null === $objProduct || $this->isLocked()) ? $this->tax_free_price : $objProduct->tax_free_price;
+    }
 }
