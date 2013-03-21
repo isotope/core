@@ -92,6 +92,19 @@ class ProductCollectionItem extends \Model
 
 
     /**
+     * Return boolean flag if product could be loaded
+     * @return bool
+     */
+    public function hasProduct()
+    {
+        // Load product if necessary
+        $this->getProduct();
+
+        return (false !== $this->objProduct);
+    }
+
+
+    /**
      * Get product SKU. Automatically falls back to the collection item table if product is not found.
      * @return string;
      */
