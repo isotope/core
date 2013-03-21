@@ -30,7 +30,7 @@ class ProductCollectionItem extends \Model
 
     /**
      * Cache the current product
-     * @var IsotopeProduct
+     * @var IsotopeProduct|false
      */
     protected $objProduct;
 
@@ -74,19 +74,17 @@ class ProductCollectionItem extends \Model
                 $strClass = 'Isotope\Product\Standard';
             }
 
-            $arrData = array('sku'=>$this->sku, 'name'=>$this->name, 'price'=>$this->price, 'tax_free_price'=>$this->tax_free_price);
-
             $objProductData = \Database::getInstance()->prepare($strClass::getSelectStatement() . " WHERE p1.language='' AND p1.id=?")
                                                       ->execute($this->product_id);
 
             if ($objProductData->numRows) {
-                $arrData = $this->blnLocked ? array_merge($objProductData->row(), $arrData) : $objProductData->row();
+                $this->objProduct = new $strClass($objProductData->row(), deserialize($this->options), $this->blnLocked, $this->quantity);
+                $this->objProduct->collection_id = $this->id;
+                $this->objProduct->tax_id = $this->tax_id;
+                $this->objProduct->reader_jumpTo_Override = $this->href_reader;
+            } else {
+                $this->objProduct = false;
             }
-
-            $this->objProduct = new $strClass($arrData, deserialize($this->options), $this->blnLocked, $this->quantity);
-            $this->objProduct->collection_id = $this->id;
-            $this->objProduct->tax_id = $this->tax_id;
-            $this->objProduct->reader_jumpTo_Override = $this->href_reader;
         }
 
         return $this->objProduct;
