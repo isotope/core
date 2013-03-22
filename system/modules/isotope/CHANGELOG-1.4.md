@@ -4,6 +4,9 @@ Isotope eCommerce Changelog
 Version 1.4.1 (????-??-??)
 ----------------------------
 
+### Fixed
+- Fixed sending e-mails did not work in PHP < 5.3 (#576)
+
 
 Version 1.4.0 (2013-03-18)
 ----------------------------
