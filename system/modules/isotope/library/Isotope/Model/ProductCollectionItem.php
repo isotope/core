@@ -64,9 +64,9 @@ class ProductCollectionItem extends \Model
      * Get the product related to this item
      * @return IsotopeProduct|null
      */
-    public function getProduct()
+    public function getProduct($blnNoCache=false)
     {
-        if (null === $this->objProduct) {
+        if (null === $this->objProduct || true === $blnNoCache) {
 
             $strClass = $GLOBALS['ISO_PRODUCT'][$this->type]['class'];
 
