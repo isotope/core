@@ -87,7 +87,7 @@ class ProductCollectionItem extends \Model
             }
         }
 
-        return $this->objProduct;
+        return false === $this->objProduct ? null : $this->objProduct;
     }
 
 
@@ -97,10 +97,7 @@ class ProductCollectionItem extends \Model
      */
     public function hasProduct()
     {
-        // Load product if necessary
-        $this->getProduct();
-
-        return (false !== $this->objProduct);
+        return (null !== $this->getProduct());
     }
 
 
