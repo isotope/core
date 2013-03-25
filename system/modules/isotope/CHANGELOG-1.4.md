@@ -1,14 +1,14 @@
 Isotope eCommerce Changelog
 ===========================
 
-Version 1.4.1 (????-??-??)
+Version 1.4.1 (2013-0?-??)
 ----------------------------
 
 ### Improved
 - Product object is now also available in the product list template
 
 ### Fixed
-- Fixed sending e-mails did not work in PHP < 5.3 (#576)
+- Sending e-mails did not work in PHP < 5.3 (#576)
 
 
 Version 1.4.0 (2013-03-18)
