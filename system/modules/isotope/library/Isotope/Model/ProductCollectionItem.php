@@ -107,9 +107,7 @@ class ProductCollectionItem extends \Model
      */
     public function getSku()
     {
-        $objProduct = $this->getProduct();
-
-        return (string) (null === $objProduct || $this->isLocked()) ? $this->sku : $objProduct->sku;
+        return (string) ($this->isLocked() || !$this->hasProduct()) ? $this->sku : $this->getProduct()->sku;
     }
 
 
@@ -119,9 +117,7 @@ class ProductCollectionItem extends \Model
      */
     public function getName()
     {
-        $objProduct = $this->getProduct();
-
-        return (string) (null === $objProduct || $this->isLocked()) ? $this->name : $objProduct->name;
+        return (string) ($this->isLocked() || !$this->hasProduct()) ? $this->name : $this->getProduct()->name;
     }
 
 
@@ -131,9 +127,7 @@ class ProductCollectionItem extends \Model
      */
     public function getOptions()
     {
-        $objProduct = $this->getProduct();
-
-        return (string) (null === $objProduct || $this->isLocked()) ? deserialize($this->options) : $objProduct->getOptions(true);
+        return (string) ($this->isLocked() || !$this->hasProduct()) ? deserialize($this->options) : $this->getProduct()->getOptions(true);
     }
 
 
@@ -143,9 +137,7 @@ class ProductCollectionItem extends \Model
      */
     public function getPrice()
     {
-        $objProduct = $this->getProduct();
-
-        return (string) (null === $objProduct || $this->isLocked()) ? $this->price : $objProduct->price;
+        return (string) ($this->isLocked() || !$this->hasProduct()) ? $this->price : $this->getProduct()->price;
     }
 
 
@@ -155,8 +147,6 @@ class ProductCollectionItem extends \Model
      */
     public function getTaxFreePrice()
     {
-        $objProduct = $this->getProduct();
-
-        return (string) (null === $objProduct || $this->isLocked()) ? $this->tax_free_price : $objProduct->tax_free_price;
+        return (string) ($this->isLocked() || !$this->hasProduct()) ? $this->tax_free_price : $this->getProduct()->tax_free_price;
     }
 }
