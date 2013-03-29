@@ -32,7 +32,7 @@ class tl_iso_product_categories extends \Backend
     public function listRows($row)
     {
         $this->loadDataContainer('tl_iso_products');
-        $this->loadLanguageFile('tl_iso_products');
+        \System::loadLanguageFile('tl_iso_products');
 
         $objProduct = $this->Database->prepare("SELECT * FROM tl_iso_products WHERE id=?")->limit(1)->execute($row['pid']);
 

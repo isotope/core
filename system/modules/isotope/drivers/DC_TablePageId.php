@@ -572,7 +572,7 @@ class DC_TablePageId extends \DC_Table
         }
 
         // Load language file and data container array of the parent table
-        $this->loadLanguageFile($this->ptable);
+        \System::loadLanguageFile($this->ptable);
         $this->loadDataContainer($this->ptable);
 
         $return = '

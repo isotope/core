@@ -300,7 +300,7 @@ class AttributeWizard extends \Widget
         $this->import('Database');
         $this->loadDataContainer('tl_iso_attributes');
         $this->loadDataContainer('tl_iso_products');
-        $this->loadLanguageFile('tl_iso_products');
+        \System::loadLanguageFile('tl_iso_products');
 
         $arrAttributes = array();
         $arrDca = $GLOBALS['TL_DCA']['tl_iso_products']['fields'];

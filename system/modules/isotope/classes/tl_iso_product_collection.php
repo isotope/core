@@ -186,7 +186,7 @@ class tl_iso_product_collection extends \Backend
             return '<div class="tl_gerror">No address data available.</div>';
         }
 
-        $this->loadLanguageFile('tl_iso_addresses');
+        \System::loadLanguageFile('tl_iso_addresses');
         $this->loadDataContainer('tl_iso_addresses');
 
         $strBuffer = '

@@ -77,7 +77,7 @@ class FieldWizard extends \Widget
                 break;
 
             case 'table':
-                $this->loadLanguageFile($varValue);
+                \System::loadLanguageFile($varValue);
                 $this->loadDataContainer($varValue);
 
                 $this->arrOptions = array();

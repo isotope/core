@@ -14,7 +14,7 @@
  */
 
 
-$this->loadLanguageFile('tl_iso_groups');
+\System::loadLanguageFile('tl_iso_groups');
 
 /**
  * Add the Isotope style sheet

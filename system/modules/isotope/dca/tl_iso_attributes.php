@@ -18,7 +18,7 @@
 /**
  * Load tl_iso_products language file for field legends
  */
-$this->loadLanguageFile('tl_iso_products');
+\System::loadLanguageFile('tl_iso_products');
 
 
 /**

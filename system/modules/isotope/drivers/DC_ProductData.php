@@ -1546,7 +1546,7 @@ window.addEvent(\'domready\', function() {
             $gtable = $GLOBALS['TL_DCA'][$this->strTable]['config']['gtable'];
             $treeClass = 'tl_tree_xtnd tl_productdata';
 
-            $this->loadLanguageFile($gtable);
+            \System::loadLanguageFile($gtable);
             $this->loadDataContainer($gtable);
 
             // Call onload_callback (e.g. to check permissions)
@@ -1830,7 +1830,7 @@ $(window).addEvents({
         {
             $table = $GLOBALS['TL_DCA'][$this->strTable]['config']['gtable'];
 
-            $this->loadLanguageFile($table);
+            \System::loadLanguageFile($table);
             $this->loadDataContainer($table);
 
             $blnPtable = true;

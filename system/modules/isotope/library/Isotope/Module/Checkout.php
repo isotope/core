@@ -1201,7 +1201,7 @@ class Checkout extends Module
     {
         $arrWidgets = array();
 
-        $this->loadLanguageFile('tl_iso_addresses');
+        \System::loadLanguageFile('tl_iso_addresses');
         $this->loadDataContainer('tl_iso_addresses');
 
         $arrFields = ($strAddressType == 'billing_address' ? Isotope::getConfig()->billing_fields : Isotope::getConfig()->shipping_fields);

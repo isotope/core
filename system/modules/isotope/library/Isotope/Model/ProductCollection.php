@@ -847,7 +847,7 @@ abstract class ProductCollection extends \Model
         // Load language files for the order
         if ($this->language != '')
         {
-            $this->loadLanguageFile('default', $this->language);
+            \System::loadLanguageFile('default', $this->language);
         }
 
         $objTemplate = new \Isotope\Template($this->strTemplate);

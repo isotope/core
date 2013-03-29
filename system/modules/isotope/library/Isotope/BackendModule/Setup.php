@@ -157,7 +157,7 @@ class Setup extends \BackendModule
             }
 
             // Load the language and DCA file
-            $this->loadLanguageFile($strTable);
+            \System::loadLanguageFile($strTable);
             $this->loadDataContainer($strTable);
 
             // Include all excluded fields which are allowed for the current user

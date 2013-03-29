@@ -41,7 +41,7 @@ class Address extends \Model
         if (!is_array($GLOBALS['ISO_ADR']))
         {
             Isotope::getInstance()->call('loadDataContainer', 'tl_iso_addresses');
-            $this->loadLanguageFile('addresses');
+            \System::loadLanguageFile('addresses');
         }
     }
 
@@ -108,7 +108,7 @@ class Address extends \Model
             {
                 if (!is_array($GLOBALS['TL_LANG']['DIV']))
                 {
-                    $this->loadLanguageFile('subdivisions');
+                    \System::loadLanguageFile('subdivisions');
                 }
 
                 list($country, $subdivion) = explode('-', $this->subdivision);

@@ -18,7 +18,7 @@
  * Load tl_iso_products data container and language files
  */
 $this->loadDataContainer('tl_iso_products');
-$this->loadLanguageFile('tl_iso_products');
+\System::loadLanguageFile('tl_iso_products');
 
 
 /**

@@ -671,7 +671,7 @@ class tl_iso_rules extends \Backend
         if (\Input::get('act') == 'edit')
         {
             $this->loadDataContainer('tl_iso_products');
-            $this->loadLanguageFile('tl_iso_products');
+            \System::loadLanguageFile('tl_iso_products');
 
             $objRule = $this->Database->execute("SELECT * FROM tl_iso_rules WHERE id=".(int) $dc->id);
 

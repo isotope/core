@@ -82,10 +82,10 @@ class ProductTree extends \Widget
         parent::__construct($arrAttributes);
 
         $this->loadDataContainer('tl_iso_products');
-        $this->loadLanguageFile('tl_iso_products');
+        \System::loadLanguageFile('tl_iso_products');
 
         $this->loadDataContainer('tl_iso_groups');
-        $this->loadLanguageFile('tl_iso_groups');
+        \System::loadLanguageFile('tl_iso_groups');
 
         $this->import('Database');
         $this->import('BackendUser', 'User');

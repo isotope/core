@@ -49,7 +49,7 @@ class Backend extends Contao_Backend
     {
         if (!is_array($GLOBALS['TL_LANG']['DIV']))
         {
-            $this->loadLanguageFile('subdivisions');
+            \System::loadLanguageFile('subdivisions');
         }
 
         return $GLOBALS['TL_LANG']['DIV'];

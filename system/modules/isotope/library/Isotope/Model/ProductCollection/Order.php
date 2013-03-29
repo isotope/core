@@ -288,7 +288,7 @@ class Order extends ProductCollection implements IsotopeProductCollection
             // Set the current system to the language when the user placed the order.
             // This will result in correct e-mails and payment description.
             $GLOBALS['TL_LANGUAGE'] = $this->language;
-            $this->loadLanguageFile('default');
+            \System::loadLanguageFile('default');
 
             // Initialize system
             Isotope::overrideConfig($this->config_id);

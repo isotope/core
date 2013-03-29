@@ -87,7 +87,7 @@ class AddressBook extends Module
      */
     protected function compile()
     {
-        $this->loadLanguageFile('tl_iso_addresses');
+        \System::loadLanguageFile('tl_iso_addresses');
         $this->loadDataContainer('tl_iso_addresses');
 
         // Call onload_callback (e.g. to check permissions)
@@ -176,7 +176,7 @@ class AddressBook extends Module
      */
     protected function edit($intAddressId=0)
     {
-        $this->loadLanguageFile('tl_member');
+        \System::loadLanguageFile('tl_member');
 
         if (!strlen($this->memberTpl))
         {
