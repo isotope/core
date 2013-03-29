@@ -643,7 +643,7 @@ class Isotope extends \Controller
             return $label;
 
         } elseif (null === $blnInstalled) {
-            $blnInstalled = $this->Database->tableExists('tl_iso_labels');
+            $blnInstalled = \Database::getInstance()->tableExists('tl_iso_labels');
         }
 
         // Recursively translate label array
