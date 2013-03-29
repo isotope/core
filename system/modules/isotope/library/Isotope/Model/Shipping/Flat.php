@@ -14,6 +14,7 @@ namespace Isotope\Model\Shipping;
 
 use Isotope\Isotope;
 use Isotope\Model\Shipping;
+use Isotope\Interfaces\IsotopeProductCollection;
 
 
 /**
@@ -71,15 +72,19 @@ class Flat extends Shipping
      * Calculate the price based on module configuration
      * @return float
      */
-    private function getPrice()
+    public function getPrice(IsotopeProductCollection $objCollection=null)
     {
+        if (null === $objCollection) {
+            $objCollection = Isotope::getCart();
+        }
+
         $strPrice = $this->arrData['price'];
         $blnPercentage = substr($strPrice, -1) == '%' ? true : false;
 
         if ($blnPercentage)
         {
             $fltSurcharge = (float) substr($strPrice, 0, -1);
-            $fltPrice = Isotope::getCart()->subTotal / 100 * $fltSurcharge;
+            $fltPrice = $objCollection->subTotal / 100 * $fltSurcharge;
         }
         else
         {
@@ -89,13 +94,13 @@ class Flat extends Shipping
         switch( $this->flatCalculation )
         {
             case 'perProduct':
-                return (($fltPrice * Isotope::getCart()->products) + $this->calculateSurcharge());
+                return (($fltPrice * $objCollection->products) + $this->calculateSurcharge($objCollection));
 
             case 'perItem':
-                return (($fltPrice * Isotope::getCart()->items) + $this->calculateSurcharge());
+                return (($fltPrice * $objCollection->items) + $this->calculateSurcharge($objCollection));
 
             default:
-                return ($fltPrice + $this->calculateSurcharge());
+                return ($fltPrice + $this->calculateSurcharge($objCollection));
         }
     }
 
@@ -104,13 +109,13 @@ class Flat extends Shipping
      * Calculate surcharge from a product if the surcharge field is set in module settings
      * @return float
      */
-    protected function calculateSurcharge()
+    protected function calculateSurcharge(IsotopeProductCollection $objCollection)
     {
         if (!strlen($this->surcharge_field))
             return 0;
 
         $intSurcharge = 0;
-        $arrProducts = Isotope::getCart()->getProducts();
+        $arrProducts = $objCollection->getProducts();
 
         foreach( $arrProducts as $objProduct )
         {
