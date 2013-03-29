@@ -128,128 +128,17 @@ abstract class ProductCollection extends \Model
      */
     public function __get($strKey)
     {
-        if (!isset($this->arrCache[$strKey]))
-        {
-            if ($this->blnLocked && array_key_exists($strKey, $this->arrData)) {
-
-                return deserialize($this->arrData[$strKey]);
-
-            } elseif ($this->blnLocked && array_key_exists($strKey, $this->arrSettings)) {
-
-                return deserialize($this->arrSettings[$strKey]);
-            }
-
-            switch ($strKey)
-            {
-                case 'table':
-                    return static::$strTable;
-                    break;
-
-                case 'ctable':
-                    return  static::$ctable;
-                    break;
-
-                case 'id':
-                case 'pid':
-                    return (int) $this->arrData[$strKey];
-                    break;
-
-                case 'Shipping':
-                case 'Payment':
-                    return $this->$strKey;
-                    break;
-
-                case 'requiresShipping':
-                    $this->arrCache[$strKey] = false;
-                    $arrProducts = $this->getProducts();
-
-                    foreach ($arrProducts as $objProduct) {
-
-                        if (!$objProduct->shipping_exempt) {
-                            $this->arrCache[$strKey] = true;
-                        }
-                    }
-                    break;
-
-                case 'requiresPayment':
-                    return $this->grandTotal > 0 ? true : false;
-                    break;
-
-                case 'items':
-                    $this->arrCache[$strKey] = \Database::getInstance()->execute("SELECT SUM(quantity) AS items FROM " . static::$ctable . " WHERE pid={$this->id}")->items;
-                    break;
-
-                case 'products':
-                    $this->arrCache[$strKey] = \Database::getInstance()->execute("SELECT COUNT(*) AS items FROM " . static::$ctable . " WHERE pid={$this->id}")->items;
-                    break;
-
-                case 'lastAdded':
-                    // getProducts() will set the cache key/value.
-                    // Only if the function has never been called, this will be triggered
-                    $this->getProducts('', true);
-                    break;
-
-                case 'subTotal':
-                    $fltTotal = 0;
-                    $arrProducts = $this->getProducts();
-
-                    foreach ($arrProducts as $objProduct) {
-
-                        $varPrice = $objProduct->total_price;
-
-                        if ($varPrice !== null) {
-                            $fltTotal += $varPrice;
-                        }
-                    }
-
-                    $this->arrCache[$strKey] = $fltTotal;
-                    break;
-
-                case 'taxFreeSubTotal':
-                    $fltTotal = 0;
-                    $arrProducts = $this->getProducts();
-
-                    foreach ($arrProducts as $objProduct) {
-                        $varPrice = $objProduct->tax_free_total_price;
-
-                        if ($varPrice !== null) {
-                            $fltTotal += $varPrice;
-                        }
-                    }
-
-                    $this->arrCache[$strKey] = $fltTotal;
-                    break;
-
-                case 'grandTotal':
-                    $fltTotal = $this->subTotal;
-                    $arrSurcharges = $this->getSurcharges();
-
-                    foreach ($arrSurcharges as $objSurcharge)
-                    {
-                        if ($objSurcharge->add !== false)
-                        {
-                            $fltTotal += $objSurcharge->total_price;
-                        }
-                    }
-
-                    $this->arrCache[$strKey] = $fltTotal > 0 ? Isotope::getInstance()->roundPrice($fltTotal) : 0;
-                    break;
-
-                default:
+        // If there is a database field for that key, retrive from there
                     if (array_key_exists($strKey, $this->arrData)) {
 
                         return deserialize($this->arrData[$strKey]);
-
-                    } else {
-
-                        return deserialize($this->arrSettings[$strKey]);
-
-                    }
-                    break;
-            }
         }
 
-        return $this->arrCache[$strKey];
+        // Everything else is in arrSettings and serialized
+        else {
+
+                        return deserialize($this->arrSettings[$strKey]);
+                    }
     }
 
 
@@ -262,28 +151,14 @@ abstract class ProductCollection extends \Model
     {
         $this->arrCache = array();
 
-        if ($strKey == 'Shipping' || $strKey == 'Payment')
-        {
-            $this->$strKey = $varValue;
-            $this->arrSurcharges = null;
-        }
-        elseif ($strKey == 'modified')
-        {
-            $this->blnModified = (bool) $varValue;
-            $this->arrProducts = null;
-            $this->arrSurcharges = null;
-        }
-
         // If there is a database field for that key, we store it there
-        elseif (array_key_exists($strKey, $this->arrData) || \Database::getInstance()->fieldExists($strKey, static::$strTable))
-        {
+        if (array_key_exists($strKey, $this->arrData) || \Database::getInstance()->fieldExists($strKey, static::$strTable)) {
             $this->arrData[$strKey] = $varValue;
             $this->blnModified = true;
         }
 
         // Everything else goes into arrSettings and is serialized
-        else
-        {
+        else {
             if ($varValue === null) {
                 unset($this->arrSettings[$strKey]);
             } else {

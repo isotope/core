@@ -77,50 +77,7 @@ class Order extends ProductCollection implements IsotopeProductCollection
             case 'order_id':
                 return $this->strOrderId;
 
-            case 'paid':
-                // Order is paid if a payment date is set
-                $paid = (int) $this->date_paid;
-                if ($paid > 0 && $paid <= time())
-                {
-                    return true;
-                }
-
-                // Otherwise we check the orderstatus checkbox
-                $objStatus = \Database::getInstance()->execute("SELECT * FROM tl_iso_orderstatus WHERE id=" . (int) $this->order_status);
-
-                return $objStatus->paid ? true : false;
-
-            case 'statusLabel':
-                $objStatus = \Database::getInstance()->execute("SELECT * FROM tl_iso_orderstatus WHERE id=" . (int) $this->order_status);
-
-                return Isotope::translate($objStatus->name);
-                break;
-
-            case 'statusAlias':
-                $objStatus = \Database::getInstance()->execute("SELECT * FROM tl_iso_orderstatus WHERE id=" . (int) $this->order_status);
-
-                return standardize($objStatus->name);
-                break;
-
             default:
-                if (!isset($this->arrCache[$strKey]))
-                {
-                    switch( $strKey )
-                    {
-                        case 'billingAddress':
-                            $objAddress = new Address();
-                            $objAddress->setRow(deserialize($this->arrData['billing_address'], true));
-                            $this->arrCache[$strKey] = $objAddress;
-                            break;
-
-                        case 'shippingAddress':
-                            $objAddress = new Address();
-                            $objAddress->setRow(deserialize($this->arrData['shipping_address'], true));
-                            $this->arrCache[$strKey] = $objAddress;
-                            break;
-                    }
-                }
-
                 return parent::__get($strKey);
         }
     }
