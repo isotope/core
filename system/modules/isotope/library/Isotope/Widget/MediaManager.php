@@ -53,7 +53,7 @@ class MediaManager extends \Widget implements \uploadable
 
         $this->import('Database');
 
-        $this->objUploader = \Isotope\Backend::getUploader();
+        $this->objUploader = new \FileUpload();
     }
 
 

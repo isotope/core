@@ -611,17 +611,6 @@ class Backend extends Contao_Backend
         return false;
     }
 
-
-    /**
-     * Instantiate and return the uploader object.
-     * This ugly method is necessary because FileUpload extends Backend but the constructor is not public...
-     * @return object
-     */
-    public static function getUploader()
-    {
-        return new \FileUpload();
-    }
-
     /**
      * Returns an array of all allowed product IDs and variant IDs for the current backend user
      * @return array|bool
