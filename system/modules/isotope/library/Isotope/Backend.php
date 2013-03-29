@@ -619,7 +619,7 @@ class Backend extends Contao_Backend
      */
     public static function getUploader()
     {
-        return new FileUpload();
+        return new \FileUpload();
     }
 
     /**
