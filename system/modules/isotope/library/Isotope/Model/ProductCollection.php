@@ -106,10 +106,8 @@ abstract class ProductCollection extends \Model
         $this->arrData['type'] = substr(get_called_class(), strrpos(get_called_class(), '\\')+1);
 
         // Do not use __destruct, because Database object might be destructed first (see http://github.com/contao/core/issues/2236)
-        if (!$this->blnLocked) {
             register_shutdown_function(array($this, 'saveDatabase'));
         }
-    }
 
 
     /**
@@ -117,7 +115,9 @@ abstract class ProductCollection extends \Model
      */
     public function saveDatabase()
     {
+        if (!$this->blnLocked) {
         $this->save();
+    }
     }
 
 
