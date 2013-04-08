@@ -230,8 +230,7 @@ class ModuleIsotopeProductList extends ModuleIsotope
 						$arrIds[] = $objProduct->id;
 					}
 
-					$intExpires = (int) $this->Database->execute("SELECT MIN(start) AS expires FROM tl_iso_products WHERE start>$time")
-													   ->expires;
+					$intExpires = $this->getCacheExpiration();
 
 					// Also delete all expired caches if we run a delete anyway
 					$this->Database->prepare("DELETE FROM tl_iso_productcache WHERE (page_id=? AND module_id=? AND requestcache_id=? AND keywords=?) OR (expires>0 AND expires<$time)")
@@ -488,5 +487,12 @@ class ModuleIsotopeProductList extends ModuleIsotope
 
 		return $arrOptions;
 	}
-}
 
+	protected function getCacheExpiration()
+	{
+		$intTime = time();
+		$strQuery = 'SELECT MIN(start) AS expires FROM tl_iso_products WHERE start > ' . $intTime;
+		return (int) $this->Database->execute($strQuery)->expires;
+	}
+
+}
