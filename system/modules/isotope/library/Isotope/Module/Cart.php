@@ -98,7 +98,7 @@ class Cart extends Module
         $arrSurcharges = Isotope::getCart()->getSurcharges();
 
         $arrProducts = Isotope::getCart()->getProducts();
-        $lastAdded = ($this->iso_continueShopping && !empty($_SESSION['ISO_CONFIRM'])) ? Isotope::getCart()->lastAdded : 0;
+        $lastAdded = ($this->iso_continueShopping && !empty($_SESSION['ISO_CONFIRM'])) ? Isotope::getCart()->getLatestItem() : null;
 
         foreach ($arrProducts as $i => $objProduct)
         {
@@ -135,7 +135,7 @@ class Cart extends Module
                 'remove_link_title' => specialchars(sprintf($GLOBALS['TL_LANG']['MSC']['removeProductLinkTitle'], $objProduct->name)),
             ));
 
-            if ($lastAdded == $objProduct->collection_id)
+            if (null !== $lastAdded && $lastAdded->id == $objProduct->collection_id)
             {
                 $objTemplate->continueJumpTo = $objProduct->href_reader;
             }

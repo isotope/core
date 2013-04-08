@@ -54,13 +54,13 @@ abstract class ProductCollection extends \Model
     protected $blnLocked = false;
 
     /**
-     * Cache all products for speed improvements
+     * Cache product items in this collection
      * @var array
      */
-    protected $arrProducts;
+    protected $arrItems;
 
     /**
-     * Cache all surcharges for speed improvements
+     * Cache surcharges in this collection
      * @var array
      */
     protected $arrSurcharges;
@@ -198,6 +198,37 @@ abstract class ProductCollection extends \Model
     }
 
     /**
+     * Return true if collection has no items
+     * @return bool
+     */
+    public function isEmpty()
+    {
+        $arrItems = $this->getItems();
+
+        return empty($arrItems);
+    }
+
+    /**
+     * Return true if collection has been modified
+     * @return bool
+     */
+    public function isModified()
+    {
+        return $this->blnModified;
+    }
+
+    /**
+     * Mark collection as modified
+     * @param bool
+     */
+    protected function setModified($varValue)
+    {
+        $this->blnModified = (bool) $varValue;
+        $this->arrItems = null;
+        $this->arrSurcharges = null;
+        $this->arrCache = array();
+    }
+
     /**
      * Return payment method for this collection
      * @return IsotopePayment|null
@@ -346,14 +377,12 @@ abstract class ProductCollection extends \Model
             $this->arrData['settings'] = serialize($this->arrSettings);
         }
 
-        $arrProducts = $this->getProducts();
+        $arrItems = $this->getItems();
 
-        if (is_array($arrProducts) && !empty($arrProducts))
-        {
-            foreach ($arrProducts as $objProduct)
-            {
-                \Database::getInstance()->prepare("UPDATE " . static::$ctable . " SET price=?, tax_free_price=? WHERE id=?")->execute($objProduct->price, $objProduct->tax_free_price, $objProduct->collection_id);
-            }
+        foreach ($arrItems as $objItem) {
+            $objItem->price = $objItem->getProduct()->price;
+            $objItem->tax_free_price = $objItem->getProduct()->tax_free_price;
+            $objItem->save();
         }
 
         // !HOOK: additional functionality when saving a collection
@@ -402,7 +431,7 @@ abstract class ProductCollection extends \Model
         }
 
         $this->arrCache = array();
-        $this->arrProducts = null;
+        $this->arrItems = null;
         $this->arrSurcharges = null;
 
         return $intAffectedRows;
@@ -414,73 +443,170 @@ abstract class ProductCollection extends \Model
      */
     public function purge()
     {
-        $arrProducts = $this->getProducts();
+        $arrItems = $this->getItems();
 
-        foreach ($arrProducts as $objProduct) {
-            $this->deleteProduct($objProduct);
+        foreach ($arrItems as $objItem) {
+            $this->deleteItem($objItem);
         }
+    }
+
+
+    public function getSubtotal()
+    {
+        if (!isset($this->arrCache['subtotal'])) {
+
+            $fltAmount = 0;
+            $arrItems = $this->getItems();
+
+            foreach ($arrItems as $objItem) {
+
+                $varPrice = $objItem->getPrice() * $objItem->quantity;
+
+                if ($varPrice !== null) {
+                    $fltAmount += $varPrice;
+                }
+            }
+
+            $this->arrCache['subtotal'] = $fltAmount;
+        }
+
+        return $this->arrCache['subtotal'];
+    }
+
+
+    public function getTaxFreeSubtotal()
+    {
+        if (!isset($this->arrCache['taxFreeSubtotal'])) {
+
+            $fltAmount = 0;
+            $arrItems = $this->getItems();
+
+            foreach ($arrItems as $objItem) {
+
+                $varPrice = $objItem->getTaxFreePrice() * $objItem->quantity;
+
+                if ($varPrice !== null) {
+                    $fltAmount += $varPrice;
+                }
+            }
+
+            $this->arrCache['taxFreeSubtotal'] = $fltAmount;
+        }
+
+        return $this->arrCache['taxFreeSubtotal'];
+    }
+
+
+    public function getTotal()
+    {
+        if (!isset($this->arrCache['total'])) {
+
+            $fltAmount = $this->getSubtotal();
+            $arrSurcharges = $this->getSurcharges();
+
+            foreach ($arrSurcharges as $objSurcharge) {
+                if ($objSurcharge->add !== false) {
+                    $fltAmount += $objSurcharge->total_price;
+                }
+            }
+
+            $this->arrCache['total'] = $fltAmount > 0 ? Isotope::roundPrice($fltAmount) : 0;
+        }
+
+        return $this->arrCache['total'];
+    }
+
+
+    public function getTaxFreeTotal()
+    {
+        if (!isset($this->arrCache['taxFreeTotal'])) {
+
+            $fltAmount = $this->getTaxFreeSubtotal();
+            $arrSurcharges = $this->getSurcharges();
+
+            foreach ($arrSurcharges as $objSurcharge) {
+                if ($objSurcharge->add !== false) {
+                    $fltAmount += $objSurcharge->tax_free_total_price;
+                }
+            }
+
+            $this->arrCache['taxFreeTotal'] = $fltAmount > 0 ? Isotope::roundPrice($fltAmount) : 0;
+        }
+
+        return $this->arrCache['taxFreeTotal'];
     }
 
 
     /**
-     * Fetch products from database
-     * @param string
-     * @param boolean
-     * @return array
+     * Return the item with the latest timestamp (e.g. the latest added item)
+     * @return ProductCollectionItem|null
      */
-    public function getProducts($strTemplate='', $blnNoCache=false)
+    public function getLatestItem()
     {
-        if (!is_array($this->arrProducts) || $blnNoCache)
-    {
-            $objDatabase = \Database::getInstance();
+        if (!isset($this->arrCache['latestItem'])) {
 
-            $this->arrProducts = array();
-            $this->arrCache['lastAdded'] = 0;
-            $lastAdded = 0;
+            $latest = 0;
+            $arrItems = $this->getItems();
 
-            if (($objItems = ProductCollectionItem::findByPid($this->id)) !== null) {
-                while ($objItems->next()) {
-
-                    if ($this->isLocked()) {
-                        $objItems->current()->lock();
-    }
-
-                    $objProduct = $objItems->current()->getProduct();
-
-                    // Remove product from collection if it is no longer available
-                    if (!$objProduct->isAvailable())
-    {
-                        $this->deleteProduct($objProduct);
-                        continue;
-    }
-
-                    if ($objItems->tstamp > $lastAdded)
-    {
-                        $this->arrCache['lastAdded'] = $objItems->id;
-                        $lastAdded = $objItems->tstamp;
-            }
-
-                    $this->arrProducts[] = $objProduct;
+            foreach ($arrItems as $objItem) {
+                if ($objItem->tstamp > $latest) {
+                    $this->arrCache['latestItem'] = $objItem;
+                    $latest = $objItem->tstamp;
                 }
             }
         }
 
-        if (strlen($strTemplate))
+        return $this->arrCache['latestItem'];
+    }
+
+
+    /**
+     * Return all items in the collection
+     * @param  bool
+     * @return array
+     */
+    public function getItems($blnNoCache=false)
     {
-            $objTemplate = new \Isotope\Template($strTemplate);
+        if (null === $this->arrItems || $blnNoCache) {
+            $this->arrItems = array();
 
-            $objTemplate->products = $this->arrProducts;
-            $objTemplate->surcharges = \Isotope\Frontend::formatSurcharges($this->getSurcharges());
-            $objTemplate->subTotalLabel = $GLOBALS['TL_LANG']['MSC']['subTotalLabel'];
-            $objTemplate->subTotalPrice = Isotope::formatPriceWithCurrency($this->subTotal, false);
-            $objTemplate->grandTotalLabel = $GLOBALS['TL_LANG']['MSC']['grandTotalLabel'];
-            $objTemplate->grandTotalPrice = Isotope::formatPriceWithCurrency($this->grandTotal, false);
-            $objTemplate->collection = $this;
+            if (($objItems = ProductCollectionItem::findByPid($this->id)) !== null) {
+                while ($objItems->next()) {
 
-            return $objTemplate->parse();
+                    $objItem = $objItems->current();
+
+                    if ($this->isLocked()) {
+                        $objItem->lock();
                     }
 
-        return $this->arrProducts;
+                    // Remove item from collection if it is no longer available
+                    if (!$this->isLocked() && (!$objItem->hasProduct() || !$objItem->getProduct()->isAvailable())) {
+                        $this->deleteItem($objItem);
+                        continue;
+                    }
+
+                    $this->arrItems[$objItem->id] = $objItem;
+                }
+                    }
+        }
+
+        return $this->arrItems;
+    }
+
+
+    /**
+     * Search item for a specific product
+     * @param  IsotopeProduct
+     * @return ProductCollectionItem|null
+     */
+    public function getItemForProduct(IsotopeProduct $objProduct)
+    {
+        $arrType = $objProduct->getType();
+        $strClass = $arrType['class'];
+
+        $objItem = ProductCollectionItem::findBy(array('pid=?', 'type=?', 'product_id=?', 'options=?'), array($this->id, $strClass, $objProduct->id, serialize($objProduct->getOptions(true))));
+
+        return (null === $objItem) ? null : $this->arrItems[$objItem->id];
     }
 
 
@@ -504,8 +630,22 @@ abstract class ProductCollection extends \Model
 
         if (true === $blnIdentical) {
 
+            $objItem = $this->getItemForProduct($objProduct);
+
+            return (null === $objItem) ? false : true;
+
         } else {
 
+            $intId = $objProduct->pid ?: $objProduct->id;
+
+            foreach ($this->getItems() as $objItem) {
+
+                if ($objItem->getProduct()->id == $intId || $objItem->getProduct()->pid == $intId) {
+                    return true;
+                }
+            }
+
+            return false;
         }
     }
 
@@ -531,28 +671,28 @@ abstract class ProductCollection extends \Model
         }
 
         $time = time();
-        $strType = substr(get_class($objProduct), strrpos(get_class($objProduct), '\\')+1);
-        $this->modified = true;
-        $objDatabase = \Database::getInstance();
+        $this->setModified(true);
 
         // Make sure collection is in DB before adding product
         if (!$this->blnRecordExists) {
             $this->save();
         }
 
-        $objItem = $objDatabase->prepare("SELECT * FROM " . static::$ctable . " WHERE pid={$this->id} AND type='$strType' AND product_id={$objProduct->id} AND options=?")->limit(1)->execute(serialize($objProduct->getOptions(true)));
+        $objItem = $this->getItemForProduct($objProduct);
 
-        if ($objItem->numRows)
+        if (null !== $objItem)
         {
-            if (($objItem->quantity + $intQuantity) < $objProduct->minimum_quantity)
-        {
+            if (($objItem->quantity + $intQuantity) < $objProduct->minimum_quantity) {
         		$_SESSION['ISO_INFO'][] = sprintf($GLOBALS['TL_LANG']['ERR']['productMinimumQuantity'], $objProduct->name, $objProduct->minimum_quantity);
         		$intQuantity = $objProduct->minimum_quantity - $objItem->quantity;
     		}
 
-            $objDatabase->query("UPDATE " . static::$ctable . " SET tstamp=$time, quantity=(quantity+$intQuantity) WHERE id={$objItem->id}");
+            \Database::getInstance()->query("UPDATE " . static::$ctable . " SET tstamp=$time, quantity=(quantity+$intQuantity) WHERE id={$objItem->id}");
 
-            return $objItem->id;
+            $this->arrItems[$objItem->id]->tstamp = $time;
+            $this->arrItems[$objItem->id]->quantity = \Database::getInstance()->executeUncached("SELECT quantity FROM " . static::$ctable . " WHERE id={$objItem->id}")->quantity;
+
+            return $objItem;
         }
         else
         {
@@ -561,41 +701,38 @@ abstract class ProductCollection extends \Model
         		$intQuantity = $objProduct->minimum_quantity;
     		}
 
-            $arrSet = array
-            (
-                'pid'               => $this->id,
-                'tstamp'            => $time,
-                'type'              => $strType,
-                'product_id'        => (int) $objProduct->id,
-                'sku'               => (string) $objProduct->sku,
-                'name'              => (string) $objProduct->name,
-                'options'           => $objProduct->getOptions(true),
-                'quantity'          => (int) $intQuantity,
-                'price'             => (float) $objProduct->price,
-                'tax_free_price'    => (float) $objProduct->tax_free_price,
-            );
+    		$objItem = new ProductCollectionItem();
+            $objItem->pid               = $this->id;
+            $objItem->tstamp            = $time;
+            $objItem->type              = substr(get_class($objProduct), strrpos(get_class($objProduct), '\\')+1);
+            $objItem->product_id        = (int) $objProduct->id;
+            $objItem->sku               = (string) $objProduct->sku;
+            $objItem->name              = (string) $objProduct->name;
+            $objItem->options           = $objProduct->getOptions(true);
+            $objItem->quantity          = (int) $intQuantity;
+            $objItem->price             = (float) $objProduct->price;
+            $objItem->tax_free_price    = (float) $objProduct->tax_free_price;
+            $objItem->href_reader       = $objProduct->href_reader;
 
-            if ($objDatabase->fieldExists('href_reader', static::$ctable))
-            {
-                $arrSet['href_reader'] = $objProduct->href_reader;
-            }
+            $objItem->save();
 
-            $intInsertId = $objDatabase->prepare("INSERT INTO " . static::$ctable . " %s")->set($arrSet)->executeUncached()->insertId;
+            // Add the new item to our cache
+            $this->arrItems[$objItem->id] = $objItem;
 
-            return $intInsertId;
+            return $objItem;
         }
     }
 
 
     /**
-     * update a product in the collection
+     * Update a product in the collection
      * @param object The product object
      * @param array The property(ies) to adjust
-     * @return integer ID of database record added/updated
+     * @return bool
      */
     public function updateProduct(IsotopeProduct $objProduct, $arrSet)
     {
-        if (!$objProduct->collection_id) {
+        if (($objItem = $this->getItemForProduct($objProduct)) === null) {
             return false;
         }
 
@@ -624,13 +761,12 @@ abstract class ProductCollection extends \Model
         // Modify timestamp when updating a product
         $arrSet['tstamp'] = time();
 
-        $intAffectedRows = \Database::getInstance()->prepare("UPDATE " . static::$ctable . " %s WHERE id={$objProduct->collection_id}")
-                                                   ->set($arrSet)
-                                                   ->executeUncached()
-                                                   ->affectedRows;
+        foreach ($arrSet as $k => $v) {
+            $objItem->$k = $v;
+        }
 
-        if ($intAffectedRows > 0) {
-            $this->modified = true;
+        if ($objItem->save() > 0) {
+            $this->setModified(true);
 
             return true;
         }
@@ -647,7 +783,7 @@ abstract class ProductCollection extends \Model
      */
     public function deleteProduct(IsotopeProduct $objProduct)
     {
-        if (!$objProduct->collection_id) {
+        if (($objItem = $this->getItemForProduct($objProduct)) === null) {
             return false;
         }
 
@@ -663,8 +799,8 @@ abstract class ProductCollection extends \Model
             }
         }
 
-        $this->modified = true;
-        \Database::getInstance()->query("DELETE FROM " . static::$ctable . " WHERE id={$objProduct->collection_id}");
+        $this->setModified(true);
+        $objItem->delete();
 
         return true;
     }
@@ -759,7 +895,7 @@ abstract class ProductCollection extends \Model
 
         if (!empty($arrIds))
         {
-            $this->modified = true;
+            $this->setModified(true);
         }
 
         // !HOOK: additional functionality when adding product to collection
@@ -784,12 +920,16 @@ abstract class ProductCollection extends \Model
     public function getShippingWeight($unit)
     {
         $arrWeights = array();
-        $arrProducts = $this->getProducts();
+        $arrItems = $this->getItems();
 
-        foreach ($arrProducts as $objProduct)
+        foreach ($arrItems as $objItem)
         {
-            $arrWeight = deserialize($objProduct->shipping_weight, true);
-            $arrWeight['value'] = $objProduct->quantity_requested * floatval($arrWeight['value']);
+            if (!$objItem->hasProduct()) {
+                continue;
+            }
+
+            $arrWeight = deserialize($objItem->getProduct()->shipping_weight, true);
+            $arrWeight['value'] = $objItem->getProduct()->quantity_requested * floatval($arrWeight['value']);
 
             $arrWeights[] = $arrWeight;
         }
