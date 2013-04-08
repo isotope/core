@@ -1314,7 +1314,7 @@ $endScript";
         				$strDomain = ($arrRoot[$objJump->rootId]->useSSL ? 'https://' : 'http://') . $arrRoot[$objJump->rootId]->dns . TL_PATH . '/';
         			}
 
-                    $arrJump[$objProducts->page_id] = $strDomain . $this->generateFrontendUrl($objJump->row(), '/product/##alias##', ($strLanguage=='' ? $arrRoot[$objJump->rootId]->language : $strLanguage));
+                    $arrJump[$objProducts->page_id] = $strDomain . $this->generateFrontendUrl($objJump->row(), ($GLOBALS['TL_CONFIG']['useAutoItem'] ? '/' : '/product/') . '##alias##', ($strLanguage=='' ? $arrRoot[$objJump->rootId]->language : $strLanguage));
                 }
                 else
                 {
