@@ -396,7 +396,7 @@ abstract class ProductCollection extends \Model
         }
 
         if ($this->blnModified || $blnForceInsert) {
-            parent::save();
+            parent::save($blnForceInsert);
         }
 
         return $this;
