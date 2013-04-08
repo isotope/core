@@ -106,8 +106,8 @@ abstract class ProductCollection extends \Model
         $this->arrData['type'] = substr(get_called_class(), strrpos(get_called_class(), '\\')+1);
 
         // Do not use __destruct, because Database object might be destructed first (see http://github.com/contao/core/issues/2236)
-            register_shutdown_function(array($this, 'saveDatabase'));
-        }
+        register_shutdown_function(array($this, 'saveDatabase'));
+    }
 
 
     /**
@@ -116,8 +116,8 @@ abstract class ProductCollection extends \Model
     public function saveDatabase()
     {
         if (!$this->blnLocked) {
-        $this->save();
-    }
+            $this->save();
+        }
     }
 
 
@@ -129,16 +129,16 @@ abstract class ProductCollection extends \Model
     public function __get($strKey)
     {
         // If there is a database field for that key, retrive from there
-                    if (array_key_exists($strKey, $this->arrData)) {
+        if (array_key_exists($strKey, $this->arrData)) {
 
-                        return deserialize($this->arrData[$strKey]);
+            return deserialize($this->arrData[$strKey]);
         }
 
         // Everything else is in arrSettings and serialized
         else {
 
-                        return deserialize($this->arrSettings[$strKey]);
-                    }
+            return deserialize($this->arrSettings[$strKey]);
+        }
     }
 
 
@@ -169,7 +169,6 @@ abstract class ProductCollection extends \Model
         }
     }
 
-
     /**
      * Check whether a property is set
      * @param string
@@ -184,7 +183,6 @@ abstract class ProductCollection extends \Model
 
         return false;
     }
-
 
     /**
      * Return true if collection is locked
@@ -324,7 +322,7 @@ abstract class ProductCollection extends \Model
     public function getProducts($strTemplate='', $blnNoCache=false)
     {
         if (!is_array($this->arrProducts) || $blnNoCache)
-        {
+    {
             $objDatabase = \Database::getInstance();
 
             $this->arrProducts = array();
@@ -336,22 +334,22 @@ abstract class ProductCollection extends \Model
 
                     if ($this->isLocked()) {
                         $objItems->current()->lock();
-                    }
+    }
 
                     $objProduct = $objItems->current()->getProduct();
 
                     // Remove product from collection if it is no longer available
                     if (!$objProduct->isAvailable())
-                    {
+    {
                         $this->deleteProduct($objProduct);
                         continue;
-                    }
+    }
 
                     if ($objItems->tstamp > $lastAdded)
-                    {
+    {
                         $this->arrCache['lastAdded'] = $objItems->id;
                         $lastAdded = $objItems->tstamp;
-                    }
+            }
 
                     $this->arrProducts[] = $objProduct;
                 }
@@ -359,7 +357,7 @@ abstract class ProductCollection extends \Model
         }
 
         if (strlen($strTemplate))
-        {
+    {
             $objTemplate = new \Isotope\Template($strTemplate);
 
             $objTemplate->products = $this->arrProducts;
@@ -371,7 +369,7 @@ abstract class ProductCollection extends \Model
             $objTemplate->collection = $this;
 
             return $objTemplate->parse();
-        }
+                    }
 
         return $this->arrProducts;
     }
@@ -412,10 +410,8 @@ abstract class ProductCollection extends \Model
     public function addProduct(IsotopeProduct $objProduct, $intQuantity)
     {
         // !HOOK: additional functionality when adding product to collection
-        if (isset($GLOBALS['ISO_HOOKS']['addProductToCollection']) && is_array($GLOBALS['ISO_HOOKS']['addProductToCollection']))
-        {
-            foreach ($GLOBALS['ISO_HOOKS']['addProductToCollection'] as $callback)
-            {
+        if (isset($GLOBALS['ISO_HOOKS']['addProductToCollection']) && is_array($GLOBALS['ISO_HOOKS']['addProductToCollection'])) {
+            foreach ($GLOBALS['ISO_HOOKS']['addProductToCollection'] as $callback) {
                 $objCallback = \System::importStatic($callback[0]);
                 $intQuantity = $objCallback->$callback[1]($objProduct, $intQuantity, $this);
             }
@@ -440,7 +436,7 @@ abstract class ProductCollection extends \Model
         if ($objItem->numRows)
         {
             if (($objItem->quantity + $intQuantity) < $objProduct->minimum_quantity)
-    		{
+        {
         		$_SESSION['ISO_INFO'][] = sprintf($GLOBALS['TL_LANG']['ERR']['productMinimumQuantity'], $objProduct->name, $objProduct->minimum_quantity);
         		$intQuantity = $objProduct->minimum_quantity - $objItem->quantity;
     		}
@@ -451,8 +447,7 @@ abstract class ProductCollection extends \Model
         }
         else
         {
-            if ($intQuantity < $objProduct->minimum_quantity)
-    		{
+            if ($intQuantity < $objProduct->minimum_quantity) {
         		$_SESSION['ISO_INFO'][] = sprintf($GLOBALS['TL_LANG']['ERR']['productMinimumQuantity'], $objProduct->name, $objProduct->minimum_quantity);
         		$intQuantity = $objProduct->minimum_quantity;
     		}
@@ -496,15 +491,12 @@ abstract class ProductCollection extends \Model
         }
 
         // !HOOK: additional functionality when updating a product in the collection
-        if (isset($GLOBALS['ISO_HOOKS']['updateProductInCollection']) && is_array($GLOBALS['ISO_HOOKS']['updateProductInCollection']))
-        {
-            foreach ($GLOBALS['ISO_HOOKS']['updateProductInCollection'] as $callback)
-            {
+        if (isset($GLOBALS['ISO_HOOKS']['updateProductInCollection']) && is_array($GLOBALS['ISO_HOOKS']['updateProductInCollection'])) {
+            foreach ($GLOBALS['ISO_HOOKS']['updateProductInCollection'] as $callback) {
                 $objCallback = \System::importStatic($callback[0]);
                 $arrSet = $objCallback->$callback[1]($objProduct, $arrSet, $this);
 
-                if (is_array($arrSet) && empty($arrSet))
-                {
+                if (is_array($arrSet) && empty($arrSet)) {
                     return false;
                 }
             }
@@ -551,15 +543,12 @@ abstract class ProductCollection extends \Model
         }
 
         // !HOOK: additional functionality when a product is removed from the collection
-        if (isset($GLOBALS['ISO_HOOKS']['deleteProductFromCollection']) && is_array($GLOBALS['ISO_HOOKS']['deleteProductFromCollection']))
-        {
-            foreach ($GLOBALS['ISO_HOOKS']['deleteProductFromCollection'] as $callback)
-            {
+        if (isset($GLOBALS['ISO_HOOKS']['deleteProductFromCollection']) && is_array($GLOBALS['ISO_HOOKS']['deleteProductFromCollection'])) {
+            foreach ($GLOBALS['ISO_HOOKS']['deleteProductFromCollection'] as $callback) {
                 $objCallback = \System::importStatic($callback[0]);
                 $blnRemove = $objCallback->$callback[1]($objProduct, $this);
 
-                if ($blnRemove === false)
-                {
+                if ($blnRemove === false) {
                     return false;
                 }
             }
@@ -701,7 +690,7 @@ abstract class ProductCollection extends \Model
 
 
     /**
-     * Generate the collection using a template. Useful for PDF output
+     * Generate the collection using a template.
      * @param string
      * @param boolean
      * @return string
@@ -773,7 +762,7 @@ abstract class ProductCollection extends \Model
         $objTemplate->billing_label = $GLOBALS['TL_LANG']['MSC']['billing_address'];
         $objTemplate->billing_address = $this->billingAddress->generateText(Isotope::getConfig()->billing_fields);
 
-        if (strlen($this->shipping_method))
+        if ($this->shipping_method != '')
         {
             $arrShippingAddress = deserialize($this->shipping_address);
 

@@ -153,8 +153,8 @@ abstract class Payment extends \Model
     {
         substr($this->arrData['price'], -1) == '%' ? true : false;
     }
-    
-    
+
+
     /**
      * Return percentage amount (if applicable)
      * @return float
@@ -166,7 +166,7 @@ abstract class Payment extends \Model
         {
             throw new \UnexpectedValueException('Payment method does not have a percentage amount.');
         }
-        
+
         return (float) substr($this->arrData['price'], 0, -1);
     }
 
