@@ -576,6 +576,9 @@ abstract class IsotopeProductCollection extends Model
 
 		if ($objItem->numRows)
 		{
+    		// Set product quantity so we can determine the correct minimum price
+    		$objProduct->quantity_requested = $objItem->product_quantity;
+
     		if (($objItem->product_quantity + $intQuantity) < $objProduct->minimum_quantity)
     		{
         		$_SESSION['ISO_INFO'][] = sprintf($GLOBALS['TL_LANG']['ERR']['productMinimumQuantity'], $objProduct->name, $objProduct->minimum_quantity);
@@ -651,11 +654,17 @@ abstract class IsotopeProductCollection extends Model
 			return $this->deleteProduct($objProduct);
 		}
 
-		if (isset($arrSet['product_quantity']) && $arrSet['product_quantity'] < $objProduct->minimum_quantity)
-		{
-    		$_SESSION['ISO_INFO'][] = sprintf($GLOBALS['TL_LANG']['ERR']['productMinimumQuantity'], $objProduct->name, $objProduct->minimum_quantity);
-    		$arrSet['product_quantity'] = $objProduct->minimum_quantity;
-		}
+		if (isset($arrSet['product_quantity'])) {
+
+    		// Set product quantity so we can determine the correct minimum price
+    		$objProduct->quantity_requested = $arrSet['product_quantity'];
+
+    		if ($arrSet['product_quantity'] < $objProduct->minimum_quantity)
+    		{
+        		$_SESSION['ISO_INFO'][] = sprintf($GLOBALS['TL_LANG']['ERR']['productMinimumQuantity'], $objProduct->name, $objProduct->minimum_quantity);
+        		$arrSet['product_quantity'] = $objProduct->minimum_quantity;
+    		}
+    	}
 
 		// Modify timestamp when updating a product
 		$arrSet['tstamp'] = time();

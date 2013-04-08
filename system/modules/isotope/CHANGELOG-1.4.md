@@ -9,6 +9,7 @@ Version 1.4.1 (2013-0?-??)
 
 ### Fixed
 - Sending e-mails did not work in PHP < 5.3 (#576)
+- Minimum order amount was incorrect when lowering cart amount (#587)
 
 
 Version 1.4.0 (2013-03-18)
