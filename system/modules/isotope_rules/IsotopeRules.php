@@ -57,8 +57,12 @@ class IsotopeRules extends Controller
 		parent::__construct();
 
 		$this->import('Database');
-		$this->import('FrontendUser', 'User');
 		$this->import('Isotope');
+
+		// User object must be loaded from cart, e.g. for postsale handling
+		if ($this->Isotope->Cart->pid > 0) {
+    		$this->User = $this->Database->prepare("SELECT * FROM tl_member WHERE id=?")->execute($this->Isotope->Cart->pid);
+		}
 	}
 
 
@@ -353,7 +357,7 @@ class IsotopeRules extends Controller
 		// Limits
 		$arrProcedures[] = "(limitPerConfig=0 OR limitPerConfig>(SELECT COUNT(*) FROM tl_iso_rule_usage WHERE pid=r.id AND config_id=".(int)$this->Isotope->Config->id." AND order_id NOT IN (SELECT id FROM tl_iso_orders WHERE cart_id=".(int)$this->Isotope->Cart->id.")))";
 
-		if (FE_USER_LOGGED_IN === true && TL_MODE=='FE')
+		if ($this->Isotope->Cart->pid > 0)
 		{
 			$arrProcedures[] = "(limitPerMember=0 OR limitPerMember>(SELECT COUNT(*) FROM tl_iso_rule_usage WHERE pid=r.id AND member_id=".(int)$this->User->id." AND order_id NOT IN (SELECT id FROM tl_iso_orders WHERE cart_id=".(int)$this->Isotope->Cart->id.")))";
 		}
@@ -365,9 +369,9 @@ class IsotopeRules extends Controller
 
 
 		// Member restrictions
-		if (FE_USER_LOGGED_IN === true && TL_MODE=='FE')
+		if ($this->Isotope->Cart->pid > 0)
 		{
-			$arrGroups = array_map('intval', (array) $this->User->groups);
+			$arrGroups = array_map('intval', deserialize($this->User->groups, true));
 
 			$arrProcedures[] = "(memberRestrictions='none'
 								OR (memberRestrictions='guests' AND memberCondition='1')
