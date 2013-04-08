@@ -13,9 +13,13 @@
 namespace Isotope\Model;
 
 use Isotope\Isotope;
+use Isotope\Interfaces\IsotopePayment;
 use Isotope\Interfaces\IsotopeProduct;
 use Isotope\Interfaces\IsotopeProductCollection;
+use Isotope\Interfaces\IsotopeShipping;
+use Isotope\Model\Payment;
 use Isotope\Model\ProductCollectionItem;
+use Isotope\Model\Shipping;
 use Isotope\Product\Standard as StandardProduct;
 
 
@@ -62,16 +66,16 @@ abstract class ProductCollection extends \Model
     protected $arrSurcharges;
 
     /**
-     * Shipping object if shipping module is set in product collection
-     * @var object
+     * Shipping method for this collection, if shipping is required
+     * @var IsotopeShipping
      */
-    protected $Shipping;
+    protected $objShipping;
 
     /**
-     * Payment object if payment module is set in product collection
-     * @var object
+     * Payment method for this collection, if payment is required
+     * @var IsotopePayment
      */
-    protected $Payment;
+    protected $objPayment;
 
     /**
      * Template
@@ -194,12 +198,96 @@ abstract class ProductCollection extends \Model
     }
 
     /**
+    /**
+     * Return payment method for this collection
+     * @return IsotopePayment|null
+     */
+    public function getPaymentMethod()
+    {
+        if (null === $this->objPayment) {
+            $this->objPayment = $this->getRelated('payment_id');
+
+            if (null === $this->objPayment) {
+                $this->objPayment = false;
+            }
+        }
+
+        return (false === $this->objPayment) ? null : $this->objPayment;
+    }
+
+    /**
+     * Set payment method for this collection
+     * @param IsotopePayment|null
+     */
+    public function setPaymentMethod(IsotopePayment $objPayment)
+    {
+        $this->objPayment = $objPayment;
+        $this->payment_id = $objPayment->id;
+        $this->arrSurcharges = null;
+    }
+
+    /**
+     * Return surcharge for current payment method
+     * @return ProductCollectionSurcharge|null
+     */
+    public function getPaymentSurcharge()
+    {
+        return ($this->hasPayment()) ? $this->getPaymentMethod()->getSurcharge($this) : null;
+    }
+
+    /**
      * Return boolean wether collection has payment
      * @return bool
      */
     public function hasPayment()
     {
-        return (is_object($this->Payment) ? true : false);
+        return (null === $this->getPaymentMethod()) ? false : true;
+    }
+
+    /**
+     * Return boolean wether collection requires payment
+     * @return bool
+     */
+    public function requiresPayment()
+    {
+        return $this->getTotal() > 0 ? true : false;
+    }
+
+    /**
+     * Return shipping method for this collection
+     * @return IsotopeShipping|null
+     */
+    public function getShippingMethod()
+    {
+        if (null === $this->objShipping) {
+            $this->objShipping = $this->getRelated('shipping_id');
+
+            if (null === $this->objShipping) {
+                $this->objShipping = false;
+            }
+        }
+
+        return (false === $this->objShipping) ? null : $this->objShipping;
+    }
+
+    /**
+     * Set shipping method for this collection
+     * @param IsotopeShipping|null
+     */
+    public function setShippingMethod(IsotopeShipping $objShipping)
+    {
+        $this->objShipping = $objShipping;
+        $this->shipping_id = $objShipping->id;
+        $this->arrSurcharges = null;
+    }
+
+    /**
+     * Return surcharge for current shipping method
+     * @return ProductCollectionSurcharge|null
+     */
+    public function getShippingSurcharge()
+    {
+        return ($this->hasShipping()) ? $this->getShippingMethod()->getSurcharge($this) : null;
     }
 
     /**
@@ -208,7 +296,28 @@ abstract class ProductCollection extends \Model
      */
     public function hasShipping()
     {
-        return (is_object($this->Shipping) ? true : false);
+        return (null === $this->getShippingMethod()) ? false : true;
+    }
+
+    /**
+     * Return boolean wether collection requires shipping
+     * @return bool
+     */
+    public function requiresShipping()
+    {
+        if (!isset($this->arrCache['requiresShipping'])) {
+
+            $this->arrCache['requiresShipping'] = false;
+            $arrItems = $this->getItems();
+
+            foreach ($arrItems as $objItem) {
+                if ($objItem->hasProduct() && !$objItem->getProduct()->shipping_exempt) {
+                    $this->arrCache['requiresShipping'] = true;
+                }
+            }
+        }
+
+        return $this->arrCache['requiresShipping'];
     }
 
 

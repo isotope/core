@@ -563,8 +563,8 @@ class Checkout extends Module
                 'shipping_method' => array
                 (
                     'headline'    => $GLOBALS['TL_LANG']['MSC']['shipping_method'],
-                    'info'        => Isotope::getCart()->Shipping->checkoutReview(),
-                    'note'        => Isotope::getCart()->Shipping->note,
+                    'info'        => Isotope::getCart()->getShippingMethod()->checkoutReview(),
+                    'note'        => Isotope::getCart()->getShippingMethod()->note,
                     'edit'        => $this->addToUrl('step=shipping', true),
                 ),
             );
@@ -593,7 +593,7 @@ class Checkout extends Module
                 }
 
                 if (is_array($_SESSION['CHECKOUT_DATA']['shipping']) && $_SESSION['CHECKOUT_DATA']['shipping']['module'] == $objModule->id) {
-                    Isotope::getCart()->Shipping = $objModule;
+                    Isotope::getCart()->setShippingMethod($objModule);
                 }
 
                 $fltPrice = $objModule->price;
@@ -604,7 +604,7 @@ class Checkout extends Module
                     'id'        => $objModule->id,
                     'label'        => $objModule->label,
                     'price'        => $strPrice,
-                    'checked'    => ((Isotope::getCart()->Shipping->id == $objModule->id || $objModules->numRows == 1) ? ' checked="checked"' : ''),
+                    'checked'   => ((Isotope::getCart()->getShippingMethod()->id == $objModule->id || $objModules->numRows == 1) ? ' checked="checked"' : ''),
                     'note'        => $objModule->note,
                     'form'        => $objModule->getShippingOptions($this),
                 );
@@ -631,8 +631,8 @@ class Checkout extends Module
 
         if (!Isotope::getCart()->hasShipping() && !strlen($_SESSION['CHECKOUT_DATA']['shipping']['module']) && count($arrModules) == 1) {
 
-            Isotope::getCart()->Shipping = $objLastModule;
-            $_SESSION['CHECKOUT_DATA']['shipping']['module'] = Isotope::getCart()->Shipping->id;
+            Isotope::getCart()->setShippingMethod($objLastModule);
+            $_SESSION['CHECKOUT_DATA']['shipping']['module'] = Isotope::getCart()->getShippingMethod()->id;
             $arrModules[0]['checked'] = ' checked="checked"';
 
         } elseif (!Isotope::getCart()->hasShipping()) {
@@ -649,10 +649,11 @@ class Checkout extends Module
         $objTemplate->shippingMethods = $arrModules;
 
         if (!$this->doNotSubmit) {
-            $this->arrOrderData['shipping_method_id']    = Isotope::getCart()->Shipping->id;
-            $this->arrOrderData['shipping_method']        = Isotope::getCart()->Shipping->label;
-            $this->arrOrderData['shipping_note']        = Isotope::getCart()->Shipping->note;
-            $this->arrOrderData['shipping_note_text']    = strip_tags(Isotope::getCart()->Shipping->note);
+            $objShipping = Isotope::getCart()->getShippingMethod();
+            $this->arrOrderData['shipping_method_id']   = $objShipping->id;
+            $this->arrOrderData['shipping_method']      = $objShipping->label;
+            $this->arrOrderData['shipping_note']        = $objShipping->note;
+            $this->arrOrderData['shipping_note_text']   = strip_tags($objShipping->note);
         }
 
         // Remove payment step if items are free of charge
@@ -765,10 +766,11 @@ class Checkout extends Module
         $objTemplate->paymentMethods = $arrModules;
 
         if (!$this->doNotSubmit) {
-            $this->arrOrderData['payment_method_id']    = Isotope::getCart()->Payment->id;
-            $this->arrOrderData['payment_method']        = Isotope::getCart()->Payment->label;
-            $this->arrOrderData['payment_note']            = Isotope::getCart()->Payment->note;
-            $this->arrOrderData['payment_note_text']    = strip_tags(Isotope::getCart()->Payment->note);
+            $objPayment = Isotope::getCart()->getPaymentMethod();
+            $this->arrOrderData['payment_method_id']    = $objPayment->id;
+            $this->arrOrderData['payment_method']       = $objPayment->label;
+            $this->arrOrderData['payment_note']         = $objPayment->note;
+            $this->arrOrderData['payment_note_text']    = strip_tags($objPayment->note);
         }
 
         return $objTemplate->parse();
@@ -985,8 +987,8 @@ class Checkout extends Module
         $objOrder->pid                  = (FE_USER_LOGGED_IN === true ? $this->User->id : 0);
         $objOrder->date                 = time();
         $objOrder->config_id            = (int) Isotope::getConfig()->id;
-        $objOrder->shipping_id          = (Isotope::getCart()->hasShipping() ? Isotope::getCart()->Shipping->id : 0);
-        $objOrder->payment_id           = (Isotope::getCart()->hasPayment() ? Isotope::getCart()->Payment->id : 0);
+        $objOrder->shipping_id          = (Isotope::getCart()->hasShipping() ? Isotope::getCart()->getShippingMethod()->id : 0);
+        $objOrder->payment_id           = (Isotope::getCart()->hasPayment() ? Isotope::getCart()->getPaymentMethod()->id : 0);
         $objOrder->subTotal             = Isotope::getCart()->subTotal;
         $objOrder->grandTotal           = Isotope::getCart()->grandTotal;
         $objOrder->surcharges           = Isotope::getCart()->getSurcharges();

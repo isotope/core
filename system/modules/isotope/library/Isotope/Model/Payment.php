@@ -122,7 +122,7 @@ abstract class Payment extends \Model
 
         $arrShippings = deserialize($this->shipping_modules);
 
-        if (is_array($arrShippings) && !empty($arrShippings) && ((!Isotope::getCart()->hasShipping() && !in_array(-1, $arrShippings)) || (Isotope::getCart()->hasShipping() && !in_array(Isotope::getCart()->Shipping->id, $arrShippings))))
+        if (is_array($arrShippings) && !empty($arrShippings) && ((!Isotope::getCart()->hasShipping() && !in_array(-1, $arrShippings)) || (Isotope::getCart()->hasShipping() && !in_array(Isotope::getCart()->getShippingMethod()->id, $arrShippings))))
         {
             return false;
         }

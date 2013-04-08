@@ -57,25 +57,13 @@ class Frontend extends \Frontend
     {
         $arrSurcharges = array();
 
-        if ($objCollection->hasShipping())
-        {
-            $objSurcharge = $objCollection->Shipping->getSurcharge($objCollection);
-
-            if ($objSurcharge instanceof IsotopeProductCollectionSurcharge)
-            {
+        if (($objSurcharge = $objCollection->getShippingSurcharge()) !== null) {
                 $arrSurcharges[] = $objSurcharge;
             }
-        }
 
-        if ($objCollection->hasPayment())
-        {
-            $objSurcharge = $objCollection->Payment->getSurcharge($objCollection);
-
-            if ($objSurcharge instanceof IsotopeProductCollectionSurcharge)
-            {
+        if (($objSurcharge = $objCollection->getPaymentSurcharge()) !== null) {
                 $arrSurcharges[] = $objSurcharge;
             }
-        }
 
         return $arrSurcharges;
     }

@@ -50,13 +50,6 @@ class Order extends ProductCollection implements IsotopeProductCollection
         parent::__construct($objResult);
 
         if ($objResult !== null) {
-            if ($this->payment_id > 0) {
-                $this->Payment = $this->getRelated('payment_id');
-            }
-
-            if ($this->shipping_id > 0) {
-                $this->Shipping = $this->getRelated('shipping_id');
-            }
 
             // The order_id must not be stored in arrData, or it would overwrite the database on save().
             $this->strOrderId = $this->arrData['order_id'];
