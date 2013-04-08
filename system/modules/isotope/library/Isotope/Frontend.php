@@ -58,12 +58,12 @@ class Frontend extends \Frontend
         $arrSurcharges = array();
 
         if (($objSurcharge = $objCollection->getShippingSurcharge()) !== null) {
-                $arrSurcharges[] = $objSurcharge;
-            }
+            $arrSurcharges[] = $objSurcharge;
+        }
 
         if (($objSurcharge = $objCollection->getPaymentSurcharge()) !== null) {
-                $arrSurcharges[] = $objSurcharge;
-            }
+            $arrSurcharges[] = $objSurcharge;
+        }
 
         return $arrSurcharges;
     }

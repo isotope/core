@@ -602,11 +602,11 @@ class Checkout extends Module
 
                 $arrModules[] = array(
                     'id'        => $objModule->id,
-                    'label'        => $objModule->label,
-                    'price'        => $strPrice,
+                    'label'     => $objModule->label,
+                    'price'     => $strPrice,
                     'checked'   => ((Isotope::getCart()->getShippingMethod()->id == $objModule->id || $objModules->numRows == 1) ? ' checked="checked"' : ''),
-                    'note'        => $objModule->note,
-                    'form'        => $objModule->getShippingOptions($this),
+                    'note'      => $objModule->note,
+                    'form'      => $objModule->getShippingOptions($this),
                 );
 
                 $objLastModule = $objModule;
@@ -719,11 +719,11 @@ class Checkout extends Module
 
                 $arrModules[] = array(
                     'id'        => $objModule->id,
-                    'label'        => $objModule->label,
-                    'price'        => $strPrice,
-                    'checked'    => ((Isotope::getCart()->Payment->id == $objModule->id || $objModules->numRows == 1) ? ' checked="checked"' : ''),
-                    'note'        => $objModule->note,
-                    'form'        => $objModule->paymentForm($this),
+                    'label'     => $objModule->label,
+                    'price'     => $strPrice,
+                    'checked'   => ((Isotope::getCart()->Payment->id == $objModule->id || $objModules->numRows == 1) ? ' checked="checked"' : ''),
+                    'note'      => $objModule->note,
+                    'form'      => $objModule->paymentForm($this),
                 );
 
                 $objLastModule = $objModule;

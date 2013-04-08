@@ -587,7 +587,7 @@ abstract class ProductCollection extends \Model
 
                     $this->arrItems[$objItem->id] = $objItem;
                 }
-                    }
+            }
         }
 
         return $this->arrItems;

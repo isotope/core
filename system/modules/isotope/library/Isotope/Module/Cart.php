@@ -118,21 +118,21 @@ class Cart extends Module
 
             $arrProductData[] = array_merge($objProduct->getAttributes(), array
             (
-                'id'                => $objProduct->id,
-                'image'                => $objProduct->images->main_image,
-                'link'                => $objProduct->href_reader,
-                'original_price'    => Isotope::formatPriceWithCurrency($objProduct->original_price),
-                'price'                => Isotope::formatPriceWithCurrency($objProduct->price),
-                'tax_free_price'    => Isotope::formatPriceWithCurrency($objProduct->tax_free_price),
-                'total_price'        => Isotope::formatPriceWithCurrency($objProduct->total_price),
-                'tax_free_total_price'    => Isotope::formatPriceWithCurrency($objProduct->tax_free_total_price),
-                'tax_id'            => $objProduct->tax_id,
-                'quantity'            => $objProduct->quantity_requested,
-                'collection_id'        => $objProduct->collection_id,
-                'product_options'    => $objProduct->getOptions(),
-                'remove_link'        => ampersand($strUrl . ($GLOBALS['TL_CONFIG']['disableAlias'] ? '&' : '?') . 'remove='.$objProduct->collection_id.'&referer='.base64_encode(\Environment::get('request'))),
-                'remove_link_text'  => $GLOBALS['TL_LANG']['MSC']['removeProductLinkText'],
-                'remove_link_title' => specialchars(sprintf($GLOBALS['TL_LANG']['MSC']['removeProductLinkTitle'], $objProduct->name)),
+                'id'                    => $objProduct->id,
+                'image'                 => $objProduct->images->main_image,
+                'link'                  => $objProduct->href_reader,
+                'original_price'        => Isotope::formatPriceWithCurrency($objProduct->original_price),
+                'price'                 => Isotope::formatPriceWithCurrency($objProduct->price),
+                'tax_free_price'        => Isotope::formatPriceWithCurrency($objProduct->tax_free_price),
+                'total_price'           => Isotope::formatPriceWithCurrency($objProduct->total_price),
+                'tax_free_total_price'  => Isotope::formatPriceWithCurrency($objProduct->tax_free_total_price),
+                'tax_id'                => $objProduct->tax_id,
+                'quantity'              => $objProduct->quantity_requested,
+                'collection_id'         => $objProduct->collection_id,
+                'product_options'       => $objProduct->getOptions(),
+                'remove_link'           => ampersand($strUrl . ($GLOBALS['TL_CONFIG']['disableAlias'] ? '&' : '?') . 'remove='.$objProduct->collection_id.'&referer='.base64_encode(\Environment::get('request'))),
+                'remove_link_text'      => $GLOBALS['TL_LANG']['MSC']['removeProductLinkText'],
+                'remove_link_title'     => specialchars(sprintf($GLOBALS['TL_LANG']['MSC']['removeProductLinkTitle'], $objProduct->name)),
             ));
 
             if (null !== $lastAdded && $lastAdded->id == $objProduct->collection_id)
