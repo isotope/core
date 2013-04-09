@@ -14,6 +14,7 @@ Version 1.4.1 (2013-0?-??)
 - Declaration of ModuleIsotopeRelatedProducts::findProducts() should be compatible with ModuleIsotopeProductList (#575)
 - Wrong URL in the Google XML sitemap (auto_item) (#581)
 - Member-restricted rules did not work with postsale script (#580)
+- Order conditions form was not always validated (#591)
 
 
 Version 1.4.0 (2013-03-18)

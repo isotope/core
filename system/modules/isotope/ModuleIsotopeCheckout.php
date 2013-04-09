@@ -197,8 +197,11 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 			return;
 		}
 
-		if (!$this->iso_forward_review && !strlen($this->Input->get('step')))
-		{
+		if ($this->Input->get('step') == '') {
+			if ($this->iso_forward_review) {
+				$this->redirect($this->addToUrl('step=review', true));
+			}
+
 			$this->redirectToNextStep();
 		}
 
