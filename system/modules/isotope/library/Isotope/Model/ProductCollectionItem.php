@@ -149,4 +149,22 @@ class ProductCollectionItem extends \Model
     {
         return (string) ($this->isLocked() || !$this->hasProduct()) ? $this->tax_free_price : $this->getProduct()->tax_free_price;
     }
+
+
+    public static function sumBy($strField, $strColumn=null, $varValue=null)
+    {
+        if (static::$strTable == '')
+		{
+			return 0;
+		}
+
+		$strQuery = "SELECT SUM(" . $strField . ") AS sum FROM " . static::$strTable;
+
+		if ($strColumn !== null)
+		{
+			$strQuery .= " WHERE " . (is_array($strColumn) ? implode(" AND ", $strColumn) : static::$strTable . '.' . $strColumn . "=?");
+		}
+
+		return (int) \Database::getInstance()->prepare($strQuery)->execute($varValue)->sum;
+    }
 }
