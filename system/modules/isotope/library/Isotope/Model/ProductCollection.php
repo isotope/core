@@ -372,6 +372,10 @@ abstract class ProductCollection extends \Model
      */
     public function save($blnForceInsert=false)
     {
+        if ($this->isLocked()) {
+            return false;
+        }
+
         if ($this->blnModified) {
             $this->arrData['tstamp'] = time();
             $this->arrData['settings'] = serialize($this->arrSettings);
