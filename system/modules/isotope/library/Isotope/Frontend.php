@@ -101,16 +101,16 @@ class Frontend extends \Frontend
             {
                 case 'cart_items';
 
-                    return Isotope::getCart()->items;
+                    return Isotope::getCart()->countItems();
                     break;
 
-                case 'cart_products';
+                case 'cart_quantity';
 
-                    return Isotope::getCart()->products;
+                    return Isotope::getCart()->sumItemsQuantity();
                     break;
 
                 case 'cart_items_label';
-                    $intCount = Isotope::getCart()->items;
+                    $intCount = Isotope::getCart()->countItems();
 
                     if (!$intCount)
                     {
@@ -120,8 +120,8 @@ class Frontend extends \Frontend
                     return $intCount == 1 ? ('('.$GLOBALS['TL_LANG']['MSC']['productSingle'].')') : sprintf(('('.$GLOBALS['TL_LANG']['MSC']['productMultiple'].')'), $intCount);
                     break;
 
-                case 'cart_products_label';
-                    $intCount = Isotope::getCart()->products;
+                case 'cart_quantity_label';
+                    $intCount = Isotope::getCart()->sumItemsQuantity();
 
                     if (!$intCount)
                     {

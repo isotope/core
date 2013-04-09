@@ -244,7 +244,7 @@ class Cart extends ProductCollection implements IsotopeProductCollection
         // Temporary cart available, move to this cart. Must be after creating a new cart!
          if (FE_USER_LOGGED_IN === true && $strHash != '')
          {
-             $blnMerge = $objCart->products ? true : false;
+             $blnMerge = $objCart->countItems() > 0 ? true : false;
 
             if (($objTemp = static::findOneBy(array('uniqid=?', 'store_id=?'), array($strHash, $intStore))) !== null)
             {

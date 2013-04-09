@@ -94,10 +94,10 @@ class Flat extends Shipping
         switch( $this->flatCalculation )
         {
             case 'perProduct':
-                return (($fltPrice * $objCollection->products) + $this->calculateSurcharge($objCollection));
+                return (($fltPrice * $objCollection->countItems()) + $this->calculateSurcharge($objCollection));
 
             case 'perItem':
-                return (($fltPrice * $objCollection->items) + $this->calculateSurcharge($objCollection));
+                return (($fltPrice * $objCollection->sumItemsQuantity()) + $this->calculateSurcharge($objCollection));
 
             default:
                 return ($fltPrice + $this->calculateSurcharge($objCollection));

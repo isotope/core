@@ -1035,8 +1035,8 @@ class Checkout extends Module
 
         $arrData = array_merge($this->arrOrderData, array
         (
-            'items'                => Isotope::getCart()->items,
-            'products'            => Isotope::getCart()->products,
+            'items'                => Isotope::getCart()->sumItemsQuantity(),
+            'products'            => Isotope::getCart()->countItems(),
             'subTotal'            => Isotope::formatPriceWithCurrency(Isotope::getCart()->subTotal, false),
             'grandTotal'        => Isotope::formatPriceWithCurrency(Isotope::getCart()->grandTotal, false),
             'cart_text'            => strip_tags($this->replaceInsertTags(Isotope::getCart()->getProducts('iso_products_text'))),

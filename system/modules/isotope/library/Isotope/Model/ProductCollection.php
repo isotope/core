@@ -352,6 +352,26 @@ abstract class ProductCollection extends \Model
     }
 
 
+    public function countItems()
+    {
+        if (!isset($this->arrCache['countItems'])) {
+            $this->arrCache['countItems'] = ProductCollectionItem::countBy('pid', $this->id);
+        }
+
+        return $this->arrCache['countItems'];
+    }
+
+
+    public function sumItemsQuantity()
+    {
+        if (!isset($this->arrCache['sumItemsQuantity'])) {
+            $this->arrCache['sumItemsQuantity'] = ProductCollectionItem::countBy('quantity', 'pid', $this->id);
+        }
+
+        return $this->arrCache['sumItemsQuantity'];
+    }
+
+
     /**
      * Load settings from database field
      * @param object
