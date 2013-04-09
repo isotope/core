@@ -131,12 +131,20 @@ class Frontend extends \Frontend
                     return $intCount == 1 ? ('('.$GLOBALS['TL_LANG']['MSC']['productSingle'].')') : sprintf(('('.$GLOBALS['TL_LANG']['MSC']['productMultiple'].')'), $intCount);
                     break;
 
-                case 'cart_total':
-                    return Isotope::formatPriceWithCurrency(Isotope::getCart()->grandTotal);
+                case 'cart_subtotal':
+                    return Isotope::formatPriceWithCurrency(Isotope::getCart()->getSubtotal());
                     break;
 
-                case 'cart_subtotal':
-                    return Isotope::formatPriceWithCurrency(Isotope::getCart()->subTotal);
+                case 'cart_taxfree_subtotal':
+                    return Isotope::formatPriceWithCurrency(Isotope::getCart()->getTaxFreeSubtotal());
+                    break;
+
+                case 'cart_total':
+                    return Isotope::formatPriceWithCurrency(Isotope::getCart()->getTotal());
+                    break;
+
+                case 'cart_taxfree_total':
+                    return Isotope::formatPriceWithCurrency(Isotope::getCart()->getTaxFreeTotal());
                     break;
             }
 
