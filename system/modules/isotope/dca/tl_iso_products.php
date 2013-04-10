@@ -311,6 +311,7 @@ $GLOBALS['TL_DCA']['tl_iso_products'] = array
             'foreignKey'            => (strlen(\Input::get('table')) ? 'tl_iso_producttypes.name' : null),
             'eval'                  => array('mandatory'=>true, 'submitOnChange'=>true, 'includeBlankOption'=>true, 'tl_class'=>'clr'),
             'attributes'            => array('legend'=>'general_legend', 'fixed'=>true, 'inherit'=>true),
+            'relation'              => array('type'=>'hasOne', 'load'=>'lazy'),
         ),
         'pages' => array
         (
