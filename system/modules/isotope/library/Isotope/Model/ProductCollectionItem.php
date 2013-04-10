@@ -151,6 +151,52 @@ class ProductCollectionItem extends \Model
     }
 
 
+    /**
+     * Increase quantity of product collection item
+     * @param   int
+     * @return  bool
+     */
+    public function increaseQuantityBy($intQuantity)
+    {
+        $time = time();
+
+        $objResult = \Database::getInstance()->query("UPDATE " . static::$strTable . " SET tstamp=$time, quantity=(quantity+" . (int) $intQuantity . ") WHERE " . static::$strPk . "=" . $this->{static::$strPk});
+
+        $this->tstamp = $time;
+        $this->quantity = \Database::getInstance()->query("SELECT quantity FROM " . static::$strTable . " WHERE " . static::$strPk . "=" . $this->{static::$strPk})->quantity;
+
+        return $this;
+    }
+
+    /**
+     * Decrease quantity of product collection item
+     * @param   int
+     * @return  bool
+     */
+    public function decreaseQuantityBy($intQuantity)
+    {
+        if (($this->quantity - $intQuantity) < 1) {
+            throw new UnderflowException('Quantity of product collection item cannot be less than 1.');
+        }
+
+        $time = time();
+
+        $objResult = \Database::getInstance()->query("UPDATE " . static::$strTable . " SET tstamp=$time, quantity=(quantity-" . (int) $intQuantity . ") WHERE " . static::$strPk . "=" . $this->{static::$strPk});
+
+        $this->tstamp = $time;
+        $this->quantity = \Database::getInstance()->query("SELECT quantity FROM " . static::$strTable . " WHERE " . static::$strPk . "=" . $this->{static::$strPk})->quantity;
+
+        return $this;
+    }
+
+
+    /**
+     * Calculate the sum of a database column
+     * @param   string
+     * @param   mixed
+     * @param   mixed
+     * @return  int
+     */
     public static function sumBy($strField, $strColumn=null, $varValue=null)
     {
         if (static::$strTable == '')

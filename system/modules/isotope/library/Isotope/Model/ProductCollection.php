@@ -711,10 +711,7 @@ abstract class ProductCollection extends \Model
         		$intQuantity = $objProduct->minimum_quantity - $objItem->quantity;
     		}
 
-            \Database::getInstance()->query("UPDATE " . static::$ctable . " SET tstamp=$time, quantity=(quantity+$intQuantity) WHERE id={$objItem->id}");
-
-            $this->arrItems[$objItem->id]->tstamp = $time;
-            $this->arrItems[$objItem->id]->quantity = \Database::getInstance()->executeUncached("SELECT quantity FROM " . static::$ctable . " WHERE id={$objItem->id}")->quantity;
+    		$objItem->increaseQuantityBy($intQuantity);
 
             return $objItem;
         }
