@@ -12,6 +12,8 @@
 
 namespace Isotope\Model;
 
+use Isotope\Model\ProductCollectionDownload;
+
 
 /**
  * ProductCollectionItem represents an item in a product collection.
@@ -33,6 +35,12 @@ class ProductCollectionItem extends \Model
      * @var IsotopeProduct|false
      */
     protected $objProduct;
+
+    /**
+     * Cache downloads for the collection item
+     * @var array
+     */
+    protected $arrDownloads;
 
     /**
      * True if product collection is locked
@@ -148,6 +156,22 @@ class ProductCollectionItem extends \Model
     public function getTaxFreePrice()
     {
         return (string) ($this->isLocked() || !$this->hasProduct()) ? $this->tax_free_price : $this->getProduct()->tax_free_price;
+    }
+
+
+    /**
+     * Return downloads associated with this product collection item
+     * @return  array
+     */
+    public function getDownloads()
+    {
+        if (null === $this->arrDownloads) {
+            $objDownloads = ProductCollectionDownload::findBy('pid', $this->id);
+
+            $this->arrDownloads = (null === $objDownloads) ? array() : $objDownloads->fetchAll();
+        }
+
+        return $this->arrDownloads;
     }
 
 
