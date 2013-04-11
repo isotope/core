@@ -69,13 +69,13 @@ abstract class ProductCollection extends \Model
      * Shipping method for this collection, if shipping is required
      * @var IsotopeShipping
      */
-    protected $objShipping;
+    protected $objShipping = false;
 
     /**
      * Payment method for this collection, if payment is required
      * @var IsotopePayment
      */
-    protected $objPayment;
+    protected $objPayment = false;
 
     /**
      * Template
@@ -235,15 +235,11 @@ abstract class ProductCollection extends \Model
      */
     public function getPaymentMethod()
     {
-        if (null === $this->objPayment) {
+        if (false === $this->objPayment) {
             $this->objPayment = $this->getRelated('payment_id');
-
-            if (null === $this->objPayment) {
-                $this->objPayment = false;
-            }
         }
 
-        return (false === $this->objPayment) ? null : $this->objPayment;
+        return $this->objPayment;
     }
 
     /**
@@ -290,15 +286,11 @@ abstract class ProductCollection extends \Model
      */
     public function getShippingMethod()
     {
-        if (null === $this->objShipping) {
+        if (false === $this->objShipping) {
             $this->objShipping = $this->getRelated('shipping_id');
-
-            if (null === $this->objShipping) {
-                $this->objShipping = false;
-            }
         }
 
-        return (false === $this->objShipping) ? null : $this->objShipping;
+        return $this->objShipping;
     }
 
     /**
