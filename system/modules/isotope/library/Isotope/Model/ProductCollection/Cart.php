@@ -248,7 +248,7 @@ class Cart extends ProductCollection implements IsotopeProductCollection
 
             if (($objTemp = static::findOneBy(array('uniqid=?', 'store_id=?'), array($strHash, $intStore))) !== null)
             {
-                $arrIds = $objCart->transferFromCollection($objTemp, false);
+                $arrIds = $objCart->copyItemsFrom($objTemp);
 
                 if ($blnMerge && !empty($arrIds)) {
                     $_SESSION['ISO_CONFIRM'][] = $GLOBALS['TL_LANG']['MSC']['cartMerged'];

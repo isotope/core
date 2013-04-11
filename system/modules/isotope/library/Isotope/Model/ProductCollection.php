@@ -828,6 +828,71 @@ abstract class ProductCollection extends \Model
 
 
     /**
+     * Copy product collection items from another collection to this one (e.g. Cart to Order)
+     * @param object
+     * @param boolean
+     * @return array
+     */
+    public function copyItemsFrom(IsotopeProductCollection $objSource)
+    {
+        if (!$this->blnRecordExists) {
+            $this->save(true);
+        }
+
+        // Make sure database table has the latest prices
+        $objSource->save();
+
+        $time = time();
+        $arrIds = array();
+        $arrOldItems = $objSource->getItems();
+
+        foreach ($arrOldItems as $objOldItem) {
+            $objNewItems = \Database::getInstance()->prepare("SELECT * FROM " . static::$ctable . " WHERE pid={$this->id} AND product_id={$objOldItem->product_id} AND options=?")->execute($objOldItem->options);
+
+            // !HOOK: additional functionality when copying product to collection
+            if (isset($GLOBALS['ISO_HOOKS']['copyCollectionItem']) && is_array($GLOBALS['ISO_HOOKS']['copyCollectionItem'])) {
+                foreach ($GLOBALS['ISO_HOOKS']['copyCollectionItem'] as $callback) {
+                    $objCallback = \System::importStatic($callback[0]);
+
+                    if ($objCallback->$callback[1]($objOldItem, $objSource, $this) === false) {
+                        continue;
+                    }
+                }
+            }
+
+            if ($objOldItem->hasProduct() && $this->hasProduct($objOldItem->getProduct())) {
+
+                $objNewItem = $this->getItemForProduct($objOldItem->getProduct());
+                $objNewItem->increaseQuantityBy($objOldItem->quantity);
+
+            } else {
+
+                $objNewItem = clone $objOldItem;
+                $objNewItem->pid = $this->id;
+                $objNewItem->tstamp = $time;
+                $objNewItem->save(true);
+            }
+
+            $arrIds[$objOldItem->id] = $objNewItem->id;
+        }
+
+        if (!empty($arrIds)) {
+            $this->setModified(true);
+        }
+
+        // !HOOK: additional functionality when adding product to collection
+        if (isset($GLOBALS['ISO_HOOKS']['copiedCollectionItems']) && is_array($GLOBALS['ISO_HOOKS']['copiedCollectionItems'])) {
+            foreach ($GLOBALS['ISO_HOOKS']['copiedCollectionItems'] as $callback) {
+                $objCallback = \System::importStatic($callback[0]);
+                $objCallback->$callback[1]($objSource, $this, $arrIds);
+            }
+        }
+
+        return $arrIds;
+    }
+
+
+    /**
      * Transfer products from another collection to this one (e.g. Cart to Order)
      * @param object
      * @param boolean
