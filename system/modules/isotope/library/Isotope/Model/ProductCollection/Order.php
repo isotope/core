@@ -322,17 +322,13 @@ class Order extends ProductCollection implements IsotopeProductCollection
 
         $this->log('New order ID ' . $this->id . ' has been placed', __METHOD__, TL_ACCESS);
 
-        if ($this->iso_mail_admin && $this->iso_sales_email != '')
-        {
+        if ($this->iso_mail_admin && $this->iso_sales_email != '') {
             Isotope::sendMail($this->iso_mail_admin, $this->iso_sales_email, $this->language, $arrData, $this->iso_customer_email, $this);
         }
 
-        if ($this->iso_mail_customer && $this->iso_customer_email != '')
-        {
+        if ($this->iso_mail_customer && $this->iso_customer_email != '') {
             Isotope::sendMail($this->iso_mail_customer, $this->iso_customer_email, $this->language, $arrData, '', $this);
-        }
-        else
-        {
+        } else {
             $this->log('Unable to send customer confirmation for order ID '.$this->id, __METHOD__, TL_ERROR);
         }
 

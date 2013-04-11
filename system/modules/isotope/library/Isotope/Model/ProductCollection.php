@@ -24,7 +24,7 @@ use Isotope\Product\Standard as StandardProduct;
 
 
 /**
- * Class Collection
+ * Class ProductCollection
  *
  * Provide methods to handle Isotope product collections.
  * @copyright  Isotope eCommerce Workgroup 2009-2012
