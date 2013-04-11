@@ -153,12 +153,9 @@ abstract class ProductCollection extends \Model
      */
     public function __set($strKey, $varValue)
     {
-        $this->arrCache = array();
-
         // If there is a database field for that key, we store it there
         if (array_key_exists($strKey, $this->arrData) || \Database::getInstance()->fieldExists($strKey, static::$strTable)) {
             $this->arrData[$strKey] = $varValue;
-            $this->blnModified = true;
         }
 
         // Everything else goes into arrSettings and is serialized
@@ -168,9 +165,10 @@ abstract class ProductCollection extends \Model
             } else {
                 $this->arrSettings[$strKey] = $varValue;
             }
-
-            $this->blnModified = true;
         }
+
+        // Empty all caches
+        $this->setModified(true);
     }
 
     /**
