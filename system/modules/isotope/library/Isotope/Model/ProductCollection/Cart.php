@@ -250,8 +250,7 @@ class Cart extends ProductCollection implements IsotopeProductCollection
             {
                 $arrIds = $objCart->transferFromCollection($objTemp, false);
 
-                if ($blnMerge && !empty($arrIds))
-                {
+                if ($blnMerge && !empty($arrIds)) {
                     $_SESSION['ISO_CONFIRM'][] = $GLOBALS['TL_LANG']['MSC']['cartMerged'];
                 }
 

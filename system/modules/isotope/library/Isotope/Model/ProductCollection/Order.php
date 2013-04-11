@@ -265,16 +265,14 @@ class Order extends ProductCollection implements IsotopeProductCollection
      */
     public function checkout($objCart=null)
     {
-        if ($this->checkout_complete)
-        {
+        if ($this->checkout_complete) {
             return true;
         }
 
            global $objPage;
 
         // Load page configuration
-        if (!is_object($objPage) && $this->pageId > 0)
-        {
+        if (!is_object($objPage) && $this->pageId > 0) {
             $objPage = \Controller::getPageDetails($this->pageId);
             $objPage = IsotopeFrontend::loadPageConfig($objPage);
         }
@@ -383,8 +381,7 @@ class Order extends ProductCollection implements IsotopeProductCollection
      */
     public function complete()
     {
-        if ($this->checkout_complete)
-        {
+        if ($this->checkout_complete) {
             $intConfig = $_SESSION['ISOTOPE']['config_id'];
 
             unset($_SESSION['CHECKOUT_DATA']);
@@ -392,8 +389,7 @@ class Order extends ProductCollection implements IsotopeProductCollection
             unset($_SESSION['FORM_DATA']);
             unset($_SESSION['FILES']);
 
-            if ($intConfig > 0)
-            {
+            if ($intConfig > 0) {
                 $_SESSION['ISOTOPE']['config_id'] = $intConfig;
             }
 
