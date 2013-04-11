@@ -822,7 +822,7 @@ abstract class ProductCollection extends \Model
     public function getSurcharges()
     {
         if (null === $this->arrSurcharges) {
-            $this->arrSurcharges = $this->isLocked() ? ProductCollectionSurcharge::findByPid($this->id) : ProductCollectionSurcharge::findForCollection($this);
+            $this->arrSurcharges = $this->isLocked() ? ProductCollectionSurcharge::findBy('pid', $this->id) : ProductCollectionSurcharge::findForCollection($this);
         }
 
         return $this->arrSurcharges;
