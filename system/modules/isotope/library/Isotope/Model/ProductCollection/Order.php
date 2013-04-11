@@ -299,14 +299,11 @@ class Order extends ProductCollection implements IsotopeProductCollection
         }
 
         // !HOOK: pre-process checkout
-        if (isset($GLOBALS['ISO_HOOKS']['preCheckout']) && is_array($GLOBALS['ISO_HOOKS']['preCheckout']))
-        {
-            foreach ($GLOBALS['ISO_HOOKS']['preCheckout'] as $callback)
-            {
-                $this->import($callback[0]);
+        if (isset($GLOBALS['ISO_HOOKS']['preCheckout']) && is_array($GLOBALS['ISO_HOOKS']['preCheckout'])) {
+            foreach ($GLOBALS['ISO_HOOKS']['preCheckout'] as $callback) {
+                $objCallback = \System::importStatic($callback[0]);
 
-                if ($this->$callback[0]->$callback[1]($this, $objCart) === false)
-                {
+                if ($objCallback->$callback[1]($this, $objCart) === false) {
                     $this->log('Callback ' . $callback[0] . '::' . $callback[1] . '() cancelled checkout for Order ID ' . $this->id, __METHOD__, TL_ERROR);
 
                     return false;
@@ -361,12 +358,10 @@ class Order extends ProductCollection implements IsotopeProductCollection
         }
 
         // !HOOK: post-process checkout
-        if (isset($GLOBALS['ISO_HOOKS']['postCheckout']) && is_array($GLOBALS['ISO_HOOKS']['postCheckout']))
-        {
-            foreach ($GLOBALS['ISO_HOOKS']['postCheckout'] as $callback)
-            {
-                $this->import($callback[0]);
-                $this->$callback[0]->$callback[1]($this, $arrItemIds, $arrData);
+        if (isset($GLOBALS['ISO_HOOKS']['postCheckout']) && is_array($GLOBALS['ISO_HOOKS']['postCheckout'])) {
+            foreach ($GLOBALS['ISO_HOOKS']['postCheckout'] as $callback) {
+                $objCallback = \System::importStatic($callback[0]);
+                $objCallback->$callback[1]($this, $arrItemIds, $arrData);
             }
         }
 
