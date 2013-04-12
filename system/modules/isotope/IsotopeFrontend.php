@@ -1688,6 +1688,7 @@ $endScript";
 				(
 					'isRoot' => false,
 					'isActive' => true,
+					'href' => $objProduct->href_reader,
 					'title' => specialchars($objProduct->name, true),
 					'link' => $objProduct->name,
 					'data' => $objPage->row(),

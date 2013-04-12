@@ -7,6 +7,7 @@ Version 1.4.1 (2013-0?-??)
 ### Improved
 - Product object is now also available in the product list template
 - Truncate product cache when using variants quick edit (#586)
+- Pass product reader link to the active breadcrumb item (#579)
 
 ### Fixed
 - Sending e-mails did not work in PHP < 5.3 (#576)
