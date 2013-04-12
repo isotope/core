@@ -1,6 +1,6 @@
 
-isotope_saferpay
-================
+isotope_saferpay 2.0
+====================
 
 [Saferpay](http://saferpay.com/) payment method for Isotope eCommerce.
 
@@ -11,4 +11,4 @@ isotope_saferpay
 
 
 ### Credits ###
-This extension has been developed by [iBROWS GmbH](http://ibrows.ch/).
+This extension has been developed by terminal42 gmbh.
