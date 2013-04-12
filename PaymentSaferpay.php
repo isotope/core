@@ -42,35 +42,35 @@ class PaymentSaferpay extends IsotopePayment
      */
     const version = '2.0.0';
 
-	/**
-	 * CreatePayInit URI
-	 * @var string
-	 */
-	const createPayInitURI = 'https://www.saferpay.com/hosting/CreatePayInit.asp';
+    /**
+     * CreatePayInit URI
+     * @var string
+     */
+    const createPayInitURI = 'https://www.saferpay.com/hosting/CreatePayInit.asp';
 
-	/**
-	 * VerifyPayConfirm URI
-	 * @var string
-	 */
-	const verifyPayConfirmURI = 'https://www.saferpay.com/hosting/VerifyPayConfirm.asp';
+    /**
+     * VerifyPayConfirm URI
+     * @var string
+     */
+    const verifyPayConfirmURI = 'https://www.saferpay.com/hosting/VerifyPayConfirm.asp';
 
-	/**
-	 * PayCompleteURI
-	 * @var string
-	 */
-	const payCompleteURI = 'https://www.saferpay.com/hosting/PayComplete.asp';
+    /**
+     * PayCompleteURI
+     * @var string
+     */
+    const payCompleteURI = 'https://www.saferpay.com/hosting/PayComplete.asp';
 
 
-	/**
-	 * Return a list of status options.
-	 *
-	 * @access public
-	 * @return array
-	 */
-	public function statusOptions()
-	{
-		return array('pending', 'processing', 'complete', 'on_hold');
-	}
+    /**
+     * Return a list of status options.
+     *
+     * @access public
+     * @return array
+     */
+    public function statusOptions()
+    {
+        return array('pending', 'processing', 'complete', 'on_hold');
+    }
 
 
     /**
@@ -163,14 +163,14 @@ class PaymentSaferpay extends IsotopePayment
     }
 
 
-	/**
-	 * Process checkout payment.
-	 *
-	 * @access public
-	 * @return mixed
-	 */
-	public function processPayment()
-	{
+    /**
+     * Process checkout payment.
+     *
+     * @access public
+     * @return mixed
+     */
+    public function processPayment()
+    {
         $objOrder = new IsotopeOrder();
         if (!$objOrder->findBy('cart_id', $this->Isotope->Cart->id))
         {
@@ -198,67 +198,67 @@ class PaymentSaferpay extends IsotopePayment
 
         $this->log('Payment could not be processed.', __METHOD__, TL_ERROR);
         $this->redirect($this->addToUrl('step=failed', true));
-	}
+    }
 
 
-	/**
-	 * HTML form for checkout
-	 *
-	 * @access public
-	 * @return mixed
-	 */
-	public function checkoutForm()
-	{
-		// Get redirect url
-		$objRequest = new Request();
-		$objRequest->send($this->createPaymentURI());
+    /**
+     * HTML form for checkout
+     *
+     * @access public
+     * @return mixed
+     */
+    public function checkoutForm()
+    {
+        // Get redirect url
+        $objRequest = new Request();
+        $objRequest->send($this->createPaymentURI());
 
-		if ((int) $objRequest->code !== 200 || substr($objRequest->response, 0, 6) === 'ERROR:') {
+        if ((int) $objRequest->code !== 200 || substr($objRequest->response, 0, 6) === 'ERROR:') {
             $this->log(sprintf('Could not get the redirect URI from Saferpay. See log files for further details.'), __METHOD__, TL_ERROR);
             log_message(sprintf('Could not get the redirect URI from Saferpay. Response was: "%s".', $objRequest->response), 'error.log');
-			$this->redirect($this->addToUrl('step=failed', true));
-		}
+            $this->redirect($this->addToUrl('step=failed', true));
+        }
 
-		$GLOBALS['TL_HEAD'][] = '<meta http-equiv="refresh" content="1; URL=' . $objRequest->response . '">';
+        $GLOBALS['TL_HEAD'][] = '<meta http-equiv="refresh" content="1; URL=' . $objRequest->response . '">';
 
-		return '
+        return '
 <h2>' . $GLOBALS['TL_LANG']['MSC']['pay_with_saferpay'][0] . '</h2>
 <p class="message">' . $GLOBALS['TL_LANG']['MSC']['pay_with_saferpay'][1] . '</p>
 <p><a href="' . $objRequest->response . '">' . $GLOBALS['TL_LANG']['MSC']['pay_with_saferpay'][2]. '</a></p>';
-	}
+    }
 
 
-	/**
-	 * Check XML data, add to log if debugging is enabled
-	 *
-	 * @param  DOMNamedNodeMap
-	 * @param  IsotopeOrder
-	 * @return bool
-	 */
-	private function validateXML($attributes, $objOrder)
-	{
+    /**
+     * Check XML data, add to log if debugging is enabled
+     *
+     * @param  DOMNamedNodeMap
+     * @param  IsotopeOrder
+     * @return bool
+     */
+    private function validateXML($attributes, $objOrder)
+    {
         log_message(print_r($objOrder, true), 'postsale.log');
-		if ($attributes->getNamedItem('ACCOUNTID')->nodeValue != $this->saferpay_accountid) {
-			$this->log('XML data wrong, possible manipulation (accountId validation failed)! See log files for further details.', __METHOD__, TL_ERROR);
+        if ($attributes->getNamedItem('ACCOUNTID')->nodeValue != $this->saferpay_accountid) {
+            $this->log('XML data wrong, possible manipulation (accountId validation failed)! See log files for further details.', __METHOD__, TL_ERROR);
             log_message(sprintf('XML data wrong, possible manipulation (accountId validation failed)! XML was: "%s". Order was: "%s"', $attributes->getNamedItem('ACCOUNTID')->nodeValue, $this->saferpay_accountid), 'error.log');
 
-			return false;
+            return false;
 
-		} elseif ($attributes->getNamedItem('AMOUNT')->nodeValue != round(($objOrder->grandTotal * 100), 0)) {
-			$this->log('XML data wrong, possible manipulation (amount validation failed)! See log files for further details.', __METHOD__, TL_ERROR);
+        } elseif ($attributes->getNamedItem('AMOUNT')->nodeValue != round(($objOrder->grandTotal * 100), 0)) {
+            $this->log('XML data wrong, possible manipulation (amount validation failed)! See log files for further details.', __METHOD__, TL_ERROR);
             log_message(sprintf('XML data wrong, possible manipulation (amount validation failed)! XML was: "%s". Order was: "%s"', $attributes->getNamedItem('AMOUNT')->nodeValue, $this->grandTotal), 'error.log');
 
-			return false;
+            return false;
 
-		} elseif ($attributes->getNamedItem('CURRENCY')->nodeValue != $objOrder->currency) {
-			$this->log('XML data wrong, possible manipulation (currency validation failed)! See log files for further details.', __METHOD__, TL_ERROR);
+        } elseif ($attributes->getNamedItem('CURRENCY')->nodeValue != $objOrder->currency) {
+            $this->log('XML data wrong, possible manipulation (currency validation failed)! See log files for further details.', __METHOD__, TL_ERROR);
             log_message(sprintf('XML data wrong, possible manipulation (currency validation failed)! XML was: "%s". Order was: "%s"', $attributes->getNamedItem('CURRENCY')->nodeValue, $this->currency), 'error.log');
 
-			return false;
+            return false;
         }
 
-		return true;
-	}
+        return true;
+    }
 
 
     /**
