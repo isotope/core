@@ -17,6 +17,7 @@ Version 1.4.1 (2013-0?-??)
 - Member-restricted rules did not work with postsale script (#580)
 - Order conditions form was not always validated (#591)
 - Fixed array_merge() error in address book module (#593)
+- Option "redirect to first product" in product list did not work (#583)
 
 
 Version 1.4.0 (2013-03-18)
