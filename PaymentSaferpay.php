@@ -191,16 +191,25 @@ class PaymentSaferpay extends IsotopePayment
 		// Important (but optional) attributes
 		$strUrl .= "&ORDERID=" . $objOrder->id; // order id
 
+	/**
+	 * HTML form for checkout
+	 *
+	 * @access public
+	 * @return mixed
+	 */
+	public function checkoutForm()
+	{
 		// Get redirect url
 		$objRequest = new Request();
-		$objRequest->send($strUrl);
+		$objRequest->send($this->createPaymentURI());
 
-		if ($objRequest->code != 200)
-		{
+		if ((int) $objRequest->code !== 200 || substr($objRequest->response, 0, 6) === 'ERROR:') {
+            $this->log(sprintf('Could not get the redirect URI from Saferpay. See log files for further details.'), __METHOD__, TL_ERROR);
+            log_message(sprintf('Could not get the redirect URI from Saferpay. Response was: "%s".', $objRequest->response), 'error.log');
 			$this->redirect($this->addToUrl('step=failed', true));
 		}
 
-		$GLOBALS['TL_HEAD'][] = '<meta http-equiv="refresh" content="0; URL=' . $objRequest->response . '">';
+		$GLOBALS['TL_HEAD'][] = '<meta http-equiv="refresh" content="1; URL=' . $objRequest->response . '">';
 
 		return '
 <h2>' . $GLOBALS['TL_LANG']['MSC']['pay_with_saferpay'][0] . '</h2>
@@ -233,15 +242,36 @@ class PaymentSaferpay extends IsotopePayment
 			return false;
 		}
 		elseif ($arrXML['ORDERID'] != $objOrder->id)
+
+
+    /**
+     * Create payment URI
+     * @return string
+     */
+    private function createPaymentURI()
 		{
-			$this->log('XML data wrong, possible manipulation (orderId validation failed)!', __METHOD__, TL_ERROR);
-			return false;
+        $objOrder = Database::getInstance()->prepare("SELECT * FROM tl_iso_orders WHERE cart_id=?")->execute($this->Isotope->Cart->id);
+
+        $strComplete = $this->Environment->base . $this->addToUrl('step=complete');
+        $strFailed = $this->Environment->base . $this->addToUrl('step=failed');
+
+        $strUrl  = self::createPayInitURI;
+        $strUrl .= "?ACCOUNTID=" . $this->saferpay_accountid;
+        $strUrl .= "&AMOUNT=" . (round(($this->Isotope->Cart->grandTotal * 100), 0));
+        $strUrl .= "&CURRENCY=" . $this->Isotope->Config->currency;
+        $strUrl .= "&SUCCESSLINK=" . urlencode($strComplete);
+        $strUrl .= "&FAILLINK=" . urlencode($strFailed);
+        $strUrl .= "&BACKLINK=" . urlencode($strFailed);
+        $strUrl .= "&NOTIFYURL=" . urlencode($this->Environment->base . '/system/modules/isotope/postsale.php?mod=pay&id=' . $this->id);
+        $strUrl .= "&DESCRIPTION=" . urlencode($this->saferpay_description);
+        $strUrl .= "&ORDERID=" . $objOrder->id; // order id
+
         // Additional attributes
         if ($this->saferpay_vtconfig) {
             $strUrl .= '&VTCONFIG=' . urlencode($this->saferpay_vtconfig);
 		}
 
-		return true;
+        return $strUrl;
 	}
 }
 
