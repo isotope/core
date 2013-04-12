@@ -28,26 +28,30 @@
  */
 
 
+/**
+ * Class PaymentSaferpay
+ * @TODO: replace "self::" with "static::" when PHP 5.3 is compulsory
+ */
 class PaymentSaferpay extends IsotopePayment
 {
 
 	/**
-	 * The hosting gateway URL to create payinit URL
+     * Version
 	 * @var string
 	 */
-	protected $strInitUrl = 'https://www.saferpay.com/hosting/CreatePayInit.asp';
+    const version = '2.0.0';
 
 	/**
-	 * The hosting gateway URL to VerifyPayConfirm: Check the returned paramter, avoid manipulation
+	 * CreatePayInit URI
 	 * @var string
 	 */
-	protected $strConfirmUrl = 'https://www.saferpay.com/hosting/VerifyPayConfirm.asp';
+	const createPayInitURI = 'https://www.saferpay.com/hosting/CreatePayInit.asp';
 
 	/**
-	 * The hosting gateway URL to PayComplete
+	 * VerifyPayConfirm URI
 	 * @var string
 	 */
-	protected $strCaptureUrl = 'https://www.saferpay.com/hosting/PayComplete.asp';
+	const verifyPayConfirmURI = 'https://www.saferpay.com/hosting/VerifyPayConfirm.asp';
 
 
 	public function __get($strKey)
@@ -67,6 +71,11 @@ class PaymentSaferpay extends IsotopePayment
 				return parent::__get($strKey);
 		}
 	}
+	/**
+	 * PayCompleteURI
+	 * @var string
+	 */
+	const payCompleteURI = 'https://www.saferpay.com/hosting/PayComplete.asp';
 
 
 	/**
@@ -125,10 +134,7 @@ class PaymentSaferpay extends IsotopePayment
 			$arrResponse = array();
 			parse_str(substr($objRequest->response, 3), $arrResponse);
 
-			// Put all attributes together and create hosting PayComplete URL
-			// For hosting: each attribute which could have non-url-conform characters inside should be urlencoded before
-			$strUrl  = $this->strCaptureUrl . "?ACCOUNTID=" . $this->saferpay_accountid;
-			$strUrl .= "&ID=" . urlencode($arrResponse['ID']) . "&TOKEN=" . urlencode($arrResponse['TOKEN']);
+            $strUrl  = self::payCompleteURI . '?ACCOUNTID=' . $this->saferpay_accountid . '&ID=' . urlencode($arrResponse['ID']) . '&TOKEN=' . urlencode($arrResponse['TOKEN']);
 
 			// Special for testaccount: Passwort for hosting-capture neccessary.
 			// Not needed for standard-saferpay-eCommerce-accounts
