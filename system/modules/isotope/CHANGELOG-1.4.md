@@ -8,6 +8,7 @@ Version 1.4.1 (2013-0?-??)
 - Product object is now also available in the product list template
 - Truncate product cache when using variants quick edit (#586)
 - Pass product reader link to the active breadcrumb item (#579)
+- Do not automatically set order to failed through PayPal API (related to #580)
 
 ### Fixed
 - Sending e-mails did not work in PHP < 5.3 (#576)
