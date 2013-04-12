@@ -31,7 +31,7 @@
 /**
  * Palettes
  */
-$GLOBALS['TL_DCA']['tl_iso_payment_modules']['palettes']['saferpay'] = '{type_legend},type,name,label;{note_legend:hide},note;{config_legend},new_order_status,minimum_total,maximum_total,countries,shipping_modules,product_types;{gateway_legend},saferpay_accountid,trans_type,saferpay_description;{price_legend:hide},price,tax_class;{enabled_legend},enabled';
+$GLOBALS['TL_DCA']['tl_iso_payment_modules']['palettes']['saferpay'] = '{type_legend},type,name,label;{note_legend:hide},note;{config_legend},new_order_status,minimum_total,maximum_total,countries,shipping_modules,product_types;{gateway_legend},saferpay_accountid,trans_type,saferpay_description,saferpay_vtconfig;{price_legend:hide},price,tax_class;{enabled_legend},enabled';
 
 
 /**
@@ -43,11 +43,16 @@ $GLOBALS['TL_DCA']['tl_iso_payment_modules']['fields']['saferpay_accountid'] = a
 	'inputType'		=> 'text',
 	'eval'			=> array('mandatory'=>true, 'maxlength'=>16, 'tl_class'=>'w50'),
 );
-
 $GLOBALS['TL_DCA']['tl_iso_payment_modules']['fields']['saferpay_description'] = array
 (
 	'label'			=> &$GLOBALS['TL_LANG']['tl_iso_payment_modules']['saferpay_description'],
 	'inputType'		=> 'text',
-	'eval'			=> array('mandatory'=>true, 'maxlength'=>255, 'tl_class'=>'clr long'),
+	'eval'			=> array('mandatory'=>true, 'maxlength'=>255, 'tl_class'=>'w50'),
+);
+$GLOBALS['TL_DCA']['tl_iso_payment_modules']['fields']['saferpay_vtconfig'] = array
+(
+	'label'			=> &$GLOBALS['TL_LANG']['tl_iso_payment_modules']['saferpay_vtconfig'],
+	'inputType'		=> 'text',
+	'eval'			=> array('maxlength'=>255, 'tl_class'=>'w50'),
 );
 

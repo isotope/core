@@ -230,6 +230,9 @@ class PaymentSaferpay extends IsotopePayment
 		{
 			$this->log('XML data wrong, possible manipulation (orderId validation failed)!', __METHOD__, TL_ERROR);
 			return false;
+        // Additional attributes
+        if ($this->saferpay_vtconfig) {
+            $strUrl .= '&VTCONFIG=' . urlencode($this->saferpay_vtconfig);
 		}
 
 		return true;
