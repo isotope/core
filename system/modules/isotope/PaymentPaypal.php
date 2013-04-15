@@ -138,8 +138,10 @@ class PaymentPaypal extends IsotopePayment
 				case 'Expired':
 				case 'Failed':
 				case 'Voided':
-					$objOrder->date_paid = '';
-					$objOrder->updateOrderStatus($this->Isotope->Config->orderstatus_error);
+				    // PayPal will also send this notification if the order has not been placed.
+				    // What do we do here?
+//					$objOrder->date_paid = '';
+//					$objOrder->updateOrderStatus($this->Isotope->Config->orderstatus_error);
 					break;
 
 				case 'In-Progress':

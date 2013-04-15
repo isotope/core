@@ -81,7 +81,7 @@ class ModuleIsotopeRelatedProducts extends ModuleIsotopeProductList
 	 * Find all products we need to list.
 	 * @return array
 	 */
-	protected function findProducts()
+	protected function findProducts($arrCacheIds=null)
 	{
 		$strAlias = $this->Input->get('product');
 		$arrIds = array(0);

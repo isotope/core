@@ -183,7 +183,7 @@ class PaymentPostfinance extends IsotopePayment
 
 		$objTemplate = new FrontendTemplate('iso_payment_postfinance');
 
-		$objTemplate->action = 'https://e-payment.postfinance.ch/ncol/' . ($this->debug ? 'test' : 'prod') . '/orderstandard.asp';
+		$objTemplate->action = 'https://e-payment.postfinance.ch/ncol/' . ($this->debug ? 'test' : 'prod') . '/orderstandard_utf8.asp';
 		$objTemplate->params = $arrParam;
 		$objTemplate->slabel = $GLOBALS['TL_LANG']['MSC']['pay_with_cc'][2];
 		$objTemplate->id = $this->id;

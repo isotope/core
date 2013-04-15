@@ -104,9 +104,8 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 			$this->Input->setGet('step', $this->Input->get('auto_item'));
 		}
 
-		// Do not index or cache the page
+		// Do not cache the page
 		global $objPage;
-		$objPage->noSearch = 1;
 		$objPage->cache = 0;
 
 		$this->strCurrentStep = $this->Input->get('step');
@@ -197,8 +196,11 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 			return;
 		}
 
-		if (!$this->iso_forward_review && !strlen($this->Input->get('step')))
-		{
+		if ($this->Input->get('step') == '') {
+			if ($this->iso_forward_review) {
+				$this->redirect($this->addToUrl('step=review', true));
+			}
+
 			$this->redirectToNextStep();
 		}
 

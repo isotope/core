@@ -309,7 +309,10 @@ class IsotopeEmail extends Controller
 			$this->attachmentsDone = true;
 		}
 
-		return call_user_func_array(array($this->objEmail, 'sendTo'), func_get_args());
+		// No direct call possible in PHP < 5.3
+		$args = func_get_args();
+
+		return call_user_func_array(array($this->objEmail, 'sendTo'), $args);
 	}
 
 

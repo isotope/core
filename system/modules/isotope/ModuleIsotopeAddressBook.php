@@ -241,7 +241,7 @@ class ModuleIsotopeAddressBook extends ModuleIsotope
 
 				while( $objConfigs->next() )
 				{
-					$arrCountries = array_merge($arrCountries, deserialize($objConfigs->billing_countries), deserialize($objConfigs->shipping_countries));
+					$arrCountries = array_merge($arrCountries, deserialize($objConfigs->billing_countries, true), deserialize($objConfigs->shipping_countries, true));
 				}
 
 				$arrData['options'] = array_values(array_intersect($arrData['options'], $arrCountries));
