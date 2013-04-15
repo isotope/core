@@ -1,8 +1,8 @@
 Isotope eCommerce Changelog
 ===========================
 
-Version 1.4.1 (2013-0?-??)
-----------------------------
+Version 1.4.1 (2013-04-15)
+--------------------------
 
 ### Improved
 - Product object is now also available in the product list template
@@ -25,7 +25,7 @@ Version 1.4.1 (2013-0?-??)
 
 
 Version 1.4.0 (2013-03-18)
-----------------------------
+--------------------------
 
 ### New
 - Standalone front end module to display Isotope messages (#101)
