@@ -21,6 +21,7 @@ Version 1.4.1 (2013-0?-??)
 - Fixed array_merge() error in address book module (#593)
 - Option "redirect to first product" in product list did not work (#583)
 - Postfinance payment did not use UTF-8 interface (#589)
+- Search index was blocked when Isotope module was on the page (#594)
 
 
 Version 1.4.0 (2013-03-18)
