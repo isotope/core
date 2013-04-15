@@ -1084,6 +1084,15 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 			'cart_html'			=> $this->replaceInsertTags($this->Isotope->Cart->getProducts('iso_products_html')),
 		));
 
+		// Replace the insert tags in the variables of the email template
+		if (count($arrData) > 0)
+		{
+			foreach ($arrData as $k => $v)
+			{
+				$arrData[$k] = trim($this->replaceInsertTags($arrData[$k]));
+			}
+		}
+
 		$objOrder->email_data = $arrData;
 		$objOrder->save();
 	}
