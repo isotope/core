@@ -568,6 +568,15 @@ class IsotopeOrder extends IsotopeProductCollection
 			$arrData['shipping_' . $k] = $this->Isotope->formatValue('tl_iso_addresses', $k, $v);
 		}
 
+		$objConfig = new IsotopeConfig();
+		if ($objConfig->findBy('id', $this->config_id))
+		{
+    		foreach ($objConfig->getData() as $k => $v)
+    		{
+    			$arrData['config_' . $k] = $this->Isotope->formatValue('tl_iso_config', $k, $v);
+    		}
+    	}
+
 		if ($this->pid > 0)
 		{
 			$objUser = $this->Database->execute("SELECT * FROM tl_member WHERE id=" . (int) $this->pid);

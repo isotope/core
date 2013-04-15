@@ -9,6 +9,7 @@ Version 1.4.1 (2013-0?-??)
 - Truncate product cache when using variants quick edit (#586)
 - Pass product reader link to the active breadcrumb item (#579)
 - Do not automatically set order to failed through PayPal API (related to #580)
+- Shop config is now available in mail templates (##config_xxx##) (#572)
 
 ### Fixed
 - Sending e-mails did not work in PHP < 5.3 (#576)
