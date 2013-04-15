@@ -330,6 +330,8 @@ $strBuffer .= '<th style="text-align:center"><img src="system/themes/default/ima
 
         if (\Input::post('FORM_SUBMIT') == 'tl_product_quick_edit' && !$globalDoNotSubmit)
         {
+            IsotopeBackend::truncateProductCache();
+
             if (strlen(\Input::post('saveNclose')))
             {
                 $this->redirect(str_replace('&key=quick_edit', '', \Environment::get('request')));

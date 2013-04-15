@@ -696,23 +696,26 @@ abstract class ProductCollection extends \Model
 
         if (null !== $objItem)
         {
-            if (($objItem->quantity + $intQuantity) < $objProduct->minimum_quantity) {
-        		$_SESSION['ISO_INFO'][] = sprintf($GLOBALS['TL_LANG']['ERR']['productMinimumQuantity'], $objProduct->name, $objProduct->minimum_quantity);
-        		$intQuantity = $objProduct->minimum_quantity - $objItem->quantity;
-    		}
+            // Set product quantity so we can determine the correct minimum price
+            $objProduct->quantity_requested = $objItem->quantity;
 
-    		$objItem->increaseQuantityBy($intQuantity);
+            if (($objItem->quantity + $intQuantity) < $objProduct->minimum_quantity) {
+                $_SESSION['ISO_INFO'][] = sprintf($GLOBALS['TL_LANG']['ERR']['productMinimumQuantity'], $objProduct->name, $objProduct->minimum_quantity);
+                $intQuantity = $objProduct->minimum_quantity - $objItem->quantity;
+            }
+
+            $objItem->increaseQuantityBy($intQuantity);
 
             return $objItem;
         }
         else
         {
             if ($intQuantity < $objProduct->minimum_quantity) {
-        		$_SESSION['ISO_INFO'][] = sprintf($GLOBALS['TL_LANG']['ERR']['productMinimumQuantity'], $objProduct->name, $objProduct->minimum_quantity);
-        		$intQuantity = $objProduct->minimum_quantity;
-    		}
+                $_SESSION['ISO_INFO'][] = sprintf($GLOBALS['TL_LANG']['ERR']['productMinimumQuantity'], $objProduct->name, $objProduct->minimum_quantity);
+                $intQuantity = $objProduct->minimum_quantity;
+            }
 
-    		$objItem = new ProductCollectionItem();
+            $objItem = new ProductCollectionItem();
             $objItem->pid               = $this->id;
             $objItem->tstamp            = $time;
             $objItem->type              = substr(get_class($objProduct), strrpos(get_class($objProduct), '\\')+1);
@@ -764,10 +767,16 @@ abstract class ProductCollection extends \Model
             return $this->deleteProduct($objProduct);
         }
 
-        if (isset($arrSet['quantity']) && $arrSet['quantity'] < $objProduct->minimum_quantity) {
-    		$_SESSION['ISO_INFO'][] = sprintf($GLOBALS['TL_LANG']['ERR']['productMinimumQuantity'], $objProduct->name, $objProduct->minimum_quantity);
-    		$arrSet['quantity'] = $objProduct->minimum_quantity;
-		}
+        if (isset($arrSet['quantity'])) {
+
+            // Set product quantity so we can determine the correct minimum price
+            $objProduct->quantity_requested = $arrSet['quantity'];
+
+            if ($arrSet['quantity'] < $objProduct->minimum_quantity) {
+                $_SESSION['ISO_INFO'][] = sprintf($GLOBALS['TL_LANG']['ERR']['productMinimumQuantity'], $objProduct->name, $objProduct->minimum_quantity);
+                $arrSet['quantity'] = $objProduct->minimum_quantity;
+            }
+        }
 
         // Modify timestamp when updating a product
         $arrSet['tstamp'] = time();

@@ -99,9 +99,8 @@ class Checkout extends Module
             \Input::setGet('step', \Input::get('auto_item'));
         }
 
-        // Do not index or cache the page
+        // Do not cache the page
         global $objPage;
-        $objPage->noSearch = 1;
         $objPage->cache = 0;
 
         $this->strCurrentStep = \Input::get('step');
@@ -196,8 +195,11 @@ class Checkout extends Module
             return;
         }
 
-        if (!$this->iso_forward_review && !strlen(\Input::get('step')))
-        {
+        if (\Input::get('step') == '') {
+            if ($this->iso_forward_review) {
+                $this->redirect($this->addToUrl('step=review', true));
+            }
+
             $this->redirectToNextStep();
         }
 

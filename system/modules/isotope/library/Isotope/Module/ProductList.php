@@ -266,12 +266,6 @@ class ProductList extends Module
             return;
         }
 
-        if ($this->iso_jump_first && \Input::get('product') == '')
-        {
-            $objProduct = array_shift($arrProducts);
-            $this->redirect($objProduct->href_reader);
-        }
-
         $arrBuffer = array();
         $intReaderPage = \Isotope\Frontend::getReaderPageId(null, $this->iso_reader_jumpTo);
         $arrDefaultOptions = $this->getDefaultProductOptions();
@@ -281,11 +275,16 @@ class ProductList extends Module
             $objProduct->setOptions(array_merge($arrDefaultOptions, $objProduct->getOptions(true)));
             $objProduct->reader_jumpTo = $intReaderPage;
 
+            if ($this->iso_jump_first && \Input::get('product') == '') {
+                $this->redirect($objProduct->href_reader);
+            }
+
             $arrBuffer[] = array
             (
-                'cssID'    => ($objProduct->cssID[0] != '') ? ' id="' . $objProduct->cssID[0] . '"' : '',
-                'class'    => $objProduct->cssID[1],
-                'html'    => $objProduct->generate((strlen($this->iso_list_layout) ? $this->iso_list_layout : $objProduct->list_template), $this),
+                'cssID'     => ($objProduct->cssID[0] != '') ? ' id="' . $objProduct->cssID[0] . '"' : '',
+                'class'     => $objProduct->cssID[1],
+                'html'      => $objProduct->generate((strlen($this->iso_list_layout) ? $this->iso_list_layout : $objProduct->list_template), $this),
+                'product'   => $objProduct,
             );
         }
 

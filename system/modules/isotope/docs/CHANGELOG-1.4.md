@@ -1,6 +1,29 @@
 Isotope eCommerce Changelog
 ===========================
 
+Version 1.4.1 (2013-04-15)
+--------------------------
+
+### Improved
+- Product object is now also available in the product list template
+- Truncate product cache when using variants quick edit (#586)
+- Pass product reader link to the active breadcrumb item (#579)
+- Do not automatically set order to failed through PayPal API (related to #580)
+- Shop config is now available in mail templates (##config_xxx##) (#572)
+
+### Fixed
+- Sending e-mails did not work in PHP < 5.3 (#576)
+- Minimum order amount was incorrect when lowering cart amount (#587)
+- Declaration of ModuleIsotopeRelatedProducts::findProducts() should be compatible with ModuleIsotopeProductList (#575)
+- Wrong URL in the Google XML sitemap (auto_item) (#581)
+- Member-restricted rules did not work with postsale script (#580)
+- Order conditions form was not always validated (#591)
+- Fixed array_merge() error in address book module (#593)
+- Option "redirect to first product" in product list did not work (#583)
+- Postfinance payment did not use UTF-8 interface (#589)
+- Search index was blocked when Isotope module was on the page (#594)
+
+
 Version 1.4.0 (2013-03-18)
 --------------------------
 

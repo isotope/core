@@ -16,6 +16,7 @@ use Isotope\Isotope;
 use Isotope\Interfaces\IsotopeProduct;
 use Isotope\Interfaces\IsotopeProductCollection;
 use Isotope\Model\Address;
+use Isotope\Model\Config;
 use Isotope\Model\Payment;
 use Isotope\Model\ProductCollection;
 use Isotope\Model\Shipping;
@@ -511,6 +512,14 @@ class Order extends ProductCollection implements IsotopeProductCollection
         foreach ($this->shipping_address as $k => $v)
         {
             $arrData['shipping_' . $k] = Isotope::formatValue('tl_iso_addresses', $k, $v);
+        }
+
+        if (($objConfig = Config::findByPk($this->config_id)) !== null)
+        {
+            foreach ($objConfig->row() as $k => $v)
+            {
+                $arrData['config_' . $k] = Isotope::formatValue('tl_iso_config', $k, $v);
+            }
         }
 
         if ($this->pid > 0)

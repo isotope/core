@@ -184,7 +184,6 @@ class ProductPriceFinder extends \System
         {
             if (!$blnPriceFound && $arrPrice['min'] <= $intQuantity)
             {
-                $arrData['min'] = (int) $arrPrice['min'];
                 $arrData['price'] = $arrPrice['price'];
                 $arrData['tax_class'] = $arrPrice['tax_class'];
                 $blnPriceFound = true;
