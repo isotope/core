@@ -20,6 +20,7 @@ Version 1.4.1 (2013-0?-??)
 - Order conditions form was not always validated (#591)
 - Fixed array_merge() error in address book module (#593)
 - Option "redirect to first product" in product list did not work (#583)
+- Postfinance payment did not use UTF-8 interface (#589)
 
 
 Version 1.4.0 (2013-03-18)
