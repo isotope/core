@@ -650,6 +650,7 @@ CREATE TABLE `tl_iso_product_collection_download` (
 CREATE TABLE `tl_iso_addresses` (
   `id` int(10) unsigned NOT NULL auto_increment,
   `pid` int(10) unsigned NOT NULL default '0',
+  `ptable` varchar(64) NOT NULL default '',
   `tstamp` int(10) unsigned NOT NULL default '0',
   `store_id` int(2) unsigned NOT NULL default '0',
   `label` varchar(255) NOT NULL default '',

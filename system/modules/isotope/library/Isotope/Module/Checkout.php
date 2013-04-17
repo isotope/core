@@ -1061,7 +1061,7 @@ class Checkout extends Module
 
         if (FE_USER_LOGGED_IN === true)
         {
-            $objAddresses = Address::findBy(array('pid=?', 'store_id='), array($this->User->id, Isotope::getConfig()->store_id), array('order'=>'isDefaultBilling DESC, isDefaultShipping DESC'));
+            $objAddresses = Address::findBy(array('pid=?', 'ptable=?', 'store_id='), array($this->User->id, 'tl_member', Isotope::getConfig()->store_id), array('order'=>'isDefaultBilling DESC, isDefaultShipping DESC'));
 
             if (null !== $objAddresses) {
                 while ($objAddresses->next()) {

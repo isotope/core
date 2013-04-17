@@ -84,7 +84,7 @@ class Cart extends ProductCollection implements IsotopeProductCollection
 
                 if (FE_USER_LOGGED_IN === true)
                 {
-                    $objAddress = $objDatabase->prepare("SELECT * FROM tl_iso_addresses WHERE pid=? AND store_id=? AND isDefaultBilling='1'")->limit(1)->execute($this->User->id, Isotope::getConfig()->store_id);
+                    $objAddress = $objDatabase->prepare("SELECT * FROM tl_iso_addresses WHERE pid=? AND ptable='tl_member' AND store_id=? AND isDefaultBilling='1'")->limit(1)->execute($this->User->id, Isotope::getConfig()->store_id);
 
                     if ($objAddress->numRows)
                     {
@@ -121,7 +121,7 @@ class Cart extends ProductCollection implements IsotopeProductCollection
 
                 if (FE_USER_LOGGED_IN === true)
                 {
-                    $objAddress = $objDatabase->prepare("SELECT * FROM tl_iso_addresses WHERE pid=? AND store_id=? AND isDefaultShipping='1'")->limit(1)->execute($this->User->id, Isotope::getConfig()->store_id);
+                    $objAddress = $objDatabase->prepare("SELECT * FROM tl_iso_addresses WHERE pid=? AND ptable='tl_member' AND store_id=? AND isDefaultShipping='1'")->limit(1)->execute($this->User->id, Isotope::getConfig()->store_id);
 
                     if ($objAddress->numRows)
                     {

@@ -23,8 +23,11 @@ $GLOBALS['TL_DCA']['tl_iso_addresses'] = array
     // Config
     'config' => array
     (
-        'ptable'                    => 'tl_member',
         'dataContainer'             => 'Table',
+        'enableVersioning'          => false,
+        'ptable'                    => '',
+        'dynamicPtable'             => true,
+        'onload_callback'           => array(),
     ),
 
     // List
@@ -252,3 +255,10 @@ $GLOBALS['TL_DCA']['tl_iso_addresses'] = array
         ),
     )
 );
+
+/**
+ * Dynamically add parent table
+ */
+if (\Input::get('do') == 'member') {
+	$GLOBALS['TL_DCA']['tl_iso_addresses']['config']['ptable'] = 'tl_member';
+}
