@@ -163,4 +163,44 @@ class Address extends \Model
 
         return $arrTokens;
     }
+
+    /**
+     * Find address for member, automatically checking the current store ID and tl_member parent table
+     * @param   int
+     * @param   array
+     * @return  Address|null
+     */
+    public static function findForMember($intMember, array $arrOptions=array())
+    {
+        return static::findBy(array('pid=?', 'ptable=?', 'store_id=?'), array($intMember, 'tl_member', Isotope::getConfig()->store_id), $arrOptions);
+    }
+
+    /**
+     * Find address by ID and member, automatically checking the current store ID and tl_member parent table
+     * @param   int
+     * @param   int
+     * @param   array
+     * @return  Address|null
+     */
+    public static function findOneForMember($intId, $intMember, array $arrOptions=array())
+    {
+        return static::findBy(array('id=?', 'pid=?', 'ptable=?', 'store_id=?'), array($intId, $intMember, 'tl_member', Isotope::getConfig()->store_id), $arrOptions);
+    }
+
+    /**
+     * Create a new address for a member and automatically set default properties
+     * @param   int
+     * @return  Address
+     */
+    public static function createForMember($intMember)
+    {
+        $objAddress = new Address();
+
+        $objAddress->pid = $intMember;
+        $objAddress->ptable = 'tl_member';
+        $objAddress->tstamp = time();
+        $objAddress->store_id = Isotope::getConfig()->store_id;
+
+        return $objAddress;
+    }
 }
