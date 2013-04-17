@@ -70,11 +70,9 @@ class Cart extends ProductCollection implements IsotopeProductCollection
             case 'billing_address':
                 if ($this->arrSettings['billingAddress_id'] > 0)
                 {
-                    $objAddress = $objDatabase->prepare("SELECT * FROM tl_iso_addresses WHERE id=?")->limit(1)->execute($this->arrSettings['billingAddress_id']);
-
-                    if ($objAddress->numRows)
+                    if (($objAddress = Address::findByPk($this->arrSettings['billingAddress_id'])) !== null)
                     {
-                        return $objAddress->fetchAssoc();
+                        return $objAddress->row();
                     }
                 }
                 elseif ($this->arrSettings['billingAddress_id'] === 0 && is_array($this->arrSettings['billingAddress_data']))
@@ -84,11 +82,9 @@ class Cart extends ProductCollection implements IsotopeProductCollection
 
                 if (FE_USER_LOGGED_IN === true)
                 {
-                    $objAddress = $objDatabase->prepare("SELECT * FROM tl_iso_addresses WHERE pid=? AND ptable='tl_member' AND store_id=? AND isDefaultBilling='1'")->limit(1)->execute($this->User->id, Isotope::getConfig()->store_id);
-
-                    if ($objAddress->numRows)
+                    if (($objAddress = Address::findDefaultBillingForMember($this->User->id)) !== null)
                     {
-                        return $objAddress->fetchAssoc();
+                        return $objAddress->row();
                     }
 
                     // Return the default user data, but ID should be 0 to know that it is a custom/new address
@@ -106,11 +102,9 @@ class Cart extends ProductCollection implements IsotopeProductCollection
 
                 if ($this->arrSettings['shippingAddress_id'] > 0)
                 {
-                    $objAddress = $objDatabase->prepare("SELECT * FROM tl_iso_addresses WHERE id=?")->limit(1)->execute($this->arrSettings['shippingAddress_id']);
-
-                    if ($objAddress->numRows)
+                    if (($objAddress = Address::findByPk($this->arrSettings['shippingAddress_id'])) !== null)
                     {
-                        return $objAddress->fetchAssoc();
+                        return $objAddress->row();
                     }
                 }
 
@@ -119,14 +113,9 @@ class Cart extends ProductCollection implements IsotopeProductCollection
                     return $this->arrSettings['shippingAddress_data'];
                 }
 
-                if (FE_USER_LOGGED_IN === true)
+                if (FE_USER_LOGGED_IN === true && ($objAddress = Address::findDefaultShippingForMember($this->User->id)) !== null)
                 {
-                    $objAddress = $objDatabase->prepare("SELECT * FROM tl_iso_addresses WHERE pid=? AND ptable='tl_member' AND store_id=? AND isDefaultShipping='1'")->limit(1)->execute($this->User->id, Isotope::getConfig()->store_id);
-
-                    if ($objAddress->numRows)
-                    {
-                        return $objAddress->fetchAssoc();
-                    }
+                    return $objAddress->row();
                 }
 
                 $arrBilling = $this->billing_address;

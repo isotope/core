@@ -168,7 +168,7 @@ class Address extends \Model
      * Find address for member, automatically checking the current store ID and tl_member parent table
      * @param   int
      * @param   array
-     * @return  Address|null
+     * @return  Collection|null
      */
     public static function findForMember($intMember, array $arrOptions=array())
     {
@@ -185,6 +185,28 @@ class Address extends \Model
     public static function findOneForMember($intId, $intMember, array $arrOptions=array())
     {
         return static::findBy(array('id=?', 'pid=?', 'ptable=?', 'store_id=?'), array($intId, $intMember, 'tl_member', Isotope::getConfig()->store_id), $arrOptions);
+    }
+
+    /**
+     * Find default billing adddress for a member, automatically checking the current store ID and tl_member parent table
+     * @param   int
+     * @param   array
+     * @return  Address|null
+     */
+    public static function findDefaultBillingForMember($intMember, array $arrOptions=array())
+    {
+        return static::findOneBy(array('pid=?', 'ptable=?', 'store_id=?', 'isDefaultBilling=?'), array($intMember, 'tl_member', Isotope::getConfig()->store_id, '1'), $arrOptions);
+    }
+
+    /**
+     * Find default shipping adddress for a member, automatically checking the current store ID and tl_member parent table
+     * @param   int
+     * @param   array
+     * @return  Address|null
+     */
+    public static function findDefaultShippingForMember($intMember, array $arrOptions=array())
+    {
+        return static::findOneBy(array('pid=?', 'ptable=?', 'store_id=?', 'isDefaultShipping=?'), array($intMember, 'tl_member', Isotope::getConfig()->store_id, '1'), $arrOptions);
     }
 
     /**
