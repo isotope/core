@@ -216,12 +216,12 @@ class Checkout extends Module
         $this->Template->showForm = true;
 
         // Remove shipping step if no items are shipped
-        if (!Isotope::getCart()->requiresShipping)
+        if (!Isotope::getCart()->requiresShipping())
         {
             unset($GLOBALS['ISO_CHECKOUT_STEPS']['shipping']);
 
             // Remove payment step if items are free of charge. We need to do this here because shipping might have a price.
-            if (!Isotope::getCart()->requiresPayment)
+            if (!Isotope::getCart()->requiresPayment())
             {
                 unset($GLOBALS['ISO_CHECKOUT_STEPS']['payment']);
             }
@@ -442,12 +442,12 @@ class Checkout extends Module
      */
     protected function getBillingAddressInterface($blnReview=false)
     {
-        $blnRequiresPayment = Isotope::getCart()->requiresPayment;
+        $blnRequiresPayment = Isotope::getCart()->requiresPayment();
 
         if ($blnReview)
         {
-            $blnRequiresShipping = Isotope::getCart()->requiresShipping;
             $objAddress = Isotope::getCart()->shippingAddress;
+            $blnRequiresShipping = Isotope::getCart()->requiresShipping();
 
             $strHeadline = $GLOBALS['TL_LANG']['MSC']['billing_address'];
 
@@ -497,7 +497,7 @@ class Checkout extends Module
      */
     protected function getShippingAddressInterface($blnReview=false)
     {
-        if (!Isotope::getCart()->requiresShipping || count(Isotope::getConfig()->shipping_fields_raw) == 0)
+        if (!Isotope::getCart()->requiresShipping() || count(Isotope::getConfig()->shipping_fields_raw) == 0)
         {
             return '';
         }
@@ -530,7 +530,7 @@ class Checkout extends Module
             // No shipping address, use billing address
             if ($objAddress->id == -1)
             {
-                $strShippingAddress = (Isotope::getCart()->requiresPayment ? $GLOBALS['TL_LANG']['MSC']['useBillingAddress'] : $GLOBALS['TL_LANG']['MSC']['useCustomerAddress']);
+                $strShippingAddress = (Isotope::getCart()->requiresPayment() ? $GLOBALS['TL_LANG']['MSC']['useBillingAddress'] : $GLOBALS['TL_LANG']['MSC']['useCustomerAddress']);
 
                 $this->arrOrderData['shipping_address'] = $strShippingAddress;
                 $this->arrOrderData['shipping_address_text'] = $strShippingAddress;
@@ -659,7 +659,7 @@ class Checkout extends Module
         }
 
         // Remove payment step if items are free of charge
-        if (!Isotope::getCart()->requiresPayment) {
+        if (!Isotope::getCart()->requiresPayment()) {
             unset($GLOBALS['ISO_CHECKOUT_STEPS']['payment']);
         }
 
@@ -1092,7 +1092,7 @@ class Checkout extends Module
                 array_insert($arrOptions, 0, array(array
                 (
                     'value'    => -1,
-                    'label' => (Isotope::getCart()->requiresPayment ? $GLOBALS['TL_LANG']['MSC']['useBillingAddress'] : $GLOBALS['TL_LANG']['MSC']['useCustomerAddress']),
+                    'label' => (Isotope::getCart()->requiresPayment() ? $GLOBALS['TL_LANG']['MSC']['useBillingAddress'] : $GLOBALS['TL_LANG']['MSC']['useCustomerAddress']),
                 )));
 
                 $arrOptions[] = array
