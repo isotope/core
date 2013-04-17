@@ -225,6 +225,7 @@ abstract class ProductCollection extends \Model
         $this->arrItems = null;
         $this->arrSurcharges = null;
         $this->arrCache = array();
+        $this->arrRelated = array();
     }
 
     /**
@@ -248,7 +249,8 @@ abstract class ProductCollection extends \Model
     {
         $this->objPayment = $objPayment;
         $this->payment_id = $objPayment->id;
-        $this->arrSurcharges = null;
+
+        $this->setModified(true);
     }
 
     /**
@@ -299,7 +301,8 @@ abstract class ProductCollection extends \Model
     {
         $this->objShipping = $objShipping;
         $this->shipping_id = $objShipping->id;
-        $this->arrSurcharges = null;
+
+        $this->setModified(true);
     }
 
     /**
