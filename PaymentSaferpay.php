@@ -269,7 +269,7 @@ class PaymentSaferpay extends IsotopePayment
     {
         $objOrder = Database::getInstance()->prepare("SELECT * FROM tl_iso_orders WHERE cart_id=?")->execute($this->Isotope->Cart->id);
 
-        $strComplete = $this->Environment->base . $this->addToUrl('step=complete');
+        $strComplete = $this->Environment->base . $this->addToUrl('step=complete') . '?uid=' . $objOrder->uniqid;
         $strFailed = $this->Environment->base . $this->addToUrl('step=failed');
 
         $strUrl  = self::createPayInitURI;
