@@ -247,7 +247,7 @@ class Order extends ProductCollection implements IsotopeProductCollection
             return true;
         }
 
-           global $objPage;
+        global $objPage;
 
         // Load page configuration
         if (!is_object($objPage) && $this->pageId > 0) {

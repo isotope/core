@@ -138,10 +138,10 @@ class Datatrans extends Payment implements IsotopePayment
         (
             'merchantId'            => $this->datatrans_id,
             'amount'                => round(Isotope::getCart()->grandTotal * 100),
-            'currency'                => Isotope::getConfig()->currency,
-            'refno'                    => $objOrder->id,
-            'language'                => $GLOBALS['TL_LANGUAGE'],
-            'reqtype'                => ($this->trans_type == 'auth' ? 'NOA' : 'CAA'),
+            'currency'              => Isotope::getConfig()->currency,
+            'refno'                 => $objOrder->id,
+            'language'              => $GLOBALS['TL_LANGUAGE'],
+            'reqtype'               => ($this->trans_type == 'auth' ? 'NOA' : 'CAA'),
             'uppCustomerDetails'    => 'yes',
             'uppCustomerTitle'      => $objAddress->salutation,
             'uppCustomerFirstName'  => $objAddress->firstname,
@@ -154,9 +154,9 @@ class Datatrans extends Payment implements IsotopePayment
             'uppCustomerPhone'      => $objAddress->phone,
             'uppCustomerEmail'      => $objAddress->email,
             'successUrl'            => ampersand(\Environment::get('base') . $this->addToUrl('step=complete', true)),
-            'errorUrl'                => ampersand(\Environment::get('base') . $this->addToUrl('step=failed', true)),
-            'cancelUrl'                => ampersand(\Environment::get('base') . $this->addToUrl('step=failed', true)),
-            'mod'                    => 'pay',
+            'errorUrl'              => ampersand(\Environment::get('base') . $this->addToUrl('step=failed', true)),
+            'cancelUrl'             => ampersand(\Environment::get('base') . $this->addToUrl('step=failed', true)),
+            'mod'                   => 'pay',
             'id'                    => $this->id,
         );
 

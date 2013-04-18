@@ -392,6 +392,10 @@ abstract class ProductCollection extends \Model
         $this->setModified(true);
     }
 
+    /**
+     * Return number of items in the collection
+     * @return  int
+     */
     public function countItems()
     {
         if (!isset($this->arrCache['countItems'])) {
@@ -401,7 +405,10 @@ abstract class ProductCollection extends \Model
         return $this->arrCache['countItems'];
     }
 
-
+    /**
+     * Return summary of item quantity in collection
+     * @return  int
+     */
     public function sumItemsQuantity()
     {
         if (!isset($this->arrCache['sumItemsQuantity'])) {

@@ -119,7 +119,7 @@ class Address extends \Model
                 continue;
             }
 
-            $arrTokens[$strField] = Isotope::getInstance()->formatValue('tl_iso_addresses', $strField, $this->$strField);
+            $arrTokens[$strField] = Isotope::formatValue('tl_iso_addresses', $strField, $this->$strField);
         }
 
 
