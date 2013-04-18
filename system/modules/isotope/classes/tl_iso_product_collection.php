@@ -47,8 +47,7 @@ class tl_iso_product_collection extends \Backend
     {
         Isotope::overrideConfig($row['config_id']);
 
-        $objAddress = new Address();
-        $objAddress->setRow(deserialize($row['billing_address'], true));
+        $objAddress = Order::findByPk($row['id'])->getBillingAddress();
         $arrTokens = $objAddress->getTokens(Isotope::getConfig()->billing_fields);
 
         $args[2] = $arrTokens['hcard_fn'];

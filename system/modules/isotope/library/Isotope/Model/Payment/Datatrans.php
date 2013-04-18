@@ -132,7 +132,7 @@ class Datatrans extends Payment implements IsotopePayment
             $this->redirect($this->addToUrl('step=failed', true));
         }
 
-        $arrAddress = Isotope::getCart()->billing_address;
+        $objAddress = Isotope::getCart()->getBillingAddress();
 
         $arrParams = array
         (
@@ -143,16 +143,16 @@ class Datatrans extends Payment implements IsotopePayment
             'language'                => $GLOBALS['TL_LANGUAGE'],
             'reqtype'                => ($this->trans_type == 'auth' ? 'NOA' : 'CAA'),
             'uppCustomerDetails'    => 'yes',
-            'uppCustomerTitle'        => $arrAddress['salutation'],
-            'uppCustomerFirstName'    => $arrAddress['firstname'],
-            'uppCustomerLastName'    => $arrAddress['lastname'],
-            'uppCustomerStreet'        => $arrAddress['street_1'],
-            'uppCustomerStreet2'    => $arrAddress['street_2'],
-            'uppCustomerCity'        => $arrAddress['city'],
-            'uppCustomerCountry'    => $arrAddress['country'],
-            'uppCustomerZipCode'    => $arrAddress['postal'],
-            'uppCustomerPhone'        => $arrAddress['phone'],
-            'uppCustomerEmail'        => $arrAddress['email'],
+            'uppCustomerTitle'      => $objAddress->salutation,
+            'uppCustomerFirstName'  => $objAddress->firstname,
+            'uppCustomerLastName'   => $objAddress->lastname,
+            'uppCustomerStreet'     => $objAddress->street_1,
+            'uppCustomerStreet2'    => $objAddress->street_2,
+            'uppCustomerCity'       => $objAddress->city,
+            'uppCustomerCountry'    => $objAddress->country,
+            'uppCustomerZipCode'    => $objAddress->postal,
+            'uppCustomerPhone'      => $objAddress->phone,
+            'uppCustomerEmail'      => $objAddress->email,
             'successUrl'            => ampersand(\Environment::get('base') . $this->addToUrl('step=complete', true)),
             'errorUrl'                => ampersand(\Environment::get('base') . $this->addToUrl('step=failed', true)),
             'cancelUrl'                => ampersand(\Environment::get('base') . $this->addToUrl('step=failed', true)),

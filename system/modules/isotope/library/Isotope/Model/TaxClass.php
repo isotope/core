@@ -61,7 +61,7 @@ class TaxClass extends \Model
     {
         if (!is_array($arrAddresses))
         {
-            $arrAddresses = array('billing'=>Isotope::getCart()->billing_address, 'shipping'=>Isotope::getCart()->shipping_address);
+            $arrAddresses = array('billing'=>Isotope::getCart()->getBillingAddress(), 'shipping'=>Isotope::getCart()->getShippingAddress());
         }
 
         $objIncludes = $this->getRelated('includes');
@@ -85,7 +85,7 @@ class TaxClass extends \Model
     {
         if (!is_array($arrAddresses))
         {
-            $arrAddresses = array('billing'=>Isotope::getCart()->billing_address, 'shipping'=>Isotope::getCart()->shipping_address);
+            $arrAddresses = array('billing'=>Isotope::getCart()->getBillingAddress(), 'shipping'=>Isotope::getCart()->getShippingAddress());
         }
 
         $objIncludes = $this->getRelated('includes');
@@ -109,7 +109,7 @@ class TaxClass extends \Model
     {
         if (!is_array($arrAddresses))
         {
-            $arrAddresses = array('billing'=>Isotope::getCart()->billing_address, 'shipping'=>Isotope::getCart()->shipping_address);
+            $arrAddresses = array('billing'=>Isotope::getCart()->getBillingAddress(), 'shipping'=>Isotope::getCart()->getShippingAddress());
         }
 
         $objIncludes = $this->getRelated('includes');

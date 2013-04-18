@@ -1144,7 +1144,7 @@ abstract class ProductCollection extends \Model
 
         $objTemplate->surcharges = \Isotope\Frontend::formatSurcharges($this->getSurcharges());
         $objTemplate->billing_label = $GLOBALS['TL_LANG']['MSC']['billing_address'];
-        $objTemplate->billing_address = $this->billingAddress->generateText(Isotope::getConfig()->billing_fields);
+        $objTemplate->billing_address = $this->getBillingAddress()->generateText(Isotope::getConfig()->billing_fields);
 
         if ($this->shipping_method != '')
         {
@@ -1159,7 +1159,7 @@ abstract class ProductCollection extends \Model
             {
                 $objTemplate->has_shipping = true;
                 $objTemplate->shipping_label = $GLOBALS['TL_LANG']['MSC']['shipping_address'];
-                $objTemplate->shipping_address = $this->shippingAddress->generateText(Isotope::getConfig()->shipping_fields);
+                $objTemplate->shipping_address = $this->getShippingAddress()->generateText(Isotope::getConfig()->shipping_fields);
             }
         }
 

@@ -381,14 +381,14 @@ $return .= '</div></div>';
         //Gather product and address data depending on FE(Cart) or BE(Order)
         if (TL_MODE=='FE')
         {
-            $arrBilling = Isotope::getCart()->billing_address;
-            $arrShipping = Isotope::getCart()->shipping_address;
+            $arrBilling = Isotope::getCart()->getBillingAddress()->row();
+            $arrShipping = Isotope::getCart()->getShippingAddress()->row();
             $arrProducts = Isotope::getCart()->getProducts();
         }
         else
         {
-            $arrBilling = $objOrder->billing_address;
-            $arrShipping = $objOrder->shipping_address;
+            $arrBilling = $objOrder->getBillingAddress()->row();
+            $arrShipping = $objOrder->getShippingAddress()->row();
             $arrProducts =  $objOrder->getProducts();
         }
 

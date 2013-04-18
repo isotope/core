@@ -481,12 +481,12 @@ class Order extends ProductCollection implements IsotopeProductCollection
         $arrData['status'] = $this->statusLabel;
         $arrData['status_id'] = $this->arrData['status'];
 
-        foreach ($this->billing_address as $k => $v)
+        foreach ($this->getBillingAddress()->row() as $k => $v)
         {
             $arrData['billing_' . $k] = Isotope::formatValue('tl_iso_addresses', $k, $v);
         }
 
-        foreach ($this->shipping_address as $k => $v)
+        foreach ($this->getShippingAddress()->row() as $k => $v)
         {
             $arrData['shipping_' . $k] = Isotope::formatValue('tl_iso_addresses', $k, $v);
         }

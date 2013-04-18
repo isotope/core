@@ -446,8 +446,8 @@ class Checkout extends Module
 
         if ($blnReview)
         {
-            $objAddress = Isotope::getCart()->shippingAddress;
             $blnRequiresShipping = Isotope::getCart()->requiresShipping();
+            $objAddress = Isotope::getCart()->getShippingAddress();
 
             $strHeadline = $GLOBALS['TL_LANG']['MSC']['billing_address'];
 
@@ -467,7 +467,7 @@ class Checkout extends Module
             return array('billing_address' => array
             (
                 'headline'    => $strHeadline,
-                'info'        => Isotope::getCart()->billingAddress->generateHtml(Isotope::getConfig()->billing_fields),
+                'info'        => Isotope::getCart()->getBillingAddress()->generateHtml(Isotope::getConfig()->billing_fields),
                 'edit'        => $this->addToUrl('step=address', true),
             ));
         }
@@ -480,7 +480,7 @@ class Checkout extends Module
 
         if (!$this->doNotSubmit)
         {
-            $objAddress = Isotope::getCart()->billingAddress;
+            $objAddress = Isotope::getCart()->getBillingAddress();
 
             $this->arrOrderData['billing_address'] = $objAddress->generateHtml(Isotope::getConfig()->billing_fields);
             $this->arrOrderData['billing_address_text'] = $objAddress->generateText(Isotope::getConfig()->billing_fields);
@@ -502,7 +502,7 @@ class Checkout extends Module
             return '';
         }
 
-        $objAddress = Isotope::getCart()->shippingAddress;
+        $objAddress = Isotope::getCart()->getShippingAddress();
 
         if ($blnReview)
         {
@@ -1006,8 +1006,8 @@ class Checkout extends Module
         $strCustomerName = '';
         $strCustomerEmail = '';
 
-        $objBillingAddress = Isotope::getCart()->billingAddress;
-        $objShippingAddress = Isotope::getCart()->shippingAddress;
+        $objBillingAddress = Isotope::getCart()->getBillingAddress();
+        $objShippingAddress = Isotope::getCart()->getShippingAddress();
 
         if ($objBillingAddress->email != '')
         {

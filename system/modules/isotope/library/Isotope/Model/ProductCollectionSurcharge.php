@@ -217,7 +217,7 @@ abstract class ProductCollectionSurcharge extends \Model
 
         $arrTaxes = array();
         $arrProducts = $objCollection->getProducts();
-        $arrAddresses = array('billing'=>$objCollection->billing_address, 'shipping'=>$objCollection->shipping_address);
+        $arrAddresses = array('billing'=>$objCollection->getBillingAddress(), 'shipping'=>$objCollection->getShippingAddress());
 
         foreach ($arrProducts as $objProduct)
         {

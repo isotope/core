@@ -148,7 +148,7 @@ class Payone extends Payment implements IsotopePayment
         $objTemplate->id = $this->id;
         $objTemplate->data = $arrData;
         $objTemplate->hash = $strHasn;
-        $objTemplate->billing_address = Isotope::getCart()->billing_address;
+        $objTemplate->billing_address = Isotope::getCart()->getBillingAddress()->row();
         $objTemplate->headline = $GLOBALS['TL_LANG']['MSC']['pay_with_redirect'][0];
         $objTemplate->message = $GLOBALS['TL_LANG']['MSC']['pay_with_redirect'][1];
         $objTemplate->slabel = specialchars($GLOBALS['TL_LANG']['MSC']['pay_with_redirect'][2]);

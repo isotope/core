@@ -96,7 +96,7 @@ abstract class Shipping extends \Model
             return false;
         }
 
-        $objAddress = Isotope::getCart()->shippingAddress;
+        $objAddress = Isotope::getCart()->getShippingAddress();
 
         $arrCountries = deserialize($this->countries);
         if (is_array($arrCountries) && !empty($arrCountries) && !in_array($objAddress->country, $arrCountries))

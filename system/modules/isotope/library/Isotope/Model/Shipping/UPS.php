@@ -122,20 +122,20 @@ class UPS extends Shipping implements IsotopeShipping
             case 'price':
                 $objConfig = Isotope::getConfig();
                 $objCart = Isotope::getCart();
-                $arrSubDivisionShipping = explode(',', $objCart->shippingAddress->subdivision);
+                $arrSubDivisionShipping = explode(',', $objCart->getShippingAddress()->subdivision);
 
                 $arrDestination = array
                 (
-                    'name'              => $objCart->shippingAddress->firstname . ' ' . $objCart->shippingAddress->lastname,
-                    'phone'             => $objCart->shippingAddress->phone,
-                    'company'           => $objCart->shippingAddress->company,
-                    'street'            => $objCart->shippingAddress->street_1,
-                    'street2'           => $objCart->shippingAddress->street_2,
-                    'street3'           => $objCart->shippingAddress->street_3,
-                    'city'              => $objCart->shippingAddress->city,
+                    'name'              => $objCart->getShippingAddress()->firstname . ' ' . $objCart->getShippingAddress()->lastname,
+                    'phone'             => $objCart->getShippingAddress()->phone,
+                    'company'           => $objCart->getShippingAddress()->company,
+                    'street'            => $objCart->getShippingAddress()->street_1,
+                    'street2'           => $objCart->getShippingAddress()->street_2,
+                    'street3'           => $objCart->getShippingAddress()->street_3,
+                    'city'              => $objCart->getShippingAddress()->city,
                     'state'             => $arrSubDivisionShipping[1],
-                    'zip'               => $objCart->shippingAddress->postal,
-                    'country'           => $objCart->shippingAddress->country
+                    'zip'               => $objCart->getShippingAddress()->postal,
+                    'country'           => $objCart->getShippingAddress()->country
                 );
 
                 $arrSubDivisionStore = explode(',',Isotope::getInstance()->Config->subdivision);

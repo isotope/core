@@ -228,7 +228,7 @@ class Paypal extends Payment implements IsotopePayment
         $objTemplate->invoice = $objOrder->id;
         $objTemplate->data = $arrData;
         $objTemplate->discount = $fltDiscount;
-        $objTemplate->address = Isotope::getCart()->billingAddress;
+        $objTemplate->address = Isotope::getCart()->getBillingAddress();
         $objTemplate->currency = Isotope::getConfig()->currency;
         $objTemplate->return = \Environment::get('base') . \Isotope\Frontend::addQueryStringToUrl('uid=' . $objOrder->uniqid, $this->addToUrl('step=complete', true));
         $objTemplate->cancel_return = \Environment::get('base') . $this->addToUrl('step=failed', true);
