@@ -212,16 +212,38 @@ class Address extends \Model
     /**
      * Create a new address for a member and automatically set default properties
      * @param   int
+     * @param   array|null
      * @return  Address
      */
-    public static function createForMember($intMember)
+    public static function createForMember($intMember, $arrFill=null)
     {
         $objAddress = new Address();
 
-        $objAddress->pid = $intMember;
-        $objAddress->ptable = 'tl_member';
-        $objAddress->tstamp = time();
-        $objAddress->store_id = Isotope::getConfig()->store_id;
+        $arrData = array(
+            'pid'       => $intMember,
+            'ptable'    => 'tl_member',
+            'tstamp'    => time(),
+            'store_id'  => Isotope::getConfig()->store_id,
+        );
+
+        if (!empty($arrFill) && is_array($arrFill) && ($objMember = \MemberModel::findByPk($intMember)) !== null) {
+
+            $arrData = array_intersect_key(
+                array_merge(
+                    $objMember->row(),
+                    $arrData,
+                    array(
+                        'street_1'      => $objMember->street,
+
+                        // Trying to guess subdivision by country and state
+                        'subdivision'   => strtoupper($objMember->country . '-' . $objMember->state)
+                    )
+                ),
+                array_flip($arrFill)
+            );
+        }
+
+        $objAddress->setRow($arrData);
 
         return $objAddress;
     }
