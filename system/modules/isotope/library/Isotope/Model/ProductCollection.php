@@ -350,7 +350,7 @@ abstract class ProductCollection extends \Model
      */
     public function getBillingAddress()
     {
-        return $this->getRelated('billing_address_id');
+        return $this->billing_address_id ? $this->getRelated('billing_address_id') : null;
     }
 
     /**
@@ -374,7 +374,7 @@ abstract class ProductCollection extends \Model
      */
     public function getShippingAddress()
     {
-        return $this->getRelated('billing_address_id');
+        return $this->shipping_address_id ? $this->getRelated('shipping_address_id') : null;
     }
 
     /**
