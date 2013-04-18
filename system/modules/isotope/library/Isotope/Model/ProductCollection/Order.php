@@ -113,29 +113,6 @@ class Order extends ProductCollection implements IsotopeProductCollection
         return $objStatus->paid ? true : false;
     }
 
-    public function getBillingAddress()
-    {
-        if (null === $this->arrCache['billingAddress']) {
-            $objAddress = new Address();
-            $objAddress->setRow($this->billing_address);
-            $this->arrCache['billingAddress'] = $objAddress;
-        }
-
-        return $this->arrCache['billingAddress'];
-    }
-
-
-    public function getShippingAddress()
-    {
-        if (null === $this->arrCache['shippingAddress']) {
-            $objAddress = new Address();
-            $objAddress->setRow($this->shipping_address);
-            $this->arrCache['shippingAddress'] = $objAddress;
-        }
-
-        return $this->arrCache['shippingAddress'];
-    }
-
 
     public function getStatusLabel()
     {

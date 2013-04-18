@@ -344,6 +344,53 @@ abstract class ProductCollection extends \Model
         return $this->arrCache['requiresShipping'];
     }
 
+    /**
+     * Get billing address for collection
+     * @return  Address|null
+     */
+    public function getBillingAddress()
+    {
+        return $this->getRelated('billing_address_id');
+    }
+
+    /**
+     * Set billing address for collectino
+     * @param   Address
+     */
+    public function setBillingAddress(Address $objAddress)
+    {
+        if (null === $objAddress || $objAddress->id < 1) {
+            $this->billing_address_id = 0;
+        } else {
+            $this->billing_address_id = $objAddress->id;
+        }
+
+        $this->setModified(true);
+    }
+
+    /**
+     * Get shipping address for collection
+     * @return  Address|null
+     */
+    public function getShippingAddress()
+    {
+        return $this->getRelated('billing_address_id');
+    }
+
+    /**
+     * Set shipping address for collection
+     * @param   Address
+     */
+    public function setShippingAddress(Address $objAddress)
+    {
+        if (null === $objAddress || $objAddress->id < 1) {
+            $this->shipping_address_id = 0;
+        } else {
+            $this->shipping_address_id = $objAddress->id;
+        }
+
+        $this->setModified(true);
+    }
 
     public function countItems()
     {
