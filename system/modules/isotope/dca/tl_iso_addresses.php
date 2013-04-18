@@ -261,4 +261,6 @@ $GLOBALS['TL_DCA']['tl_iso_addresses'] = array
  */
 if (\Input::get('do') == 'member') {
 	$GLOBALS['TL_DCA']['tl_iso_addresses']['config']['ptable'] = 'tl_member';
+} elseif (\Input::get('do') == 'iso_orders') {
+	$GLOBALS['TL_DCA']['tl_iso_addresses']['config']['ptable'] = 'tl_iso_product_collection';
 }

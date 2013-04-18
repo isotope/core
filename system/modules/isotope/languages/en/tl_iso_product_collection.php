@@ -25,8 +25,6 @@ $GLOBALS['TL_LANG']['tl_iso_product_collection']['date_shipped']            = ar
 $GLOBALS['TL_LANG']['tl_iso_product_collection']['config_id']               = array('Shop configuration');
 $GLOBALS['TL_LANG']['tl_iso_product_collection']['payment_id']              = array('Payment method');
 $GLOBALS['TL_LANG']['tl_iso_product_collection']['shipping_id']             = array('Shipping method');
-$GLOBALS['TL_LANG']['tl_iso_product_collection']['shipping_address']        = array('Shipping Address');
-$GLOBALS['TL_LANG']['tl_iso_product_collection']['billing_address']         = array('Billing Address');
 $GLOBALS['TL_LANG']['tl_iso_product_collection']['notes']                   = array('Order notes','If you would like to convey information to other backend users, please do so here.');
 
 /**
