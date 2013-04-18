@@ -56,6 +56,46 @@ class Cart extends ProductCollection implements IsotopeProductCollection
     }
 
 
+    public function getBillingAddress()
+    {
+        $objAddress = parent::getBillingAddress();
+
+        if (null === $objAddress && FE_USER_LOGGED_IN === true) {
+            $objAddress = Address::findDefaultBillingForMember($this->User->id);
+
+            if (null === $objAddress) {
+                $objAddress = Address::createForMember(FrontendUser::getInstance()->id, Isotope::getConfig()->billing_fields_raw);
+            }
+        }
+
+        if (null === $objAddress) {
+            $objAddress = new Address();
+            $objAddress->country = Isotope::getConfig()->billing_country;
+        }
+
+        return $objAddress;
+    }
+
+
+    public function getShippingAddress()
+    {
+        $objAddress = parent::getShippingAddress();
+
+        if (null === $objAddress && FE_USER_LOGGED_IN === true) {
+            $objAddress = Address::findDefaultShippingForMember($this->User->id);
+
+            if (null === $objAddress) {
+                $objAddress = Address::createForMember(FrontendUser::getInstance()->id, Isotope::getConfig()->shipping_fields_raw);
+            }
+        }
+
+        if (null === $objAddress) {
+            $objAddress = new Address();
+            $objAddress->country = Isotope::getConfig()->shipping_country;
+        }
+
+        return $objAddress;
+    }
 
 
     /**
