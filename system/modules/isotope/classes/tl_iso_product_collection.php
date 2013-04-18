@@ -147,7 +147,7 @@ class tl_iso_product_collection extends \Backend
      */
     public function generateBillingAddressData($dc, $xlabel)
     {
-        return $this->generateAddressData($dc->id, 'billing_address');
+        return $this->generateAddressData(Order::findByPk($dc->id)->getBillingAddress());
     }
 
 
@@ -159,28 +159,18 @@ class tl_iso_product_collection extends \Backend
      */
     public function generateShippingAddressData($dc, $xlabel)
     {
-        return $this->generateAddressData($dc->id, 'shipping_address');
+        return $this->generateAddressData(Order::findByPk($dc->id)->getShippingAddress());
     }
 
 
     /**
      * Generate address details amd return it as string
-     * @param integer
-     * @param string
-     * @return string
+     * @param   Address
+     * @return  string
      */
-    protected function generateAddressData($intId, $strField)
+    protected function generateAddressData(Address $objAddress)
     {
-        $objOrder = $this->Database->execute("SELECT * FROM tl_iso_product_collection WHERE id=".$intId);
-
-        if (!$objOrder->numRows)
-        {
-            $this->redirect('contao/main.php?act=error');
-        }
-
-        $arrAddress = deserialize($objOrder->$strField, true);
-
-        if (!is_array($arrAddress))
+        if (null === $objAddress)
         {
             return '<div class="tl_gerror">No address data available.</div>';
         }
@@ -197,12 +187,12 @@ class tl_iso_product_collection extends \Backend
 
         foreach ($GLOBALS['TL_DCA']['tl_iso_addresses']['fields'] as $k => $v)
         {
-            if (!isset($arrAddress[$k]))
+            if (!isset($objAddress->$k))
             {
                 continue;
             }
 
-            $v = $arrAddress[$k];
+            $v = $objAddress->$k;
             $strClass = (++$i % 2) ? '' : ' class="tl_bg"';
 
             $strBuffer .= '
@@ -279,15 +269,15 @@ class tl_iso_product_collection extends \Backend
         }
 
         $arrExport = array();
-        $objOrders = $this->Database->execute("SELECT billing_address FROM tl_iso_product_collection");
+        $objOrders = Order::findAll();
 
         while ($objOrders->next())
         {
-            $arrAddress = deserialize($objOrders->billing_address);
+            $objAddress = $objOrders->getBillingAddress();
 
-            if ($arrAddress['email'])
+            if ($objAddress->email)
             {
-                $arrExport[] = $arrAddress['firstname'] . ' ' . $arrAddress['lastname'] . ' <' . $arrAddress['email'] . '>';
+                $arrExport[] = $objAddress->firstname . ' ' . $objAddress->lastname . ' <' . $objAddress->email . '>';
             }
         }
 
