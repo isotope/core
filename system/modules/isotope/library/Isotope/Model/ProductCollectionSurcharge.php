@@ -57,34 +57,30 @@ abstract class ProductCollectionSurcharge extends \Model
     }
 
     /**
-     * Get tax amount for an individual product
+     * Get tax amount for an individual collection item
      * @param IsotopeProduct
      */
-    public function getAmountForProduct(IsotopeProduct $objProduct)
+    public function getAmountForCollectionItem(ProductCollectionItem $objItem)
     {
-        if (isset($this->arrProducts[$objProduct->collection_id])) {
+        if (isset($this->arrProducts[$objItem->id])) {
 
-            return (float) $this->arrProducts[$objProduct->collection_id];
+            return (float) $this->arrProducts[$objItem->id];
         }
 
         return 0;
     }
 
     /**
-     * Set tax amount for a product
+     * Set tax amount for a collection item
      * @param  float
      * @param  IsotopeProduct
      */
-    public function setAmountForProduct($fltAmount, IsotopeProduct $objProduct)
+    public function setAmountForCollectionItem($fltAmount, ProductCollectionItem $objItem)
     {
-        if ($objProduct->collection_id == 0) {
-            throw new \UnderflowException('Product must be in the cart (must have collection_id value)');
-        }
-
         if ($fltAmount != 0) {
-            $this->arrProducts[$objProduct->collection_id] = $fltAmount;
+            $this->arrProducts[$objItem->id] = $fltAmount;
         } else {
-            unset($this->arrProducts[$objProduct->collection_id]);
+            unset($this->arrProducts[$objItem->id]);
         }
     }
 

@@ -12,7 +12,7 @@
 
 namespace Isotope\Interfaces;
 
-use Isotope\Interfaces\IsotopeProduct;
+use Isotope\Model\ProductCollectionItem;
 
 /**
  * IsotopeProductCollectionSurcharge interface defines an Isotope collection surcharge
@@ -22,9 +22,9 @@ interface IsotopeProductCollectionSurcharge
 
     public function hasTax();
 
-    public function getAmountForProduct(IsotopeProduct $objProduct);
+    public function getAmountForCollectionItem(ProductCollectionItem $objItem);
 
-    public function setAmountForProduct($fltAmount, IsotopeProduct $objProduct);
+    public function setAmountForCollectionItem($fltAmount, ProductCollectionItem $objItem);
 
     public function addTaxNumber($intTax);
 
