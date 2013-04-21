@@ -57,7 +57,7 @@ $GLOBALS['TL_DCA']['tl_iso_product_collection'] = array
         ),
         'label' => array
         (
-            'fields'                => array('order_id', 'date', 'grandTotal', 'order_status'),
+            'fields'                => array('order_id', 'date', 'billing_address_id', 'grandTotal', 'order_status'),
             'showColumns'            => true,
             'label_callback'        => array('Isotope\tl_iso_product_collection', 'getOrderLabel')
         ),
@@ -146,7 +146,7 @@ $GLOBALS['TL_DCA']['tl_iso_product_collection'] = array
     // Palettes
     'palettes' => array
     (
-        'default'                    => '{status_legend},order_status,date_paid,date_shipped;{details_legend},details,notes;{email_legend:hide},email_data;{billing_address_legend:hide},billing_addressid;{shipping_address_legend:hide},shipping_address_id',
+        'default'                    => '{status_legend},order_status,date_paid,date_shipped;{details_legend},details,notes;{email_legend:hide},email_data;{billing_address_legend:hide},billing_address_id;{shipping_address_legend:hide},shipping_address_id',
     ),
 
     // Fields
@@ -252,12 +252,14 @@ $GLOBALS['TL_DCA']['tl_iso_product_collection'] = array
         ),
         'billing_address_id' => array
         (
+            'label'                    => &$GLOBALS['TL_LANG']['tl_iso_product_collection']['billing_address_id'],
             'input_field_callback'    => array('Isotope\tl_iso_product_collection', 'generateBillingAddressData'),
             'foreignKey'            => 'tl_iso_addresses.lastname',
             'relation'              => array('doNotShow'=>true, 'type'=>'hasOne', 'load'=>'lazy'),
         ),
         'shipping_address_id' => array
         (
+            'label'                    => &$GLOBALS['TL_LANG']['tl_iso_product_collection']['shipping_address_id'],
             'input_field_callback'    => array('Isotope\tl_iso_product_collection', 'generateShippingAddressData'),
             'foreignKey'            => 'tl_iso_addresses.lastname',
             'relation'              => array('doNotShow'=>true, 'type'=>'hasOne', 'load'=>'lazy'),
