@@ -518,12 +518,12 @@ $return .= '</div></div>';
             switch($arrResponses['transaction-status'])
             {
                 case 'Approved':
-                    $objOrder->status = ($this->new_order_status ? $this->new_order_status : Isotope::getConfig()->orderstatus_new);
+                    $objOrder->updateOrderStatus($this->new_order_status ? $this->new_order_status : Isotope::getConfig()->orderstatus_new);
                     $blnFail = false;
                     break;
 
                 default:
-                    $objOrder->status = Isotope::getConfig()->orderstatus_error;
+                    $objOrder->updateOrderStatus(Isotope::getConfig()->orderstatus_error);
                     $blnFail = true;
                     break;
 
