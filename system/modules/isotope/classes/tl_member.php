@@ -29,7 +29,7 @@ class tl_member extends \Backend
      */
     public function limitCountries($strTable)
     {
-        if ($strTable != 'tl_member' || !Isotope::getInstance()->Config->limitMemberCountries) {
+        if ($strTable != 'tl_member' || !Isotope::getInstance()->getConfig()->limitMemberCountries) {
             return;
         }
 

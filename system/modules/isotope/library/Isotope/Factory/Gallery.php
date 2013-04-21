@@ -33,7 +33,7 @@ class Gallery
     {
         // Try config class if none is given
         if ($strClass == '' || !class_exists('\Isotope\Gallery\\' . $strClass)) {
-            $strClass = Isotope::getInstance()->Config->gallery;
+            $strClass = Isotope::getInstance()->getConfig()->gallery;
         }
 
         // Use Standard class if no other is available

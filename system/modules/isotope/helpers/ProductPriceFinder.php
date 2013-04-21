@@ -167,7 +167,7 @@ class ProductPriceFinder extends \System
                                                                 SELECT id
                                                                 FROM tl_iso_prices
                                                                 WHERE
-                                                                    config_id IN (". (int) Isotope::getInstance()->Config->id . ",0)
+                                                                    config_id IN (". (int) Isotope::getInstance()->getConfig()->id . ",0)
                                                                     AND member_group IN(" . implode(',', $arrGroups) . ")
                                                                     AND (start='' OR start<$time)
                                                                     AND (stop='' OR stop>$time)
@@ -230,7 +230,7 @@ class ProductPriceFinder extends \System
                                                                     SELECT p1.id, p1.pid FROM tl_iso_prices p1 LEFT JOIN tl_iso_products p2 ON p1.pid=p2.id
                                                                     WHERE
                                                                         p1.pid IN (" . implode(',', $arrVariantIds) . ")
-                                                                        AND p1.config_id IN (" . (int) Isotope::getInstance()->Config->id . ",0)
+                                                                        AND p1.config_id IN (" . (int) Isotope::getInstance()->getConfig()->id . ",0)
                                                                         AND p1.member_group IN(" . implode(',', $arrGroups) . ")
                                                                         AND (p1.start='' OR p1.start<$time)
                                                                         AND (p1.stop='' OR p1.stop>$time)
@@ -253,7 +253,7 @@ class ProductPriceFinder extends \System
                                                                             SELECT p1.id, p1.pid FROM tl_iso_prices p1 LEFT JOIN tl_iso_products p2 ON p1.pid=p2.id
                                                                             WHERE
                                                                                 p1.pid IN (" . implode(',', $arrVariantIds) . ")
-                                                                                AND p1.config_id IN (" . (int) Isotope::getInstance()->Config->id . ",0)
+                                                                                AND p1.config_id IN (" . (int) Isotope::getInstance()->getConfig()->id . ",0)
                                                                                 AND p1.member_group IN(" . implode(',', $arrGroups) . ")
                                                                                 AND (p1.start='' OR p1.start<$time)
                                                                                 AND (p1.stop='' OR p1.stop>$time)

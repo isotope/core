@@ -138,7 +138,7 @@ class UPS extends Shipping implements IsotopeShipping
                     'country'           => $objCart->getShippingAddress()->country
                 );
 
-                $arrSubDivisionStore = explode(',',Isotope::getInstance()->Config->subdivision);
+                $arrSubDivisionStore = explode(',',Isotope::getInstance()->getConfig()->subdivision);
 
                 $arrOrigin = array
                 (
