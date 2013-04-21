@@ -504,7 +504,7 @@ class Order extends ProductCollection implements IsotopeProductCollection
      * Generate the next higher Order-ID based on config prefix, order number digits and existing records
      * @return string
      */
-    private function generateOrderId()
+    protected function generateOrderId()
     {
         if ($this->strOrderId != '')
         {
