@@ -12,6 +12,8 @@
 
 namespace Isotope\Model;
 
+use Isotope\Isotope;
+
 
 /**
  * ProductType defines a product configuration
@@ -28,4 +30,31 @@ class OrderStatus extends \Model
      */
     protected static $strTable = 'tl_iso_orderstatus';
 
+    /**
+     * Return if the order status means a collection has been paid (configuration flag)
+     * @return  bool
+     */
+    public function isPaid()
+    {
+        return (bool) $this->paid;
+    }
+
+    /**
+     * Return the localized order status name
+     * @return  string
+     */
+    public function getName()
+    {
+        return Isotope::translate($this->name);
+    }
+
+    /**
+     * Return the localized order status name
+     * Do not use $this->getName(), the alias should not be localized
+     * @return  string
+     */
+    public function getAlias()
+    {
+        return standardize($this->name);
+    }
 }
