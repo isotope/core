@@ -129,7 +129,7 @@ class Standard extends \Controller implements IsotopeProduct
 
         if ($arrData['pid'] > 0)
         {
-            $this->arrData = $this->Database->execute(IsotopeProduct::getSelectStatement() . " WHERE id={$arrData['pid']}")->fetchAssoc();
+            $this->arrData = $this->Database->execute(static::getSelectStatement() . " WHERE p1.id={$arrData['pid']}")->fetchAssoc();
         }
         else
         {
