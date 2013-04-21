@@ -17,6 +17,7 @@ use Isotope\Interfaces\IsotopeProduct;
 use Isotope\Interfaces\IsotopeProductCollection;
 use Isotope\Model\Address;
 use Isotope\Model\Config;
+use Isotope\Model\OrderStatus;
 use Isotope\Model\Payment;
 use Isotope\Model\ProductCollection;
 use Isotope\Model\Shipping;
@@ -108,25 +109,25 @@ class Order extends ProductCollection implements IsotopeProductCollection
         }
 
         // Otherwise we check the orderstatus checkbox
-        $objStatus = \Database::getInstance()->execute("SELECT * FROM tl_iso_orderstatus WHERE id=" . (int) $this->order_status);
+        $objStatus = $this->getRelated('order_status');
 
-        return $objStatus->paid ? true : false;
+        return (null !== $objStatus && $objStatus->isPaid()) ? true : false;
     }
 
 
     public function getStatusLabel()
     {
-        $objStatus = \Database::getInstance()->execute("SELECT * FROM tl_iso_orderstatus WHERE id=" . (int) $this->order_status);
+        $objStatus = $this->getRelated('order_status');
 
-        return Isotope::translate($objStatus->name);
+        return (null === $objStatus) ? '' : $objStatus->getName();
     }
 
 
     public function getStatusAlias()
     {
-        $objStatus = \Database::getInstance()->execute("SELECT * FROM tl_iso_orderstatus WHERE id=" . (int) $this->order_status);
+        $objStatus = $this->getRelated('order_status');
 
-        return standardize($objStatus->name);
+        return (null === $objStatus) ? $this->order_status : $objStatus->getAlias();
     }
 
 
@@ -478,7 +479,7 @@ class Order extends ProductCollection implements IsotopeProductCollection
         $arrData['id'] = $this->id;
         $arrData['order_id'] = $this->order_id;
         $arrData['uniqid'] = $this->uniqid;
-        $arrData['status'] = $this->statusLabel;
+        $arrData['status'] = $this->getStatusLabel();
         $arrData['status_id'] = $this->arrData['status'];
 
         foreach ($this->getBillingAddress()->row() as $k => $v)
