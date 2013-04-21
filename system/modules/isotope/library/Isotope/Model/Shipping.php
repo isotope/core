@@ -96,7 +96,7 @@ abstract class Shipping extends \Model
             return false;
         }
 
-        $objAddress = Isotope::getCart()->shippingAddress;
+        $objAddress = Isotope::getCart()->getShippingAddress();
 
         $arrCountries = deserialize($this->countries);
         if (is_array($arrCountries) && !empty($arrCountries) && !in_array($objAddress->country, $arrCountries))
@@ -147,8 +147,8 @@ abstract class Shipping extends \Model
     {
         substr($this->arrData['price'], -1) == '%' ? true : false;
     }
-    
-    
+
+
     /**
      * Return percentage amount (if applicable)
      * @return float
@@ -160,7 +160,7 @@ abstract class Shipping extends \Model
         {
             throw new \UnexpectedValueException('Shipping method does not have a percentage amount.');
         }
-        
+
         return (float) substr($this->arrData['price'], 0, -1);
     }
 

@@ -137,7 +137,7 @@ class AddressBook extends Module
         global $objPage;
         $arrAddresses = array();
         $strUrl = $this->generateFrontendUrl($objPage->row()) . ($GLOBALS['TL_CONFIG']['disableAlias'] ? '&' : '?');
-        $objAddresses = Address::findBy(array('pid=?', 'store_id=?'), array($this->User->id, Isotope::getConfig()->store_id));
+        $objAddresses = Address::findForMember($this->User->id);
 
         if (null !== $objAddresses) {
             while ($objAddresses->next()) {
@@ -193,13 +193,10 @@ class AddressBook extends Module
         $hasUpload = false;
         $row = 0;
 
-        $objAddress = Address::findOneBy(array('id=?', 'pid=?', 'store_id=?'), array($intAddressId, $this->User->id, Isotope::getConfig()->store_id));
+        $objAddress = Address::findOneForMember($intAddressId, $this->User->id);
 
         if (null === $objAddress) {
-            $objAddress = new Address();
-            $objAddress->pid = $this->User->id;
-            $objAddress->tstamp = time();
-            $objAddress->store_id = Isotope::getConfig()->store_id;
+            $objAddress = Address::createForMember($this->User->id);
         }
 
         // Build form
@@ -359,7 +356,7 @@ class AddressBook extends Module
      */
     protected function delete($intAddressId)
     {
-        if (($objAddress = Address::findOneBy(array('id=?', 'pid=?'), array($intAddressId, $this->User->id))) !== null) {
+        if (($objAddress = Address::findOneForMember($intAddressId, $this->User->id)) !== null) {
             $objAddress->delete();
         }
 

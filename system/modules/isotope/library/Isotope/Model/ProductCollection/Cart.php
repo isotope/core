@@ -56,150 +56,45 @@ class Cart extends ProductCollection implements IsotopeProductCollection
     }
 
 
-    /**
-     * Return the cart data
-     * @param string
-     * @return mixed
-     */
-    public function __get($strKey)
+    public function getBillingAddress()
     {
-        $objDatabase = \Database::getInstance();
+        $objAddress = parent::getBillingAddress();
 
-        switch ($strKey)
-        {
-            case 'billing_address':
-                if ($this->arrSettings['billingAddress_id'] > 0)
-                {
-                    $objAddress = $objDatabase->prepare("SELECT * FROM tl_iso_addresses WHERE id=?")->limit(1)->execute($this->arrSettings['billingAddress_id']);
+        if (null === $objAddress && FE_USER_LOGGED_IN === true) {
+            $objAddress = Address::findDefaultBillingForMember($this->User->id);
 
-                    if ($objAddress->numRows)
-                    {
-                        return $objAddress->fetchAssoc();
-                    }
-                }
-                elseif ($this->arrSettings['billingAddress_id'] === 0 && is_array($this->arrSettings['billingAddress_data']))
-                {
-                    return $this->arrSettings['billingAddress_data'];
-                }
-
-                if (FE_USER_LOGGED_IN === true)
-                {
-                    $objAddress = $objDatabase->prepare("SELECT * FROM tl_iso_addresses WHERE pid=? AND store_id=? AND isDefaultBilling='1'")->limit(1)->execute($this->User->id, Isotope::getConfig()->store_id);
-
-                    if ($objAddress->numRows)
-                    {
-                        return $objAddress->fetchAssoc();
-                    }
-
-                    // Return the default user data, but ID should be 0 to know that it is a custom/new address
-                    // Trying to guess subdivision by country and state
-                    return array_intersect_key(array_merge($this->User->getData(), array('id'=>0, 'street_1'=>$this->User->street, 'subdivision'=>strtoupper($this->User->country . '-' . $this->User->state))), array_flip(Isotope::getConfig()->billing_fields_raw));
-                }
-
-                return array('id'=>-1, 'country' => Isotope::getConfig()->billing_country);
-
-            case 'shipping_address':
-                if ($this->arrSettings['shippingAddress_id'] == -1)
-                {
-                    return array_merge($this->billing_address, array('id' => -1));
-                }
-
-                if ($this->arrSettings['shippingAddress_id'] > 0)
-                {
-                    $objAddress = $objDatabase->prepare("SELECT * FROM tl_iso_addresses WHERE id=?")->limit(1)->execute($this->arrSettings['shippingAddress_id']);
-
-                    if ($objAddress->numRows)
-                    {
-                        return $objAddress->fetchAssoc();
-                    }
-                }
-
-                if ($this->arrSettings['shippingAddress_id'] == 0 && count($this->arrSettings['shippingAddress_data']))
-                {
-                    return $this->arrSettings['shippingAddress_data'];
-                }
-
-                if (FE_USER_LOGGED_IN === true)
-                {
-                    $objAddress = $objDatabase->prepare("SELECT * FROM tl_iso_addresses WHERE pid=? AND store_id=? AND isDefaultShipping='1'")->limit(1)->execute($this->User->id, Isotope::getConfig()->store_id);
-
-                    if ($objAddress->numRows)
-                    {
-                        return $objAddress->fetchAssoc();
-                    }
-                }
-
-                $arrBilling = $this->billing_address;
-
-                if ($arrBilling['id'] != -1)
-                {
-                    return $arrBilling;
-                }
-
-                return array('id'=>-1, 'country' => Isotope::getConfig()->shipping_country);
-
-            case 'billingAddress':
-                $objAddress = new Address();
-                $objAddress->setRow($this->billing_address);
-
-                return $objAddress;
-
-            case 'shippingAddress':
-                $objAddress = new Address();
-                $objAddress->setRow($this->shipping_address);
-
-                return $objAddress;
-
-            default:
-                return parent::__get($strKey);
+            if (null === $objAddress) {
+                $objAddress = Address::createForMember(FrontendUser::getInstance()->id, Isotope::getConfig()->billing_fields_raw);
+            }
         }
+
+        if (null === $objAddress) {
+            $objAddress = new Address();
+            $objAddress->country = Isotope::getConfig()->billing_country;
+        }
+
+        return $objAddress;
     }
 
 
-    /**
-     * Set the cart data
-     * @param string
-     * @param mixed
-     */
-    public function __set($strKey, $varValue)
+    public function getShippingAddress()
     {
-        switch ($strKey)
-        {
-            case 'billingAddress':
-            case 'billing_address':
-                if (is_array($varValue))
-                {
-                    $this->arrSettings['billingAddress_id'] = 0;
-                    $this->arrSettings['billingAddress_data'] = $varValue;
-                }
-                else
-                {
-                    $this->arrSettings['billingAddress_id'] = $varValue;
-                }
+        $objAddress = parent::getShippingAddress();
 
-                $this->blnModified = true;
-                $this->arrCache = array();
-                break;
+        if (null === $objAddress && FE_USER_LOGGED_IN === true) {
+            $objAddress = Address::findDefaultShippingForMember($this->User->id);
 
-            case 'shippingAddress':
-            case 'shipping_address':
-                if (is_array($varValue))
-                {
-                    $this->arrSettings['shippingAddress_id'] = 0;
-                    $this->arrSettings['shippingAddress_data'] = $varValue;
-                }
-                else
-                {
-                    $this->arrSettings['shippingAddress_id'] = $varValue;
-                }
-
-                $this->blnModified = true;
-                $this->arrCache = array();
-                break;
-
-            default:
-                parent::__set($strKey, $varValue);
+            if (null === $objAddress) {
+                $objAddress = Address::createForMember(FrontendUser::getInstance()->id, Isotope::getConfig()->shipping_fields_raw);
+            }
         }
+
+        if (null === $objAddress) {
+            $objAddress = new Address();
+            $objAddress->country = Isotope::getConfig()->shipping_country;
+        }
+
+        return $objAddress;
     }
 
 

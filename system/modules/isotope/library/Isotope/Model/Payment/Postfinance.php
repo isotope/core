@@ -138,7 +138,7 @@ class Postfinance extends Payment implements IsotopePayment
             $this->redirect($this->addToUrl('step=failed', true));
         }
 
-        $objAddress = Isotope::getCart()->billingAddress;
+        $objAddress = Isotope::getCart()->getBillingAddress();
         $strFailedUrl = \Environment::get('base') . $this->addToUrl('step=failed', true);
 
         $arrParam = array

@@ -119,7 +119,7 @@ class Address extends \Model
                 continue;
             }
 
-            $arrTokens[$strField] = Isotope::getInstance()->formatValue('tl_iso_addresses', $strField, $this->$strField);
+            $arrTokens[$strField] = Isotope::formatValue('tl_iso_addresses', $strField, $this->$strField);
         }
 
 
@@ -162,5 +162,89 @@ class Address extends \Model
         );
 
         return $arrTokens;
+    }
+
+    /**
+     * Find address for member, automatically checking the current store ID and tl_member parent table
+     * @param   int
+     * @param   array
+     * @return  Collection|null
+     */
+    public static function findForMember($intMember, array $arrOptions=array())
+    {
+        return static::findBy(array('pid=?', 'ptable=?', 'store_id=?'), array($intMember, 'tl_member', Isotope::getConfig()->store_id), $arrOptions);
+    }
+
+    /**
+     * Find address by ID and member, automatically checking the current store ID and tl_member parent table
+     * @param   int
+     * @param   int
+     * @param   array
+     * @return  Address|null
+     */
+    public static function findOneForMember($intId, $intMember, array $arrOptions=array())
+    {
+        return static::findBy(array('id=?', 'pid=?', 'ptable=?', 'store_id=?'), array($intId, $intMember, 'tl_member', Isotope::getConfig()->store_id), $arrOptions);
+    }
+
+    /**
+     * Find default billing adddress for a member, automatically checking the current store ID and tl_member parent table
+     * @param   int
+     * @param   array
+     * @return  Address|null
+     */
+    public static function findDefaultBillingForMember($intMember, array $arrOptions=array())
+    {
+        return static::findOneBy(array('pid=?', 'ptable=?', 'store_id=?', 'isDefaultBilling=?'), array($intMember, 'tl_member', Isotope::getConfig()->store_id, '1'), $arrOptions);
+    }
+
+    /**
+     * Find default shipping adddress for a member, automatically checking the current store ID and tl_member parent table
+     * @param   int
+     * @param   array
+     * @return  Address|null
+     */
+    public static function findDefaultShippingForMember($intMember, array $arrOptions=array())
+    {
+        return static::findOneBy(array('pid=?', 'ptable=?', 'store_id=?', 'isDefaultShipping=?'), array($intMember, 'tl_member', Isotope::getConfig()->store_id, '1'), $arrOptions);
+    }
+
+    /**
+     * Create a new address for a member and automatically set default properties
+     * @param   int
+     * @param   array|null
+     * @return  Address
+     */
+    public static function createForMember($intMember, $arrFill=null)
+    {
+        $objAddress = new Address();
+
+        $arrData = array(
+            'pid'       => $intMember,
+            'ptable'    => 'tl_member',
+            'tstamp'    => time(),
+            'store_id'  => Isotope::getConfig()->store_id,
+        );
+
+        if (!empty($arrFill) && is_array($arrFill) && ($objMember = \MemberModel::findByPk($intMember)) !== null) {
+
+            $arrData = array_intersect_key(
+                array_merge(
+                    $objMember->row(),
+                    $arrData,
+                    array(
+                        'street_1'      => $objMember->street,
+
+                        // Trying to guess subdivision by country and state
+                        'subdivision'   => strtoupper($objMember->country . '-' . $objMember->state)
+                    )
+                ),
+                array_flip($arrFill)
+            );
+        }
+
+        $objAddress->setRow($arrData);
+
+        return $objAddress;
     }
 }

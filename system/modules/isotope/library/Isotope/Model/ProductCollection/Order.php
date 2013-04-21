@@ -113,29 +113,6 @@ class Order extends ProductCollection implements IsotopeProductCollection
         return $objStatus->paid ? true : false;
     }
 
-    public function getBillingAddress()
-    {
-        if (null === $this->arrCache['billingAddress']) {
-            $objAddress = new Address();
-            $objAddress->setRow($this->billing_address);
-            $this->arrCache['billingAddress'] = $objAddress;
-        }
-
-        return $this->arrCache['billingAddress'];
-    }
-
-
-    public function getShippingAddress()
-    {
-        if (null === $this->arrCache['shippingAddress']) {
-            $objAddress = new Address();
-            $objAddress->setRow($this->shipping_address);
-            $this->arrCache['shippingAddress'] = $objAddress;
-        }
-
-        return $this->arrCache['shippingAddress'];
-    }
-
 
     public function getStatusLabel()
     {
@@ -270,7 +247,7 @@ class Order extends ProductCollection implements IsotopeProductCollection
             return true;
         }
 
-           global $objPage;
+        global $objPage;
 
         // Load page configuration
         if (!is_object($objPage) && $this->pageId > 0) {
@@ -504,12 +481,12 @@ class Order extends ProductCollection implements IsotopeProductCollection
         $arrData['status'] = $this->statusLabel;
         $arrData['status_id'] = $this->arrData['status'];
 
-        foreach ($this->billing_address as $k => $v)
+        foreach ($this->getBillingAddress()->row() as $k => $v)
         {
             $arrData['billing_' . $k] = Isotope::formatValue('tl_iso_addresses', $k, $v);
         }
 
-        foreach ($this->shipping_address as $k => $v)
+        foreach ($this->getShippingAddress()->row() as $k => $v)
         {
             $arrData['shipping_' . $k] = Isotope::formatValue('tl_iso_addresses', $k, $v);
         }

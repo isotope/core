@@ -106,19 +106,19 @@ class TaxRate extends \Model
 
         if (is_array($this->address) && count($this->address)) // Can't use empty() because its an object property (using __get)
         {
-            foreach ($arrAddresses as $name => $arrAddress)
+            foreach ($arrAddresses as $name => $objAddress)
             {
                 if (!in_array($name, $this->address))
                 {
                     continue;
                 }
 
-                if ($this->countries != '' && !in_array($arrAddress['country'], trimsplit(',', $this->countries)))
+                if ($this->countries != '' && !in_array($objAddress->country, trimsplit(',', $this->countries)))
                 {
                     continue;
                 }
 
-                if ($this->subdivisions != '' && !in_array($arrAddress['subdivision'], trimsplit(',', $this->subdivisions)))
+                if ($this->subdivisions != '' && !in_array($objAddress->subdivision, trimsplit(',', $this->subdivisions)))
                 {
                     continue;
                 }
@@ -128,7 +128,7 @@ class TaxRate extends \Model
                 {
                     $arrCodes = \Isotope\Frontend::parsePostalCodes($this->postalCodes);
 
-                    if (!in_array($arrAddress['postal'], $arrCodes))
+                    if (!in_array($objAddress->postal, $arrCodes))
                     {
                         continue;
                     }

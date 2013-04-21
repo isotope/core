@@ -344,7 +344,58 @@ abstract class ProductCollection extends \Model
         return $this->arrCache['requiresShipping'];
     }
 
+    /**
+     * Get billing address for collection
+     * @return  Address|null
+     */
+    public function getBillingAddress()
+    {
+        return $this->billing_address_id ? $this->getRelated('billing_address_id') : null;
+    }
 
+    /**
+     * Set billing address for collectino
+     * @param   Address
+     */
+    public function setBillingAddress(Address $objAddress)
+    {
+        if (null === $objAddress || $objAddress->id < 1) {
+            $this->billing_address_id = 0;
+        } else {
+            $this->billing_address_id = $objAddress->id;
+        }
+
+        $this->setModified(true);
+    }
+
+    /**
+     * Get shipping address for collection
+     * @return  Address|null
+     */
+    public function getShippingAddress()
+    {
+        return $this->shipping_address_id ? $this->getRelated('shipping_address_id') : null;
+    }
+
+    /**
+     * Set shipping address for collection
+     * @param   Address
+     */
+    public function setShippingAddress(Address $objAddress)
+    {
+        if (null === $objAddress || $objAddress->id < 1) {
+            $this->shipping_address_id = 0;
+        } else {
+            $this->shipping_address_id = $objAddress->id;
+        }
+
+        $this->setModified(true);
+    }
+
+    /**
+     * Return number of items in the collection
+     * @return  int
+     */
     public function countItems()
     {
         if (!isset($this->arrCache['countItems'])) {
@@ -354,7 +405,10 @@ abstract class ProductCollection extends \Model
         return $this->arrCache['countItems'];
     }
 
-
+    /**
+     * Return summary of item quantity in collection
+     * @return  int
+     */
     public function sumItemsQuantity()
     {
         if (!isset($this->arrCache['sumItemsQuantity'])) {
@@ -1097,7 +1151,7 @@ abstract class ProductCollection extends \Model
 
         $objTemplate->surcharges = \Isotope\Frontend::formatSurcharges($this->getSurcharges());
         $objTemplate->billing_label = $GLOBALS['TL_LANG']['MSC']['billing_address'];
-        $objTemplate->billing_address = $this->billingAddress->generateText(Isotope::getConfig()->billing_fields);
+        $objTemplate->billing_address = $this->getBillingAddress()->generateText(Isotope::getConfig()->billing_fields);
 
         if ($this->shipping_method != '')
         {
@@ -1112,7 +1166,7 @@ abstract class ProductCollection extends \Model
             {
                 $objTemplate->has_shipping = true;
                 $objTemplate->shipping_label = $GLOBALS['TL_LANG']['MSC']['shipping_address'];
-                $objTemplate->shipping_address = $this->shippingAddress->generateText(Isotope::getConfig()->shipping_fields);
+                $objTemplate->shipping_address = $this->getShippingAddress()->generateText(Isotope::getConfig()->shipping_fields);
             }
         }
 

@@ -115,7 +115,7 @@ abstract class Payment extends \Model
 
         $arrCountries = deserialize($this->countries);
 
-        if (is_array($arrCountries) && !empty($arrCountries) && !in_array(Isotope::getCart()->billingAddress->country, $arrCountries))
+        if (is_array($arrCountries) && !empty($arrCountries) && !in_array(Isotope::getCart()->getBillingAddress()->country, $arrCountries))
         {
             return false;
         }

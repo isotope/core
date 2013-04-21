@@ -91,14 +91,14 @@ class USPS extends Shipping implements IsotopeShipping
             case 'price':
                 $objCart = Isotope::getCart();
                 $arrCountries = $this->getCountries();
-                $destCountryText = $arrCountries[$objCart->shippingAddress->country];
+                $destCountryText = $arrCountries[$objCart->getShippingAddress()->country];
 
                 $this->strOriginZip = Isotope::getConfig()->postal;
-                $this->strDestinationZip = $objCart->shippingAddress->postal;
-                $this->strDestinationCountry = $objCart->shippingAddress->country;
-                $this->strDestinationCountryText = ($objCart->shippingAddress->country == 'uk') ? 'Great Britain' : $destCountryText;
-                $this->strShippingMode = $this->getShippingMode($objCart->shippingAddress->country);
-                $this->blnDomestic = ($objCart->shippingAddress->country!='us' ? false : true);
+                $this->strDestinationZip = $objCart->getShippingAddress()->postal;
+                $this->strDestinationCountry = $objCart->getShippingAddress()->country;
+                $this->strDestinationCountryText = ($objCart->getShippingAddress()->country == 'uk') ? 'Great Britain' : $destCountryText;
+                $this->strShippingMode = $this->getShippingMode($objCart->getShippingAddress()->country);
+                $this->blnDomestic = ($objCart->getShippingAddress()->country!='us' ? false : true);
 
                 if(!$this->blnDomestic)
                 {
