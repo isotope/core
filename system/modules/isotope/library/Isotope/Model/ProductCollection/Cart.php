@@ -64,7 +64,7 @@ class Cart extends ProductCollection implements IsotopeProductCollection
             $objAddress = Address::findDefaultBillingForMember($this->User->id);
 
             if (null === $objAddress) {
-                $objAddress = Address::createForMember(FrontendUser::getInstance()->id, Isotope::getConfig()->billing_fields_raw);
+                $objAddress = Address::createForMember(FrontendUser::getInstance()->id, Isotope::getConfig()->getBillingFields());
             }
         }
 
@@ -85,7 +85,7 @@ class Cart extends ProductCollection implements IsotopeProductCollection
             $objAddress = Address::findDefaultShippingForMember($this->User->id);
 
             if (null === $objAddress) {
-                $objAddress = Address::createForMember(FrontendUser::getInstance()->id, Isotope::getConfig()->shipping_fields_raw);
+                $objAddress = Address::createForMember(FrontendUser::getInstance()->id, Isotope::getConfig()->getShippingFields());
             }
         }
 

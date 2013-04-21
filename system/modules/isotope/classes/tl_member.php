@@ -35,8 +35,8 @@ class tl_member extends \Backend
 
         $arrCountries = array_unique(
             array_merge(
-                (array) deserialize($this->Config->billing_countries),
-                (array) deserialize($this->Config->shipping_countries)
+                Isotope::getInstance()->getConfig()->getBillingCountries(),
+                Isotope::getInstance()->getConfig()->getShippingCountries()
             )
         );
 

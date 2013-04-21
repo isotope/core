@@ -86,9 +86,8 @@ class Address extends \Model
     {
         global $objPage;
 
-        if (!is_array($arrFields))
-        {
-            $arrFields = deserialize(Isotope::getInstance()->Config->billing_fields, true);
+        if (!is_array($arrFields)) {
+            $arrFields = Isotope::getInstance()->getConfig()->billing_fields;
         }
 
         $arrTokens = array('outputFormat'=>$objPage->outputFormat);

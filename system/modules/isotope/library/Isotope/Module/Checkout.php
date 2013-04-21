@@ -497,8 +497,7 @@ class Checkout extends Module
      */
     protected function getShippingAddressInterface($blnReview=false)
     {
-        if (!Isotope::getCart()->requiresShipping() || count(Isotope::getConfig()->shipping_fields_raw) == 0)
-        {
+        if (!Isotope::getCart()->requiresShipping() || count(Isotope::getConfig()->getShippingFields()) == 0) {
             return '';
         }
 
@@ -1003,7 +1002,7 @@ class Checkout extends Module
         $strBuffer = '';
         $arrOptions = array();
         $blnHasAddress = false;
-        $arrCountries = ($field == 'billing_address' ? Isotope::getConfig()->billing_countries : Isotope::getConfig()->shipping_countries);
+        $arrCountries = ($field == 'billing_address' ? Isotope::getConfig()->getBillingCountries() : Isotope::getConfig()->getShippingCountries());
 
         if (FE_USER_LOGGED_IN === true)
         {
@@ -1179,7 +1178,7 @@ class Checkout extends Module
             // Special field "country"
             if ($field['value'] == 'country')
             {
-                $arrCountries = ($strAddressType == 'billing_address' ? Isotope::getConfig()->billing_countries : Isotope::getConfig()->shipping_countries);
+                $arrCountries = ($strAddressType == 'billing_address' ? Isotope::getConfig()->getBillingCountries() : Isotope::getConfig()->getShippingCountries());
                 $arrData['options'] = array_values(array_intersect($arrData['options'], $arrCountries));
 
                 if ($arrDefault['country'] == '')

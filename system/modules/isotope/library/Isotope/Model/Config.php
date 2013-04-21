@@ -36,40 +36,71 @@ class Config extends \Model
     {
         switch ($strKey)
         {
-            case 'billing_fields_raw':
-            case 'shipping_fields_raw':
-                if (!is_array($this->arrCache[$strKey])) {
-
-                    $strField = str_replace('_raw', '', $strKey);
-                    $arrFields = array();
-
-                    foreach( $this->$strField as $field ) {
-
-                        if ($field['enabled']) {
-                            $arrFields[] = $field['value'];
-                        }
-                    }
-
-                    $this->arrCache[$strKey] = $arrFields;
-                }
-
-                return $this->arrCache[$strKey];
-
-            case 'billing_countries':
-            case 'shipping_countries':
-                $arrCountries = deserialize(parent::__get($strKey));
-
-                if (!is_array($arrCountries) || empty($arrCountries)) {
-                    $this->import('Isotope\Isotope', 'Isotope');
-                    $arrCountries = array_keys(\System::getCountries());
-                }
-
-                return $arrCountries;
-                break;
+            case 'billing_fields':
+            case 'shipping_fields':
+                return deserialize($this->arrData[$strKey], true);
 
             default:
                 return deserialize(parent::__get($strKey));
         }
+    }
+
+    /**
+     * Get billing address fields
+     * @return  array
+     */
+    public function getBillingFields()
+    {
+        return array_filter(array_map(
+            function($field) {
+                return $field['enabled'] ? $field['value'] : null;
+            },
+            $this->billing_fields
+        ));
+    }
+
+    /**
+     * Get shipping address fields
+     * @return  array
+     */
+    public function getShippingFields()
+    {
+        return array_filter(array_map(
+            function($field) {
+                return $field['enabled'] ? $field['value'] : null;
+            },
+            $this->shipping_fields
+        ));
+    }
+
+    /**
+     * Get enabled billing countries
+     * @return  array
+     */
+    public function getBillingCountries()
+    {
+        $arrCountries = deserialize($this->billing_countries);
+
+        if (empty($arrCountries) || !is_array($arrCountries)) {
+            $arrCountries = array_keys(\System::getCountries());
+        }
+
+        return $arrCountries;
+    }
+
+    /**
+     * Get enabled shipping countries
+     * @return  array
+     */
+    public function getShippingCountries()
+    {
+        $arrCountries = deserialize($this->shipping_countries);
+
+        if (empty($arrCountries) || !is_array($arrCountries)) {
+            $arrCountries = array_keys(\System::getCountries());
+        }
+
+        return $arrCountries;
     }
 
     /**

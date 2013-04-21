@@ -69,7 +69,7 @@ class AddressBook extends Module
             return '';
         }
 
-        $this->arrFields = array_unique(array_merge(deserialize(Isotope::getConfig()->billing_fields_raw, true), deserialize(Isotope::getConfig()->shipping_fields_raw, true)));
+        $this->arrFields = array_unique(array_merge(Isotope::getConfig()->getBillingFields(), Isotope::getConfig()->getShippingFields()));
 
         // Return if there are not editable fields
         if (($count = count($this->arrFields) == 0) || ($count == 1 && $this->arrFields[0] == ''))
@@ -230,7 +230,7 @@ class AddressBook extends Module
 
                 while( $objConfigs->next() )
                 {
-                    $arrCountries = array_merge($arrCountries, deserialize($objConfigs->billing_countries, true), deserialize($objConfigs->shipping_countries, true));
+                    $arrCountries = array_merge($arrCountries, $objConfigs->getBillingCountries(), $objConfigs->getShippingCountries());
                 }
 
                 $arrData['options'] = array_values(array_intersect($arrData['options'], $arrCountries));
