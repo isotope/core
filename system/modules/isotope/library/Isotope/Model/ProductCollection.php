@@ -17,6 +17,7 @@ use Isotope\Interfaces\IsotopePayment;
 use Isotope\Interfaces\IsotopeProduct;
 use Isotope\Interfaces\IsotopeProductCollection;
 use Isotope\Interfaces\IsotopeShipping;
+use Isotope\Model\Config;
 use Isotope\Model\Payment;
 use Isotope\Model\ProductCollectionItem;
 use Isotope\Model\Shipping;
@@ -938,6 +939,39 @@ abstract class ProductCollection extends \Model
         }
 
         return $this->arrSurcharges;
+    }
+
+
+    /**
+     * Initialize a new collection from given collection
+     * @param   IsotopeProductCollection
+     * @return  IsotopeProductCollection
+     */
+    public function setSourceCollection(IsotopeProductCollection $objSource)
+    {
+        global $objPage;
+
+        $objConfig = Config::findByPk($objSource->config_id);
+
+        if (null === $objConfig) {
+            $objConfig = Isotope::getConfig();
+        }
+
+        // Store in arrData, otherwise each call to __set would trigger setModified(true)
+        $this->arrData['source_collection_id'] = $objSource->id;
+        $this->arrData['config_id']            = $objSource->config_id;
+        $this->arrData['store_id']             = $objConfig->store_id;
+        $this->arrData['member']               = $objSource->member;
+        $this->arrData['language']             = $GLOBALS['TL_LANGUAGE'];
+        $this->arrData['pageId']               = (int) $objPage->id;
+        $this->arrData['currency']             = $objConfig->currency;
+
+        // Do not change the unique ID
+        if ($this->arrData['uniqid'] == '') {
+            $this->arrData['uniqid'] = uniqid(Isotope::getInstance()->call('replaceInsertTags', $objConfig->orderPrefix), true);
+        }
+
+        $this->setModified(true);
     }
 
 
