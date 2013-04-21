@@ -301,7 +301,7 @@ class Checkout extends Module
             if ($strBuffer === true)
             {
                 // If checkout is successful, complete order and redirect to confirmation page
-                if (($objOrder = Order::findOneBy('source_collection_id', Isotope::getCart()->id)) !== null && $objOrder->checkout(Isotope::getCart()) && $objOrder->complete())
+                if (($objOrder = Order::findOneBy('source_collection_id', Isotope::getCart()->id)) !== null && $objOrder->checkout() && $objOrder->complete())
                 {
                     $this->redirect(\Isotope\Frontend::addQueryStringToUrl('uid=' . $objOrder->uniqid, $this->orderCompleteJumpTo));
                 }

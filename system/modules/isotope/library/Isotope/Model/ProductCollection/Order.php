@@ -239,10 +239,9 @@ class Order extends ProductCollection implements IsotopeProductCollection
 
     /**
      * Process the order checkout
-     * @param object
      * @return boolean
      */
-    public function checkout($objCart=null)
+    public function checkout()
     {
         if ($this->checkout_complete) {
             return true;
@@ -256,27 +255,22 @@ class Order extends ProductCollection implements IsotopeProductCollection
             $objPage = IsotopeFrontend::loadPageConfig($objPage);
         }
 
+        if (($objCart = Cart::findByPk($this->source_collection_id)) === null) {
+            $this->log('Could not find Cart ID '.$this->source_collection_id.' for Order ID '.$this->id, __METHOD__, TL_ERROR);
 
-        // This is the case when not using ModuleIsotopeCheckout
-        if (!is_object($objCart))
-        {
-            if (($objCart = Cart::findByPk($this->source_collection_id)) === null)
-            {
-                $this->log('Could not find Cart ID '.$this->source_collection_id.' for Order ID '.$this->id, __METHOD__, TL_ERROR);
-
-                return false;
-            }
-
-            // Set the current system to the language when the user placed the order.
-            // This will result in correct e-mails and payment description.
-            $GLOBALS['TL_LANGUAGE'] = $this->language;
-            \System::loadLanguageFile('default');
-
-            // Initialize system
-            Isotope::overrideConfig($this->config_id);
-            Isotope::setCart($objCart);
+            return false;
         }
 
+        // Set the current system to the language when the user placed the order.
+        // This will result in correct e-mails and payment description.
+        if ($GLOBALS['TL_LANGUAGE'] != $this->language) {
+            $GLOBALS['TL_LANGUAGE'] = $this->language;
+            \System::loadLanguageFile('default', $this->language, true);
+        }
+
+        // Initialize system
+        Isotope::overrideConfig($this->config_id);
+        Isotope::setCart($objCart);
         // !HOOK: pre-process checkout
         if (isset($GLOBALS['ISO_HOOKS']['preCheckout']) && is_array($GLOBALS['ISO_HOOKS']['preCheckout'])) {
             foreach ($GLOBALS['ISO_HOOKS']['preCheckout'] as $callback) {
