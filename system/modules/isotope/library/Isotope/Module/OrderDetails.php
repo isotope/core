@@ -103,6 +103,8 @@ class OrderDetails extends Module
 
         $arrAllDownloads = array();
         $arrItems = array();
+        $objBillingAddress = $objOrder->getBillingAddress();
+        $objShippingAddress = $objOrder->getShippingAddress();
 
         foreach ($objOrder->getItems() as $objItem)
         {
@@ -149,23 +151,18 @@ class OrderDetails extends Module
         $this->Template->grandTotalLabel = $GLOBALS['TL_LANG']['MSC']['grandTotalLabel'];
         $this->Template->surcharges = \Isotope\Frontend::formatSurcharges($objOrder->getSurcharges());
         $this->Template->billing_label = $GLOBALS['TL_LANG']['MSC']['billing_address'];
-        $this->Template->billing_address = ($objOrder->getBillingAddress() ? $objOrder->getBillingAddress()->generateHtml(Isotope::getConfig()->billing_fields) : '');
+        $this->Template->billing_address = (null === $objBillingAddress ? '' : $objBillingAddress->generateHtml(Isotope::getConfig()->billing_fields));
 
-        if (strlen($objOrder->shipping_method))
+        if ($objOrder->shipping_method == '' || null === $objShippingAddress || null === $objBillingAddress || $objShippingAddress->id == $objBillingAddress->id)
         {
-            $arrShippingAddress = $objOrder->shipping_address;
-
-            if (!is_array($arrShippingAddress) || $arrShippingAddress['id'] == -1)
-            {
-                $this->Template->has_shipping = false;
-                $this->Template->billing_label = $GLOBALS['TL_LANG']['MSC']['billing_shipping_address'];
-            }
-            else
-            {
-                $this->Template->has_shipping = true;
-                $this->Template->shipping_label = $GLOBALS['TL_LANG']['MSC']['shipping_address'];
-                $this->Template->shipping_address = ($objOrder->getShippingAddress() ? $objOrder->getShippingAddress()->generateHtml(Isotope::getConfig()->shipping_fields) : '');
-            }
+            $this->Template->has_shipping = false;
+            $this->Template->billing_label = $GLOBALS['TL_LANG']['MSC']['billing_shipping_address'];
+        }
+        else
+        {
+            $this->Template->has_shipping = true;
+            $this->Template->shipping_label = $GLOBALS['TL_LANG']['MSC']['shipping_address'];
+            $this->Template->shipping_address = $objShippingAddress->generateHtml(Isotope::getConfig()->shipping_fields);
         }
     }
 
