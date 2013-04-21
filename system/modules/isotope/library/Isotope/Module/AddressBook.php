@@ -65,16 +65,14 @@ class AddressBook extends Module
             return $objTemplate->parse();
         }
 
-        if (FE_USER_LOGGED_IN !== true)
-        {
+        if (FE_USER_LOGGED_IN !== true) {
             return '';
         }
 
         $this->arrFields = array_unique(array_merge(Isotope::getConfig()->getBillingFields(), Isotope::getConfig()->getShippingFields()));
 
         // Return if there are not editable fields
-        if (($count = count($this->arrFields) == 0) || ($count == 1 && $this->arrFields[0] == ''))
-        {
+        if (($count = count($this->arrFields)) == 0 || ($count == 1 && $this->arrFields[0] == '')) {
             return '';
         }
 
@@ -92,15 +90,10 @@ class AddressBook extends Module
         $this->loadDataContainer('tl_iso_addresses');
 
         // Call onload_callback (e.g. to check permissions)
-        if (is_array($GLOBALS['TL_DCA']['tl_iso_addresses']['config']['onload_callback']))
-        {
-            foreach ($GLOBALS['TL_DCA']['tl_iso_addresses']['config']['onload_callback'] as $callback)
-            {
-                if (is_array($callback))
-                {
-                    $this->import($callback[0]);
-                    $this->$callback[0]->$callback[1]();
-                }
+        if (is_array($GLOBALS['TL_DCA']['tl_iso_addresses']['config']['onload_callback'])) {
+            foreach ($GLOBALS['TL_DCA']['tl_iso_addresses']['config']['onload_callback'] as $callback) {
+                $this->import($callback[0]);
+                $this->$callback[0]->$callback[1]();
             }
         }
 
@@ -111,14 +104,12 @@ class AddressBook extends Module
                 return $this->edit();
 
             case 'edit':
-                if (strlen(\Input::get('address')))
-                {
+                if (strlen(\Input::get('address'))) {
                     return $this->edit(\Input::get('address'));
                 }
 
             case 'delete':
-                if (strlen(\Input::get('address')))
-                {
+                if (strlen(\Input::get('address'))) {
                     return $this->delete(\Input::get('address'));
                 }
 
@@ -179,8 +170,7 @@ class AddressBook extends Module
     {
         \System::loadLanguageFile('tl_member');
 
-        if (!strlen($this->memberTpl))
-        {
+        if (!strlen($this->memberTpl)) {
             $this->memberTpl = 'member_default';
         }
 
@@ -201,8 +191,8 @@ class AddressBook extends Module
         }
 
         // Build form
-        foreach ($this->arrFields as $field)
-        {
+        foreach ($this->arrFields as $field) {
+
             // Make the address object look like a Data Container (for the save_callback)
             $objAddress->field = $field;
 
@@ -210,27 +200,23 @@ class AddressBook extends Module
             $arrData = &$GLOBALS['TL_DCA']['tl_iso_addresses']['fields'][$field];
 
             // Map checkboxWizard to regular checkbox widget
-            if ($arrData['inputType'] == 'checkboxWizard')
-            {
+            if ($arrData['inputType'] == 'checkboxWizard') {
                 $arrData['inputType'] = 'checkbox';
             }
 
             $strClass = $GLOBALS['TL_FFL'][$arrData['inputType']];
 
             // Continue if the class is not defined
-            if (!$this->classFileExists($strClass) || !$arrData['eval']['feEditable'])
-            {
+            if (!$this->classFileExists($strClass) || !$arrData['eval']['feEditable']) {
                 continue;
             }
 
             // Special field "country"
-            if ($field == 'country')
-            {
+            if ($field == 'country') {
                 $arrCountries = array();
                 $objConfigs = Config::findBy('store_id', Isotope::getConfig()->store_id);
 
-                while( $objConfigs->next() )
-                {
+                while ($objConfigs->next()) {
                     $arrCountries = array_merge($arrCountries, $objConfigs->getBillingCountries(), $objConfigs->getShippingCountries());
                 }
 
@@ -249,31 +235,25 @@ class AddressBook extends Module
             $objWidget->rowClass = 'row_'.$row . (($row == 0) ? ' row_first' : '') . ((($row % 2) == 0) ? ' even' : ' odd');
 
             // Validate input
-            if (\Input::post('FORM_SUBMIT') == 'tl_iso_addresses_' . $this->id)
-            {
+            if (\Input::post('FORM_SUBMIT') == 'tl_iso_addresses_' . $this->id) {
+
                 $objWidget->validate();
                 $varValue = $objWidget->value;
 
                 // Convert date formats into timestamps
-                if (strlen($varValue) && in_array($arrData['eval']['rgxp'], array('date', 'time', 'datim')))
-                {
+                if (strlen($varValue) && in_array($arrData['eval']['rgxp'], array('date', 'time', 'datim'))) {
                     $objDate = new \Date($varValue, $GLOBALS['TL_CONFIG'][$arrData['eval']['rgxp'] . 'Format']);
                     $varValue = $objDate->tstamp;
                 }
 
                 // Save callback
-                if (is_array($arrData['save_callback']))
-                {
-                    foreach ($arrData['save_callback'] as $callback)
-                    {
+                if (is_array($arrData['save_callback'])) {
+                    foreach ($arrData['save_callback'] as $callback) {
                         $this->import($callback[0]);
 
-                        try
-                        {
+                        try {
                             $varValue = $this->$callback[0]->$callback[1]($varValue, $objAddress);
-                        }
-                        catch (Exception $e)
-                        {
+                        } catch (Exception $e) {
                             $objWidget->class = 'error';
                             $objWidget->addError($e->getMessage());
                         }
@@ -281,22 +261,19 @@ class AddressBook extends Module
                 }
 
                 // Do not submit if there are errors
-                if ($objWidget->hasErrors())
-                {
+                if ($objWidget->hasErrors()) {
                     $doNotSubmit = true;
                 }
 
                 // Store current value
-                elseif ($objWidget->submitInput())
-                {
+                elseif ($objWidget->submitInput()) {
                     // Set new value
                     $varSave = is_array($varValue) ? serialize($varValue) : $varValue;
                     $objAddress->$field = $varSave;
                 }
             }
 
-            if ($objWidget instanceof \uploadable)
-            {
+            if ($objWidget instanceof \uploadable) {
                 $hasUpload = true;
             }
 
@@ -310,20 +287,15 @@ class AddressBook extends Module
         $this->Template->hasError = $doNotSubmit;
 
         // Redirect or reload if there was no error
-        if (\Input::post('FORM_SUBMIT') == 'tl_iso_addresses_' . $this->id && !$doNotSubmit)
-        {
+        if (\Input::post('FORM_SUBMIT') == 'tl_iso_addresses_' . $this->id && !$doNotSubmit) {
+
             $objAddress->save();
 
             // Call onsubmit_callback
-            if (is_array($GLOBALS['TL_DCA']['tl_iso_addresses']['config']['onsubmit_callback']))
-            {
-                foreach ($GLOBALS['TL_DCA']['tl_iso_addresses']['config']['onsubmit_callback'] as $callback)
-                {
-                    if (is_array($callback))
-                    {
-                        $this->import($callback[0]);
-                        $this->$callback[0]->$callback[1]($objAddress);
-                    }
+            if (is_array($GLOBALS['TL_DCA']['tl_iso_addresses']['config']['onsubmit_callback'])) {
+                foreach ($GLOBALS['TL_DCA']['tl_iso_addresses']['config']['onsubmit_callback'] as $callback) {
+                    $this->import($callback[0]);
+                    $this->$callback[0]->$callback[1]($objAddress);
                 }
             }
 
@@ -337,8 +309,7 @@ class AddressBook extends Module
         $this->Template->loginDetails = $GLOBALS['TL_LANG']['tl_iso_addresses']['loginDetails'];
 
         // Add groups
-        foreach ($arrFields as $k=>$v)
-        {
+        foreach ($arrFields as $k=>$v) {
             $this->Template->$k = $v;
         }
 
