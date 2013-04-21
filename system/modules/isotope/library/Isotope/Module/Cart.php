@@ -101,7 +101,6 @@ class Cart extends Module
         $arrSurcharges = Isotope::getCart()->getSurcharges();
 
         $arrProducts = Isotope::getCart()->getProducts();
-        $lastAdded = ($this->iso_continueShopping && !empty($_SESSION['ISO_CONFIRM'])) ? Isotope::getCart()->getLatestItem() : null;
 
         foreach ($arrProducts as $i => $objProduct)
         {
@@ -132,14 +131,14 @@ class Cart extends Module
                 'remove_link_text'      => $GLOBALS['TL_LANG']['MSC']['removeProductLinkText'],
                 'remove_link_title'     => specialchars(sprintf($GLOBALS['TL_LANG']['MSC']['removeProductLinkTitle'], $objProduct->name)),
             ));
-
-            if (null !== $lastAdded && $lastAdded->id == $objProduct->collection_id)
-            {
-                $objTemplate->continueJumpTo = $objProduct->href_reader;
-            }
         }
 
         $blnInsufficientSubtotal = (Isotope::getConfig()->cartMinSubtotal > 0 && Isotope::getConfig()->cartMinSubtotal > Isotope::getCart()->getSubtotal()) ? true : false;
+
+        if ($this->iso_continueShopping && !empty($_SESSION['ISO_CONFIRM']) && ($objLatest = Isotope::getCart()->getLatestItem()) !== null)
+        {
+            $objTemplate->continueJumpTo = $objLatest->href_reader;
+        }
 
         // Redirect if the "checkout" button has been submitted and minimum order total is reached
         if ($blnReload && \Input::post('checkout') != '' && !$blnInsufficientSubtotal)
