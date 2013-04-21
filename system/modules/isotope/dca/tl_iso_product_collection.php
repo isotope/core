@@ -232,13 +232,15 @@ $GLOBALS['TL_DCA']['tl_iso_product_collection'] = array
         'address1_id' => array
         (
             'label'                 => &$GLOBALS['TL_LANG']['tl_iso_product_collection']['address1_id'],
-            'foreignKey'            => 'tl_iso_addresses.lastname',
-            'relation'              => array('doNotShow'=>true, 'type'=>'hasOne', 'load'=>'lazy'),
+            'foreignKey'            => 'tl_iso_addresses.label',
+            'eval'                  => array('doNotShow'=>true),
+            'relation'              => array('type'=>'hasOne', 'load'=>'lazy'),
         ),
         'address2_id' => array
         (
-            'foreignKey'            => 'tl_iso_addresses.lastname',
-            'relation'              => array('doNotShow'=>true, 'type'=>'hasOne', 'load'=>'lazy'),
+            'foreignKey'            => 'tl_iso_addresses.label',
+            'eval'                  => array('doNotShow'=>true),
+            'relation'              => array('type'=>'hasOne', 'load'=>'lazy'),
         ),
         'details' => array
         (
@@ -264,10 +266,12 @@ $GLOBALS['TL_DCA']['tl_iso_product_collection'] = array
         'billing_address_data' => array
         (
             'input_field_callback'  => array('Isotope\tl_iso_product_collection', 'generateBillingAddressData'),
+            'eval'                  => array('doNotShow'=>true),
         ),
         'shipping_address_data' => array
         (
             'input_field_callback'  => array('Isotope\tl_iso_product_collection', 'generateShippingAddressData'),
+            'eval'                  => array('doNotShow'=>true),
         ),
     )
 );
