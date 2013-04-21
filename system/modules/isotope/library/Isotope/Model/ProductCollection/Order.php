@@ -374,15 +374,13 @@ class Order extends ProductCollection implements IsotopeProductCollection
     public function updateOrderStatus($intNewStatus, $blnActions=true)
     {
         // Status already set, nothing to do
-        if ($this->order_status == $intNewStatus)
-        {
+        if ($this->order_status == $intNewStatus) {
             return true;
         }
 
-        $objNewStatus = \Database::getInstance()->execute("SELECT * FROM tl_iso_orderstatus WHERE id=" . (int) $intNewStatus);
+        $objNewStatus = OrderStatus::findByPk($intNewStatus);
 
-        if ($objNewStatus->numRows == 0)
-        {
+        if (null === $objNewStatus) {
             return false;
         }
 
@@ -402,7 +400,7 @@ class Order extends ProductCollection implements IsotopeProductCollection
         }
 
         // Add the payment date if there is none
-        if ($objNewStatus->paid)
+        if ($objNewStatus->isPaid())
         {
             if ($this->date_paid == '')
             {
@@ -414,7 +412,7 @@ class Order extends ProductCollection implements IsotopeProductCollection
         if ($objNewStatus->mail_customer > 0 || $objNewStatus->mail_admin > 0)
         {
             $arrData = $this->getEmailData();
-            $arrData['new_status'] = $objNewStatus->name;
+            $arrData['new_status'] = $objNewStatus->getName();
             $strRecipient = $this->getEmailRecipient();
 
             if ($objNewStatus->mail_customer && $strRecipient != '')

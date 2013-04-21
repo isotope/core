@@ -13,6 +13,7 @@
 namespace Isotope;
 
 use \Contao\Backend as Contao_Backend;
+use Isotope\Model\OrderStatus;
 
 
 /**
@@ -463,11 +464,11 @@ class Backend extends Contao_Backend
     public static function getOrderStatus()
     {
         $arrStatus = array();
-        $objStatus = \Database::getInstance()->execute("SELECT id, name FROM tl_iso_orderstatus ORDER BY sorting");
+        $objStatus = OrderStatus::findAll(array('order'=>'sorting'));
 
         while ($objStatus->next())
         {
-            $arrStatus[$objStatus->id] = $objStatus->name;
+            $arrStatus[$objStatus->id] = $objStatus->current()->getName();
         }
 
         return $arrStatus;
