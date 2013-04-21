@@ -48,9 +48,12 @@ class tl_iso_product_collection extends \Backend
         Isotope::overrideConfig($row['config_id']);
 
         $objAddress = Order::findByPk($row['id'])->getBillingAddress();
-        $arrTokens = $objAddress->getTokens(Isotope::getConfig()->billing_fields);
 
-        $args[2] = $arrTokens['hcard_fn'];
+        if (null !== $objAddress) {
+            $arrTokens = $objAddress->getTokens(Isotope::getConfig()->billing_fields);
+            $args[2] = $arrTokens['hcard_fn'];
+        }
+
         $args[3] = Isotope::formatPriceWithCurrency($row['grandTotal']);
 
         return $args;
@@ -168,7 +171,7 @@ class tl_iso_product_collection extends \Backend
      * @param   Address
      * @return  string
      */
-    protected function generateAddressData(Address $objAddress)
+    protected function generateAddressData(Address $objAddress=null)
     {
         if (null === $objAddress)
         {
