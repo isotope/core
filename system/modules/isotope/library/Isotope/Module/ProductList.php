@@ -272,7 +272,7 @@ class ProductList extends Module
 
         foreach ($arrProducts as $objProduct)
         {
-            $objProduct->setOptions(array_merge($arrDefaultOptions, $objProduct->getOptions(true)));
+            $objProduct->setOptions(array_merge($arrDefaultOptions, $objProduct->getOptions()));
             $objProduct->reader_jumpTo = $intReaderPage;
 
             if ($this->iso_jump_first && \Input::get('product') == '') {

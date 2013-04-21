@@ -785,6 +785,31 @@ class Isotope extends \Controller
 
 
     /**
+     * Format options label and value
+     * @param   array
+     * @param   string
+     */
+    public static function formatOptions(array $arrData, $strTable='tl_iso_products', $blnSkipEmpty=true)
+    {
+        $arrOptions = array();
+
+        foreach ($arrData as $field => $value)
+        {
+            if ($blnSkipEmpty && ($value == '' || $value == '-'))
+                continue;
+
+            $arrOptions[$field] = array
+            (
+                'label'    => static::formatLabel($strTable, $field),
+                'value'    => static::formatValue($strTable, $field, $value),
+            );
+        }
+
+        return $arrOptions;
+    }
+
+
+    /**
      * Merge media manager data from fallback and translated product data
      * @param array
      * @param array

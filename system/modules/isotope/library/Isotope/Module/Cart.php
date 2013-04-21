@@ -128,7 +128,7 @@ class Cart extends Module
                 'tax_id'                => $objProduct->tax_id,
                 'quantity'              => $objProduct->quantity_requested,
                 'collection_id'         => $objProduct->collection_id,
-                'product_options'       => $objProduct->getOptions(),
+                'product_options'       => Isotope::formatOptions($objProduct->getOptions()),
                 'remove_link'           => ampersand($strUrl . ($GLOBALS['TL_CONFIG']['disableAlias'] ? '&' : '?') . 'remove='.$objProduct->collection_id.'&referer='.base64_encode(\Environment::get('request'))),
                 'remove_link_text'      => $GLOBALS['TL_LANG']['MSC']['removeProductLinkText'],
                 'remove_link_title'     => specialchars(sprintf($GLOBALS['TL_LANG']['MSC']['removeProductLinkTitle'], $objProduct->name)),

@@ -675,7 +675,7 @@ abstract class ProductCollection extends \Model
         $arrType = $objProduct->getType();
         $strClass = $arrType['class'];
 
-        $objItem = ProductCollectionItem::findBy(array('pid=?', 'type=?', 'product_id=?', 'options=?'), array($this->id, $strClass, $objProduct->id, serialize($objProduct->getOptions(true))));
+        $objItem = ProductCollectionItem::findBy(array('pid=?', 'type=?', 'product_id=?', 'options=?'), array($this->id, $strClass, $objProduct->id, serialize($objProduct->getOptions())));
 
         return (null === $objItem) ? null : $this->arrItems[$objItem->id];
     }
@@ -779,7 +779,7 @@ abstract class ProductCollection extends \Model
             $objItem->product_id        = (int) $objProduct->id;
             $objItem->sku               = (string) $objProduct->sku;
             $objItem->name              = (string) $objProduct->name;
-            $objItem->options           = $objProduct->getOptions(true);
+            $objItem->options           = $objProduct->getOptions();
             $objItem->quantity          = (int) $intQuantity;
             $objItem->price             = (float) $objProduct->price;
             $objItem->tax_free_price    = (float) $objProduct->tax_free_price;

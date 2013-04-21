@@ -496,7 +496,7 @@ class Standard extends \Controller implements IsotopeProduct
 
                 if ($objVariant->isAvailable())
                 {
-                    $arrVariantOptions = $objVariant->getOptions(true);
+                    $arrVariantOptions = $objVariant->getOptions();
 
                     $this->arrVariantOptions['ids'][] = $objVariant->id;
                     $this->arrVariantOptions['options'][$objVariant->id] = $arrVariantOptions;
@@ -557,33 +557,12 @@ class Standard extends \Controller implements IsotopeProduct
 
 
     /**
-     * Return all options, either the raw array or prepared for product listing
-     * @todo I dislike the listing approach, we might find a better solution
-     * @param boolean
+     * Return all product options
      * @return array
      */
-    public function getOptions($blnRaw=false)
+    public function getOptions()
     {
-        if ($blnRaw)
-        {
-            return $this->arrOptions;
-        }
-
-        $arrOptions = array();
-
-        foreach ($this->arrOptions as $field => $value)
-        {
-            if ($value == '' || $value == '-')
-                continue;
-
-            $arrOptions[$field] = array
-            (
-                'label'    => Isotope::formatLabel('tl_iso_products', $field),
-                'value'    => Isotope::formatValue('tl_iso_products', $field, $value),
-            );
-        }
-
-        return $arrOptions;
+        return $this->arrOptions;
     }
 
 

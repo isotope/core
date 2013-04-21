@@ -951,7 +951,7 @@ class Checkout extends Module
                 'tax_free_total_price'    => Isotope::formatPriceWithCurrency($objProduct->tax_free_total_price),
                 'quantity'            => $objProduct->quantity_requested,
                 'tax_id'            => $objProduct->tax_id,
-                'product_options'    => $objProduct->getOptions(),
+                'product_options'    => Isotope::formatOptions($objProduct->getOptions()),
             ));
         }
 

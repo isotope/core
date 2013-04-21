@@ -418,7 +418,7 @@ class IsotopeRules extends \Controller
                     $arrVariantIds = array_merge($arrVariantIds, $objProduct->variant_ids);
                 }
 
-                $arrOptions = $objProduct->getOptions(true);
+                $arrOptions = $objProduct->getOptions();
                 foreach( $arrAttributes as $k => $restriction )
                 {
                     $varValue = null;
