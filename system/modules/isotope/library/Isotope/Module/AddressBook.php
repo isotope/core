@@ -14,6 +14,7 @@ namespace Isotope\Module;
 
 use Isotope\Isotope;
 use Isotope\Model\Address;
+use Isotope\Model\Config;
 
 /**
  * Class ModuleIsotopeAddressBook
@@ -226,14 +227,14 @@ class AddressBook extends Module
             if ($field == 'country')
             {
                 $arrCountries = array();
-                $objConfigs = $this->Database->prepare("SELECT billing_countries, shipping_countries FROM tl_iso_config WHERE store_id=?")->execute(Isotope::getConfig()->store_id);
+                $objConfigs = Config::findBy('store_id', Isotope::getConfig()->store_id);
 
                 while( $objConfigs->next() )
                 {
                     $arrCountries = array_merge($arrCountries, $objConfigs->getBillingCountries(), $objConfigs->getShippingCountries());
                 }
 
-                $arrData['options'] = array_values(array_intersect($arrData['options'], $arrCountries));
+                $arrData['options'] = array_values(array_intersect($arrData['options'], array_unique($arrCountries)));
                 $arrData['default'] = Isotope::getConfig()->billing_country;
             }
 
