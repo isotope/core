@@ -151,7 +151,7 @@ class Checkout extends Module
         }
 
         // Return error message if cart is empty
-        if (!Isotope::getCart()->items)
+        if (Isotope::getCart()->isEmpty())
         {
             $this->Template = new \Isotope\Template('mod_message');
             $this->Template->type = 'empty';

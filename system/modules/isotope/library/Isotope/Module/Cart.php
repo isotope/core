@@ -73,9 +73,7 @@ class Cart extends Module
      */
     protected function compile()
     {
-        $arrProducts = Isotope::getCart()->getProducts();
-
-        if (empty($arrProducts))
+        if (Isotope::getCart()->isEmpty())
         {
             $this->Template->empty = true;
             $this->Template->type = 'empty';
