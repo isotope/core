@@ -145,7 +145,7 @@ class OrderDetails extends Module
         $this->Template->orderDetailsHeadline = sprintf($GLOBALS['TL_LANG']['MSC']['orderDetailsHeadline'], $objOrder->order_id, $this->Template->datim);
         $this->Template->orderStatus = sprintf($GLOBALS['TL_LANG']['MSC']['orderStatusHeadline'], $objOrder->getStatusLabel());
         $this->Template->orderStatusKey = $objOrder->getStatusAlias();
-        $this->Template->subTotalPrice = Isotope::formatPriceWithCurrency($objOrder->getSubTotal());
+        $this->Template->subTotalPrice = Isotope::formatPriceWithCurrency($objOrder->getSubtotal());
         $this->Template->grandTotal = Isotope::formatPriceWithCurrency($objOrder->getTotal());
         $this->Template->subTotalLabel = $GLOBALS['TL_LANG']['MSC']['subTotalLabel'];
         $this->Template->grandTotalLabel = $GLOBALS['TL_LANG']['MSC']['grandTotalLabel'];

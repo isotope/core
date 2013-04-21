@@ -275,7 +275,7 @@ class Order extends ProductCollection implements IsotopeProductCollection
         $this->arrData['date']                 = time();
         $this->arrData['shipping_id']          = ($objSource->hasShipping() ? $objSource->getShippingMethod()->id : 0);
         $this->arrData['payment_id']           = ($objSource->hasPayment() ? $objSource->getPaymentMethod()->id : 0);
-        $this->arrData['subTotal']             = $objSource->getSubTotal();
+        $this->arrData['subTotal']             = $objSource->getSubtotal();
         $this->arrData['grandTotal']           = $objSource->getTotal();
         $this->arrData['currency']             = Isotope::getConfig()->currency;
 

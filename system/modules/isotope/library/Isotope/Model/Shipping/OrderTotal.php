@@ -43,7 +43,7 @@ class OrderTotal extends Shipping implements IsotopeShipping
         switch( $strKey )
         {
             case 'price':
-                $fltEligibleSubTotal = $this->getAdjustedSubTotal((TL_MODE=='FE' ? Isotope::getCart()->getSubTotal() : Isotope::getInstance()->Order->getSubTotal()));
+                $fltEligibleSubTotal = $this->getAdjustedSubTotal((TL_MODE=='FE' ? Isotope::getCart()->getSubtotal() : Isotope::getInstance()->Order->getSubtotal()));
 
                 return $fltEligibleSubTotal <= 0 ? 0.00 : Isotope::getInstance()->calculatePrice($this->calculateShippingRate($this->id, $fltEligibleSubTotal), $this, 'price', $this->arrData['tax_class']);
 
@@ -144,7 +144,7 @@ class OrderTotal extends Shipping implements IsotopeShipping
      */
     public function getSurcharge($objCollection)
     {
-        $fltEligibleSubTotal = $this->getAdjustedSubTotal((TL_MODE=='FE' ? Isotope::getCart()->getSubTotal() : Isotope::getInstance()->Order->getSubTotal()));
+        $fltEligibleSubTotal = $this->getAdjustedSubTotal((TL_MODE=='FE' ? Isotope::getCart()->getSubtotal() : Isotope::getInstance()->Order->getSubtotal()));
 
         if ($fltEligibleSubTotal <= 0)
         {

@@ -108,7 +108,7 @@ abstract class Payment extends \Model
             }
         }
 
-        if (($this->minimum_total > 0 && $this->minimum_total > Isotope::getCart()->getSubTotal()) || ($this->maximum_total > 0 && $this->maximum_total < Isotope::getCart()->getSubTotal()))
+        if (($this->minimum_total > 0 && $this->minimum_total > Isotope::getCart()->getSubtotal()) || ($this->maximum_total > 0 && $this->maximum_total < Isotope::getCart()->getSubtotal()))
         {
             return false;
         }
@@ -182,7 +182,7 @@ abstract class Payment extends \Model
         }
 
         if ($this->isPercentage()) {
-            $fltPrice = $objCollection->getSubTotal() / 100 * $this->getPercentage();
+            $fltPrice = $objCollection->getSubtotal() / 100 * $this->getPercentage();
         } else {
             $fltPrice = (float) $this->arrData['price'];
         }

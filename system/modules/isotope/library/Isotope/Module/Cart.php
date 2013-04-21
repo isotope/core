@@ -140,7 +140,7 @@ class Cart extends Module
             }
         }
 
-        $blnInsufficientSubtotal = (Isotope::getConfig()->cartMinSubtotal > 0 && Isotope::getConfig()->cartMinSubtotal > Isotope::getCart()->getSubTotal()) ? true : false;
+        $blnInsufficientSubtotal = (Isotope::getConfig()->cartMinSubtotal > 0 && Isotope::getConfig()->cartMinSubtotal > Isotope::getCart()->getSubtotal()) ? true : false;
 
         // Redirect if the "checkout" button has been submitted and minimum order total is reached
         if ($blnReload && \Input::post('checkout') != '' && !$blnInsufficientSubtotal)
@@ -185,7 +185,7 @@ class Cart extends Module
         $objTemplate->products = \Isotope\Frontend::generateRowClass($arrProductData, 'row', 'rowClass', 0, ISO_CLASS_COUNT|ISO_CLASS_FIRSTLAST|ISO_CLASS_EVENODD);
         $objTemplate->subTotalLabel = $GLOBALS['TL_LANG']['MSC']['subTotalLabel'];
         $objTemplate->grandTotalLabel = $GLOBALS['TL_LANG']['MSC']['grandTotalLabel'];
-        $objTemplate->subTotalPrice = Isotope::formatPriceWithCurrency(Isotope::getCart()->getSubTotal());
+        $objTemplate->subTotalPrice = Isotope::formatPriceWithCurrency(Isotope::getCart()->getSubtotal());
         $objTemplate->grandTotalPrice = Isotope::formatPriceWithCurrency(Isotope::getCart()->getTotal());
         // @todo make a module option.
         $objTemplate->showOptions = false;
