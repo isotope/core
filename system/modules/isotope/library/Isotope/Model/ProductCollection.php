@@ -350,7 +350,7 @@ abstract class ProductCollection extends \Model
      */
     public function getBillingAddress()
     {
-        return $this->billing_address_id ? $this->getRelated('billing_address_id') : null;
+        return $this->getRelated('address1_id');
     }
 
     /**
@@ -360,9 +360,9 @@ abstract class ProductCollection extends \Model
     public function setBillingAddress(Address $objAddress)
     {
         if (null === $objAddress || $objAddress->id < 1) {
-            $this->billing_address_id = 0;
+            $this->address1_id = 0;
         } else {
-            $this->billing_address_id = $objAddress->id;
+            $this->address1_id = $objAddress->id;
         }
 
         $this->setModified(true);
@@ -374,7 +374,11 @@ abstract class ProductCollection extends \Model
      */
     public function getShippingAddress()
     {
-        return $this->shipping_address_id ? $this->getRelated('shipping_address_id') : null;
+        if (!$this->hasPayment()) {
+            return $this->getRelated('address1_id');
+        }
+
+        return $this->hasShipping() ? $this->getRelated('address2_id') : null;
     }
 
     /**
@@ -384,9 +388,16 @@ abstract class ProductCollection extends \Model
     public function setShippingAddress(Address $objAddress)
     {
         if (null === $objAddress || $objAddress->id < 1) {
-            $this->shipping_address_id = 0;
+            $intId = 0;
         } else {
-            $this->shipping_address_id = $objAddress->id;
+            $intId = $objAddress->id;
+        }
+
+        // If the collection does not have a payment, the shipping address is the primary address for the collection
+        if (!$this->hasPayment()) {
+            $this->address1_id = $intId;
+        } else {
+            $this->address2_id = $intId;
         }
 
         $this->setModified(true);
