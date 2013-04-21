@@ -295,7 +295,16 @@ class Order extends ProductCollection implements IsotopeProductCollection
             }
         }
 
-        $arrItemIds = $this->transferFromCollection($objCart);
+        // Copy all items from cart to oder
+        $arrItemIds = $this->copyItemsFrom($objCart);
+
+        // Set billing and shipping address and create private records
+        $this->setBillingAddress($objCart->getBillingAddress());
+        $this->setShippingAddress($objCart->setShippingAddress());
+        $this->createPrivateAddresses();
+
+        // @todo must add surcharges and downloads here
+
         $objCart->delete();
 
         $this->checkout_complete = true;
@@ -317,26 +326,6 @@ class Order extends ProductCollection implements IsotopeProductCollection
             $this->log('Unable to send customer confirmation for order ID '.$this->id, __METHOD__, TL_ERROR);
         }
 
-        // Store address in address book
-        if ($this->iso_addToAddressbook && $this->pid > 0)
-        {
-            $time = time();
-
-            foreach (array('billing', 'shipping') as $address)
-            {
-                $arrAddress = deserialize($this->arrData[$address . '_address'], true);
-
-                if ($arrAddress['id'] == 0)
-                {
-                    $arrAddress = array_intersect_key($arrAddress, array_flip(Isotope::getConfig()->{$address . '_fields_raw'}));
-                    $arrAddress['pid'] = $this->pid;
-                    $arrAddress['tstamp'] = $time;
-                    $arrAddress['store_id'] = Isotope::getConfig()->store_id;
-
-                    \Database::getInstance()->prepare("INSERT INTO tl_iso_addresses %s")->set($arrAddress)->execute();
-                }
-            }
-        }
 
         // !HOOK: post-process checkout
         if (isset($GLOBALS['ISO_HOOKS']['postCheckout']) && is_array($GLOBALS['ISO_HOOKS']['postCheckout'])) {
@@ -515,6 +504,13 @@ class Order extends ProductCollection implements IsotopeProductCollection
             }
         }
 
+        $arrData['items']       = $this->sumItemsQuantity();
+        $arrData['products']    = $this->countItems();
+        $arrData['subTotal']    = Isotope::formatPriceWithCurrency($this->getSubtotal(), false);
+        $arrData['grandTotal']  = Isotope::formatPriceWithCurrency($this->getTotal(), false);
+        $arrData['cart_text']   = strip_tags($this->replaceInsertTags($this->getProducts('iso_products_text')));
+        $arrData['cart_html']   = $this->replaceInsertTags($this->getProducts('iso_products_html'));
+
         // !HOOK: add custom email tokens
         if (isset($GLOBALS['ISO_HOOKS']['getOrderEmailData']) && is_array($GLOBALS['ISO_HOOKS']['getOrderEmailData']))
         {
@@ -526,6 +522,47 @@ class Order extends ProductCollection implements IsotopeProductCollection
         }
 
         return $arrData;
+    }
+
+
+    /**
+     * Make sure the addresses belong to this collection only, so they will never be modified
+     */
+    protected function createPrivateAddresses()
+    {
+        if (!$this->id) {
+            throw new \UnderflowException('Product collection must be saved before creating unique addresses.');
+        }
+
+        $objBillingAddress = $this->getBillingAddress();
+        $objShippingAddress = $this->getShippingAddress();
+
+        if (null !== $objBillingAddress && $objBillingAddress->ptable != static::$strTable && $objBillingAddress->pid != $this->id) {
+
+            $objNew = clone $objBillingAddress;
+            $objNew->ptable = static::$strTable;
+            $objNew->pid = $this->id;
+            $objNew->save(true);
+
+            $this->setBillingAddress($objNew);
+
+            if (null !== $objShippingAddress && $objBillingAddress->id == $objShippingAddress->id) {
+                $this->setShippingAddress($objNew);
+
+                // Return here, we do not need to check shipping address
+                return;
+            }
+        }
+
+        if (null !== $objShippingAddress && $objShippingAddress->ptable != static::$strTable && $objShippingAddress->pid != $this->id) {
+
+            $objNew = clone $objShippingAddress;
+            $objNew->ptable = static::$strTable;
+            $objNew->pid = $this->id;
+            $objNew->save(true);
+
+            $this->setShippingAddress($objNew);
+        }
     }
 
 

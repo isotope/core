@@ -982,26 +982,13 @@ class Checkout extends Module
 
         $objOrder->setSourceCollection($objCart);
 
-        $objOrder->surcharges           = Isotope::getCart()->getSurcharges();
         $objOrder->checkout_info        = $this->getCheckoutInfo();
-        $objOrder->billing_address      = Isotope::getCart()->billing_address;
-        $objOrder->shipping_address     = Isotope::getCart()->shipping_address;
         $objOrder->iso_sales_email      = $this->iso_sales_email ? $this->iso_sales_email : (($GLOBALS['TL_ADMIN_NAME'] != '') ? sprintf('%s <%s>', $GLOBALS['TL_ADMIN_NAME'], $GLOBALS['TL_ADMIN_EMAIL']) : $GLOBALS['TL_ADMIN_EMAIL']);
         $objOrder->iso_mail_admin       = $this->iso_mail_admin;
         $objOrder->iso_mail_customer    = $this->iso_mail_customer;
         $objOrder->iso_addToAddressbook = $this->iso_addToAddressbook;
+        $objOrder->email_data = $this->arrOrderData;
 
-        $arrData = array_merge($this->arrOrderData, array
-        (
-            'items'                => Isotope::getCart()->sumItemsQuantity(),
-            'products'            => Isotope::getCart()->countItems(),
-            'subTotal'            => Isotope::formatPriceWithCurrency(Isotope::getCart()->subTotal, false),
-            'grandTotal'        => Isotope::formatPriceWithCurrency(Isotope::getCart()->grandTotal, false),
-            'cart_text'            => strip_tags($this->replaceInsertTags(Isotope::getCart()->getProducts('iso_products_text'))),
-            'cart_html'            => $this->replaceInsertTags(Isotope::getCart()->getProducts('iso_products_html')),
-        ));
-
-        $objOrder->email_data = $arrData;
         $objOrder->save();
     }
 
