@@ -158,7 +158,7 @@ $GLOBALS['TL_DCA']['tl_iso_product_collection'] = array
         ),
         'source_collection_id' => array
         (
-            'foreignKey'              => 'tl_collection.order_id',
+            'foreignKey'              => 'tl_iso_product_collection.type',
             'relation'                => array('type'=>'hasOne', 'load'=>'lazy'),
         ),
         'order_id' => array
