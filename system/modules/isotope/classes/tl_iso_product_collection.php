@@ -17,6 +17,7 @@
 namespace Isotope;
 
 use Isotope\Model\Address;
+use Isotope\Model\OrderStatus;
 use Isotope\Model\ProductCollection\Order;
 
 
@@ -45,9 +46,16 @@ class tl_iso_product_collection extends \Backend
      */
     public function getOrderLabel($row, $label, \DataContainer $dc, $args)
     {
-        Isotope::overrideConfig($row['config_id']);
+        $objOrder = Order::findByPk($row['id']);
 
-        $objAddress = Order::findByPk($row['id'])->getBillingAddress();
+        if (null === $objOrder) {
+            return $args;
+        }
+
+        // Override system to correctly format currencies etc
+        Isotope::overrideConfig($objOrder->config_id);
+
+        $objAddress = $objOrder->getBillingAddress();
 
         if (null !== $objAddress) {
             $arrTokens = $objAddress->getTokens(Isotope::getConfig()->billing_fields);
@@ -55,6 +63,7 @@ class tl_iso_product_collection extends \Backend
         }
 
         $args[3] = Isotope::formatPriceWithCurrency($row['grandTotal']);
+        $args[4] = $objOrder->getStatusLabel();
 
         return $args;
     }
