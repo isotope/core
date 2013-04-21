@@ -902,22 +902,33 @@ abstract class ProductCollection extends \Model
 
 
     /**
-     * Delete a product in the collection
-     * @param object
-     * @param boolean force deleting the product even if the collection is locked
-     * @return boolean
+     * Remove item from collection
+     * @param   ProductCollectionItem
+     * @return  bool
      */
-    public function deleteProduct(IsotopeProduct $objProduct)
+    public function deleteItem(ProductCollectionItem $objItem)
     {
-        if (($objItem = $this->getItemForProduct($objProduct)) === null) {
+        return $this->deleteItemById($objItem->id);
+    }
+
+    /**
+     * Remove item with given ID from collection
+     * @param   int
+     * @return  bool
+     */
+    public function deleteItemById($intId)
+    {
+        $arrItems = $this->getItems();
+
+        if (!isset($arrItems[$intId])) {
             return false;
         }
 
         // !HOOK: additional functionality when a product is removed from the collection
-        if (isset($GLOBALS['ISO_HOOKS']['deleteProductFromCollection']) && is_array($GLOBALS['ISO_HOOKS']['deleteProductFromCollection'])) {
-            foreach ($GLOBALS['ISO_HOOKS']['deleteProductFromCollection'] as $callback) {
+        if (isset($GLOBALS['ISO_HOOKS']['deleteFromCollection']) && is_array($GLOBALS['ISO_HOOKS']['deleteFromCollection'])) {
+            foreach ($GLOBALS['ISO_HOOKS']['deleteFromCollection'] as $callback) {
                 $objCallback = \System::importStatic($callback[0]);
-                $blnRemove = $objCallback->$callback[1]($objProduct, $this);
+                $blnRemove = $objCallback->$callback[1]($arrItems[$intId], $this);
 
                 if ($blnRemove === false) {
                     return false;
@@ -925,8 +936,8 @@ abstract class ProductCollection extends \Model
             }
         }
 
+        $arrItems[$intId]->delete();
         $this->setModified(true);
-        $objItem->delete();
 
         return true;
     }

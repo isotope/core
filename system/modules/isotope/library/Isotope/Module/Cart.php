@@ -82,6 +82,12 @@ class Cart extends Module
             return;
         }
 
+        // Remove from cart
+        if (\Input::get('remove') > 0 && Isotope::getCart()->deleteItemById((int) \Input::get('remove')))
+        {
+            $this->redirect((strlen(\Input::get('referer')) ? base64_decode(\Input::get('referer', true)) : $strUrl));
+        }
+
         $objTemplate = new \Isotope\Template($this->iso_cart_layout);
 
         global $objPage;
@@ -99,14 +105,9 @@ class Cart extends Module
 
         foreach ($arrProducts as $i => $objProduct)
         {
-            // Remove product from cart
-            if (\Input::get('remove') == $objProduct->collection_id && Isotope::getCart()->deleteProduct($objProduct))
-            {
-                $this->redirect((strlen(\Input::get('referer')) ? base64_decode(\Input::get('referer', true)) : $strUrl));
-            }
 
             // Update cart data if form has been submitted
-            elseif (\Input::post('FORM_SUBMIT') == ('iso_cart_update_'.$this->id) && is_array($arrQuantity))
+            if (\Input::post('FORM_SUBMIT') == ('iso_cart_update_'.$this->id) && is_array($arrQuantity))
             {
                 $blnReload = true;
                 Isotope::getCart()->updateProduct($objProduct, array('quantity'=>$arrQuantity[$objProduct->collection_id]));
