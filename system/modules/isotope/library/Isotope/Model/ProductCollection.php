@@ -1117,20 +1117,23 @@ abstract class ProductCollection extends \Model
         $objTemplate->invoiceTitle = $GLOBALS['TL_LANG']['MSC']['iso_invoice_title'] . ' ' . $this->order_id . ' – ' . date($GLOBALS['TL_CONFIG']['datimFormat'], $this->date);
 
         $arrItems = array();
-        $arrProducts = $this->getProducts();
 
-        foreach ($arrProducts as $objProduct)
+        foreach ($objOrder->getItems() as $objItem)
         {
+            $objProduct = $objItem->getProduct();
+
             $arrItems[] = array
             (
-                'raw'               => $objProduct->getData(),
-                'options'           => $objProduct->getOptions(),
-                'name'              => $objProduct->name,
-                'quantity'          => $objProduct->quantity_requested,
-                'price'             => $objProduct->formatted_price,
-                'tax_free_price'    => Isotope::formatPriceWithCurrency($objProduct->tax_free_price),
-                'total'             => $objProduct->formatted_total_price,
-                'tax_free_total'    => Isotope::formatPriceWithCurrency($objProduct->tax_free_total_price),
+                'raw'               => ($objItem->hasProduct() ? $objProduct->getData() : $objItem->row()),
+                'sku'               => $objItem->getSku(),
+                'name'              => $objItem->getName(),
+                'options'           => Isotope::formatOptions($objItem->getOptions()),
+                'quantity'          => $objItem->quantity,
+                'price'             => Isotope::formatPriceWithCurrency($objItem->getPrice()),
+                'tax_free_price'    => Isotope::formatPriceWithCurrency($objItem->getTaxFreePrice()),
+                'total'             => Isotope::formatPriceWithCurrency($objItem->getPrice() * $objItem->quantity),
+                'tax_free_total'    => Isotope::formatPriceWithCurrency($objItem->getTaxFreePrice() * $objItem->quantity),
+                'href'              => ($this->jumpTo ? $this->generateFrontendUrl($arrPage, ($GLOBALS['TL_CONFIG']['useAutoItem'] ? '/' : '/product/') . $objProduct->alias) : ''),
                 'tax_id'            => $objProduct->tax_id,
             );
         }

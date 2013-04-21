@@ -103,27 +103,27 @@ class OrderDetails extends Module
 
         $arrAllDownloads = array();
         $arrItems = array();
-        $arrProducts = $objOrder->getProducts();
 
-        foreach ($arrProducts as $i => $objProduct)
+        foreach ($objOrder->getItems() as $objItem)
         {
-            $arrDownloads = $this->getDownloadsForProduct($objProduct, $objOrder->paid);
+            $objProduct = $objItem->getProduct();
+            $arrDownloads = $objItem->hasProduct() ? $this->getDownloadsForProduct($objProduct, $objOrder->paid) : array();
 
             $arrItems[] = array
             (
-                'raw'                => $objProduct->getData(),
-                'sku'                => $objProduct->sku,
-                'name'                => $objProduct->name,
-                'image'                => $objProduct->images->main_image,
-                'product_options'    => $objProduct->getOptions(),
-                'quantity'            => $objProduct->quantity_requested,
-                'price'                => Isotope::formatPriceWithCurrency($objProduct->price),
-                'tax_free_price'    => Isotope::formatPriceWithCurrency($objProduct->tax_free_price),
-                'total'                => Isotope::formatPriceWithCurrency($objProduct->total_price),
-                'tax_free_total'    => Isotope::formatPriceWithCurrency($objProduct->tax_free_total_price),
-                'href'                => ($this->jumpTo ? $this->generateFrontendUrl($arrPage, ($GLOBALS['TL_CONFIG']['useAutoItem'] ? '/' : '/product/') . $objProduct->alias) : ''),
+                'raw'               => ($objItem->hasProduct() ? $objProduct->getData() : $objItem->row()),
+                'sku'               => $objItem->getSku(),
+                'name'              => $objItem->getName(),
+                'image'             => ($objItem->hasProduct() ? $objProduct->images->main_image : ''),
+                'product_options'   => Isotope::formatOptions($objItem->getOptions()),
+                'quantity'          => $objItem->quantity,
+                'price'             => Isotope::formatPriceWithCurrency($objItem->getPrice()),
+                'tax_free_price'    => Isotope::formatPriceWithCurrency($objItem->getTaxFreePrice()),
+                'total'             => Isotope::formatPriceWithCurrency($objItem->getPrice() * $objItem->quantity),
+                'tax_free_total'    => Isotope::formatPriceWithCurrency($objItem->getTaxFreePrice() * $objItem->quantity),
+                'href'              => ($this->jumpTo ? $this->generateFrontendUrl($arrPage, ($GLOBALS['TL_CONFIG']['useAutoItem'] ? '/' : '/product/') . $objProduct->alias) : ''),
                 'tax_id'            => $objProduct->tax_id,
-                'downloads'            => $arrDownloads,
+                'downloads'         => $arrDownloads,
             );
 
             $arrAllDownloads = array_merge($arrAllDownloads, $arrDownloads);

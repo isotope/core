@@ -105,38 +105,38 @@ class Payone extends Payment implements IsotopePayment
             'currency'          => Isotope::getConfig()->currency,
         );
 
-        foreach( Isotope::getCart()->getProducts() as $objProduct )
-        {
+        foreach (Isotope::getCart()->getItems() as $objItem) {
+
             $strOptions = '';
-            $arrOptions = $objProduct->getOptions();
+            $arrOptions = Isotope::formatOptions($objItem->getOptions());
 
-            if (is_array($arrOptions) && !empty($arrOptions))
-            {
-                $options = array();
+            if (!empty($arrOptions)) {
 
-                foreach( $arrOptions as $option )
-                {
-                    $options[] = $option['label'] . ': ' . $option['value'];
-                }
+                array_walk(
+                    $arrOptions,
+                    function($option) {
+                        return $option['label'] . ': ' . $option['value'];
+                    }
+                );
 
-                $strOptions = ' ('.implode(', ', $options).')';
+                $strOptions = ' (' . implode(', ', $arrOptions) . ')';
             }
 
-            $arrData['id['.++$i.']']    = $objProduct->sku;
-            $arrData['pr['.$i.']']        = round($objProduct->price, 2) * 100;
-            $arrData['no['.$i.']']        = $objProduct->quantity_requested;
-            $arrData['de['.$i.']']        = specialchars($objProduct->name . $strOptions);
+            $arrData['id['.++$i.']']    = $objItem->getSku();
+            $arrData['pr['.$i.']']      = round($objItem->getPrice(), 2) * 100;
+            $arrData['no['.$i.']']      = $objItem->quantity;
+            $arrData['de['.$i.']']      = specialchars($objItem->getName() . $strOptions);
         }
 
-        foreach( Isotope::getCart()->getSurcharges() as $k => $arrSurcharge )
-        {
-            if ($arrSurcharge['add'] === false)
+        foreach (Isotope::getCart()->getSurcharges() as $k => $objSurcharge) {
+
+            if (!$objSurcharge->add)
                 continue;
 
             $arrData['id['.++$i.']']    = 'surcharge'.$k;
-            $arrData['pr['.$i.']']        = $arrSurcharge['total_price'] * 100;
-            $arrData['no['.$i.']']        = '1';
-            $arrData['de['.$i.']']        = $arrSurcharge['label'];
+            $arrData['pr['.$i.']']      = $objSurcharge->total_price * 100;
+            $arrData['no['.$i.']']      = '1';
+            $arrData['de['.$i.']']      = $objSurcharge->label;
         }
 
 

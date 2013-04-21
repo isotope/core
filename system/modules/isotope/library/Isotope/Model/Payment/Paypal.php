@@ -181,42 +181,44 @@ class Paypal extends Payment implements IsotopePayment
         $arrData = array();
         $fltDiscount = 0;
 
-        foreach (Isotope::getCart()->getProducts() as $objProduct) {
+        foreach (Isotope::getCart()->getItems() as $objItem) {
 
             $strOptions = '';
-            $arrOptions = $objProduct->getOptions();
+            $arrOptions = Isotope::formatOptions($objItem->getOptions());
 
-            if (is_array($arrOptions) && !empty($arrOptions)) {
-                $options = array();
+            if (!empty($arrOptions)) {
 
-                foreach( $arrOptions as $option ) {
-                    $options[] = $option['label'] . ': ' . $option['value'];
-                }
+                array_walk(
+                    $arrOptions,
+                    function($option) {
+                        return $option['label'] . ': ' . $option['value'];
+                    }
+                );
 
-                $strOptions = ' ('.implode(', ', $options).')';
+                $strOptions = ' (' . implode(', ', $arrOptions) . ')';
             }
 
-            $arrData['item_number_'.++$i] = $objProduct->sku;
-            $arrData['item_name_'.$i] = $objProduct->name . $strOptions;
-            $arrData['amount_'.$i] = $objProduct->price;
-            $arrData['quantity_'.$i] = $objProduct->quantity_requested;
+            $arrData['item_number_'.++$i]   = $objItem->getSku();
+            $arrData['item_name_'.$i]       = $objItem->getName() . $strOptions;
+            $arrData['amount_'.$i]          = $objItem->getPrice();
+            $arrData['quantity_'.$i]        = $objItem->quantity;
         }
 
 
-        foreach( Isotope::getCart()->getSurcharges() as $arrSurcharge ) {
+        foreach (Isotope::getCart()->getSurcharges() as $objSurcharge) {
 
-            if ($arrSurcharge['add'] === false) {
+            if (!$objSurcharge->add) {
                 continue;
             }
 
             // PayPal does only support one single discount item
-            if ($arrSurcharge['total_price'] < 0) {
-                $fltDiscount -= $arrSurcharge['total_price'];
+            if ($objSurcharge->total_price < 0) {
+                $fltDiscount -= $objSurcharge->total_price;
                 continue;
             }
 
-            $arrData['item_name_'.++$i] = $arrSurcharge['label'];
-            $arrData['amount_'.$i] = $arrSurcharge['total_price'];
+            $arrData['item_name_'.++$i] = $objSurcharge->label;
+            $arrData['amount_'.$i] = $objSurcharge->total_price;
         }
 
 
