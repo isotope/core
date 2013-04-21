@@ -271,6 +271,17 @@ class Order extends ProductCollection implements IsotopeProductCollection
         // Initialize system
         Isotope::overrideConfig($this->config_id);
         Isotope::setCart($objCart);
+
+        $this->arrData['date']                 = time();
+        $this->arrData['shipping_id']          = ($objSource->hasShipping() ? $objSource->getShippingMethod()->id : 0);
+        $this->arrData['payment_id']           = ($objSource->hasPayment() ? $objSource->getPaymentMethod()->id : 0);
+        $this->arrData['subTotal']             = $objSource->getSubTotal();
+        $this->arrData['grandTotal']           = $objSource->getTotal();
+        $this->arrData['currency']             = Isotope::getConfig()->currency;
+
+        // Mark Order as modified to empty cache
+        $this->setModified(true);
+
         // !HOOK: pre-process checkout
         if (isset($GLOBALS['ISO_HOOKS']['preCheckout']) && is_array($GLOBALS['ISO_HOOKS']['preCheckout'])) {
             foreach ($GLOBALS['ISO_HOOKS']['preCheckout'] as $callback) {

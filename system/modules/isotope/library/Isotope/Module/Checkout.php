@@ -984,19 +984,12 @@ class Checkout extends Module
         global $objPage;
 
         $objOrder->pid                  = (FE_USER_LOGGED_IN === true ? $this->User->id : 0);
-        $objOrder->date                 = time();
         $objOrder->config_id            = (int) Isotope::getConfig()->id;
-        $objOrder->shipping_id          = (Isotope::getCart()->hasShipping() ? Isotope::getCart()->getShippingMethod()->id : 0);
-        $objOrder->payment_id           = (Isotope::getCart()->hasPayment() ? Isotope::getCart()->getPaymentMethod()->id : 0);
-        $objOrder->subTotal             = Isotope::getCart()->subTotal;
-        $objOrder->grandTotal           = Isotope::getCart()->grandTotal;
         $objOrder->surcharges           = Isotope::getCart()->getSurcharges();
         $objOrder->checkout_info        = $this->getCheckoutInfo();
-        $objOrder->order_status         = 0;
         $objOrder->language             = $GLOBALS['TL_LANGUAGE'];
         $objOrder->billing_address      = Isotope::getCart()->billing_address;
         $objOrder->shipping_address     = Isotope::getCart()->shipping_address;
-        $objOrder->currency             = Isotope::getConfig()->currency;
         $objOrder->iso_sales_email      = $this->iso_sales_email ? $this->iso_sales_email : (($GLOBALS['TL_ADMIN_NAME'] != '') ? sprintf('%s <%s>', $GLOBALS['TL_ADMIN_NAME'], $GLOBALS['TL_ADMIN_EMAIL']) : $GLOBALS['TL_ADMIN_EMAIL']);
         $objOrder->iso_mail_admin       = $this->iso_mail_admin;
         $objOrder->iso_mail_customer    = $this->iso_mail_customer;
