@@ -404,6 +404,43 @@ abstract class ProductCollection extends \Model
     }
 
     /**
+     * Return customer email address for the collection
+     * @return  string
+     */
+    public function getEmailRecipient()
+    {
+        $strName = '';
+        $strEmail = '';
+        $objBillingAddress = $this->getBillingAddress();
+        $objShippingAddress = $this->getShippingAddress();
+
+        if ($objBillingAddress->email != '') {
+            $strName = $objBillingAddress->firstname . ' ' . $objBillingAddress->lastname;
+            $strEmail = $objBillingAddress->email;
+        } elseif ($objShippingAddress->email != '') {
+            $strName = $objShippingAddress->firstname . ' ' . $objShippingAddress->lastname;
+            $strEmail = $objShippingAddress->email;
+        } elseif ($this->member > 0 && ($objMember = \MemberModel::findByPk($this->member)) !== null && $objMember->email != '') {
+            $strName = $objMember->firstname . ' ' . $objMember->lastname;
+            $strEmail = $objMember->email;
+        }
+
+        if (trim($strName) != '') {
+            $strEmail = sprintf('"%s" <%s>', \Isotope\Email::romanizeFriendlyName($strName), $strEmail);
+        }
+
+        // !HOOK: determine email recipient for collection
+        if (isset($GLOBALS['ISO_HOOKS']['emailRecipientForCollection']) && is_array($GLOBALS['ISO_HOOKS']['emailRecipientForCollection'])) {
+        	foreach ($GLOBALS['ISO_HOOKS']['emailRecipientForCollection'] as $callback) {
+        		$objCallback = \System::importStatic($callback[0]);
+        		$strEmail = $objCallback->$callback[1]($strEmail, $this);
+        	}
+        }
+
+        return $strEmail;
+    }
+
+    /**
      * Return number of items in the collection
      * @return  int
      */

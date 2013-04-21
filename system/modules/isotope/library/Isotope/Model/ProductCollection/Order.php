@@ -292,15 +292,16 @@ class Order extends ProductCollection implements IsotopeProductCollection
 
         $this->generateOrderId();
         $arrData = $this->getEmailData();
+        $strRecipient = $this->getEmailRecipient();
 
         $this->log('New order ID ' . $this->id . ' has been placed', __METHOD__, TL_ACCESS);
 
         if ($this->iso_mail_admin && $this->iso_sales_email != '') {
-            Isotope::sendMail($this->iso_mail_admin, $this->iso_sales_email, $this->language, $arrData, $this->iso_customer_email, $this);
+            Isotope::sendMail($this->iso_mail_admin, $this->iso_sales_email, $this->language, $arrData, $strRecipient, $this);
         }
 
-        if ($this->iso_mail_customer && $this->iso_customer_email != '') {
-            Isotope::sendMail($this->iso_mail_customer, $this->iso_customer_email, $this->language, $arrData, '', $this);
+        if ($this->iso_mail_customer && $strRecipient != '') {
+            Isotope::sendMail($this->iso_mail_customer, $strRecipient, $this->language, $arrData, '', $this);
         } else {
             $this->log('Unable to send customer confirmation for order ID '.$this->id, __METHOD__, TL_ERROR);
         }
@@ -414,10 +415,11 @@ class Order extends ProductCollection implements IsotopeProductCollection
         {
             $arrData = $this->getEmailData();
             $arrData['new_status'] = $objNewStatus->name;
+            $strRecipient = $this->getEmailRecipient();
 
-            if ($objNewStatus->mail_customer && $this->iso_customer_email != '')
+            if ($objNewStatus->mail_customer && $strRecipient != '')
             {
-                Isotope::sendMail($objNewStatus->mail_customer, $this->iso_customer_email, $this->language, $arrData, '', $this);
+                Isotope::sendMail($objNewStatus->mail_customer, $strRecipient, $this->language, $arrData, '', $this);
 
                 if (TL_MODE == 'BE')
                 {
@@ -428,7 +430,7 @@ class Order extends ProductCollection implements IsotopeProductCollection
             $strSalesEmail = $objNewStatus->sales_email ? $objNewStatus->sales_email : $this->iso_sales_email;
             if ($objNewStatus->mail_admin && $strSalesEmail != '')
             {
-                Isotope::sendMail($objNewStatus->mail_admin, $strSalesEmail, $this->language, $arrData, $this->iso_customer_email, $this);
+                Isotope::sendMail($objNewStatus->mail_admin, $strSalesEmail, $this->language, $arrData, $strRecipient, $this);
             }
         }
 
