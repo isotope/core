@@ -93,30 +93,25 @@ abstract class ProductCollectionSurcharge extends \Model
         $this->tax_class = 0;
         $this->before_tax = true;
 
-        $arrProducts = $objCollection->getProducts();
-
         if (!$blnPercentage) {
-            $fltTotal = $objCollection->taxFreeSubTotal;
+            $fltTotal = $objCollection->getTaxFreeSubtotal();
 
             if ($fltTotal == 0) {
                 return;
             }
         }
 
-        foreach ($arrProducts as $objProduct)
-        {
-            if ($blnPercentage)
-            {
-                $fltProductPrice = $objProduct->total_price / 100 * $fltSurcharge;
-            }
-            else
-            {
-                $fltProductPrice = $this->total_price / 100 * (100 / $fltTotal * $objProduct->tax_free_total_price);
+        foreach ($objCollection->getItems() as $objItem) {
+
+            if ($blnPercentage) {
+                $fltProductPrice = $objItem->getTotal() / 100 * $fltSurcharge;
+            } else {
+                $fltProductPrice = $this->total_price / 100 * (100 / $fltTotal * $objItem->getTaxFreeTotal());
             }
 
             $fltProductPrice = $fltProductPrice > 0 ? (floor($fltProductPrice * 100) / 100) : (ceil($fltProductPrice * 100) / 100);
 
-            $this->setAmountForProduct($fltProductPrice, $objProduct);
+            $this->setAmountForCollectionItem($fltProductPrice, $objItem);
         }
     }
 
@@ -212,11 +207,16 @@ abstract class ProductCollectionSurcharge extends \Model
         }
 
         $arrTaxes = array();
-        $arrProducts = $objCollection->getProducts();
         $arrAddresses = array('billing'=>$objCollection->getBillingAddress(), 'shipping'=>$objCollection->getShippingAddress());
 
-        foreach ($arrProducts as $objProduct)
+        foreach ($objCollection->getItems() as $objItem)
         {
+            // This should never happen, but we can't calculate it
+            if (!$objItem->hasProduct()) {
+                continue;
+            }
+
+            $objProduct = $objItem->getProduct();
             $objTaxClass = TaxClass::findByPk($objProduct->tax_class);
 
             // Skip products without tax class

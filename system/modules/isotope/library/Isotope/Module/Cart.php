@@ -100,10 +100,11 @@ class Cart extends Module
         // Surcharges must be initialized before getProducts() to apply tax_id to each product
         $arrSurcharges = Isotope::getCart()->getSurcharges();
 
-        $arrProducts = Isotope::getCart()->getProducts();
+        $arrItems = Isotope::getCart()->getItems();
 
-        foreach ($arrProducts as $i => $objProduct)
+        foreach ($arrItems as $i => $objItem)
         {
+            $objProduct = $objItem->getProduct();
 
             // Update cart data if form has been submitted
             if (\Input::post('FORM_SUBMIT') == ('iso_cart_update_'.$this->id) && is_array($arrQuantity))
