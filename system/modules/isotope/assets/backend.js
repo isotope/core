@@ -443,7 +443,7 @@ var Isotope =
             {
                 el.removeClass('invisible').addEvent('click', function(e)
                 {
-                    if ($defined(document.id('isotope-contextmenu')))
+                    if (document.id('isotope-contextmenu'))
                     {
                         document.id('isotope-contextmenu').destroy();
                     }
@@ -478,7 +478,7 @@ var Isotope =
         // Hide context menu
         document.id(document.body).addEvent('click', function(e)
         {
-            if ($defined(document.id('isotope-contextmenu')) && !e.target.getParent('#isotope-contextmenu'))
+            if (document.id('isotope-contextmenu') && !e.target.getParent('#isotope-contextmenu'))
             {
                 document.id('isotope-contextmenu').destroy();
             }
