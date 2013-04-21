@@ -112,9 +112,9 @@ class Sparkasse extends Payment implements IsotopePayment
             $this->log(sprintf('Data manipulation: currency mismatch ("%s" != "%s")', $objOrder->currency, $arrdata['currency']), __METHOD__, TL_ERROR);
             $this->redirectError($arrData);
         }
-        elseif ($objOrder->grandTotal != $arrData['amount'])
+        elseif ($objOrder->getTotal() != $arrData['amount'])
         {
-            $this->log(sprintf('Data manipulation: amount mismatch ("%s" != "%s")', $objOrder->grandTotal, $arrData['amount']), __METHOD__, TL_ERROR);
+            $this->log(sprintf('Data manipulation: amount mismatch ("%s" != "%s")', $objOrder->getTotal(), $arrData['amount']), __METHOD__, TL_ERROR);
             $this->redirectError($arrData);
         }
 
@@ -162,7 +162,7 @@ class Sparkasse extends Payment implements IsotopePayment
 
         $arrParam = array
         (
-            'amount'                => number_format(Isotope::getCart()->grandTotal, 2, ',', ''),
+            'amount'                => number_format(Isotope::getCart()->getTotal(), 2, ',', ''),
             'basketid'                => Isotope::getCart()->id,
             'command'                => 'sslform',
             'currency'                => Isotope::getConfig()->currency,

@@ -161,7 +161,7 @@ class Checkout extends Module
         }
 
         // Insufficient cart subtotal
-        if (Isotope::getConfig()->cartMinSubtotal > 0 && Isotope::getConfig()->cartMinSubtotal > Isotope::getCart()->subTotal)
+        if (Isotope::getConfig()->cartMinSubtotal > 0 && Isotope::getConfig()->cartMinSubtotal > Isotope::getCart()->getSubTotal())
         {
             $this->Template = new \Isotope\Template('mod_message');
             $this->Template->type = 'error';
@@ -960,8 +960,8 @@ class Checkout extends Module
         $objTemplate->surcharges = \Isotope\Frontend::formatSurcharges($arrSurcharges);
         $objTemplate->subTotalLabel = $GLOBALS['TL_LANG']['MSC']['subTotalLabel'];
         $objTemplate->grandTotalLabel = $GLOBALS['TL_LANG']['MSC']['grandTotalLabel'];
-        $objTemplate->subTotalPrice = Isotope::formatPriceWithCurrency(Isotope::getCart()->subTotal);
-        $objTemplate->grandTotalPrice = Isotope::formatPriceWithCurrency(Isotope::getCart()->grandTotal);
+        $objTemplate->subTotalPrice = Isotope::formatPriceWithCurrency(Isotope::getCart()->getSubTotal());
+        $objTemplate->grandTotalPrice = Isotope::formatPriceWithCurrency(Isotope::getCart()->getTotal());
 
         return $objTemplate->parse();
     }

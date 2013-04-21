@@ -91,7 +91,7 @@ abstract class Shipping extends \Model
             }
         }
 
-        if (($this->minimum_total > 0 && $this->minimum_total > Isotope::getCart()->subTotal) || ($this->maximum_total > 0 && $this->maximum_total < Isotope::getCart()->subTotal))
+        if (($this->minimum_total > 0 && $this->minimum_total > Isotope::getCart()->getSubTotal()) || ($this->maximum_total > 0 && $this->maximum_total < Isotope::getCart()->getSubTotal()))
         {
             return false;
         }
@@ -176,7 +176,7 @@ abstract class Shipping extends \Model
         }
 
         if ($this->isPercentage()) {
-            $fltPrice = $objCollection->subTotal / 100 * $this->getPercentage();
+            $fltPrice = $objCollection->getSubTotal() / 100 * $this->getPercentage();
         } else {
             $fltPrice = (float) $this->arrData['price'];
         }

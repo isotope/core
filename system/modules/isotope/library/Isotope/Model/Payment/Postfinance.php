@@ -61,7 +61,7 @@ class Postfinance extends Payment implements IsotopePayment
         }
 
         // Validate payment data (see #2221)
-        if ($objOrder->currency != $this->getRequestData('currency') || $objOrder->grandTotal != $this->getRequestData('amount'))
+        if ($objOrder->currency != $this->getRequestData('currency') || $objOrder->getTotal() != $this->getRequestData('amount'))
         {
             $this->log('Postsale checkout manipulation in payment for Order ID ' . $objOrder->id . '!', __METHOD__, TL_ERROR);
             $this->redirect($this->addToUrl('step=failed', true));
@@ -106,7 +106,7 @@ class Postfinance extends Payment implements IsotopePayment
         }
 
         // Validate payment data (see #2221)
-        if ($objOrder->currency != $this->getRequestData('currency') || $objOrder->grandTotal != $this->getRequestData('amount'))
+        if ($objOrder->currency != $this->getRequestData('currency') || $objOrder->getTotal() != $this->getRequestData('amount'))
         {
             $this->log('Postsale checkout manipulation in payment for Order ID ' . $objOrder->id . '!', __METHOD__, TL_ERROR);
 
@@ -145,7 +145,7 @@ class Postfinance extends Payment implements IsotopePayment
         (
             'PSPID'            => $this->postfinance_pspid,
             'ORDERID'        => $objOrder->id,
-            'AMOUNT'        => round((Isotope::getCart()->grandTotal * 100)),
+            'AMOUNT'        => round((Isotope::getCart()->getTotal() * 100)),
             'CURRENCY'        => Isotope::getConfig()->currency,
             'LANGUAGE'        => $GLOBALS['TL_LANGUAGE'] . '_' . strtoupper($GLOBALS['TL_LANGUAGE']),
             'CN'            => $objAddress->firstname . ' ' . $objAddress->lastname,

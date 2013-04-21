@@ -95,7 +95,7 @@ class Paypal extends Payment implements IsotopePayment
             }
 
             // Validate payment data (see #2221)
-            if ($objOrder->currency != \Input::post('mc_currency') || $objOrder->grandTotal != \Input::post('mc_gross'))
+            if ($objOrder->currency != \Input::post('mc_currency') || $objOrder->getTotal() != \Input::post('mc_gross'))
             {
                 $this->log('IPN manipulation in payment from "' . \Input::post('payer_email') . '" !', __METHOD__, TL_ERROR);
 

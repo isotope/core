@@ -84,7 +84,7 @@ class Flat extends Shipping
         if ($blnPercentage)
         {
             $fltSurcharge = (float) substr($strPrice, 0, -1);
-            $fltPrice = $objCollection->subTotal / 100 * $fltSurcharge;
+            $fltPrice = $objCollection->getSubTotal() / 100 * $fltSurcharge;
         }
         else
         {

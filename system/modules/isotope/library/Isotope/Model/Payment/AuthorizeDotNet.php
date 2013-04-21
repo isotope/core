@@ -90,7 +90,7 @@ class AuthorizeDotNet extends Payment implements IsotopePayment
         $objOrder = Order::findOneBy('source_collection_id', Isotope::getCart()->id);
 
         //$arrPaymentData = deserialize($objOrder->payment_data);
-        if($this->authCapturePayment($objOrder->id, Isotope::getCart()->grandTotal, true))
+        if($this->authCapturePayment($objOrder->id, Isotope::getCart()->getTotal(), true))
 
             return true;
 
@@ -110,11 +110,11 @@ class AuthorizeDotNet extends Payment implements IsotopePayment
      */
     public function paymentForm($objModule)
     {
-        if($_SESSION['checkout']['grandTotal']!==Isotope::getCart()->grandTotal)
+        if($_SESSION['checkout']['grandTotal']!==Isotope::getCart()->getTotal())
             $_SESSION['checkout']['success']=false;
 
         //set/reset grand total.
-        $_SESSION['checkout']['grandTotal'] = Isotope::getCart()->grandTotal;
+        $_SESSION['checkout']['grandTotal'] = Isotope::getCart()->getTotal();
 
         $strBuffer = '';
         $arrPayment = \Input::post('payment');
@@ -227,7 +227,7 @@ class AuthorizeDotNet extends Payment implements IsotopePayment
             $_SESSION['CHECKOUT_DATA']['payment']['request_lockout'] = true;
 
             if($_SESSION['CHECKOUT_DATA']['payment']['success']!==true)
-                $blnResult = $this->authCapturePayment($objOrder->id, Isotope::getCart()->grandTotal, false);
+                $blnResult = $this->authCapturePayment($objOrder->id, Isotope::getCart()->getTotal(), false);
 
             if($blnResult)  //At this point the response data has been saved to the order and the auth was successful.
             {

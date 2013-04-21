@@ -98,7 +98,7 @@ class Expercash extends Payment implements IsotopePayment
             'jobId'                => microtime(),
             'functionId'        => (FE_USER_LOGGED_IN ? $this->User->id : Isotope::getCart()->session),
             'transactionId'        => $objOrder->id,
-            'amount'            => (round(Isotope::getCart()->grandTotal, 2)*100),
+            'amount'            => (round(Isotope::getCart()->getTotal(), 2)*100),
             'currency'            => Isotope::getConfig()->currency,
             'paymentMethod'        => $this->expercash_paymentMethod,
             'returnUrl'            => \Environment::get('base') . $this->addToUrl('step=complete', true) . '?uid=' . $objOrder->uniqid,
@@ -153,7 +153,7 @@ class Expercash extends Payment implements IsotopePayment
             return false;
         }
 
-        if (\Input::get('amount') != (round(Isotope::getCart()->grandTotal, 2)*100))
+        if (\Input::get('amount') != (round(Isotope::getCart()->getTotal(), 2)*100))
         {
             \System::log('ExperCash: amount is incorrect. Possible data manipulation!', __METHOD__, TL_ERROR);
 

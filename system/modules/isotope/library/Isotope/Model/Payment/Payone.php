@@ -100,8 +100,8 @@ class Payone extends Payment implements IsotopePayment
             'display_name'      => 'no',
             'display_address'   => 'no',
             'successurl'        => \Environment::get('base') . $this->addToUrl('step=complete', true) . '?uid=' . $objOrder->uniqid,
-            'amount'            => (Isotope::getCart()->grandTotal * 100),
             'backurl'           => \Environment::get('base') . $this->addToUrl('step=failed', true),
+            'amount'            => (Isotope::getCart()->getTotal() * 100),
             'currency'          => Isotope::getConfig()->currency,
         );
 

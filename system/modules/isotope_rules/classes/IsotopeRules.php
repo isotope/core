@@ -528,7 +528,7 @@ class IsotopeRules extends \Controller
     protected function calculateProductSurcharge($arrRule)
     {
         // Cart subtotal
-        if (($arrRule['minSubtotal'] > 0 && Isotope::getCart()->subTotal < $arrRule['minSubtotal']) || ($arrRule['maxSubtotal'] > 0 && Isotope::getCart()->subTotal > $arrRule['maxSubtotal']))
+        if (($arrRule['minSubtotal'] > 0 && Isotope::getCart()->getSubTotal() < $arrRule['minSubtotal']) || ($arrRule['maxSubtotal'] > 0 && Isotope::getCart()->getSubTotal() > $arrRule['maxSubtotal']))
         {
             return false;
         }

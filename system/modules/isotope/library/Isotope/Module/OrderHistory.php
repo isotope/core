@@ -102,7 +102,7 @@ class OrderHistory extends Module
                 'time'       => \System::parseDate($GLOBALS['TL_CONFIG']['timeFormat'], $objOrders->date),
                 'datime'     => \System::parseDate($GLOBALS['TL_CONFIG']['datimeFormat'], $objOrders->date),
                 'items'      => $objOrders->items,
-                'grandTotal' => Isotope::formatPriceWithCurrency($objOrders->grandTotal),
+                'grandTotal' => Isotope::formatPriceWithCurrency($objOrders->getTotal()),
                 'status'     => $objOrders->getStatusLabel(),
                 'link'       => ($this->jumpTo ? (\Isotope\Frontend::addQueryStringToUrl('uid=' . $objOrders->uniqid, $this->jumpTo)) : ''),
                 'class'      => $objOrders->getStatusAlias(),

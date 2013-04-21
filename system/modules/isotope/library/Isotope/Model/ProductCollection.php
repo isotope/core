@@ -1144,8 +1144,8 @@ abstract class ProductCollection extends \Model
         $objTemplate->time = \System::parseDate($GLOBALS['TL_CONFIG']['timeFormat'], $this->date);
         $objTemplate->datim = \System::parseDate($GLOBALS['TL_CONFIG']['datimFormat'], $this->date);
         $objTemplate->datimLabel = $GLOBALS['TL_LANG']['MSC']['datimLabel'];
-        $objTemplate->subTotalPrice = Isotope::formatPriceWithCurrency($this->subTotal);
-        $objTemplate->grandTotal = Isotope::formatPriceWithCurrency($this->grandTotal);
+        $objTemplate->subTotalPrice = Isotope::formatPriceWithCurrency($this->getSubTotal());
+        $objTemplate->grandTotal = Isotope::formatPriceWithCurrency($this->getTotal());
         $objTemplate->subTotalLabel = $GLOBALS['TL_LANG']['MSC']['subTotalLabel'];
         $objTemplate->grandTotalLabel = $GLOBALS['TL_LANG']['MSC']['grandTotalLabel'];
 

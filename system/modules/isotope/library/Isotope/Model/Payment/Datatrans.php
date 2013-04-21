@@ -61,7 +61,7 @@ class Datatrans extends Payment implements IsotopePayment
         (
             'refno'        => $objOrder->id,
             'currency'    => $objOrder->currency,
-            'amount'    => round($objOrder->grandTotal * 100),
+            'amount'    => round($objOrder->getTotal() * 100),
             'reqtype'    => ($this->trans_type == 'auth' ? 'NOA' : 'CAA'),
         )))
         {
@@ -137,7 +137,7 @@ class Datatrans extends Payment implements IsotopePayment
         $arrParams = array
         (
             'merchantId'            => $this->datatrans_id,
-            'amount'                => round(Isotope::getCart()->grandTotal * 100),
+            'amount'                => round(Isotope::getCart()->getTotal() * 100),
             'currency'              => Isotope::getConfig()->currency,
             'refno'                 => $objOrder->id,
             'language'              => $GLOBALS['TL_LANGUAGE'],
