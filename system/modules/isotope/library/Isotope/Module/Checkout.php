@@ -1009,24 +1009,18 @@ class Checkout extends Module
         $objBillingAddress = Isotope::getCart()->getBillingAddress();
         $objShippingAddress = Isotope::getCart()->getShippingAddress();
 
-        if ($objBillingAddress->email != '')
-        {
+        if ($objBillingAddress->email != '') {
             $strCustomerName = $objBillingAddress->firstname . ' ' . $objBillingAddress->lastname;
             $strCustomerEmail = $objBillingAddress->email;
-        }
-        elseif ($objShippingAddress->email != '')
-        {
+        } elseif ($objShippingAddress->email != '') {
             $strCustomerName = $objShippingAddress->firstname . ' ' . $objShippingAddress->lastname;
             $strCustomerEmail = $objShippingAddress->email;
-        }
-        elseif (FE_USER_LOGGED_IN === true && $this->User->email != '')
-        {
+        } elseif (FE_USER_LOGGED_IN === true && $this->User->email != '') {
             $strCustomerName = $this->User->firstname . ' ' . $this->User->lastname;
             $strCustomerEmail = $this->User->email;
         }
 
-        if (trim($strCustomerName) != '')
-        {
+        if (trim($strCustomerName) != '') {
             $strCustomerEmail = sprintf('"%s" <%s>', \Isotope\Email::romanizeFriendlyName($strCustomerName), $strCustomerEmail);
         }
 

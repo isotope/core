@@ -61,7 +61,7 @@ $GLOBALS['TL_DCA']['tl_page']['fields']['iso_readerJumpTo'] = array
     'inputType'               => 'pageTree',
     'foreignKey'              => 'tl_page.title',
     // @todo: only show the pages from this page root (a reader page in a different page tree than the current doesn't make sense) as soon as http://dev.contao.org/issues/3563 is implemented
-    'eval'                      => array('fieldType'=>'radio', 'mandatory'=>true),
+    'eval'                    => array('fieldType'=>'radio', 'mandatory'=>true),
     'relation'                => array('type'=>'hasOne', 'load'=>'lazy'),
 );
 

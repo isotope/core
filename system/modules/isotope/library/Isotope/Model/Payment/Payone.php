@@ -90,19 +90,19 @@ class Payone extends Payment implements IsotopePayment
 
         $arrData = array
         (
-            'aid'                => $this->payone_aid,
-            'portalid'            => $this->payone_portalid,
-            'mode'                => ($this->debug ? 'test' : 'live'),
-            'request'            => ($this->trans_type=='auth' ? 'preauthorization' : 'authorization'),
-            'encoding'            => 'UTF-8',
-            'clearingtype'        => $this->payone_clearingtype,
-            'reference'            => $objOrder->id,
-            'display_name'        => 'no',
-            'display_address'    => 'no',
+            'aid'               => $this->payone_aid,
+            'portalid'          => $this->payone_portalid,
+            'mode'              => ($this->debug ? 'test' : 'live'),
+            'request'           => ($this->trans_type=='auth' ? 'preauthorization' : 'authorization'),
+            'encoding'          => 'UTF-8',
+            'clearingtype'      => $this->payone_clearingtype,
+            'reference'         => $objOrder->id,
+            'display_name'      => 'no',
+            'display_address'   => 'no',
             'successurl'        => \Environment::get('base') . $this->addToUrl('step=complete', true) . '?uid=' . $objOrder->uniqid,
-            'backurl'            => \Environment::get('base') . $this->addToUrl('step=failed', true),
             'amount'            => (Isotope::getCart()->grandTotal * 100),
-            'currency'            => Isotope::getConfig()->currency,
+            'backurl'           => \Environment::get('base') . $this->addToUrl('step=failed', true),
+            'currency'          => Isotope::getConfig()->currency,
         );
 
         foreach( Isotope::getCart()->getProducts() as $objProduct )

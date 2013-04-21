@@ -47,7 +47,7 @@ $GLOBALS['TL_DCA']['tl_iso_prices'] = array
             'disableGrouping'       => true,
             'child_record_callback' => array('Isotope\tl_iso_prices', 'listRows')
         ),
-        'global_operations'         => array
+        'global_operations' => array
         (
             'all' => array
             (
@@ -107,7 +107,7 @@ $GLOBALS['TL_DCA']['tl_iso_prices'] = array
                 'doNotSaveEmpty'    => true,
                 'tl_class'          => 'clr',
                 'disableSorting'    => true,
-                'columnFields'      => array
+                'columnFields' => array
                 (
                     'min' => array
                     (

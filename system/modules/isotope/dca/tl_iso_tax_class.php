@@ -23,9 +23,9 @@ $GLOBALS['TL_DCA']['tl_iso_tax_class'] = array
     // Config
     'config' => array
     (
-        'dataContainer'               => 'Table',
-        'enableVersioning'            => true,
-        'closed'                      => true,
+        'dataContainer'            => 'Table',
+        'enableVersioning'         => true,
+        'closed'                   => true,
         'onload_callback' => array
         (
             array('Isotope\Backend', 'initializeSetupModule'),
