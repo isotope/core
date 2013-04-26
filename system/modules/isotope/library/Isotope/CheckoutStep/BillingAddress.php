@@ -37,11 +37,8 @@ class BillingAddress extends Address implements IsotopeCheckoutStep
     {
         $blnRequiresPayment = Isotope::getCart()->requiresPayment();
 
-        $objTemplate = new \Isotope\Template('iso_checkout_billing_address');
-
-        $objTemplate->headline = $blnRequiresPayment ? $GLOBALS['TL_LANG']['MSC']['billing_address'] : $GLOBALS['TL_LANG']['MSC']['customer_address'];
-        $objTemplate->message = (FE_USER_LOGGED_IN === true ? $GLOBALS['TL_LANG']['MSC'][($blnRequiresPayment ? 'billing' : 'customer') . '_address_message'] : $GLOBALS['TL_LANG']['MSC'][($blnRequiresPayment ? 'billing' : 'customer') . '_address_guest_message']);
-        $objTemplate->fields = $this->generateAddressWidget();
+        $this->Template->headline = $blnRequiresPayment ? $GLOBALS['TL_LANG']['MSC']['billing_address'] : $GLOBALS['TL_LANG']['MSC']['customer_address'];
+        $this->Template->message = (FE_USER_LOGGED_IN === true ? $GLOBALS['TL_LANG']['MSC'][($blnRequiresPayment ? 'billing' : 'customer') . '_address_message'] : $GLOBALS['TL_LANG']['MSC'][($blnRequiresPayment ? 'billing' : 'customer') . '_address_guest_message']);
 
 /*
         if (!$this->hasError()) {
@@ -52,7 +49,7 @@ class BillingAddress extends Address implements IsotopeCheckoutStep
         }
 */
 
-        return $objTemplate->parse();
+        return parent::generate();
     }
 
 

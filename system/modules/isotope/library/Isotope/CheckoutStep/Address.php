@@ -19,12 +19,36 @@ use Isotope\Model\Address as AddressModel;
 abstract class Address extends CheckoutStep
 {
 
+    /**
+     * Frontend template instance
+     * @var object
+     */
+    protected $Template;
+
+
+    /**
+     * Load tl_iso_addresses data container and create template
+     * @param   object
+     */
     public function __construct($objModule)
     {
         parent::__construct($objModule);
 
         \System::loadLanguageFile('tl_iso_addresses');
         $this->loadDataContainer('tl_iso_addresses');
+
+        $this->Template = new \Isotope\Template('iso_checkout_address');
+    }
+
+
+    public function generate()
+    {
+        $this->Template->class = $this->getStepClass();
+        $this->Template->tableless = $this->objModule->tableless;
+        $this->Template->options = $this->generateOptions();
+        $this->Template->fields = $this->generateFields();
+
+        return $this->Template->parse();
     }
 
 

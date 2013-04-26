@@ -38,11 +38,8 @@ class ShippingAddress extends Address implements IsotopeCheckoutStep
      */
     public function generate()
     {
-        $objTemplate = new \Isotope\Template('iso_checkout_shipping_address');
-
-        $objTemplate->headline = $GLOBALS['TL_LANG']['MSC']['shipping_address'];
-        $objTemplate->message = $GLOBALS['TL_LANG']['MSC']['shipping_address_message'];
-        $objTemplate->fields =  $this->generateAddressWidget('shipping_address', Isotope::getConfig()->getShippingCountries(), Isotope::getConfig()->shipping_fields);
+        $this->Template->headline = $GLOBALS['TL_LANG']['MSC']['shipping_address'];
+        $this->Template->message = $GLOBALS['TL_LANG']['MSC']['shipping_address_message'];
 
         if (!$this->hasError())
         {
@@ -63,7 +60,7 @@ class ShippingAddress extends Address implements IsotopeCheckoutStep
             }
         }
 
-        return $objTemplate->parse();
+        return parent::generate();
     }
 
 
