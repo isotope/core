@@ -81,7 +81,10 @@ class ShippingAddress extends Address implements IsotopeCheckoutStep
         ));
     }
 
-
+    /**
+     * Get available address options
+     * @return  array
+     */
     protected function getAddressOptions()
     {
         $arrOptions = parent::getAddressOptions();
@@ -100,30 +103,46 @@ class ShippingAddress extends Address implements IsotopeCheckoutStep
     }
 
 
+    /**
+     * Get field configuration for this address type
+     * @return  array
+     */
     protected function getAddressFields()
     {
         return Isotope::getConfig()->shipping_fields;
     }
 
-
+    /**
+     * Get allowed countries for this address type
+     * @return  array
+     */
     protected function getAddressCountries()
     {
         return Isotope::getConfig()->getShippingCountries();
     }
 
-
+    /**
+     * Get default country for this address type
+     * @return  string
+     */
     protected function getDefaultCountry()
     {
         return Isotope::getConfig()->shipping_country;
     }
 
-
+    /**
+     * Get the current address (from Cart) for this address type
+     * @return  Isotope\Model\Address
+     */
     protected function getAddress()
     {
         return Isotope::getCart()->getShippingAddress();
     }
 
-
+    /**
+     * Set new address in cart
+     * @param   Isotope\Model\Address
+     */
     protected function setAddress(AddressModel $objAddress)
     {
         Isotope::getCart()->setShippingAddress($objAddress);

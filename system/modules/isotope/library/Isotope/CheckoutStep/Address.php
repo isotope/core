@@ -40,7 +40,10 @@ abstract class Address extends CheckoutStep
         $this->Template = new \Isotope\Template('iso_checkout_address');
     }
 
-
+    /**
+     * Generate the checkout step
+     * @return  string
+     */
     public function generate()
     {
         $this->Template->class = $this->getStepClass();
@@ -50,7 +53,6 @@ abstract class Address extends CheckoutStep
 
         return $this->Template->parse();
     }
-
 
     /**
      * Generate address widget and return it as HTML string
@@ -247,7 +249,10 @@ abstract class Address extends CheckoutStep
 </table>';
     }
 
-
+    /**
+     * Get options for all addresses in the users' address book
+     * @return  array
+     */
     protected function getAddressOptions()
     {
         $arrOptions = array();
@@ -277,6 +282,10 @@ abstract class Address extends CheckoutStep
     }
 
 
+    /**
+     * Get addresses for the current member
+     * @return  array
+     */
     protected function getAddresses()
     {
         $arrAddresses = array();
