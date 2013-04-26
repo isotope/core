@@ -295,29 +295,12 @@ $GLOBALS['TL_CRON']['daily'][] = array('Isotope\Automator', 'convertCurrencies')
 /**
  * Step callbacks for checkout module
  */
-$GLOBALS['ISO_CHECKOUT_STEPS'] = array
+$GLOBALS['ISO_CHECKOUTSTEP'] = array
 (
-    'address' => array
-    (
-        array('ModuleIsotopeCheckout', 'getBillingAddressInterface'),
-        array('ModuleIsotopeCheckout', 'getShippingAddressInterface'),
-    ),
-    'shipping' => array
-    (
-        array('ModuleIsotopeCheckout', 'getShippingModulesInterface'),
-    ),
-    'payment' => array
-    (
-        array('ModuleIsotopeCheckout', 'getPaymentModulesInterface'),
-    ),
-    'review' => array
-    (
-        array('ModuleIsotopeCheckout', 'getOrderConditionsOnTop'),
-        array('ModuleIsotopeCheckout', 'getOrderInfoInterface'),
-        array('ModuleIsotopeCheckout', 'getOrderConditionsBeforeProducts'),
-        array('ModuleIsotopeCheckout', 'getOrderProductsInterface'),
-        array('ModuleIsotopeCheckout', 'getOrderConditionsAfterProducts'),
-    )
+    'address'   => array('\Isotope\CheckoutStep\BillingAddress', '\Isotope\CheckoutStep\ShippingAddress'),
+    'shipping'  => array('\Isotope\CheckoutStep\ShippingMethod'),
+    'payment'   => array('\Isotope\CheckoutStep\PaymentMethod'),
+    'review'    => array('\Isotope\CheckoutStep\OrderConditionsOnTop', '\Isotope\CheckoutStep\OrderInfo', '\Isotope\CheckoutStep\OrderConditionsBeforeProducts', '\Isotope\CheckoutStep\OrderConditionsAfterProducts'),
 );
 
 $GLOBALS['ISO_ATTR'] = array
