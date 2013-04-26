@@ -34,9 +34,9 @@ class Address extends \Model
     protected static $strTable = 'tl_iso_addresses';
 
 
-    public function __construct()
+    public function __construct(\Database\Result $objResult=null)
     {
-        parent::__construct();
+        parent::__construct($objResult);
 
         if (!is_array($GLOBALS['ISO_ADR']))
         {
