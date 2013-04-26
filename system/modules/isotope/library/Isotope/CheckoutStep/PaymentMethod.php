@@ -25,7 +25,7 @@ class PaymentMethod extends CheckoutStep implements IsotopeCheckoutStep
      */
     public function isAvailable()
     {
-        return Isotope::getCart()->hasPayment();
+        return Isotope::getCart()->requiresPayment();
     }
 
     /**

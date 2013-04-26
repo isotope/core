@@ -25,7 +25,7 @@ class ShippingMethod extends CheckoutStep implements IsotopeCheckoutStep
      */
     public function isAvailable()
     {
-        return Isotope::getCart()->hasShipping();
+        return Isotope::getCart()->requiresShipping();
     }
 
     /**
