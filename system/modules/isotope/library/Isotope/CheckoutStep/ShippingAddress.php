@@ -44,7 +44,7 @@ class ShippingAddress extends Address implements IsotopeCheckoutStep
         $objTemplate->message = $GLOBALS['TL_LANG']['MSC']['shipping_address_message'];
         $objTemplate->fields =  $this->generateAddressWidget('shipping_address', Isotope::getConfig()->getShippingCountries(), Isotope::getConfig()->shipping_fields);
 
-        if (!$this->objModule->doNotSubmit)
+        if (!$this->hasError())
         {
             $objAddress = Isotope::getCart()->getShippingAddress();
 

@@ -45,10 +45,10 @@ abstract class OrderConditions extends CheckoutStep
             return '';
         }
 
-        $this->objModule->doNotSubmit = $objForm->blnHasErrors ? true : $this->objModule->doNotSubmit;
+        $this->blnError = $objForm->blnHasErrors;
         $this->Template->enctype = $objForm->enctype;
 
-        if (!$this->objModule->doNotSubmit)
+        if (!$this->hasError())
         {
             foreach ($objForm->arrFormData as $name => $value)
             {
@@ -75,7 +75,7 @@ abstract class OrderConditions extends CheckoutStep
 
     public function review()
     {
-        if (!$this->objModule->doNotSubmit)
+        if (!$this->hasError())
         {
             if (is_array($_SESSION['FORM_DATA']))
             {

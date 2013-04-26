@@ -78,7 +78,7 @@ class ShippingMethod extends CheckoutStep implements IsotopeCheckoutStep
         }
 
         if (empty($arrModules)) {
-            $this->objModule->doNotSubmit = true;
+            $this->blnError = true;
             $this->Template->showNext = false;
 
             $objTemplate = new \Isotope\Template('mod_message');
@@ -105,14 +105,14 @@ class ShippingMethod extends CheckoutStep implements IsotopeCheckoutStep
                 $objTemplate->error = $GLOBALS['TL_LANG']['MSC']['shipping_method_missing'];
             }
 
-            $this->objModule->doNotSubmit = true;
+            $this->blnError = true;
         }
 
         $objTemplate->headline = $GLOBALS['TL_LANG']['MSC']['shipping_method'];
         $objTemplate->message = $GLOBALS['TL_LANG']['MSC']['shipping_method_message'];
         $objTemplate->shippingMethods = $arrModules;
 
-        if (!$this->objModule->doNotSubmit) {
+        if (!$this->hasError()) {
             $objShipping = Isotope::getCart()->getShippingMethod();
             $this->objModule->arrOrderData['shipping_method_id']   = $objShipping->id;
             $this->objModule->arrOrderData['shipping_method']      = $objShipping->label;

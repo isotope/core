@@ -78,7 +78,7 @@ class PaymentMethod extends CheckoutStep implements IsotopeCheckoutStep
         }
 
         if (empty($arrModules)) {
-            $this->objModule->doNotSubmit = true;
+            $this->blnError = true;
             $this->Template->showNext = false;
 
             $objTemplate = new \Isotope\Template('mod_message');
@@ -105,14 +105,14 @@ class PaymentMethod extends CheckoutStep implements IsotopeCheckoutStep
                 $objTemplate->error = $GLOBALS['TL_LANG']['MSC']['payment_method_missing'];
             }
 
-            $this->objModule->doNotSubmit = true;
+            $this->blnError = true;
         }
 
         $objTemplate->headline = $GLOBALS['TL_LANG']['MSC']['payment_method'];
         $objTemplate->message = $GLOBALS['TL_LANG']['MSC']['payment_method_message'];
         $objTemplate->paymentMethods = $arrModules;
 
-        if (!$this->objModule->doNotSubmit) {
+        if (!$this->hasError()) {
             $objPayment = Isotope::getCart()->getPaymentMethod();
             $this->objModule->arrOrderData['payment_method_id']    = $objPayment->id;
             $this->objModule->arrOrderData['payment_method']       = $objPayment->label;

@@ -57,7 +57,7 @@ abstract class Address extends CheckoutStep
                 $objWidget->validate();
 
                 if ($objWidget->hasErrors()) {
-                    $this->objModule->doNotSubmit = true;
+                    $this->blnError = true;
                 } else {
                     $intAddress = $objWidget->value;
                 }
@@ -68,7 +68,7 @@ abstract class Address extends CheckoutStep
                 $objValidator->validate();
 
                 if ($objValidator->hasErrors()) {
-                    $this->objModule->doNotSubmit = true;
+                    $this->blnError = true;
                 }
             }
 

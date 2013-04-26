@@ -197,6 +197,10 @@ class Checkout extends Module
             {
                 $strBuffer .= $objModule->generate();
 
+                if ($objModule->hasError()) {
+                    $this->doNotSubmit = true;
+                }
+
                 // the user wanted to proceed but the current step is not completed yet
                 if ($this->doNotSubmit && $step != $this->strCurrentStep) {
                     $this->redirect($this->addToUrl('step=' . $step, true));

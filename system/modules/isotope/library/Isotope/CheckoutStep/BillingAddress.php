@@ -44,7 +44,7 @@ class BillingAddress extends Address implements IsotopeCheckoutStep
         $objTemplate->fields = $this->generateAddressWidget();
 
 /*
-        if (!$this->objModule->doNotSubmit) {
+        if (!$this->hasError()) {
             $objAddress = Isotope::getCart()->getBillingAddress();
 
             $this->objModule->arrOrderData['billing_address'] = $objAddress->generateHtml(Isotope::getConfig()->billing_fields);

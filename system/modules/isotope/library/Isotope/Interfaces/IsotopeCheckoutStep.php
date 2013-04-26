@@ -26,6 +26,12 @@ interface IsotopeCheckoutStep
     public function isAvailable();
 
     /**
+     * Return true if the step has an error and forwarding should be cancelled
+     * @return  bool
+     */
+    public function hasError();
+
+    /**
      * Generate the checkout step
      * @return  string
      */

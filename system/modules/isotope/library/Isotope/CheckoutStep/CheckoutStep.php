@@ -22,12 +22,27 @@ abstract class CheckoutStep extends \Controller
      */
     protected $objModule;
 
+    /**
+     * Flag if step has error
+     * @var bool
+     */
+    protected $blnError = false;
+
 
     public function __construct($objModule)
     {
         parent::__construct();
 
         $this->objModule = $objModule;
+    }
+
+    /**
+     * Check if checkout step has an error
+     * @return  bool
+     */
+    public function hasError()
+    {
+        return $this->blnError;
     }
 
     /**
