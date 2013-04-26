@@ -29,4 +29,15 @@ abstract class CheckoutStep extends \Controller
 
         $this->objModule = $objModule;
     }
+
+    /**
+     * Return short name of current class (e.g. for CSS)
+     * @return  string
+     */
+    protected function getStepClass()
+    {
+        $strClass = get_class($this);
+
+        return substr($strClass, strrpos($strClass, '\\')+1);
+    }
 }

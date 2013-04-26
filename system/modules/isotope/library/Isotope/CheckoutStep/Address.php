@@ -43,12 +43,12 @@ abstract class Address extends CheckoutStep
 
             $strClass = $GLOBALS['TL_FFL']['radio'];
 
-            $arrData = array('id'=>$this->getShortClass(), 'name'=>$this->getShortClass(), 'mandatory'=>true);
+            $arrData = array('id'=>$this->getStepClass(), 'name'=>$this->getStepClass(), 'mandatory'=>true);
 
             $objWidget = new $strClass($arrData);
             $objWidget->options = $arrOptions;
             $objWidget->value = $intDefaultValue;
-            $objWidget->onclick = "Isotope.toggleAddressFields(this, '" . $this->getShortClass() . "_new');";
+            $objWidget->onclick = "Isotope.toggleAddressFields(this, '" . $this->getStepClass() . "_new');";
             $objWidget->storeValues = true;
             $objWidget->tableless = true;
 
@@ -133,7 +133,7 @@ abstract class Address extends CheckoutStep
 
             // Special field type "conditionalselect"
             elseif (strlen($arrData['eval']['conditionField'])) {
-                $arrData['eval']['conditionField'] = $this->getShortClass() . '_' . $arrData['eval']['conditionField'];
+                $arrData['eval']['conditionField'] = $this->getStepClass() . '_' . $arrData['eval']['conditionField'];
             }
 
             // Special fields "isDefaultBilling" & "isDefaultShipping"
@@ -142,9 +142,9 @@ abstract class Address extends CheckoutStep
 //                $arrDefault[$field['value']] = '1';
 //            }
 
-//            $objWidget = new $strClass($this->prepareForWidget($arrData, $this->getShortClass() . '_' . $field['value'], (strlen($_SESSION['CHECKOUT_DATA'][$this->getShortClass()][$field['value']]) ? $_SESSION['CHECKOUT_DATA'][$this->getShortClass()][$field['value']] : $arrDefault[$field['value']])));
+//            $objWidget = new $strClass($this->prepareForWidget($arrData, $this->getStepClass() . '_' . $field['value'], (strlen($_SESSION['CHECKOUT_DATA'][$this->getStepClass()][$field['value']]) ? $_SESSION['CHECKOUT_DATA'][$this->getStepClass()][$field['value']] : $arrDefault[$field['value']])));
 
-            $objWidget = new $strClass($this->prepareForWidget($arrData, $this->getShortClass() . '_' . $field['value']));
+            $objWidget = new $strClass($this->prepareForWidget($arrData, $this->getStepClass() . '_' . $field['value']));
 
             $objWidget->mandatory = $field['mandatory'] ? true : false;
             $objWidget->required = $objWidget->mandatory;
@@ -196,14 +196,12 @@ abstract class Address extends CheckoutStep
         $arrWidgets = \Isotope\Frontend::generateRowClass($arrWidgets, 'row', 'rowClass', 0, ISO_CLASS_COUNT|ISO_CLASS_FIRSTLAST|ISO_CLASS_EVENODD);
 
         // Validate input
-        if (\Input::post('FORM_SUBMIT') == $this->objModule->getFormId() && !$this->objModule->doNotSubmit && is_array($arrAddress) && !empty($arrAddress))
-        {
+        if (\Input::post('FORM_SUBMIT') == $this->objModule->getFormId() && !$this->objModule->doNotSubmit && is_array($arrAddress) && !empty($arrAddress)) {
             $arrAddress['id'] = 0;
-            $_SESSION['CHECKOUT_DATA'][$this->getShortClass()] = $arrAddress;
+            $_SESSION['CHECKOUT_DATA'][$this->getStepClass()] = $arrAddress;
         }
 
-        if (is_array($_SESSION['CHECKOUT_DATA'][$this->getShortClass()]) && $_SESSION['CHECKOUT_DATA'][$this->getShortClass()]['id'] === 0)
-        {
+        if (is_array($_SESSION['CHECKOUT_DATA'][$this->getStepClass()]) && $_SESSION['CHECKOUT_DATA'][$this->getStepClass()]['id'] === 0) {
             $this->setAddress($_SESSION['CHECKOUT_DATA'][$strAddressType]);
         }
 
@@ -267,17 +265,5 @@ abstract class Address extends CheckoutStep
         }
 
         return $arrAddresses;
-    }
-
-
-    /**
-     * Return short name of current class (e.g. for CSS)
-     * @return  string
-     */
-    protected function getShortClass()
-    {
-        $strClass = get_class($this);
-
-        return substr($strClass, strrpos($strClass, '\\')+1);
     }
 }
