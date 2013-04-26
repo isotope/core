@@ -395,7 +395,7 @@ abstract class ProductCollection extends \Model
         }
 
         // If the collection does not have a payment, the shipping address is the primary address for the collection
-        if (!$this->hasPayment()) {
+        if (!$this->requiresPayment()) {
             $this->address1_id = $intId;
         } else {
             $this->address2_id = $intId;
