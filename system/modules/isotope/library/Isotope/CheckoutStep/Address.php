@@ -20,6 +20,12 @@ abstract class Address extends CheckoutStep
 {
 
     /**
+     * Cache of address widgets
+     * @var array
+     */
+    private $arrWidgets;
+
+    /**
      * Frontend template instance
      * @var object
      */
@@ -46,26 +52,34 @@ abstract class Address extends CheckoutStep
      */
     public function generate()
     {
+        $blnValidate = \Input::post('FORM_SUBMIT') == $this->objModule->getFormId();
+
         $this->Template->class = $this->getStepClass();
         $this->Template->tableless = $this->objModule->tableless;
-        $this->Template->options = $this->generateOptions();
-        $this->Template->fields = $this->generateFields();
+        $this->Template->options = $this->generateOptions($blnValidate);
+        $this->Template->fields = $this->generateFields($blnValidate);
 
         return $this->Template->parse();
     }
 
     /**
-     * Generate address widget and return it as HTML string
+     * Generate address options and return it as HTML string
      * @param string
      * @return string
      */
-    protected function generateAddressWidget()
+    protected function generateOptions($blnValidate=false)
     {
         $strBuffer = '';
-        $intAddress = 0;
+        $varValue = '0';
         $arrOptions = $this->getAddressOptions();
 
         if (!empty($arrOptions)) {
+
+            foreach ($arrOptions as $option) {
+                if ($option['default']) {
+                    $varValue = $option['value'];
+                }
+            }
 
             $strClass = $GLOBALS['TL_FFL']['radio'];
 
@@ -73,20 +87,21 @@ abstract class Address extends CheckoutStep
 
             $objWidget = new $strClass($arrData);
             $objWidget->options = $arrOptions;
-            $objWidget->value = $intDefaultValue;
+            $objWidget->value = $varValue;
             $objWidget->onclick = "Isotope.toggleAddressFields(this, '" . $this->getStepClass() . "_new');";
             $objWidget->storeValues = true;
             $objWidget->tableless = true;
 
             // Validate input
-            if (\Input::post('FORM_SUBMIT') == $this->objModule->getFormId()) {
+            if ($blnValidate) {
                 $objWidget->validate();
 
                 if ($objWidget->hasErrors()) {
                     $this->blnError = true;
                 } else {
-                    $intAddress = $objWidget->value;
+                    $varValue = (string) $objWidget->value;
                 }
+/*
             } elseif ($objWidget->value != '') {
                 \Input::setPost($objWidget->name, $objWidget->value);
 
@@ -96,24 +111,21 @@ abstract class Address extends CheckoutStep
                 if ($objValidator->hasErrors()) {
                     $this->blnError = true;
                 }
+*/
             }
 
             $strBuffer .= $objWidget->parse();
         }
 
-        if ($intAddress > 0) {
-            $objAddress = AddressModel::findByPk($intAddress);
+        if ($blnValidate) {
+            $objAddress = $this->getAddressForOption($varValue);
 
             if (null === $objAddress) {
-
+                $this->blnError = true;
+            } else {
+                $this->setAddress($objAddress);
             }
-
-            $this->setAddress($objAddress);
         }
-
-        $strBuffer .= '<div id="' . $this->getShortClass() . '_new" class="address_new">';
-        $strBuffer .= '<span>' . $this->generateAddressWidgets($this->getShortClass(), count($arrOptions)) . '</span>';
-        $strBuffer .= '</div>';
 
         return $strBuffer;
     }
@@ -121,132 +133,133 @@ abstract class Address extends CheckoutStep
 
     /**
      * Generate the current step widgets.
-     * strResourceTable is used either to load a DCA or else to gather settings related to a given DCA.
-     *
-     * @todo <table...> was in a template, but I don't get why we need to define the table here?
-     * @param string
-     * @param integer
-     * @return string
+     * @param   bool
+     * @return  string|array
      */
-    protected function generateAddressWidgets($strAddressType, $intOptions)
+    protected function generateFields($blnValidate=false)
     {
-        $arrWidgets = array();
+        $strBuffer = '';
+        $arrWidgets = \Isotope\Frontend::generateRowClass($this->getWidgets(), 'row', 'rowClass', 0, ISO_CLASS_COUNT|ISO_CLASS_FIRSTLAST|ISO_CLASS_EVENODD);
 
-        foreach ($this->getAddressFields() as $field) {
+        foreach ($arrWidgets as $objWidget) {
 
-            $arrData = $GLOBALS['TL_DCA']['tl_iso_addresses']['fields'][$field['value']];
-
-            if (!is_array($arrData) || !$arrData['eval']['feEditable'] || !$field['enabled'] || ($arrData['eval']['membersOnly'] && FE_USER_LOGGED_IN !== true)) {
-                continue;
+            if ($blnValidate) {
+                $objWidget->validate();
             }
 
-            $strClass = $GLOBALS['TL_FFL'][$arrData['inputType']];
+            $strBuffer .= $objWidget->parse();
+        }
 
-            // Continue if the class is not defined
-            if (!$this->classFileExists($strClass)) {
-                continue;
-            }
+        return $strBuffer;
+    }
 
-            // Special field "country"
-            if ($field['value'] == 'country') {
-                $arrCountries = $this->getAddressCountries();
-                $arrData['options'] = array_values(array_intersect($arrData['options'], $arrCountries));
+    /**
+     * Validate input and return address data
+     * @return  array
+     */
+    protected function validateFields()
+    {
+        $arrAddress = array();
+        $arrWidgets = $this->getWidgets();
 
-                if ($arrDefault['country'] == '') {
-                    $arrDefault['country'] = $this->getDefaultCountry();
-                }
-            }
-
-            // Special field type "conditionalselect"
-            elseif (strlen($arrData['eval']['conditionField'])) {
-                $arrData['eval']['conditionField'] = $this->getStepClass() . '_' . $arrData['eval']['conditionField'];
-            }
-
-            // Special fields "isDefaultBilling" & "isDefaultShipping"
-//            elseif (($field['value'] == 'isDefaultBilling' && $strAddressType == 'billing_address' && $intOptions < 2) || ($field['value'] == 'isDefaultShipping' && $strAddressType == 'shipping_address' && $intOptions < 3))
-//            {
-//                $arrDefault[$field['value']] = '1';
-//            }
-
-//            $objWidget = new $strClass($this->prepareForWidget($arrData, $this->getStepClass() . '_' . $field['value'], (strlen($_SESSION['CHECKOUT_DATA'][$this->getStepClass()][$field['value']]) ? $_SESSION['CHECKOUT_DATA'][$this->getStepClass()][$field['value']] : $arrDefault[$field['value']])));
-
-            $objWidget = new $strClass($this->prepareForWidget($arrData, $this->getStepClass() . '_' . $field['value']));
-
-            $objWidget->mandatory = $field['mandatory'] ? true : false;
-            $objWidget->required = $objWidget->mandatory;
-            $objWidget->tableless = $this->tableless;
-            $objWidget->label = $field['label'] ? Isotope::translate($field['label']) : $objWidget->label;
-            $objWidget->storeValues = true;
-
+        foreach ($arrWidgets as $strName => $objWidget) {
             // Validate input
-            if (\Input::post('FORM_SUBMIT') == $this->objModule->getFormId() && (\Input::post($this->getShortClass()) === '0' || \Input::post($this->getShortClass()) == ''))
-            {
+            if (\Input::post('FORM_SUBMIT') == $this->objModule->getFormId()) {
+
                 $objWidget->validate();
                 $varValue = $objWidget->value;
 
                 // Convert date formats into timestamps
-                if (strlen($varValue) && in_array($arrData['eval']['rgxp'], array('date', 'time', 'datim')))
-                {
+                if (strlen($varValue) && in_array($arrData['eval']['rgxp'], array('date', 'time', 'datim'))) {
                     $objDate = new \Date($varValue, $GLOBALS['TL_CONFIG'][$arrData['eval']['rgxp'] . 'Format']);
                     $varValue = $objDate->tstamp;
                 }
 
                 // Do not submit if there are errors
-                if ($objWidget->hasErrors())
-                {
-                    $this->objModule->doNotSubmit = true;
+                if ($objWidget->hasErrors()) {
+                    $this->blnError = true;
                 }
 
                 // Store current value
-                elseif ($objWidget->submitInput())
-                {
-                    $arrAddress[$field['value']] = $varValue;
+                elseif ($objWidget->submitInput()) {
+                    $arrAddress[$strName] = $varValue;
                 }
-            }
-            elseif (\Input::post($this->getShortClass()) === '0' || \Input::post($this->getShortClass()) == '')
-            {
+
+            } else {
+
                 \Input::setPost($objWidget->name, $objWidget->value);
 
                 $objValidator = clone $objWidget;
                 $objValidator->validate();
 
-                if ($objValidator->hasErrors())
-                {
-                    $this->objModule->doNotSubmit = true;
+                if ($objValidator->hasErrors()) {
+                    $this->blnError = true;
                 }
             }
-
-            $arrWidgets[] = $objWidget;
         }
 
-        $arrWidgets = \Isotope\Frontend::generateRowClass($arrWidgets, 'row', 'rowClass', 0, ISO_CLASS_COUNT|ISO_CLASS_FIRSTLAST|ISO_CLASS_EVENODD);
+        return $arrAddress;
+    }
 
-        // Validate input
-        if (\Input::post('FORM_SUBMIT') == $this->objModule->getFormId() && !$this->objModule->doNotSubmit && is_array($arrAddress) && !empty($arrAddress)) {
-            $arrAddress['id'] = 0;
-            $_SESSION['CHECKOUT_DATA'][$this->getStepClass()] = $arrAddress;
+    /**
+     * Get widget objects for address fields
+     * @return  array
+     */
+    protected function getWidgets()
+    {
+        if (null === $this->arrWidgets) {
+            $this->arrWidgets = array();
+            $objAddress = $this->getDefaultAddress();
+
+            foreach ($this->getAddressFields() as $field) {
+
+                $arrData = $GLOBALS['TL_DCA']['tl_iso_addresses']['fields'][$field['value']];
+
+                if (!is_array($arrData) || !$arrData['eval']['feEditable'] || !$field['enabled'] || ($arrData['eval']['membersOnly'] && FE_USER_LOGGED_IN !== true)) {
+                    continue;
+                }
+
+                $strClass = $GLOBALS['TL_FFL'][$arrData['inputType']];
+
+                // Continue if the class is not defined
+                if (!$this->classFileExists($strClass)) {
+                    continue;
+                }
+
+                // Special field "country"
+                if ($field['value'] == 'country') {
+                    $arrCountries = $this->getAddressCountries();
+                    $arrData['options'] = array_values(array_intersect($arrData['options'], $arrCountries));
+
+                    if ($arrDefault['country'] == '') {
+                        $arrDefault['country'] = $this->getDefaultCountry();
+                    }
+                }
+
+                // Special field type "conditionalselect"
+                elseif (strlen($arrData['eval']['conditionField'])) {
+                    $arrData['eval']['conditionField'] = $this->getStepClass() . '_' . $arrData['eval']['conditionField'];
+                }
+
+                // Special fields "isDefaultBilling" & "isDefaultShipping"
+    //            elseif (($field['value'] == 'isDefaultBilling' && $strAddressType == 'billing_address' && $intOptions < 2) || ($field['value'] == 'isDefaultShipping' && $strAddressType == 'shipping_address' && $intOptions < 3))
+    //            {
+    //                $arrDefault[$field['value']] = '1';
+    //            }
+
+                $objWidget = new $strClass($this->prepareForWidget($arrData, $this->getStepClass() . '_' . $field['value'], $objAddress->{$field['value']}));
+
+                $objWidget->mandatory = $field['mandatory'] ? true : false;
+                $objWidget->required = $objWidget->mandatory;
+                $objWidget->tableless = $this->objModule->tableless;
+                $objWidget->label = $field['label'] ? Isotope::translate($field['label']) : $objWidget->label;
+                $objWidget->storeValues = true;
+
+                $this->arrWidgets[$field['value']] = $objWidget;
+            }
         }
 
-        if (is_array($_SESSION['CHECKOUT_DATA'][$this->getStepClass()]) && $_SESSION['CHECKOUT_DATA'][$this->getStepClass()]['id'] === 0) {
-            $this->setAddress($_SESSION['CHECKOUT_DATA'][$strAddressType]);
-        }
-
-        $strBuffer = '';
-
-        foreach ($arrWidgets as $objWidget)
-        {
-            $strBuffer .= $objWidget->parse();
-        }
-
-        if ($this->tableless)
-        {
-            return $strBuffer;
-        }
-
-        return '
-<table>
-' . $strBuffer . '
-</table>';
+        return $this->arrWidgets;
     }
 
     /**
@@ -258,10 +271,12 @@ abstract class Address extends CheckoutStep
         $arrOptions = array();
 
         if (FE_USER_LOGGED_IN === true) {
-            $arrAddresses =
+            $arrAddresses = $this->getAddresses();
             $arrCountries = $this->getAddressCountries();
 
             if (null !== $objAddresses && !empty($arrCountries)) {
+                $objDefault = $this->getAddress();
+
                 while ($objAddresses->next()) {
 
                     if (!in_array($objAddresses->country, $arrCountries)) {
@@ -273,6 +288,7 @@ abstract class Address extends CheckoutStep
                     $arrOptions[] = array(
                         'value'        => $objAddress->id,
                         'label'        => $objAddress->generateHtml($arrFields),
+                        'default'      => ($objAddress->id == $objDefault->id ? '1' : ''),
                     );
                 }
             }
@@ -281,6 +297,23 @@ abstract class Address extends CheckoutStep
         return $arrOptions;
     }
 
+    /**
+     * Get address object for a selected option
+     * @param   string
+     * @return  Isotope\Model\Address
+     */
+    protected function getAddressForOption($varValue)
+    {
+        $arrAddresses = $this->getAddresses();
+
+        foreach ($arrAddresses as $objAddress) {
+            if ($objAddress->id == $varValue) {
+                return $objAddress;
+            }
+        }
+
+        return null;
+    }
 
     /**
      * Get addresses for the current member

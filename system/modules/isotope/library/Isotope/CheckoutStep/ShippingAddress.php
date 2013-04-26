@@ -14,6 +14,7 @@ namespace Isotope\CheckoutStep;
 
 use Isotope\Isotope;
 use Isotope\Interfaces\IsotopeCheckoutStep;
+use Isotope\Model\Address as AddressModel;
 
 
 class ShippingAddress extends Address implements IsotopeCheckoutStep
@@ -90,18 +91,70 @@ class ShippingAddress extends Address implements IsotopeCheckoutStep
         $arrOptions = parent::getAddressOptions();
 
         array_insert($arrOptions, 0, array(array(
-            'value' => -1,
-            'label' => (Isotope::getCart()->requiresPayment() ? $GLOBALS['TL_LANG']['MSC']['useBillingAddress'] : $GLOBALS['TL_LANG']['MSC']['useCustomerAddress']),
+            'value'     => '-1',
+            'label'     => (Isotope::getCart()->requiresPayment() ? $GLOBALS['TL_LANG']['MSC']['useBillingAddress'] : $GLOBALS['TL_LANG']['MSC']['useCustomerAddress']),
+            'default'   => '1',
         )));
 
         $arrOptions[] = array(
-            'value' => 0,
-            'label' => $GLOBALS['TL_LANG']['MSC']['differentShippingAddress'],
+            'value'     => '0',
+            'label'     => $GLOBALS['TL_LANG']['MSC']['differentShippingAddress'],
+            'default'   => ($this->getDefaultAddress()->id == Isotope::getCart()->address2_id),
         );
 
         return $arrOptions;
     }
 
+    /**
+     * Get address object for a selected option
+     * @param   string
+     * @return  Isotope\Model\Address
+     */
+    protected function getAddressForOption($varValue)
+    {
+        if ($varValue === '-1') {
+            return Isotope::getCart()->getBillingAddress();
+        }
+        elseif ($varValue === '0') {
+            $objAddress = $this->getDefaultAddress();
+            $arrAddress = $this->validateFields();
+
+            foreach ($arrAddress as $field => $value) {
+                $objAddress->$field = $value;
+            }
+
+            $objAddress->save();
+
+            return $objAddress;
+        }
+
+        return parent::getAddressForOption($varValue);
+    }
+
+    /**
+     * Get default address for this collection and address type
+     * @return  Isotope\Model\Address
+     */
+    protected function getDefaultAddress()
+    {
+        $objAddress = AddressModel::findOneBy(array('ptable=?', 'pid=?', 'isDefaultShipping=?'), array('tl_iso_product_collection', Isotope::getCart()->id, '1'));
+
+        if (null === $objAddress) {
+            $objShippingAddress = Isotope::getCart()->getShippingAddress();
+            $arrAddress = (null === $objShippingAddress) ? array() : $objShippingAddress->row();
+
+            unset($arrAddress['id']);
+            unset($arrAddress['isDefaultBilling']);
+            $arrAddress['ptable'] = 'tl_iso_product_collection';
+            $arrAddress['pid'] = Isotope::getCart()->id;
+            $arrAddress['isDefaultShipping'] = '1';
+
+            $objAddress = new AddressModel();
+            $objAddress->setRow($arrAddress);
+        }
+
+        return $objAddress;
+    }
 
     /**
      * Get field configuration for this address type

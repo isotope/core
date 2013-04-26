@@ -95,14 +95,59 @@ class BillingAddress extends Address implements IsotopeCheckoutStep
 
         if (!empty($arrOptions)) {
             $arrOptions[] = array (
-                'value'    => 0,
-                'label' => &$GLOBALS['TL_LANG']['MSC']['createNewAddressLabel'],
+                'value'     => 0,
+                'label'     => &$GLOBALS['TL_LANG']['MSC']['createNewAddressLabel'],
+                'default'   => ($this->getDefaultAddress()->id == Isotope::getCart()->address1_id),
             );
         }
 
         return $arrOptions;
     }
 
+    /**
+     * Get address object for a selected option
+     * @param   string
+     * @return  Isotope\Model\Address
+     */
+    protected function getAddressForOption($varValue)
+    {
+        if ($varValue == 0) {
+            $objAddress = $this->getDefaultAddress();
+            $arrAddress = $this->validateFields();
+
+            foreach ($arrAddress as $field => $value) {
+                $objAddress->$field = $value;
+            }
+
+            $objAddress->save();
+
+            return $objAddress;
+        }
+
+        return parent::getAddressForOption($varValue);
+    }
+
+    /**
+     * Get default address for this collection and address type
+     * @return  Isotope\Model\Address
+     */
+    protected function getDefaultAddress()
+    {
+        $objAddress = AddressModel::findOneBy(array('ptable=?', 'pid=?', 'isDefaultBilling=?'), array('tl_iso_product_collection', Isotope::getCart()->id, '1'));
+
+        if (null === $objAddress) {
+            $arrAddress = Isotope::getCart()->getBillingAddress()->row();
+            unset($arrAddress['id']);
+            $arrAddress['ptable'] = 'tl_iso_product_collection';
+            $arrAddress['pid'] = Isotope::getCart()->id;
+            $arrAddress['isDefaultBilling'] = '1';
+
+            $objAddress = new AddressModel();
+            $objAddress->setRow($arrAddress);
+        }
+
+        return $objAddress;
+    }
 
     /**
      * Get field configuration for this address type
