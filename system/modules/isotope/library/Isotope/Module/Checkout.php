@@ -150,48 +150,7 @@ class Checkout extends Module
             }
         }
 
-        // Return error message if cart is empty
-        if (Isotope::getCart()->isEmpty())
-        {
-            $this->Template = new \Isotope\Template('mod_message');
-            $this->Template->type = 'empty';
-            $this->Template->message = $GLOBALS['TL_LANG']['MSC']['noItemsInCart'];
-
-            return;
-        }
-
-        // Insufficient cart subtotal
-        if (Isotope::getConfig()->cartMinSubtotal > 0 && Isotope::getConfig()->cartMinSubtotal > Isotope::getCart()->getSubtotal())
-        {
-            $this->Template = new \Isotope\Template('mod_message');
-            $this->Template->type = 'error';
-            $this->Template->message = sprintf($GLOBALS['TL_LANG']['ERR']['cartMinSubtotal'], Isotope::formatPriceWithCurrency(Isotope::getConfig()->cartMinSubtotal));
-
-            return;
-        }
-
-        // Redirect to login page if not logged in
-        if ($this->iso_checkout_method == 'member' && FE_USER_LOGGED_IN !== true)
-        {
-            $objPage = $this->Database->prepare("SELECT id,alias FROM tl_page WHERE id=?")->limit(1)->execute($this->iso_login_jumpTo);
-
-            if (!$objPage->numRows)
-            {
-                $this->Template = new \Isotope\Template('mod_message');
-                $this->Template->type = 'error';
-                $this->Template->message = $GLOBALS['TL_LANG']['ERR']['isoLoginRequired'];
-
-                return;
-            }
-
-            $this->redirect($this->generateFrontendUrl($objPage->row()));
-        }
-        elseif ($this->iso_checkout_method == 'guest' && FE_USER_LOGGED_IN === true)
-        {
-            $this->Template = new \Isotope\Template('mod_message');
-            $this->Template->type = 'error';
-            $this->Template->message = 'User checkout not allowed';
-
+        if (!$this->canCheckout()) {
             return;
         }
 
@@ -499,6 +458,60 @@ class Checkout extends Module
         }
 
         return parent::addToUrl($strRequest, $blnIgnoreParams);
+    }
+
+
+    /**
+     * Check if the checkout can be executed
+     * @return  bool
+     */
+    protected function canCheckout()
+    {
+        // Return error message if cart is empty
+        if (Isotope::getCart()->isEmpty()) {
+            $this->Template = new \Isotope\Template('mod_message');
+            $this->Template->type = 'empty';
+            $this->Template->message = $GLOBALS['TL_LANG']['MSC']['noItemsInCart'];
+
+            return false;
+        }
+
+        // Insufficient cart subtotal
+        if (Isotope::getConfig()->cartMinSubtotal > 0 && Isotope::getConfig()->cartMinSubtotal > Isotope::getCart()->getSubtotal())
+        {
+            $this->Template = new \Isotope\Template('mod_message');
+            $this->Template->type = 'error';
+            $this->Template->message = sprintf($GLOBALS['TL_LANG']['ERR']['cartMinSubtotal'], Isotope::formatPriceWithCurrency(Isotope::getConfig()->cartMinSubtotal));
+
+            return false;
+        }
+
+        // Redirect to login page if not logged in
+        if ($this->iso_checkout_method == 'member' && FE_USER_LOGGED_IN !== true)
+        {
+            $objPage = $this->Database->prepare("SELECT id,alias FROM tl_page WHERE id=?")->limit(1)->execute($this->iso_login_jumpTo);
+
+            if (!$objPage->numRows)
+            {
+                $this->Template = new \Isotope\Template('mod_message');
+                $this->Template->type = 'error';
+                $this->Template->message = $GLOBALS['TL_LANG']['ERR']['isoLoginRequired'];
+
+                return false;
+            }
+
+            $this->redirect($this->generateFrontendUrl($objPage->row()));
+        }
+        elseif ($this->iso_checkout_method == 'guest' && FE_USER_LOGGED_IN === true)
+        {
+            $this->Template = new \Isotope\Template('mod_message');
+            $this->Template->type = 'error';
+            $this->Template->message = 'User checkout not allowed';
+
+            return false;
+        }
+
+        return true;
     }
 
 
