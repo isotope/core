@@ -35,7 +35,7 @@ class PaymentMethod extends CheckoutStep implements IsotopeCheckoutStep
     public function generate()
     {
         $arrModules = array();
-        $arrModuleIds = deserialize($this->iso_payment_modules);
+        $arrModuleIds = deserialize($this->objModule->iso_payment_modules);
 
         if (is_array($arrModuleIds) && !empty($arrModuleIds)) {
 

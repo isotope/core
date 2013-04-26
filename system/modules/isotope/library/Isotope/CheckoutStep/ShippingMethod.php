@@ -35,7 +35,7 @@ class ShippingMethod extends CheckoutStep implements IsotopeCheckoutStep
     public function generate()
     {
         $arrModules = array();
-        $arrModuleIds = deserialize($this->iso_shipping_modules);
+        $arrModuleIds = deserialize($this->objModule->iso_shipping_modules);
 
         if (is_array($arrModuleIds) && !empty($arrModuleIds)) {
 
