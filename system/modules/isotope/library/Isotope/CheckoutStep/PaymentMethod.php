@@ -14,6 +14,7 @@ namespace Isotope\CheckoutStep;
 
 use Isotope\Isotope;
 use Isotope\Interfaces\IsotopeCheckoutStep;
+use Isotope\Model\Payment;
 
 
 class PaymentMethod extends CheckoutStep implements IsotopeCheckoutStep

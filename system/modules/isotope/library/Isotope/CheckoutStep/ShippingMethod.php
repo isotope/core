@@ -14,6 +14,7 @@ namespace Isotope\CheckoutStep;
 
 use Isotope\Isotope;
 use Isotope\Interfaces\IsotopeCheckoutStep;
+use Isotope\Model\Shipping;
 
 
 class ShippingMethod extends CheckoutStep implements IsotopeCheckoutStep
