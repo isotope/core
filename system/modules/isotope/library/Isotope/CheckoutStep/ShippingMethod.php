@@ -42,7 +42,7 @@ class ShippingMethod extends CheckoutStep implements IsotopeCheckoutStep
             $arrData = \Input::post('shipping');
             $arrModuleIds = array_map('intval', $arrModuleIds);
 
-            $objModules = Shipping::findBy(array('id IN (' . implode(',', $arrModuleIds) . ')', (BE_USER_LOGGED_IN === true ? '' : "enabled='1'")), null, array('order'=>$this->Database->findInSet('id', $arrModuleIds)));
+            $objModules = Shipping::findBy(array('id IN (' . implode(',', $arrModuleIds) . ')', (BE_USER_LOGGED_IN === true ? '' : "enabled='1'")), null, array('order'=>\Database::getInstance()->findInSet('id', $arrModuleIds)));
 
             while ($objModules->next())
             {
