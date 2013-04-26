@@ -37,7 +37,7 @@ class PaymentMethod extends CheckoutStep implements IsotopeCheckoutStep
         $arrModules = array();
         $arrModuleIds = deserialize($this->objModule->iso_payment_modules);
 
-        if (is_array($arrModuleIds) && !empty($arrModuleIds)) {
+        if (!empty($arrModuleIds) && is_array($arrModuleIds)) {
 
             $arrData = \Input::post('payment');
             $arrModuleIds = array_map('intval', $arrModuleIds);
