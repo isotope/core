@@ -215,18 +215,6 @@ class Checkout extends Module
         $this->Template->showNext = true;
         $this->Template->showForm = true;
 
-        // Remove shipping step if no items are shipped
-        if (!Isotope::getCart()->requiresShipping())
-        {
-            unset($GLOBALS['ISO_CHECKOUT_STEPS']['shipping']);
-
-            // Remove payment step if items are free of charge. We need to do this here because shipping might have a price.
-            if (!Isotope::getCart()->requiresPayment())
-            {
-                unset($GLOBALS['ISO_CHECKOUT_STEPS']['payment']);
-            }
-        }
-
         if ($this->strCurrentStep == 'failed')
         {
             $this->Database->prepare("UPDATE tl_iso_product_collection SET order_status=? WHERE source_collection_id=?")->execute(Isotope::getConfig()->orderstatus_error, Isotope::getCart()->id);
@@ -237,37 +225,21 @@ class Checkout extends Module
 
         // Run trough all steps until we find the current one or one reports failure
         $intCurrentStep = 0;
-        $intTotalSteps = count($GLOBALS['ISO_CHECKOUT_STEPS']);
-        foreach ($GLOBALS['ISO_CHECKOUT_STEPS'] as $step => $arrCallbacks)
+        $intTotalSteps = count($this->getSteps());
+        foreach ($this->getSteps() as $step => $arrModules)
         {
-            // Step could be removed while looping
-            if (!isset($GLOBALS['ISO_CHECKOUT_STEPS'][$step]))
-            {
-                --$intTotalSteps;
-                continue;
-            }
-
             $this->strFormId = 'iso_mod_checkout_' . $step;
             $this->Template->formId = $this->strFormId;
             $this->Template->formSubmit = $this->strFormId;
             ++$intCurrentStep;
             $strBuffer = '';
 
-            foreach ($arrCallbacks as $callback)
+            foreach ($arrModules as $objModule)
             {
-                if ($callback[0] == 'ModuleIsotopeCheckout')
-                {
-                    $strBuffer .= $this->{$callback[1]}();
-                }
-                else
-                {
-                    $this->import($callback[0]);
-                    $strBuffer .= $this->{$callback[0]}->{$callback[1]}($this);
-                }
+                $strBuffer .= $objModule->generate();
 
                 // the user wanted to proceed but the current step is not completed yet
-                if ($this->doNotSubmit && $step != $this->strCurrentStep)
-                {
+                if ($this->doNotSubmit && $step != $this->strCurrentStep) {
                     $this->redirect($this->addToUrl('step=' . $step, true));
                 }
             }
@@ -328,7 +300,7 @@ class Checkout extends Module
         }
 
         // Show checkout steps
-        $arrStepKeys = array_keys($GLOBALS['ISO_CHECKOUT_STEPS']);
+        $arrStepKeys = array_keys($this->getSteps());
         $blnPassed = true;
         $total = count($arrStepKeys) - 1;
         $arrSteps = array();
@@ -527,5 +499,33 @@ class Checkout extends Module
         }
 
         return parent::addToUrl($strRequest, $blnIgnoreParams);
+    }
+
+
+    /**
+     * Return array of instantiated checkout step modules
+     * @return  array
+     */
+    protected function getSteps()
+    {
+        static $arrSteps;
+
+        if (null === $arrSteps) {
+
+            $arrSteps = array();
+
+            foreach ($GLOBALS['ISO_CHECKOUTSTEP'] as $strStep => $arrModules) {
+                foreach ($arrModules as $strClass) {
+
+                    $objModule = new $strClass($this);
+
+                    if ($objModule->isAvailable()) {
+                        $arrSteps[$strStep][] = $objModule;
+                    }
+                }
+            }
+        }
+
+        return $arrSteps;
     }
 }
