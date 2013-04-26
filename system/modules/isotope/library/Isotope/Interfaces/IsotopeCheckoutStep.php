@@ -1,0 +1,39 @@
+<?php
+
+/**
+ * Isotope eCommerce for Contao Open Source CMS
+ *
+ * Copyright (C) 2009-2012 Isotope eCommerce Workgroup
+ *
+ * @package    Isotope
+ * @link       http://www.isotopeecommerce.com
+ * @license    http://opensource.org/licenses/lgpl-3.0.html LGPL
+ */
+
+namespace Isotope\Interfaces;
+
+
+/**
+ * Checkout steps handle individual steps in the Isotope checkout module
+ */
+interface IsotopeCheckoutStep
+{
+
+    /**
+     * Return true if the checkout step is available
+     * @return  bool
+     */
+    public function isAvailable();
+
+    /**
+     * Generate the checkout step
+     * @return  string
+     */
+    public function generate();
+
+    /**
+     * Get review information about this step
+     * @return  array
+     */
+    public function review();
+}
