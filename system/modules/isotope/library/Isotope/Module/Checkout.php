@@ -317,12 +317,12 @@ class Checkout extends Module
 
 
     /**
-     * Redirect visitor to the next step in ISO_CHECKOUT_STEPS
+     * Redirect visitor to the next step in ISO_CHECKOUTSTEP
      * @return void
      */
     protected function redirectToNextStep()
     {
-        $arrSteps = array_keys($GLOBALS['ISO_CHECKOUT_STEPS']);
+        $arrSteps = array_keys($this->getSteps());
 
         if (!in_array($this->strCurrentStep, $arrSteps))
         {
@@ -347,12 +347,12 @@ class Checkout extends Module
 
 
     /**
-     * Redirect visotor to the previous step in ISO_CHECKOUT_STEPS
+     * Redirect visitor to the previous step in ISO_CHECKOUTSTEP
      * @return void
      */
     protected function redirectToPreviousStep()
     {
-        $arrSteps = array_keys($GLOBALS['ISO_CHECKOUT_STEPS']);
+        $arrSteps = array_keys($this->getSteps());
 
         if (!in_array($this->strCurrentStep, $arrSteps))
         {
