@@ -20,6 +20,36 @@ interface IsotopeShipping
 {
 
     /**
+     * Return boolean flag if the shipping method is available
+     * @return  bool
+     */
+    public function isAvailable();
+
+    /**
+     * Return true if shipping price is not a fixed amount
+     * @return  bool
+     */
+    public function isPercentage();
+
+    /**
+     * Get the percentage amount (if applicable)
+     * @return  float
+     */
+    public function getPercentage();
+
+    /**
+     * Return label for the shipping method
+     * @return  string
+     */
+    public function getLabel();
+
+    /**
+     * Return the calculated total price for shipping
+     * @return  float
+     */
+    public function getPrice();
+
+    /**
      * Return the name and description for this shipping method
      * @return array
      */
