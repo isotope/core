@@ -120,10 +120,6 @@ $GLOBALS['TL_DCA']['tl_iso_shipping_modules'] = array
         '__selector__'              => array('type', 'protected'),
         'default'                   => '{title_legend},name,label,type',
         'Flat'                      => '{title_legend},name,label,type;{note_legend:hide},note;{price_legend},price,tax_class,flatCalculation,surcharge_field;{config_legend},countries,subdivisions,postalCodes,minimum_total,maximum_total,product_types;{expert_legend:hide},guests,protected;{enabled_legend},enabled',
-        'OrderTotal'                => '{title_legend},name,label,type;{note_legend:hide},note;{price_legend},price,tax_class;{config_legend},countries,subdivisions,postalCodes,minimum_total,maximum_total,product_types;{expert_legend:hide},guests,protected;{enabled_legend},enabled',
-        'WeightTotal'               => '{title_legend},name,label,type;{note_legend:hide},note;{price_legend},tax_class;{config_legend},weight_unit,countries,subdivisions,postalCodes,minimum_total,maximum_total,product_types;{expert_legend:hide},guests,protected;{enabled_legend},enabled',
-        'UPS'                       => '{title_legend},name,label,type;{note_legend:hide},note;{price_legend},tax_class;{ups_legend},ups_enabledService,ups_accessKey,ups_userName,ups_password;{config_legend},weight_unit,countries,subdivisions,minimum_total,maximum_total,product_types;{expert_legend:hide},guests,protected;{enabled_legend},enabled',
-        'USPS'                      => '{title_legend},name,label,type;{note_legend:hide},note;{price_legend},tax_class;{usps_legend},usps_enabledService,usps_userName;{config_legend},countries,subdivisions,minimum_total,maximum_total,product_types;{expert_legend:hide},guests,protected;{enabled_legend},enabled'
     ),
 
     // Subpalettes
@@ -167,54 +163,6 @@ $GLOBALS['TL_DCA']['tl_iso_shipping_modules'] = array
             'exclude'               => true,
             'inputType'             => 'textarea',
             'eval'                  => array('rte'=>'tinyMCE', 'decodeEntities'=>true),
-        ),
-        'ups_enabledService' => array
-        (
-            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_shipping_modules']['ups_enabledService'],
-            'exclude'               => true,
-            'inputType'             => 'select',
-            'options'               => $GLOBALS['TL_LANG']['tl_iso_shipping_modules']['ups_service'],
-            'eval'                  => array('mandatory'=>true)
-        ),
-        'ups_accessKey' => array
-        (
-            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_shipping_modules']['ups_accessKey'],
-            'exclude'               => true,
-            'search'                => true,
-            'inputType'             => 'text',
-            'eval'                  => array('mandatory'=>true, 'maxlength'=>255)
-        ),
-        'ups_userName' => array
-        (
-            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_shipping_modules']['ups_userName'],
-            'exclude'               => true,
-            'search'                => true,
-            'inputType'             => 'text',
-            'eval'                  => array('mandatory'=>true, 'maxlength'=>255)
-        ),
-        'ups_password' => array
-        (
-            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_shipping_modules']['ups_password'],
-            'exclude'               => true,
-            'search'                => true,
-            'inputType'             => 'text',
-            'eval'                  => array('mandatory'=>true, 'maxlength'=>255)
-        ),
-        'usps_enabledService' => array
-        (
-            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_shipping_modules']['usps_enabledService'],
-            'exclude'               => true,
-            'inputType'             => 'select',
-            'options'               => $GLOBALS['TL_LANG']['tl_iso_shipping_modules']['usps_service'],
-            'eval'                  => array('mandatory'=>true)
-        ),
-        'usps_userName' => array
-        (
-            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_shipping_modules']['usps_userName'],
-            'exclude'               => true,
-            'search'                => true,
-            'inputType'             => 'text',
-            'eval'                  => array('mandatory'=>true, 'maxlength'=>255)
         ),
         'countries' => array
         (
@@ -298,16 +246,6 @@ $GLOBALS['TL_DCA']['tl_iso_shipping_modules'] = array
             'options'               => array_keys($GLOBALS['TL_DCA']['tl_iso_products']['fields']),
             'reference'             => &$GLOBALS['TL_LANG']['tl_iso_products'],
             'eval'                  => array('includeBlankOption'=>true, 'tl_class'=>'w50', 'chosen'=>true)
-        ),
-        'weight_unit' => array
-        (
-            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_shipping_modules']['weight_unit'],
-            'exclude'               => true,
-            'default'               => 'kg',
-            'inputType'             => 'select',
-            'options'               => array('mg', 'g', 'kg', 't', 'ct', 'oz', 'lb', 'st', 'grain'),
-            'reference'             => &$GLOBALS['TL_LANG']['WGT'],
-            'eval'                  => array('tl_class'=>'clr', 'helpwizard'=>&$GLOBALS['TL_LANG']['WGT']),
         ),
         'guests' => array
         (

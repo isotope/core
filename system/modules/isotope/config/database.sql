@@ -320,17 +320,10 @@ CREATE TABLE `tl_iso_shipping_modules` (
   `price` varchar(16) NOT NULL default '',
   `surcharge_field` varchar(255) NOT NULL default '',
   `flatCalculation` varchar(10) NOT NULL default '',
-  `weight_unit` varchar(5) NOT NULL default '',
   `guests` char(1) NOT NULL default '',
   `protected` char(1) NOT NULL default '',
   `groups` blob NULL,
   `enabled` char(1) NOT NULL default '',
-  `ups_accessKey` varchar(255) NOT NULL default '',
-  `ups_userName` varchar(255) NOT NULL default '',
-  `ups_password` varchar(255) NOT NULL default '',
-  `ups_enabledService` varchar(255) NOT NULL default '',
-  `usps_userName` varchar(255) NOT NULL default '',
-  `usps_enabledService` varchar(255) NOT NULL default '',
   PRIMARY KEY  (`id`),
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
