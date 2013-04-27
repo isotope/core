@@ -132,7 +132,7 @@ abstract class Shipping extends \Model
      */
     public function isPercentage()
     {
-        substr($this->arrData['price'], -1) == '%' ? true : false;
+        return (substr($this->arrData['price'], -1) == '%') ? true : false;
     }
 
 
