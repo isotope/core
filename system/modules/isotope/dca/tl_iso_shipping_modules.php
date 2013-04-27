@@ -119,7 +119,7 @@ $GLOBALS['TL_DCA']['tl_iso_shipping_modules'] = array
     (
         '__selector__'              => array('type', 'protected'),
         'default'                   => '{title_legend},name,label,type',
-        'Flat'                      => '{title_legend},name,label,type;{note_legend:hide},note;{price_legend},price,tax_class,flatCalculation,surcharge_field;{config_legend},countries,subdivisions,postalCodes,minimum_total,maximum_total,product_types;{expert_legend:hide},guests,protected;{enabled_legend},enabled',
+        'Flat'                      => '{title_legend},name,label,type;{note_legend:hide},note;{price_legend},price,tax_class,flatCalculation;{config_legend},countries,subdivisions,postalCodes,minimum_total,maximum_total,product_types;{expert_legend:hide},guests,protected;{enabled_legend},enabled',
     ),
 
     // Subpalettes
@@ -237,15 +237,6 @@ $GLOBALS['TL_DCA']['tl_iso_shipping_modules'] = array
             'options'               => array('flat', 'perProduct', 'perItem'),
             'reference'             => &$GLOBALS['TL_LANG']['tl_iso_shipping_modules'],
             'eval'                  => array('tl_class'=>'w50'),
-        ),
-        'surcharge_field' => array
-        (
-            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_shipping_modules']['surcharge_field'],
-            'exclude'               => true,
-            'inputType'             => 'select',
-            'options'               => array_keys($GLOBALS['TL_DCA']['tl_iso_products']['fields']),
-            'reference'             => &$GLOBALS['TL_LANG']['tl_iso_products'],
-            'eval'                  => array('includeBlankOption'=>true, 'tl_class'=>'w50', 'chosen'=>true)
         ),
         'guests' => array
         (

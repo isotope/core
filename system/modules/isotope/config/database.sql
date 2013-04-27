@@ -318,7 +318,6 @@ CREATE TABLE `tl_iso_shipping_modules` (
   `maximum_total` decimal(12,2) NOT NULL default '0.00',
   `product_types` blob NULL,
   `price` varchar(16) NOT NULL default '',
-  `surcharge_field` varchar(255) NOT NULL default '',
   `flatCalculation` varchar(10) NOT NULL default '',
   `guests` char(1) NOT NULL default '',
   `protected` char(1) NOT NULL default '',

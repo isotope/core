@@ -105,30 +105,4 @@ class Flat extends Shipping
     }
 
 
-    /**
-     * Calculate surcharge from a product if the surcharge field is set in module settings
-     * @return float
-     */
-    protected function calculateSurcharge(IsotopeProductCollection $objCollection)
-    {
-        if (!strlen($this->surcharge_field))
-            return 0;
-
-        $intSurcharge = 0;
-        $arrProducts = $objCollection->getProducts();
-
-        foreach( $arrProducts as $objProduct )
-        {
-            if ($this->flatCalculation == 'perItem')
-            {
-                $intSurcharge += ($objProduct->quantity_requested * floatval($objProduct->{$this->surcharge_field}));
-            }
-            else
-            {
-                $intSurcharge += floatval($objProduct->{$this->surcharge_field});
-            }
-        }
-
-        return $intSurcharge;
-    }
 }

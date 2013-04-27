@@ -29,7 +29,6 @@ $GLOBALS['TL_LANG']['tl_iso_shipping_modules']['postalCodes']            = array
 $GLOBALS['TL_LANG']['tl_iso_shipping_modules']['minimum_total']            = array('Minimum total');
 $GLOBALS['TL_LANG']['tl_iso_shipping_modules']['maximum_total']            = array('Maximum total');
 $GLOBALS['TL_LANG']['tl_iso_shipping_modules']['product_types']            = array('Product types', 'You can restrict this shipping method to certain product types. If the cart contains a product type you have not selected, the shipping module is not available.');
-$GLOBALS['TL_LANG']['tl_iso_shipping_modules']['surcharge_field']        = array('Shipping Surcharge', 'Please specify a surcharge (for example, a fuel surcharge on all orders) to be applied for this shipping method, if any.');
 $GLOBALS['TL_LANG']['tl_iso_shipping_modules']['groups']                = array('Member Groups','Restrict this shipping option to certain member groups.');
 $GLOBALS['TL_LANG']['tl_iso_shipping_modules']['protected']              = array('Protect module', 'Show the module to certain member groups only.');
 $GLOBALS['TL_LANG']['tl_iso_shipping_modules']['guests']                 = array('Show to guests only', 'Hide the module if a member is logged in.');
