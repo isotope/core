@@ -35,27 +35,25 @@ class tl_iso_shipping_modules extends \Backend
             return;
         }
 
-        $this->import('BackendUser', 'User');
-
-        if ($this->User->isAdmin)
+        if (\BackendUser::getInstance()->isAdmin)
         {
             return;
         }
 
         // Set root IDs
-        if (!is_array($this->User->iso_shipping_modules) || count($this->User->iso_shipping_modules) < 1) // Can't use empty() because its an object property (using __get)
+        if (!is_array(\BackendUser::getInstance()->iso_shipping_modules) || count(\BackendUser::getInstance()->iso_shipping_modules) < 1) // Can't use empty() because its an object property (using __get)
         {
             $root = array(0);
         }
         else
         {
-            $root = $this->User->iso_shipping_modules;
+            $root = \BackendUser::getInstance()->iso_shipping_modules;
         }
 
         $GLOBALS['TL_DCA']['tl_iso_shipping_modules']['list']['sorting']['root'] = $root;
 
         // Check permissions to add shipping modules
-        if (!$this->User->hasAccess('create', 'iso_shipping_modulep'))
+        if (!\BackendUser::getInstance()->hasAccess('create', 'iso_shipping_modulep'))
         {
             $GLOBALS['TL_DCA']['tl_iso_shipping_modules']['config']['closed'] = true;
             unset($GLOBALS['TL_DCA']['tl_iso_shipping_modules']['list']['global_operations']['new']);
@@ -78,11 +76,11 @@ class tl_iso_shipping_modules extends \Backend
                     if (is_array($arrNew['tl_iso_shipping_modules']) && in_array(\Input::get('id'), $arrNew['tl_iso_shipping_modules']))
                     {
                         // Add permissions on user level
-                        if ($this->User->inherit == 'custom' || !$this->User->groups[0])
+                        if (\BackendUser::getInstance()->inherit == 'custom' || !\BackendUser::getInstance()->groups[0])
                         {
                             $objUser = $this->Database->prepare("SELECT iso_shipping_modules, iso_shipping_modulep FROM tl_user WHERE id=?")
                                                        ->limit(1)
-                                                       ->execute($this->User->id);
+                                                       ->execute(\BackendUser::getInstance()->id);
 
                             $arrPermissions = deserialize($objUser->iso_shipping_modulep);
 
@@ -92,16 +90,16 @@ class tl_iso_shipping_modules extends \Backend
                                 $arrAccess[] = \Input::get('id');
 
                                 $this->Database->prepare("UPDATE tl_user SET iso_shipping_modules=? WHERE id=?")
-                                               ->execute(serialize($arrAccess), $this->User->id);
+                                               ->execute(serialize($arrAccess), \BackendUser::getInstance()->id);
                             }
                         }
 
                         // Add permissions on group level
-                        elseif ($this->User->groups[0] > 0)
+                        elseif (\BackendUser::getInstance()->groups[0] > 0)
                         {
                             $objGroup = $this->Database->prepare("SELECT iso_shipping_modules, iso_shipping_modulep FROM tl_user_group WHERE id=?")
                                                        ->limit(1)
-                                                       ->execute($this->User->groups[0]);
+                                                       ->execute(\BackendUser::getInstance()->groups[0]);
 
                             $arrPermissions = deserialize($objGroup->iso_shipping_modulep);
 
@@ -111,13 +109,13 @@ class tl_iso_shipping_modules extends \Backend
                                 $arrAccess[] = \Input::get('id');
 
                                 $this->Database->prepare("UPDATE tl_user_group SET iso_shipping_modules=? WHERE id=?")
-                                               ->execute(serialize($arrAccess), $this->User->groups[0]);
+                                               ->execute(serialize($arrAccess), \BackendUser::getInstance()->groups[0]);
                             }
                         }
 
                         // Add new element to the user object
                         $root[] = \Input::get('id');
-                        $this->User->iso_shipping_modules = $root;
+                        \BackendUser::getInstance()->iso_shipping_modules = $root;
                     }
                 }
                 // No break;
@@ -125,7 +123,7 @@ class tl_iso_shipping_modules extends \Backend
             case 'copy':
             case 'delete':
             case 'show':
-                if (!in_array(\Input::get('id'), $root) || (\Input::get('act') == 'delete' && !$this->User->hasAccess('delete', 'iso_shipping_modulep')))
+                if (!in_array(\Input::get('id'), $root) || (\Input::get('act') == 'delete' && !\BackendUser::getInstance()->hasAccess('delete', 'iso_shipping_modulep')))
                 {
                     $this->log('Not enough permissions to '.\Input::get('act').' shipping module ID "'.\Input::get('id').'"', __METHOD__, TL_ERROR);
                     $this->redirect('contao/main.php?act=error');
@@ -136,7 +134,7 @@ class tl_iso_shipping_modules extends \Backend
             case 'deleteAll':
             case 'overrideAll':
                 $session = $this->Session->getData();
-                if (\Input::get('act') == 'deleteAll' && !$this->User->hasAccess('delete', 'iso_shipping_modulep'))
+                if (\Input::get('act') == 'deleteAll' && !\BackendUser::getInstance()->hasAccess('delete', 'iso_shipping_modulep'))
                 {
                     $session['CURRENT']['IDS'] = array();
                 }
@@ -170,7 +168,7 @@ class tl_iso_shipping_modules extends \Backend
      */
     public function copyShippingModule($row, $href, $label, $title, $icon, $attributes)
     {
-        return ($this->User->isAdmin || $this->User->hasAccess('create', 'iso_shipping_modulep')) ? '<a href="'.$this->addToUrl($href.'&amp;id='.$row['id']).'" title="'.specialchars($title).'"'.$attributes.'>'.$this->generateImage($icon, $label).'</a> ' : $this->generateImage(preg_replace('/\.gif$/i', '_.gif', $icon)).' ';
+        return (\BackendUser::getInstance()->isAdmin || \BackendUser::getInstance()->hasAccess('create', 'iso_shipping_modulep')) ? '<a href="'.$this->addToUrl($href.'&amp;id='.$row['id']).'" title="'.specialchars($title).'"'.$attributes.'>'.$this->generateImage($icon, $label).'</a> ' : $this->generateImage(preg_replace('/\.gif$/i', '_.gif', $icon)).' ';
     }
 
 
@@ -186,6 +184,6 @@ class tl_iso_shipping_modules extends \Backend
      */
     public function deleteShippingModule($row, $href, $label, $title, $icon, $attributes)
     {
-        return ($this->User->isAdmin || $this->User->hasAccess('delete', 'iso_shipping_modulep')) ? '<a href="'.$this->addToUrl($href.'&amp;id='.$row['id']).'" title="'.specialchars($title).'"'.$attributes.'>'.$this->generateImage($icon, $label).'</a> ' : $this->generateImage(preg_replace('/\.gif$/i', '_.gif', $icon)).' ';
+        return (\BackendUser::getInstance()->isAdmin || \BackendUser::getInstance()->hasAccess('delete', 'iso_shipping_modulep')) ? '<a href="'.$this->addToUrl($href.'&amp;id='.$row['id']).'" title="'.specialchars($title).'"'.$attributes.'>'.$this->generateImage($icon, $label).'</a> ' : $this->generateImage(preg_replace('/\.gif$/i', '_.gif', $icon)).' ';
     }
 }
