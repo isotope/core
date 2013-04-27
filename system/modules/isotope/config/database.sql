@@ -337,27 +337,6 @@ CREATE TABLE `tl_iso_shipping_modules` (
 -- --------------------------------------------------------
 
 --
--- Table `tl_iso_shipping_options`
---
-
-CREATE TABLE `tl_iso_shipping_options` (
-  `id` int(10) unsigned NOT NULL auto_increment,
-  `pid` int(10) unsigned NOT NULL default '0',
-  `tstamp` int(10) unsigned NOT NULL default '0',
-  `name` varchar(255) NOT NULL default '',
-  `description` text NULL,
-  `rate` decimal(12,2) NOT NULL default '0.00',
-  `minimum_total` decimal(12,2) NOT NULL default '0.00',
-  `maximum_total` decimal(12,2) NOT NULL default '0.00',
-  `weight_from` varchar(32) NOT NULL default '0',
-  `weight_to` varchar(32) NOT NULL default '0',
-  `enabled` char(1) NOT NULL default '',
-  PRIMARY KEY  (`id`),
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-
--- --------------------------------------------------------
-
---
 -- Table `tl_iso_tax_class`
 --
 

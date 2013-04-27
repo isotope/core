@@ -111,13 +111,6 @@ $GLOBALS['TL_DCA']['tl_iso_shipping_modules'] = array
                 'href'              => 'act=show',
                 'icon'              => 'show.gif'
             ),
-            'options' => array
-            (
-                'label'             => &$GLOBALS['TL_LANG']['tl_iso_shipping_modules']['options'],
-                'href'              => 'table=tl_iso_shipping_options',
-                'icon'              => 'tablewizard.gif',
-                'button_callback'   => array('Isotope\tl_iso_shipping_modules', 'optionsButton'),
-            ),
         )
     ),
 

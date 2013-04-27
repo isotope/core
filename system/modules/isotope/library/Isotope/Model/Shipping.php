@@ -196,23 +196,6 @@ abstract class Shipping extends \Model
 
 
     /**
-     * Initialize the module options DCA in backend
-     */
-    public function moduleOptionsLoad() {}
-
-
-    /**
-     * List module options in backend
-     * @param array
-     * @return string
-     */
-    public function moduleOptionsList($row)
-    {
-        return $row['name'];
-    }
-
-
-    /**
      * Return information or advanced features in the backend.
      * Use this function to present advanced features or basic shipping information for an order in the backend.
      * @param integer

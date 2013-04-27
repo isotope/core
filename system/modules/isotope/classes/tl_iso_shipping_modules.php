@@ -159,30 +159,6 @@ class tl_iso_shipping_modules extends \Backend
 
 
     /**
-     * Callback for options button
-     * @param array
-     * @param string
-     * @param string
-     * @param string
-     * @param string
-     * @param string
-     * @return string
-     */
-    public function optionsButton($row, $href, $label, $title, $icon, $attributes)
-    {
-        switch ($row['type'])
-        {
-            case 'OrderTotal':
-            case 'WeightTotal':
-                return '<a href="'.$this->addToUrl($href.'&amp;id='.$row['id']).'" title="'.specialchars($title).'"'.$attributes.'>'.$this->generateImage($icon, $label).'</a> ';
-
-            default:
-                return '';
-        }
-    }
-
-
-    /**
      * Return the copy shipping module button
      * @param array
      * @param string
