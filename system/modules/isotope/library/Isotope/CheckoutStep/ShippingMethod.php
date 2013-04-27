@@ -45,6 +45,7 @@ class ShippingMethod extends CheckoutStep implements IsotopeCheckoutStep
 
             $objModules = Shipping::findBy(array('id IN (' . implode(',', $arrModuleIds) . ')', (BE_USER_LOGGED_IN === true ? '' : "enabled='1'")), null, array('order'=>\Database::getInstance()->findInSet('id', $arrModuleIds)));
 
+            if (null !== $objModules) {
             while ($objModules->next()) {
 
                 $objModule = $objModules->current();
@@ -76,6 +77,7 @@ class ShippingMethod extends CheckoutStep implements IsotopeCheckoutStep
 
                 $objLastModule = $objModule;
             }
+        }
         }
 
         if (empty($arrModules)) {
