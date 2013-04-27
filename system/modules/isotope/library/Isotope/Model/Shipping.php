@@ -70,67 +70,54 @@ abstract class Shipping extends \Model
      */
     public function isAvailable()
     {
-        if (!$this->enabled && BE_USER_LOGGED_IN !== true)
-        {
+        if (!$this->enabled && BE_USER_LOGGED_IN !== true) {
             return false;
         }
 
-        if (($this->guests && FE_USER_LOGGED_IN === true) || ($this->protected && FE_USER_LOGGED_IN !== true))
-        {
+        if (($this->guests && FE_USER_LOGGED_IN === true) || ($this->protected && FE_USER_LOGGED_IN !== true)) {
             return false;
         }
 
-        if ($this->protected)
-        {
-            $this->import('FrontendUser', 'User');
+        if ($this->protected) {
             $arrGroups = deserialize($this->groups);
 
-            if (!is_array($arrGroups) || empty($arrGroups) || !count(array_intersect($arrGroups, $this->User->groups)))
-            {
+            if (!is_array($arrGroups) || empty($arrGroups) || !count(array_intersect($arrGroups, FrontendUser::getInstance()->groups))) {
                 return false;
             }
         }
 
-        if (($this->minimum_total > 0 && $this->minimum_total > Isotope::getCart()->getSubtotal()) || ($this->maximum_total > 0 && $this->maximum_total < Isotope::getCart()->getSubtotal()))
-        {
+        if (($this->minimum_total > 0 && $this->minimum_total > Isotope::getCart()->getSubtotal()) || ($this->maximum_total > 0 && $this->maximum_total < Isotope::getCart()->getSubtotal())) {
             return false;
         }
 
         $objAddress = Isotope::getCart()->getShippingAddress();
 
         $arrCountries = deserialize($this->countries);
-        if (is_array($arrCountries) && !empty($arrCountries) && !in_array($objAddress->country, $arrCountries))
-        {
+        if (is_array($arrCountries) && !empty($arrCountries) && !in_array($objAddress->country, $arrCountries)) {
             return false;
         }
 
         $arrSubdivisions = deserialize($this->subdivisions);
-        if (is_array($arrSubdivisions) && !empty($arrSubdivisions) && !in_array($objAddress->subdivision, $arrSubdivisions))
-        {
+        if (is_array($arrSubdivisions) && !empty($arrSubdivisions) && !in_array($objAddress->subdivision, $arrSubdivisions)) {
             return false;
         }
 
         // Check if address has a valid postal code
-        if ($this->postalCodes != '')
-        {
+        if ($this->postalCodes != '') {
             $arrCodes = \Isotope\Frontend::parsePostalCodes($this->postalCodes);
 
-            if (!in_array($objAddress->postal, $arrCodes))
-            {
+            if (!in_array($objAddress->postal, $arrCodes)) {
                 return false;
             }
         }
 
         $arrTypes = deserialize($this->product_types);
 
-        if (is_array($arrTypes) && !empty($arrTypes))
-        {
+        if (is_array($arrTypes) && !empty($arrTypes)) {
             $arrProducts = Isotope::getCart()->getProducts();
 
-            foreach ($arrProducts as $objProduct)
-            {
-                if (!in_array($objProduct->type, $arrTypes))
-                {
+            foreach ($arrProducts as $objProduct) {
+                if (!in_array($objProduct->type, $arrTypes)) {
                     return false;
                 }
             }
