@@ -229,7 +229,7 @@ abstract class ProductCollectionSurcharge extends \Model
 
             foreach ($arrPreTax as $objSurcharge)
             {
-                $fltPrice += $objSurcharge->getAmountForProduct($objProduct);
+                $fltPrice += $objSurcharge->getAmountForCollectionItem($objItem);
             }
 
             $objIncludes = $objTaxClass->getRelated('includes');
@@ -315,7 +315,7 @@ abstract class ProductCollectionSurcharge extends \Model
 
             foreach ($arrPreTax as $objSurcharge)
             {
-                if ($objSurcharge->getAmountForProduct($objProduct) > 0) {
+                if ($objSurcharge->getAmountForCollectionItem($objItem) > 0) {
                     foreach ($arrTaxIds as $taxId) {
                         $objSurcharge->addTaxNumber($taxId);
                     }
