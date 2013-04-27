@@ -14,7 +14,9 @@ namespace Isotope\Model\Shipping;
 
 use Isotope\Isotope;
 use Isotope\Interfaces\IsotopeShipping;
+use Isotope\Interfaces\IsotopeProductCollection;
 use Isotope\Model\Shipping;
+use Isotope\Factory\ProductCollectionSurcharge as SurchargeFactory;
 
 
 /**
@@ -216,7 +218,7 @@ class USPS extends Shipping implements IsotopeShipping
     /**
      * Get the checkout surcharge for this shipping method
      */
-    public function getSurcharge($objCollection)
+    public function getSurcharge(IsotopeProductCollection $objCollection)
     {
         $fltPrice = $this->price;
 
@@ -225,11 +227,6 @@ class USPS extends Shipping implements IsotopeShipping
             return false;
         }
 
-        return Isotope::getInstance()->calculateSurcharge(
-                                $fltPrice,
-                                ($GLOBALS['TL_LANG']['MSC']['shippingLabel'] . ' (' . $this->label . ')'),
-                                $this->arrData['tax_class'],
-                                $objCollection->getProducts(),
-                                $this);
+        return SurchargeFactory::buildShippingSurcharge($this, $objCollection);
     }
 }
