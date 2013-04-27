@@ -56,7 +56,6 @@ $GLOBALS['TL_DCA']['tl_iso_shipping_modules'] = array
         (
             'fields'                => array('name', 'type'),
             'format'                => '%s <span style="color:#b3b3b3; padding-left:3px;">[%s]</span>',
-            'label_callback'        => array('Isotope\Backend', 'addPublishIcon'),
         ),
         'global_operations' => array
         (
@@ -105,6 +104,13 @@ $GLOBALS['TL_DCA']['tl_iso_shipping_modules'] = array
                 'attributes'        => 'onclick="if (!confirm(\'' . $GLOBALS['TL_LANG']['MSC']['deleteConfirm'] . '\')) return false; Backend.getScrollOffset();"',
                 'button_callback'   => array('Isotope\tl_iso_shipping_modules', 'deleteShippingModule'),
             ),
+			'toggle' => array
+			(
+				'label'               => &$GLOBALS['TL_LANG']['tl_iso_shipping_modules']['toggle'],
+				'icon'                => 'visible.gif',
+				'attributes'          => 'onclick="Backend.getScrollOffset();return AjaxRequest.toggleVisibility(this,%s)"',
+				'button_callback'     => array('Isotope\tl_iso_shipping_modules', 'toggleIcon')
+			),
             'show' => array
             (
                 'label'             => &$GLOBALS['TL_LANG']['tl_iso_shipping_modules']['show'],

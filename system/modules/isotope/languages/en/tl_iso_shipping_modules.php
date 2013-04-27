@@ -51,7 +51,8 @@ $GLOBALS['TL_LANG']['tl_iso_shipping_modules']['new']                = array('Ne
 $GLOBALS['TL_LANG']['tl_iso_shipping_modules']['edit']                = array('Edit shipping', 'Edit shipping method ID %s');
 $GLOBALS['TL_LANG']['tl_iso_shipping_modules']['copy']                = array('Copy shipping', 'Copy shipping method ID %s');
 $GLOBALS['TL_LANG']['tl_iso_shipping_modules']['delete']            = array('Delete shipping', 'Delete shipping method ID %s');
-$GLOBALS['TL_LANG']['tl_iso_shipping_modules']['show']                = array('shipping Details', 'Show details of shipping method ID %s');
+$GLOBALS['TL_LANG']['tl_iso_shipping_modules']['toggle']            = array('Publish/unpublish shipping', 'Publish/unpublish shipping method ID %s');
+$GLOBALS['TL_LANG']['tl_iso_shipping_modules']['show']              = array('Shipping Details', 'Show details of shipping method ID %s');
 
 /**
  * References
