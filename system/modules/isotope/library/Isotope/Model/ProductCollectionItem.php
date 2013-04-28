@@ -34,7 +34,7 @@ class ProductCollectionItem extends \Model
      * Cache the current product
      * @var IsotopeProduct|false
      */
-    protected $objProduct;
+    protected $objProduct = false;
 
     /**
      * Cache downloads for the collection item
@@ -64,7 +64,7 @@ class ProductCollectionItem extends \Model
     public function lock()
     {
         $this->blnLocked = true;
-        $this->objProduct = null;
+        $this->objProduct = false;
     }
 
 
@@ -74,11 +74,13 @@ class ProductCollectionItem extends \Model
      */
     public function getProduct($blnNoCache=false)
     {
-        if (null === $this->objProduct || true === $blnNoCache) {
+        if (false === $this->objProduct || true === $blnNoCache) {
+
+            $this->objProduct = null;
 
             $strClass = $GLOBALS['ISO_PRODUCT'][$this->type]['class'];
 
-            if ($strClass == '' || class_exists($strClass)) {
+            if ($strClass == '' || !class_exists($strClass)) {
                 $strClass = 'Isotope\Product\Standard';
             }
 
@@ -87,15 +89,11 @@ class ProductCollectionItem extends \Model
 
             if ($objProductData->numRows) {
                 $this->objProduct = new $strClass($objProductData->row(), deserialize($this->options), $this->blnLocked, $this->quantity);
-                $this->objProduct->collection_id = $this->id;
-                $this->objProduct->tax_id = $this->tax_id;
                 $this->objProduct->reader_jumpTo_Override = $this->href_reader;
-            } else {
-                $this->objProduct = false;
             }
         }
 
-        return false === $this->objProduct ? null : $this->objProduct;
+        return $this->objProduct;
     }
 
 
