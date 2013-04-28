@@ -242,7 +242,7 @@ abstract class Shipping extends \Model
     /**
      * Get the checkout surcharge for this shipping method
      */
-    public function getSurcharge($objCollection)
+    public function getSurcharge(IsotopeProductCollection $objCollection)
     {
         if ($this->getPrice() == 0)
         {
