@@ -59,9 +59,6 @@ class Cart extends Module
             return $objTemplate->parse();
         }
 
-        // Do not cache the page
-        global $objPage;
-        $objPage->cache = 0;
 
         return parent::generate();
     }

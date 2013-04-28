@@ -76,13 +76,6 @@ class OrderDetails extends Module
      */
     protected function compile()
     {
-        // Do not cache the page
-        if (TL_MODE == 'FE')
-        {
-            global $objPage;
-            $objPage->cache = 0;
-        }
-
         // Also check owner (see #126)
         if (($objOrder = Order::findOneByUniqid(\Input::get('uid'))) === null || (FE_USER_LOGGED_IN === true && $objOrder->pid > 0 && \FrontendUser::getInstance()->id != $objOrder->pid))
         {
