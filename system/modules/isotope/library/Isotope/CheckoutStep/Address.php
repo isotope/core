@@ -82,15 +82,16 @@ abstract class Address extends CheckoutStep
             }
 
             $strClass = $GLOBALS['TL_FFL']['radio'];
-
-            $arrData = array('id'=>$this->getStepClass(), 'name'=>$this->getStepClass(), 'mandatory'=>true);
-
-            $objWidget = new $strClass($arrData);
-            $objWidget->options = $arrOptions;
-            $objWidget->value = $varValue;
-            $objWidget->onclick = "Isotope.toggleAddressFields(this, '" . $this->getStepClass() . "_new');";
-            $objWidget->storeValues = true;
-            $objWidget->tableless = true;
+            $objWidget = new $strClass(array(
+                'id'            => $this->getStepClass(),
+                'name'          => $this->getStepClass(),
+                'mandatory'     => true,
+                'options'       => $arrOptions,
+                'value'         => $varValue,
+                'onclick'       => "Isotope.toggleAddressFields(this, '" . $this->getStepClass() . "_new');",
+                'storeValues'   => true,
+                'tableless'     => true,
+            ));
 
             // Validate input
             if ($blnValidate) {
