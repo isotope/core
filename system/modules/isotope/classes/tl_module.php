@@ -204,14 +204,7 @@ class tl_module extends \Backend
      */
     public function getListTemplates(\DataContainer $dc)
     {
-        $intPid = $dc->activeRecord->pid;
-
-        if (\Input::get('act') == 'overrideAll')
-        {
-            $intPid = \Input::get('id');
-        }
-
-        return \Isotope\Backend::getTemplates('iso_list_', $intPid);
+        return \Isotope\Backend::getTemplates('iso_list_');
     }
 
 
@@ -222,14 +215,7 @@ class tl_module extends \Backend
      */
     public function getReaderTemplates(\DataContainer $dc)
     {
-        $intPid = $dc->activeRecord->pid;
-
-        if (\Input::get('act') == 'overrideAll')
-        {
-            $intPid = \Input::get('id');
-        }
-
-        return \Isotope\Backend::getTemplates('iso_reader_', $intPid);
+        return \Isotope\Backend::getTemplates('iso_reader_');
     }
 
 
@@ -240,13 +226,6 @@ class tl_module extends \Backend
      */
     public function getCartTemplates(\DataContainer $dc)
     {
-        $intPid = $dc->activeRecord->pid;
-
-        if (\Input::get('act') == 'overrideAll')
-        {
-            $intPid = \Input::get('id');
-        }
-
         return \Isotope\Backend::getTemplates('iso_cart_', $intPid);
     }
 
