@@ -234,7 +234,7 @@ class tl_iso_shipping_modules extends \Backend
 
         // Check permissions to publish
         if (!\BackendUser::getInstance()->isAdmin && !\BackendUser::getInstance()->hasAccess('tl_iso_shipping_modules::enabled', 'alexf')) {
-            $this->log('Not enough permissions to publish/unpublish shipping module ID "'.$intId.'"', __METHOD__, TL_ERROR);
+            $this->log('Not enough permissions to enable/disable shipping method ID "'.$intId.'"', __METHOD__, TL_ERROR);
             $this->redirect('contao/main.php?act=error');
         }
 

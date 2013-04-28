@@ -73,6 +73,7 @@ class tl_iso_payment_modules extends \Backend
                 break;
 
             case 'edit':
+            case 'toggle':
                 // Dynamically add the record to the user profile
                 if (!in_array(\Input::get('id'), $root))
                 {
@@ -236,5 +237,74 @@ class tl_iso_payment_modules extends \Backend
     public function deletePaymentModule($row, $href, $label, $title, $icon, $attributes)
     {
         return ($this->User->isAdmin || $this->User->hasAccess('delete', 'iso_payment_modulep')) ? '<a href="'.$this->addToUrl($href.'&amp;id='.$row['id']).'" title="'.specialchars($title).'"'.$attributes.'>'.$this->generateImage($icon, $label).'</a> ' : $this->generateImage(preg_replace('/\.gif$/i', '_.gif', $icon)).' ';
+    }
+
+
+    /**
+     * Return the "toggle visibility" button
+     * @param array
+     * @param string
+     * @param string
+     * @param string
+     * @param string
+     * @param string
+     * @return string
+     */
+    public function toggleIcon($row, $href, $label, $title, $icon, $attributes)
+    {
+        if (strlen(\Input::get('tid'))) {
+            $this->toggleVisibility(\Input::get('tid'), (\Input::get('state') == 1));
+            $this->redirect($this->getReferer());
+        }
+
+        if (!$row['enabled']) {
+            $icon = 'invisible.gif';
+        }
+
+        if (!\BackendUser::getInstance()->isAdmin && !\BackendUser::getInstance()->hasAccess('tl_iso_payment_modules::enabled', 'alexf')) {
+            return \Image::getHtml($icon) . ' ';
+        }
+
+        $href .= '&amp;tid='.$row['id'].'&amp;state='.($row['enabled'] ? '' : 1);
+
+        return '<a href="'.$this->addToUrl($href).'" title="'.specialchars($title).'"'.$attributes.'>'.\Image::getHtml($icon, $label).'</a> ';
+    }
+
+
+    /**
+     * Disable/enable a user group
+     * @param integer
+     * @param boolean
+     */
+    public function toggleVisibility($intId, $blnVisible)
+    {
+        // Check permissions to edit
+        \Input::setGet('id', $intId);
+        \Input::setGet('act', 'toggle');
+        $this->checkPermission();
+
+        // Check permissions to publish
+        if (!\BackendUser::getInstance()->isAdmin && !\BackendUser::getInstance()->hasAccess('tl_iso_payment_modules::enabled', 'alexf')) {
+            $this->log('Not enough permissions to enable/disable payment method ID "'.$intId.'"', __METHOD__, TL_ERROR);
+            $this->redirect('contao/main.php?act=error');
+        }
+
+        $objVersions = new \Versions('tl_iso_payment_modules', $intId);
+        $objVersions->initialize();
+
+        // Trigger the save_callback
+        if (is_array($GLOBALS['TL_DCA']['tl_iso_payment_modules']['fields']['enabled']['save_callback'])) {
+            foreach ($GLOBALS['TL_DCA']['tl_iso_payment_modules']['fields']['enabled']['save_callback'] as $callback) {
+                $objCallback = \System::importStatic($callback[0]);
+                $blnVisible = $objCallback->$callback[1]($blnVisible, $this);
+            }
+        }
+
+        // Update the database
+        \Database::getInstance()->prepare("UPDATE tl_iso_payment_modules SET tstamp=". time() .", enabled='" . ($blnVisible ? 1 : '') . "' WHERE id=?")
+                                ->execute($intId);
+
+        $objVersions->create();
+        $this->log('A new version of record "tl_iso_payment_modules.id='.$intId.'" has been created'.$this->getParentEntries('tl_iso_payment_modules', $intId), __METHOD__, TL_GENERAL);
     }
 }

@@ -48,11 +48,11 @@ $GLOBALS['TL_LANG']['tl_iso_shipping_modules']['enabled_legend']    = 'Enabled s
  * Buttons
  */
 $GLOBALS['TL_LANG']['tl_iso_shipping_modules']['new']               = array('New shipping method', 'Create a New shipping method');
-$GLOBALS['TL_LANG']['tl_iso_shipping_modules']['edit']              = array('Edit shipping', 'Edit shipping method ID %s');
-$GLOBALS['TL_LANG']['tl_iso_shipping_modules']['copy']              = array('Copy shipping', 'Copy shipping method ID %s');
-$GLOBALS['TL_LANG']['tl_iso_shipping_modules']['delete']            = array('Delete shipping', 'Delete shipping method ID %s');
-$GLOBALS['TL_LANG']['tl_iso_shipping_modules']['toggle']            = array('Publish/unpublish shipping', 'Publish/unpublish shipping method ID %s');
-$GLOBALS['TL_LANG']['tl_iso_shipping_modules']['show']              = array('Shipping Details', 'Show details of shipping method ID %s');
+$GLOBALS['TL_LANG']['tl_iso_shipping_modules']['edit']              = array('Edit shipping method', 'Edit shipping method ID %s');
+$GLOBALS['TL_LANG']['tl_iso_shipping_modules']['copy']              = array('Copy shipping method', 'Copy shipping method ID %s');
+$GLOBALS['TL_LANG']['tl_iso_shipping_modules']['delete']            = array('Delete shipping method', 'Delete shipping method ID %s');
+$GLOBALS['TL_LANG']['tl_iso_shipping_modules']['toggle']            = array('Enable/disable shipping method', 'Enable/disable shipping method ID %s');
+$GLOBALS['TL_LANG']['tl_iso_shipping_modules']['show']              = array('Shipping method details', 'Show details of shipping method ID %s');
 
 /**
  * References

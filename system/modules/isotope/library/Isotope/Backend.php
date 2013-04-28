@@ -72,25 +72,6 @@ class Backend extends Contao_Backend
 
 
     /**
-     * Add published/unpublished image to each record
-     * @param array
-     * @param string
-     * @return string
-     */
-    public function addPublishIcon($row, $label)
-    {
-        $image = 'published';
-
-        if (!$row['enabled'])
-        {
-            $image = 'un'.$image;
-        }
-
-        return sprintf('<div class="list_icon" style="background-image:url(\'system/themes/%s/images/%s.gif\');">%s</div>', $this->getTheme(), $image, $label);
-    }
-
-
-    /**
      * Export email template into XML file
      * @param object
      */
@@ -360,7 +341,7 @@ class Backend extends Contao_Backend
 		// Get the default templates
 		foreach (\TemplateLoader::getPrefixedFiles($strPrefix) as $strTemplate) {
 			$arrTemplates[$strTemplate] = $strTemplate;
-        }
+		}
 
 		$arrCustomized = glob(TL_ROOT . '/templates/' . $strPrefix . '*');
 
@@ -373,20 +354,20 @@ class Backend extends Contao_Backend
 				if (!isset($arrTemplates[$strTemplate])) {
 					$arrTemplates[''][$strTemplate] = $strTemplate;
 				}
-            }
-        }
+			}
+		}
 
 		// Do not look for back end templates in theme folders (see #5379)
 		if ($strPrefix == 'be_') {
 			return $arrTemplates;
-            }
+		}
 
 		// Try to select the shop configs
 		try {
 			$objConfig = Config::findAll(array('order'=>'name'));
 		} catch (\Exception $e) {
 			$objConfig = null;
-        }
+		}
 
 		// Add the shop config templates
 		if (null !== $objConfig) {
@@ -407,8 +388,8 @@ class Backend extends Contao_Backend
 						}
 					}
 				}
-            }
-        }
+			}
+		}
 
 		// Try to select the themes (see #5210)
 		try {
@@ -433,11 +414,11 @@ class Backend extends Contao_Backend
 							if (!isset($arrTemplates[''][$strTemplate])) {
 								$arrTemplates[$strFolder][$strTemplate] = $strTemplate;
 							}
-                }
-                }
-                }
-            }
-        }
+						}
+					}
+				}
+			}
+		}
 
         return $arrTemplates;
     }

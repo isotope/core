@@ -68,10 +68,11 @@ $GLOBALS['TL_LANG']['tl_iso_payment_modules']['enabled']                    = ar
 /**
  * Buttons
  */
-$GLOBALS['TL_LANG']['tl_iso_payment_modules']['new']                        = array('New payment method', 'Create a New payment method');
+$GLOBALS['TL_LANG']['tl_iso_payment_modules']['new']                        = array('New payment method', 'Create a new payment method');
 $GLOBALS['TL_LANG']['tl_iso_payment_modules']['edit']                       = array('Edit payment method', 'Edit payment method ID %s');
 $GLOBALS['TL_LANG']['tl_iso_payment_modules']['copy']                       = array('Copy payment method', 'Copy payment method ID %s');
 $GLOBALS['TL_LANG']['tl_iso_payment_modules']['delete']                     = array('Delete payment method', 'Delete payment method ID %s');
+$GLOBALS['TL_LANG']['tl_iso_payment_modules']['toggle']                     = array('Enable/disable payment method', 'Enable/disable payment method ID %s');
 $GLOBALS['TL_LANG']['tl_iso_payment_modules']['show']                       = array('Payment method details', 'Show details of payment method ID %s');
 
 /**
