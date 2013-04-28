@@ -199,6 +199,7 @@ class Checkout extends Module
 
                 if ($objModule->hasError()) {
                     $this->doNotSubmit = true;
+                    $this->Template->showNext = false;
                 }
 
                 // the user wanted to proceed but the current step is not completed yet
