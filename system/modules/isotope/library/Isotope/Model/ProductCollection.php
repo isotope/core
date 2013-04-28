@@ -684,7 +684,7 @@ abstract class ProductCollection extends \Model
         if (null === $this->arrItems || $blnNoCache) {
             $this->arrItems = array();
 
-            if (($objItems = ProductCollectionItem::findByPid($this->id)) !== null) {
+            if (($objItems = ProductCollectionItem::findBy('pid', $this->id, array('uncached'=>true))) !== null) {
                 while ($objItems->next()) {
 
                     $objItem = $objItems->current();
