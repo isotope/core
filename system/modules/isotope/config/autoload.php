@@ -69,7 +69,6 @@ TemplateLoader::addFiles(array
     'iso_checkout_address'          => 'system/modules/isotope/templates/checkout',
     'iso_checkout_order_conditions' => 'system/modules/isotope/templates/checkout',
     'iso_checkout_order_info'       => 'system/modules/isotope/templates/checkout',
-    'iso_checkout_order_products'   => 'system/modules/isotope/templates/checkout',
     'iso_checkout_payment_method'   => 'system/modules/isotope/templates/checkout',
     'iso_checkout_shipping_method'  => 'system/modules/isotope/templates/checkout',
     'iso_cart_full'                 => 'system/modules/isotope/templates/isotope',

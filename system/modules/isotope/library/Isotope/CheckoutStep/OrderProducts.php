@@ -34,42 +34,13 @@ class OrderProducts extends CheckoutStep implements IsotopeCheckoutStep
      */
     public function generate()
     {
-        $objTemplate = new \Isotope\Template('iso_checkout_order_products');
-
-        // Surcharges must be initialized before getProducts() to apply tax_id to each product
-        $arrSurcharges = Isotope::getCart()->getSurcharges();
-        $arrProductData = array();
-        $arrProducts = Isotope::getCart()->getProducts();
-
-        foreach ($arrProducts as $objProduct)
-        {
-            $arrProductData[] = array_merge($objProduct->getAttributes(), array
-            (
-                'id'                => $objProduct->id,
-                'image'                => $objProduct->images->main_image,
-                'link'                => $objProduct->href_reader,
-                'price'                => Isotope::formatPriceWithCurrency($objProduct->price),
-                'tax_free_price'    => Isotope::formatPriceWithCurrency($objProduct->tax_free_price),
-                'total_price'        => Isotope::formatPriceWithCurrency($objProduct->total_price),
-                'tax_free_total_price'    => Isotope::formatPriceWithCurrency($objProduct->tax_free_total_price),
-                'quantity'            => $objProduct->quantity_requested,
-                'tax_id'            => $objProduct->tax_id,
-                'product_options'    => Isotope::formatOptions($objProduct->getOptions()),
-            ));
-        }
-
-        $objTemplate->collection = Isotope::getCart();
-        $objTemplate->products = \Isotope\Frontend::generateRowClass($arrProductData, 'row', 'rowClass', 0, ISO_CLASS_COUNT|ISO_CLASS_FIRSTLAST|ISO_CLASS_EVENODD);
-        $objTemplate->surcharges = \Isotope\Frontend::formatSurcharges($arrSurcharges);
-        $objTemplate->subTotalLabel = $GLOBALS['TL_LANG']['MSC']['subTotalLabel'];
-        $objTemplate->grandTotalLabel = $GLOBALS['TL_LANG']['MSC']['grandTotalLabel'];
-        $objTemplate->subTotalPrice = Isotope::formatPriceWithCurrency(Isotope::getCart()->getSubtotal());
-        $objTemplate->grandTotalPrice = Isotope::formatPriceWithCurrency(Isotope::getCart()->getTotal());
-
-        return $objTemplate->parse();
+        return Isotope::getCart()->generate($this->objModule->iso_collectionTpl);
     }
 
-
+    /**
+     * Cart product view does not have review information
+     * @return  string
+     */
     public function review()
     {
         return '';
