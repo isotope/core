@@ -36,14 +36,10 @@ class ShippingMethod extends CheckoutStep implements IsotopeCheckoutStep
     public function generate()
     {
         $arrModules = array();
-        $arrModuleIds = deserialize($this->objModule->iso_shipping_modules);
+        $arrOptions = array();
 
-        if (!empty($arrModuleIds) && is_array($arrModuleIds)) {
-
-            $arrData = \Input::post('shipping');
-            $arrModuleIds = array_map('intval', $arrModuleIds);
-
-            $objModules = Shipping::findBy(array('id IN (' . implode(',', $arrModuleIds) . ')', (BE_USER_LOGGED_IN === true ? '' : "enabled='1'")), null, array('order'=>\Database::getInstance()->findInSet('id', $arrModuleIds)));
+        $arrIds = array_map('intval', deserialize($this->objModule->iso_shipping_modules, true));
+        $objModules = Shipping::findBy(array('id IN (' . implode(',', $arrIds) . ')', (BE_USER_LOGGED_IN === true ? '' : "enabled='1'")), null, array('order'=>\Database::getInstance()->findInSet('id', $arrIds)));
 
             if (null !== $objModules) {
             while ($objModules->next()) {
@@ -54,35 +50,21 @@ class ShippingMethod extends CheckoutStep implements IsotopeCheckoutStep
                     continue;
                 }
 
-                if (is_array($arrData) && $arrData['module'] == $objModule->id) {
-                    $_SESSION['CHECKOUT_DATA']['shipping'] = $arrData;
-                }
-
-                if (is_array($_SESSION['CHECKOUT_DATA']['shipping']) && $_SESSION['CHECKOUT_DATA']['shipping']['module'] == $objModule->id) {
-                    Isotope::getCart()->setShippingMethod($objModule);
-                }
-
                 $fltPrice = $objModule->price;
                 $strSurcharge = $objModule->surcharge;
                 $strPrice = $fltPrice != 0 ? (($strSurcharge == '' ? '' : ' ('.$strSurcharge.')') . ': '.Isotope::formatPriceWithCurrency($fltPrice)) : '';
 
-                $arrModules[] = array(
-                    'id'        => $objModule->id,
-                    'label'     => $objModule->label,
-                    'price'     => $strPrice,
-                    'checked'   => ((Isotope::getCart()->getShippingMethod()->id == $objModule->id || $objModules->numRows == 1) ? ' checked="checked"' : ''),
-                    'note'      => $objModule->note,
-                    'form'      => $objModule->getShippingOptions($this),
+                $arrOptions[] = array(
+                    'value'     => $objModule->id,
+                    'label'     => $objModule->getLabel() . $strPrice,
                 );
 
-                $objLastModule = $objModule;
-            }
+                $arrModules[$objModule->id] = $objModule;
         }
         }
 
         if (empty($arrModules)) {
             $this->blnError = true;
-            $this->Template->showNext = false;
 
             $objTemplate = new \Isotope\Template('mod_message');
             $objTemplate->class = 'shipping_method';
@@ -94,25 +76,42 @@ class ShippingMethod extends CheckoutStep implements IsotopeCheckoutStep
             return $objTemplate->parse();
         }
 
-        $objTemplate = new \Isotope\Template('iso_checkout_shipping_method');
+        $strClass = $GLOBALS['TL_FFL']['radio'];
+        $objWidget = new $strClass(array(
+            'id'            => $this->getStepClass(),
+            'name'          => $this->getStepClass(),
+            'mandatory'     => true,
+            'options'       => $arrOptions,
+            'value'         => Isotope::getCart()->shipping_id,
+            'onclick'       => "Isotope.toggleAddressFields(this, '" . $this->getStepClass() . "_new');",
+            'storeValues'   => true,
+            'tableless'     => true,
+        ));
 
-        if (!Isotope::getCart()->hasShipping() && !strlen($_SESSION['CHECKOUT_DATA']['shipping']['module']) && count($arrModules) == 1) {
+        // If there is only one shipping method, mark it as selected by default
+        if (count($arrModules) == 1) {
+            $objModule = reset($arrModules);
+            $objWidget->value = $objModule->id;
+            Isotope::getCart()->setShippingMethod($objModule);
+        }
 
-            Isotope::getCart()->setShippingMethod($objLastModule);
-            $_SESSION['CHECKOUT_DATA']['shipping']['module'] = Isotope::getCart()->getShippingMethod()->id;
-            $arrModules[0]['checked'] = ' checked="checked"';
+        if (\Input::post('FORM_SUBMIT') == $this->objModule->getFormId()) {
+            $objWidget->validate();
 
-        } elseif (!Isotope::getCart()->hasShipping()) {
-
-            if (\Input::post('FORM_SUBMIT') != '') {
-                $objTemplate->error = $GLOBALS['TL_LANG']['MSC']['shipping_method_missing'];
+            if (!$objWidget->hasErrors()) {
+                Isotope::getCart()->setShippingMethod($arrModules[$objWidget->value]);
+            }
             }
 
+        $objTemplate = new \Isotope\Template('iso_checkout_shipping_method');
+
+        if (!Isotope::getCart()->hasShipping() || !isset($arrModules[Isotope::getCart()->shipping_id])) {
             $this->blnError = true;
         }
 
         $objTemplate->headline = $GLOBALS['TL_LANG']['MSC']['shipping_method'];
         $objTemplate->message = $GLOBALS['TL_LANG']['MSC']['shipping_method_message'];
+        $objTemplate->options = $objWidget->parse();
         $objTemplate->shippingMethods = $arrModules;
 
         if (!$this->hasError()) {
@@ -121,11 +120,6 @@ class ShippingMethod extends CheckoutStep implements IsotopeCheckoutStep
             $this->objModule->arrOrderData['shipping_method']      = $objShipping->label;
             $this->objModule->arrOrderData['shipping_note']        = $objShipping->note;
             $this->objModule->arrOrderData['shipping_note_text']   = strip_tags($objShipping->note);
-        }
-
-        // Remove payment step if items are free of charge
-        if (!Isotope::getCart()->requiresPayment()) {
-            unset($GLOBALS['ISO_CHECKOUT_STEPS']['payment']);
         }
 
         return $objTemplate->parse();
