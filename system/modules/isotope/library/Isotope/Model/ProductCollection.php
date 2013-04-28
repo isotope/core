@@ -1079,28 +1079,19 @@ abstract class ProductCollection extends \Model
      */
     public function generate($strTemplate, $blnResetConfig=true)
     {
-        $objTemplate = new \Isotope\Template($this->strTemplate);
-        $objTemplate->setData($this->arrData);
-        $objTemplate->logoImage = '';
-
-        if (Isotope::getConfig()->invoiceLogo != '' && is_file(TL_ROOT . '/' . Isotope::getConfig()->invoiceLogo))
-        {
-            $objTemplate->logoImage = '<img src="' . TL_ROOT . '/' . Isotope::getConfig()->invoiceLogo . '" alt="" />';
-        }
-
-        $objTemplate->invoiceTitle = $GLOBALS['TL_LANG']['MSC']['iso_invoice_title'] . ' ' . $this->order_id . ' – ' . date($GLOBALS['TL_CONFIG']['datimFormat'], $this->date);
+        $objTemplate = new \Isotope\Template($strTemplate);
 
         $arrItems = array();
-        $objBillingAddress = $this->getBillingAddress();
-        $objShippingAddress = $this->getShippingAddress();
 
-        foreach ($objOrder->getItems() as $objItem)
+        foreach ($this->getItems() as $objItem)
         {
             $objProduct = $objItem->getProduct();
 
             $arrItems[] = array
             (
-                'raw'               => ($objItem->hasProduct() ? $objProduct->getData() : $objItem->row()),
+                'raw'               => $objItem->row(),
+                'hasProduct'        => $objItem->hasProduct(),
+                'product'           => $objProduct,
                 'sku'               => $objItem->getSku(),
                 'name'              => $objItem->getName(),
                 'options'           => Isotope::formatOptions($objItem->getOptions()),
@@ -1109,37 +1100,16 @@ abstract class ProductCollection extends \Model
                 'tax_free_price'    => Isotope::formatPriceWithCurrency($objItem->getTaxFreePrice()),
                 'total'             => Isotope::formatPriceWithCurrency($objItem->getPrice() * $objItem->quantity),
                 'tax_free_total'    => Isotope::formatPriceWithCurrency($objItem->getTaxFreePrice() * $objItem->quantity),
-                'href'              => ($this->jumpTo ? $this->generateFrontendUrl($arrPage, ($GLOBALS['TL_CONFIG']['useAutoItem'] ? '/' : '/product/') . $objProduct->alias) : ''),
-                'tax_id'            => $objProduct->tax_id,
+                'tax_id'            => $objItem->tax_id,
             );
         }
 
         $objTemplate->collection = $this;
-        $objTemplate->config = Isotope::getConfig()->getData();
-        $objTemplate->info = deserialize($this->checkout_info);
+        $objTemplate->config = ($this->getRelated('config_id') || Isotope::getConfig());
         $objTemplate->items = $arrItems;
-        $objTemplate->raw = $this->arrData;
-        $objTemplate->date = \System::parseDate($GLOBALS['TL_CONFIG']['dateFormat'], $this->date);
-        $objTemplate->time = \System::parseDate($GLOBALS['TL_CONFIG']['timeFormat'], $this->date);
-        $objTemplate->datim = \System::parseDate($GLOBALS['TL_CONFIG']['datimFormat'], $this->date);
-        $objTemplate->datimLabel = $GLOBALS['TL_LANG']['MSC']['datimLabel'];
-        $objTemplate->subTotalPrice = Isotope::formatPriceWithCurrency($this->getSubtotal());
-        $objTemplate->grandTotal = Isotope::formatPriceWithCurrency($this->getTotal());
-        $objTemplate->subTotalLabel = $GLOBALS['TL_LANG']['MSC']['subTotalLabel'];
-        $objTemplate->grandTotalLabel = $GLOBALS['TL_LANG']['MSC']['grandTotalLabel'];
 
-        $objTemplate->surcharges = \Isotope\Frontend::formatSurcharges($this->getSurcharges());
-        $objTemplate->billing_label = $GLOBALS['TL_LANG']['MSC']['billing_address'];
-        $objTemplate->billing_address = (null === $objBillingAddress) ? '' : $objBillingAddress->generateText(Isotope::getConfig()->billing_fields);
-
-        if ($this->shipping_method == '' || null === $objShippingAddress || null === $objBillingAddress || $objShippingAddress->id == $objBillingAddress->id) {
-            $objTemplate->has_shipping = false;
-            $objTemplate->billing_label = $GLOBALS['TL_LANG']['MSC']['billing_shipping_address'];
-        } else {
-            $objTemplate->has_shipping = true;
-            $objTemplate->shipping_label = $GLOBALS['TL_LANG']['MSC']['shipping_address'];
-            $objTemplate->shipping_address = $objShippingAddress->generateText(Isotope::getConfig()->shipping_fields);
-        }
+        $objTemplate->subtotalAmount = Isotope::formatPriceWithCurrency($this->getSubtotal());
+        $objTemplate->totalAmount = Isotope::formatPriceWithCurrency($this->getTotal());
 
         // !HOOK: allow overriding of the template
         if (isset($GLOBALS['ISO_HOOKS']['generateCollection']) && is_array($GLOBALS['ISO_HOOKS']['generateCollection']))
@@ -1151,7 +1121,7 @@ abstract class ProductCollection extends \Model
             }
         }
 
-        return $strArticle;
+        return $objTemplate->parse();
     }
 
 
