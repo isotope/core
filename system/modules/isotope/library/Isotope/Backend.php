@@ -13,6 +13,7 @@
 namespace Isotope;
 
 use \Contao\Backend as Contao_Backend;
+use Isotope\Model\Config;
 use Isotope\Model\OrderStatus;
 
 
@@ -352,84 +353,91 @@ class Backend extends Contao_Backend
      * @param int
      * @return array
      */
-    public static function getTemplates($strPrefix, $intTheme=0)
+    public static function getTemplates($strPrefix)
     {
-        $objDatabase = \Database::getInstance();
-        $objConfig = \Config::getInstance();
-
-        // Method could be triggered before Isotope is installed
-        if (!$objDatabase->tableExists('tl_iso_config'))
-        {
-            return array();
-        }
-
-        $arrThemes = array();
-        $arrStores = array();
         $arrTemplates = array();
-        $arrFolders = array();
 
-        // Add the templates root directory
-        $arrFolders[] = TL_ROOT . '/templates';
+		// Get the default templates
+		foreach (\TemplateLoader::getPrefixedFiles($strPrefix) as $strTemplate) {
+			$arrTemplates[$strTemplate] = $strTemplate;
+        }
 
-        // Add theme templates folder
-        $objTheme = $objDatabase->execute("SELECT name, templates FROM tl_theme" . ($intTheme>0 ? " WHERE id=$intTheme" : ''));
-        while ($objTheme->next())
-        {
-            if ($objTheme->templates != '' && is_dir(TL_ROOT .'/'. $objTheme->templates))
-            {
-                $arrFolders[] = TL_ROOT .'/'. $objTheme->templates;
-                $arrThemes[TL_ROOT .'/'. $objTheme->templates] = $objTheme->name;
+		$arrCustomized = glob(TL_ROOT . '/templates/' . $strPrefix . '*');
+
+		// Add the customized templates
+		if (is_array($arrCustomized)) {
+			foreach ($arrCustomized as $strFile) {
+
+				$strTemplate = basename($strFile, strrchr($strFile, '.'));
+
+				if (!isset($arrTemplates[$strTemplate])) {
+					$arrTemplates[''][$strTemplate] = $strTemplate;
+				}
             }
         }
 
-        // Add Isotope config templates folder
-        $objStore = $objDatabase->execute("SELECT name, templateGroup FROM tl_iso_config");
-        while ($objStore->next())
-        {
-            if ($objStore->templateGroup != '' && is_dir(TL_ROOT .'/'. $objStore->templateGroup))
-            {
-                $arrFolders[] = TL_ROOT .'/'. $objStore->templateGroup;
-                $arrStores[TL_ROOT .'/'. $objStore->templateGroup] = $objStore->name;
+		// Do not look for back end templates in theme folders (see #5379)
+		if ($strPrefix == 'be_') {
+			return $arrTemplates;
+            }
+
+		// Try to select the shop configs
+		try {
+			$objConfig = Config::findAll(array('order'=>'name'));
+		} catch (\Exception $e) {
+			$objConfig = null;
+        }
+
+		// Add the shop config templates
+		if (null !== $objConfig) {
+			while ($objConfig->next()) {
+				if ($objConfig->templateGroup != '') {
+
+    				$strFolder = sprintf($GLOBALS['TL_LANG']['MSC']['templatesConfig'], $objConfig->name);
+					$arrConfigTemplates = glob(TL_ROOT . '/' . $objConfig->templateGroup . '/' . $strPrefix . '*');
+
+					if (is_array($arrConfigTemplates)) {
+						foreach ($arrConfigTemplates as $strFile) {
+
+							$strTemplate = basename($strFile, strrchr($strFile, '.'));
+
+							if (!isset($arrTemplates[''][$strTemplate])) {
+								$arrTemplates[$strFolder][$strTemplate] = $strTemplate;
+							}
+						}
+					}
+				}
             }
         }
 
-        // Add the module templates folders if they exist
-        foreach ($objConfig->getActiveModules() as $strModule)
-        {
-            $strFolder = TL_ROOT . '/system/modules/' . $strModule . '/templates';
+		// Try to select the themes (see #5210)
+		try {
+			$objTheme = \ThemeModel::findAll(array('order'=>'name'));
+		} catch (\Exception $e) {
+			$objTheme = null;
+		}
 
-            if (is_dir($strFolder))
-            {
-                $arrFolders[] = $strFolder;
-            }
-        }
+		// Add the theme templates
+		if (null !== $objTheme) {
+			while ($objTheme->next()) {
+				if ($objTheme->templates != '') {
 
-        // Find all matching templates
-        foreach ($arrFolders as $strFolder)
-        {
-            $arrFiles = preg_grep('/^' . preg_quote($strPrefix, '/') . '/i',  scan($strFolder));
+    				$strFolder = sprintf($GLOBALS['TL_LANG']['MSC']['templatesTheme'], $objTheme->name);
+					$arrThemeTemplates = glob(TL_ROOT . '/' . $objTheme->templates . '/' . $strPrefix . '*');
 
-            foreach ($arrFiles as $strTemplate)
-            {
-                $strName = basename($strTemplate);
-                $strName = substr($strName, 0, strrpos($strName, '.'));
+					if (is_array($arrThemeTemplates)) {
+						foreach ($arrThemeTemplates as $strFile) {
 
-                if (isset($arrThemes[$strFolder]))
-                {
-                    $arrTemplates[$strName] = sprintf($GLOBALS['TL_LANG']['MSC']['templateTheme'], $strName, $arrThemes[$strFolder]);
+							$strTemplate = basename($strFile, strrchr($strFile, '.'));
+
+							if (!isset($arrTemplates[''][$strTemplate])) {
+								$arrTemplates[$strFolder][$strTemplate] = $strTemplate;
+							}
                 }
-                elseif (isset($arrStores[$strFolder]))
-                {
-                    $arrTemplates[$strName] = sprintf($GLOBALS['TL_LANG']['MSC']['templateConfig'], $strName, $arrStores[$strFolder]);
                 }
-                else
-                {
-                    $arrTemplates[$strName] = $strName;
                 }
             }
         }
-
-        natcasesort($arrTemplates);
 
         return $arrTemplates;
     }

@@ -144,17 +144,16 @@ $GLOBALS['TL_LANG']['MSC']['backendPaymentNotFound']            = 'Payment modul
 $GLOBALS['TL_LANG']['MSC']['backendShippingNotFound']           = 'Shipping module not found!';
 $GLOBALS['TL_LANG']['MSC']['backendPaymentNoInfo']              = 'This payment module does not provide additional information.';
 $GLOBALS['TL_LANG']['MSC']['backendShippingNoInfo']             = 'This shipping module does not provide additional information.';
-$GLOBALS['TL_LANG']['MSC']['useDefault']                       = 'Use default value';
-$GLOBALS['TL_LANG']['MSC']['activeStep']                       = 'active step: ';
-$GLOBALS['TL_LANG']['MSC']['productcacheLoading']              = 'Loading products...';
-$GLOBALS['TL_LANG']['MSC']['productcacheNoscript']             = 'Your browser does not support JavaScript. Please <a href="%s">click here</a> to load the product list.';
-$GLOBALS['TL_LANG']['MSC']['noFilesInFolder']                  = 'No files in this folder';
-$GLOBALS['TL_LANG']['MSC']['loadingProductData']               = 'Loading product data …';
-$GLOBALS['TL_LANG']['MSC']['templateConfig']                   = '%s (Store Config: %s)';
-$GLOBALS['TL_LANG']['MSC']['templateTheme']                    = '%s (Theme: %s)';
-$GLOBALS['TL_LANG']['MSC']['splittedTaxRate']                  = 'Splitted';
-$GLOBALS['TL_LANG']['MSC']['newOrders']                        = 'You have %s order(s) with status "%s"';
-$GLOBALS['TL_LANG']['MSC']['checkoutStep']                     = 'Step %s of %s (%s) - ';
+$GLOBALS['TL_LANG']['MSC']['useDefault']                        = 'Use default value';
+$GLOBALS['TL_LANG']['MSC']['activeStep']                        = 'active step: ';
+$GLOBALS['TL_LANG']['MSC']['productcacheLoading']               = 'Loading products...';
+$GLOBALS['TL_LANG']['MSC']['productcacheNoscript']              = 'Your browser does not support JavaScript. Please <a href="%s">click here</a> to load the product list.';
+$GLOBALS['TL_LANG']['MSC']['noFilesInFolder']                   = 'No files in this folder';
+$GLOBALS['TL_LANG']['MSC']['loadingProductData']                = 'Loading product data …';
+$GLOBALS['TL_LANG']['MSC']['templatesConfig']                   = 'Store Config "%s"';
+$GLOBALS['TL_LANG']['MSC']['splittedTaxRate']                   = 'Splitted';
+$GLOBALS['TL_LANG']['MSC']['newOrders']                         = 'You have %s order(s) with status "%s"';
+$GLOBALS['TL_LANG']['MSC']['checkoutStep']                      = 'Step %s of %s (%s) - ';
 
 /**
  * Content elements
