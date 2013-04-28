@@ -264,35 +264,10 @@ class Checkout extends Module
         }
 
         // Show checkout steps
-        $arrStepKeys = array_keys($this->getSteps());
-        $blnPassed = true;
-        $total = count($arrStepKeys) - 1;
-        $arrSteps = array();
-
-        if ($this->strCurrentStep != 'process' && $this->strCurrentStep != 'complete')
-        {
-            foreach ($arrStepKeys as $i => $step)
-            {
-                if ($this->strCurrentStep == $step)
-                {
-                    $blnPassed = false;
-                }
-
-                $blnActive = $this->strCurrentStep == $step ? true : false;
-
-                $arrSteps[] = array
-                (
-                    'isActive'    => $blnActive,
-                    'class'        => 'step_' . $i . (($i == 0) ? ' first' : '') . ($i == $total ? ' last' : '') . ($blnActive ? ' active' : '') . ($blnPassed ? ' passed' : '') . ((!$blnPassed && !$blnActive) ? ' upcoming' : '') . ' '. $step,
-                    'label'        => (strlen($GLOBALS['TL_LANG']['MSC']['checkout_' . $step]) ? $GLOBALS['TL_LANG']['MSC']['checkout_' . $step] : $step),
-                    'href'        => ($blnPassed ? $this->addToUrl('step=' . $step, true) : ''),
-                    'title'        => specialchars(sprintf($GLOBALS['TL_LANG']['MSC']['checkboutStepBack'], (strlen($GLOBALS['TL_LANG']['MSC']['checkout_' . $step]) ? $GLOBALS['TL_LANG']['MSC']['checkout_' . $step] : $step))),
-                );
-            }
-        }
-
-        $this->Template->steps = $arrSteps;
+        $this->Template->steps = $this->generateSteps();
         $this->Template->activeStep = $GLOBALS['TL_LANG']['MSC']['activeStep'];
+
+        $arrStepKeys = array_keys($this->getSteps());
 
         // Hide back buttons it this is the first step
         if (array_search($this->strCurrentStep, $arrStepKeys) === 0)
@@ -301,7 +276,7 @@ class Checkout extends Module
         }
 
         // Show "confirm order" button if this is the last step
-        elseif (array_search($this->strCurrentStep, $arrStepKeys) === $total)
+        elseif (array_search($this->strCurrentStep, $arrStepKeys) === (count($arrStepKeys) - 1))
         {
             $this->Template->nextClass = 'confirm';
             $this->Template->nextLabel = specialchars($GLOBALS['TL_LANG']['MSC']['confirmOrder']);
@@ -545,5 +520,55 @@ class Checkout extends Module
         }
 
         return $arrSteps;
+    }
+
+    /**
+     * Generate checkout step navigation
+     * @return  array
+     */
+    protected function generateSteps()
+    {
+        if ($this->strCurrentStep == 'process' || $this->strCurrentStep == 'complete') {
+            return array();
+        }
+
+        $arrItems = array();
+        $blnPassed = true;
+
+        foreach (array_keys($this->getSteps()) as $i => $step) {
+
+            $blnActive = false;
+            $href = '';
+            $class = standardize($step);
+
+            if ($this->strCurrentStep == $step) {
+                $blnPassed = false;
+                $blnActive = true;
+                $class .= ' active';
+            }
+            elseif ($blnPassed) {
+                $href = $this->addToUrl('step=' . $step, true);
+                $class .= ' passed';
+            }
+
+            $arrItems[] = array
+            (
+                'isActive'  => $blnActive,
+                'class'     => $class,
+                'link'      => ($GLOBALS['TL_LANG']['MSC']['checkout_' . $step] ?: $step),
+                'href'      => $href,
+                'title'     => specialchars(sprintf($GLOBALS['TL_LANG']['MSC']['checkboutStepBack'], ($GLOBALS['TL_LANG']['MSC']['checkout_' . $step] ?: $step))),
+            );
+        }
+
+        if (empty($arrItems)) {
+            return array();
+        }
+
+        // Add first/last classes
+        $arrItems[0]['class'] .= ' first';
+        $arrItems[count($arrItems)-1]['class'] .= ' last';
+
+        return $arrItems;
     }
 }
