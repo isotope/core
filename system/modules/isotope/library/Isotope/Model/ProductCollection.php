@@ -1174,45 +1174,6 @@ abstract class ProductCollection extends \Model
             }
         }
 
-        $strArticle = Isotope::getInstance()->call('replaceInsertTags', array($objTemplate->parse()));
-        $strArticle = html_entity_decode($strArticle, ENT_QUOTES, $GLOBALS['TL_CONFIG']['characterSet']);
-        $strArticle = \Controller::convertRelativeUrls($strArticle, '', true);
-
-        // Remove form elements and JavaScript links
-        $arrSearch = array
-        (
-            '@<form.*</form>@Us',
-            '@<a [^>]*href="[^"]*javascript:[^>]+>.*</a>@Us'
-        );
-
-        $strArticle = preg_replace($arrSearch, '', $strArticle);
-
-        // Handle line breaks in preformatted text
-        $strArticle = preg_replace_callback('@(<pre.*</pre>)@Us', 'nl2br_callback', $strArticle);
-
-        // Default PDF export using TCPDF
-        $arrSearch = array
-        (
-            '@<span style="text-decoration: ?underline;?">(.*)</span>@Us',
-            '@(<img[^>]+>)@',
-            '@(<div[^>]+block[^>]+>)@',
-            '@[\n\r\t]+@',
-            '@<br /><div class="mod_article@',
-            '@href="([^"]+)(pdf=[0-9]*(&|&amp;)?)([^"]*)"@'
-        );
-
-        $arrReplace = array
-        (
-            '<u>$1</u>',
-            '<br />$1',
-            '<br />$1',
-            ' ',
-            '<div class="mod_article',
-            'href="$1$4"'
-        );
-
-        $strArticle = preg_replace($arrSearch, $arrReplace, $strArticle);
-
         // Set config back to default
         if ($blnResetConfig)
         {
@@ -1221,85 +1182,6 @@ abstract class ProductCollection extends \Model
         }
 
         return $strArticle;
-    }
-
-
-    /**
-     * Generate a PDF file and optionally send it to the browser
-     * @param string
-     * @param object
-     * @param boolean
-     */
-    public function generatePDF($strTemplate=null, $pdf=null, $blnOutput=true)
-    {
-        if (!is_object($pdf))
-        {
-            // TCPDF configuration
-            $l['a_meta_dir'] = 'ltr';
-            $l['a_meta_charset'] = $GLOBALS['TL_CONFIG']['characterSet'];
-            $l['a_meta_language'] = $GLOBALS['TL_LANGUAGE'];
-            $l['w_page'] = 'page';
-
-            // Include library
-            require_once(TL_ROOT . '/system/config/tcpdf.php');
-            require_once(TL_ROOT . '/plugins/tcpdf/tcpdf.php');
-
-            // Prevent TCPDF from destroying absolute paths
-            unset($_SERVER['DOCUMENT_ROOT']);
-
-            // Create new PDF document
-            $pdf = new TCPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true);
-
-            // Set document information
-            $pdf->SetCreator(PDF_CREATOR);
-            $pdf->SetAuthor(PDF_AUTHOR);
-
-// @todo $objInvoice is not defined
-//            $pdf->SetTitle($objInvoice->title);
-//            $pdf->SetSubject($objInvoice->title);
-//            $pdf->SetKeywords($objInvoice->keywords);
-
-            // Remove default header/footer
-            $pdf->setPrintHeader(false);
-            $pdf->setPrintFooter(false);
-
-            // Set margins
-            $pdf->SetMargins(PDF_MARGIN_LEFT, PDF_MARGIN_TOP, PDF_MARGIN_RIGHT);
-
-            // Set auto page breaks
-            $pdf->SetAutoPageBreak(true, PDF_MARGIN_BOTTOM);
-
-            // Set image scale factor
-            $pdf->setImageScale(PDF_IMAGE_SCALE_RATIO);
-
-            // Set some language-dependent strings
-            $pdf->setLanguageArray($l);
-
-            // Initialize document and add a page
-            $pdf->AliasNbPages();
-
-            // Set font
-            $pdf->SetFont(PDF_FONT_NAME_MAIN, '', PDF_FONT_SIZE_MAIN);
-        }
-
-        // Start new page
-        $pdf->AddPage();
-
-        // Write the HTML content
-        $pdf->writeHTML($this->generate($strTemplate, false), true, 0, true, 0);
-
-        if ($blnOutput)
-        {
-            // Close and output PDF document
-            // @todo $strInvoiceTitle is not defined
-            $pdf->lastPage();
-            $pdf->Output(standardize(ampersand($strInvoiceTitle, false), true) . '.pdf', 'D');
-
-            // Stop script execution
-            exit;
-        }
-
-        return $pdf;
     }
 
 
