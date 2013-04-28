@@ -290,4 +290,37 @@ class tl_iso_config extends \Backend
 
         return ' ' . $this->generateImage('pickfile.gif', $GLOBALS['TL_LANG']['MSC']['filepicker'], 'style="vertical-align:top;cursor:pointer" onclick="Backend.pickFile(\'' . $strField . '\')"');
     }
+
+
+	/**
+	 * Return all template folders as array
+	 * @return array
+	 */
+	public function getTemplateFolders()
+	{
+		return $this->doGetTemplateFolders('templates');
+	}
+
+
+	/**
+	 * Return all template folders as array
+	 * @param string
+	 * @param integer
+	 * @return array
+	 */
+	protected function doGetTemplateFolders($path, $level=0)
+	{
+		$return = array();
+
+		foreach (scan(TL_ROOT . '/' . $path) as $file)
+		{
+			if (is_dir(TL_ROOT . '/' . $path . '/' . $file))
+			{
+				$return[$path . '/' . $file] = str_repeat(' &nbsp; &nbsp; ', $level) . $file;
+				$return = array_merge($return, $this->doGetTemplateFolders($path . '/' . $file, $level+1));
+			}
+		}
+
+		return $return;
+	}
 }
