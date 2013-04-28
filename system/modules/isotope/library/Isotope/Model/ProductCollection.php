@@ -1108,8 +1108,10 @@ abstract class ProductCollection extends \Model
         $objTemplate->config = ($this->getRelated('config_id') || Isotope::getConfig());
         $objTemplate->items = $arrItems;
 
-        $objTemplate->subtotalAmount = Isotope::formatPriceWithCurrency($this->getSubtotal());
-        $objTemplate->totalAmount = Isotope::formatPriceWithCurrency($this->getTotal());
+        $objTemplate->subtotal = Isotope::formatPriceWithCurrency($this->getSubtotal());
+        $objTemplate->total = Isotope::formatPriceWithCurrency($this->getTotal());
+
+        $objTemplate->surcharges = \Isotope\Frontend::formatSurcharges($this->getSurcharges());
 
         // !HOOK: allow overriding of the template
         if (isset($GLOBALS['ISO_HOOKS']['generateCollection']) && is_array($GLOBALS['ISO_HOOKS']['generateCollection']))

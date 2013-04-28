@@ -1,0 +1,48 @@
+
+<table>
+<tfoot>
+    <tr class="foot_0 foot_first subtotal">
+        <td class="col_first">&nbsp;</td>
+        <td class="name" colspan="2"><?php echo $GLOBALS['TL_LANG']['MSC']['subTotalLabel']; ?></td>
+        <td class="price">&nbsp;</td>
+        <td class="price total"><?php echo $this->subtotal; ?></td>
+        <td class="col_last tax">&nbsp;</td>
+    </tr>
+<?php foreach ($this->surcharges as $surcharge): ?>
+    <tr class="<?php echo $surcharge['rowClass']; ?>">
+        <td class="col_first">&nbsp;</td>
+        <td class="name" colspan="2"><?php echo $surcharge['label']; ?></td>
+        <td class="price"><?php echo $surcharge['price']; ?></td>
+        <td class="price total"><?php echo $surcharge['total_price']; ?></td>
+        <td class="col_last tax"><?php echo $surcharge['tax_id']; ?></td>
+    </tr>
+<?php endforeach; ?>
+    <tr class="foot_<?php echo count($this->surcharges)+1; ?> foot_last total">
+        <td class="col_first">&nbsp;</td>
+        <td class="name" colspan="2"><?php echo $GLOBALS['TL_LANG']['MSC']['grandTotalLabel']; ?></td>
+        <td class="price">&nbsp;</td>
+        <td class="price total"><?php echo $this->total; ?></td>
+        <td class="col_last tax">&nbsp;</td>
+    </tr>
+</tfoot>
+<tbody>
+<?php foreach($this->items as $item): ?>
+    <tr class="<?php /*echo $product['rowClass'];*/ ?>">
+        <td class="col_0 col_first image"><?php if($item['hasProduct']) $item['product']->images->generateMainImage('thumbnail'); ?></td>
+        <td class="col_1 name"><?php echo $item['name']; ?>
+            <?php if(!empty($product['options'])): ?>
+            <ul>
+                <?php foreach($product['options'] as $option): ?>
+                <li><strong><?php echo $option['label']; ?>:</strong> <?php echo $option['value']; ?></li>
+                <?php endforeach; ?>
+            </ul>
+            <?php endif; ?>
+        </td>
+        <td class="col_2 quantity"><?php echo $item['quantity']; ?> x</td>
+        <td class="col_3 price"><?php echo $item['price']; ?></td>
+        <td class="col_4 price total"><?php echo $item['total']; ?></td>
+        <td class="col_5 col_last tax"><?php echo $item['tax_id']; ?></td>
+    </tr>
+<?php endforeach; ?>
+</tbody>
+</table>
