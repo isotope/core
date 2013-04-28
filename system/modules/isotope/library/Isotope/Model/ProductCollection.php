@@ -1072,62 +1072,6 @@ abstract class ProductCollection extends \Model
 
 
     /**
-     * Generate the collection using a template.
-     * @param string
-     * @param boolean
-     * @return string
-     */
-    public function generate($strTemplate)
-    {
-        $objTemplate = new \Isotope\Template($strTemplate);
-
-        $arrItems = array();
-
-        foreach ($this->getItems() as $objItem)
-        {
-            $objProduct = $objItem->getProduct();
-
-            $arrItems[] = array
-            (
-                'raw'               => $objItem->row(),
-                'hasProduct'        => $objItem->hasProduct(),
-                'product'           => $objProduct,
-                'sku'               => $objItem->getSku(),
-                'name'              => $objItem->getName(),
-                'options'           => Isotope::formatOptions($objItem->getOptions()),
-                'quantity'          => $objItem->quantity,
-                'price'             => Isotope::formatPriceWithCurrency($objItem->getPrice()),
-                'tax_free_price'    => Isotope::formatPriceWithCurrency($objItem->getTaxFreePrice()),
-                'total'             => Isotope::formatPriceWithCurrency($objItem->getPrice() * $objItem->quantity),
-                'tax_free_total'    => Isotope::formatPriceWithCurrency($objItem->getTaxFreePrice() * $objItem->quantity),
-                'tax_id'            => $objItem->tax_id,
-            );
-        }
-
-        $objTemplate->collection = $this;
-        $objTemplate->config = ($this->getRelated('config_id') || Isotope::getConfig());
-        $objTemplate->items = $arrItems;
-
-        $objTemplate->subtotal = Isotope::formatPriceWithCurrency($this->getSubtotal());
-        $objTemplate->total = Isotope::formatPriceWithCurrency($this->getTotal());
-
-        $objTemplate->surcharges = \Isotope\Frontend::formatSurcharges($this->getSurcharges());
-
-        // !HOOK: allow overriding of the template
-        if (isset($GLOBALS['ISO_HOOKS']['generateCollection']) && is_array($GLOBALS['ISO_HOOKS']['generateCollection']))
-        {
-            foreach ($GLOBALS['ISO_HOOKS']['generateCollection'] as $callback)
-            {
-                $objCallback = \System::importStatic($callback[0]);
-                $objCallback->$callback[1]($objTemplate, $arrItems, $this);
-            }
-        }
-
-        return $objTemplate->parse();
-    }
-
-
-    /**
      * Make sure we only return results of the given model type
      */
     protected static function find(array $arrOptions)

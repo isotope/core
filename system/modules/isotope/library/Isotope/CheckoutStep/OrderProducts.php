@@ -34,7 +34,11 @@ class OrderProducts extends CheckoutStep implements IsotopeCheckoutStep
      */
     public function generate()
     {
-        return Isotope::getCart()->generate($this->objModule->iso_collectionTpl);
+        $objTemplate = new \Isotope\Template($this->objModule->iso_collectionTpl);
+
+        \Isotope\Frontend::addCollectionToTemplate($objTemplate, Isotope::getCart());
+
+        return $objTemplate->parse();
     }
 
     /**
