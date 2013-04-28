@@ -1077,7 +1077,7 @@ abstract class ProductCollection extends \Model
      * @param boolean
      * @return string
      */
-    public function generate($strTemplate, $blnResetConfig=true)
+    public function generate($strTemplate)
     {
         $objTemplate = new \Isotope\Template($strTemplate);
 
