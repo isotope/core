@@ -90,113 +90,125 @@ class Cart extends Module
         // Remove from cart
         if (\Input::get('remove') > 0 && Isotope::getCart()->deleteItemById((int) \Input::get('remove')))
         {
-            \Controller::redirect((strlen(\Input::get('referer')) ? base64_decode(\Input::get('referer', true)) : $strUrl));
+            global $objPage;
+
+            \Controller::redirect($this->generateFrontendUrl($objPage->row()));
         }
 
-        $objTemplate = new \Isotope\Template($this->iso_cart_layout);
+        $objTemplate = new \Isotope\Template($this->iso_collectionTpl);
 
-        global $objPage;
-        $strUrl = $this->generateFrontendUrl($objPage->row());
+        \Isotope\Frontend::addCollectionToTemplate($objTemplate, Isotope::getCart());
 
         $blnReload = false;
         $arrQuantity = \Input::post('quantity');
-        $arrProductData = array();
+        $blnInsufficientSubtotal = (Isotope::getConfig()->cartMinSubtotal > 0 && Isotope::getConfig()->cartMinSubtotal > Isotope::getCart()->getSubtotal()) ? true : false;
+        $arrItems = $objTemplate->items;
 
-        // Surcharges must be initialized before getProducts() to apply tax_id to each product
-        $arrSurcharges = Isotope::getCart()->getSurcharges();
-
-        $arrItems = Isotope::getCart()->getItems();
-
-        foreach ($arrItems as $i => $objItem)
-        {
-            $objProduct = $objItem->getProduct();
+        foreach ($arrItems as $k => $arrItem) {
 
             // Update cart data if form has been submitted
             if (\Input::post('FORM_SUBMIT') == $this->strFormId && is_array($arrQuantity) && isset($arrQuantity[$arrItem['id']]))
             {
                 $blnReload = true;
-                Isotope::getCart()->updateProduct($objProduct, array('quantity'=>$arrQuantity[$objProduct->collection_id]));
+                Isotope::getCart()->updateItemById($arrItem['id'], array('quantity'=>$arrQuantity[$arrItem['id']]));
                 continue; // no need to generate $arrProductData, we reload anyway
             }
 
-            $arrProductData[] = array_merge($objProduct->getAttributes(), array
-            (
-                'id'                    => $objProduct->id,
-                'image'                 => $objProduct->images->main_image,
-                'link'                  => $objProduct->href_reader,
-                'original_price'        => Isotope::formatPriceWithCurrency($objProduct->original_price),
-                'price'                 => Isotope::formatPriceWithCurrency($objProduct->price),
-                'tax_free_price'        => Isotope::formatPriceWithCurrency($objProduct->tax_free_price),
-                'total_price'           => Isotope::formatPriceWithCurrency($objProduct->total_price),
-                'tax_free_total_price'  => Isotope::formatPriceWithCurrency($objProduct->tax_free_total_price),
-                'tax_id'                => $objProduct->tax_id,
-                'quantity'              => $objProduct->quantity_requested,
-                'collection_id'         => $objProduct->collection_id,
-                'product_options'       => Isotope::formatOptions($objProduct->getOptions()),
-                'remove_link'           => ampersand($strUrl . ($GLOBALS['TL_CONFIG']['disableAlias'] ? '&' : '?') . 'remove='.$objProduct->collection_id.'&referer='.base64_encode(\Environment::get('request'))),
-                'remove_link_text'      => $GLOBALS['TL_LANG']['MSC']['removeProductLinkText'],
-                'remove_link_title'     => specialchars(sprintf($GLOBALS['TL_LANG']['MSC']['removeProductLinkTitle'], $objProduct->name)),
-            ));
+
+            $arrItem['remove_href'] = \Isotope\Frontend::addQueryStringToUrl('remove='.$arrItem['id']);
+            $arrItem['remove_title'] = specialchars(sprintf($GLOBALS['TL_LANG']['MSC']['removeProductLinkTitle'], $arrItem['name']));
+            $arrItem['remove_link'] = $GLOBALS['TL_LANG']['MSC']['removeProductLinkText'];
+
+            $arrItems[$k] = $arrItem;
         }
 
-        $blnInsufficientSubtotal = (Isotope::getConfig()->cartMinSubtotal > 0 && Isotope::getConfig()->cartMinSubtotal > Isotope::getCart()->getSubtotal()) ? true : false;
+        $arrButtons = $this->generateButtons();
 
-        if ($this->iso_continueShopping && !empty($_SESSION['ISO_CONFIRM']) && ($objLatest = Isotope::getCart()->getLatestItem()) !== null)
-        {
-            $objTemplate->continueJumpTo = $objLatest->href_reader;
-        }
-
-        // Redirect if the "checkout" button has been submitted and minimum order total is reached
-        if ($blnReload && \Input::post('checkout') != '' && !$blnInsufficientSubtotal)
-        {
-            $this->jumpToOrReload($this->iso_checkout_jumpTo);
-        }
-
-        // Otherwise, just reload the page
-        elseif ($blnReload)
+        // Reload the page if no button has handled it
+        if ($blnReload)
         {
             $this->reload();
         }
 
-        // !HOOK: add additional forms into the template
-        if (isset($GLOBALS['ISO_HOOKS']['compileCart']) && is_array($GLOBALS['ISO_HOOKS']['compileCart']))
-        {
-            foreach ($GLOBALS['ISO_HOOKS']['compileCart'] as $name => $callback)
-            {
-                $this->import($callback[0]);
-                $strForm = $this->$callback[0]->$callback[1]($this, $objTemplate, $arrProductData, $arrSurcharges);
+        $objTemplate->items = $arrItems;
+        $objTemplate->editable = true;
+        $objTemplate->linkProducts = true;
 
-                if ($strForm !== false)
-                {
-                     $arrForms[$name] = $strForm;
-                }
-            }
-        }
-
-        $objTemplate->hasError = $blnInsufficientSubtotal ? true : false;
-        $objTemplate->minSubtotalError = sprintf($GLOBALS['TL_LANG']['ERR']['cartMinSubtotal'], Isotope::formatPriceWithCurrency(Isotope::getConfig()->cartMinSubtotal));
-        $objTemplate->formId = 'iso_cart_update_'.$this->id;
-        $objTemplate->formSubmit = 'iso_cart_update_'.$this->id;
-        $objTemplate->summary = $GLOBALS['TL_LANG']['MSC']['cartSummary'];
+        $objTemplate->formId = $this->strFormId;
+        $objTemplate->formSubmit = $this->strFormId;
         $objTemplate->action = \Environment::get('request');
-        $objTemplate->cartJumpTo = $this->iso_cart_jumpTo ? $this->generateFrontendUrl($this->Database->execute("SELECT * FROM tl_page WHERE id={$this->iso_cart_jumpTo}")->fetchAssoc()) : '';
-        $objTemplate->cartLabel = $GLOBALS['TL_LANG']['MSC']['cartBT'];
-        $objTemplate->checkoutJumpToLabel = $GLOBALS['TL_LANG']['MSC']['checkoutBT'];
-        $objTemplate->checkoutJumpTo = ($this->iso_checkout_jumpTo && !$blnInsufficientSubtotal) ? $this->generateFrontendUrl($this->Database->execute("SELECT * FROM tl_page WHERE id={$this->iso_checkout_jumpTo}")->fetchAssoc()) : '';
-        $objTemplate->continueLabel = $GLOBALS['TL_LANG']['MSC']['continueShoppingBT'];
+        $objTemplate->buttons = $arrButtons;
 
-        $objTemplate->collection = Isotope::getCart();
-        $objTemplate->products = \Isotope\Frontend::generateRowClass($arrProductData, 'row', 'rowClass', 0, ISO_CLASS_COUNT|ISO_CLASS_FIRSTLAST|ISO_CLASS_EVENODD);
-        $objTemplate->subTotalLabel = $GLOBALS['TL_LANG']['MSC']['subTotalLabel'];
-        $objTemplate->grandTotalLabel = $GLOBALS['TL_LANG']['MSC']['grandTotalLabel'];
-        $objTemplate->subTotalPrice = Isotope::formatPriceWithCurrency(Isotope::getCart()->getSubtotal());
-        $objTemplate->grandTotalPrice = Isotope::formatPriceWithCurrency(Isotope::getCart()->getTotal());
-        // @todo make a module option.
-        $objTemplate->showOptions = false;
-        $objTemplate->surcharges = \Isotope\Frontend::formatSurcharges($arrSurcharges);
-        $objTemplate->forms = $arrForms;
+        if ($this->hasInsufficientSubtotal()) {
+            $objTemplate->minSubtotalError = sprintf($GLOBALS['TL_LANG']['ERR']['cartMinSubtotal'], Isotope::formatPriceWithCurrency(Isotope::getConfig()->cartMinSubtotal));
+        }
 
         $this->Template->empty = false;
         $this->Template->cart = $objTemplate->parse();
+    }
+
+
+    protected function generateButtons()
+    {
+        $arrButtons = array();
+
+        // Add "update cart" button
+        $arrButtons['update'] = array(
+            'type'      => 'submit',
+            'name'      => 'button_update',
+            'label'     => $GLOBALS['TL_LANG']['MSC']['updateCartBT'],
+        );
+
+        // Add button to cart button (usually if not on the cart page)
+        if ($this->iso_cart_jumpTo > 0) {
+            $arrButtons['cart'] = array(
+                'type'      => 'submit',
+                'name'      => 'button_cart',
+                'label'     => $GLOBALS['TL_LANG']['MSC']['cartBT'],
+            );
+
+            if (\Input::post('FORM_SUBMIT') == $this->strFormId && \Input::post('button_cart') != '') {
+                $this->jumpToOrReload($this->iso_cart_jumpTo);
+            }
+        }
+
+        // Add button to checkout page
+        if ($this->iso_checkout_jumpTo > 0 && !$this->hasInsufficientSubtotal()) {
+            $arrButtons['checkout'] = array(
+                'type'      => 'submit',
+                'name'      => 'button_checkout',
+                'label'     => $GLOBALS['TL_LANG']['MSC']['checkoutBT'],
+            );
+
+            if (\Input::post('FORM_SUBMIT') == $this->strFormId && \Input::post('button_checkout') != '') {
+                $this->jumpToOrReload($this->iso_checkout_jumpTo);
+            }
+        }
+
+
+        if ($this->iso_continueShopping && !empty($_SESSION['ISO_CONFIRM']) && ($objLatest = Isotope::getCart()->getLatestItem()) !== null)
+        {
+            $arrButtons['continue'] = array(
+                'type'      => 'submit',
+                'name'      => 'button_continue',
+                'label'     => $GLOBALS['TL_LANG']['MSC']['continueShoppingBT'],
+            );
+
+            if (\Input::post('FORM_SUBMIT') == $this->strFormId && \Input::post('button_continue') != '') {
+                $this->redirect($objLatest->getProduct()->href_reader);
+            }
+        }
+
+        return $arrButtons;
+    }
+
+
+    protected function hasInsufficientSubtotal()
+    {
+        if (Isotope::getConfig()->cartMinSubtotal > 0 && Isotope::getConfig()->cartMinSubtotal > Isotope::getCart()->getSubtotal()) {
+            return true;
+        }
+
+        return false;
     }
 }
