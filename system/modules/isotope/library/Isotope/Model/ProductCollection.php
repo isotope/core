@@ -1079,18 +1079,6 @@ abstract class ProductCollection extends \Model
      */
     public function generate($strTemplate, $blnResetConfig=true)
     {
-        // Set global config to this collection (if available)
-        if ($this->config_id > 0)
-        {
-            Isotope::overrideConfig($this->config_id);
-        }
-
-        // Load language files for the order
-        if ($this->language != '')
-        {
-            \System::loadLanguageFile('default', $this->language);
-        }
-
         $objTemplate = new \Isotope\Template($this->strTemplate);
         $objTemplate->setData($this->arrData);
         $objTemplate->logoImage = '';
@@ -1161,13 +1149,6 @@ abstract class ProductCollection extends \Model
                 $objCallback = \System::importStatic($callback[0]);
                 $objCallback->$callback[1]($objTemplate, $arrItems, $this);
             }
-        }
-
-        // Set config back to default
-        if ($blnResetConfig)
-        {
-            Isotope::resetConfig();
-            \System::loadLanguageFile('default', $GLOBALS['TL_LANGUAGE']);
         }
 
         return $strArticle;
