@@ -376,26 +376,18 @@ class Checkout extends Module
      * Return the checkout information as array
      * @return array
      */
-    protected function getCheckoutInfo()
+    public function getCheckoutInfo()
     {
         if (!is_array($this->arrCheckoutInfo))
         {
             $arrCheckoutInfo = array();
 
             // Run trough all steps to collect checkout information
-            foreach ($GLOBALS['ISO_CHECKOUT_STEPS'] as $step => $arrCallbacks)
+            foreach ($this->getSteps() as $arrModules)
             {
-                foreach ($arrCallbacks as $callback)
+                foreach ($arrModules as $objModule)
                 {
-                    if ($callback[0] == 'ModuleIsotopeCheckout')
-                    {
-                        $arrInfo = $this->{$callback[1]}(true);
-                    }
-                    else
-                    {
-                        $this->import($callback[0]);
-                        $arrInfo = $this->{$callback[0]}->{$callback[1]}($this, true);
-                    }
+                    $arrInfo = $objModule->review();
 
                     if (is_array($arrInfo) && !empty($arrInfo))
                     {
