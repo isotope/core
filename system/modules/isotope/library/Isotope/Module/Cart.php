@@ -39,6 +39,12 @@ class Cart extends Module
      */
     protected $blnDisableCache = true;
 
+    /**
+     * FORM_SUBMIT value for this module
+     * @var string
+     */
+    protected $strFormId = 'iso_cart_update_';
+
 
     /**
      * Display a wildcard in the back end
@@ -59,6 +65,8 @@ class Cart extends Module
             return $objTemplate->parse();
         }
 
+        // Add current module ID to FORM_SUBMIT
+        $this->strFormId .= $this->id;
 
         return parent::generate();
     }
@@ -104,7 +112,7 @@ class Cart extends Module
             $objProduct = $objItem->getProduct();
 
             // Update cart data if form has been submitted
-            if (\Input::post('FORM_SUBMIT') == ('iso_cart_update_'.$this->id) && is_array($arrQuantity))
+            if (\Input::post('FORM_SUBMIT') == $this->strFormId && is_array($arrQuantity) && isset($arrQuantity[$arrItem['id']]))
             {
                 $blnReload = true;
                 Isotope::getCart()->updateProduct($objProduct, array('quantity'=>$arrQuantity[$objProduct->collection_id]));
