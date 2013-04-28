@@ -839,37 +839,53 @@ abstract class ProductCollection extends \Model
 
 
     /**
-     * Update a product in the collection
+     * Update a product collection item
      * @param object The product object
      * @param array The property(ies) to adjust
      * @return bool
      */
-    public function updateProduct(IsotopeProduct $objProduct, $arrSet)
+    public function updateItem(ProductCollectionItem $objItem, $arrSet)
     {
-        if (($objItem = $this->getItemForProduct($objProduct)) === null) {
+        return $this->updateItemById($objItem->id, $arrSet);
+    }
+
+    /**
+     * Update product collection item with given ID
+     * @param   int
+     * @param   array
+     * @return  bool
+     */
+    public function updateItemById($intId, $arrSet)
+    {
+        $arrItems = $this->getItems();
+
+        if (!isset($arrItems[$intId])) {
             return false;
         }
 
-        // !HOOK: additional functionality when updating a product in the collection
-        if (isset($GLOBALS['ISO_HOOKS']['updateProductInCollection']) && is_array($GLOBALS['ISO_HOOKS']['updateProductInCollection'])) {
-            foreach ($GLOBALS['ISO_HOOKS']['updateProductInCollection'] as $callback) {
-                $objCallback = \System::importStatic($callback[0]);
-                $arrSet = $objCallback->$callback[1]($objProduct, $arrSet, $this);
+        $objItem = $arrItems[$intId];
 
-                if (is_array($arrSet) && empty($arrSet)) {
+        // !HOOK: additional functionality when updating a product in the collection
+        if (isset($GLOBALS['ISO_HOOKS']['updateItemInCollection']) && is_array($GLOBALS['ISO_HOOKS']['updateItemInCollection'])) {
+            foreach ($GLOBALS['ISO_HOOKS']['updateItemInCollection'] as $callback) {
+                $objCallback = \System::importStatic($callback[0]);
+                $arrSet = $objCallback->$callback[1]($objItem, $arrSet, $this);
+
+                if (empty($arrSet) && is_array($arrSet)) {
                     return false;
                 }
             }
         }
 
-        // Quantity set to 0, delete product
+        // Quantity set to 0, delete item
         if (isset($arrSet['quantity']) && $arrSet['quantity'] == 0) {
-            return $this->deleteProduct($objProduct);
+            return $this->deleteItemById($intId);
         }
 
-        if (isset($arrSet['quantity'])) {
+        if (isset($arrSet['quantity']) && $objItem->hasProduct()) {
 
             // Set product quantity so we can determine the correct minimum price
+            $objProduct = $objItem->getProduct();
             $objProduct->quantity_requested = $arrSet['quantity'];
 
             if ($arrSet['quantity'] < $objProduct->minimum_quantity) {
@@ -878,21 +894,17 @@ abstract class ProductCollection extends \Model
             }
         }
 
-        // Modify timestamp when updating a product
         $arrSet['tstamp'] = time();
 
         foreach ($arrSet as $k => $v) {
             $objItem->$k = $v;
         }
 
-        if ($objItem->save() > 0) {
+        $objItem->save();
             $this->setModified(true);
 
             return true;
         }
-
-        return false;
-    }
 
 
     /**
