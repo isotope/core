@@ -1749,10 +1749,10 @@ $endScript";
 
     /**
      * Add a product collection to a template
-     * @param   \Template
+     * @param   object
      * @param   IsotopeProductCollection
      */
-    public static function addCollectionToTemplate(\Template $objTemplate, IsotopeProductCollection $objCollection)
+    public static function addCollectionToTemplate($objTemplate, IsotopeProductCollection $objCollection)
     {
         $arrItems = array();
 
