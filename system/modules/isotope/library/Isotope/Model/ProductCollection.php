@@ -931,8 +931,8 @@ abstract class ProductCollection extends \Model
         }
 
         // !HOOK: additional functionality when a product is removed from the collection
-        if (isset($GLOBALS['ISO_HOOKS']['deleteFromCollection']) && is_array($GLOBALS['ISO_HOOKS']['deleteFromCollection'])) {
-            foreach ($GLOBALS['ISO_HOOKS']['deleteFromCollection'] as $callback) {
+        if (isset($GLOBALS['ISO_HOOKS']['deleteItemFromCollection']) && is_array($GLOBALS['ISO_HOOKS']['deleteItemFromCollection'])) {
+            foreach ($GLOBALS['ISO_HOOKS']['deleteItemFromCollection'] as $callback) {
                 $objCallback = \System::importStatic($callback[0]);
                 $blnRemove = $objCallback->$callback[1]($arrItems[$intId], $this);
 
