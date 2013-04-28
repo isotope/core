@@ -840,9 +840,9 @@ abstract class ProductCollection extends \Model
 
     /**
      * Update a product collection item
-     * @param object The product object
-     * @param array The property(ies) to adjust
-     * @return bool
+     * @param   object  The product object
+     * @param   array   The property(ies) to adjust
+     * @return  bool
      */
     public function updateItem(ProductCollectionItem $objItem, $arrSet)
     {
@@ -901,10 +901,10 @@ abstract class ProductCollection extends \Model
         }
 
         $objItem->save();
-            $this->setModified(true);
+        $this->setModified(true);
 
-            return true;
-        }
+        return true;
+    }
 
 
     /**
