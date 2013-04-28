@@ -80,7 +80,6 @@ TemplateLoader::addFiles(array
     'iso_gallery_standard'          => 'system/modules/isotope/templates/gallery',
     'iso_gallery_inline'            => 'system/modules/isotope/templates/gallery',
     'iso_gallery_zoom'              => 'system/modules/isotope/templates/gallery',
-    'iso_invoice'                   => 'system/modules/isotope/templates/isotope',
     'iso_list_default'              => 'system/modules/isotope/templates/isotope',
     'iso_list_variants'             => 'system/modules/isotope/templates/isotope',
     'iso_payment_datatrans'         => 'system/modules/isotope/templates/payment',

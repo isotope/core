@@ -79,12 +79,6 @@ abstract class ProductCollection extends \Model
     protected $objPayment = false;
 
     /**
-     * Template
-     * @var string
-     */
-    protected $strTemplate = 'iso_invoice';
-
-    /**
      * Configuration
      * @var array
      */
@@ -1083,13 +1077,8 @@ abstract class ProductCollection extends \Model
      * @param boolean
      * @return string
      */
-    public function generate($strTemplate=null, $blnResetConfig=true)
+    public function generate($strTemplate, $blnResetConfig=true)
     {
-        if ($strTemplate)
-        {
-            $this->strTemplate = $strTemplate;
-        }
-
         // Set global config to this collection (if available)
         if ($this->config_id > 0)
         {
