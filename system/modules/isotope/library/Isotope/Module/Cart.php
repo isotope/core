@@ -161,41 +161,51 @@ class Cart extends Module
 
         // Add button to cart button (usually if not on the cart page)
         if ($this->iso_cart_jumpTo > 0) {
-            $arrButtons['cart'] = array(
-                'type'      => 'submit',
-                'name'      => 'button_cart',
-                'label'     => $GLOBALS['TL_LANG']['MSC']['cartBT'],
-            );
+            $objJumpToCart = \PageModel::findByPk($this->iso_cart_jumpTo);
 
-            if (\Input::post('FORM_SUBMIT') == $this->strFormId && \Input::post('button_cart') != '') {
-                $this->jumpToOrReload($this->iso_cart_jumpTo);
+            if (null !== $objJumpToCart) {
+                $arrButtons['cart'] = array(
+                    'type'      => 'submit',
+                    'name'      => 'button_cart',
+                    'label'     => $GLOBALS['TL_LANG']['MSC']['cartBT'],
+                    'href'      => \Controller::generateFrontendUrl($objJumpToCart->row()),
+                );
+
+                if (\Input::post('FORM_SUBMIT') == $this->strFormId && \Input::post('button_cart') != '') {
+                    $this->jumpToOrReload($this->iso_cart_jumpTo);
+                }
             }
         }
 
         // Add button to checkout page
         if ($this->iso_checkout_jumpTo > 0 && !$this->hasInsufficientSubtotal()) {
-            $arrButtons['checkout'] = array(
-                'type'      => 'submit',
-                'name'      => 'button_checkout',
-                'label'     => $GLOBALS['TL_LANG']['MSC']['checkoutBT'],
-            );
+            $objJumpToCheckout = \PageModel::findByPk($this->iso_checkout_jumpTo);
 
-            if (\Input::post('FORM_SUBMIT') == $this->strFormId && \Input::post('button_checkout') != '') {
-                $this->jumpToOrReload($this->iso_checkout_jumpTo);
+            if (null !== $objJumpToCheckout) {
+                $arrButtons['checkout'] = array(
+                    'type'      => 'submit',
+                    'name'      => 'button_checkout',
+                    'label'     => $GLOBALS['TL_LANG']['MSC']['checkoutBT'],
+                    'href'      => \Controller::generateFrontendUrl($objJumpToCheckout->row()),
+                );
+
+                if (\Input::post('FORM_SUBMIT') == $this->strFormId && \Input::post('button_checkout') != '') {
+                    $this->jumpToOrReload($this->iso_checkout_jumpTo);
+                }
             }
         }
 
 
-        if ($this->iso_continueShopping && !empty($_SESSION['ISO_CONFIRM']) && ($objLatest = Isotope::getCart()->getLatestItem()) !== null)
-        {
+        if ($this->iso_continueShopping && !empty($_SESSION['ISO_CONFIRM']) && ($objLatest = Isotope::getCart()->getLatestItem()) !== null) {
             $arrButtons['continue'] = array(
                 'type'      => 'submit',
                 'name'      => 'button_continue',
                 'label'     => $GLOBALS['TL_LANG']['MSC']['continueShoppingBT'],
+                'href'      => $objLatest->getProduct()->href_reader,
             );
 
             if (\Input::post('FORM_SUBMIT') == $this->strFormId && \Input::post('button_continue') != '') {
-                $this->redirect($objLatest->getProduct()->href_reader);
+                $this->redirect($arrButtons['continue']['href']);
             }
         }
 
