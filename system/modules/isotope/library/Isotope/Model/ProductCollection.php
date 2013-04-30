@@ -1000,9 +1000,7 @@ abstract class ProductCollection extends \Model
      */
     public function copyItemsFrom(IsotopeProductCollection $objSource)
     {
-        if (!$this->blnRecordExists) {
-            $this->save(true);
-        }
+        $this->save();
 
         // Make sure database table has the latest prices
         $objSource->save();
