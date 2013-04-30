@@ -186,7 +186,7 @@ class Order extends ProductCollection implements IsotopeProductCollection
         // Load page configuration
         if (!is_object($objPage) && $this->pageId > 0) {
             $objPage = \Controller::getPageDetails($this->pageId);
-            $objPage = IsotopeFrontend::loadPageConfig($objPage);
+            $objPage = \Isotope\Frontend::loadPageConfig($objPage);
         }
 
         if (($objCart = Cart::findByPk($this->source_collection_id)) === null) {

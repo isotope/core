@@ -44,11 +44,11 @@ class Sparkasse extends Payment implements IsotopePayment
 
         if ($objOrder->date_paid > 0 && $objOrder->date_paid <= time())
         {
-            IsotopeFrontend::clearTimeout();
+            \Isotope\Frontend::clearTimeout();
             return true;
         }
 
-        if (IsotopeFrontend::setTimeout())
+        if (\Isotope\Frontend::setTimeout())
         {
             // Do not index or cache the page
             global $objPage;

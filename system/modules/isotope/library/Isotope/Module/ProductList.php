@@ -431,7 +431,7 @@ class ProductList extends Module
                         $filter = $arrFilters[$k];
 
                         $blnMultilingual = in_array($filter['attribute'], $GLOBALS['ISO_CONFIG']['multilingual']);
-                        $operator = IsotopeFrontend::convertFilterOperator($filter['operator'], 'SQL');
+                        $operator = \Isotope\Frontend::convertFilterOperator($filter['operator'], 'SQL');
 
                         $arrGroupWhere[] = ($blnMultilingual ? "IFNULL(p2.{$filter['attribute']}, p1.{$filter['attribute']})" : "p1.{$filter['attribute']}") . " $operator ?";
                         $arrValues[] = ($operator == 'LIKE' ? '%'.$filter['value'].'%' : $filter['value']);
