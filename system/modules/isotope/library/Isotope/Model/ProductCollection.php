@@ -980,8 +980,9 @@ abstract class ProductCollection extends \Model
         $this->arrData['store_id']             = $objConfig->store_id;
         $this->arrData['member']               = $objSource->member;
         $this->arrData['language']             = $GLOBALS['TL_LANGUAGE'];
-        $this->arrData['pageId']               = (int) $objPage->id;
         $this->arrData['currency']             = $objConfig->currency;
+
+        $this->pageId                           = (int) $objPage->id;
 
         // Do not change the unique ID
         if ($this->arrData['uniqid'] == '') {
