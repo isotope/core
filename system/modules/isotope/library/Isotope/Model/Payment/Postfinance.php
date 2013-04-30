@@ -64,7 +64,7 @@ class Postfinance extends Payment implements IsotopePayment
         if ($objOrder->currency != $this->getRequestData('currency') || $objOrder->getTotal() != $this->getRequestData('amount'))
         {
             $this->log('Postsale checkout manipulation in payment for Order ID ' . $objOrder->id . '!', __METHOD__, TL_ERROR);
-            $this->redirect($this->addToUrl('step=failed', true));
+            \Isotope\Module\Checkout::redirectToStep('failed');
         }
 
         $objOrder->date_paid = time();
@@ -135,11 +135,11 @@ class Postfinance extends Payment implements IsotopePayment
     {
         if (($objOrder = Order::findOneBy('source_collection_id', Isotope::getCart()->id)) === null)
         {
-            $this->redirect($this->addToUrl('step=failed', true));
+            \Isotope\Module\Checkout::redirectToStep('failed');
         }
 
         $objAddress = Isotope::getCart()->getBillingAddress();
-        $strFailedUrl = \Environment::get('base') . $this->addToUrl('step=failed', true);
+        $strFailedUrl = \Environment::get('base') . \Isotope\Module\Checkout::generateUrlForStep('failed');
 
         $arrParam = array
         (
@@ -156,7 +156,7 @@ class Postfinance extends Payment implements IsotopePayment
             'OWNERCTY'        => $objAddress->country,
             'OWNERTOWN'        => $objAddress->city,
             'OWNERTELNO'    => $objAddress->phone,
-            'ACCEPTURL'        => \Environment::get('base') . IsotopeFrontend::addQueryStringToUrl('uid=' . $objOrder->uniqid, $this->addToUrl('step=complete', true)),
+            'ACCEPTURL'     => \Environment::get('base') . \Isotope\Frontend::addQueryStringToUrl('uid=' . $objOrder->uniqid, \Isotope\Module\Checkout::generateUrlForStep('complete')),
             'DECLINEURL'    => $strFailedUrl,
             'EXCEPTIONURL'    => $strFailedUrl,
             'PARAMPLUS'        => 'mod=pay&amp;id=' . $this->id,

@@ -42,7 +42,7 @@ class Expercash extends Payment implements IsotopePayment
             return true;
         }
 
-        $this->redirect($this->addToUrl('step=failed', true));
+        \Isotope\Module\Checkout::redirectToStep('failed');
     }
 
 
@@ -89,7 +89,7 @@ class Expercash extends Payment implements IsotopePayment
     {
         if (($objOrder = Order::findOneBy('source_collection_id', Isotope::getCart()->id)) === null)
         {
-            $this->redirect($this->addToUrl('step=failed', true));
+            \Isotope\Module\Checkout::redirectToStep('failed');
         }
 
         $arrData = array
@@ -101,8 +101,8 @@ class Expercash extends Payment implements IsotopePayment
             'amount'            => (round(Isotope::getCart()->getTotal(), 2)*100),
             'currency'            => Isotope::getConfig()->currency,
             'paymentMethod'        => $this->expercash_paymentMethod,
-            'returnUrl'            => \Environment::get('base') . $this->addToUrl('step=complete', true) . '?uid=' . $objOrder->uniqid,
-            'errorUrl'            => \Environment::get('base') . $this->addToUrl('step=failed', true),
+            'returnUrl'     => \Environment::get('base') . \Isotope\Frontend::addQueryStringToUrl('uid=' . $objOrder->uniqid, \Isotope\Module\Checkout::generateUrlForStep('complete')),
+            'errorUrl'      => \Environment::get('base') . \Isotope\Module\Checkout::generateUrlForStep('failed'),
             'notifyUrl'            => \Environment::get('base') . 'system/modules/isotope/postsale.php?mod=pay&id=' . $this->id,
             'profile'            => $this->expercash_profile,
         );

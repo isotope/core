@@ -85,7 +85,7 @@ class Payone extends Payment implements IsotopePayment
 
         if (($objOrder = Order::findOneBy('source_collection_id', Isotope::getCart()->id)) === null)
         {
-            $this->redirect($this->addToUrl('step=failed', true));
+            \Isotope\Module\Checkout::redirectToStep('failed');
         }
 
         $arrData = array
@@ -99,8 +99,8 @@ class Payone extends Payment implements IsotopePayment
             'reference'         => $objOrder->id,
             'display_name'      => 'no',
             'display_address'   => 'no',
-            'successurl'        => \Environment::get('base') . $this->addToUrl('step=complete', true) . '?uid=' . $objOrder->uniqid,
-            'backurl'           => \Environment::get('base') . $this->addToUrl('step=failed', true),
+            'successurl'        => \Environment::get('base') . \Isotope\Frontend::addQueryStringToUrl('uid=' . $objOrder->uniqid, \Isotope\Module\Checkout::generateUrlForStep('complete')),
+            'backurl'           => \Environment::get('base') . \Isotope\Module\Checkout::generateUrlForStep('failed'),
             'amount'            => (Isotope::getCart()->getTotal() * 100),
             'currency'          => Isotope::getConfig()->currency,
         );

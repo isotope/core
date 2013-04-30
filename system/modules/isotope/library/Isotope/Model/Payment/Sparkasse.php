@@ -63,7 +63,7 @@ class Sparkasse extends Payment implements IsotopePayment
 
         $this->log('Payment could not be processed.', __METHOD__, TL_ERROR);
 
-        $this->redirect($this->addToUrl('step=failed', true));
+        \Isotope\Module\Checkout::redirectToStep('failed');
     }
 
 
@@ -153,7 +153,7 @@ class Sparkasse extends Payment implements IsotopePayment
 
         if (($objOrder = Order::findOneBy('source_collection_id', Isotope::getCart()->id)) === null)
         {
-            $this->redirect($this->addToUrl('step=failed', true));
+            \Isotope\Module\Checkout::redirectToStep('failed');
         }
 
 

@@ -129,7 +129,7 @@ class Datatrans extends Payment implements IsotopePayment
 
         if (($objOrder = Order::findOneBy('source_collection_id', Isotope::getCart()->id)) === null)
         {
-            $this->redirect($this->addToUrl('step=failed', true));
+            \Isotope\Module\Checkout::redirectToStep('failed');
         }
 
         $objAddress = Isotope::getCart()->getBillingAddress();
@@ -153,9 +153,9 @@ class Datatrans extends Payment implements IsotopePayment
             'uppCustomerZipCode'    => $objAddress->postal,
             'uppCustomerPhone'      => $objAddress->phone,
             'uppCustomerEmail'      => $objAddress->email,
-            'successUrl'            => ampersand(\Environment::get('base') . $this->addToUrl('step=complete', true)),
-            'errorUrl'              => ampersand(\Environment::get('base') . $this->addToUrl('step=failed', true)),
-            'cancelUrl'             => ampersand(\Environment::get('base') . $this->addToUrl('step=failed', true)),
+            'successUrl'            => ampersand(\Environment::get('base') . \Isotope\Module\Checkout::generateUrlForStep('complete')),
+            'errorUrl'              => ampersand(\Environment::get('base') . \Isotope\Module\Checkout::generateUrlForStep('failed')),
+            'cancelUrl'             => ampersand(\Environment::get('base') . \Isotope\Module\Checkout::generateUrlForStep('failed')),
             'mod'                   => 'pay',
             'id'                    => $this->id,
         );

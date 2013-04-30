@@ -78,7 +78,7 @@ class BillingAddress extends Address implements IsotopeCheckoutStep
         (
             'headline'    => $strHeadline,
             'info'        => Isotope::getCart()->getBillingAddress()->generateHtml(Isotope::getConfig()->billing_fields),
-            'edit'        => $this->addToUrl('step=address', true),
+            'edit'        => \Isotope\Module\Checkout::generateUrlForStep('address'),
         ));
     }
 

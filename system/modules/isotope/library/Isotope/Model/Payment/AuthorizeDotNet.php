@@ -95,8 +95,8 @@ class AuthorizeDotNet extends Payment implements IsotopePayment
             return true;
 
         $this->log('Invalid payment data received.', 'PaymentAuthorizeDotNet processPayment()', TL_ERROR);
-        $this->redirect($this->addToUrl('step=failed', true));
 
+        \Isotope\Module\Checkout::redirectToStep('failed');
     }
 
 

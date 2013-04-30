@@ -156,7 +156,7 @@ class Checkout extends Module
 
         if (\Input::get('step') == '') {
             if ($this->iso_forward_review) {
-                $this->redirect($this->addToUrl('step=review', true));
+                static::redirectToStep('review');
             }
 
             $this->redirectToNextStep();
@@ -204,7 +204,7 @@ class Checkout extends Module
 
                 // the user wanted to proceed but the current step is not completed yet
                 if ($this->doNotSubmit && $step != $this->strCurrentStep) {
-                    $this->redirect($this->addToUrl('step=' . $step, true));
+                    static::redirectToStep($step);
                 }
             }
 
@@ -221,9 +221,8 @@ class Checkout extends Module
             $this->writeOrder();
             $strBuffer = Isotope::getCart()->hasPayment() ? Isotope::getCart()->Payment->checkoutForm($this) : false;
 
-            if ($strBuffer === false)
-            {
-                $this->redirect($this->addToUrl('step=complete', true));
+            if ($strBuffer === false) {
+                static::redirectToStep('complete');
             }
 
             $this->Template->showForm = false;
@@ -243,14 +242,10 @@ class Checkout extends Module
                 }
 
                 // Checkout failed, show error message
-                $this->redirect($this->addToUrl('step=failed', true));
-            }
-            elseif ($strBuffer === false)
-            {
-                $this->redirect($this->addToUrl('step=failed', true));
-            }
-            else
-            {
+                static::redirectToStep('failed');
+            } elseif ($strBuffer === false) {
+                static::redirectToStep('failed');
+            } else {
                 $this->Template->showNext = false;
                 $this->Template->showPrevious = false;
             }
@@ -298,51 +293,38 @@ class Checkout extends Module
 
     /**
      * Redirect visitor to the next step in ISO_CHECKOUTSTEP
-     * @return void
      */
     protected function redirectToNextStep()
     {
         $arrSteps = array_keys($this->getSteps());
+        $intKey = array_search($this->strCurrentStep, $arrSteps);
 
-        if (!in_array($this->strCurrentStep, $arrSteps))
-        {
-            $this->redirect($this->addToUrl('step='.array_shift($arrSteps), true));
+        if (false === $intKey) {
+            $intKey = -1;
         }
-        else
-        {
-            // key of the next step
-            $intKey = array_search($this->strCurrentStep, $arrSteps) + 1;
 
             // redirect to step "process" if the next step is the last one
-            if ($intKey == count($arrSteps))
-            {
-                $this->redirect($this->addToUrl('step=process', true));
-            }
-            else
-            {
-                $this->redirect($this->addToUrl('step='.$arrSteps[$intKey], true));
-            }
+        elseif (($intKey+1) == count($arrSteps)) {
+            static::redirectToStep('process');
         }
+
+        static::redirectToStep($arrSteps[$intKey+1]);
     }
 
 
     /**
      * Redirect visitor to the previous step in ISO_CHECKOUTSTEP
-     * @return void
      */
     protected function redirectToPreviousStep()
     {
         $arrSteps = array_keys($this->getSteps());
+        $intKey = array_search($this->strCurrentStep, $arrSteps);
 
-        if (!in_array($this->strCurrentStep, $arrSteps))
-        {
-            $this->redirect($this->addToUrl('step='.array_shift($arrSteps), true));
+        if (false === $intKey || 0 === $intKey) {
+            $intKey = 1;
         }
-        else
-        {
-            $strKey = array_search($this->strCurrentStep, $arrSteps);
-            $this->redirect($this->addToUrl('step='.$arrSteps[($strKey-1)], true));
-        }
+
+        static::redirectToStep($arrSteps[($intKey-1)]);
     }
 
 
@@ -405,31 +387,6 @@ class Checkout extends Module
         }
 
         return $this->arrCheckoutInfo;
-    }
-
-
-    /**
-     * Override parent addToUrl function. Use generateFrontendUrl if we want to remove all parameters.
-     * @param string
-     * @param boolean
-     * @return string
-     */
-    public static function addToUrl($strRequest, $blnIgnoreParams=false)
-    {
-        if ($blnIgnoreParams)
-        {
-            global $objPage;
-
-            // Support for auto_item parameter
-            if ($GLOBALS['TL_CONFIG']['useAutoItem'])
-            {
-                $strRequest = str_replace('step=', '', $strRequest);
-            }
-
-            return \Controller::generateFrontendUrl($objPage->row(), '/' . str_replace(array('=', '&amp;', '&'), '/', $strRequest));
-        }
-
-        return parent::addToUrl($strRequest, $blnIgnoreParams);
     }
 
 
@@ -539,7 +496,7 @@ class Checkout extends Module
                 $class .= ' active';
             }
             elseif ($blnPassed) {
-                $href = $this->addToUrl('step=' . $step, true);
+                $href = static::generateUrlForStep($step);
                 $class .= ' passed';
             }
 
@@ -562,5 +519,32 @@ class Checkout extends Module
         $arrItems[count($arrItems)-1]['class'] .= ' last';
 
         return $arrItems;
+    }
+
+
+    /**
+     * Redirect to given checkout step
+     * @param   string
+     */
+    public static function redirectToStep($strStep)
+    {
+        \Controller::redirect(static::generateUrlForStep($strStep));
+    }
+
+    /**
+     * Generate frontend URL for current page including the given checkout step
+     * @param   string
+     * @return  string
+     */
+    public static function generateUrlForStep($strStep)
+    {
+        global $objPage;
+
+        // Support for auto_item parameter
+        if (!$GLOBALS['TL_CONFIG']['useAutoItem']) {
+            $strStep = 'step/' . $strStep;
+        }
+
+        return \Controller::generateFrontendUrl($objPage->row(), '/' . $strStep);
     }
 }
