@@ -94,17 +94,17 @@ class Expercash extends Payment implements IsotopePayment
 
         $arrData = array
         (
-            'popupId'            => $this->expercash_popupId,
-            'jobId'                => microtime(),
-            'functionId'        => (FE_USER_LOGGED_IN ? $this->User->id : Isotope::getCart()->session),
-            'transactionId'        => $objOrder->id,
-            'amount'            => (round(Isotope::getCart()->getTotal(), 2)*100),
-            'currency'            => Isotope::getConfig()->currency,
-            'paymentMethod'        => $this->expercash_paymentMethod,
+            'popupId'       => $this->expercash_popupId,
+            'jobId'         => microtime(),
+            'functionId'    => (FE_USER_LOGGED_IN ? $this->User->id : Isotope::getCart()->session),
+            'transactionId' => $objOrder->id,
+            'amount'        => (round(Isotope::getCart()->getTotal(), 2)*100),
+            'currency'      => Isotope::getConfig()->currency,
+            'paymentMethod' => $this->expercash_paymentMethod,
             'returnUrl'     => \Environment::get('base') . \Isotope\Frontend::addQueryStringToUrl('uid=' . $objOrder->uniqid, \Isotope\Module\Checkout::generateUrlForStep('complete')),
             'errorUrl'      => \Environment::get('base') . \Isotope\Module\Checkout::generateUrlForStep('failed'),
-            'notifyUrl'            => \Environment::get('base') . 'system/modules/isotope/postsale.php?mod=pay&id=' . $this->id,
-            'profile'            => $this->expercash_profile,
+            'notifyUrl'     => \Environment::get('base') . 'system/modules/isotope/postsale.php?mod=pay&id=' . $this->id,
+            'profile'       => $this->expercash_profile,
         );
 
         $strKey = '';

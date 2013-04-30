@@ -174,8 +174,7 @@ class Checkout extends Module
         $this->Template->showNext = true;
         $this->Template->showForm = true;
 
-        if ($this->strCurrentStep == 'failed')
-        {
+        if ($this->strCurrentStep == 'failed') {
             $this->Database->prepare("UPDATE tl_iso_product_collection SET order_status=? WHERE source_collection_id=?")->execute(Isotope::getConfig()->orderstatus_error, Isotope::getCart()->id);
             $this->Template->mtype = 'error';
             $this->Template->message = strlen(\Input::get('reason')) ? \Input::get('reason') : $GLOBALS['TL_LANG']['ERR']['orderFailed'];
@@ -185,16 +184,15 @@ class Checkout extends Module
         // Run trough all steps until we find the current one or one reports failure
         $intCurrentStep = 0;
         $intTotalSteps = count($this->getSteps());
-        foreach ($this->getSteps() as $step => $arrModules)
-        {
+        foreach ($this->getSteps() as $step => $arrModules) {
             $this->strFormId = 'iso_mod_checkout_' . $step;
             $this->Template->formId = $this->strFormId;
             $this->Template->formSubmit = $this->strFormId;
-            ++$intCurrentStep;
+
+            $intCurrentStep += 1;
             $strBuffer = '';
 
-            foreach ($arrModules as $objModule)
-            {
+            foreach ($arrModules as $objModule) {
                 $strBuffer .= $objModule->generate();
 
                 if ($objModule->hasError()) {
@@ -208,16 +206,14 @@ class Checkout extends Module
                 }
             }
 
-            if ($step == $this->strCurrentStep)
-            {
+            if ($step == $this->strCurrentStep) {
                 global $objPage;
-                $objPage->pageTitle = sprintf($GLOBALS['TL_LANG']['MSC']['checkoutStep'], $intCurrentStep, $intTotalSteps, (strlen($GLOBALS['TL_LANG']['MSC']['checkout_' . $step]) ? $GLOBALS['TL_LANG']['MSC']['checkout_' . $step] : $step)) . ($objPage->pageTitle ? $objPage->pageTitle : $objPage->title);
+                $objPage->pageTitle = sprintf($GLOBALS['TL_LANG']['MSC']['checkoutStep'], $intCurrentStep, $intTotalSteps, ($GLOBALS['TL_LANG']['MSC']['checkout_' . $step] ?: $step)) . ($objPage->pageTitle ?: $objPage->title);
                 break;
             }
         }
 
-        if ($this->strCurrentStep == 'process')
-        {
+        if ($this->strCurrentStep == 'process') {
             $this->writeOrder();
             $strBuffer = Isotope::getCart()->hasPayment() ? Isotope::getCart()->Payment->checkoutForm($this) : false;
 
@@ -227,17 +223,12 @@ class Checkout extends Module
 
             $this->Template->showForm = false;
             $this->doNotSubmit = true;
-        }
+        } else if ($this->strCurrentStep == 'complete') {
+            $strBuffer = Isotope::getCart()->hasPayment() ? Isotope::getCart()->getPaymentMethod()->processPayment() : true;
 
-        if ($this->strCurrentStep == 'complete')
-        {
-            $strBuffer = Isotope::getCart()->hasPayment() ? Isotope::getCart()->Payment->processPayment() : true;
-
-            if ($strBuffer === true)
-            {
+            if ($strBuffer === true) {
                 // If checkout is successful, complete order and redirect to confirmation page
-                if (($objOrder = Order::findOneBy('source_collection_id', Isotope::getCart()->id)) !== null && $objOrder->checkout() && $objOrder->complete())
-                {
+                if (($objOrder = Order::findOneBy('source_collection_id', Isotope::getCart()->id)) !== null && $objOrder->checkout() && $objOrder->complete()) {
                     $this->redirect(\Isotope\Frontend::addQueryStringToUrl('uid=' . $objOrder->uniqid, $this->orderCompleteJumpTo));
                 }
 
@@ -303,7 +294,7 @@ class Checkout extends Module
             $intKey = -1;
         }
 
-            // redirect to step "process" if the next step is the last one
+        // redirect to step "process" if the next step is the last one
         elseif (($intKey+1) == count($arrSteps)) {
             static::redirectToStep('process');
         }

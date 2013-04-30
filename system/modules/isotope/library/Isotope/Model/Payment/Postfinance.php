@@ -143,23 +143,23 @@ class Postfinance extends Payment implements IsotopePayment
 
         $arrParam = array
         (
-            'PSPID'            => $this->postfinance_pspid,
-            'ORDERID'        => $objOrder->id,
+            'PSPID'         => $this->postfinance_pspid,
+            'ORDERID'       => $objOrder->id,
             'AMOUNT'        => round((Isotope::getCart()->getTotal() * 100)),
-            'CURRENCY'        => Isotope::getConfig()->currency,
-            'LANGUAGE'        => $GLOBALS['TL_LANGUAGE'] . '_' . strtoupper($GLOBALS['TL_LANGUAGE']),
+            'CURRENCY'      => Isotope::getConfig()->currency,
+            'LANGUAGE'      => $GLOBALS['TL_LANGUAGE'] . '_' . strtoupper($GLOBALS['TL_LANGUAGE']),
             'CN'            => $objAddress->firstname . ' ' . $objAddress->lastname,
-            'EMAIL'            => $objAddress->email,
-            'OWNERZIP'        => $objAddress->postal,
-            'OWNERADDRESS'    => $objAddress->street_1,
-            'OWNERADDRESS2'    => $objAddress->street_2,
-            'OWNERCTY'        => $objAddress->country,
-            'OWNERTOWN'        => $objAddress->city,
+            'EMAIL'         => $objAddress->email,
+            'OWNERZIP'      => $objAddress->postal,
+            'OWNERADDRESS'  => $objAddress->street_1,
+            'OWNERADDRESS2' => $objAddress->street_2,
+            'OWNERCTY'      => $objAddress->country,
+            'OWNERTOWN'     => $objAddress->city,
             'OWNERTELNO'    => $objAddress->phone,
             'ACCEPTURL'     => \Environment::get('base') . \Isotope\Frontend::addQueryStringToUrl('uid=' . $objOrder->uniqid, \Isotope\Module\Checkout::generateUrlForStep('complete')),
             'DECLINEURL'    => $strFailedUrl,
-            'EXCEPTIONURL'    => $strFailedUrl,
-            'PARAMPLUS'        => 'mod=pay&amp;id=' . $this->id,
+            'EXCEPTIONURL'  => $strFailedUrl,
+            'PARAMPLUS'     => 'mod=pay&amp;id=' . $this->id,
         );
 
         // SHA-1 must be generated on alphabetically sorted keys.
