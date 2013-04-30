@@ -234,7 +234,7 @@ class Order extends ProductCollection implements IsotopeProductCollection
 
         // Set billing and shipping address and create private records
         $this->setBillingAddress($objCart->getBillingAddress());
-        $this->setShippingAddress($objCart->setShippingAddress());
+        $this->setShippingAddress($objCart->getShippingAddress());
         $this->createPrivateAddresses();
 
         // @todo must add surcharges and downloads here
