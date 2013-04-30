@@ -240,7 +240,7 @@ class tl_iso_product_collection extends \Backend
         unset($GLOBALS['TL_DCA']['tl_iso_product_collection']['list']['operations']['delete']);
         if (\Input::get('act') == 'delete' || \Input::get('act') == 'deleteAll')
         {
-            $this->log('Only admin can delete orders!', __METHOD__, TL_ERROR);
+            \System::log('Only admin can delete orders!', __METHOD__, TL_ERROR);
             $this->redirect('contao/main.php?act=error');
         }
 
@@ -261,7 +261,7 @@ class tl_iso_product_collection extends \Backend
 
         if (\Input::get('id') != '' && !in_array(\Input::get('id'), $arrIds))
         {
-            $this->log('Trying to access disallowed order ID '.\Input::get('id'), __METHOD__, TL_ERROR);
+            \System::log('Trying to access disallowed order ID '.\Input::get('id'), __METHOD__, TL_ERROR);
             $this->redirect(\Environment::get('script').'?act=error');
         }
     }
@@ -424,7 +424,7 @@ class tl_iso_product_collection extends \Backend
     {
         if (empty($arrIds))
         {
-            $this->log('No order IDs passed to method.', __METHOD__, TL_ERROR);
+            \System::log('No order IDs passed to method.', __METHOD__, TL_ERROR);
             $this->redirect('contao/main.php?act=error');
         }
 
@@ -440,7 +440,7 @@ class tl_iso_product_collection extends \Backend
 
         if (!$pdf)
         {
-            $this->log('No order IDs passed to method.', __METHOD__, TL_ERROR);
+            \System::log('No order IDs passed to method.', __METHOD__, TL_ERROR);
             $this->redirect('contao/main.php?act=error');
         }
 

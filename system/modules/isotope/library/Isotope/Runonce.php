@@ -76,7 +76,7 @@ class Runonce extends \Controller
             $this->handleException('Finalization', $e);
         }
 
-        $this->log('Upgraded Isotope eCommerce to ' . $step, TL_INFO, __METHOD__);
+        \System::log('Upgraded Isotope eCommerce to ' . $step, TL_INFO, __METHOD__);
     }
 
 

@@ -48,7 +48,7 @@ class Automator extends \Controller
 
         if ($intPurged > 0)
         {
-            $this->log('Purged ' . $intPurged . ' old guest carts', __METHOD__, TL_CRON);
+            \System::log('Purged ' . $intPurged . ' old guest carts', __METHOD__, TL_CRON);
         }
     }
 
@@ -76,7 +76,7 @@ class Automator extends \Controller
 
                     if ($objRequest->hasError())
                     {
-                        $this->log('Error retrieving data from European Central Bank (ecb.int): ' . $objRequest->error . ' (Code ' . $objRequest->code . ')', __METHOD__, TL_ERROR);
+                        \System::log('Error retrieving data from European Central Bank (ecb.int): ' . $objRequest->error . ' (Code ' . $objRequest->code . ')', __METHOD__, TL_ERROR);
 
                         return;
                     }
@@ -99,7 +99,7 @@ class Automator extends \Controller
                     // Log if one of the currencies is not available
                     if (!$fltCourse || !$fltCourseOrigin)
                     {
-                        $this->log('Could not find currency to convert in European Central Bank (ecb.int).', __METHOD__, TL_ERROR);
+                        \System::log('Could not find currency to convert in European Central Bank (ecb.int).', __METHOD__, TL_ERROR);
 
                         return;
                     }
@@ -117,7 +117,7 @@ class Automator extends \Controller
 
                     if ($objRequest->hasError())
                     {
-                        $this->log('Error retrieving data from Swiss Federal Department of Finance (admin.ch): ' . $objRequest->error . ' (Code ' . $objRequest->code . ')', __METHOD__, TL_ERROR);
+                        \System::log('Error retrieving data from Swiss Federal Department of Finance (admin.ch): ' . $objRequest->error . ' (Code ' . $objRequest->code . ')', __METHOD__, TL_ERROR);
 
                         return;
                     }
@@ -140,7 +140,7 @@ class Automator extends \Controller
                     // Log if one of the currencies is not available
                     if (!$fltCourse || !$fltCourseOrigin)
                     {
-                        $this->log('Could not find currency to convert in Swiss Federal Department of Finance (admin.ch).', __METHOD__, TL_ERROR);
+                        \System::log('Could not find currency to convert in Swiss Federal Department of Finance (admin.ch).', __METHOD__, TL_ERROR);
 
                         return;
                     }

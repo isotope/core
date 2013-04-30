@@ -190,7 +190,7 @@ class Order extends ProductCollection implements IsotopeProductCollection
         }
 
         if (($objCart = Cart::findByPk($this->source_collection_id)) === null) {
-            $this->log('Could not find Cart ID '.$this->source_collection_id.' for Order ID '.$this->id, __METHOD__, TL_ERROR);
+            \System::log('Could not find Cart ID '.$this->source_collection_id.' for Order ID '.$this->id, __METHOD__, TL_ERROR);
 
             return false;
         }
@@ -222,7 +222,7 @@ class Order extends ProductCollection implements IsotopeProductCollection
                 $objCallback = \System::importStatic($callback[0]);
 
                 if ($objCallback->$callback[1]($this, $objCart) === false) {
-                    $this->log('Callback ' . $callback[0] . '::' . $callback[1] . '() cancelled checkout for Order ID ' . $this->id, __METHOD__, TL_ERROR);
+                    \System::log('Callback ' . $callback[0] . '::' . $callback[1] . '() cancelled checkout for Order ID ' . $this->id, __METHOD__, TL_ERROR);
 
                     return false;
                 }
@@ -248,7 +248,7 @@ class Order extends ProductCollection implements IsotopeProductCollection
         $arrData = $this->getEmailData();
         $strRecipient = $this->getEmailRecipient();
 
-        $this->log('New order ID ' . $this->id . ' has been placed', __METHOD__, TL_ACCESS);
+        \System::log('New order ID ' . $this->id . ' has been placed', __METHOD__, TL_ACCESS);
 
         if ($this->iso_mail_admin && $this->iso_sales_email != '') {
             Isotope::sendMail($this->iso_mail_admin, $this->iso_sales_email, $this->language, $arrData, $strRecipient, $this);
@@ -257,7 +257,7 @@ class Order extends ProductCollection implements IsotopeProductCollection
         if ($this->iso_mail_customer && $strRecipient != '') {
             Isotope::sendMail($this->iso_mail_customer, $strRecipient, $this->language, $arrData, '', $this);
         } else {
-            $this->log('Unable to send customer confirmation for order ID '.$this->id, __METHOD__, TL_ERROR);
+            \System::log('Unable to send customer confirmation for order ID '.$this->id, __METHOD__, TL_ERROR);
         }
 
 

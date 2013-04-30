@@ -64,7 +64,7 @@ class Paypal extends Payment implements IsotopePayment
             return $objTemplate->parse();
         }
 
-        $this->log('Payment could not be processed.', __METHOD__, TL_ERROR);
+        \System::log('Payment could not be processed.', __METHOD__, TL_ERROR);
         \Isotope\Module\Checkout::redirectToStep('failed');
     }
 
@@ -82,14 +82,14 @@ class Paypal extends Payment implements IsotopePayment
 
         if ($objRequest->hasError())
         {
-            $this->log('Request Error: ' . $objRequest->error, __METHOD__, TL_ERROR);
+            \System::log('Request Error: ' . $objRequest->error, __METHOD__, TL_ERROR);
             exit;
         }
         elseif ($objRequest->response == 'VERIFIED' && (\Input::post('receiver_email', true) == $this->paypal_account || $this->debug))
         {
             if (($objOrder = Order::findByPk(\Input::post('invoice'))) === null)
             {
-                $this->log('Order ID "' . \Input::post('invoice') . '" not found', __METHOD__, TL_ERROR);
+                \System::log('Order ID "' . \Input::post('invoice') . '" not found', __METHOD__, TL_ERROR);
 
                 return;
             }
@@ -97,14 +97,14 @@ class Paypal extends Payment implements IsotopePayment
             // Validate payment data (see #2221)
             if ($objOrder->currency != \Input::post('mc_currency') || $objOrder->getTotal() != \Input::post('mc_gross'))
             {
-                $this->log('IPN manipulation in payment from "' . \Input::post('payer_email') . '" !', __METHOD__, TL_ERROR);
+                \System::log('IPN manipulation in payment from "' . \Input::post('payer_email') . '" !', __METHOD__, TL_ERROR);
 
                 return;
             }
 
             if (!$objOrder->checkout())
             {
-                $this->log('IPN checkout for Order ID "' . \Input::post('invoice') . '" failed', __METHOD__, TL_ERROR);
+                \System::log('IPN checkout for Order ID "' . \Input::post('invoice') . '" failed', __METHOD__, TL_ERROR);
 
                 return;
             }
@@ -154,11 +154,11 @@ class Paypal extends Payment implements IsotopePayment
 
             $objOrder->save();
 
-            $this->log('PayPal IPN: data accepted', __METHOD__, TL_GENERAL);
+            \System::log('PayPal IPN: data accepted', __METHOD__, TL_GENERAL);
         }
         else
         {
-            $this->log('PayPal IPN: data rejected (' . $objRequest->response . ')', __METHOD__, TL_ERROR);
+            \System::log('PayPal IPN: data rejected (' . $objRequest->response . ')', __METHOD__, TL_ERROR);
         }
 
         header('HTTP/1.1 200 OK');

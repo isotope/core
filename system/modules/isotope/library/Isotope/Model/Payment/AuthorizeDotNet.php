@@ -94,7 +94,7 @@ class AuthorizeDotNet extends Payment implements IsotopePayment
 
             return true;
 
-        $this->log('Invalid payment data received.', 'PaymentAuthorizeDotNet processPayment()', TL_ERROR);
+        \System::log('Invalid payment data received.', 'PaymentAuthorizeDotNet processPayment()', TL_ERROR);
 
         \Isotope\Module\Checkout::redirectToStep('failed');
     }
@@ -544,7 +544,7 @@ $return .= '</div></div>';
 
         if($blnFail)
         {
-            $this->log(sprintf("Transaction failure. Transaction Status: %s, Reason: %s", $this->strStatus, $this->strReason), 'PaymentAuthorizeDotNet capturePayment()', TL_ERROR);
+            \System::log(sprintf("Transaction failure. Transaction Status: %s, Reason: %s", $this->strStatus, $this->strReason), 'PaymentAuthorizeDotNet capturePayment()', TL_ERROR);
 
             return false;
         }

@@ -397,7 +397,7 @@ class DC_ProductData extends \DC_Table
     {
         if ($GLOBALS['TL_DCA'][$this->strTable]['config']['notEditable'])
         {
-            $this->log('Table ' . $this->strTable . ' is not editable', 'DC_ProductData edit()', TL_ERROR);
+            \System::log('Table ' . $this->strTable . ' is not editable', 'DC_ProductData edit()', TL_ERROR);
             $this->redirect('contao/main.php?act=error');
         }
 
@@ -420,14 +420,14 @@ class DC_ProductData extends \DC_Table
         // Redirect if there is no record with the given ID
         if ($objRow->numRows < 1)
         {
-            $this->log('Could not load record ID "'.$this->intId.'" of table "'.$this->strTable.'"!', 'DC_ProductData edit()', TL_ERROR);
+            \System::log('Could not load record ID "'.$this->intId.'" of table "'.$this->strTable.'"!', 'DC_ProductData edit()', TL_ERROR);
             $this->redirect('contao/main.php?act=error');
         }
 
         // ID of a language record is not allowed
         elseif ($objRow->language != '')
         {
-            $this->log('Cannot edit language record ID "'.$this->intId.'" of table "'.$this->strTable.'"!', 'DC_ProductData edit()', TL_ERROR);
+            \System::log('Cannot edit language record ID "'.$this->intId.'" of table "'.$this->strTable.'"!', 'DC_ProductData edit()', TL_ERROR);
             $this->redirect('contao/main.php?act=error');
         }
 
@@ -521,7 +521,7 @@ class DC_ProductData extends \DC_Table
                     $this->Database->prepare("UPDATE tl_version SET active=1 WHERE pid=? AND version=?")
                                    ->execute($this->objActiveRecord->id, \Input::post('version'));
 
-                    $this->log(sprintf('Version %s of record ID %s (table %s) has been restored', \Input::post('version'), $this->objActiveRecord->id, $this->strTable), 'DC_ProductData edit()', TL_GENERAL);
+                    \System::log(sprintf('Version %s of record ID %s (table %s) has been restored', \Input::post('version'), $this->objActiveRecord->id, $this->strTable), 'DC_ProductData edit()', TL_GENERAL);
 
                     // Trigger the onrestore_callback
                     if (is_array($GLOBALS['TL_DCA'][$this->strTable]['config']['onrestore_callback']))
@@ -848,7 +848,7 @@ window.addEvent(\'domready\', function() {
                     }
                 }
 
-                $this->log(sprintf('A new version of %s ID %s has been created', $this->strTable, $this->objActiveRecord->id), 'DC_ProductData edit()', TL_GENERAL);
+                \System::log(sprintf('A new version of %s ID %s has been created', $this->strTable, $this->objActiveRecord->id), 'DC_ProductData edit()', TL_GENERAL);
             }
 
             // Set the current timestamp (-> DO NOT CHANGE THE ORDER version - timestamp)
@@ -967,7 +967,7 @@ window.addEvent(\'domready\', function() {
     {
         if ($GLOBALS['TL_DCA'][$this->strTable]['config']['notEditable'])
         {
-            $this->log('Table "'.$this->strTable.'" is not editable', 'DC_Table editAll()', TL_ERROR);
+            \System::log('Table "'.$this->strTable.'" is not editable', 'DC_Table editAll()', TL_ERROR);
             $this->redirect('contao/main.php?act=error');
         }
 
@@ -1123,7 +1123,7 @@ window.addEvent(\'domready\', function() {
                             }
                         }
 
-                        $this->log(sprintf('A new version of %s ID %s has been created', $this->strTable, $this->intId), 'DC_Table editAll()', TL_GENERAL);
+                        \System::log(sprintf('A new version of %s ID %s has been created', $this->strTable, $this->intId), 'DC_Table editAll()', TL_GENERAL);
                     }
 
                     // Set the current timestamp (-> DO NOT CHANGE ORDER version - timestamp)
@@ -1252,7 +1252,7 @@ window.addEvent(\'domready\', function() {
     {
         if ($GLOBALS['TL_DCA'][$this->strTable]['config']['notEditable'])
         {
-            $this->log('Table ' . $this->strTable . ' is not editable', 'DC_Table overrideAll()', TL_ERROR);
+            \System::log('Table ' . $this->strTable . ' is not editable', 'DC_Table overrideAll()', TL_ERROR);
             $this->redirect('contao/main.php?act=error');
         }
 
@@ -1330,7 +1330,7 @@ window.addEvent(\'domready\', function() {
                         if ($this->blnCreateNewVersion)
                         {
                             $this->createNewVersion($this->strTable, $this->intId);
-                            $this->log(sprintf('A new version of record ID %s (table %s) has been created', $this->intId, $this->strTable), 'DC_Table editAll()', TL_GENERAL);
+                            \System::log(sprintf('A new version of record ID %s (table %s) has been created', $this->intId, $this->strTable), 'DC_Table editAll()', TL_GENERAL);
                         }
 
                         // Set current timestamp (-> DO NOT CHANGE ORDER version - timestamp)
@@ -2235,7 +2235,7 @@ $(window).addEvents({
             $this->Database->prepare("UPDATE {$this->strTable} %s WHERE id=$intLanguageId")->set($arrRow)->executeUncached();
 
             $this->createNewVersion($this->strTable, $intLanguageId);
-            $this->log(sprintf('A new version of record ID %s (table %s) has been created', $intLanguageId, $this->strTable), 'DC_ProductData copyFallback()', TL_GENERAL);
+            \System::log(sprintf('A new version of record ID %s (table %s) has been created', $intLanguageId, $this->strTable), 'DC_ProductData copyFallback()', TL_GENERAL);
         }
 
         $this->redirect($this->addToUrl('act=edit'));

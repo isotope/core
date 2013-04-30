@@ -592,7 +592,7 @@ $strBuffer .= '<th style="text-align:center"><img src="system/themes/default/ima
         // Check permissions to publish
         if (!$this->User->isAdmin && !$this->User->hasAccess('tl_iso_products::published', 'alexf'))
         {
-            $this->log('Not enough permissions to publish/unpublish product ID "'.$intId.'"', 'tl_iso_products toggleVisibility', TL_ERROR);
+            \System::log('Not enough permissions to publish/unpublish product ID "'.$intId.'"', 'tl_iso_products toggleVisibility', TL_ERROR);
             $this->redirect('contao/main.php?act=error');
         }
 */

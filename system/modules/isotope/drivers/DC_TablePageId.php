@@ -154,7 +154,7 @@ class DC_TablePageId extends \DC_Table
         // Update the record
         if (in_array($this->set['page_id'], $cr))
         {
-            $this->log('Attempt to relate record '.$this->intId.' of table "'.$this->strTable.'" to its child record '.\Input::get('page_id').' (circular reference)', 'DC_Table cut()', TL_ERROR);
+            \System::log('Attempt to relate record '.$this->intId.' of table "'.$this->strTable.'" to its child record '.\Input::get('page_id').' (circular reference)', 'DC_Table cut()', TL_ERROR);
             $this->redirect('contao/main.php?act=error');
         }
 

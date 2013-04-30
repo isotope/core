@@ -39,14 +39,14 @@ class Postfinance extends Payment implements IsotopePayment
     {
         if (\Input::get('NCERROR') > 0)
         {
-            $this->log('Order ID "' . \Input::get('orderID') . '" has NCERROR ' . \Input::get('NCERROR'), __METHOD__, TL_ERROR);
+            \System::log('Order ID "' . \Input::get('orderID') . '" has NCERROR ' . \Input::get('NCERROR'), __METHOD__, TL_ERROR);
 
             return false;
         }
 
         if (($objOrder = Order::findByPk(\Input::get('orderID'))) === null)
         {
-            $this->log('Order ID "' . \Input::get('orderID') . '" not found', __METHOD__, TL_ERROR);
+            \System::log('Order ID "' . \Input::get('orderID') . '" not found', __METHOD__, TL_ERROR);
 
             return false;
         }
@@ -55,7 +55,7 @@ class Postfinance extends Payment implements IsotopePayment
 
         if (!$this->validateSHASign())
         {
-            $this->log('Received invalid postsale data for order ID "' . $objOrder->id . '"', __METHOD__, TL_ERROR);
+            \System::log('Received invalid postsale data for order ID "' . $objOrder->id . '"', __METHOD__, TL_ERROR);
 
             return false;
         }
@@ -63,7 +63,7 @@ class Postfinance extends Payment implements IsotopePayment
         // Validate payment data (see #2221)
         if ($objOrder->currency != $this->getRequestData('currency') || $objOrder->getTotal() != $this->getRequestData('amount'))
         {
-            $this->log('Postsale checkout manipulation in payment for Order ID ' . $objOrder->id . '!', __METHOD__, TL_ERROR);
+            \System::log('Postsale checkout manipulation in payment for Order ID ' . $objOrder->id . '!', __METHOD__, TL_ERROR);
             \Isotope\Module\Checkout::redirectToStep('failed');
         }
 
@@ -86,21 +86,21 @@ class Postfinance extends Payment implements IsotopePayment
     {
         if ($this->getRequestData('NCERROR') > 0)
         {
-            $this->log('Order ID "' . $this->getRequestData('orderID') . '" has NCERROR ' . $this->getRequestData('NCERROR'), __METHOD__, TL_ERROR);
+            \System::log('Order ID "' . $this->getRequestData('orderID') . '" has NCERROR ' . $this->getRequestData('NCERROR'), __METHOD__, TL_ERROR);
 
             return;
         }
 
         if (($objOrder = Order::findByPk($this->getRequestData('orderID'))) === null)
         {
-            $this->log('Order ID "' . $this->getRequestData('orderID') . '" not found', __METHOD__, TL_ERROR);
+            \System::log('Order ID "' . $this->getRequestData('orderID') . '" not found', __METHOD__, TL_ERROR);
 
             return;
         }
 
         if (!$this->validateSHASign())
         {
-            $this->log('Received invalid postsale data for order ID "' . $objOrder->id . '"', __METHOD__, TL_ERROR);
+            \System::log('Received invalid postsale data for order ID "' . $objOrder->id . '"', __METHOD__, TL_ERROR);
 
             return;
         }
@@ -108,14 +108,14 @@ class Postfinance extends Payment implements IsotopePayment
         // Validate payment data (see #2221)
         if ($objOrder->currency != $this->getRequestData('currency') || $objOrder->getTotal() != $this->getRequestData('amount'))
         {
-            $this->log('Postsale checkout manipulation in payment for Order ID ' . $objOrder->id . '!', __METHOD__, TL_ERROR);
+            \System::log('Postsale checkout manipulation in payment for Order ID ' . $objOrder->id . '!', __METHOD__, TL_ERROR);
 
             return;
         }
 
         if (!$objOrder->checkout())
         {
-            $this->log('Post-Sale checkout for Order ID "' . $objOrder->id . '" failed', __METHOD__, TL_ERROR);
+            \System::log('Post-Sale checkout for Order ID "' . $objOrder->id . '" failed', __METHOD__, TL_ERROR);
 
             return;
         }

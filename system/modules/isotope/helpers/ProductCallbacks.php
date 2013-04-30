@@ -215,7 +215,7 @@ class ProductCallbacks extends \Backend
                             }
                         }
 
-                        $this->log('Advanced product filter "'.$filter.'" not found.', __METHOD__, TL_ERROR);
+                        \System::log('Advanced product filter "'.$filter.'" not found.', __METHOD__, TL_ERROR);
                         break;
                 }
 
@@ -300,7 +300,7 @@ class ProductCallbacks extends \Backend
 
             if (\Input::get('id') > 0 && !in_array(\Input::get('id'), $GLOBALS['TL_DCA']['tl_iso_products']['list']['sorting']['root']))
             {
-                $this->log('Cannot access product ID '.\Input::get('id'), __METHOD__, TL_ERROR);
+                \System::log('Cannot access product ID '.\Input::get('id'), __METHOD__, TL_ERROR);
                 $this->redirect('contao/main.php?act=error');
             }
         }
