@@ -477,13 +477,13 @@ abstract class ProductCollection extends \Model
 
     /**
      * Update database with latest product prices and store settings
-     * @param boolean
-     * @return integer
+     * @param   boolean
+     * @return  $this
      */
     public function save($blnForceInsert=false)
     {
         if ($this->isLocked()) {
-            return false;
+            return $this;
         }
 
         if ($this->blnModified) {
@@ -510,7 +510,7 @@ abstract class ProductCollection extends \Model
         }
 
         if ($this->blnModified || $blnForceInsert) {
-            parent::save($blnForceInsert);
+            return parent::save($blnForceInsert);
         }
 
         return $this;
