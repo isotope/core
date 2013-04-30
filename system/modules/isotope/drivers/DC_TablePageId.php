@@ -133,7 +133,7 @@ class DC_TablePageId extends \DC_Table
         // ID and page_id are mandatory
         if (!$this->intId || !strlen(\Input::get('page_id')))
         {
-            $this->redirect($this->getReferer());
+            \Controller::redirect($this->getReferer());
         }
 
         // Get the new position
@@ -155,7 +155,7 @@ class DC_TablePageId extends \DC_Table
         if (in_array($this->set['page_id'], $cr))
         {
             \System::log('Attempt to relate record '.$this->intId.' of table "'.$this->strTable.'" to its child record '.\Input::get('page_id').' (circular reference)', 'DC_Table cut()', TL_ERROR);
-            $this->redirect('contao/main.php?act=error');
+            \Controller::redirect('contao/main.php?act=error');
         }
 
         $this->set['tstamp'] = time();
@@ -188,7 +188,7 @@ class DC_TablePageId extends \DC_Table
 
         if (!$blnDoNotRedirect)
         {
-            $this->redirect($this->getReferer());
+            \Controller::redirect($this->getReferer());
         }
     }
 
@@ -201,7 +201,7 @@ class DC_TablePageId extends \DC_Table
         // page_id is mandatory
         if (!strlen(\Input::get('page_id')))
         {
-            $this->redirect($this->getReferer());
+            \Controller::redirect($this->getReferer());
         }
 
         $arrClipboard = $this->Session->get('CLIPBOARD');
@@ -217,7 +217,7 @@ class DC_TablePageId extends \DC_Table
             }
         }
 
-        $this->redirect($this->getReferer());
+        \Controller::redirect($this->getReferer());
     }
 
 
@@ -470,7 +470,7 @@ class DC_TablePageId extends \DC_Table
             }
         }
 
-        $this->redirect($this->getReferer());
+        \Controller::redirect($this->getReferer());
     }
 
 

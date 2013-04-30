@@ -135,7 +135,7 @@ class Checkout extends Module
                 {
                     \Isotope\Frontend::clearTimeout();
 
-                    $this->redirect(\Isotope\Frontend::addQueryStringToUrl('uid=' . $objOrder->uniqid, $this->orderCompleteJumpTo));
+                    \Controller::redirect(\Isotope\Frontend::addQueryStringToUrl('uid=' . $objOrder->uniqid, $this->orderCompleteJumpTo));
                 }
 
                 // Order is not complete, wait for it
@@ -229,7 +229,7 @@ class Checkout extends Module
             if ($strBuffer === true) {
                 // If checkout is successful, complete order and redirect to confirmation page
                 if (($objOrder = Order::findOneBy('source_collection_id', Isotope::getCart()->id)) !== null && $objOrder->checkout() && $objOrder->complete()) {
-                    $this->redirect(\Isotope\Frontend::addQueryStringToUrl('uid=' . $objOrder->uniqid, $this->orderCompleteJumpTo));
+                    \Controller::redirect(\Isotope\Frontend::addQueryStringToUrl('uid=' . $objOrder->uniqid, $this->orderCompleteJumpTo));
                 }
 
                 // Checkout failed, show error message
@@ -420,7 +420,7 @@ class Checkout extends Module
                 return false;
             }
 
-            $this->redirect($this->generateFrontendUrl($objPage->row()));
+            \Controller::redirect($this->generateFrontendUrl($objPage->row()));
         }
         elseif ($this->iso_checkout_method == 'guest' && FE_USER_LOGGED_IN === true)
         {

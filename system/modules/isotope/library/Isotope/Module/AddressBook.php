@@ -300,7 +300,7 @@ class AddressBook extends Module
             }
 
             global $objPage;
-            $this->redirect($this->generateFrontendUrl($objPage->row()));
+            \Controller::redirect($this->generateFrontendUrl($objPage->row()));
         }
 
         $this->Template->addressDetails = $GLOBALS['TL_LANG']['tl_iso_addresses']['addressDetails'];
@@ -333,6 +333,6 @@ class AddressBook extends Module
         }
 
         global $objPage;
-        $this->redirect($this->generateFrontendUrl($objPage->row()));
+        \Controller::redirect($this->generateFrontendUrl($objPage->row()));
     }
 }

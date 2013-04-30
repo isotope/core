@@ -301,7 +301,7 @@ class ProductCallbacks extends \Backend
             if (\Input::get('id') > 0 && !in_array(\Input::get('id'), $GLOBALS['TL_DCA']['tl_iso_products']['list']['sorting']['root']))
             {
                 \System::log('Cannot access product ID '.\Input::get('id'), __METHOD__, TL_ERROR);
-                $this->redirect('contao/main.php?act=error');
+                \Controller::redirect('contao/main.php?act=error');
             }
         }
     }

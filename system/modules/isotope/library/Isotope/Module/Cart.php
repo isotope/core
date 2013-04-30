@@ -85,7 +85,7 @@ class Cart extends Module
         // Remove from cart
         if (\Input::get('remove') > 0 && Isotope::getCart()->deleteItemById((int) \Input::get('remove')))
         {
-            $this->redirect((strlen(\Input::get('referer')) ? base64_decode(\Input::get('referer', true)) : $strUrl));
+            \Controller::redirect((strlen(\Input::get('referer')) ? base64_decode(\Input::get('referer', true)) : $strUrl));
         }
 
         $objTemplate = new \Isotope\Template($this->iso_cart_layout);

@@ -180,7 +180,7 @@ class DC_ProductData extends \DC_Table
 
             if (!$blnDoNotRedirect)
             {
-                $this->redirect($this->getReferer());
+                \Controller::redirect($this->getReferer());
             }
 
             // Do not call parent function
@@ -210,7 +210,7 @@ class DC_ProductData extends \DC_Table
                 }
             }
 
-            $this->redirect($this->getReferer());
+            \Controller::redirect($this->getReferer());
         }
 
         return parent::cutAll();
@@ -341,7 +341,7 @@ class DC_ProductData extends \DC_Table
                 $this->Database->query("UPDATE {$this->strTable} SET gid=" . (int) \Input::get('gid') . " WHERE id IN (" . implode(',', $arrIds) . ")");
             }
 
-            $this->redirect($this->getReferer());
+            \Controller::redirect($this->getReferer());
         }
 
         return parent::copyAll();
@@ -398,7 +398,7 @@ class DC_ProductData extends \DC_Table
         if ($GLOBALS['TL_DCA'][$this->strTable]['config']['notEditable'])
         {
             \System::log('Table ' . $this->strTable . ' is not editable', 'DC_ProductData edit()', TL_ERROR);
-            $this->redirect('contao/main.php?act=error');
+            \Controller::redirect('contao/main.php?act=error');
         }
 
         if ($intID)
@@ -421,14 +421,14 @@ class DC_ProductData extends \DC_Table
         if ($objRow->numRows < 1)
         {
             \System::log('Could not load record ID "'.$this->intId.'" of table "'.$this->strTable.'"!', 'DC_ProductData edit()', TL_ERROR);
-            $this->redirect('contao/main.php?act=error');
+            \Controller::redirect('contao/main.php?act=error');
         }
 
         // ID of a language record is not allowed
         elseif ($objRow->language != '')
         {
             \System::log('Cannot edit language record ID "'.$this->intId.'" of table "'.$this->strTable.'"!', 'DC_ProductData edit()', TL_ERROR);
-            $this->redirect('contao/main.php?act=error');
+            \Controller::redirect('contao/main.php?act=error');
         }
 
         $this->objActiveRecord = $objRow;
@@ -863,7 +863,7 @@ window.addEvent(\'domready\', function() {
                 $_SESSION['TL_CONFIRM'] = '';
 
                 setcookie('BE_PAGE_OFFSET', 0, 0, '/');
-                $this->redirect($this->getReferer());
+                \Controller::redirect($this->getReferer());
             }
 
             elseif (isset($_POST['saveNedit']))
@@ -878,7 +878,7 @@ window.addEvent(\'domready\', function() {
                 $strUrl = preg_replace('/(&amp;)?s2e=[^&]*/i', '', $strUrl);
                 $strUrl = preg_replace('/(&amp;)?act=[^&]*/i', '', $strUrl);
 
-                $this->redirect($strUrl);
+                \Controller::redirect($strUrl);
             }
 
             elseif (isset($_POST['saveNback']))
@@ -891,15 +891,15 @@ window.addEvent(\'domready\', function() {
 
                 if ($this->ptable == '')
                 {
-                    $this->redirect(\Environment::get('script') . '?do=' . \Input::get('do'));
+                    \Controller::redirect(\Environment::get('script') . '?do=' . \Input::get('do'));
                 }
                 elseif ($this->ptable == 'tl_theme' && $this->strTable == 'tl_style_sheet') # TODO: try to abstract this
                 {
-                    $this->redirect($this->getReferer(false, $this->strTable));
+                    \Controller::redirect($this->getReferer(false, $this->strTable));
                 }
                 else
                 {
-                    $this->redirect($this->getReferer(false, $this->ptable));
+                    \Controller::redirect($this->getReferer(false, $this->ptable));
                 }
             }
 
@@ -935,7 +935,7 @@ window.addEvent(\'domready\', function() {
                     $strUrl .= $this->ptable != '' ? '&amp;act=create&amp;mode=2&amp;pid=' . CURRENT_ID : '&amp;act=create';
                 }
 
-                $this->redirect($strUrl);
+                \Controller::redirect($strUrl);
             }
 
             $this->reload();
@@ -968,7 +968,7 @@ window.addEvent(\'domready\', function() {
         if ($GLOBALS['TL_DCA'][$this->strTable]['config']['notEditable'])
         {
             \System::log('Table "'.$this->strTable.'" is not editable', 'DC_Table editAll()', TL_ERROR);
-            $this->redirect('contao/main.php?act=error');
+            \Controller::redirect('contao/main.php?act=error');
         }
 
         $return = '';
@@ -1174,7 +1174,7 @@ window.addEvent(\'domready\', function() {
                 if (\Input::post('saveNclose'))
                 {
                     setcookie('BE_PAGE_OFFSET', 0, 0, '/');
-                    $this->redirect($this->getReferer());
+                    \Controller::redirect($this->getReferer());
                 }
 
                 $this->reload();
@@ -1253,7 +1253,7 @@ window.addEvent(\'domready\', function() {
         if ($GLOBALS['TL_DCA'][$this->strTable]['config']['notEditable'])
         {
             \System::log('Table ' . $this->strTable . ' is not editable', 'DC_Table overrideAll()', TL_ERROR);
-            $this->redirect('contao/main.php?act=error');
+            \Controller::redirect('contao/main.php?act=error');
         }
 
         $return = '';
@@ -1413,7 +1413,7 @@ window.addEvent(\'domready\', function() {
                 if (\Input::post('saveNclose'))
                 {
                     setcookie('BE_PAGE_OFFSET', 0, 0, '/');
-                    $this->redirect($this->getReferer());
+                    \Controller::redirect($this->getReferer());
                 }
 
                 $this->reload();
@@ -1516,7 +1516,7 @@ window.addEvent(\'domready\', function() {
             // Stop the DC_ProductData overload detection
             $this->Session->set('PRODUCTDATA_OVERLOAD', false);
 
-            $this->redirect($this->getReferer());
+            \Controller::redirect($this->getReferer());
         }
 
         if (\Input::get('loadDeferredProduct') > 0)
@@ -1600,7 +1600,7 @@ window.addEvent(\'domready\', function() {
             }
 
             $this->Session->setData($session);
-            $this->redirect(preg_replace('/(&(amp;)?|\?)(ptg)=[^& ]*/i', '', \Environment::get('request')));
+            \Controller::redirect(preg_replace('/(&(amp;)?|\?)(ptg)=[^& ]*/i', '', \Environment::get('request')));
         }
 
         // Get session data and toggle nodes
@@ -1628,7 +1628,7 @@ window.addEvent(\'domready\', function() {
             }
 
             $this->Session->setData($session);
-            $this->redirect(preg_replace('/(&(amp;)?|\?)(gtg)=[^& ]*/i', '', \Environment::get('request')));
+            \Controller::redirect(preg_replace('/(&(amp;)?|\?)(gtg)=[^& ]*/i', '', \Environment::get('request')));
         }
 
         // Handle overload detection. This variable is only true if the previous rendering was not successful
@@ -1929,7 +1929,7 @@ $(window).addEvents({
             $session[$node][\Input::get($toggle)] = (isset($session[$node][\Input::get($toggle)]) && $session[$node][\Input::get($toggle)] == 1) ? 0 : 1;
             $this->Session->setData($session);
 
-            $this->redirect(preg_replace('/(&(amp;)?|\?)'.$toggle.'=[^& ]*/i', '', \Environment::get('request')));
+            \Controller::redirect(preg_replace('/(&(amp;)?|\?)'.$toggle.'=[^& ]*/i', '', \Environment::get('request')));
         }
 
         $intSpacing = 20;
@@ -2238,7 +2238,7 @@ $(window).addEvents({
             \System::log(sprintf('A new version of record ID %s (table %s) has been created', $intLanguageId, $this->strTable), 'DC_ProductData copyFallback()', TL_GENERAL);
         }
 
-        $this->redirect($this->addToUrl('act=edit'));
+        \Controller::redirect($this->addToUrl('act=edit'));
     }
 
 

@@ -307,7 +307,7 @@ class Backend extends Contao_Backend
 
         // Redirect
         setcookie('BE_PAGE_OFFSET', 0, 0, '/');
-        $this->redirect(str_replace('&key=importMail', '', \Environment::get('request')));
+        \Controller::redirect(str_replace('&key=importMail', '', \Environment::get('request')));
     }
 
 

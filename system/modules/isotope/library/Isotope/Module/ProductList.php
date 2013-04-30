@@ -276,7 +276,7 @@ class ProductList extends Module
             $objProduct->reader_jumpTo = $intReaderPage;
 
             if ($this->iso_jump_first && \Input::get('product') == '') {
-                $this->redirect($objProduct->href_reader);
+                \Controller::redirect($objProduct->href_reader);
             }
 
             $arrBuffer[] = array

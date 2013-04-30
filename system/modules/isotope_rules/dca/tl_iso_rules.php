@@ -575,7 +575,7 @@ class tl_iso_rules extends \Backend
         if (strlen(\Input::get('tid')))
         {
             $this->toggleVisibility(\Input::get('tid'), (\Input::get('state') == 1));
-            $this->redirect($this->getReferer());
+            \Controller::redirect($this->getReferer());
         }
 
         // Check permissions AFTER checking the tid, so hacking attempts are logged
@@ -611,7 +611,7 @@ class tl_iso_rules extends \Backend
         if (!$this->User->isAdmin && !$this->User->hasAccess('tl_iso_rules::enabled', 'alexf'))
         {
             \System::log('Not enough permissions to enable/disable rule ID "'.$intId.'"', 'tl_iso_rules toggleVisibility', TL_ERROR);
-            $this->redirect('contao/main.php?act=error');
+            \Controller::redirect('contao/main.php?act=error');
         }
 
 //        $this->createInitialVersion('tl_iso_rules', $intId);

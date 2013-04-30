@@ -220,7 +220,7 @@ class IsotopeRules extends \Controller
                 }
             }
 
-            $this->redirect(preg_replace('@[?&]coupon(_[0-9]+)?=[^&]*@', '', \Environment::get('request')));
+            \Controller::redirect(preg_replace('@[?&]coupon(_[0-9]+)?=[^&]*@', '', \Environment::get('request')));
         }
 
 

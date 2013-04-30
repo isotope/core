@@ -81,7 +81,7 @@ class Setup extends \BackendModule
                 {
                     if (is_array($arrConfig['tables']) && in_array(\Input::get('table'), $arrConfig['tables']))
                     {
-                        $this->redirect($this->addToUrl('mod=' . $strModule));
+                        \Controller::redirect($this->addToUrl('mod=' . $strModule));
                     }
                 }
             }
@@ -123,14 +123,14 @@ class Setup extends \BackendModule
         if (!$this->User->isAdmin && !$this->User->hasAccess($module, 'iso_modules'))
         {
             \System::log('Isotope module "' . $module . '" was not allowed for user "' . $this->User->username . '"', 'ModuleIsotopeSetup getIsotopeModule()', TL_ERROR);
-            $this->redirect(\Environment::get('script').'?act=error');
+            \Controller::redirect(\Environment::get('script').'?act=error');
         }
 
         $strTable = \Input::get('table');
 
         if ($strTable == '' && $arrModule['callback'] == '')
         {
-            $this->redirect($this->addToUrl('table='.$arrModule['tables'][0]));
+            \Controller::redirect($this->addToUrl('table='.$arrModule['tables'][0]));
         }
 
         $id = (!\Input::get('act') && \Input::get('id')) ? \Input::get('id') : $this->Session->get('CURRENT_ID');
@@ -153,7 +153,7 @@ class Setup extends \BackendModule
             if (!in_array($strTable, (array) $arrModule['tables']))
             {
                 \System::log('Table "' . $strTable . '" is not allowed in Isotope module "' . $module . '"', 'ModuleIsotopeSetup getIsotopeModule()', TL_ERROR);
-                $this->redirect('contao/main.php?act=error');
+                \Controller::redirect('contao/main.php?act=error');
             }
 
             // Load the language and DCA file

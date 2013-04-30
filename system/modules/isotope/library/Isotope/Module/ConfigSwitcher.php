@@ -66,7 +66,7 @@ class ConfigSwitcher extends Module
                 $_SESSION['ISOTOPE']['config_id'] = \Input::get('config');
             }
 
-            $this->redirect(preg_replace(('@[?|&]config='.\Input::get('config').'@'), '', \Environment::get('request')));
+            \Controller::redirect(preg_replace(('@[?|&]config='.\Input::get('config').'@'), '', \Environment::get('request')));
         }
 
         return parent::generate();

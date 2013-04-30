@@ -137,7 +137,7 @@ class tl_iso_config extends \Backend
                 if (!in_array(\Input::get('id'), $root) || (\Input::get('act') == 'delete' && !$this->User->hasAccess('delete', 'iso_configp')))
                 {
                     \System::log('Not enough permissions to '.\Input::get('act').' store configuration ID "'.\Input::get('id').'"', __METHOD__, TL_ERROR);
-                    $this->redirect('contao/main.php?act=error');
+                    \Controller::redirect('contao/main.php?act=error');
                 }
                 break;
 
@@ -160,7 +160,7 @@ class tl_iso_config extends \Backend
                 if (strlen(\Input::get('act')))
                 {
                     \System::log('Not enough permissions to '.\Input::get('act').' store configurations', __METHOD__, TL_ERROR);
-                    $this->redirect('contao/main.php?act=error');
+                    \Controller::redirect('contao/main.php?act=error');
                 }
                 break;
         }

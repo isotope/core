@@ -102,7 +102,7 @@ class ProductFilter extends Module
             }
 
             // Include \Environment::base or the URL would not work on the index page
-            $this->redirect(\Environment::get('base') . $this->generateRequestUrl());
+            \Controller::redirect(\Environment::get('base') . $this->generateRequestUrl());
         }
 
         return $strBuffer;

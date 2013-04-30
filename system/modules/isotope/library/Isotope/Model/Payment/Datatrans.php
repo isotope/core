@@ -105,7 +105,7 @@ class Datatrans extends Payment implements IsotopePayment
         {
             global $objPage;
             \System::log('Payment could not be processed.', __METHOD__, TL_ERROR);
-            $this->redirect($this->generateFrontendUrl($objPage->row(), '/step/failed'));
+            \Controller::redirect($this->generateFrontendUrl($objPage->row(), '/step/failed'));
         }
 
         // Reload page every 5 seconds and check if payment was successful
