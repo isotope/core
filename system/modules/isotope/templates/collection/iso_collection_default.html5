@@ -41,9 +41,9 @@
         <td class="col_0 col_first image"><?php if($item['hasProduct']) $item['product']->images->generateMainImage('thumbnail'); ?></td>
         <td class="col_1 name">
             <?php if($this->linkProducts && $item['hasProduct']): ?><a href="<?php echo $item['product']->href_reader; ?>"><?php echo $item['name']; ?></a><?php else: ?><?php echo $item['name']; ?><?php endif; ?>
-            <?php if(!empty($product['options'])): ?>
+            <?php if(!empty($item['options'])): ?>
             <ul>
-                <?php foreach($product['options'] as $option): ?>
+                <?php foreach($item['options'] as $option): ?>
                 <li><strong><?php echo $option['label']; ?>:</strong> <?php echo $option['value']; ?></li>
                 <?php endforeach; ?>
             </ul>
