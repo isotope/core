@@ -178,7 +178,7 @@ abstract class Shipping extends \Model
      */
     public function getLabel()
     {
-        return Isotope::translate($this->arrData['label'] ? $this->arrData['label'] : $this->arrData['name']);
+        return Isotope::translate(($this->arrData['label'] ? $this->arrData['label'] : $this->arrData['name']));
     }
 
 
@@ -235,7 +235,7 @@ abstract class Shipping extends \Model
      */
     public function checkoutReview()
     {
-        return $this->label;
+        return $this->getLabel();
     }
 
 
