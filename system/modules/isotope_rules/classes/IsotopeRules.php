@@ -415,7 +415,7 @@ class IsotopeRules extends \Controller
 
                 if ($blnIncludeVariants)
                 {
-                    $arrVariantIds = array_merge($arrVariantIds, $objProduct->variant_ids);
+                    $arrVariantIds = array_merge($arrVariantIds, $objProduct->getVariantIds());
                 }
 
                 $arrOptions = $objProduct->getOptions();

@@ -898,7 +898,7 @@ $endScript";
             return null;
         }
 
-        if ($blnCheckAvailability && !$objProduct->available)
+        if ($blnCheckAvailability && !$objProduct->isAvailable())
         {
             return null;
         }

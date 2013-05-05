@@ -205,10 +205,6 @@ class Standard extends \Controller implements IsotopeProduct
             case 'href_reader':
                 return $this->arrData[$strKey];
 
-            case 'variant_ids':
-                return $this->getVariantIds();
-                break;
-
             case 'formSubmit':
                 return $this->formSubmit;
 
@@ -256,12 +252,6 @@ class Standard extends \Controller implements IsotopeProduct
 
             case 'shipping_exempt':
                 return ($this->arrData['shipping_exempt'] || $this->arrType['shipping_exempt']) ? true : false;
-
-            case 'available':
-                return $this->isAvailable();
-
-            case 'hasDownloads':
-                return $this->hasDownloads();
 
             case 'show_price_tiers':
                 return (bool) $this->arrType['show_price_tiers'];
