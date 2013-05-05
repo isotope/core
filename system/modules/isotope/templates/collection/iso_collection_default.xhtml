@@ -1,4 +1,19 @@
+<?php if ($this->textOnly): ?>
+<?php ### THIS IS FOR TEXT ONLY EMAILS ### ?>
+<?php foreach ($this->items as $item ): ?>
+<?php echo $item['name']; ?><?php if (!empty($item['options'])): ?> (<?php foreach ($item['options'] as $i => $option): ?><?php echo ($i==0 ? '' : ',').$option['label']; ?>: <?php echo $option['value']; ?><?php endforeach; ?>)<?php endif; ?>: <?php echo $item['quantity']; ?> x <?php echo $item['price']; ?> = <?php echo $item['total']; ?>
 
+<?php endforeach; ?>
+--------------------
+<?php echo $GLOBALS['TL_LANG']['MSC']['subTotalLabel']; ?>: <?php echo $this->subtotal; ?>
+
+<?php foreach ($this->surcharges as $surcharge): ?>
+<?php echo $surcharge['label']; ?>: <?php echo $surcharge['price']; ?> = <?php echo $surcharge['total_price']; ?>
+
+<?php endforeach; ?>
+<?php echo $GLOBALS['TL_LANG']['MSC']['grandTotalLabel']; ?>: <?php echo $this->total; ?>
+<?php else: ?>
+<?php ### THIS IS HTML EMAILS AND EVERYTHING ELSE ### ?>
 <?php if($this->editable): ?>
 <form action="<?php echo $this->action; ?>" id="<?php echo $this->formId; ?>" method="post">
 <div class="formbody">
@@ -75,4 +90,5 @@
 </div>
 <?php endif; ?>
 </form>
+<?php endif; ?>
 <?php endif; ?>
