@@ -153,9 +153,13 @@ class Order extends ProductCollection implements IsotopeProductCollection
      */
     public function delete()
     {
-        \Database::getInstance()->query("DELETE FROM tl_iso_product_collection_download WHERE pid IN (SELECT id FROM tl_iso_product_collection_item WHERE pid={$this->id})");
+        if (parent::delete()) {
+            \Database::getInstance()->query("DELETE FROM tl_iso_product_collection_download WHERE pid IN (SELECT id FROM tl_iso_product_collection_item WHERE pid={$this->id})");
 
-        return parent::delete();
+            return true;
+        }
+
+        return false;
     }
 
 

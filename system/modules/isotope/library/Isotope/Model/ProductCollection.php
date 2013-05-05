@@ -535,7 +535,8 @@ abstract class ProductCollection extends \Model
         $intAffectedRows = parent::delete();
 
         if ($intAffectedRows > 0) {
-            \Database::getInstance()->prepare("DELETE FROM tl_iso_product_collection_item WHERE pid=?")->execute($this->id);
+            \Database::getInstance()->query("DELETE FROM tl_iso_product_collection_item WHERE pid={$this->id}");
+            \Database::getInstance()->query("DELETE FROM tl_iso_addresses WHERE ptable='" . static::$strTable . "' AND pid={$this->id}");
         }
 
         $this->arrCache = array();
