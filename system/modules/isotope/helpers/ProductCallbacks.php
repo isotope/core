@@ -204,7 +204,7 @@ class ProductCallbacks extends \Backend
                         {
                             foreach ($GLOBALS['ISO_HOOKS']['applyAdvancedFilters'] as $callback)
                             {
-                                $objCallback = (in_array('getInstance', get_class_methods($callback[0]))) ? call_user_func(array($callback[0], 'getInstance')) : new $callback[0]();
+                                $objCallback = \System::importStatic($callback[0]);
                                 $arrReturn = $objCallback->$callback[1]($filter);
 
                                 if (is_array($arrReturn))

@@ -478,7 +478,7 @@ class Order extends ProductCollection implements IsotopeProductCollection
         {
             foreach ($GLOBALS['ISO_HOOKS']['getOrderEmailData'] as $callback)
             {
-                $objCallback = (in_array('getInstance', get_class_methods($callback[0]))) ? call_user_func(array($callback[0], 'getInstance')) : new $callback[0]();
+                $objCallback = \System::importStatic($callback[0]);
                 $arrData = $objCallback->$callback[1]($this, $arrData);
             }
         }
