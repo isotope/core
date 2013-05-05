@@ -207,10 +207,10 @@ class Order extends ProductCollection implements IsotopeProductCollection
         Isotope::setCart($objCart);
 
         $this->arrData['date']                 = time();
-        $this->arrData['shipping_id']          = ($objSource->hasShipping() ? $objSource->getShippingMethod()->id : 0);
-        $this->arrData['payment_id']           = ($objSource->hasPayment() ? $objSource->getPaymentMethod()->id : 0);
-        $this->arrData['subTotal']             = $objSource->getSubtotal();
-        $this->arrData['grandTotal']           = $objSource->getTotal();
+        $this->arrData['shipping_id']          = $objCart->shipping_id;
+        $this->arrData['payment_id']           = $objCart->payment_id;
+        $this->arrData['subTotal']             = $objCart->subTotal;
+        $this->arrData['grandTotal']           = $objCart->grandTotal;
         $this->arrData['currency']             = Isotope::getConfig()->currency;
 
         // Mark Order as modified to empty cache
