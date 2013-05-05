@@ -178,25 +178,6 @@ $GLOBALS['TL_DCA']['tl_iso_mail'] = array
             'inputType'             => 'text',
             'eval'                  => array('maxlength'=>255, 'rgxp'=>'extnd', 'tl_class'=>'w50'),
         ),
-        'template' => array
-        (
-            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_mail']['template'],
-            'exclude'               => true,
-            'inputType'             => 'select',
-            'default'               => 'mail_default',
-            'options'               => \Isotope\Backend::getTemplates('mail_'),
-            'eval'                  => array('mandatory'=>true, 'tl_class'=>'w50', 'chosen'=>true)
-        ),
-        'priority' => array
-        (
-            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_mail']['priority'],
-            'exclude'               => true,
-            'inputType'             => 'select',
-            'options'               => array(1,2,3,4,5),
-            'default'               => 3,
-            'reference'             => &$GLOBALS['TL_LANG']['tl_iso_mail']['priority_ref'],
-            'eval'                  => array('tl_class'=>'w50'),
-        ),
         'attachDocument' => array
         (
             'label'                 => &$GLOBALS['TL_LANG']['tl_iso_mail']['attachDocument'],
@@ -218,6 +199,25 @@ $GLOBALS['TL_DCA']['tl_iso_mail'] = array
             'exclude'               => true,
             'inputType'             => 'text',
             'eval'                  => array('mandatory'=>true, 'maxlength'=>255, 'decodeEntities'=>true, 'tl_class'=>'w50'),
+        ),
+        'template' => array
+        (
+            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_mail']['template'],
+            'exclude'               => true,
+            'inputType'             => 'select',
+            'default'               => 'mail_default',
+            'options'               => \Isotope\Backend::getTemplates('mail_'),
+            'eval'                  => array('mandatory'=>true, 'tl_class'=>'w50', 'chosen'=>true)
+        ),
+        'priority' => array
+        (
+            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_mail']['priority'],
+            'exclude'               => true,
+            'inputType'             => 'select',
+            'options'               => array(1,2,3,4,5),
+            'default'               => 3,
+            'reference'             => &$GLOBALS['TL_LANG']['tl_iso_mail']['priority_ref'],
+            'eval'                  => array('tl_class'=>'w50'),
         ),
         'source' => array
         (
