@@ -208,7 +208,7 @@ class Cart extends Module
             );
 
             if (\Input::post('FORM_SUBMIT') == $this->strFormId && \Input::post('button_continue') != '') {
-                $this->redirect($arrButtons['continue']['href']);
+                \Controller::redirect($arrButtons['continue']['href']);
             }
         }
 
