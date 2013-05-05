@@ -181,7 +181,7 @@ class tl_iso_payment_modules extends \Backend
 
                 return $arrCCTypes;
 
-            } catch (Exception $e) {}
+            } catch (\Exception $e) {}
         }
 
         return $arrCCTypes;

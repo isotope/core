@@ -73,7 +73,7 @@ class tl_iso_groups extends \Backend
             try {
                 $root = $this->eliminateNestedPages($this->User->iso_groups, 'tl_iso_groups');
             }
-            catch (Exception $e) {
+            catch (\Exception $e) {
                 $root = array();
             }
         }

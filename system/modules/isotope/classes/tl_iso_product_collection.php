@@ -332,7 +332,7 @@ class tl_iso_product_collection extends \Backend
             $objPayment = Order::findByPk($dc->id)->getRelated('payment_id');
 
             return $objPayment->backendInterface($dc->id);
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             return '<p class="tl_gerror">'.$GLOBALS['TL_LANG']['MSC']['backendPaymentNotFound'].'</p>';
         }
     }
@@ -349,7 +349,7 @@ class tl_iso_product_collection extends \Backend
             $objShipping = Order::findByPk($dc->id)->getRelated('shipping_id');
 
             return $objShipping->backendInterface($dc->id);
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             return '<p class="tl_gerror">'.$GLOBALS['TL_LANG']['MSC']['backendShippingNotFound'].'</p>';
         }
     }

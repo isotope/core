@@ -253,7 +253,7 @@ class AddressBook extends Module
 
                         try {
                             $varValue = $this->$callback[0]->$callback[1]($varValue, $objAddress);
-                        } catch (Exception $e) {
+                        } catch (\Exception $e) {
                             $objWidget->class = 'error';
                             $objWidget->addError($e->getMessage());
                         }

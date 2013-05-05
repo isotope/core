@@ -893,7 +893,7 @@ $endScript";
         {
             $objProduct = new $strClass($objProductData->row());
         }
-        catch (Exception $e)
+        catch (\Exception $e)
         {
             return null;
         }

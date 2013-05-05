@@ -281,7 +281,7 @@ $strBuffer .= '<th style="text-align:center"><img src="system/themes/default/ima
                                 {
                                     $varValue = $this->$callback[0]->$callback[1]($varValue);
                                 }
-                                catch (Exception $e)
+                                catch (\Exception $e)
                                 {
                                     $objWidget->addError($e->getMessage());
                                     $doNotSubmit = true;

@@ -1232,12 +1232,9 @@ class Standard extends \Controller implements IsotopeProduct
                     {
                         $objCallback = \System::importStatic($callback[0]);
 
-                        try
-                        {
+                        try {
                             $varValue = $objCallback->$callback[1]($varValue, $this, $objWidget);
-                        }
-                        catch (Exception $e)
-                        {
+                        } catch (\Exception $e) {
                             $objWidget->class = 'error';
                             $objWidget->addError($e->getMessage());
                             $this->doNotSubmit = true;
