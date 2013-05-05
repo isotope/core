@@ -61,7 +61,11 @@ class Order extends ProductCollection implements IsotopeProductCollection
         }
     }
 
-
+    /**
+     * Return true if order has been paid.
+     * This is the case if either payment date is set or order status has the paid flag
+     * @return  bool
+     */
     public function isPaid()
     {
         // Order is paid if a payment date is set
@@ -77,7 +81,10 @@ class Order extends ProductCollection implements IsotopeProductCollection
         return (null !== $objStatus && $objStatus->isPaid()) ? true : false;
     }
 
-
+    /**
+     * Get label for current order status
+     * @return  string
+     */
     public function getStatusLabel()
     {
         $objStatus = $this->getRelated('order_status');
@@ -85,7 +92,10 @@ class Order extends ProductCollection implements IsotopeProductCollection
         return (null === $objStatus) ? '' : $objStatus->getName();
     }
 
-
+    /**
+     * Get the alias for current order status
+     * @return  string
+     */
     public function getStatusAlias()
     {
         $objStatus = $this->getRelated('order_status');
@@ -256,6 +266,7 @@ class Order extends ProductCollection implements IsotopeProductCollection
 
     /**
      * Complete order if the checkout has been made. This will cleanup session data
+     * @return  bool
      */
     public function complete()
     {
