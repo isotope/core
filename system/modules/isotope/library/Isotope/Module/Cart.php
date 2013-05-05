@@ -74,7 +74,6 @@ class Cart extends Module
 
     /**
      * Generate module
-     * @return void
      */
     protected function compile()
     {
@@ -148,7 +147,10 @@ class Cart extends Module
         $this->Template->products = $objTemplate->parse();
     }
 
-
+    /**
+     * Generate buttons for cart template
+     * @return  array
+     */
     protected function generateButtons()
     {
         $arrButtons = array();
@@ -213,7 +215,10 @@ class Cart extends Module
         return $arrButtons;
     }
 
-
+    /**
+     * Verify if cart has enough subtotal to continue to checkout
+     * @return  bool
+     */
     protected function hasInsufficientSubtotal()
     {
         if (Isotope::getConfig()->cartMinSubtotal > 0 && Isotope::getConfig()->cartMinSubtotal > Isotope::getCart()->getSubtotal()) {

@@ -346,17 +346,15 @@ class Order extends ProductCollection implements IsotopeProductCollection
         }
 
         // Add the payment date if there is none
-        if ($objNewStatus->isPaid())
-        {
-            if ($this->date_paid == '')
-            {
+        if ($objNewStatus->isPaid()) {
+            if ($this->date_paid == '') {
                 $this->date_paid = time();
             }
         }
 
         // Trigger email actions
-        if ($objNewStatus->mail_customer > 0 || $objNewStatus->mail_admin > 0)
-        {
+        if ($objNewStatus->mail_customer > 0 || $objNewStatus->mail_admin > 0) {
+
             $arrData = $this->getEmailData();
             $arrData['new_status'] = $objNewStatus->getName();
             $strRecipient = $this->getEmailRecipient();
@@ -368,8 +366,8 @@ class Order extends ProductCollection implements IsotopeProductCollection
                     $objEmail->send($strRecipient, $arrData);
 
                     if (TL_MODE == 'BE') {
-                    $this->addConfirmationMessage($GLOBALS['TL_LANG']['tl_iso_product_collection']['orderStatusEmail']);
-                }
+                        $this->addConfirmationMessage($GLOBALS['TL_LANG']['tl_iso_product_collection']['orderStatusEmail']);
+                    }
 
                 } catch (\Exception $e) {
                     log_message($e->getMessage());

@@ -369,7 +369,7 @@ class Email extends \Controller
     {
         $arrReturn = array();
 
-        foreach( $arrPieces as $varPiece )
+        foreach ($arrPieces as $varPiece)
         {
             if (is_array($varPiece))
             {
