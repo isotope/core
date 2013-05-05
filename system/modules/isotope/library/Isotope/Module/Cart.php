@@ -126,7 +126,7 @@ class Cart extends Module
         // Reload the page if no button has handled it
         if ($blnReload)
         {
-            $this->reload();
+            \Controller::reload();
         }
 
         $objTemplate->items = $arrItems;

@@ -460,7 +460,7 @@ class ProductCallbacks extends \Backend
 
         if ($blnReload)
         {
-            $this->reload();
+            \Controller::reload();
         }
         elseif ($blnEditAll)
         {

@@ -338,7 +338,7 @@ $strBuffer .= '<th style="text-align:center"><img src="system/themes/default/ima
             }
             else
             {
-                $this->reload();
+                \Controller::reload();
             }
         }
 
@@ -381,7 +381,7 @@ $strBuffer .= '<th style="text-align:center"><img src="system/themes/default/ima
             if (empty($arrFiles))
             {
                 $_SESSION['TL_ERROR'][] = $GLOBALS['TL_LANG']['MSC']['noFilesInFolder'];
-                $this->reload();
+                \Controller::reload();
             }
 
             $arrDelete = array();
@@ -499,7 +499,7 @@ $strBuffer .= '<th style="text-align:center"><img src="system/themes/default/ima
                 }
             }
 
-            $this->reload();
+            \Controller::reload();
         }
 
         // Return form

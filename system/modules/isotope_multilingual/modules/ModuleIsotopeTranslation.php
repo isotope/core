@@ -66,7 +66,7 @@ class ModuleIsotopeTranslation extends \BackendModule
 
             $this->Session->appendData($arrFilter);
 
-            $this->reload();
+            \Controller::reload();
         }
 
         $arrSession = $this->Session->get('filter_translation');
@@ -137,7 +137,7 @@ class ModuleIsotopeTranslation extends \BackendModule
                 if ($strData == '')
                 {
                     $this->Files->delete('system/modules/' . $arrSession['module']. '/languages/' . $this->User->translation . '/local/' . $arrSession['file']);
-                    $this->reload();
+                    \Controller::reload();
                 }
 
                 $objFile = new File('system/modules/' . $arrSession['module']. '/languages/' . $this->User->translation . '/local/' . $arrSession['file']);
@@ -145,7 +145,7 @@ class ModuleIsotopeTranslation extends \BackendModule
                 $objFile->close();
 
                 $_SESSION['TL_CONFIRM'][] = $GLOBALS['TL_LANG']['MSC']['translationSaved'];
-                $this->reload();
+                \Controller::reload();
             }
 
             $this->Template->edit = true;

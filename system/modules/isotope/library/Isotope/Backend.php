@@ -168,7 +168,7 @@ class Backend extends Contao_Backend
             if (!$source || !is_array($source))
             {
                 $_SESSION['TL_ERROR'][] = $GLOBALS['TL_LANG']['ERR']['all_fields'];
-                $this->reload();
+                \Controller::reload();
             }
 
             $arrFiles = array();
@@ -199,7 +199,7 @@ class Backend extends Contao_Backend
             if (empty($arrFiles))
             {
                 $_SESSION['TL_ERROR'][] = $GLOBALS['TL_LANG']['ERR']['all_fields'];
-                $this->reload();
+                \Controller::reload();
             }
 
             return $this->importMailFiles($arrFiles);
