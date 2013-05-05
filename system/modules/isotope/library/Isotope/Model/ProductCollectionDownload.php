@@ -12,6 +12,8 @@
 
 namespace Isotope\Model;
 
+use Isotope\Interfaces\IsotopeProductCollection;
+
 
 /**
  * ProductCollectionDownload model represents a download in a collection (usually an order)
@@ -28,4 +30,22 @@ class ProductCollectionDownload extends \Model
      */
     protected static $strTable = 'tl_iso_product_collection_download';
 
+    /**
+     * Find all downloads that belong to items of a given collection
+     * @param   IsotopeProductCollection
+     * @return  \Collection|null
+     */
+    public static function findByCollection(IsotopeProductCollection $objCollection, $arrOptions)
+    {
+        $arrOptions = array_merge(
+			array(
+				'column' => ("pid IN (SELECT id FROM tl_iso_product_collection_item WHERE pid=?)"),
+				'value'  => $objCollection->id,
+				'return' => 'Collection'
+			),
+			$arrOptions
+		);
+
+		return static::find($arrOptions);
+    }
 }
