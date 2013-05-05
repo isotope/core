@@ -12,87 +12,82 @@
  */
 
 
-var Isotope =
+var Isotope = Isotope || {};
+
+Isotope.toggleAddressFields = function(el, id)
 {
-    toggleAddressFields: function(el, id)
-    {
-        if (el.value == '0' && el.checked)
-        {
-            document.id(id).setStyle('display', 'block');
-        }
-        else
-        {
-            document.id(id).setStyle('display', 'none');
-        }
-    },
-
-    /**
-     * Display a "loading data" message
-     * @param string
-     */
-    displayBox: function(message, btnClose)
-    {
-        var box = document.id('iso_ajaxBox');
-        var overlay = document.id('iso_ajaxOverlay');
-
-        if (!overlay)
-        {
-            overlay = new Element('div').setProperty('id', 'iso_ajaxOverlay').injectInside(document.id(document.body));
-        }
-
-        if (!box)
-        {
-            box = new Element('div').setProperty('id', 'iso_ajaxBox').injectInside(document.id(document.body));
-        }
-
-        if (btnClose)
-        {
-            overlay.addEvent('click', Isotope.hideBox);
-            box.addClass('btnClose').addEvent('click', Isotope.hideBox);
-        }
-
-        var scroll = window.getScroll().y;
-        if (Browser.Engine.trident && Browser.Engine.version < 5) { var sel = $$('select'); for (var i=0; i<sel.length; i++) { sel[i].setStyle('visibility', 'hidden'); } }
-
-        overlay.setStyle('display', 'block');
-
-        box.set('html', message);
-        box.setStyle('display', 'block');
-        box.setStyle('top', (scroll + 100) + 'px');
-    },
-
-
-    /**
-     * Hide the "loading data" message
-     */
-    hideBox: function()
-    {
-        var box = document.id('iso_ajaxBox');
-        var overlay = document.id('iso_ajaxOverlay');
-
-        if (overlay)
-        {
-            overlay.setStyle('display', 'none').removeEvents('click');
-        }
-
-        if (box)
-        {
-            box.setStyle('display', 'none').removeEvents('click').removeClass('btnClose');
-            if (Browser.Engine.trident && Browser.Engine.version < 5) { var sel = $$('select'); for (var i=0; i<sel.length; i++) { sel[i].setStyle('visibility', 'visible'); } }
-        }
-    },
-
-    inlineGallery: function(el, elementId)
-    {
-        $$(('#'+elementId+'_mediumsize img')).set('src', el.href);
-
-        $$(('#'+elementId+'_gallery div, #'+elementId+'_gallery img')).removeClass('active');
-
-        el.addClass('active');
-        el.getChildren().addClass('active');
-
-        return false;
+    if (el.value == '0' && el.checked) {
+        document.id(id).setStyle('display', 'block');
+    } else {
+        document.id(id).setStyle('display', 'none');
     }
+};
+
+/**
+ * Display a "loading data" message
+ * @param string
+ */
+Isotope.displayBox = function(message, btnClose)
+{
+    var box = document.id('iso_ajaxBox');
+    var overlay = document.id('iso_ajaxOverlay');
+
+    if (!overlay) {
+        overlay = new Element('div').setProperty('id', 'iso_ajaxOverlay').injectInside(document.id(document.body));
+    }
+
+    if (!box) {
+        box = new Element('div').setProperty('id', 'iso_ajaxBox').injectInside(document.id(document.body));
+    }
+
+    if (btnClose) {
+        overlay.addEvent('click', Isotope.hideBox);
+        box.addClass('btnClose').addEvent('click', Isotope.hideBox);
+    }
+
+    var scroll = window.getScroll().y;
+    if (Browser.Engine.trident && Browser.Engine.version < 5) {
+        var sel = $$('select'); for (var i=0; i<sel.length; i++) {
+            sel[i].setStyle('visibility', 'hidden');
+        } 
+    }
+
+    overlay.setStyle('display', 'block');
+
+    box.set('html', message);
+    box.setStyle('display', 'block');
+    box.setStyle('top', (scroll + 100) + 'px');
+};
+
+
+/**
+ * Hide the "loading data" message
+ */
+Isotope.hideBox = function()
+{
+    var box = document.id('iso_ajaxBox');
+    var overlay = document.id('iso_ajaxOverlay');
+
+    if (overlay) {
+        overlay.setStyle('display', 'none').removeEvents('click');
+    }
+
+    if (box) {
+        box.setStyle('display', 'none').removeEvents('click').removeClass('btnClose');
+        if (Browser.Engine.trident && Browser.Engine.version < 5) { var sel = $$('select'); for (var i=0; i<sel.length; i++) { sel[i].setStyle('visibility', 'visible'); } }
+    }
+};
+
+Isotope.inlineGallery = function(el, elementId)
+{
+    $$(('#'+elementId+'_mediumsize img')).set('src', el.href);
+
+    $$(('#'+elementId+'_gallery div, #'+elementId+'_gallery img')).removeClass('active');
+
+    el.addClass('active');
+    el.getChildren().addClass('active');
+
+    return false;
 };
 
 
