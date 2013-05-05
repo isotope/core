@@ -207,10 +207,10 @@ class Order extends ProductCollection implements IsotopeProductCollection
         Isotope::setCart($objCart);
 
         $this->arrData['date']                 = time();
-        $this->arrData['shipping_id']          = ($objSource->hasShipping() ? $objSource->getShippingMethod()->id : 0);
-        $this->arrData['payment_id']           = ($objSource->hasPayment() ? $objSource->getPaymentMethod()->id : 0);
-        $this->arrData['subTotal']             = $objSource->getSubtotal();
-        $this->arrData['grandTotal']           = $objSource->getTotal();
+        $this->arrData['shipping_id']          = $objCart->shipping_id;
+        $this->arrData['payment_id']           = $objCart->payment_id;
+        $this->arrData['subTotal']             = $objCart->subTotal;
+        $this->arrData['grandTotal']           = $objCart->grandTotal;
         $this->arrData['currency']             = Isotope::getConfig()->currency;
 
         // Mark Order as modified to empty cache
@@ -234,7 +234,7 @@ class Order extends ProductCollection implements IsotopeProductCollection
 
         // Set billing and shipping address and create private records
         $this->setBillingAddress($objCart->getBillingAddress());
-        $this->setShippingAddress($objCart->setShippingAddress());
+        $this->setShippingAddress($objCart->getShippingAddress());
         $this->createPrivateAddresses();
 
         // @todo must add surcharges and downloads here
@@ -251,15 +251,27 @@ class Order extends ProductCollection implements IsotopeProductCollection
         \System::log('New order ID ' . $this->id . ' has been placed', __METHOD__, TL_ACCESS);
 
         if ($this->iso_mail_admin && $this->iso_sales_email != '') {
-            Isotope::sendMail($this->iso_mail_admin, $this->iso_sales_email, $this->language, $arrData, $strRecipient, $this);
+            try {
+                $objEmail = new \Isotope\Email($this->iso_mail_admin, $this->language, $this);
+                $objEmail->replyTo($strRecipient);
+                $objEmail->send($this->iso_sales_email, $arrData);
+            } catch (\Exception $e) {
+                log_message($e->getMessage());
+                \System::log('Error when sending admin confirmation for order ID '.$this->id, __METHOD__, TL_ERROR);
+            }
         }
 
         if ($this->iso_mail_customer && $strRecipient != '') {
-            Isotope::sendMail($this->iso_mail_customer, $strRecipient, $this->language, $arrData, '', $this);
+            try {
+                $objEmail = new \Isotope\Email($this->iso_mail_customer, $this->language, $this);
+                $objEmail->send($strRecipient, $arrData);
+            } catch (\Exception $e) {
+                log_message($e->getMessage());
+                \System::log('Error when sending customer confirmation for order ID '.$this->id, __METHOD__, TL_ERROR);
+            }
         } else {
             \System::log('Unable to send customer confirmation for order ID '.$this->id, __METHOD__, TL_ERROR);
         }
-
 
         // !HOOK: post-process checkout
         if (isset($GLOBALS['ISO_HOOKS']['postCheckout']) && is_array($GLOBALS['ISO_HOOKS']['postCheckout'])) {
@@ -334,35 +346,47 @@ class Order extends ProductCollection implements IsotopeProductCollection
         }
 
         // Add the payment date if there is none
-        if ($objNewStatus->isPaid())
-        {
-            if ($this->date_paid == '')
-            {
+        if ($objNewStatus->isPaid()) {
+            if ($this->date_paid == '') {
                 $this->date_paid = time();
             }
         }
 
         // Trigger email actions
-        if ($objNewStatus->mail_customer > 0 || $objNewStatus->mail_admin > 0)
-        {
+        if ($objNewStatus->mail_customer > 0 || $objNewStatus->mail_admin > 0) {
+
             $arrData = $this->getEmailData();
             $arrData['new_status'] = $objNewStatus->getName();
             $strRecipient = $this->getEmailRecipient();
 
-            if ($objNewStatus->mail_customer && $strRecipient != '')
-            {
-                Isotope::sendMail($objNewStatus->mail_customer, $strRecipient, $this->language, $arrData, '', $this);
+            if ($objNewStatus->mail_customer && $strRecipient != '') {
 
-                if (TL_MODE == 'BE')
-                {
-                    $this->addConfirmationMessage($GLOBALS['TL_LANG']['tl_iso_product_collection']['orderStatusEmail']);
+                try {
+                    $objEmail = new \Isotope\Email($objNewStatus->mail_customer, $this->language, $this);
+                    $objEmail->send($strRecipient, $arrData);
+
+                    if (TL_MODE == 'BE') {
+                        $this->addConfirmationMessage($GLOBALS['TL_LANG']['tl_iso_product_collection']['orderStatusEmail']);
+                    }
+
+                } catch (\Exception $e) {
+                    log_message($e->getMessage());
+                    \System::log('Error sending status update to customer for order ID '.$this->id, __METHOD__, TL_ERROR);
                 }
             }
 
             $strSalesEmail = $objNewStatus->sales_email ? $objNewStatus->sales_email : $this->iso_sales_email;
-            if ($objNewStatus->mail_admin && $strSalesEmail != '')
-            {
-                Isotope::sendMail($objNewStatus->mail_admin, $strSalesEmail, $this->language, $arrData, $strRecipient, $this);
+
+            if ($objNewStatus->mail_admin && $strSalesEmail != '') {
+
+                try {
+                    $objEmail = new \Isotope\Email($objNewStatus->mail_admin, $this->language, $this);
+                    $objEmail->replyTo($strRecipient);
+                    $objEmail->send($strSalesEmail, $arrData);
+                } catch (\Exception $e) {
+                    log_message($e->getMessage());
+                    \System::log('Error sending status update to admin for order ID '.$this->id, __METHOD__, TL_ERROR);
+                }
             }
         }
 

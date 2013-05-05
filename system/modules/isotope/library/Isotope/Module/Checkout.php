@@ -99,10 +99,6 @@ class Checkout extends Module
             \Input::setGet('step', \Input::get('auto_item'));
         }
 
-        // Do not cache the page
-        global $objPage;
-        $objPage->cache = 0;
-
         $this->strCurrentStep = \Input::get('step');
 
         return parent::generate();

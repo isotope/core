@@ -701,7 +701,6 @@ CREATE TABLE `tl_module` (
   `iso_list_layout` varchar(64) NOT NULL default '',
   `iso_reader_layout` varchar(64) NOT NULL default '',
   `iso_reader_jumpTo` int(10) unsigned NOT NULL default '0',
-  `iso_cart_layout` varchar(64) NOT NULL default '',
   `iso_checkout_method` varchar(10) NOT NULL default '',
   `iso_login_jumpTo` int(10) unsigned NOT NULL default '0',
   `iso_payment_modules` blob NULL,
