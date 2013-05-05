@@ -35,47 +35,10 @@ class Order extends ProductCollection implements IsotopeProductCollection
 {
 
     /**
-     * This current order's unique ID with eventual prefix
-     * @param string
-     */
-    protected $strOrderId = '';
-
-    /**
      * Lock products from apply rule prices
      * @var boolean
      */
     protected $blnLocked = true;
-
-
-    public function __construct(\Database\Result $objResult=null)
-    {
-        parent::__construct($objResult);
-
-        if ($objResult !== null) {
-
-            // The order_id must not be stored in arrData, or it would overwrite the database on save().
-            $this->strOrderId = $this->arrData['order_id'];
-            unset($this->arrData['order_id']);
-        }
-    }
-
-
-    /**
-     * Return a value
-     * @param string
-     * @return mixed
-     */
-    public function __get($strKey)
-    {
-        switch ($strKey)
-        {
-            case 'order_id':
-                return $this->strOrderId;
-
-            default:
-                return parent::__get($strKey);
-        }
-    }
 
 
     /**
@@ -412,20 +375,6 @@ class Order extends ProductCollection implements IsotopeProductCollection
 
 
     /**
-     * Add additional information to the order data
-     * @return array
-     */
-    public function getData()
-    {
-        $arrData = parent::getData();
-
-        $arrData['order_id'] = $this->strOrderId;
-
-        return $arrData;
-    }
-
-
-    /**
      * Retrieve the array of email data for parsing simple tokens
      * @return array
      */
@@ -534,9 +483,9 @@ class Order extends ProductCollection implements IsotopeProductCollection
      */
     protected function generateOrderId()
     {
-        if ($this->strOrderId != '')
+        if ($this->arrData['order_id'] != '')
         {
-            return $this->strOrderId;
+            return $this->arrData['order_id'];
         }
 
         // !HOOK: generate a custom order ID
@@ -549,13 +498,13 @@ class Order extends ProductCollection implements IsotopeProductCollection
 
                 if ($strOrderId !== false)
                 {
-                    $this->strOrderId = $strOrderId;
+                    $this->arrData['order_id'] = $strOrderId;
                     break;
                 }
             }
         }
 
-        if ($this->strOrderId == '')
+        if ($this->arrData['order_id'] == '')
         {
             $objDatabase = \Database::getInstance();
             $strPrefix = Isotope::getInstance()->call('replaceInsertTags', Isotope::getConfig()->orderPrefix);
@@ -569,12 +518,12 @@ class Order extends ProductCollection implements IsotopeProductCollection
             $objMax = $objDatabase->prepare("SELECT order_id FROM " . static::$strTable . " WHERE " . ($strPrefix != '' ? "order_id LIKE '$strPrefix%' AND " : '') . "config_id IN (" . implode(',', $arrConfigIds) . ") ORDER BY CAST(" . ($strPrefix != '' ? "SUBSTRING(order_id, " . ($intPrefix+1) . ")" : 'order_id') . " AS UNSIGNED) DESC")->limit(1)->executeUncached();
             $intMax = (int) substr($objMax->order_id, $intPrefix);
 
-            $this->strOrderId = $strPrefix . str_pad($intMax+1, Isotope::getConfig()->orderDigits, '0', STR_PAD_LEFT);
+            $this->arrData['order_id'] = $strPrefix . str_pad($intMax+1, Isotope::getConfig()->orderDigits, '0', STR_PAD_LEFT);
         }
 
-        $objDatabase->prepare("UPDATE " . static::$strTable . " SET order_id=? WHERE id={$this->id}")->executeUncached($this->strOrderId);
+        $objDatabase->prepare("UPDATE " . static::$strTable . " SET order_id=? WHERE id={$this->id}")->executeUncached($this->arrData['order_id']);
         $objDatabase->unlockTables();
 
-        return $this->strOrderId;
+        return $this->arrData['order_id'];
     }
 }
