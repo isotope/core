@@ -144,7 +144,8 @@ class Cart extends Module
         }
 
         $this->Template->empty = false;
-        $this->Template->cart = $objTemplate->parse();
+        $this->Template->collection = Isotope::getCart();
+        $this->Template->products = $objTemplate->parse();
     }
 
 
