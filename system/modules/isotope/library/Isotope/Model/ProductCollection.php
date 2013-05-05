@@ -43,12 +43,6 @@ abstract class ProductCollection extends \Model
     protected static $strTable = 'tl_iso_product_collection';
 
     /**
-     * Name of the child table
-     * @var string
-     */
-    protected static $ctable = 'tl_iso_product_collection_item';
-
-    /**
      * Define if data should be threaded as "locked", eg. not apply discount rules to product prices
      * @var boolean
      */
@@ -541,7 +535,7 @@ abstract class ProductCollection extends \Model
         $intAffectedRows = parent::delete();
 
         if ($intAffectedRows > 0) {
-            \Database::getInstance()->prepare("DELETE FROM " . static::$ctable . " WHERE pid=?")->execute($this->id);
+            \Database::getInstance()->prepare("DELETE FROM tl_iso_product_collection_item WHERE pid=?")->execute($this->id);
         }
 
         $this->arrCache = array();
@@ -1011,7 +1005,7 @@ abstract class ProductCollection extends \Model
         $arrOldItems = $objSource->getItems();
 
         foreach ($arrOldItems as $objOldItem) {
-            $objNewItems = \Database::getInstance()->prepare("SELECT * FROM " . static::$ctable . " WHERE pid={$this->id} AND product_id={$objOldItem->product_id} AND options=?")->execute($objOldItem->options);
+            $objNewItems = \Database::getInstance()->prepare("SELECT * FROM tl_iso_product_collection_item WHERE pid={$this->id} AND product_id={$objOldItem->product_id} AND options=?")->execute($objOldItem->options);
 
             // !HOOK: additional functionality when copying product to collection
             if (isset($GLOBALS['ISO_HOOKS']['copyCollectionItem']) && is_array($GLOBALS['ISO_HOOKS']['copyCollectionItem'])) {
