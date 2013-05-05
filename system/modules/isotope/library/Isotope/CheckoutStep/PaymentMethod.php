@@ -36,16 +36,12 @@ class PaymentMethod extends CheckoutStep implements IsotopeCheckoutStep
     public function generate()
     {
         $arrModules = array();
-        $arrModuleIds = deserialize($this->objModule->iso_payment_modules);
+        $arrOptions = array();
 
-        if (!empty($arrModuleIds) && is_array($arrModuleIds)) {
+        $arrIds = array_map('intval', deserialize($this->objModule->iso_payment_modules, true));
+        $objModules = Payment::findBy(array('id IN (' . implode(',', $arrIds) . ')', (BE_USER_LOGGED_IN === true ? '' : "enabled='1'")), null, array('order'=>\Database::getInstance()->findInSet('id', $arrIds)));
 
-            $arrData = \Input::post('payment');
-            $arrModuleIds = array_map('intval', $arrModuleIds);
-
-            $objModules = Payment::findBy(array('id IN (' . implode(',', $arrModuleIds) . ')', (BE_USER_LOGGED_IN === true ? '' : "enabled='1'")), null, array('order'=>\Database::getInstance()->findInSet('id', $arrModuleIds)));
-
-            if (null !== $objModules) {
+        if (null !== $objModules) {
             while ($objModules->next()) {
 
                 $objModule = $objModules->current();
@@ -54,30 +50,17 @@ class PaymentMethod extends CheckoutStep implements IsotopeCheckoutStep
                     continue;
                 }
 
-                if (is_array($arrData) && $arrData['module'] == $objModule->id) {
-                    $_SESSION['CHECKOUT_DATA']['payment'] = $arrData;
-                }
-
-                if (is_array($_SESSION['CHECKOUT_DATA']['payment']) && $_SESSION['CHECKOUT_DATA']['payment']['module'] == $objModule->id) {
-                    Isotope::getCart()->Payment = $objModule;
-                }
-
                 $fltPrice = $objModule->price;
                 $strSurcharge = $objModule->surcharge;
-                $strPrice = ($fltPrice != 0) ? (($strSurcharge == '' ? '' : ' ('.$strSurcharge.')') . ': '.Isotope::formatPriceWithCurrency($fltPrice)) : '';
+                $strPrice = $fltPrice != 0 ? (($strSurcharge == '' ? '' : ' ('.$strSurcharge.')') . ': '.Isotope::formatPriceWithCurrency($fltPrice)) : '';
 
-                $arrModules[] = array(
-                    'id'        => $objModule->id,
-                    'label'     => $objModule->label,
-                    'price'     => $strPrice,
-                    'checked'   => ((Isotope::getCart()->Payment->id == $objModule->id || $objModules->numRows == 1) ? ' checked="checked"' : ''),
-                    'note'      => $objModule->note,
-                    'form'      => $objModule->paymentForm($this),
+                $arrOptions[] = array(
+                    'value'     => $objModule->id,
+                    'label'     => $objModule->getLabel() . $strPrice,
                 );
 
-                $objLastModule = $objModule;
+                $arrModules[$objModule->id] = $objModule;
             }
-        }
         }
 
         if (empty($arrModules)) {
@@ -93,34 +76,52 @@ class PaymentMethod extends CheckoutStep implements IsotopeCheckoutStep
             return $objTemplate->parse();
         }
 
+        $strClass = $GLOBALS['TL_FFL']['radio'];
+        $objWidget = new $strClass(array(
+            'id'            => $this->getStepClass(),
+            'name'          => $this->getStepClass(),
+            'mandatory'     => true,
+            'options'       => $arrOptions,
+            'value'         => Isotope::getCart()->payment_id,
+            'storeValues'   => true,
+            'tableless'     => true,
+        ));
+
+        // If there is only one payment method, mark it as selected by default
+        if (count($arrModules) == 1) {
+            $objModule = reset($arrModules);
+            $objWidget->value = $objModule->id;
+            Isotope::getCart()->setPaymentMethod($objModule);
+        }
+
+        if (\Input::post('FORM_SUBMIT') == $this->objModule->getFormId()) {
+            $objWidget->validate();
+
+            if (!$objWidget->hasErrors()) {
+                Isotope::getCart()->setPaymentMethod($arrModules[$objWidget->value]);
+            }
+        }
+
         $objTemplate = new \Isotope\Template('iso_checkout_payment_method');
 
-        if (!Isotope::getCart()->hasPayment() && !strlen($_SESSION['CHECKOUT_DATA']['payment']['module']) && count($arrModules) == 1) {
-
-            Isotope::getCart()->Payment = $objLastModule;
-            $_SESSION['CHECKOUT_DATA']['payment']['module'] = Isotope::getCart()->Payment->id;
-            $arrModules[0]['checked'] = ' checked="checked"';
-
-        } elseif (!Isotope::getCart()->hasPayment()) {
-
-            if (\Input::post('FORM_SUBMIT') != '') {
-                $objTemplate->error = $GLOBALS['TL_LANG']['MSC']['payment_method_missing'];
-            }
-
+        if (!Isotope::getCart()->hasPayment() || !isset($arrModules[Isotope::getCart()->payment_id])) {
             $this->blnError = true;
         }
 
         $objTemplate->headline = $GLOBALS['TL_LANG']['MSC']['payment_method'];
         $objTemplate->message = $GLOBALS['TL_LANG']['MSC']['payment_method_message'];
+        $objTemplate->options = $objWidget->parse();
         $objTemplate->paymentMethods = $arrModules;
 
+/*
         if (!$this->hasError()) {
-            $objPayment = Isotope::getCart()->getPaymentMethod();
-            $this->objModule->arrOrderData['payment_method_id']    = $objPayment->id;
-            $this->objModule->arrOrderData['payment_method']       = $objPayment->label;
-            $this->objModule->arrOrderData['payment_note']         = $objPayment->note;
-            $this->objModule->arrOrderData['payment_note_text']    = strip_tags($objPayment->note);
+            $objShipping = Isotope::getCart()->getShippingMethod();
+            $this->objModule->arrOrderData['shipping_method_id']   = $objShipping->id;
+            $this->objModule->arrOrderData['shipping_method']      = $objShipping->label;
+            $this->objModule->arrOrderData['shipping_note']        = $objShipping->note;
+            $this->objModule->arrOrderData['shipping_note_text']   = strip_tags($objShipping->note);
         }
+*/
 
         return $objTemplate->parse();
     }
@@ -131,8 +132,8 @@ class PaymentMethod extends CheckoutStep implements IsotopeCheckoutStep
         return array(
             'payment_method' => array(
                 'headline'    => $GLOBALS['TL_LANG']['MSC']['payment_method'],
-                'info'        => Isotope::getCart()->Payment->checkoutReview(),
-                'note'        => Isotope::getCart()->Payment->note,
+                'info'        => Isotope::getCart()->getPaymentMethod()->checkoutReview(),
+                'note'        => Isotope::getCart()->getPaymentMethod()->note,
                 'edit'        => \Isotope\Module\Checkout::generateUrlForStep('payment'),
             ),
         );
