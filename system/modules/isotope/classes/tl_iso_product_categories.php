@@ -76,7 +76,7 @@ class tl_iso_product_categories extends \Backend
         if (is_object($objPage))
         {
             $href  = (\Environment::get('ssl') ? 'https://' : 'http://') . ($objPage->dns == '' ? \Environment::get('host') : $objPage->dns) . (TL_PATH == '' ? '' : TL_PATH) . '/';
-            $href .= $this->generateFrontendUrl($objPage->row());
+            $href .= \Controller::generateFrontendUrl($objPage->row());
 
             return ' &#160; :: &#160; <a href="'.$href.'" target="_blank" class="header_preview" title="'.specialchars($title).'"'.$attributes.'>'.$label.'</a> ';
         }

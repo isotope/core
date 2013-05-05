@@ -215,6 +215,6 @@ abstract class Module extends Contao_Module
 
         global $objPage;
 
-        return $this->generateFrontendUrl($objPage->row(), $strParams) . (!empty($arrGet) ? ('?'.implode('&', $arrGet)) : '');
+        return \Controller::generateFrontendUrl($objPage->row(), $strParams) . (!empty($arrGet) ? ('?'.implode('&', $arrGet)) : '');
     }
 }

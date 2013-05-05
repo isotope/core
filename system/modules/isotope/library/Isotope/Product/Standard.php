@@ -343,11 +343,11 @@ class Standard extends \Controller implements IsotopeProduct
                         break;
                     }
 
-                    $strUrl  = $this->generateFrontendUrl($objTargetPage->row(), ($GLOBALS['TL_CONFIG']['useAutoItem'] ? '/' : '/product/') . $strUrlKey, $objTargetPage->rootLanguage);
+                    $strUrl = \Controller::generateFrontendUrl($objTargetPage->row(), ($GLOBALS['TL_CONFIG']['useAutoItem'] ? '/' : '/product/') . $strUrlKey, $objTargetPage->rootLanguage);
                 }
                 else
                 {
-                    $strUrl = $this->generateFrontendUrl($this->Database->prepare("SELECT * FROM tl_page WHERE id=?")->execute($varValue)->fetchAssoc(), ($GLOBALS['TL_CONFIG']['useAutoItem'] ? '/' : '/product/') . $strUrlKey, $objPage->rootLanguage);
+                    $strUrl = \Controller::generateFrontendUrl($this->Database->prepare("SELECT * FROM tl_page WHERE id=?")->execute($varValue)->fetchAssoc(), ($GLOBALS['TL_CONFIG']['useAutoItem'] ? '/' : '/product/') . $strUrlKey, $objPage->rootLanguage);
                 }
 
                 if (!empty($this->arrOptions))

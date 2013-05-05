@@ -1629,13 +1629,13 @@ $endScript";
 
                             if ($objNext->numRows)
                             {
-                                $href = $this->generateFrontendUrl($objNext->fetchAssoc());
+                                $href = \Controller::generateFrontendUrl($objNext->fetchAssoc());
                                 break;
                             }
                             // DO NOT ADD A break; STATEMENT
 
                         default:
-                            $href = $this->generateFrontendUrl($objResult->row());
+                            $href = \Controller::generateFrontendUrl($objResult->row());
                             break;
                     }
 
@@ -1662,7 +1662,7 @@ $endScript";
                         if ($arrItem['isActive'])
                         {
                             $arrItems[$i]['isActive'] = false;
-                            $arrItems[$i]['href'] = $this->generateFrontendUrl($arrItems[$i]['data']);
+                            $arrItems[$i]['href'] = \Controller::generateFrontendUrl($arrItems[$i]['data']);
                         }
 
                         break;

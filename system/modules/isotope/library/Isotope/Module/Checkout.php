@@ -416,7 +416,7 @@ class Checkout extends Module
                 return false;
             }
 
-            \Controller::redirect($this->generateFrontendUrl($objPage->row()));
+            \Controller::redirect(\Controller::generateFrontendUrl($objPage->row()));
         }
         elseif ($this->iso_checkout_method == 'guest' && FE_USER_LOGGED_IN === true)
         {

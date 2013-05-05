@@ -136,7 +136,7 @@ class Sparkasse extends Payment implements IsotopePayment
 
         $objPage = $this->getPageDetails((int) $arrData['sessionid']);
 
-        echo 'redirecturls=' . \Environment::get('base') . $this->generateFrontendUrl($objPage->row(), '/step/complete/uid/' . $objOrder->uniqid, $objPage->language);
+        echo 'redirecturls=' . \Environment::get('base') . \Controller::generateFrontendUrl($objPage->row(), '/step/complete/uid/' . $objOrder->uniqid, $objPage->language);
         exit;
     }
 
@@ -222,7 +222,7 @@ window.location.href = '" . $strUrl . "';
     {
         $objPage = $this->getPageDetails((int) $arrData['sessionid']);
 
-        echo 'redirecturlf=' . \Environment::get('base') . $this->generateFrontendUrl($objPage->row(), '/step/failed', $objPage->language) . '?reason=' . $arrData['directPosErrorMessage'];
+        echo 'redirecturlf=' . \Environment::get('base') . \Controller::generateFrontendUrl($objPage->row(), '/step/failed', $objPage->language) . '?reason=' . $arrData['directPosErrorMessage'];
         exit;
     }
 }

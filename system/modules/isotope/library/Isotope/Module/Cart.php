@@ -91,7 +91,7 @@ class Cart extends Module
         {
             global $objPage;
 
-            \Controller::redirect($this->generateFrontendUrl($objPage->row()));
+            \Controller::redirect(\Controller::generateFrontendUrl($objPage->row()));
         }
 
         $objTemplate = new \Isotope\Template($this->iso_collectionTpl);

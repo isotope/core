@@ -382,7 +382,7 @@ abstract class Payment extends \Model
                 $strRequest = str_replace('step=', '', $strRequest);
             }
 
-            return $this->generateFrontendUrl($objPage->row(), '/' . str_replace(array('=', '&amp;', '&'), '/', $strRequest));
+            return \Controller::generateFrontendUrl($objPage->row(), '/' . str_replace(array('=', '&amp;', '&'), '/', $strRequest));
         }
 
         return parent::addToUrl($strRequest, $blnIgnoreParams);
