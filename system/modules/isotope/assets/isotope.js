@@ -1,5 +1,3 @@
-<?php
-
 /**
  * Isotope eCommerce for Contao Open Source CMS
  *
