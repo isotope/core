@@ -57,14 +57,34 @@ class Backend extends Contao_Backend
      * @param object
      * @return array
      */
-    public function getSubdivisions($dc)
+    public static function getSubdivisions()
     {
-        if (!is_array($GLOBALS['TL_LANG']['DIV']))
-        {
+        static $arrSubdivisions = null;
+
+        if (null === $arrSubdivisions) {
+
             \System::loadLanguageFile('subdivisions');
+
+            foreach ($GLOBALS['TL_LANG']['DIV'] as $strCountry => $arrSubdivision)
+            {
+                foreach ($arrSubdivision as $strCode => $varValue)
+                {
+                    if (is_array($varValue))
+                    {
+                        $strGroup = $varValue[''];
+                        unset($varValue['']);
+
+                        $arrSubdivisions[$strCountry][$strCode][$strGroup] = $varValue;
+
+                        continue;
+                    }
+
+                    $arrSubdivisions[$strCountry][$strCode] = $varValue;
+                }
+            }
         }
 
-        return $GLOBALS['TL_LANG']['DIV'];
+        return $arrSubdivisions;
     }
 
 
