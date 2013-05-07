@@ -1063,16 +1063,8 @@ class Standard extends \Controller implements IsotopeProduct
             }
         }
 
-        // Apply <div> ID to variant attributes so we can replace it with javascript/ajax
-        if (in_array($attribute, $this->arrVariantAttributes))
-        {
-            return '<div class="iso_attribute ' . $attribute . '" id="' . $this->formSubmit . '_' . $attribute . '">' . $strBuffer . '</div>';
-        }
-        else
-        {
             return $strBuffer;
         }
-    }
 
 
     /**

@@ -268,7 +268,7 @@ $endScript
      */
     protected function generateAttribute($strId, $strBuffer, $strClass='')
     {
-        return '<div class="iso_attribute' . ($strClass != '' ? ' '.strtolower($strClass) : '') .'" id="' . $strId . '">' . $strBuffer . '</div>';
+        return '<div' . ($strClass != '' ? ' class="'.strtolower($strClass).'"' : '') .' id="' . $strId . '">' . $strBuffer . '</div>';
     }
 
 
