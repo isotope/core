@@ -1081,11 +1081,11 @@ class Standard extends \Controller implements IsotopeProduct
      * @param boolean
      * @return string
      */
-    protected function generateProductOptionWidget($strField, $blnAjax=false)
+    protected function generateProductOptionWidget($strField)
     {
         $arrData = $GLOBALS['TL_DCA']['tl_iso_products']['fields'][$strField];
 
-        $arrData['eval']['mandatory'] = ($arrData['eval']['mandatory'] && !$blnAjax) ? true : false;
+        $arrData['eval']['mandatory'] = ($arrData['eval']['mandatory'] && !\Environment::get('isAjaxRequest')) ? true : false;
         $arrData['eval']['required'] = $arrData['eval']['mandatory'];
 
         // Make sure variant options are initialized
@@ -1099,7 +1099,7 @@ class Standard extends \Controller implements IsotopeProduct
                 $this->arrVariantOptions['current'][$strField] = $this->arrVariantOptions['attributes'][$strField][0];
                 $arrData['default'] = $this->arrVariantOptions['attributes'][$strField][0];
 
-                if (!$blnAjax)
+                if (!\Environment::get('isAjaxRequest'))
                 {
                     return '';
                 }
