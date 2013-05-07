@@ -1789,4 +1789,47 @@ $endScript";
             }
         }
     }
+
+
+    /**
+     * Send response for an ajax request
+     * @param   mixed
+     */
+    public static function ajaxResponse($varValue)
+    {
+		$varValue = static::replaceTags($varValue);
+
+		if (is_array($varValue) || is_object($varValue))
+		{
+			$varValue = json_encode($varValue);
+		}
+
+		echo $varValue;
+		exit;
+    }
+
+
+	/**
+	 * Recursively replace inserttags in the return value
+	 * @param	array|string
+	 * @return	array|string
+	 */
+	private static function replaceTags($varValue)
+	{
+		if (is_array($varValue))
+		{
+			foreach( $varValue as $k => $v )
+			{
+				$varValue[$k] = static::replaceTags($v);
+			}
+
+			return $varValue;
+		}
+		elseif (is_object($varValue))
+		{
+			return $varValue;
+		}
+
+		return Isotope::getInstance()->call('replaceInsertTags', array($varValue, false));
+	}
 }
