@@ -84,7 +84,7 @@ class ProductReader extends Module
             return;
         }
 
-        $this->Template->product = $objProduct->generate((strlen($this->iso_reader_layout) ? $this->iso_reader_layout : $objProduct->reader_template), $this);
+        $this->Template->product = $objProduct->generate(($this->iso_reader_layout ?: $objProduct->reader_template), $this);
         $this->Template->product_id = ($objProduct->cssID[0] != '') ? ' id="' . $objProduct->cssID[0] . '"' : '';
         $this->Template->product_class = trim('product ' . $objProduct->cssID[1]);
         $this->Template->referer = 'javascript:history.go(-1)';
