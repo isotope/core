@@ -467,10 +467,22 @@ class Frontend extends \Frontend
 
 
     /**
-     * Use generatePage Hook to inject messages if they have not been included in a module
+     * Use generatePage Hook to inject necessary javascript
      */
-    public function injectMessages()
+    public function injectScripts()
     {
+        if (!empty($GLOBALS['AJAX_PRODUCTS']) && is_array($GLOBALS['AJAX_PRODUCTS'])) {
+            list(,$startScript, $endScript) = \Isotope\Frontend::getElementAndScriptTags();
+
+            $GLOBALS['TL_MOOTOOLS'][] = "
+$startScript
+window.addEvent('domready', function() {
+    IsotopeProducts.setLoadMessage('" . specialchars($GLOBALS['TL_LANG']['MSC']['loadingProductData']) . "');
+    IsotopeProducts.attach(JSON.decode('" . json_encode($GLOBALS['AJAX_PRODUCTS']) . "'));
+});
+$endScript";
+        }
+
         $strMessages = \Isotope\Frontend::getIsotopeMessages();
 
         if ($strMessages != '')

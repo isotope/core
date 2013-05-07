@@ -84,12 +84,6 @@ class Standard extends \Controller implements IsotopeProduct
     protected $formSubmit = 'iso_product';
 
     /**
-     * Name of the Javascript class
-     * @var string
-     */
-    protected $ajaxClass = 'IsotopeProduct';
-
-    /**
      * For option widgets, helps determine the encoding type for a form
      * @var boolean
      */
@@ -793,8 +787,7 @@ class Standard extends \Controller implements IsotopeProduct
         $objTemplate->formSubmit = $this->formSubmit;
         $objTemplate->product = $this;
 
-        list(,$startScript, $endScript) = \Isotope\Frontend::getElementAndScriptTags();
-        $GLOBALS['TL_MOOTOOLS'][] = $startScript."\nnew {$this->ajaxClass}('{$objModule->id}', '" . ($this->pid ? $this->pid : $this->id) . "', '{$this->formSubmit}', ['ctrl_" . implode("_".$this->formSubmit."', 'ctrl_", $arrAjaxOptions) . "_".$this->formSubmit."'], {language: '{$GLOBALS['TL_LANGUAGE']}', action: '".($objModule instanceof \Module ? 'fmd' : 'cte')."', page: {$objPage->id}, loadMessage:'" . specialchars($GLOBALS['TL_LANG']['MSC']['loadingProductData']) . "'});\n".$endScript;
+        $GLOBALS['AJAX_PRODUCTS'][] = array('module'=>$objModule->id, 'product'=>($this->pid ? $this->pid : $this->id), 'formId'=>$this->formSubmit, 'attributes'=>$arrAjaxOptions);
 
         // !HOOK: alter product data before output
         if (isset($GLOBALS['ISO_HOOKS']['generateProduct']) && is_array($GLOBALS['ISO_HOOKS']['generateProduct']))
@@ -980,8 +973,8 @@ class Standard extends \Controller implements IsotopeProduct
             }
         }
 
-            return $strBuffer;
-        }
+        return $strBuffer;
+    }
 
 
     /**
