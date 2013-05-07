@@ -255,6 +255,10 @@ class ProductList extends Module
 
         foreach ($arrProducts as $objProduct)
         {
+            if (\Environment::get('isAjaxRequest') && \Input::get('ajaxModule') == $this->id && \Input::get('ajaxProduct') == $objProduct->id) {
+                \Isotope\Frontend::ajaxResponse($objProduct->generate(($this->iso_list_layout ?: $objProduct->list_template), $this));
+            }
+
             $objProduct->setOptions(array_merge($arrDefaultOptions, $objProduct->getOptions()));
             $objProduct->reader_jumpTo = $intReaderPage;
 

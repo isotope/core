@@ -84,6 +84,10 @@ class ProductReader extends Module
             return;
         }
 
+        if (\Environment::get('isAjaxRequest') && \Input::get('ajaxModule') == $this->id && \Input::get('ajaxProduct') == $objProduct->id) {
+            \Isotope\Frontend::ajaxResponse($objProduct->generate(($this->iso_reader_layout ?: $objProduct->reader_template), $this));
+        }
+
         $this->Template->product = $objProduct->generate(($this->iso_reader_layout ?: $objProduct->reader_template), $this);
         $this->Template->product_id = ($objProduct->cssID[0] != '') ? ' id="' . $objProduct->cssID[0] . '"' : '';
         $this->Template->product_class = trim('product ' . $objProduct->cssID[1]);
