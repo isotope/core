@@ -62,23 +62,6 @@ class ProductReader extends Module
 
 
     /**
-     * Generate AJAX scripts
-     * @return string
-     */
-    public function generateAjax()
-    {
-        $objProduct = \Isotope\Frontend::getProduct(\Input::get('product'), \Isotope\Frontend::getReaderPageId(), false);
-
-        if ($objProduct)
-        {
-            return $objProduct->generateAjax($this);
-        }
-
-        return '';
-    }
-
-
-    /**
      * Generate module
      * @return void
      */

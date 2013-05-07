@@ -95,23 +95,6 @@ class ProductList extends Module
 
 
     /**
-     * Generate a single product and return it's HTML string
-     * @return string
-     */
-    public function generateAjax()
-    {
-        $objProduct = \Isotope\Frontend::getProduct(\Input::get('product'), \Isotope\Frontend::getReaderPageId(null, $this->iso_reader_jumpTo), false);
-
-        if ($objProduct !== null)
-        {
-            return $objProduct->generateAjax($this);
-        }
-
-        return '';
-    }
-
-
-    /**
      * Compile product list.
      *
      * This function is specially designed so you can keep it in your child classes and only override findProducts().
