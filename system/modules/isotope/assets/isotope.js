@@ -17,9 +17,9 @@ var Isotope = Isotope || {};
 Isotope.toggleAddressFields = function(el, id)
 {
     if (el.value == '0' && el.checked) {
-        document.id(id).setStyle('display', 'block');
+        document.getElementById(id).style.display = 'block';
     } else {
-        document.id(id).setStyle('display', 'none');
+        document.getElementById(id).style.display = 'none';
     }
 };
 
@@ -29,34 +29,36 @@ Isotope.toggleAddressFields = function(el, id)
  */
 Isotope.displayBox = function(message, btnClose)
 {
-    var box = document.id('iso_ajaxBox');
-    var overlay = document.id('iso_ajaxOverlay');
+    var box = document.getElementById('iso_ajaxBox');
+    var overlay = document.getElementById('iso_ajaxOverlay');
 
     if (!overlay) {
-        overlay = new Element('div').setProperty('id', 'iso_ajaxOverlay').injectInside(document.id(document.body));
+        overlay = document.createElement('div');
+        overlay.setAttribute('id', 'iso_ajaxOverlay');
+        document.body.appendChild(overlay);
     }
 
     if (!box) {
-        box = new Element('div').setProperty('id', 'iso_ajaxBox').injectInside(document.id(document.body));
+        box = document.createElement('div');
+        box.setAttribute('id', 'iso_ajaxBox');
+        document.body.appendChild(box);
     }
 
     if (btnClose) {
-        overlay.addEvent('click', Isotope.hideBox);
-        box.addClass('btnClose').addEvent('click', Isotope.hideBox);
+        overlay.addEventListener('click', Isotope.hideBox, false);
+        box.addEventListener('click', Isotope.hideBox, false);
+        if (!box.className.test(/btnClose/)) {
+            box.className = box.className + ' btnClose';
+        }
     }
 
     var scroll = window.getScroll().y;
-    if (Browser.Engine.trident && Browser.Engine.version < 5) {
-        var sel = $$('select'); for (var i=0; i<sel.length; i++) {
-            sel[i].setStyle('visibility', 'hidden');
-        } 
-    }
 
-    overlay.setStyle('display', 'block');
+    overlay.style.display = 'block';
 
-    box.set('html', message);
-    box.setStyle('display', 'block');
-    box.setStyle('top', (scroll + 100) + 'px');
+    box.innerHTML = message;
+    box.style.display = 'block';
+    box.style.top = ((scroll + 100) + 'px');
 };
 
 
@@ -65,16 +67,18 @@ Isotope.displayBox = function(message, btnClose)
  */
 Isotope.hideBox = function()
 {
-    var box = document.id('iso_ajaxBox');
-    var overlay = document.id('iso_ajaxOverlay');
+    var box = document.getElementById('iso_ajaxBox');
+    var overlay = document.getElementById('iso_ajaxOverlay');
 
     if (overlay) {
-        overlay.setStyle('display', 'none').removeEvents('click');
+        overlay.style.display = 'none';
+        overlay.removeEventListener('click', Isotope.hideBox, false);
     }
 
     if (box) {
-        box.setStyle('display', 'none').removeEvents('click').removeClass('btnClose');
-        if (Browser.Engine.trident && Browser.Engine.version < 5) { var sel = $$('select'); for (var i=0; i<sel.length; i++) { sel[i].setStyle('visibility', 'visible'); } }
+        box.style.display = 'none';
+        box.removeEventListener('click', Isotope.hideBox, false);
+        box.className = box.className.replace(/ ?btnClose/, '');
     }
 };
 
