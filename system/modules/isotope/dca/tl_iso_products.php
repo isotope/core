@@ -12,6 +12,7 @@
  * @author     Andreas Schempp <andreas.schempp@terminal42.ch>
  * @author     Fred Bliss <fred.bliss@intelligentspark.com>
  * @author     Christian de la Haye <service@delahaye.de>
+ * @author     Kamil Kuzminski <kamil.kuzminski@codefog.pl>
  */
 
 
@@ -32,11 +33,11 @@ $GLOBALS['TL_DCA']['tl_iso_products'] = array
         'ctable'                    => array('tl_iso_downloads', 'tl_iso_product_categories', 'tl_iso_prices'),
         'onload_callback' => array
         (
-            array('Isotope\Backend', 'createGeneralGroup'),
             array('Isotope\ProductCallbacks', 'applyAdvancedFilters'),
             array('Isotope\ProductCallbacks', 'checkPermission'),
             array('Isotope\ProductCallbacks', 'buildPaletteString'),
-            array('Isotope\ProductCallbacks', 'loadDefaultProductType')
+            array('Isotope\ProductCallbacks', 'loadDefaultProductType'),
+            array('Isotope\ProductCallbacks', 'addMoveAllFeature'),
         ),
         'oncopy_callback' => array
         (
@@ -54,18 +55,23 @@ $GLOBALS['TL_DCA']['tl_iso_products'] = array
     (
         'sorting' => array
         (
-            'mode'                  => 5,
+            'mode'                  => 2,
             'fields'                => array('name'),
+            'headerFields'          => array('name', 'sku', 'price', 'published'),
+            'headerOperations'      => array('edit', 'copy', 'cut', 'delete', 'toggle', 'show', 'quick_edit', 'generate', 'related', 'downloads', 'prices'),
             'flag'                  => 1,
-            'panelLayout'           => 'filter;sort,search',
+            'panelLayout'           => 'buttons,filter;sort,search,limit',
             'icon'                  => 'system/modules/isotope/assets/store-open.png',
             'paste_button_callback' => array('Isotope\PasteProductButton', 'generate'),
-            'rootPaste'             => true,
+            'panel_callback'        => array
+            (
+            	'buttons' => array('Isotope\ProductCallbacks', 'generateProductFilter')
+            )
         ),
         'label' => array
         (
-            'fields'                => array('name'),
-            'format'                => '%s',
+            'fields'                => array('', 'name', 'sku', 'price'),
+            'showColumns'           => true,
             'label_callback'        => array('Isotope\ProductCallbacks', 'getRowLabel'),
         ),
         'global_operations' => array
@@ -73,14 +79,7 @@ $GLOBALS['TL_DCA']['tl_iso_products'] = array
             'new_product' => array
             (
                 'label'             => &$GLOBALS['TL_LANG']['tl_iso_products']['new_product'],
-                'href'              => 'act=paste&mode=create&type=product',
-                'class'             => 'header_new',
-                'attributes'        => 'onclick="Backend.getScrollOffset();"',
-            ),
-            'new_variant' => array
-            (
-                'label'             => &$GLOBALS['TL_LANG']['tl_iso_products']['new_variant'],
-                'href'              => 'act=paste&mode=create&type=variant',
+                'href'              => 'act=create&type=product&gid=' . $this->Session->get('iso_products_gid'),
                 'class'             => 'header_new',
                 'attributes'        => 'onclick="Backend.getScrollOffset();"',
             ),
@@ -151,22 +150,6 @@ $GLOBALS['TL_DCA']['tl_iso_products'] = array
                 'class'             => 'header_edit_all isotope-tools',
                 'attributes'        => 'onclick="Backend.getScrollOffset();"'
             ),
-            'toggleGroups' => array
-            (
-                'label'             => &$GLOBALS['TL_LANG']['tl_iso_products']['toggleGroups'],
-                'href'              => 'gtg=all',
-                'class'             => 'header_toggle isotope-tools',
-                'attributes'        => 'onclick="Backend.getScrollOffset();"',
-                'button_callback'   => array('Isotope\ProductCallbacks', 'toggleGroups')
-            ),
-            'toggleVariants' => array
-            (
-                'label'             => &$GLOBALS['TL_LANG']['tl_iso_products']['toggleVariants'],
-                'href'              => 'ptg=all',
-                'class'             => 'header_toggle isotope-tools',
-                'attributes'        => 'onclick="Backend.getScrollOffset();"',
-                'button_callback'   => array('Isotope\ProductCallbacks', 'toggleVariants')
-            ),
             'groups' => array
             (
                 'label'             => &$GLOBALS['TL_LANG']['tl_iso_products']['groups'],
@@ -194,16 +177,16 @@ $GLOBALS['TL_DCA']['tl_iso_products'] = array
             'copy' => array
             (
                 'label'             => &$GLOBALS['TL_LANG']['tl_iso_products']['copy'],
-                'href'              => 'act=paste&amp;mode=copy&amp;childs=1',
+                'href'              => 'act=copy',
                 'icon'              => 'copy.gif',
-                'attributes'        => 'onclick="Backend.getScrollOffset();"',
+                'button_callback'   => array('Isotope\tl_iso_products', 'copyIcon')
             ),
             'cut' => array
             (
                 'label'             => &$GLOBALS['TL_LANG']['tl_iso_products']['cut'],
-                'href'              => 'act=paste&amp;mode=cut',
+                'href'              => 'act=cut',
                 'icon'              => 'cut.gif',
-                'attributes'        => 'onclick="Backend.getScrollOffset();"',
+                'button_callback'   => array('Isotope\tl_iso_products', 'cutIcon')
             ),
             'delete' => array
             (
@@ -568,3 +551,13 @@ $GLOBALS['TL_DCA']['tl_iso_products'] = array
         ),
     ),
 );
+
+
+/**
+ * Adjust the data configuration array in variants view
+ */
+if (\Input::get('id'))
+{
+	$GLOBALS['TL_DCA']['tl_iso_products']['list']['global_operations']['new_product']['label'] = &$GLOBALS['TL_LANG']['tl_iso_products']['new_variant'];
+	$GLOBALS['TL_DCA']['tl_iso_products']['list']['global_operations']['new_product']['href'] = 'act=create&mode=2&type=variant&pid=' . \Input::get('id') . '&gid=' . $this->Session->get('iso_products_gid');
+}

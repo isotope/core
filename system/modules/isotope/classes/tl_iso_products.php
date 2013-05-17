@@ -534,6 +534,52 @@ $strBuffer .= '<th style="text-align:center"><img src="system/themes/default/ima
     }
 
 
+
+    /**
+     * Return the "copy" button
+     * @param array
+     * @param string
+     * @param string
+     * @param string
+     * @param string
+     * @param string
+     * @return string
+     */
+    public function copyIcon($row, $href, $label, $title, $icon, $attributes)
+    {
+    	if ($row['pid'] > 0)
+    	{
+	    	return '<a href="'.preg_replace('/&(amp;)?id=[^& ]*/i', '', ampersand(\Environment::get('request'))).'&amp;act=paste&amp;mode=copy&amp;table=tl_iso_products&amp;id='.$row['id'].'&amp;pid='.\Input::get('id').'" title="'.specialchars($title).'"'.$attributes.' onclick="Backend.getScrollOffset();">'.$this->generateImage($icon, $label).'</a> ';
+    	}
+
+    	return '<a href="'.$this->addToUrl($href.'&amp;id='.$row['id']).'" title="'.specialchars($title).'"'.$attributes.'>'.\Image::getHtml($icon, $label).'</a> ';
+    }
+
+
+
+    /**
+     * Return the "cut" button
+     * @param array
+     * @param string
+     * @param string
+     * @param string
+     * @param string
+     * @param string
+     * @return string
+     */
+    public function cutIcon($row, $href, $label, $title, $icon, $attributes)
+    {
+    	if ($row['pid'] > 0)
+    	{
+	    	return '<a href="'.preg_replace('/&(amp;)?id=[^& ]*/i', '', ampersand(\Environment::get('request'))).'&amp;act=paste&amp;mode=cut&amp;table=tl_iso_products&amp;id='.$row['id'].'&amp;pid='.\Input::get('id').'" title="'.specialchars($title).'"'.$attributes.' onclick="Backend.getScrollOffset();">'.$this->generateImage($icon, $label).'</a> ';
+    	}
+    	else
+    	{
+	    	return '<a href="system/modules/isotope/public/group.php?do='.\Input::get('do').'&amp;table=tl_iso_groups&amp;field=gid&amp;value='.$row['gid'].'" title="'.specialchars($title).'"'.$attributes.' onclick="Backend.getScrollOffset();Isotope.openModalGroupSelector({\'width\':765,\'title\':\''.specialchars($GLOBALS['TL_LANG']['MSC']['groupPicker']).'\',\'url\':this.href,\'action\':\'moveProduct\',\'redirect\':\''.$this->addToUrl($href . '&pid=' . intval(\Input::get('pid')) . '&id=' . $row['id']).'\'});return false">'.$this->generateImage($icon, $label).'</a> ';
+    	}
+    }
+
+
     /**
      * Return the "toggle visibility" button
      * @param array

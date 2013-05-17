@@ -189,6 +189,20 @@ class tl_iso_groups extends \Backend
     }
 
 
+	/**
+	 * Add the breadcrumb menu
+	 */
+	public function addBreadcrumb()
+	{
+		$GLOBALS['TL_DCA']['tl_iso_groups']['list']['sorting']['breadcrumb'] = \Isotope\Backend::generateGroupsBreadcrumb($this->Session->get('iso_products_gid'));
+
+		if ($this->Session->get('iso_products_gid') > 0)
+		{
+			$GLOBALS['TL_DCA']['tl_iso_groups']['list']['sorting']['root'] = array($this->Session->get('iso_products_gid'));
+		}
+	}
+
+
     /**
      * Add an image to each group in the tree
      * @param array
@@ -197,7 +211,6 @@ class tl_iso_groups extends \Backend
      * @param string
      * @param boolean
      * @return string
-     * @todo add node filtering
      */
     public function addIcon($row, $label, \DataContainer $dc=null, $imageAttribute='', $blnReturnImage=false)
     {
@@ -215,10 +228,10 @@ class tl_iso_groups extends \Backend
                 $strProductType = ' <span style="color:#b3b3b3; padding-left:3px;">[' . $strProductType . ']</span>';
             }
 
-            return $this->generateImage('system/modules/isotope/html/folder-network.png', '', $imageAttribute) . ' ' . $label . $strProductType;
+            return '<a href="' . $this->addToUrl('gid=' . $row['id']) . '" title="' . specialchars($row['name'] . ' (ID ' . $row['id'] . ')') . '">' . $this->generateImage('system/modules/isotope/html/folder-network.png', '', $imageAttribute) . ' ' . $label . '</a>' . $strProductType;
         }
 
-        return ;
+        return '';
     }
 
 

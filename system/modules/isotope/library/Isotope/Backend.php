@@ -519,63 +519,6 @@ class Backend extends Contao_Backend
 
 
     /**
-     * Generate the GENERAL group if there is none
-     * @return boolean
-     */
-    public static function createGeneralGroup()
-    {
-        $objDatabase = \Database::getInstance();
-
-        $blnHasGroups = $objDatabase->executeUncached("SELECT COUNT(id) AS total FROM tl_iso_groups")->total > 0;
-        $blnHasUnassigned = $objDatabase->executeUncached("SELECT COUNT(id) AS total FROM tl_iso_products WHERE pid=0 AND language='' AND gid=0")->total > 0;
-
-        if (!$blnHasGroups || $blnHasUnassigned)
-        {
-            $intGroup = $objDatabase->executeUncached("INSERT INTO tl_iso_groups (pid,sorting,tstamp,name) VALUES (0, 0, " . time() . ", '### GENERAL ###')")->insertId;
-
-            // add all products to that new folder
-            $objDatabase->query("UPDATE tl_iso_products SET gid=$intGroup WHERE pid=0 AND language='' AND gid=0");
-
-            // toggle (open) the new group
-            \Session::getInstance()->set('tl_iso_products_tl_iso_groups_tree', array($intGroup=>1));
-
-            $objUser = BackendUser::getInstance();
-
-			if (TL_MODE == 'BE' && !$objUser->isAdmin)
-			{
-				// Add permissions on user level
-				if ($objUser->inherit == 'custom' || !$objUser->groups[0])
-				{
-					$arrAccess = deserialize($objUser->iso_groups);
-					$arrAccess[] = $intGroup;
-
-					Database::getInstance()->prepare("UPDATE tl_user SET iso_groups=? WHERE id=?")
-        								   ->execute(serialize($arrAccess), $objUser->id);
-				}
-
-				// Add permissions on group level
-				elseif ($objUser->groups[0] > 0)
-				{
-					$objGroup = Database::getInstance()->prepare("SELECT iso_groups FROM tl_user_group WHERE id=?")
-        											   ->limit(1)
-        											   ->executeUncached($objUser->groups[0]);
-
-					$arrAccess = deserialize($objGroup->iso_groups);
-					$arrAccess[] = $intGroup;
-
-					Database::getInstance()->prepare("UPDATE tl_user_group SET iso_groups=? WHERE id=?")
-					                       ->execute(serialize($arrAccess), $objUser->groups[0]);
-				}
-			}
-
-			Isotope::getInstance()->call('reload');
-        }
-
-        return false;
-    }
-
-
-    /**
      * Get product type for a given group
      * @param product group id
      * @return int|false
@@ -674,5 +617,107 @@ class Backend extends Contao_Backend
         }
 
         return $arrProducts;
+    }
+
+
+    /**
+     * Generate groups breadcrumb and return it as HTML string
+     * @param integer
+     * @param integer
+     * @return string
+     */
+    public static function generateGroupsBreadcrumb($intId, $intProductId=null)
+    {
+		$arrGroups = array();
+		$objSession = \Session::getInstance();
+
+		// Set a new gid
+		if (isset($_GET['gid']))
+		{
+			$objSession->set('iso_products_gid', \Input::get('gid'));
+			\Controller::redirect(preg_replace('/&gid=[^&]*/', '', \Environment::get('request')));
+		}
+
+		// Return if there is no trail
+		if (!$objSession->get('iso_products_gid') && !$intProductId)
+		{
+			return '';
+		}
+
+		// Include the product in variants view
+		if ($intProductId)
+		{
+			$objProduct = \Database::getInstance()->prepare("SELECT gid, name FROM tl_iso_products WHERE id=?")
+												  ->limit(1)
+												  ->execute($intProductId);
+
+			if ($objProduct->numRows)
+			{
+				$arrGroups[] = array('id'=>$intProductId, 'name'=>$objProduct->name);
+
+				// Override the group ID
+				$intId = $objProduct->gid;
+			}
+		}
+
+		$intPid = $intId;
+
+		// Generate groups
+		do
+		{
+			$objGroup = \Database::getInstance()->prepare("SELECT id, pid, name FROM tl_iso_groups WHERE id=?")
+												->limit(1)
+												->execute($intPid);
+
+			if ($objGroup->numRows)
+			{
+				$arrGroups[] = array('id'=>$objGroup->id, 'name'=>$objGroup->name);
+
+				if ($objGroup->pid)
+				{
+					$intPid = $objGroup->pid;
+				}
+			}
+		}
+		while ($objGroup->pid);
+
+		$arrLinks = array();
+		$strUrl = \Environment::get('request');
+
+		// Remove the product ID from URL
+		if ($intProductId)
+		{
+			$strUrl = preg_replace('/&id=[^&]*/', '', $strUrl);
+		}
+
+		// Generate breadcrumb trail
+		foreach ($arrGroups as $i=>$arrGroup)
+		{
+			if (!$arrGroup['id'])
+			{
+				continue;
+			}
+
+			$buffer = '';
+
+			// No link for the active group
+			if ((!$intProductId && $intId == $arrGroup['id']) || ($intProductId && $intProductId == $arrGroup['id']))
+			{
+				$buffer .= $arrGroup['name'];
+			}
+			else
+			{
+				$buffer .= '<a href="' . ampersand($strUrl) . '&amp;gid='.$arrGroup['id'] . '" title="'.specialchars($GLOBALS['TL_LANG']['MSC']['selectGroup']).'">' . $arrGroup['name'] . '</a>';
+			}
+
+			$arrLinks[] = $buffer;
+		}
+
+		$arrLinks[] = sprintf('<a href="%s" title="'.specialchars($GLOBALS['TL_LANG']['MSC']['allGroups']).'"><img src="system/modules/isotope/assets/folders.png" width="16" height="16" alt="" style="margin-right:6px;"> %s</a>', ampersand($strUrl) . '&amp;gid=0', $GLOBALS['TL_LANG']['MSC']['filterAll']);
+
+		return '
+<ul id="tl_breadcrumb">
+  <li>' . implode(' &gt; </li><li>', array_reverse($arrLinks)) . '</li>
+</ul>';
     }
 }

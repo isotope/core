@@ -55,6 +55,7 @@ $GLOBALS['TL_LANG']['tl_iso_products']['mmTranslateNone']        = array('None',
 $GLOBALS['TL_LANG']['tl_iso_products']['mmTranslateText']        = array('Text', 'Translate alt text and description for this image.');
 $GLOBALS['TL_LANG']['tl_iso_products']['mmTranslateAll']        = array('All', 'Do not include this image in translated version.');
 $GLOBALS['TL_LANG']['tl_iso_products']['variantValuesLabel']    = 'Variant';
+$GLOBALS['TL_LANG']['tl_iso_products']['showVariants']         = 'Show product variants';
 
 /**
  * Buttons
@@ -75,12 +76,10 @@ $GLOBALS['TL_LANG']['tl_iso_products']['filter_new_today']    = array('Added tod
 $GLOBALS['TL_LANG']['tl_iso_products']['filter_new_week']    = array('Added this week', 'Show products added in the last 7 days');
 $GLOBALS['TL_LANG']['tl_iso_products']['filter_new_month']    = array('Added this month', 'Show products added in the last 30 days');
 $GLOBALS['TL_LANG']['tl_iso_products']['tools']                = array('Tools', 'More options for product management');
-$GLOBALS['TL_LANG']['tl_iso_products']['toggleGroups']        = array('Toggle all groups', 'Toggle all groups');
-$GLOBALS['TL_LANG']['tl_iso_products']['toggleVariants']    = array('Toggle all variants', 'Toggle all variants');
 $GLOBALS['TL_LANG']['tl_iso_products']['groups']            = array('Product groups', 'Manage product groups');
 $GLOBALS['TL_LANG']['tl_iso_products']['import']            = array('Import assets', 'Import images and other media from a folder');
 $GLOBALS['TL_LANG']['tl_iso_products']['prices']            = array('Manage prices', 'Manage prices for product ID %s');
-$GLOBALS['TL_LANG']['tl_iso_products']['downloads']            = array('Downloads', 'Edit downloads for product ID %s');
+$GLOBALS['TL_LANG']['tl_iso_products']['downloads']            = array('Downloads', 'Edit downloads for product ID %s', 'Downloads: %s. ');
 $GLOBALS['TL_LANG']['tl_iso_products']['generate']            = array('Generate variants', 'Generate variants for product ID %s');
 $GLOBALS['TL_LANG']['tl_iso_products']['quick_edit']        = array('Quick-edit variants', 'Quick-edit variants for product ID %s');
 $GLOBALS['TL_LANG']['tl_iso_products']['related']            = array('Related products', 'Manage related products for product ID %s');

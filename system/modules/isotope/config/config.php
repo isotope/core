@@ -188,6 +188,7 @@ $GLOBALS['BE_FFL']['variantWizard']            = 'Isotope\Widget\VariantWizard';
 $GLOBALS['BE_FFL']['inheritCheckbox']        = 'Isotope\Widget\InheritCheckBox';
 $GLOBALS['BE_FFL']['fieldWizard']            = 'Isotope\Widget\FieldWizard';
 $GLOBALS['BE_FFL']['productTree']            = 'Isotope\Widget\ProductTree';
+$GLOBALS['BE_FFL']['productGroupSelector']   = 'Isotope\Widget\ProductGroupSelector';
 
 
 /**
@@ -270,6 +271,8 @@ $GLOBALS['TL_HOOKS']['replaceInsertTags'][]             = array('Isotope\Fronten
 $GLOBALS['TL_HOOKS']['generatePage'][]                  = array('Isotope\Frontend', 'injectMessages');
 $GLOBALS['TL_HOOKS']['executePreActions'][]             = array('Isotope\Widget\ProductTree', 'executePreActions');
 $GLOBALS['TL_HOOKS']['executePostActions'][]            = array('Isotope\Widget\ProductTree', 'executePostActions');
+$GLOBALS['TL_HOOKS']['executePreActions'][]             = array('Isotope\Widget\ProductGroupSelector', 'executePreActions');
+$GLOBALS['TL_HOOKS']['executePostActions'][]            = array('Isotope\Widget\ProductGroupSelector', 'executePostActions');
 $GLOBALS['TL_HOOKS']['translateUrlParameters'][]        = array('Isotope\Frontend', 'translateProductUrls');
 $GLOBALS['TL_HOOKS']['getSystemMessages'][]             = array('Isotope\Backend', 'getOrderMessages');
 $GLOBALS['TL_HOOKS']['sqlGetFromFile'][]                = array('Isotope\Backend', 'addAttributesToDBUpdate');

@@ -478,17 +478,43 @@ class ProductCallbacks extends \Backend
      */
     public function loadDefaultProductType($dc)
     {
-        if (\Input::get('act') !== 'create' || !\Input::get('gid'))
+        if (\Input::get('act') !== 'create')
         {
             return;
         }
 
-        if (($intProductTypeId = \Isotope\Backend::getProductTypeForGroup(\Input::get('gid'))) !== false)
+        if (($intProductTypeId = \Isotope\Backend::getProductTypeForGroup($this->Session->get('iso_products_gid'))) !== false)
         {
             $GLOBALS['TL_DCA']['tl_iso_products']['fields']['type']['default'] = $intProductTypeId;
         }
     }
 
+
+    /**
+     * Add a script that will handle "move all" action
+     */
+    public function addMoveAllFeature()
+    {
+	    if (\Input::get('act') == 'select' && !\Input::get('id'))
+	    {
+		    $GLOBALS['TL_MOOTOOLS'][] = "
+<script>
+window.addEvent('domready', function() {
+  $('cut').addEvents({
+    'click': function(e) {
+      e.preventDefault();
+      Isotope.openModalGroupSelector({'width':765,'title':'".specialchars($GLOBALS['TL_LANG']['MSC']['groupPicker'])."','url':'system/modules/isotope/public/group.php?do=".\Input::get('do')."&amp;table=tl_iso_groups&amp;field=gid&amp;value=".$this->Session->get('iso_products_gid')."','action':'moveProducts','trigger':$(this)});
+    },
+    'closeModal': function() {
+      var form = $('tl_select'),
+          hidden = new Element('input', { type:'hidden', name:'cut' }).inject(form.getElement('.tl_formbody'), 'top');
+      form.submit();
+    }
+  });
+});
+</script>";
+	    }
+    }
 
 
 
@@ -538,6 +564,23 @@ class ProductCallbacks extends \Backend
     }
 
 
+    //////////////////////
+    //  !panel_callback
+    //////////////////////
+
+
+    /**
+     * Generate product filter buttons and return them as HTML
+     * @return string
+     */
+    public function generateProductFilter()
+    {
+	    return '
+<div class="tl_filter tl_iso_filter tl_subpanel">
+<input type="button" id="groupFilter" class="tl_submit" onclick="Backend.getScrollOffset();Isotope.openModalGroupSelector({\'width\':765,\'title\':\''.specialchars($GLOBALS['TL_LANG']['MSC']['groupPicker']).'\',\'url\':\'system/modules/isotope/public/group.php?do='.\Input::get('do').'&amp;table=tl_iso_groups&amp;field=gid&amp;value='.$this->Session->get('iso_products_gid').'\',\'action\':\'filterGroups\'});return false" value="'.specialchars($GLOBALS['TL_LANG']['MSC']['filterByGroups']).'">
+</div>';
+    }
+
 
     //////////////////////
     //  !label_callback
@@ -546,15 +589,18 @@ class ProductCallbacks extends \Backend
 
     /**
      * Generate a product label and return it as HTML string
-     * @param array
-     * @param string
-     * @return string
+	 * @param array
+	 * @param string
+	 * @param object
+	 * @param array
+	 * @return string
      */
-    public function getRowLabel($row, $label = '')
+    public function getRowLabel($row, $label, $dc, $args)
     {
         $arrImages = deserialize($row['images']);
-        $thumbnail = '&nbsp;';
+        $args[0] = '&nbsp;';
 
+        // Add an image
         if (is_array($arrImages) && !empty($arrImages))
         {
             foreach ($arrImages as $image)
@@ -566,12 +612,21 @@ class ProductCallbacks extends \Backend
                     continue;
                 }
 
-                $thumbnail = sprintf('<img src="%s" alt="%s" align="left">', $this->getImage($strImage, 34, 34, 'proportional'), $image['alt']);
+                $args[0] = sprintf('<img src="%s" alt="%s" align="left">', $this->getImage($strImage, 34, 34, 'proportional'), $image['alt']);
                 break;
             }
         }
 
-        $objProductType = $this->Database->execute("SELECT * FROM tl_iso_producttypes WHERE id=". (int) $row['type']);
+        // Add a variants link
+        if (!$row['pid'])
+        {
+        	$args[1] = sprintf('<a href="%s" title="%s">%s</a>', ampersand($this->Environment->request) . '&amp;id=' . $row['id'], specialchars($GLOBALS['TL_LANG']['tl_iso_products']['showVariants']), $row['name']);
+        }
+
+        // TODO: format also the variants (pid > 0)
+
+        return $args;
+
         $arrAttributes = $this->arrProductTypes[$row['type']]['attributes'];
 
         if ($row['pid'] > 0)
@@ -650,54 +705,6 @@ class ProductCallbacks extends \Backend
         $href = preg_replace('/&?filter\[\]=[^&]*/', '', \Environment::get('request'));
 
         return ' &#160; :: &#160; <a href="'.$href.'" class="header_iso_filter_remove" title="'.specialchars($title).'"'.$attributes.'>'.$label.'</a> ';
-    }
-
-
-    /**
-     * Hide "toggle all groups" button if there are no groups at all
-     * @param string
-     * @param string
-     * @param string
-     * @param string
-     * @param string
-     * @param string
-     * @param array
-     * @return string
-     */
-    public function toggleGroups($href, $label, $title, $class, $attributes, $table, $root)
-    {
-        $objGroups = $this->Database->query("SELECT COUNT(id) AS hasGroups FROM tl_iso_groups");
-
-        if (!$objGroups->hasGroups)
-        {
-            return '';
-        }
-
-        return '<a href="' . $this->addToUrl('&amp;' . $href) . '" class="header_toggle isotope-tools" title="' . specialchars($title) . '"' . $attributes . '>' . specialchars($label) . '</a>';
-    }
-
-
-    /**
-     * Hide "toggle all variants" button if there are no variants at all
-     * @param string
-     * @param string
-     * @param string
-     * @param string
-     * @param string
-     * @param string
-     * @param array
-     * @return string
-     */
-    public function toggleVariants($href, $label, $title, $class, $attributes, $table, $root)
-    {
-        $objVariants = $this->Database->query("SELECT COUNT(id) AS hasVariants FROM tl_iso_products WHERE pid>0 AND language=''");
-
-        if (!$objVariants->hasVariants)
-        {
-            return '';
-        }
-
-        return '<a href="' . $this->addToUrl('&amp;' . $href) . '" class="header_toggle isotope-tools" title="' . specialchars($title) . '"' . $attributes . '>' . specialchars($label) . '</a>';
     }
 
 
@@ -787,7 +794,7 @@ class ProductCallbacks extends \Backend
             return '';
         }
 
-        return '<a href="'.$this->addToUrl($href.'&amp;id='.$row['id']).'" title="'.specialchars($title).'"'.$attributes.'>'.$this->generateImage($icon, $label).' '. (int) $this->arrDownloads[$row['id']] .'</a> ';
+        return '<a href="'.$this->addToUrl($href.'&amp;id='.$row['id']).'" title="'.specialchars(sprintf($GLOBALS['TL_DCA']['tl_iso_products']['list']['operations']['downloads']['label'][2], (int) $this->arrDownloads[$row['id']]) . $title).'"'.$attributes.'>'.$this->generateImage($icon, $label) .'</a> ';
     }
 
 
