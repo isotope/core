@@ -287,18 +287,6 @@ class DC_ProductData extends \DC_Table
 
 
     /**
-     * Duplicate a particular record of the current table
-     * @param boolean
-     */
-    public function copy($blnDoNotRedirect=false)
-    {
-        $this->set['gid'] = $this->intGroupId;
-
-        return parent::copy($blnDoNotRedirect);
-    }
-
-
-    /**
      * Duplicate all child records of a duplicated record
      * @param string
      * @param int
@@ -2502,19 +2490,154 @@ $this->generateButtons($objParent->row(), $this->strTable) . '
     }
 
 
+	/**
+	 * Return a select menu to limit results
+	 * @param boolean
+	 * @return string
+	 */
+	protected function limitMenu($blnOptional=false)
+	{
+		$session = $this->Session->getData();
+		$filter = \Input::get('id') ? $this->strTable.'_'.CURRENT_ID : $this->strTable;
+		$fields = '';
+
+		// Set limit from user input
+		if (\Input::post('FORM_SUBMIT') == 'tl_filters' || \Input::post('FORM_SUBMIT') == 'tl_filters_limit')
+		{
+			$strLimit = \Input::post('tl_limit');
+
+			if ($strLimit == 'tl_limit')
+			{
+				unset($session['filter'][$filter]['limit']);
+			}
+			else
+			{
+				// Validate the user input (thanks to aulmn) (see #4971)
+				if ($strLimit == 'all' || preg_match('/^[0-9]+,[0-9]+$/', $strLimit))
+				{
+					$session['filter'][$filter]['limit'] = $strLimit;
+				}
+			}
+
+			$this->Session->setData($session);
+
+			if (\Input::post('FORM_SUBMIT') == 'tl_filters_limit')
+			{
+				$this->reload();
+			}
+		}
+
+		// Set limit from table configuration
+		else
+		{
+			$this->limit = ($session['filter'][$filter]['limit'] != '') ? (($session['filter'][$filter]['limit'] == 'all') ? null : $session['filter'][$filter]['limit']) : '0,' . $GLOBALS['TL_CONFIG']['resultsPerPage'];
+			$query = "SELECT COUNT(*) AS count FROM " . $this->strTable;
+
+			if (\Input::get('id'))
+			{
+				$this->procedure[] = "pid=?";
+				$this->values[] = \Input::get('id');
+			}
+			else
+			{
+				$this->procedure[] = "pid=0";
+			}
+
+			if (!empty($this->root) && is_array($this->root))
+			{
+				$this->procedure[] = 'id IN(' . implode(',', $this->root) . ')';
+			}
+
+			if (!empty($this->procedure))
+			{
+				$query .= " WHERE " . implode(' AND ', $this->procedure);
+			}
+
+			$objTotal = $this->Database->prepare($query)->execute($this->values);
+			$total = $objTotal->count;
+			$options_total = 0;
+			$blnIsMaxResultsPerPage = false;
+
+			// Overall limit
+			if ($total > $GLOBALS['TL_CONFIG']['maxResultsPerPage'] && ($this->limit === null || preg_replace('/^.*,/', '', $this->limit) == $GLOBALS['TL_CONFIG']['maxResultsPerPage']))
+			{
+				if ($this->limit === null)
+				{
+					$this->limit = '0,' . $GLOBALS['TL_CONFIG']['maxResultsPerPage'];
+				}
+
+				$blnIsMaxResultsPerPage = true;
+				$GLOBALS['TL_CONFIG']['resultsPerPage'] = $GLOBALS['TL_CONFIG']['maxResultsPerPage'];
+				$session['filter'][$filter]['limit'] = $GLOBALS['TL_CONFIG']['maxResultsPerPage'];
+			}
+
+			$options = '';
+
+			// Build options
+			if ($total > 0)
+			{
+				$options = '';
+				$options_total = ceil($total / $GLOBALS['TL_CONFIG']['resultsPerPage']);
+
+				// Reset limit if other parameters have decreased the number of results
+				if ($this->limit !== null && ($this->limit == '' || preg_replace('/,.*$/', '', $this->limit) > $total))
+				{
+					$this->limit = '0,'.$GLOBALS['TL_CONFIG']['resultsPerPage'];
+				}
+
+				// Build options
+				for ($i=0; $i<$options_total; $i++)
+				{
+					$this_limit = ($i*$GLOBALS['TL_CONFIG']['resultsPerPage']).','.$GLOBALS['TL_CONFIG']['resultsPerPage'];
+					$upper_limit = ($i*$GLOBALS['TL_CONFIG']['resultsPerPage']+$GLOBALS['TL_CONFIG']['resultsPerPage']);
+
+					if ($upper_limit > $total)
+					{
+						$upper_limit = $total;
+					}
+
+					$options .= '
+  <option value="'.$this_limit.'"' . \Widget::optionSelected($this->limit, $this_limit) . '>'.($i*$GLOBALS['TL_CONFIG']['resultsPerPage']+1).' - '.$upper_limit.'</option>';
+				}
+
+				if (!$blnIsMaxResultsPerPage)
+				{
+					$options .= '
+  <option value="all"' . \Widget::optionSelected($this->limit, null) . '>'.$GLOBALS['TL_LANG']['MSC']['filterAll'].'</option>';
+				}
+			}
+
+			// Return if there is only one page
+			if ($blnOptional && ($total < 1 || $options_total < 2))
+			{
+				return '';
+			}
+
+			$fields = '
+<select name="tl_limit" class="tl_select' . (($session['filter'][$filter]['limit'] != 'all' && $total > $GLOBALS['TL_CONFIG']['resultsPerPage']) ? ' active' : '') . '" onchange="this.form.submit()">
+  <option value="tl_limit">'.$GLOBALS['TL_LANG']['MSC']['filterRecords'].'</option>'.$options.'
+</select> ';
+		}
+
+		return '
+
+<div class="tl_limit tl_subpanel">
+<strong>' . $GLOBALS['TL_LANG']['MSC']['showOnly'] . ':</strong> '.$fields.'
+</div>';
+	}
+
+
     /**
      * Copy multilingual fields from fallback to current language
      */
     public function copyFallback()
     {
         $session = $this->Session->getData();
-
         $strLanguage = $session['language'][$this->strTable][$this->intId];
         $this->strPalette = trimsplit('[;,]', $this->getPalette());
-
         $arrDuplicate = array();
 
-        foreach( $this->strPalette as $field )
+        foreach ($this->strPalette as $field)
         {
             if (is_array($GLOBALS['TL_DCA'][$this->strTable]['fields'][$field]) && $GLOBALS['TL_DCA'][$this->strTable]['fields'][$field]['attributes']['multilingual'])
             {
