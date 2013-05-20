@@ -61,8 +61,10 @@ abstract class Module extends Contao_Module
             // Disable caching for pages with certain modules (eg. Cart)
             if ($this->blnDisableCache)
             {
-                global $objPage;
-                $objPage->cache = 0;
+                try {
+                    global $objPage;
+                    $objPage->cache = 0;
+                } catch (\Exception $e) {}
             }
         }
     }
@@ -213,6 +215,6 @@ abstract class Module extends Contao_Module
 
         global $objPage;
 
-        return $this->generateFrontendUrl($objPage->row(), $strParams) . (!empty($arrGet) ? ('?'.implode('&', $arrGet)) : '');
+        return \Controller::generateFrontendUrl($objPage->row(), $strParams) . (!empty($arrGet) ? ('?'.implode('&', $arrGet)) : '');
     }
 }

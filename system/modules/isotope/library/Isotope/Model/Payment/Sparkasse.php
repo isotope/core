@@ -44,11 +44,11 @@ class Sparkasse extends Payment implements IsotopePayment
 
         if ($objOrder->date_paid > 0 && $objOrder->date_paid <= time())
         {
-            IsotopeFrontend::clearTimeout();
+            \Isotope\Frontend::clearTimeout();
             return true;
         }
 
-        if (IsotopeFrontend::setTimeout())
+        if (\Isotope\Frontend::setTimeout())
         {
             // Do not index or cache the page
             global $objPage;
@@ -61,9 +61,9 @@ class Sparkasse extends Payment implements IsotopePayment
             return $objTemplate->parse();
         }
 
-        $this->log('Payment could not be processed.', __METHOD__, TL_ERROR);
+        \System::log('Payment could not be processed.', __METHOD__, TL_ERROR);
 
-        $this->redirect($this->addToUrl('step=failed', true));
+        \Isotope\Module\Checkout::redirectToStep('failed');
     }
 
 
@@ -91,7 +91,7 @@ class Sparkasse extends Payment implements IsotopePayment
         // Check the data hash to prevent manipulations
         if (\Input::post('mac') != $this->calculateHash($arrData))
         {
-            $this->log('Security hash mismatch in Sparkasse payment!', __METHOD__, TL_ERROR);
+            \System::log('Security hash mismatch in Sparkasse payment!', __METHOD__, TL_ERROR);
             $this->redirectError($arrData);
         }
 
@@ -99,7 +99,7 @@ class Sparkasse extends Payment implements IsotopePayment
 
         if (!$objOrder->findBy('id', $arrData['orderid']))
         {
-            $this->log('Order ID "' . $arrData['orderid'] . '" not found', __METHOD__, TL_ERROR);
+            \System::log('Order ID "' . $arrData['orderid'] . '" not found', __METHOD__, TL_ERROR);
             $this->redirectError($arrData);
         }
 
@@ -109,18 +109,18 @@ class Sparkasse extends Payment implements IsotopePayment
         // Validate payment data
         if ($objOrder->currency != $arrData['currency'])
         {
-            $this->log(sprintf('Data manipulation: currency mismatch ("%s" != "%s")', $objOrder->currency, $arrdata['currency']), __METHOD__, TL_ERROR);
+            \System::log(sprintf('Data manipulation: currency mismatch ("%s" != "%s")', $objOrder->currency, $arrdata['currency']), __METHOD__, TL_ERROR);
             $this->redirectError($arrData);
         }
         elseif ($objOrder->getTotal() != $arrData['amount'])
         {
-            $this->log(sprintf('Data manipulation: amount mismatch ("%s" != "%s")', $objOrder->getTotal(), $arrData['amount']), __METHOD__, TL_ERROR);
+            \System::log(sprintf('Data manipulation: amount mismatch ("%s" != "%s")', $objOrder->getTotal(), $arrData['amount']), __METHOD__, TL_ERROR);
             $this->redirectError($arrData);
         }
 
         if (!$objOrder->checkout())
         {
-            $this->log('Postsale checkout for order ID "' . $objOrder->id . '" failed', __METHOD__, TL_ERROR);
+            \System::log('Postsale checkout for order ID "' . $objOrder->id . '" failed', __METHOD__, TL_ERROR);
             $this->redirectError($arrData);
         }
 
@@ -136,7 +136,7 @@ class Sparkasse extends Payment implements IsotopePayment
 
         $objPage = $this->getPageDetails((int) $arrData['sessionid']);
 
-        echo 'redirecturls=' . \Environment::get('base') . $this->generateFrontendUrl($objPage->row(), '/step/complete/uid/' . $objOrder->uniqid, $objPage->language);
+        echo 'redirecturls=' . \Environment::get('base') . \Controller::generateFrontendUrl($objPage->row(), '/step/complete/uid/' . $objOrder->uniqid, $objPage->language);
         exit;
     }
 
@@ -153,7 +153,7 @@ class Sparkasse extends Payment implements IsotopePayment
 
         if (($objOrder = Order::findOneBy('source_collection_id', Isotope::getCart()->id)) === null)
         {
-            $this->redirect($this->addToUrl('step=failed', true));
+            \Isotope\Module\Checkout::redirectToStep('failed');
         }
 
 
@@ -222,7 +222,7 @@ window.location.href = '" . $strUrl . "';
     {
         $objPage = $this->getPageDetails((int) $arrData['sessionid']);
 
-        echo 'redirecturlf=' . \Environment::get('base') . $this->generateFrontendUrl($objPage->row(), '/step/failed', $objPage->language) . '?reason=' . $arrData['directPosErrorMessage'];
+        echo 'redirecturlf=' . \Environment::get('base') . \Controller::generateFrontendUrl($objPage->row(), '/step/failed', $objPage->language) . '?reason=' . $arrData['directPosErrorMessage'];
         exit;
     }
 }

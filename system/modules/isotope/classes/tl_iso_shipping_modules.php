@@ -126,8 +126,8 @@ class tl_iso_shipping_modules extends \Backend
             case 'show':
                 if (!in_array(\Input::get('id'), $root) || (\Input::get('act') == 'delete' && !\BackendUser::getInstance()->hasAccess('delete', 'iso_shipping_modulep')))
                 {
-                    $this->log('Not enough permissions to '.\Input::get('act').' shipping module ID "'.\Input::get('id').'"', __METHOD__, TL_ERROR);
-                    $this->redirect('contao/main.php?act=error');
+                    \System::log('Not enough permissions to '.\Input::get('act').' shipping module ID "'.\Input::get('id').'"', __METHOD__, TL_ERROR);
+                    \Controller::redirect('contao/main.php?act=error');
                 }
                 break;
 
@@ -149,8 +149,8 @@ class tl_iso_shipping_modules extends \Backend
             default:
                 if (strlen(\Input::get('act')))
                 {
-                    $this->log('Not enough permissions to '.\Input::get('act').' shipping modules', __METHOD__, TL_ERROR);
-                    $this->redirect('contao/main.php?act=error');
+                    \System::log('Not enough permissions to '.\Input::get('act').' shipping modules', __METHOD__, TL_ERROR);
+                    \Controller::redirect('contao/main.php?act=error');
                 }
                 break;
         }
@@ -203,7 +203,7 @@ class tl_iso_shipping_modules extends \Backend
     {
         if (strlen(\Input::get('tid'))) {
             $this->toggleVisibility(\Input::get('tid'), (\Input::get('state') == 1));
-            $this->redirect($this->getReferer());
+            \Controller::redirect($this->getReferer());
         }
 
         if (!$row['enabled']) {
@@ -234,8 +234,8 @@ class tl_iso_shipping_modules extends \Backend
 
         // Check permissions to publish
         if (!\BackendUser::getInstance()->isAdmin && !\BackendUser::getInstance()->hasAccess('tl_iso_shipping_modules::enabled', 'alexf')) {
-            $this->log('Not enough permissions to enable/disable shipping method ID "'.$intId.'"', __METHOD__, TL_ERROR);
-            $this->redirect('contao/main.php?act=error');
+            \System::log('Not enough permissions to enable/disable shipping method ID "'.$intId.'"', __METHOD__, TL_ERROR);
+            \Controller::redirect('contao/main.php?act=error');
         }
 
         $objVersions = new \Versions('tl_iso_shipping_modules', $intId);
@@ -254,6 +254,6 @@ class tl_iso_shipping_modules extends \Backend
                                 ->execute($intId);
 
         $objVersions->create();
-        $this->log('A new version of record "tl_iso_shipping_modules.id='.$intId.'" has been created'.$this->getParentEntries('tl_iso_shipping_modules', $intId), __METHOD__, TL_GENERAL);
+        \System::log('A new version of record "tl_iso_shipping_modules.id='.$intId.'" has been created'.$this->getParentEntries('tl_iso_shipping_modules', $intId), __METHOD__, TL_GENERAL);
     }
 }

@@ -64,8 +64,8 @@ class Paypal extends Payment implements IsotopePayment
             return $objTemplate->parse();
         }
 
-        $this->log('Payment could not be processed.', __METHOD__, TL_ERROR);
-        $this->redirect($this->addToUrl('step=failed', true));
+        \System::log('Payment could not be processed.', __METHOD__, TL_ERROR);
+        \Isotope\Module\Checkout::redirectToStep('failed');
     }
 
 
@@ -82,14 +82,14 @@ class Paypal extends Payment implements IsotopePayment
 
         if ($objRequest->hasError())
         {
-            $this->log('Request Error: ' . $objRequest->error, __METHOD__, TL_ERROR);
+            \System::log('Request Error: ' . $objRequest->error, __METHOD__, TL_ERROR);
             exit;
         }
         elseif ($objRequest->response == 'VERIFIED' && (\Input::post('receiver_email', true) == $this->paypal_account || $this->debug))
         {
             if (($objOrder = Order::findByPk(\Input::post('invoice'))) === null)
             {
-                $this->log('Order ID "' . \Input::post('invoice') . '" not found', __METHOD__, TL_ERROR);
+                \System::log('Order ID "' . \Input::post('invoice') . '" not found', __METHOD__, TL_ERROR);
 
                 return;
             }
@@ -97,14 +97,14 @@ class Paypal extends Payment implements IsotopePayment
             // Validate payment data (see #2221)
             if ($objOrder->currency != \Input::post('mc_currency') || $objOrder->getTotal() != \Input::post('mc_gross'))
             {
-                $this->log('IPN manipulation in payment from "' . \Input::post('payer_email') . '" !', __METHOD__, TL_ERROR);
+                \System::log('IPN manipulation in payment from "' . \Input::post('payer_email') . '" !', __METHOD__, TL_ERROR);
 
                 return;
             }
 
             if (!$objOrder->checkout())
             {
-                $this->log('IPN checkout for Order ID "' . \Input::post('invoice') . '" failed', __METHOD__, TL_ERROR);
+                \System::log('IPN checkout for Order ID "' . \Input::post('invoice') . '" failed', __METHOD__, TL_ERROR);
 
                 return;
             }
@@ -154,11 +154,11 @@ class Paypal extends Payment implements IsotopePayment
 
             $objOrder->save();
 
-            $this->log('PayPal IPN: data accepted', __METHOD__, TL_GENERAL);
+            \System::log('PayPal IPN: data accepted', __METHOD__, TL_GENERAL);
         }
         else
         {
-            $this->log('PayPal IPN: data rejected (' . $objRequest->response . ')', __METHOD__, TL_ERROR);
+            \System::log('PayPal IPN: data rejected (' . $objRequest->response . ')', __METHOD__, TL_ERROR);
         }
 
         header('HTTP/1.1 200 OK');
@@ -175,7 +175,7 @@ class Paypal extends Payment implements IsotopePayment
     public function checkoutForm()
     {
         if (($objOrder = Order::findOneBy('source_collection_id', Isotope::getCart()->id)) === null) {
-            $this->redirect($this->addToUrl('step=failed', true));
+            \Isotope\Module\Checkout::redirectToStep('failed');
         }
 
         $arrData = array();
@@ -232,8 +232,8 @@ class Paypal extends Payment implements IsotopePayment
         $objTemplate->discount = $fltDiscount;
         $objTemplate->address = Isotope::getCart()->getBillingAddress();
         $objTemplate->currency = Isotope::getConfig()->currency;
-        $objTemplate->return = \Environment::get('base') . \Isotope\Frontend::addQueryStringToUrl('uid=' . $objOrder->uniqid, $this->addToUrl('step=complete', true));
-        $objTemplate->cancel_return = \Environment::get('base') . $this->addToUrl('step=failed', true);
+        $objTemplate->return = \Environment::get('base') . \Isotope\Frontend::addQueryStringToUrl('uid=' . $objOrder->uniqid, \Isotope\Module\Checkout::generateUrlForStep('complete'));
+        $objTemplate->cancel_return = \Environment::get('base') . \Isotope\Module\Checkout::generateUrlForStep('failed');
         $objTemplate->notify_url = \Environment::get('base') . 'system/modules/isotope/postsale.php?mod=pay&id=' . $this->id;
         $objTemplate->headline = $GLOBALS['TL_LANG']['MSC']['pay_with_redirect'][0];
         $objTemplate->message = $GLOBALS['TL_LANG']['MSC']['pay_with_redirect'][1];

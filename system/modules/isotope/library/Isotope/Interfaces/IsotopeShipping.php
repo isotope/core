@@ -12,6 +12,8 @@
 
 namespace Isotope\Interfaces;
 
+use Isotope\Interfaces\IsotopeProductCollection;
+
 
 /**
  * IsotopeShipping interface defines an Isotope shipping method
@@ -91,5 +93,5 @@ interface IsotopeShipping
     /**
      * Get the checkout surcharge for this shipping method
      */
-    public function getSurcharge($objCollection);
+    public function getSurcharge(IsotopeProductCollection $objCollection);
 }

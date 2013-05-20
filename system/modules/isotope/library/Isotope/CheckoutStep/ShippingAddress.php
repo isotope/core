@@ -78,7 +78,7 @@ class ShippingAddress extends Address implements IsotopeCheckoutStep
         (
             'headline'    => $GLOBALS['TL_LANG']['MSC']['shipping_address'],
             'info'        => $objAddress->generateHtml(Isotope::getConfig()->shipping_fields),
-            'edit'        => $this->addToUrl('step=address', true),
+            'edit'        => \Isotope\Module\Checkout::generateUrlForStep('address'),
         ));
     }
 

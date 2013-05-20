@@ -131,8 +131,8 @@ class tl_iso_payment_modules extends \Backend
             case 'show':
                 if (!in_array(\Input::get('id'), $root) || (\Input::get('act') == 'delete' && !$this->User->hasAccess('delete', 'iso_payment_modulep')))
                 {
-                    $this->log('Not enough permissions to '.\Input::get('act').' payment module ID "'.\Input::get('id').'"', __METHOD__, TL_ERROR);
-                    $this->redirect('contao/main.php?act=error');
+                    \System::log('Not enough permissions to '.\Input::get('act').' payment module ID "'.\Input::get('id').'"', __METHOD__, TL_ERROR);
+                    \Controller::redirect('contao/main.php?act=error');
                 }
                 break;
 
@@ -154,8 +154,8 @@ class tl_iso_payment_modules extends \Backend
             default:
                 if (strlen(\Input::get('act')))
                 {
-                    $this->log('Not enough permissions to '.\Input::get('act').' payment modules', __METHOD__, TL_ERROR);
-                    $this->redirect('contao/main.php?act=error');
+                    \System::log('Not enough permissions to '.\Input::get('act').' payment modules', __METHOD__, TL_ERROR);
+                    \Controller::redirect('contao/main.php?act=error');
                 }
                 break;
         }
@@ -181,7 +181,7 @@ class tl_iso_payment_modules extends \Backend
 
                 return $arrCCTypes;
 
-            } catch (Exception $e) {}
+            } catch (\Exception $e) {}
         }
 
         return $arrCCTypes;
@@ -254,7 +254,7 @@ class tl_iso_payment_modules extends \Backend
     {
         if (strlen(\Input::get('tid'))) {
             $this->toggleVisibility(\Input::get('tid'), (\Input::get('state') == 1));
-            $this->redirect($this->getReferer());
+            \Controller::redirect($this->getReferer());
         }
 
         if (!$row['enabled']) {
@@ -285,8 +285,8 @@ class tl_iso_payment_modules extends \Backend
 
         // Check permissions to publish
         if (!\BackendUser::getInstance()->isAdmin && !\BackendUser::getInstance()->hasAccess('tl_iso_payment_modules::enabled', 'alexf')) {
-            $this->log('Not enough permissions to enable/disable payment method ID "'.$intId.'"', __METHOD__, TL_ERROR);
-            $this->redirect('contao/main.php?act=error');
+            \System::log('Not enough permissions to enable/disable payment method ID "'.$intId.'"', __METHOD__, TL_ERROR);
+            \Controller::redirect('contao/main.php?act=error');
         }
 
         $objVersions = new \Versions('tl_iso_payment_modules', $intId);
@@ -305,6 +305,6 @@ class tl_iso_payment_modules extends \Backend
                                 ->execute($intId);
 
         $objVersions->create();
-        $this->log('A new version of record "tl_iso_payment_modules.id='.$intId.'" has been created'.$this->getParentEntries('tl_iso_payment_modules', $intId), __METHOD__, TL_GENERAL);
+        \System::log('A new version of record "tl_iso_payment_modules.id='.$intId.'" has been created'.$this->getParentEntries('tl_iso_payment_modules', $intId), __METHOD__, TL_GENERAL);
     }
 }

@@ -60,8 +60,8 @@ class tl_iso_groups extends \Backend
 
         if (!is_array($this->User->iso_groupp) || empty($this->User->iso_groupp))
         {
-            $this->log('Unallowed access to product groups!', __METHOD__, TL_ERROR);
-            $this->redirect('contao/main.php?act=error');
+            \System::log('Unallowed access to product groups!', __METHOD__, TL_ERROR);
+            \Controller::redirect('contao/main.php?act=error');
         }
 
         // Set root IDs
@@ -74,7 +74,7 @@ class tl_iso_groups extends \Backend
             try {
                 $root = $this->eliminateNestedPages($this->User->iso_groups, 'tl_iso_groups');
             }
-            catch (Exception $e) {
+            catch (\Exception $e) {
                 $root = array();
             }
         }
@@ -159,8 +159,8 @@ class tl_iso_groups extends \Backend
             case 'show':
                 if (!in_array(\Input::get('id'), $root) || (\Input::get('act') == 'delete' && !$this->User->hasAccess('delete', 'iso_groupp')))
                 {
-                    $this->log('Not enough permissions to '.\Input::get('act').' group ID "'.\Input::get('id').'"', __METHOD__, TL_ERROR);
-                    $this->redirect('contao/main.php?act=error');
+                    \System::log('Not enough permissions to '.\Input::get('act').' group ID "'.\Input::get('id').'"', __METHOD__, TL_ERROR);
+                    \Controller::redirect('contao/main.php?act=error');
                 }
                 break;
 
@@ -182,8 +182,8 @@ class tl_iso_groups extends \Backend
             default:
                 if (strlen(\Input::get('act')))
                 {
-                    $this->log('Not enough permissions to '.\Input::get('act').' groups', __METHOD__, TL_ERROR);
-                    $this->redirect('contao/main.php?act=error');
+                    \System::log('Not enough permissions to '.\Input::get('act').' groups', __METHOD__, TL_ERROR);
+                    \Controller::redirect('contao/main.php?act=error');
                 }
                 break;
         }

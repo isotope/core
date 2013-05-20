@@ -205,7 +205,7 @@ class ProductCallbacks extends \Backend
                         {
                             foreach ($GLOBALS['ISO_HOOKS']['applyAdvancedFilters'] as $callback)
                             {
-                                $objCallback = (in_array('getInstance', get_class_methods($callback[0]))) ? call_user_func(array($callback[0], 'getInstance')) : new $callback[0]();
+                                $objCallback = \System::importStatic($callback[0]);
                                 $arrReturn = $objCallback->$callback[1]($filter);
 
                                 if (is_array($arrReturn))
@@ -216,7 +216,7 @@ class ProductCallbacks extends \Backend
                             }
                         }
 
-                        $this->log('Advanced product filter "'.$filter.'" not found.', __METHOD__, TL_ERROR);
+                        \System::log('Advanced product filter "'.$filter.'" not found.', __METHOD__, TL_ERROR);
                         break;
                 }
 
@@ -301,8 +301,8 @@ class ProductCallbacks extends \Backend
 
             if (\Input::get('id') > 0 && !in_array(\Input::get('id'), $GLOBALS['TL_DCA']['tl_iso_products']['list']['sorting']['root']))
             {
-                $this->log('Cannot access product ID '.\Input::get('id'), __METHOD__, TL_ERROR);
-                $this->redirect('contao/main.php?act=error');
+                \System::log('Cannot access product ID '.\Input::get('id'), __METHOD__, TL_ERROR);
+                \Controller::redirect('contao/main.php?act=error');
             }
         }
     }
@@ -461,7 +461,7 @@ class ProductCallbacks extends \Backend
 
         if ($blnReload)
         {
-            $this->reload();
+            \Controller::reload();
         }
         elseif ($blnEditAll)
         {

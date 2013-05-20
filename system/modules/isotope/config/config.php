@@ -248,8 +248,15 @@ $GLOBALS['TL_PERMISSIONS'][] = 'iso_groupp';
 /**
  * Allow to delete the cache in maintenance module
  */
-$GLOBALS['TL_CACHE'][] = 'tl_iso_productcache';
-$GLOBALS['TL_CACHE'][] = 'tl_iso_requestcache';
+$GLOBALS['TL_PURGE']['tables']['iso_productcache'] = array(
+    'callback'  => array('\Isotope\Backend', 'truncateProductCache'),
+    'affected'  => array('tl_iso_productcache'),
+);
+
+$GLOBALS['TL_PURGE']['tables']['iso_requestcache'] = array(
+    'callback'  => array('\Isotope\Backend', 'truncateRequestCache'),
+    'affected'  => array('tl_iso_requestcache'),
+);
 
 
 /**

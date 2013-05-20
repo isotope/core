@@ -128,7 +128,7 @@ class AddressBook extends Module
     {
         global $objPage;
         $arrAddresses = array();
-        $strUrl = $this->generateFrontendUrl($objPage->row()) . ($GLOBALS['TL_CONFIG']['disableAlias'] ? '&' : '?');
+        $strUrl = \Controller::generateFrontendUrl($objPage->row()) . ($GLOBALS['TL_CONFIG']['disableAlias'] ? '&' : '?');
         $objAddresses = Address::findForMember($this->User->id);
 
         if (null !== $objAddresses) {
@@ -253,7 +253,7 @@ class AddressBook extends Module
 
                         try {
                             $varValue = $this->$callback[0]->$callback[1]($varValue, $objAddress);
-                        } catch (Exception $e) {
+                        } catch (\Exception $e) {
                             $objWidget->class = 'error';
                             $objWidget->addError($e->getMessage());
                         }
@@ -300,7 +300,7 @@ class AddressBook extends Module
             }
 
             global $objPage;
-            $this->redirect($this->generateFrontendUrl($objPage->row()));
+            \Controller::redirect(\Controller::generateFrontendUrl($objPage->row()));
         }
 
         $this->Template->addressDetails = $GLOBALS['TL_LANG']['tl_iso_addresses']['addressDetails'];
@@ -333,6 +333,6 @@ class AddressBook extends Module
         }
 
         global $objPage;
-        $this->redirect($this->generateFrontendUrl($objPage->row()));
+        \Controller::redirect(\Controller::generateFrontendUrl($objPage->row()));
     }
 }

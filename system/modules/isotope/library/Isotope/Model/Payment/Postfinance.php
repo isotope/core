@@ -39,14 +39,14 @@ class Postfinance extends Payment implements IsotopePayment
     {
         if (\Input::get('NCERROR') > 0)
         {
-            $this->log('Order ID "' . \Input::get('orderID') . '" has NCERROR ' . \Input::get('NCERROR'), __METHOD__, TL_ERROR);
+            \System::log('Order ID "' . \Input::get('orderID') . '" has NCERROR ' . \Input::get('NCERROR'), __METHOD__, TL_ERROR);
 
             return false;
         }
 
         if (($objOrder = Order::findByPk(\Input::get('orderID'))) === null)
         {
-            $this->log('Order ID "' . \Input::get('orderID') . '" not found', __METHOD__, TL_ERROR);
+            \System::log('Order ID "' . \Input::get('orderID') . '" not found', __METHOD__, TL_ERROR);
 
             return false;
         }
@@ -55,7 +55,7 @@ class Postfinance extends Payment implements IsotopePayment
 
         if (!$this->validateSHASign())
         {
-            $this->log('Received invalid postsale data for order ID "' . $objOrder->id . '"', __METHOD__, TL_ERROR);
+            \System::log('Received invalid postsale data for order ID "' . $objOrder->id . '"', __METHOD__, TL_ERROR);
 
             return false;
         }
@@ -63,8 +63,8 @@ class Postfinance extends Payment implements IsotopePayment
         // Validate payment data (see #2221)
         if ($objOrder->currency != $this->getRequestData('currency') || $objOrder->getTotal() != $this->getRequestData('amount'))
         {
-            $this->log('Postsale checkout manipulation in payment for Order ID ' . $objOrder->id . '!', __METHOD__, TL_ERROR);
-            $this->redirect($this->addToUrl('step=failed', true));
+            \System::log('Postsale checkout manipulation in payment for Order ID ' . $objOrder->id . '!', __METHOD__, TL_ERROR);
+            \Isotope\Module\Checkout::redirectToStep('failed');
         }
 
         $objOrder->date_paid = time();
@@ -86,21 +86,21 @@ class Postfinance extends Payment implements IsotopePayment
     {
         if ($this->getRequestData('NCERROR') > 0)
         {
-            $this->log('Order ID "' . $this->getRequestData('orderID') . '" has NCERROR ' . $this->getRequestData('NCERROR'), __METHOD__, TL_ERROR);
+            \System::log('Order ID "' . $this->getRequestData('orderID') . '" has NCERROR ' . $this->getRequestData('NCERROR'), __METHOD__, TL_ERROR);
 
             return;
         }
 
         if (($objOrder = Order::findByPk($this->getRequestData('orderID'))) === null)
         {
-            $this->log('Order ID "' . $this->getRequestData('orderID') . '" not found', __METHOD__, TL_ERROR);
+            \System::log('Order ID "' . $this->getRequestData('orderID') . '" not found', __METHOD__, TL_ERROR);
 
             return;
         }
 
         if (!$this->validateSHASign())
         {
-            $this->log('Received invalid postsale data for order ID "' . $objOrder->id . '"', __METHOD__, TL_ERROR);
+            \System::log('Received invalid postsale data for order ID "' . $objOrder->id . '"', __METHOD__, TL_ERROR);
 
             return;
         }
@@ -108,14 +108,14 @@ class Postfinance extends Payment implements IsotopePayment
         // Validate payment data (see #2221)
         if ($objOrder->currency != $this->getRequestData('currency') || $objOrder->getTotal() != $this->getRequestData('amount'))
         {
-            $this->log('Postsale checkout manipulation in payment for Order ID ' . $objOrder->id . '!', __METHOD__, TL_ERROR);
+            \System::log('Postsale checkout manipulation in payment for Order ID ' . $objOrder->id . '!', __METHOD__, TL_ERROR);
 
             return;
         }
 
         if (!$objOrder->checkout())
         {
-            $this->log('Post-Sale checkout for Order ID "' . $objOrder->id . '" failed', __METHOD__, TL_ERROR);
+            \System::log('Post-Sale checkout for Order ID "' . $objOrder->id . '" failed', __METHOD__, TL_ERROR);
 
             return;
         }
@@ -135,31 +135,31 @@ class Postfinance extends Payment implements IsotopePayment
     {
         if (($objOrder = Order::findOneBy('source_collection_id', Isotope::getCart()->id)) === null)
         {
-            $this->redirect($this->addToUrl('step=failed', true));
+            \Isotope\Module\Checkout::redirectToStep('failed');
         }
 
         $objAddress = Isotope::getCart()->getBillingAddress();
-        $strFailedUrl = \Environment::get('base') . $this->addToUrl('step=failed', true);
+        $strFailedUrl = \Environment::get('base') . \Isotope\Module\Checkout::generateUrlForStep('failed');
 
         $arrParam = array
         (
-            'PSPID'            => $this->postfinance_pspid,
-            'ORDERID'        => $objOrder->id,
+            'PSPID'         => $this->postfinance_pspid,
+            'ORDERID'       => $objOrder->id,
             'AMOUNT'        => round((Isotope::getCart()->getTotal() * 100)),
-            'CURRENCY'        => Isotope::getConfig()->currency,
-            'LANGUAGE'        => $GLOBALS['TL_LANGUAGE'] . '_' . strtoupper($GLOBALS['TL_LANGUAGE']),
+            'CURRENCY'      => Isotope::getConfig()->currency,
+            'LANGUAGE'      => $GLOBALS['TL_LANGUAGE'] . '_' . strtoupper($GLOBALS['TL_LANGUAGE']),
             'CN'            => $objAddress->firstname . ' ' . $objAddress->lastname,
-            'EMAIL'            => $objAddress->email,
-            'OWNERZIP'        => $objAddress->postal,
-            'OWNERADDRESS'    => $objAddress->street_1,
-            'OWNERADDRESS2'    => $objAddress->street_2,
-            'OWNERCTY'        => $objAddress->country,
-            'OWNERTOWN'        => $objAddress->city,
+            'EMAIL'         => $objAddress->email,
+            'OWNERZIP'      => $objAddress->postal,
+            'OWNERADDRESS'  => $objAddress->street_1,
+            'OWNERADDRESS2' => $objAddress->street_2,
+            'OWNERCTY'      => $objAddress->country,
+            'OWNERTOWN'     => $objAddress->city,
             'OWNERTELNO'    => $objAddress->phone,
-            'ACCEPTURL'        => \Environment::get('base') . IsotopeFrontend::addQueryStringToUrl('uid=' . $objOrder->uniqid, $this->addToUrl('step=complete', true)),
+            'ACCEPTURL'     => \Environment::get('base') . \Isotope\Frontend::addQueryStringToUrl('uid=' . $objOrder->uniqid, \Isotope\Module\Checkout::generateUrlForStep('complete')),
             'DECLINEURL'    => $strFailedUrl,
-            'EXCEPTIONURL'    => $strFailedUrl,
-            'PARAMPLUS'        => 'mod=pay&amp;id=' . $this->id,
+            'EXCEPTIONURL'  => $strFailedUrl,
+            'PARAMPLUS'     => 'mod=pay&amp;id=' . $this->id,
         );
 
         // SHA-1 must be generated on alphabetically sorted keys.

@@ -308,9 +308,9 @@ abstract class ProductCollectionSurcharge extends \Model
 
             $strTaxId = implode(',', $arrTaxIds);
 
-            if ($objProduct->tax_id != $strTaxId)
+            if ($objItem->tax_id != $strTaxId)
             {
-                $objCollection->updateProduct($objProduct, array('tax_id'=>$strTaxId));
+                $objCollection->updateItem($objItem, array('tax_id'=>$strTaxId));
             }
 
             foreach ($arrPreTax as $objSurcharge)

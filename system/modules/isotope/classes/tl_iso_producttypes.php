@@ -126,8 +126,8 @@ class tl_iso_producttypes extends \Backend
             case 'show':
                 if (!in_array(\Input::get('id'), $root) || (\Input::get('act') == 'delete' && !$this->User->hasAccess('delete', 'iso_product_typep')))
                 {
-                    $this->log('Not enough permissions to '.\Input::get('act').' product type ID "'.\Input::get('id').'"', __METHOD__, TL_ERROR);
-                    $this->redirect('contao/main.php?act=error');
+                    \System::log('Not enough permissions to '.\Input::get('act').' product type ID "'.\Input::get('id').'"', __METHOD__, TL_ERROR);
+                    \Controller::redirect('contao/main.php?act=error');
                 }
                 break;
 
@@ -149,8 +149,8 @@ class tl_iso_producttypes extends \Backend
             default:
                 if (strlen(\Input::get('act')))
                 {
-                    $this->log('Not enough permissions to '.\Input::get('act').' product types', __METHOD__, TL_ERROR);
-                    $this->redirect('contao/main.php?act=error');
+                    \System::log('Not enough permissions to '.\Input::get('act').' product types', __METHOD__, TL_ERROR);
+                    \Controller::redirect('contao/main.php?act=error');
                 }
                 break;
         }

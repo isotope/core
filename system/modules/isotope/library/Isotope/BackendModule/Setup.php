@@ -81,7 +81,7 @@ class Setup extends \BackendModule
                 {
                     if (is_array($arrConfig['tables']) && in_array(\Input::get('table'), $arrConfig['tables']))
                     {
-                        $this->redirect($this->addToUrl('mod=' . $strModule));
+                        \Controller::redirect($this->addToUrl('mod=' . $strModule));
                     }
                 }
             }
@@ -122,15 +122,15 @@ class Setup extends \BackendModule
         // Check whether the current user has access to the current module
         if (!$this->User->isAdmin && !$this->User->hasAccess($module, 'iso_modules'))
         {
-            $this->log('Isotope module "' . $module . '" was not allowed for user "' . $this->User->username . '"', 'ModuleIsotopeSetup getIsotopeModule()', TL_ERROR);
-            $this->redirect(\Environment::get('script').'?act=error');
+            \System::log('Isotope module "' . $module . '" was not allowed for user "' . $this->User->username . '"', 'ModuleIsotopeSetup getIsotopeModule()', TL_ERROR);
+            \Controller::redirect(\Environment::get('script').'?act=error');
         }
 
         $strTable = \Input::get('table');
 
         if ($strTable == '' && $arrModule['callback'] == '')
         {
-            $this->redirect($this->addToUrl('table='.$arrModule['tables'][0]));
+            \Controller::redirect($this->addToUrl('table='.$arrModule['tables'][0]));
         }
 
         $id = (!\Input::get('act') && \Input::get('id')) ? \Input::get('id') : $this->Session->get('CURRENT_ID');
@@ -152,8 +152,8 @@ class Setup extends \BackendModule
         {
             if (!in_array($strTable, (array) $arrModule['tables']))
             {
-                $this->log('Table "' . $strTable . '" is not allowed in Isotope module "' . $module . '"', 'ModuleIsotopeSetup getIsotopeModule()', TL_ERROR);
-                $this->redirect('contao/main.php?act=error');
+                \System::log('Table "' . $strTable . '" is not allowed in Isotope module "' . $module . '"', 'ModuleIsotopeSetup getIsotopeModule()', TL_ERROR);
+                \Controller::redirect('contao/main.php?act=error');
             }
 
             // Load the language and DCA file
@@ -178,7 +178,7 @@ class Setup extends \BackendModule
             // Fabricate a new data container object
             if (!strlen($GLOBALS['TL_DCA'][$strTable]['config']['dataContainer']))
             {
-                $this->log('Missing data container for table "' . $strTable . '"', 'Backend getBackendModule()', TL_ERROR);
+                \System::log('Missing data container for table "' . $strTable . '"', 'Backend getBackendModule()', TL_ERROR);
                 trigger_error('Could not create a data container object', E_USER_ERROR);
             }
 
@@ -226,7 +226,7 @@ class Setup extends \BackendModule
                 case 'undo':
                     if (!$dc instanceof \listable)
                     {
-                        $this->log('Data container ' . $strTable . ' is not listable', 'Backend getBackendModule()', TL_ERROR);
+                        \System::log('Data container ' . $strTable . ' is not listable', 'Backend getBackendModule()', TL_ERROR);
                         trigger_error('The current data container is not listable', E_USER_ERROR);
                     }
                     break;
@@ -240,7 +240,7 @@ class Setup extends \BackendModule
                 case 'edit':
                     if (!$dc instanceof \editable)
                     {
-                        $this->log('Data container ' . $strTable . ' is not editable', 'Backend getBackendModule()', TL_ERROR);
+                        \System::log('Data container ' . $strTable . ' is not editable', 'Backend getBackendModule()', TL_ERROR);
                         trigger_error('The current data container is not editable', E_USER_ERROR);
                     }
                     break;

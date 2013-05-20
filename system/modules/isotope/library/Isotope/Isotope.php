@@ -420,35 +420,6 @@ class Isotope extends \Controller
 
 
     /**
-     * Send an email using the isotope e-mail templates
-     * @param integer
-     * @param mixed
-     * @param string
-     * @param array
-     * @param string
-     * @param object
-     */
-    public static function sendMail($intId, $varRecipient, $strLanguage, $arrData, $strReplyTo='', $objCollection=null)
-    {
-        try
-        {
-            $objEmail = new \Isotope\Email($intId, $strLanguage, $objCollection);
-
-            if ($strReplyTo != '')
-            {
-                $objEmail->replyTo($strReplyTo);
-            }
-
-            $objEmail->send($varRecipient, $arrData);
-        }
-        catch (Exception $e)
-        {
-            \System::log('Isotope email error: ' . $e->getMessage(), __METHOD__, TL_ERROR);
-        }
-    }
-
-
-    /**
      * Update ConditionalSelect to include the product ID in conditionField
      * @param string
      * @param array

@@ -50,7 +50,7 @@ class Runonce extends \Controller
         try {
             $objUpgrade = new \Isotope\Upgrade\Upgrade();
             $objUpgrade->run($blnInstalled);
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             $this->handleException('Pre-2.0', $e);
         }
 
@@ -63,7 +63,7 @@ class Runonce extends \Controller
                     $step = 'Version ' . \Repository::formatVersion(substr($strVersion, 2));
                     $objUpgrade = new $strClass();
                     $objUpgrade->run($blnInstalled);
-                } catch (Exception $e) {
+                } catch (\Exception $e) {
                     $this->handleException($step, $e);
                 }
             }
@@ -72,11 +72,11 @@ class Runonce extends \Controller
         try {
             $this->verifySystemIntegrity();
             $this->purgeCaches();
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             $this->handleException('Finalization', $e);
         }
 
-        $this->log('Upgraded Isotope eCommerce to ' . $step, TL_INFO, __METHOD__);
+        \System::log('Upgraded Isotope eCommerce to ' . $step, TL_INFO, __METHOD__);
     }
 
 

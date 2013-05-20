@@ -109,7 +109,7 @@ class OrderHistory extends Module
             );
         }
 
-        $this->Template->orders = IsotopeFrontend::generateRowClass($arrOrders, '', 'class', 0, ISO_CLASS_FIRSTLAST|ISO_CLASS_EVENODD);
+        $this->Template->orders = \Isotope\Frontend::generateRowClass($arrOrders, '', 'class', 0, ISO_CLASS_FIRSTLAST|ISO_CLASS_EVENODD);
         $this->Template->dateLabel = $GLOBALS['TL_LANG']['MSC']['iso_order_date'];
         $this->Template->statusLabel = $GLOBALS['TL_LANG']['MSC']['iso_order_status'];
         $this->Template->subTotalLabel = $GLOBALS['TL_LANG']['MSC']['subTotalLabel'];

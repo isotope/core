@@ -43,12 +43,6 @@ abstract class ProductCollection extends \Model
     protected static $strTable = 'tl_iso_product_collection';
 
     /**
-     * Name of the child table
-     * @var string
-     */
-    protected static $ctable = 'tl_iso_product_collection_item';
-
-    /**
      * Define if data should be threaded as "locked", eg. not apply discount rules to product prices
      * @var boolean
      */
@@ -77,12 +71,6 @@ abstract class ProductCollection extends \Model
      * @var IsotopePayment
      */
     protected $objPayment = false;
-
-    /**
-     * Template
-     * @var string
-     */
-    protected $strTemplate = 'iso_invoice';
 
     /**
      * Configuration
@@ -483,13 +471,13 @@ abstract class ProductCollection extends \Model
 
     /**
      * Update database with latest product prices and store settings
-     * @param boolean
-     * @return integer
+     * @param   boolean
+     * @return  $this
      */
     public function save($blnForceInsert=false)
     {
         if ($this->isLocked()) {
-            return false;
+            return $this;
         }
 
         if ($this->blnModified) {
@@ -516,7 +504,7 @@ abstract class ProductCollection extends \Model
         }
 
         if ($this->blnModified || $blnForceInsert) {
-            parent::save($blnForceInsert);
+            return parent::save($blnForceInsert);
         }
 
         return $this;
@@ -547,7 +535,8 @@ abstract class ProductCollection extends \Model
         $intAffectedRows = parent::delete();
 
         if ($intAffectedRows > 0) {
-            \Database::getInstance()->prepare("DELETE FROM " . static::$ctable . " WHERE pid=?")->execute($this->id);
+            \Database::getInstance()->query("DELETE FROM tl_iso_product_collection_item WHERE pid={$this->id}");
+            \Database::getInstance()->query("DELETE FROM tl_iso_addresses WHERE ptable='" . static::$strTable . "' AND pid={$this->id}");
         }
 
         $this->arrCache = array();
@@ -690,7 +679,7 @@ abstract class ProductCollection extends \Model
         if (null === $this->arrItems || $blnNoCache) {
             $this->arrItems = array();
 
-            if (($objItems = ProductCollectionItem::findByPid($this->id)) !== null) {
+            if (($objItems = ProductCollectionItem::findBy('pid', $this->id, array('uncached'=>true))) !== null) {
                 while ($objItems->next()) {
 
                     $objItem = $objItems->current();
@@ -845,37 +834,53 @@ abstract class ProductCollection extends \Model
 
 
     /**
-     * Update a product in the collection
-     * @param object The product object
-     * @param array The property(ies) to adjust
-     * @return bool
+     * Update a product collection item
+     * @param   object  The product object
+     * @param   array   The property(ies) to adjust
+     * @return  bool
      */
-    public function updateProduct(IsotopeProduct $objProduct, $arrSet)
+    public function updateItem(ProductCollectionItem $objItem, $arrSet)
     {
-        if (($objItem = $this->getItemForProduct($objProduct)) === null) {
+        return $this->updateItemById($objItem->id, $arrSet);
+    }
+
+    /**
+     * Update product collection item with given ID
+     * @param   int
+     * @param   array
+     * @return  bool
+     */
+    public function updateItemById($intId, $arrSet)
+    {
+        $arrItems = $this->getItems();
+
+        if (!isset($arrItems[$intId])) {
             return false;
         }
 
-        // !HOOK: additional functionality when updating a product in the collection
-        if (isset($GLOBALS['ISO_HOOKS']['updateProductInCollection']) && is_array($GLOBALS['ISO_HOOKS']['updateProductInCollection'])) {
-            foreach ($GLOBALS['ISO_HOOKS']['updateProductInCollection'] as $callback) {
-                $objCallback = \System::importStatic($callback[0]);
-                $arrSet = $objCallback->$callback[1]($objProduct, $arrSet, $this);
+        $objItem = $arrItems[$intId];
 
-                if (is_array($arrSet) && empty($arrSet)) {
+        // !HOOK: additional functionality when updating a product in the collection
+        if (isset($GLOBALS['ISO_HOOKS']['updateItemInCollection']) && is_array($GLOBALS['ISO_HOOKS']['updateItemInCollection'])) {
+            foreach ($GLOBALS['ISO_HOOKS']['updateItemInCollection'] as $callback) {
+                $objCallback = \System::importStatic($callback[0]);
+                $arrSet = $objCallback->$callback[1]($objItem, $arrSet, $this);
+
+                if (empty($arrSet) && is_array($arrSet)) {
                     return false;
                 }
             }
         }
 
-        // Quantity set to 0, delete product
+        // Quantity set to 0, delete item
         if (isset($arrSet['quantity']) && $arrSet['quantity'] == 0) {
-            return $this->deleteProduct($objProduct);
+            return $this->deleteItemById($intId);
         }
 
-        if (isset($arrSet['quantity'])) {
+        if (isset($arrSet['quantity']) && $objItem->hasProduct()) {
 
             // Set product quantity so we can determine the correct minimum price
+            $objProduct = $objItem->getProduct();
             $objProduct->quantity_requested = $arrSet['quantity'];
 
             if ($arrSet['quantity'] < $objProduct->minimum_quantity) {
@@ -884,20 +889,16 @@ abstract class ProductCollection extends \Model
             }
         }
 
-        // Modify timestamp when updating a product
         $arrSet['tstamp'] = time();
 
         foreach ($arrSet as $k => $v) {
             $objItem->$k = $v;
         }
 
-        if ($objItem->save() > 0) {
-            $this->setModified(true);
+        $objItem->save();
+        $this->setModified(true);
 
-            return true;
-        }
-
-        return false;
+        return true;
     }
 
 
@@ -925,8 +926,8 @@ abstract class ProductCollection extends \Model
         }
 
         // !HOOK: additional functionality when a product is removed from the collection
-        if (isset($GLOBALS['ISO_HOOKS']['deleteFromCollection']) && is_array($GLOBALS['ISO_HOOKS']['deleteFromCollection'])) {
-            foreach ($GLOBALS['ISO_HOOKS']['deleteFromCollection'] as $callback) {
+        if (isset($GLOBALS['ISO_HOOKS']['deleteItemFromCollection']) && is_array($GLOBALS['ISO_HOOKS']['deleteItemFromCollection'])) {
+            foreach ($GLOBALS['ISO_HOOKS']['deleteItemFromCollection'] as $callback) {
                 $objCallback = \System::importStatic($callback[0]);
                 $blnRemove = $objCallback->$callback[1]($arrItems[$intId], $this);
 
@@ -974,8 +975,9 @@ abstract class ProductCollection extends \Model
         $this->arrData['store_id']             = $objConfig->store_id;
         $this->arrData['member']               = $objSource->member;
         $this->arrData['language']             = $GLOBALS['TL_LANGUAGE'];
-        $this->arrData['pageId']               = (int) $objPage->id;
         $this->arrData['currency']             = $objConfig->currency;
+
+        $this->pageId                           = (int) $objPage->id;
 
         // Do not change the unique ID
         if ($this->arrData['uniqid'] == '') {
@@ -994,9 +996,7 @@ abstract class ProductCollection extends \Model
      */
     public function copyItemsFrom(IsotopeProductCollection $objSource)
     {
-        if (!$this->blnRecordExists) {
-            $this->save(true);
-        }
+        $this->save();
 
         // Make sure database table has the latest prices
         $objSource->save();
@@ -1006,7 +1006,7 @@ abstract class ProductCollection extends \Model
         $arrOldItems = $objSource->getItems();
 
         foreach ($arrOldItems as $objOldItem) {
-            $objNewItems = \Database::getInstance()->prepare("SELECT * FROM " . static::$ctable . " WHERE pid={$this->id} AND product_id={$objOldItem->product_id} AND options=?")->execute($objOldItem->options);
+            $objNewItems = \Database::getInstance()->prepare("SELECT * FROM tl_iso_product_collection_item WHERE pid={$this->id} AND product_id={$objOldItem->product_id} AND options=?")->execute($objOldItem->options);
 
             // !HOOK: additional functionality when copying product to collection
             if (isset($GLOBALS['ISO_HOOKS']['copyCollectionItem']) && is_array($GLOBALS['ISO_HOOKS']['copyCollectionItem'])) {
@@ -1074,232 +1074,6 @@ abstract class ProductCollection extends \Model
         }
 
         return Isotope::calculateWeight($arrWeights, $unit);
-    }
-
-
-    /**
-     * Generate the collection using a template.
-     * @param string
-     * @param boolean
-     * @return string
-     */
-    public function generate($strTemplate=null, $blnResetConfig=true)
-    {
-        if ($strTemplate)
-        {
-            $this->strTemplate = $strTemplate;
-        }
-
-        // Set global config to this collection (if available)
-        if ($this->config_id > 0)
-        {
-            Isotope::overrideConfig($this->config_id);
-        }
-
-        // Load language files for the order
-        if ($this->language != '')
-        {
-            \System::loadLanguageFile('default', $this->language);
-        }
-
-        $objTemplate = new \Isotope\Template($this->strTemplate);
-        $objTemplate->setData($this->arrData);
-        $objTemplate->logoImage = '';
-
-        if (Isotope::getConfig()->invoiceLogo != '' && is_file(TL_ROOT . '/' . Isotope::getConfig()->invoiceLogo))
-        {
-            $objTemplate->logoImage = '<img src="' . TL_ROOT . '/' . Isotope::getConfig()->invoiceLogo . '" alt="" />';
-        }
-
-        $objTemplate->invoiceTitle = $GLOBALS['TL_LANG']['MSC']['iso_invoice_title'] . ' ' . $this->order_id . ' – ' . date($GLOBALS['TL_CONFIG']['datimFormat'], $this->date);
-
-        $arrItems = array();
-        $objBillingAddress = $this->getBillingAddress();
-        $objShippingAddress = $this->getShippingAddress();
-
-        foreach ($objOrder->getItems() as $objItem)
-        {
-            $objProduct = $objItem->getProduct();
-
-            $arrItems[] = array
-            (
-                'raw'               => ($objItem->hasProduct() ? $objProduct->getData() : $objItem->row()),
-                'sku'               => $objItem->getSku(),
-                'name'              => $objItem->getName(),
-                'options'           => Isotope::formatOptions($objItem->getOptions()),
-                'quantity'          => $objItem->quantity,
-                'price'             => Isotope::formatPriceWithCurrency($objItem->getPrice()),
-                'tax_free_price'    => Isotope::formatPriceWithCurrency($objItem->getTaxFreePrice()),
-                'total'             => Isotope::formatPriceWithCurrency($objItem->getPrice() * $objItem->quantity),
-                'tax_free_total'    => Isotope::formatPriceWithCurrency($objItem->getTaxFreePrice() * $objItem->quantity),
-                'href'              => ($this->jumpTo ? $this->generateFrontendUrl($arrPage, ($GLOBALS['TL_CONFIG']['useAutoItem'] ? '/' : '/product/') . $objProduct->alias) : ''),
-                'tax_id'            => $objProduct->tax_id,
-            );
-        }
-
-        $objTemplate->collection = $this;
-        $objTemplate->config = Isotope::getConfig()->getData();
-        $objTemplate->info = deserialize($this->checkout_info);
-        $objTemplate->items = $arrItems;
-        $objTemplate->raw = $this->arrData;
-        $objTemplate->date = \System::parseDate($GLOBALS['TL_CONFIG']['dateFormat'], $this->date);
-        $objTemplate->time = \System::parseDate($GLOBALS['TL_CONFIG']['timeFormat'], $this->date);
-        $objTemplate->datim = \System::parseDate($GLOBALS['TL_CONFIG']['datimFormat'], $this->date);
-        $objTemplate->datimLabel = $GLOBALS['TL_LANG']['MSC']['datimLabel'];
-        $objTemplate->subTotalPrice = Isotope::formatPriceWithCurrency($this->getSubtotal());
-        $objTemplate->grandTotal = Isotope::formatPriceWithCurrency($this->getTotal());
-        $objTemplate->subTotalLabel = $GLOBALS['TL_LANG']['MSC']['subTotalLabel'];
-        $objTemplate->grandTotalLabel = $GLOBALS['TL_LANG']['MSC']['grandTotalLabel'];
-
-        $objTemplate->surcharges = \Isotope\Frontend::formatSurcharges($this->getSurcharges());
-        $objTemplate->billing_label = $GLOBALS['TL_LANG']['MSC']['billing_address'];
-        $objTemplate->billing_address = (null === $objBillingAddress) ? '' : $objBillingAddress->generateText(Isotope::getConfig()->billing_fields);
-
-        if ($this->shipping_method == '' || null === $objShippingAddress || null === $objBillingAddress || $objShippingAddress->id == $objBillingAddress->id) {
-            $objTemplate->has_shipping = false;
-            $objTemplate->billing_label = $GLOBALS['TL_LANG']['MSC']['billing_shipping_address'];
-        } else {
-            $objTemplate->has_shipping = true;
-            $objTemplate->shipping_label = $GLOBALS['TL_LANG']['MSC']['shipping_address'];
-            $objTemplate->shipping_address = $objShippingAddress->generateText(Isotope::getConfig()->shipping_fields);
-        }
-
-        // !HOOK: allow overriding of the template
-        if (isset($GLOBALS['ISO_HOOKS']['generateCollection']) && is_array($GLOBALS['ISO_HOOKS']['generateCollection']))
-        {
-            foreach ($GLOBALS['ISO_HOOKS']['generateCollection'] as $callback)
-            {
-                $objCallback = \System::importStatic($callback[0]);
-                $objCallback->$callback[1]($objTemplate, $arrItems, $this);
-            }
-        }
-
-        $strArticle = Isotope::getInstance()->call('replaceInsertTags', array($objTemplate->parse()));
-        $strArticle = html_entity_decode($strArticle, ENT_QUOTES, $GLOBALS['TL_CONFIG']['characterSet']);
-        $strArticle = \Controller::convertRelativeUrls($strArticle, '', true);
-
-        // Remove form elements and JavaScript links
-        $arrSearch = array
-        (
-            '@<form.*</form>@Us',
-            '@<a [^>]*href="[^"]*javascript:[^>]+>.*</a>@Us'
-        );
-
-        $strArticle = preg_replace($arrSearch, '', $strArticle);
-
-        // Handle line breaks in preformatted text
-        $strArticle = preg_replace_callback('@(<pre.*</pre>)@Us', 'nl2br_callback', $strArticle);
-
-        // Default PDF export using TCPDF
-        $arrSearch = array
-        (
-            '@<span style="text-decoration: ?underline;?">(.*)</span>@Us',
-            '@(<img[^>]+>)@',
-            '@(<div[^>]+block[^>]+>)@',
-            '@[\n\r\t]+@',
-            '@<br /><div class="mod_article@',
-            '@href="([^"]+)(pdf=[0-9]*(&|&amp;)?)([^"]*)"@'
-        );
-
-        $arrReplace = array
-        (
-            '<u>$1</u>',
-            '<br />$1',
-            '<br />$1',
-            ' ',
-            '<div class="mod_article',
-            'href="$1$4"'
-        );
-
-        $strArticle = preg_replace($arrSearch, $arrReplace, $strArticle);
-
-        // Set config back to default
-        if ($blnResetConfig)
-        {
-            Isotope::resetConfig();
-            \System::loadLanguageFile('default', $GLOBALS['TL_LANGUAGE']);
-        }
-
-        return $strArticle;
-    }
-
-
-    /**
-     * Generate a PDF file and optionally send it to the browser
-     * @param string
-     * @param object
-     * @param boolean
-     */
-    public function generatePDF($strTemplate=null, $pdf=null, $blnOutput=true)
-    {
-        if (!is_object($pdf))
-        {
-            // TCPDF configuration
-            $l['a_meta_dir'] = 'ltr';
-            $l['a_meta_charset'] = $GLOBALS['TL_CONFIG']['characterSet'];
-            $l['a_meta_language'] = $GLOBALS['TL_LANGUAGE'];
-            $l['w_page'] = 'page';
-
-            // Include library
-            require_once(TL_ROOT . '/system/config/tcpdf.php');
-            require_once(TL_ROOT . '/plugins/tcpdf/tcpdf.php');
-
-            // Prevent TCPDF from destroying absolute paths
-            unset($_SERVER['DOCUMENT_ROOT']);
-
-            // Create new PDF document
-            $pdf = new TCPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true);
-
-            // Set document information
-            $pdf->SetCreator(PDF_CREATOR);
-            $pdf->SetAuthor(PDF_AUTHOR);
-
-// @todo $objInvoice is not defined
-//            $pdf->SetTitle($objInvoice->title);
-//            $pdf->SetSubject($objInvoice->title);
-//            $pdf->SetKeywords($objInvoice->keywords);
-
-            // Remove default header/footer
-            $pdf->setPrintHeader(false);
-            $pdf->setPrintFooter(false);
-
-            // Set margins
-            $pdf->SetMargins(PDF_MARGIN_LEFT, PDF_MARGIN_TOP, PDF_MARGIN_RIGHT);
-
-            // Set auto page breaks
-            $pdf->SetAutoPageBreak(true, PDF_MARGIN_BOTTOM);
-
-            // Set image scale factor
-            $pdf->setImageScale(PDF_IMAGE_SCALE_RATIO);
-
-            // Set some language-dependent strings
-            $pdf->setLanguageArray($l);
-
-            // Initialize document and add a page
-            $pdf->AliasNbPages();
-
-            // Set font
-            $pdf->SetFont(PDF_FONT_NAME_MAIN, '', PDF_FONT_SIZE_MAIN);
-        }
-
-        // Start new page
-        $pdf->AddPage();
-
-        // Write the HTML content
-        $pdf->writeHTML($this->generate($strTemplate, false), true, 0, true, 0);
-
-        if ($blnOutput)
-        {
-            // Close and output PDF document
-            // @todo $strInvoiceTitle is not defined
-            $pdf->lastPage();
-            $pdf->Output(standardize(ampersand($strInvoiceTitle, false), true) . '.pdf', 'D');
-
-            // Stop script execution
-            exit;
-        }
-
-        return $pdf;
     }
 
 

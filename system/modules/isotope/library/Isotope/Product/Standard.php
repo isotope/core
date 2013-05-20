@@ -205,10 +205,6 @@ class Standard extends \Controller implements IsotopeProduct
             case 'href_reader':
                 return $this->arrData[$strKey];
 
-            case 'variant_ids':
-                return $this->getVariantIds();
-                break;
-
             case 'formSubmit':
                 return $this->formSubmit;
 
@@ -256,12 +252,6 @@ class Standard extends \Controller implements IsotopeProduct
 
             case 'shipping_exempt':
                 return ($this->arrData['shipping_exempt'] || $this->arrType['shipping_exempt']) ? true : false;
-
-            case 'available':
-                return $this->isAvailable();
-
-            case 'hasDownloads':
-                return $this->hasDownloads();
 
             case 'show_price_tiers':
                 return (bool) $this->arrType['show_price_tiers'];
@@ -343,11 +333,11 @@ class Standard extends \Controller implements IsotopeProduct
                         break;
                     }
 
-                    $strUrl  = $this->generateFrontendUrl($objTargetPage->row(), ($GLOBALS['TL_CONFIG']['useAutoItem'] ? '/' : '/product/') . $strUrlKey, $objTargetPage->rootLanguage);
+                    $strUrl = \Controller::generateFrontendUrl($objTargetPage->row(), ($GLOBALS['TL_CONFIG']['useAutoItem'] ? '/' : '/product/') . $strUrlKey, $objTargetPage->rootLanguage);
                 }
                 else
                 {
-                    $strUrl = $this->generateFrontendUrl($this->Database->prepare("SELECT * FROM tl_page WHERE id=?")->execute($varValue)->fetchAssoc(), ($GLOBALS['TL_CONFIG']['useAutoItem'] ? '/' : '/product/') . $strUrlKey, $objPage->rootLanguage);
+                    $strUrl = \Controller::generateFrontendUrl($this->Database->prepare("SELECT * FROM tl_page WHERE id=?")->execute($varValue)->fetchAssoc(), ($GLOBALS['TL_CONFIG']['useAutoItem'] ? '/' : '/product/') . $strUrlKey, $objPage->rootLanguage);
                 }
 
                 if (!empty($this->arrOptions))
@@ -1232,12 +1222,9 @@ class Standard extends \Controller implements IsotopeProduct
                     {
                         $objCallback = \System::importStatic($callback[0]);
 
-                        try
-                        {
+                        try {
                             $varValue = $objCallback->$callback[1]($varValue, $this, $objWidget);
-                        }
-                        catch (Exception $e)
-                        {
+                        } catch (\Exception $e) {
                             $objWidget->class = 'error';
                             $objWidget->addError($e->getMessage());
                             $this->doNotSubmit = true;

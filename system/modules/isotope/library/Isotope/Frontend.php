@@ -273,7 +273,7 @@ class Frontend extends \Frontend
         {
             foreach ($GLOBALS['ISO_HOOKS']['watermarkImage'] as $callback)
             {
-                $objCallback = (in_array('getInstance', get_class_methods($callback[0]))) ? call_user_func(array($callback[0], 'getInstance')) : new $callback[0]();
+                $objCallback = \System::importStatic($callback[0]);
                 $return = $objCallback->$callback[1]($image, $watermark, $position, $target);
 
                 if (is_string($return))
@@ -893,12 +893,12 @@ $endScript";
         {
             $objProduct = new $strClass($objProductData->row());
         }
-        catch (Exception $e)
+        catch (\Exception $e)
         {
             return null;
         }
 
-        if ($blnCheckAvailability && !$objProduct->available)
+        if ($blnCheckAvailability && !$objProduct->isAvailable())
         {
             return null;
         }
@@ -1629,13 +1629,13 @@ $endScript";
 
                             if ($objNext->numRows)
                             {
-                                $href = $this->generateFrontendUrl($objNext->fetchAssoc());
+                                $href = \Controller::generateFrontendUrl($objNext->fetchAssoc());
                                 break;
                             }
                             // DO NOT ADD A break; STATEMENT
 
                         default:
-                            $href = $this->generateFrontendUrl($objResult->row());
+                            $href = \Controller::generateFrontendUrl($objResult->row());
                             break;
                     }
 
@@ -1662,7 +1662,7 @@ $endScript";
                         if ($arrItem['isActive'])
                         {
                             $arrItems[$i]['isActive'] = false;
-                            $arrItems[$i]['href'] = $this->generateFrontendUrl($arrItems[$i]['data']);
+                            $arrItems[$i]['href'] = \Controller::generateFrontendUrl($arrItems[$i]['data']);
                         }
 
                         break;
@@ -1745,5 +1745,48 @@ $endScript";
         $GLOBALS['TL_LANGUAGE'] = $objPage->language;
 
         return $objPage;
+    }
+
+    /**
+     * Add a product collection to a template
+     * @param   object
+     * @param   IsotopeProductCollection
+     */
+    public static function addCollectionToTemplate($objTemplate, IsotopeProductCollection $objCollection)
+    {
+        $arrItems = array();
+
+        foreach ($objCollection->getItems() as $objItem) {
+            $arrItems[] = array(
+                'id'                => $objItem->id,
+                'sku'               => $objItem->getSku(),
+                'name'              => $objItem->getName(),
+                'options'           => Isotope::formatOptions($objItem->getOptions()),
+                'quantity'          => $objItem->quantity,
+                'price'             => Isotope::formatPriceWithCurrency($objItem->getPrice()),
+                'tax_free_price'    => Isotope::formatPriceWithCurrency($objItem->getTaxFreePrice()),
+                'total'             => Isotope::formatPriceWithCurrency($objItem->getPrice() * $objItem->quantity),
+                'tax_free_total'    => Isotope::formatPriceWithCurrency($objItem->getTaxFreePrice() * $objItem->quantity),
+                'tax_id'            => $objItem->tax_id,
+                'hasProduct'        => $objItem->hasProduct(),
+                'product'           => $objItem->getProduct(),
+                'raw'               => $objItem->row(),
+            );
+        }
+
+        $objTemplate->collection = $objCollection;
+        $objTemplate->config = ($objCollection->getRelated('config_id') || Isotope::getConfig());
+        $objTemplate->items = \Isotope\Frontend::generateRowClass($arrItems, 'row', 'rowClass', 0, ISO_CLASS_COUNT|ISO_CLASS_FIRSTLAST|ISO_CLASS_EVENODD);
+        $objTemplate->surcharges = \Isotope\Frontend::formatSurcharges($objCollection->getSurcharges());
+        $objTemplate->subtotal = Isotope::formatPriceWithCurrency($objCollection->getSubtotal());
+        $objTemplate->total = Isotope::formatPriceWithCurrency($objCollection->getTotal());
+
+        // !HOOK: allow overriding of the template
+        if (isset($GLOBALS['ISO_HOOKS']['generateCollection']) && is_array($GLOBALS['ISO_HOOKS']['generateCollection'])) {
+            foreach ($GLOBALS['ISO_HOOKS']['generateCollection'] as $callback) {
+                $objCallback = \System::importStatic($callback[0]);
+                $objCallback->$callback[1]($objTemplate, $arrItems, $objCollection);
+            }
+        }
     }
 }

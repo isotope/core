@@ -220,7 +220,7 @@ class IsotopeRules extends \Controller
                 }
             }
 
-            $this->redirect(preg_replace('@[?&]coupon(_[0-9]+)?=[^&]*@', '', \Environment::get('request')));
+            \Controller::redirect(preg_replace('@[?&]coupon(_[0-9]+)?=[^&]*@', '', \Environment::get('request')));
         }
 
 
@@ -415,7 +415,7 @@ class IsotopeRules extends \Controller
 
                 if ($blnIncludeVariants)
                 {
-                    $arrVariantIds = array_merge($arrVariantIds, $objProduct->variant_ids);
+                    $arrVariantIds = array_merge($arrVariantIds, $objProduct->getVariantIds());
                 }
 
                 $arrOptions = $objProduct->getOptions();

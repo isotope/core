@@ -36,14 +36,14 @@ class Datatrans extends Payment implements IsotopePayment
         // Verify payment status
         if (\Input::post('status') != 'success')
         {
-            $this->log('Payment for order ID "' . \Input::post('refno') . '" failed.', __METHOD__, TL_ERROR);
+            \System::log('Payment for order ID "' . \Input::post('refno') . '" failed.', __METHOD__, TL_ERROR);
 
             return false;
         }
 
         if (($objOrder = Order::findByPk(\Input::post('refno'))) === null)
         {
-            $this->log('Order ID "' . \Input::post('refno') . '" not found', __METHOD__, TL_ERROR);
+            \System::log('Order ID "' . \Input::post('refno') . '" not found', __METHOD__, TL_ERROR);
 
             return false;
         }
@@ -51,7 +51,7 @@ class Datatrans extends Payment implements IsotopePayment
         // Validate HMAC sign
         if (\Input::post('sign2') != hash_hmac('md5', $this->datatrans_id.\Input::post('amount').\Input::post('currency').\Input::post('uppTransactionId'), $this->datatrans_sign))
         {
-            $this->log('Invalid HMAC signature for Order ID ' . \Input::post('refno'), __METHOD__, TL_ERROR);
+            \System::log('Invalid HMAC signature for Order ID ' . \Input::post('refno'), __METHOD__, TL_ERROR);
 
             return false;
         }
@@ -104,8 +104,8 @@ class Datatrans extends Payment implements IsotopePayment
         if ($_SESSION['PAYMENT_TIMEOUT'] === 0)
         {
             global $objPage;
-            $this->log('Payment could not be processed.', __METHOD__, TL_ERROR);
-            $this->redirect($this->generateFrontendUrl($objPage->row(), '/step/failed'));
+            \System::log('Payment could not be processed.', __METHOD__, TL_ERROR);
+            \Controller::redirect(\Controller::generateFrontendUrl($objPage->row(), '/step/failed'));
         }
 
         // Reload page every 5 seconds and check if payment was successful
@@ -129,7 +129,7 @@ class Datatrans extends Payment implements IsotopePayment
 
         if (($objOrder = Order::findOneBy('source_collection_id', Isotope::getCart()->id)) === null)
         {
-            $this->redirect($this->addToUrl('step=failed', true));
+            \Isotope\Module\Checkout::redirectToStep('failed');
         }
 
         $objAddress = Isotope::getCart()->getBillingAddress();
@@ -153,9 +153,9 @@ class Datatrans extends Payment implements IsotopePayment
             'uppCustomerZipCode'    => $objAddress->postal,
             'uppCustomerPhone'      => $objAddress->phone,
             'uppCustomerEmail'      => $objAddress->email,
-            'successUrl'            => ampersand(\Environment::get('base') . $this->addToUrl('step=complete', true)),
-            'errorUrl'              => ampersand(\Environment::get('base') . $this->addToUrl('step=failed', true)),
-            'cancelUrl'             => ampersand(\Environment::get('base') . $this->addToUrl('step=failed', true)),
+            'successUrl'            => ampersand(\Environment::get('base') . \Isotope\Module\Checkout::generateUrlForStep('complete')),
+            'errorUrl'              => ampersand(\Environment::get('base') . \Isotope\Module\Checkout::generateUrlForStep('failed')),
+            'cancelUrl'             => ampersand(\Environment::get('base') . \Isotope\Module\Checkout::generateUrlForStep('failed')),
             'mod'                   => 'pay',
             'id'                    => $this->id,
         );
@@ -186,7 +186,7 @@ class Datatrans extends Payment implements IsotopePayment
         {
             if (\Input::post($key) != $value)
             {
-                $this->log('Wrong data for parameter "' . $key . '" (Order ID "' . \Input::post('refno') . ').', __METHOD__, TL_ERROR);
+                \System::log('Wrong data for parameter "' . $key . '" (Order ID "' . \Input::post('refno') . ').', __METHOD__, TL_ERROR);
 
                 return false;
             }

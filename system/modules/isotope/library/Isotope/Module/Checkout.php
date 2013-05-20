@@ -99,10 +99,6 @@ class Checkout extends Module
             \Input::setGet('step', \Input::get('auto_item'));
         }
 
-        // Do not cache the page
-        global $objPage;
-        $objPage->cache = 0;
-
         $this->strCurrentStep = \Input::get('step');
 
         return parent::generate();
@@ -135,7 +131,7 @@ class Checkout extends Module
                 {
                     \Isotope\Frontend::clearTimeout();
 
-                    $this->redirect(\Isotope\Frontend::addQueryStringToUrl('uid=' . $objOrder->uniqid, $this->orderCompleteJumpTo));
+                    \Controller::redirect(\Isotope\Frontend::addQueryStringToUrl('uid=' . $objOrder->uniqid, $this->orderCompleteJumpTo));
                 }
 
                 // Order is not complete, wait for it
@@ -156,7 +152,7 @@ class Checkout extends Module
 
         if (\Input::get('step') == '') {
             if ($this->iso_forward_review) {
-                $this->redirect($this->addToUrl('step=review', true));
+                static::redirectToStep('review');
             }
 
             $this->redirectToNextStep();
@@ -174,8 +170,7 @@ class Checkout extends Module
         $this->Template->showNext = true;
         $this->Template->showForm = true;
 
-        if ($this->strCurrentStep == 'failed')
-        {
+        if ($this->strCurrentStep == 'failed') {
             $this->Database->prepare("UPDATE tl_iso_product_collection SET order_status=? WHERE source_collection_id=?")->execute(Isotope::getConfig()->orderstatus_error, Isotope::getCart()->id);
             $this->Template->mtype = 'error';
             $this->Template->message = strlen(\Input::get('reason')) ? \Input::get('reason') : $GLOBALS['TL_LANG']['ERR']['orderFailed'];
@@ -185,16 +180,15 @@ class Checkout extends Module
         // Run trough all steps until we find the current one or one reports failure
         $intCurrentStep = 0;
         $intTotalSteps = count($this->getSteps());
-        foreach ($this->getSteps() as $step => $arrModules)
-        {
+        foreach ($this->getSteps() as $step => $arrModules) {
             $this->strFormId = 'iso_mod_checkout_' . $step;
             $this->Template->formId = $this->strFormId;
             $this->Template->formSubmit = $this->strFormId;
-            ++$intCurrentStep;
+
+            $intCurrentStep += 1;
             $strBuffer = '';
 
-            foreach ($arrModules as $objModule)
-            {
+            foreach ($arrModules as $objModule) {
                 $strBuffer .= $objModule->generate();
 
                 if ($objModule->hasError()) {
@@ -204,53 +198,41 @@ class Checkout extends Module
 
                 // the user wanted to proceed but the current step is not completed yet
                 if ($this->doNotSubmit && $step != $this->strCurrentStep) {
-                    $this->redirect($this->addToUrl('step=' . $step, true));
+                    static::redirectToStep($step);
                 }
             }
 
-            if ($step == $this->strCurrentStep)
-            {
+            if ($step == $this->strCurrentStep) {
                 global $objPage;
-                $objPage->pageTitle = sprintf($GLOBALS['TL_LANG']['MSC']['checkoutStep'], $intCurrentStep, $intTotalSteps, (strlen($GLOBALS['TL_LANG']['MSC']['checkout_' . $step]) ? $GLOBALS['TL_LANG']['MSC']['checkout_' . $step] : $step)) . ($objPage->pageTitle ? $objPage->pageTitle : $objPage->title);
+                $objPage->pageTitle = sprintf($GLOBALS['TL_LANG']['MSC']['checkoutStep'], $intCurrentStep, $intTotalSteps, ($GLOBALS['TL_LANG']['MSC']['checkout_' . $step] ?: $step)) . ($objPage->pageTitle ?: $objPage->title);
                 break;
             }
         }
 
-        if ($this->strCurrentStep == 'process')
-        {
+        if ($this->strCurrentStep == 'process') {
             $this->writeOrder();
             $strBuffer = Isotope::getCart()->hasPayment() ? Isotope::getCart()->Payment->checkoutForm($this) : false;
 
-            if ($strBuffer === false)
-            {
-                $this->redirect($this->addToUrl('step=complete', true));
+            if ($strBuffer === false) {
+                static::redirectToStep('complete');
             }
 
             $this->Template->showForm = false;
             $this->doNotSubmit = true;
-        }
+        } else if ($this->strCurrentStep == 'complete') {
+            $strBuffer = Isotope::getCart()->hasPayment() ? Isotope::getCart()->getPaymentMethod()->processPayment() : true;
 
-        if ($this->strCurrentStep == 'complete')
-        {
-            $strBuffer = Isotope::getCart()->hasPayment() ? Isotope::getCart()->Payment->processPayment() : true;
-
-            if ($strBuffer === true)
-            {
+            if ($strBuffer === true) {
                 // If checkout is successful, complete order and redirect to confirmation page
-                if (($objOrder = Order::findOneBy('source_collection_id', Isotope::getCart()->id)) !== null && $objOrder->checkout() && $objOrder->complete())
-                {
-                    $this->redirect(\Isotope\Frontend::addQueryStringToUrl('uid=' . $objOrder->uniqid, $this->orderCompleteJumpTo));
+                if (($objOrder = Order::findOneBy('source_collection_id', Isotope::getCart()->id)) !== null && $objOrder->checkout() && $objOrder->complete()) {
+                    \Controller::redirect(\Isotope\Frontend::addQueryStringToUrl('uid=' . $objOrder->uniqid, $this->orderCompleteJumpTo));
                 }
 
                 // Checkout failed, show error message
-                $this->redirect($this->addToUrl('step=failed', true));
-            }
-            elseif ($strBuffer === false)
-            {
-                $this->redirect($this->addToUrl('step=failed', true));
-            }
-            else
-            {
+                static::redirectToStep('failed');
+            } elseif ($strBuffer === false) {
+                static::redirectToStep('failed');
+            } else {
                 $this->Template->showNext = false;
                 $this->Template->showPrevious = false;
             }
@@ -298,51 +280,38 @@ class Checkout extends Module
 
     /**
      * Redirect visitor to the next step in ISO_CHECKOUTSTEP
-     * @return void
      */
     protected function redirectToNextStep()
     {
         $arrSteps = array_keys($this->getSteps());
+        $intKey = array_search($this->strCurrentStep, $arrSteps);
 
-        if (!in_array($this->strCurrentStep, $arrSteps))
-        {
-            $this->redirect($this->addToUrl('step='.array_shift($arrSteps), true));
+        if (false === $intKey) {
+            $intKey = -1;
         }
-        else
-        {
-            // key of the next step
-            $intKey = array_search($this->strCurrentStep, $arrSteps) + 1;
 
-            // redirect to step "process" if the next step is the last one
-            if ($intKey == count($arrSteps))
-            {
-                $this->redirect($this->addToUrl('step=process', true));
-            }
-            else
-            {
-                $this->redirect($this->addToUrl('step='.$arrSteps[$intKey], true));
-            }
+        // redirect to step "process" if the next step is the last one
+        elseif (($intKey+1) == count($arrSteps)) {
+            static::redirectToStep('process');
         }
+
+        static::redirectToStep($arrSteps[$intKey+1]);
     }
 
 
     /**
      * Redirect visitor to the previous step in ISO_CHECKOUTSTEP
-     * @return void
      */
     protected function redirectToPreviousStep()
     {
         $arrSteps = array_keys($this->getSteps());
+        $intKey = array_search($this->strCurrentStep, $arrSteps);
 
-        if (!in_array($this->strCurrentStep, $arrSteps))
-        {
-            $this->redirect($this->addToUrl('step='.array_shift($arrSteps), true));
+        if (false === $intKey || 0 === $intKey) {
+            $intKey = 1;
         }
-        else
-        {
-            $strKey = array_search($this->strCurrentStep, $arrSteps);
-            $this->redirect($this->addToUrl('step='.$arrSteps[($strKey-1)], true));
-        }
+
+        static::redirectToStep($arrSteps[($intKey-1)]);
     }
 
 
@@ -376,26 +345,18 @@ class Checkout extends Module
      * Return the checkout information as array
      * @return array
      */
-    protected function getCheckoutInfo()
+    public function getCheckoutInfo()
     {
         if (!is_array($this->arrCheckoutInfo))
         {
             $arrCheckoutInfo = array();
 
             // Run trough all steps to collect checkout information
-            foreach ($GLOBALS['ISO_CHECKOUT_STEPS'] as $step => $arrCallbacks)
+            foreach ($this->getSteps() as $arrModules)
             {
-                foreach ($arrCallbacks as $callback)
+                foreach ($arrModules as $objModule)
                 {
-                    if ($callback[0] == 'ModuleIsotopeCheckout')
-                    {
-                        $arrInfo = $this->{$callback[1]}(true);
-                    }
-                    else
-                    {
-                        $this->import($callback[0]);
-                        $arrInfo = $this->{$callback[0]}->{$callback[1]}($this, true);
-                    }
+                    $arrInfo = $objModule->review();
 
                     if (is_array($arrInfo) && !empty($arrInfo))
                     {
@@ -413,31 +374,6 @@ class Checkout extends Module
         }
 
         return $this->arrCheckoutInfo;
-    }
-
-
-    /**
-     * Override parent addToUrl function. Use generateFrontendUrl if we want to remove all parameters.
-     * @param string
-     * @param boolean
-     * @return string
-     */
-    public static function addToUrl($strRequest, $blnIgnoreParams=false)
-    {
-        if ($blnIgnoreParams)
-        {
-            global $objPage;
-
-            // Support for auto_item parameter
-            if ($GLOBALS['TL_CONFIG']['useAutoItem'])
-            {
-                $strRequest = str_replace('step=', '', $strRequest);
-            }
-
-            return \Controller::generateFrontendUrl($objPage->row(), '/' . str_replace(array('=', '&amp;', '&'), '/', $strRequest));
-        }
-
-        return parent::addToUrl($strRequest, $blnIgnoreParams);
     }
 
 
@@ -480,7 +416,7 @@ class Checkout extends Module
                 return false;
             }
 
-            $this->redirect($this->generateFrontendUrl($objPage->row()));
+            \Controller::redirect(\Controller::generateFrontendUrl($objPage->row()));
         }
         elseif ($this->iso_checkout_method == 'guest' && FE_USER_LOGGED_IN === true)
         {
@@ -547,7 +483,7 @@ class Checkout extends Module
                 $class .= ' active';
             }
             elseif ($blnPassed) {
-                $href = $this->addToUrl('step=' . $step, true);
+                $href = static::generateUrlForStep($step);
                 $class .= ' passed';
             }
 
@@ -570,5 +506,32 @@ class Checkout extends Module
         $arrItems[count($arrItems)-1]['class'] .= ' last';
 
         return $arrItems;
+    }
+
+
+    /**
+     * Redirect to given checkout step
+     * @param   string
+     */
+    public static function redirectToStep($strStep)
+    {
+        \Controller::redirect(static::generateUrlForStep($strStep));
+    }
+
+    /**
+     * Generate frontend URL for current page including the given checkout step
+     * @param   string
+     * @return  string
+     */
+    public static function generateUrlForStep($strStep)
+    {
+        global $objPage;
+
+        // Support for auto_item parameter
+        if (!$GLOBALS['TL_CONFIG']['useAutoItem']) {
+            $strStep = 'step/' . $strStep;
+        }
+
+        return \Controller::generateFrontendUrl($objPage->row(), '/' . $strStep);
     }
 }

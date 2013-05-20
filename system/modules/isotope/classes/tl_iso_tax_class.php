@@ -127,8 +127,8 @@ class tl_iso_tax_class extends \Backend
             case 'show':
                 if (!in_array(\Input::get('id'), $root) || (\Input::get('act') == 'delete' && !$this->User->hasAccess('delete', 'iso_tax_classp')))
                 {
-                    $this->log('Not enough permissions to '.\Input::get('act').' tax class ID "'.\Input::get('id').'"', __METHOD__, TL_ERROR);
-                    $this->redirect('contao/main.php?act=error');
+                    \System::log('Not enough permissions to '.\Input::get('act').' tax class ID "'.\Input::get('id').'"', __METHOD__, TL_ERROR);
+                    \Controller::redirect('contao/main.php?act=error');
                 }
                 break;
 
@@ -150,8 +150,8 @@ class tl_iso_tax_class extends \Backend
             default:
                 if (strlen(\Input::get('act')))
                 {
-                    $this->log('Not enough permissions to '.\Input::get('act').' tax classes', __METHOD__, TL_ERROR);
-                    $this->redirect('contao/main.php?act=error');
+                    \System::log('Not enough permissions to '.\Input::get('act').' tax classes', __METHOD__, TL_ERROR);
+                    \Controller::redirect('contao/main.php?act=error');
                 }
                 break;
         }

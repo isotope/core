@@ -32,6 +32,7 @@ class Backend extends Contao_Backend
 
     /**
      * Truncate the tl_iso_productcache table if a product is changed
+     * Second parameter and return value is to use the method as save_callback
      * @param mixed
      * @return mixed
      */
@@ -44,18 +45,47 @@ class Backend extends Contao_Backend
 
 
     /**
+     * Truncate the tl_iso_requestcache table
+     */
+    public static function truncateRequestCache()
+    {
+        \Database::getInstance()->query("TRUNCATE tl_iso_requestcache");
+    }
+
+
+    /**
      * Get array of subdivisions, delay loading of file if not necessary
      * @param object
      * @return array
      */
-    public function getSubdivisions($dc)
+    public static function getSubdivisions()
     {
-        if (!is_array($GLOBALS['TL_LANG']['DIV']))
-        {
+        static $arrSubdivisions = null;
+
+        if (null === $arrSubdivisions) {
+
             \System::loadLanguageFile('subdivisions');
+
+            foreach ($GLOBALS['TL_LANG']['DIV'] as $strCountry => $arrSubdivision)
+            {
+                foreach ($arrSubdivision as $strCode => $varValue)
+                {
+                    if (is_array($varValue))
+                    {
+                        $strGroup = $varValue[''];
+                        unset($varValue['']);
+
+                        $arrSubdivisions[$strCountry][$strCode][$strGroup] = $varValue;
+
+                        continue;
+                    }
+
+                    $arrSubdivisions[$strCountry][$strCode] = $varValue;
+                }
+            }
         }
 
-        return $GLOBALS['TL_LANG']['DIV'];
+        return $arrSubdivisions;
     }
 
 
@@ -169,7 +199,7 @@ class Backend extends Contao_Backend
             if (!$source || !is_array($source))
             {
                 $_SESSION['TL_ERROR'][] = $GLOBALS['TL_LANG']['ERR']['all_fields'];
-                $this->reload();
+                \Controller::reload();
             }
 
             $arrFiles = array();
@@ -200,7 +230,7 @@ class Backend extends Contao_Backend
             if (empty($arrFiles))
             {
                 $_SESSION['TL_ERROR'][] = $GLOBALS['TL_LANG']['ERR']['all_fields'];
-                $this->reload();
+                \Controller::reload();
             }
 
             return $this->importMailFiles($arrFiles);
@@ -308,7 +338,7 @@ class Backend extends Contao_Backend
 
         // Redirect
         setcookie('BE_PAGE_OFFSET', 0, 0, '/');
-        $this->redirect(str_replace('&key=importMail', '', \Environment::get('request')));
+        \Controller::redirect(str_replace('&key=importMail', '', \Environment::get('request')));
     }
 
 

@@ -64,8 +64,8 @@ class tl_iso_mail extends \Backend
 
             if (\Input::get('key') == 'importMail')
             {
-                $this->log('Not enough permissions to import mail templates', __METHOD__, TL_ERROR);
-                $this->redirect('contao/main.php?act=error');
+                \System::log('Not enough permissions to import mail templates', __METHOD__, TL_ERROR);
+                \Controller::redirect('contao/main.php?act=error');
             }
         }
 
@@ -135,8 +135,8 @@ class tl_iso_mail extends \Backend
             case 'show':
                 if (!in_array(\Input::get('id'), $root) || (\Input::get('act') == 'delete' && !$this->User->hasAccess('delete', 'iso_mailp')))
                 {
-                    $this->log('Not enough permissions to '.\Input::get('act').' mail template ID "'.\Input::get('id').'"', __METHOD__, TL_ERROR);
-                    $this->redirect('contao/main.php?act=error');
+                    \System::log('Not enough permissions to '.\Input::get('act').' mail template ID "'.\Input::get('id').'"', __METHOD__, TL_ERROR);
+                    \Controller::redirect('contao/main.php?act=error');
                 }
                 break;
 
@@ -158,8 +158,8 @@ class tl_iso_mail extends \Backend
             default:
                 if (strlen(\Input::get('act')))
                 {
-                    $this->log('Not enough permissions to '.\Input::get('act').' mail templates', __METHOD__, TL_ERROR);
-                    $this->redirect('contao/main.php?act=error');
+                    \System::log('Not enough permissions to '.\Input::get('act').' mail templates', __METHOD__, TL_ERROR);
+                    \Controller::redirect('contao/main.php?act=error');
                 }
                 break;
         }

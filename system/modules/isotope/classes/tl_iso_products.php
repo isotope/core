@@ -135,7 +135,7 @@ class tl_iso_products extends \Backend
                     }
                 }
 
-                $this->redirect(str_replace('&key=generate', '&key=quick_edit', \Environment::get('request')));
+                \Controller::redirect(str_replace('&key=generate', '&key=quick_edit', \Environment::get('request')));
             }
         }
 
@@ -282,7 +282,7 @@ $strBuffer .= '<th style="text-align:center"><img src="system/themes/default/ima
                                 {
                                     $varValue = $this->$callback[0]->$callback[1]($varValue);
                                 }
-                                catch (Exception $e)
+                                catch (\Exception $e)
                                 {
                                     $objWidget->addError($e->getMessage());
                                     $doNotSubmit = true;
@@ -335,11 +335,11 @@ $strBuffer .= '<th style="text-align:center"><img src="system/themes/default/ima
 
             if (strlen(\Input::post('saveNclose')))
             {
-                $this->redirect(str_replace('&key=quick_edit', '', \Environment::get('request')));
+                \Controller::redirect(str_replace('&key=quick_edit', '', \Environment::get('request')));
             }
             else
             {
-                $this->reload();
+                \Controller::reload();
             }
         }
 
@@ -382,7 +382,7 @@ $strBuffer .= '<th style="text-align:center"><img src="system/themes/default/ima
             if (empty($arrFiles))
             {
                 $_SESSION['TL_ERROR'][] = $GLOBALS['TL_LANG']['MSC']['noFilesInFolder'];
-                $this->reload();
+                \Controller::reload();
             }
 
             $arrDelete = array();
@@ -500,7 +500,7 @@ $strBuffer .= '<th style="text-align:center"><img src="system/themes/default/ima
                 }
             }
 
-            $this->reload();
+            \Controller::reload();
         }
 
         // Return form
@@ -639,8 +639,8 @@ $strBuffer .= '<th style="text-align:center"><img src="system/themes/default/ima
         // Check permissions to publish
         if (!$this->User->isAdmin && !$this->User->hasAccess('tl_iso_products::published', 'alexf'))
         {
-            $this->log('Not enough permissions to publish/unpublish product ID "'.$intId.'"', 'tl_iso_products toggleVisibility', TL_ERROR);
-            $this->redirect('contao/main.php?act=error');
+            \System::log('Not enough permissions to publish/unpublish product ID "'.$intId.'"', 'tl_iso_products toggleVisibility', TL_ERROR);
+            \Controller::redirect('contao/main.php?act=error');
         }
 */
 

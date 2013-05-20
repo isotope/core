@@ -220,13 +220,13 @@ class tl_module extends \Backend
 
 
     /**
-     * Return cart templates as array
+     * Return product collection templates as array
      * @param DataContainer
      * @return array
      */
-    public function getCartTemplates(\DataContainer $dc)
+    public function getCollectionTemplates(\DataContainer $dc)
     {
-        return \Isotope\Backend::getTemplates('iso_cart_', $intPid);
+        return \Isotope\Backend::getTemplates('iso_collection_');
     }
 
 

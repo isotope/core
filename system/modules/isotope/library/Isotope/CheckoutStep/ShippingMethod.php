@@ -41,7 +41,7 @@ class ShippingMethod extends CheckoutStep implements IsotopeCheckoutStep
         $arrIds = array_map('intval', deserialize($this->objModule->iso_shipping_modules, true));
         $objModules = Shipping::findBy(array('id IN (' . implode(',', $arrIds) . ')', (BE_USER_LOGGED_IN === true ? '' : "enabled='1'")), null, array('order'=>\Database::getInstance()->findInSet('id', $arrIds)));
 
-            if (null !== $objModules) {
+        if (null !== $objModules) {
             while ($objModules->next()) {
 
                 $objModule = $objModules->current();
@@ -60,7 +60,7 @@ class ShippingMethod extends CheckoutStep implements IsotopeCheckoutStep
                 );
 
                 $arrModules[$objModule->id] = $objModule;
-        }
+            }
         }
 
         if (empty($arrModules)) {
@@ -101,7 +101,7 @@ class ShippingMethod extends CheckoutStep implements IsotopeCheckoutStep
             if (!$objWidget->hasErrors()) {
                 Isotope::getCart()->setShippingMethod($arrModules[$objWidget->value]);
             }
-            }
+        }
 
         $objTemplate = new \Isotope\Template('iso_checkout_shipping_method');
 
@@ -128,14 +128,12 @@ class ShippingMethod extends CheckoutStep implements IsotopeCheckoutStep
 
     public function review()
     {
-        return array
-        (
-            'shipping_method' => array
-            (
+        return array(
+            'shipping_method' => array(
                 'headline'    => $GLOBALS['TL_LANG']['MSC']['shipping_method'],
                 'info'        => Isotope::getCart()->getShippingMethod()->checkoutReview(),
                 'note'        => Isotope::getCart()->getShippingMethod()->note,
-                'edit'        => $this->addToUrl('step=shipping', true),
+                'edit'        => \Isotope\Module\Checkout::generateUrlForStep('shipping'),
             ),
         );
     }

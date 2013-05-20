@@ -35,47 +35,10 @@ class Order extends ProductCollection implements IsotopeProductCollection
 {
 
     /**
-     * This current order's unique ID with eventual prefix
-     * @param string
-     */
-    protected $strOrderId = '';
-
-    /**
      * Lock products from apply rule prices
      * @var boolean
      */
     protected $blnLocked = true;
-
-
-    public function __construct(\Database\Result $objResult=null)
-    {
-        parent::__construct($objResult);
-
-        if ($objResult !== null) {
-
-            // The order_id must not be stored in arrData, or it would overwrite the database on save().
-            $this->strOrderId = $this->arrData['order_id'];
-            unset($this->arrData['order_id']);
-        }
-    }
-
-
-    /**
-     * Return a value
-     * @param string
-     * @return mixed
-     */
-    public function __get($strKey)
-    {
-        switch ($strKey)
-        {
-            case 'order_id':
-                return $this->strOrderId;
-
-            default:
-                return parent::__get($strKey);
-        }
-    }
 
 
     /**
@@ -98,7 +61,11 @@ class Order extends ProductCollection implements IsotopeProductCollection
         }
     }
 
-
+    /**
+     * Return true if order has been paid.
+     * This is the case if either payment date is set or order status has the paid flag
+     * @return  bool
+     */
     public function isPaid()
     {
         // Order is paid if a payment date is set
@@ -114,7 +81,10 @@ class Order extends ProductCollection implements IsotopeProductCollection
         return (null !== $objStatus && $objStatus->isPaid()) ? true : false;
     }
 
-
+    /**
+     * Get label for current order status
+     * @return  string
+     */
     public function getStatusLabel()
     {
         $objStatus = $this->getRelated('order_status');
@@ -122,7 +92,10 @@ class Order extends ProductCollection implements IsotopeProductCollection
         return (null === $objStatus) ? '' : $objStatus->getName();
     }
 
-
+    /**
+     * Get the alias for current order status
+     * @return  string
+     */
     public function getStatusAlias()
     {
         $objStatus = $this->getRelated('order_status');
@@ -153,9 +126,13 @@ class Order extends ProductCollection implements IsotopeProductCollection
      */
     public function delete()
     {
-        \Database::getInstance()->query("DELETE FROM tl_iso_product_collection_download WHERE pid IN (SELECT id FROM " . static::$ctable . " WHERE pid={$this->id})");
+        if (parent::delete()) {
+            \Database::getInstance()->query("DELETE FROM tl_iso_product_collection_download WHERE pid IN (SELECT id FROM tl_iso_product_collection_item WHERE pid={$this->id})");
 
-        return parent::delete();
+            return true;
+        }
+
+        return false;
     }
 
 
@@ -186,11 +163,11 @@ class Order extends ProductCollection implements IsotopeProductCollection
         // Load page configuration
         if (!is_object($objPage) && $this->pageId > 0) {
             $objPage = \Controller::getPageDetails($this->pageId);
-            $objPage = IsotopeFrontend::loadPageConfig($objPage);
+            $objPage = \Isotope\Frontend::loadPageConfig($objPage);
         }
 
         if (($objCart = Cart::findByPk($this->source_collection_id)) === null) {
-            $this->log('Could not find Cart ID '.$this->source_collection_id.' for Order ID '.$this->id, __METHOD__, TL_ERROR);
+            \System::log('Could not find Cart ID '.$this->source_collection_id.' for Order ID '.$this->id, __METHOD__, TL_ERROR);
 
             return false;
         }
@@ -207,10 +184,10 @@ class Order extends ProductCollection implements IsotopeProductCollection
         Isotope::setCart($objCart);
 
         $this->arrData['date']                 = time();
-        $this->arrData['shipping_id']          = ($objSource->hasShipping() ? $objSource->getShippingMethod()->id : 0);
-        $this->arrData['payment_id']           = ($objSource->hasPayment() ? $objSource->getPaymentMethod()->id : 0);
-        $this->arrData['subTotal']             = $objSource->getSubtotal();
-        $this->arrData['grandTotal']           = $objSource->getTotal();
+        $this->arrData['shipping_id']          = $objCart->shipping_id;
+        $this->arrData['payment_id']           = $objCart->payment_id;
+        $this->arrData['subTotal']             = $objCart->subTotal;
+        $this->arrData['grandTotal']           = $objCart->grandTotal;
         $this->arrData['currency']             = Isotope::getConfig()->currency;
 
         // Mark Order as modified to empty cache
@@ -222,7 +199,7 @@ class Order extends ProductCollection implements IsotopeProductCollection
                 $objCallback = \System::importStatic($callback[0]);
 
                 if ($objCallback->$callback[1]($this, $objCart) === false) {
-                    $this->log('Callback ' . $callback[0] . '::' . $callback[1] . '() cancelled checkout for Order ID ' . $this->id, __METHOD__, TL_ERROR);
+                    \System::log('Callback ' . $callback[0] . '::' . $callback[1] . '() cancelled checkout for Order ID ' . $this->id, __METHOD__, TL_ERROR);
 
                     return false;
                 }
@@ -234,7 +211,7 @@ class Order extends ProductCollection implements IsotopeProductCollection
 
         // Set billing and shipping address and create private records
         $this->setBillingAddress($objCart->getBillingAddress());
-        $this->setShippingAddress($objCart->setShippingAddress());
+        $this->setShippingAddress($objCart->getShippingAddress());
         $this->createPrivateAddresses();
 
         // @todo must add surcharges and downloads here
@@ -248,18 +225,30 @@ class Order extends ProductCollection implements IsotopeProductCollection
         $arrData = $this->getEmailData();
         $strRecipient = $this->getEmailRecipient();
 
-        $this->log('New order ID ' . $this->id . ' has been placed', __METHOD__, TL_ACCESS);
+        \System::log('New order ID ' . $this->id . ' has been placed', __METHOD__, TL_ACCESS);
 
         if ($this->iso_mail_admin && $this->iso_sales_email != '') {
-            Isotope::sendMail($this->iso_mail_admin, $this->iso_sales_email, $this->language, $arrData, $strRecipient, $this);
+            try {
+                $objEmail = new \Isotope\Email($this->iso_mail_admin, $this->language, $this);
+                $objEmail->replyTo($strRecipient);
+                $objEmail->send($this->iso_sales_email, $arrData);
+            } catch (\Exception $e) {
+                log_message($e->getMessage());
+                \System::log('Error when sending admin confirmation for order ID '.$this->id, __METHOD__, TL_ERROR);
+            }
         }
 
         if ($this->iso_mail_customer && $strRecipient != '') {
-            Isotope::sendMail($this->iso_mail_customer, $strRecipient, $this->language, $arrData, '', $this);
+            try {
+                $objEmail = new \Isotope\Email($this->iso_mail_customer, $this->language, $this);
+                $objEmail->send($strRecipient, $arrData);
+            } catch (\Exception $e) {
+                log_message($e->getMessage());
+                \System::log('Error when sending customer confirmation for order ID '.$this->id, __METHOD__, TL_ERROR);
+            }
         } else {
-            $this->log('Unable to send customer confirmation for order ID '.$this->id, __METHOD__, TL_ERROR);
+            \System::log('Unable to send customer confirmation for order ID '.$this->id, __METHOD__, TL_ERROR);
         }
-
 
         // !HOOK: post-process checkout
         if (isset($GLOBALS['ISO_HOOKS']['postCheckout']) && is_array($GLOBALS['ISO_HOOKS']['postCheckout'])) {
@@ -277,6 +266,7 @@ class Order extends ProductCollection implements IsotopeProductCollection
 
     /**
      * Complete order if the checkout has been made. This will cleanup session data
+     * @return  bool
      */
     public function complete()
     {
@@ -334,35 +324,47 @@ class Order extends ProductCollection implements IsotopeProductCollection
         }
 
         // Add the payment date if there is none
-        if ($objNewStatus->isPaid())
-        {
-            if ($this->date_paid == '')
-            {
+        if ($objNewStatus->isPaid()) {
+            if ($this->date_paid == '') {
                 $this->date_paid = time();
             }
         }
 
         // Trigger email actions
-        if ($objNewStatus->mail_customer > 0 || $objNewStatus->mail_admin > 0)
-        {
+        if ($objNewStatus->mail_customer > 0 || $objNewStatus->mail_admin > 0) {
+
             $arrData = $this->getEmailData();
             $arrData['new_status'] = $objNewStatus->getName();
             $strRecipient = $this->getEmailRecipient();
 
-            if ($objNewStatus->mail_customer && $strRecipient != '')
-            {
-                Isotope::sendMail($objNewStatus->mail_customer, $strRecipient, $this->language, $arrData, '', $this);
+            if ($objNewStatus->mail_customer && $strRecipient != '') {
 
-                if (TL_MODE == 'BE')
-                {
-                    $this->addConfirmationMessage($GLOBALS['TL_LANG']['tl_iso_product_collection']['orderStatusEmail']);
+                try {
+                    $objEmail = new \Isotope\Email($objNewStatus->mail_customer, $this->language, $this);
+                    $objEmail->send($strRecipient, $arrData);
+
+                    if (TL_MODE == 'BE') {
+                        $this->addConfirmationMessage($GLOBALS['TL_LANG']['tl_iso_product_collection']['orderStatusEmail']);
+                    }
+
+                } catch (\Exception $e) {
+                    log_message($e->getMessage());
+                    \System::log('Error sending status update to customer for order ID '.$this->id, __METHOD__, TL_ERROR);
                 }
             }
 
             $strSalesEmail = $objNewStatus->sales_email ? $objNewStatus->sales_email : $this->iso_sales_email;
-            if ($objNewStatus->mail_admin && $strSalesEmail != '')
-            {
-                Isotope::sendMail($objNewStatus->mail_admin, $strSalesEmail, $this->language, $arrData, $strRecipient, $this);
+
+            if ($objNewStatus->mail_admin && $strSalesEmail != '') {
+
+                try {
+                    $objEmail = new \Isotope\Email($objNewStatus->mail_admin, $this->language, $this);
+                    $objEmail->replyTo($strRecipient);
+                    $objEmail->send($strSalesEmail, $arrData);
+                } catch (\Exception $e) {
+                    log_message($e->getMessage());
+                    \System::log('Error sending status update to admin for order ID '.$this->id, __METHOD__, TL_ERROR);
+                }
             }
         }
 
@@ -380,20 +382,6 @@ class Order extends ProductCollection implements IsotopeProductCollection
                 $objCallback->$callback[1]($this, $intOldStatus, $objNewStatus, $blnActions);
             }
         }
-    }
-
-
-    /**
-     * Add additional information to the order data
-     * @return array
-     */
-    public function getData()
-    {
-        $arrData = parent::getData();
-
-        $arrData['order_id'] = $this->strOrderId;
-
-        return $arrData;
     }
 
 
@@ -450,7 +438,7 @@ class Order extends ProductCollection implements IsotopeProductCollection
         {
             foreach ($GLOBALS['ISO_HOOKS']['getOrderEmailData'] as $callback)
             {
-                $objCallback = (in_array('getInstance', get_class_methods($callback[0]))) ? call_user_func(array($callback[0], 'getInstance')) : new $callback[0]();
+                $objCallback = \System::importStatic($callback[0]);
                 $arrData = $objCallback->$callback[1]($this, $arrData);
             }
         }
@@ -506,9 +494,9 @@ class Order extends ProductCollection implements IsotopeProductCollection
      */
     protected function generateOrderId()
     {
-        if ($this->strOrderId != '')
+        if ($this->arrData['order_id'] != '')
         {
-            return $this->strOrderId;
+            return $this->arrData['order_id'];
         }
 
         // !HOOK: generate a custom order ID
@@ -521,13 +509,13 @@ class Order extends ProductCollection implements IsotopeProductCollection
 
                 if ($strOrderId !== false)
                 {
-                    $this->strOrderId = $strOrderId;
+                    $this->arrData['order_id'] = $strOrderId;
                     break;
                 }
             }
         }
 
-        if ($this->strOrderId == '')
+        if ($this->arrData['order_id'] == '')
         {
             $objDatabase = \Database::getInstance();
             $strPrefix = Isotope::getInstance()->call('replaceInsertTags', Isotope::getConfig()->orderPrefix);
@@ -541,12 +529,12 @@ class Order extends ProductCollection implements IsotopeProductCollection
             $objMax = $objDatabase->prepare("SELECT order_id FROM " . static::$strTable . " WHERE " . ($strPrefix != '' ? "order_id LIKE '$strPrefix%' AND " : '') . "config_id IN (" . implode(',', $arrConfigIds) . ") ORDER BY CAST(" . ($strPrefix != '' ? "SUBSTRING(order_id, " . ($intPrefix+1) . ")" : 'order_id') . " AS UNSIGNED) DESC")->limit(1)->executeUncached();
             $intMax = (int) substr($objMax->order_id, $intPrefix);
 
-            $this->strOrderId = $strPrefix . str_pad($intMax+1, Isotope::getConfig()->orderDigits, '0', STR_PAD_LEFT);
+            $this->arrData['order_id'] = $strPrefix . str_pad($intMax+1, Isotope::getConfig()->orderDigits, '0', STR_PAD_LEFT);
         }
 
-        $objDatabase->prepare("UPDATE " . static::$strTable . " SET order_id=? WHERE id={$this->id}")->executeUncached($this->strOrderId);
+        $objDatabase->prepare("UPDATE " . static::$strTable . " SET order_id=? WHERE id={$this->id}")->executeUncached($this->arrData['order_id']);
         $objDatabase->unlockTables();
 
-        return $this->strOrderId;
+        return $this->arrData['order_id'];
     }
 }
