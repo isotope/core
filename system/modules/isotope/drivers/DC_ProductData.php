@@ -14,7 +14,6 @@
 /**
  * Class DC_ProductData
  *
- * Based on DC_Table from Contao 2.9.2
  * @copyright  Isotope eCommerce Workgroup 2009-2012
  * @author     Fred Bliss <fred.bliss@intelligentspark.com>
  * @author     Andreas Schempp <andreas.schempp@terminal42.ch>
@@ -91,7 +90,7 @@ class DC_ProductData extends \DC_Table
 		// Display last product details
 		if (!isset($_GET['id']) && $this->Session->get('iso_products_id'))
 		{
-			$this->redirect($this->addToUrl('&id=' . $this->Session->get('iso_products_id')));
+			\Controller::redirect(\Backend::addToUrl('&id=' . $this->Session->get('iso_products_id')));
 		}
 
     	$arrClipboard = $this->Session->get('CLIPBOARD');
@@ -99,7 +98,7 @@ class DC_ProductData extends \DC_Table
     	// Cut all records
     	if ($arrClipboard[$strTable]['mode'] == 'cutAll' && \Input::get('act') != 'cutAll')
     	{
-			$this->redirect($this->addToUrl('&act=cutAll'));
+			\Controller::redirect(\Backend::addToUrl('&act=cutAll'));
     	}
 
         parent::__construct($strTable);
@@ -145,7 +144,7 @@ class DC_ProductData extends \DC_Table
             $this->Session->set('CLIPBOARD', $arrClipboard);
 
             // Perform a redirect (this is the CURRENT_ID fix)
-            $this->redirect('contao/main.php?do=' . \Input::get('do') /*. '&table=' . \Input::get('table')*/ . (\Input::get('pid') ? '&id=' . \Input::get('pid') : '') . '&rt=' . \Input::get('rt') . '&ref=' . \Input::get('ref'));
+            \Controller::redirect('contao/main.php?do=' . \Input::get('do') /*. '&table=' . \Input::get('table')*/ . (\Input::get('pid') ? '&id=' . \Input::get('pid') : '') . '&rt=' . \Input::get('rt') . '&ref=' . \Input::get('ref'));
         }
 
         // Custom filter
@@ -256,7 +255,7 @@ class DC_ProductData extends \DC_Table
 
             if (!$blnDoNotRedirect)
             {
-                $this->redirect($this->getReferer());
+                \Controller::redirect(\System::getReferer());
             }
 
             return;
@@ -282,7 +281,7 @@ class DC_ProductData extends \DC_Table
             }
         }
 
-        $this->redirect($this->getReferer());
+        \Controller::redirect(\System::getReferer());
     }
 
 
@@ -404,7 +403,7 @@ class DC_ProductData extends \DC_Table
             $this->Database->query("UPDATE {$this->strTable} SET gid=" . $this->intGroupId . " WHERE id IN (" . implode(',', $arrIds) . ")");
         }
 
-        $this->redirect($this->getReferer());
+        \Controller::redirect(\System::getReferer());
     }
 
 
@@ -457,8 +456,8 @@ class DC_ProductData extends \DC_Table
     {
         if ($GLOBALS['TL_DCA'][$this->strTable]['config']['notEditable'])
         {
-            $this->log('Table ' . $this->strTable . ' is not editable', 'DC_ProductData edit()', TL_ERROR);
-            $this->redirect('contao/main.php?act=error');
+            \System::log('Table ' . $this->strTable . ' is not editable', 'DC_ProductData edit()', TL_ERROR);
+            \Controller::redirect('contao/main.php?act=error');
         }
 
         if ($intID)
@@ -480,15 +479,15 @@ class DC_ProductData extends \DC_Table
         // Redirect if there is no record with the given ID
         if ($objRow->numRows < 1)
         {
-            $this->log('Could not load record ID "'.$this->intId.'" of table "'.$this->strTable.'"!', 'DC_ProductData edit()', TL_ERROR);
-            $this->redirect('contao/main.php?act=error');
+            \System::log('Could not load record ID "'.$this->intId.'" of table "'.$this->strTable.'"!', 'DC_ProductData edit()', TL_ERROR);
+            \Controller::redirect('contao/main.php?act=error');
         }
 
         // ID of a language record is not allowed
         elseif ($objRow->language != '')
         {
-            $this->log('Cannot edit language record ID "'.$this->intId.'" of table "'.$this->strTable.'"!', 'DC_ProductData edit()', TL_ERROR);
-            $this->redirect('contao/main.php?act=error');
+            \System::log('Cannot edit language record ID "'.$this->intId.'" of table "'.$this->strTable.'"!', 'DC_ProductData edit()', TL_ERROR);
+            \Controller::redirect('contao/main.php?act=error');
         }
 
         $this->objActiveRecord = $objRow;
@@ -534,7 +533,7 @@ class DC_ProductData extends \DC_Table
 
                     $this->Session->setData($session);
                     $_SESSION['TL_INFO'] = '';
-                    $this->reload();
+                    \Controller::reload();
                 }
 
                 if ($_SESSION['BE_DATA']['language'][$this->strTable][$this->intId] != '' && in_array($_SESSION['BE_DATA']['language'][$this->strTable][$this->intId], $this->arrLanguages))
@@ -581,7 +580,7 @@ class DC_ProductData extends \DC_Table
                     $this->Database->prepare("UPDATE tl_version SET active=1 WHERE pid=? AND version=?")
                                    ->execute($this->objActiveRecord->id, \Input::post('version'));
 
-                    $this->log(sprintf('Version %s of record ID %s (table %s) has been restored', \Input::post('version'), $this->objActiveRecord->id, $this->strTable), 'DC_ProductData edit()', TL_GENERAL);
+                    \System::log(sprintf('Version %s of record ID %s (table %s) has been restored', \Input::post('version'), $this->objActiveRecord->id, $this->strTable), 'DC_ProductData edit()', TL_GENERAL);
 
                     // Trigger the onrestore_callback
                     if (is_array($GLOBALS['TL_DCA'][$this->strTable]['config']['onrestore_callback']))
@@ -598,7 +597,7 @@ class DC_ProductData extends \DC_Table
                 }
             }
 
-            $this->reload();
+            \Controller::reload();
         }
 
 
@@ -859,12 +858,12 @@ window.addEvent(\'domready\', function() {
 });
 </script>';
 
-        $copyFallback = $this->blnEditLanguage ? '&nbsp;&nbsp;::&nbsp;&nbsp;<a href="'.$this->addToUrl('act=copyFallback').'" class="header_iso_copy" title="'.specialchars($GLOBALS['TL_LANG']['MSC']['copyFallback']).'" accesskey="d" onclick="Backend.getScrollOffset();">'.($GLOBALS['TL_LANG']['MSC']['copyFallback'] ? $GLOBALS['TL_LANG']['MSC']['copyFallback'] : 'copyFallback').'</a>' : '';
+        $copyFallback = $this->blnEditLanguage ? '&nbsp;&nbsp;::&nbsp;&nbsp;<a href="'.\Backend::addToUrl('act=copyFallback').'" class="header_iso_copy" title="'.specialchars($GLOBALS['TL_LANG']['MSC']['copyFallback']).'" accesskey="d" onclick="Backend.getScrollOffset();">'.($GLOBALS['TL_LANG']['MSC']['copyFallback'] ? $GLOBALS['TL_LANG']['MSC']['copyFallback'] : 'copyFallback').'</a>' : '';
 
         // Begin the form (-> DO NOT CHANGE THIS ORDER -> this way the onsubmit attribute of the form can be changed by a field)
         $return = $version . '
 <div id="tl_buttons">
-<a href="'.$this->getReferer(true).'" class="header_back" title="'.specialchars($GLOBALS['TL_LANG']['MSC']['backBT']).'" accesskey="b" onclick="Backend.getScrollOffset();">'.$GLOBALS['TL_LANG']['MSC']['backBT'].'</a>' . $copyFallback . '
+<a href="'.\System::getReferer(true).'" class="header_back" title="'.specialchars($GLOBALS['TL_LANG']['MSC']['backBT']).'" accesskey="b" onclick="Backend.getScrollOffset();">'.$GLOBALS['TL_LANG']['MSC']['backBT'].'</a>' . $copyFallback . '
 </div>
 
 <h2 class="sub_headline">'.sprintf($GLOBALS['TL_LANG']['MSC']['editRecord'], ($this->intId ? 'ID '.$this->intId : '')).'</h2>
@@ -908,7 +907,7 @@ window.addEvent(\'domready\', function() {
                     }
                 }
 
-                $this->log(sprintf('A new version of %s ID %s has been created', $this->strTable, $this->objActiveRecord->id), 'DC_ProductData edit()', TL_GENERAL);
+                \System::log(sprintf('A new version of %s ID %s has been created', $this->strTable, $this->objActiveRecord->id), 'DC_ProductData edit()', TL_GENERAL);
             }
 
             // Set the current timestamp (-> DO NOT CHANGE THE ORDER version - timestamp)
@@ -923,7 +922,7 @@ window.addEvent(\'domready\', function() {
                 $_SESSION['TL_CONFIRM'] = '';
 
                 setcookie('BE_PAGE_OFFSET', 0, 0, '/');
-                $this->redirect($this->getReferer());
+                \Controller::redirect(\System::getReferer());
             }
 
             elseif (isset($_POST['saveNedit']))
@@ -933,12 +932,12 @@ window.addEvent(\'domready\', function() {
                 $_SESSION['TL_CONFIRM'] = '';
 
                 setcookie('BE_PAGE_OFFSET', 0, 0, '/');
-                $strUrl = $this->addToUrl($GLOBALS['TL_DCA'][$this->strTable]['list']['operations']['edit']['href']);
+                $strUrl = \Backend::addToUrl($GLOBALS['TL_DCA'][$this->strTable]['list']['operations']['edit']['href']);
 
                 $strUrl = preg_replace('/(&amp;)?s2e=[^&]*/i', '', $strUrl);
                 $strUrl = preg_replace('/(&amp;)?act=[^&]*/i', '', $strUrl);
 
-                $this->redirect($strUrl);
+                \Controller::redirect($strUrl);
             }
 
             elseif (isset($_POST['saveNback']))
@@ -951,15 +950,15 @@ window.addEvent(\'domready\', function() {
 
                 if ($this->ptable == '')
                 {
-                    $this->redirect(\Environment::get('script') . '?do=' . \Input::get('do'));
+                    \Controller::redirect(\Environment::get('script') . '?do=' . \Input::get('do'));
                 }
                 elseif ($this->ptable == 'tl_theme' && $this->strTable == 'tl_style_sheet') # TODO: try to abstract this
                 {
-                    $this->redirect($this->getReferer(false, $this->strTable));
+                    \Controller::redirect(\System::getReferer(false, $this->strTable));
                 }
                 else
                 {
-                    $this->redirect($this->getReferer(false, $this->ptable));
+                    \Controller::redirect(\System::getReferer(false, $this->ptable));
                 }
             }
 
@@ -995,10 +994,10 @@ window.addEvent(\'domready\', function() {
                     $strUrl .= $this->ptable != '' ? '&amp;act=create&amp;mode=2&amp;pid=' . CURRENT_ID : '&amp;act=create';
                 }
 
-                $this->redirect($strUrl);
+                \Controller::redirect($strUrl);
             }
 
-            $this->reload();
+            \Controller::reload();
         }
 
         // Set the focus if there is an error
@@ -1027,8 +1026,8 @@ window.addEvent(\'domready\', function() {
     {
         if ($GLOBALS['TL_DCA'][$this->strTable]['config']['notEditable'])
         {
-            $this->log('Table "'.$this->strTable.'" is not editable', 'DC_Table editAll()', TL_ERROR);
-            $this->redirect('contao/main.php?act=error');
+            \System::log('Table "'.$this->strTable.'" is not editable', 'DC_Table editAll()', TL_ERROR);
+            \Controller::redirect('contao/main.php?act=error');
         }
 
         $return = '';
@@ -1183,7 +1182,7 @@ window.addEvent(\'domready\', function() {
                             }
                         }
 
-                        $this->log(sprintf('A new version of %s ID %s has been created', $this->strTable, $this->intId), 'DC_Table editAll()', TL_GENERAL);
+                        \System::log(sprintf('A new version of %s ID %s has been created', $this->strTable, $this->intId), 'DC_Table editAll()', TL_GENERAL);
                     }
 
                     // Set the current timestamp (-> DO NOT CHANGE ORDER version - timestamp)
@@ -1234,10 +1233,10 @@ window.addEvent(\'domready\', function() {
                 if (\Input::post('saveNclose'))
                 {
                     setcookie('BE_PAGE_OFFSET', 0, 0, '/');
-                    $this->redirect($this->getReferer());
+                    \Controller::redirect(\System::getReferer());
                 }
 
-                $this->reload();
+                \Controller::reload();
             }
         }
 
@@ -1298,7 +1297,7 @@ window.addEvent(\'domready\', function() {
         // Return
         return '
 <div id="tl_buttons">
-<a href="'.$this->getReferer(true).'" class="header_back" title="'.specialchars($GLOBALS['TL_LANG']['MSC']['backBT']).'" accesskey="b" onclick="Backend.getScrollOffset();">'.$GLOBALS['TL_LANG']['MSC']['backBT'].'</a>
+<a href="'.\System::getReferer(true).'" class="header_back" title="'.specialchars($GLOBALS['TL_LANG']['MSC']['backBT']).'" accesskey="b" onclick="Backend.getScrollOffset();">'.$GLOBALS['TL_LANG']['MSC']['backBT'].'</a>
 </div>' . $return;
     }
 
@@ -1312,8 +1311,8 @@ window.addEvent(\'domready\', function() {
     {
         if ($GLOBALS['TL_DCA'][$this->strTable]['config']['notEditable'])
         {
-            $this->log('Table ' . $this->strTable . ' is not editable', 'DC_Table overrideAll()', TL_ERROR);
-            $this->redirect('contao/main.php?act=error');
+            \System::log('Table ' . $this->strTable . ' is not editable', 'DC_Table overrideAll()', TL_ERROR);
+            \Controller::redirect('contao/main.php?act=error');
         }
 
         $return = '';
@@ -1390,7 +1389,7 @@ window.addEvent(\'domready\', function() {
                         if ($this->blnCreateNewVersion)
                         {
                             $this->createNewVersion($this->strTable, $this->intId);
-                            $this->log(sprintf('A new version of record ID %s (table %s) has been created', $this->intId, $this->strTable), 'DC_Table editAll()', TL_GENERAL);
+                            \System::log(sprintf('A new version of record ID %s (table %s) has been created', $this->intId, $this->strTable), 'DC_Table editAll()', TL_GENERAL);
                         }
 
                         // Set current timestamp (-> DO NOT CHANGE ORDER version - timestamp)
@@ -1473,10 +1472,10 @@ window.addEvent(\'domready\', function() {
                 if (\Input::post('saveNclose'))
                 {
                     setcookie('BE_PAGE_OFFSET', 0, 0, '/');
-                    $this->redirect($this->getReferer());
+                    \Controller::redirect(\System::getReferer());
                 }
 
-                $this->reload();
+                \Controller::reload();
             }
         }
 
@@ -1551,7 +1550,7 @@ window.addEvent(\'domready\', function() {
         // Return
         return '
 <div id="tl_buttons">
-<a href="'.$this->getReferer(true).'" class="header_back" title="'.specialchars($GLOBALS['TL_LANG']['MSC']['backBT']).'" accesskey="b" onclick="Backend.getScrollOffset();">'.$GLOBALS['TL_LANG']['MSC']['backBT'].'</a>
+<a href="'.\System::getReferer(true).'" class="header_back" title="'.specialchars($GLOBALS['TL_LANG']['MSC']['backBT']).'" accesskey="b" onclick="Backend.getScrollOffset();">'.$GLOBALS['TL_LANG']['MSC']['backBT'].'</a>
 </div>'.$return;
     }
 
@@ -1677,9 +1676,9 @@ window.addEvent(\'domready\', function() {
 		{
 			$return .= '
 <div id="'.$this->bid.'">'.((\Input::get('act') == 'select' || $this->ptable) ? '
-<a href="'.$this->getReferer(true, $this->ptable).'" class="header_back" title="'.specialchars($GLOBALS['TL_LANG']['MSC']['backBTTitle']).'" accesskey="b" onclick="Backend.getScrollOffset()">'.$GLOBALS['TL_LANG']['MSC']['backBT'].'</a> ' : (isset($GLOBALS['TL_DCA'][$this->strTable]['config']['backlink']) ? '
+<a href="'.\System::getReferer(true, $this->ptable).'" class="header_back" title="'.specialchars($GLOBALS['TL_LANG']['MSC']['backBTTitle']).'" accesskey="b" onclick="Backend.getScrollOffset()">'.$GLOBALS['TL_LANG']['MSC']['backBT'].'</a> ' : (isset($GLOBALS['TL_DCA'][$this->strTable]['config']['backlink']) ? '
 <a href="contao/main.php?'.$GLOBALS['TL_DCA'][$this->strTable]['config']['backlink'].'" class="header_back" title="'.specialchars($GLOBALS['TL_LANG']['MSC']['backBTTitle']).'" accesskey="b" onclick="Backend.getScrollOffset()">'.$GLOBALS['TL_LANG']['MSC']['backBT'].'</a> ' : '')) . ((\Input::get('act') != 'select') ? '
-'.(!$GLOBALS['TL_DCA'][$this->strTable]['config']['closed'] ? '<a href="'.(($this->ptable != '') ? $this->addToUrl('act=create' . (($GLOBALS['TL_DCA'][$this->strTable]['list']['sorting']['mode'] < 4) ? '&amp;mode=2' : '') . '&amp;pid=' . $this->intId) : $this->addToUrl('act=create')).'" class="header_new" title="'.specialchars($GLOBALS['TL_LANG'][$this->strTable]['new'][1]).'" accesskey="n" onclick="Backend.getScrollOffset()">'.$GLOBALS['TL_LANG'][$this->strTable]['new'][0].'</a> ' : '') . $this->generateGlobalButtons() : '') . ($blnClipboard ? '<a href="'.$this->addToUrl('clipboard=1').'" class="header_clipboard" title="'.specialchars($GLOBALS['TL_LANG']['MSC']['clearClipboard']).'" accesskey="x">'.$GLOBALS['TL_LANG']['MSC']['clearClipboard'].'</a> ' : '') . '
+'.(!$GLOBALS['TL_DCA'][$this->strTable]['config']['closed'] ? '<a href="'.(($this->ptable != '') ? \Backend::addToUrl('act=create' . (($GLOBALS['TL_DCA'][$this->strTable]['list']['sorting']['mode'] < 4) ? '&amp;mode=2' : '') . '&amp;pid=' . $this->intId) : \Backend::addToUrl('act=create')).'" class="header_new" title="'.specialchars($GLOBALS['TL_LANG'][$this->strTable]['new'][1]).'" accesskey="n" onclick="Backend.getScrollOffset()">'.$GLOBALS['TL_LANG'][$this->strTable]['new'][0].'</a> ' : '') . $this->generateGlobalButtons() : '') . ($blnClipboard ? '<a href="'.\Backend::addToUrl('clipboard=1').'" class="header_clipboard" title="'.specialchars($GLOBALS['TL_LANG']['MSC']['clearClipboard']).'" accesskey="x">'.$GLOBALS['TL_LANG']['MSC']['clearClipboard'].'</a> ' : '') . '
 </div>' . \Message::generate(true);
 		}
 
@@ -1948,8 +1947,8 @@ window.addEvent(\'domready\', function() {
 
 		$return = '
 <div id="tl_buttons">
-<a href="'.$this->getReferer(true, $this->strTable).'" class="header_back" title="'.specialchars($GLOBALS['TL_LANG']['MSC']['backBTTitle']).'" accesskey="b" onclick="Backend.getScrollOffset()">'.$GLOBALS['TL_LANG']['MSC']['backBT'].'</a> ' . (!$blnClipboard ? ((\Input::get('act') != 'select') ? (!$GLOBALS['TL_DCA'][$this->strTable]['config']['closed'] ? '
-<a href="'.$this->addToUrl('act=create&amp;mode=2&amp;pid='.$this->intId).'" class="header_new" title="'.specialchars($GLOBALS['TL_LANG'][$this->strTable]['new'][1]).'" accesskey="n" onclick="Backend.getScrollOffset()">'.$GLOBALS['TL_LANG'][$this->strTable]['new'][0].'</a> ' : '') . $this->generateGlobalButtons() : '') : '<a href="'.$this->addToUrl('clipboard=1').'" class="header_clipboard" title="'.specialchars($GLOBALS['TL_LANG']['MSC']['clearClipboard']).'" accesskey="x">'.$GLOBALS['TL_LANG']['MSC']['clearClipboard'].'</a> ') . '
+<a href="'.\System::getReferer(true, $this->strTable).'" class="header_back" title="'.specialchars($GLOBALS['TL_LANG']['MSC']['backBTTitle']).'" accesskey="b" onclick="Backend.getScrollOffset()">'.$GLOBALS['TL_LANG']['MSC']['backBT'].'</a> ' . (!$blnClipboard ? ((\Input::get('act') != 'select') ? (!$GLOBALS['TL_DCA'][$this->strTable]['config']['closed'] ? '
+<a href="'.\Backend::addToUrl('act=create&amp;mode=2&amp;pid='.$this->intId).'" class="header_new" title="'.specialchars($GLOBALS['TL_LANG'][$this->strTable]['new'][1]).'" accesskey="n" onclick="Backend.getScrollOffset()">'.$GLOBALS['TL_LANG'][$this->strTable]['new'][0].'</a> ' : '') . $this->generateGlobalButtons() : '') : '<a href="'.\Backend::addToUrl('clipboard=1').'" class="header_clipboard" title="'.specialchars($GLOBALS['TL_LANG']['MSC']['clearClipboard']).'" accesskey="x">'.$GLOBALS['TL_LANG']['MSC']['clearClipboard'].'</a> ') . '
 </div>' . \Message::generate(true);
 
 		// Show breadcrumb
@@ -1995,7 +1994,7 @@ window.addEvent(\'domready\', function() {
 			$return .= '
 <div class="tl_content_right tl_iso_content_right">'.((\Input::get('act') == 'select') ? '
 <div class="tl_select_all">
-<label for="tl_select_trigger" class="tl_select_label">'.$GLOBALS['TL_LANG']['MSC']['selectAll'].'</label> <input type="checkbox" id="tl_select_trigger" onclick="Backend.toggleCheckboxes(this)" class="tl_tree_checkbox"></div>' : ($blnClipboard ? ' <a href="'.$this->addToUrl('act='.$arrClipboard['mode'].'&amp;mode=2&amp;pid='.$objParent->id . (!$blnMultiboard ? '&amp;id='.$arrClipboard['id'] : '') . '&amp;table='.$this->strTable).'" title="'.specialchars($GLOBALS['TL_LANG'][$this->strTable]['pasteafter'][0]).'" onclick="Backend.getScrollOffset()">'.$imagePasteAfter.'</a>' : '')) . '
+<label for="tl_select_trigger" class="tl_select_label">'.$GLOBALS['TL_LANG']['MSC']['selectAll'].'</label> <input type="checkbox" id="tl_select_trigger" onclick="Backend.toggleCheckboxes(this)" class="tl_tree_checkbox"></div>' : ($blnClipboard ? ' <a href="'.\Backend::addToUrl('act='.$arrClipboard['mode'].'&amp;mode=2&amp;pid='.$objParent->id . (!$blnMultiboard ? '&amp;id='.$arrClipboard['id'] : '') . '&amp;table='.$this->strTable).'" title="'.specialchars($GLOBALS['TL_LANG'][$this->strTable]['pasteafter'][0]).'" onclick="Backend.getScrollOffset()">'.$imagePasteAfter.'</a>' : '')) . '
 <div class="tl_iso_operations">' .
 $this->generateButtons($objParent->row(), $this->strTable) . '
 </div>
@@ -2523,7 +2522,7 @@ $this->generateButtons($objParent->row(), $this->strTable) . '
 
 			if (\Input::post('FORM_SUBMIT') == 'tl_filters_limit')
 			{
-				$this->reload();
+				\Controller::reload();
 			}
 		}
 
@@ -2655,9 +2654,9 @@ $this->generateButtons($objParent->row(), $this->strTable) . '
             $this->Database->prepare("UPDATE {$this->strTable} %s WHERE id=$intLanguageId")->set($arrRow)->executeUncached();
 
             $this->createNewVersion($this->strTable, $intLanguageId);
-            $this->log(sprintf('A new version of record ID %s (table %s) has been created', $intLanguageId, $this->strTable), 'DC_ProductData copyFallback()', TL_GENERAL);
+            \System::log(sprintf('A new version of record ID %s (table %s) has been created', $intLanguageId, $this->strTable), 'DC_ProductData copyFallback()', TL_GENERAL);
         }
 
-        $this->redirect($this->addToUrl('act=edit'));
+        \Controller::redirect(\Backend::addToUrl('act=edit'));
     }
 }
