@@ -11,6 +11,7 @@
  *
  * @author     Andreas Schempp <andreas.schempp@terminal42.ch>
  * @author     Fred Bliss <fred.bliss@intelligentspark.com>
+ * @author     Kamil Kuzminski <kamil.kuzminski@codefog.pl>
  */
 
 namespace Isotope;
