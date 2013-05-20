@@ -9,6 +9,7 @@
  *
  * @author     Andreas Schempp <andreas.schempp@terminal42.ch>
  * @author     Fred Bliss <fred.bliss@intelligentspark.com>
+ * @author     Kamil Kuzminski <kamil.kuzminski@codefog.pl>
  */
 
 
@@ -271,6 +272,157 @@ var Isotope =
     },
 
     /**
+     * Toggle the product product tree (input field)
+     * @param object
+     * @param string
+     * @param string
+     * @param string
+     * @param integer
+     * @return boolean
+     */
+    toggleProductGroupTree: function (el, id, field, name, level)
+    {
+        el.blur();
+		Backend.getScrollOffset();
+
+		var item = $(id),
+			image = $(el).getFirst('img');
+
+        if (item)
+        {
+            if (item.getStyle('display') == 'none')
+            {
+                item.setStyle('display', 'inline');
+                image.src = image.src.replace('folPlus.gif', 'folMinus.gif');
+                $(el).store('tip:title', Contao.lang.collapse);
+                new Request.Contao().post({'action':'toggleProductGroupTree', 'id':id, 'state':1, 'REQUEST_TOKEN':Contao.request_token});
+            }
+            else
+            {
+                item.setStyle('display', 'none');
+                image.src = image.src.replace('folMinus.gif', 'folPlus.gif');
+                $(el).store('tip:title', Contao.lang.expand);
+                new Request.Contao().post({'action':'toggleProductGroupTree', 'id':id, 'state':0, 'REQUEST_TOKEN':Contao.request_token});
+            }
+
+            return false;
+        }
+
+        new Request.Contao(
+        {
+			field: el,
+			evalScripts: true,
+			onRequest: AjaxRequest.displayBox(Contao.lang.loading + ' …'),
+            onSuccess: function(txt, json)
+            {
+				var li = new Element('li',
+				{
+					'id': id,
+					'class': 'parent',
+					'styles':
+					{
+						'display': 'inline'
+					}
+				});
+
+				var ul = new Element('ul',
+				{
+					'class': 'level_' + level,
+					'html': txt
+				}).inject(li, 'bottom');
+
+				li.inject($(el).getParent('li'), 'after');
+
+				// Update the referer ID
+				li.getElements('a').each(function(el) {
+					el.href = el.href.replace(/&ref=[a-f0-9]+/, '&ref=' + Contao.referer_id);
+				});
+
+                $(el).store('tip:title', Contao.lang.collapse);
+                image.src = image.src.replace('folPlus.gif', 'folMinus.gif');
+                AjaxRequest.hideBox();
+
+                // HOOK
+                window.fireEvent('ajax_change');
+               }
+        }).post({'action':'loadProductGroupTree', 'id':id, 'level':level, 'field':field, 'name':name, 'state':1, 'REQUEST_TOKEN':Contao.request_token});
+
+        return false;
+    },
+
+    /**
+	 * Open a group selector in a modal window
+	 * @param object
+	 * @return object
+	 */
+	openModalGroupSelector: function(options)
+	{
+		var opt = options || {};
+		var max = (window.getSize().y-180).toInt();
+		if (!opt.height || opt.height > max) opt.height = max;
+		var M = new SimpleModal(
+		{
+			'width': opt.width,
+			'btn_ok': Contao.lang.close,
+			'draggable': false,
+			'overlayOpacity': .5,
+			'onShow': function() { document.body.setStyle('overflow', 'hidden'); },
+			'onHide': function() { document.body.setStyle('overflow', 'auto'); }
+		});
+		M.addButton(Contao.lang.close, 'btn', function()
+		{
+			this.hide();
+		});
+		M.addButton(Contao.lang.apply, 'btn primary', function()
+		{
+			var val = [],
+				frm = null,
+				frms = window.frames;
+			for (var i=0; i<frms.length; i++)
+			{
+				if (frms[i].name == 'simple-modal-iframe')
+				{
+					frm = frms[i];
+					break;
+				}
+			}
+			if (frm === null)
+			{
+				alert('Could not find the SimpleModal frame');
+				return;
+			}
+			var inp = frm.document.getElementById('tl_listing').getElementsByTagName('input');
+			for (var i=0; i<inp.length; i++) 
+			{
+				if (!inp[i].checked || inp[i].id.match(/^check_all_/)) continue;
+				if (!inp[i].id.match(/^reset_/)) val.push(inp[i].get('value'));
+			}
+			new Request.Contao(
+			{
+				onRequest: AjaxRequest.displayBox(Contao.lang.loading + ' …'),
+				onSuccess: function(txt, json)
+				{
+					if (txt != '')
+					{
+						window.location.href = txt;
+					}
+				}
+			}).post({'action':opt.action, 'value':val[0], 'redirect':opt.redirect, 'REQUEST_TOKEN':Contao.request_token});
+			this.hide();
+			if (opt.trigger)
+			{
+				opt.trigger.fireEvent('closeModal');
+			}
+		});
+		M.show({
+			'title': opt.title,
+			'contents': '<iframe src="' + opt.url + '" name="simple-modal-iframe" width="100%" height="' + opt.height + '" frameborder="0"></iframe>',
+			'model': 'modal'
+		});
+		return M;
+	},
+
+    /**
      * Add the interactive help
      */
     addInteractiveHelp: function() {
@@ -526,32 +678,7 @@ var Isotope =
                 new Request({url: window.location.href, method: 'get', data: req}).send();
             }
         });
-    },
-
-    loadDeferredProducts: function()
-	{
-		var scroll = window.getScroll().y + window.getSize().y;
-		document.getElements('.deferred_product').each( function(el)
-		{
-			if (scroll - el.getPosition().y > 0)
-			{
-				el.removeClass('deferred_product');
-				var productId = el.get('id').replace('product_', '');
-				var level = (el.getParent('ul').get('class').match(/level_/) ? el.getParent('ul').get('class').replace('level_', '').toInt() : -1);
-
-				new Request.Contao({
-					method: 'get',
-					url: (window.location.href+'&loadDeferredProduct='+productId+'&level='+level),
-					onComplete: function(html, text) {
-						var temp = new Element('div').set('html', html);
-                		temp.getChildren().each( function(li) { li.inject(el.getParent('li'), 'before') });
-                		el.getParent('li').destroy();
-                		window.fireEvent('structure');
-					}
-				}).send();
-			}
-		});
-	}
+    }
 };
 
 window.addEvent('domready', function()

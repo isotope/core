@@ -9,6 +9,7 @@
  *
  * @author     Andreas Schempp <andreas.schempp@terminal42.ch>
  * @author     Fred Bliss <fred.bliss@intelligentspark.com>
+ * @author     Kamil Kuzminski <kamil.kuzminski@codefog.pl>
  */
 
 
@@ -264,6 +265,26 @@
 .w50h
 {
     height: auto;
+}
+
+.breadcrumb_container {
+	padding: 2px 0;
+	margin: 24px 18px 0 18px;
+}
+
+.tl_iso_listing_container {
+	margin-top: 0;
+}
+
+.tl_iso_operations {
+	width: 110px;
+}
+
+.tl_iso_content_right .tl_select_all,
+.tl_iso_content_right a,
+.tl_iso_operations a {
+	display: inline-block;
+	margin-bottom: 4px;
 }
 
 .tl_productdata .tl_file {
