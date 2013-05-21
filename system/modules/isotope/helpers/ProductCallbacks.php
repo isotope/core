@@ -613,7 +613,11 @@ window.addEvent('domready', function() {
                     continue;
                 }
 
-                $args[0] = sprintf('<img src="%s" alt="%s" align="left">', $this->getImage($strImage, 34, 34, 'proportional'), $image['alt']);
+				$size = @getimagesize(TL_ROOT . '/' . $strImage);
+
+                $args[0] = sprintf('<a href="%s" onclick="Backend.openModalImage({\'width\':%s,\'title\':\'%s\',\'url\':\'%s\'});return false"><img src="%s" alt="%s" align="left"></a>',
+                					$strImage, $size[0], str_replace("'", "\\'", $row['name']), $strImage,
+                					$this->getImage($strImage, 50, 50, 'crop'), $image['alt']);
                 break;
             }
         }
@@ -621,7 +625,7 @@ window.addEvent('domready', function() {
         // Add a variants link
         if (!$row['pid'])
         {
-        	$args[1] = sprintf('<a href="%s" title="%s">%s</a>', ampersand($this->Environment->request) . '&amp;id=' . $row['id'], specialchars($GLOBALS['TL_LANG']['tl_iso_products']['showVariants']), $row['name']);
+        	$args[1] = sprintf('<a href="%s" title="%s">%s</a>', ampersand(\Environment::get('request')) . '&amp;id=' . $row['id'], specialchars($GLOBALS['TL_LANG']['tl_iso_products']['showVariants']), $row['name']);
         }
 
         // TODO: format also the variants (pid > 0)
