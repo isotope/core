@@ -209,19 +209,12 @@ $GLOBALS['TL_DCA']['tl_iso_products'] = array
                 'href'              => 'act=show',
                 'icon'              => 'show.gif'
             ),
-            'tools' => array
-            (
-                'label'             => &$GLOBALS['TL_LANG']['tl_iso_products']['tools'],
-                'icon'              => 'system/modules/isotope/assets/lightning.png',
-                'attributes'        => 'class="invisible isotope-contextmenu"',
-            ),
             'quick_edit' => array
             (
                 'label'             => &$GLOBALS['TL_LANG']['tl_iso_products']['quick_edit'],
                 'href'              => 'key=quick_edit',
                 'icon'              => 'system/modules/isotope/assets/table-select-cells.png',
                 'button_callback'   => array('Isotope\ProductCallbacks', 'variantsButton'),
-                'attributes'        => 'class="isotope-tools"',
             ),
             'generate' => array
             (
@@ -229,7 +222,6 @@ $GLOBALS['TL_DCA']['tl_iso_products'] = array
                 'href'              => 'key=generate',
                 'icon'              => 'system/modules/isotope/assets/table-insert-row.png',
                 'button_callback'   => array('Isotope\ProductCallbacks', 'variantsButton'),
-                'attributes'        => 'class="isotope-tools"',
             ),
             'related' => array
             (
@@ -237,7 +229,6 @@ $GLOBALS['TL_DCA']['tl_iso_products'] = array
                 'href'              => 'table=tl_iso_related_products',
                 'icon'              => 'system/modules/isotope/assets/sitemap.png',
                 'button_callback'   => array('Isotope\ProductCallbacks', 'relatedButton'),
-                'attributes'        => 'class="isotope-tools"',
             ),
             'downloads' => array
             (
@@ -245,7 +236,6 @@ $GLOBALS['TL_DCA']['tl_iso_products'] = array
                 'href'              => 'table=tl_iso_downloads',
                 'icon'              => 'system/modules/isotope/assets/paper-clip.png',
                 'button_callback'   => array('Isotope\ProductCallbacks', 'downloadsButton'),
-                'attributes'        => 'class="isotope-tools"',
             ),
             'prices' => array
             (
@@ -253,7 +243,6 @@ $GLOBALS['TL_DCA']['tl_iso_products'] = array
                 'href'              => 'table=tl_iso_prices',
                 'icon'              => 'system/modules/isotope/assets/price-tag.png',
                 'button_callback'   => array('Isotope\ProductCallbacks', 'pricesButton'),
-                'attributes'        => 'class="isotope-tools"',
             ),
         ),
     ),

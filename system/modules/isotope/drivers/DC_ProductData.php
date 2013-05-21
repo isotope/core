@@ -1737,7 +1737,7 @@ window.addEvent(\'domready\', function() {
 			}
 
 				$return .= '
-    <th class="tl_folder_tlist tl_right_nowrap">&nbsp;</th>
+    <th class="tl_folder_tlist tl_right_nowrap tl_iso_operations">&nbsp;</th>
   </tr>';
 			}
 
@@ -1884,8 +1884,8 @@ window.addEvent(\'domready\', function() {
 
 				// Buttons ($row, $table, $root, $blnCircularReference, $childs, $previous, $next)
 				$return .= ((\Input::get('act') == 'select') ? '
-    <td class="tl_file_list tl_right_nowrap"><input type="checkbox" name="IDS[]" id="ids_'.$row['id'].'" class="tl_tree_checkbox" value="'.$row['id'].'"></td>' : '
-    <td class="tl_file_list tl_right_nowrap">'.$this->generateButtons($row, $this->strTable, $this->root).'</td>') . '
+    <td class="tl_file_list tl_right_nowrap tl_iso_operations"><input type="checkbox" name="IDS[]" id="ids_'.$row['id'].'" class="tl_tree_checkbox" value="'.$row['id'].'"></td>' : '
+    <td class="tl_file_list tl_right_nowrap tl_iso_operations">'.$this->generateButtons($row, $this->strTable, $this->root).'</td>') . '
   </tr>';
 			}
 
@@ -2225,7 +2225,7 @@ $this->generateButtons($objParent->row(), $this->strTable) . '
 			}
 
 				$return .= '
-    <th class="tl_folder_tlist tl_right_nowrap">&nbsp;</th>
+    <th class="tl_folder_tlist tl_right_nowrap tl_iso_operations">&nbsp;</th>
   </tr>';
 			}
 
@@ -2386,8 +2386,8 @@ $this->generateButtons($objParent->row(), $this->strTable) . '
 
 				// Buttons ($row, $table, $root, $blnCircularReference, $childs, $previous, $next)
 				$return .= ((\Input::get('act') == 'select') ? '
-    <td class="tl_file_list tl_right_nowrap"><input type="checkbox" name="IDS[]" id="ids_'.$row['id'].'" class="tl_tree_checkbox" value="'.$row['id'].'"></td>' : '
-    <td class="tl_file_list tl_right_nowrap">'.$this->generateButtons($row, $this->strTable, $this->root).'</td>') . '
+    <td class="tl_file_list tl_right_nowrap tl_iso_operations"><input type="checkbox" name="IDS[]" id="ids_'.$row['id'].'" class="tl_tree_checkbox" value="'.$row['id'].'"></td>' : '
+    <td class="tl_file_list tl_right_nowrap tl_iso_operations">'.$this->generateButtons($row, $this->strTable, $this->root).'</td>') . '
   </tr>';
 			}
 

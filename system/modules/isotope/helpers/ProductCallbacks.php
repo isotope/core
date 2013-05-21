@@ -628,28 +628,7 @@ window.addEvent('domready', function() {
         	$args[1] = sprintf('<a href="%s" title="%s">%s</a>', ampersand(\Environment::get('request')) . '&amp;id=' . $row['id'], specialchars($GLOBALS['TL_LANG']['tl_iso_products']['showVariants']), $row['name']);
         }
 
-        // TODO: format also the variants (pid > 0)
-
         return $args;
-
-        $arrAttributes = $this->arrProductTypes[$row['type']]['attributes'];
-
-        if ($row['pid'] > 0)
-        {
-            $strBuffer = '<div class="iso_product"><div class="thumbnail">'.$thumbnail.'</div><ul>';
-
-            foreach ($arrAttributes as $attribute => $arrConfig)
-            {
-                if ($arrConfig['enabled'] && in_array($attribute, $GLOBALS['ISO_CONFIG']['variant_options']))
-                {
-                    $strBuffer .= '<li><strong>' . Isotope::formatLabel('tl_iso_products', $attribute) . ':</strong> ' . Isotope::formatValue('tl_iso_products', $attribute, $row[$attribute]) . '</li>';
-                }
-            }
-
-            return $strBuffer . '</ul></div>';
-        }
-
-        return '<div class="iso_product"><div class="thumbnail">'.$thumbnail.'</div><p>' . $row['name'] . (($row['sku'] != '' && $arrAttributes['sku']['enabled']) ? '<span style="color:#b3b3b3; padding-left:3px;">['.$row['sku'].']</span>' : '') . '</p><div>' . ($row['pid']==0 ? '<em>' . $this->getCategoryList($row['id']) . '</em>' : '') . '</div></div> ';
     }
 
 

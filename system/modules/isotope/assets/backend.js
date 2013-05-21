@@ -583,60 +583,6 @@ var Isotope =
         });
     },
 
-    initializeToolsButton: function()
-    {
-        // Hide the tool buttons
-        document.getElements('#tl_listing .isotope-tools, .tl_listing .isotope-tools').addClass('invisible');
-
-        // Add trigger to edit buttons
-        document.getElements('a.isotope-contextmenu').each(function(el)
-        {
-            if (el.getNext('a.isotope-tools'))
-            {
-                el.removeClass('invisible').addEvent('click', function(e)
-                {
-                    if (document.id('isotope-contextmenu'))
-                    {
-                        document.id('isotope-contextmenu').destroy();
-                    }
-
-                    var div = new Element('div',
-                    {
-                        'id': 'isotope-contextmenu',
-                        'styles': {
-                            'top': (el.getPosition().y + 22),
-                            'display': 'block'
-                        }
-                    });
-
-                    el.getAllNext('a.isotope-tools').each( function(el2)
-                    {
-                        var im2 = el2.getFirst('img');
-                        new Element('a', {
-                            'href': el2.get('href'),
-                            'title': el2.get('title'),
-                            'html': (el2.get('html') +' '+ im2.get('alt'))
-                        }).inject(div);
-                    });
-
-                    div.inject(document.id(document.body));
-                    div.setStyle('left', el.getPosition().x - (div.getSize().x / 2));
-
-                    return false;
-                });
-            }
-        });
-
-        // Hide context menu
-        document.id(document.body).addEvent('click', function(e)
-        {
-            if (document.id('isotope-contextmenu') && !e.target.getParent('#isotope-contextmenu'))
-            {
-                document.id('isotope-contextmenu').destroy();
-            }
-        });
-    },
-
     /**
      * Make parent view items sortable
      * @param object
@@ -686,10 +632,8 @@ window.addEvent('domready', function()
     Isotope.addInteractiveHelp();
     Isotope.initializeToolsMenu();
     Isotope.initializeFilterMenu();
-    Isotope.initializeToolsButton();
 }).addEvent('structure', function()
 {
     Isotope.addInteractiveHelp();
-    Isotope.initializeToolsButton();
 });
 

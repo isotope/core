@@ -278,6 +278,7 @@
 
 .tl_iso_operations {
 	width: 110px;
+	white-space: normal;
 }
 
 .tl_iso_content_right .tl_select_all,
