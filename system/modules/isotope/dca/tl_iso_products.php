@@ -29,6 +29,7 @@ $GLOBALS['TL_DCA']['tl_iso_products'] = array
         'dataContainer'             => 'ProductData',
         'enableVersioning'          => true,
         'closed'                    => true,
+        'switchToEdit'              => true,
         'gtable'                    => 'tl_iso_groups',
         'ctable'                    => array('tl_iso_downloads', 'tl_iso_product_categories', 'tl_iso_prices'),
         'onload_callback' => array
@@ -79,7 +80,7 @@ $GLOBALS['TL_DCA']['tl_iso_products'] = array
             'new_product' => array
             (
                 'label'             => &$GLOBALS['TL_LANG']['tl_iso_products']['new_product'],
-                'href'              => 'act=create&type=product&gid=' . $this->Session->get('iso_products_gid'),
+                'href'              => 'act=create&type=product',
                 'class'             => 'header_new',
                 'attributes'        => 'onclick="Backend.getScrollOffset();"',
             ),

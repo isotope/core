@@ -81,10 +81,23 @@ class DC_ProductData extends \DC_Table
 			}
 		}
 
-		// Store the last product ID in session (e.g. for breadcrumb)
-		if (isset($_GET['id']) && Input::get('id', true) != $this->Session->get('iso_products_id'))
+		// Redirect if the product was not found
+		if (isset($_GET['id']))
 		{
-			$this->Session->set('iso_products_id', Input::get('id', true));
+			$objProduct = \Database::getInstance()->prepare("SELECT id FROM tl_iso_products WHERE id=?")
+												  ->limit(1)
+												  ->execute(\Input::get('id', true));
+
+			if (!$objProduct->numRows)
+			{
+				\Controller::redirect(preg_replace('/(&amp;)?id=[^&]*/i', '', \Environment::get('request')));
+			}
+
+			// Store the last product ID in session (e.g. for breadcrumb)
+			if (!isset($_GET['act']) && \Input::get('id', true) != $this->Session->get('iso_products_id'))
+			{
+				$this->Session->set('iso_products_id', \Input::get('id', true));
+			}
 		}
 
 		// Display last product details
@@ -1945,9 +1958,17 @@ window.addEvent(\'domready\', function() {
 		// Load the fonts to display the paste hint
 		$GLOBALS['TL_CONFIG']['loadGoogleFonts'] = $blnClipboard;
 
+		$strReferer = \System::getReferer(true, $this->strTable);
+
+		// Referer by default should point to the products view
+		if (!\Input::get('act'))
+		{
+			$strReferer = 'contao/main.php?do=' . \Input::get('do') . '&amp;gid=' . $this->Session->get('iso_products_gid') . '&amp;ref=' . \Input::get('ref');
+		}
+
 		$return = '
 <div id="tl_buttons">
-<a href="'.\System::getReferer(true, $this->strTable).'" class="header_back" title="'.specialchars($GLOBALS['TL_LANG']['MSC']['backBTTitle']).'" accesskey="b" onclick="Backend.getScrollOffset()">'.$GLOBALS['TL_LANG']['MSC']['backBT'].'</a> ' . (!$blnClipboard ? ((\Input::get('act') != 'select') ? (!$GLOBALS['TL_DCA'][$this->strTable]['config']['closed'] ? '
+<a href="'.$strReferer.'" class="header_back" title="'.specialchars($GLOBALS['TL_LANG']['MSC']['backBTTitle']).'" accesskey="b" onclick="Backend.getScrollOffset()">'.$GLOBALS['TL_LANG']['MSC']['backBT'].'</a> ' . (!$blnClipboard ? ((\Input::get('act') != 'select') ? (!$GLOBALS['TL_DCA'][$this->strTable]['config']['closed'] ? '
 <a href="'.\Backend::addToUrl('act=create&amp;mode=2&amp;pid='.$this->intId).'" class="header_new" title="'.specialchars($GLOBALS['TL_LANG'][$this->strTable]['new'][1]).'" accesskey="n" onclick="Backend.getScrollOffset()">'.$GLOBALS['TL_LANG'][$this->strTable]['new'][0].'</a> ' : '') . $this->generateGlobalButtons() : '') : '<a href="'.\Backend::addToUrl('clipboard=1').'" class="header_clipboard" title="'.specialchars($GLOBALS['TL_LANG']['MSC']['clearClipboard']).'" accesskey="x">'.$GLOBALS['TL_LANG']['MSC']['clearClipboard'].'</a> ') . '
 </div>' . \Message::generate(true);
 
