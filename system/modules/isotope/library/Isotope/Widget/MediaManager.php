@@ -102,8 +102,10 @@ class MediaManager extends \Widget implements \uploadable
             $GLOBALS['TL_CONFIG']['uploadTypes'] = $this->extensions;
         }
 
+        $this->objUploader->setName($this->strName);
+
         // Process the uploaded files
-        $arrUploaded = $this->objUploader->uploadTo('isotope', $this->strName);
+        $arrUploaded = $this->objUploader->uploadTo('isotope');
 
         // Reset system configuration
         $GLOBALS['TL_CONFIG']['uploadTypes'] = $arrAllowedTypes;
