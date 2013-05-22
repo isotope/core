@@ -71,7 +71,7 @@ $GLOBALS['TL_DCA']['tl_iso_products'] = array
         ),
         'label' => array
         (
-            'fields'                => array('', 'name', 'sku', 'price'),
+            'fields'                => array('images', 'name', 'sku', 'price'),
             'showColumns'           => true,
             'label_callback'        => array('Isotope\ProductCallbacks', 'getRowLabel'),
         ),

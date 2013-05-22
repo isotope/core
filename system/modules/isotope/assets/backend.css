@@ -276,6 +276,11 @@
 	margin-top: 0;
 }
 
+.tl_iso_listing_container th.col_images {
+	font-size: 0;
+	width: 60px;
+}
+
 .tl_iso_operations {
 	width: 110px;
 	white-space: normal;
