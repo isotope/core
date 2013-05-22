@@ -157,8 +157,14 @@ class DC_ProductData extends \DC_Table
             $this->Session->set('CLIPBOARD', $arrClipboard);
 
             // Perform a redirect (this is the CURRENT_ID fix)
-            \Controller::redirect('contao/main.php?do=' . \Input::get('do') /*. '&table=' . \Input::get('table')*/ . (\Input::get('pid') ? '&id=' . \Input::get('pid') : '') . '&rt=' . \Input::get('rt') . '&ref=' . \Input::get('ref'));
+            \Controller::redirect('contao/main.php?do=' . \Input::get('do') . (\Input::get('pid') ? '&id=' . \Input::get('pid') : '') . '&rt=' . \Input::get('rt') . '&ref=' . \Input::get('ref'));
         }
+
+		// Do not show the language records
+		$this->procedure[] = "language=''";
+
+		// Display products filtered by group
+		$this->procedure[] = "gid IN(" . implode(',', array_map('intval', $this->Database->getChildRecords(array($this->intGroupId), 'tl_iso_groups', false, array($this->intGroupId)))) . ")";
 
         // Custom filter
         if (is_array($GLOBALS['TL_DCA'][$this->strTable]['list']['sorting']['filter']) && !empty($GLOBALS['TL_DCA'][$this->strTable]['list']['sorting']['filter']))
@@ -1587,10 +1593,8 @@ window.addEvent(\'domready\', function() {
 
 		$query = "SELECT * FROM " . $this->strTable;
 
+		// Show only main products
 		$this->procedure[] = "pid=0";
-
-		// Display products filtered by group
-		$this->procedure[] = "gid IN(" . implode(',', array_map('intval', $this->Database->getChildRecords(array($this->intGroupId), 'tl_iso_groups', false, array($this->intGroupId)))) . ")";
 
 		if (!empty($this->procedure))
 		{
