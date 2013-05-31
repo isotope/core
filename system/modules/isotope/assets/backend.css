@@ -21,27 +21,6 @@
     background-repeat:no-repeat;
 }
 
-.header_iso_filter
-{
-    padding:2px 0px 3px 20px;
-    background-image:url("magnifier.png");
-    background-position:left center;
-    background-repeat:no-repeat;
-}
-
-.header_iso_filter_active
-{
-    background-image:url("magnifier--plus.png");
-}
-
-.header_iso_filter_remove
-{
-    padding:2px 0px 3px 20px;
-    background-image:url("magnifier--minus.png");
-    background-position:left center;
-    background-repeat:no-repeat;
-}
-
 .header_import_assets
 {
     padding:2px 0px 3px 20px;
@@ -86,46 +65,6 @@
 {
     padding:2px 0px 3px 20px;
     background-image:url("folders.png");
-    background-position:left center;
-    background-repeat:no-repeat;
-}
-
-.header_iso_filter_noimages
-{
-    padding:2px 0px 3px 20px;
-    background-image:url("image--exclamation.png");
-    background-position:left center;
-    background-repeat:no-repeat;
-}
-
-.header_iso_filter_nocategory
-{
-    padding:2px 0px 3px 20px;
-    background-image:url("globe--exclamation.png");
-    background-position:left center;
-    background-repeat:no-repeat;
-}
-
-.header_iso_filter_new_today
-{
-    padding:2px 0px 3px 20px;
-    background-image:url("calendar-select.png");
-    background-position:left center;
-    background-repeat:no-repeat;
-}
-
-.header_iso_filter_new_week
-{
-    padding:2px 0px 3px 20px;
-    background-image:url("calendar-select-week.png");
-    background-position:left center;
-    background-repeat:no-repeat;
-}
-
-.header_iso_filter_new_month
-{
-    padding:2px 0px 3px 20px;
-    background-image:url("calendar-select-month.png");
     background-position:left center;
     background-repeat:no-repeat;
 }
@@ -272,23 +211,31 @@
 	margin: 24px 18px 0 18px;
 }
 
-.tl_iso_listing_container {
+.iso_filter {
+	line-height: 28px;
+}
+
+.iso_filter .styled_select {
+	margin-top: 4px;
+}
+
+.iso_listing_container {
 	margin-top: 0;
 }
 
-.tl_iso_listing_container th.col_images {
+.iso_listing_container th.col_images {
 	font-size: 0;
 	width: 60px;
 }
 
-.tl_iso_operations {
+.iso_operations {
 	width: 110px;
 	white-space: normal;
 }
 
-.tl_iso_content_right .tl_select_all,
-.tl_iso_content_right a,
-.tl_iso_operations a {
+.iso_content_right .tl_select_all,
+.iso_content_right a,
+.iso_operations a {
 	display: inline-block;
 	margin-bottom: 4px;
 }

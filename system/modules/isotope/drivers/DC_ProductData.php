@@ -1680,7 +1680,7 @@ window.addEvent(\'domready\', function() {
 		$this->bid = ($return != '') ? $this->bid : 'tl_buttons';
 		$blnClipboard = false;
 		$arrClipboard = $this->Session->get('CLIPBOARD');
-		
+
 		// Check the clipboard
 		if (!empty($arrClipboard[$this->strTable]))
 		{
@@ -1720,7 +1720,7 @@ window.addEvent(\'domready\', function() {
 <input type="hidden" name="FORM_SUBMIT" value="tl_select">
 <input type="hidden" name="REQUEST_TOKEN" value="'.REQUEST_TOKEN.'">' : '').'
 
-<div class="tl_listing_container tl_iso_listing_container list_view">'.((\Input::get('act') == 'select') ? '
+<div class="tl_listing_container iso_listing_container list_view">'.((\Input::get('act') == 'select') ? '
 
 <div class="tl_select_trigger">
 <label for="tl_select_trigger" class="tl_select_label">'.$GLOBALS['TL_LANG']['MSC']['selectAll'].'</label> <input type="checkbox" id="tl_select_trigger" onclick="Backend.toggleCheckboxes(this)" class="tl_tree_checkbox">
@@ -1741,7 +1741,7 @@ window.addEvent(\'domready\', function() {
 			}
 
 				$return .= '
-    <th class="tl_folder_tlist tl_right_nowrap tl_iso_operations">&nbsp;</th>
+    <th class="tl_folder_tlist tl_right_nowrap iso_operations">&nbsp;</th>
   </tr>';
 			}
 
@@ -1888,8 +1888,8 @@ window.addEvent(\'domready\', function() {
 
 				// Buttons ($row, $table, $root, $blnCircularReference, $childs, $previous, $next)
 				$return .= ((\Input::get('act') == 'select') ? '
-    <td class="tl_file_list tl_right_nowrap tl_iso_operations"><input type="checkbox" name="IDS[]" id="ids_'.$row['id'].'" class="tl_tree_checkbox" value="'.$row['id'].'"></td>' : '
-    <td class="tl_file_list tl_right_nowrap tl_iso_operations">'.$this->generateButtons($row, $this->strTable, $this->root).'</td>') . '
+    <td class="tl_file_list tl_right_nowrap iso_operations"><input type="checkbox" name="IDS[]" id="ids_'.$row['id'].'" class="tl_tree_checkbox" value="'.$row['id'].'"></td>' : '
+    <td class="tl_file_list tl_right_nowrap iso_operations">'.$this->generateButtons($row, $this->strTable, $this->root).'</td>') . '
   </tr>';
 			}
 
@@ -2000,7 +2000,7 @@ window.addEvent(\'domready\', function() {
   <p>'.$GLOBALS['TL_LANG']['MSC']['selectNewPosition'].'</p>
 </div>' : '').'
 
-<div class="tl_listing_container tl_iso_listing_container parent_view">
+<div class="tl_listing_container iso_listing_container parent_view">
 
 <div class="tl_header click2edit" onmouseover="Theme.hoverDiv(this,1)" onmouseout="Theme.hoverDiv(this,0)">';
 
@@ -2017,10 +2017,10 @@ window.addEvent(\'domready\', function() {
 			$GLOBALS['TL_DCA'][$this->strTable]['list']['operations'] = array_intersect_key($GLOBALS['TL_DCA'][$this->strTable]['list']['operations'], array_flip($GLOBALS['TL_DCA'][$this->strTable]['list']['sorting']['headerOperations']));
 
 			$return .= '
-<div class="tl_content_right tl_iso_content_right">'.((\Input::get('act') == 'select') ? '
+<div class="tl_content_right iso_content_right">'.((\Input::get('act') == 'select') ? '
 <div class="tl_select_all">
 <label for="tl_select_trigger" class="tl_select_label">'.$GLOBALS['TL_LANG']['MSC']['selectAll'].'</label> <input type="checkbox" id="tl_select_trigger" onclick="Backend.toggleCheckboxes(this)" class="tl_tree_checkbox"></div>' : ($blnClipboard ? ' <a href="'.\Backend::addToUrl('act='.$arrClipboard['mode'].'&amp;mode=2&amp;pid='.$objParent->id . (!$blnMultiboard ? '&amp;id='.$arrClipboard['id'] : '') . '&amp;table='.$this->strTable).'" title="'.specialchars($GLOBALS['TL_LANG'][$this->strTable]['pasteafter'][0]).'" onclick="Backend.getScrollOffset()">'.$imagePasteAfter.'</a>' : '')) . '
-<div class="tl_iso_operations">' .
+<div class="iso_operations">' .
 $this->generateButtons($objParent->row(), $this->strTable) . '
 </div>
 </div>';
@@ -2229,7 +2229,7 @@ $this->generateButtons($objParent->row(), $this->strTable) . '
 			}
 
 				$return .= '
-    <th class="tl_folder_tlist tl_right_nowrap tl_iso_operations">&nbsp;</th>
+    <th class="tl_folder_tlist tl_right_nowrap iso_operations">&nbsp;</th>
   </tr>';
 			}
 
@@ -2390,8 +2390,8 @@ $this->generateButtons($objParent->row(), $this->strTable) . '
 
 				// Buttons ($row, $table, $root, $blnCircularReference, $childs, $previous, $next)
 				$return .= ((\Input::get('act') == 'select') ? '
-    <td class="tl_file_list tl_right_nowrap tl_iso_operations"><input type="checkbox" name="IDS[]" id="ids_'.$row['id'].'" class="tl_tree_checkbox" value="'.$row['id'].'"></td>' : '
-    <td class="tl_file_list tl_right_nowrap tl_iso_operations">'.$this->generateButtons($row, $this->strTable, $this->root).'</td>') . '
+    <td class="tl_file_list tl_right_nowrap iso_operations"><input type="checkbox" name="IDS[]" id="ids_'.$row['id'].'" class="tl_tree_checkbox" value="'.$row['id'].'"></td>' : '
+    <td class="tl_file_list tl_right_nowrap iso_operations">'.$this->generateButtons($row, $this->strTable, $this->root).'</td>') . '
   </tr>';
 			}
 

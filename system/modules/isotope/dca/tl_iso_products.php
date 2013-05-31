@@ -61,12 +61,13 @@ $GLOBALS['TL_DCA']['tl_iso_products'] = array
             'headerFields'          => array('name', 'sku', 'price', 'published'),
             'headerOperations'      => array('edit', 'copy', 'cut', 'delete', 'toggle', 'show', 'quick_edit', 'generate', 'related', 'downloads', 'prices'),
             'flag'                  => 1,
-            'panelLayout'           => 'buttons,filter;sort,search,limit',
+            'panelLayout'           => 'iso_buttons,iso_filter;filter;sort,search,limit',
             'icon'                  => 'system/modules/isotope/assets/store-open.png',
             'paste_button_callback' => array('Isotope\PasteProductButton', 'generate'),
             'panel_callback'        => array
             (
-            	'buttons' => array('Isotope\ProductCallbacks', 'generateProductFilter')
+            	'iso_buttons' => array('Isotope\ProductCallbacks', 'generateFilterButtons'),
+            	'iso_filter'  => array('Isotope\ProductCallbacks', 'generateAdvancedFilters')
             )
         ),
         'label' => array
@@ -81,81 +82,14 @@ $GLOBALS['TL_DCA']['tl_iso_products'] = array
             (
                 'label'             => &$GLOBALS['TL_LANG']['tl_iso_products']['new_product'],
                 'href'              => 'act=create&type=product',
-                'class'             => 'header_new',
+                'icon'              => 'new.gif',
                 'attributes'        => 'onclick="Backend.getScrollOffset();"',
-            ),
-            'filter' => array
-            (
-                'label'             => &$GLOBALS['TL_LANG']['tl_iso_products']['filter'],
-                'class'             => ('header_iso_filter' . (is_array(\Input::get('filter')) ? ' header_iso_filter_active' : '')),
-                'attributes'        => 'onclick="Backend.getScrollOffset();" style="display:none"',
-            ),
-            'filter_noimages' => array
-            (
-                'label'             => &$GLOBALS['TL_LANG']['tl_iso_products']['filter_noimages'],
-                'href'              => 'filter[]=noimages',
-                'class'             => 'header_iso_filter_noimages isotope-filter',
-                'attributes'        => 'onclick="Backend.getScrollOffset();"',
-                'button_callback'   => array('Isotope\ProductCallbacks', 'filterButton'),
-            ),
-            'filter_nocategory' => array
-            (
-                'label'             => &$GLOBALS['TL_LANG']['tl_iso_products']['filter_nocategory'],
-                'href'              => 'filter[]=nocategory',
-                'class'             => 'header_iso_filter_nocategory isotope-filter',
-                'attributes'        => 'onclick="Backend.getScrollOffset();"',
-                'button_callback'   => array('Isotope\ProductCallbacks', 'filterButton'),
-            ),
-            'filter_new_today' => array
-            (
-                'label'             => &$GLOBALS['TL_LANG']['tl_iso_products']['filter_new_today'],
-                'href'              => 'filter[]=new_today',
-                'class'             => 'header_iso_filter_new_today isotope-filter',
-                'attributes'        => 'onclick="Backend.getScrollOffset();"',
-                'button_callback'   => array('Isotope\ProductCallbacks', 'filterButton'),
-            ),
-            'filter_new_week' => array
-            (
-                'label'             => &$GLOBALS['TL_LANG']['tl_iso_products']['filter_new_week'],
-                'href'              => 'filter[]=new_week',
-                'class'             => 'header_iso_filter_new_week isotope-filter',
-                'attributes'        => 'onclick="Backend.getScrollOffset();"',
-                'button_callback'   => array('Isotope\ProductCallbacks', 'filterButton'),
-            ),
-            'filter_new_month' => array
-            (
-                'label'             => &$GLOBALS['TL_LANG']['tl_iso_products']['filter_new_month'],
-                'href'              => 'filter[]=new_month',
-                'class'             => 'header_iso_filter_new_month isotope-filter',
-                'attributes'        => 'onclick="Backend.getScrollOffset();"',
-                'button_callback'   => array('Isotope\ProductCallbacks', 'filterButton'),
-            ),
-            'filter_remove' => array
-            (
-                'label'             => &$GLOBALS['TL_LANG']['tl_iso_products']['filter_remove'],
-                'href'              => 'filter[]=test',
-                'class'             => 'header_iso_filter_remove isotope-filter',
-                'attributes'        => ('onclick="Backend.getScrollOffset();"' . (is_array(\Input::get('filter')) ? '' : ' style="display:none"')),
-                'button_callback'   => array('Isotope\ProductCallbacks', 'filterRemoveButton'),
-            ),
-            'tools' => array
-            (
-                'label'             => &$GLOBALS['TL_LANG']['tl_iso_products']['tools'],
-                'class'             => 'header_isotope_tools',
-                'attributes'        => 'onclick="Backend.getScrollOffset();" style="display:none"',
-            ),
-            'all' => array
-            (
-                'label'             => &$GLOBALS['TL_LANG']['MSC']['all'],
-                'href'              => 'act=select',
-                'class'             => 'header_edit_all isotope-tools',
-                'attributes'        => 'onclick="Backend.getScrollOffset();"'
             ),
             'groups' => array
             (
                 'label'             => &$GLOBALS['TL_LANG']['tl_iso_products']['groups'],
                 'href'              => 'table=tl_iso_groups',
-                'class'             => 'header_iso_groups isotope-tools',
+                'icon'              => 'system/modules/isotope/assets/folders.png',
                 'attributes'        => 'onclick="Backend.getScrollOffset();"',
                 'button_callback'   => array('Isotope\ProductCallbacks', 'groupsButton')
             ),
@@ -163,8 +97,15 @@ $GLOBALS['TL_DCA']['tl_iso_products'] = array
             (
                 'label'             => &$GLOBALS['TL_LANG']['tl_iso_products']['import'],
                 'href'              => 'key=import',
-                'class'             => 'header_import_assets isotope-tools',
+                'icon'              => 'system/modules/isotope/assets/image--plus.png',
                 'attributes'        => 'onclick="Backend.getScrollOffset();"',
+            ),
+            'all' => array
+            (
+                'label'             => &$GLOBALS['TL_LANG']['MSC']['all'],
+                'href'              => 'act=select',
+                'class'             => 'header_edit_all',
+                'attributes'        => 'onclick="Backend.getScrollOffset();"'
             ),
         ),
         'operations' => array
@@ -290,7 +231,6 @@ $GLOBALS['TL_DCA']['tl_iso_products'] = array
         (
             'label'                 => &$GLOBALS['TL_LANG']['tl_iso_products']['pages'],
             'exclude'               => true,
-            'filter'                => true,
             'inputType'             => 'pageTree',
             'foreignKey'            => 'tl_page.title',
             'eval'                  => array('mandatory'=>false, 'multiple'=>true, 'fieldType'=>'checkbox', 'tl_class'=>'clr'),
@@ -469,6 +409,7 @@ $GLOBALS['TL_DCA']['tl_iso_products'] = array
         (
             'label'                 => &$GLOBALS['TL_LANG']['tl_iso_products']['protected'],
             'exclude'               => true,
+            'filter'                => true,
             'inputType'             => 'checkbox',
             'eval'                  => array('submitOnChange'=>true, 'tl_class'=>'clr'),
             'attributes'            => array('legend'=>'expert_legend'),
@@ -477,6 +418,7 @@ $GLOBALS['TL_DCA']['tl_iso_products'] = array
         (
             'label'                 => &$GLOBALS['TL_LANG']['tl_iso_products']['groups'],
             'exclude'               => true,
+            'filter'                => true,
             'inputType'             => 'checkbox',
             'foreignKey'            => 'tl_member_group.name',
             'eval'                  => array('mandatory'=>true, 'multiple'=>true),

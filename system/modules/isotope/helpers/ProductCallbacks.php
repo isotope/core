@@ -163,69 +163,104 @@ class ProductCallbacks extends \Backend
      */
     public function applyAdvancedFilters()
     {
-        $arrFilters = \Input::get('filter');
+		$session = $this->Session->getData();
 
-        if (\Input::get('act') == '' && \Input::get('key') == '' && is_array($arrFilters))
-        {
-            $arrProducts = null;
-            $arrNames = array();
+		// Store filter values in the session
+		foreach ($_POST as $k=>$v)
+		{
+			if (substr($k, 0, 4) != 'iso_')
+			{
+				continue;
+			}
 
-            foreach ($arrFilters as $filter)
-            {
-                switch ($filter)
-                {
-                    case 'noimages':
-                        $objProducts = $this->Database->execute("SELECT id FROM tl_iso_products WHERE pid=0 AND language='' AND images IS NULL");
-                        $arrProducts = is_array($arrProducts) ? array_intersect($arrProducts, $objProducts->fetchEach('id')) : $objProducts->fetchEach('id');
-                        break;
+			// Reset the filter
+			if ($k == \Input::post($k))
+			{
+				unset($session['filter']['tl_iso_products'][$k]);
+			}
+			// Apply the filter
+			else
+			{
+				$session['filter']['tl_iso_products'][$k] = \Input::post($k);
+			}
+		}
 
-                    case 'nocategory':
-                        $objProducts = $this->Database->execute("SELECT id FROM tl_iso_products p WHERE pid=0 AND language='' AND (SELECT COUNT(*) FROM tl_iso_product_categories c WHERE c.pid=p.id)=0");
-                        $arrProducts = is_array($arrProducts) ? array_intersect($arrProducts, $objProducts->fetchEach('id')) : $objProducts->fetchEach('id');
-                        break;
+		$this->Session->setData($session);
+		$arrProducts = null;
 
-                    case 'new_today':
-                        $objProducts = $this->Database->execute("SELECT id FROM tl_iso_products p WHERE pid=0 AND language='' AND dateAdded>=".strtotime('-1 day'));
-                        $arrProducts = is_array($arrProducts) ? array_intersect($arrProducts, $objProducts->fetchEach('id')) : $objProducts->fetchEach('id');
-                        break;
+		// Filter the products
+		foreach ($session['filter']['tl_iso_products'] as $k=>$v)
+		{
+			if (substr($k, 0, 4) != 'iso_')
+			{
+				continue;
+			}
 
-                    case 'new_week':
-                        $objProducts = $this->Database->execute("SELECT id FROM tl_iso_products p WHERE pid=0 AND language='' AND dateAdded>=".strtotime('-1 week'));
-                        $arrProducts = is_array($arrProducts) ? array_intersect($arrProducts, $objProducts->fetchEach('id')) : $objProducts->fetchEach('id');
-                        break;
+			switch ($k)
+			{
+				// Show products with or without images
+				case 'iso_noimages':
+                    $objProducts = $this->Database->execute("SELECT id FROM tl_iso_products WHERE pid=0 AND language='' AND images " . ($v ? " IS NULL" : " IS NOT NULL"));
+                    $arrProducts = is_array($arrProducts) ? array_intersect($arrProducts, $objProducts->fetchEach('id')) : $objProducts->fetchEach('id');
+					break;
 
-                    case 'new_month':
-                        $objProducts = $this->Database->execute("SELECT id FROM tl_iso_products p WHERE pid=0 AND language='' AND dateAdded>=".strtotime('-1 month'));
-                        $arrProducts = is_array($arrProducts) ? array_intersect($arrProducts, $objProducts->fetchEach('id')) : $objProducts->fetchEach('id');
-                        break;
+				// Show products with or without category
+                case 'iso_nocategory':
+                    $objProducts = $this->Database->execute("SELECT id FROM tl_iso_products p WHERE pid=0 AND language='' AND (SELECT COUNT(*) FROM tl_iso_product_categories c WHERE c.pid=p.id)" . ($v ? "=0" : ">0"));
+                    $arrProducts = is_array($arrProducts) ? array_intersect($arrProducts, $objProducts->fetchEach('id')) : $objProducts->fetchEach('id');
+                    break;
 
-                    default:
-                        // !HOOK: add custom advanced filters
-                        if (isset($GLOBALS['ISO_HOOKS']['applyAdvancedFilters']) && is_array($GLOBALS['ISO_HOOKS']['applyAdvancedFilters']))
+				// Show new products
+                case 'iso_new':
+                	$date = 0;
+
+					switch ($v)
+					{
+						case 'new_today':
+							$date = strtotime('-1 day');
+							break;
+
+						case 'new_week':
+							$date = strtotime('-1 week');
+							break;
+
+						case 'new_month':
+							$date = strtotime('-1 month');
+							break;
+					}
+
+                    $objProducts = $this->Database->execute("SELECT id FROM tl_iso_products p WHERE pid=0 AND language='' AND dateAdded>=".$date);
+                    $arrProducts = is_array($arrProducts) ? array_intersect($arrProducts, $objProducts->fetchEach('id')) : $objProducts->fetchEach('id');
+                    break;
+
+                default:
+                    // !HOOK: add custom advanced filters
+                    if (isset($GLOBALS['ISO_HOOKS']['applyAdvancedFilters']) && is_array($GLOBALS['ISO_HOOKS']['applyAdvancedFilters']))
+                    {
+                        foreach ($GLOBALS['ISO_HOOKS']['applyAdvancedFilters'] as $callback)
                         {
-                            foreach ($GLOBALS['ISO_HOOKS']['applyAdvancedFilters'] as $callback)
-                            {
-                                $objCallback = \System::importStatic($callback[0]);
-                                $arrReturn = $objCallback->$callback[1]($filter);
+                            $objCallback = \System::importStatic($callback[0]);
+                            $arrReturn = $objCallback->$callback[1]($k);
 
-                                if (is_array($arrReturn))
-                                {
-                                    $arrProducts = is_array($arrProducts) ? array_intersect($arrProducts, $arrReturn) : $arrReturn;
-                                    break;
-                                }
+                            if (is_array($arrReturn))
+                            {
+								$arrProducts = is_array($arrProducts) ? array_intersect($arrProducts, $arrReturn) : $arrReturn;
+                                break;
                             }
                         }
+                    }
 
-                        \System::log('Advanced product filter "'.$filter.'" not found.', __METHOD__, TL_ERROR);
-                        break;
-                }
+                    \System::log('Advanced product filter "' . $k . '" not found.', __METHOD__, TL_ERROR);
+                    break;
+			}
+		}
 
-                $arrNames[] = $GLOBALS['TL_LANG']['tl_iso_products']['filter_'.$filter][0];
-            }
+		if (is_array($arrProducts) && empty($arrProducts))
+		{
+			$arrProducts = array(0);
+		}
 
-            $GLOBALS['TL_DCA']['tl_iso_products']['list']['sorting']['root'] = $arrProducts;
-            $GLOBALS['TL_DCA']['tl_iso_products']['list']['sorting']['breadcrumb'] .= '<p class="tl_info">' . $GLOBALS['TL_LANG']['tl_iso_products']['filter'][0] . ': ' . implode(', ', $arrNames) . '</p><br>';
-        }
+		$GLOBALS['TL_DCA']['tl_iso_products']['list']['sorting']['root'] = $arrProducts;
     }
 
 
@@ -574,12 +609,79 @@ window.addEvent('domready', function() {
      * Generate product filter buttons and return them as HTML
      * @return string
      */
-    public function generateProductFilter()
+    public function generateFilterButtons()
     {
 	    return '
-<div class="tl_filter tl_iso_filter tl_subpanel">
+<div class="tl_filter iso_filter tl_subpanel">
 <input type="button" id="groupFilter" class="tl_submit" onclick="Backend.getScrollOffset();Isotope.openModalGroupSelector({\'width\':765,\'title\':\''.specialchars($GLOBALS['TL_LANG']['MSC']['groupPicker']).'\',\'url\':\'system/modules/isotope/public/group.php?do='.\Input::get('do').'&amp;table=tl_iso_groups&amp;field=gid&amp;value='.$this->Session->get('iso_products_gid').'\',\'action\':\'filterGroups\'});return false" value="'.specialchars($GLOBALS['TL_LANG']['MSC']['filterByGroups']).'">
 </div>';
+    }
+
+
+    /**
+     * Generate advanced filter panel and return them as HTML
+     * @return string
+     */
+    public function generateAdvancedFilters()
+    {
+    	$session = $this->Session->getData();
+
+		// Filters
+		$arrFilters = array
+		(
+			'iso_noimages' => array
+			(
+				'name'    => 'iso_noimages',
+				'label'   => $GLOBALS['TL_LANG']['tl_iso_products']['filter_noimages'],
+				'options' => array(''=>$GLOBALS['TL_LANG']['MSC']['no'], 1=>$GLOBALS['TL_LANG']['MSC']['yes'])
+			),
+			'iso_nocategory' => array
+			(
+				'name'    => 'iso_nocategory',
+				'label'   => $GLOBALS['TL_LANG']['tl_iso_products']['filter_nocategory'],
+				'options' => array(''=>$GLOBALS['TL_LANG']['MSC']['no'], 1=>$GLOBALS['TL_LANG']['MSC']['yes'])
+			),
+			'iso_new' => array
+			(
+				'name'    => 'iso_new',
+				'label'   => $GLOBALS['TL_LANG']['tl_iso_products']['filter_new'],
+				'options' => array('new_today'=>$GLOBALS['TL_LANG']['tl_iso_products']['filter_new_today'], 'new_week'=>$GLOBALS['TL_LANG']['tl_iso_products']['filter_new_week'], 'new_month'=>$GLOBALS['TL_LANG']['tl_iso_products']['filter_new_month'])
+			)
+		);
+
+	    $strBuffer = '
+<div class="tl_filter iso_filter tl_subpanel">
+<strong>' . $GLOBALS['TL_LANG']['tl_iso_products']['filter'] . '</strong>' . "\n";
+
+		// Generate filters
+		foreach ($arrFilters as $arrFilter)
+		{
+			$blnActive = false;
+			$strOptions = '
+  <option value="' . $arrFilter['name'] . '">' . $arrFilter['label'] . '</option>
+  <option value="' . $arrFilter['name'] . '">---</option>' . "\n";
+
+			// Generate options
+			foreach ($arrFilter['options'] as $k=>$v)
+			{
+				$selected = '';
+
+				// Check if the option is active
+				if ($session['filter']['tl_iso_products'][$arrFilter['name']] === (string) $k)
+				{
+					$blnActive = true;
+					$selected = ' selected';
+				}
+
+				$strOptions .= '  <option value="' . $k . '"' . $selected . '>' . $v . '</option>' . "\n";
+			}
+
+			$strBuffer .= '<select name="' . $arrFilter['name'] . '" id="' . $arrFilter['name'] . '" class="tl_select' . ($blnActive ? ' active' : '') . '">
+' . $strOptions . '
+</select>' . "\n";
+		}
+
+		return $strBuffer . '</div>';
     }
 
 
@@ -710,7 +812,7 @@ window.addEvent('domready', function() {
             return '';
         }
 
-        return '<a href="' . $this->addToUrl('&amp;' . $href) . '" class="header_iso_groups isotope-tools" title="' . specialchars($title) . '"' . $attributes . '>' . specialchars($label) . '</a>';
+        return '<a href="' . $this->addToUrl('&amp;' . $href) . '" class="header_icon" title="' . specialchars($title) . '"' . $attributes . '>' . specialchars($label) . '</a>';
     }
 
 
