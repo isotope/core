@@ -186,6 +186,12 @@ class ProductCallbacks extends \Backend
 		}
 
 		$this->Session->setData($session);
+
+		if (!isset($session['filter']['tl_iso_products']))
+		{
+			return;
+		}
+
 		$arrProducts = null;
 
 		// Filter the products
@@ -656,7 +662,6 @@ window.addEvent('domready', function() {
 		// Generate filters
 		foreach ($arrFilters as $arrFilter)
 		{
-			$blnActive = false;
 			$strOptions = '
   <option value="' . $arrFilter['name'] . '">' . $arrFilter['label'] . '</option>
   <option value="' . $arrFilter['name'] . '">---</option>' . "\n";
@@ -664,19 +669,10 @@ window.addEvent('domready', function() {
 			// Generate options
 			foreach ($arrFilter['options'] as $k=>$v)
 			{
-				$selected = '';
-
-				// Check if the option is active
-				if ($session['filter']['tl_iso_products'][$arrFilter['name']] === (string) $k)
-				{
-					$blnActive = true;
-					$selected = ' selected';
-				}
-
-				$strOptions .= '  <option value="' . $k . '"' . $selected . '>' . $v . '</option>' . "\n";
+				$strOptions .= '  <option value="' . $k . '"' . (($session['filter']['tl_iso_products'][$arrFilter['name']] === (string) $k) ? ' selected' : '') . '>' . $v . '</option>' . "\n";
 			}
 
-			$strBuffer .= '<select name="' . $arrFilter['name'] . '" id="' . $arrFilter['name'] . '" class="tl_select' . ($blnActive ? ' active' : '') . '">
+			$strBuffer .= '<select name="' . $arrFilter['name'] . '" id="' . $arrFilter['name'] . '" class="tl_select' . (isset($session['filter']['tl_iso_products'][$arrFilter['name']]) ? ' active' : '') . '">
 ' . $strOptions . '
 </select>' . "\n";
 		}
