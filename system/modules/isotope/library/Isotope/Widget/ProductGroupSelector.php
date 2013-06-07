@@ -274,7 +274,7 @@ class ProductGroupSelector extends \Widget
         switch ($GLOBALS['TL_DCA'][$this->strTable]['config']['dataContainer'])
         {
             case 'File':
-                if (strlen($GLOBALS['TL_CONFIG'][$this->strField]))
+                if ($GLOBALS['TL_CONFIG'][$this->strField] != '')
                 {
                     $this->varValue = $GLOBALS['TL_CONFIG'][$this->strField];
                 }
@@ -355,7 +355,7 @@ class ProductGroupSelector extends \Widget
 				$nodes = $this->Session->get($this->strAjaxKey);
 				$nodes[$this->strAjaxId] = intval(\Input::post('state'));
 				$this->Session->set($this->strAjaxKey, $nodes);
-				exit; break;
+				break;
 
 			// Move the product
 			case 'moveProduct':
@@ -485,7 +485,7 @@ class ProductGroupSelector extends \Widget
 		{
 			$return .= '<li class="parent" id="'.$node.'_'.$id.'"><ul class="level_'.$level.'">';
 
-			for ($k=0; $k<count($childs); $k++)
+			for ($k=0, $c=count($childs); $k<$c; $k++)
 			{
 				$return .= $this->renderGrouptree($childs[$k], ($intMargin + $intSpacing));
 			}
@@ -515,7 +515,7 @@ class ProductGroupSelector extends \Widget
 		foreach ($this->varValue as $id)
 		{
 			$arrPids = $this->Database->getParentRecords($id, 'tl_iso_groups');
-			array_shift($arrPids); // the first element is the ID of the page itself
+			array_shift($arrPids); // the first element is the ID of the group itself
 			$this->arrNodes = array_merge($this->arrNodes, $arrPids);
 		}
     }
