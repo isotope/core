@@ -235,7 +235,7 @@ class ProductCallbacks extends \Backend
 							break;
 					}
 
-                    $objProducts = $this->Database->execute("SELECT id FROM tl_iso_products p WHERE pid=0 AND language='' AND dateAdded>=".$date);
+                    $objProducts = $this->Database->execute("SELECT id FROM tl_iso_products WHERE pid=0 AND language='' AND dateAdded>=".$date);
                     $arrProducts = is_array($arrProducts) ? array_intersect($arrProducts, $objProducts->fetchEach('id')) : $objProducts->fetchEach('id');
                     break;
 
@@ -259,6 +259,26 @@ class ProductCallbacks extends \Backend
                     \System::log('Advanced product filter "' . $k . '" not found.', __METHOD__, TL_ERROR);
                     break;
 			}
+		}
+
+		// Filter the products by pages
+		if (isset($session['iso_products_pages']) && is_array($session['iso_products_pages']) && !empty($session['iso_products_pages']))
+		{
+			$products = array();
+			$objProducts = $this->Database->execute("SELECT id, pages FROM tl_iso_products WHERE pid=0 AND language=''");
+
+			while ($objProducts->next())
+			{
+				$pages = deserialize($objProducts->pages, true);
+
+				// Add the product if pages match
+				if (count(array_intersect($session['iso_products_pages'], $pages)))
+				{
+					$products[] = $objProducts->id;
+				}
+			}
+
+			$arrProducts = is_array($arrProducts) ? array_intersect($arrProducts, $products) : $products;
 		}
 
 		if (is_array($arrProducts) && empty($arrProducts))
@@ -617,9 +637,12 @@ window.addEvent('domready', function() {
      */
     public function generateFilterButtons()
     {
+    	$arrPages = (array) $this->Session->get('iso_products_pages');
+
 	    return '
 <div class="tl_filter iso_filter tl_subpanel">
-<input type="button" id="groupFilter" class="tl_submit" onclick="Backend.getScrollOffset();Isotope.openModalGroupSelector({\'width\':765,\'title\':\''.specialchars($GLOBALS['TL_LANG']['MSC']['groupPicker']).'\',\'url\':\'system/modules/isotope/public/group.php?do='.\Input::get('do').'&amp;table=tl_iso_groups&amp;field=gid&amp;value='.$this->Session->get('iso_products_gid').'\',\'action\':\'filterGroups\'});return false" value="'.specialchars($GLOBALS['TL_LANG']['MSC']['filterByGroups']).'">
+<input type="button" id="groupFilter" class="tl_submit' . ($this->Session->get('iso_products_gid') ? ' active' : '') . '" onclick="Backend.getScrollOffset();Isotope.openModalGroupSelector({\'width\':765,\'title\':\''.specialchars($GLOBALS['TL_LANG']['tl_iso_products']['groups'][0]).'\',\'url\':\'system/modules/isotope/public/group.php?do='.\Input::get('do').'&amp;table=tl_iso_groups&amp;field=gid&amp;value='.$this->Session->get('iso_products_gid').'\',\'action\':\'filterGroups\'});return false" value="'.specialchars($GLOBALS['TL_LANG']['MSC']['filterByGroups']).'">
+<input type="button" id="pageFilter" class="tl_submit' . (!empty($arrPages) ? ' active' : '') . '" onclick="Backend.getScrollOffset();Isotope.openModalPageSelector({\'width\':765,\'title\':\''.specialchars($GLOBALS['TL_LANG']['MOD']['page'][0]).'\',\'url\':\'contao/page.php?do='.\Input::get('do').'&amp;table=tl_iso_products&amp;field=pages&amp;value='.implode(',', $arrPages).'\',\'action\':\'filterPages\'});return false" value="'.specialchars($GLOBALS['TL_LANG']['MSC']['filterByPages']).'">
 </div>';
     }
 

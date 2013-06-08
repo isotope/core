@@ -751,4 +751,146 @@ class Backend extends Contao_Backend
   <li>' . implode(' &gt; </li><li>', array_reverse($arrLinks)) . '</li>
 </ul>';
     }
+
+
+    /**
+     * Check the Ajax pre actions
+     * @param string
+     * @param object
+     * @return string
+     */
+    public function executePreActions($action)
+    {
+        switch ($action)
+        {
+            // Toggle nodes of the product tree
+            case 'toggleProductTree':
+                $this->strAjaxId = preg_replace('/.*_([0-9a-zA-Z]+)$/i', '$1', \Input::post('id'));
+                $this->strAjaxKey = str_replace('_' . $this->strAjaxId, '', \Input::post('id'));
+
+                if (\Input::get('act') == 'editAll')
+                {
+                    $this->strAjaxKey = preg_replace('/(.*)_[0-9a-zA-Z]+$/i', '$1', $this->strAjaxKey);
+                    $this->strAjaxName = preg_replace('/.*_([0-9a-zA-Z]+)$/i', '$1', \Input::post('name'));
+                }
+
+                $nodes = $this->Session->get($this->strAjaxKey);
+                $nodes[$this->strAjaxId] = intval(\Input::post('state'));
+
+                $this->Session->set($this->strAjaxKey, $nodes);
+                echo json_encode(array('token'=>REQUEST_TOKEN));
+                exit; break;
+
+            // Load nodes of the product tree
+            case 'loadProductTree':
+                $this->strAjaxId = preg_replace('/.*_([0-9a-zA-Z]+)$/i', '$1', \Input::post('id'));
+                $this->strAjaxKey = str_replace('_' . $this->strAjaxId, '', \Input::post('id'));
+
+                if (\Input::get('act') == 'editAll')
+                {
+                    $this->strAjaxKey = preg_replace('/(.*)_[0-9a-zA-Z]+$/i', '$1', $this->strAjaxKey);
+                    $this->strAjaxName = preg_replace('/.*_([0-9a-zA-Z]+)$/i', '$1', \Input::post('name'));
+                }
+
+                $nodes = $this->Session->get($this->strAjaxKey);
+                $nodes[$this->strAjaxId] = intval(\Input::post('state'));
+
+                $this->Session->set($this->strAjaxKey, $nodes);
+                break;
+
+            // Toggle nodes of the group tree
+            case 'toggleProductGroupTree':
+                $this->strAjaxId = preg_replace('/.*_([0-9a-zA-Z]+)$/', '$1', \Input::post('id'));
+				$this->strAjaxKey = str_replace('_' . $this->strAjaxId, '', \Input::post('id'));
+
+				if (\Input::get('act') == 'editAll')
+				{
+					$this->strAjaxKey = preg_replace('/(.*)_[0-9a-zA-Z]+$/', '$1', $this->strAjaxKey);
+					$this->strAjaxName = preg_replace('/.*_([0-9a-zA-Z]+)$/', '$1', \Input::post('name'));
+				}
+
+				$nodes = $this->Session->get($this->strAjaxKey);
+				$nodes[$this->strAjaxId] = intval(\Input::post('state'));
+				$this->Session->set($this->strAjaxKey, $nodes);
+				exit; break;
+
+            // Load nodes of the group tree
+            case 'loadProductGroupTree':
+				$this->strAjaxId = preg_replace('/.*_([0-9a-zA-Z]+)$/', '$1', \Input::post('id'));
+				$this->strAjaxKey = str_replace('_' . $this->strAjaxId, '', \Input::post('id'));
+
+				if (\Input::get('act') == 'editAll')
+				{
+					$this->strAjaxKey = preg_replace('/(.*)_[0-9a-zA-Z]+$/', '$1', $this->strAjaxKey);
+					$this->strAjaxName = preg_replace('/.*_([0-9a-zA-Z]+)$/', '$1', \Input::post('name'));
+				}
+
+				$nodes = $this->Session->get($this->strAjaxKey);
+				$nodes[$this->strAjaxId] = intval(\Input::post('state'));
+				$this->Session->set($this->strAjaxKey, $nodes);
+				break;
+
+			// Move the product
+			case 'moveProduct':
+				$this->Session->set('iso_products_gid', intval(\Input::post('value')));
+				$this->redirect(html_entity_decode(\Input::post('redirect')));
+				break;
+
+			// Move multiple products
+			case 'moveProducts':
+				$this->Session->set('iso_products_gid', intval(\Input::post('value')));
+				exit; break;
+
+			// Filter the groups
+			case 'filterGroups':
+				$this->Session->set('iso_products_gid', intval(\Input::post('value')));
+				$this->reload();
+				break;
+
+			// Filter the pages
+			case 'filterPages':
+				$this->Session->set('iso_products_pages', (array) \Input::post('value'));
+				$this->reload();
+				break;
+        }
+    }
+
+
+    /**
+     * Check the Ajax post actions
+     * @param string
+     * @param object
+     * @return string
+     */
+    public function executePostActions($action, $dc)
+    {
+    	switch ($action)
+    	{
+    		case 'loadProductTree':
+	            $arrData['strTable'] = $dc->table;
+	            $arrData['id'] = strlen($this->strAjaxName) ? $this->strAjaxName : $dc->id;
+	            $arrData['name'] = \Input::post('name');
+
+	            $this->loadDataContainer($dc->table);
+	            $arrData = array_merge($GLOBALS['TL_DCA'][$dc->table]['fields'][$arrData['name']]['eval'], $arrData);
+
+	            $objWidget = new $GLOBALS['BE_FFL']['productTree']($arrData, $dc);
+
+	            echo json_encode(array
+	            (
+	                'content' => $objWidget->generateAjax($this->strAjaxId, \Input::post('field'), intval(\Input::post('level'))),
+	                'token'   => REQUEST_TOKEN
+	            ));
+	            exit;
+
+    		case 'loadProductGroupTree':
+	            $arrData['strTable'] = $dc->table;
+	            $arrData['id'] = strlen($this->strAjaxName) ? $this->strAjaxName : $dc->id;
+	            $arrData['name'] = \Input::post('name');
+
+	            $objWidget = new $GLOBALS['BE_FFL']['productGroupSelector']($arrData, $dc);
+	            echo $objWidget->generateAjax($this->strAjaxId, \Input::post('field'), intval(\Input::post('level')));
+	            exit;
+        }
+    }
 }

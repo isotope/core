@@ -392,13 +392,14 @@ var Isotope =
 				return;
 			}
 			var inp = frm.document.getElementById('tl_listing').getElementsByTagName('input');
-			for (var i=0; i<inp.length; i++) 
+			for (var i=0; i<inp.length; i++)
 			{
 				if (!inp[i].checked || inp[i].id.match(/^check_all_/)) continue;
 				if (!inp[i].id.match(/^reset_/)) val.push(inp[i].get('value'));
 			}
 			new Request.Contao(
 			{
+				evalScripts: false,
 				onRequest: AjaxRequest.displayBox(Contao.lang.loading + ' …'),
 				onSuccess: function(txt, json)
 				{
@@ -413,6 +414,75 @@ var Isotope =
 			{
 				opt.trigger.fireEvent('closeModal');
 			}
+		});
+		M.show({
+			'title': opt.title,
+			'contents': '<iframe src="' + opt.url + '" name="simple-modal-iframe" width="100%" height="' + opt.height + '" frameborder="0"></iframe>',
+			'model': 'modal'
+		});
+		return M;
+	},
+
+    /**
+	 * Open a page selector in a modal window
+	 * @param object
+	 * @return object
+	 */
+	openModalPageSelector: function(options)
+	{
+		var opt = options || {};
+		var max = (window.getSize().y-180).toInt();
+		if (!opt.height || opt.height > max) opt.height = max;
+		var M = new SimpleModal(
+		{
+			'width': opt.width,
+			'btn_ok': Contao.lang.close,
+			'draggable': false,
+			'overlayOpacity': .5,
+			'onShow': function() { document.body.setStyle('overflow', 'hidden'); },
+			'onHide': function() { document.body.setStyle('overflow', 'auto'); }
+		});
+		M.addButton(Contao.lang.close, 'btn', function()
+		{
+			this.hide();
+		});
+		M.addButton(Contao.lang.apply, 'btn primary', function()
+		{
+			var val = [],
+				frm = null,
+				frms = window.frames;
+			for (var i=0; i<frms.length; i++)
+			{
+				if (frms[i].name == 'simple-modal-iframe')
+				{
+					frm = frms[i];
+					break;
+				}
+			}
+			if (frm === null)
+			{
+				alert('Could not find the SimpleModal frame');
+				return;
+			}
+			var inp = frm.document.getElementById('tl_listing').getElementsByTagName('input');
+			for (var i=0; i<inp.length; i++)
+			{
+				if (!inp[i].checked || inp[i].id.match(/^check_all_/)) continue;
+				if (!inp[i].id.match(/^reset_/)) val.push(inp[i].get('value'));
+			}
+			new Request.Contao(
+			{
+				evalScripts: false,
+				onRequest: AjaxRequest.displayBox(Contao.lang.loading + ' …'),
+				onSuccess: function(txt, json)
+				{
+					if (txt != '')
+					{
+						window.location.href = txt;
+					}
+				}
+			}).post({'action':opt.action, 'value':val, 'redirect':opt.redirect, 'REQUEST_TOKEN':Contao.request_token});
+			this.hide();
 		});
 		M.show({
 			'title': opt.title,

@@ -215,6 +215,16 @@
 	line-height: 28px;
 }
 
+.iso_filter .tl_submit.active {
+	border: 1px solid #b8b8b8;
+	background: #eee;
+	background-image: -moz-linear-gradient(bottom, #ccc 0%, #ffd 60%);
+	background-image: -webkit-linear-gradient(bottom, #ccc 0%, #ffd 60%);
+	background-image: -o-linear-gradient(bottom, #ccc 0%, #ffd 60%);
+	background-image: -ms-linear-gradient(bottom, #ccc 0%, #ffd 60%);
+	background-image: linear-gradient(bottom, #ccc 0%, #ffd 60%);
+}
+
 .iso_filter .styled_select {
 	margin-top: 4px;
 }

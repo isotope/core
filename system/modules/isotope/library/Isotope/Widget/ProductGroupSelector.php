@@ -316,89 +316,6 @@ class ProductGroupSelector extends \Widget
 
 
     /**
-     * Check the Ajax pre actions
-     * @param string
-     * @param object
-     * @return string
-     */
-    public function executePreActions($action)
-    {
-        switch ($action)
-        {
-            // Toggle nodes of the group tree
-            case 'toggleProductGroupTree':
-                $this->strAjaxId = preg_replace('/.*_([0-9a-zA-Z]+)$/', '$1', \Input::post('id'));
-				$this->strAjaxKey = str_replace('_' . $this->strAjaxId, '', \Input::post('id'));
-
-				if (\Input::get('act') == 'editAll')
-				{
-					$this->strAjaxKey = preg_replace('/(.*)_[0-9a-zA-Z]+$/', '$1', $this->strAjaxKey);
-					$this->strAjaxName = preg_replace('/.*_([0-9a-zA-Z]+)$/', '$1', \Input::post('name'));
-				}
-
-				$nodes = $this->Session->get($this->strAjaxKey);
-				$nodes[$this->strAjaxId] = intval(\Input::post('state'));
-				$this->Session->set($this->strAjaxKey, $nodes);
-				exit; break;
-
-            // Load nodes of the group tree
-            case 'loadProductGroupTree':
-				$this->strAjaxId = preg_replace('/.*_([0-9a-zA-Z]+)$/', '$1', \Input::post('id'));
-				$this->strAjaxKey = str_replace('_' . $this->strAjaxId, '', \Input::post('id'));
-
-				if (\Input::get('act') == 'editAll')
-				{
-					$this->strAjaxKey = preg_replace('/(.*)_[0-9a-zA-Z]+$/', '$1', $this->strAjaxKey);
-					$this->strAjaxName = preg_replace('/.*_([0-9a-zA-Z]+)$/', '$1', \Input::post('name'));
-				}
-
-				$nodes = $this->Session->get($this->strAjaxKey);
-				$nodes[$this->strAjaxId] = intval(\Input::post('state'));
-				$this->Session->set($this->strAjaxKey, $nodes);
-				break;
-
-			// Move the product
-			case 'moveProduct':
-				$this->Session->set('iso_products_gid', intval(\Input::post('value')));
-				$this->redirect(html_entity_decode(\Input::post('redirect')));
-				break;
-
-			// Move multiple products
-			case 'moveProducts':
-				$this->Session->set('iso_products_gid', intval(\Input::post('value')));
-				exit; break;
-
-			// Filter the groups
-			case 'filterGroups':
-				$this->Session->set('iso_products_gid', intval(\Input::post('value')));
-				$this->reload();
-				break;
-        }
-    }
-
-
-    /**
-     * Check the Ajax post actions
-     * @param string
-     * @param object
-     * @return string
-     */
-    public function executePostActions($action, $dc)
-    {
-        if ($action == 'loadProductGroupTree')
-        {
-            $arrData['strTable'] = $dc->table;
-            $arrData['id'] = strlen($this->strAjaxName) ? $this->strAjaxName : $dc->id;
-            $arrData['name'] = \Input::post('name');
-
-            $objWidget = new $GLOBALS['BE_FFL']['productGroupSelector']($arrData, $dc);
-            echo $objWidget->generateAjax($this->strAjaxId, \Input::post('field'), intval(\Input::post('level')));
-            exit;
-        }
-    }
-
-
-    /**
      * Recursively render the grouptree
      * @param integer
      * @param integer
@@ -447,7 +364,7 @@ class ProductGroupSelector extends \Widget
 			}
 		}
 
-        $return .= "\n    " . '<li class="tl_file" onmouseover="Theme.hoverDiv(this, 1);" onmouseout="Theme.hoverDiv(this, 0);"><div class="tl_left" style="padding-left:'.($intMargin + $intSpacing).'px;">';
+        $return .= "\n    " . '<li class="tl_file" onmouseover="Theme.hoverDiv(this, 1);" onmouseout="Theme.hoverDiv(this, 0);" onclick="Theme.toggleSelect(this)"><div class="tl_left" style="padding-left:'.($intMargin + $intSpacing).'px;">';
 
         $folderAttribute = 'style="margin-left:20px;"';
         $session[$node][$id] = is_numeric($session[$node][$id]) ? $session[$node][$id] : 0;
