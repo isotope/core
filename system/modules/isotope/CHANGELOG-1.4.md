@@ -8,6 +8,9 @@ Version 1.4.2 (2013-??-??)
 ### Improved
 - Added title attribute for product list detail links (#621)
 
+### Fixed
+- Unsuccessful orders could show up in the backend (#607)
+
 
 Version 1.4.1 (2013-04-15)
 --------------------------
