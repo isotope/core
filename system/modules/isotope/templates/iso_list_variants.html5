@@ -5,7 +5,7 @@
 <?php if($this->hasOptions): foreach( $this->raw_options as $name => $value ): ?>
 <input type="hidden" name="<?php echo $name; ?>" value="<?php echo $value; ?>">
 <?php endforeach; endif; ?>
-<h3><a href="<?php echo $this->href_reader; ?>"><?php echo $this->name; ?></a></h3>
+<h3><a href="<?php echo $this->href_reader; ?>" title="<?php echo $this->label_detail; ?>"><?php echo $this->name; ?></a></h3>
 
 <?php echo $this->images->generateMainImage('thumbnail'); ?>
 
@@ -15,7 +15,7 @@
 
 <div class="price"><?php echo $this->price; ?></div><?php if($this->baseprice): ?>
 <div class="baseprice"><?php echo $this->baseprice; ?></div><?php endif; ?>
-<div class="details"><a href="<?php echo $this->href_reader; ?>"><?php echo $this->label_detail; ?></a></div>
+<div class="details"><a href="<?php echo $this->href_reader; ?>" title="<?php echo $this->label_detail; ?>"><?php echo $this->label_detail; ?></a></div>
 
 <?php if($this->buttons): ?>
 <div class="submit_container">
