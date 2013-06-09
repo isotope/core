@@ -7,6 +7,7 @@ Version 1.4.2 (2013-??-??)
 
 ### Improved
 - Added title attribute for product list detail links (#621)
+- Show error message if someone tries to add an attribute with name "minimum_quantity" (#628)
 
 ### Fixed
 - Unsuccessful orders could show up in the backend (#607)
