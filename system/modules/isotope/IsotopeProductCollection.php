@@ -904,9 +904,9 @@ abstract class IsotopeProductCollection extends Model
 		$objTemplate->info = deserialize($this->checkout_info);
 		$objTemplate->items = $arrItems;
 		$objTemplate->raw = $this->arrData;
-		$objTemplate->date = $this->parseDate($GLOBALS['TL_CONFIG']['dateFormat'], $this->date);
-		$objTemplate->time = $this->parseDate($GLOBALS['TL_CONFIG']['timeFormat'], $this->date);
-		$objTemplate->datim = $this->parseDate($GLOBALS['TL_CONFIG']['datimFormat'], $this->date);
+		$objTemplate->date = $this->parseDate(isset($GLOBALS['objPage']) ? $GLOBALS['objPage']->dateFormat : $GLOBALS['TL_CONFIG']['dateFormat'], $this->date);
+		$objTemplate->time = $this->parseDate(isset($GLOBALS['objPage']) ? $GLOBALS['objPage']->timeFormat : $GLOBALS['TL_CONFIG']['timeFormat'], $this->date);
+		$objTemplate->datim = $this->parseDate(isset($GLOBALS['objPage']) ? $GLOBALS['objPage']->datimFormat : $GLOBALS['TL_CONFIG']['datimFormat'], $this->date);
 		$objTemplate->datimLabel = $GLOBALS['TL_LANG']['MSC']['datimLabel'];
 		$objTemplate->subTotalPrice = $this->Isotope->formatPriceWithCurrency($this->subTotal);
 		$objTemplate->grandTotal = $this->Isotope->formatPriceWithCurrency($this->grandTotal);

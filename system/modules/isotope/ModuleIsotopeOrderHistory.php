@@ -117,9 +117,9 @@ class ModuleIsotopeOrderHistory extends ModuleIsotope
 			(
 			    'collection'    => $objOrder,
 				'raw'			=> $objOrder->getData(),
-				'date'			=> $this->parseDate($GLOBALS['TL_CONFIG']['dateFormat'], $objOrder->date),
-				'time'			=> $this->parseDate($GLOBALS['TL_CONFIG']['timeFormat'], $objOrder->date),
-				'datime'		=> $this->parseDate($GLOBALS['TL_CONFIG']['datimeFormat'], $objOrder->date),
+				'date'			=> $this->parseDate(isset($GLOBALS['objPage']) ? $GLOBALS['objPage']->dateFormat : $GLOBALS['TL_CONFIG']['dateFormat'], $objOrder->date),
+				'time'			=> $this->parseDate(isset($GLOBALS['objPage']) ? $GLOBALS['objPage']->timeFormat : $GLOBALS['TL_CONFIG']['timeFormat'], $objOrder->date),
+				'datime'		=> $this->parseDate(isset($GLOBALS['objPage']) ? $GLOBALS['objPage']->datimeFormat : $GLOBALS['TL_CONFIG']['datimeFormat'], $objOrder->date),
 				'items'			=> $objOrders->items,
 				'grandTotal'	=> $this->Isotope->formatPriceWithCurrency($objOrder->grandTotal),
 				'status'		=> $objOrder->statusLabel,
