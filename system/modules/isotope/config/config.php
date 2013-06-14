@@ -234,12 +234,16 @@ $GLOBALS['ISO_GAL']['zoom']						= 'ZoomGallery';
 /**
  * Product types
  */
-$GLOBALS['ISO_PRODUCT'] = array
+$GLOBALS['ISO_PRODUCT'] = array_merge_recursive
 (
-	'regular' => array
+	(array) $GLOBALS['ISO_PRODUCT'],
+	array
 	(
-		'class'	=> 'IsotopeProduct',
-	),
+		'regular' => array
+		(
+			'class' => 'IsotopeProduct',
+		),
+	)
 );
 
 
