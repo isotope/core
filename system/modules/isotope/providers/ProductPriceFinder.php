@@ -247,8 +247,8 @@ class ProductPriceFinder extends System
 		else
 		{
 			$objResult = Database::getInstance()->execute("SELECT MIN(price) AS low_price, MAX(price) AS high_price FROM tl_iso_price_tiers WHERE id IN (
-																SELECT id FROM tl_iso_price_tiers WHERE id IN (
-																	SELECT id
+																SELECT id FROM (
+																	SELECT *
 																	FROM tl_iso_price_tiers
 																	WHERE pid IN
 																	(
@@ -266,7 +266,7 @@ class ProductPriceFinder extends System
 																		) AS p
 																		GROUP BY pid
 																	)
-																	ORDER BY min)
+																	ORDER BY min) price_tiers
 																GROUP BY pid
 															)");
 		}
