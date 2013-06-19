@@ -1847,7 +1847,7 @@ window.addEvent(\'domready\', function() {
 				}
 
 				$return .= '
-  <tr class="'.((++$eoCount % 2 == 0) ? 'even' : 'odd').' click2edit" onmouseover="Theme.hoverRow(this,1)" onmouseout="Theme.hoverRow(this,0)">
+  <tr class="'.((++$eoCount % 2 == 0) ? 'even' : 'odd').' click2edit" onmouseover="Theme.hoverRow(this,1)" onmouseout="Theme.hoverRow(this,0)" onclick="Theme.toggleSelect(this)">
     ';
 
 				$colspan = 1;
@@ -2349,7 +2349,7 @@ $this->generateButtons($objParent->row(), $this->strTable) . '
 				}
 
 				$return .= '
-  <tr class="'.((++$eoCount % 2 == 0) ? 'even' : 'odd').' click2edit" onmouseover="Theme.hoverRow(this,1)" onmouseout="Theme.hoverRow(this,0)">
+  <tr class="'.((++$eoCount % 2 == 0) ? 'even' : 'odd').' click2edit" onmouseover="Theme.hoverRow(this,1)" onmouseout="Theme.hoverRow(this,0)" onclick="Theme.toggleSelect(this)">
     ';
 
 				$colspan = 1;
