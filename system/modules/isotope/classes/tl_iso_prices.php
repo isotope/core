@@ -56,7 +56,7 @@ class tl_iso_prices extends \Backend
             $arrTiers[] = "{$objTiers->min}={$objTiers->price}";
         }
 
-        $arrInfo = array('<strong>'.$GLOBALS['TL_LANG']['tl_iso_prices']['price_tiers'][0].':</strong> ' . implode(', ', $arrTiers));
+        $arrInfo = array('<strong>'.$GLOBALS['TL_LANG']['tl_iso_prices']['price_tiers'][0].':</strong> <span>' . implode(', ', $arrTiers) . '</span>');
 
         foreach ($row as $name => $value)
         {

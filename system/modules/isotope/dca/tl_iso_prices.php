@@ -30,7 +30,7 @@ $GLOBALS['TL_DCA']['tl_iso_prices'] = array
         'ctable'                    => array('tl_iso_price_tiers'),
         'onload_callback' => array
         (
-            array('tl_iso_prices', 'initializeDCA'),
+            array('Isotope\tl_iso_prices', 'initializeDCA'),
         ),
     ),
 
