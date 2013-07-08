@@ -307,7 +307,7 @@ class PaymentAuthorizeDotNet extends IsotopePayment
 			$strResponse = '<p class="tl_info">' . sprintf("Transaction Status: %s, Reason: %s", $this->strStatus, $this->strReason) . '</p>';
 		}
 
-		if($blnAuthCapture)
+		if ($blnAuthCapture)
 		{
 			$objOrder = new IsotopeOrder();
 
@@ -317,10 +317,9 @@ class PaymentAuthorizeDotNet extends IsotopePayment
 				$objOrder->findBy('id', $objOrder->save());
 			}
 
-			$objOrder->status		= 'processing';
+			$objOrder->updateOrderStatus($this->new_order_status);
 
 			$objOrder->save();
-
 		}
 
 		$return = '<div id="tl_buttons">
@@ -518,12 +517,12 @@ $return .= '</div></div>';
 			switch($arrResponses['transaction-status'])
 			{
 				case 'Approved':
-					$objOrder->status = ($this->new_order_status ? $this->new_order_status : $this->Isotope->Config->orderstatus_new);
+					$objOrder->updateOrderStatus($this->new_order_status ? $this->new_order_status : $this->Isotope->Config->orderstatus_new);
 					$blnFail = false;
 					break;
 
 				default:
-					$objOrder->status = $this->Isotope->Config->orderstatus_error;
+					$objOrder->updateOrderStatus($this->Isotope->Config->orderstatus_error);
 					$blnFail = true;
 					break;
 
