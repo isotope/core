@@ -18,6 +18,7 @@ Version 1.4.2 (2013-??-??)
 - Postsale script broke some custom extensions (#643)
 - Attribute rules for less-than-equals, starts-with and ends-with did not work
 - Attribute rule should only sum up products that match the condition (#633)
+- deleteAll in tl_iso_orders could remove unwanted orders (#597)
 
 
 Version 1.4.1 (2013-04-15)
