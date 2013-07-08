@@ -118,7 +118,7 @@ class IsotopeCart extends IsotopeProductCollection
 					return array_intersect_key(array_merge($this->User->getData(), array('id'=>0, 'street_1'=>$this->User->street, 'subdivision'=>strtoupper($this->User->country . '-' . $this->User->state))), array_flip($this->Isotope->Config->billing_fields_raw));
 				}
 
-				return array('id'=>-1, 'country' => $this->Isotope->Config->billing_country);
+				return array('id'=>-1, 'country' => ($this->Isotope->Config->billing_country ? $this->Isotope->Config->billing_country : $this->Isotope->Config->country));
 
 			case 'shipping_address':
 				if ($this->arrSettings['shippingAddress_id'] == -1)
