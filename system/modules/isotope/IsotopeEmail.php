@@ -427,6 +427,8 @@ class IsotopeEmail extends Controller
 			$strBuffer = $this->recursiveReplaceTokensAndTags($strBuffer, $arrTokens);
 		}
 
+		$strBuffer = $this->restoreBasicEntities($strBuffer);
+
 		return $strBuffer;
 	}
 

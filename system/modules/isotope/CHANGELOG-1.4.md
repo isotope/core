@@ -21,6 +21,7 @@ Version 1.4.2 (2013-??-??)
 - Attribute rule should only sum up products that match the condition (#633)
 - deleteAll in tl_iso_orders could remove unwanted orders (#597)
 - Advanced price calculation failed when no variants were found (#644)
+- Restore basic entities in mail templates (#646)
 
 
 Version 1.4.1 (2013-04-15)
