@@ -612,6 +612,69 @@ class IsotopeRules extends Controller
 				continue;
 			}
 
+			elseif ($arrRule['productRestrictions'] == 'attribute')
+			{
+    			switch ($arrRule['attributeCondition'])
+				{
+					case 'eq':
+					    if (!($objProduct->{$arrRule['attributeName']} == $arrRule['attributeValue'])) {
+    					    continue(2);
+					    }
+					    break;
+
+					case 'neq':
+					    if (!($objProduct->{$arrRule['attributeName']} != $arrRule['attributeValue'])) {
+    					    continue(2);
+					    }
+						break;
+
+					case 'lt':
+					    if (!($objProduct->{$arrRule['attributeName']} < $arrRule['attributeValue'])) {
+    					    continue(2);
+					    }
+					    break;
+
+					case 'gt':
+					    if (!($objProduct->{$arrRule['attributeName']} > $arrRule['attributeValue'])) {
+    					    continue(2);
+					    }
+					    break;
+
+					case 'elt':
+					    if (!($objProduct->{$arrRule['attributeName']} <= $arrRule['attributeValue'])) {
+    					    continue(2);
+					    }
+					    break;
+
+					case 'egt':
+						if (!($objProduct->{$arrRule['attributeName']} >= $arrRule['attributeValue'])) {
+    					    continue(2);
+					    }
+						break;
+
+					case 'starts':
+					    if (stripos($objProduct->{$arrRule['attributeName']}, $arrRule['attributeValue']) !== 0) {
+    					    continue(2);
+					    }
+						break;
+
+					case 'ends':
+					    if (strripos($objProduct->{$arrRule['attributeName']}, $arrRule['attributeValue']) !== (strlen($objProduct->{$arrRule['attributeName']}) - strlen($arrRule['attributeValue']))) {
+    					    continue(2);
+					    }
+						break;
+
+					case 'contains':
+						if (stripos($objProduct->{$arrRule['attributeName']}, $arrRule['attributeValue']) === false) {
+    					    continue(2);
+					    }
+						break;
+
+					default:
+						throw new Exception('Unknown rule condition "' . $restrictions['condition'] . '"');
+				}
+			}
+
 			// Because we apply to the quantity of only this product, we override $intTotal in every foreach loop
 			if ($arrRule['quantityMode'] != 'cart_products' && $arrRule['quantityMode'] != 'cart_items')
 			{

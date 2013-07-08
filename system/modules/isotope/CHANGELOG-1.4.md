@@ -15,6 +15,8 @@ Version 1.4.2 (2013-??-??)
 - Order status for Authorize.NET payment method was buggy (#650)
 - Date/time formatting did not use page object (#634)
 - Postsale script broke some custom extensions (#643)
+- Attribute rules for less-than-equals, starts-with and ends-with did not work
+- Attribute rule should only sum up products that match the condition (#633)
 
 
 Version 1.4.1 (2013-04-15)
