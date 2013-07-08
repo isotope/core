@@ -487,7 +487,7 @@ class IsotopeRules extends Controller
 						$arrOR = array();
 						foreach( $restriction['values'] as $value )
 						{
-							$arrOR[] = "attributeValue" . (($restriction['condition'] == 'lt' || $restriction['condition'] == 'lte') ? '>' : '<') . (($restriction['condition'] == 'elt' || $restriction['condition'] == 'egt') ? '=' : '') . '?';
+							$arrOR[] = "attributeValue" . (($restriction['condition'] == 'lt' || $restriction['condition'] == 'elt') ? '>' : '<') . (($restriction['condition'] == 'elt' || $restriction['condition'] == 'egt') ? '=' : '') . '?';
 							$arrValues[] = $value;
 						}
 						$strRestriction .= '(' . implode(' OR ', $arrOR) . ')';
@@ -499,7 +499,7 @@ class IsotopeRules extends Controller
 						$arrOR = array();
 						foreach( $restriction['values'] as $value )
 						{
-							$arrOR[] = "? LIKE CONCAT(" . (($restriction['condition'] == 'starts' || $restriction['condition'] == 'contains') ? "'%', " : '') . "attributeValue" . (($restriction['condition'] == 'ends' || $restriction['condition'] == 'contains') ? ", '%'" : '') . ")";
+							$arrOR[] = "? LIKE CONCAT(" . (($restriction['condition'] == 'ends' || $restriction['condition'] == 'contains') ? "'%', " : '') . "attributeValue" . (($restriction['condition'] == 'starts' || $restriction['condition'] == 'contains') ? ", '%'" : '') . ")";
 							$arrValues[] = $value;
 						}
 						$strRestriction .= '(' . implode(' OR ', $arrOR) . ')';
