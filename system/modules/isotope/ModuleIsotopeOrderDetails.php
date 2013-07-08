@@ -146,9 +146,9 @@ class ModuleIsotopeOrderDetails extends ModuleIsotope
 
 		$this->Template->raw = $arrOrder;
 
-		$this->Template->date = $this->parseDate($GLOBALS['TL_CONFIG']['dateFormat'], $objOrder->date);
-		$this->Template->time = $this->parseDate($GLOBALS['TL_CONFIG']['timeFormat'], $objOrder->date);
-		$this->Template->datim = $this->parseDate($GLOBALS['TL_CONFIG']['datimFormat'], $objOrder->date);
+		$this->Template->date = $this->formatDate($objOrder->date);
+		$this->Template->time = $this->formatTime($objOrder->date);
+		$this->Template->datim = $this->formatDatim($objOrder->date);
 		$this->Template->orderDetailsHeadline = sprintf($GLOBALS['TL_LANG']['MSC']['orderDetailsHeadline'], $objOrder->order_id, $this->Template->datim);
 		$this->Template->orderStatus = sprintf($GLOBALS['TL_LANG']['MSC']['orderStatusHeadline'], $objOrder->statusLabel);
 		$this->Template->orderStatusKey = $objOrder->statusAlias;

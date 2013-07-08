@@ -12,7 +12,8 @@ Version 1.4.2 (2013-??-??)
 ### Fixed
 - Unsuccessful orders could show up in the backend (#607)
 - Edge case where price tires could show up as minimum price
-- Fixed order status for Authorize.NET payment method (#650)
+- Order status for Authorize.NET payment method was buggy (#650)
+- Date/time formatting did not use page object (#634)
 
 
 Version 1.4.1 (2013-04-15)
