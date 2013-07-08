@@ -14,6 +14,7 @@ Version 1.4.2 (2013-??-??)
 - Edge case where price tires could show up as minimum price
 - Order status for Authorize.NET payment method was buggy (#650)
 - Date/time formatting did not use page object (#634)
+- Postsale script broke some custom extensions (#643)
 
 
 Version 1.4.1 (2013-04-15)
