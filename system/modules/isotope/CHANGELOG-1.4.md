@@ -10,6 +10,7 @@ Version 1.4.2 (2013-??-??)
 - Show error message if someone tries to add an attribute with name "minimum_quantity" (#628)
 - Shop config address country is default billing of none is selected (#600)
 - Recursively parse inserttags and simple tokens in mail templates (#646)
+- Can now select the default sorting in the filter module too
 
 ### Fixed
 - Unsuccessful orders could show up in the backend (#607)
@@ -24,6 +25,7 @@ Version 1.4.2 (2013-??-??)
 - Restore basic entities in mail templates (#646)
 - File uploads could be attached to more than one product (#614)
 - Could not use two filter modules at the same time (#595)
+- Sorting options were not correctly selected
 
 
 Version 1.4.1 (2013-04-15)

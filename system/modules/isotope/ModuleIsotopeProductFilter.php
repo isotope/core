@@ -371,12 +371,13 @@ class ModuleIsotopeProductFilter extends ModuleIsotope
 			$arrOptions = array();
 
 			// Cache new request value
-			// @todo should support multiple sorting fields
 			list($sortingField, $sortingDirection) = explode(':', $this->Input->post('sorting'));
 
+            // First delete an active item, then add as first so the new selection takes priority over previous ones
 			if ($this->blnCacheRequest && in_array($sortingField, $this->iso_sortingFields))
 			{
-				$GLOBALS['ISO_SORTING'][$this->id][$sortingField] = array(($sortingDirection=='DESC' ? SORT_DESC : SORT_ASC), SORT_REGULAR);
+			    unset($GLOBALS['ISO_SORTING'][$this->id][$sortingField]);
+				array_insert($GLOBALS['ISO_SORTING'][$this->id], 0, array($sortingField => array(($sortingDirection=='DESC' ? SORT_DESC : SORT_ASC), SORT_REGULAR)));
 			}
 
 			// Request cache contains wrong value, delete it!
@@ -391,6 +392,15 @@ class ModuleIsotopeProductFilter extends ModuleIsotope
 			// No need to generate options if we reload anyway
 			elseif (!$this->blnCacheRequest)
 			{
+			    // Find (default) sorting of the select menu
+			    $sortingValue = array(($this->iso_listingSortDirection == 'DESC' ? SORT_DESC : SORT_ASC));
+			    $sortingField = $this->iso_listingSortField;
+
+			    if (!empty($GLOBALS['ISO_SORTING'][$this->id]) && is_array($GLOBALS['ISO_SORTING'][$this->id])) {
+    			    $sortingValue = reset($GLOBALS['ISO_SORTING'][$this->id]);
+    			    $sortingField = key($GLOBALS['ISO_SORTING'][$this->id]);
+    			}
+
 				foreach ($this->iso_sortingFields as $field)
 				{
 					list($asc, $desc) = $this->getSortingLabels($field);
@@ -399,14 +409,14 @@ class ModuleIsotopeProductFilter extends ModuleIsotope
 					(
 						'label'		=> ($this->Isotope->formatLabel('tl_iso_products', $field) . ', ' . $asc),
 						'value'		=> $field.':ASC',
-						'default'	=> ((is_array($GLOBALS['ISO_SORTING'][$this->id]) && $GLOBALS['ISO_SORTING'][$this->id][$field][0] == SORT_ASC) ? '1' : ''),
+						'default'	=> (($field == $sortingField && $sortingValue[0] == SORT_ASC) ? '1' : ''),
 					);
 
 					$arrOptions[] = array
 					(
 						'label'		=> ($this->Isotope->formatLabel('tl_iso_products', $field) . ', ' . $desc),
 						'value'		=> $field.':DESC',
-						'default'	=> ((is_array($GLOBALS['ISO_SORTING'][$this->id]) && $GLOBALS['ISO_SORTING'][$this->id][$field][0] == SORT_DESC) ? '1' : ''),
+						'default'	=> (($field == $sortingField && $sortingValue[0] == SORT_DESC) ? '1' : ''),
 					);
 				}
 			}
