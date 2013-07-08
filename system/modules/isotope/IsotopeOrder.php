@@ -361,7 +361,11 @@ class IsotopeOrder extends IsotopeProductCollection
 		$objCart->delete();
 
 		$this->checkout_complete = true;
-		$this->status = $this->Isotope->Config->orderstatus_new;
+
+		// Set order status only if a payment module has not already set it
+		if ($this->status == 0) {
+    		$this->status = $this->Isotope->Config->orderstatus_new;
+        }
 
 		$this->generateOrderId();
 		$arrData = $this->getEmailData();

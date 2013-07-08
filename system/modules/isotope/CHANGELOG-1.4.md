@@ -26,6 +26,7 @@ Version 1.4.2 (2013-??-??)
 - File uploads could be attached to more than one product (#614)
 - Could not use two filter modules at the same time (#595)
 - Sorting options were not correctly selected
+- Order status was reset to shop config value instead of payment method (#623)
 
 
 Version 1.4.1 (2013-04-15)
