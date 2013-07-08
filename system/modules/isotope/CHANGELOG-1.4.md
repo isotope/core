@@ -9,6 +9,7 @@ Version 1.4.2 (2013-??-??)
 - Added title attribute for product list detail links (#621)
 - Show error message if someone tries to add an attribute with name "minimum_quantity" (#628)
 - Shop config address country is default billing of none is selected (#600)
+- Recursively parse inserttags and simple tokens in mail templates (#646)
 
 ### Fixed
 - Unsuccessful orders could show up in the backend (#607)
