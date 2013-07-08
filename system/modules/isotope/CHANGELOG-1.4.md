@@ -22,6 +22,7 @@ Version 1.4.2 (2013-??-??)
 - deleteAll in tl_iso_orders could remove unwanted orders (#597)
 - Advanced price calculation failed when no variants were found (#644)
 - Restore basic entities in mail templates (#646)
+- File uploads could be attached to more than one product (#614)
 
 
 Version 1.4.1 (2013-04-15)

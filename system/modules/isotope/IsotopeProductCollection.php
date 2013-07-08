@@ -572,6 +572,9 @@ abstract class IsotopeProductCollection extends Model
 			$this->save();
 		}
 
+		// Remove uploaded files from session so they are not added to the next product (see #646)
+		unset($_SESSION['FILES']);
+
 		$objItem = $this->Database->prepare("SELECT * FROM {$this->ctable} WHERE pid={$this->id} AND product_id={$objProduct->id} AND product_options=?")->limit(1)->execute(serialize($objProduct->getOptions(true)));
 
 		if ($objItem->numRows)
