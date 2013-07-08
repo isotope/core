@@ -19,6 +19,7 @@ Version 1.4.2 (2013-??-??)
 - Attribute rules for less-than-equals, starts-with and ends-with did not work
 - Attribute rule should only sum up products that match the condition (#633)
 - deleteAll in tl_iso_orders could remove unwanted orders (#597)
+- Advanced price calculation failed when no variants were found (#644)
 
 
 Version 1.4.1 (2013-04-15)

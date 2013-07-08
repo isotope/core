@@ -141,7 +141,7 @@ class ProductPriceFinder extends System
 		$arrIds = $objProduct->pid == 0 ? $objProduct->getVariantIds() : array($objProduct->id);
 		$arrData = self::getAdvancedPrices($arrIds, $objProduct->quantity_requested, $objProduct->show_price_tiers);
 
-		if ($objProduct->pid == 0)
+		if ($objProduct->pid == 0 && !empty($arrIds))
 		{
 			$arrData['from_price'] = self::findLowestAdvancedPriceOfVariants($arrIds, $objProduct->show_price_tiers);
 		}
