@@ -184,8 +184,8 @@ class ModuleIsotopeProductFilter extends ModuleIsotope
 
 			$this->Template->id = $this->id;
 			$this->Template->formId = 'iso_filter_' . $this->id;
-			$this->Template->actionFilter = ampersand(preg_replace('/&?isorc=[0-9]+&?/', '', $this->Environment->request));
-			$this->Template->actionSearch = ampersand(preg_replace('/&?keywords=[^&]+&?/', '', $this->Environment->request));
+			$this->Template->actionFilter = ampersand($this->Environment->request);
+			$this->Template->actionSearch = ampersand($this->Environment->request);
 			$this->Template->actionClear = ampersand(preg_replace('/\?.*/', '', $this->Environment->request));
 			$this->Template->clearLabel = $GLOBALS['TL_LANG']['MSC']['clearFiltersLabel'];
 			$this->Template->slabel = $GLOBALS['TL_LANG']['MSC']['submitLabel'];

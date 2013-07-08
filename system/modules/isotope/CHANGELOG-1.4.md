@@ -23,6 +23,7 @@ Version 1.4.2 (2013-??-??)
 - Advanced price calculation failed when no variants were found (#644)
 - Restore basic entities in mail templates (#646)
 - File uploads could be attached to more than one product (#614)
+- Could not use two filter modules at the same time (#595)
 
 
 Version 1.4.1 (2013-04-15)
