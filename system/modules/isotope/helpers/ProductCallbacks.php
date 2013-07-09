@@ -206,7 +206,7 @@ class ProductCallbacks extends \Backend
 			{
 				// Show products with or without images
 				case 'iso_noimages':
-                    $objProducts = $this->Database->execute("SELECT id FROM tl_iso_products WHERE pid=0 AND language='' AND images " . ($v ? " IS NULL" : " IS NOT NULL"));
+                    $objProducts = $this->Database->execute("SELECT id FROM tl_iso_products WHERE language='' AND images " . ($v ? "IS NULL" : "IS NOT NULL"));
                     $arrProducts = is_array($arrProducts) ? array_intersect($arrProducts, $objProducts->fetchEach('id')) : $objProducts->fetchEach('id');
 					break;
 
@@ -235,7 +235,7 @@ class ProductCallbacks extends \Backend
 							break;
 					}
 
-                    $objProducts = $this->Database->execute("SELECT id FROM tl_iso_products WHERE pid=0 AND language='' AND dateAdded>=".$date);
+                    $objProducts = $this->Database->prepare("SELECT id FROM tl_iso_products WHERE language='' AND dateAdded>=?")->execute($date);
                     $arrProducts = is_array($arrProducts) ? array_intersect($arrProducts, $objProducts->fetchEach('id')) : $objProducts->fetchEach('id');
                     break;
 
