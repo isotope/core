@@ -593,6 +593,12 @@ $strBuffer .= '<th style="text-align:center"><img src="system/themes/default/ima
      */
     public function toggleIcon($row, $href, $label, $title, $icon, $attributes)
     {
+		if (strlen(\Input::get('tid')))
+		{
+			$this->toggleVisibility(\Input::get('tid'), (\Input::get('state') == 1));
+			$this->redirect($this->getReferer());
+		}
+
         // Check permissions AFTER checking the tid, so hacking attempts are logged
         if (!$this->User->isAdmin && !$this->User->hasAccess('tl_iso_products::published', 'alexf'))
         {
