@@ -170,6 +170,11 @@ class MediaManager extends \Widget implements \uploadable
                 $this->addError(sprintf($GLOBALS['TL_LANG']['ERR']['mandatory'], $this->strLabel));
             }
         }
+
+        if (empty($this->varValue))
+        {
+	        $this->varValue = null;
+        }
     }
 
 
