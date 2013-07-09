@@ -317,10 +317,9 @@ class AuthorizeDotNet extends Payment implements IsotopePayment
                 $objOrder = Order::findByPk($objOrder->save()->id);
             }
 
-            $objOrder->status        = 'processing';
+            $objOrder->updateOrderStatus($this->new_order_status);
 
             $objOrder->save();
-
         }
 
         $return = '<div id="tl_buttons">

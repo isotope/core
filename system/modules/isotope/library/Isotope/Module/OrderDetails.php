@@ -109,9 +109,9 @@ class OrderDetails extends Module
         $this->Template->downloads = $arrAllDownloads;
         $this->Template->info = deserialize($objOrder->checkout_info, true);
 
-        $this->Template->date = \System::parseDate($GLOBALS['TL_CONFIG']['dateFormat'], $objOrder->date);
-        $this->Template->time = \System::parseDate($GLOBALS['TL_CONFIG']['timeFormat'], $objOrder->date);
-        $this->Template->datim = \System::parseDate($GLOBALS['TL_CONFIG']['datimFormat'], $objOrder->date);
+        $this->Template->date = Isotope::formatDate($objOrder->date);
+        $this->Template->time = Isotope::formatTime($objOrder->date);
+        $this->Template->datim = Isotope::formatDatim($objOrder->date);
         $this->Template->orderDetailsHeadline = sprintf($GLOBALS['TL_LANG']['MSC']['orderDetailsHeadline'], $objOrder->order_id, $this->Template->datim);
         $this->Template->orderStatus = sprintf($GLOBALS['TL_LANG']['MSC']['orderStatusHeadline'], $objOrder->getStatusLabel());
         $this->Template->orderStatusKey = $objOrder->getStatusAlias();

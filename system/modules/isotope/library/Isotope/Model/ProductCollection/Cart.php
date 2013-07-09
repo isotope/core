@@ -70,7 +70,7 @@ class Cart extends ProductCollection implements IsotopeProductCollection
 
         if (null === $objAddress) {
             $objAddress = new Address();
-            $objAddress->country = Isotope::getConfig()->billing_country;
+            $objAddress->country = (Isotope::getConfig()->billing_country ?: Isotope::getConfig()->country);
         }
 
         return $objAddress;
