@@ -252,8 +252,8 @@ class IsotopeEmail extends Controller
 
 		$arrData = $this->arrSimpleTokens;
 
-		$this->objEmail->subject = strip_tags($this->parseSimpleTokens($this->replaceInsertTags($objLanguage->subject), $arrData));
-		$this->objEmail->text = strip_tags($this->parseSimpleTokens($this->replaceInsertTags($objLanguage->text), $arrData));
+		$this->objEmail->subject = strip_tags($this->recursiveReplaceTokensAndTags($objLanguage->subject, $arrData));
+		$this->objEmail->text = strip_tags($this->recursiveReplaceTokensAndTags($objLanguage->text, $arrData));
 
 		// Generate HTML
 		if (!$objLanguage->textOnly && $objLanguage->html != '')
@@ -280,7 +280,7 @@ class IsotopeEmail extends Controller
 			// Prevent parseSimpleTokens from stripping important HTML tags
 			$GLOBALS['TL_CONFIG']['allowedTags'] .= '<doctype><html><head><meta><style><body>';
 			$strHtml = str_replace('<!DOCTYPE', '<DOCTYPE', $objTemplate->parse());
-			$strHtml = $this->parseSimpleTokens($this->replaceInsertTags($strHtml), $arrData);
+			$strHtml = $this->recursiveReplaceTokensAndTags($strHtml, $arrData);
 			$strHtml = $this->convertRelativeUrls($strHtml);
 			$strHtml = str_replace('<DOCTYPE', '<!DOCTYPE', $strHtml);
 
@@ -398,6 +398,38 @@ class IsotopeEmail extends Controller
 		}
 
 		return implode($strGlue, $arrReturn);
+	}
+
+
+	/**
+	 * Recursively replace the simple tokens and the insert tags
+	 * @param string
+	 * @param array tokens
+	 * @return string
+	 */
+	protected function recursiveReplaceTokensAndTags($strText, $arrTokens)
+	{
+		// first parse the tokens as they might have if-else clauses
+		$strBuffer = $this->parseSimpleTokens($strText, $arrTokens);
+
+		// then replace the insert tags
+		$strBuffer = $this->replaceInsertTags($strBuffer);
+
+		// check if the inserttags have returned a simple token or an insert tag to parse
+		if (strpos($strBuffer, '##') !== false || strpos($strBuffer, '{{') !== false)
+		{
+			// Prevent infinite loop
+			if ($strBuffer == $strText)
+			{
+				return $strBuffer;
+			}
+
+			$strBuffer = $this->recursiveReplaceTokensAndTags($strBuffer, $arrTokens);
+		}
+
+		$strBuffer = $this->restoreBasicEntities($strBuffer);
+
+		return $strBuffer;
 	}
 
 

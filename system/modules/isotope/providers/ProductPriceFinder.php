@@ -141,7 +141,7 @@ class ProductPriceFinder extends System
 		$arrIds = $objProduct->pid == 0 ? $objProduct->getVariantIds() : array($objProduct->id);
 		$arrData = self::getAdvancedPrices($arrIds, $objProduct->quantity_requested, $objProduct->show_price_tiers);
 
-		if ($objProduct->pid == 0)
+		if ($objProduct->pid == 0 && !empty($arrIds))
 		{
 			$arrData['from_price'] = self::findLowestAdvancedPriceOfVariants($arrIds, $objProduct->show_price_tiers);
 		}
@@ -232,14 +232,14 @@ class ProductPriceFinder extends System
 																SELECT id
 																FROM
 																(
-																	SELECT p1.id, p1.pid FROM tl_iso_prices p1 LEFT JOIN tl_iso_products p2 ON p1.pid=p2.id
+																	SELECT id, pid FROM tl_iso_prices
 																	WHERE
-																		p1.pid IN (" . implode(',', $arrVariantIds) . ")
-																		AND p1.config_id IN (" . (int) Isotope::getInstance()->Config->id . ",0)
-																		AND p1.member_group IN(" . implode(',', $arrGroups) . ")
-																		AND (p1.start='' OR p1.start<$time)
-																		AND (p1.stop='' OR p1.stop>$time)
-																	ORDER BY p1.config_id DESC, p1.member_group=" . implode(" DESC, p1.member_group=", $arrGroups) . " DESC, p1.start DESC, p1.stop DESC
+																		pid IN (" . implode(',', $arrVariantIds) . ")
+																		AND config_id IN (" . (int) Isotope::getInstance()->Config->id . ",0)
+																		AND member_group IN(" . implode(',', $arrGroups) . ")
+																		AND (start='' OR start<$time)
+																		AND (stop='' OR stop>$time)
+																	ORDER BY config_id DESC, member_group=" . implode(" DESC, member_group=", $arrGroups) . " DESC, start DESC, stop DESC
 																) AS p
 																GROUP BY pid
 															)");
@@ -247,26 +247,26 @@ class ProductPriceFinder extends System
 		else
 		{
 			$objResult = Database::getInstance()->execute("SELECT MIN(price) AS low_price, MAX(price) AS high_price FROM tl_iso_price_tiers WHERE id IN (
-																SELECT id FROM tl_iso_price_tiers WHERE id IN (
-																	SELECT id
+																SELECT id FROM (
+																	SELECT *
 																	FROM tl_iso_price_tiers
 																	WHERE pid IN
 																	(
 																		SELECT id
 																		FROM
 																		(
-																			SELECT p1.id, p1.pid FROM tl_iso_prices p1 LEFT JOIN tl_iso_products p2 ON p1.pid=p2.id
+																			SELECT id, pid FROM tl_iso_prices
 																			WHERE
-																				p1.pid IN (" . implode(',', $arrVariantIds) . ")
-																				AND p1.config_id IN (" . (int) Isotope::getInstance()->Config->id . ",0)
-																				AND p1.member_group IN(" . implode(',', $arrGroups) . ")
-																				AND (p1.start='' OR p1.start<$time)
-																				AND (p1.stop='' OR p1.stop>$time)
-																			ORDER BY p1.config_id DESC, p1.member_group=" . implode(" DESC, p1.member_group=", $arrGroups) . " DESC, p1.start DESC, p1.stop DESC
+																				pid IN (" . implode(',', $arrVariantIds) . ")
+																				AND config_id IN (" . (int) Isotope::getInstance()->Config->id . ",0)
+																				AND member_group IN(" . implode(',', $arrGroups) . ")
+																				AND (start='' OR start<$time)
+																				AND (stop='' OR stop>$time)
+																			ORDER BY config_id DESC, member_group=" . implode(" DESC, member_group=", $arrGroups) . " DESC, start DESC, stop DESC
 																		) AS p
 																		GROUP BY pid
 																	)
-																	ORDER BY min)
+																	ORDER BY min) price_tiers
 																GROUP BY pid
 															)");
 		}

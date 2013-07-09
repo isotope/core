@@ -572,6 +572,9 @@ abstract class IsotopeProductCollection extends Model
 			$this->save();
 		}
 
+		// Remove uploaded files from session so they are not added to the next product (see #646)
+		unset($_SESSION['FILES']);
+
 		$objItem = $this->Database->prepare("SELECT * FROM {$this->ctable} WHERE pid={$this->id} AND product_id={$objProduct->id} AND product_options=?")->limit(1)->execute(serialize($objProduct->getOptions(true)));
 
 		if ($objItem->numRows)
@@ -904,9 +907,9 @@ abstract class IsotopeProductCollection extends Model
 		$objTemplate->info = deserialize($this->checkout_info);
 		$objTemplate->items = $arrItems;
 		$objTemplate->raw = $this->arrData;
-		$objTemplate->date = $this->parseDate($GLOBALS['TL_CONFIG']['dateFormat'], $this->date);
-		$objTemplate->time = $this->parseDate($GLOBALS['TL_CONFIG']['timeFormat'], $this->date);
-		$objTemplate->datim = $this->parseDate($GLOBALS['TL_CONFIG']['datimFormat'], $this->date);
+		$objTemplate->date = $this->Isotope->formatDate($this->date);
+		$objTemplate->time = $this->Isotope->formatTime($this->date);
+		$objTemplate->datim = $this->Isotope->formatDatim($this->date);
 		$objTemplate->datimLabel = $GLOBALS['TL_LANG']['MSC']['datimLabel'];
 		$objTemplate->subTotalPrice = $this->Isotope->formatPriceWithCurrency($this->subTotal);
 		$objTemplate->grandTotal = $this->Isotope->formatPriceWithCurrency($this->grandTotal);

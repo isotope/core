@@ -487,7 +487,7 @@ class IsotopeRules extends Controller
 						$arrOR = array();
 						foreach( $restriction['values'] as $value )
 						{
-							$arrOR[] = "attributeValue" . (($restriction['condition'] == 'lt' || $restriction['condition'] == 'lte') ? '>' : '<') . (($restriction['condition'] == 'elt' || $restriction['condition'] == 'egt') ? '=' : '') . '?';
+							$arrOR[] = "attributeValue" . (($restriction['condition'] == 'lt' || $restriction['condition'] == 'elt') ? '>' : '<') . (($restriction['condition'] == 'elt' || $restriction['condition'] == 'egt') ? '=' : '') . '?';
 							$arrValues[] = $value;
 						}
 						$strRestriction .= '(' . implode(' OR ', $arrOR) . ')';
@@ -499,7 +499,7 @@ class IsotopeRules extends Controller
 						$arrOR = array();
 						foreach( $restriction['values'] as $value )
 						{
-							$arrOR[] = "? LIKE CONCAT(" . (($restriction['condition'] == 'starts' || $restriction['condition'] == 'contains') ? "'%', " : '') . "attributeValue" . (($restriction['condition'] == 'ends' || $restriction['condition'] == 'contains') ? ", '%'" : '') . ")";
+							$arrOR[] = "? LIKE CONCAT(" . (($restriction['condition'] == 'ends' || $restriction['condition'] == 'contains') ? "'%', " : '') . "attributeValue" . (($restriction['condition'] == 'starts' || $restriction['condition'] == 'contains') ? ", '%'" : '') . ")";
 							$arrValues[] = $value;
 						}
 						$strRestriction .= '(' . implode(' OR ', $arrOR) . ')';
@@ -610,6 +610,69 @@ class IsotopeRules extends Controller
 			|| ($arrRule['productRestrictions'] == 'producttypes' && !in_array($objProduct->type, $arrLimit)))
 			{
 				continue;
+			}
+
+			elseif ($arrRule['productRestrictions'] == 'attribute')
+			{
+    			switch ($arrRule['attributeCondition'])
+				{
+					case 'eq':
+					    if (!($objProduct->{$arrRule['attributeName']} == $arrRule['attributeValue'])) {
+    					    continue(2);
+					    }
+					    break;
+
+					case 'neq':
+					    if (!($objProduct->{$arrRule['attributeName']} != $arrRule['attributeValue'])) {
+    					    continue(2);
+					    }
+						break;
+
+					case 'lt':
+					    if (!($objProduct->{$arrRule['attributeName']} < $arrRule['attributeValue'])) {
+    					    continue(2);
+					    }
+					    break;
+
+					case 'gt':
+					    if (!($objProduct->{$arrRule['attributeName']} > $arrRule['attributeValue'])) {
+    					    continue(2);
+					    }
+					    break;
+
+					case 'elt':
+					    if (!($objProduct->{$arrRule['attributeName']} <= $arrRule['attributeValue'])) {
+    					    continue(2);
+					    }
+					    break;
+
+					case 'egt':
+						if (!($objProduct->{$arrRule['attributeName']} >= $arrRule['attributeValue'])) {
+    					    continue(2);
+					    }
+						break;
+
+					case 'starts':
+					    if (stripos($objProduct->{$arrRule['attributeName']}, $arrRule['attributeValue']) !== 0) {
+    					    continue(2);
+					    }
+						break;
+
+					case 'ends':
+					    if (strripos($objProduct->{$arrRule['attributeName']}, $arrRule['attributeValue']) !== (strlen($objProduct->{$arrRule['attributeName']}) - strlen($arrRule['attributeValue']))) {
+    					    continue(2);
+					    }
+						break;
+
+					case 'contains':
+						if (stripos($objProduct->{$arrRule['attributeName']}, $arrRule['attributeValue']) === false) {
+    					    continue(2);
+					    }
+						break;
+
+					default:
+						throw new Exception('Unknown rule condition "' . $restrictions['condition'] . '"');
+				}
 			}
 
 			// Because we apply to the quantity of only this product, we override $intTotal in every foreach loop
