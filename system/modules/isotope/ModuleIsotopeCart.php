@@ -104,7 +104,6 @@ class ModuleIsotopeCart extends ModuleIsotope
 		$arrSurcharges = $this->Isotope->Cart->getSurcharges();
 
 		$arrProducts = $this->Isotope->Cart->getProducts();
-		$lastAdded = ($this->iso_continueShopping && !empty($_SESSION['ISO_CONFIRM'])) ? $this->Isotope->Cart->lastAdded : 0;
 
 		foreach ($arrProducts as $i => $objProduct)
 		{
@@ -140,11 +139,6 @@ class ModuleIsotopeCart extends ModuleIsotope
 				'remove_link_text'  => $GLOBALS['TL_LANG']['MSC']['removeProductLinkText'],
 				'remove_link_title' => specialchars(sprintf($GLOBALS['TL_LANG']['MSC']['removeProductLinkTitle'], $objProduct->name)),
 			));
-
-			if ($lastAdded == $objProduct->cart_id)
-			{
-				$objTemplate->continueJumpTo = $objProduct->href_reader;
-			}
 		}
 
 		$blnInsufficientSubtotal = ($this->Isotope->Config->cartMinSubtotal > 0 && $this->Isotope->Config->cartMinSubtotal > $this->Isotope->Cart->subTotal) ? true : false;
@@ -187,6 +181,10 @@ class ModuleIsotopeCart extends ModuleIsotope
 		$objTemplate->checkoutJumpToLabel = $GLOBALS['TL_LANG']['MSC']['checkoutBT'];
 		$objTemplate->checkoutJumpTo = ($this->iso_checkout_jumpTo && !$blnInsufficientSubtotal) ? $this->generateFrontendUrl($this->Database->execute("SELECT * FROM tl_page WHERE id={$this->iso_checkout_jumpTo}")->fetchAssoc()) : '';
 		$objTemplate->continueLabel = $GLOBALS['TL_LANG']['MSC']['continueShoppingBT'];
+
+		if ($this->iso_continueShopping && $this->Input->get('continue') != '') {
+    		$objTemplate->continueJumpTo = ampersand(base64_decode($this->Input->get('continue', true)));
+		}
 
 		$objTemplate->collection = $this->Isotope->Cart;
 		$objTemplate->products = IsotopeFrontend::generateRowClass($arrProductData, 'row', 'rowClass', 0, ISO_CLASS_COUNT|ISO_CLASS_FIRSTLAST|ISO_CLASS_EVENODD);

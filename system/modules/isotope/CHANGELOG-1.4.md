@@ -6,6 +6,8 @@ Version 1.4.3 (2013-??-??)
 --------------------------
 
 ### Improved
+- "Continue shopping" link now uses URL referer instead of last added product
+
 ### Fixed
 
 
