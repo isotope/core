@@ -1,6 +1,34 @@
 Isotope eCommerce Changelog
 ===========================
 
+
+Version 1.4.2 (2013-07-09)
+--------------------------
+
+### Improved
+- Added title attribute for product list detail links (#621)
+- Show error message if someone tries to add an attribute with name "minimum_quantity" (#628)
+- Shop config address country is default billing of none is selected (#600)
+- Recursively parse inserttags and simple tokens in mail templates (#646)
+- Can now select the default sorting in the filter module too
+
+### Fixed
+- Unsuccessful orders could show up in the backend (#607)
+- Edge case where price tires could show up as minimum price
+- Order status for Authorize.NET payment method was buggy (#650)
+- Date/time formatting did not use page object (#634)
+- Postsale script broke some custom extensions (#643)
+- Attribute rules for less-than-equals, starts-with and ends-with did not work
+- Attribute rule should only sum up products that match the condition (#633)
+- deleteAll in tl_iso_orders could remove unwanted orders (#597)
+- Advanced price calculation failed when no variants were found (#644)
+- Restore basic entities in mail templates (#646)
+- File uploads could be attached to more than one product (#614)
+- Could not use two filter modules at the same time (#595)
+- Sorting options were not correctly selected
+- Order status was reset to shop config value instead of payment method (#623)
+
+
 Version 1.4.1 (2013-04-15)
 --------------------------
 

@@ -219,7 +219,11 @@ class Order extends ProductCollection implements IsotopeProductCollection
         $objCart->delete();
 
         $this->checkout_complete = true;
-        $this->order_status = Isotope::getConfig()->orderstatus_new;
+
+        // Set order status only if a payment module has not already set it
+        if ($this->order_status == 0) {
+            $this->order_status = Isotope::getConfig()->orderstatus_new;
+        }
 
         $this->generateOrderId();
         $arrData = $this->getEmailData();

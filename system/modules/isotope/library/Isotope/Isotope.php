@@ -689,17 +689,17 @@ class Isotope extends \Controller
 
         elseif ($GLOBALS['TL_DCA'][$strTable]['fields'][$strField]['eval']['rgxp'] == 'date')
         {
-            return \System::parseDate($GLOBALS['TL_CONFIG']['dateFormat'], $varValue);
+            return static::formatDate($varValue);
         }
 
         elseif ($GLOBALS['TL_DCA'][$strTable]['fields'][$strField]['eval']['rgxp'] == 'time')
         {
-            return \System::parseDate($GLOBALS['TL_CONFIG']['timeFormat'], $varValue);
+            return static::formatTime($varValue);
         }
 
         elseif ($GLOBALS['TL_DCA'][$strTable]['fields'][$strField]['eval']['rgxp'] == 'datim' || in_array($GLOBALS['TL_DCA'][$strTable]['fields'][$strField]['flag'], array(5, 6, 7, 8, 9, 10)) || $strField == 'tstamp')
         {
-            return \System::parseDate($GLOBALS['TL_CONFIG']['datimFormat'], $varValue);
+            return static::formatDatim($varValue);
         }
 
         elseif ($GLOBALS['TL_DCA'][$strTable]['fields'][$strField]['inputType'] == 'checkbox' && !$GLOBALS['TL_DCA'][$strTable]['fields'][$strField]['eval']['multiple'])
@@ -777,6 +777,45 @@ class Isotope extends \Controller
         }
 
         return $arrOptions;
+    }
+
+
+    /**
+     * Format date according to the system config
+     * @param   int
+     * @return  string
+     */
+    public static function formatDate($intTstamp)
+    {
+        $strFormat = isset($GLOBALS['objPage']) ? $GLOBALS['objPage']->dateFormat : $GLOBALS['TL_CONFIG']['dateFormat'];
+
+        return \System::parseDate($intTstamp, $strFormat);
+    }
+
+
+    /**
+     * Format time according to the system config
+     * @param   int
+     * @return  string
+     */
+    public static function formatTime($intTstamp)
+    {
+        $strFormat = isset($GLOBALS['objPage']) ? $GLOBALS['objPage']->timeFormat : $GLOBALS['TL_CONFIG']['timeFormat'];
+
+        return \System::parseDate($intTstamp, $strFormat);
+    }
+
+
+    /**
+     * Format date & time according to the system config
+     * @param   int
+     * @return  string
+     */
+    public static function formatDatim($intTstamp)
+    {
+        $strFormat = isset($GLOBALS['objPage']) ? $GLOBALS['objPage']->datimFormat : $GLOBALS['TL_CONFIG']['datimFormat'];
+
+        return \System::parseDate($intTstamp, $strFormat);
     }
 
 

@@ -6,7 +6,7 @@
 <<?php echo $this->hl; ?>><?php echo $this->headline; ?></<?php echo $this->hl; ?>>
 <?php endif; ?>
 
-<form action="<?php echo $this->actionFilter; ?>" id="<?php echo $this->formId; ?>" method="post">
+<form action="<?php echo $this->action; ?>" id="<?php echo $this->formId; ?>" method="post">
 <div class="formbody">
 <input type="hidden" name="FORM_SUBMIT" value="<?php echo $this->formId; ?>">
 <input type="hidden" name="REQUEST_TOKEN" value="{{request_token}}">
@@ -56,7 +56,7 @@
 
 <?php if ($this->hasSearch): ?>
 <div class="search">
-<form action="<?php echo $this->actionSearch; ?>" method="get">
+<form action="<?php echo $this->action; ?>" method="get">
 <input type="hidden" name="isorc" value="<?php echo \Input::get('isorc'); ?>">
 <label for="ctrl_keywords_<?php echo $this->id; ?>"><?php echo $this->keywordsLabel; ?></label>
 <input type="text" name="keywords" id="ctrl_keywords_<?php echo $this->id; ?>" class="text" value="<?php echo ($this->keywords ? $this->keywords : $this->defaultSearchText); ?>" onblur="if (this.value=='') { this.value='<?php echo $this->defaultSearchText; ?>'; }" onfocus="if (this.value=='<?php echo $this->defaultSearchText; ?>') { this.value=''; this.select(); }">

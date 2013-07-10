@@ -420,10 +420,10 @@ abstract class ProductCollection extends \Model
 
         // !HOOK: determine email recipient for collection
         if (isset($GLOBALS['ISO_HOOKS']['emailRecipientForCollection']) && is_array($GLOBALS['ISO_HOOKS']['emailRecipientForCollection'])) {
-        	foreach ($GLOBALS['ISO_HOOKS']['emailRecipientForCollection'] as $callback) {
-        		$objCallback = \System::importStatic($callback[0]);
-        		$strEmail = $objCallback->$callback[1]($strEmail, $this);
-        	}
+            foreach ($GLOBALS['ISO_HOOKS']['emailRecipientForCollection'] as $callback) {
+                $objCallback = \System::importStatic($callback[0]);
+                $strEmail = $objCallback->$callback[1]($strEmail, $this);
+            }
         }
 
         return $strEmail;
@@ -786,6 +786,9 @@ abstract class ProductCollection extends \Model
         if (!$this->blnRecordExists) {
             $this->save();
         }
+
+        // Remove uploaded files from session so they are not added to the next product (see #646)
+        unset($_SESSION['FILES']);
 
         $objItem = $this->getItemForProduct($objProduct);
 

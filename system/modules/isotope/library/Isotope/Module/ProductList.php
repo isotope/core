@@ -372,12 +372,12 @@ class ProductList extends Module
             {
                 if (is_array($GLOBALS['ISO_FILTERS'][$module]))
                 {
-                    $arrFilters = array_merge($arrFilters, $GLOBALS['ISO_FILTERS'][$module]);
+                    $arrFilters = array_merge($GLOBALS['ISO_FILTERS'][$module], $arrFilters);
                 }
 
                 if (is_array($GLOBALS['ISO_SORTING'][$module]))
                 {
-                    $arrSorting = array_merge($arrSorting, $GLOBALS['ISO_SORTING'][$module]);
+                    $arrSorting = array_merge($GLOBALS['ISO_SORTING'][$module], $arrSorting);
                 }
             }
         }
