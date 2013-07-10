@@ -12,6 +12,15 @@
 
 
 /**
+ * Register the namespaces
+ */
+ClassLoader::addNamespaces(array
+(
+	'Isotope',
+));
+
+
+/**
  * Register the classes
  */
 ClassLoader::addClasses(array
