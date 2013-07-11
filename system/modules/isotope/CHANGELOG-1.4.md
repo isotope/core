@@ -7,6 +7,7 @@ Version 1.4.3 (2013-??-??)
 
 ### Improved
 - "Continue shopping" link now uses URL referer instead of last added product
+- "Date paid" in orders now also displays the time not only the date
 
 ### Fixed
 
