@@ -487,6 +487,8 @@ class ProductList extends Module
      */
     protected function getProductCacheExpiration()
     {
-        return (int) $this->Database->execute('SELECT MIN(start) AS expires FROM tl_iso_products WHERE start > ' . time())->expires;
+        $time = time();
+
+        return (int) $this->Database->execute("SELECT MIN(start) AS expires FROM tl_iso_products WHERE start>$time")->expires;
     }
 }
