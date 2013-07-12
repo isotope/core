@@ -11,6 +11,7 @@
  *
  * @author     Andreas Schempp <andreas.schempp@terminal42.ch>
  * @author     Fred Bliss <fred.bliss@intelligentspark.com>
+ * @author     Kamil Kuzminski <kamil.kuzminski@codefog.pl>
  */
 
 /**
@@ -18,7 +19,7 @@
  */
 $GLOBALS['TL_LANG']['tl_iso_products']['id']                    = array('Product ID');
 $GLOBALS['TL_LANG']['tl_iso_products']['pages']                    = array('Categories', 'Select a category (page-based categories take advantage of Contao pages features such as navigation automation, protection, templates, and full integration with content elements.');
-$GLOBALS['TL_LANG']['tl_iso_products']['type']                    = array('Product Type', 'Select your product type. Product types are defined in the store configuration.');
+$GLOBALS['TL_LANG']['tl_iso_products']['type']                    = array('Product type', 'Select your product type. Product types are defined in the store configuration.');
 $GLOBALS['TL_LANG']['tl_iso_products']['alias']                    = array('Alias', 'You can enter a unique alias for this product. It will be automatically generated from the name if empty.');
 $GLOBALS['TL_LANG']['tl_iso_products']['name']                    = array('Name', 'Please enter the name of this product.');
 $GLOBALS['TL_LANG']['tl_iso_products']['sku']                    = array('SKU', 'Please enter a unique stock keeping unit for this product.');
@@ -55,6 +56,7 @@ $GLOBALS['TL_LANG']['tl_iso_products']['mmTranslateNone']        = array('None',
 $GLOBALS['TL_LANG']['tl_iso_products']['mmTranslateText']        = array('Text', 'Translate alt text and description for this image.');
 $GLOBALS['TL_LANG']['tl_iso_products']['mmTranslateAll']        = array('All', 'Do not include this image in translated version.');
 $GLOBALS['TL_LANG']['tl_iso_products']['variantValuesLabel']    = 'Variant';
+$GLOBALS['TL_LANG']['tl_iso_products']['showVariants']         = 'Show product variants';
 
 /**
  * Buttons
@@ -67,20 +69,18 @@ $GLOBALS['TL_LANG']['tl_iso_products']['cut']                = array('Move produ
 $GLOBALS['TL_LANG']['tl_iso_products']['delete']            = array('Delete product', 'Delete product ID %s');
 $GLOBALS['TL_LANG']['tl_iso_products']['toggle']            = array('Publish/unpublish product', 'Publish/unpublish product ID %s');
 $GLOBALS['TL_LANG']['tl_iso_products']['show']                = array('Product details', 'Show details of product ID %s');
-$GLOBALS['TL_LANG']['tl_iso_products']['filter']            = array('Advanced Filters', 'Apply advanced filters');
-$GLOBALS['TL_LANG']['tl_iso_products']['filter_remove']        = array('Remove filters', 'Remove active filters');
-$GLOBALS['TL_LANG']['tl_iso_products']['filter_noimages']    = array('Products without images', 'Show products with no images assigned');
-$GLOBALS['TL_LANG']['tl_iso_products']['filter_nocategory']    = array('Unassigned products', 'Show products that are not assigned to any category');
-$GLOBALS['TL_LANG']['tl_iso_products']['filter_new_today']    = array('Added today', 'Show products added today');
-$GLOBALS['TL_LANG']['tl_iso_products']['filter_new_week']    = array('Added this week', 'Show products added in the last 7 days');
-$GLOBALS['TL_LANG']['tl_iso_products']['filter_new_month']    = array('Added this month', 'Show products added in the last 30 days');
+$GLOBALS['TL_LANG']['tl_iso_products']['filter']            = 'Advanced filter:';
+$GLOBALS['TL_LANG']['tl_iso_products']['filter_noimages']    = 'Without images';
+$GLOBALS['TL_LANG']['tl_iso_products']['filter_nocategory']    = 'Unassigned products';
+$GLOBALS['TL_LANG']['tl_iso_products']['filter_new']         = 'New products';
+$GLOBALS['TL_LANG']['tl_iso_products']['filter_new_today']    = 'Added today';
+$GLOBALS['TL_LANG']['tl_iso_products']['filter_new_week']    = 'Added this week';
+$GLOBALS['TL_LANG']['tl_iso_products']['filter_new_month']    = 'Added this month';
 $GLOBALS['TL_LANG']['tl_iso_products']['tools']                = array('Tools', 'More options for product management');
-$GLOBALS['TL_LANG']['tl_iso_products']['toggleGroups']        = array('Toggle all groups', 'Toggle all groups');
-$GLOBALS['TL_LANG']['tl_iso_products']['toggleVariants']    = array('Toggle all variants', 'Toggle all variants');
 $GLOBALS['TL_LANG']['tl_iso_products']['groups']            = array('Product groups', 'Manage product groups');
 $GLOBALS['TL_LANG']['tl_iso_products']['import']            = array('Import assets', 'Import images and other media from a folder');
 $GLOBALS['TL_LANG']['tl_iso_products']['prices']            = array('Manage prices', 'Manage prices for product ID %s');
-$GLOBALS['TL_LANG']['tl_iso_products']['downloads']            = array('Downloads', 'Edit downloads for product ID %s');
+$GLOBALS['TL_LANG']['tl_iso_products']['downloads']            = array('Downloads', 'Edit downloads for product ID %s', 'Downloads: %s. ');
 $GLOBALS['TL_LANG']['tl_iso_products']['generate']            = array('Generate variants', 'Generate variants for product ID %s');
 $GLOBALS['TL_LANG']['tl_iso_products']['quick_edit']        = array('Quick-edit variants', 'Quick-edit variants for product ID %s');
 $GLOBALS['TL_LANG']['tl_iso_products']['related']            = array('Related products', 'Manage related products for product ID %s');

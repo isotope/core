@@ -11,6 +11,7 @@
  * @author     Andreas Schempp <andreas.schempp@terminal42.ch>
  * @author     Fred Bliss <fred.bliss@intelligentspark.com>
  * @author     Christian de la Haye <service@delahaye.de>
+ * @author     Kamil Kuzminski <kamil.kuzminski@codefog.pl>
  */
 
 /**
@@ -43,6 +44,11 @@ $GLOBALS['TL_LANG']['MSC']['defaultLanguage']                   = 'Fallback lang
 $GLOBALS['TL_LANG']['MSC']['editingLanguage']                   = 'ATTENTION: You are editing language-specific data!';
 $GLOBALS['TL_LANG']['MSC']['deleteLanguageConfirm']             = 'Are you sure you want to delete this language? There is no undo!';
 $GLOBALS['TL_LANG']['MSC']['undefinedLanguage']                 = 'undefined';
+$GLOBALS['TL_LANG']['MSC']['selectGroup']                       = 'Only show this group';
+$GLOBALS['TL_LANG']['MSC']['filterByGroups']                    = 'Groups';
+$GLOBALS['TL_LANG']['MSC']['filterByPages']                     = 'Pages';
+$GLOBALS['TL_LANG']['MSC']['allGroups']                         = 'Show all groups';
+$GLOBALS['TL_LANG']['MSC']['noVariants']                        = 'There are no variants for this product.';
 $GLOBALS['TL_LANG']['MSC']['copyFallback']                      = 'Duplicate Fallback';
 $GLOBALS['TL_LANG']['MSC']['orderDetailsHeadline']              = 'Order no %s / %s';
 $GLOBALS['TL_LANG']['MSC']['payment_processing']                = 'Your payment is being processed. Please be patient...';

@@ -9,6 +9,7 @@
  *
  * @author     Andreas Schempp <andreas.schempp@terminal42.ch>
  * @author     Fred Bliss <fred.bliss@intelligentspark.com>
+ * @author     Kamil Kuzminski <kamil.kuzminski@codefog.pl>
  */
 
 
@@ -16,27 +17,6 @@
 {
     padding:2px 0px 3px 20px;
     background-image:url("lightning.png");
-    background-position:left center;
-    background-repeat:no-repeat;
-}
-
-.header_iso_filter
-{
-    padding:2px 0px 3px 20px;
-    background-image:url("magnifier.png");
-    background-position:left center;
-    background-repeat:no-repeat;
-}
-
-.header_iso_filter_active
-{
-    background-image:url("magnifier--plus.png");
-}
-
-.header_iso_filter_remove
-{
-    padding:2px 0px 3px 20px;
-    background-image:url("magnifier--minus.png");
     background-position:left center;
     background-repeat:no-repeat;
 }
@@ -85,46 +65,6 @@
 {
     padding:2px 0px 3px 20px;
     background-image:url("folders.png");
-    background-position:left center;
-    background-repeat:no-repeat;
-}
-
-.header_iso_filter_noimages
-{
-    padding:2px 0px 3px 20px;
-    background-image:url("image--exclamation.png");
-    background-position:left center;
-    background-repeat:no-repeat;
-}
-
-.header_iso_filter_nocategory
-{
-    padding:2px 0px 3px 20px;
-    background-image:url("globe--exclamation.png");
-    background-position:left center;
-    background-repeat:no-repeat;
-}
-
-.header_iso_filter_new_today
-{
-    padding:2px 0px 3px 20px;
-    background-image:url("calendar-select.png");
-    background-position:left center;
-    background-repeat:no-repeat;
-}
-
-.header_iso_filter_new_week
-{
-    padding:2px 0px 3px 20px;
-    background-image:url("calendar-select-week.png");
-    background-position:left center;
-    background-repeat:no-repeat;
-}
-
-.header_iso_filter_new_month
-{
-    padding:2px 0px 3px 20px;
-    background-image:url("calendar-select-month.png");
     background-position:left center;
     background-repeat:no-repeat;
 }
@@ -264,6 +204,50 @@
 .w50h
 {
     height: auto;
+}
+
+.breadcrumb_container {
+	padding: 2px 0;
+	margin: 24px 18px 0 18px;
+}
+
+.iso_filter {
+	line-height: 28px;
+}
+
+.iso_filter .tl_submit.active {
+	border: 1px solid #b8b8b8;
+	background: #eee;
+	background-image: -moz-linear-gradient(bottom, #ccc 0%, #ffd 60%);
+	background-image: -webkit-linear-gradient(bottom, #ccc 0%, #ffd 60%);
+	background-image: -o-linear-gradient(bottom, #ccc 0%, #ffd 60%);
+	background-image: -ms-linear-gradient(bottom, #ccc 0%, #ffd 60%);
+	background-image: linear-gradient(bottom, #ccc 0%, #ffd 60%);
+}
+
+.iso_filter .styled_select {
+	margin-top: 4px;
+}
+
+.iso_listing_container {
+	margin-top: 0;
+}
+
+.iso_listing_container th.col_images {
+	font-size: 0;
+	width: 60px;
+}
+
+.iso_operations {
+	width: 110px;
+	white-space: normal;
+}
+
+.iso_content_right .tl_select_all,
+.iso_content_right a,
+.iso_operations a {
+	display: inline-block;
+	margin-bottom: 4px;
 }
 
 .tl_productdata .tl_file {

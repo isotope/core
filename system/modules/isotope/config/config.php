@@ -12,6 +12,7 @@
  * @author     Andreas Schempp <andreas.schempp@terminal42.ch>
  * @author     Fred Bliss <fred.bliss@intelligentspark.com>
  * @author     Christian de la Haye <service@delahaye.de>
+ * @author     Kamil Kuzminski <kamil.kuzminski@codefog.pl>
  */
 
 
@@ -188,6 +189,7 @@ $GLOBALS['BE_FFL']['variantWizard']            = 'Isotope\Widget\VariantWizard';
 $GLOBALS['BE_FFL']['inheritCheckbox']        = 'Isotope\Widget\InheritCheckBox';
 $GLOBALS['BE_FFL']['fieldWizard']            = 'Isotope\Widget\FieldWizard';
 $GLOBALS['BE_FFL']['productTree']            = 'Isotope\Widget\ProductTree';
+$GLOBALS['BE_FFL']['productGroupSelector']   = 'Isotope\Widget\ProductGroupSelector';
 
 
 /**

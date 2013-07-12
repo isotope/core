@@ -18,15 +18,10 @@ namespace Isotope;
  *
  * @copyright  Isotope eCommerce Workgroup 2009-2012
  * @author     Andreas Schempp <andreas.schempp@terminal42.ch>
+ * @author     Kamil Kuzminski <kamil.kuzminski@codefog.pl>
  */
 class PasteProductButton extends \Backend
 {
-    /**
-     * True if group already added
-     * @var bool
-     */
-    private static $blnHasGroup = false;
-
 
     /**
      * Handle the paste button callback for tl_iso_products
@@ -41,52 +36,23 @@ class PasteProductButton extends \Backend
     public function generate(\DataContainer $dc, $row, $table, $cr, $arrClipboard=false)
     {
         // Disable all buttons if there is a circular reference
-        if ($arrClipboard !== false && ($arrClipboard['mode'] == 'cut' && ($cr == 1 || ($table == $dc->table && $arrClipboard['id'] == $row['id'])) || $arrClipboard['mode'] == 'cutAll' && ($cr == 1 || ($table == $dc->table && in_array($row['id'], $arrClipboard['id'])))))
+        if ($arrClipboard !== false && ($arrClipboard['mode'] == 'cut' && ($cr == 1 || $arrClipboard['id'] == $row['id']) || $arrClipboard['mode'] == 'cutAll' && ($cr == 1 || in_array($row['id'], $arrClipboard['id']))))
         {
             return '';
         }
 
-        // make sure there's at least one product group
-        if (!self::$blnHasGroup)
-        {
-            \Isotope\Backend::createGeneralGroup();
-
-            self::$blnHasGroup = true;
-        }
-
-        // Can't do anything in root
-        if ($row['id'] == 0)
-        {
-            return '';
-        }
-
-        // Create a new product or variant
-        if ($arrClipboard['mode'] == 'create')
-        {
-            return \Input::get('type') == 'variant' ? $this->createVariant($table, $row, $arrClipboard) : $this->createProduct($table, $row, $arrClipboard);
-        }
+        $objProduct = $this->Database->prepare("SELECT p.*, t.variants FROM tl_iso_products p LEFT JOIN tl_iso_producttypes t ON p.type=t.id WHERE p.id=?")
+        							 ->execute($arrClipboard['id']);
 
         // Copy or cut a single product or variant
         if ($arrClipboard['mode'] == 'cut' || $arrClipboard['mode'] == 'copy')
         {
-            $objProduct = $this->Database->prepare("SELECT p.*, t.variants FROM tl_iso_products p LEFT JOIN tl_iso_producttypes t ON p.type=t.id WHERE p.id=?")->execute($arrClipboard['id']);
-
-            // Variant
-            if ($objProduct->pid > 0)
-            {
-                return $this->pasteVariant($objProduct, $table, $row, $arrClipboard);
-            }
-            else
-            {
-                return $this->pasteProduct($objProduct, $table, $row, $arrClipboard);
-            }
+            return $this->pasteVariant($objProduct, $table, $row, $arrClipboard);
         }
 
-        // Cut or copy multiple products. Cannot be variants because the checkbox is not available.
+        // Cut or copy multiple variants
         elseif ($arrClipboard['mode'] == 'cutAll' || $arrClipboard['mode'] == 'copyAll')
         {
-            $objProduct = $this->Database->prepare("SELECT p.*, t.variants FROM tl_iso_products p LEFT JOIN tl_iso_producttypes t ON p.type=t.id WHERE p.id=?")->execute($arrClipboard['id']);
-
             return $this->pasteAll($objProduct, $table, $row, $arrClipboard);
         }
 
@@ -96,78 +62,13 @@ class PasteProductButton extends \Backend
 
 
     /**
-     * Return paste button for new product
-     * @return string
-     */
-    protected function createProduct($table, $row, $arrClipboard)
-    {
-        // Can't create product in product
-        if ($table == 'tl_iso_products' && $row['id'] > 0)
-        {
-            return '';
-        }
-
-        return $this->getPasteButton(true, $this->addToUrl('act=create&amp;mode=2&amp;gid='.$row['id']), $table, $row['id']);
-    }
-
-
-    /**
-     * Return paste button for new variant
-     * @return string
-     */
-    protected function createVariant($table, $row, $arrClipboard)
-    {
-        // Can't create variant in product group or root node or variant
-        if ($table == 'tl_iso_groups' || $row['id'] == 0 || $row['pid'] > 0)
-        {
-            return '';
-        }
-
-        // Disable paste button for products without variant data
-        elseif ($table == 'tl_iso_products' && $row['id'] > 0)
-        {
-            $objType = $this->Database->prepare("SELECT * FROM tl_iso_producttypes WHERE id=?")->execute($row['type']);
-
-            if (!$objType->variants)
-            {
-                return $this->getPasteButton(false);
-            }
-        }
-
-        return $this->getPasteButton(true, $this->addToUrl('act=create&amp;mode=2&amp;pid='.$row['id']), $table, $row['id']);
-    }
-
-
-    /**
-     * Copy or paste a single product
-     * @return string
-     */
-    protected function pasteProduct($objProduct, $table, $row, $arrClipboard)
-    {
-        // Can't paste product in product or variant
-        if ($table == 'tl_iso_products' && $row['id'] > 0)
-        {
-            return '';
-        }
-
-        return $this->getPasteButton(true, $this->addToUrl('act='.$arrClipboard['mode'].'&amp;mode=1&amp;gid='.$row['id']), $table, $row['id']);
-    }
-
-
-    /**
      * Copy or paste a single variant
      * @return string
      */
     protected function pasteVariant($objProduct, $table, $row, $arrClipboard)
     {
-        // Can't paste variant in product group or root node or variant
-        if ($table == 'tl_iso_groups' || $row['id'] == 0 || $row['pid'] > 0)
-        {
-            return '';
-        }
-
         // Can't copy variant into it's current product
-        elseif ($table == 'tl_iso_products' && $objProduct->pid == $row['id'] && $arrClipboard['mode'] == 'copy')
+        if ($table == 'tl_iso_products' && $objProduct->pid == $row['id'] && $arrClipboard['mode'] == 'copy')
         {
             return $this->getPasteButton(false);
         }
@@ -217,8 +118,6 @@ class PasteProductButton extends \Backend
             return $this->generateImage('pasteinto_.gif', '', 'class="blink"');
         }
 
-        $strImage = $this->generateImage('pasteinto.gif', sprintf($GLOBALS['TL_LANG'][$table]['pasteinto'][1], $id), 'class="blink"');
-
-        return '<a href="'.$url.'" title="'.specialchars(sprintf($GLOBALS['TL_LANG'][$table]['pasteinto'][1], $id)).'" onclick="Backend.getScrollOffset();">'.$strImage.'</a> ';
+        return '<a href="'.$url.'" title="'.specialchars(sprintf($GLOBALS['TL_LANG'][$table]['pasteinto'][1], $id)).'" onclick="Backend.getScrollOffset();">'.$this->generateImage('pasteinto.gif', sprintf($GLOBALS['TL_LANG'][$table]['pasteinto'][1], $id), 'class="blink"').'</a> ';
     }
 }

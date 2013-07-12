@@ -172,6 +172,11 @@ class MediaManager extends \Widget implements \uploadable
                 $this->addError(sprintf($GLOBALS['TL_LANG']['ERR']['mandatory'], $this->strLabel));
             }
         }
+
+        if (empty($this->varValue))
+        {
+	        $this->varValue = null;
+        }
     }
 
 
@@ -187,9 +192,7 @@ class MediaManager extends \Widget implements \uploadable
         if ($arrFallback !== false)
         {
             $blnLanguage = true;
-
-            $this->import('Isotope\Isotope', 'Isotope');
-            $this->varValue = Isotope::mergeMediaData($this->varValue, $arrFallback);
+            $this->varValue = \Isotope\Isotope::mergeMediaData($this->varValue, $arrFallback);
         }
 
         $GLOBALS['TL_CSS'][] = TL_PLUGINS_URL . 'plugins/mediabox/'. MEDIABOX .'/css/mediaboxAdvBlack21.css|screen';

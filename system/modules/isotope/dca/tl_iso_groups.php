@@ -11,6 +11,7 @@
  *
  * @author     Andreas Schempp <andreas.schempp@terminal42.ch>
  * @author     Fred Bliss <fred.bliss@intelligentspark.com>
+ * @author     Kamil Kuzminski <kamil.kuzminski@codefog.pl>
  */
 
 /**
@@ -24,10 +25,12 @@ $GLOBALS['TL_DCA']['tl_iso_groups'] = array
     (
         'dataContainer'             => 'Table',
         'label'                     => &$GLOBALS['TL_LANG']['tl_iso_groups']['label'],
+		'backlink'                  => \Input::get('popup') ? null : 'do=iso_products',
         'enableVersioning'          => true,
         'onload_callback' => array
         (
             array('Isotope\tl_iso_groups', 'checkPermission'),
+			array('Isotope\tl_iso_groups', 'addBreadcrumb'),
         ),
         'ondelete_callback' => array
         (
