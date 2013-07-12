@@ -506,7 +506,7 @@ class IsotopeRules extends Controller
 						break;
 
 					default:
-						throw new Exception('Unknown rule condition "' . $restrictions['condition'] . '"');
+						throw new Exception('Unknown rule condition "' . $restriction['condition'] . '"');
 				}
 
 				$arrRestrictions[] = $strRestriction . ')';
@@ -647,7 +647,7 @@ class IsotopeRules extends Controller
 					    break;
 
 					case 'egt':
-						if (!($objProduct->{$arrRule['attributeName']} >= $arrRule['attributeValue'])) {
+						if (!($objProduct->{$arrRule['attributeName']} >= $arrRule['attributeValue'])) {
     					    continue(2);
 					    }
 						break;
@@ -671,7 +671,7 @@ class IsotopeRules extends Controller
 						break;
 
 					default:
-						throw new Exception('Unknown rule condition "' . $restrictions['condition'] . '"');
+						throw new Exception('Unknown rule condition "' . $arrRule['attributeCondition'] . '"');
 				}
 			}
 
