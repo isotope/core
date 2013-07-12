@@ -289,7 +289,7 @@ class Email extends \Controller
             // @todo the PDF name could contain user specific information if sent to multiple recipients
             if ($this->strDocumentTitle != '')
             {
-                $strTitle = strip_tags($this->parseSimpleTokens($this->replaceInsertTags($this->strDocumentTitle), $arrData));
+                $strTitle = strip_tags(\String::parseSimpleTokens($this->replaceInsertTags($this->strDocumentTitle), $arrData));
                 $this->objEmail->attachFileFromString($this->varDocumentData, $strTitle.'.pdf', 'application/pdf');
             }
 
