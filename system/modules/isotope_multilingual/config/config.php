@@ -36,4 +36,4 @@ $GLOBALS['BE_MOD']['isotope']['iso_setup']['tables'][] = 'tl_iso_labels';
 /**
  * Hooks
  */
-$GLOBALS['TL_HOOKS']['loadLanguageFile'][] = array('IsotopeTranslation', 'loadLocalLanguageFiles');
+$GLOBALS['TL_HOOKS']['loadLanguageFile'][] = array('Isotope\IsotopeTranslation', 'loadLocalLanguageFiles');
