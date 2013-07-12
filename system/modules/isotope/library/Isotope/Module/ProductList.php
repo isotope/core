@@ -226,15 +226,12 @@ class ProductList extends Module
                         $arrIds[] = $objProduct->id;
                     }
 
-                    $intExpires = (int) $this->Database->execute("SELECT MIN(start) AS expires FROM tl_iso_products WHERE start>$time")
-                                                       ->expires;
-
                     // Also delete all expired caches if we run a delete anyway
                     $this->Database->prepare("DELETE FROM tl_iso_productcache WHERE (page_id=? AND module_id=? AND requestcache_id=? AND keywords=?) OR (expires>0 AND expires<$time)")
                                    ->executeUncached($pageId, $this->id, (int) \Input::get('isorc'), (string) \Input::get('keywords'));
 
                     $this->Database->prepare("INSERT INTO tl_iso_productcache (page_id,module_id,requestcache_id,keywords,products,expires) VALUES (?,?,?,?,?,?)")
-                                   ->executeUncached($pageId, $this->id, (int) \Input::get('isorc'), (string) \Input::get('keywords'), implode(',', $arrIds), $intExpires);
+                                   ->executeUncached($pageId, $this->id, (int) \Input::get('isorc'), (string) \Input::get('keywords'), implode(',', $arrIds), $this->getProductCacheExpiration());
 
                     $this->Database->unlockTables();
                 }
@@ -482,5 +479,14 @@ class ProductList extends Module
         }
 
         return $arrOptions;
+    }
+
+    /**
+     * Returns the timestamp when the product cache expires
+     * @return int
+     */
+    protected function getProductCacheExpiration()
+    {
+        return (int) $this->Database->execute('SELECT MIN(start) AS expires FROM tl_iso_products WHERE start > ' . time())->expires;
     }
 }
