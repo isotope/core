@@ -69,11 +69,13 @@ class Runonce extends \Controller
             }
         }
 
-        try {
-            $this->verifySystemIntegrity();
-            $this->purgeCaches();
-        } catch (\Exception $e) {
-            $this->handleException('Finalization', $e);
+        if ($blnInstalled) {
+            try {
+                $this->verifySystemIntegrity();
+                $this->purgeCaches();
+            } catch (\Exception $e) {
+                $this->handleException('Finalization', $e);
+            }
         }
 
         \System::log('Upgraded Isotope eCommerce to ' . $step, TL_INFO, __METHOD__);
