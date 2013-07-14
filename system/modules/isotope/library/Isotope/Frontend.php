@@ -895,6 +895,7 @@ $endScript";
         }
         catch (\Exception $e)
         {
+        	\System::log('The product of type "' . $strClass . '" could not be initialized: ' . $e->getMessage(), __METHOD__, TL_ERROR);
             return null;
         }
 
