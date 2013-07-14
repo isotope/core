@@ -136,6 +136,10 @@
     width: 90px;
 }
 
+.tl_attributewizard .cell.tl_class_select .styled_select {
+    width: 82px;
+}
+
 .tl_attributewizard .cell.mandatory_default,
 .tl_attributewizard_columninfo .cell.mandatory_default,
 .tl_attributewizard .cell.mandatory_no,
