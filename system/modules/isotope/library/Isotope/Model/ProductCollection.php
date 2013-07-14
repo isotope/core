@@ -783,7 +783,7 @@ abstract class ProductCollection extends \Model
         $this->setModified(true);
 
         // Make sure collection is in DB before adding product
-        if (!$this->blnRecordExists) {
+        if (!isset($this->{static::$strPk})) {
             $this->save();
         }
 
