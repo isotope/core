@@ -961,6 +961,9 @@ $endScript";
 
         $arrProducts = array();
 
+        // Reset DB iterator (see #22)
+        $objProductData->reset();
+
         while ($objProductData->next())
         {
             $objProduct = \Isotope\Frontend::getProduct($objProductData, $intReaderPage, $blnCheckAvailability);
