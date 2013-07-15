@@ -70,9 +70,10 @@ class ShippingAddress extends Address implements IsotopeCheckoutStep
      */
     public function review()
     {
-        $objAddress = Isotope::getCart()->getShippingAddress();
+        $objCart = Isotope::getCart();
+        $objAddress = $objCart->getShippingAddress();
 
-        if ($objAddress->id == -1)
+        if ($objAddress->id == $objCart->getBillingAddress()->id)
         {
             return false;
         }
