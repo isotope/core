@@ -253,6 +253,11 @@ class Standard extends \Controller implements IsotopeProduct
             case 'description_meta':
                 return $this->arrData['description_meta'] != '' ? $this->arrData['description_meta'] : ($this->arrData['teaser'] != '' ? $this->arrData['teaser'] : $this->arrData['description']);
 
+            case 'cssID':
+                $this->arrData['cssID'][1] = rtrim($this->arrData['cssID'][1]) . (($this->isNew()) ? ' new' : '');
+
+                return $this->arrData['cssID'];
+
             default:
                 // Initialize attribute
                 if (!isset($this->arrCache[$strKey]))
@@ -405,6 +410,17 @@ class Standard extends \Controller implements IsotopeProduct
         return $this->arrType;
     }
 
+
+    /**
+     * Checks whether a product is new according to the current store config
+     * @return boolean
+     */
+    public function isNew()
+    {
+        $limit = Isotope::getConfig()->getMarkProductAsNewLimit();
+
+        return $limit > 0 && $this->date_added >= $limit;
+    }
 
     /**
      * Return the product attributes
