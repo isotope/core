@@ -212,7 +212,7 @@ $GLOBALS['TL_DCA']['tl_iso_products'] = array
         'dateAdded' => array
         (
             'label'                 => &$GLOBALS['TL_LANG']['MSC']['dateAdded'],
-            'eval'                  => array('rgxp'=>'datim'),
+            'eval'                  => array('rgxp'=>'datim', 'doNotCopy'=>true),
             'attributes'            => array('fe_sorting'=>true),
         ),
         'type' => array
