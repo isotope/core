@@ -30,7 +30,7 @@ class SalesProduct extends Sales
 
 	protected function compile()
 	{
-		$arrSession = $this->Session->get('iso_reports');
+		$arrSession = \Session::getInstance()->get('iso_reports');
 		$strPeriod = (string) $arrSession[$this->name]['period'];
 		$intColumns = (int) $arrSession[$this->name]['columns'];
 		$blnVariants = (bool) $arrSession[$this->name]['variants'];
@@ -206,7 +206,7 @@ class SalesProduct extends Sales
 
 	protected function getSelectVariantsPanel()
 	{
-		$arrSession = $this->Session->get('iso_reports');
+		$arrSession = \Session::getInstance()->get('iso_reports');
 
 		return array
 		(
@@ -239,14 +239,14 @@ class SalesProduct extends Sales
 		);
 
 		// Set default session data
-		$arrSession = $this->Session->get('iso_reports');
+		$arrSession = \Session::getInstance()->get('iso_reports');
 
 		if ($arrSession[$this->name]['tl_sort'] == '')
 		{
 			$arrSession[$this->name]['tl_sort'] = 'total';
 		}
 
-		$this->Session->set('iso_reports', $arrSession);
+		\Session::getInstance()->set('iso_reports', $arrSession);
 
 		parent::initializeDefaultValues();
 	}

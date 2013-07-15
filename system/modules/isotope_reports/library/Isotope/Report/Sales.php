@@ -32,7 +32,7 @@ abstract class Sales extends Report
 	protected function initializeDefaultValues()
 	{
 		// Set default session data
-		$arrSession = $this->Session->get('iso_reports');
+		$arrSession = \Session::getInstance()->get('iso_reports');
 
 		if ($arrSession[$this->name]['period'] == '')
 		{
@@ -61,13 +61,13 @@ abstract class Sales extends Report
 			$arrSession[$this->name]['iso_status'] = $objStatus->id;
 		}
 
-		$this->Session->set('iso_reports', $arrSession);
+		\Session::getInstance()->set('iso_reports', $arrSession);
 	}
 
 
 	protected function getSelectFromPanel()
 	{
-		$arrSession = $this->Session->get('iso_reports');
+		$arrSession = \Session::getInstance()->get('iso_reports');
 
 		return array
 		(
@@ -83,7 +83,7 @@ abstract class Sales extends Report
 
 	protected function getSelectColumnsPanel()
 	{
-		$arrSession = $this->Session->get('iso_reports');
+		$arrSession = \Session::getInstance()->get('iso_reports');
 
 		return array
 		(
@@ -142,7 +142,7 @@ abstract class Sales extends Report
 			$arrStatus[$objStatus->id] = Isotope::translate($objStatus->name);
 		}
 
-		$arrSession = $this->Session->get('iso_reports');
+		$arrSession = \Session::getInstance()->get('iso_reports');
 		$varValue = (int) $arrSession[$this->name]['iso_status'];
 
 		return array

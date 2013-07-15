@@ -76,14 +76,14 @@ abstract class Report extends \Backend
 	{
 		if ($this->Input->post('FORM_SUBMIT') == 'tl_filters')
 		{
-			$session = $this->Session->getData();
+			$session = \Session::getInstance()->getData();
 
 			foreach (array_keys($_POST) as $strKey)
 			{
 				$session['iso_reports'][$this->name][$strKey] = $this->Input->post($strKey);
 			}
 
-			$this->Session->setData($session);
+			\Session::getInstance()->setData($session);
 
 			$this->reload();
 		}
@@ -156,7 +156,7 @@ abstract class Report extends \Backend
 			return null;
 		}
 
-		$arrSession = $this->Session->get('iso_reports');
+		$arrSession = \Session::getInstance()->get('iso_reports');
 
 		return array
 		(
@@ -178,7 +178,7 @@ abstract class Report extends \Backend
 			return null;
 		}
 
-		$arrSession = $this->Session->get('iso_reports');
+		$arrSession = \Session::getInstance()->get('iso_reports');
 		$varValue = array('tl_field'=>(string) $arrSession[$this->name]['tl_field'], 'tl_value'=>(string) $arrSession[$this->name]['tl_value']);
 
 		return array
@@ -200,7 +200,7 @@ abstract class Report extends \Backend
 			return null;
 		}
 
-		$arrSession = $this->Session->get('iso_reports');
+		$arrSession = \Session::getInstance()->get('iso_reports');
 		$varValue = (string) $arrSession[$this->name]['tl_sort'];
 
 		return array
@@ -225,7 +225,7 @@ abstract class Report extends \Backend
 			$arrConfigs[$objConfigs->id] = $objConfigs->name;
 		}
 
-		$arrSession = $this->Session->get('iso_reports');
+		$arrSession = \Session::getInstance()->get('iso_reports');
 		$varValue = (string) $arrSession[$this->name]['iso_config'];
 
 		return array
@@ -243,7 +243,7 @@ abstract class Report extends \Backend
 
 	protected function getSelectPeriodPanel()
 	{
-		$arrSession = $this->Session->get('iso_reports');
+		$arrSession = \Session::getInstance()->get('iso_reports');
 
 		return array
 		(
@@ -265,7 +265,7 @@ abstract class Report extends \Backend
 
 	protected function getSelectStartPanel()
 	{
-		$arrSession = $this->Session->get('iso_reports');
+		$arrSession = \Session::getInstance()->get('iso_reports');
 
 		return array
 		(
@@ -281,7 +281,7 @@ abstract class Report extends \Backend
 
 	protected function getSelectStopPanel()
 	{
-		$arrSession = $this->Session->get('iso_reports');
+		$arrSession = \Session::getInstance()->get('iso_reports');
 
 		return array
 		(

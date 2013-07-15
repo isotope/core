@@ -19,7 +19,7 @@ class SalesTotal extends Sales
 
 	protected function compile()
 	{
-		$arrSession = $this->Session->get('iso_reports');
+		$arrSession = \Session::getInstance()->get('iso_reports');
 
 		$intConfig = (int) $arrSession[$this->name]['iso_config'];
 		$strPeriod = (string) $arrSession[$this->name]['period'];
@@ -181,7 +181,7 @@ class SalesTotal extends Sales
 
 	protected function initializeChart($strPeriod, $intStart, $intStop, $privateDate, $publicDate)
 	{
-		$arrSession = $this->Session->get('iso_reports');
+		$arrSession = \Session::getInstance()->get('iso_reports');
 		$intConfig = (int) $arrSession[$this->name]['iso_config'];
 
 		$arrData = array('header'=>array(), 'rows'=>array(), 'footer'=>array());
@@ -244,7 +244,7 @@ class SalesTotal extends Sales
 	protected function initializeDefaultValues()
 	{
 		// Set default session data
-		$arrSession = $this->Session->get('iso_reports');
+		$arrSession = \Session::getInstance()->get('iso_reports');
 
 		if ($arrSession[$this->name]['period'] == '')
 		{
@@ -273,7 +273,7 @@ class SalesTotal extends Sales
 			$arrSession[$this->name]['start'] = $objDate->tstamp;
 		}
 
-		$this->Session->set('iso_reports', $arrSession);
+		\Session::getInstance()->set('iso_reports', $arrSession);
 
 		parent::initializeDefaultValues();
 	}
