@@ -368,3 +368,21 @@ h3.inherit,
     text-align: left;
 }
 
+.be_iso_overview .item a {
+    display:block;
+    width:100px;
+    height: 70px;
+    margin-right: 8px;
+    margin-bottom: 5px;
+    margin-top: 15px;
+    padding: 5px;
+    border-radius: 5px;
+    float:left;
+    text-align: center;
+}
+.be_iso_overview .item span {
+    display: block;
+}
+.be_iso_overview fieldset.tl_box>legend {
+    background: none;
+}

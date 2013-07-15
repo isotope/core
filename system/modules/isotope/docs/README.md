@@ -10,3 +10,8 @@ Don't settle for a bridged CMS + eCommerce system. Isotope is built for the Cont
 The following Contao extensions are required to run Isotope eCommerce:
 - https://github.com/terminal42/contao-NamespaceClassLoader
 - https://github.com/menatwork/MultiColumnWizard
+
+## Attributions
+
+The wonderful 64 x 64 pixel icons in the back end are published under the CC Attribution 3.0 license and designed by http://www.designcontest.com.
+Thank you!

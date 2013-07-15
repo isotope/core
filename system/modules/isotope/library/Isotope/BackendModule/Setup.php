@@ -21,73 +21,42 @@ namespace Isotope\BackendModule;
  * @author     Andreas Schempp <andreas.schempp@terminal42.ch>
  * @author     Fred Bliss <fred.bliss@intelligentspark.com>
  */
-class Setup extends \BackendModule
+class Setup extends BackendOverview
 {
-
     /**
-     * Template
-     * @var string
+     * {@inheritdoc}
      */
-    protected $strTemplate = 'be_iso_setup';
-
-    /**
-     * Isotope modules
-     * @var array
-     */
-    protected $arrModules = array();
-
-
-    /**
-     * Generate the module
-     * @return string
-     */
-    public function generate()
+    protected function getModules()
     {
         $this->import('BackendUser', 'User');
+        $return = array();
 
-        foreach ($GLOBALS['ISO_MOD'] as $strGroup => $arrModules)
-        {
-            foreach ($arrModules as $strModule => $arrConfig)
-            {
-                if ($this->User->hasAccess($strModule, 'iso_modules'))
-                {
-                    if (is_array($arrConfig['tables']))
-                    {
+        foreach ($GLOBALS['ISO_MOD'] as $strGroup => $arrModules) {
+            foreach ($arrModules as $strModule => $arrConfig) {
+                if ($this->User->hasAccess($strModule, 'iso_modules')) {
+                    if (is_array($arrConfig['tables'])) {
                         $GLOBALS['BE_MOD']['isotope']['iso_setup']['tables'] += $arrConfig['tables'];
                     }
 
-                    $this->arrModules[$GLOBALS['TL_LANG']['IMD'][$strGroup]][$strModule] = array
+                    $return[$GLOBALS['TL_LANG']['IMD'][$strGroup]][$strModule] = array_merge($arrConfig, array
                     (
-                        'name' => ($GLOBALS['TL_LANG']['IMD'][$strModule][0] ? $GLOBALS['TL_LANG']['IMD'][$strModule][0] : $strModule),
-                        'description' => $GLOBALS['TL_LANG']['IMD'][$strModule][1],
-                        'icon' => $arrConfig['icon']
-                    );
+                        'label'         => ($GLOBALS['TL_LANG']['IMD'][$strModule][0] ? $GLOBALS['TL_LANG']['IMD'][$strModule][0] : $strModule),
+                        'description'   => $GLOBALS['TL_LANG']['IMD'][$strModule][1],
+                        'href'          => \Environment::get('script') . '?do=iso_setup&mod=' . $strModule,
+                    ));
                 }
             }
         }
 
-        // Open module
-        if (\Input::get('mod') != '')
-        {
-            return $this->getIsotopeModule(\Input::get('mod'));
-        }
+        return $return;
+    }
 
-        // Table set but module missing, fix the saveNcreate link
-        elseif (\Input::get('table') != '')
-        {
-            foreach ($GLOBALS['ISO_MOD'] as $arrGroup)
-            {
-                foreach( $arrGroup as $strModule => $arrConfig )
-                {
-                    if (is_array($arrConfig['tables']) && in_array(\Input::get('table'), $arrConfig['tables']))
-                    {
-                        \Controller::redirect($this->addToUrl('mod=' . $strModule));
-                    }
-                }
-            }
-        }
-
-        return parent::generate();
+    /**
+     * {@inheritdoc}
+     */
+    protected function checkUserHasAccessToModule($module)
+    {
+        return $this->User->isAdmin || $this->User->hasAccess($module, 'iso_modules');
     }
 
 
@@ -96,159 +65,7 @@ class Setup extends \BackendModule
      */
     protected function compile()
     {
-        $this->Template->modules = $this->arrModules;
-        $this->Template->script = \Environment::get('script');
-        $this->Template->welcome = sprintf($GLOBALS['TL_LANG']['IMD']['config_module'], ISO_VERSION . '.' . ISO_BUILD);
-    }
-
-
-    /**
-     * Open an isotope module and return it as HTML
-     * @param string
-     * @return mixed
-     */
-    protected function getIsotopeModule($module)
-    {
-        $arrModule = array();
-
-        foreach ($GLOBALS['ISO_MOD'] as $arrGroup)
-        {
-            if (!empty($arrGroup) && in_array($module, array_keys($arrGroup)))
-            {
-                $arrModule =& $arrGroup[$module];
-            }
-        }
-
-        // Check whether the current user has access to the current module
-        if (!$this->User->isAdmin && !$this->User->hasAccess($module, 'iso_modules'))
-        {
-            \System::log('Isotope module "' . $module . '" was not allowed for user "' . $this->User->username . '"', 'ModuleIsotopeSetup getIsotopeModule()', TL_ERROR);
-            \Controller::redirect(\Environment::get('script').'?act=error');
-        }
-
-        $strTable = \Input::get('table');
-
-        if ($strTable == '' && $arrModule['callback'] == '')
-        {
-            \Controller::redirect($this->addToUrl('table='.$arrModule['tables'][0]));
-        }
-
-        $id = (!\Input::get('act') && \Input::get('id')) ? \Input::get('id') : $this->Session->get('CURRENT_ID');
-
-        // Add module style sheet
-        if (isset($arrModule['stylesheet']))
-        {
-            $GLOBALS['TL_CSS'][] = $arrModule['stylesheet'];
-        }
-
-        // Add module javascript
-        if (isset($arrModule['javascript']))
-        {
-            $GLOBALS['TL_JAVASCRIPT'][] = $arrModule['javascript'];
-        }
-
-        // Redirect if the current table does not belong to the current module
-        if ($strTable != '')
-        {
-            if (!in_array($strTable, (array) $arrModule['tables']))
-            {
-                \System::log('Table "' . $strTable . '" is not allowed in Isotope module "' . $module . '"', 'ModuleIsotopeSetup getIsotopeModule()', TL_ERROR);
-                \Controller::redirect('contao/main.php?act=error');
-            }
-
-            // Load the language and DCA file
-            \System::loadLanguageFile($strTable);
-            $this->loadDataContainer($strTable);
-
-            // Include all excluded fields which are allowed for the current user
-            if ($GLOBALS['TL_DCA'][$strTable]['fields'])
-            {
-                foreach ($GLOBALS['TL_DCA'][$strTable]['fields'] as $k=>$v)
-                {
-                    if ($v['exclude'])
-                    {
-                        if ($this->User->hasAccess($strTable.'::'.$k, 'alexf'))
-                        {
-                            $GLOBALS['TL_DCA'][$strTable]['fields'][$k]['exclude'] = false;
-                        }
-                    }
-                }
-            }
-
-            // Fabricate a new data container object
-            if (!strlen($GLOBALS['TL_DCA'][$strTable]['config']['dataContainer']))
-            {
-                \System::log('Missing data container for table "' . $strTable . '"', 'Backend getBackendModule()', TL_ERROR);
-                trigger_error('Could not create a data container object', E_USER_ERROR);
-            }
-
-            $dataContainer = 'DC_' . $GLOBALS['TL_DCA'][$strTable]['config']['dataContainer'];
-            $dc = new $dataContainer($strTable);
-        }
-
-        // AJAX request
-        if ($_POST && \Environment::get('isAjaxRequest'))
-        {
-            $this->objAjax->executePostActions($dc);
-        }
-
-        // Call module callback
-        elseif ($this->classFileExists($arrModule['callback']))
-        {
-            $objCallback = new $arrModule['callback']($dc);
-
-            return $objCallback->generate();
-        }
-
-        // Custom action (if key is not defined in config.php the default action will be called)
-        elseif (\Input::get('key') && isset($arrModule[\Input::get('key')]))
-        {
-            $objCallback = new $arrModule[\Input::get('key')][0]();
-
-            return $objCallback->$arrModule[\Input::get('key')][1]($dc, $strTable, $arrModule);
-        }
-
-        // Default action
-        elseif (is_object($dc))
-        {
-            $act = \Input::get('act');
-
-            if (!strlen($act) || $act == 'paste' || $act == 'select')
-            {
-                $act = ($dc instanceof \listable) ? 'showAll' : 'edit';
-            }
-
-            switch ($act)
-            {
-                case 'delete':
-                case 'show':
-                case 'showAll':
-                case 'undo':
-                    if (!$dc instanceof \listable)
-                    {
-                        \System::log('Data container ' . $strTable . ' is not listable', 'Backend getBackendModule()', TL_ERROR);
-                        trigger_error('The current data container is not listable', E_USER_ERROR);
-                    }
-                    break;
-
-                case 'create':
-                case 'cut':
-                case 'cutAll':
-                case 'copy':
-                case 'copyAll':
-                case 'move':
-                case 'edit':
-                    if (!$dc instanceof \editable)
-                    {
-                        \System::log('Data container ' . $strTable . ' is not editable', 'Backend getBackendModule()', TL_ERROR);
-                        trigger_error('The current data container is not editable', E_USER_ERROR);
-                    }
-                    break;
-            }
-
-            return $dc->$act();
-        }
-
-        return null;
+        $this->Template->before = '<h1 id="tl_welcome">' . sprintf($GLOBALS['TL_LANG']['IMD']['config_module'], ISO_VERSION . '.' . ISO_BUILD) . '</h1>';
+        parent::compile();
     }
 }
