@@ -28,6 +28,12 @@ class Config extends \Model
     protected static $strTable = 'tl_iso_config';
 
     /**
+     * Cache for additional methods
+     * @var array
+     */
+    protected $arrCache = array();
+
+    /**
      * Return custom options or table row data
      * @param mixed
      * @return mixed
@@ -51,6 +57,7 @@ class Config extends \Model
      */
     public function getBillingFields()
     {
+        // @todo: cache?
         return array_filter(array_map(
             function($field) {
                 return $field['enabled'] ? $field['value'] : null;
@@ -65,6 +72,7 @@ class Config extends \Model
      */
     public function getShippingFields()
     {
+        // @todo: cache?
         return array_filter(array_map(
             function($field) {
                 return $field['enabled'] ? $field['value'] : null;
@@ -79,6 +87,7 @@ class Config extends \Model
      */
     public function getBillingCountries()
     {
+        // @todo: cache?
         $arrCountries = deserialize($this->billing_countries);
 
         if (empty($arrCountries) || !is_array($arrCountries)) {
@@ -94,6 +103,7 @@ class Config extends \Model
      */
     public function getShippingCountries()
     {
+        // @todo: cache?
         $arrCountries = deserialize($this->shipping_countries);
 
         if (empty($arrCountries) || !is_array($arrCountries)) {
@@ -101,6 +111,26 @@ class Config extends \Model
         }
 
         return $arrCountries;
+    }
+
+    /**
+     * Get the limit to mark products as new
+     * @return int
+     */
+    public function getNewProductLimit()
+    {
+        if (!isset($this->arrCache['newProductLimit'])) {
+
+            $arrPeriod = deserialize($this->newProductPeriod);
+
+            if (!empty($arrPeriod) && is_array($arrPeriod) && $arrPeriod['value'] > 0 && $arrPeriod['unit'] != '') {
+                $this->arrCache['newProductLimit'] = strtotime('-' . $arrPeriod['value'] . ' ' . $arrPeriod['unit'] . ' 00:00:00');
+            } else {
+                $this->arrCache['newProductLimit'] = time();
+            }
+        }
+
+        return $this->arrCache['newProductLimit'];
     }
 
     /**

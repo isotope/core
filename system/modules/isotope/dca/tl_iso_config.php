@@ -30,7 +30,11 @@ $GLOBALS['TL_DCA']['tl_iso_config'] = array
         (
             array('Isotope\Backend', 'initializeSetupModule'),
             array('Isotope\tl_iso_config', 'checkPermission'),
-        )
+        ),
+        'onsubmit_callback' => array
+        (
+            array('Isotope\Backend', 'truncateProductCache'),
+        ),
     ),
 
     // List
@@ -116,7 +120,8 @@ $GLOBALS['TL_DCA']['tl_iso_config'] = array
             {converter_legend:hide},priceCalculateFactor,priceCalculateMode,currencyAutomator;
             {order_legend:hide},orderPrefix,orderDigits,orderstatus_new,orderstatus_error,invoiceLogo;
             {config_legend},templateGroup,cartMinSubtotal;
-            {images_legend},gallery,missing_image_placeholder,imageSizes',
+            {images_legend},gallery,missing_image_placeholder,imageSizes;
+            {products_legend},newProductPeriod',
     ),
 
     // Subpalettes
@@ -567,5 +572,16 @@ $GLOBALS['TL_DCA']['tl_iso_config'] = array
                 ),
             ),
         ),
+        'newProductPeriod' => array
+        (
+            'label'                     => &$GLOBALS['TL_LANG']['tl_iso_config']['newProductPeriod'],
+            'exclude'                   => true,
+            'default'                   => array('unit'=>'days'),
+            'inputType'                 => 'timePeriod',
+            'options'                   => array('minutes', 'hours', 'days', 'weeks', 'months', 'years'),
+            'reference'                 => &$GLOBALS['TL_LANG']['MSC']['timePeriod'],
+            'eval'                      => array('rgxp'=>'digit', 'maxlength'=>5, 'tl_class'=>'w50'),
+            'sql'                       => "varchar(255) NOT NULL default ''"
+        )
     )
 );

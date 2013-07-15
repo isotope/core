@@ -405,7 +405,6 @@ class Standard extends \Controller implements IsotopeProduct
         return $this->arrType;
     }
 
-
     /**
      * Return the product attributes
      * @return array
@@ -687,6 +686,16 @@ class Standard extends \Controller implements IsotopeProduct
         }
 
         return true;
+    }
+
+
+    /**
+     * Checks whether a product is new according to the current store config
+     * @return boolean
+     */
+    public function isNew()
+    {
+        return $this->dateAdded >= Isotope::getConfig()->getNewProductLimit();
     }
 
 

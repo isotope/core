@@ -1740,6 +1740,10 @@ window.addEvent('domready', function()
         $arrItems = array();
 
         foreach ($objCollection->getItems() as $objItem) {
+
+            $blnHasProduct = $objItem->hasProduct();
+            $objProduct = $objItem->getProduct();
+
             $arrItems[] = array(
                 'id'                => $objItem->id,
                 'sku'               => $objItem->getSku(),
@@ -1751,9 +1755,10 @@ window.addEvent('domready', function()
                 'total'             => Isotope::formatPriceWithCurrency($objItem->getPrice() * $objItem->quantity),
                 'tax_free_total'    => Isotope::formatPriceWithCurrency($objItem->getTaxFreePrice() * $objItem->quantity),
                 'tax_id'            => $objItem->tax_id,
-                'hasProduct'        => $objItem->hasProduct(),
-                'product'           => $objItem->getProduct(),
+                'hasProduct'        => $blnHasProduct,
+                'product'           => $objProduct,
                 'raw'               => $objItem->row(),
+                'rowClass'          => trim('product ' . (($blnHasProduct && $objProduct->isNew()) ? 'new ' : '') . $objProduct->cssID[1]),
             );
         }
 

@@ -63,6 +63,7 @@ $GLOBALS['TL_LANG']['tl_iso_config']['cartMinSubtotal']                    = arr
 $GLOBALS['TL_LANG']['tl_iso_config']['gallery']                            = array('Product image gallery', 'Different image galleries can be developed to present media files in a custom style.');
 $GLOBALS['TL_LANG']['tl_iso_config']['imageSizes']                        = array('Image sizes', 'You can create custom image sizes for use in your templates. The default sizes are "gallery", "thumbnail", "medium" and "large".');
 $GLOBALS['TL_LANG']['tl_iso_config']['missing_image_placeholder']        = array('Missing Image Placeholder', 'This image will be used if an image file cannot be found or none are associated with a product.');
+$GLOBALS['TL_LANG']['tl_iso_config']['newProductPeriod']                = array('Duration to mark a product as "new"', 'If you would like to highlight new products, you can enter a time period here. It will automatically add a CSS class "new" to every product everywhere within Isotope eCommerce.');
 
 /**
  * Reference
@@ -100,3 +101,4 @@ $GLOBALS['TL_LANG']['tl_iso_config']['currency_legend']                    = 'Cu
 $GLOBALS['TL_LANG']['tl_iso_config']['converter_legend']                = 'Currency conversion';
 $GLOBALS['TL_LANG']['tl_iso_config']['order_legend']                    = 'Orders';
 $GLOBALS['TL_LANG']['tl_iso_config']['images_legend']                    = 'Images';
+$GLOBALS['TL_LANG']['tl_iso_config']['products_legend']                    = 'Products';

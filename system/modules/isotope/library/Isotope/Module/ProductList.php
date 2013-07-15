@@ -12,6 +12,7 @@
 
 namespace Isotope\Module;
 
+use Isotope\Isotope;
 use Isotope\Product\Standard as StandardProduct;
 
 
@@ -265,7 +266,7 @@ class ProductList extends Module
 
             $arrBuffer[] = array(
                 'cssID'     => ($objProduct->cssID[0] != '') ? ' id="' . $objProduct->cssID[0] . '"' : '',
-                'class'     => $objProduct->cssID[1],
+                'class'     => trim('product ' . ($objProduct->isNew() ? 'new ' : '') . $objProduct->cssID[1]),
                 'html'      => $objProduct->generate(($this->iso_list_layout ?: $objProduct->list_template), $this),
                 'product'   => $objProduct,
             );
@@ -295,6 +296,13 @@ class ProductList extends Module
         $arrCategories = $this->findCategories($this->iso_category_scope);
 
         list($arrFilters, $arrSorting, $strWhere, $arrValues) = $this->getFiltersAndSorting();
+
+        // Apply new/old product filter
+        if ($this->iso_newFilter == 'show_new') {
+            $strWhere .= " AND p1.dateAdded>=" . Isotope::getConfig()->getNewProductLimit();
+        } elseif ($this->iso_newFilter == 'show_old') {
+            $strWhere .= " AND p1.dateAdded<" . Isotope::getConfig()->getNewProductLimit();
+        }
 
         $objProductData = $this->Database->prepare(StandardProduct::getSelectStatement() . "
                                                     WHERE p1.language=''"
@@ -475,6 +483,18 @@ class ProductList extends Module
     {
         $time = time();
 
-        return (int) $this->Database->execute("SELECT MIN(start) AS expires FROM tl_iso_products WHERE start>$time")->expires;
+        // Find timestamp when the next product becomes available
+        $expires = (int) $this->Database->execute("SELECT MIN(start) AS expires FROM tl_iso_products WHERE start>$time")->expires;
+
+        // Find
+        if ($this->iso_newFilter == 'show_new' || $this->iso_newFilter == 'show_old') {
+            $added = $this->Database->execute("SELECT MIN(dateAdded) FROM tl_iso_products WHERE dateAdded>" . Isotope::getConfig()->getNewProductLimit());
+
+            if ($added < $expires) {
+                $expires = $added;
+            }
+        }
+
+        return $expires;
     }
 }
