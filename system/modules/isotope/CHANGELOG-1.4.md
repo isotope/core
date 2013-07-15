@@ -11,6 +11,7 @@ Version 1.4.3 (2013-??-??)
 
 ### Fixed
 - Advanced price calculation failed when no variants were found (#644)
+- Product list cache shows incorrect results when using member group restrictions (#654)
 
 
 
