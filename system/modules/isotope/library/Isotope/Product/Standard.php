@@ -695,7 +695,7 @@ class Standard extends \Controller implements IsotopeProduct
      */
     public function isNew()
     {
-        return $this->date_added >= Isotope::getConfig()->getNewProductLimit();
+        return $this->dateAdded >= Isotope::getConfig()->getNewProductLimit();
     }
 
 

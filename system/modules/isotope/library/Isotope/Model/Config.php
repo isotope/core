@@ -121,7 +121,7 @@ class Config extends \Model
     {
         if (!isset($this->arrCache['newProductLimit'])) {
 
-            $arrPeriod = deserialize($this->productNewPeriod);
+            $arrPeriod = deserialize($this->newProductPeriod);
 
             if (!empty($arrPeriod) && is_array($arrPeriod) && $arrPeriod['value'] > 0 && $arrPeriod['unit'] != '') {
                 $this->arrCache['newProductLimit'] = strtotime('-' . $arrPeriod['value'] . ' ' . $arrPeriod['unit'] . ' 00:00:00');
