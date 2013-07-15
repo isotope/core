@@ -12,6 +12,7 @@
 
 namespace Isotope\Module;
 
+use Isotope\Isotope;
 use Isotope\Product\Standard as StandardProduct;
 
 
@@ -88,14 +89,6 @@ class ProductList extends Module
                     break;
                 }
             }
-        }
-
-        if ($this->iso_newFilter != 'show_all' && $limit = Isotope::getConfig()->getMarkProductAsNewLimit() > 0) {
-            $GLOBALS['ISO_FILTERS'][$this->id][] = array(
-                'attribute' => 'date_added',
-                'operator'  => ($this->iso_newFilter != 'show_new') ? '>=' : '<',
-                'value'     => $limit
-            );
         }
 
         return parent::generate();
@@ -303,6 +296,13 @@ class ProductList extends Module
         $arrCategories = $this->findCategories($this->iso_category_scope);
 
         list($arrFilters, $arrSorting, $strWhere, $arrValues) = $this->getFiltersAndSorting();
+
+        // Apply new/old product filter
+        if ($this->iso_newFilter == 'show_new') {
+            $strWhere .= " AND p1.dateAdded>=" . Isotope::getConfig()->getNewProductLimit();
+        } elseif ($this->iso_newFilter == 'show_old') {
+            $strWhere .= " AND p1.dateAdded<" . Isotope::getConfig()->getNewProductLimit();
+        }
 
         $objProductData = $this->Database->prepare(StandardProduct::getSelectStatement() . "
                                                     WHERE p1.language=''"
