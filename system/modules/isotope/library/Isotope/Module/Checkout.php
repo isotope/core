@@ -185,10 +185,14 @@ class Checkout extends Module
             $this->Template->formSubmit = $this->strFormId;
 
             $intCurrentStep += 1;
-            $strBuffer = '';
+            $arrBuffer = array();
 
             foreach ($arrModules as $objModule) {
-                $strBuffer .= $objModule->generate();
+
+                $arrBuffer[] = array(
+                    'class' => standardize($step) . ' ' . standardize($objModule->getStepClass()),
+                    'html'  => $objModule->generate()
+                );
 
                 if ($objModule->hasError()) {
                     $this->doNotSubmit = true;
@@ -217,6 +221,7 @@ class Checkout extends Module
 
             $this->Template->showForm = false;
             $this->doNotSubmit = true;
+            $arrBuffer = array(array('html'=>$strBuffer, 'class'=>$this->strCurrentStep));
         } else if ($this->strCurrentStep == 'complete') {
             $strBuffer = Isotope::getCart()->hasPayment() ? Isotope::getCart()->getPaymentMethod()->processPayment() : true;
 
@@ -233,10 +238,11 @@ class Checkout extends Module
             } else {
                 $this->Template->showNext = false;
                 $this->Template->showPrevious = false;
+                $arrBuffer = array(array('html'=>$strBuffer, 'class'=>$this->strCurrentStep));
             }
         }
 
-        $this->Template->fields = $strBuffer;
+        $this->Template->fields = \Isotope\Frontend::generateRowClass($arrBuffer, '', 'class', 0, ISO_CLASS_FIRSTLAST);
 
         if (!strlen($this->strCurrentStep))
         {

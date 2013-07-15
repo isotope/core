@@ -1,4 +1,3 @@
-<div class="order_info">
 <h2><?php echo $this->headline; ?></h2>
 <p><?php echo $this->message; ?></p>
 
@@ -10,4 +9,3 @@
 </div>
 <?php endforeach; ?>
 <div class="clear">&nbsp;</div>
-</div>

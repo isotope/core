@@ -32,9 +32,14 @@
 <input type="hidden" name="FORM_SUBMIT" value="<?php echo $this->formSubmit; ?>">
 <input type="hidden" name="REQUEST_TOKEN" value="{{request_token}}">
 <?php echo $this->hidden; ?>
-<?php echo $this->fields; ?>
+<?php endif; ?>
+<?php foreach ($this->fields as $field): ?>
+<div class="<?php echo $field['class']; ?>">
+<?php echo $field['html']; ?>
 </div>
-<div class="clear">&nbsp;</div>
+<?php endforeach; ?>
+<?php if ($this->showForm): ?>
+</div>
 <?php if ($this->showPrevious || $this->showNext): ?>
     <div class="submit_container">
         <?php if ($this->showPrevious): ?><input type="submit" class="submit previous button" name="previousStep" value="<?php echo $this->previousLabel; ?>"><?php endif; if ($this->showNext): ?>
@@ -42,8 +47,6 @@
     </div>
 <?php endif; ?>
 </form>
-<?php else: ?>
-<?php echo $this->fields; ?>
 <?php endif; ?>
 
 </div>
