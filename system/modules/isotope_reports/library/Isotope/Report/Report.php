@@ -74,13 +74,13 @@ abstract class Report extends \Backend
 
 	public function generate()
 	{
-		if ($this->Input->post('FORM_SUBMIT') == 'tl_filters')
+		if (\Input::post('FORM_SUBMIT') == 'tl_filters')
 		{
 			$session = \Session::getInstance()->getData();
 
 			foreach (array_keys($_POST) as $strKey)
 			{
-				$session['iso_reports'][$this->name][$strKey] = $this->Input->post($strKey);
+				$session['iso_reports'][$this->name][$strKey] = \Input::post($strKey);
 			}
 
 			\Session::getInstance()->setData($session);

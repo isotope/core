@@ -28,9 +28,9 @@ class Reports extends \BackendModule
 	{
 	    $this->import('BackendUser', 'User');
 
-		if ($this->Input->get('report') != '')
+		if (\Input::get('report') != '')
 		{
-			$arrReport = $this->findReport($this->Input->get('report'));
+			$arrReport = $this->findReport(\Input::get('report'));
 
 			if ($arrReport !== false && $this->classFileExists($arrReport['callback']))
 			{
