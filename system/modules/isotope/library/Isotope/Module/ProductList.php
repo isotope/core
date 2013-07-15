@@ -38,12 +38,6 @@ class ProductList extends Module
      */
     protected $blnCacheProducts = true;
 
-    /**
-     * Mark new limit
-     * @var int
-     */
-    protected $intMarkNewLimit = 0;
-
 
     /**
      * Display a wildcard in the back end
