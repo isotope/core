@@ -368,6 +368,10 @@ h3.inherit,
     text-align: left;
 }
 
+body.iso_be_overview .tip-wrap{
+    margin-left: 30px !important;
+    margin-top: 70px;
+}
 .be_iso_overview .item a {
     display:block;
     width:100px;

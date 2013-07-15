@@ -40,8 +40,8 @@ class Setup extends BackendOverview
 
                     $return[$GLOBALS['TL_LANG']['IMD'][$strGroup]][$strModule] = array_merge($arrConfig, array
                     (
-                        'label'         => ($GLOBALS['TL_LANG']['IMD'][$strModule][0] ? $GLOBALS['TL_LANG']['IMD'][$strModule][0] : $strModule),
-                        'description'   => $GLOBALS['TL_LANG']['IMD'][$strModule][1],
+                        'label'         => specialchars(($GLOBALS['TL_LANG']['IMD'][$strModule][0] ? $GLOBALS['TL_LANG']['IMD'][$strModule][0] : $strModule)),
+                        'description'   => specialchars(strip_tags($GLOBALS['TL_LANG']['IMD'][$strModule][1])),
                         'href'          => \Environment::get('script') . '?do=iso_setup&mod=' . $strModule,
                     ));
                 }
