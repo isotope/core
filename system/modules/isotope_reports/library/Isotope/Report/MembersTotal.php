@@ -9,13 +9,15 @@
  * @license    http://opensource.org/licenses/lgpl-3.0.html LGPL
  */
 
+namespace Isotope\Report;
 
-class IsotopeReportMembersGuests extends IsotopeReport
+
+class MembersTotal extends Report
 {
 
 	public function generate()
 	{
-		return '<p class="tl_gerror">This report is not implemented yet. It will show your sales comparison between members and guests.</p>';
+		return '<p class="tl_gerror">This report is not implemented yet. It will show your sales information by members.</p>';
 	}
 
 	protected function compile()

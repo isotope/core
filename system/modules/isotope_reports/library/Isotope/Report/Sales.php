@@ -9,8 +9,10 @@
  * @license    http://opensource.org/licenses/lgpl-3.0.html LGPL
  */
 
+namespace Isotope\Report;
 
-abstract class IsotopeReportSales extends IsotopeReport
+
+abstract class Sales extends Report
 {
 
 	// Allow extensions to use date_paid or date_shipped

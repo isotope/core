@@ -9,8 +9,10 @@
  * @license    http://opensource.org/licenses/lgpl-3.0.html LGPL
  */
 
+namespace Isotope\Report;
 
-class IsotopeReportSalesProduct extends IsotopeReportSales
+
+class SalesProduct extends Sales
 {
 
 	public function generate()

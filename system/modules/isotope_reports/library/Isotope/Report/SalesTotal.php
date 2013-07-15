@@ -9,8 +9,10 @@
  * @license    http://opensource.org/licenses/lgpl-3.0.html LGPL
  */
 
+namespace Isotope\Report;
 
-class IsotopeReportSalesTotal extends IsotopeReportSales
+
+class SalesTotal extends Sales
 {
 
 	protected function compile()
