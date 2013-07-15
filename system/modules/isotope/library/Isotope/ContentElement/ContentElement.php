@@ -42,8 +42,8 @@ abstract class ContentElement extends Contao_ContentElement
             }
 
             // Load Isotope javascript and css
-            $GLOBALS['TL_JAVASCRIPT'][] = 'system/modules/isotope/assets/isotope.min.js';
-            $GLOBALS['TL_CSS'][] = 'system/modules/isotope/assets/isotope.min.css';
+            $GLOBALS['TL_JAVASCRIPT'][] = 'system/modules/isotope/assets/isotope' . (ISO_DEBUG ? '' : '.min') . '.js';
+            $GLOBALS['TL_CSS'][] = 'system/modules/isotope/assets/isotope' . (ISO_DEBUG ? '' : '.min') . '.css';
         }
     }
 }
