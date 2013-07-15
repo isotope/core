@@ -758,9 +758,9 @@ class Standard extends \Controller implements IsotopeProduct
         {
             foreach ($arrButtons as $button => $data)
             {
-                if (strlen(\Input::post($button)))
+                if (\Input::post($button) != '')
                 {
-                    if (is_array($data['callback']) && count($data['callback']) == 2)
+                    if (isset($data['callback']))
                     {
                         $objCallback = \System::importStatic($data['callback'][0]);
                         $objCallback->{$data['callback'][1]}($this, $objModule);
