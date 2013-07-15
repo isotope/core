@@ -60,15 +60,16 @@ class BillingAddress extends Address implements IsotopeCheckoutStep
     {
         $blnRequiresPayment = Isotope::getCart()->requiresPayment();
         $blnRequiresShipping = Isotope::getCart()->requiresShipping();
-        $objAddress = Isotope::getCart()->getShippingAddress();
+        $objBillingAddress = Isotope::getCart()->getBillingAddress();
+        $objShippingAddress = Isotope::getCart()->getShippingAddress();
 
         $strHeadline = $GLOBALS['TL_LANG']['MSC']['billing_address'];
 
-        if ($blnRequiresPayment && $blnRequiresShipping && $objAddress->id == -1)
+        if ($blnRequiresPayment && $blnRequiresShipping && $objBillingAddress->id == $objShippingAddress->id)
         {
             $strHeadline = $GLOBALS['TL_LANG']['MSC']['billing_shipping_address'];
         }
-        elseif ($blnRequiresShipping && $objAddress->id == -1)
+        elseif ($blnRequiresShipping && $objBillingAddress->id == $objShippingAddress->id)
         {
             $strHeadline = $GLOBALS['TL_LANG']['MSC']['shipping_address'];
         }
@@ -80,7 +81,7 @@ class BillingAddress extends Address implements IsotopeCheckoutStep
         return array('billing_address' => array
         (
             'headline'    => $strHeadline,
-            'info'        => Isotope::getCart()->getBillingAddress()->generateHtml(Isotope::getConfig()->billing_fields),
+            'info'        => $objBillingAddress->generateHtml(Isotope::getConfig()->billing_fields),
             'edit'        => \Isotope\Module\Checkout::generateUrlForStep('address'),
         ));
     }
