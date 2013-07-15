@@ -467,10 +467,22 @@ class Frontend extends \Frontend
 
 
     /**
-     * Use generatePage Hook to inject messages if they have not been included in a module
+     * Use generatePage Hook to inject necessary javascript
      */
-    public function injectMessages()
+    public function injectScripts()
     {
+        if (!empty($GLOBALS['AJAX_PRODUCTS']) && is_array($GLOBALS['AJAX_PRODUCTS'])) {
+            list(,$startScript, $endScript) = \Isotope\Frontend::getElementAndScriptTags();
+
+            $GLOBALS['TL_MOOTOOLS'][] = "
+$startScript
+window.addEvent('domready', function() {
+    IsotopeProducts.setLoadMessage('" . specialchars($GLOBALS['TL_LANG']['MSC']['loadingProductData']) . "');
+    IsotopeProducts.attach(JSON.decode('" . json_encode($GLOBALS['AJAX_PRODUCTS']) . "'));
+});
+$endScript";
+        }
+
         $strMessages = \Isotope\Frontend::getIsotopeMessages();
 
         if ($strMessages != '') {
@@ -1761,4 +1773,47 @@ window.addEvent('domready', function()
             }
         }
     }
+
+
+    /**
+     * Send response for an ajax request
+     * @param   mixed
+     */
+    public static function ajaxResponse($varValue)
+    {
+		$varValue = static::replaceTags($varValue);
+
+		if (is_array($varValue) || is_object($varValue))
+		{
+			$varValue = json_encode($varValue);
+		}
+
+		echo $varValue;
+		exit;
+    }
+
+
+	/**
+	 * Recursively replace inserttags in the return value
+	 * @param	array|string
+	 * @return	array|string
+	 */
+	private static function replaceTags($varValue)
+	{
+		if (is_array($varValue))
+		{
+			foreach( $varValue as $k => $v )
+			{
+				$varValue[$k] = static::replaceTags($v);
+			}
+
+			return $varValue;
+		}
+		elseif (is_object($varValue))
+		{
+			return $varValue;
+		}
+
+		return Isotope::getInstance()->call('replaceInsertTags', array($varValue, false));
+	}
 }

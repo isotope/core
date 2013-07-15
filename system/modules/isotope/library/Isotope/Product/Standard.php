@@ -84,12 +84,6 @@ class Standard extends \Controller implements IsotopeProduct
     protected $formSubmit = 'iso_product';
 
     /**
-     * Name of the Javascript class
-     * @var string
-     */
-    protected $ajaxClass = 'IsotopeProduct';
-
-    /**
      * For option widgets, helps determine the encoding type for a form
      * @var boolean
      */
@@ -793,7 +787,7 @@ class Standard extends \Controller implements IsotopeProduct
         $objTemplate->formSubmit = $this->formSubmit;
         $objTemplate->product = $this;
 
-        $GLOBALS['TL_MOOTOOLS'][] = "<script>\nnew {$this->ajaxClass}('{$objModule->id}', '" . ($this->pid ? $this->pid : $this->id) . "', '{$this->formSubmit}', ['ctrl_" . implode("_".$this->formSubmit."', 'ctrl_", $arrAjaxOptions) . "_".$this->formSubmit."'], {language: '{$GLOBALS['TL_LANGUAGE']}', action: '".($objModule instanceof \Module ? 'fmd' : 'cte')."', page: {$objPage->id}, loadMessage:'" . specialchars($GLOBALS['TL_LANG']['MSC']['loadingProductData']) . "'});\n</script>";
+        $GLOBALS['AJAX_PRODUCTS'][] = array('module'=>$objModule->id, 'product'=>($this->pid ? $this->pid : $this->id), 'formId'=>$this->formSubmit, 'attributes'=>$arrAjaxOptions);
 
         // !HOOK: alter product data before output
         if (isset($GLOBALS['ISO_HOOKS']['generateProduct']) && is_array($GLOBALS['ISO_HOOKS']['generateProduct']))
@@ -806,89 +800,6 @@ class Standard extends \Controller implements IsotopeProduct
         }
 
         return $objTemplate->parse();
-    }
-
-
-
-    /**
-     * Generate the product data on ajax update
-     * @param object
-     * @return array
-     */
-    public function generateAjax(&$objModule)
-    {
-        $this->formSubmit = (($objModule instanceof \ContentElement) ? 'cte' : 'fmd') . $objModule->id . '_product_' . ($this->pid ? $this->pid : $this->id);
-        $this->validateVariant();
-
-        $arrOptions = array();
-        $arrToGenerate = array();
-
-        foreach ($this->getProductAndVariantAttributes() as $attribute)
-        {
-            $arrData = $GLOBALS['TL_DCA']['tl_iso_products']['fields'][$attribute];
-
-            if ($arrData['attributes']['variant_option'] || $arrData['attributes']['ajax_option'])
-            {
-                $arrOptions[] = array_merge($arrData, array
-                (
-                    'id'    => ('ctrl_' . $attribute . '_' . $this->formSubmit),
-                    'name'    => $attribute,
-                    'html'    => $this->generateProductOptionWidget($attribute, true),
-                ));
-            }
-            elseif (in_array($attribute, $this->arrVariantAttributes))
-            {
-                $arrToGenerate[] = $attribute;
-            }
-        }
-
-        foreach($arrToGenerate as $attribute)
-        {
-            $arrData = $GLOBALS['TL_DCA']['tl_iso_products']['fields'][$attribute];
-
-            if ($arrData['inputType'] == 'mediaManager')
-            {
-                $objGallery = $this->$attribute;
-
-                foreach ((array) Isotope::getConfig()->imageSizes as $size)
-                {
-                    $arrOptions[] = array_merge($arrData, array
-                    (
-                        'id'    => ($this->formSubmit . '_' . $attribute . '_' . $size['name'] . 'size'),
-                        'name'    => $attribute,
-                        'html'    => $objGallery->generateMainImage($size['name']),
-                    ));
-                }
-
-                $arrOptions[] = array_merge($arrData, array
-                (
-                    'id' => ($this->formSubmit . '_' . $attribute . '_gallery'),
-                    'name'    => $attribute,
-                    'html' => $objGallery->generateGallery(),
-                ));
-            }
-            else
-            {
-                $arrOptions[] = array_merge($arrData, array
-                (
-                    'id' => ($this->formSubmit . '_' . $attribute),
-                    'name'    => $attribute,
-                    'html' => $this->generateAttribute($attribute, $this->$attribute),
-                ));
-            }
-        }
-
-        // !HOOK: alter product data before ajax output
-        if (isset($GLOBALS['ISO_HOOKS']['generateAjaxProduct']) && is_array($GLOBALS['ISO_HOOKS']['generateAjaxProduct']))
-        {
-            foreach ($GLOBALS['ISO_HOOKS']['generateAjaxProduct'] as $callback)
-            {
-                $objCallback = \System::importStatic($callback[0]);
-                $arrOptions = $objCallback->$callback[1]($arrOptions, $this);
-            }
-        }
-
-        return $arrOptions;
     }
 
 
@@ -1062,15 +973,7 @@ class Standard extends \Controller implements IsotopeProduct
             }
         }
 
-        // Apply <div> ID to variant attributes so we can replace it with javascript/ajax
-        if (in_array($attribute, $this->arrVariantAttributes))
-        {
-            return '<div class="iso_attribute ' . $attribute . '" id="' . $this->formSubmit . '_' . $attribute . '">' . $strBuffer . '</div>';
-        }
-        else
-        {
-            return $strBuffer;
-        }
+        return $strBuffer;
     }
 
 
@@ -1080,11 +983,11 @@ class Standard extends \Controller implements IsotopeProduct
      * @param boolean
      * @return string
      */
-    protected function generateProductOptionWidget($strField, $blnAjax=false)
+    protected function generateProductOptionWidget($strField)
     {
         $arrData = $GLOBALS['TL_DCA']['tl_iso_products']['fields'][$strField];
 
-        $arrData['eval']['mandatory'] = ($arrData['eval']['mandatory'] && !$blnAjax) ? true : false;
+        $arrData['eval']['mandatory'] = ($arrData['eval']['mandatory'] && !\Environment::get('isAjaxRequest')) ? true : false;
         $arrData['eval']['required'] = $arrData['eval']['mandatory'];
 
         // Make sure variant options are initialized
@@ -1098,7 +1001,7 @@ class Standard extends \Controller implements IsotopeProduct
                 $this->arrVariantOptions['current'][$strField] = $this->arrVariantOptions['attributes'][$strField][0];
                 $arrData['default'] = $this->arrVariantOptions['attributes'][$strField][0];
 
-                if (!$blnAjax)
+                if (!\Environment::get('isAjaxRequest'))
                 {
                     return '';
                 }

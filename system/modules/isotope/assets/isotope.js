@@ -17,9 +17,9 @@ var Isotope = Isotope || {};
 Isotope.toggleAddressFields = function(el, id)
 {
     if (el.value == '0' && el.checked) {
-        document.id(id).setStyle('display', 'block');
+        document.getElementById(id).style.display = 'block';
     } else {
-        document.id(id).setStyle('display', 'none');
+        document.getElementById(id).style.display = 'none';
     }
 };
 
@@ -29,34 +29,36 @@ Isotope.toggleAddressFields = function(el, id)
  */
 Isotope.displayBox = function(message, btnClose)
 {
-    var box = document.id('iso_ajaxBox');
-    var overlay = document.id('iso_ajaxOverlay');
+    var box = document.getElementById('iso_ajaxBox');
+    var overlay = document.getElementById('iso_ajaxOverlay');
 
     if (!overlay) {
-        overlay = new Element('div').setProperty('id', 'iso_ajaxOverlay').injectInside(document.id(document.body));
+        overlay = document.createElement('div');
+        overlay.setAttribute('id', 'iso_ajaxOverlay');
+        document.body.appendChild(overlay);
     }
 
     if (!box) {
-        box = new Element('div').setProperty('id', 'iso_ajaxBox').injectInside(document.id(document.body));
+        box = document.createElement('div');
+        box.setAttribute('id', 'iso_ajaxBox');
+        document.body.appendChild(box);
     }
 
     if (btnClose) {
-        overlay.addEvent('click', Isotope.hideBox);
-        box.addClass('btnClose').addEvent('click', Isotope.hideBox);
+        overlay.addEventListener('click', Isotope.hideBox, false);
+        box.addEventListener('click', Isotope.hideBox, false);
+        if (!box.className.test(/btnClose/)) {
+            box.className = box.className + ' btnClose';
+        }
     }
 
     var scroll = window.getScroll().y;
-    if (Browser.Engine.trident && Browser.Engine.version < 5) {
-        var sel = $$('select'); for (var i=0; i<sel.length; i++) {
-            sel[i].setStyle('visibility', 'hidden');
-        } 
-    }
 
-    overlay.setStyle('display', 'block');
+    overlay.style.display = 'block';
 
-    box.set('html', message);
-    box.setStyle('display', 'block');
-    box.setStyle('top', (scroll + 100) + 'px');
+    box.innerHTML = message;
+    box.style.display = 'block';
+    box.style.top = ((scroll + 100) + 'px');
 };
 
 
@@ -65,16 +67,18 @@ Isotope.displayBox = function(message, btnClose)
  */
 Isotope.hideBox = function()
 {
-    var box = document.id('iso_ajaxBox');
-    var overlay = document.id('iso_ajaxOverlay');
+    var box = document.getElementById('iso_ajaxBox');
+    var overlay = document.getElementById('iso_ajaxOverlay');
 
     if (overlay) {
-        overlay.setStyle('display', 'none').removeEvents('click');
+        overlay.style.display = 'none';
+        overlay.removeEventListener('click', Isotope.hideBox, false);
     }
 
     if (box) {
-        box.setStyle('display', 'none').removeEvents('click').removeClass('btnClose');
-        if (Browser.Engine.trident && Browser.Engine.version < 5) { var sel = $$('select'); for (var i=0; i<sel.length; i++) { sel[i].setStyle('visibility', 'visible'); } }
+        box.style.display = 'none';
+        box.removeEventListener('click', Isotope.hideBox, false);
+        box.className = box.className.replace(/ ?btnClose/, '');
     }
 };
 
@@ -91,100 +95,91 @@ Isotope.inlineGallery = function(el, elementId)
 };
 
 
-var IsotopeProduct = new Class(
-{
-    Implements: Options,
-    Binds: ['refresh'],
-    options: {
-        language: 'en',
-        action: 'fmd',
-        page: 0,
-        loadMessage: 'Loading product data …'
-    },
 
-    initialize: function(ajaxid, product, formId, attributes, options)
-    {
-        this.setOptions(options);
 
-        this.form = document.id(formId);
 
-        if (this.form)
-        {
-            this.form.set('send',
+var IsotopeProducts = (function() {
+"use strict";
+
+    var loadMessage = 'Loading product data …';
+    var callbacks = [];
+
+    function initProduct(config) {
+
+        var form = document.getElementById(config.formId);
+
+        if (form) {
+            registerEvents(form, config);
+        }
+    }
+
+
+    function registerEvents(form, config) {
+
+        var i, el;
+
+        document.id(form).set('send', {
+            url: (window.location.href+'?ajaxModule='+config.module+'&ajaxProduct='+config.product),
+            link: 'cancel',
+            onRequest: Isotope.displayBox.pass(loadMessage),
+            onSuccess: function(txt, xml)
             {
-                url: ('ajax.php?action='+this.options.action+'&id='+ajaxid+'&language='+this.options.language+'&page='+this.options.page+'&product='+product),
-                link: 'cancel',
-                onRequest: function()
-                {
-                    Isotope.displayBox(this.options.loadMessage);
-                }.bind(this),
-                onSuccess: function(txt, xml)
-                {
-                    Isotope.hideBox();
+                Isotope.hideBox();
 
-                    var json = JSON.decode(txt);
+                var div = document.createElement('div');
+                div.innerHTML = txt;
+                var newForm = div.firstChild;
 
-                    // Update request token
-                    REQUEST_TOKEN = json.token;
-                    document.getElements('input[type="hidden"][name="REQUEST_TOKEN"]').set('value', json.token);
+                form.parentNode.replaceChild(newForm, form);
+                registerEvents(newForm, config);
+            },
+            onFailure: Isotope.hideBox
+        });
 
-                    json.content.each( function(option)
-                    {
-                        var oldEl = document.id(option.id);
-                        if (oldEl)
-                        {
-                            var newEl = null;
-                            new Element('div').set('html', option.html).getElements('*').each( function(child) {
-                                if (child.get('id') == option.id)
-                                {
-                                    newEl = child;
-                                }
-                            });
+        if (config.attributes) {
+            for (i=0; i<config.attributes.length; i++) {
+                el = document.getElementById(('ctrl_'+config.attributes[i]+'_'+config.formId));
 
-                            if (newEl)
-                            {
-                                if (newEl.hasClass('radio_container'))
-                                {
-                                    newEl.getElements('input.radio').each( function(option, index) {
-                                        option.addEvent('click', this.refresh);
-                                    }.bind(this));
-                                }
-
-                                newEl.cloneEvents(oldEl).replaces(oldEl);
-                            }
-                        }
-                    }.bind(this));
-
-                    // Update conditionalselect
-                    window.fireEvent('ajaxready');
-                    $$(('#'+formId+' p.error')).destroy();
-                }.bind(this),
-                onFailure: function()
-                {
-                    Isotope.hideBox();
-                }
-            });
-
-            attributes.each( function(el,index)
-            {
-                el = document.id(el);
-                if (el && el.hasClass('radio_container'))
-                {
+                if (el && el.className.test(/radio_container/)) {
+                    console.log(el);
+/*
                     el.getElements('input.radio').each( function(option) {
                         option.addEvent('click', this.refresh);
                     }.bind(this));
+*/
+                } else if (el) {
+                    el.addEventListener('change', function() {
+                        form.send();
+                    }, false);
                 }
-                else if(el)
-                {
-                    el.addEvent('change', this.refresh);
-                }
-            }.bind(this));
+            }
         }
-    },
-
-    refresh: function(event)
-    {
-        this.form.send();
     }
-});
 
+    return {
+        'attach': function(products) {
+            var i;
+
+            // Check if products is an array
+            if (Object.prototype.toString.call(products) === '[object Array]' && products.length > 0) {
+                for (i=0; i<products.length; i++) {
+                    initProduct(products[i]);
+                }
+            }
+        },
+
+        /**
+         * Callbacks are used to handle special products
+         */
+        'registerCallback': function(callback) {
+            callbacks.push(callback);
+        },
+
+        /**
+         * Overwrite the default message
+         */
+        'setLoadMessage': function(message) {
+            loadMessage = message || 'Loading product data …';
+        }
+    };
+})();

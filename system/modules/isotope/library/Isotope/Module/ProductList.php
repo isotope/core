@@ -95,23 +95,6 @@ class ProductList extends Module
 
 
     /**
-     * Generate a single product and return it's HTML string
-     * @return string
-     */
-    public function generateAjax()
-    {
-        $objProduct = \Isotope\Frontend::getProduct(\Input::get('product'), \Isotope\Frontend::getReaderPageId(null, $this->iso_reader_jumpTo), false);
-
-        if ($objProduct !== null)
-        {
-            return $objProduct->generateAjax($this);
-        }
-
-        return '';
-    }
-
-
-    /**
      * Compile product list.
      *
      * This function is specially designed so you can keep it in your child classes and only override findProducts().
@@ -269,6 +252,10 @@ class ProductList extends Module
 
         foreach ($arrProducts as $objProduct)
         {
+            if (\Environment::get('isAjaxRequest') && \Input::get('ajaxModule') == $this->id && \Input::get('ajaxProduct') == $objProduct->id) {
+                \Isotope\Frontend::ajaxResponse($objProduct->generate(($this->iso_list_layout ?: $objProduct->list_template), $this));
+            }
+
             $objProduct->setOptions(array_merge($arrDefaultOptions, $objProduct->getOptions()));
             $objProduct->reader_jumpTo = $intReaderPage;
 
@@ -276,11 +263,10 @@ class ProductList extends Module
                 \Controller::redirect($objProduct->href_reader);
             }
 
-            $arrBuffer[] = array
-            (
+            $arrBuffer[] = array(
                 'cssID'     => ($objProduct->cssID[0] != '') ? ' id="' . $objProduct->cssID[0] . '"' : '',
                 'class'     => $objProduct->cssID[1],
-                'html'      => $objProduct->generate((strlen($this->iso_list_layout) ? $this->iso_list_layout : $objProduct->list_template), $this),
+                'html'      => $objProduct->generate(($this->iso_list_layout ?: $objProduct->list_template), $this),
                 'product'   => $objProduct,
             );
         }
