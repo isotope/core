@@ -483,6 +483,7 @@ CREATE TABLE `tl_iso_config` (
   `gallery` varchar(64) NOT NULL default '',
   `missing_image_placeholder` varchar(255) NOT NULL default '',
   `imageSizes` blob NULL,
+  `markNewDays` int(10) unsigned NOT NULL default '0',
   PRIMARY KEY  (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
@@ -736,7 +737,6 @@ CREATE TABLE `tl_module` (
   `iso_addProductJumpTo` int(10) unsigned NOT NULL default '0',
   `iso_listingSortField` varchar(255) NOT NULL default '',
   `iso_listingSortDirection` varchar(8) NOT NULL default '',
-  `iso_newDays` int(10) unsigned NOT NULL default '0',
   `iso_newFilter` char(1) NOT NULL default '',
   `iso_buttons` blob NULL,
   `iso_related_categories` blob NULL,

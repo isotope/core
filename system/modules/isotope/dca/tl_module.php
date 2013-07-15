@@ -21,7 +21,7 @@ $GLOBALS['TL_DCA']['tl_module']['palettes']['__selector__'][]           = 'iso_c
 $GLOBALS['TL_DCA']['tl_module']['palettes']['__selector__'][]           = 'iso_enableLimit';
 $GLOBALS['TL_DCA']['tl_module']['palettes']['__selector__'][]           = 'iso_emptyMessage';
 $GLOBALS['TL_DCA']['tl_module']['palettes']['__selector__'][]           = 'iso_emptyFilter';
-$GLOBALS['TL_DCA']['tl_module']['palettes']['iso_productlist']          = '{title_legend},name,headline,type;{config_legend},perPage,iso_cols,iso_category_scope,iso_list_where,iso_filterModules,iso_listingSortField,iso_listingSortDirection;{iso_new_legend},iso_newDays,iso_newFilter;{redirect_legend},iso_reader_jumpTo,iso_addProductJumpTo,iso_jump_first;{reference_legend:hide},defineRoot;{template_legend:hide},iso_list_layout,iso_use_quantity,iso_hide_list,iso_includeMessages,iso_emptyMessage,iso_emptyFilter,iso_buttons;{protected_legend:hide},protected;{expert_legend:hide},guests,cssID,space';
+$GLOBALS['TL_DCA']['tl_module']['palettes']['iso_productlist']          = '{title_legend},name,headline,type;{config_legend},perPage,iso_cols,iso_category_scope,iso_list_where,iso_filterModules,iso_listingSortField,iso_listingSortDirection;{iso_new_legend},iso_newFilter;{redirect_legend},iso_reader_jumpTo,iso_addProductJumpTo,iso_jump_first;{reference_legend:hide},defineRoot;{template_legend:hide},iso_list_layout,iso_use_quantity,iso_hide_list,iso_includeMessages,iso_emptyMessage,iso_emptyFilter,iso_buttons;{protected_legend:hide},protected;{expert_legend:hide},guests,cssID,space';
 $GLOBALS['TL_DCA']['tl_module']['palettes']['iso_productvariantlist']   = '{title_legend},name,headline,type;{config_legend},perPage,iso_cols,iso_category_scope,iso_list_where,iso_filterModules,iso_listingSortField,iso_listingSortDirection;{redirect_legend},iso_reader_jumpTo,iso_addProductJumpTo,iso_jump_first;{reference_legend:hide},defineRoot;{template_legend:hide},iso_list_layout,iso_use_quantity,iso_hide_list,,iso_includeMessages,iso_emptyMessage,iso_emptyFilter,iso_buttons;{protected_legend:hide},protected;{expert_legend:hide},guests,cssID,space';
 $GLOBALS['TL_DCA']['tl_module']['palettes']['iso_productreader']        = '{title_legend},name,headline,type;{config_legend},iso_use_quantity;{redirect_legend},iso_addProductJumpTo;{template_legend:hide},iso_includeMessages,iso_reader_layout,iso_buttons;{protected_legend:hide},protected;{expert_legend:hide},guests,cssID,space';
 $GLOBALS['TL_DCA']['tl_module']['palettes']['iso_cart']                 = '{title_legend},name,headline,type;{redirect_legend},iso_cart_jumpTo,iso_checkout_jumpTo;{template_legend},iso_collectionTpl,iso_continueShopping,iso_includeMessages,iso_emptyMessage;{protected_legend:hide},protected;{expert_legend:hide},guests,cssID,space';
@@ -447,14 +447,6 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['iso_listingSortDirection'] = array
     'options'                   => array('DESC','ASC'),
     'reference'                 => &$GLOBALS['TL_LANG']['tl_module']['sortingDirection'],
     'eval'                      => array('tl_class'=>'w50'),
-);
-
-$GLOBALS['TL_DCA']['tl_module']['fields']['iso_newDays'] = array
-(
-    'label'                     => &$GLOBALS['TL_LANG']['tl_module']['iso_newDays'],
-    'exclude'                   => true,
-    'inputType'                 => 'text',
-    'eval'                      => array('tl_class'=>'w50')
 );
 
 $GLOBALS['TL_DCA']['tl_module']['fields']['iso_newFilter'] = array
