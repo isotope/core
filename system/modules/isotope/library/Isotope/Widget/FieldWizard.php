@@ -194,13 +194,13 @@ class FieldWizard extends \Widget
         }
 
         // Begin table
-        $return .= '<table class="tl_optionwizard" id="ctrl_'.$this->strId.'">
+        $return = '<table class="tl_optionwizard" id="ctrl_'.$this->strId.'">
   <thead>
     <tr>
-      <th>'.$this->generateImage('show.gif', '', 'title="'.$GLOBALS['TL_LANG'][$this->strTable]['fwEnabled'].'"').'</th>
+      <th>a)</th>
       <th>&nbsp;</th>
-      <th>'.$this->generateImage('show.gif', '', 'title="'.$GLOBALS['TL_LANG'][$this->strTable]['fwLabel'].'"').'</th>
-      <th>'.$this->generateImage('show.gif', '', 'title="'.$GLOBALS['TL_LANG'][$this->strTable]['fwMandatory'].'"').'</th>
+      <th>b)</th>
+      <th>c)</th>
       <th>&nbsp;</th>
     </tr>
   </thead>

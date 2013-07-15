@@ -77,9 +77,6 @@ $GLOBALS['TL_LANG']['tl_iso_config']['iwHeight']                        = array(
 $GLOBALS['TL_LANG']['tl_iso_config']['iwMode']                            = array('Mode');
 $GLOBALS['TL_LANG']['tl_iso_config']['iwWatermark']                        = array('Watermark image');
 $GLOBALS['TL_LANG']['tl_iso_config']['iwPosition']                        = array('Position');
-$GLOBALS['TL_LANG']['tl_iso_config']['fwEnabled']                        = 'Enable field';
-$GLOBALS['TL_LANG']['tl_iso_config']['fwLabel']                            = 'Custom label';
-$GLOBALS['TL_LANG']['tl_iso_config']['fwMandatory']                        = 'Mandatory';
 $GLOBALS['TL_LANG']['tl_iso_config']['ecb.int']                            = 'European Central Bank';
 $GLOBALS['TL_LANG']['tl_iso_config']['admin.ch']                        = 'Swiss Federal Department of Finance';
 

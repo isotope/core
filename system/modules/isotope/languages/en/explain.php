@@ -39,4 +39,8 @@ $GLOBALS['TL_LANG']['XPL']['isoAttributeWizard'][2]    = array('c)', 'Mandatory:
 $GLOBALS['TL_LANG']['XPL']['isoAttributeWizard'][3]    = array('d)', 'Mandatory: No, never.');
 $GLOBALS['TL_LANG']['XPL']['isoAttributeWizard'][4]    = array('e)', 'Mandatory: Yes, always.');
 
+$GLOBALS['TL_LANG']['XPL']['isoFieldWizard'][0]    = array('a)', 'Enable or disable field.');
+$GLOBALS['TL_LANG']['XPL']['isoFieldWizard'][1]    = array('b)', 'Custom label.');
+$GLOBALS['TL_LANG']['XPL']['isoFieldWizard'][2]    = array('c)', 'Mandatory or not.');
+
 $GLOBALS['TL_LANG']['XPL']['mediaManager']        = '<p class="tl_help_table">To upload a new picture, select the file and save the product. After successfully uploading, a preview of the image is displayed and next to it you can enter its alternative text and a description. For multiple pictures, you can click on the arrows to the right and change their order, the top image is used as the main image of each product.</p>';
