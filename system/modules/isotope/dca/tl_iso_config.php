@@ -358,7 +358,7 @@ $GLOBALS['TL_DCA']['tl_iso_config'] = array
             'exclude'               => true,
             'inputType'             => 'select',
             'options'               => &$GLOBALS['TL_LANG']['CUR'],
-            'eval'                  => array('includeBlankOption'=>true, 'mandatory'=>true, 'tl_class'=>'w50'),
+            'eval'                  => array('includeBlankOption'=>true, 'mandatory'=>true, 'chosen'=>true, 'tl_class'=>'w50'),
         ),
         'currencySymbol' => array
         (
