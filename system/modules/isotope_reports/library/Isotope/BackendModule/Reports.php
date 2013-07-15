@@ -107,7 +107,7 @@ class Reports extends \BackendModule
 	protected function getDailySummary()
 	{
 		$arrSummary = array();
-		$arrAllowedProducts = IsotopeBackend::getAllowedProductIds();
+		$arrAllowedProducts = \Isotope\Backend::getAllowedProductIds();
 
 		$objOrders = $this->Database->prepare("SELECT
 													c.id AS config_id,

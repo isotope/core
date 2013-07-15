@@ -90,7 +90,7 @@ abstract class Report extends \Backend
 			$this->reload();
 		}
 
-		$this->Template = new BackendTemplate($this->strTemplate);
+		$this->Template = new \BackendTemplate($this->strTemplate);
 		$this->Template->setData($this->arrData);
 
 		// Filter stuff

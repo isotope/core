@@ -34,7 +34,7 @@ array_insert($GLOBALS['BE_MOD']['isotope'], 2, array
 (
 	'reports' => array
 	(
-		'callback'		=> 'ModuleIsotopeReports',
+		'callback'		=> 'Isotope\BackendModule\Reports',
 		'icon'			=> 'system/modules/isotope_reports/assets/icon.png',
 		'stylesheet'	=> 'system/modules/isotope_reports/assets/reports.css',
 		'modules'		=> array
@@ -43,7 +43,7 @@ array_insert($GLOBALS['BE_MOD']['isotope'], 2, array
 			(
 				'sales_total' => array
 				(
-					'callback'	=> 'IsotopeReportSalesTotal',
+					'callback'	=> 'Isotope\Report\SalesTotal',
 					'label'		=> &$GLOBALS['ISO_LANG']['REPORT']['sales_total'],
 					'icon'		=> 'system/modules/isotope_reports/assets/sales.png',
 					'panels'    => array
@@ -54,7 +54,7 @@ array_insert($GLOBALS['BE_MOD']['isotope'], 2, array
 				),
 				'sales_product' => array
 				(
-					'callback'	=> 'IsotopeReportSalesProduct',
+					'callback'	=> 'Isotope\Report\SalesProduct',
 					'label'		=> &$GLOBALS['ISO_LANG']['REPORT']['sales_product'],
 					'icon'		=> 'system/modules/isotope_reports/assets/product.png',
 					'panels'    => array
@@ -69,19 +69,19 @@ array_insert($GLOBALS['BE_MOD']['isotope'], 2, array
 				/*
 				'members_total' => array
 				(
-					'callback'	=> 'IsotopeReportMembersTotal',
+					'callback'	=> 'Isotope\Report\MembersTotal',
 					'label'		=> &$GLOBALS['ISO_LANG']['REPORT']['members_total'],
 					'icon'		=> 'system/modules/isotope_reports/assets/member.png',
 				),
 				'members_registration' => array
 				(
-					'callback'	=> 'IsotopeReportMembersRegistration',
+					'callback'	=> 'Isotope\Report\MembersRegistration',
 					'label'		=> &$GLOBALS['ISO_LANG']['REPORT']['members_registration'],
 					'icon'		=> 'system/modules/isotope_reports/assets/member.png',
 				),
 				'members_guests' => array
 				(
-					'callback'	=> 'IsotopeReportMembersGuests',
+					'callback'	=> 'Isotope\Report\MembersGuests',
 					'label'		=> &$GLOBALS['ISO_LANG']['REPORT']['members_guests'],
 					'icon'		=> 'system/modules/isotope_reports/assets/member.png',
 				),
@@ -92,13 +92,13 @@ array_insert($GLOBALS['BE_MOD']['isotope'], 2, array
 				/*
 				'rules_usage' => array
 				(
-					'callback'	=> 'IsotopeReportRulesUsage',
+					'callback'	=> 'Isotope\Report\RulesUsage',
 					'label'		=> &$GLOBALS['ISO_LANG']['REPORT']['rules_usage'],
 					'icon'		=> 'system/modules/isotope_reports/assets/generic.png',
 				),
 				'rules_coupons' => array
 				(
-					'callback'	=> 'IsotopeReportRulesCoupons',
+					'callback'	=> 'Isotope\Report\RulesCoupons',
 					'label'		=> &$GLOBALS['ISO_LANG']['REPORT']['rules_coupons'],
 					'icon'		=> 'system/modules/isotope_reports/assets/generic.png',
 				),
