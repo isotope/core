@@ -96,10 +96,10 @@ class ProductList extends Module
             }
         }
 
-        if ($this->iso_newFilter && $limit = Isotope::getConfig()->getMarkProductAsNewLimit() > 0) {
+        if ($this->iso_newFilter != 'show_all' && $limit = Isotope::getConfig()->getMarkProductAsNewLimit() > 0) {
             $GLOBALS['ISO_FILTERS'][$this->id][] = array(
                 'attribute' => 'date_added',
-                'operator'  => '>=',
+                'operator'  => ($this->iso_newFilter != 'show_new') ? '>=' : '<',
                 'value'     => $limit
             );
         }
