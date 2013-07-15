@@ -86,8 +86,3 @@ $GLOBALS['TL_LANG']['tl_module']['iso_order_conditions_position']['after']      
 $GLOBALS['TL_LANG']['tl_module']['iso_newFilter']['show_all']                           = 'Show all products';
 $GLOBALS['TL_LANG']['tl_module']['iso_newFilter']['show_new']                           = 'Only show new products';
 $GLOBALS['TL_LANG']['tl_module']['iso_newFilter']['show_old']                           = 'Only show old products';
-
-/**
- * Legends
- */
-$GLOBALS['TL_LANG']['tl_module']['iso_new_legend']                  = 'Mark new products';
