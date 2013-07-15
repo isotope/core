@@ -11,6 +11,8 @@
 
 namespace Isotope\Report;
 
+use \Isotope\Isotope;
+
 
 class SalesTotal extends Sales
 {
@@ -29,7 +31,7 @@ class SalesTotal extends Sales
 
 		$dateFrom = date($privateDate, $intStart);
 		$dateTo = date($privateDate, $intStop);
-		$arrAllowedProducts = IsotopeBackend::getAllowedProductIds();
+		$arrAllowedProducts = \Isotope\Backend::getAllowedProductIds();
 
 		$objData = $this->Database->prepare("SELECT
 												c.id AS config_id,
@@ -215,9 +217,9 @@ class SalesTotal extends Sales
 			{
 				foreach ($arrRow['columns'][3]['value'] as $currency => $varValue)
 				{
-					$this->Isotope->overrideConfig($arrCurrencies[$currency]);
+					Isotope::overrideConfig($arrCurrencies[$currency]);
 
-					$arrData['rows'][$dateGroup]['columns'][3]['value'][$currency] = $this->Isotope->formatPriceWithCurrency($varValue);
+					$arrData['rows'][$dateGroup]['columns'][3]['value'][$currency] = Isotope::formatPriceWithCurrency($varValue);
 				}
 			}
 		}
@@ -225,9 +227,9 @@ class SalesTotal extends Sales
 		// Format footer totals
 		foreach ($arrData['footer'][3]['value'] as $currency => $varValue)
 		{
-			$this->Isotope->overrideConfig($arrCurrencies[$currency]);
+			Isotope::overrideConfig($arrCurrencies[$currency]);
 
-			$arrData['footer'][3]['value'][$currency] = $this->Isotope->formatPriceWithCurrency($varValue);
+			$arrData['footer'][3]['value'][$currency] = Isotope::formatPriceWithCurrency($varValue);
 		}
 
 		if (empty($arrData['footer'][3]['value']))

@@ -11,6 +11,8 @@
 
 namespace Isotope\BackendModule;
 
+use Isotope\Isotope;
+
 
 class Reports extends \BackendModule
 {
@@ -25,7 +27,6 @@ class Reports extends \BackendModule
 	public function generate()
 	{
 	    $this->import('BackendUser', 'User');
-	    $this->import('Isotope');
 
 		if ($this->Input->get('report') != '')
 		{
@@ -130,7 +131,7 @@ class Reports extends \BackendModule
 				'name'			=> $objOrders->config_name,
 				'currency'		=> $objOrders->currency,
 				'total_orders'	=> $objOrders->total_orders,
-				'total_sales'	=> $this->Isotope->formatPrice($objOrders->total_sales),
+				'total_sales'	=> Isotope::formatPrice($objOrders->total_sales),
 				'total_items'	=> $objOrders->total_items,
 			);
 		}

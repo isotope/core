@@ -11,6 +11,8 @@
 
 namespace Isotope\Report;
 
+use \Isotope\Isotope;
+
 
 abstract class Sales extends Report
 {
@@ -137,7 +139,7 @@ abstract class Sales extends Report
 
 		while ($objStatus->next())
 		{
-			$arrStatus[$objStatus->id] = $this->Isotope->translate($objStatus->name);
+			$arrStatus[$objStatus->id] = Isotope::translate($objStatus->name);
 		}
 
 		$arrSession = $this->Session->get('iso_reports');

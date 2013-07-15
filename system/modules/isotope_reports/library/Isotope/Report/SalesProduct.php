@@ -11,6 +11,8 @@
 
 namespace Isotope\Report;
 
+use \Isotope\Isotope;
+
 
 class SalesProduct extends Sales
 {
@@ -51,7 +53,7 @@ class SalesProduct extends Sales
 		$dateFrom = date($privateDate, $intStart);
 		$dateTo = date($privateDate, strtotime('+ ' . ($intColumns-1) . ' ' . $strPeriod, $intStart));
 		$groupVariants = $blnVariants ? 'p1.id' : 'IF(p1.pid=0, p1.id, p1.pid)';
-		$arrAllowedProducts = IsotopeBackend::getAllowedProductIds();
+		$arrAllowedProducts = \Isotope\Backend::getAllowedProductIds();
 
 		$objProducts = $this->Database->query("
 			SELECT
@@ -160,7 +162,7 @@ class SalesProduct extends Sales
 			{
 				$arrRow[$i+1] = array
 				(
-					'value'			=> $this->Isotope->formatPriceWithCurrency($arrProduct[$column]) . (($arrProduct[$column.'_quantity'] !== null) ? '<br><span class="variant">' . $this->Isotope->formatItemsString($arrProduct[$column.'_quantity']) . '</span>' : ''),
+					'value'			=> Isotope::formatPriceWithCurrency($arrProduct[$column]) . (($arrProduct[$column.'_quantity'] !== null) ? '<br><span class="variant">' . Isotope::formatItemsString($arrProduct[$column.'_quantity']) . '</span>' : ''),
 					'attributes'	=> ' style="text-align:right;white-space:nowrap"',
 				);
 
@@ -174,7 +176,7 @@ class SalesProduct extends Sales
 
 			$arrRow[$i+2] = array
 			(
-				'value'			=> $this->Isotope->formatPriceWithCurrency($arrProduct['total']) . (($arrProduct['quantity'] !== null) ? '<br><span class="variant">' . $this->Isotope->formatItemsString($arrProduct['quantity']) . '</span>' : ''),
+				'value'			=> Isotope::formatPriceWithCurrency($arrProduct['total']) . (($arrProduct['quantity'] !== null) ? '<br><span class="variant">' . Isotope::formatItemsString($arrProduct['quantity']) . '</span>' : ''),
 				'attributes'	=> ' style="text-align:right;white-space:nowrap"',
 			);
 
@@ -193,7 +195,7 @@ class SalesProduct extends Sales
 
 		for ($i=1; $i<count($arrFooter); $i++)
 		{
-			$arrFooter[$i]['value'] = $this->Isotope->formatPriceWithCurrency($arrFooter[$i]['total']) . '<br><span class="variant">' . $this->Isotope->formatItemsString($arrFooter[$i]['quantity']) . '</span>';
+			$arrFooter[$i]['value'] = Isotope::formatPriceWithCurrency($arrFooter[$i]['total']) . '<br><span class="variant">' . Isotope::formatItemsString($arrFooter[$i]['quantity']) . '</span>';
 			unset($arrFooter[$i]['total'], $arrFooter[$i]['quantity']);
 		}
 
