@@ -125,7 +125,10 @@ class ShippingMethod extends CheckoutStep implements IsotopeCheckoutStep
         return $objTemplate->parse();
     }
 
-
+    /**
+     * Return review information for last page of checkout
+     * @return  string
+     */
     public function review()
     {
         return array(

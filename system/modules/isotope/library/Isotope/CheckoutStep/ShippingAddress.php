@@ -64,7 +64,10 @@ class ShippingAddress extends Address implements IsotopeCheckoutStep
         return parent::generate();
     }
 
-
+    /**
+     * Return review information for last page of checkout
+     * @return  string
+     */
     public function review()
     {
         $objAddress = Isotope::getCart()->getShippingAddress();

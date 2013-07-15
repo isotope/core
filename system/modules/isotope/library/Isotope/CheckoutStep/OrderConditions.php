@@ -72,7 +72,10 @@ abstract class OrderConditions extends CheckoutStep
         return $objTemplate->parse();
     }
 
-
+    /**
+     * Return review information for last page of checkout
+     * @return  string
+     */
     public function review()
     {
         if (!$this->hasError())

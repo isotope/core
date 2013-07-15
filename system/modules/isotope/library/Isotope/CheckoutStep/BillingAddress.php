@@ -52,7 +52,10 @@ class BillingAddress extends Address implements IsotopeCheckoutStep
         return parent::generate();
     }
 
-
+    /**
+     * Return review information for last page of checkout
+     * @return  string
+     */
     public function review()
     {
         $blnRequiresPayment = Isotope::getCart()->requiresPayment();
