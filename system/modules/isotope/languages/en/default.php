@@ -160,6 +160,13 @@ $GLOBALS['TL_LANG']['MSC']['templatesConfig']                   = 'Store Config 
 $GLOBALS['TL_LANG']['MSC']['splittedTaxRate']                   = 'Splitted';
 $GLOBALS['TL_LANG']['MSC']['newOrders']                         = 'You have %s order(s) with status "%s"';
 $GLOBALS['TL_LANG']['MSC']['checkoutStep']                      = 'Step %s of %s (%s) - ';
+$GLOBALS['TL_LANG']['MSC']['timePeriod']['minutes']             = 'Minutes';
+$GLOBALS['TL_LANG']['MSC']['timePeriod']['hours']               = 'Hours';
+$GLOBALS['TL_LANG']['MSC']['timePeriod']['days']                = 'Days';
+$GLOBALS['TL_LANG']['MSC']['timePeriod']['weeks']               = 'Weeks';
+$GLOBALS['TL_LANG']['MSC']['timePeriod']['months']              = 'Months';
+$GLOBALS['TL_LANG']['MSC']['timePeriod']['years']               = 'Years';
+
 
 /**
  * Content elements

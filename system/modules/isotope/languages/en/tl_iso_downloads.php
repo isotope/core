@@ -41,12 +41,6 @@ $GLOBALS['TL_LANG']['tl_iso_downloads']['pastenew']             = array('Add new
  */
 $GLOBALS['TL_LANG']['tl_iso_downloads']['file']                    = 'File';
 $GLOBALS['TL_LANG']['tl_iso_downloads']['folder']                = 'Folder';
-$GLOBALS['TL_LANG']['tl_iso_downloads']['minutes']                = 'Minutes';
-$GLOBALS['TL_LANG']['tl_iso_downloads']['hours']                = 'Hours';
-$GLOBALS['TL_LANG']['tl_iso_downloads']['days']                    = 'Days';
-$GLOBALS['TL_LANG']['tl_iso_downloads']['weeks']                = 'Weeks';
-$GLOBALS['TL_LANG']['tl_iso_downloads']['months']                = 'Months';
-$GLOBALS['TL_LANG']['tl_iso_downloads']['years']                = 'Years';
 
 /**
  * Legends

@@ -117,7 +117,7 @@ $GLOBALS['TL_DCA']['tl_iso_config'] = array
             {order_legend:hide},orderPrefix,orderDigits,orderstatus_new,orderstatus_error,invoiceLogo;
             {config_legend},templateGroup,cartMinSubtotal;
             {images_legend},gallery,missing_image_placeholder,imageSizes;
-            {products_legend},markNewDays',
+            {products_legend},newProductPeriod',
     ),
 
     // Subpalettes
@@ -568,12 +568,16 @@ $GLOBALS['TL_DCA']['tl_iso_config'] = array
                 ),
             ),
         ),
-        'markNewDays' => array
+        'newProductPeriod' => array
         (
-            'label'                     => &$GLOBALS['TL_LANG']['tl_iso_config']['markNewDays'],
+            'label'                     => &$GLOBALS['TL_LANG']['tl_iso_config']['newProductPeriod'],
             'exclude'                   => true,
-            'inputType'                 => 'text',
-            'eval'                      => array('tl_class'=>'w50', 'rgxp'=>'digit')
+            'default'                   => array('unit'=>'days'),
+            'inputType'                 => 'timePeriod',
+            'options'                   => array('minutes', 'hours', 'days', 'weeks', 'months', 'years'),
+            'reference'                 => &$GLOBALS['TL_LANG']['MSC']['timePeriod'],
+            'eval'                      => array('rgxp'=>'digit', 'tl_class'=>'w50'),
+            'sql'                       => "int(10) unsigned NOT NULL default '0'"
         )
     )
 );

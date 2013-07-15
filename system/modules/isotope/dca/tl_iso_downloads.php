@@ -158,7 +158,7 @@ $GLOBALS['TL_DCA']['tl_iso_downloads'] = array
             'exclude'               => true,
             'inputType'             => 'timePeriod',
             'options'               => array('minutes', 'hours', 'days', 'weeks', 'months', 'years'),
-            'reference'             => &$GLOBALS['TL_LANG']['tl_iso_downloads'],
+            'reference'             => &$GLOBALS['TL_LANG']['MSC']['timePeriod'],
             'eval'                  => array('rgxp'=>'digit', 'tl_class'=>'w50'),
         ),
     )

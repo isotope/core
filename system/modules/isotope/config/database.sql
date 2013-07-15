@@ -483,7 +483,6 @@ CREATE TABLE `tl_iso_config` (
   `gallery` varchar(64) NOT NULL default '',
   `missing_image_placeholder` varchar(255) NOT NULL default '',
   `imageSizes` blob NULL,
-  `markNewDays` int(10) unsigned NOT NULL default '0',
   PRIMARY KEY  (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
