@@ -66,6 +66,8 @@ class PaymentMethod extends CheckoutStep implements IsotopeCheckoutStep
         if (empty($arrModules)) {
             $this->blnError = true;
 
+            \System::log('No payment methods available for cart ID ' . Isotope::getCart()->id, __METHOD__, TL_ERROR);
+
             $objTemplate = new \Isotope\Template('mod_message');
             $objTemplate->class = 'payment_method';
             $objTemplate->hl = 'h2';

@@ -66,6 +66,8 @@ class ShippingMethod extends CheckoutStep implements IsotopeCheckoutStep
         if (empty($arrModules)) {
             $this->blnError = true;
 
+            \System::log('No shipping methods available for cart ID ' . Isotope::getCart()->id, __METHOD__, TL_ERROR);
+
             $objTemplate = new \Isotope\Template('mod_message');
             $objTemplate->class = 'shipping_method';
             $objTemplate->hl = 'h2';
