@@ -57,8 +57,6 @@ abstract class Report extends \Backend
 		$this->arrData = $arrData;
 
 		parent::__construct();
-
-		$this->import('Isotope');
 	}
 
 
