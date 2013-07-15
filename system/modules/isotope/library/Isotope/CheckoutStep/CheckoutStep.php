@@ -49,7 +49,7 @@ abstract class CheckoutStep extends \Controller
      * Return short name of current class (e.g. for CSS)
      * @return  string
      */
-    protected function getStepClass()
+    public function getStepClass()
     {
         $strClass = get_class($this);
 
