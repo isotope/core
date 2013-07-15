@@ -637,7 +637,7 @@ class IsotopeRules extends \Controller
                         break;
 
                     case 'egt':
-                        if (!($objProduct->{$arrRule['attributeName']} >= $arrRule['attributeValue'])) {
+                        if (!($objProduct->{$arrRule['attributeName']} >= $arrRule['attributeValue'])) {
                             continue(2);
                         }
                         break;
