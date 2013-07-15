@@ -116,7 +116,8 @@ $GLOBALS['TL_DCA']['tl_iso_config'] = array
             {converter_legend:hide},priceCalculateFactor,priceCalculateMode,currencyAutomator;
             {order_legend:hide},orderPrefix,orderDigits,orderstatus_new,orderstatus_error,invoiceLogo;
             {config_legend},templateGroup,cartMinSubtotal;
-            {images_legend},gallery,missing_image_placeholder,imageSizes',
+            {images_legend},gallery,missing_image_placeholder,imageSizes;
+            {products_legend},markNewDays',
     ),
 
     // Subpalettes
@@ -567,5 +568,12 @@ $GLOBALS['TL_DCA']['tl_iso_config'] = array
                 ),
             ),
         ),
+        'markNewDays' => array
+        (
+            'label'                     => &$GLOBALS['TL_LANG']['tl_iso_config']['markNewDays'],
+            'exclude'                   => true,
+            'inputType'                 => 'text',
+            'eval'                      => array('tl_class'=>'w50', 'rgxp'=>'digit')
+        )
     )
 );

@@ -28,6 +28,12 @@ class Config extends \Model
     protected static $strTable = 'tl_iso_config';
 
     /**
+     * Cache for additional methods
+     * @var array
+     */
+    protected $arrCache = array();
+
+    /**
      * Return custom options or table row data
      * @param mixed
      * @return mixed
@@ -51,6 +57,7 @@ class Config extends \Model
      */
     public function getBillingFields()
     {
+        // @todo: cache?
         return array_filter(array_map(
             function($field) {
                 return $field['enabled'] ? $field['value'] : null;
@@ -65,6 +72,7 @@ class Config extends \Model
      */
     public function getShippingFields()
     {
+        // @todo: cache?
         return array_filter(array_map(
             function($field) {
                 return $field['enabled'] ? $field['value'] : null;
@@ -79,6 +87,7 @@ class Config extends \Model
      */
     public function getBillingCountries()
     {
+        // @todo: cache?
         $arrCountries = deserialize($this->billing_countries);
 
         if (empty($arrCountries) || !is_array($arrCountries)) {
@@ -94,6 +103,7 @@ class Config extends \Model
      */
     public function getShippingCountries()
     {
+        // @todo: cache?
         $arrCountries = deserialize($this->shipping_countries);
 
         if (empty($arrCountries) || !is_array($arrCountries)) {
@@ -101,6 +111,21 @@ class Config extends \Model
         }
 
         return $arrCountries;
+    }
+
+    /**
+     * Get the limit to mark products as new
+     * @return int
+     */
+    public function getMarkProductAsNewLimit()
+    {
+        if (isset($this->arrCache['markNewLimit'])) {
+            return $this->arrCache['markNewLimit'];
+        }
+
+        $this->arrCache['markNewLimit'] = time() - (86400 * $this->markNewDays);
+
+        return $this->arrCache['markNewLimit'];
     }
 
     /**
