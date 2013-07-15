@@ -273,7 +273,7 @@ class ProductList extends Module
 
             $arrBuffer[] = array(
                 'cssID'     => ($objProduct->cssID[0] != '') ? ' id="' . $objProduct->cssID[0] . '"' : '',
-                'class'     => $objProduct->cssID[1],
+                'class'     => trim('product ' . ($objProduct->isNew() ? 'new ' : '') . $objProduct->cssID[1]),
                 'html'      => $objProduct->generate(($this->iso_list_layout ?: $objProduct->list_template), $this),
                 'product'   => $objProduct,
             );
