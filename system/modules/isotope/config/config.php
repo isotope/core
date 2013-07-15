@@ -81,22 +81,22 @@ $GLOBALS['ISO_MOD'] = array
         'producttypes' => array
         (
             'tables'                    => array('tl_iso_producttypes'),
-            'icon'                        => 'system/modules/isotope/assets/drawer.png'
+            'icon'                        => 'system/modules/isotope/assets/shopping-bag_64x64.png'
         ),
         'attributes' => array
         (
             'tables'                    => array('tl_iso_attributes'),
-            'icon'                        => 'system/modules/isotope/assets/table-insert-column.png',
+            'icon'                        => 'system/modules/isotope/assets/notes_64x64.png',
         ),
         'related_categories' => array
         (
             'tables'                    => array('tl_iso_related_categories'),
-            'icon'                        => 'system/modules/isotope/assets/category.png',
+            'icon'                        => 'system/modules/isotope/assets/advertising_64x64.png',
         ),
         'baseprice' => array
         (
             'tables'                    => array('tl_iso_baseprice'),
-            'icon'                        => 'system/modules/isotope/assets/sort-price-descending.png',
+            'icon'                        => 'system/modules/isotope/assets/price_64x64.png',
         ),
     ),
     'checkout' => array
@@ -104,22 +104,22 @@ $GLOBALS['ISO_MOD'] = array
         'payment' => array
         (
             'tables'                    => array('tl_iso_payment_modules'),
-            'icon'                        => 'system/modules/isotope/assets/money-coin.png',
+            'icon'                        => 'system/modules/isotope/assets/master-card_64x64.png',
         ),
         'shipping' => array
         (
                 'tables'                => array('tl_iso_shipping_modules','tl_iso_shipping_options'),
-                'icon'                    => 'system/modules/isotope/assets/box-label.png',
+                'icon'                    => 'system/modules/isotope/assets/shipping_64x64.png',
         ),
         'tax_class' => array
         (
             'tables'                    => array('tl_iso_tax_class'),
-            'icon'                        => 'system/modules/isotope/assets/globe.png',
+            'icon'                        => 'system/modules/isotope/assets/law_64x64.png',
         ),
         'tax_rate' => array
         (
             'tables'                    => array('tl_iso_tax_rate'),
-            'icon'                        => 'system/modules/isotope/assets/calculator.png',
+            'icon'                        => 'system/modules/isotope/assets/credit-card-payment_64x64.png',
         ),
     ),
     'config' => array
@@ -127,19 +127,19 @@ $GLOBALS['ISO_MOD'] = array
         'iso_mail' => array
         (
             'tables'                    => array('tl_iso_mail', 'tl_iso_mail_content'),
-            'icon'                        => 'system/modules/isotope/assets/mail-open-document-text.png',
+            'icon'                        => 'system/modules/isotope/assets/email_64x64.png',
             'importMail'                => array('Isotope\Backend', 'importMail'),
             'exportMail'                => array('Isotope\Backend', 'exportMail'),
         ),
         'configs' => array
         (
             'tables'                    => array('tl_iso_config'),
-            'icon'                        => 'system/modules/isotope/assets/construction.png',
+            'icon'                        => 'system/modules/isotope/assets/store_64x64.png',
         ),
         'orderstatus' => array
         (
             'tables'                    => array('tl_iso_orderstatus'),
-            'icon'                        => 'system/modules/isotope/assets/traffic-light.png',
+            'icon'                        => 'system/modules/isotope/assets/transfer_64x64.png',
         ),
     )
 );
