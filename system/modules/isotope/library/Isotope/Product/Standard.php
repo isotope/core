@@ -253,11 +253,6 @@ class Standard extends \Controller implements IsotopeProduct
             case 'description_meta':
                 return $this->arrData['description_meta'] != '' ? $this->arrData['description_meta'] : ($this->arrData['teaser'] != '' ? $this->arrData['teaser'] : $this->arrData['description']);
 
-            case 'cssID':
-                $this->arrData['cssID'][1] = rtrim($this->arrData['cssID'][1]) . (($this->isNew()) ? ' new' : '');
-
-                return $this->arrData['cssID'];
-
             default:
                 // Initialize attribute
                 if (!isset($this->arrCache[$strKey]))
