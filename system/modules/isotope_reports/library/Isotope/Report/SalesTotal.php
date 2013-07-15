@@ -258,7 +258,7 @@ class SalesTotal extends Sales
 		elseif (!is_numeric($arrSession[$this->name]['stop']))
 		{
 			// Convert date formats into timestamps
-			$objDate = new Date($arrSession[$this->name]['stop'], $GLOBALS['TL_CONFIG']['dateFormat']);
+			$objDate = new \Date($arrSession[$this->name]['stop'], $GLOBALS['TL_CONFIG']['dateFormat']);
 			$arrSession[$this->name]['stop'] = $objDate->tstamp;
 		}
 
@@ -269,7 +269,7 @@ class SalesTotal extends Sales
 		elseif (!is_numeric($arrSession[$this->name]['start']))
 		{
 			// Convert date formats into timestamps
-			$objDate = new Date($arrSession[$this->name]['start'], $GLOBALS['TL_CONFIG']['dateFormat']);
+			$objDate = new \Date($arrSession[$this->name]['start'], $GLOBALS['TL_CONFIG']['dateFormat']);
 			$arrSession[$this->name]['start'] = $objDate->tstamp;
 		}
 

@@ -51,7 +51,7 @@ abstract class Sales extends Report
 		elseif (!is_numeric($arrSession[$this->name]['from']))
 		{
 			// Convert date formats into timestamps
-			$objDate = new Date($arrSession[$this->name]['from'], $GLOBALS['TL_CONFIG']['dateFormat']);
+			$objDate = new \Date($arrSession[$this->name]['from'], $GLOBALS['TL_CONFIG']['dateFormat']);
 			$arrSession[$this->name]['from'] = $objDate->tstamp;
 		}
 
