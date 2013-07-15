@@ -277,7 +277,6 @@ class Order extends ProductCollection implements IsotopeProductCollection
         if ($this->checkout_complete) {
             $intConfig = $_SESSION['ISOTOPE']['config_id'];
 
-            unset($_SESSION['CHECKOUT_DATA']);
             unset($_SESSION['ISOTOPE']);
             unset($_SESSION['FORM_DATA']);
             unset($_SESSION['FILES']);

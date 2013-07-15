@@ -90,9 +90,6 @@ class BillingAddress extends Address implements IsotopeCheckoutStep
     {
         $arrOptions = parent::getAddressOptions();
 
-        $arrAddress = $_SESSION['CHECKOUT_DATA'][$this->getStepClass()] ? $_SESSION['CHECKOUT_DATA'][$field] : Isotope::getCart()->billing_address;
-        $intDefaultValue = strlen($arrAddress['id']) ? $arrAddress['id'] : 0;
-
         if (!empty($arrOptions)) {
             $arrOptions[] = array (
                 'value'     => 0,

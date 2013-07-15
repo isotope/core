@@ -45,7 +45,6 @@ interface IsotopePayment
      *
      * The input fields should be from array "payment" including the payment module ID.
      * Example: <input type="text" name="payment[$this->id][cc_num]" />
-     * Post-Value "payment" is automatically stored in $_SESSION['CHECKOUT_DATA']['payment']
      * You can set $objCheckoutModule->doNotSubmit = true if post is sent but data is invalid.
      *
      * @param object The checkout module object.
