@@ -359,7 +359,8 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['iso_newFilter'] = array
     'default'                   => 'show_all',
     'options'                   => array('show_all', 'show_new', 'show_old'),
     'reference'                 => &$GLOBALS['TL_LANG']['tl_module']['iso_newFilter'],
-    'eval'                      => array('tl_class'=>'w50')
+    'eval'                      => array('tl_class'=>'w50'),
+    'sql'                       => "varchar(8) NOT NULL default ''"
 );
 
 $GLOBALS['TL_DCA']['tl_module']['fields']['iso_filterHideSingle'] = array
