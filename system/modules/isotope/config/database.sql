@@ -736,6 +736,8 @@ CREATE TABLE `tl_module` (
   `iso_addProductJumpTo` int(10) unsigned NOT NULL default '0',
   `iso_listingSortField` varchar(255) NOT NULL default '',
   `iso_listingSortDirection` varchar(8) NOT NULL default '',
+  `iso_newDays` int(10) unsigned NOT NULL default '0',
+  `iso_newFilter` char(1) NOT NULL default '',
   `iso_buttons` blob NULL,
   `iso_related_categories` blob NULL,
   `iso_emptyMessage` char(1) NOT NULL default '',

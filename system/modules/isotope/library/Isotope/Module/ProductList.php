@@ -38,6 +38,12 @@ class ProductList extends Module
      */
     protected $blnCacheProducts = true;
 
+    /**
+     * Mark new limit
+     * @var int
+     */
+    protected $intMarkNewLimit = 0;
+
 
     /**
      * Display a wildcard in the back end
@@ -88,6 +94,19 @@ class ProductList extends Module
                     break;
                 }
             }
+        }
+
+        // Mark product new feature
+        if ($this->iso_newDays > 0) {
+            $this->intMarkNewLimit = time() - (86400 * $this->iso_newDays);
+        }
+
+        if ($this->iso_newFilter) {
+            $GLOBALS['ISO_FILTERS'][$this->id][] = array(
+                'attribute' => 'date_added',
+                'operator'  => '>=',
+                'value'     => $this->intMarkNewLimit
+            );
         }
 
         return parent::generate();
@@ -265,7 +284,7 @@ class ProductList extends Module
 
             $arrBuffer[] = array(
                 'cssID'     => ($objProduct->cssID[0] != '') ? ' id="' . $objProduct->cssID[0] . '"' : '',
-                'class'     => $objProduct->cssID[1],
+                'class'     => rtrim($objProduct->cssID[1]) . (($this->markProductNew($objProduct)) ? ' new' : ''),
                 'html'      => $objProduct->generate(($this->iso_list_layout ?: $objProduct->list_template), $this),
                 'product'   => $objProduct,
             );
@@ -476,5 +495,15 @@ class ProductList extends Module
         $time = time();
 
         return (int) $this->Database->execute("SELECT MIN(start) AS expires FROM tl_iso_products WHERE start>$time")->expires;
+    }
+
+    /**
+     * Returns true if the given product should be marked as new
+     * @param Isotope/Interface/IsotopeProduct
+     * @return boolean
+     */
+    protected function markProductNew($product)
+    {
+        return $product->date_added >= $this->intMarkNewLimit;
     }
 }

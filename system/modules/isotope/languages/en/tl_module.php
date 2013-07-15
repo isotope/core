@@ -53,6 +53,8 @@ $GLOBALS['TL_LANG']['tl_module']['iso_filterHideSingle']            = array('Hid
 $GLOBALS['TL_LANG']['tl_module']['iso_searchFields']                = array('Enabled search fields', 'Please select search fields to enable.');
 $GLOBALS['TL_LANG']['tl_module']['iso_searchAutocomplete']          = array('Autocomplete search field', 'If you select a field here, the search will be autocompleted by the values of that field.');
 $GLOBALS['TL_LANG']['tl_module']['iso_sortingFields']               = array('Enabled sorting fields', 'Please select orderable fields to enable.');
+$GLOBALS['TL_LANG']['tl_module']['iso_newDays']                     = array('Days to mark a product as "new"', 'If you would like to highlight new products, you can enter the number of days here. It will automatically add a CSS class "new" to every product.');
+$GLOBALS['TL_LANG']['tl_module']['iso_newFilter']                   = array('Enable filtering for new products', 'If you enable this checkbox, not only will the products receive the CSS class "new" but also there will be only the new products displayed.');
 $GLOBALS['TL_LANG']['tl_module']['iso_enableLimit']                 = array('Enable per-page limiting', 'Allow the user to select the number of records to show per page.');
 $GLOBALS['TL_LANG']['tl_module']['iso_perPage']                     = array('Per page options', 'Enter a comma separated list for the limit dropdown. The first option will be used as the default value. Values will automatically sort by number.');
 $GLOBALS['TL_LANG']['tl_module']['iso_cart_jumpTo']                 = array('Shopping Cart Jump to page', 'This setting defines to which page a user will be redirected when requesting a full shopping cart view.');
@@ -82,3 +84,8 @@ $GLOBALS['TL_LANG']['tl_module']['sortingDirection']['DESC']                    
 $GLOBALS['TL_LANG']['tl_module']['iso_order_conditions_position']['top']                = 'On top (before address)';
 $GLOBALS['TL_LANG']['tl_module']['iso_order_conditions_position']['before']             = 'Before products list';
 $GLOBALS['TL_LANG']['tl_module']['iso_order_conditions_position']['after']              = 'After products list';
+
+/**
+ * Legends
+ */
+$GLOBALS['TL_LANG']['tl_module']['iso_new_legend']                  = 'Mark new products';
