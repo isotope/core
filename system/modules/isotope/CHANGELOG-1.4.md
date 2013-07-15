@@ -10,6 +10,7 @@ Version 1.4.3 (2013-??-??)
 - "Date paid" in orders now also displays the time not only the date
 
 ### Fixed
+- Advanced price calculation failed when no variants were found (#644)
 
 
 

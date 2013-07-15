@@ -912,6 +912,8 @@ $endScript";
 		}
 		catch (Exception $e)
 		{
+            $this->log('Product ID ' . $objProductData->id . ' could not be initialized: ' . $e->getMessage(), __METHOD__, TL_ERROR);
+
 			return null;
 		}
 
