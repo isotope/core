@@ -340,17 +340,16 @@ class AttributeWizard extends \Widget
 
         $arrColumns = array
         (
-            'tl_class_select',
-            'tl_class_text',
-            'mandatory_default',
-            'mandatory_no',
-            'mandatory_yes'
+            'tl_class_select'       => 'a)',
+            'tl_class_text'         => 'b)',
+            'mandatory_default'     => 'c)',
+            'mandatory_no'          => 'd)',
+            'mandatory_yes'         => 'e)'
         );
 
-        foreach ($arrColumns as $strClass)
+        foreach ($arrColumns as $strClass => $ref)
         {
-            $strLabel = $GLOBALS['TL_LANG']['tl_iso_producttypes']['attrwiz'][$strClass];
-            $return .= '<span class="cell ' . $strClass . '">' . $this->generateImage('show.gif', $strLabel, 'class="' . $strClass . '" title="' . $strLabel . '"') . '</span>';
+            $return .= '<span class="cell ' . $strClass . '">' . $ref . '</span>';
         }
 
         return $return . '</div>';

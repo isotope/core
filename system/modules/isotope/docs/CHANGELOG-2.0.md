@@ -9,5 +9,6 @@ Version 2.0.dev (????-??-??)
 
 ### Improved
 - Factored out product cache expiration in product list (#653)
+- Using help wizard in attribute wizard now (#578)
 
 ### Fixed

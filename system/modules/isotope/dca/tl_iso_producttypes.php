@@ -203,6 +203,7 @@ $GLOBALS['TL_DCA']['tl_iso_producttypes'] = array
                 'published'         => array('enabled'=>1, 'position'=>11),
             ),
             'eval'                  => array('helpwizard'=>true, 'tl_class'=>'clr', 'tl_classes'=>array('clr', 'clr long', 'long', 'w50', 'w50 m12')),
+            'explanation'           => 'isoAttributeWizard'
         ),
         'variants' => array
         (
@@ -217,6 +218,7 @@ $GLOBALS['TL_DCA']['tl_iso_producttypes'] = array
             'exclude'               => true,
             'inputType'             => 'attributeWizard',
             'eval'                  => array('helpwizard'=>true, 'variants'=>true, 'tl_class'=>'clr', 'tl_classes'=>array('clr', 'clr long', 'long', 'w50', 'w50 m12')),
+            'explanation'           => 'isoAttributeWizard'
         ),
         'force_variant_options' => array
         (
