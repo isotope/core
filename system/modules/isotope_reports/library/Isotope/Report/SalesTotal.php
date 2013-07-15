@@ -38,15 +38,15 @@ class SalesTotal extends Sales
 												c.currency,
 												o.date AS date,
 												COUNT(o.id) AS total_orders,
-												SUM(i.product_quantity) AS total_items,
-												SUM(i.tax_free_price * i.product_quantity) AS total_sales,
+												SUM(i.quantity) AS total_items,
+												SUM(i.tax_free_price * i.quantity) AS total_sales,
 												DATE_FORMAT(FROM_UNIXTIME(o.{$this->strDateField}), ?) AS dateGroup
-											FROM tl_iso_orders o
-											LEFT JOIN tl_iso_order_items i ON o.id=i.pid
-											LEFT JOIN tl_iso_orderstatus os ON os.id=o.status
+											FROM tl_iso_product_collection o
+											LEFT JOIN tl_iso_product_collection_item i ON o.id=i.pid
+											LEFT JOIN tl_iso_orderstatus os ON os.id=o.order_status
 											LEFT OUTER JOIN tl_iso_config c ON o.config_id=c.id
-											WHERE 1
-											" . ($intStatus > 0 ? " AND o.status=".$intStatus : '') . "
+											WHERE o.type='Order'
+											" . ($intStatus > 0 ? " AND o.order_status=".$intStatus : '') . "
 											" . ($arrAllowedProducts === true ? '' : (" AND i.product_id IN (" . (empty($arrAllowedProducts) ? '0' : implode(',', $arrAllowedProducts)) . ")")) . "
 											" . ($intConfig > 0 ? " AND c.id=".$intConfig : '') . "
 											GROUP BY config_id, dateGroup

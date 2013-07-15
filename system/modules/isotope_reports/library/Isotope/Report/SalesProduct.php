@@ -58,25 +58,25 @@ class SalesProduct extends Sales
 		$objProducts = \Database::getInstance()->query("
 			SELECT
 				IFNULL($groupVariants, i.product_id) AS product_id,
-				IFNULL(p1.name, i.product_name) AS variant_name,
-				IFNULL(p2.name, i.product_name) AS product_name,
+				IFNULL(p1.name, i.name) AS variant_name,
+				IFNULL(p2.name, i.name) AS product_name,
 				p1.sku AS product_sku,
 				p2.sku AS variant_sku,
-				i.product_options,
-				SUM(i.product_quantity) AS quantity,
+				i.options AS product_options,
+				SUM(i.quantity) AS quantity,
 				t.attributes,
 				t.variants,
 				t.variant_attributes,
-				SUM(i.tax_free_price * i.product_quantity) AS total,
+				SUM(i.tax_free_price * i.quantity) AS total,
 				DATE_FORMAT(FROM_UNIXTIME(o.{$this->strDateField}), '$sqlDate') AS dateGroup
-			FROM tl_iso_order_items i
-			LEFT JOIN tl_iso_orders o ON i.pid=o.id
-			LEFT JOIN tl_iso_orderstatus os ON os.id=o.status
+			FROM tl_iso_product_collection_item i
+			LEFT JOIN tl_iso_product_collection o ON i.pid=o.id
+			LEFT JOIN tl_iso_orderstatus os ON os.id=o.order_status
 			LEFT OUTER JOIN tl_iso_products p1 ON i.product_id=p1.id
 			LEFT OUTER JOIN tl_iso_products p2 ON p1.pid=p2.id
 			LEFT OUTER JOIN tl_iso_producttypes t ON p1.type=t.id
-			WHERE 1
-				" . ($intStatus > 0 ? " AND o.status=".$intStatus : '') . "
+			WHERE o.type='Order'
+				" . ($intStatus > 0 ? " AND o.order_status=".$intStatus : '') . "
 				" . ($arrAllowedProducts === true ? '' : (" AND p1.id IN (" . (empty($arrAllowedProducts) ? '0' : implode(',', $arrAllowedProducts)) . ")")) . "
 			GROUP BY dateGroup, product_id
 			HAVING dateGroup>=$dateFrom AND dateGroup<=$dateTo");
