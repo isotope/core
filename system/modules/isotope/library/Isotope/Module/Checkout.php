@@ -421,7 +421,7 @@ class Checkout extends Module
         {
             $this->Template = new \Isotope\Template('mod_message');
             $this->Template->type = 'error';
-            $this->Template->message = 'User checkout not allowed';
+            $this->Template->message = $GLOBALS['TL_LANG']['ERR']['checkoutNotAllowed'];
 
             return false;
         }
