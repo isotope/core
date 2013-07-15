@@ -786,8 +786,10 @@ class Standard extends \Controller implements IsotopeProduct
         $objTemplate->action = ampersand(\Environment::get('request'), true);
         $objTemplate->formSubmit = $this->formSubmit;
         $objTemplate->product = $this;
+        $objTemplate->product_id = ($this->pid ? $this->pid : $this->id);
+        $objTemplate->module_id = $objModule->id;
 
-        $GLOBALS['AJAX_PRODUCTS'][] = array('module'=>$objModule->id, 'product'=>($this->pid ? $this->pid : $this->id), 'formId'=>$this->formSubmit, 'attributes'=>$arrAjaxOptions);
+        $GLOBALS['AJAX_PRODUCTS'][] = array('formId'=>$this->formSubmit, 'attributes'=>$arrAjaxOptions);
 
         // !HOOK: alter product data before output
         if (isset($GLOBALS['ISO_HOOKS']['generateProduct']) && is_array($GLOBALS['ISO_HOOKS']['generateProduct']))

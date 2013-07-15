@@ -2,6 +2,9 @@
 <div class="formbody">
 <input type="hidden" name="FORM_SUBMIT" value="<?php echo $this->formSubmit; ?>">
 <input type="hidden" name="REQUEST_TOKEN" value="{{request_token}}">
+<input type="hidden" name="AJAX_PRODUCT" value="<?php echo $this->product_id; ?>">
+<input type="hidden" name="AJAX_MODULE" value="<?php echo $this->module_id; ?>">
+
 <?php if($this->hasOptions): foreach( $this->raw_options as $name => $value ): ?>
 <input type="hidden" name="<?php echo $name; ?>" value="<?php echo $value; ?>">
 <?php endforeach; endif; ?>

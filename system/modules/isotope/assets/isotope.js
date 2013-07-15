@@ -119,7 +119,7 @@ var IsotopeProducts = (function() {
         var i, el;
 
         document.id(form).set('send', {
-            url: (window.location.href+'?ajaxModule='+config.module+'&ajaxProduct='+config.product),
+            url: window.location.href,
             link: 'cancel',
             onRequest: Isotope.displayBox.pass(loadMessage),
             onSuccess: function(txt, xml)

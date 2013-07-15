@@ -84,7 +84,7 @@ class ProductReader extends Module
             return;
         }
 
-        if (\Environment::get('isAjaxRequest') && \Input::get('ajaxModule') == $this->id && \Input::get('ajaxProduct') == $objProduct->id) {
+        if (\Environment::get('isAjaxRequest') && \Input::post('AJAX_MODULE') == $this->id && \Input::post('AJAX_PRODUCT') == $objProduct->id) {
             \Isotope\Frontend::ajaxResponse($objProduct->generate(($this->iso_reader_layout ?: $objProduct->reader_template), $this));
         }
 

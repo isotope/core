@@ -252,7 +252,7 @@ class ProductList extends Module
 
         foreach ($arrProducts as $objProduct)
         {
-            if (\Environment::get('isAjaxRequest') && \Input::get('ajaxModule') == $this->id && \Input::get('ajaxProduct') == $objProduct->id) {
+            if (\Environment::get('isAjaxRequest') && \Input::get('AJAX_MODULE') == $this->id && \Input::get('AJAX_PRODUCT') == $objProduct->id) {
                 \Isotope\Frontend::ajaxResponse($objProduct->generate(($this->iso_list_layout ?: $objProduct->list_template), $this));
             }
 
