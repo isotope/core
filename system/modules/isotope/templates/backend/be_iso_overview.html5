@@ -1,0 +1,21 @@
+<?php if ($this->before): ?>
+<?php echo $this->before; ?>
+<?php endif; ?>
+<div class="tl_formbody_edit be_iso_overview">
+    <?php foreach ($this->modules as $strGroup=>$arrModules): ?>
+    <fieldset class="tl_box">
+        <legend style="cursor: default;"><?php echo $strGroup; ?></legend>
+        <?php foreach ($arrModules as $strModule=>$arrModule): ?>
+        <div class="item">
+            <a href="<?php echo $arrModule['href']; ?>" title="<?php echo $arrModule['title']; ?>">
+                <img src="<?php echo $arrModule['icon']; ?>" alt="">
+                <span><?php echo $arrModule['label']; ?></span>
+            </a>
+        </div>
+        <?php endforeach; ?>
+    </fieldset>
+    <?php endforeach; ?>
+</div>
+<?php if ($this->after): ?>
+<?php echo $this->after; ?>
+<?php endif; ?>

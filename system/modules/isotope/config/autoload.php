@@ -64,7 +64,7 @@ NamespaceClassLoader::addClassMap(array
  */
 TemplateLoader::addFiles(array
 (
-    'be_iso_setup'                  => 'system/modules/isotope/templates/backend',
+    'be_iso_overview'               => 'system/modules/isotope/templates/backend',
     'be_pos_terminal'               => 'system/modules/isotope/templates/backend',
     'iso_checkout_address'          => 'system/modules/isotope/templates/checkout',
     'iso_checkout_order_conditions' => 'system/modules/isotope/templates/checkout',
