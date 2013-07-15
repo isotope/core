@@ -576,8 +576,8 @@ $GLOBALS['TL_DCA']['tl_iso_config'] = array
             'inputType'                 => 'timePeriod',
             'options'                   => array('minutes', 'hours', 'days', 'weeks', 'months', 'years'),
             'reference'                 => &$GLOBALS['TL_LANG']['MSC']['timePeriod'],
-            'eval'                      => array('rgxp'=>'digit', 'tl_class'=>'w50'),
-            'sql'                       => "int(10) unsigned NOT NULL default '0'"
+            'eval'                      => array('rgxp'=>'digit', 'maxlength'=>5, 'tl_class'=>'w50'),
+            'sql'                       => "varchar(255) NOT NULL default ''"
         )
     )
 );
