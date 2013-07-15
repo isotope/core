@@ -31,14 +31,14 @@ array_insert($GLOBALS['BE_MOD']['isotope'], 2, array
 /**
  * Checkout Steps
  */
-array_insert($GLOBALS['ISO_CHECKOUT_STEPS']['review'], 0, array(array('IsotopeRules', 'cleanRuleUsages')));
+array_insert($GLOBALS['ISO_CHECKOUT_STEPS']['review'], 0, array(array('Isotope\IsotopeRules', 'cleanRuleUsages')));
 
 
 /**
  * Hooks
  */
-$GLOBALS['ISO_HOOKS']['calculatePrice'][]                = array('IsotopeRules', 'calculatePrice');
-$GLOBALS['ISO_HOOKS']['compileCart'][]                     = array('IsotopeRules', 'getCouponForm');
-$GLOBALS['ISO_HOOKS']['checkoutSurcharge'][]            = array('IsotopeRules', 'getSurcharges');
-$GLOBALS['ISO_HOOKS']['preCheckout'][]                    = array('IsotopeRules', 'writeRuleUsages');
-$GLOBALS['ISO_HOOKS']['transferredCollection'][]        = array('IsotopeRules', 'transferCoupons');
+$GLOBALS['ISO_HOOKS']['calculatePrice'][]           = array('Isotope\IsotopeRules', 'calculatePrice');
+$GLOBALS['ISO_HOOKS']['compileCart'][]              = array('Isotope\IsotopeRules', 'getCouponForm');
+$GLOBALS['ISO_HOOKS']['checkoutSurcharge'][]        = array('Isotope\IsotopeRules', 'getSurcharges');
+$GLOBALS['ISO_HOOKS']['preCheckout'][]              = array('Isotope\IsotopeRules', 'writeRuleUsages');
+$GLOBALS['ISO_HOOKS']['transferredCollection'][]    = array('Isotope\IsotopeRules', 'transferCoupons');
