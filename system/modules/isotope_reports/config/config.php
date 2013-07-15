@@ -66,7 +66,6 @@ array_insert($GLOBALS['BE_MOD']['isotope'], 2, array
 			),
 			'member' => array
 			(
-				/*
 				'members_total' => array
 				(
 					'callback'	=> 'Isotope\Report\MembersTotal',
@@ -85,11 +84,9 @@ array_insert($GLOBALS['BE_MOD']['isotope'], 2, array
 					'label'		=> &$GLOBALS['ISO_LANG']['REPORT']['members_guests'],
 					'icon'		=> 'system/modules/isotope_reports/assets/member.png',
 				),
-				*/
 			),
 			'rules' => array
 			(
-				/*
 				'rules_usage' => array
 				(
 					'callback'	=> 'Isotope\Report\RulesUsage',
@@ -102,7 +99,6 @@ array_insert($GLOBALS['BE_MOD']['isotope'], 2, array
 					'label'		=> &$GLOBALS['ISO_LANG']['REPORT']['rules_coupons'],
 					'icon'		=> 'system/modules/isotope_reports/assets/generic.png',
 				),
-				*/
 			),
 			'custom' => array(),
 		),
