@@ -473,17 +473,14 @@ class Frontend extends \Frontend
     {
         $strMessages = \Isotope\Frontend::getIsotopeMessages();
 
-        if ($strMessages != '')
-        {
-            list(,$startScript, $endScript) = \Isotope\Frontend::getElementAndScriptTags();
-
+        if ($strMessages != '') {
             $GLOBALS['TL_MOOTOOLS'][] = "
-$startScript
+<script>
 window.addEvent('domready', function()
 {
     Isotope.displayBox('" . $strMessages . "', true);
 });
-$endScript";
+</script>";
         }
     }
 
@@ -526,34 +523,6 @@ $endScript";
         }
 
         return $strMessages;
-    }
-
-
-    /**
-     * Get html & javascript tags depending on output format (Contao 2.10)
-     * @param boolean
-     * @return array
-     */
-    public static function getElementAndScriptTags($blnAjax=false)
-    {
-        global $objPage;
-
-        switch ($objPage->outputFormat)
-        {
-            case 'html5':
-                return array('>', '<script>', '</script>');
-
-            case 'xhtml':
-            default:
-                if ($blnAjax)
-                {
-                    return array(' />', '<script type="text/javascript">', '</script>');
-                }
-                else
-                {
-                    return array(' />', '<script type="text/javascript">'."\n".'<!--//--><![CDATA[//><!--', '//--><!]]>'."\n".'</script>');
-                }
-        }
     }
 
 

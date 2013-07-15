@@ -247,14 +247,12 @@ class Standard extends \Frontend implements IsotopeGallery
      */
     protected function injectAjax()
     {
-        list(,$startScript, $endScript) = \Isotope\Frontend::getElementAndScriptTags();
-
         $GLOBALS['TL_MOOTOOLS'][get_class($this).'_ajax'] = "
-$startScript
+<script>
 window.addEvent('ajaxready', function() {
   Mediabox ? Mediabox.scanPage() : Lightbox.scanPage();
 });
-$endScript
+</script>
 ";
     }
 
