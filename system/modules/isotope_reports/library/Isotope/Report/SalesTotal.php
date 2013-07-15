@@ -33,7 +33,7 @@ class SalesTotal extends Sales
 		$dateTo = date($privateDate, $intStop);
 		$arrAllowedProducts = \Isotope\Backend::getAllowedProductIds();
 
-		$objData = $this->Database->prepare("SELECT
+		$objData = \Database::getInstance()->prepare("SELECT
 												c.id AS config_id,
 												c.currency,
 												o.date AS date,
@@ -185,7 +185,7 @@ class SalesTotal extends Sales
 		$intConfig = (int) $arrSession[$this->name]['iso_config'];
 
 		$arrData = array('header'=>array(), 'rows'=>array(), 'footer'=>array());
-		$arrCurrencies = $this->Database->execute("SELECT DISTINCT currency FROM tl_iso_config WHERE currency!=''" . ($intConfig > 0 ? ' AND id='.$intConfig : ''))->fetchEach('currency');
+		$arrCurrencies = \Database::getInstance()->execute("SELECT DISTINCT currency FROM tl_iso_config WHERE currency!=''" . ($intConfig > 0 ? ' AND id='.$intConfig : ''))->fetchEach('currency');
 
 		foreach ($arrCurrencies as $currency)
 		{

@@ -57,7 +57,7 @@ abstract class Sales extends Report
 
 		if (!isset($arrSession[$this->name]['iso_status']))
 		{
-			$objStatus = $this->Database->query("SELECT id FROM tl_iso_orderstatus WHERE paid=1 ORDER BY sorting");
+			$objStatus = \Database::getInstance()->query("SELECT id FROM tl_iso_orderstatus WHERE paid=1 ORDER BY sorting");
 			$arrSession[$this->name]['iso_status'] = $objStatus->id;
 		}
 
@@ -135,7 +135,7 @@ abstract class Sales extends Report
 	protected function getStatusPanel()
 	{
 		$arrStatus = array(''=>&$GLOBALS['ISO_LANG']['REPORT']['all']);
-		$objStatus = $this->Database->execute("SELECT id, name, paid FROM tl_iso_orderstatus ORDER BY sorting");
+		$objStatus = \Database::getInstance()->execute("SELECT id, name, paid FROM tl_iso_orderstatus ORDER BY sorting");
 
 		while ($objStatus->next())
 		{

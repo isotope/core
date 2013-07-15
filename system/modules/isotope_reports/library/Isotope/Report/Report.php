@@ -218,7 +218,7 @@ abstract class Report extends \Backend
 	protected function getFilterByConfigPanel()
 	{
 		$arrConfigs = array(''=>&$GLOBALS['ISO_LANG']['REPORT']['all']);
-		$objConfigs = $this->Database->execute("SELECT id, name FROM tl_iso_config ORDER BY name");
+		$objConfigs = \Database::getInstance()->execute("SELECT id, name FROM tl_iso_config ORDER BY name");
 
 		while ($objConfigs->next())
 		{

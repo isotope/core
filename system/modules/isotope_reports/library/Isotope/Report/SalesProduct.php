@@ -55,7 +55,7 @@ class SalesProduct extends Sales
 		$groupVariants = $blnVariants ? 'p1.id' : 'IF(p1.pid=0, p1.id, p1.pid)';
 		$arrAllowedProducts = \Isotope\Backend::getAllowedProductIds();
 
-		$objProducts = $this->Database->query("
+		$objProducts = \Database::getInstance()->query("
 			SELECT
 				IFNULL($groupVariants, i.product_id) AS product_id,
 				IFNULL(p1.name, i.product_name) AS variant_name,

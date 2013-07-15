@@ -109,7 +109,7 @@ class Reports extends \BackendModule
 		$arrSummary = array();
 		$arrAllowedProducts = \Isotope\Backend::getAllowedProductIds();
 
-		$objOrders = $this->Database->prepare("SELECT
+		$objOrders = \Database::getInstance()->prepare("SELECT
 													c.id AS config_id,
 													c.name AS config_name,
 													c.currency,
