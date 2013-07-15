@@ -117,15 +117,20 @@ class Config extends \Model
      * Get the limit to mark products as new
      * @return int
      */
-    public function getMarkProductAsNewLimit()
+    public function getNewProductLimit()
     {
-        if (isset($this->arrCache['markNewLimit'])) {
-            return $this->arrCache['markNewLimit'];
+        if (!isset($this->arrCache['newProductLimit'])) {
+
+            $arrPeriod = deserialize($this->productNewPeriod);
+
+            if (!empty($arrPeriod) && is_array($arrPeriod) && $arrPeriod['value'] > 0 && $arrPeriod['unit'] != '') {
+                $this->arrCache['newProductLimit'] = strtotime('-' . $arrPeriod['value'] . ' ' . $arrPeriod['unit'] . ' 00:00:00');
+            } else {
+                $this->arrCache['newProductLimit'] = time();
+            }
         }
 
-        $this->arrCache['markNewLimit'] = time() - (86400 * $this->markNewDays);
-
-        return $this->arrCache['markNewLimit'];
+        return $this->arrCache['newProductLimit'];
     }
 
     /**
