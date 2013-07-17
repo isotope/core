@@ -28,12 +28,6 @@ class DC_ProductData extends \DC_Table
     protected $blnEditLanguage;
 
     /**
-     * Deferred loading of product data
-     * @var bool
-     */
-    protected $blnDeferredLoading = false;
-
-    /**
      * Array of languages for this product's type
      * @var array
      */
