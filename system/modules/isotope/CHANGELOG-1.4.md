@@ -1,6 +1,12 @@
 Isotope eCommerce Changelog
 ===========================
 
+Version 1.4.4 (2013-07-??)
+--------------------------
+
+### Fixed
+- Date to string conversion (#667)
+
 
 Version 1.4.3 (2013-07-17)
 --------------------------
