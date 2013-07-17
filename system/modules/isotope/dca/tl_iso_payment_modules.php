@@ -166,7 +166,7 @@ $GLOBALS['TL_DCA']['tl_iso_payment_modules'] = array
             'label'                 => &$GLOBALS['TL_LANG']['tl_iso_payment_modules']['label'],
             'exclude'               => true,
             'inputType'             => 'text',
-            'eval'                  => array('maxlength'=>255, 'tl_class'=>'w50'),,
+            'eval'                  => array('maxlength'=>255, 'tl_class'=>'w50'),
             'sql'                   => "varchar(255) NOT NULL default ''"
         ),
         'type' => array
