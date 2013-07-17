@@ -223,6 +223,16 @@ $GLOBALS['ISO_PRODUCT'] = array
     ),
 );
 
+/**
+ * Checkout steps
+ */
+$GLOBALS['ISO_CHECKOUTSTEP'] = array
+(
+    'address'   => array('\Isotope\CheckoutStep\BillingAddress', '\Isotope\CheckoutStep\ShippingAddress'),
+    'shipping'  => array('\Isotope\CheckoutStep\ShippingMethod'),
+    'payment'   => array('\Isotope\CheckoutStep\PaymentMethod'),
+    'review'    => array('\Isotope\CheckoutStep\OrderConditionsOnTop', '\Isotope\CheckoutStep\OrderInfo', '\Isotope\CheckoutStep\OrderConditionsBeforeProducts', '\Isotope\CheckoutStep\OrderProducts', '\Isotope\CheckoutStep\OrderConditionsAfterProducts'),
+);
 
 /**
  * Permissions are access settings for user and groups (fields in tl_user and tl_user_group)
@@ -281,17 +291,6 @@ include(TL_ROOT . '/system/modules/isotope/config/hooks.php');
 $GLOBALS['TL_CRON']['daily'][] = array('Isotope\Automator', 'deleteOldCarts');
 $GLOBALS['TL_CRON']['daily'][] = array('Isotope\Automator', 'convertCurrencies');
 
-
-/**
- * Step callbacks for checkout module
- */
-$GLOBALS['ISO_CHECKOUTSTEP'] = array
-(
-    'address'   => array('\Isotope\CheckoutStep\BillingAddress', '\Isotope\CheckoutStep\ShippingAddress'),
-    'shipping'  => array('\Isotope\CheckoutStep\ShippingMethod'),
-    'payment'   => array('\Isotope\CheckoutStep\PaymentMethod'),
-    'review'    => array('\Isotope\CheckoutStep\OrderConditionsOnTop', '\Isotope\CheckoutStep\OrderInfo', '\Isotope\CheckoutStep\OrderConditionsBeforeProducts', '\Isotope\CheckoutStep\OrderProducts', '\Isotope\CheckoutStep\OrderConditionsAfterProducts'),
-);
 
 $GLOBALS['ISO_ATTR'] = array
 (

@@ -12,6 +12,7 @@
 
 namespace Isotope\Module;
 
+use Isotope\Interfaces\IsotopeCheckoutStep;
 use Isotope\Isotope;
 use Isotope\Model\Address;
 use Isotope\Model\Payment;
@@ -451,6 +452,10 @@ class Checkout extends Module
                 foreach ($arrModules as $strClass) {
 
                     $objModule = new $strClass($this);
+
+                    if (!$objModule instanceof IsotopeCheckoutStep) {
+                        throw new \RuntimeException("$strClass has to implement Isotope\Interfaces\IsotopeCheckoutStep");
+                    }
 
                     if ($objModule->isAvailable()) {
                         $arrSteps[$strStep][] = $objModule;
