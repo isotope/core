@@ -81,7 +81,12 @@ class Frontend extends \Frontend
         if (Isotope::getCart()->addProduct($objProduct, $intQuantity) !== false)
         {
             $_SESSION['ISO_CONFIRM'][] = $GLOBALS['TL_LANG']['MSC']['addedToCart'];
-            $this->jumpToOrReload($objModule->iso_addProductJumpTo);
+
+            if (!$objModule->iso_addProductJumpTo) {
+                $this->reload();
+            }
+
+            $this->redirect(static::addQueryStringToUrl('continue='.base64_encode($this->Environment->request), $objModule->iso_addProductJumpTo));
         }
     }
 
@@ -875,6 +880,8 @@ window.addEvent('domready', function()
         }
         catch (\Exception $e)
         {
+            $this->log('Product ID ' . $objProductData->id . ' could not be initialized: ' . $e->getMessage(), __METHOD__, TL_ERROR);
+
             return null;
         }
 
@@ -1244,10 +1251,10 @@ window.addEvent('domready', function()
         // if we have a root page id (sitemap.xml e.g.) we have to make sure we only consider categories in this tree
         if ($intRoot > 0)
         {
-    		$arrPageIds = $this->getChildRecords($intRoot, 'tl_page', false);
-    		$arrPageIds[] = $intRoot;
+            $arrPageIds = $this->getChildRecords($intRoot, 'tl_page', false);
+            $arrPageIds[] = $intRoot;
 
-			$strAllowedPages = ' AND c.page_id IN (' . implode(',', $arrPageIds) . ')';
+            $strAllowedPages = ' AND c.page_id IN (' . implode(',', $arrPageIds) . ')';
         }
 
         $objProducts = $this->Database->query("
@@ -1785,39 +1792,39 @@ window.addEvent('domready', function()
      */
     public static function ajaxResponse($varValue)
     {
-		$varValue = static::replaceTags($varValue);
+        $varValue = static::replaceTags($varValue);
 
-		if (is_array($varValue) || is_object($varValue))
-		{
-			$varValue = json_encode($varValue);
-		}
+        if (is_array($varValue) || is_object($varValue))
+        {
+            $varValue = json_encode($varValue);
+        }
 
-		echo $varValue;
-		exit;
+        echo $varValue;
+        exit;
     }
 
 
-	/**
-	 * Recursively replace inserttags in the return value
-	 * @param	array|string
-	 * @return	array|string
-	 */
-	private static function replaceTags($varValue)
-	{
-		if (is_array($varValue))
-		{
-			foreach( $varValue as $k => $v )
-			{
-				$varValue[$k] = static::replaceTags($v);
-			}
+    /**
+     * Recursively replace inserttags in the return value
+     * @param    array|string
+     * @return    array|string
+     */
+    private static function replaceTags($varValue)
+    {
+        if (is_array($varValue))
+        {
+            foreach( $varValue as $k => $v )
+            {
+                $varValue[$k] = static::replaceTags($v);
+            }
 
-			return $varValue;
-		}
-		elseif (is_object($varValue))
-		{
-			return $varValue;
-		}
+            return $varValue;
+        }
+        elseif (is_object($varValue))
+        {
+            return $varValue;
+        }
 
-		return Isotope::getInstance()->call('replaceInsertTags', array($varValue, false));
-	}
+        return Isotope::getInstance()->call('replaceInsertTags', array($varValue, false));
+    }
 }

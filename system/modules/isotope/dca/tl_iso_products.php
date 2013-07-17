@@ -364,8 +364,8 @@ $GLOBALS['TL_DCA']['tl_iso_products'] = array
             'exclude'               => true,
             'inputType'             => 'select',
             'foreignKey'            => 'tl_iso_tax_class.name',
-            'attributes'            => array('legend'=>'pricing_legend', 'tl_class'=>'w50'),
-            'eval'                  => array('includeBlankOption'=>true, 'dynamic'=>true),
+            'eval'                  => array('includeBlankOption'=>true, 'tl_class'=>'w50'),
+            'attributes'            => array('legend'=>'pricing_legend', 'dynamic'=>true),
             'relation'              => array('type'=>'hasOne', 'load'=>'lazy'),
         ),
         'baseprice' => array
@@ -374,8 +374,8 @@ $GLOBALS['TL_DCA']['tl_iso_products'] = array
             'exclude'               => true,
             'inputType'             => 'timePeriod',
             'foreignKey'            => 'tl_iso_baseprice.name',
-            'eval'                  => array('includeBlankOption'=>true),
-            'attributes'            => array('legend'=>'pricing_legend', 'tl_class'=>'w50'),
+            'eval'                  => array('includeBlankOption'=>true, 'tl_class'=>'w50'),
+            'attributes'            => array('legend'=>'pricing_legend'),
         ),
         'shipping_weight' => array
         (

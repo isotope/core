@@ -200,7 +200,7 @@ $GLOBALS['TL_DCA']['tl_iso_product_collection'] = array
             'label'                 => &$GLOBALS['TL_LANG']['tl_iso_product_collection']['date_paid'],
             'exclude'               => true,
             'inputType'             => 'text',
-            'eval'                  => array('rgxp'=>'date', 'datepicker'=>(method_exists($this,'getDatePickerString') ? $this->getDatePickerString() : true), 'tl_class'=>'w50 wizard'),
+            'eval'                  => array('rgxp'=>'datim', 'datepicker'=>(method_exists($this,'getDatePickerString') ? $this->getDatePickerString() : true), 'tl_class'=>'w50 wizard'),
         ),
         'date_shipped' => array
         (

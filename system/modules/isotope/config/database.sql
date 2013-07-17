@@ -673,6 +673,7 @@ CREATE TABLE `tl_iso_productcache` (
   `module_id` int(10) unsigned NOT NULL default '0',
   `requestcache_id` int(10) unsigned NOT NULL default '0',
   `keywords` varchar(255) NOT NULL default '',
+  `groups` blob NULL,
   `products` blob NULL,
   `expires` int(10) unsigned NOT NULL default '0',
   PRIMARY KEY  (`id`),

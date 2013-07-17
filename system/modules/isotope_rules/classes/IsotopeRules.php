@@ -153,7 +153,7 @@ class IsotopeRules extends \Controller
 
             foreach( $arrCoupons as $code )
             {
-                $arrRule = $this->findCoupon($code, $arrProducts);
+                $arrRule = $this->findCoupon($code, Isotope::getCart()->getProducts());
 
                 if ($arrRule === false)
                 {
@@ -661,7 +661,7 @@ class IsotopeRules extends \Controller
                         break;
 
                     default:
-                        throw new Exception('Unknown rule condition "' . $restrictions['condition'] . '"');
+                        throw new Exception('Unknown rule condition "' . $arrRule['attributeCondition'] . '"');
                 }
             }
 

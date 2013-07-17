@@ -198,13 +198,12 @@ class Cart extends Module
             }
         }
 
-
-        if ($this->iso_continueShopping && !empty($_SESSION['ISO_CONFIRM']) && ($objLatest = Isotope::getCart()->getLatestItem()) !== null) {
+        if ($this->iso_continueShopping && $this->Input->get('continue') != '') {
             $arrButtons['continue'] = array(
                 'type'      => 'submit',
                 'name'      => 'button_continue',
                 'label'     => $GLOBALS['TL_LANG']['MSC']['continueShoppingBT'],
-                'href'      => $objLatest->getProduct()->href_reader,
+                'href'      => ampersand(base64_decode($this->Input->get('continue', true))),
             );
 
             if (\Input::post('FORM_SUBMIT') == $this->strFormId && \Input::post('button_continue') != '') {
