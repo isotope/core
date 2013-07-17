@@ -139,9 +139,14 @@ class ProductPriceFinder extends System
 	protected static function findAdvancedVariantPrice(IsotopeProduct $objProduct)
 	{
 		$arrIds = $objProduct->pid == 0 ? $objProduct->getVariantIds() : array($objProduct->id);
+
+		if (empty($arrIds)) {
+    		return array();
+		}
+
 		$arrData = self::getAdvancedPrices($arrIds, $objProduct->quantity_requested, $objProduct->show_price_tiers);
 
-		if ($objProduct->pid == 0 && !empty($arrIds))
+		if ($objProduct->pid == 0)
 		{
 			$arrData['from_price'] = self::findLowestAdvancedPriceOfVariants($arrIds, $objProduct->show_price_tiers);
 		}

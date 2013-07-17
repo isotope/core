@@ -2,6 +2,20 @@ Isotope eCommerce Changelog
 ===========================
 
 
+Version 1.4.3 (2013-07-17)
+--------------------------
+
+### Improved
+- "Continue shopping" link now uses URL referer instead of last added product
+- "Date paid" in orders now also displays the time not only the date
+
+### Fixed
+- Advanced price calculation failed when no variants were found (#644)
+- Product list cache shows incorrect results when using member group restrictions (#654)
+- Warning in Authorize.NET payment method (#639)
+
+
+
 Version 1.4.2 (2013-07-09)
 --------------------------
 
