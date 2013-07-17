@@ -36,6 +36,14 @@ $GLOBALS['TL_DCA']['tl_iso_groups'] = array
         (
             array('Isotope\tl_iso_groups', 'deleteGroup'),
         ),
+        'sql' => array
+        (
+            'keys' => array
+            (
+                'id' => 'primary',
+                'pid' => 'index'
+            )
+        )
     ),
 
     // List
@@ -112,12 +120,33 @@ $GLOBALS['TL_DCA']['tl_iso_groups'] = array
     // Fields
     'fields' => array
     (
-         'name' => array
-         (
-             'label'                => &$GLOBALS['TL_LANG']['tl_iso_groups']['name'],
+        'id' => array
+        (
+            'sql'                   => "int(10) unsigned NOT NULL auto_increment"
+        ),
+        'pid' => array
+        (
+            'sql'                   => "int(10) unsigned NOT NULL default '0'"
+        ),
+        'sorting' => array
+        (
+            'sql'                   => "int(10) unsigned NOT NULL default '0'"
+        ),
+        'tstamp' => array
+        (
+            'sql'                   => "int(10) unsigned NOT NULL default '0'"
+        ),
+        'name' => array
+        (
+            'sql'                   => "int(10) unsigned NOT NULL default '0'"
+        ),
+        'name' => array
+        (
+            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_groups']['name'],
             'exclude'               => true,
             'inputType'             => 'text',
             'eval'                  => array('mandatory'=>true, 'maxlength'=>255, 'tl_class'=>'w50'),
+            'sql'                   => "varchar(255) NOT NULL default ''"
         ),
         'product_type' => array
         (
@@ -125,7 +154,8 @@ $GLOBALS['TL_DCA']['tl_iso_groups'] = array
             'exclude'               => true,
             'inputType'             => 'select',
             'options_callback'      => array('Isotope\ProductCallbacks', 'getProductTypes'),
-            'eval'                  => array('includeBlankOption'=>true, 'tl_class'=>'w50')
-         ),
+            'eval'                  => array('includeBlankOption'=>true, 'tl_class'=>'w50'),
+            'sql'                   => "int(10) unsigned NOT NULL default '0'"
+         )
     )
 );
