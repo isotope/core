@@ -1194,7 +1194,7 @@ class Isotope extends Controller
 	{
     	$strFormat = isset($GLOBALS['objPage']) ? $GLOBALS['objPage']->dateFormat : $GLOBALS['TL_CONFIG']['dateFormat'];
 
-    	return $this->parseDate($intTstamp, $strFormat);
+    	return $this->parseDate($strFormat, $intTstamp);
 	}
 
 
@@ -1207,7 +1207,7 @@ class Isotope extends Controller
 	{
     	$strFormat = isset($GLOBALS['objPage']) ? $GLOBALS['objPage']->timeFormat : $GLOBALS['TL_CONFIG']['timeFormat'];
 
-    	return $this->parseDate($intTstamp, $strFormat);
+    	return $this->parseDate($strFormat, $intTstamp);
 	}
 
 
@@ -1220,7 +1220,7 @@ class Isotope extends Controller
 	{
     	$strFormat = isset($GLOBALS['objPage']) ? $GLOBALS['objPage']->datimFormat : $GLOBALS['TL_CONFIG']['datimFormat'];
 
-    	return $this->parseDate($intTstamp, $strFormat);
+    	return $this->parseDate($strFormat, $intTstamp);
 	}
 
 
