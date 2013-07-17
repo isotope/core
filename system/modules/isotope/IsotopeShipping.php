@@ -155,6 +155,13 @@ abstract class IsotopeShipping extends Frontend
 
 					foreach ($arrProducts as $objProduct)
 					{
+
+						// Shipping exempt items should not affect availability of shipping method
+						if ($objProduct->shipping_exempt)
+						{
+							continue;
+						}
+
 						if (!in_array($objProduct->type, $arrTypes))
 						{
 							return false;
