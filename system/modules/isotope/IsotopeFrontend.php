@@ -112,7 +112,7 @@ class IsotopeFrontend extends Frontend
     			$this->reload();
 			}
 
-			$this->redirect(static::addQueryStringToUrl('continue='.base64_encode($this->Environment->request), $objModule->iso_addProductJumpTo));
+			$this->redirect(self::addQueryStringToUrl('continue='.base64_encode($this->Environment->request), $objModule->iso_addProductJumpTo));
 		}
 	}
 
