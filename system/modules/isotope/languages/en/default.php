@@ -174,26 +174,21 @@ $GLOBALS['TL_LANG']['MSC']['timePeriod']['years']               = 'Years';
 $GLOBALS['TL_LANG']['CTE']['isotope']    = 'Isotope eCommerce';
 
 /**
- * Shipping modules
+ * Shipping methods
  */
-$GLOBALS['TL_LANG']['SHIP']['flat']                = array('Flat-price shipping');
-$GLOBALS['TL_LANG']['SHIP']['weighttotal']        = array('Weight total-based shipping');
-$GLOBALS['TL_LANG']['SHIP']['ordertotal']        = array('Order total-based shipping');
-$GLOBALS['TL_LANG']['SHIP']['collection']        = array('Collection');
-$GLOBALS['TL_LANG']['SHIP']['ups']                = array('UPS Live Rates and Service shipping');
-$GLOBALS['TL_LANG']['SHIP']['usps']                = array('USPS Live Rates and Service shipping');
+$GLOBALS['TL_LANG']['MODEL']['tl_iso_shipping_modules.flat']    = array('Flat-price shipping');
 
 /**
- * Payment modules
+ * Payment methods
  */
-$GLOBALS['TL_LANG']['PAY']['cash']                = array('Cash', 'Use this for all offline processed payment.');
-$GLOBALS['TL_LANG']['PAY']['paypal']            = array('PayPal Standard Checkout', 'This PayPal module supports IPN (Instant Payment Notifications).');
-$GLOBALS['TL_LANG']['PAY']['postfinance']        = array('Postfinance', 'Payment gateway for the swiss post payment system that supports various card types. The store will be instantly notified about successfull transactions.');
-$GLOBALS['TL_LANG']['PAY']['authorizedotnet']    = array('Authorize.net', 'An Authorize.net payment gateway.');
-$GLOBALS['TL_LANG']['PAY']['datatrans']        = array('Datatrans', 'A payment module for the swiss payment gateway "Datatrans".');
-$GLOBALS['TL_LANG']['PAY']['sparkasse']        = array('Sparkasse');
-$GLOBALS['TL_LANG']['PAY']['expercash']        = array('ExperCash');
-$GLOBALS['TL_LANG']['PAY']['payone']           = array('PayOne');
+$GLOBALS['TL_LANG']['MODEL']['tl_iso_payment_modules.cash']             = array('Cash', 'Use this for all offline processed payment.');
+$GLOBALS['TL_LANG']['MODEL']['tl_iso_payment_modules.paypal']           = array('PayPal Standard Checkout', 'This PayPal module supports IPN (Instant Payment Notifications).');
+$GLOBALS['TL_LANG']['MODEL']['tl_iso_payment_modules.postfinance']      = array('Postfinance', 'Payment gateway for the swiss post payment system that supports various card types. The store will be instantly notified about successfull transactions.');
+$GLOBALS['TL_LANG']['MODEL']['tl_iso_payment_modules.authorizedotnet']  = array('Authorize.net', 'An Authorize.net payment gateway.');
+$GLOBALS['TL_LANG']['MODEL']['tl_iso_payment_modules.datatrans']        = array('Datatrans', 'A payment module for the swiss payment gateway "Datatrans".');
+$GLOBALS['TL_LANG']['MODEL']['tl_iso_payment_modules.sparkasse']        = array('Sparkasse');
+$GLOBALS['TL_LANG']['MODEL']['tl_iso_payment_modules.expercash']        = array('ExperCash');
+$GLOBALS['TL_LANG']['MODEL']['tl_iso_payment_modules.payone']           = array('PayOne');
 
 /**
  * Galleries
