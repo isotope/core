@@ -18,13 +18,6 @@ namespace Isotope\Interfaces;
  */
 interface IsotopePayment
 {
-
-    /**
-     * Return the name and description for this payment method
-     * @return array
-     */
-    public static function getClassLabel();
-
     /**
      * Process checkout payment. Must be implemented in each payment module
      * @access public
