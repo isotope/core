@@ -82,7 +82,7 @@ class AddressBook extends Module
 
     /**
      * Generate module
-     * @return void
+     * @return mixed
      */
     protected function compile()
     {

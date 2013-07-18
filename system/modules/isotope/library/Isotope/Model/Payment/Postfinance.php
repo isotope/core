@@ -33,7 +33,7 @@ class Postfinance extends Payment implements IsotopePayment
      * Process payment on confirmation page.
      *
      * @access public
-     * @return void
+     * @return mixed
      */
     public function processPayment()
     {

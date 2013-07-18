@@ -31,7 +31,7 @@ class Sparkasse extends Payment implements IsotopePayment
      * processPayment function.
      *
      * @access public
-     * @return void
+     * @return mixed
      */
     public function processPayment()
     {

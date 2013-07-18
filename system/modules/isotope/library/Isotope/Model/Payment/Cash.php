@@ -33,7 +33,7 @@ class Cash extends Payment implements IsotopePayment
      * processPayment function.
      *
      * @access public
-     * @return void
+     * @return boolean
      */
     public function processPayment()
     {
