@@ -5,6 +5,7 @@ Version 1.4.5 (2013-??-??)
 --------------------------
 
 ### Fixed
+- HTML error in order details template
 
 
 Version 1.4.4 (2013-07-18)
