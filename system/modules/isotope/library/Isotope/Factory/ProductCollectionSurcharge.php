@@ -12,7 +12,6 @@
 
 namespace Isotope\Factory;
 
-use Isotope\Isotope;
 use Isotope\Interfaces\IsotopePayment;
 use Isotope\Interfaces\IsotopeProductCollection;
 use Isotope\Interfaces\IsotopeShipping;

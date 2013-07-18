@@ -13,7 +13,6 @@
 namespace Isotope\Model;
 
 use Isotope\Isotope;
-use Isotope\Interfaces\IsotopeProduct;
 use Isotope\Interfaces\IsotopeProductCollection;
 use Isotope\Interfaces\IsotopeProductCollectionSurcharge;
 use Isotope\Model\ProductCollectionSurcharge\Tax;

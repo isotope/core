@@ -14,7 +14,6 @@ namespace Isotope;
 
 use Isotope\Model\Config;
 use Isotope\Model\TaxClass;
-use Isotope\Model\TaxRate;
 use Isotope\Model\ProductCollection\Cart;
 
 

@@ -21,8 +21,6 @@ use Isotope\Model\Config;
 use Isotope\Model\Payment;
 use Isotope\Model\ProductCollectionItem;
 use Isotope\Model\Shipping;
-use Isotope\Product\Standard as StandardProduct;
-
 
 /**
  * Class ProductCollection

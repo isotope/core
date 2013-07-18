@@ -14,7 +14,6 @@ namespace Isotope;
 
 use Isotope\Interfaces\IsotopeProduct;
 use Isotope\Interfaces\IsotopeProductCollection;
-use Isotope\Interfaces\IsotopeProductCollectionSurcharge;
 use Isotope\Model\ProductCollection\Order;
 use Isotope\Product\Standard as StandardProduct;
 

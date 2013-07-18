@@ -15,7 +15,6 @@ namespace Isotope\Model\ProductCollection;
 use Isotope\Isotope;
 use Isotope\Interfaces\IsotopeProduct;
 use Isotope\Interfaces\IsotopeProductCollection;
-use Isotope\Model\Address;
 use Isotope\Model\Config;
 use Isotope\Model\OrderStatus;
 use Isotope\Model\Payment;

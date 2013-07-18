@@ -17,7 +17,6 @@
 namespace Isotope;
 
 use Isotope\Model\Address;
-use Isotope\Model\OrderStatus;
 use Isotope\Model\ProductCollection\Order;
 
 
