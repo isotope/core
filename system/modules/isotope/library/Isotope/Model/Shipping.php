@@ -25,7 +25,7 @@ use Isotope\Interfaces\IsotopeProductCollection;
  * @author     Andreas Schempp <andreas.schempp@terminal42.ch>
  * @author     Fred Bliss <fred.bliss@intelligentspark.com>
  */
-abstract class Shipping extends \Model
+abstract class Shipping extends TypeAgent
 {
 
     /**
@@ -33,6 +33,18 @@ abstract class Shipping extends \Model
      * @var string
      */
     protected static $strTable = 'tl_iso_shipping_modules';
+
+    /**
+     * Interface to validate shipping method
+     * @var string
+     */
+    protected static $strInterface = '\Isotope\Interfaces\IsotopeShipping';
+
+    /**
+     * List of types (classes) for this model
+     * @var array
+     */
+    protected static $arrModelTypes = array();
 
     /**
      * Template
@@ -51,7 +63,7 @@ abstract class Shipping extends \Model
         switch ($strKey)
         {
             case 'available':
-                throw new BadFunctionCallException('Your shipping method does not work with Isotope 2.x');
+                throw new \BadFunctionCallException('Your shipping method does not work with Isotope 2.x');
                 break;
 
             case 'surcharge':
@@ -250,67 +262,5 @@ abstract class Shipping extends \Model
         }
 
         return SurchargeFactory::buildShippingSurcharge($this, $objCollection);
-    }
-
-
-    /**
-     * Return the name and description for this shipping method
-     * @return array
-     */
-    public static function getClassLabel()
-    {
-        return $GLOBALS['TL_LANG']['SHIP'][strtolower(str_replace('Isotope\Model\Shipping\\', '', get_called_class()))];
-    }
-
-
-    /**
-     * Return a model or collection based on the database result type
-     */
-    protected static function find(array $arrOptions)
-    {
-        if (static::$strTable == '')
-        {
-            return null;
-        }
-
-        $arrOptions['table'] = static::$strTable;
-        $strQuery = \Model\QueryBuilder::find($arrOptions);
-
-        $objStatement = \Database::getInstance()->prepare($strQuery);
-
-        // Defaults for limit and offset
-        if (!isset($arrOptions['limit']))
-        {
-            $arrOptions['limit'] = 0;
-        }
-        if (!isset($arrOptions['offset']))
-        {
-            $arrOptions['offset'] = 0;
-        }
-
-        // Limit
-        if ($arrOptions['limit'] > 0 || $arrOptions['offset'] > 0)
-        {
-            $objStatement->limit($arrOptions['limit'], $arrOptions['offset']);
-        }
-
-        $objStatement = static::preFind($objStatement);
-        $objResult = $objStatement->execute($arrOptions['value']);
-
-        if ($objResult->numRows < 1)
-        {
-            return null;
-        }
-
-        $objResult = static::postFind($objResult);
-
-        if ($arrOptions['return'] == 'Model') {
-            $strClass = '\Isotope\Model\Shipping\\' . $objResult->type;
-
-            return new $strClass($objResult);
-        } else {
-
-            return new \Isotope\Model\Collection\Shipping($objResult, static::$strTable);
-        }
     }
 }

@@ -25,7 +25,7 @@ use Isotope\Interfaces\IsotopeProductCollection;
  * @author     Andreas Schempp <andreas.schempp@terminal42.ch>
  * @author     Fred Bliss <fred.bliss@intelligentspark.com>
  */
-abstract class Payment extends \Model
+abstract class Payment extends TypeAgent
 {
 
     /**
@@ -33,6 +33,18 @@ abstract class Payment extends \Model
      * @var string
      */
     protected static $strTable = 'tl_iso_payment_modules';
+
+    /**
+     * Interface to validate payment method
+     * @var string
+     */
+    protected static $strInterface = '\Isotope\Interfaces\IsotopePayment';
+
+    /**
+     * List of types (classes) for this model
+     * @var array
+     */
+    protected static $arrModelTypes = array();
 
     /**
      * Template
@@ -68,7 +80,7 @@ abstract class Payment extends \Model
         switch ($strKey)
         {
             case 'available':
-                throw new BadFunctionCallException('Your payment method does not work with Isotope 2.x');
+                throw new \BadFunctionCallException('Your payment method does not work with Isotope 2.x');
                 break;
 
             case 'surcharge':
@@ -387,66 +399,4 @@ abstract class Payment extends \Model
         return parent::addToUrl($strRequest, $blnIgnoreParams);
     }
 */
-
-
-    /**
-     * Return the name and description for this payment method
-     * @return array
-     */
-    public static function getClassLabel()
-    {
-        return $GLOBALS['TL_LANG']['PAY'][strtolower(str_replace('Isotope\Model\Payment\\', '', get_called_class()))];
-    }
-
-
-    /**
-     * Return a model or collection based on the database result type
-     */
-    protected static function find(array $arrOptions)
-    {
-        if (static::$strTable == '')
-        {
-            return null;
-        }
-
-        $arrOptions['table'] = static::$strTable;
-        $strQuery = \Model\QueryBuilder::find($arrOptions);
-
-        $objStatement = \Database::getInstance()->prepare($strQuery);
-
-        // Defaults for limit and offset
-        if (!isset($arrOptions['limit']))
-        {
-            $arrOptions['limit'] = 0;
-        }
-        if (!isset($arrOptions['offset']))
-        {
-            $arrOptions['offset'] = 0;
-        }
-
-        // Limit
-        if ($arrOptions['limit'] > 0 || $arrOptions['offset'] > 0)
-        {
-            $objStatement->limit($arrOptions['limit'], $arrOptions['offset']);
-        }
-
-        $objStatement = static::preFind($objStatement);
-        $objResult = $objStatement->execute($arrOptions['value']);
-
-        if ($objResult->numRows < 1)
-        {
-            return null;
-        }
-
-        $objResult = static::postFind($objResult);
-
-        if ($arrOptions['return'] == 'Model') {
-            $strClass = '\Isotope\Model\Payment\\' . $objResult->type;
-
-            return new $strClass($objResult);
-        } else {
-
-            return new \Isotope\Model\Collection\Payment($objResult, static::$strTable);
-        }
-    }
 }
