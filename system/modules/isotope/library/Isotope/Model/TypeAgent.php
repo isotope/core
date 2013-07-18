@@ -82,8 +82,8 @@ abstract class TypeAgent extends \Model
     {
         $arrOptions = array();
 
-        foreach (static::$arrModelTypes as $strName => $strClass) {
-            $arrOptions[$strName] = $GLOBALS['TL_LANG']['MODEL'][static::$strTable . '.' . $strName];
+        foreach (static::getModelTypes() as $strName => $strClass) {
+            $arrOptions[$strName] = $GLOBALS['TL_LANG']['MODEL'][static::$strTable . '.' . $strName][0] ?: $strName;
         }
 
         return $arrOptions;
@@ -93,7 +93,7 @@ abstract class TypeAgent extends \Model
      * Build model based on database result
      * @param   Database_Result
      */
-    public static function buildModelType(Database_Result $objResult)
+    public static function buildModelType(\Database_Result $objResult=null)
     {
         $strClass = static::$arrModelTypes[$objResult->type];
         $objModel = new $strClass($objResult);
@@ -116,7 +116,7 @@ abstract class TypeAgent extends \Model
         }
 
         // if find() method is called in a specific model type, results must be of that type
-        if (($strType = array_search(get_called_class(), static::$arrTypes)) !== false)
+        if (($strType = array_search(get_called_class(), static::getModelTypes())) !== false)
         {
             // Convert to array if necessary
             $arrOptions['value'] = (array) $arrOptions['value'];
