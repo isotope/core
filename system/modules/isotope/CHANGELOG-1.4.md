@@ -1,6 +1,12 @@
 Isotope eCommerce Changelog
 ===========================
 
+Version 1.4.5 (2013-??-??)
+--------------------------
+
+### Fixed
+
+
 Version 1.4.4 (2013-07-18)
 --------------------------
 
@@ -20,7 +26,6 @@ Version 1.4.3 (2013-07-17)
 - Advanced price calculation failed when no variants were found (#644)
 - Product list cache shows incorrect results when using member group restrictions (#654)
 - Warning in Authorize.NET payment method (#639)
-
 
 
 Version 1.4.2 (2013-07-09)
