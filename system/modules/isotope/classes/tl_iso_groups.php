@@ -231,8 +231,6 @@ class tl_iso_groups extends \Backend
 
             return '<a href="' . $this->addToUrl('gid=' . $row['id']) . '" title="' . specialchars($row['name'] . ' (ID ' . $row['id'] . ')') . '">' . $this->generateImage('system/modules/isotope/html/folder-network.png', '', $imageAttribute) . ' ' . $label . '</a>' . $strProductType;
         }
-
-        return '';
     }
 
 
