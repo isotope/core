@@ -789,7 +789,7 @@ class Isotope extends \Controller
     {
         $strFormat = isset($GLOBALS['objPage']) ? $GLOBALS['objPage']->dateFormat : $GLOBALS['TL_CONFIG']['dateFormat'];
 
-        return \System::parseDate($intTstamp, $strFormat);
+        return \System::parseDate($strFormat, $intTstamp);
     }
 
 
@@ -802,7 +802,7 @@ class Isotope extends \Controller
     {
         $strFormat = isset($GLOBALS['objPage']) ? $GLOBALS['objPage']->timeFormat : $GLOBALS['TL_CONFIG']['timeFormat'];
 
-        return \System::parseDate($intTstamp, $strFormat);
+        return \System::parseDate($strFormat, $intTstamp);
     }
 
 
@@ -815,7 +815,7 @@ class Isotope extends \Controller
     {
         $strFormat = isset($GLOBALS['objPage']) ? $GLOBALS['objPage']->datimFormat : $GLOBALS['TL_CONFIG']['datimFormat'];
 
-        return \System::parseDate($intTstamp, $strFormat);
+        return \System::parseDate($strFormat, $intTstamp);
     }
 
 
