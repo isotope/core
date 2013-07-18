@@ -149,7 +149,7 @@ class OrderDetails extends Module
     /**
      * Generate data array for a downloadable file
      * @param   string
-     * @param   Database_Result
+     * @param   \Database\Result
      * @param   bool
      * @return array
      */

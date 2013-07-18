@@ -843,7 +843,7 @@ window.addEvent('domready', function()
 
     /**
      * Shortcut for a single product by ID or from database result
-     * @param Database_Result|int
+     * @param \Database\Result|int
      * @param integer
      * @param boolean
      * @return IsotopeProduct|null
@@ -862,7 +862,7 @@ window.addEvent('domready', function()
                                        ->execute($objProductData);
         }
 
-        if (!($objProductData instanceof \Database_Result) || !$objProductData->numRows)
+        if (!($objProductData instanceof \Database\Result) || !$objProductData->numRows)
         {
             return null;
         }
@@ -920,7 +920,7 @@ window.addEvent('domready', function()
 
     /**
      * Generate products from database result or array of IDs
-     * @param Database_Result|array
+     * @param \Database\Result|array
      * @param integer
      * @param boolean
      * @param array
@@ -941,7 +941,7 @@ window.addEvent('domready', function()
                                                     GROUP BY p1.id ORDER BY p1.id=" . implode(' DESC, p1.id=', $objProductData) . " DESC");
         }
 
-        if (!($objProductData instanceof \Database_Result) || !$objProductData->numRows)
+        if (!($objProductData instanceof \Database\Result) || !$objProductData->numRows)
         {
             return array();
         }
@@ -1334,7 +1334,7 @@ window.addEvent('domready', function()
 
     /**
      * Gets the product reader of a certain page
-     * @param Database_Result|int    page object or page ID
+     * @param \Database\Result|int    page object or page ID
      * @param int    override setting from a module or content element
      * @return int reader page id
      */
@@ -1523,7 +1523,7 @@ window.addEvent('domready', function()
 
     /**
      * Store the current article ID so we know it for the product list
-     * @param Database_Result
+     * @param \Database\Result
      */
     public function storeCurrentArticle($objRow)
     {
@@ -1681,7 +1681,7 @@ window.addEvent('domready', function()
 
     /**
      * Load system configuration into page object
-     * @param Database_Result
+     * @param \Database\Result
      */
     public static function loadPageConfig($objPage)
     {
