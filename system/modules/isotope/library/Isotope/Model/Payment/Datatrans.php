@@ -125,8 +125,6 @@ class Datatrans extends Payment implements IsotopePayment
      */
     public function checkoutForm()
     {
-        $objOrder = new Order();
-
         if (($objOrder = Order::findOneBy('source_collection_id', Isotope::getCart()->id)) === null)
         {
             \Isotope\Module\Checkout::redirectToStep('failed');

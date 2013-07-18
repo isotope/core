@@ -271,8 +271,6 @@ class ModuleIsotopeTranslation extends \BackendModule
 
     private function parseFile($strFile)
     {
-        $return = array();
-
         if (!is_file($strFile))
         {
             return array();

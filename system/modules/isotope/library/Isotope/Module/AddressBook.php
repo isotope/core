@@ -178,7 +178,6 @@ class AddressBook extends Module
         $this->Template->fields = '';
         $this->Template->tableless = $this->tableless;
 
-        $arrSet = array();
         $arrFields = array();
         $doNotSubmit = false;
         $hasUpload = false;

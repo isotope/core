@@ -257,7 +257,7 @@ class tl_module extends \Backend
     {
         $arrClasses = array();
 
-        foreach ($GLOBALS['FE_MOD'] as $strGroup => $arrModules)
+        foreach ($GLOBALS['FE_MOD'] as $arrModules)
         {
             foreach ($arrModules as $strName => $strClass)
             {

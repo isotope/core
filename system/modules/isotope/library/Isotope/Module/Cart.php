@@ -100,6 +100,7 @@ class Cart extends Module
 
         $blnReload = false;
         $arrQuantity = \Input::post('quantity');
+        // @todo: this variable is not being used?
         $blnInsufficientSubtotal = (Isotope::getConfig()->cartMinSubtotal > 0 && Isotope::getConfig()->cartMinSubtotal > Isotope::getCart()->getSubtotal()) ? true : false;
         $arrItems = $objTemplate->items;
 

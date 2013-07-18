@@ -320,7 +320,6 @@ class ProductTree extends \Widget
 
         $return = '';
         $intSpacing = 20;
-        $products = array();
 
         // Check whether there are child groups
         $childs = $this->Database->prepare("SELECT id FROM tl_iso_groups WHERE pid=? ORDER BY sorting")
@@ -339,20 +338,16 @@ class ProductTree extends \Widget
 
         $return .= "\n    " . '<li class="tl_folder" onmouseover="Theme.hoverDiv(this, 1);" onmouseout="Theme.hoverDiv(this, 0);"><div class="tl_left" style="padding-left:'.($intMargin + $intSpacing).'px;">';
 
-        $folderAttribute = 'style="margin-left:20px;"';
         $session[$node][$id] = is_numeric($session[$node][$id]) ? $session[$node][$id] : 0;
         $level = ($intMargin / $intSpacing + 1);
         $blnIsOpen = ($session[$node][$id] == 1 || in_array($id, $this->arrNodes['groups']));
 
         if (!empty($childs) || !empty($products))
         {
-            $folderAttribute = '';
             $img = $blnIsOpen ? 'folMinus.gif' : 'folPlus.gif';
             $alt = $blnIsOpen ? $GLOBALS['TL_LANG']['MSC']['collapseNode'] : $GLOBALS['TL_LANG']['MSC']['expandNode'];
             $return .= '<a href="'.$this->addToUrl($flag.'tg='.$id).'" title="'.specialchars($alt).'" onclick="Backend.getScrollOffset(); return Isotope.toggleProductTree(this, \''.$xtnode.'_'.$id.'\', \''.$this->strField.'\', \''.$this->strName.'\', '.$level.');">'.$this->generateImage($img, '', 'style="margin-right:2px;"').'</a>';
         }
-
-        $sub = 0;
 
         // Add group name
         $return .= $this->tl_iso_groups->addIcon($objGroup->row(), $objGroup->name).'</div><div style="clear:both;"></div></li>';
@@ -440,20 +435,16 @@ class ProductTree extends \Widget
 
         $return .= "\n    " . '<li class="tl_file" onmouseover="Theme.hoverDiv(this, 1);" onmouseout="Theme.hoverDiv(this, 0);"><div class="tl_left" style="padding-left:'.($intMargin + $intSpacing).'px;">';
 
-        $folderAttribute = 'style="margin-left:20px;"';
         $session[$node][$id] = is_numeric($session[$node][$id]) ? $session[$node][$id] : 0;
         $level = ($intMargin / $intSpacing + 1);
         $blnIsOpen = ($session[$node][$id] == 1 || in_array($id, $this->arrNodes['products']));
 
         if (!empty($childs))
         {
-            $folderAttribute = '';
             $img = $blnIsOpen ? 'folMinus.gif' : 'folPlus.gif';
             $alt = $blnIsOpen ? $GLOBALS['TL_LANG']['MSC']['collapseNode'] : $GLOBALS['TL_LANG']['MSC']['expandNode'];
             $return .= '<a href="'.$this->addToUrl($flag.'tg='.$id).'" title="'.specialchars($alt).'" onclick="Backend.getScrollOffset(); return Isotope.toggleProductTree(this, \''.$xtnode.'_'.$id.'\', \''.$this->strField.'\', \''.$this->strName.'\', '.$level.');">'.$this->generateImage($img, '', 'style="margin-right:2px;"').'</a>';
         }
-
-        $sub = 0;
 
         // Add product name
         $return .= $this->ProductCallbacks->getRowLabel($objProduct->row()).'</div> <div class="tl_right">';

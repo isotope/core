@@ -368,9 +368,6 @@ $return .= '</div></div>';
         }
 
         $strLineItems = '';
-        $arrBilling = array();
-        $arrShipping = array();
-        $arrProducts = array();
         $arrPaymentInfo = array();
 
         //grab any existing payment data.  If this is an order where a prior auth was made and a new total greater than the original exists,
@@ -395,11 +392,11 @@ $return .= '</div></div>';
         {
             foreach($arrProducts as $objProduct)
             {
-                $arrItemData = array();
                 $arrItemData = array($objProduct->id, $objProduct->name, substr($objProduct->description,0,100), $objProduct->quantity_requested, $objProduct->price, ($objProduct->tax_class ? 'Y' : 'N'));
                 $arrLineItems[] = implode('<|>',$arrItemData);
             }
 
+            // @todo: what is this variable used for?
             $strLineItems .= implode('&',$arrLineItems);
         }
 

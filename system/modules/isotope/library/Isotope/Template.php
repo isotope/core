@@ -47,7 +47,6 @@ class Template extends \FrontendTemplate
         // Check the templates subfolder
         if (TL_MODE == 'FE')
         {
-            global $objPage;
             $strTemplateGroup = str_replace(array('../', 'templates/'), '', Isotope::getInstance()->getConfig()->templateGroup);
 
             if ($strTemplateGroup != '')

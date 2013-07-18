@@ -984,7 +984,7 @@ window.addEvent('domready', function()
 
                 $arrParam[] = &$arrData[$strField];
 
-                foreach( $arrConfig as $k => $v )
+                foreach( $arrConfig as $v )
                 {
                     $arrParam[] = $v;
                 }

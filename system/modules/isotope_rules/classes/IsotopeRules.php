@@ -726,7 +726,6 @@ class IsotopeRules extends \Controller
             // If fixed price discount with splitted taxes, calculate total amount of discount per taxed product
             if ($arrRule['tax_class'] == -1 && !$blnPercentage)
             {
-                $fltPrice = 0;
                 foreach( $arrSubtract as $objProduct )
                 {
                     $arrSurcharge['products'][$objProduct->collection_id] = $arrRule['discount'] / 100 * (100 / $fltTotal * $objProduct->tax_free_total_price);

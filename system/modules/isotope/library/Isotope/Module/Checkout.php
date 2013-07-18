@@ -479,7 +479,7 @@ class Checkout extends Module
         $arrItems = array();
         $blnPassed = true;
 
-        foreach (array_keys($this->getSteps()) as $i => $step) {
+        foreach (array_keys($this->getSteps()) as $step) {
 
             $blnActive = false;
             $href = '';

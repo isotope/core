@@ -83,6 +83,7 @@ class TaxClass extends \Model
      */
     public function calculateNetPrice($fltPrice, $arrAddresses=null)
     {
+        // @todo: what is this variable used for?
         if (!is_array($arrAddresses))
         {
             $arrAddresses = array('billing'=>Isotope::getCart()->getBillingAddress(), 'shipping'=>Isotope::getCart()->getShippingAddress());

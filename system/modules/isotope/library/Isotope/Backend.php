@@ -142,7 +142,7 @@ class Backend extends Contao_Backend
             }
 
             $value = $xml->createTextNode($v);
-            $value = $field->appendChild($value);
+            $field->appendChild($value);
         }
 
         $objContent = $this->Database->execute("SELECT * FROM tl_iso_mail_content WHERE pid=".$objMail->id);
@@ -164,7 +164,7 @@ class Backend extends Contao_Backend
                 }
 
                 $value = $xml->createTextNode($v);
-                $value = $field->appendChild($value);
+                $field->appendChild($value);
             }
         }
 
@@ -293,7 +293,6 @@ class Backend extends Contao_Backend
                 continue;
             }
 
-            $arrMapper = array();
             $template = $xml->getElementsByTagName('field');
             $content = $xml->getElementsByTagName('content');
 
@@ -722,7 +721,7 @@ class Backend extends Contao_Backend
 		}
 
 		// Generate breadcrumb trail
-		foreach ($arrGroups as $i=>$arrGroup)
+		foreach ($arrGroups as $arrGroup)
 		{
 			if (!$arrGroup['id'])
 			{

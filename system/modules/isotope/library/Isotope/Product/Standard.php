@@ -707,8 +707,6 @@ class Standard extends \Controller implements IsotopeProduct
      */
     public function generate($strTemplate, &$objModule)
     {
-        global $objPage;
-
         $this->formSubmit = (($objModule instanceof \ContentElement) ? 'cte' : 'fmd') . $objModule->id . '_product_' . ($this->pid ? $this->pid : $this->id);
         $this->validateVariant();
 

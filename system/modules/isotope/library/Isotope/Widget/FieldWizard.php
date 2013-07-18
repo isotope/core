@@ -180,7 +180,6 @@ class FieldWizard extends \Widget
         if ($this->varValue)
         {
             $arrOptions = array();
-            $arrTemp = $this->arrOptions;
 
             // Move selected and sorted options to the top
             foreach ($this->varValue as $i=>$arrOption)

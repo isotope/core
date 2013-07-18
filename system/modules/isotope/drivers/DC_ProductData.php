@@ -694,7 +694,7 @@ class DC_ProductData extends \DC_Table
                 }
 
                 // Build rows of the current box
-                foreach ($v as $kk=>$vv)
+                foreach ($v as $vv)
                 {
                     if ($vv == '[EOF]')
                     {
@@ -1676,6 +1676,7 @@ window.addEvent(\'domready\', function() {
 		$arrClipboard = $this->Session->get('CLIPBOARD');
 
 		// Check the clipboard
+        // @todo: $arrClipboard is never used?
 		if (!empty($arrClipboard[$this->strTable]))
 		{
 			$blnClipboard = true;
@@ -1740,8 +1741,6 @@ window.addEvent(\'domready\', function() {
 			}
 
 			// Process result and add label and buttons
-			$remoteCur = false;
-			$groupclass = 'tl_folder_tlist';
 			$eoCount = -1;
 
 			foreach ($result as $row)
@@ -1837,7 +1836,6 @@ window.addEvent(\'domready\', function() {
 					$current = $row[$firstOrderBy];
 					$orderBy = $GLOBALS['TL_DCA'][$this->strTable]['list']['sorting']['fields'];
 					$sortingMode = (count($orderBy) == 1 && $firstOrderBy == $orderBy[0] && $GLOBALS['TL_DCA'][$this->strTable]['list']['sorting']['flag'] != '' && $GLOBALS['TL_DCA'][$this->strTable]['fields'][$firstOrderBy]['flag'] == '') ? $GLOBALS['TL_DCA'][$this->strTable]['list']['sorting']['flag'] : $GLOBALS['TL_DCA'][$this->strTable]['fields'][$firstOrderBy]['flag'];
-					$remoteNew = $this->formatCurrentValue($firstOrderBy, $current, $sortingMode);
 				}
 
 				$return .= '
@@ -1938,6 +1936,7 @@ window.addEvent(\'domready\', function() {
 	{
 		$blnClipboard = false;
 		$arrClipboard = $this->Session->get('CLIPBOARD');
+        // @todo: $blnHasSorting is never being used?
 		$blnHasSorting = $GLOBALS['TL_DCA'][$this->strTable]['list']['sorting']['fields'][0] == 'sorting';
 		$blnMultiboard = false;
 
@@ -2003,6 +2002,7 @@ window.addEvent(\'domready\', function() {
 		{
 			// Header
 			$imagePasteAfter = \Image::getHtml('pasteafter.gif', $GLOBALS['TL_LANG'][$this->strTable]['pasteafter'][0]);
+            // @todo: the following 2 variables are never being used?
 			$imageEditHeader = \Image::getHtml('edit.gif', $GLOBALS['TL_LANG'][$this->strTable]['editheader'][0]);
 			$strEditHeader = $GLOBALS['TL_LANG'][$this->strTable]['edit'][0];
 

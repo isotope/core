@@ -93,8 +93,6 @@ class OrderDetails extends Module
         $arrItems = $objTemplate->items;
 
         foreach ($arrItems as $k => $arrItem) {
-
-            $objProduct = $arrItem['product'];
             $arrDownloads = $arrItem['hasProduct'] ? $this->getDownloadsForProduct($arrItem['product'], $objOrder->paid) : array();
 
             $arrItems[$k]['downloads'] = $arrDownload;
@@ -159,8 +157,6 @@ class OrderDetails extends Module
         $strFileName = basename($strFile);
 
         if (TL_MODE == 'FE') {
-            global $objPage;
-
             $strUrl = \Isotope\Frontend::addQueryStringToUrl('download=' . $objDownload->id . ($objDownload->type == 'folder' ? '&amp;file='.$strFileName : ''));
         }
 

@@ -1007,6 +1007,7 @@ abstract class ProductCollection extends \Model
         $arrOldItems = $objSource->getItems();
 
         foreach ($arrOldItems as $objOldItem) {
+            // @todo: what is this variable used for?
             $objNewItems = \Database::getInstance()->prepare("SELECT * FROM tl_iso_product_collection_item WHERE pid={$this->id} AND product_id={$objOldItem->product_id} AND options=?")->execute($objOldItem->options);
 
             // !HOOK: additional functionality when copying product to collection

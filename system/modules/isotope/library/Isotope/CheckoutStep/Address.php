@@ -272,6 +272,7 @@ abstract class Address extends CheckoutStep
         $arrOptions = array();
 
         if (FE_USER_LOGGED_IN === true) {
+            // @todo: this var is not being used, there must be something wrong here
             $arrAddresses = $this->getAddresses();
             $arrCountries = $this->getAddressCountries();
 

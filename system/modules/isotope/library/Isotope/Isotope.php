@@ -831,7 +831,7 @@ class Isotope extends \Controller
         if (is_array($arrParent) && !empty($arrParent))
         {
             // Create an array of images where key = image name
-            foreach( $arrParent as $i => $image)
+            foreach( $arrParent as $image)
             {
                 if ($image['translate'] != 'all')
                 {
