@@ -129,7 +129,7 @@ class Cart extends ProductCollection implements IsotopeProductCollection
         {
             $objCart = new static();
 
-            $objCart->member    = (FE_USER_LOGGED_IN === true ? $this->User->id : 0);
+            $objCart->member    = (FE_USER_LOGGED_IN === true ? \FrontendUser::getInstance()->id : 0);
             $objCart->uniqid    = (FE_USER_LOGGED_IN === true ? '' : $strHash);
             $objCart->store_id  = $intStore;
         }
