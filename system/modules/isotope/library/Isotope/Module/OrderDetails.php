@@ -95,7 +95,7 @@ class OrderDetails extends Module
         foreach ($arrItems as $k => $arrItem) {
             $arrDownloads = $arrItem['hasProduct'] ? $this->getDownloadsForProduct($arrItem['product'], $objOrder->paid) : array();
 
-            $arrItems[$k]['downloads'] = $arrDownload;
+            $arrItems[$k]['downloads'] = $arrDownloads;
 
             $arrAllDownloads = array_merge($arrAllDownloads, $arrDownloads);
         }
