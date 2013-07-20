@@ -760,60 +760,6 @@ window.addEvent('domready', function() {
 
 
     /**
-     * Return the filter button, allow for multiple filters
-     * @param string
-     * @param string
-     * @param string
-     * @param string
-     * @param string
-     * @param string
-     * @param array
-     * @return string
-     */
-    public function filterButton($href, $label, $title, $class, $attributes, $table, $root)
-    {
-        static $arrFilters = false;
-
-        if ($arrFilters === false)
-        {
-            $arrFilters = (array) \Input::get('filter');
-        }
-
-        $filter = str_replace('filter[]=', '', $href);
-
-        if (in_array($filter, $arrFilters))
-        {
-            $href = ampersand(str_replace('&'.$href, '', \Environment::get('request')));
-        }
-        else
-        {
-            $href = ampersand(\Environment::get('request') . '&') . $href;
-        }
-
-        return ' &#160; :: &#160; <a href="'.$href.'" class="'.$class.'" title="'.specialchars($title).'"'.$attributes.'>'.$label.'</a> ';
-    }
-
-
-    /**
-     * Return the "remove filter" button (unset url parameters)
-     * @param string
-     * @param string
-     * @param string
-     * @param string
-     * @param string
-     * @param string
-     * @param array
-     * @return string
-     */
-    public function filterRemoveButton($href, $label, $title, $class, $attributes, $table, $root)
-    {
-        $href = preg_replace('/&?filter\[\]=[^&]*/', '', \Environment::get('request'));
-
-        return ' &#160; :: &#160; <a href="'.$href.'" class="header_iso_filter_remove" title="'.specialchars($title).'"'.$attributes.'>'.$label.'</a> ';
-    }
-
-
-    /**
      * Hide "product groups" button for non-admins
      * @param string
      * @param string
