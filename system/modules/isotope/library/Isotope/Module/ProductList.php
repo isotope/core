@@ -121,13 +121,15 @@ class ProductList extends Module
         {
             $time = time();
             $pageId = ($this->iso_category_scope == 'article' ? $GLOBALS['ISO_CONFIG']['current_article']['pid'] : $objPage->id);
+            $groups = '';
 
             // Find groups of current user, the cache is groups-specific
-            $groups = '';
-            if (FE_USER_LOGGED_IN === true) {
+            if (FE_USER_LOGGED_IN === true)
+            {
                 $arrGroups = FrontendUser::getInstance()->groups;
-                if (!empty($arrGroups) && is_array($arrGroups)) {
 
+                if (!empty($arrGroups) && is_array($arrGroups))
+                {
                     // Make sure groups array always looks the same to find it in the database
                     $arrGroups = array_unique($arrGroups);
                     sort($arrGroups, SORT_NUMERIC);
