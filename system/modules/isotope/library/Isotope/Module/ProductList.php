@@ -227,7 +227,7 @@ class ProductList extends Module
                     $this->Database->prepare("DELETE FROM tl_iso_productcache WHERE (page_id=? AND module_id=? AND requestcache_id=? AND groups=? AND keywords=?) OR (expires>0 AND expires<$time)")
                                    ->executeUncached($pageId, $this->id, (int) \Input::get('isorc'), $groups, (string) \Input::get('keywords'));
 
-                    $this->Database->prepare("INSERT INTO tl_iso_productcache (page_id,module_id,requestcache_id,groups,keywords,products,expires) VALUES (?,?,?,?,?,?)")
+                    $this->Database->prepare("INSERT INTO tl_iso_productcache (page_id,module_id,requestcache_id,groups,keywords,products,expires) VALUES (?,?,?,?,?,?,?)")
                                    ->executeUncached($pageId, $this->id, (int) \Input::get('isorc'), $groups, (string) \Input::get('keywords'), implode(',', $arrIds), $this->getProductCacheExpiration());
 
                     $this->Database->unlockTables();
