@@ -579,6 +579,44 @@ window.addEvent('domready', function() {
     }
 
 
+    /**
+     * Change the displayed columns in the variants view
+     */
+    public function changeVariantColumns()
+    {
+	    if (!\Input::get('id'))
+	    {
+	    	return;
+	    }
+
+		$arrColumns = array();
+
+		// Collect only variant-specific fields
+		foreach ($GLOBALS['TL_DCA']['tl_iso_products']['fields'] as $strName=>$arrField)
+		{
+			if ($arrField['eval']['variant_option'])
+			{
+				$arrColumns[] = $strName;
+			}
+		}
+
+		if (!empty($arrColumns))
+		{
+			$arrDefault = array('images', 'name');
+
+			// Limit the number of columns if there are more than 3
+			if (count($arrColumns) > 3)
+			{
+				$GLOBALS['TL_DCA']['tl_iso_products']['list']['label']['fields'] = $arrDefault;
+				$GLOBALS['TL_DCA']['tl_iso_products']['list']['label']['variantFields'] = $arrColumns;
+				return;
+			}
+
+			$GLOBALS['TL_DCA']['tl_iso_products']['list']['label']['fields'] = array_merge($arrDefault, $arrColumns);
+		}
+    }
+
+
 
     ///////////////////////
     //  !oncopy_callback
@@ -747,6 +785,19 @@ window.addEvent('domready', function() {
         if (!$row['pid'])
         {
         	$args[1] = sprintf('<a href="%s" title="%s">%s</a>', ampersand(\Environment::get('request')) . '&amp;id=' . $row['id'], specialchars($GLOBALS['TL_LANG']['tl_iso_products']['showVariants']), $row['name']);
+        }
+
+        // Limit the number of columns
+        if ($row['pid'] && isset($GLOBALS['TL_DCA']['tl_iso_products']['list']['label']['variantFields']))
+        {
+			$attributes = array();
+
+        	foreach ($GLOBALS['TL_DCA']['tl_iso_products']['list']['label']['variantFields'] as $field)
+        	{
+        		$attributes[] = '<strong>' . $GLOBALS['TL_DCA']['tl_iso_products']['fields'][$field]['label'][0] . ':</strong>&nbsp;' . $GLOBALS['TL_DCA']['tl_iso_products']['fields'][$field]['options'][$row[$field]];
+        	}
+
+        	$args[1] .= '<br>' . implode(', ', $attributes);
         }
 
         return $args;

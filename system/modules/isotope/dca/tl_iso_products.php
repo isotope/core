@@ -39,6 +39,7 @@ $GLOBALS['TL_DCA']['tl_iso_products'] = array
             array('Isotope\ProductCallbacks', 'buildPaletteString'),
             array('Isotope\ProductCallbacks', 'loadDefaultProductType'),
             array('Isotope\ProductCallbacks', 'addMoveAllFeature'),
+            array('Isotope\ProductCallbacks', 'changeVariantColumns'),
         ),
         'oncopy_callback' => array
         (
