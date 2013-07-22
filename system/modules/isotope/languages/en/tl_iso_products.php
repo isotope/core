@@ -26,6 +26,7 @@ $GLOBALS['TL_LANG']['tl_iso_products']['sku']                    = array('SKU', 
 $GLOBALS['TL_LANG']['tl_iso_products']['shipping_weight']        = array('Shipping weight', 'Please enter the shipping weight for this product. This can be used to calculate shipping cost.');
 $GLOBALS['TL_LANG']['tl_iso_products']['teaser']                = array('Teaser', 'Please enter the teaser.');
 $GLOBALS['TL_LANG']['tl_iso_products']['description']            = array('Description', 'Please enter the product description.');
+$GLOBALS['TL_LANG']['tl_iso_products']['pagetitle_meta']          = array('Page title', 'Page title will be placed in the header on product detail page, for search engine optimization.');
 $GLOBALS['TL_LANG']['tl_iso_products']['description_meta']        = array('Meta description', 'Meta description will be placed in the header on product detail page, for search engine optimization.');
 $GLOBALS['TL_LANG']['tl_iso_products']['keywords_meta']            = array('Meta keywords', 'Meta keywords will be placed in the header on product detail page, for search engine optimization.');
 $GLOBALS['TL_LANG']['tl_iso_products']['price']                    = array('Price', 'Please enter the price(s) for this product.');

@@ -94,7 +94,7 @@ class ProductReader extends Module
         $this->Template->referer = 'javascript:history.go(-1)';
         $this->Template->back = $GLOBALS['TL_LANG']['MSC']['goBack'];
 
-        $objPage->pageTitle = strip_insert_tags($objProduct->name);
+        $objPage->pageTitle = strlen($objProduct->pagetitle_meta) ? strip_insert_tags($objProduct->pagetitle_meta) : strip_insert_tags($objProduct->name);
         $objPage->description = $this->prepareMetaDescription($objProduct->description_meta);
 
         $GLOBALS['TL_KEYWORDS'] .= (strlen($GLOBALS['TL_KEYWORDS']) ? ', ' : '') . $objProduct->keywords_meta;

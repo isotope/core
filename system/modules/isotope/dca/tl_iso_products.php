@@ -305,6 +305,15 @@ $GLOBALS['TL_DCA']['tl_iso_products'] = array
             'eval'                  => array('mandatory'=>true, 'rte'=>'tinyMCE', 'tl_class'=>'clr'),
             'attributes'            => array('legend'=>'general_legend', 'multilingual'=>true, 'fe_search'=>true),
         ),
+        'pagetitle_meta' => array
+        (
+            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_products']['pagetitle_meta'],
+            'exclude'               => true,
+            'search'                => true,
+            'inputType'             => 'text',
+            'eval'                  => array('mandatory'=>true, 'tl_class'=>'clr long'),
+            'attributes'            => array('legend'=>'meta_legend', 'multilingual'=>true),
+        ),
         'description_meta' => array
         (
             'label'                 => &$GLOBALS['TL_LANG']['tl_iso_products']['description_meta'],

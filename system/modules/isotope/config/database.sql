@@ -27,6 +27,7 @@ CREATE TABLE `tl_iso_products` (
   `images` blob NULL,
   `teaser` text NULL,
   `description` text NULL,
+  `pagetitle_meta` text NULL,
   `keywords_meta` text NULL,
   `description_meta` text NULL,
   `price` decimal(12,2) NOT NULL default '0.00',
