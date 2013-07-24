@@ -179,7 +179,7 @@ abstract class TypeAgent extends \Model
             return static::buildModelType($objResult);
         } else {
 
-            return new \Isotope\Model\Collection\TypeAgent($objResult, get_class());
+            return new \Isotope\Model\Collection\TypeAgent($objResult, get_called_class());
         }
     }
 }
