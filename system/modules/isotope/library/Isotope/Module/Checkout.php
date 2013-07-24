@@ -213,7 +213,7 @@ class Checkout extends Module
 
         if ($this->strCurrentStep == 'process') {
             $this->writeOrder();
-            $strBuffer = Isotope::getCart()->hasPayment() ? Isotope::getCart()->Payment->checkoutForm($this) : false;
+            $strBuffer = Isotope::getCart()->hasPayment() ? Isotope::getCart()->getPaymentMethod()->checkoutForm($this) : false;
 
             if ($strBuffer === false) {
                 static::redirectToStep('complete');
