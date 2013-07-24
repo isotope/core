@@ -38,6 +38,19 @@ abstract class TypeAgent extends \Model
     protected static $strInterface;
 
 
+    public function __construct(\Database\Result $objResult=null)
+    {
+        parent::__construct($objResult);
+
+        // Register model type
+        $this->arrData['type'] = array_search(get_called_class(), static::$arrModelTypes);
+
+        if ($this->arrData['type'] == '') {
+            throw new \RuntimeException(get_called_class() . ' is not a registered model type');
+        }
+    }
+
+
     /**
      * Register a model type
      * @param   string
