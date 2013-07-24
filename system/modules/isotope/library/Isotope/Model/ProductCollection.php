@@ -31,7 +31,7 @@ use Isotope\Model\Shipping;
  * @author     Fred Bliss <fred.bliss@intelligentspark.com>
  * @author     Yanick Witschi <yanick.witschi@terminal42.ch>
  */
-abstract class ProductCollection extends \Model
+abstract class ProductCollection extends TypeAgent
 {
 
     /**
@@ -39,6 +39,18 @@ abstract class ProductCollection extends \Model
      * @var string
      */
     protected static $strTable = 'tl_iso_product_collection';
+
+    /**
+     * Interface to validate product collection
+     * @var string
+     */
+    protected static $strInterface = '\Isotope\Interfaces\IsotopeProductCollection';
+
+    /**
+     * List of types (classes) for this model
+     * @var array
+     */
+    protected static $arrModelTypes = array();
 
     /**
      * Define if data should be threaded as "locked", eg. not apply discount rules to product prices
@@ -93,8 +105,6 @@ abstract class ProductCollection extends \Model
         if ($objResult !== null) {
             $this->arrSettings = deserialize($this->arrData['settings'], true);
         }
-
-        $this->arrData['type'] = substr(get_called_class(), strrpos(get_called_class(), '\\')+1);
 
         // Do not use __destruct, because Database object might be destructed first (see http://github.com/contao/core/issues/2236)
         register_shutdown_function(array($this, 'saveDatabase'));
@@ -1076,24 +1086,5 @@ abstract class ProductCollection extends \Model
         }
 
         return Isotope::calculateWeight($arrWeights, $unit);
-    }
-
-
-    /**
-     * Make sure we only return results of the given model type
-     */
-    protected static function find(array $arrOptions)
-    {
-        // Convert to array if necessary
-        $arrOptions['value'] = (array) $arrOptions['value'];
-        if (!is_array($arrOptions['column']))
-        {
-            $arrOptions['column'] = array($arrOptions['column'].'=?');
-        }
-
-        $arrOptions['column'][] = 'type=?';
-        $arrOptions['value'][] = substr(get_called_class(), strrpos(get_called_class(), '\\')+1);
-
-        return parent::find($arrOptions);
     }
 }

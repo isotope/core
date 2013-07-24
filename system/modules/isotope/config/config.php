@@ -192,6 +192,36 @@ $GLOBALS['BE_FFL']['fieldWizard']            = 'Isotope\Widget\FieldWizard';
 $GLOBALS['BE_FFL']['productTree']            = 'Isotope\Widget\ProductTree';
 $GLOBALS['BE_FFL']['productGroupSelector']   = 'Isotope\Widget\ProductGroupSelector';
 
+/**
+ * Payment methods
+ */
+\Isotope\Model\Payment::registerModelType('cash', 'Isotope\Model\Payment\Cash');
+\Isotope\Model\Payment::registerModelType('datatrans', 'Isotope\Model\Payment\Datatrans');
+\Isotope\Model\Payment::registerModelType('expercash', 'Isotope\Model\Payment\Expercash');
+\Isotope\Model\Payment::registerModelType('payone', 'Isotope\Model\Payment\Payone');
+\Isotope\Model\Payment::registerModelType('paypal', 'Isotope\Model\Payment\Paypal');
+\Isotope\Model\Payment::registerModelType('postfinance', 'Isotope\Model\Payment\Postfinance');
+\Isotope\Model\Payment::registerModelType('sparkasse', 'Isotope\Model\Payment\Sparkasse');
+\Isotope\Model\Payment::registerModelType('authorizedotnet', 'Isotope\Model\Payment\AuthorizeDotNet');
+
+/**
+ * Shipping methods
+ */
+\Isotope\Model\Shipping::registerModelType('flat', 'Isotope\Model\Shipping\Flat');
+
+/**
+ * Product collections
+ */
+\Isotope\Model\ProductCollection::registerModelType('cart', 'Isotope\Model\ProductCollection\Cart');
+\Isotope\Model\ProductCollection::registerModelType('order', 'Isotope\Model\ProductCollection\Order');
+
+/**
+ * Product collection surcharge
+ */
+\Isotope\Model\ProductCollectionSurcharge::registerModelType('payment', 'Isotope\Model\ProductCollectionSurcharge\Payment');
+\Isotope\Model\ProductCollectionSurcharge::registerModelType('shipping', 'Isotope\Model\ProductCollectionSurcharge\Shipping');
+\Isotope\Model\ProductCollectionSurcharge::registerModelType('tax', 'Isotope\Model\ProductCollectionSurcharge\Tax');
+
 
 /**
  * Models

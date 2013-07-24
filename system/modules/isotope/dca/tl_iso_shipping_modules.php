@@ -31,7 +31,6 @@ $GLOBALS['TL_DCA']['tl_iso_shipping_modules'] = array
     'config' => array
     (
         'dataContainer'             => 'Table',
-        'ctable'                    => array('tl_iso_shipping_options'),
         'switchToEdit'              => true,
         'enableVersioning'          => true,
         'closed'                    => true,
@@ -125,7 +124,7 @@ $GLOBALS['TL_DCA']['tl_iso_shipping_modules'] = array
     (
         '__selector__'              => array('type', 'protected'),
         'default'                   => '{title_legend},name,label,type',
-        'Flat'                      => '{title_legend},name,label,type;{note_legend:hide},note;{price_legend},price,tax_class,flatCalculation;{config_legend},countries,subdivisions,postalCodes,minimum_total,maximum_total,product_types;{expert_legend:hide},guests,protected;{enabled_legend},enabled',
+        'flat'                      => '{title_legend},name,label,type;{note_legend:hide},note;{price_legend},price,tax_class,flatCalculation;{config_legend},countries,subdivisions,postalCodes,minimum_total,maximum_total,product_types;{expert_legend:hide},guests,protected;{enabled_legend},enabled',
     ),
 
     // Subpalettes
@@ -159,8 +158,7 @@ $GLOBALS['TL_DCA']['tl_iso_shipping_modules'] = array
             'filter'                => true,
             'inputType'             => 'select',
             'default'               => 'Flat',
-            'options'               => array_keys(\Isotope\Model\Collection\Shipping::getClasses()),
-            'reference'             => \Isotope\Model\Collection\Shipping::getClassLabels(),
+            'options'               => \Isotope\Model\Shipping::getModelTypeOptions(),
             'eval'                  => array('helpwizard'=>true, 'submitOnChange'=>true, 'chosen'=>true, 'tl_class'=>'w50')
         ),
         'note' => array
