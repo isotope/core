@@ -195,7 +195,6 @@ $GLOBALS['BE_FFL']['productGroupSelector']   = 'Isotope\Widget\ProductGroupSelec
 /**
  * Payment methods
  */
-\Isotope\Model\Payment::registerModelType('authorizedotnet', 'Isotope\Model\Payment\AuthorizeDotNet');
 \Isotope\Model\Payment::registerModelType('cash', 'Isotope\Model\Payment\Cash');
 \Isotope\Model\Payment::registerModelType('datatrans', 'Isotope\Model\Payment\Datatrans');
 \Isotope\Model\Payment::registerModelType('expercash', 'Isotope\Model\Payment\Expercash');
@@ -203,6 +202,7 @@ $GLOBALS['BE_FFL']['productGroupSelector']   = 'Isotope\Widget\ProductGroupSelec
 \Isotope\Model\Payment::registerModelType('paypal', 'Isotope\Model\Payment\Paypal');
 \Isotope\Model\Payment::registerModelType('postfinance', 'Isotope\Model\Payment\Postfinance');
 \Isotope\Model\Payment::registerModelType('sparkasse', 'Isotope\Model\Payment\Sparkasse');
+\Isotope\Model\Payment::registerModelType('authorizedotnet', 'Isotope\Model\Payment\AuthorizeDotNet');
 
 /**
  * Shipping methods
