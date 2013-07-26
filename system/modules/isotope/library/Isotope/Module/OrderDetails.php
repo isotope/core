@@ -87,7 +87,7 @@ class OrderDetails extends Module
         $objTemplate = new \Isotope\Template($this->iso_collectionTpl);
         $objTemplate->linkProducts = true;
 
-        \Isotope\Frontend::addCollectionToTemplate($objTemplate, $objOrder);
+        $objOrder->addToTemplate($objTemplate);
 
         $arrAllDownloads = array();
         $arrItems = $objTemplate->items;

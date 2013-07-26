@@ -1087,4 +1087,52 @@ abstract class ProductCollection extends TypeAgent
 
         return Isotope::calculateWeight($arrWeights, $unit);
     }
+
+
+    /**
+     * Add the collection to a template
+     * @param   object
+     */
+    public function addToTemplate($objTemplate)
+    {
+        $arrItems = array();
+
+        foreach ($this->getItems() as $objItem) {
+
+            $blnHasProduct = $objItem->hasProduct();
+            $objProduct = $objItem->getProduct();
+
+            $arrItems[] = array(
+                'id'                => $objItem->id,
+                'sku'               => $objItem->getSku(),
+                'name'              => $objItem->getName(),
+                'options'           => Isotope::formatOptions($objItem->getOptions()),
+                'quantity'          => $objItem->quantity,
+                'price'             => Isotope::formatPriceWithCurrency($objItem->getPrice()),
+                'tax_free_price'    => Isotope::formatPriceWithCurrency($objItem->getTaxFreePrice()),
+                'total'             => Isotope::formatPriceWithCurrency($objItem->getPrice() * $objItem->quantity),
+                'tax_free_total'    => Isotope::formatPriceWithCurrency($objItem->getTaxFreePrice() * $objItem->quantity),
+                'tax_id'            => $objItem->tax_id,
+                'hasProduct'        => $blnHasProduct,
+                'product'           => $objProduct,
+                'raw'               => $objItem->row(),
+                'rowClass'          => trim('product ' . (($blnHasProduct && $objProduct->isNew()) ? 'new ' : '') . $objProduct->cssID[1]),
+            );
+        }
+
+        $objTemplate->collection = $this;
+        $objTemplate->config = ($this->getRelated('config_id') || Isotope::getConfig());
+        $objTemplate->items = \Isotope\Frontend::generateRowClass($arrItems, 'row', 'rowClass', 0, ISO_CLASS_COUNT|ISO_CLASS_FIRSTLAST|ISO_CLASS_EVENODD);
+        $objTemplate->surcharges = \Isotope\Frontend::formatSurcharges($this->getSurcharges());
+        $objTemplate->subtotal = Isotope::formatPriceWithCurrency($this->getSubtotal());
+        $objTemplate->total = Isotope::formatPriceWithCurrency($this->getTotal());
+
+        // !HOOK: allow overriding of the template
+        if (isset($GLOBALS['ISO_HOOKS']['generateCollection']) && is_array($GLOBALS['ISO_HOOKS']['generateCollection'])) {
+            foreach ($GLOBALS['ISO_HOOKS']['generateCollection'] as $callback) {
+                $objCallback = \System::importStatic($callback[0]);
+                $objCallback->$callback[1]($objTemplate, $arrItems, $this);
+            }
+        }
+    }
 }

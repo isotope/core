@@ -96,7 +96,7 @@ class Cart extends Module
 
         $objTemplate = new \Isotope\Template($this->iso_collectionTpl);
 
-        \Isotope\Frontend::addCollectionToTemplate($objTemplate, Isotope::getCart());
+        Isotope::getCart()->addToTemplate($objTemplate);
 
         $blnReload = false;
         $arrQuantity = \Input::post('quantity');
