@@ -1,0 +1,16 @@
+<div class="be_iso_first_steps">
+    <div class="box">
+        <h2>Welcome to Isotope eCommerce</h2>
+        <p>This is the page where most of the configuration regarding Isotope eCommerce will take place.<br>You should start from the bottom of this page and work your way upward.</p>
+        <p>We hope you enjoy Isotope eCommerce as much as we do!</p>
+        <p>The Isotope eCommerce workgroup</p>
+    </div>
+    <div class="box">
+        <h2>Fundraising</h2>
+        <p>Isotope eCommerce is open source.</p>
+        <p>Many days, weeks and months of voluntary work by motivated developers and designers have been put into the development of Isotope eCommerce.</p>
+        <p>You can support maintenance and further development of this wonderful product <strong>- that is free and will always remain free for you to use -</strong> by donating and taking part of the fundraising program.</p>
+        <p>You will find more information on the official <a href="http://isotopeecommerce.org" target="_blank">Isotope eCommerce website</a>. Thank you so much for considering giving something back!</p>
+    </div>
+    <div class="clr"></div>
+</div>

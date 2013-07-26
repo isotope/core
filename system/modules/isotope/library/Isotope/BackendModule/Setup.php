@@ -31,6 +31,8 @@ class Setup extends BackendOverview
         $this->import('BackendUser', 'User');
         $return = array();
 
+        $this->addFirstStepsHint($return);
+
         foreach ($GLOBALS['ISO_MOD'] as $strGroup => $arrModules) {
             foreach ($arrModules as $strModule => $arrConfig) {
 
@@ -70,5 +72,16 @@ class Setup extends BackendOverview
         $this->Template->before = '<h1 id="tl_welcome">' . sprintf($GLOBALS['TL_LANG']['IMD']['config_module'], ISO_VERSION . '.' . ISO_BUILD) . '</h1>';
 
         parent::compile();
+    }
+
+
+    /**
+     * Adds first steps and fundraising hints
+     */
+    protected function addFirstStepsHint(&$return)
+    {
+        $objTemplate = new \BackendTemplate('be_iso_first_steps');
+        $return['first_steps']['label'] = 'First steps and fundraising';
+        $return['first_steps']['html'] = $objTemplate->parse();
     }
 }

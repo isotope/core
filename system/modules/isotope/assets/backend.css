@@ -286,6 +286,16 @@ body.iso_be_overview .tip-wrap{
     display: block;
 }
 
+.be_iso_first_steps {
+    background:#ffd;
+    padding:5px;
+}
+.be_iso_first_steps .box {
+    float:left;
+    width: 335px;
+    padding: 0 5px 5px 5px;
+}
+
 .iso_importassets li {
     list-style-type: inherit;
 }
