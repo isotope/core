@@ -49,6 +49,14 @@ abstract class BackendOverview extends \BackendModule
     {
         $this->arrModules = $this->getModules();
 
+        // enable collapsing legends
+        $session = \Session::getInstance()->get('fieldset_states');
+        foreach ($this->arrModules as $k => $arrGroup) {
+            if (isset($session['iso_be_overview_legend'][$k])) {
+                $this->arrModules[$k]['collapse'] = !$session['iso_be_overview_legend'][$k];
+            }
+        }
+
         // Open module
         if (\Input::get('mod') != '')
         {
@@ -94,7 +102,7 @@ abstract class BackendOverview extends \BackendModule
         $arrModule = array();
 
         foreach ($this->arrModules as $arrGroup) {
-            if (!empty($arrGroup) && in_array($module, array_keys($arrGroup))) {
+            if (!empty($arrGroup['modules']) && in_array($module, array_keys($arrGroup['modules']))) {
                 $arrModule =& $arrGroup[$module];
             }
         }

@@ -387,6 +387,3 @@ body.iso_be_overview .tip-wrap{
 .be_iso_overview .item span {
     display: block;
 }
-.be_iso_overview fieldset.tl_box>legend {
-    background: none;
-}

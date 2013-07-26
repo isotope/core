@@ -2,10 +2,10 @@
 <?php echo $this->before; ?>
 <?php endif; ?>
 <div class="tl_formbody_edit be_iso_overview">
-    <?php foreach ($this->modules as $strGroup=>$arrModules): ?>
-    <fieldset class="tl_box">
-        <legend style="cursor: default;"><?php echo $strGroup; ?></legend>
-        <?php foreach ($arrModules as $strModule=>$arrModule): ?>
+    <?php foreach ($this->modules as $strGroupKey => $arrGroup): ?>
+    <fieldset id="pal_<?php echo $strGroupKey; ?>" class="tl_box<?php if($arrGroup['collapse']): ?> collapsed<?php endif; ?>">
+        <legend onclick="AjaxRequest.toggleFieldset(this,'<?php echo $strGroupKey; ?>','iso_be_overview_legend')" style="cursor: default;"><?php echo $arrGroup['label']; ?></legend>
+        <?php foreach ($arrGroup['modules'] as $strModule => $arrModule): ?>
         <div class="item">
             <a href="<?php echo $arrModule['href']; ?>" title="<?php echo $arrModule['description']; ?>">
                 <img src="<?php echo $arrModule['icon']; ?>" alt="">
