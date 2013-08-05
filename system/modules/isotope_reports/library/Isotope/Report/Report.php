@@ -103,7 +103,7 @@ abstract class Report extends \Backend
 		// Buttons
 		$this->Template->buttons = $this->getButtons();
 
-		$this->Template->headline = $this->arrData['label'][1] ? $this->arrData['label'][1] : $this->arrData['label'][0];
+		$this->Template->headline = $this->arrData['description'];
 
 		$this->compile();
 

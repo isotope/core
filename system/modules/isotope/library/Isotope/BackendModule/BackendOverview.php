@@ -167,7 +167,7 @@ abstract class BackendOverview extends \BackendModule
 
         // Call module callback
         elseif ($this->classFileExists($arrModule['callback'])) {
-            $objCallback = new $arrModule['callback']($dc);
+            $objCallback = new $arrModule['callback']($arrModule);
 
             return $objCallback->generate();
         }
