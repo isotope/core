@@ -254,7 +254,8 @@ class Order extends ProductCollection implements IsotopeProductCollection
             }
         }
 
-        $this->save();
+		// Lock will trigger save() of the model
+        $this->lock();
 
         return true;
     }
