@@ -103,7 +103,7 @@ abstract class BackendOverview extends \BackendModule
 
         foreach ($this->arrModules as $arrGroup) {
             if (!empty($arrGroup['modules']) && in_array($module, array_keys($arrGroup['modules']))) {
-                $arrModule =& $arrGroup[$module];
+                $arrModule =& $arrGroup['modules'][$module];
             }
         }
 
