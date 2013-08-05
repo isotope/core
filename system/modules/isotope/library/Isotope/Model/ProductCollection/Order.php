@@ -34,13 +34,6 @@ class Order extends ProductCollection implements IsotopeProductCollection
 {
 
     /**
-     * Lock products from apply rule prices
-     * @var boolean
-     */
-    protected $blnLocked = true;
-
-
-    /**
      * Set a value
      * @param string
      * @param mixed
