@@ -614,6 +614,11 @@ class Isotope extends \Controller
 
         } elseif (null === $blnInstalled) {
             $blnInstalled = \Database::getInstance()->tableExists('tl_iso_labels');
+
+            if (!$blnInstalled) {
+
+                return $label;
+            }
         }
 
         // Recursively translate label array
