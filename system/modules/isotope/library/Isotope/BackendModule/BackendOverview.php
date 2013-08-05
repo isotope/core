@@ -38,7 +38,7 @@ abstract class BackendOverview extends \BackendModule
      * Check if a user has access to the current module
      * @return boolean
      */
-    abstract protected function checkUserHasAccessToModule($module);
+    abstract protected function checkUserAccess($module);
 
 
     /**
@@ -108,7 +108,7 @@ abstract class BackendOverview extends \BackendModule
         }
 
         // Check whether the current user has access to the current module
-        if (!$this->checkUserHasAccessToModule($module)) {
+        if (!$this->checkUserAccess($module)) {
             \System::log('Module "' . $module . '" was not allowed for user "' . $this->User->username . '"', __METHOD__, TL_ERROR);
             \Controller::redirect('contao/main.php?act=error');
         }

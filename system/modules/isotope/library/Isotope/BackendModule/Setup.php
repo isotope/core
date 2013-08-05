@@ -33,7 +33,8 @@ class Setup extends BackendOverview
 
         foreach ($GLOBALS['ISO_MOD'] as $strGroup => $arrModules) {
             foreach ($arrModules as $strModule => $arrConfig) {
-                if ($this->User->hasAccess($strModule, 'iso_modules')) {
+
+                if ($this->checkUserAccess($strModule)) {
                     if (is_array($arrConfig['tables'])) {
                         $GLOBALS['BE_MOD']['isotope']['iso_setup']['tables'] += $arrConfig['tables'];
                     }
@@ -55,7 +56,7 @@ class Setup extends BackendOverview
     /**
      * {@inheritdoc}
      */
-    protected function checkUserHasAccessToModule($module)
+    protected function checkUserAccess($module)
     {
         return $this->User->isAdmin || $this->User->hasAccess($module, 'iso_modules');
     }
