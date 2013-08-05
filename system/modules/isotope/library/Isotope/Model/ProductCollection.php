@@ -568,6 +568,23 @@ abstract class ProductCollection extends TypeAgent
     }
 
 
+    /**
+     * Lock collection from begin modified
+     */
+    public function lock()
+    {
+    	if ($this->blnLocked) {
+	    	throw new \LogicException('Product collection is already locked.');
+    	}
+
+		$this->save();
+
+	    $this->blnLocked = true;
+
+	    $this->Database->query("UPDATE tl_iso_collection SET locked='1' WHERE id=" . $this->{$this->strPk});
+    }
+
+
     public function getSubtotal()
     {
         if (!isset($this->arrCache['subtotal'])) {
