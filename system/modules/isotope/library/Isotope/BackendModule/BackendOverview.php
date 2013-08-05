@@ -88,7 +88,6 @@ abstract class BackendOverview extends \BackendModule
     protected function compile()
     {
         $this->Template->modules = $this->arrModules;
-        $this->Template->welcome = sprintf($GLOBALS['TL_LANG']['IMD']['config_module'], ISO_VERSION . '.' . ISO_BUILD);
     }
 
 

@@ -41,7 +41,7 @@ class Setup extends BackendOverview
 
                     $return[$strGroup]['modules'][$strModule] = array_merge($arrConfig, array
                     (
-                        'label'         => specialchars(($GLOBALS['TL_LANG']['IMD'][$strModule][0] ? $GLOBALS['TL_LANG']['IMD'][$strModule][0] : $strModule)),
+                        'label'         => specialchars($GLOBALS['TL_LANG']['IMD'][$strModule][0] ?: $strModule),
                         'description'   => specialchars(strip_tags($GLOBALS['TL_LANG']['IMD'][$strModule][1])),
                         'href'          => \Environment::get('script') . '?do=iso_setup&mod=' . $strModule,
                     ));
@@ -68,6 +68,7 @@ class Setup extends BackendOverview
     protected function compile()
     {
         $this->Template->before = '<h1 id="tl_welcome">' . sprintf($GLOBALS['TL_LANG']['IMD']['config_module'], ISO_VERSION . '.' . ISO_BUILD) . '</h1>';
+
         parent::compile();
     }
 }
