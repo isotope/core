@@ -445,6 +445,7 @@ CREATE TABLE `tl_iso_product_collection` (
   `type` varchar(32) NOT NULL default '',
   `member` int(10) unsigned NOT NULL default '0',
   `uniqid` varchar(64) NOT NULL default '',
+  `locked` char(1) NOT NULL default '',
   `source_collection_id` int(10) unsigned NOT NULL default '0',
   `config_id` int(10) unsigned NOT NULL default '0',
   `store_id` int(2) unsigned NOT NULL default '0',
