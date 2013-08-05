@@ -14,129 +14,124 @@ namespace Isotope\BackendModule;
 use Isotope\Isotope;
 
 
-class Reports extends \BackendModule
+class Reports extends BackendOverview
 {
 
-	/**
-	 * Template
-	 * @var string
-	 */
-	protected $strTemplate = 'be_iso_reports';
+    protected function compile()
+    {
+        $this->Template->before = $this->getDailySummary();
+
+        parent::compile();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function getModules()
+    {
+        $arrReturn = array();
+        $arrGroups = &$GLOBALS['BE_MOD']['isotope']['reports']['modules'];
+
+        foreach ($arrGroups as $strGroup => $arrModules) {
+            foreach ($arrModules as $strModule => $arrConfig) {
+
+                if ($this->checkUserAccess($strModule)) {
+
+                    $arrReturn[$strGroup]['modules'][$strModule] = array_merge($arrConfig, array
+                    (
+                        'label'         => specialchars(($arrConfig['label'][0] ?: $strName)),
+                        'description'   => specialchars(strip_tags($arrConfig['label'][1])),
+                        'href'          => $this->addToUrl('mod=' . $strModule),
+                    ));
+
+                    $arrReturn[$strGroup]['label'] = $strLegend = $GLOBALS['ISO_LANG']['REPORT'][$strGroup] ?: $strGroup;;
+                }
+            }
+        }
+
+        return $arrReturn;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function checkUserAccess($module)
+    {
+        return \BackendUser::getInstance()->isAdmin || \BackendUser::getInstance()->hasAccess($module, 'iso_reports');
+    }
 
 
-	public function generate()
-	{
-	    $this->import('BackendUser', 'User');
+    /**
+     * Generate a daily summary for the overview page
+     * @return array
+     */
+    protected function getDailySummary()
+    {
+        $strBuffer = '
+<div class="tl_formbody_edit be_iso_overview">
+<fieldset class="tl_tbox">
+<legend style="cursor: default;">' . $GLOBALS['ISO_LANG']['REPORT']['24h_summary'] . '</legend>';
 
-		if (\Input::get('report') != '')
-		{
-			$arrReport = $this->findReport(\Input::get('report'));
+        $arrSummary = array();
+        $arrAllowedProducts = \Isotope\Backend::getAllowedProductIds();
 
-			if ($arrReport !== false && $this->classFileExists($arrReport['callback']))
-			{
-				$objCallback = new $arrReport['callback']($arrReport);
-				return $objCallback->generate();
-			}
-		}
+        $objOrders = \Database::getInstance()->prepare("SELECT
+                                                    c.id AS config_id,
+                                                    c.name AS config_name,
+                                                    c.currency,
+                                                    COUNT(o.id) AS total_orders,
+                                                    SUM(i.tax_free_price * i.quantity) AS total_sales,
+                                                    SUM(i.quantity) AS total_items
+                                                FROM tl_iso_product_collection o
+                                                LEFT JOIN tl_iso_product_collection_item i ON o.id=i.pid
+                                                LEFT OUTER JOIN tl_iso_config c ON o.config_id=c.id
+                                                WHERE o.type='Order' AND o.date>?
+                                                " . ($arrAllowedProducts === true ? '' : (" AND i.product_id IN (" . (empty($arrAllowedProducts) ? '0' : implode(',', $arrAllowedProducts)) . ")")) . "
+                                                GROUP BY config_id")
+                                    ->execute(strtotime('-24 hours'));
 
-		return parent::generate();
-	}
+        if (!$objOrders->numRows) {
 
+            $strBuffer .= '
+<p class="tl_info" style="margin-top:10px">' . $GLOBALS['ISO_LANG']['REPORT']['24h_empty'] . '</p>';
 
-	/**
-	 * Generate a icon view of all available reports
-	 */
-	protected function compile()
-	{
-		$arrReports = array();
-		$arrGroups = &$GLOBALS['BE_MOD']['isotope']['reports']['modules'];
+        } else {
 
-		foreach ($arrGroups as $strGroup => $arrGroup)
-		{
-			$strLegend = $GLOBALS['ISO_LANG']['REPORT'][$strGroup] ? $GLOBALS['ISO_LANG']['REPORT'][$strGroup] : $strGroup;
-
-			foreach ($arrGroup as $strName => $arrConfig)
-			{
-			    if (!$this->User->isAdmin && !in_array($strName, $this->User->iso_reports))
-			    {
-    			    continue;
-			    }
-
-				$arrReports[$strLegend][$strName] = array
-				(
-					'label'		=> ($arrConfig['label'][0] ? $arrConfig['label'][0] : $strName),
-					'title'		=> specialchars($arrConfig['label'][1]),
-					'icon'		=> $arrConfig['icon'],
-					'href'		=> $this->addToUrl('report='.$strName),
-				);
-			}
-		}
-
-		$this->Template->reports = $arrReports;
-		$this->Template->summary = $this->getDailySummary();
-	}
+            $i = -1;
+            $strBuffer .= '
+<br>
+<table class="tl_listing">
+<tr>
+	<th class="tl_folder_tlist">' . $GLOBALS['ISO_LANG']['REPORT']['shop_config'] . '</th>
+	<th class="tl_folder_tlist">' . $GLOBALS['ISO_LANG']['REPORT']['currency'] . '</th>
+	<th class="tl_folder_tlist">' . $GLOBALS['ISO_LANG']['REPORT']['orders#'] . '</th>
+	<th class="tl_folder_tlist">' . $GLOBALS['ISO_LANG']['REPORT']['products#'] . '</th>
+	<th class="tl_folder_tlist">' . $GLOBALS['ISO_LANG']['REPORT']['sales#'] . '</th>
+</tr>';
 
 
-	protected function findReport($strName)
-	{
-	    if (!$this->User->isAdmin && !in_array($strName, $this->User->iso_reports))
-	    {
-    	    return false;
-	    }
+            while ($objOrders->next())
+            {
+                $strBuffer .= '
+<tr class="row_' . ++$i . ($i%2 ? 'odd' : 'even') . '">
+	<td class="tl_file_list">' . $objOrders->config_name . '</td>
+	<td class="tl_file_list">' . $objOrders->currency . '</td>
+	<td class="tl_file_list">' . $objOrders->total_orders . '</td>
+	<td class="tl_file_list">' . $objOrders->total_items . '</td>
+	<td class="tl_file_list">' . Isotope::formatPrice($objOrders->total_sales) . '</td>
+</tr>';
+            }
 
-		foreach ($GLOBALS['BE_MOD']['isotope']['reports']['modules'] as $strGroup => $arrReports)
-		{
-			if (isset($arrReports[$strName]))
-			{
-				$arrData = $arrReports[$strName];
-				$arrData['name'] = $strName;
-				$arrData['group'] = $strGroup;
-
-				return $arrData;
-			}
-		}
-
-		return false;
-	}
+            $strBuffer .= '
+</table>';
+        }
 
 
-	/**
-	 * Generate a daily summary for the overview page
-	 * @return array
-	 */
-	protected function getDailySummary()
-	{
-		$arrSummary = array();
-		$arrAllowedProducts = \Isotope\Backend::getAllowedProductIds();
+        $strBuffer .= '
+</fieldset>
+</div>';
 
-		$objOrders = \Database::getInstance()->prepare("SELECT
-													c.id AS config_id,
-													c.name AS config_name,
-													c.currency,
-													COUNT(o.id) AS total_orders,
-													SUM(i.tax_free_price * i.quantity) AS total_sales,
-													SUM(i.quantity) AS total_items
-												FROM tl_iso_product_collection o
-												LEFT JOIN tl_iso_product_collection_item i ON o.id=i.pid
-												LEFT OUTER JOIN tl_iso_config c ON o.config_id=c.id
-												WHERE o.type='Order' AND o.date>?
-												" . ($arrAllowedProducts === true ? '' : (" AND i.product_id IN (" . (empty($arrAllowedProducts) ? '0' : implode(',', $arrAllowedProducts)) . ")")) . "
-												GROUP BY config_id")
-									->execute(strtotime('-24 hours'));
-
-		while ($objOrders->next())
-		{
-			$arrSummary[] = array
-			(
-				'name'			=> $objOrders->config_name,
-				'currency'		=> $objOrders->currency,
-				'total_orders'	=> $objOrders->total_orders,
-				'total_sales'	=> Isotope::formatPrice($objOrders->total_sales),
-				'total_items'	=> $objOrders->total_items,
-			);
-		}
-
-		return $arrSummary;
-	}
+        return $strBuffer;
+    }
 }
 
