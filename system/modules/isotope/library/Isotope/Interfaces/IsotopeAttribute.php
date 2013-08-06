@@ -19,7 +19,7 @@ namespace Isotope\Interfaces;
  * @copyright  Isotope eCommerce Workgroup 2009-2012
  * @author     Andreas Schempp <andreas.schempp@terminal42.ch>
  */
-interface IsotopeAttibute
+interface IsotopeAttribute
 {
 
 	/**
