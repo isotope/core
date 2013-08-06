@@ -1,0 +1,37 @@
+<?php
+
+/**
+ * Isotope eCommerce for Contao Open Source CMS
+ *
+ * Copyright (C) 2009-2012 Isotope eCommerce Workgroup
+ *
+ * @package    Isotope
+ * @link       http://www.isotopeecommerce.com
+ * @license    http://opensource.org/licenses/lgpl-3.0.html LGPL
+ */
+
+namespace Isotope\Model\Attribute;
+
+use Isotope\Interfaces\IsotopeAttribute;
+use Isotope\Model\Attribute;
+
+
+/**
+ * Attribute to impelement additional image galleries
+ *
+ * @copyright  Isotope eCommerce Workgroup 2009-2012
+ * @author     Andreas Schempp <andreas.schempp@terminal42.ch>
+ */
+class MediaManager extends Attribute implements IsotopeAttribute
+{
+
+	public function addToDCA(&$arrData)
+	{
+		parent::addToDCA($arrData);
+
+		$arrData['fields'][$this->field_name]['sql'] = "blob NULL";
+
+		// Media Manager must fetch fallback
+        $arrData['fields'][$this->field_name]['attributes']['fetch_fallback'] = true;
+	}
+}
