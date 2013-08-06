@@ -47,14 +47,14 @@ interface IsotopeAttibute
 	public function getDCAFieldDefinition();
 
 	/**
-	 * Return class name for the backend widget or false if none should be available
-	 * @return	string|false
+	 * Return class name for the backend widget or empty if none should be available
+	 * @return	string
 	 */
 	public function getBackendWidget();
 
 	/**
-	 * Return class name for the frontend widget or false if none should be available
-	 * @return	string|false
+	 * Return class name for the frontend widget or empty if none should be available
+	 * @return	string
 	 */
 	public function getFrontendWidget();
 }
