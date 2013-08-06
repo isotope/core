@@ -167,7 +167,7 @@ $GLOBALS['TL_DCA']['tl_iso_attributes'] = array
             'label'                 => &$GLOBALS['TL_LANG']['tl_iso_attributes']['type'],
             'exclude'               => true,
             'inputType'             => 'select',
-            'options'               => array_keys($GLOBALS['ISO_ATTR']),
+            'options'               => \Isotope\Model\Attribute::getModelTypeOptions(),
             'eval'                  => array('mandatory'=>true, 'includeBlankOption'=>true, 'submitOnChange'=>true, 'helpwizard'=>true, 'tl_class'=>'w50', 'chosen'=>true),
             'reference'             => &$GLOBALS['TL_LANG']['ATTR']
         ),

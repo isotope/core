@@ -222,6 +222,20 @@ $GLOBALS['BE_FFL']['productGroupSelector']   = 'Isotope\Widget\ProductGroupSelec
 \Isotope\Model\ProductCollectionSurcharge::registerModelType('shipping', 'Isotope\Model\ProductCollectionSurcharge\Shipping');
 \Isotope\Model\ProductCollectionSurcharge::registerModelType('tax', 'Isotope\Model\ProductCollectionSurcharge\Tax');
 
+/**
+ * Attributes
+ */
+\Isotope\Model\Attribute::registerModelType('text', 'Isotope\Model\Attribute\Text');
+\Isotope\Model\Attribute::registerModelType('textarea', 'Isotope\Model\Attribute\TextArea');
+\Isotope\Model\Attribute::registerModelType('select', 'Isotope\Model\Attribute\SelectMenu');
+\Isotope\Model\Attribute::registerModelType('radio', 'Isotope\Model\Attribute\RadioButton');
+\Isotope\Model\Attribute::registerModelType('checkbox', 'Isotope\Model\Attribute\CheckboxMenu');
+\Isotope\Model\Attribute::registerModelType('conditionalselect', 'Isotope\Model\Attribute\ConditionalSelectMenu');
+\Isotope\Model\Attribute::registerModelType('mediaManager', 'Isotope\Model\Attribute\MediaManager');
+\Isotope\Model\Attribute::registerModelType('fileTree', 'Isotope\Model\Attribute\FileTree');
+\Isotope\Model\Attribute::registerModelType('downloads', 'Isotope\Model\Attribute\Downloads');
+\Isotope\Model\Attribute::registerModelType('upload', 'Isotope\Model\Attribute\Upload');
+
 
 /**
  * Models
@@ -320,57 +334,6 @@ include(TL_ROOT . '/system/modules/isotope/config/hooks.php');
  */
 $GLOBALS['TL_CRON']['daily'][] = array('Isotope\Automator', 'deleteOldCarts');
 $GLOBALS['TL_CRON']['daily'][] = array('Isotope\Automator', 'convertCurrencies');
-
-
-$GLOBALS['ISO_ATTR'] = array
-(
-    'text' => array
-    (
-        'sql'        => "varchar(255) NOT NULL default ''",
-        'useIndex'    => true,
-    ),
-    'textarea' => array
-    (
-        'sql'        => "text NULL",
-    ),
-    'select' => array
-    (
-        'sql'        => "blob NULL",
-    ),
-    'radio' => array
-    (
-        'sql'        => "varchar(255) NOT NULL default ''",
-        'useIndex'    => true,
-    ),
-    'checkbox' => array
-    (
-        'sql'        => "blob NULL",
-    ),
-    'conditionalselect' => array
-    (
-        'sql'        => "blob NULL",
-        'callback'    => array(array('Isotope', 'mergeConditionalOptionData')),
-    ),
-    'mediaManager' => array
-    (
-        'sql'        => "blob NULL",
-    ),
-    'fileTree' => array
-    (
-        'sql'        => "blob NULL",
-    ),
-    'downloads' => array
-    (
-        'sql'        => "blob NULL",
-        'backend'    => 'fileTree',
-    ),
-    'upload' => array
-    (
-        'sql'                => "varchar(255) NOT NULL default ''",
-        'backend'            => false,
-        'customer_defined'    => true,
-    ),
-);
 
 
 /**
