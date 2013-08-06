@@ -35,18 +35,6 @@ interface IsotopeAttribute
 	public function isCustomerDefined();
 
 	/**
-	 * Return SQL definition for this attribute configuration
-	 * @return	string
-	 */
-	public function getSQLDefinition();
-
-	/**
-	 * Return array of DCA field definition
-	 * @return	array
-	 */
-	public function getDCAFieldDefinition();
-
-	/**
 	 * Return class name for the backend widget or empty if none should be available
 	 * @return	string
 	 */
@@ -57,4 +45,10 @@ interface IsotopeAttribute
 	 * @return	string
 	 */
 	public function getFrontendWidget();
+
+	/**
+	 * Inject attribute configuration into the given DCA array
+	 * @param	array
+	 */
+	public function addToDCA(&$arrData);
 }
