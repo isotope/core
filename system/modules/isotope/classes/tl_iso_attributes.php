@@ -67,13 +67,13 @@ class tl_iso_attributes extends \Backend
 
 
     /**
-     * Create an attribute column in tl_iso_products table
+     * Make sure the system columns are not added as attribute
      * @param mixed
      * @param object
      * @return mixed
      * @throws Exception
      */
-    public function createColumn($varValue, $dc)
+    public function validateFieldName($varValue, $dc)
     {
         $varValue = standardize($varValue);
 
@@ -82,35 +82,23 @@ class tl_iso_attributes extends \Backend
             throw new \InvalidArgumentException(sprintf($GLOBALS['TL_LANG']['ERR']['systemColumn'], $varValue));
         }
 
-        if ($varValue != '' && !$this->Database->fieldExists($varValue, 'tl_iso_products'))
-        {
-            $strType = $GLOBALS['ISO_ATTR'][\Input::post('type')]['sql'] == '' ? 'text' : \Input::post('type');
-
-            $this->Database->query(sprintf("ALTER TABLE tl_iso_products ADD %s %s", $varValue, $GLOBALS['ISO_ATTR'][$strType]['sql']));
-        }
-
         return $varValue;
     }
 
 
     /**
-     * Alter an attribtue column in tl_iso_products table
+     * Alter attribtue columns in tl_iso_products table
      * @param object
      * @return void
      */
-    public function modifyColumn($dc)
+    public function updateDatabase($dc)
     {
-        $objAttribute = $this->Database->execute("SELECT * FROM tl_iso_attributes WHERE id={$dc->id}");
+    	// Make sure the latest SQL definitions are written to the DCA
+		$GLOBALS['TL_CONFIG']['bypassCache'] = true;
+		$this->loadDataContainer('tl_iso_products', true);
 
-        if ($objAttribute->field_name == '')
-        {
-            return;
-        }
-
-        if ($dc->activeRecord->type != '' && $objAttribute->type != $dc->activeRecord->type && $GLOBALS['ISO_ATTR'][$dc->activeRecord->type]['sql'] != '' && $this->Database->fieldExists($dc->activeRecord->field_name, 'tl_iso_products'))
-        {
-            $this->Database->query(sprintf("ALTER TABLE tl_iso_products MODIFY %s %s", $objAttribute->field_name, $GLOBALS['ISO_ATTR'][$dc->activeRecord->type]['sql']));
-        }
+        $objUpdater = new \Isotope\DatabaseUpdater();
+        $objUpdater->autoUpdateTables(array('tl_iso_products'));
     }
 
 

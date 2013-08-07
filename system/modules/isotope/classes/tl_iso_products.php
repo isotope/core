@@ -680,11 +680,13 @@ $strBuffer .= '<th style="text-align:center"><img src="system/themes/default/ima
             return;
         }
 
-        $objAttributes = \Isotope\Model\Attribute::findAll();
+        $objAttributes = \Isotope\Model\Attribute::findAll(array('uncached'=>true));
 
         while ($objAttributes->next())
         {
-            $objAttributes->current()->addToDCA($GLOBALS['TL_DCA'][$strTable]);
+        	if (null !== $objAttributes->current()) {
+	            $objAttributes->current()->addToDCA($GLOBALS['TL_DCA'][$strTable]);
+	        }
         }
 
         $GLOBALS['ISO_CONFIG']['variant_options'] = array();

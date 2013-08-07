@@ -41,7 +41,7 @@ $GLOBALS['TL_DCA']['tl_iso_attributes'] = array
         ),
         'onsubmit_callback' => array
         (
-            array('Isotope\tl_iso_attributes', 'modifyColumn'),
+            array('Isotope\tl_iso_attributes', 'updateDatabase'),
             array('Isotope\tl_iso_attributes', 'cleanFieldValues'),
         ),
     ),
@@ -159,7 +159,7 @@ $GLOBALS['TL_DCA']['tl_iso_attributes'] = array
             'eval'                  => array('mandatory'=>true, 'maxlength'=>30, 'unique'=>true, 'doNotCopy'=>true, 'doNotSaveEmpty'=>true, 'tl_class'=>'w50'),
             'save_callback' => array
             (
-                array('Isotope\tl_iso_attributes', 'createColumn'),
+                array('Isotope\tl_iso_attributes', 'validateFieldName'),
             ),
         ),
         'type' => array
