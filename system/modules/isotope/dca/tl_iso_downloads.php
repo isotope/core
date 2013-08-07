@@ -110,11 +110,25 @@ $GLOBALS['TL_DCA']['tl_iso_downloads'] = array
     // Fields
     'fields' => array
     (
+        'id' => array
+        (
+            'sql'                   => "int(10) unsigned NOT NULL auto_increment",
+        ),
         'pid' => array
         (
             'foreignKey'            => 'tl_iso_product.name',
+            'sql'                   => "int(10) unsigned NOT NULL default '0'",
             'relation'              => array('type'=>'belongsTo', 'load'=>'lazy'),
         ),
+        'sorting' => array
+        (
+            'sql'                   => "int(10) unsigned NOT NULL default '0'",
+        ),
+        'tstamp' => array
+        (
+            'sql'                   => "int(10) unsigned NOT NULL default '0'",
+        ),
+
         'type' => array
         (
             'label'                 => &$GLOBALS['TL_LANG']['tl_iso_downloads']['type'],
@@ -123,6 +137,7 @@ $GLOBALS['TL_DCA']['tl_iso_downloads'] = array
             'options'               => array('file', 'folder'),
             'reference'             => &$GLOBALS['TL_LANG']['tl_iso_downloads'],
             'eval'                  => array('mandatory'=>true, 'submitOnChange'=>true),
+            'sql'                   => "varchar(8) NOT NULL default 'file'",
         ),
         'singleSRC' => array
         (
@@ -130,6 +145,7 @@ $GLOBALS['TL_DCA']['tl_iso_downloads'] = array
             'exclude'               => true,
             'inputType'             => 'fileTree',
             'eval'                  => array('mandatory'=>true, 'fieldType'=>'radio', 'files'=>true, 'filesOnly'=>true, 'extensions'=>$GLOBALS['TL_CONFIG']['allowedDownload']),
+            'sql'                   => "varchar(255) NOT NULL default ''",
         ),
         'title' => array
         (
@@ -137,6 +153,7 @@ $GLOBALS['TL_DCA']['tl_iso_downloads'] = array
             'exclude'               => true,
             'inputType'             => 'text',
             'eval'                  => array('mandatory'=>true, 'maxlength'=>255, 'tl_class'=>'long'),
+            'sql'                   => "varchar(255) NOT NULL default ''",
         ),
         'description' => array
         (
@@ -144,6 +161,7 @@ $GLOBALS['TL_DCA']['tl_iso_downloads'] = array
             'exclude'               => true,
             'inputType'             => 'textarea',
             'eval'                  => array('rte'=>'tinyMCE'),
+            'sql'                   => "text NULL",
         ),
         'downloads_allowed' => array
         (
@@ -151,6 +169,7 @@ $GLOBALS['TL_DCA']['tl_iso_downloads'] = array
             'exclude'               => true,
             'inputType'             => 'text',
             'eval'                  => array('mandatory'=>true, 'maxlength'=>5, 'rgxp'=>'digit', 'tl_class'=>'w50'),
+            'sql'                   => "int(5) unsigned NOT NULL default '0'",
         ),
         'expires' => array
         (
@@ -160,6 +179,7 @@ $GLOBALS['TL_DCA']['tl_iso_downloads'] = array
             'options'               => array('minutes', 'hours', 'days', 'weeks', 'months', 'years'),
             'reference'             => &$GLOBALS['TL_LANG']['MSC']['timePeriod'],
             'eval'                  => array('rgxp'=>'digit', 'tl_class'=>'w50'),
+            'sql'                   => "varchar(64) NOT NULL default ''",
         ),
     )
 );
