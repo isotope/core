@@ -495,38 +495,6 @@ class Backend extends Contao_Backend
 
 
     /**
-     * Add the product attributes to the db updater array so the users don't delete them while updating
-     * @param array
-     * @return array
-     */
-    public function addAttributesToDBUpdate($arrData)
-    {
-        if ($this->Database->tableExists('tl_iso_attributes'))
-        {
-            $objAttributes = $this->Database->execute("SELECT * FROM tl_iso_attributes");
-
-            while ($objAttributes->next())
-            {
-                if ($objAttributes->field_name == '' || $objAttributes->type == '' || $GLOBALS['ISO_ATTR'][$objAttributes->type]['sql'] == '')
-                {
-                    continue;
-                }
-
-                $arrData['tl_iso_products']['TABLE_FIELDS'][$objAttributes->field_name] = sprintf('`%s` %s', $objAttributes->field_name, $GLOBALS['ISO_ATTR'][$objAttributes->type]['sql']);
-
-                // Also check indexes
-                if ($objAttributes->fe_filter && $GLOBALS['ISO_ATTR'][$objAttributes->type]['useIndex'])
-                {
-                    $arrData['tl_iso_products']['TABLE_CREATE_DEFINITIONS'][$objAttributes->field_name] = sprintf('KEY `%s` (`%s`)', $objAttributes->field_name, $objAttributes->field_name);
-                }
-            }
-        }
-
-        return $arrData;
-    }
-
-
-    /**
      * Show messages for new order status
      * @return string
      */

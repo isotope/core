@@ -23,7 +23,6 @@ $GLOBALS['TL_HOOKS']['executePreActions'][]             = array('Isotope\Backend
 $GLOBALS['TL_HOOKS']['executePostActions'][]            = array('Isotope\Backend', 'executePostActions');
 $GLOBALS['TL_HOOKS']['translateUrlParameters'][]        = array('Isotope\Frontend', 'translateProductUrls');
 $GLOBALS['TL_HOOKS']['getSystemMessages'][]             = array('Isotope\Backend', 'getOrderMessages');
-$GLOBALS['TL_HOOKS']['sqlGetFromFile'][]                = array('Isotope\Backend', 'addAttributesToDBUpdate');
 $GLOBALS['TL_HOOKS']['getArticle'][]                    = array('Isotope\Frontend', 'storeCurrentArticle');
 $GLOBALS['TL_HOOKS']['generateBreadcrumb'][]            = array('Isotope\Frontend', 'generateBreadcrumb');
 $GLOBALS['ISO_HOOKS']['buttons'][]                      = array('Isotope\Isotope', 'defaultButtons');
