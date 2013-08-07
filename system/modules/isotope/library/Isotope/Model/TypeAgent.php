@@ -109,6 +109,11 @@ abstract class TypeAgent extends \Model
     public static function buildModelType(\Database_Result $objResult=null)
     {
         $strClass = static::$arrModelTypes[$objResult->type];
+
+        if ($strClass == '') {
+	        return null;
+        }
+
         $objModel = new $strClass($objResult);
 
         if (null !== static::$strInterface && !is_a($objModel, static::$strInterface)) {
