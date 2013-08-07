@@ -45,7 +45,7 @@ array_insert($GLOBALS['BE_MOD']['isotope'], 2, array
 				(
 					'callback'	=> 'Isotope\Report\SalesTotal',
 					'label'		=> &$GLOBALS['ISO_LANG']['REPORT']['sales_total'],
-					'icon'		=> 'system/modules/isotope_reports/assets/sales.png',
+					'icon'		=> 'system/modules/isotope_reports/assets/sales_total.png',
 					'panels'    => array
 					(
 						array('getSelectStopPanel', 'getSelectStartPanel', 'getSelectPeriodPanel'),
@@ -56,7 +56,7 @@ array_insert($GLOBALS['BE_MOD']['isotope'], 2, array
 				(
 					'callback'	=> 'Isotope\Report\SalesProduct',
 					'label'		=> &$GLOBALS['ISO_LANG']['REPORT']['sales_product'],
-					'icon'		=> 'system/modules/isotope_reports/assets/product.png',
+					'icon'		=> 'system/modules/isotope_reports/assets/sales_product.png',
 					'panels'    => array
 					(
 						array('getSelectFromPanel', 'getSelectColumnsPanel', 'getSelectPeriodPanel', 'getSelectVariantsPanel'),
@@ -70,19 +70,19 @@ array_insert($GLOBALS['BE_MOD']['isotope'], 2, array
 				(
 					'callback'	=> 'Isotope\Report\MembersTotal',
 					'label'		=> &$GLOBALS['ISO_LANG']['REPORT']['members_total'],
-					'icon'		=> 'system/modules/isotope_reports/assets/member.png',
+					'icon'		=> 'system/modules/isotope_reports/assets/members_total.png',
 				),
 				'members_registration' => array
 				(
 					'callback'	=> 'Isotope\Report\MembersRegistration',
 					'label'		=> &$GLOBALS['ISO_LANG']['REPORT']['members_registration'],
-					'icon'		=> 'system/modules/isotope_reports/assets/member.png',
+					'icon'		=> 'system/modules/isotope_reports/assets/members_registration.png',
 				),
 				'members_guests' => array
 				(
 					'callback'	=> 'Isotope\Report\MembersGuests',
 					'label'		=> &$GLOBALS['ISO_LANG']['REPORT']['members_guests'],
-					'icon'		=> 'system/modules/isotope_reports/assets/member.png',
+					'icon'		=> 'system/modules/isotope_reports/assets/members_guests.png',
 				),
 			),
 			'rules' => array
@@ -91,13 +91,13 @@ array_insert($GLOBALS['BE_MOD']['isotope'], 2, array
 				(
 					'callback'	=> 'Isotope\Report\RulesUsage',
 					'label'		=> &$GLOBALS['ISO_LANG']['REPORT']['rules_usage'],
-					'icon'		=> 'system/modules/isotope_reports/assets/generic.png',
+					'icon'		=> 'system/modules/isotope_reports/assets/rules_usage.png',
 				),
 				'rules_coupons' => array
 				(
 					'callback'	=> 'Isotope\Report\RulesCoupons',
 					'label'		=> &$GLOBALS['ISO_LANG']['REPORT']['rules_coupons'],
-					'icon'		=> 'system/modules/isotope_reports/assets/generic.png',
+					'icon'		=> 'system/modules/isotope_reports/assets/rules_coupons.png',
 				),
 			),
 			'custom' => array(),
