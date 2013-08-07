@@ -27,14 +27,19 @@ class SelectMenu extends Attribute implements IsotopeAttribute
 
 	public function addToDCA(&$arrData)
 	{
+		// Varian select menu cannot have multiple option
+        if ($this->isVariantOption()) {
+        	$this->multiple = false;
+        	$this->size = 1;
+        }
+
 		parent::addToDCA($arrData);
 
-		$arrData['fields'][$this->field_name]['sql'] = "blob NULL";
+		if ($this->multiple) {
+			$arrData['fields'][$this->field_name]['sql'] = "blob NULL";
+		} else {
+			$arrData['fields'][$this->field_name]['sql'] = "varchar(255) NOT NULL default ''";
 
-        // Varian select menu cannot have multiple option
-        if ($this->isVariantOption()) {
-            $arrData['fields'][$this->field_name]['eval']['multiple'] = false;
-            $arrData['fields'][$this->field_name]['eval']['size'] = 1;
-        }
+		}
 	}
 }
