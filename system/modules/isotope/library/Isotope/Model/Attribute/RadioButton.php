@@ -30,5 +30,9 @@ class RadioButton extends Attribute implements IsotopeAttribute
 		parent::addToDCA($arrData);
 
 		$arrData['fields'][$this->field_name]['sql'] = "varchar(255) NOT NULL default ''";
+
+		if ($this->fe_filter) {
+			$arrData['config']['sql']['keys'][$this->field_name] = 'index';
+		}
 	}
 }
