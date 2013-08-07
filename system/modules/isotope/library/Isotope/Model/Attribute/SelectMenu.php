@@ -40,6 +40,9 @@ class SelectMenu extends Attribute implements IsotopeAttribute
 		} else {
 			$arrData['fields'][$this->field_name]['sql'] = "varchar(255) NOT NULL default ''";
 
+			if ($this->fe_filter) {
+				$arrData['config']['sql']['keys'][$this->field_name] = 'index';
+			}
 		}
 	}
 }
