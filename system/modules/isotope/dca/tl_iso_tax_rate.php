@@ -122,10 +122,18 @@ $GLOBALS['TL_DCA']['tl_iso_tax_rate'] = array
     // Fields
     'fields' => array
     (
+        'id' => array
+        (
+            'sql'                 =>  "int(10) unsigned NOT NULL auto_increment",
+        ),
         'pid' => array
         (
             'foreignKey'            => 'tl_iso_tax_class.name',
             'relation'              => array('type'=>'belongsTo', 'load'=>'lazy')
+        ),
+        'tstamp' => array
+        (
+            'sql'                 =>  "int(10) unsigned NOT NULL default '0'",
         ),
         'name' => array
         (
@@ -134,6 +142,7 @@ $GLOBALS['TL_DCA']['tl_iso_tax_rate'] = array
             'search'                => true,
             'inputType'             => 'text',
             'eval'                  => array('mandatory'=>true, 'maxlength'=>255, 'tl_class'=>'w50'),
+            'sql'                   => "varchar(255) NOT NULL default ''",
         ),
         'label' => array
         (
@@ -141,6 +150,7 @@ $GLOBALS['TL_DCA']['tl_iso_tax_rate'] = array
             'exclude'               => true,
             'inputType'             => 'text',
             'eval'                  => array('maxlength'=>255, 'tl_class'=>'w50'),
+            'sql'                   => "varchar(255) NOT NULL default ''",
         ),
         'address' => array
         (
@@ -150,7 +160,8 @@ $GLOBALS['TL_DCA']['tl_iso_tax_rate'] = array
             'inputType'             => 'checkbox',
             'options'               => array('billing', 'shipping'),
             'reference'             => &$GLOBALS['TL_LANG']['tl_iso_tax_rate'],
-            'eval'                  => array('mandatory'=>true, 'multiple'=>true)
+            'eval'                  => array('mandatory'=>true, 'multiple'=>true),
+            'sql'                   => "blob NULL",
         ),
         'countries' => array
         (
@@ -159,7 +170,8 @@ $GLOBALS['TL_DCA']['tl_iso_tax_rate'] = array
             'filter'                => true,
             'inputType'             => 'select',
             'options'               => $this->getCountries(),
-            'eval'                  => array('multiple'=>true, 'size'=>10, 'csv'=>',', 'tl_class'=>'w50 w50h', 'chosen'=>true)
+            'eval'                  => array('multiple'=>true, 'size'=>10, 'csv'=>',', 'tl_class'=>'w50 w50h', 'chosen'=>true),
+            'sql'                   => "text NULL",
         ),
         'subdivisions' => array
         (
@@ -169,6 +181,7 @@ $GLOBALS['TL_DCA']['tl_iso_tax_rate'] = array
             'inputType'             => 'conditionalselect',
             'options_callback'      => array('\Isotope\Backend', 'getSubdivisions'),
             'eval'                  => array('conditionField'=>'countries', 'multiple'=>true, 'size'=>10, 'csv'=>',', 'tl_class'=>'w50 w50h'),
+            'sql'                   => "text NULL",
         ),
         'postalCodes' => array
         (
@@ -176,6 +189,7 @@ $GLOBALS['TL_DCA']['tl_iso_tax_rate'] = array
             'exclude'               => true,
             'inputType'             => 'textarea',
             'eval'                  => array('style'=>'height:40px', 'tl_class'=>'clr'),
+            'sql'                   => "text NULL",
         ),
         'rate' => array
         (
@@ -184,6 +198,7 @@ $GLOBALS['TL_DCA']['tl_iso_tax_rate'] = array
             'inputType'             => 'inputUnit',
             'options'               => array('%'=>'%'),
             'eval'                  => array('mandatory'=>true, 'maxlength'=>255, 'rgxp'=>'price'),
+            'sql'                   => "varchar(255) NOT NULL default ''",
         ),
         'amount' => array
         (
@@ -191,6 +206,7 @@ $GLOBALS['TL_DCA']['tl_iso_tax_rate'] = array
             'exclude'               => true,
             'inputType'             => 'text',
             'eval'                  => array('multiple'=>true, 'size'=>2, 'maxlength'=>10, 'rgxp'=>'digit', 'tl_class'=>'w50'),
+            'sql'                   => "varchar(255) NOT NULL default ''",
         ),
         'config' => array
         (
@@ -200,6 +216,7 @@ $GLOBALS['TL_DCA']['tl_iso_tax_rate'] = array
             'inputType'             => 'select',
             'foreignKey'            => 'tl_iso_config.name',
             'eval'                  => array('includeBlankOption'=>true, 'submitOnChange'=>true, 'tl_class'=>'w50'),
+            'sql'                   => "int(10) unsigned NOT NULL default '0'",
             'relation'              => array('type'=>'hasOne', 'load'=>'lazy')
         ),
         'stop' => array
@@ -208,6 +225,7 @@ $GLOBALS['TL_DCA']['tl_iso_tax_rate'] = array
             'exclude'               => true,
             'inputType'             => 'checkbox',
             'eval'                  => array('tl_class'=>'w50 m12'),
+            'sql'                   => "char(1) NOT NULL default ''",
         ),
         'guests' => array
         (
@@ -215,6 +233,7 @@ $GLOBALS['TL_DCA']['tl_iso_tax_rate'] = array
             'exclude'               => true,
             'inputType'             => 'checkbox',
             'eval'                  => array('tl_class'=>'clr'),
+            'sql'                   => "char(1) NOT NULL default ''",
         ),
         'protected' => array
         (
@@ -222,6 +241,7 @@ $GLOBALS['TL_DCA']['tl_iso_tax_rate'] = array
             'exclude'               => true,
             'inputType'             => 'checkbox',
             'eval'                  => array('submitOnChange'=>true, 'tl_class'=>'clr'),
+            'sql'                   => "char(1) NOT NULL default ''",
         ),
         'groups' => array
         (
@@ -230,6 +250,7 @@ $GLOBALS['TL_DCA']['tl_iso_tax_rate'] = array
             'inputType'             => 'checkbox',
             'foreignKey'            => 'tl_member_group.name',
             'eval'                  => array('multiple'=>true),
+            'sql'                   => "blob NULL",
             'relation'              => array('type'=>'hasMany', 'load'=>'lazy'),
         ),
     )
