@@ -136,13 +136,22 @@ $GLOBALS['TL_DCA']['tl_iso_shipping_modules'] = array
     // Fields
     'fields' => array
     (
+        'id' => array
+        (
+            'sql'                 =>  "int(10) unsigned NOT NULL auto_increment",
+        ),
+        'tstamp' => array
+        (
+            'sql'                 =>  "int(10) unsigned NOT NULL default '0'",
+        ),
         'name' => array
         (
             'label'                 => &$GLOBALS['TL_LANG']['tl_iso_shipping_modules']['name'],
             'exclude'               => true,
             'search'                => true,
             'inputType'             => 'text',
-            'eval'                  => array('mandatory'=>true, 'maxlength'=>255, 'tl_class'=>'w50')
+            'eval'                  => array('mandatory'=>true, 'maxlength'=>255, 'tl_class'=>'w50'),
+            'sql'                   => "varchar(255) NOT NULL default ''",
         ),
         'label' => array
         (
@@ -150,6 +159,7 @@ $GLOBALS['TL_DCA']['tl_iso_shipping_modules'] = array
             'exclude'               => true,
             'inputType'             => 'text',
             'eval'                  => array('maxlength'=>255, 'tl_class'=>'w50'),
+            'sql'                   => "varchar(255) NOT NULL default ''",
         ),
         'type' => array
         (
@@ -159,7 +169,8 @@ $GLOBALS['TL_DCA']['tl_iso_shipping_modules'] = array
             'inputType'             => 'select',
             'default'               => 'Flat',
             'options'               => \Isotope\Model\Shipping::getModelTypeOptions(),
-            'eval'                  => array('helpwizard'=>true, 'submitOnChange'=>true, 'chosen'=>true, 'tl_class'=>'w50')
+            'eval'                  => array('helpwizard'=>true, 'submitOnChange'=>true, 'chosen'=>true, 'tl_class'=>'w50'),
+            'sql'                   => "varchar(64) NOT NULL default ''",
         ),
         'note' => array
         (
@@ -167,6 +178,7 @@ $GLOBALS['TL_DCA']['tl_iso_shipping_modules'] = array
             'exclude'               => true,
             'inputType'             => 'textarea',
             'eval'                  => array('rte'=>'tinyMCE', 'decodeEntities'=>true),
+            'sql'                   => "text NULL",
         ),
         'countries' => array
         (
@@ -174,7 +186,8 @@ $GLOBALS['TL_DCA']['tl_iso_shipping_modules'] = array
             'exclude'               => true,
             'inputType'             => 'select',
             'options'               => $this->getCountries(),
-            'eval'                  => array('multiple'=>true, 'size'=>8, 'tl_class'=>'w50 w50h', 'chosen'=>true)
+            'eval'                  => array('multiple'=>true, 'size'=>8, 'tl_class'=>'w50 w50h', 'chosen'=>true),
+            'sql'                   => "blob NULL",
         ),
         'subdivisions' => array
         (
@@ -184,6 +197,7 @@ $GLOBALS['TL_DCA']['tl_iso_shipping_modules'] = array
             'inputType'             => 'conditionalselect',
             'options_callback'      => array('Isotope\Backend', 'getSubdivisions'),
             'eval'                  => array('multiple'=>true, 'size'=>8, 'conditionField'=>'countries', 'tl_class'=>'w50 w50h'),
+            'sql'                   => "longblob NULL",
         ),
         'postalCodes' => array
         (
@@ -191,6 +205,7 @@ $GLOBALS['TL_DCA']['tl_iso_shipping_modules'] = array
             'exclude'               => true,
             'inputType'             => 'textarea',
             'eval'                  => array('style'=>'height:40px', 'tl_class'=>'clr'),
+            'sql'                   => "text NULL",
         ),
         'minimum_total' => array
         (
@@ -198,6 +213,7 @@ $GLOBALS['TL_DCA']['tl_iso_shipping_modules'] = array
             'exclude'               => true,
             'inputType'             => 'text',
             'eval'                  => array('maxlength'=>255, 'rgxp'=>'price', 'tl_class'=>'w50'),
+            'sql'                   => "decimal(12,2) NOT NULL default '0.00'",
         ),
         'maximum_total' => array
         (
@@ -205,6 +221,7 @@ $GLOBALS['TL_DCA']['tl_iso_shipping_modules'] = array
             'exclude'               => true,
             'inputType'             => 'text',
             'eval'                  => array('maxlength'=>255, 'rgxp'=>'price', 'tl_class'=>'w50'),
+            'sql'                   => "decimal(12,2) NOT NULL default '0.00'",
         ),
         'product_types' => array
         (
@@ -213,6 +230,7 @@ $GLOBALS['TL_DCA']['tl_iso_shipping_modules'] = array
             'inputType'             => 'select',
             'foreignKey'            => 'tl_iso_producttypes.name',
             'eval'                  => array('multiple'=>true, 'size'=>8, 'tl_class'=>'clr'),
+            'sql'                   => "blob NULL",
             'relation'              => array('type'=>'hasMany', 'load'=>'lazy'),
         ),
         'price' => array
@@ -221,6 +239,7 @@ $GLOBALS['TL_DCA']['tl_iso_shipping_modules'] = array
             'exclude'               => true,
             'inputType'             => 'text',
             'eval'                  => array('maxlength'=>16, 'rgxp'=>'surcharge', 'tl_class'=>'w50'),
+            'sql'                   => "varchar(16) NOT NULL default ''",
         ),
         'tax_class' => array
         (
@@ -231,6 +250,7 @@ $GLOBALS['TL_DCA']['tl_iso_shipping_modules'] = array
             'foreignKey'            => 'tl_iso_tax_class.name',
             'options_callback'      => array('\Isotope\Backend', 'getTaxClassesWithSplit'),
             'eval'                  => array('includeBlankOption'=>true, 'tl_class'=>'w50'),
+            'sql'                   => "int(10) NOT NULL default '0'",
             'relation'              => array('type'=>'hasOne', 'load'=>'lazy'),
         ),
         'flatCalculation' => array
@@ -241,19 +261,22 @@ $GLOBALS['TL_DCA']['tl_iso_shipping_modules'] = array
             'options'               => array('flat', 'perProduct', 'perItem'),
             'reference'             => &$GLOBALS['TL_LANG']['tl_iso_shipping_modules'],
             'eval'                  => array('tl_class'=>'w50'),
+            'sql'                   => "varchar(10) NOT NULL default ''",
         ),
         'guests' => array
         (
             'label'                 => &$GLOBALS['TL_LANG']['tl_iso_shipping_modules']['guests'],
             'exclude'               => true,
             'inputType'             => 'checkbox',
+            'sql'                   => "char(1) NOT NULL default ''",
         ),
         'protected' => array
         (
             'label'                 => &$GLOBALS['TL_LANG']['tl_iso_shipping_modules']['protected'],
             'exclude'               => true,
             'inputType'             => 'checkbox',
-            'eval'                  => array('submitOnChange'=>true)
+            'eval'                  => array('submitOnChange'=>true),
+            'sql'                   => "char(1) NOT NULL default ''",
         ),
         'groups' => array
         (
@@ -262,6 +285,7 @@ $GLOBALS['TL_DCA']['tl_iso_shipping_modules'] = array
             'inputType'             => 'checkbox',
             'foreignKey'            => 'tl_member_group.name',
             'eval'                  => array('multiple'=>true),
+            'sql'                   => "blob NULL",
             'relation'              => array('type'=>'hasMany', 'load'=>'lazy'),
         ),
         'enabled' => array
@@ -269,6 +293,7 @@ $GLOBALS['TL_DCA']['tl_iso_shipping_modules'] = array
             'label'                 => &$GLOBALS['TL_LANG']['tl_iso_shipping_modules']['enabled'],
             'exclude'               => true,
             'inputType'             => 'checkbox',
+            'sql'                   => "char(1) NOT NULL default ''",
         ),
     )
 );
