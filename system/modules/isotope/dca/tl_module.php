@@ -56,7 +56,8 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['iso_list_layout'] = array
     'exclude'                   => true,
     'inputType'                 => 'select',
     'options_callback'          => array('Isotope\tl_module', 'getListTemplates'),
-    'eval'                      => array('includeBlankOption'=>true, 'tl_class'=>'w50', 'chosen'=>true)
+    'eval'                      => array('includeBlankOption'=>true, 'tl_class'=>'w50', 'chosen'=>true),
+    'sql'                       => "varchar(64) NOT NULL default ''",
 );
 
 $GLOBALS['TL_DCA']['tl_module']['fields']['iso_reader_layout'] = array
@@ -65,7 +66,8 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['iso_reader_layout'] = array
     'exclude'                   => true,
     'inputType'                 => 'select',
     'options_callback'          => array('Isotope\tl_module', 'getReaderTemplates'),
-    'eval'                      => array('includeBlankOption'=>true, 'chosen'=>true, 'tl_class'=>'w50')
+    'eval'                      => array('includeBlankOption'=>true, 'chosen'=>true, 'tl_class'=>'w50'),
+    'sql'                       => "varchar(64) NOT NULL default ''"
 );
 
 $GLOBALS['TL_DCA']['tl_module']['fields']['iso_collectionTpl'] = array
@@ -85,7 +87,8 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['iso_filterTpl'] = array
     'default'                   => 'iso_filter_default',
     'inputType'                 => 'select',
     'options_callback'          => array('Isotope\tl_module', 'getFilterTemplates'),
-    'eval'                      => array('mandatory'=>true, 'tl_class'=>'w50', 'chosen'=>true)
+    'eval'                      => array('mandatory'=>true, 'tl_class'=>'w50', 'chosen'=>true),
+    'sql'                       => "varchar(64) NOT NULL default ''",
 );
 
 $GLOBALS['TL_DCA']['tl_module']['fields']['iso_jump_first'] = array
@@ -93,7 +96,8 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['iso_jump_first'] = array
     'label'                     => &$GLOBALS['TL_LANG']['tl_module']['iso_jump_first'],
     'exclude'                   => true,
     'inputType'                 => 'checkbox',
-    'eval'                      => array('tl_class'=>'w50')
+    'eval'                      => array('tl_class'=>'w50'),
+    'sql'                       => "char(1) NOT NULL default ''",
 );
 
 $GLOBALS['TL_DCA']['tl_module']['fields']['iso_hide_list'] = array
@@ -101,7 +105,8 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['iso_hide_list'] = array
     'label'                     => &$GLOBALS['TL_LANG']['tl_module']['iso_hide_list'],
     'exclude'                   => true,
     'inputType'                 => 'checkbox',
-    'eval'                      => array('tl_class'=>'w50')
+    'eval'                      => array('tl_class'=>'w50'),
+    'sql'                       => "char(1) NOT NULL default ''",
 );
 
 $GLOBALS['TL_DCA']['tl_module']['fields']['iso_use_quantity'] = array
@@ -110,6 +115,7 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['iso_use_quantity'] = array
     'exclude'                   => true,
     'inputType'                 => 'checkbox',
     'eval'                      => array('tl_class'=>'w50 m12'),
+    'sql'                       => "char(1) NOT NULL default ''",
 );
 
 $GLOBALS['TL_DCA']['tl_module']['fields']['iso_checkout_method'] = array
@@ -121,6 +127,7 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['iso_checkout_method'] = array
     'options'                   => array('member', 'guest', 'both'),
     'reference'                 => &$GLOBALS['TL_LANG']['tl_module']['iso_checkout_method_ref'],
     'eval'                      => array('mandatory'=>true, 'submitOnChange'=>true),
+    'sql'                       => "varchar(10) NOT NULL default ''",
 );
 
 $GLOBALS['TL_DCA']['tl_module']['fields']['iso_reader_jumpTo'] = array
@@ -131,6 +138,7 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['iso_reader_jumpTo'] = array
     'foreignKey'                => 'tl_page.title',
     'eval'                      => array('fieldType'=>'radio', 'tl_class'=>'clr'),
     'explanation'               => 'jumpTo',
+    'sql'                       => "int(10) unsigned NOT NULL default '0'",
     'relation'                  => array('type'=>'hasOne', 'load'=>'lazy'),
 );
 
@@ -142,6 +150,7 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['iso_login_jumpTo'] = array
     'foreignKey'                => 'tl_page.title',
     'eval'                      => array('fieldType'=>'radio', 'mandatory'=>true, 'tl_class'=>'clr'),
     'explanation'               => 'jumpTo',
+    'sql'                       => "int(10) unsigned NOT NULL default '0'",
     'relation'                  => array('type'=>'hasOne', 'load'=>'lazy'),
 );
 
@@ -153,6 +162,7 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['iso_addProductJumpTo'] = array
     'foreignKey'                => 'tl_page.title',
     'eval'                      => array('fieldType'=>'radio', 'tl_class'=>'clr'),
     'explanation'               => 'jumpTo',
+    'sql'                       => "int(10) unsigned NOT NULL default '0'",
     'relation'                  => array('type'=>'hasOne', 'load'=>'lazy'),
 );
 
@@ -172,6 +182,7 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['iso_config_id'] = array
     'inputType'                 => 'select',
     'foreignKey'                => 'tl_iso_config.name',
     'eval'                      => array('includeBlankOption'=>true, 'mandatory'=>true, 'tl_class'=>'w50'),
+    'sql'                       => "int(10) unsigned NOT NULL default '0'",
     'relation'                  => array('type'=>'hasOne', 'load'=>'lazy'),
 );
 
@@ -182,6 +193,7 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['iso_config_ids'] = array
     'inputType'                 => 'checkboxWizard',
     'foreignKey'                => 'tl_iso_config.name',
     'eval'                      => array('multiple'=>true, 'mandatory'=>true, 'tl_class'=>'clr'),
+    'sql'                       => "blob NULL",
     'relation'                  => array('type'=>'hasMany', 'load'=>'lazy'),
 );
 
@@ -193,6 +205,7 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['iso_payment_modules'] = array
     'foreignKey'                => 'tl_iso_payment_modules.name',
     'options_callback'          => array('Isotope\tl_module', 'getPaymentModules'),
     'eval'                      => array('multiple'=>true),
+    'sql'                       => "blob NULL",
     'relation'                  => array('type'=>'hasMany', 'load'=>'lazy'),
 );
 
@@ -204,6 +217,7 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['iso_shipping_modules'] = array
     'foreignKey'                => 'tl_iso_shipping_modules.name',
     'options_callback'          => array('Isotope\tl_module','getShippingModules'),
     'eval'                      => array('multiple'=>true),
+    'sql'                       => "blob NULL",
     'relation'                  => array('type'=>'hasMany', 'load'=>'lazy'),
 );
 
@@ -215,6 +229,7 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['orderCompleteJumpTo'] = array
     'foreignKey'                => 'tl_page.title',
     'eval'                      => array('mandatory'=>true, 'fieldType'=>'radio', 'tl_class'=>'clr'),
     'explanation'               => 'jumpTo',
+    'sql'                       => "int(10) unsigned NOT NULL default '0'",
     'relation'                  => array('type'=>'hasOne', 'load'=>'lazy'),
 );
 
@@ -222,7 +237,8 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['iso_forward_review'] = array
 (
     'label'                     => &$GLOBALS['TL_LANG']['tl_module']['iso_forward_review'],
     'exclude'                   => true,
-    'inputType'                 => 'checkbox'
+    'inputType'                 => 'checkbox',
+    'sql'                       => "char(1) NOT NULL default ''",
 );
 
 $GLOBALS['TL_DCA']['tl_module']['fields']['iso_mail_customer'] = array
@@ -232,6 +248,7 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['iso_mail_customer'] = array
     'inputType'                 => 'select',
     'foreignKey'                => 'tl_iso_mail.name',
     'eval'                      => array('includeBlankOption'=>true, 'mandatory'=>true, 'chosen'=>true),
+    'sql'                       => "int(10) unsigned NOT NULL default '0'",
     'relation'                  => array('type'=>'hasOne', 'load'=>'lazy'),
 );
 
@@ -242,6 +259,7 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['iso_mail_admin'] = array
     'inputType'                 => 'select',
     'foreignKey'                => 'tl_iso_mail.name',
     'eval'                      => array('includeBlankOption'=>true, 'mandatory'=>true, 'tl_class'=>'w50', 'chosen'=>true),
+    'sql'                       => "int(10) unsigned NOT NULL default '0'",
     'relation'                  => array('type'=>'hasOne', 'load'=>'lazy'),
 );
 
@@ -250,7 +268,8 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['iso_sales_email'] = array
     'label'                     => &$GLOBALS['TL_LANG']['tl_module']['iso_sales_email'],
     'exclude'                   => true,
     'inputType'                 => 'text',
-    'eval'                      => array('maxlength'=>255, 'rgxp'=>'email', 'tl_class'=>'w50')
+    'eval'                      => array('maxlength'=>255, 'rgxp'=>'email', 'tl_class'=>'w50'),
+    'sql'                       => "varchar(255) NOT NULL default ''",
 );
 
 $GLOBALS['TL_DCA']['tl_module']['fields']['iso_order_conditions'] = array
@@ -260,6 +279,7 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['iso_order_conditions'] = array
     'inputType'                 => 'select',
     'foreignKey'                => 'tl_form.title',
     'eval'                      => array('includeBlankOption'=>true, 'tl_class'=>'w50', 'chosen'=>true),
+    'sql'                       => "int(10) unsigned NOT NULL default '0'",
     'relation'                  => array('type'=>'hasOne', 'load'=>'lazy'),
 );
 
@@ -271,6 +291,7 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['iso_order_conditions_position'] = arr
     'options'                   => array('top', 'before', 'after'),
     'reference'                 => &$GLOBALS['TL_LANG']['tl_module']['iso_order_conditions_position'],
     'eval'                      => array('tl_class'=>'w50'),
+    'sql'                       => "varchar(6) NOT NULL default 'after'",
 );
 
 $GLOBALS['TL_DCA']['tl_module']['fields']['iso_addToAddressbook'] = array
@@ -278,6 +299,7 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['iso_addToAddressbook'] = array
     'label'                     => &$GLOBALS['TL_LANG']['tl_module']['iso_addToAddressbook'],
     'exclude'                   => true,
     'inputType'                 => 'checkbox',
+    'sql'                       => "char(1) NOT NULL default ''",
 );
 
 $GLOBALS['TL_DCA']['tl_module']['fields']['iso_emptyMessage'] = array
@@ -286,6 +308,7 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['iso_emptyMessage'] = array
     'exclude'                   => true,
     'inputType'                 => 'checkbox',
     'eval'                      => array('submitOnChange'=>true, 'tl_class'=>'clr'),
+    'sql'                       => "char(1) NOT NULL default ''"
 );
 
 $GLOBALS['TL_DCA']['tl_module']['fields']['iso_noProducts'] = array
@@ -293,7 +316,8 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['iso_noProducts'] = array
     'label'                     => &$GLOBALS['TL_LANG']['tl_module']['iso_noProducts'],
     'exclude'                   => true,
     'inputType'                 => 'text',
-    'eval'                      => array('maxlength'=>255, 'tl_class'=>'clr long')
+    'eval'                      => array('maxlength'=>255, 'tl_class'=>'clr long'),
+    'sql'                       => "varchar(255) NOT NULL default ''",
 );
 
 $GLOBALS['TL_DCA']['tl_module']['fields']['iso_emptyFilter'] = array
@@ -302,6 +326,7 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['iso_emptyFilter'] = array
     'exclude'                   => true,
     'inputType'                 => 'checkbox',
     'eval'                      => array('submitOnChange'=>true, 'tl_class'=>'clr'),
+    'sql'                       => "char(1) NOT NULL default ''",
 );
 
 $GLOBALS['TL_DCA']['tl_module']['fields']['iso_noFilter'] = array
@@ -309,7 +334,8 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['iso_noFilter'] = array
     'label'                     => &$GLOBALS['TL_LANG']['tl_module']['iso_noFilter'],
     'exclude'                   => true,
     'inputType'                 => 'text',
-    'eval'                      => array('maxlength'=>255, 'tl_class'=>'clr long')
+    'eval'                      => array('maxlength'=>255, 'tl_class'=>'clr long'),
+    'sql'                       => "varchar(255) NOT NULL default ''",
 );
 
 $GLOBALS['TL_DCA']['tl_module']['fields']['iso_category_scope'] = array
@@ -321,6 +347,7 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['iso_category_scope'] = array
     'options'                   => array('current_category', 'current_and_first_child', 'current_and_all_children', 'parent', 'product', 'article', 'global'),
     'reference'                 => &$GLOBALS['TL_LANG']['tl_module']['iso_category_scope_ref'],
     'eval'                      => array('tl_class'=>'w50 w50h', 'helpwizard'=>true),
+    'sql'                       => "varchar(64) NOT NULL default ''",
 );
 
 $GLOBALS['TL_DCA']['tl_module']['fields']['iso_list_where'] = array
@@ -328,7 +355,8 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['iso_list_where'] = array
     'label'                     => &$GLOBALS['TL_LANG']['tl_module']['iso_list_where'],
     'exclude'                   => true,
     'inputType'                 => 'text',
-    'eval'                      => array('preserveTags'=>true, 'maxlength'=>255, 'tl_class'=>'w50')
+    'eval'                      => array('preserveTags'=>true, 'maxlength'=>255, 'tl_class'=>'w50'),
+    'sql'                       => "varchar(255) NOT NULL default ''",
 );
 
 $GLOBALS['TL_DCA']['tl_module']['fields']['iso_filterModules'] = array
@@ -339,6 +367,7 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['iso_filterModules'] = array
     'foreignKey'                => 'tl_module.name',
     'options_callback'          => array('Isotope\tl_module', 'getFilterModules'),
     'eval'                      => array('multiple'=>true, 'tl_class'=>'clr w50 w50h'),
+    'sql'                       => "blob NULL",
     'relation'                  => array('type'=>'hasMany', 'load'=>'lazy'),
 );
 
@@ -349,6 +378,7 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['iso_filterFields'] = array
     'inputType'                 => 'checkboxWizard',
     'options_callback'          => array('Isotope\tl_module', 'getFilterFields'),
     'eval'                      => array('multiple'=>true, 'tl_class'=>'clr w50 w50h'),
+    'sql'                       => "blob NULL",
 );
 
 $GLOBALS['TL_DCA']['tl_module']['fields']['iso_newFilter'] = array
@@ -369,6 +399,7 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['iso_filterHideSingle'] = array
     'exclude'                   => true,
     'inputType'                 => 'checkbox',
     'eval'                      => array('tl_class'=>'w50 m12'),
+    'sql'                       => "char(1) NOT NULL default ''",
 );
 
 $GLOBALS['TL_DCA']['tl_module']['fields']['iso_searchFields'] = array
@@ -378,6 +409,7 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['iso_searchFields'] = array
     'inputType'                 => 'checkboxWizard',
     'options_callback'          => array('Isotope\tl_module', 'getSearchFields'),
     'eval'                      => array('multiple'=>true, 'tl_class'=>'clr w50 w50h'),
+    'sql'                       => "blob NULL",
 );
 
 $GLOBALS['TL_DCA']['tl_module']['fields']['iso_searchAutocomplete'] = array
@@ -387,6 +419,7 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['iso_searchAutocomplete'] = array
     'inputType'                 => 'select',
     'options_callback'          => array('Isotope\tl_module', 'getAutocompleteFields'),
     'eval'                      => array('tl_class'=>'w50', 'includeBlankOption'=>true),
+    'sql'                       => "varchar(255) NOT NULL default ''",
 );
 
 $GLOBALS['TL_DCA']['tl_module']['fields']['iso_sortingFields'] = array
@@ -396,6 +429,7 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['iso_sortingFields'] = array
     'inputType'                 => 'checkboxWizard',
     'options_callback'          => array('Isotope\tl_module', 'getSortingFields'),
     'eval'                      => array('multiple'=>true, 'tl_class'=>'clr'),
+    'sql'                       => "blob NULL",
 );
 
 $GLOBALS['TL_DCA']['tl_module']['fields']['iso_enableLimit'] = array
@@ -404,6 +438,7 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['iso_enableLimit'] = array
     'exclude'                   => true,
     'inputType'                 => 'checkbox',
     'eval'                      => array('submitOnChange'=>true, 'tl_class'=>'clr w50 m12'),
+    'sql'                       => "char(1) NOT NULL default ''",
 );
 
 $GLOBALS['TL_DCA']['tl_module']['fields']['iso_perPage'] = array
@@ -413,6 +448,7 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['iso_perPage'] = array
     'default'                   => '8,12,32,64',
     'inputType'                 => 'text',
     'eval'                      => array('mandatory'=>true, 'maxlength'=>64, 'rgxp'=>'extnd', 'tl_class'=>'w50'),
+    'sql'                       => "varchar(64) NOT NULL default ''",
 );
 
 $GLOBALS['TL_DCA']['tl_module']['fields']['iso_cart_jumpTo'] = array
@@ -423,6 +459,7 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['iso_cart_jumpTo'] = array
     'foreignKey'                => 'tl_page.title',
     'eval'                      => array('fieldType'=>'radio', 'tl_class'=>'clr'),
     'explanation'               => 'jumpTo',
+    'sql'                       => "int(10) unsigned NOT NULL default '0'",
     'relation'                  => array('type'=>'hasOne', 'load'=>'lazy'),
 );
 
@@ -434,6 +471,7 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['iso_checkout_jumpTo'] = array
     'foreignKey'                => 'tl_page.title',
     'eval'                      => array('fieldType'=>'radio', 'tl_class'=>'clr'),
     'explanation'               => 'jumpTo',
+    'sql'                       => "int(10) unsigned NOT NULL default '0'",
     'relation'                  => array('type'=>'hasOne', 'load'=>'lazy'),
 );
 
@@ -444,6 +482,7 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['iso_listingSortField'] = array
     'inputType'                 => 'select',
     'options_callback'          => array('Isotope\tl_module', 'getSortingFields'),
     'eval'                      => array('includeBlankOption'=>true, 'tl_class'=>'clr w50'),
+    'sql'                       => "varchar(255) NOT NULL default ''",
     'save_callback'             => array
     (
         array('Isotope\Backend', 'truncateProductCache'),
@@ -459,6 +498,7 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['iso_listingSortDirection'] = array
     'options'                   => array('DESC','ASC'),
     'reference'                 => &$GLOBALS['TL_LANG']['tl_module']['sortingDirection'],
     'eval'                      => array('tl_class'=>'w50'),
+    'sql'                       => "varchar(8) NOT NULL default '',",
 );
 
 $GLOBALS['TL_DCA']['tl_module']['fields']['iso_buttons'] = array
@@ -469,6 +509,7 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['iso_buttons'] = array
     'default'                   => array('add_to_cart'),
     'options_callback'          => array('Isotope\tl_module', 'getButtons'),
     'eval'                      => array('multiple'=>true, 'tl_class'=>'clr'),
+    'sql'                       => "blob NULL",
 );
 
 $GLOBALS['TL_DCA']['tl_module']['fields']['iso_related_categories'] = array
@@ -478,6 +519,7 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['iso_related_categories'] = array
     'inputType'                 => 'checkboxWizard',
     'foreignKey'                => 'tl_iso_related_categories.name',
     'eval'                      => array('mandatory'=>true, 'multiple'=>true, 'tl_class'=>'w50 w50h'),
+    'sql'                       => "blob NULL",
     'relation'                  => array('type'=>'hasMany', 'load'=>'lazy'),
 );
 
@@ -487,6 +529,7 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['iso_includeMessages'] = array
     'exclude'                   => true,
     'inputType'                 => 'checkbox',
     'eval'                      => array('doNotCopy'=>true, 'tl_class'=>'w50'),
+    'sql'                       => "char(1) NOT NULL default ''",
 );
 
 $GLOBALS['TL_DCA']['tl_module']['fields']['iso_continueShopping'] = array
@@ -495,4 +538,14 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['iso_continueShopping'] = array
     'exclude'                   => true,
     'inputType'                 => 'checkbox',
     'eval'                      => array('tl_class'=>'w50 m12'),
+    'sql'                       => "char(1) NOT NULL default ''",
 );
+
+$GLOBALS['TL_DCA']['tl_module']['fields']['iso_productcache'] = array
+(
+    'sql'                       => "blob NULL",
+);
+
+
+
+
