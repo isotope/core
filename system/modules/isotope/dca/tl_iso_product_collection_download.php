@@ -31,15 +31,37 @@ $GLOBALS['TL_DCA']['tl_iso_product_collection_download'] = array
     // Fields
     'fields' => array
     (
+        'id' => array
+        (
+            'sql'                 =>  "int(10) unsigned NOT NULL auto_increment",
+        ),
         'pid' => array
         (
             'foreignKey'    => 'tl_iso_product_collection_item.name',
             'relation'      => array('type'=>'belongsTo', 'load'=>'lazy'),
+            'sql'                 =>  "int(10) unsigned NOT NULL default '0'",
+        ),
+        'tstamp' => array
+        (
+            'sql'                 =>  "int(10) unsigned NOT NULL default '0'",
         ),
         'download_id' => array
         (
             'foreignKey'    => 'tl_iso_downloads.type',
             'relation'      => array('type'=>'hasOne', 'load'=>'lazy'),
+        ),
+
+        'download_id' => array
+        (
+            'sql'                 =>  "int(10) unsigned NOT NULL default '0',",
+        ),
+        'downloads_remaining' => array
+        (
+            'sql'                 =>  "varchar(255) NOT NULL default ''",
+        ),
+        'expires' => array
+        (
+            'sql'                 =>  "varchar(10) NOT NULL default ''",
         ),
     )
 );

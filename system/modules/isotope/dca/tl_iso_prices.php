@@ -97,6 +97,19 @@ $GLOBALS['TL_DCA']['tl_iso_prices'] = array
     // Fields
     'fields' => array
     (
+
+        'id' => array
+        (
+            'sql'                 =>  "int(10) unsigned NOT NULL auto_increment",
+        ),
+        'pid' => array
+        (
+            'sql'                 =>  "int(10) unsigned NOT NULL default '0'",
+        ),
+        'tstamp' => array
+        (
+            'sql'                 =>  "int(10) unsigned NOT NULL default '0'",
+        ),
         'price_tiers' => array
         (
             'label'                 => &$GLOBALS['TL_LANG']['tl_iso_prices']['price_tiers'],
@@ -139,6 +152,7 @@ $GLOBALS['TL_DCA']['tl_iso_prices'] = array
             'inputType'             => 'select',
             'foreignKey'            => 'tl_iso_tax_class.name',
             'eval'                  => array('includeBlankOption'=>true, 'tl_class'=>'clr'),
+            'sql'                   => "int(10) unsigned NOT NULL default '0'",
             'relation'              => array('type'=>'hasOne', 'load'=>'lazy'),
         ),
         'config_id' => array
@@ -148,6 +162,7 @@ $GLOBALS['TL_DCA']['tl_iso_prices'] = array
             'inputType'             => 'select',
             'foreignKey'            => 'tl_iso_config.name',
             'eval'                  => array('includeBlankOption'=>true, 'tl_class'=>'w50'),
+            'sql'                   => "int(10) unsigned NOT NULL default '0'",
             'relation'              => array('type'=>'hasOne', 'load'=>'lazy'),
         ),
         'member_group' => array
@@ -157,6 +172,7 @@ $GLOBALS['TL_DCA']['tl_iso_prices'] = array
             'inputType'             => 'select',
             'foreignKey'            => 'tl_member_group.name',
             'eval'                  => array('includeBlankOption'=>true, 'tl_class'=>'w50', 'chosen'=>true),
+            'sql'                   => "int(10) unsigned NOT NULL default '0'",
             'relation'              => array('type'=>'hasOne', 'load'=>'lazy'),
         ),
         'start' => array
@@ -165,6 +181,7 @@ $GLOBALS['TL_DCA']['tl_iso_prices'] = array
             'exclude'               => true,
             'inputType'             => 'text',
             'eval'                  => array('rgxp'=>'date', 'datepicker'=>(method_exists($this,'getDatePickerString') ? $this->getDatePickerString() : true), 'tl_class'=>'w50 wizard'),
+            'sql'                   => "varchar(10) NOT NULL default ''",
         ),
         'stop' => array
         (
@@ -172,6 +189,7 @@ $GLOBALS['TL_DCA']['tl_iso_prices'] = array
             'exclude'               => true,
             'inputType'             => 'text',
             'eval'                  => array('rgxp'=>'date', 'datepicker'=>(method_exists($this,'getDatePickerString') ? $this->getDatePickerString() : true), 'tl_class'=>'w50 wizard'),
+            'sql'                   => "varchar(10) NOT NULL default ''",
         ),
     )
 );
