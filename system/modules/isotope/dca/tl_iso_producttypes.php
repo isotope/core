@@ -28,7 +28,14 @@ $GLOBALS['TL_DCA']['tl_iso_producttypes'] = array
         (
             array('Isotope\Backend', 'initializeSetupModule'),
             array('Isotope\tl_iso_producttypes', 'checkPermission'),
-        )
+        ),
+        'sql' => array
+        (
+            'keys' => array
+            (
+                'id' => 'primary',
+            )
+        ),
     ),
 
     // List

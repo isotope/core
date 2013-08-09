@@ -20,6 +20,17 @@
 $GLOBALS['TL_DCA']['tl_iso_requestcache'] = array
 (
 
+    'config' => array
+    (
+        'sql' => array
+        (
+            'keys' => array
+            (
+                'id' => 'primary',
+            )
+        ),
+    ),
+
     // Fields
     'fields' => array
     (

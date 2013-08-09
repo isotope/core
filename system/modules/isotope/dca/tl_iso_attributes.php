@@ -44,6 +44,13 @@ $GLOBALS['TL_DCA']['tl_iso_attributes'] = array
             array('Isotope\tl_iso_attributes', 'modifyColumn'),
             array('Isotope\tl_iso_attributes', 'cleanFieldValues'),
         ),
+        'sql' => array
+        (
+            'keys' => array
+            (
+                'id' => 'primary',
+            )
+        ),
     ),
 
     // List

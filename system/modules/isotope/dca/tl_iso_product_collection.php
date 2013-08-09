@@ -43,6 +43,16 @@ $GLOBALS['TL_DCA']['tl_iso_product_collection'] = array
         (
             array('Isotope\tl_iso_product_collection', 'executeSaveHook'),
         ),
+        'sql' => array
+        (
+            'keys' => array
+            (
+                'id' => 'primary',
+                'member;member,store_id,type' => 'index',
+                'uniqid;uniqid,store_id,type' => 'index',
+                'source_collection_id;source_collection_id,type' => 'index',
+            ),
+        ),
     ),
 
     // List

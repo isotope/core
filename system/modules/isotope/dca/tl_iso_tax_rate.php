@@ -32,6 +32,13 @@ $GLOBALS['TL_DCA']['tl_iso_tax_rate'] = array
             array('Isotope\tl_iso_tax_rate', 'checkPermission'),
             array('Isotope\tl_iso_tax_rate', 'addCurrencyRate'),
         ),
+        'sql' => array
+        (
+            'keys' => array
+            (
+                'id' => 'primary',
+            )
+        ),
     ),
 
     // List

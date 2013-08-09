@@ -35,6 +35,13 @@ $GLOBALS['TL_DCA']['tl_iso_config'] = array
         (
             array('Isotope\Backend', 'truncateProductCache'),
         ),
+        'sql' => array
+        (
+            'keys' => array
+            (
+                'id' => 'primary',
+            )
+        ),
     ),
 
     // List

@@ -30,6 +30,13 @@ $GLOBALS['TL_DCA']['tl_iso_related_categories'] = array
         (
             array('Isotope\Backend', 'initializeSetupModule'),
         ),
+        'sql' => array
+        (
+            'keys' => array
+            (
+                'id' => 'primary',
+            )
+        ),
     ),
 
     // List
