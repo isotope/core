@@ -27,6 +27,14 @@ $GLOBALS['TL_DCA']['tl_iso_mail_content'] = array
         'dataContainer'             => 'Table',
         'ptable'                    => 'tl_iso_mail',
         'enableVersioning'          => true,
+        'sql' => array
+        (
+            'keys' => array
+            (
+                'id' => 'primary',
+                'pid' => 'index',
+            )
+        ),
     ),
 
     // List
@@ -98,10 +106,19 @@ $GLOBALS['TL_DCA']['tl_iso_mail_content'] = array
     // Fields
     'fields' => array
     (
+        'id' => array
+        (
+            'sql'                   =>  "int(10) unsigned NOT NULL auto_increment",
+        ),
         'pid' => array
         (
             'foreignKey'            => 'tl_iso_mail.name',
+            'sql'                   =>  "int(10) unsigned NOT NULL default '0'",
             'relation'              => array('type'=>'belongsTo', 'load'=>'lazy'),
+        ),
+        'tstamp' => array
+        (
+            'sql'                   =>  "int(10) unsigned NOT NULL default '0'",
         ),
         'language' => array
         (
@@ -110,7 +127,8 @@ $GLOBALS['TL_DCA']['tl_iso_mail_content'] = array
             'inputType'             => 'select',
             'default'               => $GLOBALS['TL_LANGUAGE'],
             'options'               => $this->getLanguages(),
-            'eval'                  => array('mandatory'=>true, 'tl_class'=>'w50', 'chosen'=>true)
+            'eval'                  => array('mandatory'=>true, 'tl_class'=>'w50', 'chosen'=>true),
+            'sql'                   => "varchar(5) NOT NULL default ''",
         ),
         'fallback' => array
         (
@@ -118,6 +136,7 @@ $GLOBALS['TL_DCA']['tl_iso_mail_content'] = array
             'exclude'               => true,
             'inputType'             => 'checkbox',
             'eval'                  => array('tl_class'=>'w50 m12'),
+            'sql'                   => "char(1) NOT NULL default ''",
         ),
         'subject' => array
         (
@@ -125,6 +144,7 @@ $GLOBALS['TL_DCA']['tl_iso_mail_content'] = array
             'exclude'               => true,
             'inputType'             => 'text',
             'eval'                  => array('mandatory'=>true, 'maxlength'=>255, 'decodeEntities'=>true, 'tl_class'=>'long'),
+            'sql'                   => "varchar(255) NOT NULL default ''",
         ),
         'text' => array
         (
@@ -133,6 +153,7 @@ $GLOBALS['TL_DCA']['tl_iso_mail_content'] = array
             'inputType'             => 'textarea',
             'eval'                  => array('mandatory'=>true, 'decodeEntities'=>true, 'helpwizard'=>true),
             'explanation'           => 'isoMailTokens',
+            'sql'                   => "text NULL",
         ),
         'textOnly' => array
         (
@@ -140,6 +161,7 @@ $GLOBALS['TL_DCA']['tl_iso_mail_content'] = array
             'exclude'               => true,
             'inputType'             => 'checkbox',
             'eval'                  => array('submitOnChange'=>true),
+            'sql'                   => "char(1) NOT NULL default ''",
         ),
         'html' => array
         (
@@ -148,13 +170,15 @@ $GLOBALS['TL_DCA']['tl_iso_mail_content'] = array
             'inputType'             => 'textarea',
             'eval'                  => array('mandatory'=>true, 'rte'=>'tinyMCE', 'decodeEntities'=>true, 'helpwizard'=>true),
             'explanation'           => 'isoMailTokens',
+            'sql'                   => "text NULL",
         ),
         'attachments' => array
         (
-              'label'               => &$GLOBALS['TL_LANG']['tl_iso_mail_content']['attachments'],
+            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_mail_content']['attachments'],
             'exclude'               => true,
-              'inputType'           => 'fileTree',
-              'eval'                => array('mandatory'=>false, 'files'=>true, 'filesOnly'=>true,'fieldType' => 'checkbox'),
+            'inputType'             => 'fileTree',
+            'eval'                  => array('mandatory'=>false, 'files'=>true, 'filesOnly'=>true,'fieldType' => 'checkbox'),
+            'sql'                   => "blob NULL"
         ),
     )
 );

@@ -43,6 +43,16 @@ $GLOBALS['TL_DCA']['tl_iso_product_collection'] = array
         (
             array('Isotope\tl_iso_product_collection', 'executeSaveHook'),
         ),
+        'sql' => array
+        (
+            'keys' => array
+            (
+                'id' => 'primary',
+                'member;member,store_id,type' => 'index',
+                'uniqid;uniqid,store_id,type' => 'index',
+                'source_collection_id;source_collection_id,type' => 'index',
+            ),
+        ),
     ),
 
     // List
@@ -155,10 +165,52 @@ $GLOBALS['TL_DCA']['tl_iso_product_collection'] = array
         'id' => array
         (
             'eval'                  => array('doNotShow'=>true),
+            'sql'                   =>  "int(10) unsigned NOT NULL auto_increment",
+        ),
+        'tstamp' => array
+        (
+            'sql'                   =>  "int(10) unsigned NOT NULL default '0'",
+        ),
+        'type'  =>  array
+        (
+            'sql'                   => "varchar(32) NOT NULL default ''",
+        ),
+        'member'  =>  array
+        (
+            'sql'                   => "int(10) unsigned NOT NULL default '0'",
+        ),
+        'locked' => array
+        (
+            'sql'                   => "char(1) NOT NULL default ''",
+        ),
+        'store_id' => array
+        (
+            'sql'                   => "int(2) unsigned NOT NULL default '0'",
+        ),
+        'language' => array
+        (
+            'sql'                   => "varchar(5) NOT NULL default ''"
+        ),
+        'settings' => array
+        (
+            'sql'                   => "blob NULL",
+        ),
+        'checkout_info' => array
+        (
+            'sql'                   => "blob NULL"
+        ),
+        'payment_data' => array
+        (
+            'sql'                   => "blob NULL"
+        ),
+        'shipping_data' => array
+        (
+            'sql'                   => "blob NULL"
         ),
         'source_collection_id' => array
         (
             'foreignKey'            => 'tl_iso_product_collection.type',
+            'sql'                   => "int(10) unsigned NOT NULL default '0'",
             'relation'              => array('type'=>'hasOne', 'load'=>'lazy'),
         ),
         'order_id' => array
@@ -166,11 +218,13 @@ $GLOBALS['TL_DCA']['tl_iso_product_collection'] = array
             'label'                 => &$GLOBALS['TL_LANG']['tl_iso_product_collection']['order_id'],
             'search'                => true,
             'sorting'               => true,
+            'sql'                   => "varchar(14) NOT NULL default ''",
         ),
         'uniqid' => array
         (
             'label'                 => &$GLOBALS['TL_LANG']['tl_iso_product_collection']['uniqid'],
             'search'                => true,
+            'sql'                   => "varchar(64) NOT NULL default ''",
         ),
         'order_status' => array
         (
@@ -181,6 +235,7 @@ $GLOBALS['TL_DCA']['tl_iso_product_collection'] = array
             'inputType'             => 'select',
             'foreignKey'            => 'tl_iso_orderstatus.name',
             'options_callback'      => array('\Isotope\Backend', 'getOrderStatus'),
+            'sql'                   => "int(10) unsigned NOT NULL default '0'",
             'relation'              => array('type'=>'hasOne', 'load'=>'lazy'),
             'save_callback' => array
             (
@@ -194,6 +249,7 @@ $GLOBALS['TL_DCA']['tl_iso_product_collection'] = array
             'filter'                => true,
             'sorting'               => true,
             'eval'                  => array('rgxp'=>'date', 'tl_class'=>'clr'),
+            'sql'                   => "int(10) unsigned NOT NULL default '0'",
         ),
         'date_paid' => array
         (
@@ -201,6 +257,7 @@ $GLOBALS['TL_DCA']['tl_iso_product_collection'] = array
             'exclude'               => true,
             'inputType'             => 'text',
             'eval'                  => array('rgxp'=>'datim', 'datepicker'=>(method_exists($this,'getDatePickerString') ? $this->getDatePickerString() : true), 'tl_class'=>'w50 wizard'),
+            'sql'                   => "varchar(10) NOT NULL default ''"
         ),
         'date_shipped' => array
         (
@@ -208,11 +265,13 @@ $GLOBALS['TL_DCA']['tl_iso_product_collection'] = array
             'exclude'               => true,
             'inputType'             => 'text',
             'eval'                  => array('rgxp'=>'date', 'datepicker'=>(method_exists($this,'getDatePickerString') ? $this->getDatePickerString() : true), 'tl_class'=>'w50 wizard'),
+            'sql'                   => "varchar(10) NOT NULL default ''",
         ),
         'config_id' => array
         (
             'label'                 => &$GLOBALS['TL_LANG']['tl_iso_product_collection']['config_id'],
             'foreignKey'            => 'tl_iso_config.name',
+            'sql'                   => "int(10) unsigned NOT NULL default '0'",
             'relation'              => array('type'=>'hasOne', 'load'=>'lazy'),
         ),
         'payment_id' => array
@@ -220,6 +279,7 @@ $GLOBALS['TL_DCA']['tl_iso_product_collection'] = array
             'label'                 => &$GLOBALS['TL_LANG']['tl_iso_product_collection']['payment_id'],
             'filter'                => true,
             'foreignKey'            => 'tl_iso_payment_modules.name',
+            'sql'                   => "int(10) unsigned NOT NULL default '0'",
             'relation'              => array('type'=>'hasOne', 'load'=>'lazy'),
         ),
         'shipping_id' => array
@@ -227,6 +287,7 @@ $GLOBALS['TL_DCA']['tl_iso_product_collection'] = array
             'label'                 => &$GLOBALS['TL_LANG']['tl_iso_product_collection']['shipping_id'],
             'filter'                => true,
             'foreignKey'            => 'tl_iso_shipping_modules.name',
+            'sql'                   => "int(10) unsigned NOT NULL default '0'",
             'relation'              => array('type'=>'hasOne', 'load'=>'lazy'),
         ),
         'address1_id' => array
@@ -234,12 +295,14 @@ $GLOBALS['TL_DCA']['tl_iso_product_collection'] = array
             'label'                 => &$GLOBALS['TL_LANG']['tl_iso_product_collection']['address1_id'],
             'foreignKey'            => 'tl_iso_addresses.label',
             'eval'                  => array('doNotShow'=>true),
+            'sql'                   => "int(10) unsigned NOT NULL default '0'",
             'relation'              => array('type'=>'hasOne', 'load'=>'lazy'),
         ),
         'address2_id' => array
         (
             'foreignKey'            => 'tl_iso_addresses.label',
             'eval'                  => array('doNotShow'=>true),
+            'sql'                   => "int(10) unsigned NOT NULL default '0'",
             'relation'              => array('type'=>'hasOne', 'load'=>'lazy'),
         ),
         'details' => array
@@ -247,16 +310,30 @@ $GLOBALS['TL_DCA']['tl_iso_product_collection'] = array
             'input_field_callback'  => array('Isotope\tl_iso_product_collection', 'generateOrderDetails'),
             'eval'                  => array('doNotShow'=>true),
         ),
+        'subTotal' => array
+        (
+            'sql'                   => "decimal(12,2) NOT NULL default '0.00'",
+        ),
+        'taxTotal' => array
+        (
+            'sql'                   => "decimal(12,2) NOT NULL default '0.00'",
+        ),
         'grandTotal' => array
         (
             'label'                 => &$GLOBALS['TL_LANG']['MSC']['grandTotalLabel'],
+            'sql'                   => "decimal(12,2) NOT NULL default '0.00'",
+        ),
+        'currency' => array
+        (
+            'sql'                   => "varchar(4) NOT NULL default ''",
         ),
         'notes' => array
         (
             'label'                 => &$GLOBALS['TL_LANG']['tl_iso_product_collection']['notes'],
             'exclude'               => true,
             'inputType'             => 'textarea',
-            'eval'                  => array('style'=>'height:80px;')
+            'eval'                  => array('style'=>'height:80px;'),
+            'sql'                   => "text NULL",
         ),
         'email_data' => array
         (

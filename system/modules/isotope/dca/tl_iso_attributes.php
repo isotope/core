@@ -44,6 +44,13 @@ $GLOBALS['TL_DCA']['tl_iso_attributes'] = array
             array('Isotope\tl_iso_attributes', 'updateDatabase'),
             array('Isotope\tl_iso_attributes', 'cleanFieldValues'),
         ),
+        'sql' => array
+        (
+            'keys' => array
+            (
+                'id' => 'primary',
+            )
+        ),
     ),
 
     // List
@@ -144,12 +151,21 @@ $GLOBALS['TL_DCA']['tl_iso_attributes'] = array
     // Fields
     'fields' => array
     (
+        'id' => array
+        (
+            'sql'                 =>  "int(10) unsigned NOT NULL auto_increment",
+        ),
+        'tstamp' => array
+        (
+            'sql'                 =>  "int(10) unsigned NOT NULL default '0'",
+        ),
         'name' => array
         (
             'label'                 => &$GLOBALS['TL_LANG']['tl_iso_attributes']['name'],
             'exclude'               => true,
             'inputType'             => 'text',
             'eval'                  => array('mandatory'=>true, 'maxlength'=>255, 'tl_class'=>'w50'),
+            'sql'                   => "varchar(255) NOT NULL default ''",
         ),
         'field_name' => array
         (
@@ -157,6 +173,7 @@ $GLOBALS['TL_DCA']['tl_iso_attributes'] = array
             'exclude'               => true,
             'inputType'             => 'text',
             'eval'                  => array('mandatory'=>true, 'maxlength'=>30, 'unique'=>true, 'doNotCopy'=>true, 'doNotSaveEmpty'=>true, 'tl_class'=>'w50'),
+            'sql'                   => "varchar(30) NOT NULL default''",
             'save_callback' => array
             (
                 array('Isotope\tl_iso_attributes', 'validateFieldName'),
@@ -169,7 +186,8 @@ $GLOBALS['TL_DCA']['tl_iso_attributes'] = array
             'inputType'             => 'select',
             'options'               => \Isotope\Model\Attribute::getModelTypeOptions(),
             'eval'                  => array('mandatory'=>true, 'includeBlankOption'=>true, 'submitOnChange'=>true, 'helpwizard'=>true, 'tl_class'=>'w50', 'chosen'=>true),
-            'reference'             => &$GLOBALS['TL_LANG']['ATTR']
+            'reference'             => &$GLOBALS['TL_LANG']['ATTR'],
+            'sql'                   => "varchar(64) NOT NULL default ''",
         ),
         'legend' => array
         (
@@ -179,7 +197,8 @@ $GLOBALS['TL_DCA']['tl_iso_attributes'] = array
             'inputType'             => 'select',
             'options'               => array('general_legend', 'meta_legend', 'pricing_legend', 'inventory_legend', 'shipping_legend', 'options_legend', 'media_legend', 'expert_legend', 'publish_legend'),
             'reference'             => &$GLOBALS['TL_LANG']['tl_iso_products'],
-            'eval'                  => array('mandatory'=>true, 'tl_class'=>'w50', 'chosen'=>true)
+            'eval'                  => array('mandatory'=>true, 'tl_class'=>'w50', 'chosen'=>true),
+            'sql'                   => "varchar(255) NOT NULL default ''",
         ),
         'description' => array
         (
@@ -187,6 +206,7 @@ $GLOBALS['TL_DCA']['tl_iso_attributes'] = array
             'exclude'               => true,
             'inputType'             => 'text',
             'eval'                  => array('maxlength'=>255, 'tl_class'=>'clr long'),
+            'sql'                   => "varchar(255) NOT NULL default ''",
         ),
         'options' => array
         (
@@ -224,6 +244,7 @@ $GLOBALS['TL_DCA']['tl_iso_attributes'] = array
                     ),
                 ),
             ),
+            'sql'   => "blob NULL",
         ),
         'foreignKey' => array
         (
@@ -231,6 +252,7 @@ $GLOBALS['TL_DCA']['tl_iso_attributes'] = array
             'exclude'               => true,
             'inputType'             => 'textarea',
             'eval'                  => array('style'=>'height:80px', 'decodeEntities'=>true),
+            'sql'                   => "text NULL",
             'save_callback' => array
             (
                 array('Isotope\tl_iso_attributes', 'validateForeignKey'),
@@ -242,18 +264,21 @@ $GLOBALS['TL_DCA']['tl_iso_attributes'] = array
             'exclude'               => true,
             'inputType'             => 'checkbox',
             'eval'                  => array('submitOnChange'=>true, 'tl_class'=>'w50'),
+            'sql'                   => "char(1) NOT NULL default ''",
         ),
         'be_search' => array
         (
             'label'                 => &$GLOBALS['TL_LANG']['tl_iso_attributes']['be_search'],
             'exclude'               => true,
-            'inputType'             => 'checkbox'
+            'inputType'             => 'checkbox',
+            'sql'                   => "char(1) NOT NULL default ''",
         ),
         'be_filter' => array
         (
             'label'                 => &$GLOBALS['TL_LANG']['tl_iso_attributes']['be_filter'],
             'exclude'               => true,
             'inputType'             => 'checkbox',
+            'sql'                   => "char(1) NOT NULL default ''",
         ),
         'customer_defined' => array
         (
@@ -261,6 +286,7 @@ $GLOBALS['TL_DCA']['tl_iso_attributes'] = array
             'exclude'               => true,
             'inputType'             => 'checkbox',
             'eval'                  => array('tl_class'=>'w50'),
+            'sql'                   => "char(1) NOT NULL default ''",
         ),
         'mandatory' => array
         (
@@ -268,24 +294,28 @@ $GLOBALS['TL_DCA']['tl_iso_attributes'] = array
             'exclude'               => true,
             'inputType'             => 'checkbox',
             'eval'                  => array('tl_class'=>'w50'),
+            'sql'                   => "char(1) NOT NULL default ''",
         ),
         'fe_filter' => array
         (
             'label'                 => &$GLOBALS['TL_LANG']['tl_iso_attributes']['fe_filter'],
             'exclude'               => true,
-            'inputType'             => 'checkbox'
+            'inputType'             => 'checkbox',
+            'sql'                   => "char(1) NOT NULL default ''",
         ),
         'fe_search' => array
         (
             'label'                 => &$GLOBALS['TL_LANG']['tl_iso_attributes']['fe_search'],
             'exclude'               => true,
-            'inputType'             => 'checkbox'
+            'inputType'             => 'checkbox',
+            'sql'                   => "char(1) NOT NULL default ''",
         ),
         'fe_sorting' => array
         (
             'label'                 => &$GLOBALS['TL_LANG']['tl_iso_attributes']['fe_sorting'],
             'exclude'               => true,
-            'inputType'             => 'checkbox'
+            'inputType'             => 'checkbox',
+            'sql'                   => "char(1) NOT NULL default ''",
         ),
         'multiple' => array
         (
@@ -293,6 +323,7 @@ $GLOBALS['TL_DCA']['tl_iso_attributes'] = array
             'exclude'               => true,
             'inputType'             => 'checkbox',
             'eval'                  => array('tl_class'=>'w50'),
+            'sql'                   => "char(1) NOT NULL default ''",
         ),
         'size' => array
         (
@@ -301,6 +332,7 @@ $GLOBALS['TL_DCA']['tl_iso_attributes'] = array
             'inputType'             => 'text',
             'default'               => 5,
             'eval'                  => array('rgxp'=>'digit', 'tl_class'=>'w50'),
+            'sql'                   => "smallint(5) unsigned NOT NULL default '0'",
         ),
         'extensions' => array
         (
@@ -309,6 +341,7 @@ $GLOBALS['TL_DCA']['tl_iso_attributes'] = array
             'default'               => 'jpg,jpeg,gif,png',
             'inputType'             => 'text',
             'eval'                  => array('rgxp'=>'extnd', 'maxlength'=>255, 'tl_class'=>'w50'),
+            'sql'                   => "varchar(255) NOT NULL default ''",
         ),
         'rte' => array
         (
@@ -316,7 +349,8 @@ $GLOBALS['TL_DCA']['tl_iso_attributes'] = array
             'exclude'               => true,
             'inputType'             => 'select',
             'options_callback'      => array('Isotope\tl_iso_attributes', 'getRTE'),
-            'eval'                  => array('includeBlankOption'=>true, 'tl_class'=>'w50', 'chosen'=>true)
+            'eval'                  => array('includeBlankOption'=>true, 'tl_class'=>'w50', 'chosen'=>true),
+            'sql'                   => "varchar(255) NOT NULL default ''",
         ),
         'multilingual' => array
         (
@@ -324,6 +358,7 @@ $GLOBALS['TL_DCA']['tl_iso_attributes'] = array
             'exclude'               => true,
             'inputType'             => 'checkbox',
             'eval'                  => array('tl_class'=>'w50'),
+            'sql'                   => "char(1) NOT NULL default ''",
         ),
         'rgxp' => array
         (
@@ -332,14 +367,16 @@ $GLOBALS['TL_DCA']['tl_iso_attributes'] = array
             'inputType'             => 'select',
             'options'               => array('digit', 'alpha', 'alnum', 'extnd', 'date', 'time', 'datim', 'phone', 'email', 'url', 'price', 'discount', 'surcharge'),
             'reference'             => &$GLOBALS['TL_LANG']['tl_iso_attributes'],
-            'eval'                  => array('helpwizard'=>true, 'includeBlankOption'=>true, 'tl_class'=>'w50', 'chosen'=>true)
+            'eval'                  => array('helpwizard'=>true, 'includeBlankOption'=>true, 'tl_class'=>'w50', 'chosen'=>true),
+            'sql'                   => "varchar(255) NOT NULL default ''",
         ),
         'maxlength' => array
         (
             'label'                 => &$GLOBALS['TL_LANG']['tl_iso_attributes']['maxlength'],
             'exclude'               => true,
             'inputType'             => 'text',
-            'eval'                  => array('rgxp'=>'digit', 'tl_class'=>'w50')
+            'eval'                  => array('rgxp'=>'digit', 'tl_class'=>'w50'),
+            'sql'                   => "int(10) unsigned NOT NULL default '0'",
         ),
         'conditionField' => array
         (
@@ -347,7 +384,8 @@ $GLOBALS['TL_DCA']['tl_iso_attributes'] = array
             'exclude'               => true,
             'inputType'             => 'select',
             'options_callback'      => array('Isotope\tl_iso_attributes', 'getConditionFields'),
-            'eval'                  => array('includeBlankOption'=>true, 'mandatory'=>true, 'tl_class'=>'w50', 'chosen'=>true)
+            'eval'                  => array('includeBlankOption'=>true, 'mandatory'=>true, 'tl_class'=>'w50', 'chosen'=>true),
+            'sql'                   => "varchar(30) NOT NULL default ''",
         ),
         'gallery' => array
         (
@@ -358,6 +396,7 @@ $GLOBALS['TL_DCA']['tl_iso_attributes'] = array
             'options'               => array_keys(\Isotope\Factory\Gallery::getClasses()),
             'reference'             => \Isotope\Factory\Gallery::getClassLabels(),
             'eval'                  => array('includeBlankOption'=>true, 'tl_class'=>'w50', 'helpwizard'=>true),
+            'sql'                   => "varchar(64) NOT NULL default ''",
         ),
         'fieldType' => array
         (
@@ -367,6 +406,7 @@ $GLOBALS['TL_DCA']['tl_iso_attributes'] = array
             'options'               => array('checkbox', 'radio'),
             'reference'             => &$GLOBALS['TL_LANG']['tl_iso_attributes'],
             'eval'                  => array('tl_class'=>'w50'),
+            'sql'                   => "varchar(8) NOT NULL default ''",
         ),
         'files' => array
         (
@@ -374,6 +414,7 @@ $GLOBALS['TL_DCA']['tl_iso_attributes'] = array
             'exclude'               => true,
             'inputType'             => 'checkbox',
             'eval'                  => array('submitOnChange'=>true, 'tl_class'=>'w50'),
+            'sql'                   => "char(1) NOT NULL default ''",
         ),
         'filesOnly' => array
         (
@@ -381,6 +422,7 @@ $GLOBALS['TL_DCA']['tl_iso_attributes'] = array
             'exclude'               => true,
             'inputType'             => 'checkbox',
             'eval'                  => array('tl_class'=>'w50'),
+            'sql'                   => "char(1) NOT NULL default ''",
         ),
         'sortBy' => array
         (
@@ -389,42 +431,48 @@ $GLOBALS['TL_DCA']['tl_iso_attributes'] = array
             'inputType'             => 'select',
             'options'               => array('name_asc', 'name_desc', 'date_asc', 'date_desc', 'meta', 'random'),
             'reference'             => &$GLOBALS['TL_LANG']['tl_iso_attributes'],
-            'eval'                  => array('tl_class'=>'w50')
+            'eval'                  => array('tl_class'=>'w50'),
+            'sql'                   => "varchar(32) NOT NULL default ''",
         ),
         'path' => array
         (
             'label'                 => &$GLOBALS['TL_LANG']['tl_iso_attributes']['path'],
             'exclude'               => true,
             'inputType'             => 'fileTree',
-            'eval'                  => array('fieldType'=>'radio', 'tl_class'=>'clr')
+            'eval'                  => array('fieldType'=>'radio', 'tl_class'=>'clr'),
+            'sql'                   => "varchar(255) NOT NULL default ''",
         ),
         'storeFile' => array
         (
             'label'                 => &$GLOBALS['TL_LANG']['tl_iso_attributes']['storeFile'],
             'exclude'               => true,
             'inputType'             => 'checkbox',
-            'eval'                  => array('submitOnChange'=>true)
+            'eval'                  => array('submitOnChange'=>true),
+            'sql'                   => "char(1) NOT NULL default ''",
         ),
         'uploadFolder' => array
         (
             'label'                 => &$GLOBALS['TL_LANG']['tl_iso_attributes']['uploadFolder'],
             'exclude'               => true,
             'inputType'             => 'fileTree',
-            'eval'                  => array('fieldType'=>'radio', 'tl_class'=>'clr')
+            'eval'                  => array('fieldType'=>'radio', 'tl_class'=>'clr'),
+            'sql'                   => "varchar(255) NOT NULL default ''",
         ),
         'useHomeDir' => array
         (
             'label'                 => &$GLOBALS['TL_LANG']['tl_iso_attributes']['useHomeDir'],
             'exclude'               => true,
             'inputType'             => 'checkbox',
-            'eval'                  => array('tl_class'=>'w50')
+            'eval'                  => array('tl_class'=>'w50'),
+            'sql'                   => "char(1) NOT NULL default ''",
         ),
         'doNotOverwrite' => array
         (
             'label'                 => &$GLOBALS['TL_LANG']['tl_iso_attributes']['doNotOverwrite'],
             'exclude'               => true,
             'inputType'             => 'checkbox',
-            'eval'                  => array('tl_class'=>'w50')
+            'eval'                  => array('tl_class'=>'w50'),
+            'sql'                   => "char(1) NOT NULL default ''",
         ),
         'datepicker' => array
         (
@@ -432,6 +480,7 @@ $GLOBALS['TL_DCA']['tl_iso_attributes'] = array
             'exclude'               => true,
             'inputType'             => 'checkbox',
             'eval'                  => array('tl_class'=>'w50'),
+            'sql'                   => "char(1) NOT NULL default ''",
             'save_callback' => array
             (
                 array('Isotope\tl_iso_attributes', 'validateDatepicker'),

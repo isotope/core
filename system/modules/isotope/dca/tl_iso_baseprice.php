@@ -29,6 +29,13 @@ $GLOBALS['TL_DCA']['tl_iso_baseprice'] = array
         (
             array('Isotope\Backend', 'initializeSetupModule'),
         ),
+        'sql' => array
+        (
+            'keys' => array
+            (
+                'id' => 'primary',
+            )
+        ),
     ),
 
     // List
@@ -109,6 +116,14 @@ $GLOBALS['TL_DCA']['tl_iso_baseprice'] = array
     // Fields
     'fields' => array
     (
+        'id' => array
+        (
+            'sql'                 =>  "int(10) unsigned NOT NULL auto_increment",
+        ),
+        'tstamp' => array
+        (
+            'sql'                 =>  "int(10) unsigned NOT NULL default '0'",
+        ),
         'name' => array
         (
             'label'             => &$GLOBALS['TL_LANG']['tl_iso_baseprice']['name'],
@@ -116,6 +131,7 @@ $GLOBALS['TL_DCA']['tl_iso_baseprice'] = array
             'search'            => true,
             'inputType'         => 'text',
             'eval'              => array('mandatory'=>true, 'maxlength'=>255, 'tl_class'=>'w50'),
+            'sql'               => "varchar(255) NOT NULL default ''",
         ),
         'amount' => array
         (
@@ -123,6 +139,7 @@ $GLOBALS['TL_DCA']['tl_iso_baseprice'] = array
             'exclude'           => true,
             'inputType'         => 'text',
             'eval'              => array('mandatory'=>true, 'rgxp'=>'digit', 'maxlength'=>32, 'tl_class'=>'w50'),
+            'sql'               => "varchar(32) NOT NULL default ''",
         ),
         'label' => array
         (
@@ -132,6 +149,7 @@ $GLOBALS['TL_DCA']['tl_iso_baseprice'] = array
             'default'           => '%s',
             'inputType'         => 'text',
             'eval'              => array('mandatory'=>true, 'maxlength'=>255, 'tl_class'=>'clr long'),
+            'sql'               => "varchar(255) NOT NULL default ''",
         ),
     )
 );
