@@ -22,18 +22,14 @@ $GLOBALS['TL_DCA']['tl_iso_price_tiers'] = array
     // Config
     'config' => array
     (
-        'dataContainer'             => 'Table',
-        //'ptable'                    => '',
-    ),
-
-    // List
-    'list' => array
-    (
-    ),
-
-    // Palettes
-    'palettes' => array
-    (
+        'sql' => array
+        (
+            'keys' => array
+            (
+                'id' => 'primary',
+                'pid' => 'index',
+            )
+        ),
     ),
 
     // Fields

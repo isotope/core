@@ -30,7 +30,14 @@ $GLOBALS['TL_DCA']['tl_iso_tax_class'] = array
         (
             array('Isotope\Backend', 'initializeSetupModule'),
             array('Isotope\tl_iso_tax_class', 'checkPermission'),
-        )
+        ),
+        'sql' => array
+        (
+            'keys' => array
+            (
+                'id' => 'primary',
+            )
+        ),
     ),
 
     // List

@@ -27,6 +27,14 @@ $GLOBALS['TL_DCA']['tl_iso_product_collection_item'] = array
         'notEditable'       => true,
         'ptable'            => 'tl_iso_product_collection',
         'ctable'            => array('tl_iso_product_collection_download'),
+        'sql'               => array
+        (
+            'keys' => array
+            (
+                'id' => 'primary',
+                'pid' => 'index',
+            )
+        ),
     ),
 
     // Fields

@@ -29,6 +29,13 @@ $GLOBALS['TL_DCA']['tl_iso_baseprice'] = array
         (
             array('Isotope\Backend', 'initializeSetupModule'),
         ),
+        'sql' => array
+        (
+            'keys' => array
+            (
+                'id' => 'primary',
+            )
+        ),
     ),
 
     // List

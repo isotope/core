@@ -27,6 +27,14 @@ $GLOBALS['TL_DCA']['tl_iso_mail_content'] = array
         'dataContainer'             => 'Table',
         'ptable'                    => 'tl_iso_mail',
         'enableVersioning'          => true,
+        'sql' => array
+        (
+            'keys' => array
+            (
+                'id' => 'primary',
+                'pid' => 'index',
+            )
+        ),
     ),
 
     // List

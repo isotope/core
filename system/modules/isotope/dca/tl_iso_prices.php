@@ -32,6 +32,14 @@ $GLOBALS['TL_DCA']['tl_iso_prices'] = array
         (
             array('Isotope\tl_iso_prices', 'initializeDCA'),
         ),
+        'sql' => array
+        (
+            'keys' => array
+            (
+                'id' => 'primary',
+                'pid' => 'index',
+            )
+        ),
     ),
 
     // List

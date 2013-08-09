@@ -28,6 +28,14 @@ $GLOBALS['TL_DCA']['tl_iso_addresses'] = array
         'ptable'                    => '',
         'dynamicPtable'             => true,
         'onload_callback'           => array(),
+        'sql' => array
+        (
+            'keys' => array
+            (
+                'id' => 'primary',
+                'pid;pid,store_id' => 'index',
+            )
+        ),
     ),
 
     // List

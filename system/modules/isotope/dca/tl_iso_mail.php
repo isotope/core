@@ -33,6 +33,13 @@ $GLOBALS['TL_DCA']['tl_iso_mail'] = array
             array('Isotope\Backend', 'initializeSetupModule'),
             array('Isotope\tl_iso_mail', 'checkPermission'),
         ),
+        'sql' => array
+        (
+            'keys' => array
+            (
+                'id' => 'primary',
+            )
+        ),
     ),
 
     // List

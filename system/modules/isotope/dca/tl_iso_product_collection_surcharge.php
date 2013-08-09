@@ -19,6 +19,17 @@
  */
 $GLOBALS['TL_DCA']['tl_iso_product_collection_surcharge'] = array
 (
+    'config' => array
+    (
+        'sql' => array
+        (
+            'keys' => array
+            (
+                'id' => 'primary',
+                'pid' => 'index',
+            )
+        ),
+    ),
 
     // Fields
     'fields' => array
