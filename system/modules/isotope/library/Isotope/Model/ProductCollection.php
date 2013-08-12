@@ -1034,8 +1034,6 @@ abstract class ProductCollection extends TypeAgent
         $arrOldItems = $objSource->getItems();
 
         foreach ($arrOldItems as $objOldItem) {
-            // @todo: what is this variable used for?
-            $objNewItems = \Database::getInstance()->prepare("SELECT * FROM tl_iso_product_collection_item WHERE pid={$this->id} AND product_id={$objOldItem->product_id} AND options=?")->execute($objOldItem->options);
 
             // !HOOK: additional functionality when copying product to collection
             if (isset($GLOBALS['ISO_HOOKS']['copyCollectionItem']) && is_array($GLOBALS['ISO_HOOKS']['copyCollectionItem'])) {
@@ -1119,6 +1117,9 @@ abstract class ProductCollection extends TypeAgent
             $blnHasProduct = $objItem->hasProduct();
             $objProduct = $objItem->getProduct();
 
+            // Set the active product for insert tags replacement
+            $GLOBALS['ACTIVE_PRODUCT'] = $objProduct;
+
             $arrItems[] = array(
                 'id'                => $objItem->id,
                 'sku'               => $objItem->getSku(),
@@ -1135,6 +1136,8 @@ abstract class ProductCollection extends TypeAgent
                 'raw'               => $objItem->row(),
                 'rowClass'          => trim('product ' . (($blnHasProduct && $objProduct->isNew()) ? 'new ' : '') . $objProduct->cssID[1]),
             );
+
+            unset($GLOBALS['ACTIVE_PRODUCT']);
         }
 
         $objTemplate->collection = $this;

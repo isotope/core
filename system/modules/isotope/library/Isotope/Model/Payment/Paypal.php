@@ -78,7 +78,7 @@ class Paypal extends Payment implements IsotopePayment
     public function processPostSale()
     {
         $objRequest = new Request();
-        $objRequest->send(('https://www.' . ($this->debug ? 'sandbox.' : '') . 'paypal.com/cgi-bin/webscr?cmd=_notify-validate'), http_build_query($_POST), 'post');
+        $objRequest->send(('https://www.' . ($this->debug ? 'sandbox.' : '') . 'paypal.com/cgi-bin/webscr?cmd=_notify-validate'), http_build_query($_POST, '', '&'), 'post');
 
         if ($objRequest->hasError())
         {
@@ -183,8 +183,13 @@ class Paypal extends Payment implements IsotopePayment
 
         foreach (Isotope::getCart()->getItems() as $objItem) {
 
+            // Set the active product for insert tags replacement
+            $GLOBALS['ACTIVE_PRODUCT'] = $objItem->getProduct();
+
             $strOptions = '';
             $arrOptions = Isotope::formatOptions($objItem->getOptions());
+
+            unset($GLOBALS['ACTIVE_PRODUCT']);
 
             if (!empty($arrOptions)) {
 

@@ -285,6 +285,11 @@ class Standard extends \Controller implements IsotopeProduct
                                 break;
 
                             default:
+                                if ($this->pid > 0 && $GLOBALS['TL_DCA']['tl_iso_products']['fields'][$strKey]['attributes']['customer_defined'] || $GLOBALS['TL_DCA']['tl_iso_products']['fields'][$strKey]['attributes']['variant_option']) {
+
+    							    return isset($this->arrOptions[$strKey]) ? deserialize($this->arrOptions[$strKey]) : null;
+							    }
+
                                 return isset($this->arrData[$strKey]) ? deserialize($this->arrData[$strKey]) : null;
                         }
                     }

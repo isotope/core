@@ -776,7 +776,7 @@ class Isotope extends \Controller
             $arrOptions[$field] = array
             (
                 'label'    => static::formatLabel($strTable, $field),
-                'value'    => static::formatValue($strTable, $field, $value),
+                'value'    => Isotope::getInstance()->call('replaceInsertTags', static::formatValue($strTable, $field, $value)),
             );
         }
 
