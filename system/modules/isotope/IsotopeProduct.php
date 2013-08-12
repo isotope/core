@@ -348,6 +348,11 @@ class IsotopeProduct extends Controller
 								break;
 
 							default:
+							    if ($this->pid > 0 && $GLOBALS['TL_DCA']['tl_iso_products']['fields'][$strKey]['attributes']['customer_defined'] || $GLOBALS['TL_DCA']['tl_iso_products']['fields'][$strKey]['attributes']['variant_option']) {
+
+    							    return isset($this->arrOptions[$strKey]) ? deserialize($this->arrOptions[$strKey]) : null;
+							    }
+
 								return isset($this->arrData[$strKey]) ? deserialize($this->arrData[$strKey]) : null;
 						}
 					}
@@ -616,6 +621,9 @@ class IsotopeProduct extends Controller
 			return $this->arrOptions;
 		}
 
+		// Set the active product for insert tags replacement
+        $GLOBALS['ACTIVE_PRODUCT'] = $this;
+
 		$arrOptions = array();
 
 		foreach ($this->arrOptions as $field => $value)
@@ -626,9 +634,11 @@ class IsotopeProduct extends Controller
 			$arrOptions[$field] = array
 			(
 				'label'	=> $this->Isotope->formatLabel('tl_iso_products', $field),
-				'value'	=> $this->Isotope->formatValue('tl_iso_products', $field, $value),
+				'value'	=> $this->replaceInsertTags($this->Isotope->formatValue('tl_iso_products', $field, $value)),
 			);
 		}
+
+		unset($GLOBALS['ACTIVE_PRODUCT']);
 
 		return $arrOptions;
 	}
