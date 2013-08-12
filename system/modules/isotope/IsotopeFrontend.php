@@ -189,10 +189,10 @@ class IsotopeFrontend extends Frontend
 		elseif ($arrTag[0] == 'product')
 		{
 			// 2 possible use cases:
-			// {{product::attribute}}				- gets the data of the current product ($GLOBALS['ISO_PRODUCT'] or GET parameter "product")
+			// {{product::attribute}}				- gets the data of the current product ($GLOBALS['ACTIVE_PRODUCT'] or GET parameter "product")
 			// {{product::attribute::product_id}}	- gets the data of the specified product ID
 
-			$objProduct = (count($arrTag) == 3) ? self::getProduct($arrTag[2]) : ($GLOBALS['ISO_PRODUCT'] ? $GLOBALS['ISO_PRODUCT'] : self::getProductByAlias($this->Input->get('product')));
+			$objProduct = (count($arrTag) == 3) ? self::getProduct($arrTag[2]) : ($GLOBALS['ACTIVE_PRODUCT'] ? $GLOBALS['ACTIVE_PRODUCT'] : self::getProductByAlias($this->Input->get('product')));
 
 			return ($objProduct !== null) ? $objProduct->{$arrTag[1]} : '';
 		}

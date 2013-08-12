@@ -622,7 +622,7 @@ class IsotopeProduct extends Controller
 		}
 
 		// Set the active product for insert tags replacement
-        $GLOBALS['ISO_PRODUCT'] = $this;
+        $GLOBALS['ACTIVE_PRODUCT'] = $this;
 
 		$arrOptions = array();
 
@@ -638,7 +638,7 @@ class IsotopeProduct extends Controller
 			);
 		}
 
-		unset($GLOBALS['ISO_PRODUCT']);
+		unset($GLOBALS['ACTIVE_PRODUCT']);
 
 		return $arrOptions;
 	}
