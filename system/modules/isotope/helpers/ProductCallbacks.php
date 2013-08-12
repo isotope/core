@@ -239,6 +239,14 @@ class ProductCallbacks extends \Backend
                     $arrProducts = is_array($arrProducts) ? array_intersect($arrProducts, $objProducts->fetchEach('id')) : $objProducts->fetchEach('id');
                     break;
 
+                case 'iso_pages':
+                    // Filter the products by pages
+            		if (!empty($v) && is_array($v))
+            		{
+            		    $objProducts = $this->Database->execute("SELECT id FROM tl_iso_products p WHERE pid=0 AND language='' AND id IN (SELECT pid FROM tl_iso_product_categories c WHERE c.pid=p.id AND c.page_id IN (" . implode(array_map('intval', $v)) . "))");
+                        $arrProducts = is_array($arrProducts) ? array_intersect($arrProducts, $objProducts->fetchEach('id')) : $objProducts->fetchEach('id');
+            		}
+
                 default:
                     // !HOOK: add custom advanced filters
                     if (isset($GLOBALS['ISO_HOOKS']['applyAdvancedFilters']) && is_array($GLOBALS['ISO_HOOKS']['applyAdvancedFilters']))
@@ -259,26 +267,6 @@ class ProductCallbacks extends \Backend
                     \System::log('Advanced product filter "' . $k . '" not found.', __METHOD__, TL_ERROR);
                     break;
 			}
-		}
-
-		// Filter the products by pages
-		if (isset($session['iso_products_pages']) && is_array($session['iso_products_pages']) && !empty($session['iso_products_pages']))
-		{
-			$products = array();
-			$objProducts = $this->Database->execute("SELECT id, pages FROM tl_iso_products WHERE pid=0 AND language=''");
-
-			while ($objProducts->next())
-			{
-				$pages = deserialize($objProducts->pages, true);
-
-				// Add the product if pages match
-				if (count(array_intersect($session['iso_products_pages'], $pages)))
-				{
-					$products[] = $objProducts->id;
-				}
-			}
-
-			$arrProducts = is_array($arrProducts) ? array_intersect($arrProducts, $products) : $products;
 		}
 
 		if (is_array($arrProducts) && empty($arrProducts))
@@ -675,7 +663,8 @@ window.addEvent('domready', function() {
      */
     public function generateFilterButtons()
     {
-    	$arrPages = (array) $this->Session->get('iso_products_pages');
+        $session = $this->Session->getData();
+    	$arrPages = (array) $session['filter']['tl_iso_products']['iso_pages'];
 
 	    return '
 <div class="tl_filter iso_filter tl_subpanel">

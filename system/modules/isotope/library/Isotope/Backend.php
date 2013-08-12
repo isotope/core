@@ -816,7 +816,9 @@ class Backend extends Contao_Backend
 
 			// Filter the pages
 			case 'filterPages':
-				$this->Session->set('iso_products_pages', (array) \Input::post('value'));
+			    $filter = $this->Session->get('filter');
+				$filter['tl_iso_products']['iso_pages'] = array_map('intval', (array) \Input::post('value'));
+				$this->Session->set('filter', $filter);
 				$this->reload();
 				break;
         }
