@@ -173,7 +173,7 @@ $GLOBALS['TL_DCA']['tl_iso_attributes'] = array
             'exclude'               => true,
             'inputType'             => 'text',
             'eval'                  => array('mandatory'=>true, 'maxlength'=>30, 'unique'=>true, 'doNotCopy'=>true, 'doNotSaveEmpty'=>true, 'tl_class'=>'w50'),
-            'sql'                   => "varchar(30) NOT NULL default''",
+            'sql'                   => "varchar(30) NOT NULL default ''",
             'save_callback' => array
             (
                 array('Isotope\tl_iso_attributes', 'validateFieldName'),

@@ -173,6 +173,7 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['iso_cols'] = array
     'default'                   => 1,
     'inputType'                 => 'text',
     'eval'                      => array('maxlength'=>1, 'rgxp'=>'digit', 'tl_class'=>'w50'),
+    'sql'                       => "int(1) unsigned NOT NULL default '1'",
 );
 
 $GLOBALS['TL_DCA']['tl_module']['fields']['iso_config_id'] = array
@@ -498,7 +499,7 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['iso_listingSortDirection'] = array
     'options'                   => array('DESC','ASC'),
     'reference'                 => &$GLOBALS['TL_LANG']['tl_module']['sortingDirection'],
     'eval'                      => array('tl_class'=>'w50'),
-    'sql'                       => "varchar(8) NOT NULL default '',",
+    'sql'                       => "varchar(8) NOT NULL default ''",
 );
 
 $GLOBALS['TL_DCA']['tl_module']['fields']['iso_buttons'] = array

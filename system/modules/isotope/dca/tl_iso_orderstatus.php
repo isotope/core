@@ -159,7 +159,7 @@ $GLOBALS['TL_DCA']['tl_iso_orderstatus'] = array
             'exclude'               => true,
             'inputType'             => 'checkbox',
             'eval'                  => array('tl_class'=>'w50'),
-            'sql'                   => "char(1) NOT NULL default''"
+            'sql'                   => "char(1) NOT NULL default ''"
         ),
         'welcomescreen' => array
         (

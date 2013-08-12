@@ -77,7 +77,7 @@ $GLOBALS['TL_DCA']['tl_iso_product_collection_surcharge'] = array
         ),
         'tax_id' => array
         (
-            'sql'                 =>  "varchar(32) NOT NULL default''",
+            'sql'                 =>  "varchar(32) NOT NULL default ''",
         ),
         'before_tax' => array
         (

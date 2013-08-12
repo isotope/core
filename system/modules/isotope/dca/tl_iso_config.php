@@ -548,7 +548,7 @@ $GLOBALS['TL_DCA']['tl_iso_config'] = array
 			'inputType'             => 'select',
 			'options_callback'      => array('Isotope\tl_iso_config', 'getTemplateFolders'),
 			'eval'                  => array('includeBlankOption'=>true, 'tl_class'=>'w50'),
-            'sql'                   => "varchar(255) NOT NULL default''",
+            'sql'                   => "varchar(255) NOT NULL default ''",
         ),
         'gallery' => array
         (

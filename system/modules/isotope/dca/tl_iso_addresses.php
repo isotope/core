@@ -149,7 +149,7 @@ $GLOBALS['TL_DCA']['tl_iso_addresses'] = array
             'search'                => true,
             'inputType'             => 'text',
             'eval'                  => array('mandatory'=>true, 'maxlength'=>255, 'feEditable'=>true, 'feGroup'=>'personal', 'tl_class'=>'w50'),
-            'sql'                   => "varchar(255) NOT NULL default''",
+            'sql'                   => "varchar(255) NOT NULL default ''",
         ),
         'lastname' => array
         (

@@ -61,7 +61,7 @@ $GLOBALS['TL_DCA']['tl_iso_product_collection_download'] = array
 
         'download_id' => array
         (
-            'sql'                 =>  "int(10) unsigned NOT NULL default '0',",
+            'sql'                 =>  "int(10) unsigned NOT NULL default '0'",
         ),
         'downloads_remaining' => array
         (

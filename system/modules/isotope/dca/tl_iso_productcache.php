@@ -26,11 +26,7 @@ $GLOBALS['TL_DCA']['tl_iso_productcache'] = array
             'keys' => array
             (
                 'id'=> 'primary',
-                'page_id' => 'index',
-                'module_id' => 'index',
-                'requestcache_id' => 'index',
-                'keywords' => 'index',
-                'expires' => 'index',
+                'page_id,module_id,requestcache_id,keywords,expires' => 'index',
             )
         ),
     ),
