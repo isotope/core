@@ -50,6 +50,15 @@ $GLOBALS['TL_DCA']['tl_iso_products'] = array
             array('Isotope\Backend', 'truncateProductCache'),
             array('Isotope\ProductCallbacks', 'storeDateAdded')
         ),
+        'sql' => array
+        (
+            'keys' => array
+            (
+                'id' => 'primary',
+                'gid' => 'index',
+                'pid,language,published' => 'index',
+            )
+        ),
     ),
 
     // List
@@ -205,16 +214,34 @@ $GLOBALS['TL_DCA']['tl_iso_products'] = array
     // Fields
     'fields' => array
     (
+        'id' => array
+        (
+            'sql'                  => "int(10) unsigned NOT NULL auto_increment",
+        ),
         'pid' => array
         (
             // Fix for DC_Table, otherwise getPalette() will not use the PID value
             'eval'                  => array('submitOnChange'=>true),
+            'sql'                  => "int(10) unsigned NOT NULL default '0'",
+        ),
+        'gid' => array
+        (
+            'sql'                  => "int(10) unsigned NOT NULL default '0'",
+        ),
+        'tstamp' => array
+        (
+            'sql'                  => "int(10) unsigned NOT NULL default '0'",
+        ),
+        'language' => array
+        (
+            'sql'                  => "varchar(5) NOT NULL default ''",
         ),
         'dateAdded' => array
         (
             'label'                 => &$GLOBALS['TL_LANG']['MSC']['dateAdded'],
             'eval'                  => array('rgxp'=>'datim', 'doNotCopy'=>true),
             'attributes'            => array('fe_sorting'=>true),
+            'sql'                   => "int(10) unsigned NOT NULL default '0'",
         ),
         'type' => array
         (
@@ -226,6 +253,7 @@ $GLOBALS['TL_DCA']['tl_iso_products'] = array
             'foreignKey'            => (strlen(\Input::get('table')) ? 'tl_iso_producttypes.name' : null),
             'eval'                  => array('mandatory'=>true, 'submitOnChange'=>true, 'includeBlankOption'=>true, 'tl_class'=>'clr'),
             'attributes'            => array('legend'=>'general_legend', 'fixed'=>true, 'inherit'=>true),
+            'sql'                   => "int(10) unsigned NOT NULL default '0'",
             'relation'              => array('type'=>'hasOne', 'load'=>'lazy'),
         ),
         'pages' => array
@@ -252,6 +280,7 @@ $GLOBALS['TL_DCA']['tl_iso_products'] = array
             'exclude'               => true,
             'inputType'             => 'inheritCheckbox',
             'eval'                  => array('multiple'=>true, 'doNotShow'=>true),
+            'sql'                   => "blob NULL",
         ),
         'alias' => array
         (
@@ -262,6 +291,7 @@ $GLOBALS['TL_DCA']['tl_iso_products'] = array
             'inputType'             => 'text',
             'eval'                  => array('rgxp'=>'alnum', 'doNotCopy'=>true, 'spaceToUnderscore'=>true, 'maxlength'=>128, 'tl_class'=>'w50'),
             'attributes'            => array('legend'=>'general_legend', 'fixed'=>true, 'inherit'=>true),
+            'sql'                   => "varchar(128) NOT NULL default ''",
             'save_callback' => array
             (
                 array('Isotope\ProductCallbacks', 'generateAlias'),
@@ -276,6 +306,7 @@ $GLOBALS['TL_DCA']['tl_iso_products'] = array
             'inputType'             => 'text',
             'eval'                  => array('mandatory'=>true, 'maxlength'=>128, 'unique'=>true, 'tl_class'=>'w50'),
             'attributes'            => array('legend'=>'general_legend', 'fe_sorting'=>true, 'fe_search'=>true),
+            'sql'                   => "varchar(128) NOT NULL default ''",
         ),
         'name' => array
         (
@@ -286,6 +317,7 @@ $GLOBALS['TL_DCA']['tl_iso_products'] = array
             'inputType'             => 'text',
             'eval'                  => array('mandatory'=>true, 'tl_class'=>'clr long'),
             'attributes'            => array('legend'=>'general_legend', 'multilingual'=>true, 'fixed'=>true, 'fe_sorting'=>true, 'fe_search'=>true),
+            'sql'                   => "varchar(255) NOT NULL default ''",
         ),
         'teaser' => array
         (
@@ -295,6 +327,7 @@ $GLOBALS['TL_DCA']['tl_iso_products'] = array
             'inputType'             => 'textarea',
             'eval'                  => array('style'=>'height:80px', 'tl_class'=>'clr'),
             'attributes'            => array('legend'=>'general_legend', 'multilingual'=>true),
+            'sql'                   => "text NULL",
         ),
         'description' => array
         (
@@ -304,6 +337,7 @@ $GLOBALS['TL_DCA']['tl_iso_products'] = array
             'inputType'             => 'textarea',
             'eval'                  => array('mandatory'=>true, 'rte'=>'tinyMCE', 'tl_class'=>'clr'),
             'attributes'            => array('legend'=>'general_legend', 'multilingual'=>true, 'fe_search'=>true),
+            'sql'                   => "text NULL",
         ),
         'description_meta' => array
         (
@@ -313,6 +347,7 @@ $GLOBALS['TL_DCA']['tl_iso_products'] = array
             'inputType'             => 'textarea',
             'eval'                  => array('style'=>'height:60px'),
             'attributes'            => array('legend'=>'meta_legend', 'multilingual'=>true),
+            'sql'                   =>  "text NULL",
         ),
         'keywords_meta' => array
         (
@@ -322,6 +357,7 @@ $GLOBALS['TL_DCA']['tl_iso_products'] = array
             'inputType'             => 'textarea',
             'eval'                  => array('style'=>'height:40px'),
             'attributes'            => array('legend'=>'meta_legend', 'multilingual'=>true),
+            'sql'                   => "text NULL",
         ),
         'price' => array
         (
@@ -330,6 +366,7 @@ $GLOBALS['TL_DCA']['tl_iso_products'] = array
             'inputType'             => 'text',
             'eval'                  => array('mandatory'=>true, 'maxlength'=>13, 'rgxp'=>'price', 'tl_class'=>'w50'),
             'attributes'            => array('legend'=>'pricing_legend', 'fe_sorting'=>true, 'dynamic'=>true),
+            'sql'                   => "decimal(12,2) NOT NULL default '0.00'",
         ),
         'prices' => array
         (
@@ -368,6 +405,7 @@ $GLOBALS['TL_DCA']['tl_iso_products'] = array
             'eval'                  => array('includeBlankOption'=>true, 'tl_class'=>'w50'),
             'attributes'            => array('legend'=>'pricing_legend', 'dynamic'=>true),
             'relation'              => array('type'=>'hasOne', 'load'=>'lazy'),
+            'sql'                   => "int(10) unsigned NOT NULL default '0'",
         ),
         'baseprice' => array
         (
@@ -377,6 +415,7 @@ $GLOBALS['TL_DCA']['tl_iso_products'] = array
             'foreignKey'            => 'tl_iso_baseprice.name',
             'eval'                  => array('includeBlankOption'=>true, 'tl_class'=>'w50'),
             'attributes'            => array('legend'=>'pricing_legend'),
+            'sql'                   => "varchar(255) NOT NULL default ''",
         ),
         'shipping_weight' => array
         (
@@ -388,6 +427,7 @@ $GLOBALS['TL_DCA']['tl_iso_products'] = array
             'reference'             => &$GLOBALS['TL_LANG']['WGT'],
             'eval'                  => array('rgxp'=>'digit', 'tl_class'=>'w50 wizard', 'helpwizard'=>true),
             'attributes'            => array('legend'=>'shipping_legend'),
+            'sql'                   => "varchar(255) NOT NULL default ''",
         ),
         'shipping_exempt' => array
         (
@@ -396,6 +436,7 @@ $GLOBALS['TL_DCA']['tl_iso_products'] = array
             'inputType'             => 'checkbox',
             'eval'                  => array('tl_class'=>'w50'),
             'attributes'            => array('legend'=>'shipping_legend'),
+            'sql'                   => "char(1) NOT NULL default ''",
         ),
         'images' => array
         (
@@ -405,6 +446,7 @@ $GLOBALS['TL_DCA']['tl_iso_products'] = array
             'explanation'           => 'mediaManager',
             'eval'                  => array('extensions'=>'jpeg,jpg,png,gif', 'helpwizard'=>true, 'tl_class'=>'clr'),
             'attributes'            => array('legend'=>'media_legend', 'fixed'=>true, 'multilingual'=>true, 'dynamic'=>true, 'fetch_fallback'=>true),
+            'sql'                   => "blob NULL",
         ),
         'protected' => array
         (
@@ -414,6 +456,7 @@ $GLOBALS['TL_DCA']['tl_iso_products'] = array
             'inputType'             => 'checkbox',
             'eval'                  => array('submitOnChange'=>true, 'tl_class'=>'clr'),
             'attributes'            => array('legend'=>'expert_legend'),
+            'sql'                   => "char(1) NOT NULL default ''",
         ),
         'groups' => array
         (
@@ -423,6 +466,7 @@ $GLOBALS['TL_DCA']['tl_iso_products'] = array
             'inputType'             => 'checkbox',
             'foreignKey'            => 'tl_member_group.name',
             'eval'                  => array('mandatory'=>true, 'multiple'=>true),
+            'sql'                   => "blob NULL",
             'relation'              => array('type'=>'hasMany', 'load'=>'lazy'),
         ),
         'guests' => array
@@ -432,6 +476,7 @@ $GLOBALS['TL_DCA']['tl_iso_products'] = array
             'inputType'             => 'checkbox',
             'eval'                  => array('tl_class'=>'w50'),
             'attributes'            => array('legend'=>'expert_legend'),
+            'sql'                   => "char(1) NOT NULL default ''",
         ),
         'cssID' => array
         (
@@ -440,6 +485,7 @@ $GLOBALS['TL_DCA']['tl_iso_products'] = array
             'inputType'             => 'text',
             'eval'                  => array('multiple'=>true, 'size'=>2, 'tl_class'=>'w50'),
             'attributes'            => array('legend'=>'expert_legend'),
+            'sql'                   => "varchar(255) NOT NULL default ''",
         ),
         'published' => array
         (
@@ -449,6 +495,7 @@ $GLOBALS['TL_DCA']['tl_iso_products'] = array
             'inputType'             => 'checkbox',
             'eval'                  => array('doNotCopy'=>true, 'tl_class'=>'clr'),
             'attributes'            => array('legend'=>'publish_legend', 'fixed'=>true, 'variant_fixed'=>true),
+            'sql'                   => "char(1) NOT NULL default ''",
             'save_callback' => array
             (
                 array('Isotope\Backend', 'truncateProductCache'),
@@ -461,6 +508,7 @@ $GLOBALS['TL_DCA']['tl_iso_products'] = array
             'inputType'             => 'text',
             'eval'                  => array('rgxp'=>'date', 'datepicker'=>true, 'tl_class'=>'w50 wizard'),
             'attributes'            => array('legend'=>'publish_legend', 'fixed'=>true, 'variant_fixed'=>true),
+            'sql'                   => "varchar(10) NOT NULL default ''",
         ),
         'stop' => array
         (
@@ -469,6 +517,7 @@ $GLOBALS['TL_DCA']['tl_iso_products'] = array
             'inputType'             => 'text',
             'eval'                  => array('rgxp'=>'date', 'datepicker'=>true, 'tl_class'=>'w50 wizard'),
             'attributes'            => array('legend'=>'publish_legend', 'fixed'=>true, 'variant_fixed'=>true),
+            'sql'                   => "varchar(10) NOT NULL default ''",
         ),
         'source' => array
         (

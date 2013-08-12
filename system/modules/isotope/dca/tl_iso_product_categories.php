@@ -36,6 +36,14 @@ $GLOBALS['TL_DCA']['tl_iso_product_categories'] = array
         (
             array('Isotope\Backend', 'truncateProductCache'),
         ),
+        'sql' => array
+        (
+            'keys' => array
+            (
+                'id' => 'primary',
+                'pid' => 'index',
+            )
+        ),
     ),
 
     // List
@@ -77,5 +85,31 @@ $GLOBALS['TL_DCA']['tl_iso_product_categories'] = array
         )
     ),
 
-    'fields'                        => array() // Fields array must not be empty or we get a foreach error
+    'fields'                        => array
+    (
+        'id' => array
+        (
+            'sql'                   => "int(10) unsigned NOT NULL auto_increment",
+        ),
+
+        'pid' => array
+        (
+            'sql'                   => "int(10) unsigned NOT NULL default '0'",
+        ),
+
+        'sorting' => array
+        (
+            'sql'                   => "int(10) unsigned NOT NULL default '0'",
+        ),
+
+        'tstamp' => array
+        (
+            'sql'                   => "int(10) unsigned NOT NULL default '0'",
+        ),
+
+        'page_id' => array
+        (
+            'sql'                   => "int(10) unsigned NOT NULL default '0'",
+        ),
+    )
 );

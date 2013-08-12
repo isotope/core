@@ -29,7 +29,15 @@ $GLOBALS['TL_DCA']['tl_iso_orderstatus'] = array
         'onload_callback' => array
         (
             array('Isotope\Backend', 'initializeSetupModule'),
-        )
+        ),
+        'sql' => array
+        (
+            'keys' => array
+            (
+                'id' => 'primary',
+                'pid' => 'index',
+            )
+        ),
     ),
 
     // List
@@ -121,12 +129,29 @@ $GLOBALS['TL_DCA']['tl_iso_orderstatus'] = array
     // Fields
     'fields' => array
     (
+        'id' => array
+        (
+            'sql'                 =>  "int(10) unsigned NOT NULL auto_increment",
+        ),
+        'pid' => array
+        (
+            'sql'                 =>  "int(10) unsigned NOT NULL default '0'",
+        ),
+        'tstamp' => array
+        (
+            'sql'                 =>  "int(10) unsigned NOT NULL default '0'",
+        ),
+        'sorting' => array
+        (
+            'sql'                 =>  "int(10) unsigned NOT NULL default '0'",
+        ),
         'name' => array
         (
             'label'                 => &$GLOBALS['TL_LANG']['tl_iso_orderstatus']['name'],
             'exclude'               => true,
             'inputType'             => 'text',
             'eval'                  => array('mandatory'=>true, 'maxlength'=>255, 'tl_class'=>'clr'),
+            'sql'                   => "varchar(255) NOT NULL default ''",
         ),
         'paid' => array
         (
@@ -134,6 +159,7 @@ $GLOBALS['TL_DCA']['tl_iso_orderstatus'] = array
             'exclude'               => true,
             'inputType'             => 'checkbox',
             'eval'                  => array('tl_class'=>'w50'),
+            'sql'                   => "char(1) NOT NULL default ''"
         ),
         'welcomescreen' => array
         (
@@ -141,6 +167,7 @@ $GLOBALS['TL_DCA']['tl_iso_orderstatus'] = array
             'exclude'               => true,
             'inputType'             => 'checkbox',
             'eval'                  => array('tl_class'=>'w50'),
+            'sql'                   => "char(1) NOT NULL default ''",
         ),
         'mail_customer' => array
         (
@@ -149,6 +176,7 @@ $GLOBALS['TL_DCA']['tl_iso_orderstatus'] = array
             'inputType'             => 'select',
             'foreignKey'            => 'tl_iso_mail.name',
             'eval'                  => array('includeBlankOption'=>true),
+            'sql'                   => "int(10) unsigned NOT NULL default '0'",
             'relation'              => array('type'=>'hasOne', 'load'=>'lazy'),
         ),
         'mail_admin' => array
@@ -158,6 +186,7 @@ $GLOBALS['TL_DCA']['tl_iso_orderstatus'] = array
             'inputType'             => 'select',
             'foreignKey'            => 'tl_iso_mail.name',
             'eval'                  => array('includeBlankOption'=>true, 'tl_class'=>'w50'),
+            'sql'                   => "int(10) unsigned NOT NULL default '0'",
             'relation'              => array('type'=>'hasOne', 'load'=>'lazy'),
         ),
         'sales_email' => array
@@ -165,7 +194,8 @@ $GLOBALS['TL_DCA']['tl_iso_orderstatus'] = array
             'label'                 => &$GLOBALS['TL_LANG']['tl_iso_orderstatus']['sales_email'],
             'exclude'               => true,
             'inputType'             => 'text',
-            'eval'                  => array('maxlength'=>255, 'rgxp'=>'email', 'tl_class'=>'w50')
+            'eval'                  => array('maxlength'=>255, 'rgxp'=>'email', 'tl_class'=>'w50'),
+            'sql'                   => "varchar(255) NOT NULL default ''",
         ),
     )
 );

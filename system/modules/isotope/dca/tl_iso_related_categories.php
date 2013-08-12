@@ -30,6 +30,13 @@ $GLOBALS['TL_DCA']['tl_iso_related_categories'] = array
         (
             array('Isotope\Backend', 'initializeSetupModule'),
         ),
+        'sql' => array
+        (
+            'keys' => array
+            (
+                'id' => 'primary',
+            )
+        ),
     ),
 
     // List
@@ -109,12 +116,21 @@ $GLOBALS['TL_DCA']['tl_iso_related_categories'] = array
     // Fields
     'fields' => array
     (
+        'id' => array
+        (
+            'sql'                 =>  "int(10) unsigned NOT NULL auto_increment",
+        ),
+        'tstamp' => array
+        (
+            'sql'                 =>  "int(10) unsigned NOT NULL default '0'",
+        ),
         'name' => array
         (
             'label'             => &$GLOBALS['TL_LANG']['tl_iso_related_categories']['name'],
             'exclude'           => true,
             'inputType'         => 'text',
             'eval'              => array('mandatory'=>true, 'maxlength'=>255, 'tl_class'=>'long'),
+            'sql'               => "varchar(255) NOT NULL default ''",
         ),
         'jumpTo' => array
         (
@@ -123,6 +139,7 @@ $GLOBALS['TL_DCA']['tl_iso_related_categories'] = array
             'inputType'         => 'pageTree',
             'foreignKey'        => 'tl_page.title',
             'eval'              => array('fieldType'=>'radio'),
+            'sql'               => "int(10) unsigned NOT NULL default '0'",
             'relation'          => array('type'=>'hasOne', 'load'=>'lazy'),
         ),
     )

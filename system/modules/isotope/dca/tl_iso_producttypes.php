@@ -28,7 +28,14 @@ $GLOBALS['TL_DCA']['tl_iso_producttypes'] = array
         (
             array('Isotope\Backend', 'initializeSetupModule'),
             array('Isotope\tl_iso_producttypes', 'checkPermission'),
-        )
+        ),
+        'sql' => array
+        (
+            'keys' => array
+            (
+                'id' => 'primary',
+            )
+        ),
     ),
 
     // List
@@ -120,12 +127,21 @@ $GLOBALS['TL_DCA']['tl_iso_producttypes'] = array
     // Fields
     'fields' => array
     (
+        'id' => array
+        (
+            'sql'                 =>  "int(10) unsigned NOT NULL auto_increment",
+        ),
+        'tstamp' => array
+        (
+            'sql'                 =>  "int(10) unsigned NOT NULL default '0'",
+        ),
         'name' => array
         (
             'label'                 => &$GLOBALS['TL_LANG']['tl_iso_producttypes']['name'],
             'exclude'               => true,
             'inputType'             => 'text',
-            'eval'                  => array('mandatory'=>true, 'maxlength'=>255, 'tl_class'=>'w50')
+            'eval'                  => array('mandatory'=>true, 'maxlength'=>255, 'tl_class'=>'w50'),
+            'sql'                   => "varchar(255) NOT NULL default ''",
         ),
         'class' => array
         (
@@ -136,6 +152,7 @@ $GLOBALS['TL_DCA']['tl_iso_producttypes'] = array
             'options'               => array_keys($GLOBALS['ISO_PRODUCT']),
             'reference'             => &$GLOBALS['TL_LANG']['PRODUCT'],
             'eval'                  => array('mandatory'=>true, 'submitOnChange'=>true, 'helpwizard'=>true, 'tl_class'=>'w50'),
+            'sql'                   => "varchar(32) NOT NULL default 'standard'"
         ),
         'fallback' => array
         (
@@ -143,6 +160,7 @@ $GLOBALS['TL_DCA']['tl_iso_producttypes'] = array
             'exclude'               => true,
             'inputType'             => 'checkbox',
             'eval'                  => array('fallback'=>true, 'tl_class'=>'w50'),
+            'sql'                   => "char(1) NOT NULL default ''",
         ),
         'description' => array
         (
@@ -150,6 +168,7 @@ $GLOBALS['TL_DCA']['tl_iso_producttypes'] = array
             'exclude'               => true,
             'inputType'             => 'textarea',
             'eval'                  => array('style'=>'height:80px', 'tl_class'=>'clr'),
+            'sql'                   => "text NULL",
         ),
         'prices' => array
         (
@@ -157,6 +176,7 @@ $GLOBALS['TL_DCA']['tl_iso_producttypes'] = array
             'exclude'               => true,
             'inputType'             => 'checkbox',
             'eval'                  => array('submitOnChange'=>true, 'tl_class'=>'clr'),
+            'sql'                   => "char(1) NOT NULL default ''",
         ),
         'show_price_tiers' => array
         (
@@ -164,6 +184,7 @@ $GLOBALS['TL_DCA']['tl_iso_producttypes'] = array
             'exclude'               => true,
             'inputType'             => 'checkbox',
             'eval'                  => array('tl_class'=>'w50'),
+            'sql'                   => "char(1) NOT NULL default ''",
         ),
         'list_template' => array
         (
@@ -172,7 +193,8 @@ $GLOBALS['TL_DCA']['tl_iso_producttypes'] = array
             'inputType'             => 'select',
             'default'               => 'iso_list_default',
             'options_callback'      => array('Isotope\tl_iso_producttypes', 'getListTemplates'),
-            'eval'                  => array('mandatory'=>true, 'tl_class'=>'w50', 'chosen'=>true)
+            'eval'                  => array('mandatory'=>true, 'tl_class'=>'w50', 'chosen'=>true),
+            'sql'                   => "varchar(255) NOT NULL default ''",
         ),
         'reader_template' => array
         (
@@ -181,7 +203,8 @@ $GLOBALS['TL_DCA']['tl_iso_producttypes'] = array
             'inputType'             => 'select',
             'default'               => 'iso_reader_default',
             'options_callback'      => array('Isotope\tl_iso_producttypes', 'getReaderTemplates'),
-            'eval'                  => array('mandatory'=>true, 'tl_class'=>'w50', 'chosen'=>true)
+            'eval'                  => array('mandatory'=>true, 'tl_class'=>'w50', 'chosen'=>true),
+            'sql'                   => "varchar(255) NOT NULL default ''",
         ),
         'attributes' => array
         (
@@ -203,7 +226,8 @@ $GLOBALS['TL_DCA']['tl_iso_producttypes'] = array
                 'published'         => array('enabled'=>1, 'position'=>11),
             ),
             'eval'                  => array('helpwizard'=>true, 'tl_class'=>'clr', 'tl_classes'=>array('clr', 'clr long', 'long', 'w50', 'w50 m12')),
-            'explanation'           => 'isoAttributeWizard'
+            'explanation'           => 'isoAttributeWizard',
+            'sql'                   => 'blob NULL',
         ),
         'variants' => array
         (
@@ -211,6 +235,7 @@ $GLOBALS['TL_DCA']['tl_iso_producttypes'] = array
             'exclude'               => true,
             'inputType'             => 'checkbox',
             'eval'                  => array('tl_class'=>'clr', 'submitOnChange'=>true),
+            'sql'                   => "char(1) NOT NULL default ''",
         ),
         'variant_attributes' => array
         (
@@ -218,7 +243,8 @@ $GLOBALS['TL_DCA']['tl_iso_producttypes'] = array
             'exclude'               => true,
             'inputType'             => 'attributeWizard',
             'eval'                  => array('helpwizard'=>true, 'variants'=>true, 'tl_class'=>'clr', 'tl_classes'=>array('clr', 'clr long', 'long', 'w50', 'w50 m12')),
-            'explanation'           => 'isoAttributeWizard'
+            'explanation'           => 'isoAttributeWizard',
+            'sql'                   => 'blob NULL',
         ),
         'force_variant_options' => array
         (
@@ -226,6 +252,7 @@ $GLOBALS['TL_DCA']['tl_iso_producttypes'] = array
             'exclude'               => true,
             'inputType'             => 'checkbox',
             'eval'                  => array('tl_class'=>'clr'),
+            'sql'                   => "char(1) NOT NULL default ''"
         ),
         'shipping_exempt' => array
         (
@@ -233,6 +260,7 @@ $GLOBALS['TL_DCA']['tl_iso_producttypes'] = array
             'exclude'               => true,
             'inputType'             => 'checkbox',
             'eval'                  => array('tl_class'=>'w50'),
+            'sql'                   => "char(1) NOT NULL default ''",
         ),
         'downloads' => array
         (
@@ -240,6 +268,7 @@ $GLOBALS['TL_DCA']['tl_iso_producttypes'] = array
             'exclude'               => true,
             'inputType'             => 'checkbox',
             'eval'                  => array('tl_class'=>'w50'),
+            'sql'                   => "char(1) NOT NULL default ''"
         ),
     )
 );

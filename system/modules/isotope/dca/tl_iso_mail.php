@@ -33,6 +33,13 @@ $GLOBALS['TL_DCA']['tl_iso_mail'] = array
             array('Isotope\Backend', 'initializeSetupModule'),
             array('Isotope\tl_iso_mail', 'checkPermission'),
         ),
+        'sql' => array
+        (
+            'keys' => array
+            (
+                'id' => 'primary',
+            )
+        ),
     ),
 
     // List
@@ -143,12 +150,21 @@ $GLOBALS['TL_DCA']['tl_iso_mail'] = array
     // Fields
     'fields' => array
     (
+        'id' => array
+        (
+            'sql'                 =>  "int(10) unsigned NOT NULL auto_increment",
+        ),
+        'tstamp' => array
+        (
+            'sql'                 =>  "int(10) unsigned NOT NULL default '0'",
+        ),
         'name' => array
         (
             'label'                 => &$GLOBALS['TL_LANG']['tl_iso_mail']['name'],
             'exclude'               => true,
             'inputType'             => 'text',
             'eval'                  => array('mandatory'=>true, 'maxlength'=>255, 'tl_class'=>'long'),
+            'sql'                   =>  "varchar(255) NOT NULL default ''",
         ),
         'senderName' => array
         (
@@ -156,6 +172,7 @@ $GLOBALS['TL_DCA']['tl_iso_mail'] = array
             'exclude'               => true,
             'inputType'             => 'text',
             'eval'                  => array('mandatory'=>true, 'maxlength'=>255, 'tl_class'=>'w50'),
+            'sql'                   => "varchar(255) NOT NULL default ''",
         ),
         'sender' => array
         (
@@ -163,6 +180,7 @@ $GLOBALS['TL_DCA']['tl_iso_mail'] = array
             'exclude'               => true,
             'inputType'             => 'text',
             'eval'                  => array('mandatory'=>true, 'maxlength'=>255, 'rgxp'=>'email', 'tl_class'=>'w50'),
+            'sql'                   => "varchar(255) NOT NULL default ''",
         ),
         'cc' => array
         (
@@ -170,6 +188,7 @@ $GLOBALS['TL_DCA']['tl_iso_mail'] = array
             'exclude'               => true,
             'inputType'             => 'text',
             'eval'                  => array('maxlength'=>255, 'rgxp'=>'extnd', 'tl_class'=>'w50'),
+            'sql'                   => "varchar(255) NOT NULL default ''",
         ),
         'bcc' => array
         (
@@ -177,6 +196,7 @@ $GLOBALS['TL_DCA']['tl_iso_mail'] = array
             'exclude'               => true,
             'inputType'             => 'text',
             'eval'                  => array('maxlength'=>255, 'rgxp'=>'extnd', 'tl_class'=>'w50'),
+            'sql'                   => "varchar(255) NOT NULL default ''",
         ),
         'attachDocument' => array
         (
@@ -184,6 +204,7 @@ $GLOBALS['TL_DCA']['tl_iso_mail'] = array
             'exclude'               => true,
             'inputType'             => 'checkbox',
             'eval'                  => array('submitOnChange'=>true, 'tl_class'=>'clr'),
+            'sql'                   => "char(1) NOT NULL default ''",
         ),
         'documentTemplate' => array
         (
@@ -191,7 +212,8 @@ $GLOBALS['TL_DCA']['tl_iso_mail'] = array
             'exclude'               => true,
             'inputType'             => 'select',
             'options'               => \Isotope\Backend::getTemplates('iso_invoice'),
-            'eval'                  => array('includeBlankOption'=>true, 'tl_class'=>'w50', 'chosen'=>true)
+            'eval'                  => array('includeBlankOption'=>true, 'tl_class'=>'w50', 'chosen'=>true),
+            'sql'                   => "varchar(255) NOT NULL default ''",
         ),
         'documentTitle' => array
         (
@@ -199,6 +221,7 @@ $GLOBALS['TL_DCA']['tl_iso_mail'] = array
             'exclude'               => true,
             'inputType'             => 'text',
             'eval'                  => array('mandatory'=>true, 'maxlength'=>255, 'decodeEntities'=>true, 'tl_class'=>'w50'),
+            'sql'                   => "varchar(255) NOT NULL default ''",
         ),
         'template' => array
         (
@@ -207,7 +230,8 @@ $GLOBALS['TL_DCA']['tl_iso_mail'] = array
             'inputType'             => 'select',
             'default'               => 'mail_default',
             'options'               => \Isotope\Backend::getTemplates('mail_'),
-            'eval'                  => array('mandatory'=>true, 'tl_class'=>'w50', 'chosen'=>true)
+            'eval'                  => array('mandatory'=>true, 'tl_class'=>'w50', 'chosen'=>true),
+            'sql'                   => "varchar(255) NOT NULL default ''",
         ),
         'priority' => array
         (
@@ -218,6 +242,7 @@ $GLOBALS['TL_DCA']['tl_iso_mail'] = array
             'default'               => 3,
             'reference'             => &$GLOBALS['TL_LANG']['tl_iso_mail']['priority_ref'],
             'eval'                  => array('tl_class'=>'w50'),
+            'sql'                   => "int(1) unsigned NOT NULL default '3'",
         ),
         'source' => array
         (

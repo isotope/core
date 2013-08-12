@@ -9,24 +9,20 @@
  * @link       http://www.isotopeecommerce.com
  * @license    http://opensource.org/licenses/lgpl-3.0.html LGPL
  *
- * @author     Andreas Schempp <andreas.schempp@terminal42.ch>
+ * @author     Jan Reuteler <jan.reuteler@terminal42.ch>
  */
 
 
 /**
- * Table tl_iso_product_collection_download
+ * Table tl_iso_price_tiers
  */
-$GLOBALS['TL_DCA']['tl_iso_product_collection_download'] = array
+$GLOBALS['TL_DCA']['tl_iso_price_tiers'] = array
 (
 
     // Config
     'config' => array
     (
-        'dataContainer'     => 'Table',
-        'closed'            => true,
-        'notEditable'       => true,
-        'ptable'            => 'tl_iso_product_collection_item',
-        'sql'               => array
+        'sql' => array
         (
             'keys' => array
             (
@@ -39,37 +35,27 @@ $GLOBALS['TL_DCA']['tl_iso_product_collection_download'] = array
     // Fields
     'fields' => array
     (
+
         'id' => array
         (
             'sql'                 =>  "int(10) unsigned NOT NULL auto_increment",
         ),
         'pid' => array
         (
-            'foreignKey'    => 'tl_iso_product_collection_item.name',
-            'relation'      => array('type'=>'belongsTo', 'load'=>'lazy'),
             'sql'                 =>  "int(10) unsigned NOT NULL default '0'",
         ),
         'tstamp' => array
         (
             'sql'                 =>  "int(10) unsigned NOT NULL default '0'",
         ),
-        'download_id' => array
-        (
-            'foreignKey'    => 'tl_iso_downloads.type',
-            'relation'      => array('type'=>'hasOne', 'load'=>'lazy'),
-        ),
-
-        'download_id' => array
+        'min' => array
         (
             'sql'                 =>  "int(10) unsigned NOT NULL default '0'",
         ),
-        'downloads_remaining' => array
+        'price' => array
         (
-            'sql'                 =>  "varchar(255) NOT NULL default ''",
+            'sql'                 =>  "decimal(12,2) NOT NULL default '0.00'",
         ),
-        'expires' => array
-        (
-            'sql'                 =>  "varchar(10) NOT NULL default ''",
-        ),
+
     )
 );
