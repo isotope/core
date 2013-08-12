@@ -33,7 +33,7 @@ $GLOBALS['TL_DCA']['tl_iso_addresses'] = array
             'keys' => array
             (
                 'id' => 'primary',
-                'pid;pid,store_id' => 'index',
+                'pid,store_id' => 'index',
             )
         ),
     ),
