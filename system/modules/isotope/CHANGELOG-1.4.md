@@ -8,6 +8,7 @@ Version 1.4.5 (2013-??-??)
 - HTML error in order details template
 - PayPal issue with PHP 5.3
 - Product attribute rules did not work for variant attributes (#674)
+- User access permissions for mail templates were not available
 
 
 Version 1.4.4 (2013-07-18)

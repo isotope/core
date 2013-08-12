@@ -149,7 +149,7 @@ $GLOBALS['TL_DCA']['tl_user']['fields']['iso_tax_ratep'] = array
 	'eval'					=> array('multiple'=>true, 'tl_class'=>'w50 w50h')
 );
 
-$GLOBALS['TL_DCA']['tl_user_group']['fields']['iso_mails'] = array
+$GLOBALS['TL_DCA']['tl_user']['fields']['iso_mails'] = array
 (
 	'label'					=> &$GLOBALS['TL_LANG']['tl_user']['iso_mails'],
 	'exclude'				=> true,
@@ -158,7 +158,7 @@ $GLOBALS['TL_DCA']['tl_user_group']['fields']['iso_mails'] = array
 	'eval'					=> array('multiple'=>true, 'tl_class'=>'clr w50 w50h'),
 );
 
-$GLOBALS['TL_DCA']['tl_user_group']['fields']['iso_mailp'] = array
+$GLOBALS['TL_DCA']['tl_user']['fields']['iso_mailp'] = array
 (
 	'label'					=> &$GLOBALS['TL_LANG']['tl_user']['iso_mailp'],
 	'exclude'				=> true,
