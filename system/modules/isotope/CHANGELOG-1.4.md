@@ -4,6 +4,9 @@ Isotope eCommerce Changelog
 Version 1.4.5 (2013-??-??)
 --------------------------
 
+### Improved
+- {{product::…}} insert tags now work for options in cart etc.
+
 ### Fixed
 - HTML error in order details template
 - PayPal issue with PHP 5.3

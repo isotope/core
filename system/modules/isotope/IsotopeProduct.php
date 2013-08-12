@@ -621,6 +621,9 @@ class IsotopeProduct extends Controller
 			return $this->arrOptions;
 		}
 
+		// Set the active product for insert tags replacement
+        $GLOBALS['ISO_PRODUCT'] = $this;
+
 		$arrOptions = array();
 
 		foreach ($this->arrOptions as $field => $value)
@@ -631,9 +634,11 @@ class IsotopeProduct extends Controller
 			$arrOptions[$field] = array
 			(
 				'label'	=> $this->Isotope->formatLabel('tl_iso_products', $field),
-				'value'	=> $this->Isotope->formatValue('tl_iso_products', $field, $value),
+				'value'	=> $this->replaceInsertTags($this->Isotope->formatValue('tl_iso_products', $field, $value)),
 			);
 		}
+
+		unset($GLOBALS['ISO_PRODUCT']);
 
 		return $arrOptions;
 	}
