@@ -739,12 +739,12 @@ abstract class IsotopeProductCollection extends Model
 
 		$time = time();
 		$arrIds = array();
-	 	$objOldItems = $this->Database->execute("SELECT * FROM {$objCollection->ctable} WHERE pid={$objCollection->id}");
+	 	$objOldItems = $this->Database->executeUncached("SELECT * FROM {$objCollection->ctable} WHERE pid={$objCollection->id}");
 
 		while ($objOldItems->next())
 		{
 			$blnTransfer = true;
-			$objNewItems = $this->Database->prepare("SELECT * FROM {$this->ctable} WHERE pid={$this->id} AND product_id={$objOldItems->product_id} AND product_options=?")->execute($objOldItems->product_options);
+			$objNewItems = $this->Database->prepare("SELECT * FROM {$this->ctable} WHERE pid={$this->id} AND product_id={$objOldItems->product_id} AND product_options=?")->executeUncached($objOldItems->product_options);
 
 			// !HOOK: additional functionality when adding product to collection
 			if (isset($GLOBALS['ISO_HOOKS']['transferCollection']) && is_array($GLOBALS['ISO_HOOKS']['transferCollection']))

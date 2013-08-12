@@ -12,6 +12,7 @@ Version 1.4.5 (2013-??-??)
 - PayPal issue with PHP 5.3
 - Product attribute rules did not work for variant attributes (#674)
 - User access permissions for mail templates were not available
+- Potential cache issue on checkout (#671)
 
 
 Version 1.4.4 (2013-07-18)

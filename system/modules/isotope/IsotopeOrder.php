@@ -155,7 +155,7 @@ class IsotopeOrder extends IsotopeProductCollection
 		$arrIds = parent::transferFromCollection($objCollection, $blnDuplicate);
 
 		// Add product downloads to the order
-		$objDownloads = $this->Database->execute("SELECT d.*, ct.product_quantity, ct.id AS item_id FROM tl_iso_order_items ct JOIN tl_iso_downloads d ON d.pid IN ((SELECT id FROM tl_iso_products WHERE id=ct.product_id), (SELECT pid FROM tl_iso_products WHERE id=ct.product_id)) WHERE ct.id IN (" . implode(',', $arrIds) . ") GROUP BY ct.id, d.id ORDER BY item_id, sorting");
+    		$objDownloads = $this->Database->executeUncached("SELECT d.*, ct.product_quantity, ct.id AS item_id FROM tl_iso_order_items ct JOIN tl_iso_downloads d ON d.pid IN ((SELECT id FROM tl_iso_products WHERE id=ct.product_id), (SELECT pid FROM tl_iso_products WHERE id=ct.product_id)) WHERE ct.id IN (" . implode(',', $arrIds) . ") GROUP BY ct.id, d.id ORDER BY item_id, sorting");
 
 		while ($objDownloads->next())
 		{
