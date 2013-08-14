@@ -93,6 +93,11 @@ $GLOBALS['ISO_MOD'] = array
             'tables'            => array('tl_iso_related_categories'),
             'icon'              => 'system/modules/isotope/assets/setup-related_categories.png',
         ),
+        'gallery' => array
+        (
+            'tables'            => array('tl_iso_gallery'),
+            'icon'              => 'system/modules/isotope/assets/setup-gallery.png',
+        ),
         'baseprice' => array
         (
             'tables'            => array('tl_iso_baseprice'),
