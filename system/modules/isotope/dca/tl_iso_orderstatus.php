@@ -55,9 +55,6 @@ $GLOBALS['TL_DCA']['tl_iso_orderstatus'] = array
         (
             'fields'                => array('name'),
             'format'                => '%s',
-//            'format'              => '%s <span style="color:#b3b3b3; padding-left:3px;">[%s]</span>',
-//            'maxCharacters'       => 100,
-//            'label_callback'      => array('Isotope\tl_iso_orderstatus', 'addIcon'),
         ),
         'global_operations' => array
         (
