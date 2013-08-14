@@ -174,7 +174,7 @@ $GLOBALS['TL_DCA']['tl_iso_shipping_modules'] = array
             'exclude'               => true,
             'filter'                => true,
             'inputType'             => 'select',
-            'default'               => 'Flat',
+            'default'               => 'flat',
             'options'               => \Isotope\Model\Shipping::getModelTypeOptions(),
             'eval'                  => array('helpwizard'=>true, 'submitOnChange'=>true, 'chosen'=>true, 'tl_class'=>'w50'),
             'sql'                   => "varchar(64) NOT NULL default ''",
