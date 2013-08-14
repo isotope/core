@@ -257,7 +257,7 @@ window.addEvent('ajaxready', function() {
                 foreach (array('main','gallery','lightbox') as $name)
                 {
                     $size = deserialize($this->{$name.'_size'});
-                    $strImage = $this->getImage($strFile, $size[0], $size[1], $size[2]);
+                    $strImage = \Image::get($strFile, $size[0], $size[1], $size[2]);
 
                     if ($this->{$name.'_watermark_image'} != '' && $blnWatermark)
                     {
