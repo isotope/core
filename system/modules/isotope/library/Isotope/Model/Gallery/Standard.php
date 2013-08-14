@@ -10,10 +10,11 @@
  * @license    http://opensource.org/licenses/lgpl-3.0.html LGPL
  */
 
-namespace Isotope\Gallery;
+namespace Isotope\Model\Gallery;
 
 use Isotope\Isotope;
 use Isotope\Interfaces\IsotopeGallery;
+use Isotope\Model\Gallery;
 
 
 /**
@@ -26,7 +27,7 @@ use Isotope\Interfaces\IsotopeGallery;
  * @author     Christian de la Haye <service@delahaye.de>
  * @author     Yanick Witschi <yanick.witschi@terminal42.ch>
  */
-class Standard extends \Frontend implements IsotopeGallery
+class Standard extends Gallery implements IsotopeGallery
 {
 
     /**

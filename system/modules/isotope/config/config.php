@@ -214,6 +214,13 @@ $GLOBALS['BE_FFL']['productGroupSelector']   = 'Isotope\Widget\ProductGroupSelec
 \Isotope\Model\Shipping::registerModelType('flat', 'Isotope\Model\Shipping\Flat');
 
 /**
+ * Galleries
+ */
+\Isotope\Model\Gallery::registerModelType('standard', 'Isotope\Model\Gallery\Standard');
+\Isotope\Model\Gallery::registerModelType('inline', 'Isotope\Model\Gallery\Inline');
+\Isotope\Model\Gallery::registerModelType('zoom', 'Isotope\Model\Gallery\Zoom');
+
+/**
  * Product collections
  */
 \Isotope\Model\ProductCollection::registerModelType('cart', 'Isotope\Model\ProductCollection\Cart');
