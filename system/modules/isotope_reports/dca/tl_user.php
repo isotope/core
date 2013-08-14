@@ -32,7 +32,9 @@ $this->loadLanguageFile('tl_iso_groups');
 /**
  * Add the Isotope style sheet
  */
-$GLOBALS['TL_CSS'][] = 'system/modules/isotope/html/backend.css';
+if (TL_MODE == 'BE') {
+    $GLOBALS['TL_CSS'][] = 'system/modules/isotope/html/backend.css';
+}
 
 /**
  * Extend tl_user palettes
