@@ -12,11 +12,24 @@
  * @author     Andreas Schempp <andreas.schempp@terminal42.ch>
  */
 
+
 /**
  * Fields
  */
-$GLOBALS['TL_LANG']['tl_iso_gallery']['name']           = array('Name', 'Enter a name for this gallery.');
-$GLOBALS['TL_LANG']['tl_iso_gallery']['type']           = array('Type', 'Please select a gallery type.');
+$GLOBALS['TL_LANG']['tl_iso_gallery']['name']                           = array('Name', 'Enter a name for this gallery.');
+$GLOBALS['TL_LANG']['tl_iso_gallery']['type']                           = array('Type', 'Please select a gallery type.');
+$GLOBALS['TL_LANG']['tl_iso_gallery']['anchor']                         = array('Image anchor', 'Select what anchor type should be generated on the image.');
+$GLOBALS['TL_LANG']['tl_iso_gallery']['placeholder']                    = array('Placeholder image', 'This image will be used if an image file cannot be found or none are associated with a product.');
+$GLOBALS['TL_LANG']['tl_iso_gallery']['main_size']                      = array('Main image size', 'Please enter a width and height for the main product image.');
+$GLOBALS['TL_LANG']['tl_iso_gallery']['gallery_size']                   = array('Gallery image size', 'Please enter a width and height for the additional images.');
+$GLOBALS['TL_LANG']['tl_iso_gallery']['lightbox_size']                  = array('Lightbox image size', 'Please enter a width and height for lightbox images.');
+$GLOBALS['TL_LANG']['tl_iso_gallery']['main_watermark_image']           = array('Main watermark image', 'Select an image if you want to add a watermark to the main product image.');
+$GLOBALS['TL_LANG']['tl_iso_gallery']['main_watermark_position']        = array('Main watermark position', 'Select the position where to apply the watermark to.');
+$GLOBALS['TL_LANG']['tl_iso_gallery']['gallery_watermark_image']        = array('Gallery watermark image', 'Select an image if you want to add a watermark to the gallery images.');
+$GLOBALS['TL_LANG']['tl_iso_gallery']['gallery_watermark_position']     = array('Gallery watermark position', 'Select the position where to apply the watermark to.');
+$GLOBALS['TL_LANG']['tl_iso_gallery']['lightbox_watermark_image']       = array('Lightbox watermark image', 'Select an image if you want to add a watermark to the lightbox images.');
+$GLOBALS['TL_LANG']['tl_iso_gallery']['lightbox_watermark_position']    = array('Lightbox watermark position', 'Select the position where to apply the watermark to.');
+
 
 /**
  * Buttons
@@ -27,7 +40,16 @@ $GLOBALS['TL_LANG']['tl_iso_gallery']['copy']           = array('Duplicate galle
 $GLOBALS['TL_LANG']['tl_iso_gallery']['delete']         = array('Delete gallery', 'Delete gallery ID %s');
 $GLOBALS['TL_LANG']['tl_iso_gallery']['show']           = array('Gallery details', 'Show details of gallery ID %s');
 
+
 /**
  * Legends
  */
 $GLOBALS['TL_LANG']['tl_iso_gallery']['name_legend']    = 'Gallery';
+
+
+/**
+ * References
+ */
+$GLOBALS['TL_LANG']['tl_iso_gallery']['none']       = 'No link action';
+$GLOBALS['TL_LANG']['tl_iso_gallery']['reader']     = 'Link to the product reader';
+$GLOBALS['TL_LANG']['tl_iso_gallery']['lightbox']   = 'Open lightbox/mediabox';

@@ -35,7 +35,6 @@ $GLOBALS['TL_LANG']['tl_iso_attributes']['rgxp']                    = array('Inp
 $GLOBALS['TL_LANG']['tl_iso_attributes']['maxlength']               = array('Maximum length', 'Limit the field length to a certain number of characters (text) or bytes (file uploads).');
 $GLOBALS['TL_LANG']['tl_iso_attributes']['foreignKey']              = array('Foreign table & field', 'Instead of adding options you can enter a table.field combination to select from database. To use multilingual foreignKeys, enter one per line and specify the language (example: en=tl_table.field)');
 $GLOBALS['TL_LANG']['tl_iso_attributes']['conditionField']          = array('Parent field', 'Please select the parent field, which must be of type "Select-Menu". For parent-child relation to work, define each option of this parent field as group of the conditional select-menu.');
-$GLOBALS['TL_LANG']['tl_iso_attributes']['gallery']                 = array('Image gallery', 'Different image galleries can be developed to present media files in a custom style.');
 $GLOBALS['TL_LANG']['tl_iso_attributes']['files']                   = array('Show files', 'Show both files and folders.');
 $GLOBALS['TL_LANG']['tl_iso_attributes']['filesOnly']               = array('Files only', 'Remove the radio buttons or checkboxes next to folders.');
 $GLOBALS['TL_LANG']['tl_iso_attributes']['fieldType']               = array('Field type', 'Display radio buttons or checkboxes next to folders.');

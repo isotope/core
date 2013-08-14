@@ -87,11 +87,9 @@ class Standard extends Gallery implements IsotopeGallery
         // No image available, add placeholder from store configuration
         if (empty($this->arrFiles))
         {
-            $strPlaceholder = Isotope::getConfig()->missing_image_placeholder;
-
-            if ($strPlaceholder != '' && is_file(TL_ROOT . '/' . $strPlaceholder))
+            if ($this->placeholder != '' && is_file(TL_ROOT . '/' . $this->placeholder))
             {
-                $this->addImage(array('src'=>Isotope::getConfig()->missing_image_placeholder), false);
+                $this->addImage(array('src'=>$this->placeholder), false);
             }
         }
     }
@@ -256,27 +254,28 @@ window.addEvent('ajaxready', function() {
 
             if ($objFile->isGdImage)
             {
-                foreach ((array) Isotope::getConfig()->imageSizes as $size)
+                foreach (array('main','gallery','lightbox') as $name)
                 {
-                    $strImage = $this->getImage($strFile, $size['width'], $size['height'], $size['mode']);
+                    $size = deserialize($this->{$name.'_size'});
+                    $strImage = $this->getImage($strFile, $size[0], $size[1], $size[2]);
 
-                    if ($size['watermark'] != '' && $blnWatermark)
+                    if ($this->{$name.'_watermark_image'} != '' && $blnWatermark)
                     {
-                        $strImage = \Isotope\Frontend::watermarkImage($strImage, $size['watermark'], $size['position']);
+                        $strImage = \Isotope\Frontend::watermarkImage($strImage, $this->{$name.'_watermark_image'}, $this->{$name.'_watermark_position'});
                     }
 
                     $arrSize = @getimagesize(TL_ROOT . '/' . $strImage);
 
                     if (is_array($arrSize) && strlen($arrSize[3]))
                     {
-                        $file[$size['name'] . '_size'] = $arrSize[3];
-                        $file[$size['name'] . '_imageSize'] = $arrSize;
+                        $file[$name . '_size'] = $arrSize[3];
+                        $file[$name . '_imageSize'] = $arrSize;
                     }
 
                     $file['alt'] = specialchars($file['alt'], true);
                     $file['desc'] = specialchars($file['desc'], true);
 
-                    $file[$size['name']] = $strImage;
+                    $file[$name] = $strImage;
                 }
 
                 // Main image is first in the array
