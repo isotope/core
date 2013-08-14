@@ -37,10 +37,10 @@ class Standard extends Gallery implements IsotopeGallery
     protected $strTemplate = 'iso_gallery_standard';
 
     /**
-     * Data storage
-     * @var array
+     * Attribute name
+     * @var string
      */
-    protected $arrData = array();
+    protected $strName;
 
     /**
      * Files
@@ -50,86 +50,59 @@ class Standard extends Gallery implements IsotopeGallery
 
 
     /**
-     * Construct the object
-     * @param string
-     * @param array
+     * Set gallery attribute name
+     * @param   string
      */
-    public function __construct($strName, $arrFiles)
+    public function setName($strName)
     {
-        parent::__construct();
-
-        $this->import('Isotope\Isotope', 'Isotope');
-        $this->name = $strName;
-        $this->files = $arrFiles;
+        $this->strName = $strName;
     }
 
+    /**
+     * Get gallery attribute name
+     * @return  string
+     */
+    public function getName()
+    {
+        return $this->strName;
+    }
 
     /**
-     * Set a value
-     * @param string
-     * @param mixed
+     * Set image files
+     * @param   array
      */
-    public function __set($strKey, $varValue)
+    public function setFiles($varValue)
     {
-        switch ($strKey)
+        $this->arrFiles = array();
+        $varValue = deserialize($varValue);
+
+        if (is_array($varValue) && !empty($varValue))
         {
-            case 'files':
-                $this->arrFiles = array();
-                $varValue = deserialize($varValue);
+            foreach ($varValue as $file)
+            {
+                $this->addImage($file);
+            }
+        }
 
-                if (is_array($varValue) && !empty($varValue))
-                {
-                    foreach ($varValue as $file)
-                    {
-                        $this->addImage($file);
-                    }
-                }
+        // No image available, add placeholder from store configuration
+        if (empty($this->arrFiles))
+        {
+            $strPlaceholder = Isotope::getConfig()->missing_image_placeholder;
 
-                // No image available, add placeholder from store configuration
-                if (empty($this->arrFiles))
-                {
-                    $strPlaceholder = Isotope::getConfig()->missing_image_placeholder;
-
-                    if ($strPlaceholder != '' && is_file(TL_ROOT . '/' . $strPlaceholder))
-                    {
-                        $this->addImage(array('src'=>Isotope::getConfig()->missing_image_placeholder), false);
-                    }
-                }
-                break;
-
-            case 'main_image':
-                $file = is_array($varValue) ? $varValue : array('src'=>$file);
-
-                return $this->addImage($file, true, true);
-                break;
-
-            default:
-                $this->arrData[$strKey] = $varValue;
-                break;
+            if ($strPlaceholder != '' && is_file(TL_ROOT . '/' . $strPlaceholder))
+            {
+                $this->addImage(array('src'=>Isotope::getConfig()->missing_image_placeholder), false);
+            }
         }
     }
 
-
     /**
-     * Get a value
-     * @param string
-     * @return mixed
+     * Get image files
+     * @return  array
      */
-    public function __get($strKey)
+    public function getFiles()
     {
-        switch ($strKey)
-        {
-            case 'main_image':
-                return reset($this->arrFiles);
-                break;
-
-            case 'images':
-                return $this->arrFiles;
-                break;
-
-            default:
-                return $this->arrData[$strKey];
-        }
+        return $this->arrFiles;
     }
 
 
@@ -150,17 +123,6 @@ class Standard extends Gallery implements IsotopeGallery
     public function hasImages()
     {
         return !empty($this->arrFiles);
-    }
-
-
-    /**
-     * Check whether a property is set
-     * @param string
-     * @return boolean
-     */
-    public function __isset($strKey)
-    {
-        return isset($this->arrData[$strKey]);
     }
 
 
