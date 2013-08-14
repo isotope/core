@@ -138,7 +138,7 @@ class Standard extends Gallery implements IsotopeGallery
      * @param string
      * @return string
      */
-    public function generateMainImage($strType='medium')
+    public function generateMainImage($strType='main')
     {
         if (!count($this->arrFiles))
         {
