@@ -44,7 +44,9 @@ $GLOBALS['TL_LANG']['tl_iso_gallery']['show']           = array('Gallery details
 /**
  * Legends
  */
-$GLOBALS['TL_LANG']['tl_iso_gallery']['name_legend']    = 'Gallery';
+$GLOBALS['TL_LANG']['tl_iso_gallery']['name_legend']    	= 'Name &amp; Type';
+$GLOBALS['TL_LANG']['tl_iso_gallery']['size_legend']    	= 'Image sizes';
+$GLOBALS['TL_LANG']['tl_iso_gallery']['watermark_legend']   = 'Watermark';
 
 
 /**
