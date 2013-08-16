@@ -68,7 +68,7 @@ abstract class BackendOverview extends \BackendModule
         {
             foreach ($this->arrModules as $arrGroup)
             {
-                foreach ($arrGroup as $strModule => $arrConfig)
+                foreach ($arrGroup['modules'] as $strModule => $arrConfig)
                 {
                     if (is_array($arrConfig['tables']) && in_array(\Input::get('table'), $arrConfig['tables']))
                     {
