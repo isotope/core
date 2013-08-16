@@ -35,7 +35,6 @@ $GLOBALS['TL_DCA']['tl_iso_price_tiers'] = array
     // Fields
     'fields' => array
     (
-
         'id' => array
         (
             'sql'                 =>  "int(10) unsigned NOT NULL auto_increment",
@@ -56,6 +55,5 @@ $GLOBALS['TL_DCA']['tl_iso_price_tiers'] = array
         (
             'sql'                 =>  "decimal(12,2) NOT NULL default '0.00'",
         ),
-
     )
 );

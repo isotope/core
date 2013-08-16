@@ -105,7 +105,6 @@ $GLOBALS['TL_DCA']['tl_iso_prices'] = array
     // Fields
     'fields' => array
     (
-
         'id' => array
         (
             'sql'                 =>  "int(10) unsigned NOT NULL auto_increment",
