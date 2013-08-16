@@ -17,23 +17,23 @@
 /**
  * Errors
  */
-$GLOBALS['TL_LANG']['ERR']['systemColumn']                  = 'Name "%s" is reserved for system use. Please choose a different name.';
-$GLOBALS['TL_LANG']['ERR']['noStoreConfigurationSet']       = 'No store configuration available';
-$GLOBALS['TL_LANG']['ERR']['noDefaultStoreConfiguration']   = 'Please create a default store configuration.';
-$GLOBALS['TL_LANG']['ERR']['emptyOrderHistory']             = 'You have not yet placed any orders.';
-$GLOBALS['TL_LANG']['ERR']['orderNotFound']                 = 'The requested order was not found.';
-$GLOBALS['TL_LANG']['ERR']['isoLoginRequired']              = 'You must be logged in to checkout.';
-$GLOBALS['TL_LANG']['ERR']['variantDuplicate']              = 'A variant with this attributes is already available. Please select another combination.';
-$GLOBALS['TL_LANG']['ERR']['discount']                      = 'Please enter whole numbers or decimals signed with + or - and optionally with a percentage.';
-$GLOBALS['TL_LANG']['ERR']['surcharge']                     = 'Please enter whole numbers or decimals optionally with a percentage.';
-$GLOBALS['TL_LANG']['ERR']['orderFailed']                   = 'Checkout failed. Please try again or choose another payment method.';
-$GLOBALS['TL_LANG']['ERR']['noAddressBookEntries']          = 'You have no address book entries.';
-$GLOBALS['TL_LANG']['ERR']['cartMinSubtotal']               = 'The minimum order amount is %s. Please add more products before checkout.';
-$GLOBALS['TL_LANG']['ERR']['productMinimumQuantity']        = 'The minimum quantity for "%s" is %s items. Please check your shopping cart.';
-$GLOBALS['TL_LANG']['ERR']['imageInFallback']               = 'This image has already been assigned to the fallback language.';
-$GLOBALS['TL_LANG']['ERR']['datepickerRgxp']                = 'Select an appropriate field validation (date, time, date and time) to enable the date picker.';
-$GLOBALS['TL_LANG']['ERR']['emptyDownloadsFolder']          = 'The selected folder is empty.';
-$GLOBALS['TL_LANG']['ERR']['checkoutNotAllowed']            = 'User checkout not allowed';
+$GLOBALS['TL_LANG']['ERR']['systemColumn']                      = 'Name "%s" is reserved for system use. Please choose a different name.';
+$GLOBALS['TL_LANG']['ERR']['noStoreConfigurationSet']           = 'No store configuration available';
+$GLOBALS['TL_LANG']['ERR']['noDefaultStoreConfiguration']       = 'Please create a default store configuration.';
+$GLOBALS['TL_LANG']['ERR']['emptyOrderHistory']                 = 'You have not yet placed any orders.';
+$GLOBALS['TL_LANG']['ERR']['orderNotFound']                     = 'The requested order was not found.';
+$GLOBALS['TL_LANG']['ERR']['isoLoginRequired']                  = 'You must be logged in to checkout.';
+$GLOBALS['TL_LANG']['ERR']['variantDuplicate']                  = 'A variant with this attributes is already available. Please select another combination.';
+$GLOBALS['TL_LANG']['ERR']['discount']                          = 'Please enter whole numbers or decimals signed with + or - and optionally with a percentage.';
+$GLOBALS['TL_LANG']['ERR']['surcharge']                         = 'Please enter whole numbers or decimals optionally with a percentage.';
+$GLOBALS['TL_LANG']['ERR']['orderFailed']                       = 'Checkout failed. Please try again or choose another payment method.';
+$GLOBALS['TL_LANG']['ERR']['noAddressBookEntries']              = 'You have no address book entries.';
+$GLOBALS['TL_LANG']['ERR']['cartMinSubtotal']                   = 'The minimum order amount is %s. Please add more products before checkout.';
+$GLOBALS['TL_LANG']['ERR']['productMinimumQuantity']            = 'The minimum quantity for "%s" is %s items. Please check your shopping cart.';
+$GLOBALS['TL_LANG']['ERR']['imageInFallback']                   = 'This image has already been assigned to the fallback language.';
+$GLOBALS['TL_LANG']['ERR']['datepickerRgxp']                    = 'Select an appropriate field validation (date, time, date and time) to enable the date picker.';
+$GLOBALS['TL_LANG']['ERR']['emptyDownloadsFolder']              = 'The selected folder is empty.';
+$GLOBALS['TL_LANG']['ERR']['checkoutNotAllowed']                = 'User checkout not allowed';
 
 /**
  * Miscellaneous
@@ -171,7 +171,7 @@ $GLOBALS['TL_LANG']['MSC']['timePeriod']['years']               = 'Years';
 /**
  * Content elements
  */
-$GLOBALS['TL_LANG']['CTE']['isotope']    = 'Isotope eCommerce';
+$GLOBALS['TL_LANG']['CTE']['isotope']                           = 'Isotope eCommerce';
 
 /**
  * Shipping methods
@@ -193,67 +193,67 @@ $GLOBALS['TL_LANG']['MODEL']['tl_iso_payment_modules.payone']           = array(
 /**
  * Galleries
  */
-$GLOBALS['TL_LANG']['GAL']['standard']            = array('Default gallery (Lightbox/Mediabox)', '<p>Uses the lightbox/mediabox for full size images. Make sure you select the appropriate "moo_" template in your page layout configuration.</p><p>You can supply a "rel" attribute to the link target by using a pipe (e.g. "tl_files/video.mov|lightbox[400 300]"). If no "rel" attribute is supplied, the link will be opened in a new window.</p>');
-$GLOBALS['TL_LANG']['GAL']['inline']            = array('Inline gallery', 'Clicking on a gallery image will replace the main image.');
-$GLOBALS['TL_LANG']['GAL']['zoom'] = array('Inline gallery with zoom effect', 'In addition to the behaviour of inline gallery, it also adds an image zoom feature to the main image.');
+$GLOBALS['TL_LANG']['GAL']['standard']              = array('Default gallery (Lightbox/Mediabox)', '<p>Uses the lightbox/mediabox for full size images. Make sure you select the appropriate "moo_" template in your page layout configuration.</p><p>You can supply a "rel" attribute to the link target by using a pipe (e.g. "tl_files/video.mov|lightbox[400 300]"). If no "rel" attribute is supplied, the link will be opened in a new window.</p>');
+$GLOBALS['TL_LANG']['GAL']['inline']                = array('Inline gallery', 'Clicking on a gallery image will replace the main image.');
+$GLOBALS['TL_LANG']['GAL']['zoom']                  = array('Inline gallery with zoom effect', 'In addition to the behaviour of inline gallery, it also adds an image zoom feature to the main image.');
 
 /**
  * Product types
  */
-$GLOBALS['TL_LANG']['PRODUCT']['standard']            = array('Standard product', 'A default product. Select this if nothing else matches.');
+$GLOBALS['TL_LANG']['PRODUCT']['standard']          = array('Standard product', 'A default product. Select this if nothing else matches.');
 
 /**
  * Credit card types
  */
 $GLOBALS['TL_LANG']['CCT']['mc']                    = 'MasterCard';
-$GLOBALS['TL_LANG']['CCT']['visa']                    = 'Visa';
-$GLOBALS['TL_LANG']['CCT']['amex']                    = 'American Express';
-$GLOBALS['TL_LANG']['CCT']['discover']                = 'Discover';
-$GLOBALS['TL_LANG']['CCT']['jcb']                    = 'JCB';
+$GLOBALS['TL_LANG']['CCT']['visa']                  = 'Visa';
+$GLOBALS['TL_LANG']['CCT']['amex']                  = 'American Express';
+$GLOBALS['TL_LANG']['CCT']['discover']              = 'Discover';
+$GLOBALS['TL_LANG']['CCT']['jcb']                   = 'JCB';
 $GLOBALS['TL_LANG']['CCT']['diners']                = 'Diner\'s Club';
-$GLOBALS['TL_LANG']['CCT']['enroute']                = 'EnRoute';
-$GLOBALS['TL_LANG']['CCT']['carte_blanche']        = 'Carte Blanche';
-$GLOBALS['TL_LANG']['CCT']['jal']                    = 'JAL';
-$GLOBALS['TL_LANG']['CCT']['maestro']                = 'Maestro UK';
-$GLOBALS['TL_LANG']['CCT']['delta']                = 'Delta';
-$GLOBALS['TL_LANG']['CCT']['solo']                    = 'Solo';
-$GLOBALS['TL_LANG']['CCT']['visa_electron']        = 'Visa Electron';
-$GLOBALS['TL_LANG']['CCT']['dankort']                = 'Dankort';
-$GLOBALS['TL_LANG']['CCT']['laser']                = 'Laser';
-$GLOBALS['TL_LANG']['CCT']['carte_bleue']            = 'Carte Bleue';
-$GLOBALS['TL_LANG']['CCT']['carta_si']                = 'Carta Si';
-$GLOBALS['TL_LANG']['CCT']['enc_acct_num']            = 'Encoded Account Number';
-$GLOBALS['TL_LANG']['CCT']['uatp']                    = 'Universal Air Travel Program';
-$GLOBALS['TL_LANG']['CCT']['maestro_intl']            = 'Maestro International';
-$GLOBALS['TL_LANG']['CCT']['ge_money_uk']            = 'GE Money UK';
+$GLOBALS['TL_LANG']['CCT']['enroute']               = 'EnRoute';
+$GLOBALS['TL_LANG']['CCT']['carte_blanche']         = 'Carte Blanche';
+$GLOBALS['TL_LANG']['CCT']['jal']                   = 'JAL';
+$GLOBALS['TL_LANG']['CCT']['maestro']               = 'Maestro UK';
+$GLOBALS['TL_LANG']['CCT']['delta']                 = 'Delta';
+$GLOBALS['TL_LANG']['CCT']['solo']                  = 'Solo';
+$GLOBALS['TL_LANG']['CCT']['visa_electron']         = 'Visa Electron';
+$GLOBALS['TL_LANG']['CCT']['dankort']               = 'Dankort';
+$GLOBALS['TL_LANG']['CCT']['laser']                 = 'Laser';
+$GLOBALS['TL_LANG']['CCT']['carte_bleue']           = 'Carte Bleue';
+$GLOBALS['TL_LANG']['CCT']['carta_si']              = 'Carta Si';
+$GLOBALS['TL_LANG']['CCT']['enc_acct_num']          = 'Encoded Account Number';
+$GLOBALS['TL_LANG']['CCT']['uatp']                  = 'Universal Air Travel Program';
+$GLOBALS['TL_LANG']['CCT']['maestro_intl']          = 'Maestro International';
+$GLOBALS['TL_LANG']['CCT']['ge_money_uk']           = 'GE Money UK';
 
 /**
  * Weight Units
  * http://www.metric-conversions.org/weight/weight-conversions.htm
  */
 $GLOBALS['TL_LANG']['WGT']['mg']                    = array('Milligram (mg)', 'A unit of mass equal to one-thousandth of a gram.');
-$GLOBALS['TL_LANG']['WGT']['g']                    = array('Gram (g)', 'A metric unit of weight equal to one thousandth of a kilogram.');
+$GLOBALS['TL_LANG']['WGT']['g']                     = array('Gram (g)', 'A metric unit of weight equal to one thousandth of a kilogram.');
 $GLOBALS['TL_LANG']['WGT']['kg']                    = array('Kilogram (kg)', 'One kilogram is equivalent to 1,000 grams or 2.2 pounds; the mass of a liter of water.');
-$GLOBALS['TL_LANG']['WGT']['t']                    = array('Metric Ton (t)', 'A unit of weight equal to 1,000 kilograms, or 2,204.6 pounds.');
+$GLOBALS['TL_LANG']['WGT']['t']                     = array('Metric Ton (t)', 'A unit of weight equal to 1,000 kilograms, or 2,204.6 pounds.');
 $GLOBALS['TL_LANG']['WGT']['ct']                    = array('Carats (ct)', 'A measure of weight used for gemstones. One carat is equal to 1/5 of a gram (200 milligrams). Note that karat with a "K" is a measure of the purity of a gold alloy.');
 $GLOBALS['TL_LANG']['WGT']['oz']                    = array('Ounce (oz)', 'A unit of weight equal to one sixteenth of a pound or 28.35 grams.');
 $GLOBALS['TL_LANG']['WGT']['lb']                    = array('Pound (lb)', 'A unit of mass equal to 16 ounces');
 $GLOBALS['TL_LANG']['WGT']['st']                    = array('Stone (st)', 'A British measurement of mass that equals fourteen pounds.');
-$GLOBALS['TL_LANG']['WGT']['grain']                = array('Grain', '1/7000 pound; equals a troy grain or 64.799 milligrams.');
+$GLOBALS['TL_LANG']['WGT']['grain']                 = array('Grain', '1/7000 pound; equals a troy grain or 64.799 milligrams.');
 
 /**
  * Attributes
  */
-$GLOBALS['TL_LANG']['ATTR']['text']                = array('Text field', 'A single-line input field for a short or medium text.');
-$GLOBALS['TL_LANG']['ATTR']['textarea']            = array('Textarea', 'A multi-line input field for a medium or long text.');
-$GLOBALS['TL_LANG']['ATTR']['select']                = array('Select menu', 'A single- or multi-line drop-down menu.<br /><i>This field type is suitable for product variants.</i>');
+$GLOBALS['TL_LANG']['ATTR']['text']                 = array('Text field', 'A single-line input field for a short or medium text.');
+$GLOBALS['TL_LANG']['ATTR']['textarea']             = array('Textarea', 'A multi-line input field for a medium or long text.');
+$GLOBALS['TL_LANG']['ATTR']['select']               = array('Select menu', 'A single- or multi-line drop-down menu.<br /><i>This field type is suitable for product variants.</i>');
 $GLOBALS['TL_LANG']['ATTR']['radio']                = array('Radio button menu', 'A list of multiple options from which one can be selected.<br /><i>This field type is suitable for product variants.</i>');
-$GLOBALS['TL_LANG']['ATTR']['checkbox']            = array('Checkbox menu', 'A list of multiple options from which any can be selected.');
-$GLOBALS['TL_LANG']['ATTR']['mediaManager']        = array('Media Manager', 'Upload images and other files to the Isotope eCommerce file system. Output is processed trough an IsotopeGallery class.');
+$GLOBALS['TL_LANG']['ATTR']['checkbox']             = array('Checkbox menu', 'A list of multiple options from which any can be selected.');
+$GLOBALS['TL_LANG']['ATTR']['mediaManager']         = array('Media Manager', 'Upload images and other files to the Isotope eCommerce file system. Output is processed trough an IsotopeGallery class.');
 $GLOBALS['TL_LANG']['ATTR']['conditionalselect']    = array('Conditional Select-Menu', 'show select-options based on another select menu.');
-$GLOBALS['TL_LANG']['ATTR']['fileTree']            = array('File tree', 'A file tree for single or multiple files and folders.');
+$GLOBALS['TL_LANG']['ATTR']['fileTree']             = array('File tree', 'A file tree for single or multiple files and folders.');
 $GLOBALS['TL_LANG']['ATTR']['downloads']            = array('Downloads', 'Download files from the product, e.g. manuals, data sheets etc.');
-$GLOBALS['TL_LANG']['ATTR']['upload']                = array('File upload', 'A single-line input field to upload a local file to the server.');
+$GLOBALS['TL_LANG']['ATTR']['upload']               = array('File upload', 'A single-line input field to upload a local file to the server.');
 
 /**
  * Currencies
