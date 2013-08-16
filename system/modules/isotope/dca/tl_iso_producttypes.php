@@ -114,7 +114,7 @@ $GLOBALS['TL_DCA']['tl_iso_producttypes'] = array
     (
         '__selector__'              => array('class', 'prices', 'variants'),
         'default'                   => '{name_legend},name,class',
-        'standard'                  => '{name_legend},name,class,fallback;{description_legend:hide},description;{prices_legend:hide},prices;{template_legend},list_template,reader_template;{attributes_legend},attributes;{variants_legend:hide},variants;{expert_legend:hide},shipping_exempt,downloads',
+        'standard'                  => '{name_legend},name,class,fallback;{description_legend:hide},description;{prices_legend:hide},prices;{template_legend},list_template,reader_template,list_gallery,reader_gallery;{attributes_legend},attributes;{variants_legend:hide},variants;{expert_legend:hide},shipping_exempt,downloads',
     ),
 
     // Subpalettes
@@ -205,6 +205,24 @@ $GLOBALS['TL_DCA']['tl_iso_producttypes'] = array
             'options_callback'      => array('Isotope\tl_iso_producttypes', 'getReaderTemplates'),
             'eval'                  => array('mandatory'=>true, 'tl_class'=>'w50', 'chosen'=>true),
             'sql'                   => "varchar(255) NOT NULL default ''",
+        ),
+        'list_gallery' => array
+        (
+            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_producttypes']['list_gallery'],
+            'exclude'               => true,
+            'inputType'             => 'select',
+            'foreignKey'      		=> 'tl_iso_gallery.name',
+            'eval'                  => array('mandatory'=>true, 'includeBlankOption'=>true, 'chosen'=>true, 'tl_class'=>'w50'),
+            'sql'                   => "int(10) unsigned NOT NULL default '0'",
+        ),
+        'reader_gallery' => array
+        (
+            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_producttypes']['reader_gallery'],
+            'exclude'               => true,
+            'inputType'             => 'select',
+            'foreignKey'      		=> 'tl_iso_gallery.name',
+            'eval'                  => array('mandatory'=>true, 'includeBlankOption'=>true, 'chosen'=>true, 'tl_class'=>'w50'),
+            'sql'                   => "int(10) unsigned NOT NULL default '0'",
         ),
         'attributes' => array
         (
