@@ -50,3 +50,11 @@ $GLOBALS['TL_LANG']['tl_iso_producttypes']['template_legend']       = 'Templates
 $GLOBALS['TL_LANG']['tl_iso_producttypes']['attributes_legend']     = 'Product attributes';
 $GLOBALS['TL_LANG']['tl_iso_producttypes']['variants_legend']       = 'Variant attributes';
 $GLOBALS['TL_LANG']['tl_iso_producttypes']['expert_legend']         = 'Expert settings';
+
+/**
+ * Reference
+ */
+$GLOBALS['TL_LANG']['tl_iso_producttypes']['attributes']['legend']      = array('Grouping', 'Group fields by topic (legends)');
+$GLOBALS['TL_LANG']['tl_iso_producttypes']['attributes']['tl_class']    = array('Alignment', 'Enter a tl_class to override alignment for this attribute.');
+$GLOBALS['TL_LANG']['tl_iso_producttypes']['attributes']['mandatory']   = array('Mandatory', 'You can override the default mandatory-ness here.');
+$GLOBALS['TL_LANG']['tl_iso_producttypes']['attributes']['default']     = 'Default';

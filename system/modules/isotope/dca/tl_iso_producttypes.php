@@ -210,24 +210,34 @@ $GLOBALS['TL_DCA']['tl_iso_producttypes'] = array
         (
             'label'                 => &$GLOBALS['TL_LANG']['tl_iso_producttypes']['attributes'],
             'exclude'               => true,
-            'inputType'             => 'attributeWizard',
             'default' => array
             (
-                'type'              => array('enabled'=>1, 'position'=>1),
-                'pages'             => array('enabled'=>1, 'position'=>2),
-                'alias'             => array('enabled'=>1, 'position'=>3),
-                'sku'               => array('enabled'=>1, 'position'=>4),
-                'name'              => array('enabled'=>1, 'position'=>5),
-                'teaser'            => array('enabled'=>1, 'position'=>6),
-                'description'       => array('enabled'=>1, 'position'=>7),
-                'price'             => array('enabled'=>1, 'position'=>8),
-                'tax_class'         => array('enabled'=>1, 'position'=>9),
-                'images'            => array('enabled'=>1, 'position'=>10),
-                'published'         => array('enabled'=>1, 'position'=>11),
+                array('name'=>'type', 'enabled'=>1),
+                array('name'=>'pages', 'enabled'=>1),
+                array('name'=>'alias', 'enabled'=>1),
+                array('name'=>'sku', 'enabled'=>1),
+                array('name'=>'name', 'enabled'=>1),
+                array('name'=>'teaser', 'enabled'=>1),
+                array('name'=>'description', 'enabled'=>1),
+                array('name'=>'price', 'enabled'=>1),
+                array('name'=>'tax_class', 'enabled'=>1),
+                array('name'=>'images', 'enabled'=>1),
+                array('name'=>'published', 'enabled'=>1),
+                array('name'=>'start', 'enabled'=>1),
+                array('name'=>'stop', 'enabled'=>1),
             ),
-            'eval'                  => array('helpwizard'=>true, 'tl_class'=>'clr', 'tl_classes'=>array('clr', 'clr long', 'long', 'w50', 'w50 m12')),
-            'explanation'           => 'isoAttributeWizard',
+            'inputType'             => 'multiColumnWizard',
+            'eval'                  => array
+            (
+                'tl_class'          =>'clr',
+                'columnsCallback'   => array('Isotope\tl_iso_producttypes', 'prepareAttributeWizard'),
+                'buttons'           => array('up'=>'up.gif', 'down'=>'down.gif'),
+            ),
             'sql'                   => 'blob NULL',
+            'load_callback'         => array
+            (
+                array('Isotope\tl_iso_producttypes', 'loadAttributeWizard'),
+            ),
         ),
         'variants' => array
         (
@@ -241,10 +251,18 @@ $GLOBALS['TL_DCA']['tl_iso_producttypes'] = array
         (
             'label'                 => &$GLOBALS['TL_LANG']['tl_iso_producttypes']['variant_attributes'],
             'exclude'               => true,
-            'inputType'             => 'attributeWizard',
-            'eval'                  => array('helpwizard'=>true, 'variants'=>true, 'tl_class'=>'clr', 'tl_classes'=>array('clr', 'clr long', 'long', 'w50', 'w50 m12')),
-            'explanation'           => 'isoAttributeWizard',
+            'inputType'             => 'multiColumnWizard',
+            'eval'                  => array
+            (
+                'tl_class'          =>'clr',
+                'columnsCallback'   => array('Isotope\tl_iso_producttypes', 'prepareAttributeWizard'),
+                'buttons'           => array('up'=>'up.gif', 'down'=>'down.gif'),
+            ),
             'sql'                   => 'blob NULL',
+            'load_callback'         => array
+            (
+                array('Isotope\tl_iso_producttypes', 'loadAttributeWizard'),
+            ),
         ),
         'force_variant_options' => array
         (
