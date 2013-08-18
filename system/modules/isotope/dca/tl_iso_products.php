@@ -262,7 +262,7 @@ $GLOBALS['TL_DCA']['tl_iso_products'] = array
             'exclude'               => true,
             'inputType'             => 'pageTree',
             'foreignKey'            => 'tl_page.title',
-            'eval'                  => array('mandatory'=>false, 'multiple'=>true, 'fieldType'=>'checkbox', 'tl_class'=>'clr'),
+            'eval'                  => array('doNotSaveEmpty'=>true, 'multiple'=>true, 'fieldType'=>'checkbox', 'tl_class'=>'clr'),
             'relation'              => array('type'=>'hasMany', 'load'=>'lazy'),
             'attributes'            => array('legend'=>'general_legend', 'fixed'=>true, 'inherit'=>true),
             'load_callback'         => array
