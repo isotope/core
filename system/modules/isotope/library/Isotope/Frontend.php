@@ -14,8 +14,8 @@ namespace Isotope;
 
 use Isotope\Interfaces\IsotopeProduct;
 use Isotope\Interfaces\IsotopeProductCollection;
+use Isotope\Model\Product;
 use Isotope\Model\ProductCollection\Order;
-use Isotope\Product\Standard as StandardProduct;
 
 
 /**
@@ -842,45 +842,20 @@ window.addEvent('domready', function()
 
     /**
      * Shortcut for a single product by ID or from database result
-     * @param \Database\Result|int
+     * @param IsotopeProduct|int
      * @param integer
      * @param boolean
      * @return IsotopeProduct|null
      */
-    public static function getProduct($objProductData, $intReaderPage=0, $blnCheckAvailability=true)
+    public static function getProduct($objProduct, $intReaderPage=0, $blnCheckAvailability=true)
     {
-        if (is_numeric($objProductData))
+        if (is_numeric($objProduct))
         {
-            $time = time();
-            $Database = \Database::getInstance();
-
-            $objProductData = $Database->prepare(StandardProduct::getSelectStatement() . "
-                                                    WHERE p1.language='' AND p1.id=?"
-                                                    . (BE_USER_LOGGED_IN === true ? '' : " AND p1.published='1' AND (p1.start='' OR p1.start<$time) AND (p1.stop='' OR p1.stop>$time)"))
-                                       ->limit(1)
-                                       ->execute($objProductData);
+            $objProduct = Product::findPublishedById($objProduct);
         }
 
-        if (!($objProductData instanceof \Database\Result) || !$objProductData->numRows)
+        if (null === $objProduct || !($objProduct instanceof IsotopeProduct))
         {
-            return null;
-        }
-
-        $strClass = $GLOBALS['ISO_PRODUCT'][$objProductData->product_class]['class'];
-
-        if (!class_exists($strClass))
-        {
-            $strClass = 'Isotope\Product\Standard';
-        }
-
-        try
-        {
-            $objProduct = new $strClass($objProductData->row());
-        }
-        catch (\Exception $e)
-        {
-            $this->log('Product ID ' . $objProductData->id . ' could not be initialized: ' . $e->getMessage(), __METHOD__, TL_ERROR);
-
             return null;
         }
 
@@ -904,16 +879,7 @@ window.addEvent('domready', function()
      */
     public static function getProductByAlias($strAlias, $intReaderPage=0, $blnCheckAvailability=true)
     {
-        $time = time();
-        $Database = \Database::getInstance();
-
-        $objProductData = $Database->prepare(StandardProduct::getSelectStatement() . "
-                                                WHERE p1.pid=0 AND p1.language='' AND p1." . (is_numeric($strAlias) ? 'id' : 'alias') . "=?"
-                                                . (BE_USER_LOGGED_IN === true ? '' : " AND p1.published='1' AND (p1.start='' OR p1.start<$time) AND (p1.stop='' OR p1.stop>$time)"))
-                                   ->limit(1)
-                                   ->executeUncached($strAlias);
-
-        return self::getProduct($objProductData, $intReaderPage, $blnCheckAvailability);
+        return self::getProduct(Product::findPublishedByIdOrAlias($strAlias), $intReaderPage, $blnCheckAvailability);
     }
 
 
@@ -926,37 +892,32 @@ window.addEvent('domready', function()
      * @param array
      * @return array
      */
-    public static function getProducts($objProductData, $intReaderPage=0, $blnCheckAvailability=true, array $arrFilters=array(), array $arrSorting=array())
+    public static function getProducts($objProducts, $intReaderPage=0, $blnCheckAvailability=true, array $arrFilters=array(), array $arrSorting=array())
     {
-        // $objProductData can also be an array of product ids
-        if (is_array($objProductData) && !empty($objProductData))
-        {
-            $time = time();
-            $Database = \Database::getInstance();
-
-            $objProductData = $Database->execute(StandardProduct::getSelectStatement() . "
-                                                    WHERE p1.language='' AND p1.id IN (" . implode(',', array_map('intval', $objProductData)) . ")"
-                                                    . (BE_USER_LOGGED_IN === true ? '' : " AND p1.published='1' AND (p1.start='' OR p1.start<$time) AND (p1.stop='' OR p1.stop>$time)") . "
-                                                    GROUP BY p1.id ORDER BY p1.id=" . implode(' DESC, p1.id=', $objProductData) . " DESC");
+        // $objProducts can also be an array of product ids
+        if (is_array($objProducts) && !empty($objProducts)) {
+            $objProducts = Product::findPublishedById($objProducts, array(
+                'group' => Product::$strTable.'.id',
+                'order' => Database::getInstance()->findInSet(Product::$strTable.'.id', $objProducts)
+            ));
         }
 
-        if (!($objProductData instanceof \Database\Result) || !$objProductData->numRows)
-        {
+        if (null === $objProducts) {
             return array();
         }
 
         $arrProducts = array();
 
         // Reset DB iterator (see #22)
-        $objProductData->reset();
+        $objProducts->reset();
 
-        while ($objProductData->next())
+        while ($objProducts->next())
         {
-            $objProduct = \Isotope\Frontend::getProduct($objProductData, $intReaderPage, $blnCheckAvailability);
+            $objProduct = \Isotope\Frontend::getProduct($objProducts->current(), $intReaderPage, $blnCheckAvailability);
 
             if ($objProduct !== null)
             {
-                $arrProducts[$objProductData->id] = $objProduct;
+                $arrProducts[$objProducts->id] = $objProduct;
             }
         }
 
