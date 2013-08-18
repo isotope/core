@@ -42,6 +42,190 @@ abstract class Product extends TypeAgent
      */
     protected static $arrModelTypes = array();
 
+    /**
+     * Find published products by condition
+     * @param   mixed
+     * @param   mixed
+     * @param   array
+     * @return  \Collection
+     */
+    public function findPublishedBy($arrColumns, $arrValues, array $arrOptions=array())
+    {
+        $arrValues = (array) $arrValues;
+
+        if (!is_array($arrColumns)) {
+            $arrColumns = array(static::$strTable . '.' . $arrColumns . '=?');
+        }
+
+        if (BE_USER_LOGGED_IN !== true) {
+            $time = time();
+            $arrColumns[] = "$t.published='1' AND ($t.start='' OR $t.start<$time) AND ($t.stop='' OR $t.stop>$time)";
+        }
+
+        return static::findBy($arrColumns, $arrValues, $arrOptions);
+    }
+
+    /**
+     * Find a single product by primary key
+     * @param   int
+     * @param   array
+     * @return  \Collection
+     */
+    public function findPublishedByPk($intId, array $arrOptions=array())
+    {
+        $t = static::$strTable;
+
+        $arrColumns = array("$t." . static::$strPk . "=?");
+        $arrValues = array((int) $intId);
+
+        if (BE_USER_LOGGED_IN !== true) {
+            $time = time();
+            $arrColumns[] = "$t.published='1' AND ($t.start='' OR $t.start<$time) AND ($t.stop='' OR $t.stop>$time)";
+        }
+
+		$arrOptions = array_merge
+		(
+			array
+			(
+				'limit'  => 1,
+				'column' => $arrColumns,
+				'value'  => $arrValues,
+				'return' => 'Model'
+			),
+
+			$arrOptions
+		);
+
+		return static::find($arrOptions);
+    }
+
+    /**
+	 * Find a single product by its ID or alias
+	 * @param mixed $varId      The ID or alias
+	 * @param array $arrOptions An optional options array
+	 * @return \Model|null The model or null if the result is empty
+	 */
+	public static function findPublishedByIdOrAlias($varId, array $arrOptions=array())
+	{
+		$t = static::$strTable;
+
+		$arrColumns = array("($t.id=? OR $t.alias=?)");
+        $arrValues = array((is_numeric($varId) ? $varId : 0), $varId);
+
+        if (BE_USER_LOGGED_IN !== true) {
+            $time = time();
+            $arrColumns[] = "$t.published='1' AND ($t.start='' OR $t.start<$time) AND ($t.stop='' OR $t.stop>$time)";
+        }
+
+		$arrOptions = array_merge
+		(
+			array
+			(
+				'limit'  => 1,
+				'column' => $arrColumns,
+				'value'  => $arrValues,
+				'return' => 'Model'
+			),
+
+			$arrOptions
+		);
+
+		return static::find($arrOptions);
+	}
+
+	/**
+     * Find products by IDs
+     * @param   array
+     * @param   array
+     * @return  \Collection
+     */
+    public function findPublishedById(array $arrIds, array $arrOptions=array())
+    {
+        $t = static::$strTable;
+
+        $arrColumns = array("$t.id IN (" . implode(',', array_map('intval', $arrIds)) . ")");
+
+        if (BE_USER_LOGGED_IN !== true) {
+            $time = time();
+            $arrColumns[] = "$t.published='1' AND ($t.start='' OR $t.start<$time) AND ($t.stop='' OR $t.stop>$time)";
+        }
+
+		$arrOptions = array_merge
+		(
+			array
+			(
+				'column' => $arrColumns,
+				'return' => 'Collection'
+			),
+
+			$arrOptions
+		);
+
+		return static::find($arrOptions);
+    }
+
+    /**
+     * Return collection of published product variants by product PID
+     * @param   int
+     * @param   array
+     * @return  \Collection
+     */
+    public function findPublishedByPid($intPid, array $arrOptions=array())
+    {
+        $t = static::$strTable;
+
+        $arrColumns = array("$t.pid=?");
+
+        if (BE_USER_LOGGED_IN !== true) {
+            $time = time();
+            $arrColumns[] = "$t.published='1' AND ($t.start='' OR $t.start<$time) AND ($t.stop='' OR $t.stop>$time)";
+        }
+
+		$arrOptions = array_merge
+		(
+			array
+			(
+				'column' => $arrColumns,
+				'value'  => array((int) $intPid),
+				'return' => 'Collection'
+			),
+
+			$arrOptions
+		);
+
+		return static::find($arrOptions);
+    }
+
+    /**
+     * Return collection of published products by categories
+     * @param   array
+     * @param   array
+     * @return  \Collection
+     */
+    public function findPublishedByCategories(array $arrCategories, array $arrOptions=array())
+    {
+        $t = static::$strTable;
+
+        $arrColumns = array("c.page_id IN (" . implode(',', array_map('intval', $arrCategories)) . ")");
+
+        if (BE_USER_LOGGED_IN !== true) {
+            $time = time();
+            $arrColumns[] = "$t.published='1' AND ($t.start='' OR $t.start<$time) AND ($t.stop='' OR $t.stop>$time)";
+        }
+
+		$arrOptions = array_merge
+		(
+			array
+			(
+				'column' => $arrColumns,
+				'return' => 'Collection'
+			),
+
+			$arrOptions
+		);
+
+		return static::find($arrOptions);
+    }
 
     /**
      * Return select statement to load product data including multilingual fields
