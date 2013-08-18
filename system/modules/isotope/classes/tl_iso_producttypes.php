@@ -385,7 +385,13 @@ class tl_iso_producttypes extends \Backend
 
         uksort(static::$arrFields, array($this, 'sortFields'));
 
-        return serialize(static::$arrFields);
+        $arrFields = array();
+        foreach (array_values(static::$arrFields) as $pos => $arrConfig) {
+            $arrConfig['position'] = $pos;
+            $arrFields[$arrConfig['name']] = $arrConfig;
+        }
+
+        return serialize($arrFields);
     }
 
     /**
