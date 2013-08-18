@@ -90,6 +90,16 @@ abstract class TypeAgent extends \Model
     }
 
     /**
+     * Get class name for given model type
+     * @param   string
+     * @return  string
+     */
+    public static function getClassForModelType($strName)
+    {
+        return static::$arrModelTypes[$strName];
+    }
+
+    /**
      * Return options list of model types
      * @return  array
      */
