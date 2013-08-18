@@ -164,7 +164,7 @@ abstract class TypeAgent extends \Model
         }
 
         $arrOptions['table'] = static::$strTable;
-        $strQuery = \Model\QueryBuilder::find($arrOptions);
+        $strQuery = static::buildQueryString($arrOptions);
 
         $objStatement = \Database::getInstance()->prepare($strQuery);
 
@@ -214,5 +214,15 @@ abstract class TypeAgent extends \Model
 
             return new \Isotope\Model\Collection\TypeAgent($objResult, get_called_class());
         }
+    }
+
+    /**
+     * Allow to override the query builder
+     * @param   array
+     * @return  string
+     */
+    protected static function buildQueryString($arrOptions)
+    {
+        return \Model\QueryBuilder::find($arrOptions);
     }
 }
