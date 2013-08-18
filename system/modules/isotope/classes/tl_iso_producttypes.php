@@ -215,7 +215,11 @@ class tl_iso_producttypes extends \Backend
         return ($this->User->isAdmin || $this->User->hasAccess('delete', 'iso_product_typep')) ? '<a href="'.$this->addToUrl($href.'&amp;id='.$row['id']).'" title="'.specialchars($title).'"'.$attributes.'>'.$this->generateImage($icon, $label).'</a> ' : $this->generateImage(preg_replace('/\.gif$/i', '_.gif', $icon)).' ';
     }
 
-
+    /**
+     * Return list of MultiColumnWizard columns
+     * @param   MultiColumnWizard
+     * @return  array
+     */
     public function prepareAttributeWizard($objWidget)
     {
         $this->loadDataContainer('tl_iso_products');
@@ -256,7 +260,12 @@ class tl_iso_producttypes extends \Backend
         );
     }
 
-
+    /**
+     * For each call, return the name of the next attribute in the wizard (for input_field_callback)
+     * @param   Widget
+     * @param   string
+     * @return  string
+     */
     public function getAttributeName($objWidget, $xlabel)
     {
         static $arrValues;
@@ -284,7 +293,11 @@ class tl_iso_producttypes extends \Backend
         );
     }
 
-
+    /**
+     * Return list of default and widget legends
+     * @param   Widget
+     * @return  array
+     */
     public function getLegends($objWidget)
     {
         $arrLegends = $GLOBALS['TL_DCA']['tl_iso_attributes']['fields']['legend']['options'];
@@ -303,7 +316,12 @@ class tl_iso_producttypes extends \Backend
         return $arrLegends;
     }
 
-
+    /**
+     * Generate list of fields and add missing ones from DCA
+     * @param   mixed
+     * @param   DataContainer
+     * @return array
+     */
     public function loadAttributeWizard($varValue, $dc)
     {
         $arrDCA = &$GLOBALS['TL_DCA']['tl_iso_products']['fields'];
@@ -345,7 +363,12 @@ class tl_iso_producttypes extends \Backend
         return array_values($arrFields);
     }
 
-
+    /**
+     * save_callback to sort attribute wizard fields by legend
+     * @param   mixed
+     * @param   DataContainer
+     * @return  string
+     */
     public function saveAttributeWizard($varValue, $dc)
     {
         static::$arrFields = deserialize($varValue);
@@ -365,7 +388,12 @@ class tl_iso_producttypes extends \Backend
         return serialize(static::$arrFields);
     }
 
-
+    /**
+     * Array comparison function for attribute wizard fields
+     * @param   mixed
+     * @param   mixed
+     * @return  int
+     */
     private static function sortFields($a, $b)
     {
         if (!in_array(static::$arrFields[$a]['legend'], static::$arrLegends)) {
