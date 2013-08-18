@@ -265,6 +265,7 @@ $GLOBALS['TL_MODELS']['tl_iso_product_collection']              = 'Isotope\Model
 $GLOBALS['TL_MODELS']['tl_iso_product_collection_item']         = 'Isotope\Model\ProductCollectionItem';
 $GLOBALS['TL_MODELS']['tl_iso_product_collection_surcharge']    = 'Isotope\Model\ProductCollectionSurcharge';
 $GLOBALS['TL_MODELS']['tl_iso_product_collection_download']     = 'Isotope\Model\ProductCollectionDownload';
+$GLOBALS['TL_MODELS']['tl_iso_products']                        = 'Isotope\Model\Product';
 $GLOBALS['TL_MODELS']['tl_iso_producttypes']                    = 'Isotope\Model\ProductType';
 $GLOBALS['TL_MODELS']['tl_iso_tax_class']                       = 'Isotope\Model\TaxClass';
 $GLOBALS['TL_MODELS']['tl_iso_tax_rate']                        = 'Isotope\Model\TaxRate';

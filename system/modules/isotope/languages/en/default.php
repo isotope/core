@@ -200,7 +200,7 @@ $GLOBALS['TL_LANG']['MODEL']['tl_iso_gallery.zoom']     = array('Inline gallery 
 /**
  * Product types
  */
-$GLOBALS['TL_LANG']['PRODUCT']['standard']          = array('Standard product', 'A default product. Select this if nothing else matches.');
+$GLOBALS['TL_LANG']['MODEL']['tl_iso_products.standard'] = array('Standard product', 'A default product. Select this if nothing else matches.');
 
 /**
  * Credit card types
