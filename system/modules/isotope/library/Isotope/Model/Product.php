@@ -48,49 +48,90 @@ abstract class Product extends TypeAgent
      * @param array an array of columns
      * @return string
      */
-    public static function getSelectStatement($arrColumns=false)
+    protected static function buildQueryString(array $arrOptions, $arrJoinAliases=array('t'=>'tl_iso_producttypes'))
     {
-        static $strSelect = '';
+        $objBase = new \DcaExtractor($arrOptions['table']);
 
-        if ($strSelect == '' || $arrColumns !== false)
+        $arrJoins = array();
+        $arrFields = array($arrOptions['table'] . ".*", "'".$GLOBALS['TL_LANGUAGE']."' AS language");
+
+        foreach ($GLOBALS['ISO_CONFIG']['multilingual'] as $attribute)
         {
-            $arrSelect = ($arrColumns !== false) ? $arrColumns : array('p1.*');
-            $arrSelect[] = "'".$GLOBALS['TL_LANGUAGE']."' AS language";
-
-            foreach ($GLOBALS['ISO_CONFIG']['multilingual'] as $attribute)
-            {
-                if ($arrColumns !== false && !in_array('p1.'.$attribute, $arrColumns))
-                    continue;
-
-                $arrSelect[] = "IFNULL(p2.$attribute, p1.$attribute) AS {$attribute}";
-            }
-
-            foreach ($GLOBALS['ISO_CONFIG']['fetch_fallback'] as $attribute)
-            {
-                if ($arrColumns !== false && !in_array('p1.'.$attribute, $arrColumns))
-                    continue;
-
-                $arrSelect[] = "p1.$attribute AS {$attribute}_fallback";
-            }
-
-            $strQuery = "
-SELECT
-    " . implode(', ', $arrSelect) . ",
-    t.class AS product_class,
-    c.sorting
-FROM tl_iso_products p1
-INNER JOIN tl_iso_producttypes t ON t.id=p1.type
-LEFT OUTER JOIN tl_iso_products p2 ON p1.id=p2.pid AND p2.language='" . $GLOBALS['TL_LANGUAGE'] . "'
-LEFT OUTER JOIN tl_iso_product_categories c ON p1.id=c.pid";
-
-            if ($arrColumns !== false)
-            {
-                return $strQuery;
-            }
-
-            $strSelect = $strQuery;
+            $arrFields[] = "IFNULL(translation.$attribute, " . $arrOptions['table'] . ".$attribute) AS $attribute";
         }
 
-        return $strSelect;
+        foreach ($GLOBALS['ISO_CONFIG']['fetch_fallback'] as $attribute)
+        {
+            $arrFields[] = "{$arrOptions['table']}.$attribute AS {$attribute}_fallback";
+        }
+
+        $arrFields[] = "c.sorting";
+
+        $arrJoins[] = " LEFT OUTER JOIN tl_iso_product_categories c ON {$arrOptions['table']}.id=c.pid";
+        $arrJoins[] = " LEFT OUTER JOIN " . $arrOptions['table'] . " translation ON " . $arrOptions['table'] . ".id=translation.pid AND translation.language='" . $GLOBALS['TL_LANGUAGE'] . "'";
+
+
+        if ($objBase->hasRelations()) {
+
+            $intCount = 0;
+
+            foreach ($objBase->getRelations() as $strKey=>$arrConfig)
+            {
+                // Automatically join the single-relation records
+                if ($arrConfig['load'] == 'eager' || $arrOptions['eager'])
+                {
+                    if ($arrConfig['type'] == 'hasOne' || $arrConfig['type'] == 'belongsTo')
+                    {
+                        $key = array_search($arrConfig['table'], $arrJoinAliases);
+                        if (false !== $key) {
+                            $strJoinAlias = $key;
+                            unset($arrJoinAliases[$key]);
+                        } else {
+                            ++$intCount;
+                            $strJoinAlias = 'j' . $intCount;
+                        }
+
+                        $objRelated = new \DcaExtractor($arrConfig['table']);
+
+                        foreach (array_keys($objRelated->getFields()) as $strField)
+                        {
+                            $arrFields[] = $strJoinAlias . '.' . $strField . ' AS ' . $strKey . '__' . $strField;
+                        }
+
+                        $arrJoins[] = " LEFT JOIN " . $arrConfig['table'] . " $strJoinAlias ON " . $arrOptions['table'] . "." . $strKey . "=$strJoinAlias.id";
+                    }
+                }
+            }
+        }
+
+        // Generate the query
+        $strQuery = "SELECT " . implode(', ', $arrFields) . " FROM " . $arrOptions['table'] . implode("", $arrJoins);
+
+        // Where condition
+        $arrOptions['value'] = (array) $arrOptions['value'];
+
+        if (!is_array($arrOptions['column']))
+        {
+            $arrOptions['column'] = array($arrOptions['table'] . '.' . $arrOptions['column'].'=?');
+        }
+
+        // The model must never find a language record
+        $arrOptions['column'][] = "{$arrOptions['table']}.language=''";
+
+        $strQuery .= " WHERE " . implode(" AND ", $arrOptions['column']);
+
+        // Group by
+        if ($arrOptions['group'] !== null)
+        {
+            $strQuery .= " GROUP BY " . $arrOptions['group'];
+        }
+
+        // Order by
+        if ($arrOptions['order'] !== null)
+        {
+            $strQuery .= " ORDER BY " . $arrOptions['order'];
+        }
+
+        return $strQuery;
     }
 }
