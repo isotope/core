@@ -373,7 +373,6 @@ class ProductCallbacks extends \Backend
         }
 
         $arrFields = &$GLOBALS['TL_DCA']['tl_iso_products']['fields'];
-        $arrLegendSort = array_merge(array('variant_legend'), $GLOBALS['TL_DCA']['tl_iso_attributes']['fields']['legend']['options']);
 
         // Set default product type
         $arrFields['type']['default'] = (int) $this->Database->execute("SELECT id FROM tl_iso_producttypes WHERE fallback='1'" . ($this->User->isAdmin ? '' : (" AND id IN (" . implode(',', $this->User->iso_product_types) . ")")))->id;
@@ -471,7 +470,7 @@ class ProductCallbacks extends \Backend
                     continue;
                 }
 
-                $arrPalette[$arrFields[$attribute]['attributes']['legend']][$arrConfig['position']] = $attribute;
+                $arrPalette[$arrConfig['legend']][$arrConfig['position']] = $attribute;
 
                 // Apply product type attribute config
                 if ($arrConfig['tl_class'] != '')
@@ -496,10 +495,8 @@ class ProductCallbacks extends \Backend
             foreach ($arrPalette as $legend=>$fields)
             {
                 ksort($fields);
-                $arrLegends[array_search($legend, $arrLegendSort)] = '{' . $legend . '},' . implode(',', $fields);
+                $arrLegends[] = '{' . $legend . '},' . implode(',', $fields);
             }
-
-            ksort($arrLegends);
 
             // Set inherit options
             $arrFields['inherit']['options'] = $arrInherit;
