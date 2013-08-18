@@ -474,9 +474,9 @@ class ProductCallbacks extends \Backend
                 $arrPalette[$arrFields[$attribute]['attributes']['legend']][$arrConfig['position']] = $attribute;
 
                 // Apply product type attribute config
-                if (($tl_class = trim($arrConfig['tl_class_select'] . ' ' . $arrConfig['tl_class_text'])) != '')
+                if ($arrConfig['tl_class'] != '')
                 {
-                    $arrFields[$attribute]['eval']['tl_class'] = $tl_class;
+                    $arrFields[$attribute]['eval']['tl_class'] = $arrConfig['tl_class'];
                 }
 
                 if ($arrConfig['mandatory'] > 0)
