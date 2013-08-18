@@ -428,13 +428,12 @@ class Standard extends Product implements IsotopeProduct
      */
     public function getVariantOptions()
     {
-        if (!$this->hasVariants())
-        {
+        if (!$this->hasVariants()) {
             return false;
         }
 
-        if (!is_array($this->arrVariantOptions))
-        {
+        if (!is_array($this->arrVariantOptions)) {
+
             $time = time();
             $this->arrVariantOptions = array('current'=>array());
 
