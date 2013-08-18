@@ -12,7 +12,7 @@
 
 namespace Isotope\Module;
 
-use Isotope\Product\Standard as StandardProduct;
+use Isotope\Model\Product;
 
 
 /**
@@ -57,21 +57,38 @@ class ProductVariantList extends ProductList
      */
     protected function findProducts($arrCacheIds=null)
     {
-        $time = time();
+        $arrColumns = array();
         $arrCategories = $this->findCategories($this->iso_category_scope);
 
         list($arrFilters, $arrSorting, $strWhere, $arrValues) = $this->getFiltersAndSorting();
 
-        $objProductData = $this->Database->prepare(StandardProduct::getSelectStatement() . "
-                                                    WHERE p1.language=''"
-                                                    . (BE_USER_LOGGED_IN === true ? '' : " AND p1.published='1' AND (p1.start='' OR p1.start<$time) AND (p1.stop='' OR p1.stop>$time)")
-                                                    . "AND (p1.id IN (SELECT pid FROM tl_iso_product_categories WHERE page_id IN (" . implode(',', $arrCategories) . "))
-                                                        OR p1.pid IN (SELECT pid FROM tl_iso_product_categories WHERE page_id IN (" . implode(',', $arrCategories) . ")))"
-                                                    . (is_array($arrCacheIds) ? ("AND (p1.id IN (" . implode(',', $arrCacheIds) . ") OR p1.pid IN (" . implode(',', $arrCacheIds) . "))") : '')
-                                                    . ($this->iso_list_where == '' ? '' : " AND {$this->iso_list_where}")
-                                                    . "$strWhere GROUP BY p1.id ORDER BY c.sorting")
-                                         ->execute($arrValues);
+        if (!is_array($arrValues)) {
+            $arrValues = array();
+        }
 
-        return \Isotope\Frontend::getProducts($objProductData, \Isotope\Frontend::getReaderPageId(null, $this->iso_reader_jumpTo), true, $arrFilters, $arrSorting);
+        $arrColumns[] = "(" . Product::$strTable . ".id IN (SELECT pid FROM tl_iso_product_categories WHERE page_id IN (" . implode(',', $arrCategories) . ")) OR " . Product::$strTable . ".pid IN (SELECT pid FROM tl_iso_product_categories WHERE page_id IN (" . implode(',', $arrCategories) . ")))";
+
+        if (!empty($arrCacheIds) && is_array($arrCacheIds)) {
+            $arrColumns[] = "(" . Product::$strTable . ".id IN (" . implode(',', $arrCacheIds) . ") OR " . Product::$strTable . ".pid IN (" . implode(',', $arrCacheIds) . "))";
+        }
+
+        // Apply new/old product filter
+        if ($this->iso_newFilter == 'show_new') {
+            $arrColumns[] = Product::$strTable . ".dateAdded>=" . Isotope::getConfig()->getNewProductLimit();
+        } elseif ($this->iso_newFilter == 'show_old') {
+            $arrColumns[] = Product::$strTable . ".dateAdded<" . Isotope::getConfig()->getNewProductLimit();
+        }
+
+        if ($this->iso_list_where != '') {
+            $arrColumns[] = $this->iso_list_where;
+        }
+
+        if ($strWhere != '') {
+            $arrColumns[] = $strWhere;
+        }
+
+        $objProducts = Product::findPublishedBy($arrColumns, $arrValues, array('group'=>Product::$strTable . '.id', 'order'=>'c.sorting'));
+
+        return \Isotope\Frontend::getProducts($objProducts, \Isotope\Frontend::getReaderPageId(null, $this->iso_reader_jumpTo), true, $arrFilters, $arrSorting);
     }
 }
