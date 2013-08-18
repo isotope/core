@@ -10,10 +10,11 @@
  * @license    http://opensource.org/licenses/lgpl-3.0.html LGPL
  */
 
-namespace Isotope\Product;
+namespace Isotope\Model\Product;
 
 use Isotope\Isotope;
 use Isotope\Interfaces\IsotopeProduct;
+use Isotope\Model\Product;
 use Isotope\Model\TaxClass;
 
 
@@ -26,14 +27,8 @@ use Isotope\Model\TaxClass;
  * @author     Fred Bliss <fred.bliss@intelligentspark.com>
  * @author     Christian de la Haye <service@delahaye.de>
  */
-class Standard extends \Controller implements IsotopeProduct
+class Standard extends Product implements IsotopeProduct
 {
-
-    /**
-     * Name of the current table
-     * @var string
-     */
-    protected $strTable = 'tl_iso_products';
 
     /**
      * Data array
@@ -108,9 +103,9 @@ class Standard extends \Controller implements IsotopeProduct
      * @param array
      * @param boolean
      */
-    public function __construct($arrData, $arrOptions=null, $blnLocked=false, $intQuantity=1)
+    public function __construct(\Database\Result $objResult=null)
     {
-        parent::__construct();
+        parent::__construct($objResult);
 
         $this->Database = \Database::getInstance();
 

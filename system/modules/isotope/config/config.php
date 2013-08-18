@@ -221,6 +221,11 @@ $GLOBALS['BE_FFL']['productGroupSelector']   = 'Isotope\Widget\ProductGroupSelec
 \Isotope\Model\Gallery::registerModelType('zoom', 'Isotope\Model\Gallery\Zoom');
 
 /**
+ * Products
+ */
+\Isotope\Model\Product::registerModelType('standard', 'Isotope\Model\Product\Standard');
+
+/**
  * Product collections
  */
 \Isotope\Model\ProductCollection::registerModelType('cart', 'Isotope\Model\ProductCollection\Cart');
@@ -265,18 +270,6 @@ $GLOBALS['TL_MODELS']['tl_iso_tax_class']                       = 'Isotope\Model
 $GLOBALS['TL_MODELS']['tl_iso_tax_rate']                        = 'Isotope\Model\TaxRate';
 $GLOBALS['TL_MODELS']['tl_iso_payment_modules']                 = 'Isotope\Model\Payment';
 $GLOBALS['TL_MODELS']['tl_iso_shipping_modules']                = 'Isotope\Model\Shipping';
-
-
-/**
- * Product types
- */
-$GLOBALS['ISO_PRODUCT'] = array
-(
-    'standard' => array
-    (
-        'class'    => 'Isotope\Product\Standard',
-    ),
-);
 
 /**
  * Checkout steps
