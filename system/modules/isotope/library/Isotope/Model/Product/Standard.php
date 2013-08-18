@@ -102,15 +102,18 @@ class Standard extends Product implements IsotopeProduct
             $this->User = \FrontendUser::getInstance();
         }
 
+        $arrData = $this->arrData;
         $this->blnLocked = $blnLocked;
 
         if ($arrData['pid'] > 0)
         {
-            $this->arrData = $this->Database->execute(static::getSelectStatement() . " WHERE p1.id={$arrData['pid']}")->fetchAssoc();
-        }
-        else
-        {
-            $this->arrData = $arrData;
+            $objParent = static::findByPk($arrData['id']);
+
+            if (null === $objParent) {
+                throw new \UnderflowException('Parent record of product ID ' . $arrData['id'] . ' not found');
+            }
+
+            $this->arrData = $objParent->row();
         }
 
         $this->arrOptions = is_array($arrOptions) ? $arrOptions : array();
@@ -439,26 +442,24 @@ class Standard extends Product implements IsotopeProduct
 
             // Find all possible variant options
             $objVariant = clone $this;
-            $objVariants = $this->Database->execute(static::getSelectStatement() . " WHERE p1.pid={$this->arrData['id']} AND p1.language=''"
-                                                    . (BE_USER_LOGGED_IN === true ? '' : " AND p1.published='1' AND (p1.start='' OR p1.start<$time) AND (p1.stop='' OR p1.stop>$time)"));
+            $objVariants = static::findPublishedByPid($arrData['id']);
 
-            while ($objVariants->next())
-            {
-                $objVariant->loadVariantData($objVariants->row(), false);
+            if (null !== $objVariants) {
+                while ($objVariants->next()) {
 
-                if ($objVariant->isAvailable())
-                {
-                    $arrVariantOptions = $objVariant->getOptions();
+                    $objVariant->loadVariantData($objVariants->row(), false);
 
-                    $this->arrVariantOptions['ids'][] = $objVariant->id;
-                    $this->arrVariantOptions['options'][$objVariant->id] = $arrVariantOptions;
-                    $this->arrVariantOptions['variants'][$objVariant->id] = $objVariants->row();
+                    if ($objVariant->isAvailable()) {
+                        $arrVariantOptions = $objVariant->getOptions();
 
-                    foreach ($arrVariantOptions as $attribute => $value)
-                    {
-                        if (!in_array((string) $value, (array) $this->arrVariantOptions['attributes'][$attribute], true))
-                        {
-                            $this->arrVariantOptions['attributes'][$attribute][] = (string) $value;
+                        $this->arrVariantOptions['ids'][] = $objVariant->id;
+                        $this->arrVariantOptions['options'][$objVariant->id] = $arrVariantOptions;
+                        $this->arrVariantOptions['variants'][$objVariant->id] = $objVariants->row();
+
+                        foreach ($arrVariantOptions as $attribute => $value) {
+                            if (!in_array((string) $value, (array) $this->arrVariantOptions['attributes'][$attribute], true)) {
+                                $this->arrVariantOptions['attributes'][$attribute][] = (string) $value;
+                            }
                         }
                     }
                 }
