@@ -43,7 +43,9 @@ abstract class TypeAgent extends \Model
         parent::__construct($objResult);
 
         // Register model type
-        $this->arrData['type'] = array_search(get_called_class(), static::$arrModelTypes);
+        if (!isset($this->arrRelations['type'])) {
+            $this->arrData['type'] = array_search(get_called_class(), static::$arrModelTypes);
+        }
 
         if ($this->arrData['type'] == '') {
             throw new \RuntimeException(get_called_class() . ' is not a registered model type');
@@ -109,6 +111,19 @@ abstract class TypeAgent extends \Model
     public static function buildModelType(\Database_Result $objResult=null)
     {
         $strClass = static::$arrModelTypes[$objResult->type];
+
+        if (is_numeric($objResult->type)) {
+            $objRelations = new \DcaExtractor(static::$strTable);
+            $arrRelations = $objRelations->getRelations();
+
+            if (isset($arrRelations['type'])) {
+                $objType = \Database::getInstance()->prepare("SELECT * FROM " . $arrRelations['type']['table'] . " WHERE " . $arrRelations['type']['field'] . "=?")->execute($objResult->type);
+
+                if ($objType->numRows) {
+                    $strClass = static::$arrModelTypes[$objType->class];
+                }
+            }
+        }
 
         if ($strClass == '') {
 	        return null;
