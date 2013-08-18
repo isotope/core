@@ -12,8 +12,6 @@
 
 namespace Isotope\Model;
 
-use Isotope\Model\ProductCollectionDownload;
-
 
 /**
  * ProductCollectionItem represents an item in a product collection.
