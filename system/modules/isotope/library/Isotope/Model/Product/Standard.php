@@ -31,12 +31,6 @@ class Standard extends Product implements IsotopeProduct
 {
 
     /**
-     * Product type
-     * @var array
-     */
-    protected $arrType = array();
-
-    /**
      * Attributes assigned to this product type
      * @var array
      */
@@ -127,11 +121,10 @@ class Standard extends Product implements IsotopeProduct
         }
 
         $this->formSubmit = 'iso_product_' . $this->arrData['id'];
-        $this->arrType = $this->Database->execute("SELECT * FROM tl_iso_producttypes WHERE id=".(int) $this->arrData['type'])->fetchAssoc();
-        $this->arrAttributes = $this->getSortedAttributes($this->arrType['attributes']);
-        $this->arrVariantAttributes = $this->hasVariants() ? $this->getSortedAttributes($this->arrType['variant_attributes']) : array();
-        $this->arrCache['list_template'] = $this->arrType['list_template'];
-        $this->arrCache['reader_template'] = $this->arrType['reader_template'];
+        $this->arrAttributes = $this->getSortedAttributes($this->getRelated('type')->attributes);
+        $this->arrVariantAttributes = $this->hasVariants() ? $this->getSortedAttributes($this->getRelated('type')->variant_attributes) : array();
+        $this->arrCache['list_template'] = $this->getRelated('type')->list_template;
+        $this->arrCache['reader_template'] = $this->getRelated('type')->reader_template;
         $this->arrCache['quantity_requested'] = $intQuantity;
 
         // !HOOK: allow to customize attributes
@@ -234,10 +227,10 @@ class Standard extends Product implements IsotopeProduct
                 return $this->arrCache[$strKey] ? $this->arrCache[$strKey] : 1;
 
             case 'shipping_exempt':
-                return ($this->arrData['shipping_exempt'] || $this->arrType['shipping_exempt']) ? true : false;
+                return ($this->arrData['shipping_exempt'] || $this->getRelated('type')->shipping_exempt) ? true : false;
 
             case 'show_price_tiers':
-                return (bool) $this->arrType['show_price_tiers'];
+                return (bool) $this->getRelated('type')->show_price_tiers;
 
             case 'description_meta':
                 return $this->arrData['description_meta'] != '' ? $this->arrData['description_meta'] : ($this->arrData['teaser'] != '' ? $this->arrData['teaser'] : $this->arrData['description']);
@@ -382,16 +375,6 @@ class Standard extends Product implements IsotopeProduct
         return isset($this->arrData[$strKey]);
     }
 
-
-    /**
-     * Return the product type configuration
-     * @return array
-     */
-    public function getType()
-    {
-        return $this->arrType;
-    }
-
     /**
      * Return the product attributes
      * @return array
@@ -511,7 +494,7 @@ class Standard extends Product implements IsotopeProduct
      */
     public function getDownloads()
     {
-        if (!$this->arrType['downloads'])
+        if (!$this->getRelated('type')->downloads)
         {
             $this->arrDownloads = array();
         }
@@ -552,7 +535,7 @@ class Standard extends Product implements IsotopeProduct
      */
     public function hasVariants()
     {
-        return (bool) $this->arrType['variants'];
+        return (bool) $this->getRelated('type')->variants;
     }
 
 
@@ -577,7 +560,7 @@ class Standard extends Product implements IsotopeProduct
      */
     public function hasAdvancedPrices()
     {
-        return (bool) $this->arrType['prices'];
+        return (bool) $this->getRelated('type')->prices;
     }
 
 
@@ -991,7 +974,7 @@ class Standard extends Product implements IsotopeProduct
 
         if ($arrData['attributes']['variant_option'] && is_array($arrData['options']))
         {
-            if ((count((array) $this->arrVariantOptions['attributes'][$strField]) == 1) && !$this->arrType['force_variant_options'])
+            if ((count((array) $this->arrVariantOptions['attributes'][$strField]) == 1) && !$this->getRelated('type')->force_variant_options)
             {
                 $this->arrOptions[$strField] = $this->arrVariantOptions['attributes'][$strField][0];
                 $this->arrVariantOptions['current'][$strField] = $this->arrVariantOptions['attributes'][$strField][0];
