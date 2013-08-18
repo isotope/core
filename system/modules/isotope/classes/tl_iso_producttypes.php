@@ -255,7 +255,7 @@ class tl_iso_producttypes extends \Backend
                 'inputType'             => 'select',
                 'options'               => array('yes', 'no'),
                 'reference'             => &$GLOBALS['TL_LANG']['MSC'],
-                'eval'                  => array('style'=>'width:80px', 'includeBlankOption'=>true, 'blankOptionLabel'=>&$GLOBALS['TL_LANG']['tl_iso_producttypes']['fields']['default']),
+                'eval'                  => array('style'=>'width:80px', 'includeBlankOption'=>true, 'blankOptionLabel'=>&$GLOBALS['TL_LANG']['tl_iso_producttypes']['attributes']['default']),
             ),
         );
     }
