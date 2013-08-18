@@ -238,6 +238,10 @@ $GLOBALS['TL_DCA']['tl_iso_producttypes'] = array
             (
                 array('Isotope\tl_iso_producttypes', 'loadAttributeWizard'),
             ),
+            'save_callback'         => array
+            (
+                array('Isotope\tl_iso_producttypes', 'saveAttributeWizard'),
+            ),
         ),
         'variants' => array
         (
@@ -262,6 +266,10 @@ $GLOBALS['TL_DCA']['tl_iso_producttypes'] = array
             'load_callback'         => array
             (
                 array('Isotope\tl_iso_producttypes', 'loadAttributeWizard'),
+            ),
+            'save_callback'         => array
+            (
+                array('Isotope\tl_iso_producttypes', 'saveAttributeWizard'),
             ),
         ),
         'force_variant_options' => array

@@ -22,6 +22,9 @@ namespace Isotope;
 class tl_iso_producttypes extends \Backend
 {
 
+    static $arrFields = array();
+    static $arrLegends = array();
+
     /**
      * Check permissions to edit table tl_iso_producttypes
      * @return void
@@ -282,6 +285,25 @@ class tl_iso_producttypes extends \Backend
     }
 
 
+    public function getLegends($objWidget)
+    {
+        $arrLegends = $GLOBALS['TL_DCA']['tl_iso_attributes']['fields']['legend']['options'];
+        $arrLegends = array_intersect_key($GLOBALS['TL_LANG']['tl_iso_products'], array_flip($arrLegends));
+
+        $varValue = $objWidget->value;
+
+        if (!empty($varValue) && is_array($varValue)) {
+            foreach ($varValue as $arrField) {
+                if ($arrField['legend'] != '' && !isset($arrLegends[$arrField['legend']])) {
+                    $arrLegends[$arrField['legend']] = $arrField['legend'];
+                }
+            }
+        }
+
+        return $arrLegends;
+    }
+
+
     public function loadAttributeWizard($varValue, $dc)
     {
         $arrDCA = &$GLOBALS['TL_DCA']['tl_iso_products']['fields'];
@@ -324,21 +346,44 @@ class tl_iso_producttypes extends \Backend
     }
 
 
-    public function getLegends($objWidget)
+    public function saveAttributeWizard($varValue, $dc)
     {
-        $arrLegends = $GLOBALS['TL_DCA']['tl_iso_attributes']['fields']['legend']['options'];
-        $arrLegends = array_intersect_key($GLOBALS['TL_LANG']['tl_iso_products'], array_flip($arrLegends));
+        static::$arrFields = deserialize($varValue);
 
-        $varValue = $objWidget->value;
+        if (empty(static::$arrFields) || !is_array(static::$arrFields)) {
+            return $varValue;
+        }
 
-        if (!empty($varValue) && is_array($varValue)) {
-            foreach ($varValue as $arrField) {
-                if ($arrField['legend'] != '' && !isset($arrLegends[$arrField['legend']])) {
-                    $arrLegends[$arrField['legend']] = $arrField['legend'];
-                }
+        foreach (static::$arrFields as $arrField) {
+            if (!in_array($arrField['legend'], static::$arrLegends)) {
+                static::$arrLegends[] = $arrField['legend'];
             }
         }
 
-        return $arrLegends;
+        uksort(static::$arrFields, array($this, 'sortFields'));
+
+        return serialize(static::$arrFields);
+    }
+
+
+    private static function sortFields($a, $b)
+    {
+        if (!in_array(static::$arrFields[$a]['legend'], static::$arrLegends)) {
+            static::$arrLegends[] = static::$arrFields[$a]['legend'];
+        }
+
+        if (!in_array(static::$arrFields[$b]['legend'], static::$arrLegends)) {
+            static::$arrLegends[] = static::$arrFields[$b]['legend'];
+        }
+
+        if (static::$arrFields[$a]['enabled'] && !static::$arrFields[$b]['enabled']) {
+            return -1;
+        } elseif (static::$arrFields[$b]['enabled'] && !static::$arrFields[$a]['enabled']) {
+            return 1;
+        } elseif (static::$arrFields[$a]['legend'] == static::$arrFields[$b]['legend']) {
+            return ($a > $b) ? +1 : -1;
+        } else {
+            return (array_search(static::$arrFields[$a]['legend'], static::$arrLegends) > array_search(static::$arrFields[$b]['legend'], static::$arrLegends)) ? +1 : -1;
+        }
     }
 }
