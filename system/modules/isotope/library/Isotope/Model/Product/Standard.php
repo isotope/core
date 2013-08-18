@@ -31,12 +31,6 @@ class Standard extends Product implements IsotopeProduct
 {
 
     /**
-     * Data array
-     * @var array
-     */
-    protected $arrData = array();
-
-    /**
      * Product type
      * @var array
      */
@@ -386,16 +380,6 @@ class Standard extends Product implements IsotopeProduct
     public function __isset($strKey)
     {
         return isset($this->arrData[$strKey]);
-    }
-
-
-    /**
-     * Return the current data as associative array
-     * @return array
-     */
-    public function getData()
-    {
-        return $this->arrData;
     }
 
 

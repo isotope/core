@@ -71,7 +71,7 @@ class ProductPriceFinder extends \System
      */
     protected static function findProductPrice(IsotopeProduct $objProduct)
     {
-        $arrData = $objProduct->getData();
+        $arrData = $objProduct->row();
 
         return array
         (
@@ -89,7 +89,7 @@ class ProductPriceFinder extends \System
     protected static function findVariantPrice(IsotopeProduct $objProduct)
     {
         $time = time();
-        $arrProduct = $objProduct->getData();
+        $arrProduct = $objProduct->row();
 
         $arrData['price'] = $arrProduct['price'];
         $arrData['tax_class'] = $arrProduct['tax_class'];
