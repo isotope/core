@@ -65,48 +65,6 @@ var Isotope =
     },
 
     /**
-     * Attribute wizard
-     * @param object
-     * @param string
-     * @param string
-     */
-    attributeWizard: function(el, command, id)
-    {
-        var container = document.id(id);
-        var parent = document.id(el).getParent('.row');
-
-        Backend.getScrollOffset();
-
-        switch (command)
-        {
-            case 'up':
-                if (!parent.getPrevious('.row'))
-                {
-                    parent.injectInside(container);
-                }
-                else
-                {
-                    parent.injectBefore(parent.getPrevious('.row'));
-                }
-                break;
-
-            case 'down':
-                if (parent.getNext('.row'))
-                {
-                    parent.injectAfter(parent.getNext('.row'));
-                }
-                else
-                {
-                    var fel = container.getFirst('.row');
-
-                    parent.injectBefore(fel);
-                }
-                break;
-
-        }
-    },
-
-    /**
      * Field wizard
      * @param object
      * @param string
@@ -654,6 +612,45 @@ var Isotope =
     },
 
     /**
+     * Enable blank select option
+     */
+    makeSelectExtendable: function()
+    {
+        var collections = {};
+        document.getElements('select.extendable').forEach(function(select) {
+
+            var previous = select.value;
+            var parent = select.getParent('table').id;
+            collections[parent] = collections[parent] || [];
+            collections[parent].push(select);
+
+            select.grab(new Element('option', {'text':'Add …', 'value':'extendSelect'})).addEvent('change', function(e) {
+                if (select.value == 'extendSelect') {
+                    var name = prompt('Please enter the new group name.');
+
+                    if (name != '') {
+                        if (parent && collections[parent]) {
+                            collections[parent].forEach(function(s) {
+                                new Element('option', {'text':name, 'value':name}).inject(s.getLast(), 'before');
+                            });
+                        } else {
+                            new Element('option', {'text':name, 'value':name}).inject(select.getLast(), 'before');
+                        }
+
+                        select.value = name;
+                        previous = name;
+                    } else {
+                        select.value = previous;
+                    }
+                    select.fireEvent('change');
+                } else {
+                    previous = select.value;
+                }
+            });
+        });
+    },
+
+    /**
      * Make parent view items sortable
      * @param object
      */
@@ -702,6 +699,7 @@ window.addEvent('domready', function()
     Isotope.addInteractiveHelp();
     Isotope.initializeToolsMenu();
     Isotope.initializeFilterMenu();
+    Isotope.makeSelectExtendable();
 }).addEvent('structure', function()
 {
     Isotope.addInteractiveHelp();

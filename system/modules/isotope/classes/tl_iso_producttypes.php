@@ -22,6 +22,9 @@ namespace Isotope;
 class tl_iso_producttypes extends \Backend
 {
 
+    static $arrFields = array();
+    static $arrLegends = array();
+
     /**
      * Check permissions to edit table tl_iso_producttypes
      * @return void
@@ -210,5 +213,211 @@ class tl_iso_producttypes extends \Backend
     public function deleteProductType($row, $href, $label, $title, $icon, $attributes)
     {
         return ($this->User->isAdmin || $this->User->hasAccess('delete', 'iso_product_typep')) ? '<a href="'.$this->addToUrl($href.'&amp;id='.$row['id']).'" title="'.specialchars($title).'"'.$attributes.'>'.$this->generateImage($icon, $label).'</a> ' : $this->generateImage(preg_replace('/\.gif$/i', '_.gif', $icon)).' ';
+    }
+
+    /**
+     * Return list of MultiColumnWizard columns
+     * @param   MultiColumnWizard
+     * @return  array
+     */
+    public function prepareAttributeWizard($objWidget)
+    {
+        $this->loadDataContainer('tl_iso_products');
+
+        return array
+        (
+            'enabled' => array
+            (
+                'inputType'             => 'checkbox',
+                'eval'                  => array('hideHead'=>true),
+            ),
+            'name' => array
+            (
+                'input_field_callback'  => array('Isotope\tl_iso_producttypes', 'getAttributeName'),
+                'eval'                  => array('hideHead'=>true, 'tl_class'=>'mcwUpdateFields'),
+            ),
+            'legend' => array
+            (
+                'label'                 => &$GLOBALS['TL_LANG']['tl_iso_producttypes']['attributes']['legend'],
+                'inputType'             => 'select',
+                'options_callback'      => array('Isotope\tl_iso_producttypes', 'getLegends'),
+                'eval'                  => array('style'=>'width:150px', 'class'=>'extendable'),
+            ),
+            'tl_class' => array
+            (
+                'label'                 => &$GLOBALS['TL_LANG']['tl_iso_producttypes']['attributes']['tl_class'],
+                'inputType'             => 'text',
+                'eval'                  => array('style'=>'width:80px'),
+            ),
+            'mandatory' => array
+            (
+                'label'                 => &$GLOBALS['TL_LANG']['tl_iso_producttypes']['attributes']['mandatory'],
+                'inputType'             => 'select',
+                'options'               => array('yes', 'no'),
+                'reference'             => &$GLOBALS['TL_LANG']['MSC'],
+                'eval'                  => array('style'=>'width:80px', 'includeBlankOption'=>true, 'blankOptionLabel'=>&$GLOBALS['TL_LANG']['tl_iso_producttypes']['fields']['default']),
+            ),
+        );
+    }
+
+    /**
+     * For each call, return the name of the next attribute in the wizard (for input_field_callback)
+     * @param   Widget
+     * @param   string
+     * @return  string
+     */
+    public function getAttributeName($objWidget, $xlabel)
+    {
+        static $arrValues;
+        static $strWidget;
+        static $i = 0;
+
+        if ($strWidget != $objWidget->name) {
+            $strWidget = $objWidget->name;
+            $arrValues = $objWidget->value;
+            $i = 0;
+        }
+
+        $arrField = array_shift($arrValues);
+        $strName = $arrField['name'];
+
+        return sprintf(
+            '<input type="hidden" name="%s[%s][name]" id="ctrl_%s_row%s_name" value="%s"><div style="width:300px">%s <span style="color:#b3b3b3; padding-left:3px;">[%s]</span></div>',
+            $objWidget->name,
+            $i,
+            $objWidget->name,
+            $i++,
+            $strName,
+            $GLOBALS['TL_DCA']['tl_iso_products']['fields'][$strName]['label'][0] ?: $strName,
+            $strName
+        );
+    }
+
+    /**
+     * Return list of default and widget legends
+     * @param   Widget
+     * @return  array
+     */
+    public function getLegends($objWidget)
+    {
+        $arrLegends = $GLOBALS['TL_DCA']['tl_iso_attributes']['fields']['legend']['options'];
+        $arrLegends = array_intersect_key($GLOBALS['TL_LANG']['tl_iso_products'], array_flip($arrLegends));
+
+        $varValue = $objWidget->value;
+
+        if (!empty($varValue) && is_array($varValue)) {
+            foreach ($varValue as $arrField) {
+                if ($arrField['legend'] != '' && !isset($arrLegends[$arrField['legend']])) {
+                    $arrLegends[$arrField['legend']] = $arrField['legend'];
+                }
+            }
+        }
+
+        return $arrLegends;
+    }
+
+    /**
+     * Generate list of fields and add missing ones from DCA
+     * @param   mixed
+     * @param   DataContainer
+     * @return array
+     */
+    public function loadAttributeWizard($varValue, $dc)
+    {
+        $arrDCA = &$GLOBALS['TL_DCA']['tl_iso_products']['fields'];
+
+        $arrFields = array();
+        $arrValues = deserialize($varValue);
+        $blnInherit = ($dc->field != 'attributes');
+
+        if (!is_array($arrValues)) {
+            $arrValues = array();
+        }
+
+        foreach ($arrValues as $arrField) {
+
+            if ($arrField['name'] == '' || !isset($arrDCA[$arrField['name']]) || $arrDCA[$arrField['name']]['attributes']['legend'] == '' || ($blnInherit && $arrDCA[$arrField['name']]['attributes']['inherit'])) {
+                continue;
+            }
+
+            if ($arrField['legend'] == '') {
+                $arrField['legend'] = $arrDCA[$arrField['name']]['attributes']['legend'];
+            }
+
+            $arrFields[$arrField['name']] = $arrField;
+        }
+
+        foreach (array_diff_key($arrDCA, $arrFields) as $strName => $arrField) {
+
+            if (!is_array($arrField['attributes']) || $arrField['attributes']['legend'] == '' || ($blnInherit && $arrField['attributes']['inherit'])) {
+                continue;
+            }
+
+            $arrFields[$strName] = array(
+                'enabled'   => ($arrField['attributes']['fixed'] ? '1' : ''),
+                'name'      => $strName,
+                'legend'    => $arrField['attributes']['legend'],
+            );
+        }
+
+        return array_values($arrFields);
+    }
+
+    /**
+     * save_callback to sort attribute wizard fields by legend
+     * @param   mixed
+     * @param   DataContainer
+     * @return  string
+     */
+    public function saveAttributeWizard($varValue, $dc)
+    {
+        static::$arrFields = deserialize($varValue);
+
+        if (empty(static::$arrFields) || !is_array(static::$arrFields)) {
+            return $varValue;
+        }
+
+        foreach (static::$arrFields as $arrField) {
+            if (!in_array($arrField['legend'], static::$arrLegends)) {
+                static::$arrLegends[] = $arrField['legend'];
+            }
+        }
+
+        uksort(static::$arrFields, array($this, 'sortFields'));
+
+        $arrFields = array();
+        foreach (array_values(static::$arrFields) as $pos => $arrConfig) {
+            $arrConfig['position'] = $pos;
+            $arrFields[$arrConfig['name']] = $arrConfig;
+        }
+
+        return serialize($arrFields);
+    }
+
+    /**
+     * Array comparison function for attribute wizard fields
+     * @param   mixed
+     * @param   mixed
+     * @return  int
+     */
+    private static function sortFields($a, $b)
+    {
+        if (!in_array(static::$arrFields[$a]['legend'], static::$arrLegends)) {
+            static::$arrLegends[] = static::$arrFields[$a]['legend'];
+        }
+
+        if (!in_array(static::$arrFields[$b]['legend'], static::$arrLegends)) {
+            static::$arrLegends[] = static::$arrFields[$b]['legend'];
+        }
+
+        if (static::$arrFields[$a]['enabled'] && !static::$arrFields[$b]['enabled']) {
+            return -1;
+        } elseif (static::$arrFields[$b]['enabled'] && !static::$arrFields[$a]['enabled']) {
+            return 1;
+        } elseif (static::$arrFields[$a]['legend'] == static::$arrFields[$b]['legend']) {
+            return ($a > $b) ? +1 : -1;
+        } else {
+            return (array_search(static::$arrFields[$a]['legend'], static::$arrLegends) > array_search(static::$arrFields[$b]['legend'], static::$arrLegends)) ? +1 : -1;
+        }
     }
 }

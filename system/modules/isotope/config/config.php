@@ -185,7 +185,6 @@ $GLOBALS['FE_MOD']['isotope'] = array
  * Backend form fields
  */
 $GLOBALS['BE_FFL']['mediaManager']           = 'Isotope\Widget\MediaManager';
-$GLOBALS['BE_FFL']['attributeWizard']        = 'Isotope\Widget\AttributeWizard';
 $GLOBALS['BE_FFL']['variantWizard']          = 'Isotope\Widget\VariantWizard';
 $GLOBALS['BE_FFL']['inheritCheckbox']        = 'Isotope\Widget\InheritCheckBox';
 $GLOBALS['BE_FFL']['fieldWizard']            = 'Isotope\Widget\FieldWizard';
