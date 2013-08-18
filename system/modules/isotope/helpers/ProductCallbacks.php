@@ -762,7 +762,7 @@ window.addEvent('domready', function() {
 
                 $args[0] = sprintf('<a href="%s" onclick="Backend.openModalImage({\'width\':%s,\'title\':\'%s\',\'url\':\'%s\'});return false"><img src="%s" alt="%s" align="left"></a>',
                 					$strImage, $size[0], str_replace("'", "\\'", $row['name']), $strImage,
-                					$this->getImage($strImage, 50, 50, 'crop'), $image['alt']);
+                					\Image::get($strImage, 50, 50, 'crop'), $image['alt']);
                 break;
             }
         }

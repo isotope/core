@@ -84,7 +84,7 @@ Isotope.hideBox = function()
 
 Isotope.inlineGallery = function(el, elementId)
 {
-    $$(('#'+elementId+'_mediumsize img')).set('src', el.href);
+    $$(('#'+elementId+'_mainsize img')).set('src', el.href);
 
     $$(('#'+elementId+'_gallery div, #'+elementId+'_gallery img')).removeClass('active');
 

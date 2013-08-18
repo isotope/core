@@ -259,7 +259,10 @@ class Standard extends \Controller implements IsotopeProduct
                 {
                     if ($GLOBALS['TL_DCA'][$this->strTable]['fields'][$strKey]['inputType'] == 'mediaManager')
                     {
-                        $objGallery = \Isotope\Factory\Gallery::build($GLOBALS['TL_DCA'][$this->strTable]['fields'][$strKey]['attributes']['gallery'], $this->formSubmit . '_' . $strKey, Isotope::mergeMediaData(deserialize($this->arrData[$strKey]), deserialize($this->arrData[$strKey.'_fallback'])));
+                        //! @todo implement gallery configurations
+                        $objGallery = new \Isotope\Model\Gallery\Standard();
+                        $objGallery->setName($this->formSubmit . '_' . $strKey);
+                        $objGallery->setFiles(Isotope::mergeMediaData(deserialize($this->arrData[$strKey]), deserialize($this->arrData[$strKey.'_fallback'])));
                         $objGallery->product_id = ($this->pid ? $this->pid : $this->id);
                         $objGallery->href_reader = $this->href_reader;
                         $this->arrCache[$strKey] = $objGallery;

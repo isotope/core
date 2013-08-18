@@ -267,7 +267,7 @@ class MediaManager extends \Widget implements \uploadable
 
             if ($objFile->isGdImage)
             {
-                $strPreview = $this->getImage($strFile, 50, 50, 'box');
+                $strPreview = \Image::get($strFile, 50, 50, 'box');
             }
             else
             {

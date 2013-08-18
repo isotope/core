@@ -20,17 +20,11 @@ interface IsotopeGallery
 {
 
     /**
-     * Return the name and description for this gallery
-     * @return array
-     */
-    public static function getClassLabel();
-
-    /**
      * Generate main image and return it as HTML string
      * @param string
      * @return string
      */
-    public function generateMainImage($strType='medium');
+    public function generateMainImage($strType='main');
 
     /**
      * Generate gallery and return it as HTML string

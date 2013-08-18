@@ -135,7 +135,7 @@ $GLOBALS['TL_DCA']['tl_iso_attributes'] = array
         'radiovariant_option'       => '{attribute_legend},name,field_name,type,legend,variant_option;{description_legend:hide},description;{options_legend},options,foreignKey;{search_filters_legend},fe_filter,fe_sorting,be_filter',
         'checkbox'                  => '{attribute_legend},name,field_name,type,legend,customer_defined;{description_legend:hide},description;{options_legend},options,foreignKey;{config_legend},mandatory,multiple;{search_filters_legend},fe_filter,fe_sorting',
         'conditionalselect'         => '{attribute_legend},name,field_name,type,legend,customer_defined;{description_legend:hide},description;{options_legend},options,foreignKey;{config_legend},mandatory,multiple,size,conditionField;{search_filters_legend},fe_filter,fe_sorting',
-        'mediaManager'              => '{attribute_legend},name,field_name,type,legend;{description_legend:hide},description;{config_legend},gallery,extensions,mandatory',
+        'mediaManager'              => '{attribute_legend},name,field_name,type,legend;{description_legend:hide},description;{config_legend},extensions,mandatory',
         'fileTree'                  => '{attribute_legend},name,field_name,type,legend;{description_legend:hide},description;{config_legend},fieldType,extensions,path,mandatory,files',
         'downloads'                 => '{attribute_legend},name,field_name,type,legend;{description_legend:hide},description;{config_legend},fieldType,extensions,sortBy,path,mandatory,files',
         'upload'                    => '{attribute_legend},name,field_name,type,legend;{description_legend:hide},description;{config_legend},extensions,maxlength,mandatory;{store_legend:hide},storeFile',
@@ -386,17 +386,6 @@ $GLOBALS['TL_DCA']['tl_iso_attributes'] = array
             'options_callback'      => array('Isotope\tl_iso_attributes', 'getConditionFields'),
             'eval'                  => array('includeBlankOption'=>true, 'mandatory'=>true, 'tl_class'=>'w50', 'chosen'=>true),
             'sql'                   => "varchar(30) NOT NULL default ''",
-        ),
-        'gallery' => array
-        (
-            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_attributes']['gallery'],
-            'exclude'               => true,
-            'inputType'             => 'select',
-            'default'               => 'standard',
-            'options'               => array_keys(\Isotope\Factory\Gallery::getClasses()),
-            'reference'             => \Isotope\Factory\Gallery::getClassLabels(),
-            'eval'                  => array('includeBlankOption'=>true, 'tl_class'=>'w50', 'helpwizard'=>true),
-            'sql'                   => "varchar(64) NOT NULL default ''",
         ),
         'fieldType' => array
         (

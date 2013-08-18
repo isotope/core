@@ -60,10 +60,7 @@ $GLOBALS['TL_LANG']['tl_iso_config']['orderstatus_error']           = array('Ord
 $GLOBALS['TL_LANG']['tl_iso_config']['invoiceLogo']                 = array('Invoice Logo', 'Select a logo to show up on the invoices for this store.');
 $GLOBALS['TL_LANG']['tl_iso_config']['templateGroup']               = array('Templates folder', 'Here you can select a templates folder to search before every other template folder.');
 $GLOBALS['TL_LANG']['tl_iso_config']['cartMinSubtotal']             = array('Minimum subtotal', 'The minimum cart subtotal required to order. Enter 0 to disable.');
-$GLOBALS['TL_LANG']['tl_iso_config']['gallery']                     = array('Product image gallery', 'Different image galleries can be developed to present media files in a custom style.');
-$GLOBALS['TL_LANG']['tl_iso_config']['imageSizes']                  = array('Image sizes', 'You can create custom image sizes for use in your templates. The default sizes are "gallery", "thumbnail", "medium" and "large".');
-$GLOBALS['TL_LANG']['tl_iso_config']['missing_image_placeholder']   = array('Missing Image Placeholder', 'This image will be used if an image file cannot be found or none are associated with a product.');
-$GLOBALS['TL_LANG']['tl_iso_config']['newProductPeriod']            = array('Duration to mark a product as "new"', 'If you would like to highlight new products, you can enter a time period here. It will automatically add a CSS class "new" to every product everywhere within Isotope eCommerce.');
+$GLOBALS['TL_LANG']['tl_iso_config']['newProductPeriod']                = array('Duration to mark a product as "new"', 'If you would like to highlight new products, you can enter a time period here. It will automatically add a CSS class "new" to every product everywhere within Isotope eCommerce.');
 
 /**
  * Reference

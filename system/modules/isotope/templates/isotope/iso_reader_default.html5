@@ -7,7 +7,7 @@
 
 <h2><?php echo $this->name; ?></h2>
 
-<?php echo $this->images->generateMainImage('medium'); ?>
+<?php echo $this->images->generateMainImage(); ?>
 <?php if($this->hasOptions): ?>
 <div class="options">
 <?php foreach( $this->options as $arrOption ): echo $arrOption['html']; endforeach; ?>

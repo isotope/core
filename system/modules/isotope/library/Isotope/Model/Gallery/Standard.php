@@ -10,10 +10,11 @@
  * @license    http://opensource.org/licenses/lgpl-3.0.html LGPL
  */
 
-namespace Isotope\Gallery;
+namespace Isotope\Model\Gallery;
 
 use Isotope\Isotope;
 use Isotope\Interfaces\IsotopeGallery;
+use Isotope\Model\Gallery;
 
 
 /**
@@ -26,7 +27,7 @@ use Isotope\Interfaces\IsotopeGallery;
  * @author     Christian de la Haye <service@delahaye.de>
  * @author     Yanick Witschi <yanick.witschi@terminal42.ch>
  */
-class Standard extends \Frontend implements IsotopeGallery
+class Standard extends Gallery implements IsotopeGallery
 {
 
     /**
@@ -36,10 +37,10 @@ class Standard extends \Frontend implements IsotopeGallery
     protected $strTemplate = 'iso_gallery_standard';
 
     /**
-     * Data storage
-     * @var array
+     * Attribute name
+     * @var string
      */
-    protected $arrData = array();
+    protected $strName;
 
     /**
      * Files
@@ -49,86 +50,57 @@ class Standard extends \Frontend implements IsotopeGallery
 
 
     /**
-     * Construct the object
-     * @param string
-     * @param array
+     * Set gallery attribute name
+     * @param   string
      */
-    public function __construct($strName, $arrFiles)
+    public function setName($strName)
     {
-        parent::__construct();
-
-        $this->import('Isotope\Isotope', 'Isotope');
-        $this->name = $strName;
-        $this->files = $arrFiles;
+        $this->strName = $strName;
     }
 
+    /**
+     * Get gallery attribute name
+     * @return  string
+     */
+    public function getName()
+    {
+        return $this->strName;
+    }
 
     /**
-     * Set a value
-     * @param string
-     * @param mixed
+     * Set image files
+     * @param   array
      */
-    public function __set($strKey, $varValue)
+    public function setFiles($varValue)
     {
-        switch ($strKey)
+        $this->arrFiles = array();
+        $varValue = deserialize($varValue);
+
+        if (is_array($varValue) && !empty($varValue))
         {
-            case 'files':
-                $this->arrFiles = array();
-                $varValue = deserialize($varValue);
+            foreach ($varValue as $file)
+            {
+                $this->addImage($file);
+            }
+        }
 
-                if (is_array($varValue) && !empty($varValue))
-                {
-                    foreach ($varValue as $file)
-                    {
-                        $this->addImage($file);
-                    }
-                }
-
-                // No image available, add placeholder from store configuration
-                if (empty($this->arrFiles))
-                {
-                    $strPlaceholder = Isotope::getConfig()->missing_image_placeholder;
-
-                    if ($strPlaceholder != '' && is_file(TL_ROOT . '/' . $strPlaceholder))
-                    {
-                        $this->addImage(array('src'=>Isotope::getConfig()->missing_image_placeholder), false);
-                    }
-                }
-                break;
-
-            case 'main_image':
-                $file = is_array($varValue) ? $varValue : array('src'=>$file);
-
-                return $this->addImage($file, true, true);
-                break;
-
-            default:
-                $this->arrData[$strKey] = $varValue;
-                break;
+        // No image available, add placeholder from store configuration
+        if (empty($this->arrFiles))
+        {
+            if ($this->placeholder != '' && is_file(TL_ROOT . '/' . $this->placeholder))
+            {
+                $this->addImage(array('src'=>$this->placeholder), false);
+            }
         }
     }
 
-
     /**
-     * Get a value
-     * @param string
-     * @return mixed
+     * Get image files
+     * @return  array
      */
-    public function __get($strKey)
+    public function getFiles()
     {
-        switch ($strKey)
-        {
-            case 'main_image':
-                return reset($this->arrFiles);
-                break;
-
-            case 'images':
-                return $this->arrFiles;
-                break;
-
-            default:
-                return $this->arrData[$strKey];
-        }
+        return $this->arrFiles;
     }
 
 
@@ -153,17 +125,6 @@ class Standard extends \Frontend implements IsotopeGallery
 
 
     /**
-     * Check whether a property is set
-     * @param string
-     * @return boolean
-     */
-    public function __isset($strKey)
-    {
-        return isset($this->arrData[$strKey]);
-    }
-
-
-    /**
      * If the class is echoed, return the main image
      */
     public function __toString()
@@ -177,7 +138,7 @@ class Standard extends \Frontend implements IsotopeGallery
      * @param string
      * @return string
      */
-    public function generateMainImage($strType='medium')
+    public function generateMainImage($strType='main')
     {
         if (!count($this->arrFiles))
         {
@@ -293,27 +254,28 @@ window.addEvent('ajaxready', function() {
 
             if ($objFile->isGdImage)
             {
-                foreach ((array) Isotope::getConfig()->imageSizes as $size)
+                foreach (array('main','gallery','lightbox') as $name)
                 {
-                    $strImage = $this->getImage($strFile, $size['width'], $size['height'], $size['mode']);
+                    $size = deserialize($this->{$name.'_size'});
+                    $strImage = \Image::get($strFile, $size[0], $size[1], $size[2]);
 
-                    if ($size['watermark'] != '' && $blnWatermark)
+                    if ($this->{$name.'_watermark_image'} != '' && $blnWatermark)
                     {
-                        $strImage = \Isotope\Frontend::watermarkImage($strImage, $size['watermark'], $size['position']);
+                        $strImage = \Isotope\Frontend::watermarkImage($strImage, $this->{$name.'_watermark_image'}, $this->{$name.'_watermark_position'});
                     }
 
                     $arrSize = @getimagesize(TL_ROOT . '/' . $strImage);
 
                     if (is_array($arrSize) && strlen($arrSize[3]))
                     {
-                        $file[$size['name'] . '_size'] = $arrSize[3];
-                        $file[$size['name'] . '_imageSize'] = $arrSize;
+                        $file[$name . '_size'] = $arrSize[3];
+                        $file[$name . '_imageSize'] = $arrSize;
                     }
 
                     $file['alt'] = specialchars($file['alt'], true);
                     $file['desc'] = specialchars($file['desc'], true);
 
-                    $file[$size['name']] = $strImage;
+                    $file[$name] = $strImage;
                 }
 
                 // Main image is first in the array
@@ -331,15 +293,5 @@ window.addEvent('ajaxready', function() {
         }
 
         return false;
-    }
-
-
-    /**
-     * Return the name and description for this gallery
-     * @return array
-     */
-    public static function getClassLabel()
-    {
-        return $GLOBALS['TL_LANG']['GAL'][strtolower(str_replace('Isotope\Gallery\\', '', get_called_class()))];
     }
 }

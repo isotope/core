@@ -127,7 +127,6 @@ $GLOBALS['TL_DCA']['tl_iso_config'] = array
             {converter_legend:hide},priceCalculateFactor,priceCalculateMode,currencyAutomator;
             {order_legend:hide},orderPrefix,orderDigits,orderstatus_new,orderstatus_error,invoiceLogo;
             {config_legend},templateGroup,cartMinSubtotal;
-            {images_legend},gallery,missing_image_placeholder,imageSizes;
             {products_legend},newProductPeriod',
     ),
 
@@ -549,89 +548,6 @@ $GLOBALS['TL_DCA']['tl_iso_config'] = array
 			'options_callback'      => array('Isotope\tl_iso_config', 'getTemplateFolders'),
 			'eval'                  => array('includeBlankOption'=>true, 'tl_class'=>'w50'),
             'sql'                   => "varchar(255) NOT NULL default ''",
-        ),
-        'gallery' => array
-        (
-            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_config']['gallery'],
-            'exclude'               => true,
-            'inputType'             => 'select',
-            'default'               => 'default',
-            'options'               => array_keys(\Isotope\Factory\Gallery::getClasses()),
-            'reference'             => \Isotope\Factory\Gallery::getClassLabels(),
-            'eval'                  => array('mandatory'=>true, 'tl_class'=>'clr', 'helpwizard'=>true),
-            'sql'                   => "varchar(64) NOT NULL default ''",
-        ),
-        'missing_image_placeholder' => array
-        (
-            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_config']['missing_image_placeholder'],
-            'exclude'               => true,
-            'inputType'             => 'fileTree',
-            'eval'                  => array('fieldType'=>'radio', 'files'=>true, 'filesOnly'=>true, 'extensions' => 'jpg,jpeg,gif,png,tif,tiff', 'tl_class'=>'clr'),
-            'sql'                   => "varchar(255) NOT NULL default ''",
-        ),
-        'imageSizes' => array
-        (
-            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_config']['imageSizes'],
-            'exclude'               => true,
-            'inputType'             => 'multiColumnWizard',
-            'default' => array
-            (
-                array('name'        => 'gallery'),
-                array('name'        => 'thumbnail'),
-                array('name'        => 'medium'),
-                array('name'        => 'large'),
-            ),
-            'eval' => array
-            (
-                'mandatory'         => true,
-                'tl_class'          => 'clr',
-                'disableSorting'    => true,
-                'columnFields' => array
-                (
-                    'name' => array
-                    (
-                        'label'     => $GLOBALS['TL_LANG']['tl_iso_config']['iwName'],
-                        'inputType' => 'text',
-                        'eval'      => array('mandatory'=>true, 'rgxp'=>'alpha', 'spaceToUnderscore'=>true, 'class'=>'tl_text_4'),
-                    ),
-                    'width' => array
-                    (
-                        'label'     => $GLOBALS['TL_LANG']['tl_iso_config']['iwWidth'],
-                        'inputType' => 'text',
-                        'eval'      => array('rgxp'=>'digit', 'class'=>'tl_text_4'),
-                    ),
-                    'height' => array
-                    (
-                        'label'     => $GLOBALS['TL_LANG']['tl_iso_config']['iwHeight'],
-                        'inputType' => 'text',
-                        'eval'      => array('rgxp'=>'digit', 'class'=>'tl_text_4'),
-                    ),
-                    'mode' => array
-                    (
-                        'label'     => $GLOBALS['TL_LANG']['tl_iso_config']['iwMode'],
-                        'inputType' => 'select',
-                        'options'   => $GLOBALS['TL_CROP'],
-                        'reference' => &$GLOBALS['TL_LANG']['MSC'],
-                        'eval'      => array('style'=>'width:150px'),
-                    ),
-                    'watermark' => array
-                    (
-                        'label'     => $GLOBALS['TL_LANG']['tl_iso_config']['iwWatermark'],
-                        'inputType' => 'text',
-                        'eval'      => array('class'=>'tl_text_2'),
-//                        'wizard'  => array(array('tl_iso_config', 'filePicker')),
-                    ),
-                    'position' => array
-                    (
-                        'label'     => $GLOBALS['TL_LANG']['tl_iso_config']['iwPosition'],
-                        'inputType' => 'select',
-                        'options'   => array('tl', 'tc', 'tr', 'bl', 'bc', 'br', 'cc'),
-                        'reference' => array('tl'=>&$GLOBALS['TL_LANG']['MSC']['left_top'], 'tc'=>&$GLOBALS['TL_LANG']['MSC']['center_top'], 'tr'=>&$GLOBALS['TL_LANG']['MSC']['right_top'], 'bl'=>&$GLOBALS['TL_LANG']['MSC']['left_bottom'], 'bc'=>&$GLOBALS['TL_LANG']['MSC']['center_bottom'], 'br'=>&$GLOBALS['TL_LANG']['MSC']['right_bottom'], 'cc'=>&$GLOBALS['TL_LANG']['MSC']['center_center']),
-                        'eval'      => array('style'=>'width:60px'),
-                    ),
-                ),
-            ),
-            'sql'                   => "blob NULL",
         ),
         'newProductPeriod' => array
         (
