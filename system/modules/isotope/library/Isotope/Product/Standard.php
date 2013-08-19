@@ -1435,7 +1435,9 @@ LEFT OUTER JOIN tl_iso_product_categories c ON p1.id=c.pid";
     {
         $arrAttributes = deserialize($varValue, true);
 
-        uasort($arrAttributes, create_function('$a,$b', 'return $a["position"] > $b["position"];'));
+        uasort($arrAttributes, function ($a, $b) {
+            return $a["position"] > $b["position"];
+        });
 
         return array_keys($arrAttributes);
     }

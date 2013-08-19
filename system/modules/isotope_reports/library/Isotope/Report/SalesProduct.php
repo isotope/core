@@ -140,7 +140,18 @@ class SalesProduct extends Sales
 		$arrFooter = array();
 
 		// Sort the data
-		usort($arrRaw, array($this, ($arrSession[$this->name]['tl_sort'] == 'product_name' ? 'sortProductsByName' : 'sortProductsByTotal')));
+		if ($arrSession[$this->name]['tl_sort'] == 'product_name') {
+
+    		usort($arrRaw, function ($a, $b) {
+        		return strcasecmp($a['name'], $b['name']);
+        	});
+
+		} else {
+
+    		usort($arrRaw, function ($a, $b) {
+        		return ($a['total'] == $b['total'] ? 0 : ($a['total'] < $b['total'] ? 1 : -1));
+        	});
+		}
 
 		// Generate data
 		foreach ($arrRaw as $arrProduct)
@@ -275,18 +286,6 @@ class SalesProduct extends Sales
 		);
 
 		return $arrHeader;
-	}
-
-
-	protected function sortProductsByName($a, $b)
-	{
-		return strcasecmp($a['name'], $b['name']);
-	}
-
-
-	protected function sortProductsByTotal($a, $b)
-	{
-		return ($a['total'] == $b['total'] ? 0 : ($a['total'] < $b['total'] ? 1 : -1));
 	}
 }
 

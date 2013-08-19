@@ -381,8 +381,7 @@ class tl_iso_producttypes extends \Backend
             }
         }
 
-        uksort($arrFields, function($a, $b) use ($arrFields, $arrLegends)
-        {
+        uksort($arrFields, function ($a, $b) use ($arrFields, $arrLegends) {
             if ($arrFields[$a]['enabled'] && !$arrFields[$b]['enabled']) {
                 return -1;
             } elseif ($arrFields[$b]['enabled'] && !$arrFields[$a]['enabled']) {

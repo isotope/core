@@ -65,7 +65,10 @@ abstract class OrderConditions extends CheckoutStep
         $objTemplate->attributes    = $objForm->attributes;
         $objTemplate->tableless        = $objForm->arrData['tableless'];
 
-        $parse = create_function('$a', 'return $a->parse();');
+        $parse = function ($a) {
+            return $a->parse();
+        };
+
         $objTemplate->hidden = implode('', array_map($parse, $objForm->arrHidden));
         $objTemplate->fields = implode('', array_map($parse, $objForm->arrFields));
 
