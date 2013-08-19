@@ -22,9 +22,6 @@ namespace Isotope;
 class tl_iso_producttypes extends \Backend
 {
 
-    static $arrFields = array();
-    static $arrLegends = array();
-
     /**
      * Check permissions to edit table tl_iso_producttypes
      * @return void
@@ -371,53 +368,38 @@ class tl_iso_producttypes extends \Backend
      */
     public function saveAttributeWizard($varValue, $dc)
     {
-        static::$arrFields = deserialize($varValue);
+        $arrLegends = array();
+        $arrFields = deserialize($varValue);
 
-        if (empty(static::$arrFields) || !is_array(static::$arrFields)) {
+        if (empty($arrFields) || !is_array($arrFields)) {
             return $varValue;
         }
 
-        foreach (static::$arrFields as $arrField) {
-            if (!in_array($arrField['legend'], static::$arrLegends)) {
-                static::$arrLegends[] = $arrField['legend'];
+        foreach ($arrFields as $arrField) {
+            if (!in_array($arrField['legend'], $arrLegends)) {
+                $arrLegends[] = $arrField['legend'];
             }
         }
 
-        uksort(static::$arrFields, array($this, 'sortFields'));
+        uksort($arrFields, function($a, $b) use ($arrFields, $arrLegends)
+        {
+            if ($arrFields[$a]['enabled'] && !$arrFields[$b]['enabled']) {
+                return -1;
+            } elseif ($arrFields[$b]['enabled'] && !$arrFields[$a]['enabled']) {
+                return 1;
+            } elseif ($arrFields[$a]['legend'] == $arrFields[$b]['legend']) {
+                return ($a > $b) ? +1 : -1;
+            } else {
+                return (array_search($arrFields[$a]['legend'], $arrLegends) > array_search($arrFields[$b]['legend'], $arrLegends)) ? +1 : -1;
+            }
+        });
 
-        $arrFields = array();
-        foreach (array_values(static::$arrFields) as $pos => $arrConfig) {
+        $arrValues = array();
+        foreach (array_values($arrFields) as $pos => $arrConfig) {
             $arrConfig['position'] = $pos;
-            $arrFields[$arrConfig['name']] = $arrConfig;
+            $arrValues[$arrConfig['name']] = $arrConfig;
         }
 
-        return serialize($arrFields);
-    }
-
-    /**
-     * Array comparison function for attribute wizard fields
-     * @param   mixed
-     * @param   mixed
-     * @return  int
-     */
-    private static function sortFields($a, $b)
-    {
-        if (!in_array(static::$arrFields[$a]['legend'], static::$arrLegends)) {
-            static::$arrLegends[] = static::$arrFields[$a]['legend'];
-        }
-
-        if (!in_array(static::$arrFields[$b]['legend'], static::$arrLegends)) {
-            static::$arrLegends[] = static::$arrFields[$b]['legend'];
-        }
-
-        if (static::$arrFields[$a]['enabled'] && !static::$arrFields[$b]['enabled']) {
-            return -1;
-        } elseif (static::$arrFields[$b]['enabled'] && !static::$arrFields[$a]['enabled']) {
-            return 1;
-        } elseif (static::$arrFields[$a]['legend'] == static::$arrFields[$b]['legend']) {
-            return ($a > $b) ? +1 : -1;
-        } else {
-            return (array_search(static::$arrFields[$a]['legend'], static::$arrLegends) > array_search(static::$arrFields[$b]['legend'], static::$arrLegends)) ? +1 : -1;
-        }
+        return serialize($arrValues);
     }
 }
