@@ -680,12 +680,17 @@ $strBuffer .= '<th style="text-align:center"><img src="system/themes/default/ima
             return;
         }
 
-        $objAttributes = \Isotope\Model\Attribute::findAll(array('uncached'=>true));
+        $arrData = &$GLOBALS['TL_DCA'][$strTable];
+        $arrData['attributes'] = array();
 
-        while ($objAttributes->next())
-        {
-        	if (null !== $objAttributes->current()) {
-	            $objAttributes->current()->saveToDCA($GLOBALS['TL_DCA'][$strTable]);
+        // Write attributes from database to DCA
+        $objAttributes = \Isotope\Model\Attribute::findAll(array('uncached'=>true));
+        while ($objAttributes->next()) {
+            $objAttribute = $objAttributes->current();
+
+        	if (null !== $objAttribute) {
+	            $objAttribute->saveToDCA($arrData);
+	            $arrData['attributes'][$objAttribute->field_name] = $objAttribute;
 	        }
         }
 
