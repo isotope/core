@@ -51,6 +51,8 @@ abstract class Product extends TypeAgent
      */
     public static function findPublishedBy($arrColumns, $arrValues, array $arrOptions=array())
     {
+        $t = static::$strTable;
+
         $arrValues = (array) $arrValues;
 
         if (!is_array($arrColumns)) {
