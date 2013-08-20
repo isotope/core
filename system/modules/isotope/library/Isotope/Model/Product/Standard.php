@@ -31,6 +31,12 @@ class Standard extends Product implements IsotopeProduct
 {
 
     /**
+     * Cached product data
+     * @var array
+     */
+    protected $arrCache = array();
+
+    /**
      * Attributes assigned to this product type
      * @var array
      */
