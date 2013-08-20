@@ -851,7 +851,7 @@ window.addEvent('domready', function()
     {
         if (is_numeric($objProduct))
         {
-            $objProduct = Product::findPublishedById($objProduct);
+            $objProduct = Product::findPublishedByPk($objProduct);
         }
 
         if (null === $objProduct || !($objProduct instanceof IsotopeProduct))
