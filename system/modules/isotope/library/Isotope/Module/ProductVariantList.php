@@ -66,17 +66,17 @@ class ProductVariantList extends ProductList
             $arrValues = array();
         }
 
-        $arrColumns[] = "(" . Product::$strTable . ".id IN (SELECT pid FROM tl_iso_product_categories WHERE page_id IN (" . implode(',', $arrCategories) . ")) OR " . Product::$strTable . ".pid IN (SELECT pid FROM tl_iso_product_categories WHERE page_id IN (" . implode(',', $arrCategories) . ")))";
+        $arrColumns[] = "(" . Product::getTable() . ".id IN (SELECT pid FROM tl_iso_product_categories WHERE page_id IN (" . implode(',', $arrCategories) . ")) OR " . Product::getTable() . ".pid IN (SELECT pid FROM tl_iso_product_categories WHERE page_id IN (" . implode(',', $arrCategories) . ")))";
 
         if (!empty($arrCacheIds) && is_array($arrCacheIds)) {
-            $arrColumns[] = "(" . Product::$strTable . ".id IN (" . implode(',', $arrCacheIds) . ") OR " . Product::$strTable . ".pid IN (" . implode(',', $arrCacheIds) . "))";
+            $arrColumns[] = "(" . Product::getTable() . ".id IN (" . implode(',', $arrCacheIds) . ") OR " . Product::getTable() . ".pid IN (" . implode(',', $arrCacheIds) . "))";
         }
 
         // Apply new/old product filter
         if ($this->iso_newFilter == 'show_new') {
-            $arrColumns[] = Product::$strTable . ".dateAdded>=" . Isotope::getConfig()->getNewProductLimit();
+            $arrColumns[] = Product::getTable() . ".dateAdded>=" . Isotope::getConfig()->getNewProductLimit();
         } elseif ($this->iso_newFilter == 'show_old') {
-            $arrColumns[] = Product::$strTable . ".dateAdded<" . Isotope::getConfig()->getNewProductLimit();
+            $arrColumns[] = Product::getTable() . ".dateAdded<" . Isotope::getConfig()->getNewProductLimit();
         }
 
         if ($this->iso_list_where != '') {
@@ -87,7 +87,7 @@ class ProductVariantList extends ProductList
             $arrColumns[] = $strWhere;
         }
 
-        $objProducts = Product::findPublishedBy($arrColumns, $arrValues, array('group'=>Product::$strTable . '.id', 'order'=>'c.sorting'));
+        $objProducts = Product::findPublishedBy($arrColumns, $arrValues, array('group'=>Product::getTable() . '.id', 'order'=>'c.sorting'));
 
         return \Isotope\Frontend::getProducts($objProducts, \Isotope\Frontend::getReaderPageId(null, $this->iso_reader_jumpTo), true, $arrFilters, $arrSorting);
     }

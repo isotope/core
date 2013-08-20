@@ -319,14 +319,14 @@ class ProductList extends Module
         $arrColumns[] = "c.page_id IN (" . implode(',', $arrCategories) . ")";
 
         if (!empty($arrCacheIds) && is_array($arrCacheIds)) {
-            $arrColumns[] = Product::$strTable . ".id IN (" . implode(',', $arrCacheIds) . ")";
+            $arrColumns[] = Product::getTable() . ".id IN (" . implode(',', $arrCacheIds) . ")";
         }
 
         // Apply new/old product filter
         if ($this->iso_newFilter == 'show_new') {
-            $arrColumns[] = Product::$strTable . ".dateAdded>=" . Isotope::getConfig()->getNewProductLimit();
+            $arrColumns[] = Product::getTable() . ".dateAdded>=" . Isotope::getConfig()->getNewProductLimit();
         } elseif ($this->iso_newFilter == 'show_old') {
-            $arrColumns[] = Product::$strTable . ".dateAdded<" . Isotope::getConfig()->getNewProductLimit();
+            $arrColumns[] = Product::getTable() . ".dateAdded<" . Isotope::getConfig()->getNewProductLimit();
         }
 
         if ($this->iso_list_where != '') {
@@ -337,7 +337,7 @@ class ProductList extends Module
             $arrColumns[] = $strWhere;
         }
 
-        $objProducts = Product::findPublishedBy($arrColumns, $arrValues, array('group'=>Product::$strTable . '.id', 'order'=>'c.sorting'));
+        $objProducts = Product::findPublishedBy($arrColumns, $arrValues, array('group'=>Product::getTable() . '.id', 'order'=>'c.sorting'));
 
         return \Isotope\Frontend::getProducts($objProducts, 0, true, $arrFilters, $arrSorting);
     }

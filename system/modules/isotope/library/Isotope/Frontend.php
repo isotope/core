@@ -897,8 +897,8 @@ window.addEvent('domready', function()
         // $objProducts can also be an array of product ids
         if (is_array($objProducts) && !empty($objProducts)) {
             $objProducts = Product::findPublishedById($objProducts, array(
-                'group' => Product::$strTable.'.id',
-                'order' => Database::getInstance()->findInSet(Product::$strTable.'.id', $objProducts)
+                'group' => Product::getTable().'.id',
+                'order' => \Database::getInstance()->findInSet(Product::getTable().'.id', $objProducts)
             ));
         }
 
