@@ -180,7 +180,7 @@ class AuthorizeDotNet extends Payment implements IsotopePayment
                 continue;
             }
 
-            $objWidget = new $strClass($this->prepareForWidget($arrData, 'payment['.$field.']'));
+            $objWidget = new $strClass($strClass::getAttributesFromDca($arrData, 'payment['.$field.']'));
 
             //$objWidget->value = $_SESSION['CHECKOUT_DATA']['payment'][$field];
 

@@ -161,7 +161,7 @@ class VariantWizard extends \Widget
             switch($arrData['inputType'])
             {
                 case 'text':
-                    $objWidget = new \TextField($this->prepareForWidget($arrData, $this->strId.'['.$option['value'].']', $objVariant->{$option['value']}));
+                    $objWidget = new \TextField(\TextField::getAttributesFromDca($arrData, $this->strId.'['.$option['value'].']', $objVariant->{$option['value']}));
 
                     if ($arrData['eval']['datepicker'])
                     {
@@ -176,7 +176,7 @@ class VariantWizard extends \Widget
                     break;
 
                 default:
-                    $arrField = $this->prepareForWidget($arrData, $this->strId.'['.$option['value'].']', $objVariant->{$option['value']});
+                    $arrField = \SelectMenu::getAttributesFromDca($arrData, $this->strId.'['.$option['value'].']', $objVariant->{$option['value']});
 
                     foreach( $arrField['options'] as $k => $v )
                     {

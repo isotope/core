@@ -248,7 +248,7 @@ abstract class Address extends CheckoutStep
     //                $arrDefault[$field['value']] = '1';
     //            }
 
-                $objWidget = new $strClass($this->prepareForWidget($arrData, $this->getStepClass() . '_' . $field['value'], $objAddress->{$field['value']}));
+                $objWidget = new $strClass($strClass::getAttributesFromDca($arrData, $this->getStepClass() . '_' . $field['value'], $objAddress->{$field['value']}));
 
                 $objWidget->mandatory = $field['mandatory'] ? true : false;
                 $objWidget->required = $objWidget->mandatory;

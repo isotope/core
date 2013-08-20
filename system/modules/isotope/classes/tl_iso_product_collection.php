@@ -374,7 +374,7 @@ class tl_iso_product_collection extends \Backend
 <div class="tl_formbody_edit">
 <div class="tl_tbox block">';
 
-        $objWidget = new \SelectMenu($this->prepareForWidget($GLOBALS['TL_DCA']['tl_iso_product_collection']['fields']['order_status'], 'order_status'));
+        $objWidget = new \SelectMenu(\SelectMenu::getAttributesFromDca($GLOBALS['TL_DCA']['tl_iso_product_collection']['fields']['order_status'], 'order_status'));
 
         if (\Input::post('FORM_SUBMIT') == 'tl_print_invoices')
         {

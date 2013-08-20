@@ -295,7 +295,7 @@ class ProductFilter extends Module
                     }
 
                     // Use the default routine to initialize options data
-                    $arrWidget = $this->prepareForWidget($arrData, $strField);
+                    $arrWidget = \Widget::getAttributesFromDca($arrData, $strField);
 
                     // Must have options to apply the filter
                     if (!is_array($arrWidget['options']))

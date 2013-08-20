@@ -67,7 +67,7 @@ class tl_iso_products extends \Backend
                     $GLOBALS['TL_DCA']['tl_iso_products']['fields'][$attribute]['eval']['mandatory'] = true;
                     $GLOBALS['TL_DCA']['tl_iso_products']['fields'][$attribute]['eval']['multiple'] = true;
 
-                    $arrField = $this->prepareForWidget($GLOBALS['TL_DCA']['tl_iso_products']['fields'][$attribute], $attribute);
+                    $arrField = \CheckBox::getAttributesFromDca($GLOBALS['TL_DCA']['tl_iso_products']['fields'][$attribute], $attribute);
 
                     foreach ($arrField['options'] as $k => $option)
                     {
@@ -238,7 +238,7 @@ $strBuffer .= '<th style="text-align:center"><img src="system/themes/default/ima
                 if ($arrVarAttributes[$field]['enabled'])
                 {
                     $strClass = $GLOBALS['BE_FFL'][$GLOBALS['TL_DCA']['tl_iso_products']['fields'][$field]['inputType']];
-                    $arrWidgets[$field] = new $strClass($this->prepareForWidget($GLOBALS['TL_DCA']['tl_iso_products']['fields'][$field], $field.'[' . $objVariants->id .']', $objVariants->{$field}));
+                    $arrWidgets[$field] = new $strClass($strClass::getAttributesFromDca($GLOBALS['TL_DCA']['tl_iso_products']['fields'][$field], $field.'[' . $objVariants->id .']', $objVariants->{$field}));
                 }
             }
 
@@ -369,7 +369,7 @@ $strBuffer .= '<th style="text-align:center"><img src="system/themes/default/ima
      */
     public function importAssets($dc, $arrNewImages=array())
     {
-        $objTree = new \FileTree($this->prepareForWidget($GLOBALS['TL_DCA']['tl_iso_products']['fields']['source'], 'source', null, 'source', 'tl_iso_products'));
+        $objTree = new \FileTree(\FileTree::getAttributesFromDca($GLOBALS['TL_DCA']['tl_iso_products']['fields']['source'], 'source', null, 'source', 'tl_iso_products'));
 
         // Import assets
         if (\Input::post('FORM_SUBMIT') == 'tl_iso_products_import' && \Input::post('source') != '')

@@ -236,7 +236,7 @@ class Backend extends Contao_Backend
             return $this->importMailFiles($arrFiles);
         }
 
-        $objTree = new \FileTree($this->prepareForWidget($GLOBALS['TL_DCA']['tl_iso_mail']['fields']['source'], 'source', null, 'source', 'tl_iso_mail'));
+        $objTree = new \FileTree(\FileTree::getAttributesFromDca($GLOBALS['TL_DCA']['tl_iso_mail']['fields']['source'], 'source', null, 'source', 'tl_iso_mail'));
 
         // Return the form
         return '
