@@ -13,7 +13,7 @@
 namespace Isotope\Module;
 
 use Isotope\Isotope;
-use Isotope\Product\Standard as StandardProduct;
+use Isotope\Model\Product;
 
 
 /**
@@ -307,28 +307,39 @@ class ProductList extends Module
      */
     protected function findProducts($arrCacheIds=null)
     {
-        $time = time();
+        $arrColumns = array();
         $arrCategories = $this->findCategories($this->iso_category_scope);
 
         list($arrFilters, $arrSorting, $strWhere, $arrValues) = $this->getFiltersAndSorting();
 
-        // Apply new/old product filter
-        if ($this->iso_newFilter == 'show_new') {
-            $strWhere .= " AND p1.dateAdded>=" . Isotope::getConfig()->getNewProductLimit();
-        } elseif ($this->iso_newFilter == 'show_old') {
-            $strWhere .= " AND p1.dateAdded<" . Isotope::getConfig()->getNewProductLimit();
+        if (!is_array($arrValues)) {
+            $arrValues = array();
         }
 
-        $objProductData = $this->Database->prepare(StandardProduct::getSelectStatement() . "
-                                                    WHERE p1.language=''"
-                                                    . (BE_USER_LOGGED_IN === true ? '' : " AND p1.published='1' AND (p1.start='' OR p1.start<$time) AND (p1.stop='' OR p1.stop>$time)")
-                                                    . "AND c.page_id IN (" . implode(',', $arrCategories) . ")"
-                                                    . ((!empty($arrCacheIds) && is_array($arrCacheIds)) ? ("AND p1.id IN (" . implode(',', $arrCacheIds) . ")") : '')
-                                                    . ($this->iso_list_where == '' ? '' : " AND {$this->iso_list_where}")
-                                                    . "$strWhere GROUP BY p1.id ORDER BY c.sorting")
-                                         ->execute($arrValues);
+        $arrColumns[] = "c.page_id IN (" . implode(',', $arrCategories) . ")";
 
-        return \Isotope\Frontend::getProducts($objProductData, 0, true, $arrFilters, $arrSorting);
+        if (!empty($arrCacheIds) && is_array($arrCacheIds)) {
+            $arrColumns[] = Product::getTable() . ".id IN (" . implode(',', $arrCacheIds) . ")";
+        }
+
+        // Apply new/old product filter
+        if ($this->iso_newFilter == 'show_new') {
+            $arrColumns[] = Product::getTable() . ".dateAdded>=" . Isotope::getConfig()->getNewProductLimit();
+        } elseif ($this->iso_newFilter == 'show_old') {
+            $arrColumns[] = Product::getTable() . ".dateAdded<" . Isotope::getConfig()->getNewProductLimit();
+        }
+
+        if ($this->iso_list_where != '') {
+            $arrColumns[] = $this->iso_list_where;
+        }
+
+        if ($strWhere != '') {
+            $arrColumns[] = $strWhere;
+        }
+
+        $objProducts = Product::findPublishedBy($arrColumns, $arrValues, array('group'=>Product::getTable() . '.id', 'order'=>'c.sorting'));
+
+        return \Isotope\Frontend::getProducts($objProducts, 0, true, $arrFilters, $arrSorting);
     }
 
 
@@ -451,7 +462,7 @@ class ProductList extends Module
             if (!empty($arrWhere))
             {
                 $time = time();
-                $strWhere = " AND ((" . implode(' AND ', $arrWhere) . ") OR p1.id IN (SELECT pid FROM tl_iso_products WHERE language='' AND " . implode(' AND ', $arrWhere)
+                $strWhere = "((" . implode(' AND ', $arrWhere) . ") OR p1.id IN (SELECT pid FROM tl_iso_products WHERE language='' AND " . implode(' AND ', $arrWhere)
                             . (BE_USER_LOGGED_IN === true ? '' : " AND published='1' AND (start='' OR start<$time) AND (stop='' OR stop>$time)") . "))";
                 $arrValues = array_merge($arrValues, $arrValues);
             }

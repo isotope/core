@@ -12,8 +12,6 @@
 
 namespace Isotope\Model;
 
-use Isotope\Model\ProductCollectionDownload;
-
 
 /**
  * ProductCollectionItem represents an item in a product collection.
@@ -78,18 +76,20 @@ class ProductCollectionItem extends \Model
 
             $this->objProduct = null;
 
-            $strClass = $GLOBALS['ISO_PRODUCT'][$this->type]['class'];
+            $strClass = Product::getClassForModelType($this->type);
 
-            if ($strClass == '' || !class_exists($strClass)) {
-                $strClass = 'Isotope\Product\Standard';
-            }
-
-            $objProductData = \Database::getInstance()->prepare($strClass::getSelectStatement() . " WHERE p1.language='' AND p1.id=?")
-                                                      ->execute($this->product_id);
-
-            if ($objProductData->numRows) {
-                $this->objProduct = new $strClass($objProductData->row(), deserialize($this->options), $this->blnLocked, $this->quantity);
+            try {
+                $this->objProduct = $strClass::findByPk($this->product_id);
+                $this->objProduct->setOptions(deserialize($this->options));
+                $this->objProduct->setQuantity($this->quantity);
                 $this->objProduct->reader_jumpTo_Override = $this->href_reader;
+
+                if ($this->blnLocked) {
+                    $this->objProduct->lock();
+                }
+
+            } catch (\Exception $e) {
+                \System::log("Error creating product object: " . $e->getMessage());
             }
         }
 

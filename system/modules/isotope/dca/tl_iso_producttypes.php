@@ -149,10 +149,10 @@ $GLOBALS['TL_DCA']['tl_iso_producttypes'] = array
             'exclude'               => true,
             'inputType'             => 'select',
             'default'               => 'standard',
-            'options'               => array_keys($GLOBALS['ISO_PRODUCT']),
+            'options'               => \Isotope\Model\Product::getModelTypeOptions(),
             'reference'             => &$GLOBALS['TL_LANG']['PRODUCT'],
             'eval'                  => array('mandatory'=>true, 'submitOnChange'=>true, 'helpwizard'=>true, 'tl_class'=>'w50'),
-            'sql'                   => "varchar(32) NOT NULL default 'standard'"
+            'sql'                   => "varchar(64) NOT NULL default ''"
         ),
         'fallback' => array
         (

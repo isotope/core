@@ -10,10 +10,11 @@
  * @license    http://opensource.org/licenses/lgpl-3.0.html LGPL
  */
 
-namespace Isotope\Product;
+namespace Isotope\Model\Product;
 
 use Isotope\Isotope;
 use Isotope\Interfaces\IsotopeProduct;
+use Isotope\Model\Product;
 use Isotope\Model\TaxClass;
 
 
@@ -26,26 +27,14 @@ use Isotope\Model\TaxClass;
  * @author     Fred Bliss <fred.bliss@intelligentspark.com>
  * @author     Christian de la Haye <service@delahaye.de>
  */
-class Standard extends \Controller implements IsotopeProduct
+class Standard extends Product implements IsotopeProduct
 {
 
     /**
-     * Name of the current table
-     * @var string
-     */
-    protected $strTable = 'tl_iso_products';
-
-    /**
-     * Data array
+     * Cached product data
      * @var array
      */
-    protected $arrData = array();
-
-    /**
-     * Product type
-     * @var array
-     */
-    protected $arrType = array();
+    protected $arrCache = array();
 
     /**
      * Attributes assigned to this product type
@@ -108,9 +97,9 @@ class Standard extends \Controller implements IsotopeProduct
      * @param array
      * @param boolean
      */
-    public function __construct($arrData, $arrOptions=null, $blnLocked=false, $intQuantity=1)
+    public function __construct(\Database\Result $objResult=null)
     {
-        parent::__construct();
+        parent::__construct($objResult);
 
         $this->Database = \Database::getInstance();
 
@@ -119,15 +108,18 @@ class Standard extends \Controller implements IsotopeProduct
             $this->User = \FrontendUser::getInstance();
         }
 
+        $arrData = $this->arrData;
         $this->blnLocked = $blnLocked;
 
         if ($arrData['pid'] > 0)
         {
-            $this->arrData = $this->Database->execute(static::getSelectStatement() . " WHERE p1.id={$arrData['pid']}")->fetchAssoc();
-        }
-        else
-        {
-            $this->arrData = $arrData;
+            $objParent = static::findByPk($arrData['id']);
+
+            if (null === $objParent) {
+                throw new \UnderflowException('Parent record of product ID ' . $arrData['id'] . ' not found');
+            }
+
+            $this->arrData = $objParent->row();
         }
 
         $this->arrOptions = is_array($arrOptions) ? $arrOptions : array();
@@ -138,11 +130,10 @@ class Standard extends \Controller implements IsotopeProduct
         }
 
         $this->formSubmit = 'iso_product_' . $this->arrData['id'];
-        $this->arrType = $this->Database->execute("SELECT * FROM tl_iso_producttypes WHERE id=".(int) $this->arrData['type'])->fetchAssoc();
-        $this->arrAttributes = $this->getSortedAttributes($this->arrType['attributes']);
-        $this->arrVariantAttributes = $this->hasVariants() ? $this->getSortedAttributes($this->arrType['variant_attributes']) : array();
-        $this->arrCache['list_template'] = $this->arrType['list_template'];
-        $this->arrCache['reader_template'] = $this->arrType['reader_template'];
+        $this->arrAttributes = $this->getSortedAttributes($this->getRelated('type')->attributes);
+        $this->arrVariantAttributes = $this->hasVariants() ? $this->getSortedAttributes($this->getRelated('type')->variant_attributes) : array();
+        $this->arrCache['list_template'] = $this->getRelated('type')->list_template;
+        $this->arrCache['reader_template'] = $this->getRelated('type')->reader_template;
         $this->arrCache['quantity_requested'] = $intQuantity;
 
         // !HOOK: allow to customize attributes
@@ -245,10 +236,10 @@ class Standard extends \Controller implements IsotopeProduct
                 return $this->arrCache[$strKey] ? $this->arrCache[$strKey] : 1;
 
             case 'shipping_exempt':
-                return ($this->arrData['shipping_exempt'] || $this->arrType['shipping_exempt']) ? true : false;
+                return ($this->arrData['shipping_exempt'] || $this->getRelated('type')->shipping_exempt) ? true : false;
 
             case 'show_price_tiers':
-                return (bool) $this->arrType['show_price_tiers'];
+                return (bool) $this->getRelated('type')->show_price_tiers;
 
             case 'description_meta':
                 return $this->arrData['description_meta'] != '' ? $this->arrData['description_meta'] : ($this->arrData['teaser'] != '' ? $this->arrData['teaser'] : $this->arrData['description']);
@@ -339,7 +330,7 @@ class Standard extends \Controller implements IsotopeProduct
                 }
                 else
                 {
-                    $strUrl = \Controller::generateFrontendUrl($this->Database->prepare("SELECT * FROM tl_page WHERE id=?")->execute($varValue)->fetchAssoc(), ($GLOBALS['TL_CONFIG']['useAutoItem'] ? '/' : '/product/') . $strUrlKey, $objPage->rootLanguage);
+                    $strUrl = \Controller::generateFrontendUrl(\Database::getInstance()->prepare("SELECT * FROM tl_page WHERE id=?")->execute($varValue)->fetchAssoc(), ($GLOBALS['TL_CONFIG']['useAutoItem'] ? '/' : '/product/') . $strUrlKey, $objPage->rootLanguage);
                 }
 
                 if (!empty($this->arrOptions))
@@ -391,26 +382,6 @@ class Standard extends \Controller implements IsotopeProduct
     public function __isset($strKey)
     {
         return isset($this->arrData[$strKey]);
-    }
-
-
-    /**
-     * Return the current data as associative array
-     * @return array
-     */
-    public function getData()
-    {
-        return $this->arrData;
-    }
-
-
-    /**
-     * Return the product type configuration
-     * @return array
-     */
-    public function getType()
-    {
-        return $this->arrType;
     }
 
     /**
@@ -466,38 +437,35 @@ class Standard extends \Controller implements IsotopeProduct
      */
     public function getVariantOptions()
     {
-        if (!$this->hasVariants())
-        {
+        if (!$this->hasVariants()) {
             return false;
         }
 
-        if (!is_array($this->arrVariantOptions))
-        {
+        if (!is_array($this->arrVariantOptions)) {
+
             $time = time();
             $this->arrVariantOptions = array('current'=>array());
 
             // Find all possible variant options
             $objVariant = clone $this;
-            $objVariants = $this->Database->execute(static::getSelectStatement() . " WHERE p1.pid={$this->arrData['id']} AND p1.language=''"
-                                                    . (BE_USER_LOGGED_IN === true ? '' : " AND p1.published='1' AND (p1.start='' OR p1.start<$time) AND (p1.stop='' OR p1.stop>$time)"));
+            $objVariants = static::findPublishedByPid($arrData['id']);
 
-            while ($objVariants->next())
-            {
-                $objVariant->loadVariantData($objVariants->row(), false);
+            if (null !== $objVariants) {
+                while ($objVariants->next()) {
 
-                if ($objVariant->isAvailable())
-                {
-                    $arrVariantOptions = $objVariant->getOptions();
+                    $objVariant->loadVariantData($objVariants->row(), false);
 
-                    $this->arrVariantOptions['ids'][] = $objVariant->id;
-                    $this->arrVariantOptions['options'][$objVariant->id] = $arrVariantOptions;
-                    $this->arrVariantOptions['variants'][$objVariant->id] = $objVariants->row();
+                    if ($objVariant->isAvailable()) {
+                        $arrVariantOptions = $objVariant->getOptions();
 
-                    foreach ($arrVariantOptions as $attribute => $value)
-                    {
-                        if (!in_array((string) $value, (array) $this->arrVariantOptions['attributes'][$attribute], true))
-                        {
-                            $this->arrVariantOptions['attributes'][$attribute][] = (string) $value;
+                        $this->arrVariantOptions['ids'][] = $objVariant->id;
+                        $this->arrVariantOptions['options'][$objVariant->id] = $arrVariantOptions;
+                        $this->arrVariantOptions['variants'][$objVariant->id] = $objVariants->row();
+
+                        foreach ($arrVariantOptions as $attribute => $value) {
+                            if (!in_array((string) $value, (array) $this->arrVariantOptions['attributes'][$attribute], true)) {
+                                $this->arrVariantOptions['attributes'][$attribute][] = (string) $value;
+                            }
                         }
                     }
                 }
@@ -532,7 +500,7 @@ class Standard extends \Controller implements IsotopeProduct
      */
     public function getDownloads()
     {
-        if (!$this->arrType['downloads'])
+        if (!$this->getRelated('type')->downloads)
         {
             $this->arrDownloads = array();
         }
@@ -573,7 +541,7 @@ class Standard extends \Controller implements IsotopeProduct
      */
     public function hasVariants()
     {
-        return (bool) $this->arrType['variants'];
+        return (bool) $this->getRelated('type')->variants;
     }
 
 
@@ -598,7 +566,7 @@ class Standard extends \Controller implements IsotopeProduct
      */
     public function hasAdvancedPrices()
     {
-        return (bool) $this->arrType['prices'];
+        return (bool) $this->getRelated('type')->prices;
     }
 
 
@@ -1004,6 +972,14 @@ class Standard extends \Controller implements IsotopeProduct
     {
         $arrData = $GLOBALS['TL_DCA']['tl_iso_products']['fields'][$strField];
 
+        $strClass = strlen($GLOBALS['ISO_ATTR'][$arrData['attributes']['type']]['class']) ? $GLOBALS['ISO_ATTR'][$arrData['attributes']['type']]['class'] : $GLOBALS['TL_FFL'][$arrData['inputType']];
+
+        // Continue if the class is not defined
+        if (!class_exists($strClass))
+        {
+            return '';
+        }
+
         $arrData['eval']['mandatory'] = ($arrData['eval']['mandatory'] && !\Environment::get('isAjaxRequest')) ? true : false;
         $arrData['eval']['required'] = $arrData['eval']['mandatory'];
 
@@ -1012,7 +988,7 @@ class Standard extends \Controller implements IsotopeProduct
 
         if ($arrData['attributes']['variant_option'] && is_array($arrData['options']))
         {
-            if ((count((array) $this->arrVariantOptions['attributes'][$strField]) == 1) && !$this->arrType['force_variant_options'])
+            if ((count((array) $this->arrVariantOptions['attributes'][$strField]) == 1) && !$this->getRelated('type')->force_variant_options)
             {
                 $this->arrOptions[$strField] = $this->arrVariantOptions['attributes'][$strField][0];
                 $this->arrVariantOptions['current'][$strField] = $this->arrVariantOptions['attributes'][$strField][0];
@@ -1029,7 +1005,7 @@ class Standard extends \Controller implements IsotopeProduct
                 $arrData['eval']['includeBlankOption'] = true;
             }
 
-            $arrField = $this->prepareForWidget($arrData, $strField, $arrData['default']);
+            $arrField = $strClass::getAttributesFromDca($arrData, $strField, $arrData['default']);
 
             // Necessary, because prepareForData can unset the options
             if (is_array($arrData['options']))
@@ -1095,15 +1071,7 @@ class Standard extends \Controller implements IsotopeProduct
                 }
             }
 
-            $arrField = $this->prepareForWidget($arrData, $strField, $arrData['default']);
-        }
-
-        $strClass = strlen($GLOBALS['ISO_ATTR'][$arrData['attributes']['type']]['class']) ? $GLOBALS['ISO_ATTR'][$arrData['attributes']['type']]['class'] : $GLOBALS['TL_FFL'][$arrData['inputType']];
-
-        // Continue if the class is not defined
-        if (!class_exists($strClass))
-        {
-            return '';
+            $arrField = $strClass::getAttributesFromDca($arrData, $strField, $arrData['default']);
         }
 
         $objWidget = new $strClass($arrField);
@@ -1371,58 +1339,6 @@ class Standard extends \Controller implements IsotopeProduct
 
         // Unset arrDownloads cache
         $this->arrDownloads = null;
-    }
-
-
-    /**
-     * Return select statement to load product data including multilingual fields
-     * @param array an array of columns
-     * @return string
-     */
-    public static function getSelectStatement($arrColumns=false)
-    {
-        static $strSelect = '';
-
-        if ($strSelect == '' || $arrColumns !== false)
-        {
-            $arrSelect = ($arrColumns !== false) ? $arrColumns : array('p1.*');
-            $arrSelect[] = "'".$GLOBALS['TL_LANGUAGE']."' AS language";
-
-            foreach ($GLOBALS['ISO_CONFIG']['multilingual'] as $attribute)
-            {
-                if ($arrColumns !== false && !in_array('p1.'.$attribute, $arrColumns))
-                    continue;
-
-                $arrSelect[] = "IFNULL(p2.$attribute, p1.$attribute) AS {$attribute}";
-            }
-
-            foreach ($GLOBALS['ISO_CONFIG']['fetch_fallback'] as $attribute)
-            {
-                if ($arrColumns !== false && !in_array('p1.'.$attribute, $arrColumns))
-                    continue;
-
-                $arrSelect[] = "p1.$attribute AS {$attribute}_fallback";
-            }
-
-            $strQuery = "
-SELECT
-    " . implode(', ', $arrSelect) . ",
-    t.class AS product_class,
-    c.sorting
-FROM tl_iso_products p1
-INNER JOIN tl_iso_producttypes t ON t.id=p1.type
-LEFT OUTER JOIN tl_iso_products p2 ON p1.id=p2.pid AND p2.language='" . $GLOBALS['TL_LANGUAGE'] . "'
-LEFT OUTER JOIN tl_iso_product_categories c ON p1.id=c.pid";
-
-            if ($arrColumns !== false)
-            {
-                return $strQuery;
-            }
-
-            $strSelect = $strQuery;
-        }
-
-        return $strSelect;
     }
 
 

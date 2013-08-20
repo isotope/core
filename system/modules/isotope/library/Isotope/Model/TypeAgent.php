@@ -43,7 +43,9 @@ abstract class TypeAgent extends \Model
         parent::__construct($objResult);
 
         // Register model type
-        $this->arrData['type'] = array_search(get_called_class(), static::$arrModelTypes);
+        if (!isset($this->arrRelations['type'])) {
+            $this->arrData['type'] = array_search(get_called_class(), static::$arrModelTypes);
+        }
 
         if ($this->arrData['type'] == '') {
             throw new \RuntimeException(get_called_class() . ' is not a registered model type');
@@ -88,6 +90,16 @@ abstract class TypeAgent extends \Model
     }
 
     /**
+     * Get class name for given model type
+     * @param   string
+     * @return  string
+     */
+    public static function getClassForModelType($strName)
+    {
+        return static::$arrModelTypes[$strName];
+    }
+
+    /**
      * Return options list of model types
      * @return  array
      */
@@ -109,6 +121,19 @@ abstract class TypeAgent extends \Model
     public static function buildModelType(\Database_Result $objResult=null)
     {
         $strClass = static::$arrModelTypes[$objResult->type];
+
+        if (is_numeric($objResult->type)) {
+            $objRelations = new \DcaExtractor(static::$strTable);
+            $arrRelations = $objRelations->getRelations();
+
+            if (isset($arrRelations['type'])) {
+                $objType = \Database::getInstance()->prepare("SELECT * FROM " . $arrRelations['type']['table'] . " WHERE " . $arrRelations['type']['field'] . "=?")->execute($objResult->type);
+
+                if ($objType->numRows) {
+                    $strClass = static::$arrModelTypes[$objType->class];
+                }
+            }
+        }
 
         if ($strClass == '') {
 	        return null;
@@ -149,7 +174,7 @@ abstract class TypeAgent extends \Model
         }
 
         $arrOptions['table'] = static::$strTable;
-        $strQuery = \Model\QueryBuilder::find($arrOptions);
+        $strQuery = static::buildQueryString($arrOptions);
 
         $objStatement = \Database::getInstance()->prepare($strQuery);
 
@@ -199,5 +224,15 @@ abstract class TypeAgent extends \Model
 
             return new \Isotope\Model\Collection\TypeAgent($objResult, get_called_class());
         }
+    }
+
+    /**
+     * Allow to override the query builder
+     * @param   array
+     * @return  string
+     */
+    protected static function buildQueryString($arrOptions)
+    {
+        return \Model\QueryBuilder::find($arrOptions);
     }
 }

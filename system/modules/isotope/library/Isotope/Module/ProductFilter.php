@@ -12,7 +12,7 @@
 
 namespace Isotope\Module;
 
-use Isotope\Product\Standard as StandardProduct;
+use Isotope\Model\Product;
 
 
 /**
@@ -117,16 +117,14 @@ class ProductFilter extends Module
     {
         if ($this->iso_searchAutocomplete && \Input::get('autocomplete'))
         {
-            $time = time();
             $arrCategories = $this->findCategories($this->iso_category_scope);
+            $objProducts = Product::findPublishedByCategories($arrCategories, array('order'=>'c.sorting'));
 
-            $objProductData = $this->Database->execute(StandardProduct::getSelectStatement(array('p1.'.$this->iso_searchAutocomplete)) . "
-                                                    WHERE p1.language=''"
-                . (BE_USER_LOGGED_IN === true ? '' : " AND p1.published='1' AND (p1.start='' OR p1.start<$time) AND (p1.stop='' OR p1.stop>$time)")
-                . " AND c.page_id IN (" . implode(',', $arrCategories) . ")"
-                . " GROUP BY p1.id ORDER BY c.sorting");
+            if (null === $objProducts) {
+                return array();
+            }
 
-            return $objProductData->fetchEach($this->iso_searchAutocomplete);
+            return $objProducts->fetchEach($this->iso_searchAutocomplete);
         }
 
         return '';
