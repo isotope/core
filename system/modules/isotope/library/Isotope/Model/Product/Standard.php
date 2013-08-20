@@ -966,6 +966,14 @@ class Standard extends Product implements IsotopeProduct
     {
         $arrData = $GLOBALS['TL_DCA']['tl_iso_products']['fields'][$strField];
 
+        $strClass = strlen($GLOBALS['ISO_ATTR'][$arrData['attributes']['type']]['class']) ? $GLOBALS['ISO_ATTR'][$arrData['attributes']['type']]['class'] : $GLOBALS['TL_FFL'][$arrData['inputType']];
+
+        // Continue if the class is not defined
+        if (!class_exists($strClass))
+        {
+            return '';
+        }
+
         $arrData['eval']['mandatory'] = ($arrData['eval']['mandatory'] && !\Environment::get('isAjaxRequest')) ? true : false;
         $arrData['eval']['required'] = $arrData['eval']['mandatory'];
 
@@ -991,7 +999,7 @@ class Standard extends Product implements IsotopeProduct
                 $arrData['eval']['includeBlankOption'] = true;
             }
 
-            $arrField = $this->prepareForWidget($arrData, $strField, $arrData['default']);
+            $arrField = $strClass::getAttributesFromDca($arrData, $strField, $arrData['default']);
 
             // Necessary, because prepareForData can unset the options
             if (is_array($arrData['options']))
@@ -1057,15 +1065,7 @@ class Standard extends Product implements IsotopeProduct
                 }
             }
 
-            $arrField = $this->prepareForWidget($arrData, $strField, $arrData['default']);
-        }
-
-        $strClass = strlen($GLOBALS['ISO_ATTR'][$arrData['attributes']['type']]['class']) ? $GLOBALS['ISO_ATTR'][$arrData['attributes']['type']]['class'] : $GLOBALS['TL_FFL'][$arrData['inputType']];
-
-        // Continue if the class is not defined
-        if (!class_exists($strClass))
-        {
-            return '';
+            $arrField = $strClass::getAttributesFromDca($arrData, $strField, $arrData['default']);
         }
 
         $objWidget = new $strClass($arrField);
