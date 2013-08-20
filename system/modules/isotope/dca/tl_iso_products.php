@@ -160,6 +160,13 @@ $GLOBALS['TL_DCA']['tl_iso_products'] = array
                 'href'              => 'act=show',
                 'icon'              => 'show.gif'
             ),
+            'variants' => array
+            (
+                'label'             => &$GLOBALS['TL_LANG']['tl_iso_products']['variants'],
+                'href'              => '',
+                'icon'              => 'system/modules/isotope/assets/table--pencil.png',
+                'button_callback'   => array('Isotope\ProductCallbacks', 'variantsButton'),
+            ),
             'quick_edit' => array
             (
                 'label'             => &$GLOBALS['TL_LANG']['tl_iso_products']['quick_edit'],
