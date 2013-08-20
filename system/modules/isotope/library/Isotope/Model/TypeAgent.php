@@ -144,7 +144,7 @@ abstract class TypeAgent extends \Model
                 $arrOptions['column'] = array($arrOptions['column'].'=?');
             }
 
-            $arrOptions['column'][] = 'type=?';
+            $arrOptions['column'][] = static::$strTable . '.type=?';
             $arrOptions['value'][] = $strType;
         }
 
