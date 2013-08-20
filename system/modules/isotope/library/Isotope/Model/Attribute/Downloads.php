@@ -25,7 +25,7 @@ use Isotope\Model\Attribute;
 class Downloads extends Attribute implements IsotopeAttribute
 {
 
-	public function addToDCA(&$arrData)
+	public function addToDCA(array &$arrData)
 	{
 		parent::addToDCA($arrData);
 

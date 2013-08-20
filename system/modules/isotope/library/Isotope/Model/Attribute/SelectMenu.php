@@ -25,7 +25,7 @@ use Isotope\Model\Attribute;
 class SelectMenu extends Attribute implements IsotopeAttribute
 {
 
-	public function addToDCA(&$arrData)
+	public function addToDCA(array &$arrData)
 	{
 		// Varian select menu cannot have multiple option
         if ($this->isVariantOption()) {

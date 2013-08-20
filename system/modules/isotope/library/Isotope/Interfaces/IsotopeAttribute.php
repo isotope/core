@@ -50,5 +50,5 @@ interface IsotopeAttribute
 	 * Inject attribute configuration into the given DCA array
 	 * @param	array
 	 */
-	public function addToDCA(&$arrData);
+	public function addToDCA(array &$arrData);
 }

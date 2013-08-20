@@ -39,7 +39,7 @@ class Upload extends Attribute implements IsotopeAttribute
 		return false;
 	}
 
-	public function addToDCA(&$arrData)
+	public function addToDCA(array &$arrData)
 	{
 		parent::addToDCA($arrData);
 
