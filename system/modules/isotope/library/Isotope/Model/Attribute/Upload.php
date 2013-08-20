@@ -39,9 +39,9 @@ class Upload extends Attribute implements IsotopeAttribute
 		return false;
 	}
 
-	public function addToDCA(array &$arrData)
+	public function saveToDCA(array &$arrData)
 	{
-		parent::addToDCA($arrData);
+		parent::saveToDCA($arrData);
 
 		$arrData['fields'][$this->field_name]['sql'] = "varchar(255) NOT NULL default ''";
 

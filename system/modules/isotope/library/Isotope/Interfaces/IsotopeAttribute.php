@@ -47,8 +47,8 @@ interface IsotopeAttribute
 	public function getFrontendWidget();
 
 	/**
-	 * Inject attribute configuration into the given DCA array
+	 * Save attribute configuration into the given DCA array
 	 * @param	array
 	 */
-	public function addToDCA(array &$arrData);
+	public function saveToDCA(array &$arrData);
 }

@@ -25,9 +25,9 @@ use Isotope\Model\Attribute;
 class Downloads extends Attribute implements IsotopeAttribute
 {
 
-	public function addToDCA(array &$arrData)
+	public function saveToDCA(array &$arrData)
 	{
-		parent::addToDCA($arrData);
+		parent::saveToDCA($arrData);
 
 		$arrData['fields'][$this->field_name]['sql'] = "blob NULL";
 	}

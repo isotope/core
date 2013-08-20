@@ -87,10 +87,10 @@ abstract class Attribute extends TypeAgent
 	}
 
 	/**
-	 * Inject attribute configuration into the given DCA array
+	 * Save attribute configuration into the given DCA array
 	 * @param	array
 	 */
-	public function addToDCA(array &$arrData)
+	public function saveToDCA(array &$arrData)
 	{
 		// Keep field settings made through DCA code
         $arrField = is_array($arrData['fields'][$this->field_name]) ? $arrData['fields'][$this->field_name] : array();

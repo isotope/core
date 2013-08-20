@@ -685,7 +685,7 @@ $strBuffer .= '<th style="text-align:center"><img src="system/themes/default/ima
         while ($objAttributes->next())
         {
         	if (null !== $objAttributes->current()) {
-	            $objAttributes->current()->addToDCA($GLOBALS['TL_DCA'][$strTable]);
+	            $objAttributes->current()->saveToDCA($GLOBALS['TL_DCA'][$strTable]);
 	        }
         }
 

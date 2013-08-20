@@ -25,7 +25,7 @@ use Isotope\Model\Attribute;
 class SelectMenu extends Attribute implements IsotopeAttribute
 {
 
-	public function addToDCA(array &$arrData)
+	public function saveToDCA(array &$arrData)
 	{
 		// Varian select menu cannot have multiple option
         if ($this->isVariantOption()) {
@@ -33,7 +33,7 @@ class SelectMenu extends Attribute implements IsotopeAttribute
         	$this->size = 1;
         }
 
-		parent::addToDCA($arrData);
+		parent::saveToDCA($arrData);
 
 		if ($this->multiple) {
 			$arrData['fields'][$this->field_name]['sql'] = "blob NULL";
