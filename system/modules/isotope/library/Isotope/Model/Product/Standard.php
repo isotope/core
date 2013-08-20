@@ -324,7 +324,7 @@ class Standard extends Product implements IsotopeProduct
                 }
                 else
                 {
-                    $strUrl = \Controller::generateFrontendUrl($this->Database->prepare("SELECT * FROM tl_page WHERE id=?")->execute($varValue)->fetchAssoc(), ($GLOBALS['TL_CONFIG']['useAutoItem'] ? '/' : '/product/') . $strUrlKey, $objPage->rootLanguage);
+                    $strUrl = \Controller::generateFrontendUrl(\Database::getInstance()->prepare("SELECT * FROM tl_page WHERE id=?")->execute($varValue)->fetchAssoc(), ($GLOBALS['TL_CONFIG']['useAutoItem'] ? '/' : '/product/') . $strUrlKey, $objPage->rootLanguage);
                 }
 
                 if (!empty($this->arrOptions))
