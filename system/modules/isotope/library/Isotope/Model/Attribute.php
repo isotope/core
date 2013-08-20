@@ -87,6 +87,28 @@ abstract class Attribute extends TypeAgent
 	}
 
 	/**
+	 * Load attribute configuration from given DCA array
+	 * @param   array
+	 */
+	public function loadFromDCA(array &$arrData, $strName)
+	{
+	    $arrField = &$arrData['fields'][$strName];
+
+        $this->arrData = is_array($arrField['attributes']) ? $arrField['attributes'] : array();
+
+        if (is_array($arrField['eval'])) {
+            $this->arrData = array_merge($arrField['eval'], $this->arrData);
+        }
+
+        $this->field_name = $strName;
+        $this->name = is_array($arrField['label']) ? $arrField['label'][0] : ($arrField['label'] ?: $strName);
+        $this->description = is_array($arrField['label']) ? $arrField['label'][1] : '';
+        $this->be_filter = $arrField['filter'] ? '1' : '';
+        $this->be_search = $arrField['search'] ? '1' : '';
+        $this->foreignKey = $arrField['foreignKey'];
+	}
+
+	/**
 	 * Save attribute configuration into the given DCA array
 	 * @param	array
 	 */

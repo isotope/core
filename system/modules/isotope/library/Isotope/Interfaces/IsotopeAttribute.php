@@ -47,6 +47,12 @@ interface IsotopeAttribute
 	public function getFrontendWidget();
 
 	/**
+	 * Load attribute configuration from given DCA array
+	 * @param   array
+	 */
+	public function loadFromDCA(array &$arrData, $strName);
+
+	/**
 	 * Save attribute configuration into the given DCA array
 	 * @param	array
 	 */

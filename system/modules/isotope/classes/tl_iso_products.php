@@ -694,6 +694,24 @@ $strBuffer .= '<th style="text-align:center"><img src="system/themes/default/ima
 	        }
         }
 
+        // Create temporary models for non-database attributes
+        foreach (array_diff_key($arrData['fields'], $arrData['attributes']) as $strName => $arrConfig) {
+
+            if (is_array($arrConfig['attributes'])) {
+                if ($arrConfig['attributes']['type'] != '') {
+                    $strClass = \Isotope\Model\Attribute::getClassForModelType($arrConfig['attributes']['type']);
+                } else {
+                    $strClass = \Isotope\Model\Attribute::getClassForModelType($arrConfig['inputType']);
+                }
+
+                if ($strClass != '') {
+                    $objAttribute = new $strClass();
+                    $objAttribute->loadFromDCA($arrData, $strName);
+                    $arrData['attributes'][$strName] = $objAttribute;
+                }
+            }
+        }
+
         $GLOBALS['ISO_CONFIG']['variant_options'] = array();
         $GLOBALS['ISO_CONFIG']['multilingual'] = array();
         $GLOBALS['ISO_CONFIG']['fetch_fallback'] = array();
