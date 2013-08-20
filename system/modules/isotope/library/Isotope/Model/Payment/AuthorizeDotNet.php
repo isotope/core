@@ -175,7 +175,7 @@ class AuthorizeDotNet extends Payment implements IsotopePayment
             $strClass = $GLOBALS['TL_FFL'][$arrData['inputType']];
 
             // Continue if the class is not defined
-            if (!$this->classFileExists($strClass))
+            if (!class_exists($strClass))
             {
                 continue;
             }

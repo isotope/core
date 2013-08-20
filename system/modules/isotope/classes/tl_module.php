@@ -261,7 +261,7 @@ class tl_module extends \Backend
         {
             foreach ($arrModules as $strName => $strClass)
             {
-                if ($strClass != '' && !$this->classFileExists($strClass))
+                if ($strClass != '' && !class_exists($strClass))
                 {
                     continue;
                 }

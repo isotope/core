@@ -97,7 +97,7 @@ class PostSale extends \Frontend
         }
 
         $strClass = $GLOBALS['ISO_'.strtoupper($strMod)][$objModule->type];
-        if (!strlen($strClass) || !$this->classFileExists($strClass))
+        if (!strlen($strClass) || !class_exists($strClass))
         {
             \System::log('Invalid post-sale request (class not found): '.\Environment::get('request'), __METHOD__, TL_ERROR);
 

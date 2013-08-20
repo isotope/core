@@ -1101,7 +1101,7 @@ class Standard extends \Controller implements IsotopeProduct
         $strClass = strlen($GLOBALS['ISO_ATTR'][$arrData['attributes']['type']]['class']) ? $GLOBALS['ISO_ATTR'][$arrData['attributes']['type']]['class'] : $GLOBALS['TL_FFL'][$arrData['inputType']];
 
         // Continue if the class is not defined
-        if (!$this->classFileExists($strClass))
+        if (!class_exists($strClass))
         {
             return '';
         }
