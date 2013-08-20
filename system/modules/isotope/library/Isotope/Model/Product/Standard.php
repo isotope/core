@@ -249,44 +249,31 @@ class Standard extends Product implements IsotopeProduct
                 // Initialize attribute
                 if (!isset($this->arrCache[$strKey]))
                 {
-                    if ($GLOBALS['TL_DCA'][$this->strTable]['fields'][$strKey]['inputType'] == 'mediaManager')
+                    switch ($strKey)
                     {
-                        //! @todo implement gallery configurations
-                        $objGallery = new \Isotope\Model\Gallery\Standard();
-                        $objGallery->setName($this->formSubmit . '_' . $strKey);
-                        $objGallery->setFiles(Isotope::mergeMediaData(deserialize($this->arrData[$strKey]), deserialize($this->arrData[$strKey.'_fallback'])));
-                        $objGallery->product_id = ($this->pid ? $this->pid : $this->id);
-                        $objGallery->href_reader = $this->href_reader;
-                        $this->arrCache[$strKey] = $objGallery;
-                    }
-                    else
-                    {
-                        switch ($strKey)
-                        {
-                            case 'formatted_price':
-                                $this->arrCache[$strKey] = Isotope::formatPriceWithCurrency($this->price, false);
-                                break;
+                        case 'formatted_price':
+                            $this->arrCache[$strKey] = Isotope::formatPriceWithCurrency($this->price, false);
+                            break;
 
-                            case 'formatted_original_price':
-                                $this->arrCache[$strKey] = Isotope::formatPriceWithCurrency($this->original_price, false);
-                                break;
+                        case 'formatted_original_price':
+                            $this->arrCache[$strKey] = Isotope::formatPriceWithCurrency($this->original_price, false);
+                            break;
 
-                            case 'formatted_total_price':
-                                $this->arrCache[$strKey] = Isotope::formatPriceWithCurrency($this->total_price, false);
-                                break;
+                        case 'formatted_total_price':
+                            $this->arrCache[$strKey] = Isotope::formatPriceWithCurrency($this->total_price, false);
+                            break;
 
-                            case 'categories':
-                                $this->arrCache[$strKey] = $this->Database->execute("SELECT page_id FROM tl_iso_product_categories WHERE pid=" . ($this->pid ? $this->pid : $this->id) . " ORDER BY sorting")->fetchEach('page_id');
-                                break;
+                        case 'categories':
+                            $this->arrCache[$strKey] = $this->Database->execute("SELECT page_id FROM tl_iso_product_categories WHERE pid=" . ($this->pid ? $this->pid : $this->id) . " ORDER BY sorting")->fetchEach('page_id');
+                            break;
 
-                            default:
-                                if ($this->pid > 0 && $GLOBALS['TL_DCA']['tl_iso_products']['fields'][$strKey]['attributes']['customer_defined'] || $GLOBALS['TL_DCA']['tl_iso_products']['fields'][$strKey]['attributes']['variant_option']) {
+                        default:
+                            if ($this->pid > 0 && $GLOBALS['TL_DCA']['tl_iso_products']['fields'][$strKey]['attributes']['customer_defined'] || $GLOBALS['TL_DCA']['tl_iso_products']['fields'][$strKey]['attributes']['variant_option']) {
 
-    							    return isset($this->arrOptions[$strKey]) ? deserialize($this->arrOptions[$strKey]) : null;
-							    }
+							    return isset($this->arrOptions[$strKey]) ? deserialize($this->arrOptions[$strKey]) : null;
+						    }
 
-                                return isset($this->arrData[$strKey]) ? deserialize($this->arrData[$strKey]) : null;
-                        }
+                            return isset($this->arrData[$strKey]) ? deserialize($this->arrData[$strKey]) : null;
                     }
                 }
 
@@ -798,16 +785,9 @@ class Standard extends Product implements IsotopeProduct
     protected function generateAttribute($attribute, $varValue)
     {
         $strBuffer = '';
-        $arrData = $GLOBALS['TL_DCA']['tl_iso_products']['fields'][$attribute];
-
-        // Return the \Isotope\Gallery object
-        if ($arrData['inputType'] == 'mediaManager')
-        {
-            return $this->$attribute;
-        }
 
         // Calculate the prices
-        elseif ($attribute == 'price')
+        if ($attribute == 'price')
         {
             $fltPrice = $varValue;
             $fltOriginalPrice = $this->original_price;

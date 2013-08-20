@@ -12,8 +12,11 @@
 
 namespace Isotope\Model\Attribute;
 
+use Isotope\Isotope;
 use Isotope\Interfaces\IsotopeAttribute;
+use Isotope\Interfaces\IsotopeProduct;
 use Isotope\Model\Attribute;
+use \Isotope\Model\Gallery;
 
 
 /**
@@ -33,5 +36,18 @@ class MediaManager extends Attribute implements IsotopeAttribute
 
 		// Media Manager must fetch fallback
         $arrData['fields'][$this->field_name]['attributes']['fetch_fallback'] = true;
+	}
+
+	public function generate($strName, $varValue, IsotopeProduct $objProduct)
+	{
+        //! @todo implement gallery configurations
+        $objGallery = Gallery::findByPk($objProduct->getRelated('type')->list_gallery);
+
+        $objGallery->setName($objProduct->formSubmit . '_' . $this->field_name);
+        $objGallery->setFiles($varValue); //Isotope::mergeMediaData($varValue, deserialize($objProduct->{$strKey.'_fallback'})));
+        $objGallery->product_id = ($objProduct->pid ? $objProduct->pid : $objProduct->id);
+        $objGallery->href_reader = $objProduct->href_reader;
+
+        return $objGallery;
 	}
 }
