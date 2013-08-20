@@ -49,7 +49,7 @@ abstract class Product extends TypeAgent
      * @param   array
      * @return  \Collection
      */
-    public function findPublishedBy($arrColumns, $arrValues, array $arrOptions=array())
+    public static function findPublishedBy($arrColumns, $arrValues, array $arrOptions=array())
     {
         $arrValues = (array) $arrValues;
 
@@ -71,7 +71,7 @@ abstract class Product extends TypeAgent
      * @param   array
      * @return  \Collection
      */
-    public function findPublishedByPk($intId, array $arrOptions=array())
+    public static function findPublishedByPk($intId, array $arrOptions=array())
     {
         $t = static::$strTable;
 
