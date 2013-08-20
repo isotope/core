@@ -139,7 +139,7 @@ abstract class Product extends TypeAgent
      * @param   array
      * @return  \Collection
      */
-    public function findPublishedById(array $arrIds, array $arrOptions=array())
+    public static function findPublishedById(array $arrIds, array $arrOptions=array())
     {
         $t = static::$strTable;
 
@@ -170,7 +170,7 @@ abstract class Product extends TypeAgent
      * @param   array
      * @return  \Collection
      */
-    public function findPublishedByPid($intPid, array $arrOptions=array())
+    public static function findPublishedByPid($intPid, array $arrOptions=array())
     {
         $t = static::$strTable;
 
@@ -202,7 +202,7 @@ abstract class Product extends TypeAgent
      * @param   array
      * @return  \Collection
      */
-    public function findPublishedByCategories(array $arrCategories, array $arrOptions=array())
+    public static function findPublishedByCategories(array $arrCategories, array $arrOptions=array())
     {
         $t = static::$strTable;
 
