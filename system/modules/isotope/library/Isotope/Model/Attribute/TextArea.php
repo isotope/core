@@ -13,6 +13,7 @@
 namespace Isotope\Model\Attribute;
 
 use Isotope\Interfaces\IsotopeAttribute;
+use Isotope\Interfaces\IsotopeProduct;
 use Isotope\Model\Attribute;
 
 
@@ -35,6 +36,15 @@ class TextArea extends Attribute implements IsotopeAttribute
         if ($this->rte != '')
         {
             $arrData['fields'][$this->field_name]['eval']['tl_class'] = 'clr';
+        }
+	}
+
+	public function generate($strName, $varValue, IsotopeProduct $objProduct)
+	{
+	    if ($this->rte == '') {
+        	return nl2br($varValue);
+        } else {
+            return parent::generate($strName, $varValue, $objProduct);
         }
 	}
 }

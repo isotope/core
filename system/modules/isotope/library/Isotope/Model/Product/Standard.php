@@ -846,12 +846,6 @@ class Standard extends Product implements IsotopeProduct
             }
         }
 
-        // Convert line breaks in textarea to <br> tags
-        elseif ($arrData['inputType'] == 'textarea' && $arrData['eval']['rte'] == '')
-        {
-            $strBuffer = nl2br($varValue);
-        }
-
         // Generate download attributes
         elseif ($arrData['inputType'] == 'downloads')
         {
