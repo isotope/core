@@ -57,4 +57,12 @@ interface IsotopeAttribute
 	 * @param	array
 	 */
 	public function saveToDCA(array &$arrData);
+
+	/**
+	 * Generate attribute for given product
+	 * @param   IsotopeProduct
+     * @param   string
+     * @return  string
+	 */
+	public function generate($strName, $varValue, IsotopeProduct $objProduct);
 }

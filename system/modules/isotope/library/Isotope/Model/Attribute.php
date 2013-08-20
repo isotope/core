@@ -13,6 +13,7 @@
 namespace Isotope\Model;
 
 use Isotope\Isotope;
+use Isotope\Interfaces\IsotopeProduct;
 
 
 /**
@@ -198,6 +199,104 @@ abstract class Attribute extends TypeAgent
 
 		// Add field to the current DCA table
         $arrData['fields'][$this->field_name] = $arrField;
+	}
+
+
+	public function generate($strName, $varValue, IsotopeProduct $objProduct)
+	{
+	    $strBuffer = '';
+
+	    // Generate a HTML table for associative arrays
+        if (is_array($varValue) && !array_is_assoc($varValue) && is_array($varValue[0]))
+        {
+            $arrFormat = $GLOBALS['TL_DCA']['tl_iso_products']['fields'][$strName]['tableformat'];
+
+            $last = count($varValue[0])-1;
+
+            $strBuffer = '
+<table class="'.$strName.'">
+  <thead>
+    <tr>';
+
+            foreach (array_keys($varValue[0]) as $i => $name)
+            {
+                if ($arrFormat[$name]['doNotShow'])
+                {
+                    continue;
+                }
+
+                $label = $arrFormat[$name]['label'] ? $arrFormat[$name]['label'] : $name;
+
+                $strBuffer .= '
+      <th class="head_'.$i.($i==0 ? ' head_first' : '').($i==$last ? ' head_last' : ''). (!is_numeric($name) ? ' '.standardize($name) : '').'">' . $label . '</th>';
+            }
+
+            $strBuffer .= '
+    </tr>
+  </thead>
+  <tbody>';
+
+            foreach ($varValue as $r => $row)
+            {
+                $strBuffer .= '
+    <tr class="row_'.$r.($r==0 ? ' row_first' : '').($r==$last ? ' row_last' : '').' '.($r%2 ? 'odd' : 'even').'">';
+
+                $c = -1;
+
+                foreach ($row as $name => $value)
+                {
+                    if ($arrFormat[$name]['doNotShow'])
+                    {
+                        continue;
+                    }
+
+                    if ($arrFormat[$name]['rgxp'] == 'price')
+                    {
+                        $value = Isotope::formatPriceWithCurrency(Isotope::calculatePrice($value, $this, 'price_tiers', $this->arrData['tax_class']));
+                    }
+                    else
+                    {
+                        $value = $arrFormat[$name]['format'] ? sprintf($arrFormat[$name]['format'], $value) : $value;
+                    }
+
+                    $strBuffer .= '
+      <td class="col_'.++$c.($c==0 ? ' col_first' : '').($c==$i ? ' col_last' : '').' '.standardize($name).'">' . $value . '</td>';
+                }
+
+                $strBuffer .= '
+    </tr>';
+            }
+
+            $strBuffer .= '
+  </tbody>
+</table>';
+        }
+
+        // Generate ul/li listing for simpley arrays
+        elseif (is_array($varValue))
+        {
+            $strBuffer = '
+<ul>';
+
+            $current = 0;
+            $last = count($varValue)-1;
+            foreach( $varValue as $value )
+            {
+                $class = trim(($current == 0 ? 'first' : '') . ($current == $last ? ' last' : ''));
+
+                $strBuffer .= '
+  <li'.($class != '' ? ' class="'.$class.'"' : '').'>' . $value . '</li>';
+            }
+
+            $strBuffer .= '
+</ul>';
+        }
+        else
+        {
+            $strBuffer = Isotope::formatValue('tl_iso_products', $strName, $varValue);
+        }
+
+        return $strBuffer;
 	}
 
 

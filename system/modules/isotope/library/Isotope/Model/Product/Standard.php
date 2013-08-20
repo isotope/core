@@ -13,6 +13,7 @@
 namespace Isotope\Model\Product;
 
 use Isotope\Isotope;
+use Isotope\Interfaces\IsotopeAttribute;
 use Isotope\Interfaces\IsotopeProduct;
 use Isotope\Model\Product;
 use Isotope\Model\TaxClass;
@@ -789,7 +790,7 @@ class Standard extends Product implements IsotopeProduct
 
 
     /**
-     * Generate an arttibute and return it as HTML string
+     * Generate an attribute and return it as HTML string
      * @param string
      * @param mixed
      * @return string|\Isotope\Gallery\Default
@@ -858,94 +859,16 @@ class Standard extends Product implements IsotopeProduct
             $strBuffer = $IsotopeFrontend->generateDownloadAttribute($attribute, $arrData, $varValue);
         }
 
-        // Generate a HTML table for associative arrays
-        elseif (is_array($varValue) && !array_is_assoc($varValue) && is_array($varValue[0]))
-        {
-            $arrFormat = $GLOBALS['TL_DCA']['tl_iso_products']['fields'][$attribute]['tableformat'];
+        // Generate using the attribute object
+        else {
 
-            $last = count($varValue[0])-1;
+            $objAttribute = $GLOBALS['TL_DCA']['tl_iso_products']['attributes'][$attribute];
 
-            $strBuffer = '
-<table class="'.$attribute.'">
-  <thead>
-    <tr>';
-
-            foreach (array_keys($varValue[0]) as $i => $name)
-            {
-                if ($arrFormat[$name]['doNotShow'])
-                {
-                    continue;
-                }
-
-                $label = $arrFormat[$name]['label'] ? $arrFormat[$name]['label'] : $name;
-
-                $strBuffer .= '
-      <th class="head_'.$i.($i==0 ? ' head_first' : '').($i==$last ? ' head_last' : ''). (!is_numeric($name) ? ' '.standardize($name) : '').'">' . $label . '</th>';
+            if (!($objAttribute instanceof IsotopeAttribute)) {
+                return '';
             }
 
-            $strBuffer .= '
-    </tr>
-  </thead>
-  <tbody>';
-
-            foreach ($varValue as $r => $row)
-            {
-                $strBuffer .= '
-    <tr class="row_'.$r.($r==0 ? ' row_first' : '').($r==$last ? ' row_last' : '').' '.($r%2 ? 'odd' : 'even').'">';
-
-                $c = -1;
-
-                foreach ($row as $name => $value)
-                {
-                    if ($arrFormat[$name]['doNotShow'])
-                    {
-                        continue;
-                    }
-
-                    if ($arrFormat[$name]['rgxp'] == 'price')
-                    {
-                        $value = Isotope::formatPriceWithCurrency(Isotope::calculatePrice($value, $this, 'price_tiers', $this->arrData['tax_class']));
-                    }
-                    else
-                    {
-                        $value = $arrFormat[$name]['format'] ? sprintf($arrFormat[$name]['format'], $value) : $value;
-                    }
-
-                    $strBuffer .= '
-      <td class="col_'.++$c.($c==0 ? ' col_first' : '').($c==$i ? ' col_last' : '').' '.standardize($name).'">' . $value . '</td>';
-                }
-
-                $strBuffer .= '
-    </tr>';
-            }
-
-            $strBuffer .= '
-  </tbody>
-</table>';
-        }
-
-        // Generate ul/li listing for simpley arrays
-        elseif (is_array($varValue))
-        {
-            $strBuffer = '
-<ul>';
-
-            $current = 0;
-            $last = count($varValue)-1;
-            foreach( $varValue as $value )
-            {
-                $class = trim(($current == 0 ? 'first' : '') . ($current == $last ? ' last' : ''));
-
-                $strBuffer .= '
-  <li'.($class != '' ? ' class="'.$class.'"' : '').'>' . $value . '</li>';
-            }
-
-            $strBuffer .= '
-</ul>';
-        }
-        else
-        {
-            $strBuffer = Isotope::formatValue('tl_iso_products', $attribute, $varValue);
+            $strBuffer = $objAttribute->generate($attribute, $varValue, $this);
         }
 
         // !HOOK: allow for custom attribute types to modify their output
