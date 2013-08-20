@@ -22,7 +22,7 @@ use Isotope\Model\Attribute;
  * @copyright  Isotope eCommerce Workgroup 2009-2012
  * @author     Andreas Schempp <andreas.schempp@terminal42.ch>
  */
-class Text extends Attribute implements IsotopeAttribute
+class TextField extends Attribute implements IsotopeAttribute
 {
 
 	public function addToDCA(&$arrData)

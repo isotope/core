@@ -241,7 +241,7 @@ $GLOBALS['BE_FFL']['productGroupSelector']   = 'Isotope\Widget\ProductGroupSelec
 /**
  * Attributes
  */
-\Isotope\Model\Attribute::registerModelType('text', 'Isotope\Model\Attribute\Text');
+\Isotope\Model\Attribute::registerModelType('text', 'Isotope\Model\Attribute\TextField');
 \Isotope\Model\Attribute::registerModelType('textarea', 'Isotope\Model\Attribute\TextArea');
 \Isotope\Model\Attribute::registerModelType('select', 'Isotope\Model\Attribute\SelectMenu');
 \Isotope\Model\Attribute::registerModelType('radio', 'Isotope\Model\Attribute\RadioButton');
