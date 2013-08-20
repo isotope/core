@@ -846,13 +846,6 @@ class Standard extends Product implements IsotopeProduct
             }
         }
 
-        // Generate download attributes
-        elseif ($arrData['inputType'] == 'downloads')
-        {
-            $IsotopeFrontend = \System::importStatic('IsotopeFrontend');
-            $strBuffer = $IsotopeFrontend->generateDownloadAttribute($attribute, $arrData, $varValue);
-        }
-
         // Generate using the attribute object
         else {
 
