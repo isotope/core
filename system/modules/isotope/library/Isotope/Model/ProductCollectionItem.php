@@ -89,7 +89,7 @@ class ProductCollectionItem extends \Model
                 }
 
             } catch (\Exception $e) {
-                \System::log("Error creating product object: " . $e->getMessage());
+                \System::log("Error creating product object: " . $e->getMessage(), __METHOD__, TL_ERROR);
             }
         }
 
