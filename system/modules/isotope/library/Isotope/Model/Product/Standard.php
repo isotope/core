@@ -714,6 +714,32 @@ class Standard extends Product implements IsotopeProduct
             return $arrGalleries[$strAttribute];
         };
 
+        // Add price to template
+        $strPrice = '';
+        $fltPrice = $this->price;
+        $fltOriginalPrice = $this->original_price;
+
+        if ($this->arrCache['from_price'] !== null)
+        {
+            $fltPrice = Isotope::calculatePrice($this->arrCache['from_price'], $this, 'price', $this->arrData['tax_class']);
+            $fltOriginalPrice = Isotope::calculatePrice($this->arrCache['from_price'], $this, 'original_price', $this->arrData['tax_class']);
+
+            $strPrice = sprintf($GLOBALS['TL_LANG']['MSC']['priceRangeLabel'], Isotope::formatPriceWithCurrency($fltPrice));
+            $strOriginalPrice = sprintf($GLOBALS['TL_LANG']['MSC']['priceRangeLabel'], Isotope::formatPriceWithCurrency($fltOriginalPrice));
+        }
+        else
+        {
+            $strPrice = Isotope::formatPriceWithCurrency($fltPrice);
+            $strOriginalPrice = Isotope::formatPriceWithCurrency($fltOriginalPrice);
+        }
+
+        if ($fltPrice != $fltOriginalPrice)
+        {
+            $strPrice = '<div class="original_price"><strike>' . $strOriginalPrice . '</strike></div><div class="price">' . $strPrice . '</div>';
+        }
+
+        $objTemplate->price = $strPrice;
+
         $arrProductOptions = array();
         $arrAjaxOptions = array();
         $arrToGenerate = array();
@@ -823,32 +849,6 @@ class Standard extends Product implements IsotopeProduct
     protected function generateAttribute($attribute, $varValue)
     {
         $strBuffer = '';
-
-        // Calculate the prices
-        if ($attribute == 'price')
-        {
-            $fltPrice = $varValue;
-            $fltOriginalPrice = $this->original_price;
-
-            if ($this->arrCache['from_price'] !== null)
-            {
-                $fltPrice = Isotope::calculatePrice($this->arrCache['from_price'], $this, 'price', $this->arrData['tax_class']);
-                $fltOriginalPrice = Isotope::calculatePrice($this->arrCache['from_price'], $this, 'original_price', $this->arrData['tax_class']);
-
-                $strBuffer = sprintf($GLOBALS['TL_LANG']['MSC']['priceRangeLabel'], Isotope::formatPriceWithCurrency($fltPrice));
-                $strOriginalPrice = sprintf($GLOBALS['TL_LANG']['MSC']['priceRangeLabel'], Isotope::formatPriceWithCurrency($fltOriginalPrice));
-            }
-            else
-            {
-                $strBuffer = Isotope::formatPriceWithCurrency($fltPrice);
-                $strOriginalPrice = Isotope::formatPriceWithCurrency($fltOriginalPrice);
-            }
-
-            if ($fltPrice != $fltOriginalPrice)
-            {
-                $strBuffer = '<div class="original_price"><strike>' . $strOriginalPrice . '</strike></div><div class="price">' . $strBuffer . '</div>';
-            }
-        }
 
         // Generate using the attribute object
         else {
