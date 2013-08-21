@@ -40,14 +40,6 @@ class MediaManager extends Attribute implements IsotopeAttribute
 
 	public function generate(IsotopeProduct $objProduct)
 	{
-        //! @todo implement gallery configurations
-        $objGallery = Gallery::findByPk($objProduct->getRelated('type')->list_gallery);
-
-        $objGallery->setName($objProduct->formSubmit . '_' . $this->field_name);
-        $objGallery->setFiles($objProduct->{$this->field_name}); //Isotope::mergeMediaData($objProduct->{$this->field_name}, deserialize($objProduct->{$strKey.'_fallback'})));
-        $objGallery->product_id = ($objProduct->pid ? $objProduct->pid : $objProduct->id);
-        $objGallery->href_reader = $objProduct->href_reader;
-
-        return $objGallery;
+        throw new \BadMethodCallException('MediaManager attribute cannot be generated');
 	}
 }
