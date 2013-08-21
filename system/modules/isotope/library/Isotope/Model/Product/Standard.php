@@ -742,7 +742,6 @@ class Standard extends Product implements IsotopeProduct
 
         $arrProductOptions = array();
         $arrAjaxOptions = array();
-        $arrToGenerate = array();
 
         foreach ($this->getProductAndVariantAttributes() as $attribute)
         {
@@ -766,14 +765,7 @@ class Standard extends Product implements IsotopeProduct
                     }
                 }
 
-            } else {
-                $arrToGenerate[] = $attribute;
             }
-        }
-
-        foreach($arrToGenerate as $attribute)
-        {
-            $objTemplate->$attribute = $this->generateAttribute($attribute, $this->$attribute);
         }
 
         $arrButtons = array();
@@ -837,42 +829,6 @@ class Standard extends Product implements IsotopeProduct
         }
 
         return $objTemplate->parse();
-    }
-
-
-    /**
-     * Generate an attribute and return it as HTML string
-     * @param string
-     * @param mixed
-     * @return string|\Isotope\Gallery\Default
-     */
-    protected function generateAttribute($attribute, $varValue)
-    {
-        $strBuffer = '';
-
-        // Generate using the attribute object
-        else {
-
-            $objAttribute = $GLOBALS['TL_DCA']['tl_iso_products']['attributes'][$attribute];
-
-            if (!($objAttribute instanceof IsotopeAttribute)) {
-                return '';
-            }
-
-            $strBuffer = $objAttribute->generate($this);
-        }
-
-        // !HOOK: allow for custom attribute types to modify their output
-        if (isset($GLOBALS['ISO_HOOKS']['generateAttribute']) && is_array($GLOBALS['ISO_HOOKS']['generateAttribute']))
-        {
-            foreach ($GLOBALS['ISO_HOOKS']['generateAttribute'] as $callback)
-            {
-                $objCallback = \System::importStatic($callback[0]);
-                $strBuffer = $objCallback->$callback[1]($attribute, $varValue, $strBuffer, $this);
-            }
-        }
-
-        return $strBuffer;
     }
 
 
