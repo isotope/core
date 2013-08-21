@@ -53,7 +53,7 @@ class Downloads extends Attribute implements IsotopeAttribute
         // Send the file to the browser
         if ($file != '' && (in_array($file, $arrFiles) || in_array(dirname($file), $arrFiles)) && !preg_match('/^meta(_[a-z]{2})?\.txt$/', basename($file)))
         {
-            $this->sendFileToBrowser($file);
+            \Controller::sendFileToBrowser($file);
         }
 
         $files = array();

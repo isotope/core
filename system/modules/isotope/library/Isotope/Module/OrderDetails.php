@@ -174,7 +174,7 @@ class OrderDetails extends Module
                 $this->Database->prepare("UPDATE tl_iso_product_collection_download SET downloads_remaining=? WHERE id=?")->execute(($objDownload->downloads_remaining-1), $objDownload->id);
             }
 
-            $this->sendFileToBrowser($strFile);
+            \Controller::sendFileToBrowser($strFile);
         }
 
         return $arrDownload;
