@@ -4,17 +4,17 @@
 <input type="hidden" name="REQUEST_TOKEN" value="{{request_token}}">
 <input type="hidden" name="AJAX_PRODUCT" value="<?php echo $this->product_id; ?>">
 <input type="hidden" name="AJAX_MODULE" value="<?php echo $this->module_id; ?>">
+<h3><a href="<?php echo $this->href_reader; ?>" title="<?php echo $this->label_detail; ?>"><?php echo $this->generateAttribute('name'); ?></a></h3>
 
-<h3><a href="<?php echo $this->href_reader; ?>" title="<?php echo $this->label_detail; ?>"><?php echo $this->name; ?></a></h3>
 
 <?php echo $this->images->generateMainImage(); ?>
 
 <?php if ($this->sku): ?>
-<div class="sku"><?php echo $this->sku; ?></div><?php endif; if ($this->teaser): ?>
-<div class="teaser"><?php echo $this->teaser; ?></div><?php endif; ?>
+<div class="sku"><?php echo $this->generateAttribute('sku'); ?></div><?php endif; if ($this->teaser): ?>
+<div class="teaser"><?php echo $this->generateAttribute('teaser'); ?></div><?php endif; ?>
 
 <div class="price"><?php echo $this->price; ?></div><?php if($this->baseprice): ?>
-<div class="baseprice"><?php echo $this->baseprice; ?></div><?php endif; ?>
+<div class="baseprice"><?php echo $this->generateAttribute('baseprice'); ?></div><?php endif; ?>
 <div class="details"><a href="<?php echo $this->href_reader; ?>" title="<?php echo $this->label_detail; ?>"><?php echo $this->label_detail; ?></a></div>
 
 <?php if($this->buttons): ?>

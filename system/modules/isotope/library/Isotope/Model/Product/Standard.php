@@ -673,10 +673,23 @@ class Standard extends Product implements IsotopeProduct
         $this->formSubmit = (($arrConfig['module'] instanceof \ContentElement) ? 'cte' : 'fmd') . $arrConfig['module']->id . '_product_' . ($this->pid ? $this->pid : $this->id);
         $this->validateVariant();
 
+        $objProduct = $this;
+
         $objTemplate = new \Isotope\Template($arrConfig['template']);
         $objTemplate->setData($this->arrData);
         $objTemplate->product = $this;
         $objTemplate->config = $arrConfig;
+
+        $objTemplate->generateAttribute = function($strAttribute) use ($objProduct) {
+
+            $objAttribute = $GLOBALS['TL_DCA']['tl_iso_products']['attributes'][$strAttribute];
+
+            if (!($objAttribute instanceof IsotopeAttribute)) {
+                throw new \InvalidArgumentException($strAttribute . ' is not a valid attribute');
+            }
+
+            return $objAttribute->generate($objProduct);
+        };
         $arrProductOptions = array();
         $arrAjaxOptions = array();
         $arrToGenerate = array();
