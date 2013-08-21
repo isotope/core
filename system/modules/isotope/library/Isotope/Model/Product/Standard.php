@@ -840,15 +840,10 @@ class Standard extends Product implements IsotopeProduct
      */
     protected function generateProductOptionWidget($strField)
     {
+        $objAttribute = $GLOBALS['TL_DCA']['tl_iso_products']['attributes'][$strField];
         $arrData = $GLOBALS['TL_DCA']['tl_iso_products']['fields'][$strField];
 
-        $strClass = strlen($GLOBALS['ISO_ATTR'][$arrData['attributes']['type']]['class']) ? $GLOBALS['ISO_ATTR'][$arrData['attributes']['type']]['class'] : $GLOBALS['TL_FFL'][$arrData['inputType']];
-
-        // Continue if the class is not defined
-        if (!class_exists($strClass))
-        {
-            return '';
-        }
+        $strClass = $objAttribute->getFrontendWidget();
 
         $arrData['eval']['mandatory'] = ($arrData['eval']['mandatory'] && !\Environment::get('isAjaxRequest')) ? true : false;
         $arrData['eval']['required'] = $arrData['eval']['mandatory'];
@@ -856,7 +851,7 @@ class Standard extends Product implements IsotopeProduct
         // Make sure variant options are initialized
         $this->getVariantOptions();
 
-        if ($arrData['attributes']['variant_option'] && is_array($arrData['options']))
+        if ($objAttribute->isVariantOption() && is_array($arrData['options']))
         {
             if ((count((array) $this->arrVariantOptions['attributes'][$strField]) == 1) && !$this->getRelated('type')->force_variant_options)
             {
