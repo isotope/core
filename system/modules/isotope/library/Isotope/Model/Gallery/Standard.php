@@ -87,9 +87,11 @@ class Standard extends Gallery implements IsotopeGallery
         // No image available, add placeholder from store configuration
         if (empty($this->arrFiles))
         {
-            if ($this->placeholder != '' && is_file(TL_ROOT . '/' . $this->placeholder))
+            $objPlaceholder = \FilesModel::findByPk($this->placeholder);
+
+            if (null !== $objPlaceholder && is_file(TL_ROOT . '/' . $objPlaceholder->path))
             {
-                $this->addImage(array('src'=>$this->placeholder), false);
+                $this->addImage(array('src'=>$objPlaceholder->path), false);
             }
         }
     }
