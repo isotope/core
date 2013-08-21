@@ -7,7 +7,7 @@
 <h3><a href="<?php echo $this->href_reader; ?>" title="<?php echo $this->label_detail; ?>"><?php echo $this->generateAttribute('name'); ?></a></h3>
 
 
-<?php echo $this->images->generateMainImage(); ?>
+<?php echo $this->getGallery('images')->generateMainImage(); ?>
 
 <?php if ($this->sku): ?>
 <div class="sku"><?php echo $this->generateAttribute('sku'); ?></div><?php endif; if ($this->teaser): ?>

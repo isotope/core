@@ -7,14 +7,14 @@
 
 <h2><?php echo $this->generateAttribute('name'); ?></h2>
 
-<?php echo $this->images->generateMainImage(); ?>
+<?php echo $this->getGallery('images')->generateMainImage(); ?>
 <?php if($this->hasOptions): ?>
 <div class="options">
 <?php foreach( $this->options as $arrOption ): echo $arrOption['html']; endforeach; ?>
 </div>
 <?php endif; ?>
 
-<?php echo $this->images->generateGallery(); ?>
+<?php echo $this->getGallery('images')->generateGallery(); ?>
 
 <?php if ($this->sku): ?>
 <div class="sku"><?php echo $this->generateAttribute('sku'); ?></div><?php endif; if ($this->description): ?>

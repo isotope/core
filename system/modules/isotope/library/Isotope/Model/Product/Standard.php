@@ -15,6 +15,7 @@ namespace Isotope\Model\Product;
 use Isotope\Isotope;
 use Isotope\Interfaces\IsotopeAttribute;
 use Isotope\Interfaces\IsotopeProduct;
+use Isotope\Model\Gallery;
 use Isotope\Model\Product;
 use Isotope\Model\TaxClass;
 
@@ -674,6 +675,7 @@ class Standard extends Product implements IsotopeProduct
         $this->validateVariant();
 
         $objProduct = $this;
+        $arrGalleries = array();
 
         $objTemplate = new \Isotope\Template($arrConfig['template']);
         $objTemplate->setData($this->arrData);
@@ -690,6 +692,28 @@ class Standard extends Product implements IsotopeProduct
 
             return $objAttribute->generate($objProduct);
         };
+
+        $objTemplate->getGallery = function($strAttribute) use ($objProduct, $arrConfig, &$arrGalleries) {
+
+            if (!isset($arrGalleries[$strAttribute])) {
+
+                $objGallery = Gallery::findByPk($arrConfig['gallery']);
+
+                if (null === $objGallery) {
+                    $objGallery = new Isotope\Model\Gallery\Standard();
+                }
+
+                $objGallery->setName($objProduct->formSubmit . '_' . $strAttribute);
+                $objGallery->setFiles($objProduct->$strAttribute); //Isotope::mergeMediaData($objProduct->{$this->field_name}, deserialize($objProduct->{$strKey.'_fallback'})));
+                $objGallery->product_id = ($objProduct->pid ? $objProduct->pid : $objProduct->id);
+                $objGallery->href_reader = $objProduct->href_reader;
+
+                return $objGallery;
+            }
+
+            return $arrGalleries[$strAttribute];
+        };
+
         $arrProductOptions = array();
         $arrAjaxOptions = array();
         $arrToGenerate = array();
