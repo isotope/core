@@ -13,6 +13,7 @@
 namespace Isotope\Model\Attribute;
 
 use Isotope\Interfaces\IsotopeAttribute;
+use Isotope\Interfaces\IsotopeProduct;
 use Isotope\Model\Attribute;
 
 
@@ -34,13 +35,13 @@ class Downloads extends Attribute implements IsotopeAttribute
 
 	/**
      * Generate download attributes
-     * @param string
-     * @param array
      * @param IsotopeProduct
      * @return string
      */
-    public function generate($attribute, $arrFiles, $objProduct)
+    public function generate(IsotopeProduct $objProduct)
     {
+        $arrFiles = $objProduct->{$this->field_name};
+
         // Return if there are no files
         if (!is_array($arrFiles) || empty($arrFiles))
         {
@@ -175,7 +176,7 @@ class Downloads extends Attribute implements IsotopeAttribute
         }
 
         $objTemplate = new \Isotope\Template('ce_downloads');
-        $objTemplate->class = $attribute;
+        $objTemplate->class = $this->field_name;
         $objTemplate->files = array_values($files);
 
         return $objTemplate->parse();

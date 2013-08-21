@@ -835,7 +835,7 @@ class Standard extends Product implements IsotopeProduct
                 return '';
             }
 
-            $strBuffer = $objAttribute->generate($attribute, $varValue, $this);
+            $strBuffer = $objAttribute->generate($this);
         }
 
         // !HOOK: allow for custom attribute types to modify their output

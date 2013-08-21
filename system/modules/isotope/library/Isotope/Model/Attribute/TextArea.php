@@ -39,12 +39,12 @@ class TextArea extends Attribute implements IsotopeAttribute
         }
 	}
 
-	public function generate($strName, $varValue, IsotopeProduct $objProduct)
+	public function generate(IsotopeProduct $objProduct)
 	{
 	    if ($this->rte == '') {
-        	return nl2br($varValue);
+        	return nl2br($objProduct->{$this->field_name});
         } else {
-            return parent::generate($strName, $varValue, $objProduct);
+            return parent::generate($objProduct);
         }
 	}
 }

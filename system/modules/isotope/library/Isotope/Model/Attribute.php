@@ -202,19 +202,20 @@ abstract class Attribute extends TypeAgent
 	}
 
 
-	public function generate($strName, $varValue, IsotopeProduct $objProduct)
+	public function generate(IsotopeProduct $objProduct)
 	{
+	    $varValue = $objProduct->{$this->field_name};
 	    $strBuffer = '';
 
 	    // Generate a HTML table for associative arrays
         if (is_array($varValue) && !array_is_assoc($varValue) && is_array($varValue[0]))
         {
-            $arrFormat = $GLOBALS['TL_DCA']['tl_iso_products']['fields'][$strName]['tableformat'];
+            $arrFormat = $GLOBALS['TL_DCA']['tl_iso_products']['fields'][$this->field_name]['tableformat'];
 
             $last = count($varValue[0])-1;
 
             $strBuffer = '
-<table class="'.$strName.'">
+<table class="'.$this->field_name.'">
   <thead>
     <tr>';
 
@@ -293,7 +294,7 @@ abstract class Attribute extends TypeAgent
         }
         else
         {
-            $strBuffer = Isotope::formatValue('tl_iso_products', $strName, $varValue);
+            $strBuffer = Isotope::formatValue('tl_iso_products', $this->field_name, $varValue);
         }
 
         return $strBuffer;
