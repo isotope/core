@@ -24,6 +24,16 @@ namespace Isotope;
 class Template extends \FrontendTemplate
 {
 
+    /**
+     * Add support for callable variables (usually closures)
+     * @param   string
+     * @param   array
+     * @return  mixed
+     */
+    public function __call($name, $arguments)
+    {
+        return call_user_func_array($this->$name, $arguments);
+    }
 
     /**
      * Check the Isotope config directory for a particular template
