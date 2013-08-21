@@ -813,20 +813,6 @@ class Standard extends Product implements IsotopeProduct
             }
         }
 
-        // Calculate base price
-        elseif ($attribute == 'baseprice')
-        {
-            if (is_array($varValue) && $varValue['unit'] > 0 && $varValue['value'] != '')
-            {
-                $objBasePrice = $this->Database->execute("SELECT * FROM tl_iso_baseprice WHERE id=" . (int) $varValue['unit']);
-
-                if ($objBasePrice->numRows)
-                {
-                    $strBuffer = sprintf(Isotope::translate($objBasePrice->label), Isotope::formatPriceWithCurrency($this->price / $varValue['value'] * $objBasePrice->amount), $varValue['value']);
-                }
-            }
-        }
-
         // Generate using the attribute object
         else {
 

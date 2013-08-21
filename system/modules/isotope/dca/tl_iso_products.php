@@ -421,7 +421,7 @@ $GLOBALS['TL_DCA']['tl_iso_products'] = array
             'inputType'             => 'timePeriod',
             'foreignKey'            => 'tl_iso_baseprice.name',
             'eval'                  => array('includeBlankOption'=>true, 'tl_class'=>'w50'),
-            'attributes'            => array('legend'=>'pricing_legend'),
+            'attributes'            => array('type'=>'baseprice', 'legend'=>'pricing_legend'),
             'sql'                   => "varchar(255) NOT NULL default ''",
         ),
         'shipping_weight' => array
