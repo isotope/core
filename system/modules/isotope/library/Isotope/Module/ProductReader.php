@@ -84,11 +84,19 @@ class ProductReader extends Module
             return;
         }
 
+        $arrConfig = array(
+            'module'        => $this,
+            'template'      => ($this->iso_reader_layout ?: $objProduct->getRelated('type')->reader_template),
+            'gallery'       => $objProduct->getRelated('type')->reader_gallery,
+            'buttons'       => deserialize($this->iso_buttons, true),
+            'useQuantity'   => $this->iso_use_quantity,
+        );
+
         if (\Environment::get('isAjaxRequest') && \Input::post('AJAX_MODULE') == $this->id && \Input::post('AJAX_PRODUCT') == $objProduct->id) {
-            \Isotope\Frontend::ajaxResponse($objProduct->generate(($this->iso_reader_layout ?: $objProduct->reader_template), $this));
+            \Isotope\Frontend::ajaxResponse($objProduct->generate($arrConfig));
         }
 
-        $this->Template->product = $objProduct->generate(($this->iso_reader_layout ?: $objProduct->reader_template), $this);
+        $this->Template->product = $objProduct->generate($arrConfig);
         $this->Template->product_id = ($objProduct->cssID[0] != '') ? ' id="' . $objProduct->cssID[0] . '"' : '';
         $this->Template->product_class = trim('product ' . ($objProduct->isNew() ? 'new ' : '') . $objProduct->cssID[1]);
         $this->Template->referer = 'javascript:history.go(-1)';

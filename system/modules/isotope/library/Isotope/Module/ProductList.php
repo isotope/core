@@ -268,8 +268,16 @@ class ProductList extends Module
 
         foreach ($arrProducts as $objProduct)
         {
+            $arrConfig = array(
+                'module'        => $this,
+                'template'      => ($this->iso_list_layout ?: $objProduct->getRelated('type')->list_template),
+                'gallery'       => $objProduct->getRelated('type')->list_gallery,
+                'buttons'       => deserialize($this->iso_buttons, true),
+                'useQuantity'   => $this->iso_use_quantity,
+            );
+
             if (\Environment::get('isAjaxRequest') && \Input::get('AJAX_MODULE') == $this->id && \Input::get('AJAX_PRODUCT') == $objProduct->id) {
-                \Isotope\Frontend::ajaxResponse($objProduct->generate(($this->iso_list_layout ?: $objProduct->list_template), $this));
+                \Isotope\Frontend::ajaxResponse($objProduct->generate($arrConfig));
             }
 
             $objProduct->setOptions(array_merge($arrDefaultOptions, $objProduct->getOptions()));
@@ -282,7 +290,7 @@ class ProductList extends Module
             $arrBuffer[] = array(
                 'cssID'     => ($objProduct->cssID[0] != '') ? ' id="' . $objProduct->cssID[0] . '"' : '',
                 'class'     => trim('product ' . ($objProduct->isNew() ? 'new ' : '') . $objProduct->cssID[1]),
-                'html'      => $objProduct->generate(($this->iso_list_layout ?: $objProduct->list_template), $this),
+                'html'      => $objProduct->generate($arrConfig),
                 'product'   => $objProduct,
             );
         }

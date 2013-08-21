@@ -665,16 +665,18 @@ class Standard extends Product implements IsotopeProduct
 
     /**
      * Generate a product template
-     * @param string
-     * @param object
+     * @param array
      * @return string
      */
-    public function generate($strTemplate, &$objModule)
+    public function generate(array $arrConfig)
     {
-        $this->formSubmit = (($objModule instanceof \ContentElement) ? 'cte' : 'fmd') . $objModule->id . '_product_' . ($this->pid ? $this->pid : $this->id);
+        $this->formSubmit = (($arrConfig['module'] instanceof \ContentElement) ? 'cte' : 'fmd') . $arrConfig['module']->id . '_product_' . ($this->pid ? $this->pid : $this->id);
         $this->validateVariant();
 
-        $objTemplate = new \Isotope\Template($strTemplate);
+        $objTemplate = new \Isotope\Template($arrConfig['template']);
+        $objTemplate->setData($this->arrData);
+        $objTemplate->product = $this;
+        $objTemplate->config = $arrConfig;
         $arrProductOptions = array();
         $arrAjaxOptions = array();
         $arrToGenerate = array();
@@ -722,7 +724,7 @@ class Standard extends Product implements IsotopeProduct
                 $arrButtons = $objCallback->$callback[1]($arrButtons);
             }
 
-            $arrButtons = array_intersect_key($arrButtons, array_flip(deserialize($objModule->iso_buttons, true)));
+            $arrButtons = array_intersect_key($arrButtons, array_flip($arrConfig['buttons']));
         }
 
         if (\Input::post('FORM_SUBMIT') == $this->formSubmit && !$this->doNotSubmit)
@@ -734,7 +736,7 @@ class Standard extends Product implements IsotopeProduct
                     if (isset($data['callback']))
                     {
                         $objCallback = \System::importStatic($data['callback'][0]);
-                        $objCallback->{$data['callback'][1]}($this, $objModule);
+                        $objCallback->{$data['callback'][1]}($this, $arrConfig);
                     }
                     break;
                 }
@@ -743,7 +745,7 @@ class Standard extends Product implements IsotopeProduct
 
         $objTemplate->buttons = $arrButtons;
         $objTemplate->quantityLabel = $GLOBALS['TL_LANG']['MSC']['quantity'];
-        $objTemplate->useQuantity = $objModule->iso_use_quantity;
+        $objTemplate->useQuantity = $arrConfig['useQuantity'];
         $objTemplate->quantity_requested = $this->quantity_requested;
         $objTemplate->minimum_quantity = $this->minimum_quantity;
         $objTemplate->raw = array_merge($this->arrData, $this->arrCache);
@@ -756,9 +758,8 @@ class Standard extends Product implements IsotopeProduct
         $objTemplate->formId = $this->formSubmit;
         $objTemplate->action = ampersand(\Environment::get('request'), true);
         $objTemplate->formSubmit = $this->formSubmit;
-        $objTemplate->product = $this;
         $objTemplate->product_id = ($this->pid ? $this->pid : $this->id);
-        $objTemplate->module_id = $objModule->id;
+        $objTemplate->module_id = $arrConfig['module']->id;
 
         $GLOBALS['AJAX_PRODUCTS'][] = array('formId'=>$this->formSubmit, 'attributes'=>$arrAjaxOptions);
 

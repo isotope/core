@@ -39,9 +39,8 @@ interface IsotopeProduct
 
     /**
      * Generate a product template
-     * @param string
-     * @param object
-     * @return string
+     * @param   array
+     * @return  string
      */
-    public function generate($strTemplate, &$objModule);
+    public function generate(array $arrConfig);
 }

@@ -71,10 +71,11 @@ class Frontend extends \Frontend
     /**
      * Callback for add_to_cart button
      * @param object
-     * @param object
+     * @param array
      */
-    public function addToCart($objProduct, $objModule=null)
+    public function addToCart($objProduct, $arrConfig=array())
     {
+        $objModule = $arrConfig['module'];
         $intQuantity = ($objModule->iso_use_quantity && intval(\Input::post('quantity_requested')) > 0) ? intval(\Input::post('quantity_requested')) : 1;
 
         if (Isotope::getCart()->addProduct($objProduct, $intQuantity) !== false)
