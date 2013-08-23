@@ -8,7 +8,7 @@
  * License (LGPL) as published by the Free Software Foundation; either
  * version 3 of the License, or (at your option) any later version.
  * 
- * This library is distributed in the hope that it will be //useful,
+ * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
  * Lesser General Public License for more details.
@@ -26,8 +26,13 @@
  * @copyright Copyright (c) 2010 United Prototype GmbH (http://unitedprototype.com)
  */
 
+namespace UnitedPrototype\GoogleAnalytics\Internals\Request;
 
-class GoogleAnalyticsEventRequest extends GoogleAnalyticsRequest {
+use UnitedPrototype\GoogleAnalytics\Event;
+
+use UnitedPrototype\GoogleAnalytics\Internals\X10;
+
+class EventRequest extends Request {
 	
 	/**
 	 * @var \UnitedPrototype\GoogleAnalytics\Event
@@ -38,30 +43,14 @@ class GoogleAnalyticsEventRequest extends GoogleAnalyticsRequest {
 	/**
 	 * @const int
 	 */
-	const X10_EVENT_PROJECT_ID      = 5;
-	/**
-	 * @const int
-	 */
-	const X10_EVENT_OBJECT_KEY_NUM  = 1;
-	/**
-	 * @const int
-	 */
-	const X10_EVENT_TYPE_KEY_NUM    = 2;
-	/**
-	 * @const int
-	 */
-	const X10_EVENT_LABEL_KEY_NUM   = 3;
-	/**
-	 * @const int
-	 */
-	const X10_EVENT_VALUE_VALUE_NUM = 1;
+	const X10_EVENT_PROJECT_ID = 5;
 	
 	
 	/**
 	 * @return string
 	 */
 	protected function getType() {
-		return GoogleAnalyticsRequest::TYPE_EVENT;
+		return Request::TYPE_EVENT;
 	}
 	
 	/**
@@ -72,24 +61,24 @@ class GoogleAnalyticsEventRequest extends GoogleAnalyticsRequest {
 	protected function buildParameters() {
 		$p = parent::buildParameters();
 		
-		$x10 = new GoogleAnalyticsX10();
+		$x10 = new X10();
 		
-		$x10->clearKey($this->X10_EVENT_PROJECT_ID);
-		$x10->clearValue($this->X10_EVENT_PROJECT_ID);
+		$x10->clearKey(self::X10_EVENT_PROJECT_ID);
+		$x10->clearValue(self::X10_EVENT_PROJECT_ID);
 		
 		// Object / Category
-		$x10->setKey($this->X10_EVENT_PROJECT_ID, $this->X10_EVENT_OBJECT_KEY_NUM, $this->event->getCategory());
+		$x10->setKey(self::X10_EVENT_PROJECT_ID, X10::OBJECT_KEY_NUM, $this->event->getCategory());
 		
 		// Event Type / Action
-		$x10->setKey($this->X10_EVENT_PROJECT_ID, $this->X10_EVENT_TYPE_KEY_NUM, $this->event->getAction());
+		$x10->setKey(self::X10_EVENT_PROJECT_ID, X10::TYPE_KEY_NUM, $this->event->getAction());
 		
 		if($this->event->getLabel() !== null) {
 			// Event Description / Label
-			$x10->setKey($this->X10_EVENT_PROJECT_ID, $this->X10_EVENT_LABEL_KEY_NUM, $this->event->getLabel());
+			$x10->setKey(self::X10_EVENT_PROJECT_ID, X10::LABEL_KEY_NUM, $this->event->getLabel());
 		}
 		
 		if($this->event->getValue() !== null) {
-			$x10->setValue($this->X10_EVENT_PROJECT_ID, $this->X10_EVENT_VALUE_VALUE_NUM, $this->event->getValue());
+			$x10->setValue(self::X10_EVENT_PROJECT_ID, X10::VALUE_VALUE_NUM, $this->event->getValue());
 		}
 		
 		$p->utme .= $x10->renderUrlString();
@@ -109,9 +98,9 @@ class GoogleAnalyticsEventRequest extends GoogleAnalyticsRequest {
 	}
 	
 	/**
-	 * @param \UnitedPrototype\GoogleAnalytics\GoogleAnalyticsEvent $event
+	 * @param \UnitedPrototype\GoogleAnalytics\Event $event
 	 */
-	public function setEvent(GoogleAnalyticsEvent $event) {
+	public function setEvent(Event $event) {
 		$this->event = $event;
 	}
 	

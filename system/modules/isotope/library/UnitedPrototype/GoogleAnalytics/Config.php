@@ -8,7 +8,7 @@
  * License (LGPL) as published by the Free Software Foundation; either
  * version 3 of the License, or (at your option) any later version.
  * 
- * This library is distributed in the hope that it will be //useful,
+ * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
  * Lesser General Public License for more details.
@@ -26,13 +26,15 @@
  * @copyright Copyright (c) 2010 United Prototype GmbH (http://unitedprototype.com)
  */
 
+namespace UnitedPrototype\GoogleAnalytics;
+
 /**
  * Note: Doesn't necessarily have to be consistent across requests, as it doesn't
  * alter the actual tracking result.
  * 
  * @link http://code.google.com/p/gaforflash/source/browse/trunk/src/com/google/analytics/core/GIFRequest.as
  */
-class GoogleAnalyticsConfig {
+class Config {
 	
 	/**
 	 * How strict should errors get handled? After all, we do just do some
@@ -40,19 +42,19 @@ class GoogleAnalyticsConfig {
 	 * functionality in production.
 	 * RECOMMENDATION: Exceptions during deveopment, warnings in production.
 	 * 
-	 * Assign any value of the $this->ERROR_SEVERITY_* constants.
+	 * Assign any value of the self::ERROR_SEVERITY_* constants.
 	 * 
 	 * @see Tracker::_raiseError()
 	 * @var int
 	 */
-	protected $errorSeverity = ERROR_SEVERITY_EXCEPTIONS;
+	protected $errorSeverity = self::ERROR_SEVERITY_EXCEPTIONS;
 	
 	/**
 	 * Ignore all errors completely.
 	 */
 	const ERROR_SEVERITY_SILENCE    = 0;
 	/**
-	 * Trigger PHP errors with a E_//useR_WARNING error level.
+	 * Trigger PHP errors with a E_USER_WARNING error level.
 	 */
 	const ERROR_SEVERITY_WARNINGS   = 1;
 	/**
@@ -86,7 +88,7 @@ class GoogleAnalyticsConfig {
 	 * Logging callback, registered via setLoggingCallback(). Will be fired
 	 * whenever a request gets sent out and receives the full HTTP request
 	 * as the first and the full HTTP response (or null if the "fireAndForget"
-	 * option or simulation mode are //used) as the second argument.
+	 * option or simulation mode are used) as the second argument.
 	 * 
 	 * @var \Closure
 	 */
@@ -130,6 +132,17 @@ class GoogleAnalyticsConfig {
 	 */
 	protected $anonymizeIpAddresses = false;
 	
+	/**
+	 * Defines a new sample set size (0-100) for Site Speed data collection.
+	 * By default, a fixed 1% sampling of your site visitors make up the data pool from which
+	 * the Site Speed metrics are derived.
+	 * 
+	 * @see Page::$loadTime
+	 * @link http://code.google.com/apis/analytics/docs/gaJS/gaJSApiBasicConfiguration.html#_gat.GA_Tracker_._setSiteSpeedSampleRate
+	 * @var int
+	 */
+	protected $sitespeedSampleRate = 1;
+	
 	
 	/**
 	 * @param array $properties
@@ -142,20 +155,20 @@ class GoogleAnalyticsConfig {
 			if(method_exists($this, $setterMethod)) {
 				$this->$setterMethod($value);
 			} else {
-				return GoogleAnalyticsTracker::_raiseError('There is no setting "' . $property . '".', __METHOD__);
+				return Tracker::_raiseError('There is no setting "' . $property . '".', __METHOD__);
 			}
 		}
 	}
 	
 	/**
-	 * @return int See $this->ERROR_SEVERITY_* constants
+	 * @return int See self::ERROR_SEVERITY_* constants
 	 */
 	public function getErrorSeverity() {
 		return $this->errorSeverity;
 	}
 	
 	/**
-	 * @param int $errorSeverity See $this->ERROR_SEVERITY_* constants
+	 * @param int $errorSeverity See self::ERROR_SEVERITY_* constants
 	 */
 	public function setErrorSeverity($errorSeverity) {
 		$this->errorSeverity = $errorSeverity;
@@ -199,7 +212,7 @@ class GoogleAnalyticsConfig {
 	/**
 	 * @param \Closure $callback
 	 */
-	public function setLoggingCallback($callback) {
+	public function setLoggingCallback(\Closure $callback) {
 		$this->loggingCallback = $callback;
 	}
 	
@@ -257,6 +270,24 @@ class GoogleAnalyticsConfig {
 	 */
 	public function setAnonymizeIpAddresses($anonymizeIpAddresses) {
 		$this->anonymizeIpAddresses = $anonymizeIpAddresses;
+	}
+	
+	/**
+	 * @return int
+	 */
+	public function getSitespeedSampleRate() {
+		return $this->sitespeedSampleRate;
+	}
+	
+	/**
+	 * @param int $sitespeedSampleRate
+	 */
+	public function setSitespeedSampleRate($sitespeedSampleRate) {
+		if((int)$sitespeedSampleRate != (float)$sitespeedSampleRate || $sitespeedSampleRate < 0 || $sitespeedSampleRate > 100) {
+			return Tracker::_raiseError('For consistency with ga.js, sample rates must be specified as a number between 0 and 100.', __METHOD__);
+		}
+		
+		$this->sitespeedSampleRate = (int)$sitespeedSampleRate;
 	}
 
 }

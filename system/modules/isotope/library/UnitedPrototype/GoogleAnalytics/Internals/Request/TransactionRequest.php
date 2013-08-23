@@ -8,7 +8,7 @@
  * License (LGPL) as published by the Free Software Foundation; either
  * version 3 of the License, or (at your option) any later version.
  * 
- * This library is distributed in the hope that it will be //useful,
+ * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
  * Lesser General Public License for more details.
@@ -26,7 +26,13 @@
  * @copyright Copyright (c) 2010 United Prototype GmbH (http://unitedprototype.com)
  */
 
-class GoogleAnalyticsTransactionRequest extends GoogleAnalyticsRequest {
+namespace UnitedPrototype\GoogleAnalytics\Internals\Request;
+
+use UnitedPrototype\GoogleAnalytics\Transaction;
+
+use UnitedPrototype\GoogleAnalytics\Internals\ParameterHolder;
+
+class TransactionRequest extends Request {
 	
 	/**
 	 * @var \UnitedPrototype\GoogleAnalytics\Transaction
@@ -38,7 +44,7 @@ class GoogleAnalyticsTransactionRequest extends GoogleAnalyticsRequest {
 	 * @return string
 	 */
 	protected function getType() {
-		return GoogleAnalyticsRequest::TYPE_TRANSACTION;
+		return Request::TYPE_TRANSACTION;
 	}
 	
 	/**
@@ -65,10 +71,10 @@ class GoogleAnalyticsTransactionRequest extends GoogleAnalyticsRequest {
 	 * The GA Javascript client doesn't send any visitor information for
 	 * e-commerce requests, so we don't either.
 	 * 
-	 * @param \UnitedPrototype\GoogleAnalytics\Internals\GoogleAnalyticsParameterHolder $p
+	 * @param \UnitedPrototype\GoogleAnalytics\Internals\ParameterHolder $p
 	 * @return \UnitedPrototype\GoogleAnalytics\Internals\ParameterHolder
 	 */
-	protected function buildVisitorParameters(GoogleAnalyticsParameterHolder $p) {
+	protected function buildVisitorParameters(ParameterHolder $p) {
 		return $p;
 	}
 	
@@ -76,10 +82,10 @@ class GoogleAnalyticsTransactionRequest extends GoogleAnalyticsRequest {
 	 * The GA Javascript client doesn't send any custom variables for
 	 * e-commerce requests, so we don't either.
 	 * 
-	 * @param \UnitedPrototype\GoogleAnalytics\Internals\GoogleAnalyticsParameterHolder $p
+	 * @param \UnitedPrototype\GoogleAnalytics\Internals\ParameterHolder $p
 	 * @return \UnitedPrototype\GoogleAnalytics\Internals\ParameterHolder
 	 */
-	protected function buildCustomVariablesParameter(GoogleAnalyticsParameterHolder $p) {
+	protected function buildCustomVariablesParameter(ParameterHolder $p) {
 		return $p;
 	}
 	
@@ -93,7 +99,7 @@ class GoogleAnalyticsTransactionRequest extends GoogleAnalyticsRequest {
 	/**
 	 * @param \UnitedPrototype\GoogleAnalytics\Transaction $transaction
 	 */
-	public function setTransaction(GoogleAnalyticsTransaction $transaction) {
+	public function setTransaction(Transaction $transaction) {
 		$this->transaction = $transaction;
 	}
 	

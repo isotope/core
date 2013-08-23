@@ -8,7 +8,7 @@
  * License (LGPL) as published by the Free Software Foundation; either
  * version 3 of the License, or (at your option) any later version.
  * 
- * This library is distributed in the hope that it will be //useful,
+ * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
  * Lesser General Public License for more details.
@@ -26,10 +26,12 @@
  * @copyright Copyright (c) 2010 United Prototype GmbH (http://unitedprototype.com)
  */
 
+namespace UnitedPrototype\GoogleAnalytics;
+
 /**
  * @link http://code.google.com/p/gaforflash/source/browse/trunk/src/com/google/analytics/ecommerce/Item.as
  */
-class GoogleAnalyticsItem {
+class Item {
 	
 	/**
 	 * Order ID, e.g. "a2343898", will be mapped to "utmtid" parameter
@@ -85,7 +87,7 @@ class GoogleAnalyticsItem {
 	
 	public function validate() {
 		if($this->sku === null) {
-			GoogleAnalyticsTracker::_raiseError('Items need to have a sku/product code defined.', __METHOD__);
+			Tracker::_raiseError('Items need to have a sku/product code defined.', __METHOD__);
 		}
 	}
 	

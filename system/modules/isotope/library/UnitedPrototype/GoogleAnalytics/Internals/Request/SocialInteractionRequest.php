@@ -8,7 +8,7 @@
  * License (LGPL) as published by the Free Software Foundation; either
  * version 3 of the License, or (at your option) any later version.
  * 
- * This library is distributed in the hope that it will be //useful,
+ * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
  * Lesser General Public License for more details.
@@ -26,20 +26,23 @@
  * @copyright Copyright (c) 2010 United Prototype GmbH (http://unitedprototype.com)
  */
 
+namespace UnitedPrototype\GoogleAnalytics\Internals\Request;
 
-class GoogleAnalyticsPageviewRequest extends GoogleAnalyticsRequest {
+use UnitedPrototype\GoogleAnalytics\SocialInteraction;
+
+class SocialinteractionRequest extends PageviewRequest {
 	
 	/**
-	 * @var \UnitedPrototype\GoogleAnalytics\Page
+	 * @var \UnitedPrototype\GoogleAnalytics\SocialInteraction
 	 */
-	protected $page;
+	protected $socialInteraction;
 	
 	
 	/**
 	 * @return string
 	 */
 	protected function getType() {
-		return GoogleAnalyticsRequest::TYPE_PAGE;
+		return Request::TYPE_SOCIAL;
 	}
 	
 	/**
@@ -48,30 +51,30 @@ class GoogleAnalyticsPageviewRequest extends GoogleAnalyticsRequest {
 	protected function buildParameters() {
 		$p = parent::buildParameters();
 		
-		$p->utmp  = $this->page->getPath();
-		$p->utmdt = $this->page->getTitle();
-		if($this->page->getCharset() !== null) {
-			$p->utmcs = $this->page->getCharset();
-		}
-		if($this->page->getReferrer() !== null) {
-			$p->utmr = $this->page->getReferrer();
+		$p->utmsn  = $this->socialInteraction->getNetwork();
+		$p->utmsa  = $this->socialInteraction->getAction();
+		$p->utmsid = $this->socialInteraction->getTarget();
+		if($p->utmsid === null) {
+			// Default to page path like ga.js,
+			// see http://code.google.com/apis/analytics/docs/tracking/gaTrackingSocial.html#settingUp
+			$p->utmsid = $this->page->getPath();
 		}
 		
 		return $p;
 	}
 	
 	/**
-	 * @return \UnitedPrototype\GoogleAnalytics\Page
+	 * @return \UnitedPrototype\GoogleAnalytics\SocialInteraction
 	 */
-	public function getPage() {
-		return $this->page;
+	public function getSocialInteraction() {
+		return $this->socialInteraction;
 	}
 	
 	/**
-	 * @param \UnitedPrototype\GoogleAnalytics\GoogleAnalyticsPage $page
+	 * @param \UnitedPrototype\GoogleAnalytics\SocialInteraction $socialInteraction
 	 */
-	public function setPage(GoogleAnalyticsPage $page) {
-		$this->page = $page;
+	public function setSocialInteraction(SocialInteraction $socialInteraction) {
+		$this->socialInteraction = $socialInteraction;
 	}
 	
 }

@@ -8,7 +8,7 @@
  * License (LGPL) as published by the Free Software Foundation; either
  * version 3 of the License, or (at your option) any later version.
  * 
- * This library is distributed in the hope that it will be //useful,
+ * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
  * Lesser General Public License for more details.
@@ -26,7 +26,18 @@
  * @copyright Copyright (c) 2010 United Prototype GmbH (http://unitedprototype.com)
  */
 
-abstract class GoogleAnalyticsRequest extends GoogleAnalyticsHttpRequest {
+namespace UnitedPrototype\GoogleAnalytics\Internals\Request;
+
+use UnitedPrototype\GoogleAnalytics\Tracker;
+use UnitedPrototype\GoogleAnalytics\Visitor;
+use UnitedPrototype\GoogleAnalytics\Session;
+use UnitedPrototype\GoogleAnalytics\CustomVariable;
+
+use UnitedPrototype\GoogleAnalytics\Internals\ParameterHolder;
+use UnitedPrototype\GoogleAnalytics\Internals\Util;
+use UnitedPrototype\GoogleAnalytics\Internals\X10;
+
+abstract class Request extends HttpRequest {
 	
 	/**
 	 * @var \UnitedPrototype\GoogleAnalytics\Tracker
@@ -107,7 +118,7 @@ abstract class GoogleAnalyticsRequest extends GoogleAnalyticsHttpRequest {
 	 */
 	protected function buildHttpRequest() {
 		$this->setXForwardedFor($this->visitor->getIpAddress());
-		$this->setuserAgent($this->visitor->getuserAgent());
+		$this->setUserAgent($this->visitor->getUserAgent());
 		
 		// Increment session track counter for each request
 		$this->session->increaseTrackCount();
@@ -115,7 +126,7 @@ abstract class GoogleAnalyticsRequest extends GoogleAnalyticsHttpRequest {
 		// See http://code.google.com/p/gaforflash/source/browse/trunk/src/com/google/analytics/v4/Configuration.as?r=237#48
 		// and http://code.google.com/intl/de-DE/apis/analytics/docs/tracking/eventTrackerGuide.html#implementationConsiderations
 		if($this->session->getTrackCount() > 500) {
-			GoogleAnalyticsTracker::_raiseError('Google Analytics does not guarantee to process more than 500 requests per session.', __METHOD__,$this->tracker->getConfig());
+			Tracker::_raiseError('Google Analytics does not guarantee to process more than 500 requests per session.', __METHOD__);
 		}
 		
 		if($this->tracker->getCampaign()) {
@@ -129,19 +140,24 @@ abstract class GoogleAnalyticsRequest extends GoogleAnalyticsHttpRequest {
 	 * @return \UnitedPrototype\GoogleAnalytics\Internals\ParameterHolder
 	 */
 	protected function buildParameters() {
-		$p = new GoogleAnalyticsParameterHolder();
+		$p = new ParameterHolder();
 		
 		$p->utmac = $this->tracker->getAccountId();
 		$p->utmhn = $this->tracker->getDomainName();
 		
 		$p->utmt = $this->getType();
-		$p->utmn = GoogleAnalyticsUtil::generate32bitRandom();
+		$p->utmn = Util::generate32bitRandom();
 		
-		$p->aip = 1;//$this->tracker->getConfig()->getAnonymizeIpAddresses() ? 1 : null;
+		// The "utmip" parameter is only relevant if a mobile analytics
+		// ID (MO-123456-7) was given,
+		// see http://code.google.com/p/php-ga/issues/detail?id=9
+		$p->utmip = $this->visitor->getIpAddress();
 		
-		// The IP parameter does sadly seem to be ignored by GA, so we
-		// shouldn't set it as of today but keep it here for later reference
-		// $p->utmip = $this->visitor->getIpAddress();
+		$p->aip = $this->tracker->getConfig()->getAnonymizeIpAddresses() ? 1 : null;
+		if($p->aip) {
+			// Anonymize last IP block
+			$p->utmip = substr($p->utmip, 0, strrpos($p->utmip, '.')) . '.0';
+		}
 		
 		$p->utmhid = $this->session->getSessionId();
 		$p->utms   = $this->session->getTrackCount();
@@ -155,10 +171,10 @@ abstract class GoogleAnalyticsRequest extends GoogleAnalyticsHttpRequest {
 	}
 	
 	/**
-	 * @param \UnitedPrototype\GoogleAnalytics\Internals\GoogleAnalyticsParameterHolder $p
+	 * @param \UnitedPrototype\GoogleAnalytics\Internals\ParameterHolder $p
 	 * @return \UnitedPrototype\GoogleAnalytics\Internals\ParameterHolder
 	 */
-	protected function buildVisitorParameters(GoogleAnalyticsParameterHolder $p) {
+	protected function buildVisitorParameters(ParameterHolder $p) {
 		// Ensure correct locale format, see https://developer.mozilla.org/en/navigator.language
 		$p->utmul = strtolower(str_replace('_', '-', $this->visitor->getLocale()));
 		
@@ -178,33 +194,33 @@ abstract class GoogleAnalyticsRequest extends GoogleAnalyticsHttpRequest {
 	
 	/**
 	 * @link http://xahlee.org/js/google_analytics_tracker_2010-07-01_expanded.js line 575
-	 * @param \UnitedPrototype\GoogleAnalytics\Internals\GoogleAnalyticsParameterHolder $p
+	 * @param \UnitedPrototype\GoogleAnalytics\Internals\ParameterHolder $p
 	 * @return \UnitedPrototype\GoogleAnalytics\Internals\ParameterHolder
 	 */
-	protected function buildCustomVariablesParameter(GoogleAnalyticsParameterHolder $p) {
+	protected function buildCustomVariablesParameter(ParameterHolder $p) {
 		$customVars = $this->tracker->getCustomVariables();
 		if($customVars) {
 			if(count($customVars) > 5) {
 				// See http://code.google.com/intl/de-DE/apis/analytics/docs/tracking/gaTrackingCustomVariables.html#usage
-				GoogleAnalyticsTracker::_raiseError('The sum of all custom variables cannot exceed 5 in any given request.', __METHOD__,$this->tracker->getConfig());
+				Tracker::_raiseError('The sum of all custom variables cannot exceed 5 in any given request.', __METHOD__);
 			}
 			
-			$x10 = new GoogleAnalyticsX10();
+			$x10 = new X10();
 			
-			$x10->clearKey($this->X10_CUSTOMVAR_NAME_PROJECT_ID);
-			$x10->clearKey($this->X10_CUSTOMVAR_VALUE_PROJECT_ID);
-			$x10->clearKey($this->X10_CUSTOMVAR_SCOPE_PROJECT_ID);
+			$x10->clearKey(self::X10_CUSTOMVAR_NAME_PROJECT_ID);
+			$x10->clearKey(self::X10_CUSTOMVAR_VALUE_PROJECT_ID);
+			$x10->clearKey(self::X10_CUSTOMVAR_SCOPE_PROJECT_ID);
 			
 			foreach($customVars as $customVar) {
 				// Name and value get encoded here,
 				// see http://xahlee.org/js/google_analytics_tracker_2010-07-01_expanded.js line 563
-				$name  = GoogleAnalyticsUtil::encodeUriComponent($customVar->getName());
-				$value = GoogleAnalyticsUtil::encodeUriComponent($customVar->getValue());
+				$name  = Util::encodeUriComponent($customVar->getName());
+				$value = Util::encodeUriComponent($customVar->getValue());
 				
-				$x10->setKey($this->X10_CUSTOMVAR_NAME_PROJECT_ID, $customVar->getIndex(), $name);
-				$x10->setKey($this->X10_CUSTOMVAR_VALUE_PROJECT_ID, $customVar->getIndex(), $value);
+				$x10->setKey(self::X10_CUSTOMVAR_NAME_PROJECT_ID, $customVar->getIndex(), $name);
+				$x10->setKey(self::X10_CUSTOMVAR_VALUE_PROJECT_ID, $customVar->getIndex(), $value);
 				if($customVar->getScope() !== null && $customVar->getScope() != CustomVariable::SCOPE_PAGE) {
-					$x10->setKey($this->X10_CUSTOMVAR_SCOPE_PROJECT_ID, $customVar->getIndex(), $customVar->getScope());
+					$x10->setKey(self::X10_CUSTOMVAR_SCOPE_PROJECT_ID, $customVar->getIndex(), $customVar->getScope());
 				}
 			}
 			
@@ -216,10 +232,10 @@ abstract class GoogleAnalyticsRequest extends GoogleAnalyticsHttpRequest {
 	
 	/**
 	 * @link http://code.google.com/p/gaforflash/source/browse/trunk/src/com/google/analytics/core/GIFRequest.as#123
-	 * @param \UnitedPrototype\GoogleAnalytics\Internals\GoogleAnalyticsParameterHolder $p
+	 * @param \UnitedPrototype\GoogleAnalytics\Internals\ParameterHolder $p
 	 * @return \UnitedPrototype\GoogleAnalytics\Internals\ParameterHolder
 	 */
-	protected function buildCookieParameters(GoogleAnalyticsParameterHolder $p) {
+	protected function buildCookieParameters(ParameterHolder $p) {
 		$domainHash = $this->generateDomainHash();
 		
 		$p->__utma  = $domainHash . '.';
@@ -252,10 +268,10 @@ abstract class GoogleAnalyticsRequest extends GoogleAnalyticsHttpRequest {
 	}
 	
 	/**
-	 * @param \UnitedPrototype\GoogleAnalytics\Internals\GoogleAnalyticsParameterHolder $p
+	 * @param \UnitedPrototype\GoogleAnalytics\Internals\ParameterHolder $p
 	 * @return \UnitedPrototype\GoogleAnalytics\Internals\ParameterHolder
 	 */
-	protected function buildCampaignParameters(GoogleAnalyticsParameterHolder $p) {
+	protected function buildCampaignParameters(ParameterHolder $p) {
 		$campaign = $this->tracker->getCampaign();
 		if($campaign) {
 			$p->__utmz  = $this->generateDomainHash() . '.';
@@ -276,11 +292,11 @@ abstract class GoogleAnalyticsRequest extends GoogleAnalyticsHttpRequest {
 			);
 			foreach($data as $key => $value) {
 				if($value !== null && $value !== '') {
-					// Only spaces and pl//uses get escaped in gaforflash and ga.js, so we do the same
-					$p->__utmz .= $key . '=' . str_replace(array('+', ' '), '%20', $value) . $this->CAMPAIGN_DELIMITER;
+					// Only spaces and pluses get escaped in gaforflash and ga.js, so we do the same
+					$p->__utmz .= $key . '=' . str_replace(array('+', ' '), '%20', $value) . static::CAMPAIGN_DELIMITER;
 				}
 			}
-			$p->__utmz = rtrim($p->__utmz, $this->CAMPAIGN_DELIMITER);
+			$p->__utmz = rtrim($p->__utmz, static::CAMPAIGN_DELIMITER);
 		}
 		
 		return $p;
@@ -294,7 +310,7 @@ abstract class GoogleAnalyticsRequest extends GoogleAnalyticsHttpRequest {
 		$hash = 1;
 		
 		if($this->tracker->getAllowHash()) {
-			$hash = GoogleAnalyticsUtil::generateHash($this->tracker->getDomainName());
+			$hash = Util::generateHash($this->tracker->getDomainName());
 		}
 		
 		return $hash;
@@ -308,9 +324,9 @@ abstract class GoogleAnalyticsRequest extends GoogleAnalyticsHttpRequest {
 	}
 	
 	/**
-	 * @param \UnitedPrototype\GoogleAnalytics\GoogleAnalyticsTracker $tracker
+	 * @param \UnitedPrototype\GoogleAnalytics\Tracker $tracker
 	 */
-	public function setTracker(GoogleAnalyticsTracker $tracker) {
+	public function setTracker(Tracker $tracker) {
 		$this->tracker = $tracker;
 	}
 	
@@ -322,9 +338,9 @@ abstract class GoogleAnalyticsRequest extends GoogleAnalyticsHttpRequest {
 	}
 	
 	/**
-	 * @param \UnitedPrototype\GoogleAnalytics\GoogleAnalyticsVisitor $visitor
+	 * @param \UnitedPrototype\GoogleAnalytics\Visitor $visitor
 	 */
-	public function setVisitor(GoogleAnalyticsVisitor $visitor) {
+	public function setVisitor(Visitor $visitor) {
 		$this->visitor = $visitor;
 	}
 	
@@ -336,9 +352,9 @@ abstract class GoogleAnalyticsRequest extends GoogleAnalyticsHttpRequest {
 	}
 	
 	/**
-	 * @param \UnitedPrototype\GoogleAnalytics\GoogleAnalyticsSession $session
+	 * @param \UnitedPrototype\GoogleAnalytics\Session $session
 	 */
-	public function setSession(GoogleAnalyticsSession $session) {
+	public function setSession(Session $session) {
 		$this->session = $session;
 	}
 	

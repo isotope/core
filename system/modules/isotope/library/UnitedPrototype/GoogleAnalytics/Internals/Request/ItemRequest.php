@@ -8,7 +8,7 @@
  * License (LGPL) as published by the Free Software Foundation; either
  * version 3 of the License, or (at your option) any later version.
  * 
- * This library is distributed in the hope that it will be //useful,
+ * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
  * Lesser General Public License for more details.
@@ -26,8 +26,13 @@
  * @copyright Copyright (c) 2010 United Prototype GmbH (http://unitedprototype.com)
  */
 
+namespace UnitedPrototype\GoogleAnalytics\Internals\Request;
 
-class GoogleAnalyticsItemRequest extends GoogleAnalyticsRequest {
+use UnitedPrototype\GoogleAnalytics\Item;
+
+use UnitedPrototype\GoogleAnalytics\Internals\ParameterHolder;
+
+class ItemRequest extends Request {
 	
 	/**
 	 * @var \UnitedPrototype\GoogleAnalytics\Item
@@ -39,7 +44,7 @@ class GoogleAnalyticsItemRequest extends GoogleAnalyticsRequest {
 	 * @return string
 	 */
 	protected function getType() {
-		return GoogleAnalyticsRequest::TYPE_ITEM;
+		return Request::TYPE_ITEM;
 	}
 	
 	/**
@@ -64,10 +69,10 @@ class GoogleAnalyticsItemRequest extends GoogleAnalyticsRequest {
 	 * The GA Javascript client doesn't send any visitor information for
 	 * e-commerce requests, so we don't either.
 	 * 
-	 * @param \UnitedPrototype\GoogleAnalytics\Internals\GoogleAnalyticsParameterHolder $p
+	 * @param \UnitedPrototype\GoogleAnalytics\Internals\ParameterHolder $p
 	 * @return \UnitedPrototype\GoogleAnalytics\Internals\ParameterHolder
 	 */
-	protected function buildVisitorParameters(GoogleAnalyticsParameterHolder $p) {
+	protected function buildVisitorParameters(ParameterHolder $p) {
 		return $p;
 	}
 	
@@ -75,10 +80,10 @@ class GoogleAnalyticsItemRequest extends GoogleAnalyticsRequest {
 	 * The GA Javascript client doesn't send any custom variables for
 	 * e-commerce requests, so we don't either.
 	 * 
-	 * @param \UnitedPrototype\GoogleAnalytics\Internals\GoogleAnalyticsParameterHolder $p
+	 * @param \UnitedPrototype\GoogleAnalytics\Internals\ParameterHolder $p
 	 * @return \UnitedPrototype\GoogleAnalytics\Internals\ParameterHolder
 	 */
-	protected function buildCustomVariablesParameter(GoogleAnalyticsParameterHolder $p) {
+	protected function buildCustomVariablesParameter(ParameterHolder $p) {
 		return $p;
 	}
 	
@@ -90,9 +95,9 @@ class GoogleAnalyticsItemRequest extends GoogleAnalyticsRequest {
 	}
 	
 	/**
-	 * @param \UnitedPrototype\GoogleAnalytics\GoogleAnalyticsItem $item
+	 * @param \UnitedPrototype\GoogleAnalytics\Item $item
 	 */
-	public function setItem(GoogleAnalyticsItem $item) {
+	public function setItem(Item $item) {
 		$this->item = $item;
 	}
 	

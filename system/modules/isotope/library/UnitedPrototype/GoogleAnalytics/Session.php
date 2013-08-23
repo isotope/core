@@ -8,7 +8,7 @@
  * License (LGPL) as published by the Free Software Foundation; either
  * version 3 of the License, or (at your option) any later version.
  * 
- * This library is distributed in the hope that it will be //useful,
+ * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
  * Lesser General Public License for more details.
@@ -26,12 +26,18 @@
  * @copyright Copyright (c) 2010 United Prototype GmbH (http://unitedprototype.com)
  */
 
+namespace UnitedPrototype\GoogleAnalytics;
+
+use UnitedPrototype\GoogleAnalytics\Internals\Util;
+
+use DateTime;
+
 /**
- * You should serialize this object and store it in the //user session to keep it
+ * You should serialize this object and store it in the user session to keep it
  * persistent between requests (similar to the "__umtb" cookie of
  * the GA Javascript client).
  */
-class GoogleAnalyticsSession {
+class Session {
 	
 	/**
 	 * A unique per-session ID, will be mapped to "utmhid" parameter
@@ -70,12 +76,35 @@ class GoogleAnalyticsSession {
 	}
 	
 	/**
+	 * Will extract information for the "trackCount" and "startTime"
+	 * properties from the given "__utmb" cookie value.
+	 * 
+	 * @see Internals\ParameterHolder::$__utmb
+	 * @see Internals\Request\Request::buildCookieParameters()
+	 * @param string $value
+	 * @return $this
+	 */
+	public function fromUtmb($value) {
+		$parts = explode('.', $value);
+		if(count($parts) != 4) {
+			Tracker::_raiseError('The given "__utmb" cookie value is invalid.', __METHOD__);
+			return $this;
+		}
+		
+		$this->setTrackCount($parts[1]);
+		$this->setStartTime(new DateTime('@' . $parts[3]));
+		
+		// Allow chaining
+		return $this;
+	}
+	
+	/**
 	 * @link http://code.google.com/p/gaforflash/source/browse/trunk/src/com/google/analytics/core/DocumentInfo.as#52
 	 * @return int
 	 */
 	protected function generateSessionId() {
 		// TODO: Integrate AdSense support
-		return GoogleAnalyticsUtil::generate32bitRandom();
+		return Util::generate32bitRandom();
 	}
 	
 	/**

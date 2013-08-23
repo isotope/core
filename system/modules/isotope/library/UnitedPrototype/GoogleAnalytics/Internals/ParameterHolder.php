@@ -8,7 +8,7 @@
  * License (LGPL) as published by the Free Software Foundation; either
  * version 3 of the License, or (at your option) any later version.
  * 
- * This library is distributed in the hope that it will be //useful,
+ * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
  * Lesser General Public License for more details.
@@ -26,14 +26,17 @@
  * @copyright Copyright (c) 2010 United Prototype GmbH (http://unitedprototype.com)
  */
 
+namespace UnitedPrototype\GoogleAnalytics\Internals;
+
+use UnitedPrototype\GoogleAnalytics\Tracker;
 
 /**
- * This simple class GoogleAnalyticsis mainly meant to be a well-documented overview of all
+ * This simple class is mainly meant to be a well-documented overview of all
  * possible GA tracking parameters.
  * 
  * @link http://code.google.com/apis/analytics/docs/tracking/gaTrackingTroubleshooting.html#gifParameters
  */
-class GoogleAnalyticsParameterHolder {	
+class ParameterHolder {	
 	
 	// - - - - - - - - - - - - - - - - - General parameters - - - - - - - - - - - - - - - - -
 	
@@ -41,7 +44,7 @@ class GoogleAnalyticsParameterHolder {
 	 * Google Analytics client version, e.g. "4.7.2"
 	 * @var string
 	 */
-	public $utmwv = GoogleAnalyticsTracker::VERSION;
+	public $utmwv = Tracker::VERSION;
 	
 	/**
 	 * Google Analytics account ID, e.g. "UA-1234567-8"
@@ -57,7 +60,7 @@ class GoogleAnalyticsParameterHolder {
 	
 	/**
 	 * Indicates the type of request, which is one of null (for page), "event",
-	 * "tran", "item", "social", "var" (deprecated) or "error" (//used by ga.js
+	 * "tran", "item", "social", "var" (deprecated) or "error" (used by ga.js
 	 * for internal client error logging).
 	 * @var string
 	 */
@@ -82,14 +85,14 @@ class GoogleAnalyticsParameterHolder {
 	public $utmcc;
 	
 	/**
-	 * Extensible Parameter, //used for events and custom variables
+	 * Extensible Parameter, used for events and custom variables
 	 * @var string
 	 */
 	public $utme;
 	
 	/**
 	 * Event "non-interaction" parameter. By default, the event hit will impact a visitor's bounce rate.
-	 * By setting this parameter to 1, this event hit will not be //used in bounce rate calculations.
+	 * By setting this parameter to 1, this event hit will not be used in bounce rate calculations.
 	 * @link http://code.google.com/apis/analytics/docs/gaJS/gaJSApiEventTracking.html
 	 * @var int
 	 */
@@ -103,7 +106,7 @@ class GoogleAnalyticsParameterHolder {
 	public $aip;
 	
 	/**
-	 * //used for GA-internal statistical client function usage and error tracking,
+	 * Used for GA-internal statistical client function usage and error tracking,
 	 * not implemented in php-ga as of now, but here for documentation completeness.
 	 * @link http://glucik.blogspot.com/2011/02/utmu-google-analytics-request-parameter.html
 	 * @var string
@@ -142,8 +145,8 @@ class GoogleAnalyticsParameterHolder {
 	// - - - - - - - - - - - - - - - - - Visitor parameters - - - - - - - - - - - - - - - - -
 	
 	/**
-	 * IP Address of the end //user, e.g. "123.123.123.123", found in GA for Mobile examples,
-	 * but sadly seems to be ignored in normal GA //use
+	 * IP Address of the end user, e.g. "123.123.123.123", found in GA for Mobile examples,
+	 * but sadly seems to be ignored in normal GA use
 	 * 
 	 * @link http://github.com/mptre/php-ga/blob/master/ga.php
 	 * @var string
@@ -187,8 +190,8 @@ class GoogleAnalyticsParameterHolder {
 	 * If the cookie has been deleted by the browser operator, and the browser subsequently visits your site,
 	 * a new __utma cookie is written with a different unique ID.
 	 * 
-	 * This cookie is //used to determine unique visitors to your site and it is updated with each page view.
-	 * Additionally, this cookie is provided with a unique ID that Google Analytics //uses to ensure both the
+	 * This cookie is used to determine unique visitors to your site and it is updated with each page view.
+	 * Additionally, this cookie is provided with a unique ID that Google Analytics uses to ensure both the
 	 * validity and accessibility of the cookie as an extra security measure.
 	 * 
 	 * Expiration:
@@ -217,15 +220,15 @@ class GoogleAnalyticsParameterHolder {
 	 * Session timeout cookie parameter.
 	 * Will never be sent with requests, but stays here for documentation completeness.
 	 * 
-	 * This cookie is //used to establish and continue a //user session with your site.
-	 * When a //user views a page on your site, the Google Analytics code attempts to update this cookie.
+	 * This cookie is used to establish and continue a user session with your site.
+	 * When a user views a page on your site, the Google Analytics code attempts to update this cookie.
 	 * If it does not find the cookie, a new one is written and a new session is established.
 	 * 
-	 * Each time a //user visits a different page on your site, this cookie is updated to expire in 30 minutes,
-	 * thus continuing a single session for as long as //user activity continues within 30-minute intervals.
+	 * Each time a user visits a different page on your site, this cookie is updated to expire in 30 minutes,
+	 * thus continuing a single session for as long as user activity continues within 30-minute intervals.
 	 * 
-	 * This cookie expires when a //user pa//uses on a page on your site for longer than 30 minutes.
-	 * You can modify the default length of a //user session with the setSessionTimeout() method.
+	 * This cookie expires when a user pauses on a page on your site for longer than 30 minutes.
+	 * You can modify the default length of a user session with the setSessionTimeout() method.
 	 * 
 	 * Expiration:
 	 * 30 minutes from set/update.
@@ -243,11 +246,11 @@ class GoogleAnalyticsParameterHolder {
 	 * Will never be sent with requests, but stays here for documentation completeness.
 	 * 
 	 * This cookie operates in conjunction with the __utmb cookie to determine whether or not
-	 * to establish a new session for the //user.
+	 * to establish a new session for the user.
 	 * In particular, this cookie is not provided with an expiration date,
-	 * so it expires when the //user exits the browser.
+	 * so it expires when the user exits the browser.
 	 * 
-	 * Should a //user visit your site, exit the browser and then return to your website within 30 minutes,
+	 * Should a user visit your site, exit the browser and then return to your website within 30 minutes,
 	 * the absence of the __utmc cookie indicates that a new session needs to be established,
 	 * despite the fact that the __utmb cookie has not yet expired.
 	 * 
@@ -351,7 +354,7 @@ class GoogleAnalyticsParameterHolder {
 	 * but never both at the same time. Changes the campaign tracking data; but does not start
 	 * a new session. Either 1 or not set.
 	 * 
-	 * Found in gaforflash but not in ga.js, so we do not //use it, but it will stay here for
+	 * Found in gaforflash but not in ga.js, so we do not use it, but it will stay here for
 	 * documentation completeness.
 	 * 
 	 * @deprecated
@@ -364,7 +367,7 @@ class GoogleAnalyticsParameterHolder {
 	 * same link. Either utmcn or utmcr is present on any given request, but never both at the
 	 * same time. Either 1 or not set.
 	 * 
-	 * Found in gaforflash but not in ga.js, so we do not //use it, but it will stay here for
+	 * Found in gaforflash but not in ga.js, so we do not use it, but it will stay here for
 	 * documentation completeness.
 	 * 
 	 * @deprecated
@@ -429,10 +432,10 @@ class GoogleAnalyticsParameterHolder {
     /**
 	 * Campaign tracking cookie parameter.
 	 * 
-	 * This cookie stores the type of referral //used by the visitor to reach your site,
+	 * This cookie stores the type of referral used by the visitor to reach your site,
 	 * whether via a direct method, a referring link, a website search, or a campaign such as an ad or an email link.
 	 * 
-	 * It is //used to calculate search engine traffic, ad campaigns and page navigation within your own site.
+	 * It is used to calculate search engine traffic, ad campaigns and page navigation within your own site.
 	 * The cookie is updated with each page view to your site.
 	 * 
 	 * Expiration:
@@ -474,7 +477,7 @@ class GoogleAnalyticsParameterHolder {
     /**
      * Website Optimizer cookie parameter.
 	 * 
-	 * This cookie is //used by Website Optimizer and only set when Website Optimizer is //used in combination
+	 * This cookie is used by Website Optimizer and only set when Website Optimizer is used in combination
 	 * with GA. See the Google Website Optimizer Help Center for details.
      *
      * Expiration:
@@ -497,7 +500,7 @@ class GoogleAnalyticsParameterHolder {
 	 * documentation completeness.
 	 * 
 	 * The __utmv cookie passes the information provided via the setVar() method,
-	 * which you //use to create a custom //user segment.
+	 * which you use to create a custom user segment.
 	 * 
 	 * Expiration:
 	 * 2 years from set/update.

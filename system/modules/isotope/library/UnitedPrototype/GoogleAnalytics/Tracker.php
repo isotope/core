@@ -8,7 +8,7 @@
  * License (LGPL) as published by the Free Software Foundation; either
  * version 3 of the License, or (at your option) any later version.
  * 
- * This library is distributed in the hope that it will be //useful,
+ * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
  * Lesser General Public License for more details.
@@ -26,7 +26,16 @@
  * @copyright Copyright (c) 2010 United Prototype GmbH (http://unitedprototype.com)
  */
 
-class GoogleAnalyticsTracker {
+namespace UnitedPrototype\GoogleAnalytics;
+
+use UnitedPrototype\GoogleAnalytics\Internals\Util;
+use UnitedPrototype\GoogleAnalytics\Internals\Request\PageviewRequest;
+use UnitedPrototype\GoogleAnalytics\Internals\Request\EventRequest;
+use UnitedPrototype\GoogleAnalytics\Internals\Request\TransactionRequest;
+use UnitedPrototype\GoogleAnalytics\Internals\Request\ItemRequest;
+use UnitedPrototype\GoogleAnalytics\Internals\Request\SocialInteractionRequest;
+
+class Tracker {
 	
 	/**
 	 * Google Analytics client version on which this library is built upon,
@@ -39,15 +48,15 @@ class GoogleAnalyticsTracker {
 	 * @link http://code.google.com/apis/analytics/docs/gaJS/changelog.html
 	 * @const string
 	 */
-	const VERSION = '5.2.2'; // As of 15.11.2011
+	const VERSION = '5.2.5'; // As of 25.02.2012
 	
 	
 	/**
-	 * The configuration to //use for all tracker instances.
+	 * The configuration to use for all tracker instances.
 	 * 
 	 * @var \UnitedPrototype\GoogleAnalytics\Config
 	 */
-	protected $gaconfig;
+	protected static $config;
 	
 	/**
 	 * Google Analytics account ID, e.g. "UA-1234567-8", will be mapped to
@@ -92,18 +101,8 @@ class GoogleAnalyticsTracker {
 	 * @param string $domainName
 	 * @param \UnitedPrototype\GoogleAnalytics\Config $config
 	 */
-	public function __construct($accountId, $domainName, GoogleAnalyticsConfig $config = null) {
-		
-		if(is_object($config))
-		{
-			$this->gaconfig = $config;
-		}
-		else
-		{
-			$this->gaconfig = new GoogleAnalyticsConfig();	
-		}
-		
-		//$this->setConfig($objConfig);
+	public function __construct($accountId, $domainName, Config $config = null) {
+		static::setConfig($config ? $config : new Config());
 		
 		$this->setAccountId($accountId);
 		$this->setDomainName($domainName);
@@ -113,27 +112,22 @@ class GoogleAnalyticsTracker {
 	 * @return \UnitedPrototype\GoogleAnalytics\Config
 	 */
 	public static function getConfig() {
-		return $this->gaconfig;
+		return static::$config;
 	}	
 	
 	/**
 	 * @param \UnitedPrototype\GoogleAnalytics\Config $value
 	 */
-	public static function setConfig(GoogleAnalyticsConfig $value) {
-		$this->gaconfig = $value;
+	public static function setConfig(Config $value) {
+		static::$config = $value;
 	}
-	
-	/*protected function __set($strKey,$varValue)
-	{
-		$this->arrData[$strKey] = $varValue;	
-	}*/
 	
 	/**
 	 * @param string $value
 	 */
 	public function setAccountId($value) {
-		if(!preg_match('/^UA-[0-9]*-[0-9]*$/', $value)) {
-			$this->log('"' . $value . '" is not a valid Google Analytics account ID.', __METHOD__);
+		if(!preg_match('/^(UA|MO)-[0-9]*-[0-9]*$/', $value)) {
+			static::_raiseError('"' . $value . '" is not a valid Google Analytics account ID.', __METHOD__);
 		}
 		
 		$this->accountId = $value;
@@ -178,9 +172,9 @@ class GoogleAnalyticsTracker {
 	 * Equivalent of _setCustomVar() in GA Javascript client.
 	 * 
 	 * @link http://code.google.com/apis/analytics/docs/tracking/gaTrackingCustomVariables.html
-	 * @param \UnitedPrototype\GoogleAnalytics\GoogleAnalyticsCustomVariable $customVariable
+	 * @param \UnitedPrototype\GoogleAnalytics\CustomVariable $customVariable
 	 */
-	public function addCustomVariable(GoogleAnalyticsCustomVariable $customVariable) {
+	public function addCustomVariable(CustomVariable $customVariable) {
 		// Ensure that all required parameters are set
 		$customVariable->validate();
 		
@@ -205,9 +199,9 @@ class GoogleAnalyticsTracker {
 	}
 	
 	/**
-	 * @param \UnitedPrototype\GoogleAnalytics\GoogleAnalyticsCampaign $campaign Isn't really optional, but can be set to null
+	 * @param \UnitedPrototype\GoogleAnalytics\Campaign $campaign Isn't really optional, but can be set to null
 	 */
-	public function setCampaign(GoogleAnalyticsCampaign $campaign = null) {
+	public function setCampaign(Campaign $campaign = null) {
 		if($campaign) {
 			// Ensure that all required parameters are set
 			$campaign->validate();
@@ -227,12 +221,12 @@ class GoogleAnalyticsTracker {
 	 * Equivalent of _trackPageview() in GA Javascript client.
 	 * 
 	 * @link http://code.google.com/apis/analytics/docs/gaJS/gaJSApiBasicConfiguration.html#_gat.GA_Tracker_._trackPageview
-	 * @param \UnitedPrototype\GoogleAnalytics\GoogleAnalyticsPage $page
-	 * @param \UnitedPrototype\GoogleAnalytics\GoogleAnalyticsSession $session
-	 * @param \UnitedPrototype\GoogleAnalytics\GoogleAnalyticsVisitor $visitor
+	 * @param \UnitedPrototype\GoogleAnalytics\Page $page
+	 * @param \UnitedPrototype\GoogleAnalytics\Session $session
+	 * @param \UnitedPrototype\GoogleAnalytics\Visitor $visitor
 	 */
-	public function trackPageview(GoogleAnalyticsPage $page, GoogleAnalyticsSession $session, GoogleAnalyticsVisitor $visitor) {
-		$request = new GoogleAnalyticsPageviewRequest($this->gaconfig);
+	public function trackPageview(Page $page, Session $session, Visitor $visitor) {
+		$request = new PageviewRequest(static::$config);
 		$request->setPage($page);
 		$request->setSession($session);
 		$request->setVisitor($visitor);
@@ -244,15 +238,15 @@ class GoogleAnalyticsTracker {
 	 * Equivalent of _trackEvent() in GA Javascript client.
 	 * 
 	 * @link http://code.google.com/apis/analytics/docs/gaJS/gaJSApiEventTracking.html#_gat.GA_EventTracker_._trackEvent
-	 * @param \UnitedPrototype\GoogleAnalytics\GoogleAnalyticsEvent $event
-	 * @param \UnitedPrototype\GoogleAnalytics\GoogleAnalyticsSession $session
-	 * @param \UnitedPrototype\GoogleAnalytics\GoogleAnalyticsVisitor $visitor
+	 * @param \UnitedPrototype\GoogleAnalytics\Event $event
+	 * @param \UnitedPrototype\GoogleAnalytics\Session $session
+	 * @param \UnitedPrototype\GoogleAnalytics\Visitor $visitor
 	 */
-	public function trackEvent(GoogleAnalyticsEvent $event, GoogleAnalyticsSession $session, GoogleAnalyticsVisitor $visitor) {
+	public function trackEvent(Event $event, Session $session, Visitor $visitor) {
 		// Ensure that all required parameters are set
 		$event->validate();
 		
-		$request = new GoogleAnalyticsEventRequest($this->gaconfig);
+		$request = new EventRequest(static::$config);
 		$request->setEvent($event);
 		$request->setSession($session);
 		$request->setVisitor($visitor);
@@ -270,14 +264,14 @@ class GoogleAnalyticsTracker {
 	 * @link http://code.google.com/apis/analytics/docs/gaJS/gaJSApiEcommerce.html#_gat.GA_Tracker_._trackTrans
 	 * 
 	 * @param \UnitedPrototype\GoogleAnalytics\Transaction $transaction
-	 * @param \UnitedPrototype\GoogleAnalytics\GoogleAnalyticsSession $session
-	 * @param \UnitedPrototype\GoogleAnalytics\GoogleAnalyticsVisitor $visitor
+	 * @param \UnitedPrototype\GoogleAnalytics\Session $session
+	 * @param \UnitedPrototype\GoogleAnalytics\Visitor $visitor
 	 */
-	public function trackTransaction(GoogleAnalyticsTransaction $transaction, GoogleAnalyticsSession $session, GoogleAnalyticsVisitor $visitor) {
+	public function trackTransaction(Transaction $transaction, Session $session, Visitor $visitor) {
 		// Ensure that all required parameters are set
 		$transaction->validate();
 		
-		$request = new GoogleAnalyticsTransactionRequest($this->gaconfig);
+		$request = new TransactionRequest(static::$config);
 		$request->setTransaction($transaction);
 		$request->setSession($session);
 		$request->setVisitor($visitor);
@@ -290,7 +284,7 @@ class GoogleAnalyticsTracker {
 			// Ensure that all required parameters are set
 			$item->validate();
 			
-			$request = new GoogleAnalyticsItemRequest($this->gaconfig);
+			$request = new ItemRequest(static::$config);
 			$request->setItem($item);
 			$request->setSession($session);
 			$request->setVisitor($visitor);
@@ -304,12 +298,12 @@ class GoogleAnalyticsTracker {
 	 * 
 	 * @link http://code.google.com/apis/analytics/docs/tracking/gaTrackingSocial.html#settingUp
 	 * @param \UnitedPrototype\GoogleAnalytics\SocialInteraction $socialInteraction
-	 * @param \UnitedPrototype\GoogleAnalytics\GoogleAnalyticsPage $page
-	 * @param \UnitedPrototype\GoogleAnalytics\GoogleAnalyticsSession $session
-	 * @param \UnitedPrototype\GoogleAnalytics\GoogleAnalyticsVisitor $visitor
+	 * @param \UnitedPrototype\GoogleAnalytics\Page $page
+	 * @param \UnitedPrototype\GoogleAnalytics\Session $session
+	 * @param \UnitedPrototype\GoogleAnalytics\Visitor $visitor
 	 */
-	public function trackSocial(GoogleAnalyticsSocialInteraction $socialInteraction, GoogleAnalyticsPage $page, GoogleAnalyticsSession $session, GoogleAnalyticsVisitor $visitor) {
-		$request = new GoogleAnalyticsSocialInteractionRequest($this->gaconfig);
+	public function trackSocial(SocialInteraction $socialInteraction, Page $page, Session $session, Visitor $visitor) {
+		$request = new SocialInteractionRequest(static::$config);
 		$request->setSocialInteraction($socialInteraction);
 		$request->setPage($page);
 		$request->setSession($session);
@@ -319,30 +313,27 @@ class GoogleAnalyticsTracker {
 	}
 	
 	/**
-	 * For internal //use only. Will trigger an error according to the current
+	 * For internal use only. Will trigger an error according to the current
 	 * Config::$errorSeverity setting.
 	 * 
 	 * @see Config::$errorSeverity
 	 * @param string $message
 	 * @param string $method
 	 */
-	public static function _raiseError($message, $method,GoogleAnalyticsConfig $config=null) {
-		//$method = str_replace(__namespace__ . '\\', '', $method);
+	public static function _raiseError($message, $method) {
+		$method = str_replace(__NAMESPACE__ . '\\', '', $method);
 		$message = $method . '(): ' . $message;
 		
-		if(!is_object($config))
-			$config = new GoogleAnalyticsConfig();	
-			
-		$errorSeverity = isset($config) ? $config->getErrorSeverity() : GoogleAnalyticsConfig::ERROR_SEVERITY_EXCEPTIONS;
+		$errorSeverity = isset(static::$config) ? static::$config->getErrorSeverity() : Config::ERROR_SEVERITY_EXCEPTIONS;
 		
 		switch($errorSeverity) {
-			case GoogleAnalyticsConfig::ERROR_SEVERITY_SILENCE:
+			case Config::ERROR_SEVERITY_SILENCE:
 				// Do nothing
 				break;
-			case GoogleAnalyticsConfig::ERROR_SEVERITY_WARNINGS:
+			case Config::ERROR_SEVERITY_WARNINGS:
 				trigger_error($message, E_USER_WARNING);
 				break;
-			case GoogleAnalyticsConfig::ERROR_SEVERITY_EXCEPTIONS:
+			case Config::ERROR_SEVERITY_EXCEPTIONS:
 				throw new Exception($message);
 				break;
 		}

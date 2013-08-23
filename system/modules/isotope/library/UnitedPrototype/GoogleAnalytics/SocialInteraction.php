@@ -8,7 +8,7 @@
  * License (LGPL) as published by the Free Software Foundation; either
  * version 3 of the License, or (at your option) any later version.
  * 
- * This library is distributed in the hope that it will be //useful,
+ * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
  * Lesser General Public License for more details.
@@ -26,7 +26,9 @@
  * @copyright Copyright (c) 2010 United Prototype GmbH (http://unitedprototype.com)
  */
 
-class GoogleAnalyticsSocialInteraction {
+namespace UnitedPrototype\GoogleAnalytics;
+
+class SocialInteraction {
 	
 	/**
 	 * Required. A string representing the social network being tracked (e.g. "Facebook", "Twitter", "LinkedIn", ...),
@@ -48,8 +50,8 @@ class GoogleAnalyticsSocialInteraction {
 	
 	/**
 	 * Optional. A string representing the URL (or resource) which receives the action. For example,
-	 * if a //user clicks the Like button on a page on a site, the the target might be set to the title
-	 * of the page, or an ID //used to identify the page in a content management system. In many cases,
+	 * if a user clicks the Like button on a page on a site, the the target might be set to the title
+	 * of the page, or an ID used to identify the page in a content management system. In many cases,
 	 * the page you Like is the same page you are on. So if this parameter is not given, we will default
 	 * to using the path of the corresponding Page object.
 	 * 
@@ -70,7 +72,7 @@ class GoogleAnalyticsSocialInteraction {
 	
 	public function validate() {
 		if($this->network === null || $this->action === null) {
-			GoogleAnalyticsTracker::_raiseError('Social interactions need to have at least the "network" and "action" attributes defined.', __METHOD__);
+			Tracker::_raiseError('Social interactions need to have at least the "network" and "action" attributes defined.', __METHOD__);
 		}
 	}
 	

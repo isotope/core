@@ -8,7 +8,7 @@
  * License (LGPL) as published by the Free Software Foundation; either
  * version 3 of the License, or (at your option) any later version.
  * 
- * This library is distributed in the hope that it will be //useful,
+ * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
  * Lesser General Public License for more details.
@@ -26,8 +26,9 @@
  * @copyright Copyright (c) 2010 United Prototype GmbH (http://unitedprototype.com)
  */
 
+namespace UnitedPrototype\GoogleAnalytics;
 
-class GoogleAnalyticsPage {
+class Page {
 	
 	/**
 	 * Page request URI, e.g. "/path/page.html", will be mapped to
@@ -63,6 +64,14 @@ class GoogleAnalyticsPage {
 	 */
 	protected $referrer;
 	
+	/**
+	 * Page load time in milliseconds, will be encoded into "utme" parameter.
+	 * 
+	 * @see Internals\ParameterHolder::$utme
+	 * @var int
+	 */
+	protected $loadTime;
+	
 	
 	/**
 	 * Constant to mark referrer as a site-internal one.
@@ -85,7 +94,7 @@ class GoogleAnalyticsPage {
 	 */
 	public function setPath($path) {
 		if($path && $path[0] != '/') {
-			GoogleAnalyticsTracker::_raiseError('The page path should always start with a slash ("/").', __METHOD__);
+			Tracker::_raiseError('The page path should always start with a slash ("/").', __METHOD__);
 		}
 		
 		$this->path = $path;
@@ -138,6 +147,24 @@ class GoogleAnalyticsPage {
 	 */
 	public function getReferrer() {
 		return $this->referrer;
+	}
+	
+	/**
+	 * @param int $loadTime
+	 */
+	public function setLoadTime($loadTime) {
+		if((int)$loadTime != (float)$loadTime) {
+			return Tracker::_raiseError('Page load time must be specified in integer milliseconds.', __METHOD__);
+		}
+		
+		$this->loadTime = (int)$loadTime;
+	}
+	
+	/**
+	 * @return int
+	 */
+	public function getLoadTime() {
+		return $this->loadTime;
 	}
 	
 }

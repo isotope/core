@@ -8,7 +8,7 @@
  * License (LGPL) as published by the Free Software Foundation; either
  * version 3 of the License, or (at your option) any later version.
  * 
- * This library is distributed in the hope that it will be //useful,
+ * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
  * Lesser General Public License for more details.
@@ -26,12 +26,14 @@
  * @copyright Copyright (c) 2010 United Prototype GmbH (http://unitedprototype.com)
  */
 
+namespace UnitedPrototype\GoogleAnalytics\Internals;
+
 /**
- * This is nearly a 1:1 PHP port of the gaforflash X10 class GoogleAnalyticscode.
+ * This is nearly a 1:1 PHP port of the gaforflash X10 class code.
  * 
  * @link http://code.google.com/p/gaforflash/source/browse/trunk/src/com/google/analytics/data/X10.as
  */
-class GoogleAnalyticsX10 {
+class X10 {
 	
 	/**
 	 * @var array
@@ -94,6 +96,24 @@ class GoogleAnalyticsX10 {
 	 * @var int
 	 */
 	protected $MINIMUM = 1;
+	
+	
+	/**
+	 * @const int
+	 */
+	const OBJECT_KEY_NUM  = 1;
+	/**
+	 * @const int
+	 */
+	const TYPE_KEY_NUM    = 2;
+	/**
+	 * @const int
+	 */
+	const LABEL_KEY_NUM   = 3;
+	/**
+	 * @const int
+	 */
+	const VALUE_VALUE_NUM = 1;
 	
 	
 	/**

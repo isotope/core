@@ -8,7 +8,7 @@
  * License (LGPL) as published by the Free Software Foundation; either
  * version 3 of the License, or (at your option) any later version.
  * 
- * This library is distributed in the hope that it will be //useful,
+ * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
  * Lesser General Public License for more details.
@@ -26,15 +26,21 @@
  * @copyright Copyright (c) 2010 United Prototype GmbH (http://unitedprototype.com)
  */
 
+namespace UnitedPrototype\GoogleAnalytics;
+
+use UnitedPrototype\GoogleAnalytics\Internals\Util;
+
+use DateTime;
+
 /**
- * You should serialize this object and store it in e.g. the //user database to keep it
- * persistent for the same //user permanently (similar to the "__umtz" cookie of
+ * You should serialize this object and store it in e.g. the user database to keep it
+ * persistent for the same user permanently (similar to the "__umtz" cookie of
  * the GA Javascript client).
  */
-class GoogleAnalyticsCampaign {
+class Campaign {
 	
 	/**
-	 * See $this->TYPE_* constants, will be mapped to "__utmz" parameter.
+	 * See self::TYPE_* constants, will be mapped to "__utmz" parameter.
 	 * 
 	 * @see Internals\ParameterHolder::$__utmz
 	 * @var string
@@ -52,7 +58,7 @@ class GoogleAnalyticsCampaign {
 	/**
 	 * Response Count, will be mapped to "__utmz" parameter.
 	 * 
-	 * Is also //used to determine whether the campaign is new or repeated,
+	 * Is also used to determine whether the campaign is new or repeated,
 	 * which will be mapped to "utmcn" and "utmcr" parameters.
 	 * 
 	 * @see Internals\ParameterHolder::$__utmz
@@ -153,26 +159,26 @@ class GoogleAnalyticsCampaign {
 	 * @param string $type See TYPE_* constants
 	 */
 	public function __construct($type) {
-		if(!in_array($type, array($this->TYPE_DIRECT, $this->TYPE_ORGANIC, $this->TYPE_REFERRAL))) {
-			GoogleAnalyticsTracker::_raiseError('Campaign type has to be one of the GoogleAnalyticsCampaign::TYPE_* constant values.', __METHOD__);
+		if(!in_array($type, array(self::TYPE_DIRECT, self::TYPE_ORGANIC, self::TYPE_REFERRAL))) {
+			Tracker::_raiseError('Campaign type has to be one of the Campaign::TYPE_* constant values.', __METHOD__);
 		}
 		
 		$this->type = $type;
 		
 		switch($type) {
 			// See http://code.google.com/p/gaforflash/source/browse/trunk/src/com/google/analytics/campaign/CampaignManager.as#375
-			case $this->TYPE_DIRECT:
+			case self::TYPE_DIRECT:
 				$this->name   = '(direct)';
 				$this->source = '(direct)';
 				$this->medium = '(none)';
 				break;
 			// See http://code.google.com/p/gaforflash/source/browse/trunk/src/com/google/analytics/campaign/CampaignManager.as#340
-			case $this->TYPE_REFERRAL:
+			case self::TYPE_REFERRAL:
 				$this->name   = '(referral)';
 				$this->medium = 'referral';
 				break;
 			// See http://code.google.com/p/gaforflash/source/browse/trunk/src/com/google/analytics/campaign/CampaignManager.as#280
-			case $this->TYPE_ORGANIC:
+			case self::TYPE_ORGANIC:
 				$this->name   = '(organic)';
 				$this->medium = 'organic';
 				break;
@@ -187,7 +193,7 @@ class GoogleAnalyticsCampaign {
 	 * @return \UnitedPrototype\GoogleAnalytics\Campaign
 	 */
 	public static function createFromReferrer($url) {
-		$instance = new GoogleAnalyticsCampaign($this->TYPE_REFERRAL);
+		$instance = new static(self::TYPE_REFERRAL);
 		$urlInfo = parse_url($url);
 		$instance->source  = $urlInfo['host'];
 		$instance->content = $urlInfo['path'];
@@ -202,7 +208,7 @@ class GoogleAnalyticsCampaign {
 		// NOTE: gaforflash states that id and gClickId must also be specified,
 		// but that doesn't seem to be correct
 		if(!$this->source) {
-			GoogleAnalyticsTracker::_raiseError('Campaigns need to have at least the "source" attribute defined.', __METHOD__);
+			Tracker::_raiseError('Campaigns need to have at least the "source" attribute defined.', __METHOD__);
 		}
 	}
 	

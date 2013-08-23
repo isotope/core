@@ -8,7 +8,7 @@
  * License (LGPL) as published by the Free Software Foundation; either
  * version 3 of the License, or (at your option) any later version.
  * 
- * This library is distributed in the hope that it will be //useful,
+ * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
  * Lesser General Public License for more details.
@@ -26,10 +26,16 @@
  * @copyright Copyright (c) 2010 United Prototype GmbH (http://unitedprototype.com)
  */
 
+namespace UnitedPrototype\GoogleAnalytics\Internals\Request;
+
+use UnitedPrototype\GoogleAnalytics\Config;
+
+use UnitedPrototype\GoogleAnalytics\Internals\Util;
+
 /**
  * @link http://code.google.com/p/gaforflash/source/browse/trunk/src/com/google/analytics/core/GIFRequest.as
  */
-abstract class GoogleAnalyticsHttpRequest {	
+abstract class HttpRequest {	
 	
 	/**
 	 * Indicates the type of request, will be mapped to "utmt" parameter
@@ -58,16 +64,8 @@ abstract class GoogleAnalyticsHttpRequest {
 	/**
 	 * @param \UnitedPrototype\GoogleAnalytics\Config $config
 	 */
-	public function __construct(GoogleAnalyticsConfig $config = null) {
-		if(is_object($config))
-		{
-			$objConfig = $config;
-		}
-		else
-		{
-			$objConfig = new GoogleAnalyticsHttpRequest();	
-		}
-		$this->setConfig($objConfig);
+	public function __construct(Config $config = null) {
+		$this->setConfig($config ? $config : new Config());
 	}
 	
 	/**
@@ -80,7 +78,7 @@ abstract class GoogleAnalyticsHttpRequest {
 	/**
 	 * @param \UnitedPrototype\GoogleAnalytics\Config $config
 	 */
-	public function setConfig(GoogleAnalyticsConfig $config) {
+	public function setConfig(Config $config) {
 		$this->config = $config;
 	}
 	
@@ -94,7 +92,7 @@ abstract class GoogleAnalyticsHttpRequest {
 	/**
 	 * @param string $value
 	 */
-	protected function setuserAgent($value) {
+	protected function setUserAgent($value) {
 		$this->userAgent = $value;
 	}
 	
@@ -105,7 +103,7 @@ abstract class GoogleAnalyticsHttpRequest {
 		$parameters = $this->buildParameters();
 		
 		// This constant is supported as the 4th argument of http_build_query()
-		// from PHP 5.3.6 on and will tell it to //use rawurlencode() instead of urlencode()
+		// from PHP 5.3.6 on and will tell it to use rawurlencode() instead of urlencode()
 		// internally, see http://code.google.com/p/php-ga/issues/detail?id=3
 		if(defined('PHP_QUERY_RFC3986')) {
 			// http_build_query() does automatically skip all array entries
@@ -117,9 +115,9 @@ abstract class GoogleAnalyticsHttpRequest {
 		}
 		// Mimic Javascript's encodeURIComponent() encoding for the query
 		// string just to be sure we are 100% consistent with GA's Javascript client
-		$queryString = GoogleAnalyticsUtil::convertToUriComponentEncoding($queryString);
+		$queryString = Util::convertToUriComponentEncoding($queryString);
 		
-		// Recent versions of ga.js //use HTTP POST requests if the query string is too long
+		// Recent versions of ga.js use HTTP POST requests if the query string is too long
 		$usePost = strlen($queryString) > 2036;
 		
 		if(!$usePost) {
@@ -131,7 +129,7 @@ abstract class GoogleAnalyticsHttpRequest {
 		$r .= 'Host: ' . $this->config->getEndpointHost() . "\r\n";
 		
 		if($this->userAgent) {
-			$r .= '//user-Agent: ' . str_replace(array("\n", "\r"), '', $this->userAgent) . "\r\n";
+			$r .= 'User-Agent: ' . str_replace(array("\n", "\r"), '', $this->userAgent) . "\r\n";
 		}
 		
 		if($this->xForwardedFor) {
@@ -177,6 +175,7 @@ abstract class GoogleAnalyticsHttpRequest {
 	public function _send() {
 		$request = $this->buildHttpRequest();
 		$response = null;
+		
 		// Do not actually send the request if endpoint host is set to null
 		if($this->config->getEndpointHost() !== null) {
 			$timeout = $this->config->getRequestTimeout();
@@ -192,7 +191,12 @@ abstract class GoogleAnalyticsHttpRequest {
 			$timeoutUs = ($timeout - $timeoutS) * 100000;
 			stream_set_timeout($socket, $timeoutS, $timeoutUs);
 			
-			fwrite($socket, $request);
+			// Ensure that the full request is sent (see http://code.google.com/p/php-ga/issues/detail?id=11)
+			$sentData = 0;
+			$toBeSentData = strlen($request);
+			while($sentData < $toBeSentData) {
+				$sentData += fwrite($socket, $request);
+			}
 			
 			if(!$this->config->getFireAndForget()) {
 				while(!feof($socket)) {
@@ -202,7 +206,6 @@ abstract class GoogleAnalyticsHttpRequest {
 			
 			fclose($socket);
 		}
-		
 		
 		if($loggingCallback = $this->config->getLoggingCallback()) {
 			$loggingCallback($request, $response);
@@ -218,20 +221,19 @@ abstract class GoogleAnalyticsHttpRequest {
 	public function fire() {
 		if($this->config->getSendOnShutdown()) {
 			// This dumb variable assignment is needed as PHP prohibits using
-			// $this in closure //use statements
+			// $this in closure use statements
 			$instance = $this;
-			// We //use a closure here to retain the current values/states of
-			// this instance and $request (as the //use statement will copy them
+			// We use a closure here to retain the current values/states of
+			// this instance and $request (as the use statement will copy them
 			// into its own scope)
-			register_shutdown_function(array($this,'shutDown'),$instance);
+			register_shutdown_function(function() use($instance) {
+				$instance->_send();
+			});
 		} else {
 			$this->_send();
 		}
 	}
 
-	public function shutDown($instance) {
-		$instance->_send();
-	}
 }
 
 ?>

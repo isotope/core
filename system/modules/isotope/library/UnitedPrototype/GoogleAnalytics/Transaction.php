@@ -8,7 +8,7 @@
  * License (LGPL) as published by the Free Software Foundation; either
  * version 3 of the License, or (at your option) any later version.
  * 
- * This library is distributed in the hope that it will be //useful,
+ * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
  * Lesser General Public License for more details.
@@ -26,10 +26,12 @@
  * @copyright Copyright (c) 2010 United Prototype GmbH (http://unitedprototype.com)
  */
 
+namespace UnitedPrototype\GoogleAnalytics;
+
 /**
  * @link http://code.google.com/p/gaforflash/source/browse/trunk/src/com/google/analytics/ecommerce/Transaction.as
  */
-class GoogleAnalyticsTransaction {
+class Transaction {
 	
 	/**
 	 * Order ID, e.g. "a2343898", will be mapped to "utmtid" parameter
@@ -105,15 +107,15 @@ class GoogleAnalyticsTransaction {
 	
 	public function validate() {
 		if(!$this->items) {
-			GoogleAnalyticsTracker::_raiseError('Transactions need to consist of at least one item.', __METHOD__);
+			Tracker::_raiseError('Transactions need to consist of at least one item.', __METHOD__);
 		}
 	}
 	
 	/**
 	 * @link http://code.google.com/apis/analytics/docs/gaJS/gaJSApiEcommerce.html#_gat.GA_Tracker_._addItem
-	 * @param \UnitedPrototype\GoogleAnalytics\GoogleAnalyticsItem $item
+	 * @param \UnitedPrototype\GoogleAnalytics\Item $item
 	 */
-	public function addItem(GoogleAnalyticsItem $item) {
+	public function addItem(Item $item) {
 		// Associated items inherit the transaction's order ID
 		$item->setOrderId($this->orderId);
 		

@@ -8,7 +8,7 @@
  * License (LGPL) as published by the Free Software Foundation; either
  * version 3 of the License, or (at your option) any later version.
  * 
- * This library is distributed in the hope that it will be //useful,
+ * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
  * Lesser General Public License for more details.
@@ -26,11 +26,13 @@
  * @copyright Copyright (c) 2010 United Prototype GmbH (http://unitedprototype.com)
  */
 
+namespace UnitedPrototype\GoogleAnalytics;
+
 /**
  * @link http://code.google.com/apis/analytics/docs/tracking/eventTrackerOverview.html
  * @link http://code.google.com/apis/analytics/docs/gaJS/gaJSApiEventTracking.html
  */
-class GoogleAnalyticsEvent {	
+class Event {	
 	
 	/**
 	 * The general event category (e.g. "Videos").
@@ -64,7 +66,7 @@ class GoogleAnalyticsEvent {
 	
 	/**
 	 * Default value is false. By default, event hits will impact a visitor's bounce rate.
-	 * By setting this parameter to true, this event hit will not be //used in bounce rate calculations.
+	 * By setting this parameter to true, this event hit will not be used in bounce rate calculations.
 	 * 
 	 * @var bool
 	 */
@@ -88,7 +90,7 @@ class GoogleAnalyticsEvent {
 	
 	public function validate() {
 		if($this->category === null || $this->action === null) {
-			GoogleAnalyticsTracker::_raiseError('Events need at least to have a category and action defined.', __METHOD__);
+			Tracker::_raiseError('Events need at least to have a category and action defined.', __METHOD__);
 		}
 	}
 	
