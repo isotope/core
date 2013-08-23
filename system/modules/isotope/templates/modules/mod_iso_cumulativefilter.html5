@@ -1,0 +1,23 @@
+
+<!-- indexer::stop -->
+<nav class="<?php echo $this->class; ?> block"<?php echo $this->cssID; ?><?php if ($this->style): ?> style="<?php echo $this->style; ?>"<?php endif; ?>>
+<?php if ($this->headline): ?>
+
+<<?php echo $this->hl; ?>><?php echo $this->headline; ?></<?php echo $this->hl; ?>>
+<?php endif; ?>
+
+<ul class="level_1">
+<?php foreach ($this->filters as $item): ?>
+<li<?php if($item['isActive']): ?> class="trail"<?php endif; ?>>
+    <span class="label"><?php echo $item['label']; ?></span>
+    <?php echo $item['subitems']; ?>
+</li>
+<?php endforeach; ?>
+</ul>
+<?php if($this->showClear): ?>
+
+<p class="clearall"><a href="<?php echo $this->linkClearAll; ?>"><?php echo $this->labelClearAll; ?></a></p>
+<?php endif; ?>
+
+</nav>
+<!-- indexer::continue -->

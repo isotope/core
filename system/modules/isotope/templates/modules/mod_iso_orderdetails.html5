@@ -1,0 +1,28 @@
+
+<!-- indexer::stop -->
+<div class="<?php echo $this->class; ?> block"<?php echo $this->cssID; ?><?php if ($this->style): ?> style="<?php echo $this->style; ?>"<?php endif; ?>>
+<?php if ($this->headline): ?>
+
+<<?php echo $this->hl; ?>><?php echo $this->headline; ?></<?php echo $this->hl; ?>>
+<?php endif; ?>
+<h2 class="<?php echo $this->orderStatusKey; ?>"><?php echo $this->orderStatus; ?></h2>
+<h2><?php echo $this->orderDetailsHeadline; ?></h2>
+
+<?php foreach( $this->info as $type => $data ): ?>
+<div class="info_container <?php echo $type . $data['class']; ?>">
+    <h3><?php echo $data['headline']; ?></h3>
+    <div class="info"><?php echo $data['info']; ?></div>
+</div>
+<?php endforeach; ?>
+<div class="clear">&nbsp;</div>
+
+<?php echo $this->products; ?>
+
+<?php if (count($this->downloads)): ?>
+<h2><?php echo $GLOBALS['TL_LANG']['MSC']['downloadsLabel']; ?></h2>
+<?php foreach( $this->downloads as $download ): ?>
+<div class="download"><?php if ($download['downloadable']): ?><a href="<?php echo $download['href']; ?>"><?php endif; echo $download['title']; if ($download['downloadable']): ?></a><?php endif; echo $download['remaining']; ?></div>
+<?php endforeach; endif; ?>
+
+</div>
+<!-- indexer::continue -->
