@@ -4,6 +4,8 @@ Isotope eCommerce Changelog
 Version 1.4.6 (????-??-??)
 --------------------------
 
+### Fixed
+- Filters did not search variants correctly
 
 Version 1.4.5 (2013-08-12)
 --------------------------
