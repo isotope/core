@@ -106,11 +106,9 @@ class Analytics extends Frontend
         }
 
         // Track logged-in member as custom variable
-        if ($objConfig->ga_member != '' && FE_USER_LOGGED_IN)
+        if ($objConfig->ga_member != '' && $objOrder->member > 0 && ($objMember = \MemberModel::findByPk($objOrder->member)) !== null)
         {
-            $this->import('FrontendUser', 'User');
-
-            $customVar = new \UnitedPrototype\GoogleAnalytics\CustomVariable(1, 'Member', $this->parseSimpleTokens($objConfig->ga_member, $this->User->getData()), \UnitedPrototype\GoogleAnalytics\CustomVariable::SCOPE_VISITOR);
+            $customVar = new \UnitedPrototype\GoogleAnalytics\CustomVariable(1, 'Member', $this->parseSimpleTokens($objConfig->ga_member, $objMember->row()), \UnitedPrototype\GoogleAnalytics\CustomVariable::SCOPE_VISITOR);
 
             $tracker->addCustomVariable($customVar);
         }
