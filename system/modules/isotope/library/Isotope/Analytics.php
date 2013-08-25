@@ -12,6 +12,8 @@
 
 namespace Isotope;
 
+use Isotope\Model\Config;
+
 
 class Analytics extends Frontend
 {
@@ -21,9 +23,9 @@ class Analytics extends Frontend
      */
     public function trackOrder($objOrder, $arrItemIds, $arrData)
     {
-        $objConfig = new IsotopeConfig();
+        $objConfig = Config::findByPk($objOrder->config_id);
 
-        if ($objConfig->findBy('id', $objOrder->config_id)) {
+        if (null !== $objConfig) {
 
             if ($objConfig->ga_enable) {
                 $this->trackGATransaction($objConfig, $objOrder);
