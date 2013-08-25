@@ -785,9 +785,9 @@ abstract class ProductCollection extends TypeAgent
 
     /**
      * Add a product to the collection
-     * @param object The product object
-     * @param integer How many products to add
-     * @return integer ID of database record added/updated
+     * @param   object The product object
+     * @param   integer How many products to add
+     * @return  ProductCollectionItem
      */
     public function addProduct(IsotopeProduct $objProduct, $intQuantity)
     {
