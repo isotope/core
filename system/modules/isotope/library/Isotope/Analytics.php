@@ -13,6 +13,7 @@
 namespace Isotope;
 
 use Isotope\Model\Config;
+use Isotope\Model\ProductCollection\Order;
 
 
 class Analytics extends Frontend
@@ -21,7 +22,7 @@ class Analytics extends Frontend
     /**
      * Process checkout
      */
-    public function trackOrder($objOrder, $arrItemIds, $arrData)
+    public function trackOrder(Order $objOrder, $arrItemIds, $arrData)
     {
         $objConfig = Config::findByPk($objOrder->config_id);
 
@@ -34,7 +35,6 @@ class Analytics extends Frontend
 
         return true;
     }
-
 
     /**
      * Actually execute the GoogleAnalytics tracking
@@ -56,20 +56,20 @@ class Analytics extends Frontend
 
         $transaction->setOrderId($objOrder->order_id);
         $transaction->setAffiliation($objConfig->name);
-        $transaction->setTotal($objOrder->grandTotal);
-        $transaction->setTax($objOrder->taxTotal);
-        $transaction->setShipping($objOrder->shippingTotal);
-        $transaction->setCity($objOrder->billing_address['city']);
+        $transaction->setTotal($objOrder->getTotal());
+        $transaction->setTax(($objOrder->getTotal() - $objOrder->getTaxFreeTotal()));
+//        $transaction->setShipping($objOrder->shippingTotal);
 
-        if ($objOrder->billing_address['subdivision']) {
-            $arrSub = explode("-",$objOrder->billing_address['subdivision']);
+        $objAddress = $objOrder->getBillingAddress();
+
+        $transaction->setCity($objAddress->city);
+
+        if ($objAddress->subdivision) {
+            $arrSub = explode("-", $objAddress->subdivision, 2);
             $transaction->setRegion($arrSub[1]);
         }
 
-        $transaction->setCountry($objOrder->billing_address['country']);
-
-        $arrProducts = $objOrder->getProducts();
-
+        $transaction->setCountry($objAddress->country);
 
 
         foreach ($objOrder->getItems() as $objItem)
