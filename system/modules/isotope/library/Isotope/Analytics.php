@@ -72,35 +72,26 @@ class Analytics extends Frontend
 
 
 
-        foreach ($arrProducts as $i=>$objProduct)
+        foreach ($objOrder->getItems() as $objItem)
         {
             $item = new \UnitedPrototype\GoogleAnalytics\Item();
 
-            $arrOptions = array();
+            if ($objItem->getSku()) {
+                $item->setSku($objItem->getSku());
+            }
+
+            $item->setName($objItem->getName());
+            $item->setPrice($objItem->getPrice());
+            $item->setQuantity($objItem->quantity);
+
             $arrOptionValues = array();
-
-            if ($objProduct->sku) {
-                $item->setSku($objProduct->sku);
+            foreach (Isotope::formatOptions($objProduct->getOptions()) as $option) {
+                $arrOptionValues[] = $option['value'];
             }
 
-            $item->setName($objProduct->name);
-            $item->setPrice($objProduct->price);
-            $item->setQuantity($objProduct->quantity_requested);
-
-            //Do we also potentially have options?
-            $arrOptions = $objProduct->getOptions(true);
-
-            foreach ($arrOptions as $field => $value)
-            {
-                if ($value == '')
-                    continue;
-
-                $arrOptionValues[] = $this->Isotope->formatValue('tl_iso_products', $field, $value);
-
+            if (!empty($arrOptionValues)) {
+                $item->setVariation(implode(', ', $arrOptionValues));
             }
-
-            if(count($arrOptionValues))
-                $item->setVariation(implode(' ',$arrOptionValues));
 
             $transaction->addItem($item);
         }
