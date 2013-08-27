@@ -13,6 +13,7 @@
 
 namespace Isotope\CheckoutStep;
 
+use Haste\Form;
 
 abstract class OrderConditions extends CheckoutStep
 {
@@ -32,42 +33,27 @@ abstract class OrderConditions extends CheckoutStep
      */
     public function generate()
     {
-        $this->import('Isotope\Frontend', 'IsotopeFrontend');
-        $objForm = $this->IsotopeFrontend->prepareForm($this->iso_order_conditions, $this->strFormId);
+        $objForm = new Form($this->objModule->getFormId(), 'POST', function($haste) {
+            return \Input::post('FORM_SUBMIT') === $haste->getFormId();
+        });
 
-        // Form not found
-        if ($objForm == null)
-        {
-            return '';
-        }
+        // don't catch the exception here because we want it to be shown to the user
+        $objForm->addFieldsFromFormGenerator($this->iso_order_conditions);
 
-        $this->blnError = $objForm->blnHasErrors;
-        $this->Template->enctype = $objForm->enctype;
+        if ($objForm->validate()) {
+            foreach ($objForm->fetchAll() as $strName => $varValue) {
+                $this->objModule->arrOrderData['form_' . $strName] = $varValue;
 
-        if (!$this->hasError())
-        {
-            foreach ($objForm->arrFormData as $name => $value)
-            {
-                $this->objModule->arrOrderData['form_' . $name] = $value;
+                // @todo file handling?
+                // Isotope 1.4.* code was:
+                // $this->objModule->arrOrderData['form_' . $name] = \Environment::get('base') . str_replace(TL_ROOT . '/', '', dirname($file['tmp_name'])) . '/' . rawurlencode($file['name']);
             }
-
-            foreach ($objForm->arrFiles as $name => $file)
-            {
-                $this->objModule->arrOrderData['form_' . $name] = \Environment::get('base') . str_replace(TL_ROOT . '/', '', dirname($file['tmp_name'])) . '/' . rawurlencode($file['name']);
-            }
+        } else {
+            $this->blnError = true;
         }
 
         $objTemplate = new \Isotope\Template('iso_checkout_order_conditions');
-        $objTemplate->attributes    = $objForm->attributes;
-        $objTemplate->tableless        = $objForm->arrData['tableless'];
-
-        $parse = function ($a) {
-            return $a->parse();
-        };
-
-        $objTemplate->hidden = implode('', array_map($parse, $objForm->arrHidden));
-        $objTemplate->fields = implode('', array_map($parse, $objForm->arrFields));
-
+        $objForm->addToTemplate($objTemplate);
         return $objTemplate->parse();
     }
 

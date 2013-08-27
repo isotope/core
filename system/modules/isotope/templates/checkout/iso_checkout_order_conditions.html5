@@ -1,6 +1,3 @@
-<?php echo $this->hidden; ?>
-<?php if (!$this->tableless): ?>
-<table>
-<?php echo $this->fields; ?>
-</table>
-<?php else: echo $this->fields; endif; ?>
+<?php foreach($this->fields as $objWidget): ?>
+   <?php echo $objWidget->parse(); ?>
+<?php endforeach; ?>
