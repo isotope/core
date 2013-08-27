@@ -12,8 +12,8 @@
 
 namespace Isotope\Module;
 
-use Isotope\Interfaces\IsotopeCheckoutStep;
 use Isotope\Isotope;
+use Isotope\Interfaces\IsotopeCheckoutStep;
 use Isotope\Model\Payment;
 use Isotope\Model\Shipping;
 use Isotope\Model\ProductCollection\Order;
