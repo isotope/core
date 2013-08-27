@@ -49,8 +49,8 @@ class IsotopeRules extends \Controller
         $this->import('Database');
 
         // User object must be loaded from cart, e.g. for postsale handling
-        if (Isotope::getCart()->pid > 0) {
-            $this->User = \Database::getInstance()->prepare("SELECT * FROM tl_member WHERE id=?")->execute(Isotope::getCart()->pid);
+        if (Isotope::getCart()->member > 0) {
+            $this->User = \Database::getInstance()->prepare("SELECT * FROM tl_member WHERE id=?")->execute(Isotope::getCart()->member);
         }
     }
 
