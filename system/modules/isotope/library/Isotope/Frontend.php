@@ -709,7 +709,7 @@ window.addEvent('domready', function()
             return null;
         }
 
-        if ($blnCheckAvailability && !$objProduct->isAvailable())
+        if ($blnCheckAvailability && !$objProduct->isAvailableInFrontend())
         {
             return null;
         }

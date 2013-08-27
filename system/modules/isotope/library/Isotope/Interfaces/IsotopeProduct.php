@@ -20,10 +20,16 @@ interface IsotopeProduct
 {
 
     /**
-     * Returns true if the product is available, otherwise returns false
+     * Returns true if the product is available in the frontend
      * @return bool
      */
-    public function isAvailable();
+    public function isAvailableInFrontend();
+
+    /**
+     * Returns true if the product is available in the given collection
+     * @return bool
+     */
+    public function isAvailableForCollection(IsotopeProductCollection $objCollection);
 
     /**
      * Returns true if the product is locked (price should not be calculated, e.g. in orders), otherwise returns false

@@ -714,7 +714,7 @@ abstract class ProductCollection extends TypeAgent
                     }
 
                     // Remove item from collection if it is no longer available
-                    if (!$this->isLocked() && (!$objItem->hasProduct() || !$objItem->getProduct()->isAvailable())) {
+                    if (!$this->isLocked() && (!$objItem->hasProduct() || !$objItem->getProduct()->isAvailableForCollection($this))) {
                         $this->deleteItem($objItem);
                         continue;
                     }
