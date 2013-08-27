@@ -82,7 +82,7 @@ class PaymentPaypal extends IsotopePayment
 	public function processPostSale()
 	{
 		$objRequest = new Request();
-		$objRequest->send(('https://www.' . ($this->debug ? 'sandbox.' : '') . 'paypal.com/cgi-bin/webscr?cmd=_notify-validate'), http_build_query($_POST, '', '&'), 'post');
+		$objRequest->send(('https://www.' . ($this->debug ? 'sandbox.' : '') . 'paypal.com/cgi-bin/webscr?cmd=_notify-validate'), file_get_contents("php://input"), 'post');
 
 		if ($objRequest->hasError())
 		{
