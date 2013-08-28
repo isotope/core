@@ -230,14 +230,6 @@ class Standard extends Product implements IsotopeProduct
 
                 return $this->arrCache[$strKey] ? $this->arrCache[$strKey] : 1;
 
-            case 'minimum_quantity':
-                if (!isset($this->arrCache[$strKey]))
-                {
-                    $this->findPrice();
-                }
-
-                return $this->arrCache[$strKey] ? $this->arrCache[$strKey] : 1;
-
             case 'shipping_exempt':
                 return ($this->arrData['shipping_exempt'] || $this->getRelated('type')->shipping_exempt) ? true : false;
 
@@ -360,6 +352,20 @@ class Standard extends Product implements IsotopeProduct
             default:
                 $this->arrCache[$strKey] = $varValue;
         }
+    }
+
+    /**
+     * Return minimum quantity for the product (from advanced price tiers)
+     * @return  int
+     */
+    public function getMinimumQuantity()
+    {
+        if (!isset($this->arrCache['minimum_quantity']))
+        {
+            $this->findPrice();
+        }
+
+        return $this->arrCache['minimum_quantity'] ? $this->arrCache['minimum_quantity'] : 1;
     }
 
 
@@ -815,7 +821,7 @@ class Standard extends Product implements IsotopeProduct
         $objTemplate->quantityLabel = $GLOBALS['TL_LANG']['MSC']['quantity'];
         $objTemplate->useQuantity = $arrConfig['useQuantity'];
         $objTemplate->quantity_requested = $this->quantity_requested;
-        $objTemplate->minimum_quantity = $this->minimum_quantity;
+        $objTemplate->minimum_quantity = $this->getMinimumQuantity();
         $objTemplate->raw = array_merge($this->arrData, $this->arrCache);
         $objTemplate->raw_options = $this->arrOptions;
         $objTemplate->href_reader = $this->href_reader;

@@ -44,6 +44,12 @@ interface IsotopeProduct
     public function isPublished();
 
     /**
+     * Return minimum quantity for the product (from advanced price tiers)
+     * @return  int
+     */
+    public function getMinimumQuantity();
+
+    /**
      * Generate a product template
      * @param   array
      * @return  string

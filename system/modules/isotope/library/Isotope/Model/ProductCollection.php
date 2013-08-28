@@ -815,15 +815,13 @@ abstract class ProductCollection extends TypeAgent
         unset($_SESSION['FILES']);
 
         $objItem = $this->getItemForProduct($objProduct);
+        $intMinimumQuantity = $objProduct->getMinimumQuantity();
 
         if (null !== $objItem)
         {
-            // Set product quantity so we can determine the correct minimum price
-            $objProduct->quantity_requested = $objItem->quantity;
-
-            if (($objItem->quantity + $intQuantity) < $objProduct->minimum_quantity) {
-                $_SESSION['ISO_INFO'][] = sprintf($GLOBALS['TL_LANG']['ERR']['productMinimumQuantity'], $objProduct->name, $objProduct->minimum_quantity);
-                $intQuantity = $objProduct->minimum_quantity - $objItem->quantity;
+            if (($objItem->quantity + $intQuantity) < $intMinimumQuantity) {
+                $_SESSION['ISO_INFO'][] = sprintf($GLOBALS['TL_LANG']['ERR']['productMinimumQuantity'], $objProduct->name, $intMinimumQuantity);
+                $intQuantity = $intMinimumQuantity - $objItem->quantity;
             }
 
             $objItem->increaseQuantityBy($intQuantity);
@@ -832,9 +830,9 @@ abstract class ProductCollection extends TypeAgent
         }
         else
         {
-            if ($intQuantity < $objProduct->minimum_quantity) {
-                $_SESSION['ISO_INFO'][] = sprintf($GLOBALS['TL_LANG']['ERR']['productMinimumQuantity'], $objProduct->name, $objProduct->minimum_quantity);
-                $intQuantity = $objProduct->minimum_quantity;
+            if ($intQuantity < $intMinimumQuantity) {
+                $_SESSION['ISO_INFO'][] = sprintf($GLOBALS['TL_LANG']['ERR']['productMinimumQuantity'], $objProduct->name, $intMinimumQuantity);
+                $intQuantity = $intMinimumQuantity;
             }
 
             $objItem = new ProductCollectionItem();
@@ -908,11 +906,11 @@ abstract class ProductCollection extends TypeAgent
 
             // Set product quantity so we can determine the correct minimum price
             $objProduct = $objItem->getProduct();
-            $objProduct->quantity_requested = $arrSet['quantity'];
+            $intMinimumQuantity = $objProduct->getMinimumQuantity();
 
-            if ($arrSet['quantity'] < $objProduct->minimum_quantity) {
-                $_SESSION['ISO_INFO'][] = sprintf($GLOBALS['TL_LANG']['ERR']['productMinimumQuantity'], $objProduct->name, $objProduct->minimum_quantity);
-                $arrSet['quantity'] = $objProduct->minimum_quantity;
+            if ($arrSet['quantity'] < $intMinimumQuantity) {
+                $_SESSION['ISO_INFO'][] = sprintf($GLOBALS['TL_LANG']['ERR']['productMinimumQuantity'], $objProduct->name, $intMinimumQuantity);
+                $arrSet['quantity'] = $intMinimumQuantity;
             }
         }
 
