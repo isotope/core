@@ -35,6 +35,13 @@ class Standard extends Product implements IsotopeProduct
 {
 
     /**
+     * Price model for the current product
+     * @var Isotope\Model\ProductPrice
+     */
+    protected $objPrice;
+
+
+    /**
      * Cached product data
      * @var array
      */
@@ -497,6 +504,19 @@ class Standard extends Product implements IsotopeProduct
     public function hasAdvancedPrices()
     {
         return (bool) $this->getRelated('type')->prices;
+    }
+
+    /**
+     * Get product price model
+     * @return  IsotopePrice
+     */
+    public function getPrice()
+    {
+        if (null === $this->objPrice) {
+            $this->objPrice = ProductPrice::findForProduct($this);
+        }
+
+        return $this->objPrice;
     }
 
     /**

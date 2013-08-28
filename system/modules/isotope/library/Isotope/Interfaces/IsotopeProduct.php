@@ -62,6 +62,12 @@ interface IsotopeProduct
     public function hasAdvancedPrices();
 
     /**
+     * Get product price model
+     * @return  IsotopePrice
+     */
+    public function getPrice();
+
+    /**
      * Return minimum quantity for the product (from advanced price tiers)
      * @return  int
      */

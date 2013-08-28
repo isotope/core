@@ -59,7 +59,7 @@ class ProductPrice extends \Model implements IsotopePrice
             $arrData = self::findProductPrice($objProduct);
         }
 
-        return array_merge(array
+        $arrData = array_merge(array
         (
             'min'           => 1,
             'price'         => null,
@@ -68,6 +68,16 @@ class ProductPrice extends \Model implements IsotopePrice
             'high_price'    => null,
             'price_tiers'   => null,
         ), $arrData);
+
+        $objPrice = new static();
+        $objPrice->min = $arrData['min'];
+        $objPrice->price = $arrData['price'];
+        $objPrice->tax_class = $arrData['tax_class'];
+        $objPrice->from_price = $arrData['from_price'];
+        $objPrice->high_price = $arrData['high_price'];
+        $objPrice->price_tiers = $arrData['price_tiers'];
+
+        return $objPrice;
     }
 
 
