@@ -1127,7 +1127,8 @@ class Standard extends Product implements IsotopeProduct
         // Load variant options
         $this->arrOptions = array_merge($this->arrOptions, array_intersect_key($arrData, array_flip(array_intersect($this->arrAttributes, $GLOBALS['ISO_CONFIG']['variant_options']))));
 
-        // Unset arrDownloads cache
+        // Unset cached data
+        $this->objPrice = null;
         $this->arrDownloads = null;
     }
 
