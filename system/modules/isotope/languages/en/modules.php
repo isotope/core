@@ -57,3 +57,4 @@ $GLOBALS['TL_LANG']['IMD']['baseprice']                 = array('Base prices', '
 $GLOBALS['TL_LANG']['IMD']['gallery']                   = array('Galleries', 'Define how you want the images in your product to be rendered.');
 $GLOBALS['TL_LANG']['IMD']['iso_mail']                  = array('E-Mail manager', 'Customize Admin and Customer Notification Emails.');
 $GLOBALS['TL_LANG']['IMD']['configs']                   = array('Store configurations', 'Configure general settings for this store.');
+$GLOBALS['TL_LANG']['IMD']['labels']                    = array('Translations', 'Replace given labels for certain languages.');
