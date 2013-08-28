@@ -39,6 +39,59 @@ class ProductPrice extends \Model implements IsotopePrice
 
 
     /**
+     * Return price
+     * @param   int
+     * @return  float
+     */
+    public function getAmount($intQuantity=1)
+    {
+        return Isotope::calculatePrice($this->getValueForTier($intQuantity), $this->getRelated('pid'), 'price', $this->tax_class);
+    }
+
+    /**
+     * Return original price
+     * @param   int
+     * @return  float
+     */
+    public function getOriginalAmount($intQuantity=1)
+    {
+        return Isotope::calculatePrice($this->getValueForTier($intQuantity), $this->getRelated('pid'), 'original_price', $this->tax_class);
+    }
+
+    /**
+     * Return net price (without taxes)
+     * @param   int
+     * @return  float
+     */
+    public function getNetAmount($intQuantity=1)
+    {
+        $fltAmount = $this->getValueForTier($intQuantity);
+
+        if (($objTaxClass = $this->getRelated('tax_class')) !== null) {
+            $objTaxClass->calculateNetPrice($fltAmount);
+        }
+
+        return Isotope::calculatePrice($fltAmount, $this->getRelated('pid'), 'net_price');
+    }
+
+    /**
+     * Return gross price (with all taxes)
+     * @param   int
+     * @return  float
+     */
+    public function getGrossAmount($intQuantity=1)
+    {
+        $fltAmount = $this->getValueForTier($intQuantity);
+
+        if (($objTaxClass = $this->getRelated('tax_class')) !== null) {
+            $objTaxClass->calculateGrossPrice($fltAmount);
+        }
+
+        return Isotope::calculatePrice($fltAmount, $this->getRelated('pid'), 'gross_price');
+    }
+
+
+    /**
      * Return lowest tier (= minimum quantity)
      * @return  int
      */
