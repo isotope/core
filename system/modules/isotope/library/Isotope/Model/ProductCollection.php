@@ -697,9 +697,10 @@ abstract class ProductCollection extends TypeAgent
     /**
      * Return all items in the collection
      * @param  bool
+     * @param  callable
      * @return array
      */
-    public function getItems($blnNoCache=false)
+    public function getItems($blnNoCache=false, $varCallable=null)
     {
         if (null === $this->arrItems || $blnNoCache) {
             $this->arrItems = array();
@@ -724,7 +725,13 @@ abstract class ProductCollection extends TypeAgent
             }
         }
 
-        return $this->arrItems;
+        if ($varCallable === null) {
+            return $this->arrItems;
+        }
+
+        // not allowed to chance items
+        $arrItems = $this->arrItems;
+        return call_user_func($varCallable, $arrItems);
     }
 
 
@@ -1104,14 +1111,15 @@ abstract class ProductCollection extends TypeAgent
     /**
      * Add the collection to a template
      * @param   object
+     * @param   callable    Callable to pass to getItems() e.g. for sorting
      */
-    public function addToTemplate($objTemplate)
+    public function addToTemplate($objTemplate, $varCallable=null)
     {
         $objModule = $this;
         $arrGalleries = array();
         $arrItems = array();
 
-        foreach ($this->getItems() as $objItem) {
+        foreach ($this->getItems(false, $varCallable) as $objItem) {
 
             $blnHasProduct = $objItem->hasProduct();
             $objProduct = $objItem->getProduct();
