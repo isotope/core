@@ -39,6 +39,15 @@ class ProductPrice extends \Model implements IsotopePrice
 
 
     /**
+     * Return true if more than one price is available
+     * @return  bool
+     */
+    public function hasTiers()
+    {
+        return (count($this->arrTiers) > 1);
+    }
+
+    /**
      * Return price
      * @param   int
      * @return  float

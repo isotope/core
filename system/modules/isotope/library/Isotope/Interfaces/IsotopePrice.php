@@ -20,6 +20,12 @@ interface IsotopePrice
 {
 
     /**
+     * Return true if more than one price is available
+     * @return  bool
+     */
+    public function hasTiers();
+
+    /**
      * Return price
      * @param   int
      * @return  float
