@@ -505,6 +505,11 @@ class Standard extends Product implements IsotopeProduct
      */
     public function getMinimumQuantity()
     {
+        // Minimum quantity is only available for advanced pricing
+        if (!$this->hasAdvancedPrices()) {
+            return 1;
+        }
+
         if (!isset($this->arrCache['minimum_quantity']))
         {
             $this->findPrice();
