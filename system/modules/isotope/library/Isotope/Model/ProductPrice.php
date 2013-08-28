@@ -194,7 +194,7 @@ class ProductPrice extends \Model implements IsotopePrice
         $objPrice->pid = $objProduct->id;
         $objPrice->min = $arrData['min'];
         $objPrice->price = $arrData['price'];
-        $objPrice->tax_class = $arrData['tax_class'];
+        $objPrice->tax_class = (int) $arrData['tax_class'];
         $objPrice->from_price = $arrData['from_price'];
         $objPrice->high_price = $arrData['high_price'];
 
