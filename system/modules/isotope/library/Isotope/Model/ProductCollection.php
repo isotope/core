@@ -332,7 +332,7 @@ abstract class ProductCollection extends TypeAgent
             $arrItems = $this->getItems();
 
             foreach ($arrItems as $objItem) {
-                if ($objItem->hasProduct() && !$objItem->getProduct()->shipping_exempt) {
+                if ($objItem->hasProduct() && !$objItem->getProduct()->isExemptFromShipping()) {
                     $this->arrCache['requiresShipping'] = true;
                 }
             }

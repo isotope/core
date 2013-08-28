@@ -230,9 +230,6 @@ class Standard extends Product implements IsotopeProduct
 
                 return $this->arrCache[$strKey] ? $this->arrCache[$strKey] : 1;
 
-            case 'shipping_exempt':
-                return ($this->arrData['shipping_exempt'] || $this->getRelated('type')->shipping_exempt) ? true : false;
-
             case 'show_price_tiers':
                 return (bool) $this->getRelated('type')->show_price_tiers;
 
@@ -465,6 +462,15 @@ class Standard extends Product implements IsotopeProduct
     public function isNew()
     {
         return $this->dateAdded >= Isotope::getConfig()->getNewProductLimit();
+    }
+
+    /**
+     * Return true if the product or product type has shipping exempt activated
+     * @return  bool
+     */
+    public function isExemptFromShipping()
+    {
+        return ($this->arrData['shipping_exempt'] || $this->getRelated('type')->shipping_exempt) ? true : false;
     }
 
     /**
