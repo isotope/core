@@ -270,7 +270,7 @@ class Isotope extends \Controller
      * @param integer
      * @return float
      */
-    public static function calculatePrice($fltPrice, &$objSource, $strField, $intTaxClass=0)
+    public static function calculatePrice($fltPrice, $objSource, $strField, $intTaxClass=0)
     {
         if (!is_numeric($fltPrice))
         {
