@@ -751,16 +751,6 @@ abstract class ProductCollection extends TypeAgent
      */
     public function hasProduct(IsotopeProduct $objProduct, $blnIdentical=true)
     {
-        // !HOOK: additional functionality to check if product is in collection
-        if (isset($GLOBALS['ISO_HOOKS']['hasProductInCollection']) && is_array($GLOBALS['ISO_HOOKS']['hasProductInCollection']))
-        {
-            foreach ($GLOBALS['ISO_HOOKS']['hasProductInCollection'] as $callback)
-            {
-                $objCallback = \System::importStatic($callback[0]);
-                $intQuantity = $objCallback->$callback[1]($objProduct, $intQuantity, $this);
-            }
-        }
-
         if (true === $blnIdentical) {
 
             $objItem = $this->getItemForProduct($objProduct);
