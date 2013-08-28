@@ -139,7 +139,7 @@ class ProductPrice extends \Model implements IsotopePrice
      */
     protected static function findAdvancedProductPrice(IsotopeProduct $objProduct)
     {
-        return self::getAdvancedPrices(array($objProduct->id), $objProduct->quantity_requested, $objProduct->show_price_tiers);
+        return self::getAdvancedPrices(array($objProduct->id), $objProduct->quantity_requested, $objProduct->canSeePriceTiers());
     }
 
 
@@ -156,11 +156,11 @@ class ProductPrice extends \Model implements IsotopePrice
             return array();
         }
 
-        $arrData = self::getAdvancedPrices($arrIds, $objProduct->quantity_requested, $objProduct->show_price_tiers);
+        $arrData = self::getAdvancedPrices($arrIds, $objProduct->quantity_requested, $objProduct->canSeePriceTiers());
 
         if ($objProduct->pid == 0)
         {
-            $arrData['from_price'] = self::findLowestAdvancedPriceOfVariants($arrIds, $objProduct->show_price_tiers);
+            $arrData['from_price'] = self::findLowestAdvancedPriceOfVariants($arrIds, $objProduct->canSeePriceTiers());
         }
 
         return $arrData;

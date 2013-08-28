@@ -231,9 +231,6 @@ class Standard extends Product implements IsotopeProduct
 
                 return $this->arrCache[$strKey] ? $this->arrCache[$strKey] : 1;
 
-            case 'show_price_tiers':
-                return (bool) $this->getRelated('type')->show_price_tiers;
-
             case 'description_meta':
                 return $this->arrData['description_meta'] != '' ? $this->arrData['description_meta'] : ($this->arrData['teaser'] != '' ? $this->arrData['teaser'] : $this->arrData['description']);
 
@@ -492,6 +489,15 @@ class Standard extends Product implements IsotopeProduct
     public function hasAdvancedPrices()
     {
         return (bool) $this->getRelated('type')->prices;
+    }
+
+    /**
+     * Return true if the user should see lowest price tier as lowest price
+     * @return  bool
+     */
+    public function canSeePriceTiers()
+    {
+        return (bool) $this->getRelated('type')->show_price_tiers;
     }
 
     /**
