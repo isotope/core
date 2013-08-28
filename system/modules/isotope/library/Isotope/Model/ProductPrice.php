@@ -3,34 +3,40 @@
 /**
  * Isotope eCommerce for Contao Open Source CMS
  *
- * Copyright (C) 2008-2012 Isotope eCommerce Workgroup
+ * Copyright (C) 2009-2012 Isotope eCommerce Workgroup
  *
  * @package    Isotope
  * @link       http://www.isotopeecommerce.com
  * @license    http://opensource.org/licenses/lgpl-3.0.html LGPL
  */
 
-namespace Isotope;
+namespace Isotope\Model;
 
 use Isotope\Interfaces\IsotopeProduct;
 
 
 /**
- * Class ProductPriceFinder
+ * ProductPrice defines an advanced price of a product
  *
- * Provides helper methods to find the price of a product.
- * @copyright  Isotope eCommerce Workgroup 2009-2012
+ * @copyright  Isotope eCommerce Workgroup 2009-2013
  * @author     Andreas Schempp <andreas.schempp@terminal42.ch>
  */
-class ProductPriceFinder extends \System
+class ProductPrice extends \Model
 {
 
     /**
-     * Generate price data for a given product
+     * Name of the current table
+     * @var string
+     */
+    protected static $strTable = 'tl_iso_prices';
+
+
+    /**
+     * Find price data for a given product
      * @param IsotopeProduct
      * @return array
      */
-    public static function findPrice(IsotopeProduct $objProduct)
+    public static function findForProduct(IsotopeProduct $objProduct)
     {
         $blnAdvancedPrices = $objProduct->hasAdvancedPrices();
         $blnVariantPrices = $objProduct->hasVariantPrices();

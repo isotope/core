@@ -52,7 +52,6 @@ NamespaceClassLoader::addClassMap(array
     // Helpers
     'Isotope\PasteProductButton'        => 'system/modules/isotope/helpers/PasteProductButton.php',
     'Isotope\ProductCallbacks'          => 'system/modules/isotope/helpers/ProductCallbacks.php',
-    'Isotope\ProductPriceFinder'        => 'system/modules/isotope/helpers/ProductPriceFinder.php',
 ));
 
 

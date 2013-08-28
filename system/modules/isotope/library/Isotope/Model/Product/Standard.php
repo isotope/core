@@ -18,6 +18,7 @@ use Isotope\Interfaces\IsotopeProduct;
 use Isotope\Interfaces\IsotopeProductCollection;
 use Isotope\Model\Gallery;
 use Isotope\Model\Product;
+use Isotope\Model\ProductPrice;
 use Isotope\Model\TaxClass;
 
 
@@ -1043,7 +1044,7 @@ class Standard extends Product implements IsotopeProduct
      */
     protected function findPrice()
     {
-        $arrPrice = \Isotope\ProductPriceFinder::findPrice($this);
+        $arrPrice = ProductPrice::findForProduct($this);
 
         $this->arrData['price'] = $arrPrice['price'];
         $this->arrData['tax_class'] = $arrPrice['tax_class'];
