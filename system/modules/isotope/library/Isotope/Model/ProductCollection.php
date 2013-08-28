@@ -1109,6 +1109,8 @@ abstract class ProductCollection extends TypeAgent
      */
     public function addToTemplate($objTemplate)
     {
+        $objModule = $this;
+        $arrGalleries = array();
         $arrItems = array();
 
         foreach ($this->getItems() as $objItem) {
@@ -1132,6 +1134,7 @@ abstract class ProductCollection extends TypeAgent
                 'tax_id'            => $objItem->tax_id,
                 'hasProduct'        => $blnHasProduct,
                 'product'           => $objProduct,
+                'item'              => $objItem,
                 'raw'               => $objItem->row(),
                 'rowClass'          => trim('product ' . (($blnHasProduct && $objProduct->isNew()) ? 'new ' : '') . $objProduct->cssID[1]),
             );
@@ -1145,6 +1148,36 @@ abstract class ProductCollection extends TypeAgent
         $objTemplate->surcharges = \Isotope\Frontend::formatSurcharges($this->getSurcharges());
         $objTemplate->subtotal = Isotope::formatPriceWithCurrency($this->getSubtotal());
         $objTemplate->total = Isotope::formatPriceWithCurrency($this->getTotal());
+
+        $objTemplate->generateAttribute = function($strAttribute, $objItem) {
+
+            if (!$objItem->hasProduct()) {
+                return '';
+            }
+
+            $objAttribute = $GLOBALS['TL_DCA']['tl_iso_products']['attributes'][$strAttribute];
+
+            if (!($objAttribute instanceof IsotopeAttribute)) {
+                throw new \InvalidArgumentException($strAttribute . ' is not a valid attribute');
+            }
+
+            return $objAttribute->generate($objItem->getProduct());
+        };
+
+        $objTemplate->getGallery = function($strAttribute, $objItem) use ($objModule, &$arrGalleries) {
+
+            if (!$objItem->hasProduct()) {
+                return new \Isotope\Model\Gallery\Standard();
+            }
+
+            $strCacheKey = 'product' . $objItem->product_id . '_' . $strAttribute;
+
+            if (!isset($arrGalleries[$strCacheKey])) {
+                $arrGalleries[$strCacheKey] = Gallery::createForProductAttribute($objModule->gallery, $objItem->getProduct(), $strAttribute);
+            }
+
+            return $arrGalleries[$strCacheKey];
+        };
 
         // !HOOK: allow overriding of the template
         if (isset($GLOBALS['ISO_HOOKS']['generateCollection']) && is_array($GLOBALS['ISO_HOOKS']['generateCollection'])) {
