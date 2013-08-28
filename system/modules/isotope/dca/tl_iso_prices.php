@@ -107,15 +107,17 @@ $GLOBALS['TL_DCA']['tl_iso_prices'] = array
     (
         'id' => array
         (
-            'sql'                 =>  "int(10) unsigned NOT NULL auto_increment",
+            'sql'                   =>  "int(10) unsigned NOT NULL auto_increment",
         ),
         'pid' => array
         (
-            'sql'                 =>  "int(10) unsigned NOT NULL default '0'",
+            'foreignKey'            => 'tl_iso_products.name',
+            'sql'                   =>  "int(10) unsigned NOT NULL default '0'",
+            'relation'              => array('type'=>'belongsTo', 'load'=>'lazy'),
         ),
         'tstamp' => array
         (
-            'sql'                 =>  "int(10) unsigned NOT NULL default '0'",
+            'sql'                   =>  "int(10) unsigned NOT NULL default '0'",
         ),
         'price_tiers' => array
         (
