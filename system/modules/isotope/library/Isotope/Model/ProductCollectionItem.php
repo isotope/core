@@ -109,7 +109,7 @@ class ProductCollectionItem extends \Model
 
     /**
      * Get product SKU. Automatically falls back to the collection item table if product is not found.
-     * @return string;
+     * @return  string
      */
     public function getSku()
     {
@@ -119,7 +119,7 @@ class ProductCollectionItem extends \Model
 
     /**
      * Get product name. Automatically falls back to the collection item table if product is not found.
-     * @return string;
+     * @return  string
      */
     public function getName()
     {
@@ -129,7 +129,7 @@ class ProductCollectionItem extends \Model
 
     /**
      * Get product options. Automatically falls back to the collection item table if product is not found.
-     * @return string;
+     * @return  string
      */
     public function getOptions()
     {
@@ -139,7 +139,7 @@ class ProductCollectionItem extends \Model
 
     /**
      * Get product price. Automatically falls back to the collection item table if product is not found.
-     * @return string;
+     * @return  string
      */
     public function getPrice()
     {
@@ -149,7 +149,7 @@ class ProductCollectionItem extends \Model
 
     /**
      * Get tax free product price. Automatically falls back to the collection item table if product is not found.
-     * @return string;
+     * @return  string
      */
     public function getTaxFreePrice()
     {

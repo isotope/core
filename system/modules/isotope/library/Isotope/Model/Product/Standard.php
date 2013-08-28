@@ -360,7 +360,6 @@ class Standard extends Product implements IsotopeProduct
             default:
                 $this->arrCache[$strKey] = $varValue;
         }
-
     }
 
 
