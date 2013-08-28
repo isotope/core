@@ -365,16 +365,6 @@ class Standard extends Product implements IsotopeProduct
 
 
     /**
-     * Check whether a property is set
-     * @param string
-     * @return boolean
-     */
-    public function __isset($strKey)
-    {
-        return isset($this->arrData[$strKey]);
-    }
-
-    /**
      * Return the product attributes
      * @return array
      */
