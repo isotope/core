@@ -535,33 +535,6 @@ class Standard extends Product implements IsotopeProduct
 
 
     /**
-     * Return all product and variant attributes
-     * @return array
-     */
-    public function getProductAndVariantAttributes()
-    {
-        return array_unique(array_merge($this->arrAttributes, $this->arrVariantAttributes));
-    }
-
-
-    /**
-     * Return all attributes for this product as array
-     * @return array
-     */
-    public function getAttributes()
-    {
-        $arrData = array();
-
-        foreach ($this->getProductAndVariantAttributes() as $attribute)
-        {
-            $arrData[$attribute] = $this->$attribute;
-        }
-
-        return $arrData;
-    }
-
-
-    /**
      * Return variant options data
      * @return array|false
      */
@@ -746,7 +719,7 @@ class Standard extends Product implements IsotopeProduct
         $arrProductOptions = array();
         $arrAjaxOptions = array();
 
-        foreach ($this->getProductAndVariantAttributes() as $attribute)
+        foreach (array_unique(array_merge($this->arrAttributes, $this->arrVariantAttributes)) as $attribute)
         {
             $arrData = $GLOBALS['TL_DCA']['tl_iso_products']['fields'][$attribute];
 
