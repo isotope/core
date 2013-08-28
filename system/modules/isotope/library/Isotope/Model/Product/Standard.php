@@ -130,8 +130,6 @@ class Standard extends Product implements IsotopeProduct
         $this->formSubmit = 'iso_product_' . $this->arrData['id'];
         $this->arrAttributes = $this->getSortedAttributes($this->getRelated('type')->attributes);
         $this->arrVariantAttributes = $this->hasVariants() ? $this->getSortedAttributes($this->getRelated('type')->variant_attributes) : array();
-        $this->arrCache['list_template'] = $this->getRelated('type')->list_template;
-        $this->arrCache['reader_template'] = $this->getRelated('type')->reader_template;
         $this->arrCache['quantity_requested'] = $intQuantity;
 
         // !HOOK: allow to customize attributes
