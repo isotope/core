@@ -12,6 +12,7 @@
 
 namespace Isotope\Model;
 
+use Isotope\Isotope;
 use Isotope\Interfaces\IsotopePrice;
 use Isotope\Interfaces\IsotopeProduct;
 
