@@ -163,11 +163,6 @@ class Standard extends Product implements IsotopeProduct
         {
             $this->loadVariantData($arrData);
         }
-        elseif (!$this->isLocked())
-        {
-            // findPrice() is called by loadVariantData()
-            $this->findPrice();
-        }
 
         // Make sure the locked attributes are set
         if ($this->isLocked())
@@ -322,11 +317,6 @@ class Standard extends Product implements IsotopeProduct
 
             case 'quantity_requested':
                 $this->arrCache[$strKey] = $varValue;
-
-                if (!$this->isLocked())
-                {
-                    $this->findPrice();
-                }
                 break;
 
             default:
@@ -1047,27 +1037,6 @@ class Standard extends Product implements IsotopeProduct
 
 
     /**
-     * Find price for the current product/variant
-     */
-    protected function findPrice()
-    {
-        $arrPrice = ProductPrice::findForProduct($this);
-
-        $this->arrData['price'] = $arrPrice['price'];
-        $this->arrData['tax_class'] = $arrPrice['tax_class'];
-        $this->arrCache['from_price'] = $arrPrice['from_price'];
-
-        // Add "price_tiers" to attributes, so the field is available in the template
-        if ($this->hasAdvancedPrices())
-        {
-            $this->arrAttributes[] = 'price_tiers';
-
-            $this->arrCache['price_tiers'] = $arrPrice['price_tiers'];
-        }
-    }
-
-
-    /**
      * Load data of a product variant if the options match one
      */
     protected function validateVariant()
@@ -1173,11 +1142,6 @@ class Standard extends Product implements IsotopeProduct
             {
                 unset($this->arrCache[$attribute]);
             }
-        }
-
-        if (!$this->isLocked() && $this->hasVariantPrices())
-        {
-            $this->findPrice();
         }
 
         // Load variant options
