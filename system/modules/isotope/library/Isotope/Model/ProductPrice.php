@@ -33,6 +33,20 @@ class ProductPrice extends \Model implements IsotopePrice
 
 
     /**
+     * Store product in the relation mapping so we dont need to fetch it
+     * @param   IsotopeProduct
+     */
+    public function setProduct(IsotopeProduct $objProduct)
+    {
+        if ($this->pid != $objProduct->id) {
+            throw new \InvalidArgumentException('Product ID does not match with price PID');
+        }
+
+        $this->arrRelation['pid'] = $objProduct;
+    }
+
+
+    /**
      * Find price data for a given product
      * @param   IsotopeProduct
      * @return  IsotopePrice
@@ -70,12 +84,15 @@ class ProductPrice extends \Model implements IsotopePrice
         ), $arrData);
 
         $objPrice = new static();
+        $objPrice->pid = $objProduct->id;
         $objPrice->min = $arrData['min'];
         $objPrice->price = $arrData['price'];
         $objPrice->tax_class = $arrData['tax_class'];
         $objPrice->from_price = $arrData['from_price'];
         $objPrice->high_price = $arrData['high_price'];
         $objPrice->price_tiers = $arrData['price_tiers'];
+
+        $objPrice->setProduct($objProduct);
 
         return $objPrice;
     }
