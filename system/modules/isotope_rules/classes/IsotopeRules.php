@@ -96,7 +96,8 @@ class IsotopeRules extends \Controller
                         $intTotal = 0;
                         foreach ($this->Isotope->Cart->getProducts() as $objProduct)
                         {
-                              $intTotal += $objRules->quantityMode == 'cart_items' ? $objProduct->quantity_requested : 1;
+                            // @todo $objProduct->quantity_requested is no longer available
+                            $intTotal += $objRules->quantityMode == 'cart_items' ? $objProduct->quantity_requested : 1;
                         }
                     }
 
@@ -574,6 +575,7 @@ class IsotopeRules extends \Controller
                         && (in_array($objProduct->id, $arrLimit) || ($objProduct->pid > 0 && in_array($objProduct->pid, $arrLimit))))
                     || ($arrRule['productRestrictions'] == 'producttypes' && in_array($objProduct->type, $arrLimit)))
                     {
+                        // @todo $objProduct->quantity_requested is no longer available
                         $intTotal += $arrRule['quantityMode'] == 'cart_items' ? $objProduct->quantity_requested : 1;
                     }
                 }
@@ -668,6 +670,7 @@ class IsotopeRules extends \Controller
             // Because we apply to the quantity of only this product, we override $intTotal in every foreach loop
             if ($arrRule['quantityMode'] != 'cart_products' && $arrRule['quantityMode'] != 'cart_items')
             {
+                // @todo $objProduct->quantity_requested is no longer available
                 $intTotal = $objProduct->quantity_requested;
             }
 
@@ -689,6 +692,7 @@ class IsotopeRules extends \Controller
                     break;
 
                 case 'items':
+                    // @todo $objProduct->quantity_requested is no longer available
                     $fltPrice = ($blnPercentage ? ($objProduct->price / 100 * $fltDiscount) : $arrRule['discount']) * $objProduct->quantity_requested;
                     $fltPrice = $fltPrice > 0 ? (floor($fltPrice * 100) / 100) : (ceil($fltPrice * 100) / 100);
                     $arrSurcharge['total_price'] += $fltPrice;

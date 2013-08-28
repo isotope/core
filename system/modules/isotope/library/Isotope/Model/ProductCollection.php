@@ -1082,7 +1082,7 @@ abstract class ProductCollection extends TypeAgent
             }
 
             $arrWeight = deserialize($objItem->getProduct()->shipping_weight, true);
-            $arrWeight['value'] = $objItem->getProduct()->quantity_requested * floatval($arrWeight['value']);
+            $arrWeight['value'] = $objItem->quantity * floatval($arrWeight['value']);
 
             $arrWeights[] = $arrWeight;
         }

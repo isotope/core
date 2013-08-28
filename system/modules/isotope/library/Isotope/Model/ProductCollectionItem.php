@@ -81,7 +81,6 @@ class ProductCollectionItem extends \Model
             try {
                 $this->objProduct = $strClass::findByPk($this->product_id);
                 $this->objProduct->setOptions(deserialize($this->options));
-                $this->objProduct->setQuantity($this->quantity);
                 $this->objProduct->reader_jumpTo_Override = $this->href_reader;
 
             } catch (\Exception $e) {

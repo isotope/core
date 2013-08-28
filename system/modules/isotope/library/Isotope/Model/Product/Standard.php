@@ -131,7 +131,6 @@ class Standard extends Product implements IsotopeProduct
         $this->formSubmit = 'iso_product_' . $this->arrData['id'];
         $this->arrAttributes = $this->getSortedAttributes($this->getRelated('type')->attributes);
         $this->arrVariantAttributes = $this->hasVariants() ? $this->getSortedAttributes($this->getRelated('type')->variant_attributes) : array();
-        $this->arrCache['quantity_requested'] = $intQuantity;
 
         // !HOOK: allow to customize attributes
         if (isset($GLOBALS['ISO_HOOKS']['productAttributes']) && is_array($GLOBALS['ISO_HOOKS']['productAttributes']))
@@ -178,14 +177,6 @@ class Standard extends Product implements IsotopeProduct
 
             case 'price':
                 return Isotope::calculatePrice($this->arrData['price'], $this, 'price', $this->arrData['tax_class']);
-
-            case 'quantity_requested':
-                if (!$this->arrCache[$strKey] && \Input::post('FORM_SUBMIT') == $this->formSubmit)
-                {
-                    $this->arrCache[$strKey] = (int) \Input::post('quantity_requested');
-                }
-
-                return $this->arrCache[$strKey] ? $this->arrCache[$strKey] : 1;
 
             case 'description_meta':
                 return $this->arrData['description_meta'] != '' ? $this->arrData['description_meta'] : ($this->arrData['teaser'] != '' ? $this->arrData['teaser'] : $this->arrData['description']);
@@ -277,10 +268,6 @@ class Standard extends Product implements IsotopeProduct
             case 'name':
             case 'price':
                 $this->arrData[$strKey] = $varValue;
-                break;
-
-            case 'quantity_requested':
-                $this->arrCache[$strKey] = $varValue;
                 break;
 
             default:
@@ -743,7 +730,6 @@ class Standard extends Product implements IsotopeProduct
         $objTemplate->buttons = $arrButtons;
         $objTemplate->quantityLabel = $GLOBALS['TL_LANG']['MSC']['quantity'];
         $objTemplate->useQuantity = $arrConfig['useQuantity'];
-        $objTemplate->quantity_requested = $this->quantity_requested;
         $objTemplate->minimum_quantity = $this->getMinimumQuantity();
         $objTemplate->raw = array_merge($this->arrData, $this->arrCache);
         $objTemplate->raw_options = $this->arrOptions;
