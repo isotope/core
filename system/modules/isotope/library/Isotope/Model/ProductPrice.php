@@ -31,6 +31,40 @@ class ProductPrice extends \Model implements IsotopePrice
      */
     protected static $strTable = 'tl_iso_prices';
 
+    /**
+     * Tiers for this price
+     * @var array
+     */
+    protected $arrTiers = array();
+
+
+    /**
+     * Return value for a price tier, finding clostest match
+     * @param   int
+     * @return  float
+     */
+    public function getValueForTier($intTier)
+    {
+        do
+        {
+            if (isset($this->arrTiers[$intTier])) {
+                return $this->arrTiers[$intTier];
+            }
+
+            $intTier -= 1;
+
+        } while ($intTier > 1);
+
+        return 0;
+    }
+
+    /**
+     * Set value for a specific price tier
+     */
+    public function setValueForTier($fltValue, $intTier)
+    {
+        $this->arrTiers[$intTier] = (float) $fltValue;
+    }
 
     /**
      * Store product in the relation mapping so we dont need to fetch it
@@ -80,7 +114,6 @@ class ProductPrice extends \Model implements IsotopePrice
             'tax_class'     => null,
             'from_price'    => null,
             'high_price'    => null,
-            'price_tiers'   => null,
         ), $arrData);
 
         $objPrice = new static();
@@ -90,9 +123,12 @@ class ProductPrice extends \Model implements IsotopePrice
         $objPrice->tax_class = $arrData['tax_class'];
         $objPrice->from_price = $arrData['from_price'];
         $objPrice->high_price = $arrData['high_price'];
-        $objPrice->price_tiers = $arrData['price_tiers'];
 
         $objPrice->setProduct($objProduct);
+
+        foreach ($arrData['price_tiers'] as $arrTier) {
+            $objPrice->setValueForTier($arrTier['price'], $arrTier['min']);
+        }
 
         return $objPrice;
     }
@@ -111,6 +147,7 @@ class ProductPrice extends \Model implements IsotopePrice
         (
             'price'        => $arrData['price'],
             'tax_class'    => $arrData['tax_class'],
+            'price_tiers'  => array(array('min'=>1, 'price'=>$arrData['price'])),
         );
     }
 
@@ -144,6 +181,8 @@ class ProductPrice extends \Model implements IsotopePrice
                 $arrData['from_price'] = $objResult->low_price;
             }
         }
+
+        $arrData['price_tiers'] = array(array('min'=>1, 'price'=>$arrProduct['price']));
 
         return $arrData;
     }
