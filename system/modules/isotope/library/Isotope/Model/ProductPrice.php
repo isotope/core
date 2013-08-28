@@ -12,6 +12,7 @@
 
 namespace Isotope\Model;
 
+use Isotope\Interfaces\IsotopePrice;
 use Isotope\Interfaces\IsotopeProduct;
 
 
@@ -21,7 +22,7 @@ use Isotope\Interfaces\IsotopeProduct;
  * @copyright  Isotope eCommerce Workgroup 2009-2013
  * @author     Andreas Schempp <andreas.schempp@terminal42.ch>
  */
-class ProductPrice extends \Model
+class ProductPrice extends \Model implements IsotopePrice
 {
 
     /**
