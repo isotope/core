@@ -394,8 +394,8 @@ class ProductPrice extends \Model implements IsotopePrice
         else
         {
             $objResult = \Database::getInstance()->execute("SELECT MIN(price) AS low_price, MAX(price) AS high_price FROM (
-                                                                SELECT id FROM tl_iso_price_tiers WHERE id IN (
-                                                                    SELECT *
+                                                                SELECT * FROM tl_iso_price_tiers WHERE id IN (
+                                                                    SELECT id
                                                                     FROM tl_iso_price_tiers
                                                                     WHERE pid IN
                                                                     (
@@ -413,9 +413,9 @@ class ProductPrice extends \Model implements IsotopePrice
                                                                         ) AS p
                                                                         GROUP BY pid
                                                                     )
-                                                                    ORDER BY min) price_tiers
+                                                                    ORDER BY min)
                                                                 GROUP BY pid
-                                                            )");
+                                                            ) AS price_tiers");
         }
 
         return ($objResult->low_price > 0 && $objResult->low_price < $objResult->high_price) ? $objResult->low_price : null;
