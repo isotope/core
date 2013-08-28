@@ -355,6 +355,151 @@ class Standard extends Product implements IsotopeProduct
     }
 
     /**
+     * Returns true if the product is published, otherwise returns false
+     * @bool
+     */
+    public function isPublished()
+    {
+        if (!$this->arrData['published'])
+        {
+            return false;
+        }
+        elseif ($this->arrData['start'] > 0 && $this->arrData['start'] > time())
+        {
+            return false;
+        }
+        elseif ($this->arrData['stop'] > 0 && $this->arrData['stop'] < time())
+        {
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
+     * Returns true if the product is available to show on the website
+     * @return bool
+     */
+    public function isAvailableInFrontend()
+    {
+        if (BE_USER_LOGGED_IN !== true && !$this->isPublished()) {
+            return false;
+        }
+
+        // Show to guests only
+        if ($this->arrData['guests'] && FE_USER_LOGGED_IN === true && BE_USER_LOGGED_IN !== true && !$this->arrData['protected']) {
+            return false;
+        }
+
+        // Protected product
+        if (BE_USER_LOGGED_IN !== true && $this->arrData['protected']) {
+            if (FE_USER_LOGGED_IN !== true) {
+                return false;
+            }
+
+            $groups = deserialize($this->arrData['groups']);
+
+            if (!is_array($groups) || empty($groups) || !count(array_intersect($groups, $this->User->groups))) {
+                return false;
+            }
+        }
+
+        // Check that the product is in any page of the current site
+        if (count(\Isotope\Frontend::getPagesInCurrentRoot($this->categories, \FrontendUser::getInstance())) == 0) {
+            return false;
+        }
+
+        // Check if "advanced price" is available
+        if ($this->arrData['price'] === null && (in_array('price', $this->arrAttributes) || in_array('price', $this->arrVariantAttributes))) {
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
+     * Returns true if the product is available
+     * @return bool
+     */
+    public function isAvailableForCollection(IsotopeProductCollection $objCollection)
+    {
+        if ($objCollection->isLocked()) {
+            return true;
+        }
+
+        if (BE_USER_LOGGED_IN !== true && !$this->isPublished()) {
+            return false;
+        }
+
+        // Show to guests only
+        if ($this->arrData['guests'] && $objCollection->member > 0 && BE_USER_LOGGED_IN !== true && !$this->arrData['protected']) {
+            return false;
+        }
+
+        // Protected product
+        if (BE_USER_LOGGED_IN !== true && $this->arrData['protected']) {
+            if ($objCollection->member == 0) {
+                return false;
+            }
+
+            $groups = deserialize($this->arrData['groups']);
+            $memberGroups = deserialize($objCollection->getRelated('member')->groups);
+
+            if (!is_array($groups) || empty($groups) || !is_array($memberGroups) || empty($memberGroups) || !count(array_intersect($groups, $memberGroups))) {
+                return false;
+            }
+        }
+
+        // Check that the product is in any page of the current site
+        if (count(\Isotope\Frontend::getPagesInCurrentRoot($this->categories, $objCollection->getRelated('member'))) == 0) {
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
+     * Checks whether a product is new according to the current store config
+     * @return boolean
+     */
+    public function isNew()
+    {
+        return $this->dateAdded >= Isotope::getConfig()->getNewProductLimit();
+    }
+
+    /**
+     * Returns true if variants are enabled in the product type, otherwise returns false
+     * @return bool
+     */
+    public function hasVariants()
+    {
+        return (bool) $this->getRelated('type')->variants;
+    }
+
+    /**
+     * Returns true if product has variants, and the price is a variant attribute
+     * @return bool
+     */
+    public function hasVariantPrices()
+    {
+        if ($this->hasVariants() && in_array('price', $this->arrVariantAttributes))
+        {
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * Returns true if advanced prices are enabled in the product type, otherwise returns false
+     * @return bool
+     */
+    public function hasAdvancedPrices()
+    {
+        return (bool) $this->getRelated('type')->prices;
+    }
+
+    /**
      * Return minimum quantity for the product (from advanced price tiers)
      * @return  int
      */
@@ -521,41 +666,6 @@ class Standard extends Product implements IsotopeProduct
 
 
     /**
-     * Returns true if variants are enabled in the product type, otherwise returns false
-     * @return bool
-     */
-    public function hasVariants()
-    {
-        return (bool) $this->getRelated('type')->variants;
-    }
-
-
-    /**
-     * Returns true if product has variants, and the price is a variant attribute
-     * @return bool
-     */
-    public function hasVariantPrices()
-    {
-        if ($this->hasVariants() && in_array('price', $this->arrVariantAttributes))
-        {
-            return true;
-        }
-
-        return false;
-    }
-
-
-    /**
-     * Returns true if advanced prices are enabled in the product type, otherwise returns false
-     * @return bool
-     */
-    public function hasAdvancedPrices()
-    {
-        return (bool) $this->getRelated('type')->prices;
-    }
-
-
-    /**
      * Check if a product has downloads
      * @todo Confirm that files are available
      * @return array
@@ -566,132 +676,6 @@ class Standard extends Product implements IsotopeProduct
         $this->getDownloads();
 
         return !empty($this->arrDownloads);
-    }
-
-
-    /**
-     * Returns true if the product is published, otherwise returns false
-     * @bool
-     */
-    public function isPublished()
-    {
-        if (!$this->arrData['published'])
-        {
-            return false;
-        }
-        elseif ($this->arrData['start'] > 0 && $this->arrData['start'] > time())
-        {
-            return false;
-        }
-        elseif ($this->arrData['stop'] > 0 && $this->arrData['stop'] < time())
-        {
-            return false;
-        }
-
-        return true;
-    }
-
-
-    /**
-     * Returns true if the product is locked (price should not be calculated, e.g. in orders), otherwise returns false
-     * @return bool
-     */
-    public function isLocked()
-    {
-        return $this->blnLocked;
-    }
-
-
-    /**
-     * Returns true if the product is available to show on the website
-     * @return bool
-     */
-    public function isAvailableInFrontend()
-    {
-        if (BE_USER_LOGGED_IN !== true && !$this->isPublished()) {
-            return false;
-        }
-
-        // Show to guests only
-        if ($this->arrData['guests'] && FE_USER_LOGGED_IN === true && BE_USER_LOGGED_IN !== true && !$this->arrData['protected']) {
-            return false;
-        }
-
-        // Protected product
-        if (BE_USER_LOGGED_IN !== true && $this->arrData['protected']) {
-            if (FE_USER_LOGGED_IN !== true) {
-                return false;
-            }
-
-            $groups = deserialize($this->arrData['groups']);
-
-            if (!is_array($groups) || empty($groups) || !count(array_intersect($groups, $this->User->groups))) {
-                return false;
-            }
-        }
-
-        // Check that the product is in any page of the current site
-        if (count(\Isotope\Frontend::getPagesInCurrentRoot($this->categories, \FrontendUser::getInstance())) == 0) {
-            return false;
-        }
-
-        // Check if "advanced price" is available
-        if ($this->arrData['price'] === null && (in_array('price', $this->arrAttributes) || in_array('price', $this->arrVariantAttributes))) {
-            return false;
-        }
-
-        return true;
-    }
-
-    /**
-     * Returns true if the product is available
-     * @return bool
-     */
-    public function isAvailableForCollection(IsotopeProductCollection $objCollection)
-    {
-        if ($objCollection->isLocked()) {
-            return true;
-        }
-
-        if (BE_USER_LOGGED_IN !== true && !$this->isPublished()) {
-            return false;
-        }
-
-        // Show to guests only
-        if ($this->arrData['guests'] && $objCollection->member > 0 && BE_USER_LOGGED_IN !== true && !$this->arrData['protected']) {
-            return false;
-        }
-
-        // Protected product
-        if (BE_USER_LOGGED_IN !== true && $this->arrData['protected']) {
-            if ($objCollection->member == 0) {
-                return false;
-            }
-
-            $groups = deserialize($this->arrData['groups']);
-            $memberGroups = deserialize($objCollection->getRelated('member')->groups);
-
-            if (!is_array($groups) || empty($groups) || !is_array($memberGroups) || empty($memberGroups) || !count(array_intersect($groups, $memberGroups))) {
-                return false;
-            }
-        }
-
-        // Check that the product is in any page of the current site
-        if (count(\Isotope\Frontend::getPagesInCurrentRoot($this->categories, $objCollection->getRelated('member'))) == 0) {
-            return false;
-        }
-
-        return true;
-    }
-
-
-    /**
-     * Checks whether a product is new according to the current store config
-     * @return boolean
-     */
-    public function isNew()
-    {
-        return $this->dateAdded >= Isotope::getConfig()->getNewProductLimit();
     }
 
 
