@@ -1056,12 +1056,6 @@ class Standard extends Product implements IsotopeProduct
         {
             $this->arrAttributes[] = 'price_tiers';
 
-            // Add "price_tiers" to variant attributes, so the field is updated through ajax
-            if ($this->hasVariantPrices())
-            {
-                $this->arrVariantAttributes[] = 'price_tiers';
-            }
-
             $this->arrCache['price_tiers'] = $arrPrice['price_tiers'];
         }
     }
