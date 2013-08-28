@@ -96,9 +96,9 @@ class Standard extends Product implements IsotopeProduct
 
     /**
      * Construct the object
-     * @param array
-     * @param array
-     * @param boolean
+     * @param   array
+     * @param   array
+     * @param   boolean
      */
     public function __construct(\Database\Result $objResult=null)
     {
@@ -181,8 +181,8 @@ class Standard extends Product implements IsotopeProduct
 
     /**
      * Get a property
-     * @param string
-     * @return mixed
+     * @param   string
+     * @return  mixed
      */
     public function __get($strKey)
     {
@@ -275,8 +275,8 @@ class Standard extends Product implements IsotopeProduct
 
     /**
      * Set a property
-     * @param string
-     * @param mixed
+     * @param   string
+     * @param   mixed
      */
     public function __set($strKey, $varValue)
     {
@@ -353,7 +353,7 @@ class Standard extends Product implements IsotopeProduct
 
     /**
      * Returns true if the product is published, otherwise returns false
-     * @bool
+     * @return  bool
      */
     public function isPublished()
     {
@@ -375,7 +375,7 @@ class Standard extends Product implements IsotopeProduct
 
     /**
      * Returns true if the product is available to show on the website
-     * @return bool
+     * @return  bool
      */
     public function isAvailableInFrontend()
     {
@@ -416,7 +416,7 @@ class Standard extends Product implements IsotopeProduct
 
     /**
      * Returns true if the product is available
-     * @return bool
+     * @return  bool
      */
     public function isAvailableForCollection(IsotopeProductCollection $objCollection)
     {
@@ -457,7 +457,7 @@ class Standard extends Product implements IsotopeProduct
 
     /**
      * Checks whether a product is new according to the current store config
-     * @return boolean
+     * @return  boolean
      */
     public function isNew()
     {
@@ -475,7 +475,7 @@ class Standard extends Product implements IsotopeProduct
 
     /**
      * Returns true if variants are enabled in the product type, otherwise returns false
-     * @return bool
+     * @return  bool
      */
     public function hasVariants()
     {
@@ -484,7 +484,7 @@ class Standard extends Product implements IsotopeProduct
 
     /**
      * Returns true if product has variants, and the price is a variant attribute
-     * @return bool
+     * @return  bool
      */
     public function hasVariantPrices()
     {
@@ -498,7 +498,7 @@ class Standard extends Product implements IsotopeProduct
 
     /**
      * Returns true if advanced prices are enabled in the product type, otherwise returns false
-     * @return bool
+     * @return  bool
      */
     public function hasAdvancedPrices()
     {
@@ -527,7 +527,7 @@ class Standard extends Product implements IsotopeProduct
 
     /**
      * Return the product attributes
-     * @return array
+     * @return  array
      */
     public function getProductAttributes()
     {
@@ -537,7 +537,7 @@ class Standard extends Product implements IsotopeProduct
 
     /**
      * Return the product variant attributes
-     * @return array
+     * @return  array
      */
     public function getVariantAttributes()
     {
@@ -547,7 +547,7 @@ class Standard extends Product implements IsotopeProduct
 
     /**
      * Return variant options data
-     * @return array|false
+     * @return  array|false
      */
     public function getVariantOptions()
     {
@@ -592,7 +592,7 @@ class Standard extends Product implements IsotopeProduct
 
     /**
      * Return all available variant IDs of this product
-     * @return array|false
+     * @return  array|false
      */
     public function getVariantIds()
     {
@@ -609,8 +609,8 @@ class Standard extends Product implements IsotopeProduct
 
     /**
      * Return all downloads for this product
-     * @todo Confirm that files are available
-     * @return array
+     * @todo    Confirm that files are available
+     * @return  array
      */
     public function getDownloads()
     {
@@ -631,7 +631,7 @@ class Standard extends Product implements IsotopeProduct
 
     /**
      * Return all product options
-     * @return array
+     * @return  array
      */
     public function getOptions()
     {
@@ -641,7 +641,7 @@ class Standard extends Product implements IsotopeProduct
 
     /**
      * Set options data
-     * @param array
+     * @param   array
      */
     public function setOptions(array $arrOptions)
     {
@@ -651,8 +651,8 @@ class Standard extends Product implements IsotopeProduct
 
     /**
      * Check if a product has downloads
-     * @todo Confirm that files are available
-     * @return array
+     * @todo    Confirm that files are available
+     * @return  array
      */
     public function hasDownloads()
     {
@@ -665,8 +665,8 @@ class Standard extends Product implements IsotopeProduct
 
     /**
      * Generate a product template
-     * @param array
-     * @return string
+     * @param   array
+     * @return  string
      */
     public function generate(array $arrConfig)
     {
@@ -821,9 +821,9 @@ class Standard extends Product implements IsotopeProduct
 
     /**
      * Return a widget object based on a product attribute's properties
-     * @param string
-     * @param boolean
-     * @return string
+     * @param   string
+     * @param   boolean
+     * @return  string
      */
     protected function generateProductOptionWidget($strField)
     {
@@ -1151,8 +1151,8 @@ class Standard extends Product implements IsotopeProduct
 
     /**
      * Load variant data basing on provided data
-     * @param array
-     * @param array
+     * @param   array
+     * @param   array
      */
     public function loadVariantData($arrData, $arrInherit=false)
     {
@@ -1196,8 +1196,8 @@ class Standard extends Product implements IsotopeProduct
 
     /**
      * Sort the attributes based on their position (from wizard) and return their names only
-     * @param mixed
-     * @return array
+     * @param   mixed
+     * @return  array
      */
     protected function getSortedAttributes($varValue)
     {
