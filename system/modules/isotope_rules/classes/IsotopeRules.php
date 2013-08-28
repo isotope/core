@@ -681,6 +681,7 @@ class IsotopeRules extends \Controller
             switch( $arrRule['applyTo'] )
             {
                 case 'products':
+                    // @todo $objProduct->total_price is no longer available
                     $fltPrice = $blnPercentage ? ($objProduct->total_price / 100 * $fltDiscount) : $arrRule['discount'];
                     $fltPrice = $fltPrice > 0 ? (floor($fltPrice * 100) / 100) : (ceil($fltPrice * 100) / 100);
                     $arrSurcharge['total_price'] += $fltPrice;
@@ -696,6 +697,7 @@ class IsotopeRules extends \Controller
 
                 case 'subtotal':
                     $blnMatch = true;
+                    // @todo $objProduct->total_price is no longer available
                     $arrSurcharge['total_price'] += $objProduct->total_price;
 
                     if ($arrRule['tax_class'] == -1)
@@ -709,6 +711,7 @@ class IsotopeRules extends \Controller
                         {
                             $arrSubtract[] = $objProduct;
                             $fltTotal += (float) $objProduct->tax_free_total_price;
+                            // @todo $objProduct->tax_free_total_price does no longer exist
                         }
                     }
                     break;
@@ -728,6 +731,7 @@ class IsotopeRules extends \Controller
             {
                 foreach( $arrSubtract as $objProduct )
                 {
+                    // @todo $objProduct->tax_free_total_price does no longer exist
                     $arrSurcharge['products'][$objProduct->collection_id] = $arrRule['discount'] / 100 * (100 / $fltTotal * $objProduct->tax_free_total_price);
                 }
             }

@@ -179,22 +179,6 @@ class Standard extends Product implements IsotopeProduct
             case 'price':
                 return Isotope::calculatePrice($this->arrData['price'], $this, 'price', $this->arrData['tax_class']);
 
-            case 'total_price':
-                $varPrice = $this->price;
-
-                return $varPrice === null ? null : ($this->quantity_requested * $varPrice);
-
-            case 'tax_free_price':
-                $objTaxClass = TaxClass::findByPk($this->arrData['tax_class']);
-                $fltPrice = $objTaxClass === null ? $this->arrData['price'] : $objTaxClass->calculateNetPrice($this->arrData['price']);
-
-                return Isotope::calculatePrice($fltPrice, $this, 'tax_free_price', $this->arrData['tax_class']);
-
-            case 'tax_free_total_price':
-                $varPrice = $this->tax_free_price;
-
-                return $varPrice === null ? null : ($this->quantity_requested * $varPrice);
-
             case 'quantity_requested':
                 if (!$this->arrCache[$strKey] && \Input::post('FORM_SUBMIT') == $this->formSubmit)
                 {
