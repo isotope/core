@@ -39,6 +39,17 @@ class ProductPrice extends \Model implements IsotopePrice
 
 
     /**
+     * Return lowest tier (= minimum quantity)
+     * @return  int
+     */
+    public function getLowestTier()
+    {
+        $intMin = (int) min(array_keys($this->arrTiers));
+
+        return $intMin ?: 1;
+    }
+
+    /**
      * Return value for a price tier, finding clostest match
      * @param   int
      * @return  float

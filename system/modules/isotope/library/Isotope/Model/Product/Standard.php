@@ -524,12 +524,7 @@ class Standard extends Product implements IsotopeProduct
             return 1;
         }
 
-        if (!isset($this->arrCache['minimum_quantity']))
-        {
-            $this->findPrice();
-        }
-
-        return $this->arrCache['minimum_quantity'] ? $this->arrCache['minimum_quantity'] : 1;
+        $this->getPrice()->getLowestTier();
     }
 
 
@@ -1063,7 +1058,6 @@ class Standard extends Product implements IsotopeProduct
         $this->arrData['price'] = $arrPrice['price'];
         $this->arrData['tax_class'] = $arrPrice['tax_class'];
         $this->arrCache['from_price'] = $arrPrice['from_price'];
-        $this->arrCache['minimum_quantity'] = $arrPrice['min'];
 
         // Add "price_tiers" to attributes, so the field is available in the template
         if ($this->hasAdvancedPrices())
