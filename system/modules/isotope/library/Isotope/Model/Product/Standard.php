@@ -243,18 +243,6 @@ class Standard extends Product implements IsotopeProduct
                 {
                     switch ($strKey)
                     {
-                        case 'formatted_price':
-                            $this->arrCache[$strKey] = Isotope::formatPriceWithCurrency($this->price, false);
-                            break;
-
-                        case 'formatted_original_price':
-                            $this->arrCache[$strKey] = Isotope::formatPriceWithCurrency($this->original_price, false);
-                            break;
-
-                        case 'formatted_total_price':
-                            $this->arrCache[$strKey] = Isotope::formatPriceWithCurrency($this->total_price, false);
-                            break;
-
                         case 'categories':
                             $this->arrCache[$strKey] = $this->Database->execute("SELECT page_id FROM tl_iso_product_categories WHERE pid=" . ($this->pid ? $this->pid : $this->id) . " ORDER BY sorting")->fetchEach('page_id');
                             break;
