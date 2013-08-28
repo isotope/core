@@ -484,7 +484,7 @@ class Standard extends Product implements IsotopeProduct
      */
     public function canSeePriceTiers()
     {
-        return (bool) $this->getRelated('type')->show_price_tiers;
+        return $this->hasAdvancedPrices() && $this->getRelated('type')->show_price_tiers;
     }
 
     /**
