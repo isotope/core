@@ -106,11 +106,6 @@ class Standard extends Product implements IsotopeProduct
 
         $this->Database = \Database::getInstance();
 
-        if (FE_USER_LOGGED_IN === true)
-        {
-            $this->User = \FrontendUser::getInstance();
-        }
-
         $arrData = $this->arrData;
         $this->blnLocked = $blnLocked;
 
@@ -396,7 +391,7 @@ class Standard extends Product implements IsotopeProduct
 
             $groups = deserialize($this->arrData['groups']);
 
-            if (!is_array($groups) || empty($groups) || !count(array_intersect($groups, $this->User->groups))) {
+            if (!is_array($groups) || empty($groups) || !count(array_intersect($groups, FrontendUser::getInstance()->groups))) {
                 return false;
             }
         }
