@@ -34,8 +34,8 @@ class ProductPrice extends \Model implements IsotopePrice
 
     /**
      * Find price data for a given product
-     * @param IsotopeProduct
-     * @return array
+     * @param   IsotopeProduct
+     * @return  IsotopePrice
      */
     public static function findForProduct(IsotopeProduct $objProduct)
     {
@@ -83,8 +83,8 @@ class ProductPrice extends \Model implements IsotopePrice
 
     /**
      * Find price data for product without variant and without advanced prices
-     * @param IsotopeProduct
-     * @return array
+     * @param   IsotopeProduct
+     * @return  array
      */
     protected static function findProductPrice(IsotopeProduct $objProduct)
     {
@@ -100,8 +100,8 @@ class ProductPrice extends \Model implements IsotopePrice
 
     /**
      * Find price data for a variant product without advanced prices
-     * @param IsotopeProduct
-     * @return array
+     * @param   IsotopeProduct
+     * @return  array
      */
     protected static function findVariantPrice(IsotopeProduct $objProduct)
     {
@@ -134,8 +134,8 @@ class ProductPrice extends \Model implements IsotopePrice
 
     /**
      * Find price data for a product without variant prices but with advanced prices
-     * @param IsotopeProduct
-     * @return array
+     * @param   IsotopeProduct
+     * @return  array
      */
     protected static function findAdvancedProductPrice(IsotopeProduct $objProduct)
     {
@@ -145,8 +145,8 @@ class ProductPrice extends \Model implements IsotopePrice
 
     /**
      * Find price data for a variant product with advanced prices and with variant prices
-     * @param IsotopeProduct
-     * @return array
+     * @param   IsotopeProduct
+     * @return  array
      */
     protected static function findAdvancedVariantPrice(IsotopeProduct $objProduct)
     {
@@ -169,9 +169,9 @@ class ProductPrice extends \Model implements IsotopePrice
 
     /**
      * Get advanced prices for a list of products (usially one product ID in an array, or an array of variant IDs)
-     * @param array
-     * @param int
-     * @return array
+     * @param   array
+     * @param   int
+     * @return  array
      */
     protected static function getAdvancedPrices(array $arrIds, $intQuantity=1, $blnShowPriceTiers=false)
     {
@@ -232,8 +232,8 @@ class ProductPrice extends \Model implements IsotopePrice
 
     /**
      * Find lowest price of all variants when using advanced prices
-     * @param array
-     * @return decimal|null
+     * @param   array
+     * @return  decimal|null
      */
     protected static function findLowestAdvancedPriceOfVariants($arrVariantIds, $blnShowPriceTiers=false)
     {
@@ -294,7 +294,7 @@ class ProductPrice extends \Model implements IsotopePrice
 
     /**
      * Compile a list of member groups suitable for retrieving prices. This includes a 0 at the last position in array
-     * @return array
+     * @return  array
      */
     protected static function getMemberGroups()
     {
