@@ -151,6 +151,24 @@ class ProductCollectionItem extends \Model
         return (string) ($this->isLocked() || !$this->hasProduct()) ? $this->tax_free_price : $this->getProduct()->getPrice()->getNetAmount((int) $this->quantity);
     }
 
+    /**
+     * Get product price multiplied by the requested product quantity
+     * @return  string
+     */
+    public function getTotalPrice()
+    {
+        return (string) ($this->getPrice() * (int) $this->quantity);
+    }
+
+    /**
+     * Get tax free product price multiplied by the requested product quantity
+     * @return  string
+     */
+    public function getTaxFreeTotalPrice()
+    {
+        return (string) ($this->getTaxFreePrice() * (int) $this->quantity);
+    }
+
 
     /**
      * Return downloads associated with this product collection item

@@ -236,7 +236,7 @@ abstract class ProductCollectionSurcharge extends TypeAgent
             }
 
             $arrTaxIds = array();
-            $fltPrice = $objProduct->total_price;
+            $fltPrice = $objItem->getTotalPrice();
 
             foreach ($arrPreTax as $objSurcharge)
             {
