@@ -130,7 +130,6 @@ class ProductCallbacks extends \Backend
             if (!$blnVariants)
             {
                 unset($GLOBALS['TL_DCA']['tl_iso_products']['list']['global_operations']['toggleVariants']);
-                unset($GLOBALS['TL_DCA']['tl_iso_products']['list']['operations']['quick_edit']);
                 unset($GLOBALS['TL_DCA']['tl_iso_products']['list']['operations']['generate']);
             }
 
@@ -825,7 +824,8 @@ window.addEvent('domready', function() {
 
 
     /**
-     * Hide generate and quick edit button for variants and product types without variant support     * @param array
+     * Hide variant buttons for product types without variant support
+     * @param array
      * @param string
      * @param string
      * @param string

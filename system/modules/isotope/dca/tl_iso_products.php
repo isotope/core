@@ -69,7 +69,7 @@ $GLOBALS['TL_DCA']['tl_iso_products'] = array
             'mode'                  => 2,
             'fields'                => array('name'),
             'headerFields'          => array('name', 'sku', 'price', 'published'),
-            'headerOperations'      => array('edit', 'copy', 'cut', 'delete', 'toggle', 'show', 'quick_edit', 'generate', 'related', 'downloads', 'prices'),
+            'headerOperations'      => array('edit', 'copy', 'cut', 'delete', 'toggle', 'show', 'generate', 'related', 'downloads', 'prices'),
             'flag'                  => 1,
             'panelLayout'           => 'iso_buttons,iso_filter;filter;sort,search,limit',
             'icon'                  => 'system/modules/isotope/assets/store-open.png',
@@ -165,13 +165,6 @@ $GLOBALS['TL_DCA']['tl_iso_products'] = array
                 'label'             => &$GLOBALS['TL_LANG']['tl_iso_products']['variants'],
                 'href'              => '',
                 'icon'              => 'system/modules/isotope/assets/table--pencil.png',
-                'button_callback'   => array('Isotope\ProductCallbacks', 'variantsButton'),
-            ),
-            'quick_edit' => array
-            (
-                'label'             => &$GLOBALS['TL_LANG']['tl_iso_products']['quick_edit'],
-                'href'              => 'key=quick_edit',
-                'icon'              => 'system/modules/isotope/assets/table-select-cells.png',
                 'button_callback'   => array('Isotope\ProductCallbacks', 'variantsButton'),
             ),
             'generate' => array

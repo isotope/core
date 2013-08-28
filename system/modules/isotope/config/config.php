@@ -40,7 +40,6 @@ array_insert($GLOBALS['BE_MOD']['isotope'], 0, array
         'icon'                        => 'system/modules/isotope/assets/store-open.png',
         'javascript'                => 'system/modules/isotope/assets/backend.min.js',
         'generate'                    => array('Isotope\tl_iso_products', 'generateVariants'),
-        'quick_edit'                => array('Isotope\tl_iso_products', 'quickEditVariants'),
         'import'                    => array('Isotope\tl_iso_products', 'importAssets'),
     ),
     'iso_orders' => array

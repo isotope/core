@@ -309,11 +309,6 @@ h3.inherit,
     vertical-align: middle;
 }
 
-#tl_product_quick_edit th
-{
-    text-align: left;
-}
-
 body.iso_be_overview .tip-wrap{
     margin-left: 30px !important;
     margin-top: 70px;

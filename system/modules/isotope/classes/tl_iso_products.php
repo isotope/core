@@ -135,14 +135,14 @@ class tl_iso_products extends \Backend
                     }
                 }
 
-                \Controller::redirect(str_replace('&key=generate', '&key=quick_edit', \Environment::get('request')));
+                \Controller::redirect(str_replace('&key=generate', '', \Environment::get('request')));
             }
         }
 
         // Return form
         return '
 <div id="tl_buttons">
-<a href="'.ampersand(str_replace('&key=generate', '', \Environment::get('request'))).'" class="header_back" title="'.specialchars($GLOBALS['TL_LANG']['MSC']['backBT']).'">'.$GLOBALS['TL_LANG']['MSC']['backBT'].'</a>
+<a href="'.ampersand(str_replace('&key=generate&id='.$dc->id, '', \Environment::get('request'))).'" class="header_back" title="'.specialchars($GLOBALS['TL_LANG']['MSC']['backBT']).'">'.$GLOBALS['TL_LANG']['MSC']['backBT'].'</a>
 </div>
 
 <h2 class="sub_headline">'.sprintf($GLOBALS['TL_LANG']['tl_iso_products']['generate'][1], $dc->id).'</h2>'.$this->getMessages().'
@@ -162,198 +162,6 @@ class tl_iso_products extends \Backend
 
 <div class="tl_submit_container">
   <input type="submit" name="save" id="save" class="tl_submit" accesskey="s" value="'.specialchars($GLOBALS['TL_LANG']['tl_iso_products']['generate'][0]).'">
-</div>
-
-</div>
-</form>';
-    }
-
-
-    /**
-     * Quickly edit the most common product variant data
-     * @param object
-     * @return string
-     */
-    public function quickEditVariants($dc)
-    {
-        $objProduct = $this->Database->prepare("SELECT id, pid, language, type, (SELECT attributes FROM tl_iso_producttypes WHERE id=tl_iso_products.type) AS attributes, (SELECT variant_attributes FROM tl_iso_producttypes WHERE id=tl_iso_products.type) AS variant_attributes, (SELECT prices FROM tl_iso_producttypes WHERE id=tl_iso_products.type) AS prices FROM tl_iso_products WHERE id=?")->limit(1)->execute($dc->id);
-        $arrQuickEditFields = $objProduct->prices ? array('sku', 'shipping_weight') : array('sku', 'price', 'shipping_weight');
-
-        $arrFields = array();
-        $arrAttributes = deserialize($objProduct->attributes);
-        $arrVarAttributes = deserialize($objProduct->variant_attributes);
-
-        if (is_array($arrAttributes))
-        {
-            foreach ($arrAttributes as $attribute => $arrConfig)
-            {
-                if ($arrConfig['enabled'] && $GLOBALS['TL_DCA']['tl_iso_products']['fields'][$attribute]['attributes']['variant_option'])
-                {
-                    $arrFields[] = $attribute;
-                }
-            }
-        }
-
-        $objVariants = $this->Database->prepare("SELECT * FROM tl_iso_products WHERE pid=? AND language=''")->execute($dc->id);
-        $strBuffer = '<div id="tl_buttons">
-<a href="'.ampersand(str_replace('&key=quick_edit', '', \Environment::get('request'))).'" class="header_back" title="'.specialchars($GLOBALS['TL_LANG']['MSC']['backBT']).'">'.$GLOBALS['TL_LANG']['MSC']['backBT'].'</a>
-</div>
-
-<h2 class="sub_headline">'.sprintf($GLOBALS['TL_LANG']['tl_iso_products']['quick_edit'][1], $dc->id).'</h2>'.$this->getMessages().'
-
-<form action="'.ampersand(\Environment::get('request'), true).'" id="tl_product_quick_edit" class="tl_form" method="post">
-<div class="tl_formbody_edit">
-<input type="hidden" name="FORM_SUBMIT" value="tl_product_quick_edit">
-<input type="hidden" name="REQUEST_TOKEN" value="'.REQUEST_TOKEN.'">
-
-<div class="tl_tbox block">
-<table width="100%" border="0" cellpadding="5" cellspacing="0" summary="">
-<thead>
-<th>' . $GLOBALS['TL_LANG']['tl_iso_products']['variantValuesLabel'] . '</th>';
-
-        foreach ($arrQuickEditFields as $field)
-        {
-            if ($arrVarAttributes[$field]['enabled'])
-            {
-                $strBuffer .= '<th>'.$GLOBALS['TL_LANG']['tl_iso_products'][$field][0].'</th>';
-            }
-        }
-
-$strBuffer .= '<th style="text-align:center"><img src="system/themes/default/images/published.gif" width="16" height="16" alt="' . $GLOBALS['TL_LANG']['tl_iso_products']['published'][0].'"><br><input type="checkbox" onclick="Backend.toggleCheckboxes(this, \'ctrl_published\')"></th>
-</thead>';
-
-        $arrFields = array_flip($arrFields);
-        $globalDoNotSubmit = false;
-
-        while ($objVariants->next())
-        {
-            $arrWidgets = array();
-            $doNotSubmit = false;
-            $arrSet = array();
-
-            $arrPublished[$objVariants->id] = $objVariants->published;
-
-            foreach ($arrQuickEditFields as $field)
-            {
-                if ($arrVarAttributes[$field]['enabled'])
-                {
-                    $strClass = $GLOBALS['BE_FFL'][$GLOBALS['TL_DCA']['tl_iso_products']['fields'][$field]['inputType']];
-                    $arrWidgets[$field] = new $strClass($strClass::getAttributesFromDca($GLOBALS['TL_DCA']['tl_iso_products']['fields'][$field], $field.'[' . $objVariants->id .']', $objVariants->{$field}));
-                }
-            }
-
-            foreach ($arrWidgets as $key=>$objWidget)
-            {
-                switch ($key)
-                {
-                    case 'sku':
-                        $objWidget->class = 'tl_text_2';
-                        break;
-
-                    case 'shipping_weight':
-                        $objWidget->class = 'tl_text_trbl';
-                        break;
-
-                    default:
-                        $objWidget->class = 'tl_text_3';
-                        break;
-                }
-
-                if (\Input::post('FORM_SUBMIT') == 'tl_product_quick_edit')
-                {
-                    $objWidget->validate();
-
-                    if ($objWidget->hasErrors())
-                    {
-                        $doNotSubmit = true;
-                        $globalDoNotSubmit = true;
-                    }
-                    else
-                    {
-                        $varValue = $objWidget->value;
-
-                        if (is_array($GLOBALS['TL_DCA']['tl_iso_products']['fields'][$key]['save_callback']))
-                        {
-                            foreach ($GLOBALS['TL_DCA']['tl_iso_products']['fields'][$key]['save_callback'] as $callback)
-                            {
-                                $this->import($callback[0]);
-
-                                try
-                                {
-                                    $varValue = $this->$callback[0]->$callback[1]($varValue);
-                                }
-                                catch (\Exception $e)
-                                {
-                                    $objWidget->addError($e->getMessage());
-                                    $doNotSubmit = true;
-                                    $globalDoNotSubmit = true;
-                                }
-                            }
-                        }
-
-                        $arrSet[$key] = $varValue;
-                    }
-                }
-            }
-
-            if (\Input::post('FORM_SUBMIT') == 'tl_product_quick_edit' && !$doNotSubmit)
-            {
-                $arrPublished = \Input::post('published');
-                $arrSet['published'] = ($arrPublished[$objVariants->id] ? $arrPublished[$objVariants->id] : '');
-
-                $this->Database->prepare("UPDATE tl_iso_products %s WHERE id=?")
-                               ->set($arrSet)
-                               ->execute($objVariants->id);
-            }
-
-            $arrValues = array();
-
-            foreach (array_intersect_key($objVariants->row(), $arrFields) as $k => $v)
-            {
-                $arrValues[$k] = Isotope::formatValue('tl_iso_products', $k, $v);
-            }
-
-            $strBuffer .= '
-<tr>
-    <td>'.implode(', ', $arrValues).'</td>';
-    foreach ($arrQuickEditFields as $field)
-    {
-        if ($arrVarAttributes[$field]['enabled'])
-        {
-            $strBuffer .= '<td>'.$arrWidgets[$field]->generateWithError(true).'</td>';
-        }
-    }
-
-    $strBuffer .= '<td style="text-align:center"><input type="checkbox" id="ctrl_published_'.$objVariants->id.'" name="published['.$objVariants->id.']" value="1"'.($arrPublished[$objVariants->id] ? ' checked="checked"' : '').' class="tl_checkbox"></td>
-<tr>';
-
-        }
-
-        if (\Input::post('FORM_SUBMIT') == 'tl_product_quick_edit' && !$globalDoNotSubmit)
-        {
-            Backend::truncateProductCache();
-
-            if (strlen(\Input::post('saveNclose')))
-            {
-                \Controller::redirect(str_replace('&key=quick_edit', '', \Environment::get('request')));
-            }
-            else
-            {
-                \Controller::reload();
-            }
-        }
-
-        return $strBuffer . '
-</table>
-</div>
-
-</div>
-
-<div class="tl_formbody_submit">
-
-<div class="tl_submit_container">
-  <input type="submit" name="save" id="save" class="tl_submit" accesskey="s" value="'.specialchars($GLOBALS['TL_LANG']['MSC']['save']).'">
-  <input type="submit" name="saveNclose" id="saveNclose" class="tl_submit" accesskey="c" value="'.specialchars($GLOBALS['TL_LANG']['MSC']['saveNclose']).'">
 </div>
 
 </div>
