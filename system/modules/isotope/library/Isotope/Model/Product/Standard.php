@@ -95,12 +95,6 @@ class Standard extends Product implements IsotopeProduct
      */
     protected $doNotSubmit = false;
 
-    /**
-     * Lock products from changes and don't calculate prices
-     * @var boolean
-     */
-    protected $blnLocked = false;
-
 
     /**
      * Construct the object
@@ -115,7 +109,6 @@ class Standard extends Product implements IsotopeProduct
         $this->Database = \Database::getInstance();
 
         $arrData = $this->arrData;
-        $this->blnLocked = $blnLocked;
 
         if ($arrData['pid'] > 0)
         {
@@ -163,15 +156,6 @@ class Standard extends Product implements IsotopeProduct
         {
             $this->loadVariantData($arrData);
         }
-
-        // Make sure the locked attributes are set
-        if ($this->isLocked())
-        {
-            $this->arrData['sku']            = $arrData['sku'];
-            $this->arrData['name']           = $arrData['name'];
-            $this->arrData['price']          = $arrData['price'];
-            $this->arrData['tax_free_price'] = $arrData['tax_free_price'];
-        }
     }
 
 
@@ -193,7 +177,7 @@ class Standard extends Product implements IsotopeProduct
                 return $this->formSubmit;
 
             case 'price':
-                return $this->isLocked() ? $this->arrData['price'] : Isotope::calculatePrice($this->arrData['price'], $this, 'price', $this->arrData['tax_class']);
+                return Isotope::calculatePrice($this->arrData['price'], $this, 'price', $this->arrData['tax_class']);
 
             case 'total_price':
                 $varPrice = $this->price;
@@ -201,10 +185,6 @@ class Standard extends Product implements IsotopeProduct
                 return $varPrice === null ? null : ($this->quantity_requested * $varPrice);
 
             case 'tax_free_price':
-                if ($this->isLocked()) {
-                    return $this->arrData['tax_free_price'] ? $this->arrData['tax_free_price'] : $this->arrData['price'];
-                }
-
                 $objTaxClass = TaxClass::findByPk($this->arrData['tax_class']);
                 $fltPrice = $objTaxClass === null ? $this->arrData['price'] : $objTaxClass->calculateNetPrice($this->arrData['price']);
 
@@ -1126,7 +1106,7 @@ class Standard extends Product implements IsotopeProduct
 
         foreach ($this->arrVariantAttributes as $attribute)
         {
-            if (in_array($attribute, $arrInherit) || ($this->isLocked() && in_array($attribute, array('sku', 'name', 'price'))))
+            if (in_array($attribute, $arrInherit))
             {
                 continue;
             }

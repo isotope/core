@@ -84,10 +84,6 @@ class ProductCollectionItem extends \Model
                 $this->objProduct->setQuantity($this->quantity);
                 $this->objProduct->reader_jumpTo_Override = $this->href_reader;
 
-                if ($this->blnLocked) {
-                    $this->objProduct->lock();
-                }
-
             } catch (\Exception $e) {
                 \System::log("Error creating product object: " . $e->getMessage(), __METHOD__, TL_ERROR);
             }
