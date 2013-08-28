@@ -721,19 +721,7 @@ class Standard extends Product implements IsotopeProduct
         $objTemplate->getGallery = function($strAttribute) use ($objProduct, $arrConfig, &$arrGalleries) {
 
             if (!isset($arrGalleries[$strAttribute])) {
-
-                $objGallery = Gallery::findByPk($arrConfig['gallery']);
-
-                if (null === $objGallery) {
-                    $objGallery = new Isotope\Model\Gallery\Standard();
-                }
-
-                $objGallery->setName($objProduct->formSubmit . '_' . $strAttribute);
-                $objGallery->setFiles($objProduct->$strAttribute); //Isotope::mergeMediaData($objProduct->{$this->field_name}, deserialize($objProduct->{$strKey.'_fallback'})));
-                $objGallery->product_id = ($objProduct->pid ? $objProduct->pid : $objProduct->id);
-                $objGallery->href_reader = $objProduct->href_reader;
-
-                return $objGallery;
+                $arrGalleries[$strAttribute] = Gallery::createForProductAttribute($arrConfig['gallery'], $objProduct, $strAttribute);
             }
 
             return $arrGalleries[$strAttribute];

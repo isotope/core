@@ -12,6 +12,8 @@
 
 namespace Isotope\Model;
 
+use Isotope\Interfaces\IsotopeProduct;
+
 
 /**
  * Class Shipping
@@ -40,4 +42,27 @@ abstract class Gallery extends TypeAgent
      * @var array
      */
     protected static $arrModelTypes = array();
+
+    /**
+     * Create a gallery for product, falls back to standard gallery if none is defined
+     * @param   int
+     * @param   IsotopeProduct
+     * @param   string
+     * @return  Gallery
+     */
+    public static function createForProductAttribute($intId, IsotopeProduct $objProduct, $strAttribute)
+    {
+        $objGallery = static::findByPk($intId);
+
+        if (null === $objGallery) {
+            $objGallery = new \Isotope\Model\Gallery\Standard();
+        }
+
+        $objGallery->setName($objProduct->formSubmit . '_' . $strAttribute);
+        $objGallery->setFiles($objProduct->$strAttribute); //Isotope::mergeMediaData($objProduct->{$this->field_name}, deserialize($objProduct->{$strKey.'_fallback'})));
+        $objGallery->product_id = ($objProduct->pid ? $objProduct->pid : $objProduct->id);
+        $objGallery->href_reader = $objProduct->href_reader;
+
+        return $objGallery;
+    }
 }
