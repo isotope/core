@@ -13,6 +13,7 @@
 namespace Isotope\Model;
 
 use Isotope\Isotope;
+use Isotope\Translation;
 
 /**
  * TaxRate implements the tax rate model.
@@ -44,7 +45,7 @@ class TaxRate extends \Model
                 return deserialize($this->arrData[$strKey]);
 
             case 'label':
-                return Isotope::getInstance()->translate($this->arrData['label'] ?: $this->arrData['name']);
+                return Translation::get($this->arrData['label'] ?: $this->arrData['name']);
 
             default:
                 return parent::__get($strKey);

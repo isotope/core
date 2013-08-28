@@ -157,7 +157,7 @@ class Frontend extends \Frontend
         }
         elseif ($arrTag[0] == 'isolabel')
         {
-            return Isotope::translate($arrTag[1], $arrTag[2]);
+            return Translation::get($arrTag[1], $arrTag[2]);
         }
         elseif ($arrTag[0] == 'order')
         {
