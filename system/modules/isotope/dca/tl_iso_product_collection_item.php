@@ -22,17 +22,17 @@ $GLOBALS['TL_DCA']['tl_iso_product_collection_item'] = array
     // Config
     'config' => array
     (
-        'dataContainer'     => 'Table',
-        'closed'            => true,
-        'notEditable'       => true,
-        'ptable'            => 'tl_iso_product_collection',
-        'ctable'            => array('tl_iso_product_collection_download'),
-        'sql'               => array
+        'dataContainer'             => 'Table',
+        'closed'                    => true,
+        'notEditable'               => true,
+        'ptable'                    => 'tl_iso_product_collection',
+        'ctable'                    => array('tl_iso_product_collection_download'),
+        'sql'                       => array
         (
             'keys' => array
             (
-                'id' => 'primary',
-                'pid' => 'index',
+                'id'                => 'primary',
+                'pid'               => 'index',
             )
         ),
     ),
@@ -56,9 +56,9 @@ $GLOBALS['TL_DCA']['tl_iso_product_collection_item'] = array
         ),
         'product_id' => array
         (
-            'foreignKey'    => 'tl_iso_products.name',
-            'sql'           => "int(10) unsigned NOT NULL default '0'",
-            'relation'      => array('type'=>'hasOne', 'load'=>'lazy'),
+            'foreignKey'            => 'tl_iso_products.name',
+            'sql'                   => "int(10) unsigned NOT NULL default '0'",
+            'relation'              => array('type'=>'hasOne', 'load'=>'lazy'),
         ),
         'type' => array
         (

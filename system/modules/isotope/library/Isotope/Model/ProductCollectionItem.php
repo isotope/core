@@ -68,7 +68,7 @@ class ProductCollectionItem extends \Model
 
     /**
      * Get the product related to this item
-     * @return IsotopeProduct|null
+     * @return  IsotopeProduct|null
      */
     public function getProduct($blnNoCache=false)
     {
@@ -99,7 +99,7 @@ class ProductCollectionItem extends \Model
 
     /**
      * Return boolean flag if product could be loaded
-     * @return bool
+     * @return  bool
      */
     public function hasProduct()
     {
