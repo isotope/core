@@ -625,6 +625,11 @@ class Standard extends Product implements IsotopeProduct
             }
         }
 
+        // Check that the product is in any page of the current site
+        if (count(\Isotope\Frontend::getPagesInCurrentRoot($this->categories, \FrontendUser::getInstance())) == 0) {
+            return false;
+        }
+
         // Check if "advanced price" is available
         if ($this->arrData['price'] === null && (in_array('price', $this->arrAttributes) || in_array('price', $this->arrVariantAttributes))) {
             return false;
@@ -664,6 +669,11 @@ class Standard extends Product implements IsotopeProduct
             if (!is_array($groups) || empty($groups) || !is_array($memberGroups) || empty($memberGroups) || !count(array_intersect($groups, $memberGroups))) {
                 return false;
             }
+        }
+
+        // Check that the product is in any page of the current site
+        if (count(\Isotope\Frontend::getPagesInCurrentRoot($this->categories, $objCollection->getRelated('member'))) == 0) {
+            return false;
         }
 
         return true;

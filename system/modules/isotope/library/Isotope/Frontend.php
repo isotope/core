@@ -1343,6 +1343,79 @@ window.addEvent('domready', function()
 
 
     /**
+     * Return pages in the current root available to the member
+     * Necessary to check if a product is allowed in the current site and cache the value
+     * @param   array
+     * @param   \MemberModel|\FrontendUser
+     * @return  array
+     */
+    public static function getPagesInCurrentRoot(array $arrPages, $objMember=null)
+    {
+        global $objPage;
+
+        // $objPage not available, we dont know if the page is allowed
+        if (null === $objPage || $objPage == 0) {
+            return $arrPages;
+        }
+
+        static $arrAvailable = array();
+        static $arrUnavailable = array();
+
+        $intMember = 0;
+        if (null !== $objMember) {
+            $intMember = $objMember->id;
+            $arrGroups = deserialize($objMember->groups);
+
+            if (!is_array($arrGroups)) {
+                $arrGroups = array();
+            }
+        }
+
+        foreach (array_diff($arrPages, $arrAvailable, $arrUnavailable) as $intPage) {
+            $objPageDetails = \PageModel::findWithDetails($intPage);
+
+            // Page is not in the current root
+            if ($objPageDetails->rootId != $objPage->rootId) {
+                continue;
+            }
+
+            // Page is for guests only but we have a member
+            if ($objPageDetails->guests && $intMember > 0 && !$objPageDetails->protected) {
+
+                $arrUnavailable[$intMember][] = $intPage;
+                continue;
+
+            } elseif ($objPageDetails->protected) {
+
+                // Page is protected but we have no member
+                if ($intMember == 0) {
+                    $arrUnavailable[$intMember][] = $intPage;
+                    continue;
+                }
+
+                $arrPGroups = deserialize($objPages->groups);
+
+                // Page is protected but has no groups
+                if (!is_array($arrPGroups)) {
+                    $arrUnavailable[$intMember][] = $intPage;
+                    continue;
+                }
+
+                // Page groups do not match with member groups
+                if (count(array_intersect($arrGroups, $arrPGroups)) == 0) {
+                    $arrUnavailable[$intMember][] = $intPage;
+                    continue;
+                }
+            }
+
+            $arrAvailable[$intMember][] = $intPage;
+        }
+
+        return array_intersect($arrPages, $arrAvailable[$intMember]);
+    }
+
+
+    /**
      * Manipulate the breadcrumb to show the page reader
      * @param  array
      * @param  object
