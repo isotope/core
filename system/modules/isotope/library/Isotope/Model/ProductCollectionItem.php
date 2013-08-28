@@ -143,7 +143,7 @@ class ProductCollectionItem extends \Model
      */
     public function getPrice()
     {
-        return (string) ($this->isLocked() || !$this->hasProduct()) ? $this->price : $this->getProduct()->price;
+        return (string) ($this->isLocked() || !$this->hasProduct()) ? $this->price : $this->getProduct()->getPrice()->getAmount((int) $this->quantity);
     }
 
 
@@ -153,7 +153,7 @@ class ProductCollectionItem extends \Model
      */
     public function getTaxFreePrice()
     {
-        return (string) ($this->isLocked() || !$this->hasProduct()) ? $this->tax_free_price : $this->getProduct()->tax_free_price;
+        return (string) ($this->isLocked() || !$this->hasProduct()) ? $this->tax_free_price : $this->getProduct()->getPrice()->getNetAmount((int) $this->quantity);
     }
 
 
