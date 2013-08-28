@@ -197,9 +197,6 @@ class Standard extends Product implements IsotopeProduct
             case 'formSubmit':
                 return $this->formSubmit;
 
-            case 'original_price':
-                return $this->isLocked() ? $this->arrData['price'] : Isotope::calculatePrice($this->arrData['price'], $this, 'original_price', $this->arrData['tax_class']);
-
             case 'price':
                 return $this->isLocked() ? $this->arrData['price'] : Isotope::calculatePrice($this->arrData['price'], $this, 'price', $this->arrData['tax_class']);
 
@@ -704,10 +701,6 @@ class Standard extends Product implements IsotopeProduct
             return $arrGalleries[$strAttribute];
         };
 
-        // Add price to template
-        $strPrice = '';
-        $fltPrice = $this->price;
-        $fltOriginalPrice = $this->original_price;
 
         if ($this->arrCache['from_price'] !== null)
         {
@@ -719,6 +712,11 @@ class Standard extends Product implements IsotopeProduct
         }
         else
         {
+        // Add price to template
+        $strPrice = '';
+        $fltPrice = $this->getPrice()->getAmount();
+        $fltOriginalPrice = $this->getPrice()->getOriginalAmount();
+
             $strPrice = Isotope::formatPriceWithCurrency($fltPrice);
             $strOriginalPrice = Isotope::formatPriceWithCurrency($fltOriginalPrice);
         }
