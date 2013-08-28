@@ -97,15 +97,14 @@ class Order extends ProductCollection implements IsotopeProductCollection
 
 
     /**
-     * Remove downloads when removing a product
-     * @param object
-     * @return boolean
+     * Remove downloads when deleting an item
+     * @param   object
+     * @return  boolean
      */
-    public function deleteProduct(IsotopeProduct $objProduct)
+    public function deleteItem(ProductCollectionItem $objItem)
     {
-        if (parent::deleteProduct($objProduct))
-        {
-            \Database::getInstance()->query("DELETE FROM tl_iso_product_collection_download WHERE pid={$objProduct->collection_id}");
+        if (parent::deleteItem($objItem)) {
+            \Database::getInstance()->query("DELETE FROM tl_iso_product_collection_download WHERE pid={$objItem->id}");
         }
 
         return false;
