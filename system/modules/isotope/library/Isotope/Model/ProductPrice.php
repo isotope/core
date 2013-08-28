@@ -187,7 +187,6 @@ class ProductPrice extends \Model implements IsotopePrice
             'price'         => null,
             'tax_class'     => null,
             'from_price'    => null,
-            'high_price'    => null,
         ), $arrData);
 
         $objPrice = new static();
@@ -196,7 +195,6 @@ class ProductPrice extends \Model implements IsotopePrice
         $objPrice->price = $arrData['price'];
         $objPrice->tax_class = (int) $arrData['tax_class'];
         $objPrice->from_price = $arrData['from_price'];
-        $objPrice->high_price = $arrData['high_price'];
 
         $objPrice->setProduct($objProduct);
 
