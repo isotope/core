@@ -648,6 +648,104 @@ window.addEvent('domready', function() {
     }
 
 
+    /////////////////////////
+    //  !onversion_callback
+    /////////////////////////
+
+
+    /**
+     * Save categories history when creating new version of a product
+     * @param   string
+     * @param   int
+     * @param   \DataContainer
+     */
+    public function versionProductCategories($strTable, $intId, $dc)
+    {
+        if ($strTable != 'tl_iso_products') {
+            return;
+        }
+
+        $arrCategories = $this->Database->query("SELECT * FROM tl_iso_product_categories WHERE pid=$intId")->fetchAllAssoc();
+
+        $this->createSubtableVersion($strTable, $intId, 'tl_iso_product_categories', $arrCategories);
+    }
+
+    /**
+     * Create a new subtable version record
+     * @param   string
+     * @param   int
+     * @param   string
+     * @param   array
+     */
+    protected function createSubtableVersion($strTable, $intId, $strSubtable, $arrData)
+    {
+        $objVersion = $this->Database->prepare("SELECT * FROM tl_version WHERE pid=? AND fromTable=? ORDER BY version DESC")
+		                             ->limit(1)
+									 ->executeUncached($intId, $strTable);
+
+        $this->Database->prepare("UPDATE tl_version SET active='' WHERE pid=? AND fromTable=?")
+                       ->execute($intId, $strSubtable);
+
+        $this->Database->prepare("INSERT INTO tl_version (pid, tstamp, version, fromTable, username, userid, description, editUrl, active, data) VALUES (?, ?, ?, ?, ?, ?, ?, ?, 1, ?)")
+                       ->execute($objVersion->pid, $objVersion->tstamp, $objVersion->version, $strSubtable, $objVersion->username, $objVersion->userid, $objVersion->description, $objVersion->editUrl, serialize($arrData));
+    }
+
+
+    /////////////////////////
+    //  !onrestore_callback
+    /////////////////////////
+
+    /**
+     * Restore categories when restoring a product
+     * @param   int
+     * @param   string
+     * @param   array
+     * @param   int
+     */
+    public function restoreProductCategories($intId, $strTable, $arrData, $intVersion)
+    {
+        if ($strTable != 'tl_iso_products') {
+            return;
+        }
+
+        $arrData = $this->findSubtableVersion('tl_iso_product_categories', $intId, $intVersion);
+
+        if (null !== $arrData) {
+            $this->Database->query("DELETE FROM tl_iso_product_categories WHERE pid=$intId");
+
+            foreach ($arrData as $arrRow) {
+                $this->Database->prepare("INSERT INTO tl_iso_product_categories %s")->set($arrRow)->executeUncached();
+            }
+        }
+    }
+
+    /**
+     * Find a subtable version record
+     * @param   string
+     * @param   int
+     * @param   string
+     */
+    protected function findSubtableVersion($strTable, $intPid, $intVersion)
+    {
+        $objVersion = $this->Database->prepare("SELECT data FROM tl_version WHERE fromTable=? AND pid=? AND version=?")
+								     ->limit(1)
+                                     ->execute($strTable, $intPid, $intVersion);
+
+        if (!$objVersion->numRows) {
+            return null;
+        }
+
+        $arrData = deserialize($objVersion->data);
+
+        if (!is_array($arrData)) {
+            return null;
+        }
+
+        return $arrData;
+    }
+
+
+
     //////////////////////
     //  !panel_callback
     //////////////////////
