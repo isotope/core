@@ -6,6 +6,7 @@ Version 1.4.6 (????-??-??)
 
 ### Fixed
 - Filters did not search variants correctly
+- Removed deprecated TCPDF method AliasNbPages() (#688)
 
 Version 1.4.5 (2013-08-12)
 --------------------------

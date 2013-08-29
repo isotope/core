@@ -1048,9 +1048,6 @@ abstract class IsotopeProductCollection extends Model
 			// Set some language-dependent strings
 			$pdf->setLanguageArray($l);
 
-			// Initialize document and add a page
-			$pdf->AliasNbPages();
-
 			// Set font
 			$pdf->SetFont(PDF_FONT_NAME_MAIN, '', PDF_FONT_SIZE_MAIN);
 		}
