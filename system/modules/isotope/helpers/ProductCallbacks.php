@@ -416,11 +416,16 @@ class ProductCallbacks extends \Backend
             }
 
             // Enable advanced prices
-            if ($objProducts->prices && !$blnEditAll)
-            {
+            if ($objProducts->prices && !$blnEditAll) {
                 $arrFields['prices']['exclude'] = $arrFields['price']['exclude'];
                 $arrFields['prices']['attributes'] = $arrFields['price']['attributes'];
                 $arrFields['price'] = $arrFields['prices'];
+            }
+
+            // Register callback to version/restore a price
+            else {
+                $GLOBALS['TL_DCA']['tl_iso_products']['config']['onversion_callback'][] = array('Isotope\ProductCallbacks', 'versionPriceAndTaxClass');
+                $GLOBALS['TL_DCA']['tl_iso_products']['config']['onrestore_callback'][] = array('Isotope\ProductCallbacks', 'restorePriceAndTaxClass');
             }
 
             $arrInherit = array();
@@ -670,6 +675,32 @@ window.addEvent('domready', function() {
         $this->createSubtableVersion($strTable, $intId, 'tl_iso_product_categories', $arrCategories);
     }
 
+    /**
+     * Save prices history when creating a new version of a product
+     * @param   string
+     * @param   int
+     * @param   \DataContainer
+     */
+    public function versionPriceAndTaxClass($strTable, $intId, $dc)
+    {
+        if ($strTable != 'tl_iso_products') {
+            return;
+        }
+
+        $arrData = array('prices'=>array(), 'tiers'=>array());
+
+        $objPrices = $this->Database->query("SELECT * FROM tl_iso_prices WHERE pid=$intId");
+
+        if ($objPrices->numRows) {
+            $objTiers = $this->Database->query("SELECT * FROM tl_iso_price_tiers WHERE pid IN (" . implode(',', $objPrices->fetchEach('id')) . ")");
+
+            $arrData['prices'] = $objPrices->fetchAllAssoc();
+            $arrData['tiers'] = $objTiers->fetchAllAssoc();
+        }
+
+        $this->createSubtableVersion($strTable, $intId, 'tl_iso_prices', $arrData);
+    }
+
 
     /////////////////////////
     //  !onrestore_callback
@@ -695,6 +726,35 @@ window.addEvent('domready', function() {
 
             foreach ($arrData as $arrRow) {
                 $this->Database->prepare("INSERT INTO tl_iso_product_categories %s")->set($arrRow)->executeUncached();
+            }
+        }
+    }
+
+    /**
+     * Restore pricing information when restoring a product
+     * @param   int
+     * @param   string
+     * @param   array
+     * @param   int
+     */
+    public function restorePriceAndTaxClass($intId, $strTable, $arrData, $intVersion)
+    {
+        if ($strTable != 'tl_iso_products') {
+            return;
+        }
+
+        $arrData = $this->findSubtableVersion('tl_iso_prices', $intId, $intVersion);
+
+        if (null !== $arrData) {
+            $this->Database->query("DELETE FROM tl_iso_price_tiers WHERE pid IN (SELECT id FROM tl_iso_prices WHERE pid=$intId)");
+            $this->Database->query("DELETE FROM tl_iso_prices WHERE pid=$intId");
+
+            foreach ($arrData['prices'] as $arrRow) {
+                $this->Database->prepare("INSERT INTO tl_iso_prices %s")->set($arrRow)->executeUncached();
+            }
+
+            foreach ($arrData['tiers'] as $arrRow) {
+                $this->Database->prepare("INSERT INTO tl_iso_price_tiers %s")->set($arrRow)->executeUncached();
             }
         }
     }
