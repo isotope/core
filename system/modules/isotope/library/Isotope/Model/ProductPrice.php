@@ -306,7 +306,7 @@ class ProductPrice extends \Model implements IsotopePrice
         $time = time();
         $arrData = array();
         $blnPriceFound = false;
-        $arrGroups = self::getMemberGroups();
+        $arrGroups = self::getMemberGroups(\FrontendUser::getInstance());
 
         $objPrices = \Database::getInstance()->execute("SELECT min, price, tax_class
                                                         FROM tl_iso_price_tiers t
@@ -366,7 +366,7 @@ class ProductPrice extends \Model implements IsotopePrice
     protected static function findLowestAdvancedPriceOfVariants($arrVariantIds, $blnShowPriceTiers=false)
     {
         $time = time();
-        $arrGroups = self::getMemberGroups();
+        $arrGroups = self::getMemberGroups(\FrontendUser::getInstance());
 
         if ($blnShowPriceTiers)
         {
@@ -424,11 +424,11 @@ class ProductPrice extends \Model implements IsotopePrice
      * Compile a list of member groups suitable for retrieving prices. This includes a 0 at the last position in array
      * @return  array
      */
-    protected static function getMemberGroups()
+    protected static function getMemberGroups($objMember)
     {
-        if (FE_USER_LOGGED_IN === true)
+        if (null !== $objMember)
         {
-            $arrGroups = FrontendUser::getInstance()->groups;
+            $arrGroups = deserialize($objMember->groups);
         }
 
         if (!is_array($arrGroups))
