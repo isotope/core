@@ -39,14 +39,14 @@ class ProductPriceFinder extends System
 	{
 		$blnAdvancedPrices = $objProduct->hasAdvancedPrices();
 		$blnVariantPrices = $objProduct->hasVariantPrices();
-
+                
 		if ($blnAdvancedPrices && $blnVariantPrices)
 		{
 			$arrData = self::findAdvancedVariantPrice($objProduct);
 		}
 		elseif ($blnAdvancedPrices)
 		{
-			$arrData = self::findAdvancedProductPrice($objProduct);
+			$arrData = (!$objProduct->pid?self::findAdvancedProductPrice($objProduct):self::findAdvancedParentProductPrice($objProduct));
 		}
 		elseif ($blnVariantPrices)
 		{
@@ -130,6 +130,16 @@ class ProductPriceFinder extends System
 		return self::getAdvancedPrices(array($objProduct->id), $objProduct->quantity_requested, $objProduct->show_price_tiers);
 	}
 
+        
+	/**
+	 * Find price data for a product without variant prices but with advanced prices at main product
+	 * @param IsotopeProduct
+	 * @return array
+	 */
+	protected static function findAdvancedParentProductPrice(IsotopeProduct $objProduct)
+	{
+		return self::getAdvancedPrices(array($objProduct->pid), $objProduct->quantity_requested, $objProduct->show_price_tiers);
+	}
 
 	/**
 	 * Find price data for a variant product with advanced prices and with variant prices
