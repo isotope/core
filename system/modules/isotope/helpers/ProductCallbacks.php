@@ -670,26 +670,6 @@ window.addEvent('domready', function() {
         $this->createSubtableVersion($strTable, $intId, 'tl_iso_product_categories', $arrCategories);
     }
 
-    /**
-     * Create a new subtable version record
-     * @param   string
-     * @param   int
-     * @param   string
-     * @param   array
-     */
-    protected function createSubtableVersion($strTable, $intId, $strSubtable, $arrData)
-    {
-        $objVersion = $this->Database->prepare("SELECT * FROM tl_version WHERE pid=? AND fromTable=? ORDER BY version DESC")
-		                             ->limit(1)
-									 ->executeUncached($intId, $strTable);
-
-        $this->Database->prepare("UPDATE tl_version SET active='' WHERE pid=? AND fromTable=?")
-                       ->execute($intId, $strSubtable);
-
-        $this->Database->prepare("INSERT INTO tl_version (pid, tstamp, version, fromTable, username, userid, description, editUrl, active, data) VALUES (?, ?, ?, ?, ?, ?, ?, ?, 1, ?)")
-                       ->execute($objVersion->pid, $objVersion->tstamp, $objVersion->version, $strSubtable, $objVersion->username, $objVersion->userid, $objVersion->description, $objVersion->editUrl, serialize($arrData));
-    }
-
 
     /////////////////////////
     //  !onrestore_callback
@@ -717,31 +697,6 @@ window.addEvent('domready', function() {
                 $this->Database->prepare("INSERT INTO tl_iso_product_categories %s")->set($arrRow)->executeUncached();
             }
         }
-    }
-
-    /**
-     * Find a subtable version record
-     * @param   string
-     * @param   int
-     * @param   string
-     */
-    protected function findSubtableVersion($strTable, $intPid, $intVersion)
-    {
-        $objVersion = $this->Database->prepare("SELECT data FROM tl_version WHERE fromTable=? AND pid=? AND version=?")
-								     ->limit(1)
-                                     ->execute($strTable, $intPid, $intVersion);
-
-        if (!$objVersion->numRows) {
-            return null;
-        }
-
-        $arrData = deserialize($objVersion->data);
-
-        if (!is_array($arrData)) {
-            return null;
-        }
-
-        return $arrData;
     }
 
 
@@ -1149,5 +1104,50 @@ window.addEvent('domready', function() {
         }
 
         return $varValue;
+    }
+
+    /**
+     * Create a new subtable version record
+     * @param   string
+     * @param   int
+     * @param   string
+     * @param   array
+     */
+    protected function createSubtableVersion($strTable, $intId, $strSubtable, $arrData)
+    {
+        $objVersion = $this->Database->prepare("SELECT * FROM tl_version WHERE pid=? AND fromTable=? ORDER BY version DESC")
+		                             ->limit(1)
+									 ->executeUncached($intId, $strTable);
+
+        $this->Database->prepare("UPDATE tl_version SET active='' WHERE pid=? AND fromTable=?")
+                       ->execute($intId, $strSubtable);
+
+        $this->Database->prepare("INSERT INTO tl_version (pid, tstamp, version, fromTable, username, userid, description, editUrl, active, data) VALUES (?, ?, ?, ?, ?, ?, ?, ?, 1, ?)")
+                       ->execute($objVersion->pid, $objVersion->tstamp, $objVersion->version, $strSubtable, $objVersion->username, $objVersion->userid, $objVersion->description, $objVersion->editUrl, serialize($arrData));
+    }
+
+    /**
+     * Find a subtable version record
+     * @param   string
+     * @param   int
+     * @param   string
+     */
+    protected function findSubtableVersion($strTable, $intPid, $intVersion)
+    {
+        $objVersion = $this->Database->prepare("SELECT data FROM tl_version WHERE fromTable=? AND pid=? AND version=?")
+								     ->limit(1)
+                                     ->execute($strTable, $intPid, $intVersion);
+
+        if (!$objVersion->numRows) {
+            return null;
+        }
+
+        $arrData = deserialize($objVersion->data);
+
+        if (!is_array($arrData)) {
+            return null;
+        }
+
+        return $arrData;
     }
 }
