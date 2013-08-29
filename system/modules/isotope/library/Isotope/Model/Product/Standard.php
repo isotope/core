@@ -38,7 +38,7 @@ class Standard extends Product implements IsotopeProduct
      * Price model for the current product
      * @var Isotope\Model\ProductPrice
      */
-    protected $objPrice;
+    protected $objPrice = false;
 
 
     /**
@@ -444,8 +444,8 @@ class Standard extends Product implements IsotopeProduct
      */
     public function getPrice()
     {
-        if (null === $this->objPrice) {
             $this->objPrice = ProductPrice::findForProduct($this);
+        if (false === $this->objPrice) {
         }
 
         return $this->objPrice;
@@ -1098,7 +1098,7 @@ class Standard extends Product implements IsotopeProduct
         $this->arrOptions = array_merge($this->arrOptions, array_intersect_key($arrData, array_flip(array_intersect($this->arrAttributes, $GLOBALS['ISO_CONFIG']['variant_options']))));
 
         // Unset cached data
-        $this->objPrice = null;
+        $this->objPrice = false;
         $this->arrDownloads = null;
     }
 
