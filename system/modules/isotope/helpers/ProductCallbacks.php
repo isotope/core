@@ -1142,6 +1142,11 @@ window.addEvent('domready', function() {
 		                             ->limit(1)
 									 ->executeUncached($intId, $strTable);
 
+        // Parent table must have a version
+        if ($objVersion->numRows == 0) {
+            return;
+        }
+
         $this->Database->prepare("UPDATE tl_version SET active='' WHERE pid=? AND fromTable=?")
                        ->execute($intId, $strSubtable);
 
