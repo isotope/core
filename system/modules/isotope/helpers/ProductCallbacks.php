@@ -1041,19 +1041,28 @@ window.addEvent('domready', function() {
         if (is_array($arrIds) && !empty($arrIds))
         {
             $time = time();
-            $this->Database->query("DELETE FROM tl_iso_product_categories WHERE pid={$dc->id} AND page_id NOT IN (" . implode(',', $arrIds) . ")");
+
+            if ($this->Database->query("DELETE FROM tl_iso_product_categories WHERE pid={$dc->id} AND page_id NOT IN (" . implode(',', $arrIds) . ")")->affectedRows > 0) {
+                $dc->createNewVersion = true;
+            }
+
             $objPages = $this->Database->execute("SELECT page_id FROM tl_iso_product_categories WHERE pid={$dc->id}");
             $arrIds = array_diff($arrIds, $objPages->fetchEach('page_id'));
 
-            foreach ($arrIds as $id)
-            {
-                $sorting = $this->Database->executeUncached("SELECT MAX(sorting) AS sorting FROM tl_iso_product_categories WHERE page_id=$id")->sorting + 128;
-                $this->Database->query("INSERT INTO tl_iso_product_categories (pid,tstamp,page_id,sorting) VALUES ({$dc->id}, $time, $id, $sorting)");
+            if (!empty($arrIds)) {
+                foreach ($arrIds as $id) {
+                    $sorting = (int) $this->Database->executeUncached("SELECT MAX(sorting) AS sorting FROM tl_iso_product_categories WHERE page_id=$id")->sorting + 128;
+                    $this->Database->query("INSERT INTO tl_iso_product_categories (pid,tstamp,page_id,sorting) VALUES ({$dc->id}, $time, $id, $sorting)");
+                }
+
+                $dc->createNewVersion = true;
             }
         }
         else
         {
-            $this->Database->query("DELETE FROM tl_iso_product_categories WHERE pid={$dc->id}");
+            if ($this->Database->query("DELETE FROM tl_iso_product_categories WHERE pid={$dc->id}")->affectedRows > 0) {
+                $dc->createNewVersion = true;
+            }
         }
 
         return '';
