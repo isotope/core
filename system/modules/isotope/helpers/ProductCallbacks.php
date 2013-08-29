@@ -1014,7 +1014,11 @@ window.addEvent('domready', function() {
      */
     public function loadProductCategories($varValue, \DataContainer $dc)
     {
-        return $this->Database->execute("SELECT page_id FROM tl_iso_product_categories WHERE pid={$dc->id}")->fetchEach('page_id');
+        $objCategories = $this->Database->execute("SELECT * FROM tl_iso_product_categories WHERE pid={$dc->id}");
+
+        $this->initializeSubtableVersion($dc->table, $dc->id, 'tl_iso_product_categories', $objCategories->fetchAllAssoc());
+
+        return $objCategories->fetchEach('page_id');
     }
 
 
@@ -1104,6 +1108,25 @@ window.addEvent('domready', function() {
         }
 
         return $varValue;
+    }
+
+    /**
+     * Create initial version record if it does not exist
+     * @param   string
+     * @param   int
+     * @param   string
+     * @param   array
+     */
+    protected function initializeSubtableVersion($strTable, $intId, $strSubtable, $arrData)
+    {
+        $objVersion = $this->Database->prepare("SELECT COUNT(*) AS count FROM tl_version WHERE fromTable=? AND pid=?")
+									 ->limit(1)
+									 ->executeUncached($strSubtable, $intId);
+
+		if ($objVersion->count < 1)
+		{
+			$this->createSubtableVersion($strTable, $intId, $strSubtable, $arrData);
+		}
     }
 
     /**
