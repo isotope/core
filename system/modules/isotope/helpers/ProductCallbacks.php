@@ -999,7 +999,7 @@ window.addEvent('domready', function() {
             $this->Database->query("DELETE FROM tl_iso_product_categories WHERE pid={$dc->id}");
         }
 
-        return $varValue;
+        return '';
     }
 
 
