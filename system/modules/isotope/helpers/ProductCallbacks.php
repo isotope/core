@@ -1021,6 +1021,34 @@ window.addEvent('domready', function() {
         return $objCategories->fetchEach('page_id');
     }
 
+    /**
+     * Load price from prices subtable
+     * @param   mixed
+     * @param   DataContainer
+     * @return  mixed
+     */
+    public function loadPrice($varValue, \DataContainer $dc)
+    {
+        $objPrice = $this->Database->query("SELECT t.id, p.id AS pid, t.price FROM tl_iso_prices p LEFT JOIN tl_iso_price_tiers t ON p.id=t.pid AND t.min=1 WHERE p.pid={$dc->id} AND p.config_id=0 AND p.member_group=0 AND p.start='' AND p.stop=''");
+
+        if (!$objPrice->numRows) {
+            return '0.00';
+        }
+
+        return $objPrice->price;
+    }
+
+    /**
+     * Load tax class from prices subtable
+     * @param   mixed
+     * @param   DataContainer
+     * @return  mixed
+     */
+    public function loadTaxClass($varValue, \DataContainer $dc)
+    {
+        return (int) $this->Database->query("SELECT tax_class FROM tl_iso_prices WHERE pid={$dc->id} AND config_id=0 AND member_group=0 AND start='' AND stop=''")->tax_class;
+    }
+
 
 
     /////////////////////
@@ -1063,6 +1091,70 @@ window.addEvent('domready', function() {
             if ($this->Database->query("DELETE FROM tl_iso_product_categories WHERE pid={$dc->id}")->affectedRows > 0) {
                 $dc->createNewVersion = true;
             }
+        }
+
+        return '';
+    }
+
+    /**
+     * Save price to the prices subtable
+     * @param   mixed
+     * @param   DataContainer
+     * @return  mixed
+     */
+    public function savePrice($varValue, \DataContainer $dc)
+    {
+        $time = time();
+        $objPrice = $this->Database->query("SELECT t.id, p.id AS pid, t.price FROM tl_iso_prices p LEFT JOIN tl_iso_price_tiers t ON p.id=t.pid AND t.min=1 WHERE p.pid={$dc->id} AND p.config_id=0 AND p.member_group=0 AND p.start='' AND p.stop=''");
+
+        // Price tier record already exists, update it
+        if ($objPrice->numRows && $objPrice->id > 0) {
+
+            if ($objPrice->price != $varValue) {
+                $this->Database->prepare("UPDATE tl_iso_price_tiers SET tstamp=$time, price=? WHERE id=?")->executeUncached($varValue, $objPrice->id);
+
+                $dc->createNewVersion = true;
+            }
+
+        } else {
+
+            $intPrice = $objPrice->pid;
+
+            // Neither price tier nor price record exist, must add both
+            if (!$objPrice->numRows) {
+                $intPrice = $this->Database->query("INSERT INTO tl_iso_prices (pid,tstamp) VALUES ($dc->id, $time)")->insertId;
+            }
+
+            $this->Database->prepare("INSERT INTO tl_iso_price_tiers (pid,tstamp,min,price) VALUES ($intPrice, $time, 1, ?)")->executeUncached($varValue);
+
+            $dc->createNewVersion = true;
+        }
+
+        return '';
+    }
+
+    /**
+     * Save tax_class to the prices subtable
+     * @param   mixed
+     * @param   DataContainer
+     * @return  mixed
+     */
+    public function saveTaxClass($varValue, \DataContainer $dc)
+    {
+        $time = time();
+        $objPrice = $this->Database->query("SELECT id, tax_class FROM tl_iso_prices WHERE pid={$dc->id} AND config_id=0 AND member_group=0 AND start='' AND stop=''");
+
+        if ($objPrice->numRows == 0) {
+
+            $this->Database->prepare("INSERT INTO tl_iso_prices (pid,tstamp,tax_class) VALUES ($dc->id, $time, ?)")->executeUncached($varValue);
+
+            $dc->createNewVersion = true;
+
+        } elseif ($objPrice->tax_class != $varValue) {
+
+            $this->Database->prepare("UPDATE tl_iso_prices SET tstamp=$time, tax_class=? WHERE id=?")->executeUncached($varValue, $objPrice->id);
+
+            $dc->createNewVersion = true;
         }
 
         return '';

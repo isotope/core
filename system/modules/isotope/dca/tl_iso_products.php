@@ -372,9 +372,16 @@ $GLOBALS['TL_DCA']['tl_iso_products'] = array
             'label'                 => &$GLOBALS['TL_LANG']['tl_iso_products']['price'],
             'exclude'               => true,
             'inputType'             => 'text',
-            'eval'                  => array('mandatory'=>true, 'maxlength'=>13, 'rgxp'=>'price', 'tl_class'=>'w50'),
+            'eval'                  => array('mandatory'=>true, 'maxlength'=>13, 'rgxp'=>'price', 'doNotSaveEmpty'=>true, 'tl_class'=>'w50'),
             'attributes'            => array('legend'=>'pricing_legend', 'fe_sorting'=>true, 'dynamic'=>true),
-            'sql'                   => "decimal(12,2) NOT NULL default '0.00'",
+            'load_callback' => array
+            (
+                array('\Isotope\ProductCallbacks', 'loadPrice'),
+            ),
+            'save_callback' => array
+            (
+                array('\Isotope\ProductCallbacks', 'savePrice'),
+            ),
         ),
         'prices' => array
         (
@@ -410,10 +417,16 @@ $GLOBALS['TL_DCA']['tl_iso_products'] = array
             'exclude'               => true,
             'inputType'             => 'select',
             'foreignKey'            => 'tl_iso_tax_class.name',
-            'eval'                  => array('includeBlankOption'=>true, 'tl_class'=>'w50'),
+            'eval'                  => array('includeBlankOption'=>true, 'doNotSaveEmpty'=>true, 'tl_class'=>'w50'),
             'attributes'            => array('legend'=>'pricing_legend', 'dynamic'=>true),
-            'relation'              => array('type'=>'hasOne', 'load'=>'lazy'),
-            'sql'                   => "int(10) unsigned NOT NULL default '0'",
+            'load_callback' => array
+            (
+                array('\Isotope\ProductCallbacks', 'loadTaxClass'),
+            ),
+            'save_callback' => array
+            (
+                array('\Isotope\ProductCallbacks', 'saveTaxClass'),
+            ),
         ),
         'baseprice' => array
         (
