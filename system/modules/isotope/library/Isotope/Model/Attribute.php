@@ -202,6 +202,41 @@ abstract class Attribute extends TypeAgent
         $arrData['fields'][$this->field_name] = $arrField;
 	}
 
+	/**
+	 * Get field options
+	 * @return  array
+	 */
+	public function getOptions()
+	{
+    	$arrOptions = deserialize($this->options);
+
+    	if (!is_array($arrOptions)) {
+        	return array();
+    	}
+
+    	return $arrOptions;
+	}
+
+    /**
+     * Get available variant options for a product
+     * @param   array
+     * @param   array
+     * @return  array
+     */
+	public function getOptionsForVariants(array $arrIds, array $arrOptions=array())
+	{
+	    $strWhere = '';
+
+        foreach ($arrOptions as $field => $value) {
+            $strWhere .= " AND $field='$value'";
+        }
+
+        return \Database::getInstance()->execute("
+            SELECT DISTINCT " . $this->field_name . " FROM tl_iso_products WHERE id IN (" . implode(',', $arrIds) . ")
+            " . $strWhere . "
+        ")->fetchEach($this->field_name);
+	}
+
 
 	public function generate(IsotopeProduct $objProduct)
 	{
