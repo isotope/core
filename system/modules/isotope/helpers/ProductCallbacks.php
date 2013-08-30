@@ -372,6 +372,7 @@ class ProductCallbacks extends \Backend
         }
 
         $arrFields = &$GLOBALS['TL_DCA']['tl_iso_products']['fields'];
+        $arrAttributes = &$GLOBALS['TL_DCA']['tl_iso_products']['attributes'];
 
         // Set default product type
         $arrFields['type']['default'] = (int) $this->Database->execute("SELECT id FROM tl_iso_producttypes WHERE fallback='1'" . ($this->User->isAdmin ? '' : (" AND id IN (" . implode(',', $this->User->iso_product_types) . ")")))->id;
@@ -379,44 +380,27 @@ class ProductCallbacks extends \Backend
         // Set default tax class
         $arrFields['tax_class']['default'] = (int) $this->Database->execute("SELECT id FROM tl_iso_tax_class WHERE fallback='1'")->id;
 
-        $blnEditAll = true;
 
-        $strQuery = "SELECT
-                        id,
-                        pid,
-                        language,
-                        type,
-                        (SELECT type FROM tl_iso_products p2 WHERE p2.id=p1.pid) AS parent_type,
-                        (SELECT attributes FROM tl_iso_producttypes WHERE id=p1.type) AS attributes,
-                        (SELECT variant_attributes FROM tl_iso_producttypes WHERE id=p1.type) AS variant_attributes,
-                        (SELECT prices FROM tl_iso_producttypes WHERE id=p1.type) AS prices
-                    FROM tl_iso_products p1";
+        $arrTypes = $this->arrProductTypes;
+        $blnVariants = false;
+        $act = \Input::get('act');
 
+        if (\Input::get('id') > 0) {
+            $objProduct = \Database::getInstance()->prepare("SELECT p1.pid, p1.type, p2.type AS parent_type FROM tl_iso_products p1 LEFT JOIN tl_iso_products p2 ON p1.pid=p2.id WHERE p1.id=?")->execute(\Input::get('id'));
 
-        if (\Input::get('act') != 'editAll' && $dc->id > 0)
-        {
-            $strQuery .= ' WHERE id=' . $dc->id;
-            $blnEditAll = false;
+            if ($objProduct->numRows) {
+                $arrTypes = array($this->arrProductTypes[($objProduct->pid > 0 ? $objProduct->parent_type : $objProduct->type)]);
+
+                if ($objProduct->pid > 0 || $act != 'edit') {
+                    $blnVariants = true;
+                }
+            }
         }
 
-        $objProducts = $this->Database->execute($strQuery);
-        $blnReload = false;
-
-        while ($objProducts->next())
+        foreach ($arrTypes as $objType)
         {
-            if ($objProducts->pid > 0 && $objProducts->parent_type != '' && $objProducts->type != $objProducts->parent_type)
-            {
-                $this->Database->query("UPDATE tl_iso_products SET type={$objProducts->parent_type} WHERE id={$objProducts->id}");
-                $blnReload = true;
-            }
-
-            if ($blnReload)
-            {
-                continue;
-            }
-
             // Enable advanced prices
-            if ($objProducts->prices && !$blnEditAll) {
+            if ($act == 'edit' && $objType->hasAdvancedPrices()) {
                 $arrFields['prices']['exclude'] = $arrFields['price']['exclude'];
                 $arrFields['prices']['attributes'] = $arrFields['price']['attributes'];
                 $arrFields['price'] = $arrFields['prices'];
@@ -431,74 +415,59 @@ class ProductCallbacks extends \Backend
             $arrInherit = array();
             $arrPalette = array();
 
-            $objProducts->attributes = deserialize($objProducts->attributes, true);
-
-            // Variant
-            if ($objProducts->pid > 0)
-            {
-                $arrPalette['variant_legend'][] = 'variant_attributes' . ($blnEditAll ? '' : ',inherit');
+            if ($blnVariants) {
+                $arrPalette['variant_legend'][] = 'variant_attributes' . ($act == 'edit' ? ',inherit' : '');
 
                 // @todo will not work in edit all, should use option_callback!
-                foreach ($objProducts->attributes as $attribute => $arrConfig)
-                {
-                    if ($arrConfig['enabled'] && $arrFields[$attribute]['attributes']['variant_option'])
-                    {
+                foreach ($objType->getAttributes() as $attribute) {
+                    if ($arrFields[$attribute]['attributes']['variant_option']) {
                         $arrFields['variant_attributes']['options'][] = $attribute;
                     }
                 }
 
-                $arrAttributes = deserialize($objProducts->variant_attributes, true);
-            }
-            else
-            {
-                $arrAttributes = $objProducts->attributes;
+                $arrConfig = deserialize($objType->variant_attribues, true);
+                $arrEnabled = $objType->getVariantAttributes();
+
+            } else {
+                $arrConfig = deserialize($objType->attributes, true);
+                $arrEnabled = $objType->getAttributes();
             }
 
-            foreach ($arrAttributes as $attribute => $arrConfig)
-            {
-                // Field is disabled or not an attribute
-                if (!$arrConfig['enabled'] || !is_array($arrFields[$attribute]) || $arrFields[$attribute]['attributes']['legend'] == '')
-                {
-                    continue;
-                }
+            // Go through each enabled field and build palette
+            foreach ($arrEnabled as $name) {
 
                 // Do not show variant options & customer defined fields
-                if ($arrFields[$attribute]['attributes']['variant_option'] || $arrFields[$attribute]['attributes']['customer_defined'] || $GLOBLAS['ISO_ATTR'][$arrFields[$attribute]['attributes']['type']]['customer_defined'])
-                {
+                if (null !== $arrAttributes[$name] && ($arrAttributes[$name]->isVariantOption() || $arrAttributes[$name]->isCustomerDefined())) {
                     continue;
                 }
 
                 // Field cannot be edited in variant
-                if ($objProducts->pid > 0 && $arrFields[$attribute]['attributes']['inherit'])
-                {
+                if ($blnVariants && $arrAttributes[$name]->inherit) {
                     continue;
                 }
 
-                $arrPalette[$arrConfig['legend']][$arrConfig['position']] = $attribute;
+                $arrPalette[$arrConfig[$name]['legend']][] = $name;
 
                 // Apply product type attribute config
-                if ($arrConfig['tl_class'] != '')
-                {
-                    $arrFields[$attribute]['eval']['tl_class'] = $arrConfig['tl_class'];
+                if ($arrConfig[$name]['tl_class'] != '') {
+                    $arrFields[$attribute]['eval']['tl_class'] = $arrConfig[$name]['tl_class'];
                 }
 
-                if ($arrConfig['mandatory'] > 0)
-                {
-                    $arrFields[$attribute]['eval']['mandatory'] = $arrConfig['mandatory'] == 1 ? false : true;
+                if ($arrConfig[$name]['mandatory'] > 0) {
+                    $arrFields[$attribute]['eval']['mandatory'] = $arrConfig[$name]['mandatory'] == 1 ? false : true;
                 }
 
-                if (!$blnEditAll && !in_array($attribute, array('sku', 'price', 'shipping_weight', 'published')) && $objProducts->attributes[$attribute]['enabled'])
-                {
+/* @todo
+                if (!$blnEditAll && !in_array($attribute, array('sku', 'price', 'shipping_weight', 'published')) && $objProducts->attributes[$attribute]['enabled']) {
                     $arrInherit[$attribute] = Isotope::formatLabel('tl_iso_products', $attribute);
                 }
+*/
             }
 
             $arrLegends = array();
 
             // Build
-            foreach ($arrPalette as $legend=>$fields)
-            {
-                ksort($fields);
+            foreach ($arrPalette as $legend=>$fields) {
                 $arrLegends[] = '{' . $legend . '},' . implode(',', $fields);
             }
 
@@ -506,18 +475,23 @@ class ProductCallbacks extends \Backend
             $arrFields['inherit']['options'] = $arrInherit;
 
             // Add palettes
-            $GLOBALS['TL_DCA']['tl_iso_products']['palettes'][$objProducts->type . $objProducts->pid] = implode(';', $arrLegends);
+            $GLOBALS['TL_DCA']['tl_iso_products']['palettes'][$objType->id] = implode(';', $arrLegends);
         }
 
-        if ($blnReload)
-        {
-            \Controller::reload();
-        }
-        elseif ($blnEditAll)
-        {
+        if ($act !== 'edit') {
             $arrFields['inherit']['exclude'] = true;
             $arrFields['prices']['exclude'] = true;
-            $arrFields['variant_attributes']['exclude'] = true;
+        }
+
+        // Remove non-active fields from multi-selection
+        if ($blnVariants && $act != 'edit') {
+            $arrInclude = call_user_func_array('array_merge', $arrPalette);
+
+            foreach ($arrFields as $name => $config) {
+                if ($arrFields[$name]['attributes']['legend'] != '' && !in_array($name, $arrInclude)) {
+                    $arrFields[$name]['exclude'] = true;
+                }
+            }
         }
     }
 

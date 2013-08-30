@@ -209,7 +209,7 @@ $GLOBALS['TL_DCA']['tl_iso_products'] = array
     // Palettes
     'palettes' => array
     (
-        '__selector__'              => array('type', 'pid', 'protected'),
+        '__selector__'              => array('type', 'protected'),
         'default'                   => '{general_legend},type',
     ),
 
