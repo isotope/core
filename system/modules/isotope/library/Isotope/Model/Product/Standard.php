@@ -652,6 +652,7 @@ class Standard extends Product implements IsotopeProduct
 
         $objTemplate->price = $strPrice;
 
+        $arrVariantOptions = array();
         $arrProductOptions = array();
         $arrAjaxOptions = array();
 
@@ -661,7 +662,7 @@ class Standard extends Product implements IsotopeProduct
 
             if ($arrData['attributes']['customer_defined'] || $arrData['attributes']['variant_option']) {
 
-                $strWidget = $this->generateProductOptionWidget($attribute);
+                $strWidget = $this->generateProductOptionWidget($attribute, $arrVariantOptions);
 
                 if ($strWidget != '')
                 {
@@ -748,7 +749,7 @@ class Standard extends Product implements IsotopeProduct
      * @param   boolean
      * @return  string
      */
-    protected function generateProductOptionWidget($strField)
+    protected function generateProductOptionWidget($strField, &$arrVariantOptions)
     {
         $objAttribute = $GLOBALS['TL_DCA']['tl_iso_products']['attributes'][$strField];
         $arrData = $GLOBALS['TL_DCA']['tl_iso_products']['fields'][$strField];
@@ -758,94 +759,46 @@ class Standard extends Product implements IsotopeProduct
         $arrData['eval']['mandatory'] = ($arrData['eval']['mandatory'] && !\Environment::get('isAjaxRequest')) ? true : false;
         $arrData['eval']['required'] = $arrData['eval']['mandatory'];
 
-        // Make sure variant options are initialized
-        $this->getVariantOptions();
+        // Value can be predefined in the URL, e.g. to preselect a variant
+        if (\Input::get($strField) != '') {
+            $arrData['default'] = \Input::get($strField);
+        }
 
-        if ($objAttribute->isVariantOption() && is_array($arrData['options']))
-        {
-            if ((count((array) $this->arrVariantOptions['attributes'][$strField]) == 1) && !$this->getRelated('type')->force_variant_options)
-            {
-                $this->arrOptions[$strField] = $this->arrVariantOptions['attributes'][$strField][0];
-                $this->arrVariantOptions['current'][$strField] = $this->arrVariantOptions['attributes'][$strField][0];
-                $arrData['default'] = $this->arrVariantOptions['attributes'][$strField][0];
+        // Prepare variant selection field
+        if ($objAttribute->isVariantOption()) {
 
-                if (!\Environment::get('isAjaxRequest'))
-                {
-                    return '';
-                }
-            }
+            $arrOptions = $objAttribute->getOptionsForVariants($this->getVariantIds(), $arrVariantOptions);
 
-            if ($arrData['inputType'] == 'select')
-            {
-                $arrData['eval']['includeBlankOption'] = true;
+            // Hide selection if only one option is available (and "force_variant_options" is not set in product type)
+            if (\Input::post('FORM_SUBMIT') != $this->formSubmit && count($arrOptions) == 1 && !$this->getRelated('type')->force_variant_options) {
+                $arrVariantOptions[$strField] = $arrOptions[0];
+
+                return '';
             }
 
             $arrField = $strClass::getAttributesFromDca($arrData, $strField, $arrData['default']);
 
-            // Necessary, because prepareForData can unset the options
-            if (is_array($arrData['options']))
-            {
-                // Unset if no variant has this option
-                foreach ($arrField['options'] as $k => $option)
-                {
+            // Remove options not available in any product variant
+            if (is_array($arrData['options'])) {
+                foreach ($arrField['options'] as $k => $option) {
+
                     // Keep groups and blankOptionLabels
-                    if (!$option['group'] && $option['value'] != '')
-                    {
-                        // Unset option if no attribute has this option at all (in any enabled variant)
-                        if (!in_array((string) $option['value'], (array) $this->arrVariantOptions['attributes'][$strField], true))
-                        {
-                            unset($arrField['options'][$k]);
-                        }
-
-                        // Check each variant if it is found trough the url
-                        else
-                        {
-                            $blnValid = false;
-
-                            foreach ((array) $this->arrVariantOptions['options'] as $arrVariant)
-                            {
-                                if ($arrVariant[$strField] == $option['value'] && count($this->arrVariantOptions['current']) == count(array_intersect_assoc($this->arrVariantOptions['current'], $arrVariant)))
-                                {
-                                    $blnValid = true;
-                                }
-                            }
-
-                            if (!$blnValid)
-                            {
-                                unset($arrField['options'][$k]);
-                            }
-                        }
+                    if (!in_array($option['value'], $arrOptions) && !$option['group'] && $option['value'] != '') {
+                        unset($arrField['options'][$k]);
                     }
                 }
             }
 
             $arrField['options'] = array_values($arrField['options']);
 
-            if (\Input::get($strField) != '' && \Input::post('FORM_SUBMIT') != $this->formSubmit)
-            {
-                if (in_array(\Input::get($strField), (array) $this->arrVariantOptions['attributes'][$strField], true))
-                {
-                    $arrField['value'] = \Input::get($strField);
-                    $this->arrVariantOptions['current'][$strField] = \Input::get($strField);
-                }
-            }
-            elseif ($this->pid > 0)
-            {
+            // Set field value if a variant is selected
+            if ($this->pid > 0) {
                 $arrField['value'] = $this->arrOptions[$strField];
-                $this->arrVariantOptions['current'][$strField] = $this->arrOptions[$strField];
             }
         }
-        else
-        {
-            if (is_array($GLOBALS['ISO_ATTR'][$arrData['attributes']['type']]['callback']) && !empty($GLOBALS['ISO_ATTR'][$arrData['attributes']['type']]['callback']))
-            {
-                foreach ($GLOBALS['ISO_ATTR'][$arrData['attributes']['type']]['callback'] as $callback)
-                {
-                    $objCallback = \System::importStatic($callback[0]);
-                    $arrData = $objCallback->{$callback[1]}($strField, $arrData, $this);
-                }
-            }
 
+        // Not a variant widget, but customer editable
+        else {
             $arrField = $strClass::getAttributesFromDca($arrData, $strField, $arrData['default']);
         }
 
@@ -890,14 +843,8 @@ class Standard extends Product implements IsotopeProduct
                     }
                 }
 
-                if (!$objWidget->hasErrors())
-                {
-                    $this->arrOptions[$strField] = $varValue;
-
-                    if ($arrData['attributes']['variant_option'] && $varValue != '')
-                    {
-                        $this->arrVariantOptions['current'][$strField] = $varValue;
-                    }
+                if (!$objWidget->hasErrors()) {
+                    $arrVariantOptions[$strField] = $varValue;
                 }
             }
         }
@@ -958,7 +905,6 @@ class Standard extends Product implements IsotopeProduct
 
         return $objWidget->parse() . $wizard;
     }
-
 
     /**
      * Load data of a product variant if the options match one
