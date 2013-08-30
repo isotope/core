@@ -731,7 +731,6 @@ class Standard extends Product implements IsotopeProduct
         }
 
         $objTemplate->buttons = $arrButtons;
-        $objTemplate->quantityLabel = $GLOBALS['TL_LANG']['MSC']['quantity'];
         $objTemplate->useQuantity = $arrConfig['useQuantity'];
         $objTemplate->minimum_quantity = $this->getMinimumQuantity();
         $objTemplate->raw = array_merge($this->arrData, $this->arrCache);
