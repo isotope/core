@@ -106,8 +106,6 @@ class Standard extends Product implements IsotopeProduct
     {
         parent::__construct($objResult);
 
-        $this->Database = \Database::getInstance();
-
         $arrData = $this->arrData;
 
         if ($arrData['pid'] > 0)
@@ -188,7 +186,7 @@ class Standard extends Product implements IsotopeProduct
                     switch ($strKey)
                     {
                         case 'categories':
-                            $this->arrCache[$strKey] = $this->Database->execute("SELECT page_id FROM tl_iso_product_categories WHERE pid=" . ($this->pid ? $this->pid : $this->id) . " ORDER BY sorting")->fetchEach('page_id');
+                            $this->arrCache[$strKey] = \Database::getInstance()->execute("SELECT page_id FROM tl_iso_product_categories WHERE pid=" . ($this->pid ? $this->pid : $this->id) . " ORDER BY sorting")->fetchEach('page_id');
                             break;
 
                         default:
@@ -568,7 +566,7 @@ class Standard extends Product implements IsotopeProduct
         // Cache downloads for this product
         elseif (!is_array($this->arrDownloads))
         {
-            $this->arrDownloads = $this->Database->execute("SELECT * FROM tl_iso_downloads WHERE pid={$this->arrData['id']} OR pid={$this->arrData['pid']}")->fetchAllAssoc();
+            $this->arrDownloads = \Database::getInstance()->execute("SELECT * FROM tl_iso_downloads WHERE pid={$this->arrData['id']} OR pid={$this->arrData['pid']}")->fetchAllAssoc();
         }
 
         return $this->arrDownloads;
