@@ -33,8 +33,7 @@ class TextArea extends Attribute implements IsotopeAttribute
 		$arrData['fields'][$this->field_name]['sql'] = "text NULL";
 
 		// Textarea cannot be w50
-        if ($this->rte != '')
-        {
+        if ($this->rte != '') {
             $arrData['fields'][$this->field_name]['eval']['tl_class'] = 'clr';
         }
 	}
