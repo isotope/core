@@ -71,12 +71,6 @@ class Standard extends Product implements IsotopeProduct
     protected $arrCategories;
 
     /**
-     * Product Options of all variants
-     * @var array
-     */
-    protected $arrVariantOptions = null;
-
-    /**
      * Downloads for this product
      * @var array
      */
@@ -421,52 +415,6 @@ class Standard extends Product implements IsotopeProduct
 
         return $this->arrVariantAttributes;
     }
-
-
-    /**
-     * Return variant options data
-     * @return  array|false
-     */
-    public function getVariantOptions()
-    {
-        if (!$this->hasVariants()) {
-            return false;
-        }
-
-        if (!is_array($this->arrVariantOptions)) {
-
-            $time = time();
-            $this->arrVariantOptions = array('current'=>array());
-
-            // Find all possible variant options
-            $objVariant = clone $this;
-            $objVariants = static::findPublishedByPid($arrData['id']);
-
-            if (null !== $objVariants) {
-                while ($objVariants->next()) {
-
-                    $objVariant->loadVariantData($objVariants->row(), false);
-
-                    if ($objVariant->isAvailableInFrontend()) {
-                        $arrVariantOptions = $objVariant->getOptions();
-
-                        $this->arrVariantOptions['ids'][] = $objVariant->id;
-                        $this->arrVariantOptions['options'][$objVariant->id] = $arrVariantOptions;
-                        $this->arrVariantOptions['variants'][$objVariant->id] = $objVariants->row();
-
-                        foreach ($arrVariantOptions as $attribute => $value) {
-                            if (!in_array((string) $value, (array) $this->arrVariantOptions['attributes'][$attribute], true)) {
-                                $this->arrVariantOptions['attributes'][$attribute][] = (string) $value;
-                            }
-                        }
-                    }
-                }
-            }
-        }
-
-        return $this->arrVariantOptions;
-    }
-
 
     /**
      * Return all available variant IDs of this product
