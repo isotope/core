@@ -106,10 +106,11 @@ class ProductType extends \Model
      */
     protected function getEnabledAttributesByPosition($varValue)
     {
+        $arrFields = &$GLOBALS['TL_DCA']['tl_iso_products']['fields'];
         $arrAttributes = deserialize($varValue, true);
 
-        array_filter($arrAttributes, function($a) {
-            if ($a['enabled']) {
+        $arrAttributes = array_filter($arrAttributes, function($a) use ($arrFields) {
+            if ($a['enabled'] && is_array($arrFields[$a['name']]) && $arrFields[$a['name']]['attributes']['legend'] != '') {
                 return true;
             }
 
