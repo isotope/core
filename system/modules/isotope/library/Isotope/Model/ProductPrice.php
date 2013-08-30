@@ -15,6 +15,7 @@ namespace Isotope\Model;
 use Isotope\Isotope;
 use Isotope\Interfaces\IsotopePrice;
 use Isotope\Interfaces\IsotopeProduct;
+use Isotope\Interfaces\IsotopeProductCollection;
 
 
 /**
@@ -154,6 +155,130 @@ class ProductPrice extends \Model implements IsotopePrice
         } while ($intTier > 0);
 
         return 0;
+    }
+
+    /**
+     * Find price data for a given product
+     * @param   IsotopeProduct
+     * @param   IsotopeProductCollection
+     * @return  IsotopePrice
+     */
+    public static function findActiveByProductAndCollection(IsotopeProduct $objProduct, IsotopeProductCollection $objCollection)
+    {
+        $arrOptions = array
+		(
+			'limit'  => 1,
+			'return' => 'Model'
+		);
+
+        if ($objProduct->hasAdvancedPrices()) {
+
+            $time = time();
+            $arrGroups = static::getMemberGroups($objCollection->getRelated('member'));
+
+            $arrOptions['column'] = array(
+                "pid=" . $objProduct->id,
+                "config_id IN (". (int) $objCollection->config_id . ",0)",
+                "member_group IN(" . implode(',', $arrGroups) . ")",
+                "(start='' OR start<$time)",
+                "(stop='' OR stop>$time)"
+            );
+
+            $arrOptions['order'] = "config_id DESC, " . \Database::getInstance()->findInSet('member_group', $arrGroups) . ", start DESC, stop DESC";
+
+        } else {
+
+            $arrOptions['column'] = array(
+                "pid=" . $objProduct->id,
+                "config_id=0",
+                "member_group=0",
+                "start=''",
+                "stop=''"
+            );
+        }
+
+        return static::find($arrOptions);
+    }
+
+    /**
+     * Find lowest price for a list of variants
+     * @param   IsotopeProduct
+     * @param   IsotopeProductCollection
+     * @return  IsotopePrice
+     */
+    public static function findLowestActiveByVariantsAndCollection(IsotopeProduct $objProduct, IsotopeProductCollection $objCollection)
+    {
+        if (!$objProduct->hasVariantPrices()) {
+            throw new \LogicException('Cannot find low price, product ID ' . ($objProduct->pid ?: $objProduct->id) . ' has no variant prices');
+        }
+
+        $arrIds = $objProduct->getVariantIds();
+
+        if (empty($arrIds)) {
+            return null;
+        }
+
+        $arrOptions = array();
+
+        if ($objProduct->hasAdvancedPrices()) {
+
+            $time = time();
+            $arrGroups = static::getMemberGroups($objCollection->getRelated('member'));
+            $objPrices = null;
+
+            $objResult = \Database::getInstance()->query("
+                SELECT * FROM (
+                    SELECT *
+                    FROM " . static::$strTable . "
+                    WHERE
+                        pid IN (" . implode(',', $objProduct->getVariantIds()) . ") AND
+                        config_id IN (". (int) $objCollection->config_id . ",0) AND
+                        member_group IN(" . implode(',', $arrGroups) . ") AND
+                        (start='' OR start<$time) AND
+                        (stop='' OR stop>$time)
+                    ORDER BY config_id DESC, " . \Database::getInstance()->findInSet('member_group', $arrGroups) . ", start DESC, stop DESC
+                ) AS prices
+                GROUP BY pid
+            ");
+
+            if ($objResult->numRows) {
+                $objPrices = new \Model\Collection($objResult, static::$strTable);
+            }
+
+        } else {
+
+            $arrOptions['column'] = array(
+                "pid IN (" . implode(',', $objProduct->getVariantIds()) . ")",
+                "config_id=0",
+                "member_group=0",
+                "start=''",
+                "stop=''"
+            );
+
+            $objPrices = static::find($arrOptions);
+        }
+
+        if (null === $objPrices){
+            return null;
+        }
+
+        $blnTiers = $objProduct->canSeePriceTiers();
+        $objLowest = $objPrices->current();
+        $fltLowest = $blnTiers ? min($objLowest->getTiers()) : $objLowest->getAmount($objLowest->getLowestTier());
+
+        // Iterate through models and find the lowest price
+        while ($objPrices->next()) {
+
+            $objCurrent = $objPrices->current();
+            $fltCurrent = $blnTiers ? min($objCurrent->getTiers()) : $objCurrent->getAmount($objLowest->getLowestTier());
+
+            if ($fltCurrent < $fltLowest) {
+                $fltLowest = $fltCurrent;
+                $objLowest = $objCurrent;
+            }
+        }
+
+        return $objLowest;
     }
 
     /**
