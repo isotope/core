@@ -31,6 +31,7 @@ class SelectMenu extends Attribute implements IsotopeAttribute
         if ($this->isVariantOption()) {
         	$this->multiple = false;
         	$this->size = 1;
+        	$this->includeBlankOption = true;
         }
 
 		parent::saveToDCA($arrData);
