@@ -118,6 +118,15 @@ class ProductPrice extends \Model implements IsotopePrice
 
 
     /**
+     * Return price tiers array
+     * @return  array
+     */
+    public function getTiers()
+    {
+        return $this->arrTiers;
+    }
+
+    /**
      * Return lowest tier (= minimum quantity)
      * @return  int
      */
