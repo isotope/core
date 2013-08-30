@@ -417,13 +417,7 @@ class ProductCallbacks extends \Backend
 
             if ($blnVariants) {
                 $arrPalette['variant_legend'][] = 'variant_attributes' . ($act == 'edit' ? ',inherit' : '');
-
-                // @todo will not work in edit all, should use option_callback!
-                foreach ($objType->getAttributes() as $attribute) {
-                    if ($arrFields[$attribute]['attributes']['variant_option']) {
-                        $arrFields['variant_attributes']['options'][] = $attribute;
-                    }
-                }
+                $arrFields['variant_attributes']['options'] = array_intersect($GLOBALS['ISO_CONFIG']['variant_options'], $objType->getAttributes());
 
                 $arrConfig = deserialize($objType->variant_attribues, true);
                 $arrEnabled = $objType->getVariantAttributes();
