@@ -60,6 +60,12 @@ class Standard extends Product implements IsotopeProduct
     protected $arrVariantAttributes;
 
     /**
+     * Available variant IDs
+     * @var array
+     */
+    protected $arrVariantIds;
+
+    /**
      * Product Options
      * @var array
      */
@@ -548,14 +554,48 @@ class Standard extends Product implements IsotopeProduct
      */
     public function getVariantIds()
     {
-        $arrVariantOptions = $this->getVariantOptions();
+        if (null === $this->arrVariantIds) {
 
-        if ($arrVariantOptions === false)
-        {
-            return false;
+            $this->arrVariantIds = array();
+
+            $time = time();
+            $blnHasProtected = false;
+            $strQuery = "SELECT id, protected, groups FROM tl_iso_products WHERE pid=" . ($this->pid ?: $this->id) . " AND language='' AND published='1' AND (start='' OR start<$time) AND (stop='' OR stop>$time)";
+
+            if (BE_USER_LOGGED_IN !== true) {
+                $arrAttributes = $this->getVariantAttributes();
+                $blnHasProtected = in_array('protected', $arrAttributes);
+                $blnHasGroups = in_array('groups', $arrAttributes);
+
+                // Hide guests-only products when logged in
+                if (FE_USER_LOGGED_IN === true && in_array('guests', $arrAttributes)) {
+                    $strQuery .= " AND (guests=''" . ($blnHasProtected ? " OR protected='1'" : '') . ")";
+                }
+
+                // Hide protected if no user is logged in
+                elseif (FE_USER_LOGGED_IN !== true && $blnHasProtected) {
+                    $strQuery .= " AND protected=''";
+                }
+            }
+
+            $objVariants = \Database::getInstance()->query($strQuery);
+
+            while ($objVariants->next()) {
+                if ($blnHasProtected && $objVariants->protected) {
+                    $groups = $blnHasGroups ? deserialize($objVariants->groups) : '';
+
+                    if (empty($groups) || !is_array($groups) || !count(array_intersect($groups, FrontendUser::getInstance()->groups))) {
+                        continue;
+                    }
+                }
+
+                $this->arrVariantIds[] = $objVariants->id;
+            }
+
+            // @todo check if each variant has a price
         }
 
-        return (array) $arrVariantOptions['ids'];
+        return $this->arrVariantIds;
     }
 
 
