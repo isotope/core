@@ -28,4 +28,12 @@ class ProductType extends \Model
      */
     protected static $strTable = 'tl_iso_producttypes';
 
+    /**
+     * Returns true if variants are enabled in the product type, otherwise returns false
+     * @return  bool
+     */
+    public function hasVariants()
+    {
+        return (bool) $this->variants;
+    }
 }

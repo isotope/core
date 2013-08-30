@@ -406,7 +406,7 @@ class Standard extends Product implements IsotopeProduct
      */
     public function hasVariants()
     {
-        return (bool) $this->getRelated('type')->variants;
+        return (bool) $this->getRelated('type')->hasVariants();
     }
 
     /**
