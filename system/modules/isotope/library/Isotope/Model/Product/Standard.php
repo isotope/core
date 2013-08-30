@@ -40,13 +40,6 @@ class Standard extends Product implements IsotopeProduct
      */
     protected $objPrice = false;
 
-
-    /**
-     * Cached product data
-     * @var array
-     */
-    protected $arrCache = array();
-
     /**
      * Attributes assigned to this product type
      * @var array
@@ -177,8 +170,6 @@ class Standard extends Product implements IsotopeProduct
     {
         switch ($strKey)
         {
-            case 'id':
-            case 'pid':
             case 'href_reader':
                 return $this->arrData[$strKey];
 
@@ -192,22 +183,12 @@ class Standard extends Product implements IsotopeProduct
                 return $this->arrData['description_meta'] != '' ? $this->arrData['description_meta'] : ($this->arrData['teaser'] != '' ? $this->arrData['teaser'] : $this->arrData['description']);
 
             default:
-                // Initialize attribute
-                if (!isset($this->arrCache[$strKey]))
-                {
-                    switch ($strKey)
-                    {
-                        default:
-                            if ($this->pid > 0 && $GLOBALS['TL_DCA']['tl_iso_products']['fields'][$strKey]['attributes']['customer_defined'] || $GLOBALS['TL_DCA']['tl_iso_products']['fields'][$strKey]['attributes']['variant_option']) {
+                if ($this->pid > 0 && $GLOBALS['TL_DCA']['tl_iso_products']['fields'][$strKey]['attributes']['customer_defined'] || $GLOBALS['TL_DCA']['tl_iso_products']['fields'][$strKey]['attributes']['variant_option']) {
 
-							    return isset($this->arrOptions[$strKey]) ? deserialize($this->arrOptions[$strKey]) : null;
-						    }
+				    return isset($this->arrOptions[$strKey]) ? deserialize($this->arrOptions[$strKey]) : null;
+			    }
 
-                            return isset($this->arrData[$strKey]) ? deserialize($this->arrData[$strKey]) : null;
-                    }
-                }
-
-                return $this->arrCache[$strKey];
+                return isset($this->arrData[$strKey]) ? deserialize($this->arrData[$strKey]) : null;
         }
     }
 
@@ -275,9 +256,6 @@ class Standard extends Product implements IsotopeProduct
             case 'price':
                 $this->arrData[$strKey] = $varValue;
                 break;
-
-            default:
-                $this->arrCache[$strKey] = $varValue;
         }
     }
 
@@ -795,7 +773,7 @@ class Standard extends Product implements IsotopeProduct
         $objTemplate->buttons = $arrButtons;
         $objTemplate->useQuantity = $arrConfig['useQuantity'];
         $objTemplate->minimum_quantity = $this->getMinimumQuantity();
-        $objTemplate->raw = array_merge($this->arrData, $this->arrCache);
+        $objTemplate->raw = $this->arrData;
         $objTemplate->raw_options = $this->arrOptions;
         $objTemplate->href_reader = $this->href_reader;
         $objTemplate->label_detail = $GLOBALS['TL_LANG']['MSC']['detailLabel'];
@@ -1123,6 +1101,8 @@ class Standard extends Product implements IsotopeProduct
      */
     public function loadVariantData($arrData)
     {
+        $this->resetCache();
+
         $arrInherit = deserialize($arrData['inherit'], true);
 
         $this->arrData['id'] = $arrData['id'];
@@ -1136,18 +1116,23 @@ class Standard extends Product implements IsotopeProduct
             if (in_array($attribute, $GLOBALS['ISO_CONFIG']['fetch_fallback'])) {
                 $this->arrData[$attribute.'_fallback'] = $arrData[$attribute.'_fallback'];
             }
-
-            if (is_array($this->arrCache) && isset($this->arrCache[$attribute]))
-            {
-                unset($this->arrCache[$attribute]);
-            }
         }
 
         // Load variant options
         $this->arrOptions = array_merge($this->arrOptions, array_intersect_key($arrData, array_flip(array_intersect($this->getAttributes(), $GLOBALS['ISO_CONFIG']['variant_options']))));
+    }
 
-        // Unset cached data
+    /**
+     * Unset cached data
+     */
+    protected function resetCache()
+    {
         $this->objPrice = false;
+        $this->arrAttributes = null;
+        $this->arrVariantAttributes = null;
+        $this->arrVariantIds = null;
+        $this->arrOptions = array();
+        $this->arrCategories = null;
         $this->arrDownloads = null;
     }
 
