@@ -294,8 +294,6 @@ abstract class Product extends TypeAgent
         $strQuery = "SELECT " . implode(', ', $arrFields) . " FROM " . $arrOptions['table'] . implode("", $arrJoins);
 
         // Where condition
-        $arrOptions['value'] = (array) $arrOptions['value'];
-
         if (!is_array($arrOptions['column']))
         {
             $arrOptions['column'] = array($arrOptions['table'] . '.' . $arrOptions['column'].'=?');
