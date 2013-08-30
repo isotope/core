@@ -367,8 +367,13 @@ class Standard extends Product implements IsotopeProduct
      */
     public function getPrice()
     {
-            $this->objPrice = ProductPrice::findForProduct($this);
         if (false === $this->objPrice) {
+
+            if ($this->hasVariantPrices() && $this->pid == 0) {
+                $this->objPrice = ProductPrice::findLowestActiveByVariantsAndCollection($this, Isotope::getCart());
+            } else {
+                $this->objPrice = ProductPrice::findActiveByProductAndCollection($this, Isotope::getCart());
+            }
         }
 
         return $this->objPrice;
