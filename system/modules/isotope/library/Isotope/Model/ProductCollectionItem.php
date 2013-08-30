@@ -81,12 +81,7 @@ class ProductCollectionItem extends \Model
             try {
                 $this->objProduct = $strClass::findByPk($this->product_id);
                 $this->objProduct->setOptions(deserialize($this->options));
-                $this->objProduct->setQuantity($this->quantity);
                 $this->objProduct->reader_jumpTo_Override = $this->href_reader;
-
-                if ($this->blnLocked) {
-                    $this->objProduct->lock();
-                }
 
             } catch (\Exception $e) {
                 \System::log("Error creating product object: " . $e->getMessage(), __METHOD__, TL_ERROR);
@@ -143,7 +138,7 @@ class ProductCollectionItem extends \Model
      */
     public function getPrice()
     {
-        return (string) ($this->isLocked() || !$this->hasProduct()) ? $this->price : $this->getProduct()->price;
+        return (string) ($this->isLocked() || !$this->hasProduct()) ? $this->price : $this->getProduct()->getPrice()->getAmount((int) $this->quantity);
     }
 
 
@@ -153,7 +148,25 @@ class ProductCollectionItem extends \Model
      */
     public function getTaxFreePrice()
     {
-        return (string) ($this->isLocked() || !$this->hasProduct()) ? $this->tax_free_price : $this->getProduct()->tax_free_price;
+        return (string) ($this->isLocked() || !$this->hasProduct()) ? $this->tax_free_price : $this->getProduct()->getPrice()->getNetAmount((int) $this->quantity);
+    }
+
+    /**
+     * Get product price multiplied by the requested product quantity
+     * @return  string
+     */
+    public function getTotalPrice()
+    {
+        return (string) ($this->getPrice() * (int) $this->quantity);
+    }
+
+    /**
+     * Get tax free product price multiplied by the requested product quantity
+     * @return  string
+     */
+    public function getTaxFreeTotalPrice()
+    {
+        return (string) ($this->getTaxFreePrice() * (int) $this->quantity);
     }
 
 

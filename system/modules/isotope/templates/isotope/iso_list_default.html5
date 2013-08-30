@@ -13,7 +13,7 @@
 <div class="sku"><?php echo $this->generateAttribute('sku'); ?></div><?php endif; if ($this->teaser): ?>
 <div class="teaser"><?php echo $this->generateAttribute('teaser'); ?></div><?php endif; ?>
 
-<div class="price"><?php echo $this->price; ?></div><?php if($this->baseprice): ?>
+<div class="price"><?php echo $this->generatePrice(); ?></div><?php if($this->baseprice): ?>
 <div class="baseprice"><?php echo $this->generateAttribute('baseprice'); ?></div><?php endif; ?>
 <div class="details"><a href="<?php echo $this->href_reader; ?>" title="<?php echo $this->label_detail; ?>"><?php echo $this->label_detail; ?></a></div>
 
@@ -26,7 +26,7 @@
 <?php endif; ?>
 <?php if ($this->useQuantity): ?>
 <div class="quantity_container">
-<label for="quantity_requested_<?php echo $this->raw['id']; ?>"><?php echo $this->quantityLabel; ?>:</label> <input type="text" class="text" id="quantity_requested_<?php echo $this->raw['id']; ?>" name="quantity_requested" value="<?php echo $this->quantity_requested; ?>" maxlength="10" onblur="if (this.value=='') { this.value='1'; }" onfocus="if (this.value=='1') { this.value=''; }">
+<label for="quantity_requested_<?php echo $this->raw['id']; ?>"><?php echo $GLOBALS['TL_LANG']['MSC']['quantity']; ?>:</label> <input type="text" class="text" id="quantity_requested_<?php echo $this->raw['id']; ?>" name="quantity_requested" placeholder="<?php echo $this->minimum_quantity; ?>" maxlength="10">
 </div>
 <?php endif; ?>
 <?php foreach( $this->buttons as $name => $button ): ?>

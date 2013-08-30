@@ -18,6 +18,7 @@ use Isotope\Interfaces\IsotopeProduct;
 use Isotope\Interfaces\IsotopeProductCollection;
 use Isotope\Model\Gallery;
 use Isotope\Model\Product;
+use Isotope\Model\ProductPrice;
 use Isotope\Model\TaxClass;
 
 
@@ -34,22 +35,28 @@ class Standard extends Product implements IsotopeProduct
 {
 
     /**
-     * Cached product data
-     * @var array
+     * Price model for the current product
+     * @var Isotope\Model\ProductPrice
      */
-    protected $arrCache = array();
+    protected $objPrice = false;
 
     /**
      * Attributes assigned to this product type
      * @var array
      */
-    protected $arrAttributes = array();
+    protected $arrAttributes;
 
     /**
      * Variant attributes assigned to this product type
      * @var array
      */
-    protected $arrVariantAttributes = array();
+    protected $arrVariantAttributes;
+
+    /**
+     * Available variant IDs
+     * @var array
+     */
+    protected $arrVariantIds;
 
     /**
      * Product Options
@@ -58,16 +65,16 @@ class Standard extends Product implements IsotopeProduct
     protected $arrOptions = array();
 
     /**
-     * Product Options of all variants
+     * Assigned categories (pages)
      * @var array
      */
-    protected $arrVariantOptions = null;
+    protected $arrCategories;
 
     /**
      * Downloads for this product
      * @var array
      */
-    protected $arrDownloads = null;
+    protected $arrDownloads;
 
     /**
      * Unique form ID
@@ -87,90 +94,6 @@ class Standard extends Product implements IsotopeProduct
      */
     protected $doNotSubmit = false;
 
-    /**
-     * Lock products from changes and don't calculate prices
-     * @var boolean
-     */
-    protected $blnLocked = false;
-
-
-    /**
-     * Construct the object
-     * @param   array
-     * @param   array
-     * @param   boolean
-     */
-    public function __construct(\Database\Result $objResult=null)
-    {
-        parent::__construct($objResult);
-
-        $this->Database = \Database::getInstance();
-
-        $arrData = $this->arrData;
-        $this->blnLocked = $blnLocked;
-
-        if ($arrData['pid'] > 0)
-        {
-            $objParent = static::findByPk($arrData['id']);
-
-            if (null === $objParent) {
-                throw new \UnderflowException('Parent record of product ID ' . $arrData['id'] . ' not found');
-            }
-
-            $this->arrData = $objParent->row();
-        }
-
-        $this->arrOptions = is_array($arrOptions) ? $arrOptions : array();
-
-        if (!$this->arrData['type'])
-        {
-            return;
-        }
-
-        $this->formSubmit = 'iso_product_' . $this->arrData['id'];
-        $this->arrAttributes = $this->getSortedAttributes($this->getRelated('type')->attributes);
-        $this->arrVariantAttributes = $this->hasVariants() ? $this->getSortedAttributes($this->getRelated('type')->variant_attributes) : array();
-        $this->arrCache['quantity_requested'] = $intQuantity;
-
-        // !HOOK: allow to customize attributes
-        if (isset($GLOBALS['ISO_HOOKS']['productAttributes']) && is_array($GLOBALS['ISO_HOOKS']['productAttributes']))
-        {
-            foreach ($GLOBALS['ISO_HOOKS']['productAttributes'] as $callback)
-            {
-                $objCallback = \System::importStatic($callback[0]);
-                $objCallback->$callback[1]($this->arrAttributes, $this->arrVariantAttributes, $this);
-            }
-        }
-
-        // Remove attributes not in this product type
-        foreach ($this->arrData as $attribute => $value)
-        {
-            if (!in_array($attribute, $this->arrAttributes) && !in_array($attribute, $this->arrVariantAttributes) && $GLOBALS['TL_DCA']['tl_iso_products']['fields'][$attribute]['attributes']['legend'] != '')
-            {
-                unset($this->arrData[$attribute]);
-            }
-        }
-
-        if ($arrData['pid'] > 0)
-        {
-            $this->loadVariantData($arrData);
-        }
-        elseif (!$this->isLocked())
-        {
-            // findPrice() is called by loadVariantData()
-            $this->findPrice();
-        }
-
-        // Make sure the locked attributes are set
-        if ($this->isLocked())
-        {
-            $this->arrData['sku']            = $arrData['sku'];
-            $this->arrData['name']           = $arrData['name'];
-            $this->arrData['price']          = $arrData['price'];
-            $this->arrData['tax_free_price'] = $arrData['tax_free_price'];
-        }
-    }
-
 
     /**
      * Get a property
@@ -181,87 +104,25 @@ class Standard extends Product implements IsotopeProduct
     {
         switch ($strKey)
         {
-            case 'id':
-            case 'pid':
             case 'href_reader':
                 return $this->arrData[$strKey];
 
             case 'formSubmit':
                 return $this->formSubmit;
 
-            case 'original_price':
-                return $this->isLocked() ? $this->arrData['price'] : Isotope::calculatePrice($this->arrData['price'], $this, 'original_price', $this->arrData['tax_class']);
-
             case 'price':
-                return $this->isLocked() ? $this->arrData['price'] : Isotope::calculatePrice($this->arrData['price'], $this, 'price', $this->arrData['tax_class']);
-
-            case 'total_price':
-                $varPrice = $this->price;
-
-                return $varPrice === null ? null : ($this->quantity_requested * $varPrice);
-
-            case 'tax_free_price':
-                if ($this->isLocked()) {
-                    return $this->arrData['tax_free_price'] ? $this->arrData['tax_free_price'] : $this->arrData['price'];
-                }
-
-                $objTaxClass = TaxClass::findByPk($this->arrData['tax_class']);
-                $fltPrice = $objTaxClass === null ? $this->arrData['price'] : $objTaxClass->calculateNetPrice($this->arrData['price']);
-
-                return Isotope::calculatePrice($fltPrice, $this, 'tax_free_price', $this->arrData['tax_class']);
-
-            case 'tax_free_total_price':
-                $varPrice = $this->tax_free_price;
-
-                return $varPrice === null ? null : ($this->quantity_requested * $varPrice);
-
-            case 'quantity_requested':
-                if (!$this->arrCache[$strKey] && \Input::post('FORM_SUBMIT') == $this->formSubmit)
-                {
-                    $this->arrCache[$strKey] = (int) \Input::post('quantity_requested');
-                }
-
-                return $this->arrCache[$strKey] ? $this->arrCache[$strKey] : 1;
-
-            case 'show_price_tiers':
-                return (bool) $this->getRelated('type')->show_price_tiers;
+                return Isotope::calculatePrice($this->arrData['price'], $this, 'price', $this->arrData['tax_class']);
 
             case 'description_meta':
                 return $this->arrData['description_meta'] != '' ? $this->arrData['description_meta'] : ($this->arrData['teaser'] != '' ? $this->arrData['teaser'] : $this->arrData['description']);
 
             default:
-                // Initialize attribute
-                if (!isset($this->arrCache[$strKey]))
-                {
-                    switch ($strKey)
-                    {
-                        case 'formatted_price':
-                            $this->arrCache[$strKey] = Isotope::formatPriceWithCurrency($this->price, false);
-                            break;
+                if ($this->pid > 0 && $GLOBALS['TL_DCA']['tl_iso_products']['fields'][$strKey]['attributes']['customer_defined'] || $GLOBALS['TL_DCA']['tl_iso_products']['fields'][$strKey]['attributes']['variant_option']) {
 
-                        case 'formatted_original_price':
-                            $this->arrCache[$strKey] = Isotope::formatPriceWithCurrency($this->original_price, false);
-                            break;
+				    return isset($this->arrOptions[$strKey]) ? deserialize($this->arrOptions[$strKey]) : null;
+			    }
 
-                        case 'formatted_total_price':
-                            $this->arrCache[$strKey] = Isotope::formatPriceWithCurrency($this->total_price, false);
-                            break;
-
-                        case 'categories':
-                            $this->arrCache[$strKey] = $this->Database->execute("SELECT page_id FROM tl_iso_product_categories WHERE pid=" . ($this->pid ? $this->pid : $this->id) . " ORDER BY sorting")->fetchEach('page_id');
-                            break;
-
-                        default:
-                            if ($this->pid > 0 && $GLOBALS['TL_DCA']['tl_iso_products']['fields'][$strKey]['attributes']['customer_defined'] || $GLOBALS['TL_DCA']['tl_iso_products']['fields'][$strKey]['attributes']['variant_option']) {
-
-							    return isset($this->arrOptions[$strKey]) ? deserialize($this->arrOptions[$strKey]) : null;
-						    }
-
-                            return isset($this->arrData[$strKey]) ? deserialize($this->arrData[$strKey]) : null;
-                    }
-                }
-
-                return $this->arrCache[$strKey];
+                return isset($this->arrData[$strKey]) ? deserialize($this->arrData[$strKey]) : null;
         }
     }
 
@@ -329,18 +190,6 @@ class Standard extends Product implements IsotopeProduct
             case 'price':
                 $this->arrData[$strKey] = $varValue;
                 break;
-
-            case 'quantity_requested':
-                $this->arrCache[$strKey] = $varValue;
-
-                if (!$this->isLocked())
-                {
-                    $this->findPrice();
-                }
-                break;
-
-            default:
-                $this->arrCache[$strKey] = $varValue;
         }
     }
 
@@ -395,12 +244,12 @@ class Standard extends Product implements IsotopeProduct
         }
 
         // Check that the product is in any page of the current site
-        if (count(\Isotope\Frontend::getPagesInCurrentRoot($this->categories, \FrontendUser::getInstance())) == 0) {
+        if (count(\Isotope\Frontend::getPagesInCurrentRoot($this->getCategories(), \FrontendUser::getInstance())) == 0) {
             return false;
         }
 
         // Check if "advanced price" is available
-        if ($this->arrData['price'] === null && (in_array('price', $this->arrAttributes) || in_array('price', $this->arrVariantAttributes))) {
+        if (null === $this->getPrice() && (in_array('price', $this->getAttributes()) || $this->hasVariantPrices())) {
             return false;
         }
 
@@ -441,7 +290,12 @@ class Standard extends Product implements IsotopeProduct
         }
 
         // Check that the product is in any page of the current site
-        if (count(\Isotope\Frontend::getPagesInCurrentRoot($this->categories, $objCollection->getRelated('member'))) == 0) {
+        if (count(\Isotope\Frontend::getPagesInCurrentRoot($this->getCategories(), $objCollection->getRelated('member'))) == 0) {
+            return false;
+        }
+
+        // Check if "advanced price" is available
+        if (null === $this->getPrice() && (in_array('price', $this->getAttributes()) || $this->hasVariantPrices())) {
             return false;
         }
 
@@ -472,7 +326,7 @@ class Standard extends Product implements IsotopeProduct
      */
     public function hasVariants()
     {
-        return (bool) $this->getRelated('type')->variants;
+        return (bool) $this->getRelated('type')->hasVariants();
     }
 
     /**
@@ -481,7 +335,7 @@ class Standard extends Product implements IsotopeProduct
      */
     public function hasVariantPrices()
     {
-        if ($this->hasVariants() && in_array('price', $this->arrVariantAttributes))
+        if ($this->hasVariants() && in_array('price', $this->getVariantAttributes()))
         {
             return true;
         }
@@ -495,7 +349,34 @@ class Standard extends Product implements IsotopeProduct
      */
     public function hasAdvancedPrices()
     {
-        return (bool) $this->getRelated('type')->prices;
+        return (bool) $this->getRelated('type')->hasAdvancedPrices();
+    }
+
+    /**
+     * Return true if the user should see lowest price tier as lowest price
+     * @return  bool
+     */
+    public function canSeePriceTiers()
+    {
+        return $this->hasAdvancedPrices() && $this->getRelated('type')->show_price_tiers;
+    }
+
+    /**
+     * Get product price model
+     * @return  IsotopePrice
+     */
+    public function getPrice()
+    {
+        if (false === $this->objPrice) {
+
+            if ($this->hasVariantPrices() && $this->pid == 0) {
+                $this->objPrice = ProductPrice::findLowestActiveByVariantsAndCollection($this, Isotope::getCart());
+            } else {
+                $this->objPrice = ProductPrice::findActiveByProductAndCollection($this, Isotope::getCart());
+            }
+        }
+
+        return $this->objPrice;
     }
 
     /**
@@ -509,12 +390,7 @@ class Standard extends Product implements IsotopeProduct
             return 1;
         }
 
-        if (!isset($this->arrCache['minimum_quantity']))
-        {
-            $this->findPrice();
-        }
-
-        return $this->arrCache['minimum_quantity'] ? $this->arrCache['minimum_quantity'] : 1;
+        $this->getPrice()->getLowestTier();
     }
 
 
@@ -522,8 +398,12 @@ class Standard extends Product implements IsotopeProduct
      * Return the product attributes
      * @return  array
      */
-    public function getProductAttributes()
+    public function getAttributes()
     {
+        if (null === $this->arrAttributes) {
+            $this->arrAttributes = $this->getRelated('type')->getAttributes();
+        }
+
         return $this->arrAttributes;
     }
 
@@ -534,54 +414,12 @@ class Standard extends Product implements IsotopeProduct
      */
     public function getVariantAttributes()
     {
+        if (null === $this->arrVariantAttributes) {
+            $this->arrVariantAttributes = $this->getRelated('type')->getVariantAttributes();
+        }
+
         return $this->arrVariantAttributes;
     }
-
-
-    /**
-     * Return variant options data
-     * @return  array|false
-     */
-    public function getVariantOptions()
-    {
-        if (!$this->hasVariants()) {
-            return false;
-        }
-
-        if (!is_array($this->arrVariantOptions)) {
-
-            $time = time();
-            $this->arrVariantOptions = array('current'=>array());
-
-            // Find all possible variant options
-            $objVariant = clone $this;
-            $objVariants = static::findPublishedByPid($arrData['id']);
-
-            if (null !== $objVariants) {
-                while ($objVariants->next()) {
-
-                    $objVariant->loadVariantData($objVariants->row(), false);
-
-                    if ($objVariant->isAvailableInFrontend()) {
-                        $arrVariantOptions = $objVariant->getOptions();
-
-                        $this->arrVariantOptions['ids'][] = $objVariant->id;
-                        $this->arrVariantOptions['options'][$objVariant->id] = $arrVariantOptions;
-                        $this->arrVariantOptions['variants'][$objVariant->id] = $objVariants->row();
-
-                        foreach ($arrVariantOptions as $attribute => $value) {
-                            if (!in_array((string) $value, (array) $this->arrVariantOptions['attributes'][$attribute], true)) {
-                                $this->arrVariantOptions['attributes'][$attribute][] = (string) $value;
-                            }
-                        }
-                    }
-                }
-            }
-        }
-
-        return $this->arrVariantOptions;
-    }
-
 
     /**
      * Return all available variant IDs of this product
@@ -589,16 +427,62 @@ class Standard extends Product implements IsotopeProduct
      */
     public function getVariantIds()
     {
-        $arrVariantOptions = $this->getVariantOptions();
+        if (null === $this->arrVariantIds) {
 
-        if ($arrVariantOptions === false)
-        {
-            return false;
+            $this->arrVariantIds = array();
+
+            $time = time();
+            $blnHasProtected = false;
+            $strQuery = "SELECT id, protected, groups FROM tl_iso_products WHERE pid=" . ($this->pid ?: $this->id) . " AND language='' AND published='1' AND (start='' OR start<$time) AND (stop='' OR stop>$time)";
+
+            if (BE_USER_LOGGED_IN !== true) {
+                $arrAttributes = $this->getVariantAttributes();
+                $blnHasProtected = in_array('protected', $arrAttributes);
+                $blnHasGroups = in_array('groups', $arrAttributes);
+
+                // Hide guests-only products when logged in
+                if (FE_USER_LOGGED_IN === true && in_array('guests', $arrAttributes)) {
+                    $strQuery .= " AND (guests=''" . ($blnHasProtected ? " OR protected='1'" : '') . ")";
+                }
+
+                // Hide protected if no user is logged in
+                elseif (FE_USER_LOGGED_IN !== true && $blnHasProtected) {
+                    $strQuery .= " AND protected=''";
+                }
+            }
+
+            $objVariants = \Database::getInstance()->query($strQuery);
+
+            while ($objVariants->next()) {
+                if ($blnHasProtected && $objVariants->protected) {
+                    $groups = $blnHasGroups ? deserialize($objVariants->groups) : '';
+
+                    if (empty($groups) || !is_array($groups) || !count(array_intersect($groups, FrontendUser::getInstance()->groups))) {
+                        continue;
+                    }
+                }
+
+                $this->arrVariantIds[] = $objVariants->id;
+            }
+
+            // @todo check if each variant has a price
         }
 
-        return (array) $arrVariantOptions['ids'];
+        return $this->arrVariantIds;
     }
 
+    /**
+     * Get categories (pages) assigned to this product
+     * @return  array
+     */
+    public function getCategories()
+    {
+        if (null === $this->arrCategories) {
+            $this->arrCategories = \Database::getInstance()->execute("SELECT page_id FROM tl_iso_product_categories WHERE pid=" . ($this->pid ?: $this->id) . " ORDER BY sorting")->fetchEach('page_id');
+        }
+
+        return $this->arrCategories;
+    }
 
     /**
      * Return all downloads for this product
@@ -607,7 +491,7 @@ class Standard extends Product implements IsotopeProduct
      */
     public function getDownloads()
     {
-        if (!$this->getRelated('type')->downloads)
+        if (!$this->getRelated('type')->hasDownloads())
         {
             $this->arrDownloads = array();
         }
@@ -615,7 +499,7 @@ class Standard extends Product implements IsotopeProduct
         // Cache downloads for this product
         elseif (!is_array($this->arrDownloads))
         {
-            $this->arrDownloads = $this->Database->execute("SELECT * FROM tl_iso_downloads WHERE pid={$this->arrData['id']} OR pid={$this->arrData['pid']}")->fetchAllAssoc();
+            $this->arrDownloads = \Database::getInstance()->execute("SELECT * FROM tl_iso_downloads WHERE pid={$this->arrData['id']} OR pid={$this->arrData['pid']}")->fetchAllAssoc();
         }
 
         return $this->arrDownloads;
@@ -685,6 +569,16 @@ class Standard extends Product implements IsotopeProduct
             return $objAttribute->generate($objProduct);
         };
 
+        $objTemplate->generatePrice = function() use ($objProduct) {
+            $objPrice = $this->getPrice();
+
+            if (null === $objPrice) {
+                return '';
+            }
+
+            return $objPrice->generate(($this->pid == 0));
+        };
+
         $objTemplate->getGallery = function($strAttribute) use ($objProduct, $arrConfig, &$arrGalleries) {
 
             if (!isset($arrGalleries[$strAttribute])) {
@@ -694,42 +588,19 @@ class Standard extends Product implements IsotopeProduct
             return $arrGalleries[$strAttribute];
         };
 
-        // Add price to template
-        $strPrice = '';
-        $fltPrice = $this->price;
-        $fltOriginalPrice = $this->original_price;
 
-        if ($this->arrCache['from_price'] !== null)
-        {
-            $fltPrice = Isotope::calculatePrice($this->arrCache['from_price'], $this, 'price', $this->arrData['tax_class']);
-            $fltOriginalPrice = Isotope::calculatePrice($this->arrCache['from_price'], $this, 'original_price', $this->arrData['tax_class']);
 
-            $strPrice = sprintf($GLOBALS['TL_LANG']['MSC']['priceRangeLabel'], Isotope::formatPriceWithCurrency($fltPrice));
-            $strOriginalPrice = sprintf($GLOBALS['TL_LANG']['MSC']['priceRangeLabel'], Isotope::formatPriceWithCurrency($fltOriginalPrice));
-        }
-        else
-        {
-            $strPrice = Isotope::formatPriceWithCurrency($fltPrice);
-            $strOriginalPrice = Isotope::formatPriceWithCurrency($fltOriginalPrice);
-        }
-
-        if ($fltPrice != $fltOriginalPrice)
-        {
-            $strPrice = '<div class="original_price"><strike>' . $strOriginalPrice . '</strike></div><div class="price">' . $strPrice . '</div>';
-        }
-
-        $objTemplate->price = $strPrice;
-
+        $arrVariantOptions = array();
         $arrProductOptions = array();
         $arrAjaxOptions = array();
 
-        foreach (array_unique(array_merge($this->arrAttributes, $this->arrVariantAttributes)) as $attribute)
+        foreach (array_unique(array_merge($this->getAttributes(), $this->getVariantAttributes())) as $attribute)
         {
             $arrData = $GLOBALS['TL_DCA']['tl_iso_products']['fields'][$attribute];
 
             if ($arrData['attributes']['customer_defined'] || $arrData['attributes']['variant_option']) {
 
-                $strWidget = $this->generateProductOptionWidget($attribute);
+                $strWidget = $this->generateProductOptionWidget($attribute, $arrVariantOptions);
 
                 if ($strWidget != '')
                 {
@@ -779,11 +650,9 @@ class Standard extends Product implements IsotopeProduct
         }
 
         $objTemplate->buttons = $arrButtons;
-        $objTemplate->quantityLabel = $GLOBALS['TL_LANG']['MSC']['quantity'];
         $objTemplate->useQuantity = $arrConfig['useQuantity'];
-        $objTemplate->quantity_requested = $this->quantity_requested;
         $objTemplate->minimum_quantity = $this->getMinimumQuantity();
-        $objTemplate->raw = array_merge($this->arrData, $this->arrCache);
+        $objTemplate->raw = $this->arrData;
         $objTemplate->raw_options = $this->arrOptions;
         $objTemplate->href_reader = $this->href_reader;
         $objTemplate->label_detail = $GLOBALS['TL_LANG']['MSC']['detailLabel'];
@@ -818,7 +687,7 @@ class Standard extends Product implements IsotopeProduct
      * @param   boolean
      * @return  string
      */
-    protected function generateProductOptionWidget($strField)
+    protected function generateProductOptionWidget($strField, &$arrVariantOptions)
     {
         $objAttribute = $GLOBALS['TL_DCA']['tl_iso_products']['attributes'][$strField];
         $arrData = $GLOBALS['TL_DCA']['tl_iso_products']['fields'][$strField];
@@ -828,94 +697,46 @@ class Standard extends Product implements IsotopeProduct
         $arrData['eval']['mandatory'] = ($arrData['eval']['mandatory'] && !\Environment::get('isAjaxRequest')) ? true : false;
         $arrData['eval']['required'] = $arrData['eval']['mandatory'];
 
-        // Make sure variant options are initialized
-        $this->getVariantOptions();
+        // Value can be predefined in the URL, e.g. to preselect a variant
+        if (\Input::get($strField) != '') {
+            $arrData['default'] = \Input::get($strField);
+        }
 
-        if ($objAttribute->isVariantOption() && is_array($arrData['options']))
-        {
-            if ((count((array) $this->arrVariantOptions['attributes'][$strField]) == 1) && !$this->getRelated('type')->force_variant_options)
-            {
-                $this->arrOptions[$strField] = $this->arrVariantOptions['attributes'][$strField][0];
-                $this->arrVariantOptions['current'][$strField] = $this->arrVariantOptions['attributes'][$strField][0];
-                $arrData['default'] = $this->arrVariantOptions['attributes'][$strField][0];
+        // Prepare variant selection field
+        if ($objAttribute->isVariantOption()) {
 
-                if (!\Environment::get('isAjaxRequest'))
-                {
-                    return '';
-                }
-            }
+            $arrOptions = $objAttribute->getOptionsForVariants($this->getVariantIds(), $arrVariantOptions);
 
-            if ($arrData['inputType'] == 'select')
-            {
-                $arrData['eval']['includeBlankOption'] = true;
+            // Hide selection if only one option is available (and "force_variant_options" is not set in product type)
+            if (\Input::post('FORM_SUBMIT') != $this->formSubmit && count($arrOptions) == 1 && !$this->getRelated('type')->force_variant_options) {
+                $arrVariantOptions[$strField] = $arrOptions[0];
+
+                return '';
             }
 
             $arrField = $strClass::getAttributesFromDca($arrData, $strField, $arrData['default']);
 
-            // Necessary, because prepareForData can unset the options
-            if (is_array($arrData['options']))
-            {
-                // Unset if no variant has this option
-                foreach ($arrField['options'] as $k => $option)
-                {
+            // Remove options not available in any product variant
+            if (is_array($arrData['options'])) {
+                foreach ($arrField['options'] as $k => $option) {
+
                     // Keep groups and blankOptionLabels
-                    if (!$option['group'] && $option['value'] != '')
-                    {
-                        // Unset option if no attribute has this option at all (in any enabled variant)
-                        if (!in_array((string) $option['value'], (array) $this->arrVariantOptions['attributes'][$strField], true))
-                        {
-                            unset($arrField['options'][$k]);
-                        }
-
-                        // Check each variant if it is found trough the url
-                        else
-                        {
-                            $blnValid = false;
-
-                            foreach ((array) $this->arrVariantOptions['options'] as $arrVariant)
-                            {
-                                if ($arrVariant[$strField] == $option['value'] && count($this->arrVariantOptions['current']) == count(array_intersect_assoc($this->arrVariantOptions['current'], $arrVariant)))
-                                {
-                                    $blnValid = true;
-                                }
-                            }
-
-                            if (!$blnValid)
-                            {
-                                unset($arrField['options'][$k]);
-                            }
-                        }
+                    if (!in_array($option['value'], $arrOptions) && !$option['group'] && $option['value'] != '') {
+                        unset($arrField['options'][$k]);
                     }
                 }
             }
 
             $arrField['options'] = array_values($arrField['options']);
 
-            if (\Input::get($strField) != '' && \Input::post('FORM_SUBMIT') != $this->formSubmit)
-            {
-                if (in_array(\Input::get($strField), (array) $this->arrVariantOptions['attributes'][$strField], true))
-                {
-                    $arrField['value'] = \Input::get($strField);
-                    $this->arrVariantOptions['current'][$strField] = \Input::get($strField);
-                }
-            }
-            elseif ($this->pid > 0)
-            {
+            // Set field value if a variant is selected
+            if ($this->pid > 0) {
                 $arrField['value'] = $this->arrOptions[$strField];
-                $this->arrVariantOptions['current'][$strField] = $this->arrOptions[$strField];
             }
         }
-        else
-        {
-            if (is_array($GLOBALS['ISO_ATTR'][$arrData['attributes']['type']]['callback']) && !empty($GLOBALS['ISO_ATTR'][$arrData['attributes']['type']]['callback']))
-            {
-                foreach ($GLOBALS['ISO_ATTR'][$arrData['attributes']['type']]['callback'] as $callback)
-                {
-                    $objCallback = \System::importStatic($callback[0]);
-                    $arrData = $objCallback->{$callback[1]}($strField, $arrData, $this);
-                }
-            }
 
+        // Not a variant widget, but customer editable
+        else {
             $arrField = $strClass::getAttributesFromDca($arrData, $strField, $arrData['default']);
         }
 
@@ -930,28 +751,24 @@ class Standard extends Product implements IsotopeProduct
         {
             $objWidget->validate();
 
-            if ($objWidget->hasErrors())
-            {
+            if ($objWidget->hasErrors()) {
                 $this->doNotSubmit = true;
             }
 
             // Store current value
-            elseif ($objWidget->submitInput() || $objWidget instanceof \uploadable)
-            {
+            elseif ($objWidget->submitInput() || $objWidget instanceof \uploadable) {
                 $varValue = $objWidget->value;
 
                 // Convert date formats into timestamps
-                if ($varValue != '' && in_array($arrData['eval']['rgxp'], array('date', 'time', 'datim')))
-                {
+                if ($varValue != '' && in_array($arrData['eval']['rgxp'], array('date', 'time', 'datim'))) {
                     $objDate = new \Date($varValue, $GLOBALS['TL_CONFIG'][$arrData['eval']['rgxp'] . 'Format']);
                     $varValue = $objDate->tstamp;
                 }
 
                 // Trigger the save_callback
-                if (is_array($arrData['save_callback']))
-                {
-                    foreach ($arrData['save_callback'] as $callback)
-                    {
+                if (is_array($arrData['save_callback'])) {
+                    foreach ($arrData['save_callback'] as $callback) {
+
                         $objCallback = \System::importStatic($callback[0]);
 
                         try {
@@ -964,14 +781,8 @@ class Standard extends Product implements IsotopeProduct
                     }
                 }
 
-                if (!$objWidget->hasErrors())
-                {
-                    $this->arrOptions[$strField] = $varValue;
-
-                    if ($arrData['attributes']['variant_option'] && $varValue != '')
-                    {
-                        $this->arrVariantOptions['current'][$strField] = $varValue;
-                    }
+                if (!$objWidget->hasErrors()) {
+                    $arrVariantOptions[$strField] = $varValue;
                 }
             }
         }
@@ -979,16 +790,15 @@ class Standard extends Product implements IsotopeProduct
         $wizard = '';
 
         // Datepicker
-        if ($arrData['eval']['datepicker'])
-        {
+        if ($arrData['eval']['datepicker']) {
+
             $GLOBALS['TL_JAVASCRIPT'][] = 'plugins/datepicker/datepicker.js';
             $GLOBALS['TL_CSS'][] = 'plugins/datepicker/dashboard.css';
 
             $rgxp = $arrData['eval']['rgxp'];
             $format = Date::formatToJs($GLOBALS['TL_CONFIG'][$rgxp.'Format']);
 
-            switch ($rgxp)
-            {
+            switch ($rgxp) {
                 case 'datim':
                     $time = ",\n      timePicker:true";
                     break;
@@ -1020,186 +830,149 @@ class Standard extends Product implements IsotopeProduct
         }
 
         // Add a custom wizard
-        if (is_array($arrData['wizard']))
-        {
-            foreach ($arrData['wizard'] as $callback)
-            {
+        if (is_array($arrData['wizard'])) {
+            foreach ($arrData['wizard'] as $callback) {
                 $objCallback = \System::importStatic($callback[0]);
                 $wizard .= $objCallback->$callback[1]($this);
             }
         }
 
-        if ($objWidget instanceof \uploadable)
-        {
+        if ($objWidget instanceof \uploadable) {
             $this->hasUpload = true;
         }
 
         return $objWidget->parse() . $wizard;
     }
 
-
-    /**
-     * Find price for the current product/variant
-     */
-    protected function findPrice()
-    {
-        $arrPrice = \Isotope\ProductPriceFinder::findPrice($this);
-
-        $this->arrData['price'] = $arrPrice['price'];
-        $this->arrData['tax_class'] = $arrPrice['tax_class'];
-        $this->arrCache['from_price'] = $arrPrice['from_price'];
-        $this->arrCache['minimum_quantity'] = $arrPrice['min'];
-
-        // Add "price_tiers" to attributes, so the field is available in the template
-        if ($this->hasAdvancedPrices())
-        {
-            $this->arrAttributes[] = 'price_tiers';
-
-            // Add "price_tiers" to variant attributes, so the field is updated through ajax
-            if ($this->hasVariantPrices())
-            {
-                $this->arrVariantAttributes[] = 'price_tiers';
-            }
-
-            $this->arrCache['price_tiers'] = $arrPrice['price_tiers'];
-        }
-    }
-
-
     /**
      * Load data of a product variant if the options match one
      */
     protected function validateVariant()
     {
-        if (!$this->hasVariants())
-        {
+        if (!$this->hasVariants()) {
             return;
         }
 
-        // Make sure variant options are initialized
-        $this->getVariantOptions();
-
         $arrOptions = array();
 
-        foreach ($this->arrAttributes as $attribute)
-        {
-            if ($GLOBALS['TL_DCA']['tl_iso_products']['fields'][$attribute]['attributes']['variant_option'])
-            {
-                if (\Input::post('FORM_SUBMIT') == $this->formSubmit && in_array(\Input::post($attribute), (array) $this->arrVariantOptions['attributes'][$attribute], true))
-                {
-                    $arrOptions[$attribute] = \Input::post($attribute);
-                }
-                elseif (\Input::post('FORM_SUBMIT') == '' && in_array(\Input::get($attribute), (array) $this->arrVariantOptions['attributes'][$attribute], true))
-                {
-                    $arrOptions[$attribute] = \Input::get($attribute);
-                }
-                elseif (count((array) $this->arrVariantOptions['attributes'][$attribute]) == 1)
-                {
-                    $arrOptions[$attribute] = $this->arrVariantOptions['attributes'][$attribute][0];
-                }
+        foreach (array_intersect($this->getAttributes(), $GLOBALS['ISO_CONFIG']['variant_options']) as $attribute) {
+
+            $objAttribute = $GLOBALS['TL_DCA']['tl_iso_products']['attributes'][$attribute];
+            $arrValues = $objAttribute->getOptionsForVariants($this->getVariantIds(), $arrOptions);
+
+            if (\Input::post('FORM_SUBMIT') == $this->formSubmit && in_array(\Input::post($attribute), $arrValues)) {
+                $arrOptions[$attribute] = \Input::post($attribute);
+            } elseif (\Input::post('FORM_SUBMIT') == '' && in_array(\Input::get($attribute), $arrValues)) {
+                $arrOptions[$attribute] = \Input::get($attribute);
+            } elseif (count($arrValues) == 1) {
+                $arrOptions[$attribute] = $arrValues[0];
+            } else {
+
+                // Abort if any attribute does not have a value, we can't find a variant
+                return;
             }
         }
 
-        $intOptions = count($arrOptions);
+        if (!empty($arrOptions)) {
 
-        if ($intOptions > 0)
-        {
-            $intVariant = false;
+            // Do not use the model, it would trigger setRow and generate too much
+            $objVariant = \Database::getInstance()->prepare(
+                static::buildQueryString(array(
+                    'table'     => static::$strTable,
+                    'column'    => array("tl_iso_products.id IN (" . implode(',', $this->getVariantIds()) . ") AND tl_iso_products." . implode('=?, tl_iso_products.', array_keys($arrOptions)) . "=?")
+                ))
+            )->limit(1)->execute($arrOptions);
 
-            foreach ((array) $this->arrVariantOptions['options'] as $id => $arrVariant)
-            {
-                if ($intOptions == count($arrVariant) && $intOptions == count(array_intersect_assoc($arrOptions, $arrVariant)))
-                {
-                    if ($intVariant === false)
-                    {
-                        $intVariant = $id;
-                    }
-                    else
-                    {
-                        $this->doNotSubmit = true;
-
-                        return;
-                    }
-                }
+            if ($objVariant->numRows) {
+                $this->loadVariantData($objVariant->row());
             }
-
-            // Variant not found
-            if ($intVariant === false || !is_array($this->arrVariantOptions['variants'][$intVariant]))
-            {
-                $this->doNotSubmit = true;
-
-                return;
-            }
-
-            // Variant already loaded
-            if ($intVariant == $this->id)
-            {
-                return;
-            }
-
-            $this->loadVariantData($this->arrVariantOptions['variants'][$intVariant]);
         }
     }
 
+    /**
+     * Validate data and remove non-available attributes
+     * @param   array
+     * @return  Standard
+     */
+    public function setRow(array $arrData)
+    {
+        $this->resetCache();
+
+        if ($arrData['pid'] > 0)
+        {
+            // Do not use the model, it would trigger setRow and generate too much
+            $objParent = \Database::getInstance()->execute(static::buildQueryString(array('table'=>static::$strTable, 'column'=>'id='.$arrData['pid'])));
+
+            if (null === $objParent) {
+                throw new \UnderflowException('Parent record of product ID ' . $arrData['id'] . ' not found');
+            }
+
+            $this->setRow($objParent->row());
+            $this->loadVariantData($arrData);
+
+            return $this;
+        }
+
+        // Must initialize product type to have attributes etc.
+        if (!isset($this->arrRelated['type']))
+        {
+            $this->arrRelated['type'] = ProductType::findByPk($arrData['type']);
+
+            if (null === $this->arrRelated['type']) {
+                throw new \UnderflowException('Product type for product ID ' . $arrData['id'] . ' not found');
+            }
+        }
+
+        $this->formSubmit = 'iso_product_' . $arrData['id'];
+
+        // Remove attributes not in this product type
+        foreach ($arrData as $attribute => $value) {
+            if (!in_array($attribute, $this->getAttributes()) && !in_array($attribute, $this->getVariantAttributes()) && $GLOBALS['TL_DCA']['tl_iso_products']['fields'][$attribute]['attributes']['legend'] != '') {
+                unset($arrData[$attribute]);
+            }
+        }
+
+        return parent::setRow($arrData);
+    }
 
     /**
      * Load variant data basing on provided data
      * @param   array
-     * @param   array
      */
-    public function loadVariantData($arrData, $arrInherit=false)
+    public function loadVariantData($arrData)
     {
+        $this->resetCache();
+
         $arrInherit = deserialize($arrData['inherit'], true);
 
         $this->arrData['id'] = $arrData['id'];
         $this->arrData['pid'] = $arrData['pid'];
 
-        foreach ($this->arrVariantAttributes as $attribute)
-        {
-            if (in_array($attribute, $arrInherit) || ($this->isLocked() && in_array($attribute, array('sku', 'name', 'price'))))
-            {
-                continue;
-            }
+        // Set all variant attributes, except if they are inherited
+        foreach (array_diff($this->getVariantAttributes(), $arrInherit) as $attribute) {
 
             $this->arrData[$attribute] = $arrData[$attribute];
 
-            if (in_array($attribute, $GLOBALS['ISO_CONFIG']['fetch_fallback']))
-            {
+            if (in_array($attribute, $GLOBALS['ISO_CONFIG']['fetch_fallback'])) {
                 $this->arrData[$attribute.'_fallback'] = $arrData[$attribute.'_fallback'];
             }
-
-            if (is_array($this->arrCache) && isset($this->arrCache[$attribute]))
-            {
-                unset($this->arrCache[$attribute]);
-            }
-        }
-
-        if (!$this->isLocked() && $this->hasVariantPrices())
-        {
-            $this->findPrice();
         }
 
         // Load variant options
-        $this->arrOptions = array_merge($this->arrOptions, array_intersect_key($arrData, array_flip(array_intersect($this->arrAttributes, $GLOBALS['ISO_CONFIG']['variant_options']))));
-
-        // Unset arrDownloads cache
-        $this->arrDownloads = null;
+        $this->arrOptions = array_merge($this->arrOptions, array_intersect_key($arrData, array_flip(array_intersect($this->getAttributes(), $GLOBALS['ISO_CONFIG']['variant_options']))));
     }
 
-
     /**
-     * Sort the attributes based on their position (from wizard) and return their names only
-     * @param   mixed
-     * @return  array
+     * Unset cached data
      */
-    protected function getSortedAttributes($varValue)
+    protected function resetCache()
     {
-        $arrAttributes = deserialize($varValue, true);
-
-        uasort($arrAttributes, function ($a, $b) {
-            return $a["position"] > $b["position"];
-        });
-
-        return array_keys($arrAttributes);
+        $this->objPrice = false;
+        $this->arrAttributes = null;
+        $this->arrVariantAttributes = null;
+        $this->arrVariantIds = null;
+        $this->arrOptions = array();
+        $this->arrCategories = null;
+        $this->arrDownloads = null;
     }
 }

@@ -96,7 +96,8 @@ class IsotopeRules extends \Controller
                         $intTotal = 0;
                         foreach ($this->Isotope->Cart->getProducts() as $objProduct)
                         {
-                              $intTotal += $objRules->quantityMode == 'cart_items' ? $objProduct->quantity_requested : 1;
+                            // @todo $objProduct->quantity_requested is no longer available
+                            $intTotal += $objRules->quantityMode == 'cart_items' ? $objProduct->quantity_requested : 1;
                         }
                     }
 
@@ -574,6 +575,7 @@ class IsotopeRules extends \Controller
                         && (in_array($objProduct->id, $arrLimit) || ($objProduct->pid > 0 && in_array($objProduct->pid, $arrLimit))))
                     || ($arrRule['productRestrictions'] == 'producttypes' && in_array($objProduct->type, $arrLimit)))
                     {
+                        // @todo $objProduct->quantity_requested is no longer available
                         $intTotal += $arrRule['quantityMode'] == 'cart_items' ? $objProduct->quantity_requested : 1;
                     }
                 }
@@ -668,6 +670,7 @@ class IsotopeRules extends \Controller
             // Because we apply to the quantity of only this product, we override $intTotal in every foreach loop
             if ($arrRule['quantityMode'] != 'cart_products' && $arrRule['quantityMode'] != 'cart_items')
             {
+                // @todo $objProduct->quantity_requested is no longer available
                 $intTotal = $objProduct->quantity_requested;
             }
 
@@ -681,6 +684,7 @@ class IsotopeRules extends \Controller
             switch( $arrRule['applyTo'] )
             {
                 case 'products':
+                    // @todo $objProduct->total_price is no longer available
                     $fltPrice = $blnPercentage ? ($objProduct->total_price / 100 * $fltDiscount) : $arrRule['discount'];
                     $fltPrice = $fltPrice > 0 ? (floor($fltPrice * 100) / 100) : (ceil($fltPrice * 100) / 100);
                     $arrSurcharge['total_price'] += $fltPrice;
@@ -688,6 +692,7 @@ class IsotopeRules extends \Controller
                     break;
 
                 case 'items':
+                    // @todo $objProduct->quantity_requested is no longer available
                     $fltPrice = ($blnPercentage ? ($objProduct->price / 100 * $fltDiscount) : $arrRule['discount']) * $objProduct->quantity_requested;
                     $fltPrice = $fltPrice > 0 ? (floor($fltPrice * 100) / 100) : (ceil($fltPrice * 100) / 100);
                     $arrSurcharge['total_price'] += $fltPrice;
@@ -696,6 +701,7 @@ class IsotopeRules extends \Controller
 
                 case 'subtotal':
                     $blnMatch = true;
+                    // @todo $objProduct->total_price is no longer available
                     $arrSurcharge['total_price'] += $objProduct->total_price;
 
                     if ($arrRule['tax_class'] == -1)
@@ -709,6 +715,7 @@ class IsotopeRules extends \Controller
                         {
                             $arrSubtract[] = $objProduct;
                             $fltTotal += (float) $objProduct->tax_free_total_price;
+                            // @todo $objProduct->tax_free_total_price does no longer exist
                         }
                     }
                     break;
@@ -728,6 +735,7 @@ class IsotopeRules extends \Controller
             {
                 foreach( $arrSubtract as $objProduct )
                 {
+                    // @todo $objProduct->tax_free_total_price does no longer exist
                     $arrSurcharge['products'][$objProduct->collection_id] = $arrRule['discount'] / 100 * (100 / $fltTotal * $objProduct->tax_free_total_price);
                 }
             }

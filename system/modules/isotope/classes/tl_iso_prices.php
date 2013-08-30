@@ -56,7 +56,7 @@ class tl_iso_prices extends \Backend
             $arrTiers[] = "{$objTiers->min}={$objTiers->price}";
         }
 
-        $arrInfo = array('<strong>'.$GLOBALS['TL_LANG']['tl_iso_prices']['price_tiers'][0].':</strong> <span>' . implode(', ', $arrTiers) . '</span>');
+        $arrInfo = array('<tr><td><span class="tl_label">'.$GLOBALS['TL_LANG']['tl_iso_prices']['price_tiers'][0].':</span></td><td>' . implode(', ', $arrTiers) . '</td></tr>');
 
         foreach ($row as $name => $value)
         {
@@ -70,13 +70,13 @@ class tl_iso_prices extends \Backend
                 default:
                     if ($value != '' && $value > 0)
                     {
-                        $arrInfo[] = '<strong>' . Isotope::formatLabel('tl_iso_prices', $name) . '</strong>: ' . Isotope::formatValue('tl_iso_prices', $name, $value);
+                        $arrInfo[] = '<tr><td><span class="tl_label">' . Isotope::formatLabel('tl_iso_prices', $name) . ':</span></td><td>' . Isotope::formatValue('tl_iso_prices', $name, $value) . '</td></tr>';
                     }
                     break;
             }
         }
 
-        return '<ul style="margin:0"><li>' . implode('</li><li>', $arrInfo) . '</li></ul>';
+        return '<table class="tl_header_table">' . implode('', $arrInfo) . '</table>';
     }
 
 

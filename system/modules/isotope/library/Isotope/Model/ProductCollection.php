@@ -496,8 +496,8 @@ abstract class ProductCollection extends TypeAgent
         $arrItems = $this->getItems();
 
         foreach ($arrItems as $objItem) {
-            $objItem->price = $objItem->getProduct()->price;
-            $objItem->tax_free_price = $objItem->getProduct()->tax_free_price;
+            $objItem->price = $objItem->getProduct()->getPrice()->getAmount($objItem->quantity);
+            $objItem->tax_free_price = $objItem->getProduct()->getPrice()->getNetAmount($objItem->quantity);
             $objItem->save();
         }
 
@@ -834,8 +834,8 @@ abstract class ProductCollection extends TypeAgent
             $objItem->name              = (string) $objProduct->name;
             $objItem->options           = $objProduct->getOptions();
             $objItem->quantity          = (int) $intQuantity;
-            $objItem->price             = (float) $objProduct->price;
-            $objItem->tax_free_price    = (float) $objProduct->tax_free_price;
+            $objItem->price             = (float) $objProduct->getPrice()->getAmount((int) $intQuantity);
+            $objItem->tax_free_price    = (float) $objProduct->getPrice()->getNetAmount((int) $intQuantity);
             $objItem->href_reader       = $objProduct->href_reader;
 
             $objItem->save();
@@ -1082,7 +1082,7 @@ abstract class ProductCollection extends TypeAgent
             }
 
             $arrWeight = deserialize($objItem->getProduct()->shipping_weight, true);
-            $arrWeight['value'] = $objItem->getProduct()->quantity_requested * floatval($arrWeight['value']);
+            $arrWeight['value'] = $objItem->quantity * floatval($arrWeight['value']);
 
             $arrWeights[] = $arrWeight;
         }
@@ -1117,8 +1117,8 @@ abstract class ProductCollection extends TypeAgent
                 'quantity'          => $objItem->quantity,
                 'price'             => Isotope::formatPriceWithCurrency($objItem->getPrice()),
                 'tax_free_price'    => Isotope::formatPriceWithCurrency($objItem->getTaxFreePrice()),
-                'total'             => Isotope::formatPriceWithCurrency($objItem->getPrice() * $objItem->quantity),
-                'tax_free_total'    => Isotope::formatPriceWithCurrency($objItem->getTaxFreePrice() * $objItem->quantity),
+                'total'             => Isotope::formatPriceWithCurrency($objItem->getTotalPrice()),
+                'tax_free_total'    => Isotope::formatPriceWithCurrency($objItem->getTaxFreeTotalPrice() * $objItem->quantity),
                 'tax_id'            => $objItem->tax_id,
                 'hasProduct'        => $blnHasProduct,
                 'product'           => $objProduct,

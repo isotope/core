@@ -22,7 +22,7 @@ use Isotope\Model\Attribute;
  * @copyright  Isotope eCommerce Workgroup 2009-2012
  * @author     Andreas Schempp <andreas.schempp@terminal42.ch>
  */
-class ConditionalSelectMenu extends Attribute implements IsotopeAttribute
+class ConditionalSelectMenu extends SelectMenu implements IsotopeAttribute
 {
 
 	public function saveToDCA(array &$arrData)

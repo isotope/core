@@ -21,7 +21,7 @@ namespace Isotope;
  * @author     Andreas Schempp <andreas.schempp@terminal42.ch>
  * @author     Fred Bliss <fred.bliss@intelligentspark.com>
  */
-class DatabaseUpdater extends \Contao\Database\Installer
+class DatabaseUpdater extends \Database\Installer
 {
 
 	/**

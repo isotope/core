@@ -130,7 +130,7 @@ abstract class Module extends Contao_Module
 
                 if ($objProduct !== null)
                 {
-                    $arrCategories = $objProduct->categories;
+                    $arrCategories = $objProduct->getCategories();
                 }
                 else
                 {

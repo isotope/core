@@ -102,6 +102,7 @@ abstract class Attribute extends TypeAgent
         }
 
         $this->field_name = $strName;
+        $this->type = $this->getClassForModelType(get_called_class());
         $this->name = is_array($arrField['label']) ? $arrField['label'][0] : ($arrField['label'] ?: $strName);
         $this->description = is_array($arrField['label']) ? $arrField['label'][1] : '';
         $this->be_filter = $arrField['filter'] ? '1' : '';
@@ -120,9 +121,9 @@ abstract class Attribute extends TypeAgent
 
         $arrField['label']        = Isotope::translate(array($this->name, $this->description));
         $arrField['exclude']      = true;
-        $arrField['inputType']    = (TL_MODE == 'FE' ? $this->getFrontendWidget() : $this->getBackendWidget());
+        $arrField['inputType']    = $this->getBackendWidget();
         $arrField['attributes']	  = $this->row();
-        $arrField['eval']         = is_array($arrField['eval']) ? array_merge($arrField['eval'], $this->row()) : $arrField['attributes'];
+        $arrField['eval']         = is_array($arrField['eval']) ? array_merge($arrField['eval'], $arrField['attributes']) : $arrField['attributes'];
 
         if ($this->be_filter) {
             $arrField['filter'] = true;
@@ -199,6 +200,41 @@ abstract class Attribute extends TypeAgent
 
 		// Add field to the current DCA table
         $arrData['fields'][$this->field_name] = $arrField;
+	}
+
+	/**
+	 * Get field options
+	 * @return  array
+	 */
+	public function getOptions()
+	{
+    	$arrOptions = deserialize($this->options);
+
+    	if (!is_array($arrOptions)) {
+        	return array();
+    	}
+
+    	return $arrOptions;
+	}
+
+    /**
+     * Get available variant options for a product
+     * @param   array
+     * @param   array
+     * @return  array
+     */
+	public function getOptionsForVariants(array $arrIds, array $arrOptions=array())
+	{
+	    $strWhere = '';
+
+        foreach ($arrOptions as $field => $value) {
+            $strWhere .= " AND $field='$value'";
+        }
+
+        return \Database::getInstance()->execute("
+            SELECT DISTINCT " . $this->field_name . " FROM tl_iso_products WHERE id IN (" . implode(',', $arrIds) . ")
+            " . $strWhere . "
+        ")->fetchEach($this->field_name);
 	}
 
 
