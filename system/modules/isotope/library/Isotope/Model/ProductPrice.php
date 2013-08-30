@@ -135,15 +135,14 @@ class ProductPrice extends \Model implements IsotopePrice
      */
     public function getValueForTier($intTier)
     {
-        do
-        {
+        do {
             if (isset($this->arrTiers[$intTier])) {
                 return $this->arrTiers[$intTier];
             }
 
             $intTier -= 1;
 
-        } while ($intTier > 1);
+        } while ($intTier > 0);
 
         return 0;
     }
