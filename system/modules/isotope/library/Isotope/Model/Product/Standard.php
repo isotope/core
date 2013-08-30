@@ -880,28 +880,24 @@ class Standard extends Product implements IsotopeProduct
         {
             $objWidget->validate();
 
-            if ($objWidget->hasErrors())
-            {
+            if ($objWidget->hasErrors()) {
                 $this->doNotSubmit = true;
             }
 
             // Store current value
-            elseif ($objWidget->submitInput() || $objWidget instanceof \uploadable)
-            {
+            elseif ($objWidget->submitInput() || $objWidget instanceof \uploadable) {
                 $varValue = $objWidget->value;
 
                 // Convert date formats into timestamps
-                if ($varValue != '' && in_array($arrData['eval']['rgxp'], array('date', 'time', 'datim')))
-                {
+                if ($varValue != '' && in_array($arrData['eval']['rgxp'], array('date', 'time', 'datim'))) {
                     $objDate = new \Date($varValue, $GLOBALS['TL_CONFIG'][$arrData['eval']['rgxp'] . 'Format']);
                     $varValue = $objDate->tstamp;
                 }
 
                 // Trigger the save_callback
-                if (is_array($arrData['save_callback']))
-                {
-                    foreach ($arrData['save_callback'] as $callback)
-                    {
+                if (is_array($arrData['save_callback'])) {
+                    foreach ($arrData['save_callback'] as $callback) {
+
                         $objCallback = \System::importStatic($callback[0]);
 
                         try {
@@ -929,16 +925,15 @@ class Standard extends Product implements IsotopeProduct
         $wizard = '';
 
         // Datepicker
-        if ($arrData['eval']['datepicker'])
-        {
+        if ($arrData['eval']['datepicker']) {
+
             $GLOBALS['TL_JAVASCRIPT'][] = 'plugins/datepicker/datepicker.js';
             $GLOBALS['TL_CSS'][] = 'plugins/datepicker/dashboard.css';
 
             $rgxp = $arrData['eval']['rgxp'];
             $format = Date::formatToJs($GLOBALS['TL_CONFIG'][$rgxp.'Format']);
 
-            switch ($rgxp)
-            {
+            switch ($rgxp) {
                 case 'datim':
                     $time = ",\n      timePicker:true";
                     break;
@@ -970,17 +965,14 @@ class Standard extends Product implements IsotopeProduct
         }
 
         // Add a custom wizard
-        if (is_array($arrData['wizard']))
-        {
-            foreach ($arrData['wizard'] as $callback)
-            {
+        if (is_array($arrData['wizard'])) {
+            foreach ($arrData['wizard'] as $callback) {
                 $objCallback = \System::importStatic($callback[0]);
                 $wizard .= $objCallback->$callback[1]($this);
             }
         }
 
-        if ($objWidget instanceof \uploadable)
-        {
+        if ($objWidget instanceof \uploadable) {
             $this->hasUpload = true;
         }
 
@@ -993,8 +985,7 @@ class Standard extends Product implements IsotopeProduct
      */
     protected function validateVariant()
     {
-        if (!$this->hasVariants())
-        {
+        if (!$this->hasVariants()) {
             return;
         }
 
@@ -1067,26 +1058,20 @@ class Standard extends Product implements IsotopeProduct
     /**
      * Load variant data basing on provided data
      * @param   array
-     * @param   array
      */
-    public function loadVariantData($arrData, $arrInherit=false)
+    public function loadVariantData($arrData)
     {
         $arrInherit = deserialize($arrData['inherit'], true);
 
         $this->arrData['id'] = $arrData['id'];
         $this->arrData['pid'] = $arrData['pid'];
 
-        foreach ($this->arrVariantAttributes as $attribute)
-        {
-            if (in_array($attribute, $arrInherit))
-            {
-                continue;
-            }
+        // Set all variant attributes, except if they are inherited
+        foreach (array_diff($this->arrVariantAttributes, $arrInherit) as $attribute) {
 
             $this->arrData[$attribute] = $arrData[$attribute];
 
-            if (in_array($attribute, $GLOBALS['ISO_CONFIG']['fetch_fallback']))
-            {
+            if (in_array($attribute, $GLOBALS['ISO_CONFIG']['fetch_fallback'])) {
                 $this->arrData[$attribute.'_fallback'] = $arrData[$attribute.'_fallback'];
             }
 

@@ -367,8 +367,7 @@ class ProductCallbacks extends \Backend
         $this->import('Isotope\Isotope', 'Isotope');
         $this->loadDataContainer('tl_iso_attributes');
 
-        if (\Input::get('act') == '' && \Input::get('key') == '' || \Input::get('act') == 'select')
-        {
+        if (\Input::get('act') == '' && \Input::get('key') == '' || \Input::get('act') == 'select') {
             return;
         }
 
