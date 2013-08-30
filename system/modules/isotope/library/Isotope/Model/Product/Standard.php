@@ -51,13 +51,13 @@ class Standard extends Product implements IsotopeProduct
      * Attributes assigned to this product type
      * @var array
      */
-    protected $arrAttributes = array();
+    protected $arrAttributes;
 
     /**
      * Variant attributes assigned to this product type
      * @var array
      */
-    protected $arrVariantAttributes = array();
+    protected $arrVariantAttributes;
 
     /**
      * Product Options
@@ -75,7 +75,7 @@ class Standard extends Product implements IsotopeProduct
      * Downloads for this product
      * @var array
      */
-    protected $arrDownloads = null;
+    protected $arrDownloads;
 
     /**
      * Unique form ID
@@ -329,7 +329,7 @@ class Standard extends Product implements IsotopeProduct
         }
 
         // Check if "advanced price" is available
-        if (null === $this->getPrice() && (in_array('price', $this->arrAttributes) || in_array('price', $this->arrVariantAttributes))) {
+        if (null === $this->getPrice() && (in_array('price', $this->getAttributes()) || in_array('price', $this->getVariantAttributes()))) {
             return false;
         }
 
@@ -375,7 +375,7 @@ class Standard extends Product implements IsotopeProduct
         }
 
         // Check if "advanced price" is available
-        if (null === $this->getPrice() && (in_array('price', $this->arrAttributes) || in_array('price', $this->arrVariantAttributes))) {
+        if (null === $this->getPrice() && (in_array('price', $this->getAttributes()) || in_array('price', $this->getVariantAttributes()))) {
             return false;
         }
 
@@ -415,7 +415,7 @@ class Standard extends Product implements IsotopeProduct
      */
     public function hasVariantPrices()
     {
-        if ($this->hasVariants() && in_array('price', $this->arrVariantAttributes))
+        if ($this->hasVariants() && in_array('price', $this->getVariantAttributes()))
         {
             return true;
         }
@@ -473,8 +473,12 @@ class Standard extends Product implements IsotopeProduct
      * Return the product attributes
      * @return  array
      */
-    public function getProductAttributes()
+    public function getAttributes()
     {
+        if (null === $this->arrAttributes) {
+            $this->arrAttributes = $this->getRelated('type')->getAttributes();
+        }
+
         return $this->arrAttributes;
     }
 
@@ -485,6 +489,10 @@ class Standard extends Product implements IsotopeProduct
      */
     public function getVariantAttributes()
     {
+        if (null === $this->arrVariantAttributes) {
+            $this->arrVariantAttributes = $this->getRelated('type')->getVariantAttributes();
+        }
+
         return $this->arrVariantAttributes;
     }
 
@@ -675,7 +683,7 @@ class Standard extends Product implements IsotopeProduct
         $arrProductOptions = array();
         $arrAjaxOptions = array();
 
-        foreach (array_unique(array_merge($this->arrAttributes, $this->arrVariantAttributes)) as $attribute)
+        foreach (array_unique(array_merge($this->getAttributes(), $this->getVariantAttributes())) as $attribute)
         {
             $arrData = $GLOBALS['TL_DCA']['tl_iso_products']['fields'][$attribute];
 
@@ -1067,7 +1075,7 @@ class Standard extends Product implements IsotopeProduct
         $this->arrData['pid'] = $arrData['pid'];
 
         // Set all variant attributes, except if they are inherited
-        foreach (array_diff($this->arrVariantAttributes, $arrInherit) as $attribute) {
+        foreach (array_diff($this->getVariantAttributes(), $arrInherit) as $attribute) {
 
             $this->arrData[$attribute] = $arrData[$attribute];
 
@@ -1082,7 +1090,7 @@ class Standard extends Product implements IsotopeProduct
         }
 
         // Load variant options
-        $this->arrOptions = array_merge($this->arrOptions, array_intersect_key($arrData, array_flip(array_intersect($this->arrAttributes, $GLOBALS['ISO_CONFIG']['variant_options']))));
+        $this->arrOptions = array_merge($this->arrOptions, array_intersect_key($arrData, array_flip(array_intersect($this->getAttributes(), $GLOBALS['ISO_CONFIG']['variant_options']))));
 
         // Unset cached data
         $this->objPrice = false;
