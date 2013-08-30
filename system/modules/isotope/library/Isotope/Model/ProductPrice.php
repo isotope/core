@@ -38,6 +38,22 @@ class ProductPrice extends \Model implements IsotopePrice
      */
     protected $arrTiers = array();
 
+    /**
+     * Construct the object
+     * @param   array
+     * @param   array
+     * @param   boolean
+     */
+    public function __construct(\Database\Result $objResult=null)
+    {
+        parent::__construct($objResult);
+
+        $objTiers = \Database::getInstance()->prepare("SELECT * FROM tl_iso_price_tiers WHERE pid=? ORDER BY min")->execute($objResult->id);
+
+        while ($objTiers->next()) {
+            $this->arrTiers[$objTiers->min] = $objTiers->price;
+        }
+    }
 
     /**
      * Return true if more than one price is available
