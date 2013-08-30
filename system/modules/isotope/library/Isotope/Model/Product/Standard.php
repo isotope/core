@@ -569,6 +569,16 @@ class Standard extends Product implements IsotopeProduct
             return $objAttribute->generate($objProduct);
         };
 
+        $objTemplate->generatePrice = function() use ($objProduct) {
+            $objPrice = $this->getPrice();
+
+            if (null === $objPrice) {
+                return '';
+            }
+
+            return $objPrice->generate(($this->pid == 0));
+        };
+
         $objTemplate->getGallery = function($strAttribute) use ($objProduct, $arrConfig, &$arrGalleries) {
 
             if (!isset($arrGalleries[$strAttribute])) {
@@ -579,31 +589,6 @@ class Standard extends Product implements IsotopeProduct
         };
 
 
-        if ($this->arrCache['from_price'] !== null)
-        {
-            $fltPrice = Isotope::calculatePrice($this->arrCache['from_price'], $this, 'price', $this->arrData['tax_class']);
-            $fltOriginalPrice = Isotope::calculatePrice($this->arrCache['from_price'], $this, 'original_price', $this->arrData['tax_class']);
-
-            $strPrice = sprintf($GLOBALS['TL_LANG']['MSC']['priceRangeLabel'], Isotope::formatPriceWithCurrency($fltPrice));
-            $strOriginalPrice = sprintf($GLOBALS['TL_LANG']['MSC']['priceRangeLabel'], Isotope::formatPriceWithCurrency($fltOriginalPrice));
-        }
-        else
-        {
-        // Add price to template
-        $strPrice = '';
-        $fltPrice = $this->getPrice()->getAmount();
-        $fltOriginalPrice = $this->getPrice()->getOriginalAmount();
-
-            $strPrice = Isotope::formatPriceWithCurrency($fltPrice);
-            $strOriginalPrice = Isotope::formatPriceWithCurrency($fltOriginalPrice);
-        }
-
-        if ($fltPrice != $fltOriginalPrice)
-        {
-            $strPrice = '<div class="original_price"><strike>' . $strOriginalPrice . '</strike></div><div class="price">' . $strPrice . '</div>';
-        }
-
-        $objTemplate->price = $strPrice;
 
         $arrVariantOptions = array();
         $arrProductOptions = array();

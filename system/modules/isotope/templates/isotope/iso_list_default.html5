@@ -13,7 +13,7 @@
 <div class="sku"><?php echo $this->generateAttribute('sku'); ?></div><?php endif; if ($this->teaser): ?>
 <div class="teaser"><?php echo $this->generateAttribute('teaser'); ?></div><?php endif; ?>
 
-<div class="price"><?php echo $this->price; ?></div><?php if($this->baseprice): ?>
+<div class="price"><?php echo $this->generatePrice(); ?></div><?php if($this->baseprice): ?>
 <div class="baseprice"><?php echo $this->generateAttribute('baseprice'); ?></div><?php endif; ?>
 <div class="details"><a href="<?php echo $this->href_reader; ?>" title="<?php echo $this->label_detail; ?>"><?php echo $this->label_detail; ?></a></div>
 

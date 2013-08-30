@@ -117,6 +117,18 @@ class ProductPrice extends \Model implements IsotopePrice
         return Isotope::calculatePrice($fltAmount, $this->getRelated('pid'), 'gross_price');
     }
 
+    /**
+     * Get lowest amount of all tiers
+     * @return  float
+     */
+    public function getLowestAmount()
+    {
+        if (!$this->hasTiers()) {
+            return $this->getAmount();
+        }
+
+        return Isotope::calculatePrice(min($this->arrTiers), $this->getRelated('pid'), 'price', $this->tax_class);
+    }
 
     /**
      * Return price tiers array
@@ -155,6 +167,43 @@ class ProductPrice extends \Model implements IsotopePrice
         } while ($intTier > 0);
 
         return 0;
+    }
+
+    /**
+     * Generate price for HTML rendering
+     * @param   show from-price
+     * @return  string
+     */
+    public function generate($blnShowFrom=true)
+    {
+        if ($blnShowFrom) {
+
+            if ($this->hasTiers()) {
+                $fltPrice = $this->getLowestAmount();
+                $fltOriginalPrice = $this->getLowestAmount();
+            } else {
+                $fltPrice = $this->getAmount();
+                $fltOriginalPrice = $this->getAmount();
+            }
+
+            $strPrice = sprintf($GLOBALS['TL_LANG']['MSC']['priceRangeLabel'], Isotope::formatPriceWithCurrency($fltPrice));
+            $strOriginalPrice = sprintf($GLOBALS['TL_LANG']['MSC']['priceRangeLabel'], Isotope::formatPriceWithCurrency($fltOriginalPrice));
+
+        } else {
+
+            // Add price to template
+            $fltPrice = $this->getAmount();
+            $fltOriginalPrice = $this->getOriginalAmount();
+
+            $strPrice = Isotope::formatPriceWithCurrency($fltPrice);
+            $strOriginalPrice = Isotope::formatPriceWithCurrency($fltOriginalPrice);
+        }
+
+        if ($fltPrice != $fltOriginalPrice) {
+            $strPrice = '<div class="original_price"><strike>' . $strOriginalPrice . '</strike></div><div class="price">' . $strPrice . '</div>';
+        }
+
+        return $strPrice;
     }
 
     /**
