@@ -102,66 +102,6 @@ class Standard extends Product implements IsotopeProduct
 
 
     /**
-     * Construct the object
-     * @param   array
-     * @param   array
-     * @param   boolean
-     */
-    public function __construct(\Database\Result $objResult=null)
-    {
-        parent::__construct($objResult);
-
-        $arrData = $this->arrData;
-
-        if ($arrData['pid'] > 0)
-        {
-            $objParent = static::findByPk($arrData['id']);
-
-            if (null === $objParent) {
-                throw new \UnderflowException('Parent record of product ID ' . $arrData['id'] . ' not found');
-            }
-
-            $this->arrData = $objParent->row();
-        }
-
-        $this->arrOptions = is_array($arrOptions) ? $arrOptions : array();
-
-        if (!$this->arrData['type'])
-        {
-            return;
-        }
-
-        $this->formSubmit = 'iso_product_' . $this->arrData['id'];
-        $this->arrAttributes = $this->getSortedAttributes($this->getRelated('type')->attributes);
-        $this->arrVariantAttributes = $this->hasVariants() ? $this->getSortedAttributes($this->getRelated('type')->variant_attributes) : array();
-
-        // !HOOK: allow to customize attributes
-        if (isset($GLOBALS['ISO_HOOKS']['productAttributes']) && is_array($GLOBALS['ISO_HOOKS']['productAttributes']))
-        {
-            foreach ($GLOBALS['ISO_HOOKS']['productAttributes'] as $callback)
-            {
-                $objCallback = \System::importStatic($callback[0]);
-                $objCallback->$callback[1]($this->arrAttributes, $this->arrVariantAttributes, $this);
-            }
-        }
-
-        // Remove attributes not in this product type
-        foreach ($this->arrData as $attribute => $value)
-        {
-            if (!in_array($attribute, $this->arrAttributes) && !in_array($attribute, $this->arrVariantAttributes) && $GLOBALS['TL_DCA']['tl_iso_products']['fields'][$attribute]['attributes']['legend'] != '')
-            {
-                unset($this->arrData[$attribute]);
-            }
-        }
-
-        if ($arrData['pid'] > 0)
-        {
-            $this->loadVariantData($arrData);
-        }
-    }
-
-
-    /**
      * Get a property
      * @param   string
      * @return  mixed
@@ -1094,6 +1034,51 @@ class Standard extends Product implements IsotopeProduct
         }
     }
 
+    /**
+     * Validate data and remove non-available attributes
+     * @param   array
+     * @return  Standard
+     */
+    public function setRow(array $arrData)
+    {
+        $this->resetCache();
+
+        if ($arrData['pid'] > 0)
+        {
+            // Do not use the model, it would trigger setRow and generate too much
+            $objParent = \Database::getInstance()->execute(static::buildQueryString(array('table'=>static::$strTable, 'column'=>'id='.$arrData['pid'])));
+
+            if (null === $objParent) {
+                throw new \UnderflowException('Parent record of product ID ' . $arrData['id'] . ' not found');
+            }
+
+            $this->setRow($objParent->row());
+            $this->loadVariantData($arrData);
+
+            return $this;
+        }
+
+        // Must initialize product type to have attributes etc.
+        if (!isset($this->arrRelated['type']))
+        {
+            $this->arrRelated['type'] = ProductType::findByPk($arrData['type']);
+
+            if (null === $this->arrRelated['type']) {
+                throw new \UnderflowException('Product type for product ID ' . $arrData['id'] . ' not found');
+            }
+        }
+
+        $this->formSubmit = 'iso_product_' . $arrData['id'];
+
+        // Remove attributes not in this product type
+        foreach ($arrData as $attribute => $value) {
+            if (!in_array($attribute, $this->getAttributes()) && !in_array($attribute, $this->getVariantAttributes()) && $GLOBALS['TL_DCA']['tl_iso_products']['fields'][$attribute]['attributes']['legend'] != '') {
+                unset($arrData[$attribute]);
+            }
+        }
+
+        return parent::setRow($arrData);
+    }
 
     /**
      * Load variant data basing on provided data
