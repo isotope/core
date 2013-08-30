@@ -121,9 +121,9 @@ abstract class Attribute extends TypeAgent
 
         $arrField['label']        = Isotope::translate(array($this->name, $this->description));
         $arrField['exclude']      = true;
-        $arrField['inputType']    = (TL_MODE == 'FE' ? $this->getFrontendWidget() : $this->getBackendWidget());
+        $arrField['inputType']    = $this->getBackendWidget();
         $arrField['attributes']	  = $this->row();
-        $arrField['eval']         = is_array($arrField['eval']) ? array_merge($arrField['eval'], $this->row()) : $arrField['attributes'];
+        $arrField['eval']         = is_array($arrField['eval']) ? array_merge($arrField['eval'], $arrField['attributes']) : $arrField['attributes'];
 
         if ($this->be_filter) {
             $arrField['filter'] = true;
