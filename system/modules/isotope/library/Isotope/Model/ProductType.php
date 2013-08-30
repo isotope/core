@@ -51,6 +51,24 @@ class ProductType extends \Model
     }
 
     /**
+     * Returns true if advanced prices are enabled in the product type, otherwise returns false
+     * @return  bool
+     */
+    public function hasAdvancedPrices()
+    {
+        return (bool) $this->prices;
+    }
+
+    /**
+     * Returns true if downloads are enabled in the product type, otherwise returns false
+     * @return  bool
+     */
+    public function hasDownloads()
+    {
+        return (bool) $this->downloads;
+    }
+
+    /**
      * Get enabled attributes by sorting
      * @return  array
      */

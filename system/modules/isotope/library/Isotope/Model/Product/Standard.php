@@ -429,7 +429,7 @@ class Standard extends Product implements IsotopeProduct
      */
     public function hasAdvancedPrices()
     {
-        return (bool) $this->getRelated('type')->prices;
+        return (bool) $this->getRelated('type')->hasAdvancedPrices();
     }
 
     /**
@@ -558,7 +558,7 @@ class Standard extends Product implements IsotopeProduct
      */
     public function getDownloads()
     {
-        if (!$this->getRelated('type')->downloads)
+        if (!$this->getRelated('type')->hasDownloads())
         {
             $this->arrDownloads = array();
         }
