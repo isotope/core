@@ -969,68 +969,39 @@ class Standard extends Product implements IsotopeProduct
             return;
         }
 
-        // Make sure variant options are initialized
-        $this->getVariantOptions();
-
         $arrOptions = array();
 
-        foreach ($this->arrAttributes as $attribute)
-        {
-            if ($GLOBALS['TL_DCA']['tl_iso_products']['fields'][$attribute]['attributes']['variant_option'])
-            {
-                if (\Input::post('FORM_SUBMIT') == $this->formSubmit && in_array(\Input::post($attribute), (array) $this->arrVariantOptions['attributes'][$attribute], true))
-                {
-                    $arrOptions[$attribute] = \Input::post($attribute);
-                }
-                elseif (\Input::post('FORM_SUBMIT') == '' && in_array(\Input::get($attribute), (array) $this->arrVariantOptions['attributes'][$attribute], true))
-                {
-                    $arrOptions[$attribute] = \Input::get($attribute);
-                }
-                elseif (count((array) $this->arrVariantOptions['attributes'][$attribute]) == 1)
-                {
-                    $arrOptions[$attribute] = $this->arrVariantOptions['attributes'][$attribute][0];
-                }
+        foreach (array_intersect($this->getAttributes(), $GLOBALS['ISO_CONFIG']['variant_options']) as $attribute) {
+
+            $objAttribute = $GLOBALS['TL_DCA']['tl_iso_products']['attributes'][$attribute];
+            $arrValues = $objAttribute->getOptionsForVariants($this->getVariantIds(), $arrOptions);
+
+            if (\Input::post('FORM_SUBMIT') == $this->formSubmit && in_array(\Input::post($attribute), $arrValues)) {
+                $arrOptions[$attribute] = \Input::post($attribute);
+            } elseif (\Input::post('FORM_SUBMIT') == '' && in_array(\Input::get($attribute), $arrValues)) {
+                $arrOptions[$attribute] = \Input::get($attribute);
+            } elseif (count($arrValues) == 1) {
+                $arrOptions[$attribute] = $arrValues[0];
+            } else {
+
+                // Abort if any attribute does not have a value, we can't find a variant
+                return;
             }
         }
 
-        $intOptions = count($arrOptions);
+        if (!empty($arrOptions)) {
 
-        if ($intOptions > 0)
-        {
-            $intVariant = false;
+            // Do not use the model, it would trigger setRow and generate too much
+            $objVariant = \Database::getInstance()->prepare(
+                static::buildQueryString(array(
+                    'table'     => static::$strTable,
+                    'column'    => array("tl_iso_products.id IN (" . implode(',', $this->getVariantIds()) . ") AND tl_iso_products." . implode('=?, tl_iso_products.', array_keys($arrOptions)) . "=?")
+                ))
+            )->limit(1)->execute($arrOptions);
 
-            foreach ((array) $this->arrVariantOptions['options'] as $id => $arrVariant)
-            {
-                if ($intOptions == count($arrVariant) && $intOptions == count(array_intersect_assoc($arrOptions, $arrVariant)))
-                {
-                    if ($intVariant === false)
-                    {
-                        $intVariant = $id;
-                    }
-                    else
-                    {
-                        $this->doNotSubmit = true;
-
-                        return;
-                    }
-                }
+            if ($objVariant->numRows) {
+                $this->loadVariantData($objVariant->row());
             }
-
-            // Variant not found
-            if ($intVariant === false || !is_array($this->arrVariantOptions['variants'][$intVariant]))
-            {
-                $this->doNotSubmit = true;
-
-                return;
-            }
-
-            // Variant already loaded
-            if ($intVariant == $this->id)
-            {
-                return;
-            }
-
-            $this->loadVariantData($this->arrVariantOptions['variants'][$intVariant]);
         }
     }
 
