@@ -122,4 +122,12 @@ class ProductType extends \Model
 
         return array_keys($arrAttributes);
     }
+
+    /**
+     * Get all product types that are in use
+     */
+    public static function findAllUsed()
+    {
+        return static::findBy(array("id IN (SELECT type FROM tl_iso_products WHERE pid=0 AND language='')"), null);
+    }
 }

@@ -12,6 +12,8 @@
 
 namespace Isotope;
 
+use Isotope\Model\ProductType;
+
 
 /**
  * Class ProductCallbacks
@@ -77,32 +79,31 @@ class ProductCallbacks extends \Backend
     {
         if (!is_object(self::$objInstance))
         {
-            self::$objInstance = new \Isotope\ProductCallbacks();
+            self::$objInstance = new static();
 
             self::$objInstance->arrProductTypes = array();
             $blnDownloads = false;
             $blnVariants = false;
             $blnAdvancedPrices = false;
 
-            $objProductTypes = self::$objInstance->Database->query("SELECT t.id, t.variants, t.downloads, t.prices, t.attributes, t.variant_attributes FROM tl_iso_products p LEFT JOIN tl_iso_producttypes t ON p.type=t.id GROUP BY p.type");
+            $objProductTypes = ProductType::findAllUsed();
 
             while ($objProductTypes->next())
             {
-                self::$objInstance->arrProductTypes[$objProductTypes->id] = $objProductTypes->row();
-                self::$objInstance->arrProductTypes[$objProductTypes->id]['attributes'] = deserialize($objProductTypes->attributes, true);
-                self::$objInstance->arrProductTypes[$objProductTypes->id]['variant_attributes'] = deserialize($objProductTypes->variant_attributes, true);
+                $objType = $objProductTypes->current();
+                self::$objInstance->arrProductTypes[$objProductTypes->id] = $objType;
 
-                if ($objProductTypes->downloads)
+                if ($objType->hasDownloads())
                 {
                     $blnDownloads = true;
                 }
 
-                if ($objProductTypes->variants)
+                if ($objType->hasVariants())
                 {
                     $blnVariants = true;
                 }
 
-                if ($objProductTypes->prices)
+                if ($objType->hasAdvancedPrices())
                 {
                     $blnAdvancedPrices = true;
                 }
@@ -948,7 +949,7 @@ window.addEvent('domready', function() {
      */
     public function variantsButton($row, $href, $label, $title, $icon, $attributes)
     {
-        if ($row['pid'] > 0 || !$this->arrProductTypes[$row['type']]['variants'])
+        if ($row['pid'] > 0 || null === $this->arrProductTypes[$row['type']] || !$this->arrProductTypes[$row['type']]->hasVariants())
         {
             return '';
         }
@@ -990,7 +991,7 @@ window.addEvent('domready', function() {
      */
     public function downloadsButton($row, $href, $label, $title, $icon, $attributes)
     {
-        if (!$this->arrProductTypes[$row['type']]['downloads'])
+        if (null === $this->arrProductTypes[$row['type']] || !$this->arrProductTypes[$row['type']]->hasDownloads())
         {
             return '';
         }
@@ -1011,14 +1012,14 @@ window.addEvent('domready', function() {
      */
     public function pricesButton($row, $href, $label, $title, $icon, $attributes)
     {
-        if (!$this->arrProductTypes[$row['type']]['prices'])
+        if (null === $this->arrProductTypes[$row['type']] || !$this->arrProductTypes[$row['type']]->hasAdvancedPrices())
         {
             return '';
         }
 
-        $arrAttributes = $this->arrProductTypes[$row['type']][($row['pid'] > 0 ? 'variant_attributes' : 'attributes')];
+        $arrAttributes = $row['pid'] > 0 ? $this->arrProductTypes[$row['type']]->getVariantAttributes() : $this->arrProductTypes[$row['type']]->getAttributes();
 
-        if (!$arrAttributes['price']['enabled'])
+        if (!in_array('price', $arrAttributes))
         {
             return '';
         }
