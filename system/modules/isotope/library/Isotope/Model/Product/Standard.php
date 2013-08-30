@@ -249,7 +249,7 @@ class Standard extends Product implements IsotopeProduct
         }
 
         // Check if "advanced price" is available
-        if (null === $this->getPrice() && (in_array('price', $this->getAttributes()) || in_array('price', $this->getVariantAttributes()))) {
+        if (null === $this->getPrice() && (in_array('price', $this->getAttributes()) || $this->hasVariantPrices())) {
             return false;
         }
 
@@ -295,7 +295,7 @@ class Standard extends Product implements IsotopeProduct
         }
 
         // Check if "advanced price" is available
-        if (null === $this->getPrice() && (in_array('price', $this->getAttributes()) || in_array('price', $this->getVariantAttributes()))) {
+        if (null === $this->getPrice() && (in_array('price', $this->getAttributes()) || $this->hasVariantPrices())) {
             return false;
         }
 
