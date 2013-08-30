@@ -1120,21 +1120,4 @@ class Standard extends Product implements IsotopeProduct
         $this->arrCategories = null;
         $this->arrDownloads = null;
     }
-
-
-    /**
-     * Sort the attributes based on their position (from wizard) and return their names only
-     * @param   mixed
-     * @return  array
-     */
-    protected function getSortedAttributes($varValue)
-    {
-        $arrAttributes = deserialize($varValue, true);
-
-        uasort($arrAttributes, function ($a, $b) {
-            return $a["position"] > $b["position"];
-        });
-
-        return array_keys($arrAttributes);
-    }
 }
