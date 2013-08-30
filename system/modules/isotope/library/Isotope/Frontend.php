@@ -211,7 +211,7 @@ class Frontend extends \Frontend
                 // getProductByAlias will return null if the product is not found
                 if ($objProduct !== null)
                 {
-                    $arrCategories = $objProduct->categories;
+                    $arrCategories = $objProduct->getCategories();
 
                     if (is_array($arrCategories) && !empty($arrCategories))
                     {
@@ -1434,7 +1434,7 @@ window.addEvent('domready', function()
                 $intPage = null;
                 $objParent = null;
                 $arrTrail = $objPage->trail;
-                $arrCategories = $objProduct->categories;
+                $arrCategories = $objProduct->getCategories();
 
                 foreach (array_reverse($arrTrail) as $intTrail)
                 {

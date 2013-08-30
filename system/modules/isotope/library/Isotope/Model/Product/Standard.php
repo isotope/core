@@ -72,6 +72,12 @@ class Standard extends Product implements IsotopeProduct
     protected $arrOptions = array();
 
     /**
+     * Assigned categories (pages)
+     * @var array
+     */
+    protected $arrCategories;
+
+    /**
      * Product Options of all variants
      * @var array
      */
@@ -191,10 +197,6 @@ class Standard extends Product implements IsotopeProduct
                 {
                     switch ($strKey)
                     {
-                        case 'categories':
-                            $this->arrCache[$strKey] = \Database::getInstance()->execute("SELECT page_id FROM tl_iso_product_categories WHERE pid=" . ($this->pid ? $this->pid : $this->id) . " ORDER BY sorting")->fetchEach('page_id');
-                            break;
-
                         default:
                             if ($this->pid > 0 && $GLOBALS['TL_DCA']['tl_iso_products']['fields'][$strKey]['attributes']['customer_defined'] || $GLOBALS['TL_DCA']['tl_iso_products']['fields'][$strKey]['attributes']['variant_option']) {
 
@@ -330,7 +332,7 @@ class Standard extends Product implements IsotopeProduct
         }
 
         // Check that the product is in any page of the current site
-        if (count(\Isotope\Frontend::getPagesInCurrentRoot($this->categories, \FrontendUser::getInstance())) == 0) {
+        if (count(\Isotope\Frontend::getPagesInCurrentRoot($this->getCategories(), \FrontendUser::getInstance())) == 0) {
             return false;
         }
 
@@ -376,7 +378,7 @@ class Standard extends Product implements IsotopeProduct
         }
 
         // Check that the product is in any page of the current site
-        if (count(\Isotope\Frontend::getPagesInCurrentRoot($this->categories, $objCollection->getRelated('member'))) == 0) {
+        if (count(\Isotope\Frontend::getPagesInCurrentRoot($this->getCategories(), $objCollection->getRelated('member'))) == 0) {
             return false;
         }
 
@@ -598,6 +600,18 @@ class Standard extends Product implements IsotopeProduct
         return $this->arrVariantIds;
     }
 
+    /**
+     * Get categories (pages) assigned to this product
+     * @return  array
+     */
+    public function getCategories()
+    {
+        if (null === $this->arrCategories) {
+            $this->arrCategories = \Database::getInstance()->execute("SELECT page_id FROM tl_iso_product_categories WHERE pid=" . ($this->pid ?: $this->id) . " ORDER BY sorting")->fetchEach('page_id');
+        }
+
+        return $this->arrCategories;
+    }
 
     /**
      * Return all downloads for this product
