@@ -254,7 +254,7 @@ class Order extends ProductCollection implements IsotopeProductCollection
             }
         }
 
-		// Lock will trigger save() of the model
+        // Lock will trigger save() of the model
         $this->lock();
 
         return true;
@@ -327,6 +327,7 @@ class Order extends ProductCollection implements IsotopeProductCollection
         }
 
         // Trigger email actions
+        $blnEmail = null;
         if ($objNewStatus->mail_customer > 0 || $objNewStatus->mail_admin > 0) {
 
             $arrData = $this->getEmailData();
@@ -337,12 +338,7 @@ class Order extends ProductCollection implements IsotopeProductCollection
 
                 try {
                     $objEmail = new \Isotope\Email($objNewStatus->mail_customer, $this->language, $this);
-                    $objEmail->send($strRecipient, $arrData);
-
-                    if (TL_MODE == 'BE') {
-                        $this->addConfirmationMessage($GLOBALS['TL_LANG']['tl_iso_product_collection']['orderStatusEmail']);
-                    }
-
+                    $blnEmail = $objEmail->send($strRecipient, $arrData);
                 } catch (\Exception $e) {
                     log_message($e->getMessage());
                     \System::log('Error sending status update to customer for order ID '.$this->id, __METHOD__, TL_ERROR);
@@ -361,6 +357,16 @@ class Order extends ProductCollection implements IsotopeProductCollection
                     log_message($e->getMessage());
                     \System::log('Error sending status update to admin for order ID '.$this->id, __METHOD__, TL_ERROR);
                 }
+            }
+        }
+
+        if (TL_MODE == 'BE') {
+            $this->addConfirmationMessage($GLOBALS['TL_LANG']['tl_iso_product_collection']['orderStatusUpdate']);
+
+            if ($blnEmail === true) {
+                $this->addConfirmationMessage($GLOBALS['TL_LANG']['tl_iso_product_collection']['orderStatusEmailSuccess']);
+            } elseif ($blnEmail === false) {
+                $this->addErrorMessage($GLOBALS['TL_LANG']['tl_iso_product_collection']['orderStatusEmailError']);
             }
         }
 

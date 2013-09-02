@@ -43,11 +43,12 @@ class tl_iso_mail_content extends \Backend
             $arrLanguages = $this->getLanguages();
         }
 
+        $strHtml = (!$arrRow['textOnly']) ? $arrRow['html'] . '<hr>' : '';
+
         return '
 <div class="cte_type published"><strong>' . $arrRow['subject'] . '</strong> - ' . $arrLanguages[$arrRow['language']] . ($arrRow['fallback'] ? (' (' . $GLOBALS['TL_LANG']['tl_iso_mail_content']['fallback'][0] . ')') : '') . '</div>
 <div class="limit_height' . (!$GLOBALS['TL_CONFIG']['doNotCollapse'] ? ' h64' : '') . ' block">
-' . $arrRow['html'] . '
-<hr>
+' . $strHtml . '
 ' . nl2br($arrRow['text']) . '
 </div>' . "\n";
     }
