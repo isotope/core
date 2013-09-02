@@ -288,12 +288,13 @@ abstract class Payment extends TypeAgent
 
     /**
      * Get the checkout surcharge for this payment method
+     * @return  Isotope\Model\ProductCollectionSurcharge\Payment|null
      */
     public function getSurcharge($objCollection)
     {
         if ($this->getPrice() == 0)
         {
-            return false;
+            return null;
         }
 
         return SurchargeFactory::buildPaymentSurcharge($this, $objCollection);
