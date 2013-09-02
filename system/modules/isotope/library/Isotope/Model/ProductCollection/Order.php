@@ -19,6 +19,7 @@ use Isotope\Model\Config;
 use Isotope\Model\OrderStatus;
 use Isotope\Model\Payment;
 use Isotope\Model\ProductCollection;
+use Isotope\Model\ProductCollectionItem;
 use Isotope\Model\Shipping;
 
 
