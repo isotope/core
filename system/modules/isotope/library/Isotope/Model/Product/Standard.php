@@ -19,6 +19,7 @@ use Isotope\Interfaces\IsotopeProductCollection;
 use Isotope\Model\Gallery;
 use Isotope\Model\Product;
 use Isotope\Model\ProductPrice;
+use Isotope\Model\ProductType;
 use Isotope\Model\TaxClass;
 
 
