@@ -544,9 +544,9 @@ $GLOBALS['TL_DCA']['tl_iso_config'] = array
         (
             'label'                 => &$GLOBALS['TL_LANG']['tl_iso_config']['templateGroup'],
             'exclude'               => true,
-			'inputType'             => 'select',
-			'options_callback'      => array('Isotope\tl_iso_config', 'getTemplateFolders'),
-			'eval'                  => array('includeBlankOption'=>true, 'tl_class'=>'w50'),
+            'inputType'             => 'select',
+            'options_callback'      => array('Isotope\tl_iso_config', 'getTemplateFolders'),
+            'eval'                  => array('includeBlankOption'=>true, 'tl_class'=>'w50'),
             'sql'                   => "varchar(255) NOT NULL default ''",
         ),
         'newProductPeriod' => array
