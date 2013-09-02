@@ -127,7 +127,7 @@ class ProductPriceFinder extends System
 	 */
 	protected static function findAdvancedProductPrice(IsotopeProduct $objProduct)
 	{
-		return self::getAdvancedPrices(array($objProduct->id), $objProduct->quantity_requested, $objProduct->show_price_tiers);
+		return self::getAdvancedPrices(array(($objProduct->pid > 0 ? $objProduct->pid : $objProduct->id)), $objProduct->quantity_requested, $objProduct->show_price_tiers);
 	}
 
 
