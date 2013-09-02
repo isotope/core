@@ -138,7 +138,7 @@ class Paypal extends Payment implements IsotopePayment
                     // PayPal will also send this notification if the order has not been placed.
                     // What do we do here?
 //                    $objOrder->date_paid = '';
-//                    $objOrder->updateOrderStatus($this->Isotope->getConfig()->orderstatus_error);
+//                    $objOrder->updateOrderStatus(Isotope::getConfig()->orderstatus_error);
                     break;
 
                 case 'In-Progress':

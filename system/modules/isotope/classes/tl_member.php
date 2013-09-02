@@ -29,14 +29,14 @@ class tl_member extends \Backend
      */
     public function limitCountries($strTable)
     {
-        if ($strTable != 'tl_member' || !Isotope::getInstance()->getConfig()->limitMemberCountries) {
+        if ($strTable != 'tl_member' || !Isotope::getConfig()->limitMemberCountries) {
             return;
         }
 
         $arrCountries = array_unique(
             array_merge(
-                Isotope::getInstance()->getConfig()->getBillingCountries(),
-                Isotope::getInstance()->getConfig()->getShippingCountries()
+                Isotope::getConfig()->getBillingCountries(),
+                Isotope::getConfig()->getShippingCountries()
             )
         );
 

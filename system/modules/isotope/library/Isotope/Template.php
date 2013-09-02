@@ -57,7 +57,7 @@ class Template extends \FrontendTemplate
         // Check the templates subfolder
         if (TL_MODE == 'FE')
         {
-            $strTemplateGroup = str_replace(array('../', 'templates/'), '', Isotope::getInstance()->getConfig()->templateGroup);
+            $strTemplateGroup = str_replace(array('../', 'templates/'), '', Isotope::getConfig()->templateGroup);
 
             if ($strTemplateGroup != '')
             {

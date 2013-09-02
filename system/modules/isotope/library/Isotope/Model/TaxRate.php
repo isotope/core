@@ -61,7 +61,7 @@ class TaxRate extends \Model
     public function isApplicable($fltPrice, $arrAddresses)
     {
         // Tax rate is limited to another store config
-        if ($this->config > 0 && $this->config != Isotope::getInstance()->getConfig()->id)
+        if ($this->config > 0 && $this->config != Isotope::getConfig()->id)
         {
             return false;
         }
