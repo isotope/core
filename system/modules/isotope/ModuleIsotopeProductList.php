@@ -462,8 +462,8 @@ class ModuleIsotopeProductList extends ModuleIsotope
 			if (!empty($arrWhere))
 			{
 				$time = time();
-				$strWhere = " AND ((" . implode(' AND ', $arrWhere) . ") OR p1.id IN (SELECT pid FROM tl_iso_products WHERE language='' AND " . implode(' AND ', $arrWhere)
-							. (BE_USER_LOGGED_IN === true ? '' : " AND published='1' AND (start='' OR start<$time) AND (stop='' OR stop>$time)") . "))";
+				$strWhere = " AND ((" . implode(' AND ', $arrWhere) . ") OR p1.id IN (SELECT p1.pid FROM tl_iso_products AS p1 WHERE p1.language='' AND " . implode(' AND ', $arrWhere)
+							. (BE_USER_LOGGED_IN === true ? '' : " AND p1.published='1' AND (p1.start='' OR p1.start<$time) AND (p1.stop='' OR p1.stop>$time)") . "))";
 				$arrValues = array_merge($arrValues, $arrValues);
 			}
 

@@ -68,7 +68,8 @@ $GLOBALS['TL_LANG']['tl_iso_orders']['notes'][1]            = 'Permet de transme
 /**
  * Reference
  */
-$GLOBALS['TL_LANG']['tl_iso_orders']['orderStatusEmail'] = 'L\'état de votre commande a été mis à jour et le client a été notifié par e-mail.';
+$GLOBALS['TL_LANG']['tl_iso_orders']['orderStatusUpdate']       = 'L\'état de votre commande a été mis à jour.';
+$GLOBALS['TL_LANG']['tl_iso_orders']['orderStatusEmailSuccess'] = 'Le client a été notifié par e-mail.';
 
 
 /**

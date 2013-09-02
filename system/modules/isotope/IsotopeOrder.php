@@ -498,6 +498,7 @@ class IsotopeOrder extends IsotopeProductCollection
 		}
 
 		// Trigger email actions
+		$blnEmail = null;
 		if ($objNewStatus->mail_customer > 0 || $objNewStatus->mail_admin > 0)
 		{
 			$arrData = $this->getEmailData();
@@ -505,12 +506,7 @@ class IsotopeOrder extends IsotopeProductCollection
 
 			if ($objNewStatus->mail_customer && $this->iso_customer_email != '')
 			{
-				$this->Isotope->sendMail($objNewStatus->mail_customer, $this->iso_customer_email, $this->language, $arrData, '', $this);
-
-				if (TL_MODE == 'BE')
-				{
-					$this->addConfirmationMessage($GLOBALS['TL_LANG']['tl_iso_orders']['orderStatusEmail']);
-				}
+				$blnEmail = $this->Isotope->sendMail($objNewStatus->mail_customer, $this->iso_customer_email, $this->language, $arrData, '', $this);
 			}
 
 			$strSalesEmail = $objNewStatus->sales_email ? $objNewStatus->sales_email : $this->iso_sales_email;
@@ -524,6 +520,16 @@ class IsotopeOrder extends IsotopeProductCollection
 		$intOldStatus = $this->status;
 		$this->status = $objNewStatus->id;
 		$this->save();
+
+		if (TL_MODE == 'BE') {
+			$this->addConfirmationMessage($GLOBALS['TL_LANG']['tl_iso_orders']['orderStatusUpdate']);
+
+            if ($blnEmail === true) {
+				$this->addConfirmationMessage($GLOBALS['TL_LANG']['tl_iso_orders']['orderStatusEmailSuccess']);
+			} elseif ($blnEmail === false) {
+				$this->addErrorMessage($GLOBALS['TL_LANG']['tl_iso_orders']['orderStatusEmailError']);
+			}
+        }
 
 		// !HOOK: order status has been updated
 		if (isset($GLOBALS['ISO_HOOKS']['postOrderStatusUpdate']) && is_array($GLOBALS['ISO_HOOKS']['postOrderStatusUpdate']))
