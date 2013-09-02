@@ -378,7 +378,8 @@ class ProductCallbacks extends \Backend
         $arrFields['type']['default'] = (int) $this->Database->execute("SELECT id FROM tl_iso_producttypes WHERE fallback='1'" . ($this->User->isAdmin ? '' : (" AND id IN (" . implode(',', $this->User->iso_product_types) . ")")))->id;
 
         // Set default tax class
-        $arrFields['tax_class']['default'] = (int) $this->Database->execute("SELECT id FROM tl_iso_tax_class WHERE fallback='1'")->id;
+        // @todo this should be done in an oncreate callback.
+        //$arrFields['tax_class']['default'] = (int) $this->Database->execute("SELECT id FROM tl_iso_tax_class WHERE fallback='1'")->id;
 
 
         $arrTypes = $this->arrProductTypes;
