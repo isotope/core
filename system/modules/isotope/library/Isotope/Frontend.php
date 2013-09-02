@@ -744,8 +744,13 @@ window.addEvent('domready', function()
      */
     public static function getProducts($objProducts, $intReaderPage=0, $blnCheckAvailability=true, array $arrFilters=array(), array $arrSorting=array())
     {
+        // Could be an empty array
+        if (empty($objProducts)) {
+            return array();
+        }
+
         // $objProducts can also be an array of product ids
-        if (is_array($objProducts) && !empty($objProducts)) {
+        if (is_array($objProducts)) {
             $objProducts = Product::findPublishedById($objProducts, array(
                 'group' => Product::getTable().'.id',
                 'order' => \Database::getInstance()->findInSet(Product::getTable().'.id', $objProducts)
