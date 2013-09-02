@@ -86,26 +86,26 @@ class ProductCallbacks extends \Backend
             $blnVariants = false;
             $blnAdvancedPrices = false;
 
-            $objProductTypes = ProductType::findAllUsed();
-
-            while ($objProductTypes->next())
-            {
-                $objType = $objProductTypes->current();
-                self::$objInstance->arrProductTypes[$objProductTypes->id] = $objType;
-
-                if ($objType->hasDownloads())
+            if (($objProductTypes = ProductType::findAllUsed()) !== null) {
+                while ($objProductTypes->next())
                 {
-                    $blnDownloads = true;
-                }
+                    $objType = $objProductTypes->current();
+                    self::$objInstance->arrProductTypes[$objProductTypes->id] = $objType;
 
-                if ($objType->hasVariants())
-                {
-                    $blnVariants = true;
-                }
+                    if ($objType->hasDownloads())
+                    {
+                        $blnDownloads = true;
+                    }
 
-                if ($objType->hasAdvancedPrices())
-                {
-                    $blnAdvancedPrices = true;
+                    if ($objType->hasVariants())
+                    {
+                        $blnVariants = true;
+                    }
+
+                    if ($objType->hasAdvancedPrices())
+                    {
+                        $blnAdvancedPrices = true;
+                    }
                 }
             }
 
