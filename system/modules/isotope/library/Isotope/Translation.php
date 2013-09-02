@@ -84,7 +84,7 @@ class Translation
      * Initialize the data in tl_iso_label
      * @param string The language
      */
-    protected function initialize($strLanguage=null)
+    protected static function initialize($strLanguage=null)
     {
         if ($strLanguage === null) {
             $strLanguage = $GLOBALS['TL_LANGUAGE'];
