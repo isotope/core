@@ -4,6 +4,9 @@ Isotope eCommerce Changelog
 Version 1.4.6 (????-??-??)
 --------------------------
 
+### Improved
+- Better backend notification when updating order status (#690)
+
 ### Fixed
 - Filters did not search variants correctly
 - Removed deprecated TCPDF method AliasNbPages() (#688)

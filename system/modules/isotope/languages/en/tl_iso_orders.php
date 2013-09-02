@@ -56,7 +56,9 @@ $GLOBALS['TL_LANG']['tl_iso_orders']['notes']				= array('Order notes','If you w
 /**
  * Reference
  */
-$GLOBALS['TL_LANG']['tl_iso_orders']['orderStatusEmail']		= 'The status of your order has been updated and the client has been notified by email.';
+$GLOBALS['TL_LANG']['tl_iso_orders']['orderStatusUpdate']       = 'The status of your order has been updated.';
+$GLOBALS['TL_LANG']['tl_iso_orders']['orderStatusEmailSuccess'] = 'The client has been notified by email.';
+$GLOBALS['TL_LANG']['tl_iso_orders']['orderStatusEmailError']   = 'The client could not be notified by email. Check the email.log';
 
 
 /**
