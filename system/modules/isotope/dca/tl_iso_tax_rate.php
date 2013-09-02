@@ -176,7 +176,7 @@ $GLOBALS['TL_DCA']['tl_iso_tax_rate'] = array
             'exclude'               => true,
             'filter'                => true,
             'inputType'             => 'select',
-            'options'               => $this->getCountries(),
+            'options'               => \System::getCountries(),
             'eval'                  => array('multiple'=>true, 'size'=>10, 'csv'=>',', 'tl_class'=>'w50 w50h', 'chosen'=>true),
             'sql'                   => "text NULL",
         ),
