@@ -38,28 +38,31 @@ class ShippingMethod extends CheckoutStep implements IsotopeCheckoutStep
         $arrModules = array();
         $arrOptions = array();
 
-        $arrIds = array_map('intval', deserialize($this->objModule->iso_shipping_modules, true));
-        $objModules = Shipping::findBy(array('id IN (' . implode(',', $arrIds) . ')', (BE_USER_LOGGED_IN === true ? '' : "enabled='1'")), null, array('order'=>\Database::getInstance()->findInSet('id', $arrIds)));
+        $arrIds = deserialize($this->objModule->iso_shipping_modules);
 
-        if (null !== $objModules) {
-            while ($objModules->next()) {
+        if (!empty($arrIds) && is_array($arrIds)) {
+            $objModules = Shipping::findBy(array('id IN (' . implode(',', $arrIds) . ')', (BE_USER_LOGGED_IN === true ? '' : "enabled='1'")), null, array('order'=>\Database::getInstance()->findInSet('id', $arrIds)));
 
-                $objModule = $objModules->current();
+            if (null !== $objModules) {
+                while ($objModules->next()) {
 
-                if (!$objModule->isAvailable()) {
-                    continue;
+                    $objModule = $objModules->current();
+
+                    if (!$objModule->isAvailable()) {
+                        continue;
+                    }
+
+                    $fltPrice = $objModule->price;
+                    $strSurcharge = $objModule->surcharge;
+                    $strPrice = $fltPrice != 0 ? (($strSurcharge == '' ? '' : ' ('.$strSurcharge.')') . ': '.Isotope::formatPriceWithCurrency($fltPrice)) : '';
+
+                    $arrOptions[] = array(
+                        'value'     => $objModule->id,
+                        'label'     => $objModule->getLabel() . $strPrice,
+                    );
+
+                    $arrModules[$objModule->id] = $objModule;
                 }
-
-                $fltPrice = $objModule->price;
-                $strSurcharge = $objModule->surcharge;
-                $strPrice = $fltPrice != 0 ? (($strSurcharge == '' ? '' : ' ('.$strSurcharge.')') . ': '.Isotope::formatPriceWithCurrency($fltPrice)) : '';
-
-                $arrOptions[] = array(
-                    'value'     => $objModule->id,
-                    'label'     => $objModule->getLabel() . $strPrice,
-                );
-
-                $arrModules[$objModule->id] = $objModule;
             }
         }
 
