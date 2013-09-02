@@ -77,11 +77,11 @@ class ProductCallbacks extends \Backend
      */
     public static function getInstance()
     {
-        if (!is_object(self::$objInstance))
+        if (!is_object(static::$objInstance))
         {
-            self::$objInstance = new static();
+            static::$objInstance = new static();
 
-            self::$objInstance->arrProductTypes = array();
+            static::$objInstance->arrProductTypes = array();
             $blnDownloads = false;
             $blnVariants = false;
             $blnAdvancedPrices = false;
@@ -90,7 +90,7 @@ class ProductCallbacks extends \Backend
                 while ($objProductTypes->next())
                 {
                     $objType = $objProductTypes->current();
-                    self::$objInstance->arrProductTypes[$objProductTypes->id] = $objType;
+                    static::$objInstance->arrProductTypes[$objProductTypes->id] = $objType;
 
                     if ($objType->hasDownloads())
                     {
@@ -117,13 +117,13 @@ class ProductCallbacks extends \Backend
             else
             {
                 // Cache number of downloads
-                self::$objInstance->arrDownloads = array();
+                static::$objInstance->arrDownloads = array();
 
-                $objDownloads = self::$objInstance->Database->query("SELECT pid, COUNT(id) AS total FROM tl_iso_downloads GROUP BY pid");
+                $objDownloads = static::$objInstance->Database->query("SELECT pid, COUNT(id) AS total FROM tl_iso_downloads GROUP BY pid");
 
                 while ($objDownloads->next())
                 {
-                    self::$objInstance->arrDownloads[$objDownloads->pid] = $objDownloads->total;
+                    static::$objInstance->arrDownloads[$objDownloads->pid] = $objDownloads->total;
                 }
             }
 
@@ -141,13 +141,13 @@ class ProductCallbacks extends \Backend
             }
 
             // Disable related categories if none are defined
-            if (self::$objInstance->Database->query("SELECT COUNT(id) AS total FROM tl_iso_related_categories")->total == 0)
+            if (static::$objInstance->Database->query("SELECT COUNT(id) AS total FROM tl_iso_related_categories")->total == 0)
             {
                 unset($GLOBALS['TL_DCA']['tl_iso_products']['list']['operations']['related']);
             }
         }
 
-        return self::$objInstance;
+        return static::$objInstance;
     }
 
 

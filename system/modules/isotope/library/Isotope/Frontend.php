@@ -174,7 +174,7 @@ class Frontend extends \Frontend
             // {{product::attribute}}                - gets the data of the current product ($GLOBALS['ACTIVE_PRODUCT'] or GET parameter "product")
             // {{product::attribute::product_id}}    - gets the data of the specified product ID
 
-            $objProduct = (count($arrTag) == 3) ? self::getProduct($arrTag[2]) : ($GLOBALS['ACTIVE_PRODUCT'] ? $GLOBALS['ACTIVE_PRODUCT'] : self::getProductByAlias($this->Input->get('product')));
+            $objProduct = (count($arrTag) == 3) ? static::getProduct($arrTag[2]) : ($GLOBALS['ACTIVE_PRODUCT'] ? $GLOBALS['ACTIVE_PRODUCT'] : static::getProductByAlias($this->Input->get('product')));
 
             return ($objProduct !== null) ? $objProduct->{$arrTag[1]} : '';
         }
@@ -206,7 +206,7 @@ class Frontend extends \Frontend
             if ($arrTrail == null)
             {
                 $arrTrail = array();
-                $objProduct = self::getProductByAlias(\Input::get('product'));
+                $objProduct = static::getProductByAlias(\Input::get('product'));
 
                 // getProductByAlias will return null if the product is not found
                 if ($objProduct !== null)
@@ -729,7 +729,7 @@ window.addEvent('domready', function()
      */
     public static function getProductByAlias($strAlias, $intReaderPage=0, $blnCheckAvailability=true)
     {
-        return self::getProduct(Product::findPublishedByIdOrAlias($strAlias), $intReaderPage, $blnCheckAvailability);
+        return static::getProduct(Product::findPublishedByIdOrAlias($strAlias), $intReaderPage, $blnCheckAvailability);
     }
 
 
@@ -846,7 +846,7 @@ window.addEvent('domready', function()
                 $varValues = array($varValues);
             }
 
-            $operator = self::convertFilterOperator($filter['operator'], 'PHP');
+            $operator = static::convertFilterOperator($filter['operator'], 'PHP');
 
             foreach ($varValues as $varValue)
             {
@@ -1169,9 +1169,9 @@ window.addEvent('domready', function()
         $intPage = is_object($objOriginPage) ? (int) $objOriginPage->id : (int) $objOriginPage;
 
         // return from cache
-        if (isset(self::$arrReaderPageIds[$intPage]))
+        if (isset(static::$arrReaderPageIds[$intPage]))
         {
-            return self::$arrReaderPageIds[$intPage];
+            return static::$arrReaderPageIds[$intPage];
         }
 
         $objDatabase = \Database::getInstance();
@@ -1184,7 +1184,7 @@ window.addEvent('domready', function()
         // if the reader page is set on the current page id we return this one
         if ($objOriginPage->iso_setReaderJumpTo > 0)
         {
-            self::$arrReaderPageIds[$intPage] = $objOriginPage->iso_readerJumpTo;
+            static::$arrReaderPageIds[$intPage] = $objOriginPage->iso_readerJumpTo;
 
             return $objOriginPage->iso_readerJumpTo;
         }
@@ -1207,7 +1207,7 @@ window.addEvent('domready', function()
             if ($objParentPage->iso_setReaderJumpTo > 0)
             {
                 // cache the reader page for all trail pages
-                self::$arrReaderPageIds = array_merge(self::$arrReaderPageIds, array_fill_keys($trail, $objParentPage->iso_readerJumpTo));
+                static::$arrReaderPageIds = array_merge(static::$arrReaderPageIds, array_fill_keys($trail, $objParentPage->iso_readerJumpTo));
 
                 return $objParentPage->iso_readerJumpTo;
             }
@@ -1218,7 +1218,7 @@ window.addEvent('domready', function()
 
         // if there is no reader page set at all, we take the current page object
         global $objPage;
-        self::$arrReaderPageIds[$intPage] = $objPage->id;
+        static::$arrReaderPageIds[$intPage] = $objPage->id;
 
         return $objPage->id;
     }

@@ -62,12 +62,12 @@ class IsotopeRules extends \Controller
      */
     public static function getInstance()
     {
-        if (!is_object(self::$objInstance))
+        if (!is_object(static::$objInstance))
         {
-            self::$objInstance = new \IsotopeRules();
+            static::$objInstance = new \IsotopeRules();
         }
 
-        return self::$objInstance;
+        return static::$objInstance;
     }
 
 
