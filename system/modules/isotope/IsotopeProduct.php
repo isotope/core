@@ -1534,7 +1534,7 @@ class IsotopeProduct extends Controller
 			}
 		}
 
-		if (!$this->isLocked() && ($this->hasVariantPrices() || $this->hasAdvancedPrices()))
+		if (!$this->isLocked() && $this->hasVariantPrices())
 		{
 			$this->findPrice();
 		}
