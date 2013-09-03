@@ -40,7 +40,6 @@ $GLOBALS['TL_LANG']['tl_iso_products']['cssID']                     = array('CSS
 $GLOBALS['TL_LANG']['tl_iso_products']['published']                 = array('Publish product', 'Click here to show this product on your website.');
 $GLOBALS['TL_LANG']['tl_iso_products']['start']                     = array('Start date', 'Do not show this product before the date specified.');
 $GLOBALS['TL_LANG']['tl_iso_products']['stop']                      = array('Stop date', 'Do not show this product after the date specified.');
-$GLOBALS['TL_LANG']['tl_iso_products']['variant_attributes']        = array('Variant setup', 'Please select the combination of values for this variant.');
 $GLOBALS['TL_LANG']['tl_iso_products']['inherit']                   = array('Inherited attributes', 'Check the fields you want to inherit from base product.');
 
 /**
@@ -88,7 +87,6 @@ $GLOBALS['TL_LANG']['tl_iso_products']['downloads']                 = array('Dow
 /**
  * Legends
  */
-$GLOBALS['TL_LANG']['tl_iso_products']['variant_legend']            = 'Product variant setup';
 $GLOBALS['TL_LANG']['tl_iso_products']['general_legend']            = 'General Settings';
 $GLOBALS['TL_LANG']['tl_iso_products']['meta_legend']               = 'Meta data';
 $GLOBALS['TL_LANG']['tl_iso_products']['pricing_legend']            = 'Pricing Settings';

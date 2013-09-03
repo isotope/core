@@ -325,7 +325,7 @@ class tl_iso_producttypes extends \Backend
 
         $arrFields = array();
         $arrValues = deserialize($varValue);
-        $blnInherit = ($dc->field != 'attributes');
+        $blnVariants = ($dc->field != 'attributes');
 
         if (!is_array($arrValues)) {
             $arrValues = array();
@@ -333,7 +333,9 @@ class tl_iso_producttypes extends \Backend
 
         foreach ($arrValues as $arrField) {
 
-            if ($arrField['name'] == '' || !isset($arrDCA[$arrField['name']]) || $arrDCA[$arrField['name']]['attributes']['legend'] == '' || ($blnInherit && $arrDCA[$arrField['name']]['attributes']['inherit'])) {
+            $strName = $arrField['name'];
+
+            if ($strName == '' || !isset($arrDCA[$strName]) || $arrDCA[$strName]['attributes']['legend'] == '' || ($blnVariants && $arrDCA[$strName]['attributes']['inherit']) || (!$blnVariants && $arrDCA[$strName]['attributes']['variant_option'])) {
                 continue;
             }
 
@@ -346,7 +348,7 @@ class tl_iso_producttypes extends \Backend
 
         foreach (array_diff_key($arrDCA, $arrFields) as $strName => $arrField) {
 
-            if (!is_array($arrField['attributes']) || $arrField['attributes']['legend'] == '' || ($blnInherit && $arrField['attributes']['inherit'])) {
+            if (!is_array($arrField['attributes']) || $arrField['attributes']['legend'] == '' || ($blnVariants && $arrField['attributes']['inherit']) || (!$blnVariants && $arrField['attributes']['variant_option'])) {
                 continue;
             }
 
