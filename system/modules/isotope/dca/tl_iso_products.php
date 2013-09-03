@@ -251,13 +251,6 @@ $GLOBALS['TL_DCA']['tl_iso_products'] = array
             'attributes'            => array('fe_sorting'=>true),
             'sql'                   => "int(10) unsigned NOT NULL default '0'",
         ),
-        'variant_attributes' => array
-        (
-            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_products']['variant_attributes'],
-            'inputType'             => 'variantWizard',
-            'options'               => array(),
-            'eval'                  => array('doNotSaveEmpty'=>true),
-        ),
         'type' => array
         (
             'label'                 => &$GLOBALS['TL_LANG']['tl_iso_products']['type'],
