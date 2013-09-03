@@ -880,7 +880,7 @@ class Standard extends Product implements IsotopeProduct
             $objVariant = \Database::getInstance()->prepare(
                 static::buildQueryString(array(
                     'table'     => static::$strTable,
-                    'column'    => array("tl_iso_products.id IN (" . implode(',', $this->getVariantIds()) . ") AND tl_iso_products." . implode('=?, tl_iso_products.', array_keys($arrOptions)) . "=?")
+                    'column'    => array("tl_iso_products.id IN (" . implode(',', $this->getVariantIds()) . ") AND tl_iso_products." . implode('=? AND tl_iso_products.', array_keys($arrOptions)) . "=?")
                 ))
             )->limit(1)->execute($arrOptions);
 
