@@ -539,6 +539,8 @@ window.addEvent('domready', function() {
 
     /**
      * Change the displayed columns in the variants view
+     * @todo should only show variant columns of the current product type
+     * @todo use $GLOBALS['ISO_CONFIG']['variant_options']
      */
     public function changeVariantColumns()
     {
