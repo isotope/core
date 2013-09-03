@@ -453,11 +453,9 @@ class ProductCallbacks extends \Backend
                     $arrFields[$attribute]['eval']['mandatory'] = $arrConfig[$name]['mandatory'] == 1 ? false : true;
                 }
 
-/* @todo
-                if (!$blnEditAll && !in_array($attribute, array('sku', 'price', 'shipping_weight', 'published')) && $objProducts->attributes[$attribute]['enabled']) {
-                    $arrInherit[$attribute] = Isotope::formatLabel('tl_iso_products', $attribute);
+                if ($blnVariants && !$arrAttributes[$name]->isVariantOption() && !in_array($name, array('price', 'published', 'start', 'stop'))) {
+                    $arrInherit[$name] = Isotope::formatLabel('tl_iso_products', $name);
                 }
-*/
             }
 
             $arrLegends = array();
@@ -471,7 +469,7 @@ class ProductCallbacks extends \Backend
             $arrFields['inherit']['options'] = $arrInherit;
 
             // Add palettes
-            $GLOBALS['TL_DCA']['tl_iso_products']['palettes'][$objType->id] = implode(';', $arrLegends);
+            $GLOBALS['TL_DCA']['tl_iso_products']['palettes'][$objType->id] = ($blnVariants ? 'inherit,' : '') . implode(';', $arrLegends);
         }
 
         if ($act !== 'edit') {
