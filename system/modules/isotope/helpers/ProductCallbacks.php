@@ -417,12 +417,8 @@ class ProductCallbacks extends \Backend
             $arrPalette = array();
 
             if ($blnVariants) {
-                $arrPalette['variant_legend'][] = 'variant_attributes' . ($act == 'edit' ? ',inherit' : '');
-                $arrFields['variant_attributes']['options'] = array_intersect($GLOBALS['ISO_CONFIG']['variant_options'], $objType->getAttributes());
-
-                $arrConfig = deserialize($objType->variant_attribues, true);
+                $arrConfig = deserialize($objType->variant_attributes, true);
                 $arrEnabled = $objType->getVariantAttributes();
-
             } else {
                 $arrConfig = deserialize($objType->attributes, true);
                 $arrEnabled = $objType->getAttributes();
@@ -431,8 +427,13 @@ class ProductCallbacks extends \Backend
             // Go through each enabled field and build palette
             foreach ($arrEnabled as $name) {
 
-                // Do not show variant options & customer defined fields
-                if (null !== $arrAttributes[$name] && ($arrAttributes[$name]->isVariantOption() || $arrAttributes[$name]->isCustomerDefined())) {
+                // Do not show customer defined fields
+                if (null !== $arrAttributes[$name] && $arrAttributes[$name]->isCustomerDefined()) {
+                    continue;
+                }
+
+                // Variant fields can only be edited in variant mode
+                if (null !== $arrAttributes[$name] && $arrAttributes[$name]->isVariantOption() && !$blnVariants) {
                     continue;
                 }
 
