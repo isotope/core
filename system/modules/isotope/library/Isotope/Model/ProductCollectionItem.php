@@ -128,7 +128,7 @@ class ProductCollectionItem extends \Model
      */
     public function getOptions()
     {
-        return (string) ($this->isLocked() || !$this->hasProduct()) ? deserialize($this->options) : $this->getProduct()->getOptions();
+        return ($this->isLocked() || !$this->hasProduct()) ? deserialize($this->options) : $this->getProduct()->getOptions();
     }
 
 
