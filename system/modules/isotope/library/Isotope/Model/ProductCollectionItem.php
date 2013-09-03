@@ -138,7 +138,17 @@ class ProductCollectionItem extends \Model
      */
     public function getPrice()
     {
-        return (string) ($this->isLocked() || !$this->hasProduct()) ? $this->price : $this->getProduct()->getPrice()->getAmount((int) $this->quantity);
+        if ($this->isLocked() || !$this->hasProduct()) {
+            return $this->price;
+        }
+
+        $objPrice = $this->getProduct()->getPrice();
+
+        if (null === $objPrice) {
+            return '';
+        }
+
+        return $objPrice->getAmount((int) $this->quantity);
     }
 
 
@@ -148,7 +158,17 @@ class ProductCollectionItem extends \Model
      */
     public function getTaxFreePrice()
     {
-        return (string) ($this->isLocked() || !$this->hasProduct()) ? $this->tax_free_price : $this->getProduct()->getPrice()->getNetAmount((int) $this->quantity);
+        if ($this->isLocked() || !$this->hasProduct()) {
+            return $this->tax_free_price;
+        }
+
+        $objPrice = $this->getProduct()->getPrice();
+
+        if (null === $objPrice) {
+            return '';
+        }
+
+        return $objPrice->getNetAmount((int) $this->quantity);
     }
 
     /**

@@ -496,6 +496,11 @@ abstract class ProductCollection extends TypeAgent
         $arrItems = $this->getItems();
 
         foreach ($arrItems as $objItem) {
+
+            if (!$objItem->hasProduct() || null === $objItem->getProduct()->getPrice()) {
+                continue;
+            }
+
             $objItem->price = $objItem->getProduct()->getPrice()->getAmount($objItem->quantity);
             $objItem->tax_free_price = $objItem->getProduct()->getPrice()->getNetAmount($objItem->quantity);
             $objItem->save();
@@ -834,8 +839,8 @@ abstract class ProductCollection extends TypeAgent
             $objItem->name              = (string) $objProduct->name;
             $objItem->options           = $objProduct->getOptions();
             $objItem->quantity          = (int) $intQuantity;
-            $objItem->price             = (float) $objProduct->getPrice()->getAmount((int) $intQuantity);
-            $objItem->tax_free_price    = (float) $objProduct->getPrice()->getNetAmount((int) $intQuantity);
+            $objItem->price             = (float) ($objProduct->getPrice() ? $objProduct->getPrice()->getAmount((int) $intQuantity) : 0);
+            $objItem->tax_free_price    = (float) ($objProduct->getPrice() ? $objProduct->getPrice()->getNetAmount((int) $intQuantity) : 0);
             $objItem->href_reader       = $objProduct->href_reader;
 
             $objItem->save();
