@@ -128,6 +128,11 @@ $GLOBALS['ISO_MOD'] = array
     ),
     'config' => array
     (
+        'documents' => array
+        (
+            'tables'            => array('tl_iso_document'),
+            'icon'              => 'system/modules/isotope/assets/setup-documents.png'
+        ),
         'iso_mail' => array
         (
             'tables'            => array('tl_iso_mail', 'tl_iso_mail_content'),
