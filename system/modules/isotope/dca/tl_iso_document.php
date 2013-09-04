@@ -166,7 +166,7 @@ $GLOBALS['TL_DCA']['tl_iso_document'] = array
             'exclude'               => true,
             'inputType'             => 'select',
             'options_callback'      => array('Isotope\tl_iso_document', 'getDocumentTemplates'),
-            'eval'                  => array('includeBlankOption'=>true, 'chosen'=>true, 'tl_class'=>'w50'),
+            'eval'                  => array('includeBlankOption'=>true, 'chosen'=>true, 'tl_class'=>'w50', 'mandatory'=>true),
             'sql'                   => "varchar(64) NOT NULL default ''",
         ),
         'collectionTpl'  => array
@@ -175,7 +175,7 @@ $GLOBALS['TL_DCA']['tl_iso_document'] = array
             'exclude'               => true,
             'inputType'             => 'select',
             'options_callback'      => array('Isotope\tl_module', 'getCollectionTemplates'),
-            'eval'                  => array('includeBlankOption'=>true, 'chosen'=>true, 'tl_class'=>'w50'),
+            'eval'                  => array('includeBlankOption'=>true, 'chosen'=>true, 'tl_class'=>'w50', 'mandatory'=>true),
             'sql'                   => "varchar(64) NOT NULL default ''",
         )
     )
