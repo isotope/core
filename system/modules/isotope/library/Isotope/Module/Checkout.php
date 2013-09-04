@@ -399,6 +399,14 @@ class Checkout extends Module
         // Insufficient cart subtotal
         if (Isotope::getCart()->hasErrors())
         {
+            if ($this->iso_cart_jumpTo > 0) {
+                $objJump = \PageModel::findWithDetails($this->iso_cart_jumpTo);
+
+                if (null !== $objJump) {
+                    $this->redirect(\Controller::generateFrontendUrl($objJump->row(), null, $objJump->language));
+                }
+            }
+
             $this->Template = new \Isotope\Template('mod_message');
             $this->Template->type = 'error';
             $this->Template->message = implode("</p>\n<p class=\"error message\">", Isotope::getCart()->getErrors());
