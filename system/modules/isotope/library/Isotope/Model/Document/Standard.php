@@ -14,6 +14,8 @@ namespace Isotope\Model\Document;
 
 use Isotope\Interfaces\IsotopeDocument;
 use Isotope\Model\Document;
+use Isotope\Model\Gallery;
+use Isotope\Template;
 
 /**
  * Class Standard
@@ -102,15 +104,23 @@ class Standard extends Document implements IsotopeDocument
         // Set font
         $pdf->SetFont(PDF_FONT_NAME_MAIN, '', PDF_FONT_SIZE_MAIN);
 
-        // Prepare the template
-        $objTemplate = new \FrontendTemplate($this->template);
-        $this->collection->addToTemplate($objTemplate);
+        // Prepare the document
+        $objTemplate = new Template($this->documentTpl);
 
-        // add invoice logo
+        // add logo
+        // @todo make size configurable?
         if ($this->logo && ($objFilesModel = \FilesModel::findByPk($this->logo)) !== null) {
             $objTemplate->hasLogo = true;
             $objTemplate->logoSrc = TL_ROOT . '/' . $objFilesModel->path;
         }
+
+        // add title
+        $objTemplate->title = $this->generateFileName();
+
+        // render the collection
+        $objCollectionTemplate = new Template($this->collectionTpl);
+        $this->collection->addToTemplate($objCollectionTemplate);
+        $objTemplate->collection = $objCollectionTemplate->parse();
 
         // Write the HTML content
         $pdf->writeHTML($objTemplate->parse(), true, 0, true, 0);
