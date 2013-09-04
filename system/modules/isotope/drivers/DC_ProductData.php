@@ -522,7 +522,7 @@ class DC_ProductData extends \DC_Table
 
             if (count($arrPageLanguages) > 1)
             {
-                $this->arrLanguageLabels = System::getLanguages();
+                $this->arrLanguageLabels = \System::getLanguages();
                 $this->arrLanguages = array_intersect(array_keys($this->arrLanguageLabels), $arrPageLanguages);
 
                 if (\Input::post('FORM_SUBMIT') == 'tl_language')

@@ -32,6 +32,6 @@ $GLOBALS['TL_DCA']['tl_user']['fields']['translation'] = array
 (
     'label'        => &$GLOBALS['TL_LANG']['tl_user']['translation'],
     'inputType'    => 'select',
-    'options'    => array_diff_key(System::getLanguages(), array('en'=>'English')),
+    'options'    => array_diff_key(\System::getLanguages(), array('en'=>'English')),
     'eval'        => array('includeBlankOption'=>true, 'tl_class'=>'w50'),
 );

@@ -115,7 +115,7 @@ $GLOBALS['TL_DCA']['tl_iso_labels'] = array
             'label'                        => &$GLOBALS['TL_LANG']['tl_iso_labels']['language'],
             'filter'                    => true,
             'inputType'                    => 'select',
-            'options'                    => System::getLanguages(),
+            'options'                    => \System::getLanguages(),
             'default'                    => $this->User->language,
             'eval'                        => array('mandatory'=>true, 'tl_class'=>'clr'),
         ),
