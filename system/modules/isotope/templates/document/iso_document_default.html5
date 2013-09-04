@@ -1,0 +1,19 @@
+<div style="font-size: 62.5%; font-family: Arial, Helvetica, sans-serif">
+    <table cellspacing="0" cellpadding="20" border="1">
+        <tr>
+            <td>
+                <?php if ($this->hasLogo): ?>
+                <img src="<?php echo $this->logoSrc; ?>" alt="" />
+                <?php endif; ?>
+                <br><br>
+
+                <h2><?php echo $this->title; ?></h2>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <?php echo $this->collection; ?>
+            </td>
+        </tr>
+    </table>
+</div>

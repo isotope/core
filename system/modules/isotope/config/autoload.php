@@ -70,7 +70,7 @@ TemplateLoader::addFiles(array
     'iso_checkout_shipping_method'  => 'system/modules/isotope/templates/checkout',
     'iso_collection_default'        => 'system/modules/isotope/templates/collection',
     'iso_collection_mini'           => 'system/modules/isotope/templates/collection',
-    'iso_document_invoice'          => 'system/modules/isotope/templates/document',
+    'iso_document_default'          => 'system/modules/isotope/templates/document',
     'iso_filter_cumulative'         => 'system/modules/isotope/templates/isotope',
     'iso_filter_default'            => 'system/modules/isotope/templates/isotope',
     'iso_gallery_standard'          => 'system/modules/isotope/templates/gallery',
