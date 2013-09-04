@@ -1105,7 +1105,7 @@ abstract class ProductCollection extends TypeAgent
      * Add the collection to a template
      * @param   object
      */
-    public function addToTemplate($objTemplate)
+    public function addToTemplate(\Isotope\Template $objTemplate)
     {
         $objModule = $this;
         $arrGalleries = array();
