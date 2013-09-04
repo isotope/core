@@ -35,7 +35,8 @@ $GLOBALS['TL_LANG']['ERR']['datepickerRgxp']                    = 'Select an app
 $GLOBALS['TL_LANG']['ERR']['emptyDownloadsFolder']              = 'The selected folder is empty.';
 $GLOBALS['TL_LANG']['ERR']['checkoutNotAllowed']                = 'User checkout not allowed';
 $GLOBALS['TL_LANG']['ERR']['collectionItemNotAvailable']        = 'This product is no longer available.';
-$GLOBALS['TL_LANG']['ERR']['collectionErrorInItems']            = 'Please check the error messages in your products.';
+$GLOBALS['TL_LANG']['ERR']['collectionErrorInItems']            = 'There are errors in your products.';
+$GLOBALS['TL_LANG']['ERR']['cartErrorInItems']                  = 'Please resolve the errors in your cart before checking out.';
 
 /**
  * Miscellaneous

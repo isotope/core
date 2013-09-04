@@ -1224,11 +1224,20 @@ abstract class ProductCollection extends TypeAgent
 
         foreach ($this->getItems() as $objItem) {
             if ($objItem->hasErrors()) {
-                array_unshift($arrErrors, $GLOBALS['TL_LANG']['ERR']['collectionErrorInItems']);
+                array_unshift($arrErrors, $this->getMessageIfErrorsInItems());
                 break;
             }
         }
 
         return $arrErrors;
+    }
+
+    /**
+     * Get a collection-specific error message for items with errors
+     * @return  string
+     */
+    protected function getMessageIfErrorsInItems()
+    {
+        return $GLOBALS['TL_LANG']['ERR']['collectionErrorInItems'];
     }
 }

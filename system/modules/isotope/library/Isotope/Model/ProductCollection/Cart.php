@@ -187,4 +187,13 @@ class Cart extends ProductCollection implements IsotopeProductCollection
 
         return $arrErrors;
     }
+
+    /**
+     * Get a collection-specific error message for items with errors
+     * @return  string
+     */
+    protected function getMessageIfErrorsInItems()
+    {
+        return $GLOBALS['TL_LANG']['ERR']['cartErrorInItems'];
+    }
 }
