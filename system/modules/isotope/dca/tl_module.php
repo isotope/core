@@ -308,11 +308,12 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['iso_orderCollectionBy'] = array
 (
     'label'                     => &$GLOBALS['TL_LANG']['tl_module']['iso_orderCollectionBy'],
     'exclude'                   => true,
+    'default'                   => 'asc_id',
     'inputType'                 => 'select',
-    'options'                   => array('id_asc', 'id_desc', 'tstamp_asc', 'tstamp_desc', 'name_asc', 'name_desc', 'price_asc', 'price_desc'),
+    'options'                   => array('asc_id', 'desc_id', 'asc_tstamp', 'desc_tstamp', 'asc_name', 'desc_name', 'asc_price', 'desc_price'),
     'reference'                 => &$GLOBALS['TL_LANG']['tl_module']['iso_orderCollectionBy'],
-    'eval'                      => array('tl_class'=>'w50', 'mandatory'=>true),
-    'sql'                       => "varchar(16) NOT NULL default 'id_asc'",
+    'eval'                      => array('mandatory'=>true, 'tl_class'=>'w50'),
+    'sql'                       => "varchar(16) NOT NULL default ''",
 );
 
 $GLOBALS['TL_DCA']['tl_module']['fields']['iso_emptyMessage'] = array
