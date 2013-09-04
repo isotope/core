@@ -53,6 +53,12 @@ abstract class ProductCollection extends TypeAgent
     protected static $arrModelTypes = array();
 
     /**
+     * Cache
+     * @var array
+     */
+    protected $arrCache;
+
+    /**
      * Define if data should be threaded as "locked", eg. not apply discount rules to product prices
      * @var boolean
      */
