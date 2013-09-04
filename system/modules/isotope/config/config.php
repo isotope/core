@@ -217,6 +217,11 @@ $GLOBALS['BE_FFL']['productGroupSelector']   = 'Isotope\Widget\ProductGroupSelec
 \Isotope\Model\Shipping::registerModelType('flat', 'Isotope\Model\Shipping\Flat');
 
 /**
+ * Documents
+ */
+\Isotope\Model\Document::registerModelType('standard', 'Isotope\Model\Document\Standard');
+
+/**
  * Galleries
  */
 \Isotope\Model\Gallery::registerModelType('standard', 'Isotope\Model\Gallery\Standard');
@@ -263,6 +268,7 @@ $GLOBALS['BE_FFL']['productGroupSelector']   = 'Isotope\Widget\ProductGroupSelec
 $GLOBALS['TL_MODELS']['tl_iso_config']                          = 'Isotope\Model\Config';
 $GLOBALS['TL_MODELS']['tl_iso_addresses']                       = 'Isotope\Model\Address';
 $GLOBALS['TL_MODELS']['tl_iso_baseprice']                       = 'Isotope\Model\BasePrice';
+$GLOBALS['TL_MODELS']['tl_iso_document']                        = 'Isotope\Model\Document';
 $GLOBALS['TL_MODELS']['tl_iso_downloads']                       = 'Isotope\Model\Download';
 $GLOBALS['TL_MODELS']['tl_iso_orderstatus']                     = 'Isotope\Model\OrderStatus';
 $GLOBALS['TL_MODELS']['tl_iso_prices']                          = 'Isotope\Model\ProductPrice';
