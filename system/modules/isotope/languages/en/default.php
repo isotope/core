@@ -194,6 +194,11 @@ $GLOBALS['TL_LANG']['MODEL']['tl_iso_payment_modules.expercash']        = array(
 $GLOBALS['TL_LANG']['MODEL']['tl_iso_payment_modules.payone']           = array('PayOne');
 
 /**
+ * Documents
+ */
+$GLOBALS['TL_LANG']['MODEL']['tl_iso_document.standard']                = array('Standard');
+
+/**
  * Galleries
  */
 $GLOBALS['TL_LANG']['MODEL']['tl_iso_gallery.standard'] = array('Default gallery', '<p>Uses the lightbox/mediabox for full size images. Make sure you select the appropriate "moo_" template in your page layout configuration.</p><p>You can supply a "rel" attribute to the link target by using a pipe (e.g. "tl_files/video.mov|lightbox[400 300]"). If no "rel" attribute is supplied, the link will be opened in a new window.</p>');
