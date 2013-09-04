@@ -120,19 +120,22 @@ abstract class TypeAgent extends \Model
      */
     public static function buildModelType(\Database_Result $objResult=null)
     {
-        $strClass = static::$arrModelTypes[$objResult->type];
+        $strClass = '';
 
         if (is_numeric($objResult->type)) {
             $objRelations = new \DcaExtractor(static::$strTable);
             $arrRelations = $objRelations->getRelations();
 
             if (isset($arrRelations['type'])) {
-                $objType = \Database::getInstance()->prepare("SELECT * FROM " . $arrRelations['type']['table'] . " WHERE " . $arrRelations['type']['field'] . "=?")->execute($objResult->type);
+                $strTypeClass = static::getClassFromTable($arrRelations['type']['table']);
+                $objType = $strTypeClass::findOneBy($arrRelations['type']['field'], $objResult->type);
 
-                if ($objType->numRows) {
+                if (null !== $objType) {
                     $strClass = static::$arrModelTypes[$objType->class];
                 }
             }
+        } else {
+            $strClass = static::$arrModelTypes[$objResult->type];
         }
 
         if ($strClass == '') {
