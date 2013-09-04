@@ -113,7 +113,7 @@ class Cart extends ProductCollection implements IsotopeProductCollection
         {
             if ($strHash == '')
             {
-                $strHash = sha1(session_id() . (!$GLOBALS['TL_CONFIG']['disableIpCheck'] ? \Environment::get('ip') : '') . $intConfig . static::$strCookie);
+                $strHash = sha1(session_id() . (!$GLOBALS['TL_CONFIG']['disableIpCheck'] ? \Environment::get('ip') : '') . $intStore . static::$strCookie);
                 \System::setCookie(static::$strCookie, $strHash, $time+$GLOBALS['TL_CONFIG']['iso_cartTimeout'], $GLOBALS['TL_CONFIG']['websitePath']);
             }
 
@@ -131,6 +131,7 @@ class Cart extends ProductCollection implements IsotopeProductCollection
 
             $objCart->member    = (FE_USER_LOGGED_IN === true ? \FrontendUser::getInstance()->id : 0);
             $objCart->uniqid    = (FE_USER_LOGGED_IN === true ? '' : $strHash);
+            $objCart->config_id = $intConfig;
             $objCart->store_id  = $intStore;
         }
 
