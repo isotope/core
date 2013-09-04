@@ -234,24 +234,38 @@ class Cart extends Module
      */
     protected function getItemsSortingClosure()
     {
-        $arrSortingSettings = explode('_', $this->iso_orderCollectionBy);
-        $strSortingAttribute = $arrSortingSettings[0];
-        $strSortingDirection = $arrSortingSettings[1];
+        $arrSortingSettings = explode('_', $this->iso_orderCollectionBy, 2);
+        $strSortingAttribute = $arrSortingSettings[1];
 
-        return function($arrItems) use ($strSortingAttribute, $strSortingDirection) {
-            uasort($arrItems, function($objItem1, $objItem2) use ($strSortingAttribute, $strSortingDirection) {
-                if ($objItem1->$strSortingAttribute === $objItem2->$strSortingAttribute) {
-                    return 0;
-                }
+        if ($arrSortingSettings[0] == 'asc') {
 
-                if ($strSortingDirection == 'asc') {
+            return function($arrItems) use ($strSortingAttribute) {
+                uasort($arrItems, function($objItem1, $objItem2) use ($strSortingAttribute) {
+                    if ($objItem1->$strSortingAttribute == $objItem2->$strSortingAttribute) {
+                        return 0;
+                    }
+
                     return $objItem1->$strSortingAttribute < $objItem2->$strSortingAttribute ? -1 : 1;
-                } else {
-                    return $objItem1->$strSortingAttribute > $objItem2->$strSortingAttribute ? -1 : 1;
-                }
-            });
+                });
 
-            return $arrItems;
-        };
+                return $arrItems;
+            };
+
+        } elseif ($arrSortingSettings[0] == 'desc') {
+
+            return function($arrItems) use ($strSortingAttribute) {
+                uasort($arrItems, function($objItem1, $objItem2) use ($strSortingAttribute) {
+                    if ($objItem1->$strSortingAttribute == $objItem2->$strSortingAttribute) {
+                        return 0;
+                    }
+
+                    return $objItem1->$strSortingAttribute > $objItem2->$strSortingAttribute ? -1 : 1;
+                });
+
+                return $arrItems;
+            };
+        }
+
+        return null;
     }
 }
