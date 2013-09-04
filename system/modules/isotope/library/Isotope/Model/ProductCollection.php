@@ -696,11 +696,11 @@ abstract class ProductCollection extends TypeAgent
 
     /**
      * Return all items in the collection
-     * @param  bool
      * @param  callable
+     * @param  bool
      * @return array
      */
-    public function getItems($blnNoCache=false, $varCallable=null)
+    public function getItems($varCallable=null, $blnNoCache=false)
     {
         if (null === $this->arrItems || $blnNoCache) {
             $this->arrItems = array();
@@ -1119,7 +1119,7 @@ abstract class ProductCollection extends TypeAgent
         $arrGalleries = array();
         $arrItems = array();
 
-        foreach ($this->getItems(false, $varCallable) as $objItem) {
+        foreach ($this->getItems($varCallable) as $objItem) {
 
             $blnHasProduct = $objItem->hasProduct();
             $objProduct = $objItem->getProduct();
