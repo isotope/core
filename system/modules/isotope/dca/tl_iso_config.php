@@ -125,7 +125,8 @@ $GLOBALS['TL_DCA']['tl_iso_config'] = array
             {checkout_legend},billing_countries,shipping_countries,billing_fields,shipping_fields,billing_country,shipping_country,limitMemberCountries;
             {currency_legend},priceRoundPrecision,priceRoundIncrement,currency,currencyFormat,currencyPosition,currencySymbol;
             {converter_legend:hide},priceCalculateFactor,priceCalculateMode,currencyAutomator;
-            {order_legend:hide},orderPrefix,orderDigits,orderstatus_new,orderstatus_error,invoiceLogo;
+            {order_legend:hide},orderPrefix,orderDigits,orderstatus_new,orderstatus_error;
+            {documents_legend},invoiceDocument;
             {config_legend},templateGroup,cartMinSubtotal;
             {products_legend},newProductPeriod',
     ),
@@ -500,14 +501,6 @@ $GLOBALS['TL_DCA']['tl_iso_config'] = array
             'eval'                  => array('tl_class'=>'w50'),
             'sql'                   => "int(1) unsigned NOT NULL default '4'",
         ),
-        'invoiceLogo' => array
-        (
-            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_config']['invoiceLogo'],
-            'exclude'               => true,
-            'inputType'             => 'fileTree',
-            'eval'                  => array('fieldType'=>'radio', 'files'=>true, 'filesOnly'=>true, 'extensions'=>'jpg,jpeg,gif,png,tif,tiff', 'tl_class'=>'clr'),
-            'sql'                   => "varchar(255) NOT NULL default ''",
-        ),
         'orderstatus_new' => array
         (
             'label'                 => &$GLOBALS['TL_LANG']['tl_iso_config']['orderstatus_new'],
@@ -531,6 +524,17 @@ $GLOBALS['TL_DCA']['tl_iso_config'] = array
             'eval'                  => array('mandatory'=>true, 'includeBlankOption'=>true, 'tl_class'=>'w50'),
             'sql'                   => "int(10) unsigned NOT NULL default '0'",
             'relation'              => array('type'=>'hasOne', 'load'=>'lazy'),
+        ),
+        'invoiceDocument' => array
+        (
+            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_config']['invoiceDocument'],
+            'exclude'               => true,
+            'filter'                => true,
+            'inputType'             => 'select',
+            'foreignKey'            => 'tl_iso_document.name',
+            'eval'                  => array('mandatory'=>true, 'includeBlankOption'=>true, 'tl_class'=>'w50'),
+            'relation'              => array('type'=>'hasOne', 'load'=>'lazy'),
+            'sql'                   => "int(10) NOT NULL default '0'"
         ),
         'templateGroup' => array
         (
