@@ -26,34 +26,6 @@
 <?php endif; ?>
 
 <table>
-<tfoot>
-    <tr class="foot_0 foot_first subtotal">
-        <td class="col_first">&nbsp;</td>
-        <td class="name" colspan="2"><?php echo $GLOBALS['TL_LANG']['MSC']['subTotalLabel']; ?></td>
-        <td class="price">&nbsp;</td>
-        <td class="price total"><?php echo $this->subtotal; ?></td>
-        <td class="<?php if(!$this->editable) echo 'col_last '; ?>tax">&nbsp;</td><?php if($this->editable): ?>
-        <td class="col_last remove">&nbsp;</td><?php endif; ?>
-    </tr>
-<?php foreach ($this->surcharges as $surcharge): ?>
-    <tr class="<?php echo $surcharge['rowClass']; ?>">
-        <td class="col_first">&nbsp;</td>
-        <td class="name" colspan="2"><?php echo $surcharge['label']; ?></td>
-        <td class="price"><?php echo $surcharge['price']; ?></td>
-        <td class="price total"><?php echo $surcharge['total_price']; ?></td>
-        <td class="<?php if(!$this->editable) echo 'col_last '; ?>tax"><?php echo $surcharge['tax_id']; ?></td><?php if($this->editable): ?>
-        <td class="col_last remove">&nbsp;</td><?php endif; ?>
-    </tr>
-<?php endforeach; ?>
-    <tr class="foot_<?php echo count($this->surcharges)+1; ?> foot_last total">
-        <td class="col_first">&nbsp;</td>
-        <td class="name" colspan="2"><?php echo $GLOBALS['TL_LANG']['MSC']['grandTotalLabel']; ?></td>
-        <td class="price">&nbsp;</td>
-        <td class="price total"><?php echo $this->total; ?></td>
-        <td class="<?php if(!$this->editable) echo 'col_last '; ?>tax">&nbsp;</td><?php if($this->editable): ?>
-        <td class="col_last remove">&nbsp;</td><?php endif; ?>
-    </tr>
-</tfoot>
 <tbody>
 <?php foreach($this->items as $item): ?>
     <tr class="<?php echo $item['rowClass']; ?>">
@@ -86,6 +58,38 @@
 <?php endif; ?>
 <?php endforeach; ?>
 </tbody>
+<?php
+// we know this is invalid markup but nor Outlook nor TCPDF support putting <thead> or <tfoot> in front of <tbody>
+// you're free to adjust the template to your needs
+?>
+<tfoot>
+    <tr class="foot_0 foot_first subtotal">
+        <td class="col_first">&nbsp;</td>
+        <td class="name" colspan="2"><?php echo $GLOBALS['TL_LANG']['MSC']['subTotalLabel']; ?></td>
+        <td class="price">&nbsp;</td>
+        <td class="price total"><?php echo $this->subtotal; ?></td>
+        <td class="<?php if(!$this->editable) echo 'col_last '; ?>tax">&nbsp;</td><?php if($this->editable): ?>
+        <td class="col_last remove">&nbsp;</td><?php endif; ?>
+    </tr>
+    <?php foreach ($this->surcharges as $surcharge): ?>
+    <tr class="<?php echo $surcharge['rowClass']; ?>">
+        <td class="col_first">&nbsp;</td>
+        <td class="name" colspan="2"><?php echo $surcharge['label']; ?></td>
+        <td class="price"><?php echo $surcharge['price']; ?></td>
+        <td class="price total"><?php echo $surcharge['total_price']; ?></td>
+        <td class="<?php if(!$this->editable) echo 'col_last '; ?>tax"><?php echo $surcharge['tax_id']; ?></td><?php if($this->editable): ?>
+        <td class="col_last remove">&nbsp;</td><?php endif; ?>
+    </tr>
+    <?php endforeach; ?>
+    <tr class="foot_<?php echo count($this->surcharges)+1; ?> foot_last total">
+        <td class="col_first">&nbsp;</td>
+        <td class="name" colspan="2"><?php echo $GLOBALS['TL_LANG']['MSC']['grandTotalLabel']; ?></td>
+        <td class="price">&nbsp;</td>
+        <td class="price total"><?php echo $this->total; ?></td>
+        <td class="<?php if(!$this->editable) echo 'col_last '; ?>tax">&nbsp;</td><?php if($this->editable): ?>
+        <td class="col_last remove">&nbsp;</td><?php endif; ?>
+    </tr>
+</tfoot>
 </table>
 
 <?php if($this->editable): ?>
