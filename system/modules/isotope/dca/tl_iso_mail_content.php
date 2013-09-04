@@ -126,7 +126,7 @@ $GLOBALS['TL_DCA']['tl_iso_mail_content'] = array
             'exclude'               => true,
             'inputType'             => 'select',
             'default'               => $GLOBALS['TL_LANGUAGE'],
-            'options'               => $this->getLanguages(),
+            'options'               => System::getLanguages(),
             'eval'                  => array('mandatory'=>true, 'tl_class'=>'w50', 'chosen'=>true),
             'sql'                   => "varchar(5) NOT NULL default ''",
         ),

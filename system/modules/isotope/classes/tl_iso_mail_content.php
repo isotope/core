@@ -40,7 +40,7 @@ class tl_iso_mail_content extends \Backend
     {
         if (!is_array($this->arrLanguages))
         {
-            $arrLanguages = $this->getLanguages();
+            $arrLanguages = \System::getLanguages();
         }
 
         $strHtml = (!$arrRow['textOnly']) ? $arrRow['html'] . '<hr>' : '';
