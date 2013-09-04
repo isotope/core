@@ -244,7 +244,6 @@ class ProductCollectionItem extends \Model
         return $this;
     }
 
-
     /**
      * Calculate the sum of a database column
      * @param   string
@@ -255,17 +254,17 @@ class ProductCollectionItem extends \Model
     public static function sumBy($strField, $strColumn=null, $varValue=null)
     {
         if (static::$strTable == '')
-		{
-			return 0;
-		}
+        {
+            return 0;
+        }
 
-		$strQuery = "SELECT SUM(" . $strField . ") AS sum FROM " . static::$strTable;
+        $strQuery = "SELECT SUM(" . $strField . ") AS sum FROM " . static::$strTable;
 
-		if ($strColumn !== null)
-		{
-			$strQuery .= " WHERE " . (is_array($strColumn) ? implode(" AND ", $strColumn) : static::$strTable . '.' . $strColumn . "=?");
-		}
+        if ($strColumn !== null)
+        {
+            $strQuery .= " WHERE " . (is_array($strColumn) ? implode(" AND ", $strColumn) : static::$strTable . '.' . $strColumn . "=?");
+        }
 
-		return (int) \Database::getInstance()->prepare($strQuery)->execute($varValue)->sum;
+        return (int) \Database::getInstance()->prepare($strQuery)->execute($varValue)->sum;
     }
 }

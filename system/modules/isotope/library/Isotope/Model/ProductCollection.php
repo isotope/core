@@ -578,15 +578,15 @@ abstract class ProductCollection extends TypeAgent
      */
     public function lock()
     {
-    	if ($this->blnLocked) {
-	    	throw new \LogicException('Product collection is already locked.');
-    	}
+        if ($this->blnLocked) {
+            throw new \LogicException('Product collection is already locked.');
+        }
 
-		$this->save();
+        $this->save();
 
-	    $this->blnLocked = true;
+        $this->blnLocked = true;
 
-	    $this->Database->query("UPDATE tl_iso_collection SET locked='1' WHERE id=" . $this->{$this->strPk});
+        $this->Database->query("UPDATE tl_iso_collection SET locked='1' WHERE id=" . $this->{$this->strPk});
     }
 
 
