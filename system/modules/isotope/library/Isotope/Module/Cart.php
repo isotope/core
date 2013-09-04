@@ -100,8 +100,6 @@ class Cart extends Module
 
         $blnReload = false;
         $arrQuantity = \Input::post('quantity');
-        // @todo: this variable is not being used?
-        $blnInsufficientSubtotal = (Isotope::getConfig()->cartMinSubtotal > 0 && Isotope::getConfig()->cartMinSubtotal > Isotope::getCart()->getSubtotal()) ? true : false;
         $arrItems = $objTemplate->items;
 
         foreach ($arrItems as $k => $arrItem) {
@@ -138,10 +136,6 @@ class Cart extends Module
         $objTemplate->formSubmit = $this->strFormId;
         $objTemplate->action = \Environment::get('request');
         $objTemplate->buttons = $arrButtons;
-
-        if ($this->hasInsufficientSubtotal()) {
-            $objTemplate->minSubtotalError = sprintf($GLOBALS['TL_LANG']['ERR']['cartMinSubtotal'], Isotope::formatPriceWithCurrency(Isotope::getConfig()->cartMinSubtotal));
-        }
 
         $this->Template->empty = false;
         $this->Template->collection = Isotope::getCart();
@@ -182,7 +176,7 @@ class Cart extends Module
         }
 
         // Add button to checkout page
-        if ($this->iso_checkout_jumpTo > 0 && !$this->hasInsufficientSubtotal()) {
+        if ($this->iso_checkout_jumpTo > 0 && !Isotope::getCart()->hasErrors()) {
             $objJumpToCheckout = \PageModel::findByPk($this->iso_checkout_jumpTo);
 
             if (null !== $objJumpToCheckout) {
@@ -213,18 +207,5 @@ class Cart extends Module
         }
 
         return $arrButtons;
-    }
-
-    /**
-     * Verify if cart has enough subtotal to continue to checkout
-     * @return  bool
-     */
-    protected function hasInsufficientSubtotal()
-    {
-        if (Isotope::getConfig()->cartMinSubtotal > 0 && Isotope::getConfig()->cartMinSubtotal > Isotope::getCart()->getSubtotal()) {
-            return true;
-        }
-
-        return false;
     }
 }

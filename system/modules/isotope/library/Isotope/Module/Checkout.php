@@ -397,11 +397,11 @@ class Checkout extends Module
         }
 
         // Insufficient cart subtotal
-        if (Isotope::getConfig()->cartMinSubtotal > 0 && Isotope::getConfig()->cartMinSubtotal > Isotope::getCart()->getSubtotal())
+        if (Isotope::getCart()->hasErrors())
         {
             $this->Template = new \Isotope\Template('mod_message');
             $this->Template->type = 'error';
-            $this->Template->message = sprintf($GLOBALS['TL_LANG']['ERR']['cartMinSubtotal'], Isotope::formatPriceWithCurrency(Isotope::getConfig()->cartMinSubtotal));
+            $this->Template->message = implode("</p>\n<p class=\"error message\">", Isotope::getCart()->getErrors());
 
             return false;
         }

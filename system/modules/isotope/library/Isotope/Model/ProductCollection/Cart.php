@@ -159,4 +159,32 @@ class Cart extends ProductCollection implements IsotopeProductCollection
 
          return $objCart;
     }
+
+    /**
+     * Check if minimum order amount is reached
+     * @return  bool
+     */
+    public function hasErrors()
+    {
+        if (Isotope::getConfig()->cartMinSubtotal > 0 && Isotope::getConfig()->cartMinSubtotal > $this->getSubtotal()) {
+            return true;
+        }
+
+        return parent::hasErrors();
+    }
+
+    /**
+     * Get error messages for the cart
+     * @return  array
+     */
+    public function getErrors()
+    {
+        $arrErrors = parent::getErrors();
+
+        if (Isotope::getConfig()->cartMinSubtotal > 0 && Isotope::getConfig()->cartMinSubtotal > $this->getSubtotal()) {
+            $arrErrors[] = sprintf($GLOBALS['TL_LANG']['ERR']['cartMinSubtotal'], Isotope::formatPriceWithCurrency(Isotope::getConfig()->cartMinSubtotal));
+        }
+
+        return $arrErrors;
+    }
 }
