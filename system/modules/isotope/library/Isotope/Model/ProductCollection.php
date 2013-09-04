@@ -156,6 +156,10 @@ abstract class ProductCollection extends TypeAgent
      */
     public function __set($strKey, $varValue)
     {
+        if ($strKey == 'locked') {
+            throw new \InvalidArgumentException('Cannot set lock status of collection');
+        }
+
         // If there is a database field for that key, we store it there
         if (array_key_exists($strKey, $this->arrData) || \Database::getInstance()->fieldExists($strKey, static::$strTable)) {
             $this->arrData[$strKey] = $varValue;
