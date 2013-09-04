@@ -163,21 +163,23 @@ abstract class TypeAgent extends \Model
 
         // if find() method is called in a specific model type, results must be of that type
         if (($strType = array_search(get_called_class(), static::getModelTypes())) !== false) {
+
+            // Convert to array if necessary
+            $arrOptions['value'] = (array) $arrOptions['value'];
+            $arrOptions['value'][] = $strType;
+
+            if (!is_array($arrOptions['column']))
+            {
+                $arrOptions['column'] = array(static::$strTable . '.' . $arrOptions['column'].'=?');
+            }
+
             $objRelations = new \DcaExtractor(static::$strTable);
             $arrRelations = $objRelations->getRelations();
 
-            if (!isset($arrRelations['type'])) {
-
-                // Convert to array if necessary
-                $arrOptions['value'] = (array) $arrOptions['value'];
-
-                if (!is_array($arrOptions['column']))
-                {
-                    $arrOptions['column'] = array(static::$strTable . '.' . $arrOptions['column'].'=?');
-                }
-
+            if (isset($arrRelations['type'])) {
+                $arrOptions['column'][] = 'type IN (SELECT ' . $arrRelations['type']['field'] . ' FROM ' . $arrRelations['type']['table'] . ' WHERE class=?)';
+            } else {
                 $arrOptions['column'][] = static::$strTable . '.type=?';
-                $arrOptions['value'][] = $strType;
             }
         }
 
