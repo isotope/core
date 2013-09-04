@@ -111,7 +111,7 @@ $GLOBALS['TL_DCA']['tl_iso_document'] = array
     (
         '__selector__'              => array('type'),
         'default'                   => '{type_legend},name,type',
-        'standard'                  => '{type_legend},name,type;{config_legend},logo,fileTitle;{template_legend},template',
+        'standard'                  => '{type_legend},name,type;{config_legend},logo,fileTitle;{template_legend},documentTpl,collectionTpl',
     ),
 
     // Fields
@@ -160,12 +160,21 @@ $GLOBALS['TL_DCA']['tl_iso_document'] = array
             'eval'                  => array('mandatory'=>true, 'decodeEntities'=>true, 'maxlength'=>255, 'tl_class'=>'long'),
             'sql'                   => "varchar(255) NOT NULL default ''"
         ),
-        'template'  => array
+        'documentTpl'  => array
         (
-            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_document']['template'],
+            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_document']['documentTpl'],
             'exclude'               => true,
             'inputType'             => 'select',
             'options_callback'      => array('Isotope\tl_iso_document', 'getDocumentTemplates'),
+            'eval'                  => array('includeBlankOption'=>true, 'chosen'=>true, 'tl_class'=>'w50'),
+            'sql'                   => "varchar(64) NOT NULL default ''",
+        ),
+        'collectionTpl'  => array
+        (
+            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_document']['collectionTpl'],
+            'exclude'               => true,
+            'inputType'             => 'select',
+            'options_callback'      => array('Isotope\tl_module', 'getCollectionTemplates'),
             'eval'                  => array('includeBlankOption'=>true, 'chosen'=>true, 'tl_class'=>'w50'),
             'sql'                   => "varchar(64) NOT NULL default ''",
         )

@@ -20,7 +20,8 @@ $GLOBALS['TL_LANG']['tl_iso_document']['name']                      = array('Doc
 $GLOBALS['TL_LANG']['tl_iso_document']['type']                      = array('Type of document', 'Select a particular document rendering class.');
 $GLOBALS['TL_LANG']['tl_iso_document']['logo']                      = array('Logo', 'Select a logo.');
 $GLOBALS['TL_LANG']['tl_iso_document']['fileTitle']                 = array('File title', 'You can use simple tokens ("collection_*" whereas * equals the database column of the collection) to render your file title (e.g. "Invoice_##collection_order_id##").');
-$GLOBALS['TL_LANG']['tl_iso_document']['template']                  = array('Template', 'Choose a template you want to render this document with.');
+$GLOBALS['TL_LANG']['tl_iso_document']['documentTpl']               = array('Document template', 'Choose a template you want to render this document with.');
+$GLOBALS['TL_LANG']['tl_iso_document']['collectionTpl']             = array('Collection template', 'Choose a collection template you want to render the products with.');
 
 /**
  * Buttons
