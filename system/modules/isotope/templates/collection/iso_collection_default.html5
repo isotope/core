@@ -21,6 +21,10 @@
 <input type="hidden" name="REQUEST_TOKEN" value="{{request_token}}">
 <?php endif; ?>
 
+<?php if ($this->collection->hasErrors()): ?>
+<p class="error"><?php echo implode('</p><p class="error">', $this->collection->getErrors()); ?></p>
+<?php endif; ?>
+
 <table>
 <tfoot>
     <tr class="foot_0 foot_first subtotal">
@@ -75,7 +79,11 @@
         <td class="col_4 price total"><?php echo $item['total']; ?></td>
         <td class="col_5 <?php if(!$this->editable) echo 'col_last '; ?>tax"><?php echo $item['tax_id']; ?></td><?php if($this->editable): ?>
         <td class="col_6 col_last remove"><a href="<?php echo $item['remove_href']; ?>" title="<?php echo $item['remove_title']; ?>"><?php echo $item['remove_link']; ?></a></td><?php endif; ?>
+    </tr><?php if($item['item']->hasErrors()): ?>
+    <tr class="<?php echo $item['rowClass']; ?>">
+        <td colspan="7"><p class="error"><?php echo implode('</p><p class="error">', $item['item']->getErrors()); ?></p></td>
     </tr>
+<?php endif; ?>
 <?php endforeach; ?>
 </tbody>
 </table>

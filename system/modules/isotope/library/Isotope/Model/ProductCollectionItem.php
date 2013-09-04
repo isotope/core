@@ -41,6 +41,12 @@ class ProductCollectionItem extends \Model
     protected $arrDownloads;
 
     /**
+     * Errors
+     * @var array
+     */
+    protected $arrErrors = array();
+
+    /**
      * True if product collection is locked
      * @var bool
      */
@@ -266,5 +272,32 @@ class ProductCollectionItem extends \Model
         }
 
         return (int) \Database::getInstance()->prepare($strQuery)->execute($varValue)->sum;
+    }
+
+    /**
+     * Add an error message
+     * @param   string
+     */
+    public function addError($strError)
+    {
+        $this->arrErrors[] = $strError;
+    }
+
+    /**
+     * Return true if the collection item has errors
+     * @return  bool
+     */
+    public function hasErrors()
+    {
+        return !empty($this->arrErrors);
+    }
+
+    /**
+     * Return the errors array
+     * @return  array
+     */
+    public function getErrors()
+    {
+        return $this->arrErrors;
     }
 }

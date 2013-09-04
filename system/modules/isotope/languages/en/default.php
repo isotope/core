@@ -34,6 +34,8 @@ $GLOBALS['TL_LANG']['ERR']['imageInFallback']                   = 'This image ha
 $GLOBALS['TL_LANG']['ERR']['datepickerRgxp']                    = 'Select an appropriate field validation (date, time, date and time) to enable the date picker.';
 $GLOBALS['TL_LANG']['ERR']['emptyDownloadsFolder']              = 'The selected folder is empty.';
 $GLOBALS['TL_LANG']['ERR']['checkoutNotAllowed']                = 'User checkout not allowed';
+$GLOBALS['TL_LANG']['ERR']['collectionItemNotAvailable']        = 'This product is no longer available.';
+$GLOBALS['TL_LANG']['ERR']['collectionErrorInItems']            = 'Please check the error messages in your products.';
 
 /**
  * Miscellaneous

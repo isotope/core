@@ -71,6 +71,12 @@ abstract class ProductCollection extends TypeAgent
     protected $arrSurcharges;
 
     /**
+     * Errors
+     * @var array
+     */
+    protected $arrErrors = array();
+
+    /**
      * Shipping method for this collection, if shipping is required
      * @var IsotopeShipping
      */
@@ -718,10 +724,9 @@ abstract class ProductCollection extends TypeAgent
                         $objItem->lock();
                     }
 
-                    // Remove item from collection if it is no longer available
+                    // Add error message for items no longer available
                     if (!$this->isLocked() && (!$objItem->hasProduct() || !$objItem->getProduct()->isAvailableForCollection($this))) {
-                        $this->deleteItem($objItem);
-                        continue;
+                        $objItem->addError($GLOBALS['TL_LANG']['ERR']['collectionItemNotAvailable']);
                     }
 
                     $this->arrItems[$objItem->id] = $objItem;
@@ -1179,5 +1184,51 @@ abstract class ProductCollection extends TypeAgent
                 $objCallback->$callback[1]($objTemplate, $arrItems, $this);
             }
         }
+    }
+
+    /**
+     * Add an error message
+     * @param   string
+     */
+    public function addError($strError)
+    {
+        $this->arrErrors[] = $strError;
+    }
+
+    /**
+     * Check if collection or any item has errors
+     * @return  bool
+     */
+    public function hasErrors()
+    {
+        if (!empty($this->arrErrors)) {
+            return true;
+        }
+
+        foreach ($this->getItems() as $objItem) {
+            if ($objItem->hasErrors()) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * Return the errors array
+     * @return  array
+     */
+    public function getErrors()
+    {
+        $arrErrors = $this->arrErrors;
+
+        foreach ($this->getItems() as $objItem) {
+            if ($objItem->hasErrors()) {
+                array_unshift($arrErrors, $GLOBALS['TL_LANG']['ERR']['collectionErrorInItems']);
+                break;
+            }
+        }
+
+        return $arrErrors;
     }
 }
