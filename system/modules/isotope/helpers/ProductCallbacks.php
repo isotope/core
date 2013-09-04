@@ -374,6 +374,9 @@ class ProductCallbacks extends \Backend
         $arrFields = &$GLOBALS['TL_DCA']['tl_iso_products']['fields'];
         $arrAttributes = &$GLOBALS['TL_DCA']['tl_iso_products']['attributes'];
 
+        // Unset foreign key to activate options_callback
+        unset($arrFields['type']['foreignKey']);
+
         // Set default product type
         $arrFields['type']['default'] = (int) $this->Database->execute("SELECT id FROM tl_iso_producttypes WHERE fallback='1'" . ($this->User->isAdmin ? '' : (" AND id IN (" . implode(',', $this->User->iso_product_types) . ")")))->id;
 

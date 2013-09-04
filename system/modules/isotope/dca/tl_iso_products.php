@@ -258,7 +258,7 @@ $GLOBALS['TL_DCA']['tl_iso_products'] = array
             'filter'                => true,
             'inputType'             => 'select',
             'options_callback'      => array('Isotope\ProductCallbacks', 'getProductTypes'),
-            'foreignKey'            => ((TL_MODE == 'FE' || strlen(\Input::get('table'))) ? 'tl_iso_producttypes.name' : null),
+            'foreignKey'            => 'tl_iso_producttypes.name',
             'eval'                  => array('mandatory'=>true, 'submitOnChange'=>true, 'includeBlankOption'=>true, 'tl_class'=>'clr'),
             'attributes'            => array('legend'=>'general_legend', 'fixed'=>true, 'inherit'=>true),
             'sql'                   => "int(10) unsigned NOT NULL default '0'",
