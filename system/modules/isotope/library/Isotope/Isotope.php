@@ -109,40 +109,37 @@ class Isotope extends \Controller
             static::getInstance()->call('loadDataContainer', 'tl_iso_products');
             \System::loadLanguageFile('tl_iso_products');
 
-            if (TL_MODE == 'FE' && strpos(\Environment::get('script'), 'postsale.php') === false && strpos(\Environment::get('script'), 'cron.php') === false) {
+            // Initialize request cache for product list filters
+            if (\Input::get('isorc') != '') {
 
-                // Initialize request cache for product list filters
-                if (\Input::get('isorc') != '') {
+                $objRequestCache = \Database::getInstance()->prepare("SELECT * FROM tl_iso_requestcache WHERE id=? AND store_id=?")->execute(\Input::get('isorc'), static::getConfig()->store_id);
 
-                    $objRequestCache = \Database::getInstance()->prepare("SELECT * FROM tl_iso_requestcache WHERE id=? AND store_id=?")->execute(\Input::get('isorc'), static::getConfig()->store_id);
+                if ($objRequestCache->numRows) {
 
-                    if ($objRequestCache->numRows) {
+                    $GLOBALS['ISO_FILTERS'] = deserialize($objRequestCache->filters);
+                    $GLOBALS['ISO_SORTING'] = deserialize($objRequestCache->sorting);
+                    $GLOBALS['ISO_LIMIT'] = deserialize($objRequestCache->limits);
 
-                        $GLOBALS['ISO_FILTERS'] = deserialize($objRequestCache->filters);
-                        $GLOBALS['ISO_SORTING'] = deserialize($objRequestCache->sorting);
-                        $GLOBALS['ISO_LIMIT'] = deserialize($objRequestCache->limits);
+                    global $objPage;
+                    $objPage->noSearch = 1;
 
-                        global $objPage;
-                        $objPage->noSearch = 1;
+                } else {
 
-                    } else {
+                    unset($_GET['isorc']);
 
-                        unset($_GET['isorc']);
-
-                        // Unset the language parameter
-                        if ($GLOBALS['TL_CONFIG']['addLanguageToUrl']) {
-                            unset($_GET['language']);
-                        }
-
-                        $strQuery = http_build_query($_GET);
-                        \System::redirect(preg_replace('/\?.*$/i', '', \Environment::get('request')) . (($strQuery) ? '?' . $strQuery : ''));
+                    // Unset the language parameter
+                    if ($GLOBALS['TL_CONFIG']['addLanguageToUrl']) {
+                        unset($_GET['language']);
                     }
-                }
 
-                // Set the product from the auto_item parameter
-                if ($GLOBALS['TL_CONFIG']['useAutoItem'] && isset($_GET['auto_item'])) {
-                    \Input::setGet('product', \Input::get('auto_item'));
+                    $strQuery = http_build_query($_GET);
+                    \System::redirect(preg_replace('/\?.*$/i', '', \Environment::get('request')) . (($strQuery) ? '?' . $strQuery : ''));
                 }
+            }
+
+            // Set the product from the auto_item parameter
+            if ($GLOBALS['TL_CONFIG']['useAutoItem'] && isset($_GET['auto_item'])) {
+                \Input::setGet('product', \Input::get('auto_item'));
             }
         }
     }
