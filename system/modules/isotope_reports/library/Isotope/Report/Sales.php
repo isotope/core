@@ -11,7 +11,7 @@
 
 namespace Isotope\Report;
 
-use \Isotope\Isotope;
+use Isotope\Isotope;
 
 
 abstract class Sales extends Report
