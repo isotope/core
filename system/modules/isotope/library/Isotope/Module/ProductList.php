@@ -116,6 +116,7 @@ class ProductList extends Module
         }
 
         global $objPage;
+        $intPage = ($this->iso_category_scope == 'article' ? $GLOBALS['ISO_CONFIG']['current_article']['pid'] : $objPage->id);
         $arrProducts = null;
 
         if ($this->blnCacheProducts)
@@ -169,7 +170,7 @@ class ProductList extends Module
             // Display "loading products" message and add cache flag
             if ($this->blnCacheProducts)
             {
-                $blnCacheMessage = (bool) $this->iso_productcache[$pageId][(int) \Input::get('isorc')];
+                $blnCacheMessage = (bool) $this->iso_productcache[$intPage][(int) \Input::get('isorc')];
 
                 if ($blnCacheMessage && !\Input::get('buildCache'))
                 {
@@ -197,7 +198,7 @@ class ProductList extends Module
                 if ($blnCacheMessage != $this->blnCacheProducts)
                 {
                     $arrCacheMessage = $this->iso_productcache;
-                    $arrCacheMessage[$pageId][(int) \Input::get('isorc')] = $this->blnCacheProducts;
+                    $arrCacheMessage[$intPage][(int) \Input::get('isorc')] = $this->blnCacheProducts;
                     \Database::getInstance()->prepare("UPDATE tl_module SET iso_productcache=? WHERE id=?")->execute(serialize($arrCacheMessage), $this->id);
                 }
 
@@ -213,7 +214,7 @@ class ProductList extends Module
                     }
 
                     // Also delete all expired caches if we run a delete anyway
-                    ProductCache::deleteByPageAndModuleOrExpired($pageId, $this->id);
+                    ProductCache::deleteByPageAndModuleOrExpired($intPage, $this->id);
 
                     \Database::getInstance()->prepare("INSERT INTO tl_iso_productcache (page_id,module_id,requestcache_id,groups,keywords,products,expires) VALUES (?,?,?,?,?,?,?)")
                                             ->executeUncached($pageId, $this->id, (int) \Input::get('isorc'), $groups, (string) \Input::get('keywords'), implode(',', $arrIds), $this->getProductCacheExpiration());
