@@ -43,20 +43,6 @@ class Cart extends ProductCollection implements IsotopeProductCollection
     protected static $strCookie = 'ISOTOPE_TEMP_CART';
 
 
-    /**
-     * Import a front end user
-     */
-    public function __construct(\Database\Result $objResult=null)
-    {
-        parent::__construct($objResult);
-
-        if (FE_USER_LOGGED_IN === true)
-        {
-            $this->import('FrontendUser', 'User');
-        }
-    }
-
-
     public function getBillingAddress()
     {
         $objAddress = parent::getBillingAddress();

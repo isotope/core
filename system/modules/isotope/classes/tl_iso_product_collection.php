@@ -28,16 +28,6 @@ class tl_iso_product_collection extends \Backend
 {
 
     /**
-     * Import an Isotope object
-     */
-    public function __construct()
-    {
-        parent::__construct();
-        $this->import('Isotope\Isotope', 'Isotope');
-    }
-
-
-    /**
      * Generate the order label and return it as string
      * @param array
      * @param string

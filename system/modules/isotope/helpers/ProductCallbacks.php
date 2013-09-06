@@ -67,7 +67,6 @@ class ProductCallbacks extends \Backend
         parent::__construct();
 
         $this->import('BackendUser', 'User');
-        $this->import('Isotope\Isotope', 'Isotope');
     }
 
 
@@ -364,7 +363,6 @@ class ProductCallbacks extends \Backend
      */
     public function buildPaletteString($dc)
     {
-        $this->import('Isotope\Isotope', 'Isotope');
         $this->loadDataContainer('tl_iso_attributes');
 
         if (\Input::get('act') == '' && \Input::get('key') == '' || \Input::get('act') == 'select') {

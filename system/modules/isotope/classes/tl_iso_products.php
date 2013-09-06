@@ -34,7 +34,6 @@ class tl_iso_products extends \Backend
         parent::__construct();
 
         $this->import('BackendUser', 'User');
-        $this->import('Isotope\Isotope', 'Isotope');
     }
 
 

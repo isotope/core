@@ -642,8 +642,6 @@ class tl_iso_rules extends \Backend
      */
     public function getAttributeNames($dc)
     {
-        $this->import('Isotope\Isotope', 'Isotope');
-
         $arrAttributes = array();
 
         foreach( $GLOBALS['TL_DCA']['tl_iso_products']['fields'] as $attribute => $config )

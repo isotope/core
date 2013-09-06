@@ -67,8 +67,6 @@ class Isotope extends \Controller
     protected function __construct()
     {
         parent::__construct();
-
-        $this->import('FrontendUser', 'User');
     }
 
 

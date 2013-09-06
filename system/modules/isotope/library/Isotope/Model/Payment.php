@@ -111,7 +111,6 @@ abstract class Payment extends TypeAgent
 
         if ($this->protected)
         {
-            $this->import('FrontendUser', 'User');
             $arrGroups = deserialize($this->groups);
 
             if (!is_array($arrGroups) || empty($arrGroups) || !count(array_intersect($arrGroups, \FrontendUser::getInstance()->groups))) // Can't use empty() because its an object property (using __get)
