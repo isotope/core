@@ -179,7 +179,7 @@ class ProductList extends Module
                 // Do not write cache if table is locked. That's the case if another process is already writing cache
                 if (ProductCache::isWritable()) {
 
-                    \Database::getInstance()->lockTables(array('tl_iso_productcache'=>'WRITE', 'tl_iso_products'=>'READ'));
+                    \Database::getInstance()->lockTables(array(ProductCache::getTable()=>'WRITE', 'tl_iso_products'=>'READ'));
 
                     $arrIds = array();
                     foreach ($arrProducts as $objProduct) {
