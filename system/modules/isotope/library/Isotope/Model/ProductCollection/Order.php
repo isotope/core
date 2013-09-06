@@ -459,7 +459,7 @@ class Order extends ProductCollection implements IsotopeProductCollection
         $objBillingAddress = $this->getBillingAddress();
         $objShippingAddress = $this->getShippingAddress();
 
-        if (null !== $objBillingAddress && $objBillingAddress->ptable != static::$strTable && $objBillingAddress->pid != $this->id) {
+        if (null !== $objBillingAddress && ($objBillingAddress->ptable != static::$strTable || $objBillingAddress->pid != $this->id)) {
 
             $objNew = clone $objBillingAddress;
             $objNew->ptable = static::$strTable;
@@ -476,7 +476,7 @@ class Order extends ProductCollection implements IsotopeProductCollection
             }
         }
 
-        if (null !== $objShippingAddress && $objShippingAddress->ptable != static::$strTable && $objShippingAddress->pid != $this->id) {
+        if (null !== $objShippingAddress && ($objShippingAddress->ptable != static::$strTable || $objShippingAddress->pid != $this->id)) {
 
             $objNew = clone $objShippingAddress;
             $objNew->ptable = static::$strTable;
