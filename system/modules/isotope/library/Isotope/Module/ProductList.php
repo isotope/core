@@ -201,8 +201,10 @@ class ProductList extends Module
                     // Delete existing cache if necessary
                     ProductCache::deleteForPageAndModuleOrExpired($intPage, $this->id);
 
-                    \Database::getInstance()->prepare("INSERT INTO tl_iso_productcache (page_id,module_id,requestcache_id,groups,keywords,products,expires) VALUES (?,?,?,?,?,?,?)")
-                                            ->executeUncached($pageId, $this->id, (int) \Input::get('isorc'), $groups, (string) \Input::get('keywords'), implode(',', $arrIds), $this->getProductCacheExpiration());
+                    $objCache = ProductCache::createForPageAndModule($intPage, $this->id);
+                    $objCache->expires = $this->getProductCacheExpiration();
+                    $objCache->setProductIds($arrIds);
+                    $objCache->save();
 
                     \Database::getInstance()->unlockTables();
                 }

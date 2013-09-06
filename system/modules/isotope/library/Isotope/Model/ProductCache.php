@@ -42,6 +42,18 @@ class ProductCache extends \Model
     }
 
     /**
+     * Set array of products IDs for this cache
+     * @param   array
+     * @return  ProductCache
+     */
+    public function setProductIds(array $arrIds)
+    {
+        $this->products = implode(',', array_map('intval', $arrIds));
+
+        return $this;
+    }
+
+    /**
      * Find cache for module on page (including current environment)
      * @param   int
      * @param   int
@@ -61,6 +73,27 @@ class ProductCache extends \Model
             array($intPage, $intModule, (int) \Input::get('isorc'), static::getCacheableGroups(), (string) \Input::get('keywords')),
             $arrOptions
         );
+    }
+
+    /**
+     * Create a cache object for module on page (including current environment
+     * @param   int
+     * @param   int
+     * @return  ProductCache
+     */
+    public static function createForPageAndModule($intPage, $intModule)
+    {
+        $objCache = new static();
+
+        $objCache->setRow(array(
+            'page_id'           => $intPage,
+            'module_id'         => $intModule,
+            'requestcache_id'   => (int) \Input::get('isorc'),
+            'groups'            => static::getCacheableGroups(),
+            'keywords'          => (string) \Input::get('keywords'),
+        ));
+
+        return $objCache;
     }
 
     /**
