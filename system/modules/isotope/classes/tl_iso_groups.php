@@ -112,9 +112,9 @@ class tl_iso_groups extends \Backend
                         // Add permissions on user level
                         if ($this->User->inherit == 'custom' || !$this->User->groups[0])
                         {
-                            $objUser = $this->Database->prepare("SELECT iso_groups, iso_groupp FROM tl_user WHERE id=?")
-                                                       ->limit(1)
-                                                       ->executeUncached($this->User->id);
+                            $objUser = \Database::getInstance()->prepare("SELECT iso_groups, iso_groupp FROM tl_user WHERE id=?")
+                                                               ->limit(1)
+                                                               ->executeUncached($this->User->id);
 
                             $arrPermissions = deserialize($objUser->iso_groupp);
 
@@ -123,17 +123,17 @@ class tl_iso_groups extends \Backend
                                 $arrAccess = deserialize($objUser->iso_groups);
                                 $arrAccess[] = \Input::get('id');
 
-                                $this->Database->prepare("UPDATE tl_user SET iso_groups=? WHERE id=?")
-                                               ->execute(serialize($arrAccess), $this->User->id);
+                                \Database::getInstance()->prepare("UPDATE tl_user SET iso_groups=? WHERE id=?")
+                                                        ->execute(serialize($arrAccess), $this->User->id);
                             }
                         }
 
                         // Add permissions on group level
                         elseif ($this->User->groups[0] > 0)
                         {
-                            $objGroup = $this->Database->prepare("SELECT iso_groups, iso_groupp FROM tl_user_group WHERE id=?")
-                                                       ->limit(1)
-                                                       ->executeUncached($this->User->groups[0]);
+                            $objGroup = \Database::getInstance()->prepare("SELECT iso_groups, iso_groupp FROM tl_user_group WHERE id=?")
+                                                                ->limit(1)
+                                                                ->executeUncached($this->User->groups[0]);
 
                             $arrPermissions = deserialize($objGroup->iso_groupp);
 
@@ -142,8 +142,8 @@ class tl_iso_groups extends \Backend
                                 $arrAccess = deserialize($objGroup->iso_groups);
                                 $arrAccess[] = \Input::get('id');
 
-                                $this->Database->prepare("UPDATE tl_user_group SET iso_groups=? WHERE id=?")
-                                               ->execute(serialize($arrAccess), $this->User->groups[0]);
+                                \Database::getInstance()->prepare("UPDATE tl_user_group SET iso_groups=? WHERE id=?")
+                                                        ->execute(serialize($arrAccess), $this->User->groups[0]);
                             }
                         }
 
@@ -225,7 +225,7 @@ class tl_iso_groups extends \Backend
 
             if (($intProductType = \Isotope\Backend::getProductTypeForGroup($row['id'])) !== false)
             {
-                $strProductType = $this->Database->execute("SELECT name FROM tl_iso_producttypes WHERE id=" . $intProductType)->name;
+                $strProductType = \Database::getInstance()->execute("SELECT name FROM tl_iso_producttypes WHERE id=" . $intProductType)->name;
                 $strProductType = ' <span style="color:#b3b3b3; padding-left:3px;">[' . $strProductType . ']</span>';
             }
 
@@ -244,7 +244,7 @@ class tl_iso_groups extends \Backend
         $arrGroups = $this->getChildRecords($dc->id, 'tl_iso_groups');
         $arrGroups[] = $dc->id;
 
-        $this->Database->query("UPDATE tl_iso_products SET gid=0 WHERE gid IN (" . implode(',', $arrGroups) . ")");
+        \Database::getInstance()->query("UPDATE tl_iso_products SET gid=0 WHERE gid IN (" . implode(',', $arrGroups) . ")");
     }
 
 

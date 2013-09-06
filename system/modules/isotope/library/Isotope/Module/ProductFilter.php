@@ -83,19 +83,19 @@ class ProductFilter extends Module
             // if all filters are null we don't have to cache (this will prevent useless isorc params from being generated)
             if ($varFilter !== null || $varLimit !== null || $varSorting !== null)
             {
-                $intCacheId = $this->Database->prepare("SELECT id FROM tl_iso_requestcache WHERE store_id=? AND filters" . ($varFilter ? '=' : ' IS ') . "? AND sorting" . ($varSorting ? '=' : ' IS ') . "? AND limits" . ($varLimit ? '=' : ' IS ') . "?")
-                                             ->execute(Isotope::getCart()->store_id, $varFilter, $varSorting, $varLimit)
-                                             ->id;
+                $intCacheId = \Database::getInstance()->prepare("
+                    SELECT id FROM tl_iso_requestcache WHERE store_id=? AND filters" . ($varFilter ? '=' : ' IS ') . "? AND sorting" . ($varSorting ? '=' : ' IS ') . "? AND limits" . ($varLimit ? '=' : ' IS ') . "?
+                ")->execute(Isotope::getCart()->store_id, $varFilter, $varSorting, $varLimit)->id;
 
                 if ($intCacheId)
                 {
-                    $this->Database->query("UPDATE tl_iso_requestcache SET tstamp=$time WHERE id=$intCacheId");
+                    \Database::getInstance()->query("UPDATE tl_iso_requestcache SET tstamp=$time WHERE id=$intCacheId");
                 }
                 else
                 {
-                    $intCacheId = $this->Database->prepare("INSERT INTO tl_iso_requestcache (tstamp,store_id,filters,sorting,limits) VALUES ($time, ?, ?, ?, ?)")
-                                                 ->execute(Isotope::getCart()->store_id, $varFilter, $varSorting, $varLimit)
-                                                 ->insertId;
+                    $intCacheId = \Database::getInstance()->prepare("INSERT INTO tl_iso_requestcache (tstamp,store_id,filters,sorting,limits) VALUES ($time, ?, ?, ?, ?)")
+                                                          ->execute(Isotope::getCart()->store_id, $varFilter, $varSorting, $varLimit)
+                                                          ->insertId;
                 }
 
                 \Input::setGet('isorc', $intCacheId);
@@ -240,14 +240,16 @@ class ProductFilter extends Module
             foreach ($this->iso_filterFields as $strField)
             {
                 $arrValues = array();
-                $objValues = $this->Database->execute("SELECT DISTINCT p1.$strField FROM tl_iso_products p1
-                                                        LEFT OUTER JOIN tl_iso_products p2 ON p1.pid=p2.id
-                                                        WHERE p1.language='' AND p1.$strField!=''"
-                                                        . (BE_USER_LOGGED_IN === true ? '' : " AND p1.published='1' AND (p1.start='' OR p1.start<$time) AND (p1.stop='' OR p1.stop>$time)")
-                                                        . "AND (p1.id IN (SELECT pid FROM tl_iso_product_categories WHERE page_id IN (" . implode(',', $arrCategories) . "))
-                                                           OR p1.pid IN (SELECT pid FROM tl_iso_product_categories WHERE page_id IN (" . implode(',', $arrCategories) . ")))"
-                                                        . (BE_USER_LOGGED_IN === true ? '' : " AND (p1.pid=0 OR (p2.published='1' AND (p2.start='' OR p2.start<$time) AND (p2.stop='' OR p2.stop>$time)))")
-                                                        . ($this->iso_list_where == '' ? '' : " AND {$this->iso_list_where}"));
+                $objValues = \Database::getInstance()->execute("
+                    SELECT DISTINCT p1.$strField FROM tl_iso_products p1
+                    LEFT OUTER JOIN tl_iso_products p2 ON p1.pid=p2.id
+                    WHERE p1.language='' AND p1.$strField!=''"
+                    . (BE_USER_LOGGED_IN === true ? '' : " AND p1.published='1' AND (p1.start='' OR p1.start<$time) AND (p1.stop='' OR p1.stop>$time)")
+                    . "AND (p1.id IN (SELECT pid FROM tl_iso_product_categories WHERE page_id IN (" . implode(',', $arrCategories) . "))
+                       OR p1.pid IN (SELECT pid FROM tl_iso_product_categories WHERE page_id IN (" . implode(',', $arrCategories) . ")))"
+                    . (BE_USER_LOGGED_IN === true ? '' : " AND (p1.pid=0 OR (p2.published='1' AND (p2.start='' OR p2.start<$time) AND (p2.stop='' OR p2.stop>$time)))")
+                    . ($this->iso_list_where == '' ? '' : " AND {$this->iso_list_where}")
+                );
 
                 while ($objValues->next())
                 {
@@ -270,7 +272,7 @@ class ProductFilter extends Module
                     $this->blnCacheRequest = true;
                     unset($GLOBALS['ISO_FILTERS'][$this->id][$strField]);
 
-                    $this->Database->prepare("DELETE FROM tl_iso_requestcache WHERE id=?")->execute(\Input::get('isorc'));
+                    \Database::getInstance()->prepare("DELETE FROM tl_iso_requestcache WHERE id=?")->execute(\Input::get('isorc'));
                 }
 
                 // No need to generate options if we reload anyway
@@ -374,7 +376,7 @@ class ProductFilter extends Module
                 $this->blnCacheRequest = true;
                 unset($GLOBALS['ISO_SORTING'][$this->id]);
 
-                $this->Database->prepare("DELETE FROM tl_iso_requestcache WHERE id=?")->execute(\Input::get('isorc'));
+                \Database::getInstance()->prepare("DELETE FROM tl_iso_requestcache WHERE id=?")->execute(\Input::get('isorc'));
             }
 
             // No need to generate options if we reload anyway
@@ -435,7 +437,7 @@ class ProductFilter extends Module
                 $this->blnCacheRequest = true;
                 $GLOBALS['ISO_LIMIT'][$this->id] = $intLimit;
 
-                $this->Database->prepare("DELETE FROM tl_iso_requestcache WHERE id=?")->execute(\Input::get('isorc'));
+                \Database::getInstance()->prepare("DELETE FROM tl_iso_requestcache WHERE id=?")->execute(\Input::get('isorc'));
             }
 
             // No need to generate options if we reload anyway

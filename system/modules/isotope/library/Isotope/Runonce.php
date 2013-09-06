@@ -45,7 +45,7 @@ class Runonce extends \Controller
         $this->upgradeSystemConfiguration();
 
         // Check if shop has been installed (tl_store is the name for config table in version < 0.2)
-        $blnInstalled = ($this->Database->tableExists('tl_iso_config') || $this->Database->tableExists('tl_store'));
+        $blnInstalled = (\Database::getInstance()->tableExists('tl_iso_config') || \Database::getInstance()->tableExists('tl_store'));
 
         try {
             $objUpgrade = new \Isotope\Upgrade\Upgrade();
@@ -124,13 +124,13 @@ h1 { font-size:18px; font-weight:normal; margin:0 0 18px; }
     private function verifySystemIntegrity()
     {
         // Just make sure no variant or translation has any categories assigned
-        $this->Database->query("DELETE FROM tl_iso_product_categories WHERE pid IN (SELECT id FROM tl_iso_products WHERE pid>0)");
+        \Database::getInstance()->query("DELETE FROM tl_iso_product_categories WHERE pid IN (SELECT id FROM tl_iso_products WHERE pid>0)");
     }
 
 
     private function purgeCaches()
     {
-        $this->Database->query("TRUNCATE TABLE tl_iso_productcache");
-        $this->Database->query("TRUNCATE TABLE tl_iso_requestcache");
+        \Database::getInstance()->query("TRUNCATE TABLE tl_iso_productcache");
+        \Database::getInstance()->query("TRUNCATE TABLE tl_iso_requestcache");
     }
 }

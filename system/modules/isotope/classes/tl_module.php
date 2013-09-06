@@ -122,7 +122,7 @@ class tl_module extends \Backend
     public function getPaymentModules()
     {
         $arrPaymentModules = array();
-        $objPaymentModules = $this->Database->execute("SELECT * FROM tl_iso_payment_modules");
+        $objPaymentModules = \Database::getInstance()->execute("SELECT * FROM tl_iso_payment_modules");
 
         while ($objPaymentModules->next())
         {
@@ -140,7 +140,7 @@ class tl_module extends \Backend
     public function getShippingModules()
     {
         $arrModules = array();
-        $objModules = $this->Database->execute("SELECT * FROM tl_iso_shipping_modules WHERE enabled=1");
+        $objModules = \Database::getInstance()->execute("SELECT * FROM tl_iso_shipping_modules WHERE enabled=1");
 
         while ($objModules->next())
         {
@@ -158,7 +158,7 @@ class tl_module extends \Backend
     public function getLoginModuleList()
     {
         $arrModules = array();
-        $objModules = $this->Database->execute("SELECT id, name FROM tl_module WHERE type='login'");
+        $objModules = \Database::getInstance()->execute("SELECT id, name FROM tl_module WHERE type='login'");
 
         while ($objModules->next())
         {
@@ -274,7 +274,7 @@ class tl_module extends \Backend
         }
 
         $arrModules = array();
-        $objModules = $this->Database->execute("SELECT * FROM tl_module WHERE type IN ('" . implode("','", $arrClasses) . "')");
+        $objModules = \Database::getInstance()->execute("SELECT * FROM tl_module WHERE type IN ('" . implode("','", $arrClasses) . "')");
 
         while ($objModules->next())
         {

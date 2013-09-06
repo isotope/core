@@ -79,10 +79,7 @@ class tl_iso_shipping_modules extends \Backend
                         // Add permissions on user level
                         if (\BackendUser::getInstance()->inherit == 'custom' || !\BackendUser::getInstance()->groups[0])
                         {
-                            $objUser = $this->Database->prepare("SELECT iso_shipping_modules, iso_shipping_modulep FROM tl_user WHERE id=?")
-                                                       ->limit(1)
-                                                       ->execute(\BackendUser::getInstance()->id);
-
+                            $objUser = \Database::getInstance()->prepare("SELECT iso_shipping_modules, iso_shipping_modulep FROM tl_user WHERE id=?")->limit(1)->execute(\BackendUser::getInstance()->id);
                             $arrPermissions = deserialize($objUser->iso_shipping_modulep);
 
                             if (is_array($arrPermissions) && in_array('create', $arrPermissions))
@@ -90,18 +87,14 @@ class tl_iso_shipping_modules extends \Backend
                                 $arrAccess = deserialize($objUser->iso_shipping_modules);
                                 $arrAccess[] = \Input::get('id');
 
-                                $this->Database->prepare("UPDATE tl_user SET iso_shipping_modules=? WHERE id=?")
-                                               ->execute(serialize($arrAccess), \BackendUser::getInstance()->id);
+                                \Database::getInstance()->prepare("UPDATE tl_user SET iso_shipping_modules=? WHERE id=?")->execute(serialize($arrAccess), \BackendUser::getInstance()->id);
                             }
                         }
 
                         // Add permissions on group level
                         elseif (\BackendUser::getInstance()->groups[0] > 0)
                         {
-                            $objGroup = $this->Database->prepare("SELECT iso_shipping_modules, iso_shipping_modulep FROM tl_user_group WHERE id=?")
-                                                       ->limit(1)
-                                                       ->execute(\BackendUser::getInstance()->groups[0]);
-
+                            $objGroup = \Database::getInstance()->prepare("SELECT iso_shipping_modules, iso_shipping_modulep FROM tl_user_group WHERE id=?")->limit(1)->execute(\BackendUser::getInstance()->groups[0]);
                             $arrPermissions = deserialize($objGroup->iso_shipping_modulep);
 
                             if (is_array($arrPermissions) && in_array('create', $arrPermissions))
@@ -109,8 +102,7 @@ class tl_iso_shipping_modules extends \Backend
                                 $arrAccess = deserialize($objGroup->iso_shipping_modules);
                                 $arrAccess[] = \Input::get('id');
 
-                                $this->Database->prepare("UPDATE tl_user_group SET iso_shipping_modules=? WHERE id=?")
-                                               ->execute(serialize($arrAccess), \BackendUser::getInstance()->groups[0]);
+                                \Database::getInstance()->prepare("UPDATE tl_user_group SET iso_shipping_modules=? WHERE id=?")->execute(serialize($arrAccess), \BackendUser::getInstance()->groups[0]);
                             }
                         }
 
@@ -250,8 +242,7 @@ class tl_iso_shipping_modules extends \Backend
         }
 
         // Update the database
-        \Database::getInstance()->prepare("UPDATE tl_iso_shipping_modules SET tstamp=". time() .", enabled='" . ($blnVisible ? 1 : '') . "' WHERE id=?")
-                                ->execute($intId);
+        \Database::getInstance()->prepare("UPDATE tl_iso_shipping_modules SET tstamp=". time() .", enabled='" . ($blnVisible ? 1 : '') . "' WHERE id=?")->execute($intId);
 
         $objVersions->create();
         \System::log('A new version of record "tl_iso_shipping_modules.id='.$intId.'" has been created'.$this->getParentEntries('tl_iso_shipping_modules', $intId), __METHOD__, TL_GENERAL);

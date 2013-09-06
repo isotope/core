@@ -84,9 +84,9 @@ class tl_iso_payment_modules extends \Backend
                         // Add permissions on user level
                         if ($this->User->inherit == 'custom' || !$this->User->groups[0])
                         {
-                            $objUser = $this->Database->prepare("SELECT iso_payment_modules, iso_payment_modulep FROM tl_user WHERE id=?")
-                                                       ->limit(1)
-                                                       ->execute($this->User->id);
+                            $objUser = \Database::getInstance()->prepare("SELECT iso_payment_modules, iso_payment_modulep FROM tl_user WHERE id=?")
+                                                               ->limit(1)
+                                                               ->execute($this->User->id);
 
                             $arrPermissions = deserialize($objUser->iso_payment_modulep);
 
@@ -95,17 +95,17 @@ class tl_iso_payment_modules extends \Backend
                                 $arrAccess = deserialize($objUser->iso_payment_modules);
                                 $arrAccess[] = \Input::get('id');
 
-                                $this->Database->prepare("UPDATE tl_user SET iso_payment_modules=? WHERE id=?")
-                                               ->execute(serialize($arrAccess), $this->User->id);
+                                \Database::getInstance()->prepare("UPDATE tl_user SET iso_payment_modules=? WHERE id=?")
+                                                        ->execute(serialize($arrAccess), $this->User->id);
                             }
                         }
 
                         // Add permissions on group level
                         elseif ($this->User->groups[0] > 0)
                         {
-                            $objGroup = $this->Database->prepare("SELECT iso_payment_modules, iso_payment_modulep FROM tl_user_group WHERE id=?")
-                                                       ->limit(1)
-                                                       ->execute($this->User->groups[0]);
+                            $objGroup = \Database::getInstance()->prepare("SELECT iso_payment_modules, iso_payment_modulep FROM tl_user_group WHERE id=?")
+                                                                ->limit(1)
+                                                                ->execute($this->User->groups[0]);
 
                             $arrPermissions = deserialize($objGroup->iso_payment_modulep);
 
@@ -114,8 +114,8 @@ class tl_iso_payment_modules extends \Backend
                                 $arrAccess = deserialize($objGroup->iso_payment_modules);
                                 $arrAccess[] = \Input::get('id');
 
-                                $this->Database->prepare("UPDATE tl_user_group SET iso_payment_modules=? WHERE id=?")
-                                               ->execute(serialize($arrAccess), $this->User->groups[0]);
+                                \Database::getInstance()->prepare("UPDATE tl_user_group SET iso_payment_modules=? WHERE id=?")
+                                                        ->execute(serialize($arrAccess), $this->User->groups[0]);
                             }
                         }
 
@@ -196,7 +196,7 @@ class tl_iso_payment_modules extends \Backend
     public function loadShippingModules($dc)
     {
         $arrModules = array(-1=>$GLOBALS['TL_LANG']['tl_iso_payment_modules']['no_shipping']);
-        $objShippings = $this->Database->execute("SELECT * FROM tl_iso_shipping_modules ORDER BY name");
+        $objShippings = \Database::getInstance()->execute("SELECT * FROM tl_iso_shipping_modules ORDER BY name");
 
         while ($objShippings->next())
         {

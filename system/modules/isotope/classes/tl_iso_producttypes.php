@@ -79,10 +79,7 @@ class tl_iso_producttypes extends \Backend
                         // Add permissions on user level
                         if ($this->User->inherit == 'custom' || !$this->User->groups[0])
                         {
-                            $objUser = $this->Database->prepare("SELECT iso_product_types, iso_product_typep FROM tl_user WHERE id=?")
-                                                       ->limit(1)
-                                                       ->execute($this->User->id);
-
+                            $objUser = \Database::getInstance()->prepare("SELECT iso_product_types, iso_product_typep FROM tl_user WHERE id=?")->limit(1)->execute($this->User->id);
                             $arrPermissions = deserialize($objUser->tl_iso_producttypep);
 
                             if (is_array($arrPermissions) && in_array('create', $arrPermissions))
@@ -90,18 +87,14 @@ class tl_iso_producttypes extends \Backend
                                 $arrAccess = deserialize($objUser->iso_product_types);
                                 $arrAccess[] = \Input::get('id');
 
-                                $this->Database->prepare("UPDATE tl_user SET iso_product_types=? WHERE id=?")
-                                               ->executeUncached(serialize($arrAccess), $this->User->id);
+                                \Database::getInstance()->prepare("UPDATE tl_user SET iso_product_types=? WHERE id=?")->executeUncached(serialize($arrAccess), $this->User->id);
                             }
                         }
 
                         // Add permissions on group level
                         elseif ($this->User->groups[0] > 0)
                         {
-                            $objGroup = $this->Database->prepare("SELECT iso_product_types, iso_product_typep FROM tl_user_group WHERE id=?")
-                                                       ->limit(1)
-                                                       ->execute($this->User->groups[0]);
-
+                            $objGroup = \Database::getInstance()->prepare("SELECT iso_product_types, iso_product_typep FROM tl_user_group WHERE id=?")->limit(1)->execute($this->User->groups[0]);
                             $arrPermissions = deserialize($objGroup->iso_product_typep);
 
                             if (is_array($arrPermissions) && in_array('create', $arrPermissions))
@@ -109,8 +102,7 @@ class tl_iso_producttypes extends \Backend
                                 $arrAccess = deserialize($objGroup->iso_product_types);
                                 $arrAccess[] = \Input::get('id');
 
-                                $this->Database->prepare("UPDATE tl_user_group SET iso_product_types=? WHERE id=?")
-                                               ->executeUncached(serialize($arrAccess), $this->User->groups[0]);
+                                \Database::getInstance()->prepare("UPDATE tl_user_group SET iso_product_types=? WHERE id=?")->executeUncached(serialize($arrAccess), $this->User->groups[0]);
                             }
                         }
 

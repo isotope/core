@@ -109,7 +109,7 @@ class Backend extends Contao_Backend
     public function exportMail($dc)
     {
         // Get the mail meta data
-        $objMail = $this->Database->execute("SELECT * FROM tl_iso_mail WHERE id=".$dc->id);
+        $objMail = \Database::getInstance()->execute("SELECT * FROM tl_iso_mail WHERE id=".$dc->id);
 
         if ($objMail->numRows < 1)
         {
@@ -145,7 +145,7 @@ class Backend extends Contao_Backend
             $field->appendChild($value);
         }
 
-        $objContent = $this->Database->execute("SELECT * FROM tl_iso_mail_content WHERE pid=".$objMail->id);
+        $objContent = \Database::getInstance()->execute("SELECT * FROM tl_iso_mail_content WHERE pid=".$objMail->id);
 
         while ($objContent->next())
         {
@@ -278,8 +278,8 @@ class Backend extends Contao_Backend
         // Store the field names of the theme tables
         $arrDbFields = array
         (
-            'tl_iso_mail' => array_diff($this->Database->getFieldNames('tl_iso_mail'), array('id', 'pid')),
-            'tl_iso_mail_content' => array_diff($this->Database->getFieldNames('tl_iso_mail_content'), array('id', 'pid')),
+            'tl_iso_mail' => array_diff(\Database::getInstance()->getFieldNames('tl_iso_mail'), array('id', 'pid')),
+            'tl_iso_mail_content' => array_diff(\Database::getInstance()->getFieldNames('tl_iso_mail_content'), array('id', 'pid')),
         );
 
         foreach ($arrFiles as $strFile)
@@ -309,7 +309,7 @@ class Backend extends Contao_Backend
                 $arrSet[$template->item($i)->getAttribute('name')] = $template->item($i)->nodeValue;
             }
 
-            $intPid = $this->Database->prepare("INSERT INTO tl_iso_mail %s")->set($arrSet)->execute()->insertId;
+            $intPid = \Database::getInstance()->prepare("INSERT INTO tl_iso_mail %s")->set($arrSet)->execute()->insertId;
 
             // Loop through the content fields
             for ($i=0; $i<$content->length; $i++)
@@ -328,7 +328,7 @@ class Backend extends Contao_Backend
                     $arrSet[$row->item($j)->getAttribute('name')] = $row->item($j)->nodeValue;
                 }
 
-                $this->Database->prepare("INSERT INTO tl_iso_mail_content %s")->set($arrSet)->execute();
+                \Database::getInstance()->prepare("INSERT INTO tl_iso_mail_content %s")->set($arrSet)->execute();
             }
 
             // Notify the user
@@ -500,12 +500,12 @@ class Backend extends Contao_Backend
      */
     public function getOrderMessages()
     {
-        if (!$this->Database->tableExists('tl_iso_orderstatus')) {
+        if (!\Database::getInstance()->tableExists('tl_iso_orderstatus')) {
             return '';
         }
 
         $arrMessages = array();
-        $objOrders = $this->Database->query("SELECT COUNT(*) AS total, s.name FROM tl_iso_product_collection c LEFT JOIN tl_iso_orderstatus s ON c.order_status=s.id WHERE c.type='Order' AND s.welcomescreen='1' GROUP BY s.id");
+        $objOrders = \Database::getInstance()->query("SELECT COUNT(*) AS total, s.name FROM tl_iso_product_collection c LEFT JOIN tl_iso_orderstatus s ON c.order_status=s.id WHERE c.type='Order' AND s.welcomescreen='1' GROUP BY s.id");
 
         while ($objOrders->next())
         {

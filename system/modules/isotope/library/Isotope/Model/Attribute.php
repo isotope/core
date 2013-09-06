@@ -156,7 +156,7 @@ abstract class Attribute extends TypeAgent
             if ($this->foreignKey)
             {
                 $arrKey = explode('.', $this->foreignKey, 2);
-                $arrOptions = $this->Database->execute("SELECT id AS value, {$arrKey[1]} AS label FROM {$arrKey[0]} ORDER BY label")->fetchAllAssoc();
+                $arrOptions = \Database::getInstance()->execute("SELECT id AS value, {$arrKey[1]} AS label FROM {$arrKey[0]} ORDER BY label")->fetchAllAssoc();
             }
             else
             {

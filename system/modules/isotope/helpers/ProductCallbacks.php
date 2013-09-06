@@ -206,13 +206,13 @@ class ProductCallbacks extends \Backend
             {
                 // Show products with or without images
                 case 'iso_noimages':
-                    $objProducts = $this->Database->execute("SELECT id FROM tl_iso_products WHERE language='' AND images " . ($v ? "IS NULL" : "IS NOT NULL"));
+                    $objProducts = \Database::getInstance()->execute("SELECT id FROM tl_iso_products WHERE language='' AND images " . ($v ? "IS NULL" : "IS NOT NULL"));
                     $arrProducts = is_array($arrProducts) ? array_intersect($arrProducts, $objProducts->fetchEach('id')) : $objProducts->fetchEach('id');
                     break;
 
                 // Show products with or without category
                 case 'iso_nocategory':
-                    $objProducts = $this->Database->execute("SELECT id FROM tl_iso_products p WHERE pid=0 AND language='' AND (SELECT COUNT(*) FROM tl_iso_product_categories c WHERE c.pid=p.id)" . ($v ? "=0" : ">0"));
+                    $objProducts = \Database::getInstance()->execute("SELECT id FROM tl_iso_products p WHERE pid=0 AND language='' AND (SELECT COUNT(*) FROM tl_iso_product_categories c WHERE c.pid=p.id)" . ($v ? "=0" : ">0"));
                     $arrProducts = is_array($arrProducts) ? array_intersect($arrProducts, $objProducts->fetchEach('id')) : $objProducts->fetchEach('id');
                     break;
 
@@ -235,7 +235,7 @@ class ProductCallbacks extends \Backend
                             break;
                     }
 
-                    $objProducts = $this->Database->prepare("SELECT id FROM tl_iso_products WHERE language='' AND dateAdded>=?")->execute($date);
+                    $objProducts = \Database::getInstance()->prepare("SELECT id FROM tl_iso_products WHERE language='' AND dateAdded>=?")->execute($date);
                     $arrProducts = is_array($arrProducts) ? array_intersect($arrProducts, $objProducts->fetchEach('id')) : $objProducts->fetchEach('id');
                     break;
 
@@ -243,7 +243,7 @@ class ProductCallbacks extends \Backend
                     // Filter the products by pages
                     if (!empty($v) && is_array($v))
                     {
-                        $objProducts = $this->Database->execute("SELECT id FROM tl_iso_products p WHERE pid=0 AND language='' AND id IN (SELECT pid FROM tl_iso_product_categories c WHERE c.pid=p.id AND c.page_id IN (" . implode(array_map('intval', $v)) . "))");
+                        $objProducts = \Database::getInstance()->execute("SELECT id FROM tl_iso_products p WHERE pid=0 AND language='' AND id IN (SELECT pid FROM tl_iso_product_categories c WHERE c.pid=p.id AND c.page_id IN (" . implode(array_map('intval', $v)) . "))");
                         $arrProducts = is_array($arrProducts) ? array_intersect($arrProducts, $objProducts->fetchEach('id')) : $objProducts->fetchEach('id');
                     }
 
@@ -290,7 +290,7 @@ class ProductCallbacks extends \Backend
         }
 
         // Hide "add variant" button if no products with variants enabled exist
-        if ($this->Database->query("SELECT COUNT(*) AS total FROM tl_iso_products p LEFT JOIN tl_iso_producttypes t ON p.type=t.id WHERE t.variants='1'")->total == 0)
+        if (\Database::getInstance()->query("SELECT COUNT(*) AS total FROM tl_iso_products p LEFT JOIN tl_iso_producttypes t ON p.type=t.id WHERE t.variants='1'")->total == 0)
         {
             unset($GLOBALS['TL_DCA']['tl_iso_products']['list']['global_operations']['new_variant']);
         }
@@ -337,7 +337,7 @@ class ProductCallbacks extends \Backend
             // Set allowed clipboard IDs
             if (is_array($session['CLIPBOARD']['tl_iso_products']['id']))
             {
-                $session['CLIPBOARD']['tl_iso_products']['id'] = array_intersect($session['CLIPBOARD']['tl_iso_products']['id'], $GLOBALS['TL_DCA']['tl_iso_products']['list']['sorting']['root'], $this->Database->query("SELECT id FROM tl_iso_products WHERE pid=0")->fetchEach('id'));
+                $session['CLIPBOARD']['tl_iso_products']['id'] = array_intersect($session['CLIPBOARD']['tl_iso_products']['id'], $GLOBALS['TL_DCA']['tl_iso_products']['list']['sorting']['root'], \Database::getInstance()->query("SELECT id FROM tl_iso_products WHERE pid=0")->fetchEach('id'));
 
                 if (empty($session['CLIPBOARD']['tl_iso_products']['id']))
                 {
@@ -378,11 +378,11 @@ class ProductCallbacks extends \Backend
         unset($arrFields['type']['foreignKey']);
 
         // Set default product type
-        $arrFields['type']['default'] = (int) $this->Database->execute("SELECT id FROM tl_iso_producttypes WHERE fallback='1'" . ($this->User->isAdmin ? '' : (" AND id IN (" . implode(',', $this->User->iso_product_types) . ")")))->id;
+        $arrFields['type']['default'] = (int) \Database::getInstance()->execute("SELECT id FROM tl_iso_producttypes WHERE fallback='1'" . ($this->User->isAdmin ? '' : (" AND id IN (" . implode(',', $this->User->iso_product_types) . ")")))->id;
 
         // Set default tax class
         // @todo this should be done in an oncreate callback.
-        //$arrFields['tax_class']['default'] = (int) $this->Database->execute("SELECT id FROM tl_iso_tax_class WHERE fallback='1'")->id;
+        //$arrFields['tax_class']['default'] = (int) \Database::getInstance()->execute("SELECT id FROM tl_iso_tax_class WHERE fallback='1'")->id;
 
 
         $arrTypes = $this->arrProductTypes;
@@ -593,11 +593,11 @@ window.addEvent('domready', function() {
      */
     public function updateCategorySorting($insertId, $dc)
     {
-        $objCategories = $this->Database->query("SELECT c1.*, MAX(c2.sorting) AS max_sorting FROM tl_iso_product_categories c1 LEFT JOIN tl_iso_product_categories c2 ON c1.page_id=c2.page_id WHERE c1.pid=" . (int) $insertId . " GROUP BY c1.page_id");
+        $objCategories = \Database::getInstance()->query("SELECT c1.*, MAX(c2.sorting) AS max_sorting FROM tl_iso_product_categories c1 LEFT JOIN tl_iso_product_categories c2 ON c1.page_id=c2.page_id WHERE c1.pid=" . (int) $insertId . " GROUP BY c1.page_id");
 
         while ($objCategories->next())
         {
-            $this->Database->query("UPDATE tl_iso_product_categories SET sorting=" . ($objCategories->max_sorting + 128) . " WHERE id=" . $objCategories->id);
+            \Database::getInstance()->query("UPDATE tl_iso_product_categories SET sorting=" . ($objCategories->max_sorting + 128) . " WHERE id=" . $objCategories->id);
         }
     }
 
@@ -621,8 +621,7 @@ window.addEvent('domready', function() {
             return;
         }
 
-        $this->Database->prepare("UPDATE tl_iso_products SET dateAdded=? WHERE id=?")
-                       ->execute(time(), $dc->id);
+        \Database::getInstance()->prepare("UPDATE tl_iso_products SET dateAdded=? WHERE id=?")->execute(time(), $dc->id);
     }
 
 
@@ -643,7 +642,7 @@ window.addEvent('domready', function() {
             return;
         }
 
-        $arrCategories = $this->Database->query("SELECT * FROM tl_iso_product_categories WHERE pid=$intId")->fetchAllAssoc();
+        $arrCategories = \Database::getInstance()->query("SELECT * FROM tl_iso_product_categories WHERE pid=$intId")->fetchAllAssoc();
 
         $this->createSubtableVersion($strTable, $intId, 'tl_iso_product_categories', $arrCategories);
     }
@@ -662,10 +661,10 @@ window.addEvent('domready', function() {
 
         $arrData = array('prices'=>array(), 'tiers'=>array());
 
-        $objPrices = $this->Database->query("SELECT * FROM tl_iso_prices WHERE pid=$intId");
+        $objPrices = \Database::getInstance()->query("SELECT * FROM tl_iso_prices WHERE pid=$intId");
 
         if ($objPrices->numRows) {
-            $objTiers = $this->Database->query("SELECT * FROM tl_iso_price_tiers WHERE pid IN (" . implode(',', $objPrices->fetchEach('id')) . ")");
+            $objTiers = \Database::getInstance()->query("SELECT * FROM tl_iso_price_tiers WHERE pid IN (" . implode(',', $objPrices->fetchEach('id')) . ")");
 
             $arrData['prices'] = $objPrices->fetchAllAssoc();
             $arrData['tiers'] = $objTiers->fetchAllAssoc();
@@ -695,10 +694,10 @@ window.addEvent('domready', function() {
         $arrData = $this->findSubtableVersion('tl_iso_product_categories', $intId, $intVersion);
 
         if (null !== $arrData) {
-            $this->Database->query("DELETE FROM tl_iso_product_categories WHERE pid=$intId");
+            \Database::getInstance()->query("DELETE FROM tl_iso_product_categories WHERE pid=$intId");
 
             foreach ($arrData as $arrRow) {
-                $this->Database->prepare("INSERT INTO tl_iso_product_categories %s")->set($arrRow)->executeUncached();
+                \Database::getInstance()->prepare("INSERT INTO tl_iso_product_categories %s")->set($arrRow)->executeUncached();
             }
         }
     }
@@ -719,15 +718,15 @@ window.addEvent('domready', function() {
         $arrData = $this->findSubtableVersion('tl_iso_prices', $intId, $intVersion);
 
         if (null !== $arrData) {
-            $this->Database->query("DELETE FROM tl_iso_price_tiers WHERE pid IN (SELECT id FROM tl_iso_prices WHERE pid=$intId)");
-            $this->Database->query("DELETE FROM tl_iso_prices WHERE pid=$intId");
+            \Database::getInstance()->query("DELETE FROM tl_iso_price_tiers WHERE pid IN (SELECT id FROM tl_iso_prices WHERE pid=$intId)");
+            \Database::getInstance()->query("DELETE FROM tl_iso_prices WHERE pid=$intId");
 
             foreach ($arrData['prices'] as $arrRow) {
-                $this->Database->prepare("INSERT INTO tl_iso_prices %s")->set($arrRow)->executeUncached();
+                \Database::getInstance()->prepare("INSERT INTO tl_iso_prices %s")->set($arrRow)->executeUncached();
             }
 
             foreach ($arrData['tiers'] as $arrRow) {
-                $this->Database->prepare("INSERT INTO tl_iso_price_tiers %s")->set($arrRow)->executeUncached();
+                \Database::getInstance()->prepare("INSERT INTO tl_iso_price_tiers %s")->set($arrRow)->executeUncached();
             }
         }
     }
@@ -1022,7 +1021,7 @@ window.addEvent('domready', function() {
         }
 
         $arrProductTypes = array();
-        $objProductTypes = $this->Database->execute("SELECT id,name FROM tl_iso_producttypes WHERE tstamp>0" . ($objUser->isAdmin ? '' : (" AND id IN (" . implode(',', $arrTypes) . ")")) . " ORDER BY name");
+        $objProductTypes = \Database::getInstance()->execute("SELECT id,name FROM tl_iso_producttypes WHERE tstamp>0" . ($objUser->isAdmin ? '' : (" AND id IN (" . implode(',', $arrTypes) . ")")) . " ORDER BY name");
 
         while ($objProductTypes->next())
         {
@@ -1047,7 +1046,7 @@ window.addEvent('domready', function() {
      */
     public function loadProductCategories($varValue, \DataContainer $dc)
     {
-        $objCategories = $this->Database->execute("SELECT * FROM tl_iso_product_categories WHERE pid={$dc->id}");
+        $objCategories = \Database::getInstance()->execute("SELECT * FROM tl_iso_product_categories WHERE pid={$dc->id}");
 
         $this->initializeSubtableVersion($dc->table, $dc->id, 'tl_iso_product_categories', $objCategories->fetchAllAssoc());
 
@@ -1062,7 +1061,7 @@ window.addEvent('domready', function() {
      */
     public function loadPrice($varValue, \DataContainer $dc)
     {
-        $objPrice = $this->Database->query("SELECT t.id, p.id AS pid, t.price FROM tl_iso_prices p LEFT JOIN tl_iso_price_tiers t ON p.id=t.pid AND t.min=1 WHERE p.pid={$dc->id} AND p.config_id=0 AND p.member_group=0 AND p.start='' AND p.stop=''");
+        $objPrice = \Database::getInstance()->query("SELECT t.id, p.id AS pid, t.price FROM tl_iso_prices p LEFT JOIN tl_iso_price_tiers t ON p.id=t.pid AND t.min=1 WHERE p.pid={$dc->id} AND p.config_id=0 AND p.member_group=0 AND p.start='' AND p.stop=''");
 
         if (!$objPrice->numRows) {
             return '0.00';
@@ -1079,7 +1078,7 @@ window.addEvent('domready', function() {
      */
     public function loadTaxClass($varValue, \DataContainer $dc)
     {
-        return (int) $this->Database->query("SELECT tax_class FROM tl_iso_prices WHERE pid={$dc->id} AND config_id=0 AND member_group=0 AND start='' AND stop=''")->tax_class;
+        return (int) \Database::getInstance()->query("SELECT tax_class FROM tl_iso_prices WHERE pid={$dc->id} AND config_id=0 AND member_group=0 AND start='' AND stop=''")->tax_class;
     }
 
 
@@ -1103,17 +1102,17 @@ window.addEvent('domready', function() {
         {
             $time = time();
 
-            if ($this->Database->query("DELETE FROM tl_iso_product_categories WHERE pid={$dc->id} AND page_id NOT IN (" . implode(',', $arrIds) . ")")->affectedRows > 0) {
+            if (\Database::getInstance()->query("DELETE FROM tl_iso_product_categories WHERE pid={$dc->id} AND page_id NOT IN (" . implode(',', $arrIds) . ")")->affectedRows > 0) {
                 $dc->createNewVersion = true;
             }
 
-            $objPages = $this->Database->execute("SELECT page_id FROM tl_iso_product_categories WHERE pid={$dc->id}");
+            $objPages = \Database::getInstance()->execute("SELECT page_id FROM tl_iso_product_categories WHERE pid={$dc->id}");
             $arrIds = array_diff($arrIds, $objPages->fetchEach('page_id'));
 
             if (!empty($arrIds)) {
                 foreach ($arrIds as $id) {
-                    $sorting = (int) $this->Database->executeUncached("SELECT MAX(sorting) AS sorting FROM tl_iso_product_categories WHERE page_id=$id")->sorting + 128;
-                    $this->Database->query("INSERT INTO tl_iso_product_categories (pid,tstamp,page_id,sorting) VALUES ({$dc->id}, $time, $id, $sorting)");
+                    $sorting = (int) \Database::getInstance()->executeUncached("SELECT MAX(sorting) AS sorting FROM tl_iso_product_categories WHERE page_id=$id")->sorting + 128;
+                    \Database::getInstance()->query("INSERT INTO tl_iso_product_categories (pid,tstamp,page_id,sorting) VALUES ({$dc->id}, $time, $id, $sorting)");
                 }
 
                 $dc->createNewVersion = true;
@@ -1121,7 +1120,7 @@ window.addEvent('domready', function() {
         }
         else
         {
-            if ($this->Database->query("DELETE FROM tl_iso_product_categories WHERE pid={$dc->id}")->affectedRows > 0) {
+            if (\Database::getInstance()->query("DELETE FROM tl_iso_product_categories WHERE pid={$dc->id}")->affectedRows > 0) {
                 $dc->createNewVersion = true;
             }
         }
@@ -1138,13 +1137,13 @@ window.addEvent('domready', function() {
     public function savePrice($varValue, \DataContainer $dc)
     {
         $time = time();
-        $objPrice = $this->Database->query("SELECT t.id, p.id AS pid, t.price FROM tl_iso_prices p LEFT JOIN tl_iso_price_tiers t ON p.id=t.pid AND t.min=1 WHERE p.pid={$dc->id} AND p.config_id=0 AND p.member_group=0 AND p.start='' AND p.stop=''");
+        $objPrice = \Database::getInstance()->query("SELECT t.id, p.id AS pid, t.price FROM tl_iso_prices p LEFT JOIN tl_iso_price_tiers t ON p.id=t.pid AND t.min=1 WHERE p.pid={$dc->id} AND p.config_id=0 AND p.member_group=0 AND p.start='' AND p.stop=''");
 
         // Price tier record already exists, update it
         if ($objPrice->numRows && $objPrice->id > 0) {
 
             if ($objPrice->price != $varValue) {
-                $this->Database->prepare("UPDATE tl_iso_price_tiers SET tstamp=$time, price=? WHERE id=?")->executeUncached($varValue, $objPrice->id);
+                \Database::getInstance()->prepare("UPDATE tl_iso_price_tiers SET tstamp=$time, price=? WHERE id=?")->executeUncached($varValue, $objPrice->id);
 
                 $dc->createNewVersion = true;
             }
@@ -1155,10 +1154,10 @@ window.addEvent('domready', function() {
 
             // Neither price tier nor price record exist, must add both
             if (!$objPrice->numRows) {
-                $intPrice = $this->Database->query("INSERT INTO tl_iso_prices (pid,tstamp) VALUES ($dc->id, $time)")->insertId;
+                $intPrice = \Database::getInstance()->query("INSERT INTO tl_iso_prices (pid,tstamp) VALUES ($dc->id, $time)")->insertId;
             }
 
-            $this->Database->prepare("INSERT INTO tl_iso_price_tiers (pid,tstamp,min,price) VALUES ($intPrice, $time, 1, ?)")->executeUncached($varValue);
+            \Database::getInstance()->prepare("INSERT INTO tl_iso_price_tiers (pid,tstamp,min,price) VALUES ($intPrice, $time, 1, ?)")->executeUncached($varValue);
 
             $dc->createNewVersion = true;
         }
@@ -1175,17 +1174,17 @@ window.addEvent('domready', function() {
     public function saveTaxClass($varValue, \DataContainer $dc)
     {
         $time = time();
-        $objPrice = $this->Database->query("SELECT id, tax_class FROM tl_iso_prices WHERE pid={$dc->id} AND config_id=0 AND member_group=0 AND start='' AND stop=''");
+        $objPrice = \Database::getInstance()->query("SELECT id, tax_class FROM tl_iso_prices WHERE pid={$dc->id} AND config_id=0 AND member_group=0 AND start='' AND stop=''");
 
         if ($objPrice->numRows == 0) {
 
-            $this->Database->prepare("INSERT INTO tl_iso_prices (pid,tstamp,tax_class) VALUES ($dc->id, $time, ?)")->executeUncached($varValue);
+            \Database::getInstance()->prepare("INSERT INTO tl_iso_prices (pid,tstamp,tax_class) VALUES ($dc->id, $time, ?)")->executeUncached($varValue);
 
             $dc->createNewVersion = true;
 
         } elseif ($objPrice->tax_class != $varValue) {
 
-            $this->Database->prepare("UPDATE tl_iso_prices SET tstamp=$time, tax_class=? WHERE id=?")->executeUncached($varValue, $objPrice->id);
+            \Database::getInstance()->prepare("UPDATE tl_iso_prices SET tstamp=$time, tax_class=? WHERE id=?")->executeUncached($varValue, $objPrice->id);
 
             $dc->createNewVersion = true;
         }
@@ -1227,7 +1226,7 @@ window.addEvent('domready', function() {
             }
         }
 
-        $objAlias = $this->Database->prepare("SELECT id FROM tl_iso_products WHERE id=? OR alias=?")
+        $objAlias = \Database::getInstance()->prepare("SELECT id FROM tl_iso_products WHERE id=? OR alias=?")
                                    ->execute($dc->id, $varValue);
 
         // Check whether the product alias exists
@@ -1253,7 +1252,7 @@ window.addEvent('domready', function() {
      */
     protected function initializeSubtableVersion($strTable, $intId, $strSubtable, $arrData)
     {
-        $objVersion = $this->Database->prepare("SELECT COUNT(*) AS count FROM tl_version WHERE fromTable=? AND pid=?")
+        $objVersion = \Database::getInstance()->prepare("SELECT COUNT(*) AS count FROM tl_version WHERE fromTable=? AND pid=?")
                                      ->limit(1)
                                      ->executeUncached($strSubtable, $intId);
 
@@ -1272,7 +1271,7 @@ window.addEvent('domready', function() {
      */
     protected function createSubtableVersion($strTable, $intId, $strSubtable, $arrData)
     {
-        $objVersion = $this->Database->prepare("SELECT * FROM tl_version WHERE pid=? AND fromTable=? ORDER BY version DESC")
+        $objVersion = \Database::getInstance()->prepare("SELECT * FROM tl_version WHERE pid=? AND fromTable=? ORDER BY version DESC")
                                      ->limit(1)
                                      ->executeUncached($intId, $strTable);
 
@@ -1281,10 +1280,10 @@ window.addEvent('domready', function() {
             return;
         }
 
-        $this->Database->prepare("UPDATE tl_version SET active='' WHERE pid=? AND fromTable=?")
+        \Database::getInstance()->prepare("UPDATE tl_version SET active='' WHERE pid=? AND fromTable=?")
                        ->execute($intId, $strSubtable);
 
-        $this->Database->prepare("INSERT INTO tl_version (pid, tstamp, version, fromTable, username, userid, description, editUrl, active, data) VALUES (?, ?, ?, ?, ?, ?, ?, ?, 1, ?)")
+        \Database::getInstance()->prepare("INSERT INTO tl_version (pid, tstamp, version, fromTable, username, userid, description, editUrl, active, data) VALUES (?, ?, ?, ?, ?, ?, ?, ?, 1, ?)")
                        ->execute($objVersion->pid, $objVersion->tstamp, $objVersion->version, $strSubtable, $objVersion->username, $objVersion->userid, $objVersion->description, $objVersion->editUrl, serialize($arrData));
     }
 
@@ -1296,7 +1295,7 @@ window.addEvent('domready', function() {
      */
     protected function findSubtableVersion($strTable, $intPid, $intVersion)
     {
-        $objVersion = $this->Database->prepare("SELECT data FROM tl_version WHERE fromTable=? AND pid=? AND version=?")
+        $objVersion = \Database::getInstance()->prepare("SELECT data FROM tl_version WHERE fromTable=? AND pid=? AND version=?")
                                      ->limit(1)
                                      ->execute($strTable, $intPid, $intVersion);
 

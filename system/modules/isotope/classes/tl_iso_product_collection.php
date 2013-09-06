@@ -76,7 +76,7 @@ class tl_iso_product_collection extends \Backend
      */
     public function generateOrderDetails($dc, $xlabel)
     {
-        $objOrder = $this->Database->execute("SELECT * FROM tl_iso_product_collection WHERE id=".$dc->id);
+        $objOrder = \Database::getInstance()->execute("SELECT * FROM tl_iso_product_collection WHERE id=".$dc->id);
 
         if (!$objOrder->numRows)
         {
@@ -87,7 +87,7 @@ class tl_iso_product_collection extends \Backend
 
         // Generate a regular order details module
         \Input::setGet('uid', $objOrder->uniqid);
-        $objModule = new \Isotope\Module\OrderDetails($this->Database->execute("SELECT * FROM tl_module WHERE type='iso_orderdetails'"));
+        $objModule = new \Isotope\Module\OrderDetails(\Database::getInstance()->execute("SELECT * FROM tl_module WHERE type='iso_orderdetails'"));
 
         return $objModule->generate(true);
     }
@@ -101,7 +101,7 @@ class tl_iso_product_collection extends \Backend
      */
     public function generateEmailData($dc, $xlabel)
     {
-        $objOrder = $this->Database->execute("SELECT * FROM tl_iso_product_collection WHERE id=" . $dc->id);
+        $objOrder = \Database::getInstance()->execute("SELECT * FROM tl_iso_product_collection WHERE id=" . $dc->id);
 
         if (!$objOrder->numRows)
         {
@@ -248,7 +248,7 @@ class tl_iso_product_collection extends \Backend
 
         if (is_array($arrConfigs) && !empty($arrConfigs))
         {
-            $objOrders = $this->Database->query("SELECT id FROM tl_iso_product_collection WHERE config_id IN (" . implode(',', $arrConfigs) . ")");
+            $objOrders = \Database::getInstance()->query("SELECT id FROM tl_iso_product_collection WHERE config_id IN (" . implode(',', $arrConfigs) . ")");
 
             if ($objOrders->numRows)
             {
@@ -378,7 +378,7 @@ class tl_iso_product_collection extends \Backend
 
         if (\Input::post('FORM_SUBMIT') == 'tl_print_invoices')
         {
-            $objOrders = $this->Database->prepare("SELECT id FROM tl_iso_product_collection WHERE order_status=?")->execute(\Input::post('order_status'));
+            $objOrders = \Database::getInstance()->prepare("SELECT id FROM tl_iso_product_collection WHERE order_status=?")->execute(\Input::post('order_status'));
 
             if ($objOrders->numRows)
             {

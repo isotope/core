@@ -171,8 +171,7 @@ class ProductGroupSelector extends \Widget
 				$for = substr($for, 1);
 			}
 
-			$objRoot = $this->Database->prepare("SELECT id FROM tl_iso_groups WHERE CAST(name AS CHAR) REGEXP ?")
-									  ->execute($for);
+			$objRoot = \Database::getInstance()->prepare("SELECT id FROM tl_iso_groups WHERE CAST(name AS CHAR) REGEXP ?")->execute($for);
 
 			if ($objRoot->numRows > 0)
 			{
@@ -184,7 +183,7 @@ class ProductGroupSelector extends \Widget
 					while ($objRoot->next())
 					{
 						// Predefined node set (see #3563)
-						if (count(array_intersect($GLOBALS['TL_DCA'][$this->strTable]['fields'][$this->strField]['rootNodes'], $this->Database->getParentRecords($objRoot->id, 'tl_iso_groups'))) > 0)
+						if (count(array_intersect($GLOBALS['TL_DCA'][$this->strTable]['fields'][$this->strField]['rootNodes'], \Database::getInstance()->getParentRecords($objRoot->id, 'tl_iso_groups'))) > 0)
 						{
 							$arrRoot[] = $objRoot->id;
 						}
@@ -225,8 +224,7 @@ class ProductGroupSelector extends \Widget
 			// Show all groups to admins
 			elseif ($this->User->isAdmin)
 			{
-				$objGroup = $this->Database->prepare("SELECT id FROM tl_iso_groups WHERE pid=? ORDER BY sorting")
-										   ->execute(0);
+				$objGroup = \Database::getInstance()->execute("SELECT id FROM tl_iso_groups WHERE pid=0 ORDER BY sorting");
 
 				while ($objGroup->next())
 				{
@@ -281,14 +279,12 @@ class ProductGroupSelector extends \Widget
                 break;
 
             case 'Table':
-                if (!$this->Database->fieldExists($strField, $this->strTable))
+                if (!\Database::getInstance()->fieldExists($strField, $this->strTable))
                 {
                     break;
                 }
 
-				$objField = $this->Database->prepare("SELECT " . $this->strField . " FROM " . $this->strTable . " WHERE id=?")
-										   ->limit(1)
-										   ->execute($this->strId);
+				$objField = \Database::getInstance()->prepare("SELECT " . $this->strField . " FROM " . $this->strTable . " WHERE id=?")->execute($this->strId);
 
                 if ($objField->numRows)
                 {
@@ -303,8 +299,7 @@ class ProductGroupSelector extends \Widget
         $tree = '';
         $level = $level * 20;
 
-		$objGroup = $this->Database->prepare("SELECT id FROM tl_iso_groups WHERE pid=? ORDER BY sorting")
-								   ->execute($id);
+		$objGroup = \Database::getInstance()->prepare("SELECT id FROM tl_iso_groups WHERE pid=? ORDER BY sorting")->execute($id);
 
 		while ($objGroup->next())
 		{
@@ -338,9 +333,7 @@ class ProductGroupSelector extends \Widget
             \Controller::redirect(preg_replace('/(&(amp;)?|\?)'.$flag.'tg=[^& ]*/i', '', \Environment::get('request')));
         }
 
-        $objGroup = $this->Database->prepare("SELECT * FROM tl_iso_groups WHERE id=?")
-        						   ->limit(1)
-        						   ->execute($id);
+        $objGroup = \Database::getInstance()->prepare("SELECT * FROM tl_iso_groups WHERE id=?")->execute($id);
 
         // Return if there is no result
         if ($objGroup->numRows < 1)
@@ -355,8 +348,7 @@ class ProductGroupSelector extends \Widget
 		// Check whether there are child records
 		if (!$blnNoRecursion)
 		{
-			$objNodes = $this->Database->prepare("SELECT id FROM tl_iso_groups WHERE pid=? ORDER BY sorting")
-									   ->execute($id);
+			$objNodes = \Database::getInstance()->prepare("SELECT id FROM tl_iso_groups WHERE pid=? ORDER BY sorting")->execute($id);
 
 			if ($objNodes->numRows)
 			{
@@ -431,7 +423,7 @@ class ProductGroupSelector extends \Widget
 
 		foreach ($this->varValue as $id)
 		{
-			$arrPids = $this->Database->getParentRecords($id, 'tl_iso_groups');
+			$arrPids = \Database::getInstance()->getParentRecords($id, 'tl_iso_groups');
 			array_shift($arrPids); // the first element is the ID of the group itself
 			$this->arrNodes = array_merge($this->arrNodes, $arrPids);
 		}

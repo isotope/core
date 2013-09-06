@@ -45,7 +45,7 @@ class tl_iso_products extends \Backend
      */
     public function generateVariants($dc)
     {
-        $objProduct = $this->Database->prepare("SELECT id, pid, language, type, (SELECT attributes FROM tl_iso_producttypes WHERE id=tl_iso_products.type) AS attributes, (SELECT variant_attributes FROM tl_iso_producttypes WHERE id=tl_iso_products.type) AS variant_attributes FROM tl_iso_products WHERE id=?")->limit(1)->execute($dc->id);
+        $objProduct = \Database::getInstance()->prepare("SELECT id, pid, language, type, (SELECT attributes FROM tl_iso_producttypes WHERE id=tl_iso_products.type) AS attributes, (SELECT variant_attributes FROM tl_iso_producttypes WHERE id=tl_iso_products.type) AS variant_attributes FROM tl_iso_products WHERE id=?")->limit(1)->execute($dc->id);
 
         $doNotSubmit = false;
         $strBuffer = '';
@@ -125,13 +125,13 @@ class tl_iso_products extends \Backend
 
                 foreach ($arrCombinations as $combination)
                 {
-                    $objVariant = $this->Database->prepare("SELECT * FROM tl_iso_products WHERE pid=? AND " . implode('=? AND ', array_keys($combination)) . "=?")
-                                                 ->execute(array_merge(array($objProduct->id), $combination));
+                    $objVariant = \Database::getInstance()->prepare("SELECT * FROM tl_iso_products WHERE pid=? AND " . implode('=? AND ', array_keys($combination)) . "=?")
+                                                          ->execute(array_merge(array($objProduct->id), $combination));
 
                     if (!$objVariant->numRows)
                     {
-                        $this->Database->prepare("INSERT INTO tl_iso_products (tstamp,pid,inherit,type," . implode(',', array_keys($combination)) . ") VALUES (?,?,?,?" . str_repeat(',?', count($combination)) . ")")
-                                       ->execute(array_merge(array($time, $objProduct->id, array_diff((array) $objProduct->variant_attributes, array('sku', 'price', 'shipping_weight', 'published')), $objProduct->type), $combination));
+                        \Database::getInstance()->prepare("INSERT INTO tl_iso_products (tstamp,pid,inherit,type," . implode(',', array_keys($combination)) . ") VALUES (?,?,?,?" . str_repeat(',?', count($combination)) . ")")
+                                                ->execute(array_merge(array($time, $objProduct->id, array_diff((array) $objProduct->variant_attributes, array('sku', 'price', 'shipping_weight', 'published')), $objProduct->type), $combination));
                     }
                 }
 
@@ -194,8 +194,7 @@ class tl_iso_products extends \Backend
             }
 
             $arrDelete = array();
-            $objProducts = $this->Database->prepare("SELECT * FROM tl_iso_products WHERE pid=0")
-                                          ->execute();
+            $objProducts = \Database::getInstance()->prepare("SELECT * FROM tl_iso_products WHERE pid=0")->execute();
 
             while ($objProducts->next())
             {
@@ -293,7 +292,7 @@ class tl_iso_products extends \Backend
 
                         }
 
-                        $this->Database->prepare("UPDATE tl_iso_products SET images=? WHERE id=?")->execute(serialize($arrImages), $objProducts->id);
+                        \Database::getInstance()->prepare("UPDATE tl_iso_products SET images=? WHERE id=?")->execute(serialize($arrImages), $objProducts->id);
                     }
                 }
             }
@@ -413,7 +412,7 @@ class tl_iso_products extends \Backend
             return '';
         }
 
-        $objProductType = $this->Database->execute("SELECT * FROM tl_iso_producttypes WHERE id=" . (int) $row['type']);
+        $objProductType = \Database::getInstance()->execute("SELECT * FROM tl_iso_producttypes WHERE id=" . (int) $row['type']);
         $arrAttributes = $row['pid'] ? deserialize($objProductType->variant_attributes, true) : deserialize($objProductType->attributes, true);
         $time = time();
 
@@ -471,8 +470,7 @@ class tl_iso_products extends \Backend
         }
 
         // Update the database
-        $this->Database->prepare("UPDATE tl_iso_products SET published='" . ($blnVisible ? 1 : '') . "' WHERE id=?")
-                       ->execute($intId);
+        \Database::getInstance()->prepare("UPDATE tl_iso_products SET published='" . ($blnVisible ? 1 : '') . "' WHERE id=?")->execute($intId);
 
         $this->createNewVersion('tl_iso_products', $intId);
     }
@@ -484,7 +482,7 @@ class tl_iso_products extends \Backend
      */
     public function loadProductsDCA($strTable)
     {
-        if ($strTable != 'tl_iso_products' || !$this->Database->tableExists('tl_iso_attributes')) {
+        if ($strTable != 'tl_iso_products' || !\Database::getInstance()->tableExists('tl_iso_attributes')) {
             return;
         }
 

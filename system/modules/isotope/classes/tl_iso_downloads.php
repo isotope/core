@@ -30,7 +30,7 @@ class tl_iso_downloads extends \Backend
     {
         if (\Input::get('act') == 'edit')
         {
-            $objDownload = $this->Database->prepare("SELECT * FROM tl_iso_downloads WHERE id=?")->execute($dc->id);
+            $objDownload = \Database::getInstance()->prepare("SELECT * FROM tl_iso_downloads WHERE id=?")->execute($dc->id);
 
             if ($objDownload->type == 'folder')
             {

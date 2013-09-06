@@ -564,7 +564,7 @@ window.addEvent('domready', function()
         $objForm->blnHasErrors  = false;
         $objForm->blnHasUploads    = false;
 
-        $objForm->arrData = array_merge($this->Database->execute("SELECT * FROM tl_form WHERE id=".(int) $intId)->fetchAssoc(), $arrConfig);
+        $objForm->arrData = array_merge(\Database::getInstance()->execute("SELECT * FROM tl_form WHERE id=".(int) $intId)->fetchAssoc(), $arrConfig);
 
         // Form not found
         if (!$objForm->arrData['id'])
@@ -573,7 +573,7 @@ window.addEvent('domready', function()
         }
 
         // Get all form fields
-        $objFields = $this->Database->execute("SELECT * FROM tl_form_field WHERE pid={$objForm->arrData['id']} AND invisible='' ORDER BY sorting");
+        $objFields = \Database::getInstance()->execute("SELECT * FROM tl_form_field WHERE pid={$objForm->arrData['id']} AND invisible='' ORDER BY sorting");
 
         $row = 0;
         $max_row = $objFields->numRows;
@@ -1072,7 +1072,7 @@ window.addEvent('domready', function()
             $strAllowedPages = ' AND c.page_id IN (' . implode(',', $arrPageIds) . ')';
         }
 
-        $objProducts = $this->Database->query("
+        $objProducts = \Database::getInstance()->query("
             SELECT tl_page.*, p.id AS product_id, p.alias AS product_alias FROM tl_iso_product_categories c
                 JOIN tl_iso_products p ON p.id=c.pid
                 JOIN tl_iso_producttypes t ON t.id=p.type
@@ -1094,13 +1094,13 @@ window.addEvent('domready', function()
             {
                 // we need the root page language if we dont have it (maintenance module)
                 $intJump = static::getReaderPageId($objProducts);
-                $objJump = null === $strLanguage ? $this->getPageDetails($intJump) : $this->Database->execute("SELECT *, '$intRoot' AS rootId FROM tl_page WHERE published=1 AND (start='' OR start<$time) AND (stop='' OR stop>$time) AND id=" . (int) $intJump);
+                $objJump = null === $strLanguage ? $this->getPageDetails($intJump) : \Database::getInstance()->execute("SELECT *, '$intRoot' AS rootId FROM tl_page WHERE published=1 AND (start='' OR start<$time) AND (stop='' OR stop>$time) AND id=" . (int) $intJump);
 
                 if ($objJump->numRows)
                 {
                     if (!isset($arrRoot[$objJump->rootId]))
                     {
-                        $arrRoot[$objJump->rootId] = $this->Database->execute("SELECT * FROM tl_page WHERE id=" . (int) $objJump->rootId);
+                        $arrRoot[$objJump->rootId] = \Database::getInstance()->execute("SELECT * FROM tl_page WHERE id=" . (int) $objJump->rootId);
                     }
 
                     $strDomain = Environment::get('base');
@@ -1174,11 +1174,9 @@ window.addEvent('domready', function()
             return static::$arrReaderPageIds[$intPage];
         }
 
-        $objDatabase = \Database::getInstance();
-
         if (!is_object($objOriginPage))
         {
-            $objOriginPage = $objDatabase->execute("SELECT * FROM tl_page WHERE id=" . $intPage);
+            $objOriginPage = \Database::getInstance()->execute("SELECT * FROM tl_page WHERE id=" . $intPage);
         }
 
         // if the reader page is set on the current page id we return this one
@@ -1195,7 +1193,7 @@ window.addEvent('domready', function()
 
         do
         {
-            $objParentPage = $objDatabase->execute("SELECT * FROM tl_page WHERE id=" . $pid);
+            $objParentPage = \Database::getInstance()->execute("SELECT * FROM tl_page WHERE id=" . $pid);
 
             if ($objParentPage->numRows < 1)
             {
@@ -1474,7 +1472,7 @@ window.addEvent('domready', function()
 
                 while ($intPage != $intParent)
                 {
-                    $objResult = $this->Database->prepare("SELECT * FROM tl_page WHERE id=?" . (!BE_USER_LOGGED_IN ? " AND (start='' OR start<$time) AND (stop='' OR stop>$time) AND published=1" : ""))->execute($intPage);
+                    $objResult = \Database::getInstance()->prepare("SELECT * FROM tl_page WHERE id=?" . (!BE_USER_LOGGED_IN ? " AND (start='' OR start<$time) AND (stop='' OR stop>$time) AND published=1" : ""))->execute($intPage);
 
                     if (!$objResult->numRows)
                     {
@@ -1501,7 +1499,7 @@ window.addEvent('domready', function()
                             break;
 
                         case 'forward':
-                            $objNext = $this->Database->prepare("SELECT id, alias FROM tl_page WHERE id=?")
+                            $objNext = \Database::getInstance()->prepare("SELECT id, alias FROM tl_page WHERE id=?")
                                                       ->limit(1)
                                                       ->execute($objResult->jumpTo);
 

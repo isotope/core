@@ -170,8 +170,8 @@ class FieldWizard extends \Widget
                     break;
             }
 
-            $this->Database->prepare("UPDATE " . $this->strTable . " SET " . $this->strField . "=? WHERE id=?")
-                           ->execute(serialize($this->varValue), $this->currentRecord);
+            \Database::getInstance()->prepare("UPDATE " . $this->strTable . " SET " . $this->strField . "=? WHERE id=?")
+                                    ->execute(serialize($this->varValue), $this->currentRecord);
 
             \Controller::redirect(preg_replace('/&(amp;)?cid=[^&]*/i', '', preg_replace('/&(amp;)?' . preg_quote($strCommand, '/') . '=[^&]*/i', '', \Environment::get('request'))));
         }

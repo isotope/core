@@ -137,11 +137,11 @@ class ProductList extends Module
                 }
             }
 
-            $objCache = $this->Database->prepare("SELECT * FROM tl_iso_productcache
-                                                  WHERE page_id=? AND module_id=? AND requestcache_id=? AND groups=? AND (keywords=? OR keywords='') AND (expires>$time OR expires=0)
-                                                  ORDER BY keywords=''")
-                                       ->limit(1)
-                                       ->execute($pageId, $this->id, (int) \Input::get('isorc'), $groups, (string) \Input::get('keywords'));
+            $objCache = \Database::getInstance()->prepare("
+                SELECT * FROM tl_iso_productcache
+                WHERE page_id=? AND module_id=? AND requestcache_id=? AND groups=? AND (keywords=? OR keywords='') AND (expires>$time OR expires=0)
+                ORDER BY keywords=''"
+            )->limit(1)->execute($pageId, $this->id, (int) \Input::get('isorc'), $groups, (string) \Input::get('keywords'));
 
             // Cache found
             if ($objCache->numRows)
@@ -211,13 +211,13 @@ class ProductList extends Module
                 {
                     $arrCacheMessage = $this->iso_productcache;
                     $arrCacheMessage[$pageId][(int) \Input::get('isorc')] = $this->blnCacheProducts;
-                    $this->Database->prepare("UPDATE tl_module SET iso_productcache=? WHERE id=?")->execute(serialize($arrCacheMessage), $this->id);
+                    \Database::getInstance()->prepare("UPDATE tl_module SET iso_productcache=? WHERE id=?")->execute(serialize($arrCacheMessage), $this->id);
                 }
 
                 // Do not write cache if table is locked. That's the case if another process is already writing cache
-                if ($this->Database->query("SHOW OPEN TABLES FROM `{$GLOBALS['TL_CONFIG']['dbDatabase']}` LIKE 'tl_iso_productcache'")->In_use == 0)
+                if (\Database::getInstance()->query("SHOW OPEN TABLES FROM `{$GLOBALS['TL_CONFIG']['dbDatabase']}` LIKE 'tl_iso_productcache'")->In_use == 0)
                 {
-                    $this->Database->lockTables(array('tl_iso_productcache'=>'WRITE', 'tl_iso_products'=>'READ'));
+                    \Database::getInstance()->lockTables(array('tl_iso_productcache'=>'WRITE', 'tl_iso_products'=>'READ'));
                     $arrIds = array();
 
                     foreach ($arrProducts as $objProduct)
@@ -226,13 +226,13 @@ class ProductList extends Module
                     }
 
                     // Also delete all expired caches if we run a delete anyway
-                    $this->Database->prepare("DELETE FROM tl_iso_productcache WHERE (page_id=? AND module_id=? AND requestcache_id=? AND groups=? AND keywords=?) OR (expires>0 AND expires<$time)")
-                                   ->executeUncached($pageId, $this->id, (int) \Input::get('isorc'), $groups, (string) \Input::get('keywords'));
+                    \Database::getInstance()->prepare("DELETE FROM tl_iso_productcache WHERE (page_id=? AND module_id=? AND requestcache_id=? AND groups=? AND keywords=?) OR (expires>0 AND expires<$time)")
+                                            ->executeUncached($pageId, $this->id, (int) \Input::get('isorc'), $groups, (string) \Input::get('keywords'));
 
-                    $this->Database->prepare("INSERT INTO tl_iso_productcache (page_id,module_id,requestcache_id,groups,keywords,products,expires) VALUES (?,?,?,?,?,?,?)")
-                                   ->executeUncached($pageId, $this->id, (int) \Input::get('isorc'), $groups, (string) \Input::get('keywords'), implode(',', $arrIds), $this->getProductCacheExpiration());
+                    \Database::getInstance()->prepare("INSERT INTO tl_iso_productcache (page_id,module_id,requestcache_id,groups,keywords,products,expires) VALUES (?,?,?,?,?,?,?)")
+                                            ->executeUncached($pageId, $this->id, (int) \Input::get('isorc'), $groups, (string) \Input::get('keywords'), implode(',', $arrIds), $this->getProductCacheExpiration());
 
-                    $this->Database->unlockTables();
+                    \Database::getInstance()->unlockTables();
                 }
             }
             else
@@ -518,11 +518,11 @@ class ProductList extends Module
         $time = time();
 
         // Find timestamp when the next product becomes available
-        $expires = (int) $this->Database->execute("SELECT MIN(start) AS expires FROM tl_iso_products WHERE start>$time")->expires;
+        $expires = (int) \Database::getInstance()->execute("SELECT MIN(start) AS expires FROM tl_iso_products WHERE start>$time")->expires;
 
         // Find
         if ($this->iso_newFilter == 'show_new' || $this->iso_newFilter == 'show_old') {
-            $added = $this->Database->execute("SELECT MIN(dateAdded) FROM tl_iso_products WHERE dateAdded>" . Isotope::getConfig()->getNewProductLimit());
+            $added = \Database::getInstance()->execute("SELECT MIN(dateAdded) FROM tl_iso_products WHERE dateAdded>" . Isotope::getConfig()->getNewProductLimit());
 
             if ($added < $expires) {
                 $expires = $added;

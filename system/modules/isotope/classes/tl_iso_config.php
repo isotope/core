@@ -36,7 +36,7 @@ class tl_iso_config extends \Backend
         }
 
         // Set fallback if no fallback is available
-        $objConfig = $this->Database->query("SELECT COUNT(*) AS total FROM tl_iso_config WHERE fallback='1'");
+        $objConfig = \Database::getInstance()->query("SELECT COUNT(*) AS total FROM tl_iso_config WHERE fallback='1'");
 
         if ($objConfig->total == 0)
         {
@@ -89,9 +89,9 @@ class tl_iso_config extends \Backend
                         // Add permissions on user level
                         if ($this->User->inherit == 'custom' || !$this->User->groups[0])
                         {
-                            $objUser = $this->Database->prepare("SELECT iso_configs, iso_configp FROM tl_user WHERE id=?")
-                                                       ->limit(1)
-                                                       ->execute($this->User->id);
+                            $objUser = \Database::getInstance()->prepare("SELECT iso_configs, iso_configp FROM tl_user WHERE id=?")
+                                                               ->limit(1)
+                                                               ->execute($this->User->id);
 
                             $arrPermissions = deserialize($objUser->iso_configp);
 
@@ -100,17 +100,17 @@ class tl_iso_config extends \Backend
                                 $arrAccess = deserialize($objUser->iso_configs);
                                 $arrAccess[] = \Input::get('id');
 
-                                $this->Database->prepare("UPDATE tl_user SET iso_configs=? WHERE id=?")
-                                               ->execute(serialize($arrAccess), $this->User->id);
+                                \Database::getInstance()->prepare("UPDATE tl_user SET iso_configs=? WHERE id=?")
+                                                        ->execute(serialize($arrAccess), $this->User->id);
                             }
                         }
 
                         // Add permissions on group level
                         elseif ($this->User->groups[0] > 0)
                         {
-                            $objGroup = $this->Database->prepare("SELECT iso_configs, iso_configp FROM tl_user_group WHERE id=?")
-                                                       ->limit(1)
-                                                       ->execute($this->User->groups[0]);
+                            $objGroup = \Database::getInstance()->prepare("SELECT iso_configs, iso_configp FROM tl_user_group WHERE id=?")
+                                                                ->limit(1)
+                                                                ->execute($this->User->groups[0]);
 
                             $arrPermissions = deserialize($objGroup->iso_configp);
 
@@ -119,8 +119,8 @@ class tl_iso_config extends \Backend
                                 $arrAccess = deserialize($objGroup->iso_configs);
                                 $arrAccess[] = \Input::get('id');
 
-                                $this->Database->prepare("UPDATE tl_user_group SET iso_configs=? WHERE id=?")
-                                               ->execute(serialize($arrAccess), $this->User->groups[0]);
+                                \Database::getInstance()->prepare("UPDATE tl_user_group SET iso_configs=? WHERE id=?")
+                                                        ->execute(serialize($arrAccess), $this->User->groups[0]);
                             }
                         }
 

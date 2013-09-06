@@ -220,8 +220,8 @@ class MediaManager extends \Widget implements \uploadable
                     break;
             }
 
-            $this->Database->prepare("UPDATE " . $this->strTable . " SET " . $this->strField . "=? WHERE id=?")
-                           ->execute(serialize($this->varValue), $this->currentRecord);
+            \Database::getInstance()->prepare("UPDATE " . $this->strTable . " SET " . $this->strField . "=? WHERE id=?")
+                                    ->execute(serialize($this->varValue), $this->currentRecord);
 
             \Controller::redirect(preg_replace('/&(amp;)?cid=[^&]*/i', '', preg_replace('/&(amp;)?' . preg_quote($strCommand, '/') . '=[^&]*/i', '', \Environment::get('request'))));
         }
@@ -327,7 +327,7 @@ class MediaManager extends \Widget implements \uploadable
         // Fetch fallback language record
         if ($_SESSION['BE_DATA']['language'][$this->strTable][$this->currentRecord] != '')
         {
-            return deserialize($this->Database->execute("SELECT * FROM {$this->strTable} WHERE id={$this->currentRecord}")->{$this->strField});
+            return deserialize(\Database::getInstance()->execute("SELECT * FROM {$this->strTable} WHERE id={$this->currentRecord}")->{$this->strField});
         }
 
         return false;

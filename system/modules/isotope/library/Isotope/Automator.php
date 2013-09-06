@@ -61,7 +61,7 @@ class Automator extends \Controller
     {
         $this->import('Database');
 
-        $objConfigs = $this->Database->execute("SELECT * FROM tl_iso_config WHERE currencyAutomator='1'");
+        $objConfigs = \Database::getInstance()->execute("SELECT * FROM tl_iso_config WHERE currencyAutomator='1'");
 
         while ($objConfigs->next())
         {
@@ -105,7 +105,7 @@ class Automator extends \Controller
                     }
 
                     $fltFactor = $fltCourse / $fltCourseOrigin;
-                    $this->Database->prepare("UPDATE tl_iso_config SET priceCalculateFactor=? WHERE id=?")->execute($fltFactor, $objConfigs->id);
+                    \Database::getInstance()->prepare("UPDATE tl_iso_config SET priceCalculateFactor=? WHERE id=?")->execute($fltFactor, $objConfigs->id);
                     break;
 
                 case 'admin.ch':
@@ -146,7 +146,7 @@ class Automator extends \Controller
                     }
 
                     $fltFactor = $fltCourse / $fltCourseOrigin;
-                    $this->Database->prepare("UPDATE tl_iso_config SET priceCalculateFactor=? WHERE id=?")->execute($fltFactor, $objConfigs->id);
+                    \Database::getInstance()->prepare("UPDATE tl_iso_config SET priceCalculateFactor=? WHERE id=?")->execute($fltFactor, $objConfigs->id);
                     break;
 
                 default:

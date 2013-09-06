@@ -112,7 +112,7 @@ abstract class Module extends Contao_Module
                 break;
 
             case 'current_and_first_child':
-                $arrCategories = $this->Database->execute("SELECT id FROM tl_page WHERE pid={$objPage->id}")->fetchEach('id');
+                $arrCategories = \Database::getInstance()->execute("SELECT id FROM tl_page WHERE pid={$objPage->id}")->fetchEach('id');
                 $arrCategories[] = $objPage->id;
                 break;
 

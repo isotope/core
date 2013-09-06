@@ -80,10 +80,7 @@ class tl_iso_tax_class extends \Backend
                         // Add permissions on user level
                         if ($this->User->inherit == 'custom' || !$this->User->groups[0])
                         {
-                            $objUser = $this->Database->prepare("SELECT iso_tax_classes, iso_tax_classp FROM tl_user WHERE id=?")
-                                                       ->limit(1)
-                                                       ->execute($this->User->id);
-
+                            $objUser = \Database::getInstance()->prepare("SELECT iso_tax_classes, iso_tax_classp FROM tl_user WHERE id=?")->limit(1)->execute($this->User->id);
                             $arrPermissions = deserialize($objUser->iso_tax_classp);
 
                             if (is_array($arrPermissions) && in_array('create', $arrPermissions))
@@ -91,18 +88,14 @@ class tl_iso_tax_class extends \Backend
                                 $arrAccess = deserialize($objUser->iso_tax_classes);
                                 $arrAccess[] = \Input::get('id');
 
-                                $this->Database->prepare("UPDATE tl_user SET iso_tax_classes=? WHERE id=?")
-                                               ->execute(serialize($arrAccess), $this->User->id);
+                                \Database::getInstance()->prepare("UPDATE tl_user SET iso_tax_classes=? WHERE id=?")->execute(serialize($arrAccess), $this->User->id);
                             }
                         }
 
                         // Add permissions on group level
                         elseif ($this->User->groups[0] > 0)
                         {
-                            $objGroup = $this->Database->prepare("SELECT iso_tax_classes, iso_tax_classp FROM tl_user_group WHERE id=?")
-                                                       ->limit(1)
-                                                       ->execute($this->User->groups[0]);
-
+                            $objGroup = \Database::getInstance()->prepare("SELECT iso_tax_classes, iso_tax_classp FROM tl_user_group WHERE id=?")->limit(1)->execute($this->User->groups[0]);
                             $arrPermissions = deserialize($objGroup->iso_tax_classp);
 
                             if (is_array($arrPermissions) && in_array('create', $arrPermissions))
@@ -110,8 +103,7 @@ class tl_iso_tax_class extends \Backend
                                 $arrAccess = deserialize($objGroup->iso_tax_classes);
                                 $arrAccess[] = \Input::get('id');
 
-                                $this->Database->prepare("UPDATE tl_user_group SET iso_tax_classes=? WHERE id=?")
-                                               ->execute(serialize($arrAccess), $this->User->groups[0]);
+                                \Database::getInstance()->prepare("UPDATE tl_user_group SET iso_tax_classes=? WHERE id=?")->execute(serialize($arrAccess), $this->User->groups[0]);
                             }
                         }
 

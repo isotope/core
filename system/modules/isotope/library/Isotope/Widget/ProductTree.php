@@ -171,13 +171,13 @@ class ProductTree extends \Widget
         $this->getPathNodes();
 
 
-        $objGroups = $this->Database->execute("SELECT id FROM tl_iso_groups WHERE pid=0 ORDER BY sorting");
+        $objGroups = \Database::getInstance()->execute("SELECT id FROM tl_iso_groups WHERE pid=0 ORDER BY sorting");
         while( $objGroups->next() )
         {
             $tree .= $this->renderGroups($objGroups->id, -20);
         }
 
-        $objProducts = $this->Database->execute("SELECT id FROM tl_iso_products WHERE pid=0 AND gid=0 AND language=''" . ($this->User->isAdmin ? '' : " AND type IN ('','" . implode("','", $this->arrTypes) . "')"));
+        $objProducts = \Database::getInstance()->execute("SELECT id FROM tl_iso_products WHERE pid=0 AND gid=0 AND language=''" . ($this->User->isAdmin ? '' : " AND type IN ('','" . implode("','", $this->arrTypes) . "')"));
 
         while ($objProducts->next())
         {
@@ -233,14 +233,12 @@ class ProductTree extends \Widget
                 break;
 
             case 'Table':
-                if (!$this->Database->fieldExists($strField, $this->strTable))
+                if (!\Database::getInstance()->fieldExists($strField, $this->strTable))
                 {
                     break;
                 }
 
-                $objField = $this->Database->prepare("SELECT " . $strField . " FROM " . $this->strTable . " WHERE id=?")
-                                           ->limit(1)
-                                           ->execute($this->strId);
+                $objField = \Database::getInstance()->prepare("SELECT " . $strField . " FROM " . $this->strTable . " WHERE id=?")->execute($this->strId);
 
                 if ($objField->numRows)
                 {
@@ -257,7 +255,9 @@ class ProductTree extends \Widget
 
         if (strpos(\Input::post('id'), 'groups') === false)
         {
-            $objProducts = $this->Database->prepare("SELECT id FROM tl_iso_products WHERE language='' AND pid=?".($this->User->isAdmin ? '' : " AND type IN ('','" . implode("','", $this->arrTypes) . "')")." ORDER BY name")->execute($id);
+            $objProducts = \Database::getInstance()->prepare("
+                SELECT id FROM tl_iso_products WHERE language='' AND pid=?".($this->User->isAdmin ? '' : " AND type IN ('','" . implode("','", $this->arrTypes) . "')")." ORDER BY name
+            ")->execute($id);
 
             while ($objProducts->next())
             {
@@ -266,14 +266,16 @@ class ProductTree extends \Widget
         }
         else
         {
-            $objGroups = $this->Database->execute("SELECT id FROM tl_iso_groups WHERE pid=".$id." ORDER BY sorting");
+            $objGroups = \Database::getInstance()->execute("SELECT id FROM tl_iso_groups WHERE pid=".$id." ORDER BY sorting");
 
             while ($objGroups->next())
             {
                 $tree .= $this->renderGroups($objGroups->id, $level);
             }
 
-            $objProducts = $this->Database->prepare("SELECT id FROM tl_iso_products WHERE language='' AND gid=?".($this->User->isAdmin ? '' : " AND type IN ('','" . implode("','", $this->arrTypes) . "')")." ORDER BY name")->execute($id);
+            $objProducts = \Database::getInstance()->prepare("
+                SELECT id FROM tl_iso_products WHERE language='' AND gid=?".($this->User->isAdmin ? '' : " AND type IN ('','" . implode("','", $this->arrTypes) . "')")." ORDER BY name
+            ")->execute($id);
 
             while ($objProducts->next())
             {
@@ -310,7 +312,7 @@ class ProductTree extends \Widget
             \Controller::redirect(preg_replace('/(&(amp;)?|\?)'.$flag.'tg=[^& ]*/i', '', \Environment::get('request')));
         }
 
-        $objGroup = $this->Database->execute("SELECT * FROM tl_iso_groups WHERE id=$id");
+        $objGroup = \Database::getInstance()->execute("SELECT * FROM tl_iso_groups WHERE id=$id");
 
         // Return if there is no result
         if ($objGroup->numRows < 1)
@@ -322,14 +324,10 @@ class ProductTree extends \Widget
         $intSpacing = 20;
 
         // Check whether there are child groups
-        $childs = $this->Database->prepare("SELECT id FROM tl_iso_groups WHERE pid=? ORDER BY sorting")
-                                 ->execute($id)
-                                 ->fetchEach('id');
+        $childs = \Database::getInstance()->prepare("SELECT id FROM tl_iso_groups WHERE pid=? ORDER BY sorting")->execute($id)->fetchEach('id');
 
         // Check whether there are child products
-        $products = $this->Database->prepare("SELECT id FROM tl_iso_products WHERE gid=?".($this->User->isAdmin ? '' : " AND type IN ('','" . implode("','", $this->arrTypes) . "')")." ORDER BY name")
-                                   ->execute($id)
-                                   ->fetchEach('id');
+        $products = \Database::getInstance()->prepare("SELECT id FROM tl_iso_products WHERE gid=?".($this->User->isAdmin ? '' : " AND type IN ('','" . implode("','", $this->arrTypes) . "')")." ORDER BY name")->execute($id)->fetchEach('id');
 
         if (empty($products) && empty($childs))
         {
@@ -409,7 +407,7 @@ class ProductTree extends \Widget
             \Controller::redirect(preg_replace('/(&(amp;)?|\?)'.$flag.'tg=[^& ]*/i', '', \Environment::get('request')));
         }
 
-        $objProduct = $this->Database->prepare("SELECT * FROM tl_iso_products WHERE id=?".($this->User->isAdmin ? '' : " AND type IN ('','" . implode("','", $this->arrTypes) . "')"))->execute($id);
+        $objProduct = \Database::getInstance()->prepare("SELECT * FROM tl_iso_products WHERE id=?".($this->User->isAdmin ? '' : " AND type IN ('','" . implode("','", $this->arrTypes) . "')"))->execute($id);
 
         // Return if there is no result
         if ($objProduct->numRows < 1)
@@ -424,8 +422,7 @@ class ProductTree extends \Widget
         if ($this->variants)
         {
             // Check whether there are child records
-            $objNodes = $this->Database->prepare("SELECT id FROM tl_iso_products WHERE pid=? AND language=''")
-                                       ->execute($id);
+            $objNodes = \Database::getInstance()->prepare("SELECT id FROM tl_iso_products WHERE pid=? AND language=''")->execute($id);
 
             if ($objNodes->numRows)
             {
@@ -508,9 +505,7 @@ class ProductTree extends \Widget
         {
             do
             {
-                $objProduct = $this->Database->prepare("SELECT pid,gid FROM tl_iso_products WHERE id=?")
-                                             ->limit(1)
-                                             ->execute($id);
+                $objProduct = \Database::getInstance()->prepare("SELECT pid,gid FROM tl_iso_products WHERE id=?")->limit(1)->execute($id);
 
                 if ($objProduct->numRows < 1)
                 {

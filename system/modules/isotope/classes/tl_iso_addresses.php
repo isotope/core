@@ -68,7 +68,7 @@ class tl_iso_addresses extends \Backend
 
         if ($varValue == '1' && $objAddress->{$dc->field} != $varValue)
         {
-            $this->Database->execute("UPDATE tl_iso_addresses SET {$dc->field}='' WHERE pid={$objAddress->pid} AND ptable={$objAddress->ptable} AND store_id={$objAddress->store_id}");
+            \Database::getInstance()->execute("UPDATE tl_iso_addresses SET {$dc->field}='' WHERE pid={$objAddress->pid} AND ptable={$objAddress->ptable} AND store_id={$objAddress->store_id}");
         }
 
         return $varValue;

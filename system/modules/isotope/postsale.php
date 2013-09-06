@@ -81,11 +81,11 @@ class PostSale extends \Frontend
         switch( strtolower($strMod) )
         {
             case 'pay':
-                $objModule = $this->Database->prepare("SELECT * FROM tl_iso_payment_modules WHERE id=?")->limit(1)->execute($strId);
+                $objModule = \Database::getInstance()->prepare("SELECT * FROM tl_iso_payment_modules WHERE id=?")->limit(1)->execute($strId);
                 break;
 
             case 'ship':
-                $objModule = $this->Database->prepare("SELECT * FROM tl_iso_shipping_modules WHERE id=?")->limit(1)->execute($strId);
+                $objModule = \Database::getInstance()->prepare("SELECT * FROM tl_iso_shipping_modules WHERE id=?")->limit(1)->execute($strId);
                 break;
         }
 

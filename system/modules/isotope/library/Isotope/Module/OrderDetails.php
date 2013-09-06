@@ -125,7 +125,7 @@ class OrderDetails extends Module
     {
         $time = time();
         $arrDownloads = array();
-        $objDownloads = $this->Database->prepare("SELECT p.*, c.* FROM tl_iso_product_collection_download c JOIN tl_iso_downloads p ON c.download_id=p.id WHERE c.pid=?")->execute($objProduct->collection_id);
+        $objDownloads = \Database::getInstance()->prepare("SELECT p.*, c.* FROM tl_iso_product_collection_download c JOIN tl_iso_downloads p ON c.download_id=p.id WHERE c.pid=?")->execute($objProduct->collection_id);
 
         while ($objDownloads->next()) {
             $blnDownloadable = ($blnOrderPaid && ($objDownloads->downloads_remaining === '' || $objDownloads->downloads_remaining > 0) && ($objDownloads->expires == '' || $objDownloads->expires > $time)) ? true : false;
@@ -171,7 +171,7 @@ class OrderDetails extends Module
         // Send file to the browser
         if ($blnDownloadable && \Input::get('download') != '' && \Input::get('download') == $objDownload->id && ($objDownload->type == 'file' || (\Input::get('file') != '' && \Input::get('file') == $strFileName))) {
             if (!$this->backend && $objDownload->downloads_remaining !== '') {
-                $this->Database->prepare("UPDATE tl_iso_product_collection_download SET downloads_remaining=? WHERE id=?")->execute(($objDownload->downloads_remaining-1), $objDownload->id);
+                \Database::getInstance()->prepare("UPDATE tl_iso_product_collection_download SET downloads_remaining=? WHERE id=?")->execute(($objDownload->downloads_remaining-1), $objDownload->id);
             }
 
             \Controller::sendFileToBrowser($strFile);

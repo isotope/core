@@ -39,7 +39,7 @@ class tl_iso_attributes extends \Backend
         }
         elseif ($dc->id)
         {
-            $objAttribute = $this->Database->execute("SELECT * FROM tl_iso_attributes WHERE id={$dc->id}");
+            $objAttribute = \Database::getInstance()->execute("SELECT * FROM tl_iso_attributes WHERE id={$dc->id}");
 
             if ($objAttribute->field_name != '')
             {
@@ -56,7 +56,7 @@ class tl_iso_attributes extends \Backend
      */
     public function prepareForVariantOptions($dc)
     {
-        $objAttribute = $this->Database->prepare("SELECT * FROM tl_iso_attributes WHERE id=?")->execute($dc->id);
+        $objAttribute = \Database::getInstance()->prepare("SELECT * FROM tl_iso_attributes WHERE id=?")->execute($dc->id);
 
         if ($objAttribute->variant_option)
         {
@@ -122,7 +122,7 @@ class tl_iso_attributes extends \Backend
 
         $arrClean = array_diff($arrFields, $arrKeep, $arrSubpalettes, array('pid', 'sorting'));
 
-        $this->Database->execute("UPDATE tl_iso_attributes SET " . implode("='', ", $arrClean) . "='' WHERE id={$dc->id}");
+        \Database::getInstance()->execute("UPDATE tl_iso_attributes SET " . implode("='', ", $arrClean) . "='' WHERE id={$dc->id}");
     }
 
 
@@ -194,7 +194,7 @@ class tl_iso_attributes extends \Backend
                 }
 
                 list($strTable, $strField) = explode('.', $foreignKey, 2);
-                $this->Database->execute("SELECT $strField FROM $strTable");
+                \Database::getInstance()->execute("SELECT $strField FROM $strTable");
             }
         }
 

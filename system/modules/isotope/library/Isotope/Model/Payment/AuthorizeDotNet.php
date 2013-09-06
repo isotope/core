@@ -264,22 +264,18 @@ class AuthorizeDotNet extends Payment implements IsotopePayment
      */
     public function backendInterface($intOrderId)
     {
-        $arrOrderInfo = $this->Database->prepare("SELECT * FROM tl_iso_product_collection WHERE type='Order' AND id=?")
-                               ->limit(1)
-                               ->execute($intOrderId)
-                               ->fetchAssoc();
+        $arrOrderInfo = \Database::getInstance()->prepare("SELECT * FROM tl_iso_product_collection WHERE type='Order' AND id=?")->limit(1)->execute($intOrderId)->fetchAssoc();
 
 
         \Input::setGet('uid', $arrOrderInfo['uniqid']);
-        $objModule = new \Isotope\Module\OrderDetails($this->Database->execute("SELECT * FROM tl_module WHERE type='iso_orderdetails'"));
+        $objModule = new \Isotope\Module\OrderDetails(\Database::getInstance()->execute("SELECT * FROM tl_module WHERE type='iso_orderdetails'"));
 
         $strOrderDetails = $objModule->generate(true);
 
         $arrPaymentData = deserialize($arrOrderInfo['payment_data'], true);
 
         //Get the authorize.net configuration data
-        $objAIMConfig = $this->Database->prepare("SELECT * FROM tl_iso_payment_modules WHERE type=?")
-                                                        ->execute('authorizedotnet');
+        $objAIMConfig = \Database::getInstance()->prepare("SELECT * FROM tl_iso_payment_modules WHERE type=?")->execute('authorizedotnet');
         if($objAIMConfig->numRows < 1)
         {
             return '<i>' . $GLOBALS['TL_LANG']['MSC']['noPaymentModules'] . '</i>';

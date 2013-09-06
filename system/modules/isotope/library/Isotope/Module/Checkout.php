@@ -417,7 +417,7 @@ class Checkout extends Module
         // Redirect to login page if not logged in
         if ($this->iso_checkout_method == 'member' && FE_USER_LOGGED_IN !== true)
         {
-            $objPage = $this->Database->prepare("SELECT id,alias FROM tl_page WHERE id=?")->limit(1)->execute($this->iso_login_jumpTo);
+            $objPage = \Database::getInstance()->prepare("SELECT id,alias FROM tl_page WHERE id=?")->limit(1)->execute($this->iso_login_jumpTo);
 
             if (!$objPage->numRows)
             {

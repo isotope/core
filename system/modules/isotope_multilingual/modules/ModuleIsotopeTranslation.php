@@ -252,7 +252,7 @@ class ModuleIsotopeTranslation extends \BackendModule
  * @license    http://opensource.org/licenses/lgpl-3.0.html LGPL
  *";
 
-         $objAuthors = $this->Database->prepare("SELECT * FROM tl_user WHERE translation=?")->execute($this->User->translation);
+         $objAuthors = \Database::getInstance()->prepare("SELECT * FROM tl_user WHERE translation=?")->execute($this->User->translation);
 
         while( $objAuthors->next() )
         {
