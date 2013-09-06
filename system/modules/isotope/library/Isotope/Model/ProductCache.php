@@ -29,6 +29,19 @@ class ProductCache extends \Model
 
 
     /**
+     * Get array of product IDs
+     * @return  array
+     */
+    public function getProductIds()
+    {
+        if ($this->products == '') {
+            return array();
+        }
+
+        return array_map('intval', explode(',', $this->products));
+    }
+
+    /**
      * Find cache for module on page (including current environment)
      * @param   int
      * @param   int

@@ -121,7 +121,7 @@ class ProductList extends Module
 
         if ($this->blnCacheProducts && ($objCache = ProductCache::findByPageAndModule($intPage, $this->id)) !== null)
         {
-                $arrCacheIds = $objCache->products == '' ? array() : explode(',', $objCache->products);
+            $arrCacheIds = $objCache->getProductIds();
 
             // Use the cache if keywords match. Otherwise we will use the product IDs as a "limit" for findProducts()
             if ($objCache->keywords == \Input::get('keywords'))
