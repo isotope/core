@@ -359,12 +359,12 @@ class Order extends ProductCollection implements IsotopeProductCollection
         }
 
         if (TL_MODE == 'BE') {
-            $this->addConfirmationMessage($GLOBALS['TL_LANG']['tl_iso_product_collection']['orderStatusUpdate']);
+            \Message::addConfirmation($GLOBALS['TL_LANG']['tl_iso_product_collection']['orderStatusUpdate']);
 
             if ($blnEmail === true) {
-                $this->addConfirmationMessage($GLOBALS['TL_LANG']['tl_iso_product_collection']['orderStatusEmailSuccess']);
+                \Message::addConfirmation($GLOBALS['TL_LANG']['tl_iso_product_collection']['orderStatusEmailSuccess']);
             } elseif ($blnEmail === false) {
-                $this->addErrorMessage($GLOBALS['TL_LANG']['tl_iso_product_collection']['orderStatusEmailError']);
+                \Message::addConfirmation($GLOBALS['TL_LANG']['tl_iso_product_collection']['orderStatusEmailError']);
             }
         }
 
