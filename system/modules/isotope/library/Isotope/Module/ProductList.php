@@ -300,8 +300,8 @@ class ProductList extends Module
         {
             foreach ($GLOBALS['ISO_HOOKS']['generateProductList'] as $callback)
             {
-                $this->import($callback[0]);
-                $arrBuffer = $this->$callback[0]->$callback[1]($arrBuffer, $arrProducts, $this->Template, $this);
+                $objCallback = \System::importStatic($callback[0]);
+                $arrBuffer = $objCallback->$callback[1]($arrBuffer, $arrProducts, $this->Template, $this);
             }
         }
 

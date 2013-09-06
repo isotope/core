@@ -615,8 +615,8 @@ window.addEvent('domready', function()
             {
                 foreach ($GLOBALS['TL_HOOKS']['loadFormField'] as $callback)
                 {
-                    $this->import($callback[0]);
-                    $objWidget = $this->$callback[0]->$callback[1]($objWidget, $strFormId, $objForm->arrData);
+                    $objCallback = \System::importStatic($callback[0]);
+                    $objWidget = $objCallback->$callback[1]($objWidget, $strFormId, $objForm->arrData);
                 }
             }
 
@@ -631,8 +631,8 @@ window.addEvent('domready', function()
                 {
                     foreach ($GLOBALS['TL_HOOKS']['validateFormField'] as $callback)
                     {
-                        $this->import($callback[0]);
-                        $objWidget = $this->$callback[0]->$callback[1]($objWidget, $strFormId, $objForm->arrData);
+                        $objCallback = \System::importStatic($callback[0]);
+                        $objWidget = $objCallback->$callback[1]($objWidget, $strFormId, $objForm->arrData);
                     }
                 }
 

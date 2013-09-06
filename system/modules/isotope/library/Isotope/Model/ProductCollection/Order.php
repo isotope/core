@@ -504,8 +504,8 @@ class Order extends ProductCollection implements IsotopeProductCollection
         {
             foreach ($GLOBALS['ISO_HOOKS']['generateOrderId'] as $callback)
             {
-                $this->import($callback[0]);
-                $strOrderId = $this->$callback[0]->$callback[1]($this);
+                $objCallback = \System::importStatic($callback[0]);
+                $strOrderId = $objCallback->$callback[1]($this);
 
                 if ($strOrderId !== false)
                 {

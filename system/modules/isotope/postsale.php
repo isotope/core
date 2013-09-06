@@ -54,8 +54,8 @@ class PostSale extends \Frontend
         {
             foreach ($GLOBALS['ISO_HOOKS']['initializePostsale'] as $callback)
             {
-                $this->import($callback[0]);
-                $this->$callback[0]->$callback[1]();
+                $objCallback = \System::importStatic($callback[0]);
+                $objCallback->$callback[1]();
             }
         }
     }

@@ -183,8 +183,8 @@ class tl_module extends \Backend
         {
             foreach ($GLOBALS['ISO_HOOKS']['buttons'] as $callback)
             {
-                $this->import($callback[0]);
-                $arrButtons = $this->$callback[0]->$callback[1]($arrButtons);
+                $objCallback = \System::importStatic($callback[0]);
+                $arrButtons = $objCallback->$callback[1]($arrButtons);
             }
         }
 

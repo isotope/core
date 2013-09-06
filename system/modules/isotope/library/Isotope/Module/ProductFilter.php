@@ -289,8 +289,8 @@ class ProductFilter extends Module
                     {
                         foreach ($GLOBALS['ISO_ATTR'][$arrData['inputType']]['callback'] as $callback)
                         {
-                            $this->import($callback[0]);
-                            $arrData = $this->{$callback[0]}->{$callback[1]}($strField, $arrData, $this);
+                            $objCallback = \System::importStatic($callback[0]);
+                            $arrData = $objCallback->{$callback[1]}($strField, $arrData, $this);
                         }
                     }
 
@@ -335,8 +335,8 @@ class ProductFilter extends Module
             {
                 foreach ($GLOBALS['ISO_HOOKS']['generateFilters'] as $callback)
                 {
-                    $this->import($callback[0]);
-                    $arrFilters = $this->$callback[0]->$callback[1]($arrFilters);
+                    $objCallback = \System::importStatic($callback[0]);
+                    $arrFilters = $objCallback->$callback[1]($arrFilters);
                 }
             }
 

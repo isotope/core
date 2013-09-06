@@ -494,8 +494,8 @@ class tl_iso_product_collection extends \Backend
             {
                 foreach ($GLOBALS['ISO_HOOKS']['saveCollection'] as $callback)
                 {
-                    $this->import($callback[0]);
-                    $this->$callback[0]->$callback[1]($objOrder);
+                    $objCallback = \System::importStatic($callback[0]);
+                    $objCallback->$callback[1]($objOrder);
                 }
             }
         }

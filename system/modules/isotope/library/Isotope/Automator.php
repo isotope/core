@@ -154,8 +154,8 @@ class Automator extends \Controller
                     {
                         foreach ($GLOBALS['ISO_HOOKS']['convertCurrency'] as $callback)
                         {
-                            $this->import($callback[0]);
-                            $this->$callback[0]->$callback[1]($objConfigs->currencyProvider, $objConfigs->currencyOrigin, $objConfigs->currency, $objConfigs-row());
+                            $objCallback = \System::importStatic($callback[0]);
+                            $objCallback->$callback[1]($objConfigs->currencyProvider, $objConfigs->currencyOrigin, $objConfigs->currency, $objConfigs-row());
                         }
                     }
             }

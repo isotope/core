@@ -227,9 +227,8 @@ class tl_iso_products extends \Backend
                 {
                     foreach ($GLOBALS['ISO_HOOKS']['addAssetImportRegexp'] as $callback)
                     {
-                        $this->import($callback[0]);
-
-                        $arrPattern = $this->$callback[0]->$callback[1]($arrPattern,$objProducts);
+                        $objCallback = \System::importStatic($callback[0]);
+                        $arrPattern = $objCallback->$callback[1]($arrPattern,$objProducts);
                     }
                 }
 
@@ -464,8 +463,8 @@ class tl_iso_products extends \Backend
         {
             foreach ($GLOBALS['TL_DCA']['tl_iso_products']['fields']['published']['save_callback'] as $callback)
             {
-                $this->import($callback[0]);
-                $blnVisible = $this->$callback[0]->$callback[1]($blnVisible, $this);
+                $objCallback = \System::importStatic($callback[0]);
+                $blnVisible = $objCallback->$callback[1]($blnVisible, $this);
             }
         }
 

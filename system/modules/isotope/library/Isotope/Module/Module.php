@@ -179,8 +179,8 @@ abstract class Module extends Contao_Module
         {
             foreach ($GLOBALS['TL_HOOKS']['getPageIdFromUrl'] as $callback)
             {
-                $this->import($callback[0]);
-                $arrFragments = $this->$callback[0]->$callback[1]($arrFragments);
+                $objCallback = \System::importStatic($callback[0]);
+                $arrFragments = $objCallback->$callback[1]($arrFragments);
             }
         }
 

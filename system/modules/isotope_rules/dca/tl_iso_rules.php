@@ -621,8 +621,8 @@ class tl_iso_rules extends \Backend
         {
             foreach ($GLOBALS['TL_DCA']['tl_iso_rules']['fields']['enabled']['save_callback'] as $callback)
             {
-                $this->import($callback[0]);
-                $blnVisible = $this->$callback[0]->$callback[1]($blnVisible, $this);
+                $objCallback = \System::importStatic($callback[0]);
+                $blnVisible = $objCallback->$callback[1]($blnVisible, $this);
             }
         }
 

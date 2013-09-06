@@ -92,8 +92,8 @@ class AddressBook extends Module
         // Call onload_callback (e.g. to check permissions)
         if (is_array($GLOBALS['TL_DCA']['tl_iso_addresses']['config']['onload_callback'])) {
             foreach ($GLOBALS['TL_DCA']['tl_iso_addresses']['config']['onload_callback'] as $callback) {
-                $this->import($callback[0]);
-                $this->$callback[0]->$callback[1]();
+                $objCallback = \System::importStatic($callback[0]);
+                $objCallback->$callback[1]();
             }
         }
 
@@ -248,10 +248,10 @@ class AddressBook extends Module
                 // Save callback
                 if (is_array($arrData['save_callback'])) {
                     foreach ($arrData['save_callback'] as $callback) {
-                        $this->import($callback[0]);
+                        $objCallback = \System::importStatic($callback[0]);
 
                         try {
-                            $varValue = $this->$callback[0]->$callback[1]($varValue, $objAddress);
+                            $varValue = $objCallback->$callback[0]->$callback[1]($varValue, $objAddress);
                         } catch (\Exception $e) {
                             $objWidget->class = 'error';
                             $objWidget->addError($e->getMessage());
@@ -293,8 +293,8 @@ class AddressBook extends Module
             // Call onsubmit_callback
             if (is_array($GLOBALS['TL_DCA']['tl_iso_addresses']['config']['onsubmit_callback'])) {
                 foreach ($GLOBALS['TL_DCA']['tl_iso_addresses']['config']['onsubmit_callback'] as $callback) {
-                    $this->import($callback[0]);
-                    $this->$callback[0]->$callback[1]($objAddress);
+                    $objCallback = \System::importStatic($callback[0]);
+                    $objCallback->$callback[1]($objAddress);
                 }
             }
 
