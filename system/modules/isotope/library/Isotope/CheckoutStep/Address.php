@@ -232,8 +232,8 @@ abstract class Address extends CheckoutStep
                     $arrCountries = $this->getAddressCountries();
                     $arrData['options'] = array_values(array_intersect($arrData['options'], $arrCountries));
 
-                    if ($arrDefault['country'] == '') {
-                        $arrDefault['country'] = $this->getDefaultCountry();
+                    if ($arrData['country'] == '') {
+                        $arrData['country'] = $this->getDefaultCountry();
                     }
                 }
 
