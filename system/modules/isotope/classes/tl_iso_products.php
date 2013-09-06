@@ -404,7 +404,7 @@ class tl_iso_products extends \Backend
 		if (strlen(\Input::get('tid')))
 		{
 			$this->toggleVisibility(\Input::get('tid'), (\Input::get('state') == 1));
-			$this->redirect($this->getReferer());
+			\Controller::redirect($this->getReferer());
 		}
 
         // Check permissions AFTER checking the tid, so hacking attempts are logged

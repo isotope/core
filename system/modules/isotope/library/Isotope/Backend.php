@@ -800,7 +800,7 @@ class Backend extends Contao_Backend
 			// Move the product
 			case 'moveProduct':
 				$this->Session->set('iso_products_gid', intval(\Input::post('value')));
-				$this->redirect(html_entity_decode(\Input::post('redirect')));
+				\Controller::redirect(html_entity_decode(\Input::post('redirect')));
 				break;
 
 			// Move multiple products

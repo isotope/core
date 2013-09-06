@@ -403,7 +403,7 @@ class Checkout extends Module
                 $objJump = \PageModel::findWithDetails($this->iso_cart_jumpTo);
 
                 if (null !== $objJump) {
-                    $this->redirect(\Controller::generateFrontendUrl($objJump->row(), null, $objJump->language));
+                    \Controller::redirect(\Controller::generateFrontendUrl($objJump->row(), null, $objJump->language));
                 }
             }
 

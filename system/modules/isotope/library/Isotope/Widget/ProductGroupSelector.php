@@ -335,7 +335,7 @@ class ProductGroupSelector extends \Widget
         {
             $session[$node][\Input::get($flag.'tg')] = (isset($session[$node][\Input::get($flag.'tg')]) && $session[$node][\Input::get($flag.'tg')] == 1) ? 0 : 1;
             $this->Session->setData($session);
-            $this->redirect(preg_replace('/(&(amp;)?|\?)'.$flag.'tg=[^& ]*/i', '', \Environment::get('request')));
+            \Controller::redirect(preg_replace('/(&(amp;)?|\?)'.$flag.'tg=[^& ]*/i', '', \Environment::get('request')));
         }
 
         $objGroup = $this->Database->prepare("SELECT * FROM tl_iso_groups WHERE id=?")
