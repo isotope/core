@@ -228,7 +228,7 @@ abstract class ProductCollectionSurcharge extends TypeAgent
             }
 
             $objProduct = $objItem->getProduct();
-            $objTaxClass = $objProduct->getPrice()->getRelated('tax_class');
+            $objTaxClass = $objProduct->getPrice() ? $objProduct->getPrice()->getRelated('tax_class') : null;
 
             // Skip products without tax class
             if (null === $objTaxClass) {
