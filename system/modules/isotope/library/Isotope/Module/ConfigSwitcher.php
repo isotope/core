@@ -13,6 +13,8 @@
 namespace Isotope\Module;
 
 use Isotope\Isotope;
+use Isotope\Model\Config;
+
 
 /**
  * Class ModuleIsotopeConfigSwitcher
@@ -59,7 +61,7 @@ class ConfigSwitcher extends Module
             return '';
         }
 
-        if (strlen(\Input::get('config')))
+        if (\Input::get('config') != '')
         {
             if (in_array(\Input::get('config'), $this->iso_config_ids))
             {
@@ -81,20 +83,22 @@ class ConfigSwitcher extends Module
     {
         $this->import('Isotope\Isotope', 'Isotope');
         $arrConfigs = array();
-        $objConfigs = $this->Database->execute("SELECT * FROM tl_iso_config WHERE id IN (" . implode(',', $this->iso_config_ids) . ")");
+        $objConfigs = Config::findBy('id IN (' . implode(',', $this->iso_config_ids) . ')', null);
         $c=0;
 
-        while ($objConfigs->next())
-        {
-            $arrConfigs[] = array
-            (
-                'label'        => (strlen($objConfigs->label) ? $objConfigs->label : $objConfigs->name),
-                'class'        => (($c == 0) ? 'first' : ''),
-                'active'    => (Isotope::getConfig()->id == $objConfigs->id ? true : false),
-                'href'        => (\Environment::get('request') . ((strpos(\Environment::get('request'), '?') === false) ? '?' : '&amp;') . 'config=' . $objConfigs->id),
-            );
+        if (null !== $objConfigs) {
+            while ($objConfigs->next()) {
 
-            $c++;
+                $arrConfigs[] = array (
+                    'config'    => $objConfigs->current(),
+                    'label'     => $objConfigs->current()->getLabel(),
+                    'class'     => (($c == 0) ? 'first' : ''),
+                    'active'    => (Isotope::getConfig()->id == $objConfigs->id ? true : false),
+                    'href'      => (\Environment::get('request') . ((strpos(\Environment::get('request'), '?') === false) ? '?' : '&amp;') . 'config=' . $objConfigs->id),
+                );
+
+                $c++;
+            }
         }
 
         $last = count($arrConfigs)-1;
