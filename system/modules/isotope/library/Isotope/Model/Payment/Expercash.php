@@ -102,7 +102,7 @@ class Expercash extends Payment implements IsotopePayment
         (
             'popupId'       => $this->expercash_popupId,
             'jobId'         => microtime(),
-            'functionId'    => (FE_USER_LOGGED_IN ? $this->User->id : Isotope::getCart()->session),
+            'functionId'    => (FE_USER_LOGGED_IN ? \FrontendUser::getInstance()->id : Isotope::getCart()->session),
             'transactionId' => $objOrder->id,
             'amount'        => (round(Isotope::getCart()->getTotal(), 2)*100),
             'currency'      => Isotope::getConfig()->currency,

@@ -311,7 +311,7 @@ abstract class Address extends CheckoutStep
     protected function getAddresses()
     {
         $arrAddresses = array();
-        $objAddresses = AddressModel::findForMember($this->User->id, array('order'=>'isDefaultBilling DESC, isDefaultShipping DESC'));
+        $objAddresses = AddressModel::findForMember(\FrontendUser::getInstance()->id, array('order'=>'isDefaultBilling DESC, isDefaultShipping DESC'));
 
         if (null !== $objAddresses) {
             while ($objAddresses->next()) {

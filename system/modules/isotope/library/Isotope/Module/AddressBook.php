@@ -129,7 +129,7 @@ class AddressBook extends Module
         global $objPage;
         $arrAddresses = array();
         $strUrl = \Controller::generateFrontendUrl($objPage->row()) . ($GLOBALS['TL_CONFIG']['disableAlias'] ? '&' : '?');
-        $objAddresses = Address::findForMember($this->User->id);
+        $objAddresses = Address::findForMember(\FrontendUser::getInstance()->id);
 
         if (null !== $objAddresses) {
             while ($objAddresses->next()) {
@@ -183,10 +183,10 @@ class AddressBook extends Module
         $hasUpload = false;
         $row = 0;
 
-        $objAddress = Address::findOneForMember($intAddressId, $this->User->id);
+        $objAddress = Address::findOneForMember($intAddressId, \FrontendUser::getInstance()->id);
 
         if (null === $objAddress) {
-            $objAddress = Address::createForMember($this->User->id);
+            $objAddress = Address::createForMember(\FrontendUser::getInstance()->id);
         }
 
         // Build form
@@ -327,7 +327,7 @@ class AddressBook extends Module
      */
     protected function delete($intAddressId)
     {
-        if (($objAddress = Address::findOneForMember($intAddressId, $this->User->id)) !== null) {
+        if (($objAddress = Address::findOneForMember($intAddressId, \FrontendUser::getInstance()->id)) !== null) {
             $objAddress->delete();
         }
 
