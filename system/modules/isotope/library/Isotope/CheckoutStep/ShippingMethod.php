@@ -55,10 +55,11 @@ class ShippingMethod extends CheckoutStep implements IsotopeCheckoutStep
                     $fltPrice = $objModule->price;
                     $strSurcharge = $objModule->surcharge;
                     $strPrice = $fltPrice != 0 ? (($strSurcharge == '' ? '' : ' ('.$strSurcharge.')') . ': '.Isotope::formatPriceWithCurrency($fltPrice)) : '';
+                    $strNote = $objModule->note ? '<span class="note">' . $objModule->note . '</span>' : '';
 
                     $arrOptions[] = array(
                         'value'     => $objModule->id,
-                        'label'     => $objModule->getLabel() . $strPrice,
+                        'label'     => $objModule->getLabel() . $strPrice . $strNote,
                     );
 
                     $arrModules[$objModule->id] = $objModule;
