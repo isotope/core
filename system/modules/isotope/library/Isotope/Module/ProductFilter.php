@@ -84,7 +84,7 @@ class ProductFilter extends Module
             if ($varFilter !== null || $varLimit !== null || $varSorting !== null)
             {
                 $intCacheId = $this->Database->prepare("SELECT id FROM tl_iso_requestcache WHERE store_id=? AND filters" . ($varFilter ? '=' : ' IS ') . "? AND sorting" . ($varSorting ? '=' : ' IS ') . "? AND limits" . ($varLimit ? '=' : ' IS ') . "?")
-                                             ->execute(Isotope::getConfig()->store_id, $varFilter, $varSorting, $varLimit)
+                                             ->execute(Isotope::getCart()->store_id, $varFilter, $varSorting, $varLimit)
                                              ->id;
 
                 if ($intCacheId)
@@ -94,7 +94,7 @@ class ProductFilter extends Module
                 else
                 {
                     $intCacheId = $this->Database->prepare("INSERT INTO tl_iso_requestcache (tstamp,store_id,filters,sorting,limits) VALUES ($time, ?, ?, ?, ?)")
-                                                 ->execute(Isotope::getConfig()->store_id, $varFilter, $varSorting, $varLimit)
+                                                 ->execute(Isotope::getCart()->store_id, $varFilter, $varSorting, $varLimit)
                                                  ->insertId;
                 }
 

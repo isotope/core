@@ -213,7 +213,7 @@ class AddressBook extends Module
             // Special field "country"
             if ($field == 'country') {
                 $arrCountries = array();
-                $objConfigs = Config::findBy('store_id', Isotope::getConfig()->store_id);
+                $objConfigs = Config::findBy('store_id', Isotope::getCart()->store_id);
 
                 while ($objConfigs->next()) {
                     $arrCountries = array_merge($arrCountries, $objConfigs->getBillingCountries(), $objConfigs->getShippingCountries());
