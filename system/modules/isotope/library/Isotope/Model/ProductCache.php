@@ -27,4 +27,32 @@ class ProductCache extends \Model
      */
     protected static $strTable = 'tl_iso_productcache';
 
+
+    /**
+     * Return sorted and serialized list of active member groups for cache lookup
+     * @return  string
+     */
+    public static function getCacheableGroups()
+    {
+        static $groups = null;
+
+        if (null === $groups) {
+            $groups = '';
+
+            if (FE_USER_LOGGED_IN === true)
+            {
+                $arrGroups = \FrontendUser::getInstance()->groups;
+
+                if (!empty($arrGroups) && is_array($arrGroups))
+                {
+                    // Make sure groups array always looks the same to find it in the database
+                    $arrGroups = array_unique($arrGroups);
+                    sort($arrGroups, SORT_NUMERIC);
+                    $groups = serialize($arrGroups);
+                }
+            }
+        }
+
+        return $groups;
+    }
 }
