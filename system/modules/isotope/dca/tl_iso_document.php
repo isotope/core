@@ -111,7 +111,7 @@ $GLOBALS['TL_DCA']['tl_iso_document'] = array
     (
         '__selector__'              => array('type'),
         'default'                   => '{type_legend},name,type',
-        'standard'                  => '{type_legend},name,type;{config_legend},logo,documentTitle,fileTitle;{template_legend},documentTpl,collectionTpl',
+        'standard'                  => '{type_legend},name,type;{config_legend},documentTitle,fileTitle;{template_legend},documentTpl,collectionTpl',
     ),
 
     // Fields
@@ -143,14 +143,6 @@ $GLOBALS['TL_DCA']['tl_iso_document'] = array
             'options'               => \Isotope\Model\Document::getModelTypeOptions(),
             'eval'                  => array('submitOnChange'=>true, 'tl_class'=>'w50', 'includeBlankOption'=>true),
             'sql'                   => "varchar(255) NOT NULL default ''"
-        ),
-        'logo' => array
-        (
-            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_document']['logo'],
-            'exclude'               => true,
-            'inputType'             => 'fileTree',
-            'eval'                  => array('fieldType'=>'radio', 'files'=>true, 'filesOnly'=>true, 'extensions'=>'jpg,jpeg,gif,png,tif,tiff', 'tl_class'=>'clr'),
-            'sql'                   => "int(10) unsigned NOT NULL default '0'"
         ),
         'documentTitle' => array
         (

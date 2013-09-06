@@ -2,11 +2,6 @@
     <table cellspacing="0" cellpadding="20" border="0">
         <tr>
             <td>
-                <?php if ($this->hasLogo): ?>
-                <img src="<?php echo $this->logoSrc; ?>" alt="" />
-                <?php endif; ?>
-                <br><br>
-
                 <h2><?php echo $this->title; ?></h2>
             </td>
             <?php if ($this->billingAddress): ?>
