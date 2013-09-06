@@ -84,14 +84,15 @@ class ProductCollectionItem extends \Model
 
             $strClass = Product::getClassForModelType($this->type);
 
-            try {
-                $this->objProduct = $strClass::findByPk($this->product_id);
-                $this->objProduct->setOptions(deserialize($this->options));
-                $this->objProduct->reader_jumpTo_Override = $this->href_reader;
+            if ($strClass == '' || !class_exists($strClass)) {
+                \System::log('Error creating product object of type "' . $this->type . '"', __METHOD__, TL_ERROR);
 
-            } catch (\Exception $e) {
-                \System::log("Error creating product object: " . $e->getMessage(), __METHOD__, TL_ERROR);
+                return null;
             }
+
+            $this->objProduct = $strClass::findByPk($this->product_id);
+            $this->objProduct->setOptions(deserialize($this->options));
+            $this->objProduct->reader_jumpTo_Override = $this->href_reader;
         }
 
         return $this->objProduct;
