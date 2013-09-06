@@ -1972,9 +1972,6 @@ window.addEvent(\'domready\', function() {
 <a href="'.\Backend::addToUrl('act=create&amp;mode=2&amp;pid='.$this->intId).'" class="header_new" title="'.specialchars($GLOBALS['TL_LANG'][$this->strTable]['new'][1]).'" accesskey="n" onclick="Backend.getScrollOffset()">'.$GLOBALS['TL_LANG'][$this->strTable]['new'][0].'</a> ' : '') . $this->generateGlobalButtons() : '') : '<a href="'.\Backend::addToUrl('clipboard=1').'" class="header_clipboard" title="'.specialchars($GLOBALS['TL_LANG']['MSC']['clearClipboard']).'" accesskey="x">'.$GLOBALS['TL_LANG']['MSC']['clearClipboard'].'</a> ') . '
 </div>' . \Message::generate(true);
 
-		// Show breadcrumb
-       	$return .= '<div class="breadcrumb_container">' .\Isotope\Backend::generateGroupsBreadcrumb($this->intGroupId, CURRENT_ID) . '</div>';
-
 		// Get all details of the parent record
 		$objParent = $this->Database->prepare("SELECT * FROM " . $this->strTable . " WHERE id=?")
 									->limit(1)
