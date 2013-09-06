@@ -145,16 +145,17 @@ class ShippingAddress extends Address implements IsotopeCheckoutStep
 
         if (null === $objAddress) {
             $objShippingAddress = Isotope::getCart()->getShippingAddress();
-            $arrAddress = (null === $objShippingAddress) ? array() : $objShippingAddress->row();
 
-            unset($arrAddress['id']);
-            unset($arrAddress['isDefaultBilling']);
-            $arrAddress['ptable'] = 'tl_iso_product_collection';
-            $arrAddress['pid'] = Isotope::getCart()->id;
-            $arrAddress['isDefaultShipping'] = '1';
+            if (null === $objShippingAddress) {
+                $objAddress = new AddressModel();
+            } else {
+                $objAddress = clone $objShippingAddress;
+            }
 
-            $objAddress = new AddressModel();
-            $objAddress->setRow($arrAddress);
+            $objAddress->ptable = 'tl_iso_product_collection';
+            $objAddress->pid = Isotope::getCart()->id;
+            $objAddress->isDefaultShipping = '1';
+            $objAddress->isDefaultBilling = '';
         }
 
         return $objAddress;
