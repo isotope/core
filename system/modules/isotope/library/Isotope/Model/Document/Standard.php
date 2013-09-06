@@ -35,7 +35,7 @@ class Standard extends Document implements IsotopeDocument
     public function printToBrowser()
     {
         $pdf = $this->generatePDF();
-        $pdf->Output(sprintf('%s.pdf', $this->generateFileName()), 'D');
+        $pdf->Output(sprintf('%s.pdf', \String::parseSimpleTokens($this->fileTitle, $this->arrCollectionTokens)), 'D');
     }
 
     /**
@@ -44,15 +44,7 @@ class Standard extends Document implements IsotopeDocument
     public function store($path)
     {
         $pdf = $this->generatePDF();
-        $pdf->Output(sprintf(TL_ROOT . '/%s/%s.pdf', $path, $this->generateFileName()), 'F');
-    }
-
-    /**
-     *
-     */
-    protected function generateFileName()
-    {
-        return \String::parseSimpleTokens($this->fileTitle, $this->arrCollectionTokens);
+        $pdf->Output(sprintf(TL_ROOT . '/%s/%s.pdf', $path, \String::parseSimpleTokens($this->fileTitle, $this->arrCollectionTokens)), 'F');
     }
 
     /**
@@ -115,7 +107,7 @@ class Standard extends Document implements IsotopeDocument
         }
 
         // add title
-        $objTemplate->title = $this->generateFileName();
+        $objTemplate->title = \String::parseSimpleTokens($this->documentTitle, $this->arrCollectionTokens);
 
         // render the collection
         $objCollectionTemplate = new Template($this->collectionTpl);
