@@ -177,7 +177,7 @@ abstract class TypeAgent extends \Model
             $arrRelations = $objRelations->getRelations();
 
             if (isset($arrRelations['type'])) {
-                $arrOptions['column'][] = 'type IN (SELECT ' . $arrRelations['type']['field'] . ' FROM ' . $arrRelations['type']['table'] . ' WHERE class=?)';
+                $arrOptions['column'][] = static::$strTable . '.type IN (SELECT ' . $arrRelations['type']['field'] . ' FROM ' . $arrRelations['type']['table'] . ' WHERE class=?)';
             } else {
                 $arrOptions['column'][] = static::$strTable . '.type=?';
             }
