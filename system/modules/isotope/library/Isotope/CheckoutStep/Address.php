@@ -264,7 +264,7 @@ abstract class Address extends CheckoutStep
     }
 
     /**
-     * Get options for all addresses in the users' address book
+     * Get options for all addresses in the user's address book
      * @return  array
      */
     protected function getAddressOptions()
@@ -272,24 +272,21 @@ abstract class Address extends CheckoutStep
         $arrOptions = array();
 
         if (FE_USER_LOGGED_IN === true) {
-            // @todo: this var is not being used, there must be something wrong here
             $arrAddresses = $this->getAddresses();
             $arrCountries = $this->getAddressCountries();
 
-            if (null !== $objAddresses && !empty($arrCountries)) {
+            if (!empty($arrAddresses) && !empty($arrCountries)) {
                 $objDefault = $this->getAddress();
 
-                while ($objAddresses->next()) {
+                foreach($arrAddresses as $objAddress) {
 
-                    if (!in_array($objAddresses->country, $arrCountries)) {
+                    if (!in_array($objAddress->country, $arrCountries)) {
                         continue;
                     }
 
-                    $objAddress = $objAddresses->current();
-
                     $arrOptions[] = array(
                         'value'        => $objAddress->id,
-                        'label'        => $objAddress->generateHtml($arrFields),
+                        'label'        => $objAddress->generateHtml(),
                         'default'      => ($objAddress->id == $objDefault->id ? '1' : ''),
                     );
                 }
