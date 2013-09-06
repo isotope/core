@@ -62,8 +62,7 @@ class ProductList extends Module
         }
 
         // Hide product list in reader mode if the respective setting is enabled
-        if ($this->iso_hide_list && \Input::get('product') != '')
-        {
+        if ($this->iso_hide_list && \Input::get('product') != '') {
             return '';
         }
 
@@ -71,14 +70,13 @@ class ProductList extends Module
         $this->iso_productcache = deserialize($this->iso_productcache, true);
 
         // Disable the cache in frontend preview or debug mode
-        if (BE_USER_LOGGED_IN === true || $GLOBALS['TL_CONFIG']['debugMode'])
-        {
+        if (BE_USER_LOGGED_IN === true || $GLOBALS['TL_CONFIG']['debugMode']) {
             $this->blnCacheProducts = false;
         }
 
         // Apply limit from filter module
-        if (is_array($this->iso_filterModules))
-        {
+        if (is_array($this->iso_filterModules)) {
+
             // We only do this once. getFiltersAndSorting() then automatically has the correct sorting
             $this->iso_filterModules = array_reverse($this->iso_filterModules);
 
@@ -107,8 +105,7 @@ class ProductList extends Module
     protected function compile()
     {
         // return message if no filter is set
-        if ($this->iso_emptyFilter && !\Input::get('isorc') && !\Input::get('keywords'))
-        {
+        if ($this->iso_emptyFilter && !\Input::get('isorc') && !\Input::get('keywords')) {
             $this->Template->message = $this->replaceInsertTags($this->iso_noFilter);
             $this->Template->type = 'noFilter';
             $this->Template->products = array();
@@ -119,47 +116,39 @@ class ProductList extends Module
         $intPage = ($this->iso_category_scope == 'article' ? $GLOBALS['ISO_CONFIG']['current_article']['pid'] : $objPage->id);
         $arrProducts = null;
 
-        if ($this->blnCacheProducts && ($objCache = ProductCache::findForPageAndModule($intPage, $this->id)) !== null)
-        {
+        if ($this->blnCacheProducts && ($objCache = ProductCache::findForPageAndModule($intPage, $this->id)) !== null) {
             $arrCacheIds = $objCache->getProductIds();
 
             // Use the cache if keywords match. Otherwise we will use the product IDs as a "limit" for findProducts()
-            if ($objCache->keywords == \Input::get('keywords'))
-            {
+            if ($objCache->keywords == \Input::get('keywords')) {
                 $total = count($arrCacheIds);
 
-                if ($this->perPage > 0)
-                {
+                if ($this->perPage > 0) {
                     $offset = $this->generatePagination($total);
-
                     $total = $total - $offset;
                     $total = $total > $this->perPage ? $this->perPage : $total;
 
                     $arrProducts = \Isotope\Frontend::getProducts(array_slice($arrCacheIds, $offset, $this->perPage));
-                }
-                else
-                {
+                } else {
                     $arrProducts = \Isotope\Frontend::getProducts($arrCacheIds);
                 }
 
                 // Cache is wrong, drop everything and run findProducts()
-                if (count($arrProducts) != $total)
-                {
+                if (count($arrProducts) != $total) {
                     $arrCacheIds = null;
                     $arrProducts = null;
                 }
             }
         }
 
-        if (!is_array($arrProducts))
-        {
+        if (!is_array($arrProducts)) {
+
             // Display "loading products" message and add cache flag
-            if ($this->blnCacheProducts)
-            {
+            if ($this->blnCacheProducts) {
                 $blnCacheMessage = (bool) $this->iso_productcache[$intPage][(int) \Input::get('isorc')];
 
-                if ($blnCacheMessage && !\Input::get('buildCache'))
-                {
+                if ($blnCacheMessage && !\Input::get('buildCache')) {
+
                     // Do not index or cache the page
                     $objPage->noSearch = 1;
                     $objPage->cache = 0;
@@ -188,13 +177,12 @@ class ProductList extends Module
                 }
 
                 // Do not write cache if table is locked. That's the case if another process is already writing cache
-                if (ProductCache::isWritable())
-                {
-                    \Database::getInstance()->lockTables(array('tl_iso_productcache'=>'WRITE', 'tl_iso_products'=>'READ'));
-                    $arrIds = array();
+                if (ProductCache::isWritable()) {
 
-                    foreach ($arrProducts as $objProduct)
-                    {
+                    \Database::getInstance()->lockTables(array('tl_iso_productcache'=>'WRITE', 'tl_iso_products'=>'READ'));
+
+                    $arrIds = array();
+                    foreach ($arrProducts as $objProduct) {
                         $arrIds[] = $objProduct->id;
                     }
 
@@ -208,22 +196,19 @@ class ProductList extends Module
 
                     \Database::getInstance()->unlockTables();
                 }
-            }
-            else
-            {
+            } else {
                 $arrProducts = $this->findProducts();
             }
 
-            if ($this->perPage > 0)
-            {
+            if ($this->perPage > 0) {
                 $offset = $this->generatePagination(count($arrProducts));
                 $arrProducts = array_slice($arrProducts, $offset, $this->perPage);
             }
         }
 
         // No products found
-        if (!is_array($arrProducts) || empty($arrProducts))
-        {
+        if (!is_array($arrProducts) || empty($arrProducts)) {
+
             // Do not index or cache the page
             $objPage->noSearch = 1;
             $objPage->cache = 0;
@@ -240,8 +225,7 @@ class ProductList extends Module
         $intReaderPage = \Isotope\Frontend::getReaderPageId(null, $this->iso_reader_jumpTo);
         $arrDefaultOptions = $this->getDefaultProductOptions();
 
-        foreach ($arrProducts as $objProduct)
-        {
+        foreach ($arrProducts as $objProduct) {
             $arrConfig = array(
                 'module'        => $this,
                 'template'      => ($this->iso_list_layout ?: $objProduct->getRelated('type')->list_template),
