@@ -149,6 +149,10 @@ class BillingAddress extends Address implements IsotopeCheckoutStep
             $objAddress->pid = Isotope::getCart()->id;
             $objAddress->isDefaultBilling = '1';
             $objAddress->isDefaultShipping = '';
+
+            if ($objAddress->country == '') {
+                $objAddress->country = Isotope::getConfig()->billing_country;
+            }
         }
 
         return $objAddress;
@@ -170,15 +174,6 @@ class BillingAddress extends Address implements IsotopeCheckoutStep
     protected function getAddressCountries()
     {
         return Isotope::getConfig()->getBillingCountries();
-    }
-
-    /**
-     * Get default country for this address type
-     * @return  string
-     */
-    protected function getDefaultCountry()
-    {
-        return Isotope::getConfig()->billing_country;
     }
 
     /**

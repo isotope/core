@@ -231,10 +231,6 @@ abstract class Address extends CheckoutStep
                 if ($field['value'] == 'country') {
                     $arrCountries = $this->getAddressCountries();
                     $arrData['options'] = array_values(array_intersect($arrData['options'], $arrCountries));
-
-                    if ($arrData['country'] == '') {
-                        $arrData['country'] = $this->getDefaultCountry();
-                    }
                 }
 
                 // Special field type "conditionalselect"
