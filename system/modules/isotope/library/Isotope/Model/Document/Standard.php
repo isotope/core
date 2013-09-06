@@ -55,10 +55,10 @@ class Standard extends Document implements IsotopeDocument
     {
         // TCPDF configuration
         $l = array();
-        $l['a_meta_dir'] = 'ltr';
-        $l['a_meta_charset'] = $GLOBALS['TL_CONFIG']['characterSet'];
-        $l['a_meta_language'] = $GLOBALS['TL_LANGUAGE'];
-        $l['w_page'] = 'page';
+        $l['a_meta_dir']        = 'ltr';
+        $l['a_meta_charset']    = $GLOBALS['TL_CONFIG']['characterSet'];
+        $l['a_meta_language']   = $GLOBALS['TL_LANGUAGE'];
+        $l['w_page']            = 'page';
 
         // Include library
         require_once TL_ROOT . '/system/config/tcpdf.php';
@@ -70,6 +70,7 @@ class Standard extends Document implements IsotopeDocument
         // Set document information
         $pdf->SetCreator(PDF_CREATOR);
         $pdf->SetAuthor(PDF_AUTHOR);
+        $pdf->SetTitle(\String::parseSimpleTokens($this->documentTitle, $this->arrCollectionTokens));
 
         // Prevent font subsetting (huge speed improvement)
         $pdf->setFontSubsetting(false);
@@ -100,7 +101,6 @@ class Standard extends Document implements IsotopeDocument
         $objTemplate = new Template($this->documentTpl);
 
         // add logo
-        // @todo make size configurable?
         if ($this->logo && ($objFilesModel = \FilesModel::findByPk($this->logo)) !== null) {
             $objTemplate->hasLogo = true;
             $objTemplate->logoSrc = TL_ROOT . '/' . $objFilesModel->path;
