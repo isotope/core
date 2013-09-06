@@ -133,6 +133,7 @@ $GLOBALS['TL_LANG']['MSC']['shipping_method_missing']           = 'Please select
 $GLOBALS['TL_LANG']['MSC']['payment_method_message']            = 'Enter your payment information.';
 $GLOBALS['TL_LANG']['MSC']['payment_method_missing']            = 'Please select a payment method.';
 $GLOBALS['TL_LANG']['MSC']['order_review_message']              = 'Review and confirm your order details.';
+$GLOBALS['TL_LANG']['MSC']['checkout_address']                  = 'Address';
 $GLOBALS['TL_LANG']['MSC']['checkout_shipping']                 = 'Shipping';
 $GLOBALS['TL_LANG']['MSC']['checkout_payment']                  = 'Payment';
 $GLOBALS['TL_LANG']['MSC']['checkout_review']                   = 'Review';
