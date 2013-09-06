@@ -14,6 +14,7 @@ namespace Isotope\Module;
 
 use Isotope\Isotope;
 use Isotope\Model\Product;
+use Isotope\Model\ProductCache;
 
 
 /**
@@ -61,8 +62,7 @@ class ProductList extends Module
         }
 
         // Hide product list in reader mode if the respective setting is enabled
-        if ($this->iso_hide_list && \Input::get('product') != '')
-        {
+        if ($this->iso_hide_list && \Input::get('product') != '') {
             return '';
         }
 
@@ -70,14 +70,13 @@ class ProductList extends Module
         $this->iso_productcache = deserialize($this->iso_productcache, true);
 
         // Disable the cache in frontend preview or debug mode
-        if (BE_USER_LOGGED_IN === true || $GLOBALS['TL_CONFIG']['debugMode'])
-        {
+        if (BE_USER_LOGGED_IN === true || $GLOBALS['TL_CONFIG']['debugMode']) {
             $this->blnCacheProducts = false;
         }
 
         // Apply limit from filter module
-        if (is_array($this->iso_filterModules))
-        {
+        if (is_array($this->iso_filterModules)) {
+
             // We only do this once. getFiltersAndSorting() then automatically has the correct sorting
             $this->iso_filterModules = array_reverse($this->iso_filterModules);
 
@@ -106,8 +105,7 @@ class ProductList extends Module
     protected function compile()
     {
         // return message if no filter is set
-        if ($this->iso_emptyFilter && !\Input::get('isorc') && !\Input::get('keywords'))
-        {
+        if ($this->iso_emptyFilter && !\Input::get('isorc') && !\Input::get('keywords')) {
             $this->Template->message = $this->replaceInsertTags($this->iso_noFilter);
             $this->Template->type = 'noFilter';
             $this->Template->products = array();
@@ -115,79 +113,43 @@ class ProductList extends Module
         }
 
         global $objPage;
+        $intPage = ($this->iso_category_scope == 'article' ? $GLOBALS['ISO_CONFIG']['current_article']['pid'] : $objPage->id);
         $arrProducts = null;
 
-        if ($this->blnCacheProducts)
-        {
-            $time = time();
-            $pageId = ($this->iso_category_scope == 'article' ? $GLOBALS['ISO_CONFIG']['current_article']['pid'] : $objPage->id);
-            $groups = '';
+        if ($this->blnCacheProducts && ($objCache = ProductCache::findForPageAndModule($intPage, $this->id)) !== null) {
+            $arrCacheIds = $objCache->getProductIds();
 
-            // Find groups of current user, the cache is groups-specific
-            if (FE_USER_LOGGED_IN === true)
-            {
-                $arrGroups = \FrontendUser::getInstance()->groups;
+            // Use the cache if keywords match. Otherwise we will use the product IDs as a "limit" for findProducts()
+            if ($objCache->keywords == \Input::get('keywords')) {
+                $total = count($arrCacheIds);
 
-                if (!empty($arrGroups) && is_array($arrGroups))
-                {
-                    // Make sure groups array always looks the same to find it in the database
-                    $arrGroups = array_unique($arrGroups);
-                    sort($arrGroups, SORT_NUMERIC);
-                    $groups = serialize($arrGroups);
+                if ($this->perPage > 0) {
+                    $offset = $this->generatePagination($total);
+                    $total = $total - $offset;
+                    $total = $total > $this->perPage ? $this->perPage : $total;
+
+                    $arrProducts = \Isotope\Frontend::getProducts(array_slice($arrCacheIds, $offset, $this->perPage));
+                } else {
+                    $arrProducts = \Isotope\Frontend::getProducts($arrCacheIds);
                 }
-            }
 
-            $objCache = \Database::getInstance()->prepare("
-                SELECT * FROM tl_iso_productcache
-                WHERE page_id=? AND module_id=? AND requestcache_id=? AND groups=? AND (keywords=? OR keywords='') AND (expires>$time OR expires=0)
-                ORDER BY keywords=''"
-            )->limit(1)->execute($pageId, $this->id, (int) \Input::get('isorc'), $groups, (string) \Input::get('keywords'));
-
-            // Cache found
-            if ($objCache->numRows)
-            {
-                $arrCacheIds = $objCache->products == '' ? array() : explode(',', $objCache->products);
-
-                // Use the cache if keywords match. Otherwise we will use the product IDs as a "limit" for findProducts()
-                if ($objCache->keywords == \Input::get('keywords'))
-                {
-                    $total = count($arrCacheIds);
-
-                    if ($this->perPage > 0)
-                    {
-                        $offset = $this->generatePagination($total);
-
-                        $total = $total - $offset;
-                        $total = $total > $this->perPage ? $this->perPage : $total;
-
-                        $arrProducts = \Isotope\Frontend::getProducts(array_slice($arrCacheIds, $offset, $this->perPage));
-                    }
-                    else
-                    {
-                        $arrProducts = \Isotope\Frontend::getProducts($arrCacheIds);
-                    }
-
-                    // Cache is wrong, drop everything and run findProducts()
-                    if (count($arrProducts) != $total)
-                    {
-                        $arrCacheIds = null;
-                        $arrProducts = null;
-                    }
+                // Cache is wrong, drop everything and run findProducts()
+                if (count($arrProducts) != $total) {
+                    $arrCacheIds = null;
+                    $arrProducts = null;
                 }
             }
         }
 
-        if (!is_array($arrProducts))
-        {
-            // Display "loading products" message and add cache flag
-            if ($this->blnCacheProducts)
-            {
-                $blnCacheMessage = (bool) $this->iso_productcache[$pageId][(int) \Input::get('isorc')];
+        if (!is_array($arrProducts)) {
 
-                if ($blnCacheMessage && !\Input::get('buildCache'))
-                {
+            // Display "loading products" message and add cache flag
+            if ($this->blnCacheProducts) {
+                $blnCacheMessage = (bool) $this->iso_productcache[$intPage][(int) \Input::get('isorc')];
+
+                if ($blnCacheMessage && !\Input::get('buildCache')) {
+
                     // Do not index or cache the page
-                    global $objPage;
                     $objPage->noSearch = 1;
                     $objPage->cache = 0;
 
@@ -210,46 +172,43 @@ class ProductList extends Module
                 if ($blnCacheMessage != $this->blnCacheProducts)
                 {
                     $arrCacheMessage = $this->iso_productcache;
-                    $arrCacheMessage[$pageId][(int) \Input::get('isorc')] = $this->blnCacheProducts;
+                    $arrCacheMessage[$intPage][(int) \Input::get('isorc')] = $this->blnCacheProducts;
                     \Database::getInstance()->prepare("UPDATE tl_module SET iso_productcache=? WHERE id=?")->execute(serialize($arrCacheMessage), $this->id);
                 }
 
                 // Do not write cache if table is locked. That's the case if another process is already writing cache
-                if (\Database::getInstance()->query("SHOW OPEN TABLES FROM `{$GLOBALS['TL_CONFIG']['dbDatabase']}` LIKE 'tl_iso_productcache'")->In_use == 0)
-                {
-                    \Database::getInstance()->lockTables(array('tl_iso_productcache'=>'WRITE', 'tl_iso_products'=>'READ'));
-                    $arrIds = array();
+                if (ProductCache::isWritable()) {
 
-                    foreach ($arrProducts as $objProduct)
-                    {
+                    \Database::getInstance()->lockTables(array(ProductCache::getTable()=>'WRITE', 'tl_iso_products'=>'READ'));
+
+                    $arrIds = array();
+                    foreach ($arrProducts as $objProduct) {
                         $arrIds[] = $objProduct->id;
                     }
 
-                    // Also delete all expired caches if we run a delete anyway
-                    \Database::getInstance()->prepare("DELETE FROM tl_iso_productcache WHERE (page_id=? AND module_id=? AND requestcache_id=? AND groups=? AND keywords=?) OR (expires>0 AND expires<$time)")
-                                            ->executeUncached($pageId, $this->id, (int) \Input::get('isorc'), $groups, (string) \Input::get('keywords'));
+                    // Delete existing cache if necessary
+                    ProductCache::deleteForPageAndModuleOrExpired($intPage, $this->id);
 
-                    \Database::getInstance()->prepare("INSERT INTO tl_iso_productcache (page_id,module_id,requestcache_id,groups,keywords,products,expires) VALUES (?,?,?,?,?,?,?)")
-                                            ->executeUncached($pageId, $this->id, (int) \Input::get('isorc'), $groups, (string) \Input::get('keywords'), implode(',', $arrIds), $this->getProductCacheExpiration());
+                    $objCache = ProductCache::createForPageAndModule($intPage, $this->id);
+                    $objCache->expires = $this->getProductCacheExpiration();
+                    $objCache->setProductIds($arrIds);
+                    $objCache->save();
 
                     \Database::getInstance()->unlockTables();
                 }
-            }
-            else
-            {
+            } else {
                 $arrProducts = $this->findProducts();
             }
 
-            if ($this->perPage > 0)
-            {
+            if ($this->perPage > 0) {
                 $offset = $this->generatePagination(count($arrProducts));
                 $arrProducts = array_slice($arrProducts, $offset, $this->perPage);
             }
         }
 
         // No products found
-        if (!is_array($arrProducts) || empty($arrProducts))
-        {
+        if (!is_array($arrProducts) || empty($arrProducts)) {
+
             // Do not index or cache the page
             $objPage->noSearch = 1;
             $objPage->cache = 0;
@@ -266,8 +225,7 @@ class ProductList extends Module
         $intReaderPage = \Isotope\Frontend::getReaderPageId(null, $this->iso_reader_jumpTo);
         $arrDefaultOptions = $this->getDefaultProductOptions();
 
-        foreach ($arrProducts as $objProduct)
-        {
+        foreach ($arrProducts as $objProduct) {
             $arrConfig = array(
                 'module'        => $this,
                 'template'      => ($this->iso_list_layout ?: $objProduct->getRelated('type')->list_template),
