@@ -87,7 +87,6 @@ class ProductTree extends \Widget
         $this->loadDataContainer('tl_iso_groups');
         \System::loadLanguageFile('tl_iso_groups');
 
-        $this->import('Database');
         $this->import('BackendUser', 'User');
         $this->import('Isotope\ProductCallbacks', 'ProductCallbacks');
         $this->import('Isotope\tl_iso_groups', 'tl_iso_groups');

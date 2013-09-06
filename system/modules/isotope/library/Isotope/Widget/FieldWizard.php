@@ -157,8 +157,6 @@ class FieldWizard extends \Widget
         // Change the order
         if (\Input::get($strCommand) && is_numeric(\Input::get('cid')) && \Input::get('id') == $this->currentRecord)
         {
-            $this->import('Database');
-
             switch (\Input::get($strCommand))
             {
                 case 'up':

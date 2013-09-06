@@ -59,8 +59,6 @@ class Automator extends \Controller
      */
     public function convertCurrencies()
     {
-        $this->import('Database');
-
         $objConfigs = \Database::getInstance()->execute("SELECT * FROM tl_iso_config WHERE currencyAutomator='1'");
 
         while ($objConfigs->next())

@@ -51,8 +51,6 @@ class MediaManager extends \Widget implements \uploadable
     {
         parent::__construct($arrAttributes);
 
-        $this->import('Database');
-
         $this->objUploader = new \FileUpload();
     }
 

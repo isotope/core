@@ -68,7 +68,6 @@ class Isotope extends \Controller
     {
         parent::__construct();
 
-        $this->import('Database');
         $this->import('FrontendUser', 'User');
     }
 
