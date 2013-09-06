@@ -206,52 +206,6 @@ class Isotope extends \Controller
 
 
     /**
-     * Set the default store config
-     */
-    public static function resetConfig()
-    {
-        if (\Database::getInstance()->tableExists('tl_iso_config'))
-        {
-            if (TL_MODE == 'FE')
-            {
-                global $objPage;
-
-                static::$objConfig = Config::findByRootPageOrFallback($objPage->rootId);
-            }
-            else
-            {
-                static::$objConfig = Config::findByFallback();
-            }
-        }
-
-        if (null === static::$objConfig)
-        {
-            // Display error message in Isotope related backend modules
-            if (TL_MODE == 'BE')
-            {
-                $do = \Input::get('do');
-
-                if ($do != 'iso_setup' && isset($GLOBALS['BE_MOD']['isotope'][$do]))
-                {
-                    $_SESSION['TL_ERROR'][] = $GLOBALS['TL_LANG']['ERR']['noDefaultStoreConfiguration'];
-
-                    if ($do == 'iso_products')
-                    {
-                        \System::redirect('contao/main.php?do=iso_setup&mod=configs&table=tl_iso_config&act=create');
-                    }
-                }
-            }
-            else
-            {
-                trigger_error($GLOBALS['TL_LANG']['ERR']['noStoreConfigurationSet'], E_USER_WARNING);
-            }
-
-            return;
-        }
-    }
-
-
-    /**
      * Calculate price trough hook and foreign prices
      * @param float
      * @param object
