@@ -278,7 +278,7 @@ $GLOBALS['TL_DCA']['tl_iso_config'] = array
             'filter'                => true,
             'sorting'               => true,
             'inputType'             => 'select',
-            'default'               => (BackendUser::getInstance()->country) ?: '',
+            'default'               => (string) BackendUser::getInstance()->country,
             'options'               => \System::getCountries(),
             'eval'                  => array('mandatory'=>true, 'includeBlankOption'=>true, 'tl_class'=>'w50', 'chosen'=>true),
             'sql'                   => "varchar(2) NOT NULL default ''",

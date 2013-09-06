@@ -627,8 +627,7 @@ class tl_iso_rules extends \Backend
         }
 
         // Update the database
-        \Database::getInstance()->prepare("UPDATE tl_iso_rules SET tstamp=". time() .", enabled='" . ($blnVisible ? 1 : '') . "' WHERE id=?")
-                       ->execute($intId);
+        \Database::getInstance()->prepare("UPDATE tl_iso_rules SET tstamp=". time() .", enabled='" . ($blnVisible ? 1 : '') . "' WHERE id=?")->execute($intId);
 
 //        $this->createNewVersion('tl_iso_rules', $intId);
     }
