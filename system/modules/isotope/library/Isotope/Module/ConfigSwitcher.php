@@ -63,7 +63,7 @@ class ConfigSwitcher extends Module
         {
             if (in_array(\Input::get('config'), $this->iso_config_ids))
             {
-                $_SESSION['ISOTOPE']['config_id'] = \Input::get('config');
+                Isotope::getCart()->config_id = \Input::get('config');
             }
 
             \Controller::redirect(preg_replace(('@[?|&]config='.\Input::get('config').'@'), '', \Environment::get('request')));
