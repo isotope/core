@@ -55,4 +55,15 @@ class ProductCache extends \Model
 
         return $groups;
     }
+
+    /**
+     * Check if cache is writable (table is not locked)
+     * @return  bool
+     */
+    public static function isWritable()
+    {
+        return \Database::getInstance()->query("
+            SHOW OPEN TABLES FROM `" . $GLOBALS['TL_CONFIG']['dbDatabase'] . "` LIKE '" . static::$strTable . "'
+        ")->In_use == 0;
+    }
 }

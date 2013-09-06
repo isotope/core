@@ -202,7 +202,7 @@ class ProductList extends Module
                 }
 
                 // Do not write cache if table is locked. That's the case if another process is already writing cache
-                if (\Database::getInstance()->query("SHOW OPEN TABLES FROM `{$GLOBALS['TL_CONFIG']['dbDatabase']}` LIKE 'tl_iso_productcache'")->In_use == 0)
+                if (ProductCache::isWritable())
                 {
                     \Database::getInstance()->lockTables(array('tl_iso_productcache'=>'WRITE', 'tl_iso_products'=>'READ'));
                     $arrIds = array();
