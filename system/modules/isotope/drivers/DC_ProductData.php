@@ -517,7 +517,10 @@ class DC_ProductData extends \DC_Table
             }
             else
             {
-                $arrPageLanguages = $this->Database->execute("SELECT DISTINCT language FROM tl_page")->fetchEach('language');
+                $arrPageLanguages = $this->Database->execute("SELECT DISTINCT language FROM tl_page WHERE type='root'")->fetchEach('language');
+                $arrPageLanguages = array_map(function($strLang) {
+                    return str_replace('-', '_', $strLang);
+                }, $arrPageLanguages);
             }
 
             if (count($arrPageLanguages) > 1)
