@@ -107,10 +107,10 @@ $GLOBALS['TL_LANG']['tl_iso_products']['price_tiers']['price']      = 'Price';
 /**
  * Import assets description
  */
-$GLOBALS['TL_LANG']['tl_iso_products']['importAssetsDescr']         = '<p>There are actually two different ways how you can use this feature:</p>
+$GLOBALS['TL_LANG']['tl_iso_products']['importAssetsDescr']         = '<p>There are two different ways this feature may be used:</p>
 <ol>
     <li>The source folder you select contains files that either match the product\'s SKU or name. Isotope eCommerce is going to match all the files against all of your products and import them into the respective product\'s assets folder.</li>
     <li>The source folder you select contains subfolders that either match the product\'s SKU or name. Isotope eCommerce is going to match all the subfolders against all of your products and import everything within one subfolder into the respective product\'s asset folder.</li>
 </ol>
-<p>By the way: Any developer can provide you with other matching rules than just the SKU or name.</p>
+<p>Hint: Any developer can provide you with other matching rules than just the product\'s SKU or name.</p>
 ';
