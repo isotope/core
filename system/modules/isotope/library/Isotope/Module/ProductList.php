@@ -213,8 +213,7 @@ class ProductList extends Module
                     }
 
                     // Also delete all expired caches if we run a delete anyway
-                    \Database::getInstance()->prepare("DELETE FROM tl_iso_productcache WHERE (page_id=? AND module_id=? AND requestcache_id=? AND groups=? AND keywords=?) OR (expires>0 AND expires<$time)")
-                                            ->executeUncached($pageId, $this->id, (int) \Input::get('isorc'), $groups, (string) \Input::get('keywords'));
+                    ProductCache::deleteByPageAndModuleOrExpired($pageId, $this->id);
 
                     \Database::getInstance()->prepare("INSERT INTO tl_iso_productcache (page_id,module_id,requestcache_id,groups,keywords,products,expires) VALUES (?,?,?,?,?,?,?)")
                                             ->executeUncached($pageId, $this->id, (int) \Input::get('isorc'), $groups, (string) \Input::get('keywords'), implode(',', $arrIds), $this->getProductCacheExpiration());

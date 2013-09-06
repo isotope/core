@@ -29,6 +29,21 @@ class ProductCache extends \Model
 
 
     /**
+     * Delete cache for listing module, also delete expired ones while we're at it...
+     * @param   int
+     * @param   int
+     */
+    public static function deleteByPageAndModuleOrExpired($intPage, $intModule)
+    {
+        $time = time();
+
+        \Database::getInstance()->prepare("
+            DELETE FROM " . static::$strTable . "
+            WHERE (page_id=? AND module_id=? AND requestcache_id=? AND groups=? AND keywords=?) OR (expires>0 AND expires<$time)
+        ")->executeUncached($intPage, $intModule, (int) \Input::get('isorc'), static::getCacheableGroups(), (string) \Input::get('keywords'));
+    }
+
+    /**
      * Return sorted and serialized list of active member groups for cache lookup
      * @return  string
      */
