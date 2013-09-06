@@ -199,7 +199,7 @@ class Isotope extends \Controller
      * Set the currently active Isotope configuration
      * @param Isotope\Model\Config
      */
-    public static function setConfig(Config $objConfig)
+    public static function setConfig(Config $objConfig=null)
     {
         static::$objConfig = $objConfig;
     }
