@@ -52,6 +52,15 @@ class Config extends \Model
     }
 
     /**
+     * Get translated label for the config
+     * @return  string
+     */
+    public function getLabel()
+    {
+        return Isotope::translate(($objConfigs->label ?: $objConfigs->name));
+    }
+
+    /**
      * Get billing address fields
      * @return  array
      */
