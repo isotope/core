@@ -172,7 +172,7 @@ class Order extends ProductCollection implements IsotopeProductCollection
         }
 
         // Initialize system
-        Isotope::overrideConfig($this->config_id);
+        Isotope::setConfig($this->getRelated('config_id'));
         Isotope::setCart($objCart);
 
         $this->arrData['date']                 = time();
@@ -522,13 +522,12 @@ class Order extends ProductCollection implements IsotopeProductCollection
             $objDatabase = \Database::getInstance();
             $strPrefix = Isotope::getInstance()->call('replaceInsertTags', Isotope::getConfig()->orderPrefix);
             $intPrefix = utf8_strlen($strPrefix);
-            $arrConfigIds = $objDatabase->prepare("SELECT id FROM tl_iso_config WHERE store_id=?")->execute(Isotope::getConfig()->store_id)->fetchEach('id');
 
             // Lock tables so no other order can get the same ID
             $objDatabase->lockTables(array(static::$strTable => 'WRITE'));
 
             // Retrieve the highest available order ID
-            $objMax = $objDatabase->prepare("SELECT order_id FROM " . static::$strTable . " WHERE " . ($strPrefix != '' ? "order_id LIKE '$strPrefix%' AND " : '') . "config_id IN (" . implode(',', $arrConfigIds) . ") ORDER BY CAST(" . ($strPrefix != '' ? "SUBSTRING(order_id, " . ($intPrefix+1) . ")" : 'order_id') . " AS UNSIGNED) DESC")->limit(1)->executeUncached();
+            $objMax = $objDatabase->prepare("SELECT order_id FROM " . static::$strTable . " WHERE " . ($strPrefix != '' ? "order_id LIKE '$strPrefix%' AND " : '') . "store_id=? ORDER BY CAST(" . ($strPrefix != '' ? "SUBSTRING(order_id, " . ($intPrefix+1) . ")" : 'order_id') . " AS UNSIGNED) DESC")->limit(1)->executeUncached(Isotope::getCart()->store_id);
             $intMax = (int) substr($objMax->order_id, $intPrefix);
 
             $this->arrData['order_id'] = $strPrefix . str_pad($intMax+1, Isotope::getConfig()->orderDigits, '0', STR_PAD_LEFT);

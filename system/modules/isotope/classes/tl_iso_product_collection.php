@@ -52,7 +52,7 @@ class tl_iso_product_collection extends \Backend
         }
 
         // Override system to correctly format currencies etc
-        Isotope::overrideConfig($objOrder->config_id);
+        Isotope::setConfig($objOrder->getRelated('config_id'));
 
         $objAddress = $objOrder->getBillingAddress();
 

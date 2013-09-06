@@ -112,7 +112,7 @@ class Isotope extends \Controller
             // Initialize request cache for product list filters
             if (\Input::get('isorc') != '') {
 
-                $objRequestCache = \Database::getInstance()->prepare("SELECT * FROM tl_iso_requestcache WHERE id=? AND store_id=?")->execute(\Input::get('isorc'), static::getConfig()->store_id);
+                $objRequestCache = \Database::getInstance()->prepare("SELECT * FROM tl_iso_requestcache WHERE id=? AND store_id=?")->execute(\Input::get('isorc'), static::getCart()->store_id);
 
                 if ($objRequestCache->numRows) {
 
@@ -151,9 +151,9 @@ class Isotope extends \Controller
      */
     public static function getCart()
     {
-        if (null === static::$objCart) {
+        if (null === static::$objCart && TL_MODE == 'FE') {
             static::initialize();
-            static::$objCart = Cart::getDefaultForStore((int) static::getConfig()->id, (int) static::getConfig()->store_id);
+            static::$objCart = Cart::findForCurrentStore();
         }
 
         return static::$objCart;
@@ -179,10 +179,15 @@ class Isotope extends \Controller
         if (null === static::$objConfig) {
             static::initialize();
 
-            if ($_SESSION['ISOTOPE']['config_id'] > 0) {
-                static::overrideConfig($_SESSION['ISOTOPE']['config_id']);
-            } else {
-                static::resetConfig();
+            if (($objCart = static::getCart()) !== null) {
+                static::$objConfig = Config::findByPk($objCart->config_id);
+            }
+
+            // If cart was null or still did not find a config
+            if (null === static::$objConfig) {
+                global $objPage;
+
+                static::$objConfig = (TL_MODE == 'FE' ? Config::findByRootPageOrFallback($objPage->rootId) : Config::findByFallback());
             }
         }
 
@@ -197,65 +202,6 @@ class Isotope extends \Controller
     public static function setConfig(Config $objConfig)
     {
         static::$objConfig = $objConfig;
-    }
-
-
-    /**
-     * Set the default store config
-     */
-    public static function resetConfig()
-    {
-        if (\Database::getInstance()->tableExists('tl_iso_config'))
-        {
-            if (TL_MODE == 'FE')
-            {
-                global $objPage;
-
-                static::$objConfig = Config::findByRootPageOrFallback($objPage->rootId);
-            }
-            else
-            {
-                static::$objConfig = Config::findByFallback();
-            }
-        }
-
-        if (null === static::$objConfig)
-        {
-            // Display error message in Isotope related backend modules
-            if (TL_MODE == 'BE')
-            {
-                $do = \Input::get('do');
-
-                if ($do != 'iso_setup' && isset($GLOBALS['BE_MOD']['isotope'][$do]))
-                {
-                    $_SESSION['TL_ERROR'][] = $GLOBALS['TL_LANG']['ERR']['noDefaultStoreConfiguration'];
-
-                    if ($do == 'iso_products')
-                    {
-                        \System::redirect('contao/main.php?do=iso_setup&mod=configs&table=tl_iso_config&act=create');
-                    }
-                }
-            }
-            else
-            {
-                trigger_error($GLOBALS['TL_LANG']['ERR']['noStoreConfigurationSet'], E_USER_WARNING);
-            }
-
-            return;
-        }
-    }
-
-
-    /**
-     * Manual override of the store configuration
-     * @param integer
-     */
-    public static function overrideConfig($intConfig)
-    {
-        if ((null === static::$objConfig || static::$objConfig->id != $intConfig) && (static::$objConfig = Config::findByPk($intConfig)) === null)
-        {
-            static::resetConfig();
-        }
     }
 
 
