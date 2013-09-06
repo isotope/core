@@ -386,6 +386,7 @@ class ProductCallbacks extends \Backend
         $arrTypes = $this->arrProductTypes;
         $blnVariants = false;
         $act = \Input::get('act');
+        $blnSingleRecord = $act === 'edit' || $act === 'show';
 
         if (\Input::get('id') > 0) {
             $objProduct = \Database::getInstance()->prepare("SELECT p1.pid, p1.type, p2.type AS parent_type FROM tl_iso_products p1 LEFT JOIN tl_iso_products p2 ON p1.pid=p2.id WHERE p1.id=?")->execute(\Input::get('id'));
@@ -402,7 +403,7 @@ class ProductCallbacks extends \Backend
         foreach ($arrTypes as $objType)
         {
             // Enable advanced prices
-            if ($act == 'edit' && $objType->hasAdvancedPrices()) {
+            if ($blnSingleRecord && $objType->hasAdvancedPrices()) {
                 $arrFields['prices']['exclude'] = $arrFields['price']['exclude'];
                 $arrFields['prices']['attributes'] = $arrFields['price']['attributes'];
                 $arrFields['price'] = $arrFields['prices'];
@@ -447,11 +448,11 @@ class ProductCallbacks extends \Backend
 
                 // Apply product type attribute config
                 if ($arrConfig[$name]['tl_class'] != '') {
-                    $arrFields[$attribute]['eval']['tl_class'] = $arrConfig[$name]['tl_class'];
+                    $arrFields[$name]['eval']['tl_class'] = $arrConfig[$name]['tl_class'];
                 }
 
                 if ($arrConfig[$name]['mandatory'] > 0) {
-                    $arrFields[$attribute]['eval']['mandatory'] = $arrConfig[$name]['mandatory'] == 1 ? false : true;
+                    $arrFields[$name]['eval']['mandatory'] = $arrConfig[$name]['mandatory'] == 1 ? false : true;
                 }
 
                 if ($blnVariants && !$arrAttributes[$name]->isVariantOption() && !in_array($name, array('price', 'published', 'start', 'stop'))) {
@@ -479,7 +480,7 @@ class ProductCallbacks extends \Backend
         }
 
         // Remove non-active fields from multi-selection
-        if ($blnVariants && $act != 'edit') {
+        if ($blnVariants && !$blnSingleRecord) {
             $arrInclude = call_user_func_array('array_merge', $arrPalette);
 
             foreach ($arrFields as $name => $config) {
