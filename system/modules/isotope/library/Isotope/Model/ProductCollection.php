@@ -515,7 +515,7 @@ abstract class ProductCollection extends TypeAgent
 
         foreach ($arrItems as $objItem) {
 
-            if (!$objItem->hasProduct() || null === $objItem->getProduct()->getPrice()) {
+            if (!$objItem->hasProduct() || null === $objItem->getProduct()->getPrice()) {
                 continue;
             }
 
