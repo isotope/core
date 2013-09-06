@@ -175,7 +175,6 @@ class ProductList extends Module
                 if ($blnCacheMessage && !\Input::get('buildCache'))
                 {
                     // Do not index or cache the page
-                    global $objPage;
                     $objPage->noSearch = 1;
                     $objPage->cache = 0;
 
