@@ -268,14 +268,12 @@ class Order extends ProductCollection implements IsotopeProductCollection
     public function complete()
     {
         if ($this->checkout_complete) {
-            $intConfig = $_SESSION['ISOTOPE']['config_id'];
-
-            unset($_SESSION['ISOTOPE']);
             unset($_SESSION['FORM_DATA']);
             unset($_SESSION['FILES']);
 
-            if ($intConfig > 0) {
-                $_SESSION['ISOTOPE']['config_id'] = $intConfig;
+            // Retain custom config ID
+            if (($objCart = Isotope::getCart()) !== null && $objCart->config_id != $this->config_id) {
+                $objCart->config_id = $this->config_id;
             }
 
             return true;
