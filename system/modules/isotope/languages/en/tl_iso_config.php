@@ -20,7 +20,6 @@
 $GLOBALS['TL_LANG']['tl_iso_config']['name']                        = array('Configuration Name', 'Please enter a name for your configuration. This is only used for back end reference.');
 $GLOBALS['TL_LANG']['tl_iso_config']['label']                       = array('Label', 'The label is used in frontend, e.g. for config switcher.');
 $GLOBALS['TL_LANG']['tl_iso_config']['fallback']                    = array('Set as default store', 'Set this as the default store for back-end currency formatting and other locale-specific information.');
-$GLOBALS['TL_LANG']['tl_iso_config']['store_id']                    = array('Store ID', 'Use different store IDs to group a set of store configurations. A user\'s cart and addresses will be shared across the same store IDs.');
 $GLOBALS['TL_LANG']['tl_iso_config']['firstname']                   = array('First name', 'Please enter the first name (if applicable).');
 $GLOBALS['TL_LANG']['tl_iso_config']['lastname']                    = array('Last name', 'Please enter the last name (if applicable).');
 $GLOBALS['TL_LANG']['tl_iso_config']['company']                     = array('Company', 'You can enter a company name here (if applicable).');

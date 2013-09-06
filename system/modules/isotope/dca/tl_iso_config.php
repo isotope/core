@@ -120,7 +120,7 @@ $GLOBALS['TL_DCA']['tl_iso_config'] = array
     (
         '__selector__'              => array('currencySymbol', 'currencyAutomator'),
         'default'                   => '
-            {name_legend},name,label,fallback,store_id;
+            {name_legend},name,label,fallback;
             {address_legend:hide},firstname,lastname,company,vat_no,street_1,street_2,street_3,postal,city,country,subdivision,email,phone;
             {checkout_legend},billing_countries,shipping_countries,billing_fields,shipping_fields,billing_country,shipping_country,limitMemberCountries;
             {currency_legend},priceRoundPrecision,priceRoundIncrement,currency,currencyFormat,currencyPosition,currencySymbol;
@@ -171,14 +171,6 @@ $GLOBALS['TL_DCA']['tl_iso_config'] = array
             'inputType'             => 'checkbox',
             'eval'                  => array('doNotCopy'=>true, 'fallback'=>true, 'tl_class'=>'w50 m12'),
             'sql'                   => "char(1) NOT NULL default ''",
-        ),
-        'store_id' => array
-        (
-            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_config']['store_id'],
-            'exclude'               => true,
-            'inputType'             => 'text',
-            'eval'                  => array('mandatory'=>true, 'rgxp'=>'digit', 'nospace'=>true, 'maxlength'=>2, 'tl_class'=>'w50'),
-            'sql'                   => "int(2) unsigned NOT NULL default '0'",
         ),
         'firstname' => array
         (
