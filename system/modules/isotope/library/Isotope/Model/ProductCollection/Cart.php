@@ -15,6 +15,7 @@ namespace Isotope\Model\ProductCollection;
 use Isotope\Isotope;
 use Isotope\Interfaces\IsotopeProductCollection;
 use Isotope\Model\Address;
+use Isotope\Model\Config;
 use Isotope\Model\ProductCollection;
 
 
@@ -100,13 +101,20 @@ class Cart extends ProductCollection implements IsotopeProductCollection
 
     /**
      * Load the current cart
-     * @param integer
-     * @param integer
+     * @param   Config
+     * @return  Cart
      */
-    public static function getDefaultForStore($intConfig, $intStore)
+    public static function findForCurrentStore()
     {
+        global $objPage;
+
+        if (TL_MODE != 'FE' || null === $objPage || $objPage->rootId == 0) {
+            return null;
+        }
+
         $time = time();
         $strHash = \Input::cookie(static::$strCookie);
+        $intStore = (int) \PageModel::findByPk($objPage->rootId)->iso_store_id;
 
         //  Check to see if the user is logged in.
         if (FE_USER_LOGGED_IN !== true)
@@ -125,26 +133,32 @@ class Cart extends ProductCollection implements IsotopeProductCollection
         }
 
         // Create new cart
-        if ($objCart === null)
-        {
+        if ($objCart === null) {
+
+            $objConfig = Config::findByRootPageOrFallback($objPage->rootId);
             $objCart = new static();
 
-            $objCart->member    = (FE_USER_LOGGED_IN === true ? \FrontendUser::getInstance()->id : 0);
-            $objCart->uniqid    = (FE_USER_LOGGED_IN === true ? '' : $strHash);
-            $objCart->config_id = $intConfig;
-            $objCart->store_id  = $intStore;
-        }
+            // Can't call the individual rows here, it would trigger $blnModified and a save()
+            $objCart->setRow(array_merge($objCart->row(), array(
+                'tstamp'    => $time,
+                'member'    => (FE_USER_LOGGED_IN === true ? \FrontendUser::getInstance()->id : 0),
+                'uniqid'    => (FE_USER_LOGGED_IN === true ? '' : $strHash),
+                'config_id' => $objConfig->id,
+                'store_id'  => $intStore,
+            )));
 
-        $objCart->tstamp = $time;
+        } else {
+            $objCart->tstamp = $time;
+        }
 
         // Temporary cart available, move to this cart. Must be after creating a new cart!
          if (FE_USER_LOGGED_IN === true && $strHash != '')
          {
              $blnMerge = $objCart->countItems() > 0 ? true : false;
 
-            if (($objTemp = static::findOneBy(array('uniqid=?', 'store_id=?'), array($strHash, $intStore))) !== null)
-            {
-                $arrIds = $objCart->copyItemsFrom($objTemp);
+             if (($objTemp = static::findOneBy(array('uniqid=?', 'store_id=?'), array($strHash, $intStore))) !== null)
+             {
+                 $arrIds = $objCart->copyItemsFrom($objTemp);
 
                 if ($blnMerge && !empty($arrIds)) {
                     $_SESSION['ISO_CONFIRM'][] = $GLOBALS['TL_LANG']['MSC']['cartMerged'];

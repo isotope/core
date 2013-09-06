@@ -151,9 +151,9 @@ class Isotope extends \Controller
      */
     public static function getCart()
     {
-        if (null === static::$objCart) {
+        if (null === static::$objCart && TL_MODE == 'FE') {
             static::initialize();
-            static::$objCart = Cart::getDefaultForStore((int) static::getConfig()->id, (int) static::getConfig()->store_id);
+            static::$objCart = Cart::findForCurrentStore();
         }
 
         return static::$objCart;
@@ -179,10 +179,15 @@ class Isotope extends \Controller
         if (null === static::$objConfig) {
             static::initialize();
 
-            if ($_SESSION['ISOTOPE']['config_id'] > 0) {
-                static::overrideConfig($_SESSION['ISOTOPE']['config_id']);
-            } else {
-                static::resetConfig();
+            if (($objCart = static::getCart()) !== null) {
+                static::$objConfig = Config::findByPk($objCart->config_id);
+            }
+
+            // If cart was null or still did not find a config
+            if (null === static::$objConfig) {
+                global $objPage;
+
+                static::$objConfig = (TL_MODE == 'FE' ? Config::findByRootPageOrFallback($objPage->rootId) : Config::findByFallback());
             }
         }
 
