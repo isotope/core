@@ -93,7 +93,7 @@ abstract class Shipping extends TypeAgent
         if ($this->protected) {
             $arrGroups = deserialize($this->groups);
 
-            if (!is_array($arrGroups) || empty($arrGroups) || !count(array_intersect($arrGroups, FrontendUser::getInstance()->groups))) {
+            if (!is_array($arrGroups) || empty($arrGroups) || !count(array_intersect($arrGroups, \FrontendUser::getInstance()->groups))) {
                 return false;
             }
         }

@@ -126,7 +126,7 @@ class ProductList extends Module
             // Find groups of current user, the cache is groups-specific
             if (FE_USER_LOGGED_IN === true)
             {
-                $arrGroups = FrontendUser::getInstance()->groups;
+                $arrGroups = \FrontendUser::getInstance()->groups;
 
                 if (!empty($arrGroups) && is_array($arrGroups))
                 {

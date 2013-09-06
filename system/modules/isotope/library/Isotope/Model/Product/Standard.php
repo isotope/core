@@ -239,7 +239,7 @@ class Standard extends Product implements IsotopeProduct
 
             $groups = deserialize($this->arrData['groups']);
 
-            if (!is_array($groups) || empty($groups) || !count(array_intersect($groups, FrontendUser::getInstance()->groups))) {
+            if (!is_array($groups) || empty($groups) || !count(array_intersect($groups, \FrontendUser::getInstance()->groups))) {
                 return false;
             }
         }
@@ -458,7 +458,7 @@ class Standard extends Product implements IsotopeProduct
                 if ($blnHasProtected && $objVariants->protected) {
                     $groups = $blnHasGroups ? deserialize($objVariants->groups) : '';
 
-                    if (empty($groups) || !is_array($groups) || !count(array_intersect($groups, FrontendUser::getInstance()->groups))) {
+                    if (empty($groups) || !is_array($groups) || !count(array_intersect($groups, \FrontendUser::getInstance()->groups))) {
                         continue;
                     }
                 }
