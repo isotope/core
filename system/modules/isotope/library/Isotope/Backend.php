@@ -38,7 +38,7 @@ class Backend extends Contao_Backend
      */
     public static function truncateProductCache($varValue=null)
     {
-        \Database::getInstance()->query("TRUNCATE tl_iso_productcache");
+        \Isotope\Model\ProductCache::purge();
 
         return $varValue;
     }

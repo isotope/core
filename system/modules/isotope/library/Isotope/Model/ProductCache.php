@@ -112,6 +112,14 @@ class ProductCache extends \Model
     }
 
     /**
+     * Purge the product cache
+     */
+    public static function purge()
+    {
+        \Database::getInstance()->query("TRUNCATE " . static::$strTable);
+    }
+
+    /**
      * Return sorted and serialized list of active member groups for cache lookup
      * @return  string
      */
