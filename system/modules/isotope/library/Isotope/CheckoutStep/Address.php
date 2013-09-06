@@ -223,7 +223,7 @@ abstract class Address extends CheckoutStep
                 $strClass = $GLOBALS['TL_FFL'][$arrData['inputType']];
 
                 // Continue if the class is not defined
-                if (!class_exists($strClass)) {
+                if ($strClass == '' || !class_exists($strClass)) {
                     continue;
                 }
 
@@ -237,12 +237,6 @@ abstract class Address extends CheckoutStep
                 elseif (strlen($arrData['eval']['conditionField'])) {
                     $arrData['eval']['conditionField'] = $this->getStepClass() . '_' . $arrData['eval']['conditionField'];
                 }
-
-                // Special fields "isDefaultBilling" & "isDefaultShipping"
-    //            elseif (($field['value'] == 'isDefaultBilling' && $strAddressType == 'billing_address' && $intOptions < 2) || ($field['value'] == 'isDefaultShipping' && $strAddressType == 'shipping_address' && $intOptions < 3))
-    //            {
-    //                $arrDefault[$field['value']] = '1';
-    //            }
 
                 $objWidget = new $strClass($strClass::getAttributesFromDca($arrData, $this->getStepClass() . '_' . $field['value'], $objAddress->{$field['value']}));
 
