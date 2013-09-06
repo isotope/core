@@ -100,16 +100,21 @@ class Standard extends Document implements IsotopeDocument
         // Prepare the document
         $objTemplate = new Template($this->documentTpl);
 
-        // add logo
+        // Add logo
         if ($this->logo && ($objFilesModel = \FilesModel::findByPk($this->logo)) !== null) {
             $objTemplate->hasLogo = true;
             $objTemplate->logoSrc = TL_ROOT . '/' . $objFilesModel->path;
         }
 
-        // add title
+        // Add title
         $objTemplate->title = \String::parseSimpleTokens($this->documentTitle, $this->arrCollectionTokens);
 
-        // render the collection
+        // Add billing address
+        if (($objAddress = $this->collection->getBillingAddress()) !== null) {
+            $objTemplate->billingAddress = $objAddress;
+        }
+
+        // Render the collection
         $objCollectionTemplate = new Template($this->collectionTpl);
         $this->collection->addToTemplate($objCollectionTemplate);
         $objTemplate->collection = $objCollectionTemplate->parse();

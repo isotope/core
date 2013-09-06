@@ -1,5 +1,5 @@
 <div style="font-size: 62.5%; font-family: Arial, Helvetica, sans-serif">
-    <table cellspacing="0" cellpadding="20" border="1">
+    <table cellspacing="0" cellpadding="20" border="0">
         <tr>
             <td>
                 <?php if ($this->hasLogo): ?>
@@ -9,9 +9,14 @@
 
                 <h2><?php echo $this->title; ?></h2>
             </td>
+            <?php if ($this->billingAddress): ?>
+            <td>
+                <?php echo $this->billingAddress->generateHtml(); ?>
+            </td>
+            <?php endif; ?>
         </tr>
         <tr>
-            <td>
+            <td<?php if ($this->billingAddress): ?> colspan="2"<?php endif; ?>>
                 <?php echo $this->collection; ?>
             </td>
         </tr>
