@@ -313,8 +313,9 @@ class tl_iso_producttypes extends \Backend
      */
     public function loadAttributeWizard($varValue, $dc)
     {
-        $arrDCA = &$GLOBALS['TL_DCA']['tl_iso_products']['fields'];
+        $this->loadDataContainer('tl_iso_products');
 
+        $arrDCA = &$GLOBALS['TL_DCA']['tl_iso_products']['fields'];
         $arrFields = array();
         $arrValues = deserialize($varValue);
         $blnVariants = ($dc->field != 'attributes');
