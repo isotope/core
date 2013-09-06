@@ -902,7 +902,7 @@ class Standard extends Product implements IsotopeProduct
         if ($arrData['pid'] > 0)
         {
             // Do not use the model, it would trigger setRow and generate too much
-            $objParent = \Database::getInstance()->execute(static::buildQueryString(array('table'=>static::$strTable, 'column'=>'id='.$arrData['pid'])));
+            $objParent = \Database::getInstance()->prepare(static::buildQueryString(array('table'=>static::$strTable, 'column'=>'id')))->execute($arrData['pid']);
 
             if (null === $objParent) {
                 throw new \UnderflowException('Parent record of product ID ' . $arrData['id'] . ' not found');
