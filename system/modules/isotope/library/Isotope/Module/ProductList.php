@@ -119,48 +119,34 @@ class ProductList extends Module
         $intPage = ($this->iso_category_scope == 'article' ? $GLOBALS['ISO_CONFIG']['current_article']['pid'] : $objPage->id);
         $arrProducts = null;
 
-        if ($this->blnCacheProducts)
+        if ($this->blnCacheProducts && ($objCache = ProductCache::findByPageAndModule($intPage, $this->id)) !== null)
         {
-            $time = time();
-            $pageId = ($this->iso_category_scope == 'article' ? $GLOBALS['ISO_CONFIG']['current_article']['pid'] : $objPage->id);
-            $groups = ProductCache::getCacheableGroups();
-
-            $objCache = \Database::getInstance()->prepare("
-                SELECT * FROM tl_iso_productcache
-                WHERE page_id=? AND module_id=? AND requestcache_id=? AND groups=? AND (keywords=? OR keywords='') AND (expires>$time OR expires=0)
-                ORDER BY keywords=''"
-            )->limit(1)->execute($pageId, $this->id, (int) \Input::get('isorc'), $groups, (string) \Input::get('keywords'));
-
-            // Cache found
-            if ($objCache->numRows)
-            {
                 $arrCacheIds = $objCache->products == '' ? array() : explode(',', $objCache->products);
 
-                // Use the cache if keywords match. Otherwise we will use the product IDs as a "limit" for findProducts()
-                if ($objCache->keywords == \Input::get('keywords'))
+            // Use the cache if keywords match. Otherwise we will use the product IDs as a "limit" for findProducts()
+            if ($objCache->keywords == \Input::get('keywords'))
+            {
+                $total = count($arrCacheIds);
+
+                if ($this->perPage > 0)
                 {
-                    $total = count($arrCacheIds);
+                    $offset = $this->generatePagination($total);
 
-                    if ($this->perPage > 0)
-                    {
-                        $offset = $this->generatePagination($total);
+                    $total = $total - $offset;
+                    $total = $total > $this->perPage ? $this->perPage : $total;
 
-                        $total = $total - $offset;
-                        $total = $total > $this->perPage ? $this->perPage : $total;
+                    $arrProducts = \Isotope\Frontend::getProducts(array_slice($arrCacheIds, $offset, $this->perPage));
+                }
+                else
+                {
+                    $arrProducts = \Isotope\Frontend::getProducts($arrCacheIds);
+                }
 
-                        $arrProducts = \Isotope\Frontend::getProducts(array_slice($arrCacheIds, $offset, $this->perPage));
-                    }
-                    else
-                    {
-                        $arrProducts = \Isotope\Frontend::getProducts($arrCacheIds);
-                    }
-
-                    // Cache is wrong, drop everything and run findProducts()
-                    if (count($arrProducts) != $total)
-                    {
-                        $arrCacheIds = null;
-                        $arrProducts = null;
-                    }
+                // Cache is wrong, drop everything and run findProducts()
+                if (count($arrProducts) != $total)
+                {
+                    $arrCacheIds = null;
+                    $arrProducts = null;
                 }
             }
         }

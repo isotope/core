@@ -29,6 +29,28 @@ class ProductCache extends \Model
 
 
     /**
+     * Find cache for module on page (including current environment)
+     * @param   int
+     * @param   int
+     * @return  ProductCache|null
+     */
+    public static function findByPageAndModule($intPage, $intModule, array $arrOptions=array())
+    {
+        return static::findOneBy(
+            array(
+                'page_id=?',
+                'module_id=?',
+                'requestcache_id=?',
+                'groups=?',
+                "(keywords=? OR keywords='')",
+                '(expires>$time OR expires=0)'
+            ),
+            array($intPage, $intModule, (int) \Input::get('isorc'), static::getCacheableGroups(), (string) \Input::get('keywords')),
+            $arrOptions
+        );
+    }
+
+    /**
      * Delete cache for listing module, also delete expired ones while we're at it...
      * @param   int
      * @param   int
