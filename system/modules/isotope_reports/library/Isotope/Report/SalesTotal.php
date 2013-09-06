@@ -12,6 +12,7 @@
 namespace Isotope\Report;
 
 use Isotope\Isotope;
+use Isotope\Model\Config;
 
 
 class SalesTotal extends Sales
@@ -217,7 +218,7 @@ class SalesTotal extends Sales
 			{
 				foreach ($arrRow['columns'][3]['value'] as $currency => $varValue)
 				{
-					Isotope::overrideConfig($arrCurrencies[$currency]);
+					Isotope::setConfig(Config::findByPk($arrCurrencies[$currency]));
 
 					$arrData['rows'][$dateGroup]['columns'][3]['value'][$currency] = Isotope::formatPriceWithCurrency($varValue);
 				}
@@ -227,7 +228,7 @@ class SalesTotal extends Sales
 		// Format footer totals
 		foreach ($arrData['footer'][3]['value'] as $currency => $varValue)
 		{
-			Isotope::overrideConfig($arrCurrencies[$currency]);
+			Isotope::setConfig(Config::findByPk($arrCurrencies[$currency]));
 
 			$arrData['footer'][3]['value'][$currency] = Isotope::formatPriceWithCurrency($varValue);
 		}

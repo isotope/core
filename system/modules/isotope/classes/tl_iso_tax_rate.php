@@ -15,6 +15,7 @@
 
 namespace Isotope;
 
+use Isotope\Model\Config;
 
 /**
  * Class tl_iso_tax_rate
@@ -170,7 +171,7 @@ class tl_iso_tax_rate extends \Backend
         if ($row['config'] && !$arrRate['unit'])
         {
             $this->import('Isotope\Isotope', 'Isotope');
-            Isotope::overrideConfig($row['config']);
+            Isotope::setConfig(Config::findByPk($row['config']));
 
             $strRate = Isotope::formatPriceWithCurrency($arrRate['value'], false);
         }

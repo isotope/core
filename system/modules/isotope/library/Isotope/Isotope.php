@@ -247,19 +247,6 @@ class Isotope extends \Controller
 
 
     /**
-     * Manual override of the store configuration
-     * @param integer
-     */
-    public static function overrideConfig($intConfig)
-    {
-        if ((null === static::$objConfig || static::$objConfig->id != $intConfig) && (static::$objConfig = Config::findByPk($intConfig)) === null)
-        {
-            static::resetConfig();
-        }
-    }
-
-
-    /**
      * Calculate price trough hook and foreign prices
      * @param float
      * @param object

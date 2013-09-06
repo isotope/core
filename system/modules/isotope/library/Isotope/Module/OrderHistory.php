@@ -92,7 +92,7 @@ class OrderHistory extends Module
 
         while ($objOrders->next())
         {
-            Isotope::overrideConfig($objOrders->config_id);
+            Isotope::setConfig($objOrders->current()->getRelated('config_id'));
 
             $arrOrders[] = array
             (

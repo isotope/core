@@ -82,7 +82,7 @@ class OrderDetails extends Module
             return;
         }
 
-        Isotope::overrideConfig($objOrder->config_id);
+        Isotope::setConfig($objOrder->getRelated('config_id'));
 
         $objTemplate = new \Isotope\Template($this->iso_collectionTpl);
         $objTemplate->linkProducts = true;

@@ -172,7 +172,7 @@ class Order extends ProductCollection implements IsotopeProductCollection
         }
 
         // Initialize system
-        Isotope::overrideConfig($this->config_id);
+        Isotope::setConfig($this->getRelated('config_id'));
         Isotope::setCart($objCart);
 
         $this->arrData['date']                 = time();
