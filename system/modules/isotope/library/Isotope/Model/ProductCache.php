@@ -47,7 +47,7 @@ class ProductCache extends \Model
      * @param   int
      * @return  ProductCache|null
      */
-    public static function findByPageAndModule($intPage, $intModule, array $arrOptions=array())
+    public static function findForPageAndModule($intPage, $intModule, array $arrOptions=array())
     {
         return static::findOneBy(
             array(
@@ -68,7 +68,7 @@ class ProductCache extends \Model
      * @param   int
      * @param   int
      */
-    public static function deleteByPageAndModuleOrExpired($intPage, $intModule)
+    public static function deleteForPageAndModuleOrExpired($intPage, $intModule)
     {
         $time = time();
 

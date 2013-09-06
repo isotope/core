@@ -119,7 +119,7 @@ class ProductList extends Module
         $intPage = ($this->iso_category_scope == 'article' ? $GLOBALS['ISO_CONFIG']['current_article']['pid'] : $objPage->id);
         $arrProducts = null;
 
-        if ($this->blnCacheProducts && ($objCache = ProductCache::findByPageAndModule($intPage, $this->id)) !== null)
+        if ($this->blnCacheProducts && ($objCache = ProductCache::findForPageAndModule($intPage, $this->id)) !== null)
         {
             $arrCacheIds = $objCache->getProductIds();
 
@@ -198,8 +198,8 @@ class ProductList extends Module
                         $arrIds[] = $objProduct->id;
                     }
 
-                    // Also delete all expired caches if we run a delete anyway
-                    ProductCache::deleteByPageAndModuleOrExpired($intPage, $this->id);
+                    // Delete existing cache if necessary
+                    ProductCache::deleteForPageAndModuleOrExpired($intPage, $this->id);
 
                     \Database::getInstance()->prepare("INSERT INTO tl_iso_productcache (page_id,module_id,requestcache_id,groups,keywords,products,expires) VALUES (?,?,?,?,?,?,?)")
                                             ->executeUncached($pageId, $this->id, (int) \Input::get('isorc'), $groups, (string) \Input::get('keywords'), implode(',', $arrIds), $this->getProductCacheExpiration());
