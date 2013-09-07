@@ -13,6 +13,7 @@
 namespace Isotope\Module;
 
 use Isotope\Model\Product;
+use Isotope\Model\RequestCache;
 
 
 /**
@@ -272,7 +273,7 @@ class ProductFilter extends Module
                     $this->blnCacheRequest = true;
                     unset($GLOBALS['ISO_FILTERS'][$this->id][$strField]);
 
-                    \Database::getInstance()->prepare("DELETE FROM tl_iso_requestcache WHERE id=?")->execute(\Input::get('isorc'));
+                    RequestCache::deleteById(\Input::get('isorc'));
                 }
 
                 // No need to generate options if we reload anyway

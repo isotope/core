@@ -28,6 +28,15 @@ class RequestCache extends \Model
     protected static $strTable = 'tl_iso_requestcache';
 
     /**
+     * Delete a cache by ID
+     * @param   int
+     */
+    public static function deleteById($intId)
+    {
+        return (\Database::getInstance()->prepare("DELETE FROM " . static::$strTable . " WHERE id=?")->execute($intId)->affectedRows > 0);
+    }
+
+    /**
      * Purge the request cache
      */
     public static function purge()
