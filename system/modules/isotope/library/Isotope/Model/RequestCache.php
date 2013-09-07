@@ -87,6 +87,19 @@ class RequestCache extends \Model
     }
 
     /**
+     * Set filter config for a frontend module
+     * @param   array
+     * @param   int
+     */
+    public function setFiltersForModule(array $arrConfig, $intModule)
+    {
+        // Make sure filters are initialized
+        $this->getFilters();
+
+        $this->arrFilters[$intModule] = $arrConfig;
+    }
+
+    /**
      * Get sorting configuration
      * @return  array|null
      */
@@ -101,6 +114,19 @@ class RequestCache extends \Model
         }
 
         return $this->arrSorting;
+    }
+
+    /**
+     * Set sorting config for a frontend module
+     * @param   array
+     * @param   int
+     */
+    public function setSortingForModule(array $arrConfig, $intModule)
+    {
+        // Make sure sorting is initialized
+        $this->getSorting();
+
+        $this->arrSorting[$intModule] = $arrConfig;
     }
 
     /**
@@ -132,6 +158,19 @@ class RequestCache extends \Model
         }
 
         return $this->arrLimit;
+    }
+
+    /**
+     * Set limit for a frontend module
+     * @param   int
+     * @param   int
+     */
+    public function setLimitForModule($intLimit, $intModule)
+    {
+        // Make sure sorting is initialized
+        $this->getLimit();
+
+        $this->arrLimit[$intModule] = $intLimit;
     }
 
     /**
