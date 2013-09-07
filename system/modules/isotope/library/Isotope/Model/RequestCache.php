@@ -28,6 +28,17 @@ class RequestCache extends \Model
     protected static $strTable = 'tl_iso_requestcache';
 
     /**
+     * Find cache by ID and store
+     * @param   int
+     * @param   int
+     * @return  RequestCache|null
+     */
+    public static function findByIdAndStore($intId, $intStore, array $arrOptions=array())
+    {
+        return static::findOneBy(array('id=?', 'store_id=?'), array($intId, $intStore), $arrOptions);
+    }
+
+    /**
      * Delete a cache by ID
      * @param   int
      */

@@ -13,6 +13,7 @@
 namespace Isotope;
 
 use Isotope\Model\Config;
+use Isotope\Model\RequestCache;
 use Isotope\Model\TaxClass;
 use Isotope\Model\ProductCollection\Cart;
 
@@ -109,9 +110,9 @@ class Isotope extends \Controller
             // Initialize request cache for product list filters
             if (\Input::get('isorc') != '') {
 
-                $objRequestCache = \Database::getInstance()->prepare("SELECT * FROM tl_iso_requestcache WHERE id=? AND store_id=?")->execute(\Input::get('isorc'), static::getCart()->store_id);
+                $objRequestCache = RequestCache::findByIdAndStore(\Input::get('isorc'), static::getCart()->store_id);
 
-                if ($objRequestCache->numRows) {
+                if (null !== $objRequestCache) {
 
                     $GLOBALS['ISO_FILTERS'] = deserialize($objRequestCache->filters);
                     $GLOBALS['ISO_SORTING'] = deserialize($objRequestCache->sorting);
