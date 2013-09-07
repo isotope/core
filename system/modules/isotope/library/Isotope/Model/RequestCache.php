@@ -221,6 +221,28 @@ class RequestCache extends \Model
     }
 
     /**
+     * Add object data to row
+     * @param   array
+     * @return  array
+     */
+    protected function preSave(array $arrSet)
+    {
+        // Store values in model and make sure they are re-initialized
+        if ($this->blnModified) {
+            $arrSet['filters'] = empty($this->arrFilters) ? null : $this->arrFilters;
+            $arrSet['sorting'] = empty($this->arrSorting) ? null : $this->arrSorting;
+            $arrSet['limits'] = empty($this->arrLimits) ? null : $this->arrLimits;
+
+            $this->blnModified = false;
+            $this->arrFilters = false;
+            $this->arrSorting = false;
+            $this->arrLimits = false;
+        }
+
+        return $arrSet;
+    }
+
+    /**
      * Do not allow to overwrite existing cache
      * @param   bool
      * @return  RequestCache
