@@ -120,11 +120,11 @@ class Isotope extends \Controller
                 $GLOBALS['ISO_SORTING'] = $this->getRequestCache()->getSorting();
                 $GLOBALS['ISO_LIMIT'] = $this->getRequestCache()->getLimit();
 
-                if ($this->getRequestCache()->id > 0) {
+                if ($this->getRequestCache()->isEmpty()) {
                     global $objPage;
                     $objPage->noSearch = 1;
 
-                } else {
+                } elseif ($this->getRequestCache()->id != \Input::get('isorc')) {
 
                     unset($_GET['isorc']);
 

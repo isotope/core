@@ -47,6 +47,15 @@ class RequestCache extends \Model
 
 
     /**
+     * Check if request cache is empty
+     * @return  bool
+     */
+    public function isEmpty()
+    {
+        return (null === $this->getFilters() && null === $this->getSorting() && null === $this->getLimit());
+    }
+
+    /**
      * Get filter configuration
      * @return  array|null
      */
