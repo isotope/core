@@ -34,10 +34,10 @@ class ProductFilter extends Module
     protected $strTemplate = 'iso_filter_default';
 
     /**
-     * Cache request
+     * Update request cache
      * @var boolean
      */
-    protected $blnCacheRequest = false;
+    protected $blnUpdateCache = false;
 
 
     /**
@@ -74,7 +74,7 @@ class ProductFilter extends Module
         $strBuffer = parent::generate();
 
         // Cache request in the database and redirect to the unique requestcache ID
-        if ($this->blnCacheRequest)
+        if ($this->blnUpdateCache)
         {
             $time = time();
             $varFilter = (is_array($GLOBALS['ISO_FILTERS']) && !empty($GLOBALS['ISO_FILTERS'])) ? serialize($GLOBALS['ISO_FILTERS']) : null;
@@ -162,13 +162,13 @@ class ProductFilter extends Module
      */
     protected function compile()
     {
-        $this->blnCacheRequest = \Input::post('FORM_SUBMIT') == 'iso_filter_'.$this->id ? true : false;
+        $this->blnUpdateCache = \Input::post('FORM_SUBMIT') == 'iso_filter_'.$this->id ? true : false;
 
         $this->generateFilters();
         $this->generateSorting();
         $this->generateLimit();
 
-        if (!$this->blnCacheRequest)
+        if (!$this->blnUpdateCache)
         {
             // Search does not affect request cache
             $this->generateSearch();
@@ -257,7 +257,7 @@ class ProductFilter extends Module
                     $arrValues = array_merge($arrValues, deserialize($objValues->$strField, true));
                 }
 
-                if ($this->blnCacheRequest && in_array($arrInput[$strField], $arrValues))
+                if ($this->blnUpdateCache && in_array($arrInput[$strField], $arrValues))
                 {
                     $GLOBALS['ISO_FILTERS'][$this->id][$strField] = array
                     (
@@ -270,14 +270,14 @@ class ProductFilter extends Module
                 // Request cache contains wrong value, delete it!
                 elseif (is_array($GLOBALS['ISO_FILTERS'][$this->id][$strField]) && !in_array($GLOBALS['ISO_FILTERS'][$this->id][$strField]['value'], $arrValues))
                 {
-                    $this->blnCacheRequest = true;
+                    $this->blnUpdateCache = true;
                     unset($GLOBALS['ISO_FILTERS'][$this->id][$strField]);
 
                     RequestCache::deleteById(\Input::get('isorc'));
                 }
 
                 // No need to generate options if we reload anyway
-                elseif (!$this->blnCacheRequest)
+                elseif (!$this->blnUpdateCache)
                 {
                     if (empty($arrValues))
                     {
@@ -366,7 +366,7 @@ class ProductFilter extends Module
             // @todo should support multiple sorting fields
             list($sortingField, $sortingDirection) = explode(':', \Input::post('sorting'));
 
-            if ($this->blnCacheRequest && in_array($sortingField, $this->iso_sortingFields))
+            if ($this->blnUpdateCache && in_array($sortingField, $this->iso_sortingFields))
             {
                 $GLOBALS['ISO_SORTING'][$this->id][$sortingField] = array(($sortingDirection=='DESC' ? SORT_DESC : SORT_ASC), SORT_REGULAR);
             }
@@ -374,14 +374,14 @@ class ProductFilter extends Module
             // Request cache contains wrong value, delete it!
             elseif (is_array($GLOBALS['ISO_SORTING'][$this->id]) && array_diff(array_keys($GLOBALS['ISO_SORTING'][$this->id]), $this->iso_sortingFields))
             {
-                $this->blnCacheRequest = true;
+                $this->blnUpdateCache = true;
                 unset($GLOBALS['ISO_SORTING'][$this->id]);
 
                 \Database::getInstance()->prepare("DELETE FROM tl_iso_requestcache WHERE id=?")->execute(\Input::get('isorc'));
             }
 
             // No need to generate options if we reload anyway
-            elseif (!$this->blnCacheRequest)
+            elseif (!$this->blnUpdateCache)
             {
                 foreach ($this->iso_sortingFields as $field)
                 {
@@ -427,7 +427,7 @@ class ProductFilter extends Module
             sort($arrLimit);
 
             // Cache new request value
-            if ($this->blnCacheRequest && in_array(\Input::post('limit'), $arrLimit))
+            if ($this->blnUpdateCache && in_array(\Input::post('limit'), $arrLimit))
             {
                 $GLOBALS['ISO_LIMIT'][$this->id] = (int) \Input::post('limit');
             }
@@ -435,14 +435,14 @@ class ProductFilter extends Module
             // Request cache contains wrong value, delete it!
             elseif ($GLOBALS['ISO_LIMIT'][$this->id] && !in_array($GLOBALS['ISO_LIMIT'][$this->id], $arrLimit))
             {
-                $this->blnCacheRequest = true;
+                $this->blnUpdateCache = true;
                 $GLOBALS['ISO_LIMIT'][$this->id] = $intLimit;
 
                 \Database::getInstance()->prepare("DELETE FROM tl_iso_requestcache WHERE id=?")->execute(\Input::get('isorc'));
             }
 
             // No need to generate options if we reload anyway
-            elseif (!$this->blnCacheRequest)
+            elseif (!$this->blnUpdateCache)
             {
                 foreach ($arrLimit as $limit)
                 {

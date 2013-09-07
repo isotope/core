@@ -67,7 +67,7 @@ class CumulativeFilter extends Module
 
         if ($arrFilter[0] == $this->id && in_array($arrFilter[2], $this->iso_filterFields))
         {
-            $this->blnCacheRequest = true;
+            $this->blnUpdateCache = true;
 
             // Unique filter key is necessary to unset the filter
             $strFilterKey = $arrFilter[2].'='.$arrFilter[3];
