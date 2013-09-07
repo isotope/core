@@ -407,6 +407,7 @@ class ProductCallbacks extends \Backend
                 $arrFields['prices']['exclude'] = $arrFields['price']['exclude'];
                 $arrFields['prices']['attributes'] = $arrFields['price']['attributes'];
                 $arrFields['price'] = $arrFields['prices'];
+                unset($arrFields['tax_class']);
             }
 
             // Register callback to version/restore a price
