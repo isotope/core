@@ -377,7 +377,7 @@ class ProductFilter extends Module
                 $this->blnUpdateCache = true;
                 unset($GLOBALS['ISO_SORTING'][$this->id]);
 
-                \Database::getInstance()->prepare("DELETE FROM tl_iso_requestcache WHERE id=?")->execute(\Input::get('isorc'));
+                RequestCache::deleteById(\Input::get('isorc'));
             }
 
             // No need to generate options if we reload anyway
@@ -438,7 +438,7 @@ class ProductFilter extends Module
                 $this->blnUpdateCache = true;
                 $GLOBALS['ISO_LIMIT'][$this->id] = $intLimit;
 
-                \Database::getInstance()->prepare("DELETE FROM tl_iso_requestcache WHERE id=?")->execute(\Input::get('isorc'));
+                RequestCache::deleteById(\Input::get('isorc'));
             }
 
             // No need to generate options if we reload anyway
