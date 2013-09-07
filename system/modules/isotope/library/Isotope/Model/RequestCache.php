@@ -64,6 +64,20 @@ class RequestCache extends \Model
     }
 
     /**
+     * Get filter config for multiple modules
+     * @param   array
+     * @return  array
+     */
+    public function getFiltersForModules(array $arrIds)
+    {
+        if ($this->getFilters() === null) {
+            return array();
+        }
+
+        return call_user_func_array('array_merge', array_intersect_key($this->arrFilters, array_flip(array_reverse($arrIds))));
+    }
+
+    /**
      * Get sorting configuration
      * @return  array|null
      */
@@ -78,6 +92,20 @@ class RequestCache extends \Model
         }
 
         return $this->arrSorting;
+    }
+
+    /**
+     * Get sorting config for multiple modules
+     * @param   array
+     * @return  array
+     */
+    public function getSortingForModules(array $arrIds)
+    {
+        if (null === $this->getSorting()) {
+            return array();
+        }
+
+        return call_user_func_array('array_merge', array_intersect_key($this->arrSorting, array_flip(array_reverse($arrIds))));
     }
 
     /**

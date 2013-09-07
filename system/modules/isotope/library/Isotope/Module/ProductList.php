@@ -333,24 +333,8 @@ class ProductList extends Module
      */
     protected function getFiltersAndSorting($blnNativeSQL=true)
     {
-        $arrFilters = array();
-        $arrSorting = array();
-
-        if (is_array($this->iso_filterModules))
-        {
-            foreach ($this->iso_filterModules as $module)
-            {
-                if (is_array($GLOBALS['ISO_FILTERS'][$module]))
-                {
-                    $arrFilters = array_merge($GLOBALS['ISO_FILTERS'][$module], $arrFilters);
-                }
-
-                if (is_array($GLOBALS['ISO_SORTING'][$module]))
-                {
-                    $arrSorting = array_merge($GLOBALS['ISO_SORTING'][$module], $arrSorting);
-                }
-            }
-        }
+        $arrFilters = Isotope::getRequestCache()->getFiltersForModules($this->iso_filterModules);
+        $arrSorting = Isotope::getRequestCache()->getSortingForModules($this->iso_filterModules);
 
         if (empty($arrSorting) && $this->iso_listingSortField != '')
         {
@@ -433,21 +417,13 @@ class ProductList extends Module
     protected function getDefaultProductOptions()
     {
         $arrOptions = array();
+        $arrFilters = Isotope::getRequestCache()->getFiltersForModules($this->iso_filterModules);
 
-        if (is_array($this->iso_filterModules))
+        foreach ($arrFilters as $arrConfig)
         {
-            foreach ($this->iso_filterModules as $module)
+            if ($arrConfig['operator'] == '=' || $arrConfig['operator'] == '==' || $arrConfig['operator'] == 'eq')
             {
-                if (is_array($GLOBALS['ISO_FILTERS'][$module]))
-                {
-                    foreach ($GLOBALS['ISO_FILTERS'][$module] as $arrConfig)
-                    {
-                        if ($arrConfig['operator'] == '=' || $arrConfig['operator'] == '==' || $arrConfig['operator'] == 'eq')
-                        {
-                            $arrOptions[$arrConfig['attribute']] = $arrConfig['value'];
-                        }
-                    }
-                }
+                $arrOptions[$arrConfig['attribute']] = $arrConfig['value'];
             }
         }
 
