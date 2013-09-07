@@ -43,7 +43,7 @@ class RequestCache extends \Model
      * Limit configuration
      * @var array
      */
-    protected $arrLimit = false;
+    protected $arrLimits = false;
 
 
     /**
@@ -52,7 +52,7 @@ class RequestCache extends \Model
      */
     public function isEmpty()
     {
-        return (null === $this->getFilters() && null === $this->getSorting() && null === $this->getLimit());
+        return (null === $this->getFilters() && null === $this->getSorting() && null === $this->getLimits());
     }
 
     /**
@@ -147,17 +147,17 @@ class RequestCache extends \Model
      * Get limit configuration
      * @return  array|null
      */
-    public function getLimit()
+    public function getLimits()
     {
-        if (false === $this->arrLimit) {
-            $this->arrLimit = deserialize($this->limits);
+        if (false === $this->arrLimits) {
+            $this->arrLimits = deserialize($this->limits);
 
-            if (empty($this->arrLimit) || !is_array($this->arrLimit)) {
-                $this->arrLimit = null;
+            if (empty($this->arrLimits) || !is_array($this->arrLimits)) {
+                $this->arrLimits = null;
             }
         }
 
-        return $this->arrLimit;
+        return $this->arrLimits;
     }
 
     /**
@@ -168,9 +168,9 @@ class RequestCache extends \Model
     public function setLimitForModule($intLimit, $intModule)
     {
         // Make sure sorting is initialized
-        $this->getLimit();
+        $this->getLimits();
 
-        $this->arrLimit[$intModule] = $intLimit;
+        $this->arrLimits[$intModule] = $intLimit;
     }
 
     /**
@@ -181,13 +181,11 @@ class RequestCache extends \Model
      */
     public function getFirstLimitForModules(array $arrIds, $varDefault=0)
     {
-        if (null === $this->getLimit()) {
-            return $varDefault;
-        }
-
-        foreach ($arrIds as $id) {
-            if (isset($this->arrLimit[$id])) {
-                return $this->arrLimit[$id];
+        if (null !== $this->getLimits()) {
+            foreach ($arrIds as $id) {
+                if (isset($this->arrLimits[$id])) {
+                    return $this->arrLimits[$id];
+                }
             }
         }
 
