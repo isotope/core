@@ -114,9 +114,9 @@ class Isotope extends \Controller
 
                 if (null !== $objRequestCache) {
 
-                    $GLOBALS['ISO_FILTERS'] = deserialize($objRequestCache->filters);
-                    $GLOBALS['ISO_SORTING'] = deserialize($objRequestCache->sorting);
-                    $GLOBALS['ISO_LIMIT'] = deserialize($objRequestCache->limits);
+                    $GLOBALS['ISO_FILTERS'] = $objRequestCache->getFilters();
+                    $GLOBALS['ISO_SORTING'] = $objRequestCache->getSorting();
+                    $GLOBALS['ISO_LIMIT'] = $objRequestCache->getLimit();
 
                     global $objPage;
                     $objPage->noSearch = 1;

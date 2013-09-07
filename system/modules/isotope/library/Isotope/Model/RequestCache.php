@@ -28,6 +28,76 @@ class RequestCache extends \Model
     protected static $strTable = 'tl_iso_requestcache';
 
     /**
+     * Filter configuration
+     * @var array
+     */
+    protected $arrFilters = false;
+
+    /**
+     * Sorting configuration
+     * @var array
+     */
+    protected $arrSorting = false;
+
+    /**
+     * Limit configuration
+     * @var array
+     */
+    protected $arrLimit = false;
+
+
+    /**
+     * Get filter configuration
+     * @return  array|null
+     */
+    public function getFilters()
+    {
+        if (false === $this->arrFilters) {
+            $this->arrFilters = deserialize($this->filters);
+
+            if (empty($this->arrFilters) || !is_array($this->arrFilters)) {
+                $this->arrFilters = null;
+            }
+        }
+
+        return $this->arrFilters;
+    }
+
+    /**
+     * Get sorting configuration
+     * @return  array|null
+     */
+    public function getSorting()
+    {
+        if (false === $this->arrSorting) {
+            $this->arrSorting = deserialize($this->sorting);
+
+            if (empty($this->arrSorting) || !is_array($this->arrSorting)) {
+                $this->arrSorting = null;
+            }
+        }
+
+        return $this->arrSorting;
+    }
+
+    /**
+     * Get limit configuration
+     * @return  array|null
+     */
+    public function getLimit()
+    {
+        if (false === $this->arrLimit) {
+            $this->arrLimit = deserialize($this->limits);
+
+            if (empty($this->arrLimit) || !is_array($this->arrLimit)) {
+                $this->arrLimit = null;
+            }
+        }
+
+        return $this->arrLimit;
+    }
+
+    /**
      * Find cache by ID and store
      * @param   int
      * @param   int
