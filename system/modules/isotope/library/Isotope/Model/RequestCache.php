@@ -221,6 +221,21 @@ class RequestCache extends \Model
     }
 
     /**
+     * Do not allow to overwrite existing cache
+     * @param   bool
+     * @return  RequestCache
+     * @throws  \BadMethodCallException
+     */
+    public function save($blnForceInsert=false)
+    {
+        if ($this->blnModified && !$blnForceInsert) {
+            throw new \BadMethodCallException('Can\'t save a modified cache');
+        }
+
+        return parent::save($blnForceInsert);
+    }
+
+    /**
      * Find cache by ID and store
      * @param   int
      * @param   int
