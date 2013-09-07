@@ -335,7 +335,7 @@ class ProductList extends Module
     protected function getFiltersAndSorting($blnNativeSQL=true)
     {
         $arrFilters = Isotope::getRequestCache()->getFiltersForModules($this->iso_filterModules);
-        $arrSorting = Isotope::getRequestCache()->getSortingForModules($this->iso_filterModules);
+        $arrSorting = Isotope::getRequestCache()->getSortingsForModules($this->iso_filterModules);
 
         if (empty($arrSorting) && $this->iso_listingSortField != '')
         {

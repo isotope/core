@@ -45,7 +45,7 @@ class RequestCache extends \Model
      * Sorting configuration
      * @var array
      */
-    protected $arrSorting = false;
+    protected $arrSortings = false;
 
     /**
      * Limit configuration
@@ -68,7 +68,7 @@ class RequestCache extends \Model
      */
     public function isEmpty()
     {
-        return (null === $this->getFilters() && null === $this->getSorting() && null === $this->getLimits());
+        return (null === $this->getFilters() && null === $this->getSortings() && null === $this->getLimits());
     }
 
     /**
@@ -129,17 +129,17 @@ class RequestCache extends \Model
      * Get sorting configuration
      * @return  array|null
      */
-    public function getSorting()
+    public function getSortings()
     {
-        if (false === $this->arrSorting) {
-            $this->arrSorting = deserialize($this->sorting);
+        if (false === $this->arrSortings) {
+            $this->arrSortings = deserialize($this->sorting);
 
-            if (empty($this->arrSorting) || !is_array($this->arrSorting)) {
-                $this->arrSorting = null;
+            if (empty($this->arrSortings) || !is_array($this->arrSortings)) {
+                $this->arrSortings = null;
             }
         }
 
-        return $this->arrSorting;
+        return $this->arrSortings;
     }
 
     /**
@@ -147,27 +147,27 @@ class RequestCache extends \Model
      * @param   array
      * @param   int
      */
-    public function setSortingForModule(array $arrConfig, $intModule)
+    public function setSortingsForModule(array $arrConfig, $intModule)
     {
         // Make sure sorting is initialized and mark as modified
-        $this->getSorting();
+        $this->getSortings();
         $this->blnModified = true;
 
-        $this->arrSorting[$intModule] = $arrConfig;
+        $this->arrSortings[$intModule] = $arrConfig;
     }
 
     /**
-     * Get sorting config for multiple modules
+     * Get sorting configs for multiple modules
      * @param   array
      * @return  array
      */
-    public function getSortingForModules(array $arrIds)
+    public function getSortingsForModules(array $arrIds)
     {
-        if (null === $this->getSorting()) {
+        if (null === $this->getSortings()) {
             return array();
         }
 
-        return call_user_func_array('array_merge', array_intersect_key($this->arrSorting, array_flip(array_reverse($arrIds))));
+        return call_user_func_array('array_merge', array_intersect_key($this->arrSortings, array_flip(array_reverse($arrIds))));
     }
 
     /**
@@ -230,12 +230,12 @@ class RequestCache extends \Model
         // Store values in model and make sure they are re-initialized
         if ($this->blnModified) {
             $arrSet['filters'] = empty($this->arrFilters) ? null : $this->arrFilters;
-            $arrSet['sorting'] = empty($this->arrSorting) ? null : $this->arrSorting;
+            $arrSet['sorting'] = empty($this->arrSortings) ? null : $this->arrSortings;
             $arrSet['limits'] = empty($this->arrLimits) ? null : $this->arrLimits;
 
             $this->blnModified = false;
             $this->arrFilters = false;
-            $this->arrSorting = false;
+            $this->arrSortings = false;
             $this->arrLimits = false;
         }
 
