@@ -118,7 +118,6 @@ class Isotope extends \Controller
 
                 $GLOBALS['ISO_FILTERS'] = $this->getRequestCache()->getFilters();
                 $GLOBALS['ISO_SORTING'] = $this->getRequestCache()->getSorting();
-                $GLOBALS['ISO_LIMIT'] = $this->getRequestCache()->getLimit();
 
                 if ($this->getRequestCache()->isEmpty()) {
                     global $objPage;

@@ -12,6 +12,8 @@
 
 namespace Isotope\Model;
 
+use Isotope\RequestCache\Limit;
+
 /**
  * Isotope\Model\RequestCache represents an Isotope request cache model
  *
@@ -162,24 +164,24 @@ class RequestCache extends \Model
 
     /**
      * Set limit for a frontend module
-     * @param   int
+     * @param   Limit
      * @param   int
      */
-    public function setLimitForModule($intLimit, $intModule)
+    public function setLimitForModule(Limit $objLimit, $intModule)
     {
         // Make sure sorting is initialized
         $this->getLimits();
 
-        $this->arrLimits[$intModule] = $intLimit;
+        $this->arrLimits[$intModule] = $objLimit;
     }
 
     /**
      * Return the first limit we can find
      * @param   array
-     * @param   mixed
+     * @param   int
      * @return  int
      */
-    public function getFirstLimitForModules(array $arrIds, $varDefault=0)
+    public function getFirstLimitForModules(array $arrIds, $intDefault=0)
     {
         if (null !== $this->getLimits()) {
             foreach ($arrIds as $id) {
@@ -189,7 +191,7 @@ class RequestCache extends \Model
             }
         }
 
-        return $varDefault;
+        return Limit::to($varDefault);
     }
 
     /**

@@ -76,7 +76,7 @@ class ProductList extends Module
         }
 
         // Apply limit from filter module
-        $this->perPage = Isotope::getRequestCache()->getFirstLimitForModules($this->iso_filterModules, $this->perPage);
+        $this->perPage = Isotope::getRequestCache()->getFirstLimitForModules($this->iso_filterModules, $this->perPage)->asInt();
 
         return parent::generate();
     }

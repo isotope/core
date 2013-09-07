@@ -15,6 +15,7 @@ namespace Isotope\Module;
 use Isotope\Model\Product;
 use Isotope\Model\RequestCache;
 use Isotope\RequestCache\Filter;
+use Isotope\RequestCache\Limit;
 use Isotope\RequestCache\Sort;
 
 
@@ -81,7 +82,7 @@ class ProductFilter extends Module
             $time = time();
             $varFilter = (is_array($GLOBALS['ISO_FILTERS']) && !empty($GLOBALS['ISO_FILTERS'])) ? serialize($GLOBALS['ISO_FILTERS']) : null;
             $varSorting = (is_array($GLOBALS['ISO_SORTING']) && !empty($GLOBALS['ISO_SORTING'])) ? serialize($GLOBALS['ISO_SORTING']) : null;
-            $varLimit = (is_array($GLOBALS['ISO_LIMIT']) && !empty($GLOBALS['ISO_LIMIT'])) ? serialize($GLOBALS['ISO_LIMIT']) : null;
+            $varLimit = Isotope::getRequestCache()->getLimits();
 
             // if all filters are null we don't have to cache (this will prevent useless isorc params from being generated)
             if (!Isotope::getRequestCache()->isEmpty())
@@ -418,21 +419,21 @@ class ProductFilter extends Module
         {
             $arrOptions = array();
             $arrLimit = array_map('intval', trimsplit(',', $this->iso_perPage));
-            $intLimit = $GLOBALS['ISO_LIMIT'][$this->id] ? $GLOBALS['ISO_LIMIT'][$this->id] : $arrLimit[0];
+            $objLimit = Isotope::getRequestCache()->getFirstLimitForModules(array($this->id), $arrLimit[0]);
             $arrLimit = array_unique($arrLimit);
             sort($arrLimit);
 
             // Cache new request value
             if ($this->blnUpdateCache && in_array(\Input::post('limit'), $arrLimit))
             {
-                $GLOBALS['ISO_LIMIT'][$this->id] = (int) \Input::post('limit');
+                Isotop::getRequestCache()->setLimitForModule(Limit::to(\Input::post('limit')), $this->id);
             }
 
             // Request cache contains wrong value, delete it!
-            elseif ($GLOBALS['ISO_LIMIT'][$this->id] && !in_array($GLOBALS['ISO_LIMIT'][$this->id], $arrLimit))
+            elseif ($objLimit->notIn($arrLimit))
             {
                 $this->blnUpdateCache = true;
-                $GLOBALS['ISO_LIMIT'][$this->id] = $intLimit;
+                Isotope::getRequestCache()->setLimitForModule($objLimit, $this->id);
 
                 RequestCache::deleteById(\Input::get('isorc'));
             }
@@ -444,9 +445,9 @@ class ProductFilter extends Module
                 {
                     $arrOptions[] = array
                     (
-                        'label'        => $limit,
-                        'value'        => $limit,
-                        'default'    => ($intLimit == $limit ? '1' : ''),
+                        'label'     => $limit,
+                        'value'     => $limit,
+                        'default'   => ($objLimit->equals($limit) ? '1' : ''),
                     );
                 }
 
