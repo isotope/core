@@ -22,7 +22,7 @@ class Sort implements ArrayAccess
 {
 
     /**
-     * Filter config
+     * Sorting config
      */
     protected $arrConfig = array();
 

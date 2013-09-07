@@ -87,7 +87,12 @@ class ProductFilter extends Module
             if (!Isotope::getRequestCache()->isEmpty())
             {
                 $intCacheId = \Database::getInstance()->prepare("
-                    SELECT id FROM tl_iso_requestcache WHERE store_id=? AND filters" . ($varFilter ? '=' : ' IS ') . "? AND sorting" . ($varSorting ? '=' : ' IS ') . "? AND limits" . ($varLimit ? '=' : ' IS ') . "?
+                    SELECT id FROM tl_iso_requestcache
+                    WHERE
+                        store_id=? AND
+                        filters" . ($varFilter ? '=' : ' IS ') . "? AND
+                        sorting" . ($varSorting ? '=' : ' IS ') . "? AND
+                        limits" . ($varLimit ? '=' : ' IS ') . "?
                 ")->execute(Isotope::getCart()->store_id, $varFilter, $varSorting, $varLimit)->id;
 
                 if ($intCacheId)

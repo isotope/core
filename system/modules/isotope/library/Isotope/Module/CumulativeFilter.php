@@ -67,8 +67,8 @@ class CumulativeFilter extends Module
     {
         $arrFilter = explode(';', base64_decode(\Input::get('cumulativefilter', true)), 4);
 
-        if ($arrFilter[0] == $this->id && in_array($arrFilter[2], $this->iso_filterFields))
-        {
+        if ($arrFilter[0] == $this->id && in_array($arrFilter[2], $this->iso_filterFields)) {
+
             $this->blnUpdateCache = true;
 
             // Unique filter key is necessary to unset the filter
@@ -82,9 +82,8 @@ class CumulativeFilter extends Module
 
             // unset GET parameter or it would be included in the redirect URL
             \Input::setGet('cumulativefilter', null);
-        }
-        else
-        {
+
+        } else {
             $this->generateFilter();
 
             $this->Template->linkClearAll = ampersand(preg_replace('/\?.*/', '', \Environment::get('request')));
