@@ -30,6 +30,12 @@ class RequestCache extends \Model
     protected static $strTable = 'tl_iso_requestcache';
 
     /**
+     * Modified flag
+     * @var bool
+     */
+    protected $blnModified = false;
+
+    /**
      * Filter configuration
      * @var array
      */
@@ -48,6 +54,14 @@ class RequestCache extends \Model
     protected $arrLimits = false;
 
 
+    public function __clone()
+    {
+        parent::__clone();
+
+        $this->blnModified = false;
+    }
+
+
     /**
      * Check if request cache is empty
      * @return  bool
@@ -55,6 +69,15 @@ class RequestCache extends \Model
     public function isEmpty()
     {
         return (null === $this->getFilters() && null === $this->getSorting() && null === $this->getLimits());
+    }
+
+    /**
+     * Check if request chace is modified
+     * @return  bool
+     */
+    public function isModified()
+    {
+        return $this->blnModified;
     }
 
     /**
@@ -95,8 +118,9 @@ class RequestCache extends \Model
      */
     public function setFiltersForModule(array $arrConfig, $intModule)
     {
-        // Make sure filters are initialized
+        // Make sure filters are initialized and mark as modified
         $this->getFilters();
+        $this->blnModified = true;
 
         $this->arrFilters[$intModule] = $arrConfig;
     }
@@ -125,8 +149,9 @@ class RequestCache extends \Model
      */
     public function setSortingForModule(array $arrConfig, $intModule)
     {
-        // Make sure sorting is initialized
+        // Make sure sorting is initialized and mark as modified
         $this->getSorting();
+        $this->blnModified = true;
 
         $this->arrSorting[$intModule] = $arrConfig;
     }
@@ -169,8 +194,9 @@ class RequestCache extends \Model
      */
     public function setLimitForModule(Limit $objLimit, $intModule)
     {
-        // Make sure sorting is initialized
+        // Make sure sorting is initialized and mark as modified
         $this->getLimits();
+        $this->blnModified = true;
 
         $this->arrLimits[$intModule] = $objLimit;
     }
