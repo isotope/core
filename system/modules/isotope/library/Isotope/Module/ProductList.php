@@ -15,6 +15,7 @@ namespace Isotope\Module;
 use Isotope\Isotope;
 use Isotope\Model\Product;
 use Isotope\Model\ProductCache;
+use Isotope\RequestCache\Sort;
 
 
 /**
@@ -338,7 +339,7 @@ class ProductList extends Module
 
         if (empty($arrSorting) && $this->iso_listingSortField != '')
         {
-            $arrSorting[$this->iso_listingSortField] = array(($this->iso_listingSortDirection=='DESC' ? SORT_DESC : SORT_ASC), SORT_REGULAR);
+            $arrSorting[$this->iso_listingSortField] = ($this->iso_listingSortDirection == 'DESC' ? Sort::descending() : Sort::ascending());
         }
 
         // Thanks to certo web & design for sponsoring this feature

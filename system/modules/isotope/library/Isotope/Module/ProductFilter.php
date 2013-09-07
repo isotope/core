@@ -15,6 +15,7 @@ namespace Isotope\Module;
 use Isotope\Model\Product;
 use Isotope\Model\RequestCache;
 use Isotope\RequestCache\Filter;
+use Isotope\RequestCache\Sort;
 
 
 /**
@@ -358,7 +359,7 @@ class ProductFilter extends Module
 
             if ($this->blnUpdateCache && in_array($sortingField, $this->iso_sortingFields))
             {
-                $GLOBALS['ISO_SORTING'][$this->id][$sortingField] = array(($sortingDirection=='DESC' ? SORT_DESC : SORT_ASC), SORT_REGULAR);
+                $GLOBALS['ISO_SORTING'][$this->id][$sortingField] = ($sortingDirection == 'DESC' ? Sort::descending() : Sort::ascending());
             }
 
             // Request cache contains wrong value, delete it!
