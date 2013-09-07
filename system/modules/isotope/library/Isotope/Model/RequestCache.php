@@ -98,6 +98,27 @@ class RequestCache extends \Model
     }
 
     /**
+     * Return the first limit we can find
+     * @param   array
+     * @param   mixed
+     * @return  int
+     */
+    public function getFirstLimitForModules(array $arrIds, $varDefault=0)
+    {
+        if (null === $this->getLimit()) {
+            return $varDefault;
+        }
+
+        foreach ($arrIds as $id) {
+            if (isset($this->arrLimit[$id])) {
+                return $this->arrLimit[$id];
+            }
+        }
+
+        return $varDefault;
+    }
+
+    /**
      * Find cache by ID and store
      * @param   int
      * @param   int
