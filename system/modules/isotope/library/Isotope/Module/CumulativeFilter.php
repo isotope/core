@@ -12,6 +12,8 @@
 
 namespace Isotope\Module;
 
+use Isotope\RequestCache\Filter;
+
 
 /**
  * Class ModuleIsotopeCumulativeFilter
@@ -72,17 +74,9 @@ class CumulativeFilter extends Module
             // Unique filter key is necessary to unset the filter
             $strFilterKey = $arrFilter[2].'='.$arrFilter[3];
 
-            if ($arrFilter[1] == 'add')
-            {
-                $GLOBALS['ISO_FILTERS'][$this->id][$strFilterKey] = array
-                (
-                    'operator'        => '==',
-                    'attribute'        => $arrFilter[2],
-                    'value'            => $arrFilter[3]
-                );
-            }
-            else
-            {
+            if ($arrFilter[1] == 'add') {
+                $GLOBALS['ISO_FILTERS'][$this->id][$strFilterKey] = Filter::attribute($arrFilter[2])->isEqualTo($arrFilter[3]);
+            } else {
                 unset($GLOBALS['ISO_FILTERS'][$this->id][$strFilterKey]);
             }
 

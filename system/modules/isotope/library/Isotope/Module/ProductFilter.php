@@ -14,6 +14,7 @@ namespace Isotope\Module;
 
 use Isotope\Model\Product;
 use Isotope\Model\RequestCache;
+use Isotope\RequestCache\Filter;
 
 
 /**
@@ -203,13 +204,7 @@ class ProductFilter extends Module
                 {
                     foreach ($this->iso_searchFields as $field)
                     {
-                        $GLOBALS['ISO_FILTERS'][$this->id][] = array
-                        (
-                            'group'        => ('keyword: '.$keyword),
-                            'operator'    => 'search',
-                            'attribute'    => $field,
-                            'value'        => $keyword,
-                        );
+                        $GLOBALS['ISO_FILTERS'][$this->id][] = Filter::attribute($field)->contains($keyword)->groupBy('keyword: '.$keyword);
                     }
                 }
             }
@@ -259,12 +254,7 @@ class ProductFilter extends Module
 
                 if ($this->blnUpdateCache && in_array($arrInput[$strField], $arrValues))
                 {
-                    $GLOBALS['ISO_FILTERS'][$this->id][$strField] = array
-                    (
-                        'operator'        => '==',
-                        'attribute'        => $strField,
-                        'value'            => $arrInput[$strField],
-                    );
+                    $GLOBALS['ISO_FILTERS'][$this->id][$strField] = Filter::attribute($strField)->isEqualTo($arrInput[$strField]);
                 }
 
                 // Request cache contains wrong value, delete it!
