@@ -55,6 +55,12 @@ class Isotope extends \Controller
      */
     protected static $objConfig;
 
+    /**
+     * Current request cache instance
+     * @var Isotope\Model\RequestCache
+     */
+    protected static $objRequestCache;
+
 
     /**
      * Prevent cloning of the object (Singleton)
@@ -110,14 +116,11 @@ class Isotope extends \Controller
             // Initialize request cache for product list filters
             if (\Input::get('isorc') != '') {
 
-                $objRequestCache = RequestCache::findByIdAndStore(\Input::get('isorc'), static::getCart()->store_id);
+                $GLOBALS['ISO_FILTERS'] = $this->getRequestCache()->getFilters();
+                $GLOBALS['ISO_SORTING'] = $this->getRequestCache()->getSorting();
+                $GLOBALS['ISO_LIMIT'] = $this->getRequestCache()->getLimit();
 
-                if (null !== $objRequestCache) {
-
-                    $GLOBALS['ISO_FILTERS'] = $objRequestCache->getFilters();
-                    $GLOBALS['ISO_SORTING'] = $objRequestCache->getSorting();
-                    $GLOBALS['ISO_LIMIT'] = $objRequestCache->getLimit();
-
+                if ($this->getRequestCache()->id > 0) {
                     global $objPage;
                     $objPage->noSearch = 1;
 
@@ -200,6 +203,23 @@ class Isotope extends \Controller
     public static function setConfig(Config $objConfig=null)
     {
         static::$objConfig = $objConfig;
+    }
+
+    /**
+     * Get active request cache
+     * @return  RequestCache
+     */
+    public static function getRequestCache()
+    {
+        if (false === $this->objRequestCache) {
+            $this->objRequestCache = RequestCache::findByIdAndStore(\Input::get('isorc'), static::getCart()->store_id);
+
+            if (null === $this->objRequestCache) {
+                $this->objRequestCache = new RequestCache();
+            }
+        }
+
+        return $this->objRequestCache;
     }
 
 
