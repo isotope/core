@@ -341,7 +341,6 @@ class ProductList extends Module
             $arrSorting[$this->iso_listingSortField] = ($this->iso_listingSortDirection == 'DESC' ? Sort::descending() : Sort::ascending());
         }
 
-        // Thanks to certo web & design for sponsoring this feature
         if ($blnNativeSQL) {
             $strWhere = '';
             $arrWhere = array();
