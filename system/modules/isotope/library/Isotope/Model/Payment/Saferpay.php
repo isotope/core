@@ -180,10 +180,12 @@ class Saferpay extends Payment implements IsotopePayment
             $objTemplate = new \Isotope\Template('mod_message');
             $objTemplate->type = 'processing';
             $objTemplate->message = $GLOBALS['TL_LANG']['MSC']['payment_processing'];
+
             return $objTemplate->parse();
         }
 
         $this->log('Payment could not be processed.', __METHOD__, TL_ERROR);
+
         $this->redirect($this->addToUrl('step=failed', true));
     }
 
@@ -203,6 +205,7 @@ class Saferpay extends Payment implements IsotopePayment
         if ((int) $objRequest->code !== 200 || substr($objRequest->response, 0, 6) === 'ERROR:') {
             $this->log(sprintf('Could not get the redirect URI from Saferpay. See log files for further details.'), __METHOD__, TL_ERROR);
             log_message(sprintf('Could not get the redirect URI from Saferpay. Response was: "%s".', $objRequest->response), 'error.log');
+
             $this->redirect($this->addToUrl('step=failed', true));
         }
 
