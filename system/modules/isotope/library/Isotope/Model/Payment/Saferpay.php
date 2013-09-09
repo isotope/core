@@ -19,7 +19,6 @@ use Isotope\Model\Payment;
 /**
  * Class PaymentSaferpay
  * @TODO: remove magic_quotes:gpc when PHP 5.4 is compulsory (it's also deprecated in PHP 5.3 so it might also be removed when PHP 5.3 is compulsory)
- * @TODO: replace "self::" with "static::" when PHP 5.3 is compulsory
  */
 class Saferpay extends Payment implements IsotopePayment
 {
@@ -99,7 +98,7 @@ class Saferpay extends Payment implements IsotopePayment
 
         // Get the Payment URL from the saferpay hosting server
         $objRequest = new Request();
-        $objRequest->send(self::verifyPayConfirmURI . "?DATA=" . urlencode($strData) . "&SIGNATURE=" . urlencode($this->Input->post('SIGNATURE')));
+        $objRequest->send(static::verifyPayConfirmURI . "?DATA=" . urlencode($strData) . "&SIGNATURE=" . urlencode($this->Input->post('SIGNATURE')));
 
         // Stop if verification is not working
         if (strtoupper(substr($objRequest->response, 0, 3)) != 'OK:')
@@ -116,7 +115,7 @@ class Saferpay extends Payment implements IsotopePayment
             $arrResponse = array();
             parse_str(substr($objRequest->response, 3), $arrResponse);
 
-            $strUrl  = self::payCompleteURI . '?ACCOUNTID=' . $this->saferpay_accountid . '&ID=' . urlencode($arrResponse['ID']) . '&TOKEN=' . urlencode($arrResponse['TOKEN']);
+            $strUrl  = static::payCompleteURI . '?ACCOUNTID=' . $this->saferpay_accountid . '&ID=' . urlencode($arrResponse['ID']) . '&TOKEN=' . urlencode($arrResponse['TOKEN']);
 
             // This is only for the sandbox mode where a password is required
             if (substr($this->saferpay_accountid, 0, 6) == '99867-') {
@@ -260,7 +259,7 @@ class Saferpay extends Payment implements IsotopePayment
         $strComplete = $this->Environment->base . $this->addToUrl('step=complete', true) . '?uid=' . $objOrder->uniqid;
         $strFailed = $this->Environment->base . $this->addToUrl('step=failed', true);
 
-        $strUrl  = self::createPayInitURI;
+        $strUrl  = static::createPayInitURI;
         $strUrl .= "?ACCOUNTID=" . $this->saferpay_accountid;
         $strUrl .= "&AMOUNT=" . (round(($this->Isotope->Cart->grandTotal * 100), 0));
         $strUrl .= "&CURRENCY=" . $this->Isotope->Config->currency;
