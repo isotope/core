@@ -116,11 +116,11 @@ class Isotope extends \Controller
             // Initialize request cache for product list filters
             if (\Input::get('isorc') != '') {
 
-                if ($this->getRequestCache()->isEmpty()) {
+                if (static::getRequestCache()->isEmpty()) {
                     global $objPage;
                     $objPage->noSearch = 1;
 
-                } elseif ($this->getRequestCache()->id != \Input::get('isorc')) {
+                } elseif (static::getRequestCache()->id != \Input::get('isorc')) {
 
                     unset($_GET['isorc']);
 
@@ -207,15 +207,15 @@ class Isotope extends \Controller
      */
     public static function getRequestCache()
     {
-        if (false === $this->objRequestCache) {
-            $this->objRequestCache = RequestCache::findByIdAndStore(\Input::get('isorc'), static::getCart()->store_id);
+        if (false === static::$objRequestCache) {
+            static::$objRequestCache = RequestCache::findByIdAndStore(\Input::get('isorc'), static::getCart()->store_id);
 
-            if (null === $this->objRequestCache) {
-                $this->objRequestCache = new RequestCache();
+            if (null === static::$objRequestCache) {
+                static::$objRequestCache = new RequestCache();
             }
         }
 
-        return $this->objRequestCache;
+        return static::$objRequestCache;
     }
 
 
