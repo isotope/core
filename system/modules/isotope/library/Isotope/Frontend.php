@@ -1640,6 +1640,20 @@ window.addEvent('domready', function()
         exit;
     }
 
+    /**
+     * Get value of an auto_item parameter
+     * @param   string Key
+     * @return  string
+     */
+    public static function getAutoItem($strKey)
+    {
+        if ($GLOBALS['TL_CONFIG']['useAutoItem'] && in_array($strKey, $GLOBALS['TL_AUTO_ITEM'])) {
+
+            return \Input::get('auto_item');
+        }
+
+        return \Input::get(Isotope::getConfig()->getUrlParam($strKey));
+    }
 
     /**
      * Recursively replace inserttags in the return value
