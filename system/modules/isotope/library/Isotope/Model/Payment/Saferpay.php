@@ -86,7 +86,7 @@ class Saferpay extends Payment implements IsotopePayment
 
         // validate the data on our side
         if (($objOrder = Order::findByPk($attributes->getNamedItem('ORDERID')->nodeValue)) === null) {
-            $this->log(sprintf('Order ID could not be found. See log files for further details.'), __METHOD__, TL_ERROR);
+            \System::log(sprintf('Order ID could not be found. See log files for further details.'), __METHOD__, TL_ERROR);
             log_message(sprintf('Order ID could not be found. Order ID was: "%s".', $attributes->getNamedItem('ORDERID')->nodeValue), 'error.log');
 
             return;
@@ -104,7 +104,7 @@ class Saferpay extends Payment implements IsotopePayment
         // Stop if verification is not working
         if (strtoupper(substr($objRequest->response, 0, 3)) != 'OK:')
         {
-            $this->log(sprintf('Payment not successfull. See log files for further details.'), __METHOD__, TL_ERROR);
+            \System::log(sprintf('Payment not successfull. See log files for further details.'), __METHOD__, TL_ERROR);
             log_message(sprintf('Payment not successfull. Message was: "%s".', $objRequest->response), 'error.log');
 
             return;
@@ -129,7 +129,7 @@ class Saferpay extends Payment implements IsotopePayment
             // Stop if capture was not successful
             if (strtoupper($objRequest->response) != 'OK')
             {
-                $this->log(sprintf('Payment capture failed. See log files for further details.'), __METHOD__, TL_ERROR);
+                \System::log(sprintf('Payment capture failed. See log files for further details.'), __METHOD__, TL_ERROR);
                 log_message(sprintf('Payment capture failed. Message was: "%s".', $objRequest->response), 'error.log');
 
                 return;
@@ -139,7 +139,7 @@ class Saferpay extends Payment implements IsotopePayment
             // otherwise checkout
             if (!$objOrder->checkout())
             {
-                $this->log('Checkout for Saferpay failed.', __METHOD__, TL_ERROR);
+                \System::log('Checkout for Saferpay failed.', __METHOD__, TL_ERROR);
 
                 return;
             }
@@ -184,7 +184,7 @@ class Saferpay extends Payment implements IsotopePayment
             return $objTemplate->parse();
         }
 
-        $this->log('Payment could not be processed.', __METHOD__, TL_ERROR);
+        \System::log('Payment could not be processed.', __METHOD__, TL_ERROR);
         \Isotope\Module\Checkout::redirectToStep('failed');
     }
 
@@ -202,7 +202,7 @@ class Saferpay extends Payment implements IsotopePayment
         $objRequest->send($this->createPaymentURI());
 
         if ((int) $objRequest->code !== 200 || substr($objRequest->response, 0, 6) === 'ERROR:') {
-            $this->log(sprintf('Could not get the redirect URI from Saferpay. See log files for further details.'), __METHOD__, TL_ERROR);
+            \System::log(sprintf('Could not get the redirect URI from Saferpay. See log files for further details.'), __METHOD__, TL_ERROR);
             log_message(sprintf('Could not get the redirect URI from Saferpay. Response was: "%s".', $objRequest->response), 'error.log');
 
             \Isotope\Module\Checkout::redirectToStep('failed');
@@ -228,19 +228,19 @@ class Saferpay extends Payment implements IsotopePayment
     {
         log_message(print_r($objOrder, true), 'postsale.log');
         if ($attributes->getNamedItem('ACCOUNTID')->nodeValue != $this->saferpay_accountid) {
-            $this->log('XML data wrong, possible manipulation (accountId validation failed)! See log files for further details.', __METHOD__, TL_ERROR);
+            \System::log('XML data wrong, possible manipulation (accountId validation failed)! See log files for further details.', __METHOD__, TL_ERROR);
             log_message(sprintf('XML data wrong, possible manipulation (accountId validation failed)! XML was: "%s". Order was: "%s"', $attributes->getNamedItem('ACCOUNTID')->nodeValue, $this->saferpay_accountid), 'error.log');
 
             return false;
 
         } elseif ($attributes->getNamedItem('AMOUNT')->nodeValue != round(($objOrder->grandTotal * 100), 0)) {
-            $this->log('XML data wrong, possible manipulation (amount validation failed)! See log files for further details.', __METHOD__, TL_ERROR);
+            \System::log('XML data wrong, possible manipulation (amount validation failed)! See log files for further details.', __METHOD__, TL_ERROR);
             log_message(sprintf('XML data wrong, possible manipulation (amount validation failed)! XML was: "%s". Order was: "%s"', $attributes->getNamedItem('AMOUNT')->nodeValue, $this->grandTotal), 'error.log');
 
             return false;
 
         } elseif ($attributes->getNamedItem('CURRENCY')->nodeValue != $objOrder->currency) {
-            $this->log('XML data wrong, possible manipulation (currency validation failed)! See log files for further details.', __METHOD__, TL_ERROR);
+            \System::log('XML data wrong, possible manipulation (currency validation failed)! See log files for further details.', __METHOD__, TL_ERROR);
             log_message(sprintf('XML data wrong, possible manipulation (currency validation failed)! XML was: "%s". Order was: "%s"', $attributes->getNamedItem('CURRENCY')->nodeValue, $this->currency), 'error.log');
 
             return false;
