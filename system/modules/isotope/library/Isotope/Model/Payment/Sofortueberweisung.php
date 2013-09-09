@@ -136,7 +136,7 @@ class Sofortueberweisung extends Payment implements IsotopePayment
      */
     public function checkoutForm()
     {
-        if (($objOrder = Order::findOneBy('cart_id', Isotope::getCart()->id)) === null) {
+        if (($objOrder = Order::findOneBy('source_collection_id', Isotope::getCart()->id)) === null) {
             \Isotope\Module\Checkout::redirectToStep('failed');
         }
 
