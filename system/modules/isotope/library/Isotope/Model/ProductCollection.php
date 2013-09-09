@@ -1193,8 +1193,20 @@ abstract class ProductCollection extends TypeAgent
 
             $strCacheKey = 'product' . $objItem->product_id . '_' . $strAttribute;
 
+            // href
+            try {
+                $strHref = $objItem->getProduct()->generateUrl((int) $objItem->reader_page);
+            } catch (\InvalidArgumentException $e) {
+                $strHref = '';
+            }
+
+
             if (!isset($arrGalleries[$strCacheKey])) {
-                $arrGalleries[$strCacheKey] = Gallery::createForProductAttribute($objModule->gallery, $objItem->getProduct(), $strAttribute);
+                $arrGalleries[$strCacheKey] = Gallery::createForProductAttribute(
+                    $objModule->gallery,
+                    $objItem->getProduct(),
+                    $strAttribute,
+                    $strHref);
             }
 
             return $arrGalleries[$strCacheKey];
