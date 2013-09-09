@@ -61,6 +61,7 @@ abstract class Gallery extends TypeAgent
         $objGallery->setName($objProduct->formSubmit . '_' . $strAttribute);
         $objGallery->setFiles($objProduct->$strAttribute); //Isotope::mergeMediaData($objProduct->{$this->field_name}, deserialize($objProduct->{$strKey.'_fallback'})));
         $objGallery->product_id = ($objProduct->pid ? $objProduct->pid : $objProduct->id);
+        // @todo: href_reader does not exist anymore
         $objGallery->href_reader = $objProduct->href_reader;
 
         return $objGallery;

@@ -1553,6 +1553,7 @@ window.addEvent('domready', function()
                 (
                     'isRoot' => false,
                     'isActive' => true,
+                    // @todo: href_reader does not exist anymore
                     'href' => $objProduct->href_reader,
                     'title' => specialchars($objProduct->name, true),
                     'link' => $objProduct->name,
