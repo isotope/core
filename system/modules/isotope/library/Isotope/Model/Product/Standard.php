@@ -919,7 +919,7 @@ class Standard extends Product implements IsotopeProduct
      * @return  array
      * @throw   \InvalidArgumentException
      */
-    public function generateUrl($varPage, $arrParams=null)
+    public function generateUrl($varPage, $arrParams=array())
     {
         if (!$varPage instanceof \PageModel) {
             if (!is_int($varPage)) {
