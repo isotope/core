@@ -12,6 +12,7 @@
 
 namespace Isotope\Model\Payment;
 
+use Isotope\Isotope;
 use Isotope\Interfaces\IsotopePayment;
 use Isotope\Model\Payment;
 
@@ -19,20 +20,17 @@ use Isotope\Model\Payment;
 class Sofortueberweisung extends Payment implements IsotopePayment
 {
 
-	public function __get($strKey)
+	/**
+	 * sofortueberweisung.de only supports these currencies
+	 * @return  true
+	 */
+	public function isAvailable()
 	{
-		switch( $strKey )
-		{
-			case 'available':
-				// sofortueberweisung.de only supports these currencies
-				if (!in_array($this->Isotope->Config->currency, array('EUR', 'CHF', 'GBP')))
-					return false;
+        if (!in_array(Isotope::getConfig()->currency, array('EUR', 'CHF', 'GBP'))) {
+            return false;
+        }
 
-				// Do NOT add a break. Continue to the parent "available" check.
-
-			default:
-				return parent::__get($strKey);
-		}
+        return parent::isAvailable();
 	}
 
 
