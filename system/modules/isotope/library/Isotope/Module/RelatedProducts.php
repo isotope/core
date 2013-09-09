@@ -11,6 +11,7 @@
  */
 
 namespace Isotope\Module;
+use Isotope\Frontend;
 
 
 /**
@@ -50,7 +51,7 @@ class RelatedProducts extends ProductList
             return $objTemplate->parse();
         }
 
-        if (!strlen(\Input::get(Isotope::getConfig()->getUrlParam('product'))))
+        if (!Frontend::getAutoItem('product'))
         {
             return '';
         }
@@ -72,7 +73,7 @@ class RelatedProducts extends ProductList
      */
     protected function findProducts($arrCacheIds=null)
     {
-        $strAlias = \Input::get(Isotope::getConfig()->getUrlParam('product'));
+        $strAlias = Frontend::getAutoItem('product');
         $arrIds = array(0);
         $arrJumpTo = array();
 

@@ -174,7 +174,7 @@ class Frontend extends \Frontend
             // {{product::attribute}}                - gets the data of the current product ($GLOBALS['ACTIVE_PRODUCT'] or GET parameter "product")
             // {{product::attribute::product_id}}    - gets the data of the specified product ID
 
-            $objProduct = (count($arrTag) == 3) ? static::getProduct($arrTag[2]) : ($GLOBALS['ACTIVE_PRODUCT'] ? $GLOBALS['ACTIVE_PRODUCT'] : static::getProductByAlias($this->Input->get('product')));
+            $objProduct = (count($arrTag) == 3) ? static::getProduct($arrTag[2]) : ($GLOBALS['ACTIVE_PRODUCT'] ? $GLOBALS['ACTIVE_PRODUCT'] : static::getProductByAlias(static::getAutoItem('product')));
 
             return ($objProduct !== null) ? $objProduct->{$arrTag[1]} : '';
         }
@@ -191,7 +191,7 @@ class Frontend extends \Frontend
     public function addNavigationClass(&$objTemplate)
     {
         // Unset hook to prevent further execution on non-reader pages
-        if (\Input::get(Isotope::getConfig()->getUrlParam('product')) == '')
+        if (Frontend::getAutoItem('product') == '')
         {
             unset($GLOBALS['TL_HOOKS']['parseTemplate'][array_search(array('Isotope\Frontend', 'fixNavigationTrail'), $GLOBALS['TL_HOOKS']['parseTemplate'])]);
 
@@ -206,7 +206,7 @@ class Frontend extends \Frontend
             if ($arrTrail == null)
             {
                 $arrTrail = array();
-                $objProduct = static::getProductByAlias(\Input::get(Isotope::getConfig()->getUrlParam('product')));
+                $objProduct = static::getProductByAlias(static::getAutoItem('product'));
 
                 // getProductByAlias will return null if the product is not found
                 if ($objProduct !== null)
@@ -454,9 +454,9 @@ class Frontend extends \Frontend
      */
     public function translateProductUrls($arrGet, $strLanguage, $arrRootPage)
     {
-        if (\Input::get(Isotope::getConfig()->getUrlParam('product')) != '')
+        if (static::getAutoItem('product') != '')
         {
-            $arrGet['url']['product'] = \Input::get(Isotope::getConfig()->getUrlParam('product'));
+            $arrGet['url']['product'] = static::getAutoItem('product');
         }
         elseif (\Input::get('step') != '')
         {
@@ -1425,9 +1425,9 @@ window.addEvent('domready', function()
      */
     public function generateBreadcrumb($arrItems, $objModule)
     {
-        if (\Input::get(Isotope::getConfig()->getUrlParam('product')) != '')
+        if (static::getAutoItem('product') != '')
         {
-            $objProduct = static::getProductByAlias(\Input::get(Isotope::getConfig()->getUrlParam('product')));
+            $objProduct = static::getProductByAlias(static::getAutoItem('product'));
 
             if ($objProduct !== null)
             {

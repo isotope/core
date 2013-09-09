@@ -12,6 +12,7 @@
 
 namespace Isotope\Module;
 
+use Isotope\Frontend;
 use Isotope\Isotope;
 use Isotope\Model\Product;
 use Isotope\Model\ProductCache;
@@ -62,7 +63,7 @@ class ProductList extends Module
         }
 
         // Hide product list in reader mode if the respective setting is enabled
-        if ($this->iso_hide_list && \Input::get(Isotope::getConfig()->getUrlParam('product')) != '') {
+        if ($this->iso_hide_list && Frontend::getAutoItem('product') != '') {
             return '';
         }
 
@@ -241,7 +242,7 @@ class ProductList extends Module
 
             $objProduct->setOptions(array_merge($arrDefaultOptions, $objProduct->getOptions()));
 
-            if ($this->iso_jump_first && \Input::get(Isotope::getConfig()->getUrlParam('product')) == '') {
+            if ($this->iso_jump_first && Frontend::getAutoItem('product') == '') {
                 \Controller::redirect($objProduct->generateUrl($intReaderPage));
             }
 
