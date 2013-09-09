@@ -11,6 +11,7 @@
  */
 
 namespace Isotope\Model;
+use Isotope\Isotope;
 
 /**
  * Isotope\Model\Config represents an Isotope config model
@@ -140,6 +141,23 @@ class Config extends \Model
         }
 
         return $this->arrCache['newProductLimit'];
+    }
+
+    /**
+     * Get url param
+     * @param   string
+     * @return  string
+     * @throws  \InvalidArgumentException
+     */
+    public function getUrlParam($strKey)
+    {
+        $arrMatrix = Isotope::getConfig()->urlMatrix;
+
+        if (!isset($arrMatrix[$strKey])) {
+            throw new \InvalidArgumentException(sprintf('URL Param with key "%s" does not exist!', $strKey));
+        }
+
+        return $arrMatrix[$strKey];
     }
 
     /**
