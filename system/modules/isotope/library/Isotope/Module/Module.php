@@ -121,7 +121,7 @@ abstract class Module extends Contao_Module
                 break;
 
             case 'product':
-                $objProduct = \Isotope\Frontend::getProductByAlias(\Input::get('product'));
+                $objProduct = \Isotope\Frontend::getProductByAlias(\Input::get(Isotope::getConfig()->getUrlParam('product')));
 
                 if ($objProduct !== null)
                 {

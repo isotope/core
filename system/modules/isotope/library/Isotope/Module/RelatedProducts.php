@@ -50,7 +50,7 @@ class RelatedProducts extends ProductList
             return $objTemplate->parse();
         }
 
-        if (!strlen(\Input::get('product')))
+        if (!strlen(\Input::get(Isotope::getConfig()->getUrlParam('product'))))
         {
             return '';
         }
@@ -72,7 +72,7 @@ class RelatedProducts extends ProductList
      */
     protected function findProducts($arrCacheIds=null)
     {
-        $strAlias = \Input::get('product');
+        $strAlias = \Input::get(Isotope::getConfig()->getUrlParam('product'));
         $arrIds = array(0);
         $arrJumpTo = array();
 

@@ -52,7 +52,7 @@ class ProductReader extends Module
         }
 
         // Return if no product has been specified
-        if (\Input::get('product') == '')
+        if (\Input::get(Isotope::getConfig()->getUrlParam('product')) == '')
         {
             return '';
         }
@@ -69,7 +69,7 @@ class ProductReader extends Module
     {
         global $objPage;
 
-        $objProduct = \Isotope\Frontend::getProductByAlias(\Input::get('product'), \Isotope\Frontend::getReaderPageId());
+        $objProduct = \Isotope\Frontend::getProductByAlias(\Input::get(Isotope::getConfig()->getUrlParam('product')), \Isotope\Frontend::getReaderPageId());
 
         if (!$objProduct)
         {

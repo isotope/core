@@ -191,7 +191,7 @@ class Frontend extends \Frontend
     public function addNavigationClass(&$objTemplate)
     {
         // Unset hook to prevent further execution on non-reader pages
-        if (\Input::get('product') == '')
+        if (\Input::get(Isotope::getConfig()->getUrlParam('product')) == '')
         {
             unset($GLOBALS['TL_HOOKS']['parseTemplate'][array_search(array('Isotope\Frontend', 'fixNavigationTrail'), $GLOBALS['TL_HOOKS']['parseTemplate'])]);
 
@@ -206,7 +206,7 @@ class Frontend extends \Frontend
             if ($arrTrail == null)
             {
                 $arrTrail = array();
-                $objProduct = static::getProductByAlias(\Input::get('product'));
+                $objProduct = static::getProductByAlias(\Input::get(Isotope::getConfig()->getUrlParam('product')));
 
                 // getProductByAlias will return null if the product is not found
                 if ($objProduct !== null)
@@ -454,9 +454,9 @@ class Frontend extends \Frontend
      */
     public function translateProductUrls($arrGet, $strLanguage, $arrRootPage)
     {
-        if (\Input::get('product') != '')
+        if (\Input::get(Isotope::getConfig()->getUrlParam('product')) != '')
         {
-            $arrGet['url']['product'] = \Input::get('product');
+            $arrGet['url']['product'] = \Input::get(Isotope::getConfig()->getUrlParam('product'));
         }
         elseif (\Input::get('step') != '')
         {
@@ -1428,9 +1428,9 @@ window.addEvent('domready', function()
      */
     public function generateBreadcrumb($arrItems, $objModule)
     {
-        if (\Input::get('product') != '')
+        if (\Input::get(Isotope::getConfig()->getUrlParam('product')) != '')
         {
-            $objProduct = static::getProductByAlias(\Input::get('product'));
+            $objProduct = static::getProductByAlias(\Input::get(Isotope::getConfig()->getUrlParam('product')));
 
             if ($objProduct !== null)
             {

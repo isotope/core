@@ -62,7 +62,7 @@ class ProductList extends Module
         }
 
         // Hide product list in reader mode if the respective setting is enabled
-        if ($this->iso_hide_list && \Input::get('product') != '') {
+        if ($this->iso_hide_list && \Input::get(Isotope::getConfig()->getUrlParam('product')) != '') {
             return '';
         }
 
@@ -241,7 +241,7 @@ class ProductList extends Module
             $objProduct->setOptions(array_merge($arrDefaultOptions, $objProduct->getOptions()));
             $objProduct->reader_jumpTo = $intReaderPage;
 
-            if ($this->iso_jump_first && \Input::get('product') == '') {
+            if ($this->iso_jump_first && \Input::get(Isotope::getConfig()->getUrlParam('product')) == '') {
                 \Controller::redirect($objProduct->href_reader);
             }
 
