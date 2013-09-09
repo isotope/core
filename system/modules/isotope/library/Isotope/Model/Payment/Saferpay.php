@@ -256,8 +256,8 @@ class Saferpay extends Payment implements IsotopePayment
     {
         $objOrder = \Database::getInstance()->prepare("SELECT * FROM tl_iso_orders WHERE cart_id=?")->execute(Isotope::getCart()->id);
 
-        $strComplete = $this->Environment->base . $this->addToUrl('step=complete', true) . '?uid=' . $objOrder->uniqid;
-        $strFailed = $this->Environment->base . $this->addToUrl('step=failed', true);
+        $strComplete = \Environment::get('base') . $this->addToUrl('step=complete', true) . '?uid=' . $objOrder->uniqid;
+        $strFailed = \Environment::get('base') . $this->addToUrl('step=failed', true);
 
         $strUrl  = static::createPayInitURI;
         $strUrl .= "?ACCOUNTID=" . $this->saferpay_accountid;
@@ -266,7 +266,7 @@ class Saferpay extends Payment implements IsotopePayment
         $strUrl .= "&SUCCESSLINK=" . urlencode($strComplete);
         $strUrl .= "&FAILLINK=" . urlencode($strFailed);
         $strUrl .= "&BACKLINK=" . urlencode($strFailed);
-        $strUrl .= "&NOTIFYURL=" . urlencode($this->Environment->base . '/system/modules/isotope/postsale.php?mod=pay&id=' . $this->id);
+        $strUrl .= "&NOTIFYURL=" . urlencode(\Environment::get('base') . '/system/modules/isotope/postsale.php?mod=pay&id=' . $this->id);
         $strUrl .= "&DESCRIPTION=" . urlencode($this->saferpay_description);
         $strUrl .= "&ORDERID=" . $objOrder->id; // order id
 
