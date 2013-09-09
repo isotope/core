@@ -778,9 +778,67 @@ window.addEvent('domready', function()
 
         if (!empty($arrFilters))
         {
-            global $filterConfig;
-            $filterConfig = $arrFilters;
-            $arrProducts = array_filter($arrProducts, array(self, 'filterProducts'));
+            $arrProducts = array_filter($arrProducts, function ($objProduct) use ($arrFilters) {
+                $arrGroups = array();
+
+                foreach ($arrFilters as $filter)
+                {
+                    $varValues = $objProduct->{$filter['attribute']};
+                    $blnMatch = false;
+
+                    // If the attribute is not set for this product, we will ignore this attribute
+                    if ($varValues === null)
+                    {
+                        continue;
+                    }
+                    elseif (!is_array($varValues))
+                    {
+                        $varValues = array($varValues);
+                    }
+
+                    $operator = static::convertFilterOperator($filter['operator'], 'PHP');
+
+                    foreach ($varValues as $varValue)
+                    {
+                        $blnMatchOne = false;
+
+                        switch( $operator )
+                        {
+                            case 'stripos':
+                                if (stripos($varValue, $filter['value']) !== false)
+                                {
+                                    $blnMatchOne = true;
+                                }
+                                break;
+
+                            default:
+                                if (eval('return $varValue '.$operator.' $filter[\'value\'];'))
+                                {
+                                    $blnMatchOne = true;
+                                }
+                                break;
+                        }
+
+                        $blnMatch = $blnMatch ? $blnMatch : $blnMatchOne;
+                    }
+
+                    if ($filter['group'])
+                    {
+                        $arrGroups[$filter['group']] = $arrGroups[$filter['group']] ? $arrGroups[$filter['group']] : $blnMatch;
+                    }
+                    elseif (!$blnMatch)
+                    {
+                        return false;
+                    }
+                }
+
+                if (!empty($arrGroups) && in_array(false, $arrGroups))
+                {
+                    return false;
+                }
+
+                return true;
+            });
         }
 
         // $arrProducts can be empty if the filter removed all records
@@ -808,83 +866,6 @@ window.addEvent('domready', function()
         }
 
         return $arrProducts;
-    }
-
-
-    /**
-     * Callback function to filter products
-     * @param object
-     * @return boolean
-     * @see array_filter()
-     */
-    private static function filterProducts($objProduct)
-    {
-        global $filterConfig;
-
-        if (!is_array($filterConfig) || empty($filterConfig))
-        {
-            return true;
-        }
-
-        $arrGroups = array();
-
-        foreach ($filterConfig as $filter)
-        {
-            $varValues = $objProduct->{$filter['attribute']};
-            $blnMatch = false;
-
-            // If the attribute is not set for this product, we will ignore this attribute
-            if ($varValues === null)
-            {
-                continue;
-            }
-            elseif (!is_array($varValues))
-            {
-                $varValues = array($varValues);
-            }
-
-            $operator = static::convertFilterOperator($filter['operator'], 'PHP');
-
-            foreach ($varValues as $varValue)
-            {
-                $blnMatchOne = false;
-
-                switch( $operator )
-                {
-                    case 'stripos':
-                        if (stripos($varValue, $filter['value']) !== false)
-                        {
-                            $blnMatchOne = true;
-                        }
-                        break;
-
-                    default:
-                        if (eval('return $varValue '.$operator.' $filter[\'value\'];'))
-                        {
-                            $blnMatchOne = true;
-                        }
-                        break;
-                }
-
-                $blnMatch = $blnMatch ? $blnMatch : $blnMatchOne;
-            }
-
-            if ($filter['group'])
-            {
-                $arrGroups[$filter['group']] = $arrGroups[$filter['group']] ? $arrGroups[$filter['group']] : $blnMatch;
-            }
-            elseif (!$blnMatch)
-            {
-                return false;
-            }
-        }
-
-        if (!empty($arrGroups) && in_array(false, $arrGroups))
-        {
-            return false;
-        }
-
-        return true;
     }
 
 
