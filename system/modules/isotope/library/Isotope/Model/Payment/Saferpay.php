@@ -85,7 +85,7 @@ class Saferpay extends Payment implements IsotopePayment
         $attributes = $doc->getElementsByTagName('IDP')->item(0)->attributes;
 
         // validate the data on our side
-        if (($objOrder = Order::findByPk('id', $attributes->getNamedItem('ORDERID')->nodeValue)) === null) {
+        if (($objOrder = Order::findByPk($attributes->getNamedItem('ORDERID')->nodeValue)) === null) {
             $this->log(sprintf('Order ID could not be found. See log files for further details.'), __METHOD__, TL_ERROR);
             log_message(sprintf('Order ID could not be found. Order ID was: "%s".', $attributes->getNamedItem('ORDERID')->nodeValue), 'error.log');
 
