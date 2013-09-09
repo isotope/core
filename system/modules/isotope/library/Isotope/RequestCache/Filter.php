@@ -12,6 +12,8 @@
 
 namespace Isotope\RequestCache;
 
+use Isotope\Interfaces\IsotopeProduct;
+
 /**
  * Build filter configuration for request cache
  *
@@ -178,6 +180,96 @@ class Filter implements \ArrayAccess
         return $this;
     }
 
+    /**
+     * Check if filter has a grouping
+     * @return  bool
+     */
+    public function hasGroup()
+    {
+        return isset($this->arrConfig['group']);
+    }
+
+    /**
+     * Get group name for this filter
+     * @return  string
+     */
+    public function getGroup()
+    {
+        return (string) $this->arrConfig['group'];
+    }
+
+    /**
+     * Check if product matches the filter
+     * @param   IsotopeProduct
+     * @return  bool
+     */
+    public static function matches(IsotopeProduct $objProduct)
+    {
+        if ($this->arrConfig['operator'] == '') {
+            throw new \BadMethodCallException('Filter operator is not yet configured');
+        }
+
+        $varValues = $objProduct->{$this->arrConfig['attribute']};
+
+        // If the attribute is not set for this product, we will ignore this attribute
+        if ($varValues === null) {
+            return true;
+        } elseif (!is_array($varValues)) {
+            $varValues = array($varValues);
+        }
+
+        foreach ($varValues as $varValue)
+        {
+            switch ($this->arrConfig['operator']) {
+                case 'like':
+                    if (stripos($varValue, $filter['value']) !== false) {
+                        return true;
+                    }
+                    break;
+
+                case 'gt':
+                    if ($varValue > $this->arrConfig['value']) {
+                        return true;
+                    }
+                    break;
+
+                case 'lt':
+                    if ($varValue < $this->arrConfig['value']) {
+                        return true;
+                    }
+                    break;
+
+                case 'gte':
+                    if ($varValue >= $this->arrConfig['value']) {
+                        return true;
+                    }
+                    break;
+
+                case 'lte':
+                    if ($varValue <= $this->arrConfig['value']) {
+                        return true;
+                    }
+                    break;
+
+                case 'neq':
+                    if ($varValue != $this->arrConfig['value']) {
+                        return true;
+                    }
+                    break;
+
+                case 'eq':
+                    if ($varValue == $this->arrConfig['value']) {
+                        return true;
+                    }
+                    break;
+
+                default:
+                    throw new \UnexpectedValueException('Unknown filter operator "' . $this->arrConfig['operator'] . '"');
+            }
+        }
+
+        return false;
+    }
     protected function preventModification()
     {
         if (isset($this->arrConfig['operator']) || isset($this->arrConfig['value'])) {

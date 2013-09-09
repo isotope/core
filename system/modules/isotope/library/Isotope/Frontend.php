@@ -781,53 +781,12 @@ window.addEvent('domready', function()
             $arrProducts = array_filter($arrProducts, function ($objProduct) use ($arrFilters) {
                 $arrGroups = array();
 
-                foreach ($arrFilters as $filter)
-                {
-                    $varValues = $objProduct->{$filter['attribute']};
-                    $blnMatch = false;
+                foreach ($arrFilters as $objFilter) {
+                    $blnMatch = $objFilter->matches($objProduct);
 
-                    // If the attribute is not set for this product, we will ignore this attribute
-                    if ($varValues === null)
-                    {
-                        continue;
-                    }
-                    elseif (!is_array($varValues))
-                    {
-                        $varValues = array($varValues);
-                    }
-
-                    $operator = static::convertFilterOperator($filter['operator'], 'PHP');
-
-                    foreach ($varValues as $varValue)
-                    {
-                        $blnMatchOne = false;
-
-                        switch( $operator )
-                        {
-                            case 'stripos':
-                                if (stripos($varValue, $filter['value']) !== false)
-                                {
-                                    $blnMatchOne = true;
-                                }
-                                break;
-
-                            default:
-                                if (eval('return $varValue '.$operator.' $filter[\'value\'];'))
-                                {
-                                    $blnMatchOne = true;
-                                }
-                                break;
-                        }
-
-                        $blnMatch = $blnMatch ? $blnMatch : $blnMatchOne;
-                    }
-
-                    if ($filter['group'])
-                    {
-                        $arrGroups[$filter['group']] = $arrGroups[$filter['group']] ? $arrGroups[$filter['group']] : $blnMatch;
-                    }
-                    elseif (!$blnMatch)
-                    {
+                    if ($objFilter->hasGroup()) {
+                        $arrGroups[$objFilter->getGroup()] = $arrGroups[$objFilter->getGroup()] ?: $blnMatch;
+                    } elseif (!$blnMatch) {
                         return false;
                     }
                 }
