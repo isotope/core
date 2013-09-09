@@ -1460,7 +1460,7 @@ window.addEvent('domready', function()
                     }
                 }
 
-                // If we still havent found a list page, don't alter the breadcrumb
+                // If we still haven't found a list page, don't alter the breadcrumb
                 if ($intPage === null)
                 {
                     return $arrItems;
@@ -1553,8 +1553,7 @@ window.addEvent('domready', function()
                 (
                     'isRoot' => false,
                     'isActive' => true,
-                    // @todo: href_reader does not exist anymore
-                    'href' => $objProduct->href_reader,
+                    'href' => $objProduct->generateUrl($objPage->id),
                     'title' => specialchars($objProduct->name, true),
                     'link' => $objProduct->name,
                     'data' => $objPage->row(),
