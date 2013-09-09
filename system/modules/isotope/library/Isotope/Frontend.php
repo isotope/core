@@ -766,18 +766,15 @@ window.addEvent('domready', function()
         // Reset DB iterator (see #22)
         $objProducts->reset();
 
-        while ($objProducts->next())
-        {
+        while ($objProducts->next()) {
             $objProduct = \Isotope\Frontend::getProduct($objProducts->current(), $intReaderPage, $blnCheckAvailability);
 
-            if ($objProduct !== null)
-            {
+            if ($objProduct !== null) {
                 $arrProducts[$objProducts->id] = $objProduct;
             }
         }
 
-        if (!empty($arrFilters))
-        {
+        if (!empty($arrFilters)) {
             $arrProducts = array_filter($arrProducts, function ($objProduct) use ($arrFilters) {
                 $arrGroups = array();
 
@@ -791,8 +788,7 @@ window.addEvent('domready', function()
                     }
                 }
 
-                if (!empty($arrGroups) && in_array(false, $arrGroups))
-                {
+                if (!empty($arrGroups) && in_array(false, $arrGroups)) {
                     return false;
                 }
 
@@ -801,15 +797,13 @@ window.addEvent('domready', function()
         }
 
         // $arrProducts can be empty if the filter removed all records
-        if (!empty($arrSorting) && !empty($arrProducts))
-        {
+        if (!empty($arrSorting) && !empty($arrProducts)) {
             $arrParam = array();
             $arrData = array();
 
-            foreach ($arrSorting as $strField => $arrConfig)
-            {
-                foreach ($arrProducts as $id => $objProduct)
-                {
+            foreach ($arrSorting as $strField => $arrConfig) {
+                foreach ($arrProducts as $id => $objProduct) {
+
                     // Both SORT_STRING and SORT_REGULAR are case sensitive, strings starting with a capital letter will come before strings starting with a lowercase letter.
                     // To perform a case insensitive search, force the sorting order to be determined by a lowercase copy of the original value.
                     $arrData[$strField][$id] = strtolower(str_replace('"', '', $objProduct->$strField));

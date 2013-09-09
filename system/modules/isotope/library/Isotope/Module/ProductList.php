@@ -337,14 +337,12 @@ class ProductList extends Module
         $arrFilters = Isotope::getRequestCache()->getFiltersForModules($this->iso_filterModules);
         $arrSorting = Isotope::getRequestCache()->getSortingsForModules($this->iso_filterModules);
 
-        if (empty($arrSorting) && $this->iso_listingSortField != '')
-        {
+        if (empty($arrSorting) && $this->iso_listingSortField != '') {
             $arrSorting[$this->iso_listingSortField] = ($this->iso_listingSortDirection == 'DESC' ? Sort::descending() : Sort::ascending());
         }
 
         // Thanks to certo web & design for sponsoring this feature
-        if ($blnNativeSQL)
-        {
+        if ($blnNativeSQL) {
             $strWhere = '';
             $arrWhere = array();
             $arrValues = array();
@@ -376,10 +374,8 @@ class ProductList extends Module
                 }
             }
 
-            if (!empty($arrGroups))
-            {
-                foreach ($arrGroups as $arrGroup)
-                {
+            if (!empty($arrGroups)) {
+                foreach ($arrGroups as $arrGroup) {
                     $arrGroupWhere = array();
 
                     foreach ($arrGroup as $k)
@@ -398,8 +394,7 @@ class ProductList extends Module
                 }
             }
 
-            if (!empty($arrWhere))
-            {
+            if (!empty($arrWhere)) {
                 $time = time();
                 $strWhere = "((" . implode(' AND ', $arrWhere) . ") OR $t.id IN (SELECT $t.pid FROM tl_iso_products AS $t WHERE $t.language='' AND " . implode(' AND ', $arrWhere)
                             . (BE_USER_LOGGED_IN === true ? '' : " AND $t.published='1' AND ($t.start='' OR $t.start<$time) AND ($t.stop='' OR $t.stop>$time)") . "))";
