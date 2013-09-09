@@ -18,7 +18,7 @@ namespace Isotope\RequestCache;
  * @copyright  Isotope eCommerce Workgroup 2009-2012
  * @author     Andreas Schempp <andreas.schempp@terminal42.ch>
  */
-class Sort implements ArrayAccess
+class Sort implements \ArrayAccess
 {
 
     /**
