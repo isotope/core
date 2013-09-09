@@ -98,7 +98,7 @@ class Saferpay extends Payment implements IsotopePayment
         }
 
         // Get the Payment URL from the saferpay hosting server
-        $objRequest = new Request();
+        $objRequest = new \Request();
         $objRequest->send(static::verifyPayConfirmURI . "?DATA=" . urlencode($strData) . "&SIGNATURE=" . urlencode(\Input::post('SIGNATURE')));
 
         // Stop if verification is not working
@@ -123,7 +123,7 @@ class Saferpay extends Payment implements IsotopePayment
                 $strUrl .= '&spPassword=XAjc3Kna';
             }
 
-            $objRequest = new Request();
+            $objRequest = new \Request();
             $objRequest->send($strUrl);
 
             // Stop if capture was not successful
@@ -166,18 +166,18 @@ class Saferpay extends Payment implements IsotopePayment
 
         if ($objOrder->date_paid > 0 && $objOrder->date_paid <= time())
         {
-            IsotopeFrontend::clearTimeout();
+            \Isotope\Frontend::clearTimeout();
             return true;
         }
 
-        if (IsotopeFrontend::setTimeout())
+        if (\Isotope\Frontend::setTimeout())
         {
             // Do not index or cache the page
             global $objPage;
             $objPage->noSearch = 1;
             $objPage->cache = 0;
 
-            $objTemplate = new FrontendTemplate('mod_message');
+            $objTemplate = new \Isotope\Template('mod_message');
             $objTemplate->type = 'processing';
             $objTemplate->message = $GLOBALS['TL_LANG']['MSC']['payment_processing'];
             return $objTemplate->parse();
@@ -197,7 +197,7 @@ class Saferpay extends Payment implements IsotopePayment
     public function checkoutForm()
     {
         // Get redirect url
-        $objRequest = new Request();
+        $objRequest = new \Request();
         $objRequest->send($this->createPaymentURI());
 
         if ((int) $objRequest->code !== 200 || substr($objRequest->response, 0, 6) === 'ERROR:') {
