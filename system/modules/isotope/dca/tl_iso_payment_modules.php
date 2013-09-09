@@ -103,13 +103,13 @@ $GLOBALS['TL_DCA']['tl_iso_payment_modules'] = array
                 'attributes'        => 'onclick="if (!confirm(\'' . $GLOBALS['TL_LANG']['MSC']['deleteConfirm'] . '\')) return false; Backend.getScrollOffset();"',
                 'button_callback'   => array('Isotope\tl_iso_payment_modules', 'deletePaymentModule'),
             ),
-			'toggle' => array
-			(
-				'label'             => &$GLOBALS['TL_LANG']['tl_iso_payment_modules']['toggle'],
-				'icon'              => 'visible.gif',
-				'attributes'        => 'onclick="Backend.getScrollOffset();return AjaxRequest.toggleVisibility(this,%s)"',
-				'button_callback'   => array('Isotope\tl_iso_payment_modules', 'toggleIcon')
-			),
+            'toggle' => array
+            (
+                'label'             => &$GLOBALS['TL_LANG']['tl_iso_payment_modules']['toggle'],
+                'icon'              => 'visible.gif',
+                'attributes'        => 'onclick="Backend.getScrollOffset();return AjaxRequest.toggleVisibility(this,%s)"',
+                'button_callback'   => array('Isotope\tl_iso_payment_modules', 'toggleIcon')
+            ),
             'show' => array
             (
                 'label'             => &$GLOBALS['TL_LANG']['tl_iso_payment_modules']['show'],
@@ -132,7 +132,6 @@ $GLOBALS['TL_DCA']['tl_iso_payment_modules'] = array
         'sparkasse'                 => '{type_legend},name,label,type;{note_legend:hide},note;{config_legend:hide},new_order_status,minimum_total,maximum_total,countries,shipping_modules,product_types;{gateway_legend},sparkasse_paymentmethod,trans_type,sparkasse_sslmerchant,sparkasse_sslpassword,sparkasse_merchantref;{price_legend:hide},price,tax_class;{expert_legend:hide},guests,protected;{enabled_legend},debug,enabled',
         'expercash'                 => '{type_legend},name,label,type;{note_legend:hide},note;{config_legend},new_order_status,minimum_total,maximum_total,countries,shipping_modules,product_types;{gateway_legend},expercash_popupId,expercash_profile,expercash_popupKey,expercash_paymentMethod;{price_legend:hide},price,tax_class;{template_legend},expercash_css;{expert_legend:hide},guests,protected;{enabled_legend},enabled',
         'payone'                    => '{type_legend},name,label,type;{note_legend:hide},note;{config_legend},new_order_status,minimum_total,maximum_total,countries,shipping_modules,product_types;{gateway_legend},trans_type,payone_clearingtype,payone_aid,payone_portalid,payone_key;{price_legend:hide},price,tax_class;{enabled_legend},debug,enabled',
-
     ),
 
     // Subpalettes
