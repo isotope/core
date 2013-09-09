@@ -57,7 +57,7 @@ class Config extends \Model
      */
     public function getLabel()
     {
-        return Isotope::translate(($objConfigs->label ?: $objConfigs->name));
+        return Isotope::translate(($this->label ?: $this->name));
     }
 
     /**
