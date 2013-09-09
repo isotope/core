@@ -406,7 +406,7 @@ class ProductFilter extends Module
         {
             $arrOptions = array();
             $arrLimit = array_map('intval', trimsplit(',', $this->iso_perPage));
-            $objLimit = Isotope::getRequestCache()->getFirstLimitForModules(array($this->id), $arrLimit[0]);
+            $objLimit = Isotope::getRequestCache()->getFirstLimitForModules(array($this->id));
             $arrLimit = array_unique($arrLimit);
             sort($arrLimit);
 
@@ -420,7 +420,7 @@ class ProductFilter extends Module
             elseif ($objLimit->notIn($arrLimit))
             {
                 $this->blnUpdateCache = true;
-                Isotope::getRequestCache()->setLimitForModule($objLimit, $this->id);
+                Isotope::getRequestCache()->setLimitForModule(Limit::to($arrLimit[1]), $this->id);
 
                 RequestCache::deleteById(\Input::get('isorc'));
             }
