@@ -12,7 +12,9 @@
 
 namespace Isotope\Model;
 
+use Isotope\RequestCache\Filter;
 use Isotope\RequestCache\Limit;
+use Isotope\RequestCache\Sort;
 
 /**
  * Isotope\Model\RequestCache represents an Isotope request cache model
@@ -116,13 +118,13 @@ class RequestCache extends \Model
      * @param   array
      * @param   int
      */
-    public function setFiltersForModule(array $arrConfig, $intModule)
+    public function setFiltersForModule(array $arrFilters, $intModule)
     {
         // Make sure filters are initialized and mark as modified
         $this->getFilters();
         $this->blnModified = true;
 
-        $this->arrFilters[$intModule] = $arrConfig;
+        $this->arrFilters[$intModule] = $arrFilters;
     }
 
     /**
@@ -154,30 +156,31 @@ class RequestCache extends \Model
 
     /**
      * Add an additional filter for a frontend module
-     * @param   array
+     * @param   Filter
      * @param   int
      */
-    public function addFilterForModule(array $arrConfig, $intModule)
+    public function addFilterForModule(Filter $objFilter, $intModule)
     {
         // Make sure filters are initialized and mark as modified
         $this->getFilters();
         $this->blnModified = true;
 
-        $this->arrFilters[$intModule][] = $arrConfig;
+        $this->arrFilters[$intModule][] = $objFilter;
     }
 
     /**
      * Set filter by name for a frontend module
-     * @param   array
+     * @param   string
+     * @param   Filter
      * @param   int
      */
-    public function setFilterForModule($strName, array $arrConfig, $intModule)
+    public function setFilterForModule($strName, Filter $objFilter, $intModule)
     {
         // Make sure filters are initialized and mark as modified
         $this->getFilters();
         $this->blnModified = true;
 
-        $this->arrFilters[$intModule][$strName] = $arrConfig;
+        $this->arrFilters[$intModule][$strName] = $objFilter;
     }
 
     /**
@@ -237,13 +240,13 @@ class RequestCache extends \Model
      * @param   array
      * @param   int
      */
-    public function setSortingsForModule(array $arrConfig, $intModule)
+    public function setSortingsForModule(array $arrSortings, $intModule)
     {
         // Make sure sorting is initialized and mark as modified
         $this->getSortings();
         $this->blnModified = true;
 
-        $this->arrSortings[$intModule] = $arrConfig;
+        $this->arrSortings[$intModule] = $arrSortings;
     }
 
     /**
@@ -275,30 +278,31 @@ class RequestCache extends \Model
 
     /**
      * Add an additional sorting for a frontend module
-     * @param   array
+     * @param   Sort
      * @param   int
      */
-    public function addSortingForModule(array $arrConfig, $intModule)
+    public function addSortingForModule(Sort $objSort, $intModule)
     {
         // Make sure filters are initialized and mark as modified
         $this->getSortings();
         $this->blnModified = true;
 
-        $this->arrSortings[$intModule][] = $arrConfig;
+        $this->arrSortings[$intModule][] = $objSort;
     }
 
     /**
      * Set sorting by name for a frontend module
-     * @param   array
+     * @param   string
+     * @param   Sort
      * @param   int
      */
-    public function setSortingForModule($strName, array $arrConfig, $intModule)
+    public function setSortingForModule($strName, Sort $objSort, $intModule)
     {
         // Make sure filters are initialized and mark as modified
         $this->getFilters();
         $this->blnModified = true;
 
-        $this->arrFilters[$intModule][$strName] = $arrConfig;
+        $this->arrFilters[$intModule][$strName] = $objSort;
     }
 
     /**
