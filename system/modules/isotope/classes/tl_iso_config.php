@@ -323,4 +323,48 @@ class tl_iso_config extends \Backend
 
 		return $return;
 	}
+
+
+    /**
+     * Load URL matrix for multiColumnWizard
+     * @param   mixed
+     * @param   DataContainer
+     */
+    public function loadUrlMatrix($varValue, $dc)
+    {
+        $arrReturn = array();
+        $arrParams = $GLOBALS['TL_DCA']['tl_iso_config']['fields']['urlMatrix']['eval']['urlParams'];
+        $varValue = deserialize($varValue);
+
+        if (!is_array($varValue)) {
+            $varValue = array();
+        }
+
+        foreach ($arrParams as $strParam) {
+            $arrReturn[] = array(
+                'original'  => $strParam,
+                'custom'    => (isset($varValue[$strParam]) && $varValue[$strParam] != $strParam) ? $varValue[$strParam] : $strParam
+            );
+        }
+
+        return $arrReturn;
+    }
+
+
+    /**
+     * Save URL matrix for multiColumnWizard
+     * @param   mixed
+     * @param   DataContainer
+     */
+    public function saveUrlMatrix($varValue, $dc)
+    {
+        $varValue = deserialize($varValue);
+        $arrReturn = array();
+        $arrParams = $GLOBALS['TL_DCA']['tl_iso_config']['fields']['urlMatrix']['eval']['urlParams'];
+        foreach ($arrParams as $k => $strParam) {
+            $arrReturn[$strParam] = $varValue[$k]['custom'];
+        }
+
+        return serialize($arrReturn);
+    }
 }

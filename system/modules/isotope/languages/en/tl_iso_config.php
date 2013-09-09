@@ -59,6 +59,7 @@ $GLOBALS['TL_LANG']['tl_iso_config']['orderstatus_error']           = array('Ord
 $GLOBALS['TL_LANG']['tl_iso_config']['invoiceLogo']                 = array('Invoice Logo', 'Select a logo to show up on the invoices for this store.');
 $GLOBALS['TL_LANG']['tl_iso_config']['templateGroup']               = array('Templates folder', 'Here you can select a templates folder to search before every other template folder.');
 $GLOBALS['TL_LANG']['tl_iso_config']['cartMinSubtotal']             = array('Minimum subtotal', 'The minimum cart subtotal required to order. Enter 0 to disable.');
+$GLOBALS['TL_LANG']['tl_iso_config']['urlMatrix']                   = array('URL Matrix', 'You can configure the URL parameters Isotope eCommerce uses here.');
 $GLOBALS['TL_LANG']['tl_iso_config']['newProductPeriod']            = array('Duration to mark a product as "new"', 'If you would like to highlight new products, you can enter a time period here. It will automatically add a CSS class "new" to every product everywhere within Isotope eCommerce.');
 
 /**
@@ -76,6 +77,8 @@ $GLOBALS['TL_LANG']['tl_iso_config']['iwWatermark']                 = array('Wat
 $GLOBALS['TL_LANG']['tl_iso_config']['iwPosition']                  = array('Position');
 $GLOBALS['TL_LANG']['tl_iso_config']['ecb.int']                     = 'European Central Bank';
 $GLOBALS['TL_LANG']['tl_iso_config']['admin.ch']                    = 'Swiss Federal Department of Finance';
+$GLOBALS['TL_LANG']['tl_iso_config']['urlMatrix']['original']       = 'Default (original)';
+$GLOBALS['TL_LANG']['tl_iso_config']['urlMatrix']['custom']         = 'Custom';
 
 /**
  * Buttons
@@ -97,4 +100,5 @@ $GLOBALS['TL_LANG']['tl_iso_config']['currency_legend']             = 'Currency 
 $GLOBALS['TL_LANG']['tl_iso_config']['converter_legend']            = 'Currency conversion';
 $GLOBALS['TL_LANG']['tl_iso_config']['order_legend']                = 'Orders';
 $GLOBALS['TL_LANG']['tl_iso_config']['images_legend']               = 'Images';
+$GLOBALS['TL_LANG']['tl_iso_config']['url_legend']                  = 'URL settings';
 $GLOBALS['TL_LANG']['tl_iso_config']['products_legend']             = 'Products';
