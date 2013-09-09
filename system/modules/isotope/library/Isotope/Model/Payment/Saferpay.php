@@ -14,6 +14,7 @@ namespace Isotope\Model\Payment;
 
 use Isotope\Interfaces\IsotopePayment;
 use Isotope\Model\Payment;
+use Isotope\Model\ProductCollection\Order;
 
 
 /**
@@ -83,8 +84,7 @@ class Saferpay extends Payment implements IsotopePayment
         $attributes = $doc->getElementsByTagName('IDP')->item(0)->attributes;
 
         // validate the data on our side
-        $objOrder = new IsotopeOrder();
-        if (!$objOrder->findBy('id', $attributes->getNamedItem('ORDERID')->nodeValue)) {
+        if (($objOrder = Order::findByPk('id', $attributes->getNamedItem('ORDERID')->nodeValue)) === null) {
             $this->log(sprintf('Order ID could not be found. See log files for further details.'), __METHOD__, TL_ERROR);
             log_message(sprintf('Order ID could not be found. Order ID was: "%s".', $attributes->getNamedItem('ORDERID')->nodeValue), 'error.log');
 
@@ -158,8 +158,7 @@ class Saferpay extends Payment implements IsotopePayment
      */
     public function processPayment()
     {
-        $objOrder = new IsotopeOrder();
-        if (!$objOrder->findBy('cart_id', $this->Isotope->Cart->id))
+        if (($objOrder = Order::findOneBy('cart_id', $this->Isotope->Cart->id)) === null)
         {
             return false;
         }
@@ -219,10 +218,10 @@ class Saferpay extends Payment implements IsotopePayment
      * Check XML data, add to log if debugging is enabled
      *
      * @param  DOMNamedNodeMap
-     * @param  IsotopeOrder
+     * @param  Order
      * @return bool
      */
-    private function validateXML($attributes, $objOrder)
+    private function validateXML($attributes, Order $objOrder)
     {
         log_message(print_r($objOrder, true), 'postsale.log');
         if ($attributes->getNamedItem('ACCOUNTID')->nodeValue != $this->saferpay_accountid) {
