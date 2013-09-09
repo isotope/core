@@ -40,11 +40,6 @@ class Limit
         return array('intLimit');
     }
 
-    public function __toString()
-    {
-        return serialize($this);
-    }
-
     /**
      * Check if current limit is not in a given list
      * @return  bool

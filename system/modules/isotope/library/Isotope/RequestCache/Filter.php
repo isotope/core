@@ -40,11 +40,6 @@ class Filter implements \ArrayAccess
         return array('arrConfig');
     }
 
-    public function __toString()
-    {
-        return serialize($this);
-    }
-
     /**
      * @see     http://php.net/arrayaccess
      */
