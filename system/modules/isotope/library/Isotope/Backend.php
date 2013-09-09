@@ -862,4 +862,31 @@ class Backend extends Contao_Backend
 	            exit;
         }
     }
+
+    public function loadTypeAgentHelp($strTable)
+    {
+        $strScript = \Environment::get('script');
+        $arrField = &$GLOBALS['TL_DCA'][$strTable]['fields']['type'];
+        if (
+            $strScript != 'contao/help.php' ||
+            !$arrField ||
+            !$arrField['eval']['helpwizard'] ||
+            !is_array($arrField['options']) ||
+            isset($GLOBALS['TL_LANG']['XPL']['type'])
+        ) {
+
+            return $strTable;
+        }
+
+        // try to load a type agent model help description
+        $arrField['explanation'] = 'type';
+        foreach (array_keys($arrField['options']) as $strKey) {
+            $arrLabel = $GLOBALS['TL_LANG']['MODEL'][$strTable . '.' . $strKey];
+            if ($arrLabel) {
+                $GLOBALS['TL_LANG']['XPL']['type'][] = $arrLabel;
+            }
+        }
+
+        return $strTable;
+    }
 }
