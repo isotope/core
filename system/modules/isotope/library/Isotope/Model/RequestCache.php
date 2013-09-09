@@ -423,17 +423,31 @@ class RequestCache extends \Model
             return $this;
         }
 
-        $objCache = static::findOneBy(array(
-            'store_id=?',
-            'filters' . ($this->getFilters() ? '=?' : ' IS NULL'),
-            'sorting' . ($this->getSortings() ? '=?' : ' IS NULL'),
-            'limits' . ($this->getLimits() ? '=?' : ' IS NULL'),
-        ), array(
-            $this->store_id,
-            $this->getFilters(),
-            $this->getSortings(),
-            $this->getLimits(),
-        ));
+        $arrColumns = array('store_id=?');
+        $arrValues = array($this->store_id);
+
+        if ($this->getFilters()) {
+            $arrColumns[] = 'filters=?';
+            $arrValues[] = serialize($this->getFilters());
+        } else {
+            $arrColumns[] = 'filters IS NULL';
+        }
+
+        if ($this->getSortings()) {
+            $arrColumns[] = 'sorting=?';
+            $arrValues[] = serialize($this->getSortings());
+        } else {
+            $arrColumns[] = 'sorting IS NULL';
+        }
+
+        if ($this->getLimits()) {
+            $arrColumns[] = 'limits=?';
+            $arrValues[] = serialize($this->getLimits());
+        } else {
+            $arrColumns[] = 'limits IS NULL';
+        }
+
+        $objCache = static::findOneBy($arrColumns, $arrValues);
 
         if (null === $objCache) {
             $objCache = clone $this;
