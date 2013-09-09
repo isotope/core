@@ -420,7 +420,7 @@ class ProductFilter extends Module
             elseif ($objLimit->notIn($arrLimit))
             {
                 $this->blnUpdateCache = true;
-                Isotope::getRequestCache()->setLimitForModule(Limit::to($arrLimit[1]), $this->id);
+                Isotope::getRequestCache()->setLimitForModule(Limit::to($arrLimit[0]), $this->id);
 
                 RequestCache::deleteById(\Input::get('isorc'));
             }
