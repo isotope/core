@@ -59,7 +59,6 @@ class Sofortueberweisung extends Payment implements IsotopePayment
 	public function processPostSale($arrRow)
 	{
 		$this->import('Database');
-		$this->import('Input');
 
 		// check if there is a order with this ID
 		$objOrderCheck = $this->Database->prepare('SELECT * FROM tl_iso_orders WHERE id=?')
@@ -74,44 +73,44 @@ class Sofortueberweisung extends Payment implements IsotopePayment
 
 		$arrHash = array
 		(
-			'transaction' => $this->Input->post('transaction'),
-			'user_id' => $this->Input->post('user_id'),
-			'project_id' => $this->Input->post('project_id'),
-			'sender_holder' => $this->Input->post('sender_holder'),
-			'sender_account_number' => $this->Input->post('sender_account_number'),
-			'sender_bank_code' => $this->Input->post('sender_bank_code'),
-			'sender_bank_name' => $this->Input->post('sender_bank_name'),
-			'sender_bank_bic' => $this->Input->post('sender_bank_bic'),
-			'sender_iban' => $this->Input->post('sender_iban'),
-			'sender_country_id' => $this->Input->post('sender_country_id'),
-			'recipient_holder' => $this->Input->post('recipient_holder'),
-			'recipient_account_number' => $this->Input->post('recipient_account_number'),
-			'recipient_bank_code' => $this->Input->post('recipient_bank_code'),
-			'recipient_bank_name' => $this->Input->post('recipient_bank_name'),
-			'recipient_bank_bic' => $this->Input->post('recipient_bank_bic'),
-			'recipient_iban' => $this->Input->post('recipient_iban'),
-			'recipient_country_id' => $this->Input->post('recipient_country_id'),
-			'international_transaction' => $this->Input->post('international_transaction'),
-			'amount' => $this->Input->post('amount'),
-			'currency_id' => $this->Input->post('currency_id'),
-			'reason_1' => $this->Input->post('reason_1'),
-			'reason_2' => $this->Input->post('reason_2'),
-			'security_criteria' => $this->Input->post('security_criteria'),
-			'user_variable_0' => $this->Input->post('user_variable_0'),
-			'user_variable_1' => $this->Input->post('user_variable_1'),
-			'user_variable_2' => $this->Input->post('user_variable_2'),
-			'user_variable_3' => $this->Input->post('user_variable_3'),
-			'user_variable_4' => $this->Input->post('user_variable_2'),
-			'user_variable_5' => $this->Input->post('user_variable_5'),
-			'created' => $this->Input->post('created'),
-			'notification_password' => ';,J~!}!GZJ){20)~!Cup',
+			'transaction'                => \Input::post('transaction'),
+			'user_id'                    => \Input::post('user_id'),
+			'project_id'                 => \Input::post('project_id'),
+			'sender_holder'              => \Input::post('sender_holder'),
+			'sender_account_number'      => \Input::post('sender_account_number'),
+			'sender_bank_code'           => \Input::post('sender_bank_code'),
+			'sender_bank_name'           => \Input::post('sender_bank_name'),
+			'sender_bank_bic'            => \Input::post('sender_bank_bic'),
+			'sender_iban'                => \Input::post('sender_iban'),
+			'sender_country_id'          => \Input::post('sender_country_id'),
+			'recipient_holder'           => \Input::post('recipient_holder'),
+			'recipient_account_number'   => \Input::post('recipient_account_number'),
+			'recipient_bank_code'        => \Input::post('recipient_bank_code'),
+			'recipient_bank_name'        => \Input::post('recipient_bank_name'),
+			'recipient_bank_bic'         => \Input::post('recipient_bank_bic'),
+			'recipient_iban'             => \Input::post('recipient_iban'),
+			'recipient_country_id'       => \Input::post('recipient_country_id'),
+			'international_transaction'  => \Input::post('international_transaction'),
+			'amount'                     => \Input::post('amount'),
+			'currency_id'                => \Input::post('currency_id'),
+			'reason_1'                   => \Input::post('reason_1'),
+			'reason_2'                   => \Input::post('reason_2'),
+			'security_criteria'          => \Input::post('security_criteria'),
+			'user_variable_0'            => \Input::post('user_variable_0'),
+			'user_variable_1'            => \Input::post('user_variable_1'),
+			'user_variable_2'            => \Input::post('user_variable_2'),
+			'user_variable_3'            => \Input::post('user_variable_3'),
+			'user_variable_4'            => \Input::post('user_variable_2'),
+			'user_variable_5'            => \Input::post('user_variable_5'),
+			'created'                    => \Input::post('created'),
+			'notification_password'      => ';,J~!}!GZJ){20)~!Cup',
 		);
 
 
 		$strHash = sha1(implode('|', $arrHash));
 
 		// check if both hashes math
-		if ($this->Input->post('hash') == $strHash)
+		if (\Input::post('hash') == $strHash)
 		{
 			$arrSet = array
 			(
@@ -121,7 +120,7 @@ class Sofortueberweisung extends Payment implements IsotopePayment
 			// update the order
 			$this->Database->prepare('UPDATE tl_iso_orders %s WHERE id=?')
 						   ->set($arrSet)
-						   ->execute($this->Input->post('user_variable_0'));
+						   ->execute(\Input::post('user_variable_0'));
 
 			return;
 		}
