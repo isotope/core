@@ -1,11 +1,20 @@
-# OS
-.DS_Store
-Thumbs.db
+# Ignore everything (useful to ignore the whole Contao installation)
+/*
 
-# IDEs
-.buildpath
-.project
-.settings/
-.build/
-.idea/
-nbproject/
+# Do not ignore ".gitignore"
+!.gitignore
+!.tx
+!README.md
+
+# Isotope ignoring rules
+!isotope/
+!system/
+system/*
+!system/drivers/
+system/drivers/*
+!system/modules
+system/modules/*
+!system/modules/isotope/
+!system/modules/isotope_multilingual/
+!system/modules/isotope_reports/
+!system/modules/isotope_rules/

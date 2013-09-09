@@ -1,0 +1,29 @@
+<?php if ($this->before): ?>
+<?php echo $this->before; ?>
+<?php endif; ?>
+<div class="tl_formbody_edit be_iso_overview">
+    <?php foreach ($this->modules as $strGroupKey => $arrGroup): ?>
+    <fieldset id="pal_<?php echo $strGroupKey; ?>" class="tl_box<?php if($arrGroup['collapse']): ?> collapsed<?php endif; ?>">
+        <legend onclick="AjaxRequest.toggleFieldset(this,'<?php echo $strGroupKey; ?>','iso_be_overview_legend')"><?php echo $arrGroup['label']; ?></legend>
+        <?php foreach ($arrGroup['modules'] as $strModule => $arrModule): ?>
+        <div class="item">
+            <a href="<?php echo $arrModule['href']; ?>" title="<?php echo $arrModule['description']; ?>">
+                <img src="<?php echo $arrModule['icon']; ?>" alt="">
+                <span><?php echo $arrModule['label']; ?></span>
+            </a>
+        </div>
+        <?php endforeach; ?>
+    </fieldset>
+    <?php endforeach; ?>
+</div>
+<?php if ($this->after): ?>
+<?php echo $this->after; ?>
+<?php endif; ?>
+
+<script>
+// I really can't do this properly :-(
+window.addEvent('domready', function() {
+    document.id(document.body).addClass('iso_be_overview');
+
+});
+</script>
