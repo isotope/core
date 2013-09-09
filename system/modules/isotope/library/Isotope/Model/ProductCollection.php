@@ -865,7 +865,6 @@ abstract class ProductCollection extends TypeAgent
             $objItem->quantity          = (int) $intQuantity;
             $objItem->price             = (float) ($objProduct->getPrice() ? $objProduct->getPrice()->getAmount((int) $intQuantity) : 0);
             $objItem->tax_free_price    = (float) ($objProduct->getPrice() ? $objProduct->getPrice()->getNetAmount((int) $intQuantity) : 0);
-            $objItem->href_reader       = $objProduct->href_reader;
 
             $objItem->save();
 
@@ -1131,7 +1130,7 @@ abstract class ProductCollection extends TypeAgent
         $arrGalleries = array();
         $arrItems = array();
 
-        foreach ($this->getItems($varCallable) as $objItem) {
+        foreach ($this->getItems($varCallable) as $k => $objItem) {
 
             $blnHasProduct = $objItem->hasProduct();
             $objProduct = $objItem->getProduct();
@@ -1139,7 +1138,7 @@ abstract class ProductCollection extends TypeAgent
             // Set the active product for insert tags replacement
             $GLOBALS['ACTIVE_PRODUCT'] = $objProduct;
 
-            $arrItems[] = array(
+            $arrItems[$k] = array(
                 'id'                => $objItem->id,
                 'sku'               => $objItem->getSku(),
                 'name'              => $objItem->getName(),
@@ -1156,6 +1155,10 @@ abstract class ProductCollection extends TypeAgent
                 'raw'               => $objItem->row(),
                 'rowClass'          => trim('product ' . (($blnHasProduct && $objProduct->isNew()) ? 'new ' : '') . $objProduct->cssID[1]),
             );
+
+            if ($objItem->reader_page && $blnHasProduct) {
+                $arrItems[$k]['href_reader'] = $objProduct->generateUrl((int) $objItem->reader_page);
+            }
 
             unset($GLOBALS['ACTIVE_PRODUCT']);
         }
