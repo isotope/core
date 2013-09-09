@@ -1254,9 +1254,10 @@ window.addEvent('domready', function()
 
     /**
      * Add a request string to the given URI string or page ID
-     * @param string
-     * @param mixed
-     * @return string
+     * @param   string
+     * @param   mixed
+     * @return  string
+     * @throws  \InvalidArgumentException
      */
     public static function addQueryStringToUrl($strRequest, $varUrl=null)
     {
@@ -1264,8 +1265,9 @@ window.addEvent('domready', function()
             $varUrl = \Environment::getInstance()->request;
         }
         elseif (is_numeric($varUrl)) {
-            $objJump = \Database::getInstance()->prepare("SELECT * FROM tl_page WHERE id=?")->execute($varUrl);
-
+            if (($objJump = \PageModel::findByPk($varUrl)) === null) {
+                throw new \InvalidArgumentException('Given page id does not exist.');
+            }
             $varUrl = Isotope::getInstance()->generateFrontendUrl($objJump->row());
         }
 
