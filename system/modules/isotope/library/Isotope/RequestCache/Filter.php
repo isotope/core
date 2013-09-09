@@ -270,6 +270,128 @@ class Filter implements \ArrayAccess
 
         return false;
     }
+
+    /**
+     * Check if filter attribute is dynamic (can't use SQL filter then)
+     * @return  bool
+     */
+    public function isDynamicAttribute()
+    {
+        return in_array($this->arrConfig['attribute'], $GLOBALS['ISO_CONFIG']['dynamicAttributes']);
+    }
+
+    /**
+     * Check if filter attribute is dynamic (can't use SQL filter then)
+     * @return  bool
+     */
+    public function isMultilingualAttribute()
+    {
+        return in_array($this->arrConfig['attribute'], $GLOBALS['ISO_CONFIG']['multilingual']);
+    }
+
+    /**
+     * Get WHERE statement for SQL filter
+     * @return  string
+     */
+    public function sqlWhere()
+    {
+        if ($this->arrConfig['operator'] == '') {
+            throw new \BadMethodCallException('Filter operator is not yet configured');
+        }
+
+        if ($this->isMultilingualAttribute()) {
+            $strWhere = 'IFNULL(translation.' . $this->arrConfig['attribute'] . ', ' . Product::getTable() . '.' . $this->arrConfig['attribute'] . ')';
+        } else {
+            $strWhere = Product::getTable() . '.' . $this->arrConfig['attribute'];
+        }
+
+        switch ($this->arrConfig['operator']) {
+            case 'like':
+                $strWhere .= ' LIKE ?';
+                break;
+
+            case 'gt':
+                $strWhere .= ' > ?';
+                break;
+
+            case 'lt':
+                $strWhere .= ' < ?';
+                break;
+
+            case 'gte':
+                $strWhere .= ' >= ?';
+                break;
+
+            case 'lte':
+                $strWhere .= ' <= ?';
+                break;
+
+            case 'neq':
+                $strWhere .= ' != ?';
+                break;
+
+            case 'eq':
+                $strWhere .= ' = ?';
+                break;
+
+            default:
+                throw new \UnexpectedValueException('Unknown filter operator "' . $this->arrConfig['operator'] . '"');
+        }
+
+        return $strWhere;
+    }
+
+    /**
+     * Get value for SQL filter
+     * @return  string
+     */
+    public function sqlValue()
+    {
+        return ($this->arrConfig['operator'] == 'like' ? ('%'.$this->arrConfig['value'].'%') : $this->arrConfig['value']);
+    }
+
+    /**
+     * Get filter operator suitable for SQL query
+     * @return string
+     */
+    public static function getOperatorForSQL()
+    {
+        if ($this->arrConfig['operator'] == '') {
+            throw new \BadMethodCallException('Filter operator is not yet configured');
+        }
+
+        switch ($this->arrConfig['operator'])
+        {
+            case 'like':
+                return 'LIKE';
+
+            case 'gt':
+                return '>';
+
+            case 'lt':
+                return '<';
+
+            case 'gte':
+                return '>=';
+
+            case 'lte':
+                return '<=';
+
+            case 'neq':
+                return '!=';
+
+            case 'eq':
+                return '=';
+
+            default:
+                throw new \UnexpectedValueException('Unknown filter operator "' . $this->arrConfig['operator'] . '"');
+        }
+    }
+
+    /**
+     * Make sure filter operator or value is not modified
+     * @throws  \BadMethodCallException
+     */
     protected function preventModification()
     {
         if (isset($this->arrConfig['operator']) || isset($this->arrConfig['value'])) {

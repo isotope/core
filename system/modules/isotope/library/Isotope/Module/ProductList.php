@@ -347,29 +347,18 @@ class ProductList extends Module
             $arrWhere = array();
             $arrValues = array();
             $arrGroups = array();
-            $t = Product::getTable();
 
             // Initiate native SQL filtering
-            foreach ($arrFilters as $k => $filter)
-            {
-                if ($filter['group'] != '' && $arrGroups[$filter['group']] !== false)
-                {
-                    if (in_array($filter['attribute'], $GLOBALS['ISO_CONFIG']['dynamicAttributes']))
-                    {
-                        $arrGroups[$filter['group']] = false;
+            foreach ($arrFilters as $k => $objFilter) {
+                if ($objFilter->hasGroup() && $arrGroups[$objFilter->getGroup()] !== false) {
+                    if ($objFilter->isDynamicAttribute()) {
+                        $arrGroups[$objFilter->getGroup()] = false;
+                    } else {
+                        $arrGroups[$objFilter->getGroup()][] = $k;
                     }
-                    else
-                    {
-                        $arrGroups[$filter['group']][] = $k;
-                    }
-                }
-                elseif ($filter['group'] == '' && !in_array($filter['attribute'], $GLOBALS['ISO_CONFIG']['dynamicAttributes']))
-                {
-                    $blnMultilingual = in_array($filter['attribute'], $GLOBALS['ISO_CONFIG']['multilingual']);
-                    $operator = \Isotope\Frontend::convertFilterOperator($filter['operator'], 'SQL');
-
-                    $arrWhere[] = ($blnMultilingual ? "IFNULL(translation.{$filter['attribute']}, $t.{$filter['attribute']})" : "$t.{$filter['attribute']}") . " $operator ?";
-                    $arrValues[] = ($operator == 'LIKE' ? '%'.$filter['value'].'%' : $filter['value']);
+                } elseif (!$objFilter->hasGroup() && !$objFilter->isDynamicAttribute()) {
+                    $arrWhere[] = $objFilter->sqlWhere();
+                    $arrValues[] = $objFilter->sqlValue();
                     unset($arrFilters[$k]);
                 }
             }
@@ -378,15 +367,11 @@ class ProductList extends Module
                 foreach ($arrGroups as $arrGroup) {
                     $arrGroupWhere = array();
 
-                    foreach ($arrGroup as $k)
-                    {
-                        $filter = $arrFilters[$k];
+                    foreach ($arrGroup as $k) {
+                        $objFilter = $arrFilters[$k];
 
-                        $blnMultilingual = in_array($filter['attribute'], $GLOBALS['ISO_CONFIG']['multilingual']);
-                        $operator = \Isotope\Frontend::convertFilterOperator($filter['operator'], 'SQL');
-
-                        $arrGroupWhere[] = ($blnMultilingual ? "IFNULL(translation.{$filter['attribute']}, $t.{$filter['attribute']})" : "$t.{$filter['attribute']}") . " $operator ?";
-                        $arrValues[] = ($operator == 'LIKE' ? '%'.$filter['value'].'%' : $filter['value']);
+                        $arrGroupWhere[] = $objFilter->sqlWhere();
+                        $arrValues[] = $objFilter->sqlValue();
                         unset($arrFilters[$k]);
                     }
 
@@ -396,6 +381,8 @@ class ProductList extends Module
 
             if (!empty($arrWhere)) {
                 $time = time();
+                $t = Product::getTable();
+
                 $strWhere = "((" . implode(' AND ', $arrWhere) . ") OR $t.id IN (SELECT $t.pid FROM tl_iso_products AS $t WHERE $t.language='' AND " . implode(' AND ', $arrWhere)
                             . (BE_USER_LOGGED_IN === true ? '' : " AND $t.published='1' AND ($t.start='' OR $t.start<$time) AND ($t.stop='' OR $t.stop>$time)") . "))";
                 $arrValues = array_merge($arrValues, $arrValues);
