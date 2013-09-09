@@ -799,11 +799,8 @@ window.addEvent('domready', function()
                 }
 
                 $arrParam[] = &$arrData[$strField];
-
-                foreach( $arrConfig as $v )
-                {
-                    $arrParam[] = $v;
-                }
+                $arrParam[] = $arrConfig[0];
+                $arrParam[] = $arrConfig[1];
             }
 
             // Add product array as the last item. This will sort the products array based on the sorting of the passed in arguments.
