@@ -12,6 +12,7 @@
 
 namespace Isotope\Model\ProductCollection;
 
+use Isotope\Interfaces\IsotopeProduct;
 use Isotope\Isotope;
 use Isotope\Interfaces\IsotopeProductCollection;
 use Isotope\Model\Address;
@@ -196,5 +197,27 @@ class Cart extends ProductCollection implements IsotopeProductCollection
     protected function getMessageIfErrorsInItems()
     {
         return $GLOBALS['TL_LANG']['ERR']['cartErrorInItems'];
+    }
+
+    /**
+     * Add a product to the cart and also set its reader page (needed for redirect)
+     * @param   object The product object
+     * @param   integer How many products to add
+     * @param   array Config
+     * @return  ProductCollectionItem
+     */
+    public function addProduct(IsotopeProduct $objProduct, $intQuantity, $arrConfig=array())
+    {
+        $objItem = parent::addProduct($objProduct, $intQuantity);
+
+        if ($arrConfig['reader_page']) {
+            $objItem->reader_page = $arrConfig['reader_page'];
+            $objItem->save();
+
+            // Add the new item to our cache
+            $this->arrItems[$objItem->id] = $objItem;
+        }
+
+        return $objItem;
     }
 }
