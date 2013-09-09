@@ -77,6 +77,26 @@ class Filter implements ArrayAccess
         return $this->arrConfig[$offset];
     }
 
+    /**
+     * Verify if filter value is a valid option
+     * @param   array
+     * @return  bool
+     */
+    public function valueNotIn(array $arrValues)
+    {
+        return !in_array($this->arrConfig['value'], $arrValues);
+    }
+
+    /**
+     * Check if filter value equals given value
+     * @param   mixed
+     * @return  bool
+     */
+    public function valueEquals($value)
+    {
+        return ($this->arrConfig['value'] == $value);
+    }
+
 
     public function contains($value)
     {
