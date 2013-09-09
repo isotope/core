@@ -13,6 +13,7 @@
 namespace Isotope\RequestCache;
 
 use Isotope\Interfaces\IsotopeProduct;
+use Isotope\Model\Product;
 
 /**
  * Build filter configuration for request cache
