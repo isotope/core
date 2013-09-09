@@ -185,8 +185,7 @@ class Saferpay extends Payment implements IsotopePayment
         }
 
         $this->log('Payment could not be processed.', __METHOD__, TL_ERROR);
-
-        $this->redirect($this->addToUrl('step=failed', true));
+        \Isotope\Module\Checkout::redirectToStep('failed');
     }
 
 
@@ -206,7 +205,7 @@ class Saferpay extends Payment implements IsotopePayment
             $this->log(sprintf('Could not get the redirect URI from Saferpay. See log files for further details.'), __METHOD__, TL_ERROR);
             log_message(sprintf('Could not get the redirect URI from Saferpay. Response was: "%s".', $objRequest->response), 'error.log');
 
-            $this->redirect($this->addToUrl('step=failed', true));
+            \Isotope\Module\Checkout::redirectToStep('failed');
         }
 
         $GLOBALS['TL_HEAD'][] = '<meta http-equiv="refresh" content="1; URL=' . $objRequest->response . '">';
@@ -257,10 +256,12 @@ class Saferpay extends Payment implements IsotopePayment
      */
     private function createPaymentURI()
     {
-        $objOrder = \Database::getInstance()->prepare("SELECT * FROM tl_iso_orders WHERE cart_id=?")->execute(Isotope::getCart()->id);
+        if (($objOrder = Order::findOneBy('source_collection_id', Isotope::getCart()->id)) === null) {
+            \Isotope\Module\Checkout::redirectToStep('failed');
+        }
 
-        $strComplete = \Environment::get('base') . $this->addToUrl('step=complete', true) . '?uid=' . $objOrder->uniqid;
-        $strFailed = \Environment::get('base') . $this->addToUrl('step=failed', true);
+        $strComplete = \Environment::get('base') . \Isotope\Module\Checkout::generateUrlForStep('complete') . '?uid=' . $objOrder->uniqid;
+        $strFailed = \Environment::get('base') . \Isotope\Module\Checkout::generateUrlForStep('failed');
 
         $strUrl  = static::createPayInitURI;
         $strUrl .= "?ACCOUNTID=" . $this->saferpay_accountid;
