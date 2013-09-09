@@ -169,6 +169,10 @@ class Filter implements \ArrayAccess
             throw new \BadMethodCallException('Filter already has a group');
         }
 
+        if ($group == '') {
+            throw new \UnexpectedValueException('Group name can\'t be empty.');
+        }
+
         $this->arrConfig['group'] = $group;
 
         return $this;
