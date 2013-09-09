@@ -1271,6 +1271,11 @@ window.addEvent('domready', function()
             $varUrl = Isotope::getInstance()->generateFrontendUrl($objJump->row());
         }
 
+        if ($strRequest === '') {
+
+            return $varUrl;
+        }
+
         list($strScript, $strQueryString) = explode('?', $varUrl, 2);
 
         $strRequest = preg_replace('/^&(amp;)?/i', '', $strRequest);
