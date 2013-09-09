@@ -147,7 +147,6 @@ class Config extends \Model
      * Get url param
      * @param   string
      * @return  string
-     * @throws  \InvalidArgumentException
      */
     public function getUrlParam($strKey)
     {
@@ -160,7 +159,8 @@ class Config extends \Model
         $arrMatrix = Isotope::getConfig()->urlMatrix;
 
         if (!isset($arrMatrix[$strKey])) {
-            throw new \InvalidArgumentException(sprintf('URL Param with key "%s" does not exist!', $strKey));
+
+            return $strKey;
         }
 
         return $arrMatrix[$strKey];
