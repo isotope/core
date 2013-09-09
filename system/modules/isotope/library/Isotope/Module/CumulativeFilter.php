@@ -75,9 +75,13 @@ class CumulativeFilter extends Module
             $strFilterKey = $arrFilter[2].'='.$arrFilter[3];
 
             if ($arrFilter[1] == 'add') {
-                $GLOBALS['ISO_FILTERS'][$this->id][$strFilterKey] = Filter::attribute($arrFilter[2])->isEqualTo($arrFilter[3]);
+                Isotope::getRequestCache()->setFilterForModule(
+                    $strFilterKey,
+                    Filter::attribute($arrFilter[2])->isEqualTo($arrFilter[3]),
+                    $this->id
+                );
             } else {
-                unset($GLOBALS['ISO_FILTERS'][$this->id][$strFilterKey]);
+                Isotope::getRequestCache()->removeFilterForModule($strFilterKey, $this->id);
             }
 
             // unset GET parameter or it would be included in the redirect URL
@@ -116,7 +120,7 @@ class CumulativeFilter extends Module
                 }
 
                 $strFilterKey = $strField . '=' . $varValue;
-                $blnActive = isset($GLOBALS['ISO_FILTERS'][$this->id][$strFilterKey]);
+                $blnActive = (Isotope::getRequestCache()->getFilterForModule($strFilterKey, $this->id) !== null);
                 $blnTrail = $blnActive ? true : $blnTrail;
 
                 $arrItems[] = array

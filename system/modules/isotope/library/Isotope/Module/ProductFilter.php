@@ -211,7 +211,10 @@ class ProductFilter extends Module
                 {
                     foreach ($this->iso_searchFields as $field)
                     {
-                        $GLOBALS['ISO_FILTERS'][$this->id][] = Filter::attribute($field)->contains($keyword)->groupBy('keyword: '.$keyword);
+                        Isotope::getRequestCache()->addFilterForModule(
+                            Filter::attribute($field)->contains($keyword)->groupBy('keyword: '.$keyword),
+                            $this->id
+                        );
                     }
                 }
             }
@@ -261,14 +264,18 @@ class ProductFilter extends Module
 
                 if ($this->blnUpdateCache && in_array($arrInput[$strField], $arrValues))
                 {
-                    $GLOBALS['ISO_FILTERS'][$this->id][$strField] = Filter::attribute($strField)->isEqualTo($arrInput[$strField]);
+                    Isotope::getRequestCache()->setFilterForModule(
+                        $strField,
+                        Filter::attribute($strField)->isEqualTo($arrInput[$strField]),
+                        $this->id
+                    );
                 }
 
                 // Request cache contains wrong value, delete it!
-                elseif (is_array($GLOBALS['ISO_FILTERS'][$this->id][$strField]) && !in_array($GLOBALS['ISO_FILTERS'][$this->id][$strField]['value'], $arrValues))
+                elseif (($objFilter = Isotope::getRequestCache()->getFilterForModule($strField, $this->id)) !== null && $objFilter->valueNotIn($arrValues))
                 {
                     $this->blnUpdateCache = true;
-                    unset($GLOBALS['ISO_FILTERS'][$this->id][$strField]);
+                    Isotope::getRequestCache()->removeFilterForModule($strField, $this->id);
 
                     RequestCache::deleteById(\Input::get('isorc'));
                 }
@@ -294,6 +301,7 @@ class ProductFilter extends Module
 
                     // Use the default routine to initialize options data
                     $arrWidget = \Widget::getAttributesFromDca($arrData, $strField);
+                    $objFilter = Isotope::getRequestCache()->getFilterForModule($strField, $this->id);
 
                     // Must have options to apply the filter
                     if (!is_array($arrWidget['options']))
@@ -315,7 +323,7 @@ class ProductFilter extends Module
                             continue;
                         }
 
-                        $arrWidget['options'][$k]['default'] = $option['value'] == $GLOBALS['ISO_FILTERS'][$this->id][$strField]['value'] ? '1' : '';
+                        $arrWidget['options'][$k]['default'] = ((null !== $objFilter && $objFilter->valueEquals($option['value'])) ? '1' : '');
                     }
 
                     // Hide fields with just one option (if enabled)
@@ -365,14 +373,18 @@ class ProductFilter extends Module
 
             if ($this->blnUpdateCache && in_array($sortingField, $this->iso_sortingFields))
             {
-                $GLOBALS['ISO_SORTING'][$this->id][$sortingField] = ($sortingDirection == 'DESC' ? Sort::descending() : Sort::ascending());
+                Isotope::getRequestCache()->setSortingForModule(
+                    $sortingField,
+                    ($sortingDirection == 'DESC' ? Sort::descending() : Sort::ascending()),
+                    $this->id
+                );
             }
 
             // Request cache contains wrong value, delete it!
-            elseif (is_array($GLOBALS['ISO_SORTING'][$this->id]) && array_diff(array_keys($GLOBALS['ISO_SORTING'][$this->id]), $this->iso_sortingFields))
+            elseif (array_diff(array_keys(Isotope::getRequestCache()->getSortingsForModules(array($this->id))), $this->iso_sortingFields))
             {
                 $this->blnUpdateCache = true;
-                unset($GLOBALS['ISO_SORTING'][$this->id]);
+                Isotope::getRequestCache()->unsetSortingsForModule($this->id);
 
                 RequestCache::deleteById(\Input::get('isorc'));
             }
