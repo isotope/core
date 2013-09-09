@@ -12,6 +12,7 @@
 
 namespace Isotope\Model\Product;
 
+use Isotope\Frontend;
 use Isotope\Isotope;
 use Isotope\Interfaces\IsotopeAttribute;
 use Isotope\Interfaces\IsotopeProduct;
@@ -961,6 +962,39 @@ class Standard extends Product implements IsotopeProduct
 
         // Load variant options
         $this->arrOptions = array_merge($this->arrOptions, array_intersect_key($arrData, array_flip(array_intersect($this->getVariantAttributes(), $GLOBALS['ISO_CONFIG']['variant_options']))));
+    }
+
+    /**
+     * Generate url
+     * @param   \PageModel|int A PageModel instance or a page id
+     * @param   string Optional parameters
+     * @return  array
+     * @throw   \InvalidArgumentException
+     */
+    public function generateUrl($varPage, $arrParams=null)
+    {
+        if (!$varPage instanceof \PageModel) {
+            if (!is_int($varPage)) {
+                throw new \InvalidArgumentException('First param has to be either a PageModel instance or a page id (integer).');
+            }
+
+            if (($varPage = \PageModel::findByPk($varPage)) === null) {
+                throw new \InvalidArgumentException('Given page id does not exist.');
+            }
+        }
+
+        $strUrl = '/' . Isotope::getConfig()->getUrlParam('product') . '/';
+        $strUrl .= $this->arrData['alias'] ? $this->arrData['alias'] : ($this->arrData['pid'] ? $this->arrData['pid'] : $this->arrData['id']);
+
+        $arrOptions = $this->getOptions();
+        if (!empty($arrOptions)) {
+            $arrParams = array_merge($arrOptions, $arrParams);
+        }
+
+        return Frontend::addQueryStringToUrl(
+            http_build_query($arrParams),
+            \Controller::generateFrontendUrl($varPage->row(), $strUrl, $varPage->rootLanguage)
+        );
     }
 
     /**
