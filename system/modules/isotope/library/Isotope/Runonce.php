@@ -131,6 +131,6 @@ h1 { font-size:18px; font-weight:normal; margin:0 0 18px; }
     private function purgeCaches()
     {
         \Isotope\Model\ProductCache::purge();
-        \Database::getInstance()->query("TRUNCATE TABLE tl_iso_requestcache");
+        \Isotope\Model\RequestCache::purge();
     }
 }

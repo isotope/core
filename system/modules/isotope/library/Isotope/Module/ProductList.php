@@ -15,6 +15,7 @@ namespace Isotope\Module;
 use Isotope\Isotope;
 use Isotope\Model\Product;
 use Isotope\Model\ProductCache;
+use Isotope\RequestCache\Sort;
 
 
 /**
@@ -75,20 +76,7 @@ class ProductList extends Module
         }
 
         // Apply limit from filter module
-        if (is_array($this->iso_filterModules)) {
-
-            // We only do this once. getFiltersAndSorting() then automatically has the correct sorting
-            $this->iso_filterModules = array_reverse($this->iso_filterModules);
-
-            foreach ($this->iso_filterModules as $module)
-            {
-                if ($GLOBALS['ISO_LIMIT'][$module] > 0)
-                {
-                    $this->perPage = $GLOBALS['ISO_LIMIT'][$module];
-                    break;
-                }
-            }
-        }
+        $this->perPage = Isotope::getRequestCache()->getFirstLimitForModules($this->iso_filterModules, $this->perPage)->asInt();
 
         return parent::generate();
     }
@@ -346,78 +334,43 @@ class ProductList extends Module
      */
     protected function getFiltersAndSorting($blnNativeSQL=true)
     {
-        $arrFilters = array();
-        $arrSorting = array();
+        $arrFilters = Isotope::getRequestCache()->getFiltersForModules($this->iso_filterModules);
+        $arrSorting = Isotope::getRequestCache()->getSortingsForModules($this->iso_filterModules);
 
-        if (is_array($this->iso_filterModules))
-        {
-            foreach ($this->iso_filterModules as $module)
-            {
-                if (is_array($GLOBALS['ISO_FILTERS'][$module]))
-                {
-                    $arrFilters = array_merge($GLOBALS['ISO_FILTERS'][$module], $arrFilters);
-                }
-
-                if (is_array($GLOBALS['ISO_SORTING'][$module]))
-                {
-                    $arrSorting = array_merge($GLOBALS['ISO_SORTING'][$module], $arrSorting);
-                }
-            }
+        if (empty($arrSorting) && $this->iso_listingSortField != '') {
+            $arrSorting[$this->iso_listingSortField] = ($this->iso_listingSortDirection == 'DESC' ? Sort::descending() : Sort::ascending());
         }
 
-        if (empty($arrSorting) && $this->iso_listingSortField != '')
-        {
-            $arrSorting[$this->iso_listingSortField] = array(($this->iso_listingSortDirection=='DESC' ? SORT_DESC : SORT_ASC), SORT_REGULAR);
-        }
-
-        // Thanks to certo web & design for sponsoring this feature
-        if ($blnNativeSQL)
-        {
+        if ($blnNativeSQL) {
             $strWhere = '';
             $arrWhere = array();
             $arrValues = array();
             $arrGroups = array();
 
             // Initiate native SQL filtering
-            foreach ($arrFilters as $k => $filter)
-            {
-                if ($filter['group'] != '' && $arrGroups[$filter['group']] !== false)
-                {
-                    if (in_array($filter['attribute'], $GLOBALS['ISO_CONFIG']['dynamicAttributes']))
-                    {
-                        $arrGroups[$filter['group']] = false;
+            foreach ($arrFilters as $k => $objFilter) {
+                if ($objFilter->hasGroup() && $arrGroups[$objFilter->getGroup()] !== false) {
+                    if ($objFilter->isDynamicAttribute()) {
+                        $arrGroups[$objFilter->getGroup()] = false;
+                    } else {
+                        $arrGroups[$objFilter->getGroup()][] = $k;
                     }
-                    else
-                    {
-                        $arrGroups[$filter['group']][] = $k;
-                    }
-                }
-                elseif ($filter['group'] == '' && !in_array($filter['attribute'], $GLOBALS['ISO_CONFIG']['dynamicAttributes']))
-                {
-                    $blnMultilingual = in_array($filter['attribute'], $GLOBALS['ISO_CONFIG']['multilingual']);
-                    $operator = \Isotope\Frontend::convertFilterOperator($filter['operator'], 'SQL');
-
-                    $arrWhere[] = ($blnMultilingual ? "IFNULL(p2.{$filter['attribute']}, p1.{$filter['attribute']})" : "p1.{$filter['attribute']}") . " $operator ?";
-                    $arrValues[] = ($operator == 'LIKE' ? '%'.$filter['value'].'%' : $filter['value']);
+                } elseif (!$objFilter->hasGroup() && !$objFilter->isDynamicAttribute()) {
+                    $arrWhere[] = $objFilter->sqlWhere();
+                    $arrValues[] = $objFilter->sqlValue();
                     unset($arrFilters[$k]);
                 }
             }
 
-            if (!empty($arrGroups))
-            {
-                foreach ($arrGroups as $arrGroup)
-                {
+            if (!empty($arrGroups)) {
+                foreach ($arrGroups as $arrGroup) {
                     $arrGroupWhere = array();
 
-                    foreach ($arrGroup as $k)
-                    {
-                        $filter = $arrFilters[$k];
+                    foreach ($arrGroup as $k) {
+                        $objFilter = $arrFilters[$k];
 
-                        $blnMultilingual = in_array($filter['attribute'], $GLOBALS['ISO_CONFIG']['multilingual']);
-                        $operator = \Isotope\Frontend::convertFilterOperator($filter['operator'], 'SQL');
-
-                        $arrGroupWhere[] = ($blnMultilingual ? "IFNULL(p2.{$filter['attribute']}, p1.{$filter['attribute']})" : "p1.{$filter['attribute']}") . " $operator ?";
-                        $arrValues[] = ($operator == 'LIKE' ? '%'.$filter['value'].'%' : $filter['value']);
+                        $arrGroupWhere[] = $objFilter->sqlWhere();
+                        $arrValues[] = $objFilter->sqlValue();
                         unset($arrFilters[$k]);
                     }
 
@@ -425,11 +378,12 @@ class ProductList extends Module
                 }
             }
 
-            if (!empty($arrWhere))
-            {
+            if (!empty($arrWhere)) {
                 $time = time();
-                $strWhere = "((" . implode(' AND ', $arrWhere) . ") OR p1.id IN (SELECT p1.pid FROM tl_iso_products AS p1 WHERE p1.language='' AND " . implode(' AND ', $arrWhere)
-                            . (BE_USER_LOGGED_IN === true ? '' : " AND p1.published='1' AND (p1.start='' OR p1.start<$time) AND (p1.stop='' OR p1.stop>$time)") . "))";
+                $t = Product::getTable();
+
+                $strWhere = "((" . implode(' AND ', $arrWhere) . ") OR $t.id IN (SELECT $t.pid FROM tl_iso_products AS $t WHERE $t.language='' AND " . implode(' AND ', $arrWhere)
+                            . (BE_USER_LOGGED_IN === true ? '' : " AND $t.published='1' AND ($t.start='' OR $t.start<$time) AND ($t.stop='' OR $t.stop>$time)") . "))";
                 $arrValues = array_merge($arrValues, $arrValues);
             }
 
@@ -446,21 +400,13 @@ class ProductList extends Module
     protected function getDefaultProductOptions()
     {
         $arrOptions = array();
+        $arrFilters = Isotope::getRequestCache()->getFiltersForModules($this->iso_filterModules);
 
-        if (is_array($this->iso_filterModules))
+        foreach ($arrFilters as $arrConfig)
         {
-            foreach ($this->iso_filterModules as $module)
+            if ($arrConfig['operator'] == '=' || $arrConfig['operator'] == '==' || $arrConfig['operator'] == 'eq')
             {
-                if (is_array($GLOBALS['ISO_FILTERS'][$module]))
-                {
-                    foreach ($GLOBALS['ISO_FILTERS'][$module] as $arrConfig)
-                    {
-                        if ($arrConfig['operator'] == '=' || $arrConfig['operator'] == '==' || $arrConfig['operator'] == 'eq')
-                        {
-                            $arrOptions[$arrConfig['attribute']] = $arrConfig['value'];
-                        }
-                    }
-                }
+                $arrOptions[$arrConfig['attribute']] = $arrConfig['value'];
             }
         }
 

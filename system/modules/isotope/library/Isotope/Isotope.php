@@ -13,6 +13,7 @@
 namespace Isotope;
 
 use Isotope\Model\Config;
+use Isotope\Model\RequestCache;
 use Isotope\Model\TaxClass;
 use Isotope\Model\ProductCollection\Cart;
 
@@ -53,6 +54,12 @@ class Isotope extends \Controller
      * @var Isotope\Model\Config
      */
     protected static $objConfig;
+
+    /**
+     * Current request cache instance
+     * @var Isotope\Model\RequestCache
+     */
+    protected static $objRequestCache;
 
 
     /**
@@ -109,18 +116,11 @@ class Isotope extends \Controller
             // Initialize request cache for product list filters
             if (\Input::get('isorc') != '') {
 
-                $objRequestCache = \Database::getInstance()->prepare("SELECT * FROM tl_iso_requestcache WHERE id=? AND store_id=?")->execute(\Input::get('isorc'), static::getCart()->store_id);
-
-                if ($objRequestCache->numRows) {
-
-                    $GLOBALS['ISO_FILTERS'] = deserialize($objRequestCache->filters);
-                    $GLOBALS['ISO_SORTING'] = deserialize($objRequestCache->sorting);
-                    $GLOBALS['ISO_LIMIT'] = deserialize($objRequestCache->limits);
-
+                if (static::getRequestCache()->isEmpty()) {
                     global $objPage;
                     $objPage->noSearch = 1;
 
-                } else {
+                } elseif (static::getRequestCache()->id != \Input::get('isorc')) {
 
                     unset($_GET['isorc']);
 
@@ -199,6 +199,23 @@ class Isotope extends \Controller
     public static function setConfig(Config $objConfig=null)
     {
         static::$objConfig = $objConfig;
+    }
+
+    /**
+     * Get active request cache
+     * @return  RequestCache
+     */
+    public static function getRequestCache()
+    {
+        if (null === static::$objRequestCache) {
+            static::$objRequestCache = RequestCache::findByIdAndStore(\Input::get('isorc'), static::getCart()->store_id);
+
+            if (null === static::$objRequestCache) {
+                static::$objRequestCache = new RequestCache();
+            }
+        }
+
+        return static::$objRequestCache;
     }
 
 

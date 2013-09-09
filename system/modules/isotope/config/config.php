@@ -268,6 +268,7 @@ $GLOBALS['TL_MODELS']['tl_iso_product_collection_download']     = 'Isotope\Model
 $GLOBALS['TL_MODELS']['tl_iso_productcache']                    = 'Isotope\Model\ProductCache';
 $GLOBALS['TL_MODELS']['tl_iso_products']                        = 'Isotope\Model\Product';
 $GLOBALS['TL_MODELS']['tl_iso_producttypes']                    = 'Isotope\Model\ProductType';
+$GLOBALS['TL_MODELS']['tl_iso_requestcache']                    = 'Isotope\Model\RequestCache';
 $GLOBALS['TL_MODELS']['tl_iso_tax_class']                       = 'Isotope\Model\TaxClass';
 $GLOBALS['TL_MODELS']['tl_iso_tax_rate']                        = 'Isotope\Model\TaxRate';
 $GLOBALS['TL_MODELS']['tl_iso_payment_modules']                 = 'Isotope\Model\Payment';

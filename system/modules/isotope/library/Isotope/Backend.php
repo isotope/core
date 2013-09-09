@@ -31,7 +31,7 @@ class Backend extends Contao_Backend
 {
 
     /**
-     * Truncate the tl_iso_productcache table if a product is changed
+     * Truncate the product cache table if a product is changed
      * Second parameter and return value is to use the method as save_callback
      * @param mixed
      * @return mixed
@@ -45,11 +45,11 @@ class Backend extends Contao_Backend
 
 
     /**
-     * Truncate the tl_iso_requestcache table
+     * Truncate the request cache table
      */
     public static function truncateRequestCache()
     {
-        \Database::getInstance()->query("TRUNCATE tl_iso_requestcache");
+        \Isotope\Model\RequestCache::purge();
     }
 
 
