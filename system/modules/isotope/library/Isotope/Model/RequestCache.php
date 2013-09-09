@@ -41,27 +41,19 @@ class RequestCache extends \Model
      * Filter configuration
      * @var array
      */
-    protected $arrFilters = false;
+    protected $arrFilters;
 
     /**
      * Sorting configuration
      * @var array
      */
-    protected $arrSortings = false;
+    protected $arrSortings;
 
     /**
      * Limit configuration
      * @var array
      */
-    protected $arrLimits = false;
-
-
-    public function __clone()
-    {
-        parent::__clone();
-
-        $this->blnModified = false;
-    }
+    protected $arrLimits;
 
 
     /**
@@ -88,14 +80,6 @@ class RequestCache extends \Model
      */
     public function getFilters()
     {
-        if (false === $this->arrFilters) {
-            $this->arrFilters = deserialize($this->filters);
-
-            if (empty($this->arrFilters) || !is_array($this->arrFilters)) {
-                $this->arrFilters = null;
-            }
-        }
-
         return $this->arrFilters;
     }
 
@@ -106,7 +90,7 @@ class RequestCache extends \Model
      */
     public function getFiltersForModules(array $arrIds)
     {
-        if ($this->getFilters() === null) {
+        if ($this->arrFilters === null) {
             return array();
         }
 
@@ -120,8 +104,6 @@ class RequestCache extends \Model
      */
     public function setFiltersForModule(array $arrFilters, $intModule)
     {
-        // Make sure filters are initialized and mark as modified
-        $this->getFilters();
         $this->blnModified = true;
 
         $this->arrFilters[$intModule] = $arrFilters;
@@ -132,11 +114,10 @@ class RequestCache extends \Model
      */
     public function unsetFiltersForModule($intModule)
     {
-        // Make sure filters are initialized and mark as modified
-        $this->getFilters();
-        $this->blnModified = true;
-
-        unset($this->arrFilters[$intModule]);
+        if (isset($this->arrFilters[$intModule])) {
+            unset($this->arrFilters[$intModule]);
+            $this->blnModified = true;
+        }
     }
 
     /**
@@ -161,11 +142,8 @@ class RequestCache extends \Model
      */
     public function addFilterForModule(Filter $objFilter, $intModule)
     {
-        // Make sure filters are initialized and mark as modified
-        $this->getFilters();
-        $this->blnModified = true;
-
         $this->arrFilters[$intModule][] = $objFilter;
+        $this->blnModified = true;
     }
 
     /**
@@ -176,11 +154,8 @@ class RequestCache extends \Model
      */
     public function setFilterForModule($strName, Filter $objFilter, $intModule)
     {
-        // Make sure filters are initialized and mark as modified
-        $this->getFilters();
-        $this->blnModified = true;
-
         $this->arrFilters[$intModule][$strName] = $objFilter;
+        $this->blnModified = true;
     }
 
     /**
@@ -190,9 +165,6 @@ class RequestCache extends \Model
      */
     public function removeFilterForModule($strName, $intModule)
     {
-        // Make sure filters are initialized and mark as modified
-        $this->getFilters();
-
         if (isset($this->arrFilters[$intModule]) || isset($this->arrFilters[$intModule][$strName])) {
             $this->blnModified = true;
 
@@ -210,14 +182,6 @@ class RequestCache extends \Model
      */
     public function getSortings()
     {
-        if (false === $this->arrSortings) {
-            $this->arrSortings = deserialize($this->sorting);
-
-            if (empty($this->arrSortings) || !is_array($this->arrSortings)) {
-                $this->arrSortings = null;
-            }
-        }
-
         return $this->arrSortings;
     }
 
@@ -228,7 +192,7 @@ class RequestCache extends \Model
      */
     public function getSortingsForModules(array $arrIds)
     {
-        if (null === $this->getSortings()) {
+        if (null === $this->arrSortings) {
             return array();
         }
 
@@ -242,23 +206,36 @@ class RequestCache extends \Model
      */
     public function setSortingsForModule(array $arrSortings, $intModule)
     {
-        // Make sure sorting is initialized and mark as modified
-        $this->getSortings();
-        $this->blnModified = true;
-
         $this->arrSortings[$intModule] = $arrSortings;
+        $this->blnModified = true;
     }
 
     /**
      * Remove sorting configs for a frontend module
+     * @param   int
      */
     public function unsetSortingsForModule($intModule)
     {
-        // Make sure filters are initialized and mark as modified
-        $this->getFilters();
-        $this->blnModified = true;
+        if (isset($this->arrSortings[$intModule])) {
+            unset($this->arrSortings[$intModule]);
+            $this->blnModified = true;
+        }
+    }
 
-        unset($this->arrSortings[$intModule]);
+    /**
+     * Get first sorting field name for a frontend module
+     * @param   int
+     * @return  string
+     */
+    public function getFirstSortingFieldForModule($intModule)
+    {
+        if (null === $this->arrSortings || !is_array($this->arrSortings[$intModule])) {
+            return '';
+        }
+
+        $arrNames = array_keys($this->arrSortings[$intModule]);
+
+        return reset($arrNames);
     }
 
     /**
@@ -283,11 +260,12 @@ class RequestCache extends \Model
      */
     public function addSortingForModule(Sort $objSort, $intModule)
     {
-        // Make sure filters are initialized and mark as modified
-        $this->getSortings();
-        $this->blnModified = true;
+        if (null === $this->arrSortings || !is_array($this->arrSortings[$intModule])) {
+            $this->arrSortings[$intModule] = array();
+        }
 
-        $this->arrSortings[$intModule][] = $objSort;
+        $this->arrSortings[$intModule] = array_merge(array($objSort), $this->arrSortings[$intModule]);
+        $this->blnModified = true;
     }
 
     /**
@@ -298,11 +276,16 @@ class RequestCache extends \Model
      */
     public function setSortingForModule($strName, Sort $objSort, $intModule)
     {
-        // Make sure filters are initialized and mark as modified
-        $this->getFilters();
-        $this->blnModified = true;
+        if (null === $this->arrSortings || !is_array($this->arrSortings[$intModule])) {
+            $this->arrSortings[$intModule] = array();
+        }
 
-        $this->arrFilters[$intModule][$strName] = $objSort;
+        if (isset($this->arrSortings[$intModule][$strName])) {
+            unset($this->arrSortings[$intModule][$strName]);
+        }
+
+        $this->arrSortings[$intModule] = array_merge(array($strName=>$objSort), $this->arrSortings[$intModule]);
+        $this->blnModified = true;
     }
 
     /**
@@ -312,9 +295,6 @@ class RequestCache extends \Model
      */
     public function removeSortingForModule($strName, $intModule)
     {
-        // Make sure sorting is initialized and mark as modified
-        $this->getSortings();
-
         if (isset($this->arrSortings[$intModule]) || isset($this->arrSortings[$intModule][$strName])) {
             $this->blnModified = true;
 
@@ -332,14 +312,6 @@ class RequestCache extends \Model
      */
     public function getLimits()
     {
-        if (false === $this->arrLimits) {
-            $this->arrLimits = deserialize($this->limits);
-
-            if (empty($this->arrLimits) || !is_array($this->arrLimits)) {
-                $this->arrLimits = null;
-            }
-        }
-
         return $this->arrLimits;
     }
 
@@ -350,11 +322,8 @@ class RequestCache extends \Model
      */
     public function setLimitForModule(Limit $objLimit, $intModule)
     {
-        // Make sure sorting is initialized and mark as modified
-        $this->getLimits();
-        $this->blnModified = true;
-
         $this->arrLimits[$intModule] = $objLimit;
+        $this->blnModified = true;
     }
 
     /**
@@ -365,7 +334,7 @@ class RequestCache extends \Model
      */
     public function getFirstLimitForModules(array $arrIds, $intDefault=0)
     {
-        if (null !== $this->getLimits()) {
+        if (null !== $this->arrLimits) {
             foreach ($arrIds as $id) {
                 if (isset($this->arrLimits[$id])) {
                     return $this->arrLimits[$id];
@@ -377,28 +346,6 @@ class RequestCache extends \Model
     }
 
     /**
-     * Add object data to row
-     * @param   array
-     * @return  array
-     */
-    protected function preSave(array $arrSet)
-    {
-        // Store values in model and make sure they are re-initialized
-        if ($this->blnModified) {
-            $arrSet['filters'] = empty($this->arrFilters) ? null : $this->arrFilters;
-            $arrSet['sorting'] = empty($this->arrSortings) ? null : $this->arrSortings;
-            $arrSet['limits'] = empty($this->arrLimits) ? null : $this->arrLimits;
-
-            $this->blnModified = false;
-            $this->arrFilters = false;
-            $this->arrSortings = false;
-            $this->arrLimits = false;
-        }
-
-        return $arrSet;
-    }
-
-    /**
      * Do not allow to overwrite existing cache
      * @param   bool
      * @return  RequestCache
@@ -406,7 +353,7 @@ class RequestCache extends \Model
      */
     public function save($blnForceInsert=false)
     {
-        if ($this->blnModified && !$blnForceInsert) {
+        if ($this->blnModified && $this->id > 0 && !$blnForceInsert) {
             throw new \BadMethodCallException('Can\'t save a modified cache');
         }
 
@@ -423,31 +370,7 @@ class RequestCache extends \Model
             return $this;
         }
 
-        $arrColumns = array('store_id=?');
-        $arrValues = array($this->store_id);
-
-        if ($this->getFilters()) {
-            $arrColumns[] = 'filters=?';
-            $arrValues[] = serialize($this->getFilters());
-        } else {
-            $arrColumns[] = 'filters IS NULL';
-        }
-
-        if ($this->getSortings()) {
-            $arrColumns[] = 'sorting=?';
-            $arrValues[] = serialize($this->getSortings());
-        } else {
-            $arrColumns[] = 'sorting IS NULL';
-        }
-
-        if ($this->getLimits()) {
-            $arrColumns[] = 'limits=?';
-            $arrValues[] = serialize($this->getLimits());
-        } else {
-            $arrColumns[] = 'limits IS NULL';
-        }
-
-        $objCache = static::findOneBy($arrColumns, $arrValues);
+        $objCache = static::findOneBy(array('store_id=?', 'config=?'), $this->preSave(array($this->store_id)));
 
         if (null === $objCache) {
             $objCache = clone $this;
@@ -458,6 +381,38 @@ class RequestCache extends \Model
         $objCache->tstamp = time();
 
         return $objCache->save();
+    }
+
+	/**
+	 * Set the current record from an array
+	 * @param   array
+	 * @return  \Model
+	 */
+    public function setRow(array $arrData)
+    {
+        $arrConfig = deserialize($arrData['config']);
+
+        $this->arrFilters = $arrConfig['filters'];
+        $this->arrSortings = $arrConfig['sortings'];
+        $this->arrLimits = $arrConfig['limits'];
+
+        return parent::setRow($arrData);
+    }
+
+    /**
+     * Add object data to row
+     * @param   array
+     * @return  array
+     */
+    protected function preSave(array $arrSet)
+    {
+        $arrSet['config'] = array(
+            'filters'   => (empty($this->arrFilters) ? null : $this->arrFilters),
+            'sortings'  => (empty($this->arrSortings) ? null : $this->arrSortings),
+            'limits'    => (empty($this->arrLimits) ? null : $this->arrLimits)
+        );
+
+        return $arrSet;
     }
 
     /**
