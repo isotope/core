@@ -1,31 +1,19 @@
-<?php if (!defined('TL_ROOT')) die('You can not access this file directly!');
+<?php
 
 /**
- * Contao Open Source CMS
- * Copyright (C) 2005-2010 Leo Feyer
+ * Isotope eCommerce for Contao Open Source CMS
  *
- * Formerly known as TYPOlight Open Source CMS.
+ * Copyright (C) 2009-2012 Isotope eCommerce Workgroup
  *
- * This program is free software: you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation, either
- * version 3 of the License, or (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
- * Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public
- * License along with this program. If not, please visit the Free
- * Software Foundation website at <http://www.gnu.org/licenses/>.
- *
- * PHP version 5
- * @copyright  iBROWs Web Communications GmbH 2010
- * @author     Andreas Schempp <andreas@schempp.ch>
- * @license    http://opensource.org/licenses/lgpl-3.0.html
- * @version    $Id$
+ * @package    Isotope
+ * @link       http://www.isotopeecommerce.com
+ * @license    http://opensource.org/licenses/lgpl-3.0.html LGPL
  */
+
+namespace Isotope\Model\Payment;
+
+use Isotope\Interfaces\IsotopePayment;
+use Isotope\Model\Payment;
 
 
 /**
@@ -33,7 +21,7 @@
  * @TODO: remove magic_quotes:gpc when PHP 5.4 is compulsory (it's also deprecated in PHP 5.3 so it might also be removed when PHP 5.3 is compulsory)
  * @TODO: replace "self::" with "static::" when PHP 5.3 is compulsory
  */
-class PaymentSaferpay extends IsotopePayment
+class Saferpay extends Payment implements IsotopePayment
 {
 
     /**
@@ -222,9 +210,9 @@ class PaymentSaferpay extends IsotopePayment
         $GLOBALS['TL_HEAD'][] = '<meta http-equiv="refresh" content="1; URL=' . $objRequest->response . '">';
 
         return '
-<h2>' . $GLOBALS['TL_LANG']['MSC']['pay_with_saferpay'][0] . '</h2>
-<p class="message">' . $GLOBALS['TL_LANG']['MSC']['pay_with_saferpay'][1] . '</p>
-<p><a href="' . $objRequest->response . '">' . $GLOBALS['TL_LANG']['MSC']['pay_with_saferpay'][2]. '</a></p>';
+<h2>' . $GLOBALS['TL_LANG']['MSC']['pay_with_redirect'][0] . '</h2>
+<p class="message">' . $GLOBALS['TL_LANG']['MSC']['pay_with_redirect'][1] . '</p>
+<p><a href="' . $objRequest->response . '">' . $GLOBALS['TL_LANG']['MSC']['pay_with_redirect'][2]. '</a></p>';
     }
 
 
@@ -291,4 +279,3 @@ class PaymentSaferpay extends IsotopePayment
         return $strUrl;
     }
 }
-
