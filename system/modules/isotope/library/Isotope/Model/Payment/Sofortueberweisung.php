@@ -157,7 +157,7 @@ class Sofortueberweisung extends Payment implements IsotopePayment
             'reason_2'              => '',
             'user_variable_0'       => $objOrder->id,
             'user_variable_1'       => $this->id,
-            'user_variable_2'       => '',
+            'user_variable_2'       => $objOrder->uniqid,
             'user_variable_3'       => '',
             'user_variable_4'       => '',
             'user_variable_5'       => '',
