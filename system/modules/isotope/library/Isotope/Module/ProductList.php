@@ -349,6 +349,7 @@ class ProductList extends Module
             $arrWhere = array();
             $arrValues = array();
             $arrGroups = array();
+            $t = Product::getTable();
 
             // Initiate native SQL filtering
             foreach ($arrFilters as $k => $filter)
@@ -369,7 +370,7 @@ class ProductList extends Module
                     $blnMultilingual = in_array($filter['attribute'], $GLOBALS['ISO_CONFIG']['multilingual']);
                     $operator = \Isotope\Frontend::convertFilterOperator($filter['operator'], 'SQL');
 
-                    $arrWhere[] = ($blnMultilingual ? "IFNULL(p2.{$filter['attribute']}, p1.{$filter['attribute']})" : "p1.{$filter['attribute']}") . " $operator ?";
+                    $arrWhere[] = ($blnMultilingual ? "IFNULL(translation.{$filter['attribute']}, $t.{$filter['attribute']})" : "$t.{$filter['attribute']}") . " $operator ?";
                     $arrValues[] = ($operator == 'LIKE' ? '%'.$filter['value'].'%' : $filter['value']);
                     unset($arrFilters[$k]);
                 }
@@ -388,7 +389,7 @@ class ProductList extends Module
                         $blnMultilingual = in_array($filter['attribute'], $GLOBALS['ISO_CONFIG']['multilingual']);
                         $operator = \Isotope\Frontend::convertFilterOperator($filter['operator'], 'SQL');
 
-                        $arrGroupWhere[] = ($blnMultilingual ? "IFNULL(p2.{$filter['attribute']}, p1.{$filter['attribute']})" : "p1.{$filter['attribute']}") . " $operator ?";
+                        $arrGroupWhere[] = ($blnMultilingual ? "IFNULL(translation.{$filter['attribute']}, $t.{$filter['attribute']})" : "$t.{$filter['attribute']}") . " $operator ?";
                         $arrValues[] = ($operator == 'LIKE' ? '%'.$filter['value'].'%' : $filter['value']);
                         unset($arrFilters[$k]);
                     }
@@ -400,8 +401,8 @@ class ProductList extends Module
             if (!empty($arrWhere))
             {
                 $time = time();
-                $strWhere = "((" . implode(' AND ', $arrWhere) . ") OR p1.id IN (SELECT p1.pid FROM tl_iso_products AS p1 WHERE p1.language='' AND " . implode(' AND ', $arrWhere)
-                            . (BE_USER_LOGGED_IN === true ? '' : " AND p1.published='1' AND (p1.start='' OR p1.start<$time) AND (p1.stop='' OR p1.stop>$time)") . "))";
+                $strWhere = "((" . implode(' AND ', $arrWhere) . ") OR $t.id IN (SELECT $t.pid FROM tl_iso_products AS $t WHERE $t.language='' AND " . implode(' AND ', $arrWhere)
+                            . (BE_USER_LOGGED_IN === true ? '' : " AND $t.published='1' AND ($t.start='' OR $t.start<$time) AND ($t.stop='' OR $t.stop>$time)") . "))";
                 $arrValues = array_merge($arrValues, $arrValues);
             }
 
