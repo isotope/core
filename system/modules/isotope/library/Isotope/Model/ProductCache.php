@@ -68,9 +68,9 @@ class ProductCache extends \Model
                 'requestcache_id=?',
                 'groups=?',
                 "(keywords=? OR keywords='')",
-                '(expires>$time OR expires=0)'
+                '(expires>? OR expires=0)'
             ),
-            array($intPage, $intModule, (int) \Input::get('isorc'), static::getCacheableGroups(), (string) \Input::get('keywords')),
+            array($intPage, $intModule, (int) \Input::get('isorc'), static::getCacheableGroups(), (string) \Input::get('keywords'), time()),
             $arrOptions
         );
     }
