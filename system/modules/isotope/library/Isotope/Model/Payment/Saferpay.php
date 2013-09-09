@@ -12,6 +12,7 @@
 
 namespace Isotope\Model\Payment;
 
+use Isotope\Isotope;
 use Isotope\Interfaces\IsotopePayment;
 use Isotope\Model\Payment;
 use Isotope\Model\ProductCollection\Order;
@@ -158,7 +159,7 @@ class Saferpay extends Payment implements IsotopePayment
      */
     public function processPayment()
     {
-        if (($objOrder = Order::findOneBy('cart_id', $this->Isotope->Cart->id)) === null)
+        if (($objOrder = Order::findOneBy('cart_id', Isotope::getCart()->id)) === null)
         {
             return false;
         }
@@ -253,15 +254,15 @@ class Saferpay extends Payment implements IsotopePayment
      */
     private function createPaymentURI()
     {
-        $objOrder = Database::getInstance()->prepare("SELECT * FROM tl_iso_orders WHERE cart_id=?")->execute($this->Isotope->Cart->id);
+        $objOrder = \Database::getInstance()->prepare("SELECT * FROM tl_iso_orders WHERE cart_id=?")->execute(Isotope::getCart()->id);
 
         $strComplete = $this->Environment->base . $this->addToUrl('step=complete', true) . '?uid=' . $objOrder->uniqid;
         $strFailed = $this->Environment->base . $this->addToUrl('step=failed', true);
 
         $strUrl  = static::createPayInitURI;
         $strUrl .= "?ACCOUNTID=" . $this->saferpay_accountid;
-        $strUrl .= "&AMOUNT=" . (round(($this->Isotope->Cart->grandTotal * 100), 0));
-        $strUrl .= "&CURRENCY=" . $this->Isotope->Config->currency;
+        $strUrl .= "&AMOUNT=" . (round((Isotope::getCart()->getTotal() * 100), 0));
+        $strUrl .= "&CURRENCY=" . Isotope::getConfig()->currency;
         $strUrl .= "&SUCCESSLINK=" . urlencode($strComplete);
         $strUrl .= "&FAILLINK=" . urlencode($strFailed);
         $strUrl .= "&BACKLINK=" . urlencode($strFailed);
