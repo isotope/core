@@ -78,6 +78,24 @@ class Sort implements ArrayAccess
     }
 
     /**
+     * Return true if sorting is ascending
+     * @return  bool
+     */
+    public function isAscending()
+    {
+        return ($this->arrConfig[0] == SORT_ASC);
+    }
+
+    /**
+     * Return true if sorting is descending
+     * @return  bool
+     */
+    public function isDescending()
+    {
+        return ($this->arrConfig[0] == SORT_DESC);
+    }
+
+    /**
      * Treat values as numbers
      * @return  Sort
      */

@@ -395,19 +395,20 @@ class ProductFilter extends Module
                 foreach ($this->iso_sortingFields as $field)
                 {
                     list($asc, $desc) = $this->getSortingLabels($field);
+                    $objSorting = Isotope::getRequestCache()->getSortingForModule($field, $this->id);
 
                     $arrOptions[] = array
                     (
-                        'label'        => (Isotope::formatLabel('tl_iso_products', $field) . ', ' . $asc),
-                        'value'        => $field.':ASC',
-                        'default'    => ((is_array($GLOBALS['ISO_SORTING'][$this->id]) && $GLOBALS['ISO_SORTING'][$this->id][$field][0] == SORT_ASC) ? '1' : ''),
+                        'label'     => (Isotope::formatLabel('tl_iso_products', $field) . ', ' . $asc),
+                        'value'     => $field.':ASC',
+                        'default'   => ((null !== $objSorting && $objSorting->isAscending()) ? '1' : ''),
                     );
 
                     $arrOptions[] = array
                     (
-                        'label'        => (Isotope::formatLabel('tl_iso_products', $field) . ', ' . $desc),
-                        'value'        => $field.':DESC',
-                        'default'    => ((is_array($GLOBALS['ISO_SORTING'][$this->id]) && $GLOBALS['ISO_SORTING'][$this->id][$field][0] == SORT_DESC) ? '1' : ''),
+                        'label'     => (Isotope::formatLabel('tl_iso_products', $field) . ', ' . $desc),
+                        'value'     => $field.':DESC',
+                        'default'   => ((null !== $objSorting && $objSorting->isDescending()) ? '1' : ''),
                     );
                 }
             }
