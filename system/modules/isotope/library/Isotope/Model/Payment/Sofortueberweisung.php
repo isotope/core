@@ -74,11 +74,8 @@ class Sofortueberweisung extends Payment implements IsotopePayment
 
     /**
      * Handle the server to server postsale request
-     *
-     * @param array $arrRow
-     * @return void
      */
-    public function processPostSale($arrRow)
+    public function processPostSale()
     {
         // check if there is a order with this ID
         if (($objOrder = Order::findByPk(\Input::post('user_variable_0'))) === null) {
@@ -120,7 +117,6 @@ class Sofortueberweisung extends Payment implements IsotopePayment
             'notification_password'      => $this->sofortueberweisung_project_password,
         );
 
-
         // check if both hashes math
         if (\Input::post('hash') == sha1(implode('|', $arrHash))) {
 
@@ -135,9 +131,7 @@ class Sofortueberweisung extends Payment implements IsotopePayment
 
 
     /**
-     * Return the payment form.
-     *
-     * @access public
+     * Return the payment form
      * @return string
      */
     public function checkoutForm()
