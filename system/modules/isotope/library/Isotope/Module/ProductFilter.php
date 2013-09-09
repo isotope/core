@@ -231,18 +231,18 @@ class ProductFilter extends Module
                     . ($this->iso_list_where == '' ? '' : " AND {$this->iso_list_where}")
                 );
 
-                while ($objValues->next())
-                {
+                while ($objValues->next()) {
                     $arrValues = array_merge($arrValues, deserialize($objValues->$strField, true));
                 }
 
-                if ($this->blnUpdateCache && in_array($arrInput[$strField], $arrValues))
-                {
+                if ($this->blnUpdateCache && in_array($arrInput[$strField], $arrValues)) {
                     Isotope::getRequestCache()->setFilterForModule(
                         $strField,
                         Filter::attribute($strField)->isEqualTo($arrInput[$strField]),
                         $this->id
                     );
+                } elseif ($this->blnUpdateCache && $arrInput[$strField] == '') {
+                    Isotope::getRequestCache()->removeFilterForModule($strField, $this->id);
                 }
 
                 // Request cache contains wrong value, delete it!
