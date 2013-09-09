@@ -15,6 +15,7 @@ namespace Isotope\Model\Payment;
 use Isotope\Isotope;
 use Isotope\Interfaces\IsotopePayment;
 use Isotope\Model\Payment;
+use Isotope\Model\ProductCollection\Order;
 
 
 class Sofortueberweisung extends Payment implements IsotopePayment
@@ -56,15 +57,9 @@ class Sofortueberweisung extends Payment implements IsotopePayment
 	 */
 	public function processPostSale($arrRow)
 	{
-		$this->import('Database');
-
 		// check if there is a order with this ID
-		$objOrderCheck = $this->Database->prepare('SELECT * FROM tl_iso_orders WHERE id=?')
-										->execute($this->Input->post('user_variable_0'));
-
-		if ($objOrderCheck->numRows != 1)
-		{
-			$this->log('Order not found. (Sofortüberweisung.de)', __METHOD__, TL_ERROR);
+		if (($objOrder = Order::findByPk(\Input::post('user_variable_0'))) === null) {
+			\System::log('Order not found. (Sofortüberweisung.de)', __METHOD__, TL_ERROR);
 			return;
 		}
 
@@ -105,21 +100,11 @@ class Sofortueberweisung extends Payment implements IsotopePayment
 		);
 
 
-		$strHash = sha1(implode('|', $arrHash));
-
 		// check if both hashes math
-		if (\Input::post('hash') == $strHash)
-		{
-			$arrSet = array
-			(
-				'date_paid' => time()
-			);
+		if (\Input::post('hash') == sha1(implode('|', $arrHash))) {
 
-			// update the order
-			$this->Database->prepare('UPDATE tl_iso_orders %s WHERE id=?')
-						   ->set($arrSet)
-						   ->execute(\Input::post('user_variable_0'));
-
+		    $objOrder->date_paid = time();
+		    $objOrder->save();
 			return;
 		}
 
@@ -137,8 +122,9 @@ class Sofortueberweisung extends Payment implements IsotopePayment
 	 */
 	public function checkoutForm()
 	{
-		$objOrder = new IsotopeOrder();
-		$objOrder->findBy('cart_id', $this->Isotope->Cart->id);
+		if (($objOrder = Order::findOneBy('cart_id', Isotope::getCart()->id)) === null) {
+			\Isotope\Module\Checkout::redirectToStep('failed');
+		}
 
 		$strCountry = in_array($this->Isotope->Cart->billing_address['country'], array('de','ch','at')) ? $this->Isotope->Cart->billing_address['country'] : 'de';
 		$strUrl = 'https://www.sofortueberweisung.'.$strCountry.'/payment/start';
