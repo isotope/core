@@ -442,7 +442,7 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['iso_sortingFields'] = array
     'exclude'                   => true,
     'inputType'                 => 'checkboxWizard',
     'options_callback'          => array('Isotope\tl_module', 'getSortingFields'),
-    'eval'                      => array('multiple'=>true, 'tl_class'=>'clr'),
+    'eval'                      => array('multiple'=>true, 'tl_class'=>'clr w50 w50h'),
     'sql'                       => "blob NULL",
 );
 
