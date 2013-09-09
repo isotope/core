@@ -1157,7 +1157,7 @@ window.addEvent('domready', function()
     {
         if ($intOverride > 0)
         {
-            return $intOverride;
+            return (int) $intOverride;
         }
 
         if ($objOriginPage === null)
@@ -1184,7 +1184,7 @@ window.addEvent('domready', function()
         {
             static::$arrReaderPageIds[$intPage] = $objOriginPage->iso_readerJumpTo;
 
-            return $objOriginPage->iso_readerJumpTo;
+            return (int) $objOriginPage->iso_readerJumpTo;
         }
 
         // now move up the page tree until we find a page where the reader is set
@@ -1207,7 +1207,7 @@ window.addEvent('domready', function()
                 // cache the reader page for all trail pages
                 static::$arrReaderPageIds = array_merge(static::$arrReaderPageIds, array_fill_keys($trail, $objParentPage->iso_readerJumpTo));
 
-                return $objParentPage->iso_readerJumpTo;
+                return (int) $objParentPage->iso_readerJumpTo;
             }
 
             $pid = (int) $objParentPage->pid;
@@ -1216,9 +1216,9 @@ window.addEvent('domready', function()
 
         // if there is no reader page set at all, we take the current page object
         global $objPage;
-        static::$arrReaderPageIds[$intPage] = $objPage->id;
+        static::$arrReaderPageIds[$intPage] = (int) $objPage->id;
 
-        return $objPage->id;
+        return (int) $objPage->id;
     }
 
 
