@@ -458,9 +458,9 @@ class Frontend extends \Frontend
         {
             $arrGet['url']['product'] = static::getAutoItem('product');
         }
-        elseif (\Input::get('step') != '')
+        elseif (static::getAutoItem('step') != '')
         {
-            $arrGet['url']['step'] = \Input::get('step');
+            $arrGet['url']['step'] = static::getAutoItem('step');
         }
         elseif (\Input::get('uid') != '')
         {

@@ -565,7 +565,7 @@ $GLOBALS['TL_DCA']['tl_iso_config'] = array
                     )
                 ),
                 'hideButtons'       => true,
-                'urlParams'         => array('product', 'isorc')
+                'urlParams'         => array('product', 'step')
             ),
             'sql'                   => "blob NULL",
             'load_callback'         => array

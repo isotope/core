@@ -16,6 +16,7 @@ use Isotope\Isotope;
 use Isotope\Interfaces\IsotopePayment;
 use Isotope\Model\Payment;
 use Isotope\Model\ProductCollection\Order;
+use Isotope\Module\Checkout;
 
 
 /**
@@ -105,7 +106,7 @@ class Datatrans extends Payment implements IsotopePayment
         {
             global $objPage;
             \System::log('Payment could not be processed.', __METHOD__, TL_ERROR);
-            \Controller::redirect(\Controller::generateFrontendUrl($objPage->row(), '/step/failed'));
+            Checkout::redirectToStep('failed');
         }
 
         // Reload page every 5 seconds and check if payment was successful
