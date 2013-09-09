@@ -12,6 +12,7 @@
 
 namespace Isotope\Module;
 
+use Isotope\Isotope;
 use Isotope\Model\Product;
 use Isotope\Model\RequestCache;
 use Isotope\RequestCache\Filter;
@@ -412,7 +413,7 @@ class ProductFilter extends Module
             // Cache new request value
             if ($this->blnUpdateCache && in_array(\Input::post('limit'), $arrLimit))
             {
-                Isotop::getRequestCache()->setLimitForModule(Limit::to(\Input::post('limit')), $this->id);
+                Isotope::getRequestCache()->setLimitForModule(Limit::to(\Input::post('limit')), $this->id);
             }
 
             // Request cache contains wrong value, delete it!
