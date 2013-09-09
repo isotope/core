@@ -79,36 +79,9 @@ class ProductFilter extends Module
         // Cache request in the database and redirect to the unique requestcache ID
         if ($this->blnUpdateCache)
         {
-            $time = time();
-            $varFilter = (is_array($GLOBALS['ISO_FILTERS']) && !empty($GLOBALS['ISO_FILTERS'])) ? serialize($GLOBALS['ISO_FILTERS']) : null;
-            $varSorting = (is_array($GLOBALS['ISO_SORTING']) && !empty($GLOBALS['ISO_SORTING'])) ? serialize($GLOBALS['ISO_SORTING']) : null;
-            $varLimit = Isotope::getRequestCache()->getLimits();
+            $objCache = Isotope::getRequestCache()->saveNewConfiguartion();
 
-            // if all filters are null we don't have to cache (this will prevent useless isorc params from being generated)
-            if (!Isotope::getRequestCache()->isEmpty())
-            {
-                $intCacheId = \Database::getInstance()->prepare("
-                    SELECT id FROM tl_iso_requestcache
-                    WHERE
-                        store_id=? AND
-                        filters" . ($varFilter ? '=' : ' IS ') . "? AND
-                        sorting" . ($varSorting ? '=' : ' IS ') . "? AND
-                        limits" . ($varLimit ? '=' : ' IS ') . "?
-                ")->execute(Isotope::getCart()->store_id, $varFilter, $varSorting, $varLimit)->id;
-
-                if ($intCacheId)
-                {
-                    \Database::getInstance()->query("UPDATE tl_iso_requestcache SET tstamp=$time WHERE id=$intCacheId");
-                }
-                else
-                {
-                    $intCacheId = \Database::getInstance()->prepare("INSERT INTO tl_iso_requestcache (tstamp,store_id,filters,sorting,limits) VALUES ($time, ?, ?, ?, ?)")
-                                                          ->execute(Isotope::getCart()->store_id, $varFilter, $varSorting, $varLimit)
-                                                          ->insertId;
-                }
-
-                \Input::setGet('isorc', $intCacheId);
-            }
+            \Input::setGet('isorc', $objCache->id);
 
             // Include \Environment::base or the URL would not work on the index page
             \Controller::redirect(\Environment::get('base') . $this->generateRequestUrl());

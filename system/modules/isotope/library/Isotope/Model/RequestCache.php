@@ -410,6 +410,39 @@ class RequestCache extends \Model
     }
 
     /**
+     * Return cache matching the current config, create or update if necessary
+     * @return  RequestCache
+     */
+    public function saveNewConfiguartion()
+    {
+        if (!$this->blnModified) {
+            return $this;
+        }
+
+        $objCache = static::findOneBy(array(
+            'store_id=?',
+            'filters' . ($this->getFilters() ? '=?' : ' IS NULL'),
+            'sorting' . ($this->getSortings() ? '=?' : ' IS NULL'),
+            'limits' . ($this->getLimits() ? '=?' : ' IS NULL'),
+        ), array(
+            $this->store_id,
+            $this->getFilters(),
+            $this->getSortings(),
+            $this->getLimits(),
+        ));
+
+        if (null === $objCache) {
+            $objCache = clone $this;
+        } elseif ($objCache->id == $this->id) {
+            return $this;
+        }
+
+        $objCache->tstamp = time();
+
+        return $objCache->save();
+    }
+
+    /**
      * Find cache by ID and store
      * @param   int
      * @param   int
