@@ -932,7 +932,7 @@ class Standard extends Product implements IsotopeProduct
         }
 
         $strUrlParam = Isotope::getConfig()->getUrlParam('product');
-        $strUrl = '/' . ($strUrlParam) ? $strUrlParam . '/' : '';
+        $strUrl = '/' . (($strUrlParam) ? $strUrlParam . '/' : '');
         $strUrl .= $this->arrData['alias'] ? $this->arrData['alias'] : ($this->arrData['pid'] ? $this->arrData['pid'] : $this->arrData['id']);
 
         $arrOptions = $this->getOptions();
