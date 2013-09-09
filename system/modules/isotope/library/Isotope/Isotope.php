@@ -207,7 +207,7 @@ class Isotope extends \Controller
      */
     public static function getRequestCache()
     {
-        if (false === static::$objRequestCache) {
+        if (null === static::$objRequestCache) {
             static::$objRequestCache = RequestCache::findByIdAndStore(\Input::get('isorc'), static::getCart()->store_id);
 
             if (null === static::$objRequestCache) {
