@@ -89,6 +89,9 @@ class ProductVariantList extends ProductList
 
         $objProducts = Product::findPublishedBy($arrColumns, $arrValues, array('group'=>Product::getTable() . '.id', 'order'=>'c.sorting'));
 
-        return \Isotope\Frontend::getProducts($objProducts, \Isotope\Frontend::getReaderPageId(null, $this->iso_reader_jumpTo), true, $arrFilters, $arrSorting);
+        // @todo I deleted passing this as a second param (ex-reader-page without changing anything at some other place. Do we even need that?
+        //  \Isotope\Frontend::getReaderPageId(null, $this->iso_reader_jumpTo)
+
+        return \Isotope\Frontend::getProducts($objProducts, true, $arrFilters, $arrSorting);
     }
 }

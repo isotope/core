@@ -106,9 +106,6 @@ class Standard extends Product implements IsotopeProduct
     {
         switch ($strKey)
         {
-            case 'href_reader':
-                return $this->arrData[$strKey];
-
             case 'formSubmit':
                 return $this->formSubmit;
 
@@ -138,55 +135,6 @@ class Standard extends Product implements IsotopeProduct
     {
         switch ($strKey)
         {
-            case 'reader_jumpTo':
-
-                // Remove the target URL if no page ID is given
-                if ($varValue == '' || $varValue < 1)
-                {
-                    $this->arrData['href_reader'] = '';
-                    break;
-                }
-
-                global $objPage;
-                $strUrlKey = $this->arrData['alias'] ? $this->arrData['alias'] : ($this->arrData['pid'] ? $this->arrData['pid'] : $this->arrData['id']);
-
-                // make sure the page object is loaded because of the url language feature (e.g. when rebuilding the search index in the back end or ajax actions)
-                if (!$objPage)
-                {
-                    $objTargetPage = $this->getPageDetails($varValue);
-
-                    if ($objTargetPage === null)
-                    {
-                        $this->arrData['href_reader'] = '';
-                        break;
-                    }
-
-                    $strUrl = \Controller::generateFrontendUrl($objTargetPage->row(), ($GLOBALS['TL_CONFIG']['useAutoItem'] ? '/' : '/product/') . $strUrlKey, $objTargetPage->rootLanguage);
-                }
-                else
-                {
-                    $strUrl = \Controller::generateFrontendUrl(\Database::getInstance()->prepare("SELECT * FROM tl_page WHERE id=?")->execute($varValue)->fetchAssoc(), ($GLOBALS['TL_CONFIG']['useAutoItem'] ? '/' : '/product/') . $strUrlKey, $objPage->rootLanguage);
-                }
-
-                if (!empty($this->arrOptions))
-                {
-                    $arrOptions = array();
-
-                    foreach ($this->arrOptions as $k => $v)
-                    {
-                        $arrOptions[] = $k . '=' . urlencode($v);
-                    }
-
-                    $strUrl .= (strpos('?', $strUrl) === false ? '?' : '&amp;') . implode('&amp;', $arrOptions);
-                }
-
-                $this->arrData['href_reader'] = $strUrl;
-                break;
-
-            case 'reader_jumpTo_Override':
-                $this->arrData['href_reader'] = $varValue;
-                break;
-
             case 'sku':
             case 'name':
             case 'price':
@@ -656,7 +604,7 @@ class Standard extends Product implements IsotopeProduct
         $objTemplate->minimum_quantity = $this->getMinimumQuantity();
         $objTemplate->raw = $this->arrData;
         $objTemplate->raw_options = $this->arrOptions;
-        $objTemplate->href_reader = $this->href_reader;
+        $objTemplate->href_reader = $this->generateUrl($arrConfig['reader_page']);
         $objTemplate->label_detail = $GLOBALS['TL_LANG']['MSC']['detailLabel'];
         $objTemplate->options = \Isotope\Frontend::generateRowClass($arrProductOptions, 'product_option');
         $objTemplate->hasOptions = !empty($arrProductOptions);

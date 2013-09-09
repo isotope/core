@@ -69,7 +69,7 @@ class ProductReader extends Module
     {
         global $objPage;
 
-        $objProduct = \Isotope\Frontend::getProductByAlias(\Input::get(Isotope::getConfig()->getUrlParam('product')), \Isotope\Frontend::getReaderPageId());
+        $objProduct = \Isotope\Frontend::getProductByAlias(\Input::get(Isotope::getConfig()->getUrlParam('product')));
 
         if (!$objProduct)
         {
@@ -90,6 +90,7 @@ class ProductReader extends Module
             'gallery'       => $objProduct->getRelated('type')->reader_gallery,
             'buttons'       => deserialize($this->iso_buttons, true),
             'useQuantity'   => $this->iso_use_quantity,
+            'reader_page'   => \Isotope\Frontend::getReaderPageId()
         );
 
         if (\Environment::get('isAjaxRequest') && \Input::post('AJAX_MODULE') == $this->id && \Input::post('AJAX_PRODUCT') == $objProduct->id) {

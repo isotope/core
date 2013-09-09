@@ -693,11 +693,10 @@ window.addEvent('domready', function()
     /**
      * Shortcut for a single product by ID or from database result
      * @param IsotopeProduct|int
-     * @param integer
      * @param boolean
      * @return IsotopeProduct|null
      */
-    public static function getProduct($objProduct, $intReaderPage=0, $blnCheckAvailability=true)
+    public static function getProduct($objProduct, $blnCheckAvailability=true)
     {
         if (is_numeric($objProduct))
         {
@@ -714,8 +713,6 @@ window.addEvent('domready', function()
             return null;
         }
 
-        $objProduct->reader_jumpTo = $intReaderPage;
-
         return $objProduct;
     }
 
@@ -723,26 +720,24 @@ window.addEvent('domready', function()
     /**
      * Shortcut for a single product by alias (from url?)
      * @param string
-     * @param integer
      * @param boolean
      * @return IsotopeProduct|null
      */
-    public static function getProductByAlias($strAlias, $intReaderPage=0, $blnCheckAvailability=true)
+    public static function getProductByAlias($strAlias, $blnCheckAvailability=true)
     {
-        return static::getProduct(Product::findPublishedByIdOrAlias($strAlias), $intReaderPage, $blnCheckAvailability);
+        return static::getProduct(Product::findPublishedByIdOrAlias($strAlias), $blnCheckAvailability);
     }
 
 
     /**
      * Generate products from database result or array of IDs
      * @param \Database\Result|array
-     * @param integer
      * @param boolean
      * @param array
      * @param array
      * @return array
      */
-    public static function getProducts($objProducts, $intReaderPage=0, $blnCheckAvailability=true, array $arrFilters=array(), array $arrSorting=array())
+    public static function getProducts($objProducts, $blnCheckAvailability=true, array $arrFilters=array(), array $arrSorting=array())
     {
         // Could be an empty array
         if (empty($objProducts)) {
@@ -768,7 +763,7 @@ window.addEvent('domready', function()
 
         while ($objProducts->next())
         {
-            $objProduct = \Isotope\Frontend::getProduct($objProducts->current(), $intReaderPage, $blnCheckAvailability);
+            $objProduct = \Isotope\Frontend::getProduct($objProducts->current(), $blnCheckAvailability);
 
             if ($objProduct !== null)
             {
@@ -1110,6 +1105,8 @@ window.addEvent('domready', function()
                     {
                         $strDomain = ($arrRoot[$objJump->rootId]->useSSL ? 'https://' : 'http://') . $arrRoot[$objJump->rootId]->dns . TL_PATH . '/';
                     }
+
+                    // @todo use Product::generateUrl() here or don't we do this because of performance?
 
                     $arrJump[$objProducts->page_id] = $strDomain . Controller::generateFrontendUrl($objJump->row(), ($GLOBALS['TL_CONFIG']['useAutoItem'] ? '/' : '/product/') . '##alias##', ($strLanguage=='' ? $arrRoot[$objJump->rootId]->language : $strLanguage));
                 }

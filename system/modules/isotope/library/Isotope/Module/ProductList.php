@@ -232,6 +232,7 @@ class ProductList extends Module
                 'gallery'       => $objProduct->getRelated('type')->list_gallery,
                 'buttons'       => deserialize($this->iso_buttons, true),
                 'useQuantity'   => $this->iso_use_quantity,
+                'reader_page'   => $intReaderPage
             );
 
             if (\Environment::get('isAjaxRequest') && \Input::get('AJAX_MODULE') == $this->id && \Input::get('AJAX_PRODUCT') == $objProduct->id) {
@@ -239,10 +240,9 @@ class ProductList extends Module
             }
 
             $objProduct->setOptions(array_merge($arrDefaultOptions, $objProduct->getOptions()));
-            $objProduct->reader_jumpTo = $intReaderPage;
 
             if ($this->iso_jump_first && \Input::get(Isotope::getConfig()->getUrlParam('product')) == '') {
-                \Controller::redirect($objProduct->href_reader);
+                \Controller::redirect($objProduct->generateUrl($intReaderPage));
             }
 
             $arrBuffer[] = array(
@@ -305,7 +305,7 @@ class ProductList extends Module
 
         $objProducts = Product::findPublishedBy($arrColumns, $arrValues, array('group'=>Product::getTable() . '.id', 'order'=>'c.sorting'));
 
-        return \Isotope\Frontend::getProducts($objProducts, 0, true, $arrFilters, $arrSorting);
+        return \Isotope\Frontend::getProducts($objProducts, true, $arrFilters, $arrSorting);
     }
 
 
