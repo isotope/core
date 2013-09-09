@@ -151,6 +151,12 @@ class Config extends \Model
      */
     public function getUrlParam($strKey)
     {
+        // auto_item support
+        if ($GLOBALS['TL_CONFIG']['useAutoItem'] && in_array($strKey, $GLOBALS['TL_AUTO_ITEM']) && isset($_GET['auto_item'])) {
+
+            return \Input::get('auto_item');
+        }
+
         $arrMatrix = Isotope::getConfig()->urlMatrix;
 
         if (!isset($arrMatrix[$strKey])) {

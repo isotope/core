@@ -133,11 +133,6 @@ class Isotope extends \Controller
                     \System::redirect(preg_replace('/\?.*$/i', '', \Environment::get('request')) . (($strQuery) ? '?' . $strQuery : ''));
                 }
             }
-
-            // Set the product from the auto_item parameter
-            if ($GLOBALS['TL_CONFIG']['useAutoItem'] && isset($_GET['auto_item'])) {
-                \Input::setGet('product', \Input::get('auto_item'));
-            }
         }
     }
 
