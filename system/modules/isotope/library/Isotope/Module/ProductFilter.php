@@ -366,10 +366,12 @@ class ProductFilter extends Module
             // No need to generate options if we reload anyway
             elseif (!$this->blnUpdateCache)
             {
+                $first = Isotope::getRequestCache()->getFirstSortingFieldForModule($this->id);
+
                 foreach ($this->iso_sortingFields as $field)
                 {
                     list($asc, $desc) = $this->getSortingLabels($field);
-                    $objSorting = Isotope::getRequestCache()->getSortingForModule($field, $this->id);
+                    $objSorting = $first == $field ? Isotope::getRequestCache()->getSortingForModule($field, $this->id) : null;
 
                     $arrOptions[] = array
                     (
