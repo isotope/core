@@ -1398,7 +1398,7 @@ window.addEvent('domready', function()
                     continue;
                 }
 
-                $arrPGroups = deserialize($objPages->groups);
+                $arrPGroups = deserialize($objPageDetails->groups);
 
                 // Page is protected but has no groups
                 if (!is_array($arrPGroups)) {
