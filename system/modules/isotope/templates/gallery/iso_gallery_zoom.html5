@@ -1,0 +1,16 @@
+<?php if ($this->type == 'gallery'): ?>
+<figure class="image_container<?php if ($this->class) echo ' '.$this->class; ?>">
+  <a title="<?php echo $this->desc; ?>" href="<?php echo $this->link ? $this->link : $this->main; ?>" onclick="zoom_<?php echo $this->product_id; ?> = Isotope.zoomGallery(zoom_<?php echo $this->product_id; ?>, '<?php echo $this->large; ?>'); return Isotope.inlineGallery(this, '<?php echo $this->name; ?>');">
+    <img src="<?php echo $this->{$this->type}; ?>" alt="<?php echo $this->alt; ?>" <?php echo $this->{$this->type.'_size'}; ?><?php if ($this->class) echo ' class="'.$this->class.'"'; ?>>
+  </a>
+</figure>
+<?php elseif ($this->type == 'main'): ?>
+<figure class="image_container"><div class="zoom"><a href="<?php echo $this->large; ?>" class="zoomImage" title="<?php echo $this->desc; ?>"><img src="<?php echo $this->{$this->type}; ?>" alt="<?php echo $this->alt; ?>" <?php echo $this->{$this->type.'_size'}; ?>></a></div></figure>
+<script>
+var zoom_<?php echo $this->product_id; ?>;
+window.addEvent('load', function(){ zoom_<?php echo $this->product_id; ?> = Isotope.zoomGallery(zoom_<?php echo $this->product_id; ?>, '<?php echo $this->large; ?>'); });
+window.addEvent('ajaxready', function(){ zoom_<?php echo $this->product_id; ?> = Isotope.zoomGallery(zoom_<?php echo $this->product_id; ?>, document.getElement('#<?php echo $this->name; ?>_mainsize a.zoomImage').get('href')); });
+</script>
+<?php else: ?>
+<figure class="image_container"><div class="zoom"><a href="<?php echo $this->href_reader; ?>" class="zoomImage" title="<?php echo $this->desc; ?>"><img src="<?php echo $this->{$this->type}; ?>" alt="<?php echo $this->alt; ?>" <?php echo $this->{$this->type.'_size'}; ?>></a></div></figure>
+<?php endif; ?>
