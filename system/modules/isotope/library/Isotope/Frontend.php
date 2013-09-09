@@ -823,52 +823,6 @@ window.addEvent('domready', function()
 
 
     /**
-     * Convert a filter operator for PHP or SQL
-     * @param string
-     * @param string
-     * @return string
-     */
-    public static function convertFilterOperator($operator, $mode='PHP')
-    {
-        switch ($operator)
-        {
-            case 'like':
-            case 'search':
-                return $mode == 'SQL' ? 'LIKE' : 'stripos';
-
-            case '>':
-            case 'gt':
-                return '>';
-
-            case '<':
-            case 'lt':
-                return '<';
-
-            case '>=':
-            case '=>':
-            case 'gte':
-                return '>=';
-
-            case '<=':
-            case '=<':
-            case 'lte':
-                return '<=';
-
-            case '!=':
-            case 'neq':
-            case 'not':
-                return '!=';
-
-            case '=':
-            case '==':
-            case 'eq':
-            default:
-                return $mode == 'SQL' ? '=' : '==';
-        }
-    }
-
-
-    /**
      * Generate row class for an array
      * @param array data rows
      * @param string class prefix (e.g. "product")
