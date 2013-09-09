@@ -116,9 +116,6 @@ class Isotope extends \Controller
             // Initialize request cache for product list filters
             if (\Input::get('isorc') != '') {
 
-                $GLOBALS['ISO_FILTERS'] = $this->getRequestCache()->getFilters();
-                $GLOBALS['ISO_SORTING'] = $this->getRequestCache()->getSorting();
-
                 if ($this->getRequestCache()->isEmpty()) {
                     global $objPage;
                     $objPage->noSearch = 1;
