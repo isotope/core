@@ -126,6 +126,82 @@ class RequestCache extends \Model
     }
 
     /**
+     * Remove all filters for a frontend module
+     */
+    public function unsetFiltersForModule($intModule)
+    {
+        // Make sure filters are initialized and mark as modified
+        $this->getFilters();
+        $this->blnModified = true;
+
+        unset($this->arrFilters[$intModule]);
+    }
+
+    /**
+     * Return a specific filter by name and module
+     * @param   string
+     * @param   int
+     * @return  Filter|null
+     */
+    public function getFilterForModule($strName, $intModule)
+    {
+        if (!isset($this->arrFilters[$intModule]) || !isset($this->arrFilters[$intModule][$strName])) {
+            return null;
+        }
+
+        return $this->arrFilters[$intModule][$strName];
+    }
+
+    /**
+     * Add an additional filter for a frontend module
+     * @param   array
+     * @param   int
+     */
+    public function addFilterForModule(array $arrConfig, $intModule)
+    {
+        // Make sure filters are initialized and mark as modified
+        $this->getFilters();
+        $this->blnModified = true;
+
+        $this->arrFilters[$intModule][] = $arrConfig;
+    }
+
+    /**
+     * Set filter by name for a frontend module
+     * @param   array
+     * @param   int
+     */
+    public function setFilterForModule($strName, array $arrConfig, $intModule)
+    {
+        // Make sure filters are initialized and mark as modified
+        $this->getFilters();
+        $this->blnModified = true;
+
+        $this->arrFilters[$intModule][$strName] = $arrConfig;
+    }
+
+    /**
+     * Remove a filter for a frontend module
+     * @param   string
+     * @param   int
+     */
+    public function removeFilterForModule($strName, $intModule)
+    {
+        // Make sure filters are initialized and mark as modified
+        $this->getFilters();
+
+        if (isset($this->arrFilters[$intModule]) || isset($this->arrFilters[$intModule][$strName])) {
+            $this->blnModified = true;
+
+            unset($this->arrFilters[$intModule][$strName]);
+
+            if (empty($this->arrFilters[$intModule])) {
+                unset($this->arrFilters[$intModule]);
+            }
+        }
+    }
+
+    /**
      * Get sorting configuration
      * @return  array|null
      */
@@ -143,6 +219,20 @@ class RequestCache extends \Model
     }
 
     /**
+     * Get sorting configs for multiple modules
+     * @param   array
+     * @return  array
+     */
+    public function getSortingsForModules(array $arrIds)
+    {
+        if (null === $this->getSortings()) {
+            return array();
+        }
+
+        return call_user_func_array('array_merge', array_intersect_key($this->arrSortings, array_flip(array_reverse($arrIds))));
+    }
+
+    /**
      * Set sorting config for a frontend module
      * @param   array
      * @param   int
@@ -157,17 +247,79 @@ class RequestCache extends \Model
     }
 
     /**
-     * Get sorting configs for multiple modules
-     * @param   array
-     * @return  array
+     * Remove sorting configs for a frontend module
      */
-    public function getSortingsForModules(array $arrIds)
+    public function unsetSortingsForModule($intModule)
     {
-        if (null === $this->getSortings()) {
-            return array();
+        // Make sure filters are initialized and mark as modified
+        $this->getFilters();
+        $this->blnModified = true;
+
+        unset($this->arrSortings[$intModule]);
+    }
+
+    /**
+     * Return a specific sorting by name and module
+     * @param   string
+     * @param   int
+     * @return  Sort|null
+     */
+    public function getSortingForModule($strName, $intModule)
+    {
+        if (!isset($this->arrSortings[$intModule]) || !isset($this->arrSortings[$intModule][$strName])) {
+            return null;
         }
 
-        return call_user_func_array('array_merge', array_intersect_key($this->arrSortings, array_flip(array_reverse($arrIds))));
+        return $this->arrSortings[$intModule][$strName];
+    }
+
+    /**
+     * Add an additional sorting for a frontend module
+     * @param   array
+     * @param   int
+     */
+    public function addSortingForModule(array $arrConfig, $intModule)
+    {
+        // Make sure filters are initialized and mark as modified
+        $this->getSortings();
+        $this->blnModified = true;
+
+        $this->arrSortings[$intModule][] = $arrConfig;
+    }
+
+    /**
+     * Set sorting by name for a frontend module
+     * @param   array
+     * @param   int
+     */
+    public function setSortingForModule($strName, array $arrConfig, $intModule)
+    {
+        // Make sure filters are initialized and mark as modified
+        $this->getFilters();
+        $this->blnModified = true;
+
+        $this->arrFilters[$intModule][$strName] = $arrConfig;
+    }
+
+    /**
+     * Remove a sorting for a frontend module
+     * @param   string
+     * @param   int
+     */
+    public function removeSortingForModule($strName, $intModule)
+    {
+        // Make sure sorting is initialized and mark as modified
+        $this->getSortings();
+
+        if (isset($this->arrSortings[$intModule]) || isset($this->arrSortings[$intModule][$strName])) {
+            $this->blnModified = true;
+
+            unset($this->arrSortings[$intModule][$strName]);
+
+            if (empty($this->arrSortings[$intModule])) {
+                unset($this->arrSortings[$intModule]);
+            }
+        }
     }
 
     /**
