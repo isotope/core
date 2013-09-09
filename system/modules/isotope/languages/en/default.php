@@ -191,6 +191,7 @@ $GLOBALS['TL_LANG']['MODEL']['tl_iso_payment_modules.postfinance']      = array(
 $GLOBALS['TL_LANG']['MODEL']['tl_iso_payment_modules.authorizedotnet']  = array('Authorize.net', 'An Authorize.net payment gateway.');
 $GLOBALS['TL_LANG']['MODEL']['tl_iso_payment_modules.datatrans']        = array('Datatrans', 'A payment module for the swiss payment gateway "Datatrans".');
 $GLOBALS['TL_LANG']['MODEL']['tl_iso_payment_modules.sparkasse']        = array('Sparkasse');
+$GLOBALS['TL_LANG']['MODEL']['tl_iso_payment_modules.saferpay']         = array('Saferpay');
 $GLOBALS['TL_LANG']['MODEL']['tl_iso_payment_modules.expercash']        = array('ExperCash');
 $GLOBALS['TL_LANG']['MODEL']['tl_iso_payment_modules.payone']           = array('PayOne');
 
