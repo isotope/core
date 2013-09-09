@@ -369,7 +369,7 @@ class RequestCache extends \Model
             }
         }
 
-        return Limit::to($varDefault);
+        return Limit::to($intDefault);
     }
 
     /**
