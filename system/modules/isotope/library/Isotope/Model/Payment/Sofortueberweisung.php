@@ -173,35 +173,12 @@ class Sofortueberweisung extends Payment implements IsotopePayment
         $arrParam['hash'] = sha1(implode('|', $arrParam));
         $arrParam['language_id'] = $GLOBALS['TL_LANGUAGE'];
 
+        $objTemplate = new \Isotope\Template('iso_payment_sofortueberweisung');
+        $objTemplate->setData($this->arrData);
+        $objTemplate->action = $strUrl;
+        $objTemplate->params = array_filter(array_diff_key($arrParams, array('project_password'=>'')));
 
-        $strBuffer = '
-<h2>' . $GLOBALS['TL_LANG']['MSC']['pay_with_redirect'][0] . '</h2>
-<p class="message">' . $GLOBALS['TL_LANG']['MSC']['pay_with_redirect'][1] . '</p>
-<form id="payment_form" action="' . $strUrl . '" method="post">';
-
-        foreach( $arrParam as $k => $v )
-        {
-            if ($v == '' || $k == 'project_password')
-                continue;
-
-            $strBuffer .= "\n" . '<input type="hidden" name="' . $k . '" value="' . $v . '" />';
-        }
-
-        $strBuffer .= '
-<noscript>
-<input type="submit" value="' . specialchars($GLOBALS['TL_LANG']['MSC']['pay_with_redirect'][2]) . '">
-</noscript>
-</form>
-
-<script type="text/javascript">
-<!--//--><![CDATA[//><!--
-window.addEvent( \'domready\' , function() {
-  $(\'payment_form\').submit();
-});
-//--><!]]>
-</script>';
-
-        return $strBuffer;
+        return $objTemplate->parse();
     }
 }
 
