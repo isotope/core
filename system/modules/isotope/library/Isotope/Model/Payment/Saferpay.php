@@ -65,12 +65,12 @@ class Saferpay extends Payment implements IsotopePayment
      */
     public function processPostSale()
     {
-        if ($this->Input->get('mod') != 'pay' || $this->Input->get('id') != $this->id) {
+        if (\Input::get('mod') != 'pay' || \Input::get('id') != $this->id) {
 
             return false;
         }
 
-        // Cannot use $this->Input->post() here because it would kill XML data
+        // Cannot use \Input::post() here because it would kill XML data
         $strData = $_POST['DATA'];
 
         // catch magic_quotes_gpc is set to yes in php.ini (can be removed when PHP 5.4 is compulsory)
@@ -98,7 +98,7 @@ class Saferpay extends Payment implements IsotopePayment
 
         // Get the Payment URL from the saferpay hosting server
         $objRequest = new Request();
-        $objRequest->send(static::verifyPayConfirmURI . "?DATA=" . urlencode($strData) . "&SIGNATURE=" . urlencode($this->Input->post('SIGNATURE')));
+        $objRequest->send(static::verifyPayConfirmURI . "?DATA=" . urlencode($strData) . "&SIGNATURE=" . urlencode(\Input::post('SIGNATURE')));
 
         // Stop if verification is not working
         if (strtoupper(substr($objRequest->response, 0, 3)) != 'OK:')
