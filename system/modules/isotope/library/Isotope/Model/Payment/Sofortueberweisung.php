@@ -109,8 +109,7 @@ class Sofortueberweisung extends Payment implements IsotopePayment
 		}
 
 		// error, hashes does not match
-		$this->log('The given hash does not match. (sofortüberweisung.de)', __METHOD__, TL_ERROR);
-		return;
+		\System::log('The given hash does not match. (sofortüberweisung.de)', __METHOD__, TL_ERROR);
 	}
 
 
@@ -126,7 +125,7 @@ class Sofortueberweisung extends Payment implements IsotopePayment
 			\Isotope\Module\Checkout::redirectToStep('failed');
 		}
 
-		$strCountry = in_array($this->Isotope->Cart->billing_address['country'], array('de','ch','at')) ? $this->Isotope->Cart->billing_address['country'] : 'de';
+		$strCountry = in_array(Isotope::getCart()->getBillingAddress()->country, array('de','ch','at')) ? Isotope::getCart()->getBillingAddress()->country : 'de';
 		$strUrl = 'https://www.sofortueberweisung.'.$strCountry.'/payment/start';
 
 		$arrParam = array
@@ -136,10 +135,10 @@ class Sofortueberweisung extends Payment implements IsotopePayment
 			'sender_holder'			=> '',
 			'sender_account_number'	=> '',
 			'sender_bank_code'		=> '',
-			'sender_country_id'		=> $this->Isotope->Cart->billing_address['country'],
-			'amount'				=> number_format($this->Isotope->Cart->grandTotal, 2, '.', ''),
-			'currency_id'			=> $this->Isotope->Config->currency,
-			'reason_1'				=> $this->Environment->host,
+			'sender_country_id'		=> Isotope::getCart()->getBillingAddress()->country,
+			'amount'				=> number_format(Isotope::getCart()->getTotal(), 2, '.', ''),
+			'currency_id'			=> Isotope::getConfig()->currency,
+			'reason_1'				=> \Environment::get('host'),
 			'reason_2'				=> '',
 			'user_variable_0'		=> $objOrder->id,
 			'user_variable_1'		=> $this->id,
