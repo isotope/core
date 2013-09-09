@@ -1260,12 +1260,10 @@ window.addEvent('domready', function()
      */
     public static function addQueryStringToUrl($strRequest, $varUrl=null)
     {
-        if ($varUrl === null)
-        {
+        if ($varUrl === null) {
             $varUrl = \Environment::getInstance()->request;
         }
-        elseif (is_numeric($varUrl))
-        {
+        elseif (is_numeric($varUrl)) {
             $objJump = \Database::getInstance()->prepare("SELECT * FROM tl_page WHERE id=?")->execute($varUrl);
 
             $varUrl = Isotope::getInstance()->generateFrontendUrl($objJump->row());
@@ -1282,20 +1280,17 @@ window.addEvent('domready', function()
         $queries = preg_split('/&(amp;)?/i', $strQueryString);
 
         // Overwrite existing parameters and ignore "language", see #64
-        foreach ($queries as $k=>$v)
-        {
+        foreach ($queries as $k=>$v) {
             $explode = explode('=', $v, 2);
 
-            if ($k === 'language' || preg_match('/(^|&(amp;)?)' . preg_quote($explode[0], '/') . '=/i', $strRequest))
-            {
+            if ($k === 'language' || preg_match('/(^|&(amp;)?)' . preg_quote($explode[0], '/') . '=/i', $strRequest)) {
                 unset($queries[$k]);
             }
         }
 
         $href = '?';
 
-        if (!empty($queries))
-        {
+        if (!empty($queries)) {
             $href .= implode('&amp;', $queries) . '&amp;';
         }
 
