@@ -125,6 +125,13 @@ abstract class Attribute extends TypeAgent
         $arrField['attributes']	  = $this->row();
         $arrField['eval']         = is_array($arrField['eval']) ? array_merge($arrField['eval'], $arrField['attributes']) : $arrField['attributes'];
 
+        // Support numeric paths (fileTree)
+        if ($this->path && is_numeric($this->path)) {
+            if (($objFile = \FilesModel::findByPk($this->path)) !== null) {
+                $arrField['eval']['path'] = $objFile->path;
+            }
+        }
+
         if ($this->be_filter) {
             $arrField['filter'] = true;
         }
