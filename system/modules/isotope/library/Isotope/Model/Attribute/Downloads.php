@@ -25,13 +25,20 @@ use Isotope\Model\Attribute;
  */
 class Downloads extends Attribute implements IsotopeAttribute
 {
+    public function saveToDCA(array &$arrData)
+    {
+        parent::saveToDCA($arrData);
 
-	public function saveToDCA(array &$arrData)
-	{
-		parent::saveToDCA($arrData);
+        $arrData['fields'][$this->field_name]['sql'] = "blob NULL";
 
-		$arrData['fields'][$this->field_name]['sql'] = "blob NULL";
-	}
+        if ($this->fieldType == 'checkbox') {
+            $arrData['fields'][$this->field_name]['sql'] = "blob NULL";
+            $arrData['fields'][$this->field_name]['eval']['multiple'] = true;
+
+        } else {
+            $arrData['fields'][$this->field_name]['sql'] = "int(10) unsigned NOT NULL default='0'";
+        }
+    }
 
     /**
      * Return class name for the backend widget or false if none should be available
