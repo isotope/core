@@ -33,7 +33,17 @@ class Downloads extends Attribute implements IsotopeAttribute
 		$arrData['fields'][$this->field_name]['sql'] = "blob NULL";
 	}
 
-	/**
+    /**
+     * Return class name for the backend widget or false if none should be available
+     * @return	string
+     */
+    public function getBackendWidget()
+    {
+        return $GLOBALS['BE_FFL']['fileTree'];
+    }
+
+
+    /**
      * Generate download attributes
      * @param IsotopeProduct
      * @return string
