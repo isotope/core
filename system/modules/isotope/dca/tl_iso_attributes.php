@@ -418,7 +418,7 @@ $GLOBALS['TL_DCA']['tl_iso_attributes'] = array
             'label'                 => &$GLOBALS['TL_LANG']['tl_iso_attributes']['sortBy'],
             'exclude'               => true,
             'inputType'             => 'select',
-            'options'               => array('name_asc', 'name_desc', 'date_asc', 'date_desc', 'meta', 'random'),
+            'options'               => array('custom', 'name_asc', 'name_desc', 'date_asc', 'date_desc', 'random'),
             'reference'             => &$GLOBALS['TL_LANG']['tl_iso_attributes'],
             'eval'                  => array('tl_class'=>'w50'),
             'sql'                   => "varchar(32) NOT NULL default ''",

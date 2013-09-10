@@ -35,6 +35,12 @@ class Downloads extends Attribute implements IsotopeAttribute
             $arrData['fields'][$this->field_name]['sql'] = "blob NULL";
             $arrData['fields'][$this->field_name]['eval']['multiple'] = true;
 
+            // Custom sorting
+            if ($this->sortBy == 'custom') {
+                $strOrderField = $this->field_name . '_order';
+                $arrData['fields'][$this->field_name]['eval']['orderField'] = $strOrderField;
+                $arrData['fields'][$strOrderField]['sql'] = "text NULL";
+            }
         } else {
             $arrData['fields'][$this->field_name]['sql'] = "int(10) unsigned NOT NULL default='0'";
         }
@@ -160,8 +166,7 @@ class Downloads extends Attribute implements IsotopeAttribute
         }
 
         // Sort array
-        switch ($this->sortBy)
-        {
+        switch ($this->sortBy) {
             default:
             case 'name_asc':
                 uksort($files, 'basename_natcasecmp');
@@ -178,17 +183,34 @@ class Downloads extends Attribute implements IsotopeAttribute
             case 'date_desc':
                 array_multisort($files, SORT_NUMERIC, $auxDate, SORT_DESC);
                 break;
+            case 'custom':
+                if ($this->{$this->field_name . '_order'} != '') {
+                    // Turn the order string into an array and remove all values
+                    $arrOrder = explode(',', $this->{$this->field_name . '_order'});
+                    $arrOrder = array_flip(array_map('intval', $arrOrder));
+                    $arrOrder = array_map(function(){}, $arrOrder);
 
-            case 'meta':
-                $arrFiles = array();
-                foreach ($this->arrAux as $k)
-                {
-                    if (strlen($k))
-                    {
-                        $arrFiles[] = $files[$k];
+                    // Move the matching elements to their position in $arrOrder
+                    foreach ($files as $k=>$v) {
+                        if (array_key_exists($v['id'], $arrOrder)) {
+                            $arrOrder[$v['id']] = $v;
+                            unset($files[$k]);
+                        }
                     }
+
+                    // Append the left-over files at the end
+                    if (!empty($files)) {
+                        $arrOrder = array_merge($arrOrder, array_values($files));
+                    }
+
+                    // Remove empty (unreplaced) entries
+                    $files = array_filter($arrOrder);
+                    unset($arrOrder);
                 }
-                $files = $arrFiles;
+                break;
+
+            case 'random':
+                shuffle($files);
                 break;
         }
 
