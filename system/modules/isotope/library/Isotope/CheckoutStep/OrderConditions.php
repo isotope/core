@@ -35,7 +35,7 @@ abstract class OrderConditions extends CheckoutStep
     {
         $objForm = new Form($this->objModule->getFormId(), 'POST', function($haste) {
             return \Input::post('FORM_SUBMIT') === $haste->getFormId();
-        });
+        }, (boolean) $this->objModule->tableless);
 
         // don't catch the exception here because we want it to be shown to the user
         $objForm->addFieldsFromFormGenerator($this->iso_order_conditions);
