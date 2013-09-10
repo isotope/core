@@ -38,7 +38,7 @@ abstract class OrderConditions extends CheckoutStep
         }, (boolean) $this->objModule->tableless);
 
         // don't catch the exception here because we want it to be shown to the user
-        $objForm->addFieldsFromFormGenerator($this->iso_order_conditions);
+        $objForm->addFieldsFromFormGenerator($this->objModule->iso_order_conditions);
 
         if ($objForm->validate()) {
             foreach ($objForm->fetchAll() as $strName => $varValue) {
