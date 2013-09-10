@@ -24,10 +24,10 @@ class OrderConditionsAfterProducts extends OrderConditions implements IsotopeChe
      */
     public function isAvailable()
     {
-        if ($this->iso_order_conditions_position == 'after') {
-            return true;
+        if ($this->objModule->iso_order_conditions_position != 'after') {
+            return false;
         }
 
-        return false;
+        return parent::isAvailable();
     }
 }

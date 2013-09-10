@@ -24,10 +24,10 @@ class OrderConditionsOnTop extends OrderConditions implements IsotopeCheckoutSte
      */
     public function isAvailable()
     {
-        if ($this->iso_order_conditions_position == 'top') {
-            return true;
+        if ($this->objModule->iso_order_conditions_position != 'top') {
+            return false;
         }
 
-        return false;
+        return parent::isAvailable();
     }
 }
