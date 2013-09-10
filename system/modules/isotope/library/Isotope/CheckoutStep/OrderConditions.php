@@ -40,13 +40,22 @@ abstract class OrderConditions extends CheckoutStep
         // don't catch the exception here because we want it to be shown to the user
         $objForm->addFieldsFromFormGenerator($this->objModule->iso_order_conditions);
 
-        if ($objForm->validate()) {
-            foreach ($objForm->fetchAll() as $strName => $varValue) {
-                $this->objModule->arrOrderData['form_' . $strName] = $varValue;
+        // Manually create widgets because we need to know if there are uploadable widgets
+        $objForm->createWidgets();
 
-                // @todo file handling?
-                // Isotope 1.4.* code was:
-                // $this->objModule->arrOrderData['form_' . $name] = \Environment::get('base') . str_replace(TL_ROOT . '/', '', dirname($file['tmp_name'])) . '/' . rawurlencode($file['name']);
+        // change enctype if there are uploads
+        if ($objForm->hasUploads()) {
+            $this->objModule->Template->enctype = 'multipart/form-data';
+        }
+
+        if ($objForm->isSubmitted() && $objForm->validate()) {
+            foreach ($objForm->fetchAll() as $strName => $varValue) {
+                if ($objForm->getWidget($strName) instanceof \uploadable) {
+                    $arrFile = $_SESSION['FILES'][$strName];
+                    $varValue = str_replace(TL_ROOT . '/', '', dirname($arrFile['tmp_name'])) . '/' . rawurlencode($arrFile['name']);
+                }
+
+                $this->objModule->arrOrderData['form_' . $strName] = $varValue;
             }
         } else {
             $this->blnError = true;
@@ -77,7 +86,7 @@ abstract class OrderConditions extends CheckoutStep
             {
                 foreach( $_SESSION['FILES'] as $name => $file )
                 {
-                    $this->objModule->arrOrderData['form_' . $name] = \Environment::get('base') . str_replace(TL_ROOT . '/', '', dirname($file['tmp_name'])) . '/' . rawurlencode($file['name']);
+                    $this->objModule->arrOrderData['form_' . $name] = str_replace(TL_ROOT . '/', '', dirname($file['tmp_name'])) . '/' . rawurlencode($file['name']);
                 }
             }
         }
