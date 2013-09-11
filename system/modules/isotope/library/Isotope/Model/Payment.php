@@ -213,15 +213,6 @@ abstract class Payment extends TypeAgent
 
 
     /**
-     * Process post-sale requests. Does nothing by default.
-     *
-     * This function can be called from the postsale.php file when the payment server is requestion/posting a status change.
-     * You can see an implementation example in PaymentPostfinance.php
-     */
-    public function processPostSale() {}
-
-
-    /**
      * Return a html form for payment data or an empty string.
      *
      * The input fields should be from array "payment" including the payment module ID.
