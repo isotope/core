@@ -53,6 +53,9 @@ $GLOBALS['TL_LANG']['tl_iso_payment_modules']['sparkasse_merchantref']          
 $GLOBALS['TL_LANG']['tl_iso_payment_modules']['sofortueberweisung_user_id']             = array('Customer ID', 'Your customer ID for sofortüberweisung.de');
 $GLOBALS['TL_LANG']['tl_iso_payment_modules']['sofortueberweisung_project_id']          = array('Project ID', 'Your project ID for sofortüberweisung.de');
 $GLOBALS['TL_LANG']['tl_iso_payment_modules']['sofortueberweisung_project_password']    = array('Projekt password', 'Your project password for sofortüberweisung.de');
+$GLOBALS['TL_LANG']['tl_iso_payment_modules']['saferpay_accountid']                     = array('Saferpay Account-ID', 'Please enter your unique Saferpay account id.');
+$GLOBALS['TL_LANG']['tl_iso_payment_modules']['saferpay_description']                   = array('Checkout description', 'The customer will see this description on the Saferpay checkout page.');
+$GLOBALS['TL_LANG']['tl_iso_payment_modules']['saferpay_vtconfig']                      = array('Payment page configuration (VTCONFIG)', 'You can create different Payment Page configurations. If you want to use a specific one of them, enter its "Parameter for the request" value here.');
 $GLOBALS['TL_LANG']['tl_iso_payment_modules']['expercash_popupId']                      = array('ExperCash Popup-ID', 'Geben Sie die Popup-ID aus Ihrem ExperCash Portal ein.');
 $GLOBALS['TL_LANG']['tl_iso_payment_modules']['expercash_profile']                      = array('ExperCash Profile', 'Geben Sie die dreistellige Profilnummer ein.');
 $GLOBALS['TL_LANG']['tl_iso_payment_modules']['expercash_popupKey']                     = array('ExperCash Popup-Key', 'Geben Sie den Popup-Key aus Ihrem ExperCash Portal ein.');
