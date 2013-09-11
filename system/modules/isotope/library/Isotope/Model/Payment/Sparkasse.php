@@ -24,48 +24,8 @@ use Isotope\Model\ProductCollection\Order;
  * @copyright  Isotope eCommerce Workgroup 2009-2012
  * @author     Andreas Schempp <andreas@schempp.ch>
  */
-class Sparkasse extends Payment implements IsotopePayment
+class Sparkasse extends Postsale implements IsotopePayment
 {
-
-    /**
-     * processPayment function.
-     *
-     * @access public
-     * @return mixed
-     */
-    public function processPayment()
-    {
-        $objOrder = new IsotopeOrder();
-
-        if (!$objOrder->findBy('source_collection_id', Isotope::getCart()->id))
-        {
-            return false;
-        }
-
-        if ($objOrder->date_paid > 0 && $objOrder->date_paid <= time())
-        {
-            \Isotope\Frontend::clearTimeout();
-            return true;
-        }
-
-        if (\Isotope\Frontend::setTimeout())
-        {
-            // Do not index or cache the page
-            global $objPage;
-            $objPage->noSearch = 1;
-            $objPage->cache = 0;
-
-            $objTemplate = new \Isotope\Template('mod_message');
-            $objTemplate->type = 'processing';
-            $objTemplate->message = $GLOBALS['TL_LANG']['MSC']['payment_processing'];
-            return $objTemplate->parse();
-        }
-
-        \System::log('Payment could not be processed.', __METHOD__, TL_ERROR);
-
-        \Isotope\Module\Checkout::redirectToStep('failed');
-    }
-
 
     /**
      * Server to server communication

@@ -18,26 +18,8 @@ use Isotope\Model\Payment;
 use Isotope\Model\ProductCollection\Order;
 
 
-/**
- * Class CybersourceClient
- *
- * @copyright  Isotope eCommerce Workgroup 2009-2012
- * @author     Andreas Schempp <andreas.schempp@terminal42.ch>
- */
-class Payone extends Payment implements IsotopePayment
+class Payone extends Postsale implements IsotopePayment
 {
-
-    /**
-     * Process checkout payment.
-     *
-     * @access public
-     * @return mixed
-     */
-    public function processPayment()
-    {
-        return true;
-    }
-
 
     /**
      * Process Transaction URL notification
@@ -47,9 +29,10 @@ class Payone extends Payment implements IsotopePayment
      */
     public function processPostsale()
     {
-        if (\Input::post('aid') == $this->payone_aid
-            && \Input::post('portalid') == $this->payone_portalid
-            && ((\Input::post('mode') == 'test' && $this->debug) || (\Input::post('mode') == 'live' && !$this->debug)))
+        if (
+            \Input::post('aid') == $this->payone_aid &&
+            \Input::post('portalid') == $this->payone_portalid &&
+            ((\Input::post('mode') == 'test' && $this->debug) || (\Input::post('mode') == 'live' && !$this->debug)))
         {
             if (($objOrder = Order::findByPk(\Input::post('reference'))) !== null)
             {
