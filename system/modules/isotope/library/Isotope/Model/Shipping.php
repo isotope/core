@@ -223,7 +223,7 @@ abstract class Shipping extends TypeAgent
      * This function can be called from the postsale.php file when the shipping server is requestion/posting a status change.
      * You can see an implementation example in PaymentPostfinance.php
      */
-    public function processPostSale() {}
+    public function processPostsale() {}
 
 
     /**

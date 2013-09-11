@@ -83,7 +83,7 @@ class Postfinance extends Payment implements IsotopePayment, IsotopePostsale
      * @access public
      * @return void
      */
-    public function processPostSale()
+    public function processPostsale()
     {
         if ($this->getRequestData('NCERROR') > 0)
         {

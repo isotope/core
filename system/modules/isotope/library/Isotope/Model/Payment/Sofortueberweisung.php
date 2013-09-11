@@ -75,7 +75,7 @@ class Sofortueberweisung extends Payment implements IsotopePayment
     /**
      * Handle the server to server postsale request
      */
-    public function processPostSale()
+    public function processPostsale()
     {
         // check if there is a order with this ID
         if (($objOrder = Order::findByPk(\Input::post('user_variable_0'))) === null) {

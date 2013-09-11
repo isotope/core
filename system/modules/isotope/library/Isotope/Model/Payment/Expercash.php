@@ -53,7 +53,7 @@ class Expercash extends Payment implements IsotopePayment, IsotopePostsale
      * @access public
      * @return void
      */
-    public function processPostSale()
+    public function processPostsale()
     {
         if (($objOrder = Order::findByPk(\Input::get('transactionId'))) === null)
         {

@@ -67,6 +67,6 @@ abstract class Postsale extends Payment
      * This function can be called from the postsale.php file when the payment server is requestion/posting a status change.
      * You can see an implementation example in Isotope\Payment\Paypal
      */
-    public abstract function processPostSale();
+    public abstract function processPostsale();
 
 }

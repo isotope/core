@@ -31,7 +31,7 @@ class Datatrans extends Payment implements IsotopePayment
     /**
      * Perform server to server data check
      */
-    public function processPostSale()
+    public function processPostsale()
     {
         // Verify payment status
         if (\Input::post('status') != 'success')

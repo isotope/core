@@ -107,7 +107,7 @@ class PostSale extends \Frontend
         try {
             $objModule = new $strClass($objModule->row());
 
-            return $objModule->processPostSale();
+            return $objModule->processPostsale();
 
         } catch (\Exception $e) {
             \System::log('Exception in post-sale request: '.$e->getMessage(), __METHOD__, TL_ERROR);

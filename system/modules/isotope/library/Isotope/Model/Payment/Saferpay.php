@@ -53,7 +53,7 @@ class Saferpay extends Payment implements IsotopePayment
     /**
      * Process Saferpay server to server notification
      */
-    public function processPostSale()
+    public function processPostsale()
     {
         if (\Input::get('mod') != 'pay' || \Input::get('id') != $this->id) {
 

@@ -73,7 +73,7 @@ class Sparkasse extends Payment implements IsotopePayment
      * @access public
      * @return void
      */
-    public function processPostSale()
+    public function processPostsale()
     {
         $arrData = array();
 

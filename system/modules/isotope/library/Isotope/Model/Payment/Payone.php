@@ -45,7 +45,7 @@ class Payone extends Payment implements IsotopePayment
      * @access public
      * @return void
      */
-    public function processPostSale()
+    public function processPostsale()
     {
         if (\Input::post('aid') == $this->payone_aid
             && \Input::post('portalid') == $this->payone_portalid
