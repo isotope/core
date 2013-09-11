@@ -13,6 +13,7 @@
 namespace Isotope\Model\Payment;
 
 use Isotope\Isotope;
+use Isotope\Interfaces\IsotopePostsale;
 use Isotope\Model\Payment;
 use Isotope\Model\ProductCollection\Order;
 
@@ -22,7 +23,7 @@ use Isotope\Model\ProductCollection\Order;
  * @copyright  Isotope eCommerce Workgroup 2009-2012
  * @author     Andreas Schempp <andreas.schempp@terminal42.ch>
  */
-abstract class Postsale extends Payment
+abstract class Postsale extends Payment implements IsotopePostsale
 {
 
     /**
