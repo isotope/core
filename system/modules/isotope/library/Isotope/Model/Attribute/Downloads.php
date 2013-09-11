@@ -43,6 +43,7 @@ class Downloads extends Attribute implements IsotopeAttribute
             }
         } else {
             $arrData['fields'][$this->field_name]['sql'] = "int(10) unsigned NOT NULL default='0'";
+            $arrData['fields'][$this->field_name]['eval']['multiple'] = false;
         }
     }
 
