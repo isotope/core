@@ -12,6 +12,8 @@
 
 namespace Isotope;
 
+use Isotope\Interfaces\IsotopePostsale;
+
 
 /**
  * Initialize the system
@@ -105,6 +107,13 @@ class PostSale extends \Frontend
 
         try {
             $objModule = new $strClass($objModule->row());
+
+            if (!($objModule instanceof IsotopePostsale)) {
+                \System::log('Invalid post-sale request (interface not implemented): '.\Environment::get('request'), __METHOD__, TL_ERROR);
+
+                header('HTTP/1.1 501 Not Implemented');
+    			die('Not Implemented');
+            }
 
             return $objModule->processPostsale();
 
