@@ -14,7 +14,6 @@
 
 
 $GLOBALS['TL_HOOKS']['loadDataContainer'][]             = array('Isotope\tl_iso_products', 'loadProductsDCA');
-$GLOBALS['TL_HOOKS']['loadDataContainer'][]             = array('Isotope\tl_member', 'limitCountries');
 $GLOBALS['TL_HOOKS']['loadDataContainer'][]             = array('Isotope\Backend', 'loadTypeAgentHelp');
 $GLOBALS['TL_HOOKS']['addCustomRegexp'][]               = array('Isotope\Isotope', 'validateRegexp');
 $GLOBALS['TL_HOOKS']['getSearchablePages'][]            = array('Isotope\Frontend', 'addProductsToSearchIndex');
@@ -29,8 +28,10 @@ $GLOBALS['TL_HOOKS']['generateBreadcrumb'][]            = array('Isotope\Fronten
 $GLOBALS['ISO_HOOKS']['buttons'][]                      = array('Isotope\Isotope', 'defaultButtons');
 $GLOBALS['ISO_HOOKS']['findSurchargesForCollection'][]  = array('Isotope\Frontend', 'findShippingAndPaymentSurcharges');
 
-if (TL_MODE == 'FE')
-{
+if (TL_MODE == 'FE') {
     // Do not parse backend templates
     $GLOBALS['TL_HOOKS']['parseTemplate'][]            = array('Isotope\Frontend', 'addNavigationClass');
+
+    // Only limit countries in FE
+    $GLOBALS['TL_HOOKS']['loadDataContainer'][]        = array('Isotope\tl_member', 'limitCountries');
 }
