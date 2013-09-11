@@ -75,7 +75,7 @@ class PostSale extends \Frontend
             \System::log('Invalid post-sale request (param error): '.\Environment::get('request'), __METHOD__, TL_ERROR);
 
             header('HTTP/1.1 400 Bad Request');
-			die('Bad Request');
+            die('Bad Request');
         }
 
         \System::log('New post-sale request: '.\Environment::get('request'), __METHOD__, TL_ACCESS);
@@ -94,7 +94,7 @@ class PostSale extends \Frontend
             \System::log('Invalid post-sale request (module not found): '.\Environment::get('request'), __METHOD__, TL_ERROR);
 
             header('HTTP/1.1 404 Not Found');
-			die('Not Found');
+            die('Not Found');
         }
 
         $strClass = $GLOBALS['ISO_'.strtoupper($strMod)][$objModule->type];
@@ -102,7 +102,7 @@ class PostSale extends \Frontend
             \System::log('Invalid post-sale request (class not found): '.\Environment::get('request'), __METHOD__, TL_ERROR);
 
             header('HTTP/1.1 501 Not Implemented');
-			die('Not Implemented');
+            die('Not Implemented');
         }
 
         try {
@@ -112,7 +112,7 @@ class PostSale extends \Frontend
                 \System::log('Invalid post-sale request (interface not implemented): '.\Environment::get('request'), __METHOD__, TL_ERROR);
 
                 header('HTTP/1.1 501 Not Implemented');
-    			die('Not Implemented');
+                die('Not Implemented');
             }
 
             return $objModule->processPostsale();
@@ -121,7 +121,7 @@ class PostSale extends \Frontend
             \System::log('Exception in post-sale request: '.$e->getMessage(), __METHOD__, TL_ERROR);
 
             header('HTTP/1.1 500 Internal Server Error');
-			die('Internal Server Error');
+            die('Internal Server Error');
         }
     }
 }
