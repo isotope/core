@@ -27,47 +27,8 @@ use Isotope\Model\ProductCollection\Order;
  * @author     Fred Bliss <fred.bliss@intelligentspark.com>
  * @author     Christian de la Haye <service@delahaye.de>
  */
-class Paypal extends Payment implements IsotopePayment
+class Paypal extends Postsale implements IsotopePayment
 {
-
-    /**
-     * processPayment function.
-     *
-     * @access public
-     * @return mixed
-     */
-    public function processPayment()
-    {
-        if (($objOrder = Order::findOneBy('source_collection_id', Isotope::getCart()->id)) === null)
-        {
-            return false;
-        }
-
-        if ($objOrder->date_paid > 0 && $objOrder->date_paid <= time())
-        {
-            \Isotope\Frontend::clearTimeout();
-
-            return true;
-        }
-
-        if (\Isotope\Frontend::setTimeout())
-        {
-            // Do not index or cache the page
-            global $objPage;
-            $objPage->noSearch = 1;
-            $objPage->cache = 0;
-
-            $objTemplate = new \Isotope\Template('mod_message');
-            $objTemplate->type = 'processing';
-            $objTemplate->message = $GLOBALS['TL_LANG']['MSC']['payment_processing'];
-
-            return $objTemplate->parse();
-        }
-
-        \System::log('Payment could not be processed.', __METHOD__, TL_ERROR);
-        \Isotope\Module\Checkout::redirectToStep('failed');
-    }
-
 
     /**
      * Process PayPal Instant Payment Notifications (IPN)
@@ -75,7 +36,7 @@ class Paypal extends Payment implements IsotopePayment
      * @access public
      * @return void
      */
-    public function processPostSale()
+    public function processPostsale()
     {
         $objRequest = new \Request();
         $objRequest->send(('https://www.' . ($this->debug ? 'sandbox.' : '') . 'paypal.com/cgi-bin/webscr?cmd=_notify-validate'), file_get_contents("php://input"), 'post');

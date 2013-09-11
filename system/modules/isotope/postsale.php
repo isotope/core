@@ -12,6 +12,8 @@
 
 namespace Isotope;
 
+use Isotope\Interfaces\IsotopePostsale;
+
 
 /**
  * Initialize the system
@@ -69,17 +71,16 @@ class PostSale extends \Frontend
         $strMod = strlen(\Input::post('mod')) ? \Input::post('mod') : \Input::get('mod');
         $strId = strlen(\Input::post('id')) ? \Input::post('id') : \Input::get('id');
 
-        if (!strlen($strMod) || !strlen($strId))
-        {
+        if ($strMod == '' || $strId == '') {
             \System::log('Invalid post-sale request (param error): '.\Environment::get('request'), __METHOD__, TL_ERROR);
 
-            return;
+            header('HTTP/1.1 400 Bad Request');
+			die('Bad Request');
         }
 
         \System::log('New post-sale request: '.\Environment::get('request'), __METHOD__, TL_ACCESS);
 
-        switch( strtolower($strMod) )
-        {
+        switch (strtolower($strMod)) {
             case 'pay':
                 $objModule = \Database::getInstance()->prepare("SELECT * FROM tl_iso_payment_modules WHERE id=?")->limit(1)->execute($strId);
                 break;
@@ -89,31 +90,39 @@ class PostSale extends \Frontend
                 break;
         }
 
-        if (!$objModule->numRows)
-        {
+        if (!$objModule->numRows) {
             \System::log('Invalid post-sale request (module not found): '.\Environment::get('request'), __METHOD__, TL_ERROR);
 
-            return;
+            header('HTTP/1.1 404 Not Found');
+			die('Not Found');
         }
 
         $strClass = $GLOBALS['ISO_'.strtoupper($strMod)][$objModule->type];
-        if (!strlen($strClass) || !class_exists($strClass))
-        {
+        if (!strlen($strClass) || !class_exists($strClass)) {
             \System::log('Invalid post-sale request (class not found): '.\Environment::get('request'), __METHOD__, TL_ERROR);
 
-            return;
+            header('HTTP/1.1 501 Not Implemented');
+			die('Not Implemented');
         }
 
         try {
             $objModule = new $strClass($objModule->row());
 
-            return $objModule->processPostSale();
+            if (!($objModule instanceof IsotopePostsale)) {
+                \System::log('Invalid post-sale request (interface not implemented): '.\Environment::get('request'), __METHOD__, TL_ERROR);
+
+                header('HTTP/1.1 501 Not Implemented');
+    			die('Not Implemented');
+            }
+
+            return $objModule->processPostsale();
 
         } catch (\Exception $e) {
             \System::log('Exception in post-sale request: '.$e->getMessage(), __METHOD__, TL_ERROR);
-        }
 
-        return;
+            header('HTTP/1.1 500 Internal Server Error');
+			die('Internal Server Error');
+        }
     }
 }
 

@@ -25,13 +25,13 @@ use Isotope\Model\ProductCollection\Order;
  * @author     Andreas Schempp <andreas@schempp.ch>
  * @author     Leo Unglaub <leo@leo-unglaub.net>
  */
-class Datatrans extends Payment implements IsotopePayment
+class Datatrans extends Postsale implements IsotopePayment
 {
 
     /**
      * Perform server to server data check
      */
-    public function processPostSale()
+    public function processPostsale()
     {
         // Verify payment status
         if (\Input::post('status') != 'success')
@@ -71,51 +71,6 @@ class Datatrans extends Payment implements IsotopePayment
         $objOrder->checkout();
         $objOrder->date_payed = time();
         $objOrder->save();
-    }
-
-
-    /**
-     * Validate post parameters and complete order
-     * @return bool
-     */
-    public function processPayment()
-    {
-        if (($objOrder = Order::findOneBy('source_collection_id', Isotope::getCart()->id)) === null)
-        {
-            return false;
-        }
-
-        if ($objOrder->date_payed > 0 && $objOrder->date_payed <= time())
-        {
-            unset($_SESSION['PAYMENT_TIMEOUT']);
-
-            return true;
-        }
-
-        if (!isset($_SESSION['PAYMENT_TIMEOUT']))
-        {
-            $_SESSION['PAYMENT_TIMEOUT'] = 60;
-        }
-        else
-        {
-            $_SESSION['PAYMENT_TIMEOUT'] = $_SESSION['PAYMENT_TIMEOUT'] - 5;
-        }
-
-        if ($_SESSION['PAYMENT_TIMEOUT'] === 0)
-        {
-            global $objPage;
-            \System::log('Payment could not be processed.', __METHOD__, TL_ERROR);
-            \Controller::redirect(\Controller::generateFrontendUrl($objPage->row(), '/step/failed'));
-        }
-
-        // Reload page every 5 seconds and check if payment was successful
-        $GLOBALS['TL_HEAD'][] = '<meta http-equiv="refresh" content="5,' . \Environment::get('base') . \Environment::get('request') . '">';
-
-        $objTemplate = new \Isotope\Template('mod_message');
-        $objTemplate->type = 'processing';
-        $objTemplate->message = $GLOBALS['TL_LANG']['MSC']['payment_processing'];
-
-        return $objTemplate->parse();
     }
 
 
