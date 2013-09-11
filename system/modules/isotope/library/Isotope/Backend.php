@@ -863,10 +863,19 @@ class Backend extends Contao_Backend
         }
     }
 
+    /**
+     * Load type agent model help
+     * @param   string
+     */
     public function loadTypeAgentHelp($strTable)
     {
+        if (!isset($GLOBALS['TL_DCA'][$strTable]['fields']['type'])) {
+            return;
+        }
+
         $strScript = \Environment::get('script');
         $arrField = &$GLOBALS['TL_DCA'][$strTable]['fields']['type'];
+
         if (
             $strScript != 'contao/help.php' ||
             !$arrField ||
@@ -874,8 +883,7 @@ class Backend extends Contao_Backend
             !is_array($arrField['options']) ||
             isset($GLOBALS['TL_LANG']['XPL']['type'])
         ) {
-
-            return $strTable;
+            return;
         }
 
         // try to load a type agent model help description
@@ -886,7 +894,5 @@ class Backend extends Contao_Backend
                 $GLOBALS['TL_LANG']['XPL']['type'][] = $arrLabel;
             }
         }
-
-        return $strTable;
     }
 }
