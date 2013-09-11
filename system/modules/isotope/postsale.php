@@ -69,8 +69,7 @@ class PostSale extends \Frontend
         $strMod = strlen(\Input::post('mod')) ? \Input::post('mod') : \Input::get('mod');
         $strId = strlen(\Input::post('id')) ? \Input::post('id') : \Input::get('id');
 
-        if (!strlen($strMod) || !strlen($strId))
-        {
+        if ($strMod == '' || $strId == '') {
             \System::log('Invalid post-sale request (param error): '.\Environment::get('request'), __METHOD__, TL_ERROR);
 
             header('HTTP/1.1 400 Bad Request');
@@ -79,8 +78,7 @@ class PostSale extends \Frontend
 
         \System::log('New post-sale request: '.\Environment::get('request'), __METHOD__, TL_ACCESS);
 
-        switch( strtolower($strMod) )
-        {
+        switch (strtolower($strMod)) {
             case 'pay':
                 $objModule = \Database::getInstance()->prepare("SELECT * FROM tl_iso_payment_modules WHERE id=?")->limit(1)->execute($strId);
                 break;
@@ -90,8 +88,7 @@ class PostSale extends \Frontend
                 break;
         }
 
-        if (!$objModule->numRows)
-        {
+        if (!$objModule->numRows) {
             \System::log('Invalid post-sale request (module not found): '.\Environment::get('request'), __METHOD__, TL_ERROR);
 
             header('HTTP/1.1 404 Not Found');
@@ -99,8 +96,7 @@ class PostSale extends \Frontend
         }
 
         $strClass = $GLOBALS['ISO_'.strtoupper($strMod)][$objModule->type];
-        if (!strlen($strClass) || !class_exists($strClass))
-        {
+        if (!strlen($strClass) || !class_exists($strClass)) {
             \System::log('Invalid post-sale request (class not found): '.\Environment::get('request'), __METHOD__, TL_ERROR);
 
             header('HTTP/1.1 501 Not Implemented');
