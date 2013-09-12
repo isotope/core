@@ -179,6 +179,14 @@ class TaxRate extends \Model
         return ($arrTaxRate['unit'] == '%');
     }
 
+    /**
+     * Get label
+     * @return  string
+     */
+    public function getLabel()
+    {
+        return Translation::get($this->label ?: $this->name);
+    }
 
     /**
      * Get amount of tax rate

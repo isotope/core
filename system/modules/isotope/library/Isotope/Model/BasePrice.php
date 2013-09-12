@@ -28,4 +28,14 @@ class BasePrice extends \Model
      */
     protected static $strTable = 'tl_iso_baseprice';
 
+
+    /**
+     * Get label
+     * @return  string
+     */
+    public function getLabel()
+    {
+        return $this->label ? Translation::get($this->label) : '';
+    }
+
 }

@@ -51,6 +51,14 @@ class TaxClass extends \Model
         }
     }
 
+    /**
+     * Get label
+     * @return  string
+     */
+    public function getLabel()
+    {
+        return Translation::get($this->label ?: $this->name);
+    }
 
     /**
      * Calculate a price, removing tax if included but not applicable
