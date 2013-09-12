@@ -48,6 +48,10 @@ class Translation
             return $varLabel;
         }
 
+        if (null === $strLanguage) {
+            $strLanguage = $GLOBALS['TL_LANGUAGE'];
+        }
+
         // Recursively translate label array
         if (is_array($varLabel)) {
             foreach ($varLabel as $k => $v) {
