@@ -12,6 +12,9 @@
 
 namespace Isotope;
 
+use Isotope\Model\Label;
+
+
 /**
  * Translates labels
  *
@@ -41,7 +44,7 @@ class Translation
      */
     public static function get($varLabel, $strLanguage=null)
     {
-        if (!\Database::getInstance()->tableExists('tl_iso_labels')) {
+        if (!\Database::getInstance()->tableExists(Label::getTable())) {
             return $varLabel;
         }
 
@@ -97,9 +100,12 @@ class Translation
 
         if (!isset(static::$arrLoaded[$strLanguage])) {
 
-            $objLabels = \Database::getInstance()->prepare('SELECT * FROM tl_iso_labels WHERE language=?')->execute($strLanguage);
-            while ($objLabels->next()) {
-                static::$arrLabels[$strLanguage][$objLabels->label] = $objLabels->replacement;
+            $objLabels = Label::findBy('language', $strLanguage);
+
+            if (null !== $objLabels) {
+                while ($objLabels->next()) {
+                    static::$arrLabels[$strLanguage][$objLabels->label] = $objLabels->replacement;
+                }
             }
 
             static::$arrLoaded[$strLanguage] = true;
