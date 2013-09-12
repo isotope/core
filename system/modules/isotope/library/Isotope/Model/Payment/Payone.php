@@ -124,7 +124,7 @@ class Payone extends Postsale implements IsotopePayment
             $arrData['id['.++$i.']']    = 'surcharge'.$k;
             $arrData['pr['.$i.']']      = $objSurcharge->total_price * 100;
             $arrData['no['.$i.']']      = '1';
-            $arrData['de['.$i.']']      = $objSurcharge->label;
+            $arrData['de['.$i.']']      = $objSurcharge->getLabel();
         }
 
 

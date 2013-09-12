@@ -123,7 +123,7 @@ class ShippingMethod extends CheckoutStep implements IsotopeCheckoutStep
         if (!$this->hasError()) {
             $objShipping = Isotope::getCart()->getShippingMethod();
             $this->objModule->arrOrderData['shipping_method_id']   = $objShipping->id;
-            $this->objModule->arrOrderData['shipping_method']      = $objShipping->label;
+            $this->objModule->arrOrderData['shipping_method']      = $objShipping->getLabel();
             $this->objModule->arrOrderData['shipping_note']        = $objShipping->note;
             $this->objModule->arrOrderData['shipping_note_text']   = strip_tags($objShipping->note);
         }

@@ -273,7 +273,7 @@ abstract class Payment extends TypeAgent
      */
     public function checkoutReview()
     {
-        return $this->label;
+        return $this->getLabel();
     }
 
 

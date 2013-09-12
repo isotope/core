@@ -250,7 +250,7 @@ class AuthorizeDotNet extends Payment implements IsotopePayment
         }
 
         return '
-<h2>' . $this->label . '</h2>'.
+<h2>' . $this->getLabel() . '</h2>'.
 ($_SESSION['CHECKOUT_DATA']['responseMsg'] == '' ? '' : '<p class="error message">'. $_SESSION['CHECKOUT_DATA']['responseMsg'] . '</p>').$strBuffer;
 
     }

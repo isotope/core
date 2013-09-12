@@ -45,7 +45,7 @@ class BasePrice extends Attribute implements IsotopeAttribute
 
             if (null !== $objBasePrice)
             {
-                return sprintf(Translation::get($objBasePrice->label), Isotope::formatPriceWithCurrency($objProduct->price / $arrData['value'] * $objBasePrice->amount), $arrData['value']);
+                return sprintf($objBasePrice->getLabel(), Isotope::formatPriceWithCurrency($objProduct->price / $arrData['value'] * $objBasePrice->amount), $arrData['value']);
             }
         }
 
