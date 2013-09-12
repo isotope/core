@@ -40,6 +40,10 @@ class Translation
      */
     public static function get($varLabel, $strLanguage=null)
     {
+        if (!\Database::getInstance()->tableExists('tl_iso_labels')) {
+            return $varLabel;
+        }
+
         // Recursively translate label array
         if (is_array($varLabel)) {
             foreach ($varLabel as $k => $v) {
