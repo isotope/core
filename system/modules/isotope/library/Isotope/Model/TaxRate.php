@@ -44,9 +44,6 @@ class TaxRate extends \Model
             case 'address':
                 return deserialize($this->arrData[$strKey]);
 
-            case 'label':
-                return Translation::get($this->arrData['label'] ?: $this->arrData['name']);
-
             default:
                 return parent::__get($strKey);
         }

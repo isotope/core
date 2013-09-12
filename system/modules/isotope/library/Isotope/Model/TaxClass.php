@@ -43,9 +43,6 @@ class TaxClass extends \Model
             case 'rates':
                 return deserialize($this->arrData[$strKey]);
 
-            case 'label':
-                return $this->arrData['label'] ? Translation::get($this->arrData['label']) : '';
-
             default:
                 return parent::__get($strKey);
         }

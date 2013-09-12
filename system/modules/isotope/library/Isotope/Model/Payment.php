@@ -209,7 +209,7 @@ abstract class Payment extends TypeAgent
      */
     public function getLabel()
     {
-        return Translation::get($this->arrData['label'] ? $this->arrData['label'] : $this->arrData['name']);
+        return Translation::get($this->label ?: $this->name);
     }
 
 
