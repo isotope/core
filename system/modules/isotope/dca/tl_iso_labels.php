@@ -132,7 +132,7 @@ $GLOBALS['TL_DCA']['tl_iso_labels'] = array
             'options'                   => \System::getLanguages(),
             'default'                   => \BackendUser::getInstance()->language,
             'eval'                      => array('mandatory'=>true, 'tl_class'=>'clr'),
-            'sql'                       => "varchar(2) NOT NULL default ''"
+            'sql'                       => "varchar(5) NOT NULL default ''"
         ),
         'label' => array
         (
