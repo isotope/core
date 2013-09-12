@@ -20,6 +20,7 @@ namespace Isotope;
  */
 class Translation
 {
+
     /**
      * Labels
      * @var array
@@ -74,7 +75,7 @@ class Translation
      */
     public static function add($strLabel, $strReplacement, $strLanguage=null)
     {
-        if ($strLanguage === null) {
+        if (null === $strLanguage) {
             $strLanguage = $GLOBALS['TL_LANGUAGE'];
         }
 
@@ -90,7 +91,7 @@ class Translation
      */
     protected static function initialize($strLanguage=null)
     {
-        if ($strLanguage === null) {
+        if (null === $strLanguage) {
             $strLanguage = $GLOBALS['TL_LANGUAGE'];
         }
 
