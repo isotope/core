@@ -94,7 +94,7 @@ class Translation
 
             $objLabels = \Database::getInstance()->prepare('SELECT * FROM tl_iso_labels WHERE language=?')->execute($strLanguage);
             while ($objLabels->next()) {
-                static::$arrLabels[$objLabels->label] = $objLabels->replacement;
+                static::$arrLabels[$strLanguage][$objLabels->label] = $objLabels->replacement;
             }
 
             static::$arrLoaded[$strLanguage] = true;
