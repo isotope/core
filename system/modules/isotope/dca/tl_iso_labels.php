@@ -50,8 +50,8 @@ $GLOBALS['TL_DCA']['tl_iso_labels'] = array
         ),
         'label' => array
         (
-            'fields'                    => array('label', 'replacement'),
-            'format'                    => '%s <span style="color:#b3b3b3; padding-left:3px;">[%s]</span>',
+            'fields'                    => array('language', 'label', 'replacement'),
+            'showColumns'               => true,
         ),
         'global_operations' => array
         (
@@ -139,7 +139,7 @@ $GLOBALS['TL_DCA']['tl_iso_labels'] = array
             'label'                     => &$GLOBALS['TL_LANG']['tl_iso_labels']['label'],
             'search'                    => true,
             'inputType'                 => 'text',
-            'eval'                      => array('mandatory'=>true, 'maxlength'=>255, 'decodeEntities'=>true, 'tl_class'=>'w50'),
+            'eval'                      => array('mandatory'=>true, 'maxlength'=>255, 'decodeEntities'=>true, 'tl_class'=>'long'),
             'sql'                       => "varchar(255) NOT NULL default ''"
         ),
         'replacement' => array
@@ -147,7 +147,7 @@ $GLOBALS['TL_DCA']['tl_iso_labels'] = array
             'label'                     => &$GLOBALS['TL_LANG']['tl_iso_labels']['replacement'],
             'search'                    => true,
             'inputType'                 => 'text',
-            'eval'                      => array('mandatory'=>true, 'maxlength'=>255, 'decodeEntities'=>true, 'tl_class'=>'w50'),
+            'eval'                      => array('mandatory'=>true, 'maxlength'=>255, 'decodeEntities'=>true, 'tl_class'=>'long'),
             'sql'                       => "varchar(255) NOT NULL default ''"
         )
     )
