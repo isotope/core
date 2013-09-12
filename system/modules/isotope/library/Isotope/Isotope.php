@@ -556,62 +556,6 @@ class Isotope extends \Controller
 
 
     /**
-     * Translate a value using the tl_iso_label table
-     * @param mixed
-     * @param boolean
-     * @return mixed
-     */
-    public static function translate($label, $language=false)
-    {
-        static $blnInstalled = null;
-
-        if (false === $blnInstalled) {
-
-            return $label;
-
-        } elseif (null === $blnInstalled) {
-            $blnInstalled = \Database::getInstance()->tableExists('tl_iso_labels');
-
-            if (!$blnInstalled) {
-
-                return $label;
-            }
-        }
-
-        // Recursively translate label array
-        if (is_array($label))
-        {
-            foreach ($label as $k => $v)
-            {
-                $label[$k] = static::translate($v, $language);
-            }
-
-            return $label;
-        }
-
-        if (!$language)
-        {
-            $language = $GLOBALS['TL_LANGUAGE'];
-        }
-
-        if (!is_array($GLOBALS['TL_LANG']['TBL'][$language]))
-        {
-            $GLOBALS['TL_LANG']['TBL'][$language] = array();
-            $objLabels = \Database::getInstance()->prepare("SELECT * FROM tl_iso_labels WHERE language=?")->execute($language);
-
-            while ($objLabels->next())
-            {
-                $GLOBALS['TL_LANG']['TBL'][$language][\String::decodeEntities($objLabels->label)] = $objLabels->replacement;
-            }
-        }
-
-        $label = \String::decodeEntities($label);
-
-        return $GLOBALS['TL_LANG']['TBL'][$language][$label] ? $GLOBALS['TL_LANG']['TBL'][$language][$label] : $label;
-    }
-
-
-    /**
      * Format value (based on DC_Table::show(), Contao 2.9.0)
      * @param string
      * @param string

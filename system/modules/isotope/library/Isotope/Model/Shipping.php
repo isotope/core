@@ -15,6 +15,7 @@ namespace Isotope\Model;
 use Isotope\Isotope;
 use Isotope\Factory\ProductCollectionSurcharge as SurchargeFactory;
 use Isotope\Interfaces\IsotopeProductCollection;
+use Isotope\Translation;
 
 
 /**
@@ -190,7 +191,7 @@ abstract class Shipping extends TypeAgent
      */
     public function getLabel()
     {
-        return Isotope::translate(($this->arrData['label'] ? $this->arrData['label'] : $this->arrData['name']));
+        return Translation::get(($this->arrData['label'] ? $this->arrData['label'] : $this->arrData['name']));
     }
 
 

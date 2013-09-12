@@ -546,7 +546,7 @@ class IsotopeRules extends \Controller
 
         $arrSurcharge = array
         (
-            'label'            => Isotope::translate(($arrRule['label'] ? $arrRule['label'] : $arrRule['name'])),
+            'label'            => Translation::get(($arrRule['label'] ? $arrRule['label'] : $arrRule['name'])),
             'price'            => ($blnPercentage ? $fltDiscount.'%' : ''),
             'total_price'    => 0,
             'tax_class'        => 0,

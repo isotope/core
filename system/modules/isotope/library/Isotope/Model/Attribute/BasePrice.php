@@ -16,6 +16,7 @@ use Isotope\Isotope;
 use Isotope\Interfaces\IsotopeAttribute;
 use Isotope\Interfaces\IsotopeProduct;
 use Isotope\Model\Attribute;
+use Isotope\Translation;
 
 
 /**
@@ -44,7 +45,7 @@ class BasePrice extends Attribute implements IsotopeAttribute
 
             if (null !== $objBasePrice)
             {
-                return sprintf(Isotope::translate($objBasePrice->label), Isotope::formatPriceWithCurrency($objProduct->price / $arrData['value'] * $objBasePrice->amount), $arrData['value']);
+                return sprintf(Translation::get($objBasePrice->label), Isotope::formatPriceWithCurrency($objProduct->price / $arrData['value'] * $objBasePrice->amount), $arrData['value']);
             }
         }
 

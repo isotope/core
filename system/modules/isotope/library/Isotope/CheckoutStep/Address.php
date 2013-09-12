@@ -15,6 +15,7 @@ namespace Isotope\CheckoutStep;
 
 use Isotope\Isotope;
 use Isotope\Model\Address as AddressModel;
+use Isotope\Translation;
 
 abstract class Address extends CheckoutStep
 {
@@ -243,7 +244,7 @@ abstract class Address extends CheckoutStep
                 $objWidget->mandatory = $field['mandatory'] ? true : false;
                 $objWidget->required = $objWidget->mandatory;
                 $objWidget->tableless = $this->objModule->tableless;
-                $objWidget->label = $field['label'] ? Isotope::translate($field['label']) : $objWidget->label;
+                $objWidget->label = $field['label'] ? Translation::get($field['label']) : $objWidget->label;
                 $objWidget->storeValues = true;
 
                 $this->arrWidgets[$field['value']] = $objWidget;

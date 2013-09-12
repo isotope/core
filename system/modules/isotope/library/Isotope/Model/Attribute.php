@@ -14,6 +14,7 @@ namespace Isotope\Model;
 
 use Isotope\Isotope;
 use Isotope\Interfaces\IsotopeProduct;
+use Isotope\Translation;
 
 
 /**
@@ -119,7 +120,7 @@ abstract class Attribute extends TypeAgent
 		// Keep field settings made through DCA code
         $arrField = is_array($arrData['fields'][$this->field_name]) ? $arrData['fields'][$this->field_name] : array();
 
-        $arrField['label']        = Isotope::translate(array($this->name, $this->description));
+        $arrField['label']        = Translation::get(array($this->name, $this->description));
         $arrField['exclude']      = true;
         $arrField['inputType']    = array_search($this->getBackendWidget(), $GLOBALS['BE_FFL']);
         $arrField['attributes']	  = $this->row();
@@ -180,25 +181,25 @@ abstract class Attribute extends TypeAgent
                     if (!strlen($option['value']))
                     {
                         $arrField['eval']['includeBlankOption'] = true;
-                        $arrField['eval']['blankOptionLabel'] = Isotope::translate($option['label']);
+                        $arrField['eval']['blankOptionLabel'] = Translation::get($option['label']);
                         continue;
                     }
                     elseif ($option['group'])
                     {
-                        $strGroup = Isotope::translate($option['label']);
+                        $strGroup = Translation::get($option['label']);
                         continue;
                     }
 
                     if ($strGroup != '')
                     {
-                        $arrField['options'][$strGroup][$option['value']] = Isotope::translate($option['label']);
+                        $arrField['options'][$strGroup][$option['value']] = Translation::get($option['label']);
                     }
                     else
                     {
-                        $arrField['options'][$option['value']] = Isotope::translate($option['label']);
+                        $arrField['options'][$option['value']] = Translation::get($option['label']);
                     }
 
-                    $arrField['reference'][$option['value']] = Isotope::translate($option['label']);
+                    $arrField['reference'][$option['value']] = Translation::get($option['label']);
                 }
             }
         }
