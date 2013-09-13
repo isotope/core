@@ -164,7 +164,7 @@ class PaymentWorldpay extends IsotopePayment
         $objTemplate->id = $this->id;
         $objTemplate->pageId = $objPage->id;
         $objTemplate->debug = $this->debug;
-        $objTemplate->action = ($this->debug ? 'https://secure-test.worldpay.com/wcc/purchase' : '');
+        $objTemplate->action = ($this->debug ? 'https://secure-test.worldpay.com/wcc/purchase' : 'https://secure.worldpay.com/wcc/purchase');
 
         return $objTemplate->parse();
     }
