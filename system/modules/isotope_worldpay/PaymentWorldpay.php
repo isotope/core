@@ -110,7 +110,7 @@ class PaymentWorldpay extends IsotopePayment
 
         $objOrder->save();
 
-        $this->postsaleSuccess();
+        $this->postsaleSuccess($objOrder);
     }
 
 
@@ -193,7 +193,7 @@ Redirecting back to shop...
     }
 
 
-    protected function postsaleSuccess()
+    protected function postsaleSuccess($objOrder)
     {
         $objPage = $this->getPageDetails((int) $this->Input->post('M_pageId'));
         $strUrl = $this->Environment->base . $this->generateFrontendUrl($objPage->row(), '/step/complete', $objPage->language) . '?uid=' . $objOrder->uniqid;
