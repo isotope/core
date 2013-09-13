@@ -68,14 +68,14 @@ class PaymentWorldpay extends IsotopePayment
     {
         if ($this->Input->post('instId') != $this->worldpay_instId) {
             $this->log('Installation ID does not match', __METHOD__, TL_ERROR);
-            return;
+            $this->postsaleError();
         }
 
         $objOrder = new IsotopeOrder();
 
         if (!$objOrder->findBy('cart_id', $this->Input->post('cartId'))) {
             $this->log('Order ID "' . $this->Input->post('cartId') . '" not found', __METHOD__, TL_ERROR);
-            return;
+            $this->postsaleError();
         }
 
         // Validate payment data (see #2221)
@@ -86,18 +86,18 @@ class PaymentWorldpay extends IsotopePayment
             (!$this->debug && $this->Input->post('testMode') == '100')
         ) {
             $this->log('Data manipulation in payment from "' . $this->Input->post('email') . '" !', __METHOD__, TL_ERROR);
-            return;
+            $this->postsaleError();
         }
 
         // Order status cancelled and order not yet completed, do nothing
         if ($this->Input->get('transStatus') != 'Y' && $objOrder->status == 0) {
-            return;
+            $this->postsaleError();
         }
 
         if ($this->Input->get('transStatus') == 'Y') {
             if (!$objOrder->checkout()) {
                 $this->log('Checkout for Order ID "' . $objOrder->id . '" failed', __METHOD__, TL_ERROR);
-                return;
+                $this->postsaleError();
             }
 
             $objOrder->date_paid = time();
@@ -109,6 +109,8 @@ class PaymentWorldpay extends IsotopePayment
         $objOrder->payment_data = $arrPayment;
 
         $objOrder->save();
+
+        $this->postsaleSuccess();
     }
 
 
@@ -126,6 +128,7 @@ class PaymentWorldpay extends IsotopePayment
             $this->redirect($this->addToUrl('step=failed', true));
         }
 
+        global $objPage;
         $objAddress = $this->Isotope->Cart->billingAddress;
 
         $arrData['instId'] = $this->worldpay_instId;
@@ -159,9 +162,56 @@ class PaymentWorldpay extends IsotopePayment
 
         $objTemplate->setData($arrData);
         $objTemplate->id = $this->id;
+        $objTemplate->pageId = $objPage->id;
         $objTemplate->debug = $this->debug;
         $objTemplate->action = ($this->debug ? 'https://secure-test.worldpay.com/wcc/purchase' : '');
 
         return $objTemplate->parse();
+    }
+
+
+    protected function postsaleError($objOrder)
+    {
+        $objPage = $this->getPageDetails((int) $this->Input->get('M_pageId'));
+        $strUrl = $this->Environment->base . $this->generateFrontendUrl($objPage->row(), '/step/failed', $objPage->language);
+
+        // Output a HTML page to redirect the client from WorldPay back to the shop
+        echo '
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<title>The Tulle Factory</title>
+<meta http-equiv="refresh" content="0; url=' . $strUrl . '">
+</head>
+<body>
+Redirecting back to shop...
+</body>
+</html>
+';
+        exit;
+    }
+
+
+    protected function postsaleSuccess()
+    {
+        $objPage = $this->getPageDetails((int) $this->Input->get('M_pageId'));
+        $strUrl = $this->Environment->base . $this->generateFrontendUrl($objPage->row(), '/step/confirm', $objPage->language) . '?uid=' . $objOrder->uniqid;
+
+        // Output a HTML page to redirect the client from WorldPay back to the shop
+        echo '
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<title>The Tulle Factory</title>
+<meta http-equiv="refresh" content="0; url=' . $strUrl . '">
+</head>
+<body>
+Redirecting back to shop...
+</body>
+</html>
+';
+        exit;
     }
 }
