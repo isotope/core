@@ -82,7 +82,7 @@ class PaymentWorldpay extends IsotopePayment
         if (
             $objOrder->currency != $this->Input->post('currency') ||
             $objOrder->grandTotal != $this->Input->post('amount') ||
-            $objOrder->worldpay_callbackPW != $this->Input->post('callbackPW') ||
+            $this->worldpay_callbackPW != $this->Input->post('callbackPW') ||
             (!$this->debug && $this->Input->post('testMode') == '100')
         ) {
             $this->log('Data manipulation in payment from "' . $this->Input->post('email') . '" !', __METHOD__, TL_ERROR);
@@ -133,7 +133,7 @@ class PaymentWorldpay extends IsotopePayment
 
         $arrData['instId'] = $this->worldpay_instId;
         $arrData['cartId'] = $this->Isotope->Cart->id;
-        $arrData['amount'] = $this->Isotope->Cart->grandTotal;
+        $arrData['amount'] = number_format($this->Isotope->Cart->grandTotal, 2);
         $arrData['currency'] = $this->Isotope->Config->currency;
         $arrData['description'] = $this->worldpay_description;
         $arrData['name'] = substr($objAddress->firstname . ' ' . $objAddress->lastname, 0, 40);
