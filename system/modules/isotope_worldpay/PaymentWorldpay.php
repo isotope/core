@@ -152,6 +152,9 @@ class PaymentWorldpay extends IsotopePayment
         $arrData['tel'] = substr($objAddress->phone, 0, 30);
         $arrData['email'] = substr($objAddress->email, 0, 80);
 
+        // Generate MD5 secret hash
+        $arrData['signature'] = md5($this->worldpay_md5secret . ':' . implode(':', array_intersect_key($arrData, array_flip(trimsplit(':', $this->worldpay_signatureFields)))));
+
         $objTemplate = new IsotopeTemplate('iso_payment_worldpay');
 
         $objTemplate->setData($arrData);

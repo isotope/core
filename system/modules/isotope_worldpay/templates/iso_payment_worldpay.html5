@@ -20,6 +20,7 @@
 <input type="hidden" name="email" value="<?php echo $this->email; ?>">
 <input type="hidden" name="lang" value="<?php echo $GLOBALS['TL_LANGUAGE']; ?>">
 <input type="hidden" name="testMode" value="<?php echo ($this->debug ? '100' : '0'); ?>">
+<input type="hidden" name="signature" value="<?php echo $this->signature; ?>">
 <noscript>
 <input type="submit" value="<?php echo specialchars($GLOBALS['TL_LANG']['MSC']['pay_with_redirect'][2]); ?>">
 </noscript>
