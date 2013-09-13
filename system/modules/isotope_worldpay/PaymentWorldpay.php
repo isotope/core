@@ -78,7 +78,7 @@ class PaymentWorldpay extends IsotopePayment
             $this->postsaleError();
         }
 
-        // Validate payment data (see #2221)
+        // Validate payment data
         if (
             $objOrder->currency != $this->Input->post('currency') ||
             $objOrder->grandTotal != $this->Input->post('amount') ||
@@ -169,8 +169,10 @@ class PaymentWorldpay extends IsotopePayment
         return $objTemplate->parse();
     }
 
-
-    protected function postsaleError($objOrder)
+    /**
+     * Redirect client on WorldPay site to the error page
+     */
+    protected function postsaleError()
     {
         $objPage = $this->getPageDetails((int) $this->Input->post('M_pageId'));
         $strUrl = $this->Environment->base . $this->generateFrontendUrl($objPage->row(), '/step/failed', $objPage->language);
@@ -192,7 +194,10 @@ Redirecting back to shop...
         exit;
     }
 
-
+    /**
+     * Redirect client on WorldPay site to the confirmation page
+     * @param   IsotopeOrder
+     */
     protected function postsaleSuccess($objOrder)
     {
         $objPage = $this->getPageDetails((int) $this->Input->post('M_pageId'));
