@@ -123,31 +123,33 @@ class PaymentWorldpay extends IsotopePayment
 
         $objAddress = $this->Isotope->Cart->billingAddress;
 
-        $objTemplate = new IsotopeTemplate('iso_payment_worldpay');
-        $objTemplate->instId = $this->worldpay_instId;
-        $objTemplate->cartId = $this->Isotope->Cart->id;
-        $objTemplate->amount = $this->Isotope->Cart->grandTotal;
-        $objTemplate->currency = $this->Isotope->Config->currency;
-        $objTemplate->description = $this->worldpay_description;
-        $objTemplate->name = substr($objAddress->firstname . ' ' . $objAddress->lastname, 0, 40);
+        $arrData['instId'] = $this->worldpay_instId;
+        $arrData['cartId'] = $this->Isotope->Cart->id;
+        $arrData['amount'] = $this->Isotope->Cart->grandTotal;
+        $arrData['currency'] = $this->Isotope->Config->currency;
+        $arrData['description'] = $this->worldpay_description;
+        $arrData['name'] = substr($objAddress->firstname . ' ' . $objAddress->lastname, 0, 40);
 
         if ($objAddress->company != '') {
-            $objTemplate->address1 = substr($objAddress->company, 0, 84);
-            $objTemplate->address2 = substr($objAddress->street_1, 0, 84);
-            $objTemplate->address3 = substr($objAddress->street_2, 0, 84);
+            $arrData['address1'] = substr($objAddress->company, 0, 84);
+            $arrData['address2'] = substr($objAddress->street_1, 0, 84);
+            $arrData['address3'] = substr($objAddress->street_2, 0, 84);
         } else {
-            $objTemplate->address1 = substr($objAddress->street_1, 0, 84);
-            $objTemplate->address2 = substr($objAddress->street_2, 0, 84);
-            $objTemplate->address3 = substr($objAddress->street_3, 0, 84);
+            $arrData['address1'] = substr($objAddress->street_1, 0, 84);
+            $arrData['address2'] = substr($objAddress->street_2, 0, 84);
+            $arrData['address3'] = substr($objAddress->street_3, 0, 84);
         }
 
-        $objTemplate->town = substr($objAddress->city, 0, 30);
-        $objTemplate->region = substr($objAddress->subdivision, 0, 30);
-        $objTemplate->postcode = substr($objAddress->postal, 0, 12);
-        $objTemplate->country = strtoupper($objAddress->country);
-        $objTemplate->tel = substr($objAddress->phone, 0, 30);
-        $objTemplate->email = substr($objAddress->email, 0, 80);
+        $arrData['town'] = substr($objAddress->city, 0, 30);
+        $arrData['region'] = substr($objAddress->subdivision, 0, 30);
+        $arrData['postcode'] = substr($objAddress->postal, 0, 12);
+        $arrData['country'] = strtoupper($objAddress->country);
+        $arrData['tel'] = substr($objAddress->phone, 0, 30);
+        $arrData['email'] = substr($objAddress->email, 0, 80);
 
+        $objTemplate = new IsotopeTemplate('iso_payment_worldpay');
+
+        $objTemplate->setData($arrData);
         $objTemplate->id = $this->id;
         $objTemplate->debug = $this->debug;
         $objTemplate->action = ($this->debug ? 'https://secure-test.worldpay.com/wcc/purchase' : '');
