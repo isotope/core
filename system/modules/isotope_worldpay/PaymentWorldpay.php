@@ -195,8 +195,8 @@ Redirecting back to shop...
 
     protected function postsaleSuccess()
     {
-        $strUrl = $this->Environment->base . $this->generateFrontendUrl($objPage->row(), '/step/confirm', $objPage->language) . '?uid=' . $objOrder->uniqid;
         $objPage = $this->getPageDetails((int) $this->Input->post('M_pageId'));
+        $strUrl = $this->Environment->base . $this->generateFrontendUrl($objPage->row(), '/step/complete', $objPage->language) . '?uid=' . $objOrder->uniqid;
 
         // Output a HTML page to redirect the client from WorldPay back to the shop
         echo '
