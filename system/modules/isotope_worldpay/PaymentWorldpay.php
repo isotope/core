@@ -90,11 +90,11 @@ class PaymentWorldpay extends IsotopePayment
         }
 
         // Order status cancelled and order not yet completed, do nothing
-        if ($this->Input->get('transStatus') != 'Y' && $objOrder->status == 0) {
+        if ($this->Input->post('transStatus') != 'Y' && $objOrder->status == 0) {
             $this->postsaleError();
         }
 
-        if ($this->Input->get('transStatus') == 'Y') {
+        if ($this->Input->post('transStatus') == 'Y') {
             if (!$objOrder->checkout()) {
                 $this->log('Checkout for Order ID "' . $objOrder->id . '" failed', __METHOD__, TL_ERROR);
                 $this->postsaleError();
@@ -172,7 +172,7 @@ class PaymentWorldpay extends IsotopePayment
 
     protected function postsaleError($objOrder)
     {
-        $objPage = $this->getPageDetails((int) $this->Input->get('M_pageId'));
+        $objPage = $this->getPageDetails((int) $this->Input->post('M_pageId'));
         $strUrl = $this->Environment->base . $this->generateFrontendUrl($objPage->row(), '/step/failed', $objPage->language);
 
         // Output a HTML page to redirect the client from WorldPay back to the shop
@@ -195,8 +195,8 @@ Redirecting back to shop...
 
     protected function postsaleSuccess()
     {
-        $objPage = $this->getPageDetails((int) $this->Input->get('M_pageId'));
         $strUrl = $this->Environment->base . $this->generateFrontendUrl($objPage->row(), '/step/confirm', $objPage->language) . '?uid=' . $objOrder->uniqid;
+        $objPage = $this->getPageDetails((int) $this->Input->post('M_pageId'));
 
         // Output a HTML page to redirect the client from WorldPay back to the shop
         echo '
