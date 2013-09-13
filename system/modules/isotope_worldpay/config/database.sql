@@ -13,5 +13,6 @@
 
 CREATE TABLE `tl_iso_payment_modules` (
   `worldpay_instId` int(6) NOT NULL default '0',
+  `worldpay_callbackPW` varchar(64) NOT NULL default '',
   `worldpay_description` varchar(255) NOT NULL default '',
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;

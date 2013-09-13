@@ -25,7 +25,15 @@ $GLOBALS['TL_DCA']['tl_iso_payment_modules']['fields']['worldpay_instId'] = arra
     'label'         => &$GLOBALS['TL_LANG']['tl_iso_payment_modules']['worldpay_instId'],
     'exclude'       => true,
     'inputType'     => 'text',
-    'eval'          => array('mandatory'=>true, 'maxlength'=>6, 'rgxp'=>'digit'),
+    'eval'          => array('mandatory'=>true, 'maxlength'=>6, 'rgxp'=>'digit', 'tl_class'=>'w50'),
+);
+
+$GLOBALS['TL_DCA']['tl_iso_payment_modules']['fields']['worldpay_callbackPW'] = array
+(
+    'label'         => &$GLOBALS['TL_LANG']['tl_iso_payment_modules']['worldpay_callbackPW'],
+    'exclude'       => true,
+    'inputType'     => 'text',
+    'eval'          => array('mandatory'=>true, 'maxlength'=>64, 'hideInput'=>true, 'tl_class'=>'w50'),
 );
 
 $GLOBALS['TL_DCA']['tl_iso_payment_modules']['fields']['worldpay_description'] = array
@@ -33,5 +41,5 @@ $GLOBALS['TL_DCA']['tl_iso_payment_modules']['fields']['worldpay_description'] =
     'label'         => &$GLOBALS['TL_LANG']['tl_iso_payment_modules']['worldpay_description'],
     'exclude'       => true,
     'inputType'     => 'text',
-    'eval'          => array('mandatory'=>true, 'maxlength'=>255, 'tl_class'=>'long'),
+    'eval'          => array('mandatory'=>true, 'maxlength'=>255, 'tl_class'=>'clr long'),
 );
