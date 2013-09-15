@@ -74,7 +74,7 @@ class OrderDetails extends Module
     protected function compile()
     {
         // Also check owner (see #126)
-        if (($objOrder = Order::findOneBy('uniqid', (string) \Input::get('uid'))) === null || (FE_USER_LOGGED_IN === true && $objOrder->pid > 0 && \FrontendUser::getInstance()->id != $objOrder->pid)) {
+        if (($objOrder = Order::findOneBy('uniqid', (string) \Input::get('uid'))) === null || (FE_USER_LOGGED_IN === true && $objOrder->member > 0 && \FrontendUser::getInstance()->id != $objOrder->member)) {
             $this->Template = new \Isotope\Template('mod_message');
             $this->Template->type = 'error';
             $this->Template->message = $GLOBALS['TL_LANG']['ERR']['orderNotFound'];

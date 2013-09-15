@@ -296,7 +296,7 @@ class IsotopeRules extends \Controller
         {
             $time = time();
 
-            \Database::getInstance()->query("INSERT INTO tl_iso_rule_usage (pid,tstamp,order_id,config_id,member_id) VALUES (" . implode(", $time, {$objOrder->id}, ".(int) Isotope::getConfig()->id.", {$objOrder->pid}), (", $arrRules) . ", $time, {$objOrder->id}, ".(int) Isotope::getConfig()->id.", {$objOrder->pid})");
+            \Database::getInstance()->query("INSERT INTO tl_iso_rule_usage (pid,tstamp,order_id,config_id,member_id) VALUES (" . implode(", $time, {$objOrder->id}, ".(int) Isotope::getConfig()->id.", {$objOrder->member}), (", $arrRules) . ", $time, {$objOrder->id}, ".(int) Isotope::getConfig()->id.", {$objOrder->member})");
         }
 
         return true;
