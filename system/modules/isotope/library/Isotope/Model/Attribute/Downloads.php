@@ -211,7 +211,8 @@ class Downloads extends Attribute implements IsotopeAttribute
         }
 
         // Sort array
-        switch ($this->sortBy) {
+        $sortBy = $arrOptions['sortBy'] ?: $this->sortBy;
+        switch ($sortBy) {
             default:
             case 'name_asc':
                 uksort($files, 'basename_natcasecmp');
