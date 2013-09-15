@@ -204,9 +204,15 @@ class ProductCollectionItem extends \Model
     public function getDownloads()
     {
         if (null === $this->arrDownloads) {
+            $this->arrDownloads = array();
+
             $objDownloads = ProductCollectionDownload::findBy('pid', $this->id);
 
-            $this->arrDownloads = (null === $objDownloads) ? array() : $objDownloads->fetchAll();
+            if (null !== $objDownloads) {
+                while ($objDownloads->next()) {
+                    $this->arrDownloads[] = $objDownloads->current();
+                }
+            }
         }
 
         return $this->arrDownloads;
