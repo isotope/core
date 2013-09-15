@@ -117,7 +117,7 @@ class Downloads extends Attribute implements IsotopeAttribute
                     continue;
                 }
 
-                $arrMeta = $this->getMetaData($objFiles->meta, $objPage->language);
+                $arrMeta = Isotope::getMetaData($objFiles->meta, $objPage->language);
 
                 // Use the file name as title if none is given
                 if ($arrMeta['title'] == '') {
@@ -173,7 +173,7 @@ class Downloads extends Attribute implements IsotopeAttribute
                         continue;
                     }
 
-                    $arrMeta = $this->getMetaData($objSubfiles->meta, $objPage->language);
+                    $arrMeta = Isotope::getMetaData($objSubfiles->meta, $objPage->language);
 
                     // Use the file name as title if none is given
                     if ($arrMeta['title'] == '') {
@@ -267,26 +267,4 @@ class Downloads extends Attribute implements IsotopeAttribute
 
         return $objTemplate->parse();
     }
-
-    /**
-	 * Get the meta data from a serialized string
-	 * @param   string
-	 * @param   string
-	 * @return  array
-	 * @todo    remove this as soon as \Frontend::getMetaData is public and static in Contao core
-	 */
-	protected function getMetaData($strData, $strLanguage)
-	{
-		$arrData = deserialize($strData);
-
-		// Convert the language to a locale (see #5678)
-		$strLanguage = str_replace('-', '_', $strLanguage);
-
-		if (!is_array($arrData) || !isset($arrData[$strLanguage]))
-		{
-			return array();
-		}
-
-		return $arrData[$strLanguage];
-	}
 }

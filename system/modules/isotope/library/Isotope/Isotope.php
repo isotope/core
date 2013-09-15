@@ -785,4 +785,28 @@ class Isotope extends \Controller
 
         return $arrCurrent;
     }
+
+
+
+    /**
+	 * Get the meta data from a serialized string
+	 * @param   string
+	 * @param   string
+	 * @return  array
+	 * @todo    remove this as soon as \Frontend::getMetaData is public and static in Contao core
+	 */
+	public static function getMetaData($strData, $strLanguage)
+	{
+		$arrData = deserialize($strData);
+
+		// Convert the language to a locale (see #5678)
+		$strLanguage = str_replace('-', '_', $strLanguage);
+
+		if (!is_array($arrData) || !isset($arrData[$strLanguage]))
+		{
+			return array();
+		}
+
+		return $arrData[$strLanguage];
+	}
 }
