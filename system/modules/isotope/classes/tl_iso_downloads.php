@@ -15,6 +15,8 @@
 
 namespace Isotope;
 
+use Isotope\Model\Download;
+
 
 /**
  * Class tl_iso_downloads
@@ -24,45 +26,47 @@ class tl_iso_downloads extends \Backend
 {
 
     /**
-     * Add an image to each record
-     * @param array
-     * @return string
+     * List download files
+     * @param   array
+     * @return  string
      */
     public function listRows($row)
     {
-        if ($row['type'] == 'folder')
-        {
-            if (!is_dir(TL_ROOT . '/' . $row['singleSRC']))
-            {
-                return '';
-            }
+        // Check for version 3 format
+        if (!is_numeric($row['singleSRC'])) {
+            return '<p class="error">'.$GLOBALS['TL_LANG']['ERR']['version2format'].'</p>';
+        }
 
+        $objFiles = \FilesModel::findByPk($row['singleSRC']);
+
+        if (null === $objFiles) {
+            return '<p class="error">'.$GLOBALS['TL_LANG']['ERR']['invalidName'].'</p>';
+        }
+
+        if ($objFiles->type == 'folder') {
             $arrDownloads = array();
 
-            foreach (scan(TL_ROOT . '/' . $row['singleSRC']) as $file)
-            {
-                if (is_file(TL_ROOT . '/' . $row['singleSRC'] . '/' . $file))
-                {
-                    $objFile = new \File($row['singleSRC'] . '/' . $file);
-                    $icon = 'background:url(system/themes/' . $this->getTheme() . '/images/' . $objFile->icon . ') left center no-repeat; padding-left: 22px';
-                    $arrDownloads[] = sprintf('<div style="margin-bottom:5px;height:16px;%s">%s</div>', $icon, $row['singleSRC'] . '/' . $file);
+            foreach (scan(TL_ROOT . '/' . $objFiles->path) as $file) {
+                if (is_file(TL_ROOT . '/' . $objFiles->path . '/' . $file)) {
+                    $objFile = new \File($objFiles->path . '/' . $file);
+                    $icon = 'background:url(assets/contao/images/' . $objFile->icon . ') left center no-repeat; padding-left: 22px';
+                    $arrDownloads[] = sprintf('<div style="margin-bottom:5px;height:16px;%s">%s</div>', $icon, $objFiles->path . '/' . $file);
                 }
             }
 
-            if (empty($arrDownloads))
-            {
+            if (empty($arrDownloads)) {
                 return $GLOBALS['TL_LANG']['ERR']['emptyDownloadsFolder'];
             }
 
-            return implode("\n", $arrDownloads);
+            return '<div style="margin-bottom:5px;height:16px;font-weight:bold">' . $objFiles->path . '</div>' . implode("\n", $arrDownloads);
         }
 
-        if (is_file(TL_ROOT . '/' . $row['singleSRC']))
+        if (is_file(TL_ROOT . '/' . $objFiles->path))
         {
-            $objFile = new \File($row['singleSRC']);
-            $icon = 'background: url(system/themes/' . $this->getTheme() . '/images/' . $objFile->icon . ') left center no-repeat; padding-left: 22px';
+            $objFile = new \File($objFiles->path);
+            $icon = 'background: url(assets/contao/images/' . $objFile->icon . ') left center no-repeat; padding-left: 22px';
         }
 
-        return sprintf('<div style="height: 16px;%s">%s <span style="color:#b3b3b3; padding-left:3px;">[%s]</span></div>', $icon, $row['title'], $row['singleSRC']);
+        return sprintf('<div style="height: 16px;%s">%s</div>', $icon, $objFiles->path);
     }
 }
