@@ -22,11 +22,11 @@ $GLOBALS['TL_DCA']['tl_iso_product_collection_download'] = array
     // Config
     'config' => array
     (
-        'dataContainer'     => 'Table',
-        'closed'            => true,
-        'notEditable'       => true,
-        'ptable'            => 'tl_iso_product_collection_item',
-        'sql'               => array
+        'dataContainer'         => 'Table',
+        'closed'                => true,
+        'notEditable'           => true,
+        'ptable'                => 'tl_iso_product_collection_item',
+        'sql'                   => array
         (
             'keys' => array
             (
@@ -41,35 +41,31 @@ $GLOBALS['TL_DCA']['tl_iso_product_collection_download'] = array
     (
         'id' => array
         (
-            'sql'                 =>  "int(10) unsigned NOT NULL auto_increment",
+            'sql'               => "int(10) unsigned NOT NULL auto_increment",
         ),
         'pid' => array
         (
-            'foreignKey'    => 'tl_iso_product_collection_item.name',
-            'relation'      => array('type'=>'belongsTo', 'load'=>'lazy'),
-            'sql'                 =>  "int(10) unsigned NOT NULL default '0'",
+            'foreignKey'        => 'tl_iso_product_collection_item.name',
+            'sql'               => "int(10) unsigned NOT NULL default '0'",
+            'relation'          => array('type'=>'belongsTo', 'load'=>'lazy'),
         ),
         'tstamp' => array
         (
-            'sql'                 =>  "int(10) unsigned NOT NULL default '0'",
+            'sql'               => "int(10) unsigned NOT NULL default '0'",
         ),
         'download_id' => array
         (
-            'foreignKey'    => 'tl_iso_downloads.type',
-            'relation'      => array('type'=>'hasOne', 'load'=>'lazy'),
-        ),
-
-        'download_id' => array
-        (
-            'sql'                 =>  "int(10) unsigned NOT NULL default '0'",
+            'foreignKey'        => 'tl_iso_downloads.id',
+            'sql'               => "int(10) unsigned NOT NULL default '0'",
+            'relation'          => array('type'=>'hasOne', 'load'=>'eager'),
         ),
         'downloads_remaining' => array
         (
-            'sql'                 =>  "varchar(255) NOT NULL default ''",
+            'sql'               => "varchar(255) NOT NULL default ''",
         ),
         'expires' => array
         (
-            'sql'                 =>  "varchar(10) NOT NULL default ''",
+            'sql'               => "varchar(10) NOT NULL default ''",
         ),
     )
 );

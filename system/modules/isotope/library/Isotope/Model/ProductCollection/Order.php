@@ -20,6 +20,7 @@ use Isotope\Model\OrderStatus;
 use Isotope\Model\Payment;
 use Isotope\Model\ProductCollection;
 use Isotope\Model\ProductCollectionItem;
+use Isotope\Model\ProductCollectionDownload;
 use Isotope\Model\Shipping;
 
 
@@ -206,8 +207,16 @@ class Order extends ProductCollection implements IsotopeProductCollection
         $this->setShippingAddress($objCart->getShippingAddress());
         $this->createPrivateAddresses();
 
-        // @todo must add surcharges and downloads here
+        // @todo must add surcharges here
 
+
+        // Add downloads from products to the collection
+        $arrDownloads = ProductCollectionDownload::createForProductsInCollection($this);
+        foreach ($arrDownloads as $objDownload) {
+            $objDownload->save();
+        }
+
+        // Delete cart after migrating to order
         $objCart->delete();
 
         $this->checkout_complete = true;

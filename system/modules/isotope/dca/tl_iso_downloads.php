@@ -26,10 +26,6 @@ $GLOBALS['TL_DCA']['tl_iso_downloads'] = array
         'dataContainer'             => 'Table',
         'enableVersioning'          => true,
         'ptable'                    => 'tl_iso_products',
-        'onload_callback' => array
-        (
-            array('Isotope\tl_iso_downloads', 'prepareSRC'),
-        ),
         'sql' => array
         (
             'keys' => array
@@ -95,7 +91,15 @@ $GLOBALS['TL_DCA']['tl_iso_downloads'] = array
                 'label'             => &$GLOBALS['TL_LANG']['tl_iso_downloads']['delete'],
                 'href'              => 'act=delete',
                 'icon'              => 'delete.gif',
-                'attributes'        => 'onclick="if (!confirm(\'' . $GLOBALS['TL_LANG']['MSC']['deleteConfirm'] . '\')) return false; Backend.getScrollOffset();"'
+                'attributes'        => 'onclick="if (!confirm(\'' . $GLOBALS['TL_LANG']['MSC']['deleteConfirm'] . '\')) return false; Backend.getScrollOffset();"',
+                'button_callback'   => array('Isotope\tl_iso_downloads', 'deleteButton'),
+            ),
+            'toggle' => array
+            (
+                'label'             => &$GLOBALS['TL_LANG']['tl_iso_downloads']['toggle'],
+                'icon'              => 'visible.gif',
+                'attributes'        => 'onclick="Backend.getScrollOffset(); return AjaxRequest.toggleVisibility(this, %s);"',
+                'button_callback'   => array('Isotope\tl_iso_downloads', 'toggleIcon')
             ),
             'show' => array
             (
@@ -109,10 +113,7 @@ $GLOBALS['TL_DCA']['tl_iso_downloads'] = array
     // Palettes
     'palettes' => array
     (
-        '__selector__'              => array('type'),
-        'default'                   => '{file_legend},type,',
-        'file'                      => '{file_legend},type,singleSRC;{name_legend},title,description;{limit_legend},downloads_allowed,expires',
-        'folder'                    => '{file_legend},type,singleSRC;{limit_legend},downloads_allowed,expires',
+        'default'                   => '{file_legend},singleSRC;{limit_legend},downloads_allowed,expires;{publish_legend},published',
     ),
 
     // Fields
@@ -136,40 +137,15 @@ $GLOBALS['TL_DCA']['tl_iso_downloads'] = array
         (
             'sql'                   => "int(10) unsigned NOT NULL default '0'",
         ),
-
-        'type' => array
-        (
-            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_downloads']['type'],
-            'exclude'               => true,
-            'inputType'             => 'select',
-            'options'               => array('file', 'folder'),
-            'reference'             => &$GLOBALS['TL_LANG']['tl_iso_downloads'],
-            'eval'                  => array('mandatory'=>true, 'submitOnChange'=>true),
-            'sql'                   => "varchar(8) NOT NULL default 'file'",
-        ),
         'singleSRC' => array
         (
             'label'                 => &$GLOBALS['TL_LANG']['tl_iso_downloads']['singleSRC'],
             'exclude'               => true,
             'inputType'             => 'fileTree',
-            'eval'                  => array('mandatory'=>true, 'fieldType'=>'radio', 'files'=>true, 'filesOnly'=>true, 'extensions'=>$GLOBALS['TL_CONFIG']['allowedDownload']),
-            'sql'                   => "varchar(255) NOT NULL default ''",
-        ),
-        'title' => array
-        (
-            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_downloads']['title'],
-            'exclude'               => true,
-            'inputType'             => 'text',
-            'eval'                  => array('mandatory'=>true, 'maxlength'=>255, 'tl_class'=>'long'),
-            'sql'                   => "varchar(255) NOT NULL default ''",
-        ),
-        'description' => array
-        (
-            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_downloads']['description'],
-            'exclude'               => true,
-            'inputType'             => 'textarea',
-            'eval'                  => array('rte'=>'tinyMCE'),
-            'sql'                   => "text NULL",
+            'foreignKey'            => 'tl_files.path',
+            'eval'                  => array('mandatory'=>true, 'fieldType'=>'radio', 'files'=>true, 'extensions'=>$GLOBALS['TL_CONFIG']['allowedDownload']),
+            'sql'                   => "int(10) unsigned NOT NULL default '0'",
+            'relation'              => array('type'=>'hasOne', 'load'=>'eager'),
         ),
         'downloads_allowed' => array
         (
@@ -188,6 +164,14 @@ $GLOBALS['TL_DCA']['tl_iso_downloads'] = array
             'reference'             => &$GLOBALS['TL_LANG']['MSC']['timePeriod'],
             'eval'                  => array('rgxp'=>'digit', 'tl_class'=>'w50'),
             'sql'                   => "varchar(64) NOT NULL default ''",
+        ),
+        'published' => array
+        (
+            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_downloads']['published'],
+            'exclude'               => true,
+            'inputType'             => 'checkbox',
+            'eval'                  => array('doNotCopy'=>true),
+            'sql'                   => "char(1) NOT NULL default ''",
         ),
     )
 );
