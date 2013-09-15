@@ -75,9 +75,11 @@ class tl_iso_attributes extends \Backend
      */
     public function validateFieldName($varValue, $dc)
     {
+        $this->loadDataContainer('tl_iso_products');
+
         $varValue = standardize($varValue);
 
-        if (in_array($varValue, array('id', 'pid', 'tstamp', 'dateAdded', 'type', 'language', 'pages', 'inherit')))
+        if (isset($GLOBALS['TL_DCA']['tl_iso_products']['fields'][$varValue]) && $GLOBALS['TL_DCA']['tl_iso_products']['fields'][$varValue]['attributes']['systemColumn'])
         {
             throw new \InvalidArgumentException(sprintf($GLOBALS['TL_LANG']['ERR']['systemColumn'], $varValue));
         }
