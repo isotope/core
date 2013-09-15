@@ -30,6 +30,39 @@ class Download extends \Model
 
 
     /**
+     * Get array of files for this download (could be multiple for folder selection)
+     * @return  array
+     */
+    public function getFiles()
+    {
+        // Check for version 3 format
+        if (!is_numeric($this->singleSRC)) {
+            throw new \UnexpectedValueException($GLOBALS['TL_LANG']['ERR']['version2format']);
+        }
+
+        $objFile = $this->getRelated('singleSRC');
+
+        if (null !== $objFile && $objFile->type == 'folder') {
+            $arrFiles = array();
+            $objFiles = \FilesModel::findBy(array("pid=?", "type='file'"), array($objFile->id));
+
+            if (null !== $objFiles) {
+                while ($objFiles->next()) {
+                    $arrFiles[] = $objFiles->current();
+                }
+            }
+
+            return $arrFiles;
+
+        } elseif (null !== $objFile && is_file(TL_ROOT . '/' . $objFile->path)) {
+
+            return array($objFile);
+        }
+
+        return array();
+    }
+
+    /**
      * Calculate the expiration time of a download
      * @param   int|null
      * @return  int|null

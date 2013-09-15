@@ -62,27 +62,14 @@ class ProductCollectionDownload extends \Model
     {
         $objDownload = $this->getRelated('download_id');
 
-        if (null === $objDownload || null === $objDownload->getRelated('singleSRC')) {
+        if (null === $objDownload) {
             return array();
-        }
-
-        if ($objDownload->getRelated('singleSRC')->type == 'folder') {
-            $arrFiles = array();
-            $objFiles = \FilesModel::findBy(array("pid=?", "type='file'"), array($objDownload->getRelated('singleSRC')->id));
-
-            if (null !== $objFiles) {
-                while ($objFiles->next()) {
-                    $arrFiles[] = $objFiles->current();
-                }
-            }
-        } else {
-            $arrFiles = array($objDownload->getRelated('singleSRC'));
         }
 
         $arrDownloads = array();
         $allowedDownload = trimsplit(',', strtolower($GLOBALS['TL_CONFIG']['allowedDownload']));
 
-        foreach ($arrFiles as $objFileModel) {
+        foreach ($objDownload->getFiles() as $objFileModel) {
 
             $objFile = new \File($objFileModel->path, true);
 
