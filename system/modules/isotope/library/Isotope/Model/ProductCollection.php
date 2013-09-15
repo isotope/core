@@ -1090,6 +1090,8 @@ abstract class ProductCollection extends TypeAgent
             }
         }
 
+        $this->setModified(true);
+
         return $arrIds;
     }
 
