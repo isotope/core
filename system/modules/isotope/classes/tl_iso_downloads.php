@@ -53,7 +53,7 @@ class tl_iso_downloads extends \Backend
             foreach (scan(TL_ROOT . '/' . $path) as $file) {
                 if (is_file(TL_ROOT . '/' . $path . '/' . $file)) {
                     $objFile = new \File($path . '/' . $file);
-                    $icon = 'background:url(assets/contao/images/' . $objFile->icon . ') left center no-repeat; padding-left: 22px';
+                    $icon = 'background:url(' . TL_ASSETS_URL . 'assets/contao/images/' . $objFile->icon . ') left center no-repeat; padding-left: 22px';
                     $arrDownloads[] = sprintf('<div style="margin-bottom:5px;height:16px;%s">%s</div>', $icon, $path . '/' . $file);
                 }
             }
@@ -68,7 +68,7 @@ class tl_iso_downloads extends \Backend
         if (is_file(TL_ROOT . '/' . $path))
         {
             $objFile = new \File($path);
-            $icon = 'background: url(assets/contao/images/' . $objFile->icon . ') left center no-repeat; padding-left: 22px';
+            $icon = 'background: url(' . TL_ASSETS_URL . 'assets/contao/images/' . $objFile->icon . ') left center no-repeat; padding-left: 22px';
         }
 
         return sprintf('<div style="height: 16px;%s">%s</div>', $icon, $path);
