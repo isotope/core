@@ -49,4 +49,45 @@ class ProductCollectionDownload extends \Model
 
 		return static::find($arrOptions);
     }
+
+    /**
+     * Create ProductCollectionDownload for all product downloads in the given collection
+     * @param   IsotopeProductCollection
+     * @return  array
+     */
+    public static function createForProductsInCollection(IsotopeProductCollection $objCollection)
+    {
+        $arrDownloads = array();
+        $t = Download::getTable();
+        $time = time();
+
+        foreach ($objCollection->getItems() as $objItem) {
+            if ($objItem->hasProduct()) {
+                $objDownloads = Download::findBy(array("($t.pid=? OR $t.pid=?)", "$t.published='1'"), array($objItem->getProduct()->id, $objItem->getProduct()->pid));
+
+                if (null !== $objDownloads) {
+                    while ($objDownloads->next()) {
+
+                        $objItemDownload = new ProductCollectionDownload();
+                        $objItemDownload->pid = $objItem->id;
+                        $objItemDownload->tstamp = $time;
+                        $objItemDownload->download_id = $objDownloads->id;
+
+                        if ($objDownloads->downloads_allowed > 0) {
+                            $objItemDownload->downloads_remaining = ($objDownloads->downloads_allowed * $objItem->quantity);
+                        }
+
+                        $expires = $objDownloads->current()->getExpirationTimestamp();
+                        if (null !== $expires) {
+                            $objItemDownload->expires = $expires;
+                        }
+
+                        $arrDownloads[] = $objItemDownload;
+                    }
+                }
+            }
+        }
+
+        return $arrDownloads;
+    }
 }
