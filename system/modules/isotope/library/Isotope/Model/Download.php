@@ -29,6 +29,11 @@ class Download extends \Model
     protected static $strTable = 'tl_iso_downloads';
 
 
+    /**
+     * Calculate the expiration time of a download
+     * @param   int|null
+     * @return  int|null
+     */
     public function getExpirationTimestamp($intFrom=null)
     {
         if ($this->expires == '') {

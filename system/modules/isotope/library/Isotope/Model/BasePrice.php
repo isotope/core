@@ -37,5 +37,4 @@ class BasePrice extends \Model
     {
         return $this->label ? Translation::get($this->label) : '';
     }
-
 }

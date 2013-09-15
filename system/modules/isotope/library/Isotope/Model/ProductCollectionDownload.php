@@ -33,9 +33,10 @@ class ProductCollectionDownload extends \Model
     /**
      * Find all downloads that belong to items of a given collection
      * @param   IsotopeProductCollection
+     * @param   array
      * @return  \Collection|null
      */
-    public static function findByCollection(IsotopeProductCollection $objCollection, $arrOptions)
+    public static function findByCollection(IsotopeProductCollection $objCollection, array $arrOptions=array())
     {
         $arrOptions = array_merge(
 			array(
