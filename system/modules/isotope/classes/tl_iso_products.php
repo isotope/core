@@ -17,6 +17,8 @@
 
 namespace Isotope;
 
+use Isotope\Model\ProductCollectionItem;
+
 
 /**
  * Class tl_iso_products
@@ -385,6 +387,25 @@ class tl_iso_products extends \Backend
     	{
 	    	return '<a href="system/modules/isotope/public/group.php?do='.\Input::get('do').'&amp;table=tl_iso_groups&amp;field=gid&amp;value='.$row['gid'].'" title="'.specialchars($title).'"'.$attributes.' onclick="Backend.getScrollOffset();Isotope.openModalGroupSelector({\'width\':765,\'title\':\''.specialchars($GLOBALS['TL_LANG']['tl_iso_products']['groups'][0]).'\',\'url\':this.href,\'action\':\'moveProduct\',\'redirect\':\''.$this->addToUrl($href . '&pid=' . intval(\Input::get('pid')) . '&id=' . $row['id']).'\'});return false">'.$this->generateImage($icon, $label).'</a> ';
     	}
+    }
+
+    /**
+     * Disable "delete" button if product has been sold
+     * @param array
+     * @param string
+     * @param string
+     * @param string
+     * @param string
+     * @param string
+     * @return string
+     */
+    public function deleteButton($row, $href, $label, $title, $icon, $attributes)
+    {
+    	if (ProductCollectionItem::countBy(array("product_id IN (SELECT id FROM tl_iso_products WHERE id=? OR (pid=? AND language=''))"), array($row['id'], $row['id'])) > 0) {
+            return $this->generateImage(preg_replace('/\.gif$/i', '_.gif', $icon)).' ';
+        }
+
+        return '<a href="'.$this->addToUrl($href.'&amp;id='.$row['id']).'" title="'.specialchars($title).'"'.$attributes.'>'.$this->generateImage($icon, $label).'</a> ';
     }
 
 
