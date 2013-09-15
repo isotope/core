@@ -72,13 +72,33 @@ class Downloads extends Attribute implements IsotopeAttribute
             return '';
         }
 
+        // Check for version 3 format
+        if (!is_numeric($arrFiles[0])) {
+            return '<p class="error">'.$GLOBALS['TL_LANG']['ERR']['version2format'].'</p>';
+        }
+
+        // Get the file entries from the database
+        $objFiles = \FilesModel::findMultipleByIds($arrFiles);
+
+        if (null === $objFiles) {
+            return '';
+        }
+
         $file = \Input::get('file', true);
 
-        // Send the file to the browser
-        if ($file != '' && (in_array($file, $arrFiles) || in_array(dirname($file), $arrFiles)) && !preg_match('/^meta(_[a-z]{2})?\.txt$/', basename($file)))
-        {
-            \Controller::sendFileToBrowser($file);
-        }
+		// Send the file to the browser and do not send a 404 header (see #4632)
+		if ($file != '' && !preg_match('/^meta(_[a-z]{2})?\.txt$/', basename($file)))
+		{
+			while ($objFiles->next())
+			{
+				if ($file == $objFiles->path || dirname($file) == $objFiles->path)
+				{
+					\Controller::sendFileToBrowser($file);
+				}
+			}
+
+			$objFiles->reset();
+		}
 
         $files = array();
         $auxDate = array();
@@ -86,79 +106,120 @@ class Downloads extends Attribute implements IsotopeAttribute
         $allowedDownload = trimsplit(',', strtolower($GLOBALS['TL_CONFIG']['allowedDownload']));
 
         // Get all files
-        foreach ($arrFiles as $file)
+        while ($objFiles->next())
         {
-            if (isset($files[$file]) || !file_exists(TL_ROOT . '/' . $file))
+            // Continue if the files has been processed or does not exist
+            if (isset($files[$objFiles->path]) || !file_exists(TL_ROOT . '/' . $objFiles->path))
             {
                 continue;
             }
 
             // Single files
-            if (is_file(TL_ROOT . '/' . $file))
+            if ($objFiles->type == 'file')
             {
-                $objFile = new File($file);
+                $objFile = new \File($objFiles->path, true);
 
-                if (in_array($objFile->extension, $allowedDownload) && !preg_match('/^meta(_[a-z]{2})?\.txt$/', basename($file)))
-                {
-                    $this->parseMetaFile(dirname($file), true);
-                    $arrMeta = $this->arrMeta[$objFile->basename];
-
-                    if ($arrMeta[0] == '')
-                    {
-                        $arrMeta[0] = specialchars($objFile->basename);
-                    }
-
-                    $files[$file] = array
-                    (
-                        'link' => $arrMeta[0],
-                        'title' => $arrMeta[0],
-                        'href' => \Environment::get('request') . (($GLOBALS['TL_CONFIG']['disableAlias'] || strpos(\Environment::get('request'), '?') !== false) ? '&amp;' : '?') . 'file=' . $this->urlEncode($file),
-                        'caption' => $arrMeta[2],
-                        'filesize' => $this->getReadableSize($objFile->filesize, 1),
-                        'icon' => TL_FILES_URL . 'system/themes/' . $this->getTheme() . '/images/' . $objFile->icon,
-                        'mime' => $objFile->mime,
-                        'meta' => $arrMeta,
-                        'extension' => $objFile->extension
-                    );
-
-                    $auxDate[] = $objFile->mtime;
-                }
-
-                continue;
-            }
-
-            $subfiles = scan(TL_ROOT . '/' . $file);
-            $this->parseMetaFile($file);
-
-            // Folders
-            foreach ($subfiles as $subfile)
-            {
-                if (is_dir(TL_ROOT . '/' . $file . '/' . $subfile))
+                if (!in_array($objFile->extension, $allowedDownload) || preg_match('/^meta(_[a-z]{2})?\.txt$/', $objFile->basename))
                 {
                     continue;
                 }
 
-                $objFile = new File($file . '/' . $subfile);
+                $arrMeta = $this->getMetaData($objFiles->meta, $objPage->language);
 
-                if (in_array($objFile->extension, $allowedDownload) && !preg_match('/^meta(_[a-z]{2})?\.txt$/', basename($subfile)))
+                // Use the file name as title if none is given
+                if ($arrMeta['title'] == '')
                 {
-                    $arrMeta = $this->arrMeta[$objFile->basename];
+                    $arrMeta['title'] = specialchars(str_replace('_', ' ', preg_replace('/^[0-9]+_/', '', $objFile->filename)));
+                }
 
-                    if ($arrMeta[0] == '')
+                $strHref = \Environment::get('request');
+
+                // Remove an existing file parameter (see #5683)
+                if (preg_match('/(&(amp;)?|\?)file=/', $strHref))
+                {
+                    $strHref = preg_replace('/(&(amp;)?|\?)file=[^&]+/', '', $strHref);
+                }
+
+                $strHref .= (($GLOBALS['TL_CONFIG']['disableAlias'] || strpos($strHref, '?') !== false) ? '&amp;' : '?') . 'file=' . \System::urlEncode($objFiles->path);
+
+                // Add the image
+                $files[$objFiles->path] = array
+                (
+                    'id'        => $objFiles->id,
+                    'name'      => $objFile->basename,
+                    'title'     => $arrMeta['title'],
+                    'link'      => $arrMeta['title'],
+                    'caption'   => $arrMeta['caption'],
+                    'href'      => $strHref,
+                    'filesize'  => \System::getReadableSize($objFile->filesize, 1),
+                    'icon'      => TL_ASSETS_URL . 'assets/contao/images/' . $objFile->icon,
+                    'mime'      => $objFile->mime,
+                    'meta'      => $arrMeta,
+                    'extension' => $objFile->extension,
+                    'path'      => $objFile->dirname
+                );
+
+                $auxDate[] = $objFile->mtime;
+            }
+
+            // Folders
+            else
+            {
+                $objSubfiles = \FilesModel::findByPid($objFiles->id);
+
+                if ($objSubfiles === null)
+                {
+                    continue;
+                }
+
+                while ($objSubfiles->next())
+                {
+                    // Skip subfolders
+                    if ($objSubfiles->type == 'folder')
                     {
-                        $arrMeta[0] = specialchars($objFile->basename);
+                        continue;
                     }
 
-                    $files[$file . '/' . $subfile] = array
+                    $objFile = new \File($objSubfiles->path, true);
+
+                    if (!in_array($objFile->extension, $allowedDownload) || preg_match('/^meta(_[a-z]{2})?\.txt$/', $objFile->basename))
+                    {
+                        continue;
+                    }
+
+                    $arrMeta = $this->getMetaData($objSubfiles->meta, $objPage->language);
+
+                    // Use the file name as title if none is given
+                    if ($arrMeta['title'] == '')
+                    {
+                        $arrMeta['title'] = specialchars(str_replace('_', ' ', preg_replace('/^[0-9]+_/', '', $objFile->filename)));
+                    }
+
+                    $strHref = \Environment::get('request');
+
+                    // Remove an existing file parameter (see #5683)
+                    if (preg_match('/(&(amp;)?|\?)file=/', $strHref))
+                    {
+                        $strHref = preg_replace('/(&(amp;)?|\?)file=[^&]+/', '', $strHref);
+                    }
+
+                    $strHref .= (($GLOBALS['TL_CONFIG']['disableAlias'] || strpos($strHref, '?') !== false) ? '&amp;' : '?') . 'file=' . \System::urlEncode($objSubfiles->path);
+
+                    // Add the image
+                    $files[$objSubfiles->path] = array
                     (
-                        'link' => $arrMeta[0],
-                        'title' => $arrMeta[0],
-                        'href' => \Environment::get('request') . (($GLOBALS['TL_CONFIG']['disableAlias'] || strpos(\Environment::get('request'), '?') !== false) ? '&amp;' : '?') . 'file=' . $this->urlEncode($file . '/' . $subfile),
-                        'caption' => $arrMeta[2],
-                        'filesize' => $this->getReadableSize($objFile->filesize, 1),
-                        'icon' => 'system/themes/' . $this->getTheme() . '/images/' . $objFile->icon,
-                        'meta' => $arrMeta,
-                        'extension' => $objFile->extension
+                        'id'        => $objSubfiles->id,
+                        'name'      => $objFile->basename,
+                        'title'     => $arrMeta['title'],
+                        'link'      => $arrMeta['title'],
+                        'caption'   => $arrMeta['caption'],
+                        'href'      => $strHref,
+                        'filesize'  => $this->getReadableSize($objFile->filesize, 1),
+                        'icon'      => TL_ASSETS_URL . 'assets/contao/images/' . $objFile->icon,
+                        'mime'      => $objFile->mime,
+                        'meta'      => $arrMeta,
+                        'extension' => $objFile->extension,
+                        'path'      => $objFile->dirname
                     );
 
                     $auxDate[] = $objFile->mtime;
@@ -221,4 +282,26 @@ class Downloads extends Attribute implements IsotopeAttribute
 
         return $objTemplate->parse();
     }
+
+    /**
+	 * Get the meta data from a serialized string
+	 * @param   string
+	 * @param   string
+	 * @return  array
+	 * @todo    remove this as soon as \Frontend::getMetaData is public and static in Contao core
+	 */
+	protected function getMetaData($strData, $strLanguage)
+	{
+		$arrData = deserialize($strData);
+
+		// Convert the language to a locale (see #5678)
+		$strLanguage = str_replace('-', '_', $strLanguage);
+
+		if (!is_array($arrData) || !isset($arrData[$strLanguage]))
+		{
+			return array();
+		}
+
+		return $arrData[$strLanguage];
+	}
 }
