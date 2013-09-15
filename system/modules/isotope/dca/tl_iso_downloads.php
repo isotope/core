@@ -155,22 +155,6 @@ $GLOBALS['TL_DCA']['tl_iso_downloads'] = array
             'eval'                  => array('mandatory'=>true, 'fieldType'=>'radio', 'files'=>true, 'filesOnly'=>true, 'extensions'=>$GLOBALS['TL_CONFIG']['allowedDownload']),
             'sql'                   => "varchar(255) NOT NULL default ''",
         ),
-        'title' => array
-        (
-            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_downloads']['title'],
-            'exclude'               => true,
-            'inputType'             => 'text',
-            'eval'                  => array('mandatory'=>true, 'maxlength'=>255, 'tl_class'=>'long'),
-            'sql'                   => "varchar(255) NOT NULL default ''",
-        ),
-        'description' => array
-        (
-            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_downloads']['description'],
-            'exclude'               => true,
-            'inputType'             => 'textarea',
-            'eval'                  => array('rte'=>'tinyMCE'),
-            'sql'                   => "text NULL",
-        ),
         'downloads_allowed' => array
         (
             'label'                 => &$GLOBALS['TL_LANG']['tl_iso_downloads']['downloads_allowed'],

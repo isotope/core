@@ -18,8 +18,6 @@
  */
 $GLOBALS['TL_LANG']['tl_iso_downloads']['type']                 = array('Download type', 'Select if you want provide a file or all files in a folder.');
 $GLOBALS['TL_LANG']['tl_iso_downloads']['singleSRC']            = array('Attachement', 'Select the file you want to sell.');
-$GLOBALS['TL_LANG']['tl_iso_downloads']['title']                = array('Title', 'Enter a title for this download.');
-$GLOBALS['TL_LANG']['tl_iso_downloads']['description']          = array('Description', 'Enter a description for this file.');
 $GLOBALS['TL_LANG']['tl_iso_downloads']['downloads_allowed']    = array('Downloads allowed', 'The number of times these file(s) can be downloaded per order (multiplied by the quantity sold). Enter 0 for unlimited downloads.');
 $GLOBALS['TL_LANG']['tl_iso_downloads']['expires']              = array('Expiration', 'Define if the download(s) expires after a certain time period.');
 
@@ -46,5 +44,4 @@ $GLOBALS['TL_LANG']['tl_iso_downloads']['folder']               = 'Folder';
  * Legends
  */
 $GLOBALS['TL_LANG']['tl_iso_downloads']['file_legend']          = 'Attachement';
-$GLOBALS['TL_LANG']['tl_iso_downloads']['name_legend']          = 'Title &amp; Description';
 $GLOBALS['TL_LANG']['tl_iso_downloads']['limit_legend']         = 'Limits';
