@@ -42,7 +42,6 @@ $GLOBALS['TL_DCA']['tl_iso_attributes'] = array
         'onsubmit_callback' => array
         (
             array('Isotope\tl_iso_attributes', 'updateDatabase'),
-            array('Isotope\tl_iso_attributes', 'cleanFieldValues'),
         ),
         'sql' => array
         (

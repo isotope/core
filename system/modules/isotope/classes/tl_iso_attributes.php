@@ -103,30 +103,6 @@ class tl_iso_attributes extends \Backend
 
 
     /**
-     * Remove field that are not available in certain attributes and could cause unwanted results
-     * @param object
-     * @return void
-     */
-    public function cleanFieldValues($dc)
-    {
-        $strPalette = $GLOBALS['TL_DCA']['tl_iso_attributes']['palettes'][$dc->activeRecord->type];
-
-        if ($dc->activeRecord->variant_option && $GLOBALS['TL_DCA']['tl_iso_attributes']['palettes'][$dc->activeRecord->type.'variant_option'] != '')
-        {
-            $strPalette = $GLOBALS['TL_DCA']['tl_iso_attributes']['palettes'][$dc->activeRecord->type.'variant_option'];
-        }
-
-        $arrFields = array_keys($GLOBALS['TL_DCA']['tl_iso_attributes']['fields']);
-        $arrKeep = trimsplit(',|;', $strPalette);
-        $arrSubpalettes = trimsplit(',', implode(',', (array) $GLOBALS['TL_DCA']['tl_iso_attributes']['subpalettes']));
-
-        $arrClean = array_diff($arrFields, $arrKeep, $arrSubpalettes, array('pid', 'sorting'));
-
-        \Database::getInstance()->execute("UPDATE tl_iso_attributes SET " . implode("='', ", $arrClean) . "='' WHERE id={$dc->id}");
-    }
-
-
-    /**
      * Return an array of select-attributes
      * @param object
      * @return array
