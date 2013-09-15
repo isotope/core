@@ -94,6 +94,13 @@ $GLOBALS['TL_DCA']['tl_iso_downloads'] = array
                 'attributes'        => 'onclick="if (!confirm(\'' . $GLOBALS['TL_LANG']['MSC']['deleteConfirm'] . '\')) return false; Backend.getScrollOffset();"',
                 'button_callback'   => array('Isotope\tl_iso_downloads', 'deleteButton'),
             ),
+            'toggle' => array
+            (
+                'label'             => &$GLOBALS['TL_LANG']['tl_iso_downloads']['toggle'],
+                'icon'              => 'visible.gif',
+                'attributes'        => 'onclick="Backend.getScrollOffset(); return AjaxRequest.toggleVisibility(this, %s);"',
+                'button_callback'   => array('Isotope\tl_iso_downloads', 'toggleIcon')
+            ),
             'show' => array
             (
                 'label'             => &$GLOBALS['TL_LANG']['tl_iso_downloads']['show'],
@@ -106,7 +113,7 @@ $GLOBALS['TL_DCA']['tl_iso_downloads'] = array
     // Palettes
     'palettes' => array
     (
-        'default'                   => '{file_legend},singleSRC;{limit_legend},downloads_allowed,expires',
+        'default'                   => '{file_legend},singleSRC;{limit_legend},downloads_allowed,expires;{publish_legend},published',
     ),
 
     // Fields
@@ -157,6 +164,14 @@ $GLOBALS['TL_DCA']['tl_iso_downloads'] = array
             'reference'             => &$GLOBALS['TL_LANG']['MSC']['timePeriod'],
             'eval'                  => array('rgxp'=>'digit', 'tl_class'=>'w50'),
             'sql'                   => "varchar(64) NOT NULL default ''",
+        ),
+        'published' => array
+        (
+            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_downloads']['published'],
+            'exclude'               => true,
+            'inputType'             => 'checkbox',
+            'eval'                  => array('doNotCopy'=>true),
+            'sql'                   => "char(1) NOT NULL default ''",
         ),
     )
 );

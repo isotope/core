@@ -93,4 +93,77 @@ class tl_iso_downloads extends \Backend
 
         return '<a href="'.$this->addToUrl($href.'&amp;id='.$row['id']).'" title="'.specialchars($title).'"'.$attributes.'>'.$this->generateImage($icon, $label).'</a> ';
     }
+
+
+    /**
+     * Return the "toggle visibility" button
+     * @param array
+     * @param string
+     * @param string
+     * @param string
+     * @param string
+     * @param string
+     * @return string
+     */
+    public function toggleIcon($row, $href, $label, $title, $icon, $attributes)
+    {
+		if (strlen(\Input::get('tid')))
+		{
+			$this->toggleVisibility(\Input::get('tid'), (\Input::get('state') == 1));
+			\Controller::redirect($this->getReferer());
+		}
+
+        // Check permissions AFTER checking the tid, so hacking attempts are logged
+        if (!\BackendUser::getInstance()->isAdmin && !\BackendUser::getInstance()->hasAccess('tl_iso_downloads::published', 'alexf'))
+        {
+            return '';
+        }
+
+        if ($row['published'] != '1')
+        {
+            $icon = 'invisible.gif';
+        }
+
+        $href .= '&amp;tid='.$row['id'].'&amp;state='.($row['published'] ? '' : 1);
+
+        return '<a href="'.$this->addToUrl($href).'" title="'.specialchars($title).'"'.$attributes.'>'.$this->generateImage($icon, $label).'</a> ';
+    }
+
+
+    /**
+     * Publish/unpublish a product
+     * @param integer
+     * @param boolean
+     * @return void
+     */
+    public function toggleVisibility($intId, $blnVisible)
+    {
+        // Check permissions to edit
+        \Input::setGet('id', $intId);
+        \Input::setGet('act', 'toggle');
+
+        // Check permissions to publish
+        if (!\BackendUser::getInstance()->isAdmin && !\BackendUser::getInstance()->hasAccess('tl_iso_downloads::published', 'alexf'))
+        {
+            \System::log('Not enough permissions to publish/unpublish download ID "'.$intId.'"', __METHOD__, TL_ERROR);
+            \Controller::redirect('contao/main.php?act=error');
+        }
+
+        $this->createInitialVersion('tl_iso_downloads', $intId);
+
+        // Trigger the save_callback
+        if (is_array($GLOBALS['TL_DCA']['tl_iso_downloads']['fields']['published']['save_callback']))
+        {
+            foreach ($GLOBALS['TL_DCA']['tl_iso_downloads']['fields']['published']['save_callback'] as $callback)
+            {
+                $objCallback = \System::importStatic($callback[0]);
+                $blnVisible = $objCallback->$callback[1]($blnVisible, $this);
+            }
+        }
+
+        // Update the database
+        \Database::getInstance()->prepare("UPDATE tl_iso_downloads SET published='" . ($blnVisible ? 1 : '') . "' WHERE id=?")->execute($intId);
+
+        $this->createNewVersion('tl_iso_downloads', $intId);
+    }
 }
