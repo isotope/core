@@ -373,11 +373,7 @@ abstract class Attribute extends TypeAgent
 
                 if ($arrFormat[$name]['rgxp'] == 'price')
                 {
-                    $intTax = 0;
-
-                    if (null !== $objProduct->getPrice()) {
-                        $intTax = $objProduct->getPrice()->tax_class;
-                    }
+                    $intTax = (int) $row['tax_class'];
 
                     $value = Isotope::formatPriceWithCurrency(Isotope::calculatePrice($value, $objProduct, $this->field_name, $intTax));
                 }
