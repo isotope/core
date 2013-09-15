@@ -44,11 +44,15 @@ abstract class TypeAgent extends \Model
 
         // Register model type
         if (!isset($this->arrRelations['type'])) {
-            $this->arrData['type'] = array_search(get_called_class(), static::$arrModelTypes);
+            $strType = array_search(get_called_class(), static::$arrModelTypes);
+
+            if ($strType != '') {
+                $this->arrData['type'] = $strType;
+            }
         }
 
         if ($this->arrData['type'] == '') {
-            throw new \RuntimeException(get_called_class() . ' is not a registered model type');
+            throw new \RuntimeException(get_called_class() . ' has no model type');
         }
     }
 
