@@ -42,9 +42,9 @@ class BasePrice extends Attribute implements IsotopeAttribute
         {
             $objBasePrice = \Isotope\Model\BasePrice::findByPk((int) $arrData['unit']);
 
-            if (null !== $objBasePrice)
+            if (null !== $objBasePrice && null !== $objProduct->getPrice())
             {
-                return sprintf($objBasePrice->getLabel(), Isotope::formatPriceWithCurrency($objProduct->price / $arrData['value'] * $objBasePrice->amount), $arrData['value']);
+                return sprintf($objBasePrice->getLabel(), Isotope::formatPriceWithCurrency($objProduct->getPrice()->getAmount() / $arrData['value'] * $objBasePrice->amount), $arrData['value']);
             }
         }
 
