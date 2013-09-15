@@ -24,24 +24,6 @@ class tl_iso_downloads extends \Backend
 {
 
     /**
-     * Update singleSRC field depending on type
-     */
-    public function prepareSRC($dc)
-    {
-        if (\Input::get('act') == 'edit')
-        {
-            $objDownload = \Database::getInstance()->prepare("SELECT * FROM tl_iso_downloads WHERE id=?")->execute($dc->id);
-
-            if ($objDownload->type == 'folder')
-            {
-                $GLOBALS['TL_DCA']['tl_iso_downloads']['fields']['singleSRC']['eval']['files'] = false;
-                $GLOBALS['TL_DCA']['tl_iso_downloads']['fields']['singleSRC']['eval']['filesOnly'] = false;
-            }
-        }
-    }
-
-
-    /**
      * Add an image to each record
      * @param array
      * @return string

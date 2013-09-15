@@ -16,8 +16,7 @@
 /**
  * Fields
  */
-$GLOBALS['TL_LANG']['tl_iso_downloads']['type']                 = array('Download type', 'Select if you want provide a file or all files in a folder.');
-$GLOBALS['TL_LANG']['tl_iso_downloads']['singleSRC']            = array('Attachement', 'Select the file you want to sell.');
+$GLOBALS['TL_LANG']['tl_iso_downloads']['singleSRC']            = array('Attachement', 'Select the file or folder content you want to sell.');
 $GLOBALS['TL_LANG']['tl_iso_downloads']['downloads_allowed']    = array('Downloads allowed', 'The number of times these file(s) can be downloaded per order (multiplied by the quantity sold). Enter 0 for unlimited downloads.');
 $GLOBALS['TL_LANG']['tl_iso_downloads']['expires']              = array('Expiration', 'Define if the download(s) expires after a certain time period.');
 
@@ -33,12 +32,6 @@ $GLOBALS['TL_LANG']['tl_iso_downloads']['show']                 = array('Downloa
 $GLOBALS['TL_LANG']['tl_iso_downloads']['editheader']           = array('Edit product', 'Edit this product');
 $GLOBALS['TL_LANG']['tl_iso_downloads']['pasteafter']           = array('Paste at the top', 'Paste after download ID %s');
 $GLOBALS['TL_LANG']['tl_iso_downloads']['pastenew']             = array('Add new at the top', 'Add new after download ID %s');
-
-/**
- * Reference
- */
-$GLOBALS['TL_LANG']['tl_iso_downloads']['file']                 = 'File';
-$GLOBALS['TL_LANG']['tl_iso_downloads']['folder']               = 'Folder';
 
 /**
  * Legends

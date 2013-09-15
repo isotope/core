@@ -26,10 +26,6 @@ $GLOBALS['TL_DCA']['tl_iso_downloads'] = array
         'dataContainer'             => 'Table',
         'enableVersioning'          => true,
         'ptable'                    => 'tl_iso_products',
-        'onload_callback' => array
-        (
-            array('Isotope\tl_iso_downloads', 'prepareSRC'),
-        ),
         'sql' => array
         (
             'keys' => array
@@ -109,10 +105,7 @@ $GLOBALS['TL_DCA']['tl_iso_downloads'] = array
     // Palettes
     'palettes' => array
     (
-        '__selector__'              => array('type'),
-        'default'                   => '{file_legend},type,',
-        'file'                      => '{file_legend},type,singleSRC;{name_legend},title,description;{limit_legend},downloads_allowed,expires',
-        'folder'                    => '{file_legend},type,singleSRC;{limit_legend},downloads_allowed,expires',
+        'default'                   => '{file_legend},singleSRC;{limit_legend},downloads_allowed,expires',
     ),
 
     // Fields
@@ -136,24 +129,13 @@ $GLOBALS['TL_DCA']['tl_iso_downloads'] = array
         (
             'sql'                   => "int(10) unsigned NOT NULL default '0'",
         ),
-
-        'type' => array
-        (
-            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_downloads']['type'],
-            'exclude'               => true,
-            'inputType'             => 'select',
-            'options'               => array('file', 'folder'),
-            'reference'             => &$GLOBALS['TL_LANG']['tl_iso_downloads'],
-            'eval'                  => array('mandatory'=>true, 'submitOnChange'=>true),
-            'sql'                   => "varchar(8) NOT NULL default 'file'",
-        ),
         'singleSRC' => array
         (
             'label'                 => &$GLOBALS['TL_LANG']['tl_iso_downloads']['singleSRC'],
             'exclude'               => true,
             'inputType'             => 'fileTree',
-            'eval'                  => array('mandatory'=>true, 'fieldType'=>'radio', 'files'=>true, 'filesOnly'=>true, 'extensions'=>$GLOBALS['TL_CONFIG']['allowedDownload']),
-            'sql'                   => "varchar(255) NOT NULL default ''",
+            'eval'                  => array('mandatory'=>true, 'fieldType'=>'radio', 'files'=>true, 'extensions'=>$GLOBALS['TL_CONFIG']['allowedDownload']),
+            'sql'                   => "int(10) unsigned NOT NULL default '0'",
         ),
         'downloads_allowed' => array
         (
