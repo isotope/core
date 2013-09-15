@@ -49,7 +49,7 @@ class Downloads extends Attribute implements IsotopeAttribute
 
     /**
      * Return class name for the backend widget or false if none should be available
-     * @return	string
+     * @return    string
      */
     public function getBackendWidget()
     {
@@ -67,8 +67,7 @@ class Downloads extends Attribute implements IsotopeAttribute
         $arrFiles = $objProduct->{$this->field_name};
 
         // Return if there are no files
-        if (!is_array($arrFiles) || empty($arrFiles))
-        {
+        if (empty($arrFiles) || !is_array($arrFiles)) {
             return '';
         }
 
@@ -87,12 +86,9 @@ class Downloads extends Attribute implements IsotopeAttribute
         $file = \Input::get('file', true);
 
 		// Send the file to the browser and do not send a 404 header (see #4632)
-		if ($file != '' && !preg_match('/^meta(_[a-z]{2})?\.txt$/', basename($file)))
-		{
-			while ($objFiles->next())
-			{
-				if ($file == $objFiles->path || dirname($file) == $objFiles->path)
-				{
+		if ($file != '' && !preg_match('/^meta(_[a-z]{2})?\.txt$/', basename($file))) {
+			while ($objFiles->next()) {
+				if ($file == $objFiles->path || dirname($file) == $objFiles->path) {
 					\Controller::sendFileToBrowser($file);
 				}
 			}
@@ -106,45 +102,39 @@ class Downloads extends Attribute implements IsotopeAttribute
         $allowedDownload = trimsplit(',', strtolower($GLOBALS['TL_CONFIG']['allowedDownload']));
 
         // Get all files
-        while ($objFiles->next())
-        {
+        while ($objFiles->next()) {
+
             // Continue if the files has been processed or does not exist
-            if (isset($files[$objFiles->path]) || !file_exists(TL_ROOT . '/' . $objFiles->path))
-            {
+            if (isset($files[$objFiles->path]) || !file_exists(TL_ROOT . '/' . $objFiles->path)) {
                 continue;
             }
 
             // Single files
-            if ($objFiles->type == 'file')
-            {
+            if ($objFiles->type == 'file') {
                 $objFile = new \File($objFiles->path, true);
 
-                if (!in_array($objFile->extension, $allowedDownload) || preg_match('/^meta(_[a-z]{2})?\.txt$/', $objFile->basename))
-                {
+                if (!in_array($objFile->extension, $allowedDownload) || preg_match('/^meta(_[a-z]{2})?\.txt$/', $objFile->basename)) {
                     continue;
                 }
 
                 $arrMeta = $this->getMetaData($objFiles->meta, $objPage->language);
 
                 // Use the file name as title if none is given
-                if ($arrMeta['title'] == '')
-                {
+                if ($arrMeta['title'] == '') {
                     $arrMeta['title'] = specialchars(str_replace('_', ' ', preg_replace('/^[0-9]+_/', '', $objFile->filename)));
                 }
 
                 $strHref = \Environment::get('request');
 
                 // Remove an existing file parameter (see #5683)
-                if (preg_match('/(&(amp;)?|\?)file=/', $strHref))
-                {
+                if (preg_match('/(&(amp;)?|\?)file=/', $strHref)) {
                     $strHref = preg_replace('/(&(amp;)?|\?)file=[^&]+/', '', $strHref);
                 }
 
                 $strHref .= (($GLOBALS['TL_CONFIG']['disableAlias'] || strpos($strHref, '?') !== false) ? '&amp;' : '?') . 'file=' . \System::urlEncode($objFiles->path);
 
                 // Add the image
-                $files[$objFiles->path] = array
-                (
+                $files[$objFiles->path] = array(
                     'id'        => $objFiles->id,
                     'name'      => $objFile->basename,
                     'title'     => $arrMeta['title'],
@@ -163,51 +153,44 @@ class Downloads extends Attribute implements IsotopeAttribute
             }
 
             // Folders
-            else
-            {
+            else {
                 $objSubfiles = \FilesModel::findByPid($objFiles->id);
 
-                if ($objSubfiles === null)
-                {
+                if ($objSubfiles === null) {
                     continue;
                 }
 
-                while ($objSubfiles->next())
-                {
+                while ($objSubfiles->next()) {
+
                     // Skip subfolders
-                    if ($objSubfiles->type == 'folder')
-                    {
+                    if ($objSubfiles->type == 'folder') {
                         continue;
                     }
 
                     $objFile = new \File($objSubfiles->path, true);
 
-                    if (!in_array($objFile->extension, $allowedDownload) || preg_match('/^meta(_[a-z]{2})?\.txt$/', $objFile->basename))
-                    {
+                    if (!in_array($objFile->extension, $allowedDownload) || preg_match('/^meta(_[a-z]{2})?\.txt$/', $objFile->basename)) {
                         continue;
                     }
 
                     $arrMeta = $this->getMetaData($objSubfiles->meta, $objPage->language);
 
                     // Use the file name as title if none is given
-                    if ($arrMeta['title'] == '')
-                    {
+                    if ($arrMeta['title'] == '') {
                         $arrMeta['title'] = specialchars(str_replace('_', ' ', preg_replace('/^[0-9]+_/', '', $objFile->filename)));
                     }
 
                     $strHref = \Environment::get('request');
 
                     // Remove an existing file parameter (see #5683)
-                    if (preg_match('/(&(amp;)?|\?)file=/', $strHref))
-                    {
+                    if (preg_match('/(&(amp;)?|\?)file=/', $strHref)) {
                         $strHref = preg_replace('/(&(amp;)?|\?)file=[^&]+/', '', $strHref);
                     }
 
                     $strHref .= (($GLOBALS['TL_CONFIG']['disableAlias'] || strpos($strHref, '?') !== false) ? '&amp;' : '?') . 'file=' . \System::urlEncode($objSubfiles->path);
 
                     // Add the image
-                    $files[$objSubfiles->path] = array
-                    (
+                    $files[$objSubfiles->path] = array(
                         'id'        => $objSubfiles->id,
                         'name'      => $objFile->basename,
                         'title'     => $arrMeta['title'],
@@ -245,6 +228,7 @@ class Downloads extends Attribute implements IsotopeAttribute
             case 'date_desc':
                 array_multisort($files, SORT_NUMERIC, $auxDate, SORT_DESC);
                 break;
+
             case 'custom':
                 if ($this->{$this->field_name . '_order'} != '') {
                     // Turn the order string into an array and remove all values
