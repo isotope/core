@@ -16,6 +16,7 @@
 namespace Isotope;
 
 use Isotope\Model\Download;
+use Isotope\Model\ProductCollectionDownload;
 
 
 /**
@@ -29,6 +30,7 @@ class tl_iso_downloads extends \Backend
      * List download files
      * @param   array
      * @return  string
+     * @see     https://contao.org/de/manual/3.1/data-container-arrays.html#label_callback
      */
     public function listRows($row)
     {
@@ -70,5 +72,25 @@ class tl_iso_downloads extends \Backend
         }
 
         return sprintf('<div style="height: 16px;%s">%s</div>', $icon, $path);
+    }
+
+    /**
+     * Prevent delete on a download which has been sold
+     * @param   array
+     * @param   string
+     * @param   string
+     * @param   string
+     * @param   string
+     * @param   array
+     * @return  string
+     * @see     https://contao.org/de/manual/3.1/data-container-arrays.html#button_callback
+     */
+    public function deleteButton($row, $href, $label, $title, $icon, $attributes)
+    {
+        if (ProductCollectionDownload::countBy('download_id', $row['id']) > 0) {
+            return $this->generateImage(preg_replace('/\.gif$/i', '_.gif', $icon)).' ';
+        }
+
+        return '<a href="'.$this->addToUrl($href.'&amp;id='.$row['id']).'" title="'.specialchars($title).'"'.$attributes.'>'.$this->generateImage($icon, $label).'</a> ';
     }
 }
