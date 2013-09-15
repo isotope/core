@@ -255,87 +255,13 @@ abstract class Attribute extends TypeAgent
 	    // Generate a HTML table for associative arrays
         if (is_array($varValue) && !array_is_assoc($varValue) && is_array($varValue[0]))
         {
-            $arrFormat = $GLOBALS['TL_DCA']['tl_iso_products']['fields'][$this->field_name]['tableformat'];
-
-            $last = count($varValue[0])-1;
-
-            $strBuffer = '
-<table class="'.$this->field_name.'">
-  <thead>
-    <tr>';
-
-            foreach (array_keys($varValue[0]) as $i => $name)
-            {
-                if ($arrFormat[$name]['doNotShow'])
-                {
-                    continue;
-                }
-
-                $label = $arrFormat[$name]['label'] ? $arrFormat[$name]['label'] : $name;
-
-                $strBuffer .= '
-      <th class="head_'.$i.($i==0 ? ' head_first' : '').($i==$last ? ' head_last' : ''). (!is_numeric($name) ? ' '.standardize($name) : '').'">' . $label . '</th>';
-            }
-
-            $strBuffer .= '
-    </tr>
-  </thead>
-  <tbody>';
-
-            foreach ($varValue as $r => $row)
-            {
-                $strBuffer .= '
-    <tr class="row_'.$r.($r==0 ? ' row_first' : '').($r==$last ? ' row_last' : '').' '.($r%2 ? 'odd' : 'even').'">';
-
-                $c = -1;
-
-                foreach ($row as $name => $value)
-                {
-                    if ($arrFormat[$name]['doNotShow'])
-                    {
-                        continue;
-                    }
-
-                    if ($arrFormat[$name]['rgxp'] == 'price')
-                    {
-                        $value = Isotope::formatPriceWithCurrency(Isotope::calculatePrice($value, $this, 'price_tiers', $this->arrData['tax_class']));
-                    }
-                    else
-                    {
-                        $value = $arrFormat[$name]['format'] ? sprintf($arrFormat[$name]['format'], $value) : $value;
-                    }
-
-                    $strBuffer .= '
-      <td class="col_'.++$c.($c==0 ? ' col_first' : '').($c==$i ? ' col_last' : '').' '.standardize($name).'">' . $value . '</td>';
-                }
-
-                $strBuffer .= '
-    </tr>';
-            }
-
-            $strBuffer .= '
-  </tbody>
-</table>';
+            $strBuffer = $this->generateTable($varValue);
         }
 
         // Generate ul/li listing for simpley arrays
         elseif (is_array($varValue))
         {
-            $strBuffer = '
-<ul>';
-
-            $current = 0;
-            $last = count($varValue)-1;
-            foreach( $varValue as $value )
-            {
-                $class = trim(($current == 0 ? 'first' : '') . ($current == $last ? ' last' : ''));
-
-                $strBuffer .= '
-  <li'.($class != '' ? ' class="'.$class.'"' : '').'>' . $value . '</li>';
-            }
-
-            $strBuffer .= '
-</ul>';
+            $strBuffer = $this->generateList($varValue);
         }
         else
         {
@@ -395,5 +321,105 @@ abstract class Attribute extends TypeAgent
         }
 
         return $strFallback;
+    }
+
+    /**
+     * Generate HTML table for associative array values
+     * @param   array
+     * @return  string
+     */
+    protected function generateTable(array $arrValues)
+    {
+        $arrFormat = $GLOBALS['TL_DCA']['tl_iso_products']['fields'][$this->field_name]['tableformat'];
+
+        $last = count($arrValues[0])-1;
+
+        $strBuffer = '
+<table class="'.$this->field_name.'">
+  <thead>
+    <tr>';
+
+        foreach (array_keys($arrValues[0]) as $i => $name)
+        {
+            if ($arrFormat[$name]['doNotShow'])
+            {
+                continue;
+            }
+
+            $label = $arrFormat[$name]['label'] ? $arrFormat[$name]['label'] : $name;
+
+            $strBuffer .= '
+      <th class="head_'.$i.($i==0 ? ' head_first' : '').($i==$last ? ' head_last' : ''). (!is_numeric($name) ? ' '.standardize($name) : '').'">' . $label . '</th>';
+        }
+
+        $strBuffer .= '
+    </tr>
+  </thead>
+  <tbody>';
+
+        foreach ($arrValues as $r => $row)
+        {
+            $strBuffer .= '
+    <tr class="row_'.$r.($r==0 ? ' row_first' : '').($r==$last ? ' row_last' : '').' '.($r%2 ? 'odd' : 'even').'">';
+
+            $c = -1;
+
+            foreach ($row as $name => $value)
+            {
+                if ($arrFormat[$name]['doNotShow'])
+                {
+                    continue;
+                }
+
+                if ($arrFormat[$name]['rgxp'] == 'price')
+                {
+                    $intTax = 0;
+
+                    if (null !== $objProduct->getPrice()) {
+                        $intTax = $objProduct->getPrice()->tax_class;
+                    }
+
+                    $value = Isotope::formatPriceWithCurrency(Isotope::calculatePrice($value, $objProduct, $this->field_name, $intTax));
+                }
+                else
+                {
+                    $value = $arrFormat[$name]['format'] ? sprintf($arrFormat[$name]['format'], $value) : $value;
+                }
+
+                $strBuffer .= '
+      <td class="col_'.++$c.($c==0 ? ' col_first' : '').($c==$i ? ' col_last' : '').' '.standardize($name).'">' . $value . '</td>';
+            }
+
+            $strBuffer .= '
+    </tr>';
+        }
+
+        $strBuffer .= '
+  </tbody>
+</table>';
+
+        return $strBuffer;
+    }
+
+    /**
+     * Generate HTML list for array values
+     * @param   array
+     * @return  string
+     */
+    protected function generateList(array $arrValues)
+    {
+        $strBuffer = "\n<ul>";
+
+        $current = 0;
+        $last = count($arrValues)-1;
+        foreach ($arrValues as $value ) {
+            $class = trim(($current == 0 ? 'first' : '') . ($current == $last ? ' last' : ''));
+
+            $strBuffer .= "\n<li".($class != '' ? ' class="'.$class.'"' : '').'>' . $value . '</li>';
+        }
+
+        $strBuffer .= "\n</ul>";
+
+        return $strBuffer;
     }
 }
