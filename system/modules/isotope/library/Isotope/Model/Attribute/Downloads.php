@@ -62,7 +62,7 @@ class Downloads extends Attribute implements IsotopeAttribute
      * @param IsotopeProduct
      * @return string
      */
-    public function generate(IsotopeProduct $objProduct)
+    public function generate(IsotopeProduct $objProduct, array $arrOptions=array())
     {
         $arrFiles = $objProduct->{$this->field_name};
 

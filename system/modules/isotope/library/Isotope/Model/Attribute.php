@@ -247,7 +247,7 @@ abstract class Attribute extends TypeAgent
 	}
 
 
-	public function generate(IsotopeProduct $objProduct)
+	public function generate(IsotopeProduct $objProduct, array $arrOptions=array())
 	{
 	    $varValue = $objProduct->{$this->field_name};
 	    $strBuffer = '';

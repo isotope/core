@@ -34,7 +34,7 @@ class BasePrice extends Attribute implements IsotopeAttribute
 		$arrData['fields'][$this->field_name]['sql'] = "varchar(255) NOT NULL default ''";
 	}
 
-	public function generate(IsotopeProduct $objProduct)
+	public function generate(IsotopeProduct $objProduct, array $arrOptions=array())
 	{
 	    $arrData = deserialize($objProduct->{$this->field_name});
 

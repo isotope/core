@@ -559,7 +559,7 @@ class Standard extends Product implements IsotopeProduct
         $objTemplate->product = $this;
         $objTemplate->config = $arrConfig;
 
-        $objTemplate->generateAttribute = function($strAttribute) use ($objProduct) {
+        $objTemplate->generateAttribute = function($strAttribute, array $arrOptions=array()) use ($objProduct) {
 
             $objAttribute = $GLOBALS['TL_DCA']['tl_iso_products']['attributes'][$strAttribute];
 
@@ -567,7 +567,7 @@ class Standard extends Product implements IsotopeProduct
                 throw new \InvalidArgumentException($strAttribute . ' is not a valid attribute');
             }
 
-            return $objAttribute->generate($objProduct);
+            return $objAttribute->generate($objProduct, $arrOptions);
         };
 
         $objTemplate->generatePrice = function() use ($objProduct) {
