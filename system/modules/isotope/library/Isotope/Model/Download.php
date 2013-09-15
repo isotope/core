@@ -19,7 +19,7 @@ namespace Isotope\Model;
  * @copyright  Isotope eCommerce Workgroup 2009-2012
  * @author     Andreas Schempp <andreas.schempp@terminal42.ch>
  */
-class ProductCollectionDownload extends \Model
+class Download extends \Model
 {
 
     /**
@@ -31,11 +31,11 @@ class ProductCollectionDownload extends \Model
 
     public function getExpirationTimestamp($intFrom=null)
     {
-        if ($objDownloads->expires == '') {
+        if ($this->expires == '') {
             return null;
         }
 
-        $arrExpires = deserialize($objDownloads->expires, true);
+        $arrExpires = deserialize($this->expires, true);
 
         if ($arrExpires['value'] == 0 || $arrExpires['unit'] == '') {
             return null;
