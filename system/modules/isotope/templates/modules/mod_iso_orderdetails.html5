@@ -18,11 +18,5 @@
 
 <?php echo $this->products; ?>
 
-<?php if (count($this->downloads)): ?>
-<h2><?php echo $GLOBALS['TL_LANG']['MSC']['downloadsLabel']; ?></h2>
-<?php foreach( $this->downloads as $download ): ?>
-<div class="download"><?php if ($download['downloadable']): ?><a href="<?php echo $download['href']; ?>"><?php endif; echo $download['title']; if ($download['downloadable']): ?></a><?php endif; echo $download['remaining']; ?></div>
-<?php endforeach; endif; ?>
-
 </div>
 <!-- indexer::continue -->
