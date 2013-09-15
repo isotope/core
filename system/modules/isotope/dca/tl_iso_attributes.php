@@ -136,8 +136,8 @@ $GLOBALS['TL_DCA']['tl_iso_attributes'] = array
         'checkbox'                  => '{attribute_legend},name,field_name,type,legend,customer_defined;{description_legend:hide},description;{options_legend},options,foreignKey;{config_legend},mandatory,multiple;{search_filters_legend},fe_filter,fe_sorting',
         'conditionalselect'         => '{attribute_legend},name,field_name,type,legend,customer_defined;{description_legend:hide},description;{options_legend},options,foreignKey;{config_legend},mandatory,multiple,size,conditionField;{search_filters_legend},fe_filter,fe_sorting',
         'mediaManager'              => '{attribute_legend},name,field_name,type,legend;{description_legend:hide},description;{config_legend},extensions,mandatory',
-        'fileTree'                  => '{attribute_legend},name,field_name,type,legend;{description_legend:hide},description;{config_legend},fieldType,extensions,path,mandatory,files',
-        'downloads'                 => '{attribute_legend},name,field_name,type,legend;{description_legend:hide},description;{config_legend},fieldType,extensions,sortBy,path,mandatory,files',
+        'fileTree'                  => '{attribute_legend},name,field_name,type,legend;{description_legend:hide},description;{config_legend},fieldType,path,mandatory,files',
+        'downloads'                 => '{attribute_legend},name,field_name,type,legend;{description_legend:hide},description;{config_legend},fieldType,sortBy,path,mandatory,files',
         'upload'                    => '{attribute_legend},name,field_name,type,legend;{description_legend:hide},description;{config_legend},extensions,maxlength,mandatory;{store_legend:hide},storeFile',
     ),
 
@@ -145,7 +145,7 @@ $GLOBALS['TL_DCA']['tl_iso_attributes'] = array
     'subpalettes' => array
     (
         'storeFile'                 => 'uploadFolder,useHomeDir,doNotOverwrite',
-        'files'                     => 'filesOnly',
+        'files'                     => 'extensions,filesOnly',
     ),
 
     // Fields
@@ -340,7 +340,7 @@ $GLOBALS['TL_DCA']['tl_iso_attributes'] = array
             'exclude'               => true,
             'default'               => 'jpg,jpeg,gif,png',
             'inputType'             => 'text',
-            'eval'                  => array('rgxp'=>'extnd', 'maxlength'=>255, 'tl_class'=>'w50'),
+            'eval'                  => array('mandatory'=>true, 'rgxp'=>'extnd', 'maxlength'=>255, 'tl_class'=>'w50'),
             'sql'                   => "varchar(255) NOT NULL default ''",
         ),
         'rte' => array
@@ -410,7 +410,7 @@ $GLOBALS['TL_DCA']['tl_iso_attributes'] = array
             'label'                 => &$GLOBALS['TL_LANG']['tl_iso_attributes']['filesOnly'],
             'exclude'               => true,
             'inputType'             => 'checkbox',
-            'eval'                  => array('tl_class'=>'w50'),
+            'eval'                  => array('tl_class'=>'w50 m12'),
             'sql'                   => "char(1) NOT NULL default ''",
         ),
         'sortBy' => array
