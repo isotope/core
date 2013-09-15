@@ -12,6 +12,7 @@
 
 namespace Isotope\Model;
 
+use Isotope\Isotope;
 use Isotope\Interfaces\IsotopeProductCollection;
 
 
@@ -29,6 +30,110 @@ class ProductCollectionDownload extends \Model
      * @var string
      */
     protected static $strTable = 'tl_iso_product_collection_download';
+
+
+    /**
+     * Check if downloadds are remaining and is not expired
+     * @return  bool
+     */
+    public function canDownload()
+    {
+        return (($this->downloads_remaining === '' || $this->downloads_remaining > 0) && ($this->expires == '' || $this->expires > time()));
+    }
+
+    /**
+     * Send a file to browser and increase download counter
+     * @param   string
+     */
+    protected function download($strFile)
+    {
+        if (TL_MODE != 'FE' && $this->downloads_remaining !== '') {
+            \Database::getInstance()->prepare("UPDATE " . static::$strTable . " SET downloads_remaining=(downloads_remaining-1) WHERE id=?")->execute($this->id);
+        }
+
+        \Controller::sendFileToBrowser($strFile);
+    }
+
+    /**
+     * Generate array representation for download
+     * @return  array
+     */
+    public function getForTemplate($blnOrderPaid=false)
+    {
+        $objDownload = $this->getRelated('download_id');
+
+        if (null === $objDownload || null === $objDownload->getRelated('singleSRC')) {
+            return array();
+        }
+
+        if ($objDownload->getRelated('singleSRC')->type == 'folder') {
+            $arrFiles = array();
+            $objFiles = \FilesModel::findBy(array("pid=?", "type='file'"), array($objDownload->getRelated('singleSRC')->id));
+
+            if (null !== $objFiles) {
+                while ($objFiles->next()) {
+                    $arrFiles[] = $objFiles->current();
+                }
+            }
+        } else {
+            $arrFiles = array($objDownload->getRelated('singleSRC'));
+        }
+
+        $arrDownloads = array();
+        $allowedDownload = trimsplit(',', strtolower($GLOBALS['TL_CONFIG']['allowedDownload']));
+
+        foreach ($arrFiles as $objFileModel) {
+
+            $objFile = new \File($objFileModel->path, true);
+
+            if (!in_array($objFile->extension, $allowedDownload) || preg_match('/^meta(_[a-z]{2})?\.txt$/', $objFile->basename)) {
+                continue;
+            }
+
+            // Send file to the browser
+            if (
+                $blnOrderPaid &&
+                $this->canDownload() &&
+                \Input::get('download') == $objDownload->id &&
+                \Input::get('file') == $objFileModel->path
+            ) {
+                $this->download($objFileModel->path);
+            }
+
+
+            $arrMeta = Isotope::getMetaData($objFileModel->meta, $objPage->language);
+
+            // Use the file name as title if none is given
+            if ($arrMeta['title'] == '') {
+                $arrMeta['title'] = specialchars(str_replace('_', ' ', preg_replace('/^[0-9]+_/', '', $objFile->filename)));
+            }
+
+            $strHref = '';
+            if (TL_MODE == 'FE') {
+                $strHref = \Isotope\Frontend::addQueryStringToUrl('download=' . $objDownload->id . '&amp;file=' . $objFileModel->path);
+            }
+
+            // Add the image
+            $arrDownloads[] = array(
+                'id'            => $this->id,
+                'name'          => $objFile->basename,
+                'title'         => $arrMeta['title'],
+                'link'          => $arrMeta['title'],
+                'caption'       => $arrMeta['caption'],
+                'href'          => $strHref,
+                'filesize'      => \System::getReadableSize($objFile->filesize, 1),
+                'icon'          => TL_ASSETS_URL . 'assets/contao/images/' . $objFile->icon,
+                'mime'          => $objFile->mime,
+                'meta'          => $arrMeta,
+                'extension'     => $objFile->extension,
+                'path'          => $objFile->dirname,
+                'remaining'     => ($objDownload->downloads_allowed > 0 ? sprintf($GLOBALS['TL_LANG']['MSC']['downloadsRemaining'], intval($objDownload->downloads_remaining)) : ''),
+                'downloadable'  => ($blnOrderPaid && $this->canDownload()),
+            );
+        }
+
+        return $arrDownloads;
+    }
 
     /**
      * Find all downloads that belong to items of a given collection

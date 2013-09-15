@@ -1132,14 +1132,21 @@ abstract class ProductCollection extends TypeAgent
         $objModule = $this;
         $arrGalleries = array();
         $arrItems = array();
+        $arrAllDownloads = array();
+        $blnOrderPaid = (null !== $this->getRelated('order_status') && $this->getRelated('order_status')->isPaid());
 
         foreach ($this->getItems($varCallable) as $objItem) {
 
             $blnHasProduct = $objItem->hasProduct();
             $objProduct = $objItem->getProduct();
+            $arrDownloads = array();
 
             // Set the active product for insert tags replacement
             $GLOBALS['ACTIVE_PRODUCT'] = $objProduct;
+
+            foreach ($objItem->getDownloads() as $objDownload) {
+                $arrDownloads = array_merge($arrDownloads, $objDownload->getForTemplate($blnOrderPaid));
+            }
 
             $arrItems[] = array(
                 'id'                => $objItem->id,
@@ -1153,11 +1160,14 @@ abstract class ProductCollection extends TypeAgent
                 'tax_free_total'    => Isotope::formatPriceWithCurrency($objItem->getTaxFreeTotalPrice() * $objItem->quantity),
                 'tax_id'            => $objItem->tax_id,
                 'hasProduct'        => $blnHasProduct,
+                'downloads'         => $arrDownloads,
                 'product'           => $objProduct,
                 'item'              => $objItem,
                 'raw'               => $objItem->row(),
                 'rowClass'          => trim('product ' . (($blnHasProduct && $objProduct->isNew()) ? 'new ' : '') . $objProduct->cssID[1]),
             );
+
+            $arrAllDownloads = array_merge($arrAllDownloads, $arrDownloads);
 
             unset($GLOBALS['ACTIVE_PRODUCT']);
         }
@@ -1166,6 +1176,7 @@ abstract class ProductCollection extends TypeAgent
         $objTemplate->config = ($this->getRelated('config_id') || Isotope::getConfig());
         $objTemplate->items = \Isotope\Frontend::generateRowClass($arrItems, 'row', 'rowClass', 0, ISO_CLASS_COUNT|ISO_CLASS_FIRSTLAST|ISO_CLASS_EVENODD);
         $objTemplate->surcharges = \Isotope\Frontend::formatSurcharges($this->getSurcharges());
+        $objTemplate->downloads = $arrAllDownloads;
         $objTemplate->subtotal = Isotope::formatPriceWithCurrency($this->getSubtotal());
         $objTemplate->total = Isotope::formatPriceWithCurrency($this->getTotal());
 
