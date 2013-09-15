@@ -16,7 +16,6 @@ use Isotope\Isotope;
 use Isotope\Interfaces\IsotopeAttribute;
 use Isotope\Interfaces\IsotopeProduct;
 use Isotope\Model\Attribute;
-use Isotope\Translation;
 
 
 /**
