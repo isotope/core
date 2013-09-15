@@ -506,7 +506,7 @@ class tl_iso_products extends \Backend
 
             if (is_array($arrConfig['attributes'])) {
                 if ($arrConfig['attributes']['type'] != '') {
-                    $strClass = \Isotope\Model\Attribute::getClassForModelType($arrConfig['attributes']['type']);
+                    $strClass = $arrConfig['attributes']['type'];
                 } else {
                     $strClass = \Isotope\Model\Attribute::getClassForModelType($arrConfig['inputType']);
                 }

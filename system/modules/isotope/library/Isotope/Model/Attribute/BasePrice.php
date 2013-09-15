@@ -27,6 +27,15 @@ use Isotope\Model\Attribute;
 class BasePrice extends Attribute implements IsotopeAttribute
 {
 
+    public function __construct(\Database\Result $objResult=null)
+    {
+        // This class should not be registered
+    	// Set type or ModelType would throw an exception
+    	$this->arrData['type'] = 'pricetiers';
+
+    	parent::__construct($objResult);
+    }
+
 	public function saveToDCA(array &$arrData)
 	{
 		parent::saveToDCA($arrData);
