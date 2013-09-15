@@ -37,20 +37,22 @@ class tl_iso_downloads extends \Backend
             return '<p class="error">'.$GLOBALS['TL_LANG']['ERR']['version2format'].'</p>';
         }
 
-        $objFiles = \FilesModel::findByPk($row['singleSRC']);
+        $objDownload = Download::findByPk($row['id']);
 
-        if (null === $objFiles) {
+        if (null === $objDownload) {
             return '<p class="error">'.$GLOBALS['TL_LANG']['ERR']['invalidName'].'</p>';
         }
 
-        if ($objFiles->type == 'folder') {
+        $path = $objDownload->getRelated('singleSRC')->path;
+
+        if ($objDownload->getRelated('singleSRC')->type == 'folder') {
             $arrDownloads = array();
 
-            foreach (scan(TL_ROOT . '/' . $objFiles->path) as $file) {
-                if (is_file(TL_ROOT . '/' . $objFiles->path . '/' . $file)) {
-                    $objFile = new \File($objFiles->path . '/' . $file);
+            foreach (scan(TL_ROOT . '/' . $path) as $file) {
+                if (is_file(TL_ROOT . '/' . $path . '/' . $file)) {
+                    $objFile = new \File($path . '/' . $file);
                     $icon = 'background:url(assets/contao/images/' . $objFile->icon . ') left center no-repeat; padding-left: 22px';
-                    $arrDownloads[] = sprintf('<div style="margin-bottom:5px;height:16px;%s">%s</div>', $icon, $objFiles->path . '/' . $file);
+                    $arrDownloads[] = sprintf('<div style="margin-bottom:5px;height:16px;%s">%s</div>', $icon, $path . '/' . $file);
                 }
             }
 
@@ -58,15 +60,15 @@ class tl_iso_downloads extends \Backend
                 return $GLOBALS['TL_LANG']['ERR']['emptyDownloadsFolder'];
             }
 
-            return '<div style="margin-bottom:5px;height:16px;font-weight:bold">' . $objFiles->path . '</div>' . implode("\n", $arrDownloads);
+            return '<div style="margin-bottom:5px;height:16px;font-weight:bold">' . $path . '</div>' . implode("\n", $arrDownloads);
         }
 
-        if (is_file(TL_ROOT . '/' . $objFiles->path))
+        if (is_file(TL_ROOT . '/' . $path))
         {
-            $objFile = new \File($objFiles->path);
+            $objFile = new \File($path);
             $icon = 'background: url(assets/contao/images/' . $objFile->icon . ') left center no-repeat; padding-left: 22px';
         }
 
-        return sprintf('<div style="height: 16px;%s">%s</div>', $icon, $objFiles->path);
+        return sprintf('<div style="height: 16px;%s">%s</div>', $icon, $path);
     }
 }
