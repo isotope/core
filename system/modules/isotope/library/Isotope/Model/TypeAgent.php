@@ -160,8 +160,7 @@ abstract class TypeAgent extends \Model
      */
     protected static function find(array $arrOptions)
     {
-        if (static::$strTable == '')
-        {
+        if (static::$strTable == '') {
             return null;
         }
 
