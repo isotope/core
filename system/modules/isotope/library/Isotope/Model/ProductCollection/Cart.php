@@ -43,6 +43,10 @@ class Cart extends ProductCollection implements IsotopeProductCollection
     protected static $strCookie = 'ISOTOPE_TEMP_CART';
 
 
+    /**
+     * Get billing address or create if none exists
+     * @return  Address
+     */
     public function getBillingAddress()
     {
         $objAddress = parent::getBillingAddress();
@@ -63,7 +67,10 @@ class Cart extends ProductCollection implements IsotopeProductCollection
         return $objAddress;
     }
 
-
+    /**
+     * Get shipping address or create if none exists
+     * @return  Address
+     */
     public function getShippingAddress()
     {
         $objAddress = parent::getShippingAddress();
@@ -84,6 +91,42 @@ class Cart extends ProductCollection implements IsotopeProductCollection
         return $objAddress;
     }
 
+    /**
+     * Check if minimum order amount is reached
+     * @return  bool
+     */
+    public function hasErrors()
+    {
+        if (Isotope::getConfig()->cartMinSubtotal > 0 && Isotope::getConfig()->cartMinSubtotal > $this->getSubtotal()) {
+            return true;
+        }
+
+        return parent::hasErrors();
+    }
+
+    /**
+     * Get error messages for the cart
+     * @return  array
+     */
+    public function getErrors()
+    {
+        $arrErrors = parent::getErrors();
+
+        if (Isotope::getConfig()->cartMinSubtotal > 0 && Isotope::getConfig()->cartMinSubtotal > $this->getSubtotal()) {
+            $arrErrors[] = sprintf($GLOBALS['TL_LANG']['ERR']['cartMinSubtotal'], Isotope::formatPriceWithCurrency(Isotope::getConfig()->cartMinSubtotal));
+        }
+
+        return $arrErrors;
+    }
+
+    /**
+     * Get a collection-specific error message for items with errors
+     * @return  string
+     */
+    protected function getMessageIfErrorsInItems()
+    {
+        return $GLOBALS['TL_LANG']['ERR']['cartErrorInItems'];
+    }
 
     /**
      * Load the current cart
@@ -159,42 +202,5 @@ class Cart extends ProductCollection implements IsotopeProductCollection
          }
 
          return $objCart;
-    }
-
-    /**
-     * Check if minimum order amount is reached
-     * @return  bool
-     */
-    public function hasErrors()
-    {
-        if (Isotope::getConfig()->cartMinSubtotal > 0 && Isotope::getConfig()->cartMinSubtotal > $this->getSubtotal()) {
-            return true;
-        }
-
-        return parent::hasErrors();
-    }
-
-    /**
-     * Get error messages for the cart
-     * @return  array
-     */
-    public function getErrors()
-    {
-        $arrErrors = parent::getErrors();
-
-        if (Isotope::getConfig()->cartMinSubtotal > 0 && Isotope::getConfig()->cartMinSubtotal > $this->getSubtotal()) {
-            $arrErrors[] = sprintf($GLOBALS['TL_LANG']['ERR']['cartMinSubtotal'], Isotope::formatPriceWithCurrency(Isotope::getConfig()->cartMinSubtotal));
-        }
-
-        return $arrErrors;
-    }
-
-    /**
-     * Get a collection-specific error message for items with errors
-     * @return  string
-     */
-    protected function getMessageIfErrorsInItems()
-    {
-        return $GLOBALS['TL_LANG']['ERR']['cartErrorInItems'];
     }
 }
