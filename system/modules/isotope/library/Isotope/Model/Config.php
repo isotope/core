@@ -165,30 +165,36 @@ class Config extends \Model
      * @param  int
      * @return object|null
      */
-    public static function findByRootPageOrFallback($intRoot)
+    public static function findByRootPageOrFallback($intRoot, array $arrOptions=array())
     {
-        $arrOptions = array(
-			'column' => array("(id=(SELECT iso_config FROM tl_page WHERE id=?) OR fallback='1')"),
-			'value'  => $intRoot,
-			'order'  => 'fallback',
-			'return' => 'Model'
-		);
+        $arrOptions = array_merge(
+            array(
+                'column' => array("(id=(SELECT iso_config FROM tl_page WHERE id=?) OR fallback='1')"),
+                'value'  => $intRoot,
+                'order'  => 'fallback',
+                'return' => 'Model'
+            ),
+            $arrOptions
+        );
 
-		return static::find($arrOptions);
+        return static::find($arrOptions);
     }
 
     /**
      * Find the fallback config
      * @return object|null
      */
-    public static function findByFallback()
+    public static function findByFallback(array $arrOptions=array())
     {
-        $arrOptions = array(
-			'column' => 'fallback',
-			'value'  => '1',
-			'return' => 'Model'
-		);
+        $arrOptions = array_merge(
+            array(
+                'column' => 'fallback',
+                'value'  => '1',
+                'return' => 'Model'
+            ),
+            $arrOptions
+        );
 
-		return static::find($arrOptions);
+        return static::find($arrOptions);
     }
 }

@@ -217,13 +217,15 @@ class ProductPrice extends \Model implements IsotopePrice
      * @param   IsotopeProductCollection
      * @return  IsotopePrice
      */
-    public static function findActiveByProductAndCollection(IsotopeProduct $objProduct, IsotopeProductCollection $objCollection)
+    public static function findActiveByProductAndCollection(IsotopeProduct $objProduct, IsotopeProductCollection $objCollection, array $arrOptions=array())
     {
-        $arrOptions = array
-		(
-			'limit'  => 1,
-			'return' => 'Model'
-		);
+        $arrOptions = array_merge(
+            array(
+    			'limit'  => 1,
+    			'return' => 'Model'
+    		),
+            $arrOptions
+        );
 
         if ($objProduct->hasAdvancedPrices()) {
 
@@ -260,7 +262,7 @@ class ProductPrice extends \Model implements IsotopePrice
      * @param   IsotopeProductCollection
      * @return  IsotopePrice
      */
-    public static function findLowestActiveByVariantsAndCollection(IsotopeProduct $objProduct, IsotopeProductCollection $objCollection)
+    public static function findLowestActiveByVariantsAndCollection(IsotopeProduct $objProduct, IsotopeProductCollection $objCollection, array $arrOptions=array())
     {
         if (!$objProduct->hasVariantPrices()) {
             throw new \LogicException('Cannot find low price, product ID ' . ($objProduct->pid ?: $objProduct->id) . ' has no variant prices');
@@ -271,8 +273,6 @@ class ProductPrice extends \Model implements IsotopePrice
         if (empty($arrIds)) {
             return null;
         }
-
-        $arrOptions = array();
 
         if ($objProduct->hasAdvancedPrices()) {
 
