@@ -105,7 +105,7 @@ class Address extends \Model
 
             if ($strField == 'subdivision' && $this->subdivision != '')
             {
-                $arrSubdivisions = \Isotope\Backend::getSubdivisons();
+                $arrSubdivisions = \Isotope\Backend::getSubdivisions();
 
                 list($country, $subdivion) = explode('-', $this->subdivision);
 
