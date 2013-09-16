@@ -149,7 +149,7 @@ class ProductCollectionItem extends \Model
             return $this->price;
         }
 
-        $objPrice = $this->getProduct()->getPrice();
+        $objPrice = $this->getProduct()->getPrice($this->getRelated('pid'));
 
         if (null === $objPrice) {
             return '';
@@ -169,7 +169,7 @@ class ProductCollectionItem extends \Model
             return $this->tax_free_price;
         }
 
-        $objPrice = $this->getProduct()->getPrice();
+        $objPrice = $this->getProduct()->getPrice($this->getRelated('pid'));
 
         if (null === $objPrice) {
             return '';

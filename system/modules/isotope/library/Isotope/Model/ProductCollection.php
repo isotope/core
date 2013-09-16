@@ -516,12 +516,12 @@ abstract class ProductCollection extends TypeAgent
 
         foreach ($arrItems as $objItem) {
 
-            if (!$objItem->hasProduct() || null === $objItem->getProduct()->getPrice()) {
+            if (!$objItem->hasProduct() || null === $objItem->getProduct()->getPrice($this)) {
                 continue;
             }
 
-            $objItem->price = $objItem->getProduct()->getPrice()->getAmount($objItem->quantity);
-            $objItem->tax_free_price = $objItem->getProduct()->getPrice()->getNetAmount($objItem->quantity);
+            $objItem->price = $objItem->getProduct()->getPrice($this)->getAmount($objItem->quantity);
+            $objItem->tax_free_price = $objItem->getProduct()->getPrice($this)->getNetAmount($objItem->quantity);
             $objItem->save();
         }
 
@@ -864,8 +864,8 @@ abstract class ProductCollection extends TypeAgent
             $objItem->name              = (string) $objProduct->name;
             $objItem->options           = $objProduct->getOptions();
             $objItem->quantity          = (int) $intQuantity;
-            $objItem->price             = (float) ($objProduct->getPrice() ? $objProduct->getPrice()->getAmount((int) $intQuantity) : 0);
-            $objItem->tax_free_price    = (float) ($objProduct->getPrice() ? $objProduct->getPrice()->getNetAmount((int) $intQuantity) : 0);
+            $objItem->price             = (float) ($objProduct->getPrice($this) ? $objProduct->getPrice($this)->getAmount((int) $intQuantity) : 0);
+            $objItem->tax_free_price    = (float) ($objProduct->getPrice($this) ? $objProduct->getPrice($this)->getNetAmount((int) $intQuantity) : 0);
             $objItem->href_reader       = $objProduct->href_reader;
 
             $objItem->save();

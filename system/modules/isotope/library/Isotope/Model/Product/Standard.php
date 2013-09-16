@@ -290,7 +290,7 @@ class Standard extends Product implements IsotopeProduct
         }
 
         // Check if "advanced price" is available
-        if (null === $this->getPrice() && (in_array('price', $this->getAttributes()) || $this->hasVariantPrices())) {
+        if (null === $this->getPrice($objCollection) && (in_array('price', $this->getAttributes()) || $this->hasVariantPrices())) {
             return false;
         }
 
@@ -358,16 +358,21 @@ class Standard extends Product implements IsotopeProduct
 
     /**
      * Get product price model
+     * @param   IsotopeProductCollection
      * @return  IsotopePrice
      */
-    public function getPrice()
+    public function getPrice(IsotopeProductCollection $objCollection=null)
     {
         if (false === $this->objPrice) {
 
+            if (null === $objCollection) {
+                $objCollection = Isotope::getCart();
+            }
+
             if ($this->hasVariantPrices() && $this->pid == 0) {
-                $this->objPrice = ProductPrice::findLowestActiveByVariantsAndCollection($this, Isotope::getCart());
+                $this->objPrice = ProductPrice::findLowestActiveByVariantsAndCollection($this, $objCollection);
             } else {
-                $this->objPrice = ProductPrice::findActiveByProductAndCollection($this, Isotope::getCart());
+                $this->objPrice = ProductPrice::findActiveByProductAndCollection($this, $objCollection);
             }
         }
 
