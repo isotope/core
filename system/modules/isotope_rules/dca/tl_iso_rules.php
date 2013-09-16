@@ -581,7 +581,7 @@ class tl_iso_rules extends \Backend
         // Check permissions AFTER checking the tid, so hacking attempts are logged
         if (!$this->User->isAdmin && !$this->User->hasAccess('tl_iso_rules::enabled', 'alexf'))
         {
-            return $this->generateImage($icon, $label).' ';
+            return \Image::getHtml($icon, $label).' ';
         }
 
         $href .= '&amp;tid='.$row['id'].'&amp;state='.($row['enabled'] ? '' : 1);
@@ -591,7 +591,7 @@ class tl_iso_rules extends \Backend
             $icon = 'invisible.gif';
         }
 
-        return '<a href="'.$this->addToUrl($href).'" title="'.specialchars($title).'"'.$attributes.'>'.$this->generateImage($icon, $label).'</a> ';
+        return '<a href="'.$this->addToUrl($href).'" title="'.specialchars($title).'"'.$attributes.'>'.\Image::getHtml($icon, $label).'</a> ';
     }
 
 

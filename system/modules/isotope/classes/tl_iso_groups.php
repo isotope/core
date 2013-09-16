@@ -217,7 +217,7 @@ class tl_iso_groups extends \Backend
     {
         if ($dc->table == 'tl_iso_products')
         {
-            return $this->generateImage('system/modules/isotope/html/folder-network.png', '', $imageAttribute) . ' <span style="font-weight:bold">' . $label . '</span>';
+            return \Image::getHtml('system/modules/isotope/html/folder-network.png', '', $imageAttribute) . ' <span style="font-weight:bold">' . $label . '</span>';
         }
         else
         {
@@ -229,7 +229,7 @@ class tl_iso_groups extends \Backend
                 $strProductType = ' <span style="color:#b3b3b3; padding-left:3px;">[' . $strProductType . ']</span>';
             }
 
-            return '<a href="' . $this->addToUrl('gid=' . $row['id']) . '" title="' . specialchars($row['name'] . ' (ID ' . $row['id'] . ')') . '">' . $this->generateImage('system/modules/isotope/html/folder-network.png', '', $imageAttribute) . ' ' . $label . '</a>' . $strProductType;
+            return '<a href="' . $this->addToUrl('gid=' . $row['id']) . '" title="' . specialchars($row['name'] . ' (ID ' . $row['id'] . ')') . '">' . \Image::getHtml('system/modules/isotope/html/folder-network.png', '', $imageAttribute) . ' ' . $label . '</a>' . $strProductType;
         }
     }
 
@@ -262,10 +262,10 @@ class tl_iso_groups extends \Backend
     {
         if (!$this->User->isAdmin && (!is_array($this->User->iso_groupp) || !in_array('create', $this->User->iso_groupp)))
         {
-            return $this->generateImage(preg_replace('/\.gif$/i', '_.gif', $icon)) . ' ';
+            return \Image::getHtml(preg_replace('/\.gif$/i', '_.gif', $icon)) . ' ';
         }
 
-        return '<a href="'.$this->addToUrl($href.'&amp;id='.$row['id']).'" title="'.specialchars($title).'"'.$attributes.'>'.$this->generateImage($icon, $label).'</a> ';
+        return '<a href="'.$this->addToUrl($href.'&amp;id='.$row['id']).'" title="'.specialchars($title).'"'.$attributes.'>'.\Image::getHtml($icon, $label).'</a> ';
     }
 
 
@@ -283,9 +283,9 @@ class tl_iso_groups extends \Backend
     {
         if (!$this->User->isAdmin && (!is_array($this->User->iso_groupp) || !in_array('delete', $this->User->iso_groupp)))
         {
-            return $this->generateImage(preg_replace('/\.gif$/i', '_.gif', $icon)) . ' ';
+            return \Image::getHtml(preg_replace('/\.gif$/i', '_.gif', $icon)) . ' ';
         }
 
-        return '<a href="'.$this->addToUrl($href.'&amp;id='.$row['id']).'" title="'.specialchars($title).'"'.$attributes.'>'.$this->generateImage($icon, $label).'</a> ';
+        return '<a href="'.$this->addToUrl($href.'&amp;id='.$row['id']).'" title="'.specialchars($title).'"'.$attributes.'>'.\Image::getHtml($icon, $label).'</a> ';
     }
 }

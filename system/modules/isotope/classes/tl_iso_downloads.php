@@ -88,10 +88,10 @@ class tl_iso_downloads extends \Backend
     public function deleteButton($row, $href, $label, $title, $icon, $attributes)
     {
         if (ProductCollectionDownload::countBy('download_id', $row['id']) > 0) {
-            return $this->generateImage(preg_replace('/\.gif$/i', '_.gif', $icon)).' ';
+            return \Image::getHtml(preg_replace('/\.gif$/i', '_.gif', $icon)).' ';
         }
 
-        return '<a href="'.$this->addToUrl($href.'&amp;id='.$row['id']).'" title="'.specialchars($title).'"'.$attributes.'>'.$this->generateImage($icon, $label).'</a> ';
+        return '<a href="'.$this->addToUrl($href.'&amp;id='.$row['id']).'" title="'.specialchars($title).'"'.$attributes.'>'.\Image::getHtml($icon, $label).'</a> ';
     }
 
 
@@ -126,7 +126,7 @@ class tl_iso_downloads extends \Backend
 
         $href .= '&amp;tid='.$row['id'].'&amp;state='.($row['published'] ? '' : 1);
 
-        return '<a href="'.$this->addToUrl($href).'" title="'.specialchars($title).'"'.$attributes.'>'.$this->generateImage($icon, $label).'</a> ';
+        return '<a href="'.$this->addToUrl($href).'" title="'.specialchars($title).'"'.$attributes.'>'.\Image::getHtml($icon, $label).'</a> ';
     }
 
 

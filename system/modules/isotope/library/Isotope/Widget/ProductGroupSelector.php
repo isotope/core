@@ -367,7 +367,7 @@ class ProductGroupSelector extends \Widget
             $folderAttribute = '';
             $img = $blnIsOpen ? 'folMinus.gif' : 'folPlus.gif';
             $alt = $blnIsOpen ? $GLOBALS['TL_LANG']['MSC']['collapseNode'] : $GLOBALS['TL_LANG']['MSC']['expandNode'];
-            $return .= '<a href="'.$this->addToUrl($flag.'tg='.$id).'" title="'.specialchars($alt).'" onclick="Backend.getScrollOffset(); return Isotope.toggleProductGroupTree(this, \''.$xtnode.'_'.$id.'\', \''.$this->strField.'\', \''.$this->strName.'\', '.$level.');">'.$this->generateImage($img, '', 'style="margin-right:2px;"').'</a>';
+            $return .= '<a href="'.$this->addToUrl($flag.'tg='.$id).'" title="'.specialchars($alt).'" onclick="Backend.getScrollOffset(); return Isotope.toggleProductGroupTree(this, \''.$xtnode.'_'.$id.'\', \''.$this->strField.'\', \''.$this->strName.'\', '.$level.');">'.\Image::getHtml($img, '', 'style="margin-right:2px;"').'</a>';
         }
 
         $href = '<a href="' . $this->addToUrl('gid='.$objGroup->id) . '" title="'.specialchars($objGroup->name . ' (ID ' . $objGroup->id . ')').'"'.(empty($childs) ? ' style="padding-left:20px;"' : '').'>'.$objGroup->name.'</a>';
