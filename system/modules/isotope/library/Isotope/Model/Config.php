@@ -37,6 +37,7 @@ class Config extends \Model
      * Return custom options or table row data
      * @param mixed
      * @return mixed
+     * @todo: this should be dropped. any reason for it to still be around?
      */
     public function __get($strKey)
     {
@@ -66,13 +67,18 @@ class Config extends \Model
      */
     public function getBillingFields()
     {
-        // @todo: cache?
-        return array_filter(array_map(
-            function($field) {
-                return $field['enabled'] ? $field['value'] : null;
-            },
-            $this->billing_fields
-        ));
+        if (!isset($this->arrCache['billingFields'])) {
+
+            $this->arrCache['billingFields'] = array_filter(array_map(
+                function($field) {
+                    return $field['enabled'] ? $field['value'] : null;
+                },
+                $this->billing_fields
+            ));
+
+        }
+
+        return $this->arrCache['billingFields'];
     }
 
     /**
@@ -81,13 +87,17 @@ class Config extends \Model
      */
     public function getShippingFields()
     {
-        // @todo: cache?
-        return array_filter(array_map(
-            function($field) {
-                return $field['enabled'] ? $field['value'] : null;
-            },
-            $this->shipping_fields
-        ));
+        if (!isset($this->arrCache['shippingFields'])) {
+
+            $this->arrCache['shippingFields'] = array_filter(array_map(
+                function($field) {
+                    return $field['enabled'] ? $field['value'] : null;
+                },
+                $this->shipping_fields
+            ));
+        }
+
+        return $this->arrCache['shippingFields'];
     }
 
     /**
@@ -96,14 +106,18 @@ class Config extends \Model
      */
     public function getBillingCountries()
     {
-        // @todo: cache?
-        $arrCountries = deserialize($this->billing_countries);
+        if (!isset($this->arrCache['billingCountries'])) {
 
-        if (empty($arrCountries) || !is_array($arrCountries)) {
-            $arrCountries = array_keys(\System::getCountries());
+            $arrCountries = deserialize($this->billing_countries);
+
+            if (empty($arrCountries) || !is_array($arrCountries)) {
+                $arrCountries = array_keys(\System::getCountries());
+            }
+
+            $this->arrCache['billingCountries'] = $arrCountries;
         }
 
-        return $arrCountries;
+        return $this->arrCache['billingCountries'];
     }
 
     /**
@@ -112,14 +126,18 @@ class Config extends \Model
      */
     public function getShippingCountries()
     {
-        // @todo: cache?
-        $arrCountries = deserialize($this->shipping_countries);
+        if (!isset($this->arrCache['shippingCountries'])) {
 
-        if (empty($arrCountries) || !is_array($arrCountries)) {
-            $arrCountries = array_keys(\System::getCountries());
+            $arrCountries = deserialize($this->shipping_countries);
+
+            if (empty($arrCountries) || !is_array($arrCountries)) {
+                $arrCountries = array_keys(\System::getCountries());
+            }
+
+            $this->arrCache['shippingCountries'] = $arrCountries;
         }
 
-        return $arrCountries;
+        return $this->arrCache['shippingCountries'];
     }
 
     /**
