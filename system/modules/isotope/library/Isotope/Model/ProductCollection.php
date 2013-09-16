@@ -606,7 +606,7 @@ abstract class ProductCollection extends TypeAgent
 
         $this->blnLocked = true;
 
-        \Database::getInstance()->query("UPDATE tl_iso_product_collection SET locked='1' WHERE id=" . $this->id);
+        \Database::getInstance()->query("UPDATE " . static::$strTable . " SET locked='1' WHERE id=" . $this->id);
     }
 
 
