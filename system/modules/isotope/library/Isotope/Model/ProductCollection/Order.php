@@ -207,6 +207,27 @@ class Order extends ProductCollection implements IsotopeProductCollection
         $this->setShippingAddress($objCart->getShippingAddress());
         $this->createPrivateAddresses();
 
+        // Store address in address book
+        if ($this->iso_addToAddressbook && $this->member > 0) {
+            $time = time();
+
+            if ($objCart->getBillingAddress()->ptable != \MemberModel::getTable()) {
+                $objAddress = clone $objCart->getBillingAddress();
+                $objAddress->pid = $this->member;
+                $objAddress->tstamp = time();
+                $objAddress->ptable = \MemberModel::getTable();
+                $objAddress->save();
+            }
+
+            if ($objCart->getBillingAddress()->id != $objCart->getShippingAddress()->id && $objCart->getShippingAddress()->ptable != \MemberModel::getTable()) {
+                $objAddress = clone $objCart->getShippingAddress();
+                $objAddress->pid = $this->member;
+                $objAddress->tstamp = time();
+                $objAddress->ptable = \MemberModel::getTable();
+                $objAddress->save();
+            }
+        }
+
         // @todo must add surcharges here
 
 
