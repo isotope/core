@@ -104,7 +104,7 @@ abstract class ProductCollection extends TypeAgent
      * Record has been modified
      * @var boolean
      */
-    protected $blnModified = false;
+    protected $blnModified = true;
 
 
     /**
@@ -115,6 +115,7 @@ abstract class ProductCollection extends TypeAgent
         parent::__construct($objResult);
 
         if ($objResult !== null) {
+            $this->blnModified = false;
             $this->arrSettings = deserialize($this->arrData['settings'], true);
         }
 
