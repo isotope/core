@@ -135,7 +135,7 @@ class PaymentWorldpay extends IsotopePayment
         $arrData['cartId'] = $this->Isotope->Cart->id;
         $arrData['amount'] = number_format($this->Isotope->Cart->grandTotal, 2);
         $arrData['currency'] = $this->Isotope->Config->currency;
-        $arrData['description'] = $this->worldpay_description;
+        $arrData['description'] = $this->Isotope->translate($this->worldpay_description);
         $arrData['name'] = substr($objAddress->firstname . ' ' . $objAddress->lastname, 0, 40);
 
         if ($objAddress->company != '') {
