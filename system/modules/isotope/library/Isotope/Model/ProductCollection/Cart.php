@@ -138,13 +138,13 @@ class Cart extends ProductCollection implements IsotopeProductCollection
         }
 
         // Temporary cart available, move to this cart. Must be after creating a new cart!
-         if (FE_USER_LOGGED_IN === true && $strHash != '')
-         {
-             $blnMerge = $objCart->countItems() > 0 ? true : false;
+        if (FE_USER_LOGGED_IN === true && $strHash != '')
+        {
+            $blnMerge = $objCart->countItems() > 0 ? true : false;
 
-             if (($objTemp = static::findOneBy(array('uniqid=?', 'store_id=?'), array($strHash, $intStore))) !== null)
-             {
-                 $arrIds = $objCart->copyItemsFrom($objTemp);
+            if (($objTemp = static::findOneBy(array('uniqid=?', 'store_id=?'), array($strHash, $intStore))) !== null)
+            {
+                $arrIds = $objCart->copyItemsFrom($objTemp);
 
                 if ($blnMerge && !empty($arrIds)) {
                     $_SESSION['ISO_CONFIRM'][] = $GLOBALS['TL_LANG']['MSC']['cartMerged'];
