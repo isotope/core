@@ -18,7 +18,7 @@
  */
 $GLOBALS['TL_LANG']['tl_iso_payment_modules']['name']                                   = array('Payment Method Name', 'Enter a name for this payment method. This will only be used in the backend.');
 $GLOBALS['TL_LANG']['tl_iso_payment_modules']['label']                                  = array('Payment Method Label', 'The label will be shown to customers on checkout.');
-$GLOBALS['TL_LANG']['tl_iso_payment_modules']['type']                                   = array('Type of Payment Gateway', 'Select a particular payment gateway (e.g. Authorize.net)');
+$GLOBALS['TL_LANG']['tl_iso_payment_modules']['type']                                   = array('Type of Payment Gateway', 'Select a particular payment gateway');
 $GLOBALS['TL_LANG']['tl_iso_payment_modules']['note']                                   = array('Payment Note', 'This note can be sent in confirmation mails (##payment_note##).');
 $GLOBALS['TL_LANG']['tl_iso_payment_modules']['new_order_status']                       = array('Status for new orders', 'Choose a matching status for new orders.');
 $GLOBALS['TL_LANG']['tl_iso_payment_modules']['minimum_total']                          = array('Minimum total', 'Enter a number greater zero to exclude this payment method for lower priced orders.');
@@ -40,10 +40,6 @@ $GLOBALS['TL_LANG']['tl_iso_payment_modules']['postfinance_secret']             
 $GLOBALS['TL_LANG']['tl_iso_payment_modules']['postfinance_method']                     = array('Postfinance method', 'Type of data transfer from postfinance.');
 $GLOBALS['TL_LANG']['tl_iso_payment_modules']['requireCCV']                             = array('Require Card Code Verification (CCV) Number', 'Choose this option if you would like to increase transaction security by requiring the card code verification number.');
 $GLOBALS['TL_LANG']['tl_iso_payment_modules']['allowed_cc_types']                       = array('Allowed Credit Card Types', 'Select which credit cards the payment method accepts.');
-$GLOBALS['TL_LANG']['tl_iso_payment_modules']['authorize_login']                        = array('Authorize.net Login', 'Provided when you have completed signup for your gateway');
-$GLOBALS['TL_LANG']['tl_iso_payment_modules']['authorize_trans_key']                    = array('Authorize.net Transaction Key', 'Provided when you have completed signup for your gateway');
-$GLOBALS['TL_LANG']['tl_iso_payment_modules']['authorize_delimiter']                    = array('Authorize.net Delimiter', 'What character should be inserted as the data delimiter for the response?');
-$GLOBALS['TL_LANG']['tl_iso_payment_modules']['authorize_trans_type']                   = array('Authorize.net Transaction Type', 'Authorize and Capture, for example - the first stage is authorizing by validating the data entered by the customer and the next step is submitting for settlement, which is called "capture".');
 $GLOBALS['TL_LANG']['tl_iso_payment_modules']['datatrans_id']                           = array('Merchant-ID', 'Please enter your merchant ID.');
 $GLOBALS['TL_LANG']['tl_iso_payment_modules']['datatrans_sign']                         = array('HMAC Key', 'Please enter your HMAC key from the Datatrans control panel.');
 $GLOBALS['TL_LANG']['tl_iso_payment_modules']['sparkasse_paymentmethod']                = array('Payment method', 'Please select a payment method for this method.');
