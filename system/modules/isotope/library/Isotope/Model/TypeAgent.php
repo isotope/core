@@ -208,20 +208,7 @@ abstract class TypeAgent extends \Model
         }
 
         $objStatement = static::preFind($objStatement);
-
-        // Optionally execute (un)cached (see #5102)
-        if (isset($arrOptions['cached']) && $arrOptions['cached'])
-        {
-            $objResult = $objStatement->executeCached($arrOptions['value']);
-        }
-        elseif (isset($arrOptions['uncached']) && $arrOptions['uncached'])
-        {
-            $objResult = $objStatement->executeUncached($arrOptions['value']);
-        }
-        else
-        {
-            $objResult = $objStatement->execute($arrOptions['value']);
-        }
+        $objResult = $objStatement->execute($arrOptions['value']);
 
         if ($objResult->numRows < 1)
         {
