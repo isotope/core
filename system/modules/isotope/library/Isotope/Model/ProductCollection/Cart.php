@@ -92,6 +92,35 @@ class Cart extends ProductCollection implements IsotopeProductCollection
     }
 
     /**
+     * Merge guest cart if necessary
+     */
+    public function mergeGuestCart()
+    {
+        $strHash = \Input::cookie(static::$strCookie);
+
+        // Temporary cart available, move to this cart. Must be after creating a new cart!
+        if (FE_USER_LOGGED_IN === true && $strHash != '' && $this->member > 0)
+        {
+            $blnMerge = $this->countItems() > 0 ? true : false;
+
+            if (($objTemp = static::findOneBy(array('uniqid=?', 'store_id=?'), array($strHash, $this->store_id))) !== null)
+            {
+                $arrIds = $this->copyItemsFrom($objTemp);
+
+                if ($blnMerge && !empty($arrIds)) {
+                    $_SESSION['ISO_CONFIRM'][] = $GLOBALS['TL_LANG']['MSC']['cartMerged'];
+                }
+
+                $objTemp->delete();
+            }
+
+            // Delete cookie
+            \System::setCookie(static::$strCookie, '', ($time - 3600), $GLOBALS['TL_CONFIG']['websitePath']);
+            \System::reload();
+         }
+    }
+
+    /**
      * Check if minimum order amount is reached
      * @return  bool
      */
@@ -180,27 +209,6 @@ class Cart extends ProductCollection implements IsotopeProductCollection
             $objCart->tstamp = $time;
         }
 
-        // Temporary cart available, move to this cart. Must be after creating a new cart!
-        if (FE_USER_LOGGED_IN === true && $strHash != '')
-        {
-            $blnMerge = $objCart->countItems() > 0 ? true : false;
-
-            if (($objTemp = static::findOneBy(array('uniqid=?', 'store_id=?'), array($strHash, $intStore))) !== null)
-            {
-                $arrIds = $objCart->copyItemsFrom($objTemp);
-
-                if ($blnMerge && !empty($arrIds)) {
-                    $_SESSION['ISO_CONFIRM'][] = $GLOBALS['TL_LANG']['MSC']['cartMerged'];
-                }
-
-                $objTemp->delete();
-            }
-
-            // Delete cookie
-            \System::setCookie(static::$strCookie, '', ($time - 3600), $GLOBALS['TL_CONFIG']['websitePath']);
-            \System::reload();
-         }
-
-         return $objCart;
+        return $objCart;
     }
 }

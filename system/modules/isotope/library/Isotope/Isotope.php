@@ -151,6 +151,7 @@ class Isotope extends \Controller
         if (null === static::$objCart && TL_MODE == 'FE') {
             static::initialize();
             static::$objCart = Cart::findForCurrentStore();
+            static::$objCart->mergeGuestCart();
         }
 
         return static::$objCart;
