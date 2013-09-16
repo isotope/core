@@ -536,6 +536,7 @@ abstract class ProductCollection extends TypeAgent
         }
 
         if ($this->blnModified || $blnForceInsert) {
+            $this->blnModified = false;
             return parent::save($blnForceInsert);
         }
 
