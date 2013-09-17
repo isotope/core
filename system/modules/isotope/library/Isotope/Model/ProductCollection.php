@@ -604,6 +604,7 @@ abstract class ProductCollection extends TypeAgent
             throw new \LogicException('Product collection is already locked.');
         }
 
+        $this->date = time();
         $this->save();
 
         $this->blnLocked = true;

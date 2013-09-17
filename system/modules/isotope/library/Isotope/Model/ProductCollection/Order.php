@@ -176,7 +176,6 @@ class Order extends ProductCollection implements IsotopeProductCollection
         Isotope::setConfig($this->getRelated('config_id'));
         Isotope::setCart($objCart);
 
-        $this->arrData['date']                 = time();
         $this->arrData['shipping_id']          = $objCart->shipping_id;
         $this->arrData['payment_id']           = $objCart->payment_id;
         $this->arrData['subTotal']             = $objCart->subTotal;
