@@ -229,7 +229,7 @@ class ProductPrice extends \Model implements IsotopePrice
 
         if ($objProduct->hasAdvancedPrices()) {
 
-            $time = time();
+            $time = $objCollection->getLastModification();
             $arrGroups = static::getMemberGroups($objCollection->getRelated('member'));
 
             $arrOptions['column'] = array(

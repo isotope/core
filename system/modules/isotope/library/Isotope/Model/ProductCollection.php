@@ -721,6 +721,19 @@ abstract class ProductCollection extends TypeAgent
         return $this->arrCache['latestItem'];
     }
 
+    /**
+     * Return timestamp when this collection was created
+     * This is relevant for price calculation
+     * @return  int
+     */
+    public function getLastModification()
+    {
+        if ($this->isLocked() && $this->date > 0) {
+            return $this->date;
+        }
+
+        return $this->tstamp ?: time();
+    }
 
     /**
      * Return all items in the collection
