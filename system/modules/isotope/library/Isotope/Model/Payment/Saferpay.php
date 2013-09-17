@@ -115,8 +115,7 @@ class Saferpay extends Postsale implements IsotopePayment
             $objRequest->send($strUrl);
 
             // Stop if capture was not successful
-            if (strtoupper($objRequest->response) != 'OK')
-            {
+            if (strtoupper($objRequest->response) != 'OK') {
                 \System::log(sprintf('Payment capture failed. See log files for further details.'), __METHOD__, TL_ERROR);
                 log_message(sprintf('Payment capture failed. Message was: "%s".', $objRequest->response), 'error.log');
 
@@ -125,15 +124,14 @@ class Saferpay extends Postsale implements IsotopePayment
 
 
             // otherwise checkout
-            if (!$objOrder->checkout())
-            {
-                \System::log('Checkout for Saferpay failed.', __METHOD__, TL_ERROR);
-
+            if (!$objOrder->checkout()) {
+                \System::log('Postsale checkout for Order ID "' . $objOrder->id . '" failed', __METHOD__, TL_ERROR);
                 return;
             }
 
             $objOrder->date_paid = time();
             $objOrder->updateOrderStatus($this->new_order_status);
+
             $objOrder->save();
         }
     }

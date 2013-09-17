@@ -55,22 +55,18 @@ class Expercash extends Payment implements IsotopePayment, IsotopePostsale
      */
     public function processPostsale()
     {
-        if (($objOrder = Order::findByPk(\Input::get('transactionId'))) === null)
-        {
+        if (($objOrder = Order::findByPk(\Input::get('transactionId'))) === null) {
             \System::log('Order ID "' . \Input::post('invoice') . '" not found', __METHOD__, TL_ERROR);
 
             return;
         }
 
-        if (!$this->validateUrlParams($objOrder))
-        {
+        if (!$this->validateUrlParams($objOrder)) {
             \System::log('ExperCash: data rejected' . print_r($_POST, true), __METHOD__, TL_GENERAL);
         }
 
-        if (!$objOrder->checkout())
-        {
+        if (!$objOrder->checkout()) {
             \System::log('Postsale checkout for Order ID "' . \Input::post('invoice') . '" failed', __METHOD__, TL_ERROR);
-
             return;
         }
 
@@ -78,8 +74,6 @@ class Expercash extends Payment implements IsotopePayment, IsotopePostsale
         $objOrder->updateOrderStatus($this->new_order_status);
 
         $objOrder->save();
-
-        \System::log('ExperCash: data accepted', __METHOD__, TL_GENERAL);
 
         header('HTTP/1.1 200 OK');
         exit;

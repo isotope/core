@@ -81,15 +81,20 @@ class Sofortueberweisung extends Postsale implements IsotopePayment
         );
 
         // check if both hashes math
-        if (\Input::post('hash') == sha1(implode('|', $arrHash))) {
-
-            $objOrder->date_paid = time();
-            $objOrder->save();
+        if (\Input::post('hash') != sha1(implode('|', $arrHash))) {
+            \System::log('The given hash does not match. (sofortüberweisung.de)', __METHOD__, TL_ERROR);
             return;
         }
 
-        // error, hashes does not match
-        \System::log('The given hash does not match. (sofortüberweisung.de)', __METHOD__, TL_ERROR);
+        if (!$objOrder->checkout()) {
+            \System::log('Postsale checkout for Order ID "' . \Input::post('user_variable_0') . '" failed', __METHOD__, TL_ERROR);
+            return;
+        }
+
+        $objOrder->date_paid = time();
+        $objOrder->updateOrderStatus($this->new_order_status);
+
+        $objOrder->save();
     }
 
 

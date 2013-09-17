@@ -29,29 +29,39 @@ class Payone extends Postsale implements IsotopePayment
      */
     public function processPostsale()
     {
-        if (
-            \Input::post('aid') == $this->payone_aid &&
-            \Input::post('portalid') == $this->payone_portalid &&
-            ((\Input::post('mode') == 'test' && $this->debug) || (\Input::post('mode') == 'live' && !$this->debug)))
-        {
-            if (($objOrder = Order::findByPk(\Input::post('reference'))) !== null)
-            {
-                if (\Input::post('txaction') == 'paid'
-                    && \Input::post('currency') == $objOrder->currency
-                    && \Input::post('balance') <= 0)
-                {
-                    $objOrder->date_payed = time();
-
-                    if (ISO_VERSION > 0.2)
-                    {
-                        $objOrder->checkout();
-                    }
-
-                    $objOrder->save();
-                }
-            }
+        if (\Input::post('aid') != $this->payone_aid
+            || \Input::post('portalid') != $this->payone_portalid
+            || (\Input::post('mode') == 'test' && !$this->debug)
+            || (\Input::post('mode') == 'live' && $this->debug)
+        ) {
+            \System::log('PayOne configuration mismatch', __METHOD__, TL_ERROR);
+            die('TSOK');
         }
 
+        if (($objOrder = Order::findByPk(\Input::post('reference'))) === null) {
+            \System::log('Order ID "'.\Input::post('reference').'" not found', __METHOD__, TL_ERROR);
+            die('TSOK');
+        }
+
+        if (\Input::post('txaction') != 'paid'
+            && \Input::post('currency') != $objOrder->currency
+            && \Input::post('balance') > 0
+        ) {
+            \System::log('PayOne order data mismatch for Order ID "' . \Input::post('invoice') . '"', __METHOD__, TL_ERROR);
+            die('TSOK');
+        }
+
+        if (!$objOrder->checkout()) {
+            \System::log('Postsale checkout for Order ID "' . \Input::post('invoice') . '" failed', __METHOD__, TL_ERROR);
+            die('TSOK');
+        }
+
+        $objOrder->date_paid = time();
+        $objOrder->updateOrderStatus($this->new_order_status);
+
+        $objOrder->save();
+
+        // PayOne must get TSOK as return value, otherwise the request will be sent again
         die('TSOK');
     }
 
