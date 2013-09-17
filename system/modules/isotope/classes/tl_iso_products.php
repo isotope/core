@@ -467,16 +467,12 @@ class tl_iso_products extends \Backend
         $this->import('Isotope\ProductCallbacks', 'ProductCallbacks');
         $this->ProductCallbacks->checkPermission();
 
-/**
- * @todo tl_iso_products is missing in groups settings
- *
         // Check permissions to publish
         if (!$this->User->isAdmin && !$this->User->hasAccess('tl_iso_products::published', 'alexf'))
         {
             \System::log('Not enough permissions to publish/unpublish product ID "'.$intId.'"', 'tl_iso_products toggleVisibility', TL_ERROR);
             \Controller::redirect('contao/main.php?act=error');
         }
-*/
 
         $this->createInitialVersion('tl_iso_products', $intId);
 
