@@ -129,7 +129,7 @@ abstract class ProductCollection extends TypeAgent
      */
     public function saveDatabase()
     {
-        if (!$this->blnLocked) {
+        if (!$this->isLocked()) {
             $this->save();
         }
     }
@@ -600,7 +600,7 @@ abstract class ProductCollection extends TypeAgent
      */
     public function lock()
     {
-        if ($this->blnLocked) {
+        if ($this->isLocked()) {
             throw new \LogicException('Product collection is already locked.');
         }
 
