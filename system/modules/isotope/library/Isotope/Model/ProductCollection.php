@@ -489,10 +489,12 @@ abstract class ProductCollection extends TypeAgent
      */
     public function setRow(array $arrData)
     {
-        parent::setRow($arrData);
-
         $this->arrSettings = deserialize($arrData['settings'], true);
-        $this->blnLocked = (bool) $this->locked;
+        $this->blnLocked = (bool) $arrData['locked'];
+
+        unset($arrData['settings'], $arrData['locked']);
+
+        return parent::setRow($arrData);
     }
 
 
