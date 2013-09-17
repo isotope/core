@@ -18,4 +18,6 @@ namespace Isotope\Interfaces;
  */
 interface IsotopeProductCollection
 {
+
+    // @todo where are the interface methods?
 }

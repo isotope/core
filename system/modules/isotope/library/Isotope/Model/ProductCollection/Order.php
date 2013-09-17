@@ -347,10 +347,8 @@ class Order extends ProductCollection implements IsotopeProductCollection
         }
 
         // Add the payment date if there is none
-        if ($objNewStatus->isPaid()) {
-            if ($this->date_paid == '') {
-                $this->date_paid = time();
-            }
+        if ($objNewStatus->isPaid() && $this->date_paid == '') {
+            $this->date_paid = time();
         }
 
         // Trigger email actions

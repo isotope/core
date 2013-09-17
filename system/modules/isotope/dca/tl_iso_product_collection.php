@@ -312,10 +312,6 @@ $GLOBALS['TL_DCA']['tl_iso_product_collection'] = array
         (
             'sql'                   => "decimal(12,2) NOT NULL default '0.00'",
         ),
-        'taxTotal' => array
-        (
-            'sql'                   => "decimal(12,2) NOT NULL default '0.00'",
-        ),
         'grandTotal' => array
         (
             'label'                 => &$GLOBALS['TL_LANG']['MSC']['grandTotalLabel'],
