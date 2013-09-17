@@ -1131,52 +1131,11 @@ abstract class ProductCollection extends TypeAgent
     {
         $objModule = $this;
         $arrGalleries = array();
-        $arrItems = array();
-        $arrAllDownloads = array();
-        $blnOrderPaid = (null !== $this->getRelated('order_status') && $this->getRelated('order_status')->isPaid());
-
-        foreach ($this->getItems($varCallable) as $objItem) {
-
-            $blnHasProduct = $objItem->hasProduct();
-            $objProduct = $objItem->getProduct();
-            $arrDownloads = array();
-
-            // Set the active product for insert tags replacement
-            $GLOBALS['ACTIVE_PRODUCT'] = $objProduct;
-
-            foreach ($objItem->getDownloads() as $objDownload) {
-                $arrDownloads = array_merge($arrDownloads, $objDownload->getForTemplate($blnOrderPaid));
-            }
-
-            $arrItems[] = array(
-                'id'                => $objItem->id,
-                'sku'               => $objItem->getSku(),
-                'name'              => $objItem->getName(),
-                'options'           => Isotope::formatOptions($objItem->getOptions()),
-                'quantity'          => $objItem->quantity,
-                'price'             => Isotope::formatPriceWithCurrency($objItem->getPrice()),
-                'tax_free_price'    => Isotope::formatPriceWithCurrency($objItem->getTaxFreePrice()),
-                'total'             => Isotope::formatPriceWithCurrency($objItem->getTotalPrice()),
-                'tax_free_total'    => Isotope::formatPriceWithCurrency($objItem->getTaxFreeTotalPrice() * $objItem->quantity),
-                'tax_id'            => $objItem->tax_id,
-                'hasProduct'        => $blnHasProduct,
-                'downloads'         => $arrDownloads,
-                'product'           => $objProduct,
-                'item'              => $objItem,
-                'raw'               => $objItem->row(),
-                'rowClass'          => trim('product ' . (($blnHasProduct && $objProduct->isNew()) ? 'new ' : '') . $objProduct->cssID[1]),
-            );
-
-            $arrAllDownloads = array_merge($arrAllDownloads, $arrDownloads);
-
-            unset($GLOBALS['ACTIVE_PRODUCT']);
-        }
+        $arrItems = $this->addItemsToTemplate($objTemplate, $varCallable);
 
         $objTemplate->collection = $this;
         $objTemplate->config = ($this->getRelated('config_id') || Isotope::getConfig());
-        $objTemplate->items = \Isotope\Frontend::generateRowClass($arrItems, 'row', 'rowClass', 0, ISO_CLASS_COUNT|ISO_CLASS_FIRSTLAST|ISO_CLASS_EVENODD);
         $objTemplate->surcharges = \Isotope\Frontend::formatSurcharges($this->getSurcharges());
-        $objTemplate->downloads = $arrAllDownloads;
         $objTemplate->subtotal = Isotope::formatPriceWithCurrency($this->getSubtotal());
         $objTemplate->total = Isotope::formatPriceWithCurrency($this->getTotal());
 
@@ -1263,6 +1222,62 @@ abstract class ProductCollection extends TypeAgent
         }
 
         return $arrErrors;
+    }
+
+    /**
+     * Loop over items and add them to template
+     * @param   Isotope\Template
+     * @param   Callable
+     * @return  array
+     */
+    protected function addItemsToTemplate(\Isotope\Template $objTemplate, $varCallable=null)
+    {
+        $arrItems = array();
+
+        foreach ($this->getItems($varCallable) as $objItem) {
+            $arrItems[] = $this->generateItem($objItem);
+        }
+
+        $objTemplate->items = \Isotope\Frontend::generateRowClass($arrItems, 'row', 'rowClass', 0, ISO_CLASS_COUNT|ISO_CLASS_FIRSTLAST|ISO_CLASS_EVENODD);
+
+        return $arrItems;
+    }
+
+    /**
+     * Generate item array for template
+     * @param   ProductCollectionItem
+     * @return  array
+     */
+    protected function generateItem(ProductCollectionItem $objItem)
+    {
+        $blnHasProduct = $objItem->hasProduct();
+        $objProduct = $objItem->getProduct();
+
+        // Set the active product for insert tags replacement
+        $GLOBALS['ACTIVE_PRODUCT'] = $objProduct;
+
+        $arrItem = array(
+            'id'                => $objItem->id,
+            'sku'               => $objItem->getSku(),
+            'name'              => $objItem->getName(),
+            'options'           => Isotope::formatOptions($objItem->getOptions()),
+            'quantity'          => $objItem->quantity,
+            'price'             => Isotope::formatPriceWithCurrency($objItem->getPrice()),
+            'tax_free_price'    => Isotope::formatPriceWithCurrency($objItem->getTaxFreePrice()),
+            'total'             => Isotope::formatPriceWithCurrency($objItem->getTotalPrice()),
+            'tax_free_total'    => Isotope::formatPriceWithCurrency($objItem->getTaxFreeTotalPrice() * $objItem->quantity),
+            'tax_id'            => $objItem->tax_id,
+            'hasProduct'        => $blnHasProduct,
+            'downloads'         => $arrDownloads,
+            'product'           => $objProduct,
+            'item'              => $objItem,
+            'raw'               => $objItem->row(),
+            'rowClass'          => trim('product ' . (($blnHasProduct && $objProduct->isNew()) ? 'new ' : '') . $objProduct->cssID[1]),
+        );
+
+        unset($GLOBALS['ACTIVE_PRODUCT']);
+
+        return $arrItem;
     }
 
     /**

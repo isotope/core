@@ -476,6 +476,35 @@ class Order extends ProductCollection implements IsotopeProductCollection
         return $arrData;
     }
 
+    /**
+     * Include downloads when adding items to template
+     * @param   Isotope\Template
+     * @param   Callable
+     * @return  array
+     */
+    protected function addItemsToTemplate(\Isotope\Template $objTemplate, $varCallable=null)
+    {
+        $arrItems = array();
+        $arrAllDownloads = array();
+
+        foreach ($this->getItems($varCallable) as $objItem) {
+
+            $arrDownloads = array();
+            $arrItems[] = $this->generateItem($objItem);
+
+            foreach ($objItem->getDownloads() as $objDownload) {
+                $arrDownloads = array_merge($arrDownloads, $objDownload->getForTemplate($this->isPaid()));
+            }
+
+            $arrAllDownloads = array_merge($arrAllDownloads, $arrDownloads);
+        }
+
+        $objTemplate->items = \Isotope\Frontend::generateRowClass($arrItems, 'row', 'rowClass', 0, ISO_CLASS_COUNT|ISO_CLASS_FIRSTLAST|ISO_CLASS_EVENODD);
+        $objTemplate->downloads = $arrAllDownloads;
+
+        return $arrItems;
+    }
+
 
     /**
      * Make sure the addresses belong to this collection only, so they will never be modified
