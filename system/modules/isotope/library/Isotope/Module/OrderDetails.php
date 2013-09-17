@@ -93,9 +93,9 @@ class OrderDetails extends Module
         $this->Template->products = $objTemplate->parse();
         $this->Template->info = deserialize($objOrder->checkout_info, true);
 
-        $this->Template->date = Isotope::formatDate($objOrder->date);
-        $this->Template->time = Isotope::formatTime($objOrder->date);
-        $this->Template->datim = Isotope::formatDatim($objOrder->date);
+        $this->Template->date = Isotope::formatDate($objOrder->locked);
+        $this->Template->time = Isotope::formatTime($objOrder->locked);
+        $this->Template->datim = Isotope::formatDatim($objOrder->locked);
         $this->Template->orderDetailsHeadline = sprintf($GLOBALS['TL_LANG']['MSC']['orderDetailsHeadline'], $objOrder->order_id, $this->Template->datim);
         $this->Template->orderStatus = sprintf($GLOBALS['TL_LANG']['MSC']['orderStatusHeadline'], $objOrder->getStatusLabel());
         $this->Template->orderStatusKey = $objOrder->getStatusAlias();

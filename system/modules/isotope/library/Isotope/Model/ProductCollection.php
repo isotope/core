@@ -59,12 +59,6 @@ abstract class ProductCollection extends TypeAgent
     protected $arrCache;
 
     /**
-     * Define if data should be threaded as "locked", eg. not apply discount rules to product prices
-     * @var boolean
-     */
-    protected $blnLocked = false;
-
-    /**
      * Cache product items in this collection
      * @var array
      */
@@ -206,7 +200,7 @@ abstract class ProductCollection extends TypeAgent
      */
     public function isLocked()
     {
-        return $this->blnLocked;
+        return (string) $this->locked !== '';
     }
 
     /**
@@ -490,9 +484,8 @@ abstract class ProductCollection extends TypeAgent
     public function setRow(array $arrData)
     {
         $this->arrSettings = deserialize($arrData['settings'], true);
-        $this->blnLocked = (bool) $arrData['locked'];
 
-        unset($arrData['settings'], $arrData['locked']);
+        unset($arrData['settings']);
 
         return parent::setRow($arrData);
     }
@@ -604,12 +597,10 @@ abstract class ProductCollection extends TypeAgent
             throw new \LogicException('Product collection is already locked.');
         }
 
-        $this->date = time();
         $this->save();
 
-        $this->blnLocked = true;
-
-        \Database::getInstance()->query("UPDATE " . static::$strTable . " SET locked='1' WHERE id=" . $this->id);
+        // Can't use model, it would not save as soon as it's locked
+        \Database::getInstance()->query("UPDATE " . static::$strTable . " SET locked=" . time() . " WHERE id=" . $this->id);
     }
 
 
@@ -728,8 +719,8 @@ abstract class ProductCollection extends TypeAgent
      */
     public function getLastModification()
     {
-        if ($this->isLocked() && $this->date > 0) {
-            return $this->date;
+        if ($this->isLocked()) {
+            return $this->locked;
         }
 
         return $this->tstamp ?: time();

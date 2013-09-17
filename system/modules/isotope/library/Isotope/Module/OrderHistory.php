@@ -98,9 +98,9 @@ class OrderHistory extends Module
             (
                 'collection' => $objOrders->current(),
                 'raw'        => $objOrders->row(),
-                'date'       => Isotope::formatDate($objOrders->date),
-                'time'       => Isotope::formatTime($objOrders->date),
-                'datime'     => Isotope::formatDatim($objOrders->date),
+                'date'       => Isotope::formatDate($objOrders->locked),
+                'time'       => Isotope::formatTime($objOrders->locked),
+                'datime'     => Isotope::formatDatim($objOrders->locked),
                 'items'      => $objOrders->items,
                 'grandTotal' => Isotope::formatPriceWithCurrency($objOrders->getTotal()),
                 'status'     => $objOrders->getStatusLabel(),
