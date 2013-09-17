@@ -499,7 +499,7 @@ abstract class ProductCollection extends TypeAgent
     public function save($blnForceInsert=false)
     {
         if ($this->isLocked()) {
-            return $this;
+            throw new \BadMethodCallException('Cannot save a locked product collection.');
         }
 
         if ($this->blnModified) {
