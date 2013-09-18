@@ -558,20 +558,27 @@ class Backend extends Contao_Backend
         {
             $arrNewRecords = $_SESSION['BE_DATA']['new_records']['tl_iso_products'];
             $arrProductTypes = $objUser->iso_product_types;
-            $arrGroups = $objUser->iso_groups;
+            $arrGroups = array(0);
 
-            if (!is_array($arrProductTypes) || empty($arrProductTypes) || !is_array($arrGroups) || empty($arrGroups))
+            if (!is_array($arrProductTypes) || empty($arrProductTypes))
             {
                 return false;
             }
 
-            $arrGroups = array_merge($arrGroups, Isotope::getInstance()->call('getChildRecords', array($arrGroups, 'tl_iso_groups')));
+            if (is_array($objUser->iso_groups) && count($objUser->iso_groups) > 0) {
+                $arrGroups = array_merge($arrGroups, $objUser->iso_groups, \Database::getInstance()->getChildRecords($objUser->iso_groups, 'tl_iso_groups'));
+            }
 
-            $objProducts = Database::getInstance()->execute("SELECT id FROM tl_iso_products
-                                                             WHERE pid=0 AND language='' AND
-                                                             gid IN (" . implode(',', $arrGroups) . ") AND
-                                                             (type IN (" . implode(',', $arrProductTypes) . ")" .
-                                                             ((is_array($arrNewRecords) && !empty($arrNewRecords)) ? " OR id IN (".implode(',', $arrNewRecords)."))" : ')'));
+            $objProducts = \Database::getInstance()->execute("
+                SELECT id FROM tl_iso_products
+                WHERE pid=0
+                    AND language=''
+                    AND gid IN (" . implode(',', $arrGroups) . ")
+                    AND (
+                        type IN (" . implode(',', $arrProductTypes) . ")" .
+                        ((is_array($arrNewRecords) && !empty($arrNewRecords)) ? " OR id IN (".implode(',', $arrNewRecords).")" : '') .
+                    ")
+            ");
 
             if ($objProducts->numRows == 0)
             {
