@@ -397,6 +397,7 @@ class ProductCallbacks extends \Backend
             if ($blnVariants) {
                 $arrConfig = deserialize($objType->variant_attributes, true);
                 $arrEnabled = $objType->getVariantAttributes();
+                $arrCanInherit = $objType->getAttributes();
             } else {
                 $arrConfig = deserialize($objType->attributes, true);
                 $arrEnabled = $objType->getAttributes();
@@ -431,7 +432,8 @@ class ProductCallbacks extends \Backend
                     $arrFields[$name]['eval']['mandatory'] = $arrConfig[$name]['mandatory'] == 1 ? false : true;
                 }
 
-                if ($blnVariants && !$arrAttributes[$name]->isVariantOption() && !in_array($name, array('price', 'published', 'start', 'stop'))) {
+                // @todo only allow inherit for fields that are enabled in the parent
+                if ($blnVariants && in_array($name, $arrCanInherit) && !$arrAttributes[$name]->isVariantOption() && !in_array($name, array('price', 'published', 'start', 'stop'))) {
                     $arrInherit[$name] = Isotope::formatLabel('tl_iso_products', $name);
                 }
             }
