@@ -34,25 +34,6 @@ class Config extends \Model
     protected $arrCache = array();
 
     /**
-     * Return custom options or table row data
-     * @param mixed
-     * @return mixed
-     * @todo: this should be dropped. any reason for it to still be around?
-     */
-    public function __get($strKey)
-    {
-        switch ($strKey)
-        {
-            case 'billing_fields':
-            case 'shipping_fields':
-                return deserialize($this->arrData[$strKey], true);
-
-            default:
-                return deserialize(parent::__get($strKey));
-        }
-    }
-
-    /**
      * Get translated label for the config
      * @return  string
      */
@@ -73,12 +54,27 @@ class Config extends \Model
                 function($field) {
                     return $field['enabled'] ? $field['value'] : null;
                 },
-                $this->billing_fields
+                $this->getBillingFieldsConfig()
             ));
 
         }
 
         return $this->arrCache['billingFields'];
+    }
+
+    /**
+     * Return raw billing field data
+     * @return  array
+     */
+    public function getBillingFieldsConfig()
+    {
+        $arrFields = deserialize($this->billing_fields);
+
+        if (!is_array($arrFields)) {
+            return array();
+        }
+
+        return $arrFields;
     }
 
     /**
@@ -93,11 +89,26 @@ class Config extends \Model
                 function($field) {
                     return $field['enabled'] ? $field['value'] : null;
                 },
-                $this->shipping_fields
+                $this->getShippingFieldsConfig()
             ));
         }
 
         return $this->arrCache['shippingFields'];
+    }
+
+    /**
+     * Return raw shipping field data
+     * @return  array
+     */
+    public function getShippingFieldsConfig()
+    {
+        $arrFields = deserialize($this->shipping_fields);
+
+        if (!is_array($arrFields)) {
+            return array();
+        }
+
+        return $arrFields;
     }
 
     /**

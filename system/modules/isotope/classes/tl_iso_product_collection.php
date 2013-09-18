@@ -47,7 +47,7 @@ class tl_iso_product_collection extends \Backend
         $objAddress = $objOrder->getBillingAddress();
 
         if (null !== $objAddress) {
-            $arrTokens = $objAddress->getTokens(Isotope::getConfig()->billing_fields);
+            $arrTokens = $objAddress->getTokens(Isotope::getConfig()->getBillingFieldsConfig());
             $args[2] = $arrTokens['hcard_fn'];
         }
 

@@ -79,15 +79,15 @@ class Address extends \Model
 
     /**
      * Compile the list of hCard tokens for this address
-     * @param array
-     * @return array
+     * @param   array
+     * @return  array
      */
     public function getTokens($arrFields=null)
     {
         global $objPage;
 
         if (!is_array($arrFields)) {
-            $arrFields = Isotope::getConfig()->billing_fields;
+            $arrFields = Isotope::getConfig()->getBillingFieldsConfig();
         }
 
         $arrTokens = array('outputFormat'=>$objPage->outputFormat);
