@@ -20,7 +20,7 @@ use Isotope\Model\ProductCollection\Order;
 
 /**
  * Class PaymentSaferpay
- * @TODO: remove magic_quotes:gpc when PHP 5.4 is compulsory (it's also deprecated in PHP 5.3 so it might also be removed when PHP 5.3 is compulsory)
+ * @todo    remove magic_quotes:gpc when PHP 5.4 is compulsory (it's also deprecated in PHP 5.3 so it might also be removed when PHP 5.3 is compulsory)
  */
 class Saferpay extends Postsale implements IsotopePayment
 {

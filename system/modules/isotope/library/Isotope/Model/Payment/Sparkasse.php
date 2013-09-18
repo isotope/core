@@ -122,17 +122,17 @@ class Sparkasse extends Postsale implements IsotopePayment
 
         $arrParam = array
         (
-            'amount'                => number_format(Isotope::getCart()->getTotal(), 2, ',', ''),
-            'basketid'                => Isotope::getCart()->id,
-            'command'                => 'sslform',
-            'currency'                => Isotope::getConfig()->currency,
-            'locale'                => $GLOBALS['TL_LANGUAGE'],
-            'orderid'                => $objOrder->id,
-            'paymentmethod'            => $this->sparkasse_paymentmethod,
-            'sessionid'                => $objPage->id,
-            'sslmerchant'            => $this->sparkasse_sslmerchant,
-            'transactiontype'        => ($this->trans_type == 'auth' ? 'preauthorization' : 'authorization'),
-            'version'                => '1.5',
+            'amount'            => number_format(Isotope::getCart()->getTotal(), 2, ',', ''),
+            'basketid'          => Isotope::getCart()->id,
+            'command'           => 'sslform',
+            'currency'          => Isotope::getConfig()->currency,
+            'locale'            => $GLOBALS['TL_LANGUAGE'],
+            'orderid'           => $objOrder->id,
+            'paymentmethod'     => $this->sparkasse_paymentmethod,
+            'sessionid'         => $objPage->id,
+            'sslmerchant'       => $this->sparkasse_sslmerchant,
+            'transactiontype'   => ($this->trans_type == 'auth' ? 'preauthorization' : 'authorization'),
+            'version'           => '1.5',
         );
 
         if ($this->sparkasse_merchantref != '')

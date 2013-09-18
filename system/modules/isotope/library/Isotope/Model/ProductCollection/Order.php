@@ -586,7 +586,7 @@ class Order extends ProductCollection implements IsotopeProductCollection
             $objMax = $objDatabase->prepare("SELECT order_id FROM " . static::$strTable . " WHERE " . ($strPrefix != '' ? "order_id LIKE '$strPrefix%' AND " : '') . "store_id=? ORDER BY CAST(" . ($strPrefix != '' ? "SUBSTRING(order_id, " . ($intPrefix+1) . ")" : 'order_id') . " AS UNSIGNED) DESC")->limit(1)->executeUncached(Isotope::getCart()->store_id);
             $intMax = (int) substr($objMax->order_id, $intPrefix);
 
-            $this->arrData['order_id'] = $strPrefix . str_pad($intMax+1, Isotope::getConfig()->orderDigits, '0', STR_PAD_LEFT);
+            $this->arrData['order_id'] = $strPrefix . str_pad($intMax+1, (int) Isotope::getConfig()->orderDigits, '0', STR_PAD_LEFT);
         }
 
         $objDatabase->prepare("UPDATE " . static::$strTable . " SET order_id=? WHERE id={$this->id}")->executeUncached($this->arrData['order_id']);
