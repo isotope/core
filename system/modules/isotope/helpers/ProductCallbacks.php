@@ -378,11 +378,6 @@ class ProductCallbacks extends \Backend
         // Set default product type
         $arrFields['type']['default'] = (int) \Database::getInstance()->execute("SELECT id FROM tl_iso_producttypes WHERE fallback='1'" . ($this->User->isAdmin ? '' : (" AND id IN (" . implode(',', $this->User->iso_product_types) . ")")))->id;
 
-        // Set default tax class
-        // @todo this should be done in an oncreate callback.
-        //$arrFields['tax_class']['default'] = (int) \Database::getInstance()->execute("SELECT id FROM tl_iso_tax_class WHERE fallback='1'")->id;
-
-
         $arrTypes = $this->arrProductTypes;
         $blnVariants = false;
         $act = \Input::get('act');
@@ -1064,7 +1059,10 @@ window.addEvent('domready', function() {
         $objPrice = \Database::getInstance()->query("SELECT t.id, p.id AS pid, p.tax_class, t.price FROM tl_iso_prices p LEFT JOIN tl_iso_price_tiers t ON p.id=t.pid AND t.min=1 WHERE p.pid={$dc->id} AND p.config_id=0 AND p.member_group=0 AND p.start='' AND p.stop=''");
 
         if (!$objPrice->numRows) {
-            return array('value'=>'0.00', 'unit'=>'0');
+            return array(
+                'value' => '0.00',
+                'unit'  => (int) \Database::getInstance()->execute("SELECT id FROM tl_iso_tax_class WHERE fallback='1'")->id
+            );
         }
 
         return array('value'=>$objPrice->price, 'unit'=>$objPrice->tax_class);
