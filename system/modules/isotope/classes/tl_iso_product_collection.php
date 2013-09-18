@@ -306,7 +306,7 @@ class tl_iso_product_collection extends \Backend
                 \Controller::redirect($strRedirectUrl);
             }
 
-            if (($objConfig = Config::findByPk($objOrder->config_id)) === null) {
+            if ($objOrder->getRelated('config_id') === null) {
                 \Message::addError('Could not find config id.');
                 \Controller::redirect($strRedirectUrl);
             }
@@ -316,7 +316,7 @@ class tl_iso_product_collection extends \Backend
                 \Controller::redirect($strRedirectUrl);
             }
 
-            $objDocument->setCollection($objOrder)->setConfig($objConfig)->printToBrowser();
+            $objDocument->setCollection($objOrder)->setConfig($objOrder->getRelated('config_id'))->printToBrowser();
         }
 
         $arrSelect = array
