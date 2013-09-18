@@ -277,14 +277,7 @@ class ProductCallbacks extends \Backend
             $GLOBALS['TL_DCA']['tl_iso_products']['config']['closed'] = false;
         }
 
-        // Hide "add variant" button if no products with variants enabled exist
-        if (\Database::getInstance()->query("SELECT COUNT(*) AS total FROM tl_iso_products p LEFT JOIN tl_iso_producttypes t ON p.type=t.id WHERE t.variants='1'")->total == 0)
-        {
-            unset($GLOBALS['TL_DCA']['tl_iso_products']['list']['global_operations']['new_variant']);
-        }
-
         $session = $this->Session->getData();
-
         $arrProducts = \Isotope\Backend::getAllowedProductIds();
 
         // Method will return true if no limits should be applied (e.g. user is admin)
@@ -296,7 +289,6 @@ class ProductCallbacks extends \Backend
         // Filter by product type and group permissions
         if (empty($arrProducts))
         {
-            unset($GLOBALS['TL_DCA']['tl_iso_products']['list']['global_operations']['new_variant']);
             unset($session['CLIPBOARD']['tl_iso_products']);
             $session['CURRENT']['IDS'] = array();
             $GLOBALS['TL_DCA']['tl_iso_products']['list']['sorting']['filter'][] = array('id=?', 0);
