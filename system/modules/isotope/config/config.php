@@ -47,7 +47,6 @@ array_insert($GLOBALS['BE_MOD']['isotope'], 0, array
         'tables'                    => array('tl_iso_product_collection', 'tl_iso_product_collection_item', 'tl_iso_product_collection_surcharge', 'tl_iso_product_collection_download', 'tl_iso_addresses'),
         'icon'                        => 'system/modules/isotope/assets/shopping-basket.png',
         'javascript'                => 'system/modules/isotope/assets/backend.min.js',
-        'export_emails'             => array('Isotope\tl_iso_product_collection', 'exportOrderEmails'),
         'print_document'                => array('Isotope\tl_iso_product_collection', 'printDocument'),
         'payment'                    => array('Isotope\tl_iso_product_collection', 'paymentInterface'),
         'shipping'                    => array('Isotope\tl_iso_product_collection', 'shippingInterface'),

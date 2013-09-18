@@ -45,22 +45,6 @@
     padding:2px 0 3px 20px;
 }
 
-.header_iso_export_csv
-{
-    background-image:url(document-excel-csv.png);
-    background-position:left center;
-    background-repeat:no-repeat;
-    padding:2px 0 3px 20px
-}
-
-.header_print_invoices
-{
-    padding:2px 0px 3px 20px;
-    background-image:url("document-pdf-text.png");
-    background-position:left center;
-    background-repeat:no-repeat;
-}
-
 .header_iso_groups
 {
     padding:2px 0px 3px 20px;

@@ -39,7 +39,6 @@ $GLOBALS['TL_LANG']['tl_iso_product_collection']['payment']                 = ar
 $GLOBALS['TL_LANG']['tl_iso_product_collection']['shipping']                = array('Shipping details', 'Show shipping details of order ID %s');
 $GLOBALS['TL_LANG']['tl_iso_product_collection']['print_document']          = array('Print a document', 'Print order ID %s with a document of your choice');
 $GLOBALS['TL_LANG']['tl_iso_product_collection']['tools']                   = array('Tools', 'More options for order management.');
-$GLOBALS['TL_LANG']['tl_iso_product_collection']['export_emails']           = array('Export Order Emails','Export all emails for those who have ordered.');
 
 /**
  * Document choice
