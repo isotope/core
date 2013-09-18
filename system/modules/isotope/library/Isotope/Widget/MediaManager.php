@@ -21,6 +21,7 @@ namespace Isotope\Widget;
  * @author     Andreas Schempp <andreas.schempp@terminal42.ch>
  * @author     Fred Bliss <fred.bliss@intelligentspark.com>
  * @author     Christian de la Haye <service@delahaye.de>
+ * @author     Kamil Kuzminski <kamil.kuzminski@codefog.pl>
  */
 class MediaManager extends \Widget implements \uploadable
 {
@@ -173,7 +174,7 @@ class MediaManager extends \Widget implements \uploadable
 
         if (empty($this->varValue))
         {
-	        $this->varValue = null;
+            $this->varValue = null;
         }
     }
 
@@ -193,7 +194,7 @@ class MediaManager extends \Widget implements \uploadable
             $this->varValue = \Isotope\Isotope::mergeMediaData($this->varValue, $arrFallback);
         }
 
-        $arrButtons = array('up', 'down', 'delete');
+        $arrButtons = array('up', 'down', 'delete', 'drag');
         $strCommand = 'cmd_' . $this->strField;
 
         // Change the order
@@ -245,7 +246,7 @@ class MediaManager extends \Widget implements \uploadable
     <td class="col_4 col_last">&nbsp;</td>
   </tr>
   </thead>
-  <tbody>';
+  <tbody class="sortable">';
 
         // Add input fields
         for ($i=0, $count=count($this->varValue); $i<$count; $i++)
@@ -292,6 +293,7 @@ class MediaManager extends \Widget implements \uploadable
     </td>
     <td class="col_4 col_last">';
 
+            // Add buttons
             foreach ($arrButtons as $button)
             {
                 if ($button == 'delete' && $blnLanguage && $this->varValue[$i]['translate'] != 'all')
@@ -299,7 +301,13 @@ class MediaManager extends \Widget implements \uploadable
                     continue;
                 }
 
-                $return .= '<a href="'.$this->addToUrl('&amp;'.$strCommand.'='.$button.'&amp;cid='.$i.'&amp;id='.$this->currentRecord).'" title="'.specialchars($GLOBALS['TL_LANG'][$this->strTable]['wz_'.$button]).'" onclick="Isotope.mediaManager(this, \''.$button.'\',  \'ctrl_'.$this->strId.'\'); return false;">'.\Image::getHtml($button.'.gif', $GLOBALS['TL_LANG'][$this->strTable]['wz_'.$button], 'class="tl_listwizard_img"').'</a> ';
+                $class = ($button == 'up' || $button == 'down') ? ' class="button-move"' : '';
+
+                if ($button == 'drag') {
+                    $return .= \Image::getHtml('drag.gif', '', 'class="drag-handle" title="' . sprintf($GLOBALS['TL_LANG']['MSC']['move']) . '"');
+                } else {
+                    $return .= '<a href="'.$this->addToUrl('&amp;'.$strCommand.'='.$button.'&amp;cid='.$i.'&amp;id='.$this->currentRecord).'"' . $class . ' title="'.specialchars($GLOBALS['TL_LANG'][$this->strTable]['wz_'.$button]).'" onclick="Isotope.mediaManager(this, \''.$button.'\',  \'ctrl_'.$this->strId.'\'); return false;">'.\Image::getHtml($button.'.gif', $GLOBALS['TL_LANG'][$this->strTable]['wz_'.$button], 'class="tl_listwizard_img"').'</a> ';
+                }
             }
 
             $return .= '</td>

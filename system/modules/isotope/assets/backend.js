@@ -17,13 +17,39 @@ var Isotope =
 {
 
     /**
+     * Make the wizards sortable
+     */
+    makeWizardsSortable: function() {
+        $$('.tl_mediamanager .sortable').each(function(el) {
+            new Sortables(el, {
+                contstrain: true,
+                opacity: 0.6,
+                handle: '.drag-handle',
+                onComplete: function() {
+                    Isotope.wizardResort(el);
+                }
+            });
+        });
+
+        $$('.tl_fieldwizard .sortable').each(function(el) {
+            new Sortables(el, {
+                contstrain: true,
+                opacity: 0.6,
+                handle: '.drag-handle',
+                onComplete: function() {
+                    Isotope.wizardResort(el);
+                }
+            });
+        });
+    },
+
+    /**
      * Media Manager
      * @param object
      * @param string
      * @param string
      */
-    mediaManager: function(el, command, id)
-    {
+    mediaManager: function(el, command, id) {
         var table = document.id(id).getFirst('table');
         var tbody = table.getFirst('tbody');
         var parent = document.id(el).getParent('tr');
@@ -31,35 +57,43 @@ var Isotope =
 
         Backend.getScrollOffset();
 
-        switch (command)
-        {
+        switch (command) {
             case 'up':
                 parent.getPrevious() ? parent.injectBefore(parent.getPrevious()) : parent.injectInside(tbody);
                 break;
-
             case 'down':
                 parent.getNext() ? parent.injectAfter(parent.getNext()) : parent.injectBefore(tbody.getFirst());
                 break;
-
             case 'delete':
                 parent.destroy();
                 break;
         }
 
-        rows = tbody.getChildren();
+        Isotope.wizardResort(tbody);
+    },
 
-        for (var i=0; i<rows.length; i++)
-        {
-            var childs = rows[i].getChildren();
+    /**
+     * Resort the media manager fields
+     * @param object
+     */
+    wizardResort: function(tbody) {
+        var rows = tbody.getChildren(),
+            textarea, inputs, labels, i, j;
 
-            for (var j=0; j<childs.length; j++)
-            {
-                var first = childs[j].getFirst();
+        for (i=0; i<rows.length; i++) {
+            inputs = rows[i].getElements('[name]');
 
-                if (first.type == 'hidden' || first.type == 'text' || first.type == 'textarea')
-                {
-                    first.name = first.name.replace(/\[[0-9]+\]/ig, '[' + i + ']');
-                }
+            // Update the inputs
+            for (j=0; j<inputs.length; j++) {
+                inputs[j].name = inputs[j].name.replace(/\[[0-9]+\]/g, '[' + i + ']');
+                inputs[j].id = inputs[j].id.replace(/_[0-9]+/g, '_' + i);
+            }
+
+            labels = rows[i].getElements('label');
+
+            // Update the labels
+            for (j=0; j<labels.length; j++) {
+                labels[j].set('for', labels[j].get('for').replace(/_[0-9]+/g, '_' + i));
             }
         }
     },
@@ -241,10 +275,10 @@ var Isotope =
     toggleProductGroupTree: function (el, id, field, name, level)
     {
         el.blur();
-		Backend.getScrollOffset();
+        Backend.getScrollOffset();
 
-		var item = $(id),
-			image = $(el).getFirst('img');
+        var item = $(id),
+            image = $(el).getFirst('img');
 
         if (item)
         {
@@ -268,33 +302,33 @@ var Isotope =
 
         new Request.Contao(
         {
-			field: el,
-			evalScripts: true,
-			onRequest: AjaxRequest.displayBox(Contao.lang.loading + ' …'),
+            field: el,
+            evalScripts: true,
+            onRequest: AjaxRequest.displayBox(Contao.lang.loading + ' …'),
             onSuccess: function(txt, json)
             {
-				var li = new Element('li',
-				{
-					'id': id,
-					'class': 'parent',
-					'styles':
-					{
-						'display': 'inline'
-					}
-				});
+                var li = new Element('li',
+                {
+                    'id': id,
+                    'class': 'parent',
+                    'styles':
+                    {
+                        'display': 'inline'
+                    }
+                });
 
-				var ul = new Element('ul',
-				{
-					'class': 'level_' + level,
-					'html': txt
-				}).inject(li, 'bottom');
+                var ul = new Element('ul',
+                {
+                    'class': 'level_' + level,
+                    'html': txt
+                }).inject(li, 'bottom');
 
-				li.inject($(el).getParent('li'), 'after');
+                li.inject($(el).getParent('li'), 'after');
 
-				// Update the referer ID
-				li.getElements('a').each(function(el) {
-					el.href = el.href.replace(/&ref=[a-f0-9]+/, '&ref=' + Contao.referer_id);
-				});
+                // Update the referer ID
+                li.getElements('a').each(function(el) {
+                    el.href = el.href.replace(/&ref=[a-f0-9]+/, '&ref=' + Contao.referer_id);
+                });
 
                 $(el).store('tip:title', Contao.lang.collapse);
                 image.src = image.src.replace('folPlus.gif', 'folMinus.gif');
@@ -309,146 +343,146 @@ var Isotope =
     },
 
     /**
-	 * Open a group selector in a modal window
-	 * @param object
-	 * @return object
-	 */
-	openModalGroupSelector: function(options)
-	{
-		var opt = options || {};
-		var max = (window.getSize().y-180).toInt();
-		if (!opt.height || opt.height > max) opt.height = max;
-		var M = new SimpleModal(
-		{
-			'width': opt.width,
-			'btn_ok': Contao.lang.close,
-			'draggable': false,
-			'overlayOpacity': .5,
-			'onShow': function() { document.body.setStyle('overflow', 'hidden'); },
-			'onHide': function() { document.body.setStyle('overflow', 'auto'); }
-		});
-		M.addButton(Contao.lang.close, 'btn', function()
-		{
-			this.hide();
-		});
-		M.addButton(Contao.lang.apply, 'btn primary', function()
-		{
-			var val = [],
-				frm = null,
-				frms = window.frames;
-			for (var i=0; i<frms.length; i++)
-			{
-				if (frms[i].name == 'simple-modal-iframe')
-				{
-					frm = frms[i];
-					break;
-				}
-			}
-			if (frm === null)
-			{
-				alert('Could not find the SimpleModal frame');
-				return;
-			}
-			var inp = frm.document.getElementById('tl_listing').getElementsByTagName('input');
-			for (var i=0; i<inp.length; i++)
-			{
-				if (!inp[i].checked || inp[i].id.match(/^check_all_/)) continue;
-				if (!inp[i].id.match(/^reset_/)) val.push(inp[i].get('value'));
-			}
-			new Request.Contao(
-			{
-				evalScripts: false,
-				onRequest: AjaxRequest.displayBox(Contao.lang.loading + ' …'),
-				onSuccess: function(txt, json)
-				{
-					if (txt != '')
-					{
-						window.location.href = txt;
-					}
-				}
-			}).post({'action':opt.action, 'value':val[0], 'redirect':opt.redirect, 'REQUEST_TOKEN':Contao.request_token});
-			this.hide();
-			if (opt.trigger)
-			{
-				opt.trigger.fireEvent('closeModal');
-			}
-		});
-		M.show({
-			'title': opt.title,
-			'contents': '<iframe src="' + opt.url + '" name="simple-modal-iframe" width="100%" height="' + opt.height + '" frameborder="0"></iframe>',
-			'model': 'modal'
-		});
-		return M;
-	},
+     * Open a group selector in a modal window
+     * @param object
+     * @return object
+     */
+    openModalGroupSelector: function(options)
+    {
+        var opt = options || {};
+        var max = (window.getSize().y-180).toInt();
+        if (!opt.height || opt.height > max) opt.height = max;
+        var M = new SimpleModal(
+        {
+            'width': opt.width,
+            'btn_ok': Contao.lang.close,
+            'draggable': false,
+            'overlayOpacity': .5,
+            'onShow': function() { document.body.setStyle('overflow', 'hidden'); },
+            'onHide': function() { document.body.setStyle('overflow', 'auto'); }
+        });
+        M.addButton(Contao.lang.close, 'btn', function()
+        {
+            this.hide();
+        });
+        M.addButton(Contao.lang.apply, 'btn primary', function()
+        {
+            var val = [],
+                frm = null,
+                frms = window.frames;
+            for (var i=0; i<frms.length; i++)
+            {
+                if (frms[i].name == 'simple-modal-iframe')
+                {
+                    frm = frms[i];
+                    break;
+                }
+            }
+            if (frm === null)
+            {
+                alert('Could not find the SimpleModal frame');
+                return;
+            }
+            var inp = frm.document.getElementById('tl_listing').getElementsByTagName('input');
+            for (var i=0; i<inp.length; i++)
+            {
+                if (!inp[i].checked || inp[i].id.match(/^check_all_/)) continue;
+                if (!inp[i].id.match(/^reset_/)) val.push(inp[i].get('value'));
+            }
+            new Request.Contao(
+            {
+                evalScripts: false,
+                onRequest: AjaxRequest.displayBox(Contao.lang.loading + ' …'),
+                onSuccess: function(txt, json)
+                {
+                    if (txt != '')
+                    {
+                        window.location.href = txt;
+                    }
+                }
+            }).post({'action':opt.action, 'value':val[0], 'redirect':opt.redirect, 'REQUEST_TOKEN':Contao.request_token});
+            this.hide();
+            if (opt.trigger)
+            {
+                opt.trigger.fireEvent('closeModal');
+            }
+        });
+        M.show({
+            'title': opt.title,
+            'contents': '<iframe src="' + opt.url + '" name="simple-modal-iframe" width="100%" height="' + opt.height + '" frameborder="0"></iframe>',
+            'model': 'modal'
+        });
+        return M;
+    },
 
     /**
-	 * Open a page selector in a modal window
-	 * @param object
-	 * @return object
-	 */
-	openModalPageSelector: function(options)
-	{
-		var opt = options || {};
-		var max = (window.getSize().y-180).toInt();
-		if (!opt.height || opt.height > max) opt.height = max;
-		var M = new SimpleModal(
-		{
-			'width': opt.width,
-			'btn_ok': Contao.lang.close,
-			'draggable': false,
-			'overlayOpacity': .5,
-			'onShow': function() { document.body.setStyle('overflow', 'hidden'); },
-			'onHide': function() { document.body.setStyle('overflow', 'auto'); }
-		});
-		M.addButton(Contao.lang.close, 'btn', function()
-		{
-			this.hide();
-		});
-		M.addButton(Contao.lang.apply, 'btn primary', function()
-		{
-			var val = [],
-				frm = null,
-				frms = window.frames;
-			for (var i=0; i<frms.length; i++)
-			{
-				if (frms[i].name == 'simple-modal-iframe')
-				{
-					frm = frms[i];
-					break;
-				}
-			}
-			if (frm === null)
-			{
-				alert('Could not find the SimpleModal frame');
-				return;
-			}
-			var inp = frm.document.getElementById('tl_listing').getElementsByTagName('input');
-			for (var i=0; i<inp.length; i++)
-			{
-				if (!inp[i].checked || inp[i].id.match(/^check_all_/)) continue;
-				if (!inp[i].id.match(/^reset_/)) val.push(inp[i].get('value'));
-			}
-			new Request.Contao(
-			{
-				evalScripts: false,
-				onRequest: AjaxRequest.displayBox(Contao.lang.loading + ' …'),
-				onSuccess: function(txt, json)
-				{
-					if (txt != '')
-					{
-						window.location.href = txt;
-					}
-				}
-			}).post({'action':opt.action, 'value':val, 'redirect':opt.redirect, 'REQUEST_TOKEN':Contao.request_token});
-			this.hide();
-		});
-		M.show({
-			'title': opt.title,
-			'contents': '<iframe src="' + opt.url + '" name="simple-modal-iframe" width="100%" height="' + opt.height + '" frameborder="0"></iframe>',
-			'model': 'modal'
-		});
-		return M;
-	},
+     * Open a page selector in a modal window
+     * @param object
+     * @return object
+     */
+    openModalPageSelector: function(options)
+    {
+        var opt = options || {};
+        var max = (window.getSize().y-180).toInt();
+        if (!opt.height || opt.height > max) opt.height = max;
+        var M = new SimpleModal(
+        {
+            'width': opt.width,
+            'btn_ok': Contao.lang.close,
+            'draggable': false,
+            'overlayOpacity': .5,
+            'onShow': function() { document.body.setStyle('overflow', 'hidden'); },
+            'onHide': function() { document.body.setStyle('overflow', 'auto'); }
+        });
+        M.addButton(Contao.lang.close, 'btn', function()
+        {
+            this.hide();
+        });
+        M.addButton(Contao.lang.apply, 'btn primary', function()
+        {
+            var val = [],
+                frm = null,
+                frms = window.frames;
+            for (var i=0; i<frms.length; i++)
+            {
+                if (frms[i].name == 'simple-modal-iframe')
+                {
+                    frm = frms[i];
+                    break;
+                }
+            }
+            if (frm === null)
+            {
+                alert('Could not find the SimpleModal frame');
+                return;
+            }
+            var inp = frm.document.getElementById('tl_listing').getElementsByTagName('input');
+            for (var i=0; i<inp.length; i++)
+            {
+                if (!inp[i].checked || inp[i].id.match(/^check_all_/)) continue;
+                if (!inp[i].id.match(/^reset_/)) val.push(inp[i].get('value'));
+            }
+            new Request.Contao(
+            {
+                evalScripts: false,
+                onRequest: AjaxRequest.displayBox(Contao.lang.loading + ' …'),
+                onSuccess: function(txt, json)
+                {
+                    if (txt != '')
+                    {
+                        window.location.href = txt;
+                    }
+                }
+            }).post({'action':opt.action, 'value':val, 'redirect':opt.redirect, 'REQUEST_TOKEN':Contao.request_token});
+            this.hide();
+        });
+        M.show({
+            'title': opt.title,
+            'contents': '<iframe src="' + opt.url + '" name="simple-modal-iframe" width="100%" height="' + opt.height + '" frameborder="0"></iframe>',
+            'model': 'modal'
+        });
+        return M;
+    },
 
     /**
      * Add the interactive help
@@ -694,14 +728,21 @@ var Isotope =
     }
 };
 
+// Initialize the back end script
 window.addEvent('domready', function()
 {
     Isotope.addInteractiveHelp();
     Isotope.initializeToolsMenu();
     Isotope.initializeFilterMenu();
     Isotope.makeSelectExtendable();
+    Isotope.makeWizardsSortable();
 }).addEvent('structure', function()
 {
     Isotope.addInteractiveHelp();
 });
 
+// Re-apply certain changes upon ajax_change
+window.addEvent('ajax_change', function() {
+    Isotope.addInteractiveHelp();
+    Isotope.makeWizardsSortable();
+});

@@ -97,6 +97,24 @@
     display: block;
 }
 
+.tl_mediamanager img {
+    position: relative;
+    top: 1px;
+}
+
+.tl_fieldwizard td {
+    padding-right: 4px;
+}
+
+.tl_fieldwizard th {
+    padding: 2px 0;
+    font-weight: normal;
+}
+
+.tl_fieldwizard .col_1 {
+    width: 180px;
+}
+
 .mod_iso_orderdetails .info_container
 {
     float:left;
@@ -157,43 +175,43 @@
 }
 
 .breadcrumb_container {
-	padding: 2px 0;
-	margin: 24px 18px 0 18px;
+    padding: 2px 0;
+    margin: 24px 18px 0 18px;
 }
 
 .iso_filter {
-	line-height: 28px;
+    line-height: 28px;
 }
 
 .iso_filter .tl_submit.active {
-	border: 1px solid #b8b8b8;
-	background: #eee;
-	background-image: -moz-linear-gradient(bottom, #ccc 0%, #ffd 60%);
-	background-image: -webkit-linear-gradient(bottom, #ccc 0%, #ffd 60%);
-	background-image: -o-linear-gradient(bottom, #ccc 0%, #ffd 60%);
-	background-image: -ms-linear-gradient(bottom, #ccc 0%, #ffd 60%);
-	background-image: linear-gradient(bottom, #ccc 0%, #ffd 60%);
+    border: 1px solid #b8b8b8;
+    background: #eee;
+    background-image: -moz-linear-gradient(bottom, #ccc 0%, #ffd 60%);
+    background-image: -webkit-linear-gradient(bottom, #ccc 0%, #ffd 60%);
+    background-image: -o-linear-gradient(bottom, #ccc 0%, #ffd 60%);
+    background-image: -ms-linear-gradient(bottom, #ccc 0%, #ffd 60%);
+    background-image: linear-gradient(bottom, #ccc 0%, #ffd 60%);
 }
 
 .iso_filter .styled_select {
-	margin-top: 4px;
+    margin-top: 4px;
 }
 
 .iso_listing_container th.col_images {
-	font-size: 0;
-	width: 60px;
+    font-size: 0;
+    width: 60px;
 }
 
 .iso_operations {
-	width: 110px;
-	white-space: normal;
+    width: 110px;
+    white-space: normal;
 }
 
 .iso_content_right .tl_select_all,
 .iso_content_right a,
 .iso_operations a {
-	display: inline-block;
-	margin-bottom: 4px;
+    display: inline-block;
+    margin-bottom: 4px;
 }
 
 .tl_productdata .tl_file {
