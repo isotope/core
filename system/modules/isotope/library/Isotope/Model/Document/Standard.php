@@ -15,7 +15,6 @@ namespace Isotope\Model\Document;
 use Isotope\Interfaces\IsotopeDocument;
 use Isotope\Model\Document;
 use Isotope\Model\Gallery;
-use Isotope\Template;
 
 /**
  * Class Standard
@@ -96,7 +95,7 @@ class Standard extends Document implements IsotopeDocument
         $pdf->SetFont(PDF_FONT_NAME_MAIN, '', PDF_FONT_SIZE_MAIN);
 
         // Prepare the document
-        $objTemplate = new Template($this->documentTpl);
+        $objTemplate = new \Isotope\Template($this->documentTpl);
 
         // Add title
         $objTemplate->title = \String::parseSimpleTokens($this->documentTitle, $this->arrCollectionTokens);
@@ -107,7 +106,7 @@ class Standard extends Document implements IsotopeDocument
         }
 
         // Render the collection
-        $objCollectionTemplate = new Template($this->collectionTpl);
+        $objCollectionTemplate = new \Isotope\Template($this->collectionTpl);
         $this->collection->addToTemplate($objCollectionTemplate);
         $objTemplate->collection = $objCollectionTemplate->parse();
 
