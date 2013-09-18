@@ -46,8 +46,6 @@ class tl_iso_prices extends \Backend
             return '';
         }
 
-        $this->import('Isotope\Isotope', 'Isotope');
-
         $arrTiers = array();
         $objTiers = \Database::getInstance()->execute("SELECT * FROM tl_iso_price_tiers WHERE pid={$row['id']} ORDER BY min");
 
@@ -117,14 +115,14 @@ class tl_iso_prices extends \Backend
 
         if (!is_array($arrNew) || empty($arrNew))
         {
-            $this->Database->query("DELETE FROM tl_iso_price_tiers WHERE pid={$dc->id}");
+            \Database::getInstance()->query("DELETE FROM tl_iso_price_tiers WHERE pid={$dc->id}");
         }
         else
         {
             $time = time();
             $arrInsert = array();
             $arrUpdate = array();
-            $arrDelete = $this->Database->execute("SELECT min FROM tl_iso_price_tiers WHERE pid={$dc->id}")->fetchEach('min');
+            $arrDelete = \Database::getInstance()->execute("SELECT min FROM tl_iso_price_tiers WHERE pid={$dc->id}")->fetchEach('min');
 
             foreach ($arrNew as $new)
             {
@@ -143,14 +141,14 @@ class tl_iso_prices extends \Backend
 
             if (!empty($arrDelete))
             {
-                $this->Database->query("DELETE FROM tl_iso_price_tiers WHERE pid={$dc->id} AND min IN (" . implode(',', $arrDelete) . ")");
+                \Database::getInstance()->query("DELETE FROM tl_iso_price_tiers WHERE pid={$dc->id} AND min IN (" . implode(',', $arrDelete) . ")");
             }
 
             if (!empty($arrUpdate))
             {
                 foreach ($arrUpdate as $min => $price)
                 {
-                    $this->Database->prepare("UPDATE tl_iso_price_tiers SET tstamp=$time, price=? WHERE pid={$dc->id} AND min=?")->executeUncached($price, $min);
+                    \Database::getInstance()->prepare("UPDATE tl_iso_price_tiers SET tstamp=$time, price=? WHERE pid={$dc->id} AND min=?")->executeUncached($price, $min);
                 }
             }
 
@@ -158,7 +156,7 @@ class tl_iso_prices extends \Backend
             {
                 foreach ($arrInsert as $min => $price)
                 {
-                    $this->Database->prepare("INSERT INTO tl_iso_price_tiers (pid,tstamp,min,price) VALUES ({$dc->id}, $time, ?, ?)")->executeUncached($min, $price);
+                    \Database::getInstance()->prepare("INSERT INTO tl_iso_price_tiers (pid,tstamp,min,price) VALUES ({$dc->id}, $time, ?, ?)")->executeUncached($min, $price);
                 }
             }
         }

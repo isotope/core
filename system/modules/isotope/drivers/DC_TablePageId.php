@@ -142,7 +142,7 @@ class DC_TablePageId extends \DC_Table
         // Avoid circular references when there is no parent table
         if ($this->Database->fieldExists('page_id', $this->strTable) && !strlen($this->ptable))
         {
-            $cr = $this->getChildRecords($this->intId, $this->strTable);
+            $cr = \Database::getInstance()->getChildRecords($this->intId, $this->strTable);
             $cr[] = $this->intId;
         }
 
@@ -606,9 +606,9 @@ class DC_TablePageId extends \DC_Table
         if (!\Input::get('act') || \Input::get('act') == 'paste' || \Input::get('act') == 'select')
         {
             // Header
-            $imagePasteNew = $this->generateImage('new.gif', $GLOBALS['TL_LANG'][$this->strTable]['pasteafter'][0]);
-            $imagePasteAfter = $this->generateImage('pasteafter.gif', $GLOBALS['TL_LANG'][$this->strTable]['pasteafter'][0], 'class="blink"');
-            $imageEditHeader = $this->generateImage('edit.gif', $GLOBALS['TL_LANG'][$this->strTable]['editheader'][0]);
+            $imagePasteNew = \Image::getHtml('new.gif', $GLOBALS['TL_LANG'][$this->strTable]['pasteafter'][0]);
+            $imagePasteAfter = \Image::getHtml('pasteafter.gif', $GLOBALS['TL_LANG'][$this->strTable]['pasteafter'][0], 'class="blink"');
+            $imageEditHeader = \Image::getHtml('edit.gif', $GLOBALS['TL_LANG'][$this->strTable]['editheader'][0]);
 
             $return .= '
 <div class="tl_content_right">'.((\Input::get('act') == 'select') ? '
@@ -791,8 +791,8 @@ class DC_TablePageId extends \DC_Table
                 for ($i=0, $count=count($row); $i<$count; $i++)
                 {
                     $this->current[] = $row[$i]['id'];
-                    $imagePasteAfter = $this->generateImage('pasteafter.gif', sprintf($GLOBALS['TL_LANG'][$this->strTable]['pasteafter'][1], $row[$i]['id']), 'class="blink"');
-                    $imagePasteNew = $this->generateImage('new.gif', sprintf($GLOBALS['TL_LANG'][$this->strTable]['pastenew'][1], $row[$i]['id']));
+                    $imagePasteAfter = \Image::getHtml('pasteafter.gif', sprintf($GLOBALS['TL_LANG'][$this->strTable]['pasteafter'][1], $row[$i]['id']), 'class="blink"');
+                    $imagePasteNew = \Image::getHtml('new.gif', sprintf($GLOBALS['TL_LANG'][$this->strTable]['pastenew'][1], $row[$i]['id']));
 
                     // Decrypt encrypted value
                     foreach ($row[$i] as $k=>$v)
@@ -855,7 +855,7 @@ class DC_TablePageId extends \DC_Table
                             // Prevent circular references
                             if ($blnClipboard && $arrClipboard['mode'] == 'cut' && $row[$i]['id'] == $arrClipboard['id'] || $blnMultiboard && $arrClipboard['mode'] == 'cutAll' && in_array($row[$i]['id'], $arrClipboard['id']))
                             {
-                                $return .= ' ' . $this->generateImage('pasteafter_.gif', '', 'class="blink"');
+                                $return .= ' ' . \Image::getHtml('pasteafter_.gif', '', 'class="blink"');
                             }
 
                             // Copy/move multiple
@@ -1279,7 +1279,7 @@ Isotope.makePageViewSortable("ul_' . CURRENT_ID . '");
             // Generate all buttons except "move up" and "move down" buttons
             if ($k != 'move' && $v != 'move')
             {
-                $return .= '<a href="'.$this->addToUrl($v['href'].'&amp;id='.$arrRow['id']).'" title="'.specialchars($title).'"'.$attributes.'>'.$this->generateImage($v['icon'], $label).'</a> ';
+                $return .= '<a href="'.$this->addToUrl($v['href'].'&amp;id='.$arrRow['id']).'" title="'.specialchars($title).'"'.$attributes.'>'.\Image::getHtml($v['icon'], $label).'</a> ';
                 continue;
             }
 
@@ -1291,16 +1291,16 @@ Isotope.makePageViewSortable("ul_' . CURRENT_ID . '");
                 $label = strlen($GLOBALS['TL_LANG'][$strTable][$dir][0]) ? $GLOBALS['TL_LANG'][$strTable][$dir][0] : $dir;
                 $title = strlen($GLOBALS['TL_LANG'][$strTable][$dir][1]) ? $GLOBALS['TL_LANG'][$strTable][$dir][1] : $dir;
 
-                $label = $this->generateImage($dir.'.gif', $label);
+                $label = \Image::getHtml($dir.'.gif', $label);
                 $href = strlen($v['href']) ? $v['href'] : '&amp;act=move';
 
                 if ($dir == 'up')
                 {
-                    $return .= ((is_numeric($strPrevious) && (!in_array($arrRow['id'], $arrRootIds) || empty($GLOBALS['TL_DCA'][$strTable]['list']['sorting']['root']))) ? '<a href="'.$this->addToUrl($href.'&amp;id='.$arrRow['id']).'&amp;sid='.intval($strPrevious).'" title="'.specialchars($title).'"'.$attributes.'>'.$label.'</a> ' : $this->generateImage('up_.gif')).' ';
+                    $return .= ((is_numeric($strPrevious) && (!in_array($arrRow['id'], $arrRootIds) || empty($GLOBALS['TL_DCA'][$strTable]['list']['sorting']['root']))) ? '<a href="'.$this->addToUrl($href.'&amp;id='.$arrRow['id']).'&amp;sid='.intval($strPrevious).'" title="'.specialchars($title).'"'.$attributes.'>'.$label.'</a> ' : \Image::getHtml('up_.gif')).' ';
                     continue;
                 }
 
-                $return .= ((is_numeric($strNext) && (!in_array($arrRow['id'], $arrRootIds) || empty($GLOBALS['TL_DCA'][$strTable]['list']['sorting']['root']))) ? '<a href="'.$this->addToUrl($href.'&amp;id='.$arrRow['id']).'&amp;sid='.intval($strNext).'" title="'.specialchars($title).'"'.$attributes.'>'.$label.'</a> ' : $this->generateImage('down_.gif')).' ';
+                $return .= ((is_numeric($strNext) && (!in_array($arrRow['id'], $arrRootIds) || empty($GLOBALS['TL_DCA'][$strTable]['list']['sorting']['root']))) ? '<a href="'.$this->addToUrl($href.'&amp;id='.$arrRow['id']).'&amp;sid='.intval($strNext).'" title="'.specialchars($title).'"'.$attributes.'>'.$label.'</a> ' : \Image::getHtml('down_.gif')).' ';
             }
         }
 

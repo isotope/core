@@ -34,7 +34,7 @@ class tl_iso_product_categories extends \Backend
         $this->loadDataContainer('tl_iso_products');
         \System::loadLanguageFile('tl_iso_products');
 
-        $objProduct = $this->Database->prepare("SELECT * FROM tl_iso_products WHERE id=?")->limit(1)->execute($row['pid']);
+        $objProduct = \Database::getInstance()->prepare("SELECT * FROM tl_iso_products WHERE id=?")->limit(1)->execute($row['pid']);
 
         $this->import('Isotope\ProductCallbacks', 'ProductCallbacks');
 
@@ -52,8 +52,8 @@ class tl_iso_product_categories extends \Backend
     {
         if (\Input::get('act') == '')
         {
-            $arrCategories = $this->Database->execute("SELECT page_id FROM tl_iso_product_categories WHERE pid={$dc->id}");
-            $this->Database->query("UPDATE tl_iso_products SET pages='" . serialize($arrCategories) . "' WHERE id={$dc->id}");
+            $arrCategories = \Database::getInstance()->execute("SELECT page_id FROM tl_iso_product_categories WHERE pid={$dc->id}");
+            \Database::getInstance()->query("UPDATE tl_iso_products SET pages='" . serialize($arrCategories) . "' WHERE id={$dc->id}");
         }
     }
 

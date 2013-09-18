@@ -39,7 +39,7 @@ class tl_iso_attributes extends \Backend
         }
         elseif ($dc->id)
         {
-            $objAttribute = $this->Database->execute("SELECT * FROM tl_iso_attributes WHERE id={$dc->id}");
+            $objAttribute = \Database::getInstance()->execute("SELECT * FROM tl_iso_attributes WHERE id={$dc->id}");
 
             if ($objAttribute->field_name != '')
             {
@@ -56,7 +56,7 @@ class tl_iso_attributes extends \Backend
      */
     public function prepareForVariantOptions($dc)
     {
-        $objAttribute = $this->Database->prepare("SELECT * FROM tl_iso_attributes WHERE id=?")->execute($dc->id);
+        $objAttribute = \Database::getInstance()->prepare("SELECT * FROM tl_iso_attributes WHERE id=?")->execute($dc->id);
 
         if ($objAttribute->variant_option)
         {
@@ -75,9 +75,11 @@ class tl_iso_attributes extends \Backend
      */
     public function validateFieldName($varValue, $dc)
     {
+        $this->loadDataContainer('tl_iso_products');
+
         $varValue = standardize($varValue);
 
-        if (in_array($varValue, array('id', 'pid', 'tstamp', 'dateAdded', 'type', 'language', 'pages', 'inherit')))
+        if (isset($GLOBALS['TL_DCA']['tl_iso_products']['fields'][$varValue]) && $GLOBALS['TL_DCA']['tl_iso_products']['fields'][$varValue]['attributes']['systemColumn'])
         {
             throw new \InvalidArgumentException(sprintf($GLOBALS['TL_LANG']['ERR']['systemColumn'], $varValue));
         }
@@ -99,30 +101,6 @@ class tl_iso_attributes extends \Backend
 
         $objUpdater = new \Isotope\DatabaseUpdater();
         $objUpdater->autoUpdateTables(array('tl_iso_products'));
-    }
-
-
-    /**
-     * Remove field that are not available in certain attributes and could cause unwanted results
-     * @param object
-     * @return void
-     */
-    public function cleanFieldValues($dc)
-    {
-        $strPalette = $GLOBALS['TL_DCA']['tl_iso_attributes']['palettes'][$dc->activeRecord->type];
-
-        if ($dc->activeRecord->variant_option && $GLOBALS['TL_DCA']['tl_iso_attributes']['palettes'][$dc->activeRecord->type.'variant_option'] != '')
-        {
-            $strPalette = $GLOBALS['TL_DCA']['tl_iso_attributes']['palettes'][$dc->activeRecord->type.'variant_option'];
-        }
-
-        $arrFields = array_keys($GLOBALS['TL_DCA']['tl_iso_attributes']['fields']);
-        $arrKeep = trimsplit(',|;', $strPalette);
-        $arrSubpalettes = trimsplit(',', implode(',', (array) $GLOBALS['TL_DCA']['tl_iso_attributes']['subpalettes']));
-
-        $arrClean = array_diff($arrFields, $arrKeep, $arrSubpalettes, array('pid', 'sorting'));
-
-        $this->Database->execute("UPDATE tl_iso_attributes SET " . implode("='', ", $arrClean) . "='' WHERE id={$dc->id}");
     }
 
 
@@ -194,7 +172,7 @@ class tl_iso_attributes extends \Backend
                 }
 
                 list($strTable, $strField) = explode('.', $foreignKey, 2);
-                $this->Database->execute("SELECT $strField FROM $strTable");
+                \Database::getInstance()->execute("SELECT $strField FROM $strTable");
             }
         }
 

@@ -46,8 +46,6 @@ class IsotopeRules extends \Controller
     {
         parent::__construct();
 
-        $this->import('Database');
-
         // User object must be loaded from cart, e.g. for postsale handling
         if (Isotope::getCart()->member > 0) {
             $this->User = \Database::getInstance()->prepare("SELECT * FROM tl_member WHERE id=?")->execute(Isotope::getCart()->member);
@@ -174,7 +172,7 @@ class IsotopeRules extends \Controller
             {
                 // @todo show dropped coupons
                 $arrCoupons = array_diff($arrCoupons, $arrDropped);
-                $this->Database->query("UPDATE tl_iso_cart SET coupons='" . serialize($arrCoupons) . "' WHERE id=".(int) Isotope::getCart()->id);
+                \Database::getInstance()->query("UPDATE tl_iso_cart SET coupons='" . serialize($arrCoupons) . "' WHERE id=".(int) Isotope::getCart()->id);
             }
         }
 
@@ -298,7 +296,7 @@ class IsotopeRules extends \Controller
         {
             $time = time();
 
-            $this->Database->query("INSERT INTO tl_iso_rule_usage (pid,tstamp,order_id,config_id,member_id) VALUES (" . implode(", $time, {$objOrder->id}, ".(int) Isotope::getConfig()->id.", {$objOrder->pid}), (", $arrRules) . ", $time, {$objOrder->id}, ".(int) Isotope::getConfig()->id.", {$objOrder->pid})");
+            \Database::getInstance()->query("INSERT INTO tl_iso_rule_usage (pid,tstamp,order_id,config_id,member_id) VALUES (" . implode(", $time, {$objOrder->id}, ".(int) Isotope::getConfig()->id.", {$objOrder->member}), (", $arrRules) . ", $time, {$objOrder->id}, ".(int) Isotope::getConfig()->id.", {$objOrder->member})");
         }
 
         return true;
@@ -309,7 +307,7 @@ class IsotopeRules extends \Controller
      */
     public function cleanRuleUsages(&$objModule)
     {
-        $this->Database->query("DELETE FROM tl_iso_rule_usage WHERE pid=(SELECT id FROM tl_iso_product_collection WHERE type='Order' AND source_collection_id=".(int) Isotope::getCart()->id.")");
+        \Database::getInstance()->query("DELETE FROM tl_iso_rule_usage WHERE pid=(SELECT id FROM tl_iso_product_collection WHERE type='Order' AND source_collection_id=".(int) Isotope::getCart()->id.")");
 
         return '';
     }
@@ -392,7 +390,7 @@ class IsotopeRules extends \Controller
             $arrTypes = array();
 
             // Prepare product attribute condition
-            $objAttributeRules = $this->Database->execute("SELECT * FROM tl_iso_rules WHERE enabled='1' AND productRestrictions='attribute' AND attributeName!='' GROUP BY attributeName, attributeCondition");
+            $objAttributeRules = \Database::getInstance()->execute("SELECT * FROM tl_iso_rules WHERE enabled='1' AND productRestrictions='attribute' AND attributeName!='' GROUP BY attributeName, attributeCondition");
             while( $objAttributeRules->next() )
             {
                 $arrAttributes[] = array
@@ -508,7 +506,7 @@ class IsotopeRules extends \Controller
 
 
         // Fetch and process rules
-        return $this->Database->prepare("SELECT * FROM tl_iso_rules r WHERE " . implode(' AND ', $arrProcedures) . " ORDER BY sorting")->execute($arrValues);
+        return \Database::getInstance()->prepare("SELECT * FROM tl_iso_rules r WHERE " . implode(' AND ', $arrProcedures) . " ORDER BY sorting")->execute($arrValues);
     }
 
 
@@ -548,7 +546,7 @@ class IsotopeRules extends \Controller
 
         $arrSurcharge = array
         (
-            'label'            => Isotope::translate(($arrRule['label'] ? $arrRule['label'] : $arrRule['name'])),
+            'label'            => Translation::get(($arrRule['label'] ? $arrRule['label'] : $arrRule['name'])),
             'price'            => ($blnPercentage ? $fltDiscount.'%' : ''),
             'total_price'    => 0,
             'tax_class'        => 0,
@@ -559,11 +557,11 @@ class IsotopeRules extends \Controller
         // Product or producttype restrictions
         if ($arrRule['productRestrictions'] != '' && $arrRule['productRestrictions'] != 'none')
         {
-            $arrLimit = $this->Database->execute("SELECT object_id FROM tl_iso_rule_restrictions WHERE pid={$arrRule['id']} AND type='{$arrRule['productRestrictions']}'")->fetchEach('object_id');
+            $arrLimit = \Database::getInstance()->execute("SELECT object_id FROM tl_iso_rule_restrictions WHERE pid={$arrRule['id']} AND type='{$arrRule['productRestrictions']}'")->fetchEach('object_id');
 
             if ($arrRule['productRestrictions'] == 'pages' && !empty($arrLimit))
             {
-                $arrLimit = $this->Database->execute("SELECT pid FROM tl_iso_product_categories WHERE page_id IN (" . implode(',', $arrLimit) . ")")->fetchEach('pid');
+                $arrLimit = \Database::getInstance()->execute("SELECT pid FROM tl_iso_product_categories WHERE page_id IN (" . implode(',', $arrLimit) . ")")->fetchEach('pid');
             }
 
             if ($arrRule['quantityMode'] == 'cart_products' || $arrRule['quantityMode'] == 'cart_items')

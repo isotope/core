@@ -506,7 +506,7 @@ class tl_iso_rules extends \Backend
     public function getRules($dc)
     {
         $arrRules = array();
-        $objRules = $this->Database->execute("SELECT * FROM tl_iso_rules WHERE enabled='1' AND id!={$dc->id}");
+        $objRules = \Database::getInstance()->execute("SELECT * FROM tl_iso_rules WHERE enabled='1' AND id!={$dc->id}");
 
         while( $objRules->next() )
         {
@@ -522,7 +522,7 @@ class tl_iso_rules extends \Backend
      */
     public function loadRestrictions($varValue, $dc)
     {
-        return $this->Database->execute("SELECT object_id FROM tl_iso_rule_restrictions WHERE pid={$dc->activeRecord->id} AND type='{$dc->field}'")->fetchEach('object_id');
+        return \Database::getInstance()->execute("SELECT object_id FROM tl_iso_rule_restrictions WHERE pid={$dc->activeRecord->id} AND type='{$dc->field}'")->fetchEach('object_id');
     }
 
 
@@ -535,24 +535,24 @@ class tl_iso_rules extends \Backend
 
         if (!is_array($arrNew) || empty($arrNew))
         {
-            $this->Database->query("DELETE FROM tl_iso_rule_restrictions WHERE pid={$dc->activeRecord->id} AND type='{$dc->field}'");
+            \Database::getInstance()->query("DELETE FROM tl_iso_rule_restrictions WHERE pid={$dc->activeRecord->id} AND type='{$dc->field}'");
         }
         else
         {
-            $arrOld = $this->Database->execute("SELECT object_id FROM tl_iso_rule_restrictions WHERE pid={$dc->activeRecord->id} AND type='{$dc->field}'")->fetchEach('object_id');
+            $arrOld = \Database::getInstance()->execute("SELECT object_id FROM tl_iso_rule_restrictions WHERE pid={$dc->activeRecord->id} AND type='{$dc->field}'")->fetchEach('object_id');
 
             $arrInsert = array_diff($arrNew, $arrOld);
             $arrDelete = array_diff($arrOld, $arrNew);
 
             if (!empty($arrDelete))
             {
-                $this->Database->query("DELETE FROM tl_iso_rule_restrictions WHERE pid={$dc->activeRecord->id} AND type='{$dc->field}' AND object_id IN (" . implode(',', $arrDelete) . ")");
+                \Database::getInstance()->query("DELETE FROM tl_iso_rule_restrictions WHERE pid={$dc->activeRecord->id} AND type='{$dc->field}' AND object_id IN (" . implode(',', $arrDelete) . ")");
             }
 
             if (!empty($arrInsert))
             {
                 $time = time();
-                $this->Database->query("INSERT INTO tl_iso_rule_restrictions (pid,tstamp,type,object_id) VALUES ({$dc->id}, $time, '{$dc->field}', " . implode("), ({$dc->id}, $time, '{$dc->field}', ", $arrInsert) . ")");
+                \Database::getInstance()->query("INSERT INTO tl_iso_rule_restrictions (pid,tstamp,type,object_id) VALUES ({$dc->id}, $time, '{$dc->field}', " . implode("), ({$dc->id}, $time, '{$dc->field}', ", $arrInsert) . ")");
             }
         }
 
@@ -581,7 +581,7 @@ class tl_iso_rules extends \Backend
         // Check permissions AFTER checking the tid, so hacking attempts are logged
         if (!$this->User->isAdmin && !$this->User->hasAccess('tl_iso_rules::enabled', 'alexf'))
         {
-            return $this->generateImage($icon, $label).' ';
+            return \Image::getHtml($icon, $label).' ';
         }
 
         $href .= '&amp;tid='.$row['id'].'&amp;state='.($row['enabled'] ? '' : 1);
@@ -591,7 +591,7 @@ class tl_iso_rules extends \Backend
             $icon = 'invisible.gif';
         }
 
-        return '<a href="'.$this->addToUrl($href).'" title="'.specialchars($title).'"'.$attributes.'>'.$this->generateImage($icon, $label).'</a> ';
+        return '<a href="'.$this->addToUrl($href).'" title="'.specialchars($title).'"'.$attributes.'>'.\Image::getHtml($icon, $label).'</a> ';
     }
 
 
@@ -621,14 +621,13 @@ class tl_iso_rules extends \Backend
         {
             foreach ($GLOBALS['TL_DCA']['tl_iso_rules']['fields']['enabled']['save_callback'] as $callback)
             {
-                $this->import($callback[0]);
-                $blnVisible = $this->$callback[0]->$callback[1]($blnVisible, $this);
+                $objCallback = \System::importStatic($callback[0]);
+                $blnVisible = $objCallback->$callback[1]($blnVisible, $this);
             }
         }
 
         // Update the database
-        $this->Database->prepare("UPDATE tl_iso_rules SET tstamp=". time() .", enabled='" . ($blnVisible ? 1 : '') . "' WHERE id=?")
-                       ->execute($intId);
+        \Database::getInstance()->prepare("UPDATE tl_iso_rules SET tstamp=". time() .", enabled='" . ($blnVisible ? 1 : '') . "' WHERE id=?")->execute($intId);
 
 //        $this->createNewVersion('tl_iso_rules', $intId);
     }
@@ -642,8 +641,6 @@ class tl_iso_rules extends \Backend
      */
     public function getAttributeNames($dc)
     {
-        $this->import('Isotope\Isotope', 'Isotope');
-
         $arrAttributes = array();
 
         foreach( $GLOBALS['TL_DCA']['tl_iso_products']['fields'] as $attribute => $config )
@@ -673,7 +670,7 @@ class tl_iso_rules extends \Backend
             $this->loadDataContainer('tl_iso_products');
             \System::loadLanguageFile('tl_iso_products');
 
-            $objRule = $this->Database->execute("SELECT * FROM tl_iso_rules WHERE id=".(int) $dc->id);
+            $objRule = \Database::getInstance()->execute("SELECT * FROM tl_iso_rules WHERE id=".(int) $dc->id);
 
             if ($objRule->productRestrictions == 'attribute' && $objRule->attributeName != '')
             {

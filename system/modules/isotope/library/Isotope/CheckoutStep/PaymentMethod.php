@@ -55,10 +55,11 @@ class PaymentMethod extends CheckoutStep implements IsotopeCheckoutStep
                     $fltPrice = $objModule->price;
                     $strSurcharge = $objModule->surcharge;
                     $strPrice = $fltPrice != 0 ? (($strSurcharge == '' ? '' : ' ('.$strSurcharge.')') . ': '.Isotope::formatPriceWithCurrency($fltPrice)) : '';
+                    $strNote = $objModule->note ? '<span class="note">' . $objModule->note . '</span>' : '';
 
                     $arrOptions[] = array(
                         'value'     => $objModule->id,
-                        'label'     => $objModule->getLabel() . $strPrice,
+                        'label'     => $objModule->getLabel() . $strPrice . $strNote,
                     );
 
                     $arrModules[$objModule->id] = $objModule;
@@ -122,7 +123,7 @@ class PaymentMethod extends CheckoutStep implements IsotopeCheckoutStep
         if (!$this->hasError()) {
             $objShipping = Isotope::getCart()->getShippingMethod();
             $this->objModule->arrOrderData['shipping_method_id']   = $objShipping->id;
-            $this->objModule->arrOrderData['shipping_method']      = $objShipping->label;
+            $this->objModule->arrOrderData['shipping_method']      = $objShipping->getLabel();
             $this->objModule->arrOrderData['shipping_note']        = $objShipping->note;
             $this->objModule->arrOrderData['shipping_note_text']   = strip_tags($objShipping->note);
         }

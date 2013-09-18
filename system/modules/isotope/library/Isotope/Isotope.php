@@ -13,6 +13,7 @@
 namespace Isotope;
 
 use Isotope\Model\Config;
+use Isotope\Model\RequestCache;
 use Isotope\Model\TaxClass;
 use Isotope\Model\ProductCollection\Cart;
 
@@ -54,6 +55,12 @@ class Isotope extends \Controller
      */
     protected static $objConfig;
 
+    /**
+     * Current request cache instance
+     * @var Isotope\Model\RequestCache
+     */
+    protected static $objRequestCache;
+
 
     /**
      * Prevent cloning of the object (Singleton)
@@ -67,9 +74,6 @@ class Isotope extends \Controller
     protected function __construct()
     {
         parent::__construct();
-
-        $this->import('Database');
-        $this->import('FrontendUser', 'User');
     }
 
 
@@ -112,18 +116,11 @@ class Isotope extends \Controller
             // Initialize request cache for product list filters
             if (\Input::get('isorc') != '') {
 
-                $objRequestCache = \Database::getInstance()->prepare("SELECT * FROM tl_iso_requestcache WHERE id=? AND store_id=?")->execute(\Input::get('isorc'), static::getCart()->store_id);
-
-                if ($objRequestCache->numRows) {
-
-                    $GLOBALS['ISO_FILTERS'] = deserialize($objRequestCache->filters);
-                    $GLOBALS['ISO_SORTING'] = deserialize($objRequestCache->sorting);
-                    $GLOBALS['ISO_LIMIT'] = deserialize($objRequestCache->limits);
-
+                if (static::getRequestCache()->isEmpty()) {
                     global $objPage;
                     $objPage->noSearch = 1;
 
-                } else {
+                } elseif (static::getRequestCache()->id != \Input::get('isorc')) {
 
                     unset($_GET['isorc']);
 
@@ -154,6 +151,7 @@ class Isotope extends \Controller
         if (null === static::$objCart && TL_MODE == 'FE') {
             static::initialize();
             static::$objCart = Cart::findForCurrentStore();
+            static::$objCart->mergeGuestCart();
         }
 
         return static::$objCart;
@@ -197,11 +195,28 @@ class Isotope extends \Controller
 
     /**
      * Set the currently active Isotope configuration
-     * @param Isotope\Model\Config
+     * @param Isotope\Model\Config|null
      */
-    public static function setConfig(Config $objConfig)
+    public static function setConfig(Config $objConfig=null)
     {
         static::$objConfig = $objConfig;
+    }
+
+    /**
+     * Get active request cache
+     * @return  RequestCache
+     */
+    public static function getRequestCache()
+    {
+        if (null === static::$objRequestCache) {
+            static::$objRequestCache = RequestCache::findByIdAndStore(\Input::get('isorc'), static::getCart()->store_id);
+
+            if (null === static::$objRequestCache) {
+                static::$objRequestCache = new RequestCache();
+            }
+        }
+
+        return static::$objRequestCache;
     }
 
 
@@ -542,62 +557,6 @@ class Isotope extends \Controller
 
 
     /**
-     * Translate a value using the tl_iso_label table
-     * @param mixed
-     * @param boolean
-     * @return mixed
-     */
-    public static function translate($label, $language=false)
-    {
-        static $blnInstalled = null;
-
-        if (false === $blnInstalled) {
-
-            return $label;
-
-        } elseif (null === $blnInstalled) {
-            $blnInstalled = \Database::getInstance()->tableExists('tl_iso_labels');
-
-            if (!$blnInstalled) {
-
-                return $label;
-            }
-        }
-
-        // Recursively translate label array
-        if (is_array($label))
-        {
-            foreach ($label as $k => $v)
-            {
-                $label[$k] = static::translate($v, $language);
-            }
-
-            return $label;
-        }
-
-        if (!$language)
-        {
-            $language = $GLOBALS['TL_LANGUAGE'];
-        }
-
-        if (!is_array($GLOBALS['TL_LANG']['TBL'][$language]))
-        {
-            $GLOBALS['TL_LANG']['TBL'][$language] = array();
-            $objLabels = \Database::getInstance()->prepare("SELECT * FROM tl_iso_labels WHERE language=?")->execute($language);
-
-            while ($objLabels->next())
-            {
-                $GLOBALS['TL_LANG']['TBL'][$language][\String::decodeEntities($objLabels->label)] = $objLabels->replacement;
-            }
-        }
-
-        $label = \String::decodeEntities($label);
-
-        return $GLOBALS['TL_LANG']['TBL'][$language][$label] ? $GLOBALS['TL_LANG']['TBL'][$language][$label] : $label;
-    }
-
-
-    /**
      * Format value (based on DC_Table::show(), Contao 2.9.0)
      * @param string
      * @param string
@@ -827,4 +786,28 @@ class Isotope extends \Controller
 
         return $arrCurrent;
     }
+
+
+
+    /**
+	 * Get the meta data from a serialized string
+	 * @param   string
+	 * @param   string
+	 * @return  array
+	 * @todo    remove this as soon as \Frontend::getMetaData is public and static in Contao core
+	 */
+	public static function getMetaData($strData, $strLanguage)
+	{
+		$arrData = deserialize($strData);
+
+		// Convert the language to a locale (see #5678)
+		$strLanguage = str_replace('-', '_', $strLanguage);
+
+		if (!is_array($arrData) || !isset($arrData[$strLanguage]))
+		{
+			return array();
+		}
+
+		return $arrData[$strLanguage];
+	}
 }

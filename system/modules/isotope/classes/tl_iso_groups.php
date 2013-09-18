@@ -16,6 +16,8 @@
 
 namespace Isotope;
 
+use Isotope\Model\Group;
+
 
 /**
  * Class tl_iso_groups
@@ -112,9 +114,9 @@ class tl_iso_groups extends \Backend
                         // Add permissions on user level
                         if ($this->User->inherit == 'custom' || !$this->User->groups[0])
                         {
-                            $objUser = $this->Database->prepare("SELECT iso_groups, iso_groupp FROM tl_user WHERE id=?")
-                                                       ->limit(1)
-                                                       ->executeUncached($this->User->id);
+                            $objUser = \Database::getInstance()->prepare("SELECT iso_groups, iso_groupp FROM tl_user WHERE id=?")
+                                                               ->limit(1)
+                                                               ->executeUncached($this->User->id);
 
                             $arrPermissions = deserialize($objUser->iso_groupp);
 
@@ -123,17 +125,17 @@ class tl_iso_groups extends \Backend
                                 $arrAccess = deserialize($objUser->iso_groups);
                                 $arrAccess[] = \Input::get('id');
 
-                                $this->Database->prepare("UPDATE tl_user SET iso_groups=? WHERE id=?")
-                                               ->execute(serialize($arrAccess), $this->User->id);
+                                \Database::getInstance()->prepare("UPDATE tl_user SET iso_groups=? WHERE id=?")
+                                                        ->execute(serialize($arrAccess), $this->User->id);
                             }
                         }
 
                         // Add permissions on group level
                         elseif ($this->User->groups[0] > 0)
                         {
-                            $objGroup = $this->Database->prepare("SELECT iso_groups, iso_groupp FROM tl_user_group WHERE id=?")
-                                                       ->limit(1)
-                                                       ->executeUncached($this->User->groups[0]);
+                            $objGroup = \Database::getInstance()->prepare("SELECT iso_groups, iso_groupp FROM tl_user_group WHERE id=?")
+                                                                ->limit(1)
+                                                                ->executeUncached($this->User->groups[0]);
 
                             $arrPermissions = deserialize($objGroup->iso_groupp);
 
@@ -142,8 +144,8 @@ class tl_iso_groups extends \Backend
                                 $arrAccess = deserialize($objGroup->iso_groups);
                                 $arrAccess[] = \Input::get('id');
 
-                                $this->Database->prepare("UPDATE tl_user_group SET iso_groups=? WHERE id=?")
-                                               ->execute(serialize($arrAccess), $this->User->groups[0]);
+                                \Database::getInstance()->prepare("UPDATE tl_user_group SET iso_groups=? WHERE id=?")
+                                                        ->execute(serialize($arrAccess), $this->User->groups[0]);
                             }
                         }
 
@@ -217,19 +219,18 @@ class tl_iso_groups extends \Backend
     {
         if ($dc->table == 'tl_iso_products')
         {
-            return $this->generateImage('system/modules/isotope/html/folder-network.png', '', $imageAttribute) . ' <span style="font-weight:bold">' . $label . '</span>';
+            return \Image::getHtml('system/modules/isotope/html/folder-network.png', '', $imageAttribute) . ' <span style="font-weight:bold">' . $label . '</span>';
         }
         else
         {
             $strProductType = '';
 
-            if (($intProductType = \Isotope\Backend::getProductTypeForGroup($row['id'])) !== false)
+            if (($objProductType = Group::findByPk($row['id'])->getRelated('product_type')) !== null)
             {
-                $strProductType = $this->Database->execute("SELECT name FROM tl_iso_producttypes WHERE id=" . $intProductType)->name;
-                $strProductType = ' <span style="color:#b3b3b3; padding-left:3px;">[' . $strProductType . ']</span>';
+                $strProductType = ' <span style="color:#b3b3b3; padding-left:3px;">[' . $objProductType->name . ']</span>';
             }
 
-            return '<a href="' . $this->addToUrl('gid=' . $row['id']) . '" title="' . specialchars($row['name'] . ' (ID ' . $row['id'] . ')') . '">' . $this->generateImage('system/modules/isotope/html/folder-network.png', '', $imageAttribute) . ' ' . $label . '</a>' . $strProductType;
+            return '<a href="' . $this->addToUrl('gid=' . $row['id']) . '" title="' . specialchars($row['name'] . ' (ID ' . $row['id'] . ')') . '">' . \Image::getHtml('system/modules/isotope/html/folder-network.png', '', $imageAttribute) . ' ' . $label . '</a>' . $strProductType;
         }
     }
 
@@ -241,10 +242,10 @@ class tl_iso_groups extends \Backend
      */
     public function deleteGroup($dc)
     {
-        $arrGroups = $this->getChildRecords($dc->id, 'tl_iso_groups');
+        $arrGroups = \Database::getInstance()->getChildRecords($dc->id, 'tl_iso_groups');
         $arrGroups[] = $dc->id;
 
-        $this->Database->query("UPDATE tl_iso_products SET gid=0 WHERE gid IN (" . implode(',', $arrGroups) . ")");
+        \Database::getInstance()->query("UPDATE tl_iso_products SET gid=0 WHERE gid IN (" . implode(',', $arrGroups) . ")");
     }
 
 
@@ -262,10 +263,10 @@ class tl_iso_groups extends \Backend
     {
         if (!$this->User->isAdmin && (!is_array($this->User->iso_groupp) || !in_array('create', $this->User->iso_groupp)))
         {
-            return $this->generateImage(preg_replace('/\.gif$/i', '_.gif', $icon)) . ' ';
+            return \Image::getHtml(preg_replace('/\.gif$/i', '_.gif', $icon)) . ' ';
         }
 
-        return '<a href="'.$this->addToUrl($href.'&amp;id='.$row['id']).'" title="'.specialchars($title).'"'.$attributes.'>'.$this->generateImage($icon, $label).'</a> ';
+        return '<a href="'.$this->addToUrl($href.'&amp;id='.$row['id']).'" title="'.specialchars($title).'"'.$attributes.'>'.\Image::getHtml($icon, $label).'</a> ';
     }
 
 
@@ -283,9 +284,9 @@ class tl_iso_groups extends \Backend
     {
         if (!$this->User->isAdmin && (!is_array($this->User->iso_groupp) || !in_array('delete', $this->User->iso_groupp)))
         {
-            return $this->generateImage(preg_replace('/\.gif$/i', '_.gif', $icon)) . ' ';
+            return \Image::getHtml(preg_replace('/\.gif$/i', '_.gif', $icon)) . ' ';
         }
 
-        return '<a href="'.$this->addToUrl($href.'&amp;id='.$row['id']).'" title="'.specialchars($title).'"'.$attributes.'>'.$this->generateImage($icon, $label).'</a> ';
+        return '<a href="'.$this->addToUrl($href.'&amp;id='.$row['id']).'" title="'.specialchars($title).'"'.$attributes.'>'.\Image::getHtml($icon, $label).'</a> ';
     }
 }

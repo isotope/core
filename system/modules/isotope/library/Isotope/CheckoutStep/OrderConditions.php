@@ -23,11 +23,7 @@ abstract class OrderConditions extends CheckoutStep
      */
     public function isAvailable()
     {
-        if (!$this->iso_order_conditions) {
-            return false;
-        }
-
-        return true;
+        return (boolean) $this->objModule->iso_order_conditions;
     }
 
     /**

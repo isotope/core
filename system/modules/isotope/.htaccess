@@ -1,0 +1,13 @@
+<IfModule !mod_authz_core.c>
+  # Apache 2.2
+  <Files postsale.php>
+    Order Allow,Deny
+    Allow from all
+  </Files>
+</IfModule>
+<IfModule mod_authz_core.c>
+  # Apache 2.4
+  <Files postsale.php>
+    Require all granted
+  </Files>
+</IfModule>

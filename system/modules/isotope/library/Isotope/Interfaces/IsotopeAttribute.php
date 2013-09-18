@@ -61,7 +61,8 @@ interface IsotopeAttribute
 	/**
 	 * Generate attribute for given product
 	 * @param   IsotopeProduct
+	 * @param   array
 	 * @return  string
 	 */
-	public function generate(IsotopeProduct $objProduct);
+	public function generate(IsotopeProduct $objProduct, array $arrOptions=array());
 }

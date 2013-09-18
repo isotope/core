@@ -51,8 +51,6 @@ class MediaManager extends \Widget implements \uploadable
     {
         parent::__construct($arrAttributes);
 
-        $this->import('Database');
-
         $this->objUploader = new \FileUpload();
     }
 
@@ -195,10 +193,6 @@ class MediaManager extends \Widget implements \uploadable
             $this->varValue = \Isotope\Isotope::mergeMediaData($this->varValue, $arrFallback);
         }
 
-        $GLOBALS['TL_CSS'][] = TL_PLUGINS_URL . 'plugins/mediabox/'. MEDIABOX .'/css/mediaboxAdvBlack21.css|screen';
-        $GLOBALS['TL_JAVASCRIPT'][] = TL_PLUGINS_URL . 'plugins/mediabox/' . MEDIABOX . '/js/mediabox.js';
-        $GLOBALS['TL_JAVASCRIPT'][] = TL_PLUGINS_URL . 'system/modules/isotope/assets/mediabox_init.js';
-
         $arrButtons = array('up', 'down', 'delete');
         $strCommand = 'cmd_' . $this->strField;
 
@@ -220,8 +214,8 @@ class MediaManager extends \Widget implements \uploadable
                     break;
             }
 
-            $this->Database->prepare("UPDATE " . $this->strTable . " SET " . $this->strField . "=? WHERE id=?")
-                           ->execute(serialize($this->varValue), $this->currentRecord);
+            \Database::getInstance()->prepare("UPDATE " . $this->strTable . " SET " . $this->strField . "=? WHERE id=?")
+                                    ->execute(serialize($this->varValue), $this->currentRecord);
 
             \Controller::redirect(preg_replace('/&(amp;)?cid=[^&]*/i', '', preg_replace('/&(amp;)?' . preg_quote($strCommand, '/') . '=[^&]*/i', '', \Environment::get('request'))));
         }
@@ -279,7 +273,7 @@ class MediaManager extends \Widget implements \uploadable
 
             $return .= '
   <tr>
-    <td class="col_0 col_first"><input type="hidden" name="' . $this->strName . '['.$i.'][src]" value="' . specialchars($this->varValue[$i]['src']) . '"><a href="' . $strFile . '" rel="lightbox"><img src="' . $strPreview . '" alt="' . specialchars($this->varValue[$i]['src']) . '"></a></td>
+    <td class="col_0 col_first"><input type="hidden" name="' . $this->strName . '['.$i.'][src]" value="' . specialchars($this->varValue[$i]['src']) . '"><a href="' . $strFile . '" onclick="Backend.openModalImage({\'width\':' . $objFile->width . ',\'title\':\'' . str_replace("'", "\\'", $GLOBALS['TL_LANG'][$this->strTable]['mmSrc']) . '\',\'url\':\'' . $strFile . '\'});return false"><img src="' . $strPreview . '" alt="' . specialchars($this->varValue[$i]['src']) . '"></a></td>
     <td class="col_1"><input type="text" class="tl_text_2" name="' . $this->strName . '['.$i.'][alt]" value="' . specialchars($this->varValue[$i]['alt'], true) . '"'.$strTranslateNone.'><br><input type="text" class="tl_text_2" name="' . $this->strName . '['.$i.'][link]" value="' . specialchars($this->varValue[$i]['link'], true) . '"'.$strTranslateText.'></td>
     <td class="col_2"><textarea name="' . $this->strName . '['.$i.'][desc]" cols="40" rows="3" class="tl_textarea"'.$strTranslateNone.' >' . specialchars($this->varValue[$i]['desc']) . '</textarea></td>
     <td class="col_3">
@@ -305,7 +299,7 @@ class MediaManager extends \Widget implements \uploadable
                     continue;
                 }
 
-                $return .= '<a href="'.$this->addToUrl('&amp;'.$strCommand.'='.$button.'&amp;cid='.$i.'&amp;id='.$this->currentRecord).'" title="'.specialchars($GLOBALS['TL_LANG'][$this->strTable]['wz_'.$button]).'" onclick="Isotope.mediaManager(this, \''.$button.'\',  \'ctrl_'.$this->strId.'\'); return false;">'.$this->generateImage($button.'.gif', $GLOBALS['TL_LANG'][$this->strTable]['wz_'.$button], 'class="tl_listwizard_img"').'</a> ';
+                $return .= '<a href="'.$this->addToUrl('&amp;'.$strCommand.'='.$button.'&amp;cid='.$i.'&amp;id='.$this->currentRecord).'" title="'.specialchars($GLOBALS['TL_LANG'][$this->strTable]['wz_'.$button]).'" onclick="Isotope.mediaManager(this, \''.$button.'\',  \'ctrl_'.$this->strId.'\'); return false;">'.\Image::getHtml($button.'.gif', $GLOBALS['TL_LANG'][$this->strTable]['wz_'.$button], 'class="tl_listwizard_img"').'</a> ';
             }
 
             $return .= '</td>
@@ -327,7 +321,7 @@ class MediaManager extends \Widget implements \uploadable
         // Fetch fallback language record
         if ($_SESSION['BE_DATA']['language'][$this->strTable][$this->currentRecord] != '')
         {
-            return deserialize($this->Database->execute("SELECT * FROM {$this->strTable} WHERE id={$this->currentRecord}")->{$this->strField});
+            return deserialize(\Database::getInstance()->execute("SELECT * FROM {$this->strTable} WHERE id={$this->currentRecord}")->{$this->strField});
         }
 
         return false;

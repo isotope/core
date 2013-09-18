@@ -37,7 +37,7 @@ class DatabaseUpdater extends \Database\Installer
 			if (!empty($arrCommands['ALTER_DROP']) && is_array($arrCommands['ALTER_DROP'])) {
 				foreach ($arrCommands['ALTER_DROP'] as $strCommand) {
 					if (strpos($strCommand, 'ALTER TABLE `'.$strTable.'` DROP INDEX') === 0) {
-						$this->Database->query($strCommand);
+						\Database::getInstance()->query($strCommand);
 					}
 				}
 			}
@@ -45,7 +45,7 @@ class DatabaseUpdater extends \Database\Installer
 			if (!empty($arrCommands['ALTER_CHANGE']) && is_array($arrCommands['ALTER_CHANGE'])) {
 				foreach ($arrCommands['ALTER_CHANGE'] as $strCommand) {
 					if (strpos($strCommand, 'ALTER TABLE `'.$strTable.'`') === 0) {
-						$this->Database->query($strCommand);
+						\Database::getInstance()->query($strCommand);
 					}
 				}
 			}
@@ -53,7 +53,7 @@ class DatabaseUpdater extends \Database\Installer
 			if (!empty($arrCommands['ALTER_ADD']) && is_array($arrCommands['ALTER_ADD'])) {
 				foreach ($arrCommands['ALTER_ADD'] as $strCommand) {
 					if (strpos($strCommand, 'ALTER TABLE `'.$strTable.'`') === 0) {
-						$this->Database->query($strCommand);
+						\Database::getInstance()->query($strCommand);
 					}
 				}
 			}

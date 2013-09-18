@@ -157,8 +157,6 @@ class FieldWizard extends \Widget
         // Change the order
         if (\Input::get($strCommand) && is_numeric(\Input::get('cid')) && \Input::get('id') == $this->currentRecord)
         {
-            $this->import('Database');
-
             switch (\Input::get($strCommand))
             {
                 case 'up':
@@ -170,8 +168,8 @@ class FieldWizard extends \Widget
                     break;
             }
 
-            $this->Database->prepare("UPDATE " . $this->strTable . " SET " . $this->strField . "=? WHERE id=?")
-                           ->execute(serialize($this->varValue), $this->currentRecord);
+            \Database::getInstance()->prepare("UPDATE " . $this->strTable . " SET " . $this->strField . "=? WHERE id=?")
+                                    ->execute(serialize($this->varValue), $this->currentRecord);
 
             \Controller::redirect(preg_replace('/&(amp;)?cid=[^&]*/i', '', preg_replace('/&(amp;)?' . preg_quote($strCommand, '/') . '=[^&]*/i', '', \Environment::get('request'))));
         }
@@ -223,7 +221,7 @@ class FieldWizard extends \Widget
 
             foreach ($arrButtons as $button)
             {
-                $return .= '<a href="'.$this->addToUrl('&amp;'.$strCommand.'='.$button.'&amp;cid='.$i.'&amp;id='.$this->currentRecord).'" title="'.specialchars($GLOBALS['TL_LANG'][$this->strTable][$button][0]).'" onclick="Isotope.fieldWizard(this, \''.$button.'\', \'ctrl_'.$this->strId.'\'); return false;">'.$this->generateImage($button.'.gif', $GLOBALS['TL_LANG'][$this->strTable][$button][0]).'</a> ';
+                $return .= '<a href="'.$this->addToUrl('&amp;'.$strCommand.'='.$button.'&amp;cid='.$i.'&amp;id='.$this->currentRecord).'" title="'.specialchars($GLOBALS['TL_LANG'][$this->strTable][$button][0]).'" onclick="Isotope.fieldWizard(this, \''.$button.'\', \'ctrl_'.$this->strId.'\'); return false;">'.\Image::getHtml($button.'.gif', $GLOBALS['TL_LANG'][$this->strTable][$button][0]).'</a> ';
             }
 
             $return .= '</td>

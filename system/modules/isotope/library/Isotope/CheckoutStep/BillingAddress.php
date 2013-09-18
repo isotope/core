@@ -44,8 +44,8 @@ class BillingAddress extends Address implements IsotopeCheckoutStep
         if (!$this->hasError()) {
             $objAddress = Isotope::getCart()->getBillingAddress();
 
-            $this->objModule->arrOrderData['billing_address'] = $objAddress->generateHtml(Isotope::getConfig()->billing_fields);
-            $this->objModule->arrOrderData['billing_address_text'] = $objAddress->generateText(Isotope::getConfig()->billing_fields);
+            $this->objModule->arrOrderData['billing_address'] = $objAddress->generateHtml(Isotope::getConfig()->getBillingFieldsConfig());
+            $this->objModule->arrOrderData['billing_address_text'] = $objAddress->generateText(Isotope::getConfig()->getBillingFieldsConfig());
         }
 */
 
@@ -81,7 +81,7 @@ class BillingAddress extends Address implements IsotopeCheckoutStep
         return array('billing_address' => array
         (
             'headline'    => $strHeadline,
-            'info'        => $objBillingAddress->generateHtml(Isotope::getConfig()->billing_fields),
+            'info'        => $objBillingAddress->generateHtml(Isotope::getConfig()->getBillingFieldsConfig()),
             'edit'        => \Isotope\Module\Checkout::generateUrlForStep('address'),
         ));
     }
@@ -137,14 +137,22 @@ class BillingAddress extends Address implements IsotopeCheckoutStep
         $objAddress = AddressModel::findOneBy(array('ptable=?', 'pid=?', 'isDefaultBilling=?'), array('tl_iso_product_collection', Isotope::getCart()->id, '1'));
 
         if (null === $objAddress) {
-            $arrAddress = Isotope::getCart()->getBillingAddress()->row();
-            unset($arrAddress['id']);
-            $arrAddress['ptable'] = 'tl_iso_product_collection';
-            $arrAddress['pid'] = Isotope::getCart()->id;
-            $arrAddress['isDefaultBilling'] = '1';
+            $objBillingAddress = Isotope::getCart()->getBillingAddress();
 
-            $objAddress = new AddressModel();
-            $objAddress->setRow($arrAddress);
+            if (null === $objBillingAddress) {
+                $objAddress = new AddressModel();
+            } else {
+                $objAddress = clone $objBillingAddress;
+            }
+
+            $objAddress->ptable = 'tl_iso_product_collection';
+            $objAddress->pid = Isotope::getCart()->id;
+            $objAddress->isDefaultBilling = '1';
+            $objAddress->isDefaultShipping = '';
+
+            if ($objAddress->country == '') {
+                $objAddress->country = Isotope::getConfig()->billing_country;
+            }
         }
 
         return $objAddress;
@@ -156,7 +164,7 @@ class BillingAddress extends Address implements IsotopeCheckoutStep
      */
     protected function getAddressFields()
     {
-        return Isotope::getConfig()->billing_fields;
+        return Isotope::getConfig()->getBillingFieldsConfig();
     }
 
     /**
@@ -166,15 +174,6 @@ class BillingAddress extends Address implements IsotopeCheckoutStep
     protected function getAddressCountries()
     {
         return Isotope::getConfig()->getBillingCountries();
-    }
-
-    /**
-     * Get default country for this address type
-     * @return  string
-     */
-    protected function getDefaultCountry()
-    {
-        return Isotope::getConfig()->billing_country;
     }
 
     /**

@@ -73,11 +73,11 @@ $GLOBALS['TL_LANG']['tl_iso_attributes']['url']                     = array('URL
 $GLOBALS['TL_LANG']['tl_iso_attributes']['price']                   = array('Price', 'Checks whether the input is a valid price.');
 $GLOBALS['TL_LANG']['tl_iso_attributes']['discount']                = array('Discount', 'Checks whether the input is a valid discount.<br />Example: -10%, -10, +10, +10%');
 $GLOBALS['TL_LANG']['tl_iso_attributes']['surcharge']               = array('Surcharge', 'Checks whether the input is a valid surcharge.<br />Example: 10.00, 10%');
+$GLOBALS['TL_LANG']['tl_iso_attributes']['custom']                  = 'Custom order';
 $GLOBALS['TL_LANG']['tl_iso_attributes']['name_asc']                = 'File name (ascending)';
 $GLOBALS['TL_LANG']['tl_iso_attributes']['name_desc']               = 'File name (descending)';
 $GLOBALS['TL_LANG']['tl_iso_attributes']['date_asc']                = 'Date (ascending)';
 $GLOBALS['TL_LANG']['tl_iso_attributes']['date_desc']               = 'Date (descending)';
-$GLOBALS['TL_LANG']['tl_iso_attributes']['meta']                    = 'Meta file (meta.txt)';
 $GLOBALS['TL_LANG']['tl_iso_attributes']['random']                  = 'Random order';
 
 /**

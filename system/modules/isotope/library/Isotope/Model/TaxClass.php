@@ -13,6 +13,7 @@
 namespace Isotope\Model;
 
 use Isotope\Isotope;
+use Isotope\Translation;
 
 /**
  * TaxRate implements the tax class model.
@@ -42,14 +43,19 @@ class TaxClass extends \Model
             case 'rates':
                 return deserialize($this->arrData[$strKey]);
 
-            case 'label':
-                return $this->arrData['label'] ? Isotope::getInstance()->translate($this->arrData['label']) : '';
-
             default:
                 return parent::__get($strKey);
         }
     }
 
+    /**
+     * Get label
+     * @return  string
+     */
+    public function getLabel()
+    {
+        return Translation::get($this->label ?: $this->name);
+    }
 
     /**
      * Calculate a price, removing tax if included but not applicable
@@ -81,14 +87,8 @@ class TaxClass extends \Model
      * @param  array|null
      * @return float
      */
-    public function calculateNetPrice($fltPrice, $arrAddresses=null)
+    public function calculateNetPrice($fltPrice)
     {
-        // @todo: what is this variable used for?
-        if (!is_array($arrAddresses))
-        {
-            $arrAddresses = array('billing'=>Isotope::getCart()->getBillingAddress(), 'shipping'=>Isotope::getCart()->getShippingAddress());
-        }
-
         $objIncludes = $this->getRelated('includes');
 
         if ($objIncludes->id > 0)
@@ -138,5 +138,15 @@ class TaxClass extends \Model
         }
 
         return $fltPrice;
+    }
+
+    /**
+     * Find fallback product type
+     * @param   array
+     * @return  TaxClass|null
+     */
+    public static function findFallback(array $arrOptions=array())
+    {
+        return static::findOneBy('fallback', '1', $arrOptions);
     }
 }

@@ -30,16 +30,6 @@ class tl_iso_product_collection extends \Backend
 {
 
     /**
-     * Import an Isotope object
-     */
-    public function __construct()
-    {
-        parent::__construct();
-        $this->import('Isotope\Isotope', 'Isotope');
-    }
-
-
-    /**
      * Generate the order label and return it as string
      * @param array
      * @param string
@@ -59,7 +49,7 @@ class tl_iso_product_collection extends \Backend
         $objAddress = $objOrder->getBillingAddress();
 
         if (null !== $objAddress) {
-            $arrTokens = $objAddress->getTokens(Isotope::getConfig()->billing_fields);
+            $arrTokens = $objAddress->getTokens(Isotope::getConfig()->getBillingFieldsConfig());
             $args[2] = $arrTokens['hcard_fn'];
         }
 
@@ -78,7 +68,7 @@ class tl_iso_product_collection extends \Backend
      */
     public function generateOrderDetails($dc, $xlabel)
     {
-        $objOrder = $this->Database->execute("SELECT * FROM tl_iso_product_collection WHERE id=".$dc->id);
+        $objOrder = \Database::getInstance()->execute("SELECT * FROM tl_iso_product_collection WHERE id=".$dc->id);
 
         if (!$objOrder->numRows)
         {
@@ -89,7 +79,7 @@ class tl_iso_product_collection extends \Backend
 
         // Generate a regular order details module
         \Input::setGet('uid', $objOrder->uniqid);
-        $objModule = new \Isotope\Module\OrderDetails($this->Database->execute("SELECT * FROM tl_module WHERE type='iso_orderdetails'"));
+        $objModule = new \Isotope\Module\OrderDetails(\Database::getInstance()->execute("SELECT * FROM tl_module WHERE type='iso_orderdetails'"));
 
         return $objModule->generate(true);
     }
@@ -103,7 +93,7 @@ class tl_iso_product_collection extends \Backend
      */
     public function generateEmailData($dc, $xlabel)
     {
-        $objOrder = $this->Database->execute("SELECT * FROM tl_iso_product_collection WHERE id=" . $dc->id);
+        $objOrder = \Database::getInstance()->execute("SELECT * FROM tl_iso_product_collection WHERE id=" . $dc->id);
 
         if (!$objOrder->numRows)
         {
@@ -250,7 +240,7 @@ class tl_iso_product_collection extends \Backend
 
         if (is_array($arrConfigs) && !empty($arrConfigs))
         {
-            $objOrders = $this->Database->query("SELECT id FROM tl_iso_product_collection WHERE config_id IN (" . implode(',', $arrConfigs) . ")");
+            $objOrders = \Database::getInstance()->query("SELECT id FROM tl_iso_product_collection WHERE config_id IN (" . implode(',', $arrConfigs) . ")");
 
             if ($objOrders->numRows)
             {
@@ -413,8 +403,8 @@ class tl_iso_product_collection extends \Backend
             {
                 foreach ($GLOBALS['ISO_HOOKS']['saveCollection'] as $callback)
                 {
-                    $this->import($callback[0]);
-                    $this->$callback[0]->$callback[1]($objOrder);
+                    $objCallback = \System::importStatic($callback[0]);
+                    $objCallback->$callback[1]($objOrder);
                 }
             }
         }

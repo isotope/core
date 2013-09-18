@@ -12,6 +12,8 @@
 
 namespace Isotope\Module;
 
+use Isotope\RequestCache\Filter;
+
 
 /**
  * Class ModuleIsotopeCumulativeFilter
@@ -65,32 +67,27 @@ class CumulativeFilter extends Module
     {
         $arrFilter = explode(';', base64_decode(\Input::get('cumulativefilter', true)), 4);
 
-        if ($arrFilter[0] == $this->id && in_array($arrFilter[2], $this->iso_filterFields))
-        {
-            $this->blnCacheRequest = true;
+        if ($arrFilter[0] == $this->id && in_array($arrFilter[2], $this->iso_filterFields)) {
+
+            $this->blnUpdateCache = true;
 
             // Unique filter key is necessary to unset the filter
             $strFilterKey = $arrFilter[2].'='.$arrFilter[3];
 
-            if ($arrFilter[1] == 'add')
-            {
-                $GLOBALS['ISO_FILTERS'][$this->id][$strFilterKey] = array
-                (
-                    'operator'        => '==',
-                    'attribute'        => $arrFilter[2],
-                    'value'            => $arrFilter[3]
+            if ($arrFilter[1] == 'add') {
+                Isotope::getRequestCache()->setFilterForModule(
+                    $strFilterKey,
+                    Filter::attribute($arrFilter[2])->isEqualTo($arrFilter[3]),
+                    $this->id
                 );
-            }
-            else
-            {
-                unset($GLOBALS['ISO_FILTERS'][$this->id][$strFilterKey]);
+            } else {
+                Isotope::getRequestCache()->removeFilterForModule($strFilterKey, $this->id);
             }
 
             // unset GET parameter or it would be included in the redirect URL
             \Input::setGet('cumulativefilter', null);
-        }
-        else
-        {
+
+        } else {
             $this->generateFilter();
 
             $this->Template->linkClearAll = ampersand(preg_replace('/\?.*/', '', \Environment::get('request')));
@@ -123,7 +120,7 @@ class CumulativeFilter extends Module
                 }
 
                 $strFilterKey = $strField . '=' . $varValue;
-                $blnActive = isset($GLOBALS['ISO_FILTERS'][$this->id][$strFilterKey]);
+                $blnActive = (Isotope::getRequestCache()->getFilterForModule($strFilterKey, $this->id) !== null);
                 $blnTrail = $blnActive ? true : $blnTrail;
 
                 $arrItems[] = array

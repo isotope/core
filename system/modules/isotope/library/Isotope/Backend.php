@@ -31,25 +31,25 @@ class Backend extends Contao_Backend
 {
 
     /**
-     * Truncate the tl_iso_productcache table if a product is changed
+     * Truncate the product cache table if a product is changed
      * Second parameter and return value is to use the method as save_callback
      * @param mixed
      * @return mixed
      */
     public static function truncateProductCache($varValue=null)
     {
-        \Database::getInstance()->query("TRUNCATE tl_iso_productcache");
+        \Isotope\Model\ProductCache::purge();
 
         return $varValue;
     }
 
 
     /**
-     * Truncate the tl_iso_requestcache table
+     * Truncate the request cache table
      */
     public static function truncateRequestCache()
     {
-        \Database::getInstance()->query("TRUNCATE tl_iso_requestcache");
+        \Isotope\Model\RequestCache::purge();
     }
 
 
@@ -109,7 +109,7 @@ class Backend extends Contao_Backend
     public function exportMail($dc)
     {
         // Get the mail meta data
-        $objMail = $this->Database->execute("SELECT * FROM tl_iso_mail WHERE id=".$dc->id);
+        $objMail = \Database::getInstance()->execute("SELECT * FROM tl_iso_mail WHERE id=".$dc->id);
 
         if ($objMail->numRows < 1)
         {
@@ -145,7 +145,7 @@ class Backend extends Contao_Backend
             $field->appendChild($value);
         }
 
-        $objContent = $this->Database->execute("SELECT * FROM tl_iso_mail_content WHERE pid=".$objMail->id);
+        $objContent = \Database::getInstance()->execute("SELECT * FROM tl_iso_mail_content WHERE pid=".$objMail->id);
 
         while ($objContent->next())
         {
@@ -252,7 +252,7 @@ class Backend extends Contao_Backend
 <input type="hidden" name="REQUEST_TOKEN" value="'.REQUEST_TOKEN.'">
 
 <div class="tl_tbox block">
-  <h3><label for="source">'.$GLOBALS['TL_LANG']['tl_iso_mail']['source'][0].'</label> <a href="contao/files.php" title="' . specialchars($GLOBALS['TL_LANG']['MSC']['fileManager']) . '" onclick="Backend.getScrollOffset(); Backend.openWindow(this, 750, 500); return false;">' . $this->generateImage('filemanager.gif', $GLOBALS['TL_LANG']['MSC']['fileManager'], 'style="vertical-align:text-bottom;"') . '</a></h3>'.$objTree->generate().(strlen($GLOBALS['TL_LANG']['tl_iso_mail']['source'][1]) ? '
+  <h3><label for="source">'.$GLOBALS['TL_LANG']['tl_iso_mail']['source'][0].'</label> <a href="contao/files.php" title="' . specialchars($GLOBALS['TL_LANG']['MSC']['fileManager']) . '" onclick="Backend.getScrollOffset(); Backend.openWindow(this, 750, 500); return false;">' . \Image::getHtml('filemanager.gif', $GLOBALS['TL_LANG']['MSC']['fileManager'], 'style="vertical-align:text-bottom;"') . '</a></h3>'.$objTree->generate().(strlen($GLOBALS['TL_LANG']['tl_iso_mail']['source'][1]) ? '
   <p class="tl_help tl_tip">'.$GLOBALS['TL_LANG']['tl_iso_mail']['source'][1].'</p>' : '').'
 </div>
 
@@ -278,8 +278,8 @@ class Backend extends Contao_Backend
         // Store the field names of the theme tables
         $arrDbFields = array
         (
-            'tl_iso_mail' => array_diff($this->Database->getFieldNames('tl_iso_mail'), array('id', 'pid')),
-            'tl_iso_mail_content' => array_diff($this->Database->getFieldNames('tl_iso_mail_content'), array('id', 'pid')),
+            'tl_iso_mail' => array_diff(\Database::getInstance()->getFieldNames('tl_iso_mail'), array('id', 'pid')),
+            'tl_iso_mail_content' => array_diff(\Database::getInstance()->getFieldNames('tl_iso_mail_content'), array('id', 'pid')),
         );
 
         foreach ($arrFiles as $strFile)
@@ -309,7 +309,7 @@ class Backend extends Contao_Backend
                 $arrSet[$template->item($i)->getAttribute('name')] = $template->item($i)->nodeValue;
             }
 
-            $intPid = $this->Database->prepare("INSERT INTO tl_iso_mail %s")->set($arrSet)->execute()->insertId;
+            $intPid = \Database::getInstance()->prepare("INSERT INTO tl_iso_mail %s")->set($arrSet)->execute()->insertId;
 
             // Loop through the content fields
             for ($i=0; $i<$content->length; $i++)
@@ -328,7 +328,7 @@ class Backend extends Contao_Backend
                     $arrSet[$row->item($j)->getAttribute('name')] = $row->item($j)->nodeValue;
                 }
 
-                $this->Database->prepare("INSERT INTO tl_iso_mail_content %s")->set($arrSet)->execute();
+                \Database::getInstance()->prepare("INSERT INTO tl_iso_mail_content %s")->set($arrSet)->execute();
             }
 
             // Notify the user
@@ -500,12 +500,12 @@ class Backend extends Contao_Backend
      */
     public function getOrderMessages()
     {
-        if (!$this->Database->tableExists('tl_iso_orderstatus')) {
+        if (!\Database::getInstance()->tableExists('tl_iso_orderstatus')) {
             return '';
         }
 
         $arrMessages = array();
-        $objOrders = $this->Database->query("SELECT COUNT(*) AS total, s.name FROM tl_iso_product_collection c LEFT JOIN tl_iso_orderstatus s ON c.order_status=s.id WHERE c.type='Order' AND s.welcomescreen='1' GROUP BY s.id");
+        $objOrders = \Database::getInstance()->query("SELECT COUNT(*) AS total, s.name FROM tl_iso_product_collection c LEFT JOIN tl_iso_orderstatus s ON c.order_status=s.id WHERE c.type='Order' AND s.welcomescreen='1' GROUP BY s.id");
 
         while ($objOrders->next())
         {
@@ -515,32 +515,6 @@ class Backend extends Contao_Backend
         return implode("\n", $arrMessages);
     }
 
-
-    /**
-     * Get product type for a given group
-     * @param product group id
-     * @return int|false
-     */
-    public static function getProductTypeForGroup($intGroup)
-    {
-        $objDatabase = \Database::getInstance();
-
-        do
-        {
-            $objGroup = $objDatabase->query('SELECT pid, product_type FROM tl_iso_groups WHERE id=' . (int) $intGroup);
-
-            if ($objGroup->product_type > 0)
-            {
-                return $objGroup->product_type;
-            }
-
-            $intGroup = $objGroup->pid;
-        }
-        while ($objGroup->numRows && $intGroup > 0);
-
-        // if there is no default type set we return false
-        return false;
-    }
 
     /**
      * Returns an array of all allowed product IDs and variant IDs for the current backend user
@@ -558,20 +532,27 @@ class Backend extends Contao_Backend
         {
             $arrNewRecords = $_SESSION['BE_DATA']['new_records']['tl_iso_products'];
             $arrProductTypes = $objUser->iso_product_types;
-            $arrGroups = $objUser->iso_groups;
+            $arrGroups = array(0);
 
-            if (!is_array($arrProductTypes) || empty($arrProductTypes) || !is_array($arrGroups) || empty($arrGroups))
+            if (!is_array($arrProductTypes) || empty($arrProductTypes))
             {
                 return false;
             }
 
-            $arrGroups = array_merge($arrGroups, Isotope::getInstance()->call('getChildRecords', array($arrGroups, 'tl_iso_groups')));
+            if (is_array($objUser->iso_groups) && count($objUser->iso_groups) > 0) {
+                $arrGroups = array_merge($arrGroups, $objUser->iso_groups, \Database::getInstance()->getChildRecords($objUser->iso_groups, 'tl_iso_groups'));
+            }
 
-            $objProducts = Database::getInstance()->execute("SELECT id FROM tl_iso_products
-                                                             WHERE pid=0 AND language='' AND
-                                                             gid IN (" . implode(',', $arrGroups) . ") AND
-                                                             (type IN (" . implode(',', $arrProductTypes) . ")" .
-                                                             ((is_array($arrNewRecords) && !empty($arrNewRecords)) ? " OR id IN (".implode(',', $arrNewRecords)."))" : ')'));
+            $objProducts = \Database::getInstance()->execute("
+                SELECT id FROM tl_iso_products
+                WHERE pid=0
+                    AND language=''
+                    AND gid IN (" . implode(',', $arrGroups) . ")
+                    AND (
+                        type IN (" . implode(',', $arrProductTypes) . ")" .
+                        ((is_array($arrNewRecords) && !empty($arrNewRecords)) ? " OR id IN (".implode(',', $arrNewRecords).")" : '') .
+                    ")
+            ");
 
             if ($objProducts->numRows == 0)
             {
@@ -579,7 +560,7 @@ class Backend extends Contao_Backend
             }
 
             $arrProducts = $objProducts->fetchEach('id');
-            $arrProducts = array_merge($arrProducts, Isotope::getInstance()->call('getChildRecords', array($arrProducts, 'tl_iso_products')));
+            $arrProducts = array_merge($arrProducts, \Database::getInstance()->getChildRecords($arrProducts, 'tl_iso_products'));
         }
 
         // HOOK: allow extensions to define allowed products
@@ -860,6 +841,39 @@ class Backend extends Contao_Backend
 	            $objWidget = new $GLOBALS['BE_FFL']['productGroupSelector']($arrData, $dc);
 	            echo $objWidget->generateAjax($this->strAjaxId, \Input::post('field'), intval(\Input::post('level')));
 	            exit;
+        }
+    }
+
+    /**
+     * Load type agent model help
+     * @param   string
+     */
+    public function loadTypeAgentHelp($strTable)
+    {
+        if (!isset($GLOBALS['TL_DCA'][$strTable]['fields']['type'])) {
+            return;
+        }
+
+        $strScript = \Environment::get('script');
+        $arrField = &$GLOBALS['TL_DCA'][$strTable]['fields']['type'];
+
+        if (
+            $strScript != 'contao/help.php' ||
+            !$arrField ||
+            !$arrField['eval']['helpwizard'] ||
+            !is_array($arrField['options']) ||
+            isset($GLOBALS['TL_LANG']['XPL']['type'])
+        ) {
+            return;
+        }
+
+        // try to load a type agent model help description
+        $arrField['explanation'] = 'type';
+        foreach (array_keys($arrField['options']) as $strKey) {
+            $arrLabel = $GLOBALS['TL_LANG']['MODEL'][$strTable . '.' . $strKey];
+            if ($arrLabel) {
+                $GLOBALS['TL_LANG']['XPL']['type'][] = $arrLabel;
+            }
         }
     }
 }

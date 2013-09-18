@@ -85,16 +85,13 @@ abstract class Product extends TypeAgent
             $arrColumns[] = "$t.published='1' AND ($t.start='' OR $t.start<$time) AND ($t.stop='' OR $t.stop>$time)";
         }
 
-		$arrOptions = array_merge
-		(
-			array
-			(
+		$arrOptions = array_merge(
+			array(
 				'limit'  => 1,
 				'column' => $arrColumns,
 				'value'  => $arrValues,
 				'return' => 'Model'
 			),
-
 			$arrOptions
 		);
 
@@ -119,16 +116,13 @@ abstract class Product extends TypeAgent
             $arrColumns[] = "$t.published='1' AND ($t.start='' OR $t.start<$time) AND ($t.stop='' OR $t.stop>$time)";
         }
 
-		$arrOptions = array_merge
-		(
-			array
-			(
+		$arrOptions = array_merge(
+			array(
 				'limit'  => 1,
 				'column' => $arrColumns,
 				'value'  => $arrValues,
 				'return' => 'Model'
 			),
-
 			$arrOptions
 		);
 
@@ -152,14 +146,11 @@ abstract class Product extends TypeAgent
             $arrColumns[] = "$t.published='1' AND ($t.start='' OR $t.start<$time) AND ($t.stop='' OR $t.stop>$time)";
         }
 
-		$arrOptions = array_merge
-		(
-			array
-			(
+		$arrOptions = array_merge(
+			array(
 				'column' => $arrColumns,
 				'return' => 'Collection'
 			),
-
 			$arrOptions
 		);
 
@@ -183,15 +174,12 @@ abstract class Product extends TypeAgent
             $arrColumns[] = "$t.published='1' AND ($t.start='' OR $t.start<$time) AND ($t.stop='' OR $t.stop>$time)";
         }
 
-		$arrOptions = array_merge
-		(
-			array
-			(
+		$arrOptions = array_merge(
+			array(
 				'column' => $arrColumns,
 				'value'  => array((int) $intPid),
 				'return' => 'Collection'
 			),
-
 			$arrOptions
 		);
 
@@ -215,14 +203,11 @@ abstract class Product extends TypeAgent
             $arrColumns[] = "$t.published='1' AND ($t.start='' OR $t.start<$time) AND ($t.stop='' OR $t.stop>$time)";
         }
 
-		$arrOptions = array_merge
-		(
-			array
-			(
+		$arrOptions = array_merge(
+			array(
 				'column' => $arrColumns,
 				'return' => 'Collection'
 			),
-
 			$arrOptions
 		);
 
@@ -239,7 +224,7 @@ abstract class Product extends TypeAgent
         $objBase = new \DcaExtractor($arrOptions['table']);
 
         $arrJoins = array();
-        $arrFields = array($arrOptions['table'] . ".*", "'".$GLOBALS['TL_LANGUAGE']."' AS language");
+        $arrFields = array($arrOptions['table'] . ".*", "'". str_replace('-', '_', $GLOBALS['TL_LANGUAGE']) . "' AS language");
 
         foreach ($GLOBALS['ISO_CONFIG']['multilingual'] as $attribute)
         {
@@ -254,7 +239,7 @@ abstract class Product extends TypeAgent
         $arrFields[] = "c.sorting";
 
         $arrJoins[] = " LEFT OUTER JOIN tl_iso_product_categories c ON {$arrOptions['table']}.id=c.pid";
-        $arrJoins[] = " LEFT OUTER JOIN " . $arrOptions['table'] . " translation ON " . $arrOptions['table'] . ".id=translation.pid AND translation.language='" . $GLOBALS['TL_LANGUAGE'] . "'";
+        $arrJoins[] = " LEFT OUTER JOIN " . $arrOptions['table'] . " translation ON " . $arrOptions['table'] . ".id=translation.pid AND translation.language='" . str_replace('-', '_', $GLOBALS['TL_LANGUAGE']) . "'";
 
 
         if ($objBase->hasRelations()) {

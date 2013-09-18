@@ -33,7 +33,7 @@ $GLOBALS['TL_DCA']['tl_iso_product_collection'] = array
     (
         'dataContainer'             => 'Table',
         'enableVersioning'          => false,
-        'ctable'                    => array('tl_iso_product_collection_item', 'tl_iso_product_collection_surcharge', 'tl_iso_product_collection_download'),
+        'ctable'                    => array('tl_iso_product_collection_item', 'tl_iso_product_collection_surcharge'),
         'closed'                    => true,
         'onload_callback' => array
         (
@@ -61,13 +61,13 @@ $GLOBALS['TL_DCA']['tl_iso_product_collection'] = array
         'sorting' => array
         (
             'mode'                  => 2,
-            'fields'                => array('date DESC'),
+            'fields'                => array('locked DESC'),
             'panelLayout'           => 'filter;sort,search,limit',
             'filter'                => array(array('type=?', 'Order'), array('order_status>?', '0')),
         ),
         'label' => array
         (
-            'fields'                => array('order_id', 'date', 'address1_id', 'grandTotal', 'order_status'),
+            'fields'                => array('order_id', 'locked', 'address1_id', 'grandTotal', 'order_status'),
             'showColumns'           => true,
             'label_callback'        => array('Isotope\tl_iso_product_collection', 'getOrderLabel')
         ),
@@ -176,7 +176,12 @@ $GLOBALS['TL_DCA']['tl_iso_product_collection'] = array
         ),
         'locked' => array
         (
-            'sql'                   => "char(1) NOT NULL default ''",
+            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_product_collection']['locked'],
+            'flag'                  => 8,
+            'filter'                => true,
+            'sorting'               => true,
+            'eval'                  => array('rgxp'=>'date'),
+            'sql'                   => "varchar(10) NOT NULL default ''",
         ),
         'store_id' => array
         (
@@ -213,7 +218,7 @@ $GLOBALS['TL_DCA']['tl_iso_product_collection'] = array
             'label'                 => &$GLOBALS['TL_LANG']['tl_iso_product_collection']['order_id'],
             'search'                => true,
             'sorting'               => true,
-            'sql'                   => "varchar(14) NOT NULL default ''",
+            'sql'                   => "varchar(64) NOT NULL default ''",
         ),
         'uniqid' => array
         (
@@ -236,15 +241,6 @@ $GLOBALS['TL_DCA']['tl_iso_product_collection'] = array
             (
                 array('Isotope\tl_iso_product_collection', 'updateOrderStatus'),
             ),
-        ),
-        'date' => array
-        (
-            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_product_collection']['date'],
-            'flag'                  => 8,
-            'filter'                => true,
-            'sorting'               => true,
-            'eval'                  => array('rgxp'=>'date', 'tl_class'=>'clr'),
-            'sql'                   => "int(10) unsigned NOT NULL default '0'",
         ),
         'date_paid' => array
         (
@@ -306,10 +302,6 @@ $GLOBALS['TL_DCA']['tl_iso_product_collection'] = array
             'eval'                  => array('doNotShow'=>true),
         ),
         'subTotal' => array
-        (
-            'sql'                   => "decimal(12,2) NOT NULL default '0.00'",
-        ),
-        'taxTotal' => array
         (
             'sql'                   => "decimal(12,2) NOT NULL default '0.00'",
         ),

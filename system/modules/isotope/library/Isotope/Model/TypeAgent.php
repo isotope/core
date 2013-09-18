@@ -44,11 +44,15 @@ abstract class TypeAgent extends \Model
 
         // Register model type
         if (!isset($this->arrRelations['type'])) {
-            $this->arrData['type'] = array_search(get_called_class(), static::$arrModelTypes);
+            $strType = array_search(get_called_class(), static::$arrModelTypes);
+
+            if ($strType != '') {
+                $this->arrData['type'] = $strType;
+            }
         }
 
         if ($this->arrData['type'] == '') {
-            throw new \RuntimeException(get_called_class() . ' is not a registered model type');
+            throw new \RuntimeException(get_called_class() . ' has no model type');
         }
     }
 
@@ -156,8 +160,7 @@ abstract class TypeAgent extends \Model
      */
     protected static function find(array $arrOptions)
     {
-        if (static::$strTable == '')
-        {
+        if (static::$strTable == '') {
             return null;
         }
 
@@ -205,20 +208,7 @@ abstract class TypeAgent extends \Model
         }
 
         $objStatement = static::preFind($objStatement);
-
-        // Optionally execute (un)cached (see #5102)
-        if (isset($arrOptions['cached']) && $arrOptions['cached'])
-        {
-            $objResult = $objStatement->executeCached($arrOptions['value']);
-        }
-        elseif (isset($arrOptions['uncached']) && $arrOptions['uncached'])
-        {
-            $objResult = $objStatement->executeUncached($arrOptions['value']);
-        }
-        else
-        {
-            $objResult = $objStatement->execute($arrOptions['value']);
-        }
+        $objResult = $objStatement->execute($arrOptions['value']);
 
         if ($objResult->numRows < 1)
         {

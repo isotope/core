@@ -179,10 +179,6 @@
 	margin-top: 4px;
 }
 
-.iso_listing_container {
-	margin-top: 0;
-}
-
 .iso_listing_container th.col_images {
 	font-size: 0;
 	width: 60px;
@@ -327,4 +323,8 @@ body.iso_be_overview .tip-wrap{
 }
 .be_iso_overview .item span {
     display: block;
+}
+
+.iso_importassets li {
+    list-style-type: inherit;
 }

@@ -90,7 +90,6 @@ class Email extends \Controller
     public function __construct($intId, $strLanguage=null, $objCollection=null)
     {
         parent::__construct();
-        $this->import('Database');
 
         // Verify collection object type
         if (!($objCollection instanceof IsotopeCollection))

@@ -27,6 +27,15 @@ use Isotope\Model\Attribute;
 class BasePrice extends Attribute implements IsotopeAttribute
 {
 
+    public function __construct(\Database\Result $objResult=null)
+    {
+        // This class should not be registered
+    	// Set type or ModelType would throw an exception
+    	$this->arrData['type'] = 'pricetiers';
+
+    	parent::__construct($objResult);
+    }
+
 	public function saveToDCA(array &$arrData)
 	{
 		parent::saveToDCA($arrData);
@@ -34,7 +43,7 @@ class BasePrice extends Attribute implements IsotopeAttribute
 		$arrData['fields'][$this->field_name]['sql'] = "varchar(255) NOT NULL default ''";
 	}
 
-	public function generate(IsotopeProduct $objProduct)
+	public function generate(IsotopeProduct $objProduct, array $arrOptions=array())
 	{
 	    $arrData = deserialize($objProduct->{$this->field_name});
 
@@ -42,9 +51,9 @@ class BasePrice extends Attribute implements IsotopeAttribute
         {
             $objBasePrice = \Isotope\Model\BasePrice::findByPk((int) $arrData['unit']);
 
-            if (null !== $objBasePrice)
+            if (null !== $objBasePrice && null !== $objProduct->getPrice())
             {
-                return sprintf(Isotope::translate($objBasePrice->label), Isotope::formatPriceWithCurrency($objProduct->price / $arrData['value'] * $objBasePrice->amount), $arrData['value']);
+                return sprintf($objBasePrice->getLabel(), Isotope::formatPriceWithCurrency($objProduct->getPrice()->getAmount() / $arrData['value'] * $objBasePrice->amount), $arrData['value']);
             }
         }
 

@@ -88,9 +88,9 @@ class tl_iso_mail extends \Backend
                         // Add permissions on user level
                         if ($this->User->inherit == 'custom' || !$this->User->groups[0])
                         {
-                            $objUser = $this->Database->prepare("SELECT iso_mails, iso_mailp FROM tl_user WHERE id=?")
-                                                       ->limit(1)
-                                                       ->execute($this->User->id);
+                            $objUser = \Database::getInstance()->prepare("SELECT iso_mails, iso_mailp FROM tl_user WHERE id=?")
+                                                               ->limit(1)
+                                                               ->execute($this->User->id);
 
                             $arrPermissions = deserialize($objUser->iso_mailp);
 
@@ -99,17 +99,17 @@ class tl_iso_mail extends \Backend
                                 $arrAccess = deserialize($objUser->iso_mails);
                                 $arrAccess[] = \Input::get('id');
 
-                                $this->Database->prepare("UPDATE tl_user SET iso_mails=? WHERE id=?")
-                                               ->execute(serialize($arrAccess), $this->User->id);
+                                \Database::getInstance()->prepare("UPDATE tl_user SET iso_mails=? WHERE id=?")
+                                                        ->execute(serialize($arrAccess), $this->User->id);
                             }
                         }
 
                         // Add permissions on group level
                         elseif ($this->User->groups[0] > 0)
                         {
-                            $objGroup = $this->Database->prepare("SELECT iso_mails, iso_mailp FROM tl_user_group WHERE id=?")
-                                                       ->limit(1)
-                                                       ->execute($this->User->groups[0]);
+                            $objGroup = \Database::getInstance()->prepare("SELECT iso_mails, iso_mailp FROM tl_user_group WHERE id=?")
+                                                                ->limit(1)
+                                                                ->execute($this->User->groups[0]);
 
                             $arrPermissions = deserialize($objGroup->iso_mailp);
 
@@ -118,8 +118,8 @@ class tl_iso_mail extends \Backend
                                 $arrAccess = deserialize($objGroup->iso_mails);
                                 $arrAccess[] = \Input::get('id');
 
-                                $this->Database->prepare("UPDATE tl_user_group SET iso_mails=? WHERE id=?")
-                                               ->execute(serialize($arrAccess), $this->User->groups[0]);
+                                \Database::getInstance()->prepare("UPDATE tl_user_group SET iso_mails=? WHERE id=?")
+                                                        ->execute(serialize($arrAccess), $this->User->groups[0]);
                             }
                         }
 
@@ -178,7 +178,7 @@ class tl_iso_mail extends \Backend
      */
     public function copyMail($row, $href, $label, $title, $icon, $attributes)
     {
-        return ($this->User->isAdmin || $this->User->hasAccess('create', 'iso_mailp')) ? '<a href="'.$this->addToUrl($href.'&amp;id='.$row['id']).'" title="'.specialchars($title).'"'.$attributes.'>'.$this->generateImage($icon, $label).'</a> ' : $this->generateImage(preg_replace('/\.gif$/i', '_.gif', $icon)).' ';
+        return ($this->User->isAdmin || $this->User->hasAccess('create', 'iso_mailp')) ? '<a href="'.$this->addToUrl($href.'&amp;id='.$row['id']).'" title="'.specialchars($title).'"'.$attributes.'>'.\Image::getHtml($icon, $label).'</a> ' : \Image::getHtml(preg_replace('/\.gif$/i', '_.gif', $icon)).' ';
     }
 
 
@@ -194,6 +194,6 @@ class tl_iso_mail extends \Backend
      */
     public function deleteMail($row, $href, $label, $title, $icon, $attributes)
     {
-        return ($this->User->isAdmin || $this->User->hasAccess('delete', 'iso_mailp')) ? '<a href="'.$this->addToUrl($href.'&amp;id='.$row['id']).'" title="'.specialchars($title).'"'.$attributes.'>'.$this->generateImage($icon, $label).'</a> ' : $this->generateImage(preg_replace('/\.gif$/i', '_.gif', $icon)).' ';
+        return ($this->User->isAdmin || $this->User->hasAccess('delete', 'iso_mailp')) ? '<a href="'.$this->addToUrl($href.'&amp;id='.$row['id']).'" title="'.specialchars($title).'"'.$attributes.'>'.\Image::getHtml($icon, $label).'</a> ' : \Image::getHtml(preg_replace('/\.gif$/i', '_.gif', $icon)).' ';
     }
 }

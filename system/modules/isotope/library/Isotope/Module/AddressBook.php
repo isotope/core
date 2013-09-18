@@ -92,8 +92,8 @@ class AddressBook extends Module
         // Call onload_callback (e.g. to check permissions)
         if (is_array($GLOBALS['TL_DCA']['tl_iso_addresses']['config']['onload_callback'])) {
             foreach ($GLOBALS['TL_DCA']['tl_iso_addresses']['config']['onload_callback'] as $callback) {
-                $this->import($callback[0]);
-                $this->$callback[0]->$callback[1]();
+                $objCallback = \System::importStatic($callback[0]);
+                $objCallback->$callback[1]();
             }
         }
 
@@ -129,7 +129,7 @@ class AddressBook extends Module
         global $objPage;
         $arrAddresses = array();
         $strUrl = \Controller::generateFrontendUrl($objPage->row()) . ($GLOBALS['TL_CONFIG']['disableAlias'] ? '&' : '?');
-        $objAddresses = Address::findForMember($this->User->id);
+        $objAddresses = Address::findForMember(\FrontendUser::getInstance()->id);
 
         if (null !== $objAddresses) {
             while ($objAddresses->next()) {
@@ -183,10 +183,10 @@ class AddressBook extends Module
         $hasUpload = false;
         $row = 0;
 
-        $objAddress = Address::findOneForMember($intAddressId, $this->User->id);
+        $objAddress = Address::findOneForMember($intAddressId, \FrontendUser::getInstance()->id);
 
         if (null === $objAddress) {
-            $objAddress = Address::createForMember($this->User->id);
+            $objAddress = Address::createForMember(\FrontendUser::getInstance()->id);
         }
 
         // Build form
@@ -248,10 +248,10 @@ class AddressBook extends Module
                 // Save callback
                 if (is_array($arrData['save_callback'])) {
                     foreach ($arrData['save_callback'] as $callback) {
-                        $this->import($callback[0]);
+                        $objCallback = \System::importStatic($callback[0]);
 
                         try {
-                            $varValue = $this->$callback[0]->$callback[1]($varValue, $objAddress);
+                            $varValue = $objCallback->$callback[0]->$callback[1]($varValue, $objAddress);
                         } catch (\Exception $e) {
                             $objWidget->class = 'error';
                             $objWidget->addError($e->getMessage());
@@ -293,8 +293,8 @@ class AddressBook extends Module
             // Call onsubmit_callback
             if (is_array($GLOBALS['TL_DCA']['tl_iso_addresses']['config']['onsubmit_callback'])) {
                 foreach ($GLOBALS['TL_DCA']['tl_iso_addresses']['config']['onsubmit_callback'] as $callback) {
-                    $this->import($callback[0]);
-                    $this->$callback[0]->$callback[1]($objAddress);
+                    $objCallback = \System::importStatic($callback[0]);
+                    $objCallback->$callback[1]($objAddress);
                 }
             }
 
@@ -327,7 +327,7 @@ class AddressBook extends Module
      */
     protected function delete($intAddressId)
     {
-        if (($objAddress = Address::findOneForMember($intAddressId, $this->User->id)) !== null) {
+        if (($objAddress = Address::findOneForMember($intAddressId, \FrontendUser::getInstance()->id)) !== null) {
             $objAddress->delete();
         }
 

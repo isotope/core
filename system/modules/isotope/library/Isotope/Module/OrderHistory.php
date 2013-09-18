@@ -78,7 +78,7 @@ class OrderHistory extends Module
     protected function compile()
     {
         $arrOrders = array();
-        $objOrders = Order::findBy(array('order_status>0', 'pid=?', 'config_id IN (?)'), array($this->User->id, implode("','", $this->iso_config_ids)), array('order'=>'date DESC'));
+        $objOrders = Order::findBy(array('order_status>0', 'pid=?', 'config_id IN (?)'), array(\FrontendUser::getInstance()->id, implode("','", $this->iso_config_ids)), array('order'=>'date DESC'));
 
         // No orders found, just display an "empty" message
         if ($objOrders->count() == 0)
@@ -98,9 +98,9 @@ class OrderHistory extends Module
             (
                 'collection' => $objOrders->current(),
                 'raw'        => $objOrders->row(),
-                'date'       => Isotope::formatDate($objOrders->date),
-                'time'       => Isotope::formatTime($objOrders->date),
-                'datime'     => Isotope::formatDatim($objOrders->date),
+                'date'       => Isotope::formatDate($objOrders->locked),
+                'time'       => Isotope::formatTime($objOrders->locked),
+                'datime'     => Isotope::formatDatim($objOrders->locked),
                 'items'      => $objOrders->items,
                 'grandTotal' => Isotope::formatPriceWithCurrency($objOrders->getTotal()),
                 'status'     => $objOrders->getStatusLabel(),

@@ -13,6 +13,7 @@
 namespace Isotope\Model;
 
 use Isotope\Isotope;
+use Isotope\Translation;
 
 
 /**
@@ -45,7 +46,7 @@ class OrderStatus extends \Model
      */
     public function getName()
     {
-        return Isotope::translate($this->name);
+        return Translation::get($this->name);
     }
 
     /**

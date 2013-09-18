@@ -12,7 +12,12 @@
 
 namespace Isotope\Module;
 
+use Isotope\Isotope;
 use Isotope\Model\Product;
+use Isotope\Model\RequestCache;
+use Isotope\RequestCache\Filter;
+use Isotope\RequestCache\Limit;
+use Isotope\RequestCache\Sort;
 
 
 /**
@@ -33,10 +38,10 @@ class ProductFilter extends Module
     protected $strTemplate = 'iso_filter_default';
 
     /**
-     * Cache request
+     * Update request cache
      * @var boolean
      */
-    protected $blnCacheRequest = false;
+    protected $blnUpdateCache = false;
 
 
     /**
@@ -73,33 +78,11 @@ class ProductFilter extends Module
         $strBuffer = parent::generate();
 
         // Cache request in the database and redirect to the unique requestcache ID
-        if ($this->blnCacheRequest)
+        if ($this->blnUpdateCache)
         {
-            $time = time();
-            $varFilter = (is_array($GLOBALS['ISO_FILTERS']) && !empty($GLOBALS['ISO_FILTERS'])) ? serialize($GLOBALS['ISO_FILTERS']) : null;
-            $varSorting = (is_array($GLOBALS['ISO_SORTING']) && !empty($GLOBALS['ISO_SORTING'])) ? serialize($GLOBALS['ISO_SORTING']) : null;
-            $varLimit = (is_array($GLOBALS['ISO_LIMIT']) && !empty($GLOBALS['ISO_LIMIT'])) ? serialize($GLOBALS['ISO_LIMIT']) : null;
+            $objCache = Isotope::getRequestCache()->saveNewConfiguartion();
 
-            // if all filters are null we don't have to cache (this will prevent useless isorc params from being generated)
-            if ($varFilter !== null || $varLimit !== null || $varSorting !== null)
-            {
-                $intCacheId = $this->Database->prepare("SELECT id FROM tl_iso_requestcache WHERE store_id=? AND filters" . ($varFilter ? '=' : ' IS ') . "? AND sorting" . ($varSorting ? '=' : ' IS ') . "? AND limits" . ($varLimit ? '=' : ' IS ') . "?")
-                                             ->execute(Isotope::getCart()->store_id, $varFilter, $varSorting, $varLimit)
-                                             ->id;
-
-                if ($intCacheId)
-                {
-                    $this->Database->query("UPDATE tl_iso_requestcache SET tstamp=$time WHERE id=$intCacheId");
-                }
-                else
-                {
-                    $intCacheId = $this->Database->prepare("INSERT INTO tl_iso_requestcache (tstamp,store_id,filters,sorting,limits) VALUES ($time, ?, ?, ?, ?)")
-                                                 ->execute(Isotope::getCart()->store_id, $varFilter, $varSorting, $varLimit)
-                                                 ->insertId;
-                }
-
-                \Input::setGet('isorc', $intCacheId);
-            }
+            \Input::setGet('isorc', $objCache->id);
 
             // Include \Environment::base or the URL would not work on the index page
             \Controller::redirect(\Environment::get('base') . $this->generateRequestUrl());
@@ -161,13 +144,13 @@ class ProductFilter extends Module
      */
     protected function compile()
     {
-        $this->blnCacheRequest = \Input::post('FORM_SUBMIT') == 'iso_filter_'.$this->id ? true : false;
+        $this->blnUpdateCache = \Input::post('FORM_SUBMIT') == 'iso_filter_'.$this->id ? true : false;
 
         $this->generateFilters();
         $this->generateSorting();
         $this->generateLimit();
 
-        if (!$this->blnCacheRequest)
+        if (!$this->blnUpdateCache)
         {
             // Search does not affect request cache
             $this->generateSearch();
@@ -202,12 +185,9 @@ class ProductFilter extends Module
                 {
                     foreach ($this->iso_searchFields as $field)
                     {
-                        $GLOBALS['ISO_FILTERS'][$this->id][] = array
-                        (
-                            'group'        => ('keyword: '.$keyword),
-                            'operator'    => 'search',
-                            'attribute'    => $field,
-                            'value'        => $keyword,
+                        Isotope::getRequestCache()->addFilterForModule(
+                            Filter::attribute($field)->contains($keyword)->groupBy('keyword: '.$keyword),
+                            $this->id
                         );
                     }
                 }
@@ -240,41 +220,42 @@ class ProductFilter extends Module
             foreach ($this->iso_filterFields as $strField)
             {
                 $arrValues = array();
-                $objValues = $this->Database->execute("SELECT DISTINCT p1.$strField FROM tl_iso_products p1
-                                                        LEFT OUTER JOIN tl_iso_products p2 ON p1.pid=p2.id
-                                                        WHERE p1.language='' AND p1.$strField!=''"
-                                                        . (BE_USER_LOGGED_IN === true ? '' : " AND p1.published='1' AND (p1.start='' OR p1.start<$time) AND (p1.stop='' OR p1.stop>$time)")
-                                                        . "AND (p1.id IN (SELECT pid FROM tl_iso_product_categories WHERE page_id IN (" . implode(',', $arrCategories) . "))
-                                                           OR p1.pid IN (SELECT pid FROM tl_iso_product_categories WHERE page_id IN (" . implode(',', $arrCategories) . ")))"
-                                                        . (BE_USER_LOGGED_IN === true ? '' : " AND (p1.pid=0 OR (p2.published='1' AND (p2.start='' OR p2.start<$time) AND (p2.stop='' OR p2.stop>$time)))")
-                                                        . ($this->iso_list_where == '' ? '' : " AND {$this->iso_list_where}"));
+                $objValues = \Database::getInstance()->execute("
+                    SELECT DISTINCT p1.$strField FROM tl_iso_products p1
+                    LEFT OUTER JOIN tl_iso_products p2 ON p1.pid=p2.id
+                    WHERE p1.language='' AND p1.$strField!=''"
+                    . (BE_USER_LOGGED_IN === true ? '' : " AND p1.published='1' AND (p1.start='' OR p1.start<$time) AND (p1.stop='' OR p1.stop>$time)")
+                    . "AND (p1.id IN (SELECT pid FROM tl_iso_product_categories WHERE page_id IN (" . implode(',', $arrCategories) . "))
+                       OR p1.pid IN (SELECT pid FROM tl_iso_product_categories WHERE page_id IN (" . implode(',', $arrCategories) . ")))"
+                    . (BE_USER_LOGGED_IN === true ? '' : " AND (p1.pid=0 OR (p2.published='1' AND (p2.start='' OR p2.start<$time) AND (p2.stop='' OR p2.stop>$time)))")
+                    . ($this->iso_list_where == '' ? '' : " AND {$this->iso_list_where}")
+                );
 
-                while ($objValues->next())
-                {
+                while ($objValues->next()) {
                     $arrValues = array_merge($arrValues, deserialize($objValues->$strField, true));
                 }
 
-                if ($this->blnCacheRequest && in_array($arrInput[$strField], $arrValues))
-                {
-                    $GLOBALS['ISO_FILTERS'][$this->id][$strField] = array
-                    (
-                        'operator'        => '==',
-                        'attribute'        => $strField,
-                        'value'            => $arrInput[$strField],
+                if ($this->blnUpdateCache && in_array($arrInput[$strField], $arrValues)) {
+                    Isotope::getRequestCache()->setFilterForModule(
+                        $strField,
+                        Filter::attribute($strField)->isEqualTo($arrInput[$strField]),
+                        $this->id
                     );
+                } elseif ($this->blnUpdateCache && $arrInput[$strField] == '') {
+                    Isotope::getRequestCache()->removeFilterForModule($strField, $this->id);
                 }
 
                 // Request cache contains wrong value, delete it!
-                elseif (is_array($GLOBALS['ISO_FILTERS'][$this->id][$strField]) && !in_array($GLOBALS['ISO_FILTERS'][$this->id][$strField]['value'], $arrValues))
+                elseif (($objFilter = Isotope::getRequestCache()->getFilterForModule($strField, $this->id)) !== null && $objFilter->valueNotIn($arrValues))
                 {
-                    $this->blnCacheRequest = true;
-                    unset($GLOBALS['ISO_FILTERS'][$this->id][$strField]);
+                    $this->blnUpdateCache = true;
+                    Isotope::getRequestCache()->removeFilterForModule($strField, $this->id);
 
-                    $this->Database->prepare("DELETE FROM tl_iso_requestcache WHERE id=?")->execute(\Input::get('isorc'));
+                    RequestCache::deleteById(\Input::get('isorc'));
                 }
 
                 // No need to generate options if we reload anyway
-                elseif (!$this->blnCacheRequest)
+                elseif (!$this->blnUpdateCache)
                 {
                     if (empty($arrValues))
                     {
@@ -287,13 +268,14 @@ class ProductFilter extends Module
                     {
                         foreach ($GLOBALS['ISO_ATTR'][$arrData['inputType']]['callback'] as $callback)
                         {
-                            $this->import($callback[0]);
-                            $arrData = $this->{$callback[0]}->{$callback[1]}($strField, $arrData, $this);
+                            $objCallback = \System::importStatic($callback[0]);
+                            $arrData = $objCallback->{$callback[1]}($strField, $arrData, $this);
                         }
                     }
 
                     // Use the default routine to initialize options data
                     $arrWidget = \Widget::getAttributesFromDca($arrData, $strField);
+                    $objFilter = Isotope::getRequestCache()->getFilterForModule($strField, $this->id);
 
                     // Must have options to apply the filter
                     if (!is_array($arrWidget['options']))
@@ -315,7 +297,7 @@ class ProductFilter extends Module
                             continue;
                         }
 
-                        $arrWidget['options'][$k]['default'] = $option['value'] == $GLOBALS['ISO_FILTERS'][$this->id][$strField]['value'] ? '1' : '';
+                        $arrWidget['options'][$k]['default'] = ((null !== $objFilter && $objFilter->valueEquals($option['value'])) ? '1' : '');
                     }
 
                     // Hide fields with just one option (if enabled)
@@ -333,8 +315,8 @@ class ProductFilter extends Module
             {
                 foreach ($GLOBALS['ISO_HOOKS']['generateFilters'] as $callback)
                 {
-                    $this->import($callback[0]);
-                    $arrFilters = $this->$callback[0]->$callback[1]($arrFilters);
+                    $objCallback = \System::importStatic($callback[0]);
+                    $arrFilters = $objCallback->$callback[1]($arrFilters);
                 }
             }
 
@@ -363,39 +345,46 @@ class ProductFilter extends Module
             // @todo should support multiple sorting fields
             list($sortingField, $sortingDirection) = explode(':', \Input::post('sorting'));
 
-            if ($this->blnCacheRequest && in_array($sortingField, $this->iso_sortingFields))
+            if ($this->blnUpdateCache && in_array($sortingField, $this->iso_sortingFields))
             {
-                $GLOBALS['ISO_SORTING'][$this->id][$sortingField] = array(($sortingDirection=='DESC' ? SORT_DESC : SORT_ASC), SORT_REGULAR);
+                Isotope::getRequestCache()->setSortingForModule(
+                    $sortingField,
+                    ($sortingDirection == 'DESC' ? Sort::descending() : Sort::ascending()),
+                    $this->id
+                );
             }
 
             // Request cache contains wrong value, delete it!
-            elseif (is_array($GLOBALS['ISO_SORTING'][$this->id]) && array_diff(array_keys($GLOBALS['ISO_SORTING'][$this->id]), $this->iso_sortingFields))
+            elseif (array_diff(array_keys(Isotope::getRequestCache()->getSortingsForModules(array($this->id))), $this->iso_sortingFields))
             {
-                $this->blnCacheRequest = true;
-                unset($GLOBALS['ISO_SORTING'][$this->id]);
+                $this->blnUpdateCache = true;
+                Isotope::getRequestCache()->unsetSortingsForModule($this->id);
 
-                $this->Database->prepare("DELETE FROM tl_iso_requestcache WHERE id=?")->execute(\Input::get('isorc'));
+                RequestCache::deleteById(\Input::get('isorc'));
             }
 
             // No need to generate options if we reload anyway
-            elseif (!$this->blnCacheRequest)
+            elseif (!$this->blnUpdateCache)
             {
+                $first = Isotope::getRequestCache()->getFirstSortingFieldForModule($this->id);
+
                 foreach ($this->iso_sortingFields as $field)
                 {
                     list($asc, $desc) = $this->getSortingLabels($field);
+                    $objSorting = $first == $field ? Isotope::getRequestCache()->getSortingForModule($field, $this->id) : null;
 
                     $arrOptions[] = array
                     (
-                        'label'        => (Isotope::formatLabel('tl_iso_products', $field) . ', ' . $asc),
-                        'value'        => $field.':ASC',
-                        'default'    => ((is_array($GLOBALS['ISO_SORTING'][$this->id]) && $GLOBALS['ISO_SORTING'][$this->id][$field][0] == SORT_ASC) ? '1' : ''),
+                        'label'     => (Isotope::formatLabel('tl_iso_products', $field) . ', ' . $asc),
+                        'value'     => $field.':ASC',
+                        'default'   => ((null !== $objSorting && $objSorting->isAscending()) ? '1' : ''),
                     );
 
                     $arrOptions[] = array
                     (
-                        'label'        => (Isotope::formatLabel('tl_iso_products', $field) . ', ' . $desc),
-                        'value'        => $field.':DESC',
-                        'default'    => ((is_array($GLOBALS['ISO_SORTING'][$this->id]) && $GLOBALS['ISO_SORTING'][$this->id][$field][0] == SORT_DESC) ? '1' : ''),
+                        'label'     => (Isotope::formatLabel('tl_iso_products', $field) . ', ' . $desc),
+                        'value'     => $field.':DESC',
+                        'default'   => ((null !== $objSorting && $objSorting->isDescending()) ? '1' : ''),
                     );
                 }
             }
@@ -419,35 +408,35 @@ class ProductFilter extends Module
         {
             $arrOptions = array();
             $arrLimit = array_map('intval', trimsplit(',', $this->iso_perPage));
-            $intLimit = $GLOBALS['ISO_LIMIT'][$this->id] ? $GLOBALS['ISO_LIMIT'][$this->id] : $arrLimit[0];
+            $objLimit = Isotope::getRequestCache()->getFirstLimitForModules(array($this->id));
             $arrLimit = array_unique($arrLimit);
             sort($arrLimit);
 
             // Cache new request value
-            if ($this->blnCacheRequest && in_array(\Input::post('limit'), $arrLimit))
+            if ($this->blnUpdateCache && in_array(\Input::post('limit'), $arrLimit))
             {
-                $GLOBALS['ISO_LIMIT'][$this->id] = (int) \Input::post('limit');
+                Isotope::getRequestCache()->setLimitForModule(Limit::to(\Input::post('limit')), $this->id);
             }
 
             // Request cache contains wrong value, delete it!
-            elseif ($GLOBALS['ISO_LIMIT'][$this->id] && !in_array($GLOBALS['ISO_LIMIT'][$this->id], $arrLimit))
+            elseif ($objLimit->notIn($arrLimit))
             {
-                $this->blnCacheRequest = true;
-                $GLOBALS['ISO_LIMIT'][$this->id] = $intLimit;
+                $this->blnUpdateCache = true;
+                Isotope::getRequestCache()->setLimitForModule(Limit::to($arrLimit[0]), $this->id);
 
-                $this->Database->prepare("DELETE FROM tl_iso_requestcache WHERE id=?")->execute(\Input::get('isorc'));
+                RequestCache::deleteById(\Input::get('isorc'));
             }
 
             // No need to generate options if we reload anyway
-            elseif (!$this->blnCacheRequest)
+            elseif (!$this->blnUpdateCache)
             {
                 foreach ($arrLimit as $limit)
                 {
                     $arrOptions[] = array
                     (
-                        'label'        => $limit,
-                        'value'        => $limit,
-                        'default'    => ($intLimit == $limit ? '1' : ''),
+                        'label'     => $limit,
+                        'value'     => $limit,
+                        'default'   => ($objLimit->equals($limit) ? '1' : ''),
                     );
                 }
 

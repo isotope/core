@@ -36,11 +36,6 @@ abstract class ContentElement extends Contao_ContentElement
 
         if (TL_MODE == 'FE')
         {
-            if (FE_USER_LOGGED_IN === true)
-            {
-                $this->import('FrontendUser', 'User');
-            }
-
             // Load Isotope javascript and css
             $GLOBALS['TL_JAVASCRIPT'][] = 'system/modules/isotope/assets/isotope' . (ISO_DEBUG ? '' : '.min') . '.js';
             $GLOBALS['TL_CSS'][] = 'system/modules/isotope/assets/isotope' . (ISO_DEBUG ? '' : '.min') . '.css';

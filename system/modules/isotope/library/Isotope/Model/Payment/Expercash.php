@@ -14,6 +14,7 @@ namespace Isotope\Model\Payment;
 
 use Isotope\Isotope;
 use Isotope\Interfaces\IsotopePayment;
+use Isotope\Interfaces\IsotopePostsale;
 use Isotope\Model\Payment;
 use Isotope\Model\ProductCollection\Order;
 
@@ -24,7 +25,7 @@ use Isotope\Model\ProductCollection\Order;
  * @copyright Isotope eCommerce Workgroup 2009-2012
  * @author    Andreas Schempp <andreas.schempp@terminal42.ch>
  */
-class Expercash extends Payment implements IsotopePayment
+class Expercash extends Payment implements IsotopePayment, IsotopePostsale
 {
 
     /**
@@ -52,24 +53,20 @@ class Expercash extends Payment implements IsotopePayment
      * @access public
      * @return void
      */
-    public function processPostSale()
+    public function processPostsale()
     {
-        if (($objOrder = Order::findByPk(\Input::get('transactionId'))) === null)
-        {
+        if (($objOrder = Order::findByPk(\Input::get('transactionId'))) === null) {
             \System::log('Order ID "' . \Input::post('invoice') . '" not found', __METHOD__, TL_ERROR);
 
             return;
         }
 
-        if (!$this->validateUrlParams($objOrder))
-        {
+        if (!$this->validateUrlParams($objOrder)) {
             \System::log('ExperCash: data rejected' . print_r($_POST, true), __METHOD__, TL_GENERAL);
         }
 
-        if (!$objOrder->checkout())
-        {
+        if (!$objOrder->checkout()) {
             \System::log('Postsale checkout for Order ID "' . \Input::post('invoice') . '" failed', __METHOD__, TL_ERROR);
-
             return;
         }
 
@@ -77,8 +74,6 @@ class Expercash extends Payment implements IsotopePayment
         $objOrder->updateOrderStatus($this->new_order_status);
 
         $objOrder->save();
-
-        \System::log('ExperCash: data accepted', __METHOD__, TL_GENERAL);
 
         header('HTTP/1.1 200 OK');
         exit;
@@ -102,7 +97,7 @@ class Expercash extends Payment implements IsotopePayment
         (
             'popupId'       => $this->expercash_popupId,
             'jobId'         => microtime(),
-            'functionId'    => (FE_USER_LOGGED_IN ? $this->User->id : Isotope::getCart()->session),
+            'functionId'    => (FE_USER_LOGGED_IN ? \FrontendUser::getInstance()->id : Isotope::getCart()->session),
             'transactionId' => $objOrder->id,
             'amount'        => (round(Isotope::getCart()->getTotal(), 2)*100),
             'currency'      => Isotope::getConfig()->currency,

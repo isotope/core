@@ -157,7 +157,7 @@ class Frontend extends \Frontend
         }
         elseif ($arrTag[0] == 'isolabel')
         {
-            return Isotope::translate($arrTag[1], $arrTag[2]);
+            return Translation::get($arrTag[1], $arrTag[2]);
         }
         elseif ($arrTag[0] == 'order')
         {
@@ -564,7 +564,7 @@ window.addEvent('domready', function()
         $objForm->blnHasErrors  = false;
         $objForm->blnHasUploads    = false;
 
-        $objForm->arrData = array_merge($this->Database->execute("SELECT * FROM tl_form WHERE id=".(int) $intId)->fetchAssoc(), $arrConfig);
+        $objForm->arrData = array_merge(\Database::getInstance()->execute("SELECT * FROM tl_form WHERE id=".(int) $intId)->fetchAssoc(), $arrConfig);
 
         // Form not found
         if (!$objForm->arrData['id'])
@@ -573,7 +573,7 @@ window.addEvent('domready', function()
         }
 
         // Get all form fields
-        $objFields = $this->Database->execute("SELECT * FROM tl_form_field WHERE pid={$objForm->arrData['id']} AND invisible='' ORDER BY sorting");
+        $objFields = \Database::getInstance()->execute("SELECT * FROM tl_form_field WHERE pid={$objForm->arrData['id']} AND invisible='' ORDER BY sorting");
 
         $row = 0;
         $max_row = $objFields->numRows;
@@ -615,8 +615,8 @@ window.addEvent('domready', function()
             {
                 foreach ($GLOBALS['TL_HOOKS']['loadFormField'] as $callback)
                 {
-                    $this->import($callback[0]);
-                    $objWidget = $this->$callback[0]->$callback[1]($objWidget, $strFormId, $objForm->arrData);
+                    $objCallback = \System::importStatic($callback[0]);
+                    $objWidget = $objCallback->$callback[1]($objWidget, $strFormId, $objForm->arrData);
                 }
             }
 
@@ -631,8 +631,8 @@ window.addEvent('domready', function()
                 {
                     foreach ($GLOBALS['TL_HOOKS']['validateFormField'] as $callback)
                     {
-                        $this->import($callback[0]);
-                        $objWidget = $this->$callback[0]->$callback[1]($objWidget, $strFormId, $objForm->arrData);
+                        $objCallback = \System::importStatic($callback[0]);
+                        $objWidget = $objCallback->$callback[1]($objWidget, $strFormId, $objForm->arrData);
                     }
                 }
 
@@ -766,44 +766,52 @@ window.addEvent('domready', function()
         // Reset DB iterator (see #22)
         $objProducts->reset();
 
-        while ($objProducts->next())
-        {
+        while ($objProducts->next()) {
             $objProduct = \Isotope\Frontend::getProduct($objProducts->current(), $intReaderPage, $blnCheckAvailability);
 
-            if ($objProduct !== null)
-            {
+            if ($objProduct !== null) {
                 $arrProducts[$objProducts->id] = $objProduct;
             }
         }
 
-        if (!empty($arrFilters))
-        {
-            global $filterConfig;
-            $filterConfig = $arrFilters;
-            $arrProducts = array_filter($arrProducts, array(self, 'filterProducts'));
+        if (!empty($arrFilters)) {
+            $arrProducts = array_filter($arrProducts, function ($objProduct) use ($arrFilters) {
+                $arrGroups = array();
+
+                foreach ($arrFilters as $objFilter) {
+                    $blnMatch = $objFilter->matches($objProduct);
+
+                    if ($objFilter->hasGroup()) {
+                        $arrGroups[$objFilter->getGroup()] = $arrGroups[$objFilter->getGroup()] ?: $blnMatch;
+                    } elseif (!$blnMatch) {
+                        return false;
+                    }
+                }
+
+                if (!empty($arrGroups) && in_array(false, $arrGroups)) {
+                    return false;
+                }
+
+                return true;
+            });
         }
 
         // $arrProducts can be empty if the filter removed all records
-        if (!empty($arrSorting) && !empty($arrProducts))
-        {
+        if (!empty($arrSorting) && !empty($arrProducts)) {
             $arrParam = array();
             $arrData = array();
 
-            foreach ($arrSorting as $strField => $arrConfig)
-            {
-                foreach ($arrProducts as $id => $objProduct)
-                {
+            foreach ($arrSorting as $strField => $arrConfig) {
+                foreach ($arrProducts as $id => $objProduct) {
+
                     // Both SORT_STRING and SORT_REGULAR are case sensitive, strings starting with a capital letter will come before strings starting with a lowercase letter.
                     // To perform a case insensitive search, force the sorting order to be determined by a lowercase copy of the original value.
                     $arrData[$strField][$id] = strtolower(str_replace('"', '', $objProduct->$strField));
                 }
 
                 $arrParam[] = &$arrData[$strField];
-
-                foreach( $arrConfig as $v )
-                {
-                    $arrParam[] = $v;
-                }
+                $arrParam[] = $arrConfig[0];
+                $arrParam[] = $arrConfig[1];
             }
 
             // Add product array as the last item. This will sort the products array based on the sorting of the passed in arguments.
@@ -811,129 +819,6 @@ window.addEvent('domready', function()
         }
 
         return $arrProducts;
-    }
-
-
-    /**
-     * Callback function to filter products
-     * @param object
-     * @return boolean
-     * @see array_filter()
-     */
-    private static function filterProducts($objProduct)
-    {
-        global $filterConfig;
-
-        if (!is_array($filterConfig) || empty($filterConfig))
-        {
-            return true;
-        }
-
-        $arrGroups = array();
-
-        foreach ($filterConfig as $filter)
-        {
-            $varValues = $objProduct->{$filter['attribute']};
-            $blnMatch = false;
-
-            // If the attribute is not set for this product, we will ignore this attribute
-            if ($varValues === null)
-            {
-                continue;
-            }
-            elseif (!is_array($varValues))
-            {
-                $varValues = array($varValues);
-            }
-
-            $operator = static::convertFilterOperator($filter['operator'], 'PHP');
-
-            foreach ($varValues as $varValue)
-            {
-                $blnMatchOne = false;
-
-                switch( $operator )
-                {
-                    case 'stripos':
-                        if (stripos($varValue, $filter['value']) !== false)
-                        {
-                            $blnMatchOne = true;
-                        }
-                        break;
-
-                    default:
-                        if (eval('return $varValue '.$operator.' $filter[\'value\'];'))
-                        {
-                            $blnMatchOne = true;
-                        }
-                        break;
-                }
-
-                $blnMatch = $blnMatch ? $blnMatch : $blnMatchOne;
-            }
-
-            if ($filter['group'])
-            {
-                $arrGroups[$filter['group']] = $arrGroups[$filter['group']] ? $arrGroups[$filter['group']] : $blnMatch;
-            }
-            elseif (!$blnMatch)
-            {
-                return false;
-            }
-        }
-
-        if (!empty($arrGroups) && in_array(false, $arrGroups))
-        {
-            return false;
-        }
-
-        return true;
-    }
-
-
-    /**
-     * Convert a filter operator for PHP or SQL
-     * @param string
-     * @param string
-     * @return string
-     */
-    public static function convertFilterOperator($operator, $mode='PHP')
-    {
-        switch ($operator)
-        {
-            case 'like':
-            case 'search':
-                return $mode == 'SQL' ? 'LIKE' : 'stripos';
-
-            case '>':
-            case 'gt':
-                return '>';
-
-            case '<':
-            case 'lt':
-                return '<';
-
-            case '>=':
-            case '=>':
-            case 'gte':
-                return '>=';
-
-            case '<=':
-            case '=<':
-            case 'lte':
-                return '<=';
-
-            case '!=':
-            case 'neq':
-            case 'not':
-                return '!=';
-
-            case '=':
-            case '==':
-            case 'eq':
-            default:
-                return $mode == 'SQL' ? '=' : '==';
-        }
     }
 
 
@@ -1066,13 +951,13 @@ window.addEvent('domready', function()
         // if we have a root page id (sitemap.xml e.g.) we have to make sure we only consider categories in this tree
         if ($intRoot > 0)
         {
-            $arrPageIds = $this->getChildRecords($intRoot, 'tl_page', false);
+            $arrPageIds = \Database::getInstance()->getChildRecords($intRoot, 'tl_page', false);
             $arrPageIds[] = $intRoot;
 
             $strAllowedPages = ' AND c.page_id IN (' . implode(',', $arrPageIds) . ')';
         }
 
-        $objProducts = $this->Database->query("
+        $objProducts = \Database::getInstance()->query("
             SELECT tl_page.*, p.id AS product_id, p.alias AS product_alias FROM tl_iso_product_categories c
                 JOIN tl_iso_products p ON p.id=c.pid
                 JOIN tl_iso_producttypes t ON t.id=p.type
@@ -1094,13 +979,13 @@ window.addEvent('domready', function()
             {
                 // we need the root page language if we dont have it (maintenance module)
                 $intJump = static::getReaderPageId($objProducts);
-                $objJump = null === $strLanguage ? $this->getPageDetails($intJump) : $this->Database->execute("SELECT *, '$intRoot' AS rootId FROM tl_page WHERE published=1 AND (start='' OR start<$time) AND (stop='' OR stop>$time) AND id=" . (int) $intJump);
+                $objJump = null === $strLanguage ? $this->getPageDetails($intJump) : \Database::getInstance()->execute("SELECT *, '$intRoot' AS rootId FROM tl_page WHERE published=1 AND (start='' OR start<$time) AND (stop='' OR stop>$time) AND id=" . (int) $intJump);
 
                 if ($objJump->numRows)
                 {
                     if (!isset($arrRoot[$objJump->rootId]))
                     {
-                        $arrRoot[$objJump->rootId] = $this->Database->execute("SELECT * FROM tl_page WHERE id=" . (int) $objJump->rootId);
+                        $arrRoot[$objJump->rootId] = \Database::getInstance()->execute("SELECT * FROM tl_page WHERE id=" . (int) $objJump->rootId);
                     }
 
                     $strDomain = Environment::get('base');
@@ -1157,7 +1042,7 @@ window.addEvent('domready', function()
     {
         if ($intOverride > 0)
         {
-            return $intOverride;
+            return (int) $intOverride;
         }
 
         if ($objOriginPage === null)
@@ -1174,11 +1059,9 @@ window.addEvent('domready', function()
             return static::$arrReaderPageIds[$intPage];
         }
 
-        $objDatabase = \Database::getInstance();
-
         if (!is_object($objOriginPage))
         {
-            $objOriginPage = $objDatabase->execute("SELECT * FROM tl_page WHERE id=" . $intPage);
+            $objOriginPage = \Database::getInstance()->execute("SELECT * FROM tl_page WHERE id=" . $intPage);
         }
 
         // if the reader page is set on the current page id we return this one
@@ -1186,7 +1069,7 @@ window.addEvent('domready', function()
         {
             static::$arrReaderPageIds[$intPage] = $objOriginPage->iso_readerJumpTo;
 
-            return $objOriginPage->iso_readerJumpTo;
+            return (int) $objOriginPage->iso_readerJumpTo;
         }
 
         // now move up the page tree until we find a page where the reader is set
@@ -1195,7 +1078,7 @@ window.addEvent('domready', function()
 
         do
         {
-            $objParentPage = $objDatabase->execute("SELECT * FROM tl_page WHERE id=" . $pid);
+            $objParentPage = \Database::getInstance()->execute("SELECT * FROM tl_page WHERE id=" . $pid);
 
             if ($objParentPage->numRows < 1)
             {
@@ -1209,7 +1092,7 @@ window.addEvent('domready', function()
                 // cache the reader page for all trail pages
                 static::$arrReaderPageIds = array_merge(static::$arrReaderPageIds, array_fill_keys($trail, $objParentPage->iso_readerJumpTo));
 
-                return $objParentPage->iso_readerJumpTo;
+                return (int) $objParentPage->iso_readerJumpTo;
             }
 
             $pid = (int) $objParentPage->pid;
@@ -1218,9 +1101,9 @@ window.addEvent('domready', function()
 
         // if there is no reader page set at all, we take the current page object
         global $objPage;
-        static::$arrReaderPageIds[$intPage] = $objPage->id;
+        static::$arrReaderPageIds[$intPage] = (int) $objPage->id;
 
-        return $objPage->id;
+        return (int) $objPage->id;
     }
 
 
@@ -1256,21 +1139,26 @@ window.addEvent('domready', function()
 
     /**
      * Add a request string to the given URI string or page ID
-     * @param string
-     * @param mixed
-     * @return string
+     * @param   string
+     * @param   mixed
+     * @return  string
+     * @throws  \InvalidArgumentException
      */
     public static function addQueryStringToUrl($strRequest, $varUrl=null)
     {
-        if ($varUrl === null)
-        {
+        if ($varUrl === null) {
             $varUrl = \Environment::getInstance()->request;
         }
-        elseif (is_numeric($varUrl))
-        {
-            $objJump = \Database::getInstance()->prepare("SELECT * FROM tl_page WHERE id=?")->execute($varUrl);
-
+        elseif (is_numeric($varUrl)) {
+            if (($objJump = \PageModel::findByPk($varUrl)) === null) {
+                throw new \InvalidArgumentException('Given page id does not exist.');
+            }
             $varUrl = Isotope::getInstance()->generateFrontendUrl($objJump->row());
+        }
+
+        if ($strRequest === '') {
+
+            return $varUrl;
         }
 
         list($strScript, $strQueryString) = explode('?', $varUrl, 2);
@@ -1279,20 +1167,17 @@ window.addEvent('domready', function()
         $queries = preg_split('/&(amp;)?/i', $strQueryString);
 
         // Overwrite existing parameters and ignore "language", see #64
-        foreach ($queries as $k=>$v)
-        {
+        foreach ($queries as $k=>$v) {
             $explode = explode('=', $v, 2);
 
-            if ($k === 'language' || preg_match('/(^|&(amp;)?)' . preg_quote($explode[0], '/') . '=/i', $strRequest))
-            {
+            if ($k === 'language' || preg_match('/(^|&(amp;)?)' . preg_quote($explode[0], '/') . '=/i', $strRequest)) {
                 unset($queries[$k]);
             }
         }
 
         $href = '?';
 
-        if (!empty($queries))
-        {
+        if (!empty($queries)) {
             $href .= implode('&amp;', $queries) . '&amp;';
         }
 
@@ -1398,7 +1283,7 @@ window.addEvent('domready', function()
                     continue;
                 }
 
-                $arrPGroups = deserialize($objPages->groups);
+                $arrPGroups = deserialize($objPageDetails->groups);
 
                 // Page is protected but has no groups
                 if (!is_array($arrPGroups)) {
@@ -1452,7 +1337,7 @@ window.addEvent('domready', function()
                     }
 
                     // Check if a child record of our trail is in categories
-                    $arrChildren = $this->getChildRecords($intTrail, 'tl_page', true);
+                    $arrChildren = \Database::getInstance()->getChildRecords($intTrail, 'tl_page', true);
                     $arrMatch = array_intersect($arrChildren, $arrCategories);
 
                     if (!empty($arrMatch))
@@ -1474,7 +1359,7 @@ window.addEvent('domready', function()
 
                 while ($intPage != $intParent)
                 {
-                    $objResult = $this->Database->prepare("SELECT * FROM tl_page WHERE id=?" . (!BE_USER_LOGGED_IN ? " AND (start='' OR start<$time) AND (stop='' OR stop>$time) AND published=1" : ""))->execute($intPage);
+                    $objResult = \Database::getInstance()->prepare("SELECT * FROM tl_page WHERE id=?" . (!BE_USER_LOGGED_IN ? " AND (start='' OR start<$time) AND (stop='' OR stop>$time) AND published=1" : ""))->execute($intPage);
 
                     if (!$objResult->numRows)
                     {
@@ -1501,7 +1386,7 @@ window.addEvent('domready', function()
                             break;
 
                         case 'forward':
-                            $objNext = $this->Database->prepare("SELECT id, alias FROM tl_page WHERE id=?")
+                            $objNext = \Database::getInstance()->prepare("SELECT id, alias FROM tl_page WHERE id=?")
                                                       ->limit(1)
                                                       ->execute($objResult->jumpTo);
 

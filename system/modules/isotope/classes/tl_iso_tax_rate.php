@@ -81,10 +81,7 @@ class tl_iso_tax_rate extends \Backend
                         // Add permissions on user level
                         if ($this->User->inherit == 'custom' || !$this->User->groups[0])
                         {
-                            $objUser = $this->Database->prepare("SELECT iso_tax_rates, iso_tax_ratep FROM tl_user WHERE id=?")
-                                                       ->limit(1)
-                                                       ->execute($this->User->id);
-
+                            $objUser = \Database::getInstance()->prepare("SELECT iso_tax_rates, iso_tax_ratep FROM tl_user WHERE id=?")->limit(1)->execute($this->User->id);
                             $arrPermissions = deserialize($objUser->iso_tax_ratep);
 
                             if (is_array($arrPermissions) && in_array('create', $arrPermissions))
@@ -92,18 +89,14 @@ class tl_iso_tax_rate extends \Backend
                                 $arrAccess = deserialize($objUser->iso_tax_rates);
                                 $arrAccess[] = \Input::get('id');
 
-                                $this->Database->prepare("UPDATE tl_user SET iso_tax_rates=? WHERE id=?")
-                                               ->execute(serialize($arrAccess), $this->User->id);
+                                \Database::getInstance()->prepare("UPDATE tl_user SET iso_tax_rates=? WHERE id=?")->execute(serialize($arrAccess), $this->User->id);
                             }
                         }
 
                         // Add permissions on group level
                         elseif ($this->User->groups[0] > 0)
                         {
-                            $objGroup = $this->Database->prepare("SELECT iso_tax_rates, iso_tax_ratep FROM tl_user_group WHERE id=?")
-                                                       ->limit(1)
-                                                       ->execute($this->User->groups[0]);
-
+                            $objGroup = \Database::getInstance()->prepare("SELECT iso_tax_rates, iso_tax_ratep FROM tl_user_group WHERE id=?")->limit(1)->execute($this->User->groups[0]);
                             $arrPermissions = deserialize($objGroup->iso_tax_ratep);
 
                             if (is_array($arrPermissions) && in_array('create', $arrPermissions))
@@ -111,8 +104,7 @@ class tl_iso_tax_rate extends \Backend
                                 $arrAccess = deserialize($objGroup->iso_tax_rates);
                                 $arrAccess[] = \Input::get('id');
 
-                                $this->Database->prepare("UPDATE tl_user_group SET iso_tax_rates=? WHERE id=?")
-                                               ->execute(serialize($arrAccess), $this->User->groups[0]);
+                                \Database::getInstance()->prepare("UPDATE tl_user_group SET iso_tax_rates=? WHERE id=?")->execute(serialize($arrAccess), $this->User->groups[0]);
                             }
                         }
 
@@ -170,7 +162,6 @@ class tl_iso_tax_rate extends \Backend
 
         if ($row['config'] && !$arrRate['unit'])
         {
-            $this->import('Isotope\Isotope', 'Isotope');
             Isotope::setConfig(Config::findByPk($row['config']));
 
             $strRate = Isotope::formatPriceWithCurrency($arrRate['value'], false);
@@ -190,7 +181,7 @@ class tl_iso_tax_rate extends \Backend
      */
     public function addCurrencyRate($dc)
     {
-        $objConfig = $this->Database->prepare("SELECT tl_iso_config.* FROM tl_iso_tax_rate LEFT OUTER JOIN tl_iso_config ON tl_iso_config.id=tl_iso_tax_rate.config WHERE tl_iso_tax_rate.id=?")->execute($dc->id);
+        $objConfig = \Database::getInstance()->prepare("SELECT tl_iso_config.* FROM tl_iso_tax_rate LEFT OUTER JOIN tl_iso_config ON tl_iso_config.id=tl_iso_tax_rate.config WHERE tl_iso_tax_rate.id=?")->execute($dc->id);
 
         if ($objConfig->currency)
         {
@@ -211,7 +202,7 @@ class tl_iso_tax_rate extends \Backend
      */
     public function copyTaxRate($row, $href, $label, $title, $icon, $attributes)
     {
-        return ($this->User->isAdmin || $this->User->hasAccess('create', 'iso_tax_ratep')) ? '<a href="'.$this->addToUrl($href.'&amp;id='.$row['id']).'" title="'.specialchars($title).'"'.$attributes.'>'.$this->generateImage($icon, $label).'</a> ' : $this->generateImage(preg_replace('/\.gif$/i', '_.gif', $icon)).' ';
+        return ($this->User->isAdmin || $this->User->hasAccess('create', 'iso_tax_ratep')) ? '<a href="'.$this->addToUrl($href.'&amp;id='.$row['id']).'" title="'.specialchars($title).'"'.$attributes.'>'.\Image::getHtml($icon, $label).'</a> ' : \Image::getHtml(preg_replace('/\.gif$/i', '_.gif', $icon)).' ';
     }
 
 
@@ -227,6 +218,6 @@ class tl_iso_tax_rate extends \Backend
      */
     public function deleteTaxRate($row, $href, $label, $title, $icon, $attributes)
     {
-        return ($this->User->isAdmin || $this->User->hasAccess('delete', 'iso_tax_ratep')) ? '<a href="'.$this->addToUrl($href.'&amp;id='.$row['id']).'" title="'.specialchars($title).'"'.$attributes.'>'.$this->generateImage($icon, $label).'</a> ' : $this->generateImage(preg_replace('/\.gif$/i', '_.gif', $icon)).' ';
+        return ($this->User->isAdmin || $this->User->hasAccess('delete', 'iso_tax_ratep')) ? '<a href="'.$this->addToUrl($href.'&amp;id='.$row['id']).'" title="'.specialchars($title).'"'.$attributes.'>'.\Image::getHtml($icon, $label).'</a> ' : \Image::getHtml(preg_replace('/\.gif$/i', '_.gif', $icon)).' ';
     }
 }

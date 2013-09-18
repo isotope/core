@@ -59,9 +59,7 @@ class Automator extends \Controller
      */
     public function convertCurrencies()
     {
-        $this->import('Database');
-
-        $objConfigs = $this->Database->execute("SELECT * FROM tl_iso_config WHERE currencyAutomator='1'");
+        $objConfigs = \Database::getInstance()->execute("SELECT * FROM tl_iso_config WHERE currencyAutomator='1'");
 
         while ($objConfigs->next())
         {
@@ -105,7 +103,7 @@ class Automator extends \Controller
                     }
 
                     $fltFactor = $fltCourse / $fltCourseOrigin;
-                    $this->Database->prepare("UPDATE tl_iso_config SET priceCalculateFactor=? WHERE id=?")->execute($fltFactor, $objConfigs->id);
+                    \Database::getInstance()->prepare("UPDATE tl_iso_config SET priceCalculateFactor=? WHERE id=?")->execute($fltFactor, $objConfigs->id);
                     break;
 
                 case 'admin.ch':
@@ -146,7 +144,7 @@ class Automator extends \Controller
                     }
 
                     $fltFactor = $fltCourse / $fltCourseOrigin;
-                    $this->Database->prepare("UPDATE tl_iso_config SET priceCalculateFactor=? WHERE id=?")->execute($fltFactor, $objConfigs->id);
+                    \Database::getInstance()->prepare("UPDATE tl_iso_config SET priceCalculateFactor=? WHERE id=?")->execute($fltFactor, $objConfigs->id);
                     break;
 
                 default:
@@ -156,8 +154,8 @@ class Automator extends \Controller
                     {
                         foreach ($GLOBALS['ISO_HOOKS']['convertCurrency'] as $callback)
                         {
-                            $this->import($callback[0]);
-                            $this->$callback[0]->$callback[1]($objConfigs->currencyProvider, $objConfigs->currencyOrigin, $objConfigs->currency, $objConfigs-row());
+                            $objCallback = \System::importStatic($callback[0]);
+                            $objCallback->$callback[1]($objConfigs->currencyProvider, $objConfigs->currencyOrigin, $objConfigs->currency, $objConfigs-row());
                         }
                     }
             }

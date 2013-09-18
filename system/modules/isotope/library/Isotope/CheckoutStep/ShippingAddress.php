@@ -56,8 +56,8 @@ class ShippingAddress extends Address implements IsotopeCheckoutStep
             }
             else
             {
-                $this->objModule->arrOrderData['shipping_address'] = $objAddress->generateHtml(Isotope::getConfig()->shipping_fields);
-                $this->objModule->arrOrderData['shipping_address_text'] = $objAddress->generateText(Isotope::getConfig()->shipping_fields);
+                $this->objModule->arrOrderData['shipping_address'] = $objAddress->generateHtml(Isotope::getConfig()->getShippingFieldsConfig());
+                $this->objModule->arrOrderData['shipping_address_text'] = $objAddress->generateText(Isotope::getConfig()->getShippingFieldsConfig());
             }
         }
 
@@ -81,7 +81,7 @@ class ShippingAddress extends Address implements IsotopeCheckoutStep
         return array('shipping_address' => array
         (
             'headline'    => $GLOBALS['TL_LANG']['MSC']['shipping_address'],
-            'info'        => $objAddress->generateHtml(Isotope::getConfig()->shipping_fields),
+            'info'        => $objAddress->generateHtml(Isotope::getConfig()->getShippingFieldsConfig()),
             'edit'        => \Isotope\Module\Checkout::generateUrlForStep('address'),
         ));
     }
@@ -145,16 +145,21 @@ class ShippingAddress extends Address implements IsotopeCheckoutStep
 
         if (null === $objAddress) {
             $objShippingAddress = Isotope::getCart()->getShippingAddress();
-            $arrAddress = (null === $objShippingAddress) ? array() : $objShippingAddress->row();
 
-            unset($arrAddress['id']);
-            unset($arrAddress['isDefaultBilling']);
-            $arrAddress['ptable'] = 'tl_iso_product_collection';
-            $arrAddress['pid'] = Isotope::getCart()->id;
-            $arrAddress['isDefaultShipping'] = '1';
+            if (null === $objShippingAddress) {
+                $objAddress = new AddressModel();
+            } else {
+                $objAddress = clone $objShippingAddress;
+            }
 
-            $objAddress = new AddressModel();
-            $objAddress->setRow($arrAddress);
+            $objAddress->ptable = 'tl_iso_product_collection';
+            $objAddress->pid = Isotope::getCart()->id;
+            $objAddress->isDefaultShipping = '1';
+            $objAddress->isDefaultBilling = '';
+
+            if ($objAddress->country == '') {
+                $objAddress->country = Isotope::getConfig()->shipping_country;
+            }
         }
 
         return $objAddress;
@@ -166,7 +171,7 @@ class ShippingAddress extends Address implements IsotopeCheckoutStep
      */
     protected function getAddressFields()
     {
-        return Isotope::getConfig()->shipping_fields;
+        return Isotope::getConfig()->getShippingFieldsConfig();
     }
 
     /**
@@ -176,15 +181,6 @@ class ShippingAddress extends Address implements IsotopeCheckoutStep
     protected function getAddressCountries()
     {
         return Isotope::getConfig()->getShippingCountries();
-    }
-
-    /**
-     * Get default country for this address type
-     * @return  string
-     */
-    protected function getDefaultCountry()
-    {
-        return Isotope::getConfig()->shipping_country;
     }
 
     /**

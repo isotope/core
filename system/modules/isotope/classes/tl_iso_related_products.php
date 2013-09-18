@@ -31,7 +31,7 @@ class tl_iso_related_products extends \Backend
      */
     public function listRows($row)
     {
-        $strCategory = $this->Database->prepare("SELECT * FROM tl_iso_related_categories WHERE id=?")->execute($row['category'])->name;
+        $strCategory = \Database::getInstance()->prepare("SELECT * FROM tl_iso_related_categories WHERE id=?")->execute($row['category'])->name;
 
         $strBuffer = '
 <div class="cte_type" style="color:#666966"><strong>' . $GLOBALS['TL_LANG']['tl_iso_related_products']['category'][0] . ':</strong> ' . $strCategory . '</div>';
@@ -41,7 +41,7 @@ class tl_iso_related_products extends \Backend
         if (is_array($arrProducts) && !empty($arrProducts))
         {
             $strBuffer .= '<div class="limit_height' . (!$GLOBALS['TL_CONFIG']['doNotCollapse'] ? ' h0' : '') . ' block"><ul>';
-            $objProducts = $this->Database->execute("SELECT * FROM tl_iso_products WHERE id IN (" . implode(',', $arrProducts) . ") ORDER BY name");
+            $objProducts = \Database::getInstance()->execute("SELECT * FROM tl_iso_products WHERE id IN (" . implode(',', $arrProducts) . ") ORDER BY name");
 
             while ($objProducts->next())
             {
@@ -63,8 +63,7 @@ class tl_iso_related_products extends \Backend
     public function initDCA($dc)
     {
         $arrCategories = array();
-        $objCategories = $this->Database->prepare("SELECT * FROM tl_iso_related_categories WHERE id NOT IN (SELECT category FROM tl_iso_related_products WHERE pid=" . (strlen(\Input::get('act')) ? "(SELECT pid FROM tl_iso_related_products WHERE id=?) AND id!=?" : '?') . ")")
-                                        ->execute($dc->id, $dc->id);
+        $objCategories = \Database::getInstance()->prepare("SELECT * FROM tl_iso_related_categories WHERE id NOT IN (SELECT category FROM tl_iso_related_products WHERE pid=" . (strlen(\Input::get('act')) ? "(SELECT pid FROM tl_iso_related_products WHERE id=?) AND id!=?" : '?') . ")")->execute($dc->id, $dc->id);
 
         while ($objCategories->next())
         {
@@ -80,7 +79,7 @@ class tl_iso_related_products extends \Backend
         {
             unset($GLOBALS['TL_DCA']['tl_iso_related_products']['fields']['category']['foreignKey']);
             $GLOBALS['TL_DCA']['tl_iso_related_products']['fields']['category']['options'] = $arrCategories;
-            $GLOBALS['TL_DCA']['tl_iso_related_products']['fields']['products']['eval']['allowedIds'] = $this->Database->prepare("SELECT id FROM tl_iso_products WHERE pid=0 AND id!=(SELECT pid FROM tl_iso_related_products WHERE id=?)")->execute($dc->id)->fetchEach('id');
+            $GLOBALS['TL_DCA']['tl_iso_related_products']['fields']['products']['eval']['allowedIds'] = \Database::getInstance()->prepare("SELECT id FROM tl_iso_products WHERE pid=0 AND id!=(SELECT pid FROM tl_iso_related_products WHERE id=?)")->execute($dc->id)->fetchEach('id');
         }
     }
 }

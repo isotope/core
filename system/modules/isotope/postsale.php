@@ -12,6 +12,10 @@
 
 namespace Isotope;
 
+use Isotope\Interfaces\IsotopePostsale;
+use Isotope\Model\Payment;
+use Isotope\Model\Shipping;
+
 
 /**
  * Initialize the system
@@ -54,8 +58,8 @@ class PostSale extends \Frontend
         {
             foreach ($GLOBALS['ISO_HOOKS']['initializePostsale'] as $callback)
             {
-                $this->import($callback[0]);
-                $this->$callback[0]->$callback[1]();
+                $objCallback = \System::importStatic($callback[0]);
+                $objCallback->$callback[1]();
             }
         }
     }
@@ -69,51 +73,48 @@ class PostSale extends \Frontend
         $strMod = strlen(\Input::post('mod')) ? \Input::post('mod') : \Input::get('mod');
         $strId = strlen(\Input::post('id')) ? \Input::post('id') : \Input::get('id');
 
-        if (!strlen($strMod) || !strlen($strId))
-        {
+        if ($strMod == '' || $strId == '') {
             \System::log('Invalid post-sale request (param error): '.\Environment::get('request'), __METHOD__, TL_ERROR);
 
-            return;
+            header('HTTP/1.1 400 Bad Request');
+            die('Bad Request');
+        }
+
+        switch (strtolower($strMod)) {
+            case 'pay':
+                $objMethod = Payment::findByPk($strId);
+                break;
+
+            case 'ship':
+                $objMethod = Shipping::findByPk($strId);
+                break;
+        }
+
+        if (null === $objMethod) {
+            \System::log('Invalid post-sale request (model not found): '.\Environment::get('request'), __METHOD__, TL_ERROR);
+
+            header('HTTP/1.1 404 Not Found');
+            die('Not Found');
         }
 
         \System::log('New post-sale request: '.\Environment::get('request'), __METHOD__, TL_ACCESS);
 
-        switch( strtolower($strMod) )
-        {
-            case 'pay':
-                $objModule = $this->Database->prepare("SELECT * FROM tl_iso_payment_modules WHERE id=?")->limit(1)->execute($strId);
-                break;
-
-            case 'ship':
-                $objModule = $this->Database->prepare("SELECT * FROM tl_iso_shipping_modules WHERE id=?")->limit(1)->execute($strId);
-                break;
-        }
-
-        if (!$objModule->numRows)
-        {
-            \System::log('Invalid post-sale request (module not found): '.\Environment::get('request'), __METHOD__, TL_ERROR);
-
-            return;
-        }
-
-        $strClass = $GLOBALS['ISO_'.strtoupper($strMod)][$objModule->type];
-        if (!strlen($strClass) || !class_exists($strClass))
-        {
-            \System::log('Invalid post-sale request (class not found): '.\Environment::get('request'), __METHOD__, TL_ERROR);
-
-            return;
-        }
-
         try {
-            $objModule = new $strClass($objModule->row());
+            if (!($objMethod instanceof IsotopePostsale)) {
+                \System::log('Invalid post-sale request (interface not implemented): '.\Environment::get('request'), __METHOD__, TL_ERROR);
 
-            return $objModule->processPostSale();
+                header('HTTP/1.1 501 Not Implemented');
+                die('Not Implemented');
+            }
+
+            return $objMethod->processPostsale();
 
         } catch (\Exception $e) {
             \System::log('Exception in post-sale request: '.$e->getMessage(), __METHOD__, TL_ERROR);
-        }
 
-        return;
+            header('HTTP/1.1 500 Internal Server Error');
+            die('Internal Server Error');
+        }
     }
 }
 

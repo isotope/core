@@ -28,9 +28,8 @@ $GLOBALS['TL_LANG']['tl_iso_products']['teaser']                    = array('Tea
 $GLOBALS['TL_LANG']['tl_iso_products']['description']               = array('Description', 'Please enter the product description.');
 $GLOBALS['TL_LANG']['tl_iso_products']['description_meta']          = array('Meta description', 'Meta description will be placed in the header on product detail page, for search engine optimization.');
 $GLOBALS['TL_LANG']['tl_iso_products']['keywords_meta']             = array('Meta keywords', 'Meta keywords will be placed in the header on product detail page, for search engine optimization.');
-$GLOBALS['TL_LANG']['tl_iso_products']['price']                     = array('Price', 'Please enter the price(s) for this product.');
+$GLOBALS['TL_LANG']['tl_iso_products']['price']                     = array('Price &amp; tax class', 'Please enter the price(s) for this product and select the tax class.');
 $GLOBALS['TL_LANG']['tl_iso_products']['shipping_exempt']           = array('Exempt from shipping', 'Check if item is not a shipped item (such as downloadable products).');
-$GLOBALS['TL_LANG']['tl_iso_products']['tax_class']                 = array('Tax Class', 'Select your appropriate tax class.');
 $GLOBALS['TL_LANG']['tl_iso_products']['baseprice']                 = array('Base price amount', 'Enter the amount to calculate the base price (e.g. "1500" if your product is 1500 grams).');
 $GLOBALS['TL_LANG']['tl_iso_products']['images']                    = array('Images', 'Upload images to this product. Please save the product after selecting a file.');
 $GLOBALS['TL_LANG']['tl_iso_products']['protected']                 = array('Protect product', 'Restrict product access to certain member groups.');
@@ -103,3 +102,14 @@ $GLOBALS['TL_LANG']['tl_iso_products']['publish_legend']            = 'Publishin
 $GLOBALS['TL_LANG']['tl_iso_products']['price_tiers']['min']        = 'Quantity';
 $GLOBALS['TL_LANG']['tl_iso_products']['price_tiers']['min_format'] = 'from %s pcs.';
 $GLOBALS['TL_LANG']['tl_iso_products']['price_tiers']['price']      = 'Price';
+
+/**
+ * Import assets description
+ */
+$GLOBALS['TL_LANG']['tl_iso_products']['importAssetsDescr']         = '<p>There are two different ways this feature may be used:</p>
+<ol>
+    <li>The source folder you select contains files that either match the product\'s SKU or name. Isotope eCommerce is going to match all the files against all of your products and import them into the respective product\'s assets folder.</li>
+    <li>The source folder you select contains subfolders that either match the product\'s SKU or name. Isotope eCommerce is going to match all the subfolders against all of your products and import everything within one subfolder into the respective product\'s asset folder.</li>
+</ol>
+<p>Hint: Any developer can provide you with other matching rules than just the product\'s SKU or name.</p>
+';

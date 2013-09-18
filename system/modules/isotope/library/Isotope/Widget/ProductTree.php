@@ -87,7 +87,6 @@ class ProductTree extends \Widget
         $this->loadDataContainer('tl_iso_groups');
         \System::loadLanguageFile('tl_iso_groups');
 
-        $this->import('Database');
         $this->import('BackendUser', 'User');
         $this->import('Isotope\ProductCallbacks', 'ProductCallbacks');
         $this->import('Isotope\tl_iso_groups', 'tl_iso_groups');
@@ -171,13 +170,13 @@ class ProductTree extends \Widget
         $this->getPathNodes();
 
 
-        $objGroups = $this->Database->execute("SELECT id FROM tl_iso_groups WHERE pid=0 ORDER BY sorting");
+        $objGroups = \Database::getInstance()->execute("SELECT id FROM tl_iso_groups WHERE pid=0 ORDER BY sorting");
         while( $objGroups->next() )
         {
             $tree .= $this->renderGroups($objGroups->id, -20);
         }
 
-        $objProducts = $this->Database->execute("SELECT id FROM tl_iso_products WHERE pid=0 AND gid=0 AND language=''" . ($this->User->isAdmin ? '' : " AND type IN ('','" . implode("','", $this->arrTypes) . "')"));
+        $objProducts = \Database::getInstance()->execute("SELECT id FROM tl_iso_products WHERE pid=0 AND gid=0 AND language=''" . ($this->User->isAdmin ? '' : " AND type IN ('','" . implode("','", $this->arrTypes) . "')"));
 
         while ($objProducts->next())
         {
@@ -200,7 +199,7 @@ class ProductTree extends \Widget
 
         // Return the tree
         return '<ul class="tl_listing tree_view product_tree'.(strlen($this->strClass) ? ' ' . $this->strClass : '').'" id="'.$this->strId.'">
-    <li class="tl_folder_top"><div class="tl_left">'.$this->generateImage('system/modules/isotope/assets/store-open.png').' '.(strlen($GLOBALS['TL_CONFIG']['websiteTitle']) ? $GLOBALS['TL_CONFIG']['websiteTitle'] : 'Contao Open Source CMS').'</div> <div class="tl_right"><label for="ctrl_'.$this->strId.'" class="tl_change_selected">'.$GLOBALS['TL_LANG']['MSC']['changeSelected'].'</label> <input type="checkbox" name="'.$this->strName.'_save" id="ctrl_'.$this->strId.'" class="tl_tree_checkbox" value="1" onclick="Backend.showTreeBody(this, \''.$this->strId.'_parent\');"></div><div style="clear:both;"></div></li><li class="parent" id="'.$this->strId.'_parent"><ul>'.$tree.$strReset.'
+    <li class="tl_folder_top"><div class="tl_left">'.\Image::getHtml('system/modules/isotope/assets/store-open.png').' '.(strlen($GLOBALS['TL_CONFIG']['websiteTitle']) ? $GLOBALS['TL_CONFIG']['websiteTitle'] : 'Contao Open Source CMS').'</div> <div class="tl_right"><label for="ctrl_'.$this->strId.'" class="tl_change_selected">'.$GLOBALS['TL_LANG']['MSC']['changeSelected'].'</label> <input type="checkbox" name="'.$this->strName.'_save" id="ctrl_'.$this->strId.'" class="tl_tree_checkbox" value="1" onclick="Backend.showTreeBody(this, \''.$this->strId.'_parent\');"></div><div style="clear:both;"></div></li><li class="parent" id="'.$this->strId.'_parent"><ul>'.$tree.$strReset.'
   </ul></li></ul>';
     }
 
@@ -233,14 +232,12 @@ class ProductTree extends \Widget
                 break;
 
             case 'Table':
-                if (!$this->Database->fieldExists($strField, $this->strTable))
+                if (!\Database::getInstance()->fieldExists($strField, $this->strTable))
                 {
                     break;
                 }
 
-                $objField = $this->Database->prepare("SELECT " . $strField . " FROM " . $this->strTable . " WHERE id=?")
-                                           ->limit(1)
-                                           ->execute($this->strId);
+                $objField = \Database::getInstance()->prepare("SELECT " . $strField . " FROM " . $this->strTable . " WHERE id=?")->execute($this->strId);
 
                 if ($objField->numRows)
                 {
@@ -257,7 +254,9 @@ class ProductTree extends \Widget
 
         if (strpos(\Input::post('id'), 'groups') === false)
         {
-            $objProducts = $this->Database->prepare("SELECT id FROM tl_iso_products WHERE language='' AND pid=?".($this->User->isAdmin ? '' : " AND type IN ('','" . implode("','", $this->arrTypes) . "')")." ORDER BY name")->execute($id);
+            $objProducts = \Database::getInstance()->prepare("
+                SELECT id FROM tl_iso_products WHERE language='' AND pid=?".($this->User->isAdmin ? '' : " AND type IN ('','" . implode("','", $this->arrTypes) . "')")." ORDER BY name
+            ")->execute($id);
 
             while ($objProducts->next())
             {
@@ -266,14 +265,16 @@ class ProductTree extends \Widget
         }
         else
         {
-            $objGroups = $this->Database->execute("SELECT id FROM tl_iso_groups WHERE pid=".$id." ORDER BY sorting");
+            $objGroups = \Database::getInstance()->execute("SELECT id FROM tl_iso_groups WHERE pid=".$id." ORDER BY sorting");
 
             while ($objGroups->next())
             {
                 $tree .= $this->renderGroups($objGroups->id, $level);
             }
 
-            $objProducts = $this->Database->prepare("SELECT id FROM tl_iso_products WHERE language='' AND gid=?".($this->User->isAdmin ? '' : " AND type IN ('','" . implode("','", $this->arrTypes) . "')")." ORDER BY name")->execute($id);
+            $objProducts = \Database::getInstance()->prepare("
+                SELECT id FROM tl_iso_products WHERE language='' AND gid=?".($this->User->isAdmin ? '' : " AND type IN ('','" . implode("','", $this->arrTypes) . "')")." ORDER BY name
+            ")->execute($id);
 
             while ($objProducts->next())
             {
@@ -310,7 +311,7 @@ class ProductTree extends \Widget
             \Controller::redirect(preg_replace('/(&(amp;)?|\?)'.$flag.'tg=[^& ]*/i', '', \Environment::get('request')));
         }
 
-        $objGroup = $this->Database->execute("SELECT * FROM tl_iso_groups WHERE id=$id");
+        $objGroup = \Database::getInstance()->execute("SELECT * FROM tl_iso_groups WHERE id=$id");
 
         // Return if there is no result
         if ($objGroup->numRows < 1)
@@ -322,14 +323,10 @@ class ProductTree extends \Widget
         $intSpacing = 20;
 
         // Check whether there are child groups
-        $childs = $this->Database->prepare("SELECT id FROM tl_iso_groups WHERE pid=? ORDER BY sorting")
-                                 ->execute($id)
-                                 ->fetchEach('id');
+        $childs = \Database::getInstance()->prepare("SELECT id FROM tl_iso_groups WHERE pid=? ORDER BY sorting")->execute($id)->fetchEach('id');
 
         // Check whether there are child products
-        $products = $this->Database->prepare("SELECT id FROM tl_iso_products WHERE gid=?".($this->User->isAdmin ? '' : " AND type IN ('','" . implode("','", $this->arrTypes) . "')")." ORDER BY name")
-                                   ->execute($id)
-                                   ->fetchEach('id');
+        $products = \Database::getInstance()->prepare("SELECT id FROM tl_iso_products WHERE gid=?".($this->User->isAdmin ? '' : " AND type IN ('','" . implode("','", $this->arrTypes) . "')")." ORDER BY name")->execute($id)->fetchEach('id');
 
         if (empty($products) && empty($childs))
         {
@@ -346,7 +343,7 @@ class ProductTree extends \Widget
         {
             $img = $blnIsOpen ? 'folMinus.gif' : 'folPlus.gif';
             $alt = $blnIsOpen ? $GLOBALS['TL_LANG']['MSC']['collapseNode'] : $GLOBALS['TL_LANG']['MSC']['expandNode'];
-            $return .= '<a href="'.$this->addToUrl($flag.'tg='.$id).'" title="'.specialchars($alt).'" onclick="Backend.getScrollOffset(); return Isotope.toggleProductTree(this, \''.$xtnode.'_'.$id.'\', \''.$this->strField.'\', \''.$this->strName.'\', '.$level.');">'.$this->generateImage($img, '', 'style="margin-right:2px;"').'</a>';
+            $return .= '<a href="'.$this->addToUrl($flag.'tg='.$id).'" title="'.specialchars($alt).'" onclick="Backend.getScrollOffset(); return Isotope.toggleProductTree(this, \''.$xtnode.'_'.$id.'\', \''.$this->strField.'\', \''.$this->strName.'\', '.$level.');">'.\Image::getHtml($img, '', 'style="margin-right:2px;"').'</a>';
         }
 
         // Add group name
@@ -409,7 +406,7 @@ class ProductTree extends \Widget
             \Controller::redirect(preg_replace('/(&(amp;)?|\?)'.$flag.'tg=[^& ]*/i', '', \Environment::get('request')));
         }
 
-        $objProduct = $this->Database->prepare("SELECT * FROM tl_iso_products WHERE id=?".($this->User->isAdmin ? '' : " AND type IN ('','" . implode("','", $this->arrTypes) . "')"))->execute($id);
+        $objProduct = \Database::getInstance()->prepare("SELECT * FROM tl_iso_products WHERE id=?".($this->User->isAdmin ? '' : " AND type IN ('','" . implode("','", $this->arrTypes) . "')"))->execute($id);
 
         // Return if there is no result
         if ($objProduct->numRows < 1)
@@ -424,8 +421,7 @@ class ProductTree extends \Widget
         if ($this->variants)
         {
             // Check whether there are child records
-            $objNodes = $this->Database->prepare("SELECT id FROM tl_iso_products WHERE pid=? AND language=''")
-                                       ->execute($id);
+            $objNodes = \Database::getInstance()->prepare("SELECT id FROM tl_iso_products WHERE pid=? AND language=''")->execute($id);
 
             if ($objNodes->numRows)
             {
@@ -443,7 +439,7 @@ class ProductTree extends \Widget
         {
             $img = $blnIsOpen ? 'folMinus.gif' : 'folPlus.gif';
             $alt = $blnIsOpen ? $GLOBALS['TL_LANG']['MSC']['collapseNode'] : $GLOBALS['TL_LANG']['MSC']['expandNode'];
-            $return .= '<a href="'.$this->addToUrl($flag.'tg='.$id).'" title="'.specialchars($alt).'" onclick="Backend.getScrollOffset(); return Isotope.toggleProductTree(this, \''.$xtnode.'_'.$id.'\', \''.$this->strField.'\', \''.$this->strName.'\', '.$level.');">'.$this->generateImage($img, '', 'style="margin-right:2px;"').'</a>';
+            $return .= '<a href="'.$this->addToUrl($flag.'tg='.$id).'" title="'.specialchars($alt).'" onclick="Backend.getScrollOffset(); return Isotope.toggleProductTree(this, \''.$xtnode.'_'.$id.'\', \''.$this->strField.'\', \''.$this->strName.'\', '.$level.');">'.\Image::getHtml($img, '', 'style="margin-right:2px;"').'</a>';
         }
 
         // Add product name
@@ -508,9 +504,7 @@ class ProductTree extends \Widget
         {
             do
             {
-                $objProduct = $this->Database->prepare("SELECT pid,gid FROM tl_iso_products WHERE id=?")
-                                             ->limit(1)
-                                             ->execute($id);
+                $objProduct = \Database::getInstance()->prepare("SELECT pid,gid FROM tl_iso_products WHERE id=?")->limit(1)->execute($id);
 
                 if ($objProduct->numRows < 1)
                 {

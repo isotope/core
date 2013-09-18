@@ -15,6 +15,7 @@ namespace Isotope\CheckoutStep;
 
 use Isotope\Isotope;
 use Isotope\Model\Address as AddressModel;
+use Isotope\Translation;
 
 abstract class Address extends CheckoutStep
 {
@@ -223,7 +224,7 @@ abstract class Address extends CheckoutStep
                 $strClass = $GLOBALS['TL_FFL'][$arrData['inputType']];
 
                 // Continue if the class is not defined
-                if (!class_exists($strClass)) {
+                if ($strClass == '' || !class_exists($strClass)) {
                     continue;
                 }
 
@@ -231,10 +232,6 @@ abstract class Address extends CheckoutStep
                 if ($field['value'] == 'country') {
                     $arrCountries = $this->getAddressCountries();
                     $arrData['options'] = array_values(array_intersect($arrData['options'], $arrCountries));
-
-                    if ($arrDefault['country'] == '') {
-                        $arrDefault['country'] = $this->getDefaultCountry();
-                    }
                 }
 
                 // Special field type "conditionalselect"
@@ -242,18 +239,12 @@ abstract class Address extends CheckoutStep
                     $arrData['eval']['conditionField'] = $this->getStepClass() . '_' . $arrData['eval']['conditionField'];
                 }
 
-                // Special fields "isDefaultBilling" & "isDefaultShipping"
-    //            elseif (($field['value'] == 'isDefaultBilling' && $strAddressType == 'billing_address' && $intOptions < 2) || ($field['value'] == 'isDefaultShipping' && $strAddressType == 'shipping_address' && $intOptions < 3))
-    //            {
-    //                $arrDefault[$field['value']] = '1';
-    //            }
-
                 $objWidget = new $strClass($strClass::getAttributesFromDca($arrData, $this->getStepClass() . '_' . $field['value'], $objAddress->{$field['value']}));
 
                 $objWidget->mandatory = $field['mandatory'] ? true : false;
                 $objWidget->required = $objWidget->mandatory;
                 $objWidget->tableless = $this->objModule->tableless;
-                $objWidget->label = $field['label'] ? Isotope::translate($field['label']) : $objWidget->label;
+                $objWidget->label = $field['label'] ? Translation::get($field['label']) : $objWidget->label;
                 $objWidget->storeValues = true;
 
                 $this->arrWidgets[$field['value']] = $objWidget;
@@ -264,7 +255,7 @@ abstract class Address extends CheckoutStep
     }
 
     /**
-     * Get options for all addresses in the users' address book
+     * Get options for all addresses in the user's address book
      * @return  array
      */
     protected function getAddressOptions()
@@ -272,24 +263,21 @@ abstract class Address extends CheckoutStep
         $arrOptions = array();
 
         if (FE_USER_LOGGED_IN === true) {
-            // @todo: this var is not being used, there must be something wrong here
             $arrAddresses = $this->getAddresses();
             $arrCountries = $this->getAddressCountries();
 
-            if (null !== $objAddresses && !empty($arrCountries)) {
+            if (!empty($arrAddresses) && !empty($arrCountries)) {
                 $objDefault = $this->getAddress();
 
-                while ($objAddresses->next()) {
+                foreach($arrAddresses as $objAddress) {
 
-                    if (!in_array($objAddresses->country, $arrCountries)) {
+                    if (!in_array($objAddress->country, $arrCountries)) {
                         continue;
                     }
 
-                    $objAddress = $objAddresses->current();
-
                     $arrOptions[] = array(
                         'value'        => $objAddress->id,
-                        'label'        => $objAddress->generateHtml($arrFields),
+                        'label'        => $objAddress->generateHtml(),
                         'default'      => ($objAddress->id == $objDefault->id ? '1' : ''),
                     );
                 }
@@ -324,7 +312,7 @@ abstract class Address extends CheckoutStep
     protected function getAddresses()
     {
         $arrAddresses = array();
-        $objAddresses = AddressModel::findForMember($this->User->id, array('order'=>'isDefaultBilling DESC, isDefaultShipping DESC'));
+        $objAddresses = AddressModel::findForMember(\FrontendUser::getInstance()->id, array('order'=>'isDefaultBilling DESC, isDefaultShipping DESC'));
 
         if (null !== $objAddresses) {
             while ($objAddresses->next()) {
