@@ -12,6 +12,7 @@
 
 namespace Isotope\Interfaces;
 
+use Isotope\Interfaces\IsotopeProductCollection;
 use Isotope\Model\Config;
 
 
@@ -20,23 +21,17 @@ use Isotope\Model\Config;
  */
 interface IsotopeDocument
 {
-    /**
-     * Set the collection
-     */
-    public function setCollection(IsotopeProductCollection $collection);
-
-    /**
-     * Set the config
-     */
-    public function setConfig(Config $config);
 
     /**
      * Generate the document and send it to browser
+     * @param   IsotopeProductCollection
      */
-    public function printToBrowser();
+    public function outputToBrowser(IsotopeProductCollection $objCollection);
 
     /**
      * Generate the document and store it to a given path
+     * @param   IsotopeProductCollection
+     * @param   string
      */
-    public function store($path);
+    public function outputToFile(IsotopeProductCollection $objCollection, $path);
 }

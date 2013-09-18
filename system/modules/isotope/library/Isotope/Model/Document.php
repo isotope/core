@@ -43,56 +43,20 @@ abstract class Document extends TypeAgent
      */
     protected static $arrModelTypes = array();
 
-    /*
-    * Collection
-    * @var array
-    */
-    protected $collection = null;
-
-    /*
-     * Config
-     * @var array
-     */
-    protected $config = null;
-
-    /**
-     * Collection tokens
-     * @var array
-     */
-    protected $arrCollectionTokens = array();
-
-    /**
-     * Set the collection and prepare tokens
-     * @param IsotopeProductCollection
-     * @return Standard
-     */
-    public function setCollection(IsotopeProductCollection $collection)
-    {
-        $this->collection = $collection;
-        $this->prepareCollectionTokens();
-
-        return $this;
-    }
-
-    /**
-     * Set the store config
-     * @param Config
-     * @return Standard
-     */
-    public function setConfig(Config $config)
-    {
-        $this->config = $config;
-
-        return $this;
-    }
 
     /**
      * Prepares the collection tokens
+     * @param   IsotopeProductCollection
+     * @return  array
      */
-    protected function prepareCollectionTokens()
+    protected function prepareCollectionTokens(IsotopeProductCollection $objCollection)
     {
-        foreach ($this->collection->row() as $k => $v) {
-            $this->arrCollectionTokens['collection_' . $k] = $v;
+        $arrTokens = array();
+
+        foreach ($objCollection->row() as $k => $v) {
+            $arrTokens['collection_' . $k] = $v;
         }
+
+        return $arrTokens;
     }
 }

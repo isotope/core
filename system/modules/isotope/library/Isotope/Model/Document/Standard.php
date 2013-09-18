@@ -13,8 +13,8 @@
 namespace Isotope\Model\Document;
 
 use Isotope\Interfaces\IsotopeDocument;
+use Isotope\Interfaces\IsotopeProductCollection;
 use Isotope\Model\Document;
-use Isotope\Model\Gallery;
 
 /**
  * Class Standard
@@ -26,29 +26,36 @@ use Isotope\Model\Gallery;
  */
 class Standard extends Document implements IsotopeDocument
 {
+
     /**
      * {@inheritdoc}
      */
-    public function printToBrowser()
+    public function outputToBrowser(IsotopeProductCollection $objCollection)
     {
-        $pdf = $this->generatePDF();
-        $pdf->Output(sprintf('%s.pdf', \String::parseSimpleTokens($this->fileTitle, $this->arrCollectionTokens)), 'D');
+        $arrTokens = $this->prepareCollectionTokens($objCollection);
+
+        $pdf = $this->generatePDF($objCollection, $arrTokens);
+        $pdf->Output(sprintf('%s.pdf', \String::parseSimpleTokens($this->fileTitle, $arrTokens)), 'D');
     }
 
     /**
      * {@inheritdoc}
      */
-    public function store($path)
+    public function outputToFile(IsotopeProductCollection $objCollection, $path)
     {
-        $pdf = $this->generatePDF();
-        $pdf->Output(sprintf(TL_ROOT . '/%s/%s.pdf', $path, \String::parseSimpleTokens($this->fileTitle, $this->arrCollectionTokens)), 'F');
+        $arrTokens = $this->prepareCollectionTokens($objCollection);
+
+        $pdf = $this->generatePDF($objCollection, $arrTokens);
+        $pdf->Output(sprintf(TL_ROOT . '/%s/%s.pdf', $path, \String::parseSimpleTokens($this->fileTitle, $arrTokens)), 'F');
     }
 
     /**
      * Generate the pdf document
-     * @return \TCPDF
+     * @param   IsotopeProductCollection
+     * @param   array
+     * @return  \TCPDF
      */
-    protected function generatePDF()
+    protected function generatePDF(IsotopeProductCollection $objCollection, array $arrTokens)
     {
         // TCPDF configuration
         $l = array();
@@ -67,7 +74,7 @@ class Standard extends Document implements IsotopeDocument
         // Set document information
         $pdf->SetCreator(PDF_CREATOR);
         $pdf->SetAuthor(PDF_AUTHOR);
-        $pdf->SetTitle(\String::parseSimpleTokens($this->documentTitle, $this->arrCollectionTokens));
+        $pdf->SetTitle(\String::parseSimpleTokens($this->documentTitle, $arrTokens));
 
         // Prevent font subsetting (huge speed improvement)
         $pdf->setFontSubsetting(false);
@@ -98,16 +105,16 @@ class Standard extends Document implements IsotopeDocument
         $objTemplate = new \Isotope\Template($this->documentTpl);
 
         // Add title
-        $objTemplate->title = \String::parseSimpleTokens($this->documentTitle, $this->arrCollectionTokens);
+        $objTemplate->title = \String::parseSimpleTokens($this->documentTitle, $arrTokens);
 
         // Add billing address
-        if (($objAddress = $this->collection->getBillingAddress()) !== null) {
+        if (($objAddress = $objCollection->getBillingAddress()) !== null) {
             $objTemplate->billingAddress = $objAddress;
         }
 
         // Render the collection
         $objCollectionTemplate = new \Isotope\Template($this->collectionTpl);
-        $this->collection->addToTemplate($objCollectionTemplate);
+        $objCollection->addToTemplate($objCollectionTemplate);
         $objTemplate->collection = $objCollectionTemplate->parse();
 
         // Write the HTML content

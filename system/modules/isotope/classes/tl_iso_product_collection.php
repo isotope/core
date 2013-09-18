@@ -316,7 +316,7 @@ class tl_iso_product_collection extends \Backend
                 \Controller::redirect($strRedirectUrl);
             }
 
-            $objDocument->setCollection($objOrder)->setConfig($objOrder->getRelated('config_id'))->printToBrowser();
+            $objDocument->outputToBrowser($objOrder);
         }
 
         $arrSelect = array
