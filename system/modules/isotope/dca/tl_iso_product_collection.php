@@ -93,13 +93,6 @@ $GLOBALS['TL_DCA']['tl_iso_product_collection'] = array
                 'href'              => 'key=export_emails',
                 'class'             => 'header_iso_export_csv isotope-tools',
                 'attributes'        => 'onclick="Backend.getScrollOffset();"'
-            ),
-            'print_invoices' => array
-            (
-                'label'             => &$GLOBALS['TL_LANG']['tl_iso_product_collection']['print_invoices'],
-                'href'              => 'key=print_invoices',
-                'class'             => 'header_print_invoices isotope-tools',
-                'attributes'        => 'onclick="Backend.getScrollOffset();"'
             )
         ),
         'operations' => array
@@ -144,12 +137,12 @@ $GLOBALS['TL_DCA']['tl_iso_product_collection'] = array
                 'icon'              => 'system/modules/isotope/assets/box-label.png',
                 'attributes'        => 'class="isotope-tools"',
             ),
-            'print_order' => array
+            'print_document' => array
             (
-                'label'             => &$GLOBALS['TL_LANG']['tl_iso_product_collection']['print_order'],
-                'href'              => 'key=print_order',
+                'label'             => &$GLOBALS['TL_LANG']['tl_iso_product_collection']['print_document'],
+                'href'              => 'key=print_document',
                 'icon'              => 'system/modules/isotope/assets/document-pdf-text.png'
-            ),
+            )
         )
     ),
 

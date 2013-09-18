@@ -48,8 +48,7 @@ array_insert($GLOBALS['BE_MOD']['isotope'], 0, array
         'icon'                        => 'system/modules/isotope/assets/shopping-basket.png',
         'javascript'                => 'system/modules/isotope/assets/backend.min.js',
         'export_emails'             => array('Isotope\tl_iso_product_collection', 'exportOrderEmails'),
-        'print_order'                => array('Isotope\tl_iso_product_collection', 'printInvoice'),
-        'print_invoices'            => array('Isotope\tl_iso_product_collection', 'printInvoices'),
+        'print_document'                => array('Isotope\tl_iso_product_collection', 'printDocument'),
         'payment'                    => array('Isotope\tl_iso_product_collection', 'paymentInterface'),
         'shipping'                    => array('Isotope\tl_iso_product_collection', 'shippingInterface'),
     ),
@@ -128,10 +127,15 @@ $GLOBALS['ISO_MOD'] = array
     ),
     'config' => array
     (
+        'documents' => array
+        (
+            'tables'            => array('tl_iso_document'),
+            'icon'              => 'system/modules/isotope/assets/setup-documents.png'
+        ),
         'labels' => array
         (
             'tables'            => array('tl_iso_labels'),
-            'icon'              => 'system/modules/isotope/assets/setup-labels.png',
+            'icon'              => 'system/modules/isotope/assets/setup-labels.png'
         ),
         'iso_mail' => array
         (
@@ -218,6 +222,11 @@ $GLOBALS['BE_FFL']['productGroupSelector']   = 'Isotope\Widget\ProductGroupSelec
 \Isotope\Model\Shipping::registerModelType('flat', 'Isotope\Model\Shipping\Flat');
 
 /**
+ * Documents
+ */
+\Isotope\Model\Document::registerModelType('standard', 'Isotope\Model\Document\Standard');
+
+/**
  * Galleries
  */
 \Isotope\Model\Gallery::registerModelType('standard', 'Isotope\Model\Gallery\Standard');
@@ -263,6 +272,7 @@ $GLOBALS['BE_FFL']['productGroupSelector']   = 'Isotope\Widget\ProductGroupSelec
 $GLOBALS['TL_MODELS']['tl_iso_config']                          = 'Isotope\Model\Config';
 $GLOBALS['TL_MODELS']['tl_iso_addresses']                       = 'Isotope\Model\Address';
 $GLOBALS['TL_MODELS']['tl_iso_baseprice']                       = 'Isotope\Model\BasePrice';
+$GLOBALS['TL_MODELS']['tl_iso_document']                        = 'Isotope\Model\Document';
 $GLOBALS['TL_MODELS']['tl_iso_downloads']                       = 'Isotope\Model\Download';
 $GLOBALS['TL_MODELS']['tl_iso_groups']                          = 'Isotope\Model\Group';
 $GLOBALS['TL_MODELS']['tl_iso_labels']                          = 'Isotope\Model\Label';
