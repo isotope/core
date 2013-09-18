@@ -951,7 +951,7 @@ window.addEvent('domready', function()
         // if we have a root page id (sitemap.xml e.g.) we have to make sure we only consider categories in this tree
         if ($intRoot > 0)
         {
-            $arrPageIds = $this->getChildRecords($intRoot, 'tl_page', false);
+            $arrPageIds = \Database::getInstance()->getChildRecords($intRoot, 'tl_page', false);
             $arrPageIds[] = $intRoot;
 
             $strAllowedPages = ' AND c.page_id IN (' . implode(',', $arrPageIds) . ')';
@@ -1337,7 +1337,7 @@ window.addEvent('domready', function()
                     }
 
                     // Check if a child record of our trail is in categories
-                    $arrChildren = $this->getChildRecords($intTrail, 'tl_page', true);
+                    $arrChildren = \Database::getInstance()->getChildRecords($intTrail, 'tl_page', true);
                     $arrMatch = array_intersect($arrChildren, $arrCategories);
 
                     if (!empty($arrMatch))

@@ -142,7 +142,7 @@ class DC_TablePageId extends \DC_Table
         // Avoid circular references when there is no parent table
         if ($this->Database->fieldExists('page_id', $this->strTable) && !strlen($this->ptable))
         {
-            $cr = $this->getChildRecords($this->intId, $this->strTable);
+            $cr = \Database::getInstance()->getChildRecords($this->intId, $this->strTable);
             $cr[] = $this->intId;
         }
 

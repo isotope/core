@@ -158,7 +158,7 @@ class DC_ProductData extends \DC_Table
 		$this->procedure[] = "language=''";
 
 		// Display products filtered by group
-		$this->procedure[] = "gid IN(" . implode(',', array_map('intval', $this->Database->getChildRecords(array($this->intGroupId), 'tl_iso_groups', false, array($this->intGroupId)))) . ")";
+		$this->procedure[] = "gid IN(" . implode(',', array_map('intval', \Database::getInstance()->getChildRecords(array($this->intGroupId), 'tl_iso_groups', false, array($this->intGroupId)))) . ")";
 
         // Custom filter
         if (is_array($GLOBALS['TL_DCA'][$this->strTable]['list']['sorting']['filter']) && !empty($GLOBALS['TL_DCA'][$this->strTable]['list']['sorting']['filter']))

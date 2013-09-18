@@ -102,7 +102,7 @@ abstract class Module extends Contao_Module
         switch ($strCategoryScope)
         {
             case 'global':
-                $arrCategories = $this->getChildRecords($objPage->rootId, 'tl_page');
+                $arrCategories = \Database::getInstance()->getChildRecords($objPage->rootId, 'tl_page');
                 $arrCategories[] = $objPage->rootId;
                 break;
 
@@ -112,7 +112,7 @@ abstract class Module extends Contao_Module
                 break;
 
             case 'current_and_all_children':
-                $arrCategories = $this->getChildRecords($objPage->id, 'tl_page');
+                $arrCategories = \Database::getInstance()->getChildRecords($objPage->id, 'tl_page');
                 $arrCategories[] = $objPage->id;
                 break;
 

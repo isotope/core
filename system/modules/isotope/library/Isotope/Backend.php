@@ -579,7 +579,7 @@ class Backend extends Contao_Backend
             }
 
             $arrProducts = $objProducts->fetchEach('id');
-            $arrProducts = array_merge($arrProducts, Isotope::getInstance()->call('getChildRecords', array($arrProducts, 'tl_iso_products')));
+            $arrProducts = array_merge($arrProducts, \Database::getInstance()->getChildRecords($arrProducts, 'tl_iso_products'));
         }
 
         // HOOK: allow extensions to define allowed products

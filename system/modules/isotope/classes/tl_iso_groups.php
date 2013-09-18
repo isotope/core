@@ -241,7 +241,7 @@ class tl_iso_groups extends \Backend
      */
     public function deleteGroup($dc)
     {
-        $arrGroups = $this->getChildRecords($dc->id, 'tl_iso_groups');
+        $arrGroups = \Database::getInstance()->getChildRecords($dc->id, 'tl_iso_groups');
         $arrGroups[] = $dc->id;
 
         \Database::getInstance()->query("UPDATE tl_iso_products SET gid=0 WHERE gid IN (" . implode(',', $arrGroups) . ")");
