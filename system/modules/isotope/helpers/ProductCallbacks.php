@@ -12,6 +12,7 @@
 
 namespace Isotope;
 
+use Isotope\Model\Group;
 use Isotope\Model\ProductType;
 
 
@@ -356,9 +357,6 @@ class ProductCallbacks extends \Backend
         // Unset foreign key to activate options_callback
         unset($arrFields['type']['foreignKey']);
 
-        // Set default product type
-        $arrFields['type']['default'] = (int) \Database::getInstance()->execute("SELECT id FROM tl_iso_producttypes WHERE fallback='1'" . ($this->User->isAdmin ? '' : (" AND id IN (" . implode(',', $this->User->iso_product_types) . ")")))->id;
-
         $arrTypes = $this->arrProductTypes;
         $blnVariants = false;
         $act = \Input::get('act');
@@ -480,9 +478,17 @@ class ProductCallbacks extends \Backend
             return;
         }
 
-        if (($intProductTypeId = \Isotope\Backend::getProductTypeForGroup($this->Session->get('iso_products_gid'))) !== false)
+        $objGroup = Group::findByPk($this->Session->get('iso_products_gid'));
+
+        if (null === $objGroup || null === $objGroup->getRelated('product_type')) {
+            $objType = ProductType::findFallback();
+        } else {
+            $objType = $objGroup->getRelated('product_type');
+        }
+
+        if (null !== $objType)
         {
-            $GLOBALS['TL_DCA']['tl_iso_products']['fields']['type']['default'] = $intProductTypeId;
+            $GLOBALS['TL_DCA']['tl_iso_products']['fields']['type']['default'] = $objType->id;
         }
     }
 

@@ -517,32 +517,6 @@ class Backend extends Contao_Backend
 
 
     /**
-     * Get product type for a given group
-     * @param product group id
-     * @return int|false
-     */
-    public static function getProductTypeForGroup($intGroup)
-    {
-        $objDatabase = \Database::getInstance();
-
-        do
-        {
-            $objGroup = $objDatabase->query('SELECT pid, product_type FROM tl_iso_groups WHERE id=' . (int) $intGroup);
-
-            if ($objGroup->product_type > 0)
-            {
-                return $objGroup->product_type;
-            }
-
-            $intGroup = $objGroup->pid;
-        }
-        while ($objGroup->numRows && $intGroup > 0);
-
-        // if there is no default type set we return false
-        return false;
-    }
-
-    /**
      * Returns an array of all allowed product IDs and variant IDs for the current backend user
      * @return array|bool
      */

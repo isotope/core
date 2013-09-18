@@ -16,6 +16,8 @@
 
 namespace Isotope;
 
+use Isotope\Model\Group;
+
 
 /**
  * Class tl_iso_groups
@@ -223,10 +225,9 @@ class tl_iso_groups extends \Backend
         {
             $strProductType = '';
 
-            if (($intProductType = \Isotope\Backend::getProductTypeForGroup($row['id'])) !== false)
+            if (($objProductType = Group::findByPk($row['id'])->getRelated('product_type')) !== null)
             {
-                $strProductType = \Database::getInstance()->execute("SELECT name FROM tl_iso_producttypes WHERE id=" . $intProductType)->name;
-                $strProductType = ' <span style="color:#b3b3b3; padding-left:3px;">[' . $strProductType . ']</span>';
+                $strProductType = ' <span style="color:#b3b3b3; padding-left:3px;">[' . $objProductType->name . ']</span>';
             }
 
             return '<a href="' . $this->addToUrl('gid=' . $row['id']) . '" title="' . specialchars($row['name'] . ' (ID ' . $row['id'] . ')') . '">' . \Image::getHtml('system/modules/isotope/html/folder-network.png', '', $imageAttribute) . ' ' . $label . '</a>' . $strProductType;
