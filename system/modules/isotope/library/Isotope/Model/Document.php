@@ -11,6 +11,7 @@
  */
 
 namespace Isotope\Model;
+
 use Isotope\Interfaces\IsotopeProductCollection;
 
 /**
@@ -18,11 +19,12 @@ use Isotope\Interfaces\IsotopeProductCollection;
  *
  * Parent class for all documents.
  * @copyright  Isotope eCommerce Workgroup 2009-2012
+ * @author     Yanick Witschi <yanick.witschi@terminal42.ch>
  * @author     Andreas Schempp <andreas.schempp@terminal42.ch>
- * @author     Fred Bliss <fred.bliss@intelligentspark.com>
  */
 abstract class Document extends TypeAgent
 {
+
     /**
      * Table name
      * @var string
@@ -93,5 +95,4 @@ abstract class Document extends TypeAgent
             $this->arrCollectionTokens['collection_' . $k] = $v;
         }
     }
-
 }

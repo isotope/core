@@ -11,6 +11,7 @@
  */
 
 namespace Isotope\Interfaces;
+
 use Isotope\Model\Config;
 
 

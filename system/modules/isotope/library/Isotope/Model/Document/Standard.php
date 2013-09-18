@@ -22,10 +22,8 @@ use Isotope\Template;
  *
  * Provide methods to handle Isotope galleries.
  * @copyright  Isotope eCommerce Workgroup 2009-2012
- * @author     Andreas Schempp <andreas.schempp@terminal42.ch>
- * @author     Fred Bliss <fred.bliss@intelligentspark.com>
- * @author     Christian de la Haye <service@delahaye.de>
  * @author     Yanick Witschi <yanick.witschi@terminal42.ch>
+ * @author     Andreas Schempp <andreas.schempp@terminal42.ch>
  */
 class Standard extends Document implements IsotopeDocument
 {
