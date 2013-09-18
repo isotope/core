@@ -126,7 +126,6 @@ $GLOBALS['TL_DCA']['tl_iso_config'] = array
             {currency_legend},priceRoundPrecision,priceRoundIncrement,currency,currencyFormat,currencyPosition,currencySymbol;
             {converter_legend:hide},priceCalculateFactor,priceCalculateMode,currencyAutomator;
             {order_legend:hide},orderPrefix,orderDigits,orderstatus_new,orderstatus_error;
-            {documents_legend},invoiceDocument;
             {config_legend},templateGroup,cartMinSubtotal;
             {products_legend},newProductPeriod',
     ),
@@ -524,17 +523,6 @@ $GLOBALS['TL_DCA']['tl_iso_config'] = array
             'eval'                  => array('mandatory'=>true, 'includeBlankOption'=>true, 'tl_class'=>'w50'),
             'sql'                   => "int(10) unsigned NOT NULL default '0'",
             'relation'              => array('type'=>'hasOne', 'load'=>'lazy'),
-        ),
-        'invoiceDocument' => array
-        (
-            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_config']['invoiceDocument'],
-            'exclude'               => true,
-            'filter'                => true,
-            'inputType'             => 'select',
-            'foreignKey'            => 'tl_iso_document.name',
-            'eval'                  => array('mandatory'=>true, 'includeBlankOption'=>true, 'tl_class'=>'w50'),
-            'relation'              => array('type'=>'hasOne', 'load'=>'lazy'),
-            'sql'                   => "int(10) NOT NULL default '0'"
         ),
         'templateGroup' => array
         (
