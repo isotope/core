@@ -71,16 +71,6 @@ $GLOBALS['TL_DCA']['tl_iso_product_collection'] = array
             'showColumns'           => true,
             'label_callback'        => array('Isotope\tl_iso_product_collection', 'getOrderLabel')
         ),
-        'global_operations' => array
-        (
-            'all' => array
-            (
-                'label'             => &$GLOBALS['TL_LANG']['MSC']['all'],
-                'href'              => 'act=select',
-                'class'             => 'header_edit_all',
-                'attributes'        => 'onclick="Backend.getScrollOffset();"'
-            ),
-        ),
         'operations' => array
         (
             'edit' => array
