@@ -1047,9 +1047,12 @@ window.addEvent('domready', function() {
         $objPrice = \Database::getInstance()->query("SELECT t.id, p.id AS pid, p.tax_class, t.price FROM tl_iso_prices p LEFT JOIN tl_iso_price_tiers t ON p.id=t.pid AND t.min=1 WHERE p.pid={$dc->id} AND p.config_id=0 AND p.member_group=0 AND p.start='' AND p.stop=''");
 
         if (!$objPrice->numRows) {
+
+            $objTax = TaxClass::findFallback();
+
             return array(
                 'value' => '0.00',
-                'unit'  => (int) \Database::getInstance()->execute("SELECT id FROM tl_iso_tax_class WHERE fallback='1'")->id
+                'unit'  => (null === $objTax ? 0 : $objTax->id),
             );
         }
 

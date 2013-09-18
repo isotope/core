@@ -139,4 +139,14 @@ class TaxClass extends \Model
 
         return $fltPrice;
     }
+
+    /**
+     * Find fallback product type
+     * @param   array
+     * @return  TaxClass|null
+     */
+    public static function findFallback(array $arrOptions=array())
+    {
+        return static::findOneBy('fallback', '1', $arrOptions);
+    }
 }
