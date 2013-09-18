@@ -98,12 +98,14 @@ $GLOBALS['TL_DCA']['tl_iso_product_collection'] = array
                 'href'              => 'key=payment',
                 'icon'              => 'system/modules/isotope/assets/money-coin.png',
             ),
+            // @todo add button_callback to disable/hide if not applicable
             'shipping' => array
             (
                 'label'             => &$GLOBALS['TL_LANG']['tl_iso_product_collection']['shipping'],
                 'href'              => 'key=shipping',
                 'icon'              => 'system/modules/isotope/assets/box-label.png',
             ),
+            // @todo add button_callback to disable/hide if not applicable
             'print_document' => array
             (
                 'label'             => &$GLOBALS['TL_LANG']['tl_iso_product_collection']['print_document'],

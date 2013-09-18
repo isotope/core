@@ -432,7 +432,6 @@ class ProductCallbacks extends \Backend
                     $arrFields[$name]['eval']['mandatory'] = $arrConfig[$name]['mandatory'] == 1 ? false : true;
                 }
 
-                // @todo only allow inherit for fields that are enabled in the parent
                 if ($blnVariants && in_array($name, $arrCanInherit) && !$arrAttributes[$name]->isVariantOption() && !in_array($name, array('price', 'published', 'start', 'stop'))) {
                     $arrInherit[$name] = Isotope::formatLabel('tl_iso_products', $name);
                 }
