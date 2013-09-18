@@ -380,9 +380,10 @@ $GLOBALS['TL_DCA']['tl_iso_products'] = array
         (
             'label'                 => &$GLOBALS['TL_LANG']['tl_iso_products']['price'],
             'exclude'               => true,
-            'inputType'             => 'text',
-            'eval'                  => array('mandatory'=>true, 'maxlength'=>13, 'rgxp'=>'price', 'doNotSaveEmpty'=>true, 'tl_class'=>'w50'),
-            'attributes'            => array('legend'=>'pricing_legend', 'fe_sorting'=>true, 'dynamic'=>true, 'systemColumn'=>true),
+            'inputType'             => 'timePeriod',
+            'foreignKey'            => 'tl_iso_tax_class.name',
+            'eval'                  => array('mandatory'=>true, 'maxlength'=>13, 'rgxp'=>'price', 'includeBlankOption'=>true, 'doNotSaveEmpty'=>true, 'tl_class'=>'w50'),
+            'attributes'            => array('legend'=>'pricing_legend', 'fe_sorting'=>true, 'dynamic'=>true, 'systemColumn'=>true, 'type'=>'\Isotope\Model\Attribute\Price'),
             'load_callback' => array
             (
                 array('\Isotope\ProductCallbacks', 'loadPrice'),
@@ -421,23 +422,6 @@ $GLOBALS['TL_DCA']['tl_iso_products'] = array
                 (
                     'doNotShow'     => true,
                 ),
-            ),
-        ),
-        'tax_class' => array
-        (
-            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_products']['tax_class'],
-            'exclude'               => true,
-            'inputType'             => 'select',
-            'foreignKey'            => 'tl_iso_tax_class.name',
-            'eval'                  => array('includeBlankOption'=>true, 'doNotSaveEmpty'=>true, 'tl_class'=>'w50'),
-            'attributes'            => array('legend'=>'pricing_legend', 'dynamic'=>true, 'systemColumn'=>true),
-            'load_callback' => array
-            (
-                array('\Isotope\ProductCallbacks', 'loadTaxClass'),
-            ),
-            'save_callback' => array
-            (
-                array('\Isotope\ProductCallbacks', 'saveTaxClass'),
             ),
         ),
         'baseprice' => array
