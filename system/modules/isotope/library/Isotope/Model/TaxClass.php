@@ -87,14 +87,8 @@ class TaxClass extends \Model
      * @param  array|null
      * @return float
      */
-    public function calculateNetPrice($fltPrice, $arrAddresses=null)
+    public function calculateNetPrice($fltPrice)
     {
-        // @todo: what is this variable used for?
-        if (!is_array($arrAddresses))
-        {
-            $arrAddresses = array('billing'=>Isotope::getCart()->getBillingAddress(), 'shipping'=>Isotope::getCart()->getShippingAddress());
-        }
-
         $objIncludes = $this->getRelated('includes');
 
         if ($objIncludes->id > 0)
