@@ -13,6 +13,8 @@
 namespace Isotope;
 
 use Isotope\Interfaces\IsotopePostsale;
+use Isotope\Model\Payment;
+use Isotope\Model\Shipping;
 
 
 /**
@@ -78,44 +80,34 @@ class PostSale extends \Frontend
             die('Bad Request');
         }
 
-        \System::log('New post-sale request: '.\Environment::get('request'), __METHOD__, TL_ACCESS);
-
         switch (strtolower($strMod)) {
             case 'pay':
-                $objModule = \Database::getInstance()->prepare("SELECT * FROM tl_iso_payment_modules WHERE id=?")->limit(1)->execute($strId);
+                $objMethod = Payment::findByPk($strId);
                 break;
 
             case 'ship':
-                $objModule = \Database::getInstance()->prepare("SELECT * FROM tl_iso_shipping_modules WHERE id=?")->limit(1)->execute($strId);
+                $objMethod = Shipping::findByPk($strId);
                 break;
         }
 
-        if (!$objModule->numRows) {
-            \System::log('Invalid post-sale request (module not found): '.\Environment::get('request'), __METHOD__, TL_ERROR);
+        if (null === $objMethod) {
+            \System::log('Invalid post-sale request (model not found): '.\Environment::get('request'), __METHOD__, TL_ERROR);
 
             header('HTTP/1.1 404 Not Found');
             die('Not Found');
         }
 
-        $strClass = $GLOBALS['ISO_'.strtoupper($strMod)][$objModule->type];
-        if (!strlen($strClass) || !class_exists($strClass)) {
-            \System::log('Invalid post-sale request (class not found): '.\Environment::get('request'), __METHOD__, TL_ERROR);
-
-            header('HTTP/1.1 501 Not Implemented');
-            die('Not Implemented');
-        }
+        \System::log('New post-sale request: '.\Environment::get('request'), __METHOD__, TL_ACCESS);
 
         try {
-            $objModule = new $strClass($objModule->row());
-
-            if (!($objModule instanceof IsotopePostsale)) {
+            if (!($objMethod instanceof IsotopePostsale)) {
                 \System::log('Invalid post-sale request (interface not implemented): '.\Environment::get('request'), __METHOD__, TL_ERROR);
 
                 header('HTTP/1.1 501 Not Implemented');
                 die('Not Implemented');
             }
 
-            return $objModule->processPostsale();
+            return $objMethod->processPostsale();
 
         } catch (\Exception $e) {
             \System::log('Exception in post-sale request: '.$e->getMessage(), __METHOD__, TL_ERROR);
