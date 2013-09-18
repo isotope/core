@@ -279,7 +279,6 @@ $GLOBALS['TL_DCA']['tl_iso_products'] = array
             'eval'                  => array('doNotSaveEmpty'=>true, 'multiple'=>true, 'fieldType'=>'checkbox', 'tl_class'=>'clr'),
             'relation'              => array('type'=>'hasMany', 'load'=>'lazy'),
             'attributes'            => array('legend'=>'general_legend', 'fixed'=>true, 'inherit'=>true, 'systemColumn'=>true),
-            'sql'                   => "blob NULL",
             'load_callback'         => array
             (
                 array('Isotope\ProductCallbacks', 'loadProductCategories'),
