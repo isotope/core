@@ -74,7 +74,6 @@ $GLOBALS['TL_LANG']['tl_iso_products']['filter_new']                = 'New produ
 $GLOBALS['TL_LANG']['tl_iso_products']['filter_new_today']          = 'Added today';
 $GLOBALS['TL_LANG']['tl_iso_products']['filter_new_week']           = 'Added this week';
 $GLOBALS['TL_LANG']['tl_iso_products']['filter_new_month']          = 'Added this month';
-$GLOBALS['TL_LANG']['tl_iso_products']['tools']                     = array('Tools', 'More options for product management');
 $GLOBALS['TL_LANG']['tl_iso_products']['groups']                    = array('Product groups', 'Manage product groups');
 $GLOBALS['TL_LANG']['tl_iso_products']['import']                    = array('Import assets', 'Import images and other media from a folder');
 $GLOBALS['TL_LANG']['tl_iso_products']['prices']                    = array('Manage prices', 'Manage prices for product ID %s');

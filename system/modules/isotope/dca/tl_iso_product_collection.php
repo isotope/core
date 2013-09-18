@@ -96,32 +96,23 @@ $GLOBALS['TL_DCA']['tl_iso_product_collection'] = array
                 'icon'              => 'delete.gif',
                 'attributes'        => 'onclick="if (!confirm(\'' . $GLOBALS['TL_LANG']['MSC']['deleteConfirm'] . '\')) return false; Backend.getScrollOffset();"'
             ),
-            'info' => array
-            (
-                'label'             => &$GLOBALS['TL_LANG']['tl_iso_product_collection']['info'],
-                'icon'              => 'show.gif',
-                'attributes'        => 'class="invisible isotope-contextmenu"',
-            ),
             'show' => array
             (
                 'label'             => &$GLOBALS['TL_LANG']['tl_iso_product_collection']['show'],
                 'href'              => 'act=show',
                 'icon'              => 'show.gif',
-                'attributes'        => 'class="isotope-tools"',
             ),
             'payment' => array
             (
                 'label'             => &$GLOBALS['TL_LANG']['tl_iso_product_collection']['payment'],
                 'href'              => 'key=payment',
                 'icon'              => 'system/modules/isotope/assets/money-coin.png',
-                'attributes'        => 'class="isotope-tools"',
             ),
             'shipping' => array
             (
                 'label'             => &$GLOBALS['TL_LANG']['tl_iso_product_collection']['shipping'],
                 'href'              => 'key=shipping',
                 'icon'              => 'system/modules/isotope/assets/box-label.png',
-                'attributes'        => 'class="isotope-tools"',
             ),
             'print_document' => array
             (

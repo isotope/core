@@ -13,14 +13,6 @@
  */
 
 
-.header_isotope_tools
-{
-    padding:2px 0px 3px 20px;
-    background-image:url("lightning.png");
-    background-position:left center;
-    background-repeat:no-repeat;
-}
-
 .header_import_assets
 {
     padding:2px 0px 3px 20px;
@@ -273,38 +265,6 @@ h3.inherit,
     background-color: #f8f8f8;
     padding: 2px 2px 2px 0;
     margin: 14px 0 1px 0
-}
-
-#isotopetoolsmenu,
-#isotopefiltermenu,
-#isotope-contextmenu
-{
-    display:none;
-    position:absolute;
-    z-index:99999999;
-    background-color:#fff;
-    border:1px solid #ccc;
-    padding:3px 6px;
-    -moz-border-radius:4px;
-    -webkit-border-radius:4px;
-    border-radius:4px;
-}
-
-#isotopetoolsmenu a,
-#isotopefiltermenu a,
-#isotope-contextmenu a
-{
-    display:block;
-    padding-top: 3px;
-    white-space: nowrap;
-}
-
-#isotopetoolsmenu img,
-#isotopefiltermenu img,
-#isotope-contextmenu img
-{
-    padding-bottom: 1px;
-    vertical-align: middle;
 }
 
 body.iso_be_overview .tip-wrap{

@@ -569,82 +569,6 @@ var Isotope =
         }
     },
 
-    initializeToolsMenu: function()
-    {
-        var tools = document.getElements('#tl_buttons .isotope-tools');
-
-        if (tools.length < 1)
-            return;
-
-        // Remove the separators between each button
-        tools.each(function(node) {
-            node.previousSibling.nodeValue = '';
-        });
-
-        // Add trigger to tools buttons
-        document.getElement('a.header_isotope_tools').addEvent('click', function(e)
-        {
-            document.id('isotopetoolsmenu').setStyle('display', 'block');
-            return false;
-        })
-        .setStyle('display', 'inline');
-
-        var div = new Element('div',
-        {
-            'id': 'isotopetoolsmenu',
-            'styles': {
-                'top': ($$('a.header_isotope_tools')[0].getPosition().y + 22)
-            }
-        })
-        .adopt(tools)
-        .inject(document.id(document.body))
-        .setStyle('left', $$('a.header_isotope_tools')[0].getPosition().x - 7);
-
-        // Hide context menu
-        document.id(document.body).addEvent('click', function()
-        {
-            document.id('isotopetoolsmenu').setStyle('display', 'none');
-        });
-    },
-
-    initializeFilterMenu: function()
-    {
-        var tools = document.getElements('#tl_buttons .isotope-filter');
-
-        if (tools.length < 1)
-            return;
-
-        // Remove the separators between each button
-        tools.each(function(node) {
-            node.previousSibling.nodeValue = '';
-        });
-
-        // Add trigger to tools buttons
-        document.getElement('a.header_iso_filter').addEvent('click', function(e)
-        {
-            document.id('isotopefiltermenu').setStyle('display', 'block');
-            return false;
-        })
-        .setStyle('display', 'inline');
-
-        var div = new Element('div',
-        {
-            'id': 'isotopefiltermenu',
-            'styles': {
-                'top': ($$('a.header_iso_filter')[0].getPosition().y + 22)
-            }
-        })
-        .adopt(tools)
-        .inject(document.id(document.body))
-        .setStyle('left', $$('a.header_iso_filter')[0].getPosition().x - 7);
-
-        // Hide context menu
-        document.id(document.body).addEvent('click', function()
-        {
-            document.id('isotopefiltermenu').setStyle('display', 'none');
-        });
-    },
-
     /**
      * Enable blank select option
      */
@@ -732,8 +656,6 @@ var Isotope =
 window.addEvent('domready', function()
 {
     Isotope.addInteractiveHelp();
-    Isotope.initializeToolsMenu();
-    Isotope.initializeFilterMenu();
     Isotope.makeSelectExtendable();
     Isotope.makeWizardsSortable();
 }).addEvent('structure', function()
