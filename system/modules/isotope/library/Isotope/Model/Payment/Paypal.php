@@ -170,7 +170,6 @@ class Paypal extends Postsale implements IsotopePayment
             $arrData['quantity_'.$i]        = $objItem->quantity;
         }
 
-
         foreach (Isotope::getCart()->getSurcharges() as $objSurcharge) {
 
             if (!$objSurcharge->add) {
@@ -187,8 +186,7 @@ class Paypal extends Postsale implements IsotopePayment
             $arrData['amount_'.$i] = $objSurcharge->total_price;
         }
 
-
-        $objTemplate = new \Isotope\Template('iso_payment_datatrans');
+        $objTemplate = new \Isotope\Template('iso_payment_paypal');
         $objTemplate->setData($this->arrData);
 
         $objTemplate->id = $this->id;
