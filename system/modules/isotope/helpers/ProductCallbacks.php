@@ -14,6 +14,7 @@ namespace Isotope;
 
 use Isotope\Model\Group;
 use Isotope\Model\ProductType;
+use Isotope\Model\TaxClass;
 
 
 /**
