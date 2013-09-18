@@ -26,8 +26,8 @@ $GLOBALS['TL_LANG']['tl_iso_payment_modules']['maximum_total']                  
 $GLOBALS['TL_LANG']['tl_iso_payment_modules']['countries']                              = array('Available countries', 'Select the countries where this payment method may be used (customer\'s billing address).');
 $GLOBALS['TL_LANG']['tl_iso_payment_modules']['shipping_modules']                       = array('Shipping methods', 'You can restrict this payment method to certain shipping methods (e.g. Cash only when picking up).');
 $GLOBALS['TL_LANG']['tl_iso_payment_modules']['product_types']                          = array('Product types', 'You can restrict this payment method to certain product types. If the cart contains a product type you have not selected, the payment method is not available.');
-$GLOBALS['TL_LANG']['tl_iso_payment_modules']['price']                                  = array('Price', '');
-$GLOBALS['TL_LANG']['tl_iso_payment_modules']['tax_class']                              = array('Tax Class', '');
+$GLOBALS['TL_LANG']['tl_iso_payment_modules']['price']                                  = array('Price', 'Enter a price or percent value (e.g. "10" or "10%").');
+$GLOBALS['TL_LANG']['tl_iso_payment_modules']['tax_class']                              = array('Tax Class', 'Please select a tax class for the price.');
 $GLOBALS['TL_LANG']['tl_iso_payment_modules']['trans_type']                             = array('Transaction type', 'Select if you want to instantly capture the money or authorize (and hold) for a later transaction (e.g. when shipping).');
 $GLOBALS['TL_LANG']['tl_iso_payment_modules']['paypal_account']                         = array('PayPal Account', 'Enter the default email address from your PayPal-Account. Note: Check the correct spelling, and case-sensitive.');
 $GLOBALS['TL_LANG']['tl_iso_payment_modules']['payflowpro_user']                        = array('Paypal Payflow Pro username', '');

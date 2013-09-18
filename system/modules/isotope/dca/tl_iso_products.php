@@ -53,10 +53,12 @@ $GLOBALS['TL_DCA']['tl_iso_products'] = array
         'onversion_callback' => array
         (
             array('Isotope\ProductCallbacks', 'versionProductCategories'),
+            // price version callbacks are added in the onload_callback (buildPaletteString)
         ),
         'onrestore_callback' => array
         (
             array('Isotope\ProductCallbacks', 'restoreProductCategories'),
+            // price version callbacks are added in the onload_callback (buildPaletteString)
         ),
         'sql' => array
         (
