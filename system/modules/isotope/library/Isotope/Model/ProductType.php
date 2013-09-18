@@ -126,6 +126,7 @@ class ProductType extends \Model
 
     /**
      * Get all product types that are in use
+     * @return  Collection|null
      */
     public static function findAllUsed()
     {

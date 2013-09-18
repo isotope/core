@@ -14,7 +14,7 @@ namespace Isotope\Model;
 
 
 /**
- * ProductType defines a product configuration
+ * Label defines a translation
  *
  * @copyright  Isotope eCommerce Workgroup 2009-2012
  * @author     Andreas Schempp <andreas.schempp@terminal42.ch>
