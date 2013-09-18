@@ -76,8 +76,7 @@ class ProductCallbacks extends \Backend
      */
     public static function getInstance()
     {
-        if (!is_object(static::$objInstance))
-        {
+        if (!is_object(static::$objInstance)) {
             static::$objInstance = new static();
 
             static::$objInstance->arrProductTypes = array();
@@ -91,57 +90,47 @@ class ProductCallbacks extends \Backend
                     $objType = $objProductTypes->current();
                     static::$objInstance->arrProductTypes[$objProductTypes->id] = $objType;
 
-                    if ($objType->hasDownloads())
-                    {
+                    if ($objType->hasDownloads()) {
                         $blnDownloads = true;
                     }
 
-                    if ($objType->hasVariants())
-                    {
+                    if ($objType->hasVariants()) {
                         $blnVariants = true;
                     }
 
-                    if ($objType->hasAdvancedPrices())
-                    {
+                    if ($objType->hasAdvancedPrices()) {
                         $blnAdvancedPrices = true;
                     }
                 }
             }
 
             // If no downloads are enabled in any product type, we do not need the option
-            if (!$blnDownloads)
-            {
+            if (!$blnDownloads) {
                 unset($GLOBALS['TL_DCA']['tl_iso_products']['list']['operations']['downloads']);
-            }
-            else
-            {
+            } else {
                 // Cache number of downloads
                 static::$objInstance->arrDownloads = array();
 
                 $objDownloads = static::$objInstance->Database->query("SELECT pid, COUNT(id) AS total FROM tl_iso_downloads GROUP BY pid");
 
-                while ($objDownloads->next())
-                {
+                while ($objDownloads->next()) {
                     static::$objInstance->arrDownloads[$objDownloads->pid] = $objDownloads->total;
                 }
             }
 
             // Disable all variant related operations
-            if (!$blnVariants)
-            {
+            if (!$blnVariants) {
                 unset($GLOBALS['TL_DCA']['tl_iso_products']['list']['global_operations']['toggleVariants']);
                 unset($GLOBALS['TL_DCA']['tl_iso_products']['list']['operations']['generate']);
             }
 
             // Disable prices button if not enabled in any product type
-            if (!$blnAdvancedPrices)
-            {
+            if (!$blnAdvancedPrices) {
                 unset($GLOBALS['TL_DCA']['tl_iso_products']['list']['operations']['prices']);
             }
 
             // Disable related categories if none are defined
-            if (static::$objInstance->Database->query("SELECT COUNT(id) AS total FROM tl_iso_related_categories")->total == 0)
-            {
+            if (static::$objInstance->Database->query("SELECT COUNT(id) AS total FROM tl_iso_related_categories")->total == 0) {
                 unset($GLOBALS['TL_DCA']['tl_iso_products']['list']['operations']['related']);
             }
         }
@@ -495,8 +484,7 @@ class ProductCallbacks extends \Backend
      */
     public function loadDefaultProductType($dc)
     {
-        if (\Input::get('act') !== 'create')
-        {
+        if (\Input::get('act') !== 'create') {
             return;
         }
 
