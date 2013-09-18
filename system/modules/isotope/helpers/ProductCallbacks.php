@@ -392,7 +392,8 @@ class ProductCallbacks extends \Backend
             $objProduct = \Database::getInstance()->prepare("SELECT p1.pid, p1.type, p2.type AS parent_type FROM tl_iso_products p1 LEFT JOIN tl_iso_products p2 ON p1.pid=p2.id WHERE p1.id=?")->execute(\Input::get('id'));
 
             if ($objProduct->numRows) {
-                $arrTypes = array($this->arrProductTypes[($objProduct->pid > 0 ? $objProduct->parent_type : $objProduct->type)]);
+                $objType = $this->arrProductTypes[($objProduct->pid > 0 ? $objProduct->parent_type : $objProduct->type)];
+                $arrTypes = null === $objType ? array() : array($objType);
 
                 if ($objProduct->pid > 0 || $act != 'edit') {
                     $blnVariants = true;
