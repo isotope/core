@@ -239,8 +239,10 @@ $GLOBALS['TL_DCA']['tl_iso_products'] = array
         ),
         'gid' => array
         (
+            'foreignKey'            => 'tl_iso_groups.name',
             'attributes'            => array('systemColumn'=>true),
             'sql'                   => "int(10) unsigned NOT NULL default '0'",
+            'relation'              => array('type'=>'hasOne', 'load'=>'lazy'),
         ),
         'tstamp' => array
         (
