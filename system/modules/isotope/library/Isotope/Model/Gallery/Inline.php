@@ -33,56 +33,37 @@ class Inline extends Standard
 
     /**
      * Generate gallery and return it as HTML string
-     * @param string
-     * @param integer
-     * @param boolean
-     * @return string
+     * @param   integer
+     * @param   bool
+     * @return  string
      */
-    public function generateGallery($strType='gallery', $intSkip=0, $blnForce=false)
+    public function generateGallery($intSkip=0, $blnForce=false)
     {
         // Do not render gallery if there are no additional image
         $total = count($this->arrFiles);
 
-        if (($total == 1 || $total <= $intSkip) && !$blnForce)
-        {
-            return $this->generateAttribute($this->name . '_gallery', ' ', $strType);
+        if (($total == 1 || $total <= $intSkip) && !$blnForce) {
+            return '';
         }
 
-        $strGallery = '';
-
-        foreach ($this->arrFiles as $i => $arrFile)
-        {
-            if ($i < $intSkip)
-            {
-                continue;
-            }
-
-            $objTemplate = new \Isotope\Template($this->strTemplate);
-
-            $objTemplate->setData($arrFile);
-            $objTemplate->id = $i;
-            $objTemplate->mode = 'gallery';
-            $objTemplate->type = $strType;
-            $objTemplate->name = $this->name;
-            $objTemplate->product_id = $this->product_id;
-            $objTemplate->href = $this->href;
-
-            list($objTemplate->link, $objTemplate->rel) = explode('|', $arrFile['link']);
-
-            if ($i == 0)
-            {
-                $objTemplate->class = 'active';
-            }
-
-            $strGallery .= $objTemplate->parse();
-        }
-
-        return $this->generateAttribute($this->name . '_gallery', $strGallery, $strType);
+        return parent::generateGallery($intSkip);
     }
 
-
     /**
-     * Inject AJAX script
+     * Add CSS ID to main image so we can replace it
+     * @param   object
+     * @param   string
+     * @param   array
+     * @return  string
      */
-    protected function injectAjax() {}
+    protected function addImageToTemplate(\Isotope\Template $objTemplate, $strType, array $arrFile)
+    {
+        parent::addImageToTemplate($objTemplate, $strType, $arrFile);
+
+        $objTemplate->uid = spl_object_hash($this);
+
+        if ($strType == 'gallery') {
+            $objTemplate->link = $arrFile['main'];
+        }
+    }
 }

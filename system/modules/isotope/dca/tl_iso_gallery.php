@@ -114,6 +114,7 @@ $GLOBALS['TL_DCA']['tl_iso_gallery'] = array
         'default'                   => '{name_legend},name,type',
         'standard'                  => '{name_legend},name,type,anchor,placeholder;{size_legend},main_size,gallery_size;{watermark_legend:hide},main_watermark_image,main_watermark_position,gallery_watermark_image,gallery_watermark_position',
         'standardlightbox'          => '{name_legend},name,type,anchor,placeholder;{size_legend},main_size,gallery_size,lightbox_size;{watermark_legend:hide},main_watermark_image,main_watermark_position,gallery_watermark_image,gallery_watermark_position,lightbox_watermark_image,lightbox_watermark_position',
+        'inline'                    => '{name_legend},name,type,placeholder;{size_legend},main_size,gallery_size;{watermark_legend:hide},main_watermark_image,main_watermark_position,gallery_watermark_image,gallery_watermark_position',
     ),
 
     // Fields
