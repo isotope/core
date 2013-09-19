@@ -50,7 +50,7 @@ class RelatedProducts extends ProductList
             return $objTemplate->parse();
         }
 
-        if (!strlen(\Input::get('product')))
+        if (!\Isotope\Frontend::getAutoItem('product'))
         {
             return '';
         }
@@ -72,7 +72,7 @@ class RelatedProducts extends ProductList
      */
     protected function findProducts($arrCacheIds=null)
     {
-        $strAlias = \Input::get('product');
+        $strAlias = \Isotope\Frontend::getAutoItem('product');
         $arrIds = array(0);
         $arrJumpTo = array();
 
@@ -92,7 +92,9 @@ class RelatedProducts extends ProductList
                 }
             }
         }
+        // @todo I deleted passing this as a second param (ex-reader-page without changing anything at some other place. Do we even need that?
+        //  \Isotope\Frontend::getReaderPageId(null, $this->iso_reader_jumpTo)
 
-        return \Isotope\Frontend::getProducts($arrIds, \Isotope\Frontend::getReaderPageId(null, $this->iso_reader_jumpTo));
+        return \Isotope\Frontend::getProducts($arrIds);
     }
 }

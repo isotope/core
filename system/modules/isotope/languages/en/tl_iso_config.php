@@ -76,6 +76,8 @@ $GLOBALS['TL_LANG']['tl_iso_config']['iwWatermark']                 = array('Wat
 $GLOBALS['TL_LANG']['tl_iso_config']['iwPosition']                  = array('Position');
 $GLOBALS['TL_LANG']['tl_iso_config']['ecb.int']                     = 'European Central Bank';
 $GLOBALS['TL_LANG']['tl_iso_config']['admin.ch']                    = 'Swiss Federal Department of Finance';
+$GLOBALS['TL_LANG']['tl_iso_config']['urlMatrix']['original']       = 'Default (original)';
+$GLOBALS['TL_LANG']['tl_iso_config']['urlMatrix']['custom']         = 'Custom';
 
 /**
  * Buttons
@@ -97,4 +99,5 @@ $GLOBALS['TL_LANG']['tl_iso_config']['currency_legend']             = 'Currency 
 $GLOBALS['TL_LANG']['tl_iso_config']['converter_legend']            = 'Currency conversion';
 $GLOBALS['TL_LANG']['tl_iso_config']['order_legend']                = 'Orders';
 $GLOBALS['TL_LANG']['tl_iso_config']['images_legend']               = 'Images';
+$GLOBALS['TL_LANG']['tl_iso_config']['url_legend']                  = 'URL settings';
 $GLOBALS['TL_LANG']['tl_iso_config']['products_legend']             = 'Products';

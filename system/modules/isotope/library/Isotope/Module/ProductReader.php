@@ -12,6 +12,8 @@
 
 namespace Isotope\Module;
 
+use Isotope\Isotope;
+
 
 /**
  * Class ProductReader
@@ -52,7 +54,7 @@ class ProductReader extends Module
         }
 
         // Return if no product has been specified
-        if (\Input::get('product') == '')
+        if (\Isotope\Frontend::getAutoItem('product') == '')
         {
             return '';
         }
@@ -69,7 +71,7 @@ class ProductReader extends Module
     {
         global $objPage;
 
-        $objProduct = \Isotope\Frontend::getProductByAlias(\Input::get('product'), \Isotope\Frontend::getReaderPageId());
+        $objProduct = \Isotope\Frontend::getProductByAlias(\Isotope\Frontend::getAutoItem('product'));
 
         if (!$objProduct)
         {
@@ -90,6 +92,7 @@ class ProductReader extends Module
             'gallery'       => $objProduct->getRelated('type')->reader_gallery,
             'buttons'       => deserialize($this->iso_buttons, true),
             'useQuantity'   => $this->iso_use_quantity,
+            'jumpTo'        => $objPage->id,
         );
 
         if (\Environment::get('isAjaxRequest') && \Input::post('AJAX_MODULE') == $this->id && \Input::post('AJAX_PRODUCT') == $objProduct->id) {

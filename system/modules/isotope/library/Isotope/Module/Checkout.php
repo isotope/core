@@ -93,13 +93,7 @@ class Checkout extends Module
             return $objTemplate->parse();
         }
 
-        // Set the step from the auto_item parameter
-        if ($GLOBALS['TL_CONFIG']['useAutoItem'] && isset($_GET['auto_item']))
-        {
-            \Input::setGet('step', \Input::get('auto_item'));
-        }
-
-        $this->strCurrentStep = \Input::get('step');
+        $this->strCurrentStep = \Isotope\Frontend::getAutoItem('step');
 
         return parent::generate();
     }
@@ -150,7 +144,7 @@ class Checkout extends Module
             return;
         }
 
-        if (\Input::get('step') == '') {
+        if (\Isotope\Frontend::getAutoItem('step') == '') {
             if ($this->iso_forward_review) {
                 static::redirectToStep('review');
             }
@@ -543,9 +537,10 @@ class Checkout extends Module
     {
         global $objPage;
 
-        // Support for auto_item parameter
-        if (!$GLOBALS['TL_CONFIG']['useAutoItem']) {
-            $strStep = 'step/' . $strStep;
+        $strUrlParam = 'step';
+
+        if ($strUrlParam) {
+            $strStep = $strUrlParam . '/' . $strStep;
         }
 
         return \Controller::generateFrontendUrl($objPage->row(), '/' . $strStep);

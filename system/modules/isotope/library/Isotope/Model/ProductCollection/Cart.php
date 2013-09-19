@@ -12,6 +12,7 @@
 
 namespace Isotope\Model\ProductCollection;
 
+use Isotope\Interfaces\IsotopeProduct;
 use Isotope\Isotope;
 use Isotope\Interfaces\IsotopeProductCollection;
 use Isotope\Model\Address;

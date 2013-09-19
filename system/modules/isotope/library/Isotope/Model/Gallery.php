@@ -45,14 +45,14 @@ abstract class Gallery extends TypeAgent
 
     /**
      * Create a gallery for product, falls back to standard gallery if none is defined
-     * @param   int
      * @param   IsotopeProduct
      * @param   string
+     * @param   array
      * @return  Gallery
      */
-    public static function createForProductAttribute($intId, IsotopeProduct $objProduct, $strAttribute)
+    public static function createForProductAttribute(IsotopeProduct $objProduct, $strAttribute, $arrConfig)
     {
-        $objGallery = static::findByPk($intId);
+        $objGallery = static::findByPk((int) $arrConfig['gallery']);
 
         if (null === $objGallery) {
             $objGallery = new \Isotope\Model\Gallery\Standard();
@@ -61,7 +61,7 @@ abstract class Gallery extends TypeAgent
         $objGallery->setName($objProduct->formSubmit . '_' . $strAttribute);
         $objGallery->setFiles($objProduct->$strAttribute); //Isotope::mergeMediaData($objProduct->{$this->field_name}, deserialize($objProduct->{$strKey.'_fallback'})));
         $objGallery->product_id = ($objProduct->pid ? $objProduct->pid : $objProduct->id);
-        $objGallery->href_reader = $objProduct->href_reader;
+        $objGallery->href = $objProduct->generateUrl($arrConfig['jumpTo']);
 
         return $objGallery;
     }

@@ -70,7 +70,7 @@ class ProductFilter extends Module
         }
 
         // Hide product list in reader mode if the respective setting is enabled
-        if ($this->iso_hide_list && \Input::get('product') != '')
+        if ($this->iso_hide_list && \Isotope\Frontend::getAutoItem('product') != '')
         {
             return '';
         }

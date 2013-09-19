@@ -65,7 +65,7 @@ class Inline extends Standard
             $objTemplate->type = $strType;
             $objTemplate->name = $this->name;
             $objTemplate->product_id = $this->product_id;
-            $objTemplate->href_reader = $this->href_reader;
+            $objTemplate->href = $this->href;
 
             list($objTemplate->link, $objTemplate->rel) = explode('|', $arrFile['link']);
 

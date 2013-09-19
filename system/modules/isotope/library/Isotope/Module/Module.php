@@ -163,7 +163,7 @@ abstract class Module extends Contao_Module
                 break;
 
             case 'product':
-                $objProduct = \Isotope\Frontend::getProductByAlias(\Input::get('product'));
+                $objProduct = \Isotope\Frontend::getProductByAlias(\Isotope\Frontend::getAutoItem('product'));
 
                 if ($objProduct !== null)
                 {

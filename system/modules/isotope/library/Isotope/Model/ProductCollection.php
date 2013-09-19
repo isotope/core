@@ -813,11 +813,12 @@ abstract class ProductCollection extends TypeAgent
 
     /**
      * Add a product to the collection
-     * @param   object The product object
-     * @param   integer How many products to add
+     * @param   object
+     * @param   integer
+     * @param   array
      * @return  ProductCollectionItem
      */
-    public function addProduct(IsotopeProduct $objProduct, $intQuantity)
+    public function addProduct(IsotopeProduct $objProduct, $intQuantity, array $arrConfig=array())
     {
         // !HOOK: additional functionality when adding product to collection
         if (isset($GLOBALS['ISO_HOOKS']['addProductToCollection']) && is_array($GLOBALS['ISO_HOOKS']['addProductToCollection'])) {
@@ -874,7 +875,7 @@ abstract class ProductCollection extends TypeAgent
             $objItem->quantity          = (int) $intQuantity;
             $objItem->price             = (float) ($objProduct->getPrice($this) ? $objProduct->getPrice($this)->getAmount((int) $intQuantity) : 0);
             $objItem->tax_free_price    = (float) ($objProduct->getPrice($this) ? $objProduct->getPrice($this)->getNetAmount((int) $intQuantity) : 0);
-            $objItem->href_reader       = $objProduct->href_reader;
+            $objItem->jumpTo            = (int) $arrConfig['jumpTo'];
 
             $objItem->save();
 
@@ -1136,7 +1137,8 @@ abstract class ProductCollection extends TypeAgent
      */
     public function addToTemplate(\Isotope\Template $objTemplate, $varCallable=null)
     {
-        $objModule = $this;
+        // @todo config should be passed from the frontend module
+        $arrConfig = array();
         $arrGalleries = array();
         $arrItems = $this->addItemsToTemplate($objTemplate, $varCallable);
 
@@ -1161,16 +1163,21 @@ abstract class ProductCollection extends TypeAgent
             return $objAttribute->generate($objItem->getProduct());
         };
 
-        $objTemplate->getGallery = function($strAttribute, $objItem) use ($objModule, &$arrGalleries) {
+        $objTemplate->getGallery = function($strAttribute, $objItem) use ($arrConfig, &$arrGalleries) {
 
             if (!$objItem->hasProduct()) {
                 return new \Isotope\Model\Gallery\Standard();
             }
 
             $strCacheKey = 'product' . $objItem->product_id . '_' . $strAttribute;
+            $arrConfig['jumpTo'] = $objItem->jumpTo;
 
             if (!isset($arrGalleries[$strCacheKey])) {
-                $arrGalleries[$strCacheKey] = Gallery::createForProductAttribute($objModule->gallery, $objItem->getProduct(), $strAttribute);
+                $arrGalleries[$strCacheKey] = Gallery::createForProductAttribute(
+                    $objItem->getProduct(),
+                    $strAttribute,
+                    $arrConfig
+                );
             }
 
             return $arrGalleries[$strCacheKey];
@@ -1281,6 +1288,10 @@ abstract class ProductCollection extends TypeAgent
             'raw'               => $objItem->row(),
             'rowClass'          => trim('product ' . (($blnHasProduct && $objProduct->isNew()) ? 'new ' : '') . $objProduct->cssID[1]),
         );
+
+        if ($objItem->jumpTo && $blnHasProduct) {
+            $arrItem['href'] = $objProduct->generateUrl((int) $objItem->jumpTo);
+        }
 
         unset($GLOBALS['ACTIVE_PRODUCT']);
 

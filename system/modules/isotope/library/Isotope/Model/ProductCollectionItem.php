@@ -92,7 +92,6 @@ class ProductCollectionItem extends \Model
 
             $this->objProduct = $strClass::findByPk($this->product_id);
             $this->objProduct->setOptions(deserialize($this->options));
-            $this->objProduct->reader_jumpTo_Override = $this->href_reader;
         }
 
         return $this->objProduct;

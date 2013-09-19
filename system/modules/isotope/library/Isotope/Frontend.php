@@ -73,12 +73,12 @@ class Frontend extends \Frontend
      * @param object
      * @param array
      */
-    public function addToCart($objProduct, $arrConfig=array())
+    public function addToCart($objProduct, array $arrConfig=array())
     {
         $objModule = $arrConfig['module'];
         $intQuantity = ($objModule->iso_use_quantity && intval(\Input::post('quantity_requested')) > 0) ? intval(\Input::post('quantity_requested')) : 1;
 
-        if (Isotope::getCart()->addProduct($objProduct, $intQuantity) !== false)
+        if (Isotope::getCart()->addProduct($objProduct, $intQuantity, $arrConfig) !== false)
         {
             $_SESSION['ISO_CONFIRM'][] = $GLOBALS['TL_LANG']['MSC']['addedToCart'];
 
@@ -174,7 +174,7 @@ class Frontend extends \Frontend
             // {{product::attribute}}                - gets the data of the current product ($GLOBALS['ACTIVE_PRODUCT'] or GET parameter "product")
             // {{product::attribute::product_id}}    - gets the data of the specified product ID
 
-            $objProduct = (count($arrTag) == 3) ? static::getProduct($arrTag[2]) : ($GLOBALS['ACTIVE_PRODUCT'] ? $GLOBALS['ACTIVE_PRODUCT'] : static::getProductByAlias($this->Input->get('product')));
+            $objProduct = (count($arrTag) == 3) ? static::getProduct($arrTag[2]) : ($GLOBALS['ACTIVE_PRODUCT'] ? $GLOBALS['ACTIVE_PRODUCT'] : static::getProductByAlias(static::getAutoItem('product')));
 
             return ($objProduct !== null) ? $objProduct->{$arrTag[1]} : '';
         }
@@ -191,7 +191,7 @@ class Frontend extends \Frontend
     public function addNavigationClass(&$objTemplate)
     {
         // Unset hook to prevent further execution on non-reader pages
-        if (\Input::get('product') == '')
+        if (Frontend::getAutoItem('product') == '')
         {
             unset($GLOBALS['TL_HOOKS']['parseTemplate'][array_search(array('Isotope\Frontend', 'fixNavigationTrail'), $GLOBALS['TL_HOOKS']['parseTemplate'])]);
 
@@ -206,7 +206,7 @@ class Frontend extends \Frontend
             if ($arrTrail == null)
             {
                 $arrTrail = array();
-                $objProduct = static::getProductByAlias(\Input::get('product'));
+                $objProduct = static::getProductByAlias(static::getAutoItem('product'));
 
                 // getProductByAlias will return null if the product is not found
                 if ($objProduct !== null)
@@ -454,13 +454,13 @@ class Frontend extends \Frontend
      */
     public function translateProductUrls($arrGet, $strLanguage, $arrRootPage)
     {
-        if (\Input::get('product') != '')
+        if (static::getAutoItem('product') != '')
         {
-            $arrGet['url']['product'] = \Input::get('product');
+            $arrGet['url']['product'] = static::getAutoItem('product');
         }
-        elseif (\Input::get('step') != '')
+        elseif (static::getAutoItem('step') != '')
         {
-            $arrGet['url']['step'] = \Input::get('step');
+            $arrGet['url']['step'] = static::getAutoItem('step');
         }
         elseif (\Input::get('uid') != '')
         {
@@ -693,11 +693,10 @@ window.addEvent('domready', function()
     /**
      * Shortcut for a single product by ID or from database result
      * @param IsotopeProduct|int
-     * @param integer
      * @param boolean
      * @return IsotopeProduct|null
      */
-    public static function getProduct($objProduct, $intReaderPage=0, $blnCheckAvailability=true)
+    public static function getProduct($objProduct, $blnCheckAvailability=true)
     {
         if (is_numeric($objProduct))
         {
@@ -714,8 +713,6 @@ window.addEvent('domready', function()
             return null;
         }
 
-        $objProduct->reader_jumpTo = $intReaderPage;
-
         return $objProduct;
     }
 
@@ -723,26 +720,24 @@ window.addEvent('domready', function()
     /**
      * Shortcut for a single product by alias (from url?)
      * @param string
-     * @param integer
      * @param boolean
      * @return IsotopeProduct|null
      */
-    public static function getProductByAlias($strAlias, $intReaderPage=0, $blnCheckAvailability=true)
+    public static function getProductByAlias($strAlias, $blnCheckAvailability=true)
     {
-        return static::getProduct(Product::findPublishedByIdOrAlias($strAlias), $intReaderPage, $blnCheckAvailability);
+        return static::getProduct(Product::findPublishedByIdOrAlias($strAlias), $blnCheckAvailability);
     }
 
 
     /**
      * Generate products from database result or array of IDs
      * @param \Database\Result|array
-     * @param integer
      * @param boolean
      * @param array
      * @param array
      * @return array
      */
-    public static function getProducts($objProducts, $intReaderPage=0, $blnCheckAvailability=true, array $arrFilters=array(), array $arrSorting=array())
+    public static function getProducts($objProducts, $blnCheckAvailability=true, array $arrFilters=array(), array $arrSorting=array())
     {
         // Could be an empty array
         if (empty($objProducts)) {
@@ -767,7 +762,7 @@ window.addEvent('domready', function()
         $objProducts->reset();
 
         while ($objProducts->next()) {
-            $objProduct = \Isotope\Frontend::getProduct($objProducts->current(), $intReaderPage, $blnCheckAvailability);
+            $objProduct = \Isotope\Frontend::getProduct($objProducts->current(), $blnCheckAvailability);
 
             if ($objProduct !== null) {
                 $arrProducts[$objProducts->id] = $objProduct;
@@ -995,6 +990,8 @@ window.addEvent('domready', function()
                     {
                         $strDomain = ($arrRoot[$objJump->rootId]->useSSL ? 'https://' : 'http://') . $arrRoot[$objJump->rootId]->dns . TL_PATH . '/';
                     }
+
+                    // @todo use Product::generateUrl() here or don't we do this because of performance?
 
                     $arrJump[$objProducts->page_id] = $strDomain . Controller::generateFrontendUrl($objJump->row(), ($GLOBALS['TL_CONFIG']['useAutoItem'] ? '/' : '/product/') . '##alias##', ($strLanguage=='' ? $arrRoot[$objJump->rootId]->language : $strLanguage));
                 }
@@ -1313,9 +1310,9 @@ window.addEvent('domready', function()
      */
     public function generateBreadcrumb($arrItems, $objModule)
     {
-        if (\Input::get('product') != '')
+        if (static::getAutoItem('product') != '')
         {
-            $objProduct = static::getProductByAlias(\Input::get('product'));
+            $objProduct = static::getProductByAlias(static::getAutoItem('product'));
 
             if ($objProduct !== null)
             {
@@ -1348,7 +1345,7 @@ window.addEvent('domready', function()
                     }
                 }
 
-                // If we still havent found a list page, don't alter the breadcrumb
+                // If we still haven't found a list page, don't alter the breadcrumb
                 if ($intPage === null)
                 {
                     return $arrItems;
@@ -1404,12 +1401,12 @@ window.addEvent('domready', function()
 
                     $arrResult[] = array
                     (
-                        'isRoot' => false,
-                        'isActive' => false,
-                        'href' => $href,
-                        'title' => ($objResult->pageTitle != '' ? specialchars($objResult->pageTitle, true) : specialchars($objResult->title, true)),
-                        'link' => $objResult->title,
-                        'data' => $objResult->row()
+                        'isRoot'    => false,
+                        'isActive'  => false,
+                        'href'      => $href,
+                        'title'     => ($objResult->pageTitle != '' ? specialchars($objResult->pageTitle, true) : specialchars($objResult->title, true)),
+                        'link'      => $objResult->title,
+                        'data'      => $objResult->row()
                     );
                 }
 
@@ -1439,12 +1436,12 @@ window.addEvent('domready', function()
                 // Add the reader as breadcrumb item
                 $arrItems[] = array
                 (
-                    'isRoot' => false,
-                    'isActive' => true,
-                    'href' => $objProduct->href_reader,
-                    'title' => specialchars($objProduct->name, true),
-                    'link' => $objProduct->name,
-                    'data' => $objPage->row(),
+                    'isRoot'    => false,
+                    'isActive'  => true,
+                    'href'      => $objProduct->generateUrl($objPage->id),
+                    'title'     => specialchars($objProduct->name, true),
+                    'link'      => $objProduct->name,
+                    'data'      => $objPage->row(),
                 );
             }
         }
@@ -1528,6 +1525,20 @@ window.addEvent('domready', function()
         exit;
     }
 
+    /**
+     * Get value of an auto_item parameter
+     * @param   string Key
+     * @return  string
+     */
+    public static function getAutoItem($strKey)
+    {
+        if ($GLOBALS['TL_CONFIG']['useAutoItem'] && in_array($strKey, $GLOBALS['TL_AUTO_ITEM'])) {
+
+            return \Input::get('auto_item');
+        }
+
+        return \Input::get($strKey);
+    }
 
     /**
      * Recursively replace inserttags in the return value

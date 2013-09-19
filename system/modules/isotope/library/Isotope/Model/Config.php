@@ -12,6 +12,8 @@
 
 namespace Isotope\Model;
 
+use Isotope\Isotope;
+
 /**
  * Isotope\Model\Config represents an Isotope config model
  *
