@@ -658,7 +658,7 @@ abstract class ProductCollection extends TypeAgent
             $arrSurcharges = $this->getSurcharges();
 
             foreach ($arrSurcharges as $objSurcharge) {
-                if ($objSurcharge->add !== false) {
+                if ($objSurcharge->addToTotal !== false) {
                     $fltAmount += $objSurcharge->total_price;
                 }
             }
@@ -678,7 +678,7 @@ abstract class ProductCollection extends TypeAgent
             $arrSurcharges = $this->getSurcharges();
 
             foreach ($arrSurcharges as $objSurcharge) {
-                if ($objSurcharge->add !== false) {
+                if ($objSurcharge->addToTotal !== false) {
                     $fltAmount += $objSurcharge->tax_free_total_price;
                 }
             }
