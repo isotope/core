@@ -149,21 +149,7 @@ class Standard extends Gallery implements IsotopeGallery
 
         $arrFile = reset($this->arrFiles);
 
-        $this->injectAjax();
-
-        $objTemplate = new \Isotope\Template($this->strTemplate);
-
-        $objTemplate->setData($arrFile);
-        $objTemplate->id = 0;
-        $objTemplate->mode = 'main';
-        $objTemplate->type = $strType;
-        $objTemplate->name = $this->name;
-        $objTemplate->product_id = $this->product_id;
-        $objTemplate->href_reader = $this->href_reader;
-
-        list($objTemplate->link, $objTemplate->rel) = explode('|', $arrFile['link']);
-
-        return $this->generateAttribute($this->name . '_' . $strType . 'size', $objTemplate->parse(), 'images ' . $strType);
+        return $this->generateImage('main', $arrFile);
     }
 
 
@@ -184,26 +170,52 @@ class Standard extends Gallery implements IsotopeGallery
                 continue;
             }
 
-            $objTemplate = new \Isotope\Template($this->strTemplate);
-
-            $objTemplate->setData($arrFile);
-            $objTemplate->id = $i;
-            $objTemplate->mode = 'gallery';
-            $objTemplate->type = $strType;
-            $objTemplate->name = $this->name;
-            $objTemplate->product_id = $this->product_id;
-            $objTemplate->href_reader = $this->href_reader;
-
-            list($objTemplate->link, $objTemplate->rel) = explode('|', $arrFile['link']);
-
-            $strGallery .= $objTemplate->parse();
+            $strGallery .= $this->generateImage('gallery', $arrFile);
         }
 
-        $this->injectAjax();
-
-        return $this->generateAttribute($this->name . '_gallery', $strGallery, $strType);
+        return $strGallery;
     }
 
+    /**
+     * Generate template with given file
+     * @param   string
+     * @param   array
+     * @return  string
+     */
+    protected function generateImage($strType, $arrFile)
+    {
+        $objTemplate = new \Isotope\Template($this->strTemplate);
+
+        $objTemplate->setData($this->arrData);
+        $objTemplate->type = $strType;
+        $objTemplate->product_id = $this->product_id;
+        $objTemplate->file = $arrFile;
+        $objTemplate->src = $arrFile[$strType];
+        $objTemplate->size = $arrFile[$strType.'_size'];
+        $objTemplate->alt = $arrFile['alt'];
+        $objTemplate->title = $arrFile['desc'];
+
+        switch ($this->anchor) {
+            case 'reader':
+                $objTemplate->hasLink = ($this->href != '');
+                $objTemplate->link = $this->href;
+                break;
+
+            case 'lightbox':
+                list($link, $rel) = explode('|', $arrFile['link'], 2);
+
+                $objTemplate->hasLink = true;
+                $objTemplate->link = $link ?: $arrFile['lightbox'];
+                $objTemplate->attributes = ($link ? (' data-lightbox="'.$rel.'"' ?: '') : ' data-lightbox="product'.$this->product_id.'"');
+                break;
+
+            default:
+                $objTemplate->hasLink = false;
+                break;
+        }
+
+        return $objTemplate->parse();
+    }
 
     /**
      * Inject Ajax scripts
