@@ -230,7 +230,6 @@ $GLOBALS['BE_FFL']['productGroupSelector']   = 'Isotope\Widget\ProductGroupSelec
  */
 \Isotope\Model\Gallery::registerModelType('standard', 'Isotope\Model\Gallery\Standard');
 \Isotope\Model\Gallery::registerModelType('inline', 'Isotope\Model\Gallery\Inline');
-\Isotope\Model\Gallery::registerModelType('zoom', 'Isotope\Model\Gallery\Zoom');
 
 /**
  * Products
