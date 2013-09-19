@@ -449,7 +449,7 @@ abstract class ProductCollectionSurcharge extends TypeAgent
     }
 
 
-    protected static function buildForCollection($strClass, $strLabel, $objSource, IsotopeProductCollection $objCollection)
+    protected static function buildSurcharge($strClass, $strLabel, $objSource, IsotopeProductCollection $objCollection)
     {
         $intTaxClass = $objSource->tax_class;
 
