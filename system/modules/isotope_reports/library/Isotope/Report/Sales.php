@@ -19,7 +19,7 @@ abstract class Sales extends Report
 {
 
 	// Allow extensions to use date_paid or date_shipped
-	protected $strDateField = 'date';
+	protected $strDateField = 'locked';
 
 
 	public function generate()
