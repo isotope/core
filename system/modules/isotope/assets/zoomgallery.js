@@ -1,7 +1,7 @@
 Isotope.zoomGallery = function(gallery, src, options)
 {
     if (typeof gallery != 'undefined') gallery.destroy();
-    
+
     return new ZoomIt(Object.merge(
     {
         'elems': '.zoomImage',
@@ -40,11 +40,11 @@ var ZoomIt = new Class({
     },
     initialize: function(options){
         this.setOptions(options);
-        if( !this.options.elems ) return;        
+        if( !this.options.elems ) return;
         this.elements = $(this.options.container||document.body).getElements(this.options.elems);
         this.zoomerVisible = false;
         this.current = -1;
-        
+
         /* the container for the zoomed image */
         this.zoomer = new Element('div', {
             'id':'MooZoom_zoomer',
@@ -55,8 +55,8 @@ var ZoomIt = new Class({
                 'top':-1000,
                 'overflow':'hidden'
             }
-        }).injectInside(document.body);
-        
+        }).inject(document.body);
+
         /* all elements in page that have zoom */
         this.elements.each(function(el, i){
             var params = {};
@@ -67,12 +67,12 @@ var ZoomIt = new Class({
             // zoomer position
             var elPos = el.getPosition(),
                 elSize = el.getSize();
-            params.position = {'x':elPos.x, 'y':elPos.y};            
+            params.position = {'x':elPos.x, 'y':elPos.y};
             switch( this.options.zoomPosition ){
                 case 'right':
                 default:
-                    elPos.x += elSize.x + this.options.zoomDistance;                
-                break;                
+                    elPos.x += elSize.x + this.options.zoomDistance;
+                break;
                 case 'left':
                     elPos.x -= imgSize.x * ( this.options.multiplier || 1 ) + this.options.zoomDistance;
                 break;
@@ -87,7 +87,7 @@ var ZoomIt = new Class({
             params.zoomPosition = elPos;
             var dragged = new Element('div',{
                 'class': this.options.zoomAreaClass,
-                styles:{                      
+                styles:{
                     'background': this.options.zoomAreaColor || '#999',
                     'opacity': this.options.zoomAreaOpacity || .7,
                     'display':'none',
@@ -96,8 +96,8 @@ var ZoomIt = new Class({
                     'left':0,
                     'cursor':'move'
                 }
-            }).injectInside(el.getParent());
-            
+            }).inject(el.getParent());
+
             params.dragged = dragged;
             el.store('params', params);
             // add mouse event on element
@@ -105,10 +105,10 @@ var ZoomIt = new Class({
                 event.preventDefault();
                 this.startZoom(i);
             }.bind(this))
-            el.getParent().addEvent('mouseleave', this.closeZoom.bind(this));            
-        }.bind(this))        
+            el.getParent().addEvent('mouseleave', this.closeZoom.bind(this));
+        }.bind(this))
     },
-    
+
     startZoom: function(index){
         if( this.zoomerVisible ){
             return;
@@ -123,7 +123,7 @@ var ZoomIt = new Class({
             dragParams = e.retrieve('dragParams'),
             zoomerWidth = 0,
             zoomerHeight = 0;
-        
+
         // if multiplier is larger than image full size, show full sized image with no drag
         if( dragParams && dragParams.fullImageSize ){
             zoomerWidth = dragParams.fullImageSize.x;
@@ -136,11 +136,11 @@ var ZoomIt = new Class({
         this.zoomer.empty().setStyles({
             'width':zoomerWidth,
             'height':zoomerHeight
-        }).setPosition(p.zoomPosition);    
-        
+        }).setPosition(p.zoomPosition);
+
         // if drag params are set, big image was loaded so just set some styles
         if( dragParams ){
-            dragParams.bigImg.injectInside(this.zoomer);
+            dragParams.bigImg.inject(this.zoomer);
             drag.setStyles({'display':'block', 'width':dragParams.dragW, 'height':dragParams.dragH});
             this.fireEvent('onZoom', e);
             return;
@@ -148,16 +148,16 @@ var ZoomIt = new Class({
         this.zoomer.addClass(this.options.zoomLoadingClass);
         // on first run, load the big image and set drag
         var bigImg = Asset.image(img,{
-            onLoad: function(e){                
+            onLoad: function(e){
                 this.zoomer.removeClass(this.options.zoomLoadingClass);
-                bigImg.setStyles({'position':'absolute', 'top':0, 'left':0}).injectInside(this.zoomer);
-                
+                bigImg.setStyles({'position':'absolute', 'top':0, 'left':0}).inject(this.zoomer);
+
                 var s = bigImg.getSize(),
                     ratioX = s.x / imgSize.x,
                     ratioY = s.y / imgSize.y,
                     dragW = imgSize.x/ratioX*(this.options.multiplier||1),
                     dragH = imgSize.y/ratioY*(this.options.multiplier||1);
-                    
+
                 if( this.options.multiplier > ratioX && this.options.multiplier > ratioY ){
                     this.zoomer.setStyles({
                         'width':s.x,
@@ -169,24 +169,24 @@ var ZoomIt = new Class({
                     this.elements[index].store('dragParams', params);
                     return;
                 }
-                    
-                drag.setStyles({'display':'block', 'width':dragW, 'height':dragH});    
+
+                drag.setStyles({'display':'block', 'width':dragW, 'height':dragH});
                 var initPosition = drag.getPosition(drag.getParent());
                 bigImg.setStyles({'top': -(initPosition.y*ratioY), 'left': -(initPosition.x*ratioX)});
-                
-                // set the drag params. this prevents the script to load the big image again 
+
+                // set the drag params. this prevents the script to load the big image again
                 var params = {};
                 params.bigImg = bigImg;
                 params.dragW = dragW;
                 params.dragH = dragH;
                 this.elements[index].store('dragParams', params);
-                
+
                 if( this.options.zoomAreaMove == 'mousemove' ){
                     // mouse move on image
                     this.elements[index].addEvent('mousemove', function(event){
                         var mPosX = event.page.x - p.position.x - dragW/2,
                             mPosY = event.page.y - p.position.y - dragH/2;
-                        
+
                         // horizontal right limit
                         if( event.page.x > ( p.position.x + p.imgSize.x - dragW/2 )){
                             mPosX = p.imgSize.x - dragW;
@@ -194,9 +194,9 @@ var ZoomIt = new Class({
                         // vertical bottom limit
                         if( event.page.y > ( p.position.y + p.imgSize.y - dragH/2 )){
                             mPosY = p.imgSize.y - dragH;
-                        }                            
+                        }
                         drag.setPosition({'x':mPosX, 'y':mPosY});
-                    }.bind(this))                
+                    }.bind(this))
                     // mousemove n dragged zoom area
                     drag.addEvent('mousemove', function(event){
                         var mX = event.page.x - p.position.x - dragW/2,
@@ -219,12 +219,12 @@ var ZoomIt = new Class({
                         }
                         // move zoomed area
                         drag.setPosition({'x':mX, 'y':mY});
-                        
+
                         var pos = drag.getPosition(drag.getParent()),
                             left = -(pos.x*ratioX),
                             top = -(pos.y*ratioY);
-                        bigImg.setPosition({'x':left, 'y':top});                        
-                    })                
+                        bigImg.setPosition({'x':left, 'y':top});
+                    })
                 }else{
                     // start drag
                     new Drag(drag,{
@@ -237,26 +237,26 @@ var ZoomIt = new Class({
                                 top = -(pos.y*ratioY);
                             bigImg.setPosition({'x':left, 'y':top});
                         }.bind(this)
-                    });                    
+                    });
                 }
-                
-                this.fireEvent('onZoom', e);                
+
+                this.fireEvent('onZoom', e);
             }.bind(this)
-        });    
+        });
     },
-    
+
     closeZoom: function(event){
         if( this.current == -1 ) return;
-        
+
         var e = this.elements[this.current],
             drag = e.retrieve('params').dragged.setStyle('display', 'none');
-        
+
         this.zoomer.setStyles({'top':-1000}).empty();
         this.current = -1;
         this.zoomerVisible = false;
-        this.fireEvent('onClose', e); 
+        this.fireEvent('onClose', e);
     },
-    
+
     destroy: function(){
         this.elements.each(function(e){
             var p = e.retrieve('params');
@@ -267,5 +267,5 @@ var ZoomIt = new Class({
             e.getParent().removeEvents();
         })
         this.zoomer.dispose();
-    }    
+    }
 });
