@@ -887,6 +887,10 @@ class Standard extends Product implements IsotopeProduct
      */
     public function generateUrl($objPage, $arrParams=array())
     {
+        if (!$objPage) {
+            return '';
+        }
+
         if (is_numeric($objPage)) {
             $objPage = \PageModel::findByPk($objPage);
         }
