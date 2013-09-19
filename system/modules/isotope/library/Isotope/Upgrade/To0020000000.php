@@ -18,9 +18,5 @@ class To0020000000 extends \System
 
     public function run($blnInstalled)
     {
-        if ($blnInstalled) {
-            $this->import('Database');
-
-        }
     }
 }
