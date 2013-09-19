@@ -219,6 +219,18 @@ class tl_iso_producttypes extends \Backend
     {
         $this->loadDataContainer('tl_iso_products');
 
+        $arrValues = $objWidget->value;
+        $arrDCA = &$GLOBALS['TL_DCA']['tl_iso_products']['fields'];
+        $blnVariants = ($objWidget->name != 'attributes');
+
+        if (!empty($arrValues) && is_array($arrValues)) {
+            foreach ($arrValues as $i => $attribute) {
+                if ($arrDCA[$attribute['name']]['attributes'][($blnVariants ? 'variant_' : '').'fixed']) {
+                    $objWidget->addDataToFieldAtIndex($i, 'enabled', array('eval'=>array('disabled'=>true)));
+                }
+            }
+        }
+
         return array
         (
             'enabled' => array
@@ -352,7 +364,7 @@ class tl_iso_producttypes extends \Backend
             }
 
             $arrFields[$strName] = array(
-                'enabled'   => ($arrField['attributes']['fixed'] ? '1' : ''),
+                'enabled'   => ($arrField['attributes'][($blnVariants ? 'variant_' : '').'fixed'] ? '1' : ''),
                 'name'      => $strName,
                 'legend'    => $arrField['attributes']['legend'],
             );
@@ -369,14 +381,21 @@ class tl_iso_producttypes extends \Backend
      */
     public function saveAttributeWizard($varValue, $dc)
     {
+        $arrDCA = &$GLOBALS['TL_DCA']['tl_iso_products']['fields'];
+
         $arrLegends = array();
         $arrFields = deserialize($varValue);
+        $blnVariants = ($dc->field != 'attributes');
 
         if (empty($arrFields) || !is_array($arrFields)) {
             return $varValue;
         }
 
-        foreach ($arrFields as $arrField) {
+        foreach ($arrFields as $k => $arrField) {
+            if ($arrDCA[$arrField['name']]['attributes'][($blnVariants ? 'variant_' : '').'fixed']) {
+                $arrFields[$k]['enabled'] = '1';
+            }
+
             if (!in_array($arrField['legend'], $arrLegends)) {
                 $arrLegends[] = $arrField['legend'];
             }
