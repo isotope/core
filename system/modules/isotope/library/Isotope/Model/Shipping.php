@@ -13,9 +13,9 @@
 namespace Isotope\Model;
 
 use Isotope\Isotope;
-use Isotope\Factory\ProductCollectionSurcharge as SurchargeFactory;
-use Isotope\Interfaces\IsotopeProductCollection;
 use Isotope\Translation;
+use Isotope\Interfaces\IsotopeProductCollection;
+use Isotope\Model\ProductCollectionSurcharge;
 
 
 /**
@@ -262,6 +262,6 @@ abstract class Shipping extends TypeAgent
             return false;
         }
 
-        return SurchargeFactory::buildShippingSurcharge($this, $objCollection);
+        return ProductCollectionSurcharge::createForShippingInCollection($this, $objCollection);
     }
 }

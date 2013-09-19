@@ -432,4 +432,39 @@ abstract class ProductCollectionSurcharge extends TypeAgent
 
         return array_merge($arrPreTax, $arrTaxes, $arrPostTax);
     }
+
+
+    /**
+     * Create a payment surcharge
+     */
+    public static function createForPaymentInCollection(IsotopePayment $objPayment, IsotopeProductCollection $objCollection)
+    {
+        return static::buildSurcharge('Isotope\Model\ProductCollectionSurcharge\Payment', $GLOBALS['TL_LANG']['MSC']['paymentLabel'], $objPayment, $objCollection);
+    }
+
+
+    public static function createForShippingInCollection(IsotopeShipping $objShipping, IsotopeProductCollection $objCollection)
+    {
+        return static::buildSurcharge('Isotope\Model\ProductCollectionSurcharge\Shipping', $GLOBALS['TL_LANG']['MSC']['shippingLabel'], $objShipping, $objCollection);
+    }
+
+
+    protected static function buildForCollection($strClass, $strLabel, $objSource, IsotopeProductCollection $objCollection)
+    {
+        $intTaxClass = $objSource->tax_class;
+
+        $objSurcharge = new $strClass();
+        $objSurcharge->label = ($strLabel . ' (' . $objSource->getLabel() . ')');
+        $objSurcharge->price = ($objSource->isPercentage() ? $objSource->getPercentage().'%' : '&nbsp;');
+        $objSurcharge->total_price = $objSource->getPrice();
+        $objSurcharge->tax_class = $intTaxClass;
+        $objSurcharge->before_tax = ($intTaxClass ? true : false);
+
+        if ($intTaxClass == -1)
+        {
+            $objSurcharge->applySplittedTax($objCollection);
+        }
+
+        return $objSurcharge;
+    }
 }
