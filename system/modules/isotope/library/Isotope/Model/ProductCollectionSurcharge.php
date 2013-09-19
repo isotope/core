@@ -15,6 +15,8 @@ namespace Isotope\Model;
 use Isotope\Isotope;
 use Isotope\Interfaces\IsotopeProductCollection;
 use Isotope\Interfaces\IsotopeProductCollectionSurcharge;
+use Isotope\Interfaces\IsotopePayment;
+use Isotope\Interfaces\IsotopeShipping;
 use Isotope\Model\ProductCollectionSurcharge\Tax;
 
 /**
