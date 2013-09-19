@@ -1135,7 +1135,8 @@ abstract class ProductCollection extends TypeAgent
      */
     public function addToTemplate(\Isotope\Template $objTemplate, $varCallable=null)
     {
-        $objModule = $this;
+        // @todo config should be passed from the frontend module
+        $arrConfig = array();
         $arrGalleries = array();
         $arrItems = $this->addItemsToTemplate($objTemplate, $varCallable);
 
@@ -1160,28 +1161,21 @@ abstract class ProductCollection extends TypeAgent
             return $objAttribute->generate($objItem->getProduct());
         };
 
-        $objTemplate->getGallery = function($strAttribute, $objItem) use ($objModule, &$arrGalleries) {
+        $objTemplate->getGallery = function($strAttribute, $objItem) use ($arrConfig, &$arrGalleries) {
 
             if (!$objItem->hasProduct()) {
                 return new \Isotope\Model\Gallery\Standard();
             }
 
             $strCacheKey = 'product' . $objItem->product_id . '_' . $strAttribute;
-
-            // href
-            try {
-                $strHref = $objItem->getProduct()->generateUrl((int) $objItem->reader_page);
-            } catch (\InvalidArgumentException $e) {
-                $strHref = '';
-            }
-
+            $arrConfig['reader_page'] = $objItem->reader_page;
 
             if (!isset($arrGalleries[$strCacheKey])) {
                 $arrGalleries[$strCacheKey] = Gallery::createForProductAttribute(
-                    $objModule->gallery,
                     $objItem->getProduct(),
                     $strAttribute,
-                    $strHref);
+                    $arrConfig
+                );
             }
 
             return $arrGalleries[$strCacheKey];

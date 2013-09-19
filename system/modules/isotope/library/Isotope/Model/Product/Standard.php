@@ -493,19 +493,12 @@ class Standard extends Product implements IsotopeProduct
         };
 
         $objTemplate->getGallery = function($strAttribute) use ($objProduct, $arrConfig, &$arrGalleries) {
-            // href
-            try {
-                $strHref = $objProduct->generateUrl((int) $arrConfig['reader_page']);
-            } catch (\InvalidArgumentException $e) {
-                $strHref = '';
-            }
 
             if (!isset($arrGalleries[$strAttribute])) {
                 $arrGalleries[$strAttribute] = Gallery::createForProductAttribute(
-                    $arrConfig['gallery'],
                     $objProduct,
                     $strAttribute,
-                    $strHref
+                    $arrConfig
                 );
             }
 
