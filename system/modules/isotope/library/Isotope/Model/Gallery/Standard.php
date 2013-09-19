@@ -142,14 +142,17 @@ class Standard extends Gallery implements IsotopeGallery
      */
     public function generateMainImage()
     {
-        if (!count($this->arrFiles))
-        {
+        if (!count($this->arrFiles)) {
             return '';
         }
 
         $arrFile = reset($this->arrFiles);
 
-        return $this->generateImage('main', $arrFile);
+        $objTemplate = new \Isotope\Template($this->strTemplate);
+
+        $this->addImageToTemplate($objTemplate, 'main', $arrFile);
+
+        return $objTemplate->parse();
     }
 
     /**
@@ -162,14 +165,16 @@ class Standard extends Gallery implements IsotopeGallery
     {
         $strGallery = '';
 
-        foreach ($this->arrFiles as $i => $arrFile)
-        {
-            if ($i < $intSkip)
-            {
+        foreach ($this->arrFiles as $i => $arrFile) {
+            if ($i < $intSkip) {
                 continue;
             }
 
-            $strGallery .= $this->generateImage('gallery', $arrFile);
+            $objTemplate = new \Isotope\Template($this->strTemplate);
+
+            $this->addImageToTemplate($objTemplate, 'gallery', $arrFile);
+
+            $strGallery .= $objTemplate->parse();
         }
 
         return $strGallery;
@@ -177,14 +182,13 @@ class Standard extends Gallery implements IsotopeGallery
 
     /**
      * Generate template with given file
+     * @param   object
      * @param   string
      * @param   array
      * @return  string
      */
-    protected function generateImage($strType, $arrFile)
+    protected function addImageToTemplate(\Isotope\Template $objTemplate, $strType, $arrFile)
     {
-        $objTemplate = new \Isotope\Template($this->strTemplate);
-
         $objTemplate->setData($this->arrData);
         $objTemplate->type = $strType;
         $objTemplate->product_id = $this->product_id;
@@ -212,24 +216,7 @@ class Standard extends Gallery implements IsotopeGallery
                 $objTemplate->hasLink = false;
                 break;
         }
-
-        return $objTemplate->parse();
     }
-
-    /**
-     * Inject Ajax scripts
-     */
-    protected function injectAjax()
-    {
-        $GLOBALS['TL_MOOTOOLS'][get_class($this).'_ajax'] = "
-<script>
-window.addEvent('ajaxready', function() {
-  Mediabox ? Mediabox.scanPage() : Lightbox.scanPage();
-});
-</script>
-";
-    }
-
 
     /**
      * Add an image to the gallery
