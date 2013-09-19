@@ -215,12 +215,12 @@ class Cart extends ProductCollection implements IsotopeProductCollection
 
     /**
      * Add a product to the cart and also set its reader page (needed for redirect)
-     * @param   object The product object
-     * @param   integer How many products to add
-     * @param   array Config
+     * @param   object
+     * @param   integer
+     * @param   array
      * @return  ProductCollectionItem
      */
-    public function addProduct(IsotopeProduct $objProduct, $intQuantity, $arrConfig=array())
+    public function addProduct(IsotopeProduct $objProduct, $intQuantity, array $arrConfig=array())
     {
         $objItem = parent::addProduct($objProduct, $intQuantity);
 
