@@ -205,7 +205,7 @@ class Standard extends Gallery implements IsotopeGallery
 
                 $objTemplate->hasLink = true;
                 $objTemplate->link = $link ?: $arrFile['lightbox'];
-                $objTemplate->attributes = ($link ? (' data-lightbox="'.$rel.'"' ?: '') : ' data-lightbox="product'.$this->product_id.'"');
+                $objTemplate->attributes = ($link ? ($rel ? ' data-lightbox="'.$rel.'"' : ' target="_blank"') : ' data-lightbox="product'.$this->product_id.'"');
                 break;
 
             default:
