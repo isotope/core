@@ -11,6 +11,7 @@
  */
 
 namespace Isotope\Model;
+
 use Isotope\Isotope;
 
 /**

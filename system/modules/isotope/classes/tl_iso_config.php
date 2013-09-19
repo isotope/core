@@ -361,6 +361,7 @@ class tl_iso_config extends \Backend
         $varValue = deserialize($varValue);
         $arrReturn = array();
         $arrParams = $GLOBALS['TL_DCA']['tl_iso_config']['fields']['urlMatrix']['eval']['urlParams'];
+
         foreach ($arrParams as $k => $strParam) {
             $arrReturn[$strParam] = $varValue[$k]['custom'];
         }
