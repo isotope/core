@@ -1177,8 +1177,8 @@ abstract class ProductCollection extends TypeAgent
         };
 
         // !HOOK: allow overriding of the template
-        if (isset($GLOBALS['ISO_HOOKS']['generateCollection']) && is_array($GLOBALS['ISO_HOOKS']['generateCollection'])) {
-            foreach ($GLOBALS['ISO_HOOKS']['generateCollection'] as $callback) {
+        if (isset($GLOBALS['ISO_HOOKS']['addCollectionToTemplate']) && is_array($GLOBALS['ISO_HOOKS']['addCollectionToTemplate'])) {
+            foreach ($GLOBALS['ISO_HOOKS']['addCollectionToTemplate'] as $callback) {
                 $objCallback = \System::importStatic($callback[0]);
                 $objCallback->$callback[1]($objTemplate, $arrItems, $this);
             }
