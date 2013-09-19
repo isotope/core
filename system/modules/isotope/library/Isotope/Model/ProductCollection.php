@@ -813,11 +813,12 @@ abstract class ProductCollection extends TypeAgent
 
     /**
      * Add a product to the collection
-     * @param   object The product object
-     * @param   integer How many products to add
+     * @param   object
+     * @param   integer
+     * @param   array
      * @return  ProductCollectionItem
      */
-    public function addProduct(IsotopeProduct $objProduct, $intQuantity)
+    public function addProduct(IsotopeProduct $objProduct, $intQuantity, array $arrConfig=array())
     {
         // !HOOK: additional functionality when adding product to collection
         if (isset($GLOBALS['ISO_HOOKS']['addProductToCollection']) && is_array($GLOBALS['ISO_HOOKS']['addProductToCollection'])) {
@@ -874,6 +875,7 @@ abstract class ProductCollection extends TypeAgent
             $objItem->quantity          = (int) $intQuantity;
             $objItem->price             = (float) ($objProduct->getPrice($this) ? $objProduct->getPrice($this)->getAmount((int) $intQuantity) : 0);
             $objItem->tax_free_price    = (float) ($objProduct->getPrice($this) ? $objProduct->getPrice($this)->getNetAmount((int) $intQuantity) : 0);
+            $objItem->jumpTo            = (int) $arrConfig['jumpTo'];
 
             $objItem->save();
 
@@ -1168,7 +1170,7 @@ abstract class ProductCollection extends TypeAgent
             }
 
             $strCacheKey = 'product' . $objItem->product_id . '_' . $strAttribute;
-            $arrConfig['reader_page'] = $objItem->reader_page;
+            $arrConfig['jumpTo'] = $objItem->jumpTo;
 
             if (!isset($arrGalleries[$strCacheKey])) {
                 $arrGalleries[$strCacheKey] = Gallery::createForProductAttribute(
@@ -1287,8 +1289,8 @@ abstract class ProductCollection extends TypeAgent
             'rowClass'          => trim('product ' . (($blnHasProduct && $objProduct->isNew()) ? 'new ' : '') . $objProduct->cssID[1]),
         );
 
-        if ($objItem->reader_page && $blnHasProduct) {
-            $arrItem['href_reader'] = $objProduct->generateUrl((int) $objItem->reader_page);
+        if ($objItem->jumpTo && $blnHasProduct) {
+            $arrItem['href'] = $objProduct->generateUrl((int) $objItem->jumpTo);
         }
 
         unset($GLOBALS['ACTIVE_PRODUCT']);

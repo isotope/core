@@ -73,7 +73,7 @@ class Frontend extends \Frontend
      * @param object
      * @param array
      */
-    public function addToCart($objProduct, $arrConfig=array())
+    public function addToCart($objProduct, array $arrConfig=array())
     {
         $objModule = $arrConfig['module'];
         $intQuantity = ($objModule->iso_use_quantity && intval(\Input::post('quantity_requested')) > 0) ? intval(\Input::post('quantity_requested')) : 1;

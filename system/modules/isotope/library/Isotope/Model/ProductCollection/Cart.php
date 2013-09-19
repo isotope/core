@@ -212,26 +212,4 @@ class Cart extends ProductCollection implements IsotopeProductCollection
 
         return $objCart;
     }
-
-    /**
-     * Add a product to the cart and also set its reader page (needed for redirect)
-     * @param   object
-     * @param   integer
-     * @param   array
-     * @return  ProductCollectionItem
-     */
-    public function addProduct(IsotopeProduct $objProduct, $intQuantity, array $arrConfig=array())
-    {
-        $objItem = parent::addProduct($objProduct, $intQuantity);
-
-        if ($arrConfig['reader_page']) {
-            $objItem->reader_page = $arrConfig['reader_page'];
-            $objItem->save();
-
-            // Add the new item to our cache
-            $this->arrItems[$objItem->id] = $objItem;
-        }
-
-        return $objItem;
-    }
 }
