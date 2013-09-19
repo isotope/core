@@ -45,6 +45,10 @@
     background-repeat:no-repeat;
 }
 
+body.popup .header_back {
+    display: none;
+}
+
 .tl_mediamanager th,
 .tl_mediamanager td
 {
