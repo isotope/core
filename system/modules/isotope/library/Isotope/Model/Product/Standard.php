@@ -891,7 +891,6 @@ class Standard extends Product implements IsotopeProduct
      * @param   PageModel|int   A PageModel instance or a page id
      * @param   string          Optional parameters
      * @return  array
-     * @throw   \InvalidArgumentException
      */
     public function generateUrl($objPage, $arrParams=array())
     {
@@ -900,7 +899,7 @@ class Standard extends Product implements IsotopeProduct
         }
 
         if (null === $objPage) {
-            throw new \InvalidArgumentException('Given page does not exist.');
+            return '';
         }
 
         $strUrlParam = Isotope::getConfig()->getUrlParam('product');
