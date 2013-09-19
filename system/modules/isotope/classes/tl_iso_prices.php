@@ -79,6 +79,24 @@ class tl_iso_prices extends \Backend
 
 
     /**
+     * Generate a list of tiers for a wizard in products
+     * @param object
+     * @param string
+     * @return string
+     */
+    public function generateWizardList($objRecords, $strId)
+    {
+    	$strReturn = '';
+
+    	while ($objRecords->next()) {
+	    	$strReturn .= '<li>' . $this->listRows($objRecords->row()) . '</li>';
+    	}
+
+	    return '<ul id="sort_' . $strId . '">' . $strReturn . '</ul>';
+    }
+
+
+    /**
      * Get tiers and return them as array
      * @param mixed
      * @param object
