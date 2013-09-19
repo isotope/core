@@ -899,9 +899,11 @@ class Standard extends Product implements IsotopeProduct
             return '';
         }
 
-        $strUrlParam = 'product';
-        $strUrl = '/' . ($strUrlParam ? $strUrlParam.'/' : '');
-        $strUrl .= $this->arrData['alias'] ?: ($this->arrData['pid'] ?: $this->arrData['id']);
+        $strUrl = '/' . $this->arrData['alias'] ?: ($this->arrData['pid'] ?: $this->arrData['id']);
+
+        if (!$GLOBALS['TL_CONFIG']['useAutoItem'] || !in_array('product', $GLOBALS['TL_AUTO_ITEM'])) {
+            $strUrl = '/product' . $strUrl;
+        }
 
         $arrOptions = $this->getOptions();
         if (!empty($arrOptions)) {
