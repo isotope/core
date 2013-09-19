@@ -1401,12 +1401,12 @@ window.addEvent('domready', function()
 
                     $arrResult[] = array
                     (
-                        'isRoot' => false,
-                        'isActive' => false,
-                        'href' => $href,
-                        'title' => ($objResult->pageTitle != '' ? specialchars($objResult->pageTitle, true) : specialchars($objResult->title, true)),
-                        'link' => $objResult->title,
-                        'data' => $objResult->row()
+                        'isRoot'    => false,
+                        'isActive'  => false,
+                        'href'      => $href,
+                        'title'     => ($objResult->pageTitle != '' ? specialchars($objResult->pageTitle, true) : specialchars($objResult->title, true)),
+                        'link'      => $objResult->title,
+                        'data'      => $objResult->row()
                     );
                 }
 
@@ -1436,12 +1436,12 @@ window.addEvent('domready', function()
                 // Add the reader as breadcrumb item
                 $arrItems[] = array
                 (
-                    'isRoot' => false,
-                    'isActive' => true,
-                    'href' => $objProduct->generateUrl($objPage->id),
-                    'title' => specialchars($objProduct->name, true),
-                    'link' => $objProduct->name,
-                    'data' => $objPage->row(),
+                    'isRoot'    => false,
+                    'isActive'  => true,
+                    'href'      => $objProduct->generateUrl($objPage->id),
+                    'title'     => specialchars($objProduct->name, true),
+                    'link'      => $objProduct->name,
+                    'data'      => $objPage->row(),
                 );
             }
         }
