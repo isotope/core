@@ -130,18 +130,6 @@ class Order extends ProductCollection implements IsotopeProductCollection
 
 
     /**
-     * Return current surcharges as array
-     * @return array
-     */
-    public function getSurcharges()
-    {
-        $arrSurcharges = deserialize($this->arrData['surcharges']);
-
-        return is_array($arrSurcharges) ? $arrSurcharges : array();
-    }
-
-
-    /**
      * Process the order checkout
      * @return boolean
      */
