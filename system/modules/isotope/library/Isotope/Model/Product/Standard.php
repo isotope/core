@@ -888,26 +888,24 @@ class Standard extends Product implements IsotopeProduct
 
     /**
      * Generate url
-     * @param   \PageModel|int A PageModel instance or a page id
-     * @param   string Optional parameters
+     * @param   PageModel|int   A PageModel instance or a page id
+     * @param   string          Optional parameters
      * @return  array
      * @throw   \InvalidArgumentException
      */
-    public function generateUrl($varPage, $arrParams=array())
+    public function generateUrl($objPage, $arrParams=array())
     {
-        if (!$varPage instanceof \PageModel) {
-            if (!is_int($varPage)) {
-                throw new \InvalidArgumentException('First param has to be either a PageModel instance or a page id (integer).');
-            }
+        if (is_numeric($objPage)) {
+            $objPage = \PageModel::findByPk($objPage);
+        }
 
-            if (($varPage = \PageModel::findByPk($varPage)) === null) {
-                throw new \InvalidArgumentException('Given page id does not exist.');
-            }
+        if (null === $objPage) {
+            throw new \InvalidArgumentException('Given page does not exist.');
         }
 
         $strUrlParam = Isotope::getConfig()->getUrlParam('product');
-        $strUrl = '/' . (($strUrlParam) ? $strUrlParam . '/' : '');
-        $strUrl .= $this->arrData['alias'] ? $this->arrData['alias'] : ($this->arrData['pid'] ? $this->arrData['pid'] : $this->arrData['id']);
+        $strUrl = '/' . ($strUrlParam ? $strUrlParam.'/' : '');
+        $strUrl .= $this->arrData['alias'] ?: ($this->arrData['pid'] ?: $this->arrData['id']);
 
         $arrOptions = $this->getOptions();
         if (!empty($arrOptions)) {
@@ -916,7 +914,7 @@ class Standard extends Product implements IsotopeProduct
 
         return \Isotope\Frontend::addQueryStringToUrl(
             http_build_query($arrParams),
-            \Controller::generateFrontendUrl($varPage->row(), $strUrl, $varPage->rootLanguage)
+            \Controller::generateFrontendUrl($objPage->row(), $strUrl, $objPage->language)
         );
     }
 
