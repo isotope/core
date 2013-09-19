@@ -144,14 +144,13 @@ class Standard extends Gallery implements IsotopeGallery
     {
         if (!count($this->arrFiles))
         {
-            return $this->generateAttribute($this->name . '_' . $strType . 'size', ' ', 'images ' . $strType);
+            return '';
         }
 
         $arrFile = reset($this->arrFiles);
 
         return $this->generateImage('main', $arrFile);
     }
-
 
     /**
      * Generate gallery and return it as HTML string
@@ -229,19 +228,6 @@ window.addEvent('ajaxready', function() {
 });
 </script>
 ";
-    }
-
-
-    /**
-     * Generate the HTML attribute container
-     * @param string
-     * @param string
-     * @param string
-     * @return string
-     */
-    protected function generateAttribute($strId, $strBuffer, $strClass='')
-    {
-        return '<div' . ($strClass != '' ? ' class="'.strtolower($strClass).'"' : '') .' id="' . $strId . '">' . $strBuffer . '</div>';
     }
 
 
