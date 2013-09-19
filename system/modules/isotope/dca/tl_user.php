@@ -17,11 +17,6 @@
 \System::loadLanguageFile('tl_iso_groups');
 
 /**
- * Add the Isotope style sheet
- */
-$GLOBALS['TL_CSS'][] = 'system/modules/isotope/assets/backend.min.css';
-
-/**
  * Extend tl_user palettes
  */
 $GLOBALS['TL_DCA']['tl_user']['palettes']['extend'] = str_replace('{account_legend}', '{isotope_legend},iso_modules,iso_product_types,iso_product_typep,iso_payment_modules,iso_payment_modulep,iso_shipping_modules,iso_shipping_modulep,iso_tax_classes,iso_tax_classp,iso_tax_rates,iso_tax_ratep,iso_mails,iso_mailp,iso_configs,iso_configp,iso_groups,iso_groupp;{account_legend}', $GLOBALS['TL_DCA']['tl_user']['palettes']['extend']);

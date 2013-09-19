@@ -158,7 +158,6 @@ class ProductTree extends \Widget
     public function generate()
     {
         $GLOBALS['TL_JAVASCRIPT'][] = 'system/modules/isotope/assets/backend.min.js';
-        $GLOBALS['TL_CSS'][] = 'system/modules/isotope/assets/backend.min.css';
 
         // Open the tree if there is an error
         if ($this->hasErrors())
