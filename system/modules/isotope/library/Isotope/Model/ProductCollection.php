@@ -997,11 +997,24 @@ abstract class ProductCollection extends TypeAgent
         return true;
     }
 
-
+    /**
+     * Find surcharges for the current collection
+     * @return  array
+     */
     public function getSurcharges()
     {
         if (null === $this->arrSurcharges) {
-            $this->arrSurcharges = $this->isLocked() ? ProductCollectionSurcharge::findBy('pid', $this->id) : ProductCollectionSurcharge::findForCollection($this);
+            if ($this->isLocked()) {
+                $this->arrSurcharges = array();
+
+                if (($objSurcharges = ProductCollectionSurcharge::findBy('pid', $this->id)) !== null) {
+                    while ($objSurcharges->next()) {
+                        $this->arrSurcharges[] = $objSurcharges->current();
+                    }
+                }
+            } else {
+                $this->arrSurcharges = ProductCollectionSurcharge::findForCollection($this);
+            }
         }
 
         return $this->arrSurcharges;
