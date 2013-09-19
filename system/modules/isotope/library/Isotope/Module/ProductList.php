@@ -291,7 +291,6 @@ class ProductList extends Module
      */
     protected function generatePagination($arrItems)
     {
-    	global $objPage;
     	$offset = 0;
         $limit = null;
 
@@ -316,13 +315,11 @@ class ProductList extends Module
 
 			// Do not index or cache the page if the page number is outside the range
 			if ($page < 1 || $page > max(ceil($total / $this->perPage), 1)) {
-	            $objPage->noSearch = 1;
-	            $objPage->cache = 0;
+	            global $objPage;
 
-	            $this->Template->empty = true;
-	            $this->Template->type = 'empty';
-	            $this->Template->message = $this->iso_emptyMessage ? $this->iso_noProducts : $GLOBALS['TL_LANG']['MSC']['noProducts'];
-	            $this->Template->products = array();
+	            $objHandler = new $GLOBALS['TL_PTY']['error_404']();
+                $objHandler->generate($objPage->id);
+                exit;
 			}
 
 			// Set limit and offset
