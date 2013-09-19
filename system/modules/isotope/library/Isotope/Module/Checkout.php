@@ -540,7 +540,7 @@ class Checkout extends Module
         $strUrlParam = Isotope::getConfig()->getUrlParam('step');
 
         if ($strUrlParam) {
-            $strUrlParam . '/' . $strStep;
+            $strStep = $strUrlParam . '/' . $strStep;
         }
 
         return \Controller::generateFrontendUrl($objPage->row(), '/' . $strStep);
