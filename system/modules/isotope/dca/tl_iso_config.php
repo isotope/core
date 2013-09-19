@@ -127,7 +127,6 @@ $GLOBALS['TL_DCA']['tl_iso_config'] = array
             {converter_legend:hide},priceCalculateFactor,priceCalculateMode,currencyAutomator;
             {order_legend:hide},orderPrefix,orderDigits,orderstatus_new,orderstatus_error;
             {config_legend},templateGroup,cartMinSubtotal;
-            {url_legend},urlMatrix;
             {products_legend},newProductPeriod',
     ),
 
@@ -533,41 +532,6 @@ $GLOBALS['TL_DCA']['tl_iso_config'] = array
             'options_callback'      => array('Isotope\tl_iso_config', 'getTemplateFolders'),
             'eval'                  => array('includeBlankOption'=>true, 'tl_class'=>'w50'),
             'sql'                   => "varchar(255) NOT NULL default ''",
-        ),
-        'urlMatrix' => array
-        (
-            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_config']['urlMatrix'],
-            'exclude'               => true,
-            'inputType'             => 'multiColumnWizard',
-            'eval'                  => array
-            (
-                'tl_class'          =>'clr',
-                'columnFields'      => array
-                (
-                    'original'  => array
-                    (
-                        'label'     => &$GLOBALS['TL_LANG']['tl_iso_config']['urlMatrix']['original'],
-                        'inputType' => 'text',
-                        'eval'      => array('disabled'=>true)
-                    ),
-                    'custom'    => array
-                    (
-                        'label'     => &$GLOBALS['TL_LANG']['tl_iso_config']['urlMatrix']['custom'],
-                        'inputType' => 'text',
-                    )
-                ),
-                'hideButtons'       => true,
-                'urlParams'         => array('product', 'step')
-            ),
-            'sql'                   => "blob NULL",
-            'load_callback'         => array
-            (
-                array('Isotope\tl_iso_config', 'loadUrlMatrix'),
-            ),
-            'save_callback'         => array
-            (
-                array('Isotope\tl_iso_config', 'saveUrlMatrix'),
-            ),
         ),
         'newProductPeriod' => array
         (

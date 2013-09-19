@@ -1537,7 +1537,7 @@ window.addEvent('domready', function()
             return \Input::get('auto_item');
         }
 
-        return \Input::get(Isotope::getConfig()->getUrlParam($strKey));
+        return \Input::get($strKey);
     }
 
     /**

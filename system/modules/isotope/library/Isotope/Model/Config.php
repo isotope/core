@@ -174,29 +174,6 @@ class Config extends \Model
     }
 
     /**
-     * Get url param
-     * @param   string
-     * @return  string
-     */
-    public function getUrlParam($strKey)
-    {
-        // auto_item support -> empty
-        if ($GLOBALS['TL_CONFIG']['useAutoItem'] && in_array($strKey, $GLOBALS['TL_AUTO_ITEM'])) {
-
-            return '';
-        }
-
-        $arrMatrix = Isotope::getConfig()->urlMatrix;
-
-        if (!isset($arrMatrix[$strKey])) {
-
-            return $strKey;
-        }
-
-        return $arrMatrix[$strKey];
-    }
-
-    /**
      * Find config set in root page or the fallback
      * @param  int
      * @return object|null

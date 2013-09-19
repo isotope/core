@@ -537,7 +537,7 @@ class Checkout extends Module
     {
         global $objPage;
 
-        $strUrlParam = Isotope::getConfig()->getUrlParam('step');
+        $strUrlParam = 'step';
 
         if ($strUrlParam) {
             $strStep = $strUrlParam . '/' . $strStep;
