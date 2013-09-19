@@ -188,6 +188,7 @@ class Order extends ProductCollection implements IsotopeProductCollection
 
         // Copy all items from cart to oder
         $arrItemIds = $this->copyItemsFrom($objCart);
+        $this->copySurchargesFrom($objCart, $arrItemIds);
 
         // Set billing and shipping address and create private records
         $this->setBillingAddress($objCart->getBillingAddress());
@@ -214,9 +215,6 @@ class Order extends ProductCollection implements IsotopeProductCollection
                 $objAddress->save();
             }
         }
-
-        // @todo must add surcharges here
-
 
         // Add downloads from products to the collection
         $arrDownloads = ProductCollectionDownload::createForProductsInCollection($this);

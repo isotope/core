@@ -98,6 +98,24 @@ abstract class ProductCollectionSurcharge extends TypeAgent
     }
 
     /**
+     * Update IDs of tax per product config
+     * @param   array
+     */
+    public function convertCollectionItemIds($arrIdMap)
+    {
+        $arrProducts = array();
+
+        foreach ($this->arrProducts as $k => $v) {
+            if (isset($arrIdMap[$k])) {
+                $arrProducts[$arrIdMap[$k]] = $v;
+            }
+        }
+
+        $this->arrProducts = $arrProducts;
+    }
+
+
+    /**
      * Split tax amount amongst collection products
      * @param IsotopeProductCollection
      */

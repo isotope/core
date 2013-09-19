@@ -1057,9 +1057,8 @@ abstract class ProductCollection extends TypeAgent
 
     /**
      * Copy product collection items from another collection to this one (e.g. Cart to Order)
-     * @param object
-     * @param boolean
-     * @return array
+     * @param   IsotopeProductCollection
+     * @return  array
      */
     public function copyItemsFrom(IsotopeProductCollection $objSource)
     {
@@ -1111,6 +1110,37 @@ abstract class ProductCollection extends TypeAgent
                 $objCallback = \System::importStatic($callback[0]);
                 $objCallback->$callback[1]($objSource, $this, $arrIds);
             }
+        }
+
+        return $arrIds;
+    }
+
+
+    /**
+     * Copy product collection surcharges from another collection to this one (e.g. Cart to Order)
+     * @param   IsotopeProductCollection
+     * @return  array
+     */
+    public function copySurchargesFrom(IsotopeProductCollection $objSource, array $arrItemMap=array())
+    {
+        $arrIds = array();
+        $time = time();
+        $sorting = 0;
+
+        foreach ($objSource->getSurcharges() as $objSourceSurcharge) {
+            $objSurcharge = clone $objSourceSurcharge;
+            $objSurcharge->pid = $this->id;
+            $objSurcharge->tstamp = $time;
+            $objSurcharge->sorting = $sorting;
+
+            // Convert surcharge amount for individual product IDs
+            $objSurcharge->convertCollectionItemIds($arrItemMap);
+
+            $objSurcharge->save();
+
+            $arrIds[$objSourceSurcharge->id] = $objSurcharge->id;
+
+            $sorting += 128;
         }
 
         return $arrIds;
