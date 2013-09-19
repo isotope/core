@@ -12,7 +12,6 @@
 
 namespace Isotope\Model\Product;
 
-use Isotope\Frontend;
 use Isotope\Isotope;
 use Isotope\Interfaces\IsotopeAttribute;
 use Isotope\Interfaces\IsotopeProduct;
@@ -915,7 +914,7 @@ class Standard extends Product implements IsotopeProduct
             $arrParams = array_merge($arrOptions, $arrParams);
         }
 
-        return Frontend::addQueryStringToUrl(
+        return \Isotope\Frontend::addQueryStringToUrl(
             http_build_query($arrParams),
             \Controller::generateFrontendUrl($varPage->row(), $strUrl, $varPage->rootLanguage)
         );

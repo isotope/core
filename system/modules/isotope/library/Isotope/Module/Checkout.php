@@ -12,7 +12,6 @@
 
 namespace Isotope\Module;
 
-use Isotope\Frontend;
 use Isotope\Isotope;
 use Isotope\Interfaces\IsotopeCheckoutStep;
 use Isotope\Model\Payment;
@@ -94,7 +93,7 @@ class Checkout extends Module
             return $objTemplate->parse();
         }
 
-        $this->strCurrentStep = Frontend::getAutoItem('step');
+        $this->strCurrentStep = \Isotope\Frontend::getAutoItem('step');
 
         return parent::generate();
     }
@@ -145,7 +144,7 @@ class Checkout extends Module
             return;
         }
 
-        if (Frontend::getAutoItem('step') == '') {
+        if (\Isotope\Frontend::getAutoItem('step') == '') {
             if ($this->iso_forward_review) {
                 static::redirectToStep('review');
             }

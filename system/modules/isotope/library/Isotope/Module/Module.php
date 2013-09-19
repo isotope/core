@@ -12,7 +12,6 @@
 
 namespace Isotope\Module;
 
-use Isotope\Frontend;
 use \Module as Contao_Module;
 use Isotope\Isotope;
 
@@ -164,7 +163,7 @@ abstract class Module extends Contao_Module
                 break;
 
             case 'product':
-                $objProduct = \Isotope\Frontend::getProductByAlias(Frontend::getAutoItem('product'));
+                $objProduct = \Isotope\Frontend::getProductByAlias(\Isotope\Frontend::getAutoItem('product'));
 
                 if ($objProduct !== null)
                 {

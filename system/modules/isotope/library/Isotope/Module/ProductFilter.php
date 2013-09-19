@@ -13,7 +13,6 @@
 namespace Isotope\Module;
 
 use Isotope\Isotope;
-use Isotope\Frontend;
 use Isotope\Model\Product;
 use Isotope\Model\RequestCache;
 use Isotope\RequestCache\Filter;
@@ -71,7 +70,7 @@ class ProductFilter extends Module
         }
 
         // Hide product list in reader mode if the respective setting is enabled
-        if ($this->iso_hide_list && Frontend::getAutoItem('product') != '')
+        if ($this->iso_hide_list && \Isotope\Frontend::getAutoItem('product') != '')
         {
             return '';
         }

@@ -11,7 +11,7 @@
  */
 
 namespace Isotope\Module;
-use Isotope\Frontend;
+
 use Isotope\Isotope;
 
 
@@ -54,7 +54,7 @@ class ProductReader extends Module
         }
 
         // Return if no product has been specified
-        if (Frontend::getAutoItem('product') == '')
+        if (\Isotope\Frontend::getAutoItem('product') == '')
         {
             return '';
         }
@@ -71,7 +71,7 @@ class ProductReader extends Module
     {
         global $objPage;
 
-        $objProduct = \Isotope\Frontend::getProductByAlias(Frontend::getAutoItem('product'));
+        $objProduct = \Isotope\Frontend::getProductByAlias(\Isotope\Frontend::getAutoItem('product'));
 
         if (!$objProduct)
         {
