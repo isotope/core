@@ -54,8 +54,7 @@ class IsotopeRules extends \Controller
 
 
     /**
-     * Instantiate a database driver object and return it (Factory)
-     *
+     * Instantiate the singleton if necessary and return it
      * @return object
      */
     public static function getInstance()
