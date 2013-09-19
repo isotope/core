@@ -137,8 +137,7 @@ class Standard extends Gallery implements IsotopeGallery
 
     /**
      * Generate main image and return it as HTML string
-     * @param string
-     * @return string
+     * @return  string
      */
     public function generateMainImage()
     {
@@ -157,9 +156,8 @@ class Standard extends Gallery implements IsotopeGallery
 
     /**
      * Generate gallery and return it as HTML string
-     * @param string
-     * @param integer
-     * @return string
+     * @param   integer
+     * @return  string
      */
     public function generateGallery($intSkip=1)
     {
@@ -187,7 +185,7 @@ class Standard extends Gallery implements IsotopeGallery
      * @param   array
      * @return  string
      */
-    protected function addImageToTemplate(\Isotope\Template $objTemplate, $strType, $arrFile)
+    protected function addImageToTemplate(\Isotope\Template $objTemplate, $strType, array $arrFile)
     {
         $objTemplate->setData($this->arrData);
         $objTemplate->type = $strType;

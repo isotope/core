@@ -109,5 +109,7 @@ class ProductReader extends Module
         $objPage->description = $this->prepareMetaDescription($objProduct->description_meta);
 
         $GLOBALS['TL_KEYWORDS'] .= (strlen($GLOBALS['TL_KEYWORDS']) ? ', ' : '') . $objProduct->keywords_meta;
+
+        // @todo add canonical links to all categories of current root into TL_HEAD
     }
 }

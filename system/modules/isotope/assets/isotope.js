@@ -141,6 +141,7 @@ var IsotopeProducts = (function() {
                 el = document.getElementById(('ctrl_'+config.attributes[i]+'_'+config.formId));
 
                 if (el && el.className.test(/radio_container/)) {
+                    // @todo radios not working?
                     console.log(el);
 /*
                     el.getElements('input.radio').each( function(option) {
