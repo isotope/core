@@ -286,8 +286,8 @@ class ProductList extends Module
 
     /**
      * Generate the pagination
-     * @param array
-     * @return array
+     * @param   array
+     * @return  array
      */
     protected function generatePagination($arrItems)
     {
@@ -302,7 +302,7 @@ class ProductList extends Module
 		$total = count($arrItems);
 
 		// Split the results
-		if ($this->perPage > 0 && (!isset($limit) || $this->numberOfItems > $this->perPage)) {
+		if ($this->perPage > 0 && (!isset($limit) || $limit > $this->perPage)) {
 
 			// Adjust the overall limit
 			if (isset($limit)) {
