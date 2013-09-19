@@ -571,7 +571,7 @@ class Standard extends Product implements IsotopeProduct
         $objTemplate->minimum_quantity = $this->getMinimumQuantity();
         $objTemplate->raw = $this->arrData;
         $objTemplate->raw_options = $this->arrOptions;
-        $objTemplate->href_reader = $this->generateUrl($arrConfig['reader_page']);
+        $objTemplate->href = $this->generateUrl($arrConfig['jumpTo']);
         $objTemplate->label_detail = $GLOBALS['TL_LANG']['MSC']['detailLabel'];
         $objTemplate->options = \Isotope\Frontend::generateRowClass($arrProductOptions, 'product_option');
         $objTemplate->hasOptions = !empty($arrProductOptions);

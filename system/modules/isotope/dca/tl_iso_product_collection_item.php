@@ -92,7 +92,7 @@ $GLOBALS['TL_DCA']['tl_iso_product_collection_item'] = array
         (
             'sql'                   => "varchar(32) NOT NULL default ''",
         ),
-        'reader_page' => array
+        'jumpTo' => array
         (
             'sql'                   => "int(10) unsigned NOT NULL default '0'",
         ),

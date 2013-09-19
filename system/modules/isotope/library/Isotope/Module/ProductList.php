@@ -207,7 +207,7 @@ class ProductList extends Module
                 'gallery'       => $objProduct->getRelated('type')->list_gallery,
                 'buttons'       => deserialize($this->iso_buttons, true),
                 'useQuantity'   => $this->iso_use_quantity,
-                'reader_page'   => $intReaderPage
+                'jumpTo'        => $intReaderPage
             );
 
             if (\Environment::get('isAjaxRequest') && \Input::get('AJAX_MODULE') == $this->id && \Input::get('AJAX_PRODUCT') == $objProduct->id) {
