@@ -22,7 +22,7 @@ array_insert($GLOBALS['BE_MOD']['isotope'], 2, array
     'iso_rules' => array
     (
         'tables'                    => array('tl_iso_rules'),
-        'javsacript'                => 'system/modules/isotope/assets/backend.min.js',
+        'javsacript'                => 'system/modules/isotope/assets/backend'.(ISO_DEBUG ? '' : '.min').'.js',
         'icon'                        => 'system/modules/isotope_rules/assets/auction-hammer-gavel.png'
     ),
 ));

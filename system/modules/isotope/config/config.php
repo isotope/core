@@ -38,7 +38,7 @@ array_insert($GLOBALS['BE_MOD']['isotope'], 0, array
     (
         'tables'                    => array('tl_iso_products', 'tl_iso_groups', 'tl_iso_product_categories', 'tl_iso_downloads', 'tl_iso_related_products', 'tl_iso_prices', 'tl_iso_price_tiers'),
         'icon'                        => 'system/modules/isotope/assets/store-open.png',
-        'javascript'                => 'system/modules/isotope/assets/backend.min.js',
+        'javascript'                => 'system/modules/isotope/assets/backend'.(ISO_DEBUG ? '' : '.min').'.js',
         'generate'                    => array('Isotope\tl_iso_products', 'generateVariants'),
         'import'                    => array('Isotope\tl_iso_products', 'importAssets'),
     ),
@@ -46,7 +46,7 @@ array_insert($GLOBALS['BE_MOD']['isotope'], 0, array
     (
         'tables'                    => array('tl_iso_product_collection', 'tl_iso_product_collection_item', 'tl_iso_product_collection_surcharge', 'tl_iso_product_collection_download', 'tl_iso_addresses'),
         'icon'                        => 'system/modules/isotope/assets/shopping-basket.png',
-        'javascript'                => 'system/modules/isotope/assets/backend.min.js',
+        'javascript'                => 'system/modules/isotope/assets/backend'.(ISO_DEBUG ? '' : '.min').'.js',
         'print_document'                => array('Isotope\tl_iso_product_collection', 'printDocument'),
         'payment'                    => array('Isotope\tl_iso_product_collection', 'paymentInterface'),
         'shipping'                    => array('Isotope\tl_iso_product_collection', 'shippingInterface'),
@@ -56,7 +56,7 @@ array_insert($GLOBALS['BE_MOD']['isotope'], 0, array
         'callback'                    => 'Isotope\BackendModule\Setup',
         'tables'                    => array(),
         'icon'                        => 'system/modules/isotope/assets/application-monitor.png',
-        'javascript'                => 'system/modules/isotope/assets/backend.min.js',
+        'javascript'                => 'system/modules/isotope/assets/backend'.(ISO_DEBUG ? '' : '.min').'.js',
     ),
 ));
 
@@ -64,7 +64,7 @@ $GLOBALS['BE_MOD']['accounts']['member']['tables'][] = 'tl_iso_addresses';
 
 if (TL_MODE == 'BE')
 {
-    $GLOBALS['TL_CSS'][] = 'system/modules/isotope/assets/backend.min.css';
+    $GLOBALS['TL_CSS'][] = 'system/modules/isotope/assets/backend'.(ISO_DEBUG ? '' : '.min').'.css';
 }
 
 

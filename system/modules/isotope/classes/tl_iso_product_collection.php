@@ -75,7 +75,7 @@ class tl_iso_product_collection extends \Backend
             \Controller::redirect('contao/main.php?act=error');
         }
 
-        $GLOBALS['TL_CSS'][] = 'system/modules/isotope/assets/print.min.css|print';
+        $GLOBALS['TL_CSS'][] = 'system/modules/isotope/assets/print' . (ISO_DEBUG ? '' : '.min') . '.css|print';
 
         // Generate a regular order details module
         \Input::setGet('uid', $objOrder->uniqid);

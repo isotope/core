@@ -66,9 +66,9 @@
 <?php endif; ?>
 
 <?php if ($this->hasAutocomplete):
-$GLOBALS['TL_CSS'][] = 'system/modules/isotope/assets/Autocompleter.min.css';
+$GLOBALS['TL_CSS'][] = 'system/modules/isotope/assets/Autocompleter'.(ISO_DEBUG ? '' : '.min').'.css';
 ?>
-<script src="system/modules/isotope/assets/Autocompleter.min.js"></script>
+<script src="system/modules/isotope/assets/Autocompleter<?php echo (ISO_DEBUG ? '' : '.min'); ?>.js"></script>
 <script>
 window.addEvent('domready', function() {
     var requested = false;
