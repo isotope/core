@@ -47,15 +47,7 @@ $GLOBALS['TL_DCA']['tl_iso_requestcache'] = array
         (
             'sql'                 =>  "int(10) unsigned NOT NULL default '0'",
         ),
-        'filters' => array
-        (
-            'sql'                 =>  "blob NULL",
-        ),
-        'sorting' => array
-        (
-            'sql'                 =>  "blob NULL",
-        ),
-        'limits' => array
+        'config' => array
         (
             'sql'                 =>  "blob NULL",
         ),

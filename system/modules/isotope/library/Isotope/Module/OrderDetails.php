@@ -74,7 +74,7 @@ class OrderDetails extends Module
     protected function compile()
     {
         // Also check owner (see #126)
-        if (($objOrder = Order::findOneBy('uniqid', (string) \Input::get('uid'))) === null || (FE_USER_LOGGED_IN === true && $objOrder->pid > 0 && \FrontendUser::getInstance()->id != $objOrder->pid)) {
+        if (($objOrder = Order::findOneBy('uniqid', (string) \Input::get('uid'))) === null || (FE_USER_LOGGED_IN === true && $objOrder->member > 0 && \FrontendUser::getInstance()->id != $objOrder->member)) {
             $this->Template = new \Isotope\Template('mod_message');
             $this->Template->type = 'error';
             $this->Template->message = $GLOBALS['TL_LANG']['ERR']['orderNotFound'];
@@ -87,96 +87,17 @@ class OrderDetails extends Module
         $objTemplate = new \Isotope\Template($this->iso_collectionTpl);
         $objTemplate->linkProducts = true;
 
-        $objOrder->addToTemplate($objTemplate);
-
-        $arrAllDownloads = array();
-        $arrItems = $objTemplate->items;
-
-        foreach ($arrItems as $k => $arrItem) {
-            $arrDownloads = $arrItem['hasProduct'] ? $this->getDownloadsForProduct($arrItem['product'], $objOrder->paid) : array();
-
-            $arrItems[$k]['downloads'] = $arrDownloads;
-
-            $arrAllDownloads = array_merge($arrAllDownloads, $arrDownloads);
-        }
-
-        $objTemplate->items = $arrItems;
+        $objOrder->addToTemplate($objTemplate, $this->getProductCollectionItemsSortingCallable());
 
         $this->Template->collection = $objOrder;
         $this->Template->products = $objTemplate->parse();
-        $this->Template->downloads = $arrAllDownloads;
         $this->Template->info = deserialize($objOrder->checkout_info, true);
 
-        $this->Template->date = Isotope::formatDate($objOrder->date);
-        $this->Template->time = Isotope::formatTime($objOrder->date);
-        $this->Template->datim = Isotope::formatDatim($objOrder->date);
+        $this->Template->date = Isotope::formatDate($objOrder->locked);
+        $this->Template->time = Isotope::formatTime($objOrder->locked);
+        $this->Template->datim = Isotope::formatDatim($objOrder->locked);
         $this->Template->orderDetailsHeadline = sprintf($GLOBALS['TL_LANG']['MSC']['orderDetailsHeadline'], $objOrder->order_id, $this->Template->datim);
         $this->Template->orderStatus = sprintf($GLOBALS['TL_LANG']['MSC']['orderStatusHeadline'], $objOrder->getStatusLabel());
         $this->Template->orderStatusKey = $objOrder->getStatusAlias();
-    }
-
-    /**
-     * Generate downloads for a product
-     * @param   IsotopeProduct
-     * @param   bool
-     * @return  array
-     */
-    protected function getDownloadsForProduct($objProduct, $blnOrderPaid=false)
-    {
-        $time = time();
-        $arrDownloads = array();
-        $objDownloads = \Database::getInstance()->prepare("SELECT p.*, c.* FROM tl_iso_product_collection_download c JOIN tl_iso_downloads p ON c.download_id=p.id WHERE c.pid=?")->execute($objProduct->collection_id);
-
-        while ($objDownloads->next()) {
-            $blnDownloadable = ($blnOrderPaid && ($objDownloads->downloads_remaining === '' || $objDownloads->downloads_remaining > 0) && ($objDownloads->expires == '' || $objDownloads->expires > $time)) ? true : false;
-
-            if ($objDownloads->type == 'folder') {
-                foreach (scan(TL_ROOT . '/' . $objDownloads->singleSRC) as $file) {
-                    if (is_file(TL_ROOT . '/' . $objDownloads->singleSRC . '/' . $file)) {
-                        $arrDownloads[] = $this->generateDownload($objDownloads->singleSRC . '/' . $file, $objDownloads, $blnDownloadable);
-                    }
-                }
-            } else {
-                $arrDownloads[] = $this->generateDownload($objDownloads->singleSRC, $objDownloads, $blnDownloadable);
-            }
-        }
-
-        return $arrDownloads;
-    }
-
-    /**
-     * Generate data array for a downloadable file
-     * @param   string
-     * @param   \Database\Result
-     * @param   bool
-     * @return array
-     */
-    protected function generateDownload($strFile, $objDownload, $blnDownloadable)
-    {
-        $strUrl = '';
-        $strFileName = basename($strFile);
-
-        if (TL_MODE == 'FE') {
-            $strUrl = \Isotope\Frontend::addQueryStringToUrl('download=' . $objDownload->id . ($objDownload->type == 'folder' ? '&amp;file='.$strFileName : ''));
-        }
-
-        $arrDownload = array(
-            'raw'            => $objDownload->row(),
-            'title'            => ($objDownload->type == 'folder' ? $strFileName : $objDownload->title),
-            'href'            => $strUrl,
-            'remaining'        => ($objDownload->downloads_allowed > 0 ? sprintf($GLOBALS['TL_LANG']['MSC']['downloadsRemaining'], intval($objDownload->downloads_remaining)) : ''),
-            'downloadable'    => $blnDownloadable,
-        );
-
-        // Send file to the browser
-        if ($blnDownloadable && \Input::get('download') != '' && \Input::get('download') == $objDownload->id && ($objDownload->type == 'file' || (\Input::get('file') != '' && \Input::get('file') == $strFileName))) {
-            if (!$this->backend && $objDownload->downloads_remaining !== '') {
-                \Database::getInstance()->prepare("UPDATE tl_iso_product_collection_download SET downloads_remaining=? WHERE id=?")->execute(($objDownload->downloads_remaining-1), $objDownload->id);
-            }
-
-            \Controller::sendFileToBrowser($strFile);
-        }
-
-        return $arrDownload;
     }
 }

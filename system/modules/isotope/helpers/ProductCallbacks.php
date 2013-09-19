@@ -12,7 +12,9 @@
 
 namespace Isotope;
 
+use Isotope\Model\Group;
 use Isotope\Model\ProductType;
+use Isotope\Model\TaxClass;
 
 
 /**
@@ -76,8 +78,7 @@ class ProductCallbacks extends \Backend
      */
     public static function getInstance()
     {
-        if (!is_object(static::$objInstance))
-        {
+        if (!is_object(static::$objInstance)) {
             static::$objInstance = new static();
 
             static::$objInstance->arrProductTypes = array();
@@ -91,57 +92,47 @@ class ProductCallbacks extends \Backend
                     $objType = $objProductTypes->current();
                     static::$objInstance->arrProductTypes[$objProductTypes->id] = $objType;
 
-                    if ($objType->hasDownloads())
-                    {
+                    if ($objType->hasDownloads()) {
                         $blnDownloads = true;
                     }
 
-                    if ($objType->hasVariants())
-                    {
+                    if ($objType->hasVariants()) {
                         $blnVariants = true;
                     }
 
-                    if ($objType->hasAdvancedPrices())
-                    {
+                    if ($objType->hasAdvancedPrices()) {
                         $blnAdvancedPrices = true;
                     }
                 }
             }
 
             // If no downloads are enabled in any product type, we do not need the option
-            if (!$blnDownloads)
-            {
+            if (!$blnDownloads) {
                 unset($GLOBALS['TL_DCA']['tl_iso_products']['list']['operations']['downloads']);
-            }
-            else
-            {
+            } else {
                 // Cache number of downloads
                 static::$objInstance->arrDownloads = array();
 
                 $objDownloads = static::$objInstance->Database->query("SELECT pid, COUNT(id) AS total FROM tl_iso_downloads GROUP BY pid");
 
-                while ($objDownloads->next())
-                {
+                while ($objDownloads->next()) {
                     static::$objInstance->arrDownloads[$objDownloads->pid] = $objDownloads->total;
                 }
             }
 
             // Disable all variant related operations
-            if (!$blnVariants)
-            {
+            if (!$blnVariants) {
                 unset($GLOBALS['TL_DCA']['tl_iso_products']['list']['global_operations']['toggleVariants']);
                 unset($GLOBALS['TL_DCA']['tl_iso_products']['list']['operations']['generate']);
             }
 
             // Disable prices button if not enabled in any product type
-            if (!$blnAdvancedPrices)
-            {
+            if (!$blnAdvancedPrices) {
                 unset($GLOBALS['TL_DCA']['tl_iso_products']['list']['operations']['prices']);
             }
 
             // Disable related categories if none are defined
-            if (static::$objInstance->Database->query("SELECT COUNT(id) AS total FROM tl_iso_related_categories")->total == 0)
-            {
+            if (static::$objInstance->Database->query("SELECT COUNT(id) AS total FROM tl_iso_related_categories")->total == 0) {
                 unset($GLOBALS['TL_DCA']['tl_iso_products']['list']['operations']['related']);
             }
         }
@@ -288,14 +279,7 @@ class ProductCallbacks extends \Backend
             $GLOBALS['TL_DCA']['tl_iso_products']['config']['closed'] = false;
         }
 
-        // Hide "add variant" button if no products with variants enabled exist
-        if (\Database::getInstance()->query("SELECT COUNT(*) AS total FROM tl_iso_products p LEFT JOIN tl_iso_producttypes t ON p.type=t.id WHERE t.variants='1'")->total == 0)
-        {
-            unset($GLOBALS['TL_DCA']['tl_iso_products']['list']['global_operations']['new_variant']);
-        }
-
         $session = $this->Session->getData();
-
         $arrProducts = \Isotope\Backend::getAllowedProductIds();
 
         // Method will return true if no limits should be applied (e.g. user is admin)
@@ -307,7 +291,6 @@ class ProductCallbacks extends \Backend
         // Filter by product type and group permissions
         if (empty($arrProducts))
         {
-            unset($GLOBALS['TL_DCA']['tl_iso_products']['list']['global_operations']['new_variant']);
             unset($session['CLIPBOARD']['tl_iso_products']);
             $session['CURRENT']['IDS'] = array();
             $GLOBALS['TL_DCA']['tl_iso_products']['list']['sorting']['filter'][] = array('id=?', 0);
@@ -375,14 +358,6 @@ class ProductCallbacks extends \Backend
         // Unset foreign key to activate options_callback
         unset($arrFields['type']['foreignKey']);
 
-        // Set default product type
-        $arrFields['type']['default'] = (int) \Database::getInstance()->execute("SELECT id FROM tl_iso_producttypes WHERE fallback='1'" . ($this->User->isAdmin ? '' : (" AND id IN (" . implode(',', $this->User->iso_product_types) . ")")))->id;
-
-        // Set default tax class
-        // @todo this should be done in an oncreate callback.
-        //$arrFields['tax_class']['default'] = (int) \Database::getInstance()->execute("SELECT id FROM tl_iso_tax_class WHERE fallback='1'")->id;
-
-
         $arrTypes = $this->arrProductTypes;
         $blnVariants = false;
         $act = \Input::get('act');
@@ -392,7 +367,8 @@ class ProductCallbacks extends \Backend
             $objProduct = \Database::getInstance()->prepare("SELECT p1.pid, p1.type, p2.type AS parent_type FROM tl_iso_products p1 LEFT JOIN tl_iso_products p2 ON p1.pid=p2.id WHERE p1.id=?")->execute(\Input::get('id'));
 
             if ($objProduct->numRows) {
-                $arrTypes = array($this->arrProductTypes[($objProduct->pid > 0 ? $objProduct->parent_type : $objProduct->type)]);
+                $objType = $this->arrProductTypes[($objProduct->pid > 0 ? $objProduct->parent_type : $objProduct->type)];
+                $arrTypes = null === $objType ? array() : array($objType);
 
                 if ($objProduct->pid > 0 || $act != 'edit') {
                     $blnVariants = true;
@@ -407,7 +383,6 @@ class ProductCallbacks extends \Backend
                 $arrFields['prices']['exclude'] = $arrFields['price']['exclude'];
                 $arrFields['prices']['attributes'] = $arrFields['price']['attributes'];
                 $arrFields['price'] = $arrFields['prices'];
-                unset($arrFields['tax_class']);
             }
 
             // Register callback to version/restore a price
@@ -422,6 +397,7 @@ class ProductCallbacks extends \Backend
             if ($blnVariants) {
                 $arrConfig = deserialize($objType->variant_attributes, true);
                 $arrEnabled = $objType->getVariantAttributes();
+                $arrCanInherit = $objType->getAttributes();
             } else {
                 $arrConfig = deserialize($objType->attributes, true);
                 $arrEnabled = $objType->getAttributes();
@@ -456,7 +432,7 @@ class ProductCallbacks extends \Backend
                     $arrFields[$name]['eval']['mandatory'] = $arrConfig[$name]['mandatory'] == 1 ? false : true;
                 }
 
-                if ($blnVariants && !$arrAttributes[$name]->isVariantOption() && !in_array($name, array('price', 'published', 'start', 'stop'))) {
+                if ($blnVariants && in_array($name, $arrCanInherit) && !$arrAttributes[$name]->isVariantOption() && !in_array($name, array('price', 'published', 'start', 'stop'))) {
                     $arrInherit[$name] = Isotope::formatLabel('tl_iso_products', $name);
                 }
             }
@@ -500,14 +476,21 @@ class ProductCallbacks extends \Backend
      */
     public function loadDefaultProductType($dc)
     {
-        if (\Input::get('act') !== 'create')
-        {
+        if (\Input::get('act') !== 'create') {
             return;
         }
 
-        if (($intProductTypeId = \Isotope\Backend::getProductTypeForGroup($this->Session->get('iso_products_gid'))) !== false)
+        $objGroup = Group::findByPk($this->Session->get('iso_products_gid'));
+
+        if (null === $objGroup || null === $objGroup->getRelated('product_type')) {
+            $objType = ProductType::findFallback();
+        } else {
+            $objType = $objGroup->getRelated('product_type');
+        }
+
+        if (null !== $objType)
         {
-            $GLOBALS['TL_DCA']['tl_iso_products']['fields']['type']['default'] = $intProductTypeId;
+            $GLOBALS['TL_DCA']['tl_iso_products']['fields']['type']['default'] = $objType->id;
         }
     }
 
@@ -925,7 +908,7 @@ window.addEvent('domready', function() {
             return '';
         }
 
-        return '<a href="'.$this->addToUrl($href.'&amp;id='.$row['id']).'" title="'.specialchars($title).'"'.$attributes.'>'.$this->generateImage($icon, $label).'</a> ';
+        return '<a href="'.$this->addToUrl($href.'&amp;id='.$row['id']).'" title="'.specialchars($title).'"'.$attributes.'>'.\Image::getHtml($icon, $label).'</a> ';
     }
 
 
@@ -946,7 +929,7 @@ window.addEvent('domready', function() {
             return '';
         }
 
-        return '<a href="'.$this->addToUrl($href.'&amp;id='.$row['id']).'" title="'.specialchars($title).'"'.$attributes.'>'.$this->generateImage($icon, $label).'</a> ';
+        return '<a href="'.$this->addToUrl($href.'&amp;id='.$row['id']).'" title="'.specialchars($title).'"'.$attributes.'>'.\Image::getHtml($icon, $label).'</a> ';
     }
 
 
@@ -967,7 +950,7 @@ window.addEvent('domready', function() {
             return '';
         }
 
-        return '<a href="'.$this->addToUrl($href.'&amp;id='.$row['id']).'" title="'.specialchars(sprintf($GLOBALS['TL_DCA']['tl_iso_products']['list']['operations']['downloads']['label'][2], (int) $this->arrDownloads[$row['id']]) . $title).'"'.$attributes.'>'.$this->generateImage($icon, $label) .'</a> ';
+        return '<a href="'.$this->addToUrl($href.'&amp;id='.$row['id']).'" title="'.specialchars(sprintf($GLOBALS['TL_DCA']['tl_iso_products']['list']['operations']['downloads']['label'][2], (int) $this->arrDownloads[$row['id']]) . $title).'"'.$attributes.'>'.\Image::getHtml($icon, $label) .'</a> ';
     }
 
 
@@ -995,7 +978,7 @@ window.addEvent('domready', function() {
             return '';
         }
 
-        return '<a href="'.$this->addToUrl($href.'&amp;id='.$row['id']).'" title="'.specialchars($title).'"'.$attributes.'>'.$this->generateImage($icon, $label).'</a> ';
+        return '<a href="'.$this->addToUrl($href.'&amp;id='.$row['id']).'" title="'.specialchars($title).'"'.$attributes.'>'.\Image::getHtml($icon, $label).'</a> ';
     }
 
 
@@ -1061,24 +1044,19 @@ window.addEvent('domready', function() {
      */
     public function loadPrice($varValue, \DataContainer $dc)
     {
-        $objPrice = \Database::getInstance()->query("SELECT t.id, p.id AS pid, t.price FROM tl_iso_prices p LEFT JOIN tl_iso_price_tiers t ON p.id=t.pid AND t.min=1 WHERE p.pid={$dc->id} AND p.config_id=0 AND p.member_group=0 AND p.start='' AND p.stop=''");
+        $objPrice = \Database::getInstance()->query("SELECT t.id, p.id AS pid, p.tax_class, t.price FROM tl_iso_prices p LEFT JOIN tl_iso_price_tiers t ON p.id=t.pid AND t.min=1 WHERE p.pid={$dc->id} AND p.config_id=0 AND p.member_group=0 AND p.start='' AND p.stop=''");
 
         if (!$objPrice->numRows) {
-            return '0.00';
+
+            $objTax = TaxClass::findFallback();
+
+            return array(
+                'value' => '0.00',
+                'unit'  => (null === $objTax ? 0 : $objTax->id),
+            );
         }
 
-        return $objPrice->price;
-    }
-
-    /**
-     * Load tax class from prices subtable
-     * @param   mixed
-     * @param   DataContainer
-     * @return  mixed
-     */
-    public function loadTaxClass($varValue, \DataContainer $dc)
-    {
-        return (int) \Database::getInstance()->query("SELECT tax_class FROM tl_iso_prices WHERE pid={$dc->id} AND config_id=0 AND member_group=0 AND start='' AND stop=''")->tax_class;
+        return array('value'=>$objPrice->price, 'unit'=>$objPrice->tax_class);
     }
 
 
@@ -1137,13 +1115,25 @@ window.addEvent('domready', function() {
     public function savePrice($varValue, \DataContainer $dc)
     {
         $time = time();
-        $objPrice = \Database::getInstance()->query("SELECT t.id, p.id AS pid, t.price FROM tl_iso_prices p LEFT JOIN tl_iso_price_tiers t ON p.id=t.pid AND t.min=1 WHERE p.pid={$dc->id} AND p.config_id=0 AND p.member_group=0 AND p.start='' AND p.stop=''");
+
+        // Parse the timePeriod widget
+        $arrValue = deserialize($varValue, true);
+        $strPrice = (string) $arrValue['value'];
+        $intTax = (int) $arrValue['unit'];
+
+        $objPrice = \Database::getInstance()->query("SELECT t.id, p.id AS pid, p.tax_class, t.price FROM tl_iso_prices p LEFT JOIN tl_iso_price_tiers t ON p.id=t.pid AND t.min=1 WHERE p.pid={$dc->id} AND p.config_id=0 AND p.member_group=0 AND p.start='' AND p.stop=''");
 
         // Price tier record already exists, update it
         if ($objPrice->numRows && $objPrice->id > 0) {
 
-            if ($objPrice->price != $varValue) {
-                \Database::getInstance()->prepare("UPDATE tl_iso_price_tiers SET tstamp=$time, price=? WHERE id=?")->executeUncached($varValue, $objPrice->id);
+            if ($objPrice->price != $strPrice) {
+                \Database::getInstance()->prepare("UPDATE tl_iso_price_tiers SET tstamp=$time, price=? WHERE id=?")->executeUncached($strPrice, $objPrice->id);
+
+                $dc->createNewVersion = true;
+            }
+
+            if ($objPrice->tax_class != $intTax) {
+                \Database::getInstance()->prepare("UPDATE tl_iso_prices SET tstamp=$time, tax_class=? WHERE id=?")->executeUncached($intTax, $objPrice->pid);
 
                 $dc->createNewVersion = true;
             }
@@ -1154,37 +1144,12 @@ window.addEvent('domready', function() {
 
             // Neither price tier nor price record exist, must add both
             if (!$objPrice->numRows) {
-                $intPrice = \Database::getInstance()->query("INSERT INTO tl_iso_prices (pid,tstamp) VALUES ($dc->id, $time)")->insertId;
+                $intPrice = \Database::getInstance()->prepare("INSERT INTO tl_iso_prices (pid,tstamp,tax_class) VALUES (?,?,?)")->execute($dc->id, $time, $intTax)->insertId;
+            } elseif ($objPrice->tax_class != $intTax) {
+                \Database::getInstance()->prepare("UPDATE tl_iso_prices SET tstamp=?, tax_class=? WHERE id=?")->execute($time, $intTax, $intPrice);
             }
 
-            \Database::getInstance()->prepare("INSERT INTO tl_iso_price_tiers (pid,tstamp,min,price) VALUES ($intPrice, $time, 1, ?)")->executeUncached($varValue);
-
-            $dc->createNewVersion = true;
-        }
-
-        return '';
-    }
-
-    /**
-     * Save tax_class to the prices subtable
-     * @param   mixed
-     * @param   DataContainer
-     * @return  mixed
-     */
-    public function saveTaxClass($varValue, \DataContainer $dc)
-    {
-        $time = time();
-        $objPrice = \Database::getInstance()->query("SELECT id, tax_class FROM tl_iso_prices WHERE pid={$dc->id} AND config_id=0 AND member_group=0 AND start='' AND stop=''");
-
-        if ($objPrice->numRows == 0) {
-
-            \Database::getInstance()->prepare("INSERT INTO tl_iso_prices (pid,tstamp,tax_class) VALUES ($dc->id, $time, ?)")->executeUncached($varValue);
-
-            $dc->createNewVersion = true;
-
-        } elseif ($objPrice->tax_class != $varValue) {
-
-            \Database::getInstance()->prepare("UPDATE tl_iso_prices SET tstamp=$time, tax_class=? WHERE id=?")->executeUncached($varValue, $objPrice->id);
+            \Database::getInstance()->prepare("INSERT INTO tl_iso_price_tiers (pid,tstamp,min,price) VALUES (?,?,1,?)")->executeUncached($intPrice, $time, $strPrice);
 
             $dc->createNewVersion = true;
         }

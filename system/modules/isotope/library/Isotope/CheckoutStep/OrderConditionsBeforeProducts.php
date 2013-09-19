@@ -24,10 +24,10 @@ class OrderConditionsBeforeProducts extends OrderConditions implements IsotopeCh
      */
     public function isAvailable()
     {
-        if ($this->iso_order_conditions_position == 'before') {
-            return true;
+        if ($this->objModule->iso_order_conditions_position != 'before') {
+            return false;
         }
 
-        return false;
+        return parent::isAvailable();
     }
 }

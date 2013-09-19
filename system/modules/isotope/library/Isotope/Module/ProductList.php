@@ -16,6 +16,7 @@ use Isotope\Frontend;
 use Isotope\Isotope;
 use Isotope\Model\Product;
 use Isotope\Model\ProductCache;
+use Isotope\RequestCache\Sort;
 
 
 /**
@@ -76,20 +77,7 @@ class ProductList extends Module
         }
 
         // Apply limit from filter module
-        if (is_array($this->iso_filterModules)) {
-
-            // We only do this once. getFiltersAndSorting() then automatically has the correct sorting
-            $this->iso_filterModules = array_reverse($this->iso_filterModules);
-
-            foreach ($this->iso_filterModules as $module)
-            {
-                if ($GLOBALS['ISO_LIMIT'][$module] > 0)
-                {
-                    $this->perPage = $GLOBALS['ISO_LIMIT'][$module];
-                    break;
-                }
-            }
-        }
+        $this->perPage = Isotope::getRequestCache()->getFirstLimitForModules($this->iso_filterModules, $this->perPage)->asInt();
 
         return parent::generate();
     }
@@ -100,8 +88,6 @@ class ProductList extends Module
      *
      * This function is specially designed so you can keep it in your child classes and only override findProducts().
      * You will automatically gain product caching (see class property), grid classes, pagination and more.
-     *
-     * @return void
      */
     protected function compile()
     {
@@ -117,25 +103,17 @@ class ProductList extends Module
         $intPage = ($this->iso_category_scope == 'article' ? $GLOBALS['ISO_CONFIG']['current_article']['pid'] : $objPage->id);
         $arrProducts = null;
 
+		// Try to load the products from cache
         if ($this->blnCacheProducts && ($objCache = ProductCache::findForPageAndModule($intPage, $this->id)) !== null) {
             $arrCacheIds = $objCache->getProductIds();
 
             // Use the cache if keywords match. Otherwise we will use the product IDs as a "limit" for findProducts()
             if ($objCache->keywords == \Input::get('keywords')) {
-                $total = count($arrCacheIds);
-
-                if ($this->perPage > 0) {
-                    $offset = $this->generatePagination($total);
-                    $total = $total - $offset;
-                    $total = $total > $this->perPage ? $this->perPage : $total;
-
-                    $arrProducts = \Isotope\Frontend::getProducts(array_slice($arrCacheIds, $offset, $this->perPage));
-                } else {
-                    $arrProducts = \Isotope\Frontend::getProducts($arrCacheIds);
-                }
+            	$arrCacheIds = $this->generatePagination($arrCacheIds);
+                $arrProducts = \Isotope\Frontend::getProducts($arrCacheIds);
 
                 // Cache is wrong, drop everything and run findProducts()
-                if (count($arrProducts) != $total) {
+                if (count($arrProducts) != count($arrCacheIds)) {
                     $arrCacheIds = null;
                     $arrProducts = null;
                 }
@@ -201,10 +179,7 @@ class ProductList extends Module
                 $arrProducts = $this->findProducts();
             }
 
-            if ($this->perPage > 0) {
-                $offset = $this->generatePagination(count($arrProducts));
-                $arrProducts = array_slice($arrProducts, $offset, $this->perPage);
-            }
+            $arrProducts = $this->generatePagination($arrProducts);
         }
 
         // No products found
@@ -312,31 +287,61 @@ class ProductList extends Module
 
     /**
      * Generate the pagination
-     * @param integer
-     * @return integer
+     * @param   array
+     * @return  array
      */
-    protected function generatePagination($total)
+    protected function generatePagination($arrItems)
     {
-        // Add pagination
-        if ($this->perPage > 0 && $total > 0)
-        {
-            $page = \Input::get('page') ? \Input::get('page') : 1;
+    	$offset = 0;
+        $limit = null;
 
-            // Check the maximum page number
-            if ($page > ($total/$this->perPage))
-            {
-                $page = ceil($total/$this->perPage);
-            }
-
-            $offset = ($page - 1) * $this->perPage;
-
-            $objPagination = new \Pagination($total, $this->perPage);
-            $this->Template->pagination = $objPagination->generate("\n  ");
-
-            return $offset;
+        // Set the limit
+        if ($this->numberOfItems > 0) {
+            $limit = $this->numberOfItems;
         }
 
-        return 0;
+		$total = count($arrItems);
+
+		// Split the results
+		if ($this->perPage > 0 && (!isset($limit) || $limit > $this->perPage)) {
+
+			// Adjust the overall limit
+			if (isset($limit)) {
+				$total = min($limit, $total);
+			}
+
+			// Get the current page
+			$id = 'page_iso' . $this->id;
+			$page = \Input::get($id) ?: 1;
+
+			// Do not index or cache the page if the page number is outside the range
+			if ($page < 1 || $page > max(ceil($total / $this->perPage), 1)) {
+	            global $objPage;
+
+	            $objHandler = new $GLOBALS['TL_PTY']['error_404']();
+                $objHandler->generate($objPage->id);
+                exit;
+			}
+
+			// Set limit and offset
+			$limit = $this->perPage;
+			$offset += (max($page, 1) - 1) * $this->perPage;
+
+			// Overall limit
+			if ($offset + $limit > $total) {
+				$limit = $total - $offset;
+			}
+
+			// Add the pagination menu
+			$objPagination = new \Pagination($total, $this->perPage, $GLOBALS['TL_CONFIG']['maxPaginationLinks'], $id);
+			$this->Template->pagination = $objPagination->generate("\n  ");
+		}
+
+		if (isset($limit)) {
+			$arrItems = array_slice($arrItems, $offset, $limit);
+		}
+
+        return $arrItems;
     }
 
 
@@ -347,78 +352,43 @@ class ProductList extends Module
      */
     protected function getFiltersAndSorting($blnNativeSQL=true)
     {
-        $arrFilters = array();
-        $arrSorting = array();
+        $arrFilters = Isotope::getRequestCache()->getFiltersForModules($this->iso_filterModules);
+        $arrSorting = Isotope::getRequestCache()->getSortingsForModules($this->iso_filterModules);
 
-        if (is_array($this->iso_filterModules))
-        {
-            foreach ($this->iso_filterModules as $module)
-            {
-                if (is_array($GLOBALS['ISO_FILTERS'][$module]))
-                {
-                    $arrFilters = array_merge($GLOBALS['ISO_FILTERS'][$module], $arrFilters);
-                }
-
-                if (is_array($GLOBALS['ISO_SORTING'][$module]))
-                {
-                    $arrSorting = array_merge($GLOBALS['ISO_SORTING'][$module], $arrSorting);
-                }
-            }
+        if (empty($arrSorting) && $this->iso_listingSortField != '') {
+            $arrSorting[$this->iso_listingSortField] = ($this->iso_listingSortDirection == 'DESC' ? Sort::descending() : Sort::ascending());
         }
 
-        if (empty($arrSorting) && $this->iso_listingSortField != '')
-        {
-            $arrSorting[$this->iso_listingSortField] = array(($this->iso_listingSortDirection=='DESC' ? SORT_DESC : SORT_ASC), SORT_REGULAR);
-        }
-
-        // Thanks to certo web & design for sponsoring this feature
-        if ($blnNativeSQL)
-        {
+        if ($blnNativeSQL) {
             $strWhere = '';
             $arrWhere = array();
             $arrValues = array();
             $arrGroups = array();
 
             // Initiate native SQL filtering
-            foreach ($arrFilters as $k => $filter)
-            {
-                if ($filter['group'] != '' && $arrGroups[$filter['group']] !== false)
-                {
-                    if (in_array($filter['attribute'], $GLOBALS['ISO_CONFIG']['dynamicAttributes']))
-                    {
-                        $arrGroups[$filter['group']] = false;
+            foreach ($arrFilters as $k => $objFilter) {
+                if ($objFilter->hasGroup() && $arrGroups[$objFilter->getGroup()] !== false) {
+                    if ($objFilter->isDynamicAttribute()) {
+                        $arrGroups[$objFilter->getGroup()] = false;
+                    } else {
+                        $arrGroups[$objFilter->getGroup()][] = $k;
                     }
-                    else
-                    {
-                        $arrGroups[$filter['group']][] = $k;
-                    }
-                }
-                elseif ($filter['group'] == '' && !in_array($filter['attribute'], $GLOBALS['ISO_CONFIG']['dynamicAttributes']))
-                {
-                    $blnMultilingual = in_array($filter['attribute'], $GLOBALS['ISO_CONFIG']['multilingual']);
-                    $operator = \Isotope\Frontend::convertFilterOperator($filter['operator'], 'SQL');
-
-                    $arrWhere[] = ($blnMultilingual ? "IFNULL(p2.{$filter['attribute']}, p1.{$filter['attribute']})" : "p1.{$filter['attribute']}") . " $operator ?";
-                    $arrValues[] = ($operator == 'LIKE' ? '%'.$filter['value'].'%' : $filter['value']);
+                } elseif (!$objFilter->hasGroup() && !$objFilter->isDynamicAttribute()) {
+                    $arrWhere[] = $objFilter->sqlWhere();
+                    $arrValues[] = $objFilter->sqlValue();
                     unset($arrFilters[$k]);
                 }
             }
 
-            if (!empty($arrGroups))
-            {
-                foreach ($arrGroups as $arrGroup)
-                {
+            if (!empty($arrGroups)) {
+                foreach ($arrGroups as $arrGroup) {
                     $arrGroupWhere = array();
 
-                    foreach ($arrGroup as $k)
-                    {
-                        $filter = $arrFilters[$k];
+                    foreach ($arrGroup as $k) {
+                        $objFilter = $arrFilters[$k];
 
-                        $blnMultilingual = in_array($filter['attribute'], $GLOBALS['ISO_CONFIG']['multilingual']);
-                        $operator = \Isotope\Frontend::convertFilterOperator($filter['operator'], 'SQL');
-
-                        $arrGroupWhere[] = ($blnMultilingual ? "IFNULL(p2.{$filter['attribute']}, p1.{$filter['attribute']})" : "p1.{$filter['attribute']}") . " $operator ?";
-                        $arrValues[] = ($operator == 'LIKE' ? '%'.$filter['value'].'%' : $filter['value']);
+                        $arrGroupWhere[] = $objFilter->sqlWhere();
+                        $arrValues[] = $objFilter->sqlValue();
                         unset($arrFilters[$k]);
                     }
 
@@ -426,11 +396,12 @@ class ProductList extends Module
                 }
             }
 
-            if (!empty($arrWhere))
-            {
+            if (!empty($arrWhere)) {
                 $time = time();
-                $strWhere = "((" . implode(' AND ', $arrWhere) . ") OR p1.id IN (SELECT p1.pid FROM tl_iso_products AS p1 WHERE p1.language='' AND " . implode(' AND ', $arrWhere)
-                            . (BE_USER_LOGGED_IN === true ? '' : " AND p1.published='1' AND (p1.start='' OR p1.start<$time) AND (p1.stop='' OR p1.stop>$time)") . "))";
+                $t = Product::getTable();
+
+                $strWhere = "((" . implode(' AND ', $arrWhere) . ") OR $t.id IN (SELECT $t.pid FROM tl_iso_products AS $t WHERE $t.language='' AND " . implode(' AND ', $arrWhere)
+                            . (BE_USER_LOGGED_IN === true ? '' : " AND $t.published='1' AND ($t.start='' OR $t.start<$time) AND ($t.stop='' OR $t.stop>$time)") . "))";
                 $arrValues = array_merge($arrValues, $arrValues);
             }
 
@@ -447,21 +418,13 @@ class ProductList extends Module
     protected function getDefaultProductOptions()
     {
         $arrOptions = array();
+        $arrFilters = Isotope::getRequestCache()->getFiltersForModules($this->iso_filterModules);
 
-        if (is_array($this->iso_filterModules))
+        foreach ($arrFilters as $arrConfig)
         {
-            foreach ($this->iso_filterModules as $module)
+            if ($arrConfig['operator'] == '=' || $arrConfig['operator'] == '==' || $arrConfig['operator'] == 'eq')
             {
-                if (is_array($GLOBALS['ISO_FILTERS'][$module]))
-                {
-                    foreach ($GLOBALS['ISO_FILTERS'][$module] as $arrConfig)
-                    {
-                        if ($arrConfig['operator'] == '=' || $arrConfig['operator'] == '==' || $arrConfig['operator'] == 'eq')
-                        {
-                            $arrOptions[$arrConfig['attribute']] = $arrConfig['value'];
-                        }
-                    }
-                }
+                $arrOptions[$arrConfig['attribute']] = $arrConfig['value'];
             }
         }
 

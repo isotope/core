@@ -13,8 +13,9 @@
 namespace Isotope\Model;
 
 use Isotope\Isotope;
-use Isotope\Factory\ProductCollectionSurcharge as SurchargeFactory;
+use Isotope\Translation;
 use Isotope\Interfaces\IsotopeProductCollection;
+use Isotope\Model\ProductCollectionSurcharge;
 
 
 /**
@@ -190,7 +191,7 @@ abstract class Shipping extends TypeAgent
      */
     public function getLabel()
     {
-        return Isotope::translate(($this->arrData['label'] ? $this->arrData['label'] : $this->arrData['name']));
+        return Translation::get($this->label ?: $this->name);
     }
 
 
@@ -223,7 +224,7 @@ abstract class Shipping extends TypeAgent
      * This function can be called from the postsale.php file when the shipping server is requestion/posting a status change.
      * You can see an implementation example in PaymentPostfinance.php
      */
-    public function processPostSale() {}
+    public function processPostsale() {}
 
 
     /**
@@ -261,6 +262,6 @@ abstract class Shipping extends TypeAgent
             return false;
         }
 
-        return SurchargeFactory::buildShippingSurcharge($this, $objCollection);
+        return ProductCollectionSurcharge::createForShippingInCollection($this, $objCollection);
     }
 }

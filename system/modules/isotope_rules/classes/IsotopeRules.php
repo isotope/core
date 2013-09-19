@@ -54,8 +54,7 @@ class IsotopeRules extends \Controller
 
 
     /**
-     * Instantiate a database driver object and return it (Factory)
-     *
+     * Instantiate the singleton if necessary and return it
      * @return object
      */
     public static function getInstance()
@@ -296,7 +295,7 @@ class IsotopeRules extends \Controller
         {
             $time = time();
 
-            \Database::getInstance()->query("INSERT INTO tl_iso_rule_usage (pid,tstamp,order_id,config_id,member_id) VALUES (" . implode(", $time, {$objOrder->id}, ".(int) Isotope::getConfig()->id.", {$objOrder->pid}), (", $arrRules) . ", $time, {$objOrder->id}, ".(int) Isotope::getConfig()->id.", {$objOrder->pid})");
+            \Database::getInstance()->query("INSERT INTO tl_iso_rule_usage (pid,tstamp,order_id,config_id,member_id) VALUES (" . implode(", $time, {$objOrder->id}, ".(int) Isotope::getConfig()->id.", {$objOrder->member}), (", $arrRules) . ", $time, {$objOrder->id}, ".(int) Isotope::getConfig()->id.", {$objOrder->member})");
         }
 
         return true;
@@ -546,7 +545,7 @@ class IsotopeRules extends \Controller
 
         $arrSurcharge = array
         (
-            'label'            => Isotope::translate(($arrRule['label'] ? $arrRule['label'] : $arrRule['name'])),
+            'label'            => Translation::get(($arrRule['label'] ? $arrRule['label'] : $arrRule['name'])),
             'price'            => ($blnPercentage ? $fltDiscount.'%' : ''),
             'total_price'    => 0,
             'tax_class'        => 0,

@@ -44,6 +44,10 @@ class Cart extends ProductCollection implements IsotopeProductCollection
     protected static $strCookie = 'ISOTOPE_TEMP_CART';
 
 
+    /**
+     * Get billing address or create if none exists
+     * @return  Address
+     */
     public function getBillingAddress()
     {
         $objAddress = parent::getBillingAddress();
@@ -52,7 +56,7 @@ class Cart extends ProductCollection implements IsotopeProductCollection
             $objAddress = Address::findDefaultBillingForMember(\FrontendUser::getInstance()->id);
 
             if (null === $objAddress) {
-                $objAddress = Address::createForMember(FrontendUser::getInstance()->id, Isotope::getConfig()->getBillingFields());
+                $objAddress = Address::createForMember(\FrontendUser::getInstance()->id, Isotope::getConfig()->getBillingFields());
             }
         }
 
@@ -64,7 +68,10 @@ class Cart extends ProductCollection implements IsotopeProductCollection
         return $objAddress;
     }
 
-
+    /**
+     * Get shipping address or create if none exists
+     * @return  Address
+     */
     public function getShippingAddress()
     {
         $objAddress = parent::getShippingAddress();
@@ -73,7 +80,7 @@ class Cart extends ProductCollection implements IsotopeProductCollection
             $objAddress = Address::findDefaultShippingForMember(\FrontendUser::getInstance()->id);
 
             if (null === $objAddress) {
-                $objAddress = Address::createForMember(FrontendUser::getInstance()->id, Isotope::getConfig()->getShippingFields());
+                $objAddress = Address::createForMember(\FrontendUser::getInstance()->id, Isotope::getConfig()->getShippingFields());
             }
         }
 
@@ -85,6 +92,71 @@ class Cart extends ProductCollection implements IsotopeProductCollection
         return $objAddress;
     }
 
+    /**
+     * Merge guest cart if necessary
+     */
+    public function mergeGuestCart()
+    {
+        $strHash = \Input::cookie(static::$strCookie);
+
+        // Temporary cart available, move to this cart. Must be after creating a new cart!
+        if (FE_USER_LOGGED_IN === true && $strHash != '' && $this->member > 0)
+        {
+            $blnMerge = $this->countItems() > 0 ? true : false;
+
+            if (($objTemp = static::findOneBy(array('uniqid=?', 'store_id=?'), array($strHash, $this->store_id))) !== null)
+            {
+                $arrIds = $this->copyItemsFrom($objTemp);
+
+                if ($blnMerge && !empty($arrIds)) {
+                    $_SESSION['ISO_CONFIRM'][] = $GLOBALS['TL_LANG']['MSC']['cartMerged'];
+                }
+
+                $objTemp->delete();
+            }
+
+            // Delete cookie
+            \System::setCookie(static::$strCookie, '', ($time - 3600), $GLOBALS['TL_CONFIG']['websitePath']);
+            \System::reload();
+         }
+    }
+
+    /**
+     * Check if minimum order amount is reached
+     * @return  bool
+     */
+    public function hasErrors()
+    {
+        if (Isotope::getConfig()->cartMinSubtotal > 0 && Isotope::getConfig()->cartMinSubtotal > $this->getSubtotal()) {
+            return true;
+        }
+
+        return parent::hasErrors();
+    }
+
+    /**
+     * Get error messages for the cart
+     * @return  array
+     */
+    public function getErrors()
+    {
+        $arrErrors = parent::getErrors();
+
+        if (Isotope::getConfig()->cartMinSubtotal > 0 && Isotope::getConfig()->cartMinSubtotal > $this->getSubtotal()) {
+            $arrErrors[] = sprintf($GLOBALS['TL_LANG']['ERR']['cartMinSubtotal'], Isotope::formatPriceWithCurrency(Isotope::getConfig()->cartMinSubtotal));
+        }
+
+        return $arrErrors;
+    }
+
+    /**
+     * Get a collection-specific error message for items with errors
+     * @return  string
+     */
+    protected function getMessageIfErrorsInItems()
+    {
+        return $GLOBALS['TL_LANG']['ERR']['cartErrorInItems'];
+    }
 
     /**
      * Load the current cart
@@ -138,65 +210,7 @@ class Cart extends ProductCollection implements IsotopeProductCollection
             $objCart->tstamp = $time;
         }
 
-        // Temporary cart available, move to this cart. Must be after creating a new cart!
-         if (FE_USER_LOGGED_IN === true && $strHash != '')
-         {
-             $blnMerge = $objCart->countItems() > 0 ? true : false;
-
-             if (($objTemp = static::findOneBy(array('uniqid=?', 'store_id=?'), array($strHash, $intStore))) !== null)
-             {
-                 $arrIds = $objCart->copyItemsFrom($objTemp);
-
-                if ($blnMerge && !empty($arrIds)) {
-                    $_SESSION['ISO_CONFIRM'][] = $GLOBALS['TL_LANG']['MSC']['cartMerged'];
-                }
-
-                $objTemp->delete();
-            }
-
-            // Delete cookie
-            \System::setCookie(static::$strCookie, '', ($time - 3600), $GLOBALS['TL_CONFIG']['websitePath']);
-            \System::reload();
-         }
-
-         return $objCart;
-    }
-
-    /**
-     * Check if minimum order amount is reached
-     * @return  bool
-     */
-    public function hasErrors()
-    {
-        if (Isotope::getConfig()->cartMinSubtotal > 0 && Isotope::getConfig()->cartMinSubtotal > $this->getSubtotal()) {
-            return true;
-        }
-
-        return parent::hasErrors();
-    }
-
-    /**
-     * Get error messages for the cart
-     * @return  array
-     */
-    public function getErrors()
-    {
-        $arrErrors = parent::getErrors();
-
-        if (Isotope::getConfig()->cartMinSubtotal > 0 && Isotope::getConfig()->cartMinSubtotal > $this->getSubtotal()) {
-            $arrErrors[] = sprintf($GLOBALS['TL_LANG']['ERR']['cartMinSubtotal'], Isotope::formatPriceWithCurrency(Isotope::getConfig()->cartMinSubtotal));
-        }
-
-        return $arrErrors;
-    }
-
-    /**
-     * Get a collection-specific error message for items with errors
-     * @return  string
-     */
-    protected function getMessageIfErrorsInItems()
-    {
-        return $GLOBALS['TL_LANG']['ERR']['cartErrorInItems'];
+        return $objCart;
     }
 
     /**

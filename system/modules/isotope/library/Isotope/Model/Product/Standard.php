@@ -73,12 +73,6 @@ class Standard extends Product implements IsotopeProduct
     protected $arrCategories;
 
     /**
-     * Downloads for this product
-     * @var array
-     */
-    protected $arrDownloads;
-
-    /**
      * Unique form ID
      * @var string
      */
@@ -245,7 +239,7 @@ class Standard extends Product implements IsotopeProduct
         }
 
         // Check if "advanced price" is available
-        if (null === $this->getPrice() && (in_array('price', $this->getAttributes()) || $this->hasVariantPrices())) {
+        if (null === $this->getPrice($objCollection) && (in_array('price', $this->getAttributes()) || $this->hasVariantPrices())) {
             return false;
         }
 
@@ -313,16 +307,21 @@ class Standard extends Product implements IsotopeProduct
 
     /**
      * Get product price model
+     * @param   IsotopeProductCollection
      * @return  IsotopePrice
      */
-    public function getPrice()
+    public function getPrice(IsotopeProductCollection $objCollection=null)
     {
         if (false === $this->objPrice) {
 
+            if (null === $objCollection) {
+                $objCollection = Isotope::getCart();
+            }
+
             if ($this->hasVariantPrices() && $this->pid == 0) {
-                $this->objPrice = ProductPrice::findLowestActiveByVariantsAndCollection($this, Isotope::getCart());
+                $this->objPrice = ProductPrice::findLowestActiveByVariantsAndCollection($this, $objCollection);
             } else {
-                $this->objPrice = ProductPrice::findActiveByProductAndCollection($this, Isotope::getCart());
+                $this->objPrice = ProductPrice::findActiveByProductAndCollection($this, $objCollection);
             }
         }
 
@@ -434,27 +433,6 @@ class Standard extends Product implements IsotopeProduct
         return $this->arrCategories;
     }
 
-    /**
-     * Return all downloads for this product
-     * @todo    Confirm that files are available
-     * @return  array
-     */
-    public function getDownloads()
-    {
-        if (!$this->getRelated('type')->hasDownloads())
-        {
-            $this->arrDownloads = array();
-        }
-
-        // Cache downloads for this product
-        elseif (!is_array($this->arrDownloads))
-        {
-            $this->arrDownloads = \Database::getInstance()->execute("SELECT * FROM tl_iso_downloads WHERE pid={$this->arrData['id']} OR pid={$this->arrData['pid']}")->fetchAllAssoc();
-        }
-
-        return $this->arrDownloads;
-    }
-
 
     /**
      * Return all product options
@@ -477,20 +455,6 @@ class Standard extends Product implements IsotopeProduct
 
 
     /**
-     * Check if a product has downloads
-     * @todo    Confirm that files are available
-     * @return  array
-     */
-    public function hasDownloads()
-    {
-        // Cache downloads if not yet done
-        $this->getDownloads();
-
-        return !empty($this->arrDownloads);
-    }
-
-
-    /**
      * Generate a product template
      * @param   array
      * @return  string
@@ -508,7 +472,7 @@ class Standard extends Product implements IsotopeProduct
         $objTemplate->product = $this;
         $objTemplate->config = $arrConfig;
 
-        $objTemplate->generateAttribute = function($strAttribute) use ($objProduct) {
+        $objTemplate->generateAttribute = function($strAttribute, array $arrOptions=array()) use ($objProduct) {
 
             $objAttribute = $GLOBALS['TL_DCA']['tl_iso_products']['attributes'][$strAttribute];
 
@@ -516,7 +480,7 @@ class Standard extends Product implements IsotopeProduct
                 throw new \InvalidArgumentException($strAttribute . ' is not a valid attribute');
             }
 
-            return $objAttribute->generate($objProduct);
+            return $objAttribute->generate($objProduct, $arrOptions);
         };
 
         $objTemplate->generatePrice = function() use ($objProduct) {
@@ -968,6 +932,5 @@ class Standard extends Product implements IsotopeProduct
         $this->arrVariantIds = null;
         $this->arrOptions = array();
         $this->arrCategories = null;
-        $this->arrDownloads = null;
     }
 }

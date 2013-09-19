@@ -26,6 +26,7 @@ NamespaceClassLoader::addClassMap(array
     'Isotope\tl_iso_addresses'          => 'system/modules/isotope/classes/tl_iso_addresses.php',
     'Isotope\tl_iso_attributes'         => 'system/modules/isotope/classes/tl_iso_attributes.php',
     'Isotope\tl_iso_config'             => 'system/modules/isotope/classes/tl_iso_config.php',
+    'Isotope\tl_iso_document'           => 'system/modules/isotope/classes/tl_iso_document.php',
     'Isotope\tl_iso_downloads'          => 'system/modules/isotope/classes/tl_iso_downloads.php',
     'Isotope\tl_iso_groups'             => 'system/modules/isotope/classes/tl_iso_groups.php',
     'Isotope\tl_iso_mail'               => 'system/modules/isotope/classes/tl_iso_mail.php',
@@ -44,6 +45,7 @@ NamespaceClassLoader::addClassMap(array
     'Isotope\tl_iso_tax_rate'           => 'system/modules/isotope/classes/tl_iso_tax_rate.php',
     'Isotope\tl_member'                 => 'system/modules/isotope/classes/tl_member.php',
     'Isotope\tl_module'                 => 'system/modules/isotope/classes/tl_module.php',
+    'Isotope\tl_page'                   => 'system/modules/isotope/classes/tl_page.php',
 
     // Drivers
     'DC_ProductData'                    => 'system/modules/isotope/drivers/DC_ProductData.php',
@@ -69,6 +71,7 @@ TemplateLoader::addFiles(array
     'iso_checkout_shipping_method'  => 'system/modules/isotope/templates/checkout',
     'iso_collection_default'        => 'system/modules/isotope/templates/collection',
     'iso_collection_mini'           => 'system/modules/isotope/templates/collection',
+    'iso_document_default'          => 'system/modules/isotope/templates/document',
     'iso_filter_cumulative'         => 'system/modules/isotope/templates/isotope',
     'iso_filter_default'            => 'system/modules/isotope/templates/isotope',
     'iso_gallery_standard'          => 'system/modules/isotope/templates/gallery',

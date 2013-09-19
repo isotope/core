@@ -44,8 +44,8 @@ class BillingAddress extends Address implements IsotopeCheckoutStep
         if (!$this->hasError()) {
             $objAddress = Isotope::getCart()->getBillingAddress();
 
-            $this->objModule->arrOrderData['billing_address'] = $objAddress->generateHtml(Isotope::getConfig()->billing_fields);
-            $this->objModule->arrOrderData['billing_address_text'] = $objAddress->generateText(Isotope::getConfig()->billing_fields);
+            $this->objModule->arrOrderData['billing_address'] = $objAddress->generateHtml(Isotope::getConfig()->getBillingFieldsConfig());
+            $this->objModule->arrOrderData['billing_address_text'] = $objAddress->generateText(Isotope::getConfig()->getBillingFieldsConfig());
         }
 */
 
@@ -81,7 +81,7 @@ class BillingAddress extends Address implements IsotopeCheckoutStep
         return array('billing_address' => array
         (
             'headline'    => $strHeadline,
-            'info'        => $objBillingAddress->generateHtml(Isotope::getConfig()->billing_fields),
+            'info'        => $objBillingAddress->generateHtml(Isotope::getConfig()->getBillingFieldsConfig()),
             'edit'        => \Isotope\Module\Checkout::generateUrlForStep('address'),
         ));
     }
@@ -164,7 +164,7 @@ class BillingAddress extends Address implements IsotopeCheckoutStep
      */
     protected function getAddressFields()
     {
-        return Isotope::getConfig()->billing_fields;
+        return Isotope::getConfig()->getBillingFieldsConfig();
     }
 
     /**

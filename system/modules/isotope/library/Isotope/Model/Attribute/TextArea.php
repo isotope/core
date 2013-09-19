@@ -38,7 +38,7 @@ class TextArea extends Attribute implements IsotopeAttribute
         }
 	}
 
-	public function generate(IsotopeProduct $objProduct)
+	public function generate(IsotopeProduct $objProduct, array $arrOptions=array())
 	{
 	    if ($this->rte == '') {
         	return nl2br($objProduct->{$this->field_name});

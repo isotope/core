@@ -157,7 +157,7 @@ class Frontend extends \Frontend
         }
         elseif ($arrTag[0] == 'isolabel')
         {
-            return Isotope::translate($arrTag[1], $arrTag[2]);
+            return Translation::get($arrTag[1], $arrTag[2]);
         }
         elseif ($arrTag[0] == 'order')
         {
@@ -761,44 +761,52 @@ window.addEvent('domready', function()
         // Reset DB iterator (see #22)
         $objProducts->reset();
 
-        while ($objProducts->next())
-        {
+        while ($objProducts->next()) {
             $objProduct = \Isotope\Frontend::getProduct($objProducts->current(), $blnCheckAvailability);
 
-            if ($objProduct !== null)
-            {
+            if ($objProduct !== null) {
                 $arrProducts[$objProducts->id] = $objProduct;
             }
         }
 
-        if (!empty($arrFilters))
-        {
-            global $filterConfig;
-            $filterConfig = $arrFilters;
-            $arrProducts = array_filter($arrProducts, array(self, 'filterProducts'));
+        if (!empty($arrFilters)) {
+            $arrProducts = array_filter($arrProducts, function ($objProduct) use ($arrFilters) {
+                $arrGroups = array();
+
+                foreach ($arrFilters as $objFilter) {
+                    $blnMatch = $objFilter->matches($objProduct);
+
+                    if ($objFilter->hasGroup()) {
+                        $arrGroups[$objFilter->getGroup()] = $arrGroups[$objFilter->getGroup()] ?: $blnMatch;
+                    } elseif (!$blnMatch) {
+                        return false;
+                    }
+                }
+
+                if (!empty($arrGroups) && in_array(false, $arrGroups)) {
+                    return false;
+                }
+
+                return true;
+            });
         }
 
         // $arrProducts can be empty if the filter removed all records
-        if (!empty($arrSorting) && !empty($arrProducts))
-        {
+        if (!empty($arrSorting) && !empty($arrProducts)) {
             $arrParam = array();
             $arrData = array();
 
-            foreach ($arrSorting as $strField => $arrConfig)
-            {
-                foreach ($arrProducts as $id => $objProduct)
-                {
+            foreach ($arrSorting as $strField => $arrConfig) {
+                foreach ($arrProducts as $id => $objProduct) {
+
                     // Both SORT_STRING and SORT_REGULAR are case sensitive, strings starting with a capital letter will come before strings starting with a lowercase letter.
                     // To perform a case insensitive search, force the sorting order to be determined by a lowercase copy of the original value.
                     $arrData[$strField][$id] = strtolower(str_replace('"', '', $objProduct->$strField));
                 }
 
                 $arrParam[] = &$arrData[$strField];
-
-                foreach( $arrConfig as $v )
-                {
-                    $arrParam[] = $v;
-                }
+                $arrParam[] = $arrConfig[0];
+                $arrParam[] = $arrConfig[1];
             }
 
             // Add product array as the last item. This will sort the products array based on the sorting of the passed in arguments.
@@ -806,129 +814,6 @@ window.addEvent('domready', function()
         }
 
         return $arrProducts;
-    }
-
-
-    /**
-     * Callback function to filter products
-     * @param object
-     * @return boolean
-     * @see array_filter()
-     */
-    private static function filterProducts($objProduct)
-    {
-        global $filterConfig;
-
-        if (!is_array($filterConfig) || empty($filterConfig))
-        {
-            return true;
-        }
-
-        $arrGroups = array();
-
-        foreach ($filterConfig as $filter)
-        {
-            $varValues = $objProduct->{$filter['attribute']};
-            $blnMatch = false;
-
-            // If the attribute is not set for this product, we will ignore this attribute
-            if ($varValues === null)
-            {
-                continue;
-            }
-            elseif (!is_array($varValues))
-            {
-                $varValues = array($varValues);
-            }
-
-            $operator = static::convertFilterOperator($filter['operator'], 'PHP');
-
-            foreach ($varValues as $varValue)
-            {
-                $blnMatchOne = false;
-
-                switch( $operator )
-                {
-                    case 'stripos':
-                        if (stripos($varValue, $filter['value']) !== false)
-                        {
-                            $blnMatchOne = true;
-                        }
-                        break;
-
-                    default:
-                        if (eval('return $varValue '.$operator.' $filter[\'value\'];'))
-                        {
-                            $blnMatchOne = true;
-                        }
-                        break;
-                }
-
-                $blnMatch = $blnMatch ? $blnMatch : $blnMatchOne;
-            }
-
-            if ($filter['group'])
-            {
-                $arrGroups[$filter['group']] = $arrGroups[$filter['group']] ? $arrGroups[$filter['group']] : $blnMatch;
-            }
-            elseif (!$blnMatch)
-            {
-                return false;
-            }
-        }
-
-        if (!empty($arrGroups) && in_array(false, $arrGroups))
-        {
-            return false;
-        }
-
-        return true;
-    }
-
-
-    /**
-     * Convert a filter operator for PHP or SQL
-     * @param string
-     * @param string
-     * @return string
-     */
-    public static function convertFilterOperator($operator, $mode='PHP')
-    {
-        switch ($operator)
-        {
-            case 'like':
-            case 'search':
-                return $mode == 'SQL' ? 'LIKE' : 'stripos';
-
-            case '>':
-            case 'gt':
-                return '>';
-
-            case '<':
-            case 'lt':
-                return '<';
-
-            case '>=':
-            case '=>':
-            case 'gte':
-                return '>=';
-
-            case '<=':
-            case '=<':
-            case 'lte':
-                return '<=';
-
-            case '!=':
-            case 'neq':
-            case 'not':
-                return '!=';
-
-            case '=':
-            case '==':
-            case 'eq':
-            default:
-                return $mode == 'SQL' ? '=' : '==';
-        }
     }
 
 
@@ -1061,7 +946,7 @@ window.addEvent('domready', function()
         // if we have a root page id (sitemap.xml e.g.) we have to make sure we only consider categories in this tree
         if ($intRoot > 0)
         {
-            $arrPageIds = $this->getChildRecords($intRoot, 'tl_page', false);
+            $arrPageIds = \Database::getInstance()->getChildRecords($intRoot, 'tl_page', false);
             $arrPageIds[] = $intRoot;
 
             $strAllowedPages = ' AND c.page_id IN (' . implode(',', $arrPageIds) . ')';
@@ -1395,7 +1280,7 @@ window.addEvent('domready', function()
                     continue;
                 }
 
-                $arrPGroups = deserialize($objPages->groups);
+                $arrPGroups = deserialize($objPageDetails->groups);
 
                 // Page is protected but has no groups
                 if (!is_array($arrPGroups)) {
@@ -1449,7 +1334,7 @@ window.addEvent('domready', function()
                     }
 
                     // Check if a child record of our trail is in categories
-                    $arrChildren = $this->getChildRecords($intTrail, 'tl_page', true);
+                    $arrChildren = \Database::getInstance()->getChildRecords($intTrail, 'tl_page', true);
                     $arrMatch = array_intersect($arrChildren, $arrCategories);
 
                     if (!empty($arrMatch))

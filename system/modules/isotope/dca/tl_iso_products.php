@@ -53,10 +53,12 @@ $GLOBALS['TL_DCA']['tl_iso_products'] = array
         'onversion_callback' => array
         (
             array('Isotope\ProductCallbacks', 'versionProductCategories'),
+            // price version callbacks are added in the onload_callback (buildPaletteString)
         ),
         'onrestore_callback' => array
         (
             array('Isotope\ProductCallbacks', 'restoreProductCategories'),
+            // price version callbacks are added in the onload_callback (buildPaletteString)
         ),
         'sql' => array
         (
@@ -154,6 +156,7 @@ $GLOBALS['TL_DCA']['tl_iso_products'] = array
                 'href'              => 'act=delete',
                 'icon'              => 'delete.gif',
                 'attributes'        => 'onclick="if (!confirm(\'' . $GLOBALS['TL_LANG']['MSC']['deleteConfirm'] . '\')) return false; Backend.getScrollOffset();"',
+                'button_callback'   => array('Isotope\tl_iso_products', 'deleteButton')
             ),
             'toggle' => array
             (
@@ -224,31 +227,38 @@ $GLOBALS['TL_DCA']['tl_iso_products'] = array
     (
         'id' => array
         (
-            'sql'                  => "int(10) unsigned NOT NULL auto_increment",
+            'attributes'            => array('systemColumn'=>true),
+            'sql'                   => "int(10) unsigned NOT NULL auto_increment",
         ),
         'pid' => array
         (
             // Fix for DC_Table, otherwise getPalette() will not use the PID value
             'eval'                  => array('submitOnChange'=>true),
-            'sql'                  => "int(10) unsigned NOT NULL default '0'",
+            'attributes'            => array('systemColumn'=>true),
+            'sql'                   => "int(10) unsigned NOT NULL default '0'",
         ),
         'gid' => array
         (
-            'sql'                  => "int(10) unsigned NOT NULL default '0'",
+            'foreignKey'            => 'tl_iso_groups.name',
+            'attributes'            => array('systemColumn'=>true),
+            'sql'                   => "int(10) unsigned NOT NULL default '0'",
+            'relation'              => array('type'=>'hasOne', 'load'=>'lazy'),
         ),
         'tstamp' => array
         (
-            'sql'                  => "int(10) unsigned NOT NULL default '0'",
+            'attributes'            => array('systemColumn'=>true),
+            'sql'                   => "int(10) unsigned NOT NULL default '0'",
         ),
         'language' => array
         (
-            'sql'                  => "varchar(5) NOT NULL default ''",
+            'attributes'            => array('systemColumn'=>true),
+            'sql'                   => "varchar(5) NOT NULL default ''",
         ),
         'dateAdded' => array
         (
             'label'                 => &$GLOBALS['TL_LANG']['MSC']['dateAdded'],
             'eval'                  => array('rgxp'=>'datim', 'doNotCopy'=>true),
-            'attributes'            => array('fe_sorting'=>true),
+            'attributes'            => array('fe_sorting'=>true, 'systemColumn'=>true),
             'sql'                   => "int(10) unsigned NOT NULL default '0'",
         ),
         'type' => array
@@ -260,7 +270,7 @@ $GLOBALS['TL_DCA']['tl_iso_products'] = array
             'options_callback'      => array('Isotope\ProductCallbacks', 'getProductTypes'),
             'foreignKey'            => 'tl_iso_producttypes.name',
             'eval'                  => array('mandatory'=>true, 'submitOnChange'=>true, 'includeBlankOption'=>true, 'tl_class'=>'clr'),
-            'attributes'            => array('legend'=>'general_legend', 'fixed'=>true, 'inherit'=>true),
+            'attributes'            => array('legend'=>'general_legend', 'fixed'=>true, 'inherit'=>true, 'systemColumn'=>true),
             'sql'                   => "int(10) unsigned NOT NULL default '0'",
             'relation'              => array('type'=>'hasOne', 'load'=>'eager'),
         ),
@@ -272,7 +282,7 @@ $GLOBALS['TL_DCA']['tl_iso_products'] = array
             'foreignKey'            => 'tl_page.title',
             'eval'                  => array('doNotSaveEmpty'=>true, 'multiple'=>true, 'fieldType'=>'checkbox', 'tl_class'=>'clr'),
             'relation'              => array('type'=>'hasMany', 'load'=>'lazy'),
-            'attributes'            => array('legend'=>'general_legend', 'fixed'=>true, 'inherit'=>true),
+            'attributes'            => array('legend'=>'general_legend', 'fixed'=>true, 'inherit'=>true, 'systemColumn'=>true),
             'load_callback'         => array
             (
                 array('Isotope\ProductCallbacks', 'loadProductCategories'),
@@ -288,6 +298,7 @@ $GLOBALS['TL_DCA']['tl_iso_products'] = array
             'exclude'               => true,
             'inputType'             => 'inheritCheckbox',
             'eval'                  => array('multiple'=>true, 'doNotShow'=>true),
+            'attributes'            => array('systemColumn'=>true),
             'sql'                   => "blob NULL",
         ),
         'alias' => array
@@ -371,9 +382,10 @@ $GLOBALS['TL_DCA']['tl_iso_products'] = array
         (
             'label'                 => &$GLOBALS['TL_LANG']['tl_iso_products']['price'],
             'exclude'               => true,
-            'inputType'             => 'text',
-            'eval'                  => array('mandatory'=>true, 'maxlength'=>13, 'rgxp'=>'price', 'doNotSaveEmpty'=>true, 'tl_class'=>'w50'),
-            'attributes'            => array('legend'=>'pricing_legend', 'fe_sorting'=>true, 'dynamic'=>true),
+            'inputType'             => 'timePeriod',
+            'foreignKey'            => 'tl_iso_tax_class.name',
+            'eval'                  => array('mandatory'=>true, 'maxlength'=>13, 'rgxp'=>'price', 'includeBlankOption'=>true, 'doNotSaveEmpty'=>true, 'tl_class'=>'w50'),
+            'attributes'            => array('legend'=>'pricing_legend', 'fe_sorting'=>true, 'dynamic'=>true, 'systemColumn'=>true, 'type'=>'\Isotope\Model\Attribute\Price'),
             'load_callback' => array
             (
                 array('\Isotope\ProductCallbacks', 'loadPrice'),
@@ -388,14 +400,14 @@ $GLOBALS['TL_DCA']['tl_iso_products'] = array
             'label'                 => &$GLOBALS['TL_LANG']['tl_iso_products']['prices'],
             'inputType'             => 'dcaWizard',
             'foreignTable'          => 'tl_iso_prices',
+            'attributes'            => array('systemColumn'=>true),
             'eval'                  => array('tl_class'=>'clr'),
         ),
         'price_tiers' => array
         (
             // This is only for automated table generation in the frontend
-            // @todo probably no longer necessary, should be manually rendered in the template
-
             'eval'                  => array('dynamic'=>true),
+            'attributes'            => array('type'=>'\Isotope\Model\Attribute\PriceTiers'),
             'tableformat' => array
             (
                 'min' => array
@@ -414,23 +426,6 @@ $GLOBALS['TL_DCA']['tl_iso_products'] = array
                 ),
             ),
         ),
-        'tax_class' => array
-        (
-            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_products']['tax_class'],
-            'exclude'               => true,
-            'inputType'             => 'select',
-            'foreignKey'            => 'tl_iso_tax_class.name',
-            'eval'                  => array('includeBlankOption'=>true, 'doNotSaveEmpty'=>true, 'tl_class'=>'w50'),
-            'attributes'            => array('legend'=>'pricing_legend', 'dynamic'=>true),
-            'load_callback' => array
-            (
-                array('\Isotope\ProductCallbacks', 'loadTaxClass'),
-            ),
-            'save_callback' => array
-            (
-                array('\Isotope\ProductCallbacks', 'saveTaxClass'),
-            ),
-        ),
         'baseprice' => array
         (
             'label'                 => &$GLOBALS['TL_LANG']['tl_iso_products']['baseprice'],
@@ -438,7 +433,7 @@ $GLOBALS['TL_DCA']['tl_iso_products'] = array
             'inputType'             => 'timePeriod',
             'foreignKey'            => 'tl_iso_baseprice.name',
             'eval'                  => array('includeBlankOption'=>true, 'tl_class'=>'w50'),
-            'attributes'            => array('type'=>'baseprice', 'legend'=>'pricing_legend'),
+            'attributes'            => array('type'=>'\Isotope\Model\Attribute\BasePrice', 'legend'=>'pricing_legend'),
             'sql'                   => "varchar(255) NOT NULL default ''",
         ),
         'shipping_weight' => array
@@ -459,7 +454,7 @@ $GLOBALS['TL_DCA']['tl_iso_products'] = array
             'exclude'               => true,
             'inputType'             => 'checkbox',
             'eval'                  => array('tl_class'=>'w50'),
-            'attributes'            => array('legend'=>'shipping_legend'),
+            'attributes'            => array('legend'=>'shipping_legend', 'systemColumn'=>true),
             'sql'                   => "char(1) NOT NULL default ''",
         ),
         'images' => array
@@ -469,7 +464,7 @@ $GLOBALS['TL_DCA']['tl_iso_products'] = array
             'inputType'             => 'mediaManager',
             'explanation'           => 'mediaManager',
             'eval'                  => array('extensions'=>'jpeg,jpg,png,gif', 'helpwizard'=>true, 'tl_class'=>'clr'),
-            'attributes'            => array('legend'=>'media_legend', 'fixed'=>true, 'multilingual'=>true, 'dynamic'=>true, 'fetch_fallback'=>true),
+            'attributes'            => array('legend'=>'media_legend', 'fixed'=>true, 'multilingual'=>true, 'dynamic'=>true, 'systemColumn'=>true, 'fetch_fallback'=>true),
             'sql'                   => "blob NULL",
         ),
         'protected' => array
@@ -479,7 +474,7 @@ $GLOBALS['TL_DCA']['tl_iso_products'] = array
             'filter'                => true,
             'inputType'             => 'checkbox',
             'eval'                  => array('submitOnChange'=>true, 'tl_class'=>'clr'),
-            'attributes'            => array('legend'=>'expert_legend'),
+            'attributes'            => array('legend'=>'expert_legend', 'systemColumn'=>true),
             'sql'                   => "char(1) NOT NULL default ''",
         ),
         'groups' => array
@@ -489,7 +484,7 @@ $GLOBALS['TL_DCA']['tl_iso_products'] = array
             'filter'                => true,
             'inputType'             => 'checkbox',
             'foreignKey'            => 'tl_member_group.name',
-            'eval'                  => array('mandatory'=>true, 'multiple'=>true),
+            'eval'                  => array('mandatory'=>true, 'multiple'=>true, 'systemColumn'=>true),
             'sql'                   => "blob NULL",
             'relation'              => array('type'=>'hasMany', 'load'=>'lazy'),
         ),
@@ -499,7 +494,7 @@ $GLOBALS['TL_DCA']['tl_iso_products'] = array
             'exclude'               => true,
             'inputType'             => 'checkbox',
             'eval'                  => array('tl_class'=>'w50'),
-            'attributes'            => array('legend'=>'expert_legend'),
+            'attributes'            => array('legend'=>'expert_legend', 'systemColumn'=>true),
             'sql'                   => "char(1) NOT NULL default ''",
         ),
         'cssID' => array
@@ -518,7 +513,7 @@ $GLOBALS['TL_DCA']['tl_iso_products'] = array
             'filter'                => true,
             'inputType'             => 'checkbox',
             'eval'                  => array('doNotCopy'=>true, 'tl_class'=>'clr'),
-            'attributes'            => array('legend'=>'publish_legend', 'fixed'=>true, 'variant_fixed'=>true),
+            'attributes'            => array('legend'=>'publish_legend', 'fixed'=>true, 'variant_fixed'=>true, 'systemColumn'=>true),
             'sql'                   => "char(1) NOT NULL default ''",
             'save_callback' => array
             (
@@ -531,7 +526,7 @@ $GLOBALS['TL_DCA']['tl_iso_products'] = array
             'exclude'               => true,
             'inputType'             => 'text',
             'eval'                  => array('rgxp'=>'date', 'datepicker'=>true, 'tl_class'=>'w50 wizard'),
-            'attributes'            => array('legend'=>'publish_legend', 'fixed'=>true, 'variant_fixed'=>true),
+            'attributes'            => array('legend'=>'publish_legend', 'fixed'=>true, 'variant_fixed'=>true, 'systemColumn'=>true),
             'sql'                   => "varchar(10) NOT NULL default ''",
         ),
         'stop' => array
@@ -540,7 +535,7 @@ $GLOBALS['TL_DCA']['tl_iso_products'] = array
             'exclude'               => true,
             'inputType'             => 'text',
             'eval'                  => array('rgxp'=>'date', 'datepicker'=>true, 'tl_class'=>'w50 wizard'),
-            'attributes'            => array('legend'=>'publish_legend', 'fixed'=>true, 'variant_fixed'=>true),
+            'attributes'            => array('legend'=>'publish_legend', 'fixed'=>true, 'variant_fixed'=>true, 'systemColumn'=>true),
             'sql'                   => "varchar(10) NOT NULL default ''",
         ),
         'source' => array

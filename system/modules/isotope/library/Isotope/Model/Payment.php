@@ -13,8 +13,9 @@
 namespace Isotope\Model;
 
 use Isotope\Isotope;
-use Isotope\Factory\ProductCollectionSurcharge as SurchargeFactory;
+use Isotope\Translation;
 use Isotope\Interfaces\IsotopeProductCollection;
+use Isotope\Model\ProductCollectionSurcharge;
 
 
 /**
@@ -208,17 +209,8 @@ abstract class Payment extends TypeAgent
      */
     public function getLabel()
     {
-        return Isotope::translate($this->arrData['label'] ? $this->arrData['label'] : $this->arrData['name']);
+        return Translation::get($this->label ?: $this->name);
     }
-
-
-    /**
-     * Process post-sale requests. Does nothing by default.
-     *
-     * This function can be called from the postsale.php file when the payment server is requestion/posting a status change.
-     * You can see an implementation example in PaymentPostfinance.php
-     */
-    public function processPostSale() {}
 
 
     /**
@@ -281,7 +273,7 @@ abstract class Payment extends TypeAgent
      */
     public function checkoutReview()
     {
-        return $this->label;
+        return $this->getLabel();
     }
 
 
@@ -296,7 +288,7 @@ abstract class Payment extends TypeAgent
             return null;
         }
 
-        return SurchargeFactory::buildPaymentSurcharge($this, $objCollection);
+        return ProductCollectionSurcharge::createForPaymentInCollection($this, $objCollection);
     }
 
 

@@ -15,6 +15,9 @@
 
 namespace Isotope;
 
+use Isotope\Model\Download;
+use Isotope\Model\ProductCollectionDownload;
+
 
 /**
  * Class tl_iso_downloads
@@ -24,63 +27,143 @@ class tl_iso_downloads extends \Backend
 {
 
     /**
-     * Update singleSRC field depending on type
+     * List download files
+     * @param   array
+     * @return  string
+     * @see     https://contao.org/de/manual/3.1/data-container-arrays.html#label_callback
      */
-    public function prepareSRC($dc)
+    public function listRows($row)
     {
-        if (\Input::get('act') == 'edit')
-        {
-            $objDownload = \Database::getInstance()->prepare("SELECT * FROM tl_iso_downloads WHERE id=?")->execute($dc->id);
-
-            if ($objDownload->type == 'folder')
-            {
-                $GLOBALS['TL_DCA']['tl_iso_downloads']['fields']['singleSRC']['eval']['files'] = false;
-                $GLOBALS['TL_DCA']['tl_iso_downloads']['fields']['singleSRC']['eval']['filesOnly'] = false;
-            }
+        // Check for version 3 format
+        if (!is_numeric($row['singleSRC'])) {
+            return '<p class="error">'.$GLOBALS['TL_LANG']['ERR']['version2format'].'</p>';
         }
+
+        $objDownload = Download::findByPk($row['id']);
+
+        if (null === $objDownload) {
+            return '<p class="error">'.$GLOBALS['TL_LANG']['ERR']['invalidName'].'</p>';
+        }
+
+        $path = $objDownload->getRelated('singleSRC')->path;
+
+        if ($objDownload->getRelated('singleSRC')->type == 'folder') {
+            $arrDownloads = array();
+
+            foreach (scan(TL_ROOT . '/' . $path) as $file) {
+                if (is_file(TL_ROOT . '/' . $path . '/' . $file)) {
+                    $objFile = new \File($path . '/' . $file);
+                    $icon = 'background:url(' . TL_ASSETS_URL . 'assets/contao/images/' . $objFile->icon . ') left center no-repeat; padding-left: 22px';
+                    $arrDownloads[] = sprintf('<div style="margin-bottom:5px;height:16px;%s">%s</div>', $icon, $path . '/' . $file);
+                }
+            }
+
+            if (empty($arrDownloads)) {
+                return $GLOBALS['TL_LANG']['ERR']['emptyDownloadsFolder'];
+            }
+
+            return '<div style="margin-bottom:5px;height:16px;font-weight:bold">' . $path . '</div>' . implode("\n", $arrDownloads);
+        }
+
+        if (is_file(TL_ROOT . '/' . $path))
+        {
+            $objFile = new \File($path);
+            $icon = 'background: url(' . TL_ASSETS_URL . 'assets/contao/images/' . $objFile->icon . ') left center no-repeat; padding-left: 22px';
+        }
+
+        return sprintf('<div style="height: 16px;%s">%s</div>', $icon, $path);
+    }
+
+    /**
+     * Prevent delete on a download which has been sold
+     * @param   array
+     * @param   string
+     * @param   string
+     * @param   string
+     * @param   string
+     * @param   array
+     * @return  string
+     * @see     https://contao.org/de/manual/3.1/data-container-arrays.html#button_callback
+     */
+    public function deleteButton($row, $href, $label, $title, $icon, $attributes)
+    {
+        if (ProductCollectionDownload::countBy('download_id', $row['id']) > 0) {
+            return \Image::getHtml(preg_replace('/\.gif$/i', '_.gif', $icon)).' ';
+        }
+
+        return '<a href="'.$this->addToUrl($href.'&amp;id='.$row['id']).'" title="'.specialchars($title).'"'.$attributes.'>'.\Image::getHtml($icon, $label).'</a> ';
     }
 
 
     /**
-     * Add an image to each record
+     * Return the "toggle visibility" button
      * @param array
+     * @param string
+     * @param string
+     * @param string
+     * @param string
+     * @param string
      * @return string
      */
-    public function listRows($row)
+    public function toggleIcon($row, $href, $label, $title, $icon, $attributes)
     {
-        if ($row['type'] == 'folder')
+		if (strlen(\Input::get('tid')))
+		{
+			$this->toggleVisibility(\Input::get('tid'), (\Input::get('state') == 1));
+			\Controller::redirect($this->getReferer());
+		}
+
+        // Check permissions AFTER checking the tid, so hacking attempts are logged
+        if (!\BackendUser::getInstance()->isAdmin && !\BackendUser::getInstance()->hasAccess('tl_iso_downloads::published', 'alexf'))
         {
-            if (!is_dir(TL_ROOT . '/' . $row['singleSRC']))
-            {
-                return '';
-            }
-
-            $arrDownloads = array();
-
-            foreach (scan(TL_ROOT . '/' . $row['singleSRC']) as $file)
-            {
-                if (is_file(TL_ROOT . '/' . $row['singleSRC'] . '/' . $file))
-                {
-                    $objFile = new \File($row['singleSRC'] . '/' . $file);
-                    $icon = 'background:url(system/themes/' . $this->getTheme() . '/images/' . $objFile->icon . ') left center no-repeat; padding-left: 22px';
-                    $arrDownloads[] = sprintf('<div style="margin-bottom:5px;height:16px;%s">%s</div>', $icon, $row['singleSRC'] . '/' . $file);
-                }
-            }
-
-            if (empty($arrDownloads))
-            {
-                return $GLOBALS['TL_LANG']['ERR']['emptyDownloadsFolder'];
-            }
-
-            return implode("\n", $arrDownloads);
+            return '';
         }
 
-        if (is_file(TL_ROOT . '/' . $row['singleSRC']))
+        if ($row['published'] != '1')
         {
-            $objFile = new \File($row['singleSRC']);
-            $icon = 'background: url(system/themes/' . $this->getTheme() . '/images/' . $objFile->icon . ') left center no-repeat; padding-left: 22px';
+            $icon = 'invisible.gif';
         }
 
-        return sprintf('<div style="height: 16px;%s">%s <span style="color:#b3b3b3; padding-left:3px;">[%s]</span></div>', $icon, $row['title'], $row['singleSRC']);
+        $href .= '&amp;tid='.$row['id'].'&amp;state='.($row['published'] ? '' : 1);
+
+        return '<a href="'.$this->addToUrl($href).'" title="'.specialchars($title).'"'.$attributes.'>'.\Image::getHtml($icon, $label).'</a> ';
+    }
+
+
+    /**
+     * Publish/unpublish a product
+     * @param integer
+     * @param boolean
+     * @return void
+     */
+    public function toggleVisibility($intId, $blnVisible)
+    {
+        // Check permissions to edit
+        \Input::setGet('id', $intId);
+        \Input::setGet('act', 'toggle');
+
+        // Check permissions to publish
+        if (!\BackendUser::getInstance()->isAdmin && !\BackendUser::getInstance()->hasAccess('tl_iso_downloads::published', 'alexf'))
+        {
+            \System::log('Not enough permissions to publish/unpublish download ID "'.$intId.'"', __METHOD__, TL_ERROR);
+            \Controller::redirect('contao/main.php?act=error');
+        }
+
+        $this->createInitialVersion('tl_iso_downloads', $intId);
+
+        // Trigger the save_callback
+        if (is_array($GLOBALS['TL_DCA']['tl_iso_downloads']['fields']['published']['save_callback']))
+        {
+            foreach ($GLOBALS['TL_DCA']['tl_iso_downloads']['fields']['published']['save_callback'] as $callback)
+            {
+                $objCallback = \System::importStatic($callback[0]);
+                $blnVisible = $objCallback->$callback[1]($blnVisible, $this);
+            }
+        }
+
+        // Update the database
+        \Database::getInstance()->prepare("UPDATE tl_iso_downloads SET published='" . ($blnVisible ? 1 : '') . "' WHERE id=?")->execute($intId);
+
+        $this->createNewVersion('tl_iso_downloads', $intId);
     }
 }

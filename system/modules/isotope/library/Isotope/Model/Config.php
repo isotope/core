@@ -35,24 +35,6 @@ class Config extends \Model
     protected $arrCache = array();
 
     /**
-     * Return custom options or table row data
-     * @param mixed
-     * @return mixed
-     */
-    public function __get($strKey)
-    {
-        switch ($strKey)
-        {
-            case 'billing_fields':
-            case 'shipping_fields':
-                return deserialize($this->arrData[$strKey], true);
-
-            default:
-                return deserialize(parent::__get($strKey));
-        }
-    }
-
-    /**
      * Get translated label for the config
      * @return  string
      */
@@ -67,13 +49,33 @@ class Config extends \Model
      */
     public function getBillingFields()
     {
-        // @todo: cache?
-        return array_filter(array_map(
-            function($field) {
-                return $field['enabled'] ? $field['value'] : null;
-            },
-            $this->billing_fields
-        ));
+        if (!isset($this->arrCache['billingFields'])) {
+
+            $this->arrCache['billingFields'] = array_filter(array_map(
+                function($field) {
+                    return $field['enabled'] ? $field['value'] : null;
+                },
+                $this->getBillingFieldsConfig()
+            ));
+
+        }
+
+        return $this->arrCache['billingFields'];
+    }
+
+    /**
+     * Return raw billing field data
+     * @return  array
+     */
+    public function getBillingFieldsConfig()
+    {
+        $arrFields = deserialize($this->billing_fields);
+
+        if (!is_array($arrFields)) {
+            return array();
+        }
+
+        return $arrFields;
     }
 
     /**
@@ -82,13 +84,32 @@ class Config extends \Model
      */
     public function getShippingFields()
     {
-        // @todo: cache?
-        return array_filter(array_map(
-            function($field) {
-                return $field['enabled'] ? $field['value'] : null;
-            },
-            $this->shipping_fields
-        ));
+        if (!isset($this->arrCache['shippingFields'])) {
+
+            $this->arrCache['shippingFields'] = array_filter(array_map(
+                function($field) {
+                    return $field['enabled'] ? $field['value'] : null;
+                },
+                $this->getShippingFieldsConfig()
+            ));
+        }
+
+        return $this->arrCache['shippingFields'];
+    }
+
+    /**
+     * Return raw shipping field data
+     * @return  array
+     */
+    public function getShippingFieldsConfig()
+    {
+        $arrFields = deserialize($this->shipping_fields);
+
+        if (!is_array($arrFields)) {
+            return array();
+        }
+
+        return $arrFields;
     }
 
     /**
@@ -97,14 +118,18 @@ class Config extends \Model
      */
     public function getBillingCountries()
     {
-        // @todo: cache?
-        $arrCountries = deserialize($this->billing_countries);
+        if (!isset($this->arrCache['billingCountries'])) {
 
-        if (empty($arrCountries) || !is_array($arrCountries)) {
-            $arrCountries = array_keys(\System::getCountries());
+            $arrCountries = deserialize($this->billing_countries);
+
+            if (empty($arrCountries) || !is_array($arrCountries)) {
+                $arrCountries = array_keys(\System::getCountries());
+            }
+
+            $this->arrCache['billingCountries'] = $arrCountries;
         }
 
-        return $arrCountries;
+        return $this->arrCache['billingCountries'];
     }
 
     /**
@@ -113,14 +138,18 @@ class Config extends \Model
      */
     public function getShippingCountries()
     {
-        // @todo: cache?
-        $arrCountries = deserialize($this->shipping_countries);
+        if (!isset($this->arrCache['shippingCountries'])) {
 
-        if (empty($arrCountries) || !is_array($arrCountries)) {
-            $arrCountries = array_keys(\System::getCountries());
+            $arrCountries = deserialize($this->shipping_countries);
+
+            if (empty($arrCountries) || !is_array($arrCountries)) {
+                $arrCountries = array_keys(\System::getCountries());
+            }
+
+            $this->arrCache['shippingCountries'] = $arrCountries;
         }
 
-        return $arrCountries;
+        return $this->arrCache['shippingCountries'];
     }
 
     /**
@@ -171,30 +200,36 @@ class Config extends \Model
      * @param  int
      * @return object|null
      */
-    public static function findByRootPageOrFallback($intRoot)
+    public static function findByRootPageOrFallback($intRoot, array $arrOptions=array())
     {
-        $arrOptions = array(
-			'column' => array("(id=(SELECT iso_config FROM tl_page WHERE id=?) OR fallback='1')"),
-			'value'  => $intRoot,
-			'order'  => 'fallback',
-			'return' => 'Model'
-		);
+        $arrOptions = array_merge(
+            array(
+                'column' => array("(id=(SELECT iso_config FROM tl_page WHERE id=?) OR fallback='1')"),
+                'value'  => $intRoot,
+                'order'  => 'fallback',
+                'return' => 'Model'
+            ),
+            $arrOptions
+        );
 
-		return static::find($arrOptions);
+        return static::find($arrOptions);
     }
 
     /**
      * Find the fallback config
      * @return object|null
      */
-    public static function findByFallback()
+    public static function findByFallback(array $arrOptions=array())
     {
-        $arrOptions = array(
-			'column' => 'fallback',
-			'value'  => '1',
-			'return' => 'Model'
-		);
+        $arrOptions = array_merge(
+            array(
+                'column' => 'fallback',
+                'value'  => '1',
+                'return' => 'Model'
+            ),
+            $arrOptions
+        );
 
-		return static::find($arrOptions);
+        return static::find($arrOptions);
     }
 }

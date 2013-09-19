@@ -32,7 +32,7 @@ class tl_iso_addresses extends \Backend
     public function renderLabel($arrAddress)
     {
         $objAddress = new \Isotope\Model\Address();
-        $objAddress->setData($arrAddress);
+        $objAddress->setRow($arrAddress);
         $strBuffer = $objAddress->generateHtml();
 
         $strBuffer .= '<div style="color:#b3b3b3;margin-top:8px">' . $GLOBALS['TL_LANG']['tl_iso_addresses']['store_id'][0] . ' ' . $arrAddress['store_id'];

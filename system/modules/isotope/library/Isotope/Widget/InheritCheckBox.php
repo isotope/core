@@ -16,7 +16,7 @@ namespace Isotope\Widget;
 /**
  * Class InheritCheckbox
  *
- * Provide methods to inherit checbkox fields.
+ * Provide methods to inherit checkbox fields.
  * @copyright  Isotope eCommerce Workgroup 2009-2012
  * @author     Andreas Schempp <andreas.schempp@terminal42.ch>
  * @author     Fred Bliss <fred.bliss@intelligentspark.com>

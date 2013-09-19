@@ -18,26 +18,8 @@ use Isotope\Model\Payment;
 use Isotope\Model\ProductCollection\Order;
 
 
-/**
- * Class CybersourceClient
- *
- * @copyright  Isotope eCommerce Workgroup 2009-2012
- * @author     Andreas Schempp <andreas.schempp@terminal42.ch>
- */
-class Payone extends Payment implements IsotopePayment
+class Payone extends Postsale implements IsotopePayment
 {
-
-    /**
-     * Process checkout payment.
-     *
-     * @access public
-     * @return mixed
-     */
-    public function processPayment()
-    {
-        return true;
-    }
-
 
     /**
      * Process Transaction URL notification
@@ -45,30 +27,41 @@ class Payone extends Payment implements IsotopePayment
      * @access public
      * @return void
      */
-    public function processPostSale()
+    public function processPostsale()
     {
-        if (\Input::post('aid') == $this->payone_aid
-            && \Input::post('portalid') == $this->payone_portalid
-            && ((\Input::post('mode') == 'test' && $this->debug) || (\Input::post('mode') == 'live' && !$this->debug)))
-        {
-            if (($objOrder = Order::findByPk(\Input::post('reference'))) !== null)
-            {
-                if (\Input::post('txaction') == 'paid'
-                    && \Input::post('currency') == $objOrder->currency
-                    && \Input::post('balance') <= 0)
-                {
-                    $objOrder->date_payed = time();
-
-                    if (ISO_VERSION > 0.2)
-                    {
-                        $objOrder->checkout();
-                    }
-
-                    $objOrder->save();
-                }
-            }
+        if (\Input::post('aid') != $this->payone_aid
+            || \Input::post('portalid') != $this->payone_portalid
+            || (\Input::post('mode') == 'test' && !$this->debug)
+            || (\Input::post('mode') == 'live' && $this->debug)
+        ) {
+            \System::log('PayOne configuration mismatch', __METHOD__, TL_ERROR);
+            die('TSOK');
         }
 
+        if (($objOrder = Order::findByPk(\Input::post('reference'))) === null) {
+            \System::log('Order ID "'.\Input::post('reference').'" not found', __METHOD__, TL_ERROR);
+            die('TSOK');
+        }
+
+        if (\Input::post('txaction') != 'paid'
+            && \Input::post('currency') != $objOrder->currency
+            && \Input::post('balance') > 0
+        ) {
+            \System::log('PayOne order data mismatch for Order ID "' . \Input::post('invoice') . '"', __METHOD__, TL_ERROR);
+            die('TSOK');
+        }
+
+        if (!$objOrder->checkout()) {
+            \System::log('Postsale checkout for Order ID "' . \Input::post('invoice') . '" failed', __METHOD__, TL_ERROR);
+            die('TSOK');
+        }
+
+        $objOrder->date_paid = time();
+        $objOrder->updateOrderStatus($this->new_order_status);
+
+        $objOrder->save();
+
+        // PayOne must get TSOK as return value, otherwise the request will be sent again
         die('TSOK');
     }
 
@@ -141,7 +134,7 @@ class Payone extends Payment implements IsotopePayment
             $arrData['id['.++$i.']']    = 'surcharge'.$k;
             $arrData['pr['.$i.']']      = $objSurcharge->total_price * 100;
             $arrData['no['.$i.']']      = '1';
-            $arrData['de['.$i.']']      = $objSurcharge->label;
+            $arrData['de['.$i.']']      = $objSurcharge->getLabel();
         }
 
 

@@ -20,6 +20,7 @@ use Isotope\Model\OrderStatus;
 use Isotope\Model\Payment;
 use Isotope\Model\ProductCollection;
 use Isotope\Model\ProductCollectionItem;
+use Isotope\Model\ProductCollectionDownload;
 use Isotope\Model\Shipping;
 
 
@@ -175,7 +176,6 @@ class Order extends ProductCollection implements IsotopeProductCollection
         Isotope::setConfig($this->getRelated('config_id'));
         Isotope::setCart($objCart);
 
-        $this->arrData['date']                 = time();
         $this->arrData['shipping_id']          = $objCart->shipping_id;
         $this->arrData['payment_id']           = $objCart->payment_id;
         $this->arrData['subTotal']             = $objCart->subTotal;
@@ -206,8 +206,37 @@ class Order extends ProductCollection implements IsotopeProductCollection
         $this->setShippingAddress($objCart->getShippingAddress());
         $this->createPrivateAddresses();
 
-        // @todo must add surcharges and downloads here
+        // Store address in address book
+        if ($this->iso_addToAddressbook && $this->member > 0) {
+            $time = time();
 
+            if ($objCart->getBillingAddress()->ptable != \MemberModel::getTable()) {
+                $objAddress = clone $objCart->getBillingAddress();
+                $objAddress->pid = $this->member;
+                $objAddress->tstamp = time();
+                $objAddress->ptable = \MemberModel::getTable();
+                $objAddress->save();
+            }
+
+            if ($objCart->getBillingAddress()->id != $objCart->getShippingAddress()->id && $objCart->getShippingAddress()->ptable != \MemberModel::getTable()) {
+                $objAddress = clone $objCart->getShippingAddress();
+                $objAddress->pid = $this->member;
+                $objAddress->tstamp = time();
+                $objAddress->ptable = \MemberModel::getTable();
+                $objAddress->save();
+            }
+        }
+
+        // @todo must add surcharges here
+
+
+        // Add downloads from products to the collection
+        $arrDownloads = ProductCollectionDownload::createForProductsInCollection($this);
+        foreach ($arrDownloads as $objDownload) {
+            $objDownload->save();
+        }
+
+        // Delete cart after migrating to order
         $objCart->delete();
 
         $this->checkout_complete = true;
@@ -318,10 +347,8 @@ class Order extends ProductCollection implements IsotopeProductCollection
         }
 
         // Add the payment date if there is none
-        if ($objNewStatus->isPaid()) {
-            if ($this->date_paid == '') {
-                $this->date_paid = time();
-            }
+        if ($objNewStatus->isPaid() && $this->date_paid == '') {
+            $this->date_paid = time();
         }
 
         // Trigger email actions
@@ -446,6 +473,35 @@ class Order extends ProductCollection implements IsotopeProductCollection
         return $arrData;
     }
 
+    /**
+     * Include downloads when adding items to template
+     * @param   Isotope\Template
+     * @param   Callable
+     * @return  array
+     */
+    protected function addItemsToTemplate(\Isotope\Template $objTemplate, $varCallable=null)
+    {
+        $arrItems = array();
+        $arrAllDownloads = array();
+
+        foreach ($this->getItems($varCallable) as $objItem) {
+
+            $arrDownloads = array();
+            $arrItems[] = $this->generateItem($objItem);
+
+            foreach ($objItem->getDownloads() as $objDownload) {
+                $arrDownloads = array_merge($arrDownloads, $objDownload->getForTemplate($this->isPaid()));
+            }
+
+            $arrAllDownloads = array_merge($arrAllDownloads, $arrDownloads);
+        }
+
+        $objTemplate->items = \Isotope\Frontend::generateRowClass($arrItems, 'row', 'rowClass', 0, ISO_CLASS_COUNT|ISO_CLASS_FIRSTLAST|ISO_CLASS_EVENODD);
+        $objTemplate->downloads = $arrAllDownloads;
+
+        return $arrItems;
+    }
+
 
     /**
      * Make sure the addresses belong to this collection only, so they will never be modified
@@ -462,9 +518,10 @@ class Order extends ProductCollection implements IsotopeProductCollection
         if (null !== $objBillingAddress && ($objBillingAddress->ptable != static::$strTable || $objBillingAddress->pid != $this->id)) {
 
             $objNew = clone $objBillingAddress;
-            $objNew->ptable = static::$strTable;
             $objNew->pid = $this->id;
-            $objNew->save(true);
+            $objNew->tstamp = time();
+            $objNew->ptable = static::$strTable;
+            $objNew->save();
 
             $this->setBillingAddress($objNew);
 
@@ -479,9 +536,10 @@ class Order extends ProductCollection implements IsotopeProductCollection
         if (null !== $objShippingAddress && ($objShippingAddress->ptable != static::$strTable || $objShippingAddress->pid != $this->id)) {
 
             $objNew = clone $objShippingAddress;
-            $objNew->ptable = static::$strTable;
             $objNew->pid = $this->id;
-            $objNew->save(true);
+            $objNew->tstamp = time();
+            $objNew->ptable = static::$strTable;
+            $objNew->save();
 
             $this->setShippingAddress($objNew);
         }
@@ -528,7 +586,7 @@ class Order extends ProductCollection implements IsotopeProductCollection
             $objMax = $objDatabase->prepare("SELECT order_id FROM " . static::$strTable . " WHERE " . ($strPrefix != '' ? "order_id LIKE '$strPrefix%' AND " : '') . "store_id=? ORDER BY CAST(" . ($strPrefix != '' ? "SUBSTRING(order_id, " . ($intPrefix+1) . ")" : 'order_id') . " AS UNSIGNED) DESC")->limit(1)->executeUncached(Isotope::getCart()->store_id);
             $intMax = (int) substr($objMax->order_id, $intPrefix);
 
-            $this->arrData['order_id'] = $strPrefix . str_pad($intMax+1, Isotope::getConfig()->orderDigits, '0', STR_PAD_LEFT);
+            $this->arrData['order_id'] = $strPrefix . str_pad($intMax+1, (int) Isotope::getConfig()->orderDigits, '0', STR_PAD_LEFT);
         }
 
         $objDatabase->prepare("UPDATE " . static::$strTable . " SET order_id=? WHERE id={$this->id}")->executeUncached($this->arrData['order_id']);

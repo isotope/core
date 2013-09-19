@@ -13,14 +13,6 @@
  */
 
 
-.header_isotope_tools
-{
-    padding:2px 0px 3px 20px;
-    background-image:url("lightning.png");
-    background-position:left center;
-    background-repeat:no-repeat;
-}
-
 .header_import_assets
 {
     padding:2px 0px 3px 20px;
@@ -43,22 +35,6 @@
     background-position:left center;
     background-repeat:no-repeat;
     padding:2px 0 3px 20px;
-}
-
-.header_iso_export_csv
-{
-    background-image:url(document-excel-csv.png);
-    background-position:left center;
-    background-repeat:no-repeat;
-    padding:2px 0 3px 20px
-}
-
-.header_print_invoices
-{
-    padding:2px 0px 3px 20px;
-    background-image:url("document-pdf-text.png");
-    background-position:left center;
-    background-repeat:no-repeat;
 }
 
 .header_iso_groups
@@ -95,6 +71,24 @@
 .tl_mediamanager .radio_container span
 {
     display: block;
+}
+
+.tl_mediamanager img {
+    position: relative;
+    top: 1px;
+}
+
+.tl_fieldwizard td {
+    padding-right: 4px;
+}
+
+.tl_fieldwizard th {
+    padding: 2px 0;
+    font-weight: normal;
+}
+
+.tl_fieldwizard .col_1 {
+    width: 180px;
 }
 
 .mod_iso_orderdetails .info_container
@@ -157,43 +151,43 @@
 }
 
 .breadcrumb_container {
-	padding: 2px 0;
-	margin: 24px 18px 0 18px;
+    padding: 2px 0;
+    margin: 24px 18px 0 18px;
 }
 
 .iso_filter {
-	line-height: 28px;
+    line-height: 28px;
 }
 
 .iso_filter .tl_submit.active {
-	border: 1px solid #b8b8b8;
-	background: #eee;
-	background-image: -moz-linear-gradient(bottom, #ccc 0%, #ffd 60%);
-	background-image: -webkit-linear-gradient(bottom, #ccc 0%, #ffd 60%);
-	background-image: -o-linear-gradient(bottom, #ccc 0%, #ffd 60%);
-	background-image: -ms-linear-gradient(bottom, #ccc 0%, #ffd 60%);
-	background-image: linear-gradient(bottom, #ccc 0%, #ffd 60%);
+    border: 1px solid #b8b8b8;
+    background: #eee;
+    background-image: -moz-linear-gradient(bottom, #ccc 0%, #ffd 60%);
+    background-image: -webkit-linear-gradient(bottom, #ccc 0%, #ffd 60%);
+    background-image: -o-linear-gradient(bottom, #ccc 0%, #ffd 60%);
+    background-image: -ms-linear-gradient(bottom, #ccc 0%, #ffd 60%);
+    background-image: linear-gradient(bottom, #ccc 0%, #ffd 60%);
 }
 
 .iso_filter .styled_select {
-	margin-top: 4px;
+    margin-top: 4px;
 }
 
 .iso_listing_container th.col_images {
-	font-size: 0;
-	width: 60px;
+    font-size: 0;
+    width: 60px;
 }
 
 .iso_operations {
-	width: 110px;
-	white-space: normal;
+    width: 110px;
+    white-space: normal;
 }
 
 .iso_content_right .tl_select_all,
 .iso_content_right a,
 .iso_operations a {
-	display: inline-block;
-	margin-bottom: 4px;
+    display: inline-block;
+    margin-bottom: 4px;
 }
 
 .tl_productdata .tl_file {
@@ -271,38 +265,6 @@ h3.inherit,
     background-color: #f8f8f8;
     padding: 2px 2px 2px 0;
     margin: 14px 0 1px 0
-}
-
-#isotopetoolsmenu,
-#isotopefiltermenu,
-#isotope-contextmenu
-{
-    display:none;
-    position:absolute;
-    z-index:99999999;
-    background-color:#fff;
-    border:1px solid #ccc;
-    padding:3px 6px;
-    -moz-border-radius:4px;
-    -webkit-border-radius:4px;
-    border-radius:4px;
-}
-
-#isotopetoolsmenu a,
-#isotopefiltermenu a,
-#isotope-contextmenu a
-{
-    display:block;
-    padding-top: 3px;
-    white-space: nowrap;
-}
-
-#isotopetoolsmenu img,
-#isotopefiltermenu img,
-#isotope-contextmenu img
-{
-    padding-bottom: 1px;
-    vertical-align: middle;
 }
 
 body.iso_be_overview .tip-wrap{

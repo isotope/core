@@ -1,9 +1,0 @@
-<IfModule !mod_authz_core.c>
-  # Apache 2.2
-  Order allow,deny
-  Allow from all
-</IfModule>
-<IfModule mod_authz_core.c>
-  # Apache 2.4
-  Require all granted
-</IfModule>

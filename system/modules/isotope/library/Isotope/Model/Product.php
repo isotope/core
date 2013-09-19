@@ -85,16 +85,13 @@ abstract class Product extends TypeAgent
             $arrColumns[] = "$t.published='1' AND ($t.start='' OR $t.start<$time) AND ($t.stop='' OR $t.stop>$time)";
         }
 
-		$arrOptions = array_merge
-		(
-			array
-			(
+		$arrOptions = array_merge(
+			array(
 				'limit'  => 1,
 				'column' => $arrColumns,
 				'value'  => $arrValues,
 				'return' => 'Model'
 			),
-
 			$arrOptions
 		);
 
@@ -119,16 +116,13 @@ abstract class Product extends TypeAgent
             $arrColumns[] = "$t.published='1' AND ($t.start='' OR $t.start<$time) AND ($t.stop='' OR $t.stop>$time)";
         }
 
-		$arrOptions = array_merge
-		(
-			array
-			(
+		$arrOptions = array_merge(
+			array(
 				'limit'  => 1,
 				'column' => $arrColumns,
 				'value'  => $arrValues,
 				'return' => 'Model'
 			),
-
 			$arrOptions
 		);
 
@@ -152,14 +146,11 @@ abstract class Product extends TypeAgent
             $arrColumns[] = "$t.published='1' AND ($t.start='' OR $t.start<$time) AND ($t.stop='' OR $t.stop>$time)";
         }
 
-		$arrOptions = array_merge
-		(
-			array
-			(
+		$arrOptions = array_merge(
+			array(
 				'column' => $arrColumns,
 				'return' => 'Collection'
 			),
-
 			$arrOptions
 		);
 
@@ -183,15 +174,12 @@ abstract class Product extends TypeAgent
             $arrColumns[] = "$t.published='1' AND ($t.start='' OR $t.start<$time) AND ($t.stop='' OR $t.stop>$time)";
         }
 
-		$arrOptions = array_merge
-		(
-			array
-			(
+		$arrOptions = array_merge(
+			array(
 				'column' => $arrColumns,
 				'value'  => array((int) $intPid),
 				'return' => 'Collection'
 			),
-
 			$arrOptions
 		);
 
@@ -215,14 +203,11 @@ abstract class Product extends TypeAgent
             $arrColumns[] = "$t.published='1' AND ($t.start='' OR $t.start<$time) AND ($t.stop='' OR $t.stop>$time)";
         }
 
-		$arrOptions = array_merge
-		(
-			array
-			(
+		$arrOptions = array_merge(
+			array(
 				'column' => $arrColumns,
 				'return' => 'Collection'
 			),
-
 			$arrOptions
 		);
 

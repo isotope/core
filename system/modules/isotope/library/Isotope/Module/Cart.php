@@ -96,7 +96,7 @@ class Cart extends Module
 
         $objTemplate = new \Isotope\Template($this->iso_collectionTpl);
 
-        Isotope::getCart()->addToTemplate($objTemplate, $this->getItemsSortingClosure());
+        Isotope::getCart()->addToTemplate($objTemplate, $this->getProductCollectionItemsSortingCallable());
 
         $blnReload = false;
         $arrQuantity = \Input::post('quantity');
@@ -207,46 +207,5 @@ class Cart extends Module
         }
 
         return $arrButtons;
-    }
-
-    /**
-     * Method that returns a closure to sort items
-     * @return  Closure
-     */
-    protected function getItemsSortingClosure()
-    {
-        $arrSortingSettings = explode('_', $this->iso_orderCollectionBy, 2);
-        $strSortingAttribute = $arrSortingSettings[1];
-
-        if ($arrSortingSettings[0] == 'asc') {
-
-            return function($arrItems) use ($strSortingAttribute) {
-                uasort($arrItems, function($objItem1, $objItem2) use ($strSortingAttribute) {
-                    if ($objItem1->$strSortingAttribute == $objItem2->$strSortingAttribute) {
-                        return 0;
-                    }
-
-                    return $objItem1->$strSortingAttribute < $objItem2->$strSortingAttribute ? -1 : 1;
-                });
-
-                return $arrItems;
-            };
-
-        } elseif ($arrSortingSettings[0] == 'desc') {
-
-            return function($arrItems) use ($strSortingAttribute) {
-                uasort($arrItems, function($objItem1, $objItem2) use ($strSortingAttribute) {
-                    if ($objItem1->$strSortingAttribute == $objItem2->$strSortingAttribute) {
-                        return 0;
-                    }
-
-                    return $objItem1->$strSortingAttribute > $objItem2->$strSortingAttribute ? -1 : 1;
-                });
-
-                return $arrItems;
-            };
-        }
-
-        return null;
     }
 }

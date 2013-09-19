@@ -17,6 +17,8 @@
 namespace Isotope;
 
 use Isotope\Model\Address;
+use Isotope\Model\Document;
+use Isotope\Model\Config;
 use Isotope\Model\ProductCollection\Order;
 
 
@@ -47,7 +49,7 @@ class tl_iso_product_collection extends \Backend
         $objAddress = $objOrder->getBillingAddress();
 
         if (null !== $objAddress) {
-            $arrTokens = $objAddress->getTokens(Isotope::getConfig()->billing_fields);
+            $arrTokens = $objAddress->getTokens(Isotope::getConfig()->getBillingFieldsConfig());
             $args[2] = $arrTokens['hcard_fn'];
         }
 
@@ -257,60 +259,6 @@ class tl_iso_product_collection extends \Backend
 
 
     /**
-     * Export order e-mails and send them to browser as file
-     * @param DataContainer
-     * @return string
-     * @todo orders should be sorted, but by ID or date? also might want to respect user filter/search
-     */
-    public function exportOrderEmails(\DataContainer $dc)
-    {
-        if (\Input::get('key') != 'export_emails')
-        {
-            return '';
-        }
-
-        $arrExport = array();
-        $objOrders = Order::findAll();
-
-        while ($objOrders->next())
-        {
-            $objAddress = $objOrders->getBillingAddress();
-
-            if ($objAddress->email)
-            {
-                $arrExport[] = $objAddress->firstname . ' ' . $objAddress->lastname . ' <' . $objAddress->email . '>';
-            }
-        }
-
-        if (empty($arrExport))
-        {
-            return '
-<div id="tl_buttons">
-<a href="'.ampersand(str_replace('&key=export_emails', '', \Environment::get('request'))).'" class="header_back" title="'.specialchars($GLOBALS['TL_LANG']['MSC']['backBT']).'">'.$GLOBALS['TL_LANG']['MSC']['backBT'].'</a>
-</div>
-<p class="tl_gerror">'. $GLOBALS['TL_LANG']['MSC']['noOrderEmails'] .'</p>';
-        }
-
-        header('Content-Type: application/csv');
-        header('Content-Transfer-Encoding: binary');
-        header('Content-Disposition: attachment; filename="isotope_order_emails_export_' . time() .'.csv"');
-        header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
-        header('Pragma: public');
-        header('Expires: 0');
-
-        $output = '';
-
-        foreach ($arrExport as $export)
-        {
-            $output .= '"' . $export . '"' . "\n";
-        }
-
-        echo $output;
-        exit;
-    }
-
-
-    /**
      * Generate a payment interface and return it as HTML string
      * @param object
      * @return string
@@ -345,103 +293,74 @@ class tl_iso_product_collection extends \Backend
 
 
     /**
-     * Provide a select menu to choose orders by status and print PDF
-     * @return string
-     */
-    public function printInvoices()
-    {
-        $strMessage = '';
-
-        $strReturn = '
-<div id="tl_buttons">
-<a href="'.ampersand(str_replace('&key=print_invoices', '', \Environment::get('request'))).'" class="header_back" title="'.specialchars($GLOBALS['TL_LANG']['MSC']['backBT']).'">'.$GLOBALS['TL_LANG']['MSC']['backBT'].'</a>
-</div>
-
-<h2 class="sub_headline">'.$GLOBALS['TL_LANG']['tl_iso_product_collection']['print_invoices'][0].'</h2>
-<form action="'.\Environment::get('request').'"  id="tl_print_invoices" class="tl_form" method="post">
-<input type="hidden" name="FORM_SUBMIT" value="tl_print_invoices">
-<input type="hidden" name="REQUEST_TOKEN" value="'.REQUEST_TOKEN.'">
-<div class="tl_formbody_edit">
-<div class="tl_tbox block">';
-
-        $objWidget = new \SelectMenu(\SelectMenu::getAttributesFromDca($GLOBALS['TL_DCA']['tl_iso_product_collection']['fields']['order_status'], 'order_status'));
-
-        if (\Input::post('FORM_SUBMIT') == 'tl_print_invoices')
-        {
-            $objOrders = \Database::getInstance()->prepare("SELECT id FROM tl_iso_product_collection WHERE order_status=?")->execute(\Input::post('order_status'));
-
-            if ($objOrders->numRows)
-            {
-                $this->generateInvoices($objOrders->fetchEach('id'));
-            }
-            else
-            {
-                $strMessage = '<p class="tl_gerror">'.$GLOBALS['TL_LANG']['MSC']['noOrders'].'</p>';
-            }
-        }
-
-        return $strReturn . $strMessage . $objWidget->parse() . '
-</div>
-</div>
-<div class="tl_formbody_submit">
-<div class="tl_submit_container">
-<input type="submit" name="print_invoices" id="ctrl_print_invoices" value="'.$GLOBALS['TL_LANG']['MSC']['labelSubmit'].'">
-</div>
-</div>
-</form>
-</div>';
-    }
-
-
-    /**
-     * Print one order as PDF
+     * Pass an order to the document
      * @param DataContainer
-     * @return void
      */
-    public function printInvoice(\DataContainer $dc)
+    public function printDocument(\DataContainer $dc)
     {
-        $this->generateInvoices(array($dc->id));
-    }
+        $strRedirectUrl = str_replace('&key=print_document', '', \Environment::get('request'));
 
-
-    /**
-     * Generate one or multiple PDFs by order ID
-     * @param array
-     * @return void
-     */
-    public function generateInvoices(array $arrIds)
-    {
-        if (empty($arrIds))
-        {
-            \System::log('No order IDs passed to method.', __METHOD__, TL_ERROR);
-            \Controller::redirect('contao/main.php?act=error');
-        }
-
-        $pdf = null;
-
-        foreach ($arrIds as $intId)
-        {
-            if (($objOrder = Order::findByPk($intId)) !== null)
-            {
-                $pdf = $objOrder->generatePDF(null, $pdf, false);
+        if (\Input::post('FORM_SUBMIT') == 'tl_iso_print_document') {
+            if (($objOrder = Order::findByPk($dc->id)) === null) {
+                \Message::addError('Could not find order id.');
+                \Controller::redirect($strRedirectUrl);
             }
+
+            if ($objOrder->getRelated('config_id') === null) {
+                \Message::addError('Could not find config id.');
+                \Controller::redirect($strRedirectUrl);
+            }
+
+            if (($objDocument = Document::findByPk(\Input::post('document'))) === null) {
+                \Message::addError('Could not find document id.');
+                \Controller::redirect($strRedirectUrl);
+            }
+
+            $objDocument->outputToBrowser($objOrder);
         }
 
-        if (!$pdf)
-        {
-            \System::log('No order IDs passed to method.', __METHOD__, TL_ERROR);
-            \Controller::redirect('contao/main.php?act=error');
-        }
+        $arrSelect = array
+        (
+            'name'          => 'document',
+            'label'         => &$GLOBALS['TL_LANG']['tl_iso_product_collection']['document_choice'],
+            'inputType'     => 'select',
+            'foreignKey'    => 'tl_iso_document.name',
+            'eval'          => array('mandatory'=>true)
+        );
 
-        // Close and output PDF document
-        $pdf->lastPage();
+        $objSelect = new \SelectMenu(\SelectMenu::getAttributesFromDca($arrSelect, $arrSelect['name']));
 
-        // @todo make things like this configurable in a further version of Isotope
-        $strInvoiceTitle = 'invoice_' . $objOrder->order_id;
-        $pdf->Output(standardize(ampersand($strInvoiceTitle, false), true) . '.pdf', 'D');
+        $strMessages = \Message::generate();
+        \Message::reset();
 
-        // Stop script execution
-        exit;
+        // Return form
+        return '
+<div id="tl_buttons">
+<a href="'. ampersand($strRedirectUrl) .'" class="header_back" title="'.specialchars($GLOBALS['TL_LANG']['MSC']['backBT']).'">'.$GLOBALS['TL_LANG']['MSC']['backBT'].'</a>
+</div>
+
+<h2 class="sub_headline">'.sprintf($GLOBALS['TL_LANG']['tl_iso_product_collection']['print_document'][1], $dc->id).'</h2>'. $strMessages .'
+
+<form action="'.ampersand(\Environment::get('request'), true).'" id="tl_iso_products_import" class="tl_form" method="post">
+<div class="tl_formbody_edit">
+<input type="hidden" name="FORM_SUBMIT" value="tl_iso_print_document">
+<input type="hidden" name="REQUEST_TOKEN" value="'.REQUEST_TOKEN.'">
+
+<div class="tl_tbox block">
+  ' . $objSelect->parse() . '
+  <p class="tl_help">'.$objSelect->description.'</p>
+</div>
+
+</div>
+
+<div class="tl_formbody_submit">
+
+<div class="tl_submit_container">
+<input type="submit" name="print" id="print" class="tl_submit" alt="" accesskey="s" value="'.specialchars($GLOBALS['TL_LANG']['tl_iso_product_collection']['print']).'">
+</div>
+
+</div>
+</form>';
     }
 
 
