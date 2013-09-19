@@ -537,10 +537,8 @@ class Checkout extends Module
     {
         global $objPage;
 
-        $strUrlParam = 'step';
-
-        if ($strUrlParam) {
-            $strStep = $strUrlParam . '/' . $strStep;
+        if (!$GLOBALS['TL_CONFIG']['useAutoItem'] || !in_array('step', $GLOBALS['TL_AUTO_ITEM'])) {
+            $strStep = 'step/' . $strStep;
         }
 
         return \Controller::generateFrontendUrl($objPage->row(), '/' . $strStep);
