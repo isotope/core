@@ -24,7 +24,7 @@ interface IsotopeGallery
      * @param string
      * @return string
      */
-    public function generateMainImage($strType='main');
+    public function generateMainImage();
 
     /**
      * Generate gallery and return it as HTML string
@@ -32,5 +32,5 @@ interface IsotopeGallery
      * @param integer
      * @return string
      */
-    public function generateGallery($strType='gallery', $intSkip=1);
+    public function generateGallery($intSkip=1);
 }

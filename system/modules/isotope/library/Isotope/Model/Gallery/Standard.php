@@ -140,7 +140,7 @@ class Standard extends Gallery implements IsotopeGallery
      * @param string
      * @return string
      */
-    public function generateMainImage($strType='main')
+    public function generateMainImage()
     {
         if (!count($this->arrFiles))
         {
@@ -173,7 +173,7 @@ class Standard extends Gallery implements IsotopeGallery
      * @param integer
      * @return string
      */
-    public function generateGallery($strType='gallery', $intSkip=1)
+    public function generateGallery($intSkip=1)
     {
         $strGallery = '';
 
