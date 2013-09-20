@@ -214,22 +214,6 @@ abstract class Payment extends TypeAgent
 
 
     /**
-     * Return a html form for payment data or an empty string.
-     *
-     * The input fields should be from array "payment" including the payment module ID.
-     * Example: <input type="text" name="payment[$this->id][cc_num]" />
-     * You can set $objCheckoutModule->doNotSubmit = true if post is sent but data is invalid.
-     *
-     * @param object The checkout module object.
-     * @return string
-     */
-    public function paymentForm($objCheckoutModule)
-    {
-        return '';
-    }
-
-
-    /**
      * Return a html form for checkout or false
      * @return mixed
      */
