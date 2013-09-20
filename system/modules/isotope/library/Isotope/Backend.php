@@ -874,4 +874,17 @@ class Backend extends Contao_Backend
             }
         }
     }
+
+
+    /**
+     * Adjust the product groups manager view
+     * @param object
+     */
+    public function adjustGroupsManager($objTemplate)
+    {
+	    if (\Input::get('popup') && \Input::get('do') == 'iso_products' && \Input::get('table') == 'tl_iso_groups' && $objTemplate->getName() == 'be_main') {
+		    $objTemplate->managerHref = ampersand($this->Session->get('groupPickerRef'));
+		    $objTemplate->manager = $GLOBALS['TL_LANG']['MSC']['groupPickerHome'];
+	    }
+    }
 }

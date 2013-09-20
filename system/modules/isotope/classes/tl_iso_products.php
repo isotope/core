@@ -385,7 +385,7 @@ class tl_iso_products extends \Backend
     	}
     	else
     	{
-	    	return '<a href="system/modules/isotope/public/group.php?do='.\Input::get('do').'&amp;table=tl_iso_groups&amp;field=gid&amp;value='.$row['gid'].'" title="'.specialchars($title).'"'.$attributes.' onclick="Backend.getScrollOffset();Isotope.openModalGroupSelector({\'width\':765,\'title\':\''.specialchars($GLOBALS['TL_LANG']['tl_iso_products']['groups'][0]).'\',\'url\':this.href,\'action\':\'moveProduct\',\'redirect\':\''.$this->addToUrl($href . '&pid=' . intval(\Input::get('pid')) . '&id=' . $row['id']).'\'});return false">'.\Image::getHtml($icon, $label).'</a> ';
+	    	return '<a href="system/modules/isotope/public/group.php?do='.\Input::get('do').'&amp;table=tl_iso_groups&amp;field=gid&amp;value='.$row['gid'].'" title="'.specialchars($title).'"'.$attributes.' onclick="Backend.getScrollOffset();Isotope.openModalGroupSelector({\'width\':765,\'title\':\''.specialchars($GLOBALS['TL_LANG']['tl_iso_products']['product_groups'][0]).'\',\'url\':this.href,\'action\':\'moveProduct\',\'redirect\':\''.$this->addToUrl($href . '&pid=' . intval(\Input::get('pid')) . '&id=' . $row['id']).'\'});return false">'.\Image::getHtml($icon, $label).'</a> ';
     	}
     }
 

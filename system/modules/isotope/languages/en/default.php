@@ -50,6 +50,7 @@ $GLOBALS['TL_LANG']['MSC']['undefinedLanguage']                 = 'undefined';
 $GLOBALS['TL_LANG']['MSC']['selectGroup']                       = 'Only show this group';
 $GLOBALS['TL_LANG']['MSC']['filterByGroups']                    = 'Groups';
 $GLOBALS['TL_LANG']['MSC']['filterByPages']                     = 'Pages';
+$GLOBALS['TL_LANG']['MSC']['groupPickerHome']                   = 'Back to the group picker';
 $GLOBALS['TL_LANG']['MSC']['allGroups']                         = 'Show all groups';
 $GLOBALS['TL_LANG']['MSC']['noVariants']                        = 'There are no variants for this product.';
 $GLOBALS['TL_LANG']['MSC']['copyFallback']                      = 'Duplicate Fallback';

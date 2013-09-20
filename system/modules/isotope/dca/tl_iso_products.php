@@ -107,7 +107,7 @@ $GLOBALS['TL_DCA']['tl_iso_products'] = array
             ),
             'groups' => array
             (
-                'label'             => &$GLOBALS['TL_LANG']['tl_iso_products']['groups'],
+                'label'             => &$GLOBALS['TL_LANG']['tl_iso_products']['product_groups'],
                 'href'              => 'table=tl_iso_groups',
                 'icon'              => 'system/modules/isotope/assets/folders.png',
                 'attributes'        => 'onclick="Backend.getScrollOffset();"',
