@@ -89,7 +89,6 @@ class ShippingMethod extends CheckoutStep implements IsotopeCheckoutStep
             'mandatory'     => true,
             'options'       => $arrOptions,
             'value'         => Isotope::getCart()->shipping_id,
-            'onclick'       => "Isotope.toggleAddressFields(this, '" . $this->getStepClass() . "_new');",
             'storeValues'   => true,
             'tableless'     => true,
         ));
