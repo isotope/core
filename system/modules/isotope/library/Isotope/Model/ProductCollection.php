@@ -1037,12 +1037,16 @@ abstract class ProductCollection extends TypeAgent
         }
 
         // Store in arrData, otherwise each call to __set would trigger setModified(true)
-        $this->arrData['source_collection_id'] = $objSource->id;
-        $this->arrData['config_id']            = $objSource->config_id;
-        $this->arrData['store_id']             = $objSource->store_id;
-        $this->arrData['member']               = $objSource->member;
-        $this->arrData['language']             = $GLOBALS['TL_LANGUAGE'];
-        $this->arrData['currency']             = $objConfig->currency;
+        $this->arrData['source_collection_id']  = $objSource->id;
+        $this->arrData['config_id']             = $objSource->config_id;
+        $this->arrData['store_id']              = $objSource->store_id;
+        $this->arrData['address1_id']           = $objSource->address1_id;
+        $this->arrData['address2_id']           = $objSource->address2_id;
+        $this->arrData['payment_id']            = $objSource->payment_id;
+        $this->arrData['shipping_id']           = $objSource->shipping_id;
+        $this->arrData['member']                = $objSource->member;
+        $this->arrData['language']              = $GLOBALS['TL_LANGUAGE'];
+        $this->arrData['currency']              = $objConfig->currency;
 
         $this->pageId                           = (int) $objPage->id;
 

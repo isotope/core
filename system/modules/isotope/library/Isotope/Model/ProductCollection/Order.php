@@ -409,48 +409,23 @@ class Order extends ProductCollection implements IsotopeProductCollection
         $arrData['order_id'] = $this->order_id;
         $arrData['uniqid'] = $this->uniqid;
         $arrData['status'] = $this->getStatusLabel();
-        $arrData['status_id'] = $this->arrData['status'];
+        $arrData['status_id'] = $this->order_status;
 
-        foreach ($this->getBillingAddress()->row() as $k => $v)
-        {
-            $arrData['billing_' . $k] = Isotope::formatValue('tl_iso_addresses', $k, $v);
-        }
-
-        foreach ($this->getShippingAddress()->row() as $k => $v)
-        {
-            $arrData['shipping_' . $k] = Isotope::formatValue('tl_iso_addresses', $k, $v);
-        }
-
-        if (($objConfig = Config::findByPk($this->config_id)) !== null)
-        {
-            foreach ($objConfig->row() as $k => $v)
-            {
-                $arrData['config_' . $k] = Isotope::formatValue('tl_iso_config', $k, $v);
+        if ($this->getRelated('config_id') !== null) {
+            foreach ($this->getRelated('config_id')->row() as $k => $v) {
+                $arrData['config_' . $k] = Isotope::formatValue($this->getRelated('config_id')->getTable(), $k, $v);
             }
         }
 
-        if ($this->pid > 0)
-        {
-            $objUser = \Database::getInstance()->execute("SELECT * FROM tl_member WHERE id=" . (int) $this->pid);
-
-            foreach ($objUser->row() as $k => $v)
-            {
-                $arrData['member_' . $k] = Isotope::formatValue('tl_member', $k, $v);
+        if ($this->pid > 0 && $this->getRelated('pid') !== null) {
+            foreach ($this->getRelated('pid')->row() as $k => $v) {
+                $arrData['member_' . $k] = Isotope::formatValue($this->getRelated('pid')->getTable(), $k, $v);
             }
         }
-
-        $arrData['items']       = $this->sumItemsQuantity();
-        $arrData['products']    = $this->countItems();
-        $arrData['subTotal']    = Isotope::formatPriceWithCurrency($this->getSubtotal(), false);
-        $arrData['grandTotal']  = Isotope::formatPriceWithCurrency($this->getTotal(), false);
-        $arrData['cart_text']   = strip_tags(Isotope::getInstance()->call('replaceInsertTags', $this->getProducts('iso_products_text')));
-        $arrData['cart_html']   = Isotope::getInstance()->call('replaceInsertTags', $this->getProducts('iso_products_html'));
 
         // !HOOK: add custom email tokens
-        if (isset($GLOBALS['ISO_HOOKS']['getOrderEmailData']) && is_array($GLOBALS['ISO_HOOKS']['getOrderEmailData']))
-        {
-            foreach ($GLOBALS['ISO_HOOKS']['getOrderEmailData'] as $callback)
-            {
+        if (isset($GLOBALS['ISO_HOOKS']['getOrderEmailData']) && is_array($GLOBALS['ISO_HOOKS']['getOrderEmailData'])) {
+            foreach ($GLOBALS['ISO_HOOKS']['getOrderEmailData'] as $callback) {
                 $objCallback = \System::importStatic($callback[0]);
                 $arrData = $objCallback->$callback[1]($this, $arrData);
             }

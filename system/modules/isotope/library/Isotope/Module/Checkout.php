@@ -14,6 +14,7 @@ namespace Isotope\Module;
 
 use Isotope\Isotope;
 use Isotope\Interfaces\IsotopeCheckoutStep;
+use Isotope\Interfaces\IsotopeProductCollection;
 use Isotope\Model\Payment;
 use Isotope\Model\Shipping;
 use Isotope\Model\ProductCollection\Order;
@@ -30,12 +31,6 @@ use Isotope\Model\ProductCollection\Order;
  */
 class Checkout extends Module
 {
-
-    /**
-     * Order data. Each checkout step can provide key-value (string) data for the order email.
-     * @var array
-     */
-    public $arrOrderData = array();
 
     /**
      * Do not submit form
@@ -333,7 +328,7 @@ class Checkout extends Module
         $objOrder->iso_mail_admin       = $this->iso_mail_admin;
         $objOrder->iso_mail_customer    = $this->iso_mail_customer;
         $objOrder->iso_addToAddressbook = $this->iso_addToAddressbook;
-        $objOrder->email_data = $this->arrOrderData;
+        $objOrder->email_data           = $this->getEmailTokensFromSteps($objOrder);
 
         $objOrder->save();
     }
@@ -370,6 +365,26 @@ class Checkout extends Module
         }
 
         return $this->arrCheckoutInfo;
+    }
+
+
+    /**
+     * Retrieve the array of email data for parsing simple tokens
+     * @param   IsotopeProductCollection
+     * @return  array
+     */
+    protected function getEmailTokensFromSteps(IsotopeProductCollection $objOrder)
+    {
+        $arrTokens = array();
+
+        // Run trough all steps to collect checkout information
+        foreach ($this->getSteps() as $arrModules) {
+            foreach ($arrModules as $objModule) {
+                $arrTokens = array_merge($arrTokens, $objModule->getEmailTokens($objOrder, $this));
+            }
+        }
+
+        return $arrTokens;
     }
 
 

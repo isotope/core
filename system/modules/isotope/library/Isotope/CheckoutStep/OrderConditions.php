@@ -12,6 +12,7 @@
 
 
 namespace Isotope\CheckoutStep;
+use Isotope\Interfaces\IsotopeProductCollection;
 
 
 abstract class OrderConditions extends CheckoutStep
@@ -43,19 +44,6 @@ abstract class OrderConditions extends CheckoutStep
 
         $this->blnError = $objForm->blnHasErrors;
         $this->Template->enctype = $objForm->enctype;
-
-        if (!$this->hasError())
-        {
-            foreach ($objForm->arrFormData as $name => $value)
-            {
-                $this->objModule->arrOrderData['form_' . $name] = $value;
-            }
-
-            foreach ($objForm->arrFiles as $name => $file)
-            {
-                $this->objModule->arrOrderData['form_' . $name] = \Environment::get('base') . str_replace(TL_ROOT . '/', '', dirname($file['tmp_name'])) . '/' . rawurlencode($file['name']);
-            }
-        }
 
         $objTemplate = new \Isotope\Template('iso_checkout_order_conditions');
         $objTemplate->attributes    = $objForm->attributes;
@@ -97,5 +85,29 @@ abstract class OrderConditions extends CheckoutStep
         }
 
         return '';
+    }
+
+    /**
+     * Return array of tokens for email templates
+     * @param   IsotopeProductCollection
+     * @param   \Module
+     * @return  array
+     */
+    public function getEmailTokens(IsotopeProductCollection $objCollection, \Module $objModule)
+    {
+        // @todo return form field values
+        /*
+        foreach ($objForm->arrFormData as $name => $value)
+        {
+            $this->objModule->arrOrderData['form_' . $name] = $value;
+        }
+
+        foreach ($objForm->arrFiles as $name => $file)
+        {
+            $this->objModule->arrOrderData['form_' . $name] = \Environment::get('base') . str_replace(TL_ROOT . '/', '', dirname($file['tmp_name'])) . '/' . rawurlencode($file['name']);
+        }
+        */
+
+        return array();
     }
 }

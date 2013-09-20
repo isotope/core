@@ -13,6 +13,7 @@
 namespace Isotope\CheckoutStep;
 
 use Isotope\Interfaces\IsotopeCheckoutStep;
+use Isotope\Interfaces\IsotopeProductCollection;
 
 
 class OrderInfo extends CheckoutStep implements IsotopeCheckoutStep
@@ -50,5 +51,16 @@ class OrderInfo extends CheckoutStep implements IsotopeCheckoutStep
     public function review()
     {
         return '';
+    }
+
+    /**
+     * Return array of tokens for email templates
+     * @param   IsotopeProductCollection
+     * @param   \Module
+     * @return  array
+     */
+    public function getEmailTokens(IsotopeProductCollection $objCollection, \Module $objModule)
+    {
+        return array();
     }
 }

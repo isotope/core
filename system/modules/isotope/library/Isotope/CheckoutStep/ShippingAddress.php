@@ -14,6 +14,7 @@ namespace Isotope\CheckoutStep;
 
 use Isotope\Isotope;
 use Isotope\Interfaces\IsotopeCheckoutStep;
+use Isotope\Interfaces\IsotopeProductCollection;
 use Isotope\Model\Address as AddressModel;
 
 
@@ -42,25 +43,6 @@ class ShippingAddress extends Address implements IsotopeCheckoutStep
         $this->Template->headline = $GLOBALS['TL_LANG']['MSC']['shipping_address'];
         $this->Template->message = $GLOBALS['TL_LANG']['MSC']['shipping_address_message'];
 
-        if (!$this->hasError())
-        {
-            $objAddress = Isotope::getCart()->getShippingAddress();
-
-            // No shipping address, use billing address
-            if ($objAddress->id == -1)
-            {
-                $strShippingAddress = (Isotope::getCart()->requiresPayment() ? $GLOBALS['TL_LANG']['MSC']['useBillingAddress'] : $GLOBALS['TL_LANG']['MSC']['useCustomerAddress']);
-
-                $this->objModule->arrOrderData['shipping_address'] = $strShippingAddress;
-                $this->objModule->arrOrderData['shipping_address_text'] = $strShippingAddress;
-            }
-            else
-            {
-                $this->objModule->arrOrderData['shipping_address'] = $objAddress->generateHtml(Isotope::getConfig()->getShippingFieldsConfig());
-                $this->objModule->arrOrderData['shipping_address_text'] = $objAddress->generateText(Isotope::getConfig()->getShippingFieldsConfig());
-            }
-        }
-
         return parent::generate();
     }
 
@@ -70,10 +52,9 @@ class ShippingAddress extends Address implements IsotopeCheckoutStep
      */
     public function review()
     {
-        $objCart = Isotope::getCart();
-        $objAddress = $objCart->getShippingAddress();
+        $objAddress = Isotope::getCart()->getShippingAddress();
 
-        if ($objAddress->id == $objCart->getBillingAddress()->id)
+        if ($objAddress->id == Isotope::getCart()->getBillingAddress()->id)
         {
             return false;
         }
@@ -84,6 +65,33 @@ class ShippingAddress extends Address implements IsotopeCheckoutStep
             'info'        => $objAddress->generateHtml(Isotope::getConfig()->getShippingFieldsConfig()),
             'edit'        => \Isotope\Module\Checkout::generateUrlForStep('address'),
         ));
+    }
+
+    /**
+     * Return array of tokens for email templates
+     * @param   IsotopeProductCollection
+     * @param   \Module
+     * @return  array
+     */
+    public function getEmailTokens(IsotopeProductCollection $objCollection, \Module $objModule)
+    {
+        $arrTokens = array();
+        $objAddress = $objCollection->getShippingAddress();
+
+        foreach ($objAddress->row() as $k => $v) {
+            $arrTokens['shipping_' . $k] = Isotope::formatValue($objAddress->getTable(), $k, $v);
+        }
+
+        // Shipping address equals billing address
+        if ($objAddress->id == $objCollection->getBillingAddress()->id) {
+            $arrTokens['shipping_address'] = ($objCollection->requiresPayment() ? $GLOBALS['TL_LANG']['MSC']['useBillingAddress'] : $GLOBALS['TL_LANG']['MSC']['useCustomerAddress']);
+            $arrTokens['shipping_address_text'] = $arrTokens['shipping_address'];
+        } else {
+            $arrTokens['shipping_address'] = $objAddress->generateHtml($objCollection->getRelated('config_id')->getShippingFieldsConfig());
+            $arrTokens['shipping_address_text'] = $objAddress->generateText($objCollection->getRelated('config_id')->getShippingFieldsConfig());
+        }
+
+        return $arrTokens;
     }
 
     /**
