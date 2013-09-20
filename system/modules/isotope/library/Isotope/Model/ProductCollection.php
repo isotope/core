@@ -108,11 +108,6 @@ abstract class ProductCollection extends TypeAgent
     {
         parent::__construct($objResult);
 
-        if ($objResult !== null) {
-            $this->blnModified = false;
-            $this->arrSettings = deserialize($this->arrData['settings'], true);
-        }
-
         // Do not use __destruct, because Database object might be destructed first (see http://github.com/contao/core/issues/2236)
         register_shutdown_function(array($this, 'saveDatabase'));
     }
@@ -483,6 +478,7 @@ abstract class ProductCollection extends TypeAgent
      */
     public function setRow(array $arrData)
     {
+        $this->blnModified = false;
         $this->arrSettings = deserialize($arrData['settings'], true);
 
         unset($arrData['settings']);
