@@ -364,31 +364,4 @@ abstract class Payment extends TypeAgent
     {
         return array();
     }
-
-
-    /**
-     * Override parent addToUrl function. Use generateFrontendUrl if we want to remove all parameters.
-     * @param string
-     * @param boolean
-     * @return string
-     */
-/*
-    protected function addToUrl($strRequest, $blnIgnoreParams=false)
-    {
-        if ($blnIgnoreParams)
-        {
-            global $objPage;
-
-            // Support for auto_item parameter
-            if ($GLOBALS['TL_CONFIG']['useAutoItem'])
-            {
-                $strRequest = str_replace('step=', '', $strRequest);
-            }
-
-            return \Controller::generateFrontendUrl($objPage->row(), '/' . str_replace(array('=', '&amp;', '&'), '/', $strRequest));
-        }
-
-        return parent::addToUrl($strRequest, $blnIgnoreParams);
-    }
-*/
 }
