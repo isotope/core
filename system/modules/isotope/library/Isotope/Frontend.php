@@ -1031,17 +1031,11 @@ window.addEvent('domready', function()
 
     /**
      * Gets the product reader of a certain page
-     * @param \Database\Result|int    page object or page ID
-     * @param int    override setting from a module or content element
-     * @return int reader page id
+     * @param   \PageModel|int  PageModel or page ID
+     * @return  int Reader page id
      */
-    public static function getReaderPageId($objOriginPage=null, $intOverride=0)
+    public static function getReaderPageId($objOriginPage=null)
     {
-        if ($intOverride > 0)
-        {
-            return (int) $intOverride;
-        }
-
         if ($objOriginPage === null)
         {
             global $objPage;
