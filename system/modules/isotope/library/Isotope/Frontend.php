@@ -932,83 +932,61 @@ window.addEvent('domready', function()
 
     /**
      * Adds the product urls to the array so they get indexed when the search index is being rebuilt in the maintenance module
-     * @param array absolute page urls
-     * @param int root page id
-     * @return array extended array of absolute page urls
+     * @param   array Absolute page urls
+     * @param   int Root page id
+     * @param   boolean True if it's a sitemap module call (= treat differently when page is protected etc.)
+     * @param   string Language
+     * @return  array Extended array of absolute page urls
      */
     public function addProductsToSearchIndex($arrPages, $intRoot=0, $blnSitemap=false, $strLanguage=null)
     {
-        $time = time();
-        $arrJump = array();
-        $arrRoot = array();
-        $strAllowedPages = '';
+        $arrRoots = array();
 
-        // if we have a root page id (sitemap.xml e.g.) we have to make sure we only consider categories in this tree
-        if ($intRoot > 0)
-        {
+        // If we have a root page id (sitemap.xml e.g.) we have to make sure we only consider categories in this tree
+        if ($intRoot > 0) {
             $arrPageIds = \Database::getInstance()->getChildRecords($intRoot, 'tl_page', false);
             $arrPageIds[] = $intRoot;
 
-            $strAllowedPages = ' AND c.page_id IN (' . implode(',', $arrPageIds) . ')';
+            $objProducts = Product::findPublishedByCategories($arrPageIds);
+            $objRoot = \PageModel::findByPk($intRoot);
+        } else {
+            $objProducts = Product::findPublished();
         }
-
-        $objProducts = \Database::getInstance()->query("
-            SELECT tl_page.*, p.id AS product_id, p.alias AS product_alias FROM tl_iso_product_categories c
-                JOIN tl_iso_products p ON p.id=c.pid
-                JOIN tl_iso_producttypes t ON t.id=p.type
-                JOIN tl_page ON tl_page.id=c.page_id
-            WHERE
-                t.class='regular'
-                AND p.language=''
-                AND p.pid=0
-                AND p.published=1
-                AND (p.start='' OR p.start<$time)
-                AND (p.stop='' OR p.stop>$time)"
-                . $strAllowedPages
-        );
 
         while ($objProducts->next())
         {
-            // Cache redirect page with a placeholder, so we only need to replace the string
-            if (!isset($arrJump[$objProducts->id]))
-            {
-                // we need the root page language if we dont have it (maintenance module)
-                $intJump = static::getReaderPageId($objProducts);
-                $objJump = null === $strLanguage ? $this->getPageDetails($intJump) : \Database::getInstance()->execute("SELECT *, '$intRoot' AS rootId FROM tl_page WHERE published=1 AND (start='' OR start<$time) AND (stop='' OR stop>$time) AND id=" . (int) $intJump);
+            $objProduct = $objProducts->current();
 
-                if ($objJump->numRows)
-                {
-                    if (!isset($arrRoot[$objJump->rootId]))
-                    {
-                        $arrRoot[$objJump->rootId] = \Database::getInstance()->execute("SELECT * FROM tl_page WHERE id=" . (int) $objJump->rootId);
+            // Do the fun for all categories
+            foreach ((array) $objProduct->getCategories() as $intPage) {
+                $intJumpTo = static::getReaderPageId($intPage);
+
+                if ($intJumpTo) {
+                    // No need to get the root page model of the page if it's restricted to one only anyway
+                    // Otherwise we need to get the root page model of the current page and for performance
+                    // reasons we cache that in an array
+                    if ($intRoot === 0) {
+                        if (!isset($arrRoot[$intJumpTo])) {
+                            $arrRoot[$intJumpTo] = \PageModel::findByPk(\PageModel::findWithDetails($intJumpTo)->rootId);
+                        }
+
+                        $objRoot = $arrRoot[$intJumpTo];
                     }
 
-                    $strDomain = Environment::get('base');
+                    // Generate the absolute URL
+                    $strDomain = \Environment::get('base');
 
                     // Overwrite the domain
-                    if ($arrRoot[$objJump->rootId]->dns != '')
-                    {
-                        $strDomain = ($arrRoot[$objJump->rootId]->useSSL ? 'https://' : 'http://') . $arrRoot[$objJump->rootId]->dns . TL_PATH . '/';
+                    if ($objRoot->dns != '') {
+                        $strDomain = ($objRoot->useSSL ? 'https://' : 'http://') . $objRoot->dns . TL_PATH . '/';
                     }
 
-                    // @todo use Product::generateUrl() here or don't we do this because of performance?
-
-                    $arrJump[$objProducts->page_id] = $strDomain . \Controller::generateFrontendUrl($objJump->row(), ($GLOBALS['TL_CONFIG']['useAutoItem'] ? '/' : '/product/') . '##alias##', ($strLanguage=='' ? $arrRoot[$objJump->rootId]->language : $strLanguage));
+                    $arrPages[] = $strDomain . $objProducts->current()->generateUrl($intJumpTo);
                 }
-                else
-                {
-                    $arrJump[$objProducts->page_id] = false;
-                }
-            }
-
-            if (false !== $arrJump[$objProducts->page_id])
-            {
-                $strAlias = $objProducts->product_alias == '' ? $objProducts->product_id : $objProducts->product_alias;
-                $arrPages[] = str_replace('##alias##', $strAlias, $arrJump[$objProducts->page_id]);
             }
         }
 
-        // the reader page id can be the same for several categories so we have to make sure we only index the product once
+        // The reader page id can be the same for several categories so we have to make sure we only index the product once
         return array_unique($arrPages);
     }
 
