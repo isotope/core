@@ -368,87 +368,87 @@ class Backend extends Contao_Backend
     {
         $arrTemplates = array();
 
-		// Get the default templates
-		foreach (\TemplateLoader::getPrefixedFiles($strPrefix) as $strTemplate) {
-			$arrTemplates[$strTemplate] = $strTemplate;
-		}
+        // Get the default templates
+        foreach (\TemplateLoader::getPrefixedFiles($strPrefix) as $strTemplate) {
+            $arrTemplates[$strTemplate] = $strTemplate;
+        }
 
-		$arrCustomized = glob(TL_ROOT . '/templates/' . $strPrefix . '*');
+        $arrCustomized = glob(TL_ROOT . '/templates/' . $strPrefix . '*');
 
-		// Add the customized templates
-		if (is_array($arrCustomized)) {
-			foreach ($arrCustomized as $strFile) {
+        // Add the customized templates
+        if (is_array($arrCustomized)) {
+            foreach ($arrCustomized as $strFile) {
 
-				$strTemplate = basename($strFile, strrchr($strFile, '.'));
+                $strTemplate = basename($strFile, strrchr($strFile, '.'));
 
-				if (!isset($arrTemplates[$strTemplate])) {
-					$arrTemplates[''][$strTemplate] = $strTemplate;
-				}
-			}
-		}
+                if (!isset($arrTemplates[$strTemplate])) {
+                    $arrTemplates[''][$strTemplate] = $strTemplate;
+                }
+            }
+        }
 
-		// Do not look for back end templates in theme folders (see #5379)
-		if ($strPrefix == 'be_') {
-			return $arrTemplates;
-		}
+        // Do not look for back end templates in theme folders (see #5379)
+        if ($strPrefix == 'be_') {
+            return $arrTemplates;
+        }
 
-		// Try to select the shop configs
-		try {
-			$objConfig = Config::findAll(array('order'=>'name'));
-		} catch (\Exception $e) {
-			$objConfig = null;
-		}
+        // Try to select the shop configs
+        try {
+            $objConfig = Config::findAll(array('order'=>'name'));
+        } catch (\Exception $e) {
+            $objConfig = null;
+        }
 
-		// Add the shop config templates
-		if (null !== $objConfig) {
-			while ($objConfig->next()) {
-				if ($objConfig->templateGroup != '') {
+        // Add the shop config templates
+        if (null !== $objConfig) {
+            while ($objConfig->next()) {
+                if ($objConfig->templateGroup != '') {
 
-    				$strFolder = sprintf($GLOBALS['TL_LANG']['MSC']['templatesConfig'], $objConfig->name);
-					$arrConfigTemplates = glob(TL_ROOT . '/' . $objConfig->templateGroup . '/' . $strPrefix . '*');
+                    $strFolder = sprintf($GLOBALS['TL_LANG']['MSC']['templatesConfig'], $objConfig->name);
+                    $arrConfigTemplates = glob(TL_ROOT . '/' . $objConfig->templateGroup . '/' . $strPrefix . '*');
 
-					if (is_array($arrConfigTemplates)) {
-						foreach ($arrConfigTemplates as $strFile) {
+                    if (is_array($arrConfigTemplates)) {
+                        foreach ($arrConfigTemplates as $strFile) {
 
-							$strTemplate = basename($strFile, strrchr($strFile, '.'));
+                            $strTemplate = basename($strFile, strrchr($strFile, '.'));
 
-							if (!isset($arrTemplates[''][$strTemplate])) {
-								$arrTemplates[$strFolder][$strTemplate] = $strTemplate;
-							}
-						}
-					}
-				}
-			}
-		}
+                            if (!isset($arrTemplates[''][$strTemplate])) {
+                                $arrTemplates[$strFolder][$strTemplate] = $strTemplate;
+                            }
+                        }
+                    }
+                }
+            }
+        }
 
-		// Try to select the themes (see #5210)
-		try {
-			$objTheme = \ThemeModel::findAll(array('order'=>'name'));
-		} catch (\Exception $e) {
-			$objTheme = null;
-		}
+        // Try to select the themes (see #5210)
+        try {
+            $objTheme = \ThemeModel::findAll(array('order'=>'name'));
+        } catch (\Exception $e) {
+            $objTheme = null;
+        }
 
-		// Add the theme templates
-		if (null !== $objTheme) {
-			while ($objTheme->next()) {
-				if ($objTheme->templates != '') {
+        // Add the theme templates
+        if (null !== $objTheme) {
+            while ($objTheme->next()) {
+                if ($objTheme->templates != '') {
 
-    				$strFolder = sprintf($GLOBALS['TL_LANG']['MSC']['templatesTheme'], $objTheme->name);
-					$arrThemeTemplates = glob(TL_ROOT . '/' . $objTheme->templates . '/' . $strPrefix . '*');
+                    $strFolder = sprintf($GLOBALS['TL_LANG']['MSC']['templatesTheme'], $objTheme->name);
+                    $arrThemeTemplates = glob(TL_ROOT . '/' . $objTheme->templates . '/' . $strPrefix . '*');
 
-					if (is_array($arrThemeTemplates)) {
-						foreach ($arrThemeTemplates as $strFile) {
+                    if (is_array($arrThemeTemplates)) {
+                        foreach ($arrThemeTemplates as $strFile) {
 
-							$strTemplate = basename($strFile, strrchr($strFile, '.'));
+                            $strTemplate = basename($strFile, strrchr($strFile, '.'));
 
-							if (!isset($arrTemplates[''][$strTemplate])) {
-								$arrTemplates[$strFolder][$strTemplate] = $strTemplate;
-							}
-						}
-					}
-				}
-			}
-		}
+                            if (!isset($arrTemplates[''][$strTemplate])) {
+                                $arrTemplates[$strFolder][$strTemplate] = $strTemplate;
+                            }
+                        }
+                    }
+                }
+            }
+        }
 
         return $arrTemplates;
     }
@@ -605,94 +605,94 @@ class Backend extends Contao_Backend
      */
     public static function generateGroupsBreadcrumb($intId, $intProductId=null)
     {
-		$arrGroups = array();
-		$objSession = \Session::getInstance();
+        $arrGroups = array();
+        $objSession = \Session::getInstance();
 
-		// Set a new gid
-		if (isset($_GET['gid']))
-		{
-			$objSession->set('iso_products_gid', \Input::get('gid'));
-			\Controller::redirect(preg_replace('/&gid=[^&]*/', '', \Environment::get('request')));
-		}
+        // Set a new gid
+        if (isset($_GET['gid']))
+        {
+            $objSession->set('iso_products_gid', \Input::get('gid'));
+            \Controller::redirect(preg_replace('/&gid=[^&]*/', '', \Environment::get('request')));
+        }
 
-		// Return if there is no trail
-		if (!$objSession->get('iso_products_gid') && !$intProductId)
-		{
-			return '';
-		}
+        // Return if there is no trail
+        if (!$objSession->get('iso_products_gid') && !$intProductId)
+        {
+            return '';
+        }
 
-		// Include the product in variants view
-		if ($intProductId)
-		{
-			$objProduct = \Database::getInstance()->prepare("SELECT gid, name FROM tl_iso_products WHERE id=?")
-												  ->limit(1)
-												  ->execute($intProductId);
+        // Include the product in variants view
+        if ($intProductId)
+        {
+            $objProduct = \Database::getInstance()->prepare("SELECT gid, name FROM tl_iso_products WHERE id=?")
+                                                  ->limit(1)
+                                                  ->execute($intProductId);
 
-			if ($objProduct->numRows)
-			{
-				$arrGroups[] = array('id'=>$intProductId, 'name'=>$objProduct->name);
+            if ($objProduct->numRows)
+            {
+                $arrGroups[] = array('id'=>$intProductId, 'name'=>$objProduct->name);
 
-				// Override the group ID
-				$intId = $objProduct->gid;
-			}
-		}
+                // Override the group ID
+                $intId = $objProduct->gid;
+            }
+        }
 
-		$intPid = $intId;
+        $intPid = $intId;
 
-		// Generate groups
-		do
-		{
-			$objGroup = \Database::getInstance()->prepare("SELECT id, pid, name FROM tl_iso_groups WHERE id=?")
-												->limit(1)
-												->execute($intPid);
+        // Generate groups
+        do
+        {
+            $objGroup = \Database::getInstance()->prepare("SELECT id, pid, name FROM tl_iso_groups WHERE id=?")
+                                                ->limit(1)
+                                                ->execute($intPid);
 
-			if ($objGroup->numRows)
-			{
-				$arrGroups[] = array('id'=>$objGroup->id, 'name'=>$objGroup->name);
+            if ($objGroup->numRows)
+            {
+                $arrGroups[] = array('id'=>$objGroup->id, 'name'=>$objGroup->name);
 
-				if ($objGroup->pid)
-				{
-					$intPid = $objGroup->pid;
-				}
-			}
-		}
-		while ($objGroup->pid);
+                if ($objGroup->pid)
+                {
+                    $intPid = $objGroup->pid;
+                }
+            }
+        }
+        while ($objGroup->pid);
 
-		$arrLinks = array();
-		$strUrl = \Environment::get('request');
+        $arrLinks = array();
+        $strUrl = \Environment::get('request');
 
-		// Remove the product ID from URL
-		if ($intProductId)
-		{
-			$strUrl = preg_replace('/&id=[^&]*/', '', $strUrl);
-		}
+        // Remove the product ID from URL
+        if ($intProductId)
+        {
+            $strUrl = preg_replace('/&id=[^&]*/', '', $strUrl);
+        }
 
-		// Generate breadcrumb trail
-		foreach ($arrGroups as $arrGroup)
-		{
-			if (!$arrGroup['id'])
-			{
-				continue;
-			}
+        // Generate breadcrumb trail
+        foreach ($arrGroups as $arrGroup)
+        {
+            if (!$arrGroup['id'])
+            {
+                continue;
+            }
 
-			$buffer = '';
+            $buffer = '';
 
-			// No link for the active group
-			if ((!$intProductId && $intId == $arrGroup['id']) || ($intProductId && $intProductId == $arrGroup['id']))
-			{
-				$buffer .= $arrGroup['name'];
-			}
-			else
-			{
-				$buffer .= '<a href="' . ampersand($strUrl) . '&amp;gid='.$arrGroup['id'] . '" title="'.specialchars($GLOBALS['TL_LANG']['MSC']['selectGroup']).'">' . $arrGroup['name'] . '</a>';
-			}
+            // No link for the active group
+            if ((!$intProductId && $intId == $arrGroup['id']) || ($intProductId && $intProductId == $arrGroup['id']))
+            {
+                $buffer .= $arrGroup['name'];
+            }
+            else
+            {
+                $buffer .= '<a href="' . ampersand($strUrl) . '&amp;gid='.$arrGroup['id'] . '" title="'.specialchars($GLOBALS['TL_LANG']['MSC']['selectGroup']).'">' . $arrGroup['name'] . '</a>';
+            }
 
-			$arrLinks[] = $buffer;
-		}
+            $arrLinks[] = $buffer;
+        }
 
-		$arrLinks[] = sprintf('<a href="%s" title="'.specialchars($GLOBALS['TL_LANG']['MSC']['allGroups']).'"><img src="system/modules/isotope/assets/folders.png" width="16" height="16" alt="" style="margin-right:6px;"> %s</a>', ampersand($strUrl) . '&amp;gid=0', $GLOBALS['TL_LANG']['MSC']['filterAll']);
+        $arrLinks[] = sprintf('<a href="%s" title="'.specialchars($GLOBALS['TL_LANG']['MSC']['allGroups']).'"><img src="system/modules/isotope/assets/folders.png" width="16" height="16" alt="" style="margin-right:6px;"> %s</a>', ampersand($strUrl) . '&amp;gid=0', $GLOBALS['TL_LANG']['MSC']['filterAll']);
 
-		return '
+        return '
 <ul id="tl_breadcrumb">
   <li>' . implode(' &gt; </li><li>', array_reverse($arrLinks)) . '</li>
 </ul>';
@@ -747,59 +747,59 @@ class Backend extends Contao_Backend
             // Toggle nodes of the group tree
             case 'toggleProductGroupTree':
                 $this->strAjaxId = preg_replace('/.*_([0-9a-zA-Z]+)$/', '$1', \Input::post('id'));
-				$this->strAjaxKey = str_replace('_' . $this->strAjaxId, '', \Input::post('id'));
+                $this->strAjaxKey = str_replace('_' . $this->strAjaxId, '', \Input::post('id'));
 
-				if (\Input::get('act') == 'editAll')
-				{
-					$this->strAjaxKey = preg_replace('/(.*)_[0-9a-zA-Z]+$/', '$1', $this->strAjaxKey);
-					$this->strAjaxName = preg_replace('/.*_([0-9a-zA-Z]+)$/', '$1', \Input::post('name'));
-				}
+                if (\Input::get('act') == 'editAll')
+                {
+                    $this->strAjaxKey = preg_replace('/(.*)_[0-9a-zA-Z]+$/', '$1', $this->strAjaxKey);
+                    $this->strAjaxName = preg_replace('/.*_([0-9a-zA-Z]+)$/', '$1', \Input::post('name'));
+                }
 
-				$nodes = $this->Session->get($this->strAjaxKey);
-				$nodes[$this->strAjaxId] = intval(\Input::post('state'));
-				$this->Session->set($this->strAjaxKey, $nodes);
-				exit; break;
+                $nodes = $this->Session->get($this->strAjaxKey);
+                $nodes[$this->strAjaxId] = intval(\Input::post('state'));
+                $this->Session->set($this->strAjaxKey, $nodes);
+                exit; break;
 
             // Load nodes of the group tree
             case 'loadProductGroupTree':
-				$this->strAjaxId = preg_replace('/.*_([0-9a-zA-Z]+)$/', '$1', \Input::post('id'));
-				$this->strAjaxKey = str_replace('_' . $this->strAjaxId, '', \Input::post('id'));
+                $this->strAjaxId = preg_replace('/.*_([0-9a-zA-Z]+)$/', '$1', \Input::post('id'));
+                $this->strAjaxKey = str_replace('_' . $this->strAjaxId, '', \Input::post('id'));
 
-				if (\Input::get('act') == 'editAll')
-				{
-					$this->strAjaxKey = preg_replace('/(.*)_[0-9a-zA-Z]+$/', '$1', $this->strAjaxKey);
-					$this->strAjaxName = preg_replace('/.*_([0-9a-zA-Z]+)$/', '$1', \Input::post('name'));
-				}
+                if (\Input::get('act') == 'editAll')
+                {
+                    $this->strAjaxKey = preg_replace('/(.*)_[0-9a-zA-Z]+$/', '$1', $this->strAjaxKey);
+                    $this->strAjaxName = preg_replace('/.*_([0-9a-zA-Z]+)$/', '$1', \Input::post('name'));
+                }
 
-				$nodes = $this->Session->get($this->strAjaxKey);
-				$nodes[$this->strAjaxId] = intval(\Input::post('state'));
-				$this->Session->set($this->strAjaxKey, $nodes);
-				break;
+                $nodes = $this->Session->get($this->strAjaxKey);
+                $nodes[$this->strAjaxId] = intval(\Input::post('state'));
+                $this->Session->set($this->strAjaxKey, $nodes);
+                break;
 
-			// Move the product
-			case 'moveProduct':
-				$this->Session->set('iso_products_gid', intval(\Input::post('value')));
-				\Controller::redirect(html_entity_decode(\Input::post('redirect')));
-				break;
+            // Move the product
+            case 'moveProduct':
+                $this->Session->set('iso_products_gid', intval(\Input::post('value')));
+                \Controller::redirect(html_entity_decode(\Input::post('redirect')));
+                break;
 
-			// Move multiple products
-			case 'moveProducts':
-				$this->Session->set('iso_products_gid', intval(\Input::post('value')));
-				exit; break;
+            // Move multiple products
+            case 'moveProducts':
+                $this->Session->set('iso_products_gid', intval(\Input::post('value')));
+                exit; break;
 
-			// Filter the groups
-			case 'filterGroups':
-				$this->Session->set('iso_products_gid', intval(\Input::post('value')));
-				$this->reload();
-				break;
+            // Filter the groups
+            case 'filterGroups':
+                $this->Session->set('iso_products_gid', intval(\Input::post('value')));
+                $this->reload();
+                break;
 
-			// Filter the pages
-			case 'filterPages':
-			    $filter = $this->Session->get('filter');
-				$filter['tl_iso_products']['iso_pages'] = array_map('intval', (array) \Input::post('value'));
-				$this->Session->set('filter', $filter);
-				$this->reload();
-				break;
+            // Filter the pages
+            case 'filterPages':
+                $filter = $this->Session->get('filter');
+                $filter['tl_iso_products']['iso_pages'] = array_map('intval', (array) \Input::post('value'));
+                $this->Session->set('filter', $filter);
+                $this->reload();
+                break;
         }
     }
 
@@ -812,33 +812,33 @@ class Backend extends Contao_Backend
      */
     public function executePostActions($action, $dc)
     {
-    	switch ($action)
-    	{
-    		case 'loadProductTree':
-	            $arrData['strTable'] = $dc->table;
-	            $arrData['id'] = strlen($this->strAjaxName) ? $this->strAjaxName : $dc->id;
-	            $arrData['name'] = \Input::post('name');
+        switch ($action)
+        {
+            case 'loadProductTree':
+                $arrData['strTable'] = $dc->table;
+                $arrData['id'] = strlen($this->strAjaxName) ? $this->strAjaxName : $dc->id;
+                $arrData['name'] = \Input::post('name');
 
-	            $this->loadDataContainer($dc->table);
-	            $arrData = array_merge($GLOBALS['TL_DCA'][$dc->table]['fields'][$arrData['name']]['eval'], $arrData);
+                $this->loadDataContainer($dc->table);
+                $arrData = array_merge($GLOBALS['TL_DCA'][$dc->table]['fields'][$arrData['name']]['eval'], $arrData);
 
-	            $objWidget = new $GLOBALS['BE_FFL']['productTree']($arrData, $dc);
+                $objWidget = new $GLOBALS['BE_FFL']['productTree']($arrData, $dc);
 
-	            echo json_encode(array
-	            (
-	                'content' => $objWidget->generateAjax($this->strAjaxId, \Input::post('field'), intval(\Input::post('level'))),
-	                'token'   => REQUEST_TOKEN
-	            ));
-	            exit;
+                echo json_encode(array
+                (
+                    'content' => $objWidget->generateAjax($this->strAjaxId, \Input::post('field'), intval(\Input::post('level'))),
+                    'token'   => REQUEST_TOKEN
+                ));
+                exit;
 
-    		case 'loadProductGroupTree':
-	            $arrData['strTable'] = $dc->table;
-	            $arrData['id'] = strlen($this->strAjaxName) ? $this->strAjaxName : $dc->id;
-	            $arrData['name'] = \Input::post('name');
+            case 'loadProductGroupTree':
+                $arrData['strTable'] = $dc->table;
+                $arrData['id'] = strlen($this->strAjaxName) ? $this->strAjaxName : $dc->id;
+                $arrData['name'] = \Input::post('name');
 
-	            $objWidget = new $GLOBALS['BE_FFL']['productGroupSelector']($arrData, $dc);
-	            echo $objWidget->generateAjax($this->strAjaxId, \Input::post('field'), intval(\Input::post('level')));
-	            exit;
+                $objWidget = new $GLOBALS['BE_FFL']['productGroupSelector']($arrData, $dc);
+                echo $objWidget->generateAjax($this->strAjaxId, \Input::post('field'), intval(\Input::post('level')));
+                exit;
         }
     }
 
@@ -882,9 +882,9 @@ class Backend extends Contao_Backend
      */
     public function adjustGroupsManager($objTemplate)
     {
-	    if (\Input::get('popup') && \Input::get('do') == 'iso_products' && \Input::get('table') == 'tl_iso_groups' && $objTemplate->getName() == 'be_main') {
-		    $objTemplate->managerHref = ampersand($this->Session->get('groupPickerRef'));
-		    $objTemplate->manager = $GLOBALS['TL_LANG']['MSC']['groupPickerHome'];
-	    }
+        if (\Input::get('popup') && \Input::get('do') == 'iso_products' && \Input::get('table') == 'tl_iso_groups' && $objTemplate->getName() == 'be_main') {
+            $objTemplate->managerHref = ampersand($this->Session->get('groupPickerRef'));
+            $objTemplate->manager = $GLOBALS['TL_LANG']['MSC']['groupPickerHome'];
+        }
     }
 }

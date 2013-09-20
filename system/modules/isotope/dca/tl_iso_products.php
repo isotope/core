@@ -86,8 +86,8 @@ $GLOBALS['TL_DCA']['tl_iso_products'] = array
             'paste_button_callback' => array('Isotope\PasteProductButton', 'generate'),
             'panel_callback'        => array
             (
-            	'iso_buttons' => array('Isotope\ProductCallbacks', 'generateFilterButtons'),
-            	'iso_filter'  => array('Isotope\ProductCallbacks', 'generateAdvancedFilters')
+                'iso_buttons' => array('Isotope\ProductCallbacks', 'generateFilterButtons'),
+                'iso_filter'  => array('Isotope\ProductCallbacks', 'generateAdvancedFilters')
             )
         ),
         'label' => array
@@ -557,6 +557,6 @@ $GLOBALS['TL_DCA']['tl_iso_products'] = array
  */
 if (\Input::get('id'))
 {
-	$GLOBALS['TL_DCA']['tl_iso_products']['list']['global_operations']['new_product']['label'] = &$GLOBALS['TL_LANG']['tl_iso_products']['new_variant'];
-	$GLOBALS['TL_DCA']['tl_iso_products']['list']['global_operations']['new_product']['href'] = 'act=create&mode=2&type=variant&pid=' . \Input::get('id') . '&gid=' . $this->Session->get('iso_products_gid');
+    $GLOBALS['TL_DCA']['tl_iso_products']['list']['global_operations']['new_product']['label'] = &$GLOBALS['TL_LANG']['tl_iso_products']['new_variant'];
+    $GLOBALS['TL_DCA']['tl_iso_products']['list']['global_operations']['new_product']['href'] = 'act=create&mode=2&type=variant&pid=' . \Input::get('id') . '&gid=' . $this->Session->get('iso_products_gid');
 }

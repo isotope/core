@@ -357,12 +357,12 @@ class tl_iso_products extends \Backend
      */
     public function copyIcon($row, $href, $label, $title, $icon, $attributes)
     {
-    	if ($row['pid'] > 0)
-    	{
-	    	return '<a href="'.preg_replace('/&(amp;)?id=[^& ]*/i', '', ampersand(\Environment::get('request'))).'&amp;act=paste&amp;mode=copy&amp;table=tl_iso_products&amp;id='.$row['id'].'&amp;pid='.\Input::get('id').'" title="'.specialchars($title).'"'.$attributes.' onclick="Backend.getScrollOffset();">'.\Image::getHtml($icon, $label).'</a> ';
-    	}
+        if ($row['pid'] > 0)
+        {
+            return '<a href="'.preg_replace('/&(amp;)?id=[^& ]*/i', '', ampersand(\Environment::get('request'))).'&amp;act=paste&amp;mode=copy&amp;table=tl_iso_products&amp;id='.$row['id'].'&amp;pid='.\Input::get('id').'" title="'.specialchars($title).'"'.$attributes.' onclick="Backend.getScrollOffset();">'.\Image::getHtml($icon, $label).'</a> ';
+        }
 
-    	return '<a href="'.$this->addToUrl($href.'&amp;id='.$row['id']).'" title="'.specialchars($title).'"'.$attributes.'>'.\Image::getHtml($icon, $label).'</a> ';
+        return '<a href="'.$this->addToUrl($href.'&amp;id='.$row['id']).'" title="'.specialchars($title).'"'.$attributes.'>'.\Image::getHtml($icon, $label).'</a> ';
     }
 
 
@@ -379,14 +379,11 @@ class tl_iso_products extends \Backend
      */
     public function cutIcon($row, $href, $label, $title, $icon, $attributes)
     {
-    	if ($row['pid'] > 0)
-    	{
-	    	return '<a href="'.preg_replace('/&(amp;)?id=[^& ]*/i', '', ampersand(\Environment::get('request'))).'&amp;act=paste&amp;mode=cut&amp;table=tl_iso_products&amp;id='.$row['id'].'&amp;pid='.\Input::get('id').'" title="'.specialchars($title).'"'.$attributes.' onclick="Backend.getScrollOffset();">'.\Image::getHtml($icon, $label).'</a> ';
-    	}
-    	else
-    	{
-	    	return '<a href="system/modules/isotope/public/group.php?do='.\Input::get('do').'&amp;table=tl_iso_groups&amp;field=gid&amp;value='.$row['gid'].'" title="'.specialchars($title).'"'.$attributes.' onclick="Backend.getScrollOffset();Isotope.openModalGroupSelector({\'width\':765,\'title\':\''.specialchars($GLOBALS['TL_LANG']['tl_iso_products']['product_groups'][0]).'\',\'url\':this.href,\'action\':\'moveProduct\',\'redirect\':\''.$this->addToUrl($href . '&pid=' . intval(\Input::get('pid')) . '&id=' . $row['id']).'\'});return false">'.\Image::getHtml($icon, $label).'</a> ';
-    	}
+        if ($row['pid'] > 0) {
+            return '<a href="'.preg_replace('/&(amp;)?id=[^& ]*/i', '', ampersand(\Environment::get('request'))).'&amp;act=paste&amp;mode=cut&amp;table=tl_iso_products&amp;id='.$row['id'].'&amp;pid='.\Input::get('id').'" title="'.specialchars($title).'"'.$attributes.' onclick="Backend.getScrollOffset();">'.\Image::getHtml($icon, $label).'</a> ';
+        } else {
+            return '<a href="system/modules/isotope/public/group.php?do='.\Input::get('do').'&amp;table=tl_iso_groups&amp;field=gid&amp;value='.$row['gid'].'" title="'.specialchars($title).'"'.$attributes.' onclick="Backend.getScrollOffset();Isotope.openModalGroupSelector({\'width\':765,\'title\':\''.specialchars($GLOBALS['TL_LANG']['tl_iso_products']['product_groups'][0]).'\',\'url\':this.href,\'action\':\'moveProduct\',\'redirect\':\''.$this->addToUrl($href . '&pid=' . intval(\Input::get('pid')) . '&id=' . $row['id']).'\'});return false">'.\Image::getHtml($icon, $label).'</a> ';
+        }
     }
 
     /**
@@ -401,7 +398,7 @@ class tl_iso_products extends \Backend
      */
     public function deleteButton($row, $href, $label, $title, $icon, $attributes)
     {
-    	if (ProductCollectionItem::countBy(array("product_id IN (SELECT id FROM tl_iso_products WHERE id=? OR (pid=? AND language=''))"), array($row['id'], $row['id'])) > 0) {
+        if (ProductCollectionItem::countBy(array("product_id IN (SELECT id FROM tl_iso_products WHERE id=? OR (pid=? AND language=''))"), array($row['id'], $row['id'])) > 0) {
             return \Image::getHtml(preg_replace('/\.gif$/i', '_.gif', $icon)).' ';
         }
 
@@ -421,11 +418,11 @@ class tl_iso_products extends \Backend
      */
     public function toggleIcon($row, $href, $label, $title, $icon, $attributes)
     {
-		if (strlen(\Input::get('tid')))
-		{
-			$this->toggleVisibility(\Input::get('tid'), (\Input::get('state') == 1));
-			\Controller::redirect($this->getReferer());
-		}
+        if (strlen(\Input::get('tid')))
+        {
+            $this->toggleVisibility(\Input::get('tid'), (\Input::get('state') == 1));
+            \Controller::redirect($this->getReferer());
+        }
 
         // Check permissions AFTER checking the tid, so hacking attempts are logged
         if (!$this->User->isAdmin && !$this->User->hasAccess('tl_iso_products::published', 'alexf'))
