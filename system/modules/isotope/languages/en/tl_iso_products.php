@@ -77,6 +77,7 @@ $GLOBALS['TL_LANG']['tl_iso_products']['filter_new_month']          = 'Added thi
 $GLOBALS['TL_LANG']['tl_iso_products']['groups']                    = array('Product groups', 'Manage product groups');
 $GLOBALS['TL_LANG']['tl_iso_products']['import']                    = array('Import assets', 'Import images and other media from a folder');
 $GLOBALS['TL_LANG']['tl_iso_products']['prices']                    = array('Manage prices', 'Click the button to manage advanced prices for this product.');
+$GLOBALS['TL_LANG']['tl_iso_products']['prices']['apply_and_close'] = 'Apply and close';
 $GLOBALS['TL_LANG']['tl_iso_products']['variants']                  = array('Product variants', 'Show variants for product ID %s');
 $GLOBALS['TL_LANG']['tl_iso_products']['generate']                  = array('Generate variants', 'Generate variants for product ID %s');
 $GLOBALS['TL_LANG']['tl_iso_products']['related']                   = array('Related products', 'Manage related products for product ID %s');

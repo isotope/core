@@ -401,7 +401,12 @@ $GLOBALS['TL_DCA']['tl_iso_products'] = array
             'inputType'             => 'dcaWizard',
             'foreignTable'          => 'tl_iso_prices',
             'attributes'            => array('systemColumn'=>true),
-            'eval'                  => array('listCallback'=>array('Isotope\tl_iso_prices', 'generateWizardList'), 'tl_class'=>'clr'),
+            'eval'                  => array
+            (
+                'listCallback'      => array('Isotope\tl_iso_prices', 'generateWizardList'),
+                'applyButtonLabel'  => &$GLOBALS['TL_LANG']['tl_iso_products']['prices']['apply_and_close'],
+                'tl_class'          =>'clr'
+            ),
         ),
         'price_tiers' => array
         (
