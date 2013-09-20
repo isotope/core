@@ -314,14 +314,13 @@ class Checkout extends Module
      */
     protected function writeOrder()
     {
-        $objCart = Isotope::getCart();
-        $objOrder = Order::findOneBy('source_collection_id', $objCart->id);
+        $objOrder = Order::findOneBy('source_collection_id', Isotope::getCart()->id);
 
         if (null === $objOrder) {
             $objOrder = new Order();
         }
 
-        $objOrder->setSourceCollection($objCart);
+        $objOrder->setSourceCollection(Isotope::getCart());
 
         $objOrder->checkout_info        = $this->getCheckoutInfo();
         $objOrder->iso_sales_email      = $this->iso_sales_email ? $this->iso_sales_email : (($GLOBALS['TL_ADMIN_NAME'] != '') ? sprintf('%s <%s>', $GLOBALS['TL_ADMIN_NAME'], $GLOBALS['TL_ADMIN_EMAIL']) : $GLOBALS['TL_ADMIN_EMAIL']);
