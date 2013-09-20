@@ -10,53 +10,21 @@
  * @license    http://opensource.org/licenses/lgpl-3.0.html LGPL
  */
 
+namespace Isotope\Model\Payment;
+
+use Isotope\Isotope;
+use Isotope\Interfaces\IsotopePayment;
+use Isotope\Model\Payment;
+use Isotope\Model\ProductCollection\Order;
+
 
 /**
  * Isotope payment method for www.worldpay.com
  * @copyright  Isotope eCommerce Workgroup 2009-2012
  * @author     Andreas Schempp <andreas.schempp@terminal42.ch>
  */
-class PaymentWorldpay extends IsotopePayment
+class Worldpay extends Postsale implements IsotopePayment
 {
-
-    /**
-     * processPayment function.
-     *
-     * @access public
-     * @return void
-     */
-    public function processPayment()
-    {
-        $objOrder = new IsotopeOrder();
-
-        if (!$objOrder->findBy('cart_id', $this->Isotope->Cart->id))
-        {
-            return false;
-        }
-
-        if ($objOrder->date_paid > 0 && $objOrder->date_paid <= time())
-        {
-            IsotopeFrontend::clearTimeout();
-            return true;
-        }
-
-        if (IsotopeFrontend::setTimeout())
-        {
-            // Do not index or cache the page
-            global $objPage;
-            $objPage->noSearch = 1;
-            $objPage->cache = 0;
-
-            $objTemplate = new FrontendTemplate('mod_message');
-            $objTemplate->type = 'processing';
-            $objTemplate->message = $GLOBALS['TL_LANG']['MSC']['payment_processing'];
-            return $objTemplate->parse();
-        }
-
-        $this->log('Payment could not be processed.', __METHOD__, TL_ERROR);
-        $this->redirect($this->addToUrl('step=failed', true));
-    }
-
 
     /**
      * Process PayPal Instant Payment Notifications (IPN)

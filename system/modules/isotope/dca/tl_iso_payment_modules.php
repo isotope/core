@@ -133,6 +133,7 @@ $GLOBALS['TL_DCA']['tl_iso_payment_modules'] = array
         'saferpay'                  => '{type_legend},name,label,type;{note_legend:hide},note;{config_legend},new_order_status,minimum_total,maximum_total,countries,shipping_modules,product_types;{gateway_legend},saferpay_accountid,trans_type,saferpay_description,saferpay_vtconfig;{price_legend:hide},price,tax_class;{enabled_legend},enabled',
         'expercash'                 => '{type_legend},name,label,type;{note_legend:hide},note;{config_legend},new_order_status,minimum_total,maximum_total,countries,shipping_modules,product_types;{gateway_legend},expercash_popupId,expercash_profile,expercash_popupKey,expercash_paymentMethod;{price_legend:hide},price,tax_class;{template_legend},expercash_css;{expert_legend:hide},guests,protected;{enabled_legend},enabled',
         'payone'                    => '{type_legend},name,label,type;{note_legend:hide},note;{config_legend},new_order_status,minimum_total,maximum_total,countries,shipping_modules,product_types;{gateway_legend},trans_type,payone_clearingtype,payone_aid,payone_portalid,payone_key;{price_legend:hide},price,tax_class;{enabled_legend},debug,enabled',
+        'worldpay'                  => '{type_legend},name,label,type;{note_legend:hide},note;{config_legend},new_order_status,minimum_total,maximum_total,countries,shipping_modules,product_types;{gateway_legend},worldpay_instId,worldpay_callbackPW,worldpay_signatureFields,worldpay_md5secret,worldpay_description;{price_legend:hide},price,tax_class;{expert_legend:hide},guests,protected;{enabled_legend},debug,enabled',
     ),
 
     // Subpalettes
@@ -486,6 +487,47 @@ $GLOBALS['TL_DCA']['tl_iso_payment_modules'] = array
             'inputType'             => 'text',
             'eval'                  => array('mandatory'=>true, 'maxlength'=>255, 'tl_class'=>'w50'),
             'sql'                   => "varchar(255) NOT NULL default ''"
+        ),
+        'worldpay_instId' => array
+        (
+            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_payment_modules']['worldpay_instId'],
+            'exclude'               => true,
+            'inputType'             => 'text',
+            'eval'                  => array('mandatory'=>true, 'maxlength'=>6, 'rgxp'=>'digit', 'tl_class'=>'w50'),
+            'sql'                   => "int(6) NOT NULL default '0'",
+        ),
+        'worldpay_callbackPW' => array
+        (
+            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_payment_modules']['worldpay_callbackPW'],
+            'exclude'               => true,
+            'inputType'             => 'text',
+            'eval'                  => array('mandatory'=>true, 'maxlength'=>64, 'hideInput'=>true, 'tl_class'=>'w50'),
+            'sql'                   => "varchar(64) NOT NULL default ''",
+        ),
+        'worldpay_signatureFields' => array
+        (
+            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_payment_modules']['worldpay_signatureFields'],
+            'exclude'               => true,
+            'default'               => 'instId:cartId:amount:currency',
+            'inputType'             => 'text',
+            'eval'                  => array('mandatory'=>true, 'maxlength'=>255, 'tl_class'=>'w50'),
+            'sql'                   => "varchar(255) NOT NULL default ''",
+        ),
+        'worldpay_md5secret' => array
+        (
+            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_payment_modules']['worldpay_md5secret'],
+            'exclude'               => true,
+            'inputType'             => 'text',
+            'eval'                  => array('mandatory'=>true, 'maxlength'=>64, 'hideInput'=>true, 'tl_class'=>'w50'),
+            'sql'                   => "varchar(255) NOT NULL default ''",
+        ),
+        'worldpay_description' => array
+        (
+            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_payment_modules']['worldpay_description'],
+            'exclude'               => true,
+            'inputType'             => 'text',
+            'eval'                  => array('mandatory'=>true, 'maxlength'=>255, 'tl_class'=>'clr long'),
+            'sql'                   => "varchar(255) NOT NULL default ''",
         ),
         'requireCCV' => array
         (

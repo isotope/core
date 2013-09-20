@@ -61,6 +61,11 @@ $GLOBALS['TL_LANG']['tl_iso_payment_modules']['payone_clearingtype']            
 $GLOBALS['TL_LANG']['tl_iso_payment_modules']['payone_aid']                             = array('PAYONE Account-ID', 'Please enter your unique PAYONE account ID.');
 $GLOBALS['TL_LANG']['tl_iso_payment_modules']['payone_portalid']                        = array('PAYONE Portal-ID', 'Please enter your unique PAYONE portal ID.');
 $GLOBALS['TL_LANG']['tl_iso_payment_modules']['payone_key']                             = array('Secret key', 'Enter the secret key you specified for this portal.');
+$GLOBALS['TL_LANG']['tl_iso_payment_modules']['worldpay_instId']                        = array('Installation ID', 'Please enter your WorldPay Installation ID');
+$GLOBALS['TL_LANG']['tl_iso_payment_modules']['worldpay_callbackPW']                    = array('Transaction Password', 'Enter the same transaction password as in your WorldPay configuration.');
+$GLOBALS['TL_LANG']['tl_iso_payment_modules']['worldpay_signatureFields']               = array('SignatureFields', 'Enter the same SignatureField value as in your WorldPay configuration.');
+$GLOBALS['TL_LANG']['tl_iso_payment_modules']['worldpay_md5secret']                     = array('MD5 Secret', 'Enter the same MD5 secret value as in your WorldPay configuration.');
+$GLOBALS['TL_LANG']['tl_iso_payment_modules']['worldpay_description']                   = array('Description', 'Enter a description for your store. It will be shown to the customer on the worldpay checkout process.');
 $GLOBALS['TL_LANG']['tl_iso_payment_modules']['groups']                                 = array('Member groups', 'Restrict this payment method to certain member groups.');
 $GLOBALS['TL_LANG']['tl_iso_payment_modules']['protected']                              = array('Protect payment method', 'Show the payment method to certain member groups only.');
 $GLOBALS['TL_LANG']['tl_iso_payment_modules']['guests']                                 = array('Show to guests only', 'Hide the payment method if a member is logged in.');
