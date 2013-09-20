@@ -13,8 +13,8 @@
 namespace Isotope\Model\Payment;
 
 use Isotope\Isotope;
+use Isotope\Translation;
 use Isotope\Interfaces\IsotopePayment;
-use Isotope\Model\Payment;
 use Isotope\Model\ProductCollection\Order;
 
 
@@ -27,48 +27,46 @@ class Worldpay extends Postsale implements IsotopePayment
 {
 
     /**
-     * Process PayPal Instant Payment Notifications (IPN)
-     *
+     * Process Instant Payment Notifications (IPN)
      * @access public
      * @return void
      */
     public function processPostSale()
     {
-        if ($this->Input->post('instId') != $this->worldpay_instId) {
-            $this->log('Installation ID does not match', __METHOD__, TL_ERROR);
+        if (\Input::post('instId') != $this->worldpay_instId) {
+            \System::log('Installation ID does not match', __METHOD__, TL_ERROR);
             $this->postsaleError();
         }
 
-        $objOrder = new IsotopeOrder();
-
-        if (!$objOrder->findBy('cart_id', $this->Input->post('cartId'))) {
-            $this->log('Order ID "' . $this->Input->post('cartId') . '" not found', __METHOD__, TL_ERROR);
+        if (($objOrder = Order::findOneBy('cart_id', \Input::post('cartId'))) === null) {
+            \System::log('Order ID "' . \Input::post('cartId') . '" not found', __METHOD__, TL_ERROR);
             $this->postsaleError();
         }
 
         // Validate payment data
         if (
-            $objOrder->currency != $this->Input->post('currency') ||
-            $objOrder->grandTotal != $this->Input->post('amount') ||
-            $this->worldpay_callbackPW != $this->Input->post('callbackPW') ||
-            (!$this->debug && $this->Input->post('testMode') == '100')
+            $objOrder->currency != \Input::post('currency') ||
+            $objOrder->getTotal() != \Input::post('amount') ||
+            $this->worldpay_callbackPW != \Input::post('callbackPW') ||
+            (!$this->debug && \Input::post('testMode') == '100')
         ) {
-            $this->log('Data manipulation in payment from "' . $this->Input->post('email') . '" !', __METHOD__, TL_ERROR);
+            \System::log('Data manipulation in payment from "' . \Input::post('email') . '" !', __METHOD__, TL_ERROR);
             $this->postsaleError();
         }
 
         // Order status cancelled and order not yet completed, do nothing
-        if ($this->Input->post('transStatus') != 'Y' && $objOrder->status == 0) {
+        if (\Input::post('transStatus') != 'Y' && $objOrder->status == 0) {
             $this->postsaleError();
         }
 
-        if ($this->Input->post('transStatus') == 'Y') {
+        if (\Input::post('transStatus') == 'Y') {
             if (!$objOrder->checkout()) {
-                $this->log('Checkout for Order ID "' . $objOrder->id . '" failed', __METHOD__, TL_ERROR);
+                \System::log('Checkout for Order ID "' . $objOrder->id . '" failed', __METHOD__, TL_ERROR);
                 $this->postsaleError();
             }
 
             $objOrder->date_paid = time();
+            $objOrder->updateOrderStatus($this->new_order_status);
         }
 
         // Store request data in order for future references
@@ -83,27 +81,25 @@ class Worldpay extends Postsale implements IsotopePayment
 
 
     /**
-     * Return the PayPal form.
+     * Return the checkout form.
      *
      * @access public
      * @return string
      */
     public function checkoutForm()
     {
-        $objOrder = new IsotopeOrder();
-
-        if (!$objOrder->findBy('cart_id', $this->Isotope->Cart->id)) {
+        if (($objOrder = Order::findOneBy('cart_id', Isotope::getCart()->id)) === null) {
             $this->redirect($this->addToUrl('step=failed', true));
         }
 
         global $objPage;
-        $objAddress = $this->Isotope->Cart->billingAddress;
+        $objAddress = Isotope::getCart()->getBillingAddress();
 
         $arrData['instId'] = $this->worldpay_instId;
-        $arrData['cartId'] = $this->Isotope->Cart->id;
-        $arrData['amount'] = number_format($this->Isotope->Cart->grandTotal, 2);
-        $arrData['currency'] = $this->Isotope->Config->currency;
-        $arrData['description'] = $this->Isotope->translate($this->worldpay_description);
+        $arrData['cartId'] = Isotope::getCart()->id;
+        $arrData['amount'] = number_format(Isotope::getCart()->getTotal(), 2);
+        $arrData['currency'] = Isotope::getConfig()->currency;
+        $arrData['description'] = Translation::get($this->worldpay_description);
         $arrData['name'] = substr($objAddress->firstname . ' ' . $objAddress->lastname, 0, 40);
 
         if ($objAddress->company != '') {
@@ -126,7 +122,7 @@ class Worldpay extends Postsale implements IsotopePayment
         // Generate MD5 secret hash
         $arrData['signature'] = md5($this->worldpay_md5secret . ':' . implode(':', array_intersect_key($arrData, array_flip(trimsplit(':', $this->worldpay_signatureFields)))));
 
-        $objTemplate = new IsotopeTemplate('iso_payment_worldpay');
+        $objTemplate = new \Isotope\Template('iso_payment_worldpay');
 
         $objTemplate->setData($arrData);
         $objTemplate->id = $this->id;
@@ -142,8 +138,8 @@ class Worldpay extends Postsale implements IsotopePayment
      */
     protected function postsaleError()
     {
-        $objPage = $this->getPageDetails((int) $this->Input->post('M_pageId'));
-        $strUrl = $this->Environment->base . $this->generateFrontendUrl($objPage->row(), '/step/failed', $objPage->language);
+        $objPage = \PageModel::findWithDetails((int) \Input::post('M_pageId'));
+        $strUrl = \Environment::get('base') . \Controller::generateFrontendUrl($objPage->row(), '/step/failed', $objPage->language);
 
         // Output a HTML page to redirect the client from WorldPay back to the shop
         echo '
@@ -168,8 +164,8 @@ Redirecting back to shop...
      */
     protected function postsaleSuccess($objOrder)
     {
-        $objPage = $this->getPageDetails((int) $this->Input->post('M_pageId'));
-        $strUrl = $this->Environment->base . $this->generateFrontendUrl($objPage->row(), '/step/complete', $objPage->language) . '?uid=' . $objOrder->uniqid;
+        $objPage = \PageModel::findWithDetails((int) \Input::post('M_pageId'));
+        $strUrl = \Environment::get('base') . \Controller::generateFrontendUrl($objPage->row(), '/step/complete', $objPage->language) . '?uid=' . $objOrder->uniqid;
 
         // Output a HTML page to redirect the client from WorldPay back to the shop
         echo '
