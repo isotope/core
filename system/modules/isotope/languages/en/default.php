@@ -194,6 +194,7 @@ $GLOBALS['TL_LANG']['MODEL']['tl_iso_payment_modules.saferpay']             = ar
 $GLOBALS['TL_LANG']['MODEL']['tl_iso_payment_modules.sofortueberweisung']   = array('sofortüberweisung.de');
 $GLOBALS['TL_LANG']['MODEL']['tl_iso_payment_modules.expercash']            = array('ExperCash');
 $GLOBALS['TL_LANG']['MODEL']['tl_iso_payment_modules.payone']               = array('PayOne');
+$GLOBALS['TL_LANG']['MODEL']['tl_iso_payment_modules.worldpay']             = array('WorldPay');
 
 /**
  * Documents
