@@ -993,7 +993,7 @@ window.addEvent('domready', function()
 
                     // @todo use Product::generateUrl() here or don't we do this because of performance?
 
-                    $arrJump[$objProducts->page_id] = $strDomain . Controller::generateFrontendUrl($objJump->row(), ($GLOBALS['TL_CONFIG']['useAutoItem'] ? '/' : '/product/') . '##alias##', ($strLanguage=='' ? $arrRoot[$objJump->rootId]->language : $strLanguage));
+                    $arrJump[$objProducts->page_id] = $strDomain . \Controller::generateFrontendUrl($objJump->row(), ($GLOBALS['TL_CONFIG']['useAutoItem'] ? '/' : '/product/') . '##alias##', ($strLanguage=='' ? $arrRoot[$objJump->rootId]->language : $strLanguage));
                 }
                 else
                 {
@@ -1150,7 +1150,7 @@ window.addEvent('domready', function()
             if (($objJump = \PageModel::findByPk($varUrl)) === null) {
                 throw new \InvalidArgumentException('Given page id does not exist.');
             }
-            $varUrl = Isotope::getInstance()->generateFrontendUrl($objJump->row());
+            $varUrl = \Controller::generateFrontendUrl($objJump->row());
         }
 
         if ($strRequest === '') {
