@@ -477,7 +477,6 @@ class Backend extends Contao_Backend
 
     /**
      * Get order status and return it as array
-     * @param object
      * @return array
      */
     public static function getOrderStatus()
