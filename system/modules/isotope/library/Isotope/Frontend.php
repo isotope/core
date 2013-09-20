@@ -1036,13 +1036,12 @@ window.addEvent('domready', function()
      */
     public static function getReaderPageId($objOriginPage=null)
     {
-        if ($objOriginPage === null)
-        {
+        if ($objOriginPage === null) {
             global $objPage;
             $objOriginPage = $objPage;
         }
 
-        $intPage = is_object($objOriginPage) ? (int) $objOriginPage->id : (int) $objOriginPage;
+        $intPage = (int) (($objOriginPage instanceof \PageModel) ? $objOriginPage->id : $objOriginPage);
 
         // return from cache
         if (isset(static::$arrReaderPageIds[$intPage]))
@@ -1050,45 +1049,40 @@ window.addEvent('domready', function()
             return static::$arrReaderPageIds[$intPage];
         }
 
-        if (!is_object($objOriginPage))
-        {
-            $objOriginPage = \Database::getInstance()->execute("SELECT * FROM tl_page WHERE id=" . $intPage);
+        if (!$objOriginPage instanceof \PageModel) {
+            $objOriginPage = \PageModel::findByPk($intPage);
         }
 
-        // if the reader page is set on the current page id we return this one
-        if ($objOriginPage->iso_setReaderJumpTo > 0)
-        {
+        // If the reader page is set on the current page id we return this one
+        if ($objOriginPage->iso_setReaderJumpTo > 0) {
             static::$arrReaderPageIds[$intPage] = $objOriginPage->iso_readerJumpTo;
 
             return (int) $objOriginPage->iso_readerJumpTo;
         }
 
-        // now move up the page tree until we find a page where the reader is set
+        // Now move up the page tree until we find a page where the reader is set
         $trail = array();
         $pid = (int) $objOriginPage->pid;
 
-        do
-        {
-            $objParentPage = \Database::getInstance()->execute("SELECT * FROM tl_page WHERE id=" . $pid);
+        do {
+            $objParentPage = \PageModel::findByPk($pid);
 
-            if ($objParentPage->numRows < 1)
-            {
+            if ($objParentPage === null) {
                 break;
             }
 
             $trail[] = $objParentPage->id;
 
-            if ($objParentPage->iso_setReaderJumpTo > 0)
-            {
-                // cache the reader page for all trail pages
+            if ($objParentPage->iso_setReaderJumpTo > 0) {
+                // Cache the reader page for all trail pages
                 static::$arrReaderPageIds = array_merge(static::$arrReaderPageIds, array_fill_keys($trail, $objParentPage->iso_readerJumpTo));
 
                 return (int) $objParentPage->iso_readerJumpTo;
             }
 
             $pid = (int) $objParentPage->pid;
-        }
-        while ($pid > 0 && $objParentPage->type != 'root');
+
+        } while ($pid > 0 && $objParentPage->type != 'root');
 
         // if there is no reader page set at all, we take the current page object
         global $objPage;
