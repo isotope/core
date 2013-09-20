@@ -345,19 +345,17 @@ class Checkout extends Module
      */
     public function getCheckoutInfo()
     {
-        if (!is_array($this->arrCheckoutInfo))
-        {
+        if (!is_array($this->arrCheckoutInfo)) {
+
             $arrCheckoutInfo = array();
 
             // Run trough all steps to collect checkout information
-            foreach ($this->getSteps() as $arrModules)
-            {
-                foreach ($arrModules as $objModule)
-                {
+            foreach ($this->getSteps() as $arrModules) {
+                foreach ($arrModules as $objModule) {
+
                     $arrInfo = $objModule->review();
 
-                    if (is_array($arrInfo) && !empty($arrInfo))
-                    {
+                    if (!empty($arrInfo) && is_array($arrInfo)) {
                         $arrCheckoutInfo += $arrInfo;
                     }
                 }

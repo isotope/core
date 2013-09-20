@@ -484,7 +484,7 @@ class Backend extends Contao_Backend
         $arrStatus = array();
         if ($objStatus = OrderStatus::findAll(array('order'=>'sorting')) !== null) {
             while ($objStatus->next()) {
-                $arrStatus[$objStatus->current()->id] = $objStatus->current()->getName();
+                $arrStatus[$objStatus->id] = $objStatus->current()->getName();
             }
         }
 
