@@ -1,0 +1,21 @@
+
+<?php foreach($this->items as $item): ?>
+<div class="product"><?php if($this->editable): ?>
+    <div class="remove"><a href="<?php echo $item['remove_href']; ?>" title="<?php echo $item['remove_title']; ?>"><?php echo $item['remove_link']; ?></a></div><?php endif; ?>
+    <div class="name"><?php if($this->linkProducts && $item['hasProduct']): ?><a href="<?php echo $item['href']; ?>"><?php echo $item['name']; ?></a><?php else: ?><?php echo $item['name']; ?><?php endif; ?></div>
+    <div class="info">
+        <?php if(!empty($item['options'])): ?>
+        <ul>
+        <?php foreach($item['options'] as $option): ?>
+            <li><strong><?php echo $option['label']; ?>:</strong> <?php echo $option['value']; ?></li>
+        <?php endforeach; ?>
+        </ul>
+        <?php endif; ?>
+        <div class="price"><?php echo $item['quantity']; ?> x <?php echo $item['price']; ?> = <span class="total"><?php echo $item['total']; ?></span></div>
+    </div>
+    <div class="clear">&nbsp;</div>
+</div>
+<?php endforeach; ?>
+<div class="subtotal"><span class="label"><?php echo $GLOBALS['TL_LANG']['MSC']['subTotalLabel']; ?></span> <?php echo $this->subtotal; ?></div><?php if ($this->buttons['cart']): ?>
+<div class="cart"><a class="button" href="<?php echo $this->buttons['cart']['href']; ?>"><?php echo $this->buttons['cart']['label']; ?></a></div><?php endif; if ($this->buttons['checkout']): ?>
+<div class="checkout"><a class="button dark" href="<?php echo $this->buttons['checkout']['href']; ?>"><?php echo $this->buttons['checkout']['label']; ?></a></div><?php endif; ?>
