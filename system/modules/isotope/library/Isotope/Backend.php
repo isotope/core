@@ -483,11 +483,10 @@ class Backend extends Contao_Backend
     public static function getOrderStatus()
     {
         $arrStatus = array();
-        $objStatus = OrderStatus::findAll(array('order'=>'sorting'));
-
-        while ($objStatus->next())
-        {
-            $arrStatus[$objStatus->id] = $objStatus->current()->getName();
+        if ($objStatus = OrderStatus::findAll(array('order'=>'sorting')) !== null) {
+            while ($objStatus->next()) {
+                $arrStatus[$objStatus->current()->id] = $objStatus->current()->getName();
+            }
         }
 
         return $arrStatus;
