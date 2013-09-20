@@ -43,6 +43,23 @@ abstract class Product extends TypeAgent
     protected static $arrModelTypes = array();
 
     /**
+     * Find all published products
+     * @param   array
+     * @return  \Collection
+     */
+    public static function findPublished(array $arrOptions=array())
+    {
+        $t = static::$strTable;
+
+        if (BE_USER_LOGGED_IN !== true) {
+            $time = time();
+            $arrColumns[] = "$t.published='1' AND ($t.start='' OR $t.start<$time) AND ($t.stop='' OR $t.stop>$time)";
+        }
+
+        return static::findBy($arrColumns, array(), $arrOptions);
+    }
+
+    /**
      * Find published products by condition
      * @param   mixed
      * @param   mixed
