@@ -133,11 +133,6 @@ class Isotope extends \Controller
                     \System::redirect(preg_replace('/\?.*$/i', '', \Environment::get('request')) . (($strQuery) ? '?' . $strQuery : ''));
                 }
             }
-
-            // Set the product from the auto_item parameter
-            if ($GLOBALS['TL_CONFIG']['useAutoItem'] && isset($_GET['auto_item'])) {
-                \Input::setGet('product', \Input::get('auto_item'));
-            }
         }
     }
 
@@ -151,6 +146,7 @@ class Isotope extends \Controller
         if (null === static::$objCart && TL_MODE == 'FE') {
             static::initialize();
             static::$objCart = Cart::findForCurrentStore();
+            static::$objCart->mergeGuestCart();
         }
 
         return static::$objCart;
@@ -556,62 +552,6 @@ class Isotope extends \Controller
 
 
     /**
-     * Translate a value using the tl_iso_label table
-     * @param mixed
-     * @param boolean
-     * @return mixed
-     */
-    public static function translate($label, $language=false)
-    {
-        static $blnInstalled = null;
-
-        if (false === $blnInstalled) {
-
-            return $label;
-
-        } elseif (null === $blnInstalled) {
-            $blnInstalled = \Database::getInstance()->tableExists('tl_iso_labels');
-
-            if (!$blnInstalled) {
-
-                return $label;
-            }
-        }
-
-        // Recursively translate label array
-        if (is_array($label))
-        {
-            foreach ($label as $k => $v)
-            {
-                $label[$k] = static::translate($v, $language);
-            }
-
-            return $label;
-        }
-
-        if (!$language)
-        {
-            $language = $GLOBALS['TL_LANGUAGE'];
-        }
-
-        if (!is_array($GLOBALS['TL_LANG']['TBL'][$language]))
-        {
-            $GLOBALS['TL_LANG']['TBL'][$language] = array();
-            $objLabels = \Database::getInstance()->prepare("SELECT * FROM tl_iso_labels WHERE language=?")->execute($language);
-
-            while ($objLabels->next())
-            {
-                $GLOBALS['TL_LANG']['TBL'][$language][\String::decodeEntities($objLabels->label)] = $objLabels->replacement;
-            }
-        }
-
-        $label = \String::decodeEntities($label);
-
-        return $GLOBALS['TL_LANG']['TBL'][$language][$label] ? $GLOBALS['TL_LANG']['TBL'][$language][$label] : $label;
-    }
-
-
-    /**
      * Format value (based on DC_Table::show(), Contao 2.9.0)
      * @param string
      * @param string
@@ -841,4 +781,28 @@ class Isotope extends \Controller
 
         return $arrCurrent;
     }
+
+
+
+    /**
+	 * Get the meta data from a serialized string
+	 * @param   string
+	 * @param   string
+	 * @return  array
+	 * @todo    remove this as soon as \Frontend::getMetaData is public and static in Contao core
+	 */
+	public static function getMetaData($strData, $strLanguage)
+	{
+		$arrData = deserialize($strData);
+
+		// Convert the language to a locale (see #5678)
+		$strLanguage = str_replace('-', '_', $strLanguage);
+
+		if (!is_array($arrData) || !isset($arrData[$strLanguage]))
+		{
+			return array();
+		}
+
+		return $arrData[$strLanguage];
+	}
 }

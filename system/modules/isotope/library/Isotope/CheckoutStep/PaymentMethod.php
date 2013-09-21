@@ -14,6 +14,7 @@ namespace Isotope\CheckoutStep;
 
 use Isotope\Isotope;
 use Isotope\Interfaces\IsotopeCheckoutStep;
+use Isotope\Interfaces\IsotopeProductCollection;
 use Isotope\Model\Payment;
 
 
@@ -110,24 +111,10 @@ class PaymentMethod extends CheckoutStep implements IsotopeCheckoutStep
 
         $objTemplate = new \Isotope\Template('iso_checkout_payment_method');
 
-        if (!Isotope::getCart()->hasPayment() || !isset($arrModules[Isotope::getCart()->payment_id])) {
-            $this->blnError = true;
-        }
-
         $objTemplate->headline = $GLOBALS['TL_LANG']['MSC']['payment_method'];
         $objTemplate->message = $GLOBALS['TL_LANG']['MSC']['payment_method_message'];
         $objTemplate->options = $objWidget->parse();
         $objTemplate->paymentMethods = $arrModules;
-
-/*
-        if (!$this->hasError()) {
-            $objShipping = Isotope::getCart()->getShippingMethod();
-            $this->objModule->arrOrderData['shipping_method_id']   = $objShipping->id;
-            $this->objModule->arrOrderData['shipping_method']      = $objShipping->label;
-            $this->objModule->arrOrderData['shipping_note']        = $objShipping->note;
-            $this->objModule->arrOrderData['shipping_note_text']   = strip_tags($objShipping->note);
-        }
-*/
 
         return $objTemplate->parse();
     }
@@ -145,6 +132,24 @@ class PaymentMethod extends CheckoutStep implements IsotopeCheckoutStep
                 'note'        => Isotope::getCart()->getPaymentMethod()->note,
                 'edit'        => \Isotope\Module\Checkout::generateUrlForStep('payment'),
             ),
+        );
+    }
+
+    /**
+     * Return array of tokens for email templates
+     * @param   IsotopeProductCollection
+     * @param   \Module
+     * @return  array
+     */
+    public function getEmailTokens(IsotopeProductCollection $objCollection, \Module $objModule)
+    {
+        $objPayment = $objCollection->getPaymentMethod();
+
+        return array(
+            'payment_id'        => $objPayment->id,
+            'payment_label'     => $objPayment->getLabel(),
+            'payment_note'      => $objPayment->note,
+            'payment_note_text' => strip_tags($objPayment->note),
         );
     }
 }

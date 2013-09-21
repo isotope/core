@@ -65,15 +65,7 @@ interface IsotopeShipping
      * This function can be called from the postsale.php file when the shipping server is requestion/posting a status change.
      * You can see an implementation example in PaymentPostfinance.php
      */
-    public function processPostSale();
-
-    /**
-     * This function is used to gather any addition shipping options that might be available specific to the current customer or order.
-     * For example, expedited shipping based on customer location.
-     * @param object
-     * @return string
-     */
-    public function getShippingOptions(&$objModule);
+    public function processPostsale();
 
     /**
      * Return the checkout review information.

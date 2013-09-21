@@ -13,8 +13,9 @@
 namespace Isotope\Model;
 
 use Isotope\Isotope;
-use Isotope\Factory\ProductCollectionSurcharge as SurchargeFactory;
+use Isotope\Translation;
 use Isotope\Interfaces\IsotopeProductCollection;
+use Isotope\Model\ProductCollectionSurcharge;
 
 
 /**
@@ -208,32 +209,7 @@ abstract class Payment extends TypeAgent
      */
     public function getLabel()
     {
-        return Isotope::translate($this->arrData['label'] ? $this->arrData['label'] : $this->arrData['name']);
-    }
-
-
-    /**
-     * Process post-sale requests. Does nothing by default.
-     *
-     * This function can be called from the postsale.php file when the payment server is requestion/posting a status change.
-     * You can see an implementation example in PaymentPostfinance.php
-     */
-    public function processPostSale() {}
-
-
-    /**
-     * Return a html form for payment data or an empty string.
-     *
-     * The input fields should be from array "payment" including the payment module ID.
-     * Example: <input type="text" name="payment[$this->id][cc_num]" />
-     * You can set $objCheckoutModule->doNotSubmit = true if post is sent but data is invalid.
-     *
-     * @param object The checkout module object.
-     * @return string
-     */
-    public function paymentForm($objCheckoutModule)
-    {
-        return '';
+        return Translation::get($this->label ?: $this->name);
     }
 
 
@@ -281,7 +257,7 @@ abstract class Payment extends TypeAgent
      */
     public function checkoutReview()
     {
-        return $this->label;
+        return $this->getLabel();
     }
 
 
@@ -296,7 +272,7 @@ abstract class Payment extends TypeAgent
             return null;
         }
 
-        return SurchargeFactory::buildPaymentSurcharge($this, $objCollection);
+        return ProductCollectionSurcharge::createForPaymentInCollection($this, $objCollection);
     }
 
 
@@ -372,31 +348,4 @@ abstract class Payment extends TypeAgent
     {
         return array();
     }
-
-
-    /**
-     * Override parent addToUrl function. Use generateFrontendUrl if we want to remove all parameters.
-     * @param string
-     * @param boolean
-     * @return string
-     */
-/*
-    protected function addToUrl($strRequest, $blnIgnoreParams=false)
-    {
-        if ($blnIgnoreParams)
-        {
-            global $objPage;
-
-            // Support for auto_item parameter
-            if ($GLOBALS['TL_CONFIG']['useAutoItem'])
-            {
-                $strRequest = str_replace('step=', '', $strRequest);
-            }
-
-            return \Controller::generateFrontendUrl($objPage->row(), '/' . str_replace(array('=', '&amp;', '&'), '/', $strRequest));
-        }
-
-        return parent::addToUrl($strRequest, $blnIgnoreParams);
-    }
-*/
 }

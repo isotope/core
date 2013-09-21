@@ -108,7 +108,7 @@ window.addEvent("domready", function() {
 </tbody>
 </table>
 
-<script src="system/modules/isotope_reports/assets/MilkChart.min.js"></script>
+<script src="system/modules/isotope_reports/assets/MilkChart<?php echo (ISO_DEBUG ? '' : '.min'); ?>js"></script>
 <script>
 window.addEvent('domready', function() {
     new MilkChart.Column('report-data', {

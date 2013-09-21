@@ -14,6 +14,8 @@
 
 namespace Isotope;
 
+use Isotope\Model\Product;
+
 
 /**
  * Class tl_iso_producttypes
@@ -185,7 +187,7 @@ class tl_iso_producttypes extends \Backend
     {
         $this->import('BackendUser', 'User');
 
-        return ($this->User->isAdmin || $this->User->hasAccess('create', 'iso_product_typep')) ? '<a href="'.$this->addToUrl($href.'&amp;id='.$row['id']).'" title="'.specialchars($title).'"'.$attributes.'>'.$this->generateImage($icon, $label).'</a> ' : $this->generateImage(preg_replace('/\.gif$/i', '_.gif', $icon)).' ';
+        return ($this->User->isAdmin || $this->User->hasAccess('create', 'iso_product_typep')) ? '<a href="'.$this->addToUrl($href.'&amp;id='.$row['id']).'" title="'.specialchars($title).'"'.$attributes.'>'.\Image::getHtml($icon, $label).'</a> ' : \Image::getHtml(preg_replace('/\.gif$/i', '_.gif', $icon)).' ';
     }
 
 
@@ -201,7 +203,11 @@ class tl_iso_producttypes extends \Backend
      */
     public function deleteProductType($row, $href, $label, $title, $icon, $attributes)
     {
-        return ($this->User->isAdmin || $this->User->hasAccess('delete', 'iso_product_typep')) ? '<a href="'.$this->addToUrl($href.'&amp;id='.$row['id']).'" title="'.specialchars($title).'"'.$attributes.'>'.$this->generateImage($icon, $label).'</a> ' : $this->generateImage(preg_replace('/\.gif$/i', '_.gif', $icon)).' ';
+        if (Product::countBy('type', $row['id']) > 0) {
+            return \Image::getHtml(preg_replace('/\.gif$/i', '_.gif', $icon)).' ';
+        }
+
+        return ($this->User->isAdmin || $this->User->hasAccess('delete', 'iso_product_typep')) ? '<a href="'.$this->addToUrl($href.'&amp;id='.$row['id']).'" title="'.specialchars($title).'"'.$attributes.'>'.\Image::getHtml($icon, $label).'</a> ' : \Image::getHtml(preg_replace('/\.gif$/i', '_.gif', $icon)).' ';
     }
 
     /**
@@ -212,6 +218,18 @@ class tl_iso_producttypes extends \Backend
     public function prepareAttributeWizard($objWidget)
     {
         $this->loadDataContainer('tl_iso_products');
+
+        $arrValues = $objWidget->value;
+        $arrDCA = &$GLOBALS['TL_DCA']['tl_iso_products']['fields'];
+        $blnVariants = ($objWidget->name != 'attributes');
+
+        if (!empty($arrValues) && is_array($arrValues)) {
+            foreach ($arrValues as $i => $attribute) {
+                if ($arrDCA[$attribute['name']]['attributes'][($blnVariants ? 'variant_' : '').'fixed']) {
+                    $objWidget->addDataToFieldAtIndex($i, 'enabled', array('eval'=>array('disabled'=>true)));
+                }
+            }
+        }
 
         return array
         (
@@ -346,7 +364,7 @@ class tl_iso_producttypes extends \Backend
             }
 
             $arrFields[$strName] = array(
-                'enabled'   => ($arrField['attributes']['fixed'] ? '1' : ''),
+                'enabled'   => ($arrField['attributes'][($blnVariants ? 'variant_' : '').'fixed'] ? '1' : ''),
                 'name'      => $strName,
                 'legend'    => $arrField['attributes']['legend'],
             );
@@ -363,14 +381,21 @@ class tl_iso_producttypes extends \Backend
      */
     public function saveAttributeWizard($varValue, $dc)
     {
+        $arrDCA = &$GLOBALS['TL_DCA']['tl_iso_products']['fields'];
+
         $arrLegends = array();
         $arrFields = deserialize($varValue);
+        $blnVariants = ($dc->field != 'attributes');
 
         if (empty($arrFields) || !is_array($arrFields)) {
             return $varValue;
         }
 
-        foreach ($arrFields as $arrField) {
+        foreach ($arrFields as $k => $arrField) {
+            if ($arrDCA[$arrField['name']]['attributes'][($blnVariants ? 'variant_' : '').'fixed']) {
+                $arrFields[$k]['enabled'] = '1';
+            }
+
             if (!in_array($arrField['legend'], $arrLegends)) {
                 $arrLegends[] = $arrField['legend'];
             }

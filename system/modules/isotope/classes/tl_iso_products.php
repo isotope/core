@@ -17,6 +17,10 @@
 
 namespace Isotope;
 
+use Isotope\Model\Attribute;
+use Isotope\Model\Product;
+use Isotope\Model\ProductCollectionItem;
+
 
 /**
  * Class tl_iso_products
@@ -44,111 +48,96 @@ class tl_iso_products extends \Backend
      */
     public function generateVariants($dc)
     {
-        $objProduct = \Database::getInstance()->prepare("SELECT id, pid, language, type, (SELECT attributes FROM tl_iso_producttypes WHERE id=tl_iso_products.type) AS attributes, (SELECT variant_attributes FROM tl_iso_producttypes WHERE id=tl_iso_products.type) AS variant_attributes FROM tl_iso_products WHERE id=?")->limit(1)->execute($dc->id);
+        $table = Product::getTable();
+        $objProduct = Product::findByPk($dc->id);
 
         $doNotSubmit = false;
         $strBuffer = '';
         $arrOptions = array();
-        $arrAttributes = deserialize($objProduct->attributes);
 
-        if (is_array($arrAttributes))
-        {
-            foreach ($arrAttributes as $attribute => $arrConfig)
-            {
-                // Skip disabled attributes
-                if (!$arrConfig['enabled'])
-                {
-                    continue;
+        foreach ($objProduct->getRelated('type')->getVariantAttributes() as $attribute) {
+            if ($GLOBALS['TL_DCA'][$table]['fields'][$attribute]['attributes']['variant_option']) {
+
+                $GLOBALS['TL_DCA'][$table]['fields'][$attribute]['eval']['mandatory'] = true;
+                $GLOBALS['TL_DCA'][$table]['fields'][$attribute]['eval']['multiple'] = true;
+
+                $arrField = \CheckBox::getAttributesFromDca($GLOBALS['TL_DCA'][$table]['fields'][$attribute], $attribute);
+
+                foreach ($arrField['options'] as $k => $option) {
+                    if ($option['value'] == '') {
+                        unset($arrField['options'][$k]);
+                    }
                 }
 
-                if ($GLOBALS['TL_DCA']['tl_iso_products']['fields'][$attribute]['attributes']['variant_option'])
-                {
-                    $GLOBALS['TL_DCA']['tl_iso_products']['fields'][$attribute]['eval']['mandatory'] = true;
-                    $GLOBALS['TL_DCA']['tl_iso_products']['fields'][$attribute]['eval']['multiple'] = true;
+                $objWidget = new \CheckBox($arrField);
 
-                    $arrField = \CheckBox::getAttributesFromDca($GLOBALS['TL_DCA']['tl_iso_products']['fields'][$attribute], $attribute);
+                if (\Input::post('FORM_SUBMIT') == ($table.'_generate')) {
+                    $objWidget->validate();
 
-                    foreach ($arrField['options'] as $k => $option)
-                    {
-                        if ($option['value'] == '')
-                        {
-                            unset($arrField['options'][$k]);
-                        }
+                    if ($objWidget->hasErrors()) {
+                        $doNotSubmit = true;
+                    } else {
+                        $arrOptions[$attribute] = $objWidget->value;
                     }
-
-                    $objWidget = new \CheckBox($arrField);
-
-                    if (\Input::post('FORM_SUBMIT') == 'tl_product_generate')
-                    {
-                        $objWidget->validate();
-
-                        if ($objWidget->hasErrors())
-                        {
-                            $doNotSubmit = true;
-                        }
-                        else
-                        {
-                            $arrOptions[$attribute] = $objWidget->value;
-                        }
-                    }
-
-                    $strBuffer .= $objWidget->parse();
                 }
+
+                $strBuffer .= $objWidget->parse();
             }
+        }
 
-            if (\Input::post('FORM_SUBMIT') == 'tl_product_generate' && !$doNotSubmit)
-            {
-                $time = time();
+        if (\Input::post('FORM_SUBMIT') == $table.'_generate' && !$doNotSubmit) {
+            $time = time();
+            $arrCombinations = array();
+
+            foreach ($arrOptions as $name => $options) {
+                $arrTemp = $arrCombinations;
                 $arrCombinations = array();
 
-                foreach ($arrOptions as $name => $options)
-                {
-                    $arrTemp = $arrCombinations;
-                    $arrCombinations = array();
+                foreach ($options as $option) {
+                    if (empty($arrTemp)) {
+                        $arrCombinations[][$name] = $option;
+                        continue;
+                    }
 
-                    foreach ($options as $option)
-                    {
-                        if (empty($arrTemp))
-                        {
-                            $arrCombinations[][$name] = $option;
-                            continue;
-                        }
-
-                        foreach ($arrTemp as $temp)
-                        {
-                            $temp[$name] = $option;
-                            $arrCombinations[] = $temp;
-                        }
+                    foreach ($arrTemp as $temp) {
+                        $temp[$name] = $option;
+                        $arrCombinations[] = $temp;
                     }
                 }
-
-                foreach ($arrCombinations as $combination)
-                {
-                    $objVariant = \Database::getInstance()->prepare("SELECT * FROM tl_iso_products WHERE pid=? AND " . implode('=? AND ', array_keys($combination)) . "=?")
-                                                          ->execute(array_merge(array($objProduct->id), $combination));
-
-                    if (!$objVariant->numRows)
-                    {
-                        \Database::getInstance()->prepare("INSERT INTO tl_iso_products (tstamp,pid,inherit,type," . implode(',', array_keys($combination)) . ") VALUES (?,?,?,?" . str_repeat(',?', count($combination)) . ")")
-                                                ->execute(array_merge(array($time, $objProduct->id, array_diff((array) $objProduct->variant_attributes, array('sku', 'price', 'shipping_weight', 'published')), $objProduct->type), $combination));
-                    }
-                }
-
-                \Controller::redirect(str_replace('&key=generate', '', \Environment::get('request')));
             }
+
+            foreach ($arrCombinations as $combination) {
+
+                $objVariant = \Database::getInstance()->prepare("
+                    SELECT * FROM $table WHERE pid=? AND " . implode('=? AND ', array_keys($combination)) . "=?"
+                )->execute(array_merge(array($objProduct->id), $combination));
+
+                if (!$objVariant->numRows) {
+
+                    $arrSet = array_merge($combination, array(
+                        'tstamp'    => $time,
+                        'pid'       => $objProduct->id,
+                        'inherit'   => array_diff($objProduct->getRelated('type')->getVariantAttributes(), Attribute::getSystemColumnsFields()),
+                    ));
+
+                    \Database::getInstance()->prepare("INSERT INTO $table %s")->set($arrSet)->execute();
+                }
+            }
+
+            \Controller::redirect(str_replace('&key=generate', '', \Environment::get('request')));
         }
 
         // Return form
         return '
 <div id="tl_buttons">
-<a href="'.ampersand(str_replace('&key=generate&id='.$dc->id, '', \Environment::get('request'))).'" class="header_back" title="'.specialchars($GLOBALS['TL_LANG']['MSC']['backBT']).'">'.$GLOBALS['TL_LANG']['MSC']['backBT'].'</a>
+<a href="'.ampersand(str_replace('&key=generate', '', \Environment::get('request'))).'" class="header_back" title="'.specialchars($GLOBALS['TL_LANG']['MSC']['backBT']).'">'.$GLOBALS['TL_LANG']['MSC']['backBT'].'</a>
 </div>
 
-<h2 class="sub_headline">'.sprintf($GLOBALS['TL_LANG']['tl_iso_products']['generate'][1], $dc->id).'</h2>'.$this->getMessages().'
+<h2 class="sub_headline">'.sprintf($GLOBALS['TL_LANG'][$table]['generate'][1], $dc->id).'</h2>'.$this->getMessages().'
 
-<form action="'.ampersand(\Environment::get('request'), true).'" id="tl_product_generate" class="tl_form" method="post">
+<form action="'.ampersand(\Environment::get('request'), true).'" id="'.$table.'_generate" class="tl_form" method="post">
 <div class="tl_formbody_edit">
-<input type="hidden" name="FORM_SUBMIT" value="tl_product_generate">
+<input type="hidden" name="FORM_SUBMIT" value="'.$table.'_generate">
 <input type="hidden" name="REQUEST_TOKEN" value="'.REQUEST_TOKEN.'">
 
 <div class="tl_tbox block">
@@ -324,7 +313,7 @@ class tl_iso_products extends \Backend
 <div class="tl_info">' . $GLOBALS['TL_LANG']['tl_iso_products']['importAssetsDescr'] . '</div>
 
 <div class="tl_tbox block">
-  <h3><label for="source">'.$GLOBALS['TL_LANG']['tl_iso_products']['source'][0].'</label> <a href="typolight/files.php" title="' . specialchars($GLOBALS['TL_LANG']['MSC']['fileManager']) . '" onclick="Backend.getScrollOffset(); this.blur(); Backend.openWindow(this, 750, 500); return false;">' . $this->generateImage('filemanager.gif', $GLOBALS['TL_LANG']['MSC']['fileManager'], 'style="vertical-align:text-bottom;"') . '</a></h3>
+  <h3><label for="source">'.$GLOBALS['TL_LANG']['tl_iso_products']['source'][0].'</label> <a href="typolight/files.php" title="' . specialchars($GLOBALS['TL_LANG']['MSC']['fileManager']) . '" onclick="Backend.getScrollOffset(); this.blur(); Backend.openWindow(this, 750, 500); return false;">' . \Image::getHtml('filemanager.gif', $GLOBALS['TL_LANG']['MSC']['fileManager'], 'style="vertical-align:text-bottom;"') . '</a></h3>
   '.$objTree->generate().(strlen($GLOBALS['TL_LANG']['tl_iso_products']['source'][1]) ? '
   <p class="tl_help">'.$GLOBALS['TL_LANG']['tl_iso_products']['source'][1].'</p>' : '').'
 </div>
@@ -355,12 +344,12 @@ class tl_iso_products extends \Backend
      */
     public function copyIcon($row, $href, $label, $title, $icon, $attributes)
     {
-    	if ($row['pid'] > 0)
-    	{
-	    	return '<a href="'.preg_replace('/&(amp;)?id=[^& ]*/i', '', ampersand(\Environment::get('request'))).'&amp;act=paste&amp;mode=copy&amp;table=tl_iso_products&amp;id='.$row['id'].'&amp;pid='.\Input::get('id').'" title="'.specialchars($title).'"'.$attributes.' onclick="Backend.getScrollOffset();">'.$this->generateImage($icon, $label).'</a> ';
-    	}
+        if ($row['pid'] > 0)
+        {
+            return '<a href="'.preg_replace('/&(amp;)?id=[^& ]*/i', '', ampersand(\Environment::get('request'))).'&amp;act=paste&amp;mode=copy&amp;table=tl_iso_products&amp;id='.$row['id'].'&amp;pid='.\Input::get('id').'" title="'.specialchars($title).'"'.$attributes.' onclick="Backend.getScrollOffset();">'.\Image::getHtml($icon, $label).'</a> ';
+        }
 
-    	return '<a href="'.$this->addToUrl($href.'&amp;id='.$row['id']).'" title="'.specialchars($title).'"'.$attributes.'>'.\Image::getHtml($icon, $label).'</a> ';
+        return '<a href="'.$this->addToUrl($href.'&amp;id='.$row['id']).'" title="'.specialchars($title).'"'.$attributes.'>'.\Image::getHtml($icon, $label).'</a> ';
     }
 
 
@@ -377,14 +366,30 @@ class tl_iso_products extends \Backend
      */
     public function cutIcon($row, $href, $label, $title, $icon, $attributes)
     {
-    	if ($row['pid'] > 0)
-    	{
-	    	return '<a href="'.preg_replace('/&(amp;)?id=[^& ]*/i', '', ampersand(\Environment::get('request'))).'&amp;act=paste&amp;mode=cut&amp;table=tl_iso_products&amp;id='.$row['id'].'&amp;pid='.\Input::get('id').'" title="'.specialchars($title).'"'.$attributes.' onclick="Backend.getScrollOffset();">'.$this->generateImage($icon, $label).'</a> ';
-    	}
-    	else
-    	{
-	    	return '<a href="system/modules/isotope/public/group.php?do='.\Input::get('do').'&amp;table=tl_iso_groups&amp;field=gid&amp;value='.$row['gid'].'" title="'.specialchars($title).'"'.$attributes.' onclick="Backend.getScrollOffset();Isotope.openModalGroupSelector({\'width\':765,\'title\':\''.specialchars($GLOBALS['TL_LANG']['tl_iso_products']['groups'][0]).'\',\'url\':this.href,\'action\':\'moveProduct\',\'redirect\':\''.$this->addToUrl($href . '&pid=' . intval(\Input::get('pid')) . '&id=' . $row['id']).'\'});return false">'.$this->generateImage($icon, $label).'</a> ';
-    	}
+        if ($row['pid'] > 0) {
+            return '<a href="'.preg_replace('/&(amp;)?id=[^& ]*/i', '', ampersand(\Environment::get('request'))).'&amp;act=paste&amp;mode=cut&amp;table=tl_iso_products&amp;id='.$row['id'].'&amp;pid='.\Input::get('id').'" title="'.specialchars($title).'"'.$attributes.' onclick="Backend.getScrollOffset();">'.\Image::getHtml($icon, $label).'</a> ';
+        } else {
+            return '<a href="system/modules/isotope/public/group.php?do='.\Input::get('do').'&amp;table=tl_iso_groups&amp;field=gid&amp;value='.$row['gid'].'" title="'.specialchars($title).'"'.$attributes.' onclick="Backend.getScrollOffset();Isotope.openModalGroupSelector({\'width\':765,\'title\':\''.specialchars($GLOBALS['TL_LANG']['tl_iso_products']['product_groups'][0]).'\',\'url\':this.href,\'action\':\'moveProduct\',\'redirect\':\''.$this->addToUrl($href . '&pid=' . intval(\Input::get('pid')) . '&id=' . $row['id']).'\'});return false">'.\Image::getHtml($icon, $label).'</a> ';
+        }
+    }
+
+    /**
+     * Disable "delete" button if product has been sold
+     * @param array
+     * @param string
+     * @param string
+     * @param string
+     * @param string
+     * @param string
+     * @return string
+     */
+    public function deleteButton($row, $href, $label, $title, $icon, $attributes)
+    {
+        if (ProductCollectionItem::countBy(array("product_id IN (SELECT id FROM tl_iso_products WHERE id=? OR (pid=? AND language=''))"), array($row['id'], $row['id'])) > 0) {
+            return \Image::getHtml(preg_replace('/\.gif$/i', '_.gif', $icon)).' ';
+        }
+
+        return '<a href="'.$this->addToUrl($href.'&amp;id='.$row['id']).'" title="'.specialchars($title).'"'.$attributes.'>'.\Image::getHtml($icon, $label).'</a> ';
     }
 
 
@@ -400,11 +405,11 @@ class tl_iso_products extends \Backend
      */
     public function toggleIcon($row, $href, $label, $title, $icon, $attributes)
     {
-		if (strlen(\Input::get('tid')))
-		{
-			$this->toggleVisibility(\Input::get('tid'), (\Input::get('state') == 1));
-			\Controller::redirect($this->getReferer());
-		}
+        if (strlen(\Input::get('tid')))
+        {
+            $this->toggleVisibility(\Input::get('tid'), (\Input::get('state') == 1));
+            \Controller::redirect($this->getReferer());
+        }
 
         // Check permissions AFTER checking the tid, so hacking attempts are logged
         if (!$this->User->isAdmin && !$this->User->hasAccess('tl_iso_products::published', 'alexf'))
@@ -418,7 +423,7 @@ class tl_iso_products extends \Backend
 
         if (($arrAttributes['start']['enabled'] && $row['start'] != '' && $row['start'] > $time) || ($arrAttributes['stop']['enabled'] && $row['stop'] != '' && $row['stop'] < $time))
         {
-            return $this->generateImage('system/modules/isotope/assets/invisible-startstop.png', $label).' ';
+            return \Image::getHtml('system/modules/isotope/assets/invisible-startstop.png', $label).' ';
         }
         elseif ($row['published'] != '1')
         {
@@ -427,7 +432,7 @@ class tl_iso_products extends \Backend
 
         $href .= '&amp;tid='.$row['id'].'&amp;state='.($row['published'] ? '' : 1);
 
-        return '<a href="'.$this->addToUrl($href).'" title="'.specialchars($title).'"'.$attributes.'>'.$this->generateImage($icon, $label).'</a> ';
+        return '<a href="'.$this->addToUrl($href).'" title="'.specialchars($title).'"'.$attributes.'>'.\Image::getHtml($icon, $label).'</a> ';
     }
 
 
@@ -446,16 +451,12 @@ class tl_iso_products extends \Backend
         $this->import('Isotope\ProductCallbacks', 'ProductCallbacks');
         $this->ProductCallbacks->checkPermission();
 
-/**
- * @todo tl_iso_products is missing in groups settings
- *
         // Check permissions to publish
         if (!$this->User->isAdmin && !$this->User->hasAccess('tl_iso_products::published', 'alexf'))
         {
             \System::log('Not enough permissions to publish/unpublish product ID "'.$intId.'"', 'tl_iso_products toggleVisibility', TL_ERROR);
             \Controller::redirect('contao/main.php?act=error');
         }
-*/
 
         $this->createInitialVersion('tl_iso_products', $intId);
 
@@ -506,7 +507,7 @@ class tl_iso_products extends \Backend
 
             if (is_array($arrConfig['attributes'])) {
                 if ($arrConfig['attributes']['type'] != '') {
-                    $strClass = \Isotope\Model\Attribute::getClassForModelType($arrConfig['attributes']['type']);
+                    $strClass = $arrConfig['attributes']['type'];
                 } else {
                     $strClass = \Isotope\Model\Attribute::getClassForModelType($arrConfig['inputType']);
                 }
@@ -516,34 +517,6 @@ class tl_iso_products extends \Backend
                     $objAttribute->loadFromDCA($arrData, $strName);
                     $arrData['attributes'][$strName] = $objAttribute;
                 }
-            }
-        }
-
-        $GLOBALS['ISO_CONFIG']['variant_options'] = array();
-        $GLOBALS['ISO_CONFIG']['multilingual'] = array();
-        $GLOBALS['ISO_CONFIG']['fetch_fallback'] = array();
-        $GLOBALS['ISO_CONFIG']['dynamicAttributes'] = array();
-
-        foreach ($GLOBALS['TL_DCA']['tl_iso_products']['fields'] as $attribute => $config)
-        {
-            if ($config['attributes']['variant_option'])
-            {
-                $GLOBALS['ISO_CONFIG']['variant_options'][] = $attribute;
-            }
-
-            if ($config['attributes']['multilingual'])
-            {
-                $GLOBALS['ISO_CONFIG']['multilingual'][] = $attribute;
-            }
-
-            if ($config['attributes']['fetch_fallback'])
-            {
-                $GLOBALS['ISO_CONFIG']['fetch_fallback'][] = $attribute;
-            }
-
-            if ($config['attributes']['dynamic'] || $config['eval']['multiple'])
-            {
-                $GLOBALS['ISO_CONFIG']['dynamicAttributes'][] = $attribute;
             }
         }
     }

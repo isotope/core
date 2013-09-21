@@ -89,6 +89,6 @@ class ProductVariantList extends ProductList
 
         $objProducts = Product::findPublishedBy($arrColumns, $arrValues, array('group'=>Product::getTable() . '.id', 'order'=>'c.sorting'));
 
-        return \Isotope\Frontend::getProducts($objProducts, \Isotope\Frontend::getReaderPageId(null, $this->iso_reader_jumpTo), true, $arrFilters, $arrSorting);
+        return \Isotope\Frontend::getProducts($objProducts, true, $arrFilters, $arrSorting);
     }
 }

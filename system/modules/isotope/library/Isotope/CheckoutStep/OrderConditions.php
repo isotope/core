@@ -12,6 +12,7 @@
 
 
 namespace Isotope\CheckoutStep;
+use Isotope\Interfaces\IsotopeProductCollection;
 
 use Haste\Form;
 
@@ -92,5 +93,29 @@ abstract class OrderConditions extends CheckoutStep
         }
 
         return '';
+    }
+
+    /**
+     * Return array of tokens for email templates
+     * @param   IsotopeProductCollection
+     * @param   \Module
+     * @return  array
+     */
+    public function getEmailTokens(IsotopeProductCollection $objCollection, \Module $objModule)
+    {
+        // @todo return form field values
+        /*
+        foreach ($objForm->arrFormData as $name => $value)
+        {
+            $this->objModule->arrOrderData['form_' . $name] = $value;
+        }
+
+        foreach ($objForm->arrFiles as $name => $file)
+        {
+            $this->objModule->arrOrderData['form_' . $name] = \Environment::get('base') . str_replace(TL_ROOT . '/', '', dirname($file['tmp_name'])) . '/' . rawurlencode($file['name']);
+        }
+        */
+
+        return array();
     }
 }

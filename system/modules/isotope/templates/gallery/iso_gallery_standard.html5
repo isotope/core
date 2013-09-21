@@ -1,5 +1,9 @@
-<?php if ($this->type == 'main' || $this->type == 'gallery'): ?>
-<figure class="image_container"><a title="<?php echo $this->desc; ?>" <?php if ($this->link): ?>href="<?php echo $this->link; ?>"<?php echo $this->rel ? ' rel="'.$this->rel.'"' : LINK_NEW_WINDOW; ?><?php else: ?>href="<?php echo $this->large; ?>" data-lightbox="<?php echo $this->name; ?>"<?php endif; ?>><img src="<?php echo $this->{$this->type}; ?>" alt="<?php echo $this->alt; ?>" <?php echo $this->{$this->type.'_size'}; ?>></a></figure>
-<?php else: ?>
-<figure class="image_container"><a href="<?php echo $this->href_reader; ?>" title="<?php echo $this->desc; ?>"><img src="<?php echo $this->{$this->type}; ?>" alt="<?php echo $this->alt; ?>" <?php echo $this->{$this->type.'_size'}; ?>></a></figure>
+<figure class="image_container">
+<?php if ($this->hasLink): ?>
+<a title="<?php echo $this->title; ?>" href="<?php echo $this->link; ?>"<?php echo $this->attributes; ?>>
 <?php endif; ?>
+<img src="<?php echo $this->src; ?>" alt="<?php echo $this->alt; ?>" <?php echo $this->size; ?>>
+<?php if ($this->hasLink): ?>
+</a>
+<?php endif; ?>
+</figure>

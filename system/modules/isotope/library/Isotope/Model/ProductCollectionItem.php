@@ -92,7 +92,6 @@ class ProductCollectionItem extends \Model
 
             $this->objProduct = $strClass::findByPk($this->product_id);
             $this->objProduct->setOptions(deserialize($this->options));
-            $this->objProduct->reader_jumpTo_Override = $this->href_reader;
         }
 
         return $this->objProduct;
@@ -149,7 +148,7 @@ class ProductCollectionItem extends \Model
             return $this->price;
         }
 
-        $objPrice = $this->getProduct()->getPrice();
+        $objPrice = $this->getProduct()->getPrice($this->getRelated('pid'));
 
         if (null === $objPrice) {
             return '';
@@ -169,7 +168,7 @@ class ProductCollectionItem extends \Model
             return $this->tax_free_price;
         }
 
-        $objPrice = $this->getProduct()->getPrice();
+        $objPrice = $this->getProduct()->getPrice($this->getRelated('pid'));
 
         if (null === $objPrice) {
             return '';
@@ -204,9 +203,15 @@ class ProductCollectionItem extends \Model
     public function getDownloads()
     {
         if (null === $this->arrDownloads) {
+            $this->arrDownloads = array();
+
             $objDownloads = ProductCollectionDownload::findBy('pid', $this->id);
 
-            $this->arrDownloads = (null === $objDownloads) ? array() : $objDownloads->fetchAll();
+            if (null !== $objDownloads) {
+                while ($objDownloads->next()) {
+                    $this->arrDownloads[] = $objDownloads->current();
+                }
+            }
         }
 
         return $this->arrDownloads;

@@ -14,6 +14,7 @@ namespace Isotope\Model;
 
 use Isotope\Isotope;
 use Isotope\Interfaces\IsotopeProduct;
+use Isotope\Translation;
 
 
 /**
@@ -119,11 +120,19 @@ abstract class Attribute extends TypeAgent
 		// Keep field settings made through DCA code
         $arrField = is_array($arrData['fields'][$this->field_name]) ? $arrData['fields'][$this->field_name] : array();
 
-        $arrField['label']        = Isotope::translate(array($this->name, $this->description));
+        $arrField['label']        = Translation::get(array($this->name, $this->description));
         $arrField['exclude']      = true;
         $arrField['inputType']    = array_search($this->getBackendWidget(), $GLOBALS['BE_FFL']);
         $arrField['attributes']	  = $this->row();
         $arrField['eval']         = is_array($arrField['eval']) ? array_merge($arrField['eval'], $arrField['attributes']) : $arrField['attributes'];
+
+        // Support numeric paths (fileTree)
+        unset($arrField['eval']['path']);
+        if ($this->path && is_numeric($this->path)) {
+            if (($objFile = \FilesModel::findByPk($this->path)) !== null) {
+                $arrField['eval']['path'] = $objFile->path;
+            }
+        }
 
         if ($this->be_filter) {
             $arrField['filter'] = true;
@@ -172,25 +181,25 @@ abstract class Attribute extends TypeAgent
                     if (!strlen($option['value']))
                     {
                         $arrField['eval']['includeBlankOption'] = true;
-                        $arrField['eval']['blankOptionLabel'] = Isotope::translate($option['label']);
+                        $arrField['eval']['blankOptionLabel'] = Translation::get($option['label']);
                         continue;
                     }
                     elseif ($option['group'])
                     {
-                        $strGroup = Isotope::translate($option['label']);
+                        $strGroup = Translation::get($option['label']);
                         continue;
                     }
 
                     if ($strGroup != '')
                     {
-                        $arrField['options'][$strGroup][$option['value']] = Isotope::translate($option['label']);
+                        $arrField['options'][$strGroup][$option['value']] = Translation::get($option['label']);
                     }
                     else
                     {
-                        $arrField['options'][$option['value']] = Isotope::translate($option['label']);
+                        $arrField['options'][$option['value']] = Translation::get($option['label']);
                     }
 
-                    $arrField['reference'][$option['value']] = Isotope::translate($option['label']);
+                    $arrField['reference'][$option['value']] = Translation::get($option['label']);
                 }
             }
         }
@@ -238,7 +247,7 @@ abstract class Attribute extends TypeAgent
 	}
 
 
-	public function generate(IsotopeProduct $objProduct)
+	public function generate(IsotopeProduct $objProduct, array $arrOptions=array())
 	{
 	    $varValue = $objProduct->{$this->field_name};
 	    $strBuffer = '';
@@ -246,87 +255,13 @@ abstract class Attribute extends TypeAgent
 	    // Generate a HTML table for associative arrays
         if (is_array($varValue) && !array_is_assoc($varValue) && is_array($varValue[0]))
         {
-            $arrFormat = $GLOBALS['TL_DCA']['tl_iso_products']['fields'][$this->field_name]['tableformat'];
-
-            $last = count($varValue[0])-1;
-
-            $strBuffer = '
-<table class="'.$this->field_name.'">
-  <thead>
-    <tr>';
-
-            foreach (array_keys($varValue[0]) as $i => $name)
-            {
-                if ($arrFormat[$name]['doNotShow'])
-                {
-                    continue;
-                }
-
-                $label = $arrFormat[$name]['label'] ? $arrFormat[$name]['label'] : $name;
-
-                $strBuffer .= '
-      <th class="head_'.$i.($i==0 ? ' head_first' : '').($i==$last ? ' head_last' : ''). (!is_numeric($name) ? ' '.standardize($name) : '').'">' . $label . '</th>';
-            }
-
-            $strBuffer .= '
-    </tr>
-  </thead>
-  <tbody>';
-
-            foreach ($varValue as $r => $row)
-            {
-                $strBuffer .= '
-    <tr class="row_'.$r.($r==0 ? ' row_first' : '').($r==$last ? ' row_last' : '').' '.($r%2 ? 'odd' : 'even').'">';
-
-                $c = -1;
-
-                foreach ($row as $name => $value)
-                {
-                    if ($arrFormat[$name]['doNotShow'])
-                    {
-                        continue;
-                    }
-
-                    if ($arrFormat[$name]['rgxp'] == 'price')
-                    {
-                        $value = Isotope::formatPriceWithCurrency(Isotope::calculatePrice($value, $this, 'price_tiers', $this->arrData['tax_class']));
-                    }
-                    else
-                    {
-                        $value = $arrFormat[$name]['format'] ? sprintf($arrFormat[$name]['format'], $value) : $value;
-                    }
-
-                    $strBuffer .= '
-      <td class="col_'.++$c.($c==0 ? ' col_first' : '').($c==$i ? ' col_last' : '').' '.standardize($name).'">' . $value . '</td>';
-                }
-
-                $strBuffer .= '
-    </tr>';
-            }
-
-            $strBuffer .= '
-  </tbody>
-</table>';
+            $strBuffer = $this->generateTable($varValue);
         }
 
         // Generate ul/li listing for simpley arrays
         elseif (is_array($varValue))
         {
-            $strBuffer = '
-<ul>';
-
-            $current = 0;
-            $last = count($varValue)-1;
-            foreach( $varValue as $value )
-            {
-                $class = trim(($current == 0 ? 'first' : '') . ($current == $last ? ' last' : ''));
-
-                $strBuffer .= '
-  <li'.($class != '' ? ' class="'.$class.'"' : '').'>' . $value . '</li>';
-            }
-
-            $strBuffer .= '
-</ul>';
+            $strBuffer = $this->generateList($varValue);
         }
         else
         {
@@ -386,5 +321,280 @@ abstract class Attribute extends TypeAgent
         }
 
         return $strFallback;
+    }
+
+    /**
+     * Generate HTML table for associative array values
+     * @param   array
+     * @return  string
+     */
+    protected function generateTable(array $arrValues)
+    {
+        $arrFormat = $GLOBALS['TL_DCA']['tl_iso_products']['fields'][$this->field_name]['tableformat'];
+
+        $last = count($arrValues[0])-1;
+
+        $strBuffer = '
+<table class="'.$this->field_name.'">
+  <thead>
+    <tr>';
+
+        foreach (array_keys($arrValues[0]) as $i => $name)
+        {
+            if ($arrFormat[$name]['doNotShow'])
+            {
+                continue;
+            }
+
+            $label = $arrFormat[$name]['label'] ? $arrFormat[$name]['label'] : $name;
+
+            $strBuffer .= '
+      <th class="head_'.$i.($i==0 ? ' head_first' : '').($i==$last ? ' head_last' : ''). (!is_numeric($name) ? ' '.standardize($name) : '').'">' . $label . '</th>';
+        }
+
+        $strBuffer .= '
+    </tr>
+  </thead>
+  <tbody>';
+
+        foreach ($arrValues as $r => $row)
+        {
+            $strBuffer .= '
+    <tr class="row_'.$r.($r==0 ? ' row_first' : '').($r==$last ? ' row_last' : '').' '.($r%2 ? 'odd' : 'even').'">';
+
+            $c = -1;
+
+            foreach ($row as $name => $value)
+            {
+                if ($arrFormat[$name]['doNotShow'])
+                {
+                    continue;
+                }
+
+                if ($arrFormat[$name]['rgxp'] == 'price')
+                {
+                    $intTax = (int) $row['tax_class'];
+
+                    $value = Isotope::formatPriceWithCurrency(Isotope::calculatePrice($value, $objProduct, $this->field_name, $intTax));
+                }
+                else
+                {
+                    $value = $arrFormat[$name]['format'] ? sprintf($arrFormat[$name]['format'], $value) : $value;
+                }
+
+                $strBuffer .= '
+      <td class="col_'.++$c.($c==0 ? ' col_first' : '').($c==$i ? ' col_last' : '').' '.standardize($name).'">' . $value . '</td>';
+            }
+
+            $strBuffer .= '
+    </tr>';
+        }
+
+        $strBuffer .= '
+  </tbody>
+</table>';
+
+        return $strBuffer;
+    }
+
+    /**
+     * Generate HTML list for array values
+     * @param   array
+     * @return  string
+     */
+    protected function generateList(array $arrValues)
+    {
+        $strBuffer = "\n<ul>";
+
+        $current = 0;
+        $last = count($arrValues)-1;
+        foreach ($arrValues as $value ) {
+            $class = trim(($current == 0 ? 'first' : '') . ($current == $last ? ' last' : ''));
+
+            $strBuffer .= "\n<li".($class != '' ? ' class="'.$class.'"' : '').'>' . $value . '</li>';
+        }
+
+        $strBuffer .= "\n</ul>";
+
+        return $strBuffer;
+    }
+
+    /**
+     * Get list of system columns
+     * @return  array
+     */
+    public static function getSystemColumnsFields()
+    {
+        static $arrFields;
+
+        if (null === $arrFields) {
+            $arrFields = array();
+            $arrDCA = &$GLOBALS['TL_DCA']['tl_iso_products']['fields'];
+
+            foreach ($arrDCA as $field => $config) {
+                if ($config['attributes']['systemColumn']) {
+                    $arrFields[] = $field;
+                }
+            }
+        }
+
+        return $arrFields;
+    }
+
+    /**
+     * Return list of variant option fields
+     * @return  array
+     */
+    public static function getVariantOptionFields()
+    {
+        static $arrFields;
+
+        if (null === $arrFields) {
+            $arrFields = array();
+            $arrDCA = &$GLOBALS['TL_DCA']['tl_iso_products']['fields'];
+
+            foreach ($arrDCA as $field => $config) {
+                if ($config['attributes']['variant_option']) {
+                    $arrFields[] = $field;
+                }
+            }
+        }
+
+        return $arrFields;
+    }
+
+    /**
+     * Return list of fields that are customer defined
+     * @return  array
+     */
+    public static function getCustomerDefinedFields()
+    {
+        static $arrFields;
+
+        if (null === $arrFields) {
+            $arrFields = array();
+            $arrDCA = &$GLOBALS['TL_DCA']['tl_iso_products']['fields'];
+
+            foreach ($arrDCA as $field => $config) {
+                if ($config['attributes']['customer_defined']) {
+                    $arrFields[] = $field;
+                }
+            }
+        }
+
+        return $arrFields;
+    }
+
+    /**
+     * Return list of fields that are multilingual
+     * @return  array
+     */
+    public static function getMultilingualFields()
+    {
+        static $arrFields;
+
+        if (null === $arrFields) {
+            $arrFields = array();
+            $arrDCA = &$GLOBALS['TL_DCA']['tl_iso_products']['fields'];
+
+            foreach ($arrDCA as $field => $config) {
+                if ($config['attributes']['multilingual']) {
+                    $arrFields[] = $field;
+                }
+            }
+        }
+
+        return $arrFields;
+    }
+
+    /**
+     * Return list of fields that have fetch_fallback set
+     * @return  array
+     */
+    public static function getFetchFallbackFields()
+    {
+        static $arrFields;
+
+        if (null === $arrFields) {
+            $arrFields = array();
+            $arrDCA = &$GLOBALS['TL_DCA']['tl_iso_products']['fields'];
+
+            foreach ($arrDCA as $field => $config) {
+                if ($config['attributes']['fetch_fallback']) {
+                    $arrFields[] = $field;
+                }
+            }
+        }
+
+        return $arrFields;
+    }
+
+    /**
+     * Return list of dynamic fields
+     * Dynamic fields cannot be filtered on database level (e.g. product price)
+     * @return  array
+     */
+    public static function getDynamicAttributeFields()
+    {
+        static $arrFields;
+
+        if (null === $arrFields) {
+            $arrFields = array();
+            $arrDCA = &$GLOBALS['TL_DCA']['tl_iso_products']['fields'];
+
+            foreach ($arrDCA as $field => $config) {
+                if ($config['attributes']['dynamic'] || $config['eval']['multiple']) {
+                    $arrFields[] = $field;
+                }
+            }
+        }
+
+        return $arrFields;
+    }
+
+    /**
+     * Return list of fixed fields
+     * Fixed fields cannot be disabled in product type config
+     * @return  array
+     */
+    public static function getFixedFields()
+    {
+        static $arrFields;
+
+        if (null === $arrFields) {
+            $arrFields = array();
+            $arrDCA = &$GLOBALS['TL_DCA']['tl_iso_products']['fields'];
+
+            foreach ($arrDCA as $field => $config) {
+                if ($config['attributes']['fixed']) {
+                    $arrFields[] = $field;
+                }
+            }
+        }
+
+        return $arrFields;
+    }
+
+    /**
+     * Return list of fixed fields
+     * Fixed fields cannot be disabled in product type config
+     * @return  array
+     */
+    public static function getVariantFixedFields()
+    {
+        static $arrFields;
+
+        if (null === $arrFields) {
+            $arrFields = array();
+            $arrDCA = &$GLOBALS['TL_DCA']['tl_iso_products']['fields'];
+
+            foreach ($arrDCA as $field => $config) {
+                if ($config['attributes']['variant_fixed']) {
+                    $arrFields[] = $field;
+                }
+            }
+        }
+
+        return $arrFields;
     }
 }

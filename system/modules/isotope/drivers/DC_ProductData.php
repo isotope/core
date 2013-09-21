@@ -158,7 +158,7 @@ class DC_ProductData extends \DC_Table
 		$this->procedure[] = "language=''";
 
 		// Display products filtered by group
-		$this->procedure[] = "gid IN(" . implode(',', array_map('intval', $this->Database->getChildRecords(array($this->intGroupId), 'tl_iso_groups', false, array($this->intGroupId)))) . ")";
+		$this->procedure[] = "gid IN(" . implode(',', array_map('intval', \Database::getInstance()->getChildRecords(array($this->intGroupId), 'tl_iso_groups', false, array($this->intGroupId)))) . ")";
 
         // Custom filter
         if (is_array($GLOBALS['TL_DCA'][$this->strTable]['list']['sorting']['filter']) && !empty($GLOBALS['TL_DCA'][$this->strTable]['list']['sorting']['filter']))
@@ -968,7 +968,7 @@ window.addEvent(\'domready\', function() {
                 {
                     \Controller::redirect(\Environment::get('script') . '?do=' . \Input::get('do'));
                 }
-                elseif ($this->ptable == 'tl_theme' && $this->strTable == 'tl_style_sheet') # TODO: try to abstract this
+                elseif ($this->ptable == 'tl_theme' && $this->strTable == 'tl_style_sheet')
                 {
                     \Controller::redirect(\System::getReferer(false, $this->strTable));
                 }
@@ -1679,11 +1679,9 @@ window.addEvent(\'domready\', function() {
 		$arrClipboard = $this->Session->get('CLIPBOARD');
 
 		// Check the clipboard
-        // @todo: $arrClipboard is never used?
 		if (!empty($arrClipboard[$this->strTable]))
 		{
 			$blnClipboard = true;
-			$arrClipboard = $arrClipboard[$this->strTable];
 		}
 
 		// Display buttons
@@ -1939,8 +1937,6 @@ window.addEvent(\'domready\', function() {
 	{
 		$blnClipboard = false;
 		$arrClipboard = $this->Session->get('CLIPBOARD');
-        // @todo: $blnHasSorting is never being used?
-		$blnHasSorting = $GLOBALS['TL_DCA'][$this->strTable]['list']['sorting']['fields'][0] == 'sorting';
 		$blnMultiboard = false;
 
 		// Check clipboard
@@ -2000,11 +1996,7 @@ window.addEvent(\'domready\', function() {
 		// List all records of the child table
 		if (!\Input::get('act') || \Input::get('act') == 'paste' || \Input::get('act') == 'select')
 		{
-			// Header
 			$imagePasteAfter = \Image::getHtml('pasteafter.gif', $GLOBALS['TL_LANG'][$this->strTable]['pasteafter'][0]);
-            // @todo: the following 2 variables are never being used?
-			$imageEditHeader = \Image::getHtml('edit.gif', $GLOBALS['TL_LANG'][$this->strTable]['editheader'][0]);
-			$strEditHeader = $GLOBALS['TL_LANG'][$this->strTable]['edit'][0];
 
 			// Temporarily limit the header operations
 			$headerButtons = $GLOBALS['TL_DCA'][$this->strTable]['list']['operations'];

@@ -114,9 +114,9 @@ class PasteProductButton extends \Backend
     {
         if (!$blnActive)
         {
-            return $this->generateImage('pasteinto_.gif', '', 'class="blink"');
+            return \Image::getHtml('pasteinto_.gif', '', 'class="blink"');
         }
 
-        return '<a href="'.$url.'" title="'.specialchars(sprintf($GLOBALS['TL_LANG'][$table]['pasteinto'][1], $id)).'" onclick="Backend.getScrollOffset();">'.$this->generateImage('pasteinto.gif', sprintf($GLOBALS['TL_LANG'][$table]['pasteinto'][1], $id), 'class="blink"').'</a> ';
+        return '<a href="'.$url.'" title="'.specialchars(sprintf($GLOBALS['TL_LANG'][$table]['pasteinto'][1], $id)).'" onclick="Backend.getScrollOffset();">'.\Image::getHtml('pasteinto.gif', sprintf($GLOBALS['TL_LANG'][$table]['pasteinto'][1], $id), 'class="blink"').'</a> ';
     }
 }

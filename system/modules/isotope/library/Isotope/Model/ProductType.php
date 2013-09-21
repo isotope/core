@@ -126,9 +126,20 @@ class ProductType extends \Model
 
     /**
      * Get all product types that are in use
+     * @return  Collection|null
      */
     public static function findAllUsed()
     {
         return static::findBy(array("id IN (SELECT type FROM tl_iso_products WHERE pid=0 AND language='')"), null);
+    }
+
+    /**
+     * Find fallback product type
+     * @param   array
+     * @return  ProductType|null
+     */
+    public static function findFallback(array $arrOptions=array())
+    {
+        return static::findOneBy('fallback', '1', $arrOptions);
     }
 }

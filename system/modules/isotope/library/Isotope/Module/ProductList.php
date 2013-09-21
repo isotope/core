@@ -63,7 +63,7 @@ class ProductList extends Module
         }
 
         // Hide product list in reader mode if the respective setting is enabled
-        if ($this->iso_hide_list && \Input::get('product') != '') {
+        if ($this->iso_hide_list && \Isotope\Frontend::getAutoItem('product') != '') {
             return '';
         }
 
@@ -87,8 +87,6 @@ class ProductList extends Module
      *
      * This function is specially designed so you can keep it in your child classes and only override findProducts().
      * You will automatically gain product caching (see class property), grid classes, pagination and more.
-     *
-     * @return void
      */
     protected function compile()
     {
@@ -104,25 +102,17 @@ class ProductList extends Module
         $intPage = ($this->iso_category_scope == 'article' ? $GLOBALS['ISO_CONFIG']['current_article']['pid'] : $objPage->id);
         $arrProducts = null;
 
+		// Try to load the products from cache
         if ($this->blnCacheProducts && ($objCache = ProductCache::findForPageAndModule($intPage, $this->id)) !== null) {
             $arrCacheIds = $objCache->getProductIds();
 
             // Use the cache if keywords match. Otherwise we will use the product IDs as a "limit" for findProducts()
             if ($objCache->keywords == \Input::get('keywords')) {
-                $total = count($arrCacheIds);
-
-                if ($this->perPage > 0) {
-                    $offset = $this->generatePagination($total);
-                    $total = $total - $offset;
-                    $total = $total > $this->perPage ? $this->perPage : $total;
-
-                    $arrProducts = \Isotope\Frontend::getProducts(array_slice($arrCacheIds, $offset, $this->perPage));
-                } else {
-                    $arrProducts = \Isotope\Frontend::getProducts($arrCacheIds);
-                }
+            	$arrCacheIds = $this->generatePagination($arrCacheIds);
+                $arrProducts = \Isotope\Frontend::getProducts($arrCacheIds);
 
                 // Cache is wrong, drop everything and run findProducts()
-                if (count($arrProducts) != $total) {
+                if (count($arrProducts) != count($arrCacheIds)) {
                     $arrCacheIds = null;
                     $arrProducts = null;
                 }
@@ -188,10 +178,7 @@ class ProductList extends Module
                 $arrProducts = $this->findProducts();
             }
 
-            if ($this->perPage > 0) {
-                $offset = $this->generatePagination(count($arrProducts));
-                $arrProducts = array_slice($arrProducts, $offset, $this->perPage);
-            }
+            $arrProducts = $this->generatePagination($arrProducts);
         }
 
         // No products found
@@ -210,7 +197,8 @@ class ProductList extends Module
         }
 
         $arrBuffer = array();
-        $intReaderPage = \Isotope\Frontend::getReaderPageId(null, $this->iso_reader_jumpTo);
+
+        $intReaderPage = $this->iso_reader_jumpTo ?: \Isotope\Frontend::getReaderPageId();
         $arrDefaultOptions = $this->getDefaultProductOptions();
 
         foreach ($arrProducts as $objProduct) {
@@ -220,6 +208,7 @@ class ProductList extends Module
                 'gallery'       => $objProduct->getRelated('type')->list_gallery,
                 'buttons'       => deserialize($this->iso_buttons, true),
                 'useQuantity'   => $this->iso_use_quantity,
+                'jumpTo'        => $intReaderPage
             );
 
             if (\Environment::get('isAjaxRequest') && \Input::get('AJAX_MODULE') == $this->id && \Input::get('AJAX_PRODUCT') == $objProduct->id) {
@@ -227,10 +216,9 @@ class ProductList extends Module
             }
 
             $objProduct->setOptions(array_merge($arrDefaultOptions, $objProduct->getOptions()));
-            $objProduct->reader_jumpTo = $intReaderPage;
 
-            if ($this->iso_jump_first && \Input::get('product') == '') {
-                \Controller::redirect($objProduct->href_reader);
+            if ($this->iso_jump_first && \Isotope\Frontend::getAutoItem('product') == '') {
+                \Controller::redirect($objProduct->generateUrl($intReaderPage));
             }
 
             $arrBuffer[] = array(
@@ -293,37 +281,67 @@ class ProductList extends Module
 
         $objProducts = Product::findPublishedBy($arrColumns, $arrValues, array('group'=>Product::getTable() . '.id', 'order'=>'c.sorting'));
 
-        return \Isotope\Frontend::getProducts($objProducts, 0, true, $arrFilters, $arrSorting);
+        return \Isotope\Frontend::getProducts($objProducts, true, $arrFilters, $arrSorting);
     }
 
 
     /**
      * Generate the pagination
-     * @param integer
-     * @return integer
+     * @param   array
+     * @return  array
      */
-    protected function generatePagination($total)
+    protected function generatePagination($arrItems)
     {
-        // Add pagination
-        if ($this->perPage > 0 && $total > 0)
-        {
-            $page = \Input::get('page') ? \Input::get('page') : 1;
+    	$offset = 0;
+        $limit = null;
 
-            // Check the maximum page number
-            if ($page > ($total/$this->perPage))
-            {
-                $page = ceil($total/$this->perPage);
-            }
-
-            $offset = ($page - 1) * $this->perPage;
-
-            $objPagination = new \Pagination($total, $this->perPage);
-            $this->Template->pagination = $objPagination->generate("\n  ");
-
-            return $offset;
+        // Set the limit
+        if ($this->numberOfItems > 0) {
+            $limit = $this->numberOfItems;
         }
 
-        return 0;
+		$total = count($arrItems);
+
+		// Split the results
+		if ($this->perPage > 0 && (!isset($limit) || $limit > $this->perPage)) {
+
+			// Adjust the overall limit
+			if (isset($limit)) {
+				$total = min($limit, $total);
+			}
+
+			// Get the current page
+			$id = 'page_iso' . $this->id;
+			$page = \Input::get($id) ?: 1;
+
+			// Do not index or cache the page if the page number is outside the range
+			if ($page < 1 || $page > max(ceil($total / $this->perPage), 1)) {
+	            global $objPage;
+
+	            $objHandler = new $GLOBALS['TL_PTY']['error_404']();
+                $objHandler->generate($objPage->id);
+                exit;
+			}
+
+			// Set limit and offset
+			$limit = $this->perPage;
+			$offset += (max($page, 1) - 1) * $this->perPage;
+
+			// Overall limit
+			if ($offset + $limit > $total) {
+				$limit = $total - $offset;
+			}
+
+			// Add the pagination menu
+			$objPagination = new \Pagination($total, $this->perPage, $GLOBALS['TL_CONFIG']['maxPaginationLinks'], $id);
+			$this->Template->pagination = $objPagination->generate("\n  ");
+		}
+
+		if (isset($limit)) {
+			$arrItems = array_slice($arrItems, $offset, $limit);
+		}
+
+        return $arrItems;
     }
 
 

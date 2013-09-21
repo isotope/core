@@ -33,7 +33,7 @@ $GLOBALS['TL_DCA']['tl_iso_product_collection'] = array
     (
         'dataContainer'             => 'Table',
         'enableVersioning'          => false,
-        'ctable'                    => array('tl_iso_product_collection_item', 'tl_iso_product_collection_surcharge', 'tl_iso_product_collection_download'),
+        'ctable'                    => array('tl_iso_product_collection_item', 'tl_iso_product_collection_surcharge'),
         'closed'                    => true,
         'onload_callback' => array
         (
@@ -61,46 +61,15 @@ $GLOBALS['TL_DCA']['tl_iso_product_collection'] = array
         'sorting' => array
         (
             'mode'                  => 2,
-            'fields'                => array('date DESC'),
+            'fields'                => array('locked DESC'),
             'panelLayout'           => 'filter;sort,search,limit',
             'filter'                => array(array('type=?', 'Order'), array('order_status>?', '0')),
         ),
         'label' => array
         (
-            'fields'                => array('order_id', 'date', 'address1_id', 'grandTotal', 'order_status'),
+            'fields'                => array('order_id', 'locked', 'address1_id', 'grandTotal', 'order_status'),
             'showColumns'           => true,
             'label_callback'        => array('Isotope\tl_iso_product_collection', 'getOrderLabel')
-        ),
-        'global_operations' => array
-        (
-            'all' => array
-            (
-                'label'             => &$GLOBALS['TL_LANG']['MSC']['all'],
-                'href'              => 'act=select',
-                'class'             => 'header_edit_all',
-                'attributes'        => 'onclick="Backend.getScrollOffset();"'
-            ),
-            'tools' => array
-            (
-                'label'             => &$GLOBALS['TL_LANG']['tl_iso_product_collection']['tools'],
-                'href'              => '',
-                'class'             => 'header_isotope_tools',
-                'attributes'        => 'onclick="Backend.getScrollOffset();" style="display:none"',
-            ),
-            'export_emails' => array
-            (
-                'label'             => &$GLOBALS['TL_LANG']['tl_iso_product_collection']['export_emails'],
-                'href'              => 'key=export_emails',
-                'class'             => 'header_iso_export_csv isotope-tools',
-                'attributes'        => 'onclick="Backend.getScrollOffset();"'
-            ),
-            'print_invoices' => array
-            (
-                'label'             => &$GLOBALS['TL_LANG']['tl_iso_product_collection']['print_invoices'],
-                'href'              => 'key=print_invoices',
-                'class'             => 'header_print_invoices isotope-tools',
-                'attributes'        => 'onclick="Backend.getScrollOffset();"'
-            )
         ),
         'operations' => array
         (
@@ -117,39 +86,32 @@ $GLOBALS['TL_DCA']['tl_iso_product_collection'] = array
                 'icon'              => 'delete.gif',
                 'attributes'        => 'onclick="if (!confirm(\'' . $GLOBALS['TL_LANG']['MSC']['deleteConfirm'] . '\')) return false; Backend.getScrollOffset();"'
             ),
-            'info' => array
-            (
-                'label'             => &$GLOBALS['TL_LANG']['tl_iso_product_collection']['info'],
-                'icon'              => 'show.gif',
-                'attributes'        => 'class="invisible isotope-contextmenu"',
-            ),
             'show' => array
             (
                 'label'             => &$GLOBALS['TL_LANG']['tl_iso_product_collection']['show'],
                 'href'              => 'act=show',
                 'icon'              => 'show.gif',
-                'attributes'        => 'class="isotope-tools"',
             ),
             'payment' => array
             (
                 'label'             => &$GLOBALS['TL_LANG']['tl_iso_product_collection']['payment'],
                 'href'              => 'key=payment',
                 'icon'              => 'system/modules/isotope/assets/money-coin.png',
-                'attributes'        => 'class="isotope-tools"',
             ),
+            // @todo add button_callback to disable/hide if not applicable
             'shipping' => array
             (
                 'label'             => &$GLOBALS['TL_LANG']['tl_iso_product_collection']['shipping'],
                 'href'              => 'key=shipping',
                 'icon'              => 'system/modules/isotope/assets/box-label.png',
-                'attributes'        => 'class="isotope-tools"',
             ),
-            'print_order' => array
+            // @todo add button_callback to disable/hide if not applicable
+            'print_document' => array
             (
-                'label'             => &$GLOBALS['TL_LANG']['tl_iso_product_collection']['print_order'],
-                'href'              => 'key=print_order',
+                'label'             => &$GLOBALS['TL_LANG']['tl_iso_product_collection']['print_document'],
+                'href'              => 'key=print_document',
                 'icon'              => 'system/modules/isotope/assets/document-pdf-text.png'
-            ),
+            )
         )
     ),
 
@@ -183,7 +145,12 @@ $GLOBALS['TL_DCA']['tl_iso_product_collection'] = array
         ),
         'locked' => array
         (
-            'sql'                   => "char(1) NOT NULL default ''",
+            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_product_collection']['locked'],
+            'flag'                  => 8,
+            'filter'                => true,
+            'sorting'               => true,
+            'eval'                  => array('rgxp'=>'date'),
+            'sql'                   => "varchar(10) NOT NULL default ''",
         ),
         'store_id' => array
         (
@@ -243,15 +210,6 @@ $GLOBALS['TL_DCA']['tl_iso_product_collection'] = array
             (
                 array('Isotope\tl_iso_product_collection', 'updateOrderStatus'),
             ),
-        ),
-        'date' => array
-        (
-            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_product_collection']['date'],
-            'flag'                  => 8,
-            'filter'                => true,
-            'sorting'               => true,
-            'eval'                  => array('rgxp'=>'date', 'tl_class'=>'clr'),
-            'sql'                   => "int(10) unsigned NOT NULL default '0'",
         ),
         'date_paid' => array
         (
@@ -313,10 +271,6 @@ $GLOBALS['TL_DCA']['tl_iso_product_collection'] = array
             'eval'                  => array('doNotShow'=>true),
         ),
         'subTotal' => array
-        (
-            'sql'                   => "decimal(12,2) NOT NULL default '0.00'",
-        ),
-        'taxTotal' => array
         (
             'sql'                   => "decimal(12,2) NOT NULL default '0.00'",
         ),

@@ -21,6 +21,7 @@ namespace Isotope\Widget;
  * @author     Andreas Schempp <andreas.schempp@terminal42.ch>
  * @author     Fred Bliss <fred.bliss@intelligentspark.com>
  * @author     Christian de la Haye <service@delahaye.de>
+ * @author     Kamil Kuzminski <kamil.kuzminski@codefog.pl>
  */
 class FieldWizard extends \Widget
 {
@@ -56,6 +57,7 @@ class FieldWizard extends \Widget
             case 'value':
                 $this->varValue = deserialize($varValue);
 
+				// @todo: can we remove this?
                 /*if (!is_array($this->varValue))
                 {
                     $this->varValue = array();
@@ -151,7 +153,7 @@ class FieldWizard extends \Widget
      */
     public function generate()
     {
-        $arrButtons = array('up', 'down');
+        $arrButtons = array('drag', 'up', 'down');
         $strCommand = 'cmd_' . $this->strField;
 
         // Change the order
@@ -191,17 +193,17 @@ class FieldWizard extends \Widget
         }
 
         // Begin table
-        $return = '<table class="tl_optionwizard" id="ctrl_'.$this->strId.'">
+        $return = '<table class="tl_fieldwizard" id="ctrl_'.$this->strId.'">
   <thead>
     <tr>
-      <th>a)</th>
-      <th>&nbsp;</th>
-      <th>b)</th>
-      <th>c)</th>
-      <th>&nbsp;</th>
+      <th class="col_0">a)</th>
+      <th class="col_1">&nbsp;</th>
+      <th class="col_2">b)</th>
+      <th class="col_3">c)</th>
+      <th class="col_4">&nbsp;</th>
     </tr>
   </thead>
-  <tbody>';
+  <tbody class="sortable">';
 
         $tabindex = 0;
 
@@ -210,18 +212,24 @@ class FieldWizard extends \Widget
         {
             $return .= '
     <tr>
-      <td><input type="hidden" name="'.$this->strId.'['.$i.'][enabled]" value=""><input type="checkbox" name="'.$this->strId.'['.$i.'][enabled]" id="'.$this->strId.'_enabled_'.$i.'" class="fw_checkbox" tabindex="'.++$tabindex.'" value="1"'.($this->varValue[$i]['enabled'] ? ' checked="checked"' : '').'></td>
-      <td><input type="hidden" name="'.$this->strId.'['.$i.'][value]" value="'.$option.'">'.($GLOBALS['TL_DCA'][$this->table]['fields'][$option]['label'][0] ? $GLOBALS['TL_DCA'][$this->table]['fields'][$option]['label'][0] : $option).'</td>
-      <td><input type="text" name="'.$this->strId.'['.$i.'][label]" id="'.$this->strId.'_label_'.$i.'" class="tl_text_4" tabindex="'.++$tabindex.'" value="'.specialchars($this->varValue[$i]['label']).'"></td>
-      <td><input type="hidden" name="'.$this->strId.'['.$i.'][mandatory]" value=""><input type="checkbox" name="'.$this->strId.'['.$i.'][mandatory]" id="'.$this->strId.'_mandatory_'.$i.'" class="fw_checkbox" tabindex="'.++$tabindex.'" value="1"'.($this->varValue[$i]['mandatory'] ? ' checked="checked"' : '').'> <label for="'.$this->strId.'_mandatory_'.$i.'"></label></td>';
+      <td class="col_0"><input type="hidden" name="'.$this->strId.'['.$i.'][enabled]" value=""><input type="checkbox" name="'.$this->strId.'['.$i.'][enabled]" id="'.$this->strId.'_enabled_'.$i.'" class="fw_checkbox" tabindex="'.++$tabindex.'" value="1"'.($this->varValue[$i]['enabled'] ? ' checked="checked"' : '').'></td>
+      <td class="col_1"><input type="hidden" name="'.$this->strId.'['.$i.'][value]" value="'.$option.'"><label for="'.$this->strId.'_enabled_'.$i.'">'.($GLOBALS['TL_DCA'][$this->table]['fields'][$option]['label'][0] ? $GLOBALS['TL_DCA'][$this->table]['fields'][$option]['label'][0] : $option).'</label></td>
+      <td class="col_2"><input type="text" name="'.$this->strId.'['.$i.'][label]" id="'.$this->strId.'_label_'.$i.'" class="tl_text_4" tabindex="'.++$tabindex.'" value="'.specialchars($this->varValue[$i]['label']).'"></td>
+      <td class="col_3"><input type="hidden" name="'.$this->strId.'['.$i.'][mandatory]" value=""><input type="checkbox" name="'.$this->strId.'['.$i.'][mandatory]" id="'.$this->strId.'_mandatory_'.$i.'" class="fw_checkbox" tabindex="'.++$tabindex.'" value="1"'.($this->varValue[$i]['mandatory'] ? ' checked="checked"' : '').'> <label for="'.$this->strId.'_mandatory_'.$i.'"></label></td>';
 
             // Add row buttons
             $return .= '
-      <td style="white-space:nowrap; padding-left:3px;">';
+      <td class="col_4" style="white-space:nowrap; padding-left:3px;">';
 
             foreach ($arrButtons as $button)
             {
-                $return .= '<a href="'.$this->addToUrl('&amp;'.$strCommand.'='.$button.'&amp;cid='.$i.'&amp;id='.$this->currentRecord).'" title="'.specialchars($GLOBALS['TL_LANG'][$this->strTable][$button][0]).'" onclick="Isotope.fieldWizard(this, \''.$button.'\', \'ctrl_'.$this->strId.'\'); return false;">'.$this->generateImage($button.'.gif', $GLOBALS['TL_LANG'][$this->strTable][$button][0]).'</a> ';
+                $class = ($button == 'up' || $button == 'down') ? ' class="button-move"' : '';
+
+                if ($button == 'drag') {
+                    $return .= \Image::getHtml('drag.gif', '', 'class="drag-handle" title="' . sprintf($GLOBALS['TL_LANG']['MSC']['move']) . '"');
+                } else {
+                    $return .= '<a href="'.$this->addToUrl('&amp;'.$strCommand.'='.$button.'&amp;cid='.$i.'&amp;id='.$this->currentRecord).'"' . $class . ' title="'.specialchars($GLOBALS['TL_LANG'][$this->strTable][$button][0]).'" onclick="Isotope.fieldWizard(this, \''.$button.'\', \'ctrl_'.$this->strId.'\'); return false;">'.\Image::getHtml($button.'.gif', $GLOBALS['TL_LANG'][$this->strTable][$button][0]).'</a> ';
+                }
             }
 
             $return .= '</td>

@@ -25,12 +25,12 @@ $GLOBALS['TL_DCA']['tl_iso_groups'] = array
     (
         'dataContainer'             => 'Table',
         'label'                     => &$GLOBALS['TL_LANG']['tl_iso_groups']['label'],
-		'backlink'                  => \Input::get('popup') ? null : 'do=iso_products',
+        'backlink'                  => \Input::get('popup') ? null : 'do=iso_products',
         'enableVersioning'          => true,
         'onload_callback' => array
         (
             array('Isotope\tl_iso_groups', 'checkPermission'),
-			array('Isotope\tl_iso_groups', 'addBreadcrumb'),
+            array('Isotope\tl_iso_groups', 'addBreadcrumb'),
         ),
         'ondelete_callback' => array
         (
@@ -126,17 +126,15 @@ $GLOBALS['TL_DCA']['tl_iso_groups'] = array
         ),
         'pid' => array
         (
-            'sql'                   => "int(10) unsigned NOT NULL default '0'"
+            'foreignKey'            => 'tl_iso_groups.name',
+            'sql'                   => "int(10) unsigned NOT NULL default '0'",
+            'relation'              => array('type'=>'belongsTo', 'load'=>'lazy'),
         ),
         'sorting' => array
         (
             'sql'                   => "int(10) unsigned NOT NULL default '0'"
         ),
         'tstamp' => array
-        (
-            'sql'                   => "int(10) unsigned NOT NULL default '0'"
-        ),
-        'name' => array
         (
             'sql'                   => "int(10) unsigned NOT NULL default '0'"
         ),
@@ -153,9 +151,11 @@ $GLOBALS['TL_DCA']['tl_iso_groups'] = array
             'label'                 => &$GLOBALS['TL_LANG']['tl_iso_groups']['product_type'],
             'exclude'               => true,
             'inputType'             => 'select',
+            'foreignKey'            => 'tl_iso_producttypes.name',
             'options_callback'      => array('Isotope\ProductCallbacks', 'getProductTypes'),
             'eval'                  => array('includeBlankOption'=>true, 'tl_class'=>'w50'),
-            'sql'                   => "int(10) unsigned NOT NULL default '0'"
-         )
+            'sql'                   => "int(10) unsigned NOT NULL default '0'",
+            'relation'              => array('type'=>'hasOne', 'load'=>'eager'),
+        )
     )
 );

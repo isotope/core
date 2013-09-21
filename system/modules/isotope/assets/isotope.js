@@ -82,14 +82,21 @@ Isotope.hideBox = function()
     }
 };
 
-Isotope.inlineGallery = function(el, elementId)
-{
-    $$(('#'+elementId+'_mainsize img')).set('src', el.href);
+Isotope.inlineGallery = function(el, elementId) {
+"use strict";
 
-    $$(('#'+elementId+'_gallery div, #'+elementId+'_gallery img')).removeClass('active');
+    var i;
+    var parent = el.parentNode;
+    var siblings = parent.parentNode.children;
 
-    el.addClass('active');
-    el.getChildren().addClass('active');
+    for (i=0; i<siblings.length; i++) {
+        if (siblings[i].className.test(/image_container/) && siblings[i].className.test(/active/)) {
+            siblings[i].className = siblings[i].className.replace(/ ?active/, '');
+        }
+    }
+
+    parent.className = parent.className + ' active';
+    document.getElementById(elementId).src = el.href;
 
     return false;
 };
@@ -139,15 +146,7 @@ var IsotopeProducts = (function() {
         if (config.attributes) {
             for (i=0; i<config.attributes.length; i++) {
                 el = document.getElementById(('ctrl_'+config.attributes[i]+'_'+config.formId));
-
-                if (el && el.className.test(/radio_container/)) {
-                    console.log(el);
-/*
-                    el.getElements('input.radio').each( function(option) {
-                        option.addEvent('click', this.refresh);
-                    }.bind(this));
-*/
-                } else if (el) {
+                if (el) {
                     el.addEventListener('change', function() {
                         form.send();
                     }, false);

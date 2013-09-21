@@ -137,101 +137,84 @@ class Standard extends Gallery implements IsotopeGallery
 
     /**
      * Generate main image and return it as HTML string
-     * @param string
-     * @return string
+     * @return  string
      */
-    public function generateMainImage($strType='main')
+    public function generateMainImage()
     {
-        if (!count($this->arrFiles))
-        {
-            return $this->generateAttribute($this->name . '_' . $strType . 'size', ' ', 'images ' . $strType);
+        if (!count($this->arrFiles)) {
+            return '';
         }
 
         $arrFile = reset($this->arrFiles);
 
-        $this->injectAjax();
-
         $objTemplate = new \Isotope\Template($this->strTemplate);
 
-        $objTemplate->setData($arrFile);
-        $objTemplate->id = 0;
-        $objTemplate->mode = 'main';
-        $objTemplate->type = $strType;
-        $objTemplate->name = $this->name;
-        $objTemplate->product_id = $this->product_id;
-        $objTemplate->href_reader = $this->href_reader;
+        $this->addImageToTemplate($objTemplate, 'main', $arrFile);
 
-        list($objTemplate->link, $objTemplate->rel) = explode('|', $arrFile['link']);
-
-        return $this->generateAttribute($this->name . '_' . $strType . 'size', $objTemplate->parse(), 'images ' . $strType);
+        return $objTemplate->parse();
     }
-
 
     /**
      * Generate gallery and return it as HTML string
-     * @param string
-     * @param integer
-     * @return string
+     * @param   integer
+     * @return  string
      */
-    public function generateGallery($strType='gallery', $intSkip=1)
+    public function generateGallery($intSkip=1)
     {
         $strGallery = '';
 
-        foreach ($this->arrFiles as $i => $arrFile)
-        {
-            if ($i < $intSkip)
-            {
+        foreach ($this->arrFiles as $i => $arrFile) {
+            if ($i < $intSkip) {
                 continue;
             }
 
             $objTemplate = new \Isotope\Template($this->strTemplate);
 
-            $objTemplate->setData($arrFile);
-            $objTemplate->id = $i;
-            $objTemplate->mode = 'gallery';
-            $objTemplate->type = $strType;
-            $objTemplate->name = $this->name;
-            $objTemplate->product_id = $this->product_id;
-            $objTemplate->href_reader = $this->href_reader;
-
-            list($objTemplate->link, $objTemplate->rel) = explode('|', $arrFile['link']);
+            $this->addImageToTemplate($objTemplate, 'gallery', $arrFile);
 
             $strGallery .= $objTemplate->parse();
         }
 
-        $this->injectAjax();
-
-        return $this->generateAttribute($this->name . '_gallery', $strGallery, $strType);
+        return $strGallery;
     }
-
 
     /**
-     * Inject Ajax scripts
+     * Generate template with given file
+     * @param   object
+     * @param   string
+     * @param   array
+     * @return  string
      */
-    protected function injectAjax()
+    protected function addImageToTemplate(\Isotope\Template $objTemplate, $strType, array $arrFile)
     {
-        $GLOBALS['TL_MOOTOOLS'][get_class($this).'_ajax'] = "
-<script>
-window.addEvent('ajaxready', function() {
-  Mediabox ? Mediabox.scanPage() : Lightbox.scanPage();
-});
-</script>
-";
+        $objTemplate->setData($this->arrData);
+        $objTemplate->type = $strType;
+        $objTemplate->product_id = $this->product_id;
+        $objTemplate->file = $arrFile;
+        $objTemplate->src = $arrFile[$strType];
+        $objTemplate->size = $arrFile[$strType.'_size'];
+        $objTemplate->alt = $arrFile['alt'];
+        $objTemplate->title = $arrFile['desc'];
+
+        switch ($this->anchor) {
+            case 'reader':
+                $objTemplate->hasLink = ($this->href != '');
+                $objTemplate->link = $this->href;
+                break;
+
+            case 'lightbox':
+                list($link, $rel) = explode('|', $arrFile['link'], 2);
+
+                $objTemplate->hasLink = true;
+                $objTemplate->link = $link ?: $arrFile['lightbox'];
+                $objTemplate->attributes = ($link ? ($rel ? ' data-lightbox="'.$rel.'"' : ' target="_blank"') : ' data-lightbox="product'.$this->product_id.'"');
+                break;
+
+            default:
+                $objTemplate->hasLink = false;
+                break;
+        }
     }
-
-
-    /**
-     * Generate the HTML attribute container
-     * @param string
-     * @param string
-     * @param string
-     * @return string
-     */
-    protected function generateAttribute($strId, $strBuffer, $strClass='')
-    {
-        return '<div' . ($strClass != '' ? ' class="'.strtolower($strClass).'"' : '') .' id="' . $strId . '">' . $strBuffer . '</div>';
-    }
-
 
     /**
      * Add an image to the gallery

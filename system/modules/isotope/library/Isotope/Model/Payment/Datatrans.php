@@ -14,7 +14,6 @@ namespace Isotope\Model\Payment;
 
 use Isotope\Isotope;
 use Isotope\Interfaces\IsotopePayment;
-use Isotope\Model\Payment;
 use Isotope\Model\ProductCollection\Order;
 
 
@@ -25,40 +24,33 @@ use Isotope\Model\ProductCollection\Order;
  * @author     Andreas Schempp <andreas@schempp.ch>
  * @author     Leo Unglaub <leo@leo-unglaub.net>
  */
-class Datatrans extends Payment implements IsotopePayment
+class Datatrans extends Postsale implements IsotopePayment
 {
 
     /**
      * Perform server to server data check
      */
-    public function processPostSale()
+    public function processPostsale()
     {
         // Verify payment status
-        if (\Input::post('status') != 'success')
-        {
+        if (\Input::post('status') != 'success') {
             \System::log('Payment for order ID "' . \Input::post('refno') . '" failed.', __METHOD__, TL_ERROR);
-
             return false;
         }
 
-        if (($objOrder = Order::findByPk(\Input::post('refno'))) === null)
-        {
+        if (($objOrder = Order::findByPk(\Input::post('refno'))) === null) {
             \System::log('Order ID "' . \Input::post('refno') . '" not found', __METHOD__, TL_ERROR);
-
             return false;
         }
 
         // Validate HMAC sign
-        if (\Input::post('sign2') != hash_hmac('md5', $this->datatrans_id.\Input::post('amount').\Input::post('currency').\Input::post('uppTransactionId'), $this->datatrans_sign))
-        {
+        if (\Input::post('sign2') != hash_hmac('md5', $this->datatrans_id.\Input::post('amount').\Input::post('currency').\Input::post('uppTransactionId'), $this->datatrans_sign)) {
             \System::log('Invalid HMAC signature for Order ID ' . \Input::post('refno'), __METHOD__, TL_ERROR);
-
             return false;
         }
 
         // For maximum security, also validate individual parameters
-        if (!$this->validateParameters(array
-        (
+        if (!$this->validateParameters(array(
             'refno'        => $objOrder->id,
             'currency'    => $objOrder->currency,
             'amount'    => round($objOrder->getTotal() * 100),
@@ -68,54 +60,15 @@ class Datatrans extends Payment implements IsotopePayment
             return false;
         }
 
-        $objOrder->checkout();
-        $objOrder->date_payed = time();
-        $objOrder->save();
-    }
-
-
-    /**
-     * Validate post parameters and complete order
-     * @return bool
-     */
-    public function processPayment()
-    {
-        if (($objOrder = Order::findOneBy('source_collection_id', Isotope::getCart()->id)) === null)
-        {
+        if (!$objOrder->checkout()) {
+            \System::log('Postsale checkout for Order ID "' . \Input::post('refno') . '" failed', __METHOD__, TL_ERROR);
             return false;
         }
 
-        if ($objOrder->date_payed > 0 && $objOrder->date_payed <= time())
-        {
-            unset($_SESSION['PAYMENT_TIMEOUT']);
+        $objOrder->date_paid = time();
+        $objOrder->updateOrderStatus($this->new_order_status);
 
-            return true;
-        }
-
-        if (!isset($_SESSION['PAYMENT_TIMEOUT']))
-        {
-            $_SESSION['PAYMENT_TIMEOUT'] = 60;
-        }
-        else
-        {
-            $_SESSION['PAYMENT_TIMEOUT'] = $_SESSION['PAYMENT_TIMEOUT'] - 5;
-        }
-
-        if ($_SESSION['PAYMENT_TIMEOUT'] === 0)
-        {
-            global $objPage;
-            \System::log('Payment could not be processed.', __METHOD__, TL_ERROR);
-            \Controller::redirect(\Controller::generateFrontendUrl($objPage->row(), '/step/failed'));
-        }
-
-        // Reload page every 5 seconds and check if payment was successful
-        $GLOBALS['TL_HEAD'][] = '<meta http-equiv="refresh" content="5,' . \Environment::get('base') . \Environment::get('request') . '">';
-
-        $objTemplate = new \Isotope\Template('mod_message');
-        $objTemplate->type = 'processing';
-        $objTemplate->message = $GLOBALS['TL_LANG']['MSC']['payment_processing'];
-
-        return $objTemplate->parse();
+        $objOrder->save();
     }
 
 

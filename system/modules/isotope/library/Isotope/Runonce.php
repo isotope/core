@@ -47,13 +47,6 @@ class Runonce extends \Controller
         // Check if shop has been installed (tl_store is the name for config table in version < 0.2)
         $blnInstalled = (\Database::getInstance()->tableExists('tl_iso_config') || \Database::getInstance()->tableExists('tl_store'));
 
-        try {
-            $objUpgrade = new \Isotope\Upgrade\Upgrade();
-            $objUpgrade->run($blnInstalled);
-        } catch (\Exception $e) {
-            $this->handleException('Pre-2.0', $e);
-        }
-
         foreach (scan(TL_ROOT . '/system/modules/isotope/library/Isotope/Upgrade') as $strFile) {
             $strVersion = pathinfo($strFile, PATHINFO_FILENAME);
             $strClass = 'Isotope\Upgrade\\' . $strVersion;

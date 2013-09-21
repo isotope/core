@@ -14,6 +14,7 @@ namespace Isotope\Module;
 
 use Isotope\Isotope;
 use Isotope\Interfaces\IsotopeCheckoutStep;
+use Isotope\Interfaces\IsotopeProductCollection;
 use Isotope\Model\Payment;
 use Isotope\Model\Shipping;
 use Isotope\Model\ProductCollection\Order;
@@ -30,12 +31,6 @@ use Isotope\Model\ProductCollection\Order;
  */
 class Checkout extends Module
 {
-
-    /**
-     * Order data. Each checkout step can provide key-value (string) data for the order email.
-     * @var array
-     */
-    public $arrOrderData = array();
 
     /**
      * Do not submit form
@@ -93,13 +88,7 @@ class Checkout extends Module
             return $objTemplate->parse();
         }
 
-        // Set the step from the auto_item parameter
-        if ($GLOBALS['TL_CONFIG']['useAutoItem'] && isset($_GET['auto_item']))
-        {
-            \Input::setGet('step', \Input::get('auto_item'));
-        }
-
-        $this->strCurrentStep = \Input::get('step');
+        $this->strCurrentStep = \Isotope\Frontend::getAutoItem('step');
 
         return parent::generate();
     }
@@ -150,7 +139,7 @@ class Checkout extends Module
             return;
         }
 
-        if (\Input::get('step') == '') {
+        if (\Isotope\Frontend::getAutoItem('step') == '') {
             if ($this->iso_forward_review) {
                 static::redirectToStep('review');
             }
@@ -325,21 +314,20 @@ class Checkout extends Module
      */
     protected function writeOrder()
     {
-        $objCart = Isotope::getCart();
-        $objOrder = Order::findOneBy('source_collection_id', $objCart->id);
+        $objOrder = Order::findOneBy('source_collection_id', Isotope::getCart()->id);
 
         if (null === $objOrder) {
             $objOrder = new Order();
         }
 
-        $objOrder->setSourceCollection($objCart);
+        $objOrder->setSourceCollection(Isotope::getCart());
 
         $objOrder->checkout_info        = $this->getCheckoutInfo();
         $objOrder->iso_sales_email      = $this->iso_sales_email ? $this->iso_sales_email : (($GLOBALS['TL_ADMIN_NAME'] != '') ? sprintf('%s <%s>', $GLOBALS['TL_ADMIN_NAME'], $GLOBALS['TL_ADMIN_EMAIL']) : $GLOBALS['TL_ADMIN_EMAIL']);
         $objOrder->iso_mail_admin       = $this->iso_mail_admin;
         $objOrder->iso_mail_customer    = $this->iso_mail_customer;
         $objOrder->iso_addToAddressbook = $this->iso_addToAddressbook;
-        $objOrder->email_data = $this->arrOrderData;
+        $objOrder->email_data           = $this->getEmailTokensFromSteps($objOrder);
 
         $objOrder->save();
     }
@@ -351,19 +339,17 @@ class Checkout extends Module
      */
     public function getCheckoutInfo()
     {
-        if (!is_array($this->arrCheckoutInfo))
-        {
+        if (!is_array($this->arrCheckoutInfo)) {
+
             $arrCheckoutInfo = array();
 
             // Run trough all steps to collect checkout information
-            foreach ($this->getSteps() as $arrModules)
-            {
-                foreach ($arrModules as $objModule)
-                {
+            foreach ($this->getSteps() as $arrModules) {
+                foreach ($arrModules as $objModule) {
+
                     $arrInfo = $objModule->review();
 
-                    if (is_array($arrInfo) && !empty($arrInfo))
-                    {
+                    if (!empty($arrInfo) && is_array($arrInfo)) {
                         $arrCheckoutInfo += $arrInfo;
                     }
                 }
@@ -382,11 +368,56 @@ class Checkout extends Module
 
 
     /**
+     * Retrieve the array of email data for parsing simple tokens
+     * @param   IsotopeProductCollection
+     * @return  array
+     */
+    protected function getEmailTokensFromSteps(IsotopeProductCollection $objOrder)
+    {
+        $arrTokens = array();
+
+        // Run trough all steps to collect checkout information
+        foreach ($this->getSteps() as $arrModules) {
+            foreach ($arrModules as $objModule) {
+                $arrTokens = array_merge($arrTokens, $objModule->getEmailTokens($objOrder, $this));
+            }
+        }
+
+        return $arrTokens;
+    }
+
+
+    /**
      * Check if the checkout can be executed
      * @return  bool
      */
     protected function canCheckout()
     {
+        // Redirect to login page if not logged in
+        if ($this->iso_checkout_method == 'member' && FE_USER_LOGGED_IN !== true)
+        {
+            $objPage = \Database::getInstance()->prepare("SELECT id,alias FROM tl_page WHERE id=?")->limit(1)->execute($this->iso_login_jumpTo);
+
+            if (!$objPage->numRows)
+            {
+                $this->Template = new \Isotope\Template('mod_message');
+                $this->Template->type = 'error';
+                $this->Template->message = $GLOBALS['TL_LANG']['ERR']['isoLoginRequired'];
+
+                return false;
+            }
+
+            \Controller::redirect(\Controller::generateFrontendUrl($objPage->row()));
+        }
+        elseif ($this->iso_checkout_method == 'guest' && FE_USER_LOGGED_IN === true)
+        {
+            $this->Template = new \Isotope\Template('mod_message');
+            $this->Template->type = 'error';
+            $this->Template->message = $GLOBALS['TL_LANG']['ERR']['checkoutNotAllowed'];
+
+            return false;
+        }
+
         // Return error message if cart is empty
         if (Isotope::getCart()->isEmpty()) {
             $this->Template = new \Isotope\Template('mod_message');
@@ -410,31 +441,6 @@ class Checkout extends Module
             $this->Template = new \Isotope\Template('mod_message');
             $this->Template->type = 'error';
             $this->Template->message = implode("</p>\n<p class=\"error message\">", Isotope::getCart()->getErrors());
-
-            return false;
-        }
-
-        // Redirect to login page if not logged in
-        if ($this->iso_checkout_method == 'member' && FE_USER_LOGGED_IN !== true)
-        {
-            $objPage = \Database::getInstance()->prepare("SELECT id,alias FROM tl_page WHERE id=?")->limit(1)->execute($this->iso_login_jumpTo);
-
-            if (!$objPage->numRows)
-            {
-                $this->Template = new \Isotope\Template('mod_message');
-                $this->Template->type = 'error';
-                $this->Template->message = $GLOBALS['TL_LANG']['ERR']['isoLoginRequired'];
-
-                return false;
-            }
-
-            \Controller::redirect(\Controller::generateFrontendUrl($objPage->row()));
-        }
-        elseif ($this->iso_checkout_method == 'guest' && FE_USER_LOGGED_IN === true)
-        {
-            $this->Template = new \Isotope\Template('mod_message');
-            $this->Template->type = 'error';
-            $this->Template->message = $GLOBALS['TL_LANG']['ERR']['checkoutNotAllowed'];
 
             return false;
         }
@@ -543,8 +549,7 @@ class Checkout extends Module
     {
         global $objPage;
 
-        // Support for auto_item parameter
-        if (!$GLOBALS['TL_CONFIG']['useAutoItem']) {
+        if (!$GLOBALS['TL_CONFIG']['useAutoItem'] || !in_array('step', $GLOBALS['TL_AUTO_ITEM'])) {
             $strStep = 'step/' . $strStep;
         }
 

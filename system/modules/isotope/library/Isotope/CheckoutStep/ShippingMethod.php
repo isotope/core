@@ -14,6 +14,7 @@ namespace Isotope\CheckoutStep;
 
 use Isotope\Isotope;
 use Isotope\Interfaces\IsotopeCheckoutStep;
+use Isotope\Interfaces\IsotopeProductCollection;
 use Isotope\Model\Shipping;
 
 
@@ -89,7 +90,6 @@ class ShippingMethod extends CheckoutStep implements IsotopeCheckoutStep
             'mandatory'     => true,
             'options'       => $arrOptions,
             'value'         => Isotope::getCart()->shipping_id,
-            'onclick'       => "Isotope.toggleAddressFields(this, '" . $this->getStepClass() . "_new');",
             'storeValues'   => true,
             'tableless'     => true,
         ));
@@ -120,14 +120,6 @@ class ShippingMethod extends CheckoutStep implements IsotopeCheckoutStep
         $objTemplate->options = $objWidget->parse();
         $objTemplate->shippingMethods = $arrModules;
 
-        if (!$this->hasError()) {
-            $objShipping = Isotope::getCart()->getShippingMethod();
-            $this->objModule->arrOrderData['shipping_method_id']   = $objShipping->id;
-            $this->objModule->arrOrderData['shipping_method']      = $objShipping->label;
-            $this->objModule->arrOrderData['shipping_note']        = $objShipping->note;
-            $this->objModule->arrOrderData['shipping_note_text']   = strip_tags($objShipping->note);
-        }
-
         return $objTemplate->parse();
     }
 
@@ -144,6 +136,24 @@ class ShippingMethod extends CheckoutStep implements IsotopeCheckoutStep
                 'note'        => Isotope::getCart()->getShippingMethod()->note,
                 'edit'        => \Isotope\Module\Checkout::generateUrlForStep('shipping'),
             ),
+        );
+    }
+
+    /**
+     * Return array of tokens for email templates
+     * @param   IsotopeProductCollection
+     * @param   \Module
+     * @return  array
+     */
+    public function getEmailTokens(IsotopeProductCollection $objCollection, \Module $objModule)
+    {
+        $objShipping = $objCollection->getShippingMethod();
+
+        return array(
+            'shipping_id'        => $objShipping->id,
+            'shipping_label'     => $objShipping->getLabel(),
+            'shipping_note'      => $objShipping->note,
+            'shipping_note_text' => strip_tags($objShipping->note),
         );
     }
 }

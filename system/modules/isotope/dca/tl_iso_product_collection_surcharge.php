@@ -83,10 +83,13 @@ $GLOBALS['TL_DCA']['tl_iso_product_collection_surcharge'] = array
         (
             'sql'                 =>  "char(1) NOT NULL default ''",
         ),
-        'add' => array
+        'addToTotal' => array
         (
             'sql'                 =>  "char(1) NOT NULL default ''",
         ),
-
+        'products' => array
+        (
+            'sql'                 =>  "blob NULL",
+        ),
     ),
 );

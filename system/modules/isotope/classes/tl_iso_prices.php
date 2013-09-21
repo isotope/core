@@ -79,6 +79,55 @@ class tl_iso_prices extends \Backend
 
 
     /**
+     * Generate a list of tiers for a wizard in products
+     * @param object
+     * @param string
+     * @return string
+     */
+    public function generateWizardList($objRecords, $strId)
+    {
+    	$strReturn = '
+<table class="tl_listing showColumns">
+<thead>
+    <td class="tl_folder_tlist">' . Isotope::formatLabel('tl_iso_prices', 'price_tiers') . '</td>
+    <td class="tl_folder_tlist">' . Isotope::formatLabel('tl_iso_prices', 'tax_class') . '</td>
+    <td class="tl_folder_tlist">' . Isotope::formatLabel('tl_iso_prices', 'config_id') . '</td>
+    <td class="tl_folder_tlist">' . Isotope::formatLabel('tl_iso_prices', 'member_group') . '</td>
+    <td class="tl_folder_tlist">' . Isotope::formatLabel('tl_iso_prices', 'start') . '</td>
+    <td class="tl_folder_tlist">' . Isotope::formatLabel('tl_iso_prices', 'stop') . '</td>
+</thead>
+<tbody>';
+
+    	while ($objRecords->next()) {
+
+    	    $arrTiers = array();
+            $objTiers = \Database::getInstance()->execute("SELECT * FROM tl_iso_price_tiers WHERE pid={$objRecords->id} ORDER BY min");
+
+            while ($objTiers->next()) {
+                $arrTiers[] = "{$objTiers->min}={$objTiers->price}";
+            }
+
+	    	$strReturn .= '
+<tr>
+    <td class="tl_file_list">' . implode(', ', $arrTiers) . '</td>
+    <td class="tl_file_list">' . (Isotope::formatValue('tl_iso_prices', 'tax_class', $objRecords->tax_class) ?: '-') . '</td>
+    <td class="tl_file_list">' . (Isotope::formatValue('tl_iso_prices', 'config_id', $objRecords->config_id) ?: '-') . '</td>
+    <td class="tl_file_list">' . (Isotope::formatValue('tl_iso_prices', 'member_group', $objRecords->member_group) ?: '-') . '</td>
+    <td class="tl_file_list">' . (Isotope::formatValue('tl_iso_prices', 'member_group', $objRecords->start) ?: '-') . '</td>
+    <td class="tl_file_list">' . (Isotope::formatValue('tl_iso_prices', 'member_group', $objRecords->stop) ?: '-') . '</td>
+</tr>
+';
+    	}
+
+        $strReturn .= '
+</tbody>
+</table>';
+
+        return $strReturn;
+    }
+
+
+    /**
      * Get tiers and return them as array
      * @param mixed
      * @param object

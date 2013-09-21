@@ -59,12 +59,6 @@ abstract class ProductCollection extends TypeAgent
     protected $arrCache;
 
     /**
-     * Define if data should be threaded as "locked", eg. not apply discount rules to product prices
-     * @var boolean
-     */
-    protected $blnLocked = false;
-
-    /**
      * Cache product items in this collection
      * @var array
      */
@@ -104,7 +98,7 @@ abstract class ProductCollection extends TypeAgent
      * Record has been modified
      * @var boolean
      */
-    protected $blnModified = false;
+    protected $blnModified = true;
 
 
     /**
@@ -113,10 +107,6 @@ abstract class ProductCollection extends TypeAgent
     public function __construct(\Database\Result $objResult=null)
     {
         parent::__construct($objResult);
-
-        if ($objResult !== null) {
-            $this->arrSettings = deserialize($this->arrData['settings'], true);
-        }
 
         // Do not use __destruct, because Database object might be destructed first (see http://github.com/contao/core/issues/2236)
         register_shutdown_function(array($this, 'saveDatabase'));
@@ -128,7 +118,7 @@ abstract class ProductCollection extends TypeAgent
      */
     public function saveDatabase()
     {
-        if (!$this->blnLocked) {
+        if (!$this->isLocked()) {
             $this->save();
         }
     }
@@ -205,7 +195,7 @@ abstract class ProductCollection extends TypeAgent
      */
     public function isLocked()
     {
-        return $this->blnLocked;
+        return (string) $this->locked !== '';
     }
 
     /**
@@ -488,10 +478,12 @@ abstract class ProductCollection extends TypeAgent
      */
     public function setRow(array $arrData)
     {
-        parent::setRow($arrData);
-
+        $this->blnModified = false;
         $this->arrSettings = deserialize($arrData['settings'], true);
-        $this->blnLocked = (bool) $this->locked;
+
+        unset($arrData['settings']);
+
+        return parent::setRow($arrData);
     }
 
 
@@ -503,7 +495,7 @@ abstract class ProductCollection extends TypeAgent
     public function save($blnForceInsert=false)
     {
         if ($this->isLocked()) {
-            return $this;
+            throw new \BadMethodCallException('Cannot save a locked product collection.');
         }
 
         if ($this->blnModified) {
@@ -515,12 +507,12 @@ abstract class ProductCollection extends TypeAgent
 
         foreach ($arrItems as $objItem) {
 
-            if (!$objItem->hasProduct() || null === $objItem->getProduct()->getPrice()) {
+            if (!$objItem->hasProduct() || null === $objItem->getProduct()->getPrice($this)) {
                 continue;
             }
 
-            $objItem->price = $objItem->getProduct()->getPrice()->getAmount($objItem->quantity);
-            $objItem->tax_free_price = $objItem->getProduct()->getPrice()->getNetAmount($objItem->quantity);
+            $objItem->price = $objItem->getProduct()->getPrice($this)->getAmount($objItem->quantity);
+            $objItem->tax_free_price = $objItem->getProduct()->getPrice($this)->getNetAmount($objItem->quantity);
             $objItem->save();
         }
 
@@ -535,6 +527,7 @@ abstract class ProductCollection extends TypeAgent
         }
 
         if ($this->blnModified || $blnForceInsert) {
+            $this->blnModified = false;
             return parent::save($blnForceInsert);
         }
 
@@ -596,15 +589,14 @@ abstract class ProductCollection extends TypeAgent
      */
     public function lock()
     {
-        if ($this->blnLocked) {
+        if ($this->isLocked()) {
             throw new \LogicException('Product collection is already locked.');
         }
 
         $this->save();
 
-        $this->blnLocked = true;
-
-        \Database::getInstance()->query("UPDATE tl_iso_product_collection SET locked='1' WHERE id=" . $this->id);
+        // Can't use model, it would not save as soon as it's locked
+        \Database::getInstance()->query("UPDATE " . static::$strTable . " SET locked=" . time() . " WHERE id=" . $this->id);
     }
 
 
@@ -662,7 +654,7 @@ abstract class ProductCollection extends TypeAgent
             $arrSurcharges = $this->getSurcharges();
 
             foreach ($arrSurcharges as $objSurcharge) {
-                if ($objSurcharge->add !== false) {
+                if ($objSurcharge->addToTotal !== false) {
                     $fltAmount += $objSurcharge->total_price;
                 }
             }
@@ -682,7 +674,7 @@ abstract class ProductCollection extends TypeAgent
             $arrSurcharges = $this->getSurcharges();
 
             foreach ($arrSurcharges as $objSurcharge) {
-                if ($objSurcharge->add !== false) {
+                if ($objSurcharge->addToTotal !== false) {
                     $fltAmount += $objSurcharge->tax_free_total_price;
                 }
             }
@@ -716,6 +708,19 @@ abstract class ProductCollection extends TypeAgent
         return $this->arrCache['latestItem'];
     }
 
+    /**
+     * Return timestamp when this collection was created
+     * This is relevant for price calculation
+     * @return  int
+     */
+    public function getLastModification()
+    {
+        if ($this->isLocked()) {
+            return $this->locked;
+        }
+
+        return $this->tstamp ?: time();
+    }
 
     /**
      * Return all items in the collection
@@ -804,11 +809,12 @@ abstract class ProductCollection extends TypeAgent
 
     /**
      * Add a product to the collection
-     * @param   object The product object
-     * @param   integer How many products to add
+     * @param   object
+     * @param   integer
+     * @param   array
      * @return  ProductCollectionItem
      */
-    public function addProduct(IsotopeProduct $objProduct, $intQuantity)
+    public function addProduct(IsotopeProduct $objProduct, $intQuantity, array $arrConfig=array())
     {
         // !HOOK: additional functionality when adding product to collection
         if (isset($GLOBALS['ISO_HOOKS']['addProductToCollection']) && is_array($GLOBALS['ISO_HOOKS']['addProductToCollection'])) {
@@ -863,9 +869,9 @@ abstract class ProductCollection extends TypeAgent
             $objItem->name              = (string) $objProduct->name;
             $objItem->options           = $objProduct->getOptions();
             $objItem->quantity          = (int) $intQuantity;
-            $objItem->price             = (float) ($objProduct->getPrice() ? $objProduct->getPrice()->getAmount((int) $intQuantity) : 0);
-            $objItem->tax_free_price    = (float) ($objProduct->getPrice() ? $objProduct->getPrice()->getNetAmount((int) $intQuantity) : 0);
-            $objItem->href_reader       = $objProduct->href_reader;
+            $objItem->price             = (float) ($objProduct->getPrice($this) ? $objProduct->getPrice($this)->getAmount((int) $intQuantity) : 0);
+            $objItem->tax_free_price    = (float) ($objProduct->getPrice($this) ? $objProduct->getPrice($this)->getNetAmount((int) $intQuantity) : 0);
+            $objItem->jumpTo            = (int) $arrConfig['jumpTo'];
 
             $objItem->save();
 
@@ -987,11 +993,24 @@ abstract class ProductCollection extends TypeAgent
         return true;
     }
 
-
+    /**
+     * Find surcharges for the current collection
+     * @return  array
+     */
     public function getSurcharges()
     {
         if (null === $this->arrSurcharges) {
-            $this->arrSurcharges = $this->isLocked() ? ProductCollectionSurcharge::findBy('pid', $this->id) : ProductCollectionSurcharge::findForCollection($this);
+            if ($this->isLocked()) {
+                $this->arrSurcharges = array();
+
+                if (($objSurcharges = ProductCollectionSurcharge::findBy('pid', $this->id)) !== null) {
+                    while ($objSurcharges->next()) {
+                        $this->arrSurcharges[] = $objSurcharges->current();
+                    }
+                }
+            } else {
+                $this->arrSurcharges = ProductCollectionSurcharge::findForCollection($this);
+            }
         }
 
         return $this->arrSurcharges;
@@ -1014,12 +1033,16 @@ abstract class ProductCollection extends TypeAgent
         }
 
         // Store in arrData, otherwise each call to __set would trigger setModified(true)
-        $this->arrData['source_collection_id'] = $objSource->id;
-        $this->arrData['config_id']            = $objSource->config_id;
-        $this->arrData['store_id']             = $objSource->store_id;
-        $this->arrData['member']               = $objSource->member;
-        $this->arrData['language']             = $GLOBALS['TL_LANGUAGE'];
-        $this->arrData['currency']             = $objConfig->currency;
+        $this->arrData['source_collection_id']  = $objSource->id;
+        $this->arrData['config_id']             = $objSource->config_id;
+        $this->arrData['store_id']              = $objSource->store_id;
+        $this->arrData['address1_id']           = $objSource->address1_id;
+        $this->arrData['address2_id']           = $objSource->address2_id;
+        $this->arrData['payment_id']            = $objSource->payment_id;
+        $this->arrData['shipping_id']           = $objSource->shipping_id;
+        $this->arrData['member']                = $objSource->member;
+        $this->arrData['language']              = $GLOBALS['TL_LANGUAGE'];
+        $this->arrData['currency']              = $objConfig->currency;
 
         $this->pageId                           = (int) $objPage->id;
 
@@ -1034,9 +1057,8 @@ abstract class ProductCollection extends TypeAgent
 
     /**
      * Copy product collection items from another collection to this one (e.g. Cart to Order)
-     * @param object
-     * @param boolean
-     * @return array
+     * @param   IsotopeProductCollection
+     * @return  array
      */
     public function copyItemsFrom(IsotopeProductCollection $objSource)
     {
@@ -1095,6 +1117,37 @@ abstract class ProductCollection extends TypeAgent
 
 
     /**
+     * Copy product collection surcharges from another collection to this one (e.g. Cart to Order)
+     * @param   IsotopeProductCollection
+     * @return  array
+     */
+    public function copySurchargesFrom(IsotopeProductCollection $objSource, array $arrItemMap=array())
+    {
+        $arrIds = array();
+        $time = time();
+        $sorting = 0;
+
+        foreach ($objSource->getSurcharges() as $objSourceSurcharge) {
+            $objSurcharge = clone $objSourceSurcharge;
+            $objSurcharge->pid = $this->id;
+            $objSurcharge->tstamp = $time;
+            $objSurcharge->sorting = $sorting;
+
+            // Convert surcharge amount for individual product IDs
+            $objSurcharge->convertCollectionItemIds($arrItemMap);
+
+            $objSurcharge->save();
+
+            $arrIds[$objSourceSurcharge->id] = $objSurcharge->id;
+
+            $sorting += 128;
+        }
+
+        return $arrIds;
+    }
+
+
+    /**
      * Calculate the weight of all products in the cart in a specific weight unit
      * @param string
      * @return mixed
@@ -1127,42 +1180,13 @@ abstract class ProductCollection extends TypeAgent
      */
     public function addToTemplate(\Isotope\Template $objTemplate, $varCallable=null)
     {
-        $objModule = $this;
+        // @todo config should be passed from the frontend module
+        $arrConfig = array();
         $arrGalleries = array();
-        $arrItems = array();
-
-        foreach ($this->getItems($varCallable) as $objItem) {
-
-            $blnHasProduct = $objItem->hasProduct();
-            $objProduct = $objItem->getProduct();
-
-            // Set the active product for insert tags replacement
-            $GLOBALS['ACTIVE_PRODUCT'] = $objProduct;
-
-            $arrItems[] = array(
-                'id'                => $objItem->id,
-                'sku'               => $objItem->getSku(),
-                'name'              => $objItem->getName(),
-                'options'           => Isotope::formatOptions($objItem->getOptions()),
-                'quantity'          => $objItem->quantity,
-                'price'             => Isotope::formatPriceWithCurrency($objItem->getPrice()),
-                'tax_free_price'    => Isotope::formatPriceWithCurrency($objItem->getTaxFreePrice()),
-                'total'             => Isotope::formatPriceWithCurrency($objItem->getTotalPrice()),
-                'tax_free_total'    => Isotope::formatPriceWithCurrency($objItem->getTaxFreeTotalPrice() * $objItem->quantity),
-                'tax_id'            => $objItem->tax_id,
-                'hasProduct'        => $blnHasProduct,
-                'product'           => $objProduct,
-                'item'              => $objItem,
-                'raw'               => $objItem->row(),
-                'rowClass'          => trim('product ' . (($blnHasProduct && $objProduct->isNew()) ? 'new ' : '') . $objProduct->cssID[1]),
-            );
-
-            unset($GLOBALS['ACTIVE_PRODUCT']);
-        }
+        $arrItems = $this->addItemsToTemplate($objTemplate, $varCallable);
 
         $objTemplate->collection = $this;
         $objTemplate->config = ($this->getRelated('config_id') || Isotope::getConfig());
-        $objTemplate->items = \Isotope\Frontend::generateRowClass($arrItems, 'row', 'rowClass', 0, ISO_CLASS_COUNT|ISO_CLASS_FIRSTLAST|ISO_CLASS_EVENODD);
         $objTemplate->surcharges = \Isotope\Frontend::formatSurcharges($this->getSurcharges());
         $objTemplate->subtotal = Isotope::formatPriceWithCurrency($this->getSubtotal());
         $objTemplate->total = Isotope::formatPriceWithCurrency($this->getTotal());
@@ -1182,24 +1206,29 @@ abstract class ProductCollection extends TypeAgent
             return $objAttribute->generate($objItem->getProduct());
         };
 
-        $objTemplate->getGallery = function($strAttribute, $objItem) use ($objModule, &$arrGalleries) {
+        $objTemplate->getGallery = function($strAttribute, $objItem) use ($arrConfig, &$arrGalleries) {
 
             if (!$objItem->hasProduct()) {
                 return new \Isotope\Model\Gallery\Standard();
             }
 
             $strCacheKey = 'product' . $objItem->product_id . '_' . $strAttribute;
+            $arrConfig['jumpTo'] = $objItem->jumpTo;
 
             if (!isset($arrGalleries[$strCacheKey])) {
-                $arrGalleries[$strCacheKey] = Gallery::createForProductAttribute($objModule->gallery, $objItem->getProduct(), $strAttribute);
+                $arrGalleries[$strCacheKey] = Gallery::createForProductAttribute(
+                    $objItem->getProduct(),
+                    $strAttribute,
+                    $arrConfig
+                );
             }
 
             return $arrGalleries[$strCacheKey];
         };
 
         // !HOOK: allow overriding of the template
-        if (isset($GLOBALS['ISO_HOOKS']['generateCollection']) && is_array($GLOBALS['ISO_HOOKS']['generateCollection'])) {
-            foreach ($GLOBALS['ISO_HOOKS']['generateCollection'] as $callback) {
+        if (isset($GLOBALS['ISO_HOOKS']['addCollectionToTemplate']) && is_array($GLOBALS['ISO_HOOKS']['addCollectionToTemplate'])) {
+            foreach ($GLOBALS['ISO_HOOKS']['addCollectionToTemplate'] as $callback) {
                 $objCallback = \System::importStatic($callback[0]);
                 $objCallback->$callback[1]($objTemplate, $arrItems, $this);
             }
@@ -1250,6 +1279,66 @@ abstract class ProductCollection extends TypeAgent
         }
 
         return $arrErrors;
+    }
+
+    /**
+     * Loop over items and add them to template
+     * @param   Isotope\Template
+     * @param   Callable
+     * @return  array
+     */
+    protected function addItemsToTemplate(\Isotope\Template $objTemplate, $varCallable=null)
+    {
+        $arrItems = array();
+
+        foreach ($this->getItems($varCallable) as $objItem) {
+            $arrItems[] = $this->generateItem($objItem);
+        }
+
+        $objTemplate->items = \Isotope\Frontend::generateRowClass($arrItems, 'row', 'rowClass', 0, ISO_CLASS_COUNT|ISO_CLASS_FIRSTLAST|ISO_CLASS_EVENODD);
+
+        return $arrItems;
+    }
+
+    /**
+     * Generate item array for template
+     * @param   ProductCollectionItem
+     * @return  array
+     */
+    protected function generateItem(ProductCollectionItem $objItem)
+    {
+        $blnHasProduct = $objItem->hasProduct();
+        $objProduct = $objItem->getProduct();
+
+        // Set the active product for insert tags replacement
+        $GLOBALS['ACTIVE_PRODUCT'] = $objProduct;
+
+        $arrItem = array(
+            'id'                => $objItem->id,
+            'sku'               => $objItem->getSku(),
+            'name'              => $objItem->getName(),
+            'options'           => Isotope::formatOptions($objItem->getOptions()),
+            'quantity'          => $objItem->quantity,
+            'price'             => Isotope::formatPriceWithCurrency($objItem->getPrice()),
+            'tax_free_price'    => Isotope::formatPriceWithCurrency($objItem->getTaxFreePrice()),
+            'total'             => Isotope::formatPriceWithCurrency($objItem->getTotalPrice()),
+            'tax_free_total'    => Isotope::formatPriceWithCurrency($objItem->getTaxFreeTotalPrice() * $objItem->quantity),
+            'tax_id'            => $objItem->tax_id,
+            'hasProduct'        => $blnHasProduct,
+            'downloads'         => $arrDownloads,
+            'product'           => $objProduct,
+            'item'              => $objItem,
+            'raw'               => $objItem->row(),
+            'rowClass'          => trim('product ' . (($blnHasProduct && $objProduct->isNew()) ? 'new ' : '') . $objProduct->cssID[1]),
+        );
+
+        if ($objItem->jumpTo && $blnHasProduct) {
+            $arrItem['href'] = $objProduct->generateUrl((int) $objItem->jumpTo);
+        }
+
+        unset($GLOBALS['ACTIVE_PRODUCT']);
+
+        return $arrItem;
     }
 
     /**

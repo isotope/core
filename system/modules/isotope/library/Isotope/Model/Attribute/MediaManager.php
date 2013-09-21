@@ -38,7 +38,7 @@ class MediaManager extends Attribute implements IsotopeAttribute
         $arrData['fields'][$this->field_name]['attributes']['fetch_fallback'] = true;
 	}
 
-	public function generate(IsotopeProduct $objProduct)
+	public function generate(IsotopeProduct $objProduct, array $arrOptions=array())
 	{
         throw new \BadMethodCallException('MediaManager attribute cannot be generated');
 	}

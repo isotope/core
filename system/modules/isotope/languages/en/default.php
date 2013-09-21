@@ -50,6 +50,7 @@ $GLOBALS['TL_LANG']['MSC']['undefinedLanguage']                 = 'undefined';
 $GLOBALS['TL_LANG']['MSC']['selectGroup']                       = 'Only show this group';
 $GLOBALS['TL_LANG']['MSC']['filterByGroups']                    = 'Groups';
 $GLOBALS['TL_LANG']['MSC']['filterByPages']                     = 'Pages';
+$GLOBALS['TL_LANG']['MSC']['groupPickerHome']                   = 'Back to the group picker';
 $GLOBALS['TL_LANG']['MSC']['allGroups']                         = 'Show all groups';
 $GLOBALS['TL_LANG']['MSC']['noVariants']                        = 'There are no variants for this product.';
 $GLOBALS['TL_LANG']['MSC']['copyFallback']                      = 'Duplicate Fallback';
@@ -188,19 +189,24 @@ $GLOBALS['TL_LANG']['MODEL']['tl_iso_shipping_modules.flat']    = array('Flat-pr
 $GLOBALS['TL_LANG']['MODEL']['tl_iso_payment_modules.cash']                 = array('Cash', 'Use this for all offline processed payment.');
 $GLOBALS['TL_LANG']['MODEL']['tl_iso_payment_modules.paypal']               = array('PayPal Standard Checkout', 'This PayPal module supports IPN (Instant Payment Notifications).');
 $GLOBALS['TL_LANG']['MODEL']['tl_iso_payment_modules.postfinance']          = array('Postfinance', 'Payment gateway for the swiss post payment system that supports various card types. The store will be instantly notified about successfull transactions.');
-$GLOBALS['TL_LANG']['MODEL']['tl_iso_payment_modules.authorizedotnet']      = array('Authorize.net', 'An Authorize.net payment gateway.');
 $GLOBALS['TL_LANG']['MODEL']['tl_iso_payment_modules.datatrans']            = array('Datatrans', 'A payment module for the swiss payment gateway "Datatrans".');
 $GLOBALS['TL_LANG']['MODEL']['tl_iso_payment_modules.sparkasse']            = array('Sparkasse');
+$GLOBALS['TL_LANG']['MODEL']['tl_iso_payment_modules.saferpay']             = array('Saferpay');
 $GLOBALS['TL_LANG']['MODEL']['tl_iso_payment_modules.sofortueberweisung']   = array('sofortüberweisung.de');
 $GLOBALS['TL_LANG']['MODEL']['tl_iso_payment_modules.expercash']            = array('ExperCash');
 $GLOBALS['TL_LANG']['MODEL']['tl_iso_payment_modules.payone']               = array('PayOne');
+$GLOBALS['TL_LANG']['MODEL']['tl_iso_payment_modules.worldpay']             = array('WorldPay');
+
+/**
+ * Documents
+ */
+$GLOBALS['TL_LANG']['MODEL']['tl_iso_document.standard']                = array('Standard');
 
 /**
  * Galleries
  */
 $GLOBALS['TL_LANG']['MODEL']['tl_iso_gallery.standard'] = array('Default gallery', '<p>Uses the lightbox/mediabox for full size images. Make sure you select the appropriate "moo_" template in your page layout configuration.</p><p>You can supply a "rel" attribute to the link target by using a pipe (e.g. "tl_files/video.mov|lightbox[400 300]"). If no "rel" attribute is supplied, the link will be opened in a new window.</p>');
 $GLOBALS['TL_LANG']['MODEL']['tl_iso_gallery.inline']   = array('Inline gallery', 'Clicking on a gallery image will replace the main image.');
-$GLOBALS['TL_LANG']['MODEL']['tl_iso_gallery.zoom']     = array('Inline gallery with zoom effect', 'In addition to the behaviour of inline gallery, it also adds an image zoom feature to the main image.');
 
 /**
  * Product types

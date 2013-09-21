@@ -29,6 +29,7 @@ class Template extends \FrontendTemplate
      * @param   string
      * @param   array
      * @return  mixed
+     * @todo    remove when minimum is Contao 3.2
      */
     public function __call($name, $arguments)
     {

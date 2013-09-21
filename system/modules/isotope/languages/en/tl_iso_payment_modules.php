@@ -18,7 +18,7 @@
  */
 $GLOBALS['TL_LANG']['tl_iso_payment_modules']['name']                                   = array('Payment Method Name', 'Enter a name for this payment method. This will only be used in the backend.');
 $GLOBALS['TL_LANG']['tl_iso_payment_modules']['label']                                  = array('Payment Method Label', 'The label will be shown to customers on checkout.');
-$GLOBALS['TL_LANG']['tl_iso_payment_modules']['type']                                   = array('Type of Payment Gateway', 'Select a particular payment gateway (e.g. Authorize.net)');
+$GLOBALS['TL_LANG']['tl_iso_payment_modules']['type']                                   = array('Type of Payment Gateway', 'Select a particular payment gateway');
 $GLOBALS['TL_LANG']['tl_iso_payment_modules']['note']                                   = array('Payment Note', 'This note can be sent in confirmation mails (##payment_note##).');
 $GLOBALS['TL_LANG']['tl_iso_payment_modules']['new_order_status']                       = array('Status for new orders', 'Choose a matching status for new orders.');
 $GLOBALS['TL_LANG']['tl_iso_payment_modules']['minimum_total']                          = array('Minimum total', 'Enter a number greater zero to exclude this payment method for lower priced orders.');
@@ -26,8 +26,8 @@ $GLOBALS['TL_LANG']['tl_iso_payment_modules']['maximum_total']                  
 $GLOBALS['TL_LANG']['tl_iso_payment_modules']['countries']                              = array('Available countries', 'Select the countries where this payment method may be used (customer\'s billing address).');
 $GLOBALS['TL_LANG']['tl_iso_payment_modules']['shipping_modules']                       = array('Shipping methods', 'You can restrict this payment method to certain shipping methods (e.g. Cash only when picking up).');
 $GLOBALS['TL_LANG']['tl_iso_payment_modules']['product_types']                          = array('Product types', 'You can restrict this payment method to certain product types. If the cart contains a product type you have not selected, the payment method is not available.');
-$GLOBALS['TL_LANG']['tl_iso_payment_modules']['price']                                  = array('Price', '');
-$GLOBALS['TL_LANG']['tl_iso_payment_modules']['tax_class']                              = array('Tax Class', '');
+$GLOBALS['TL_LANG']['tl_iso_payment_modules']['price']                                  = array('Price', 'Enter a price or percent value (e.g. "10" or "10%").');
+$GLOBALS['TL_LANG']['tl_iso_payment_modules']['tax_class']                              = array('Tax Class', 'Please select a tax class for the price.');
 $GLOBALS['TL_LANG']['tl_iso_payment_modules']['trans_type']                             = array('Transaction type', 'Select if you want to instantly capture the money or authorize (and hold) for a later transaction (e.g. when shipping).');
 $GLOBALS['TL_LANG']['tl_iso_payment_modules']['paypal_account']                         = array('PayPal Account', 'Enter the default email address from your PayPal-Account. Note: Check the correct spelling, and case-sensitive.');
 $GLOBALS['TL_LANG']['tl_iso_payment_modules']['payflowpro_user']                        = array('Paypal Payflow Pro username', '');
@@ -40,10 +40,6 @@ $GLOBALS['TL_LANG']['tl_iso_payment_modules']['postfinance_secret']             
 $GLOBALS['TL_LANG']['tl_iso_payment_modules']['postfinance_method']                     = array('Postfinance method', 'Type of data transfer from postfinance.');
 $GLOBALS['TL_LANG']['tl_iso_payment_modules']['requireCCV']                             = array('Require Card Code Verification (CCV) Number', 'Choose this option if you would like to increase transaction security by requiring the card code verification number.');
 $GLOBALS['TL_LANG']['tl_iso_payment_modules']['allowed_cc_types']                       = array('Allowed Credit Card Types', 'Select which credit cards the payment method accepts.');
-$GLOBALS['TL_LANG']['tl_iso_payment_modules']['authorize_login']                        = array('Authorize.net Login', 'Provided when you have completed signup for your gateway');
-$GLOBALS['TL_LANG']['tl_iso_payment_modules']['authorize_trans_key']                    = array('Authorize.net Transaction Key', 'Provided when you have completed signup for your gateway');
-$GLOBALS['TL_LANG']['tl_iso_payment_modules']['authorize_delimiter']                    = array('Authorize.net Delimiter', 'What character should be inserted as the data delimiter for the response?');
-$GLOBALS['TL_LANG']['tl_iso_payment_modules']['authorize_trans_type']                   = array('Authorize.net Transaction Type', 'Authorize and Capture, for example - the first stage is authorizing by validating the data entered by the customer and the next step is submitting for settlement, which is called "capture".');
 $GLOBALS['TL_LANG']['tl_iso_payment_modules']['datatrans_id']                           = array('Merchant-ID', 'Please enter your merchant ID.');
 $GLOBALS['TL_LANG']['tl_iso_payment_modules']['datatrans_sign']                         = array('HMAC Key', 'Please enter your HMAC key from the Datatrans control panel.');
 $GLOBALS['TL_LANG']['tl_iso_payment_modules']['sparkasse_paymentmethod']                = array('Payment method', 'Please select a payment method for this method.');
@@ -53,6 +49,9 @@ $GLOBALS['TL_LANG']['tl_iso_payment_modules']['sparkasse_merchantref']          
 $GLOBALS['TL_LANG']['tl_iso_payment_modules']['sofortueberweisung_user_id']             = array('Customer ID', 'Your customer ID for sofortüberweisung.de');
 $GLOBALS['TL_LANG']['tl_iso_payment_modules']['sofortueberweisung_project_id']          = array('Project ID', 'Your project ID for sofortüberweisung.de');
 $GLOBALS['TL_LANG']['tl_iso_payment_modules']['sofortueberweisung_project_password']    = array('Projekt password', 'Your project password for sofortüberweisung.de');
+$GLOBALS['TL_LANG']['tl_iso_payment_modules']['saferpay_accountid']                     = array('Saferpay Account-ID', 'Please enter your unique Saferpay account id.');
+$GLOBALS['TL_LANG']['tl_iso_payment_modules']['saferpay_description']                   = array('Checkout description', 'The customer will see this description on the Saferpay checkout page.');
+$GLOBALS['TL_LANG']['tl_iso_payment_modules']['saferpay_vtconfig']                      = array('Payment page configuration (VTCONFIG)', 'You can create different Payment Page configurations. If you want to use a specific one of them, enter its "Parameter for the request" value here.');
 $GLOBALS['TL_LANG']['tl_iso_payment_modules']['expercash_popupId']                      = array('ExperCash Popup-ID', 'Geben Sie die Popup-ID aus Ihrem ExperCash Portal ein.');
 $GLOBALS['TL_LANG']['tl_iso_payment_modules']['expercash_profile']                      = array('ExperCash Profile', 'Geben Sie die dreistellige Profilnummer ein.');
 $GLOBALS['TL_LANG']['tl_iso_payment_modules']['expercash_popupKey']                     = array('ExperCash Popup-Key', 'Geben Sie den Popup-Key aus Ihrem ExperCash Portal ein.');
@@ -62,6 +61,11 @@ $GLOBALS['TL_LANG']['tl_iso_payment_modules']['payone_clearingtype']            
 $GLOBALS['TL_LANG']['tl_iso_payment_modules']['payone_aid']                             = array('PAYONE Account-ID', 'Please enter your unique PAYONE account ID.');
 $GLOBALS['TL_LANG']['tl_iso_payment_modules']['payone_portalid']                        = array('PAYONE Portal-ID', 'Please enter your unique PAYONE portal ID.');
 $GLOBALS['TL_LANG']['tl_iso_payment_modules']['payone_key']                             = array('Secret key', 'Enter the secret key you specified for this portal.');
+$GLOBALS['TL_LANG']['tl_iso_payment_modules']['worldpay_instId']                        = array('Installation ID', 'Please enter your WorldPay Installation ID');
+$GLOBALS['TL_LANG']['tl_iso_payment_modules']['worldpay_callbackPW']                    = array('Transaction Password', 'Enter the same transaction password as in your WorldPay configuration.');
+$GLOBALS['TL_LANG']['tl_iso_payment_modules']['worldpay_signatureFields']               = array('SignatureFields', 'Enter the same SignatureField value as in your WorldPay configuration.');
+$GLOBALS['TL_LANG']['tl_iso_payment_modules']['worldpay_md5secret']                     = array('MD5 Secret', 'Enter the same MD5 secret value as in your WorldPay configuration.');
+$GLOBALS['TL_LANG']['tl_iso_payment_modules']['worldpay_description']                   = array('Description', 'Enter a description for your store. It will be shown to the customer on the worldpay checkout process.');
 $GLOBALS['TL_LANG']['tl_iso_payment_modules']['groups']                                 = array('Member groups', 'Restrict this payment method to certain member groups.');
 $GLOBALS['TL_LANG']['tl_iso_payment_modules']['protected']                              = array('Protect payment method', 'Show the payment method to certain member groups only.');
 $GLOBALS['TL_LANG']['tl_iso_payment_modules']['guests']                                 = array('Show to guests only', 'Hide the payment method if a member is logged in.');

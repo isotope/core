@@ -12,13 +12,14 @@
 namespace Isotope\Report;
 
 use Isotope\Isotope;
+use Isotope\Translation;
 
 
 abstract class Sales extends Report
 {
 
 	// Allow extensions to use date_paid or date_shipped
-	protected $strDateField = 'date';
+	protected $strDateField = 'locked';
 
 
 	public function generate()
@@ -139,7 +140,7 @@ abstract class Sales extends Report
 
 		while ($objStatus->next())
 		{
-			$arrStatus[$objStatus->id] = Isotope::translate($objStatus->name);
+			$arrStatus[$objStatus->id] = Translation::get($objStatus->name);
 		}
 
 		$arrSession = \Session::getInstance()->get('iso_reports');

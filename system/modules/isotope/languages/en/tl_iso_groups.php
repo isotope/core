@@ -40,3 +40,4 @@ $GLOBALS['TL_LANG']['tl_iso_groups']['group_legend']    = 'Product group setting
  * References
  */
 $GLOBALS['TL_LANG']['tl_iso_groups']['label']           = 'Product Groups';
+$GLOBALS['TL_LANG']['tl_iso_groups']['manager']         = 'Manage product groups';

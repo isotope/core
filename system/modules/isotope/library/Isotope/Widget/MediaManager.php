@@ -21,6 +21,7 @@ namespace Isotope\Widget;
  * @author     Andreas Schempp <andreas.schempp@terminal42.ch>
  * @author     Fred Bliss <fred.bliss@intelligentspark.com>
  * @author     Christian de la Haye <service@delahaye.de>
+ * @author     Kamil Kuzminski <kamil.kuzminski@codefog.pl>
  */
 class MediaManager extends \Widget implements \uploadable
 {
@@ -173,7 +174,7 @@ class MediaManager extends \Widget implements \uploadable
 
         if (empty($this->varValue))
         {
-	        $this->varValue = null;
+            $this->varValue = null;
         }
     }
 
@@ -193,11 +194,7 @@ class MediaManager extends \Widget implements \uploadable
             $this->varValue = \Isotope\Isotope::mergeMediaData($this->varValue, $arrFallback);
         }
 
-        $GLOBALS['TL_CSS'][] = TL_PLUGINS_URL . 'plugins/mediabox/'. MEDIABOX .'/css/mediaboxAdvBlack21.css|screen';
-        $GLOBALS['TL_JAVASCRIPT'][] = TL_PLUGINS_URL . 'plugins/mediabox/' . MEDIABOX . '/js/mediabox.js';
-        $GLOBALS['TL_JAVASCRIPT'][] = TL_PLUGINS_URL . 'system/modules/isotope/assets/mediabox_init.js';
-
-        $arrButtons = array('up', 'down', 'delete');
+        $arrButtons = array('up', 'down', 'delete', 'drag');
         $strCommand = 'cmd_' . $this->strField;
 
         // Change the order
@@ -249,7 +246,7 @@ class MediaManager extends \Widget implements \uploadable
     <td class="col_4 col_last">&nbsp;</td>
   </tr>
   </thead>
-  <tbody>';
+  <tbody class="sortable">';
 
         // Add input fields
         for ($i=0, $count=count($this->varValue); $i<$count; $i++)
@@ -277,7 +274,7 @@ class MediaManager extends \Widget implements \uploadable
 
             $return .= '
   <tr>
-    <td class="col_0 col_first"><input type="hidden" name="' . $this->strName . '['.$i.'][src]" value="' . specialchars($this->varValue[$i]['src']) . '"><a href="' . $strFile . '" rel="lightbox"><img src="' . $strPreview . '" alt="' . specialchars($this->varValue[$i]['src']) . '"></a></td>
+    <td class="col_0 col_first"><input type="hidden" name="' . $this->strName . '['.$i.'][src]" value="' . specialchars($this->varValue[$i]['src']) . '"><a href="' . $strFile . '" onclick="Backend.openModalImage({\'width\':' . $objFile->width . ',\'title\':\'' . str_replace("'", "\\'", $GLOBALS['TL_LANG'][$this->strTable]['mmSrc']) . '\',\'url\':\'' . $strFile . '\'});return false"><img src="' . $strPreview . '" alt="' . specialchars($this->varValue[$i]['src']) . '"></a></td>
     <td class="col_1"><input type="text" class="tl_text_2" name="' . $this->strName . '['.$i.'][alt]" value="' . specialchars($this->varValue[$i]['alt'], true) . '"'.$strTranslateNone.'><br><input type="text" class="tl_text_2" name="' . $this->strName . '['.$i.'][link]" value="' . specialchars($this->varValue[$i]['link'], true) . '"'.$strTranslateText.'></td>
     <td class="col_2"><textarea name="' . $this->strName . '['.$i.'][desc]" cols="40" rows="3" class="tl_textarea"'.$strTranslateNone.' >' . specialchars($this->varValue[$i]['desc']) . '</textarea></td>
     <td class="col_3">
@@ -296,6 +293,7 @@ class MediaManager extends \Widget implements \uploadable
     </td>
     <td class="col_4 col_last">';
 
+            // Add buttons
             foreach ($arrButtons as $button)
             {
                 if ($button == 'delete' && $blnLanguage && $this->varValue[$i]['translate'] != 'all')
@@ -303,7 +301,13 @@ class MediaManager extends \Widget implements \uploadable
                     continue;
                 }
 
-                $return .= '<a href="'.$this->addToUrl('&amp;'.$strCommand.'='.$button.'&amp;cid='.$i.'&amp;id='.$this->currentRecord).'" title="'.specialchars($GLOBALS['TL_LANG'][$this->strTable]['wz_'.$button]).'" onclick="Isotope.mediaManager(this, \''.$button.'\',  \'ctrl_'.$this->strId.'\'); return false;">'.$this->generateImage($button.'.gif', $GLOBALS['TL_LANG'][$this->strTable]['wz_'.$button], 'class="tl_listwizard_img"').'</a> ';
+                $class = ($button == 'up' || $button == 'down') ? ' class="button-move"' : '';
+
+                if ($button == 'drag') {
+                    $return .= \Image::getHtml('drag.gif', '', 'class="drag-handle" title="' . sprintf($GLOBALS['TL_LANG']['MSC']['move']) . '"');
+                } else {
+                    $return .= '<a href="'.$this->addToUrl('&amp;'.$strCommand.'='.$button.'&amp;cid='.$i.'&amp;id='.$this->currentRecord).'"' . $class . ' title="'.specialchars($GLOBALS['TL_LANG'][$this->strTable]['wz_'.$button]).'" onclick="Isotope.mediaManager(this, \''.$button.'\',  \'ctrl_'.$this->strId.'\'); return false;">'.\Image::getHtml($button.'.gif', $GLOBALS['TL_LANG'][$this->strTable]['wz_'.$button], 'class="tl_listwizard_img"').'</a> ';
+                }
             }
 
             $return .= '</td>

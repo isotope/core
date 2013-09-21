@@ -37,7 +37,7 @@ class SalesTotal extends Sales
 		$objData = \Database::getInstance()->prepare("SELECT
 												c.id AS config_id,
 												c.currency,
-												o.date AS date,
+												o.locked AS date,
 												COUNT(o.id) AS total_orders,
 												SUM(i.quantity) AS total_items,
 												SUM(i.tax_free_price * i.quantity) AS total_sales,

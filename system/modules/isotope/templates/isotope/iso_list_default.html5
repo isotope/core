@@ -4,7 +4,7 @@
 <input type="hidden" name="REQUEST_TOKEN" value="{{request_token}}">
 <input type="hidden" name="AJAX_PRODUCT" value="<?php echo $this->product_id; ?>">
 <input type="hidden" name="AJAX_MODULE" value="<?php echo $this->module_id; ?>">
-<h3><a href="<?php echo $this->href_reader; ?>" title="<?php echo $this->label_detail; ?>"><?php echo $this->generateAttribute('name'); ?></a></h3>
+<h3><a href="<?php echo $this->href; ?>" title="<?php echo $this->label_detail; ?>"><?php echo $this->generateAttribute('name'); ?></a></h3>
 
 
 <?php echo $this->getGallery('images')->generateMainImage(); ?>
@@ -15,7 +15,7 @@
 
 <div class="price"><?php echo $this->generatePrice(); ?></div><?php if($this->baseprice): ?>
 <div class="baseprice"><?php echo $this->generateAttribute('baseprice'); ?></div><?php endif; ?>
-<div class="details"><a href="<?php echo $this->href_reader; ?>" title="<?php echo $this->label_detail; ?>"><?php echo $this->label_detail; ?></a></div>
+<div class="details"><a href="<?php echo $this->href; ?>" title="<?php echo $this->label_detail; ?>"><?php echo $this->label_detail; ?></a></div>
 
 <?php if($this->buttons): ?>
 <div class="submit_container">

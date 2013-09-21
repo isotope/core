@@ -85,7 +85,7 @@ class Reports extends BackendOverview
                                                 FROM tl_iso_product_collection o
                                                 LEFT JOIN tl_iso_product_collection_item i ON o.id=i.pid
                                                 LEFT OUTER JOIN tl_iso_config c ON o.config_id=c.id
-                                                WHERE o.type='Order' AND o.date>?
+                                                WHERE o.type='Order' AND o.locked>?
                                                 " . ($arrAllowedProducts === true ? '' : (" AND i.product_id IN (" . (empty($arrAllowedProducts) ? '0' : implode(',', $arrAllowedProducts)) . ")")) . "
                                                 GROUP BY config_id")
                                     ->execute(strtotime('-24 hours'));

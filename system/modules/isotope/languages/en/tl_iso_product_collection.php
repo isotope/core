@@ -18,8 +18,8 @@
  */
 $GLOBALS['TL_LANG']['tl_iso_product_collection']['order_id']                = array('Order ID');
 $GLOBALS['TL_LANG']['tl_iso_product_collection']['uniqid']                  = array('Unique ID');
-$GLOBALS['TL_LANG']['tl_iso_product_collection']['order_status']            = array('Order Status', 'Select the status of this order.');
-$GLOBALS['TL_LANG']['tl_iso_product_collection']['date']                    = array('Date');
+$GLOBALS['TL_LANG']['tl_iso_product_collection']['order_status']            = array('Order status', 'Select the status of this order.');
+$GLOBALS['TL_LANG']['tl_iso_product_collection']['locked']                  = array('Placed');
 $GLOBALS['TL_LANG']['tl_iso_product_collection']['date_paid']               = array('Payment date', 'Enter a date when this order has been paid.');
 $GLOBALS['TL_LANG']['tl_iso_product_collection']['date_shipped']            = array('Shipped date', 'Enter a date when this order has been shipped.');
 $GLOBALS['TL_LANG']['tl_iso_product_collection']['config_id']               = array('Shop configuration');
@@ -37,10 +37,13 @@ $GLOBALS['TL_LANG']['tl_iso_product_collection']['delete']                  = ar
 $GLOBALS['TL_LANG']['tl_iso_product_collection']['show']                    = array('Order details', 'Show details of order ID %s');
 $GLOBALS['TL_LANG']['tl_iso_product_collection']['payment']                 = array('Payment details', 'Show payment details of order ID %s');
 $GLOBALS['TL_LANG']['tl_iso_product_collection']['shipping']                = array('Shipping details', 'Show shipping details of order ID %s');
-$GLOBALS['TL_LANG']['tl_iso_product_collection']['print_order']             = array('Print this order', 'Print an invoice for the current order');
-$GLOBALS['TL_LANG']['tl_iso_product_collection']['tools']                   = array('Tools', 'More options for order management.');
-$GLOBALS['TL_LANG']['tl_iso_product_collection']['export_emails']           = array('Export Order Emails','Export all emails for those who have ordered.');
-$GLOBALS['TL_LANG']['tl_iso_product_collection']['print_invoices']          = array('Print Invoices','Print one or more invoices into a single document of a certain order status.');
+$GLOBALS['TL_LANG']['tl_iso_product_collection']['print_document']          = array('Print a document', 'Print order ID %s with a document of your choice');
+
+/**
+ * Document choice
+ */
+$GLOBALS['TL_LANG']['tl_iso_product_collection']['document_choice']         = array('Document', 'Choose the document you would like to print the data with.');
+$GLOBALS['TL_LANG']['tl_iso_product_collection']['print']                   = 'Print';
 
 /**
  * Reference

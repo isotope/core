@@ -73,12 +73,12 @@ class Frontend extends \Frontend
      * @param object
      * @param array
      */
-    public function addToCart($objProduct, $arrConfig=array())
+    public function addToCart($objProduct, array $arrConfig=array())
     {
         $objModule = $arrConfig['module'];
         $intQuantity = ($objModule->iso_use_quantity && intval(\Input::post('quantity_requested')) > 0) ? intval(\Input::post('quantity_requested')) : 1;
 
-        if (Isotope::getCart()->addProduct($objProduct, $intQuantity) !== false)
+        if (Isotope::getCart()->addProduct($objProduct, $intQuantity, $arrConfig) !== false)
         {
             $_SESSION['ISO_CONFIRM'][] = $GLOBALS['TL_LANG']['MSC']['addedToCart'];
 
@@ -157,7 +157,7 @@ class Frontend extends \Frontend
         }
         elseif ($arrTag[0] == 'isolabel')
         {
-            return Isotope::translate($arrTag[1], $arrTag[2]);
+            return Translation::get($arrTag[1], $arrTag[2]);
         }
         elseif ($arrTag[0] == 'order')
         {
@@ -174,7 +174,7 @@ class Frontend extends \Frontend
             // {{product::attribute}}                - gets the data of the current product ($GLOBALS['ACTIVE_PRODUCT'] or GET parameter "product")
             // {{product::attribute::product_id}}    - gets the data of the specified product ID
 
-            $objProduct = (count($arrTag) == 3) ? static::getProduct($arrTag[2]) : ($GLOBALS['ACTIVE_PRODUCT'] ? $GLOBALS['ACTIVE_PRODUCT'] : static::getProductByAlias($this->Input->get('product')));
+            $objProduct = (count($arrTag) == 3) ? static::getProduct($arrTag[2]) : ($GLOBALS['ACTIVE_PRODUCT'] ? $GLOBALS['ACTIVE_PRODUCT'] : static::getProductByAlias(static::getAutoItem('product')));
 
             return ($objProduct !== null) ? $objProduct->{$arrTag[1]} : '';
         }
@@ -191,7 +191,7 @@ class Frontend extends \Frontend
     public function addNavigationClass(&$objTemplate)
     {
         // Unset hook to prevent further execution on non-reader pages
-        if (\Input::get('product') == '')
+        if (Frontend::getAutoItem('product') == '')
         {
             unset($GLOBALS['TL_HOOKS']['parseTemplate'][array_search(array('Isotope\Frontend', 'fixNavigationTrail'), $GLOBALS['TL_HOOKS']['parseTemplate'])]);
 
@@ -206,7 +206,7 @@ class Frontend extends \Frontend
             if ($arrTrail == null)
             {
                 $arrTrail = array();
-                $objProduct = static::getProductByAlias(\Input::get('product'));
+                $objProduct = static::getProductByAlias(static::getAutoItem('product'));
 
                 // getProductByAlias will return null if the product is not found
                 if ($objProduct !== null)
@@ -454,13 +454,13 @@ class Frontend extends \Frontend
      */
     public function translateProductUrls($arrGet, $strLanguage, $arrRootPage)
     {
-        if (\Input::get('product') != '')
+        if (static::getAutoItem('product') != '')
         {
-            $arrGet['url']['product'] = \Input::get('product');
+            $arrGet['url']['product'] = static::getAutoItem('product');
         }
-        elseif (\Input::get('step') != '')
+        elseif (static::getAutoItem('step') != '')
         {
-            $arrGet['url']['step'] = \Input::get('step');
+            $arrGet['url']['step'] = static::getAutoItem('step');
         }
         elseif (\Input::get('uid') != '')
         {
@@ -545,11 +545,10 @@ window.addEvent('domready', function()
     /**
      * Shortcut for a single product by ID or from database result
      * @param IsotopeProduct|int
-     * @param integer
      * @param boolean
      * @return IsotopeProduct|null
      */
-    public static function getProduct($objProduct, $intReaderPage=0, $blnCheckAvailability=true)
+    public static function getProduct($objProduct, $blnCheckAvailability=true)
     {
         if (is_numeric($objProduct))
         {
@@ -566,8 +565,6 @@ window.addEvent('domready', function()
             return null;
         }
 
-        $objProduct->reader_jumpTo = $intReaderPage;
-
         return $objProduct;
     }
 
@@ -575,26 +572,24 @@ window.addEvent('domready', function()
     /**
      * Shortcut for a single product by alias (from url?)
      * @param string
-     * @param integer
      * @param boolean
      * @return IsotopeProduct|null
      */
-    public static function getProductByAlias($strAlias, $intReaderPage=0, $blnCheckAvailability=true)
+    public static function getProductByAlias($strAlias, $blnCheckAvailability=true)
     {
-        return static::getProduct(Product::findPublishedByIdOrAlias($strAlias), $intReaderPage, $blnCheckAvailability);
+        return static::getProduct(Product::findPublishedByIdOrAlias($strAlias), $blnCheckAvailability);
     }
 
 
     /**
      * Generate products from database result or array of IDs
      * @param \Database\Result|array
-     * @param integer
      * @param boolean
      * @param array
      * @param array
      * @return array
      */
-    public static function getProducts($objProducts, $intReaderPage=0, $blnCheckAvailability=true, array $arrFilters=array(), array $arrSorting=array())
+    public static function getProducts($objProducts, $blnCheckAvailability=true, array $arrFilters=array(), array $arrSorting=array())
     {
         // Could be an empty array
         if (empty($objProducts)) {
@@ -619,7 +614,7 @@ window.addEvent('domready', function()
         $objProducts->reset();
 
         while ($objProducts->next()) {
-            $objProduct = \Isotope\Frontend::getProduct($objProducts->current(), $intReaderPage, $blnCheckAvailability);
+            $objProduct = \Isotope\Frontend::getProduct($objProducts->current(), $blnCheckAvailability);
 
             if ($objProduct !== null) {
                 $arrProducts[$objProducts->id] = $objProduct;
@@ -789,81 +784,61 @@ window.addEvent('domready', function()
 
     /**
      * Adds the product urls to the array so they get indexed when the search index is being rebuilt in the maintenance module
-     * @param array absolute page urls
-     * @param int root page id
-     * @return array extended array of absolute page urls
+     * @param   array Absolute page urls
+     * @param   int Root page id
+     * @param   boolean True if it's a sitemap module call (= treat differently when page is protected etc.)
+     * @param   string Language
+     * @return  array Extended array of absolute page urls
      */
     public function addProductsToSearchIndex($arrPages, $intRoot=0, $blnSitemap=false, $strLanguage=null)
     {
-        $time = time();
-        $arrJump = array();
-        $arrRoot = array();
-        $strAllowedPages = '';
+        $arrRoots = array();
 
-        // if we have a root page id (sitemap.xml e.g.) we have to make sure we only consider categories in this tree
-        if ($intRoot > 0)
-        {
-            $arrPageIds = $this->getChildRecords($intRoot, 'tl_page', false);
+        // If we have a root page id (sitemap.xml e.g.) we have to make sure we only consider categories in this tree
+        if ($intRoot > 0) {
+            $arrPageIds = \Database::getInstance()->getChildRecords($intRoot, 'tl_page', false);
             $arrPageIds[] = $intRoot;
 
-            $strAllowedPages = ' AND c.page_id IN (' . implode(',', $arrPageIds) . ')';
+            $objProducts = Product::findPublishedByCategories($arrPageIds);
+            $objRoot = \PageModel::findByPk($intRoot);
+        } else {
+            $objProducts = Product::findPublished();
         }
-
-        $objProducts = \Database::getInstance()->query("
-            SELECT tl_page.*, p.id AS product_id, p.alias AS product_alias FROM tl_iso_product_categories c
-                JOIN tl_iso_products p ON p.id=c.pid
-                JOIN tl_iso_producttypes t ON t.id=p.type
-                JOIN tl_page ON tl_page.id=c.page_id
-            WHERE
-                t.class='regular'
-                AND p.language=''
-                AND p.pid=0
-                AND p.published=1
-                AND (p.start='' OR p.start<$time)
-                AND (p.stop='' OR p.stop>$time)"
-                . $strAllowedPages
-        );
 
         while ($objProducts->next())
         {
-            // Cache redirect page with a placeholder, so we only need to replace the string
-            if (!isset($arrJump[$objProducts->id]))
-            {
-                // we need the root page language if we dont have it (maintenance module)
-                $intJump = static::getReaderPageId($objProducts);
-                $objJump = null === $strLanguage ? $this->getPageDetails($intJump) : \Database::getInstance()->execute("SELECT *, '$intRoot' AS rootId FROM tl_page WHERE published=1 AND (start='' OR start<$time) AND (stop='' OR stop>$time) AND id=" . (int) $intJump);
+            $objProduct = $objProducts->current();
 
-                if ($objJump->numRows)
-                {
-                    if (!isset($arrRoot[$objJump->rootId]))
-                    {
-                        $arrRoot[$objJump->rootId] = \Database::getInstance()->execute("SELECT * FROM tl_page WHERE id=" . (int) $objJump->rootId);
+            // Do the fun for all categories
+            foreach ((array) $objProduct->getCategories() as $intPage) {
+                $intJumpTo = static::getReaderPageId($intPage);
+
+                if ($intJumpTo) {
+                    // No need to get the root page model of the page if it's restricted to one only anyway
+                    // Otherwise we need to get the root page model of the current page and for performance
+                    // reasons we cache that in an array
+                    if ($intRoot === 0) {
+                        if (!isset($arrRoot[$intJumpTo])) {
+                            $arrRoot[$intJumpTo] = \PageModel::findByPk(\PageModel::findWithDetails($intJumpTo)->rootId);
+                        }
+
+                        $objRoot = $arrRoot[$intJumpTo];
                     }
 
-                    $strDomain = Environment::get('base');
+                    // Generate the absolute URL
+                    $strDomain = \Environment::get('base');
 
                     // Overwrite the domain
-                    if ($arrRoot[$objJump->rootId]->dns != '')
-                    {
-                        $strDomain = ($arrRoot[$objJump->rootId]->useSSL ? 'https://' : 'http://') . $arrRoot[$objJump->rootId]->dns . TL_PATH . '/';
+                    if ($objRoot->dns != '') {
+                        $strDomain = ($objRoot->useSSL ? 'https://' : 'http://') . $objRoot->dns . TL_PATH . '/';
                     }
 
-                    $arrJump[$objProducts->page_id] = $strDomain . Controller::generateFrontendUrl($objJump->row(), ($GLOBALS['TL_CONFIG']['useAutoItem'] ? '/' : '/product/') . '##alias##', ($strLanguage=='' ? $arrRoot[$objJump->rootId]->language : $strLanguage));
+                    $arrPages[] = $strDomain . $objProducts->current()->generateUrl($intJumpTo);
                 }
-                else
-                {
-                    $arrJump[$objProducts->page_id] = false;
-                }
-            }
-
-            if (false !== $arrJump[$objProducts->page_id])
-            {
-                $strAlias = $objProducts->product_alias == '' ? $objProducts->product_id : $objProducts->product_alias;
-                $arrPages[] = str_replace('##alias##', $strAlias, $arrJump[$objProducts->page_id]);
             }
         }
 
-        // the reader page id can be the same for several categories so we have to make sure we only index the product once
+        // The reader page id can be the same for several categories so we have to make sure we only index the product once
         return array_unique($arrPages);
     }
 
@@ -886,24 +861,17 @@ window.addEvent('domready', function()
 
     /**
      * Gets the product reader of a certain page
-     * @param \Database\Result|int    page object or page ID
-     * @param int    override setting from a module or content element
-     * @return int reader page id
+     * @param   \PageModel|int  PageModel or page ID
+     * @return  int Reader page id
      */
-    public static function getReaderPageId($objOriginPage=null, $intOverride=0)
+    public static function getReaderPageId($objOriginPage=null)
     {
-        if ($intOverride > 0)
-        {
-            return (int) $intOverride;
-        }
-
-        if ($objOriginPage === null)
-        {
+        if ($objOriginPage === null) {
             global $objPage;
             $objOriginPage = $objPage;
         }
 
-        $intPage = is_object($objOriginPage) ? (int) $objOriginPage->id : (int) $objOriginPage;
+        $intPage = (int) (($objOriginPage instanceof \PageModel) ? $objOriginPage->id : $objOriginPage);
 
         // return from cache
         if (isset(static::$arrReaderPageIds[$intPage]))
@@ -911,45 +879,40 @@ window.addEvent('domready', function()
             return static::$arrReaderPageIds[$intPage];
         }
 
-        if (!is_object($objOriginPage))
-        {
-            $objOriginPage = \Database::getInstance()->execute("SELECT * FROM tl_page WHERE id=" . $intPage);
+        if (!$objOriginPage instanceof \PageModel) {
+            $objOriginPage = \PageModel::findByPk($intPage);
         }
 
-        // if the reader page is set on the current page id we return this one
-        if ($objOriginPage->iso_setReaderJumpTo > 0)
-        {
+        // If the reader page is set on the current page id we return this one
+        if ($objOriginPage->iso_setReaderJumpTo > 0) {
             static::$arrReaderPageIds[$intPage] = $objOriginPage->iso_readerJumpTo;
 
             return (int) $objOriginPage->iso_readerJumpTo;
         }
 
-        // now move up the page tree until we find a page where the reader is set
+        // Now move up the page tree until we find a page where the reader is set
         $trail = array();
         $pid = (int) $objOriginPage->pid;
 
-        do
-        {
-            $objParentPage = \Database::getInstance()->execute("SELECT * FROM tl_page WHERE id=" . $pid);
+        do {
+            $objParentPage = \PageModel::findByPk($pid);
 
-            if ($objParentPage->numRows < 1)
-            {
+            if ($objParentPage === null) {
                 break;
             }
 
             $trail[] = $objParentPage->id;
 
-            if ($objParentPage->iso_setReaderJumpTo > 0)
-            {
-                // cache the reader page for all trail pages
+            if ($objParentPage->iso_setReaderJumpTo > 0) {
+                // Cache the reader page for all trail pages
                 static::$arrReaderPageIds = array_merge(static::$arrReaderPageIds, array_fill_keys($trail, $objParentPage->iso_readerJumpTo));
 
                 return (int) $objParentPage->iso_readerJumpTo;
             }
 
             $pid = (int) $objParentPage->pid;
-        }
-        while ($pid > 0 && $objParentPage->type != 'root');
+
+        } while ($pid > 0 && $objParentPage->type != 'root');
 
         // if there is no reader page set at all, we take the current page object
         global $objPage;
@@ -1005,7 +968,7 @@ window.addEvent('domready', function()
             if (($objJump = \PageModel::findByPk($varUrl)) === null) {
                 throw new \InvalidArgumentException('Given page id does not exist.');
             }
-            $varUrl = Isotope::getInstance()->generateFrontendUrl($objJump->row());
+            $varUrl = \Controller::generateFrontendUrl($objJump->row());
         }
 
         if ($strRequest === '') {
@@ -1165,9 +1128,9 @@ window.addEvent('domready', function()
      */
     public function generateBreadcrumb($arrItems, $objModule)
     {
-        if (\Input::get('product') != '')
+        if (static::getAutoItem('product') != '')
         {
-            $objProduct = static::getProductByAlias(\Input::get('product'));
+            $objProduct = static::getProductByAlias(static::getAutoItem('product'));
 
             if ($objProduct !== null)
             {
@@ -1189,7 +1152,7 @@ window.addEvent('domready', function()
                     }
 
                     // Check if a child record of our trail is in categories
-                    $arrChildren = $this->getChildRecords($intTrail, 'tl_page', true);
+                    $arrChildren = \Database::getInstance()->getChildRecords($intTrail, 'tl_page', true);
                     $arrMatch = array_intersect($arrChildren, $arrCategories);
 
                     if (!empty($arrMatch))
@@ -1200,7 +1163,7 @@ window.addEvent('domready', function()
                     }
                 }
 
-                // If we still havent found a list page, don't alter the breadcrumb
+                // If we still haven't found a list page, don't alter the breadcrumb
                 if ($intPage === null)
                 {
                     return $arrItems;
@@ -1256,12 +1219,12 @@ window.addEvent('domready', function()
 
                     $arrResult[] = array
                     (
-                        'isRoot' => false,
-                        'isActive' => false,
-                        'href' => $href,
-                        'title' => ($objResult->pageTitle != '' ? specialchars($objResult->pageTitle, true) : specialchars($objResult->title, true)),
-                        'link' => $objResult->title,
-                        'data' => $objResult->row()
+                        'isRoot'    => false,
+                        'isActive'  => false,
+                        'href'      => $href,
+                        'title'     => ($objResult->pageTitle != '' ? specialchars($objResult->pageTitle, true) : specialchars($objResult->title, true)),
+                        'link'      => $objResult->title,
+                        'data'      => $objResult->row()
                     );
                 }
 
@@ -1291,12 +1254,12 @@ window.addEvent('domready', function()
                 // Add the reader as breadcrumb item
                 $arrItems[] = array
                 (
-                    'isRoot' => false,
-                    'isActive' => true,
-                    'href' => $objProduct->href_reader,
-                    'title' => specialchars($objProduct->name, true),
-                    'link' => $objProduct->name,
-                    'data' => $objPage->row(),
+                    'isRoot'    => false,
+                    'isActive'  => true,
+                    'href'      => $objProduct->generateUrl($objPage->id),
+                    'title'     => specialchars($objProduct->name, true),
+                    'link'      => $objProduct->name,
+                    'data'      => $objPage->row(),
                 );
             }
         }
@@ -1380,6 +1343,20 @@ window.addEvent('domready', function()
         exit;
     }
 
+    /**
+     * Get value of an auto_item parameter
+     * @param   string Key
+     * @return  string
+     */
+    public static function getAutoItem($strKey)
+    {
+        if ($GLOBALS['TL_CONFIG']['useAutoItem'] && in_array($strKey, $GLOBALS['TL_AUTO_ITEM'])) {
+
+            return \Input::get('auto_item');
+        }
+
+        return \Input::get($strKey);
+    }
 
     /**
      * Recursively replace inserttags in the return value
