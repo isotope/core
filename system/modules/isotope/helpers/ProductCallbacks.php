@@ -12,7 +12,9 @@
 
 namespace Isotope;
 
+use Isotope\Model\Attribute;
 use Isotope\Model\Group;
+use Isotope\Model\Product;
 use Isotope\Model\ProductType;
 use Isotope\Model\TaxClass;
 
@@ -516,41 +518,35 @@ window.addEvent('domready', function() {
 
     /**
      * Change the displayed columns in the variants view
-     * @todo should only show variant columns of the current product type
-     * @todo use $GLOBALS['ISO_CONFIG']['variant_options']
      */
     public function changeVariantColumns()
     {
-        if (!\Input::get('id'))
-        {
+        if (!\Input::get('id') || ($objProduct = Product::findByPk(\Input::get('id'))) === null) {
             return;
         }
 
-        $arrColumns = array();
+        $GLOBALS['TL_DCA'][$objProduct->getTable()]['list']['sorting']['fields'] = array('id');
 
-        // Collect only variant-specific fields
-        foreach ($GLOBALS['TL_DCA']['tl_iso_products']['fields'] as $strName=>$arrField)
-        {
-            if ($arrField['eval']['variant_option'])
-            {
-                $arrColumns[] = $strName;
-            }
+        $arrFields = array('images');
+        $arrVariantFields = $objProduct->getRelated('type')->getVariantAttributes();
+        $arrVariantOptions = Attribute::getVariantOptionFields();
+
+        if (in_array('name', $arrVariantFields)) {
+            $arrFields[] = 'name';
+            $GLOBALS['TL_DCA'][$objProduct->getTable()]['list']['sorting']['fields'] = array('name');
+        } elseif (in_array('sku', $arrVariantFields)) {
+            $arrFields[] = 'sku';
+            $GLOBALS['TL_DCA'][$objProduct->getTable()]['list']['sorting']['fields'] = array('sku');
         }
 
-        if (!empty($arrColumns))
-        {
-            $arrDefault = array('images', 'name');
-
-            // Limit the number of columns if there are more than 3
-            if (count($arrColumns) > 3)
-            {
-                $GLOBALS['TL_DCA']['tl_iso_products']['list']['label']['fields'] = $arrDefault;
-                $GLOBALS['TL_DCA']['tl_iso_products']['list']['label']['variantFields'] = $arrColumns;
-                return;
-            }
-
-            $GLOBALS['TL_DCA']['tl_iso_products']['list']['label']['fields'] = array_merge($arrDefault, $arrColumns);
+        // Limit the number of columns if there are more than 3
+        if (count($arrVariantOptions) > 3) {
+            $GLOBALS['TL_DCA'][$objProduct->getTable()]['list']['label']['fields'] = $arrFields;
+            $GLOBALS['TL_DCA'][$objProduct->getTable()]['list']['label']['variantFields'] = $arrVariantOptions;
+            return;
         }
+
+        $GLOBALS['TL_DCA'][$objProduct->getTable()]['list']['label']['fields'] = array_merge($arrFields, $arrVariantOptions);
     }
 
 
