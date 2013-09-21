@@ -519,33 +519,5 @@ class tl_iso_products extends \Backend
                 }
             }
         }
-
-        $GLOBALS['ISO_CONFIG']['variant_options'] = array();
-        $GLOBALS['ISO_CONFIG']['multilingual'] = array();
-        $GLOBALS['ISO_CONFIG']['fetch_fallback'] = array();
-        $GLOBALS['ISO_CONFIG']['dynamicAttributes'] = array();
-
-        foreach ($GLOBALS['TL_DCA']['tl_iso_products']['fields'] as $attribute => $config)
-        {
-            if ($config['attributes']['variant_option'])
-            {
-                $GLOBALS['ISO_CONFIG']['variant_options'][] = $attribute;
-            }
-
-            if ($config['attributes']['multilingual'])
-            {
-                $GLOBALS['ISO_CONFIG']['multilingual'][] = $attribute;
-            }
-
-            if ($config['attributes']['fetch_fallback'])
-            {
-                $GLOBALS['ISO_CONFIG']['fetch_fallback'][] = $attribute;
-            }
-
-            if ($config['attributes']['dynamic'] || $config['eval']['multiple'])
-            {
-                $GLOBALS['ISO_CONFIG']['dynamicAttributes'][] = $attribute;
-            }
-        }
     }
 }

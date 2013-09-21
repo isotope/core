@@ -13,6 +13,7 @@
 namespace Isotope\Model;
 
 use Isotope\Isotope;
+use Isotope\Model\Attribute;
 
 
 /**
@@ -243,12 +244,12 @@ abstract class Product extends TypeAgent
         $arrJoins = array();
         $arrFields = array($arrOptions['table'] . ".*", "'". str_replace('-', '_', $GLOBALS['TL_LANGUAGE']) . "' AS language");
 
-        foreach ($GLOBALS['ISO_CONFIG']['multilingual'] as $attribute)
+        foreach (Attribute::getMultilingualFields() as $attribute)
         {
             $arrFields[] = "IFNULL(translation.$attribute, " . $arrOptions['table'] . ".$attribute) AS $attribute";
         }
 
-        foreach ($GLOBALS['ISO_CONFIG']['fetch_fallback'] as $attribute)
+        foreach (Attribute::getFetchFallbackFields() as $attribute)
         {
             $arrFields[] = "{$arrOptions['table']}.$attribute AS {$attribute}_fallback";
         }

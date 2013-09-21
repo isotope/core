@@ -13,6 +13,7 @@
 namespace Isotope\RequestCache;
 
 use Isotope\Interfaces\IsotopeProduct;
+use Isotope\Model\Attribute;
 use Isotope\Model\Product;
 
 /**
@@ -278,7 +279,7 @@ class Filter implements \ArrayAccess
      */
     public function isDynamicAttribute()
     {
-        return in_array($this->arrConfig['attribute'], $GLOBALS['ISO_CONFIG']['dynamicAttributes']);
+        return in_array($this->arrConfig['attribute'], Attribute::getDynamicAttributeFields());
     }
 
     /**
@@ -287,7 +288,7 @@ class Filter implements \ArrayAccess
      */
     public function isMultilingualAttribute()
     {
-        return in_array($this->arrConfig['attribute'], $GLOBALS['ISO_CONFIG']['multilingual']);
+        return in_array($this->arrConfig['attribute'], Attribute::getMultilingualFields());
     }
 
     /**

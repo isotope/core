@@ -16,6 +16,7 @@ use Isotope\Isotope;
 use Isotope\Interfaces\IsotopeAttribute;
 use Isotope\Interfaces\IsotopeProduct;
 use Isotope\Interfaces\IsotopeProductCollection;
+use Isotope\Model\Attribute;
 use Isotope\Model\Gallery;
 use Isotope\Model\Product;
 use Isotope\Model\ProductPrice;
@@ -772,7 +773,7 @@ class Standard extends Product implements IsotopeProduct
 
         $arrOptions = array();
 
-        foreach (array_intersect($this->getVariantAttributes(), $GLOBALS['ISO_CONFIG']['variant_options']) as $attribute) {
+        foreach (array_intersect($this->getVariantAttributes(), Attribute::getVariantOptionFields()) as $attribute) {
 
             $objAttribute = $GLOBALS['TL_DCA']['tl_iso_products']['attributes'][$attribute];
             $arrValues = $objAttribute->getOptionsForVariants($this->getVariantIds(), $arrOptions);
@@ -870,13 +871,13 @@ class Standard extends Product implements IsotopeProduct
 
             $this->arrData[$attribute] = $arrData[$attribute];
 
-            if (in_array($attribute, $GLOBALS['ISO_CONFIG']['fetch_fallback'])) {
+            if (in_array($attribute, Attribute::getFetchFallbackFields())) {
                 $this->arrData[$attribute.'_fallback'] = $arrData[$attribute.'_fallback'];
             }
         }
 
         // Load variant options
-        $this->arrOptions = array_merge($this->arrOptions, array_intersect_key($arrData, array_flip(array_intersect($this->getVariantAttributes(), $GLOBALS['ISO_CONFIG']['variant_options']))));
+        $this->arrOptions = array_merge($this->arrOptions, array_intersect_key($arrData, array_flip(array_intersect($this->getVariantAttributes(), Attribute::getVariantOptionFields()))));
     }
 
     /**
