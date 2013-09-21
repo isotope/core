@@ -551,6 +551,8 @@ if (\Input::get('id'))
 {
     $GLOBALS['TL_DCA']['tl_iso_products']['list']['global_operations']['new_product']['label'] = &$GLOBALS['TL_LANG']['tl_iso_products']['new_variant'];
     $GLOBALS['TL_DCA']['tl_iso_products']['list']['global_operations']['new_product']['href'] = 'act=create&mode=2&type=variant&pid=' . \Input::get('id') . '&gid=' . $this->Session->get('iso_products_gid');
+    unset($GLOBALS['TL_DCA']['tl_iso_products']['list']['global_operations']['import']);
+    unset($GLOBALS['TL_DCA']['tl_iso_products']['list']['global_operations']['groups']);
 } else {
     unset($GLOBALS['TL_DCA']['tl_iso_products']['list']['global_operations']['generate']);
 }
