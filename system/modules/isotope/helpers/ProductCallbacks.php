@@ -350,9 +350,6 @@ class ProductCallbacks extends \Backend
         $arrFields = &$GLOBALS['TL_DCA']['tl_iso_products']['fields'];
         $arrAttributes = &$GLOBALS['TL_DCA']['tl_iso_products']['attributes'];
 
-        // Unset foreign key to activate options_callback
-        unset($arrFields['type']['foreignKey']);
-
         $arrTypes = $this->arrProductTypes;
         $blnVariants = false;
         $act = \Input::get('act');
