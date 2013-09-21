@@ -12,11 +12,19 @@
 
 
 namespace Isotope\CheckoutStep;
+
 use Isotope\Interfaces\IsotopeProductCollection;
+use Haste\Form;
 
 
 abstract class OrderConditions extends CheckoutStep
 {
+
+    /**
+     * Haste form
+     * @var object
+     */
+    protected $objForm;
 
     /**
      * Returns true if order conditions are defined
@@ -33,28 +41,27 @@ abstract class OrderConditions extends CheckoutStep
      */
     public function generate()
     {
-        $this->import('Isotope\Frontend', 'IsotopeFrontend');
-        $objForm = $this->IsotopeFrontend->prepareForm($this->iso_order_conditions, $this->strFormId);
+        $this->objForm = new Form($this->objModule->getFormId(), 'POST', function($haste) {
+            return \Input::post('FORM_SUBMIT') === $haste->getFormId();
+        }, (boolean) $this->objModule->tableless);
 
-        // Form not found
-        if ($objForm == null)
-        {
-            return '';
+        // don't catch the exception here because we want it to be shown to the user
+        $this->objForm->addFieldsFromFormGenerator($this->objModule->iso_order_conditions);
+
+        // Manually create widgets because we need to know if there are uploadable widgets
+        $this->objForm->createWidgets();
+
+        // change enctype if there are uploads
+        if ($this->objForm->hasUploads()) {
+            $this->objModule->Template->enctype = 'multipart/form-data';
         }
 
-        $this->blnError = $objForm->blnHasErrors;
-        $this->Template->enctype = $objForm->enctype;
+        if (!$this->objForm->isSubmitted() || !$this->objForm->validate()) {
+            $this->blnError = true;
+        }
 
         $objTemplate = new \Isotope\Template('iso_checkout_order_conditions');
-        $objTemplate->attributes    = $objForm->attributes;
-        $objTemplate->tableless        = $objForm->arrData['tableless'];
-
-        $parse = function ($a) {
-            return $a->parse();
-        };
-
-        $objTemplate->hidden = implode('', array_map($parse, $objForm->arrHidden));
-        $objTemplate->fields = implode('', array_map($parse, $objForm->arrFields));
+        $this->objForm->addToTemplate($objTemplate);
 
         return $objTemplate->parse();
     }
@@ -65,25 +72,6 @@ abstract class OrderConditions extends CheckoutStep
      */
     public function review()
     {
-        if (!$this->hasError())
-        {
-            if (is_array($_SESSION['FORM_DATA']))
-            {
-                foreach( $_SESSION['FORM_DATA'] as $name => $value )
-                {
-                    $this->objModule->arrOrderData['form_' . $name] = $value;
-                }
-            }
-
-            if (is_array($_SESSION['FILES']))
-            {
-                foreach( $_SESSION['FILES'] as $name => $file )
-                {
-                    $this->objModule->arrOrderData['form_' . $name] = \Environment::get('base') . str_replace(TL_ROOT . '/', '', dirname($file['tmp_name'])) . '/' . rawurlencode($file['name']);
-                }
-            }
-        }
-
         return '';
     }
 
@@ -95,19 +83,17 @@ abstract class OrderConditions extends CheckoutStep
      */
     public function getEmailTokens(IsotopeProductCollection $objCollection, \Module $objModule)
     {
-        // @todo return form field values
-        /*
-        foreach ($objForm->arrFormData as $name => $value)
-        {
-            $this->objModule->arrOrderData['form_' . $name] = $value;
+        $arrTokens = array();
+
+        foreach ($this->objForm->fetchAll() as $strName => $varValue) {
+            if ($this->objForm->getWidget($strName) instanceof \uploadable) {
+                $arrFile = $_SESSION['FILES'][$strName];
+                $varValue = str_replace(TL_ROOT . '/', '', dirname($arrFile['tmp_name'])) . '/' . rawurlencode($arrFile['name']);
+            }
+
+            $arrTokens['form_' . $strName] = $varValue;
         }
 
-        foreach ($objForm->arrFiles as $name => $file)
-        {
-            $this->objModule->arrOrderData['form_' . $name] = \Environment::get('base') . str_replace(TL_ROOT . '/', '', dirname($file['tmp_name'])) . '/' . rawurlencode($file['name']);
-        }
-        */
-
-        return array();
+        return $arrTokens;
     }
 }
