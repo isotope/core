@@ -418,4 +418,25 @@ abstract class Attribute extends TypeAgent
 
         return $strBuffer;
     }
+
+    /**
+     * Get list of system columns
+     * @return  array
+     */
+    public static function getSystemColumnsFields()
+    {
+        static $arrFields;
+
+        if (null === $arrFields) {
+            $arrDCA = &$GLOBALS['TL_DCA']['tl_iso_products']['fields'];
+
+            foreach ($arrDCA as $field => $config) {
+                if ($config['attributes']['systemColumn']) {
+                    $arrFields[] = $field;
+                }
+            }
+        }
+
+        return $arrFields;
+    }
 }
