@@ -719,6 +719,10 @@ window.addEvent('domready', function() {
      */
     public function generateFilterButtons()
     {
+        if (\Input::get('id') > 0) {
+            return;
+        }
+
         $session = $this->Session->getData();
         $arrPages = (array) $session['filter']['tl_iso_products']['iso_pages'];
 
@@ -736,6 +740,10 @@ window.addEvent('domready', function() {
      */
     public function generateAdvancedFilters()
     {
+        if (\Input::get('id') > 0) {
+            return;
+        }
+
         $session = $this->Session->getData();
 
         // Filters
