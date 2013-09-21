@@ -79,7 +79,7 @@ $GLOBALS['TL_DCA']['tl_iso_products'] = array
             'mode'                  => 2,
             'fields'                => array('name'),
             'headerFields'          => array('name', 'sku', 'price', 'published'),
-            'headerOperations'      => array('edit', 'copy', 'cut', 'delete', 'toggle', 'show', 'generate', 'related', 'downloads', 'prices'),
+            'headerOperations'      => array('edit', 'copy', 'cut', 'delete', 'toggle', 'show', 'generate', 'related', 'downloads'),
             'flag'                  => 1,
             'panelLayout'           => 'iso_buttons,iso_filter;filter;sort,search,limit',
             'icon'                  => 'system/modules/isotope/assets/store-open.png',
@@ -198,13 +198,6 @@ $GLOBALS['TL_DCA']['tl_iso_products'] = array
                 'href'              => 'table=tl_iso_downloads',
                 'icon'              => 'system/modules/isotope/assets/paper-clip.png',
                 'button_callback'   => array('Isotope\ProductCallbacks', 'downloadsButton'),
-            ),
-            'prices' => array
-            (
-                'label'             => &$GLOBALS['TL_LANG']['tl_iso_products']['prices'],
-                'href'              => 'table=tl_iso_prices',
-                'icon'              => 'system/modules/isotope/assets/price-tag.png',
-                'button_callback'   => array('Isotope\ProductCallbacks', 'pricesButton'),
             ),
         ),
     ),

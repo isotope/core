@@ -954,34 +954,6 @@ window.addEvent('domready', function() {
     }
 
 
-    /**
-     * Show/hide the prices button
-     * @param array
-     * @param string
-     * @param string
-     * @param string
-     * @param string
-     * @param string
-     * @return string
-     */
-    public function pricesButton($row, $href, $label, $title, $icon, $attributes)
-    {
-        if (null === $this->arrProductTypes[$row['type']] || !$this->arrProductTypes[$row['type']]->hasAdvancedPrices())
-        {
-            return '';
-        }
-
-        $arrAttributes = $row['pid'] > 0 ? $this->arrProductTypes[$row['type']]->getVariantAttributes() : $this->arrProductTypes[$row['type']]->getAttributes();
-
-        if (!in_array('price', $arrAttributes))
-        {
-            return '';
-        }
-
-        return '<a href="'.$this->addToUrl($href.'&amp;id='.$row['id']).'" title="'.specialchars($title).'"'.$attributes.'>'.\Image::getHtml($icon, $label).'</a> ';
-    }
-
-
 
     ////////////////////////
     //  !options_callback
