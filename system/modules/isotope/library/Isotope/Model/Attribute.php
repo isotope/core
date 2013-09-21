@@ -551,4 +551,50 @@ abstract class Attribute extends TypeAgent
 
         return $arrFields;
     }
+
+    /**
+     * Return list of fixed fields
+     * Fixed fields cannot be disabled in product type config
+     * @return  array
+     */
+    public static function getFixedFields()
+    {
+        static $arrFields;
+
+        if (null === $arrFields) {
+            $arrFields = array();
+            $arrDCA = &$GLOBALS['TL_DCA']['tl_iso_products']['fields'];
+
+            foreach ($arrDCA as $field => $config) {
+                if ($config['attributes']['fixed']) {
+                    $arrFields[] = $field;
+                }
+            }
+        }
+
+        return $arrFields;
+    }
+
+    /**
+     * Return list of fixed fields
+     * Fixed fields cannot be disabled in product type config
+     * @return  array
+     */
+    public static function getVariantFixedFields()
+    {
+        static $arrFields;
+
+        if (null === $arrFields) {
+            $arrFields = array();
+            $arrDCA = &$GLOBALS['TL_DCA']['tl_iso_products']['fields'];
+
+            foreach ($arrDCA as $field => $config) {
+                if ($config['attributes']['variant_fixed']) {
+                    $arrFields[] = $field;
+                }
+            }
+        }
+
+        return $arrFields;
+    }
 }
