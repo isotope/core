@@ -28,7 +28,6 @@ $GLOBALS['TL_DCA']['tl_iso_products'] = array
         'label'                     => &$GLOBALS['TL_LANG']['MOD']['iso_products'][0],
         'dataContainer'             => 'ProductData',
         'enableVersioning'          => true,
-        'closed'                    => true,
         'switchToEdit'              => true,
         'gtable'                    => 'tl_iso_groups',
         'ctable'                    => array('tl_iso_downloads', 'tl_iso_product_categories', 'tl_iso_prices'),
@@ -98,13 +97,6 @@ $GLOBALS['TL_DCA']['tl_iso_products'] = array
         ),
         'global_operations' => array
         (
-            'new_product' => array
-            (
-                'label'             => &$GLOBALS['TL_LANG']['tl_iso_products']['new_product'],
-                'href'              => 'act=create&type=product',
-                'icon'              => 'new.gif',
-                'attributes'        => 'onclick="Backend.getScrollOffset();"',
-            ),
             'generate' => array
             (
                 'label'             => &$GLOBALS['TL_LANG']['tl_iso_products']['generate'],
@@ -547,10 +539,9 @@ $GLOBALS['TL_DCA']['tl_iso_products'] = array
 /**
  * Adjust the data configuration array in variants view
  */
-if (\Input::get('id'))
-{
-    $GLOBALS['TL_DCA']['tl_iso_products']['list']['global_operations']['new_product']['label'] = &$GLOBALS['TL_LANG']['tl_iso_products']['new_variant'];
-    $GLOBALS['TL_DCA']['tl_iso_products']['list']['global_operations']['new_product']['href'] = 'act=create&mode=2&type=variant&pid=' . \Input::get('id') . '&gid=' . $this->Session->get('iso_products_gid');
+if (\Input::get('id')) {
+    $GLOBALS['TL_LANG']['tl_iso_products']['new'] = $GLOBALS['TL_LANG']['tl_iso_products']['new_variant'];
+    $GLOBALS['TL_DCA']['tl_iso_products']['config']['switchToEdit'] = false;
     unset($GLOBALS['TL_DCA']['tl_iso_products']['list']['global_operations']['import']);
     unset($GLOBALS['TL_DCA']['tl_iso_products']['list']['global_operations']['groups']);
 } else {

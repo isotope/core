@@ -59,7 +59,7 @@ $GLOBALS['TL_LANG']['tl_iso_products']['showVariants']              = 'Show prod
 /**
  * Buttons
  */
-$GLOBALS['TL_LANG']['tl_iso_products']['new_product']               = array('New product', 'Create new product');
+$GLOBALS['TL_LANG']['tl_iso_products']['new']                       = array('New product', 'Create new product');
 $GLOBALS['TL_LANG']['tl_iso_products']['new_variant']               = array('Add variant', 'Add new variant to a given product');
 $GLOBALS['TL_LANG']['tl_iso_products']['edit']                      = array('Edit product', 'Edit product ID %s');
 $GLOBALS['TL_LANG']['tl_iso_products']['copy']                      = array('Copy product', 'Copy product ID %s');

@@ -274,11 +274,6 @@ class ProductCallbacks extends \Backend
      */
     public function checkPermission()
     {
-        if (\Input::get('act') != '' && (\Input::get('mode') == '' || is_numeric(\Input::get('mode'))))
-        {
-            $GLOBALS['TL_DCA']['tl_iso_products']['config']['closed'] = false;
-        }
-
         $session = $this->Session->getData();
         $arrProducts = \Isotope\Backend::getAllowedProductIds();
 
@@ -297,7 +292,7 @@ class ProductCallbacks extends \Backend
 
             if (false === $arrProducts)
             {
-                unset($GLOBALS['TL_DCA']['tl_iso_products']['list']['global_operations']['new_product']);
+                $GLOBALS['TL_DCA']['tl_iso_products']['config']['closed'] = true;
             }
         }
         else
