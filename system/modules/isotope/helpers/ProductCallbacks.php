@@ -448,7 +448,7 @@ class ProductCallbacks extends \Backend
             $arrFields['inherit']['options'] = $arrInherit;
 
             // Add palettes
-            $GLOBALS['TL_DCA']['tl_iso_products']['palettes'][$objType->id] = ($blnVariants ? 'inherit,' : '') . implode(';', $arrLegends);
+            $GLOBALS['TL_DCA']['tl_iso_products']['palettes'][($blnVariants ? 'default' : $objType->id)] = ($blnVariants ? 'inherit,' : '') . implode(';', $arrLegends);
         }
 
         if ($act !== 'edit') {
