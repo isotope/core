@@ -92,8 +92,6 @@ class RelatedProducts extends ProductList
                 }
             }
         }
-        // @todo I deleted passing this as a second param (ex-reader-page without changing anything at some other place. Do we even need that?
-        //  \Isotope\Frontend::getReaderPageId(null, $this->iso_reader_jumpTo)
 
         return \Isotope\Frontend::getProducts($arrIds);
     }
