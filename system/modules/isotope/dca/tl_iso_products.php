@@ -79,7 +79,7 @@ $GLOBALS['TL_DCA']['tl_iso_products'] = array
             'mode'                  => 2,
             'fields'                => array('name'),
             'headerFields'          => array('name', 'sku', 'price', 'published'),
-            'headerOperations'      => array('edit', 'copy', 'cut', 'delete', 'toggle', 'show', 'generate', 'related', 'downloads'),
+            'headerOperations'      => array('edit', 'copy', 'cut', 'delete', 'toggle', 'show', 'related', 'downloads'),
             'flag'                  => 1,
             'panelLayout'           => 'iso_buttons,iso_filter;filter;sort,search,limit',
             'icon'                  => 'system/modules/isotope/assets/store-open.png',
@@ -104,6 +104,12 @@ $GLOBALS['TL_DCA']['tl_iso_products'] = array
                 'href'              => 'act=create&type=product',
                 'icon'              => 'new.gif',
                 'attributes'        => 'onclick="Backend.getScrollOffset();"',
+            ),
+            'generate' => array
+            (
+                'label'             => &$GLOBALS['TL_LANG']['tl_iso_products']['generate'],
+                'href'              => 'key=generate',
+                'icon'              => 'new.gif',
             ),
             'groups' => array
             (
@@ -176,13 +182,6 @@ $GLOBALS['TL_DCA']['tl_iso_products'] = array
                 'label'             => &$GLOBALS['TL_LANG']['tl_iso_products']['variants'],
                 'href'              => '',
                 'icon'              => 'system/modules/isotope/assets/table--pencil.png',
-                'button_callback'   => array('Isotope\ProductCallbacks', 'variantsButton'),
-            ),
-            'generate' => array
-            (
-                'label'             => &$GLOBALS['TL_LANG']['tl_iso_products']['generate'],
-                'href'              => 'key=generate',
-                'icon'              => 'system/modules/isotope/assets/table-insert-row.png',
                 'button_callback'   => array('Isotope\ProductCallbacks', 'variantsButton'),
             ),
             'related' => array
@@ -552,4 +551,6 @@ if (\Input::get('id'))
 {
     $GLOBALS['TL_DCA']['tl_iso_products']['list']['global_operations']['new_product']['label'] = &$GLOBALS['TL_LANG']['tl_iso_products']['new_variant'];
     $GLOBALS['TL_DCA']['tl_iso_products']['list']['global_operations']['new_product']['href'] = 'act=create&mode=2&type=variant&pid=' . \Input::get('id') . '&gid=' . $this->Session->get('iso_products_gid');
+} else {
+    unset($GLOBALS['TL_DCA']['tl_iso_products']['list']['global_operations']['generate']);
 }
