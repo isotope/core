@@ -48,8 +48,7 @@ interface IsotopeCheckoutStep
     /**
      * Return array of tokens for email templates
      * @param   IsotopeProductCollection
-     * @param   \Module
      * @return  array
      */
-    public function getEmailTokens(IsotopeProductCollection $objCollection, \Module $objModule);
+    public function getEmailTokens(IsotopeProductCollection $objCollection);
 }

@@ -379,7 +379,7 @@ class Checkout extends Module
         // Run trough all steps to collect checkout information
         foreach ($this->getSteps() as $arrModules) {
             foreach ($arrModules as $objModule) {
-                $arrTokens = array_merge($arrTokens, $objModule->getEmailTokens($objOrder, $this));
+                $arrTokens = array_merge($arrTokens, $objModule->getEmailTokens($objOrder));
             }
         }
 
