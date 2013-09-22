@@ -198,7 +198,7 @@ class ProductList extends Module
 
         $arrBuffer = array();
 
-        $intReaderPage = $this->iso_reader_jumpTo ?: \Isotope\Frontend::getReaderPageId();
+        $intReaderPage = \Isotope\Frontend::getReaderPageId();
         $arrDefaultOptions = $this->getDefaultProductOptions();
 
         foreach ($arrProducts as $objProduct) {
