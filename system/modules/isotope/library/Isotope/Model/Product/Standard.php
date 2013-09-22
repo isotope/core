@@ -430,7 +430,7 @@ class Standard extends Product implements IsotopeProduct
             $this->arrCategories = \Database::getInstance()->execute("SELECT page_id FROM tl_iso_product_categories WHERE pid=" . ($this->pid ?: $this->id) . " ORDER BY sorting")->fetchEach('page_id');
         }
 
-        return $this->arrCategories;
+        return (array) $this->arrCategories;
     }
 
 
