@@ -277,11 +277,9 @@ body.iso_be_overview .tip-wrap{
 }
 .be_iso_overview .item a {
     display:block;
-    width:100px;
+    width:105px;
     height: 70px;
-    margin-right: 8px;
-    margin-bottom: 5px;
-    margin-top: 15px;
+    margin: 15px 0;
     padding: 5px;
     border-radius: 5px;
     float:left;
