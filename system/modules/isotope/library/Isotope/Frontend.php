@@ -778,7 +778,7 @@ window.addEvent('domready', function()
      * @param   array Absolute page urls
      * @param   int Root page id
      * @param   boolean True if it's a sitemap module call (= treat differently when page is protected etc.)
-     * @param   string Language
+     * @param   string Language of the root page
      * @return  array Extended array of absolute page urls
      */
     public function addProductsToSearchIndex($arrPages, $intRoot=0, $blnSitemap=false, $strLanguage=null)
