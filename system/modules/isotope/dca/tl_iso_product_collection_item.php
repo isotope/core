@@ -94,7 +94,9 @@ $GLOBALS['TL_DCA']['tl_iso_product_collection_item'] = array
         ),
         'jumpTo' => array
         (
+            'foreignKey'            => 'tl_page.title',
             'sql'                   => "int(10) unsigned NOT NULL default '0'",
+            'relation'              => array('type'=>'hasOne', 'load'=>'lazy'),
         ),
 
     )
