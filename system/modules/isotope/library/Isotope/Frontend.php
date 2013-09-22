@@ -39,15 +39,6 @@ class Frontend extends \Frontend
 
 
     /**
-     * Import the Isotope object
-     */
-    public function __construct()
-    {
-        parent::__construct();
-    }
-
-
-    /**
      * Get shipping and payment surcharges for given collection
      * @param IsotopeProductCollection
      * @return array
