@@ -335,7 +335,7 @@ class ModuleIsotopeProductList extends ModuleIsotope
 													. (BE_USER_LOGGED_IN === true ? '' : " AND p1.published='1' AND (p1.start='' OR p1.start<$time) AND (p1.stop='' OR p1.stop>$time)")
 													. "AND c.page_id IN (" . implode(',', $arrCategories) . ")"
 													. ((is_array($arrCacheIds) && !empty($arrCacheIds)) ? (" AND p1.id IN (" . implode(',', $arrCacheIds) . ")") : '')
-													. ($this->iso_list_where == '' ? '' : " AND {$this->iso_list_where}")
+													. ($this->iso_list_where == '' ? '' : " AND ".$this->replaceInsertTags($this->iso_list_where))
 													. "$strWhere GROUP BY p1.id ORDER BY c.sorting")
 										 ->execute($arrValues);
 
