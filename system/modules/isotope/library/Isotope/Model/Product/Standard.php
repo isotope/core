@@ -490,7 +490,7 @@ class Standard extends Product implements IsotopeProduct
                 return '';
             }
 
-            return $objPrice->generate(($this->pid == 0));
+            return $objPrice->generate(($objProduct->pid == 0));
         };
 
         $objTemplate->getGallery = function($strAttribute) use ($objProduct, $arrConfig, &$arrGalleries) {
