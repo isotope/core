@@ -484,7 +484,7 @@ class Standard extends Product implements IsotopeProduct
         };
 
         $objTemplate->generatePrice = function() use ($objProduct) {
-            $objPrice = $this->getPrice();
+            $objPrice = $objProduct->getPrice();
 
             if (null === $objPrice) {
                 return '';
