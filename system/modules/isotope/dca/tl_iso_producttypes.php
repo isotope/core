@@ -248,7 +248,7 @@ $GLOBALS['TL_DCA']['tl_iso_producttypes'] = array
             (
                 'tl_class'          =>'clr',
                 'columnsCallback'   => array('Isotope\tl_iso_producttypes', 'prepareAttributeWizard'),
-                'buttons'           => array('up'=>'up.gif', 'down'=>'down.gif'),
+                'buttons'           => array('copy'=>false, 'delete'=>false),
             ),
             'sql'                   => 'blob NULL',
             'load_callback'         => array
@@ -277,7 +277,7 @@ $GLOBALS['TL_DCA']['tl_iso_producttypes'] = array
             (
                 'tl_class'          =>'clr',
                 'columnsCallback'   => array('Isotope\tl_iso_producttypes', 'prepareAttributeWizard'),
-                'buttons'           => array('up'=>'up.gif', 'down'=>'down.gif'),
+                'buttons'           => array('copy'=>false, 'delete'=>false),
             ),
             'sql'                   => 'blob NULL',
             'load_callback'         => array
