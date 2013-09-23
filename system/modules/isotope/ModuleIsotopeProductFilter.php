@@ -258,7 +258,7 @@ class ModuleIsotopeProductFilter extends ModuleIsotope
 														. "AND (p1.id IN (SELECT pid FROM tl_iso_product_categories WHERE page_id IN (" . implode(',', $arrCategories) . "))
 														   OR p1.pid IN (SELECT pid FROM tl_iso_product_categories WHERE page_id IN (" . implode(',', $arrCategories) . ")))"
 														. (BE_USER_LOGGED_IN === true ? '' : " AND (p1.pid=0 OR (p2.published='1' AND (p2.start='' OR p2.start<$time) AND (p2.stop='' OR p2.stop>$time)))")
-														. ($this->iso_list_where == '' ? '' : " AND {$this->iso_list_where}"));
+														. ($this->iso_list_where == '' ? '' : " AND ".$this->replaceInsertTags($this->iso_list_where)));
 
 				while ($objValues->next())
 				{
