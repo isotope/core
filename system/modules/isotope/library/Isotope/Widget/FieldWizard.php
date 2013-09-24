@@ -56,23 +56,6 @@ class FieldWizard extends \Widget
         {
             case 'value':
                 $this->varValue = deserialize($varValue);
-
-				// @todo: can we remove this?
-                /*if (!is_array($this->varValue))
-                {
-                    $this->varValue = array();
-
-                    if ($this->table != '')
-                    {
-                        foreach( $GLOBALS['TL_DCA'][$this->table]['fields'] as $field => $arrData )
-                        {
-                            if ($arrData['eval']['feEditable'] && $arrData['eval']['mandatory'])
-                            {
-                                $this->varValue[] = array('value'=>$field, 'enabled'=>true, 'mandatory'=>true);
-                            }
-                        }
-                    }
-                }*/
                 break;
 
             case 'options':
