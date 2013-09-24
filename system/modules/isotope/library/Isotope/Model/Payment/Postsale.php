@@ -60,14 +60,4 @@ abstract class Postsale extends Payment implements IsotopePostsale
         \System::log('Payment could not be processed.', __METHOD__, TL_ERROR);
         \Isotope\Module\Checkout::redirectToStep('failed');
     }
-
-
-    /**
-     * Process post-sale requests.
-     *
-     * This function can be called from the postsale.php file when the payment server is requestion/posting a status change.
-     * You can see an implementation example in Isotope\Payment\Paypal
-     */
-    public abstract function processPostsale();
-
 }
