@@ -1057,7 +1057,6 @@ window.addEvent('domready', function()
         static $arrAvailable = array();
         static $arrUnavailable = array();
 
-        $intMember = 0;
         if (null !== $objMember) {
             $intMember = $objMember->id;
             $arrGroups = deserialize($objMember->groups);
@@ -1065,6 +1064,8 @@ window.addEvent('domready', function()
             if (!is_array($arrGroups)) {
                 $arrGroups = array();
             }
+        } else {
+            return $arrPages;
         }
 
         foreach (array_diff($arrPages, $arrAvailable, $arrUnavailable) as $intPage) {
