@@ -63,9 +63,10 @@ interface IsotopeProduct
 
     /**
      * Get product price model
+     * @param   IsotopeProductCollection
      * @return  IsotopePrice
      */
-    public function getPrice();
+    public function getPrice(IsotopeProductCollection $objCollection=null);
 
     /**
      * Return minimum quantity for the product (from advanced price tiers)
