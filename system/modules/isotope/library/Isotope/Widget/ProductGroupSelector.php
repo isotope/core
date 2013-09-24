@@ -73,6 +73,7 @@ class ProductGroupSelector extends \Widget
         $this->loadDataContainer('tl_iso_groups');
         \System::loadLanguageFile('tl_iso_groups');
 
+        $this->import('Database');
         $this->import('BackendUser', 'User');
         $this->import('Isotope\tl_iso_groups', 'tl_iso_groups');
     }
@@ -193,6 +194,17 @@ class ProductGroupSelector extends \Widget
                 {
                     // Show all pages to admins
                     $arrIds = $objRoot->fetchEach('id');
+                } else {
+                    $arrRoot = array();
+
+                    while ($objRoot->next()) {
+                        // Show only mounted groups to regular users
+                        if (count(array_intersect($this->User->iso_groups, $this->Database->getParentRecords($objRoot->id, 'tl_iso_groups'))) > 0) {
+                            $arrRoot[] = $objRoot->id;
+                        }
+                    }
+
+                    $arrIds = $arrRoot;
                 }
             }
 
@@ -227,6 +239,11 @@ class ProductGroupSelector extends \Widget
                 while ($objGroup->next())
                 {
                     $tree .= $this->renderGrouptree($objGroup->id, -20);
+                }
+            } else {
+            	// Show only mounted groups to regular users
+                foreach ($this->eliminateNestedPages($this->User->iso_groups, 'tl_iso_groups') as $node) {
+                    $tree .= $this->renderGrouptree($node, -20);
                 }
             }
         }

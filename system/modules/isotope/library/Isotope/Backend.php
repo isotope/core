@@ -530,15 +530,21 @@ class Backend extends Contao_Backend
         {
             $arrNewRecords = $_SESSION['BE_DATA']['new_records']['tl_iso_products'];
             $arrProductTypes = $objUser->iso_product_types;
-            $arrGroups = array(0);
+            $arrGroups = array();
 
-            if (!is_array($arrProductTypes) || empty($arrProductTypes))
-            {
+            // Return false if there are no product types
+            if (!is_array($arrProductTypes) || empty($arrProductTypes)) {
                 return false;
             }
 
+            // Find the user groups
             if (is_array($objUser->iso_groups) && count($objUser->iso_groups) > 0) {
                 $arrGroups = array_merge($arrGroups, $objUser->iso_groups, \Database::getInstance()->getChildRecords($objUser->iso_groups, 'tl_iso_groups'));
+            }
+
+            // Return false if there are no groups
+            if (empty($arrGroups)) {
+                return false;
             }
 
             $objProducts = \Database::getInstance()->execute("
@@ -621,12 +627,15 @@ class Backend extends Contao_Backend
             return '';
         }
 
+        $objUser = \BackendUser::getInstance();
+        $objDatabase = \Database::getInstance();
+
         // Include the product in variants view
         if ($intProductId)
         {
-            $objProduct = \Database::getInstance()->prepare("SELECT gid, name FROM tl_iso_products WHERE id=?")
-                                                  ->limit(1)
-                                                  ->execute($intProductId);
+            $objProduct = $objDatabase->prepare("SELECT gid, name FROM tl_iso_products WHERE id=?")
+                                      ->limit(1)
+                                      ->execute($intProductId);
 
             if ($objProduct->numRows)
             {
@@ -642,9 +651,9 @@ class Backend extends Contao_Backend
         // Generate groups
         do
         {
-            $objGroup = \Database::getInstance()->prepare("SELECT id, pid, name FROM tl_iso_groups WHERE id=?")
-                                                ->limit(1)
-                                                ->execute($intPid);
+            $objGroup = $objDatabase->prepare("SELECT id, pid, name FROM tl_iso_groups WHERE id=?")
+                                    ->limit(1)
+                                    ->execute($intPid);
 
             if ($objGroup->numRows)
             {
@@ -652,6 +661,12 @@ class Backend extends Contao_Backend
 
                 if ($objGroup->pid)
                 {
+                    // Do not show the mounted groups
+                    if (!$objUser->isAdmin && $objUser->hasAccess($objGroup->id, 'iso_groups'))
+                    {
+                        break;
+                    }
+
                     $intPid = $objGroup->pid;
                 }
             }

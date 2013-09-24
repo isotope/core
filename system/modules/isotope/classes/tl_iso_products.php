@@ -366,6 +366,15 @@ class tl_iso_products extends \Backend
      */
     public function cutIcon($row, $href, $label, $title, $icon, $attributes)
     {
+        // Check permission
+        if (!$this->User->isAdmin) {
+            $groups = deserialize($this->User->iso_groups);
+
+            if (!is_array($groups) || empty($groups)) {
+                return \Image::getHtml(preg_replace('/\.gif$/i', '_.gif', $icon)).' ';
+            }
+        }
+
         if ($row['pid'] > 0) {
             return '<a href="'.preg_replace('/&(amp;)?id=[^& ]*/i', '', ampersand(\Environment::get('request'))).'&amp;act=paste&amp;mode=cut&amp;table=tl_iso_products&amp;id='.$row['id'].'&amp;pid='.\Input::get('id').'" title="'.specialchars($title).'"'.$attributes.' onclick="Backend.getScrollOffset();">'.\Image::getHtml($icon, $label).'</a> ';
         } else {

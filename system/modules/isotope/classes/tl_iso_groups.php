@@ -44,7 +44,7 @@ class tl_iso_groups extends \Backend
         }
 
         // Load permissions in tl_iso_products
-        if ($dc->table == 'tl_iso_products')
+        if ($dc->table == 'tl_iso_products' || stripos(\Environment::get('request'), 'group.php') !== false)
         {
             $arrGroups = $this->User->iso_groups;
 
@@ -67,7 +67,7 @@ class tl_iso_groups extends \Backend
         }
 
         // Set root IDs
-        if (!is_array($this->User->iso_groups) || count($this->User->iso_groups) < 1) // Can't use empty() because its an object property (using __get)
+        if (!is_array($this->User->iso_groups) || empty($this->User->iso_groups))
         {
             $root = array();
         }
@@ -192,18 +192,17 @@ class tl_iso_groups extends \Backend
     }
 
 
-	/**
-	 * Add the breadcrumb menu
-	 */
-	public function addBreadcrumb()
-	{
-		$GLOBALS['TL_DCA']['tl_iso_groups']['list']['sorting']['breadcrumb'] = \Isotope\Backend::generateGroupsBreadcrumb($this->Session->get('iso_products_gid'));
+    /**
+     * Add the breadcrumb menu
+     */
+    public function addBreadcrumb()
+    {
+        $GLOBALS['TL_DCA']['tl_iso_groups']['list']['sorting']['breadcrumb'] = \Isotope\Backend::generateGroupsBreadcrumb($this->Session->get('iso_products_gid'));
 
-		if ($this->Session->get('iso_products_gid') > 0)
-		{
-			$GLOBALS['TL_DCA']['tl_iso_groups']['list']['sorting']['root'] = array($this->Session->get('iso_products_gid'));
-		}
-	}
+        if ($this->Session->get('iso_products_gid') > 0) {
+            $GLOBALS['TL_DCA']['tl_iso_groups']['list']['sorting']['root'] = array($this->Session->get('iso_products_gid'));
+        }
+    }
 
 
     /**

@@ -327,8 +327,8 @@ class ProductCallbacks extends \Backend
             // Overwrite session
             $this->Session->setData($session);
 
-            if (\Input::get('id') > 0 && !in_array(\Input::get('id'), $GLOBALS['TL_DCA']['tl_iso_products']['list']['sorting']['root']))
-            {
+            // Check if the product is accessible by user
+            if (\Input::get('id') > 0 && !in_array(\Input::get('id'), $GLOBALS['TL_DCA']['tl_iso_products']['list']['sorting']['root']) && !in_array(\Input::get('id'), $session['new_records']['tl_iso_products'])) {
                 \System::log('Cannot access product ID '.\Input::get('id'), __METHOD__, TL_ERROR);
                 \Controller::redirect('contao/main.php?act=error');
             }
@@ -582,17 +582,29 @@ window.addEvent('domready', function() {
     /**
      * Store the date when the product has been added
      * @param DataContainer
-     * @return void
      */
     public function storeDateAdded(\DataContainer $dc)
     {
         // Return if there is no active record (override all)
-        if (!$dc->activeRecord || $dc->activeRecord->dateAdded > 0)
-        {
+        if (!$dc->activeRecord || $dc->activeRecord->dateAdded > 0) {
             return;
         }
 
         \Database::getInstance()->prepare("UPDATE tl_iso_products SET dateAdded=? WHERE id=?")->execute(time(), $dc->id);
+    }
+
+
+    /**
+     * Set the default group for non-admins
+     * @param \DataContainer $dc
+     */
+    public function setDefaultGroup(\DataContainer $dc)
+    {
+        if ($this->User->isAdmin) {
+            return;
+        }
+
+        $this->Database->prepare("UPDATE tl_iso_products SET gid=? WHERE id=?")->execute($this->User->iso_groups[0], $dc->id);
     }
 
 
@@ -721,10 +733,26 @@ window.addEvent('domready', function() {
 
         $session = $this->Session->getData();
         $arrPages = (array) $session['filter']['tl_iso_products']['iso_pages'];
+        $blnGroups = true;
+
+        // Check permission
+        if (!$this->User->isAdmin) {
+            $groups = deserialize($this->User->iso_groups);
+
+            if (!is_array($groups) || empty($groups)) {
+                $blnGroups = false;
+            }
+
+            // Allow to manage groups
+            if (is_array($this->User->iso_groupp) && !empty($this->User->iso_groupp))
+            {
+                $blnGroups = true;
+            }
+        }
 
         return '
 <div class="tl_filter iso_filter tl_subpanel">
-<input type="button" id="groupFilter" class="tl_submit' . ($this->Session->get('iso_products_gid') ? ' active' : '') . '" onclick="Backend.getScrollOffset();Isotope.openModalGroupSelector({\'width\':765,\'title\':\''.specialchars($GLOBALS['TL_LANG']['tl_iso_products']['product_groups'][0]).'\',\'url\':\'system/modules/isotope/public/group.php?do='.\Input::get('do').'&amp;table=tl_iso_groups&amp;field=gid&amp;value='.$this->Session->get('iso_products_gid').'\',\'action\':\'filterGroups\'});return false" value="'.specialchars($GLOBALS['TL_LANG']['MSC']['filterByGroups']).'">
+' . ($blnGroups ? '<input type="button" id="groupFilter" class="tl_submit' . ($this->Session->get('iso_products_gid') ? ' active' : '') . '" onclick="Backend.getScrollOffset();Isotope.openModalGroupSelector({\'width\':765,\'title\':\''.specialchars($GLOBALS['TL_LANG']['tl_iso_products']['product_groups'][0]).'\',\'url\':\'system/modules/isotope/public/group.php?do='.\Input::get('do').'&amp;table=tl_iso_groups&amp;field=gid&amp;value='.$this->Session->get('iso_products_gid').'\',\'action\':\'filterGroups\'});return false" value="'.specialchars($GLOBALS['TL_LANG']['MSC']['filterByGroups']).'">' : '') . '
 <input type="button" id="pageFilter" class="tl_submit' . (!empty($arrPages) ? ' active' : '') . '" onclick="Backend.getScrollOffset();Isotope.openModalPageSelector({\'width\':765,\'title\':\''.specialchars($GLOBALS['TL_LANG']['MOD']['page'][0]).'\',\'url\':\'contao/page.php?do='.\Input::get('do').'&amp;table=tl_iso_products&amp;field=pages&amp;value='.implode(',', $arrPages).'\',\'action\':\'filterPages\'});return false" value="'.specialchars($GLOBALS['TL_LANG']['MSC']['filterByPages']).'">
 </div>';
     }
