@@ -97,8 +97,7 @@ class ProductPrice extends \Model implements IsotopePrice
         $fltAmount = $this->getValueForTier($intQuantity);
 
         if (($objTaxClass = $this->getRelated('tax_class')) !== null) {
-            // @todo shouldn't this process the return value?
-            $objTaxClass->calculateNetPrice($fltAmount);
+            $fltAmount = $objTaxClass->calculateNetPrice($fltAmount);
         }
 
         // @todo should pass product object as second parameter
@@ -115,8 +114,7 @@ class ProductPrice extends \Model implements IsotopePrice
         $fltAmount = $this->getValueForTier($intQuantity);
 
         if (($objTaxClass = $this->getRelated('tax_class')) !== null) {
-            // @todo shouldn't this process the return value?
-            $objTaxClass->calculateGrossPrice($fltAmount);
+            $fltAmount = $objTaxClass->calculateGrossPrice($fltAmount);
         }
 
         // @todo should pass product object as second parameter
