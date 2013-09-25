@@ -25,9 +25,11 @@
         "contao-legacy/dcawizard":">=1.2.1",
         "contao-legacy/tablelookupwizard":">=1.3.4"
     },
+    "autoload":{
+        "classmap":["system/"]
+    },
     "replace": {
-		// @see https://legacy-packages-via.contao-community-alliance.org/packages/contao-legacy/isotope
-		"contao-legacy/isotope": "*"
+        "contao-legacy/isotope": "*"
 	},
     "extra":{
         "contao": {
