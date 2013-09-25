@@ -77,8 +77,6 @@ class TaxClass extends \Model
             $fltPrice -= $objIncludes->calculateAmountIncludedInPrice($fltPrice);
         }
 
-        // @todo shouldn't this also add the once that are applicable?
-
         return $fltPrice;
     }
 
