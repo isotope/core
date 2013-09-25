@@ -247,7 +247,7 @@ abstract class Shipping extends TypeAgent
     {
         if ($this->getPrice() == 0)
         {
-            return false;
+            return null;
         }
 
         return ProductCollectionSurcharge::createForShippingInCollection($this, $objCollection);
