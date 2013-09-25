@@ -1,3 +1,5 @@
+<h2><?php echo $this->headline; ?></h2>
+<p class="message"><?php echo $this->message; ?></p>
 <form id="postfinance<?php echo $this->id; ?>" action="<?php echo $this->action; ?>" method="post">
 <?php foreach( $this->params as $k => $v ): ?>
 <input type="hidden" name="<?php echo $k; ?>" value="<?php echo $v; ?>">
@@ -8,6 +10,6 @@
 </form>
 <script>
 window.addEvent('domready' , function() {
-  $('postfinance<?php echo $this->id; ?>').submit();
+  document.id('postfinance<?php echo $this->id; ?>').submit();
 });
 </script>

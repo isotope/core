@@ -140,6 +140,8 @@ class Postfinance extends Payment implements IsotopePayment, IsotopePostsale
         }
 
         $objAddress = Isotope::getCart()->getBillingAddress();
+        $objTemplate->headline = $GLOBALS['TL_LANG']['MSC']['pay_with_redirect'][0];
+        $objTemplate->message = $GLOBALS['TL_LANG']['MSC']['pay_with_redirect'][1];
         $strFailedUrl = \Environment::get('base') . \Isotope\Module\Checkout::generateUrlForStep('failed');
 
         $arrParam = array
