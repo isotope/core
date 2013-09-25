@@ -127,10 +127,10 @@ abstract class Shipping extends TypeAgent
         $arrTypes = deserialize($this->product_types);
 
         if (is_array($arrTypes) && !empty($arrTypes)) {
-            $arrProducts = Isotope::getCart()->getProducts();
+            $arrItems = Isotope::getCart()->getItems();
 
-            foreach ($arrProducts as $objProduct) {
-                if (!in_array($objProduct->type, $arrTypes)) {
+            foreach ($arrItems as $objItem) {
+                if (!$objItem->hasProduct() || !in_array($objItem->getProduct()->type, $arrTypes)) {
                     return false;
                 }
             }
