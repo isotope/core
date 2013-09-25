@@ -126,7 +126,7 @@ $GLOBALS['TL_DCA']['tl_iso_payment_modules'] = array
         'default'                   => '{type_legend},name,label,type',
         'cash'                      => '{type_legend},name,label,type;{note_legend:hide},note;{config_legend},new_order_status,minimum_total,maximum_total,countries,shipping_modules,product_types;{price_legend:hide},price,tax_class;{expert_legend:hide},guests,protected;{enabled_legend},enabled',
         'paypal'                    => '{type_legend},name,label,type;{note_legend:hide},note;{config_legend},new_order_status,minimum_total,maximum_total,countries,shipping_modules,product_types;{gateway_legend},paypal_account;{price_legend:hide},price,tax_class;{expert_legend:hide},guests,protected;{enabled_legend},debug,enabled',
-        'postfinance'               => '{type_legend},name,label,type;{note_legend:hide},note;{config_legend},new_order_status,minimum_total,maximum_total,countries,shipping_modules,product_types;{gateway_legend},postfinance_pspid,postfinance_secret,postfinance_method;{price_legend:hide},price,tax_class;{expert_legend:hide},guests,protected;{enabled_legend},debug,enabled',
+        'postfinance'               => '{type_legend},name,label,type;{note_legend:hide},note;{config_legend},new_order_status,minimum_total,maximum_total,countries,shipping_modules,product_types;{gateway_legend},postfinance_pspid,postfinance_method,postfinance_sha1_in,postfinance_sha1_out;{price_legend:hide},price,tax_class;{expert_legend:hide},guests,protected;{enabled_legend},debug,enabled',
         'datatrans'                 => '{type_legend},name,label,type;{note_legend:hide},note;{config_legend},new_order_status,trans_type,minimum_total,maximum_total,countries,shipping_modules,product_types;{gateway_legend},datatrans_id,datatrans_sign;{price_legend:hide},price,tax_class;{expert_legend:hide},guests,protected;{enabled_legend},debug,enabled',
         'sparkasse'                 => '{type_legend},name,label,type;{note_legend:hide},note;{config_legend:hide},new_order_status,minimum_total,maximum_total,countries,shipping_modules,product_types;{gateway_legend},sparkasse_paymentmethod,trans_type,sparkasse_sslmerchant,sparkasse_sslpassword,sparkasse_merchantref;{price_legend:hide},price,tax_class;{expert_legend:hide},guests,protected;{enabled_legend},debug,enabled',
         'sofortueberweisung'        => '{type_legend},name,label,type;{note_legend:hide},note;{config_legend:hide},new_order_status,minimum_total,maximum_total,countries,shipping_modules,product_types;{gateway_legend},trans_type,sofortueberweisung_user_id,sofortueberweisung_project_id,sofortueberweisung_project_password;{price_legend:hide},price,tax_class;{expert_legend:hide},guests,protected;{enabled_legend},enabled',
@@ -299,15 +299,7 @@ $GLOBALS['TL_DCA']['tl_iso_payment_modules'] = array
             'label'                 => &$GLOBALS['TL_LANG']['tl_iso_payment_modules']['postfinance_pspid'],
             'exclude'               => true,
             'inputType'             => 'text',
-            'eval'                  => array('mandatory'=>true, 'maxlength'=>255),
-            'sql'                   => "varchar(255) NOT NULL default ''"
-        ),
-        'postfinance_secret' => array
-        (
-            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_payment_modules']['postfinance_secret'],
-            'exclude'               => true,
-            'inputType'             => 'text',
-            'eval'                  => array('maxlength'=>255, 'tl_class'=>'w50'),
+            'eval'                  => array('mandatory'=>true, 'maxlength'=>255, 'tl_class'=>'w50'),
             'sql'                   => "varchar(255) NOT NULL default ''"
         ),
         'postfinance_method' => array
@@ -319,6 +311,22 @@ $GLOBALS['TL_DCA']['tl_iso_payment_modules'] = array
             'options'               => array('POST', 'GET'),
             'eval'                  => array('mandatory'=>true, 'tl_class'=>'w50'),
             'sql'                   => "varchar(4) NOT NULL default ''"
+        ),
+        'postfinance_sha1_in' => array
+        (
+            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_payment_modules']['postfinance_sha1_in'],
+            'exclude'               => true,
+            'inputType'             => 'text',
+            'eval'                  => array('maxlength'=>32, 'tl_class'=>'w50'),
+            'sql'                   => "varchar(32) NOT NULL default ''"
+        ),
+        'postfinance_sha1_out' => array
+        (
+            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_payment_modules']['postfinance_sha1_out'],
+            'exclude'               => true,
+            'inputType'             => 'text',
+            'eval'                  => array('maxlength'=>32, 'tl_class'=>'w50'),
+            'sql'                   => "varchar(32) NOT NULL default ''"
         ),
         'datatrans_id' => array
         (

@@ -36,7 +36,8 @@ $GLOBALS['TL_LANG']['tl_iso_payment_modules']['payflowpro_partner']             
 $GLOBALS['TL_LANG']['tl_iso_payment_modules']['payflowpro_password']                    = array('Paypal Payflow Pro api password', 'An alphanumeric string of about 11 characters');
 $GLOBALS['TL_LANG']['tl_iso_payment_modules']['payflowpro_transType']                   = array('Paypal Payflow Pro transaction type', 'Please select a transaction type.');
 $GLOBALS['TL_LANG']['tl_iso_payment_modules']['postfinance_pspid']                      = array('Postfinance PSPID', 'The PSPID is your unique identification for the Postfinance system.');
-$GLOBALS['TL_LANG']['tl_iso_payment_modules']['postfinance_secret']                     = array('Postfinance SHA-1-IN signature', 'This will be used to validate the server communication.');
+$GLOBALS['TL_LANG']['tl_iso_payment_modules']['postfinance_sha1_in']                    = array('Postfinance SHA-1-IN signature', 'This will be used to validate the server to server communication.');
+$GLOBALS['TL_LANG']['tl_iso_payment_modules']['postfinance_sha1_out']                   = array('Postfinance SHA-1-OUT signature', 'This will be used to validate the server to server communication.');
 $GLOBALS['TL_LANG']['tl_iso_payment_modules']['postfinance_method']                     = array('Postfinance method', 'Type of data transfer from postfinance.');
 $GLOBALS['TL_LANG']['tl_iso_payment_modules']['requireCCV']                             = array('Require Card Code Verification (CCV) Number', 'Choose this option if you would like to increase transaction security by requiring the card code verification number.');
 $GLOBALS['TL_LANG']['tl_iso_payment_modules']['allowed_cc_types']                       = array('Allowed Credit Card Types', 'Select which credit cards the payment method accepts.');
