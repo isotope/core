@@ -105,8 +105,10 @@ class Order extends ProductCollection implements IsotopeProductCollection
      */
     public function deleteItem(ProductCollectionItem $objItem)
     {
-        if (parent::deleteItem($objItem)) {
-            \Database::getInstance()->query("DELETE FROM tl_iso_product_collection_download WHERE pid={$objItem->id}");
+        $intPid = $objItem->id;
+
+        if (parent::deleteItem($objItem) && $intPid > 0) {
+            \Database::getInstance()->query("DELETE FROM tl_iso_product_collection_download WHERE pid=$intPid");
         }
 
         return false;
@@ -119,8 +121,10 @@ class Order extends ProductCollection implements IsotopeProductCollection
      */
     public function delete()
     {
-        if (parent::delete()) {
-            \Database::getInstance()->query("DELETE FROM tl_iso_product_collection_download WHERE pid IN (SELECT id FROM tl_iso_product_collection_item WHERE pid={$this->id})");
+        $intPid = $this->id;
+
+        if (parent::delete() && $intPid > 0) {
+            \Database::getInstance()->query("DELETE FROM tl_iso_product_collection_download WHERE pid IN (SELECT id FROM tl_iso_product_collection_item WHERE pid=$intPid)");
 
             return true;
         }

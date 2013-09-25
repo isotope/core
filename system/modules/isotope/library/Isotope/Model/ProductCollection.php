@@ -556,11 +556,12 @@ abstract class ProductCollection extends TypeAgent
             }
         }
 
+        $intPid = $this->id;
         $intAffectedRows = parent::delete();
 
-        if ($intAffectedRows > 0) {
-            \Database::getInstance()->query("DELETE FROM tl_iso_product_collection_item WHERE pid={$this->id}");
-            \Database::getInstance()->query("DELETE FROM tl_iso_addresses WHERE ptable='" . static::$strTable . "' AND pid={$this->id}");
+        if ($intAffectedRows > 0 && $intPid > 0) {
+            \Database::getInstance()->query("DELETE FROM tl_iso_product_collection_item WHERE pid=$intPid");
+            \Database::getInstance()->query("DELETE FROM tl_iso_addresses WHERE ptable='" . static::$strTable . "' AND pid=$intPid");
         }
 
         $this->arrCache = array();
@@ -988,6 +989,9 @@ abstract class ProductCollection extends TypeAgent
         }
 
         $arrItems[$intId]->delete();
+
+        unset($this->arrItems[$intId]);
+
         $this->setModified(true);
 
         return true;
