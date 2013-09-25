@@ -29,6 +29,64 @@ use Isotope\Model\ProductCollection\Order;
  */
 class Postfinance extends Payment implements IsotopePayment, IsotopePostsale
 {
+    /**
+     * SHA1-Out relevant fields
+     * @var array
+     */
+    private static $arrShaOut = array
+    (
+        'AAVADDRESS',
+        'AAVCHECK',
+        'AAVZIP',
+        'ACCEPTANCE',
+        'ALIAS',
+        'AMOUNT',
+        'BIN',
+        'BRAND',
+        'CARDNO',
+        'CCCTY',
+        'CN',
+        'COMPLUS',
+        'CREATION_STATUS',
+        'CURRENCY',
+        'CVCCHECK',
+        'DCC_COMMPERCENTAGE',
+        'DCC_CONVAMOUNT',
+        'DCC_CONVCCY',
+        'DCC_EXCHRATE',
+        'DCC_EXCHRATESOURCE',
+        'DCC_EXCHRATETS',
+        'DCC_INDICATOR',
+        'DCC_MARGINPERCENTAGE',
+        'DCC_VALIDHOURS',
+        'DIGESTCARDNO',
+        'ECI',
+        'ED',
+        'ENCCARDNO',
+        'FXAMOUNT',
+        'FXCURRENCY',
+        'IP',
+        'IPCTY',
+        'NBREMAILUSAGE',
+        'NBRIPUSAGE',
+        'NBRIPUSAGE_ALLTX',
+        'NBRUSAGE',
+        'NCERROR',
+        'NCERRORCARDNO',
+        'NCERRORCN',
+        'NCERRORCVC',
+        'NCERRORED',
+        'ORDERID',
+        'PAYID',
+        'PM',
+        'SCO_CATEGORY',
+        'SCORING',
+        'STATUS',
+        'SUBBRAND',
+        'SUBSCRIPTION_ID',
+        'TRXDATE',
+        'VC'
+    );
 
     /**
      * Process payment on confirmation page.
@@ -203,28 +261,24 @@ class Postfinance extends Payment implements IsotopePayment, IsotopePostsale
     {
         $strSHASign = '';
         $arrParam = array();
-        $arrSHAOut = array('AAVADDRESS', 'AAVCHECK', 'AAVZIP', 'ACCEPTANCE', 'ALIAS', 'AMOUNT', 'BIN', 'BRAND', 'CARDNO', 'CCCTY', 'CN', 'COMPLUS', 'CREATION_STATUS', 'CURRENCY', 'CVCCHECK', 'DCC_COMMPERCENTAGE', 'DCC_CONVAMOUNT', 'DCC_CONVCCY', 'DCC_EXCHRATE', 'DCC_EXCHRATESOURCE', 'DCC_EXCHRATETS', 'DCC_INDICATOR', 'DCC_MARGINPERC', 'ENTAGE', 'DCC_VALIDHOURS', 'DIGESTC', 'ARDNO', 'ECI', 'ED', 'ENCCARDNO', 'IP', 'IPCTY', 'NBREMAILUSAGE', 'NBRIPUSAGE', 'NBRIPUSAGE_ALLTX', 'NBRUSAGE', 'NCERROR', 'ORDERID', 'PAYID', 'PM', 'STATUS', 'SUBBRAND', 'TRXDATE', 'VC');
 
-        foreach( array_keys(($this->postfinance_method == 'GET' ? $_GET : $_POST)) as $key )
-        {
-            if (in_array(strtoupper($key), $arrSHAOut))
-            {
+        foreach (array_keys(($this->postfinance_method == 'GET' ? $_GET : $_POST)) as $key) {
+            if (in_array(strtoupper($key), self::$arrShaOut)) {
                 $arrParam[$key] = $this->getRequestData($key);
             }
         }
 
         uksort($arrParam, 'strcasecmp');
 
-        foreach( $arrParam as $k => $v )
-        {
+        foreach($arrParam as $k => $v ) {
+
             if ($v == '')
                 continue;
 
-            $strSHASign .= strtoupper($k) . '=' . $v . $this->postfinance_secret;
+            $strSHASign .= strtoupper($k) . '=' . $v . $this->postfinance_sha1_out;
         }
 
-        if ($this->getRequestData('SHASIGN') == strtoupper(sha1($strSHASign)))
-        {
+        if ($this->getRequestData('SHASIGN') == strtoupper(sha1($strSHASign))) {
             return true;
         }
 
