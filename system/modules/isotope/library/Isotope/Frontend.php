@@ -976,7 +976,7 @@ window.addEvent('domready', function()
         foreach ($queries as $k=>$v) {
             $explode = explode('=', $v, 2);
 
-            if ($k === 'language' || preg_match('/(^|&(amp;)?)' . preg_quote($explode[0], '/') . '=/i', $strRequest)) {
+            if ($v === '' || $k === 'language' || preg_match('/(^|&(amp;)?)' . preg_quote($explode[0], '/') . '=/i', $strRequest)) {
                 unset($queries[$k]);
             }
         }
