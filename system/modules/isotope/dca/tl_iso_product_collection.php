@@ -67,7 +67,7 @@ $GLOBALS['TL_DCA']['tl_iso_product_collection'] = array
         ),
         'label' => array
         (
-            'fields'                => array('order_id', 'locked', 'address1_id', 'grandTotal', 'order_status'),
+            'fields'                => array('document_number', 'locked', 'address1_id', 'grandTotal', 'order_status'),
             'showColumns'           => true,
             'label_callback'        => array('Isotope\tl_iso_product_collection', 'getOrderLabel')
         ),
@@ -182,9 +182,9 @@ $GLOBALS['TL_DCA']['tl_iso_product_collection'] = array
             'sql'                   => "int(10) unsigned NOT NULL default '0'",
             'relation'              => array('type'=>'hasOne', 'load'=>'lazy'),
         ),
-        'order_id' => array
+        'document_number' => array
         (
-            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_product_collection']['order_id'],
+            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_product_collection']['document_number'],
             'search'                => true,
             'sorting'               => true,
             'sql'                   => "varchar(64) NOT NULL default ''",

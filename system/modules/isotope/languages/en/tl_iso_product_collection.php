@@ -16,7 +16,7 @@
 /**
  * Fields
  */
-$GLOBALS['TL_LANG']['tl_iso_product_collection']['order_id']                = array('Order ID');
+$GLOBALS['TL_LANG']['tl_iso_product_collection']['document_number']         = array('Order ID');
 $GLOBALS['TL_LANG']['tl_iso_product_collection']['uniqid']                  = array('Unique ID');
 $GLOBALS['TL_LANG']['tl_iso_product_collection']['order_status']            = array('Order status', 'Select the status of this order.');
 $GLOBALS['TL_LANG']['tl_iso_product_collection']['locked']                  = array('Placed');

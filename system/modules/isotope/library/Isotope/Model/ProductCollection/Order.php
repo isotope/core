@@ -45,9 +45,9 @@ class Order extends ProductCollection implements IsotopeProductCollection
     {
         switch ($strKey)
         {
-            // Order ID cannot be changed, it is created through Isotope\Model\ProductCollection\Order::generateOrderId on checkout
-            case 'order_id':
-                throw new \InvalidArgumentException('order_id cannot be changed trough __set().');
+            // Document Number cannot be changed, it is created through Isotope\Model\ProductCollection\Order::generateDocumentNumber on checkout
+            case 'document_number':
+                throw new \InvalidArgumentException('document_number cannot be changed trough __set().');
                 break;
 
             default:
@@ -232,7 +232,7 @@ class Order extends ProductCollection implements IsotopeProductCollection
             $this->order_status = Isotope::getConfig()->orderstatus_new;
         }
 
-        $this->generateOrderId();
+        $this->generateDocumentNumber(Isotope::getConfig()->orderPrefix, (int) Isotope::getConfig()->orderDigits);
         $arrData = $this->getEmailData();
         $strRecipient = $this->getEmailRecipient();
 
@@ -406,7 +406,7 @@ class Order extends ProductCollection implements IsotopeProductCollection
     {
         $arrData = $this->email_data;
         $arrData['id'] = $this->id;
-        $arrData['order_id'] = $this->order_id;
+        $arrData['document_number'] = $this->document_number;
         $arrData['uniqid'] = $this->uniqid;
         $arrData['status'] = $this->getStatusLabel();
         $arrData['status_id'] = $this->order_status;
@@ -504,55 +504,5 @@ class Order extends ProductCollection implements IsotopeProductCollection
 
             $this->setShippingAddress($objNew);
         }
-    }
-
-
-    /**
-     * Generate the next higher Order-ID based on config prefix, order number digits and existing records
-     * @return string
-     */
-    protected function generateOrderId()
-    {
-        if ($this->arrData['order_id'] != '')
-        {
-            return $this->arrData['order_id'];
-        }
-
-        // !HOOK: generate a custom order ID
-        if (isset($GLOBALS['ISO_HOOKS']['generateOrderId']) && is_array($GLOBALS['ISO_HOOKS']['generateOrderId']))
-        {
-            foreach ($GLOBALS['ISO_HOOKS']['generateOrderId'] as $callback)
-            {
-                $objCallback = \System::importStatic($callback[0]);
-                $strOrderId = $objCallback->$callback[1]($this);
-
-                if ($strOrderId !== false)
-                {
-                    $this->arrData['order_id'] = $strOrderId;
-                    break;
-                }
-            }
-        }
-
-        if ($this->arrData['order_id'] == '')
-        {
-            $objDatabase = \Database::getInstance();
-            $strPrefix = Isotope::getInstance()->call('replaceInsertTags', Isotope::getConfig()->orderPrefix);
-            $intPrefix = utf8_strlen($strPrefix);
-
-            // Lock tables so no other order can get the same ID
-            $objDatabase->lockTables(array(static::$strTable => 'WRITE'));
-
-            // Retrieve the highest available order ID
-            $objMax = $objDatabase->prepare("SELECT order_id FROM " . static::$strTable . " WHERE " . ($strPrefix != '' ? "order_id LIKE '$strPrefix%' AND " : '') . "store_id=? ORDER BY CAST(" . ($strPrefix != '' ? "SUBSTRING(order_id, " . ($intPrefix+1) . ")" : 'order_id') . " AS UNSIGNED) DESC")->limit(1)->executeUncached(Isotope::getCart()->store_id);
-            $intMax = (int) substr($objMax->order_id, $intPrefix);
-
-            $this->arrData['order_id'] = $strPrefix . str_pad($intMax+1, (int) Isotope::getConfig()->orderDigits, '0', STR_PAD_LEFT);
-        }
-
-        $objDatabase->prepare("UPDATE " . static::$strTable . " SET order_id=? WHERE id={$this->id}")->executeUncached($this->arrData['order_id']);
-        $objDatabase->unlockTables();
-
-        return $this->arrData['order_id'];
     }
 }

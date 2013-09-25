@@ -15,7 +15,7 @@
 /**
  * Help Wizard explanations
  */
-$GLOBALS['TL_LANG']['XPL']['isoMailTokens'][0]      = array('##order_id##', 'Unique number for this order');
+$GLOBALS['TL_LANG']['XPL']['isoMailTokens'][0]      = array('##document_number##', 'Unique number for this order');
 $GLOBALS['TL_LANG']['XPL']['isoMailTokens'][1]      = array('##items##', 'Number of items in cart');
 $GLOBALS['TL_LANG']['XPL']['isoMailTokens'][2]      = array('##products##', 'Products in cart');
 $GLOBALS['TL_LANG']['XPL']['isoMailTokens'][3]      = array('##subTotal##', 'Subtotal of order');

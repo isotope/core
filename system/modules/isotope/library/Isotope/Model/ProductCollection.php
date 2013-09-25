@@ -1349,4 +1349,64 @@ abstract class ProductCollection extends TypeAgent
     {
         return $GLOBALS['TL_LANG']['ERR']['collectionErrorInItems'];
     }
+
+    /**
+     * Generate the next higher Document Number based on existing records
+     * @param   string
+     * @param   int
+     * @return  string
+     */
+    protected function generateDocumentNumber($strPrefix, $intDigits)
+    {
+        if ($this->arrData['document_number'] != '') {
+            return $this->arrData['document_number'];
+        }
+
+        // !HOOK: generate a custom order ID
+        if (isset($GLOBALS['ISO_HOOKS']['generateDocumentNumber']) && is_array($GLOBALS['ISO_HOOKS']['generateDocumentNumber'])) {
+            foreach ($GLOBALS['ISO_HOOKS']['generateDocumentNumber'] as $callback) {
+                $objCallback = \System::importStatic($callback[0]);
+                $strOrderId = $objCallback->$callback[1]($this, $strPrefix, $intDigits);
+
+                if ($strOrderId !== false) {
+                    $this->arrData['document_number'] = $strOrderId;
+                    break;
+                }
+            }
+        }
+
+        if ($this->arrData['document_number'] == '') {
+            $strPrefix = Isotope::getInstance()->call('replaceInsertTags', $strPrefix);
+            $intPrefix = utf8_strlen($strPrefix);
+
+            // Lock tables so no other order can get the same ID
+            \Database::getInstance()->lockTables(array(static::$strTable=>'WRITE'));
+
+            // Retrieve the highest available order ID
+            $objMax = \Database::getInstance()->prepare("
+                SELECT document_number
+                FROM " . static::$strTable . "
+                WHERE
+                    type=?
+                    " . ($strPrefix != '' ? " AND document_number LIKE '$strPrefix%' AND " : '') . "
+                    AND store_id=?
+                ORDER BY CAST(" . ($strPrefix != '' ? "SUBSTRING(document_number, " . ($intPrefix+1) . ")" : 'document_number') . " AS UNSIGNED) DESC
+            ")->limit(1)->execute(
+                array_search(get_called_class(), static::getModelTypes()),
+                Isotope::getCart()->store_id
+            );
+
+            $intMax = (int) substr($objMax->document_number, $intPrefix);
+
+            $this->arrData['document_number'] = $strPrefix . str_pad($intMax+1, $intDigits, '0', STR_PAD_LEFT);
+        }
+
+        \Database::getInstance()->prepare("
+            UPDATE " . static::$strTable . " SET document_number=? WHERE id=?
+        ")->execute($this->arrData['document_number'], $this->id);
+
+        \Database::getInstance()->unlockTables();
+
+        return $this->arrData['document_number'];
+    }
 }

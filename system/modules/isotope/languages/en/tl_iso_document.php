@@ -19,8 +19,8 @@
 $GLOBALS['TL_LANG']['tl_iso_document']['name']                      = array('Document name', 'Enter a name for this document. This will only be used in the backend.');
 $GLOBALS['TL_LANG']['tl_iso_document']['type']                      = array('Type of document', 'Select a particular document rendering class.');
 $GLOBALS['TL_LANG']['tl_iso_document']['logo']                      = array('Logo', 'Select a logo.');
-$GLOBALS['TL_LANG']['tl_iso_document']['documentTitle']             = array('Document title', 'You can use simple tokens ("collection_*" whereas * equals the database column of the collection) to render your file title (e.g. "Invoice title ##collection_order_id##").');
-$GLOBALS['TL_LANG']['tl_iso_document']['fileTitle']                 = array('File title', 'You can use simple tokens ("collection_*" whereas * equals the database column of the collection) to render your file title (e.g. "invoice_##collection_order_id##").');
+$GLOBALS['TL_LANG']['tl_iso_document']['documentTitle']             = array('Document title', 'You can use simple tokens ("collection_*" whereas * equals the database column of the collection) to render your file title (e.g. "Invoice title ##collection_document_number##").');
+$GLOBALS['TL_LANG']['tl_iso_document']['fileTitle']                 = array('File title', 'You can use simple tokens ("collection_*" whereas * equals the database column of the collection) to render your file title (e.g. "invoice_##collection_document_number##").');
 $GLOBALS['TL_LANG']['tl_iso_document']['documentTpl']               = array('Document template', 'Choose a template you want to render this document with.');
 $GLOBALS['TL_LANG']['tl_iso_document']['collectionTpl']             = array('Collection template', 'Choose a collection template you want to render the products with.');
 

@@ -46,7 +46,7 @@ $GLOBALS['TL_DCA']['tl_iso_product_collection_item'] = array
         ),
         'pid' => array
         (
-            'foreignKey'            => 'tl_iso_product_collection.order_id',
+            'foreignKey'            => 'tl_iso_product_collection.document_number',
             'sql'                   =>  "int(10) unsigned NOT NULL default '0'",
             'relation'              => array('type'=>'belongsTo', 'load'=>'lazy'),
         ),
