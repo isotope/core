@@ -189,28 +189,9 @@ class Postfinance extends Payment implements IsotopePayment, IsotopePostsale
         }
 
         $objAddress = Isotope::getCart()->getBillingAddress();
-        $strFailedUrl = \Environment::get('base') . \Isotope\Module\Checkout::generateUrlForStep('failed');
 
-        $arrParams = array
-        (
-            'PSPID'         => $this->postfinance_pspid,
-            'ORDERID'       => $objOrder->id,
-            'AMOUNT'        => round((Isotope::getCart()->getTotal() * 100)),
-            'CURRENCY'      => Isotope::getConfig()->currency,
-            'LANGUAGE'      => $GLOBALS['TL_LANGUAGE'] . '_' . strtoupper($GLOBALS['TL_LANGUAGE']),
-            'CN'            => $objAddress->firstname . ' ' . $objAddress->lastname,
-            'EMAIL'         => $objAddress->email,
-            'OWNERZIP'      => $objAddress->postal,
-            'OWNERADDRESS'  => $objAddress->street_1,
-            'OWNERADDRESS2' => $objAddress->street_2,
-            'OWNERCTY'      => $objAddress->country,
-            'OWNERTOWN'     => $objAddress->city,
-            'OWNERTELNO'    => $objAddress->phone,
-            'ACCEPTURL'     => \Environment::get('base') . \Isotope\Frontend::addQueryStringToUrl('uid=' . $objOrder->uniqid, \Isotope\Module\Checkout::generateUrlForStep('complete')),
-            'DECLINEURL'    => $strFailedUrl,
-            'EXCEPTIONURL'  => $strFailedUrl,
-            'PARAMPLUS'     => 'mod=pay&amp;id=' . $this->id,
-        );
+        $arrParams = array();
+        $arrParams = array_merge($arrParams, $this->preparePSPParams($objOrder, $objAddress));
 
         // SHA-1 must be generated on alphabetically sorted keys.
         ksort($arrParams);
@@ -235,6 +216,38 @@ class Postfinance extends Payment implements IsotopePayment, IsotopePostsale
         $objTemplate->id = $this->id;
 
         return $objTemplate->parse();
+    }
+
+    /**
+     * Prepare regular PSP params
+     * @param   Order
+     * @param   Address
+     * @return  array
+     */
+    private function preparePSPParams($objOrder, $objAddress)
+    {
+        $strFailedUrl = \Environment::get('base') . \Isotope\Module\Checkout::generateUrlForStep('failed');
+
+        return array
+        (
+            'PSPID'         => $this->postfinance_pspid,
+            'ORDERID'       => $objOrder->id,
+            'AMOUNT'        => round((Isotope::getCart()->getTotal() * 100)),
+            'CURRENCY'      => Isotope::getConfig()->currency,
+            'LANGUAGE'      => $GLOBALS['TL_LANGUAGE'] . '_' . strtoupper($GLOBALS['TL_LANGUAGE']),
+            'CN'            => $objAddress->firstname . ' ' . $objAddress->lastname,
+            'EMAIL'         => $objAddress->email,
+            'OWNERZIP'      => $objAddress->postal,
+            'OWNERADDRESS'  => $objAddress->street_1,
+            'OWNERADDRESS2' => $objAddress->street_2,
+            'OWNERCTY'      => $objAddress->country,
+            'OWNERTOWN'     => $objAddress->city,
+            'OWNERTELNO'    => $objAddress->phone,
+            'ACCEPTURL'     => \Environment::get('base') . \Isotope\Frontend::addQueryStringToUrl('uid=' . $objOrder->uniqid, \Isotope\Module\Checkout::generateUrlForStep('complete')),
+            'DECLINEURL'    => $strFailedUrl,
+            'EXCEPTIONURL'  => $strFailedUrl,
+            'PARAMPLUS'     => 'mod=pay&amp;id=' . $this->id,
+        );
     }
 
 
