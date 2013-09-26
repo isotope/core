@@ -196,7 +196,7 @@ class Postfinance extends Payment implements IsotopePayment, IsotopePostsale
         $objAddress = Isotope::getCart()->getBillingAddress();
         $strFailedUrl = \Environment::get('base') . \Isotope\Module\Checkout::generateUrlForStep('failed');
 
-        $arrParam = array
+        $arrParams = array
         (
             'PSPID'         => $this->postfinance_pspid,
             'ORDERID'       => $objOrder->id,
@@ -218,10 +218,10 @@ class Postfinance extends Payment implements IsotopePayment, IsotopePostsale
         );
 
         // SHA-1 must be generated on alphabetically sorted keys.
-        ksort($arrParam);
+        ksort($arrParams);
 
         $strSHASign = '';
-        foreach( $arrParam as $k => $v )
+        foreach( $arrParams as $k => $v )
         {
             if ($v == '')
                 continue;
@@ -229,12 +229,12 @@ class Postfinance extends Payment implements IsotopePayment, IsotopePostsale
             $strSHASign .= $k . '=' . htmlspecialchars_decode($v) . $this->postfinance_secret;
         }
 
-        $arrParam['SHASIGN'] = sha1($strSHASign);
+        $arrParams['SHASIGN'] = sha1($strSHASign);
 
         $objTemplate = new \Isotope\Template('iso_payment_postfinance');
 
         $objTemplate->action = 'https://e-payment.postfinance.ch/ncol/' . ($this->debug ? 'test' : 'prod') . '/orderstandard_utf8.asp';
-        $objTemplate->params = $arrParam;
+        $objTemplate->params = $arrParams;
         $objTemplate->headline = $GLOBALS['TL_LANG']['MSC']['pay_with_redirect'][0];
         $objTemplate->message = $GLOBALS['TL_LANG']['MSC']['pay_with_redirect'][1];
         $objTemplate->slabel = $GLOBALS['TL_LANG']['MSC']['pay_with_redirect'][2];
@@ -260,17 +260,17 @@ class Postfinance extends Payment implements IsotopePayment, IsotopePostsale
     private function validateSHASign()
     {
         $strSHASign = '';
-        $arrParam = array();
+        $arrParams = array();
 
         foreach (array_keys(($this->postfinance_method == 'GET' ? $_GET : $_POST)) as $key) {
             if (in_array(strtoupper($key), self::$arrShaOut)) {
-                $arrParam[$key] = $this->getRequestData($key);
+                $arrParams[$key] = $this->getRequestData($key);
             }
         }
 
-        uksort($arrParam, 'strcasecmp');
+        uksort($arrParams, 'strcasecmp');
 
-        foreach($arrParam as $k => $v ) {
+        foreach($arrParams as $k => $v ) {
 
             if ($v == '')
                 continue;
