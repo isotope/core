@@ -195,8 +195,9 @@ class Postfinance extends Payment implements IsotopePayment, IsotopePostsale
         $arrParams = array_merge($arrParams, $this->prepareFISParams($objOrder, $objAddress));
 
         // SHA-1 must be generated on alphabetically sorted keys.
-        // @todo check correct sorting of FIS params (ITEM1 and ITEM10)
-        ksort($arrParams);
+        // Use the natural order algorithm so ITEM10 gets listed after ITEM2
+        // We can only use ksort($arrParams, SORT_NATURAL) as of PHP 5.4
+        uksort($arrParams, 'strnatcasecmp');
 
         $strSHASign = '';
         foreach($arrParams as $k => $v) {
@@ -321,7 +322,10 @@ class Postfinance extends Payment implements IsotopePayment, IsotopePostsale
             }
         }
 
-        uksort($arrParams, 'strcasecmp');
+        // SHA-1 must be generated on alphabetically sorted keys.
+        // Use the natural order algorithm so ITEM10 gets listed after ITEM2
+        // We can only use ksort($arrParams, SORT_NATURAL) as of PHP 5.4
+        uksort($arrParams, 'strnatcasecmp');
 
         foreach($arrParams as $k => $v ) {
 
