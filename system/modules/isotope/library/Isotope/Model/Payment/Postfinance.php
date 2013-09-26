@@ -96,15 +96,13 @@ class Postfinance extends Payment implements IsotopePayment, IsotopePostsale
      */
     public function processPayment()
     {
-        if (\Input::get('NCERROR') > 0)
-        {
+        if (\Input::get('NCERROR') > 0) {
             \System::log('Order ID "' . \Input::get('orderID') . '" has NCERROR ' . \Input::get('NCERROR'), __METHOD__, TL_ERROR);
 
             return false;
         }
 
-        if (($objOrder = Order::findByPk(\Input::get('orderID'))) === null)
-        {
+        if (($objOrder = Order::findByPk(\Input::get('orderID'))) === null) {
             \System::log('Order ID "' . \Input::get('orderID') . '" not found', __METHOD__, TL_ERROR);
 
             return false;
@@ -112,16 +110,14 @@ class Postfinance extends Payment implements IsotopePayment, IsotopePostsale
 
         $this->postfinance_method = 'GET';
 
-        if (!$this->validateSHASign())
-        {
+        if (!$this->validateSHASign()) {
             \System::log('Received invalid postsale data for order ID "' . $objOrder->id . '"', __METHOD__, TL_ERROR);
 
             return false;
         }
 
         // Validate payment data (see #2221)
-        if ($objOrder->currency != $this->getRequestData('currency') || $objOrder->getTotal() != $this->getRequestData('amount'))
-        {
+        if ($objOrder->currency != $this->getRequestData('currency') || $objOrder->getTotal() != $this->getRequestData('amount')) {
             \System::log('Postsale checkout manipulation in payment for Order ID ' . $objOrder->id . '!', __METHOD__, TL_ERROR);
             \Isotope\Module\Checkout::redirectToStep('failed');
         }
@@ -141,30 +137,26 @@ class Postfinance extends Payment implements IsotopePayment, IsotopePostsale
      */
     public function processPostsale(IsotopeProductCollection $objOrder)
     {
-        if ($this->getRequestData('NCERROR') > 0)
-        {
+        if ($this->getRequestData('NCERROR') > 0) {
             \System::log('Order ID "' . $this->getRequestData('orderID') . '" has NCERROR ' . $this->getRequestData('NCERROR'), __METHOD__, TL_ERROR);
 
             return;
         }
 
-        if (!$this->validateSHASign())
-        {
+        if (!$this->validateSHASign()) {
             \System::log('Received invalid postsale data for order ID "' . $objOrder->id . '"', __METHOD__, TL_ERROR);
 
             return;
         }
 
         // Validate payment data (see #2221)
-        if ($objOrder->currency != $this->getRequestData('currency') || $objOrder->getTotal() != $this->getRequestData('amount'))
-        {
+        if ($objOrder->currency != $this->getRequestData('currency') || $objOrder->getTotal() != $this->getRequestData('amount')) {
             \System::log('Postsale checkout manipulation in payment for Order ID ' . $objOrder->id . '!', __METHOD__, TL_ERROR);
 
             return;
         }
 
-        if (!$objOrder->checkout())
-        {
+        if (!$objOrder->checkout()) {
             \System::log('Post-Sale checkout for Order ID "' . $objOrder->id . '" failed', __METHOD__, TL_ERROR);
 
             return;
@@ -174,6 +166,10 @@ class Postfinance extends Payment implements IsotopePayment, IsotopePostsale
         $objOrder->save();
     }
 
+
+    /**
+     * {@inheritdoc}
+     */
     public function getPostsaleOrder()
     {
         return Order::findByPk($this->getRequestData('orderID'));
@@ -188,8 +184,7 @@ class Postfinance extends Payment implements IsotopePayment, IsotopePostsale
      */
     public function checkoutForm()
     {
-        if (($objOrder = Order::findOneBy('source_collection_id', Isotope::getCart()->id)) === null)
-        {
+        if (($objOrder = Order::findOneBy('source_collection_id', Isotope::getCart()->id)) === null) {
             \Isotope\Module\Checkout::redirectToStep('failed');
         }
 
@@ -221,12 +216,11 @@ class Postfinance extends Payment implements IsotopePayment, IsotopePostsale
         ksort($arrParams);
 
         $strSHASign = '';
-        foreach( $arrParams as $k => $v )
-        {
+        foreach($arrParams as $k => $v) {
             if ($v == '')
                 continue;
 
-            $strSHASign .= $k . '=' . htmlspecialchars_decode($v) . $this->postfinance_secret;
+            $strSHASign .= $k . '=' . htmlspecialchars_decode($v) . $this->postfinance_sha1_in;
         }
 
         $arrParams['SHASIGN'] = sha1($strSHASign);
