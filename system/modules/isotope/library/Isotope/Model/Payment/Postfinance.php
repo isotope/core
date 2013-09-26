@@ -238,6 +238,11 @@ class Postfinance extends Payment implements IsotopePayment, IsotopePostsale
     }
 
 
+    /**
+     * Gets the request data based on the chosen HTTP method
+     * @param   string Key
+     * @return  mixed
+     */
     private function getRequestData($strKey)
     {
         if ($this->postfinance_method == 'GET') {
