@@ -192,8 +192,10 @@ class Postfinance extends Payment implements IsotopePayment, IsotopePostsale
 
         $arrParams = array();
         $arrParams = array_merge($arrParams, $this->preparePSPParams($objOrder, $objAddress));
+        $arrParams = array_merge($arrParams, $this->prepareFISParams($objOrder, $objAddress));
 
         // SHA-1 must be generated on alphabetically sorted keys.
+        // @todo check correct sorting of FIS params (ITEM1 and ITEM10)
         ksort($arrParams);
 
         $strSHASign = '';
@@ -248,6 +250,45 @@ class Postfinance extends Payment implements IsotopePayment, IsotopePostsale
             'EXCEPTIONURL'  => $strFailedUrl,
             'PARAMPLUS'     => 'mod=pay&amp;id=' . $this->id,
         );
+    }
+
+    /**
+     * Prepare FIS params
+     * @param   Order
+     * @param   Address
+     * @return  array
+     */
+    private function prepareFISParams($objOrder, $objAddress)
+    {
+        $arrInvoice = array
+        (
+            'ECOM_BILLTO_POSTAL_NAME_FIRST'     => $objAddress->firstname,
+            'ECOM_BILLTO_POSTAL_NAME_LAST'      => $objAddress->lastname,
+            'OWNERADDRESS'                      => $objAddress->street_1,
+            'OWNERADDRESS2'                     => $objAddress->street_2,
+            // @todo we don't have the street number, do we even need it?
+            //'ECOM_BILLTO_POSTAL_STREET_NUMBER'  => $objAddress->street_2,
+            'OWNERZIP'                          => $objAddress->postal,
+            'OWNERTOWN'                         => $objAddress->city,
+            'OWNERCTY'                          => $objAddress->country,
+        );
+
+        $arrOrder = array();
+        $i = 1;
+
+        // Need to take the items from the cart as they're not transferred to the order here yet
+        foreach (Isotope::getCart()->getItems() as $objItem) {
+            $arrOrder['ITEMID' . $i]        = $objItem->id;
+            $arrOrder['ITEMNAME' . $i]      = $objItem->getName();
+            $arrOrder['ITEMPRICE' . $i]     = $objItem->getPrice();
+            $arrOrder['ITEMQUANT' . $i]     = $objItem->quantity;
+            // @todo calculate this
+            $arrOrder['ITEMVATCODE' . $i]   = '8%';
+
+            $i++;
+        }
+
+        return array_merge_($arrInvoice, $arrOrder);
     }
 
 
