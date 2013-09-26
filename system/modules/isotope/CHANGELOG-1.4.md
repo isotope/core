@@ -1,6 +1,13 @@
 Isotope eCommerce Changelog
 ===========================
 
+Version 1.4.7 (2013-??-??)
+--------------------------
+
+### Improved
+- Added composer-related files to GIT repo
+
+
 Version 1.4.6 (2013-09-02)
 --------------------------
 
