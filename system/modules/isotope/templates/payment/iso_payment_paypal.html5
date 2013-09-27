@@ -4,7 +4,7 @@
 <input type="hidden" name="cmd" value="_cart">
 <input type="hidden" name="upload" value="1">
 <input type="hidden" name="charset" value="UTF-8">
-<input type="hidden" name="business" value="<?php echo $this->account; ?>">
+<input type="hidden" name="business" value="<?php echo $this->paypal_account; ?>">
 <input type="hidden" name="lc" value="<?php echo strtoupper($GLOBALS['TL_LANGUAGE']); ?>">
 <?php foreach ($this->data as $k => $v): ?>
 <input type="hidden" name="<?php echo $k; ?>" value="<?php echo $v; ?>">
