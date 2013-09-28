@@ -452,7 +452,7 @@ class ProductCallbacks extends \Backend
 
         // Remove non-active fields from multi-selection
         if ($blnVariants && !$blnSingleRecord) {
-            $arrInclude = call_user_func_array('array_merge', $arrPalette);
+            $arrInclude = empty($arrPalette) ? array() : call_user_func_array('array_merge', $arrPalette);
 
             foreach ($arrFields as $name => $config) {
                 if ($arrFields[$name]['attributes']['legend'] != '' && !in_array($name, $arrInclude)) {
