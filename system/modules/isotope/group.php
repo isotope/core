@@ -19,7 +19,7 @@ namespace Isotope;
  * Initialize the system
  */
 define('TL_MODE', 'BE');
-require_once '../../../initialize.php';
+require_once '../../initialize.php';
 
 
 /**
