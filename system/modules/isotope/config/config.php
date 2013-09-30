@@ -20,7 +20,7 @@
  * Isotope constants
  */
 @define('ISO_VERSION', '2.0');
-@define('ISO_BUILD', 'dev');
+@define('ISO_BUILD', 'beta1');
 @define('ISO_DEBUG', (bool) $GLOBALS['TL_CONFIG']['debugMode']);
 
 
