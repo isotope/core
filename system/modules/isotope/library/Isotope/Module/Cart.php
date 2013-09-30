@@ -96,7 +96,13 @@ class Cart extends Module
 
         $objTemplate = new \Isotope\Template($this->iso_collectionTpl);
 
-        Isotope::getCart()->addToTemplate($objTemplate, $this->getProductCollectionItemsSortingCallable());
+        Isotope::getCart()->addToTemplate(
+            $objTemplate,
+            array(
+                'gallery'   => $this->iso_gallery,
+                'sorting'   => $this->getProductCollectionItemsSortingCallable(),
+            )
+        );
 
         $blnReload = false;
         $arrQuantity = \Input::post('quantity');

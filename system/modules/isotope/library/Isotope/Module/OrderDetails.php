@@ -87,7 +87,13 @@ class OrderDetails extends Module
         $objTemplate = new \Isotope\Template($this->iso_collectionTpl);
         $objTemplate->linkProducts = true;
 
-        $objOrder->addToTemplate($objTemplate, $this->getProductCollectionItemsSortingCallable());
+        $objOrder->addToTemplate(
+            $objTemplate,
+            array(
+                'gallery'   => $this->iso_gallery,
+                'sorting'   => $this->getProductCollectionItemsSortingCallable(),
+            )
+        );
 
         $this->Template->collection = $objOrder;
         $this->Template->products = $objTemplate->parse();

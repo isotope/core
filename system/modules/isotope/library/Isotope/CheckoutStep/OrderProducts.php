@@ -37,7 +37,13 @@ class OrderProducts extends CheckoutStep implements IsotopeCheckoutStep
     {
         $objTemplate = new \Isotope\Template($this->objModule->iso_collectionTpl);
 
-        Isotope::getCart()->addToTemplate($objTemplate, $this->objModule->getProductCollectionItemsSortingCallable());
+        Isotope::getCart()->addToTemplate(
+            $objTemplate,
+            array(
+                'gallery'   => $this->objModule->iso_gallery,
+                'sorting'   => $this->objModule->getProductCollectionItemsSortingCallable(),
+            )
+        );
 
         return $objTemplate->parse();
     }
@@ -60,7 +66,13 @@ class OrderProducts extends CheckoutStep implements IsotopeCheckoutStep
     {
         $objTemplate = new \Isotope\Template($this->objModule->iso_collectionTpl);
 
-        Isotope::getCart()->addToTemplate($objTemplate, $this->objModule->getProductCollectionItemsSortingCallable());
+        Isotope::getCart()->addToTemplate(
+            $objTemplate,
+            array(
+                'gallery'   => $this->objModule->iso_gallery,
+                'sorting'   => $this->objModule->getProductCollectionItemsSortingCallable(),
+            )
+        );
 
         $strHtml = $objTemplate->parse();
         $objTemplate->textOnly = true;

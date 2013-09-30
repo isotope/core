@@ -1180,14 +1180,12 @@ abstract class ProductCollection extends TypeAgent
     /**
      * Add the collection to a template
      * @param   object
-     * @param   callable    Callable to pass to getItems() e.g. for sorting
+     * @param   array
      */
-    public function addToTemplate(\Isotope\Template $objTemplate, $varCallable=null)
+    public function addToTemplate(\Isotope\Template $objTemplate, array $arrConfig=array())
     {
-        // @todo config should be passed from the frontend module
-        $arrConfig = array();
         $arrGalleries = array();
-        $arrItems = $this->addItemsToTemplate($objTemplate, $varCallable);
+        $arrItems = $this->addItemsToTemplate($objTemplate, $arrConfig['sorting']);
 
         $objTemplate->collection = $this;
         $objTemplate->config = ($this->getRelated('config_id') || Isotope::getConfig());
