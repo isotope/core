@@ -257,6 +257,20 @@ class tl_iso_product_collection extends \Backend
         }
     }
 
+	/**
+	 * Return the paymnet button if a payment method is available
+	 * @param array
+	 * @param string
+	 * @param string
+	 * @param string
+	 * @param string
+	 * @param string
+	 * @return string
+	 */
+	public function paymentButton($row, $href, $label, $title, $icon, $attributes)
+	{
+		return $row['payment_id'] > 0 ? '<a href="'.$this->addToUrl($href.'&amp;id='.$row['id']).'" title="'.specialchars($title).'"'.$attributes.'>'.$this->generateImage($icon, $label).'</a> ' : '';
+	}
 
     /**
      * Generate a payment interface and return it as HTML string
@@ -278,6 +292,20 @@ class tl_iso_product_collection extends \Backend
         return '<p class="tl_gerror">'.$GLOBALS['TL_LANG']['MSC']['backendPaymentNotFound'].'</p>';
     }
 
+    /**
+	 * Return the shipping button if a shipping method is available
+	 * @param array
+	 * @param string
+	 * @param string
+	 * @param string
+	 * @param string
+	 * @param string
+	 * @return string
+	 */
+	public function shippingButton($row, $href, $label, $title, $icon, $attributes)
+	{
+		return $row['shipping_id'] > 0 ? '<a href="'.$this->addToUrl($href.'&amp;id='.$row['id']).'" title="'.specialchars($title).'"'.$attributes.'>'.$this->generateImage($icon, $label).'</a> ' : '';
+	}
 
     /**
      * Generate a shipping interface and return it as HTML string
