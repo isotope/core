@@ -114,6 +114,8 @@ class Standard extends Document implements IsotopeDocument
 
         // Render the collection
         $objCollectionTemplate = new \Isotope\Template($this->collectionTpl);
+
+        // @todo add sorting and gallery configuration to document
         $objCollection->addToTemplate($objCollectionTemplate);
         $objTemplate->collection = $objCollectionTemplate->parse();
 
