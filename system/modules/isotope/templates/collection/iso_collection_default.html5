@@ -29,7 +29,7 @@
 <tbody>
 <?php foreach($this->items as $item): ?>
     <tr class="<?php echo $item['rowClass']; ?>">
-        <td class="col_0 col_first image"><?php $this->getGallery('images', $item['item'])->generateMainImage(); ?></td>
+        <td class="col_0 col_first image"><?php echo $this->getGallery('images', $item['item'])->generateMainImage(); ?></td>
         <td class="col_1 name">
             <?php if($this->linkProducts && $item['hasProduct']): ?><a href="<?php echo $item['href']; ?>"><?php echo $item['name']; ?></a><?php else: ?><?php echo $item['name']; ?><?php endif; ?>
             <?php if(!empty($item['options'])): ?>
