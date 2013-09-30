@@ -150,7 +150,9 @@ class tl_iso_product_collection extends \Backend
      */
     public function generateBillingAddressData($dc, $xlabel)
     {
-        return $this->generateAddressData(Order::findByPk($dc->id)->getBillingAddress());
+        $objOrder = Order::findByPk($dc->id);
+
+        return $this->generateAddressData((null === $objOrder) ? null : $objOrder->getBillingAddress());
     }
 
 
@@ -162,7 +164,9 @@ class tl_iso_product_collection extends \Backend
      */
     public function generateShippingAddressData($dc, $xlabel)
     {
-        return $this->generateAddressData(Order::findByPk($dc->id)->getShippingAddress());
+        $objOrder = Order::findByPk($dc->id);
+
+        return $this->generateAddressData((null === $objOrder) ? null : $objOrder->getShippingAddress());
     }
 
 
