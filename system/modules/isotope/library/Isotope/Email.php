@@ -57,18 +57,6 @@ class Email extends \Controller
     protected $strCssFile = 'isotope';
 
     /**
-     * Collection PDF data
-     * @var mixed
-     */
-    protected $varDocumentData;
-
-    /**
-     * Collection PDF title
-     * @var string
-     */
-    protected $strDocumentTitle;
-
-    /**
      * if attachments have been added (= reset $objEmail if language changes)
      * @var boolean
      */
@@ -285,13 +273,6 @@ class Email extends \Controller
                 }
             }
 
-            // @todo the PDF name could contain user specific information if sent to multiple recipients
-            if ($this->strDocumentTitle != '')
-            {
-                $strTitle = strip_tags(\String::parseSimpleTokens($this->replaceInsertTags($this->strDocumentTitle), $arrData));
-                $this->objEmail->attachFileFromString($this->varDocumentData, $strTitle.'.pdf', 'application/pdf');
-            }
-
             $this->attachmentsDone = true;
         }
 
@@ -330,15 +311,6 @@ class Email extends \Controller
         $this->addRecipients($objTemplate->bcc, 'sendBcc');
 
         $this->strTemplate = $objTemplate->template ? $objTemplate->template : 'mail_default';
-
-        if ($objTemplate->attachDocument && $objCollection instanceof IsotopeCollection)
-        {
-            $objPdf = $objCollection->generatePDF(($objTemplate->documentTemplate ? $objTemplate->documentTemplate : null), null, false);
-            $objPdf->lastPage();
-
-            $this->varDocumentData = $objPdf->Output('collection.pdf', 'S');
-            $this->strDocumentTitle = $objTemplate->documentTitle;
-        }
     }
 
 
