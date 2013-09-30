@@ -205,7 +205,7 @@ class ProductList extends Module
             $arrConfig = array(
                 'module'        => $this,
                 'template'      => ($this->iso_list_layout ?: $objProduct->getRelated('type')->list_template),
-                'gallery'       => $objProduct->getRelated('type')->list_gallery,
+                'gallery'       => ($this->iso_gallery ?: $objProduct->getRelated('type')->list_gallery),
                 'buttons'       => deserialize($this->iso_buttons, true),
                 'useQuantity'   => $this->iso_use_quantity,
                 'jumpTo'        => $intReaderPage

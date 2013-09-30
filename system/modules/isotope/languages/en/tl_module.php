@@ -19,6 +19,7 @@
  */
 $GLOBALS['TL_LANG']['tl_module']['iso_list_layout']                 = array('Product list template', 'Please choose a list layout. You can add custom list layouts to folder <em>templates</em>. List template files start with <em>iso_list_</em> and require file extension <em>.tpl</em>.');
 $GLOBALS['TL_LANG']['tl_module']['iso_reader_layout']               = array('Product reader template', 'Please choose a reader template.  You can add custom reader templates to folder <em>templates</em>. Reader template files start with <em>iso_reader_</em>.');
+$GLOBALS['TL_LANG']['tl_module']['iso_gallery']                     = array('Gallery', 'Select a gallery to render images (overrides the product type config).');
 $GLOBALS['TL_LANG']['tl_module']['iso_collectionTpl']               = array('Product collection template', 'Please choose a template to render the products. You can add custom collection templates to folder <em>templates</em>. Collection template files start with <em>iso_collection_</em>.');
 $GLOBALS['TL_LANG']['tl_module']['iso_filterTpl']                   = array('Filter template', 'Please choose a filter template. You can add custom filter templates to folder <em>templates</em>. Filter template files start with <em>iso_filter_</em>.');
 $GLOBALS['TL_LANG']['tl_module']['iso_jump_first']                  = array('Redirect to first product', 'Check here if users are redirected to the first product of the list.');

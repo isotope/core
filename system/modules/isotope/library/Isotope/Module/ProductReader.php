@@ -89,7 +89,7 @@ class ProductReader extends Module
         $arrConfig = array(
             'module'        => $this,
             'template'      => ($this->iso_reader_layout ?: $objProduct->getRelated('type')->reader_template),
-            'gallery'       => $objProduct->getRelated('type')->reader_gallery,
+            'gallery'       => ($this->iso_gallery ?: $objProduct->getRelated('type')->reader_gallery),
             'buttons'       => deserialize($this->iso_buttons, true),
             'useQuantity'   => $this->iso_use_quantity,
             'jumpTo'        => $objPage->id,
