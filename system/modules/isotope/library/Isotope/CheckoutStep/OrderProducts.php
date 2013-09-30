@@ -58,14 +58,21 @@ class OrderProducts extends CheckoutStep implements IsotopeCheckoutStep
      */
     public function getEmailTokens(IsotopeProductCollection $objCollection)
     {
+        $objTemplate = new \Isotope\Template($this->objModule->iso_collectionTpl);
+
+        Isotope::getCart()->addToTemplate($objTemplate, $this->objModule->getProductCollectionItemsSortingCallable());
+
+        $strHtml = $objTemplate->parse();
+        $objTemplate->textOnly = true;
+        $strText = $objTemplate->parse();
+
         return array(
             'items'         => $objCollection->sumItemsQuantity(),
             'products'      => $objCollection->countItems(),
             'subTotal'      => Isotope::formatPriceWithCurrency($objCollection->getSubtotal(), false),
             'grandTotal'    => Isotope::formatPriceWithCurrency($objCollection->getTotal(), false),
-// @todo implement these tags using collection templates
-//            'cart_text'     => strip_tags(Isotope::getInstance()->call('replaceInsertTags', $this->getProducts('iso_products_text'))),
-//            'cart_html'     => Isotope::getInstance()->call('replaceInsertTags', $this->getProducts('iso_products_html'))
+            'cart_text'     => strip_tags(Isotope::getInstance()->call('replaceInsertTags', $strText)),
+            'cart_html'     => Isotope::getInstance()->call('replaceInsertTags', $strHtml),
         );
     }
 }
