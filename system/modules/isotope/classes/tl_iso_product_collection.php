@@ -265,13 +265,17 @@ class tl_iso_product_collection extends \Backend
      */
     public function paymentInterface($dc)
     {
-        try {
-            $objPayment = Order::findByPk($dc->id)->getRelated('payment_id');
+        $objOrder = Order::findByPk($dc->id);
 
-            return $objPayment->backendInterface($dc->id);
-        } catch (\Exception $e) {
-            return '<p class="tl_gerror">'.$GLOBALS['TL_LANG']['MSC']['backendPaymentNotFound'].'</p>';
+        if (null !== $objOrder) {
+            $objPayment = $objOrder->getRelated('payment_id');
+
+            if (null !== $objPayment) {
+                return $objPayment->backendInterface($dc->id);
+            }
         }
+
+        return '<p class="tl_gerror">'.$GLOBALS['TL_LANG']['MSC']['backendPaymentNotFound'].'</p>';
     }
 
 
@@ -282,13 +286,17 @@ class tl_iso_product_collection extends \Backend
      */
     public function shippingInterface($dc)
     {
-        try {
-            $objShipping = Order::findByPk($dc->id)->getRelated('shipping_id');
+        $objOrder = Order::findByPk($dc->id);
 
-            return $objShipping->backendInterface($dc->id);
-        } catch (\Exception $e) {
-            return '<p class="tl_gerror">'.$GLOBALS['TL_LANG']['MSC']['backendShippingNotFound'].'</p>';
+        if (null !== $objOrder) {
+            $objShipping = $objOrder->getRelated('shipping_id');
+
+            if (null !== $objShipping) {
+                return $objShipping->backendInterface($dc->id);
+            }
         }
+
+        return '<p class="tl_gerror">'.$GLOBALS['TL_LANG']['MSC']['backendShippingNotFound'].'</p>';
     }
 
 
