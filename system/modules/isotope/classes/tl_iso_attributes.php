@@ -95,9 +95,13 @@ class tl_iso_attributes extends \Backend
      */
     public function updateDatabase($dc)
     {
-    	// Make sure the latest SQL definitions are written to the DCA
-		$GLOBALS['TL_CONFIG']['bypassCache'] = true;
-		$this->loadDataContainer('tl_iso_products', true);
+        if (!$dc->activeRecord->fieldName) {
+            return;
+        }
+
+        // Make sure the latest SQL definitions are written to the DCA
+        $GLOBALS['TL_CONFIG']['bypassCache'] = true;
+        $this->loadDataContainer('tl_iso_products', true);
 
         $objUpdater = new \Isotope\DatabaseUpdater();
         $objUpdater->autoUpdateTables(array('tl_iso_products'));
