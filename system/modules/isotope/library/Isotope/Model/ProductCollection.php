@@ -840,6 +840,10 @@ abstract class ProductCollection extends TypeAgent
         // Remove uploaded files from session so they are not added to the next product (see #646)
         unset($_SESSION['FILES']);
 
+        // Load items in cache again, so getItemForProduct() finds the already present ones
+        // @todo this is strange (see #739 for more comments)
+        $this->getItems();
+
         $objItem = $this->getItemForProduct($objProduct);
         $intMinimumQuantity = $objProduct->getMinimumQuantity();
 
