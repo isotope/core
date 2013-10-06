@@ -12,7 +12,7 @@ The following Contao extensions are required to run Isotope eCommerce:
 - https://github.com/terminal42/contao-NamespaceClassLoader
 - https://github.com/contao-catalog/backend_tabletree
 - https://github.com/terminal42/contao-conditionalselectmenu
-- https://github.com/isotope/dcawizard
+- https://github.com/terminal42/contao-dcawizard
 - https://github.com/codefog/contao-haste
 - https://github.com/menatwork/MultiColumnWizard
-- https://github.com/isotope/tablelookupwizard
+- https://github.com/terminal42/contao-tablelookupwizard
