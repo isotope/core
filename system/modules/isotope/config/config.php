@@ -264,6 +264,11 @@ $GLOBALS['BE_FFL']['productGroupSelector']   = 'Isotope\Widget\ProductGroupSelec
 \Isotope\Model\Attribute::registerModelType('downloads', 'Isotope\Model\Attribute\Downloads');
 \Isotope\Model\Attribute::registerModelType('upload', 'Isotope\Model\Attribute\Upload');
 
+/**
+ * Notification Center notification types
+ */
+$GLOBALS['NOTIFICATION_CENTER']['NOTIFICATIONTYPE']['isotope']['iso_order_status_change'] = 'Isotope\NotificationCenter\NotificationType\OrderStatusChange';
+
 
 /**
  * Models
