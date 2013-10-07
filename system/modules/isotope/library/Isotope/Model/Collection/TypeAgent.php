@@ -17,19 +17,18 @@ class TypeAgent extends \Model\Collection
 {
 
     /**
-	 * Fetch the next result row and create the model
-	 *
-	 * @return boolean True if there was another row
-	 */
-	protected function fetchNext()
-	{
-		if ($this->objResult->next() == false)
-		{
-			return false;
-		}
+     * Fetch the next result row and create the model
+     *
+     * @return boolean True if there was another row
+     */
+    protected function fetchNext()
+    {
+        if ($this->objResult->next() == false) {
+            return false;
+        }
 
-		$this->arrModels[$this->intIndex + 1] = call_user_func(array($this->strTable, 'buildModelType'), $this->objResult);
+        $this->arrModels[$this->intIndex + 1] = call_user_func(array($this->strTable, 'buildModelType'), $this->objResult);
 
-		return true;
-	}
+        return true;
+    }
 }
