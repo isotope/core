@@ -521,7 +521,7 @@ window.addEvent('domready', function() {
      */
     public function changeVariantColumns()
     {
-        if (!\Input::get('id') || ($objProduct = Product::findByPk(\Input::get('id'))) === null) {
+        if (\Input::get('act') != '' || \Input::get('id') == '' || ($objProduct = Product::findByPk(\Input::get('id'))) === null) {
             return;
         }
 
