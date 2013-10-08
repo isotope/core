@@ -323,9 +323,7 @@ class Checkout extends Module
         $objOrder->setSourceCollection(Isotope::getCart());
 
         $objOrder->checkout_info        = $this->getCheckoutInfo();
-        $objOrder->iso_sales_email      = $this->iso_sales_email ? $this->iso_sales_email : (($GLOBALS['TL_ADMIN_NAME'] != '') ? sprintf('%s <%s>', $GLOBALS['TL_ADMIN_NAME'], $GLOBALS['TL_ADMIN_EMAIL']) : $GLOBALS['TL_ADMIN_EMAIL']);
-        $objOrder->iso_mail_admin       = $this->iso_mail_admin;
-        $objOrder->iso_mail_customer    = $this->iso_mail_customer;
+        $objOrder->nc_notification      = $this->nc_notification;
         $objOrder->iso_addToAddressbook = $this->iso_addToAddressbook;
         $objOrder->email_data           = $this->getEmailTokensFromSteps($objOrder);
 
