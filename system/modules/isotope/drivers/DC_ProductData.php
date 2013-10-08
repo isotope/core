@@ -60,18 +60,21 @@ class DC_ProductData extends \DC_Table
 			$this->Session->set('iso_products_id', null);
 		}
 
-    	$this->intGroupId = intval($this->Session->get('iso_products_gid'));
+    	$this->intGroupId = (int) \Session::getInstance()->get('iso_products_gid') ?: (\BackendUser::getInstance()->isAdmin ? 0 : intval(\BackendUser::getInstance()->iso_groups[0]));
 
     	// Check if the group exists
 		if ($this->intGroupId > 0)
 		{
-			$objGroup = \Database::getInstance()->prepare("SELECT id FROM tl_iso_groups WHERE id=?")
-												->limit(1)
-												->execute($this->intGroupId);
+			$objGroup = \Database::getInstance()->prepare("SELECT id FROM tl_iso_groups WHERE id=?")->execute($this->intGroupId);
 
-			if (!$objGroup->numRows)
-			{
-				$this->intGroupId = 0;
+			if (!$objGroup->numRows) {
+			    if (\BackendUser::getInstance()->isAdmin || !is_array(\BackendUser::getInstance()->iso_groups)) {
+    			    $this->intGroupId = 0;
+			    }
+            } else {
+    			$this->intGroupId = (int) \Database::getInstance()->prepare(
+    			    "SELECT id FROM tl_iso_groups WHERE id IN ('" . implode("','", \BackendUser::getInstance()->iso_groups) . "') ORDER BY " . \Database::getInstance()->findInSet('id', \BackendUser::getInstance()->iso_groups)
+                )->limit(1)->execute()->id;
 			}
 		}
 
