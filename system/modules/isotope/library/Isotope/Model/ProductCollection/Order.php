@@ -243,7 +243,7 @@ class Order extends ProductCollection implements IsotopeProductCollection
         \System::log('New order ID ' . $this->id . ' has been placed', __METHOD__, TL_ACCESS);
 
         if ($this->nc_notification) {
-            $blnResult = NotificationCenter\Notification::send($this->nc_notification, $arrTokens, $this->language);
+            $blnResult = \NotificationCenter\Notification::send($this->nc_notification, $arrTokens, $this->language);
 
             if (!$blnResult) {
                 \System::log('Error when sending notifications for order ID '.$this->id, __METHOD__, TL_ERROR);
