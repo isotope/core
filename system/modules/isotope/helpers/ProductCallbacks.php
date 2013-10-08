@@ -15,6 +15,7 @@ namespace Isotope;
 use Isotope\Model\Attribute;
 use Isotope\Model\Group;
 use Isotope\Model\Product;
+use Isotope\Model\ProductPrice;
 use Isotope\Model\ProductType;
 use Isotope\Model\TaxClass;
 
@@ -849,47 +850,64 @@ window.addEvent('domready', function() {
      */
     public function getRowLabel($row, $label, $dc, $args)
     {
-        $arrImages = deserialize($row['images']);
-        $args[0] = '&nbsp;';
+        $objProduct = Product::findByPk($row['id']);
 
-        // Add an image
-        if (is_array($arrImages) && !empty($arrImages))
-        {
-            foreach ($arrImages as $image)
-            {
-                $strImage = 'isotope/' . strtolower(substr($image['src'], 0, 1)) . '/' . $image['src'];
+        foreach ($GLOBALS['TL_DCA'][$dc->table]['list']['label']['fields'] as $i => $field) {
+            switch ($field) {
 
-                if (!is_file(TL_ROOT . '/' . $strImage))
-                {
-                    continue;
-                }
+                // Add an image
+                case 'images':
+                    $arrImages = deserialize($objProduct->images);
+                    $args[$i] = '&nbsp;';
 
-                $size = @getimagesize(TL_ROOT . '/' . $strImage);
+                    if (is_array($arrImages) && !empty($arrImages)) {
+                        foreach ($arrImages as $image) {
+                            $strImage = 'isotope/' . strtolower(substr($image['src'], 0, 1)) . '/' . $image['src'];
 
-                $args[0] = sprintf('<a href="%s" onclick="Backend.openModalImage({\'width\':%s,\'title\':\'%s\',\'url\':\'%s\'});return false"><img src="%s" alt="%s" align="left"></a>',
-                                    $strImage, $size[0], str_replace("'", "\\'", $row['name']), $strImage,
-                                    \Image::get($strImage, 50, 50, 'crop'), $image['alt']);
-                break;
+                            if (!is_file(TL_ROOT . '/' . $strImage)) {
+                                continue;
+                            }
+
+                            $size = @getimagesize(TL_ROOT . '/' . $strImage);
+
+                            $args[$i] = sprintf('<a href="%s" onclick="Backend.openModalImage({\'width\':%s,\'title\':\'%s\',\'url\':\'%s\'});return false"><img src="%s" alt="%s" align="left"></a>',
+                                                $strImage, $size[0], str_replace("'", "\\'", $objProduct->name), $strImage,
+                                                \Image::get($strImage, 50, 50, 'crop'), $image['alt']);
+                            break;
+                        }
+                    }
+                    break;
+
+                case 'name':
+                    $args[$i] = $objProduct->name;
+
+                    if ($row['pid'] == 0) {
+                        // Add a variants link
+                        $args[$i] = sprintf('<a href="%s" title="%s">%s</a>', ampersand(\Environment::get('request')) . '&amp;id=' . $row['id'], specialchars($GLOBALS['TL_LANG'][$dc->table]['showVariants']), $args[$i]);
+                    }
+                    break;
+
+                case 'price':
+                    $objPrice = ProductPrice::findPrimaryByProduct($row['id']);
+
+                    if (null !== $objPrice) {
+                        $objTax = $objPrice->getRelated('tax_class');
+                        $strTax = (null === $objTax ? '' : ' ('.$objTax->getLabel().')');
+
+                        $args[$i] = $objPrice->getValueForTier(1) . $strTax;
+                    }
+                    break;
+
+                case 'variantFields':
+                    $attributes = array();
+
+                    foreach ($GLOBALS['TL_DCA'][$dc->table]['list']['label']['variantFields'] as $field) {
+                        $attributes[] = '<strong>' . Isotope::formatLabel($dc->table, $field) . ':</strong>&nbsp;' . Isotope::formatValue($dc->table, $field, $objProduct->$field);
+                    }
+
+                    $args[$i] = ($args[$i] ? $args[$i].'<br>' : '') . implode(', ', $attributes);
+                    break;
             }
-        }
-
-        // Add a variants link
-        if (!$row['pid'])
-        {
-            $args[1] = sprintf('<a href="%s" title="%s">%s</a>', ampersand(\Environment::get('request')) . '&amp;id=' . $row['id'], specialchars($GLOBALS['TL_LANG']['tl_iso_products']['showVariants']), $row['name']);
-        }
-
-        // Limit the number of columns
-        if ($row['pid'] && isset($GLOBALS['TL_DCA']['tl_iso_products']['list']['label']['variantFields']))
-        {
-            $attributes = array();
-
-            foreach ($GLOBALS['TL_DCA']['tl_iso_products']['list']['label']['variantFields'] as $field)
-            {
-                $attributes[] = '<strong>' . $GLOBALS['TL_DCA']['tl_iso_products']['fields'][$field]['label'][0] . ':</strong>&nbsp;' . $GLOBALS['TL_DCA']['tl_iso_products']['fields'][$field]['options'][$row[$field]];
-            }
-
-            $args[1] .= '<br>' . implode(', ', $attributes);
         }
 
         return $args;

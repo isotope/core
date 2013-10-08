@@ -15,6 +15,7 @@
  * @author     Kamil Kuzminski <kamil.kuzminski@codefog.pl>
  */
 
+\System::loadLanguageFile('tl_iso_producttypes');
 
 /**
  * Table tl_iso_products
@@ -527,6 +528,10 @@ $GLOBALS['TL_DCA']['tl_iso_products'] = array
             'eval'                  => array('rgxp'=>'date', 'datepicker'=>true, 'tl_class'=>'w50 wizard'),
             'attributes'            => array('legend'=>'publish_legend', 'fixed'=>true, 'variant_fixed'=>true, 'systemColumn'=>true),
             'sql'                   => "varchar(10) NOT NULL default ''",
+        ),
+        'variantFields' => array
+        (
+            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_producttypes']['variant_attributes'],
         ),
         'source' => array
         (
