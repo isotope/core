@@ -81,6 +81,37 @@ class Frontend extends \Frontend
         }
     }
 
+    /**
+     * Replace the current page with a reader page if applicable
+     * @param   array
+     * @return  array
+     */
+    public function loadReaderPageFromUrl($arrFragments)
+    {
+        $strKey = 'product';
+        $strAlias = '';
+
+        // Find products alias. Can't use Input because they're not yet initialized
+        if ($GLOBALS['TL_CONFIG']['useAutoItem'] && in_array($strKey, $GLOBALS['TL_AUTO_ITEM'])) {
+            $strKey = 'auto_item';
+        }
+
+        for ($i=1, $c=count($arrFragments); $i<$c; $i+=2) {
+            if ($arrFragments[$i] == $strKey) {
+                $strAlias = $arrFragments[$i+1];
+            }
+        }
+
+        if ($strAlias != ''
+            && ($objPage = \PageModel::findPublishedByIdOrAlias($arrFragments[0])) !== null
+            && $objPage->iso_setReaderJumpTo
+            && ($objReader = $objPage->getRelated('iso_readerJumpTo')) !== null
+        ) {
+            $arrFragments[0] = $objReader->id;
+        }
+
+        return $arrFragments;
+    }
 
     /**
      * Replaces Isotope-specific InsertTags in Frontend

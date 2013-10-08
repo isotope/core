@@ -15,6 +15,7 @@
 
 $GLOBALS['TL_HOOKS']['loadDataContainer'][]             = array('Isotope\tl_iso_products', 'loadProductsDCA');
 $GLOBALS['TL_HOOKS']['addCustomRegexp'][]               = array('Isotope\Isotope', 'validateRegexp');
+$GLOBALS['TL_HOOKS']['getPageIdFromUrl'][]              = array('Isotope\Frontend', 'loadReaderPageFromUrl');
 $GLOBALS['TL_HOOKS']['getSearchablePages'][]            = array('Isotope\Frontend', 'addProductsToSearchIndex');
 $GLOBALS['TL_HOOKS']['replaceInsertTags'][]             = array('Isotope\Frontend', 'replaceIsotopeTags');
 $GLOBALS['TL_HOOKS']['generatePage'][]                  = array('Isotope\Frontend', 'injectScripts');
