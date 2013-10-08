@@ -592,7 +592,7 @@ window.addEvent('domready', function() {
         }
 
         $intType = 0;
-        $intGroup = $this->Session->get('iso_products_gid') ?: ($this->User->isAdmin ? 0 : intval($this->User->iso_groups[0]));
+        $intGroup = (int) \Session::getInstance()->get('iso_products_gid') ?: (\BackendUser::getInstance()->isAdmin ? 0 : intval(\BackendUser::getInstance()->iso_groups[0]));
         $objGroup = Group::findByPk($intGroup);
 
         if (null === $objGroup || null === $objGroup->getRelated('product_type')) {
