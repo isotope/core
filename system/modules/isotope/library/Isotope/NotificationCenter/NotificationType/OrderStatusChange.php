@@ -69,7 +69,7 @@ class OrderStatusChange extends Base implements NotificationTypeInterface
     /**
      * {@inheritdoc}
      */
-    public function getFileTokens()
+    public function getAttachmentTokens()
     {
         return array
         (
