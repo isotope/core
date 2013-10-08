@@ -31,7 +31,7 @@ class OrderStatusChange extends Base implements NotificationTypeInterface
     {
         return array
         (
-            'recipient_email' // @todo
+            'recipient_email' // The email address of the recipient
         );
     }
 
