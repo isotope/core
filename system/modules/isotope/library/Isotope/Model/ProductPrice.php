@@ -336,6 +336,31 @@ class ProductPrice extends \Model implements IsotopePrice
     }
 
     /**
+     * Find primary price for a product
+     * @param   int
+     * @return  ProductPrice|null
+     */
+    public static function findPrimaryByProduct($intProduct, array $arrOptions=array())
+    {
+        $arrOptions = array_merge(
+            array(
+                'column' => array(
+                    "pid=" . $intProduct,
+                    "config_id=0",
+                    "member_group=0",
+                    "start=''",
+                    "stop=''"
+                ),
+    			'limit'  => 1,
+    			'return' => 'Model'
+    		),
+            $arrOptions
+        );
+
+        return static::find($arrOptions);
+    }
+
+    /**
      * Compile a list of member groups suitable for retrieving prices. This includes a 0 at the last position in array
      * @return  array
      */
