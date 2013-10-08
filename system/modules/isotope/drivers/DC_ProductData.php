@@ -208,23 +208,6 @@ class DC_ProductData extends \DC_Table
 
 
     /**
-     * Insert a new row into a database table
-     * @param array
-     */
-    public function create($set=array())
-    {
-        if (!is_array($set))
-        {
-            $set = array();
-        }
-
-        $set['gid'] = $this->intGroupId;
-
-        parent::create($set);
-    }
-
-
-    /**
      * Assign a new position to an existing record
      * @param boolean
      */
