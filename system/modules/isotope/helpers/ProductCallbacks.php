@@ -473,33 +473,6 @@ class ProductCallbacks extends \Backend
 
 
     /**
-     * Load the default product type
-     * @param object
-     * @return void
-     */
-    public function loadDefaultProductType($dc)
-    {
-        if (\Input::get('act') !== 'create') {
-            return;
-        }
-
-        $intGroup = $this->Session->get('iso_products_gid') ? $this->Session->get('iso_products_gid') : $this->getDefaultGroup();
-        $objGroup = Group::findByPk($intGroup);
-
-        if (null === $objGroup || null === $objGroup->getRelated('product_type')) {
-            $objType = ProductType::findFallback();
-        } else {
-            $objType = $objGroup->getRelated('product_type');
-        }
-
-        if (null !== $objType)
-        {
-            $GLOBALS['TL_DCA']['tl_iso_products']['fields']['type']['default'] = $objType->id;
-        }
-    }
-
-
-    /**
      * Add a script that will handle "move all" action
      */
     public function addMoveAllFeature()
@@ -601,47 +574,40 @@ window.addEvent('domready', function() {
 
 
     /////////////////////////
-    //  !onsubmit_callback
+    //  !oncreate_callback
     /////////////////////////
 
 
     /**
-     * Store the date when the product has been added
-     * @param DataContainer
+     * Store initial values when creating a product
+     * @param   string
+     * @param   int
+     * @param   array
+     * @param   DataContainer
      */
-    public function storeDateAdded(\DataContainer $dc)
+    public function storeInitialValues($strTable, $insertID, $arrSet, $dc)
     {
-        // Return if there is no active record (override all)
-        if (!$dc->activeRecord || $dc->activeRecord->dateAdded > 0) {
+        if ($arrSet['pid'] > 0) {
             return;
         }
 
-        \Database::getInstance()->prepare("UPDATE tl_iso_products SET dateAdded=? WHERE id=?")->execute(time(), $dc->id);
-    }
+        $intType = 0;
+        $intGroup = $this->Session->get('iso_products_gid') ?: ($this->User->isAdmin ? 0 : intval($this->User->iso_groups[0]));
+        $objGroup = Group::findByPk($intGroup);
 
-
-    /**
-     * Set the default group for non-admins
-     * @param \DataContainer $dc
-     */
-    public function setDefaultGroup(\DataContainer $dc)
-    {
-        if ($this->User->isAdmin || $dc->activeRecord->tstamp) {
-            return;
+        if (null === $objGroup || null === $objGroup->getRelated('product_type')) {
+            $objType = ProductType::findFallback();
+        } else {
+            $objType = $objGroup->getRelated('product_type');
         }
 
-        $this->Database->prepare("UPDATE tl_iso_products SET gid=? WHERE id=?")->execute($this->getDefaultGroup(), $dc->id);
+        if (null !== $objType) {
+            $intType = $objType->id;
+        }
+
+        Database::getInstance()->prepare("UPDATE $strTable SET gid=?, type=?, dateAdded=? WHERE id=?")->execute($intGroup, $intType, time(), $insertId);
     }
 
-
-    /**
-     * Get the default group for the current user
-     * @return integer
-     */
-    public function getDefaultGroup()
-    {
-        return $this->User->isAdmin ? 0 : intval($this->User->iso_groups[0]);
-    }
 
 
     /////////////////////////
