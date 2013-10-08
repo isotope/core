@@ -254,7 +254,7 @@ class Order extends ProductCollection implements IsotopeProductCollection
         if (isset($GLOBALS['ISO_HOOKS']['postCheckout']) && is_array($GLOBALS['ISO_HOOKS']['postCheckout'])) {
             foreach ($GLOBALS['ISO_HOOKS']['postCheckout'] as $callback) {
                 $objCallback = \System::importStatic($callback[0]);
-                $objCallback->$callback[1]($this, $arrItemIds, $arrData);
+                $objCallback->$callback[1]($this, $arrItemIds, $arrTokens);
             }
         }
 
