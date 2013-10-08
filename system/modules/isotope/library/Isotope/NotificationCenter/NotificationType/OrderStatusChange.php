@@ -63,6 +63,7 @@ class OrderStatusChange extends Base implements NotificationTypeInterface
             'shipping_label', // Shipping method label
             'shipping_note', // Shipping method note
             'shipping_note_text', // Shipping method note without HTML tags
+            'new_status', // Contains the new collection status
         );
     }
 

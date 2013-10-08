@@ -327,46 +327,26 @@ class Order extends ProductCollection implements IsotopeProductCollection
         }
 
         // Trigger email actions
-        // @todo adjust to notification center
-        $blnEmail = null;
-        if ($objNewStatus->mail_customer > 0 || $objNewStatus->mail_admin > 0) {
+        $blnResult = null;
+        if ($objNewStatus->notification > 0) {
 
-            $arrData = $this->getEmailData();
-            $arrData['new_status'] = $objNewStatus->getName();
-            $strRecipient = $this->getEmailRecipient();
+            $arrTokens = $this->getEmailData();
+            $arrTokens['new_status'] = $objNewStatus->getName();
+            $arrTokens['recipient_email'] = $this->getEmailRecipient();
 
-            if ($objNewStatus->mail_customer && $strRecipient != '') {
+            $blnResult = \NotificationCenter\Notification::send($objNewStatus->notification, $arrTokens, $this->language);
 
-                try {
-                    $objEmail = new \Isotope\Email($objNewStatus->mail_customer, $this->language, $this);
-                    $blnEmail = $objEmail->send($strRecipient, $arrData);
-                } catch (\Exception $e) {
-                    log_message($e->getMessage());
-                    \System::log('Error sending status update to customer for order ID '.$this->id, __METHOD__, TL_ERROR);
-                }
-            }
-
-            $strSalesEmail = $objNewStatus->sales_email ? $objNewStatus->sales_email : $this->iso_sales_email;
-
-            if ($objNewStatus->mail_admin && $strSalesEmail != '') {
-
-                try {
-                    $objEmail = new \Isotope\Email($objNewStatus->mail_admin, $this->language, $this);
-                    $objEmail->replyTo($strRecipient);
-                    $objEmail->send($strSalesEmail, $arrData);
-                } catch (\Exception $e) {
-                    log_message($e->getMessage());
-                    \System::log('Error sending status update to admin for order ID '.$this->id, __METHOD__, TL_ERROR);
-                }
+            if (!$blnResult) {
+                \System::log('Error when sending status update to customer for order ID '.$this->id, __METHOD__, TL_ERROR);
             }
         }
 
         if (TL_MODE == 'BE') {
             \Message::addConfirmation($GLOBALS['TL_LANG']['tl_iso_product_collection']['orderStatusUpdate']);
 
-            if ($blnEmail === true) {
+            if ($blnResult === true) {
                 \Message::addConfirmation($GLOBALS['TL_LANG']['tl_iso_product_collection']['orderStatusEmailSuccess']);
-            } elseif ($blnEmail === false) {
+            } elseif ($blnResult === false) {
                 \Message::addConfirmation($GLOBALS['TL_LANG']['tl_iso_product_collection']['orderStatusEmailError']);
             }
         }
