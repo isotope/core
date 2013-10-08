@@ -237,32 +237,17 @@ class Order extends ProductCollection implements IsotopeProductCollection
         }
 
         $this->generateDocumentNumber(Isotope::getConfig()->orderPrefix, (int) Isotope::getConfig()->orderDigits);
-        $arrData = $this->getEmailData();
-        $strRecipient = $this->getEmailRecipient();
+        $arrTokens = $this->getEmailData();
+        $arrTokens['recipient_email'] =  $this->getEmailRecipient();
 
         \System::log('New order ID ' . $this->id . ' has been placed', __METHOD__, TL_ACCESS);
 
-        if ($this->iso_mail_admin && $this->iso_sales_email != '') {
-            try {
-                $objEmail = new \Isotope\Email($this->iso_mail_admin, $this->language, $this);
-                $objEmail->replyTo($strRecipient);
-                $objEmail->send($this->iso_sales_email, $arrData);
-            } catch (\Exception $e) {
-                log_message($e->getMessage());
-                \System::log('Error when sending admin confirmation for order ID '.$this->id, __METHOD__, TL_ERROR);
-            }
-        }
+        if ($this->nc_notification) {
+            $blnResult = NotificationCenter\Notification::send($this->nc_notification, $arrTokens, $this->language);
 
-        if ($this->iso_mail_customer && $strRecipient != '') {
-            try {
-                $objEmail = new \Isotope\Email($this->iso_mail_customer, $this->language, $this);
-                $objEmail->send($strRecipient, $arrData);
-            } catch (\Exception $e) {
-                log_message($e->getMessage());
-                \System::log('Error when sending customer confirmation for order ID '.$this->id, __METHOD__, TL_ERROR);
+            if (!$blnResult) {
+                \System::log('Error when sending notifications for order ID '.$this->id, __METHOD__, TL_ERROR);
             }
-        } else {
-            \System::log('Unable to send customer confirmation for order ID '.$this->id, __METHOD__, TL_ERROR);
         }
 
         // !HOOK: post-process checkout
