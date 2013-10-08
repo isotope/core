@@ -882,24 +882,12 @@ class Standard extends Product implements IsotopeProduct
 
     /**
      * Generate url
-     * @param   PageModel|int   A PageModel instance or a page id
+     * @param   PageModel       A PageModel instance
      * @param   string          Optional parameters
      * @return  array
      */
-    public function generateUrl($objPage, $arrParams=array())
+    public function generateUrl(\PageModel $objPage, $arrParams=array())
     {
-        if (!$objPage) {
-            return '';
-        }
-
-        if (is_numeric($objPage)) {
-            $objPage = \PageModel::findByPk($objPage);
-        }
-
-        if (null === $objPage) {
-            return '';
-        }
-
         $strUrl = '/' . $this->arrData['alias'] ?: ($this->arrData['pid'] ?: $this->arrData['id']);
 
         if (!$GLOBALS['TL_CONFIG']['useAutoItem'] || !in_array('product', $GLOBALS['TL_AUTO_ITEM'])) {

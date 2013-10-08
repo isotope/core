@@ -1180,7 +1180,7 @@ window.addEvent('domready', function()
                 (
                     'isRoot'    => false,
                     'isActive'  => true,
-                    'href'      => $objProduct->generateUrl($objPage->id),
+                    'href'      => $objProduct->generateUrl($objPage),
                     'title'     => specialchars($objProduct->name, true),
                     'link'      => $objProduct->name,
                     'data'      => $objPage->row(),

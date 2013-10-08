@@ -92,7 +92,7 @@ class ProductReader extends Module
             'gallery'       => ($this->iso_gallery ?: $objProduct->getRelated('type')->reader_gallery),
             'buttons'       => deserialize($this->iso_buttons, true),
             'useQuantity'   => $this->iso_use_quantity,
-            'jumpTo'        => $objPage->id,
+            'jumpTo'        => $objPage,
         );
 
         if (\Environment::get('isAjaxRequest') && \Input::post('AJAX_MODULE') == $this->id && \Input::post('AJAX_PRODUCT') == $objProduct->id) {
