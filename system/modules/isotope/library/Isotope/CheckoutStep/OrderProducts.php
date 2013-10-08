@@ -64,7 +64,7 @@ class OrderProducts extends CheckoutStep implements IsotopeCheckoutStep
      */
     public function getEmailTokens(IsotopeProductCollection $objCollection)
     {
-        $objTemplate = new \Isotope\Template($this->objModule->iso_collectionTpl);
+        $objTemplate = new \Isotope\Template($this->objModule->iso_notification_collectionTpl);
 
         Isotope::getCart()->addToTemplate(
             $objTemplate,
