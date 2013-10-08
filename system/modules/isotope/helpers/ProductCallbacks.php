@@ -536,6 +536,7 @@ window.addEvent('domready', function() {
         }
 
         $GLOBALS['TL_DCA'][$objProduct->getTable()]['list']['sorting']['fields'] = array('id');
+        $GLOBALS['TL_DCA']['tl_iso_products']['fields']['alias']['sorting'] = false;
 
         $arrFields = array();
         $arrVariantFields = $objProduct->getRelated('type')->getVariantAttributes();
@@ -548,11 +549,15 @@ window.addEvent('domready', function() {
         if (in_array('name', $arrVariantFields)) {
             $arrFields[] = 'name';
             $GLOBALS['TL_DCA'][$objProduct->getTable()]['list']['sorting']['fields'] = array('name');
+        } else {
+            $GLOBALS['TL_DCA']['tl_iso_products']['fields']['name']['sorting'] = false;
         }
 
         if (in_array('sku', $arrVariantFields)) {
             $arrFields[] = 'sku';
             $GLOBALS['TL_DCA'][$objProduct->getTable()]['list']['sorting']['fields'] = array('sku');
+        } else {
+            $GLOBALS['TL_DCA']['tl_iso_products']['fields']['sorting']['sorting'] = false;
         }
 
         if (in_array('price', $arrVariantFields)) {
