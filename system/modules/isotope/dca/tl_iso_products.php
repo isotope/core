@@ -49,7 +49,6 @@ $GLOBALS['TL_DCA']['tl_iso_products'] = array
         (
             array('Isotope\Backend', 'truncateProductCache'),
             array('Isotope\ProductCallbacks', 'storeDateAdded'),
-            array('Isotope\ProductCallbacks', 'setDefaultGroup')
         ),
         'onversion_callback' => array
         (

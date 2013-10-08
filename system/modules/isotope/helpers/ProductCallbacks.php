@@ -483,7 +483,8 @@ class ProductCallbacks extends \Backend
             return;
         }
 
-        $objGroup = Group::findByPk($this->Session->get('iso_products_gid'));
+        $intGroup = $this->Session->get('iso_products_gid') ? $this->Session->get('iso_products_gid') : $this->getDefaultGroup();
+        $objGroup = Group::findByPk($intGroup);
 
         if (null === $objGroup || null === $objGroup->getRelated('product_type')) {
             $objType = ProductType::findFallback();
@@ -616,11 +617,21 @@ window.addEvent('domready', function() {
      */
     public function setDefaultGroup(\DataContainer $dc)
     {
-        if ($this->User->isAdmin) {
+        if ($this->User->isAdmin || $dc->activeRecord->tstamp) {
             return;
         }
 
-        $this->Database->prepare("UPDATE tl_iso_products SET gid=? WHERE id=?")->execute($this->User->iso_groups[0], $dc->id);
+        $this->Database->prepare("UPDATE tl_iso_products SET gid=? WHERE id=?")->execute($this->getDefaultGroup(), $dc->id);
+    }
+
+
+    /**
+     * Get the default group for the current user
+     * @return integer
+     */
+    public function getDefaultGroup()
+    {
+        return $this->User->isAdmin ? 0 : intval($this->User->iso_groups[0]);
     }
 
 
