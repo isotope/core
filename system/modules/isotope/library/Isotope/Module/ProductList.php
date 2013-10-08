@@ -198,7 +198,6 @@ class ProductList extends Module
 
         $arrBuffer = array();
 
-        $intReaderPage = \Isotope\Frontend::getReaderPageId();
         $arrDefaultOptions = $this->getDefaultProductOptions();
 
         foreach ($arrProducts as $objProduct) {
@@ -208,7 +207,7 @@ class ProductList extends Module
                 'gallery'       => ($this->iso_gallery ?: $objProduct->getRelated('type')->list_gallery),
                 'buttons'       => deserialize($this->iso_buttons, true),
                 'useQuantity'   => $this->iso_use_quantity,
-                'jumpTo'        => $intReaderPage
+                'jumpTo'        => $objPage->id
             );
 
             if (\Environment::get('isAjaxRequest') && \Input::get('AJAX_MODULE') == $this->id && \Input::get('AJAX_PRODUCT') == $objProduct->id) {
@@ -217,8 +216,9 @@ class ProductList extends Module
 
             $objProduct->setOptions(array_merge($arrDefaultOptions, $objProduct->getOptions()));
 
+            // Must be done after setting options to generate the variant config into the URL
             if ($this->iso_jump_first && \Isotope\Frontend::getAutoItem('product') == '') {
-                \Controller::redirect($objProduct->generateUrl($intReaderPage));
+                \Controller::redirect($objProduct->generateUrl($objPage->id));
             }
 
             $arrBuffer[] = array(
