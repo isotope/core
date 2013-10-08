@@ -537,9 +537,13 @@ window.addEvent('domready', function() {
 
         $GLOBALS['TL_DCA'][$objProduct->getTable()]['list']['sorting']['fields'] = array('id');
 
-        $arrFields = array('images');
+        $arrFields = array();
         $arrVariantFields = $objProduct->getRelated('type')->getVariantAttributes();
         $arrVariantOptions = array_intersect($arrVariantFields, Attribute::getVariantOptionFields());
+
+        if (in_array('images', $arrVariantFields)) {
+            $arrFields[] = 'images';
+        }
 
         if (in_array('name', $arrVariantFields)) {
             $arrFields[] = 'name';
