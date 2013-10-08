@@ -14,7 +14,7 @@ namespace Isotope;
 
 
 /**
- * Class Isotope\Email
+ * Class Isotope\DatabaseUpdater
  *
  * Provide methods to send Isotope e-mails.
  * @copyright  Isotope eCommerce Workgroup 2009-2012

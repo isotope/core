@@ -327,6 +327,7 @@ class Order extends ProductCollection implements IsotopeProductCollection
         }
 
         // Trigger email actions
+        // @todo adjust to notification center
         $blnEmail = null;
         if ($objNewStatus->mail_customer > 0 || $objNewStatus->mail_admin > 0) {
 

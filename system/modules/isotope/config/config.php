@@ -136,13 +136,6 @@ $GLOBALS['ISO_MOD'] = array
             'tables'            => array('tl_iso_labels'),
             'icon'              => 'system/modules/isotope/assets/setup-labels.png'
         ),
-        'iso_mail' => array
-        (
-            'tables'            => array('tl_iso_mail', 'tl_iso_mail_content'),
-            'icon'              => 'system/modules/isotope/assets/setup-mail.png',
-            'importMail'        => array('Isotope\Backend', 'importMail'),
-            'exportMail'        => array('Isotope\Backend', 'exportMail'),
-        ),
         'configs' => array
         (
             'tables'            => array('tl_iso_config'),
@@ -320,8 +313,6 @@ $GLOBALS['TL_PERMISSIONS'][] = 'iso_tax_rates';
 $GLOBALS['TL_PERMISSIONS'][] = 'iso_tax_ratep';
 $GLOBALS['TL_PERMISSIONS'][] = 'iso_tax_classes';
 $GLOBALS['TL_PERMISSIONS'][] = 'iso_tax_classp';
-$GLOBALS['TL_PERMISSIONS'][] = 'iso_mails';
-$GLOBALS['TL_PERMISSIONS'][] = 'iso_mailp';
 $GLOBALS['TL_PERMISSIONS'][] = 'iso_configs';
 $GLOBALS['TL_PERMISSIONS'][] = 'iso_configp';
 $GLOBALS['TL_PERMISSIONS'][] = 'iso_groups';
