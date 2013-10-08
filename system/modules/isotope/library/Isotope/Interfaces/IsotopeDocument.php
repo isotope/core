@@ -31,7 +31,8 @@ interface IsotopeDocument
     /**
      * Generate the document and store it to a given path
      * @param   IsotopeProductCollection
-     * @param   string
+     * @param   string Absolute path to the directory the file should be stored in
+     * @return  string Absolute path to the file
      */
-    public function outputToFile(IsotopeProductCollection $objCollection, $path);
+    public function outputToFile(IsotopeProductCollection $objCollection, $strDirectoryPath);
 }

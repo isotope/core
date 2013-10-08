@@ -41,12 +41,15 @@ class Standard extends Document implements IsotopeDocument
     /**
      * {@inheritdoc}
      */
-    public function outputToFile(IsotopeProductCollection $objCollection, $path)
+    public function outputToFile(IsotopeProductCollection $objCollection, $strDirectoryPath)
     {
         $arrTokens = $this->prepareCollectionTokens($objCollection);
 
         $pdf = $this->generatePDF($objCollection, $arrTokens);
-        $pdf->Output(sprintf(TL_ROOT . '/%s/%s.pdf', $path, \String::parseSimpleTokens($this->fileTitle, $arrTokens)), 'F');
+        $strFile = sprintf('/%s/%s.pdf', $strDirectoryPath, \String::parseSimpleTokens($this->fileTitle, $arrTokens));
+        $pdf->Output($strFile, 'F');
+
+        return $strFile;
     }
 
     /**
