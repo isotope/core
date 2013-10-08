@@ -49,7 +49,6 @@ class ProductCallbacks extends \Backend
      */
     protected $arrProductTypes;
 
-
     /**
      * Cache number of downloads per product
      * @var array
@@ -538,24 +537,31 @@ window.addEvent('domready', function() {
 
         $arrFields = array('images');
         $arrVariantFields = $objProduct->getRelated('type')->getVariantAttributes();
-        $arrVariantOptions = Attribute::getVariantOptionFields();
+        $arrVariantOptions = array_intersect($arrVariantFields, Attribute::getVariantOptionFields());
 
         if (in_array('name', $arrVariantFields)) {
             $arrFields[] = 'name';
             $GLOBALS['TL_DCA'][$objProduct->getTable()]['list']['sorting']['fields'] = array('name');
-        } elseif (in_array('sku', $arrVariantFields)) {
+        }
+
+        if (in_array('sku', $arrVariantFields)) {
             $arrFields[] = 'sku';
             $GLOBALS['TL_DCA'][$objProduct->getTable()]['list']['sorting']['fields'] = array('sku');
         }
 
-        // Limit the number of columns if there are more than 3
-        if (count($arrVariantOptions) > 3) {
-            $GLOBALS['TL_DCA'][$objProduct->getTable()]['list']['label']['fields'] = $arrFields;
-            $GLOBALS['TL_DCA'][$objProduct->getTable()]['list']['label']['variantFields'] = $arrVariantOptions;
-            return;
+        if (in_array('price', $arrVariantFields)) {
+            $arrFields[] = 'price';
         }
 
-        $GLOBALS['TL_DCA'][$objProduct->getTable()]['list']['label']['fields'] = array_merge($arrFields, $arrVariantOptions);
+        // Limit the number of columns if there are more than 2
+        if (count($arrVariantOptions) > 2) {
+            $arrFields[] = 'variantFields';
+            $GLOBALS['TL_DCA'][$objProduct->getTable()]['list']['label']['variantFields'] = $arrVariantOptions;
+        } else {
+            $arrFields = array_merge($arrFields, $arrVariantOptions);
+        }
+
+        $GLOBALS['TL_DCA'][$objProduct->getTable()]['list']['label']['fields'] = $arrFields;
     }
 
 
