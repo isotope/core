@@ -87,6 +87,7 @@ class ProductCallbacks extends \Backend
             $blnDownloads = false;
             $blnVariants = false;
             $blnAdvancedPrices = false;
+            $blnShowSku = false;
 
             if (($objProductTypes = ProductType::findAllUsed()) !== null) {
                 while ($objProductTypes->next())
@@ -104,6 +105,10 @@ class ProductCallbacks extends \Backend
 
                     if ($objType->hasAdvancedPrices()) {
                         $blnAdvancedPrices = true;
+                    }
+
+                    if (in_array('sku', $objType->getAttributes())) {
+                        $blnShowSku = true;
                     }
                 }
             }
@@ -131,6 +136,10 @@ class ProductCallbacks extends \Backend
             // Disable prices button if not enabled in any product type
             if (!$blnAdvancedPrices) {
                 unset($GLOBALS['TL_DCA']['tl_iso_products']['list']['operations']['prices']);
+            }
+
+            if (!$blnShowSku) {
+                unset($GLOBALS['TL_DCA'][Product::getTable()]['list']['label']['fields'][2]);
             }
 
             // Disable related categories if none are defined
