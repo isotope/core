@@ -74,6 +74,7 @@ class OrderStatusChange extends Base implements NotificationTypeInterface
         return array
         (
             'form_*', // All the order condition form fields
+            'document' // The document that should be attached (e.g. an invoice)
         );
     }
 }

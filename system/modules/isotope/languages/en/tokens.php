@@ -39,3 +39,4 @@ $GLOBALS['TL_LANG']['NOTIFICATION_CENTER_TOKEN']['iso_order_status_change']['shi
 $GLOBALS['TL_LANG']['NOTIFICATION_CENTER_TOKEN']['iso_order_status_change']['shipping_note']         = 'Shipping method note';
 $GLOBALS['TL_LANG']['NOTIFICATION_CENTER_TOKEN']['iso_order_status_change']['shipping_note_text']    = 'Shipping method note without HTML tags';
 $GLOBALS['TL_LANG']['NOTIFICATION_CENTER_TOKEN']['iso_order_status_change']['recipient_email']       = 'The email address of the recipient';
+$GLOBALS['TL_LANG']['NOTIFICATION_CENTER_TOKEN']['iso_order_status_change']['document']              = 'The document that should be attached (e.g. an invoice)';
