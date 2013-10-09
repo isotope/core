@@ -427,10 +427,16 @@ class Standard extends Product implements IsotopeProduct
     public function getCategories()
     {
         if (null === $this->arrCategories) {
-            $this->arrCategories = \Database::getInstance()->execute("SELECT page_id FROM tl_iso_product_categories WHERE pid=" . ($this->pid ?: $this->id) . " ORDER BY sorting")->fetchEach('page_id');
+            $this->arrCategories = \Database::getInstance()->execute("SELECT page_id FROM tl_iso_product_categories WHERE pid=" . ($this->pid ?: $this->id))->fetchEach('page_id');
+
+            // Sort categories by the backend drag&drop
+            $arrOrder = deserialize($this->orderPages);
+            if (!empty($arrOrder) && is_array($arrOrder)) {
+                $this->arrCategories = array_unique(array_merge(array_intersect($arrOrder, $this->arrCategories), $this->arrCategories));
+            }
         }
 
-        return (array) $this->arrCategories;
+        return $this->arrCategories;
     }
 
 
