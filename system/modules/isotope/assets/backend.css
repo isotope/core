@@ -154,6 +154,10 @@ body.popup .header_back {
     height: auto;
 }
 
+.hide_sort_hint .sort_hint {
+    display: none;
+}
+
 .breadcrumb_container {
     padding: 2px 0;
     margin: 24px 18px 0 18px;
