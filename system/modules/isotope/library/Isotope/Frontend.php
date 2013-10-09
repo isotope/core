@@ -836,11 +836,11 @@ window.addEvent('domready', function()
                 // Otherwise we need to get the root page model of the current page and for performance
                 // reasons we cache that in an array
                 if ($intRoot === 0) {
-                    if (!isset($arrRoot[$intPage])) {
-                        $arrRoot[$intPage] = \PageModel::findByPk(\PageModel::findWithDetails($intPage)->rootId);
+                    if (!isset($arrRoots[$intPage])) {
+                        $arrRoots[$intPage] = \PageModel::findByPk(\PageModel::findWithDetails($intPage)->rootId);
                     }
 
-                    $objRoot = $arrRoot[$intPage];
+                    $objRoot = $arrRoots[$intPage];
                 }
 
                 // Generate the absolute URL
