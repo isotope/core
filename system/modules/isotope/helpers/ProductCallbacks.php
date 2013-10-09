@@ -550,29 +550,6 @@ window.addEvent('domready', function() {
 
 
 
-    ///////////////////////
-    //  !oncopy_callback
-    ///////////////////////
-
-
-    /**
-     * Update sorting of product in categories when duplicating, move new product to the bottom
-     * @param integer
-     * @param object
-     * @link http://www.contao.org/callbacks.html#oncopy_callback
-     */
-    public function updateCategorySorting($insertId, $dc)
-    {
-        $objCategories = \Database::getInstance()->query("SELECT c1.*, MAX(c2.sorting) AS max_sorting FROM tl_iso_product_categories c1 LEFT JOIN tl_iso_product_categories c2 ON c1.page_id=c2.page_id WHERE c1.pid=" . (int) $insertId . " GROUP BY c1.page_id");
-
-        while ($objCategories->next())
-        {
-            \Database::getInstance()->query("UPDATE tl_iso_product_categories SET sorting=" . ($objCategories->max_sorting + 128) . " WHERE id=" . $objCategories->id);
-        }
-    }
-
-
-
     /////////////////////////
     //  !oncreate_callback
     /////////////////////////
@@ -606,6 +583,29 @@ window.addEvent('domready', function() {
         }
 
         \Database::getInstance()->prepare("UPDATE $strTable SET gid=?, type=?, dateAdded=? WHERE id=?")->execute($intGroup, $intType, time(), $insertId);
+    }
+
+
+
+    ///////////////////////
+    //  !oncopy_callback
+    ///////////////////////
+
+
+    /**
+     * Update sorting of product in categories when duplicating, move new product to the bottom
+     * @param integer
+     * @param object
+     * @link http://www.contao.org/callbacks.html#oncopy_callback
+     */
+    public function updateCategorySorting($insertId, $dc)
+    {
+        $objCategories = \Database::getInstance()->query("SELECT c1.*, MAX(c2.sorting) AS max_sorting FROM tl_iso_product_categories c1 LEFT JOIN tl_iso_product_categories c2 ON c1.page_id=c2.page_id WHERE c1.pid=" . (int) $insertId . " GROUP BY c1.page_id");
+
+        while ($objCategories->next())
+        {
+            \Database::getInstance()->query("UPDATE tl_iso_product_categories SET sorting=" . ($objCategories->max_sorting + 128) . " WHERE id=" . $objCategories->id);
+        }
     }
 
 
