@@ -827,10 +827,9 @@ window.addEvent('domready', function()
             $objProducts = Product::findPublished();
         }
 
-        while ($objProducts->next())
-        {
+        while ($objProducts->next()) {
             // Do the fun for all categories
-            foreach ((array) $objProduct->current()->getCategories() as $intPage) {
+            foreach ($objProduct->current()->getCategories() as $intPage) {
 
                 // No need to get the root page model of the page if it's restricted to one only anyway
                 // Otherwise we need to get the root page model of the current page and for performance
