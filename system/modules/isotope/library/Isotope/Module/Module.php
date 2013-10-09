@@ -208,7 +208,11 @@ abstract class Module extends Contao_Module
         global $objPage;
         global $objIsotopeListPage;
 
-        $arrCategories = array_intersect($objProduct->getCategories(), $this->findCategories());
+        $arrCategories = array();
+
+        if ($this->iso_category_scope != 'current_category' && $this->iso_category_scope != '' && $objPage->alias != 'index') {
+            $arrCategories = array_intersect($objProduct->getCategories(), $this->findCategories());
+        }
 
         // If our current category scope does not match with any product category, use the first product category in the current root page
         if (empty($arrCategories)) {
