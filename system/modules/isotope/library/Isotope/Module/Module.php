@@ -34,6 +34,12 @@ abstract class Module extends Contao_Module
      */
     protected $blnDisableCache = false;
 
+    /**
+     * Cache category lookup
+     * @var array
+     */
+    private $arrCategories;
+
 
     /**
      * Load libraries and scripts
@@ -127,64 +133,68 @@ abstract class Module extends Contao_Module
 
     /**
      * The ids of all pages we take care of. This is what should later be used eg. for filter data.
-     * @param string
      * @return array
      */
-    protected function findCategories($strCategoryScope)
+    protected function findCategories()
     {
-        if ($this->defineRoot && $this->rootPage > 0) {
-            $objPage = $this->getPageDetails($this->rootPage);
-        } else {
-            global $objPage;
+        if (null === $this->arrCategories) {
+
+            if ($this->defineRoot && $this->rootPage > 0) {
+                $objPage = $this->getPageDetails($this->rootPage);
+            } else {
+                global $objPage;
+            }
+
+            switch ($this->iso_category_scope) {
+
+                case 'global':
+                    $arrCategories = \Database::getInstance()->getChildRecords($objPage->rootId, 'tl_page');
+                    $arrCategories[] = $objPage->rootId;
+                    break;
+
+                case 'current_and_first_child':
+                    $arrCategories = \Database::getInstance()->execute("SELECT id FROM tl_page WHERE pid={$objPage->id}")->fetchEach('id');
+                    $arrCategories[] = $objPage->id;
+                    break;
+
+                case 'current_and_all_children':
+                    $arrCategories = \Database::getInstance()->getChildRecords($objPage->id, 'tl_page');
+                    $arrCategories[] = $objPage->id;
+                    break;
+
+                case 'parent':
+                    $arrCategories = array($objPage->pid);
+                    break;
+
+                case 'product':
+                    $objProduct = \Isotope\Frontend::getProductByAlias(\Isotope\Frontend::getAutoItem('product'));
+
+                    if ($objProduct !== null) {
+                        $arrCategories = $objProduct->getCategories();
+                    } else {
+                        $arrCategories = array(0);
+                    }
+                    break;
+
+                case 'article':
+                    $arrCategories = array($GLOBALS['ISO_CONFIG']['current_article']['pid'] ?: $objPage->id);
+                    break;
+
+                case '':
+                case 'current_category':
+                    $arrCategories = array($objPage->id);
+                    break;
+
+                default:
+                    // @todo change this to a hook to allow custom category scope
+                    $arrCategories = array($objPage->id);
+                    break;
+            }
+
+            $this->arrCategories = empty($arrCategories) ? array(0) : $arrCategories;
         }
 
-        switch ($strCategoryScope) {
-
-            case 'global':
-                $arrCategories = \Database::getInstance()->getChildRecords($objPage->rootId, 'tl_page');
-                $arrCategories[] = $objPage->rootId;
-                break;
-
-            case 'current_and_first_child':
-                $arrCategories = \Database::getInstance()->execute("SELECT id FROM tl_page WHERE pid={$objPage->id}")->fetchEach('id');
-                $arrCategories[] = $objPage->id;
-                break;
-
-            case 'current_and_all_children':
-                $arrCategories = \Database::getInstance()->getChildRecords($objPage->id, 'tl_page');
-                $arrCategories[] = $objPage->id;
-                break;
-
-            case 'parent':
-                $arrCategories = array($objPage->pid);
-                break;
-
-            case 'product':
-                $objProduct = \Isotope\Frontend::getProductByAlias(\Isotope\Frontend::getAutoItem('product'));
-
-                if ($objProduct !== null) {
-                    $arrCategories = $objProduct->getCategories();
-                } else {
-                    $arrCategories = array(0);
-                }
-                break;
-
-            case 'article':
-                $arrCategories = array($GLOBALS['ISO_CONFIG']['current_article']['pid'] ?: $objPage->id);
-                break;
-
-            case '':
-            case 'current_category':
-                $arrCategories = array($objPage->id);
-                break;
-
-            default:
-                // @todo change this to a hook to allow custom category scope
-                $arrCategories = array($objPage->id);
-                break;
-        }
-
-        return empty($arrCategories) ? array(0) : $arrCategories;
+        return $this->arrCategories;
     }
 
 

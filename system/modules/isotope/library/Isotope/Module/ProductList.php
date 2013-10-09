@@ -250,7 +250,7 @@ class ProductList extends Module
     protected function findProducts($arrCacheIds=null)
     {
         $arrColumns = array();
-        $arrCategories = $this->findCategories($this->iso_category_scope);
+        $arrCategories = $this->findCategories();
 
         list($arrFilters, $arrSorting, $strWhere, $arrValues) = $this->getFiltersAndSorting();
 
