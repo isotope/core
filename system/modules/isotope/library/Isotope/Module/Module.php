@@ -132,17 +132,14 @@ abstract class Module extends Contao_Module
      */
     protected function findCategories($strCategoryScope)
     {
-        if ($this->defineRoot && $this->rootPage > 0)
-        {
+        if ($this->defineRoot && $this->rootPage > 0) {
             $objPage = $this->getPageDetails($this->rootPage);
-        }
-        else
-        {
+        } else {
             global $objPage;
         }
 
-        switch ($strCategoryScope)
-        {
+        switch ($strCategoryScope) {
+
             case 'global':
                 $arrCategories = \Database::getInstance()->getChildRecords($objPage->rootId, 'tl_page');
                 $arrCategories[] = $objPage->rootId;
@@ -165,22 +162,24 @@ abstract class Module extends Contao_Module
             case 'product':
                 $objProduct = \Isotope\Frontend::getProductByAlias(\Isotope\Frontend::getAutoItem('product'));
 
-                if ($objProduct !== null)
-                {
+                if ($objProduct !== null) {
                     $arrCategories = $objProduct->getCategories();
-                }
-                else
-                {
-                    return array(0);
+                } else {
+                    $arrCategories = array(0);
                 }
                 break;
 
             case 'article':
-                $arrCategories = array($GLOBALS['ISO_CONFIG']['current_article']['pid'] > 0 ? $GLOBALS['ISO_CONFIG']['current_article']['pid'] : $objPage->id);
+                $arrCategories = array($GLOBALS['ISO_CONFIG']['current_article']['pid'] ?: $objPage->id);
                 break;
 
+            case '':
             case 'current_category':
+                $arrCategories = array($objPage->id);
+                break;
+
             default:
+                // @todo change this to a hook to allow custom category scope
                 $arrCategories = array($objPage->id);
                 break;
         }
