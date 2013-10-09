@@ -227,6 +227,7 @@ $GLOBALS['TL_DCA']['tl_iso_products'] = array
         'gid' => array
         (
             'foreignKey'            => 'tl_iso_groups.name',
+            'eval'                  => array('doNotShow'=>true),
             'attributes'            => array('systemColumn'=>true),
             'sql'                   => "int(10) unsigned NOT NULL default '0'",
             'relation'              => array('type'=>'hasOne', 'load'=>'lazy'),
@@ -238,6 +239,7 @@ $GLOBALS['TL_DCA']['tl_iso_products'] = array
         ),
         'language' => array
         (
+            'eval'                  => array('doNotShow'=>true),
             'attributes'            => array('systemColumn'=>true),
             'sql'                   => "varchar(5) NOT NULL default ''",
         ),

@@ -373,7 +373,7 @@ class ProductCallbacks extends \Backend
                 $objType = $this->arrProductTypes[($objProduct->pid > 0 ? $objProduct->parent_type : $objProduct->type)];
                 $arrTypes = null === $objType ? array() : array($objType);
 
-                if ($objProduct->pid > 0 || $act != 'edit') {
+                if ($objProduct->pid > 0 || ($act != 'edit' && $act != 'show')) {
                     $blnVariants = true;
                 }
             }
@@ -407,36 +407,45 @@ class ProductCallbacks extends \Backend
             }
 
             // Go through each enabled field and build palette
-            foreach ($arrEnabled as $name) {
+            foreach ($arrFields as $name => $arrField) {
+                if (in_array($name, $arrEnabled)) {
 
-                // Do not show customer defined fields
-                if (null !== $arrAttributes[$name] && $arrAttributes[$name]->isCustomerDefined()) {
-                    continue;
-                }
+                    // Do not show customer defined fields
+                    if (null !== $arrAttributes[$name] && $arrAttributes[$name]->isCustomerDefined()) {
+                        continue;
+                    }
 
-                // Variant fields can only be edited in variant mode
-                if (null !== $arrAttributes[$name] && $arrAttributes[$name]->isVariantOption() && !$blnVariants) {
-                    continue;
-                }
+                    // Variant fields can only be edited in variant mode
+                    if (null !== $arrAttributes[$name] && $arrAttributes[$name]->isVariantOption() && !$blnVariants) {
+                        continue;
+                    }
 
-                // Field cannot be edited in variant
-                if ($blnVariants && $arrAttributes[$name]->inherit) {
-                    continue;
-                }
+                    // Field cannot be edited in variant
+                    if ($blnVariants && $arrAttributes[$name]->inherit) {
+                        continue;
+                    }
 
-                $arrPalette[$arrConfig[$name]['legend']][] = $name;
+                    $arrPalette[$arrConfig[$name]['legend']][] = $name;
 
-                // Apply product type attribute config
-                if ($arrConfig[$name]['tl_class'] != '') {
-                    $arrFields[$name]['eval']['tl_class'] = $arrConfig[$name]['tl_class'];
-                }
+                    // Apply product type attribute config
+                    if ($arrConfig[$name]['tl_class'] != '') {
+                        $arrFields[$name]['eval']['tl_class'] = $arrConfig[$name]['tl_class'];
+                    }
 
-                if ($arrConfig[$name]['mandatory'] > 0) {
-                    $arrFields[$name]['eval']['mandatory'] = $arrConfig[$name]['mandatory'] == 1 ? false : true;
-                }
+                    if ($arrConfig[$name]['mandatory'] > 0) {
+                        $arrFields[$name]['eval']['mandatory'] = $arrConfig[$name]['mandatory'] == 1 ? false : true;
+                    }
 
-                if ($blnVariants && in_array($name, $arrCanInherit) && !$arrAttributes[$name]->isVariantOption() && !in_array($name, array('price', 'published', 'start', 'stop'))) {
-                    $arrInherit[$name] = Isotope::formatLabel('tl_iso_products', $name);
+                    if ($blnVariants && in_array($name, $arrCanInherit) && !$arrAttributes[$name]->isVariantOption() && !in_array($name, array('price', 'published', 'start', 'stop'))) {
+                        $arrInherit[$name] = Isotope::formatLabel('tl_iso_products', $name);
+                    }
+
+                } else {
+
+                    // Hide field from "show" option
+                    if (!isset($arrField['attributes']) || $arrField['inputType'] != '') {
+                        $arrFields[$name]['eval']['doNotShow'] = true;
+                    }
                 }
             }
 
