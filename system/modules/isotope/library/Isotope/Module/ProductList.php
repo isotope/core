@@ -218,7 +218,7 @@ class ProductList extends Module
 
             // Must be done after setting options to generate the variant config into the URL
             if ($this->iso_jump_first && \Isotope\Frontend::getAutoItem('product') == '') {
-                \Controller::redirect($objProduct->generateUrl($objPage));
+                \Controller::redirect($objProduct->generateUrl($arrConfig['jumpTo']));
             }
 
             $arrBuffer[] = array(

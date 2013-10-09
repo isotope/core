@@ -892,8 +892,15 @@ class Standard extends Product implements IsotopeProduct
      * @param   string          Optional parameters
      * @return  array
      */
-    public function generateUrl(\PageModel $objPage, $arrParams=array())
+    public function generateUrl(\PageModel $objJumpTo=null, $arrParams=array())
     {
+        if (null === $objJumpTo) {
+            global $objPage;
+            global $objIsotopeListPage;
+
+            $objJumpTo = $objIsotopeListPage ?: $objPage;
+        }
+
         $strUrl = '/' . $this->arrData['alias'] ?: ($this->arrData['pid'] ?: $this->arrData['id']);
 
         if (!$GLOBALS['TL_CONFIG']['useAutoItem'] || !in_array('product', $GLOBALS['TL_AUTO_ITEM'])) {
@@ -907,7 +914,7 @@ class Standard extends Product implements IsotopeProduct
 
         return \Isotope\Frontend::addQueryStringToUrl(
             http_build_query($arrParams),
-            \Controller::generateFrontendUrl($objPage->row(), $strUrl, $objPage->language)
+            \Controller::generateFrontendUrl($objJumpTo->row(), $strUrl, $objJumpTo->language)
         );
     }
 

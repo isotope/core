@@ -70,6 +70,7 @@ class ProductReader extends Module
     protected function compile()
     {
         global $objPage;
+        global $objIsotopeListPage;
 
         $objProduct = \Isotope\Frontend::getProductByAlias(\Isotope\Frontend::getAutoItem('product'));
 
@@ -92,7 +93,7 @@ class ProductReader extends Module
             'gallery'       => ($this->iso_gallery ?: $objProduct->getRelated('type')->reader_gallery),
             'buttons'       => deserialize($this->iso_buttons, true),
             'useQuantity'   => $this->iso_use_quantity,
-            'jumpTo'        => $objPage,
+            'jumpTo'        => ($objIsotopeListPage ?: $objPage),
         );
 
         if (\Environment::get('isAjaxRequest') && \Input::post('AJAX_MODULE') == $this->id && \Input::post('AJAX_PRODUCT') == $objProduct->id) {
