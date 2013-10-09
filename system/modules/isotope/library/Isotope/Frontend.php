@@ -102,12 +102,68 @@ class Frontend extends \Frontend
             }
         }
 
-        if ($strAlias != ''
-            && ($objPage = \PageModel::findPublishedByIdOrAlias($arrFragments[0])) !== null
-            && $objPage->iso_setReaderJumpTo
-            && ($objReader = $objPage->getRelated('iso_readerJumpTo')) !== null
-        ) {
-            $arrFragments[0] = $objReader->id;
+        global $objIsotopeListPage;
+        $objIsotopeListPage = null;
+
+        if ($strAlias != '' && ($objPage = \PageModel::findPublishedByIdOrAlias($arrFragments[0])) !== null) {
+
+            // Check the URL and language of each page if there are multiple results
+            // see Contao's index.php
+    		if ($objPage !== null && $objPage->count() > 1)
+    		{
+    			$objNewPage = null;
+    			$arrPages = array();
+
+    			// Order by domain and language
+    			while ($objPage->next())
+    			{
+    				$objCurrentPage = $objPage->current()->loadDetails();
+
+    				$domain = $objCurrentPage->domain ?: '*';
+    				$arrPages[$domain][$objCurrentPage->rootLanguage] = $objCurrentPage;
+
+    				// Also store the fallback language
+    				if ($objCurrentPage->rootIsFallback)
+    				{
+    					$arrPages[$domain]['*'] = $objCurrentPage;
+    				}
+    			}
+
+    			$strHost = Environment::get('host');
+
+    			// Look for a root page whose domain name matches the host name
+    			if (isset($arrPages[$strHost]))
+    			{
+    				$arrLangs = $arrPages[$strHost];
+    			}
+    			else
+    			{
+    				$arrLangs = $arrPages['*']; // Empty domain
+    			}
+
+    			// Use the first result (see #4872)
+    			if (!$GLOBALS['TL_CONFIG']['addLanguageToUrl'])
+    			{
+    				$objNewPage = current($arrLangs);
+    			}
+    			// Try to find a page matching the language parameter
+    			elseif (($lang = Input::get('language')) != '' && isset($arrLangs[$lang]))
+    			{
+    				$objNewPage = $arrLangs[$lang];
+    			}
+
+    			// Store the page object
+    			if (is_object($objNewPage))
+    			{
+    				$objPage = $objNewPage;
+    			}
+    		}
+
+            if ($objPage->iso_setReaderJumpTo && ($objReader = $objPage->getRelated('iso_readerJumpTo')) !== null) {
+
+                $objIsotopeListPage = ($objPage instanceof \Model\Collection ? $objPage->current() : $objPage);
+                $arrFragments[0] = $objReader->id;
+            }
         }
 
         return $arrFragments;
