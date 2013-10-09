@@ -199,6 +199,37 @@ abstract class Module extends Contao_Module
 
 
     /**
+     * Find jumpTo page for current category scope
+     * @param   Product
+     * @return  PageModel
+     */
+    protected function findJumpToPage($objProduct)
+    {
+        global $objPage;
+        global $objIsotopeListPage;
+
+        $arrCategories = array_intersect($objProduct->getCategories(), $this->findCategories());
+
+        // If our current category scope does not match with any product category, use the first product category in the current root page
+        if (empty($arrCategories)) {
+            $arrCategories = array_intersect($objProduct->getCategories(), \Database::getInstance()->getChildRecords($objPage->id, $objPage->getTable()));
+        }
+
+        foreach ($arrCategories as $intCategory) {
+            $objCategory = \PageModel::findByPk($intCategory);
+
+            if ($objCategory->alias == 'index' && count($arrCategories) > 1) {
+                continue;
+            }
+
+            return $objCategory;
+        }
+
+        return $objIsotopeListPage ?: $objPage;
+    }
+
+
+    /**
      * Generate the URL from existing $_GET parameters.
      * Use \Input::setGet('var', null) to remove a parameter from the final URL.
      * @return string
