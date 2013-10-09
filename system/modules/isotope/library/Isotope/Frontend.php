@@ -828,15 +828,20 @@ window.addEvent('domready', function()
         }
 
         while ($objProducts->next()) {
+
             // Do the fun for all categories
-            foreach ($objProduct->current()->getCategories() as $intPage) {
+            $arrCategories = $objProducts->current()->getCategories();
+
+            foreach ($arrCategories as $intPage) {
+
+                $objPage = \PageModel::findWithDetails($intPage);
 
                 // No need to get the root page model of the page if it's restricted to one only anyway
                 // Otherwise we need to get the root page model of the current page and for performance
                 // reasons we cache that in an array
                 if ($intRoot === 0) {
                     if (!isset($arrRoots[$intPage])) {
-                        $arrRoots[$intPage] = \PageModel::findByPk(\PageModel::findWithDetails($intPage)->rootId);
+                        $arrRoots[$intPage] = \PageModel::findByPk($objPage->rootId);
                     }
 
                     $objRoot = $arrRoots[$intPage];
@@ -850,7 +855,7 @@ window.addEvent('domready', function()
                     $strDomain = ($objRoot->useSSL ? 'https://' : 'http://') . $objRoot->dns . TL_PATH . '/';
                 }
 
-                $arrPages[] = $strDomain . $objProducts->current()->generateUrl($intPage);
+                $arrPages[] = $strDomain . $objProducts->current()->generateUrl($objPage);
             }
         }
 
