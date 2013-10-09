@@ -818,7 +818,7 @@ window.addEvent('domready', function()
 
         // If we have a root page id (sitemap.xml e.g.) we have to make sure we only consider categories in this tree
         if ($intRoot > 0) {
-            $arrPageIds = \Database::getInstance()->getChildRecords($intRoot, 'tl_page', false);
+            $arrPageIds = \Database::getInstance()->getChildRecords($intRoot, \PageModel::getTable(), false);
             $arrPageIds[] = $intRoot;
 
             $objProducts = Product::findPublishedByCategories($arrPageIds);
@@ -842,9 +842,16 @@ window.addEvent('domready', function()
                 if ($intRoot === 0) {
                     if (!isset($arrRoots[$intPage])) {
                         $arrRoots[$intPage] = \PageModel::findByPk($objPage->rootId);
+                        $arrPageIds = \Database::getInstance()->getChildRecords($objPage->rootId, \PageModel::getTable(), false);
+                        $arrPageIds[] = $objPage->rootId;
                     }
 
                     $objRoot = $arrRoots[$intPage];
+                }
+
+                // Do not generate a reader for the index page, except if it is the only one
+                if ($objPage->alias == 'index' && count(array_intersect($arrCategories, $arrPageIds)) > 1) {
+                    continue;
                 }
 
                 // Generate the absolute URL
