@@ -170,6 +170,19 @@ class Frontend extends \Frontend
     }
 
     /**
+     *
+     */
+    public function overrideReaderPage($objPage, $objLayout, $objRegularPage)
+    {
+        global $objPage;
+        global $objIsotopeListPage;
+
+        if (null !== $objIsotopeListPage) {
+            $objPage->alias = $objIsotopeListPage->alias;
+        }
+    }
+
+    /**
      * Replaces Isotope-specific InsertTags in Frontend
      * @param string
      * @return mixed
