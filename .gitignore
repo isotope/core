@@ -15,6 +15,5 @@ system/drivers/*
 !system/modules
 system/modules/*
 !system/modules/isotope/
-!system/modules/isotope_multilingual/
 !system/modules/isotope_reports/
 !system/modules/isotope_rules/

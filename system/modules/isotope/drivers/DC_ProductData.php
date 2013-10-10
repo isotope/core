@@ -492,68 +492,64 @@ class DC_ProductData extends \DC_Table
         $this->objActiveRecord = $objRow;
 
         // Load and/or change language
-        $arrActiveModules = \Config::getInstance()->getActiveModules();
 
-        if (in_array('isotope_multilingual', $arrActiveModules))
+        // Add support for i18nl10n extension
+        if (in_array('i18nl10n', \Config::getInstance()->getActiveModules()))
         {
-            // Add support for i18nl10n extension
-            if (in_array('i18nl10n', $arrActiveModules))
-            {
-                $arrPageLanguages = array_filter(array_unique(deserialize($GLOBALS['TL_CONFIG']['i18nl10n_languages'], true)));
-            }
-            else
-            {
-                $arrPageLanguages = $this->Database->execute("SELECT DISTINCT language FROM tl_page WHERE type='root'")->fetchEach('language');
-                $arrPageLanguages = array_map(function($strLang) {
-                    return str_replace('-', '_', $strLang);
-                }, $arrPageLanguages);
-            }
+            $arrPageLanguages = array_filter(array_unique(deserialize($GLOBALS['TL_CONFIG']['i18nl10n_languages'], true)));
+        }
+        else
+        {
+            $arrPageLanguages = $this->Database->execute("SELECT DISTINCT language FROM tl_page WHERE type='root'")->fetchEach('language');
+            $arrPageLanguages = array_map(function($strLang) {
+                return str_replace('-', '_', $strLang);
+            }, $arrPageLanguages);
+        }
 
-            if (count($arrPageLanguages) > 1)
-            {
-                $this->arrLanguageLabels = \System::getLanguages();
-                $this->arrLanguages = array_intersect(array_keys($this->arrLanguageLabels), $arrPageLanguages);
+        if (count($arrPageLanguages) > 1)
+        {
+            $this->arrLanguageLabels = \System::getLanguages();
+            $this->arrLanguages = array_intersect(array_keys($this->arrLanguageLabels), $arrPageLanguages);
 
-                if (\Input::post('FORM_SUBMIT') == 'tl_language')
+            if (\Input::post('FORM_SUBMIT') == 'tl_language')
+            {
+                $session = $this->Session->getData();
+
+                if (in_array(\Input::post('language'), $this->arrLanguages))
                 {
-                    $session = $this->Session->getData();
+                    $session['language'][$this->strTable][$this->intId] = \Input::post('language');
 
-                    if (in_array(\Input::post('language'), $this->arrLanguages))
+                    if (\Input::post('deleteLanguage') != '')
                     {
-                        $session['language'][$this->strTable][$this->intId] = \Input::post('language');
-
-                        if (\Input::post('deleteLanguage') != '')
-                        {
-                            $this->Database->prepare("DELETE FROM " . $this->strTable . " WHERE pid=? AND language=?")->execute($this->intId, \Input::post('language'));
-                            unset($session['language'][$this->strTable][$this->intId]);
-                        }
-                    }
-                    else
-                    {
+                        $this->Database->prepare("DELETE FROM " . $this->strTable . " WHERE pid=? AND language=?")->execute($this->intId, \Input::post('language'));
                         unset($session['language'][$this->strTable][$this->intId]);
                     }
-
-                    $this->Session->setData($session);
-                    $_SESSION['TL_INFO'] = '';
-                    \Controller::reload();
                 }
-
-                if ($_SESSION['BE_DATA']['language'][$this->strTable][$this->intId] != '' && in_array($_SESSION['BE_DATA']['language'][$this->strTable][$this->intId], $this->arrLanguages))
+                else
                 {
-                    $objRow = $this->Database->prepare("SELECT * FROM " . $this->strTable . " WHERE pid=? AND language=?")->execute($this->intId, $_SESSION['BE_DATA']['language'][$this->strTable][$this->intId]);
-
-                    if (!$objRow->numRows)
-                    {
-                        $intId = $this->Database->prepare("INSERT INTO tl_iso_products (pid,tstamp,language) VALUES (?,?,?)")->execute($this->intId, time(), $_SESSION['BE_DATA']['language'][$this->strTable][$this->intId])->insertId;
-
-                        $objRow = $this->Database->prepare("SELECT * FROM " . $this->strTable . " WHERE id=?")->execute($intId);
-                    }
-
-                    $this->objActiveRecord = $objRow;
-                    $this->values = array($this->intId, $_SESSION['BE_DATA']['language'][$this->strTable][$this->intId]);
-                    $this->procedure = array('pid=?', 'language=?');
-                    $this->blnEditLanguage = true;
+                    unset($session['language'][$this->strTable][$this->intId]);
                 }
+
+                $this->Session->setData($session);
+                $_SESSION['TL_INFO'] = '';
+                \Controller::reload();
+            }
+
+            if ($_SESSION['BE_DATA']['language'][$this->strTable][$this->intId] != '' && in_array($_SESSION['BE_DATA']['language'][$this->strTable][$this->intId], $this->arrLanguages))
+            {
+                $objRow = $this->Database->prepare("SELECT * FROM " . $this->strTable . " WHERE pid=? AND language=?")->execute($this->intId, $_SESSION['BE_DATA']['language'][$this->strTable][$this->intId]);
+
+                if (!$objRow->numRows)
+                {
+                    $intId = $this->Database->prepare("INSERT INTO tl_iso_products (pid,tstamp,language) VALUES (?,?,?)")->execute($this->intId, time(), $_SESSION['BE_DATA']['language'][$this->strTable][$this->intId])->insertId;
+
+                    $objRow = $this->Database->prepare("SELECT * FROM " . $this->strTable . " WHERE id=?")->execute($intId);
+                }
+
+                $this->objActiveRecord = $objRow;
+                $this->values = array($this->intId, $_SESSION['BE_DATA']['language'][$this->strTable][$this->intId]);
+                $this->procedure = array('pid=?', 'language=?');
+                $this->blnEditLanguage = true;
             }
         }
 
