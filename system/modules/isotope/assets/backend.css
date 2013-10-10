@@ -82,19 +82,6 @@ body.popup .header_back {
     top: 1px;
 }
 
-.tl_fieldwizard td {
-    padding-right: 4px;
-}
-
-.tl_fieldwizard th {
-    padding: 2px 0;
-    font-weight: normal;
-}
-
-.tl_fieldwizard .col_1 {
-    width: 180px;
-}
-
 #ctrl_attributes tr:hover td,
 #ctrl_variant_attributes tr:hover td,
 #ctrl_address_fields tr:hover td {

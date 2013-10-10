@@ -39,10 +39,6 @@ $GLOBALS['TL_LANG']['XPL']['isoAttributeWizard'][2] = array('c)', 'Mandatory: Us
 $GLOBALS['TL_LANG']['XPL']['isoAttributeWizard'][3] = array('d)', 'Mandatory: No, never.');
 $GLOBALS['TL_LANG']['XPL']['isoAttributeWizard'][4] = array('e)', 'Mandatory: Yes, always.');
 
-$GLOBALS['TL_LANG']['XPL']['isoFieldWizard'][0]     = array('a)', 'Enable or disable field.');
-$GLOBALS['TL_LANG']['XPL']['isoFieldWizard'][1]     = array('b)', 'Custom label.');
-$GLOBALS['TL_LANG']['XPL']['isoFieldWizard'][2]     = array('c)', 'Mandatory or not.');
-
 $GLOBALS['TL_LANG']['XPL']['isoReaderJumpTo']       = '
 <p class="tl_help_table">
     Unlike any other Contao module, a user is not redirected to the reader page when viewing the product details. To solve the issue of nice aliases and to know the detail page of a product, we came up with a new solution.<br>
