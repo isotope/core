@@ -1097,6 +1097,50 @@ window.addEvent('domready', function()
     }
 
     /**
+     * Show product name in breadcrumb
+     * @param  array
+     * @param  object
+     * @return array
+     */
+    public function addProductToBreadcrumb($arrItems, $objModule)
+    {
+        if (static::getAutoItem('product') != '') {
+            $objProduct = static::getProductByAlias(static::getAutoItem('product'));
+
+            if (null !== $objProduct) {
+
+                global $objPage;
+                global $objIsotopeListPage;
+
+                $last = count($arrItems) - 1;
+
+                // If we have a reader page, rename the last item (the reader) to the product title
+                if (null !== $objIsotopeListPage) {
+                    $arrItems[$last]['title'] = specialchars($objProduct->name, true);
+                    $arrItems[$last]['link'] = $objProduct->name;
+                }
+
+                // Otherwise we add a new item for the product at the last position
+                else {
+                    $arrItems[$last]['isActive'] = false;
+
+                    $arrItems[] = array
+                    (
+                        'isRoot'    => false,
+                        'isActive'  => true,
+                        'href'      => $objProduct->generateUrl($objPage),
+                        'title'     => specialchars($objProduct->name, true),
+                        'link'      => $objProduct->name,
+                        'data'      => $objPage->row(),
+                    );
+                }
+            }
+        }
+
+        return $arrItems;
+    }
+
+    /**
      * Load system configuration into page object
      * @param \Database\Result
      */
