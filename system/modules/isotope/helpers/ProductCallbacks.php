@@ -88,6 +88,7 @@ class ProductCallbacks extends \Backend
             $blnVariants = false;
             $blnAdvancedPrices = false;
             $blnShowSku = false;
+            $blnShowPrice = false;
 
             if (($objProductTypes = ProductType::findAllUsed()) !== null) {
                 while ($objProductTypes->next())
@@ -109,6 +110,10 @@ class ProductCallbacks extends \Backend
 
                     if (in_array('sku', $objType->getAttributes())) {
                         $blnShowSku = true;
+                    }
+
+                    if (in_array('price', $objType->getAttributes())) {
+                        $blnShowPrice = true;
                     }
                 }
             }
@@ -140,6 +145,10 @@ class ProductCallbacks extends \Backend
 
             if (!$blnShowSku) {
                 unset($GLOBALS['TL_DCA'][Product::getTable()]['list']['label']['fields'][2]);
+            }
+
+            if (!$blnShowPrice) {
+                unset($GLOBALS['TL_DCA'][Product::getTable()]['list']['label']['fields'][3]);
             }
 
             // Disable related categories if none are defined
