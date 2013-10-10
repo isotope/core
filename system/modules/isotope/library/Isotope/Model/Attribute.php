@@ -427,6 +427,8 @@ abstract class Attribute extends TypeAgent
     {
         static $arrFields;
 
+        Isotope::getInstance()->call('loadDataContainer', 'tl_iso_products');
+
         if (null === $arrFields) {
             $arrFields = array();
             $arrDCA = &$GLOBALS['TL_DCA']['tl_iso_products']['fields'];
@@ -448,6 +450,8 @@ abstract class Attribute extends TypeAgent
     public static function getVariantOptionFields()
     {
         static $arrFields;
+
+        Isotope::getInstance()->call('loadDataContainer', 'tl_iso_products');
 
         if (null === $arrFields) {
             $arrFields = array();
@@ -471,6 +475,8 @@ abstract class Attribute extends TypeAgent
     {
         static $arrFields;
 
+        Isotope::getInstance()->call('loadDataContainer', 'tl_iso_products');
+
         if (null === $arrFields) {
             $arrFields = array();
             $arrDCA = &$GLOBALS['TL_DCA']['tl_iso_products']['fields'];
@@ -493,6 +499,8 @@ abstract class Attribute extends TypeAgent
     {
         static $arrFields;
 
+        Isotope::getInstance()->call('loadDataContainer', 'tl_iso_products');
+
         if (null === $arrFields) {
             $arrFields = array();
             $arrDCA = &$GLOBALS['TL_DCA']['tl_iso_products']['fields'];
@@ -514,6 +522,8 @@ abstract class Attribute extends TypeAgent
     public static function getFetchFallbackFields()
     {
         static $arrFields;
+
+        Isotope::getInstance()->call('loadDataContainer', 'tl_iso_products');
 
         if (null === $arrFields) {
             $arrFields = array();
@@ -538,6 +548,8 @@ abstract class Attribute extends TypeAgent
     {
         static $arrFields;
 
+        Isotope::getInstance()->call('loadDataContainer', 'tl_iso_products');
+
         if (null === $arrFields) {
             $arrFields = array();
             $arrDCA = &$GLOBALS['TL_DCA']['tl_iso_products']['fields'];
@@ -561,6 +573,8 @@ abstract class Attribute extends TypeAgent
     {
         static $arrFields;
 
+        Isotope::getInstance()->call('loadDataContainer', 'tl_iso_products');
+
         if (null === $arrFields) {
             $arrFields = array();
             $arrDCA = &$GLOBALS['TL_DCA']['tl_iso_products']['fields'];
@@ -583,6 +597,8 @@ abstract class Attribute extends TypeAgent
     public static function getVariantFixedFields()
     {
         static $arrFields;
+
+        Isotope::getInstance()->call('loadDataContainer', 'tl_iso_products');
 
         if (null === $arrFields) {
             $arrFields = array();
