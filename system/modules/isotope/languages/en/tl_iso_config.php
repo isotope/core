@@ -76,8 +76,6 @@ $GLOBALS['TL_LANG']['tl_iso_config']['iwWatermark']                 = array('Wat
 $GLOBALS['TL_LANG']['tl_iso_config']['iwPosition']                  = array('Position');
 $GLOBALS['TL_LANG']['tl_iso_config']['ecb.int']                     = 'European Central Bank';
 $GLOBALS['TL_LANG']['tl_iso_config']['admin.ch']                    = 'Swiss Federal Department of Finance';
-$GLOBALS['TL_LANG']['tl_iso_config']['urlMatrix']['original']       = 'Default (original)';
-$GLOBALS['TL_LANG']['tl_iso_config']['urlMatrix']['custom']         = 'Custom';
 
 /**
  * Buttons
