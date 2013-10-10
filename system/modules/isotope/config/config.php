@@ -260,7 +260,96 @@ $GLOBALS['BE_FFL']['productGroupSelector']   = 'Isotope\Widget\ProductGroupSelec
 /**
  * Notification Center notification types
  */
-$GLOBALS['NOTIFICATION_CENTER']['NOTIFICATIONTYPE']['isotope']['iso_order_status_change'] = 'Isotope\NotificationCenter\NotificationType\OrderStatusChange';
+$GLOBALS['NOTIFICATION_CENTER']['NOTIFICATION_TYPE']['isotope'] = array
+(
+    'iso_order_status_change'   => array
+    (
+        'recipients'    => array
+        (
+            'recipient_email' // The email address of the recipient
+        ),
+        'attachments'    => array
+        (
+            'form_*', // All the order condition form fields
+            'document' // The document that should be attached (e.g. an invoice)
+        ),
+        'email_subject'    => array
+        (
+            'billing_*', // All the billing address model fields
+            'billing_address', // Billing address as HTML
+            'billing_address_text', // Billing address as text
+            'shipping_*', // All the shipping address model fields
+            'shipping_address', // Shipping address as HTML
+            'shipping_address_text', // Shipping address as text
+            'form_*', // All the order condition form fields
+            'items', // Number of items in order
+            'products', // Number of single products in order
+            'subTotal', // Subtotal
+            'grandTotal', // Grand total
+            'cart_text', // Order/Cart as text
+            'cart_html', // Order/Cart as HTML
+            'payment_id', // Payment method ID
+            'payment_label', // Payment method label
+            'payment_note', // Payment method note
+            'payment_note_text', // Payment method note without HTML tags
+            'shipping_id', // Shipping method ID
+            'shipping_label', // Shipping method label
+            'shipping_note', // Shipping method note
+            'shipping_note_text', // Shipping method note without HTML tags
+            'new_status', // Contains the new collection status
+        ),
+        'email_text'    => array
+        (
+            'billing_*', // All the billing address model fields
+            'billing_address', // Billing address as HTML
+            'billing_address_text', // Billing address as text
+            'shipping_*', // All the shipping address model fields
+            'shipping_address', // Shipping address as HTML
+            'shipping_address_text', // Shipping address as text
+            'form_*', // All the order condition form fields
+            'items', // Number of items in order
+            'products', // Number of single products in order
+            'subTotal', // Subtotal
+            'grandTotal', // Grand total
+            'cart_text', // Order/Cart as text
+            'cart_html', // Order/Cart as HTML
+            'payment_id', // Payment method ID
+            'payment_label', // Payment method label
+            'payment_note', // Payment method note
+            'payment_note_text', // Payment method note without HTML tags
+            'shipping_id', // Shipping method ID
+            'shipping_label', // Shipping method label
+            'shipping_note', // Shipping method note
+            'shipping_note_text', // Shipping method note without HTML tags
+            'new_status', // Contains the new collection status
+        ),
+        'email_html'    => array
+        (
+            'billing_*', // All the billing address model fields
+            'billing_address', // Billing address as HTML
+            'billing_address_text', // Billing address as text
+            'shipping_*', // All the shipping address model fields
+            'shipping_address', // Shipping address as HTML
+            'shipping_address_text', // Shipping address as text
+            'form_*', // All the order condition form fields
+            'items', // Number of items in order
+            'products', // Number of single products in order
+            'subTotal', // Subtotal
+            'grandTotal', // Grand total
+            'cart_text', // Order/Cart as text
+            'cart_html', // Order/Cart as HTML
+            'payment_id', // Payment method ID
+            'payment_label', // Payment method label
+            'payment_note', // Payment method note
+            'payment_note_text', // Payment method note without HTML tags
+            'shipping_id', // Shipping method ID
+            'shipping_label', // Shipping method label
+            'shipping_note', // Shipping method note
+            'shipping_note_text', // Shipping method note without HTML tags
+            'new_status', // Contains the new collection status
+        )
+    )
+);
 
 
 /**
