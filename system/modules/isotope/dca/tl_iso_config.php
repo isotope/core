@@ -122,7 +122,7 @@ $GLOBALS['TL_DCA']['tl_iso_config'] = array
         'default'                   => '
             {name_legend},name,label,fallback;
             {address_legend:hide},firstname,lastname,company,vat_no,street_1,street_2,street_3,postal,city,country,subdivision,email,phone;
-            {checkout_legend},billing_countries,shipping_countries,billing_fields,shipping_fields,billing_country,shipping_country,limitMemberCountries;
+            {checkout_legend},billing_country,shipping_country,billing_countries,shipping_countries,billing_fields,shipping_fields,limitMemberCountries;
             {currency_legend},priceRoundPrecision,priceRoundIncrement,currency,currencyFormat,currencyPosition,currencySymbol;
             {converter_legend:hide},priceCalculateFactor,priceCalculateMode,currencyAutomator;
             {order_legend:hide},orderPrefix,orderDigits,orderstatus_new,orderstatus_error;
@@ -301,23 +301,14 @@ $GLOBALS['TL_DCA']['tl_iso_config'] = array
             'eval'                  => array('maxlength'=>64, 'rgxp'=>'email', 'tl_class'=>'w50'),
             'sql'                   => "varchar(255) NOT NULL default ''",
         ),
-        'shipping_countries' => array
+        'billing_country' => array
         (
-            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_config']['shipping_countries'],
+            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_config']['billing_country'],
             'exclude'               => true,
             'inputType'             => 'select',
             'options'               => \System::getCountries(),
-            'eval'                  => array('multiple'=>true, 'size'=>8, 'tl_class'=>'w50 w50h', 'chosen'=>true),
-            'sql'                   => "blob NULL",
-        ),
-        'shipping_fields' => array
-        (
-            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_config']['shipping_fields'],
-            'exclude'               => true,
-            'inputType'             => 'fieldWizard',
-            'eval'                  => array('multiple'=>true, 'tl_class'=>'w50 w50h', 'table'=>'tl_iso_addresses', 'helpwizard'=>true),
-            'explanation'           => 'isoFieldWizard',
-            'sql'                   => "blob NULL",
+            'eval'                  => array('includeBlankOption'=>true, 'tl_class'=>'w50', 'chosen'=>true),
+            'sql'                   => "varchar(2) NOT NULL default ''",
         ),
         'shipping_country' => array
         (
@@ -337,6 +328,24 @@ $GLOBALS['TL_DCA']['tl_iso_config'] = array
             'eval'                  => array('multiple'=>true, 'size'=>8, 'tl_class'=>'w50 w50h', 'chosen'=>true),
             'sql'                   => "blob NULL"
         ),
+        'shipping_countries' => array
+        (
+            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_config']['shipping_countries'],
+            'exclude'               => true,
+            'inputType'             => 'select',
+            'options'               => \System::getCountries(),
+            'eval'                  => array('multiple'=>true, 'size'=>8, 'tl_class'=>'w50 w50h', 'chosen'=>true),
+            'sql'                   => "blob NULL",
+        ),
+        'shipping_fields' => array
+        (
+            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_config']['shipping_fields'],
+            'exclude'               => true,
+            'inputType'             => 'fieldWizard',
+            'eval'                  => array('multiple'=>true, 'tl_class'=>'w50 w50h', 'table'=>'tl_iso_addresses', 'helpwizard'=>true),
+            'explanation'           => 'isoFieldWizard',
+            'sql'                   => "blob NULL",
+        ),
         'billing_fields' => array
         (
             'label'                 => &$GLOBALS['TL_LANG']['tl_iso_config']['billing_fields'],
@@ -345,15 +354,6 @@ $GLOBALS['TL_DCA']['tl_iso_config'] = array
             'eval'                  => array('mandatory'=>true, 'multiple'=>true, 'table'=>'tl_iso_addresses', 'tl_class'=>'clr w50 w50h', 'helpwizard'=>true),
             'explanation'           => 'isoFieldWizard',
             'sql'                   => "blob NULL",
-        ),
-        'billing_country' => array
-        (
-            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_config']['billing_country'],
-            'exclude'               => true,
-            'inputType'             => 'select',
-            'options'               => \System::getCountries(),
-            'eval'                  => array('includeBlankOption'=>true, 'tl_class'=>'w50', 'chosen'=>true),
-            'sql'                   => "varchar(2) NOT NULL default ''",
         ),
         'limitMemberCountries' => array
         (
