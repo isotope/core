@@ -268,7 +268,7 @@ class Postfinance extends Payment implements IsotopePayment, IsotopePostsale
             'OWNERADDRESS'                      => $objAddress->street_1,
             'OWNERADDRESS2'                     => $objAddress->street_2,
             // @todo we don't have the street number, do we even need it?
-            //'ECOM_BILLTO_POSTAL_STREET_NUMBER'  => $objAddress->street_2,
+            'ECOM_BILLTO_POSTAL_STREET_NUMBER'  => '',
             'OWNERZIP'                          => $objAddress->postal,
             'OWNERTOWN'                         => $objAddress->city,
             'OWNERCTY'                          => $objAddress->country,
@@ -280,10 +280,12 @@ class Postfinance extends Payment implements IsotopePayment, IsotopePostsale
         // Need to take the items from the cart as they're not transferred to the order here yet
         foreach (Isotope::getCart()->getItems() as $objItem) {
 
-            $fltVat = Isotope::roundPrice((100 / $objItem->getTaxFreePrice() * $objItem->getPrice()) - 100, false);
+            $objProduct = $objItem->getProduct();
+
+            $fltVat = Isotope::roundPrice((100 / $objProduct->getTaxFreePrice() * $objProduct->getGrossPrice()) - 100, false);
             $arrOrder['ITEMID' . $i]        = $objItem->id;
             $arrOrder['ITEMNAME' . $i]      = $objItem->getName();
-            $arrOrder['ITEMPRICE' . $i]     = $objItem->getPrice();
+            $arrOrder['ITEMPRICE' . $i]     = $objProduct->getGrossPrice();
             $arrOrder['ITEMQUANT' . $i]     = $objItem->quantity;
             $arrOrder['ITEMVATCODE' . $i]   = $fltVat . '%';
 
