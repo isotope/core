@@ -70,13 +70,24 @@ class Config extends \Model
      */
     public function getBillingFieldsConfig()
     {
-        $arrFields = deserialize($this->billing_fields);
+        if (!isset($this->arrCache['billingFieldsConfig'])) {
 
-        if (!is_array($arrFields)) {
-            return array();
+            $this->arrCache['billingFieldsConfig'] = array();
+            $arrFields = deserialize($this->address_fields);
+
+            if (is_array($arrFields)) {
+                foreach ($arrFields as $arrField) {
+
+                    $this->arrCache['billingFieldsConfig'][] = array(
+                        'value'     => $arrField['name'],
+                        'enabled'   => ($arrField['billing'] != 'disabled'),
+                        'mandatory' => ($arrField['billing'] == 'mandatory'),
+                    );
+                }
+            }
         }
 
-        return $arrFields;
+        return $this->arrCache['billingFieldsConfig'];
     }
 
     /**
@@ -104,13 +115,24 @@ class Config extends \Model
      */
     public function getShippingFieldsConfig()
     {
-        $arrFields = deserialize($this->shipping_fields);
+        if (!isset($this->arrCache['shippingFieldsConfig'])) {
 
-        if (!is_array($arrFields)) {
-            return array();
+            $this->arrCache['shippingFieldsConfig'] = array();
+            $arrFields = deserialize($this->address_fields);
+
+            if (is_array($arrFields)) {
+                foreach ($arrFields as $arrField) {
+
+                    $this->arrCache['shippingFieldsConfig'][] = array(
+                        'value'     => $arrField['name'],
+                        'enabled'   => ($arrField['shipping'] != 'disabled'),
+                        'mandatory' => ($arrField['shipping'] == 'mandatory'),
+                    );
+                }
+            }
         }
 
-        return $arrFields;
+        return $this->arrCache['shippingFieldsConfig'];
     }
 
     /**
