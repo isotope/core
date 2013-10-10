@@ -45,18 +45,18 @@ abstract class OrderConditions extends CheckoutStep
             return \Input::post('FORM_SUBMIT') === $haste->getFormId();
         }, (boolean) $this->objModule->tableless);
 
-        // don't catch the exception here because we want it to be shown to the user
+        // Don't catch the exception here because we want it to be shown to the user
         $this->objForm->addFieldsFromFormGenerator($this->objModule->iso_order_conditions);
 
         // Manually create widgets because we need to know if there are uploadable widgets
         $this->objForm->createWidgets();
 
-        // change enctype if there are uploads
+        // Change enctype if there are uploads
         if ($this->objForm->hasUploads()) {
             $this->objModule->Template->enctype = 'multipart/form-data';
         }
 
-        if (!$this->objForm->isSubmitted() || !$this->objForm->validate()) {
+        if ($this->objForm->isSubmitted() && !$this->objForm->validate()) {
             $this->blnError = true;
         }
 
