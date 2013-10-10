@@ -392,8 +392,9 @@ class tl_iso_config extends \Backend
             }
 
             $arrFields[$strName] = array(
-                'enabled'   => '',
                 'name'      => $strName,
+                'billing'   => ($arrField['eval']['mandatory'] === true ? 'mandatory' : ($arrField['eval']['mandatory'] === false ? 'enabled' : 'disabled')),
+                'shipping'  => ($arrField['eval']['mandatory'] === true ? 'mandatory' : ($arrField['eval']['mandatory'] === false ? 'enabled' : 'disabled')),
             );
         }
 

@@ -305,23 +305,6 @@ $GLOBALS['TL_DCA']['tl_iso_config'] = array
         (
             'label'                 => &$GLOBALS['TL_LANG']['tl_iso_config']['address_fields'],
             'exclude'               => true,
-            'default' => array
-            (
-/*
-                array('name'=>'type', 'enabled'=>1),
-                array('name'=>'pages', 'enabled'=>1),
-                array('name'=>'alias', 'enabled'=>1),
-                array('name'=>'sku', 'enabled'=>1),
-                array('name'=>'name', 'enabled'=>1),
-                array('name'=>'teaser', 'enabled'=>1),
-                array('name'=>'description', 'enabled'=>1),
-                array('name'=>'price', 'enabled'=>1),
-                array('name'=>'images', 'enabled'=>1),
-                array('name'=>'published', 'enabled'=>1),
-                array('name'=>'start', 'enabled'=>1),
-                array('name'=>'stop', 'enabled'=>1),
-*/
-            ),
             'inputType'             => 'multiColumnWizard',
             'eval' => array
             (
