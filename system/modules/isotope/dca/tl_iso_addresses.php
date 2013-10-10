@@ -170,7 +170,7 @@ $GLOBALS['TL_DCA']['tl_iso_addresses'] = array
             'sorting'               => true,
             'flag'                  => 1,
             'inputType'             => 'text',
-            'eval'                  => array('maxlength'=>255, 'feEditable'=>true, 'feGroup'=>'address', 'tl_class'=>'w50'),
+            'eval'                  => array('mandatory'=>false, 'maxlength'=>255, 'feEditable'=>true, 'feGroup'=>'address', 'tl_class'=>'w50'),
             'sql'                   => "varchar(255) NOT NULL default ''",
         ),
         'vat_no' => array
@@ -257,7 +257,7 @@ $GLOBALS['TL_DCA']['tl_iso_addresses'] = array
             'exclude'               => true,
             'search'                => true,
             'inputType'             => 'text',
-            'eval'                  => array('maxlength'=>64, 'rgxp'=>'phone', 'feEditable'=>true, 'feGroup'=>'contact', 'tl_class'=>'w50'),
+            'eval'                  => array('mandatory'=>false, 'maxlength'=>64, 'rgxp'=>'phone', 'feEditable'=>true, 'feGroup'=>'contact', 'tl_class'=>'w50'),
             'sql'                   => "varchar(64) NOT NULL default ''",
         ),
         'email' => array
@@ -266,7 +266,7 @@ $GLOBALS['TL_DCA']['tl_iso_addresses'] = array
             'exclude'               => true,
             'search'                => true,
             'inputType'             => 'text',
-            'eval'                  => array('maxlength'=>64, 'rgxp'=>'email', 'feEditable'=>true, 'feGroup'=>'contact', 'tl_class'=>'w50'),
+            'eval'                  => array('mandatory'=>true, 'maxlength'=>64, 'rgxp'=>'email', 'feEditable'=>true, 'feGroup'=>'contact', 'tl_class'=>'w50'),
             'sql'                   => "varchar(255) NOT NULL default ''",
         ),
         'isDefaultBilling' => array

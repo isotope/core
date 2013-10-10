@@ -244,7 +244,6 @@ abstract class Address extends CheckoutStep
                 $objWidget->mandatory = $field['mandatory'] ? true : false;
                 $objWidget->required = $objWidget->mandatory;
                 $objWidget->tableless = $this->objModule->tableless;
-                $objWidget->label = $field['label'] ? Translation::get($field['label']) : $objWidget->label;
                 $objWidget->storeValues = true;
 
                 $this->arrWidgets[$field['value']] = $objWidget;

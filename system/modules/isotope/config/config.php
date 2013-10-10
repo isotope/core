@@ -198,7 +198,6 @@ $GLOBALS['FE_MOD']['isotope'] = array
  */
 $GLOBALS['BE_FFL']['mediaManager']           = 'Isotope\Widget\MediaManager';
 $GLOBALS['BE_FFL']['inheritCheckbox']        = 'Isotope\Widget\InheritCheckBox';
-$GLOBALS['BE_FFL']['fieldWizard']            = 'Isotope\Widget\FieldWizard';
 $GLOBALS['BE_FFL']['productTree']            = 'Isotope\Widget\ProductTree';
 $GLOBALS['BE_FFL']['productGroupSelector']   = 'Isotope\Widget\ProductGroupSelector';
 

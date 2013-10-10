@@ -33,9 +33,6 @@ $GLOBALS['TL_LANG']['XPL']['isoMailTokens'][16]     = array('##shipping_firstnam
 $GLOBALS['TL_LANG']['XPL']['isoMailTokens'][17]     = array('##form_...##', 'Retrieve condition form data. Use the prefix "form_" and the field\'s name.');
 
 
-$GLOBALS['TL_LANG']['XPL']['isoFieldWizard'][0]     = array('a)', 'Enable or disable field.');
-$GLOBALS['TL_LANG']['XPL']['isoFieldWizard'][1]     = array('b)', 'Custom label.');
-$GLOBALS['TL_LANG']['XPL']['isoFieldWizard'][2]     = array('c)', 'Mandatory or not.');
 
 $GLOBALS['TL_LANG']['XPL']['isoReaderJumpTo']       = '
 <p class="tl_help_table">
