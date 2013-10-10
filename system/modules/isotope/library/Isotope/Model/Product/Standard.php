@@ -427,10 +427,16 @@ class Standard extends Product implements IsotopeProduct
     public function getCategories()
     {
         if (null === $this->arrCategories) {
-            $this->arrCategories = \Database::getInstance()->execute("SELECT page_id FROM tl_iso_product_categories WHERE pid=" . ($this->pid ?: $this->id) . " ORDER BY sorting")->fetchEach('page_id');
+            $this->arrCategories = \Database::getInstance()->execute("SELECT page_id FROM tl_iso_product_categories WHERE pid=" . ($this->pid ?: $this->id))->fetchEach('page_id');
+
+            // Sort categories by the backend drag&drop
+            $arrOrder = deserialize($this->orderPages);
+            if (!empty($arrOrder) && is_array($arrOrder)) {
+                $this->arrCategories = array_unique(array_merge(array_intersect($arrOrder, $this->arrCategories), $this->arrCategories));
+            }
         }
 
-        return (array) $this->arrCategories;
+        return $this->arrCategories;
     }
 
 
@@ -882,22 +888,17 @@ class Standard extends Product implements IsotopeProduct
 
     /**
      * Generate url
-     * @param   PageModel|int   A PageModel instance or a page id
+     * @param   PageModel       A PageModel instance
      * @param   string          Optional parameters
      * @return  array
      */
-    public function generateUrl($objPage, $arrParams=array())
+    public function generateUrl(\PageModel $objJumpTo=null, $arrParams=array())
     {
-        if (!$objPage) {
-            return '';
-        }
+        if (null === $objJumpTo) {
+            global $objPage;
+            global $objIsotopeListPage;
 
-        if (is_numeric($objPage)) {
-            $objPage = \PageModel::findByPk($objPage);
-        }
-
-        if (null === $objPage) {
-            return '';
+            $objJumpTo = $objIsotopeListPage ?: $objPage;
         }
 
         $strUrl = '/' . $this->arrData['alias'] ?: ($this->arrData['pid'] ?: $this->arrData['id']);
@@ -913,7 +914,7 @@ class Standard extends Product implements IsotopeProduct
 
         return \Isotope\Frontend::addQueryStringToUrl(
             http_build_query($arrParams),
-            \Controller::generateFrontendUrl($objPage->row(), $strUrl, $objPage->language)
+            \Controller::generateFrontendUrl($objJumpTo->row(), $strUrl, $objJumpTo->language)
         );
     }
 

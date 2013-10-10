@@ -94,7 +94,9 @@ $GLOBALS['TL_DCA']['tl_iso_product_categories'] = array
 
         'pid' => array
         (
+            'foreignKey'            => 'tl_iso_products.name',
             'sql'                   => "int(10) unsigned NOT NULL default '0'",
+            'relation'              => array('type'=>'belongsTo', 'load'=>'lazy'),
         ),
 
         'sorting' => array
@@ -109,7 +111,9 @@ $GLOBALS['TL_DCA']['tl_iso_product_categories'] = array
 
         'page_id' => array
         (
+            'foreignKey'            => 'tl_page.title',
             'sql'                   => "int(10) unsigned NOT NULL default '0'",
+            'relation'              => array('type'=>'hasOne', 'load'=>'lazy'),
         ),
     )
 );

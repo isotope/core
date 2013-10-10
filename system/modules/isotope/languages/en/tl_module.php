@@ -26,7 +26,6 @@ $GLOBALS['TL_LANG']['tl_module']['iso_jump_first']                  = array('Red
 $GLOBALS['TL_LANG']['tl_module']['iso_hide_list']                   = array('Hide in reader mode', 'Hide product list when a product alias is found in the URL.');
 $GLOBALS['TL_LANG']['tl_module']['iso_use_quantity']                = array('Enable quantity', 'Allow users to specify 1 or more of a product to be purchased.');
 $GLOBALS['TL_LANG']['tl_module']['iso_checkout_method']             = array('Checkout method', 'Choose your checkout method.');
-$GLOBALS['TL_LANG']['tl_module']['iso_reader_jumpTo']               = array('Product reader jump to page', 'This setting defines to which page a user will be redirected when clicking a product for more info (<strong>Note:</strong> This overwrites the settings in the site structure!).');
 $GLOBALS['TL_LANG']['tl_module']['iso_login_jumpTo']                = array('Checkout login page', 'Select the page where a user should login to checkout.');
 $GLOBALS['TL_LANG']['tl_module']['iso_addProductJumpTo']            = array('Add product jump to page', 'This setting defines to which page a user will be redirected when adding a product to the cart, if other than the current page.');
 $GLOBALS['TL_LANG']['tl_module']['iso_cols']                        = array('Columns', 'Enter a number of columns to display width-wise in the listing template.');

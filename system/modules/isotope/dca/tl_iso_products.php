@@ -269,7 +269,7 @@ $GLOBALS['TL_DCA']['tl_iso_products'] = array
             'exclude'               => true,
             'inputType'             => 'pageTree',
             'foreignKey'            => 'tl_page.title',
-            'eval'                  => array('doNotSaveEmpty'=>true, 'multiple'=>true, 'fieldType'=>'checkbox', 'tl_class'=>'clr'),
+            'eval'                  => array('doNotSaveEmpty'=>true, 'multiple'=>true, 'fieldType'=>'checkbox', 'orderField'=>'orderPages', 'tl_class'=>'clr hide_sort_hint'),
             'relation'              => array('type'=>'hasMany', 'load'=>'lazy'),
             'attributes'            => array('legend'=>'general_legend', 'fixed'=>true, 'inherit'=>true, 'systemColumn'=>true),
             'load_callback'         => array
@@ -280,6 +280,11 @@ $GLOBALS['TL_DCA']['tl_iso_products'] = array
             (
                 array('Isotope\ProductCallbacks', 'saveProductCategories'),
             ),
+        ),
+        'orderPages' => array
+        (
+            'eval'                  => array('doNotShow'=>true),
+            'sql'                   => "text NULL"
         ),
         'inherit' => array
         (

@@ -34,6 +34,12 @@ abstract class Module extends Contao_Module
      */
     protected $blnDisableCache = false;
 
+    /**
+     * Cache category lookup
+     * @var array
+     */
+    private $arrCategories;
+
 
     /**
      * Load libraries and scripts
@@ -127,65 +133,103 @@ abstract class Module extends Contao_Module
 
     /**
      * The ids of all pages we take care of. This is what should later be used eg. for filter data.
-     * @param string
      * @return array
      */
-    protected function findCategories($strCategoryScope)
+    protected function findCategories()
     {
-        if ($this->defineRoot && $this->rootPage > 0)
-        {
-            $objPage = $this->getPageDetails($this->rootPage);
+        if (null === $this->arrCategories) {
+
+            if ($this->defineRoot && $this->rootPage > 0) {
+                $objPage = $this->getPageDetails($this->rootPage);
+            } else {
+                global $objPage;
+            }
+
+            switch ($this->iso_category_scope) {
+
+                case 'global':
+                    $arrCategories = \Database::getInstance()->getChildRecords($objPage->rootId, 'tl_page');
+                    $arrCategories[] = $objPage->rootId;
+                    break;
+
+                case 'current_and_first_child':
+                    $arrCategories = \Database::getInstance()->execute("SELECT id FROM tl_page WHERE pid={$objPage->id}")->fetchEach('id');
+                    $arrCategories[] = $objPage->id;
+                    break;
+
+                case 'current_and_all_children':
+                    $arrCategories = \Database::getInstance()->getChildRecords($objPage->id, 'tl_page');
+                    $arrCategories[] = $objPage->id;
+                    break;
+
+                case 'parent':
+                    $arrCategories = array($objPage->pid);
+                    break;
+
+                case 'product':
+                    $objProduct = \Isotope\Frontend::getProductByAlias(\Isotope\Frontend::getAutoItem('product'));
+
+                    if ($objProduct !== null) {
+                        $arrCategories = $objProduct->getCategories();
+                    } else {
+                        $arrCategories = array(0);
+                    }
+                    break;
+
+                case 'article':
+                    $arrCategories = array($GLOBALS['ISO_CONFIG']['current_article']['pid'] ?: $objPage->id);
+                    break;
+
+                case '':
+                case 'current_category':
+                    $arrCategories = array($objPage->id);
+                    break;
+
+                default:
+                    // @todo change this to a hook to allow custom category scope
+                    $arrCategories = array($objPage->id);
+                    break;
+            }
+
+            $this->arrCategories = empty($arrCategories) ? array(0) : $arrCategories;
         }
-        else
-        {
-            global $objPage;
+
+        return $this->arrCategories;
+    }
+
+
+    /**
+     * Find jumpTo page for current category scope
+     * @param   Product
+     * @return  PageModel
+     */
+    protected function findJumpToPage($objProduct)
+    {
+        global $objPage;
+        global $objIsotopeListPage;
+
+        $arrCategories = array();
+
+        if ($this->iso_category_scope != 'current_category' && $this->iso_category_scope != '' && $objPage->alias != 'index') {
+            $arrCategories = array_intersect($objProduct->getCategories(), $this->findCategories());
         }
 
-        switch ($strCategoryScope)
-        {
-            case 'global':
-                $arrCategories = \Database::getInstance()->getChildRecords($objPage->rootId, 'tl_page');
-                $arrCategories[] = $objPage->rootId;
-                break;
-
-            case 'current_and_first_child':
-                $arrCategories = \Database::getInstance()->execute("SELECT id FROM tl_page WHERE pid={$objPage->id}")->fetchEach('id');
-                $arrCategories[] = $objPage->id;
-                break;
-
-            case 'current_and_all_children':
-                $arrCategories = \Database::getInstance()->getChildRecords($objPage->id, 'tl_page');
-                $arrCategories[] = $objPage->id;
-                break;
-
-            case 'parent':
-                $arrCategories = array($objPage->pid);
-                break;
-
-            case 'product':
-                $objProduct = \Isotope\Frontend::getProductByAlias(\Isotope\Frontend::getAutoItem('product'));
-
-                if ($objProduct !== null)
-                {
-                    $arrCategories = $objProduct->getCategories();
-                }
-                else
-                {
-                    return array(0);
-                }
-                break;
-
-            case 'article':
-                $arrCategories = array($GLOBALS['ISO_CONFIG']['current_article']['pid'] > 0 ? $GLOBALS['ISO_CONFIG']['current_article']['pid'] : $objPage->id);
-                break;
-
-            case 'current_category':
-            default:
-                $arrCategories = array($objPage->id);
-                break;
+        // If our current category scope does not match with any product category, use the first product category in the current root page
+        if (empty($arrCategories)) {
+            $arrCategories = array_intersect($objProduct->getCategories(), \Database::getInstance()->getChildRecords($objPage->rootId, $objPage->getTable()));
         }
 
-        return empty($arrCategories) ? array(0) : $arrCategories;
+        foreach ($arrCategories as $intCategory) {
+            $objCategory = \PageModel::findByPk($intCategory);
+
+            if ($objCategory->alias == 'index' && count($arrCategories) > 1) {
+                continue;
+            }
+
+            return $objCategory;
+        }
+
+        return $objIsotopeListPage ?: $objPage;
     }
 
 

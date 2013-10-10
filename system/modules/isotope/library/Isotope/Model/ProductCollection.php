@@ -879,7 +879,7 @@ abstract class ProductCollection extends TypeAgent
             $objItem->quantity          = (int) $intQuantity;
             $objItem->price             = (float) ($objProduct->getPrice($this) ? $objProduct->getPrice($this)->getAmount((int) $intQuantity) : 0);
             $objItem->tax_free_price    = (float) ($objProduct->getPrice($this) ? $objProduct->getPrice($this)->getNetAmount((int) $intQuantity) : 0);
-            $objItem->jumpTo            = (int) $arrConfig['jumpTo'];
+            $objItem->jumpTo            = (int) $arrConfig['jumpTo']->id;
 
             $objItem->save();
 
@@ -1222,7 +1222,7 @@ abstract class ProductCollection extends TypeAgent
             }
 
             $strCacheKey = 'product' . $objItem->product_id . '_' . $strAttribute;
-            $arrConfig['jumpTo'] = $objItem->jumpTo;
+            $arrConfig['jumpTo'] = $objItem->getRelated('jumpTo');
 
             if (!isset($arrGalleries[$strCacheKey])) {
                 $arrGalleries[$strCacheKey] = Gallery::createForProductAttribute(
@@ -1341,8 +1341,8 @@ abstract class ProductCollection extends TypeAgent
             'rowClass'          => trim('product ' . (($blnHasProduct && $objProduct->isNew()) ? 'new ' : '') . $objProduct->cssID[1]),
         );
 
-        if ($objItem->jumpTo && $blnHasProduct) {
-            $arrItem['href'] = $objProduct->generateUrl((int) $objItem->jumpTo);
+        if (null !== $objItem->getRelated('jumpTo') && $blnHasProduct) {
+            $arrItem['href'] = $objProduct->generateUrl($objItem->getRelated('jumpTo'));
         }
 
         unset($GLOBALS['ACTIVE_PRODUCT']);

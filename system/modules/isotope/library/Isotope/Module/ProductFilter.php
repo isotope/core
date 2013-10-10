@@ -100,8 +100,7 @@ class ProductFilter extends Module
     {
         if ($this->iso_searchAutocomplete && \Input::get('autocomplete'))
         {
-            $arrCategories = $this->findCategories($this->iso_category_scope);
-            $objProducts = Product::findPublishedByCategories($arrCategories, array('order'=>'c.sorting'));
+            $objProducts = Product::findPublishedByCategories($this->findCategories(), array('order'=>'c.sorting'));
 
             if (null === $objProducts) {
                 return array();
@@ -215,7 +214,7 @@ class ProductFilter extends Module
             $time = time();
             $arrFilters = array();
             $arrInput = \Input::post('filter');
-            $arrCategories = $this->findCategories($this->iso_category_scope);
+            $arrCategories = $this->findCategories();
 
             foreach ($this->iso_filterFields as $strField)
             {
