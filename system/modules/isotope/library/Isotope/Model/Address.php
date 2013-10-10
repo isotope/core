@@ -40,7 +40,7 @@ class Address extends \Model
 
         if (!is_array($GLOBALS['ISO_ADR']))
         {
-            Isotope::getInstance()->call('loadDataContainer', 'tl_iso_addresses');
+            Isotope::getInstance()->call('loadDataContainer', static::$strTable);
             \System::loadLanguageFile('addresses');
         }
     }
@@ -115,7 +115,7 @@ class Address extends \Model
                 continue;
             }
 
-            $arrTokens[$strField] = Isotope::formatValue('tl_iso_addresses', $strField, $this->$strField);
+            $arrTokens[$strField] = Isotope::formatValue(static::$strTable, $strField, $this->$strField);
         }
 
 
