@@ -162,6 +162,8 @@ class Frontend extends \Frontend
             if ($objPage->iso_setReaderJumpTo && ($objReader = $objPage->getRelated('iso_readerJumpTo')) !== null) {
 
                 $objIsotopeListPage = ($objPage instanceof \Model\Collection ? $objPage->current() : $objPage);
+                $objIsotopeListPage->loadDetails();
+
                 $arrFragments[0] = $objReader->id;
             }
         }
@@ -178,7 +180,12 @@ class Frontend extends \Frontend
         global $objIsotopeListPage;
 
         if (null !== $objIsotopeListPage) {
+            $arrTrail = $objIsotopeListPage->trail;
+            $arrTrail[] = $objPage->id;
+
+            $objPage->pid = $objIsotopeListPage->id;
             $objPage->alias = $objIsotopeListPage->alias;
+            $objPage->trail = $arrTrail;
         }
     }
 
