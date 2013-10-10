@@ -115,24 +115,27 @@ class TaxClass extends \Model
 
         $objIncludes = $this->getRelated('includes');
 
-        if ($objIncludes->id > 0 && !$objIncludes->isApplicable($fltPrice, $arrAddresses))
+        if ($objIncludes !== null && !$objIncludes->isApplicable($fltPrice, $arrAddresses))
         {
             $fltPrice -= $objIncludes->calculateAmountIncludedInPrice($fltPrice);
         }
 
         $objRates = $this->getRelated('rates');
 
-        while ($objRates->next())
+        if ($objRates !== null)
         {
-            $objTaxRate = $objRates->current();
-
-            if ($objTaxRate->isApplicable($fltPrice, $arrAddresses))
+            $objRates->reset();
+            while ($objRates->next())
             {
-                $fltPrice += $objTaxRate->calculateAmountAddedToPrice($fltPrice);
-
-                if ($objTaxRate->stop)
+                $objTaxRate = $objRates->current();
+                if ($objTaxRate->isApplicable($fltPrice, $arrAddresses))
                 {
-                    break;
+                    $fltPrice += $objTaxRate->calculateAmountAddedToPrice($fltPrice);
+
+                    if ($objTaxRate->stop)
+                    {
+                        break;
+                    }
                 }
             }
         }
