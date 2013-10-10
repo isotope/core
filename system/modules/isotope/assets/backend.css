@@ -95,6 +95,12 @@ body.popup .header_back {
     width: 180px;
 }
 
+#ctrl_attributes tr:hover td,
+#ctrl_variant_attributes tr:hover td,
+#ctrl_address_fields tr:hover td {
+    background-color: #EBFDD7;
+}
+
 .mod_iso_orderdetails .info_container
 {
     float:left;

@@ -323,4 +323,107 @@ class tl_iso_config extends \Backend
 
 		return $return;
 	}
+
+	/**
+     * For each call, return the name of the next address field in the wizard (for input_field_callback)
+     * @param   Widget
+     * @param   string
+     * @return  string
+     */
+    public function getAddressFieldName($objWidget, $xlabel)
+    {
+        static $arrValues;
+        static $i = 0;
+
+        if (null === $arrValues) {
+            \System::loadLanguageFile('tl_iso_addresses');
+            $arrValues = $objWidget->value;
+            $i = 0;
+        }
+
+        $arrField = array_shift($arrValues);
+        $strName = $arrField['name'];
+
+        return sprintf(
+            '<input type="hidden" name="%s[%s][name]" id="ctrl_%s_row%s_name" value="%s"><div style="width:344px">%s <span style="color:#b3b3b3; padding-left:3px;">[%s]</span></div>',
+            $objWidget->name,
+            $i,
+            $objWidget->name,
+            $i++,
+            $strName,
+            $GLOBALS['TL_DCA']['tl_iso_addresses']['fields'][$strName]['label'][0] ?: $strName,
+            $strName
+        );
+    }
+
+    /**
+     * Generate list of fields and add missing ones from DCA
+     * @param   mixed
+     * @param   DataContainer
+     * @return array
+     */
+    public function loadAddressFieldsWizard($varValue, $dc)
+    {
+        $this->loadDataContainer('tl_iso_addresses');
+
+        $arrDCA = &$GLOBALS['TL_DCA']['tl_iso_addresses']['fields'];
+        $arrFields = array();
+        $arrValues = deserialize($varValue);
+
+        if (!is_array($arrValues)) {
+            $arrValues = array();
+        }
+
+        foreach ($arrValues as $arrField) {
+
+            $strName = $arrField['name'];
+
+            if ($strName == '' || !isset($arrDCA[$strName]) || !$arrDCA[$strName]['eval']['feEditable']) {
+                continue;
+            }
+
+            $arrFields[$arrField['name']] = $arrField;
+        }
+
+        foreach (array_diff_key($arrDCA, $arrFields) as $strName => $arrField) {
+
+            if (!$arrDCA[$strName]['eval']['feEditable']) {
+                continue;
+            }
+
+            $arrFields[$strName] = array(
+                'enabled'   => '',
+                'name'      => $strName,
+            );
+        }
+
+        return array_values($arrFields);
+    }
+
+    /**
+     * save_callback to sort attribute wizard fields by legend
+     * @param   mixed
+     * @param   DataContainer
+     * @return  string
+     */
+    public function saveAddressFieldsWizard($varValue, $dc)
+    {
+        $this->loadDataContainer('tl_iso_addresses');
+
+        $arrDCA = &$GLOBALS['TL_DCA']['tl_iso_addresses']['fields'];
+
+        $arrFields = deserialize($varValue);
+
+        if (empty($arrFields) || !is_array($arrFields)) {
+            return $varValue;
+        }
+
+        $arrValues = array();
+        foreach (array_values($arrFields) as $pos => $arrConfig) {
+            $arrConfig['position'] = $pos;
+            $arrValues[$arrConfig['name']] = $arrConfig;
+        }
+
+        return serialize($arrValues);
+    }
 }

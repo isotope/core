@@ -33,6 +33,7 @@ $GLOBALS['TL_LANG']['tl_iso_config']['subdivision']                 = array('Sta
 $GLOBALS['TL_LANG']['tl_iso_config']['country']                     = array('Country', 'Please select a country. This is also the default for custom shipping/billing addresses.');
 $GLOBALS['TL_LANG']['tl_iso_config']['phone']                       = array('Phone number', 'Please enter the phone number.');
 $GLOBALS['TL_LANG']['tl_iso_config']['email']                       = array('Shipping email address', 'Please enter a valid e-mail address.');
+$GLOBALS['TL_LANG']['tl_iso_config']['address_fields']              = array('Address fields', 'Select the fields for a billing and shipping address when checking out.');
 $GLOBALS['TL_LANG']['tl_iso_config']['billing_country']             = array('Default billing country', 'Select a default country for new billing addresses.');
 $GLOBALS['TL_LANG']['tl_iso_config']['shipping_country']            = array('Default shipping country', 'Select a default country for new shipping addresses.');
 $GLOBALS['TL_LANG']['tl_iso_config']['billing_countries']           = array('Available billing countries', 'Select the countries you want to allow for checkout billing address. Select none to allow all countries.');
@@ -74,6 +75,12 @@ $GLOBALS['TL_LANG']['tl_iso_config']['iwWatermark']                 = array('Wat
 $GLOBALS['TL_LANG']['tl_iso_config']['iwPosition']                  = array('Position');
 $GLOBALS['TL_LANG']['tl_iso_config']['ecb.int']                     = 'European Central Bank';
 $GLOBALS['TL_LANG']['tl_iso_config']['admin.ch']                    = 'Swiss Federal Department of Finance';
+$GLOBALS['TL_LANG']['tl_iso_config']['address_fields']['name']      = array('Address field');
+$GLOBALS['TL_LANG']['tl_iso_config']['address_fields']['billing']   = array('Show in billing address');
+$GLOBALS['TL_LANG']['tl_iso_config']['address_fields']['shipping']  = array('Show in shipping address');
+$GLOBALS['TL_LANG']['tl_iso_config']['address_fields']['disabled']  = 'Disabled';
+$GLOBALS['TL_LANG']['tl_iso_config']['address_fields']['enabled']   = 'Enabled (not mandatory)';
+$GLOBALS['TL_LANG']['tl_iso_config']['address_fields']['mandatory'] = 'Enabled (mandatory)';
 
 /**
  * Buttons
