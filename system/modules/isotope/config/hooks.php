@@ -25,14 +25,10 @@ $GLOBALS['TL_HOOKS']['executePostActions'][]            = array('Isotope\Backend
 $GLOBALS['TL_HOOKS']['translateUrlParameters'][]        = array('Isotope\Frontend', 'translateProductUrls');
 $GLOBALS['TL_HOOKS']['getSystemMessages'][]             = array('Isotope\Backend', 'getOrderMessages');
 $GLOBALS['TL_HOOKS']['getArticle'][]                    = array('Isotope\Frontend', 'storeCurrentArticle');
-$GLOBALS['TL_HOOKS']['generateBreadcrumb'][]            = array('Isotope\Frontend', 'generateBreadcrumb');
 $GLOBALS['ISO_HOOKS']['buttons'][]                      = array('Isotope\Isotope', 'defaultButtons');
 $GLOBALS['ISO_HOOKS']['findSurchargesForCollection'][]  = array('Isotope\Frontend', 'findShippingAndPaymentSurcharges');
 
 if (TL_MODE == 'FE') {
-    // Do not parse backend templates
-    $GLOBALS['TL_HOOKS']['parseTemplate'][]            = array('Isotope\Frontend', 'addNavigationClass');
-
     // Only limit countries in FE
     $GLOBALS['TL_HOOKS']['loadDataContainer'][]        = array('Isotope\tl_member', 'limitCountries');
 }
