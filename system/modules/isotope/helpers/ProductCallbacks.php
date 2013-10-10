@@ -885,7 +885,7 @@ window.addEvent('domready', function() {
                 case 'name':
                     $args[$i] = $objProduct->name;
 
-                    if ($row['pid'] == 0) {
+                    if ($row['pid'] == 0 && $this->arrProductTypes[$row['type']] && $this->arrProductTypes[$row['type']]->hasVariants()) {
                         // Add a variants link
                         $args[$i] = sprintf('<a href="%s" title="%s">%s</a>', ampersand(\Environment::get('request')) . '&amp;id=' . $row['id'], specialchars($GLOBALS['TL_LANG'][$dc->table]['showVariants']), $args[$i]);
                     }
