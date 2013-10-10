@@ -76,7 +76,8 @@ $GLOBALS['TL_DCA']['tl_page']['fields']['iso_readerJumpTo'] = array
     'exclude'                 => true,
     'inputType'               => 'pageTree',
     'foreignKey'              => 'tl_page.title',
-    'eval'                    => array('fieldType'=>'radio', 'mandatory'=>true),
+    'explanation'             => 'isoReaderJumpTo',
+    'eval'                    => array('fieldType'=>'radio', 'mandatory'=>true, 'helpwizard'=>true),
     'sql'                     => "int(10) unsigned NOT NULL default '0'",
     'relation'                => array('type'=>'hasOne', 'load'=>'lazy'),
 );
