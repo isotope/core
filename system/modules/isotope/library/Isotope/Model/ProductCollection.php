@@ -734,7 +734,7 @@ abstract class ProductCollection extends TypeAgent
         if (null === $this->arrItems || $blnNoCache) {
             $this->arrItems = array();
 
-            if (($objItems = ProductCollectionItem::findBy('pid', $this->id, array('uncached'=>true))) !== null) {
+            if (($objItems = ProductCollectionItem::findBy('pid', $this->id)) !== null) {
                 while ($objItems->next()) {
 
                     $objItem = $objItems->current();
