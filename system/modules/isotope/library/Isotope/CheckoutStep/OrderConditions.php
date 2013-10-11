@@ -56,8 +56,20 @@ abstract class OrderConditions extends CheckoutStep
             $this->objModule->Template->enctype = 'multipart/form-data';
         }
 
-        if ($this->objForm->isSubmitted() && !$this->objForm->validate()) {
-            $this->blnError = true;
+        if ($this->objForm->isSubmitted()) {
+            $this->blnError = $this->objForm->validate();
+        } else {
+            $blnError = false;
+            foreach (array_keys($this->objForm->getFormFields()) as $strField) {
+                // Clone widget because otherwise we add errors to the original widget instance
+                $objClone = clone $this->objForm->getWidget($strField);
+                if (!$objClone->validate()) {
+                    $blnError = true;
+                    break;
+                }
+            }
+
+            $this->blnError = $blnError;
         }
 
         $objTemplate = new \Isotope\Template('iso_checkout_order_conditions');
