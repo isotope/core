@@ -141,6 +141,10 @@ class Postfinance extends Payment implements IsotopePayment, IsotopePostsale
             return;
         }
 
+        $objCart = $objOrder->getRelated('source_collection_id');
+        Isotope::setCart($objCart);
+        Isotope::setConfig($objCart->getRelated('config_id'));
+
         if (!$this->validateSHASign()) {
             \System::log('Received invalid postsale data for order ID "' . $objOrder->id . '"', __METHOD__, TL_ERROR);
 
@@ -148,7 +152,7 @@ class Postfinance extends Payment implements IsotopePayment, IsotopePostsale
         }
 
         // Validate payment data (see #2221)
-        if ($objOrder->currency != $this->getRequestData('currency') || $objOrder->getTotal() != $this->getRequestData('amount')) {
+        if ($objOrder->currency != $this->getRequestData('currency') || $objCart->getTotal() != $this->getRequestData('amount')) {
             \System::log('Postsale checkout manipulation in payment for Order ID ' . $objOrder->id . '!', __METHOD__, TL_ERROR);
 
             return;
@@ -177,7 +181,7 @@ class Postfinance extends Payment implements IsotopePayment, IsotopePostsale
 
     /**
      * Return the payment form
-     * @return string
+     * @return  string
      */
     public function checkoutForm()
     {
@@ -264,7 +268,7 @@ class Postfinance extends Payment implements IsotopePayment, IsotopePostsale
             'ECOM_BILLTO_POSTAL_NAME_LAST'      => $objAddress->lastname,
             'OWNERADDRESS'                      => $objAddress->street_1,
             'OWNERADDRESS2'                     => $objAddress->street_2,
-            // @todo we don't have the street number, do we even need it?
+            // This key is mandatory but can be empty
             'ECOM_BILLTO_POSTAL_STREET_NUMBER'  => '',
             'OWNERZIP'                          => $objAddress->postal,
             'OWNERTOWN'                         => $objAddress->city,
