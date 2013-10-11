@@ -136,6 +136,11 @@ $GLOBALS['ISO_MOD'] = array
             'tables'            => array('tl_iso_orderstatus'),
             'icon'              => 'system/modules/isotope/assets/setup-orderstatus.png',
         ),
+        'notifications' => array
+        (
+            'icon'              => 'system/modules/isotope/assets/setup-notifications.png',
+            'redirect'          => 'contao/main.php?do=nc_notifications',
+        ),
         'documents' => array
         (
             'tables'            => array('tl_iso_document'),

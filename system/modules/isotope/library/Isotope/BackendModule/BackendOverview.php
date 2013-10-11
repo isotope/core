@@ -112,6 +112,11 @@ abstract class BackendOverview extends \BackendModule
             \Controller::redirect('contao/main.php?act=error');
         }
 
+        // Redirect the user to the specified page
+        if ($arrModule['redirect'] != '') {
+            \Controller::redirect($arrModule['redirect']);
+        }
+
         $strTable = \Input::get('table');
 
         if ($strTable == '' && $arrModule['callback'] == '') {
