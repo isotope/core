@@ -774,13 +774,6 @@ abstract class ProductCollection extends TypeAgent
 
         $objItem = ProductCollectionItem::findBy(array('pid=?', 'type=?', 'product_id=?', 'options=?'), array($this->id, $strClass, $objProduct->id, serialize($objProduct->getOptions())));
 
-        // @todo remove this collection lookup as soon as the Model Registry is available
-        if (null !== $objItem) {
-            $this->getItems();
-
-            $objItem = $this->arrItems[$objItem->id];
-        }
-
         return $objItem;
     }
 
