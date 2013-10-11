@@ -84,13 +84,22 @@ abstract class OrderConditions extends CheckoutStep
     {
         $arrTokens = array();
 
-        foreach ($this->objForm->fetchAll() as $strName => $varValue) {
-            if ($this->objForm->getWidget($strName) instanceof \uploadable) {
-                $arrFile = $_SESSION['FILES'][$strName];
-                $varValue = str_replace(TL_ROOT . '/', '', dirname($arrFile['tmp_name'])) . '/' . rawurlencode($arrFile['name']);
-            }
+        foreach (array_keys($this->objForm->getFormFields()) as $strField) {
+            if ($this->objForm->isSubmitted()) {
+                if ($this->objForm->getWidget($strField) instanceof \uploadable) {
+                    $arrFile = $_SESSION['FILES'][$strField];
+                    $varValue = str_replace(TL_ROOT . '/', '', dirname($arrFile['tmp_name'])) . '/' . rawurlencode($arrFile['name']);
+                } else {
+                    $varValue = $this->objForm->fetch($strField);
+                }
 
-            $arrTokens['form_' . $strName] = $varValue;
+                $_SESSION['FORM_DATA'][$strField] = $varValue;
+                $arrTokens['form_' . $strField]   = $varValue;
+            } else {
+                if (isset($_SESSION['FORM_DATA'][$strField])) {
+                    $arrTokens['form_' . $strField]   = $_SESSION['FORM_DATA'][$strField];
+                }
+            }
         }
 
         return $arrTokens;
