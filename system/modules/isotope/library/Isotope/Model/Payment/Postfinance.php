@@ -102,7 +102,7 @@ class Postfinance extends Payment implements IsotopePayment, IsotopePostsale
             return false;
         }
 
-        if (($objOrder = Order::findByPk(\Input::get('orderID'))) === null) {
+        if (($objOrder = Order::findByPk((int) \Input::get('orderID'))) === null) {
             \System::log('Order ID "' . \Input::get('orderID') . '" not found', __METHOD__, TL_ERROR);
 
             return false;
