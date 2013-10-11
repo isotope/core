@@ -20,12 +20,12 @@ use Isotope\Model\ProductCollection\Order;
 
 
 /**
- * Class PaymentPostfinance
+ * Class Postfinance
  *
- * Handle Postfinance (swiss post) payments
- * @copyright  Isotope eCommerce Workgroup 2009-2012
+ * Handle Postfinance (Swiss Post) payments
+ * @copyright  Isotope eCommerce Workgroup 2009-2013
  * @author     Andreas Schempp <andreas.schempp@terminal42.ch>
- * @author     Fred Bliss <fred.bliss@intelligentspark.com>
+ * @author     Yanick Witschi <yanick.witschi@terminal42.ch>
  */
 class Postfinance extends Payment implements IsotopePayment, IsotopePostsale
 {
@@ -89,10 +89,8 @@ class Postfinance extends Payment implements IsotopePayment, IsotopePostsale
     );
 
     /**
-     * Process payment on confirmation page.
-     *
-     * @access public
-     * @return mixed
+     * Process payment on confirmation page
+     * @return  boolean
      */
     public function processPayment()
     {
@@ -178,9 +176,7 @@ class Postfinance extends Payment implements IsotopePayment, IsotopePostsale
 
 
     /**
-     * Return the payment form.
-     *
-     * @access public
+     * Return the payment form
      * @return string
      */
     public function checkoutForm()
@@ -314,6 +310,7 @@ class Postfinance extends Payment implements IsotopePayment, IsotopePostsale
 
     /**
      * Validate SHA-OUT signature
+     * @return  boolean
      */
     private function validateSHASign()
     {
