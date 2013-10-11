@@ -28,7 +28,6 @@ class Setup extends BackendOverview
      */
     protected function getModules()
     {
-        $this->import('BackendUser', 'User');
         $return = array();
 
         $this->addFirstStepsHint($return);
@@ -60,7 +59,7 @@ class Setup extends BackendOverview
      */
     protected function checkUserAccess($module)
     {
-        return $this->User->isAdmin || $this->User->hasAccess($module, 'iso_modules');
+        return \BackendUser::getInstance()->isAdmin || \BackendUser::getInstance()->hasAccess($module, 'iso_modules');
     }
 
 
