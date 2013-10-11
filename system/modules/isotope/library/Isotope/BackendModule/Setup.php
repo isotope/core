@@ -30,7 +30,7 @@ class Setup extends BackendOverview
     {
         $return = array();
 
-        $this->addFirstStepsHint($return);
+        $this->addIntroduction($return);
 
         foreach ($GLOBALS['ISO_MOD'] as $strGroup => $arrModules) {
             foreach ($arrModules as $strModule => $arrConfig) {
@@ -77,7 +77,7 @@ class Setup extends BackendOverview
     /**
      * Adds first steps and fundraising hints
      */
-    protected function addFirstStepsHint(&$return)
+    protected function addIntroduction(&$return)
     {
         if (\BackendUser::getInstance()->isAdmin) {
             $objTemplate = new \BackendTemplate('be_iso_introduction');
