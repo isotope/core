@@ -2,7 +2,7 @@
 <?php if ($this->hasLink): ?>
 <a title="<?php echo $this->title; ?>" href="<?php echo $this->link; ?>"<?php echo $this->attributes; ?>>
 <?php endif; ?>
-<img src="<?php echo $this->src; ?>" alt="<?php echo $this->alt; ?>" <?php echo $this->size; ?>>
+<img src="<?php echo $this->src; ?>" itemprop="image" alt="<?php echo $this->alt; ?>" <?php echo $this->size; ?>>
 <?php if ($this->hasLink): ?>
 </a>
 <?php endif; ?>
