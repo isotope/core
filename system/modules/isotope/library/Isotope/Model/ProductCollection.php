@@ -798,7 +798,7 @@ abstract class ProductCollection extends TypeAgent
 
             foreach ($this->getItems() as $objItem) {
 
-                if ($objItem->getProduct()->id == $intId || $objItem->getProduct()->pid == $intId) {
+                if ($objItem->hasProduct() && ($objItem->getProduct()->id == $intId || $objItem->getProduct()->pid == $intId)) {
                     return true;
                 }
             }
