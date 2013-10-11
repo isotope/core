@@ -126,16 +126,6 @@ $GLOBALS['ISO_MOD'] = array
     ),
     'config' => array
     (
-        'documents' => array
-        (
-            'tables'            => array('tl_iso_document'),
-            'icon'              => 'system/modules/isotope/assets/setup-documents.png'
-        ),
-        'labels' => array
-        (
-            'tables'            => array('tl_iso_labels'),
-            'icon'              => 'system/modules/isotope/assets/setup-labels.png'
-        ),
         'configs' => array
         (
             'tables'            => array('tl_iso_config'),
@@ -145,6 +135,16 @@ $GLOBALS['ISO_MOD'] = array
         (
             'tables'            => array('tl_iso_orderstatus'),
             'icon'              => 'system/modules/isotope/assets/setup-orderstatus.png',
+        ),
+        'documents' => array
+        (
+            'tables'            => array('tl_iso_document'),
+            'icon'              => 'system/modules/isotope/assets/setup-documents.png'
+        ),
+        'labels' => array
+        (
+            'tables'            => array('tl_iso_labels'),
+            'icon'              => 'system/modules/isotope/assets/setup-labels.png'
         ),
     )
 );
