@@ -163,6 +163,7 @@ class Postfinance extends Payment implements IsotopePayment, IsotopePostsale
         }
 
         $objOrder->date_paid = time();
+        $objOrder->updateOrderStatus($this->new_order_status);
         $objOrder->save();
     }
 
