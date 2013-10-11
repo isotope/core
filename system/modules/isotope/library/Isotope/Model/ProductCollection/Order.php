@@ -105,6 +105,8 @@ class Order extends ProductCollection implements IsotopeProductCollection
      */
     public function deleteItem(ProductCollectionItem $objItem)
     {
+        $this->ensureNotLocked();
+
         $intPid = $objItem->id;
 
         if (parent::deleteItem($objItem) && $intPid > 0) {
@@ -121,6 +123,8 @@ class Order extends ProductCollection implements IsotopeProductCollection
      */
     public function delete()
     {
+        $this->ensureNotLocked();
+
         $intPid = $this->id;
 
         if (parent::delete() && $intPid > 0) {
@@ -473,6 +477,8 @@ class Order extends ProductCollection implements IsotopeProductCollection
      */
     protected function createPrivateAddresses()
     {
+        $this->ensureNotLocked();
+
         if (!$this->id) {
             throw new \UnderflowException('Product collection must be saved before creating unique addresses.');
         }
