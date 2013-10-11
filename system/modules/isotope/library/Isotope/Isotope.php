@@ -139,14 +139,15 @@ class Isotope extends \Controller
 
     /**
      * Get the currently active Isotope cart
-     * @return Isotope\Model\ProductCollection\Cart
+     * @return Isotope\Model\ProductCollection\Cart|null
      */
     public static function getCart()
     {
         if (null === static::$objCart && TL_MODE == 'FE') {
             static::initialize();
-            static::$objCart = Cart::findForCurrentStore();
-            static::$objCart->mergeGuestCart();
+            if ((static::$objCart = Cart::findForCurrentStore()) !== null) {
+                static::$objCart->mergeGuestCart();
+            }
         }
 
         return static::$objCart;
