@@ -281,12 +281,12 @@ class Postfinance extends Payment implements IsotopePayment, IsotopePostsale
         // Need to take the items from the cart as they're not transferred to the order here yet
         foreach (Isotope::getCart()->getItems() as $objItem) {
 
-            $objProduct = $objItem->getProduct();
+            $objPrice = $objItem->getProduct()->getPrice();
 
-            $fltVat = Isotope::roundPrice((100 / $objProduct->getTaxFreePrice() * $objProduct->getGrossPrice()) - 100, false);
+            $fltVat = Isotope::roundPrice((100 / $objPrice->getNetAmount() * $objPrice->getGrossAmount()) - 100, false);
             $arrOrder['ITEMID' . $i]        = $objItem->id;
             $arrOrder['ITEMNAME' . $i]      = $objItem->getName();
-            $arrOrder['ITEMPRICE' . $i]     = $objProduct->getGrossPrice();
+            $arrOrder['ITEMPRICE' . $i]     = $objPrice->getNetAmount();
             $arrOrder['ITEMQUANT' . $i]     = $objItem->quantity;
             $arrOrder['ITEMVATCODE' . $i]   = $fltVat . '%';
 
