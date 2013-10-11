@@ -500,7 +500,7 @@ class tl_iso_products extends \Backend
         $arrData['attributes'] = array();
 
         // Write attributes from database to DCA
-        if (($objAttributes = \Isotope\Model\Attribute::findAll(array('uncached'=>true))) !== null) {
+        if (($objAttributes = \Isotope\Model\Attribute::findAll()) !== null) {
             while ($objAttributes->next()) {
                 $objAttribute = $objAttributes->current();
 

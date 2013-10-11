@@ -101,7 +101,6 @@ class OrderHistory extends Module
                 'date'       => Isotope::formatDate($objOrders->locked),
                 'time'       => Isotope::formatTime($objOrders->locked),
                 'datime'     => Isotope::formatDatim($objOrders->locked),
-                'items'      => $objOrders->items,
                 'grandTotal' => Isotope::formatPriceWithCurrency($objOrders->getTotal()),
                 'status'     => $objOrders->getStatusLabel(),
                 'link'       => ($this->jumpTo ? (\Isotope\Frontend::addQueryStringToUrl('uid=' . $objOrders->uniqid, $this->jumpTo)) : ''),
@@ -110,11 +109,5 @@ class OrderHistory extends Module
         }
 
         $this->Template->orders = \Isotope\Frontend::generateRowClass($arrOrders, '', 'class', 0, ISO_CLASS_FIRSTLAST|ISO_CLASS_EVENODD);
-        $this->Template->dateLabel = $GLOBALS['TL_LANG']['MSC']['iso_order_date'];
-        $this->Template->statusLabel = $GLOBALS['TL_LANG']['MSC']['iso_order_status'];
-        $this->Template->subTotalLabel = $GLOBALS['TL_LANG']['MSC']['subTotalLabel'];
-        $this->Template->grandTotalLabel = $GLOBALS['TL_LANG']['MSC']['grandTotalLabel'];
-        $this->Template->quantityLabel = $GLOBALS['TL_LANG']['MSC']['iso_quantity_header'];
-        $this->Template->detailsLabel = $GLOBALS['TL_LANG']['MSC']['detailLabel'];
     }
 }

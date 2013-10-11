@@ -33,15 +33,6 @@ $GLOBALS['TL_LANG']['XPL']['isoMailTokens'][16]     = array('##shipping_firstnam
 $GLOBALS['TL_LANG']['XPL']['isoMailTokens'][17]     = array('##form_...##', 'Retrieve condition form data. Use the prefix "form_" and the field\'s name.');
 
 
-$GLOBALS['TL_LANG']['XPL']['isoAttributeWizard'][0] = array('a)', 'Choose from a few predefined Contao CSS classes e.g. "w50" for input fields that should float left and get 50% width.');
-$GLOBALS['TL_LANG']['XPL']['isoAttributeWizard'][1] = array('b)', 'Write your own CSS classes that should be applied to the field.');
-$GLOBALS['TL_LANG']['XPL']['isoAttributeWizard'][2] = array('c)', 'Mandatory: Use default value.');
-$GLOBALS['TL_LANG']['XPL']['isoAttributeWizard'][3] = array('d)', 'Mandatory: No, never.');
-$GLOBALS['TL_LANG']['XPL']['isoAttributeWizard'][4] = array('e)', 'Mandatory: Yes, always.');
-
-$GLOBALS['TL_LANG']['XPL']['isoFieldWizard'][0]     = array('a)', 'Enable or disable field.');
-$GLOBALS['TL_LANG']['XPL']['isoFieldWizard'][1]     = array('b)', 'Custom label.');
-$GLOBALS['TL_LANG']['XPL']['isoFieldWizard'][2]     = array('c)', 'Mandatory or not.');
 
 $GLOBALS['TL_LANG']['XPL']['isoReaderJumpTo']       = '
 <p class="tl_help_table">

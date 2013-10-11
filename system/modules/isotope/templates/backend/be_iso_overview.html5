@@ -5,6 +5,9 @@
     <?php foreach ($this->modules as $strGroupKey => $arrGroup): ?>
     <fieldset id="pal_<?php echo $strGroupKey; ?>" class="tl_box<?php if($arrGroup['collapse']): ?> collapsed<?php endif; ?>">
         <legend onclick="AjaxRequest.toggleFieldset(this,'<?php echo $strGroupKey; ?>','iso_be_overview_legend')"><?php echo $arrGroup['label']; ?></legend>
+        <?php if ($arrGroup['html']): ?>
+        <?php echo $arrGroup['html']; ?>
+        <?php else: ?>
         <?php foreach ($arrGroup['modules'] as $strModule => $arrModule): ?>
         <div class="item">
             <a href="<?php echo $arrModule['href']; ?>" title="<?php echo $arrModule['description']; ?>">
@@ -13,6 +16,7 @@
             </a>
         </div>
         <?php endforeach; ?>
+        <?php endif; ?>
     </fieldset>
     <?php endforeach; ?>
 </div>

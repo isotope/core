@@ -88,6 +88,7 @@ class ProductCallbacks extends \Backend
             $blnVariants = false;
             $blnAdvancedPrices = false;
             $blnShowSku = false;
+            $blnShowPrice = false;
 
             if (($objProductTypes = ProductType::findAllUsed()) !== null) {
                 while ($objProductTypes->next())
@@ -109,6 +110,10 @@ class ProductCallbacks extends \Backend
 
                     if (in_array('sku', $objType->getAttributes())) {
                         $blnShowSku = true;
+                    }
+
+                    if (in_array('price', $objType->getAttributes())) {
+                        $blnShowPrice = true;
                     }
                 }
             }
@@ -140,6 +145,10 @@ class ProductCallbacks extends \Backend
 
             if (!$blnShowSku) {
                 unset($GLOBALS['TL_DCA'][Product::getTable()]['list']['label']['fields'][2]);
+            }
+
+            if (!$blnShowPrice) {
+                unset($GLOBALS['TL_DCA'][Product::getTable()]['list']['label']['fields'][3]);
             }
 
             // Disable related categories if none are defined
@@ -531,15 +540,11 @@ window.addEvent('domready', function() {
         if (in_array('name', $arrVariantFields)) {
             $arrFields[] = 'name';
             $GLOBALS['TL_DCA'][$objProduct->getTable()]['list']['sorting']['fields'] = array('name');
-        } else {
-            $GLOBALS['TL_DCA']['tl_iso_products']['fields']['name']['sorting'] = false;
         }
 
         if (in_array('sku', $arrVariantFields)) {
             $arrFields[] = 'sku';
             $GLOBALS['TL_DCA'][$objProduct->getTable()]['list']['sorting']['fields'] = array('sku');
-        } else {
-            $GLOBALS['TL_DCA']['tl_iso_products']['fields']['sorting']['sorting'] = false;
         }
 
         if (in_array('price', $arrVariantFields)) {
@@ -555,6 +560,11 @@ window.addEvent('domready', function() {
         }
 
         $GLOBALS['TL_DCA'][$objProduct->getTable()]['list']['label']['fields'] = $arrFields;
+
+        // Make all column fields sortable
+        foreach ($GLOBALS['TL_DCA'][$objProduct->getTable()]['fields'] as $name => $arrField) {
+            $GLOBALS['TL_DCA']['tl_iso_products']['fields'][$name]['sorting'] = ($name != 'price' && in_array($name, $arrFields));
+        }
     }
 
 
@@ -876,7 +886,7 @@ window.addEvent('domready', function() {
                 case 'name':
                     $args[$i] = $objProduct->name;
 
-                    if ($row['pid'] == 0) {
+                    if ($row['pid'] == 0 && $this->arrProductTypes[$row['type']] && $this->arrProductTypes[$row['type']]->hasVariants()) {
                         // Add a variants link
                         $args[$i] = sprintf('<a href="%s" title="%s">%s</a>', ampersand(\Environment::get('request')) . '&amp;id=' . $row['id'], specialchars($GLOBALS['TL_LANG'][$dc->table]['showVariants']), $args[$i]);
                     }

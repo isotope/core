@@ -156,6 +156,10 @@ abstract class ProductCollection extends TypeAgent
             throw new \InvalidArgumentException('Cannot set lock status of collection');
         }
 
+        if ($strKey == 'document_number') {
+            throw new \InvalidArgumentException('Cannot set document number of a collection, must be generated using generateDocumentNumber()');
+        }
+
         // If there is a database field for that key, we store it there
         if (array_key_exists($strKey, $this->arrData) || \Database::getInstance()->fieldExists($strKey, static::$strTable)) {
             $this->arrData[$strKey] = $varValue;
@@ -494,9 +498,7 @@ abstract class ProductCollection extends TypeAgent
      */
     public function save($blnForceInsert=false)
     {
-        if ($this->isLocked()) {
-            throw new \BadMethodCallException('Cannot save a locked product collection.');
-        }
+        $this->ensureNotLocked();
 
         if ($this->blnModified) {
             $this->arrData['tstamp'] = time();
@@ -734,7 +736,7 @@ abstract class ProductCollection extends TypeAgent
         if (null === $this->arrItems || $blnNoCache) {
             $this->arrItems = array();
 
-            if (($objItems = ProductCollectionItem::findBy('pid', $this->id, array('uncached'=>true))) !== null) {
+            if (($objItems = ProductCollectionItem::findBy('pid', $this->id)) !== null) {
                 while ($objItems->next()) {
 
                     $objItem = $objItems->current();
@@ -774,13 +776,6 @@ abstract class ProductCollection extends TypeAgent
 
         $objItem = ProductCollectionItem::findBy(array('pid=?', 'type=?', 'product_id=?', 'options=?'), array($this->id, $strClass, $objProduct->id, serialize($objProduct->getOptions())));
 
-        // @todo remove this collection lookup as soon as the Model Registry is available
-        if (null !== $objItem) {
-            $this->getItems();
-
-            $objItem = $this->arrItems[$objItem->id];
-        }
-
         return $objItem;
     }
 
@@ -805,7 +800,7 @@ abstract class ProductCollection extends TypeAgent
 
             foreach ($this->getItems() as $objItem) {
 
-                if ($objItem->getProduct()->id == $intId || $objItem->getProduct()->pid == $intId) {
+                if ($objItem->hasProduct() && ($objItem->getProduct()->id == $intId || $objItem->getProduct()->pid == $intId)) {
                     return true;
                 }
             }
@@ -824,6 +819,8 @@ abstract class ProductCollection extends TypeAgent
      */
     public function addProduct(IsotopeProduct $objProduct, $intQuantity, array $arrConfig=array())
     {
+        $this->ensureNotLocked();
+
         // !HOOK: additional functionality when adding product to collection
         if (isset($GLOBALS['ISO_HOOKS']['addProductToCollection']) && is_array($GLOBALS['ISO_HOOKS']['addProductToCollection'])) {
             foreach ($GLOBALS['ISO_HOOKS']['addProductToCollection'] as $callback) {
@@ -910,6 +907,8 @@ abstract class ProductCollection extends TypeAgent
      */
     public function updateItemById($intId, $arrSet)
     {
+        $this->ensureNotLocked();
+
         $arrItems = $this->getItems();
 
         if (!isset($arrItems[$intId])) {
@@ -977,6 +976,8 @@ abstract class ProductCollection extends TypeAgent
      */
     public function deleteItemById($intId)
     {
+        $this->ensureNotLocked();
+
         $arrItems = $this->getItems();
 
         if (!isset($arrItems[$intId])) {
@@ -1035,6 +1036,8 @@ abstract class ProductCollection extends TypeAgent
      */
     public function setSourceCollection(IsotopeProductCollection $objSource)
     {
+        $this->ensureNotLocked();
+
         global $objPage;
 
         $objConfig = Config::findByPk($objSource->config_id);
@@ -1073,6 +1076,8 @@ abstract class ProductCollection extends TypeAgent
      */
     public function copyItemsFrom(IsotopeProductCollection $objSource)
     {
+        $this->ensureNotLocked();
+
         $this->save();
 
         // Make sure database table has the latest prices
@@ -1134,6 +1139,8 @@ abstract class ProductCollection extends TypeAgent
      */
     public function copySurchargesFrom(IsotopeProductCollection $objSource, array $arrItemMap=array())
     {
+        $this->ensureNotLocked();
+
         $arrIds = array();
         $time = time();
         $sorting = 0;
@@ -1367,6 +1374,8 @@ abstract class ProductCollection extends TypeAgent
      */
     protected function generateDocumentNumber($strPrefix, $intDigits)
     {
+        $this->ensureNotLocked();
+
         if ($this->arrData['document_number'] != '') {
             return $this->arrData['document_number'];
         }
@@ -1417,5 +1426,16 @@ abstract class ProductCollection extends TypeAgent
         \Database::getInstance()->unlockTables();
 
         return $this->arrData['document_number'];
+    }
+
+    /**
+     * Prevent modifying a locked collection
+     * @throws  BadMethodCallException
+     */
+    protected function ensureNotLocked()
+    {
+        if ($this->isLocked()) {
+            throw new \BadMethodCallException('Product collection is locked');
+        }
     }
 }

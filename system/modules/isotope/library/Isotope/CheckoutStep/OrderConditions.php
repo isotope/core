@@ -45,19 +45,31 @@ abstract class OrderConditions extends CheckoutStep
             return \Input::post('FORM_SUBMIT') === $haste->getFormId();
         }, (boolean) $this->objModule->tableless);
 
-        // don't catch the exception here because we want it to be shown to the user
+        // Don't catch the exception here because we want it to be shown to the user
         $this->objForm->addFieldsFromFormGenerator($this->objModule->iso_order_conditions);
 
         // Manually create widgets because we need to know if there are uploadable widgets
         $this->objForm->createWidgets();
 
-        // change enctype if there are uploads
+        // Change enctype if there are uploads
         if ($this->objForm->hasUploads()) {
             $this->objModule->Template->enctype = 'multipart/form-data';
         }
 
-        if (!$this->objForm->isSubmitted() || !$this->objForm->validate()) {
-            $this->blnError = true;
+        if ($this->objForm->isSubmitted()) {
+            $this->blnError = $this->objForm->validate();
+        } else {
+            $blnError = false;
+            foreach (array_keys($this->objForm->getFormFields()) as $strField) {
+                // Clone widget because otherwise we add errors to the original widget instance
+                $objClone = clone $this->objForm->getWidget($strField);
+                if (!$objClone->validate()) {
+                    $blnError = true;
+                    break;
+                }
+            }
+
+            $this->blnError = $blnError;
         }
 
         $objTemplate = new \Isotope\Template('iso_checkout_order_conditions');
@@ -84,13 +96,22 @@ abstract class OrderConditions extends CheckoutStep
     {
         $arrTokens = array();
 
-        foreach ($this->objForm->fetchAll() as $strName => $varValue) {
-            if ($this->objForm->getWidget($strName) instanceof \uploadable) {
-                $arrFile = $_SESSION['FILES'][$strName];
-                $varValue = str_replace(TL_ROOT . '/', '', dirname($arrFile['tmp_name'])) . '/' . rawurlencode($arrFile['name']);
-            }
+        foreach (array_keys($this->objForm->getFormFields()) as $strField) {
+            if ($this->objForm->isSubmitted()) {
+                if ($this->objForm->getWidget($strField) instanceof \uploadable) {
+                    $arrFile = $_SESSION['FILES'][$strField];
+                    $varValue = str_replace(TL_ROOT . '/', '', dirname($arrFile['tmp_name'])) . '/' . rawurlencode($arrFile['name']);
+                } else {
+                    $varValue = $this->objForm->fetch($strField);
+                }
 
-            $arrTokens['form_' . $strName] = $varValue;
+                $_SESSION['FORM_DATA'][$strField] = $varValue;
+                $arrTokens['form_' . $strField]   = $varValue;
+            } else {
+                if (isset($_SESSION['FORM_DATA'][$strField])) {
+                    $arrTokens['form_' . $strField]   = $_SESSION['FORM_DATA'][$strField];
+                }
+            }
         }
 
         return $arrTokens;

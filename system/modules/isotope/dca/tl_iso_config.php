@@ -122,7 +122,7 @@ $GLOBALS['TL_DCA']['tl_iso_config'] = array
         'default'                   => '
             {name_legend},name,label,fallback;
             {address_legend:hide},firstname,lastname,company,vat_no,street_1,street_2,street_3,postal,city,country,subdivision,email,phone;
-            {checkout_legend},billing_countries,shipping_countries,billing_fields,shipping_fields,billing_country,shipping_country,limitMemberCountries;
+            {checkout_legend},address_fields,billing_country,shipping_country,billing_countries,shipping_countries,limitMemberCountries;
             {currency_legend},priceRoundPrecision,priceRoundIncrement,currency,currencyFormat,currencyPosition,currencySymbol;
             {converter_legend:hide},priceCalculateFactor,priceCalculateMode,currencyAutomator;
             {order_legend:hide},orderPrefix,orderDigits,orderstatus_new,orderstatus_error;
@@ -301,23 +301,59 @@ $GLOBALS['TL_DCA']['tl_iso_config'] = array
             'eval'                  => array('maxlength'=>64, 'rgxp'=>'email', 'tl_class'=>'w50'),
             'sql'                   => "varchar(255) NOT NULL default ''",
         ),
-        'shipping_countries' => array
+        'address_fields' => array
         (
-            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_config']['shipping_countries'],
+            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_config']['address_fields'],
+            'exclude'               => true,
+            'inputType'             => 'multiColumnWizard',
+            'eval' => array
+            (
+                'tl_class'          => 'clr',
+                'buttons'           => array('up'=>'up.gif', 'down'=>'down.gif'),
+                'columnFields'      => array
+                (
+                    'name' => array
+                    (
+                        'label'                 => &$GLOBALS['TL_LANG']['tl_iso_config']['address_fields']['name'],
+                        'input_field_callback'  => array('Isotope\tl_iso_config', 'getAddressFieldName'),
+                        'eval'                  => array('hideHead'=>true, 'tl_class'=>'mcwUpdateFields'),
+                    ),
+                    'billing' => array
+                    (
+                        'label'                 => &$GLOBALS['TL_LANG']['tl_iso_config']['address_fields']['billing'],
+                        'inputType'             => 'select',
+                        'options'               => array('disabled', 'enabled', 'mandatory'),
+                        'reference'             => &$GLOBALS['TL_LANG']['tl_iso_config']['address_fields'],
+                        'eval'                  => array('style'=>'width:140px'),
+                    ),
+                    'shipping' => array
+                    (
+                        'label'                 => &$GLOBALS['TL_LANG']['tl_iso_config']['address_fields']['shipping'],
+                        'inputType'             => 'select',
+                        'options'               => array('disabled', 'enabled', 'mandatory'),
+                        'reference'             => &$GLOBALS['TL_LANG']['tl_iso_config']['address_fields'],
+                        'eval'                  => array('style'=>'width:140px'),
+                    ),
+                ),
+            ),
+            'load_callback' => array
+            (
+                array('Isotope\tl_iso_config', 'loadAddressFieldsWizard'),
+            ),
+            'save_callback' => array
+            (
+                array('Isotope\tl_iso_config', 'saveAddressFieldsWizard'),
+            ),
+            'sql'                   => "blob NULL",
+        ),
+        'billing_country' => array
+        (
+            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_config']['billing_country'],
             'exclude'               => true,
             'inputType'             => 'select',
             'options'               => \System::getCountries(),
-            'eval'                  => array('multiple'=>true, 'size'=>8, 'tl_class'=>'w50 w50h', 'chosen'=>true),
-            'sql'                   => "blob NULL",
-        ),
-        'shipping_fields' => array
-        (
-            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_config']['shipping_fields'],
-            'exclude'               => true,
-            'inputType'             => 'fieldWizard',
-            'eval'                  => array('multiple'=>true, 'tl_class'=>'w50 w50h', 'table'=>'tl_iso_addresses', 'helpwizard'=>true),
-            'explanation'           => 'isoFieldWizard',
-            'sql'                   => "blob NULL",
+            'eval'                  => array('includeBlankOption'=>true, 'tl_class'=>'w50', 'chosen'=>true),
+            'sql'                   => "varchar(2) NOT NULL default ''",
         ),
         'shipping_country' => array
         (
@@ -337,23 +373,14 @@ $GLOBALS['TL_DCA']['tl_iso_config'] = array
             'eval'                  => array('multiple'=>true, 'size'=>8, 'tl_class'=>'w50 w50h', 'chosen'=>true),
             'sql'                   => "blob NULL"
         ),
-        'billing_fields' => array
+        'shipping_countries' => array
         (
-            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_config']['billing_fields'],
-            'exclude'               => true,
-            'inputType'             => 'fieldWizard',
-            'eval'                  => array('mandatory'=>true, 'multiple'=>true, 'table'=>'tl_iso_addresses', 'tl_class'=>'clr w50 w50h', 'helpwizard'=>true),
-            'explanation'           => 'isoFieldWizard',
-            'sql'                   => "blob NULL",
-        ),
-        'billing_country' => array
-        (
-            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_config']['billing_country'],
+            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_config']['shipping_countries'],
             'exclude'               => true,
             'inputType'             => 'select',
             'options'               => \System::getCountries(),
-            'eval'                  => array('includeBlankOption'=>true, 'tl_class'=>'w50', 'chosen'=>true),
-            'sql'                   => "varchar(2) NOT NULL default ''",
+            'eval'                  => array('multiple'=>true, 'size'=>8, 'tl_class'=>'w50 w50h', 'chosen'=>true),
+            'sql'                   => "blob NULL",
         ),
         'limitMemberCountries' => array
         (

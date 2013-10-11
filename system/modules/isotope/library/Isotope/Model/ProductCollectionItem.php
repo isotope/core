@@ -68,7 +68,6 @@ class ProductCollectionItem extends \Model
     public function lock()
     {
         $this->blnLocked = true;
-        $this->objProduct = false;
     }
 
 
