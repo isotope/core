@@ -1,16 +1,16 @@
 <div class="be_iso_first_steps">
-    <div class="box">
+    <div class="left">
         <h2>Welcome to Isotope eCommerce</h2>
-        <p>This is the page where most of the configuration regarding Isotope eCommerce will take place.<br>You should start from the bottom of this page and work your way upward.</p>
-        <p>We hope you enjoy Isotope eCommerce as much as we do!</p>
-        <p>The Isotope eCommerce workgroup</p>
+        <p>Isotope is the premier open source eCommerce solution for Contao.</p>
+        <p>This is the page where most of the configuration will take place. <u>You should start from the bottom of this page and work your way upward</u>.</p>
+        <p>Visit the official <a href="http://isotopeecommerce.org" target="_blank">Isotope eCommerce website</a> for the latest news, configuration manuals and our fundraising campaigns. Thank you so much for considering giving something back!</p>
+        <p>The Isotope eCommerce Team</p>
     </div>
-    <div class="box">
-        <h2>Fundraising</h2>
-        <p>Isotope eCommerce is open source.</p>
-        <p>Many days, weeks and months of voluntary work by motivated developers and designers have been put into the development of Isotope eCommerce.</p>
-        <p>You can support maintenance and further development of this wonderful product <strong>- that is free and will always remain free for you to use -</strong> by donating and taking part of the fundraising program.</p>
-        <p>You will find more information on the official <a href="http://isotopeecommerce.org" target="_blank">Isotope eCommerce website</a>. Thank you so much for considering giving something back!</p>
+    <div class="right">
+        <a href="http://isotopeecommerce.org/" target="_blank"><img src="system/modules/isotope/assets/isotope-logo.250x71.png" alt="" width="250" height="71"></a>
+        <br><br><br>
+        <p>Isotope is a product of <a href="http://www.terminal42.ch/" target="_blank">terminal42&nbsp;gmbh</a> in association with <a href="http://isotopeecommerce.org/de/team.html" target="_blank">the Isotope Team</a>.</p>
+        <p><u><a href="http://isotopeecommerce.org" target="_blank">www.isotopeecommerce.org</a></u></p>
     </div>
     <div class="clr"></div>
 </div>

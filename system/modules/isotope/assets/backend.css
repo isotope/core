@@ -287,13 +287,16 @@ body.iso_be_overview .tip-wrap{
 }
 
 .be_iso_first_steps {
-    background:#ffd;
-    padding:5px;
+    background: #eff5fa;
+    padding: 5px 5px 5px 15px;
 }
-.be_iso_first_steps .box {
-    float:left;
-    width: 335px;
-    padding: 0 5px 5px 5px;
+.be_iso_first_steps .left {
+    float: left;
+    width: 410px;
+}
+.be_iso_first_steps .right {
+    width: 250px;
+    margin-left: 441px;
 }
 
 .iso_importassets li {
