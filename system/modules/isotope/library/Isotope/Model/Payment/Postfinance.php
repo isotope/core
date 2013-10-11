@@ -30,7 +30,7 @@ use Isotope\Model\ProductCollection\Order;
 class Postfinance extends Payment implements IsotopePayment, IsotopePostsale
 {
     /**
-     * SHA1-Out relevant fields
+     * SHA-OUT relevant fields
      * @var array
      */
     private static $arrShaOut = array
@@ -108,7 +108,7 @@ class Postfinance extends Payment implements IsotopePayment, IsotopePostsale
             return false;
         }
 
-        $this->postfinance_method = 'GET';
+        $this->postfinance_http_method = 'GET';
 
         if (!$this->validateSHASign()) {
             \System::log('Received invalid postsale data for order ID "' . $objOrder->id . '"', __METHOD__, TL_ERROR);
@@ -205,10 +205,10 @@ class Postfinance extends Payment implements IsotopePayment, IsotopePostsale
             if ($v == '')
                 continue;
 
-            $strSHASign .= $k . '=' . htmlspecialchars_decode($v) . $this->postfinance_sha1_in;
+            $strSHASign .= $k . '=' . htmlspecialchars_decode($v) . $this->postfinance_hash_in;
         }
 
-        $arrParams['SHASIGN'] = sha1($strSHASign);
+        $arrParams['SHASIGN'] = hash($this->postfinance_hash_method, $strSHASign);
 
         $objTemplate = new \Isotope\Template('iso_payment_postfinance');
 
@@ -304,7 +304,7 @@ class Postfinance extends Payment implements IsotopePayment, IsotopePostsale
      */
     private function getRequestData($strKey)
     {
-        if ($this->postfinance_method == 'GET') {
+        if ($this->postfinance_http_method == 'GET') {
             return \Input::get($strKey);
         }
 
@@ -320,7 +320,7 @@ class Postfinance extends Payment implements IsotopePayment, IsotopePostsale
         $strSHASign = '';
         $arrParams = array();
 
-        foreach (array_keys(($this->postfinance_method == 'GET' ? $_GET : $_POST)) as $key) {
+        foreach (array_keys(($this->postfinance_http_method == 'GET' ? $_GET : $_POST)) as $key) {
             if (in_array(strtoupper($key), self::$arrShaOut)) {
                 $arrParams[$key] = $this->getRequestData($key);
             }
@@ -336,10 +336,10 @@ class Postfinance extends Payment implements IsotopePayment, IsotopePostsale
             if ($v == '')
                 continue;
 
-            $strSHASign .= strtoupper($k) . '=' . $v . $this->postfinance_sha1_out;
+            $strSHASign .= strtoupper($k) . '=' . $v . $this->postfinance_hash_out;
         }
 
-        if ($this->getRequestData('SHASIGN') == strtoupper(sha1($strSHASign))) {
+        if ($this->getRequestData('SHASIGN') == strtoupper(hash($this->postfinance_hash_method, $strSHASign))) {
             return true;
         }
 
