@@ -494,9 +494,7 @@ abstract class ProductCollection extends TypeAgent
      */
     public function save($blnForceInsert=false)
     {
-        if ($this->isLocked()) {
-            throw new \BadMethodCallException('Cannot save a locked product collection.');
-        }
+        $this->ensureNotLocked();
 
         if ($this->blnModified) {
             $this->arrData['tstamp'] = time();
@@ -817,6 +815,8 @@ abstract class ProductCollection extends TypeAgent
      */
     public function addProduct(IsotopeProduct $objProduct, $intQuantity, array $arrConfig=array())
     {
+        $this->ensureNotLocked();
+
         // !HOOK: additional functionality when adding product to collection
         if (isset($GLOBALS['ISO_HOOKS']['addProductToCollection']) && is_array($GLOBALS['ISO_HOOKS']['addProductToCollection'])) {
             foreach ($GLOBALS['ISO_HOOKS']['addProductToCollection'] as $callback) {
@@ -903,6 +903,8 @@ abstract class ProductCollection extends TypeAgent
      */
     public function updateItemById($intId, $arrSet)
     {
+        $this->ensureNotLocked();
+
         $arrItems = $this->getItems();
 
         if (!isset($arrItems[$intId])) {
@@ -970,6 +972,8 @@ abstract class ProductCollection extends TypeAgent
      */
     public function deleteItemById($intId)
     {
+        $this->ensureNotLocked();
+
         $arrItems = $this->getItems();
 
         if (!isset($arrItems[$intId])) {
@@ -1028,6 +1032,8 @@ abstract class ProductCollection extends TypeAgent
      */
     public function setSourceCollection(IsotopeProductCollection $objSource)
     {
+        $this->ensureNotLocked();
+
         global $objPage;
 
         $objConfig = Config::findByPk($objSource->config_id);
@@ -1066,6 +1072,8 @@ abstract class ProductCollection extends TypeAgent
      */
     public function copyItemsFrom(IsotopeProductCollection $objSource)
     {
+        $this->ensureNotLocked();
+
         $this->save();
 
         // Make sure database table has the latest prices
@@ -1127,6 +1135,8 @@ abstract class ProductCollection extends TypeAgent
      */
     public function copySurchargesFrom(IsotopeProductCollection $objSource, array $arrItemMap=array())
     {
+        $this->ensureNotLocked();
+
         $arrIds = array();
         $time = time();
         $sorting = 0;
@@ -1360,6 +1370,8 @@ abstract class ProductCollection extends TypeAgent
      */
     protected function generateDocumentNumber($strPrefix, $intDigits)
     {
+        $this->ensureNotLocked();
+
         if ($this->arrData['document_number'] != '') {
             return $this->arrData['document_number'];
         }
@@ -1410,5 +1422,16 @@ abstract class ProductCollection extends TypeAgent
         \Database::getInstance()->unlockTables();
 
         return $this->arrData['document_number'];
+    }
+
+    /**
+     * Prevent modifying a locked collection
+     * @throws  BadMethodCallException
+     */
+    protected function ensureNotLocked()
+    {
+        if ($this->isLocked()) {
+            throw new \BadMethodCallException('Product collection is locked');
+        }
     }
 }
