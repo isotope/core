@@ -171,6 +171,12 @@ $GLOBALS['TL_LANG']['MSC']['timePeriod']['days']                = 'Days';
 $GLOBALS['TL_LANG']['MSC']['timePeriod']['weeks']               = 'Weeks';
 $GLOBALS['TL_LANG']['MSC']['timePeriod']['months']              = 'Months';
 $GLOBALS['TL_LANG']['MSC']['timePeriod']['years']               = 'Years';
+$GLOBALS['TL_LANG']['MSC']['isotopeIntroduction'][0]            = 'Welcome to Isotope eCommerce';
+$GLOBALS['TL_LANG']['MSC']['isotopeIntroduction'][1]            = 'Isotope is the premier open source eCommerce solution for Contao.';
+$GLOBALS['TL_LANG']['MSC']['isotopeIntroduction'][2]            = 'This is the page where most of the configuration will take place. <u>You should start from the bottom of this page and work your way upward</u>.';
+$GLOBALS['TL_LANG']['MSC']['isotopeIntroduction'][3]            = 'Visit the official <a href="http://isotopeecommerce.org" target="_blank">Isotope eCommerce website</a> for the latest news, configuration manuals and our fundraising campaigns. Thank you so much for considering giving something back!';
+$GLOBALS['TL_LANG']['MSC']['isotopeIntroduction'][4]            = 'The Isotope eCommerce Team';
+$GLOBALS['TL_LANG']['MSC']['isotopeIntroduction'][5]            = 'Isotope is a product of %s in association with <a href="http://isotopeecommerce.org/de/team.html" target="_blank">the Isotope eCommerce Team</a>.';
 
 
 /**
