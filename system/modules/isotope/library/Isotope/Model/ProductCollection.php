@@ -156,6 +156,10 @@ abstract class ProductCollection extends TypeAgent
             throw new \InvalidArgumentException('Cannot set lock status of collection');
         }
 
+        if ($strKey == 'document_number') {
+            throw new \InvalidArgumentException('Cannot set document number of a collection, must be generated using generateDocumentNumber()');
+        }
+
         // If there is a database field for that key, we store it there
         if (array_key_exists($strKey, $this->arrData) || \Database::getInstance()->fieldExists($strKey, static::$strTable)) {
             $this->arrData[$strKey] = $varValue;
