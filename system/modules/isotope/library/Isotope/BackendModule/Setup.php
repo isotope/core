@@ -80,10 +80,10 @@ class Setup extends BackendOverview
     protected function addFirstStepsHint(&$return)
     {
         if (\BackendUser::getInstance()->isAdmin) {
-            $objTemplate = new \BackendTemplate('be_iso_first_steps');
+            $objTemplate = new \BackendTemplate('be_iso_introduction');
 
-            $return['first_steps']['label'] = 'First steps and fundraising';
-            $return['first_steps']['html'] = $objTemplate->parse();
+            $return['introduction']['label'] = 'Introduction';
+            $return['introduction']['html'] = $objTemplate->parse();
         }
     }
 }
