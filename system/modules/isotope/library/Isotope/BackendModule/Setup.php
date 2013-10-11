@@ -28,8 +28,9 @@ class Setup extends BackendOverview
      */
     protected function getModules()
     {
-        $this->import('BackendUser', 'User');
         $return = array();
+
+        $this->addFirstStepsHint($return);
 
         foreach ($GLOBALS['ISO_MOD'] as $strGroup => $arrModules) {
             foreach ($arrModules as $strModule => $arrConfig) {
@@ -58,7 +59,7 @@ class Setup extends BackendOverview
      */
     protected function checkUserAccess($module)
     {
-        return $this->User->isAdmin || $this->User->hasAccess($module, 'iso_modules');
+        return \BackendUser::getInstance()->isAdmin || \BackendUser::getInstance()->hasAccess($module, 'iso_modules');
     }
 
 
@@ -70,5 +71,19 @@ class Setup extends BackendOverview
         $this->Template->before = '<h1 id="tl_welcome">' . sprintf($GLOBALS['TL_LANG']['IMD']['config_module'], ISO_VERSION . '.' . ISO_BUILD) . '</h1>';
 
         parent::compile();
+    }
+
+
+    /**
+     * Adds first steps and fundraising hints
+     */
+    protected function addFirstStepsHint(&$return)
+    {
+        if (\BackendUser::getInstance()->isAdmin) {
+            $objTemplate = new \BackendTemplate('be_iso_introduction');
+
+            $return['introduction']['label'] = 'Introduction';
+            $return['introduction']['html'] = $objTemplate->parse();
+        }
     }
 }
