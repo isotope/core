@@ -279,6 +279,13 @@ $GLOBALS['NOTIFICATION_CENTER']['NOTIFICATION_TYPE']['isotope'] = array
         ),
         'email_subject'    => array
         (
+            'id',
+            'document_number',
+            'uniqid',
+            'status',
+            'status_id',
+            'new_status', // Contains the new collection status
+            'recipient_email',
             'billing_*', // All the billing address model fields
             'billing_address', // Billing address as HTML
             'billing_address_text', // Billing address as text
@@ -304,6 +311,13 @@ $GLOBALS['NOTIFICATION_CENTER']['NOTIFICATION_TYPE']['isotope'] = array
         ),
         'email_text'    => array
         (
+            'id',
+            'document_number',
+            'uniqid',
+            'status',
+            'status_id',
+            'new_status', // Contains the new collection status
+            'recipient_email',
             'billing_*', // All the billing address model fields
             'billing_address', // Billing address as HTML
             'billing_address_text', // Billing address as text
@@ -325,10 +339,16 @@ $GLOBALS['NOTIFICATION_CENTER']['NOTIFICATION_TYPE']['isotope'] = array
             'shipping_label', // Shipping method label
             'shipping_note', // Shipping method note
             'shipping_note_text', // Shipping method note without HTML tags
-            'new_status', // Contains the new collection status
         ),
         'email_html'    => array
         (
+            'id',
+            'document_number',
+            'uniqid',
+            'status',
+            'status_id',
+            'new_status', // Contains the new collection status
+            'recipient_email',
             'billing_*', // All the billing address model fields
             'billing_address', // Billing address as HTML
             'billing_address_text', // Billing address as text
