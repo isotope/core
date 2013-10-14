@@ -580,6 +580,7 @@ window.addEvent('domready', function()
      * @param IsotopeProduct|int
      * @param boolean
      * @return IsotopeProduct|null
+     * @todo    should use the model instead of this method
      */
     public static function getProduct($objProduct, $blnCheckAvailability=true)
     {
