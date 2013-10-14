@@ -94,7 +94,7 @@ class OrderProducts extends CheckoutStep implements IsotopeCheckoutStep
             'grandTotal'    => Isotope::formatPriceWithCurrency($objCollection->getTotal(), false),
             'cart_text'     => strip_tags(Isotope::getInstance()->call('replaceInsertTags', $strText)),
             'cart_html'     => Isotope::getInstance()->call('replaceInsertTags', $strHtml),
-            'document'      => $strFilePath,
+            'document'      => str_replace(TL_ROOT.'/', '', $strFilePath),
         );
     }
 }
