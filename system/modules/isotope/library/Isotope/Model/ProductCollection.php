@@ -433,7 +433,14 @@ abstract class ProductCollection extends TypeAgent
         }
 
         if (trim($strName) != '') {
-            $strEmail = sprintf('"%s" <%s>', \Isotope\Email::romanizeFriendlyName($strName), $strEmail);
+
+            // Romanize friendly name to prevent email issues
+            $strName = html_entity_decode($strName, ENT_QUOTES, $GLOBALS['TL_CONFIG']['characterSet']);
+    		$strName = strip_insert_tags($strName);
+    		$strName = utf8_romanize($strName);
+    		$strName = preg_replace('/[^A-Za-z0-9\.!#$%&\'*+-\/=?^_ `{\|}~]+/i', '_', $strName);
+
+            $strEmail = sprintf('"%s" <%s>', $strName, $strEmail);
         }
 
         // !HOOK: determine email recipient for collection
