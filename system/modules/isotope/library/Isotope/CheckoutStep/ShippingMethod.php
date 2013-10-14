@@ -146,13 +146,6 @@ class ShippingMethod extends CheckoutStep implements IsotopeCheckoutStep
      */
     public function getEmailTokens(IsotopeProductCollection $objCollection)
     {
-        $objShipping = $objCollection->getShippingMethod();
-
-        return array(
-            'shipping_id'        => $objShipping->id,
-            'shipping_label'     => $objShipping->getLabel(),
-            'shipping_note'      => $objShipping->note,
-            'shipping_note_text' => strip_tags($objShipping->note),
-        );
+        return array();
     }
 }

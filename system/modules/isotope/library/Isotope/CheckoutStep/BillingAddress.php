@@ -85,17 +85,7 @@ class BillingAddress extends Address implements IsotopeCheckoutStep
      */
     public function getEmailTokens(IsotopeProductCollection $objCollection)
     {
-        $arrTokens = array();
-        $objAddress = $objCollection->getBillingAddress();
-
-        foreach ($objAddress->row() as $k => $v) {
-            $arrTokens['billing_' . $k] = Isotope::formatValue($objAddress->getTable(), $k, $v);
-        }
-
-        $arrTokens['billing_address'] = $objAddress->generateHtml($objCollection->getRelated('config_id')->getBillingFieldsConfig());
-        $arrTokens['billing_address_text'] = $objAddress->generateText($objCollection->getRelated('config_id')->getBillingFieldsConfig());
-
-        return $arrTokens;
+        return array();
     }
 
     /**

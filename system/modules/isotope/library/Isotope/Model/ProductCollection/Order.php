@@ -237,7 +237,7 @@ class Order extends ProductCollection implements IsotopeProductCollection
         }
 
         $this->generateDocumentNumber(Isotope::getConfig()->orderPrefix, (int) Isotope::getConfig()->orderDigits);
-        $arrTokens = $this->getEmailData();
+        $arrTokens = $this->getEmailTokens();
         $arrTokens['recipient_email'] =  $this->getEmailRecipient();
 
         \System::log('New order ID ' . $this->id . ' has been placed', __METHOD__, TL_ACCESS);
@@ -330,7 +330,7 @@ class Order extends ProductCollection implements IsotopeProductCollection
         $blnResult = null;
         if ($objNewStatus->notification > 0) {
 
-            $arrTokens = $this->getEmailData();
+            $arrTokens = $this->getEmailTokens();
             $arrTokens['new_status'] = $objNewStatus->getName();
             $arrTokens['recipient_email'] = $this->getEmailRecipient();
 
@@ -372,7 +372,7 @@ class Order extends ProductCollection implements IsotopeProductCollection
      * Retrieve the array of email data for parsing simple tokens
      * @return array
      */
-    public function getEmailData()
+    public function getEmailTokens()
     {
         $arrData = $this->email_data;
         $arrData['id'] = $this->id;
@@ -380,13 +380,58 @@ class Order extends ProductCollection implements IsotopeProductCollection
         $arrData['uniqid'] = $this->uniqid;
         $arrData['status'] = $this->getStatusLabel();
         $arrData['status_id'] = $this->order_status;
+        $arrData['new_status'] = '';
 
+        // Add billing/customer address fields
+        if (($objAddress = $this->getBillingAddress()) !== null) {
+            foreach ($objAddress->row() as $k => $v) {
+                $arrTokens['billing_' . $k] = Isotope::formatValue($objAddress->getTable(), $k, $v);
+            }
+
+            $arrTokens['billing_address'] = $objAddress->generateHtml($this->getRelated('config_id')->getBillingFieldsConfig());
+            $arrTokens['billing_address_text'] = $objAddress->generateText($this->getRelated('config_id')->getBillingFieldsConfig());
+        }
+
+        // Add shipping address fields
+        if (($objAddress = $this->getShippingAddress()) !== null) {
+            foreach ($objAddress->row() as $k => $v) {
+                $arrTokens['shipping_' . $k] = Isotope::formatValue($objAddress->getTable(), $k, $v);
+            }
+
+            // Shipping address equals billing address
+            if ($objAddress->id == $this->getBillingAddress()->id) {
+                $arrTokens['shipping_address'] = ($this->requiresPayment() ? $GLOBALS['TL_LANG']['MSC']['useBillingAddress'] : $GLOBALS['TL_LANG']['MSC']['useCustomerAddress']);
+                $arrTokens['shipping_address_text'] = $arrTokens['shipping_address'];
+            } else {
+                $arrTokens['shipping_address'] = $objAddress->generateHtml($this->getRelated('config_id')->getShippingFieldsConfig());
+                $arrTokens['shipping_address_text'] = $objAddress->generateText($this->getRelated('config_id')->getShippingFieldsConfig());
+            }
+        }
+
+        // Add payment method info
+        if ($this->hasPayment() && ($objPayment = $this->getPaymentMethod()) !== null) {
+            $arrTokens['payment_id']        = $objPayment->id;
+            $arrTokens['payment_label']     = $objPayment->getLabel();
+            $arrTokens['payment_note']      = $objPayment->note;
+            $arrTokens['payment_note_text'] = strip_tags($objPayment->note);
+        }
+
+        // Add shipping method info
+        if ($this->hasShipping() && ($objShipping = $this->getShippingMethod()) !== null) {
+            $arrTokens['shipping_id']        = $objShipping->id;
+            $arrTokens['shipping_label']     = $objShipping->getLabel();
+            $arrTokens['shipping_note']      = $objShipping->note;
+            $arrTokens['shipping_note_text'] = strip_tags($objShipping->note);
+        }
+
+        // Add config fields
         if ($this->getRelated('config_id') !== null) {
             foreach ($this->getRelated('config_id')->row() as $k => $v) {
                 $arrData['config_' . $k] = Isotope::formatValue($this->getRelated('config_id')->getTable(), $k, $v);
             }
         }
 
+        // Add member fields
         if ($this->pid > 0 && $this->getRelated('pid') !== null) {
             foreach ($this->getRelated('pid')->row() as $k => $v) {
                 $arrData['member_' . $k] = Isotope::formatValue($this->getRelated('pid')->getTable(), $k, $v);
@@ -394,8 +439,8 @@ class Order extends ProductCollection implements IsotopeProductCollection
         }
 
         // !HOOK: add custom email tokens
-        if (isset($GLOBALS['ISO_HOOKS']['getOrderEmailData']) && is_array($GLOBALS['ISO_HOOKS']['getOrderEmailData'])) {
-            foreach ($GLOBALS['ISO_HOOKS']['getOrderEmailData'] as $callback) {
+        if (isset($GLOBALS['ISO_HOOKS']['getEmailTokens']) && is_array($GLOBALS['ISO_HOOKS']['getEmailTokens'])) {
+            foreach ($GLOBALS['ISO_HOOKS']['getEmailTokens'] as $callback) {
                 $objCallback = \System::importStatic($callback[0]);
                 $arrData = $objCallback->$callback[1]($this, $arrData);
             }

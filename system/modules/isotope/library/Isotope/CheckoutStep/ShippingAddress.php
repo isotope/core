@@ -74,23 +74,7 @@ class ShippingAddress extends Address implements IsotopeCheckoutStep
      */
     public function getEmailTokens(IsotopeProductCollection $objCollection)
     {
-        $arrTokens = array();
-        $objAddress = $objCollection->getShippingAddress();
-
-        foreach ($objAddress->row() as $k => $v) {
-            $arrTokens['shipping_' . $k] = Isotope::formatValue($objAddress->getTable(), $k, $v);
-        }
-
-        // Shipping address equals billing address
-        if ($objAddress->id == $objCollection->getBillingAddress()->id) {
-            $arrTokens['shipping_address'] = ($objCollection->requiresPayment() ? $GLOBALS['TL_LANG']['MSC']['useBillingAddress'] : $GLOBALS['TL_LANG']['MSC']['useCustomerAddress']);
-            $arrTokens['shipping_address_text'] = $arrTokens['shipping_address'];
-        } else {
-            $arrTokens['shipping_address'] = $objAddress->generateHtml($objCollection->getRelated('config_id')->getShippingFieldsConfig());
-            $arrTokens['shipping_address_text'] = $objAddress->generateText($objCollection->getRelated('config_id')->getShippingFieldsConfig());
-        }
-
-        return $arrTokens;
+        return array();
     }
 
     /**
