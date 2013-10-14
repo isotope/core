@@ -65,36 +65,6 @@ class OrderProducts extends CheckoutStep implements IsotopeCheckoutStep
      */
     public function getNotificationTokens(IsotopeProductCollection $objCollection)
     {
-        $objTemplate = new \Isotope\Template($this->objModule->iso_notification_collectionTpl);
-        $objCart = Isotope::getCart();
-
-        $objCart->addToTemplate(
-            $objTemplate,
-            array(
-                'gallery'   => $this->objModule->iso_gallery,
-                'sorting'   => $this->objModule->getProductCollectionItemsSortingCallable(),
-            )
-        );
-
-        $strHtml = $objTemplate->parse();
-        $objTemplate->textOnly = true;
-        $strText = $objTemplate->parse();
-
-        // Document
-        if ($this->objModule->iso_notification_document
-            && (($objDocument = Document::findByPk($this->objModule->iso_notification_document)) !== null)) {
-
-            $strFilePath = $objDocument->outputToFile($objCart, TL_ROOT . '/system/tmp');
-        }
-
-        return array(
-            'items'         => $objCollection->sumItemsQuantity(),
-            'products'      => $objCollection->countItems(),
-            'subTotal'      => Isotope::formatPriceWithCurrency($objCollection->getSubtotal(), false),
-            'grandTotal'    => Isotope::formatPriceWithCurrency($objCollection->getTotal(), false),
-            'cart_text'     => strip_tags(Isotope::getInstance()->call('replaceInsertTags', $strText)),
-            'cart_html'     => Isotope::getInstance()->call('replaceInsertTags', $strHtml),
-            'document'      => str_replace(TL_ROOT.'/', '', $strFilePath),
-        );
+        return array();
     }
 }

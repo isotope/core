@@ -16,6 +16,7 @@ use Isotope\Isotope;
 use Isotope\Interfaces\IsotopeProduct;
 use Isotope\Interfaces\IsotopeProductCollection;
 use Isotope\Model\Config;
+use Isotope\Model\Document;
 use Isotope\Model\OrderStatus;
 use Isotope\Model\Payment;
 use Isotope\Model\ProductCollection;
@@ -238,7 +239,7 @@ class Order extends ProductCollection implements IsotopeProductCollection
         }
 
         $this->generateDocumentNumber(Isotope::getConfig()->orderPrefix, (int) Isotope::getConfig()->orderDigits);
-        $arrTokens = $this->getNotificationTokens();
+        $arrTokens = $this->getNotificationTokens($this->nc_notification);
 
         \System::log('New order ID ' . $this->id . ' has been placed', __METHOD__, TL_ACCESS);
 
@@ -339,7 +340,7 @@ class Order extends ProductCollection implements IsotopeProductCollection
         $blnNotificationError = null;
         if ($objNewStatus->notification > 0) {
 
-            $arrTokens = $this->getNotificationTokens();
+            $arrTokens = $this->getNotificationTokens($objNewStatus->notification);
             $arrTokens['new_status'] = $objNewStatus->getName();
 
             $blnNotificationError = true;
@@ -465,6 +466,30 @@ class Order extends ProductCollection implements IsotopeProductCollection
                 $arrData['member_' . $k] = Isotope::formatValue($this->getRelated('pid')->getTable(), $k, $v);
             }
         }
+
+        if ($intNotification > 0 && ($objNotification = Notification::findByPk($intNotification)) !== null) {
+            $objTemplate = new \Isotope\Template($objNotification->iso_collectionTpl);
+
+            $this->addToTemplate(
+                $objTemplate,
+                array(
+                    'gallery'   => $objNotification->iso_gallery,
+                    // @todo implement sorting option
+//                    'sorting'   => $this->objModule->getProductCollectionItemsSortingCallable(),
+                )
+            );
+
+            $arrData['cart_html'] = Isotope::getInstance()->call('replaceInsertTags', $objTemplate->parse());
+            $objTemplate->textOnly = true;
+            $arrData['cart_text'] = strip_tags(Isotope::getInstance()->call('replaceInsertTags', $objTemplate->parse()));
+
+            // Generate and "attach" document
+            if ($objNotification->iso_document > 0 && (($objDocument = Document::findByPk($objNotification->iso_document)) !== null)) {
+                $strFilePath = $objDocument->outputToFile($this, TL_ROOT . '/system/tmp');
+                $arrData['document'] = str_replace(TL_ROOT.'/', '', $strFilePath);
+            }
+        }
+
 
         // !HOOK: add custom email tokens
         // @todo might want to rename because there could be tokens for other things?
