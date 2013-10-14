@@ -238,7 +238,6 @@ class Order extends ProductCollection implements IsotopeProductCollection
 
         $this->generateDocumentNumber(Isotope::getConfig()->orderPrefix, (int) Isotope::getConfig()->orderDigits);
         $arrTokens = $this->getEmailTokens();
-        $arrTokens['recipient_email'] =  $this->getEmailRecipient();
 
         \System::log('New order ID ' . $this->id . ' has been placed', __METHOD__, TL_ACCESS);
 
@@ -332,7 +331,6 @@ class Order extends ProductCollection implements IsotopeProductCollection
 
             $arrTokens = $this->getEmailTokens();
             $arrTokens['new_status'] = $objNewStatus->getName();
-            $arrTokens['recipient_email'] = $this->getEmailRecipient();
 
             $blnResult = \NotificationCenter\Notification::send($objNewStatus->notification, $arrTokens, $this->language);
 
@@ -380,6 +378,7 @@ class Order extends ProductCollection implements IsotopeProductCollection
         $arrData['uniqid'] = $this->uniqid;
         $arrData['status'] = $this->getStatusLabel();
         $arrData['status_id'] = $this->order_status;
+        $arrTokens['recipient_email'] =  $this->getEmailRecipient();
         $arrData['new_status'] = '';
 
         // Add billing/customer address fields
