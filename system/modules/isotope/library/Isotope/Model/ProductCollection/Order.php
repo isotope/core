@@ -398,21 +398,21 @@ class Order extends ProductCollection implements IsotopeProductCollection
      */
     public function getNotificationTokens($intNotification)
     {
-        $arrData = $this->email_data;
-        $arrData['uniqid']              = $this->uniqid;
-        $arrData['status_id']           = $this->order_status;
-        $arrData['recipient_email']     = $this->getEmailRecipient();
-        $arrData['order_id']            = $this->id;
-        $arrData['order_status']        = $this->getStatusLabel();
-        $arrData['order_status_new']    = '';
-        $arrData['order_items']         = $this->sumItemsQuantity();
-        $arrData['order_products']      = $this->countItems();
-        $arrData['order_subtotal']      = Isotope::formatPriceWithCurrency($this->getSubtotal(), false);
-        $arrData['order_total']         = Isotope::formatPriceWithCurrency($this->getTotal(), false);
-        $arrData['document_number']     = $this->document_number;
-        $arrData['cart_html']           = '';
-        $arrData['cart_text']           = '';
-        $arrData['document']            = '';
+        $arrTokens = deserialize($this->email_data, true);
+        $arrTokens['uniqid']              = $this->uniqid;
+        $arrTokens['status_id']           = $this->order_status;
+        $arrTokens['recipient_email']     = $this->getEmailRecipient();
+        $arrTokens['order_id']            = $this->id;
+        $arrTokens['order_status']        = $this->getStatusLabel();
+        $arrTokens['order_status_new']    = '';
+        $arrTokens['order_items']         = $this->sumItemsQuantity();
+        $arrTokens['order_products']      = $this->countItems();
+        $arrTokens['order_subtotal']      = Isotope::formatPriceWithCurrency($this->getSubtotal(), false);
+        $arrTokens['order_total']         = Isotope::formatPriceWithCurrency($this->getTotal(), false);
+        $arrTokens['document_number']     = $this->document_number;
+        $arrTokens['cart_html']           = '';
+        $arrTokens['cart_text']           = '';
+        $arrTokens['document']            = '';
 
 
         // Add billing/customer address fields
@@ -460,14 +460,14 @@ class Order extends ProductCollection implements IsotopeProductCollection
         // Add config fields
         if ($this->getRelated('config_id') !== null) {
             foreach ($this->getRelated('config_id')->row() as $k => $v) {
-                $arrData['config_' . $k] = Isotope::formatValue($this->getRelated('config_id')->getTable(), $k, $v);
+                $arrTokens['config_' . $k] = Isotope::formatValue($this->getRelated('config_id')->getTable(), $k, $v);
             }
         }
 
         // Add member fields
         if ($this->pid > 0 && $this->getRelated('pid') !== null) {
             foreach ($this->getRelated('pid')->row() as $k => $v) {
-                $arrData['member_' . $k] = Isotope::formatValue($this->getRelated('pid')->getTable(), $k, $v);
+                $arrTokens['member_' . $k] = Isotope::formatValue($this->getRelated('pid')->getTable(), $k, $v);
             }
         }
 
@@ -483,14 +483,14 @@ class Order extends ProductCollection implements IsotopeProductCollection
                 )
             );
 
-            $arrData['cart_html'] = Isotope::getInstance()->call('replaceInsertTags', $objTemplate->parse());
+            $arrTokens['cart_html'] = Isotope::getInstance()->call('replaceInsertTags', $objTemplate->parse());
             $objTemplate->textOnly = true;
-            $arrData['cart_text'] = strip_tags(Isotope::getInstance()->call('replaceInsertTags', $objTemplate->parse()));
+            $arrTokens['cart_text'] = strip_tags(Isotope::getInstance()->call('replaceInsertTags', $objTemplate->parse()));
 
             // Generate and "attach" document
             if ($objNotification->iso_document > 0 && (($objDocument = Document::findByPk($objNotification->iso_document)) !== null)) {
                 $strFilePath = $objDocument->outputToFile($this, TL_ROOT . '/system/tmp');
-                $arrData['document'] = str_replace(TL_ROOT.'/', '', $strFilePath);
+                $arrTokens['document'] = str_replace(TL_ROOT.'/', '', $strFilePath);
             }
         }
 
@@ -500,11 +500,11 @@ class Order extends ProductCollection implements IsotopeProductCollection
         if (isset($GLOBALS['ISO_HOOKS']['getNotificationTokens']) && is_array($GLOBALS['ISO_HOOKS']['getNotificationTokens'])) {
             foreach ($GLOBALS['ISO_HOOKS']['getNotificationTokens'] as $callback) {
                 $objCallback = \System::importStatic($callback[0]);
-                $arrData = $objCallback->$callback[1]($this, $arrData);
+                $arrTokens = $objCallback->$callback[1]($this, $arrTokens);
             }
         }
 
-        return $arrData;
+        return $arrTokens;
     }
 
     /**
