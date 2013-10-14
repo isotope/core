@@ -398,7 +398,7 @@ class Order extends ProductCollection implements IsotopeProductCollection
         $arrData['uniqid'] = $this->uniqid;
         $arrData['status'] = $this->getStatusLabel();
         $arrData['status_id'] = $this->order_status;
-        $arrTokens['recipient_email'] =  $this->getEmailRecipient();
+        $arrData['recipient_email'] = $this->getEmailRecipient();
         $arrData['new_status'] = '';
 
         // Add billing/customer address fields
