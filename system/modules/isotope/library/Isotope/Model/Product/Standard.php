@@ -95,6 +95,7 @@ class Standard extends Product implements IsotopeProduct
      * Get a property
      * @param   string
      * @return  mixed
+     * @todo Kick me
      */
     public function __get($strKey)
     {
@@ -102,9 +103,6 @@ class Standard extends Product implements IsotopeProduct
         {
             case 'formSubmit':
                 return $this->formSubmit;
-
-            case 'price':
-                return Isotope::calculatePrice($this->arrData['price'], $this, 'price', $this->arrData['tax_class']);
 
             case 'description_meta':
                 return $this->arrData['description_meta'] != '' ? $this->arrData['description_meta'] : ($this->arrData['teaser'] != '' ? $this->arrData['teaser'] : $this->arrData['description']);
@@ -116,24 +114,6 @@ class Standard extends Product implements IsotopeProduct
 			    }
 
                 return isset($this->arrData[$strKey]) ? deserialize($this->arrData[$strKey]) : null;
-        }
-    }
-
-
-    /**
-     * Set a property
-     * @param   string
-     * @param   mixed
-     */
-    public function __set($strKey, $varValue)
-    {
-        switch ($strKey)
-        {
-            case 'sku':
-            case 'name':
-            case 'price':
-                $this->arrData[$strKey] = $varValue;
-                break;
         }
     }
 
