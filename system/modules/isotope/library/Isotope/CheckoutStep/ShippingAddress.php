@@ -68,11 +68,11 @@ class ShippingAddress extends Address implements IsotopeCheckoutStep
     }
 
     /**
-     * Return array of tokens for email templates
+     * Return array of tokens for notification
      * @param   IsotopeProductCollection
      * @return  array
      */
-    public function getEmailTokens(IsotopeProductCollection $objCollection)
+    public function getNotificationTokens(IsotopeProductCollection $objCollection)
     {
         return array();
     }

@@ -325,7 +325,7 @@ class Checkout extends Module
         $objOrder->checkout_info        = $this->getCheckoutInfo();
         $objOrder->nc_notification      = $this->nc_notification;
         $objOrder->iso_addToAddressbook = $this->iso_addToAddressbook;
-        $objOrder->email_data           = $this->getEmailTokensFromSteps($objOrder);
+        $objOrder->email_data           = $this->getNotificationTokensFromSteps($objOrder);
 
         $objOrder->save();
     }
@@ -366,18 +366,18 @@ class Checkout extends Module
 
 
     /**
-     * Retrieve the array of email data for parsing simple tokens
+     * Retrieve the array of notification data for parsing simple tokens
      * @param   IsotopeProductCollection
      * @return  array
      */
-    protected function getEmailTokensFromSteps(IsotopeProductCollection $objOrder)
+    protected function getNotificationTokensFromSteps(IsotopeProductCollection $objOrder)
     {
         $arrTokens = array();
 
         // Run trough all steps to collect checkout information
         foreach ($this->getSteps() as $arrModules) {
             foreach ($arrModules as $objModule) {
-                $arrTokens = array_merge($arrTokens, $objModule->getEmailTokens($objOrder));
+                $arrTokens = array_merge($arrTokens, $objModule->getNotificationTokens($objOrder));
             }
         }
 

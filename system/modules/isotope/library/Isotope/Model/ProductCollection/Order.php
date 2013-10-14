@@ -237,7 +237,7 @@ class Order extends ProductCollection implements IsotopeProductCollection
         }
 
         $this->generateDocumentNumber(Isotope::getConfig()->orderPrefix, (int) Isotope::getConfig()->orderDigits);
-        $arrTokens = $this->getEmailTokens();
+        $arrTokens = $this->getNotificationTokens();
 
         \System::log('New order ID ' . $this->id . ' has been placed', __METHOD__, TL_ACCESS);
 
@@ -329,7 +329,7 @@ class Order extends ProductCollection implements IsotopeProductCollection
         $blnResult = null;
         if ($objNewStatus->notification > 0) {
 
-            $arrTokens = $this->getEmailTokens();
+            $arrTokens = $this->getNotificationTokens();
             $arrTokens['new_status'] = $objNewStatus->getName();
 
             $blnResult = \NotificationCenter\Notification::send($objNewStatus->notification, $arrTokens, $this->language);
@@ -367,10 +367,10 @@ class Order extends ProductCollection implements IsotopeProductCollection
 
 
     /**
-     * Retrieve the array of email data for parsing simple tokens
+     * Retrieve the array of notification data for parsing simple tokens
      * @return array
      */
-    public function getEmailTokens()
+    public function getNotificationTokens()
     {
         $arrData = $this->email_data;
         $arrData['id'] = $this->id;
@@ -438,8 +438,9 @@ class Order extends ProductCollection implements IsotopeProductCollection
         }
 
         // !HOOK: add custom email tokens
-        if (isset($GLOBALS['ISO_HOOKS']['getEmailTokens']) && is_array($GLOBALS['ISO_HOOKS']['getEmailTokens'])) {
-            foreach ($GLOBALS['ISO_HOOKS']['getEmailTokens'] as $callback) {
+        // @todo might want to rename because there could be tokens for other things?
+        if (isset($GLOBALS['ISO_HOOKS']['getNotificationTokens']) && is_array($GLOBALS['ISO_HOOKS']['getNotificationTokens'])) {
+            foreach ($GLOBALS['ISO_HOOKS']['getNotificationTokens'] as $callback) {
                 $objCallback = \System::importStatic($callback[0]);
                 $arrData = $objCallback->$callback[1]($this, $arrData);
             }
