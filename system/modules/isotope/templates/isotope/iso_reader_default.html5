@@ -19,8 +19,10 @@
 <?php if ($this->sku): ?>
 <div class="sku" itemprop="sku"><?php echo $this->generateAttribute('sku'); ?></div><?php endif; if ($this->description): ?>
 <div class="description" itemprop="description"><?php echo $this->generateAttribute('description'); ?></div><?php endif; ?>
-<div itemscope itemtype="http://schema.org/Offer"><div class="price" itemprop="price"><?php echo $this->generatePrice(); ?></div></div><?php if($this->baseprice): ?>
+<div class="offer" itemscope itemtype="http://schema.org/Offer">
+<div class="price" itemprop="price"><?php echo $this->generatePrice(); ?></div><?php if($this->baseprice): ?>
 <div class="baseprice"><?php echo $this->generateAttribute('baseprice'); ?></div><?php endif; ?>
+</div>
 <?php if($this->buttons): ?>
 <div class="submit_container">
 <?php if ($this->useQuantity): ?>
