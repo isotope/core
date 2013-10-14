@@ -388,18 +388,27 @@ class Order extends ProductCollection implements IsotopeProductCollection
 
     /**
      * Retrieve the array of notification data for parsing simple tokens
-     * @return array
+     * @param   int
+     * @return  array
      */
-    public function getNotificationTokens()
+    public function getNotificationTokens($intNotification)
     {
         $arrData = $this->email_data;
-        $arrData['id'] = $this->id;
-        $arrData['document_number'] = $this->document_number;
-        $arrData['uniqid'] = $this->uniqid;
-        $arrData['status'] = $this->getStatusLabel();
-        $arrData['status_id'] = $this->order_status;
-        $arrData['recipient_email'] = $this->getEmailRecipient();
-        $arrData['new_status'] = '';
+        $arrData['uniqid']              = $this->uniqid;
+        $arrData['status_id']           = $this->order_status;
+        $arrData['recipient_email']     = $this->getEmailRecipient();
+        $arrData['order_id']            = $this->id;
+        $arrData['order_status']        = $this->getStatusLabel();
+        $arrData['order_status_new']    = '';
+        $arrData['order_items']         = $this->sumItemsQuantity();
+        $arrData['order_products']      = $this->countItems();
+        $arrData['order_subtotal']      = Isotope::formatPriceWithCurrency($this->getSubtotal(), false);
+        $arrData['order_total']         = Isotope::formatPriceWithCurrency($this->getTotal(), false);
+        $arrData['document_number']     = $this->document_number;
+        $arrData['cart_html']           = '';
+        $arrData['cart_text']           = '';
+        $arrData['document']            = '';
+
 
         // Add billing/customer address fields
         if (($objAddress = $this->getBillingAddress()) !== null) {
