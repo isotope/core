@@ -339,7 +339,13 @@ class Standard extends Product implements IsotopeProduct
             return 1;
         }
 
-        $this->getPrice()->getLowestTier();
+        $intLowest = (int) $this->getPrice()->getLowestTier();
+
+        if ($intLowest < 1) {
+            return 1;
+        }
+
+        return $intLowest;
     }
 
 

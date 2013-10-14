@@ -1,11 +1,11 @@
 <form action="<?php echo $this->action; ?>" id="<?php echo $this->formId; ?>" name="iso<?php echo rand(); ?>" method="post" enctype="<?php echo $this->enctype; ?>">
-<div class="formbody">
+<div class="formbody" itemscope itemtype="http://schema.org/Product">
 <input type="hidden" name="FORM_SUBMIT" value="<?php echo $this->formSubmit; ?>">
 <input type="hidden" name="REQUEST_TOKEN" value="{{request_token}}">
 <input type="hidden" name="AJAX_PRODUCT" value="<?php echo $this->product_id; ?>">
 <input type="hidden" name="AJAX_MODULE" value="<?php echo $this->module_id; ?>">
 
-<h2><?php echo $this->generateAttribute('name'); ?></h2>
+<h2 itemprop="name"><?php echo $this->generateAttribute('name'); ?></h2>
 
 <?php echo $this->getGallery('images')->generateMainImage(); ?>
 <?php if($this->hasOptions): ?>
@@ -17,10 +17,12 @@
 <?php echo $this->getGallery('images')->generateGallery(); ?>
 
 <?php if ($this->sku): ?>
-<div class="sku"><?php echo $this->generateAttribute('sku'); ?></div><?php endif; if ($this->description): ?>
-<div class="description"><?php echo $this->generateAttribute('description'); ?></div><?php endif; ?>
-<div class="price"><?php echo $this->generatePrice(); ?></div><?php if($this->baseprice): ?>
+<div class="sku" itemprop="sku"><?php echo $this->generateAttribute('sku'); ?></div><?php endif; if ($this->description): ?>
+<div class="description" itemprop="description"><?php echo $this->generateAttribute('description'); ?></div><?php endif; ?>
+<div class="offer" itemscope itemtype="http://schema.org/Offer">
+<div class="price" itemprop="price"><?php echo $this->generatePrice(); ?></div><?php if($this->baseprice): ?>
 <div class="baseprice"><?php echo $this->generateAttribute('baseprice'); ?></div><?php endif; ?>
+</div>
 <?php if($this->buttons): ?>
 <div class="submit_container">
 <?php if ($this->useQuantity): ?>

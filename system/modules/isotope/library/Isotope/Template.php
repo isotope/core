@@ -25,18 +25,6 @@ class Template extends \FrontendTemplate
 {
 
     /**
-     * Add support for callable variables (usually closures)
-     * @param   string
-     * @param   array
-     * @return  mixed
-     * @todo    remove when minimum is Contao 3.2
-     */
-    public function __call($name, $arguments)
-    {
-        return call_user_func_array($this->$name, $arguments);
-    }
-
-    /**
      * Check the Isotope config directory for a particular template
      * @param string
      * @return string

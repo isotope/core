@@ -146,7 +146,17 @@ abstract class TypeAgent extends \Model
 	        return null;
         }
 
-        $objModel = new $strClass($objResult);
+        $strPk = static::$strPk;
+		$intPk = $objResult->$strPk;
+
+		// Try to load from the registry
+		$objModel = \Model\Registry::getInstance()->fetch(static::$strTable, $intPk);
+
+		if ($objModel !== null) {
+			$objModel->mergeRow($objResult->row());
+		} else {
+		    $objModel = new $strClass($objResult);
+        }
 
         if (null !== static::$strInterface && !is_a($objModel, static::$strInterface)) {
             throw new \RuntimeException(get_class($objModel) . ' must implement interface ' . static::$strInterface);
@@ -219,11 +229,11 @@ abstract class TypeAgent extends \Model
 
         if ($arrOptions['return'] == 'Model') {
 
-            return static::buildModelType($objResult);
-        } else {
+			return static::buildModelType($objResult);
+		} else {
 
-            return new \Isotope\Model\Collection\TypeAgent($objResult, get_called_class());
-        }
+			return static::createCollectionFromDbResult($objResult);
+		}
     }
 
     /**
@@ -234,5 +244,26 @@ abstract class TypeAgent extends \Model
     protected static function buildQueryString($arrOptions)
     {
         return \Model\QueryBuilder::find($arrOptions);
+    }
+
+    /**
+     * Create array of models and return a collection of them
+     * @param   Database\Result
+     * @return  Model\Collection
+     */
+    protected static function createCollectionFromDbResult($objResult)
+    {
+        $arrModels = array();
+
+		while ($objResult->next())
+		{
+		    $objModel = static::buildModelType($objResult);
+
+		    if (null !== $objModel) {
+    		    $arrModels[] = $objModel;
+		    }
+		}
+
+		return new \Model\Collection($arrModels, static::$strTable);
     }
 }

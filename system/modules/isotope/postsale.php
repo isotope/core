@@ -110,7 +110,12 @@ class PostSale extends \Frontend
             return $objMethod->processPostsale();
 
         } catch (\Exception $e) {
-            \System::log('Exception in post-sale request: '.$e->getMessage(), __METHOD__, TL_ERROR);
+            \System::log(
+                sprintf('Exception in post-sale request in file "%s" on line "%s" with message "%s".',
+                    $e->getFile(),
+                    $e->getLine(),
+                    $e->getMessage()
+                ), __METHOD__, TL_ERROR);
 
             header('HTTP/1.1 500 Internal Server Error');
             die('Internal Server Error');

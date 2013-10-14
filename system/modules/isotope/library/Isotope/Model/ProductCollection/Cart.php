@@ -97,6 +97,8 @@ class Cart extends ProductCollection implements IsotopeProductCollection
      */
     public function mergeGuestCart()
     {
+        $this->ensureNotLocked();
+
         $strHash = \Input::cookie(static::$strCookie);
 
         // Temporary cart available, move to this cart. Must be after creating a new cart!
