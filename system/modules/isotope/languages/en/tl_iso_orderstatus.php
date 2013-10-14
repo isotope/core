@@ -19,8 +19,6 @@ $GLOBALS['TL_LANG']['tl_iso_orderstatus']['name']                       = array(
 $GLOBALS['TL_LANG']['tl_iso_orderstatus']['paid']                       = array('Order is paid', 'Assume the order is paid when it has this status. This will for example allow files to be downloaded.');
 $GLOBALS['TL_LANG']['tl_iso_orderstatus']['welcomescreen']              = array('Show on welcome screen', 'Show number of orders with this status on the backend welcome screen.');
 $GLOBALS['TL_LANG']['tl_iso_orderstatus']['notification']               = array('Notification', 'Please select a notification.');
-$GLOBALS['TL_LANG']['tl_iso_orderstatus']['notification_collectionTpl'] = array('Notification product collection template', 'Please choose a template to render the products for the notification content.');
-$GLOBALS['TL_LANG']['tl_iso_orderstatus']['notification_document']      = array('Notification document', 'If you would like to attach a document to the notification, choose one here and use the simple token in the notification center.');
 
 
 /**

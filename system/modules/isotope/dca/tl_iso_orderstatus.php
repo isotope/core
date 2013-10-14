@@ -120,7 +120,7 @@ $GLOBALS['TL_DCA']['tl_iso_orderstatus'] = array
     // Palettes
     'palettes' => array
     (
-        'default'                   => '{name_legend},name,paid,welcomescreen;{email_legend},notification,notification_collectionTpl,notification_document',
+        'default'                   => '{name_legend},name,paid,welcomescreen;{email_legend},notification',
     ),
 
     // Fields
@@ -175,23 +175,5 @@ $GLOBALS['TL_DCA']['tl_iso_orderstatus'] = array
             'eval'                  => array('chosen'=>true, 'tl_class'=>'w50'),
             'sql'                   => "int(10) unsigned NOT NULL default '0'"
         ),
-        'notification_collectionTpl' => array
-        (
-            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_orderstatus']['notification_collectionTpl'],
-            'exclude'               => true,
-            'inputType'             => 'select',
-            'options_callback'      => array('Isotope\tl_module', 'getCollectionTemplates'),
-            'eval'                  => array('mandatory'=>true, 'chosen'=>true, 'tl_class'=>'w50'),
-            'sql'                   => "varchar(64) NOT NULL default ''",
-        ),
-        'notification_document' => array
-        (
-            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_orderstatus']['notification_document'],
-            'exclude'               => true,
-            'inputType'             => 'select',
-            'foreignKey'            => 'tl_iso_document.name',
-            'eval'                  => array('includeBlankOption'=>true, 'chosen'=>true, 'tl_class'=>'w50'),
-            'sql'                   => "int(10) unsigned NOT NULL default '0'",
-        )
     )
 );
