@@ -100,7 +100,7 @@ abstract class OrderConditions extends CheckoutStep
             if ($this->objForm->isSubmitted()) {
                 if ($this->objForm->getWidget($strField) instanceof \uploadable) {
                     $arrFile = $_SESSION['FILES'][$strField];
-                    $varValue = str_replace(TL_ROOT . '/', '', dirname($arrFile['tmp_name'])) . '/' . rawurlencode($arrFile['name']);
+                    $varValue = dirname($arrFile['tmp_name']) . '/' . rawurlencode($arrFile['name']);
                 } else {
                     $varValue = $this->objForm->fetch($strField);
                 }
