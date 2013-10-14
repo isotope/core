@@ -22,6 +22,7 @@ use Isotope\Model\ProductCollection;
 use Isotope\Model\ProductCollectionItem;
 use Isotope\Model\ProductCollectionDownload;
 use Isotope\Model\Shipping;
+use NotificationCenter\Model\Notification;
 
 
 /**
@@ -241,12 +242,23 @@ class Order extends ProductCollection implements IsotopeProductCollection
 
         \System::log('New order ID ' . $this->id . ' has been placed', __METHOD__, TL_ACCESS);
 
+        // Trigger notification
         if ($this->nc_notification) {
-            $blnResult = \NotificationCenter\Notification::send($this->nc_notification, $arrTokens, $this->language);
+            $blnNotificationError = true;
 
-            if (!$blnResult) {
-                \System::log('Error when sending notifications for order ID '.$this->id, __METHOD__, TL_ERROR);
+            if (($objNotification = Notification::findByPk($this->nc_notification)) !== null) {
+                $arrResult = $objNotification->send($arrTokens, $this->language);
+
+                if (!empty($arrResult) && !in_array(false, $arrResult)) {
+                    $blnNotificationError = false;
+                }
             }
+
+            if ($blnNotificationError === true) {
+                \System::log('Error sending new order notification for order ID '.$this->id, __METHOD__, TL_ERROR);
+            }
+        } else {
+            \System::log('No notification for order ID '.$this->id, __METHOD__, TL_ERROR);
         }
 
         // !HOOK: post-process checkout
@@ -292,7 +304,7 @@ class Order extends ProductCollection implements IsotopeProductCollection
      * @param bool
      * @return bool
      */
-    public function updateOrderStatus($intNewStatus, $blnActions=true)
+    public function updateOrderStatus($intNewStatus)
     {
         // Status already set, nothing to do
         if ($this->order_status == $intNewStatus) {
@@ -306,15 +318,13 @@ class Order extends ProductCollection implements IsotopeProductCollection
         }
 
         // !HOOK: allow to cancel a status update
-        if (isset($GLOBALS['ISO_HOOKS']['preOrderStatusUpdate']) && is_array($GLOBALS['ISO_HOOKS']['preOrderStatusUpdate']))
-        {
-            foreach ($GLOBALS['ISO_HOOKS']['preOrderStatusUpdate'] as $callback)
-            {
-                $objCallback = \System::importStatic($callback[0]);
-                $blnCancel = $objCallback->$callback[1]($this, $objNewStatus, $blnActions);
+        if (isset($GLOBALS['ISO_HOOKS']['preOrderStatusUpdate']) && is_array($GLOBALS['ISO_HOOKS']['preOrderStatusUpdate'])) {
+            foreach ($GLOBALS['ISO_HOOKS']['preOrderStatusUpdate'] as $callback) {
 
-                if ($blnCancel === true)
-                {
+                $objCallback = \System::importStatic($callback[0]);
+                $blnCancel = $objCallback->$callback[1]($this, $objNewStatus);
+
+                if ($blnCancel === true) {
                     return false;
                 }
             }
@@ -325,27 +335,37 @@ class Order extends ProductCollection implements IsotopeProductCollection
             $this->date_paid = time();
         }
 
-        // Trigger email actions
-        $blnResult = null;
+        // Trigger notification
+        $blnNotificationError = null;
         if ($objNewStatus->notification > 0) {
 
             $arrTokens = $this->getNotificationTokens();
             $arrTokens['new_status'] = $objNewStatus->getName();
 
-            $blnResult = \NotificationCenter\Notification::send($objNewStatus->notification, $arrTokens, $this->language);
+            $blnNotificationError = true;
 
-            if (!$blnResult) {
-                \System::log('Error when sending status update to customer for order ID '.$this->id, __METHOD__, TL_ERROR);
+            if (($objNotification = Notification::findByPk($objNewStatus->notification)) !== null) {
+                $arrResult = $objNotification->send($arrTokens, $this->language);
+
+                if (in_array(false, $arrResult)) {
+                    $blnNotificationError = true;
+                } elseif (!empty($arrResult)) {
+                    $blnNotificationError = false;
+                }
+            }
+
+            if ($blnNotificationError === true) {
+                \System::log('Error sending status update notification for order ID '.$this->id, __METHOD__, TL_ERROR);
             }
         }
 
         if (TL_MODE == 'BE') {
             \Message::addConfirmation($GLOBALS['TL_LANG']['tl_iso_product_collection']['orderStatusUpdate']);
 
-            if ($blnResult === true) {
-                \Message::addConfirmation($GLOBALS['TL_LANG']['tl_iso_product_collection']['orderStatusEmailSuccess']);
-            } elseif ($blnResult === false) {
-                \Message::addConfirmation($GLOBALS['TL_LANG']['tl_iso_product_collection']['orderStatusEmailError']);
+            if ($blnNotificationError === true) {
+                \Message::addConfirmation($GLOBALS['TL_LANG']['tl_iso_product_collection']['orderStatusNotificationError']);
+            } elseif ($blnNotificationError === false) {
+                \Message::addConfirmation($GLOBALS['TL_LANG']['tl_iso_product_collection']['orderStatusNotificationSuccess']);
             }
         }
 
@@ -360,7 +380,7 @@ class Order extends ProductCollection implements IsotopeProductCollection
             foreach ($GLOBALS['ISO_HOOKS']['postOrderStatusUpdate'] as $callback)
             {
                 $objCallback = \System::importStatic($callback[0]);
-                $objCallback->$callback[1]($this, $intOldStatus, $objNewStatus, $blnActions);
+                $objCallback->$callback[1]($this, $intOldStatus, $objNewStatus);
             }
         }
     }
