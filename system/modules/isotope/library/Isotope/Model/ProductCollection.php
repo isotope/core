@@ -88,12 +88,6 @@ abstract class ProductCollection extends TypeAgent
      */
     protected $objPayment = false;
 
-    /**
-     * Configuration
-     * @var array
-     */
-    protected $arrSettings = array();
-
 
     /**
      * Initialize the object
@@ -117,75 +111,6 @@ abstract class ProductCollection extends TypeAgent
         }
     }
 
-
-    /**
-     * Return data
-     * @param string
-     * @return mixed
-     */
-    public function __get($strKey)
-    {
-        // If there is a database field for that key, retrive from there
-        if (array_key_exists($strKey, $this->arrData)) {
-
-            return deserialize($this->arrData[$strKey]);
-        }
-
-        // Everything else is in arrSettings and serialized
-        else {
-
-            return deserialize($this->arrSettings[$strKey]);
-        }
-    }
-
-
-    /**
-     * Set data
-     * @param string
-     * @param mixed
-     */
-    public function __set($strKey, $varValue)
-    {
-        if ($strKey == 'locked') {
-            throw new \InvalidArgumentException('Cannot set lock status of collection');
-        }
-
-        if ($strKey == 'document_number') {
-            throw new \InvalidArgumentException('Cannot set document number of a collection, must be generated using generateDocumentNumber()');
-        }
-
-        // If there is a database field for that key, we store it there
-        if (array_key_exists($strKey, $this->arrData) || \Database::getInstance()->fieldExists($strKey, static::$strTable)) {
-            $this->arrData[$strKey] = $varValue;
-        }
-
-        // Everything else goes into arrSettings and is serialized
-        else {
-            if ($varValue === null) {
-                unset($this->arrSettings[$strKey]);
-            } else {
-                $this->arrSettings[$strKey] = $varValue;
-            }
-        }
-
-        // Empty all caches
-        $this->setModified(true);
-    }
-
-    /**
-     * Check whether a property is set
-     * @param string
-     * @return boolean
-     */
-    public function __isset($strKey)
-    {
-        if (isset($this->arrData[$strKey]) || isset($this->arrSettings[$strKey])) {
-
-            return true;
-        }
-
-        return false;
-    }
     /**
      * Mark a field as modified
      * @param $strKey The field key
@@ -194,11 +119,19 @@ abstract class ProductCollection extends TypeAgent
     {
         $this->ensureNotLocked();
 
+        if ($strKey == 'locked') {
+            throw new \InvalidArgumentException('Cannot change lock status of collection');
+        }
+
+        if ($strKey == 'document_number') {
+            throw new \InvalidArgumentException('Cannot change document number of a collection, must be generated using generateDocumentNumber()');
+        }
+
         $this->arrItems = null;
         $this->arrSurcharges = null;
         $this->arrCache = array();
 
-        parent::markModified($strKey);
+        return parent::markModified($strKey);
     }
 
     /**
@@ -460,12 +393,12 @@ abstract class ProductCollection extends TypeAgent
      */
     public function setRow(array $arrData)
     {
-        $this->blnModified = false;
-        $this->arrSettings = deserialize($arrData['settings'], true);
+        parent::setRow($arrData);
 
-        unset($arrData['settings']);
+        // Merge settings into arrData, save() will move the values back
+        $this->arrData = array_merge(deserialize($arrData['settings'], true), $this->arrData);
 
-        return parent::setRow($arrData);
+        return $this;
     }
 
 
@@ -477,11 +410,6 @@ abstract class ProductCollection extends TypeAgent
     public function save()
     {
         $this->ensureNotLocked();
-
-        if ($this->blnModified) {
-            $this->arrData['tstamp'] = time();
-            $this->arrData['settings'] = serialize($this->arrSettings);
-        }
 
         $arrItems = $this->getItems();
 
@@ -506,12 +434,17 @@ abstract class ProductCollection extends TypeAgent
             }
         }
 
-        if ($this->blnModified) {
-            $this->blnModified = false;
-            return parent::save();
+        $arrDbFields = \Database::getInstance()->getFieldNames(static::$strTable);
+        $arrModified = array_diff_key($this->arrModified, array_flip($arrDbFields));
+
+        if (!empty($arrModified)) {
+            $arrSettings = deserialize($this->settings, true);
+            $arrSettings = array_merge($arrSettings, array_intersect_key($this->arrData, $arrModified));
+
+            $this->settings = serialize($arrSettings);
         }
 
-        return $this;
+        return parent::save();
     }
 
 
