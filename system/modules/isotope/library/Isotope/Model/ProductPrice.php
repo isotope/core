@@ -296,7 +296,7 @@ class ProductPrice extends \Model implements IsotopePrice
             ");
 
             if ($objResult->numRows) {
-                $objPrices = new \Model\Collection($objResult, static::$strTable);
+                $objPrices = \Model\Collection::createFromDbResult($objResult, static::$strTable);
             }
 
         } else {
