@@ -119,8 +119,10 @@ abstract class ProductCollection extends TypeAgent
 
             // First call to __set for tstamp will truncate the cache
             $this->tstamp = time();
-            $this->subTotal = $this->getSubtotal();
-            $this->grandTotal = $this->getTotal();
+            $this->subtotal = $this->getSubtotal();
+            $this->tax_free_subtotal = $this->getTaxFreeSubtotal();
+            $this->total = $this->getTotal();
+            $this->tax_free_total = $this->getTaxFreeTotal();
 
             $this->save();
         }
@@ -524,6 +526,10 @@ abstract class ProductCollection extends TypeAgent
 
     public function getSubtotal()
     {
+        if ($this->isLocked()) {
+            return $this->subtotal;
+        }
+
         if (!isset($this->arrCache['subtotal'])) {
 
             $fltAmount = 0;
@@ -547,6 +553,10 @@ abstract class ProductCollection extends TypeAgent
 
     public function getTaxFreeSubtotal()
     {
+        if ($this->isLocked()) {
+            return $this->tax_free_subtotal;
+        }
+
         if (!isset($this->arrCache['taxFreeSubtotal'])) {
 
             $fltAmount = 0;
@@ -570,6 +580,10 @@ abstract class ProductCollection extends TypeAgent
 
     public function getTotal()
     {
+        if ($this->isLocked()) {
+            return $this->total;
+        }
+
         if (!isset($this->arrCache['total'])) {
 
             $fltAmount = $this->getSubtotal();
@@ -590,6 +604,10 @@ abstract class ProductCollection extends TypeAgent
 
     public function getTaxFreeTotal()
     {
+        if ($this->isLocked()) {
+            return $this->tax_free_subtotal;
+        }
+
         if (!isset($this->arrCache['taxFreeTotal'])) {
 
             $fltAmount = $this->getTaxFreeSubtotal();

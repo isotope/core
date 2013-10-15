@@ -180,9 +180,9 @@ class Saferpay extends Postsale implements IsotopePayment
 
             return false;
 
-        } elseif ($attributes->getNamedItem('AMOUNT')->nodeValue != round(($objOrder->grandTotal * 100), 0)) {
+        } elseif ($attributes->getNamedItem('AMOUNT')->nodeValue != round(($objOrder->getTotal() * 100), 0)) {
             \System::log('XML data wrong, possible manipulation (amount validation failed)! See log files for further details.', __METHOD__, TL_ERROR);
-            log_message(sprintf('XML data wrong, possible manipulation (amount validation failed)! XML was: "%s". Order was: "%s"', $attributes->getNamedItem('AMOUNT')->nodeValue, $this->grandTotal), 'error.log');
+            log_message(sprintf('XML data wrong, possible manipulation (amount validation failed)! XML was: "%s". Order was: "%s"', $attributes->getNamedItem('AMOUNT')->nodeValue, $this->getTotal()), 'error.log');
 
             return false;
 

@@ -154,8 +154,6 @@ class Order extends ProductCollection implements IsotopeProductCollection
 
         $this->shipping_id  = $objCart->shipping_id;
         $this->payment_id   = $objCart->payment_id;
-        $this->subTotal     = $objCart->subTotal;
-        $this->grandTotal   = $objCart->grandTotal;
         $this->currency     = Isotope::getConfig()->currency;
 
         // !HOOK: pre-process checkout
