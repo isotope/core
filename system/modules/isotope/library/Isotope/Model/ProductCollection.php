@@ -214,15 +214,6 @@ abstract class ProductCollection extends TypeAgent
     }
 
     /**
-     * Return true if collection has been modified
-     * @return bool
-     */
-    public function isModified()
-    {
-        return $this->blnModified;
-    }
-
-    /**
      * Mark collection as modified
      * @param bool
      */
