@@ -199,7 +199,7 @@ class Cart extends ProductCollection implements IsotopeProductCollection
             $objConfig = Config::findByRootPageOrFallback($objPage->rootId);
             $objCart = new static();
 
-            // Can't call the individual rows here, it would trigger $blnModified and a save()
+            // Can't call the individual rows here, it would trigger markModified and a save()
             $objCart->setRow(array_merge($objCart->row(), array(
                 'tstamp'    => $time,
                 'member'    => (FE_USER_LOGGED_IN === true ? \FrontendUser::getInstance()->id : 0),

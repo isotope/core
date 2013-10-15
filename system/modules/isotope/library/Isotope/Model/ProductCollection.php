@@ -94,12 +94,6 @@ abstract class ProductCollection extends TypeAgent
      */
     protected $arrSettings = array();
 
-    /**
-     * Record has been modified
-     * @var boolean
-     */
-    protected $blnModified = true;
-
 
     /**
      * Initialize the object
@@ -192,6 +186,20 @@ abstract class ProductCollection extends TypeAgent
 
         return false;
     }
+    /**
+     * Mark a field as modified
+     * @param $strKey The field key
+     */
+    protected function markModified($strKey)
+    {
+        $this->ensureNotLocked();
+
+        $this->arrItems = null;
+        $this->arrSurcharges = null;
+        $this->arrCache = array();
+
+        parent::markModified($strKey);
+    }
 
     /**
      * Return true if collection is locked
@@ -214,21 +222,6 @@ abstract class ProductCollection extends TypeAgent
     }
 
     /**
-     * Mark collection as modified
-     * @param bool
-     */
-    protected function setModified($varValue)
-    {
-        $this->ensureNotLocked();
-
-        $this->blnModified = (bool) $varValue;
-        $this->arrItems = null;
-        $this->arrSurcharges = null;
-        $this->arrCache = array();
-        $this->arrRelated = array();
-    }
-
-    /**
      * Return payment method for this collection
      * @return IsotopePayment|null
      */
@@ -245,14 +238,10 @@ abstract class ProductCollection extends TypeAgent
      * Set payment method for this collection
      * @param IsotopePayment|null
      */
-    public function setPaymentMethod(IsotopePayment $objPayment)
+    public function setPaymentMethod(IsotopePayment $objPayment=null)
     {
-        $this->ensureNotLocked();
-
+        $this->payment_id = (null === $objPayment ? 0 : $objPayment->id);
         $this->objPayment = $objPayment;
-        $this->payment_id = $objPayment->id;
-
-        $this->setModified(true);
     }
 
     /**
@@ -299,14 +288,10 @@ abstract class ProductCollection extends TypeAgent
      * Set shipping method for this collection
      * @param IsotopeShipping|null
      */
-    public function setShippingMethod(IsotopeShipping $objShipping)
+    public function setShippingMethod(IsotopeShipping $objShipping=null)
     {
-        $this->ensureNotLocked();
-
+        $this->shipping_id = (null === $objShipping ? 0 : $objShipping->id);
         $this->objShipping = $objShipping;
-        $this->shipping_id = $objShipping->id;
-
-        $this->setModified(true);
     }
 
     /**
@@ -363,15 +348,11 @@ abstract class ProductCollection extends TypeAgent
      */
     public function setBillingAddress(Address $objAddress)
     {
-        $this->ensureNotLocked();
-
         if (null === $objAddress || $objAddress->id < 1) {
             $this->address1_id = 0;
         } else {
             $this->address1_id = $objAddress->id;
         }
-
-        $this->setModified(true);
     }
 
     /**
@@ -393,8 +374,6 @@ abstract class ProductCollection extends TypeAgent
      */
     public function setShippingAddress(Address $objAddress)
     {
-        $this->ensureNotLocked();
-
         if (null === $objAddress || $objAddress->id < 1) {
             $intId = 0;
         } else {
@@ -407,8 +386,6 @@ abstract class ProductCollection extends TypeAgent
         } else {
             $this->address2_id = $intId;
         }
-
-        $this->setModified(true);
     }
 
     /**
@@ -824,8 +801,6 @@ abstract class ProductCollection extends TypeAgent
      */
     public function addProduct(IsotopeProduct $objProduct, $intQuantity, array $arrConfig=array())
     {
-        $this->ensureNotLocked();
-
         // !HOOK: additional functionality when adding product to collection
         if (isset($GLOBALS['ISO_HOOKS']['addProductToCollection']) && is_array($GLOBALS['ISO_HOOKS']['addProductToCollection'])) {
             foreach ($GLOBALS['ISO_HOOKS']['addProductToCollection'] as $callback) {
@@ -839,7 +814,7 @@ abstract class ProductCollection extends TypeAgent
         }
 
         $time = time();
-        $this->setModified(true);
+        $this->tstamp = $time;
 
         // Make sure collection is in DB before adding product
         if (!isset($this->{static::$strPk})) {
@@ -958,7 +933,7 @@ abstract class ProductCollection extends TypeAgent
         }
 
         $objItem->save();
-        $this->setModified(true);
+        $this->tstamp = time();
 
         return true;
     }
@@ -1005,7 +980,7 @@ abstract class ProductCollection extends TypeAgent
 
         unset($this->arrItems[$intId]);
 
-        $this->setModified(true);
+        $this->tstamp = time();
 
         return true;
     }
@@ -1041,36 +1016,30 @@ abstract class ProductCollection extends TypeAgent
      */
     public function setSourceCollection(IsotopeProductCollection $objSource)
     {
-        $this->ensureNotLocked();
-
         global $objPage;
 
-        $objConfig = Config::findByPk($objSource->config_id);
+        $objConfig = $objSource->getRelated('config_id');
 
         if (null === $objConfig) {
             $objConfig = Isotope::getConfig();
         }
 
-        // Store in arrData, otherwise each call to __set would trigger setModified(true)
-        $this->arrData['source_collection_id']  = $objSource->id;
-        $this->arrData['config_id']             = $objSource->config_id;
-        $this->arrData['store_id']              = $objSource->store_id;
-        $this->arrData['address1_id']           = $objSource->address1_id;
-        $this->arrData['address2_id']           = $objSource->address2_id;
-        $this->arrData['payment_id']            = $objSource->payment_id;
-        $this->arrData['shipping_id']           = $objSource->shipping_id;
-        $this->arrData['member']                = $objSource->member;
-        $this->arrData['language']              = $GLOBALS['TL_LANGUAGE'];
-        $this->arrData['currency']              = $objConfig->currency;
-
-        $this->pageId                           = (int) $objPage->id;
+        $this->source_collection_id = $objSource->id;
+        $this->config_id            = $objSource->config_id;
+        $this->store_id             = $objSource->store_id;
+        $this->address1_id          = $objSource->address1_id;
+        $this->address2_id          = $objSource->address2_id;
+        $this->payment_id           = $objSource->payment_id;
+        $this->shipping_id          = $objSource->shipping_id;
+        $this->member               = $objSource->member;
+        $this->language             = $GLOBALS['TL_LANGUAGE'];
+        $this->currency             = $objConfig->currency;
+        $this->pageId               = (int) $objPage->id;
 
         // Do not change the unique ID
-        if ($this->arrData['uniqid'] == '') {
-            $this->arrData['uniqid'] = uniqid(Isotope::getInstance()->call('replaceInsertTags', $objConfig->orderPrefix), true);
+        if ($this->uniqid == '') {
+            $this->uniqid = uniqid(Isotope::getInstance()->call('replaceInsertTags', $objConfig->orderPrefix), true);
         }
-
-        $this->setModified(true);
     }
 
 
@@ -1122,7 +1091,7 @@ abstract class ProductCollection extends TypeAgent
         }
 
         if (!empty($arrIds)) {
-            $this->setModified(true);
+            $this->tstamp = $time;
         }
 
         // !HOOK: additional functionality when adding product to collection
