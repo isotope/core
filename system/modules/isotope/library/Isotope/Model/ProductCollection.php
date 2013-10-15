@@ -228,6 +228,8 @@ abstract class ProductCollection extends TypeAgent
      */
     protected function setModified($varValue)
     {
+        $this->ensureNotLocked();
+
         $this->blnModified = (bool) $varValue;
         $this->arrItems = null;
         $this->arrSurcharges = null;
@@ -254,6 +256,8 @@ abstract class ProductCollection extends TypeAgent
      */
     public function setPaymentMethod(IsotopePayment $objPayment)
     {
+        $this->ensureNotLocked();
+
         $this->objPayment = $objPayment;
         $this->payment_id = $objPayment->id;
 
@@ -306,6 +310,8 @@ abstract class ProductCollection extends TypeAgent
      */
     public function setShippingMethod(IsotopeShipping $objShipping)
     {
+        $this->ensureNotLocked();
+
         $this->objShipping = $objShipping;
         $this->shipping_id = $objShipping->id;
 
@@ -366,6 +372,8 @@ abstract class ProductCollection extends TypeAgent
      */
     public function setBillingAddress(Address $objAddress)
     {
+        $this->ensureNotLocked();
+
         if (null === $objAddress || $objAddress->id < 1) {
             $this->address1_id = 0;
         } else {
@@ -394,6 +402,8 @@ abstract class ProductCollection extends TypeAgent
      */
     public function setShippingAddress(Address $objAddress)
     {
+        $this->ensureNotLocked();
+
         if (null === $objAddress || $objAddress->id < 1) {
             $intId = 0;
         } else {
@@ -543,6 +553,8 @@ abstract class ProductCollection extends TypeAgent
      */
     public function delete()
     {
+        $this->ensureNotLocked();
+
         // !HOOK: additional functionality when deleting a collection
         if (isset($GLOBALS['ISO_HOOKS']['deleteCollection']) && is_array($GLOBALS['ISO_HOOKS']['deleteCollection']))
         {
@@ -579,6 +591,8 @@ abstract class ProductCollection extends TypeAgent
      */
     public function purge()
     {
+        $this->ensureNotLocked();
+
         $arrItems = $this->getItems();
 
         foreach ($arrItems as $objItem) {
