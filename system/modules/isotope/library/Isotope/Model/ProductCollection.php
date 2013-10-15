@@ -750,7 +750,7 @@ abstract class ProductCollection extends TypeAgent
         $this->tstamp = $time;
 
         // Make sure collection is in DB before adding product
-        if (!isset($this->{static::$strPk})) {
+        if (!\Model\Registry::getInstance()->isRegistered($this)) {
             $this->save();
         }
 
