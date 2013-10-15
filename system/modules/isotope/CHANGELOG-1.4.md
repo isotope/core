@@ -9,6 +9,7 @@ Version 1.4.7 (2013-??-??)
 
 ### Fixed
 - Potential error message in SQL queries (#747)
+- Check user permission for "new orders" message on welcome screen (#720)
 
 
 Version 1.4.6 (2013-09-02)
