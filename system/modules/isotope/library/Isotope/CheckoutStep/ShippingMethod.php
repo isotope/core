@@ -53,14 +53,24 @@ class ShippingMethod extends CheckoutStep implements IsotopeCheckoutStep
                         continue;
                     }
 
-                    $fltPrice = $objModule->price;
-                    $strSurcharge = $objModule->surcharge;
-                    $strPrice = $fltPrice != 0 ? (($strSurcharge == '' ? '' : ' ('.$strSurcharge.')') . ': '.Isotope::formatPriceWithCurrency($fltPrice)) : '';
-                    $strNote = $objModule->note ? '<span class="note">' . $objModule->note . '</span>' : '';
-
+                    $strLabel = $objModule->getLabel();
+                    $fltPrice = $objModule->getPrice();
+                    
+                    if ($fltPrice > 0) {
+                        if ($objModule->isPercentage()) {
+                            $strLabel .= ' (' . $objModule->getPercentageLabel() . ')';
+                        }
+                        
+                        $strLabel .= ': ' . Isotope::formatPriceWithCurrency($fltPrice);
+                    }
+                    
+                    if ($objModule->note != '') {
+                        $strLabel .= '<span class="note">' . $objModule->note . '</span>';
+                    }
+                    
                     $arrOptions[] = array(
                         'value'     => $objModule->id,
-                        'label'     => $objModule->getLabel() . $strPrice . $strNote,
+                        'label'     => $strLabel,
                     );
 
                     $arrModules[$objModule->id] = $objModule;
