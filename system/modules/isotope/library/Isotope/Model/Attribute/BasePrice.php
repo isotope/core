@@ -31,7 +31,7 @@ class BasePrice extends Attribute implements IsotopeAttribute
     {
         // This class should not be registered
     	// Set type or ModelType would throw an exception
-    	$this->arrData['type'] = 'pricetiers';
+    	$this->arrData['type'] = 'baseprice';
 
     	parent::__construct($objResult);
     }
