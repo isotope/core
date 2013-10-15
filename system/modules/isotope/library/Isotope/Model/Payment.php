@@ -155,8 +155,8 @@ abstract class Payment extends TypeAgent
 
         return (float) substr($this->arrData['price'], 0, -1);
     }
-    
-    /** 
+
+    /**
      * Return percentage label if price is percentage
      * @return  string
      */

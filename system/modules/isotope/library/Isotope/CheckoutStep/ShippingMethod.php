@@ -55,19 +55,19 @@ class ShippingMethod extends CheckoutStep implements IsotopeCheckoutStep
 
                     $strLabel = $objModule->getLabel();
                     $fltPrice = $objModule->getPrice();
-                    
+
                     if ($fltPrice > 0) {
                         if ($objModule->isPercentage()) {
                             $strLabel .= ' (' . $objModule->getPercentageLabel() . ')';
                         }
-                        
+
                         $strLabel .= ': ' . Isotope::formatPriceWithCurrency($fltPrice);
                     }
-                    
+
                     if ($objModule->note != '') {
                         $strLabel .= '<span class="note">' . $objModule->note . '</span>';
                     }
-                    
+
                     $arrOptions[] = array(
                         'value'     => $objModule->id,
                         'label'     => $strLabel,
