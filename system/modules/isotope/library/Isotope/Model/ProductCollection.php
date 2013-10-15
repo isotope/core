@@ -1039,7 +1039,7 @@ abstract class ProductCollection extends TypeAgent
                 $objNewItem = clone $objOldItem;
                 $objNewItem->pid = $this->id;
                 $objNewItem->tstamp = $time;
-                $objNewItem->save(true);
+                $objNewItem->save();
             }
 
             $arrIds[$objOldItem->id] = $objNewItem->id;
