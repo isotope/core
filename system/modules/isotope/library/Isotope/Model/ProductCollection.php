@@ -97,16 +97,31 @@ abstract class ProductCollection extends TypeAgent
         parent::__construct($objResult);
 
         // Do not use __destruct, because Database object might be destructed first (see http://github.com/contao/core/issues/2236)
-        register_shutdown_function(array($this, 'saveDatabase'));
+        register_shutdown_function(array($this, 'updateDatabase'));
     }
 
-
     /**
-     * Shutdown function to save data if modified
+     * Shutdown function to update prices of items and collection
      */
-    public function saveDatabase()
+    public function updateDatabase()
     {
         if (!$this->isLocked()) {
+
+            foreach ($this->getItems() as $objItem) {
+                if (!$objItem->hasProduct() || null === $objItem->getProduct()->getPrice($this)) {
+                    continue;
+                }
+
+                $objItem->price = $objItem->getProduct()->getPrice($this)->getAmount($objItem->quantity);
+                $objItem->tax_free_price = $objItem->getProduct()->getPrice($this)->getNetAmount($objItem->quantity);
+                $objItem->save();
+            }
+
+            // First call to __set for tstamp will truncate the cache
+            $this->tstamp = time();
+            $this->subTotal = $this->getSubtotal();
+            $this->grandTotal = $this->getTotal();
+
             $this->save();
         }
     }
@@ -411,19 +426,6 @@ abstract class ProductCollection extends TypeAgent
     {
         $this->ensureNotLocked();
 
-        $arrItems = $this->getItems();
-
-        foreach ($arrItems as $objItem) {
-
-            if (!$objItem->hasProduct() || null === $objItem->getProduct()->getPrice($this)) {
-                continue;
-            }
-
-            $objItem->price = $objItem->getProduct()->getPrice($this)->getAmount($objItem->quantity);
-            $objItem->tax_free_price = $objItem->getProduct()->getPrice($this)->getNetAmount($objItem->quantity);
-            $objItem->save();
-        }
-
         // !HOOK: additional functionality when saving a collection
         if (isset($GLOBALS['ISO_HOOKS']['saveCollection']) && is_array($GLOBALS['ISO_HOOKS']['saveCollection']))
         {
@@ -511,7 +513,7 @@ abstract class ProductCollection extends TypeAgent
             throw new \LogicException('Product collection is already locked.');
         }
 
-        $this->save();
+        $this->updateDatabase();
 
         // Can't use model, it would not save as soon as it's locked
         \Database::getInstance()->query("UPDATE " . static::$strTable . " SET locked=" . time() . " WHERE id=" . $this->id);
