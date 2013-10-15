@@ -161,7 +161,7 @@ class Frontend extends \Frontend
 
             if ($objPage->iso_setReaderJumpTo && ($objReader = $objPage->getRelated('iso_readerJumpTo')) !== null) {
 
-                $objIsotopeListPage = ($objPage instanceof \Model\Collection ? $objPage->current() : $objPage);
+                $objIsotopeListPage = $objPage->current();
                 $objIsotopeListPage->loadDetails();
 
                 $arrFragments[0] = $objReader->id;
