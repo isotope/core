@@ -496,7 +496,7 @@ abstract class ProductCollection extends TypeAgent
      * @param   boolean
      * @return  $this
      */
-    public function save($blnForceInsert=false)
+    public function save()
     {
         $this->ensureNotLocked();
 
@@ -528,9 +528,9 @@ abstract class ProductCollection extends TypeAgent
             }
         }
 
-        if ($this->blnModified || $blnForceInsert) {
+        if ($this->blnModified) {
             $this->blnModified = false;
-            return parent::save($blnForceInsert);
+            return parent::save();
         }
 
         return $this;
