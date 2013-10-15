@@ -711,7 +711,7 @@ abstract class ProductCollection extends TypeAgent
     {
         $strClass = $objProduct->getRelated('type')->class;
 
-        $objItem = ProductCollectionItem::findBy(array('pid=?', 'type=?', 'product_id=?', 'options=?'), array($this->id, $strClass, $objProduct->id, serialize($objProduct->getOptions())));
+        $objItem = ProductCollectionItem::findOneBy(array('pid=?', 'type=?', 'product_id=?', 'options=?'), array($this->id, $strClass, $objProduct->id, serialize($objProduct->getOptions())));
 
         return $objItem;
     }
