@@ -32,23 +32,6 @@ class TaxClass extends \Model
 
 
     /**
-     * Get a property, unserialize appropriate fields
-     * @param  string
-     * @return mixed
-     */
-    public function __get($strKey)
-    {
-        switch ($strKey)
-        {
-            case 'rates':
-                return deserialize($this->arrData[$strKey]);
-
-            default:
-                return parent::__get($strKey);
-        }
-    }
-
-    /**
      * Get label
      * @return  string
      */

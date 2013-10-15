@@ -32,25 +32,6 @@ class TaxRate extends \Model
 
 
     /**
-     * Get a property, unserialize appropriate fields
-     * @param  string
-     * @return mixed
-     */
-    public function __get($strKey)
-    {
-        switch ($strKey)
-        {
-            case 'rate':
-            case 'address':
-                return deserialize($this->arrData[$strKey]);
-
-            default:
-                return parent::__get($strKey);
-        }
-    }
-
-
-    /**
      * Determine if this tax rate is applicable
      * @paran  float
      * @param  array
@@ -102,11 +83,12 @@ class TaxRate extends \Model
             }
         }
 
-        if (is_array($this->address) && count($this->address)) // Can't use empty() because its an object property (using __get)
+        $arrAddress = deserialize($this->address);
+        if (!empty($arrAddress) && is_array($arrAddress))
         {
             foreach ($arrAddresses as $name => $objAddress)
             {
-                if (!in_array($name, $this->address))
+                if (!in_array($name, $arrAddress))
                 {
                     continue;
                 }
@@ -171,7 +153,7 @@ class TaxRate extends \Model
      */
     public function isPercentage()
     {
-        $arrTaxRate = $this->rate;
+        $arrTaxRate = deserialize($this->rate, true);
 
         return ($arrTaxRate['unit'] == '%');
     }
@@ -191,7 +173,7 @@ class TaxRate extends \Model
      */
     public function getAmount()
     {
-        $arrTaxRate = $this->rate;
+        $arrTaxRate = deserialize($this->rate, true);
 
         return (float) $arrTaxRate['value'];
     }
