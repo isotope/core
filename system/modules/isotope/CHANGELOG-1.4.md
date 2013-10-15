@@ -7,6 +7,9 @@ Version 1.4.7 (2013-??-??)
 ### Improved
 - Added composer-related files to GIT repo
 
+### Fixed
+- Potential error message in SQL queries (#747)
+
 
 Version 1.4.6 (2013-09-02)
 --------------------------
