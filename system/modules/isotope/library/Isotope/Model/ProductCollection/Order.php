@@ -36,26 +36,6 @@ class Order extends ProductCollection implements IsotopeProductCollection
 {
 
     /**
-     * Set a value
-     * @param string
-     * @param mixed
-     * @throws Exception
-     */
-    public function __set($strKey, $varValue)
-    {
-        switch ($strKey)
-        {
-            // Document Number cannot be changed, it is created through Isotope\Model\ProductCollection\Order::generateDocumentNumber on checkout
-            case 'document_number':
-                throw new \InvalidArgumentException('document_number cannot be changed trough __set().');
-                break;
-
-            default:
-                parent::__set($strKey, $varValue);
-        }
-    }
-
-    /**
      * Return true if order has been paid.
      * This is the case if either payment date is set or order status has the paid flag
      * @return  bool
