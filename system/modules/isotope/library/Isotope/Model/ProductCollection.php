@@ -88,18 +88,6 @@ abstract class ProductCollection extends TypeAgent
      */
     protected $objPayment = false;
 
-    /**
-     * Configuration
-     * @var array
-     */
-    protected $arrSettings = array();
-
-    /**
-     * Record has been modified
-     * @var boolean
-     */
-    protected $blnModified = true;
-
 
     /**
      * Initialize the object
@@ -109,88 +97,58 @@ abstract class ProductCollection extends TypeAgent
         parent::__construct($objResult);
 
         // Do not use __destruct, because Database object might be destructed first (see http://github.com/contao/core/issues/2236)
-        register_shutdown_function(array($this, 'saveDatabase'));
+        register_shutdown_function(array($this, 'updateDatabase'));
     }
 
-
     /**
-     * Shutdown function to save data if modified
+     * Shutdown function to update prices of items and collection
      */
-    public function saveDatabase()
+    public function updateDatabase()
     {
         if (!$this->isLocked()) {
+
+            foreach ($this->getItems() as $objItem) {
+                if (!$objItem->hasProduct() || null === $objItem->getProduct()->getPrice($this)) {
+                    continue;
+                }
+
+                $objItem->price = $objItem->getProduct()->getPrice($this)->getAmount($objItem->quantity);
+                $objItem->tax_free_price = $objItem->getProduct()->getPrice($this)->getNetAmount($objItem->quantity);
+                $objItem->save();
+            }
+
+            // First call to __set for tstamp will truncate the cache
+            $this->tstamp = time();
+            $this->subtotal = $this->getSubtotal();
+            $this->tax_free_subtotal = $this->getTaxFreeSubtotal();
+            $this->total = $this->getTotal();
+            $this->tax_free_total = $this->getTaxFreeTotal();
+
             $this->save();
         }
     }
 
-
     /**
-     * Return data
-     * @param string
-     * @return mixed
+     * Mark a field as modified
+     * @param $strKey The field key
      */
-    public function __get($strKey)
+    protected function markModified($strKey)
     {
-        // If there is a database field for that key, retrive from there
-        if (array_key_exists($strKey, $this->arrData)) {
+        $this->ensureNotLocked();
 
-            return deserialize($this->arrData[$strKey]);
-        }
-
-        // Everything else is in arrSettings and serialized
-        else {
-
-            return deserialize($this->arrSettings[$strKey]);
-        }
-    }
-
-
-    /**
-     * Set data
-     * @param string
-     * @param mixed
-     */
-    public function __set($strKey, $varValue)
-    {
         if ($strKey == 'locked') {
-            throw new \InvalidArgumentException('Cannot set lock status of collection');
+            throw new \InvalidArgumentException('Cannot change lock status of collection');
         }
 
         if ($strKey == 'document_number') {
-            throw new \InvalidArgumentException('Cannot set document number of a collection, must be generated using generateDocumentNumber()');
+            throw new \InvalidArgumentException('Cannot change document number of a collection, must be generated using generateDocumentNumber()');
         }
 
-        // If there is a database field for that key, we store it there
-        if (array_key_exists($strKey, $this->arrData) || \Database::getInstance()->fieldExists($strKey, static::$strTable)) {
-            $this->arrData[$strKey] = $varValue;
-        }
+        $this->arrItems = null;
+        $this->arrSurcharges = null;
+        $this->arrCache = array();
 
-        // Everything else goes into arrSettings and is serialized
-        else {
-            if ($varValue === null) {
-                unset($this->arrSettings[$strKey]);
-            } else {
-                $this->arrSettings[$strKey] = $varValue;
-            }
-        }
-
-        // Empty all caches
-        $this->setModified(true);
-    }
-
-    /**
-     * Check whether a property is set
-     * @param string
-     * @return boolean
-     */
-    public function __isset($strKey)
-    {
-        if (isset($this->arrData[$strKey]) || isset($this->arrSettings[$strKey])) {
-
-            return true;
-        }
-
-        return false;
+        return parent::markModified($strKey);
     }
 
     /**
@@ -214,28 +172,6 @@ abstract class ProductCollection extends TypeAgent
     }
 
     /**
-     * Return true if collection has been modified
-     * @return bool
-     */
-    public function isModified()
-    {
-        return $this->blnModified;
-    }
-
-    /**
-     * Mark collection as modified
-     * @param bool
-     */
-    protected function setModified($varValue)
-    {
-        $this->blnModified = (bool) $varValue;
-        $this->arrItems = null;
-        $this->arrSurcharges = null;
-        $this->arrCache = array();
-        $this->arrRelated = array();
-    }
-
-    /**
      * Return payment method for this collection
      * @return IsotopePayment|null
      */
@@ -252,12 +188,10 @@ abstract class ProductCollection extends TypeAgent
      * Set payment method for this collection
      * @param IsotopePayment|null
      */
-    public function setPaymentMethod(IsotopePayment $objPayment)
+    public function setPaymentMethod(IsotopePayment $objPayment=null)
     {
+        $this->payment_id = (null === $objPayment ? 0 : $objPayment->id);
         $this->objPayment = $objPayment;
-        $this->payment_id = $objPayment->id;
-
-        $this->setModified(true);
     }
 
     /**
@@ -304,12 +238,10 @@ abstract class ProductCollection extends TypeAgent
      * Set shipping method for this collection
      * @param IsotopeShipping|null
      */
-    public function setShippingMethod(IsotopeShipping $objShipping)
+    public function setShippingMethod(IsotopeShipping $objShipping=null)
     {
+        $this->shipping_id = (null === $objShipping ? 0 : $objShipping->id);
         $this->objShipping = $objShipping;
-        $this->shipping_id = $objShipping->id;
-
-        $this->setModified(true);
     }
 
     /**
@@ -371,8 +303,6 @@ abstract class ProductCollection extends TypeAgent
         } else {
             $this->address1_id = $objAddress->id;
         }
-
-        $this->setModified(true);
     }
 
     /**
@@ -406,8 +336,6 @@ abstract class ProductCollection extends TypeAgent
         } else {
             $this->address2_id = $intId;
         }
-
-        $this->setModified(true);
     }
 
     /**
@@ -489,12 +417,12 @@ abstract class ProductCollection extends TypeAgent
      */
     public function setRow(array $arrData)
     {
-        $this->blnModified = false;
-        $this->arrSettings = deserialize($arrData['settings'], true);
+        parent::setRow($arrData);
 
-        unset($arrData['settings']);
+        // Merge settings into arrData, save() will move the values back
+        $this->arrData = array_merge(deserialize($arrData['settings'], true), $this->arrData);
 
-        return parent::setRow($arrData);
+        return $this;
     }
 
 
@@ -503,27 +431,9 @@ abstract class ProductCollection extends TypeAgent
      * @param   boolean
      * @return  $this
      */
-    public function save($blnForceInsert=false)
+    public function save()
     {
         $this->ensureNotLocked();
-
-        if ($this->blnModified) {
-            $this->arrData['tstamp'] = time();
-            $this->arrData['settings'] = serialize($this->arrSettings);
-        }
-
-        $arrItems = $this->getItems();
-
-        foreach ($arrItems as $objItem) {
-
-            if (!$objItem->hasProduct() || null === $objItem->getProduct()->getPrice($this)) {
-                continue;
-            }
-
-            $objItem->price = $objItem->getProduct()->getPrice($this)->getAmount($objItem->quantity);
-            $objItem->tax_free_price = $objItem->getProduct()->getPrice($this)->getNetAmount($objItem->quantity);
-            $objItem->save();
-        }
 
         // !HOOK: additional functionality when saving a collection
         if (isset($GLOBALS['ISO_HOOKS']['saveCollection']) && is_array($GLOBALS['ISO_HOOKS']['saveCollection']))
@@ -535,12 +445,17 @@ abstract class ProductCollection extends TypeAgent
             }
         }
 
-        if ($this->blnModified || $blnForceInsert) {
-            $this->blnModified = false;
-            return parent::save($blnForceInsert);
+        $arrDbFields = \Database::getInstance()->getFieldNames(static::$strTable);
+        $arrModified = array_diff_key($this->arrModified, array_flip($arrDbFields));
+
+        if (!empty($arrModified)) {
+            $arrSettings = deserialize($this->settings, true);
+            $arrSettings = array_merge($arrSettings, array_intersect_key($this->arrData, $arrModified));
+
+            $this->settings = serialize($arrSettings);
         }
 
-        return $this;
+        return parent::save();
     }
 
 
@@ -550,6 +465,8 @@ abstract class ProductCollection extends TypeAgent
      */
     public function delete()
     {
+        $this->ensureNotLocked();
+
         // !HOOK: additional functionality when deleting a collection
         if (isset($GLOBALS['ISO_HOOKS']['deleteCollection']) && is_array($GLOBALS['ISO_HOOKS']['deleteCollection']))
         {
@@ -586,6 +503,8 @@ abstract class ProductCollection extends TypeAgent
      */
     public function purge()
     {
+        $this->ensureNotLocked();
+
         $arrItems = $this->getItems();
 
         foreach ($arrItems as $objItem) {
@@ -603,15 +522,21 @@ abstract class ProductCollection extends TypeAgent
             throw new \LogicException('Product collection is already locked.');
         }
 
-        $this->save();
+        $this->updateDatabase();
 
         // Can't use model, it would not save as soon as it's locked
-        \Database::getInstance()->query("UPDATE " . static::$strTable . " SET locked=" . time() . " WHERE id=" . $this->id);
+        $time = time();
+        \Database::getInstance()->query("UPDATE " . static::$strTable . " SET locked=" . $time . " WHERE id=" . $this->id);
+        $this->arrData['locked'] = $time;
     }
 
 
     public function getSubtotal()
     {
+        if ($this->isLocked()) {
+            return $this->subtotal;
+        }
+
         if (!isset($this->arrCache['subtotal'])) {
 
             $fltAmount = 0;
@@ -635,6 +560,10 @@ abstract class ProductCollection extends TypeAgent
 
     public function getTaxFreeSubtotal()
     {
+        if ($this->isLocked()) {
+            return $this->tax_free_subtotal;
+        }
+
         if (!isset($this->arrCache['taxFreeSubtotal'])) {
 
             $fltAmount = 0;
@@ -658,6 +587,10 @@ abstract class ProductCollection extends TypeAgent
 
     public function getTotal()
     {
+        if ($this->isLocked()) {
+            return $this->total;
+        }
+
         if (!isset($this->arrCache['total'])) {
 
             $fltAmount = $this->getSubtotal();
@@ -678,6 +611,10 @@ abstract class ProductCollection extends TypeAgent
 
     public function getTaxFreeTotal()
     {
+        if ($this->isLocked()) {
+            return $this->tax_free_subtotal;
+        }
+
         if (!isset($this->arrCache['taxFreeTotal'])) {
 
             $fltAmount = $this->getTaxFreeSubtotal();
@@ -781,7 +718,7 @@ abstract class ProductCollection extends TypeAgent
     {
         $strClass = $objProduct->getRelated('type')->class;
 
-        $objItem = ProductCollectionItem::findBy(array('pid=?', 'type=?', 'product_id=?', 'options=?'), array($this->id, $strClass, $objProduct->id, serialize($objProduct->getOptions())));
+        $objItem = ProductCollectionItem::findOneBy(array('pid=?', 'type=?', 'product_id=?', 'options=?'), array($this->id, $strClass, $objProduct->id, serialize($objProduct->getOptions())));
 
         return $objItem;
     }
@@ -826,8 +763,6 @@ abstract class ProductCollection extends TypeAgent
      */
     public function addProduct(IsotopeProduct $objProduct, $intQuantity, array $arrConfig=array())
     {
-        $this->ensureNotLocked();
-
         // !HOOK: additional functionality when adding product to collection
         if (isset($GLOBALS['ISO_HOOKS']['addProductToCollection']) && is_array($GLOBALS['ISO_HOOKS']['addProductToCollection'])) {
             foreach ($GLOBALS['ISO_HOOKS']['addProductToCollection'] as $callback) {
@@ -841,10 +776,10 @@ abstract class ProductCollection extends TypeAgent
         }
 
         $time = time();
-        $this->setModified(true);
+        $this->tstamp = $time;
 
         // Make sure collection is in DB before adding product
-        if (!isset($this->{static::$strPk})) {
+        if (!\Model\Registry::getInstance()->isRegistered($this)) {
             $this->save();
         }
 
@@ -960,7 +895,7 @@ abstract class ProductCollection extends TypeAgent
         }
 
         $objItem->save();
-        $this->setModified(true);
+        $this->tstamp = time();
 
         return true;
     }
@@ -1007,7 +942,7 @@ abstract class ProductCollection extends TypeAgent
 
         unset($this->arrItems[$intId]);
 
-        $this->setModified(true);
+        $this->tstamp = time();
 
         return true;
     }
@@ -1043,36 +978,30 @@ abstract class ProductCollection extends TypeAgent
      */
     public function setSourceCollection(IsotopeProductCollection $objSource)
     {
-        $this->ensureNotLocked();
-
         global $objPage;
 
-        $objConfig = Config::findByPk($objSource->config_id);
+        $objConfig = $objSource->getRelated('config_id');
 
         if (null === $objConfig) {
             $objConfig = Isotope::getConfig();
         }
 
-        // Store in arrData, otherwise each call to __set would trigger setModified(true)
-        $this->arrData['source_collection_id']  = $objSource->id;
-        $this->arrData['config_id']             = $objSource->config_id;
-        $this->arrData['store_id']              = $objSource->store_id;
-        $this->arrData['address1_id']           = $objSource->address1_id;
-        $this->arrData['address2_id']           = $objSource->address2_id;
-        $this->arrData['payment_id']            = $objSource->payment_id;
-        $this->arrData['shipping_id']           = $objSource->shipping_id;
-        $this->arrData['member']                = $objSource->member;
-        $this->arrData['language']              = $GLOBALS['TL_LANGUAGE'];
-        $this->arrData['currency']              = $objConfig->currency;
-
-        $this->pageId                           = (int) $objPage->id;
+        $this->source_collection_id = $objSource->id;
+        $this->config_id            = $objSource->config_id;
+        $this->store_id             = $objSource->store_id;
+        $this->address1_id          = $objSource->address1_id;
+        $this->address2_id          = $objSource->address2_id;
+        $this->payment_id           = $objSource->payment_id;
+        $this->shipping_id          = $objSource->shipping_id;
+        $this->member               = $objSource->member;
+        $this->language             = $GLOBALS['TL_LANGUAGE'];
+        $this->currency             = $objConfig->currency;
+        $this->pageId               = (int) $objPage->id;
 
         // Do not change the unique ID
-        if ($this->arrData['uniqid'] == '') {
-            $this->arrData['uniqid'] = uniqid(Isotope::getInstance()->call('replaceInsertTags', $objConfig->orderPrefix), true);
+        if ($this->uniqid == '') {
+            $this->uniqid = uniqid(Isotope::getInstance()->call('replaceInsertTags', $objConfig->orderPrefix), true);
         }
-
-        $this->setModified(true);
     }
 
 
@@ -1117,14 +1046,14 @@ abstract class ProductCollection extends TypeAgent
                 $objNewItem = clone $objOldItem;
                 $objNewItem->pid = $this->id;
                 $objNewItem->tstamp = $time;
-                $objNewItem->save(true);
+                $objNewItem->save();
             }
 
             $arrIds[$objOldItem->id] = $objNewItem->id;
         }
 
         if (!empty($arrIds)) {
-            $this->setModified(true);
+            $this->tstamp = $time;
         }
 
         // !HOOK: additional functionality when adding product to collection

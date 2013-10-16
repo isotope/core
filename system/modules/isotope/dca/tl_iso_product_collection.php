@@ -270,13 +270,21 @@ $GLOBALS['TL_DCA']['tl_iso_product_collection'] = array
             'input_field_callback'  => array('Isotope\tl_iso_product_collection', 'generateOrderDetails'),
             'eval'                  => array('doNotShow'=>true),
         ),
-        'subTotal' => array
+        'subtotal' => array
         (
             'sql'                   => "decimal(12,2) NOT NULL default '0.00'",
         ),
-        'grandTotal' => array
+        'tax_free_subtotal' => array
+        (
+            'sql'                   => "decimal(12,2) NOT NULL default '0.00'",
+        ),
+        'total' => array
         (
             'label'                 => &$GLOBALS['TL_LANG']['MSC']['grandTotalLabel'],
+            'sql'                   => "decimal(12,2) NOT NULL default '0.00'",
+        ),
+        'tax_free_total' => array
+        (
             'sql'                   => "decimal(12,2) NOT NULL default '0.00'",
         ),
         'currency' => array

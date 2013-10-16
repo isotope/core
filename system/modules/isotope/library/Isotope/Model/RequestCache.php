@@ -351,13 +351,13 @@ class RequestCache extends \Model
      * @return  RequestCache
      * @throws  \BadMethodCallException
      */
-    public function save($blnForceInsert=false)
+    public function save()
     {
         if ($this->blnModified && $this->id > 0 && !$blnForceInsert) {
             throw new \BadMethodCallException('Can\'t save a modified cache');
         }
 
-        return parent::save($blnForceInsert);
+        return parent::save();
     }
 
     /**

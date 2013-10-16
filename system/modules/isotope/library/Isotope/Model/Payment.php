@@ -72,29 +72,6 @@ abstract class Payment extends TypeAgent
 
 
     /**
-     * Return an object property
-     * @param string
-     * @return mixed
-     */
-    public function __get($strKey)
-    {
-        switch ($strKey)
-        {
-            case 'available':
-                throw new \BadFunctionCallException('Your payment method does not work with Isotope 2.x');
-                break;
-
-            case 'surcharge':
-                return substr($this->arrData['price'], -1) == '%' ? $this->arrData['price'] : '';
-                break;
-
-            default:
-                return parent::__get($strKey);
-        }
-    }
-
-
-    /**
      * Return true or false depending on availability of the payment method
      * @return bool
      */
@@ -164,7 +141,6 @@ abstract class Payment extends TypeAgent
         substr($this->arrData['price'], -1) == '%' ? true : false;
     }
 
-
     /**
      * Return percentage amount (if applicable)
      * @return float
@@ -180,6 +156,14 @@ abstract class Payment extends TypeAgent
         return (float) substr($this->arrData['price'], 0, -1);
     }
 
+    /**
+     * Return percentage label if price is percentage
+     * @return  string
+     */
+    public function getPercentageLabel()
+    {
+        return $this->isPercentage() ? $this->arrData['price'] : '';
+    }
 
     /**
      * Return calculated price for this payment method

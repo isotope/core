@@ -38,26 +38,6 @@ class Order extends ProductCollection implements IsotopeProductCollection
 {
 
     /**
-     * Set a value
-     * @param string
-     * @param mixed
-     * @throws Exception
-     */
-    public function __set($strKey, $varValue)
-    {
-        switch ($strKey)
-        {
-            // Document Number cannot be changed, it is created through Isotope\Model\ProductCollection\Order::generateDocumentNumber on checkout
-            case 'document_number':
-                throw new \InvalidArgumentException('document_number cannot be changed trough __set().');
-                break;
-
-            default:
-                parent::__set($strKey, $varValue);
-        }
-    }
-
-    /**
      * Return true if order has been paid.
      * This is the case if either payment date is set or order status has the paid flag
      * @return  bool
@@ -174,14 +154,9 @@ class Order extends ProductCollection implements IsotopeProductCollection
         Isotope::setConfig($this->getRelated('config_id'));
         Isotope::setCart($objCart);
 
-        $this->arrData['shipping_id']          = $objCart->shipping_id;
-        $this->arrData['payment_id']           = $objCart->payment_id;
-        $this->arrData['subTotal']             = $objCart->subTotal;
-        $this->arrData['grandTotal']           = $objCart->grandTotal;
-        $this->arrData['currency']             = Isotope::getConfig()->currency;
-
-        // Mark Order as modified to empty cache
-        $this->setModified(true);
+        $this->shipping_id  = $objCart->shipping_id;
+        $this->payment_id   = $objCart->payment_id;
+        $this->currency     = Isotope::getConfig()->currency;
 
         // !HOOK: pre-process checkout
         if (isset($GLOBALS['ISO_HOOKS']['preCheckout']) && is_array($GLOBALS['ISO_HOOKS']['preCheckout'])) {
