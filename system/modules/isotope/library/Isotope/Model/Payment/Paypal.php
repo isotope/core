@@ -31,11 +31,9 @@ class Paypal extends Postsale implements IsotopePayment
 
     /**
      * Process PayPal Instant Payment Notifications (IPN)
-     *
-     * @access public
-     * @return void
+     * @param   IsotopeProductCollection
      */
-    public function processPostsale()
+    public function processPostsale(IsotopeProductCollection $objOrder)
     {
         $objRequest = new \Request();
         $objRequest->send(('https://www.' . ($this->debug ? 'sandbox.' : '') . 'paypal.com/cgi-bin/webscr?cmd=_notify-validate'), file_get_contents("php://input"), 'post');
@@ -47,13 +45,6 @@ class Paypal extends Postsale implements IsotopePayment
         }
         elseif ($objRequest->response == 'VERIFIED' && (\Input::post('receiver_email', true) == $this->paypal_account || $this->debug))
         {
-            if (($objOrder = Order::findByPk(\Input::post('invoice'))) === null)
-            {
-                \System::log('Order ID "' . \Input::post('invoice') . '" not found', __METHOD__, TL_ERROR);
-
-                return;
-            }
-
             // Validate payment data (see #2221)
             if ($objOrder->currency != \Input::post('mc_currency') || $objOrder->getTotal() != \Input::post('mc_gross'))
             {
@@ -123,6 +114,11 @@ class Paypal extends Postsale implements IsotopePayment
 
         header('HTTP/1.1 200 OK');
         exit;
+    }
+
+    public function getPostsaleOrder()
+    {
+        return Order::findByPk(\Input::post('invoice'));
     }
 
 

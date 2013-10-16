@@ -28,18 +28,12 @@ class Worldpay extends Postsale implements IsotopePayment
 
     /**
      * Process Instant Payment Notifications (IPN)
-     * @access public
-     * @return void
+     * @param   IsotopeProductCollection
      */
-    public function processPostSale()
+    public function processPostSale(IsotopeProductCollection $objOrder)
     {
         if (\Input::post('instId') != $this->worldpay_instId) {
             \System::log('Installation ID does not match', __METHOD__, TL_ERROR);
-            $this->postsaleError();
-        }
-
-        if (($objOrder = Order::findOneBy('source_collection_id', \Input::post('cartId'))) === null) {
-            \System::log('Order ID "' . \Input::post('cartId') . '" not found', __METHOD__, TL_ERROR);
             $this->postsaleError();
         }
 
@@ -77,6 +71,11 @@ class Worldpay extends Postsale implements IsotopePayment
         $objOrder->save();
 
         $this->postsaleSuccess($objOrder);
+    }
+
+    public function getPostsaleOrder()
+    {
+        return Order::findOneBy('source_collection_id', \Input::post('cartId'));
     }
 
 

@@ -36,15 +36,10 @@ class Sofortueberweisung extends Postsale implements IsotopePayment
 
     /**
      * Handle the server to server postsale request
+     * @param   IsotopeProductCollection
      */
-    public function processPostsale()
+    public function processPostsale(IsotopeProductCollection $objOrder)
     {
-        // check if there is a order with this ID
-        if (($objOrder = Order::findByPk(\Input::post('user_variable_0'))) === null) {
-            \System::log('Order not found. (Sofortüberweisung.de)', __METHOD__, TL_ERROR);
-            return;
-        }
-
         $arrHash = array (
             'transaction'                => \Input::post('transaction'),
             'user_id'                    => \Input::post('user_id'),
@@ -94,6 +89,11 @@ class Sofortueberweisung extends Postsale implements IsotopePayment
         $objOrder->updateOrderStatus($this->new_order_status);
 
         $objOrder->save();
+    }
+
+    public function getPostsaleOrder()
+    {
+        return Order::findByPk(\Input::post('user_variable_0'));
     }
 
 

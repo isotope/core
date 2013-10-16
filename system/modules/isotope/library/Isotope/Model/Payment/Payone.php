@@ -22,11 +22,9 @@ class Payone extends Postsale implements IsotopePayment
 
     /**
      * Process Transaction URL notification
-     *
-     * @access public
-     * @return void
+     * @param   IsotopeProductCollection
      */
-    public function processPostsale()
+    public function processPostsale(IsotopeProductCollection $objOrder)
     {
         if (\Input::post('aid') != $this->payone_aid
             || \Input::post('portalid') != $this->payone_portalid
@@ -34,11 +32,6 @@ class Payone extends Postsale implements IsotopePayment
             || (\Input::post('mode') == 'live' && $this->debug)
         ) {
             \System::log('PayOne configuration mismatch', __METHOD__, TL_ERROR);
-            die('TSOK');
-        }
-
-        if (($objOrder = Order::findByPk(\Input::post('reference'))) === null) {
-            \System::log('Order ID "'.\Input::post('reference').'" not found', __METHOD__, TL_ERROR);
             die('TSOK');
         }
 
@@ -62,6 +55,11 @@ class Payone extends Postsale implements IsotopePayment
 
         // PayOne must get TSOK as return value, otherwise the request will be sent again
         die('TSOK');
+    }
+
+    public function getPostsaleOrder()
+    {
+        return Order::findByPk(\Input::post('reference'));
     }
 
 

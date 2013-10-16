@@ -19,7 +19,6 @@ use Isotope\Model\ProductCollection\Order;
 
 /**
  * Class PaymentSaferpay
- * @todo    remove magic_quotes:gpc when PHP 5.4 is compulsory (it's also deprecated in PHP 5.3 so it might also be removed when PHP 5.3 is compulsory)
  */
 class Saferpay extends Postsale implements IsotopePayment
 {
@@ -49,44 +48,22 @@ class Saferpay extends Postsale implements IsotopePayment
     const payCompleteURI = 'https://www.saferpay.com/hosting/PayComplete.asp';
 
 
+    protected $objXML;
+
+
     /**
      * Process Saferpay server to server notification
+     * @param   IsotopeProductCollection
      */
-    public function processPostsale()
+    public function processPostsale(IsotopeProductCollection $objOrder)
     {
-        if (\Input::get('mod') != 'pay' || \Input::get('id') != $this->id) {
-
-            return false;
-        }
-
-        // Cannot use \Input::post() here because it would kill XML data
-        $strData = $_POST['DATA'];
-
-        // catch magic_quotes_gpc is set to yes in php.ini (can be removed when PHP 5.4 is compulsory)
-        if (substr($strData, 0, 15) == '<IDP MSGTYPE=\\') {
-            $strData = stripslashes($strData);
-        }
-
-        $doc = new DOMDocument();
-        $doc->loadXML($strData);
-        $attributes = $doc->getElementsByTagName('IDP')->item(0)->attributes;
-
-        // validate the data on our side
-        if (($objOrder = Order::findByPk($attributes->getNamedItem('ORDERID')->nodeValue)) === null) {
-            \System::log(sprintf('Order ID could not be found. See log files for further details.'), __METHOD__, TL_ERROR);
-            log_message(sprintf('Order ID could not be found. Order ID was: "%s".', $attributes->getNamedItem('ORDERID')->nodeValue), 'error.log');
-
-            return;
-        }
-
-        if (!$this->validateXML($attributes, $objOrder)) {
-
+        if (!$this->validateXML($objOrder)) {
             return;
         }
 
         // Get the Payment URL from the saferpay hosting server
         $objRequest = new \Request();
-        $objRequest->send(static::verifyPayConfirmURI . "?DATA=" . urlencode($strData) . "&SIGNATURE=" . urlencode(\Input::post('SIGNATURE')));
+        $objRequest->send(static::verifyPayConfirmURI . "?DATA=" . urlencode($this->getPostData()) . "&SIGNATURE=" . urlencode(\Input::post('SIGNATURE')));
 
         // Stop if verification is not working
         if (strtoupper(substr($objRequest->response, 0, 3)) != 'OK:')
@@ -135,6 +112,11 @@ class Saferpay extends Postsale implements IsotopePayment
         }
     }
 
+    public function getPostsaleOrder()
+    {
+        return Order::findByPk($this->getPostValue('ORDERID'));
+    }
+
 
     /**
      * HTML form for checkout
@@ -163,6 +145,39 @@ class Saferpay extends Postsale implements IsotopePayment
 <p><a href="' . $objRequest->response . '">' . $GLOBALS['TL_LANG']['MSC']['pay_with_redirect'][2]. '</a></p>';
     }
 
+    /**
+     * Get data from POST
+     * @todo    remove magic_quotes:gpc when PHP 5.4 is compulsory (it's also deprecated in PHP 5.3 so it might also be removed when PHP 5.3 is compulsory)
+     */
+    private function getPostData()
+    {
+        // Cannot use \Input::post() here because it would kill XML data
+        $strData = $_POST['DATA'];
+
+        // catch magic_quotes_gpc is set to yes in php.ini (can be removed when PHP 5.4 is compulsory)
+        if (substr($strData, 0, 15) == '<IDP MSGTYPE=\\') {
+            $strData = stripslashes($strData);
+        }
+
+        return $strData;
+    }
+
+    /**
+     * Parse POST data XML and get attribute value
+     * @param   string
+     * @return  string
+     */
+    private function getPostValue($strKey)
+    {
+        if (null === $this->objXML) {
+            $doc = new DOMDocument();
+            $doc->loadXML($this->getPostData());
+            $this->objXML = $doc->getElementsByTagName('IDP')->item(0)->attributes;
+        }
+
+        return (string) $this->objXML->getNamedItem($strKey)->nodeValue;
+    }
+
 
     /**
      * Check XML data, add to log if debugging is enabled
@@ -171,24 +186,23 @@ class Saferpay extends Postsale implements IsotopePayment
      * @param  Order
      * @return bool
      */
-    private function validateXML($attributes, Order $objOrder)
+    private function validateXML(Order $objOrder)
     {
-        log_message(print_r($objOrder, true), 'postsale.log');
-        if ($attributes->getNamedItem('ACCOUNTID')->nodeValue != $this->saferpay_accountid) {
+        if ($this->getPostValue('ACCOUNTID') != $this->saferpay_accountid) {
             \System::log('XML data wrong, possible manipulation (accountId validation failed)! See log files for further details.', __METHOD__, TL_ERROR);
-            log_message(sprintf('XML data wrong, possible manipulation (accountId validation failed)! XML was: "%s". Order was: "%s"', $attributes->getNamedItem('ACCOUNTID')->nodeValue, $this->saferpay_accountid), 'error.log');
+            log_message(sprintf('XML data wrong, possible manipulation (accountId validation failed)! XML was: "%s". Order was: "%s"', $this->getPostValue('ACCOUNTID'), $this->saferpay_accountid), 'error.log');
 
             return false;
 
-        } elseif ($attributes->getNamedItem('AMOUNT')->nodeValue != round(($objOrder->getTotal() * 100), 0)) {
+        } elseif ($this->getPostValue('AMOUNT') != round(($objOrder->getTotal() * 100), 0)) {
             \System::log('XML data wrong, possible manipulation (amount validation failed)! See log files for further details.', __METHOD__, TL_ERROR);
-            log_message(sprintf('XML data wrong, possible manipulation (amount validation failed)! XML was: "%s". Order was: "%s"', $attributes->getNamedItem('AMOUNT')->nodeValue, $this->getTotal()), 'error.log');
+            log_message(sprintf('XML data wrong, possible manipulation (amount validation failed)! XML was: "%s". Order was: "%s"', $this->getPostValue('AMOUNT'), $this->getTotal()), 'error.log');
 
             return false;
 
-        } elseif ($attributes->getNamedItem('CURRENCY')->nodeValue != $objOrder->currency) {
+        } elseif ($this->getPostValue('CURRENCY') != $objOrder->currency) {
             \System::log('XML data wrong, possible manipulation (currency validation failed)! See log files for further details.', __METHOD__, TL_ERROR);
-            log_message(sprintf('XML data wrong, possible manipulation (currency validation failed)! XML was: "%s". Order was: "%s"', $attributes->getNamedItem('CURRENCY')->nodeValue, $this->currency), 'error.log');
+            log_message(sprintf('XML data wrong, possible manipulation (currency validation failed)! XML was: "%s". Order was: "%s"', $this->getPostValue('CURRENCY'), $this->currency), 'error.log');
 
             return false;
         }

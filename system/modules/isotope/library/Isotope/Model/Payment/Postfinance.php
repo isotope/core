@@ -79,22 +79,13 @@ class Postfinance extends Payment implements IsotopePayment, IsotopePostsale
 
     /**
      * Process post-sale requestion from the Postfinance payment server.
-     *
-     * @access public
-     * @return void
+     * @param   IsotopeProductCollection
      */
-    public function processPostsale()
+    public function processPostsale(IsotopeProductCollection $objOrder)
     {
         if ($this->getRequestData('NCERROR') > 0)
         {
             \System::log('Order ID "' . $this->getRequestData('orderID') . '" has NCERROR ' . $this->getRequestData('NCERROR'), __METHOD__, TL_ERROR);
-
-            return;
-        }
-
-        if (($objOrder = Order::findByPk($this->getRequestData('orderID'))) === null)
-        {
-            \System::log('Order ID "' . $this->getRequestData('orderID') . '" not found', __METHOD__, TL_ERROR);
 
             return;
         }
@@ -123,6 +114,11 @@ class Postfinance extends Payment implements IsotopePayment, IsotopePostsale
 
         $objOrder->date_paid = time();
         $objOrder->save();
+    }
+
+    public function getPostsaleOrder()
+    {
+        return Order::findByPk($this->getRequestData('orderID'));
     }
 
 

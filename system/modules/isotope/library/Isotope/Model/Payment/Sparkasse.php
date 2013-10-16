@@ -28,11 +28,9 @@ class Sparkasse extends Postsale implements IsotopePayment
 
     /**
      * Server to server communication
-     *
-     * @access public
-     * @return void
+     * @param   IsotopeProductCollection
      */
-    public function processPostsale()
+    public function processPostsale(IsotopeProductCollection $objOrder)
     {
         $arrData = array();
 
@@ -51,12 +49,6 @@ class Sparkasse extends Postsale implements IsotopePayment
         if (\Input::post('mac') != $this->calculateHash($arrData))
         {
             \System::log('Security hash mismatch in Sparkasse payment!', __METHOD__, TL_ERROR);
-            $this->redirectError($arrData);
-        }
-
-        if (($objOrder = Order::findByPk($arrData['orderid'])) === null)
-        {
-            \System::log('Order ID "' . $arrData['orderid'] . '" not found', __METHOD__, TL_ERROR);
             $this->redirectError($arrData);
         }
 
@@ -95,6 +87,11 @@ class Sparkasse extends Postsale implements IsotopePayment
 
         echo 'redirecturls=' . \Environment::get('base') . \Controller::generateFrontendUrl($objPage->row(), '/step/complete/uid/' . $objOrder->uniqid, $objPage->language);
         exit;
+    }
+
+    public function getPostsaleOrder()
+    {
+        return Order::findByPk(\Input::post('orderid'));
     }
 
 

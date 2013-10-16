@@ -29,17 +29,13 @@ class Datatrans extends Postsale implements IsotopePayment
 
     /**
      * Perform server to server data check
+     * @param   IsotopeProductCollection
      */
-    public function processPostsale()
+    public function processPostsale(IsotopeProductCollection $objOrder)
     {
         // Verify payment status
         if (\Input::post('status') != 'success') {
             \System::log('Payment for order ID "' . \Input::post('refno') . '" failed.', __METHOD__, TL_ERROR);
-            return false;
-        }
-
-        if (($objOrder = Order::findByPk(\Input::post('refno'))) === null) {
-            \System::log('Order ID "' . \Input::post('refno') . '" not found', __METHOD__, TL_ERROR);
             return false;
         }
 
@@ -69,6 +65,11 @@ class Datatrans extends Postsale implements IsotopePayment
         $objOrder->updateOrderStatus($this->new_order_status);
 
         $objOrder->save();
+    }
+
+    public function getPostsaleOrder()
+    {
+        return Order::findByPk(\Input::post('refno'));
     }
 
 

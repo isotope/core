@@ -25,6 +25,12 @@ interface IsotopePostsale
      * This function can be called from the postsale.php file when the payment server is requestion/posting a status change.
      * You can see an implementation example in Isotope\Payment\Postsale
      */
-    public function processPostsale();
+    public function processPostsale(IsotopeProductCollection $objOrder);
+
+    /**
+     * Get the order object in a postsale request
+     * @return  IsotopeProductCollection
+     */
+    public function getPostsaleOrder();
 
 }

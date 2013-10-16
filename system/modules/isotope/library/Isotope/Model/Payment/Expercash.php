@@ -50,17 +50,10 @@ class Expercash extends Payment implements IsotopePayment, IsotopePostsale
     /**
      * Process PayPal Instant Payment Notifications (IPN)
      *
-     * @access public
-     * @return void
+     * @param   IsotopeProductCollection
      */
-    public function processPostsale()
+    public function processPostsale(IsotopeProductCollection $objOrder)
     {
-        if (($objOrder = Order::findByPk(\Input::get('transactionId'))) === null) {
-            \System::log('Order ID "' . \Input::post('invoice') . '" not found', __METHOD__, TL_ERROR);
-
-            return;
-        }
-
         if (!$this->validateUrlParams($objOrder)) {
             \System::log('ExperCash: data rejected' . print_r($_POST, true), __METHOD__, TL_GENERAL);
         }
@@ -77,6 +70,11 @@ class Expercash extends Payment implements IsotopePayment, IsotopePostsale
 
         header('HTTP/1.1 200 OK');
         exit;
+    }
+
+    public function getPostsaleOrder()
+    {
+        return Order::findByPk(\Input::get('transactionId'));
     }
 
 
