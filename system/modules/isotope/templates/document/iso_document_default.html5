@@ -4,15 +4,13 @@
             <td>
                 <h2><?php echo $this->title; ?></h2>
             </td>
-            <?php if ($this->billingAddress): ?>
             <td>
-                <?php echo $this->billingAddress->generateHtml(); ?>
+                <?php if ($this->collection->getBillingAddress()) echo $this->collection->getBillingAddress()->generateHtml(); ?>
             </td>
-            <?php endif; ?>
         </tr>
         <tr>
-            <td<?php if ($this->billingAddress): ?> colspan="2"<?php endif; ?>>
-                <?php echo $this->collection; ?>
+            <td colspan="2">
+                <?php echo $this->products; ?>
             </td>
         </tr>
     </table>
