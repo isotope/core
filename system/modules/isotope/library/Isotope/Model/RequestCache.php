@@ -32,12 +32,6 @@ class RequestCache extends \Model
     protected static $strTable = 'tl_iso_requestcache';
 
     /**
-     * Modified flag
-     * @var bool
-     */
-    protected $blnModified = false;
-
-    /**
      * Filter configuration
      * @var array
      */
@@ -63,15 +57,6 @@ class RequestCache extends \Model
     public function isEmpty()
     {
         return (null === $this->getFilters() && null === $this->getSortings() && null === $this->getLimits());
-    }
-
-    /**
-     * Check if request chace is modified
-     * @return  bool
-     */
-    public function isModified()
-    {
-        return $this->blnModified;
     }
 
     /**
@@ -104,9 +89,10 @@ class RequestCache extends \Model
      */
     public function setFiltersForModule(array $arrFilters, $intModule)
     {
-        $this->blnModified = true;
-
         $this->arrFilters[$intModule] = $arrFilters;
+
+        // Mark as modified
+        $this->tstamp = time();
     }
 
     /**
@@ -116,7 +102,9 @@ class RequestCache extends \Model
     {
         if (isset($this->arrFilters[$intModule])) {
             unset($this->arrFilters[$intModule]);
-            $this->blnModified = true;
+
+            // Mark as modified
+            $this->tstamp = time();
         }
     }
 
@@ -143,7 +131,9 @@ class RequestCache extends \Model
     public function addFilterForModule(Filter $objFilter, $intModule)
     {
         $this->arrFilters[$intModule][] = $objFilter;
-        $this->blnModified = true;
+
+        // Mark as modified
+        $this->tstamp = time();
     }
 
     /**
@@ -155,7 +145,9 @@ class RequestCache extends \Model
     public function setFilterForModule($strName, Filter $objFilter, $intModule)
     {
         $this->arrFilters[$intModule][$strName] = $objFilter;
-        $this->blnModified = true;
+
+        // Mark as modified
+        $this->tstamp = time();
     }
 
     /**
@@ -166,13 +158,14 @@ class RequestCache extends \Model
     public function removeFilterForModule($strName, $intModule)
     {
         if (isset($this->arrFilters[$intModule]) || isset($this->arrFilters[$intModule][$strName])) {
-            $this->blnModified = true;
-
             unset($this->arrFilters[$intModule][$strName]);
 
             if (empty($this->arrFilters[$intModule])) {
                 unset($this->arrFilters[$intModule]);
             }
+
+            // Mark as modified
+            $this->tstamp = time();
         }
     }
 
@@ -207,7 +200,9 @@ class RequestCache extends \Model
     public function setSortingsForModule(array $arrSortings, $intModule)
     {
         $this->arrSortings[$intModule] = $arrSortings;
-        $this->blnModified = true;
+
+        // Mark as modified
+        $this->tstamp = time();
     }
 
     /**
@@ -218,7 +213,9 @@ class RequestCache extends \Model
     {
         if (isset($this->arrSortings[$intModule])) {
             unset($this->arrSortings[$intModule]);
-            $this->blnModified = true;
+
+            // Mark as modified
+            $this->tstamp = time();
         }
     }
 
@@ -265,7 +262,9 @@ class RequestCache extends \Model
         }
 
         $this->arrSortings[$intModule] = array_merge(array($objSort), $this->arrSortings[$intModule]);
-        $this->blnModified = true;
+
+        // Mark as modified
+        $this->tstamp = time();
     }
 
     /**
@@ -285,7 +284,9 @@ class RequestCache extends \Model
         }
 
         $this->arrSortings[$intModule] = array_merge(array($strName=>$objSort), $this->arrSortings[$intModule]);
-        $this->blnModified = true;
+
+        // Mark as modified
+        $this->tstamp = time();
     }
 
     /**
@@ -296,13 +297,14 @@ class RequestCache extends \Model
     public function removeSortingForModule($strName, $intModule)
     {
         if (isset($this->arrSortings[$intModule]) || isset($this->arrSortings[$intModule][$strName])) {
-            $this->blnModified = true;
-
             unset($this->arrSortings[$intModule][$strName]);
 
             if (empty($this->arrSortings[$intModule])) {
                 unset($this->arrSortings[$intModule]);
             }
+
+            // Mark as modified
+            $this->tstamp = time();
         }
     }
 
@@ -323,7 +325,9 @@ class RequestCache extends \Model
     public function setLimitForModule(Limit $objLimit, $intModule)
     {
         $this->arrLimits[$intModule] = $objLimit;
-        $this->blnModified = true;
+
+        // Mark as modified
+        $this->tstamp = time();
     }
 
     /**
@@ -353,7 +357,7 @@ class RequestCache extends \Model
      */
     public function save()
     {
-        if ($this->blnModified && $this->id > 0 && !$blnForceInsert) {
+        if ($this->isModified() && \Model\Registry::getInstance()->isRegistered($this)) {
             throw new \BadMethodCallException('Can\'t save a modified cache');
         }
 
@@ -366,7 +370,7 @@ class RequestCache extends \Model
      */
     public function saveNewConfiguartion()
     {
-        if (!$this->blnModified) {
+        if (!$this->isModified()) {
             return $this;
         }
 
@@ -377,8 +381,6 @@ class RequestCache extends \Model
         } elseif ($objCache->id == $this->id) {
             return $this;
         }
-
-        $objCache->tstamp = time();
 
         return $objCache->save();
     }
