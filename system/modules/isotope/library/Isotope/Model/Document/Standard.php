@@ -65,7 +65,7 @@ class Standard extends Document implements IsotopeDocument
         $l = array();
         $l['a_meta_dir']        = 'ltr';
         $l['a_meta_charset']    = $GLOBALS['TL_CONFIG']['characterSet'];
-        $l['a_meta_language']   = $GLOBALS['TL_LANGUAGE'];
+        $l['a_meta_language']   = substr($GLOBALS['TL_LANGUAGE'], 0, 2);
         $l['w_page']            = 'page';
 
         // Include library
