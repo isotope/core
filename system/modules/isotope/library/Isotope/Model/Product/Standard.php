@@ -101,9 +101,6 @@ class Standard extends Product implements IsotopeProduct
     {
         switch ($strKey)
         {
-            case 'description_meta':
-                return $this->arrData['description_meta'] != '' ? $this->arrData['description_meta'] : ($this->arrData['teaser'] != '' ? $this->arrData['teaser'] : $this->arrData['description']);
-
             default:
                 if ($this->pid > 0 && $GLOBALS['TL_DCA']['tl_iso_products']['fields'][$strKey]['attributes']['customer_defined'] || $GLOBALS['TL_DCA']['tl_iso_products']['fields'][$strKey]['attributes']['variant_option']) {
 

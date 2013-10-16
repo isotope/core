@@ -111,12 +111,22 @@ class ProductReader extends Module
         $this->Template->referer = 'javascript:history.go(-1)';
         $this->Template->back = $GLOBALS['TL_LANG']['MSC']['goBack'];
 
-        $objPage->pageTitle = strip_insert_tags($objProduct->name);
-        $objPage->description = $this->prepareMetaDescription($objProduct->description_meta);
-
-        $GLOBALS['TL_KEYWORDS'] .= (strlen($GLOBALS['TL_KEYWORDS']) ? ', ' : '') . $objProduct->keywords_meta;
-
+        $this->addMetaTags($objProduct);
         $this->addCanonicalProductUrls($objProduct);
+    }
+
+    /**
+     * Add meta header fields to the current page
+     * @param   IsotopeProduct
+     */
+    protected function addMetaTags(IsotopeProduct $objProduct)
+    {
+        global $objPage;
+
+        $objPage->pageTitle = strip_insert_tags($objProduct->name);
+        $objPage->description = $this->prepareMetaDescription($objProduct->description_meta ?: ($objProduct->teaser ?: $objProduct->description));
+
+        $GLOBALS['TL_KEYWORDS'] .= ($GLOBALS['TL_KEYWORDS'] != '' ? ', ' : '') . $objProduct->keywords_meta;
     }
 
     /**
