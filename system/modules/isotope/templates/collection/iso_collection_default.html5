@@ -14,7 +14,7 @@
 <?php echo $GLOBALS['TL_LANG']['MSC']['grandTotalLabel']; ?>: <?php echo $this->total; ?>
 <?php else: ?>
 <?php ### THIS IS HTML EMAILS AND EVERYTHING ELSE ### ?>
-<?php if($this->editable): ?>
+<?php if($this->isEditable): ?>
 <form action="<?php echo $this->action; ?>" id="<?php echo $this->formId; ?>" method="post">
 <div class="formbody">
 <input type="hidden" name="FORM_SUBMIT" value="<?php echo $this->formSubmit; ?>">
@@ -27,10 +27,10 @@
 
 <table>
 <tbody>
-<?php foreach($this->items as $item): ?>
-    <tr class="<?php echo $item['rowClass']; ?>">
-        <td class="col_0 col_first image"><?php echo $this->getGallery('images', $item['item'])->generateMainImage(); ?></td>
-        <td class="col_1 name">
+<?php foreach($this->items as $item): $i=0; ?>
+    <tr class="<?php echo $item['rowClass']; ?>"><?php if(!$this->isNotification): ?>
+        <td class="col_<?php echo $i++; ?> col_first image"><?php echo $this->getGallery('images', $item['item'])->generateMainImage(); ?></td><?php endif; ?>
+        <td class="col_<?php echo $i++; ?><?php if($this->isNotification) echo ' col_first'; ?> name">
             <?php if($this->linkProducts && $item['hasProduct']): ?><a href="<?php echo $item['href']; ?>"><?php echo $item['name']; ?></a><?php else: ?><?php echo $item['name']; ?><?php endif; ?>
             <?php if(!empty($item['options'])): ?>
             <ul>
@@ -40,17 +40,17 @@
             </ul>
             <?php endif; ?>
         </td>
-        <td class="col_2 quantity">
-        <?php if($this->editable): ?>
+        <td class="col_<?php echo $i++; ?> quantity">
+        <?php if($this->isEditable): ?>
             <input name="quantity[<?php echo $item['id']; ?>]" type="text" class="text" value="<?php echo $item['quantity']; ?>" maxlength="10">
         <?php else: ?>
             <?php echo $item['quantity']; ?> x
         <?php endif; ?>
         </td>
-        <td class="col_3 price"><?php echo $item['price']; ?></td>
-        <td class="col_4 price total"><?php echo $item['total']; ?></td>
-        <td class="col_5 <?php if(!$this->editable) echo 'col_last '; ?>tax"><?php echo $item['tax_id']; ?></td><?php if($this->editable): ?>
-        <td class="col_6 col_last remove"><a href="<?php echo $item['remove_href']; ?>" title="<?php echo $item['remove_title']; ?>"><?php echo $item['remove_link']; ?></a></td><?php endif; ?>
+        <td class="col_<?php echo $i++; ?> price"><?php echo $item['price']; ?></td>
+        <td class="col_<?php echo $i++; ?> price total"><?php echo $item['total']; ?></td>
+        <td class="col_<?php echo $i++; ?> <?php if(!$this->isEditable) echo 'col_last '; ?>tax"><?php echo $item['tax_id']; ?></td><?php if($this->isEditable): ?>
+        <td class="col_<?php echo $i++; ?> col_last remove"><a href="<?php echo $item['remove_href']; ?>" title="<?php echo $item['remove_title']; ?>"><?php echo $item['remove_link']; ?></a></td><?php endif; ?>
     </tr><?php if($item['item']->hasErrors()): ?>
     <tr class="<?php echo $item['rowClass']; ?>">
         <td colspan="7"><p class="error"><?php echo implode('</p><p class="error">', $item['item']->getErrors()); ?></p></td>
@@ -64,35 +64,38 @@
 ?>
 <tfoot>
     <tr class="foot_0 foot_first subtotal">
-        <td class="col_first">&nbsp;</td>
-        <td class="name" colspan="2"><?php echo $GLOBALS['TL_LANG']['MSC']['subTotalLabel']; ?></td>
-        <td class="price">&nbsp;</td>
-        <td class="price total"><?php echo $this->subtotal; ?></td>
-        <td class="<?php if(!$this->editable) echo 'col_last '; ?>tax">&nbsp;</td><?php if($this->editable): ?>
-        <td class="col_last remove">&nbsp;</td><?php endif; ?>
+        <?php $i=0; if(!$this->isNotification): ?>
+        <td class="col_<?php echo $i++; ?> col_first">&nbsp;</td><?php endif; ?>
+        <td class="col_<?php echo $i++; ?><?php if($this->isNotification) echo ' col_first'; ?> name" colspan="2"><?php echo $GLOBALS['TL_LANG']['MSC']['subTotalLabel']; ?></td>
+        <td class="col_<?php echo $i++; ?> price">&nbsp;</td>
+        <td class="col_<?php echo $i++; ?> price total"><?php echo $this->subtotal; ?></td>
+        <td class="col_<?php echo $i++; ?> <?php if(!$this->isEditable) echo 'col_last '; ?>tax">&nbsp;</td><?php if($this->isEditable): ?>
+        <td class="col_<?php echo $i++; ?> col_last remove">&nbsp;</td><?php endif; ?>
     </tr>
-    <?php foreach ($this->surcharges as $surcharge): ?>
+    <?php foreach ($this->surcharges as $surcharge): $i=0; ?>
     <tr class="<?php echo $surcharge['rowClass']; ?>">
-        <td class="col_first">&nbsp;</td>
-        <td class="name" colspan="2"><?php echo $surcharge['label']; ?></td>
-        <td class="price"><?php echo $surcharge['price']; ?></td>
-        <td class="price total"><?php echo $surcharge['total_price']; ?></td>
-        <td class="<?php if(!$this->editable) echo 'col_last '; ?>tax"><?php echo $surcharge['tax_id']; ?></td><?php if($this->editable): ?>
-        <td class="col_last remove">&nbsp;</td><?php endif; ?>
+        <?php if(!$this->isNotification): ?>
+        <td class="col_<?php echo $i++; ?> col_first">&nbsp;</td><?php endif; ?>
+        <td class="col_<?php echo $i++; ?><?php if($this->isNotification) echo ' col_first'; ?> name" colspan="2"><?php echo $surcharge['label']; ?></td>
+        <td class="col_<?php echo $i++; ?> price"><?php echo $surcharge['price']; ?></td>
+        <td class="col_<?php echo $i++; ?> price total"><?php echo $surcharge['total_price']; ?></td>
+        <td class="col_<?php echo $i++; ?> <?php if(!$this->isEditable) echo 'col_last '; ?>tax"><?php echo $surcharge['tax_id']; ?></td><?php if($this->isEditable): ?>
+        <td class="col_<?php echo $i++; ?> col_last remove">&nbsp;</td><?php endif; ?>
     </tr>
     <?php endforeach; ?>
     <tr class="foot_<?php echo count($this->surcharges)+1; ?> foot_last total">
-        <td class="col_first">&nbsp;</td>
-        <td class="name" colspan="2"><?php echo $GLOBALS['TL_LANG']['MSC']['grandTotalLabel']; ?></td>
-        <td class="price">&nbsp;</td>
-        <td class="price total"><?php echo $this->total; ?></td>
-        <td class="<?php if(!$this->editable) echo 'col_last '; ?>tax">&nbsp;</td><?php if($this->editable): ?>
-        <td class="col_last remove">&nbsp;</td><?php endif; ?>
+        <?php $i=0; if(!$this->isNotification): ?>
+        <td class="col_<?php echo $i++; ?> col_first">&nbsp;</td><?php endif; ?>
+        <td class="col_<?php echo $i++; ?><?php if($this->isNotification) echo ' col_first'; ?> name" colspan="2"><?php echo $GLOBALS['TL_LANG']['MSC']['grandTotalLabel']; ?></td>
+        <td class="col_<?php echo $i++; ?> price">&nbsp;</td>
+        <td class="col_<?php echo $i++; ?> price total"><?php echo $this->total; ?></td>
+        <td class="col_<?php echo $i++; ?> <?php if(!$this->isEditable) echo 'col_last '; ?>tax">&nbsp;</td><?php if($this->isEditable): ?>
+        <td class="col_<?php echo $i++; ?> col_last remove">&nbsp;</td><?php endif; ?>
     </tr>
 </tfoot>
 </table>
 
-<?php if($this->editable): ?>
+<?php if($this->isEditable): ?>
 </div>
 <?php if(!empty($this->buttons)): ?>
 <div class="submit_container">
@@ -104,7 +107,7 @@
 </form>
 <?php endif; ?>
 
-<?php if (!$this->editable && count($this->downloads)): ?>
+<?php if (!$this->isEditable && count($this->downloads)): ?>
 <div class="downloads">
 <h2><?php echo $GLOBALS['TL_LANG']['MSC']['downloadsLabel']; ?></h2>
 <ul>

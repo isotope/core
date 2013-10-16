@@ -16,12 +16,14 @@ use Isotope\Isotope;
 use Isotope\Interfaces\IsotopeProduct;
 use Isotope\Interfaces\IsotopeProductCollection;
 use Isotope\Model\Config;
+use Isotope\Model\Document;
 use Isotope\Model\OrderStatus;
 use Isotope\Model\Payment;
 use Isotope\Model\ProductCollection;
 use Isotope\Model\ProductCollectionItem;
 use Isotope\Model\ProductCollectionDownload;
 use Isotope\Model\Shipping;
+use NotificationCenter\Model\Notification;
 
 
 /**
@@ -216,39 +218,34 @@ class Order extends ProductCollection implements IsotopeProductCollection
         }
 
         $this->generateDocumentNumber(Isotope::getConfig()->orderPrefix, (int) Isotope::getConfig()->orderDigits);
-        $arrData = $this->getEmailData();
-        $strRecipient = $this->getEmailRecipient();
+        $arrTokens = $this->getNotificationTokens($this->nc_notification);
 
         \System::log('New order ID ' . $this->id . ' has been placed', __METHOD__, TL_ACCESS);
 
-        if ($this->iso_mail_admin && $this->iso_sales_email != '') {
-            try {
-                $objEmail = new \Isotope\Email($this->iso_mail_admin, $this->language, $this);
-                $objEmail->replyTo($strRecipient);
-                $objEmail->send($this->iso_sales_email, $arrData);
-            } catch (\Exception $e) {
-                log_message($e->getMessage());
-                \System::log('Error when sending admin confirmation for order ID '.$this->id, __METHOD__, TL_ERROR);
-            }
-        }
+        // Trigger notification
+        if ($this->nc_notification) {
+            $blnNotificationError = true;
 
-        if ($this->iso_mail_customer && $strRecipient != '') {
-            try {
-                $objEmail = new \Isotope\Email($this->iso_mail_customer, $this->language, $this);
-                $objEmail->send($strRecipient, $arrData);
-            } catch (\Exception $e) {
-                log_message($e->getMessage());
-                \System::log('Error when sending customer confirmation for order ID '.$this->id, __METHOD__, TL_ERROR);
+            if (($objNotification = Notification::findByPk($this->nc_notification)) !== null) {
+                $arrResult = $objNotification->send($arrTokens, $this->language);
+
+                if (!empty($arrResult) && !in_array(false, $arrResult)) {
+                    $blnNotificationError = false;
+                }
+            }
+
+            if ($blnNotificationError === true) {
+                \System::log('Error sending new order notification for order ID '.$this->id, __METHOD__, TL_ERROR);
             }
         } else {
-            \System::log('Unable to send customer confirmation for order ID '.$this->id, __METHOD__, TL_ERROR);
+            \System::log('No notification for order ID '.$this->id, __METHOD__, TL_ERROR);
         }
 
         // !HOOK: post-process checkout
         if (isset($GLOBALS['ISO_HOOKS']['postCheckout']) && is_array($GLOBALS['ISO_HOOKS']['postCheckout'])) {
             foreach ($GLOBALS['ISO_HOOKS']['postCheckout'] as $callback) {
                 $objCallback = \System::importStatic($callback[0]);
-                $objCallback->$callback[1]($this, $arrItemIds, $arrData);
+                $objCallback->$callback[1]($this, $arrItemIds, $arrTokens);
             }
         }
 
@@ -287,7 +284,7 @@ class Order extends ProductCollection implements IsotopeProductCollection
      * @param bool
      * @return bool
      */
-    public function updateOrderStatus($intNewStatus, $blnActions=true)
+    public function updateOrderStatus($intNewStatus)
     {
         // Status already set, nothing to do
         if ($this->order_status == $intNewStatus) {
@@ -301,15 +298,13 @@ class Order extends ProductCollection implements IsotopeProductCollection
         }
 
         // !HOOK: allow to cancel a status update
-        if (isset($GLOBALS['ISO_HOOKS']['preOrderStatusUpdate']) && is_array($GLOBALS['ISO_HOOKS']['preOrderStatusUpdate']))
-        {
-            foreach ($GLOBALS['ISO_HOOKS']['preOrderStatusUpdate'] as $callback)
-            {
-                $objCallback = \System::importStatic($callback[0]);
-                $blnCancel = $objCallback->$callback[1]($this, $objNewStatus, $blnActions);
+        if (isset($GLOBALS['ISO_HOOKS']['preOrderStatusUpdate']) && is_array($GLOBALS['ISO_HOOKS']['preOrderStatusUpdate'])) {
+            foreach ($GLOBALS['ISO_HOOKS']['preOrderStatusUpdate'] as $callback) {
 
-                if ($blnCancel === true)
-                {
+                $objCallback = \System::importStatic($callback[0]);
+                $blnCancel = $objCallback->$callback[1]($this, $objNewStatus);
+
+                if ($blnCancel === true) {
                     return false;
                 }
             }
@@ -320,47 +315,37 @@ class Order extends ProductCollection implements IsotopeProductCollection
             $this->date_paid = time();
         }
 
-        // Trigger email actions
-        $blnEmail = null;
-        if ($objNewStatus->mail_customer > 0 || $objNewStatus->mail_admin > 0) {
+        // Trigger notification
+        $blnNotificationError = null;
+        if ($objNewStatus->notification > 0) {
 
-            $arrData = $this->getEmailData();
-            $arrData['new_status'] = $objNewStatus->getName();
-            $strRecipient = $this->getEmailRecipient();
+            $arrTokens = $this->getNotificationTokens($objNewStatus->notification);
+            $arrTokens['new_status'] = $objNewStatus->getName();
 
-            if ($objNewStatus->mail_customer && $strRecipient != '') {
+            $blnNotificationError = true;
 
-                try {
-                    $objEmail = new \Isotope\Email($objNewStatus->mail_customer, $this->language, $this);
-                    $blnEmail = $objEmail->send($strRecipient, $arrData);
-                } catch (\Exception $e) {
-                    log_message($e->getMessage());
-                    \System::log('Error sending status update to customer for order ID '.$this->id, __METHOD__, TL_ERROR);
+            if (($objNotification = Notification::findByPk($objNewStatus->notification)) !== null) {
+                $arrResult = $objNotification->send($arrTokens, $this->language);
+
+                if (in_array(false, $arrResult)) {
+                    $blnNotificationError = true;
+                } elseif (!empty($arrResult)) {
+                    $blnNotificationError = false;
                 }
             }
 
-            $strSalesEmail = $objNewStatus->sales_email ? $objNewStatus->sales_email : $this->iso_sales_email;
-
-            if ($objNewStatus->mail_admin && $strSalesEmail != '') {
-
-                try {
-                    $objEmail = new \Isotope\Email($objNewStatus->mail_admin, $this->language, $this);
-                    $objEmail->replyTo($strRecipient);
-                    $objEmail->send($strSalesEmail, $arrData);
-                } catch (\Exception $e) {
-                    log_message($e->getMessage());
-                    \System::log('Error sending status update to admin for order ID '.$this->id, __METHOD__, TL_ERROR);
-                }
+            if ($blnNotificationError === true) {
+                \System::log('Error sending status update notification for order ID '.$this->id, __METHOD__, TL_ERROR);
             }
         }
 
         if (TL_MODE == 'BE') {
             \Message::addConfirmation($GLOBALS['TL_LANG']['tl_iso_product_collection']['orderStatusUpdate']);
 
-            if ($blnEmail === true) {
-                \Message::addConfirmation($GLOBALS['TL_LANG']['tl_iso_product_collection']['orderStatusEmailSuccess']);
-            } elseif ($blnEmail === false) {
-                \Message::addConfirmation($GLOBALS['TL_LANG']['tl_iso_product_collection']['orderStatusEmailError']);
+            if ($blnNotificationError === true) {
+                \Message::addConfirmation($GLOBALS['TL_LANG']['tl_iso_product_collection']['orderStatusNotificationError']);
+            } elseif ($blnNotificationError === false) {
+                \Message::addConfirmation($GLOBALS['TL_LANG']['tl_iso_product_collection']['orderStatusNotificationSuccess']);
             }
         }
 
@@ -375,46 +360,127 @@ class Order extends ProductCollection implements IsotopeProductCollection
             foreach ($GLOBALS['ISO_HOOKS']['postOrderStatusUpdate'] as $callback)
             {
                 $objCallback = \System::importStatic($callback[0]);
-                $objCallback->$callback[1]($this, $intOldStatus, $objNewStatus, $blnActions);
+                $objCallback->$callback[1]($this, $intOldStatus, $objNewStatus);
             }
         }
     }
 
 
     /**
-     * Retrieve the array of email data for parsing simple tokens
-     * @return array
+     * Retrieve the array of notification data for parsing simple tokens
+     * @param   int
+     * @return  array
      */
-    public function getEmailData()
+    public function getNotificationTokens($intNotification)
     {
-        $arrData = $this->email_data;
-        $arrData['id'] = $this->id;
-        $arrData['document_number'] = $this->document_number;
-        $arrData['uniqid'] = $this->uniqid;
-        $arrData['status'] = $this->getStatusLabel();
-        $arrData['status_id'] = $this->order_status;
+        $arrTokens = deserialize($this->email_data, true);
+        $arrTokens['uniqid']              = $this->uniqid;
+        $arrTokens['status_id']           = $this->order_status;
+        $arrTokens['recipient_email']     = $this->getEmailRecipient();
+        $arrTokens['order_id']            = $this->id;
+        $arrTokens['order_status']        = $this->getStatusLabel();
+        $arrTokens['order_status_new']    = '';
+        $arrTokens['order_items']         = $this->sumItemsQuantity();
+        $arrTokens['order_products']      = $this->countItems();
+        $arrTokens['order_subtotal']      = Isotope::formatPriceWithCurrency($this->getSubtotal(), false);
+        $arrTokens['order_total']         = Isotope::formatPriceWithCurrency($this->getTotal(), false);
+        $arrTokens['document_number']     = $this->document_number;
+        $arrTokens['cart_html']           = '';
+        $arrTokens['cart_text']           = '';
+        $arrTokens['document']            = '';
 
+
+        // Add billing/customer address fields
+        if (($objAddress = $this->getBillingAddress()) !== null) {
+            foreach ($objAddress->row() as $k => $v) {
+                $arrTokens['billing_' . $k] = Isotope::formatValue($objAddress->getTable(), $k, $v);
+            }
+
+            $arrTokens['billing_address'] = $objAddress->generateHtml($this->getRelated('config_id')->getBillingFieldsConfig());
+            $arrTokens['billing_address_text'] = $objAddress->generateText($this->getRelated('config_id')->getBillingFieldsConfig());
+        }
+
+        // Add shipping address fields
+        if (($objAddress = $this->getShippingAddress()) !== null) {
+            foreach ($objAddress->row() as $k => $v) {
+                $arrTokens['shipping_' . $k] = Isotope::formatValue($objAddress->getTable(), $k, $v);
+            }
+
+            // Shipping address equals billing address
+            if ($objAddress->id == $this->getBillingAddress()->id) {
+                $arrTokens['shipping_address'] = ($this->requiresPayment() ? $GLOBALS['TL_LANG']['MSC']['useBillingAddress'] : $GLOBALS['TL_LANG']['MSC']['useCustomerAddress']);
+                $arrTokens['shipping_address_text'] = $arrTokens['shipping_address'];
+            } else {
+                $arrTokens['shipping_address'] = $objAddress->generateHtml($this->getRelated('config_id')->getShippingFieldsConfig());
+                $arrTokens['shipping_address_text'] = $objAddress->generateText($this->getRelated('config_id')->getShippingFieldsConfig());
+            }
+        }
+
+        // Add payment method info
+        if ($this->hasPayment() && ($objPayment = $this->getPaymentMethod()) !== null) {
+            $arrTokens['payment_id']        = $objPayment->id;
+            $arrTokens['payment_label']     = $objPayment->getLabel();
+            $arrTokens['payment_note']      = $objPayment->note;
+            $arrTokens['payment_note_text'] = strip_tags($objPayment->note);
+        }
+
+        // Add shipping method info
+        if ($this->hasShipping() && ($objShipping = $this->getShippingMethod()) !== null) {
+            $arrTokens['shipping_id']        = $objShipping->id;
+            $arrTokens['shipping_label']     = $objShipping->getLabel();
+            $arrTokens['shipping_note']      = $objShipping->note;
+            $arrTokens['shipping_note_text'] = strip_tags($objShipping->note);
+        }
+
+        // Add config fields
         if ($this->getRelated('config_id') !== null) {
             foreach ($this->getRelated('config_id')->row() as $k => $v) {
-                $arrData['config_' . $k] = Isotope::formatValue($this->getRelated('config_id')->getTable(), $k, $v);
+                $arrTokens['config_' . $k] = Isotope::formatValue($this->getRelated('config_id')->getTable(), $k, $v);
             }
         }
 
+        // Add member fields
         if ($this->pid > 0 && $this->getRelated('pid') !== null) {
             foreach ($this->getRelated('pid')->row() as $k => $v) {
-                $arrData['member_' . $k] = Isotope::formatValue($this->getRelated('pid')->getTable(), $k, $v);
+                $arrTokens['member_' . $k] = Isotope::formatValue($this->getRelated('pid')->getTable(), $k, $v);
             }
         }
+
+        if ($intNotification > 0 && ($objNotification = Notification::findByPk($intNotification)) !== null) {
+            $objTemplate = new \Isotope\Template($objNotification->iso_collectionTpl);
+            $objTemplate->isNotification = true;
+
+            $this->addToTemplate(
+                $objTemplate,
+                array(
+                    'gallery'   => $objNotification->iso_gallery,
+                    // @todo implement sorting option
+//                    'sorting'   => $this->objModule->getProductCollectionItemsSortingCallable(),
+                )
+            );
+
+            $arrTokens['cart_html'] = Isotope::getInstance()->call('replaceInsertTags', $objTemplate->parse());
+            $objTemplate->textOnly = true;
+            $arrTokens['cart_text'] = strip_tags(Isotope::getInstance()->call('replaceInsertTags', $objTemplate->parse()));
+
+            // Generate and "attach" document
+            if ($objNotification->iso_document > 0 && (($objDocument = Document::findByPk($objNotification->iso_document)) !== null)) {
+                $strFilePath = $objDocument->outputToFile($this, TL_ROOT . '/system/tmp');
+                $arrTokens['document'] = str_replace(TL_ROOT.'/', '', $strFilePath);
+            }
+        }
+
 
         // !HOOK: add custom email tokens
-        if (isset($GLOBALS['ISO_HOOKS']['getOrderEmailData']) && is_array($GLOBALS['ISO_HOOKS']['getOrderEmailData'])) {
-            foreach ($GLOBALS['ISO_HOOKS']['getOrderEmailData'] as $callback) {
+        // @todo might want to rename because there could be tokens for other things?
+        if (isset($GLOBALS['ISO_HOOKS']['getNotificationTokens']) && is_array($GLOBALS['ISO_HOOKS']['getNotificationTokens'])) {
+            foreach ($GLOBALS['ISO_HOOKS']['getNotificationTokens'] as $callback) {
                 $objCallback = \System::importStatic($callback[0]);
-                $arrData = $objCallback->$callback[1]($this, $arrData);
+                $arrTokens = $objCallback->$callback[1]($this, $arrTokens);
             }
         }
 
-        return $arrData;
+        return $arrTokens;
     }
 
     /**

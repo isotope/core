@@ -323,11 +323,9 @@ class Checkout extends Module
         $objOrder->setSourceCollection(Isotope::getCart());
 
         $objOrder->checkout_info        = $this->getCheckoutInfo();
-        $objOrder->iso_sales_email      = $this->iso_sales_email ? $this->iso_sales_email : (($GLOBALS['TL_ADMIN_NAME'] != '') ? sprintf('%s <%s>', $GLOBALS['TL_ADMIN_NAME'], $GLOBALS['TL_ADMIN_EMAIL']) : $GLOBALS['TL_ADMIN_EMAIL']);
-        $objOrder->iso_mail_admin       = $this->iso_mail_admin;
-        $objOrder->iso_mail_customer    = $this->iso_mail_customer;
+        $objOrder->nc_notification      = $this->nc_notification;
         $objOrder->iso_addToAddressbook = $this->iso_addToAddressbook;
-        $objOrder->email_data           = $this->getEmailTokensFromSteps($objOrder);
+        $objOrder->email_data           = $this->getNotificationTokensFromSteps($objOrder);
 
         $objOrder->save();
     }
@@ -368,18 +366,18 @@ class Checkout extends Module
 
 
     /**
-     * Retrieve the array of email data for parsing simple tokens
+     * Retrieve the array of notification data for parsing simple tokens
      * @param   IsotopeProductCollection
      * @return  array
      */
-    protected function getEmailTokensFromSteps(IsotopeProductCollection $objOrder)
+    protected function getNotificationTokensFromSteps(IsotopeProductCollection $objOrder)
     {
         $arrTokens = array();
 
         // Run trough all steps to collect checkout information
         foreach ($this->getSteps() as $arrModules) {
             foreach ($arrModules as $objModule) {
-                $arrTokens = array_merge($arrTokens, $objModule->getEmailTokens($objOrder));
+                $arrTokens = array_merge($arrTokens, $objModule->getNotificationTokens($objOrder));
             }
         }
 

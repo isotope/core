@@ -48,9 +48,9 @@ $GLOBALS['TL_LANG']['tl_iso_product_collection']['print']                   = 'P
 /**
  * Reference
  */
-$GLOBALS['TL_LANG']['tl_iso_product_collection']['orderStatusUpdate']       = 'The status of your order has been updated.';
-$GLOBALS['TL_LANG']['tl_iso_product_collection']['orderStatusEmailSuccess'] = 'The client has been notified by email.';
-$GLOBALS['TL_LANG']['tl_iso_product_collection']['orderStatusEmailError']   = 'The client could not be notified by email. Check the email.log';
+$GLOBALS['TL_LANG']['tl_iso_product_collection']['orderStatusUpdate']               = 'The status of your order has been updated.';
+$GLOBALS['TL_LANG']['tl_iso_product_collection']['orderStatusNotificationSuccess']  = 'Notifications (e.g. email to client) have been sent.';
+$GLOBALS['TL_LANG']['tl_iso_product_collection']['orderStatusNotificationError']    = 'Notifications (e.g. email to client) clould not be sent. Check the system log.';
 
 /**
  * Legends

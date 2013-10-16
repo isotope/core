@@ -120,7 +120,7 @@ $GLOBALS['TL_DCA']['tl_iso_orderstatus'] = array
     // Palettes
     'palettes' => array
     (
-        'default'                   => '{name_legend},name,paid,welcomescreen;{email_legend},mail_customer,mail_admin,sales_email',
+        'default'                   => '{name_legend},name,paid,welcomescreen;{email_legend},notification',
     ),
 
     // Fields
@@ -166,33 +166,14 @@ $GLOBALS['TL_DCA']['tl_iso_orderstatus'] = array
             'eval'                  => array('tl_class'=>'w50'),
             'sql'                   => "char(1) NOT NULL default ''",
         ),
-        'mail_customer' => array
+        'notification' => array
         (
-            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_orderstatus']['mail_customer'],
+            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_orderstatus']['notification'],
             'exclude'               => true,
             'inputType'             => 'select',
-            'foreignKey'            => 'tl_iso_mail.name',
-            'eval'                  => array('includeBlankOption'=>true),
-            'sql'                   => "int(10) unsigned NOT NULL default '0'",
-            'relation'              => array('type'=>'hasOne', 'load'=>'lazy'),
-        ),
-        'mail_admin' => array
-        (
-            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_orderstatus']['mail_admin'],
-            'exclude'               => true,
-            'inputType'             => 'select',
-            'foreignKey'            => 'tl_iso_mail.name',
-            'eval'                  => array('includeBlankOption'=>true, 'tl_class'=>'w50'),
-            'sql'                   => "int(10) unsigned NOT NULL default '0'",
-            'relation'              => array('type'=>'hasOne', 'load'=>'lazy'),
-        ),
-        'sales_email' => array
-        (
-            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_orderstatus']['sales_email'],
-            'exclude'               => true,
-            'inputType'             => 'text',
-            'eval'                  => array('maxlength'=>255, 'rgxp'=>'email', 'tl_class'=>'w50'),
-            'sql'                   => "varchar(255) NOT NULL default ''",
+            'options_callback'      => array('NotificationCenter\tl_module', 'getNotificationChoices'),
+            'eval'                  => array('chosen'=>true, 'tl_class'=>'w50'),
+            'sql'                   => "int(10) unsigned NOT NULL default '0'"
         ),
     )
 );

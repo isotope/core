@@ -126,23 +126,6 @@ $GLOBALS['ISO_MOD'] = array
     ),
     'config' => array
     (
-        'documents' => array
-        (
-            'tables'            => array('tl_iso_document'),
-            'icon'              => 'system/modules/isotope/assets/setup-documents.png'
-        ),
-        'labels' => array
-        (
-            'tables'            => array('tl_iso_labels'),
-            'icon'              => 'system/modules/isotope/assets/setup-labels.png'
-        ),
-        'iso_mail' => array
-        (
-            'tables'            => array('tl_iso_mail', 'tl_iso_mail_content'),
-            'icon'              => 'system/modules/isotope/assets/setup-mail.png',
-            'importMail'        => array('Isotope\Backend', 'importMail'),
-            'exportMail'        => array('Isotope\Backend', 'exportMail'),
-        ),
         'configs' => array
         (
             'tables'            => array('tl_iso_config'),
@@ -152,6 +135,21 @@ $GLOBALS['ISO_MOD'] = array
         (
             'tables'            => array('tl_iso_orderstatus'),
             'icon'              => 'system/modules/isotope/assets/setup-orderstatus.png',
+        ),
+        'notifications' => array
+        (
+            'icon'              => 'system/modules/isotope/assets/setup-notifications.png',
+            'redirect'          => 'contao/main.php?do=nc_notifications',
+        ),
+        'documents' => array
+        (
+            'tables'            => array('tl_iso_document'),
+            'icon'              => 'system/modules/isotope/assets/setup-documents.png'
+        ),
+        'labels' => array
+        (
+            'tables'            => array('tl_iso_labels'),
+            'icon'              => 'system/modules/isotope/assets/setup-labels.png'
         ),
     )
 );
@@ -263,6 +261,45 @@ $GLOBALS['BE_FFL']['productGroupSelector']   = 'Isotope\Widget\ProductGroupSelec
 \Isotope\Model\Attribute::registerModelType('downloads', 'Isotope\Model\Attribute\Downloads');
 \Isotope\Model\Attribute::registerModelType('upload', 'Isotope\Model\Attribute\Upload');
 
+/**
+ * Notification Center notification types
+ */
+$GLOBALS['NOTIFICATION_CENTER']['NOTIFICATION_TYPE']['isotope']['iso_order_status_change']['recipients'] = array('recipient_email');
+$GLOBALS['NOTIFICATION_CENTER']['NOTIFICATION_TYPE']['isotope']['iso_order_status_change']['attachments'] = array('form_*', 'document');
+$GLOBALS['NOTIFICATION_CENTER']['NOTIFICATION_TYPE']['isotope']['iso_order_status_change']['email_text'] = array(
+    'uniqid',
+    'status_id',
+    'recipient_email',
+    'order_id',
+    'order_status',
+    'order_status_new',
+    'order_items',
+    'order_products',
+    'order_subtotal',
+    'order_total',
+    'document_number',
+    'cart_html',
+    'cart_text',
+    'document',
+    'billing_*', // All the billing address model fields
+    'billing_address', // Billing address as HTML
+    'billing_address_text', // Billing address as text
+    'shipping_*', // All the shipping address model fields
+    'shipping_address', // Shipping address as HTML
+    'shipping_address_text', // Shipping address as text
+    'form_*', // All the order condition form fields
+    'payment_id', // Payment method ID
+    'payment_label', // Payment method label
+    'payment_note', // Payment method note
+    'payment_note_text', // Payment method note without HTML tags
+    'shipping_id', // Shipping method ID
+    'shipping_label', // Shipping method label
+    'shipping_note', // Shipping method note
+    'shipping_note_text', // Shipping method note without HTML tags
+);
+$GLOBALS['NOTIFICATION_CENTER']['NOTIFICATION_TYPE']['isotope']['iso_order_status_change']['email_subject'] = &$GLOBALS['NOTIFICATION_CENTER']['NOTIFICATION_TYPE']['isotope']['iso_order_status_change']['email_text'];
+$GLOBALS['NOTIFICATION_CENTER']['NOTIFICATION_TYPE']['isotope']['iso_order_status_change']['email_html'] = &$GLOBALS['NOTIFICATION_CENTER']['NOTIFICATION_TYPE']['isotope']['iso_order_status_change']['email_text'];
+
 
 /**
  * Models
@@ -314,8 +351,6 @@ $GLOBALS['TL_PERMISSIONS'][] = 'iso_tax_rates';
 $GLOBALS['TL_PERMISSIONS'][] = 'iso_tax_ratep';
 $GLOBALS['TL_PERMISSIONS'][] = 'iso_tax_classes';
 $GLOBALS['TL_PERMISSIONS'][] = 'iso_tax_classp';
-$GLOBALS['TL_PERMISSIONS'][] = 'iso_mails';
-$GLOBALS['TL_PERMISSIONS'][] = 'iso_mailp';
 $GLOBALS['TL_PERMISSIONS'][] = 'iso_configs';
 $GLOBALS['TL_PERMISSIONS'][] = 'iso_configp';
 $GLOBALS['TL_PERMISSIONS'][] = 'iso_groups';

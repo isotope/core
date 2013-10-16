@@ -15,6 +15,7 @@ namespace Isotope\CheckoutStep;
 use Isotope\Isotope;
 use Isotope\Interfaces\IsotopeCheckoutStep;
 use Isotope\Interfaces\IsotopeProductCollection;
+use Isotope\Model\Document;
 
 
 class OrderProducts extends CheckoutStep implements IsotopeCheckoutStep
@@ -58,33 +59,12 @@ class OrderProducts extends CheckoutStep implements IsotopeCheckoutStep
     }
 
     /**
-     * Return array of tokens for email templates
+     * Return array of tokens for notification
      * @param   IsotopeProductCollection
      * @return  array
      */
-    public function getEmailTokens(IsotopeProductCollection $objCollection)
+    public function getNotificationTokens(IsotopeProductCollection $objCollection)
     {
-        $objTemplate = new \Isotope\Template($this->objModule->iso_collectionTpl);
-
-        Isotope::getCart()->addToTemplate(
-            $objTemplate,
-            array(
-                'gallery'   => $this->objModule->iso_gallery,
-                'sorting'   => $this->objModule->getProductCollectionItemsSortingCallable(),
-            )
-        );
-
-        $strHtml = $objTemplate->parse();
-        $objTemplate->textOnly = true;
-        $strText = $objTemplate->parse();
-
-        return array(
-            'items'         => $objCollection->sumItemsQuantity(),
-            'products'      => $objCollection->countItems(),
-            'subTotal'      => Isotope::formatPriceWithCurrency($objCollection->getSubtotal(), false),
-            'grandTotal'    => Isotope::formatPriceWithCurrency($objCollection->getTotal(), false),
-            'cart_text'     => strip_tags(Isotope::getInstance()->call('replaceInsertTags', $strText)),
-            'cart_html'     => Isotope::getInstance()->call('replaceInsertTags', $strHtml),
-        );
+        return array();
     }
 }
