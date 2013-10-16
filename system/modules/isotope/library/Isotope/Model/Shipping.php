@@ -204,15 +204,6 @@ abstract class Shipping extends TypeAgent
 
 
     /**
-     * Process post-sale requests. Does nothing by default.
-     *
-     * This function can be called from the postsale.php file when the shipping server is requestion/posting a status change.
-     * You can see an implementation example in PaymentPostfinance.php
-     */
-    public function processPostsale() {}
-
-
-    /**
      * Return the checkout review information.
      *
      * Use this to return custom checkout information about this shipping module.
