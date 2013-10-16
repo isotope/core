@@ -817,7 +817,7 @@ class Standard extends Product implements IsotopeProduct
             $objParent = \Database::getInstance()->prepare(static::buildQueryString(array('table'=>static::$strTable, 'column'=>'id')))->execute($arrData['pid']);
 
             if (null === $objParent) {
-                throw new \UnderflowException('Parent record of product ID ' . $arrData['id'] . ' not found');
+                throw new \UnderflowException('Parent record of product variant ID ' . $arrData['id'] . ' not found');
             }
 
             $this->setRow($objParent->row());
