@@ -12,6 +12,7 @@
 
 namespace Isotope\Model\Document;
 
+use Isotope\Isotope;
 use Isotope\Interfaces\IsotopeDocument;
 use Isotope\Interfaces\IsotopeProductCollection;
 use Isotope\Model\Document;
@@ -105,7 +106,7 @@ class Standard extends Document implements IsotopeDocument
         $pdf->SetFont(PDF_FONT_NAME_MAIN, '', PDF_FONT_SIZE_MAIN);
 
         // Write the HTML content
-        $pdf->writeHTML($this->generateTemplate(), true, 0, true, 0);
+        $pdf->writeHTML($this->generateTemplate($objCollection, $arrTokens), true, 0, true, 0);
 
         $pdf->lastPage();
 
@@ -116,7 +117,7 @@ class Standard extends Document implements IsotopeDocument
      * Generate and return document template
      * @return  string
      */
-    protected function generateTemplate()
+    protected function generateTemplate(IsotopeProductCollection $objCollection, array $arrTokens)
     {
         $objTemplate = new \Isotope\Template($this->documentTpl);
         $objTemplate->setData($this->arrData);
@@ -138,7 +139,45 @@ class Standard extends Document implements IsotopeDocument
 
         $objTemplate->products = $objCollectionTemplate->parse();
 
-        $strBuffer = $objTemplate->parse();
+		// Generate template and fix PDF issues, see Contao's ModuleArticle
+		$strBuffer = Isotope::getInstance()->call('replaceInsertTags', array($objTemplate->parse(), false));
+		$strBuffer = html_entity_decode($strBuffer, ENT_QUOTES, $GLOBALS['TL_CONFIG']['characterSet']);
+		$strBuffer = \Controller::convertRelativeUrls($strBuffer, '');
+
+		// Remove form elements and JavaScript links
+		$arrSearch = array
+		(
+			'@<form.*</form>@Us',
+			'@<a [^>]*href="[^"]*javascript:[^>]+>.*</a>@Us'
+		);
+
+		$strBuffer = preg_replace($arrSearch, '', $strBuffer);
+
+		// Handle line breaks in preformatted text
+		$strBuffer = preg_replace_callback('@(<pre.*</pre>)@Us', 'nl2br_callback', $strBuffer);
+
+		// Default PDF export using TCPDF
+		$arrSearch = array
+		(
+			'@<span style="text-decoration: ?underline;?">(.*)</span>@Us',
+			'@(<img[^>]+>)@',
+			'@(<div[^>]+block[^>]+>)@',
+			'@[\n\r\t]+@',
+			'@<br( /)?><div class="mod_article@',
+			'@href="([^"]+)(pdf=[0-9]*(&|&amp;)?)([^"]*)"@'
+		);
+
+		$arrReplace = array
+		(
+			'<u>$1</u>',
+			'<br>$1',
+			'<br>$1',
+			' ',
+			'<div class="mod_article',
+			'href="$1$4"'
+		);
+
+		$strBuffer = preg_replace($arrSearch, $arrReplace, $strBuffer);
 
         return $strBuffer;
     }
