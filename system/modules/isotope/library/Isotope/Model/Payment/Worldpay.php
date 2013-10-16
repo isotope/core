@@ -38,7 +38,7 @@ class Worldpay extends Postsale implements IsotopePayment
             $this->postsaleError();
         }
 
-        if (($objOrder = Order::findOneBy('cart_id', \Input::post('cartId'))) === null) {
+        if (($objOrder = Order::findOneBy('source_collection_id', \Input::post('cartId'))) === null) {
             \System::log('Order ID "' . \Input::post('cartId') . '" not found', __METHOD__, TL_ERROR);
             $this->postsaleError();
         }
@@ -88,7 +88,7 @@ class Worldpay extends Postsale implements IsotopePayment
      */
     public function checkoutForm()
     {
-        if (($objOrder = Order::findOneBy('cart_id', Isotope::getCart()->id)) === null) {
+        if (($objOrder = Order::findOneBy('source_collection_id', Isotope::getCart()->id)) === null) {
             $this->redirect($this->addToUrl('step=failed', true));
         }
 
