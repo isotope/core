@@ -5,6 +5,7 @@
 !.gitignore
 !.tx
 !README.md
+!composer.json
 
 # Isotope ignoring rules
 !isotope/
