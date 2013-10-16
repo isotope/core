@@ -381,7 +381,7 @@ class Isotope extends \Controller
      */
     public static function mergeConditionalOptionData($strField, $arrData, &$objProduct=null)
     {
-        $arrData['eval']['conditionField'] = $arrData['attributes']['conditionField'] . (is_object($objProduct) ? '_' . $objProduct->formSubmit : '');
+        $arrData['eval']['conditionField'] = $arrData['attributes']['conditionField'] . (is_object($objProduct) ? '_' . $objProduct->getFormId() : '');
 
         return $arrData;
     }

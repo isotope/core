@@ -76,7 +76,7 @@ class Standard extends Product implements IsotopeProduct
      * Unique form ID
      * @var string
      */
-    protected $formSubmit = 'iso_product';
+    protected $strFormId = 'iso_product';
 
     /**
      * For option widgets, helps determine the encoding type for a form
@@ -101,9 +101,6 @@ class Standard extends Product implements IsotopeProduct
     {
         switch ($strKey)
         {
-            case 'formSubmit':
-                return $this->formSubmit;
-
             case 'description_meta':
                 return $this->arrData['description_meta'] != '' ? $this->arrData['description_meta'] : ($this->arrData['teaser'] != '' ? $this->arrData['teaser'] : $this->arrData['description']);
 
@@ -286,6 +283,15 @@ class Standard extends Product implements IsotopeProduct
     }
 
     /**
+     * Return the unique form ID for the product
+     * @return  string
+     */
+    public function getFormId()
+    {
+        return $this->strFormId;
+    }
+
+    /**
      * Get product price model
      * @param   IsotopeProductCollection
      * @return  IsotopePrice
@@ -453,7 +459,7 @@ class Standard extends Product implements IsotopeProduct
      */
     public function generate(array $arrConfig)
     {
-        $this->formSubmit = (($arrConfig['module'] instanceof \ContentElement) ? 'cte' : 'fmd') . $arrConfig['module']->id . '_product_' . ($this->pid ? $this->pid : $this->id);
+        $this->strFormId = (($arrConfig['module'] instanceof \ContentElement) ? 'cte' : 'fmd') . $arrConfig['module']->id . '_product_' . ($this->pid ? $this->pid : $this->id);
         $this->validateVariant();
 
         $objProduct = $this;
@@ -543,7 +549,7 @@ class Standard extends Product implements IsotopeProduct
             $arrButtons = array_intersect_key($arrButtons, array_flip($arrConfig['buttons']));
         }
 
-        if (\Input::post('FORM_SUBMIT') == $this->formSubmit && !$this->doNotSubmit)
+        if (\Input::post('FORM_SUBMIT') == $this->getFormId() && !$this->doNotSubmit)
         {
             foreach ($arrButtons as $button => $data)
             {
@@ -569,13 +575,13 @@ class Standard extends Product implements IsotopeProduct
         $objTemplate->options = \Isotope\Frontend::generateRowClass($arrProductOptions, 'product_option');
         $objTemplate->hasOptions = !empty($arrProductOptions);
         $objTemplate->enctype = $this->hasUpload ? 'multipart/form-data' : 'application/x-www-form-urlencoded';
-        $objTemplate->formId = $this->formSubmit;
+        $objTemplate->formId = $this->getFormId();
         $objTemplate->action = ampersand(\Environment::get('request'), true);
-        $objTemplate->formSubmit = $this->formSubmit;
+        $objTemplate->formSubmit = $this->getFormId();
         $objTemplate->product_id = ($this->pid ? $this->pid : $this->id);
         $objTemplate->module_id = $arrConfig['module']->id;
 
-        $GLOBALS['AJAX_PRODUCTS'][] = array('formId'=>$this->formSubmit, 'attributes'=>$arrAjaxOptions);
+        $GLOBALS['AJAX_PRODUCTS'][] = array('formId'=>$this->getFormId(), 'attributes'=>$arrAjaxOptions);
 
         // !HOOK: alter product data before output
         if (isset($GLOBALS['ISO_HOOKS']['generateProduct']) && is_array($GLOBALS['ISO_HOOKS']['generateProduct']))
@@ -618,7 +624,7 @@ class Standard extends Product implements IsotopeProduct
             $arrOptions = $objAttribute->getOptionsForVariants($this->getVariantIds(), $arrVariantOptions);
 
             // Hide selection if only one option is available (and "force_variant_options" is not set in product type)
-            if (\Input::post('FORM_SUBMIT') != $this->formSubmit && count($arrOptions) == 1 && !$this->getRelated('type')->force_variant_options) {
+            if (\Input::post('FORM_SUBMIT') != $this->getFormId() && count($arrOptions) == 1 && !$this->getRelated('type')->force_variant_options) {
                 $arrVariantOptions[$strField] = $arrOptions[0];
 
                 return '';
@@ -654,10 +660,10 @@ class Standard extends Product implements IsotopeProduct
 
         $objWidget->storeValues = true;
         $objWidget->tableless = true;
-        $objWidget->id .= "_" . $this->formSubmit;
+        $objWidget->id .= "_" . $this->getFormId();
 
         // Validate input
-        if (\Input::post('FORM_SUBMIT') == $this->formSubmit)
+        if (\Input::post('FORM_SUBMIT') == $this->getFormId())
         {
             $objWidget->validate();
 
@@ -770,7 +776,7 @@ class Standard extends Product implements IsotopeProduct
             $objAttribute = $GLOBALS['TL_DCA']['tl_iso_products']['attributes'][$attribute];
             $arrValues = $objAttribute->getOptionsForVariants($this->getVariantIds(), $arrOptions);
 
-            if (\Input::post('FORM_SUBMIT') == $this->formSubmit && in_array(\Input::post($attribute), $arrValues)) {
+            if (\Input::post('FORM_SUBMIT') == $this->getFormId() && in_array(\Input::post($attribute), $arrValues)) {
                 $arrOptions[$attribute] = \Input::post($attribute);
             } elseif (\Input::post('FORM_SUBMIT') == '' && in_array(\Input::get($attribute), $arrValues)) {
                 $arrOptions[$attribute] = \Input::get($attribute);
@@ -833,7 +839,7 @@ class Standard extends Product implements IsotopeProduct
             }
         }
 
-        $this->formSubmit = 'iso_product_' . $arrData['id'];
+        $this->strFormId = 'iso_product_' . $arrData['id'];
 
         // Remove attributes not in this product type
         foreach ($arrData as $attribute => $value) {
