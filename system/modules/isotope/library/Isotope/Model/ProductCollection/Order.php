@@ -448,6 +448,7 @@ class Order extends ProductCollection implements IsotopeProductCollection
 
         if ($intNotification > 0 && ($objNotification = Notification::findByPk($intNotification)) !== null) {
             $objTemplate = new \Isotope\Template($objNotification->iso_collectionTpl);
+            $objTemplate->isNotification = true;
 
             $this->addToTemplate(
                 $objTemplate,

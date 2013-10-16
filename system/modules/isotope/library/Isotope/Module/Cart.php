@@ -135,7 +135,7 @@ class Cart extends Module
         }
 
         $objTemplate->items = $arrItems;
-        $objTemplate->editable = true;
+        $objTemplate->isEditable = true;
         $objTemplate->linkProducts = true;
 
         $objTemplate->formId = $this->strFormId;
