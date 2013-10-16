@@ -12,6 +12,8 @@
 
 namespace Isotope\Module;
 
+use Isotope\Interfaces\IsotopeProduct;
+
 
 /**
  * Class ProductReader
@@ -75,9 +77,9 @@ class ProductReader extends Module
         global $objPage;
         global $objIsotopeListPage;
 
-        $this->objProduct = \Isotope\Frontend::getProductByAlias(\Isotope\Frontend::getAutoItem('product'));
+        $objProduct = \Isotope\Frontend::getProductByAlias(\Isotope\Frontend::getAutoItem('product'));
 
-        if (!$this->objProduct)
+        if (!$objProduct)
         {
             // Do not index or cache the page
             $objPage->noSearch = 1;
@@ -92,47 +94,48 @@ class ProductReader extends Module
 
         $arrConfig = array(
             'module'        => $this,
-            'template'      => ($this->iso_reader_layout ?: $this->objProduct->getRelated('type')->reader_template),
-            'gallery'       => ($this->iso_gallery ?: $this->objProduct->getRelated('type')->reader_gallery),
+            'template'      => ($this->iso_reader_layout ?: $objProduct->getRelated('type')->reader_template),
+            'gallery'       => ($this->iso_gallery ?: $objProduct->getRelated('type')->reader_gallery),
             'buttons'       => deserialize($this->iso_buttons, true),
             'useQuantity'   => $this->iso_use_quantity,
             'jumpTo'        => ($objIsotopeListPage ?: $objPage),
         );
 
-        if (\Environment::get('isAjaxRequest') && \Input::post('AJAX_MODULE') == $this->id && \Input::post('AJAX_PRODUCT') == $this->objProduct->id) {
-            \Isotope\Frontend::ajaxResponse($this->objProduct->generate($arrConfig));
+        if (\Environment::get('isAjaxRequest') && \Input::post('AJAX_MODULE') == $this->id && \Input::post('AJAX_PRODUCT') == $objProduct->id) {
+            \Isotope\Frontend::ajaxResponse($objProduct->generate($arrConfig));
         }
 
-        $this->Template->product = $this->objProduct->generate($arrConfig);
-        $this->Template->product_id = ($this->objProduct->cssID[0] != '') ? ' id="' . $this->objProduct->cssID[0] . '"' : '';
-        $this->Template->product_class = trim('product ' . ($this->objProduct->isNew() ? 'new ' : '') . $this->objProduct->cssID[1]);
+        $this->Template->product = $objProduct->generate($arrConfig);
+        $this->Template->product_id = ($objProduct->cssID[0] != '') ? ' id="' . $objProduct->cssID[0] . '"' : '';
+        $this->Template->product_class = trim('product ' . ($objProduct->isNew() ? 'new ' : '') . $objProduct->cssID[1]);
         $this->Template->referer = 'javascript:history.go(-1)';
         $this->Template->back = $GLOBALS['TL_LANG']['MSC']['goBack'];
 
-        $objPage->pageTitle = strip_insert_tags($this->objProduct->name);
-        $objPage->description = $this->prepareMetaDescription($this->objProduct->description_meta);
+        $objPage->pageTitle = strip_insert_tags($objProduct->name);
+        $objPage->description = $this->prepareMetaDescription($objProduct->description_meta);
 
-        $GLOBALS['TL_KEYWORDS'] .= (strlen($GLOBALS['TL_KEYWORDS']) ? ', ' : '') . $this->objProduct->keywords_meta;
+        $GLOBALS['TL_KEYWORDS'] .= (strlen($GLOBALS['TL_KEYWORDS']) ? ', ' : '') . $objProduct->keywords_meta;
 
-        $this->addCanonicalProductUrls();
+        $this->addCanonicalProductUrls($objProduct);
     }
 
     /**
      * Adds canonical product URLs to the document
+     * @param   IsotopeProduct
      */
-    protected function addCanonicalProductUrls()
+    protected function addCanonicalProductUrls(IsotopeProduct $objProduct)
     {
         // Only get pages of current root
         global $objPage;
         $arrPages = \Database::getInstance()->getChildRecords($objPage->rootId, 'tl_page');
         $arrPages[] = $objPage->rootId;
 
-        $arrCanonicalCategories = array_intersect($this->objProduct->getCategories(), $arrPages);
+        $arrCanonicalCategories = array_intersect($objProduct->getCategories(), $arrPages);
 
         foreach ($arrCanonicalCategories as $intPage) {
             // The current page is not a canonical category
             if ($intPage !== $objPage->id && ($objJumpTo = \PageModel::findByPk($intPage)) !== null) {
-                $GLOBALS['TL_HEAD'][] = sprintf('<link rel="canonical" href="%s">', $this->objProduct->generateUrl($objJumpTo));
+                $GLOBALS['TL_HEAD'][] = sprintf('<link rel="canonical" href="%s">', $objProduct->generateUrl($objJumpTo));
             }
         }
     }
