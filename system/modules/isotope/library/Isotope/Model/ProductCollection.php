@@ -530,7 +530,10 @@ abstract class ProductCollection extends TypeAgent
         $this->arrData['locked'] = $time;
     }
 
-
+    /**
+     * Sum total price of all items in the collection
+     * @return  float
+     */
     public function getSubtotal()
     {
         if ($this->isLocked()) {
@@ -557,7 +560,10 @@ abstract class ProductCollection extends TypeAgent
         return $this->arrCache['subtotal'];
     }
 
-
+    /**
+     * Sum total tax free price of all items in the collection
+     * @return  float
+     */
     public function getTaxFreeSubtotal()
     {
         if ($this->isLocked()) {
@@ -584,7 +590,10 @@ abstract class ProductCollection extends TypeAgent
         return $this->arrCache['taxFreeSubtotal'];
     }
 
-
+    /**
+     * Sum total price of items and surcharges
+     * @return  float
+     */
     public function getTotal()
     {
         if ($this->isLocked()) {
@@ -608,7 +617,10 @@ abstract class ProductCollection extends TypeAgent
         return $this->arrCache['total'];
     }
 
-
+    /**
+     * Sum tax free total of items and surcharges
+     * @return  float
+     */
     public function getTaxFreeTotal()
     {
         if ($this->isLocked()) {
