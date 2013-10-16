@@ -104,16 +104,25 @@ class Standard extends Document implements IsotopeDocument
         // Set font
         $pdf->SetFont(PDF_FONT_NAME_MAIN, '', PDF_FONT_SIZE_MAIN);
 
-        // Prepare the document
+        // Write the HTML content
+        $pdf->writeHTML($this->generateTemplate(), true, 0, true, 0);
+
+        $pdf->lastPage();
+
+        return $pdf;
+    }
+
+    /**
+     * Generate and return document template
+     * @return  string
+     */
+    protected function generateTemplate()
+    {
         $objTemplate = new \Isotope\Template($this->documentTpl);
+        $objTemplate->setData($this->arrData);
 
-        // Add title
         $objTemplate->title = \String::parseSimpleTokens($this->documentTitle, $arrTokens);
-
-        // Add billing address
-        if (($objAddress = $objCollection->getBillingAddress()) !== null) {
-            $objTemplate->billingAddress = $objAddress;
-        }
+        $objTemplate->collection = $objCollection;
 
         // Render the collection
         $objCollectionTemplate = new \Isotope\Template($this->collectionTpl);
@@ -127,13 +136,10 @@ class Standard extends Document implements IsotopeDocument
             )
         );
 
-        $objTemplate->collection = $objCollectionTemplate->parse();
+        $objTemplate->products = $objCollectionTemplate->parse();
 
-        // Write the HTML content
-        $pdf->writeHTML($objTemplate->parse(), true, 0, true, 0);
+        $strBuffer = $objTemplate->parse();
 
-        $pdf->lastPage();
-
-        return $pdf;
+        return $strBuffer;
     }
 }
