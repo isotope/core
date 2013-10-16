@@ -214,9 +214,7 @@ class Paypal extends Postsale implements IsotopePayment
      */
     public function backendInterface($orderId)
     {
-        $objOrder = new IsotopeOrder();
-
-        if (!$objOrder->findBy('id', $orderId))
+        if (($objOrder = Order::findByPk($orderId)) === null)
         {
             return parent::backendInterface($orderId);
         }

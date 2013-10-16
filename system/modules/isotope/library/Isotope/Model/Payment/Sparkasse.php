@@ -54,9 +54,7 @@ class Sparkasse extends Postsale implements IsotopePayment
             $this->redirectError($arrData);
         }
 
-        $objOrder = new IsotopeOrder();
-
-        if (!$objOrder->findBy('id', $arrData['orderid']))
+        if (($objOrder = Order::findByPk($arrData['orderid'])) === null)
         {
             \System::log('Order ID "' . $arrData['orderid'] . '" not found', __METHOD__, TL_ERROR);
             $this->redirectError($arrData);

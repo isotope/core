@@ -160,7 +160,7 @@ Redirecting back to shop...
 
     /**
      * Redirect client on WorldPay site to the confirmation page
-     * @param   IsotopeOrder
+     * @param   IsotopeProductCollection
      */
     protected function postsaleSuccess($objOrder)
     {
