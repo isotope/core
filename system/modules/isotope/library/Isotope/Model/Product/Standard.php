@@ -860,6 +860,22 @@ class Standard extends Product implements IsotopeProduct
     }
 
     /**
+     * Prevent reload of the database record
+     * We would need to fetch parent data etc. again, pretty useless
+     * @param   array
+     * @return  self
+     */
+    public function mergeRow(array $arrData)
+    {
+        // do not allow to reset the whole record
+        if ($arrData['id']) {
+            return $this;
+        }
+
+        return parent::mergeRow($arrData);
+    }
+
+    /**
      * In a variant, only variant and non-inherited fields can be marked as modified
      * @param   string
      */
