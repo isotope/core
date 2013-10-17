@@ -129,7 +129,7 @@ class ProductType extends \Model
      * @param   array
      * @return  Collection|null
      */
-    public static function findAllUsed(array $arrOptions)
+    public static function findAllUsed(array $arrOptions=array())
     {
         $t = static::$strTable;
 
