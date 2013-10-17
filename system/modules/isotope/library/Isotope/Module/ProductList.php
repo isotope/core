@@ -210,7 +210,7 @@ class ProductList extends Module
                 'jumpTo'        => $this->findJumpToPage($objProduct),
             );
 
-            if (\Environment::get('isAjaxRequest') && \Input::get('AJAX_MODULE') == $this->id && \Input::get('AJAX_PRODUCT') == $objProduct->id) {
+            if (\Environment::get('isAjaxRequest') && \Input::get('AJAX_MODULE') == $this->id && \Input::get('AJAX_PRODUCT') == $objProduct->getProductId()) {
                 \Isotope\Frontend::ajaxResponse($objProduct->generate($arrConfig));
             }
 

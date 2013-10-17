@@ -101,7 +101,7 @@ class ProductReader extends Module
             'jumpTo'        => ($objIsotopeListPage ?: $objPage),
         );
 
-        if (\Environment::get('isAjaxRequest') && \Input::post('AJAX_MODULE') == $this->id && \Input::post('AJAX_PRODUCT') == $objProduct->id) {
+        if (\Environment::get('isAjaxRequest') && \Input::post('AJAX_MODULE') == $this->id && \Input::post('AJAX_PRODUCT') == $objProduct->getProductId()) {
             \Isotope\Frontend::ajaxResponse($objProduct->generate($arrConfig));
         }
 

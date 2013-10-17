@@ -289,6 +289,15 @@ class Standard extends Product implements IsotopeProduct
     }
 
     /**
+     * Get the product id (NOT variant id)
+     * @return  int
+     */
+    public function getProductId()
+    {
+        return (int) $this->pid ?: $this->id;
+    }
+
+    /**
      * Get product price model
      * @param   IsotopeProductCollection
      * @return  IsotopePrice
@@ -371,7 +380,7 @@ class Standard extends Product implements IsotopeProduct
 
             $time = time();
             $blnHasProtected = false;
-            $strQuery = "SELECT id, protected, groups FROM tl_iso_products WHERE pid=" . ($this->pid ?: $this->id) . " AND language='' AND published='1' AND (start='' OR start<$time) AND (stop='' OR stop>$time)";
+            $strQuery = "SELECT id, protected, groups FROM tl_iso_products WHERE pid=" . $this->getProductId() . " AND language='' AND published='1' AND (start='' OR start<$time) AND (stop='' OR stop>$time)";
 
             if (BE_USER_LOGGED_IN !== true) {
                 $arrAttributes = $this->getVariantAttributes();
@@ -416,7 +425,7 @@ class Standard extends Product implements IsotopeProduct
     public function getCategories()
     {
         if (null === $this->arrCategories) {
-            $this->arrCategories = \Database::getInstance()->execute("SELECT page_id FROM tl_iso_product_categories WHERE pid=" . ($this->pid ?: $this->id))->fetchEach('page_id');
+            $this->arrCategories = \Database::getInstance()->execute("SELECT page_id FROM tl_iso_product_categories WHERE pid=" . $this->getProductId())->fetchEach('page_id');
 
             // Sort categories by the backend drag&drop
             $arrOrder = deserialize($this->orderPages);
@@ -575,7 +584,7 @@ class Standard extends Product implements IsotopeProduct
         $objTemplate->formId = $this->getFormId();
         $objTemplate->action = ampersand(\Environment::get('request'), true);
         $objTemplate->formSubmit = $this->getFormId();
-        $objTemplate->product_id = ($this->pid ? $this->pid : $this->id);
+        $objTemplate->product_id = $this->getProductId();
         $objTemplate->module_id = $arrConfig['module']->id;
 
         $GLOBALS['AJAX_PRODUCTS'][] = array('formId'=>$this->getFormId(), 'attributes'=>$arrAjaxOptions);
