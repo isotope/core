@@ -17,6 +17,7 @@
  * Fields
  */
 $GLOBALS['TL_LANG']['tl_iso_product_collection']['document_number']         = array('Order ID');
+$GLOBALS['TL_LANG']['tl_iso_product_collection']['member']                  = array('Member (empty for guests)');
 $GLOBALS['TL_LANG']['tl_iso_product_collection']['uniqid']                  = array('Unique ID');
 $GLOBALS['TL_LANG']['tl_iso_product_collection']['order_status']            = array('Order status', 'Select the status of this order.');
 $GLOBALS['TL_LANG']['tl_iso_product_collection']['locked']                  = array('Placed');
@@ -26,6 +27,12 @@ $GLOBALS['TL_LANG']['tl_iso_product_collection']['config_id']               = ar
 $GLOBALS['TL_LANG']['tl_iso_product_collection']['payment_id']              = array('Payment method');
 $GLOBALS['TL_LANG']['tl_iso_product_collection']['shipping_id']             = array('Shipping method');
 $GLOBALS['TL_LANG']['tl_iso_product_collection']['address1_id']             = array('Primary address');
+$GLOBALS['TL_LANG']['tl_iso_product_collection']['subtotal']                = array('Subtotal');
+$GLOBALS['TL_LANG']['tl_iso_product_collection']['tax_free_subtotal']       = array('Subtotal without tax');
+$GLOBALS['TL_LANG']['tl_iso_product_collection']['total']                   = array('Total');
+$GLOBALS['TL_LANG']['tl_iso_product_collection']['tax_free_total']          = array('Total without tax');
+$GLOBALS['TL_LANG']['tl_iso_product_collection']['currency']                = array('Currency');
+$GLOBALS['TL_LANG']['tl_iso_product_collection']['language']                = array('Language');
 $GLOBALS['TL_LANG']['tl_iso_product_collection']['notes']                   = array('Order notes','If you would like to convey information to other backend users, please do so here.');
 
 /**

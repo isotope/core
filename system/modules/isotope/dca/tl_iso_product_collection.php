@@ -126,7 +126,6 @@ $GLOBALS['TL_DCA']['tl_iso_product_collection'] = array
     (
         'id' => array
         (
-            'eval'                  => array('doNotShow'=>true),
             'sql'                   =>  "int(10) unsigned NOT NULL auto_increment",
         ),
         'tstamp' => array
@@ -135,11 +134,13 @@ $GLOBALS['TL_DCA']['tl_iso_product_collection'] = array
         ),
         'type'  =>  array
         (
+            'eval'                  => array('doNotShow'=>true),
             'sql'                   => "varchar(32) NOT NULL default ''",
         ),
         'member'  =>  array
         (
-            'foreignKey'            => 'tl_member.id',
+            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_product_collection']['member'],
+            'foreignKey'            => "tl_member.CONCAT(firstname, ' ', lastname)",
             'sql'                   => "int(10) unsigned NOT NULL default '0'",
             'relation'              => array('type'=>'hasOne', 'load'=>'lazy'),
         ),
@@ -154,31 +155,33 @@ $GLOBALS['TL_DCA']['tl_iso_product_collection'] = array
         ),
         'store_id' => array
         (
+            'eval'                  => array('doNotShow'=>true),
             'sql'                   => "int(2) unsigned NOT NULL default '0'",
-        ),
-        'language' => array
-        (
-            'sql'                   => "varchar(5) NOT NULL default ''"
         ),
         'settings' => array
         (
+            'eval'                  => array('doNotShow'=>true),
             'sql'                   => "blob NULL",
         ),
         'checkout_info' => array
         (
+            'eval'                  => array('doNotShow'=>true),
             'sql'                   => "blob NULL"
         ),
         'payment_data' => array
         (
+            'eval'                  => array('doNotShow'=>true),
             'sql'                   => "blob NULL"
         ),
         'shipping_data' => array
         (
+            'eval'                  => array('doNotShow'=>true),
             'sql'                   => "blob NULL"
         ),
         'source_collection_id' => array
         (
             'foreignKey'            => 'tl_iso_product_collection.type',
+            'eval'                  => array('doNotShow'=>true),
             'sql'                   => "int(10) unsigned NOT NULL default '0'",
             'relation'              => array('type'=>'hasOne', 'load'=>'lazy'),
         ),
@@ -272,24 +275,33 @@ $GLOBALS['TL_DCA']['tl_iso_product_collection'] = array
         ),
         'subtotal' => array
         (
+            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_product_collection']['subtotal'],
             'sql'                   => "decimal(12,2) NOT NULL default '0.00'",
         ),
         'tax_free_subtotal' => array
         (
+            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_product_collection']['tax_free_subtotal'],
             'sql'                   => "decimal(12,2) NOT NULL default '0.00'",
         ),
         'total' => array
         (
-            'label'                 => &$GLOBALS['TL_LANG']['MSC']['grandTotalLabel'],
+            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_product_collection']['total'],
             'sql'                   => "decimal(12,2) NOT NULL default '0.00'",
         ),
         'tax_free_total' => array
         (
+            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_product_collection']['tax_free_total'],
             'sql'                   => "decimal(12,2) NOT NULL default '0.00'",
         ),
         'currency' => array
         (
+            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_product_collection']['currency'],
             'sql'                   => "varchar(4) NOT NULL default ''",
+        ),
+        'language' => array
+        (
+            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_product_collection']['language'],
+            'sql'                   => "varchar(5) NOT NULL default ''"
         ),
         'notes' => array
         (
