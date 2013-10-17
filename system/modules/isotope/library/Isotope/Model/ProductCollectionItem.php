@@ -129,11 +129,21 @@ class ProductCollectionItem extends \Model
 
     /**
      * Get product options. Automatically falls back to the collection item table if product is not found.
-     * @return  string
+     * @return  array
      */
     public function getOptions()
     {
-        return ($this->isLocked() || !$this->hasProduct()) ? deserialize($this->options) : $this->getProduct()->getOptions();
+        if ($this->isLocked() || !$this->hasProduct()) {
+            $arrOptions = deserialize($this->options);
+
+            if (!is_array($arrOptions)) {
+                $arrOptions = array();
+            }
+        } else {
+            $arrOptions = $this->getProduct()->getOptions();
+        }
+
+        return $arrOptions;
     }
 
 
