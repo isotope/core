@@ -470,8 +470,8 @@ class Standard extends Product implements IsotopeProduct
      */
     public function generate(array $arrConfig)
     {
-        $this->strFormId = (($arrConfig['module'] instanceof \ContentElement) ? 'cte' : 'fmd') . $arrConfig['module']->id . '_product_' . ($this->pid ? $this->pid : $this->id);
         $this->validateVariant();
+        $this->strFormId = (($arrConfig['module'] instanceof \ContentElement) ? 'cte' : 'fmd') . $arrConfig['module']->id . '_product_' . $this->getProductId();
 
         $objProduct = $this;
         $arrGalleries = array();
