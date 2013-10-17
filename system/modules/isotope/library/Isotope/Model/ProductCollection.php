@@ -134,7 +134,7 @@ abstract class ProductCollection extends TypeAgent
      * Mark a field as modified
      * @param $strKey The field key
      */
-    protected function markModified($strKey)
+    public function markModified($strKey)
     {
         $this->ensureNotLocked();
 
