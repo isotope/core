@@ -13,6 +13,7 @@
 namespace Isotope\Model;
 
 use Isotope\Isotope;
+use Isotope\Interfaces\IsotopeProduct;
 use Isotope\Model\Attribute;
 
 
@@ -225,6 +226,34 @@ abstract class Product extends TypeAgent
 			array(
 				'column' => $arrColumns,
 				'return' => 'Collection'
+			),
+			$arrOptions
+		);
+
+		return static::find($arrOptions);
+    }
+
+    /**
+     * Find variant of a product
+     * @param   IsotopeProduct
+     * @param   array
+     * @param   array
+     */
+    public static function findVariantOfProduct(IsotopeProduct $objProduct, array $arrVariant, array $arrOptions=array())
+    {
+        $t = static::$strTable;
+
+        $arrColumns = array(
+            "$t.id IN (" . implode(',', $objProduct->getVariantIds()) . ")",
+            "$t." . implode("=? AND $t.", array_keys($arrVariant)) . "=?"
+        );
+
+        $arrOptions = array_merge(
+			array(
+				'limit'  => 1,
+				'column' => $arrColumns,
+				'value'  => $arrVariant,
+				'return' => 'Model'
 			),
 			$arrOptions
 		);

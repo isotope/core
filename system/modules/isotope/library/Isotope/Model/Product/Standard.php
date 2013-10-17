@@ -470,10 +470,14 @@ class Standard extends Product implements IsotopeProduct
      */
     public function generate(array $arrConfig)
     {
-        $this->validateVariant();
         $this->strFormId = (($arrConfig['module'] instanceof \ContentElement) ? 'cte' : 'fmd') . $arrConfig['module']->id . '_product_' . $this->getProductId();
+        $objProduct = $this->validateVariant();
 
-        $objProduct = $this;
+        // A variant has been loaded, generate the variant
+        if ($objProduct->id != $this->id) {
+            return $objProduct->generate($arrConfig);
+        }
+
         $arrGalleries = array();
 
         $objTemplate = new \Isotope\Template($arrConfig['template']);
@@ -773,11 +777,12 @@ class Standard extends Product implements IsotopeProduct
 
     /**
      * Load data of a product variant if the options match one
+     * @return  IsotopeProduct
      */
     protected function validateVariant()
     {
         if (!$this->hasVariants()) {
-            return;
+            return $this;
         }
 
         $arrOptions = array();
@@ -796,24 +801,15 @@ class Standard extends Product implements IsotopeProduct
             } else {
 
                 // Abort if any attribute does not have a value, we can't find a variant
-                return;
+                return $this;
             }
         }
 
-        if (!empty($arrOptions)) {
-
-            // Do not use the model, it would trigger setRow and generate too much
-            $objVariant = \Database::getInstance()->prepare(
-                static::buildQueryString(array(
-                    'table'     => static::$strTable,
-                    'column'    => array("tl_iso_products.id IN (" . implode(',', $this->getVariantIds()) . ") AND tl_iso_products." . implode('=? AND tl_iso_products.', array_keys($arrOptions)) . "=?")
-                ))
-            )->limit(1)->execute($arrOptions);
-
-            if ($objVariant->numRows) {
-                $this->loadVariantData($objVariant->row());
-            }
+        if (!empty($arrOptions) && ($objVariant = static::findVariantOfProduct($this, $arrOptions)) !== null) {
+            return $objVariant;
         }
+
+        return $this;
     }
 
     /**
@@ -823,8 +819,6 @@ class Standard extends Product implements IsotopeProduct
      */
     public function setRow(array $arrData)
     {
-        $this->resetCache();
-
         if ($arrData['pid'] > 0)
         {
             // Do not use the model, it would trigger setRow and generate too much
@@ -835,10 +829,30 @@ class Standard extends Product implements IsotopeProduct
             }
 
             $this->setRow($objParent->row());
-            $this->loadVariantData($arrData);
+
+            $this->arrData['id'] = $arrData['id'];
+            $this->arrData['pid'] = $arrData['pid'];
+            $this->arrData['inherit'] = $arrData['inherit'];
+
+            // Set all variant attributes, except if they are inherited
+            foreach (array_diff($this->getVariantAttributes(), $this->getInheritedFields()) as $attribute) {
+
+                $this->arrData[$attribute] = $arrData[$attribute];
+
+                if (in_array($attribute, Attribute::getFetchFallbackFields())) {
+                    $this->arrData[$attribute.'_fallback'] = $arrData[$attribute.'_fallback'];
+                }
+            }
 
             return $this;
         }
+
+        // Empty cache
+        $this->objPrice = false;
+        $this->arrAttributes = null;
+        $this->arrVariantAttributes = null;
+        $this->arrVariantIds = null;
+        $this->arrCategories = null;
 
         // Must initialize product type to have attributes etc.
         if (!isset($this->arrRelated['type']))
@@ -882,32 +896,6 @@ class Standard extends Product implements IsotopeProduct
     }
 
     /**
-     * Load variant data basing on provided data
-     * @param   array
-     */
-    public function loadVariantData($arrData)
-    {
-        $this->resetCache();
-
-        $this->arrData['id'] = $arrData['id'];
-        $this->arrData['pid'] = $arrData['pid'];
-        $this->arrData['inherit'] = $arrData['inherit'];
-
-        // Set all variant attributes, except if they are inherited
-        foreach (array_diff($this->getVariantAttributes(), $this->getInheritedFields()) as $attribute) {
-
-            $this->arrData[$attribute] = $arrData[$attribute];
-
-            if (in_array($attribute, Attribute::getFetchFallbackFields())) {
-                $this->arrData[$attribute.'_fallback'] = $arrData[$attribute.'_fallback'];
-            }
-        }
-
-        // Load variant options
-        $this->arrOptions = array_merge($this->arrOptions, array_intersect_key($arrData, array_flip(array_intersect($this->getVariantAttributes(), Attribute::getVariantOptionFields()))));
-    }
-
-    /**
      * Generate url
      * @param   PageModel       A PageModel instance
      * @return  array
@@ -945,18 +933,5 @@ class Standard extends Product implements IsotopeProduct
         }
 
         return array_merge(deserialize($this->arrData['inherit'], true), Attribute::getInheritFields());
-    }
-
-    /**
-     * Unset cached data
-     */
-    protected function resetCache()
-    {
-        $this->objPrice = false;
-        $this->arrAttributes = null;
-        $this->arrVariantAttributes = null;
-        $this->arrVariantIds = null;
-        $this->arrOptions = array();
-        $this->arrCategories = null;
     }
 }
