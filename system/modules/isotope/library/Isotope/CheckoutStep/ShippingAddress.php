@@ -103,27 +103,30 @@ class ShippingAddress extends Address implements IsotopeCheckoutStep
     /**
      * Get address object for a selected option
      * @param   string
+     * @param   bool
      * @return  Isotope\Model\Address
      */
-    protected function getAddressForOption($varValue)
+    protected function getAddressForOption($varValue, $blnValidate)
     {
         if ($varValue === '-1') {
             return Isotope::getCart()->getBillingAddress();
         }
         elseif ($varValue === '0') {
             $objAddress = $this->getDefaultAddress();
-            $arrAddress = $this->validateFields();
+            $arrAddress = $this->validateFields($blnValidate);
 
-            foreach ($arrAddress as $field => $value) {
-                $objAddress->$field = $value;
+            if ($blnValidate) {
+                foreach ($arrAddress as $field => $value) {
+                    $objAddress->$field = $value;
+                }
+
+                $objAddress->save();
             }
-
-            $objAddress->save();
 
             return $objAddress;
         }
 
-        return parent::getAddressForOption($varValue);
+        return parent::getAddressForOption($varValue, $blnValidate);
     }
 
     /**

@@ -103,7 +103,6 @@ abstract class Address extends CheckoutStep
                 } else {
                     $varValue = (string) $objWidget->value;
                 }
-/*
             } elseif ($objWidget->value != '') {
                 \Input::setPost($objWidget->name, $objWidget->value);
 
@@ -113,20 +112,18 @@ abstract class Address extends CheckoutStep
                 if ($objValidator->hasErrors()) {
                     $this->blnError = true;
                 }
-*/
             }
 
             $strBuffer .= $objWidget->parse();
         }
 
-        if ($blnValidate) {
-            $objAddress = $this->getAddressForOption($varValue);
 
-            if (null === $objAddress) {
-                $this->blnError = true;
-            } else {
-                $this->setAddress($objAddress);
-            }
+        $objAddress = $this->getAddressForOption($varValue, $blnValidate);
+
+        if (null === $objAddress) {
+            $this->blnError = true;
+        } elseif ($blnValidate) {
+            $this->setAddress($objAddress);
         }
 
         return $strBuffer;
@@ -144,11 +141,6 @@ abstract class Address extends CheckoutStep
         $arrWidgets = \Isotope\Frontend::generateRowClass($this->getWidgets(), 'row', 'rowClass', 0, ISO_CLASS_COUNT|ISO_CLASS_FIRSTLAST|ISO_CLASS_EVENODD);
 
         foreach ($arrWidgets as $objWidget) {
-
-            if ($blnValidate) {
-                $objWidget->validate();
-            }
-
             $strBuffer .= $objWidget->parse();
         }
 
@@ -159,14 +151,14 @@ abstract class Address extends CheckoutStep
      * Validate input and return address data
      * @return  array
      */
-    protected function validateFields()
+    protected function validateFields($blnValidate)
     {
         $arrAddress = array();
         $arrWidgets = $this->getWidgets();
 
         foreach ($arrWidgets as $strName => $objWidget) {
             // Validate input
-            if (\Input::post('FORM_SUBMIT') == $this->objModule->getFormId()) {
+            if ($blnValidate) {
 
                 $objWidget->validate();
                 $varValue = $objWidget->value;
@@ -289,9 +281,10 @@ abstract class Address extends CheckoutStep
     /**
      * Get address object for a selected option
      * @param   string
+     * @param   bool
      * @return  Isotope\Model\Address
      */
-    protected function getAddressForOption($varValue)
+    protected function getAddressForOption($varValue, $blnValidate)
     {
         $arrAddresses = $this->getAddresses();
 
