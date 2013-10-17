@@ -864,9 +864,9 @@ class Standard extends Product implements IsotopeProduct
     public function markModified($strKey)
     {
         if ($this->pid > 0) {
-            $arrAttributes = array_diff($this->getVariantAttributes(), $this->getInheritedFields());
+            $arrAttributes = array_diff($this->getVariantAttributes(), $this->getInheritedFields(), Attribute::getCustomerDefinedFields());
         } else {
-            $arrAttributes = $this->getAttributes();
+            $arrAttributes = array_diff($this->getAttributes(), Attribute::getCustomerDefinedFields());
         }
 
         if (!in_array($strKey, $arrAttributes) && $GLOBALS['TL_DCA'][static::$strTable]['fields'][$strKey]['attributes']['legend'] != '') {
