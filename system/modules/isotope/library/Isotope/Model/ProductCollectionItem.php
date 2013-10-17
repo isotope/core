@@ -90,7 +90,11 @@ class ProductCollectionItem extends \Model
             }
 
             $this->objProduct = $strClass::findByPk($this->product_id);
-            $this->objProduct->setOptions(deserialize($this->options));
+
+            $arrOptions = deserialize($this->options);
+            if (!empty($arrOptions) && is_array($arrOptions)) {
+                $this->objProduct->mergeRow($arrOptions);
+            }
         }
 
         return $this->objProduct;

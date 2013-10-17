@@ -61,12 +61,6 @@ class Standard extends Product implements IsotopeProduct
     protected $arrVariantIds;
 
     /**
-     * Product Options
-     * @var array
-     */
-    protected $arrOptions = array();
-
-    /**
      * Assigned categories (pages)
      * @var array
      */
@@ -90,22 +84,6 @@ class Standard extends Product implements IsotopeProduct
      */
     protected $doNotSubmit = false;
 
-
-    /**
-     * Get a property
-     * @param   string
-     * @return  mixed
-     * @todo Kick me
-     */
-    public function __get($strKey)
-    {
-        if ($this->isVariant() && $GLOBALS['TL_DCA']['tl_iso_products']['fields'][$strKey]['attributes']['customer_defined'] || $GLOBALS['TL_DCA']['tl_iso_products']['fields'][$strKey]['attributes']['variant_option']) {
-
-		    return isset($this->arrOptions[$strKey]) ? deserialize($this->arrOptions[$strKey]) : null;
-	    }
-
-        return isset($this->arrData[$strKey]) ? deserialize($this->arrData[$strKey]) : null;
-    }
 
     /**
      * Returns true if the product is published, otherwise returns false
@@ -449,17 +427,19 @@ class Standard extends Product implements IsotopeProduct
      */
     public function getOptions()
     {
-        return $this->arrOptions;
-    }
+        if ($this->hasVariants()) {
+            $arrAttributes = array_intersect(array_merge($this->getAttributes(), $this->getVariantAttributes()), array_merge(Attribute::getVariantOptionFields(), Attribute::getCustomerDefinedFields()));
+        } else {
+            $arrAttributes = array_intersect($this->getAttributes(), Attribute::getCustomerDefinedFields());
+        }
 
+        $arrOptions = array();
 
-    /**
-     * Set options data
-     * @param   array
-     */
-    public function setOptions(array $arrOptions)
-    {
-        $this->arrOptions = $arrOptions;
+        foreach (array_unique($arrAttributes) as $attribute) {
+            $arrOptions[$attribute] = $this->arrData[$attribute];
+        }
+
+        return $arrOptions;
     }
 
 
@@ -584,7 +564,7 @@ class Standard extends Product implements IsotopeProduct
         $objTemplate->useQuantity = $arrConfig['useQuantity'];
         $objTemplate->minimum_quantity = $this->getMinimumQuantity();
         $objTemplate->raw = $this->arrData;
-        $objTemplate->raw_options = $this->arrOptions;
+        $objTemplate->raw_options = $this->getOptions();
         $objTemplate->href = $this->generateUrl($arrConfig['jumpTo']);
         $objTemplate->label_detail = $GLOBALS['TL_LANG']['MSC']['detailLabel'];
         $objTemplate->options = \Isotope\Frontend::generateRowClass($arrProductOptions, 'product_option');
@@ -659,11 +639,7 @@ class Standard extends Product implements IsotopeProduct
             }
 
             $arrField['options'] = array_values($arrField['options']);
-
-            // Set field value if a variant is selected
-            if ($this->isVariant()) {
-                $arrField['value'] = $this->arrOptions[$strField];
-            }
+            $arrField['value'] = $this->$strField;
         }
 
         // Not a variant widget, but customer editable
@@ -868,7 +844,14 @@ class Standard extends Product implements IsotopeProduct
 
         // Remove attributes not in this product type
         foreach ($arrData as $attribute => $value) {
-            if (!in_array($attribute, $this->getAttributes()) && !in_array($attribute, $this->getVariantAttributes()) && $GLOBALS['TL_DCA']['tl_iso_products']['fields'][$attribute]['attributes']['legend'] != '') {
+            if ((
+                    !in_array($attribute, $this->getAttributes())
+                    && !in_array($attribute, $this->getVariantAttributes())
+                    && $GLOBALS['TL_DCA']['tl_iso_products']['fields'][$attribute]['attributes']['legend'] != ''
+                )
+                || in_array($attribute, Attribute::getVariantOptionFields())
+                || in_array($attribute, Attribute::getCustomerDefinedFields())
+            ) {
                 unset($arrData[$attribute]);
             }
         }

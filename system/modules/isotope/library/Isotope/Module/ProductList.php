@@ -214,7 +214,7 @@ class ProductList extends Module
                 \Isotope\Frontend::ajaxResponse($objProduct->generate($arrConfig));
             }
 
-            $objProduct->setOptions(array_merge($arrDefaultOptions, $objProduct->getOptions()));
+            $objProduct->mergeRow($arrDefaultOptions);
 
             // Must be done after setting options to generate the variant config into the URL
             if ($this->iso_jump_first && \Isotope\Frontend::getAutoItem('product') == '') {
