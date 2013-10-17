@@ -910,10 +910,9 @@ class Standard extends Product implements IsotopeProduct
     /**
      * Generate url
      * @param   PageModel       A PageModel instance
-     * @param   string          Optional parameters
      * @return  array
      */
-    public function generateUrl(\PageModel $objJumpTo=null, $arrParams=array())
+    public function generateUrl(\PageModel $objJumpTo=null)
     {
         if (null === $objJumpTo) {
             global $objPage;
@@ -928,13 +927,8 @@ class Standard extends Product implements IsotopeProduct
             $strUrl = '/product' . $strUrl;
         }
 
-        $arrOptions = $this->getOptions();
-        if (!empty($arrOptions)) {
-            $arrParams = array_merge($arrOptions, $arrParams);
-        }
-
         return \Isotope\Frontend::addQueryStringToUrl(
-            http_build_query($arrParams),
+            http_build_query($this->getOptions()),
             \Controller::generateFrontendUrl($objJumpTo->row(), $strUrl, $objJumpTo->language)
         );
     }
