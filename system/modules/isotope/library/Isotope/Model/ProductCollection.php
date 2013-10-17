@@ -97,7 +97,9 @@ abstract class ProductCollection extends TypeAgent
         parent::__construct($objResult);
 
         // Do not use __destruct, because Database object might be destructed first (see http://github.com/contao/core/issues/2236)
-        register_shutdown_function(array($this, 'updateDatabase'));
+        if (TL_MODE == 'FE') {
+            register_shutdown_function(array($this, 'updateDatabase'));
+        }
     }
 
     /**
