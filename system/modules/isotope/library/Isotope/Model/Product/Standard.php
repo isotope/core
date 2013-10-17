@@ -849,6 +849,25 @@ class Standard extends Product implements IsotopeProduct
     }
 
     /**
+     * In a variant, only variant and non-inherited fields can be marked as modified
+     * @param   string
+     */
+    public function markModified($strKey)
+    {
+        if ($this->pid > 0) {
+            $arrAttributes = array_diff($this->getVariantAttributes(), $this->getInheritedFields());
+        } else {
+            $arrAttributes = $this->getAttributes();
+        }
+
+        if (!in_array($strKey, $arrAttributes) && $GLOBALS['TL_DCA'][static::$strTable]['fields'][$strKey]['attributes']['legend'] != '') {
+            return false;
+        }
+
+        return parent::marModified($strKey);
+    }
+
+    /**
      * Load variant data basing on provided data
      * @param   array
      */
@@ -856,13 +875,12 @@ class Standard extends Product implements IsotopeProduct
     {
         $this->resetCache();
 
-        $arrInherit = deserialize($arrData['inherit'], true);
-
         $this->arrData['id'] = $arrData['id'];
         $this->arrData['pid'] = $arrData['pid'];
+        $this->arrData['inherit'] = $arrData['inherit'];
 
         // Set all variant attributes, except if they are inherited
-        foreach (array_diff($this->getVariantAttributes(), $arrInherit) as $attribute) {
+        foreach (array_diff($this->getVariantAttributes(), $this->getInheritedFields()) as $attribute) {
 
             $this->arrData[$attribute] = $arrData[$attribute];
 
@@ -905,6 +923,20 @@ class Standard extends Product implements IsotopeProduct
             http_build_query($arrParams),
             \Controller::generateFrontendUrl($objJumpTo->row(), $strUrl, $objJumpTo->language)
         );
+    }
+
+    /**
+     * Return array of inherited attributes
+     * @return  array
+     */
+    protected function getInheritedFields()
+    {
+        // Not a variant, no inherited fields
+        if ($this->pid == 0) {
+            return array();
+        }
+
+        return array_merge(deserialize($this->arrData['inherit'], true), Attribute::getInheritFields());
     }
 
     /**

@@ -613,4 +613,28 @@ abstract class Attribute extends TypeAgent
 
         return $arrFields;
     }
+
+    /**
+     * Return list of fields that must be inherited by variants
+     * @return  array
+     */
+    public static function getInheritFields()
+    {
+        static $arrFields;
+
+        Isotope::getInstance()->call('loadDataContainer', 'tl_iso_products');
+
+        if (null === $arrFields) {
+            $arrFields = array();
+            $arrDCA = &$GLOBALS['TL_DCA']['tl_iso_products']['fields'];
+
+            foreach ($arrDCA as $field => $config) {
+                if ($config['attributes']['inherit']) {
+                    $arrFields[] = $field;
+                }
+            }
+        }
+
+        return $arrFields;
+    }
 }
