@@ -99,16 +99,12 @@ class Standard extends Product implements IsotopeProduct
      */
     public function __get($strKey)
     {
-        switch ($strKey)
-        {
-            default:
-                if ($this->pid > 0 && $GLOBALS['TL_DCA']['tl_iso_products']['fields'][$strKey]['attributes']['customer_defined'] || $GLOBALS['TL_DCA']['tl_iso_products']['fields'][$strKey]['attributes']['variant_option']) {
+        if ($this->isVariant() && $GLOBALS['TL_DCA']['tl_iso_products']['fields'][$strKey]['attributes']['customer_defined'] || $GLOBALS['TL_DCA']['tl_iso_products']['fields'][$strKey]['attributes']['variant_option']) {
 
-				    return isset($this->arrOptions[$strKey]) ? deserialize($this->arrOptions[$strKey]) : null;
-			    }
+		    return isset($this->arrOptions[$strKey]) ? deserialize($this->arrOptions[$strKey]) : null;
+	    }
 
-                return isset($this->arrData[$strKey]) ? deserialize($this->arrData[$strKey]) : null;
-        }
+        return isset($this->arrData[$strKey]) ? deserialize($this->arrData[$strKey]) : null;
     }
 
     /**
@@ -236,6 +232,15 @@ class Standard extends Product implements IsotopeProduct
     public function isExemptFromShipping()
     {
         return ($this->arrData['shipping_exempt'] || $this->getRelated('type')->shipping_exempt) ? true : false;
+    }
+
+    /**
+     * Returns true if a variant is loaded
+     * @return  bool
+     */
+    public function isVariant()
+    {
+        return ($this->hasVariants() && $this->pid > 0);
     }
 
     /**
@@ -652,7 +657,7 @@ class Standard extends Product implements IsotopeProduct
             $arrField['options'] = array_values($arrField['options']);
 
             // Set field value if a variant is selected
-            if ($this->pid > 0) {
+            if ($this->isVariant()) {
                 $arrField['value'] = $this->arrOptions[$strField];
             }
         }
@@ -863,7 +868,7 @@ class Standard extends Product implements IsotopeProduct
      */
     public function markModified($strKey)
     {
-        if ($this->pid > 0) {
+        if ($this->isVariant()) {
             $arrAttributes = array_diff($this->getVariantAttributes(), $this->getInheritedFields(), Attribute::getCustomerDefinedFields());
         } else {
             $arrAttributes = array_diff($this->getAttributes(), Attribute::getCustomerDefinedFields());
