@@ -12,6 +12,9 @@
 
 namespace Isotope\Interfaces;
 
+use Isotope\Interfaces\IsotopeProduct;
+use Isotope\Model\ProductCollectionItem;
+
 
 /**
  * IsotopeProductCollection interface defines an Isotope product collection
