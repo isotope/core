@@ -14,6 +14,7 @@
  * @license http://www.gnu.org/licenses/lgpl-3.0.html LGPL
  */
 
+$GLOBALS['TL_LANG']['MOD']['isotope'] = 'Isotope eCommerce';
 $GLOBALS['TL_LANG']['MOD']['iso_products'][0] = 'Produkte';
 $GLOBALS['TL_LANG']['MOD']['iso_products'][1] = 'Verwalten Sie Produkte und Produkt-Varianten.';
 $GLOBALS['TL_LANG']['MOD']['iso_orders'][0] = 'Bestellungen';
@@ -43,6 +44,7 @@ $GLOBALS['TL_LANG']['FMD']['iso_configswitcher'][0] = 'Shopkonfigurations-Wechsl
 $GLOBALS['TL_LANG']['FMD']['iso_configswitcher'][1] = 'Zwischen Shopkonfigurationen umschalten um Währungen und andere Einstellungen zu ändern.';
 $GLOBALS['TL_LANG']['FMD']['iso_relatedproducts'][0] = 'Ähnliche Produkte';
 $GLOBALS['TL_LANG']['FMD']['iso_relatedproducts'][1] = 'Zeigt Produkte an, die Ähnlichkeit mit dem aktiven Produkt haben.';
+$GLOBALS['TL_LANG']['FMD']['iso_messages'][0] = 'Nachrichten';
 $GLOBALS['TL_LANG']['IMD']['product'] = 'Produkte';
 $GLOBALS['TL_LANG']['IMD']['attributes'][0] = 'Attribute';
 $GLOBALS['TL_LANG']['IMD']['attributes'][1] = 'In der Attributverewaltung können Sie eigene Felder für Ihre Produkte anlegen. Dies ist z.B. hilfreich wenn Ihr Produkt einen Untertitel haben soll. Beachten Sie dass die entsprechenden Felder dann manuell im Template ausgegeben werden müssen (=Template-Anpassung).';
@@ -50,6 +52,7 @@ $GLOBALS['TL_LANG']['IMD']['producttypes'][0] = 'Produkttypen';
 $GLOBALS['TL_LANG']['IMD']['producttypes'][1] = 'Mittels Produkttypen können Sie Ihre Produkte gruppieren. Verschiedene Produttypen können verschiedene Felder und Funktionen (z.B. Downloads aktivieren) enthalten.';
 $GLOBALS['TL_LANG']['IMD']['related_categories'][0] = 'Verknüpfte Kategorien';
 $GLOBALS['TL_LANG']['IMD']['related_categories'][1] = 'Legen Sie hier Kategorien an, mit deren Gruppierung Sie später Produkte miteinander verknüpfen können.';
+$GLOBALS['TL_LANG']['IMD']['gallery'][0] = 'Galerien';
 $GLOBALS['TL_LANG']['IMD']['baseprice'][0] = 'Grundpreis';
 $GLOBALS['TL_LANG']['IMD']['baseprice'][1] = 'Grundpres festlegen.';
 $GLOBALS['TL_LANG']['IMD']['checkout'] = 'Bestellablauf';
@@ -66,3 +69,6 @@ $GLOBALS['TL_LANG']['IMD']['configs'][0] = 'Konfigurationen';
 $GLOBALS['TL_LANG']['IMD']['configs'][1] = 'Konfigurationen umfassen Einstellungen bezüglich Währung, Preisberechnung, Adressaufbereitung, Produktbildgrössen und anderem. Sie können mehrere Konfigurationen anlegen und diese im Shop-Betrieb (über das entsprechende Frontend-Modul) wechseln, um z.B. eine Umschaltung zwischen mehreren Währungen zu ermöglichen.';
 $GLOBALS['TL_LANG']['IMD']['orderstatus'][0] = 'Bestellstatus';
 $GLOBALS['TL_LANG']['IMD']['orderstatus'][1] = 'Verschieden Statusbezeichnungen für die Bestellungen anlegen.';
+$GLOBALS['TL_LANG']['IMD']['notifications'][0] = 'Benachrichtigungen';
+$GLOBALS['TL_LANG']['IMD']['documents'][0] = 'Dokumente';
+$GLOBALS['TL_LANG']['IMD']['labels'][0] = 'Übersetzungen';
