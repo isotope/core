@@ -12,6 +12,7 @@
 
 namespace Isotope\Model;
 
+use Isotope\Isotope;
 use Isotope\Interfaces\IsotopeProduct;
 
 
@@ -59,7 +60,7 @@ abstract class Gallery extends TypeAgent
         }
 
         $objGallery->setName($objProduct->getFormId() . '_' . $strAttribute);
-        $objGallery->setFiles($objProduct->$strAttribute); //Isotope::mergeMediaData($objProduct->{$this->field_name}, deserialize($objProduct->{$strKey.'_fallback'})));
+        $objGallery->setFiles(Isotope::mergeMediaData($objProduct->$strAttribute, deserialize($objProduct->{$strAttribute.'_fallback'})));
         $objGallery->product_id = ($objProduct->pid ? $objProduct->pid : $objProduct->id);
         $objGallery->href = $objProduct->generateUrl($arrConfig['jumpTo']);
 

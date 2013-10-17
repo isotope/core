@@ -278,11 +278,6 @@ abstract class Product extends TypeAgent
             $arrFields[] = "IFNULL(translation.$attribute, " . $arrOptions['table'] . ".$attribute) AS $attribute";
         }
 
-        foreach (Attribute::getFetchFallbackFields() as $attribute)
-        {
-            $arrFields[] = "{$arrOptions['table']}.$attribute AS {$attribute}_fallback";
-        }
-
         $arrFields[] = "c.sorting";
 
         $arrJoins[] = " LEFT OUTER JOIN tl_iso_product_categories c ON {$arrOptions['table']}.id=c.pid";
