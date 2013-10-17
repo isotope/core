@@ -921,7 +921,7 @@ class Standard extends Product implements IsotopeProduct
             $objJumpTo = $objIsotopeListPage ?: $objPage;
         }
 
-        $strUrl = '/' . $this->arrData['alias'] ?: ($this->arrData['pid'] ?: $this->arrData['id']);
+        $strUrl = '/' . $this->arrData['alias'] ?: $this->getProductId();
 
         if (!$GLOBALS['TL_CONFIG']['useAutoItem'] || !in_array('product', $GLOBALS['TL_AUTO_ITEM'])) {
             $strUrl = '/product' . $strUrl;
