@@ -12,6 +12,7 @@
 
 namespace Isotope\Widget;
 
+use Isotope\Model\Gallery;
 
 /**
  * Class MediaManager
@@ -191,7 +192,7 @@ class MediaManager extends \Widget implements \uploadable
         if ($arrFallback !== false)
         {
             $blnLanguage = true;
-            $this->varValue = \Isotope\Isotope::mergeMediaData($this->varValue, $arrFallback);
+            $this->varValue = Gallery::mergeMediaData($this->varValue, $arrFallback);
         }
 
         $arrButtons = array('up', 'down', 'delete', 'drag');

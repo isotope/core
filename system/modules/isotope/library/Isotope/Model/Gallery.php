@@ -60,10 +60,72 @@ abstract class Gallery extends TypeAgent
         }
 
         $objGallery->setName($objProduct->getFormId() . '_' . $strAttribute);
-        $objGallery->setFiles(Isotope::mergeMediaData($objProduct->$strAttribute, deserialize($objProduct->{$strAttribute.'_fallback'})));
+        $objGallery->setFiles(static::mergeMediaData($objProduct->$strAttribute, deserialize($objProduct->{$strAttribute.'_fallback'})));
         $objGallery->product_id = ($objProduct->pid ? $objProduct->pid : $objProduct->id);
         $objGallery->href = $objProduct->generateUrl($arrConfig['jumpTo']);
 
         return $objGallery;
+    }
+
+    /**
+     * Merge media manager data from fallback and translated product data
+     * @param array
+     * @param array
+     * @return array
+     */
+    public static function mergeMediaData($arrCurrent, $arrParent)
+    {
+        $arrTranslate = array();
+
+        if (is_array($arrParent) && !empty($arrParent))
+        {
+            // Create an array of images where key = image name
+            foreach( $arrParent as $image)
+            {
+                if ($image['translate'] != 'all')
+                {
+                    $arrTranslate[$image['src']] = $image;
+                }
+            }
+        }
+
+        if (is_array($arrCurrent) && !empty($arrCurrent))
+        {
+            foreach ($arrCurrent as $i => $image)
+            {
+                if (isset($arrTranslate[$image['src']]))
+                {
+                    if ($arrTranslate[$image['src']]['translate'] == '')
+                    {
+                        $arrCurrent[$i] = $arrTranslate[$image['src']];
+                    }
+                    else
+                    {
+                        $arrCurrent[$i]['link'] = $arrTranslate[$image['src']]['link'];
+                        $arrCurrent[$i]['translate'] = $arrTranslate[$image['src']]['translate'];
+                    }
+
+                    unset($arrTranslate[$image['src']]);
+                }
+                elseif ($arrCurrent[$i]['translate'] != 'all')
+                {
+                    unset($arrCurrent[$i]);
+                }
+            }
+
+            // Add remaining parent image to the list
+            if (!empty($arrTranslate))
+            {
+                $arrCurrent = array_merge($arrCurrent, array_values($arrTranslate));
+            }
+
+            $arrCurrent = array_values($arrCurrent);
+        }
+        else
+        {
+            $arrCurrent = array_values($arrTranslate);
+        }
+
+        return $arrCurrent;
     }
 }
