@@ -387,7 +387,14 @@ class ProductGroupSelector extends \Widget
         }
 
         $href = '<a href="' . $this->addToUrl('gid='.$objGroup->id) . '" title="'.specialchars($objGroup->name . ' (ID ' . $objGroup->id . ')').'">'.$objGroup->name.'</a>';
-        $return .= $this->tl_iso_groups->addIcon($objGroup->row(), $href, null, $folderAttribute).'</div> <div class="tl_right">';
+        $callback = $GLOBALS['TL_DCA']['tl_iso_groups']['list']['label']['label_callback'];
+
+        // Load the label_callback
+        if (is_array($callback) && !empty($callback)) {
+            $return .= static::importStatic($callback[0])->$callback[1]($objGroup->row(), $href, null, $folderAttribute);
+        }
+
+        $return .= '</div> <div class="tl_right">';
 
         // Add checkbox or radio button
         switch ($GLOBALS['TL_DCA'][$this->strTable]['fields'][$this->strField]['eval']['fieldType'])
