@@ -72,8 +72,7 @@ class ProductPrice extends \Model implements IsotopePrice
      */
     public function getAmount($intQuantity=1)
     {
-        // @todo should pass product object as second parameter
-        return Isotope::calculatePrice($this->getValueForTier($intQuantity), null, 'price', $this->tax_class);
+        return Isotope::calculatePrice($this->getValueForTier($intQuantity), $this->getRelated('pid'), 'price', $this->tax_class);
     }
 
     /**
@@ -83,8 +82,7 @@ class ProductPrice extends \Model implements IsotopePrice
      */
     public function getOriginalAmount($intQuantity=1)
     {
-        // @todo should pass product object as second parameter
-        return Isotope::calculatePrice($this->getValueForTier($intQuantity), null, 'original_price', $this->tax_class);
+        return Isotope::calculatePrice($this->getValueForTier($intQuantity), $this->getRelated('pid'), 'original_price', $this->tax_class);
     }
 
     /**
@@ -100,8 +98,7 @@ class ProductPrice extends \Model implements IsotopePrice
             $fltAmount = $objTaxClass->calculateNetPrice($fltAmount);
         }
 
-        // @todo should pass product object as second parameter
-        return Isotope::calculatePrice($fltAmount, null, 'net_price');
+        return Isotope::calculatePrice($fltAmount, $this->getRelated('pid'), 'net_price');
     }
 
     /**
@@ -117,8 +114,7 @@ class ProductPrice extends \Model implements IsotopePrice
             $fltAmount = $objTaxClass->calculateGrossPrice($fltAmount);
         }
 
-        // @todo should pass product object as second parameter
-        return Isotope::calculatePrice($fltAmount, null, 'gross_price');
+        return Isotope::calculatePrice($fltAmount, $this->getRelated('pid'), 'gross_price');
     }
 
     /**
@@ -131,8 +127,7 @@ class ProductPrice extends \Model implements IsotopePrice
             return $this->getAmount();
         }
 
-        // @todo should pass product object as second parameter
-        return Isotope::calculatePrice(min($this->arrTiers), null, 'price', $this->tax_class);
+        return Isotope::calculatePrice(min($this->arrTiers), $this->getRelated('pid'), 'price', $this->tax_class);
     }
 
     /**
