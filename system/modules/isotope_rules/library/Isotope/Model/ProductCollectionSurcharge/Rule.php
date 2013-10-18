@@ -12,7 +12,6 @@
 
 namespace Isotope\Model\ProductCollectionSurcharge;
 
-use Isotope\Translation;
 use Isotope\Interfaces\IsotopeProductCollection;
 use Isotope\Interfaces\IsotopeProductCollectionSurcharge;
 use Isotope\Model\ProductCollectionSurcharge;
@@ -38,18 +37,13 @@ class Rule extends ProductCollectionSurcharge implements IsotopeProductCollectio
         $arrCollectionItems = $objCollection->getItems();
 
         $blnMatch = false;
-        $blnPercentage = false;
+        $blnPercentage = $objRule->isPercentage();
+        $fltDiscount = $blnPercentage ? $objRule->getPercentage() : 0;
         $fltTotal = 0;
 
-        if (strpos($objRule->discount, '%') !== false)
-        {
-            $blnPercentage = true;
-            $fltDiscount = rtrim($objRule->discount, '%');
-        }
-
         $objSurcharge = new static();
-        $objSurcharge->label = Translation::get(($objRule->label ?: $objRule->name));
-        $objSurcharge->price = ($blnPercentage ? $fltDiscount.'%' : '&nbsp;');
+        $objSurcharge->label = $objRule->getLabel();
+        $objSurcharge->price = $objRule->getPercentageLabel();
         $objSurcharge->total_price = 0;
         $objSurcharge->tax_class = 0;
         $objSurcharge->before_tax = true;

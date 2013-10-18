@@ -13,6 +13,7 @@
 namespace Isotope\Model;
 
 use Isotope\Isotope;
+use Isotope\Translation;
 use Isotope\Interfaces\IsotopeProduct;
 
 /**
@@ -30,6 +31,48 @@ class Rule extends \Model
      * @var string
      */
     protected static $strTable = 'tl_iso_rules';
+
+    /**
+     * Get label for rule
+     * @return  string
+     */
+    public function getLabel()
+    {
+        return Translation::get(($this->label ?: $this->name));
+    }
+
+    /**
+     * Return true if the rule has a percentage (not fixed) amount
+     * @return bool
+     */
+    public function isPercentage()
+    {
+        return (substr($this->discount, -1) == '%') ? true : false;
+    }
+
+    /**
+     * Return percentage amount (if applicable)
+     * @return float
+     * @throws UnexpectedValueException
+     */
+    public function getPercentage()
+    {
+        if (!$this->isPercentage())
+        {
+            throw new \UnexpectedValueException('Rule does not have a percentage amount.');
+        }
+
+        return (float) substr($this->discount, 0, -1);
+    }
+
+    /**
+     * Return percentage label if price is percentage
+     * @return  string
+     */
+    public function getPercentageLabel()
+    {
+        return $this->isPercentage() ? $this->discount : '';
+    }
 
 
     public static function findByProduct(IsotopeProduct $objProduct, $strField, $fltPrice)

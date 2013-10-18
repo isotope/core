@@ -111,9 +111,9 @@ class Rules extends \Controller
                         continue;
                     }
 
-                    if (strpos($objRules->discount, '%') !== false)
+                    if ($objRules->current()->isPercentage())
                     {
-                        $fltDiscount = 100 + rtrim($objRules->discount, '%');
+                        $fltDiscount = 100 + $objRules->current()->getPercentage();
                         $fltDiscount = round($fltPrice - ($fltPrice / 100 * $fltDiscount), 10);
                         $fltDiscount = $fltDiscount > 0 ? (floor($fltDiscount * 100) / 100) : (ceil($fltDiscount * 100) / 100);
 
