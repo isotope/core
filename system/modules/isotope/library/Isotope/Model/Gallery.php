@@ -77,52 +77,42 @@ abstract class Gallery extends TypeAgent
     {
         $arrTranslate = array();
 
-        if (is_array($arrParent) && !empty($arrParent))
-        {
+        if (!empty($arrParent) && is_array($arrParent)) {
+
             // Create an array of images where key = image name
-            foreach( $arrParent as $image)
-            {
-                if ($image['translate'] != 'all')
-                {
+            foreach ($arrParent as $image) {
+                if ($image['translate'] != 'all') {
                     $arrTranslate[$image['src']] = $image;
                 }
             }
         }
 
-        if (is_array($arrCurrent) && !empty($arrCurrent))
-        {
-            foreach ($arrCurrent as $i => $image)
-            {
-                if (isset($arrTranslate[$image['src']]))
-                {
-                    if ($arrTranslate[$image['src']]['translate'] == '')
-                    {
+        if (!empty($arrCurrent) && is_array($arrCurrent)) {
+            foreach ($arrCurrent as $i => $image) {
+
+                if (isset($arrTranslate[$image['src']])) {
+                    if ($arrTranslate[$image['src']]['translate'] == '') {
                         $arrCurrent[$i] = $arrTranslate[$image['src']];
-                    }
-                    else
-                    {
+                    } else {
                         $arrCurrent[$i]['link'] = $arrTranslate[$image['src']]['link'];
                         $arrCurrent[$i]['translate'] = $arrTranslate[$image['src']]['translate'];
                     }
 
                     unset($arrTranslate[$image['src']]);
-                }
-                elseif ($arrCurrent[$i]['translate'] != 'all')
-                {
+
+                } elseif ($arrCurrent[$i]['translate'] != 'all') {
                     unset($arrCurrent[$i]);
                 }
             }
 
             // Add remaining parent image to the list
-            if (!empty($arrTranslate))
-            {
+            if (!empty($arrTranslate)) {
                 $arrCurrent = array_merge($arrCurrent, array_values($arrTranslate));
             }
 
             $arrCurrent = array_values($arrCurrent);
-        }
-        else
-        {
+
+        } else {
             $arrCurrent = array_values($arrTranslate);
         }
 
