@@ -109,7 +109,7 @@ class Expercash extends Payment implements IsotopePayment, IsotopePostsale
         $strKey = '';
         $strUrl = 'https://epi.expercash.net/epi_popup2.php?';
 
-        foreach( $arrData as $k => $v )
+        foreach ($arrData as $k => $v)
         {
             $strKey .= $v;
             $strUrl .= $k . '=' . urlencode($v) . '&amp;';

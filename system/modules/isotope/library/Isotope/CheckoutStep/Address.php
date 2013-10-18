@@ -260,7 +260,7 @@ abstract class Address extends CheckoutStep
             if (!empty($arrAddresses) && !empty($arrCountries)) {
                 $objDefault = $this->getAddress();
 
-                foreach($arrAddresses as $objAddress) {
+                foreach ($arrAddresses as $objAddress) {
 
                     if (!in_array($objAddress->country, $arrCountries)) {
                         continue;

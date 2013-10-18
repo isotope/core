@@ -105,8 +105,7 @@ class Sparkasse extends Postsale implements IsotopePayment
     {
         global $objPage;
 
-        if (($objOrder = Order::findOneBy('source_collection_id', Isotope::getCart()->id)) === null)
-        {
+        if (($objOrder = Order::findOneBy('source_collection_id', Isotope::getCart()->id)) === null) {
             \Isotope\Module\Checkout::redirectToStep('failed');
         }
 
@@ -114,8 +113,7 @@ class Sparkasse extends Postsale implements IsotopePayment
         $arrUrl = array();
         $strUrl = 'https://' . ($this->debug ? 'test' : '') . 'system.sparkassen-internetkasse.de/vbv/mpi_legacy?';
 
-        $arrParam = array
-        (
+        $arrParam = array(
             'amount'            => number_format(Isotope::getCart()->getTotal(), 2, ',', ''),
             'basketid'          => Isotope::getCart()->id,
             'command'           => 'sslform',
@@ -129,15 +127,13 @@ class Sparkasse extends Postsale implements IsotopePayment
             'version'           => '1.5',
         );
 
-        if ($this->sparkasse_merchantref != '')
-        {
+        if ($this->sparkasse_merchantref != '') {
             $arrParam['merchantref'] = substr($this->replaceInsertTags($this->sparkasse_merchantref), 0, 30);
         }
 
         $arrParam['mac'] = $this->calculateHash($arrParam);
 
-        foreach( $arrParam as $k => $v )
-        {
+        foreach ($arrParam as $k => $v) {
             $arrUrl[] = $k . '=' . $v;
         }
 

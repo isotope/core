@@ -74,7 +74,7 @@ class Paypal extends Postsale implements IsotopePayment
             $arrData['new_payment_status'] = $arrPayment['status'];
 
             // array('pending','processing','complete','on_hold', 'cancelled'),
-            switch( $arrPayment['status'] )
+            switch ($arrPayment['status'])
             {
                 case 'Completed':
                     $objOrder->date_paid = time();
