@@ -27,6 +27,10 @@ array_insert($GLOBALS['BE_MOD']['isotope'], 2, array
     ),
 ));
 
+/**
+ * Models
+ */
+$GLOBALS['TL_MODELS']['tl_iso_rules'] = 'Isotope\Model\Rule';
 
 /**
  * Checkout Steps
