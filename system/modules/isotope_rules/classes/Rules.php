@@ -87,17 +87,16 @@ class Rules extends \Controller
                 // Check cart quantity
                 if ($objRules->minItemQuantity > 0 || $objRules->maxItemQuantity > 0)
                 {
-                    if ($objRules->quantityMode == 'cart_products' || $objRules->quantityMode == 'cart_items')
-                    {
-                        $intTotal = 0;
-                        foreach (Isotope::getCart()->getItems() as $objItem)
-                        {
-                            $intTotal += $objRules->quantityMode == 'cart_items' ? $objItem->quantity : 1;
-                        }
+                    if ($objRules->quantityMode == 'cart_products') {
+                        $intTotal = Isotope::getCart()->countItems();
+                    } elseif ($objRules->quantityMode == 'cart_items') {
+                        $intTotal = Isotope::getCart()->sumItemsQuantity();
+                    } else {
+                        $objItem = Isotope::getCart()->getItemForProduct($objSource);
+                        $intTotal = (null === $objItem) ? 0 : $objItem->quantity;
                     }
 
-                    if (($objRules->minItemQuantity > 0 && $objRules->minItemQuantity > $intTotal) || ($objRules->maxItemQuantity > 0 && $objRules->maxItemQuantity < $intTotal))
-                    {
+                    if (($objRules->minItemQuantity > 0 && $objRules->minItemQuantity > $intTotal) || ($objRules->maxItemQuantity > 0 && $objRules->maxItemQuantity < $intTotal)) {
                         continue;
                     }
                 }
