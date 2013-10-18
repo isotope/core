@@ -813,11 +813,11 @@ class Standard extends Product implements IsotopeProduct
             // Set all variant attributes, except if they are inherited
             foreach (array_diff($this->getVariantAttributes(), $this->getInheritedFields()) as $attribute) {
 
-                if (in_array($attribute, Attribute::getFetchFallbackFields())) {
-                    $this->arrData[$attribute.'_fallback'] = $this->arrData[$attribute];
-                }
-
                 $this->arrData[$attribute] = $arrData[$attribute];
+
+                if (in_array($attribute, Attribute::getFetchFallbackFields())) {
+                    $this->arrData[$attribute.'_fallback'] = $arrData[$attribute.'_fallback'];
+                }
             }
 
             return $this;
