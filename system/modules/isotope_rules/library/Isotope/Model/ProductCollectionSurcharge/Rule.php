@@ -80,7 +80,7 @@ class Rule extends ProductCollectionSurcharge implements IsotopeProductCollectio
         }
         else
         {
-            switch( $objRule->quantityMode )
+            switch ($objRule->quantityMode)
             {
                 case 'cart_products':
                     $intTotal = $objCollection->countItems();

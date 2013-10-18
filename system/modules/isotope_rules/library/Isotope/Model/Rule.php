@@ -247,7 +247,7 @@ class Rule extends \Model
 
                 $strRestriction = "(productRestrictions='attribute' AND attributeName='" . $restriction['attribute'] . "' AND attributeCondition='" . $restriction['condition'] . "' AND ";
 
-                switch( $restriction['condition'] )
+                switch ($restriction['condition'])
                 {
                     case 'eq':
                     case 'neq':

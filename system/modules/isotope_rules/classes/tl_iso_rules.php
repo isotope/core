@@ -31,8 +31,7 @@ class tl_iso_rules extends \Backend
         $arrRules = array();
         $objRules = \Database::getInstance()->execute("SELECT * FROM tl_iso_rules WHERE enabled='1' AND id!={$dc->id}");
 
-        while( $objRules->next() )
-        {
+        while ($objRules->next()) {
             $arrRules[$objRules->id] = $objRules->name;
         }
 
@@ -56,12 +55,10 @@ class tl_iso_rules extends \Backend
     {
         $arrNew = deserialize($varValue);
 
-        if (!is_array($arrNew) || empty($arrNew))
-        {
+        if (!is_array($arrNew) || empty($arrNew)) {
             \Database::getInstance()->query("DELETE FROM tl_iso_rule_restrictions WHERE pid={$dc->activeRecord->id} AND type='{$dc->field}'");
-        }
-        else
-        {
+
+        } else {
             $arrOld = \Database::getInstance()->execute("SELECT object_id FROM tl_iso_rule_restrictions WHERE pid={$dc->activeRecord->id} AND type='{$dc->field}'")->fetchEach('object_id');
 
             $arrInsert = array_diff($arrNew, $arrOld);
@@ -166,10 +163,8 @@ class tl_iso_rules extends \Backend
     {
         $arrAttributes = array();
 
-        foreach( $GLOBALS['TL_DCA']['tl_iso_products']['fields'] as $attribute => $config )
-        {
-            if ($config['attributes']['legend'] != '' && $attribute != 'pages' && $config['inputType'] != 'mediaManager')
-            {
+        foreach ($GLOBALS['TL_DCA']['tl_iso_products']['fields'] as $attribute => $config) {
+            if ($config['attributes']['legend'] != '' && $attribute != 'pages' && $config['inputType'] != 'mediaManager') {
                 $arrAttributes[$attribute] = Isotope::formatLabel('tl_iso_products', $attribute);
             }
         }
