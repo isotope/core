@@ -386,7 +386,7 @@ class ProductGroupSelector extends \Widget
             $return .= '<a href="'.$this->addToUrl($flag.'tg='.$id).'" title="'.specialchars($alt).'" onclick="Backend.getScrollOffset(); return Isotope.toggleProductGroupTree(this, \''.$xtnode.'_'.$id.'\', \''.$this->strField.'\', \''.$this->strName.'\', '.$level.');">'.\Image::getHtml($img, '', 'style="margin-right:2px;"').'</a>';
         }
 
-        $href = '<a href="' . $this->addToUrl('gid='.$objGroup->id) . '" title="'.specialchars($objGroup->name . ' (ID ' . $objGroup->id . ')').'"'.(empty($childs) ? ' style="padding-left:20px;"' : '').'>'.$objGroup->name.'</a>';
+        $href = '<a href="' . $this->addToUrl('gid='.$objGroup->id) . '" title="'.specialchars($objGroup->name . ' (ID ' . $objGroup->id . ')').'">'.$objGroup->name.'</a>';
         $return .= $this->tl_iso_groups->addIcon($objGroup->row(), $href, null, $folderAttribute).'</div> <div class="tl_right">';
 
         // Add checkbox or radio button

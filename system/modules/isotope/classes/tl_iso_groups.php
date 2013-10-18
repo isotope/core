@@ -216,9 +216,11 @@ class tl_iso_groups extends \Backend
      */
     public function addIcon($row, $label, \DataContainer $dc=null, $imageAttribute='', $blnReturnImage=false)
     {
+    	$image = \Image::getHtml('system/modules/isotope/assets/folder-network.png', '', $imageAttribute);
+
         if ($dc->table == 'tl_iso_products')
         {
-            return \Image::getHtml('system/modules/isotope/html/folder-network.png', '', $imageAttribute) . ' <span style="font-weight:bold">' . $label . '</span>';
+            return $image . ' <span style="font-weight:bold">' . $label . '</span>';
         }
         else
         {
@@ -229,7 +231,7 @@ class tl_iso_groups extends \Backend
                 $strProductType = ' <span style="color:#b3b3b3; padding-left:3px;">[' . $objProductType->name . ']</span>';
             }
 
-            return '<a href="' . $this->addToUrl('gid=' . $row['id']) . '" title="' . specialchars($row['name'] . ' (ID ' . $row['id'] . ')') . '">' . \Image::getHtml('system/modules/isotope/html/folder-network.png', '', $imageAttribute) . ' ' . $label . '</a>' . $strProductType;
+            return '<a href="' . $this->addToUrl('gid=' . $row['id']) . '" title="' . specialchars($row['name'] . ' (ID ' . $row['id'] . ')') . '">' . $image . ' ' . $label . '</a>' . $strProductType;
         }
     }
 
