@@ -149,7 +149,7 @@ class Rules extends \Controller
 
             foreach ($arrCoupons as $code)
             {
-                $arrRule = $this->findCoupon($code, Isotope::getCart()->getProducts());
+                $arrRule = $this->findCoupon($code, Isotope::getCart()->getItems());
 
                 if ($arrRule === false)
                 {
@@ -193,7 +193,7 @@ class Rules extends \Controller
 
         if ($strCoupon != '')
         {
-            $arrRule = $this->findCoupon($strCoupon, Isotope::getCart()->getProducts());
+            $arrRule = $this->findCoupon($strCoupon, Isotope::getCart()->getItems());
 
             if ($arrRule === false)
             {
@@ -268,7 +268,7 @@ class Rules extends \Controller
 
             foreach ($arrCoupons as $k => $code)
             {
-                $arrRule = $this->findCoupon($code, $objCart->getProducts());
+                $arrRule = $this->findCoupon($code, $objCart->getItems());
 
                 if ($arrRule === false)
                 {
