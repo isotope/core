@@ -329,7 +329,7 @@ class Rules extends \Controller
     /**
      * Fetch rules
      */
-    protected function findRules($arrProcedures, $arrValues=array(), $arrCollectionItems=null, $blnIncludeVariants=false, $arrAttributeData=array())
+    protected function findRules($arrProcedures, $arrValues=array(), $arrProducts=null, $blnIncludeVariants=false, $arrAttributeData=array())
     {
         // Only enabled rules
         $arrProcedures[] = "enabled='1'";
@@ -375,12 +375,12 @@ class Rules extends \Controller
 
 
         // Product restrictions
-        if (!is_array($arrCollectionItems))
+        if (!is_array($arrProducts))
         {
-            $arrCollectionItems = Isotope::getCart()->getItems();
+            $arrProducts = Isotope::getCart()->getItems();
         }
 
-        if (!empty($arrCollectionItems))
+        if (!empty($arrProducts))
         {
             $arrProductIds = array();
             $arrVariantIds = array();
@@ -399,13 +399,16 @@ class Rules extends \Controller
                 );
             }
 
-            foreach ($arrCollectionItems as $objItem)
+            foreach ($arrProducts as $objProduct)
             {
-                if (!$objItem->hasProduct()) {
-                    continue;
+                if ($objProduct instanceof ProductCollectionItem) {
+                    if (!$objProduct->hasProduct()) {
+                        continue;
+                    }
+
+                    $objProduct = $objProduct->getProduct();
                 }
 
-                $objProduct = $objItem->getProduct();
                 $arrProductIds[] = $objProduct->getProductId();
                 $arrVariantIds[] = $objProduct->id;
                 $arrTypes[] = $objProduct->type;
