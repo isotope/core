@@ -1116,7 +1116,7 @@ window.addEvent('domready', function()
 
                 // If we have a reader page, rename the last item (the reader) to the product title
                 if (null !== $objIsotopeListPage) {
-                    $arrItems[$last]['title'] = specialchars($objProduct->name, true);
+                    $arrItems[$last]['title'] = $this->prepareMetaDescription($objProduct->meta_title ?: $objProduct->name);
                     $arrItems[$last]['link'] = $objProduct->name;
                 }
 
@@ -1129,7 +1129,7 @@ window.addEvent('domready', function()
                         'isRoot'    => false,
                         'isActive'  => true,
                         'href'      => $objProduct->generateUrl($objPage),
-                        'title'     => specialchars($objProduct->name, true),
+                        'title'     => $this->prepareMetaDescription($objProduct->meta_title ?: $objProduct->name),
                         'link'      => $objProduct->name,
                         'data'      => $objPage->row(),
                     );

@@ -123,10 +123,12 @@ class ProductReader extends Module
     {
         global $objPage;
 
-        $objPage->pageTitle = strip_insert_tags($objProduct->name);
-        $objPage->description = $this->prepareMetaDescription($objProduct->description_meta ?: ($objProduct->teaser ?: $objProduct->description));
+        $objPage->pageTitle = $this->prepareMetaDescription($objProduct->meta_title ?: $objProduct->name);
+        $objPage->description = $this->prepareMetaDescription($objProduct->meta_description ?: ($objProduct->teaser ?: $objProduct->description));
 
-        $GLOBALS['TL_KEYWORDS'] .= ($GLOBALS['TL_KEYWORDS'] != '' ? ', ' : '') . $objProduct->keywords_meta;
+        if ($objProduct->meta_keywords) {
+            $GLOBALS['TL_KEYWORDS'] .= ($GLOBALS['TL_KEYWORDS'] != '' ? ', ' : '') . $objProduct->meta_keywords;
+        }
     }
 
     /**
