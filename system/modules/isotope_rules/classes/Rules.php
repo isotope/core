@@ -133,29 +133,25 @@ class Rules extends \Controller
     {
         $objRules = $this->findRules(array("type='cart'", "enableCode=''"));
 
-        while ($objRules->next())
-        {
+        while ($objRules->next()) {
             $arrSurcharge = $this->calculateProductSurcharge($objRules->row());
 
-            if (is_array($arrSurcharge))
+            if (is_array($arrSurcharge)) {
                 $arrSurcharges[] = $arrSurcharge;
+            }
         }
 
         $arrCoupons = deserialize(Isotope::getCart()->coupons);
-        if (is_array($arrCoupons) && !empty($arrCoupons))
-        {
+
+        if (is_array($arrCoupons) && !empty($arrCoupons)) {
             $arrDropped = array();
 
-            foreach ($arrCoupons as $code)
-            {
+            foreach ($arrCoupons as $code) {
                 $arrRule = $this->findCoupon($code, Isotope::getCart()->getItems());
 
-                if ($arrRule === false)
-                {
+                if ($arrRule === false) {
                     $arrDropped[] = $code;
-                }
-                else
-                {
+                } else {
                     //cart rules should total all eligible products for the cart discount and apply the discount to that amount rather than individual products.
                     $arrSurcharge = $this->calculateProductSurcharge($arrRule);
 
@@ -164,8 +160,7 @@ class Rules extends \Controller
                 }
             }
 
-            if (!empty($arrDropped))
-            {
+            if (!empty($arrDropped)) {
                 // @todo show dropped coupons
                 $arrCoupons = array_diff($arrCoupons, $arrDropped);
                 \Database::getInstance()->query("UPDATE tl_iso_cart SET coupons='" . serialize($arrCoupons) . "' WHERE id=".(int) Isotope::getCart()->id);
