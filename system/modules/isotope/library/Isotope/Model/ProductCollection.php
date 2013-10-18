@@ -404,7 +404,7 @@ abstract class ProductCollection extends TypeAgent
     public function sumItemsQuantity()
     {
         if (!isset($this->arrCache['sumItemsQuantity'])) {
-            $this->arrCache['sumItemsQuantity'] = ProductCollectionItem::countBy('quantity', 'pid', $this->id);
+            $this->arrCache['sumItemsQuantity'] = ProductCollectionItem::sumBy('quantity', 'pid', $this->id);
         }
 
         return $this->arrCache['sumItemsQuantity'];
