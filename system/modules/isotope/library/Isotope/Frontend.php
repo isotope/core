@@ -940,8 +940,8 @@ window.addEvent('domready', function()
     {
         if ($varUrl === null) {
             $varUrl = \Environment::getInstance()->request;
-        }
-        elseif (is_numeric($varUrl)) {
+
+        } elseif (is_numeric($varUrl)) {
             if (($objJump = \PageModel::findByPk($varUrl)) === null) {
                 throw new \InvalidArgumentException('Given page id does not exist.');
             }
@@ -949,7 +949,6 @@ window.addEvent('domready', function()
         }
 
         if ($strRequest === '') {
-
             return $varUrl;
         }
 
