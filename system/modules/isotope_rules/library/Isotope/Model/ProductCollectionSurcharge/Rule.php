@@ -12,6 +12,8 @@
 
 namespace Isotope\Model\ProductCollectionSurcharge;
 
+use Isotope\Translation;
+use Isotope\Interfaces\IsotopeProductCollection;
 use Isotope\Interfaces\IsotopeProductCollectionSurcharge;
 use Isotope\Model\ProductCollectionSurcharge;
 use Isotope\Model\Rule as RuleModel;
