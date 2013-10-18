@@ -305,7 +305,7 @@ class Rules extends \Controller
      */
     public function cleanRuleUsages(&$objModule)
     {
-        \Database::getInstance()->query("DELETE FROM tl_iso_rule_usage WHERE pid=(SELECT id FROM tl_iso_product_collection WHERE type='Order' AND source_collection_id=".(int) Isotope::getCart()->id.")");
+        \Database::getInstance()->query("DELETE FROM tl_iso_rule_usage WHERE pid=(SELECT id FROM tl_iso_product_collection WHERE type='order' AND source_collection_id=".(int) Isotope::getCart()->id.")");
 
         return '';
     }
