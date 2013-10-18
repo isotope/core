@@ -59,8 +59,7 @@ class Rules extends \Controller
      */
     public static function getInstance()
     {
-        if (!is_object(static::$objInstance))
-        {
+        if (!is_object(static::$objInstance)) {
             static::$objInstance = new \Isotope\Rules();
         }
 
@@ -135,7 +134,7 @@ class Rules extends \Controller
     {
         $objRules = $this->findRules(array("type='cart'", "enableCode=''"));
 
-        while( $objRules->next() )
+        while ($objRules->next())
         {
             $arrSurcharge = $this->calculateProductSurcharge($objRules->row());
 
@@ -148,7 +147,7 @@ class Rules extends \Controller
         {
             $arrDropped = array();
 
-            foreach( $arrCoupons as $code )
+            foreach ($arrCoupons as $code)
             {
                 $arrRule = $this->findCoupon($code, Isotope::getCart()->getProducts());
 
@@ -223,8 +222,9 @@ class Rules extends \Controller
 
         $objRules = $this->findRules(array("type='cart'", "enableCode='1'"));
 
-        if (!$objRules->numRows || !count(array_diff($objRules->fetchEach('code'), $arrCoupons)))
+        if (!$objRules->numRows || !count(array_diff($objRules->fetchEach('code'), $arrCoupons))) {
             return '';
+        }
 
 
         //build template
@@ -389,7 +389,7 @@ class Rules extends \Controller
 
             // Prepare product attribute condition
             $objAttributeRules = \Database::getInstance()->execute("SELECT * FROM tl_iso_rules WHERE enabled='1' AND productRestrictions='attribute' AND attributeName!='' GROUP BY attributeName, attributeCondition");
-            while( $objAttributeRules->next() )
+            while ($objAttributeRules->next())
             {
                 $arrAttributes[] = array
                 (
@@ -421,7 +421,7 @@ class Rules extends \Controller
                 }
 
                 $arrOptions = $objProduct->getOptions();
-                foreach( $arrAttributes as $k => $restriction )
+                foreach ($arrAttributes as $k => $restriction)
                 {
                     $varValue = null;
 
@@ -458,7 +458,7 @@ class Rules extends \Controller
             $arrRestrictions[] = "(productRestrictions='pages' AND productCondition='' AND (SELECT COUNT(*) FROM tl_iso_rule_restrictions WHERE pid=r.id AND type='pages' AND object_id IN (SELECT page_id FROM tl_iso_product_categories WHERE pid IN (" . implode(',', $arrProductIds) . ")))>0)";
             $arrRestrictions[] = "(productRestrictions='pages' AND productCondition='1' AND (SELECT COUNT(*) FROM tl_iso_rule_restrictions WHERE pid=r.id AND type='pages' AND object_id IN (SELECT page_id FROM tl_iso_product_categories WHERE pid IN (" . implode(',', $arrProductIds) . ")))=0)";
 
-            foreach( $arrAttributes as $restriction )
+            foreach ($arrAttributes as $restriction)
             {
                 if (empty($restriction['values']))
                     continue;
@@ -477,7 +477,7 @@ class Rules extends \Controller
                     case 'elt':
                     case 'egt':
                         $arrOR = array();
-                        foreach( $restriction['values'] as $value )
+                        foreach ($restriction['values'] as $value)
                         {
                             $arrOR[] = "attributeValue" . (($restriction['condition'] == 'lt' || $restriction['condition'] == 'elt') ? '>' : '<') . (($restriction['condition'] == 'elt' || $restriction['condition'] == 'egt') ? '=' : '') . '?';
                             $arrValues[] = $value;
@@ -489,7 +489,7 @@ class Rules extends \Controller
                     case 'ends':
                     case 'contains':
                         $arrOR = array();
-                        foreach( $restriction['values'] as $value )
+                        foreach ($restriction['values'] as $value)
                         {
                             $arrOR[] = "? LIKE CONCAT(" . (($restriction['condition'] == 'ends' || $restriction['condition'] == 'contains') ? "'%', " : '') . "attributeValue" . (($restriction['condition'] == 'starts' || $restriction['condition'] == 'contains') ? ", '%'" : '') . ")";
                             $arrValues[] = $value;
@@ -530,8 +530,7 @@ class Rules extends \Controller
     protected function calculateProductSurcharge($arrRule)
     {
         // Cart subtotal
-        if (($arrRule['minSubtotal'] > 0 && Isotope::getCart()->getSubtotal() < $arrRule['minSubtotal']) || ($arrRule['maxSubtotal'] > 0 && Isotope::getCart()->getSubtotal() > $arrRule['maxSubtotal']))
-        {
+        if (($arrRule['minSubtotal'] > 0 && Isotope::getCart()->getSubtotal() < $arrRule['minSubtotal']) || ($arrRule['maxSubtotal'] > 0 && Isotope::getCart()->getSubtotal() > $arrRule['maxSubtotal'])) {
             return false;
         }
 
@@ -743,7 +742,7 @@ class Rules extends \Controller
             // If fixed price discount with splitted taxes, calculate total amount of discount per taxed product
             if ($arrRule['tax_class'] == -1 && !$blnPercentage)
             {
-                foreach( $arrSubtract as $objProduct )
+                foreach ($arrSubtract as $objProduct)
                 {
                     // @todo $objProduct->tax_free_total_price does no longer exist
                     $arrSurcharge['products'][$objItem->id] = $arrRule['discount'] / 100 * (100 / $fltTotal * $objProduct->tax_free_total_price);
