@@ -18,13 +18,13 @@ use Isotope\Model\ProductCollection\Cart;
 
 
 /**
- * Class IsotopeRules
+ * Class Rules
  *
  * @copyright  Isotope eCommerce Workgroup 2009-2012
  * @author     Andreas Schempp <andreas.schempp@terminal42.ch>
  * @author     Fred Bliss <fred.bliss@intelligentspark.com>
  */
-class IsotopeRules extends \Controller
+class Rules extends \Controller
 {
 
     /**
@@ -61,7 +61,7 @@ class IsotopeRules extends \Controller
     {
         if (!is_object(static::$objInstance))
         {
-            static::$objInstance = new \IsotopeRules();
+            static::$objInstance = new \Isotope\Rules();
         }
 
         return static::$objInstance;
