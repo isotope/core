@@ -14,6 +14,7 @@ namespace Isotope;
 
 use Isotope\Isotope;
 use Isotope\Interfaces\IsotopeProduct;
+use Isotope\Interfaces\IsotopeProductCollection;
 use Isotope\Model\Rule;
 use Isotope\Model\ProductCollection\Cart;
 use Isotope\Model\ProductCollectionSurcharge\Rule as RuleSurcharge;
@@ -133,8 +134,14 @@ class Rules extends \Controller
     /**
      * Add cart rules to surcharges
      */
-    public function getSurcharges($arrSurcharges)
+    public function findSurcharges(IsotopeProductCollection $objCollection)
     {
+        // Rules should only be applied to Cart, not any other product collection
+        if (!($objCollection instanceof Cart)) {
+            return array();
+        }
+
+        $arrSurcharges = array();
         $objRules = Rule::findForCart();
 
         if (null !== $objRules) {
@@ -147,19 +154,19 @@ class Rules extends \Controller
             }
         }
 
-        $arrCoupons = deserialize(Isotope::getCart()->coupons);
+        $arrCoupons = deserialize($objCollection->coupons);
 
-        if (is_array($arrCoupons) && !empty($arrCoupons)) {
+        if (!empty($arrCoupons) && is_array($arrCoupons)) {
             $arrDropped = array();
 
             foreach ($arrCoupons as $code) {
-                $objRule = Rule::findOneByCouponCode($code, Isotope::getCart()->getItems());
+                $objRule = Rule::findOneByCouponCode($code, $objCollection->getItems());
 
                 if (null === $objRule) {
                     $arrDropped[] = $code;
                 } else {
                     // cart rules should total all eligible products for the cart discount and apply the discount to that amount rather than individual products.
-                    $objSurcharge = RuleSurcharge::createForRuleInCollection($objRule);
+                    $objSurcharge = RuleSurcharge::createForRuleInCollection($objRule, $objCollection);
 
                     if (null !== $objSurcharge) {
                         $arrSurcharges[] = $objSurcharge;

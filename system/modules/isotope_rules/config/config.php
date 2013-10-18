@@ -46,8 +46,8 @@ array_insert($GLOBALS['ISO_CHECKOUT_STEPS']['review'], 0, array(array('Isotope\R
 /**
  * Hooks
  */
-$GLOBALS['ISO_HOOKS']['calculatePrice'][]           = array('Isotope\Rules', 'calculatePrice');
-$GLOBALS['ISO_HOOKS']['compileCart'][]              = array('Isotope\Rules', 'getCouponForm');
-$GLOBALS['ISO_HOOKS']['checkoutSurcharge'][]        = array('Isotope\Rules', 'getSurcharges');
-$GLOBALS['ISO_HOOKS']['preCheckout'][]              = array('Isotope\Rules', 'writeRuleUsages');
-$GLOBALS['ISO_HOOKS']['transferredCollection'][]    = array('Isotope\Rules', 'transferCoupons');
+$GLOBALS['ISO_HOOKS']['calculatePrice'][]               = array('Isotope\Rules', 'calculatePrice');
+$GLOBALS['ISO_HOOKS']['compileCart'][]                  = array('Isotope\Rules', 'getCouponForm');
+$GLOBALS['ISO_HOOKS']['findSurchargesForCollection'][]  = array('Isotope\Rules', 'findSurcharges');
+$GLOBALS['ISO_HOOKS']['preCheckout'][]                  = array('Isotope\Rules', 'writeRuleUsages');
+$GLOBALS['ISO_HOOKS']['transferredCollection'][]        = array('Isotope\Rules', 'transferCoupons');
