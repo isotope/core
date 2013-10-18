@@ -91,10 +91,9 @@ class Rules extends \Controller
                     if ($objRules->quantityMode == 'cart_products' || $objRules->quantityMode == 'cart_items')
                     {
                         $intTotal = 0;
-                        foreach ($this->Isotope->Cart->getProducts() as $objProduct)
+                        foreach (Isotope::getCart()->getItems() as $objItem)
                         {
-                            // @todo $objProduct->quantity_requested is no longer available
-                            $intTotal += $objRules->quantityMode == 'cart_items' ? $objProduct->quantity_requested : 1;
+                            $intTotal += $objRules->quantityMode == 'cart_items' ? $objItem->quantity : 1;
                         }
                     }
 
@@ -330,7 +329,7 @@ class Rules extends \Controller
     /**
      * Fetch rules
      */
-    protected function findRules($arrProcedures, $arrValues=array(), $arrProducts=null, $blnIncludeVariants=false, $arrAttributeData=array())
+    protected function findRules($arrProcedures, $arrValues=array(), $arrCollectionItems=null, $blnIncludeVariants=false, $arrAttributeData=array())
     {
         // Only enabled rules
         $arrProcedures[] = "enabled='1'";
@@ -376,12 +375,12 @@ class Rules extends \Controller
 
 
         // Product restrictions
-        if (!is_array($arrProducts))
+        if (!is_array($arrCollectionItems))
         {
-            $arrProducts = Isotope::getCart()->getProducts();
+            $arrCollectionItems = Isotope::getCart()->getItems();
         }
 
-        if (!empty($arrProducts))
+        if (!empty($arrCollectionItems))
         {
             $arrProductIds = array();
             $arrVariantIds = array();
@@ -400,9 +399,14 @@ class Rules extends \Controller
                 );
             }
 
-            foreach( $arrProducts as $objProduct )
+            foreach ($arrCollectionItems as $objItem)
             {
-                $arrProductIds[] = $objProduct->pid ? $objProduct->pid : $objProduct->id;
+                if (!$objItem->hasProduct()) {
+                    continue;
+                }
+
+                $objProduct = $objItem->getProduct();
+                $arrProductIds[] = $objProduct->getProductId();
                 $arrVariantIds[] = $objProduct->id;
                 $arrTypes[] = $objProduct->type;
 
@@ -512,9 +516,9 @@ class Rules extends \Controller
     /**
      * Find coupon matching a code
      */
-    protected function findCoupon($strCode, $arrProducts)
+    protected function findCoupon($strCode, $arrCollectionItems)
     {
-        $objRules = $this->findRules(array("type='cart'", "enableCode='1'", "code=?"), array($strCode), $arrProducts);
+        $objRules = $this->findRules(array("type='cart'", "enableCode='1'", "code=?"), array($strCode), $arrCollectionItems);
 
         return $objRules->numRows ? $objRules->row() : false;
     }
@@ -531,7 +535,7 @@ class Rules extends \Controller
             return false;
         }
 
-        $arrProducts = Isotope::getCart()->getProducts();
+        $arrCollectionItems = Isotope::getCart()->getItems();
 
         $blnMatch = false;
         $blnPercentage = false;
@@ -566,14 +570,19 @@ class Rules extends \Controller
             if ($arrRule['quantityMode'] == 'cart_products' || $arrRule['quantityMode'] == 'cart_items')
             {
                 $intTotal = 0;
-                foreach( $arrProducts as $objProduct )
+                foreach ($arrCollectionItems as $objItem)
                 {
+                    if (!$objItem->hasProduct()) {
+                        continue;
+                    }
+
+                    $objProduct = $objItem->getProduct();
+
                     if ((($arrRule['productRestrictions'] == 'products' || $arrRule['productRestrictions'] == 'variants' || $arrRule['productRestrictions'] == 'pages')
                         && (in_array($objProduct->id, $arrLimit) || ($objProduct->pid > 0 && in_array($objProduct->pid, $arrLimit))))
                     || ($arrRule['productRestrictions'] == 'producttypes' && in_array($objProduct->type, $arrLimit)))
                     {
-                        // @todo $objProduct->quantity_requested is no longer available
-                        $intTotal += $arrRule['quantityMode'] == 'cart_items' ? $objProduct->quantity_requested : 1;
+                        $intTotal += $arrRule['quantityMode'] == 'cart_items' ? $objItem->quantity : 1;
                     }
                 }
             }
@@ -592,8 +601,14 @@ class Rules extends \Controller
             }
         }
 
-        foreach( $arrProducts as $objProduct )
+        foreach ($arrCollectionItems as $objItem)
         {
+            if (!$objItem->hasProduct()) {
+                continue;
+            }
+
+            $objProduct = $objItem->getProduct();
+
             // Product restrictions
             if ((($arrRule['productRestrictions'] == 'products' || $arrRule['productRestrictions'] == 'variants' || $arrRule['productRestrictions'] == 'pages')
                 && (!in_array($objProduct->id, $arrLimit) && ($objProduct->pid == 0 || !in_array($objProduct->pid, $arrLimit))))
@@ -667,8 +682,7 @@ class Rules extends \Controller
             // Because we apply to the quantity of only this product, we override $intTotal in every foreach loop
             if ($arrRule['quantityMode'] != 'cart_products' && $arrRule['quantityMode'] != 'cart_items')
             {
-                // @todo $objProduct->quantity_requested is no longer available
-                $intTotal = $objProduct->quantity_requested;
+                $intTotal = $objItem->quantity;
             }
 
             // Quantity does not match, do not apply to this product
@@ -689,8 +703,7 @@ class Rules extends \Controller
                     break;
 
                 case 'items':
-                    // @todo $objProduct->quantity_requested is no longer available
-                    $fltPrice = ($blnPercentage ? ($objProduct->price / 100 * $fltDiscount) : $arrRule['discount']) * $objProduct->quantity_requested;
+                    $fltPrice = ($blnPercentage ? ($objProduct->price / 100 * $fltDiscount) : $arrRule['discount']) * $objItem->quantity;
                     $fltPrice = $fltPrice > 0 ? (floor($fltPrice * 100) / 100) : (ceil($fltPrice * 100) / 100);
                     $arrSurcharge['total_price'] += $fltPrice;
                     $arrSurcharge['products'][$objProduct->collection_id] = $fltPrice;
