@@ -143,7 +143,6 @@ class Rules extends \Controller
 
         $arrSurcharges = array();
         $objRules = Rule::findForCart();
-
         if (null !== $objRules) {
             while ($objRules->next()) {
                 $objSurcharge = RuleSurcharge::createForRuleInCollection($objRules->current(), $objCollection);

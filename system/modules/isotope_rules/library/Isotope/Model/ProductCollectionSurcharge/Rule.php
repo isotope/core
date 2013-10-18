@@ -186,30 +186,29 @@ class Rule extends ProductCollectionSurcharge implements IsotopeProductCollectio
             switch ($objRule->applyTo)
             {
                 case 'products':
-                    // @todo $objProduct->total_price is no longer available
-                    $fltPrice = $blnPercentage ? ($objProduct->total_price / 100 * $fltDiscount) : $objRule->discount;
+                    $fltPrice = $blnPercentage ? ($objItem->getTotalPrice() / 100 * $fltDiscount) : $objRule->discount;
                     $fltPrice = $fltPrice > 0 ? (floor($fltPrice * 100) / 100) : (ceil($fltPrice * 100) / 100);
-                    $arrSurcharge['total_price'] += $fltPrice;
-                    $arrSurcharge['products'][$objItem->id] = $fltPrice;
+                    $objSurcharge->total_price += $fltPrice;
+                    $objSurcharge->setAmountForCollectionItem($fltPrice, $objItem);
                     break;
 
                 case 'items':
-                    $fltPrice = ($blnPercentage ? ($objProduct->price / 100 * $fltDiscount) : $objRule->discount) * $objItem->quantity;
+                    $fltPrice = ($blnPercentage ? ($objItem->getPrice() / 100 * $fltDiscount) : $objRule->discount) * $objItem->quantity;
                     $fltPrice = $fltPrice > 0 ? (floor($fltPrice * 100) / 100) : (ceil($fltPrice * 100) / 100);
-                    $arrSurcharge['total_price'] += $fltPrice;
-                    $arrSurcharge['products'][$objItem->id] = $fltPrice;
+                    $objSurcharge->total_price += $fltPrice;
+                    $objSurcharge->setAmountForCollectionItem($fltPrice, $objItem);
                     break;
 
                 case 'subtotal':
                     $blnMatch = true;
-                    $arrSurcharge['total_price'] += $objItem->getTotalPrice();
+                    $objSurcharge->total_price += $objItem->getTotalPrice();
 
                     if ($objRule->tax_class == -1)
                     {
                         if ($blnPercentage)
                         {
                             $fltPrice = $objItem->getTotalPrice() / 100 * $fltDiscount;
-                            $arrSurcharge['products'][$objItem->id] = $fltPrice;
+                            $objSurcharge->setAmountForCollectionItem($fltPrice, $objItem);
                         }
                         else
                         {
@@ -224,23 +223,23 @@ class Rule extends ProductCollectionSurcharge implements IsotopeProductCollectio
         if ($objRule->applyTo == 'subtotal' && $blnMatch)
         {
             // discount total! not related to tax subtraction
-            $fltPrice = $blnPercentage ? ($arrSurcharge['total_price'] / 100 * $fltDiscount) : $objRule->discount;
-            $arrSurcharge['total_price'] = $fltPrice > 0 ? (floor(round($fltPrice * 100, 4)) / 100) : (ceil(round($fltPrice * 100, 4)) / 100);
-            $arrSurcharge['before_tax'] = ($objRule->tax_class != 0 ? true : false);
-            $arrSurcharge['tax_class'] = ($objRule->tax_class > 0 ? $objRule->tax_class : 0);
+            $fltPrice = $blnPercentage ? ($objSurcharge->total_price / 100 * $fltDiscount) : $objRule->discount;
+            $objSurcharge->total_price = $fltPrice > 0 ? (floor(round($fltPrice * 100, 4)) / 100) : (ceil(round($fltPrice * 100, 4)) / 100);
+            $objSurcharge->before_tax = ($objRule->tax_class != 0 ? true : false);
+            $objSurcharge->tax_class = ($objRule->tax_class > 0 ? $objRule->tax_class : 0);
 
             // If fixed price discount with splitted taxes, calculate total amount of discount per taxed product
             if ($objRule->tax_class == -1 && !$blnPercentage)
             {
                 foreach ($arrSubtract as $objItem)
                 {
-                    // @todo $objProduct->tax_free_total_price does no longer exist
-                    $arrSurcharge['products'][$objItem->id] = $objRule->discount / 100 * (100 / $fltTotal * $objItem->getTaxFreeTotalPrice());
+                    $fltPrice = $objRule->discount / 100 * (100 / $fltTotal * $objItem->getTaxFreeTotalPrice());
+                    $objSurcharge->setAmountForCollectionItem($fltPrice, $objItem);
                 }
             }
         }
 
-        return $arrSurcharge['total_price'] == 0 ? null : $objSurcharge;
+        return $objSurcharge->total_price == 0 ? null : $objSurcharge;
 
 
 
