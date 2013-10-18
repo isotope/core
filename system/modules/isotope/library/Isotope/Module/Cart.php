@@ -89,9 +89,7 @@ class Cart extends Module
         // Remove from cart
         if (\Input::get('remove') > 0 && Isotope::getCart()->deleteItemById((int) \Input::get('remove')))
         {
-            global $objPage;
-
-            \Controller::redirect(\Controller::generateFrontendUrl($objPage->row()));
+            \Controller::redirect(preg_replace('/([?&])remove=[^&]*(&|$)/', '$1', \Environment::get('request')));
         }
 
         $objTemplate = new \Isotope\Template($this->iso_collectionTpl);
