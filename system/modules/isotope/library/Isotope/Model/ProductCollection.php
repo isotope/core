@@ -730,7 +730,7 @@ abstract class ProductCollection extends TypeAgent
      */
     public function getItemForProduct(IsotopeProduct $objProduct)
     {
-        $strClass = $objProduct->getRelated('type')->class;
+        $strClass = array_search(get_called_class(), Product::getModelTypes());
 
         $objItem = ProductCollectionItem::findOneBy(array('pid=?', 'type=?', 'product_id=?', 'options=?'), array($this->id, $strClass, $objProduct->id, serialize($objProduct->getOptions())));
 
