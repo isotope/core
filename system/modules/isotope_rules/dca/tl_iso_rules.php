@@ -313,8 +313,8 @@ $GLOBALS['TL_DCA']['tl_iso_rules'] = array
             'exclude'                       => true,
             'filter'                        => true,
             'options'                       => array('none', 'guests', 'groups', 'members'),
+            'reference'                     => &$GLOBALS['TL_LANG']['tl_iso_rules']['memberRestrictions'],
             'eval'                          => array('submitOnChange'=>true, 'tl_class'=>'clr w50 w50h'),
-            'reference'                     => &$GLOBALS['TL_LANG']['tl_iso_rules']['memberRestrictions']
         ),
         'memberCondition' => array
         (
@@ -374,8 +374,8 @@ $GLOBALS['TL_DCA']['tl_iso_rules'] = array
             'exclude'                       => true,
             'filter'                        => true,
             'options'                       => array('none', 'producttypes', 'pages', 'products', 'variants', 'attribute'),
+            'reference'                     => &$GLOBALS['TL_LANG']['tl_iso_rules']['productRestrictions'],
             'eval'                          => array('submitOnChange'=>true, 'tl_class'=>'clr w50 w50h'),
-            'reference'                     => &$GLOBALS['TL_LANG']['tl_iso_rules']['productRestrictions']
         ),
         'productCondition' => array
         (
