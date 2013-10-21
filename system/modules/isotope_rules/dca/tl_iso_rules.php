@@ -264,14 +264,14 @@ $GLOBALS['TL_DCA']['tl_iso_rules'] = array
             'label'                         => &$GLOBALS['TL_LANG']['tl_iso_rules']['startTime'],
             'exclude'                       => true,
             'inputType'                     => 'text',
-            'eval'                          => array('rgxp'=>'time', 'tl_class'=>'w50')
+            'eval'                          => array('rgxp'=>'time', 'datepicker'=>true, 'tl_class'=>'w50 wizard'),
         ),
         'endTime' => array
         (
             'label'                         => &$GLOBALS['TL_LANG']['tl_iso_rules']['endTime'],
             'exclude'                       => true,
             'inputType'                     => 'text',
-            'eval'                          => array('rgxp'=>'time', 'tl_class'=>'w50'),
+            'eval'                          => array('rgxp'=>'time', 'datepicker'=>true, 'tl_class'=>'w50 wizard'),
         ),
         'configRestrictions' => array
         (
