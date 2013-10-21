@@ -63,6 +63,8 @@ class ProductFilter extends Module
             return $objTemplate->parse();
         }
 
+        $this->generateAjax();
+
         // Initialize module data.
         if (!$this->initializeFilters())
         {
@@ -98,18 +100,20 @@ class ProductFilter extends Module
      */
     public function generateAjax()
     {
-        if ($this->iso_searchAutocomplete && \Input::get('autocomplete'))
-        {
+        if (!\Environment::get('isAjaxRequest')) {
+            return;
+        }
+
+        if ($this->iso_searchAutocomplete && \Input::get('iso_autocomplete') == $this->id) {
+
             $objProducts = Product::findPublishedByCategories($this->findCategories(), array('order'=>'c.sorting'));
 
             if (null === $objProducts) {
-                return array();
+                \Isotope\Frontend::ajaxResponse(array());
             }
 
-            return $objProducts->fetchEach($this->iso_searchAutocomplete);
+			\Isotope\Frontend::ajaxResponse(array_values($objProducts->fetchEach($this->iso_searchAutocomplete)));
         }
-
-        return '';
     }
 
 
