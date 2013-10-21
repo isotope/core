@@ -34,8 +34,10 @@ $GLOBALS['TL_MODELS']['tl_iso_rules'] = 'Isotope\Model\Rule';
 
 /**
  * Checkout Steps
+ * @todo this will no longer work
  */
 array_insert($GLOBALS['ISO_CHECKOUT_STEPS']['review'], 0, array(array('Isotope\Rules', 'cleanRuleUsages')));
+
 /**
  * Product collection surcharge
  */

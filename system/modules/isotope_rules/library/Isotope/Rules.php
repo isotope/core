@@ -297,6 +297,7 @@ class Rules extends \Controller
 
     /**
      * Callback for checkout step "review". Remove rule usages if an order failed.
+     * @todo this will no longer work
      */
     public function cleanRuleUsages(&$objModule)
     {
