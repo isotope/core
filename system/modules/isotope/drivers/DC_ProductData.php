@@ -69,8 +69,8 @@ class DC_ProductData extends \DC_Table
                 if (\BackendUser::getInstance()->isAdmin || !is_array(\BackendUser::getInstance()->iso_groups)) {
                     $this->intGroupId = 0;
                 }
-            } else {
-                $this->intGroupId = (int)\Database::getInstance()->prepare(
+            } elseif (!\BackendUser::getInstance()->isAdmin) {
+                $this->intGroupId = (int) \Database::getInstance()->prepare(
                     "SELECT id FROM tl_iso_groups WHERE id IN ('" . implode("','", \BackendUser::getInstance()->iso_groups) . "') ORDER BY " . \Database::getInstance()->findInSet('id', \BackendUser::getInstance()->iso_groups)
                 )->limit(1)->execute()->id;
             }

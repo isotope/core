@@ -75,6 +75,12 @@ interface IsotopeProduct
     public function getMinimumQuantity();
 
     /**
+     * Return the product's options
+     * @return  array
+     */
+    public function getOptions();
+
+    /**
      * Generate a product template
      * @param   array
      * @return  string
