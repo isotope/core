@@ -824,7 +824,7 @@ abstract class ProductCollection extends TypeAgent
             $objItem = new ProductCollectionItem();
             $objItem->pid               = $this->id;
             $objItem->tstamp            = $time;
-            $objItem->type              = $objProduct->getRelated('type')->class;
+            $objItem->type              = array_search(get_called_class(), Product::getModelTypes());
             $objItem->product_id        = (int) $objProduct->id;
             $objItem->sku               = (string) $objProduct->sku;
             $objItem->name              = (string) $objProduct->name;
