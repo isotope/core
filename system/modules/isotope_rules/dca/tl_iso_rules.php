@@ -250,14 +250,14 @@ $GLOBALS['TL_DCA']['tl_iso_rules'] = array
             'label'                         => &$GLOBALS['TL_LANG']['tl_iso_rules']['startDate'],
             'exclude'                       => true,
             'inputType'                     => 'text',
-            'eval'                          => array('rgxp'=>'date', 'datepicker'=>(method_exists($this,'getDatePickerString') ? $this->getDatePickerString() : true), 'tl_class'=>'w50 wizard')
+            'eval'                          => array('rgxp'=>'date', 'datepicker'=>true, 'tl_class'=>'w50 wizard'),
         ),
         'endDate' => array
         (
             'label'                         => &$GLOBALS['TL_LANG']['tl_iso_rules']['endDate'],
             'exclude'                       => true,
             'inputType'                     => 'text',
-            'eval'                          => array('rgxp'=>'date', 'datepicker'=>(method_exists($this,'getDatePickerString') ? $this->getDatePickerString() : true), 'tl_class'=>'w50 wizard')
+            'eval'                          => array('rgxp'=>'date', 'datepicker'=>true, 'tl_class'=>'w50 wizard'),
         ),
         'startTime' => array
         (
