@@ -444,4 +444,59 @@ class RequestCache extends \Model
     {
         \Database::getInstance()->query("TRUNCATE " . static::$strTable);
     }
+
+    /**
+     * Generate query string for native filters
+     * @param	array
+     * @return	array
+     */
+    public static function buildSqlFilters(array $arrFilters)
+    {
+		$strWhere = '';
+        $arrWhere = array();
+        $arrValues = array();
+        $arrGroups = array();
+
+        // Initiate native SQL filtering
+        foreach ($arrFilters as $k => $objFilter) {
+            if ($objFilter->hasGroup() && $arrGroups[$objFilter->getGroup()] !== false) {
+                if ($objFilter->isDynamicAttribute()) {
+                    $arrGroups[$objFilter->getGroup()] = false;
+                } else {
+                    $arrGroups[$objFilter->getGroup()][] = $k;
+                }
+            } elseif (!$objFilter->hasGroup() && !$objFilter->isDynamicAttribute()) {
+                $arrWhere[] = $objFilter->sqlWhere();
+                $arrValues[] = $objFilter->sqlValue();
+                unset($arrFilters[$k]);
+            }
+        }
+
+        if (!empty($arrGroups)) {
+            foreach ($arrGroups as $arrGroup) {
+                $arrGroupWhere = array();
+
+                foreach ($arrGroup as $k) {
+                    $objFilter = $arrFilters[$k];
+
+                    $arrGroupWhere[] = $objFilter->sqlWhere();
+                    $arrValues[] = $objFilter->sqlValue();
+                    unset($arrFilters[$k]);
+                }
+
+                $arrWhere[] = '(' . implode(' OR ', $arrGroupWhere) . ')';
+            }
+        }
+
+        if (!empty($arrWhere)) {
+            $time = time();
+            $t = Product::getTable();
+
+            $strWhere = "((" . implode(' AND ', $arrWhere) . ") OR $t.id IN (SELECT $t.pid FROM tl_iso_products AS $t WHERE $t.language='' AND " . implode(' AND ', $arrWhere)
+                        . (BE_USER_LOGGED_IN === true ? '' : " AND $t.published='1' AND ($t.start='' OR $t.start<$time) AND ($t.stop='' OR $t.stop>$time)") . "))";
+            $arrValues = array_merge($arrValues, $arrValues);
+        }
+
+        return array($arrFilters, $strWhere, $arrValues);
+    }
 }

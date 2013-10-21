@@ -15,6 +15,7 @@ namespace Isotope\Module;
 use Isotope\Isotope;
 use Isotope\Model\Product;
 use Isotope\Model\ProductCache;
+use Isotope\Model\RequestCache;
 use Isotope\RequestCache\Sort;
 
 
@@ -360,50 +361,7 @@ class ProductList extends Module
         }
 
         if ($blnNativeSQL) {
-            $strWhere = '';
-            $arrWhere = array();
-            $arrValues = array();
-            $arrGroups = array();
-
-            // Initiate native SQL filtering
-            foreach ($arrFilters as $k => $objFilter) {
-                if ($objFilter->hasGroup() && $arrGroups[$objFilter->getGroup()] !== false) {
-                    if ($objFilter->isDynamicAttribute()) {
-                        $arrGroups[$objFilter->getGroup()] = false;
-                    } else {
-                        $arrGroups[$objFilter->getGroup()][] = $k;
-                    }
-                } elseif (!$objFilter->hasGroup() && !$objFilter->isDynamicAttribute()) {
-                    $arrWhere[] = $objFilter->sqlWhere();
-                    $arrValues[] = $objFilter->sqlValue();
-                    unset($arrFilters[$k]);
-                }
-            }
-
-            if (!empty($arrGroups)) {
-                foreach ($arrGroups as $arrGroup) {
-                    $arrGroupWhere = array();
-
-                    foreach ($arrGroup as $k) {
-                        $objFilter = $arrFilters[$k];
-
-                        $arrGroupWhere[] = $objFilter->sqlWhere();
-                        $arrValues[] = $objFilter->sqlValue();
-                        unset($arrFilters[$k]);
-                    }
-
-                    $arrWhere[] = '(' . implode(' OR ', $arrGroupWhere) . ')';
-                }
-            }
-
-            if (!empty($arrWhere)) {
-                $time = time();
-                $t = Product::getTable();
-
-                $strWhere = "((" . implode(' AND ', $arrWhere) . ") OR $t.id IN (SELECT $t.pid FROM tl_iso_products AS $t WHERE $t.language='' AND " . implode(' AND ', $arrWhere)
-                            . (BE_USER_LOGGED_IN === true ? '' : " AND $t.published='1' AND ($t.start='' OR $t.start<$time) AND ($t.stop='' OR $t.stop>$time)") . "))";
-                $arrValues = array_merge($arrValues, $arrValues);
-            }
+            list($arrFilters, $strWhere, $arrValues) = RequestCache::buildSqlFilters($arrFilters);
 
             return array($arrFilters, $arrSorting, $strWhere, $arrValues);
         }
