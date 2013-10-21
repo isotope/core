@@ -265,8 +265,8 @@ class Rules extends \Controller
      */
     public function writeRuleUsages($objOrder, $objCart)
     {
-        $objRules = $this->findRules(array("(type='product' OR (type='cart' AND enableCode=''))"));
-        $arrRules = $objRules->fetchEach('id');
+        $objRules = Rule::findActiveWitoutCoupons();
+        $arrRules = (null === $objRules) ? array() : $objRules->fetchEach('id');
         $arrCoupons = deserialize($objCart->coupons);
 
         if (is_array($arrCoupons) && !empty($arrCoupons))

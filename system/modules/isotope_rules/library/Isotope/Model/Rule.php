@@ -92,6 +92,11 @@ class Rule extends \Model
         return static::findByConditions(array("type='cart'", "enableCode='1'"));
     }
 
+    public static function findActiveWitoutCoupons()
+    {
+        return static::findByConditions(array("(type='product' OR (type='cart' AND enableCode=''))"));
+    }
+
 
     public static function findOneByCouponCode($strCode, $arrCollectionItems)
     {
