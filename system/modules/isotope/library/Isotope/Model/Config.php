@@ -202,9 +202,11 @@ class Config extends \Model
      */
     public static function findByRootPageOrFallback($intRoot, array $arrOptions=array())
     {
+        $t = static::$strTable;
+
         $arrOptions = array_merge(
             array(
-                'column' => array("(id=(SELECT iso_config FROM tl_page WHERE id=?) OR fallback='1')"),
+                'column' => array("($t.id=(SELECT iso_config FROM tl_page WHERE id=?) OR $t.fallback='1')"),
                 'value'  => $intRoot,
                 'order'  => 'fallback',
                 'return' => 'Model'
