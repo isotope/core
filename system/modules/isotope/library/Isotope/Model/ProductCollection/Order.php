@@ -497,13 +497,16 @@ class Order extends ProductCollection implements IsotopeProductCollection
         foreach ($this->getItems($varCallable) as $objItem) {
 
             $arrDownloads = array();
-            $arrItems[] = $this->generateItem($objItem);
+            $arrItem = $this->generateItem($objItem);
 
             foreach ($objItem->getDownloads() as $objDownload) {
                 $arrDownloads = array_merge($arrDownloads, $objDownload->getForTemplate($this->isPaid()));
             }
 
+            $arrItem['downloads'] = $arrDownloads;
             $arrAllDownloads = array_merge($arrAllDownloads, $arrDownloads);
+
+            $arrItems[] = $arrItem;
         }
 
         $objTemplate->items = \Isotope\Frontend::generateRowClass($arrItems, 'row', 'rowClass', 0, ISO_CLASS_COUNT|ISO_CLASS_FIRSTLAST|ISO_CLASS_EVENODD);
