@@ -110,7 +110,7 @@ $GLOBALS['TL_DCA']['tl_iso_related_categories'] = array
     // Palettes
     'palettes' => array
     (
-        'default'               => '{name_legend},name;{redirect_legend},jumpTo',
+        'default'               => '{name_legend},name',
     ),
 
     // Fields
@@ -118,11 +118,11 @@ $GLOBALS['TL_DCA']['tl_iso_related_categories'] = array
     (
         'id' => array
         (
-            'sql'                 =>  "int(10) unsigned NOT NULL auto_increment",
+            'sql'               => "int(10) unsigned NOT NULL auto_increment",
         ),
         'tstamp' => array
         (
-            'sql'                 =>  "int(10) unsigned NOT NULL default '0'",
+            'sql'               => "int(10) unsigned NOT NULL default '0'",
         ),
         'name' => array
         (
