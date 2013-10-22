@@ -51,15 +51,13 @@ class RelatedProducts extends ProductList
             return $objTemplate->parse();
         }
 
-        if (!\Isotope\Frontend::getAutoItem('product'))
-        {
+        if (!\Isotope\Frontend::getAutoItem('product')) {
             return '';
         }
 
         $this->iso_related_categories = deserialize($this->iso_related_categories);
 
-        if (!is_array($this->iso_related_categories) || !count($this->iso_related_categories)) // Can't use empty() because its an object property (using __get)
-        {
+        if (!is_array($this->iso_related_categories) || !count($this->iso_related_categories)) { // Can't use empty() because its an object property (using __get)
             return '';
         }
 
