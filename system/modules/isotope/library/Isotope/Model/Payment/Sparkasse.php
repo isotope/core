@@ -12,6 +12,7 @@
 
 namespace Isotope\Model\Payment;
 
+use Isotope\Interfaces\IsotopeProductCollection;
 use Isotope\Isotope;
 use Isotope\Interfaces\IsotopePayment;
 use Isotope\Model\ProductCollection\Order;
@@ -58,7 +59,7 @@ class Sparkasse extends Postsale implements IsotopePayment
         // Validate payment data
         if ($objOrder->currency != $arrData['currency'])
         {
-            \System::log(sprintf('Data manipulation: currency mismatch ("%s" != "%s")', $objOrder->currency, $arrdata['currency']), __METHOD__, TL_ERROR);
+            \System::log(sprintf('Data manipulation: currency mismatch ("%s" != "%s")', $objOrder->currency, $arrData['currency']), __METHOD__, TL_ERROR);
             $this->redirectError($arrData);
         }
         elseif ($objOrder->getTotal() != $arrData['amount'])
