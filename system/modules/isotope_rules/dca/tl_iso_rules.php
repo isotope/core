@@ -503,7 +503,7 @@ $GLOBALS['TL_DCA']['tl_iso_rules'] = array
             'label'                         => &$GLOBALS['TL_LANG']['tl_iso_rules']['attributeName'],
             'exclude'                       => true,
             'inputType'                     => 'select',
-            'options_callback'              => array('tl_iso_rules', 'getAttributeNames'),
+            'options_callback'              => array('\Isotope\tl_iso_rules', 'getAttributeNames'),
             'eval'                          => array('mandatory'=>true, 'includeBlankOption'=>true, 'submitOnChange'=>true, 'tl_class'=>'clr w50'),
             'sql'                           => "varchar(32) NOT NULL default ''",
         ),
