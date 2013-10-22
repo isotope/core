@@ -85,8 +85,10 @@ class Sparkasse extends Postsale implements IsotopePayment
 
         $objPage = $this->getPageDetails((int) $arrData['sessionid']);
 
-        echo 'redirecturls=' . \Environment::get('base') . \Controller::generateFrontendUrl($objPage->row(), '/step/complete/uid/' . $objOrder->uniqid, $objPage->language);
-        exit;
+        // 200 OK
+        $strResponse = 'redirecturls=' . \Environment::get('base') . \Controller::generateFrontendUrl($objPage->row(), '/step/complete/uid/' . $objOrder->uniqid, $objPage->language;
+        $objResponse = new Response($strResponse);
+        $objResponse->send();
     }
 
     public function getPostsaleOrder()
@@ -172,7 +174,9 @@ window.location.href = '" . $strUrl . "';
     {
         $objPage = $this->getPageDetails((int) $arrData['sessionid']);
 
-        echo 'redirecturlf=' . \Environment::get('base') . \Controller::generateFrontendUrl($objPage->row(), '/step/failed', $objPage->language) . '?reason=' . $arrData['directPosErrorMessage'];
-        exit;
+        // 200 OK
+        $strResponse = 'redirecturlf=' . \Environment::get('base') . \Controller::generateFrontendUrl($objPage->row(), '/step/failed', $objPage->language) . '?reason=' . $arrData['directPosErrorMessage'];
+        $objResponse = new Response($strResponse);
+        $objResponse->send();
     }
 }

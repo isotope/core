@@ -15,6 +15,7 @@ namespace Isotope\Model\Payment;
 use Isotope\Isotope;
 use Isotope\Interfaces\IsotopePayment;
 use Isotope\Model\ProductCollection\Order;
+use Isotope\Response\Response;
 
 
 /**
@@ -112,8 +113,9 @@ class Paypal extends Postsale implements IsotopePayment
             \System::log('PayPal IPN: data rejected (' . $objRequest->response . ')', __METHOD__, TL_ERROR);
         }
 
-        header('HTTP/1.1 200 OK');
-        exit;
+        // 200 OK
+        $objResponse = new Response();
+        $objResponse->send();
     }
 
     public function getPostsaleOrder()
