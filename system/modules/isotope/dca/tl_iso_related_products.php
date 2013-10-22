@@ -108,7 +108,9 @@ $GLOBALS['TL_DCA']['tl_iso_related_products'] = array
         ),
         'pid' => array
         (
+            'foreignKey'            => 'tl_iso_products.name',
             'sql'                   => "int(10) unsigned NOT NULL default '0'",
+            'relation'              => array('type'=>'belongsTo', 'load'=>'lazy'),
         ),
         'tstamp' => array
         (
