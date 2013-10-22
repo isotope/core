@@ -135,8 +135,8 @@ $GLOBALS['TL_DCA']['tl_iso_related_products'] = array
         (
             'label'                 => &$GLOBALS['TL_LANG']['tl_iso_related_products']['products'],
             'exclude'               => true,
-            'inputType'             => 'productTree',
-            'eval'                  => array('mandatory'=>true, 'fieldType'=>'checkbox', 'variants'=>true, 'tl_class'=>'clr'),
+            'inputType'             => 'text',
+            'eval'                  => array('mandatory'=>true, 'tl_class'=>'long'),
             'sql'                   => "blob NULL",
         ),
     )
