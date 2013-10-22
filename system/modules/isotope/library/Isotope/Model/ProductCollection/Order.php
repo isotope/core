@@ -212,11 +212,6 @@ class Order extends ProductCollection implements IsotopeProductCollection
 
         $this->checkout_complete = true;
 
-        // Set order status only if a payment module has not already set it
-        if ($this->order_status == 0) {
-            $this->order_status = Isotope::getConfig()->orderstatus_new;
-        }
-
         $this->generateDocumentNumber(Isotope::getConfig()->orderPrefix, (int) Isotope::getConfig()->orderDigits);
         $arrTokens = $this->getNotificationTokens($this->nc_notification);
 
@@ -239,6 +234,11 @@ class Order extends ProductCollection implements IsotopeProductCollection
             }
         } else {
             \System::log('No notification for order ID '.$this->id, __METHOD__, TL_ERROR);
+        }
+
+        // Set order status only if a payment module has not already set it
+        if ($this->order_status == 0) {
+            $this->updateOrderStatus(Isotope::getConfig()->orderstatus_new);
         }
 
         // !HOOK: post-process checkout
