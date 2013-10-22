@@ -1197,24 +1197,6 @@ window.addEvent('domready', function()
         return $objPage;
     }
 
-
-    /**
-     * Send response for an ajax request
-     * @param   mixed
-     */
-    public static function ajaxResponse($varValue)
-    {
-        $varValue = static::replaceTags($varValue);
-
-        if (is_array($varValue) || is_object($varValue))
-        {
-            $varValue = json_encode($varValue);
-        }
-
-        echo $varValue;
-        exit;
-    }
-
     /**
      * Get value of an auto_item parameter
      * @param   string Key
@@ -1235,7 +1217,7 @@ window.addEvent('domready', function()
      * @param    array|string
      * @return    array|string
      */
-    private static function replaceTags($varValue)
+    public static function replaceTags($varValue)
     {
         if (is_array($varValue)) {
             foreach ($varValue as $k => $v) {

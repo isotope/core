@@ -18,6 +18,7 @@ use Isotope\Model\RequestCache;
 use Isotope\RequestCache\Filter;
 use Isotope\RequestCache\Limit;
 use Isotope\RequestCache\Sort;
+use Isotope\Response\JsonResponse;
 
 
 /**
@@ -109,10 +110,12 @@ class ProductFilter extends Module
             $objProducts = Product::findPublishedByCategories($this->findCategories(), array('order'=>'c.sorting'));
 
             if (null === $objProducts) {
-                \Isotope\Frontend::ajaxResponse(array());
+                $objResponse = new JsonResponse(array());
+                $objResponse->send();
             }
 
-			\Isotope\Frontend::ajaxResponse(array_values($objProducts->fetchEach($this->iso_searchAutocomplete)));
+            $objResponse = new JsonResponse(array_values($objProducts->fetchEach($this->iso_searchAutocomplete)));
+            $objResponse->send();
         }
     }
 
