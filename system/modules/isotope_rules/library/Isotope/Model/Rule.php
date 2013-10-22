@@ -294,7 +294,7 @@ class Rule extends \Model
             $arrProcedures[] = '(' . implode(' OR ', $arrRestrictions) . ')';
         }
 
-        $objResult = \Database::getInstance()->prepare("SELECT * FROM " . static::$strTable . " r WHERE " . implode(' AND ', $arrProcedures) . " ORDER BY sorting")->execute($arrValues);
+        $objResult = \Database::getInstance()->prepare("SELECT * FROM " . static::$strTable . " r WHERE " . implode(' AND ', $arrProcedures))->execute($arrValues);
 
         if ($objResult->numRows) {
             return \Model\Collection::createFromDbResult($objResult, static::$strTable);
