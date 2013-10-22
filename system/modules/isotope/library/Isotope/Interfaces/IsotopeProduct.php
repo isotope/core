@@ -50,6 +50,12 @@ interface IsotopeProduct
     public function isNew();
 
     /**
+     * Checks whether a product is exempt from shipping
+     * @return boolean
+     */
+    public function isExemptFromShipping();
+
+    /**
      * Returns true if variants are enabled in the product type, otherwise returns false
      * @return bool
      */
@@ -92,4 +98,11 @@ interface IsotopeProduct
      * @return  string
      */
     public function generate(array $arrConfig);
+
+    /**
+     * Return the unique form ID for the product
+     * @param  \PageModel
+     * @return string
+     */
+    public function generateUrl(\PageModel $objJumpTo=null);
 }
