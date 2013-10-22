@@ -400,7 +400,20 @@ class Standard extends Product implements IsotopeProduct
                 $this->arrVariantIds[] = $objVariants->id;
             }
 
-            // @todo check if each variant has a price
+            // Only show variants where a price is available
+            if ($this->hasVariantPrices()) {
+                if ($this->hasAdvancedPrices()) {
+                    $objPrices = ProductPrice::findAdvancedByProductIdsAndCollection($this->arrVariantIds, Isotope::getCart());
+                } else {
+                    $objPrices = ProductPrice::findPrimaryByProductIds($this->arrVariantIds);
+                }
+
+                if (null === $objPrices) {
+                    $this->arrVariantIds = array();
+                } else {
+                    $this->arrVariantIds = $objPrices->fetchEach('pid');
+                }
+            }
         }
 
         return $this->arrVariantIds;
