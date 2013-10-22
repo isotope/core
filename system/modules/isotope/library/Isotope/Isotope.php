@@ -378,6 +378,7 @@ class Isotope extends \Controller
      * @param array
      * @param object
      * @return array
+     * @todo refactor
      */
     public static function mergeConditionalOptionData($strField, $arrData, &$objProduct=null)
     {
