@@ -706,7 +706,7 @@ class Standard extends Product implements IsotopeProduct
                     }
                 }
 
-                if (!$objWidget->hasErrors()) {
+                if (!$objWidget->hasErrors() && $varValue != '') {
                     $arrVariantOptions[$strField] = $varValue;
                 }
             }
