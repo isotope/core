@@ -847,15 +847,11 @@ class Standard extends Product implements IsotopeProduct
         $this->arrVariantAttributes = null;
         $this->arrVariantIds = null;
         $this->arrCategories = null;
+        $this->arrRelations = array();
 
         // Must initialize product type to have attributes etc.
-        if (!isset($this->arrRelated['type']))
-        {
-            $this->arrRelated['type'] = ProductType::findByPk($arrData['type']);
-
-            if (null === $this->arrRelated['type']) {
-                throw new \UnderflowException('Product type for product ID ' . $arrData['id'] . ' not found');
-            }
+        if (($this->arrRelated['type'] = ProductType::findByPk($arrData['type'])) === null) {
+            throw new \UnderflowException('Product type for product ID ' . $arrData['id'] . ' not found');
         }
 
         $this->strFormId = 'iso_product_' . $arrData['id'];
