@@ -12,6 +12,8 @@
 
 namespace Isotope\Model;
 
+use Isotope\Interfaces\IsotopeProduct;
+
 
 /**
  * RelatedProduct holds array of related products
@@ -28,4 +30,28 @@ class RelatedProduct extends \Model
      */
     protected static $strTable = 'tl_iso_related_products';
 
+
+    /**
+     * Find related products of a product
+     * @param   IsotopeProduct
+     * @param   array
+     * @param   array
+     * @return  Model\Collection|null
+     */
+    public static function findByProductAndCategories(IsotopeProduct $objProduct, array $arrCategories, array $arrOptions=array())
+    {
+        $t = static::$strTable;
+
+        $arrOptions = array_merge(
+            array(
+                'column'    => array("$t.pid=?", "$t.category IN (" . implode(',', $arrCategories) . ")"),
+                'value'     => array($objProduct->getProductId()),
+                'order'     => \Database::getInstance()->findInSet("$t.category", $arrCategories),
+				'return'    => 'Collection'
+            ),
+            $arrOptions
+        );
+
+        return static::find($arrOptions);
+    }
 }
