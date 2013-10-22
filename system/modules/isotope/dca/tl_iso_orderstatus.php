@@ -172,7 +172,7 @@ $GLOBALS['TL_DCA']['tl_iso_orderstatus'] = array
             'exclude'               => true,
             'inputType'             => 'select',
             'options_callback'      => array('NotificationCenter\tl_module', 'getNotificationChoices'),
-            'eval'                  => array('chosen'=>true, 'tl_class'=>'w50'),
+            'eval'                  => array('includeBlankOption'=>true, 'chosen'=>true, 'tl_class'=>'w50'),
             'sql'                   => "int(10) unsigned NOT NULL default '0'"
         ),
     )
