@@ -487,8 +487,8 @@ $GLOBALS['TL_DCA']['tl_iso_rules'] = array
         (
             'label'                         => &$GLOBALS['TL_LANG']['tl_iso_rules']['variants'],
             'exclude'                       => true,
-            'inputType'                     => 'productTree',
-            'eval'                          => array('mandatory'=>true, 'fieldType'=>'checkbox', 'variants'=>true, 'doNotSaveEmpty'=>true, 'tl_class'=>'clr'),
+            'inputType'                     => 'text',
+            'eval'                          => array('mandatory'=>true, 'doNotSaveEmpty'=>true, 'csv'=>',', 'tl_class'=>'clr long'),
             'load_callback' => array
             (
                 array('\Isotope\tl_iso_rules', 'loadRestrictions'),

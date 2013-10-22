@@ -44,7 +44,13 @@ class tl_iso_rules extends \Backend
      */
     public function loadRestrictions($varValue, $dc)
     {
-        return \Database::getInstance()->execute("SELECT object_id FROM tl_iso_rule_restrictions WHERE pid={$dc->activeRecord->id} AND type='{$dc->field}'")->fetchEach('object_id');
+        $varValue = \Database::getInstance()->execute("SELECT object_id FROM tl_iso_rule_restrictions WHERE pid={$dc->activeRecord->id} AND type='{$dc->field}'")->fetchEach('object_id');
+
+        if ($GLOBALS['TL_DCA'][$dc->table]['fields'][$dc->field]['eval']['csv'] != '') {
+            $varValue = implode($GLOBALS['TL_DCA'][$dc->table]['fields'][$dc->field]['eval']['csv'], $varValue);
+        }
+
+        return $varValue;
     }
 
 
@@ -53,7 +59,11 @@ class tl_iso_rules extends \Backend
      */
     public function saveRestrictions($varValue, $dc)
     {
-        $arrNew = deserialize($varValue);
+        if ($GLOBALS['TL_DCA'][$dc->table]['fields'][$dc->field]['eval']['csv'] != '') {
+            $arrNew = explode($GLOBALS['TL_DCA'][$dc->table]['fields'][$dc->field]['eval']['csv'], $varValue);
+        } else {
+            $arrNew = deserialize($varValue);
+        }
 
         if (!is_array($arrNew) || empty($arrNew)) {
             \Database::getInstance()->query("DELETE FROM tl_iso_rule_restrictions WHERE pid={$dc->activeRecord->id} AND type='{$dc->field}'");
