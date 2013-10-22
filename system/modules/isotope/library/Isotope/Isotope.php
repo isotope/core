@@ -373,22 +373,6 @@ class Isotope extends \Controller
 
 
     /**
-     * Update ConditionalSelect to include the product ID in conditionField
-     * @param string
-     * @param array
-     * @param object
-     * @return array
-     * @todo refactor
-     */
-    public static function mergeConditionalOptionData($strField, $arrData, &$objProduct=null)
-    {
-        $arrData['eval']['conditionField'] = $arrData['attributes']['conditionField'] . (is_object($objProduct) ? '_' . $objProduct->getFormId() : '');
-
-        return $arrData;
-    }
-
-
-    /**
      * Callback for isoButton Hook
      * @param array
      * @return array

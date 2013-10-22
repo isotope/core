@@ -254,7 +254,6 @@ $GLOBALS['BE_FFL']['productGroupSelector']   = 'Isotope\Widget\ProductGroupSelec
 \Isotope\Model\Attribute::registerModelType('select', 'Isotope\Model\Attribute\SelectMenu');
 \Isotope\Model\Attribute::registerModelType('radio', 'Isotope\Model\Attribute\RadioButton');
 \Isotope\Model\Attribute::registerModelType('checkbox', 'Isotope\Model\Attribute\CheckboxMenu');
-\Isotope\Model\Attribute::registerModelType('conditionalselect', 'Isotope\Model\Attribute\ConditionalSelectMenu');
 \Isotope\Model\Attribute::registerModelType('mediaManager', 'Isotope\Model\Attribute\MediaManager');
 \Isotope\Model\Attribute::registerModelType('fileTree', 'Isotope\Model\Attribute\FileTree');
 \Isotope\Model\Attribute::registerModelType('downloads', 'Isotope\Model\Attribute\Downloads');
