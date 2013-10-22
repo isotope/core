@@ -361,6 +361,11 @@ class Standard extends Product implements IsotopeProduct
 
             $this->arrVariantIds = array();
 
+            // Nothing to do if we have no variants
+            if (!$this->hasVariants()) {
+                return $this->arrVariantIds;
+            }
+
             $time = time();
             $blnHasProtected = false;
             $strQuery = "SELECT id, protected, groups FROM tl_iso_products WHERE pid=" . $this->getProductId() . " AND language='' AND published='1' AND (start='' OR start<$time) AND (stop='' OR stop>$time)";
