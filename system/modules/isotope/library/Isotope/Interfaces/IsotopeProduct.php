@@ -20,6 +20,12 @@ interface IsotopeProduct
 {
 
     /**
+     * Return the unique form ID for the product
+     * @return  string
+     */
+    public function getFormId();
+
+    /**
      * Returns true if the product is available in the frontend
      * @return bool
      */
