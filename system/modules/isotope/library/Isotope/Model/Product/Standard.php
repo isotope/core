@@ -847,7 +847,7 @@ class Standard extends Product implements IsotopeProduct
         $this->arrVariantAttributes = null;
         $this->arrVariantIds = null;
         $this->arrCategories = null;
-        $this->arrRelations = array();
+        $this->arrRelated = array();
 
         // Must initialize product type to have attributes etc.
         if (($this->arrRelated['type'] = ProductType::findByPk($arrData['type'])) === null) {
