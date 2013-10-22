@@ -732,7 +732,7 @@ abstract class ProductCollection extends TypeAgent
     {
         $strClass = array_search(get_class($objProduct), Product::getModelTypes());
 
-        $objItem = ProductCollectionItem::findOneBy(array('pid=?', 'type=?', 'product_id=?', 'options=?'), array($this->id, $strClass, $objProduct->id, serialize($objProduct->getOptions())));
+        $objItem = ProductCollectionItem::findOneBy(array('pid=?', 'type=?', 'product_id=?', 'options=?'), array($this->id, $strClass, $objProduct->{$objProduct->getPk()}, serialize($objProduct->getOptions())));
 
         return $objItem;
     }
@@ -825,7 +825,7 @@ abstract class ProductCollection extends TypeAgent
             $objItem->pid               = $this->id;
             $objItem->tstamp            = $time;
             $objItem->type              = array_search(get_class($objProduct), Product::getModelTypes());
-            $objItem->product_id        = (int) $objProduct->id;
+            $objItem->product_id        = $objProduct->{$objProduct->getPk()};
             $objItem->sku               = (string) $objProduct->sku;
             $objItem->name              = (string) $objProduct->name;
             $objItem->options           = $objProduct->getOptions();
