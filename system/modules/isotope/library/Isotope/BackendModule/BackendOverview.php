@@ -58,21 +58,18 @@ abstract class BackendOverview extends \BackendModule
         }
 
         // Open module
-        if (\Input::get('mod') != '')
-        {
+        if (\Input::get('mod') != '') {
             return $this->getModule(\Input::get('mod'));
         }
 
         // Table set but module missing, fix the saveNcreate link
-        elseif (\Input::get('table') != '')
-        {
-            foreach ($this->arrModules as $arrGroup)
-            {
-                foreach ($arrGroup['modules'] as $strModule => $arrConfig)
-                {
-                    if (is_array($arrConfig['tables']) && in_array(\Input::get('table'), $arrConfig['tables']))
-                    {
-                        \Controller::redirect($this->addToUrl('mod=' . $strModule));
+        elseif (\Input::get('table') != '') {
+            foreach ($this->arrModules as $arrGroup) {
+                if (isset($arrGroup['modules'])) {
+                    foreach ($arrGroup['modules'] as $strModule => $arrConfig) {
+                        if (is_array($arrConfig['tables']) && in_array(\Input::get('table'), $arrConfig['tables'])) {
+                            \Controller::redirect($this->addToUrl('mod=' . $strModule));
+                        }
                     }
                 }
             }
