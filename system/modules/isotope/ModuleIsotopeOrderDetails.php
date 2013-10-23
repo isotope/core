@@ -133,6 +133,7 @@ class ModuleIsotopeOrderDetails extends ModuleIsotope
 				'href'				=> ($this->jumpTo ? $this->generateFrontendUrl($arrPage, ($GLOBALS['TL_CONFIG']['useAutoItem'] ? '/' : '/product/') . $objProduct->alias) : ''),
 				'tax_id'			=> $objProduct->tax_id,
 				'downloads'			=> $arrDownloads,
+                'product'           => $objProduct
 			);
 
 			$arrAllDownloads = array_merge($arrAllDownloads, $arrDownloads);

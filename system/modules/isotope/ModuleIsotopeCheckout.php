@@ -992,6 +992,7 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 				'quantity'			=> $objProduct->quantity_requested,
 				'tax_id'			=> $objProduct->tax_id,
 				'product_options'	=> $objProduct->getOptions(),
+                'product'	=> $objProduct
 			));
 		}
 
