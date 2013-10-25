@@ -157,6 +157,8 @@ abstract class Address extends CheckoutStep
         $arrWidgets = $this->getWidgets();
 
         foreach ($arrWidgets as $strName => $objWidget) {
+            $arrData = &$GLOBALS['TL_DCA']['tl_iso_addresses']['fields'][$strName];
+
             // Validate input
             if ($blnValidate) {
 
@@ -207,7 +209,7 @@ abstract class Address extends CheckoutStep
 
             foreach ($this->getAddressFields() as $field) {
 
-                $arrData = $GLOBALS['TL_DCA']['tl_iso_addresses']['fields'][$field['value']];
+                $arrData = &$GLOBALS['TL_DCA']['tl_iso_addresses']['fields'][$field['value']];
 
                 if (!is_array($arrData) || !$arrData['eval']['feEditable'] || !$field['enabled'] || ($arrData['eval']['membersOnly'] && FE_USER_LOGGED_IN !== true)) {
                     continue;
