@@ -273,6 +273,9 @@ class Postfinance extends Payment implements IsotopePayment, IsotopePostsale
             'OWNERZIP'                          => $objAddress->postal,
             'OWNERTOWN'                         => $objAddress->city,
             'OWNERCTY'                          => $objAddress->country,
+            'ECOM_SHIPTO_DOB'                   => $objAddress->dateOfBirth,
+            // This key is mandatory but can be empty
+            'REF_CUSTOMERID'                    => ''
         );
 
         $arrOrder = array();
