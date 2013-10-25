@@ -190,11 +190,9 @@ class Postfinance extends Payment implements IsotopePayment, IsotopePostsale
             \Isotope\Module\Checkout::redirectToStep('failed');
         }
 
-        $objAddress = Isotope::getCart()->getBillingAddress();
-
         $arrParams = array();
-        $arrParams = array_merge($arrParams, $this->preparePSPParams($objOrder, $objAddress));
-        $arrParams = array_merge($arrParams, $this->prepareFISParams($objOrder, $objAddress));
+        $arrParams = array_merge($arrParams, $this->preparePSPParams($objOrder));
+        $arrParams = array_merge($arrParams, $this->prepareFISParams($objOrder));
 
         // SHA-1 must be generated on alphabetically sorted keys.
         // Use the natural order algorithm so ITEM10 gets listed after ITEM2
@@ -226,12 +224,12 @@ class Postfinance extends Payment implements IsotopePayment, IsotopePostsale
     /**
      * Prepare regular PSP params
      * @param   Order
-     * @param   Address
      * @return  array
      */
-    private function preparePSPParams($objOrder, $objAddress)
+    private function preparePSPParams($objOrder)
     {
         $strFailedUrl = \Environment::get('base') . \Isotope\Module\Checkout::generateUrlForStep('failed');
+        $objBillingAddress = $objOrder->getBillingAddress();
 
         return array
         (
@@ -240,14 +238,14 @@ class Postfinance extends Payment implements IsotopePayment, IsotopePostsale
             'AMOUNT'        => round((Isotope::getCart()->getTotal() * 100)),
             'CURRENCY'      => Isotope::getConfig()->currency,
             'LANGUAGE'      => $GLOBALS['TL_LANGUAGE'] . '_' . strtoupper($GLOBALS['TL_LANGUAGE']),
-            'CN'            => $objAddress->firstname . ' ' . $objAddress->lastname,
-            'EMAIL'         => $objAddress->email,
-            'OWNERZIP'      => $objAddress->postal,
-            'OWNERADDRESS'  => $objAddress->street_1,
-            'OWNERADDRESS2' => $objAddress->street_2,
-            'OWNERCTY'      => $objAddress->country,
-            'OWNERTOWN'     => $objAddress->city,
-            'OWNERTELNO'    => $objAddress->phone,
+            'CN'            => $objBillingAddress->firstname . ' ' . $objBillingAddress->lastname,
+            'EMAIL'         => $objBillingAddress->email,
+            'OWNERZIP'      => $objBillingAddress->postal,
+            'OWNERADDRESS'  => $objBillingAddress->street_1,
+            'OWNERADDRESS2' => $objBillingAddress->street_2,
+            'OWNERCTY'      => $objBillingAddress->country,
+            'OWNERTOWN'     => $objBillingAddress->city,
+            'OWNERTELNO'    => $objBillingAddress->phone,
             'ACCEPTURL'     => \Environment::get('base') . \Isotope\Frontend::addQueryStringToUrl('uid=' . $objOrder->uniqid, \Isotope\Module\Checkout::generateUrlForStep('complete')),
             'DECLINEURL'    => $strFailedUrl,
             'EXCEPTIONURL'  => $strFailedUrl,
@@ -258,23 +256,27 @@ class Postfinance extends Payment implements IsotopePayment, IsotopePostsale
     /**
      * Prepare FIS params
      * @param   Order
-     * @param   Address
      * @return  array
      */
-    private function prepareFISParams($objOrder, $objAddress)
+    private function prepareFISParams($objOrder)
     {
+        $objBillingAddress  = $objOrder->getBillingAddress();
+
         $arrInvoice = array
         (
-            'ECOM_BILLTO_POSTAL_NAME_FIRST'     => $objAddress->firstname,
-            'ECOM_BILLTO_POSTAL_NAME_LAST'      => $objAddress->lastname,
-            'OWNERADDRESS'                      => $objAddress->street_1,
-            'OWNERADDRESS2'                     => $objAddress->street_2,
+            'ECOM_BILLTO_POSTAL_NAME_FIRST'     => $objBillingAddress->firstname,
+            'ECOM_BILLTO_POSTAL_NAME_LAST'      => $objBillingAddress->lastname,
+            'OWNERADDRESS'                      => $objBillingAddress->street_1,
+            'OWNERADDRESS2'                     => $objBillingAddress->street_2,
             // This key is mandatory but can be empty
             'ECOM_BILLTO_POSTAL_STREET_NUMBER'  => '',
-            'OWNERZIP'                          => $objAddress->postal,
-            'OWNERTOWN'                         => $objAddress->city,
-            'OWNERCTY'                          => $objAddress->country,
-            'ECOM_SHIPTO_DOB'                   => $objAddress->dateOfBirth,
+            // This key is mandatory but can be empty
+            'ECOM_SHIPTO_POSTAL_STREET_NUMBER'  => '',
+            'OWNERZIP'                          => $objBillingAddress->postal,
+            'OWNERTOWN'                         => $objBillingAddress->city,
+            'OWNERCTY'                          => strtoupper($objBillingAddress->country),
+            'ECOM_SHIPTO_DOB'                   => date('d/m/Y', $objBillingAddress->dateOfBirth),
+            'ECOM_CONSUMER_GENDER'              => $objBillingAddress->gender == 'male' ? 'M' : 'F',
             // This key is mandatory but can be empty
             'REF_CUSTOMERID'                    => ''
         );
