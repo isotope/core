@@ -267,18 +267,15 @@ class Postfinance extends Payment implements IsotopePayment, IsotopePostsale
             'ECOM_BILLTO_POSTAL_NAME_FIRST'     => $objBillingAddress->firstname,
             'ECOM_BILLTO_POSTAL_NAME_LAST'      => $objBillingAddress->lastname,
             'OWNERADDRESS'                      => $objBillingAddress->street_1,
+            // @todo: is this mandatory?
             'OWNERADDRESS2'                     => $objBillingAddress->street_2,
-            // This key is mandatory but can be empty
-            'ECOM_BILLTO_POSTAL_STREET_NUMBER'  => '',
-            // This key is mandatory but can be empty
-            'ECOM_SHIPTO_POSTAL_STREET_NUMBER'  => '',
             'OWNERZIP'                          => $objBillingAddress->postal,
             'OWNERTOWN'                         => $objBillingAddress->city,
             'OWNERCTY'                          => strtoupper($objBillingAddress->country),
             'ECOM_SHIPTO_DOB'                   => date('d/m/Y', $objBillingAddress->dateOfBirth),
             'ECOM_CONSUMER_GENDER'              => $objBillingAddress->gender == 'male' ? 'M' : 'F',
-            // This key is mandatory but can be empty
-            'REF_CUSTOMERID'                    => ''
+            // This key is mandatory and just has to be unique
+            'REF_CUSTOMERID'                    => 'psp_' . $this->id . '_' . $objOrder->id
         );
 
         $arrOrder = array();
