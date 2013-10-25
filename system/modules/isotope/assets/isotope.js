@@ -14,8 +14,9 @@
 
 var Isotope = Isotope || {};
 
-Isotope.toggleAddressFields = function(el, id)
-{
+Isotope.toggleAddressFields = function(el, id) {
+"use strict";
+
     if (el.value == '0' && el.checked) {
         document.getElementById(id).style.display = 'block';
     } else {
@@ -27,8 +28,9 @@ Isotope.toggleAddressFields = function(el, id)
  * Display a "loading data" message
  * @param string
  */
-Isotope.displayBox = function(message, btnClose)
-{
+Isotope.displayBox = function(message, btnClose) {
+"use strict";
+
     var box = document.getElementById('iso_ajaxBox');
     var overlay = document.getElementById('iso_ajaxOverlay');
 
@@ -65,8 +67,9 @@ Isotope.displayBox = function(message, btnClose)
 /**
  * Hide the "loading data" message
  */
-Isotope.hideBox = function()
-{
+Isotope.hideBox = function() {
+"use strict";
+
     var box = document.getElementById('iso_ajaxBox');
     var overlay = document.getElementById('iso_ajaxOverlay');
 

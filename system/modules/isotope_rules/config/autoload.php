@@ -12,12 +12,18 @@
 
 
 /**
- * Register the classes
+ * Register PSR-0 namespace
  */
-ClassLoader::addClasses(array
+NamespaceClassLoader::add('Isotope', 'system/modules/isotope_rules/library');
+
+
+/**
+ * Register classes outside the namespace folder
+ */
+NamespaceClassLoader::addClassMap(array
 (
-    // Classes
-    'Isotope\IsotopeRules'             => 'system/modules/isotope_rules/classes/IsotopeRules.php',
+    // DCA Helpers
+    'Isotope\tl_iso_rules'  => 'system/modules/isotope_rules/classes/tl_iso_rules.php',
 ));
 
 

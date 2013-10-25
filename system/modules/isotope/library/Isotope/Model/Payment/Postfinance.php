@@ -12,6 +12,7 @@
 
 namespace Isotope\Model\Payment;
 
+use Isotope\Interfaces\IsotopeProductCollection;
 use Isotope\Isotope;
 use Isotope\Interfaces\IsotopePayment;
 use Isotope\Interfaces\IsotopePostsale;
@@ -336,9 +337,9 @@ class Postfinance extends Payment implements IsotopePayment, IsotopePostsale
         uksort($arrParams, 'strnatcasecmp');
 
         foreach($arrParams as $k => $v ) {
-
-            if ($v == '')
+            if ($v == '') {
                 continue;
+            }
 
             $strSHASign .= strtoupper($k) . '=' . $v . $this->psp_hash_out;
         }

@@ -142,20 +142,21 @@ abstract class TypeAgent extends \Model
             $strClass = static::$arrModelTypes[$objResult->type];
         }
 
+        // Try to use the current class as fallback
         if ($strClass == '') {
-	        return null;
+            $strClass = get_called_class();
         }
 
         $strPk = static::$strPk;
-		$intPk = $objResult->$strPk;
+        $intPk = $objResult->$strPk;
 
-		// Try to load from the registry
-		$objModel = \Model\Registry::getInstance()->fetch(static::$strTable, $intPk);
+        // Try to load from the registry
+        $objModel = \Model\Registry::getInstance()->fetch(static::$strTable, $intPk);
 
-		if ($objModel !== null) {
-			$objModel->mergeRow($objResult->row());
-		} else {
-		    $objModel = new $strClass($objResult);
+        if ($objModel !== null) {
+            $objModel->mergeRow($objResult->row());
+        } else {
+            $objModel = new $strClass($objResult);
         }
 
         if (null !== static::$strInterface && !is_a($objModel, static::$strInterface)) {
@@ -179,7 +180,6 @@ abstract class TypeAgent extends \Model
 
             // Convert to array if necessary
             $arrOptions['value'] = (array) $arrOptions['value'];
-            $arrOptions['value'][] = $strType;
 
             if (!is_array($arrOptions['column']))
             {
@@ -191,8 +191,10 @@ abstract class TypeAgent extends \Model
 
             if (isset($arrRelations['type'])) {
                 $arrOptions['column'][] = static::$strTable . '.type IN (SELECT ' . $arrRelations['type']['field'] . ' FROM ' . $arrRelations['type']['table'] . ' WHERE class=?)';
-            } else {
+                $arrOptions['value'][] = $strType;
+            } elseif ($GLOBALS['TL_DCA'][static::$strTable]['fields']['type']) {
                 $arrOptions['column'][] = static::$strTable . '.type=?';
+                $arrOptions['value'][] = $strType;
             }
         }
 

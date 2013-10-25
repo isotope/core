@@ -82,17 +82,17 @@ class Order extends ProductCollection implements IsotopeProductCollection
 
     /**
      * Remove downloads when deleting an item
-     * @param   object
+     * @param   int
      * @return  boolean
      */
-    public function deleteItem(ProductCollectionItem $objItem)
+    public function deleteItemById($intId)
     {
         $this->ensureNotLocked();
 
-        $intPid = $objItem->id;
+        if (parent::deleteItemById($intId) && $intId > 0) {
+            \Database::getInstance()->query("DELETE FROM tl_iso_product_collection_download WHERE pid=$intId");
 
-        if (parent::deleteItem($objItem) && $intPid > 0) {
-            \Database::getInstance()->query("DELETE FROM tl_iso_product_collection_download WHERE pid=$intPid");
+            return true;
         }
 
         return false;
@@ -212,11 +212,6 @@ class Order extends ProductCollection implements IsotopeProductCollection
 
         $this->checkout_complete = true;
 
-        // Set order status only if a payment module has not already set it
-        if ($this->order_status == 0) {
-            $this->order_status = Isotope::getConfig()->orderstatus_new;
-        }
-
         $this->generateDocumentNumber(Isotope::getConfig()->orderPrefix, (int) Isotope::getConfig()->orderDigits);
         $arrTokens = $this->getNotificationTokens($this->nc_notification);
 
@@ -239,6 +234,11 @@ class Order extends ProductCollection implements IsotopeProductCollection
             }
         } else {
             \System::log('No notification for order ID '.$this->id, __METHOD__, TL_ERROR);
+        }
+
+        // Set order status only if a payment module has not already set it
+        if ($this->order_status == 0) {
+            $this->updateOrderStatus(Isotope::getConfig()->orderstatus_new);
         }
 
         // !HOOK: post-process checkout
@@ -497,13 +497,16 @@ class Order extends ProductCollection implements IsotopeProductCollection
         foreach ($this->getItems($varCallable) as $objItem) {
 
             $arrDownloads = array();
-            $arrItems[] = $this->generateItem($objItem);
+            $arrItem = $this->generateItem($objItem);
 
             foreach ($objItem->getDownloads() as $objDownload) {
                 $arrDownloads = array_merge($arrDownloads, $objDownload->getForTemplate($this->isPaid()));
             }
 
+            $arrItem['downloads'] = $arrDownloads;
             $arrAllDownloads = array_merge($arrAllDownloads, $arrDownloads);
+
+            $arrItems[] = $arrItem;
         }
 
         $objTemplate->items = \Isotope\Frontend::generateRowClass($arrItems, 'row', 'rowClass', 0, ISO_CLASS_COUNT|ISO_CLASS_FIRSTLAST|ISO_CLASS_EVENODD);

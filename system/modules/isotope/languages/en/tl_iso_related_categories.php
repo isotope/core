@@ -17,7 +17,6 @@
  * Fields
  */
 $GLOBALS['TL_LANG']['tl_iso_related_categories']['name']            = array('Category name', 'Please enter a name for this category.');
-$GLOBALS['TL_LANG']['tl_iso_related_categories']['jumpTo']          = array('Redirect page', 'Select the page where product reader is available. If you don\'t select one, the current page will be used.');
 
 /**
  * Buttons
@@ -32,4 +31,3 @@ $GLOBALS['TL_LANG']['tl_iso_related_categories']['show']            = array('Cat
  * Legends
  */
 $GLOBALS['TL_LANG']['tl_iso_related_categories']['name_legend']     = 'Name';
-$GLOBALS['TL_LANG']['tl_iso_related_categories']['redirect_legend'] = 'Redirect settings';

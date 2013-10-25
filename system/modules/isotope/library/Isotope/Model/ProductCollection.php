@@ -404,7 +404,7 @@ abstract class ProductCollection extends TypeAgent
     public function sumItemsQuantity()
     {
         if (!isset($this->arrCache['sumItemsQuantity'])) {
-            $this->arrCache['sumItemsQuantity'] = ProductCollectionItem::countBy('quantity', 'pid', $this->id);
+            $this->arrCache['sumItemsQuantity'] = ProductCollectionItem::sumBy('quantity', 'pid', $this->id);
         }
 
         return $this->arrCache['sumItemsQuantity'];
@@ -730,9 +730,9 @@ abstract class ProductCollection extends TypeAgent
      */
     public function getItemForProduct(IsotopeProduct $objProduct)
     {
-        $strClass = $objProduct->getRelated('type')->class;
+        $strClass = array_search(get_class($objProduct), Product::getModelTypes());
 
-        $objItem = ProductCollectionItem::findOneBy(array('pid=?', 'type=?', 'product_id=?', 'options=?'), array($this->id, $strClass, $objProduct->id, serialize($objProduct->getOptions())));
+        $objItem = ProductCollectionItem::findOneBy(array('pid=?', 'type=?', 'product_id=?', 'options=?'), array($this->id, $strClass, $objProduct->{$objProduct->getPk()}, serialize($objProduct->getOptions())));
 
         return $objItem;
     }
@@ -824,8 +824,8 @@ abstract class ProductCollection extends TypeAgent
             $objItem = new ProductCollectionItem();
             $objItem->pid               = $this->id;
             $objItem->tstamp            = $time;
-            $objItem->type              = $objProduct->getRelated('type')->class;
-            $objItem->product_id        = (int) $objProduct->id;
+            $objItem->type              = array_search(get_class($objProduct), Product::getModelTypes());
+            $objItem->product_id        = $objProduct->{$objProduct->getPk()};
             $objItem->sku               = (string) $objProduct->sku;
             $objItem->name              = (string) $objProduct->name;
             $objItem->options           = $objProduct->getOptions();
@@ -1291,7 +1291,6 @@ abstract class ProductCollection extends TypeAgent
             'tax_free_total'    => Isotope::formatPriceWithCurrency($objItem->getTaxFreeTotalPrice() * $objItem->quantity),
             'tax_id'            => $objItem->tax_id,
             'hasProduct'        => $blnHasProduct,
-            'downloads'         => $arrDownloads,
             'product'           => $objProduct,
             'item'              => $objItem,
             'raw'               => $objItem->row(),

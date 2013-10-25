@@ -85,30 +85,26 @@ $GLOBALS['TL_DCA']['tl_iso_product_categories'] = array
         )
     ),
 
-    'fields'                        => array
+    'fields' => array
     (
         'id' => array
         (
             'sql'                   => "int(10) unsigned NOT NULL auto_increment",
         ),
-
         'pid' => array
         (
             'foreignKey'            => 'tl_iso_products.name',
             'sql'                   => "int(10) unsigned NOT NULL default '0'",
             'relation'              => array('type'=>'belongsTo', 'load'=>'lazy'),
         ),
-
         'sorting' => array
         (
             'sql'                   => "int(10) unsigned NOT NULL default '0'",
         ),
-
         'tstamp' => array
         (
             'sql'                   => "int(10) unsigned NOT NULL default '0'",
         ),
-
         'page_id' => array
         (
             'foreignKey'            => 'tl_page.title',

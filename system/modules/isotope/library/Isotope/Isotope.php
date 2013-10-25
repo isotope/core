@@ -373,21 +373,6 @@ class Isotope extends \Controller
 
 
     /**
-     * Update ConditionalSelect to include the product ID in conditionField
-     * @param string
-     * @param array
-     * @param object
-     * @return array
-     */
-    public static function mergeConditionalOptionData($strField, $arrData, &$objProduct=null)
-    {
-        $arrData['eval']['conditionField'] = $arrData['attributes']['conditionField'] . (is_object($objProduct) ? '_' . $objProduct->getFormId() : '');
-
-        return $arrData;
-    }
-
-
-    /**
      * Callback for isoButton Hook
      * @param array
      * @return array
@@ -719,26 +704,4 @@ class Isotope extends \Controller
 
         return \System::parseDate($strFormat, $intTstamp);
     }
-
-    /**
-	 * Get the meta data from a serialized string
-	 * @param   string
-	 * @param   string
-	 * @return  array
-	 * @todo    remove this as soon as \Frontend::getMetaData is public and static in Contao core
-	 */
-	public static function getMetaData($strData, $strLanguage)
-	{
-		$arrData = deserialize($strData);
-
-		// Convert the language to a locale (see #5678)
-		$strLanguage = str_replace('-', '_', $strLanguage);
-
-		if (!is_array($arrData) || !isset($arrData[$strLanguage]))
-		{
-			return array();
-		}
-
-		return $arrData[$strLanguage];
-	}
 }

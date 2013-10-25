@@ -12,6 +12,7 @@
 
 namespace Isotope\Model\Payment;
 
+use Isotope\Interfaces\IsotopeProductCollection;
 use Isotope\Isotope;
 use Isotope\Interfaces\IsotopePayment;
 use Isotope\Model\ProductCollection\Order;
@@ -47,10 +48,10 @@ class Datatrans extends Postsale implements IsotopePayment
 
         // For maximum security, also validate individual parameters
         if (!$this->validateParameters(array(
-            'refno'        => $objOrder->id,
-            'currency'    => $objOrder->currency,
-            'amount'    => round($objOrder->getTotal() * 100),
-            'reqtype'    => ($this->trans_type == 'auth' ? 'NOA' : 'CAA'),
+            'refno'         => $objOrder->id,
+            'currency'      => $objOrder->currency,
+            'amount'        => round($objOrder->getTotal() * 100),
+            'reqtype'       => ($this->trans_type == 'auth' ? 'NOA' : 'CAA'),
         )))
         {
             return false;

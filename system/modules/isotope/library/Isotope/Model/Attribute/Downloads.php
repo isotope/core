@@ -118,7 +118,7 @@ class Downloads extends Attribute implements IsotopeAttribute
                     continue;
                 }
 
-                $arrMeta = Isotope::getMetaData($objFiles->meta, $objPage->language);
+                $arrMeta = \Frontend::getMetaData($objFiles->meta, $objPage->language);
 
                 // Use the file name as title if none is given
                 if ($arrMeta['title'] == '') {
@@ -174,7 +174,7 @@ class Downloads extends Attribute implements IsotopeAttribute
                         continue;
                     }
 
-                    $arrMeta = Isotope::getMetaData($objSubfiles->meta, $objPage->language);
+                    $arrMeta = \Frontend::getMetaData($objSubfiles->meta, $objPage->language);
 
                     // Use the file name as title if none is given
                     if ($arrMeta['title'] == '') {

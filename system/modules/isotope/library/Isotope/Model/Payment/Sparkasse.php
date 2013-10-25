@@ -12,6 +12,7 @@
 
 namespace Isotope\Model\Payment;
 
+use Isotope\Interfaces\IsotopeProductCollection;
 use Isotope\Isotope;
 use Isotope\Interfaces\IsotopePayment;
 use Isotope\Model\ProductCollection\Order;
@@ -58,7 +59,7 @@ class Sparkasse extends Postsale implements IsotopePayment
         // Validate payment data
         if ($objOrder->currency != $arrData['currency'])
         {
-            \System::log(sprintf('Data manipulation: currency mismatch ("%s" != "%s")', $objOrder->currency, $arrdata['currency']), __METHOD__, TL_ERROR);
+            \System::log(sprintf('Data manipulation: currency mismatch ("%s" != "%s")', $objOrder->currency, $arrData['currency']), __METHOD__, TL_ERROR);
             $this->redirectError($arrData);
         }
         elseif ($objOrder->getTotal() != $arrData['amount'])
@@ -105,8 +106,7 @@ class Sparkasse extends Postsale implements IsotopePayment
     {
         global $objPage;
 
-        if (($objOrder = Order::findOneBy('source_collection_id', Isotope::getCart()->id)) === null)
-        {
+        if (($objOrder = Order::findOneBy('source_collection_id', Isotope::getCart()->id)) === null) {
             \Isotope\Module\Checkout::redirectToStep('failed');
         }
 
@@ -114,8 +114,7 @@ class Sparkasse extends Postsale implements IsotopePayment
         $arrUrl = array();
         $strUrl = 'https://' . ($this->debug ? 'test' : '') . 'system.sparkassen-internetkasse.de/vbv/mpi_legacy?';
 
-        $arrParam = array
-        (
+        $arrParam = array(
             'amount'            => number_format(Isotope::getCart()->getTotal(), 2, ',', ''),
             'basketid'          => Isotope::getCart()->id,
             'command'           => 'sslform',
@@ -129,15 +128,13 @@ class Sparkasse extends Postsale implements IsotopePayment
             'version'           => '1.5',
         );
 
-        if ($this->sparkasse_merchantref != '')
-        {
+        if ($this->sparkasse_merchantref != '') {
             $arrParam['merchantref'] = substr($this->replaceInsertTags($this->sparkasse_merchantref), 0, 30);
         }
 
         $arrParam['mac'] = $this->calculateHash($arrParam);
 
-        foreach( $arrParam as $k => $v )
-        {
+        foreach ($arrParam as $k => $v) {
             $arrUrl[] = $k . '=' . $v;
         }
 

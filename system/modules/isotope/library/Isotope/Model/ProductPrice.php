@@ -72,8 +72,7 @@ class ProductPrice extends \Model implements IsotopePrice
      */
     public function getAmount($intQuantity=1)
     {
-        // @todo should pass product object as second parameter
-        return Isotope::calculatePrice($this->getValueForTier($intQuantity), null, 'price', $this->tax_class);
+        return Isotope::calculatePrice($this->getValueForTier($intQuantity), $this->getRelated('pid'), 'price', $this->tax_class);
     }
 
     /**
@@ -83,8 +82,7 @@ class ProductPrice extends \Model implements IsotopePrice
      */
     public function getOriginalAmount($intQuantity=1)
     {
-        // @todo should pass product object as second parameter
-        return Isotope::calculatePrice($this->getValueForTier($intQuantity), null, 'original_price', $this->tax_class);
+        return Isotope::calculatePrice($this->getValueForTier($intQuantity), $this->getRelated('pid'), 'original_price', $this->tax_class);
     }
 
     /**
@@ -100,8 +98,7 @@ class ProductPrice extends \Model implements IsotopePrice
             $fltAmount = $objTaxClass->calculateNetPrice($fltAmount);
         }
 
-        // @todo should pass product object as second parameter
-        return Isotope::calculatePrice($fltAmount, null, 'net_price');
+        return Isotope::calculatePrice($fltAmount, $this->getRelated('pid'), 'net_price');
     }
 
     /**
@@ -117,8 +114,7 @@ class ProductPrice extends \Model implements IsotopePrice
             $fltAmount = $objTaxClass->calculateGrossPrice($fltAmount);
         }
 
-        // @todo should pass product object as second parameter
-        return Isotope::calculatePrice($fltAmount, null, 'gross_price');
+        return Isotope::calculatePrice($fltAmount, $this->getRelated('pid'), 'gross_price');
     }
 
     /**
@@ -131,8 +127,7 @@ class ProductPrice extends \Model implements IsotopePrice
             return $this->getAmount();
         }
 
-        // @todo should pass product object as second parameter
-        return Isotope::calculatePrice(min($this->arrTiers), null, 'price', $this->tax_class);
+        return Isotope::calculatePrice(min($this->arrTiers), $this->getRelated('pid'), 'price', $this->tax_class);
     }
 
     /**
@@ -275,41 +270,9 @@ class ProductPrice extends \Model implements IsotopePrice
         }
 
         if ($objProduct->hasAdvancedPrices()) {
-
-            $time = time();
-            $arrGroups = static::getMemberGroups($objCollection->getRelated('member'));
-            $objPrices = null;
-
-            $objResult = \Database::getInstance()->query("
-                SELECT * FROM (
-                    SELECT *
-                    FROM " . static::$strTable . "
-                    WHERE
-                        pid IN (" . implode(',', $objProduct->getVariantIds()) . ") AND
-                        config_id IN (". (int) $objCollection->config_id . ",0) AND
-                        member_group IN(" . implode(',', $arrGroups) . ") AND
-                        (start='' OR start<$time) AND
-                        (stop='' OR stop>$time)
-                    ORDER BY config_id DESC, " . \Database::getInstance()->findInSet('member_group', $arrGroups) . ", start DESC, stop DESC
-                ) AS prices
-                GROUP BY pid
-            ");
-
-            if ($objResult->numRows) {
-                $objPrices = \Model\Collection::createFromDbResult($objResult, static::$strTable);
-            }
-
+            $objPrices = static::findAdvancedByProductIdsAndCollection($objProduct->getVariantIds(), $objCollection);
         } else {
-
-            $arrOptions['column'] = array(
-                "pid IN (" . implode(',', $objProduct->getVariantIds()) . ")",
-                "config_id=0",
-                "member_group=0",
-                "start=''",
-                "stop=''"
-            );
-
-            $objPrices = static::find($arrOptions);
+            $objPrices = static::findPrimaryByProductIds($objProduct->getVariantIds());
         }
 
         if (null === $objPrices){
@@ -358,6 +321,66 @@ class ProductPrice extends \Model implements IsotopePrice
         );
 
         return static::find($arrOptions);
+    }
+
+    /**
+     * Find primary price for multiple product/variant IDs
+     * @param   array
+     * @param   array
+     * @return  Model\Collection|null
+     */
+    public static function findPrimaryByProductIds(array $arrIds, array $arrOptions=array())
+    {
+        $t = static::$strTable;
+
+        $arrOptions = array_merge(
+            array(
+                'column' => array(
+                    "$t.pid IN (" . implode(',', $arrIds) . ")",
+                    "$t.config_id=0",
+                    "$t.member_group=0",
+                    "$t.start=''",
+                    "$t.stop=''"
+                ),
+                'return'    => 'Collection'
+            ),
+            $arrOptions
+        );
+
+        return static::find($arrOptions);
+    }
+
+    /**
+     * Find advanced price for multiple product/variant IDs
+     * @param   array
+     * @param   IsotopeProductCollection
+     * @return  Model\Collection|null
+     */
+    public static function findAdvancedByProductIdsAndCollection(array $arrIds, IsotopeProductCollection $objCollection)
+    {
+        $time = time();
+        $arrGroups = static::getMemberGroups($objCollection->getRelated('member'));
+
+        $objResult = \Database::getInstance()->query("
+            SELECT * FROM (
+                SELECT *
+                FROM " . static::$strTable . "
+                WHERE
+                    pid IN (" . implode(',', $arrIds) . ") AND
+                    config_id IN (". (int) $objCollection->config_id . ",0) AND
+                    member_group IN(" . implode(',', $arrGroups) . ") AND
+                    (start='' OR start<$time) AND
+                    (stop='' OR stop>$time)
+                ORDER BY config_id DESC, " . \Database::getInstance()->findInSet('member_group', $arrGroups) . ", start DESC, stop DESC
+            ) AS prices
+            GROUP BY pid
+        ");
+
+        if ($objResult->numRows) {
+            return \Model\Collection::createFromDbResult($objResult, static::$strTable);
+        }
+
+        return null;
     }
 
     /**

@@ -361,6 +361,11 @@ class Standard extends Product implements IsotopeProduct
 
             $this->arrVariantIds = array();
 
+            // Nothing to do if we have no variants
+            if (!$this->hasVariants()) {
+                return $this->arrVariantIds;
+            }
+
             $time = time();
             $blnHasProtected = false;
             $strQuery = "SELECT id, protected, groups FROM tl_iso_products WHERE pid=" . $this->getProductId() . " AND language='' AND published='1' AND (start='' OR start<$time) AND (stop='' OR stop>$time)";
@@ -395,7 +400,20 @@ class Standard extends Product implements IsotopeProduct
                 $this->arrVariantIds[] = $objVariants->id;
             }
 
-            // @todo check if each variant has a price
+            // Only show variants where a price is available
+            if ($this->hasVariantPrices()) {
+                if ($this->hasAdvancedPrices()) {
+                    $objPrices = ProductPrice::findAdvancedByProductIdsAndCollection($this->arrVariantIds, Isotope::getCart());
+                } else {
+                    $objPrices = ProductPrice::findPrimaryByProductIds($this->arrVariantIds);
+                }
+
+                if (null === $objPrices) {
+                    $this->arrVariantIds = array();
+                } else {
+                    $this->arrVariantIds = $objPrices->fetchEach('pid');
+                }
+            }
         }
 
         return $this->arrVariantIds;
@@ -688,7 +706,7 @@ class Standard extends Product implements IsotopeProduct
                     }
                 }
 
-                if (!$objWidget->hasErrors()) {
+                if (!$objWidget->hasErrors() && $varValue != '') {
                     $arrVariantOptions[$strField] = $varValue;
                 }
             }
@@ -829,15 +847,11 @@ class Standard extends Product implements IsotopeProduct
         $this->arrVariantAttributes = null;
         $this->arrVariantIds = null;
         $this->arrCategories = null;
+        $this->arrRelated = array();
 
         // Must initialize product type to have attributes etc.
-        if (!isset($this->arrRelated['type']))
-        {
-            $this->arrRelated['type'] = ProductType::findByPk($arrData['type']);
-
-            if (null === $this->arrRelated['type']) {
-                throw new \UnderflowException('Product type for product ID ' . $arrData['id'] . ' not found');
-            }
+        if (($this->arrRelated['type'] = ProductType::findByPk($arrData['type'])) === null) {
+            throw new \UnderflowException('Product type for product ID ' . $arrData['id'] . ' not found');
         }
 
         $this->strFormId = 'iso_product_' . $arrData['id'];

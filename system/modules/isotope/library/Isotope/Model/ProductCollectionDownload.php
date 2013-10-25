@@ -88,7 +88,7 @@ class ProductCollectionDownload extends \Model
             }
 
 
-            $arrMeta = Isotope::getMetaData($objFileModel->meta, $objPage->language);
+            $arrMeta = \Frontend::getMetaData($objFileModel->meta, $objPage->language);
 
             // Use the file name as title if none is given
             if ($arrMeta['title'] == '') {

@@ -1237,17 +1237,14 @@ window.addEvent('domready', function()
      */
     private static function replaceTags($varValue)
     {
-        if (is_array($varValue))
-        {
-            foreach( $varValue as $k => $v )
-            {
+        if (is_array($varValue)) {
+            foreach ($varValue as $k => $v) {
                 $varValue[$k] = static::replaceTags($v);
             }
 
             return $varValue;
-        }
-        elseif (is_object($varValue))
-        {
+
+        } elseif (is_object($varValue)) {
             return $varValue;
         }
 
