@@ -81,6 +81,7 @@ TemplateLoader::addFiles(array
     'iso_payment_paypal'            => 'system/modules/isotope/templates/payment',
     'iso_payment_payone'            => 'system/modules/isotope/templates/payment',
     'iso_payment_postfinance'       => 'system/modules/isotope/templates/payment',
+    'iso_payment_viveum'            => 'system/modules/isotope/templates/payment',
     'iso_payment_worldpay'          => 'system/modules/isotope/templates/payment',
     'iso_reader_default'            => 'system/modules/isotope/templates/isotope',
     'mod_iso_addressbook'           => 'system/modules/isotope/templates/modules',
