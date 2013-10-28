@@ -251,7 +251,7 @@ class Viveum extends Payment implements IsotopePayment, IsotopePostsale
         $strSHASign = '';
         $arrParams = array();
 
-        foreach ($_POST as $key) {
+        foreach (array_keys($_POST) as $key) {
             if (in_array(strtoupper($key), self::$arrShaOut)) {
                 $arrParams[$key] = \Input::post($key);
             }
