@@ -198,7 +198,7 @@ class Viveum extends Payment implements IsotopePayment, IsotopePostsale
 
         $objTemplate = new \Isotope\Template('iso_payment_viveum');
 
-        $objTemplate->action = 'https://viveum.v-psp.com/' . ($this->debug ? 'test' : 'prod') . '/orderstandard_utf8.asp';
+        $objTemplate->action = 'https://viveum.v-psp.com/ncol/' . ($this->debug ? 'test' : 'prod') . '/orderstandard_utf8.asp';
         $objTemplate->params = $arrParams;
         $objTemplate->headline = $GLOBALS['TL_LANG']['MSC']['pay_with_redirect'][0];
         $objTemplate->message = $GLOBALS['TL_LANG']['MSC']['pay_with_redirect'][1];
