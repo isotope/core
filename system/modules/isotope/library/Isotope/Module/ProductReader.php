@@ -139,16 +139,28 @@ class ProductReader extends Module
     {
         // Only get pages of current root
         global $objPage;
-        $arrPages = \Database::getInstance()->getChildRecords($objPage->rootId, 'tl_page');
+        $arrPages = \Database::getInstance()->getChildRecords($objPage->rootId, \PageModel::getTable());
         $arrPages[] = $objPage->rootId;
 
         $arrCanonicalCategories = array_intersect($objProduct->getCategories(), $arrPages);
 
         foreach ($arrCanonicalCategories as $intPage) {
             // The current page is not a canonical category
-            if ($intPage !== $objPage->id && ($objJumpTo = \PageModel::findByPk($intPage)) !== null) {
-                $GLOBALS['TL_HEAD'][] = sprintf('<link rel="canonical" href="%s">', $objProduct->generateUrl($objJumpTo));
+            if ($intPage !== $objPage->id && ($objJumpTo = \PageModel::findWithDetails($intPage)) !== null) {
+
+                $strDomain = \Environment::get('base');
+
+                // Overwrite the domain
+                if ($objJumpTo->dns != '') {
+                    $strDomain = ($objJumpTo->useSSL ? 'https://' : 'http://') . $objJumpTo->dns . TL_PATH . '/';
+                }
+
+                $GLOBALS['TL_HEAD'][] = sprintf('<link rel="canonical" href="%s">', $strDomain . $objProduct->generateUrl($objJumpTo));
             }
+
+            // Only take the first matching category because this is our primary
+            // one and multiple canonical links are not allowed
+            break;
         }
     }
 }

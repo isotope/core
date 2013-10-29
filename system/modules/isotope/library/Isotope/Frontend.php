@@ -875,6 +875,10 @@ window.addEvent('domready', function()
                 }
 
                 $arrPages[] = $strDomain . $objProducts->current()->generateUrl($objPage);
+
+                // Only take the first matching category because this is our primary
+                // one and multiple canonical links are not allowed
+                break;
             }
         }
 
