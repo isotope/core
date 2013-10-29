@@ -4,6 +4,8 @@
 # Do not ignore ".gitignore"
 !.gitignore
 !.tx
+.tx/source/*
+!.tx/source/en
 !README.md
 !composer.json
 
