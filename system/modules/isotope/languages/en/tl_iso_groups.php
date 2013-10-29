@@ -25,6 +25,7 @@ $GLOBALS['TL_LANG']['tl_iso_groups']['product_type']    = array('Default product
 $GLOBALS['TL_LANG']['tl_iso_groups']['new']             = array('New group', 'Create a new group');
 $GLOBALS['TL_LANG']['tl_iso_groups']['edit']            = array('Edit group', 'Edit group ID %s');
 $GLOBALS['TL_LANG']['tl_iso_groups']['copy']            = array('Duplicate group', 'Duplicate group ID %s');
+$GLOBALS['TL_LANG']['tl_iso_groups']['copyChilds']      = array('Duplicate with subgroups', 'Duplicate group ID %s with subgroups');
 $GLOBALS['TL_LANG']['tl_iso_groups']['cut']             = array('Move group', 'Move group ID %s');
 $GLOBALS['TL_LANG']['tl_iso_groups']['delete']          = array('Delete group', 'Delete group ID %s');
 $GLOBALS['TL_LANG']['tl_iso_groups']['show']            = array('Group details', 'Show details of group ID %s');

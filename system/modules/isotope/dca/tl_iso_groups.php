@@ -88,6 +88,14 @@ $GLOBALS['TL_DCA']['tl_iso_groups'] = array
                 'attributes'        => 'onclick="Backend.getScrollOffset()"',
                 'button_callback'   => array('Isotope\tl_iso_groups', 'copyButton'),
             ),
+            'copyChilds' => array
+            (
+                'label'             => &$GLOBALS['TL_LANG']['tl_iso_groups']['copyChilds'],
+                'href'              => 'table=tl_iso_groups&amp;act=paste&amp;mode=copy&amp;childs=1',
+                'icon'              => 'copychilds.gif',
+                'attributes'        => 'onclick="Backend.getScrollOffset()"',
+                'button_callback'   => array('Isotope\tl_iso_groups', 'copyButton'),
+            ),
             'cut' => array
             (
                 'label'             => &$GLOBALS['TL_LANG']['tl_iso_groups']['cut'],
