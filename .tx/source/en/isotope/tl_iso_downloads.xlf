@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.1">
+  <file datatype="php" original="system/modules/isotope/languages/en/tl_iso_downloads.php" source-language="en">
+    <body>
+      <trans-unit id="tl_iso_downloads.singleSRC.0">
+        <source>Attachement</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_downloads.singleSRC.1">
+        <source>Select the file or folder content you want to sell.</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_downloads.downloads_allowed.0">
+        <source>Downloads allowed</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_downloads.downloads_allowed.1">
+        <source>The number of times these file(s) can be downloaded per order (multiplied by the quantity sold). Enter 0 for unlimited downloads.</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_downloads.expires.0">
+        <source>Expiration</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_downloads.expires.1">
+        <source>Define if the download(s) expires after a certain time period.</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_downloads.published.0">
+        <source>Download available</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_downloads.published.1">
+        <source>Click here to include this download in new orders.</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_downloads.new.0">
+        <source>Add download</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_downloads.new.1">
+        <source>Add a new download to this product</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_downloads.edit.0">
+        <source>Edit download</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_downloads.edit.1">
+        <source>Edit download ID %s</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_downloads.copy.0">
+        <source>Duplicate download</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_downloads.copy.1">
+        <source>Duplicate download ID %s</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_downloads.cut.0">
+        <source>Move download</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_downloads.cut.1">
+        <source>Move download ID %s</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_downloads.delete.0">
+        <source>Delete download</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_downloads.delete.1">
+        <source>Delete download ID %s</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_downloads.toggle.0">
+        <source>Publish/unpublish download</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_downloads.toggle.1">
+        <source>Publish/unpublish download ID %s</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_downloads.show.0">
+        <source>Download details</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_downloads.show.1">
+        <source>Show details of download ID %s</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_downloads.editheader.0">
+        <source>Edit product</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_downloads.editheader.1">
+        <source>Edit this product</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_downloads.pasteafter.0">
+        <source>Paste at the top</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_downloads.pasteafter.1">
+        <source>Paste after download ID %s</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_downloads.pastenew.0">
+        <source>Add new at the top</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_downloads.pastenew.1">
+        <source>Add new after download ID %s</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_downloads.file_legend">
+        <source>Attachement</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_downloads.limit_legend">
+        <source>Limits</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_downloads.publish_legend">
+        <source>Publishing</source>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.1">
+  <file datatype="php" original="system/modules/isotope/languages/en/tl_iso_groups.php" source-language="en">
+    <body>
+      <trans-unit id="tl_iso_groups.name.0">
+        <source>Group name</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_groups.name.1">
+        <source>Please enter a name for this group.</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_groups.product_type.0">
+        <source>Default product type</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_groups.product_type.1">
+        <source>Here you can specify a default product type for this product group.</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_groups.new.0">
+        <source>New group</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_groups.new.1">
+        <source>Create a new group</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_groups.edit.0">
+        <source>Edit group</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_groups.edit.1">
+        <source>Edit group ID %s</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_groups.copy.0">
+        <source>Duplicate group</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_groups.copy.1">
+        <source>Duplicate group ID %s</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_groups.copyChilds.0">
+        <source>Duplicate with subgroups</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_groups.copyChilds.1">
+        <source>Duplicate group ID %s with subgroups</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_groups.cut.0">
+        <source>Move group</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_groups.cut.1">
+        <source>Move group ID %s</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_groups.delete.0">
+        <source>Delete group</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_groups.delete.1">
+        <source>Delete group ID %s</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_groups.show.0">
+        <source>Group details</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_groups.show.1">
+        <source>Show details of group ID %s</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_groups.pasteafter.0">
+        <source>Paste after</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_groups.pasteafter.1">
+        <source>Paste after group ID %s</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_groups.pasteinto.0">
+        <source>Paste into</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_groups.pasteinto.1">
+        <source>Paste into group ID %s</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_groups.group_legend">
+        <source>Product group settings</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_groups.label">
+        <source>Product Groups</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_groups.manager">
+        <source>Manage product groups</source>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
