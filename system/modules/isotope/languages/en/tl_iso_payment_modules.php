@@ -40,6 +40,7 @@ $GLOBALS['TL_LANG']['tl_iso_payment_modules']['psp_hash_in']                    
 $GLOBALS['TL_LANG']['tl_iso_payment_modules']['psp_hash_out']                           = array('SHA-OUT signature', 'This will be used to validate the server to server communication.');
 $GLOBALS['TL_LANG']['tl_iso_payment_modules']['psp_http_method']                        = array('HTTP method', 'Type of HTTP data transfer from and to the servers.');
 $GLOBALS['TL_LANG']['tl_iso_payment_modules']['psp_hash_method']                        = array('Hash method', 'Hashing algorithm for data transfer from and to the servers.');
+$GLOBALS['TL_LANG']['tl_iso_payment_modules']['psp_dynamic_template']                   = array('Dynamic template URL', 'Enter a valid <strong>absolute</strong> URL to a dynamic template here.');
 $GLOBALS['TL_LANG']['tl_iso_payment_modules']['requireCCV']                             = array('Require Card Code Verification (CCV) Number', 'Choose this option if you would like to increase transaction security by requiring the card code verification number.');
 $GLOBALS['TL_LANG']['tl_iso_payment_modules']['allowed_cc_types']                       = array('Allowed Credit Card Types', 'Select which credit cards the payment method accepts.');
 $GLOBALS['TL_LANG']['tl_iso_payment_modules']['datatrans_id']                           = array('Merchant-ID', 'Please enter your merchant ID.');
