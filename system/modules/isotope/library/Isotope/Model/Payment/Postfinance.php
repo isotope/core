@@ -123,21 +123,30 @@ class Postfinance extends PSP implements IsotopePayment, IsotopePostsale
     private function prepareFISParams($objOrder)
     {
         $objBillingAddress  = $objOrder->getBillingAddress();
+        $objShippingAddress = $objOrder->getShippingAddress();
 
         $arrInvoice = array
         (
             'ECOM_BILLTO_POSTAL_NAME_FIRST'     => $objBillingAddress->firstname,
             'ECOM_BILLTO_POSTAL_NAME_LAST'      => $objBillingAddress->lastname,
             'OWNERADDRESS'                      => $objBillingAddress->street_1,
-            // @todo: is this mandatory?
-            'OWNERADDRESS2'                     => $objBillingAddress->street_2,
             'OWNERZIP'                          => $objBillingAddress->postal,
             'OWNERTOWN'                         => $objBillingAddress->city,
             'OWNERCTY'                          => strtoupper($objBillingAddress->country),
-            'ECOM_SHIPTO_DOB'                   => date('d/m/Y', $objBillingAddress->dateOfBirth),
             'ECOM_CONSUMER_GENDER'              => $objBillingAddress->gender == 'male' ? 'M' : 'F',
-            // This key is mandatory and just has to be unique
-            'REF_CUSTOMERID'                    => 'psp_' . $this->id . '_' . $objOrder->id
+            // This is mandatory if no P.O. Box and we don't have any
+            'ECOM_SHIPTO_POSTAL_STREET_LINE1'   => $objShippingAddress->street_1,
+            'ECOM_SHIPTO_POSTAL_POSTALCODE'     => $objShippingAddress->postal,
+            'ECOM_SHIPTO_POSTAL_CITY'           => $objShippingAddress->city,
+            'ECOM_SHIPTO_POSTAL_COUNTRYCODE'    => strtoupper($objShippingAddress->country),
+
+
+            'ECOM_SHIPTO_DOB'                   => date('d/m/Y', $objShippingAddress->dateOfBirth),
+            // This key is mandatory and just has to be unique (20 chars)
+            'REF_CUSTOMERID'                    => substr('psp_' . $this->id . '_' . $objOrder->id . '_' . $objOrder->uniqid, 0, 20)
+
+            // We do not add "ECOM_SHIPTO_COMPANY" here because B2B sometimes may require up to 24 hours
+            // to check solvency which is not acceptable for an online shop
         );
 
         $arrOrder = array();
@@ -154,6 +163,9 @@ class Postfinance extends PSP implements IsotopePayment, IsotopePostsale
             $arrOrder['ITEMPRICE' . $i]     = $objPrice->getNetAmount();
             $arrOrder['ITEMQUANT' . $i]     = $objItem->quantity;
             $arrOrder['ITEMVATCODE' . $i]   = $fltVat . '%';
+            $arrOrder['ITEMVAT' . $i]       = Isotope::roundPrice($objPrice->getGrossAmount() - $objPrice->getNetAmount(), false);
+            $arrOrder['FACEXCL' . $i]       = $objPrice->getNetAmount();
+            $arrOrder['FACTOTAL' . $i]      = $objPrice->getGrossAmount();
 
             $i++;
         }
