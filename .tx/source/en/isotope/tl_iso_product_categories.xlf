@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.1">
+  <file datatype="php" original="system/modules/isotope/languages/en/tl_iso_product_categories.php" source-language="en">
+    <body>
+      <trans-unit id="tl_iso_product_categories.cut.0">
+        <source>Move product</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_product_categories.cut.1">
+        <source>Move product ID %s</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_product_categories.pasteafter.0">
+        <source>Paste at the top</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_product_categories.pasteafter.1">
+        <source>Paste after product ID %s</source>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

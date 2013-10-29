@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.1">
+  <file datatype="php" original="system/modules/isotope/languages/en/tl_iso_addresses.php" source-language="en">
+    <body>
+      <trans-unit id="tl_iso_addresses.store_id.0">
+        <source>Store ID</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_addresses.store_id.1">
+        <source>Different store IDs group a store on multiple root sites. A members's cart and addresses will be shared across the same store IDs.</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_addresses.label.0">
+        <source>Label</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_addresses.label.1">
+        <source>Please enter a custom label for this address.</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_addresses.salutation.0">
+        <source>Salutation</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_addresses.salutation.1">
+        <source>Please enter the salutation (Mr, Mrs, Dr., Prof.).</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_addresses.firstname.0">
+        <source>First name</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_addresses.firstname.1">
+        <source>Please enter the first name.</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_addresses.lastname.0">
+        <source>Last name</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_addresses.lastname.1">
+        <source>Please enter the last name.</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_addresses.company.0">
+        <source>Company</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_addresses.company.1">
+        <source>You can enter a company name here.</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_addresses.vat_no.0">
+        <source>VAT No.</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_addresses.vat_no.1">
+        <source>Please enter a VAT number.</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_addresses.street_1.0">
+        <source>Street</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_addresses.street_1.1">
+        <source>Please enter the street name and the street number.</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_addresses.street_2.0">
+        <source>Street 2</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_addresses.street_2.1">
+        <source>Enter a second street info if there's any.</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_addresses.street_3.0">
+        <source>Street 3</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_addresses.street_3.1">
+        <source>Enter a third street info if there's any.</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_addresses.postal.0">
+        <source>Postal code</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_addresses.postal.1">
+        <source>Please enter the postal code.</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_addresses.city.0">
+        <source>City</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_addresses.city.1">
+        <source>Plase enter the name of the city.</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_addresses.subdivision.0">
+        <source>State</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_addresses.subdivision.1">
+        <source>Plase enter the name of the state.</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_addresses.country.0">
+        <source>Country</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_addresses.country.1">
+        <source>Please select a country.</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_addresses.phone.0">
+        <source>Phone number</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_addresses.phone.1">
+        <source>Please enter the phone number.</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_addresses.email.0">
+        <source>E-mail address</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_addresses.email.1">
+        <source>Please enter a valid e-mail address.</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_addresses.isDefaultBilling.0">
+        <source>Default billing address</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_addresses.isDefaultBilling.1">
+        <source>Is this your default billing address?</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_addresses.isDefaultShipping.0">
+        <source>Default shipping address</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_addresses.isDefaultShipping.1">
+        <source>Is this your default shipping address?</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_addresses.store_legend">
+        <source>Store</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_addresses.personal_legend">
+        <source>Personal data</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_addresses.address_legend">
+        <source>Address details</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_addresses.contact_legend">
+        <source>Contact details</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_addresses.default_legend">
+        <source>Default address</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_addresses.personalData">
+        <source>Personal data</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_addresses.addressDetails">
+        <source>Address details</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_addresses.contactDetails">
+        <source>Contact details</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_addresses.loginDetails">
+        <source>Default address</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_addresses.new.0">
+        <source>New address</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_addresses.new.1">
+        <source>Create a new address</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_addresses.edit.0">
+        <source>Edit address</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_addresses.edit.1">
+        <source>Edit address ID %s</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_addresses.copy.0">
+        <source>Duplicate address</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_addresses.copy.1">
+        <source>Duplicate address ID %s</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_addresses.delete.0">
+        <source>Delete address</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_addresses.delete.1">
+        <source>Delete address ID %s</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_addresses.show.0">
+        <source>Address details</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_addresses.show.1">
+        <source>Show details of address ID %s</source>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
