@@ -44,6 +44,7 @@ NamespaceClassLoader::addClassMap(array
     'Isotope\tl_member'                 => 'system/modules/isotope/classes/tl_member.php',
     'Isotope\tl_module'                 => 'system/modules/isotope/classes/tl_module.php',
     'Isotope\tl_page'                   => 'system/modules/isotope/classes/tl_page.php',
+    'Isotope\tl_user'                   => 'system/modules/isotope/classes/tl_user.php',
 
     // Drivers
     'DC_ProductData'                    => 'system/modules/isotope/drivers/DC_ProductData.php',

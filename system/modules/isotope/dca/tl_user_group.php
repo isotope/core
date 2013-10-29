@@ -168,8 +168,9 @@ $GLOBALS['TL_DCA']['tl_user_group']['fields']['iso_groups'] = array
     'label'                 => &$GLOBALS['TL_LANG']['tl_user']['iso_groups'],
     'exclude'               => true,
     'inputType'             => 'checkbox',
+    'options_callback'      => array('\Isotope\tl_user', 'getGroups'),
+    'eval'                  => array('multiple'=>true, 'tl_class'=>'clr w50 w50h'),
     'sql'                   => 'blob NULL',
-    'eval'                  => array('multiple'=>true, 'tl_class'=>'clr')
 );
 
 $GLOBALS['TL_DCA']['tl_user_group']['fields']['iso_groupp'] = array
@@ -179,6 +180,6 @@ $GLOBALS['TL_DCA']['tl_user_group']['fields']['iso_groupp'] = array
     'inputType'             => 'checkbox',
     'options'               => array('create', 'delete', 'rootPaste'),
     'reference'             => &$GLOBALS['TL_LANG']['MSC'],
-    'eval'                  => array('multiple'=>true, 'tl_class'=>'clr'),
+    'eval'                  => array('multiple'=>true, 'tl_class'=>'w50 w50h'),
     'sql'                   => 'blob NULL',
 );
