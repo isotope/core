@@ -18,6 +18,7 @@ use Isotope\Interfaces\IsotopePayment;
 use Isotope\Interfaces\IsotopePostsale;
 use Isotope\Model\Payment;
 use Isotope\Model\ProductCollection\Order;
+use Isotope\Template;
 
 
 /**
@@ -28,13 +29,13 @@ use Isotope\Model\ProductCollection\Order;
  * @author     Andreas Schempp <andreas.schempp@terminal42.ch>
  * @author     Yanick Witschi <yanick.witschi@terminal42.ch>
  */
-class Postfinance extends Payment implements IsotopePayment, IsotopePostsale
+class Postfinance extends PSP implements IsotopePayment, IsotopePostsale
 {
     /**
      * SHA-OUT relevant fields
      * @var array
      */
-    private static $arrShaOut = array
+    protected static $arrShaOut = array
     (
         'AAVADDRESS',
         'AAVCHECK',
@@ -90,167 +91,28 @@ class Postfinance extends Payment implements IsotopePayment, IsotopePostsale
     );
 
     /**
-     * Process payment on confirmation page
-     * @return  boolean
+     * Creates the template instance
+     * @return  \FrontendTemplate
      */
-    public function processPayment()
+    protected function prepareTemplate()
     {
-        if (\Input::get('NCERROR') > 0) {
-            \System::log('Order ID "' . \Input::get('orderID') . '" has NCERROR ' . \Input::get('NCERROR'), __METHOD__, TL_ERROR);
-
-            return false;
-        }
-
-        if (($objOrder = Order::findByPk((int) \Input::get('orderID'))) === null) {
-            \System::log('Order ID "' . \Input::get('orderID') . '" not found', __METHOD__, TL_ERROR);
-
-            return false;
-        }
-
-        $this->psp_http_method = 'GET';
-
-        if (!$this->validateSHASign()) {
-            \System::log('Received invalid postsale data for order ID "' . $objOrder->id . '"', __METHOD__, TL_ERROR);
-
-            return false;
-        }
-
-        // Validate payment data (see #2221)
-        if ($objOrder->currency != $this->getRequestData('currency') || $objOrder->getTotal() != $this->getRequestData('amount')) {
-            \System::log('Postsale checkout manipulation in payment for Order ID ' . $objOrder->id . '!', __METHOD__, TL_ERROR);
-            \Isotope\Module\Checkout::redirectToStep('failed');
-        }
-
-        $objOrder->date_paid = time();
-        $objOrder->updateOrderStatus($this->new_order_status);
-
-        $objOrder->save();
-
-        return true;
-    }
-
-
-    /**
-     * Process post-sale requestion from the Postfinance payment server.
-     * @param   IsotopeProductCollection
-     */
-    public function processPostsale(IsotopeProductCollection $objOrder)
-    {
-        if ($this->getRequestData('NCERROR') > 0) {
-            \System::log('Order ID "' . $this->getRequestData('orderID') . '" has NCERROR ' . $this->getRequestData('NCERROR'), __METHOD__, TL_ERROR);
-
-            return;
-        }
-
-        $objCart = $objOrder->getRelated('source_collection_id');
-        Isotope::setCart($objCart);
-        Isotope::setConfig($objCart->getRelated('config_id'));
-
-        if (!$this->validateSHASign()) {
-            \System::log('Received invalid postsale data for order ID "' . $objOrder->id . '"', __METHOD__, TL_ERROR);
-
-            return;
-        }
-
-        // Validate payment data (see #2221)
-        if ($objOrder->currency != $this->getRequestData('currency') || $objCart->getTotal() != $this->getRequestData('amount')) {
-            \System::log('Postsale checkout manipulation in payment for Order ID ' . $objOrder->id . '!', __METHOD__, TL_ERROR);
-
-            return;
-        }
-
-        if (!$objOrder->checkout()) {
-            \System::log('Post-Sale checkout for Order ID "' . $objOrder->id . '" failed', __METHOD__, TL_ERROR);
-
-            return;
-        }
-
-        $objOrder->date_paid = time();
-        $objOrder->updateOrderStatus($this->new_order_status);
-        $objOrder->save();
-    }
-
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getPostsaleOrder()
-    {
-        return Order::findByPk($this->getRequestData('orderID'));
-    }
-
-
-    /**
-     * Return the payment form
-     * @return  string
-     */
-    public function checkoutForm()
-    {
-        if (($objOrder = Order::findOneBy('source_collection_id', Isotope::getCart()->id)) === null) {
-            \Isotope\Module\Checkout::redirectToStep('failed');
-        }
-
-        $arrParams = array();
-        $arrParams = array_merge($arrParams, $this->preparePSPParams($objOrder));
-        $arrParams = array_merge($arrParams, $this->prepareFISParams($objOrder));
-
-        // SHA-1 must be generated on alphabetically sorted keys.
-        // Use the natural order algorithm so ITEM10 gets listed after ITEM2
-        // We can only use ksort($arrParams, SORT_NATURAL) as of PHP 5.4
-        uksort($arrParams, 'strnatcasecmp');
-
-        $strSHASign = '';
-        foreach($arrParams as $k => $v) {
-            if ($v == '')
-                continue;
-
-            $strSHASign .= $k . '=' . htmlspecialchars_decode($v) . $this->psp_hash_in;
-        }
-
-        $arrParams['SHASIGN'] = hash($this->psp_hash_method, $strSHASign);
-
-        $objTemplate = new \Isotope\Template('iso_payment_postfinance');
-
+        $objTemplate = new Template('iso_payment_psp');
         $objTemplate->action = 'https://e-payment.postfinance.ch/ncol/' . ($this->debug ? 'test' : 'prod') . '/orderstandard_utf8.asp';
-        $objTemplate->params = $arrParams;
-        $objTemplate->headline = $GLOBALS['TL_LANG']['MSC']['pay_with_redirect'][0];
-        $objTemplate->message = $GLOBALS['TL_LANG']['MSC']['pay_with_redirect'][1];
-        $objTemplate->slabel = $GLOBALS['TL_LANG']['MSC']['pay_with_redirect'][2];
-        $objTemplate->id = $this->id;
 
-        return $objTemplate->parse();
+        return $objTemplate;
     }
 
     /**
-     * Prepare regular PSP params
+     * Prepare PSP params
      * @param   Order
      * @return  array
      */
-    private function preparePSPParams($objOrder)
+    protected function preparePSPParams($objOrder)
     {
-        $strFailedUrl = \Environment::get('base') . \Isotope\Module\Checkout::generateUrlForStep('failed');
-        $objBillingAddress = $objOrder->getBillingAddress();
+        $arrParams = parent::preparePSPParams($objOrder);
+        $arrParams = array_merge($arrParams, $this->prepareFISParams($objOrder));
 
-        return array
-        (
-            'PSPID'         => $this->psp_pspid,
-            'ORDERID'       => $objOrder->id,
-            'AMOUNT'        => round((Isotope::getCart()->getTotal() * 100)),
-            'CURRENCY'      => Isotope::getConfig()->currency,
-            'LANGUAGE'      => $GLOBALS['TL_LANGUAGE'] . '_' . strtoupper($GLOBALS['TL_LANGUAGE']),
-            'CN'            => $objBillingAddress->firstname . ' ' . $objBillingAddress->lastname,
-            'EMAIL'         => $objBillingAddress->email,
-            'OWNERZIP'      => $objBillingAddress->postal,
-            'OWNERADDRESS'  => $objBillingAddress->street_1,
-            'OWNERADDRESS2' => $objBillingAddress->street_2,
-            'OWNERCTY'      => $objBillingAddress->country,
-            'OWNERTOWN'     => $objBillingAddress->city,
-            'OWNERTELNO'    => $objBillingAddress->phone,
-            'ACCEPTURL'     => \Environment::get('base') . \Isotope\Frontend::addQueryStringToUrl('uid=' . $objOrder->uniqid, \Isotope\Module\Checkout::generateUrlForStep('complete')),
-            'DECLINEURL'    => $strFailedUrl,
-            'EXCEPTIONURL'  => $strFailedUrl,
-            'PARAMPLUS'     => 'mod=pay&amp;id=' . $this->id,
-        );
+        return $arrParams;
     }
 
     /**
@@ -297,56 +159,5 @@ class Postfinance extends Payment implements IsotopePayment, IsotopePostsale
         }
 
         return array_merge($arrInvoice, $arrOrder);
-    }
-
-
-    /**
-     * Gets the request data based on the chosen HTTP method
-     * @param   string Key
-     * @return  mixed
-     */
-    private function getRequestData($strKey)
-    {
-        if ($this->psp_http_method == 'GET') {
-            return \Input::get($strKey);
-        }
-
-        return \Input::post($strKey);
-    }
-
-
-    /**
-     * Validate SHA-OUT signature
-     * @return  boolean
-     */
-    private function validateSHASign()
-    {
-        $strSHASign = '';
-        $arrParams = array();
-
-        foreach (array_keys(($this->psp_http_method == 'GET' ? $_GET : $_POST)) as $key) {
-            if (in_array(strtoupper($key), self::$arrShaOut)) {
-                $arrParams[$key] = $this->getRequestData($key);
-            }
-        }
-
-        // SHA-1 must be generated on alphabetically sorted keys.
-        // Use the natural order algorithm so ITEM10 gets listed after ITEM2
-        // We can only use ksort($arrParams, SORT_NATURAL) as of PHP 5.4
-        uksort($arrParams, 'strnatcasecmp');
-
-        foreach($arrParams as $k => $v ) {
-            if ($v == '') {
-                continue;
-            }
-
-            $strSHASign .= strtoupper($k) . '=' . $v . $this->psp_hash_out;
-        }
-
-        if ($this->getRequestData('SHASIGN') == strtoupper(hash($this->psp_hash_method, $strSHASign))) {
-            return true;
-        }
-
-        return false;
     }
 }
