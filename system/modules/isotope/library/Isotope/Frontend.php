@@ -826,63 +826,61 @@ window.addEvent('domready', function()
      */
     public function addProductsToSearchIndex($arrPages, $intRoot=0, $blnSitemap=false, $strLanguage=null)
     {
-        $arrRoots = array();
+        $t = \PageModel::getTable();
+        $arrColumn = array("$t.type='root'");
+        $arrValue = array();
 
-        // If we have a root page id (sitemap.xml e.g.) we have to make sure we only consider categories in this tree
         if ($intRoot > 0) {
-            $arrPageIds = \Database::getInstance()->getChildRecords($intRoot, \PageModel::getTable(), false);
-            $arrPageIds[] = $intRoot;
-
-            $objProducts = Product::findPublishedByCategories($arrPageIds);
-            $objRoot = \PageModel::findByPk($intRoot);
-        } else {
-            $objProducts = Product::findPublished();
+            $arrColumn[] = "$t.id=?";
+            $arrValue[] = $intRoot;
         }
 
-        while ($objProducts->next()) {
+        $objRoots = \PageModel::findBy($arrColumn, $arrValue);
 
-            // Do the fun for all categories
-            $arrCategories = $objProducts->current()->getCategories();
+        if (null !== $objRoots) {
+            foreach ($objRoots as $objRoot) {
 
-            foreach ($arrCategories as $intPage) {
+                $arrPageIds = \Database::getInstance()->getChildRecords($objRoot->id, $t, false);
+                $arrPageIds[] = $intRoot;
 
-                $objPage = \PageModel::findWithDetails($intPage);
+                $objProducts = Product::findPublishedByCategories($arrPageIds);
 
-                // No need to get the root page model of the page if it's restricted to one only anyway
-                // Otherwise we need to get the root page model of the current page and for performance
-                // reasons we cache that in an array
-                if ($intRoot === 0) {
-                    if (!isset($arrRoots[$intPage])) {
-                        $arrRoots[$intPage] = \PageModel::findByPk($objPage->rootId);
-                        $arrPageIds = \Database::getInstance()->getChildRecords($objPage->rootId, \PageModel::getTable(), false);
-                        $arrPageIds[] = $objPage->rootId;
+                if (null !== $objProducts) {
+                    foreach ($objProducts as $objProduct) {
+
+                        // Find the categories in the current root
+                        $arrCategories = array_intersect($objProduct->getCategories(), $arrPageIds);
+
+                        foreach ($arrCategories as $intPage) {
+                            $objPage = \PageModel::findByPk($intPage);
+
+                            // Do not generate a reader for the index page, except if it is the only one
+                            if ($objPage->alias == 'index' && count($arrCategories) > 1) {
+                                continue;
+                            }
+
+                            // Generate the absolute URL
+                            $strDomain = \Environment::get('base');
+
+                            // Overwrite the domain
+                            if ($objRoot->dns != '') {
+                                $strDomain = ($objRoot->useSSL ? 'https://' : 'http://') . $objRoot->dns . TL_PATH . '/';
+                            }
+
+                            // Pass root language to page object
+                            $objPage->language = $objRoot->language;
+
+                            $arrPages[] = $strDomain . $objProduct->generateUrl($objPage);
+
+                            // Only take the first category because this is our primary one
+                            // Having multiple reader pages in the sitemap XML would mean duplicate content
+                            break;
+                        }
                     }
-
-                    $objRoot = $arrRoots[$intPage];
                 }
-
-                // Do not generate a reader for the index page, except if it is the only one
-                if ($objPage->alias == 'index' && count(array_intersect($arrCategories, $arrPageIds)) > 1) {
-                    continue;
-                }
-
-                // Generate the absolute URL
-                $strDomain = \Environment::get('base');
-
-                // Overwrite the domain
-                if ($objRoot->dns != '') {
-                    $strDomain = ($objRoot->useSSL ? 'https://' : 'http://') . $objRoot->dns . TL_PATH . '/';
-                }
-
-                $arrPages[] = $strDomain . $objProducts->current()->generateUrl($objPage);
-
-                // Only take the first matching category because this is our primary
-                // one and multiple canonical links are not allowed
-                break;
             }
         }
 
-        // The reader page id can be the same for several categories so we have to make sure we only index the product once
         return array_unique($arrPages);
     }
 
