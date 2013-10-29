@@ -14,6 +14,7 @@
  * @license http://www.gnu.org/licenses/lgpl-3.0.html LGPL
  */
 
+$GLOBALS['TL_LANG']['ERR']['couponCodeDropped'] = 'Votre code coupon "%s" ne pouvait pas être appliqué. Veuillez vérifier à nouveau votre commande.';
 $GLOBALS['TL_LANG']['MSC']['couponHeadline'] = 'Ajouter des codes promotionnels';
 $GLOBALS['TL_LANG']['MSC']['couponLabel'] = 'Code promotionnel';
 $GLOBALS['TL_LANG']['MSC']['couponApply'] = 'Appliquer';
