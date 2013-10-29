@@ -382,7 +382,9 @@ $GLOBALS['ISO_NUM']["10'000.00"]    = array(2, '.', "'");
 /**
  * Hooks
  */
-include(TL_ROOT . '/system/modules/isotope/config/hooks.php');
+if (\Config::getInstance()->isComplete()) {
+    include(TL_ROOT . '/system/modules/isotope/config/hooks.php');
+}
 
 
 /**
