@@ -39,6 +39,7 @@ $GLOBALS['TL_DCA']['tl_iso_products'] = array
             array('Isotope\ProductCallbacks', 'buildPaletteString'),
             array('Isotope\ProductCallbacks', 'addMoveAllFeature'),
             array('Isotope\ProductCallbacks', 'changeVariantColumns'),
+            array('Isotope\ProductCallbacks', 'generateSitemap'),
         ),
         'oncreate_callback' => array
         (
@@ -51,6 +52,7 @@ $GLOBALS['TL_DCA']['tl_iso_products'] = array
         'onsubmit_callback' => array
         (
             array('Isotope\Backend', 'truncateProductCache'),
+            array('Isotope\ProductCallbacks', 'scheduleUpdate'),
         ),
         'onversion_callback' => array
         (

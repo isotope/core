@@ -568,6 +568,25 @@ window.addEvent('domready', function() {
     }
 
 
+    /**
+     * Check for modified products and update the XML files if necessary
+     */
+    public function generateSitemap()
+    {
+        $session = $this->Session->get('iso_product_updater');
+
+        if (!is_array($session) || empty($session))
+        {
+            return;
+        }
+
+        $objAutomator = new \Automator();
+        $objAutomator->generateSitemap();
+
+        $this->Session->set('iso_product_updater', null);
+    }
+
+
 
     /////////////////////////
     //  !oncreate_callback
@@ -627,6 +646,31 @@ window.addEvent('domready', function() {
             \Database::getInstance()->query("UPDATE tl_iso_product_categories SET sorting=" . ($objCategories->max_sorting + 128) . " WHERE id=" . $objCategories->id);
         }
     }
+
+
+
+    /////////////////////////
+    //  !onversion_callback
+    /////////////////////////
+
+
+    /**
+	 * Schedule an XML sitemap update
+	 * @param \DataContainer
+	 */
+	public function scheduleUpdate($dc)
+	{
+		// Return if there is no ID
+		if (!$dc->id)
+		{
+			return;
+		}
+
+		// Store the ID in the session
+		$session = $this->Session->get('iso_product_updater');
+		$session[] = $dc->id;
+		$this->Session->set('iso_product_updater', array_unique($session));
+	}
 
 
 
