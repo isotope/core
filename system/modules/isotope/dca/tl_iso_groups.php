@@ -85,6 +85,7 @@ $GLOBALS['TL_DCA']['tl_iso_groups'] = array
                 'label'             => &$GLOBALS['TL_LANG']['tl_iso_groups']['copy'],
                 'href'              => 'table=tl_iso_groups&amp;act=paste&amp;mode=copy',
                 'icon'              => 'copy.gif',
+                'attributes'        => 'onclick="Backend.getScrollOffset()"',
                 'button_callback'   => array('Isotope\tl_iso_groups', 'copyButton'),
             ),
             'cut' => array
