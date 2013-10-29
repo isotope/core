@@ -306,9 +306,11 @@ class Order extends ProductCollection implements IsotopeProductCollection
             }
         }
 
+        $arrSet = array();
+
         // Add the payment date if there is none
         if ($objNewStatus->isPaid() && $this->date_paid == '') {
-            $this->date_paid = time();
+            $arrSet['date_paid'] = time();
         }
 
         // Trigger notification
@@ -347,8 +349,11 @@ class Order extends ProductCollection implements IsotopeProductCollection
 
         // Store old status and set the new one
         $intOldStatus = $this->order_status;
-        $this->order_status = $objNewStatus->id;
-        $this->save();
+        $arrSet['order_status'] = $objNewStatus->id;
+
+        // Do not use Model, it could be locked
+        \Database::getInstance()->prepare("UPDATE " . static::$strTable . " %s WHERE id=?")->set($arrSet)->execute($this->id);
+        $this->mergeRow($arrSet);
 
         // !HOOK: order status has been updated
         if (isset($GLOBALS['ISO_HOOKS']['postOrderStatusUpdate']) && is_array($GLOBALS['ISO_HOOKS']['postOrderStatusUpdate']))
