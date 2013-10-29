@@ -14,6 +14,7 @@
  * @license http://www.gnu.org/licenses/lgpl-3.0.html LGPL
  */
 
+$GLOBALS['TL_LANG']['ERR']['couponCodeDropped'] = 'Ihr Gutscheincode "%s" konnte nicht verwendet werden. Bitte kontrollieren Sie Ihre Bestellung nochmals.';
 $GLOBALS['TL_LANG']['MSC']['couponHeadline'] = 'Gutscheincode hinzufügen';
 $GLOBALS['TL_LANG']['MSC']['couponLabel'] = 'Gutscheincode';
 $GLOBALS['TL_LANG']['MSC']['couponApply'] = 'Hinzufügen';

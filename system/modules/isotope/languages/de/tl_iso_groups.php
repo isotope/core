@@ -16,6 +16,8 @@
 
 $GLOBALS['TL_LANG']['tl_iso_groups']['name'][0] = 'Name';
 $GLOBALS['TL_LANG']['tl_iso_groups']['name'][1] = 'Geben Sie den Namen für diese Gruppe ein.';
+$GLOBALS['TL_LANG']['tl_iso_groups']['product_type'][0] = 'Standard Produkttyp';
+$GLOBALS['TL_LANG']['tl_iso_groups']['product_type'][1] = 'Hier können Sie den Standard Produkttyp für diese Gruppe definieren.';
 $GLOBALS['TL_LANG']['tl_iso_groups']['new'][0] = 'Neue Gruppe';
 $GLOBALS['TL_LANG']['tl_iso_groups']['new'][1] = 'Eine neue Produktgruppe hinzufügen';
 $GLOBALS['TL_LANG']['tl_iso_groups']['edit'][0] = 'Gruppe bearbeiten';
@@ -32,4 +34,6 @@ $GLOBALS['TL_LANG']['tl_iso_groups']['pasteafter'][0] = 'Danach einfügen';
 $GLOBALS['TL_LANG']['tl_iso_groups']['pasteafter'][1] = 'Nach der Produktgruppe ID %s einfügen';
 $GLOBALS['TL_LANG']['tl_iso_groups']['pasteinto'][0] = 'Am Anfang einfügen';
 $GLOBALS['TL_LANG']['tl_iso_groups']['pasteinto'][1] = 'Am Anfang einfügen';
+$GLOBALS['TL_LANG']['tl_iso_groups']['group_legend'] = 'Produktgruppe-Einstellungen';
 $GLOBALS['TL_LANG']['tl_iso_groups']['label'] = 'Produktgruppen';
+$GLOBALS['TL_LANG']['tl_iso_groups']['manager'] = 'Produktgruppen verwalten';
