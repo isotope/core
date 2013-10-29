@@ -373,21 +373,6 @@ class Isotope extends \Controller
 
 
     /**
-     * Update ConditionalSelect to include the product ID in conditionField
-     * @param string
-     * @param array
-     * @param object
-     * @return array
-     */
-    public static function mergeConditionalOptionData($strField, $arrData, &$objProduct=null)
-    {
-        $arrData['eval']['conditionField'] = $arrData['attributes']['conditionField'] . (is_object($objProduct) ? '_' . $objProduct->getFormId() : '');
-
-        return $arrData;
-    }
-
-
-    /**
      * Callback for isoButton Hook
      * @param array
      * @return array
@@ -719,91 +704,4 @@ class Isotope extends \Controller
 
         return \System::parseDate($strFormat, $intTstamp);
     }
-
-
-    /**
-     * Merge media manager data from fallback and translated product data
-     * @param array
-     * @param array
-     * @return array
-     */
-    public static function mergeMediaData($arrCurrent, $arrParent)
-    {
-        $arrTranslate = array();
-
-        if (is_array($arrParent) && !empty($arrParent))
-        {
-            // Create an array of images where key = image name
-            foreach( $arrParent as $image)
-            {
-                if ($image['translate'] != 'all')
-                {
-                    $arrTranslate[$image['src']] = $image;
-                }
-            }
-        }
-
-        if (is_array($arrCurrent) && !empty($arrCurrent))
-        {
-            foreach ($arrCurrent as $i => $image)
-            {
-                if (isset($arrTranslate[$image['src']]))
-                {
-                    if ($arrTranslate[$image['src']]['translate'] == '')
-                    {
-                        $arrCurrent[$i] = $arrTranslate[$image['src']];
-                    }
-                    else
-                    {
-                        $arrCurrent[$i]['link'] = $arrTranslate[$image['src']]['link'];
-                        $arrCurrent[$i]['translate'] = $arrTranslate[$image['src']]['translate'];
-                    }
-
-                    unset($arrTranslate[$image['src']]);
-                }
-                elseif ($arrCurrent[$i]['translate'] != 'all')
-                {
-                    unset($arrCurrent[$i]);
-                }
-            }
-
-            // Add remaining parent image to the list
-            if (!empty($arrTranslate))
-            {
-                $arrCurrent = array_merge($arrCurrent, array_values($arrTranslate));
-            }
-
-            $arrCurrent = array_values($arrCurrent);
-        }
-        else
-        {
-            $arrCurrent = array_values($arrTranslate);
-        }
-
-        return $arrCurrent;
-    }
-
-
-
-    /**
-	 * Get the meta data from a serialized string
-	 * @param   string
-	 * @param   string
-	 * @return  array
-	 * @todo    remove this as soon as \Frontend::getMetaData is public and static in Contao core
-	 */
-	public static function getMetaData($strData, $strLanguage)
-	{
-		$arrData = deserialize($strData);
-
-		// Convert the language to a locale (see #5678)
-		$strLanguage = str_replace('-', '_', $strLanguage);
-
-		if (!is_array($arrData) || !isset($arrData[$strLanguage]))
-		{
-			return array();
-		}
-
-		return $arrData[$strLanguage];
-	}
 }

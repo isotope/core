@@ -12,6 +12,7 @@
 
 namespace Isotope\Model\Payment;
 
+use Isotope\Interfaces\IsotopeProductCollection;
 use Isotope\Isotope;
 use Isotope\Interfaces\IsotopePayment;
 use Isotope\Interfaces\IsotopePostsale;
@@ -31,8 +32,8 @@ class Expercash extends Payment implements IsotopePayment, IsotopePostsale
     /**
      * processPayment function.
      *
-     * @access public
-     * @return mixed
+     * @access  public
+     * @return  mixed|
      */
     public function processPayment()
     {
@@ -109,7 +110,7 @@ class Expercash extends Payment implements IsotopePayment, IsotopePostsale
         $strKey = '';
         $strUrl = 'https://epi.expercash.net/epi_popup2.php?';
 
-        foreach( $arrData as $k => $v )
+        foreach ($arrData as $k => $v)
         {
             $strKey .= $v;
             $strUrl .= $k . '=' . urlencode($v) . '&amp;';

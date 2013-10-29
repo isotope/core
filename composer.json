@@ -19,7 +19,6 @@
         "contao":">=2.3",
         "contao-community-alliance/composer-installer":"*",
         "contao-legacy/NamespaceClassLoader":">=1.0.1",
-        "contao-legacy/backend_tabletree":">=0.1.3",
         "contao-legacy/conditionalselectmenu":">=1.1.3",
         "contao-legacy/dcawizard":"2.0.*",
         "contao-legacy/haste":"2.0.*",

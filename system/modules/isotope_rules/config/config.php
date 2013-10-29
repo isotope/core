@@ -21,24 +21,35 @@ array_insert($GLOBALS['BE_MOD']['isotope'], 2, array
 (
     'iso_rules' => array
     (
-        'tables'                    => array('tl_iso_rules'),
-        'javsacript'                => 'system/modules/isotope/assets/backend'.(ISO_DEBUG ? '' : '.min').'.js',
-        'icon'                        => 'system/modules/isotope_rules/assets/auction-hammer-gavel.png'
+        'tables'        => array('tl_iso_rules'),
+        'javascript'    => 'system/modules/isotope/assets/backend'.(ISO_DEBUG ? '' : '.min').'.js',
+        'icon'          => 'system/modules/isotope_rules/assets/auction-hammer-gavel.png'
     ),
 ));
 
+/**
+ * Models
+ */
+$GLOBALS['TL_MODELS']['tl_iso_rules'] = 'Isotope\Model\Rule';
 
 /**
  * Checkout Steps
+ * @todo this will no longer work
  */
-array_insert($GLOBALS['ISO_CHECKOUT_STEPS']['review'], 0, array(array('Isotope\IsotopeRules', 'cleanRuleUsages')));
+array_insert($GLOBALS['ISO_CHECKOUT_STEPS']['review'], 0, array(array('Isotope\Rules', 'cleanRuleUsages')));
+
+/**
+ * Product collection surcharge
+ */
+\Isotope\Model\ProductCollectionSurcharge::registerModelType('rule', 'Isotope\Model\ProductCollectionSurcharge\Rule');
+
 
 
 /**
  * Hooks
  */
-$GLOBALS['ISO_HOOKS']['calculatePrice'][]           = array('Isotope\IsotopeRules', 'calculatePrice');
-$GLOBALS['ISO_HOOKS']['compileCart'][]              = array('Isotope\IsotopeRules', 'getCouponForm');
-$GLOBALS['ISO_HOOKS']['checkoutSurcharge'][]        = array('Isotope\IsotopeRules', 'getSurcharges');
-$GLOBALS['ISO_HOOKS']['preCheckout'][]              = array('Isotope\IsotopeRules', 'writeRuleUsages');
-$GLOBALS['ISO_HOOKS']['transferredCollection'][]    = array('Isotope\IsotopeRules', 'transferCoupons');
+$GLOBALS['ISO_HOOKS']['calculatePrice'][]               = array('Isotope\Rules', 'calculatePrice');
+$GLOBALS['ISO_HOOKS']['compileCart'][]                  = array('Isotope\Rules', 'getCouponForm');
+$GLOBALS['ISO_HOOKS']['findSurchargesForCollection'][]  = array('Isotope\Rules', 'findSurcharges');
+$GLOBALS['ISO_HOOKS']['preCheckout'][]                  = array('Isotope\Rules', 'writeRuleUsages');
+$GLOBALS['ISO_HOOKS']['transferredCollection'][]        = array('Isotope\Rules', 'transferCoupons');

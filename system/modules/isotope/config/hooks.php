@@ -41,18 +41,3 @@ if (TL_MODE == 'BE') {
     // Adjust the product groups manager
     $GLOBALS['TL_HOOKS']['parseTemplate'][]            = array('Isotope\Backend', 'adjustGroupsManager');
 }
-
-/**
- * Unset backend_tabletree hooks until the extension is Contao 3.1 compatible
- * @todo Remove as soon as backend_tabletree is Contao 3.1 compatible
- */
-foreach ($GLOBALS['TL_HOOKS']['executePreActions'] as $k => $arrHook) {
-    if ($arrHook[0] == 'TableTree') {
-        unset($GLOBALS['TL_HOOKS']['executePreActions'][$k]);
-    }
-}
-foreach ($GLOBALS['TL_HOOKS']['executePostActions'] as $k => $arrHook) {
-    if ($arrHook[0] == 'TableTree') {
-        unset($GLOBALS['TL_HOOKS']['executePostActions'][$k]);
-    }
-}

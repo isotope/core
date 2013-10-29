@@ -394,7 +394,9 @@ class tl_iso_products extends \Backend
      */
     public function deleteButton($row, $href, $label, $title, $icon, $attributes)
     {
-        if (ProductCollectionItem::countBy(array("product_id IN (SELECT id FROM tl_iso_products WHERE id=? OR (pid=? AND language=''))"), array($row['id'], $row['id'])) > 0) {
+        $t = ProductCollectionItem::getTable();
+
+        if (ProductCollectionItem::countBy(array("$t.pid IN (SELECT id FROM tl_iso_product_collection WHERE type='order')", "$t.product_id IN (SELECT id FROM tl_iso_products WHERE id=? OR (pid=? AND language=''))"), array($row['id'], $row['id'])) > 0) {
             return \Image::getHtml(preg_replace('/\.gif$/i', '_.gif', $icon)).' ';
         }
 

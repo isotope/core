@@ -39,6 +39,7 @@ $GLOBALS['TL_DCA']['tl_iso_products'] = array
             array('Isotope\ProductCallbacks', 'buildPaletteString'),
             array('Isotope\ProductCallbacks', 'addMoveAllFeature'),
             array('Isotope\ProductCallbacks', 'changeVariantColumns'),
+            array('Isotope\ProductCallbacks', 'generateSitemap'),
         ),
         'oncreate_callback' => array
         (
@@ -51,6 +52,7 @@ $GLOBALS['TL_DCA']['tl_iso_products'] = array
         'onsubmit_callback' => array
         (
             array('Isotope\Backend', 'truncateProductCache'),
+            array('Isotope\ProductCallbacks', 'scheduleUpdate'),
         ),
         'onversion_callback' => array
         (
@@ -352,23 +354,33 @@ $GLOBALS['TL_DCA']['tl_iso_products'] = array
             'attributes'            => array('legend'=>'general_legend', 'multilingual'=>true, 'fe_search'=>true),
             'sql'                   => "text NULL",
         ),
-        'description_meta' => array
+        'meta_title' => array
         (
-            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_products']['description_meta'],
+            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_products']['meta_title'],
+            'exclude'               => true,
+            'search'                => true,
+            'inputType'             => 'text',
+            'eval'                  => array('maxlength'=>255, 'tl_class'=>'clr long'),
+            'attributes'            => array('legend'=>'meta_legend', 'multilingual'=>true),
+            'sql'                   =>  "varchar(255) NOT NULL default ''",
+        ),
+        'meta_description' => array
+        (
+            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_products']['meta_description'],
             'exclude'               => true,
             'search'                => true,
             'inputType'             => 'textarea',
-            'eval'                  => array('style'=>'height:60px'),
+            'eval'                  => array('style'=>'height:60px', 'tl_class'=>'clr'),
             'attributes'            => array('legend'=>'meta_legend', 'multilingual'=>true),
             'sql'                   =>  "text NULL",
         ),
-        'keywords_meta' => array
+        'meta_keywords' => array
         (
-            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_products']['keywords_meta'],
+            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_products']['meta_keywords'],
             'exclude'               => true,
             'search'                => true,
             'inputType'             => 'textarea',
-            'eval'                  => array('style'=>'height:40px'),
+            'eval'                  => array('style'=>'height:40px', 'tl_class'=>'clr'),
             'attributes'            => array('legend'=>'meta_legend', 'multilingual'=>true),
             'sql'                   => "text NULL",
         ),

@@ -39,7 +39,7 @@ class Reports extends BackendOverview
 
                     $arrReturn[$strGroup]['modules'][$strModule] = array_merge($arrConfig, array
                     (
-                        'label'         => specialchars(($arrConfig['label'][0] ?: $strName)),
+                        'label'         => specialchars(($arrConfig['label'][0] ?: $strModule)),
                         'description'   => specialchars(strip_tags($arrConfig['label'][1])),
                         'href'          => $this->addToUrl('mod=' . $strModule),
                     ));
@@ -72,7 +72,6 @@ class Reports extends BackendOverview
 <fieldset class="tl_tbox">
 <legend style="cursor: default;">' . $GLOBALS['ISO_LANG']['REPORT']['24h_summary'] . '</legend>';
 
-        $arrSummary = array();
         $arrAllowedProducts = \Isotope\Backend::getAllowedProductIds();
 
         $objOrders = \Database::getInstance()->prepare("SELECT

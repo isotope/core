@@ -79,28 +79,22 @@ window.addEvent('domready', function() {
         requested = true;
 
         new Request.JSON({
-            'url': 'ajax.php',
+            'url': '<?php echo \Environment::get('request'); ?>',
             'method': 'get',
             'data': {
-                'action': 'fmd',
-                'autocomplete': 1,
-                'pageId': <?php global $objPage; echo $objPage->id; ?>,
-                'id': <?php echo $this->id; ?>
+                'iso_autocomplete': '<?php echo $this->id; ?>',
             },
             onComplete: function(json) {
-                if (json && json.content)
-                {
-                    new Autocompleter.Local(searchField, json.content, {
-                        'minLength': 1,
-                        'autoSubmit': true,
-                        'selectMode': 'pick',
-                        'filterSubset': true,
-                        'onSelect': function(el)
-                        {
-                            el.getParent('form').submit();
-                        }
-                    }).query();
-                }
+                new Autocompleter.Local(searchField, json, {
+                    'minLength': 1,
+                    'autoSubmit': true,
+                    'selectMode': 'pick',
+                    'filterSubset': true,
+                    'onSelect': function(el)
+                    {
+                        el.getParent('form').submit();
+                    }
+                }).query();
             }
         }).send();
     });

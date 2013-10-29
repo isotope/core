@@ -13,9 +13,7 @@
 
 namespace Isotope\CheckoutStep;
 
-use Isotope\Isotope;
 use Isotope\Model\Address as AddressModel;
-use Isotope\Translation;
 
 abstract class Address extends CheckoutStep
 {
@@ -157,6 +155,8 @@ abstract class Address extends CheckoutStep
         $arrWidgets = $this->getWidgets();
 
         foreach ($arrWidgets as $strName => $objWidget) {
+            $arrData = &$GLOBALS['TL_DCA']['tl_iso_addresses']['fields'][$strName];
+
             // Validate input
             if ($blnValidate) {
 
@@ -207,7 +207,7 @@ abstract class Address extends CheckoutStep
 
             foreach ($this->getAddressFields() as $field) {
 
-                $arrData = $GLOBALS['TL_DCA']['tl_iso_addresses']['fields'][$field['value']];
+                $arrData = &$GLOBALS['TL_DCA']['tl_iso_addresses']['fields'][$field['value']];
 
                 if (!is_array($arrData) || !$arrData['eval']['feEditable'] || !$field['enabled'] || ($arrData['eval']['membersOnly'] && FE_USER_LOGGED_IN !== true)) {
                     continue;
@@ -260,7 +260,7 @@ abstract class Address extends CheckoutStep
             if (!empty($arrAddresses) && !empty($arrCountries)) {
                 $objDefault = $this->getAddress();
 
-                foreach($arrAddresses as $objAddress) {
+                foreach ($arrAddresses as $objAddress) {
 
                     if (!in_array($objAddress->country, $arrCountries)) {
                         continue;

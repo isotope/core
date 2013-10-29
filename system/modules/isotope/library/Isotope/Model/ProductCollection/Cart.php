@@ -12,7 +12,6 @@
 
 namespace Isotope\Model\ProductCollection;
 
-use Isotope\Interfaces\IsotopeProduct;
 use Isotope\Isotope;
 use Isotope\Interfaces\IsotopeProductCollection;
 use Isotope\Model\Address;
@@ -118,7 +117,7 @@ class Cart extends ProductCollection implements IsotopeProductCollection
             }
 
             // Delete cookie
-            \System::setCookie(static::$strCookie, '', ($time - 3600), $GLOBALS['TL_CONFIG']['websitePath']);
+            \System::setCookie(static::$strCookie, '', (time() - 3600), $GLOBALS['TL_CONFIG']['websitePath']);
             \System::reload();
          }
     }

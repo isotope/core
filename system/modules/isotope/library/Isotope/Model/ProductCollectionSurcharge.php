@@ -124,6 +124,7 @@ abstract class ProductCollectionSurcharge extends TypeAgent
         $this->tax_class = 0;
         $this->before_tax = true;
 
+        // @todo $blnPercentage is undefined
         if (!$blnPercentage) {
             $fltTotal = $objCollection->getTaxFreeSubtotal();
 
@@ -133,10 +134,12 @@ abstract class ProductCollectionSurcharge extends TypeAgent
         }
 
         foreach ($objCollection->getItems() as $objItem) {
-
+            // @todo $blnPercentage is undefined
             if ($blnPercentage) {
+                // @todo $fltSurcharge is undefined
                 $fltProductPrice = $objItem->getTotal() / 100 * $fltSurcharge;
             } else {
+                // @todo $fltTotal might have not been defined
                 $fltProductPrice = $this->total_price / 100 * (100 / $fltTotal * $objItem->getTaxFreeTotal());
             }
 

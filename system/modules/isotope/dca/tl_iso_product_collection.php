@@ -33,8 +33,9 @@ $GLOBALS['TL_DCA']['tl_iso_product_collection'] = array
     (
         'dataContainer'             => 'Table',
         'enableVersioning'          => false,
-        'ctable'                    => array('tl_iso_product_collection_item', 'tl_iso_product_collection_surcharge'),
+        'ctable'                    => array('tl_iso_product_collection_item', 'tl_iso_product_collection_surcharge', 'tl_iso_addresses'),
         'closed'                    => true,
+        'notDeletable'              => (\Input::get('act') == 'select'),
         'onload_callback' => array
         (
             array('Isotope\tl_iso_product_collection', 'checkPermission'),
@@ -70,6 +71,16 @@ $GLOBALS['TL_DCA']['tl_iso_product_collection'] = array
             'fields'                => array('document_number', 'locked', 'address1_id', 'grandTotal', 'order_status'),
             'showColumns'           => true,
             'label_callback'        => array('Isotope\tl_iso_product_collection', 'getOrderLabel')
+        ),
+        'global_operations' => array
+        (
+            'all' => array
+            (
+                'label'             => &$GLOBALS['TL_LANG']['MSC']['all'],
+                'href'              => 'act=select',
+                'class'             => 'header_edit_all',
+                'attributes'        => 'onclick="Backend.getScrollOffset();" accesskey="e"'
+            ),
         ),
         'operations' => array
         (

@@ -69,8 +69,8 @@ class DC_ProductData extends \DC_Table
                 if (\BackendUser::getInstance()->isAdmin || !is_array(\BackendUser::getInstance()->iso_groups)) {
                     $this->intGroupId = 0;
                 }
-            } else {
-                $this->intGroupId = (int)\Database::getInstance()->prepare(
+            } elseif (!\BackendUser::getInstance()->isAdmin) {
+                $this->intGroupId = (int) \Database::getInstance()->prepare(
                     "SELECT id FROM tl_iso_groups WHERE id IN ('" . implode("','", \BackendUser::getInstance()->iso_groups) . "') ORDER BY " . \Database::getInstance()->findInSet('id', \BackendUser::getInstance()->iso_groups)
                 )->limit(1)->execute()->id;
             }
@@ -227,8 +227,12 @@ class DC_ProductData extends \DC_Table
             // Call the oncut_callback
             if (is_array($GLOBALS['TL_DCA'][$this->strTable]['config']['oncut_callback'])) {
                 foreach ($GLOBALS['TL_DCA'][$this->strTable]['config']['oncut_callback'] as $callback) {
-                    $this->import($callback[0]);
-                    $this->$callback[0]->$callback[1]($this);
+                    if (is_array($callback)) {
+                        $this->import($callback[0]);
+                        $this->$callback[0]->$callback[1]($this);
+                    } elseif (is_callable($callback)) {
+                        call_user_func($callback, $this);
+                    }
                 }
             }
 
@@ -519,6 +523,8 @@ class DC_ProductData extends \DC_Table
                             if (is_array($callback)) {
                                 $this->import($callback[0]);
                                 $this->$callback[0]->$callback[1]($this->objActiveRecord->id, $this->strTable, $data, \Input::post('version'));
+                            } elseif (is_callable($callback)) {
+                                call_user_func($callback, $this->objActiveRecord->id, $this->strTable, $data, \Input::post('version'));
                             }
                         }
                     }
@@ -630,6 +636,8 @@ class DC_ProductData extends \DC_Table
                             if (is_array($callback)) {
                                 $this->import($callback[0]);
                                 $this->varValue = $this->$callback[0]->$callback[1]($this->varValue, $this);
+                            } elseif (is_callable($callback)) {
+                                call_user_func($callback, $this->varValue, $this);
                             }
                         }
 
@@ -768,8 +776,12 @@ window.addEvent(\'domready\', function() {
             // Trigger the onsubmit_callback
             if (is_array($GLOBALS['TL_DCA'][$this->strTable]['config']['onsubmit_callback'])) {
                 foreach ($GLOBALS['TL_DCA'][$this->strTable]['config']['onsubmit_callback'] as $callback) {
-                    $this->import($callback[0]);
-                    $this->$callback[0]->$callback[1]($this);
+                    if (is_array($callback)) {
+                        $this->import($callback[0]);
+                        $this->$callback[0]->$callback[1]($this);
+                    } elseif (is_callable($callback)) {
+                        call_user_func($callback, $this);
+                    }
                 }
             }
 
@@ -780,8 +792,12 @@ window.addEvent(\'domready\', function() {
                 // Call the onversion_callback
                 if (is_array($GLOBALS['TL_DCA'][$this->strTable]['config']['onversion_callback'])) {
                     foreach ($GLOBALS['TL_DCA'][$this->strTable]['config']['onversion_callback'] as $callback) {
-                        $this->import($callback[0]);
-                        $this->$callback[0]->$callback[1]($this->strTable, $this->objActiveRecord->id, $this);
+                        if (is_array($callback)) {
+                            $this->import($callback[0]);
+                            $this->$callback[0]->$callback[1]($this->strTable, $this->objActiveRecord->id, $this);
+                        } elseif (is_callable($callback)) {
+                            call_user_func($callback, $this->strTable, $this->objActiveRecord->id, $this);
+                        }
                     }
                 }
 
@@ -977,8 +993,12 @@ window.addEvent(\'domready\', function() {
                     // Call load_callback
                     if (is_array($GLOBALS['TL_DCA'][$this->strTable]['fields'][$this->strField]['load_callback'])) {
                         foreach ($GLOBALS['TL_DCA'][$this->strTable]['fields'][$this->strField]['load_callback'] as $callback) {
-                            $this->import($callback[0]);
-                            $this->varValue = $this->$callback[0]->$callback[1]($this->varValue, $this);
+                            if (is_array($callback)) {
+                                $this->import($callback[0]);
+                                $this->varValue = $this->$callback[0]->$callback[1]($this->varValue, $this);
+                            } elseif (is_callable($callback)) {
+                                $this->varValue = call_user_func($callback, $this->varValue, $this);
+                            }
                         }
                     }
 
@@ -999,8 +1019,12 @@ window.addEvent(\'domready\', function() {
                     // Call onsubmit_callback
                     if (is_array($GLOBALS['TL_DCA'][$this->strTable]['config']['onsubmit_callback'])) {
                         foreach ($GLOBALS['TL_DCA'][$this->strTable]['config']['onsubmit_callback'] as $callback) {
-                            $this->import($callback[0]);
-                            $this->$callback[0]->$callback[1]($this);
+                            if (is_array($callback)) {
+                                $this->import($callback[0]);
+                                $this->$callback[0]->$callback[1]($this);
+                            } elseif (is_callable($callback)) {
+                                call_user_func($callback, $this);
+                            }
                         }
                     }
 
@@ -1011,8 +1035,12 @@ window.addEvent(\'domready\', function() {
                         // Call the onversion_callback
                         if (is_array($GLOBALS['TL_DCA'][$this->strTable]['config']['onversion_callback'])) {
                             foreach ($GLOBALS['TL_DCA'][$this->strTable]['config']['onversion_callback'] as $callback) {
-                                $this->import($callback[0]);
-                                $this->$callback[0]->$callback[1]($this->strTable, $this->intId, $this);
+                                if (is_array($callback)) {
+                                    $this->import($callback[0]);
+                                    $this->$callback[0]->$callback[1]($this->strTable, $this->intId, $this);
+                                } elseif (is_callable($callback)) {
+                                    call_user_func($callback, $this->strTable, $this->intId, $this);
+                                }
                             }
                         }
 
@@ -1079,7 +1107,7 @@ window.addEvent(\'domready\', function() {
 
             // Show all non-excluded fields
             foreach ($fields as $field) {
-                if ($field == 'pid' || $field == 'sorting' || (!$GLOBALS['TL_DCA'][$this->strTable]['fields'][$field]['exclude'] && !$GLOBALS['TL_DCA'][$this->strTable]['fields'][$field]['eval']['doNotShow'] && ($GLOBALS['TL_DCA'][$this->strTable]['fields'][$field]['inputType'] != '' || is_array($GLOBALS['TL_DCA'][$this->strTable]['fields'][$field]['input_field_callback'])))) {
+                if ($field == 'pid' || $field == 'sorting' || (!$GLOBALS['TL_DCA'][$this->strTable]['fields'][$field]['exclude'] && !$GLOBALS['TL_DCA'][$this->strTable]['fields'][$field]['eval']['doNotShow'] && ($GLOBALS['TL_DCA'][$this->strTable]['fields'][$field]['inputType'] != '' || is_array($GLOBALS['TL_DCA'][$this->strTable]['fields'][$field]['input_field_callback']) || is_callable($GLOBALS['TL_DCA'][$this->strTable]['fields'][$field]['input_field_callback'])))) {
                     $options .= '
   <input type="checkbox" name="all_fields[]" id="all_' . $field . '" class="tl_checkbox" value="' . specialchars($field) . '"> <label for="all_' . $field . '" class="tl_checkbox_label">' . ($GLOBALS['TL_DCA'][$this->strTable]['fields'][$field]['label'][0] != '' ? $GLOBALS['TL_DCA'][$this->strTable]['fields'][$field]['label'][0] : $GLOBALS['TL_LANG']['MSC'][$field][0]) . '</label><br>';
                 }
@@ -1196,8 +1224,13 @@ window.addEvent(\'domready\', function() {
                         // Call onsubmit_callback
                         if (is_array($GLOBALS['TL_DCA'][$this->strTable]['config']['onsubmit_callback'])) {
                             foreach ($GLOBALS['TL_DCA'][$this->strTable]['config']['onsubmit_callback'] as $callback) {
-                                $this->import($callback[0]);
-                                $this->$callback[0]->$callback[1]($this);
+                                if (is_array($callback)) {
+                                    $this->import($callback[0]);
+                                    $this->$callback[0]->$callback[1]($this);
+                                }
+                                elseif (is_callable($callback)) {
+                                    call_user_func($callback, $this);
+                                }
                             }
                         }
 
@@ -1308,7 +1341,7 @@ window.addEvent(\'domready\', function() {
 
             // Show all non-excluded fields
             foreach ($fields as $field) {
-                if ($field == 'pid' || $field == 'sorting' || (!$GLOBALS['TL_DCA'][$this->strTable]['fields'][$field]['exclude'] && !$GLOBALS['TL_DCA'][$this->strTable]['fields'][$field]['eval']['doNotShow'] && ($GLOBALS['TL_DCA'][$this->strTable]['fields'][$field]['inputType'] != '' || is_array($GLOBALS['TL_DCA'][$this->strTable]['fields'][$field]['input_field_callback'])))) {
+                if ($field == 'pid' || $field == 'sorting' || (!$GLOBALS['TL_DCA'][$this->strTable]['fields'][$field]['exclude'] && !$GLOBALS['TL_DCA'][$this->strTable]['fields'][$field]['eval']['doNotShow'] && ($GLOBALS['TL_DCA'][$this->strTable]['fields'][$field]['inputType'] != '' || is_array($GLOBALS['TL_DCA'][$this->strTable]['fields'][$field]['input_field_callback']) || is_callable($GLOBALS['TL_DCA'][$this->strTable]['fields'][$field]['input_field_callback'])))) {
                     $options .= '
   <input type="checkbox" name="all_fields[]" id="all_' . $field . '" class="tl_checkbox" value="' . specialchars($field) . '"> <label for="all_' . $field . '" class="tl_checkbox_label">' . ($GLOBALS['TL_DCA'][$this->strTable]['fields'][$field]['label'][0] != '' ? $GLOBALS['TL_DCA'][$this->strTable]['fields'][$field]['label'][0] : $GLOBALS['TL_LANG']['MSC'][$field][0]) . '</label><br>';
                 }
@@ -1397,6 +1430,8 @@ window.addEvent(\'domready\', function() {
 
                         $this->import($strClass);
                         $keys = $this->$strClass->$strMethod($this);
+                    } elseif (is_callable($GLOBALS['TL_DCA'][$this->strTable]['fields'][$key]['options_callback'])) {
+                        $keys = call_user_func($GLOBALS['TL_DCA'][$this->strTable]['fields'][$key]['options_callback'], $this);
                     } else {
                         $keys = $GLOBALS['TL_DCA'][$this->strTable]['fields'][$key]['options'];
                     }
@@ -1567,13 +1602,6 @@ window.addEvent(\'domready\', function() {
                 $label = preg_replace('/\( *\) ?|\[ *\] ?|\{ *\} ?|< *> ?/', '', $label);
                 $label = preg_replace('/<[^>]+>\s*<\/[^>]+>/', '', $label);
 
-                // Build the sorting groups
-                if ($GLOBALS['TL_DCA'][$this->strTable]['list']['sorting']['mode'] > 0) {
-                    $current = $row[$firstOrderBy];
-                    $orderBy = $GLOBALS['TL_DCA'][$this->strTable]['list']['sorting']['fields'];
-                    $sortingMode = (count($orderBy) == 1 && $firstOrderBy == $orderBy[0] && $GLOBALS['TL_DCA'][$this->strTable]['list']['sorting']['flag'] != '' && $GLOBALS['TL_DCA'][$this->strTable]['fields'][$firstOrderBy]['flag'] == '') ? $GLOBALS['TL_DCA'][$this->strTable]['list']['sorting']['flag'] : $GLOBALS['TL_DCA'][$this->strTable]['fields'][$firstOrderBy]['flag'];
-                }
-
                 $return .= '
   <tr class="' . ((++$eoCount % 2 == 0) ? 'even' : 'odd') . ' click2edit" onmouseover="Theme.hoverRow(this,1)" onmouseout="Theme.hoverRow(this,0)" onclick="Theme.toggleSelect(this)">
     ';
@@ -1581,12 +1609,16 @@ window.addEvent(\'domready\', function() {
                 $colspan = 1;
 
                 // Call the label callback ($row, $label, $this)
-                if (is_array($GLOBALS['TL_DCA'][$this->strTable]['list']['label']['label_callback'])) {
-                    $strClass = $GLOBALS['TL_DCA'][$this->strTable]['list']['label']['label_callback'][0];
-                    $strMethod = $GLOBALS['TL_DCA'][$this->strTable]['list']['label']['label_callback'][1];
+                if (is_array($GLOBALS['TL_DCA'][$this->strTable]['list']['label']['label_callback']) || is_callable($GLOBALS['TL_DCA'][$this->strTable]['list']['label']['label_callback'])) {
+                    if (is_array($GLOBALS['TL_DCA'][$this->strTable]['list']['label']['label_callback'])) {
+                        $strClass = $GLOBALS['TL_DCA'][$this->strTable]['list']['label']['label_callback'][0];
+                        $strMethod = $GLOBALS['TL_DCA'][$this->strTable]['list']['label']['label_callback'][1];
 
-                    $this->import($strClass);
-                    $args = $this->$strClass->$strMethod($row, $label, $this, $args);
+                        $this->import($strClass);
+                        $args = $this->$strClass->$strMethod($row, $label, $this, $args);
+                    } else {
+                        $args = call_user_func($GLOBALS['TL_DCA'][$this->strTable]['list']['label']['label_callback'], $row, $label, $this, $args);
+                    }
 
                     // Handle strings and arrays (backwards compatibility)
                     if (!$GLOBALS['TL_DCA'][$this->strTable]['list']['label']['showColumns']) {
@@ -1626,8 +1658,12 @@ window.addEvent(\'domready\', function() {
                 // Call the buttons_callback
                 if (is_array($GLOBALS['TL_DCA'][$this->strTable]['edit']['buttons_callback'])) {
                     foreach ($GLOBALS['TL_DCA'][$this->strTable]['edit']['buttons_callback'] as $callback) {
-                        $this->import($callback[0]);
-                        $callbacks .= $this->$callback[0]->$callback[1]($this);
+                        if (is_array($callback)) {
+                            $this->import($callback[0]);
+                            $callbacks .= $this->$callback[0]->$callback[1]($this);
+                        } elseif (is_callable($callback)) {
+                            $callbacks .= call_user_func($callback, $this);
+                        }
                     }
                 }
 
@@ -1791,6 +1827,8 @@ window.addEvent(\'domready\', function() {
 
                 $this->import($strClass);
                 $add = $this->$strClass->$strMethod($add, $this);
+            } elseif (is_callable($GLOBALS['TL_DCA'][$this->strTable]['list']['sorting']['header_callback'])) {
+                $add = call_user_func($GLOBALS['TL_DCA'][$this->strTable]['list']['sorting']['header_callback'], $add, $this);
             }
 
             // Output the header data
@@ -1995,12 +2033,16 @@ window.addEvent(\'domready\', function() {
                 $colspan = 1;
 
                 // Call the label callback ($row, $label, $this)
-                if (is_array($GLOBALS['TL_DCA'][$this->strTable]['list']['label']['label_callback'])) {
-                    $strClass = $GLOBALS['TL_DCA'][$this->strTable]['list']['label']['label_callback'][0];
-                    $strMethod = $GLOBALS['TL_DCA'][$this->strTable]['list']['label']['label_callback'][1];
+                if (is_array($GLOBALS['TL_DCA'][$this->strTable]['list']['label']['label_callback']) || is_callable($GLOBALS['TL_DCA'][$this->strTable]['list']['label']['label_callback'])) {
+                    if (is_array($GLOBALS['TL_DCA'][$this->strTable]['list']['label']['label_callback'])) {
+                        $strClass = $GLOBALS['TL_DCA'][$this->strTable]['list']['label']['label_callback'][0];
+                        $strMethod = $GLOBALS['TL_DCA'][$this->strTable]['list']['label']['label_callback'][1];
 
-                    $this->import($strClass);
-                    $args = $this->$strClass->$strMethod($row, $label, $this, $args);
+                        $this->import($strClass);
+                        $args = $this->$strClass->$strMethod($row, $label, $this, $args);
+                    } else {
+                        $args = call_user_func($GLOBALS['TL_DCA'][$this->strTable]['list']['label']['label_callback'], $row, $label, $this, $args);
+                    }
 
                     // Handle strings and arrays (backwards compatibility)
                     if (!$GLOBALS['TL_DCA'][$this->strTable]['list']['label']['showColumns']) {
@@ -2041,8 +2083,12 @@ window.addEvent(\'domready\', function() {
             // Call the buttons_callback
             if (is_array($GLOBALS['TL_DCA'][$this->strTable]['edit']['buttons_callback'])) {
                 foreach ($GLOBALS['TL_DCA'][$this->strTable]['edit']['buttons_callback'] as $callback) {
-                    $this->import($callback[0]);
-                    $callbacks .= $this->$callback[0]->$callback[1]($this);
+                    if (is_array($callback)) {
+                        $this->import($callback[0]);
+                        $callbacks .= $this->$callback[0]->$callback[1]($this);
+                    } elseif (is_callable($callback)) {
+                        $callbacks .= call_user_func($callback, $this);
+                    }
                 }
             }
 

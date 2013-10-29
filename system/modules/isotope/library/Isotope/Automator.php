@@ -35,19 +35,16 @@ class Automator extends \Controller
         $intPurged = 0;
         $objCarts = Cart::findBy(array('member=0', 'tstamp<?'), array(time() - $GLOBALS['TL_CONFIG']['iso_cartTimeout']));
 
-        while ($objCarts->next())
-        {
-            if (($objOrder = Order::findOneBy('source_collection_id', $objCart->id)) !== null && $objOrder->status == 0)
-            {
+        while ($objCarts->next()) {
+            if (($objOrder = Order::findOneBy('source_collection_id', $objCarts->current()->id)) !== null && $objOrder->status == 0) {
                 $objOrder->delete();
             }
 
-            $objCart->delete();
+            $objCarts->current()->delete();
             $intPurged += 1;
         }
 
-        if ($intPurged > 0)
-        {
+        if ($intPurged > 0) {
             \System::log('Purged ' . $intPurged . ' old guest carts', __METHOD__, TL_CRON);
         }
     }

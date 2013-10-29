@@ -250,7 +250,6 @@ abstract class Attribute extends TypeAgent
 	public function generate(IsotopeProduct $objProduct, array $arrOptions=array())
 	{
 	    $varValue = $objProduct->{$this->field_name};
-	    $strBuffer = '';
 
 	    // Generate a HTML table for associative arrays
         if (is_array($varValue) && !array_is_assoc($varValue) && is_array($varValue[0]))
@@ -375,6 +374,7 @@ abstract class Attribute extends TypeAgent
                 {
                     $intTax = (int) $row['tax_class'];
 
+                    // @todo $objProduct is not defined
                     $value = Isotope::formatPriceWithCurrency(Isotope::calculatePrice($value, $objProduct, $this->field_name, $intTax));
                 }
                 else

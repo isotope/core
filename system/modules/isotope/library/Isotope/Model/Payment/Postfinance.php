@@ -12,6 +12,7 @@
 
 namespace Isotope\Model\Payment;
 
+use Isotope\Interfaces\IsotopeProductCollection;
 use Isotope\Isotope;
 use Isotope\Interfaces\IsotopePayment;
 use Isotope\Interfaces\IsotopePostsale;
@@ -163,10 +164,10 @@ class Postfinance extends Payment implements IsotopePayment, IsotopePostsale
         ksort($arrParam);
 
         $strSHASign = '';
-        foreach( $arrParam as $k => $v )
-        {
-            if ($v == '')
+        foreach ($arrParam as $k => $v) {
+            if ($v == '') {
                 continue;
+            }
 
             $strSHASign .= $k . '=' . htmlspecialchars_decode($v) . $this->postfinance_secret;
         }
@@ -205,26 +206,23 @@ class Postfinance extends Payment implements IsotopePayment, IsotopePostsale
         $arrParam = array();
         $arrSHAOut = array('AAVADDRESS', 'AAVCHECK', 'AAVZIP', 'ACCEPTANCE', 'ALIAS', 'AMOUNT', 'BIN', 'BRAND', 'CARDNO', 'CCCTY', 'CN', 'COMPLUS', 'CREATION_STATUS', 'CURRENCY', 'CVCCHECK', 'DCC_COMMPERCENTAGE', 'DCC_CONVAMOUNT', 'DCC_CONVCCY', 'DCC_EXCHRATE', 'DCC_EXCHRATESOURCE', 'DCC_EXCHRATETS', 'DCC_INDICATOR', 'DCC_MARGINPERC', 'ENTAGE', 'DCC_VALIDHOURS', 'DIGESTC', 'ARDNO', 'ECI', 'ED', 'ENCCARDNO', 'IP', 'IPCTY', 'NBREMAILUSAGE', 'NBRIPUSAGE', 'NBRIPUSAGE_ALLTX', 'NBRUSAGE', 'NCERROR', 'ORDERID', 'PAYID', 'PM', 'STATUS', 'SUBBRAND', 'TRXDATE', 'VC');
 
-        foreach( array_keys(($this->postfinance_method == 'GET' ? $_GET : $_POST)) as $key )
-        {
-            if (in_array(strtoupper($key), $arrSHAOut))
-            {
+        foreach (array_keys(($this->postfinance_method == 'GET' ? $_GET : $_POST)) as $key) {
+            if (in_array(strtoupper($key), $arrSHAOut)) {
                 $arrParam[$key] = $this->getRequestData($key);
             }
         }
 
         uksort($arrParam, 'strcasecmp');
 
-        foreach( $arrParam as $k => $v )
-        {
-            if ($v == '')
+        foreach ($arrParam as $k => $v) {
+            if ($v == '') {
                 continue;
+            }
 
             $strSHASign .= strtoupper($k) . '=' . $v . $this->postfinance_secret;
         }
 
-        if ($this->getRequestData('SHASIGN') == strtoupper(sha1($strSHASign)))
-        {
+        if ($this->getRequestData('SHASIGN') == strtoupper(sha1($strSHASign))) {
             return true;
         }
 

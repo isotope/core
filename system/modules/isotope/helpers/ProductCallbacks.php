@@ -503,7 +503,7 @@ window.addEvent('domready', function() {
   $('cut').addEvents({
     'click': function(e) {
       e.preventDefault();
-      Isotope.openModalGroupSelector({'width':765,'title':'".specialchars($GLOBALS['TL_LANG']['MSC']['groupPicker'])."','url':'system/modules/isotope/group.php?do=".\Input::get('do')."&amp;table=tl_iso_groups&amp;field=gid&amp;value=".$this->Session->get('iso_products_gid')."','action':'moveProducts','trigger':$(this)});
+      Isotope.openModalGroupSelector({'width':765,'title':'".specialchars($GLOBALS['TL_LANG']['tl_iso_products']['product_groups'][0])."','url':'system/modules/isotope/group.php?do=".\Input::get('do')."&amp;table=tl_iso_groups&amp;field=gid&amp;value=".$this->Session->get('iso_products_gid')."','action':'moveProducts','trigger':$(this)});
     },
     'closeModal': function() {
       var form = $('tl_select'),
@@ -568,6 +568,25 @@ window.addEvent('domready', function() {
     }
 
 
+    /**
+     * Check for modified products and update the XML files if necessary
+     */
+    public function generateSitemap()
+    {
+        $session = $this->Session->get('iso_product_updater');
+
+        if (!is_array($session) || empty($session))
+        {
+            return;
+        }
+
+        $objAutomator = new \Automator();
+        $objAutomator->generateSitemap();
+
+        $this->Session->set('iso_product_updater', null);
+    }
+
+
 
     /////////////////////////
     //  !oncreate_callback
@@ -601,6 +620,7 @@ window.addEvent('domready', function() {
             $intType = $objType->id;
         }
 
+        // @todo $insertId is undefined
         \Database::getInstance()->prepare("UPDATE $strTable SET gid=?, type=?, dateAdded=? WHERE id=?")->execute($intGroup, $intType, time(), $insertId);
     }
 
@@ -626,6 +646,31 @@ window.addEvent('domready', function() {
             \Database::getInstance()->query("UPDATE tl_iso_product_categories SET sorting=" . ($objCategories->max_sorting + 128) . " WHERE id=" . $objCategories->id);
         }
     }
+
+
+
+    /////////////////////////
+    //  !onversion_callback
+    /////////////////////////
+
+
+    /**
+	 * Schedule an XML sitemap update
+	 * @param \DataContainer
+	 */
+	public function scheduleUpdate($dc)
+	{
+		// Return if there is no ID
+		if (!$dc->id)
+		{
+			return;
+		}
+
+		// Store the ID in the session
+		$session = $this->Session->get('iso_product_updater');
+		$session[] = $dc->id;
+		$this->Session->set('iso_product_updater', array_unique($session));
+	}
 
 
 
@@ -906,8 +951,8 @@ window.addEvent('domready', function() {
                 case 'variantFields':
                     $attributes = array();
 
-                    foreach ($GLOBALS['TL_DCA'][$dc->table]['list']['label']['variantFields'] as $field) {
-                        $attributes[] = '<strong>' . Isotope::formatLabel($dc->table, $field) . ':</strong>&nbsp;' . Isotope::formatValue($dc->table, $field, $objProduct->$field);
+                    foreach ($GLOBALS['TL_DCA'][$dc->table]['list']['label']['variantFields'] as $variantField) {
+                        $attributes[] = '<strong>' . Isotope::formatLabel($dc->table, $variantField) . ':</strong>&nbsp;' . Isotope::formatValue($dc->table, $variantField, $objProduct->$variantField);
                     }
 
                     $args[$i] = ($args[$i] ? $args[$i].'<br>' : '') . implode(', ', $attributes);

@@ -123,10 +123,12 @@ class ProductReader extends Module
     {
         global $objPage;
 
-        $objPage->pageTitle = strip_insert_tags($objProduct->name);
-        $objPage->description = $this->prepareMetaDescription($objProduct->description_meta ?: ($objProduct->teaser ?: $objProduct->description));
+        $objPage->pageTitle = $this->prepareMetaDescription($objProduct->meta_title ?: $objProduct->name);
+        $objPage->description = $this->prepareMetaDescription($objProduct->meta_description ?: ($objProduct->teaser ?: $objProduct->description));
 
-        $GLOBALS['TL_KEYWORDS'] .= ($GLOBALS['TL_KEYWORDS'] != '' ? ', ' : '') . $objProduct->keywords_meta;
+        if ($objProduct->meta_keywords) {
+            $GLOBALS['TL_KEYWORDS'] .= ($GLOBALS['TL_KEYWORDS'] != '' ? ', ' : '') . $objProduct->meta_keywords;
+        }
     }
 
     /**
@@ -135,17 +137,37 @@ class ProductReader extends Module
      */
     protected function addCanonicalProductUrls(IsotopeProduct $objProduct)
     {
-        // Only get pages of current root
         global $objPage;
-        $arrPages = \Database::getInstance()->getChildRecords($objPage->rootId, 'tl_page');
-        $arrPages[] = $objPage->rootId;
+        $arrPageIds = \Database::getInstance()->getChildRecords($objPage->rootId, \PageModel::getTable());
+        $arrPageIds[] = $objPage->rootId;
 
-        $arrCanonicalCategories = array_intersect($objProduct->getCategories(), $arrPages);
+        // Find the categories in the current root
+        $arrCategories = array_intersect($objProduct->getCategories(), $arrPageIds);
 
-        foreach ($arrCanonicalCategories as $intPage) {
-            // The current page is not a canonical category
-            if ($intPage !== $objPage->id && ($objJumpTo = \PageModel::findByPk($intPage)) !== null) {
-                $GLOBALS['TL_HEAD'][] = sprintf('<link rel="canonical" href="%s">', $objProduct->generateUrl($objJumpTo));
+        foreach ($arrCategories as $intPage) {
+
+            // Do not use the index page as canonical link
+            if ($objPage->alias == 'index' && count($arrCategories) > 1) {
+                continue;
+            }
+
+            // Current page is the primary one, do not generate canonical link
+            if ($intPage == $objPage->id) {
+                break;
+            }
+
+            if (($objJumpTo = \PageModel::findWithDetails($intPage)) !== null) {
+
+                $strDomain = \Environment::get('base');
+
+                // Overwrite the domain
+                if ($objJumpTo->dns != '') {
+                    $strDomain = ($objJumpTo->useSSL ? 'https://' : 'http://') . $objJumpTo->dns . TL_PATH . '/';
+                }
+
+                $GLOBALS['TL_HEAD'][] = sprintf('<link rel="canonical" href="%s">', $strDomain . $objProduct->generateUrl($objJumpTo));
+
+                break;
             }
         }
     }

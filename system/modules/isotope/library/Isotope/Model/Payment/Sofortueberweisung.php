@@ -12,6 +12,7 @@
 
 namespace Isotope\Model\Payment;
 
+use Isotope\Interfaces\IsotopeProductCollection;
 use Isotope\Isotope;
 use Isotope\Interfaces\IsotopePayment;
 use Isotope\Model\ProductCollection\Order;
@@ -110,7 +111,7 @@ class Sofortueberweisung extends Postsale implements IsotopePayment
         $strCountry = in_array(Isotope::getCart()->getBillingAddress()->country, array('de','ch','at')) ? Isotope::getCart()->getBillingAddress()->country : 'de';
         $strUrl = 'https://www.sofortueberweisung.'.$strCountry.'/payment/start';
 
-        $arrParam = array
+        $arrParams = array
         (
             'user_id'               => $this->sofortueberweisung_user_id,
             'project_id'            => $this->sofortueberweisung_project_id,
@@ -131,8 +132,8 @@ class Sofortueberweisung extends Postsale implements IsotopePayment
             'project_password'      => $this->sofortueberweisung_project_password,
         );
 
-        $arrParam['hash'] = sha1(implode('|', $arrParam));
-        $arrParam['language_id'] = $GLOBALS['TL_LANGUAGE'];
+        $arrParams['hash'] = sha1(implode('|', $arrParams));
+        $arrParams['language_id'] = $GLOBALS['TL_LANGUAGE'];
 
         $objTemplate = new \Isotope\Template('iso_payment_sofortueberweisung');
         $objTemplate->setData($this->arrData);

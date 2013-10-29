@@ -12,7 +12,6 @@
 
 namespace Isotope\Model\Attribute;
 
-use Isotope\Isotope;
 use Isotope\Interfaces\IsotopeAttribute;
 use Isotope\Interfaces\IsotopeProduct;
 use Isotope\Model\Attribute;
@@ -65,6 +64,7 @@ class Downloads extends Attribute implements IsotopeAttribute
      */
     public function generate(IsotopeProduct $objProduct, array $arrOptions=array())
     {
+        global $objPage;
         $arrFiles = $objProduct->{$this->field_name};
 
         // Return if there are no files
@@ -118,7 +118,7 @@ class Downloads extends Attribute implements IsotopeAttribute
                     continue;
                 }
 
-                $arrMeta = Isotope::getMetaData($objFiles->meta, $objPage->language);
+                $arrMeta = \Frontend::getMetaData($objFiles->meta, $objPage->language);
 
                 // Use the file name as title if none is given
                 if ($arrMeta['title'] == '') {
@@ -174,7 +174,7 @@ class Downloads extends Attribute implements IsotopeAttribute
                         continue;
                     }
 
-                    $arrMeta = Isotope::getMetaData($objSubfiles->meta, $objPage->language);
+                    $arrMeta = \Frontend::getMetaData($objSubfiles->meta, $objPage->language);
 
                     // Use the file name as title if none is given
                     if ($arrMeta['title'] == '') {

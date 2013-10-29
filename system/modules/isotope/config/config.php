@@ -196,7 +196,6 @@ $GLOBALS['FE_MOD']['isotope'] = array
  */
 $GLOBALS['BE_FFL']['mediaManager']           = 'Isotope\Widget\MediaManager';
 $GLOBALS['BE_FFL']['inheritCheckbox']        = 'Isotope\Widget\InheritCheckBox';
-$GLOBALS['BE_FFL']['productTree']            = 'Isotope\Widget\ProductTree';
 $GLOBALS['BE_FFL']['productGroupSelector']   = 'Isotope\Widget\ProductGroupSelector';
 
 /**
@@ -255,7 +254,6 @@ $GLOBALS['BE_FFL']['productGroupSelector']   = 'Isotope\Widget\ProductGroupSelec
 \Isotope\Model\Attribute::registerModelType('select', 'Isotope\Model\Attribute\SelectMenu');
 \Isotope\Model\Attribute::registerModelType('radio', 'Isotope\Model\Attribute\RadioButton');
 \Isotope\Model\Attribute::registerModelType('checkbox', 'Isotope\Model\Attribute\CheckboxMenu');
-\Isotope\Model\Attribute::registerModelType('conditionalselect', 'Isotope\Model\Attribute\ConditionalSelectMenu');
 \Isotope\Model\Attribute::registerModelType('mediaManager', 'Isotope\Model\Attribute\MediaManager');
 \Isotope\Model\Attribute::registerModelType('fileTree', 'Isotope\Model\Attribute\FileTree');
 \Isotope\Model\Attribute::registerModelType('downloads', 'Isotope\Model\Attribute\Downloads');
@@ -265,7 +263,7 @@ $GLOBALS['BE_FFL']['productGroupSelector']   = 'Isotope\Widget\ProductGroupSelec
  * Notification Center notification types
  */
 $GLOBALS['NOTIFICATION_CENTER']['NOTIFICATION_TYPE']['isotope']['iso_order_status_change']['recipients'] = array('recipient_email');
-$GLOBALS['NOTIFICATION_CENTER']['NOTIFICATION_TYPE']['isotope']['iso_order_status_change']['attachments'] = array('form_*', 'document');
+$GLOBALS['NOTIFICATION_CENTER']['NOTIFICATION_TYPE']['isotope']['iso_order_status_change']['attachment_tokens'] = array('form_*', 'document');
 $GLOBALS['NOTIFICATION_CENTER']['NOTIFICATION_TYPE']['isotope']['iso_order_status_change']['email_text'] = array(
     'uniqid',
     'status_id',
@@ -320,6 +318,7 @@ $GLOBALS['TL_MODELS']['tl_iso_product_collection_download']     = 'Isotope\Model
 $GLOBALS['TL_MODELS']['tl_iso_productcache']                    = 'Isotope\Model\ProductCache';
 $GLOBALS['TL_MODELS']['tl_iso_products']                        = 'Isotope\Model\Product';
 $GLOBALS['TL_MODELS']['tl_iso_producttypes']                    = 'Isotope\Model\ProductType';
+$GLOBALS['TL_MODELS']['tl_iso_related_products']                = 'Isotope\Model\RelatedProduct';
 $GLOBALS['TL_MODELS']['tl_iso_requestcache']                    = 'Isotope\Model\RequestCache';
 $GLOBALS['TL_MODELS']['tl_iso_tax_class']                       = 'Isotope\Model\TaxClass';
 $GLOBALS['TL_MODELS']['tl_iso_tax_rate']                        = 'Isotope\Model\TaxRate';
@@ -383,7 +382,9 @@ $GLOBALS['ISO_NUM']["10'000.00"]    = array(2, '.', "'");
 /**
  * Hooks
  */
-include(TL_ROOT . '/system/modules/isotope/config/hooks.php');
+if (\Config::getInstance()->isComplete()) {
+    include(TL_ROOT . '/system/modules/isotope/config/hooks.php');
+}
 
 
 /**

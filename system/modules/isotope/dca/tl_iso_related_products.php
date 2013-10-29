@@ -104,19 +104,21 @@ $GLOBALS['TL_DCA']['tl_iso_related_products'] = array
     (
         'id' => array
         (
-            'sql'                 =>  "int(10) unsigned NOT NULL auto_increment",
+            'sql'                   => "int(10) unsigned NOT NULL auto_increment",
         ),
         'pid' => array
         (
-            'sql'                 =>  "int(10) unsigned NOT NULL default '0'",
+            'foreignKey'            => 'tl_iso_products.name',
+            'sql'                   => "int(10) unsigned NOT NULL default '0'",
+            'relation'              => array('type'=>'belongsTo', 'load'=>'lazy'),
         ),
         'tstamp' => array
         (
-            'sql'                 =>  "int(10) unsigned NOT NULL default '0'",
+            'sql'                   => "int(10) unsigned NOT NULL default '0'",
         ),
         'sorting' => array
         (
-            'sql'                 =>  "int(10) unsigned NOT NULL default '0'",
+            'sql'                   => "int(10) unsigned NOT NULL default '0'",
         ),
         'category' => array
         (
@@ -133,8 +135,8 @@ $GLOBALS['TL_DCA']['tl_iso_related_products'] = array
         (
             'label'                 => &$GLOBALS['TL_LANG']['tl_iso_related_products']['products'],
             'exclude'               => true,
-            'inputType'             => 'productTree',
-            'eval'                  => array('mandatory'=>true, 'fieldType'=>'checkbox', 'variants'=>true, 'tl_class'=>'clr'),
+            'inputType'             => 'text',
+            'eval'                  => array('mandatory'=>true, 'tl_class'=>'long'),
             'sql'                   => "blob NULL",
         ),
     )

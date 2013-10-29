@@ -333,7 +333,6 @@ class ProductGroupSelector extends \Widget
      */
     protected function renderGrouptree($id, $intMargin)
     {
-        static $session;
         $session = $this->Session->getData();
 
         $flag = substr($this->strField, 0, 2).'g';
@@ -361,6 +360,7 @@ class ProductGroupSelector extends \Widget
         $childs = array();
 
         // Check whether there are child records
+        // @todo $blnNoRecursion is not defined
         if (!$blnNoRecursion)
         {
             $objNodes = \Database::getInstance()->prepare("SELECT id FROM tl_iso_groups WHERE pid=? ORDER BY sorting")->execute($id);
@@ -386,8 +386,15 @@ class ProductGroupSelector extends \Widget
             $return .= '<a href="'.$this->addToUrl($flag.'tg='.$id).'" title="'.specialchars($alt).'" onclick="Backend.getScrollOffset(); return Isotope.toggleProductGroupTree(this, \''.$xtnode.'_'.$id.'\', \''.$this->strField.'\', \''.$this->strName.'\', '.$level.');">'.\Image::getHtml($img, '', 'style="margin-right:2px;"').'</a>';
         }
 
-        $href = '<a href="' . $this->addToUrl('gid='.$objGroup->id) . '" title="'.specialchars($objGroup->name . ' (ID ' . $objGroup->id . ')').'"'.(empty($childs) ? ' style="padding-left:20px;"' : '').'>'.$objGroup->name.'</a>';
-        $return .= $this->tl_iso_groups->addIcon($objGroup->row(), $href, null, $folderAttribute).'</div> <div class="tl_right">';
+        $href = '<a href="' . $this->addToUrl('gid='.$objGroup->id) . '" title="'.specialchars($objGroup->name . ' (ID ' . $objGroup->id . ')').'">'.$objGroup->name.'</a>';
+        $callback = $GLOBALS['TL_DCA']['tl_iso_groups']['list']['label']['label_callback'];
+
+        // Load the label_callback
+        if (is_array($callback) && !empty($callback)) {
+            $return .= static::importStatic($callback[0])->$callback[1]($objGroup->row(), $href, null, $folderAttribute);
+        }
+
+        $return .= '</div> <div class="tl_right">';
 
         // Add checkbox or radio button
         switch ($GLOBALS['TL_DCA'][$this->strTable]['fields'][$this->strField]['eval']['fieldType'])

@@ -12,7 +12,6 @@
 
 namespace Isotope\Model;
 
-use Isotope\Isotope;
 use Isotope\Interfaces\IsotopeProduct;
 use Isotope\Model\Attribute;
 
@@ -52,6 +51,7 @@ abstract class Product extends TypeAgent
     public static function findPublished(array $arrOptions=array())
     {
         $t = static::$strTable;
+        $arrColumns = array();
 
         if (BE_USER_LOGGED_IN !== true) {
             $time = time();
@@ -276,6 +276,11 @@ abstract class Product extends TypeAgent
         foreach (Attribute::getMultilingualFields() as $attribute)
         {
             $arrFields[] = "IFNULL(translation.$attribute, " . $arrOptions['table'] . ".$attribute) AS $attribute";
+        }
+
+        foreach (Attribute::getFetchFallbackFields() as $attribute)
+        {
+            $arrFields[] = "{$arrOptions['table']}.$attribute AS {$attribute}_fallback";
         }
 
         $arrFields[] = "c.sorting";

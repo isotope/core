@@ -167,23 +167,10 @@ $GLOBALS['TL_DCA']['tl_user']['fields']['iso_groups'] = array
 (
     'label'                 => &$GLOBALS['TL_LANG']['tl_user']['iso_groups'],
     'exclude'               => true,
-    'inputType'             => 'tableTree',
+    'inputType'             => 'checkbox',
+    'options_callback'      => array('\Isotope\tl_user', 'getGroups'),
+    'eval'                  => array('multiple'=>true, 'tl_class'=>'clr w50 w50h'),
     'sql'                   => 'blob NULL',
-    'reference'             => array
-    (
-        'icon' => array
-        (
-            'tl_iso_groups' => array('system/modules/isotope/assets/folders.png', 'system/modules/isotope/assets/folder-network.png')
-        )
-    ),
-    'eval' => array
-    (
-        'tableColumn'       => 'tl_iso_groups.name',
-        'fieldType'         => 'checkbox',
-        'title'             => &$GLOBALS['TL_LANG']['tl_iso_groups']['label'],
-        'children'          => true,
-        'tl_class'          => 'clr'
-    )
 );
 
 $GLOBALS['TL_DCA']['tl_user']['fields']['iso_groupp'] = array
@@ -193,6 +180,6 @@ $GLOBALS['TL_DCA']['tl_user']['fields']['iso_groupp'] = array
     'inputType'             => 'checkbox',
     'options'               => array('create', 'delete', 'rootPaste'),
     'reference'             => &$GLOBALS['TL_LANG']['MSC'],
-    'eval'                  => array('multiple'=>true, 'tl_class'=>'clr'),
+    'eval'                  => array('multiple'=>true, 'tl_class'=>'w50 w50h'),
     'sql'                   => 'blob NULL',
 );

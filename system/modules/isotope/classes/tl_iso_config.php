@@ -411,8 +411,6 @@ class tl_iso_config extends \Backend
     {
         $this->loadDataContainer('tl_iso_addresses');
 
-        $arrDCA = &$GLOBALS['TL_DCA']['tl_iso_addresses']['fields'];
-
         $arrFields = deserialize($varValue);
 
         if (empty($arrFields) || !is_array($arrFields)) {

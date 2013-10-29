@@ -18,7 +18,6 @@ namespace Isotope;
 
 use Isotope\Model\Address;
 use Isotope\Model\Document;
-use Isotope\Model\Config;
 use Isotope\Model\ProductCollection\Order;
 
 
