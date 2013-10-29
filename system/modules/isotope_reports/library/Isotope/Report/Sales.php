@@ -11,7 +11,6 @@
 
 namespace Isotope\Report;
 
-use Isotope\Isotope;
 use Isotope\Translation;
 
 

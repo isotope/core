@@ -137,6 +137,7 @@ class Paypal extends Postsale implements IsotopePayment
 
         $arrData = array();
         $fltDiscount = 0;
+        $i = 0;
 
         foreach (Isotope::getCart()->getItems() as $objItem) {
 

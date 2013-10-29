@@ -13,14 +13,11 @@
 namespace Isotope\Model\ProductCollection;
 
 use Isotope\Isotope;
-use Isotope\Interfaces\IsotopeProduct;
 use Isotope\Interfaces\IsotopeProductCollection;
-use Isotope\Model\Config;
 use Isotope\Model\Document;
 use Isotope\Model\OrderStatus;
 use Isotope\Model\Payment;
 use Isotope\Model\ProductCollection;
-use Isotope\Model\ProductCollectionItem;
 use Isotope\Model\ProductCollectionDownload;
 use Isotope\Model\Shipping;
 use NotificationCenter\Model\Notification;
@@ -182,7 +179,6 @@ class Order extends ProductCollection implements IsotopeProductCollection
 
         // Store address in address book
         if ($this->iso_addToAddressbook && $this->member > 0) {
-            $time = time();
 
             if ($objCart->getBillingAddress()->ptable != \MemberModel::getTable()) {
                 $objAddress = clone $objCart->getBillingAddress();

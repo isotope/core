@@ -32,8 +32,8 @@ class Expercash extends Payment implements IsotopePayment, IsotopePostsale
     /**
      * processPayment function.
      *
-     * @access public
-     * @return mixed
+     * @access  public
+     * @return  mixed|
      */
     public function processPayment()
     {

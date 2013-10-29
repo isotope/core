@@ -166,7 +166,7 @@ class Rule extends ProductCollectionSurcharge implements IsotopeProductCollectio
                         break;
 
                     default:
-                        throw new Exception('Unknown rule condition "' . $objRule->attributeCondition . '"');
+                        throw new \Exception('Unknown rule condition "' . $objRule->attributeCondition . '"');
                 }
             }
 
@@ -240,49 +240,5 @@ class Rule extends ProductCollectionSurcharge implements IsotopeProductCollectio
         }
 
         return $objSurcharge->total_price == 0 ? null : $objSurcharge;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        $intTaxClass = $objSource->tax_class;
-
-        $objSurcharge = new static();
-        $objSurcharge->label = ($strLabel . ' (' . $objSource->getLabel() . ')');
-        $objSurcharge->price = ($objSource->isPercentage() ? $objSource->getPercentage().'%' : '&nbsp;');
-        $objSurcharge->total_price = $objSource->getPrice();
-        $objSurcharge->tax_class = $intTaxClass;
-        $objSurcharge->before_tax = ($intTaxClass ? true : false);
-
-        if ($intTaxClass == -1)
-        {
-            $objSurcharge->applySplittedTax($objCollection);
-        }
-
-        return $objSurcharge;
     }
 }

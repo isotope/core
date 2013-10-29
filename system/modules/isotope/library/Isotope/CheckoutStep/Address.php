@@ -13,9 +13,7 @@
 
 namespace Isotope\CheckoutStep;
 
-use Isotope\Isotope;
 use Isotope\Model\Address as AddressModel;
-use Isotope\Translation;
 
 abstract class Address extends CheckoutStep
 {

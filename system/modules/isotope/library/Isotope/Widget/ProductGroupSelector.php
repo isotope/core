@@ -333,7 +333,6 @@ class ProductGroupSelector extends \Widget
      */
     protected function renderGrouptree($id, $intMargin)
     {
-        static $session;
         $session = $this->Session->getData();
 
         $flag = substr($this->strField, 0, 2).'g';
@@ -361,6 +360,7 @@ class ProductGroupSelector extends \Widget
         $childs = array();
 
         // Check whether there are child records
+        // @todo $blnNoRecursion is not defined
         if (!$blnNoRecursion)
         {
             $objNodes = \Database::getInstance()->prepare("SELECT id FROM tl_iso_groups WHERE pid=? ORDER BY sorting")->execute($id);

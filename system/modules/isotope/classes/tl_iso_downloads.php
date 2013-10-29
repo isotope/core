@@ -40,6 +40,7 @@ class tl_iso_downloads extends \Backend
         }
 
         $objDownload = Download::findByPk($row['id']);
+        $icon = '';
 
         if (null === $objDownload) {
             return '<p class="error">'.$GLOBALS['TL_LANG']['ERR']['invalidName'].'</p>';

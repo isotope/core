@@ -50,14 +50,14 @@ class Runonce extends \Controller
         foreach (scan(TL_ROOT . '/system/modules/isotope/library/Isotope/Upgrade') as $strFile) {
             $strVersion = pathinfo($strFile, PATHINFO_FILENAME);
             $strClass = 'Isotope\Upgrade\\' . $strVersion;
+            $strStep = 'Version ' . \Repository::formatVersion(substr($strVersion, 2));
 
             if (preg_match('/To[0-9]{10}/', $strVersion)) {
                 try {
-                    $step = 'Version ' . \Repository::formatVersion(substr($strVersion, 2));
                     $objUpgrade = new $strClass();
                     $objUpgrade->run($blnInstalled);
                 } catch (\Exception $e) {
-                    $this->handleException($step, $e);
+                    $this->handleException($strStep, $e);
                 }
             }
         }
@@ -71,7 +71,7 @@ class Runonce extends \Controller
             }
         }
 
-        \System::log('Upgraded Isotope eCommerce to ' . $step, TL_INFO, __METHOD__);
+        \System::log('Upgraded Isotope eCommerce to ' . $strStep, TL_INFO, __METHOD__);
     }
 
 

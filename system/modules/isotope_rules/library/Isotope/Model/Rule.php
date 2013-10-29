@@ -285,7 +285,7 @@ class Rule extends \Model
                         break;
 
                     default:
-                        throw new \InvalidArgumentException('Unknown rule condition "' . $restrictions['condition'] . '"');
+                        throw new \InvalidArgumentException('Unknown rule condition "' . $restriction['condition'] . '"');
                 }
 
                 $arrRestrictions[] = $strRestriction . ')';

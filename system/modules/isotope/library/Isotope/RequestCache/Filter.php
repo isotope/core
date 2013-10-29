@@ -207,10 +207,11 @@ class Filter implements \ArrayAccess
      */
     public static function matches(IsotopeProduct $objProduct)
     {
+        // @todo using $this in static environment
         if ($this->arrConfig['operator'] == '') {
             throw new \BadMethodCallException('Filter operator is not yet configured');
         }
-
+        // @todo using $this in static environment
         $varValues = $objProduct->{$this->arrConfig['attribute']};
 
         // If the attribute is not set for this product, we will ignore this attribute
@@ -222,50 +223,59 @@ class Filter implements \ArrayAccess
 
         foreach ($varValues as $varValue)
         {
+            // @todo using $this in static environment
             switch ($this->arrConfig['operator']) {
                 case 'like':
+                    // @todo $filter is undefined
                     if (stripos($varValue, $filter['value']) !== false) {
                         return true;
                     }
                     break;
 
                 case 'gt':
+                    // @todo using $this in static environment
                     if ($varValue > $this->arrConfig['value']) {
                         return true;
                     }
                     break;
 
                 case 'lt':
+                    // @todo using $this in static environment
                     if ($varValue < $this->arrConfig['value']) {
                         return true;
                     }
                     break;
 
                 case 'gte':
+                    // @todo using $this in static environment
                     if ($varValue >= $this->arrConfig['value']) {
                         return true;
                     }
                     break;
 
                 case 'lte':
+                    // @todo using $this in static environment
                     if ($varValue <= $this->arrConfig['value']) {
                         return true;
                     }
                     break;
 
                 case 'neq':
+                    // @todo using $this in static environment
                     if ($varValue != $this->arrConfig['value']) {
                         return true;
                     }
                     break;
 
                 case 'eq':
+                    // @todo using $this in static environment
                     if ($varValue == $this->arrConfig['value']) {
                         return true;
                     }
                     break;
 
                 default:
+                    // @todo using $this in static environment
                     throw new \UnexpectedValueException('Unknown filter operator "' . $this->arrConfig['operator'] . '"');
             }
         }

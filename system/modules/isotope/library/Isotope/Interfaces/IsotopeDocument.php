@@ -13,8 +13,6 @@
 namespace Isotope\Interfaces;
 
 use Isotope\Interfaces\IsotopeProductCollection;
-use Isotope\Model\Config;
-
 
 /**
  * Documents print a collection

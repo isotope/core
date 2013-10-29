@@ -601,6 +601,7 @@ window.addEvent('domready', function() {
             $intType = $objType->id;
         }
 
+        // @todo $insertId is undefined
         \Database::getInstance()->prepare("UPDATE $strTable SET gid=?, type=?, dateAdded=? WHERE id=?")->execute($intGroup, $intType, time(), $insertId);
     }
 
@@ -906,8 +907,8 @@ window.addEvent('domready', function() {
                 case 'variantFields':
                     $attributes = array();
 
-                    foreach ($GLOBALS['TL_DCA'][$dc->table]['list']['label']['variantFields'] as $field) {
-                        $attributes[] = '<strong>' . Isotope::formatLabel($dc->table, $field) . ':</strong>&nbsp;' . Isotope::formatValue($dc->table, $field, $objProduct->$field);
+                    foreach ($GLOBALS['TL_DCA'][$dc->table]['list']['label']['variantFields'] as $variantField) {
+                        $attributes[] = '<strong>' . Isotope::formatLabel($dc->table, $variantField) . ':</strong>&nbsp;' . Isotope::formatValue($dc->table, $variantField, $objProduct->$variantField);
                     }
 
                     $args[$i] = ($args[$i] ? $args[$i].'<br>' : '') . implode(', ', $attributes);

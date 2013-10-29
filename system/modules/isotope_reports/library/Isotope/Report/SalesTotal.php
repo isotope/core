@@ -55,7 +55,6 @@ class SalesTotal extends Sales
 									->execute($sqlDate);
 
 
-		$i = -1;
 		$arrCurrencies = array();
 		$arrData = $this->initializeData($strPeriod, $intStart, $intStop, $privateDate, $publicDate);
 		$arrChart = $this->initializeChart($strPeriod, $intStart, $intStop, $privateDate, $publicDate);
@@ -148,6 +147,7 @@ class SalesTotal extends Sales
 		{
 			$arrData['rows'][date($privateDate, $intStart)] = array
 			(
+                // @todo $i is undefined
 				'class' => (++$i%2 ? 'odd' : 'even'),
 				'columns' => array
 				(

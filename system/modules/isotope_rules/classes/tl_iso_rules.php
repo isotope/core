@@ -166,8 +166,8 @@ class tl_iso_rules extends \Backend
     /**
      * Get attributes that can be filtered
      *
-     * @param    DataContainer
-     * @return void
+     * @param   DataContainer
+     * @return  array
      */
     public function getAttributeNames($dc)
     {

@@ -528,7 +528,6 @@ $GLOBALS['TL_DCA']['tl_iso_rules'] = array
             'label'                         => &$GLOBALS['TL_LANG']['tl_iso_rules']['enabled'],
             'exclude'                       => true,
             'inputType'                     => 'checkbox',
-            'exclude'                       => true,
             'filter'                        => true,
             'sql'                           => "char(1) NOT NULL default ''",
         )
