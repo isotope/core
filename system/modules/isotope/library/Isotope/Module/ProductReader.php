@@ -137,16 +137,26 @@ class ProductReader extends Module
      */
     protected function addCanonicalProductUrls(IsotopeProduct $objProduct)
     {
-        // Only get pages of current root
         global $objPage;
-        $arrPages = \Database::getInstance()->getChildRecords($objPage->rootId, \PageModel::getTable());
-        $arrPages[] = $objPage->rootId;
+        $arrPageIds = \Database::getInstance()->getChildRecords($objPage->rootId, \PageModel::getTable());
+        $arrPageIds[] = $objPage->rootId;
 
-        $arrCanonicalCategories = array_intersect($objProduct->getCategories(), $arrPages);
+        // Find the categories in the current root
+        $arrCategories = array_intersect($objProduct->getCategories(), $arrPageIds);
 
-        foreach ($arrCanonicalCategories as $intPage) {
-            // The current page is not a canonical category
-            if ($intPage !== $objPage->id && ($objJumpTo = \PageModel::findWithDetails($intPage)) !== null) {
+        foreach ($arrCategories as $intPage) {
+
+            // Do not use the index page as canonical link
+            if ($objPage->alias == 'index' && count($arrCategories) > 1) {
+                continue;
+            }
+
+            // Current page is the primary one, do not generate canonical link
+            if ($intPage == $objPage->id) {
+                break;
+            }
+
+            if (($objJumpTo = \PageModel::findWithDetails($intPage)) !== null) {
 
                 $strDomain = \Environment::get('base');
 
@@ -156,11 +166,9 @@ class ProductReader extends Module
                 }
 
                 $GLOBALS['TL_HEAD'][] = sprintf('<link rel="canonical" href="%s">', $strDomain . $objProduct->generateUrl($objJumpTo));
-            }
 
-            // Only take the first matching category because this is our primary
-            // one and multiple canonical links are not allowed
-            break;
+                break;
+            }
         }
     }
 }
