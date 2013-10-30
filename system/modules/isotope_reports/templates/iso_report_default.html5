@@ -77,55 +77,6 @@ window.addEvent("domready", function() {
 
 <div class="tl_listing_container list_view mod_iso_reports">
 
-
-
-
-<?php if($this->addChart): ?>
-<div class="chart" style="margin-bottom:30px">
-<table id="report-data">
-<?php if($this->chart['header']): ?>
-<thead><tr>
-<?php foreach($this->chart['header'] as $col): ?>
-		<th><?php echo $col['value']; ?></th>
-<?php endforeach; ?>
-</tr></thead>
-<?php endif; ?>
-<?php if($this->chart['footer']): ?>
-<tfoot><tr>
-<?php foreach($this->chart['footer'] as $col): ?>
-		<td><?php echo $col['value']; ?></td>
-<?php endforeach; ?>
-</tr></tfoot>
-<?php endif; ?>
-<tbody>
-<?php foreach($this->chart['rows'] as $row): ?>
-	<tr>
-<?php foreach($row['columns'] as $col): ?>
-		<td><?php echo $col['value']; ?></td>
-<?php endforeach; ?>
-	</tr>
-<?php endforeach; ?>
-</tbody>
-</table>
-
-<script src="system/modules/isotope_reports/assets/MilkChart<?php echo (ISO_DEBUG ? '' : '.min'); ?>.js"></script>
-<script>
-window.addEvent('domready', function() {
-    new MilkChart.Column('report-data', {
-	    width:690,
-		padding:20,
-<?php if($this->chartHeight): ?>
-	    height: <?php echo $this->chartHeight; ?>,
-<?php endif; ?>
-		lineWeight:2
-    });
-})
-</script>
-</div>
-<?php endif; ?>
-
-
-
 <div class="iso_report_container">
 <table class="iso_report tl_listing showColumns">
 <?php if($this->data['header']): ?>
