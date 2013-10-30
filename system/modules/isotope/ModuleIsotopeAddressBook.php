@@ -146,7 +146,7 @@ class ModuleIsotopeAddressBook extends ModuleIsotope
 		global $objPage;
 		$arrAddresses = array();
 		$strUrl = $this->generateFrontendUrl($objPage->row()) . ($GLOBALS['TL_CONFIG']['disableAlias'] ? '&' : '?');
-		$objAddresses = $this->Database->execute("SELECT * FROM tl_iso_addresses WHERE pid={$this->User->id} AND store_id={$this->Isotope->Config->store_id}");
+		$objAddresses = $this->Database->prepare("SELECT * FROM tl_iso_addresses WHERE pid=? AND store_id=?")->execute($this->User->id, $this->Isotope->Config->store_id);
 
 		while ($objAddresses->next())
 		{

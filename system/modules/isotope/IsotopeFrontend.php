@@ -1485,7 +1485,7 @@ $endScript";
 		list($strScript, $strQueryString) = explode('?', $varUrl, 2);
 
 		$strRequest = preg_replace('/^&(amp;)?/i', '', $strRequest);
-		$queries = preg_split('/&(amp;)?/i', $strQueryString);
+		$queries = preg_split('/&(amp;)?/i', $strQueryString, -1, PREG_SPLIT_NO_EMPTY);
 
 		// Overwrite existing parameters and ignore "language", see #64
 		foreach ($queries as $k=>$v)

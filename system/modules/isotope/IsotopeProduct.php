@@ -191,7 +191,8 @@ class IsotopeProduct extends Controller
 		{
 			$this->loadVariantData($arrData);
 		}
-		elseif (!$this->isLocked())
+
+		if (!$this->isLocked() && !$this->hasVariantPrices())
 		{
 			// findPrice() is called by loadVariantData()
 			$this->findPrice();

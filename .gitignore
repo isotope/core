@@ -4,6 +4,7 @@
 # Do not ignore ".gitignore"
 !.gitignore
 !README.md
+!composer.json
 
 # Isotope ignoring rules
 !isotope/

@@ -106,7 +106,7 @@ class IsotopeCart extends IsotopeProductCollection
 
 				if (FE_USER_LOGGED_IN === true)
 				{
-					$objAddress = $this->Database->prepare("SELECT * FROM tl_iso_addresses WHERE pid={$this->User->id} AND store_id={$this->Isotope->Config->store_id} AND isDefaultBilling='1'")->limit(1)->execute();
+					$objAddress = $this->Database->prepare("SELECT * FROM tl_iso_addresses WHERE pid=? AND store_id=? AND isDefaultBilling='1'")->limit(1)->execute($this->User->id, $this->Isotope->Config->store_id);
 
 					if ($objAddress->numRows)
 					{
@@ -145,7 +145,7 @@ class IsotopeCart extends IsotopeProductCollection
 				{
 					$this->import('Isotope');
 
-					$objAddress = $this->Database->prepare("SELECT * FROM tl_iso_addresses WHERE pid={$this->User->id} AND store_id={$this->Isotope->Config->store_id} AND isDefaultShipping='1'")->limit(1)->execute();
+					$objAddress = $this->Database->prepare("SELECT * FROM tl_iso_addresses WHERE pid=? AND store_id=? AND isDefaultShipping='1'")->limit(1)->execute($this->User->id, $this->Isotope->Config->store_id);
 
 					if ($objAddress->numRows)
 					{

@@ -992,6 +992,7 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 				'quantity'			=> $objProduct->quantity_requested,
 				'tax_id'			=> $objProduct->tax_id,
 				'product_options'	=> $objProduct->getOptions(),
+                'product'	=> $objProduct
 			));
 		}
 
@@ -1102,7 +1103,7 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 
 		if (FE_USER_LOGGED_IN === true)
 		{
-			$objAddresses = $this->Database->execute("SELECT * FROM tl_iso_addresses WHERE pid={$this->User->id} AND store_id={$this->Isotope->Config->store_id} ORDER BY isDefaultBilling DESC, isDefaultShipping DESC");
+			$objAddresses = $this->Database->prepare("SELECT * FROM tl_iso_addresses WHERE pid=? AND store_id=? ORDER BY isDefaultBilling DESC, isDefaultShipping DESC")->execute($this->User->id, $this->Isotope->Config->store_id);
 
 			while ($objAddresses->next())
 			{

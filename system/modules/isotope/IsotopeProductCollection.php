@@ -899,6 +899,7 @@ abstract class IsotopeProductCollection extends Model
 				'total'				=> $objProduct->formatted_total_price,
 				'tax_free_total'	=> $this->Isotope->formatPriceWithCurrency($objProduct->tax_free_total_price),
 				'tax_id'			=> $objProduct->tax_id,
+                'product'	        => $objProduct
 			);
 		}
 
