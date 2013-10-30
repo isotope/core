@@ -329,16 +329,16 @@ $GLOBALS['TL_DCA']['tl_iso_payment_modules'] = array
             'label'                 => &$GLOBALS['TL_LANG']['tl_iso_payment_modules']['psp_hash_in'],
             'exclude'               => true,
             'inputType'             => 'text',
-            'eval'                  => array('maxlength'=>128, 'tl_class'=>'w50'),
             'sql'                   => "varchar(128) NOT NULL default ''" // Max is 512 bit hash = 128 hex digits
+            'eval'                  => array('mandatory'=>true, 'maxlength'=>128, 'hideInput'=>true, 'tl_class'=>'w50'),
         ),
         'psp_hash_out' => array
         (
             'label'                 => &$GLOBALS['TL_LANG']['tl_iso_payment_modules']['psp_hash_out'],
             'exclude'               => true,
             'inputType'             => 'text',
-            'eval'                  => array('maxlength'=>128, 'tl_class'=>'w50'),
             'sql'                   => "varchar(128) NOT NULL default ''" // Max is 512 bit hash = 128 hex digits
+            'eval'                  => array('mandatory'=>true, 'maxlength'=>128, 'hideInput'=>true, 'tl_class'=>'w50'),
         ),
         'psp_dynamic_template' => array
         (
