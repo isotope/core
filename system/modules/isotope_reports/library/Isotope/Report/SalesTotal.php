@@ -18,6 +18,13 @@ use Isotope\Model\Config;
 class SalesTotal extends Sales
 {
 
+    /**
+     * Template
+     * @var string
+     */
+    protected $strTemplate = 'iso_report_sales_total';
+
+
 	protected function compile()
 	{
 		$arrSession = \Session::getInstance()->get('iso_reports');
@@ -54,7 +61,6 @@ class SalesTotal extends Sales
 											HAVING dateGroup>=$dateFrom AND dateGroup<=$dateTo")
 									->execute($sqlDate);
 
-
 		$arrCurrencies = array();
 		$arrData = $this->initializeData($strPeriod, $intStart, $intStop, $privateDate, $publicDate);
 		$arrChart = $this->initializeChart($strPeriod, $intStart, $intStop, $privateDate, $publicDate);
@@ -79,7 +85,7 @@ class SalesTotal extends Sales
 			$arrData['footer'][3]['value'][$objData->currency] = ((float) $arrData['footer'][3]['value'][$objData->currency] + $objData->total_sales);
 
 			// Generate chart data
-			$arrChart['rows'][$objData->dateGroup]['columns'][$objData->currency]['value'] = ((float) $arrChart['rows'][$objData->dateGroup]['columns'][$objData->currency]['value'] + $objData->total_sales);
+			$arrChart[$objData->currency]['data'][$objData->dateGroup]['y'] = ((float) $arrChart['rows'][$objData->dateGroup]['columns'][$objData->currency]['value'] + $objData->total_sales);
 
 		}
 
@@ -87,7 +93,6 @@ class SalesTotal extends Sales
 		$arrData = $this->formatValues($arrData, $arrCurrencies);
 
 		$this->Template->data = $arrData;
-		$this->Template->addChart = true;
 		$this->Template->chart = $arrChart;
 	}
 
@@ -185,21 +190,22 @@ class SalesTotal extends Sales
 		$arrSession = \Session::getInstance()->get('iso_reports');
 		$intConfig = (int) $arrSession[$this->name]['iso_config'];
 
-		$arrData = array('header'=>array(), 'rows'=>array(), 'footer'=>array());
+
+		$arrData = array();
 		$arrCurrencies = \Database::getInstance()->execute("SELECT DISTINCT currency FROM tl_iso_config WHERE currency!=''" . ($intConfig > 0 ? ' AND id='.$intConfig : ''))->fetchEach('currency');
 
 		foreach ($arrCurrencies as $currency)
 		{
-			$arrData['header'][$currency]['value'] = $currency;
+			$arrData[$currency]['label'] = $currency;
+			$arrData[$currency]['className'] = '.'.strtolower($currency);
 		}
 
 		while ($intStart <= $intStop)
 		{
-			$arrData['footer'][date($privateDate, $intStart)]['value'] = $this->parseDate($publicDate, $intStart);
-
 			foreach ($arrCurrencies as $currency)
 			{
-				$arrData['rows'][date($privateDate, $intStart)]['columns'][$currency]['value'] = 0;
+                $arrData[$currency]['data'][date($privateDate, $intStart)]['x'] = $this->parseDate($publicDate, $intStart);
+				$arrData[$currency]['data'][date($privateDate, $intStart)]['y'] = 0;
 			}
 
 			$intStart = strtotime('+ 1 '.$strPeriod, $intStart);
