@@ -177,7 +177,7 @@ abstract class PSP extends Payment
             'OWNERZIP'      => $objBillingAddress->postal,
             'OWNERADDRESS'  => $objBillingAddress->street_1,
             'OWNERADDRESS2' => $objBillingAddress->street_2,
-            'OWNERCTY'      => $objBillingAddress->country,
+            'OWNERCTY'      => strtoupper($objBillingAddress->country),
             'OWNERTOWN'     => $objBillingAddress->city,
             'OWNERTELNO'    => $objBillingAddress->phone,
             'ACCEPTURL'     => \Environment::get('base') . \Isotope\Frontend::addQueryStringToUrl('uid=' . $objOrder->uniqid, \Isotope\Module\Checkout::generateUrlForStep('complete')),

@@ -124,10 +124,6 @@ class Postfinance extends PSP implements IsotopePayment, IsotopePostsale
         (
             'ECOM_BILLTO_POSTAL_NAME_FIRST'     => $objBillingAddress->firstname,
             'ECOM_BILLTO_POSTAL_NAME_LAST'      => $objBillingAddress->lastname,
-            'OWNERADDRESS'                      => $objBillingAddress->street_1,
-            'OWNERZIP'                          => $objBillingAddress->postal,
-            'OWNERTOWN'                         => $objBillingAddress->city,
-            'OWNERCTY'                          => strtoupper($objBillingAddress->country),
             'ECOM_CONSUMER_GENDER'              => $objBillingAddress->gender == 'male' ? 'M' : 'F',
             // This is mandatory if no P.O. Box and we don't have any
             'ECOM_SHIPTO_POSTAL_STREET_LINE1'   => $objShippingAddress->street_1,
