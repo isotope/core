@@ -140,7 +140,6 @@ class Postfinance extends PSP implements IsotopePayment, IsotopePostsale
             'ECOM_SHIPTO_POSTAL_CITY'           => $objShippingAddress->city,
             'ECOM_SHIPTO_POSTAL_COUNTRYCODE'    => strtoupper($objShippingAddress->country),
 
-
             'ECOM_SHIPTO_DOB'                   => date('d/m/Y', $objShippingAddress->dateOfBirth),
             // This key is mandatory and just has to be unique (20 chars)
             'REF_CUSTOMERID'                    => substr('psp_' . $this->id . '_' . $objOrder->id . '_' . $objOrder->uniqid, 0, 20)
@@ -156,8 +155,8 @@ class Postfinance extends PSP implements IsotopePayment, IsotopePostsale
         foreach (Isotope::getCart()->getItems() as $objItem) {
 
             $objPrice = $objItem->getProduct()->getPrice();
-
             $fltVat = Isotope::roundPrice((100 / $objPrice->getNetAmount() * $objPrice->getGrossAmount()) - 100, false);
+
             $arrOrder['ITEMID' . $i]        = $objItem->id;
             $arrOrder['ITEMNAME' . $i]      = $objItem->getName();
             $arrOrder['ITEMPRICE' . $i]     = $objPrice->getNetAmount();
@@ -167,7 +166,7 @@ class Postfinance extends PSP implements IsotopePayment, IsotopePostsale
             $arrOrder['FACEXCL' . $i]       = $objPrice->getNetAmount();
             $arrOrder['FACTOTAL' . $i]      = $objPrice->getGrossAmount();
 
-            $i++;
+            ++$i;
         }
 
         return array_merge($arrInvoice, $arrOrder);

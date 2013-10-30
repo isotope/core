@@ -36,10 +36,10 @@ $GLOBALS['TL_LANG']['tl_iso_payment_modules']['payflowpro_partner']             
 $GLOBALS['TL_LANG']['tl_iso_payment_modules']['payflowpro_password']                    = array('Paypal Payflow Pro api password', 'An alphanumeric string of about 11 characters');
 $GLOBALS['TL_LANG']['tl_iso_payment_modules']['payflowpro_transType']                   = array('Paypal Payflow Pro transaction type', 'Please select a transaction type.');
 $GLOBALS['TL_LANG']['tl_iso_payment_modules']['psp_pspid']                              = array('PSPID', 'The PSPID is your unique identification for the payment method.');
-$GLOBALS['TL_LANG']['tl_iso_payment_modules']['psp_hash_in']                            = array('SHA-IN signature', 'This will be used to validate the server to server communication.');
-$GLOBALS['TL_LANG']['tl_iso_payment_modules']['psp_hash_out']                           = array('SHA-OUT signature', 'This will be used to validate the server to server communication.');
 $GLOBALS['TL_LANG']['tl_iso_payment_modules']['psp_http_method']                        = array('HTTP method', 'Type of HTTP data transfer from and to the servers.');
 $GLOBALS['TL_LANG']['tl_iso_payment_modules']['psp_hash_method']                        = array('Hash method', 'Hashing algorithm for data transfer from and to the servers.');
+$GLOBALS['TL_LANG']['tl_iso_payment_modules']['psp_hash_in']                            = array('SHA-IN signature', 'This will be used to validate the server to server communication.');
+$GLOBALS['TL_LANG']['tl_iso_payment_modules']['psp_hash_out']                           = array('SHA-OUT signature', 'This will be used to validate the server to server communication.');
 $GLOBALS['TL_LANG']['tl_iso_payment_modules']['psp_dynamic_template']                   = array('Dynamic template URL', 'Enter a valid <strong>absolute</strong> URL to a dynamic template here.');
 $GLOBALS['TL_LANG']['tl_iso_payment_modules']['requireCCV']                             = array('Require Card Code Verification (CCV) Number', 'Choose this option if you would like to increase transaction security by requiring the card code verification number.');
 $GLOBALS['TL_LANG']['tl_iso_payment_modules']['allowed_cc_types']                       = array('Allowed Credit Card Types', 'Select which credit cards the payment method accepts.');

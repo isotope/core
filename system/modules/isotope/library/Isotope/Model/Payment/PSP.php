@@ -27,6 +27,7 @@ use Isotope\Model\ProductCollection\Order;
  */
 abstract class PSP extends Payment
 {
+
      /**
      * Process payment on confirmation page
      * @return  boolean
