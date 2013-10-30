@@ -226,34 +226,7 @@ $GLOBALS['TL_DCA']['tl_iso_addresses'] = array
             'inputType'             => 'text',
             'eval'                  => array('maxlength'=>255, 'feEditable'=>true, 'feGroup'=>'address', 'tl_class'=>'w50'),
             'sql'                   => "varchar(255) NOT NULL default ''",
-        ),/*
-        'street_number_1' => array
-        (
-            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_addresses']['street_number_1'],
-            'exclude'               => true,
-            'search'                => true,
-            'inputType'             => 'text',
-            'eval'                  => array('maxlength'=>255, 'feEditable'=>true, 'feGroup'=>'address', 'tl_class'=>'w50'),
-            'sql'                   => "varchar(255) NOT NULL default ''",
         ),
-        'street_number_2' => array
-        (
-            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_addresses']['street_number_2'],
-            'exclude'               => true,
-            'search'                => true,
-            'inputType'             => 'text',
-            'eval'                  => array('maxlength'=>255, 'feEditable'=>true, 'feGroup'=>'address', 'tl_class'=>'w50'),
-            'sql'                   => "varchar(255) NOT NULL default ''",
-        ),
-        'street_number_3' => array
-        (
-            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_addresses']['street_number_3'],
-            'exclude'               => true,
-            'search'                => true,
-            'inputType'             => 'text',
-            'eval'                  => array('maxlength'=>255, 'feEditable'=>true, 'feGroup'=>'address', 'tl_class'=>'w50'),
-            'sql'                   => "varchar(255) NOT NULL default ''",
-        ),*/
         'postal' => array
         (
             'label'                 => &$GLOBALS['TL_LANG']['tl_iso_addresses']['postal'],
