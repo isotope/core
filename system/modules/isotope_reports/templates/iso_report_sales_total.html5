@@ -77,6 +77,27 @@ window.addEvent("domready", function() {
 
 <div class="tl_listing_container list_view mod_iso_reports">
 
+
+<?php $GLOBALS['TL_CSS'][] = 'system/modules/isotope_reports/assets/xcharts/xcharts' . (ISO_DEBUG ? '' : '.min') . '.css'; ?>
+<figure style="width:690px; height:300px" id="report-data"></figure>
+<script src="system/modules/isotope_reports/assets/d3.v3/d3.v3<?php echo (ISO_DEBUG ? '' : '.min'); ?>.js"></script>
+<script src="system/modules/isotope_reports/assets/xcharts/xcharts<?php echo (ISO_DEBUG ? '' : '.min'); ?>.js"></script>
+<script>
+window.addEvent('domready', function() {
+    window.xchart_report = new xChart('line-dotted', {
+        'xScale':'ordinal',
+        'yScale':'linear',
+        'main': JSON.decode('<?php echo json_encode(array_values($this->chart)); ?>'),
+    }, '#report-data');
+});
+</script>
+<ul class="currencies">
+<?php $i=0; foreach ($this->chart as $currency => $data): ?>
+    <li class="color<?php echo $i++; ?>"><input type="checkbox" class="checkbox" id="toggle_<?php echo strtolower($currency); ?>" checked="checked" onchange="document.getElement('#report-data <?php echo $data['className']; ?>').setStyle('display', (this.checked ? 'block' : 'none'));"> <label for="toggle_<?php echo strtolower($currency); ?>"><?php echo $currency; ?></label></li>
+<?php endforeach; ?>
+</ul>
+
+
 <div class="iso_report_container">
 <table class="iso_report tl_listing showColumns">
 <?php if($this->data['header']): ?>
