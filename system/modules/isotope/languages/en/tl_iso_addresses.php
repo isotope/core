@@ -53,8 +53,6 @@ $GLOBALS['TL_LANG']['tl_iso_addresses']['personalData']         = 'Personal data
 $GLOBALS['TL_LANG']['tl_iso_addresses']['addressDetails']       = 'Address details';
 $GLOBALS['TL_LANG']['tl_iso_addresses']['contactDetails']       = 'Contact details';
 $GLOBALS['TL_LANG']['tl_iso_addresses']['loginDetails']         = 'Default address';
-$GLOBALS['TL_LANG']['tl_iso_addresses']['gender']['male']       = 'Male';
-$GLOBALS['TL_LANG']['tl_iso_addresses']['gender']['female']     = 'Female';
 
 /**
  * Buttons

@@ -140,9 +140,9 @@ $GLOBALS['TL_DCA']['tl_iso_addresses'] = array
             'exclude'               => true,
             'inputType'             => 'select',
             'options'               => array('male', 'female'),
-            'reference'             => &$GLOBALS['TL_LANG']['tl_iso_addresses']['gender'],
             'eval'                  => array('feEditable'=>true, 'feGroup'=>'personal', 'tl_class'=>'clr'),
             'sql'                   => "varchar(5) NOT NULL default ''",
+            'reference'             => &$GLOBALS['TL_LANG']['MSC'],
         ),
         'salutation' => array
         (
