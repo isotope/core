@@ -527,13 +527,19 @@ class IsotopeBackend extends Backend
 	    }
 
 	    // Can't see any orders if user does not have access to any shop config
-		$arrConfigs = BackendUser::getInstance()->iso_configs;
-		if (empty($arrConfigs) || !is_array($arrConfigs)) {
-		    return '';
-		}
+	    $strConfig = '';
+	    if (!BackendUser::getInstance()->isAdmin) {
+    		$arrConfigs = BackendUser::getInstance()->iso_configs;
+
+    		if (empty($arrConfigs) || !is_array($arrConfigs)) {
+    		    return '';
+    		}
+
+    		$strConfig = "AND o.config_id IN (" . implode(',', $arrConfigs) . ")";
+        }
 
 		$arrMessages = array();
-		$objOrders = $this->Database->query("SELECT COUNT(*) AS total, s.name FROM tl_iso_orders o LEFT JOIN tl_iso_orderstatus s ON o.status=s.id WHERE s.welcomescreen='1' AND o.config_id IN (" . implode(',', $arrConfigs) . ") GROUP BY s.id");
+		$objOrders = $this->Database->query("SELECT COUNT(*) AS total, s.name FROM tl_iso_orders o LEFT JOIN tl_iso_orderstatus s ON o.status=s.id WHERE s.welcomescreen='1' $strConfig GROUP BY s.id");
 
 		while ($objOrders->next())
 		{
