@@ -102,6 +102,7 @@ class ProductList extends Module
         global $objPage;
         $intPage = ($this->iso_category_scope == 'article' ? $GLOBALS['ISO_CONFIG']['current_article']['pid'] : $objPage->id);
         $arrProducts = null;
+        $arrCacheIds = null;
 
 		// Try to load the products from cache
         if ($this->blnCacheProducts && ($objCache = ProductCache::findForPageAndModule($intPage, $this->id)) !== null) {
@@ -142,7 +143,6 @@ class ProductList extends Module
                 $start = microtime(true);
 
                 // Load products
-                // @todo $arrCacheIds might have not been defined
                 $arrProducts = $this->findProducts($arrCacheIds);
 
                 // Decide if we should show the "caching products" message the next time

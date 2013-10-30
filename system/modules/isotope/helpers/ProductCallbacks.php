@@ -620,8 +620,7 @@ window.addEvent('domready', function() {
             $intType = $objType->id;
         }
 
-        // @todo $insertId is undefined
-        \Database::getInstance()->prepare("UPDATE $strTable SET gid=?, type=?, dateAdded=? WHERE id=?")->execute($intGroup, $intType, time(), $insertId);
+        \Database::getInstance()->prepare("UPDATE $strTable SET gid=?, type=?, dateAdded=? WHERE id=?")->execute($intGroup, $intType, time(), $insertID);
     }
 
 

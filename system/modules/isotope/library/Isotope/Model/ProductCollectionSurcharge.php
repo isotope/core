@@ -117,14 +117,14 @@ abstract class ProductCollectionSurcharge extends TypeAgent
 
     /**
      * Split tax amount amongst collection products
-     * @param IsotopeProductCollection
+     * @param   IsotopeProductCollection
+     * @param   bool
      */
-    public function applySplittedTax(IsotopeProductCollection $objCollection)
+    public function applySplittedTax(IsotopeProductCollection $objCollection, $blnPercentage)
     {
         $this->tax_class = 0;
         $this->before_tax = true;
 
-        // @todo $blnPercentage is undefined
         if (!$blnPercentage) {
             $fltTotal = $objCollection->getTaxFreeSubtotal();
 
@@ -134,12 +134,9 @@ abstract class ProductCollectionSurcharge extends TypeAgent
         }
 
         foreach ($objCollection->getItems() as $objItem) {
-            // @todo $blnPercentage is undefined
             if ($blnPercentage) {
-                // @todo $fltSurcharge is undefined
                 $fltProductPrice = $objItem->getTotal() / 100 * $fltSurcharge;
             } else {
-                // @todo $fltTotal might have not been defined
                 $fltProductPrice = $this->total_price / 100 * (100 / $fltTotal * $objItem->getTaxFreeTotal());
             }
 
@@ -483,9 +480,8 @@ abstract class ProductCollectionSurcharge extends TypeAgent
         $objSurcharge->tax_class = $intTaxClass;
         $objSurcharge->before_tax = ($intTaxClass ? true : false);
 
-        if ($intTaxClass == -1)
-        {
-            $objSurcharge->applySplittedTax($objCollection);
+        if ($intTaxClass == -1) {
+            $objSurcharge->applySplittedTax($objCollection, $objSource->isPercentage());
         }
 
         return $objSurcharge;

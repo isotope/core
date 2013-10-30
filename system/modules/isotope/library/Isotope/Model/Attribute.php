@@ -254,7 +254,7 @@ abstract class Attribute extends TypeAgent
 	    // Generate a HTML table for associative arrays
         if (is_array($varValue) && !array_is_assoc($varValue) && is_array($varValue[0]))
         {
-            $strBuffer = $this->generateTable($varValue);
+            $strBuffer = $this->generateTable($varValue, $objProduct);
         }
 
         // Generate ul/li listing for simpley arrays
@@ -325,9 +325,10 @@ abstract class Attribute extends TypeAgent
     /**
      * Generate HTML table for associative array values
      * @param   array
+     * @param   IsotopeProduct
      * @return  string
      */
-    protected function generateTable(array $arrValues)
+    protected function generateTable(array $arrValues, IsotopeProduct $objProduct)
     {
         $arrFormat = $GLOBALS['TL_DCA']['tl_iso_products']['fields'][$this->field_name]['tableformat'];
 
@@ -374,7 +375,6 @@ abstract class Attribute extends TypeAgent
                 {
                     $intTax = (int) $row['tax_class'];
 
-                    // @todo $objProduct is not defined
                     $value = Isotope::formatPriceWithCurrency(Isotope::calculatePrice($value, $objProduct, $this->field_name, $intTax));
                 }
                 else

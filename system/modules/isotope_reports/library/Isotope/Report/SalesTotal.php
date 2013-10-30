@@ -147,8 +147,6 @@ class SalesTotal extends Sales
 		{
 			$arrData['rows'][date($privateDate, $intStart)] = array
 			(
-                // @todo $i is undefined
-				'class' => (++$i%2 ? 'odd' : 'even'),
 				'columns' => array
 				(
 					array
@@ -175,6 +173,8 @@ class SalesTotal extends Sales
 
 			$intStart = strtotime('+ 1 '.$strPeriod, $intStart);
 		}
+
+        $arrData['rows'] = \Isotope\Frontend::generateRowClass($arrData['rows'], '', 'class', 0, ISO_CLASS_EVENODD);
 
 		return $arrData;
 	}
