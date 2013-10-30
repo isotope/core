@@ -38,8 +38,6 @@ class Runonce extends \Controller
      */
     public function run()
     {
-        $this->upgradeSystemConfiguration();
-
         // Check if shop has been installed (tl_store is the name for config table in version < 0.2)
         $blnInstalled = (\Database::getInstance()->tableExists('tl_iso_config') || \Database::getInstance()->tableExists('tl_store'));
 
@@ -98,15 +96,6 @@ h1 { font-size:18px; font-weight:normal; margin:0 0 18px; }
 </html>
 ';
         exit;
-    }
-
-
-    private function upgradeSystemConfiguration()
-    {
-        // Make sure file extension .imt (Isotope Mail Template) is allowed for up- and download
-        if (!in_array('imt', trimsplit(',', $GLOBALS['TL_CONFIG']['uploadTypes']))) {
-            $this->Config->update('$GLOBALS[\'TL_CONFIG\'][\'uploadTypes\']', $GLOBALS['TL_CONFIG']['uploadTypes'].',imt');
-        }
     }
 
 
