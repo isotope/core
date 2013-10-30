@@ -35,9 +35,12 @@ $GLOBALS['TL_LANG']['tl_iso_payment_modules']['payflowpro_vendor']              
 $GLOBALS['TL_LANG']['tl_iso_payment_modules']['payflowpro_partner']                     = array('Paypal Payflow Pro partner', 'Case-sensitive! Usual partner Ids are either "PayPal" or "PayPalUK".');
 $GLOBALS['TL_LANG']['tl_iso_payment_modules']['payflowpro_password']                    = array('Paypal Payflow Pro api password', 'An alphanumeric string of about 11 characters');
 $GLOBALS['TL_LANG']['tl_iso_payment_modules']['payflowpro_transType']                   = array('Paypal Payflow Pro transaction type', 'Please select a transaction type.');
-$GLOBALS['TL_LANG']['tl_iso_payment_modules']['postfinance_pspid']                      = array('Postfinance PSPID', 'The PSPID is your unique identification for the Postfinance system.');
-$GLOBALS['TL_LANG']['tl_iso_payment_modules']['postfinance_secret']                     = array('Postfinance SHA-1-IN signature', 'This will be used to validate the server communication.');
-$GLOBALS['TL_LANG']['tl_iso_payment_modules']['postfinance_method']                     = array('Postfinance method', 'Type of data transfer from postfinance.');
+$GLOBALS['TL_LANG']['tl_iso_payment_modules']['psp_pspid']                              = array('PSPID', 'The PSPID is your unique identification for the payment method.');
+$GLOBALS['TL_LANG']['tl_iso_payment_modules']['psp_http_method']                        = array('HTTP method', 'Type of HTTP data transfer from and to the servers.');
+$GLOBALS['TL_LANG']['tl_iso_payment_modules']['psp_hash_method']                        = array('Hash method', 'Hashing algorithm for data transfer from and to the servers.');
+$GLOBALS['TL_LANG']['tl_iso_payment_modules']['psp_hash_in']                            = array('SHA-IN signature', 'This will be used to validate the server to server communication.');
+$GLOBALS['TL_LANG']['tl_iso_payment_modules']['psp_hash_out']                           = array('SHA-OUT signature', 'This will be used to validate the server to server communication.');
+$GLOBALS['TL_LANG']['tl_iso_payment_modules']['psp_dynamic_template']                   = array('Dynamic template URL', 'Enter a valid <strong>absolute</strong> URL to a dynamic template here.');
 $GLOBALS['TL_LANG']['tl_iso_payment_modules']['requireCCV']                             = array('Require Card Code Verification (CCV) Number', 'Choose this option if you would like to increase transaction security by requiring the card code verification number.');
 $GLOBALS['TL_LANG']['tl_iso_payment_modules']['allowed_cc_types']                       = array('Allowed Credit Card Types', 'Select which credit cards the payment method accepts.');
 $GLOBALS['TL_LANG']['tl_iso_payment_modules']['datatrans_id']                           = array('Merchant-ID', 'Please enter your merchant ID.');
@@ -105,6 +108,9 @@ $GLOBALS['TL_LANG']['tl_iso_payment_modules']['expercash_paymentMethod']['cc_buy
 $GLOBALS['TL_LANG']['tl_iso_payment_modules']['expercash_paymentMethod']['cc_authorize']                = 'verbindliche Reservierung auf eine Kreditkarte zum späteren Einzug';
 $GLOBALS['TL_LANG']['tl_iso_payment_modules']['expercash_paymentMethod']['giropay']                     = 'Transaktion über giropay';
 $GLOBALS['TL_LANG']['tl_iso_payment_modules']['expercash_paymentMethod']['sofortueberweisung']          = 'Transaktion über Sofortüberweisung';
+$GLOBALS['TL_LANG']['tl_iso_payment_modules']['psp_hash_method']['sha1']                                = 'SHA-1';
+$GLOBALS['TL_LANG']['tl_iso_payment_modules']['psp_hash_method']['sha256']                              = 'SHA-256';
+$GLOBALS['TL_LANG']['tl_iso_payment_modules']['psp_hash_method']['sha512']                              = 'SHA-512';
 
 /**
  * Legends

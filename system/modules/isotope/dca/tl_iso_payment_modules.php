@@ -126,7 +126,8 @@ $GLOBALS['TL_DCA']['tl_iso_payment_modules'] = array
         'default'                   => '{type_legend},name,label,type',
         'cash'                      => '{type_legend},name,label,type;{note_legend:hide},note;{config_legend},new_order_status,minimum_total,maximum_total,countries,shipping_modules,product_types;{price_legend:hide},price,tax_class;{expert_legend:hide},guests,protected;{enabled_legend},enabled',
         'paypal'                    => '{type_legend},name,label,type;{note_legend:hide},note;{config_legend},new_order_status,minimum_total,maximum_total,countries,shipping_modules,product_types;{gateway_legend},paypal_account;{price_legend:hide},price,tax_class;{expert_legend:hide},guests,protected;{enabled_legend},debug,enabled',
-        'postfinance'               => '{type_legend},name,label,type;{note_legend:hide},note;{config_legend},new_order_status,minimum_total,maximum_total,countries,shipping_modules,product_types;{gateway_legend},postfinance_pspid,postfinance_secret,postfinance_method;{price_legend:hide},price,tax_class;{expert_legend:hide},guests,protected;{enabled_legend},debug,enabled',
+        'postfinance'               => '{type_legend},name,label,type;{note_legend:hide},note;{config_legend},new_order_status,minimum_total,maximum_total,countries,shipping_modules,product_types;{gateway_legend},psp_pspid,psp_http_method,psp_hash_method,psp_hash_in,psp_hash_out,psp_dynamic_template;{price_legend:hide},price,tax_class;{expert_legend:hide},guests,protected;{enabled_legend},debug,enabled',
+        'viveum'                    => '{type_legend},name,label,type;{note_legend:hide},note;{config_legend},new_order_status,minimum_total,maximum_total,countries,shipping_modules,product_types;{gateway_legend},psp_pspid,psp_http_method,psp_hash_method,psp_hash_in,psp_hash_out,psp_dynamic_template;{price_legend:hide},price,tax_class;{expert_legend:hide},guests,protected;{enabled_legend},debug,enabled',
         'datatrans'                 => '{type_legend},name,label,type;{note_legend:hide},note;{config_legend},new_order_status,trans_type,minimum_total,maximum_total,countries,shipping_modules,product_types;{gateway_legend},datatrans_id,datatrans_sign;{price_legend:hide},price,tax_class;{expert_legend:hide},guests,protected;{enabled_legend},debug,enabled',
         'sparkasse'                 => '{type_legend},name,label,type;{note_legend:hide},note;{config_legend:hide},new_order_status,minimum_total,maximum_total,countries,shipping_modules,product_types;{gateway_legend},sparkasse_paymentmethod,trans_type,sparkasse_sslmerchant,sparkasse_sslpassword,sparkasse_merchantref;{price_legend:hide},price,tax_class;{expert_legend:hide},guests,protected;{enabled_legend},debug,enabled',
         'sofortueberweisung'        => '{type_legend},name,label,type;{note_legend:hide},note;{config_legend:hide},new_order_status,minimum_total,maximum_total,countries,shipping_modules,product_types;{gateway_legend},trans_type,sofortueberweisung_user_id,sofortueberweisung_project_id,sofortueberweisung_project_password;{price_legend:hide},price,tax_class;{expert_legend:hide},guests,protected;{enabled_legend},enabled',
@@ -147,11 +148,11 @@ $GLOBALS['TL_DCA']['tl_iso_payment_modules'] = array
     (
         'id' => array
         (
-            'sql'                   => "int(10) unsigned NOT NULL auto_increment"
+            'sql'                   => "int(10) unsigned NOT NULL auto_increment",
         ),
         'tstamp' => array
         (
-            'sql'                   => "int(10) unsigned NOT NULL default '0'"
+            'sql'                   => "int(10) unsigned NOT NULL default '0'",
         ),
         'name' => array
         (
@@ -160,7 +161,7 @@ $GLOBALS['TL_DCA']['tl_iso_payment_modules'] = array
             'search'                => true,
             'inputType'             => 'text',
             'eval'                  => array('mandatory'=>true, 'maxlength'=>255, 'tl_class'=>'w50'),
-            'sql'                   => "varchar(255) NOT NULL default ''"
+            'sql'                   => "varchar(255) NOT NULL default ''",
         ),
         'label' => array
         (
@@ -168,7 +169,7 @@ $GLOBALS['TL_DCA']['tl_iso_payment_modules'] = array
             'exclude'               => true,
             'inputType'             => 'text',
             'eval'                  => array('maxlength'=>255, 'tl_class'=>'w50'),
-            'sql'                   => "varchar(255) NOT NULL default ''"
+            'sql'                   => "varchar(255) NOT NULL default ''",
         ),
         'type' => array
         (
@@ -179,7 +180,7 @@ $GLOBALS['TL_DCA']['tl_iso_payment_modules'] = array
             'default'               => 'cash',
             'options'               => \Isotope\Model\Payment::getModelTypeOptions(),
             'eval'                  => array('includeBlankOption'=>true, 'helpwizard'=>true, 'submitOnChange'=>true, 'chosen'=>true, 'tl_class'=>'w50'),
-            'sql'                   => "varchar(64) NOT NULL default ''"
+            'sql'                   => "varchar(64) NOT NULL default ''",
         ),
         'note' => array
         (
@@ -187,7 +188,7 @@ $GLOBALS['TL_DCA']['tl_iso_payment_modules'] = array
             'exclude'               => true,
             'inputType'             => 'textarea',
             'eval'                  => array('rte'=>'tinyMCE'),
-            'sql'                   => "text NULL"
+            'sql'                   => "text NULL",
         ),
         'new_order_status' => array
         (
@@ -198,7 +199,7 @@ $GLOBALS['TL_DCA']['tl_iso_payment_modules'] = array
             'options_callback'      => array('\Isotope\Backend', 'getOrderStatus'),
             'eval'                  => array('mandatory'=>true, 'includeBlankOption'=>true, 'tl_class'=>'w50'),
             'relation'              => array('type'=>'hasOne', 'load'=>'lazy'),
-            'sql'                   => "int(10) NOT NULL default '0'"
+            'sql'                   => "int(10) NOT NULL default '0'",
         ),
         'price' => array
         (
@@ -206,7 +207,7 @@ $GLOBALS['TL_DCA']['tl_iso_payment_modules'] = array
             'exclude'               => true,
             'inputType'             => 'text',
             'eval'                  => array('maxlength'=>16, 'rgxp'=>'surcharge', 'tl_class'=>'w50'),
-            'sql'                   => "varchar(16) NOT NULL default ''"
+            'sql'                   => "varchar(16) NOT NULL default ''",
         ),
         'tax_class' => array
         (
@@ -218,7 +219,7 @@ $GLOBALS['TL_DCA']['tl_iso_payment_modules'] = array
             'options_callback'      => array('\Isotope\Backend', 'getTaxClassesWithSplit'),
             'eval'                  => array('includeBlankOption'=>true, 'tl_class'=>'w50'),
             'relation'              => array('type'=>'hasOne', 'load'=>'lazy'),
-            'sql'                   => "int(10) NOT NULL default '0'"
+            'sql'                   => "int(10) NOT NULL default '0'",
         ),
         'allowed_cc_types' => array
         (
@@ -228,7 +229,7 @@ $GLOBALS['TL_DCA']['tl_iso_payment_modules'] = array
             'inputType'             => 'checkbox',
             'options_callback'      => array('Isotope\tl_iso_payment_modules', 'getAllowedCCTypes'),
             'eval'                  => array('multiple'=>true, 'tl_class'=>'clr'),
-            'sql'                   => "text NULL"
+            'sql'                   => "text NULL",
         ),
         'trans_type' => array
         (
@@ -239,7 +240,7 @@ $GLOBALS['TL_DCA']['tl_iso_payment_modules'] = array
             'options'               => array('capture', 'auth'),
             'eval'                  => array('mandatory'=>true, 'tl_class'=>'w50', 'helpwizard'=>true),
             'reference'             => $GLOBALS['TL_LANG']['tl_iso_payment_modules'],
-            'sql'                   => "varchar(8) NOT NULL default ''"
+            'sql'                   => "varchar(8) NOT NULL default ''",
         ),
         'minimum_total' => array
         (
@@ -248,7 +249,7 @@ $GLOBALS['TL_DCA']['tl_iso_payment_modules'] = array
             'inputType'             => 'text',
             'default'               => 0,
             'eval'                  => array('maxlength'=>255, 'rgxp'=>'price', 'tl_class'=>'clr w50'),
-            'sql'                   => "decimal(12,2) NOT NULL default '0.00'"
+            'sql'                   => "decimal(12,2) NOT NULL default '0.00'",
         ),
         'maximum_total' => array
         (
@@ -257,7 +258,7 @@ $GLOBALS['TL_DCA']['tl_iso_payment_modules'] = array
             'inputType'             => 'text',
             'default'               => 0,
             'eval'                  => array('maxlength'=>255, 'rgxp'=>'price', 'tl_class'=>'w50'),
-            'sql'                   => "decimal(12,2) NOT NULL default '0.00'"
+            'sql'                   => "decimal(12,2) NOT NULL default '0.00'",
         ),
         'countries' => array
         (
@@ -266,7 +267,7 @@ $GLOBALS['TL_DCA']['tl_iso_payment_modules'] = array
             'inputType'             => 'select',
             'options'               => \System::getCountries(),
             'eval'                  => array('multiple'=>true, 'size'=>8, 'tl_class'=>'w50 w50h', 'chosen'=>true),
-            'sql'                   => "blob NULL"
+            'sql'                   => "blob NULL",
         ),
         'shipping_modules' => array
         (
@@ -274,7 +275,7 @@ $GLOBALS['TL_DCA']['tl_iso_payment_modules'] = array
             'exclude'               => true,
             'inputType'             => 'select',
             'eval'                  => array('multiple'=>true, 'size'=>8, 'tl_class'=>'w50 w50h', 'chosen'=>true),
-            'sql'                   => "blob NULL"
+            'sql'                   => "blob NULL",
         ),
         'product_types' => array
         (
@@ -284,7 +285,7 @@ $GLOBALS['TL_DCA']['tl_iso_payment_modules'] = array
             'foreignKey'            => 'tl_iso_producttypes.name',
             'eval'                  => array('multiple'=>true, 'size'=>8, 'tl_class'=>'clr w50 w50h', 'chosen'=>true),
             'relation'              => array('type'=>'hasMany', 'load'=>'lazy'),
-            'sql'                   => "blob NULL"
+            'sql'                   => "blob NULL",
         ),
         'paypal_account' => array
         (
@@ -292,33 +293,60 @@ $GLOBALS['TL_DCA']['tl_iso_payment_modules'] = array
             'exclude'               => true,
             'inputType'             => 'text',
             'eval'                  => array('mandatory'=>true, 'maxlength'=>255, 'rgxp'=>'email', 'tl_class'=>'w50'),
-            'sql'                   => "varchar(255) NOT NULL default ''"
+            'sql'                   => "varchar(255) NOT NULL default ''",
         ),
-        'postfinance_pspid' => array
+        'psp_pspid' => array
         (
-            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_payment_modules']['postfinance_pspid'],
+            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_payment_modules']['psp_pspid'],
             'exclude'               => true,
             'inputType'             => 'text',
-            'eval'                  => array('mandatory'=>true, 'maxlength'=>255),
-            'sql'                   => "varchar(255) NOT NULL default ''"
+            'eval'                  => array('mandatory'=>true, 'maxlength'=>255, 'tl_class'=>'w50'),
+            'sql'                   => "varchar(255) NOT NULL default ''",
         ),
-        'postfinance_secret' => array
+        'psp_http_method' => array
         (
-            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_payment_modules']['postfinance_secret'],
-            'exclude'               => true,
-            'inputType'             => 'text',
-            'eval'                  => array('maxlength'=>255, 'tl_class'=>'w50'),
-            'sql'                   => "varchar(255) NOT NULL default ''"
-        ),
-        'postfinance_method' => array
-        (
-            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_payment_modules']['postfinance_method'],
+            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_payment_modules']['psp_http_method'],
             'exclude'               => true,
             'inputType'             => 'select',
             'default'               => 'POST',
             'options'               => array('POST', 'GET'),
             'eval'                  => array('mandatory'=>true, 'tl_class'=>'w50'),
-            'sql'                   => "varchar(4) NOT NULL default ''"
+            'sql'                   => "varchar(4) NOT NULL default ''",
+        ),
+        'psp_hash_method' => array
+        (
+            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_payment_modules']['psp_hash_method'],
+            'exclude'               => true,
+            'default'               => 'sha1',
+            'inputType'             => 'select',
+            'options'               => array('sha1', 'sha256', 'sha512'),
+            'reference'             => &$GLOBALS['TL_LANG']['tl_iso_payment_modules']['psp_hash_method'],
+            'eval'                  => array('mandatory'=>true, 'tl_class'=>'w50'),
+            'sql'                   => "varchar(6) NOT NULL default ''",
+        ),
+        'psp_hash_in' => array
+        (
+            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_payment_modules']['psp_hash_in'],
+            'exclude'               => true,
+            'inputType'             => 'text',
+            'eval'                  => array('mandatory'=>true, 'maxlength'=>128, 'hideInput'=>true, 'tl_class'=>'w50'),
+            'sql'                   => "varchar(128) NOT NULL default ''", // Max is 512 bit hash = 128 hex digits
+        ),
+        'psp_hash_out' => array
+        (
+            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_payment_modules']['psp_hash_out'],
+            'exclude'               => true,
+            'inputType'             => 'text',
+            'eval'                  => array('mandatory'=>true, 'maxlength'=>128, 'hideInput'=>true, 'tl_class'=>'w50'),
+            'sql'                   => "varchar(128) NOT NULL default ''", // Max is 512 bit hash = 128 hex digits
+        ),
+        'psp_dynamic_template' => array
+        (
+            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_payment_modules']['psp_dynamic_template'],
+            'exclude'               => true,
+            'inputType'             => 'text',
+            'eval'                  => array('maxlength'=>128, 'rgxp'=>'url', 'tl_class'=>'w50'),
+            'sql'                   => "varchar(128) NOT NULL default ''",
         ),
         'datatrans_id' => array
         (
@@ -326,7 +354,7 @@ $GLOBALS['TL_DCA']['tl_iso_payment_modules'] = array
             'exclude'               => true,
             'inputType'             => 'text',
             'eval'                  => array('mandatory'=>true, 'maxlength'=>100, 'rgxp'=>'digit', 'tl_class'=>'w50'),
-            'sql'                   => "varchar(16) NOT NULL default ''"
+            'sql'                   => "varchar(16) NOT NULL default ''",
         ),
         'datatrans_sign' => array
         (
@@ -334,7 +362,7 @@ $GLOBALS['TL_DCA']['tl_iso_payment_modules'] = array
             'exclude'               => true,
             'inputType'             => 'text',
             'eval'                  => array('mandatory'=>true, 'decodeEntities'=>true, 'tl_class'=>'w50'),
-            'sql'                   => "varchar(128) NOT NULL default ''"
+            'sql'                   => "varchar(128) NOT NULL default ''",
         ),
         'sparkasse_paymentmethod' => array
         (
@@ -344,7 +372,7 @@ $GLOBALS['TL_DCA']['tl_iso_payment_modules'] = array
             'options'               => array('creditcard', 'maestro', 'directdebit'),
             'reference'             => &$GLOBALS['TL_LANG']['tl_iso_payment_modules']['sparkasse_paymentmethod'],
             'eval'                  => array('mandatory'=>true, 'tl_class'=>'w50'),
-            'sql'                   => "varchar(32) NOT NULL default ''"
+            'sql'                   => "varchar(32) NOT NULL default ''",
         ),
         'sparkasse_sslmerchant' => array
         (
@@ -352,7 +380,7 @@ $GLOBALS['TL_DCA']['tl_iso_payment_modules'] = array
             'exclude'               => true,
             'inputType'             => 'text',
             'eval'                  => array('mandatory'=>true, 'maxlength'=>16, 'tl_class'=>'w50'),
-            'sql'                   => "varchar(16) NOT NULL default ''"
+            'sql'                   => "varchar(16) NOT NULL default ''",
         ),
         'sparkasse_sslpassword' => array
         (
@@ -360,7 +388,7 @@ $GLOBALS['TL_DCA']['tl_iso_payment_modules'] = array
             'exclude'               => true,
             'inputType'             => 'text',
             'eval'                  => array('mandatory'=>true, 'maxlength'=>255, 'hideInput'=>true, 'decodeEntities'=>true, 'tl_class'=>'w50'),
-            'sql'                   => "varchar(255) NOT NULL default ''"
+            'sql'                   => "varchar(255) NOT NULL default ''",
         ),
         'sparkasse_merchantref' => array
         (
@@ -368,7 +396,7 @@ $GLOBALS['TL_DCA']['tl_iso_payment_modules'] = array
             'exclude'               => true,
             'inputType'             => 'text',
             'eval'                  => array('maxlength'=>255, 'decodeEntities'=>true, 'tl_class'=>'clr long'),
-            'sql'                   => "varchar(255) NOT NULL default ''"
+            'sql'                   => "varchar(255) NOT NULL default ''",
         ),
         'sofortueberweisung_user_id' => array
         (

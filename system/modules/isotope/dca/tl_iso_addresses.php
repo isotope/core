@@ -93,7 +93,7 @@ $GLOBALS['TL_DCA']['tl_iso_addresses'] = array
     // Palettes
     'palettes' => array
     (
-        'default'                   => '{store_legend},label,store_id;{personal_legend},salutation,firstname,lastname,company,vat_no;{address_legend},street_1,street_2,street_3,postal,city,subdivision,country;{contact_legend},email,phone;{default_legend:hide},isDefaultBilling,isDefaultShipping',
+        'default'                   => '{store_legend},label,store_id;{personal_legend},gender,salutation,firstname,lastname,dateOfBirth,company,vat_no;{address_legend},street_1,street_2,street_3,street_number_1,street_number_2,street_number_3,postal,city,subdivision,country;{contact_legend},email,phone;{default_legend:hide},isDefaultBilling,isDefaultShipping',
     ),
 
     // Fields
@@ -134,12 +134,22 @@ $GLOBALS['TL_DCA']['tl_iso_addresses'] = array
             'eval'                  => array('mandatory'=>true, 'maxlength'=>2, 'rgxp'=>'digit', 'tl_class'=>'w50'),
             'sql'                   => "int(2) unsigned NOT NULL default '0'",
         ),
+        'gender' => array
+        (
+            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_addresses']['gender'],
+            'exclude'               => true,
+            'inputType'             => 'select',
+            'options'               => array('male', 'female'),
+            'reference'             => &$GLOBALS['TL_LANG']['MSC'],
+            'eval'                  => array('includeBlankOption'=>true, 'feEditable'=>true, 'feGroup'=>'personal', 'tl_class'=>'w50'),
+            'sql'                   => "varchar(32) NOT NULL default ''",
+        ),
         'salutation' => array
         (
             'label'                 => &$GLOBALS['TL_LANG']['tl_iso_addresses']['salutation'],
             'exclude'               => true,
             'inputType'             => 'text',
-            'eval'                  => array('maxlength'=>255, 'feEditable'=>true, 'feGroup'=>'personal', 'tl_class'=>'clr'),
+            'eval'                  => array('maxlength'=>255, 'feEditable'=>true, 'feGroup'=>'personal', 'tl_class'=>'w50'),
             'sql'                   => "varchar(255) NOT NULL default ''",
         ),
         'firstname' => array
@@ -161,6 +171,14 @@ $GLOBALS['TL_DCA']['tl_iso_addresses'] = array
             'inputType'             => 'text',
             'eval'                  => array('mandatory'=>true, 'maxlength'=>255, 'feEditable'=>true, 'feGroup'=>'personal', 'tl_class'=>'w50'),
             'sql'                   => "varchar(255) NOT NULL default ''",
+        ),
+        'dateOfBirth' => array
+        (
+            'label'                   => &$GLOBALS['TL_LANG']['tl_iso_addresses']['dateOfBirth'],
+            'exclude'                 => true,
+            'inputType'               => 'text',
+            'eval'                    => array('rgxp'=>'date', 'datepicker'=>true, 'feEditable'=>true, 'feViewable'=>true, 'feGroup'=>'personal', 'tl_class'=>'w50 wizard'),
+            'sql'                     => "varchar(11) NOT NULL default ''"
         ),
         'company' => array
         (
