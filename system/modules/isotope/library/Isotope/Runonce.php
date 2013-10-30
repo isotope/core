@@ -30,10 +30,6 @@ class Runonce extends \Controller
     public function __construct()
     {
         parent::__construct();
-
-        // Fix potential Exception on line 0 because of __destruct method (see http://dev.contao.org/issues/2236)
-        $this->import((TL_MODE=='BE' ? 'BackendUser' : 'FrontendUser'), 'User');
-        $this->import('Database');
     }
 
 
