@@ -348,11 +348,12 @@ class IsotopeRules extends Controller
 		$arrProcedures[] = "enabled='1'";
 
 		// Date & Time restrictions
-		$arrProcedures[] = "(startDate='' OR FROM_UNIXTIME(startDate,GET_FORMAT(DATE,'INTERNAL')) <= FROM_UNIXTIME(UNIX_TIMESTAMP(),GET_FORMAT(DATE,'INTERNAL')))";
-		$arrProcedures[] = "(endDate='' OR FROM_UNIXTIME(endDate,GET_FORMAT(DATE,'INTERNAL')) >= FROM_UNIXTIME(UNIX_TIMESTAMP(),GET_FORMAT(DATE,'INTERNAL')))";
-		$arrProcedures[] = "(startTime='' OR FROM_UNIXTIME(startTime,GET_FORMAT(TIME,'INTERNAL')) <= FROM_UNIXTIME(UNIX_TIMESTAMP(),GET_FORMAT(TIME,'INTERNAL')))";
-		$arrProcedures[] = "(endTime='' OR FROM_UNIXTIME(endTime,GET_FORMAT(TIME,'INTERNAL')) >= FROM_UNIXTIME(UNIX_TIMESTAMP(),GET_FORMAT(TIME,'INTERNAL')))";
-
+		$date = date('Y-m-d');
+		$time = date('H:i:s');
+		$arrProcedures[] = "(startDate='' OR startDate <= UNIX_TIMESTAMP('$date'))";
+		$arrProcedures[] = "(endDate='' OR endDate >= UNIX_TIMESTAMP('$date'))";
+		$arrProcedures[] = "(startTime='' OR startTime <= UNIX_TIMESTAMP('1970-01-01 $time'))";
+		$arrProcedures[] = "(endTime='' OR endTime >= UNIX_TIMESTAMP('1970-01-01 $time'))";
 
 		// Limits
 		$arrProcedures[] = "(limitPerConfig=0 OR limitPerConfig>(SELECT COUNT(*) FROM tl_iso_rule_usage WHERE pid=r.id AND config_id=".(int)$this->Isotope->Config->id." AND order_id NOT IN (SELECT id FROM tl_iso_orders WHERE cart_id=".(int)$this->Isotope->Cart->id.")))";
