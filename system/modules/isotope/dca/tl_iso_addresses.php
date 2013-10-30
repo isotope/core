@@ -140,16 +140,16 @@ $GLOBALS['TL_DCA']['tl_iso_addresses'] = array
             'exclude'               => true,
             'inputType'             => 'select',
             'options'               => array('male', 'female'),
-            'eval'                  => array('feEditable'=>true, 'feGroup'=>'personal', 'tl_class'=>'clr'),
             'sql'                   => "varchar(5) NOT NULL default ''",
             'reference'             => &$GLOBALS['TL_LANG']['MSC'],
+            'eval'                  => array('includeBlankOption'=>true, 'feEditable'=>true, 'feGroup'=>'personal', 'tl_class'=>'w50'),
         ),
         'salutation' => array
         (
             'label'                 => &$GLOBALS['TL_LANG']['tl_iso_addresses']['salutation'],
             'exclude'               => true,
             'inputType'             => 'text',
-            'eval'                  => array('maxlength'=>255, 'feEditable'=>true, 'feGroup'=>'personal', 'tl_class'=>'clr'),
+            'eval'                  => array('maxlength'=>255, 'feEditable'=>true, 'feGroup'=>'personal', 'tl_class'=>'w50'),
             'sql'                   => "varchar(255) NOT NULL default ''",
         ),
         'firstname' => array
