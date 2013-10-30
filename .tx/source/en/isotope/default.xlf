@@ -485,6 +485,12 @@
       <trans-unit id="MODEL.tl_iso_payment_modules.postfinance.1">
         <source>Payment gateway for the swiss post payment system that supports various card types. The store will be instantly notified about successfull transactions.</source>
       </trans-unit>
+      <trans-unit id="MODEL.tl_iso_payment_modules.viveum.0">
+        <source>VIVEUM</source>
+      </trans-unit>
+      <trans-unit id="MODEL.tl_iso_payment_modules.viveum.1">
+        <source>Payment gateway for VIVEUM Zahlungssysteme GmbH.</source>
+      </trans-unit>
       <trans-unit id="MODEL.tl_iso_payment_modules.datatrans.0">
         <source>Datatrans</source>
       </trans-unit>

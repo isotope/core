@@ -72,13 +72,13 @@
         <source>City</source>
       </trans-unit>
       <trans-unit id="tl_iso_config.city.1">
-        <source>Plase enter the name of the city.</source>
+        <source>Please enter the name of the city.</source>
       </trans-unit>
       <trans-unit id="tl_iso_config.subdivision.0">
         <source>State</source>
       </trans-unit>
       <trans-unit id="tl_iso_config.subdivision.1">
-        <source>Plase enter the name of the state.</source>
+        <source>Please enter the name of the state.</source>
       </trans-unit>
       <trans-unit id="tl_iso_config.country.0">
         <source>Country</source>

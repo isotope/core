@@ -116,23 +116,50 @@
       <trans-unit id="tl_iso_payment_modules.payflowpro_transType.1">
         <source>Please select a transaction type.</source>
       </trans-unit>
-      <trans-unit id="tl_iso_payment_modules.postfinance_pspid.0">
-        <source>Postfinance PSPID</source>
+      <trans-unit id="tl_iso_payment_modules.psp_pspid.0">
+        <source>PSPID</source>
       </trans-unit>
-      <trans-unit id="tl_iso_payment_modules.postfinance_pspid.1">
-        <source>The PSPID is your unique identification for the Postfinance system.</source>
+      <trans-unit id="tl_iso_payment_modules.psp_pspid.1">
+        <source>The PSPID is your unique identification for the payment method.</source>
       </trans-unit>
-      <trans-unit id="tl_iso_payment_modules.postfinance_secret.0">
-        <source>Postfinance SHA-1-IN signature</source>
+      <trans-unit id="tl_iso_payment_modules.psp_http_method.0">
+        <source>HTTP method</source>
       </trans-unit>
-      <trans-unit id="tl_iso_payment_modules.postfinance_secret.1">
-        <source>This will be used to validate the server communication.</source>
+      <trans-unit id="tl_iso_payment_modules.psp_http_method.1">
+        <source>Type of HTTP data transfer from and to the servers.</source>
       </trans-unit>
-      <trans-unit id="tl_iso_payment_modules.postfinance_method.0">
-        <source>Postfinance method</source>
+      <trans-unit id="tl_iso_payment_modules.psp_hash_method.0">
+        <source>Hash method</source>
       </trans-unit>
-      <trans-unit id="tl_iso_payment_modules.postfinance_method.1">
-        <source>Type of data transfer from postfinance.</source>
+      <trans-unit id="tl_iso_payment_modules.psp_hash_method.1">
+        <source>Hashing algorithm for data transfer from and to the servers.</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment_modules.psp_hash_method.sha1">
+        <source>SHA-1</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment_modules.psp_hash_method.sha256">
+        <source>SHA-256</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment_modules.psp_hash_method.sha512">
+        <source>SHA-512</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment_modules.psp_hash_in.0">
+        <source>SHA-IN signature</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment_modules.psp_hash_in.1">
+        <source>This will be used to validate the server to server communication.</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment_modules.psp_hash_out.0">
+        <source>SHA-OUT signature</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment_modules.psp_hash_out.1">
+        <source>This will be used to validate the server to server communication.</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment_modules.psp_dynamic_template.0">
+        <source>Dynamic template URL</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment_modules.psp_dynamic_template.1">
+        <source>Enter a valid &lt;strong&gt;absolute&lt;/strong&gt; URL to a dynamic template here.</source>
       </trans-unit>
       <trans-unit id="tl_iso_payment_modules.requireCCV.0">
         <source>Require Card Code Verification (CCV) Number</source>

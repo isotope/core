@@ -14,6 +14,12 @@
       <trans-unit id="tl_iso_addresses.label.1">
         <source>Please enter a custom label for this address.</source>
       </trans-unit>
+      <trans-unit id="tl_iso_addresses.gender.0">
+        <source>Gender</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_addresses.gender.1">
+        <source>Please choose the gender.</source>
+      </trans-unit>
       <trans-unit id="tl_iso_addresses.salutation.0">
         <source>Salutation</source>
       </trans-unit>
@@ -31,6 +37,12 @@
       </trans-unit>
       <trans-unit id="tl_iso_addresses.lastname.1">
         <source>Please enter the last name.</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_addresses.dateOfBirth.0">
+        <source>Date of birth</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_addresses.dateOfBirth.1">
+        <source>Please enter the date of birth.</source>
       </trans-unit>
       <trans-unit id="tl_iso_addresses.company.0">
         <source>Company</source>
@@ -72,13 +84,13 @@
         <source>City</source>
       </trans-unit>
       <trans-unit id="tl_iso_addresses.city.1">
-        <source>Plase enter the name of the city.</source>
+        <source>Please enter the name of the city.</source>
       </trans-unit>
       <trans-unit id="tl_iso_addresses.subdivision.0">
         <source>State</source>
       </trans-unit>
       <trans-unit id="tl_iso_addresses.subdivision.1">
-        <source>Plase enter the name of the state.</source>
+        <source>Please enter the name of the state.</source>
       </trans-unit>
       <trans-unit id="tl_iso_addresses.country.0">
         <source>Country</source>
