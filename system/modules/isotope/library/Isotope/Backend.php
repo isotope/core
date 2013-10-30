@@ -259,12 +259,24 @@ class Backend extends Contao_Backend
      */
     public function getOrderMessages()
     {
-        if (!\Database::getInstance()->tableExists('tl_iso_orderstatus')) {
+        if (!\Database::getInstance()->tableExists('tl_iso_orderstatus') || !\BackendUser::getInstance()->hasAccess('iso_orders', 'modules')) {
             return '';
         }
 
+        // Can't see any orders if user does not have access to any shop config
+        $strConfig = '';
+        if (!\BackendUser::getInstance()->isAdmin) {
+            $arrConfigs = \BackendUser::getInstance()->iso_configs;
+
+            if (empty($arrConfigs) || !is_array($arrConfigs)) {
+                return '';
+            }
+
+            $strConfig = "AND o.config_id IN (" . implode(',', $arrConfigs) . ")";
+        }
+
         $arrMessages = array();
-        $objOrders = \Database::getInstance()->query("SELECT COUNT(*) AS total, s.name FROM tl_iso_product_collection c LEFT JOIN tl_iso_orderstatus s ON c.order_status=s.id WHERE c.type='Order' AND s.welcomescreen='1' GROUP BY s.id");
+        $objOrders = \Database::getInstance()->query("SELECT COUNT(*) AS total, s.name FROM tl_iso_product_collection c LEFT JOIN tl_iso_orderstatus s ON c.order_status=s.id WHERE c.type='Order' AND s.welcomescreen='1' $strConfig GROUP BY s.id");
 
         while ($objOrders->next())
         {
