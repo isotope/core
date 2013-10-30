@@ -211,7 +211,7 @@ class ProductGroupSelector extends \Widget
             // Build the tree
             foreach ($arrIds as $id)
             {
-                $tree .= $this->renderGrouptree($id, -20);
+                $tree .= $this->renderGrouptree($id, -20, true);
             }
         }
         else
@@ -241,7 +241,7 @@ class ProductGroupSelector extends \Widget
                     $tree .= $this->renderGrouptree($objGroup->id, -20);
                 }
             } else {
-            	// Show only mounted groups to regular users
+                // Show only mounted groups to regular users
                 foreach ($this->eliminateNestedPages($this->User->iso_groups, 'tl_iso_groups') as $node) {
                     $tree .= $this->renderGrouptree($node, -20);
                 }
@@ -329,9 +329,10 @@ class ProductGroupSelector extends \Widget
      * Recursively render the grouptree
      * @param integer
      * @param integer
+     * @param boolean
      * @return string
      */
-    protected function renderGrouptree($id, $intMargin)
+    protected function renderGrouptree($id, $intMargin, $blnNoRecursion=false)
     {
         $session = $this->Session->getData();
 
@@ -360,7 +361,6 @@ class ProductGroupSelector extends \Widget
         $childs = array();
 
         // Check whether there are child records
-        // @todo $blnNoRecursion is not defined
         if (!$blnNoRecursion)
         {
             $objNodes = \Database::getInstance()->prepare("SELECT id FROM tl_iso_groups WHERE pid=? ORDER BY sorting")->execute($id);
