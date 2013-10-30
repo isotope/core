@@ -1,6 +1,6 @@
 <h2><?php echo $this->headline; ?></h2>
 <p class="message"><?php echo $this->message; ?></p>
-<form id="psp<?php echo $this->id; ?>" action="<?php echo $this->action; ?>" method="post">
+<form id="psp<?php echo $this->id; ?>" action="https://viveum.v-psp.com/ncol/<?php echo ($this->debug ? 'test' : 'prod'); ?>/orderstandard_utf8.asp" method="post">
 <?php foreach( $this->params as $k => $v ): ?>
 <input type="hidden" name="<?php echo $k; ?>" value="<?php echo $v; ?>">
 <?php endforeach; ?>

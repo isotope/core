@@ -18,7 +18,6 @@ use Isotope\Interfaces\IsotopePayment;
 use Isotope\Interfaces\IsotopePostsale;
 use Isotope\Model\Payment;
 use Isotope\Model\ProductCollection\Order;
-use Isotope\Template;
 
 
 /**
@@ -31,6 +30,13 @@ use Isotope\Template;
  */
 class Postfinance extends PSP implements IsotopePayment, IsotopePostsale
 {
+
+    /**
+     * Template
+     * @var string
+     */
+    protected $strTemplate = 'iso_payment_postfinance';
+
     /**
      * SHA-OUT relevant fields
      * @var array
@@ -90,17 +96,6 @@ class Postfinance extends PSP implements IsotopePayment, IsotopePostsale
         'VC'
     );
 
-    /**
-     * Creates the template instance
-     * @return  \FrontendTemplate
-     */
-    protected function prepareTemplate()
-    {
-        $objTemplate = new Template('iso_payment_psp');
-        $objTemplate->action = 'https://e-payment.postfinance.ch/ncol/' . ($this->debug ? 'test' : 'prod') . '/orderstandard_utf8.asp';
-
-        return $objTemplate;
-    }
 
     /**
      * Prepare PSP params

@@ -144,21 +144,16 @@ abstract class PSP extends Payment
 
         $arrParams['SHASIGN'] = strtoupper(hash($this->psp_hash_method, $strSHASign));
 
-        $objTemplate = $this->prepareTemplate();
+        $objTemplate = new \Isotope\Template($this->strTemplate);
+        $objTemplate->setData($this->arrData);
+
         $objTemplate->params    = $arrParams;
         $objTemplate->headline  = $GLOBALS['TL_LANG']['MSC']['pay_with_redirect'][0];
         $objTemplate->message   = $GLOBALS['TL_LANG']['MSC']['pay_with_redirect'][1];
         $objTemplate->slabel    = $GLOBALS['TL_LANG']['MSC']['pay_with_redirect'][2];
-        $objTemplate->id        = $this->id;
 
         return $objTemplate->parse();
     }
-
-    /**
-     * Creates the template instance
-     * @return  \FrontendTemplate
-     */
-    abstract protected function prepareTemplate();
 
     /**
      * Prepare PSP params

@@ -18,7 +18,6 @@ use Isotope\Interfaces\IsotopePayment;
 use Isotope\Interfaces\IsotopePostsale;
 use Isotope\Model\Payment;
 use Isotope\Model\ProductCollection\Order;
-use Isotope\Template;
 
 
 /**
@@ -30,6 +29,13 @@ use Isotope\Template;
  */
 class Viveum extends PSP implements IsotopePayment, IsotopePostsale
 {
+
+    /**
+     * Template
+     * @var string
+     */
+    protected $strTemplate = 'iso_payment_viveum';
+
     /**
      * SHA-OUT relevant fields
      * @var array
@@ -82,16 +88,4 @@ class Viveum extends PSP implements IsotopePayment, IsotopePostsale
         'TRXDATE',
         'VC'
     );
-
-    /**
-     * Creates the template instance
-     * @return  \FrontendTemplate
-     */
-    protected function prepareTemplate()
-    {
-        $objTemplate = new Template('iso_payment_psp');
-        $objTemplate->action = 'https://viveum.v-psp.com/ncol/' . ($this->debug ? 'test' : 'prod') . '/orderstandard_utf8.asp';
-
-        return $objTemplate;
-    }
 }
