@@ -112,8 +112,7 @@ class ProductList extends Module
             if ($objCache->keywords == \Input::get('keywords')) {
             	$arrCacheIds = $this->generatePagination($arrCacheIds);
 
-                // @todo: $arrIds is not defined
-                $arrProducts = Product::findAvailableByIds($arrIds, array(
+                $arrProducts = Product::findAvailableByIds($arrCacheIds, array(
                     'order' => \Database::getInstance()->findInSet(Product::getTable().'.id', $arrCacheIds)
                 ));
 
