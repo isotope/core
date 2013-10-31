@@ -30,7 +30,7 @@ $GLOBALS['TL_DCA']['tl_iso_products'] = array
         'dataContainer'             => 'ProductData',
         'enableVersioning'          => true,
         'switchToEdit'              => true,
-        'gtable'                    => 'tl_iso_groups',
+        'gtable'                    => \Isotope\Model\Group::getTable(),
         'ctable'                    => array(\Isotope\Model\Download::getTable(), \Isotope\Model\ProductCategory::getTable(), \Isotope\Model\ProductPrice::getTable()),
         'onload_callback' => array
         (
@@ -111,7 +111,7 @@ $GLOBALS['TL_DCA']['tl_iso_products'] = array
             'groups' => array
             (
                 'label'             => &$GLOBALS['TL_LANG']['tl_iso_products']['product_groups'],
-                'href'              => 'table=tl_iso_groups',
+                'href'              => 'table='.\Isotope\Model\Group::getTable(),
                 'icon'              => 'system/modules/isotope/assets/folders.png',
                 'attributes'        => 'onclick="Backend.getScrollOffset();"',
                 'button_callback'   => array('Isotope\ProductCallbacks', 'groupsButton')
@@ -228,7 +228,7 @@ $GLOBALS['TL_DCA']['tl_iso_products'] = array
         ),
         'gid' => array
         (
-            'foreignKey'            => 'tl_iso_groups.name',
+            'foreignKey'            => \Isotope\Model\Group::getTable().'.name',
             'eval'                  => array('doNotShow'=>true),
             'attributes'            => array('systemColumn'=>true),
             'sql'                   => "int(10) unsigned NOT NULL default '0'",

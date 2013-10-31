@@ -63,15 +63,15 @@ class DC_ProductData extends \DC_Table
 
         // Check if the group exists
         if ($this->intGroupId > 0) {
-            $objGroup = \Database::getInstance()->prepare("SELECT id FROM tl_iso_groups WHERE id=?")->execute($this->intGroupId);
+            $objGroup = \Isotope\Model\Group::findByPk($this->intGroupId);
 
-            if (!$objGroup->numRows) {
+            if (null === $objGroup) {
                 if (\BackendUser::getInstance()->isAdmin || !is_array(\BackendUser::getInstance()->iso_groups)) {
                     $this->intGroupId = 0;
                 }
             } elseif (!\BackendUser::getInstance()->isAdmin) {
                 $this->intGroupId = (int) \Database::getInstance()->prepare(
-                    "SELECT id FROM tl_iso_groups WHERE id IN ('" . implode("','", \BackendUser::getInstance()->iso_groups) . "') ORDER BY " . \Database::getInstance()->findInSet('id', \BackendUser::getInstance()->iso_groups)
+                    "SELECT id FROM " . \Isotope\Model\Group::getTable() . " WHERE id IN ('" . implode("','", \BackendUser::getInstance()->iso_groups) . "') ORDER BY " . \Database::getInstance()->findInSet('id', \BackendUser::getInstance()->iso_groups)
                 )->limit(1)->execute()->id;
             }
         }
@@ -150,7 +150,7 @@ class DC_ProductData extends \DC_Table
         $this->procedure[] = "language=''";
 
         // Display products filtered by group
-        $this->procedure[] = "gid IN(" . implode(',', array_map('intval', \Database::getInstance()->getChildRecords(array($this->intGroupId), 'tl_iso_groups', false, array($this->intGroupId)))) . ")";
+        $this->procedure[] = "gid IN(" . implode(',', array_map('intval', \Database::getInstance()->getChildRecords(array($this->intGroupId), \Isotope\Model\Group::getTable(), false, array($this->intGroupId)))) . ")";
 
         // Custom filter
         if (is_array($GLOBALS['TL_DCA'][$this->strTable]['list']['sorting']['filter']) && !empty($GLOBALS['TL_DCA'][$this->strTable]['list']['sorting']['filter'])) {
