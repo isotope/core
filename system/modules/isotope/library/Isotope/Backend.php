@@ -216,27 +216,6 @@ class Backend extends Contao_Backend
 
 
     /**
-     * Get all tax classes, including a "split amonst products" option
-     * @param DataContainer
-     * @return array
-     */
-    public static function getTaxClassesWithSplit()
-    {
-        $arrTaxes = array();
-        $objTaxes = \Database::getInstance()->execute("SELECT * FROM tl_iso_tax_class ORDER BY name");
-
-        while ($objTaxes->next())
-        {
-            $arrTaxes[$objTaxes->id] = $objTaxes->name;
-        }
-
-        $arrTaxes[-1] = $GLOBALS['TL_LANG']['MSC']['splittedTaxRate'];
-
-        return $arrTaxes;
-    }
-
-
-    /**
      * Get order status and return it as array
      * @return array
      */

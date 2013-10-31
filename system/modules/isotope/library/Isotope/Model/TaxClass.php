@@ -135,4 +135,26 @@ class TaxClass extends \Model
     {
         return static::findOneBy('fallback', '1', $arrOptions);
     }
+
+
+    /**
+     * Get all tax classes suitable for DCA options, including a "split amonst products" option
+     * @param DataContainer
+     * @return array
+     */
+    public static function getOptionsWithSplit()
+    {
+        $arrTaxes = array();
+        $objTaxes = static::findAll(array('order'=>'name'));
+
+        if (null !== $objTaxes) {
+            while ($objTaxes->next()) {
+                $arrTaxes[$objTaxes->id] = $objTaxes->name;
+            }
+        }
+
+        $arrTaxes[-1] = $GLOBALS['TL_LANG']['MSC']['splittedTaxRate'];
+
+        return $arrTaxes;
+    }
 }
