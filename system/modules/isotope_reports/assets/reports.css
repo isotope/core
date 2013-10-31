@@ -1,18 +1,3 @@
-.iso_reports .item a {
-	display: block;
-	width:100px;
-	height: 70px;
-	margin-right: 8px;
-	margin-bottom: 5px;
-	margin-top: 15px;
-	padding: 5px;
-	border-radius: 5px;
-	float:left;
-	text-align: center;
-}
-.iso_reports .item span {
-	display: block;
-}
 .mod_iso_reports {
 	overflow: auto;
 }
