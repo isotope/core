@@ -19,10 +19,10 @@ use Isotope\Model\RelatedCategory;
 
 
 /**
- * Class tl_iso_related_products
+ * Class tl_iso_related_product
  * Provide miscellaneous methods that are used by the data configuration array.
  */
-class tl_iso_related_products extends \Backend
+class tl_iso_related_product extends \Backend
 {
 
     /**
@@ -36,7 +36,7 @@ class tl_iso_related_products extends \Backend
         $strCategory = RelatedCategory::findByPk($row['category'])->name;
 
         $strBuffer = '
-<div class="cte_type" style="color:#666966"><strong>' . $GLOBALS['TL_LANG']['tl_iso_related_products']['category'][0] . ':</strong> ' . $strCategory . '</div>';
+<div class="cte_type" style="color:#666966"><strong>' . $GLOBALS['TL_LANG']['tl_iso_related_product']['category'][0] . ':</strong> ' . $strCategory . '</div>';
 
         $arrProducts = deserialize($row['products']);
 
@@ -74,14 +74,14 @@ class tl_iso_related_products extends \Backend
 
         if (empty($arrCategories))
         {
-            $GLOBALS['TL_DCA']['tl_iso_related_products']['config']['closed'] = true;
+            $GLOBALS['TL_DCA']['tl_iso_related_product']['config']['closed'] = true;
         }
 
         if (\Input::get('act') == 'edit')
         {
-            unset($GLOBALS['TL_DCA']['tl_iso_related_products']['fields']['category']['foreignKey']);
-            $GLOBALS['TL_DCA']['tl_iso_related_products']['fields']['category']['options'] = $arrCategories;
-            $GLOBALS['TL_DCA']['tl_iso_related_products']['fields']['products']['eval']['allowedIds'] = \Database::getInstance()->prepare("SELECT id FROM tl_iso_products WHERE pid=0 AND id!=(SELECT pid FROM tl_iso_related_products WHERE id=?)")->execute($dc->id)->fetchEach('id');
+            unset($GLOBALS['TL_DCA']['tl_iso_related_product']['fields']['category']['foreignKey']);
+            $GLOBALS['TL_DCA']['tl_iso_related_product']['fields']['category']['options'] = $arrCategories;
+            $GLOBALS['TL_DCA']['tl_iso_related_product']['fields']['products']['eval']['allowedIds'] = \Database::getInstance()->prepare("SELECT id FROM tl_iso_products WHERE pid=0 AND id!=(SELECT pid FROM tl_iso_related_product WHERE id=?)")->execute($dc->id)->fetchEach('id');
         }
     }
 }

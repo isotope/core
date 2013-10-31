@@ -15,9 +15,9 @@
 
 
 /**
- * Table tl_iso_related_products
+ * Table tl_iso_related_product
  */
-$GLOBALS['TL_DCA']['tl_iso_related_products'] = array
+$GLOBALS['TL_DCA']['tl_iso_related_product'] = array
 (
 
     // Config
@@ -28,7 +28,7 @@ $GLOBALS['TL_DCA']['tl_iso_related_products'] = array
         'ptable'                    => 'tl_iso_products',
         'onload_callback'           => array
         (
-            array('Isotope\tl_iso_related_products', 'initDCA')
+            array('Isotope\tl_iso_related_product', 'initDCA')
         ),
         'sql' => array
         (
@@ -51,7 +51,7 @@ $GLOBALS['TL_DCA']['tl_iso_related_products'] = array
             'panelLayout'           => 'filter,limit',
             'headerFields'          => array('type', 'name', 'alias', 'sku'),
             'disableGrouping'       => true,
-            'child_record_callback' => array('Isotope\tl_iso_related_products', 'listRows')
+            'child_record_callback' => array('Isotope\tl_iso_related_product', 'listRows')
         ),
         'global_operations' => array
         (
@@ -67,26 +67,26 @@ $GLOBALS['TL_DCA']['tl_iso_related_products'] = array
         (
             'edit' => array
             (
-                'label'             => &$GLOBALS['TL_LANG']['tl_iso_related_products']['edit'],
+                'label'             => &$GLOBALS['TL_LANG']['tl_iso_related_product']['edit'],
                 'href'              => 'act=edit',
                 'icon'              => 'edit.gif'
             ),
             'copy' => array
             (
-                'label'             => &$GLOBALS['TL_LANG']['tl_iso_related_products']['copy'],
+                'label'             => &$GLOBALS['TL_LANG']['tl_iso_related_product']['copy'],
                 'href'              => 'act=copy',
                 'icon'              => 'copy.gif'
             ),
             'delete' => array
             (
-                'label'             => &$GLOBALS['TL_LANG']['tl_iso_related_products']['delete'],
+                'label'             => &$GLOBALS['TL_LANG']['tl_iso_related_product']['delete'],
                 'href'              => 'act=delete',
                 'icon'              => 'delete.gif',
                 'attributes'        => 'onclick="if (!confirm(\'' . $GLOBALS['TL_LANG']['MSC']['deleteConfirm'] . '\')) return false; Backend.getScrollOffset();"'
             ),
             'show' => array
             (
-                'label'             => &$GLOBALS['TL_LANG']['tl_iso_related_products']['show'],
+                'label'             => &$GLOBALS['TL_LANG']['tl_iso_related_product']['show'],
                 'href'              => 'act=show',
                 'icon'              => 'show.gif'
             ),
@@ -122,7 +122,7 @@ $GLOBALS['TL_DCA']['tl_iso_related_products'] = array
         ),
         'category' => array
         (
-            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_related_products']['category'],
+            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_related_product']['category'],
             'exclude'               => true,
             'filter'                => true,
             'inputType'             => 'select',
@@ -133,7 +133,7 @@ $GLOBALS['TL_DCA']['tl_iso_related_products'] = array
         ),
         'products' => array
         (
-            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_related_products']['products'],
+            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_related_product']['products'],
             'exclude'               => true,
             'inputType'             => 'text',
             'eval'                  => array('mandatory'=>true, 'tl_class'=>'long'),
