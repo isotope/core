@@ -27,14 +27,14 @@ class tl_module extends \Backend
 {
 
     /**
-     * Load tl_iso_products data container and language file
+     * Load tl_iso_product data container and language file
      */
     public function __construct()
     {
         parent::__construct();
 
-        $this->loadDataContainer('tl_iso_products');
-        \System::loadLanguageFile('tl_iso_products');
+        $this->loadDataContainer('tl_iso_product');
+        \System::loadLanguageFile('tl_iso_product');
     }
 
 
@@ -46,7 +46,7 @@ class tl_module extends \Backend
     {
         $arrAttributes = array();
 
-        foreach ($GLOBALS['TL_DCA']['tl_iso_products']['fields'] as $field => $arrData)
+        foreach ($GLOBALS['TL_DCA']['tl_iso_product']['fields'] as $field => $arrData)
         {
             if ($arrData['attributes']['fe_filter'])
             {
@@ -66,7 +66,7 @@ class tl_module extends \Backend
     {
         $arrAttributes = array();
 
-        foreach ($GLOBALS['TL_DCA']['tl_iso_products']['fields'] as $field => $arrData)
+        foreach ($GLOBALS['TL_DCA']['tl_iso_product']['fields'] as $field => $arrData)
         {
             if ($arrData['attributes']['fe_sorting'])
             {
@@ -86,7 +86,7 @@ class tl_module extends \Backend
     {
         $arrAttributes = array();
 
-        foreach ($GLOBALS['TL_DCA']['tl_iso_products']['fields'] as $field => $arrData)
+        foreach ($GLOBALS['TL_DCA']['tl_iso_product']['fields'] as $field => $arrData)
         {
             if ($arrData['attributes']['fe_search'])
             {
@@ -106,7 +106,7 @@ class tl_module extends \Backend
     {
         $arrAttributes = array();
 
-        foreach ($GLOBALS['TL_DCA']['tl_iso_products']['fields'] as $field => $arrData)
+        foreach ($GLOBALS['TL_DCA']['tl_iso_product']['fields'] as $field => $arrData)
         {
             if ($arrData['attributes']['fe_search'] && !$arrData['attributes']['dynamic'])
             {

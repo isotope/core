@@ -281,7 +281,7 @@ class Backend extends Contao_Backend
         }
         else
         {
-            $arrNewRecords = $_SESSION['BE_DATA']['new_records']['tl_iso_products'];
+            $arrNewRecords = $_SESSION['BE_DATA']['new_records']['tl_iso_product'];
             $arrProductTypes = $objUser->iso_product_types;
             $arrGroups = array();
 
@@ -296,7 +296,7 @@ class Backend extends Contao_Backend
             }
 
             $objProducts = \Database::getInstance()->execute("
-                SELECT id FROM tl_iso_products
+                SELECT id FROM tl_iso_product
                 WHERE pid=0
                     AND language=''
                     " . (empty($arrGroups) ? '' : "AND gid IN (" . implode(',', $arrGroups) . ")") . "
@@ -312,7 +312,7 @@ class Backend extends Contao_Backend
             }
 
             $arrProducts = $objProducts->fetchEach('id');
-            $arrProducts = array_merge($arrProducts, \Database::getInstance()->getChildRecords($arrProducts, 'tl_iso_products'));
+            $arrProducts = array_merge($arrProducts, \Database::getInstance()->getChildRecords($arrProducts, 'tl_iso_product'));
         }
 
         // HOOK: allow extensions to define allowed products
@@ -342,7 +342,7 @@ class Backend extends Contao_Backend
         }
 
         // If all product are allowed, we don't need to filter
-        if ($arrProducts === true || count($arrProducts) == \Database::getInstance()->execute("SELECT COUNT(id) as total FROM tl_iso_products")->total)
+        if ($arrProducts === true || count($arrProducts) == \Database::getInstance()->execute("SELECT COUNT(id) as total FROM tl_iso_product")->total)
         {
             return true;
         }
@@ -381,7 +381,7 @@ class Backend extends Contao_Backend
         // Include the product in variants view
         if ($intProductId)
         {
-            $objProduct = $objDatabase->prepare("SELECT gid, name FROM tl_iso_products WHERE id=?")
+            $objProduct = $objDatabase->prepare("SELECT gid, name FROM tl_iso_product WHERE id=?")
                                       ->limit(1)
                                       ->execute($intProductId);
 
@@ -490,7 +490,7 @@ class Backend extends Contao_Backend
             // Filter the pages
             case 'filterPages':
                 $filter = $this->Session->get('filter');
-                $filter['tl_iso_products']['iso_pages'] = array_map('intval', (array) \Input::post('value'));
+                $filter['tl_iso_product']['iso_pages'] = array_map('intval', (array) \Input::post('value'));
                 $this->Session->set('filter', $filter);
                 $this->reload();
                 break;

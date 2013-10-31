@@ -193,22 +193,22 @@ $GLOBALS['TL_LANG']['CTE']['isotope']                           = 'Isotope eComm
 /**
  * Shipping methods
  */
-$GLOBALS['TL_LANG']['MODEL']['tl_iso_shipping_modules.flat']    = array('Flat-price shipping');
+$GLOBALS['TL_LANG']['MODEL']['tl_iso_shipping.flat']    = array('Flat-price shipping');
 
 /**
  * Payment methods
  */
-$GLOBALS['TL_LANG']['MODEL']['tl_iso_payment_modules.cash']                 = array('Cash', 'Use this for all offline processed payment.');
-$GLOBALS['TL_LANG']['MODEL']['tl_iso_payment_modules.paypal']               = array('PayPal Standard Checkout', 'This PayPal module supports IPN (Instant Payment Notifications).');
-$GLOBALS['TL_LANG']['MODEL']['tl_iso_payment_modules.postfinance']          = array('Postfinance', 'Payment gateway for the swiss post payment system that supports various card types. The store will be instantly notified about successfull transactions.');
-$GLOBALS['TL_LANG']['MODEL']['tl_iso_payment_modules.viveum']               = array('VIVEUM', 'Payment gateway for VIVEUM Zahlungssysteme GmbH.');
-$GLOBALS['TL_LANG']['MODEL']['tl_iso_payment_modules.datatrans']            = array('Datatrans', 'A payment module for the swiss payment gateway "Datatrans".');
-$GLOBALS['TL_LANG']['MODEL']['tl_iso_payment_modules.sparkasse']            = array('Sparkasse');
-$GLOBALS['TL_LANG']['MODEL']['tl_iso_payment_modules.saferpay']             = array('Saferpay');
-$GLOBALS['TL_LANG']['MODEL']['tl_iso_payment_modules.sofortueberweisung']   = array('sofortüberweisung.de');
-$GLOBALS['TL_LANG']['MODEL']['tl_iso_payment_modules.expercash']            = array('ExperCash');
-$GLOBALS['TL_LANG']['MODEL']['tl_iso_payment_modules.payone']               = array('PayOne');
-$GLOBALS['TL_LANG']['MODEL']['tl_iso_payment_modules.worldpay']             = array('WorldPay');
+$GLOBALS['TL_LANG']['MODEL']['tl_iso_payment.cash']                 = array('Cash', 'Use this for all offline processed payment.');
+$GLOBALS['TL_LANG']['MODEL']['tl_iso_payment.paypal']               = array('PayPal Standard Checkout', 'This PayPal module supports IPN (Instant Payment Notifications).');
+$GLOBALS['TL_LANG']['MODEL']['tl_iso_payment.postfinance']          = array('Postfinance', 'Payment gateway for the swiss post payment system that supports various card types. The store will be instantly notified about successfull transactions.');
+$GLOBALS['TL_LANG']['MODEL']['tl_iso_payment.viveum']               = array('VIVEUM', 'Payment gateway for VIVEUM Zahlungssysteme GmbH.');
+$GLOBALS['TL_LANG']['MODEL']['tl_iso_payment.datatrans']            = array('Datatrans', 'A payment module for the swiss payment gateway "Datatrans".');
+$GLOBALS['TL_LANG']['MODEL']['tl_iso_payment.sparkasse']            = array('Sparkasse');
+$GLOBALS['TL_LANG']['MODEL']['tl_iso_payment.saferpay']             = array('Saferpay');
+$GLOBALS['TL_LANG']['MODEL']['tl_iso_payment.sofortueberweisung']   = array('sofortüberweisung.de');
+$GLOBALS['TL_LANG']['MODEL']['tl_iso_payment.expercash']            = array('ExperCash');
+$GLOBALS['TL_LANG']['MODEL']['tl_iso_payment.payone']               = array('PayOne');
+$GLOBALS['TL_LANG']['MODEL']['tl_iso_payment.worldpay']             = array('WorldPay');
 
 /**
  * Documents
@@ -224,7 +224,7 @@ $GLOBALS['TL_LANG']['MODEL']['tl_iso_gallery.inline']   = array('Inline gallery'
 /**
  * Product types
  */
-$GLOBALS['TL_LANG']['MODEL']['tl_iso_products.standard'] = array('Standard product', 'A default product. Select this if nothing else matches.');
+$GLOBALS['TL_LANG']['MODEL']['tl_iso_product.standard'] = array('Standard product', 'A default product. Select this if nothing else matches.');
 
 /**
  * Credit card types

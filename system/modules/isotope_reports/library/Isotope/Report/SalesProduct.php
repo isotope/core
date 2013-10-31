@@ -21,8 +21,8 @@ class SalesProduct extends Sales
 	{
 		$this->initializeDefaultValues();
 
-		$this->loadLanguageFile('tl_iso_products');
-		$this->loadDataContainer('tl_iso_products');
+		$this->loadLanguageFile('tl_iso_product');
+		$this->loadDataContainer('tl_iso_product');
 
 		return parent::generate();
 	}
@@ -110,10 +110,10 @@ class SalesProduct extends Sales
 
 				foreach (deserialize($objProducts->product_options, true) as $strName => $strValue)
 				{
-					if (isset($GLOBALS['TL_DCA']['tl_iso_products']['fields'][$strName]))
+					if (isset($GLOBALS['TL_DCA']['tl_iso_product']['fields'][$strName]))
 					{
-						$strValue = $GLOBALS['TL_DCA']['tl_iso_products']['fields'][$strName]['options'][$strValue] ? $GLOBALS['TL_DCA']['tl_iso_products']['fields'][$strName]['options'][$strValue] : $strValue;
-						$strName = $GLOBALS['TL_DCA']['tl_iso_products']['fields'][$strName]['label'][0] ? $GLOBALS['TL_DCA']['tl_iso_products']['fields'][$strName]['label'][0] : $strName;
+						$strValue = $GLOBALS['TL_DCA']['tl_iso_product']['fields'][$strName]['options'][$strValue] ? $GLOBALS['TL_DCA']['tl_iso_product']['fields'][$strName]['options'][$strValue] : $strValue;
+						$strName = $GLOBALS['TL_DCA']['tl_iso_product']['fields'][$strName]['label'][0] ? $GLOBALS['TL_DCA']['tl_iso_product']['fields'][$strName]['label'][0] : $strName;
 					}
 
 					$arrOptions[] = '<span class="variant">' . $strName . ': ' . $strValue . '</span>';

@@ -70,12 +70,12 @@ class ProductGroupSelector extends \Widget
     {
         parent::__construct($arrAttributes);
 
-        $this->loadDataContainer('tl_iso_groups');
-        \System::loadLanguageFile('tl_iso_groups');
+        $this->loadDataContainer('tl_iso_group');
+        \System::loadLanguageFile('tl_iso_group');
 
         $this->import('Database');
         $this->import('BackendUser', 'User');
-        $this->import('Isotope\tl_iso_groups', 'tl_iso_groups');
+        $this->import('Isotope\tl_iso_group', 'tl_iso_group');
     }
 
 
@@ -170,7 +170,7 @@ class ProductGroupSelector extends \Widget
                 $for = substr($for, 1);
             }
 
-            $objRoot = \Database::getInstance()->prepare("SELECT id FROM tl_iso_groups WHERE CAST(name AS CHAR) REGEXP ?")->execute($for);
+            $objRoot = \Database::getInstance()->prepare("SELECT id FROM tl_iso_group WHERE CAST(name AS CHAR) REGEXP ?")->execute($for);
 
             if ($objRoot->numRows > 0)
             {
@@ -182,7 +182,7 @@ class ProductGroupSelector extends \Widget
                     while ($objRoot->next())
                     {
                         // Predefined node set (see #3563)
-                        if (count(array_intersect($GLOBALS['TL_DCA'][$this->strTable]['fields'][$this->strField]['rootNodes'], \Database::getInstance()->getParentRecords($objRoot->id, 'tl_iso_groups'))) > 0)
+                        if (count(array_intersect($GLOBALS['TL_DCA'][$this->strTable]['fields'][$this->strField]['rootNodes'], \Database::getInstance()->getParentRecords($objRoot->id, 'tl_iso_group'))) > 0)
                         {
                             $arrRoot[] = $objRoot->id;
                         }
@@ -199,7 +199,7 @@ class ProductGroupSelector extends \Widget
 
                     while ($objRoot->next()) {
                         // Show only mounted groups to regular users
-                        if (count(array_intersect($this->User->iso_groups, $this->Database->getParentRecords($objRoot->id, 'tl_iso_groups'))) > 0) {
+                        if (count(array_intersect($this->User->iso_groups, $this->Database->getParentRecords($objRoot->id, 'tl_iso_group'))) > 0) {
                             $arrRoot[] = $objRoot->id;
                         }
                     }
@@ -234,7 +234,7 @@ class ProductGroupSelector extends \Widget
             // Show all groups to admins
             elseif ($this->User->isAdmin)
             {
-                $objGroup = \Database::getInstance()->execute("SELECT id FROM tl_iso_groups WHERE pid=0 ORDER BY sorting");
+                $objGroup = \Database::getInstance()->execute("SELECT id FROM tl_iso_group WHERE pid=0 ORDER BY sorting");
 
                 while ($objGroup->next())
                 {
@@ -242,7 +242,7 @@ class ProductGroupSelector extends \Widget
                 }
             } else {
                 // Show only mounted groups to regular users
-                foreach ($this->eliminateNestedPages($this->User->iso_groups, 'tl_iso_groups') as $node) {
+                foreach ($this->eliminateNestedPages($this->User->iso_groups, 'tl_iso_group') as $node) {
                     $tree .= $this->renderGrouptree($node, -20);
                 }
             }
@@ -261,7 +261,7 @@ class ProductGroupSelector extends \Widget
 
         // Return the tree
         return '<ul class="tl_listing tree_view picker_selector'.(($this->strClass != '') ? ' ' . $this->strClass : '').'" id="'.$this->strId.'">
-    <li class="tl_folder_top"><div class="tl_left">'.\Image::getHtml($GLOBALS['TL_DCA'][$this->strTable]['list']['sorting']['icon']).' '.$GLOBALS['TL_LANG']['tl_iso_groups']['label'].'</div> <div class="tl_right">&nbsp;</div><div style="clear:both"></div></li><li class="parent" id="'.$this->strId.'_parent"><ul>'.$tree.$strReset.'
+    <li class="tl_folder_top"><div class="tl_left">'.\Image::getHtml($GLOBALS['TL_DCA'][$this->strTable]['list']['sorting']['icon']).' '.$GLOBALS['TL_LANG']['tl_iso_group']['label'].'</div> <div class="tl_right">&nbsp;</div><div style="clear:both"></div></li><li class="parent" id="'.$this->strId.'_parent"><ul>'.$tree.$strReset.'
   </ul></li></ul>';
     }
 
@@ -314,7 +314,7 @@ class ProductGroupSelector extends \Widget
         $tree = '';
         $level = $level * 20;
 
-        $objGroup = \Database::getInstance()->prepare("SELECT id FROM tl_iso_groups WHERE pid=? ORDER BY sorting")->execute($id);
+        $objGroup = \Database::getInstance()->prepare("SELECT id FROM tl_iso_group WHERE pid=? ORDER BY sorting")->execute($id);
 
         while ($objGroup->next())
         {
@@ -348,7 +348,7 @@ class ProductGroupSelector extends \Widget
             \Controller::redirect(preg_replace('/(&(amp;)?|\?)'.$flag.'tg=[^& ]*/i', '', \Environment::get('request')));
         }
 
-        $objGroup = \Database::getInstance()->prepare("SELECT * FROM tl_iso_groups WHERE id=?")->execute($id);
+        $objGroup = \Database::getInstance()->prepare("SELECT * FROM tl_iso_group WHERE id=?")->execute($id);
 
         // Return if there is no result
         if ($objGroup->numRows < 1)
@@ -363,7 +363,7 @@ class ProductGroupSelector extends \Widget
         // Check whether there are child records
         if (!$blnNoRecursion)
         {
-            $objNodes = \Database::getInstance()->prepare("SELECT id FROM tl_iso_groups WHERE pid=? ORDER BY sorting")->execute($id);
+            $objNodes = \Database::getInstance()->prepare("SELECT id FROM tl_iso_group WHERE pid=? ORDER BY sorting")->execute($id);
 
             if ($objNodes->numRows)
             {
@@ -387,7 +387,7 @@ class ProductGroupSelector extends \Widget
         }
 
         $href = '<a href="' . $this->addToUrl('gid='.$objGroup->id) . '" title="'.specialchars($objGroup->name . ' (ID ' . $objGroup->id . ')').'">'.$objGroup->name.'</a>';
-        $callback = $GLOBALS['TL_DCA']['tl_iso_groups']['list']['label']['label_callback'];
+        $callback = $GLOBALS['TL_DCA']['tl_iso_group']['list']['label']['label_callback'];
 
         // Load the label_callback
         if (is_array($callback) && !empty($callback)) {
@@ -445,7 +445,7 @@ class ProductGroupSelector extends \Widget
 
         foreach ($this->varValue as $id)
         {
-            $arrPids = \Database::getInstance()->getParentRecords($id, 'tl_iso_groups');
+            $arrPids = \Database::getInstance()->getParentRecords($id, 'tl_iso_group');
             array_shift($arrPids); // the first element is the ID of the group itself
             $this->arrNodes = array_merge($this->arrNodes, $arrPids);
         }

@@ -51,7 +51,7 @@ class Rule extends ProductCollectionSurcharge implements IsotopeProductCollectio
         // Product or producttype restrictions
         if ($objRule->productRestrictions != '' && $objRule->productRestrictions != 'none')
         {
-            $arrLimit = \Database::getInstance()->execute("SELECT object_id FROM tl_iso_rule_restrictions WHERE pid={$objRule->id} AND type='{$objRule->productRestrictions}'")->fetchEach('object_id');
+            $arrLimit = \Database::getInstance()->execute("SELECT object_id FROM tl_iso_rule_restriction WHERE pid={$objRule->id} AND type='{$objRule->productRestrictions}'")->fetchEach('object_id');
 
             if ($objRule->productRestrictions == 'pages' && !empty($arrLimit))
             {

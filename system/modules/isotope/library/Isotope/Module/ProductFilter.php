@@ -224,8 +224,8 @@ class ProductFilter extends Module
             {
                 $arrValues = array();
                 $objValues = \Database::getInstance()->execute("
-                    SELECT DISTINCT p1.$strField FROM tl_iso_products p1
-                    LEFT OUTER JOIN tl_iso_products p2 ON p1.pid=p2.id
+                    SELECT DISTINCT p1.$strField FROM tl_iso_product p1
+                    LEFT OUTER JOIN tl_iso_product p2 ON p1.pid=p2.id
                     WHERE p1.language='' AND p1.$strField!=''"
                     . (BE_USER_LOGGED_IN === true ? '' : " AND p1.published='1' AND (p1.start='' OR p1.start<$time) AND (p1.stop='' OR p1.stop>$time)")
                     . "AND (p1.id IN (SELECT pid FROM " . \Isotope\Model\ProductCategory::getTable() . " WHERE page_id IN (" . implode(',', $arrCategories) . "))
@@ -265,7 +265,7 @@ class ProductFilter extends Module
                         continue;
                     }
 
-                    $arrData = $GLOBALS['TL_DCA']['tl_iso_products']['fields'][$strField];
+                    $arrData = $GLOBALS['TL_DCA']['tl_iso_product']['fields'][$strField];
 
                     if (is_array($GLOBALS['ISO_ATTR'][$arrData['inputType']]['callback']) && !empty($GLOBALS['ISO_ATTR'][$arrData['inputType']]['callback']))
                     {
@@ -378,14 +378,14 @@ class ProductFilter extends Module
 
                     $arrOptions[] = array
                     (
-                        'label'     => (Isotope::formatLabel('tl_iso_products', $field) . ', ' . $asc),
+                        'label'     => (Isotope::formatLabel('tl_iso_product', $field) . ', ' . $asc),
                         'value'     => $field.':ASC',
                         'default'   => ((null !== $objSorting && $objSorting->isAscending()) ? '1' : ''),
                     );
 
                     $arrOptions[] = array
                     (
-                        'label'     => (Isotope::formatLabel('tl_iso_products', $field) . ', ' . $desc),
+                        'label'     => (Isotope::formatLabel('tl_iso_product', $field) . ', ' . $desc),
                         'value'     => $field.':DESC',
                         'default'   => ((null !== $objSorting && $objSorting->isDescending()) ? '1' : ''),
                     );
@@ -458,7 +458,7 @@ class ProductFilter extends Module
      */
     protected function getSortingLabels($field)
     {
-        $arrData = $GLOBALS['TL_DCA']['tl_iso_products']['fields'][$field];
+        $arrData = $GLOBALS['TL_DCA']['tl_iso_product']['fields'][$field];
 
         switch ($arrData['eval']['rgxp'])
         {

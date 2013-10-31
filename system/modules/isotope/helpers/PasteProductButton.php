@@ -26,7 +26,7 @@ class PasteProductButton extends \Backend
 {
 
     /**
-     * Handle the paste button callback for tl_iso_products
+     * Handle the paste button callback for tl_iso_product
      * @param DataContainer
      * @param array
      * @param string
@@ -69,13 +69,13 @@ class PasteProductButton extends \Backend
     protected function pasteVariant($objProduct, $table, $row, $arrClipboard)
     {
         // Can't copy variant into it's current product
-        if ($table == 'tl_iso_products' && $objProduct->pid == $row['id'] && $arrClipboard['mode'] == 'copy')
+        if ($table == 'tl_iso_product' && $objProduct->pid == $row['id'] && $arrClipboard['mode'] == 'copy')
         {
             return $this->getPasteButton(false);
         }
 
         // Disable paste button for products without variant data
-        elseif ($table == 'tl_iso_products' && $row['id'] > 0)
+        elseif ($table == 'tl_iso_product' && $row['id'] > 0)
         {
             $objType = ProductType::findByPk($row['type']);
 
@@ -96,7 +96,7 @@ class PasteProductButton extends \Backend
     protected function pasteAll($objProduct, $table, $row, $arrClipboard)
     {
         // Can't paste products in product or variant
-        if ($table == 'tl_iso_products' && $row['id'] > 0)
+        if ($table == 'tl_iso_product' && $row['id'] > 0)
         {
             return '';
         }

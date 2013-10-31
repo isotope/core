@@ -26,6 +26,6 @@ class Label extends \Model
      * Name of the current table
      * @var string
      */
-    protected static $strTable = 'tl_iso_labels';
+    protected static $strTable = 'tl_iso_label';
 
 }

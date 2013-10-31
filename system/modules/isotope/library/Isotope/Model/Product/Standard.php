@@ -367,7 +367,7 @@ class Standard extends Product implements IsotopeProduct
 
             $time = time();
             $blnHasProtected = false;
-            $strQuery = "SELECT id, protected, groups FROM tl_iso_products WHERE pid=" . $this->getProductId() . " AND language='' AND published='1' AND (start='' OR start<$time) AND (stop='' OR stop>$time)";
+            $strQuery = "SELECT id, protected, groups FROM tl_iso_product WHERE pid=" . $this->getProductId() . " AND language='' AND published='1' AND (start='' OR start<$time) AND (stop='' OR stop>$time)";
 
             if (BE_USER_LOGGED_IN !== true) {
                 $arrAttributes = $this->getVariantAttributes();
@@ -485,7 +485,7 @@ class Standard extends Product implements IsotopeProduct
 
         $objTemplate->generateAttribute = function($strAttribute, array $arrOptions=array()) use ($objProduct) {
 
-            $objAttribute = $GLOBALS['TL_DCA']['tl_iso_products']['attributes'][$strAttribute];
+            $objAttribute = $GLOBALS['TL_DCA']['tl_iso_product']['attributes'][$strAttribute];
 
             if (!($objAttribute instanceof IsotopeAttribute)) {
                 throw new \InvalidArgumentException($strAttribute . ' is not a valid attribute');
@@ -525,7 +525,7 @@ class Standard extends Product implements IsotopeProduct
 
         foreach (array_unique(array_merge($this->getAttributes(), $this->getVariantAttributes())) as $attribute)
         {
-            $arrData = $GLOBALS['TL_DCA']['tl_iso_products']['fields'][$attribute];
+            $arrData = $GLOBALS['TL_DCA']['tl_iso_product']['fields'][$attribute];
 
             if ($arrData['attributes']['customer_defined'] || $arrData['attributes']['variant_option']) {
 
@@ -618,8 +618,8 @@ class Standard extends Product implements IsotopeProduct
      */
     protected function generateProductOptionWidget($strField, &$arrVariantOptions)
     {
-        $objAttribute = $GLOBALS['TL_DCA']['tl_iso_products']['attributes'][$strField];
-        $arrData = $GLOBALS['TL_DCA']['tl_iso_products']['fields'][$strField];
+        $objAttribute = $GLOBALS['TL_DCA']['tl_iso_product']['attributes'][$strField];
+        $arrData = $GLOBALS['TL_DCA']['tl_iso_product']['fields'][$strField];
 
         $strClass = $objAttribute->getFrontendWidget();
 
@@ -783,7 +783,7 @@ class Standard extends Product implements IsotopeProduct
 
         foreach (array_intersect($this->getVariantAttributes(), Attribute::getVariantOptionFields()) as $attribute) {
 
-            $objAttribute = $GLOBALS['TL_DCA']['tl_iso_products']['attributes'][$attribute];
+            $objAttribute = $GLOBALS['TL_DCA']['tl_iso_product']['attributes'][$attribute];
             $arrValues = $objAttribute->getOptionsForVariants($this->getVariantIds(), $arrOptions);
 
             if (\Input::post('FORM_SUBMIT') == $this->getFormId() && in_array(\Input::post($attribute), $arrValues)) {
@@ -861,7 +861,7 @@ class Standard extends Product implements IsotopeProduct
             if ((
                     !in_array($attribute, $this->getAttributes())
                     && !in_array($attribute, $this->getVariantAttributes())
-                    && $GLOBALS['TL_DCA']['tl_iso_products']['fields'][$attribute]['attributes']['legend'] != ''
+                    && $GLOBALS['TL_DCA']['tl_iso_product']['fields'][$attribute]['attributes']['legend'] != ''
                 )
                 || in_array($attribute, Attribute::getVariantOptionFields())
                 || in_array($attribute, Attribute::getCustomerDefinedFields())

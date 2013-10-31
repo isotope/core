@@ -108,7 +108,7 @@ class CumulativeFilter extends Module
         {
             $blnTrail = false;
             $arrItems = array();
-            $arrWidget = \Widget::getAttributesFromDca($GLOBALS['TL_DCA']['tl_iso_products']['fields'][$strField], $strField); // Use the default routine to initialize options data
+            $arrWidget = \Widget::getAttributesFromDca($GLOBALS['TL_DCA']['tl_iso_product']['fields'][$strField], $strField); // Use the default routine to initialize options data
 
             foreach ($arrWidget['options'] as $option)
             {

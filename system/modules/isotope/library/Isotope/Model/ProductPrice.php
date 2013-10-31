@@ -31,7 +31,7 @@ class ProductPrice extends \Model implements IsotopePrice
      * Name of the current table
      * @var string
      */
-    protected static $strTable = 'tl_iso_prices';
+    protected static $strTable = 'tl_iso_product_price';
 
     /**
      * Tiers for this price
@@ -49,7 +49,7 @@ class ProductPrice extends \Model implements IsotopePrice
     {
         parent::__construct($objResult);
 
-        $objTiers = \Database::getInstance()->prepare("SELECT * FROM tl_iso_price_tiers WHERE pid=? ORDER BY min")->execute($objResult->id);
+        $objTiers = \Database::getInstance()->prepare("SELECT * FROM tl_iso_product_pricetier WHERE pid=? ORDER BY min")->execute($objResult->id);
 
         while ($objTiers->next()) {
             $this->arrTiers[$objTiers->min] = $objTiers->price;
