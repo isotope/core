@@ -11,9 +11,6 @@
 
 namespace Isotope\Report;
 
-use Isotope\Translation;
-
-
 abstract class Sales extends Report
 {
 

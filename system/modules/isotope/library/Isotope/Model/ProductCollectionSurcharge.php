@@ -135,6 +135,7 @@ abstract class ProductCollectionSurcharge extends TypeAgent
 
         foreach ($objCollection->getItems() as $objItem) {
             if ($blnPercentage) {
+                // @todo: $fltSurcharge is not defined
                 $fltProductPrice = $objItem->getTotal() / 100 * $fltSurcharge;
             } else {
                 $fltProductPrice = $this->total_price / 100 * (100 / $fltTotal * $objItem->getTaxFreeTotal());
