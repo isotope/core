@@ -20,6 +20,6 @@ class ProductCategory extends \Model
      * Name of the current table
      * @var string
      */
-    protected static $strTable = 'tl_iso_product_categories';
+    protected static $strTable = 'tl_iso_product_category';
 
 }

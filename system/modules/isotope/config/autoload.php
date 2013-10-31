@@ -32,7 +32,7 @@ NamespaceClassLoader::addClassMap(array
     'Isotope\tl_iso_orderstatus'        => 'system/modules/isotope/classes/tl_iso_orderstatus.php',
     'Isotope\tl_iso_payment'            => 'system/modules/isotope/classes/tl_iso_payment.php',
     'Isotope\tl_iso_prices'             => 'system/modules/isotope/classes/tl_iso_prices.php',
-    'Isotope\tl_iso_product_categories' => 'system/modules/isotope/classes/tl_iso_product_categories.php',
+    'Isotope\tl_iso_product_category'   => 'system/modules/isotope/classes/tl_iso_product_category.php',
     'Isotope\tl_iso_product_collection' => 'system/modules/isotope/classes/tl_iso_product_collection.php',
     'Isotope\tl_iso_products'           => 'system/modules/isotope/classes/tl_iso_products.php',
     'Isotope\tl_iso_producttype'        => 'system/modules/isotope/classes/tl_iso_producttype.php',

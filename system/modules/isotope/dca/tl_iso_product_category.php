@@ -15,9 +15,9 @@
 
 
 /**
- * Table tl_iso_product_categories
+ * Table tl_iso_product_category
  */
-$GLOBALS['TL_DCA']['tl_iso_product_categories'] = array
+$GLOBALS['TL_DCA']['tl_iso_product_category'] = array
 (
 
     // Config
@@ -30,7 +30,7 @@ $GLOBALS['TL_DCA']['tl_iso_product_categories'] = array
         'onload_callback' => array
         (
 
-            array('Isotope\tl_iso_product_categories', 'updateFilterData'),
+            array('Isotope\tl_iso_product_category', 'updateFilterData'),
         ),
         'oncut_callback' => array
         (
@@ -55,7 +55,7 @@ $GLOBALS['TL_DCA']['tl_iso_product_categories'] = array
             'fields'                => array('sorting'),
             'panelLayout'           => 'limit',
             'headerFields'          => array('title', 'type'),
-            'child_record_callback' => array('Isotope\tl_iso_product_categories', 'listRows')
+            'child_record_callback' => array('Isotope\tl_iso_product_category', 'listRows')
         ),
         'global_operations' => array
         (
@@ -63,7 +63,7 @@ $GLOBALS['TL_DCA']['tl_iso_product_categories'] = array
             (
                 'label'             => &$GLOBALS['TL_LANG']['MSC']['fePreview'],
                 'class'             => 'header_preview',
-                'button_callback'   => array('Isotope\tl_iso_product_categories', 'getPageViewButton'),
+                'button_callback'   => array('Isotope\tl_iso_product_category', 'getPageViewButton'),
             ),
             'all' => array
             (
@@ -77,7 +77,7 @@ $GLOBALS['TL_DCA']['tl_iso_product_categories'] = array
         (
             'cut' => array
             (
-                'label'             => &$GLOBALS['TL_LANG']['tl_iso_product_categories']['cut'],
+                'label'             => &$GLOBALS['TL_LANG']['tl_iso_product_category']['cut'],
                 'href'              => 'act=paste&amp;mode=cut',
                 'icon'              => 'cut.gif',
                 'attributes'        => 'onclick="Backend.getScrollOffset();"'

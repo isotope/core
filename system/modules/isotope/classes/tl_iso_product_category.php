@@ -17,11 +17,11 @@ namespace Isotope;
 
 
 /**
- * Class tl_iso_product_categories
+ * Class tl_iso_product_category
  *
  * Provide miscellaneous methods that are used by the data configuration array.
  */
-class tl_iso_product_categories extends \Backend
+class tl_iso_product_category extends \Backend
 {
 
     /**
@@ -52,7 +52,7 @@ class tl_iso_product_categories extends \Backend
     {
         if (\Input::get('act') == '')
         {
-            $arrCategories = \Database::getInstance()->execute("SELECT page_id FROM tl_iso_product_categories WHERE pid={$dc->id}");
+            $arrCategories = \Database::getInstance()->execute("SELECT page_id FROM tl_iso_product_category WHERE pid={$dc->id}");
             \Database::getInstance()->query("UPDATE tl_iso_products SET pages='" . serialize($arrCategories) . "' WHERE id={$dc->id}");
         }
     }
