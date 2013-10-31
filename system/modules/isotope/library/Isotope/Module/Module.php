@@ -98,6 +98,8 @@ abstract class Module extends Contao_Module
     {
         if (null === $this->arrCategories) {
 
+            $arrCategories = null;
+
             if ($this->defineRoot && $this->rootPage > 0) {
                 $objPage = $this->getPageDetails($this->rootPage);
             } else {
@@ -145,8 +147,16 @@ abstract class Module extends Contao_Module
                     break;
 
                 default:
-                    // @todo change this to a hook to allow custom category scope
-                    $arrCategories = array($objPage->id);
+                    if (isset($GLOBALS['ISO_HOOKS']['findCategories']) && is_array($GLOBALS['ISO_HOOKS']['findCategories'])) {
+                        foreach ($GLOBALS['ISO_HOOKS']['findCategories'] as $callback) {
+                            $objCallback = \System::importStatic($callback[0]);
+                            $arrCategories = $objCallback->$callback[1]($this);
+
+                            if ($arrCategories !== false) {
+                                break;
+                            }
+                        }
+                    }
                     break;
             }
 
