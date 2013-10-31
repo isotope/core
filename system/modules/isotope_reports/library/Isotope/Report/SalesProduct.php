@@ -53,7 +53,6 @@ class SalesProduct extends Sales
 		$dateFrom = date($privateDate, $intStart);
 		$dateTo = date($privateDate, strtotime('+ ' . ($intColumns-1) . ' ' . $strPeriod, $intStart));
 		$groupVariants = $blnVariants ? 'p1.id' : 'IF(p1.pid=0, p1.id, p1.pid)';
-		$arrAllowedProducts = \Isotope\Backend::getAllowedProductIds();
 
 		$objProducts = \Database::getInstance()->query("
 			SELECT
@@ -77,7 +76,8 @@ class SalesProduct extends Sales
 			LEFT OUTER JOIN tl_iso_producttypes t ON p1.type=t.id
 			WHERE o.type='Order'
 				" . ($intStatus > 0 ? " AND o.order_status=".$intStatus : '') . "
-				" . ($arrAllowedProducts === true ? '' : (" AND p1.id IN (" . (empty($arrAllowedProducts) ? '0' : implode(',', $arrAllowedProducts)) . ")")) . "
+				" . $this->getProductProcedure('p1') . "
+				" . $this->getConfigProcedure('o', 'config_id') . "
 			GROUP BY dateGroup, product_id
 			HAVING dateGroup>=$dateFrom AND dateGroup<=$dateTo");
 
