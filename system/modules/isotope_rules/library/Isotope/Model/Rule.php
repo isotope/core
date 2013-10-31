@@ -30,7 +30,7 @@ class Rule extends \Model
      * Name of the current table
      * @var string
      */
-    protected static $strTable = 'tl_iso_rules';
+    protected static $strTable = 'tl_iso_rule';
 
     /**
      * Get label for rule

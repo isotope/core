@@ -39,7 +39,7 @@ $GLOBALS['TL_DCA']['tl_iso_rule_restriction'] = array
         ),
         'pid' => array
         (
-            'foreignKey'            => 'tl_iso_rules.name',
+            'foreignKey'            => \Isotope\Model\Rule::getTable().'.name',
             'sql'                   => "int(10) unsigned NOT NULL default '0'",
             'relation'              => array('type'=>'belongsTo', 'load'=>'lazy'),
         ),

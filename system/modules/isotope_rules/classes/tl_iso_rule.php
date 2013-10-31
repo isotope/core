@@ -13,7 +13,7 @@
 namespace Isotope;
 
 
-class tl_iso_rules extends \Backend
+class tl_iso_rule extends \Backend
 {
 
     public function __construct()
@@ -29,7 +29,7 @@ class tl_iso_rules extends \Backend
     public function getRules($dc)
     {
         $arrRules = array();
-        $objRules = \Database::getInstance()->execute("SELECT * FROM tl_iso_rules WHERE enabled='1' AND id!={$dc->id}");
+        $objRules = \Database::getInstance()->execute("SELECT * FROM tl_iso_rule WHERE enabled='1' AND id!={$dc->id}");
 
         while ($objRules->next()) {
             $arrRules[$objRules->id] = $objRules->name;
@@ -109,7 +109,7 @@ class tl_iso_rules extends \Backend
         }
 
         // Check permissions AFTER checking the tid, so hacking attempts are logged
-        if (!$this->User->isAdmin && !$this->User->hasAccess('tl_iso_rules::enabled', 'alexf'))
+        if (!$this->User->isAdmin && !$this->User->hasAccess('tl_iso_rule::enabled', 'alexf'))
         {
             return \Image::getHtml($icon, $label).' ';
         }
@@ -138,18 +138,18 @@ class tl_iso_rules extends \Backend
 //        $this->checkPermission();
 
         // Check permissions to publish
-        if (!$this->User->isAdmin && !$this->User->hasAccess('tl_iso_rules::enabled', 'alexf'))
+        if (!$this->User->isAdmin && !$this->User->hasAccess('tl_iso_rule::enabled', 'alexf'))
         {
-            \System::log('Not enough permissions to enable/disable rule ID "'.$intId.'"', 'tl_iso_rules toggleVisibility', TL_ERROR);
+            \System::log('Not enough permissions to enable/disable rule ID "'.$intId.'"', 'tl_iso_rule toggleVisibility', TL_ERROR);
             \Controller::redirect('contao/main.php?act=error');
         }
 
-//        $this->createInitialVersion('tl_iso_rules', $intId);
+//        $this->createInitialVersion('tl_iso_rule', $intId);
 
         // Trigger the save_callback
-        if (is_array($GLOBALS['TL_DCA']['tl_iso_rules']['fields']['enabled']['save_callback']))
+        if (is_array($GLOBALS['TL_DCA']['tl_iso_rule']['fields']['enabled']['save_callback']))
         {
-            foreach ($GLOBALS['TL_DCA']['tl_iso_rules']['fields']['enabled']['save_callback'] as $callback)
+            foreach ($GLOBALS['TL_DCA']['tl_iso_rule']['fields']['enabled']['save_callback'] as $callback)
             {
                 $objCallback = \System::importStatic($callback[0]);
                 $blnVisible = $objCallback->$callback[1]($blnVisible, $this);
@@ -157,9 +157,9 @@ class tl_iso_rules extends \Backend
         }
 
         // Update the database
-        \Database::getInstance()->prepare("UPDATE tl_iso_rules SET tstamp=". time() .", enabled='" . ($blnVisible ? 1 : '') . "' WHERE id=?")->execute($intId);
+        \Database::getInstance()->prepare("UPDATE tl_iso_rule SET tstamp=". time() .", enabled='" . ($blnVisible ? 1 : '') . "' WHERE id=?")->execute($intId);
 
-//        $this->createNewVersion('tl_iso_rules', $intId);
+//        $this->createNewVersion('tl_iso_rule', $intId);
     }
 
 
@@ -198,11 +198,11 @@ class tl_iso_rules extends \Backend
             $this->loadDataContainer('tl_iso_product');
             \System::loadLanguageFile('tl_iso_product');
 
-            $objRule = \Database::getInstance()->execute("SELECT * FROM tl_iso_rules WHERE id=".(int) $dc->id);
+            $objRule = \Database::getInstance()->execute("SELECT * FROM tl_iso_rule WHERE id=".(int) $dc->id);
 
             if ($objRule->productRestrictions == 'attribute' && $objRule->attributeName != '')
             {
-                $GLOBALS['TL_DCA']['tl_iso_rules']['fields']['attributeValue'] = array_merge($GLOBALS['TL_DCA']['tl_iso_product']['fields'][$objRule->attributeName], $GLOBALS['TL_DCA']['tl_iso_rules']['fields']['attributeValue']);
+                $GLOBALS['TL_DCA']['tl_iso_rule']['fields']['attributeValue'] = array_merge($GLOBALS['TL_DCA']['tl_iso_product']['fields'][$objRule->attributeName], $GLOBALS['TL_DCA']['tl_iso_rule']['fields']['attributeValue']);
             }
         }
     }
