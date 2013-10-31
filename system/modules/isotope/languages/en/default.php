@@ -193,7 +193,7 @@ $GLOBALS['TL_LANG']['CTE']['isotope']                           = 'Isotope eComm
 /**
  * Shipping methods
  */
-$GLOBALS['TL_LANG']['MODEL']['tl_iso_shipping_modules.flat']    = array('Flat-price shipping');
+$GLOBALS['TL_LANG']['MODEL']['tl_iso_shipping.flat']    = array('Flat-price shipping');
 
 /**
  * Payment methods

@@ -168,7 +168,7 @@ $GLOBALS['TL_LANG']['MSC']['isotopeIntroduction'][3] = 'Besuchen Sie die offizie
 $GLOBALS['TL_LANG']['MSC']['isotopeIntroduction'][4] = 'Das Isotope eCommerce Team';
 $GLOBALS['TL_LANG']['MSC']['isotopeIntroduction'][5] = 'Isotope ist ein Produkt von %s in Zusammenarbeit mit <a href="http://isotopeecommerce.org/de/team.html" target="_blank">dem Isotope eCommerce Team</a>.';
 $GLOBALS['TL_LANG']['CTE']['isotope'] = 'Isotope eCommerce';
-$GLOBALS['TL_LANG']['MODEL']['tl_iso_shipping_modules']['flat'][0] = 'Einheitspreis-Versand';
+$GLOBALS['TL_LANG']['MODEL']['tl_iso_shipping']['flat'][0] = 'Einheitspreis-Versand';
 $GLOBALS['TL_LANG']['MODEL']['tl_iso_payment']['cash'][0] = 'Barzahlung';
 $GLOBALS['TL_LANG']['MODEL']['tl_iso_payment']['cash'][1] = 'Benutzen Sie dies für alle persönlich-abgewickelten Bezahlungen.';
 $GLOBALS['TL_LANG']['MODEL']['tl_iso_payment']['paypal'][0] = 'PayPal Standard Checkout';

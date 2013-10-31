@@ -22,9 +22,9 @@ $this->loadDataContainer('tl_iso_products');
 
 
 /**
- * Table tl_iso_shipping_modules
+ * Table tl_iso_shipping
  */
-$GLOBALS['TL_DCA']['tl_iso_shipping_modules'] = array
+$GLOBALS['TL_DCA']['tl_iso_shipping'] = array
 (
 
     // Config
@@ -37,7 +37,7 @@ $GLOBALS['TL_DCA']['tl_iso_shipping_modules'] = array
         'onload_callback' => array
         (
             array('Isotope\Backend', 'initializeSetupModule'),
-            array('Isotope\tl_iso_shipping_modules', 'checkPermission'),
+            array('Isotope\tl_iso_shipping', 'checkPermission'),
         ),
         'sql' => array
         (
@@ -74,7 +74,7 @@ $GLOBALS['TL_DCA']['tl_iso_shipping_modules'] = array
             ),
             'new' => array
             (
-                'label'             => &$GLOBALS['TL_LANG']['tl_iso_shipping_modules']['new'],
+                'label'             => &$GLOBALS['TL_LANG']['tl_iso_shipping']['new'],
                 'href'              => 'act=create',
                 'class'             => 'header_new',
                 'attributes'        => 'onclick="Backend.getScrollOffset();"',
@@ -91,35 +91,35 @@ $GLOBALS['TL_DCA']['tl_iso_shipping_modules'] = array
         (
             'edit' => array
             (
-                'label'             => &$GLOBALS['TL_LANG']['tl_iso_shipping_modules']['edit'],
+                'label'             => &$GLOBALS['TL_LANG']['tl_iso_shipping']['edit'],
                 'href'              => 'act=edit',
                 'icon'              => 'edit.gif'
             ),
             'copy' => array
             (
-                'label'             => &$GLOBALS['TL_LANG']['tl_iso_shipping_modules']['copy'],
+                'label'             => &$GLOBALS['TL_LANG']['tl_iso_shipping']['copy'],
                 'href'              => 'act=copy',
                 'icon'              => 'copy.gif',
-                'button_callback'   => array('Isotope\tl_iso_shipping_modules', 'copyShippingModule'),
+                'button_callback'   => array('Isotope\tl_iso_shipping', 'copyShippingModule'),
             ),
             'delete' => array
             (
-                'label'             => &$GLOBALS['TL_LANG']['tl_iso_shipping_modules']['delete'],
+                'label'             => &$GLOBALS['TL_LANG']['tl_iso_shipping']['delete'],
                 'href'              => 'act=delete',
                 'icon'              => 'delete.gif',
                 'attributes'        => 'onclick="if (!confirm(\'' . $GLOBALS['TL_LANG']['MSC']['deleteConfirm'] . '\')) return false; Backend.getScrollOffset();"',
-                'button_callback'   => array('Isotope\tl_iso_shipping_modules', 'deleteShippingModule'),
+                'button_callback'   => array('Isotope\tl_iso_shipping', 'deleteShippingModule'),
             ),
 			'toggle' => array
 			(
-				'label'               => &$GLOBALS['TL_LANG']['tl_iso_shipping_modules']['toggle'],
+				'label'               => &$GLOBALS['TL_LANG']['tl_iso_shipping']['toggle'],
 				'icon'                => 'visible.gif',
 				'attributes'          => 'onclick="Backend.getScrollOffset();return AjaxRequest.toggleVisibility(this,%s)"',
-				'button_callback'     => array('Isotope\tl_iso_shipping_modules', 'toggleIcon')
+				'button_callback'     => array('Isotope\tl_iso_shipping', 'toggleIcon')
 			),
             'show' => array
             (
-                'label'             => &$GLOBALS['TL_LANG']['tl_iso_shipping_modules']['show'],
+                'label'             => &$GLOBALS['TL_LANG']['tl_iso_shipping']['show'],
                 'href'              => 'act=show',
                 'icon'              => 'show.gif'
             ),
@@ -153,7 +153,7 @@ $GLOBALS['TL_DCA']['tl_iso_shipping_modules'] = array
         ),
         'name' => array
         (
-            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_shipping_modules']['name'],
+            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_shipping']['name'],
             'exclude'               => true,
             'search'                => true,
             'inputType'             => 'text',
@@ -162,7 +162,7 @@ $GLOBALS['TL_DCA']['tl_iso_shipping_modules'] = array
         ),
         'label' => array
         (
-            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_shipping_modules']['label'],
+            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_shipping']['label'],
             'exclude'               => true,
             'inputType'             => 'text',
             'eval'                  => array('maxlength'=>255, 'tl_class'=>'w50'),
@@ -170,7 +170,7 @@ $GLOBALS['TL_DCA']['tl_iso_shipping_modules'] = array
         ),
         'type' => array
         (
-            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_shipping_modules']['type'],
+            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_shipping']['type'],
             'exclude'               => true,
             'filter'                => true,
             'inputType'             => 'select',
@@ -181,7 +181,7 @@ $GLOBALS['TL_DCA']['tl_iso_shipping_modules'] = array
         ),
         'note' => array
         (
-            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_shipping_modules']['note'],
+            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_shipping']['note'],
             'exclude'               => true,
             'inputType'             => 'textarea',
             'eval'                  => array('rte'=>'tinyMCE', 'decodeEntities'=>true),
@@ -189,7 +189,7 @@ $GLOBALS['TL_DCA']['tl_iso_shipping_modules'] = array
         ),
         'countries' => array
         (
-            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_shipping_modules']['countries'],
+            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_shipping']['countries'],
             'exclude'               => true,
             'inputType'             => 'select',
             'options'               => \System::getCountries(),
@@ -198,7 +198,7 @@ $GLOBALS['TL_DCA']['tl_iso_shipping_modules'] = array
         ),
         'subdivisions' => array
         (
-            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_shipping_modules']['subdivisions'],
+            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_shipping']['subdivisions'],
             'exclude'               => true,
             'sorting'               => true,
             'inputType'             => 'conditionalselect',
@@ -208,7 +208,7 @@ $GLOBALS['TL_DCA']['tl_iso_shipping_modules'] = array
         ),
         'postalCodes' => array
         (
-            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_shipping_modules']['postalCodes'],
+            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_shipping']['postalCodes'],
             'exclude'               => true,
             'inputType'             => 'textarea',
             'eval'                  => array('style'=>'height:40px', 'tl_class'=>'clr'),
@@ -216,7 +216,7 @@ $GLOBALS['TL_DCA']['tl_iso_shipping_modules'] = array
         ),
         'minimum_total' => array
         (
-            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_shipping_modules']['minimum_total'],
+            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_shipping']['minimum_total'],
             'exclude'               => true,
             'inputType'             => 'text',
             'eval'                  => array('maxlength'=>255, 'rgxp'=>'price', 'tl_class'=>'w50'),
@@ -224,7 +224,7 @@ $GLOBALS['TL_DCA']['tl_iso_shipping_modules'] = array
         ),
         'maximum_total' => array
         (
-            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_shipping_modules']['maximum_total'],
+            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_shipping']['maximum_total'],
             'exclude'               => true,
             'inputType'             => 'text',
             'eval'                  => array('maxlength'=>255, 'rgxp'=>'price', 'tl_class'=>'w50'),
@@ -232,7 +232,7 @@ $GLOBALS['TL_DCA']['tl_iso_shipping_modules'] = array
         ),
         'product_types' => array
         (
-            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_shipping_modules']['product_types'],
+            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_shipping']['product_types'],
             'exclude'               => true,
             'inputType'             => 'select',
             'foreignKey'            => \Isotope\Model\ProductType::getTable().'.name',
@@ -242,7 +242,7 @@ $GLOBALS['TL_DCA']['tl_iso_shipping_modules'] = array
         ),
         'price' => array
         (
-            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_shipping_modules']['price'],
+            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_shipping']['price'],
             'exclude'               => true,
             'inputType'             => 'text',
             'eval'                  => array('maxlength'=>16, 'rgxp'=>'surcharge', 'tl_class'=>'w50'),
@@ -250,7 +250,7 @@ $GLOBALS['TL_DCA']['tl_iso_shipping_modules'] = array
         ),
         'tax_class' => array
         (
-            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_shipping_modules']['tax_class'],
+            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_shipping']['tax_class'],
             'exclude'               => true,
             'filter'                => true,
             'inputType'             => 'select',
@@ -262,24 +262,24 @@ $GLOBALS['TL_DCA']['tl_iso_shipping_modules'] = array
         ),
         'flatCalculation' => array
         (
-            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_shipping_modules']['flatCalculation'],
+            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_shipping']['flatCalculation'],
             'exclude'               => true,
             'inputType'             => 'select',
             'options'               => array('flat', 'perProduct', 'perItem'),
-            'reference'             => &$GLOBALS['TL_LANG']['tl_iso_shipping_modules'],
+            'reference'             => &$GLOBALS['TL_LANG']['tl_iso_shipping'],
             'eval'                  => array('tl_class'=>'w50'),
             'sql'                   => "varchar(10) NOT NULL default ''",
         ),
         'guests' => array
         (
-            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_shipping_modules']['guests'],
+            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_shipping']['guests'],
             'exclude'               => true,
             'inputType'             => 'checkbox',
             'sql'                   => "char(1) NOT NULL default ''",
         ),
         'protected' => array
         (
-            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_shipping_modules']['protected'],
+            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_shipping']['protected'],
             'exclude'               => true,
             'inputType'             => 'checkbox',
             'eval'                  => array('submitOnChange'=>true),
@@ -287,7 +287,7 @@ $GLOBALS['TL_DCA']['tl_iso_shipping_modules'] = array
         ),
         'groups' => array
         (
-            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_shipping_modules']['groups'],
+            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_shipping']['groups'],
             'exclude'               => true,
             'inputType'             => 'checkbox',
             'foreignKey'            => 'tl_member_group.name',
@@ -297,7 +297,7 @@ $GLOBALS['TL_DCA']['tl_iso_shipping_modules'] = array
         ),
         'enabled' => array
         (
-            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_shipping_modules']['enabled'],
+            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_shipping']['enabled'],
             'exclude'               => true,
             'inputType'             => 'checkbox',
             'sql'                   => "char(1) NOT NULL default ''",
