@@ -1386,4 +1386,46 @@ abstract class ProductCollection extends TypeAgent
             throw new \BadMethodCallException('Product collection is locked');
         }
     }
+
+
+    /**
+     * Method that returns a closure to sort product collection items
+     * @param   string
+     * @return  Closure
+     */
+    public static function getItemsSortingCallable($strOrderBy='asc_id')
+    {
+        list($direction, $attribute) = explode('_', $strOrderBy, 2);
+
+        if ($direction == 'asc') {
+
+            return function($arrItems) use ($attribute) {
+                uasort($arrItems, function($objItem1, $objItem2) use ($attribute) {
+                    if ($objItem1->$attribute == $objItem2->$attribute) {
+                        return 0;
+                    }
+
+                    return $objItem1->$attribute < $objItem2->$attribute ? -1 : 1;
+                });
+
+                return $arrItems;
+            };
+
+        } elseif ($direction == 'desc') {
+
+            return function($arrItems) use ($attribute) {
+                uasort($arrItems, function($objItem1, $objItem2) use ($attribute) {
+                    if ($objItem1->$attribute == $objItem2->$attribute) {
+                        return 0;
+                    }
+
+                    return $objItem1->$attribute > $objItem2->$attribute ? -1 : 1;
+                });
+
+                return $arrItems;
+            };
+        }
+
+        return null;
+    }
 }

@@ -91,48 +91,6 @@ abstract class Module extends Contao_Module
 
 
     /**
-     * Method that returns a closure to sort product collection items
-     * @return  Closure
-     */
-    public function getProductCollectionItemsSortingCallable()
-    {
-        $arrSortingSettings = explode('_', $this->iso_orderCollectionBy, 2);
-        $strSortingAttribute = $arrSortingSettings[1];
-
-        if ($arrSortingSettings[0] == 'asc') {
-
-            return function($arrItems) use ($strSortingAttribute) {
-                uasort($arrItems, function($objItem1, $objItem2) use ($strSortingAttribute) {
-                    if ($objItem1->$strSortingAttribute == $objItem2->$strSortingAttribute) {
-                        return 0;
-                    }
-
-                    return $objItem1->$strSortingAttribute < $objItem2->$strSortingAttribute ? -1 : 1;
-                });
-
-                return $arrItems;
-            };
-
-        } elseif ($arrSortingSettings[0] == 'desc') {
-
-            return function($arrItems) use ($strSortingAttribute) {
-                uasort($arrItems, function($objItem1, $objItem2) use ($strSortingAttribute) {
-                    if ($objItem1->$strSortingAttribute == $objItem2->$strSortingAttribute) {
-                        return 0;
-                    }
-
-                    return $objItem1->$strSortingAttribute > $objItem2->$strSortingAttribute ? -1 : 1;
-                });
-
-                return $arrItems;
-            };
-        }
-
-        return null;
-    }
-
-
-    /**
      * The ids of all pages we take care of. This is what should later be used eg. for filter data.
      * @return array
      */
