@@ -273,7 +273,7 @@ class Frontend extends \Frontend
             // {{product::attribute::product_id}}    - gets the data of the specified product ID
 
             if (count($arrTag) == 3) {
-                $objProduct = static::getProduct($arrTag[2]);
+                $objProduct = Product::findAvailableByPk($arrTag[2]);
             } elseif ($GLOBALS['ACTIVE_PRODUCT']) {
                 $objProduct = $GLOBALS['ACTIVE_PRODUCT'];
             } else {
@@ -580,34 +580,6 @@ window.addEvent('domready', function()
         return $strMessages;
     }
 
-
-    /**
-     * Shortcut for a single product by ID or from database result
-     * @param IsotopeProduct|int
-     * @param boolean
-     * @return IsotopeProduct|null
-     * @todo    should use the model instead of this method
-     */
-    public static function getProduct($objProduct, $blnCheckAvailability=true)
-    {
-        if (is_numeric($objProduct))
-        {
-            $objProduct = Product::findPublishedByPk($objProduct);
-        }
-
-        if (null === $objProduct || !($objProduct instanceof IsotopeProduct))
-        {
-            return null;
-        }
-
-        if ($blnCheckAvailability && !$objProduct->isAvailableInFrontend())
-        {
-            return null;
-        }
-
-        return $objProduct;
-    }
-
     /**
      * Generate products from database result or array of IDs
      * @param \Database\Result|array
@@ -641,11 +613,11 @@ window.addEvent('domready', function()
         $objProducts->reset();
 
         while ($objProducts->next()) {
-            $objProduct = \Isotope\Frontend::getProduct($objProducts->current(), $blnCheckAvailability);
-
-            if ($objProduct !== null) {
-                $arrProducts[$objProducts->id] = $objProduct;
+            if ($blnCheckAvailability && !$objProducts->current()->isAvailableInFrontend()) {
+                continue;
             }
+
+            $arrProducts[$objProducts->id] = $objProduct;
         }
 
         if (!empty($arrFilters)) {

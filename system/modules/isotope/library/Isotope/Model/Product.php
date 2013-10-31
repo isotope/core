@@ -206,6 +206,23 @@ abstract class Product extends TypeAgent
     }
 
     /**
+     * Find a single frontend-available product by primary key
+     * @param   int
+     * @param   array
+     * @return  \Collection
+     */
+    public static function findAvailableByPk($intId, array $arrOptions=array())
+    {
+        $objProduct = static::findPublishedByPk($intId, $arrOptions);
+
+        if (null === $objProduct || !$objProduct->isAvailableInFrontend()) {
+            return null;
+        }
+
+        return $objProduct;
+    }
+
+    /**
 	 * Find a single frontend-available product by its ID or alias
 	 * @param   mixed       The ID or alias
 	 * @param   array       An optional options array
