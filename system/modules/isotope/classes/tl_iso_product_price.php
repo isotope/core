@@ -18,10 +18,10 @@ namespace Isotope;
 
 
 /**
- * Class tl_iso_prices
+ * Class tl_iso_product_price
  * Provide miscellaneous methods that are used by the data configuration array.
  */
-class tl_iso_prices extends \Backend
+class tl_iso_product_price extends \Backend
 {
 
     /**
@@ -30,7 +30,7 @@ class tl_iso_prices extends \Backend
     public function initializeDCA()
     {
         // Set default tax class
-        $GLOBALS['TL_DCA']['tl_iso_prices']['fields']['tax_class']['default'] = (int) \Isotope\Model\TaxClass::findFallback()->id;
+        $GLOBALS['TL_DCA']['tl_iso_product_price']['fields']['tax_class']['default'] = (int) \Isotope\Model\TaxClass::findFallback()->id;
     }
 
 
@@ -54,7 +54,7 @@ class tl_iso_prices extends \Backend
             $arrTiers[] = "{$objTiers->min}={$objTiers->price}";
         }
 
-        $arrInfo = array('<tr><td><span class="tl_label">'.$GLOBALS['TL_LANG']['tl_iso_prices']['price_tiers'][0].':</span></td><td>' . implode(', ', $arrTiers) . '</td></tr>');
+        $arrInfo = array('<tr><td><span class="tl_label">'.$GLOBALS['TL_LANG']['tl_iso_product_price']['price_tiers'][0].':</span></td><td>' . implode(', ', $arrTiers) . '</td></tr>');
 
         foreach ($row as $name => $value)
         {
@@ -68,7 +68,7 @@ class tl_iso_prices extends \Backend
                 default:
                     if ($value != '' && $value > 0)
                     {
-                        $arrInfo[] = '<tr><td><span class="tl_label">' . Isotope::formatLabel('tl_iso_prices', $name) . ':</span></td><td>' . Isotope::formatValue('tl_iso_prices', $name, $value) . '</td></tr>';
+                        $arrInfo[] = '<tr><td><span class="tl_label">' . Isotope::formatLabel('tl_iso_product_price', $name) . ':</span></td><td>' . Isotope::formatValue('tl_iso_product_price', $name, $value) . '</td></tr>';
                     }
                     break;
             }
@@ -89,12 +89,12 @@ class tl_iso_prices extends \Backend
     	$strReturn = '
 <table class="tl_listing showColumns">
 <thead>
-    <td class="tl_folder_tlist">' . Isotope::formatLabel('tl_iso_prices', 'price_tiers') . '</td>
-    <td class="tl_folder_tlist">' . Isotope::formatLabel('tl_iso_prices', 'tax_class') . '</td>
-    <td class="tl_folder_tlist">' . Isotope::formatLabel('tl_iso_prices', 'config_id') . '</td>
-    <td class="tl_folder_tlist">' . Isotope::formatLabel('tl_iso_prices', 'member_group') . '</td>
-    <td class="tl_folder_tlist">' . Isotope::formatLabel('tl_iso_prices', 'start') . '</td>
-    <td class="tl_folder_tlist">' . Isotope::formatLabel('tl_iso_prices', 'stop') . '</td>
+    <td class="tl_folder_tlist">' . Isotope::formatLabel('tl_iso_product_price', 'price_tiers') . '</td>
+    <td class="tl_folder_tlist">' . Isotope::formatLabel('tl_iso_product_price', 'tax_class') . '</td>
+    <td class="tl_folder_tlist">' . Isotope::formatLabel('tl_iso_product_price', 'config_id') . '</td>
+    <td class="tl_folder_tlist">' . Isotope::formatLabel('tl_iso_product_price', 'member_group') . '</td>
+    <td class="tl_folder_tlist">' . Isotope::formatLabel('tl_iso_product_price', 'start') . '</td>
+    <td class="tl_folder_tlist">' . Isotope::formatLabel('tl_iso_product_price', 'stop') . '</td>
 </thead>
 <tbody>';
 
@@ -110,11 +110,11 @@ class tl_iso_prices extends \Backend
 	    	$strReturn .= '
 <tr>
     <td class="tl_file_list">' . implode(', ', $arrTiers) . '</td>
-    <td class="tl_file_list">' . (Isotope::formatValue('tl_iso_prices', 'tax_class', $objRecords->tax_class) ?: '-') . '</td>
-    <td class="tl_file_list">' . (Isotope::formatValue('tl_iso_prices', 'config_id', $objRecords->config_id) ?: '-') . '</td>
-    <td class="tl_file_list">' . (Isotope::formatValue('tl_iso_prices', 'member_group', $objRecords->member_group) ?: '-') . '</td>
-    <td class="tl_file_list">' . (Isotope::formatValue('tl_iso_prices', 'member_group', $objRecords->start) ?: '-') . '</td>
-    <td class="tl_file_list">' . (Isotope::formatValue('tl_iso_prices', 'member_group', $objRecords->stop) ?: '-') . '</td>
+    <td class="tl_file_list">' . (Isotope::formatValue('tl_iso_product_price', 'tax_class', $objRecords->tax_class) ?: '-') . '</td>
+    <td class="tl_file_list">' . (Isotope::formatValue('tl_iso_product_price', 'config_id', $objRecords->config_id) ?: '-') . '</td>
+    <td class="tl_file_list">' . (Isotope::formatValue('tl_iso_product_price', 'member_group', $objRecords->member_group) ?: '-') . '</td>
+    <td class="tl_file_list">' . (Isotope::formatValue('tl_iso_product_price', 'member_group', $objRecords->start) ?: '-') . '</td>
+    <td class="tl_file_list">' . (Isotope::formatValue('tl_iso_product_price', 'member_group', $objRecords->stop) ?: '-') . '</td>
 </tr>
 ';
     	}

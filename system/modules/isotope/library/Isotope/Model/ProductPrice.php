@@ -31,7 +31,7 @@ class ProductPrice extends \Model implements IsotopePrice
      * Name of the current table
      * @var string
      */
-    protected static $strTable = 'tl_iso_prices';
+    protected static $strTable = 'tl_iso_product_price';
 
     /**
      * Tiers for this price
