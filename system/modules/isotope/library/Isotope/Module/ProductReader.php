@@ -13,7 +13,7 @@
 namespace Isotope\Module;
 
 use Isotope\Interfaces\IsotopeProduct;
-use Isotope\Response\JsonResponse;
+use Isotope\Response\HtmlResponse;
 use Isotope\Model\Product;
 
 
@@ -103,7 +103,7 @@ class ProductReader extends Module
         );
 
         if (\Environment::get('isAjaxRequest') && \Input::post('AJAX_MODULE') == $this->id && \Input::post('AJAX_PRODUCT') == $objProduct->getProductId()) {
-            $objResponse = new JsonResponse($objProduct->generate($arrConfig));
+            $objResponse = new HtmlResponse($objProduct->generate($arrConfig));
             $objResponse->send();
         }
 
