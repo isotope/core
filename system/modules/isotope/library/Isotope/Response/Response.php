@@ -177,9 +177,6 @@ class Response
         // Content-Length
         $this->setHeader('Content-Length', strlen($this->strContent));
 
-        // Add a custom header for JavaScripts that need the Contao request token
-        $this->setHeader('X-Contao-Request-Token', REQUEST_TOKEN);
-
         // Fix charset
         $strContentType = $this->getHeader('Content-Type');
         if (strpos($strContentType, 'charset') !== false) {
