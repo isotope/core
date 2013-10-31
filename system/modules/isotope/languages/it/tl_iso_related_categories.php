@@ -16,8 +16,6 @@
 
 $GLOBALS['TL_LANG']['tl_iso_related_categories']['name'][0] = 'Nome categoria';
 $GLOBALS['TL_LANG']['tl_iso_related_categories']['name'][1] = 'Per cortesia inserisca un nome per questa categoria.';
-$GLOBALS['TL_LANG']['tl_iso_related_categories']['jumpTo'][0] = 'Reindirizza pagina';
-$GLOBALS['TL_LANG']['tl_iso_related_categories']['jumpTo'][1] = 'Selezioni la pagina in cui il lettore prodotti è disponibile. Se non la seleziona, sarà usata la pagina corrente.';
 $GLOBALS['TL_LANG']['tl_iso_related_categories']['new'][0] = 'Nuova categoria';
 $GLOBALS['TL_LANG']['tl_iso_related_categories']['new'][1] = 'Crea una nuova categoria';
 $GLOBALS['TL_LANG']['tl_iso_related_categories']['edit'][0] = 'Modifica categoria';
@@ -29,4 +27,3 @@ $GLOBALS['TL_LANG']['tl_iso_related_categories']['delete'][1] = 'Cancella catego
 $GLOBALS['TL_LANG']['tl_iso_related_categories']['show'][0] = 'Dettagli categoria';
 $GLOBALS['TL_LANG']['tl_iso_related_categories']['show'][1] = 'Visualizza dettagli categoria ID %s';
 $GLOBALS['TL_LANG']['tl_iso_related_categories']['name_legend'] = 'Nome';
-$GLOBALS['TL_LANG']['tl_iso_related_categories']['redirect_legend'] = 'Impostazioni reindirizzamento';

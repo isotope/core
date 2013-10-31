@@ -17,7 +17,6 @@
 $GLOBALS['TL_LANG']['tl_iso_related_products']['category'][0] = 'Kategori';
 $GLOBALS['TL_LANG']['tl_iso_related_products']['category'][1] = 'Vælg en kategori';
 $GLOBALS['TL_LANG']['tl_iso_related_products']['products'][0] = 'Produkter';
-$GLOBALS['TL_LANG']['tl_iso_related_products']['products'][1] = 'Søg efter produkter ved at indtaste navn, henvisning, varenummer eller beskrivelse og afkryds de ønskede produkter.';
 $GLOBALS['TL_LANG']['tl_iso_related_products']['new'][0] = 'Tilføj kategori';
 $GLOBALS['TL_LANG']['tl_iso_related_products']['new'][1] = 'Tilføj en ny kategori med produkter';
 $GLOBALS['TL_LANG']['tl_iso_related_products']['edit'][0] = 'Rediger kategori';

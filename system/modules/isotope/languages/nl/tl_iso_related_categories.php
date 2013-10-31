@@ -16,8 +16,6 @@
 
 $GLOBALS['TL_LANG']['tl_iso_related_categories']['name'][0] = 'Categorie naam';
 $GLOBALS['TL_LANG']['tl_iso_related_categories']['name'][1] = 'Voer een naam voor deze categorie.';
-$GLOBALS['TL_LANG']['tl_iso_related_categories']['jumpTo'][0] = 'Herleidings pagina';
-$GLOBALS['TL_LANG']['tl_iso_related_categories']['jumpTo'][1] = 'Selecteer de pagina waar de productreader module beschikbaar is. Als u niet selecteert, zal de huidige pagina worden gebruikt.';
 $GLOBALS['TL_LANG']['tl_iso_related_categories']['new'][0] = 'Nieuwe categorie';
 $GLOBALS['TL_LANG']['tl_iso_related_categories']['new'][1] = 'Maak een nieuwe categorie';
 $GLOBALS['TL_LANG']['tl_iso_related_categories']['edit'][0] = 'Bewerk categorie';
@@ -29,4 +27,3 @@ $GLOBALS['TL_LANG']['tl_iso_related_categories']['delete'][1] = 'Verwijder categ
 $GLOBALS['TL_LANG']['tl_iso_related_categories']['show'][0] = 'Categorie details';
 $GLOBALS['TL_LANG']['tl_iso_related_categories']['show'][1] = 'Toon details van categorie ID %s';
 $GLOBALS['TL_LANG']['tl_iso_related_categories']['name_legend'] = 'Naam';
-$GLOBALS['TL_LANG']['tl_iso_related_categories']['redirect_legend'] = 'Herleidingsinstellingen';

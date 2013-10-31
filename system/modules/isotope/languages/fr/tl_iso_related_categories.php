@@ -16,8 +16,6 @@
 
 $GLOBALS['TL_LANG']['tl_iso_related_categories']['name'][0] = 'Nom de la catégorie';
 $GLOBALS['TL_LANG']['tl_iso_related_categories']['name'][1] = 'Saisir un nom pour la catégorie';
-$GLOBALS['TL_LANG']['tl_iso_related_categories']['jumpTo'][0] = 'Page de redirection';
-$GLOBALS['TL_LANG']['tl_iso_related_categories']['jumpTo'][1] = 'Sélectionner la page où le lecteur de produit est disponible. Si aucune sélection n\'est faite, la page en cours sera utilisée.';
 $GLOBALS['TL_LANG']['tl_iso_related_categories']['new'][0] = 'Nouvelle catégorie';
 $GLOBALS['TL_LANG']['tl_iso_related_categories']['new'][1] = 'Créer une nouvelle catégorie';
 $GLOBALS['TL_LANG']['tl_iso_related_categories']['edit'][0] = 'Éditer une catégorie';
@@ -29,4 +27,3 @@ $GLOBALS['TL_LANG']['tl_iso_related_categories']['delete'][1] = 'Effacer la cat�
 $GLOBALS['TL_LANG']['tl_iso_related_categories']['show'][0] = 'Détails de la catégorie';
 $GLOBALS['TL_LANG']['tl_iso_related_categories']['show'][1] = 'Afficher les détails de la catégorie ID %s';
 $GLOBALS['TL_LANG']['tl_iso_related_categories']['name_legend'] = 'Nom';
-$GLOBALS['TL_LANG']['tl_iso_related_categories']['redirect_legend'] = 'Paramètres de redirection';

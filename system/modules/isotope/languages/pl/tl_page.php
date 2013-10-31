@@ -20,4 +20,6 @@ $GLOBALS['TL_LANG']['tl_page']['iso_setReaderJumpTo'][0] = 'Skonfiguruj stronę 
 $GLOBALS['TL_LANG']['tl_page']['iso_setReaderJumpTo'][1] = 'Każda strona zawierająca listę produktów musi mieć przypisaną stronę z czytnikiem (dziedziczne).';
 $GLOBALS['TL_LANG']['tl_page']['iso_readerJumpTo'][0] = 'Wybierz stronę czytnika';
 $GLOBALS['TL_LANG']['tl_page']['iso_readerJumpTo'][1] = 'Wybierz stronę docelową, do której będą prowadzić produkty z tej stronie.';
+$GLOBALS['TL_LANG']['tl_page']['iso_store_id'][0] = 'ID sklepu';
+$GLOBALS['TL_LANG']['tl_page']['iso_store_id'][1] = 'Używaj różnych ID sklepów do grupowania zestawów konfiguracji. Koszyk użytkownika i adres będzie współdzielony w obrębie tego samego ID sklepu.';
 $GLOBALS['TL_LANG']['tl_page']['isotope_legend'] = 'Isotope eCommerce';

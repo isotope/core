@@ -14,3 +14,5 @@
  * @license http://www.gnu.org/licenses/lgpl-3.0.html LGPL
  */
 
+$GLOBALS['TL_LANG']['MOD']['isotope_rules'][0] = 'Sklep Isotope: Reguły i kupony';
+$GLOBALS['TL_LANG']['MOD']['iso_rules'][0] = 'Reguły i kupony';

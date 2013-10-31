@@ -14,3 +14,5 @@
  * @license http://www.gnu.org/licenses/lgpl-3.0.html LGPL
  */
 
+$GLOBALS['TL_LANG']['MOD']['isotope_reports'][0] = 'Isotope eCommerce: Rapporter og statistikker';
+$GLOBALS['TL_LANG']['MOD']['reports'][0] = 'Rapporter og statistikker';

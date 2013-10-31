@@ -14,3 +14,9 @@
  * @license http://www.gnu.org/licenses/lgpl-3.0.html LGPL
  */
 
+$GLOBALS['TL_LANG']['MSC']['couponHeadline'] = 'Użyj kodu promocyjnego';
+$GLOBALS['TL_LANG']['MSC']['couponLabel'] = 'Kod promocyjny';
+$GLOBALS['TL_LANG']['MSC']['couponApply'] = 'Zastosuj';
+$GLOBALS['TL_LANG']['MSC']['couponInvalid'] = 'Twój kupon %s jest niepoprawny.';
+$GLOBALS['TL_LANG']['MSC']['couponApplied'] = 'Twój kupon %s został użyty.';
+$GLOBALS['TL_LANG']['MSC']['couponDuplicate'] = 'Twój kupon %s został już wcześniej użyty.';

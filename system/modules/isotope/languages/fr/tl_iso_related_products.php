@@ -17,7 +17,6 @@
 $GLOBALS['TL_LANG']['tl_iso_related_products']['category'][0] = 'Catégorie';
 $GLOBALS['TL_LANG']['tl_iso_related_products']['category'][1] = 'Sélectionnez une catégorie';
 $GLOBALS['TL_LANG']['tl_iso_related_products']['products'][0] = 'Produits';
-$GLOBALS['TL_LANG']['tl_iso_related_products']['products'][1] = 'Recherche des produits par mots-clés (dans le nom, alias, produit ou description), ajouter des produits en cochant la case.';
 $GLOBALS['TL_LANG']['tl_iso_related_products']['new'][0] = 'Ajouter une catégorie';
 $GLOBALS['TL_LANG']['tl_iso_related_products']['new'][1] = 'Ajouter une nouvelle catégorie avec des produits';
 $GLOBALS['TL_LANG']['tl_iso_related_products']['edit'][0] = 'Éditer une catégorie';

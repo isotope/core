@@ -88,7 +88,6 @@ $GLOBALS['TL_LANG']['tl_iso_rules']['producttypes'][1] = 'Select the product typ
 $GLOBALS['TL_LANG']['tl_iso_rules']['products'][0] = 'Products';
 $GLOBALS['TL_LANG']['tl_iso_rules']['products'][1] = 'Select products this rule is restricted to. If none, all are eligible.';
 $GLOBALS['TL_LANG']['tl_iso_rules']['variants'][0] = 'Products & Variants';
-$GLOBALS['TL_LANG']['tl_iso_rules']['variants'][1] = 'Select products & variants this rule is restricted to. If none, all are eligible.';
 $GLOBALS['TL_LANG']['tl_iso_rules']['attributeName'][0] = 'Attribute name';
 $GLOBALS['TL_LANG']['tl_iso_rules']['attributeName'][1] = 'Select the product attribute you want to restrict.';
 $GLOBALS['TL_LANG']['tl_iso_rules']['attributeCondition'][0] = 'Attribute condition';

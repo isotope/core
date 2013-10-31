@@ -14,3 +14,25 @@
  * @license http://www.gnu.org/licenses/lgpl-3.0.html LGPL
  */
 
+$GLOBALS['TL_LANG']['tl_iso_orderstatus']['name'][0] = 'Nazwa';
+$GLOBALS['TL_LANG']['tl_iso_orderstatus']['name'][1] = 'Wprowadź nazwę tego statusu.';
+$GLOBALS['TL_LANG']['tl_iso_orderstatus']['paid'][0] = 'Zamówienie jest zapłacone';
+$GLOBALS['TL_LANG']['tl_iso_orderstatus']['welcomescreen'][0] = 'Pokaż na ekranie powitania';
+$GLOBALS['TL_LANG']['tl_iso_orderstatus']['notification'][0] = 'Powiadomienie';
+$GLOBALS['TL_LANG']['tl_iso_orderstatus']['notification'][1] = 'Proszę wybrać powiadomienie.';
+$GLOBALS['TL_LANG']['tl_iso_orderstatus']['new'][0] = 'Status nowego zamówienia';
+$GLOBALS['TL_LANG']['tl_iso_orderstatus']['new'][1] = 'Stwórz status nowego zamówienia';
+$GLOBALS['TL_LANG']['tl_iso_orderstatus']['edit'][0] = 'Edytuj status zamówienia';
+$GLOBALS['TL_LANG']['tl_iso_orderstatus']['edit'][1] = 'Edytuj status zamówienia ID %s';
+$GLOBALS['TL_LANG']['tl_iso_orderstatus']['copy'][0] = 'Duplikuj status zamówienia';
+$GLOBALS['TL_LANG']['tl_iso_orderstatus']['copy'][1] = 'Duplikuj status zamówienia ID %s';
+$GLOBALS['TL_LANG']['tl_iso_orderstatus']['delete'][0] = 'Usuń status zamówienia';
+$GLOBALS['TL_LANG']['tl_iso_orderstatus']['delete'][1] = 'Usuń status zamówienia ID %s';
+$GLOBALS['TL_LANG']['tl_iso_orderstatus']['show'][0] = 'Szczegóły statusu zamówienia';
+$GLOBALS['TL_LANG']['tl_iso_orderstatus']['show'][1] = 'Pokaż szczegóły statusu zamówienia ID %s';
+$GLOBALS['TL_LANG']['tl_iso_orderstatus']['pasteafter'][0] = 'Wklej po';
+$GLOBALS['TL_LANG']['tl_iso_orderstatus']['pasteafter'][1] = 'Wklej po statusie zamówienia ID %s';
+$GLOBALS['TL_LANG']['tl_iso_orderstatus']['pasteinto'][0] = 'Wklej w';
+$GLOBALS['TL_LANG']['tl_iso_orderstatus']['pasteinto'][1] = 'Wklej w status zamówienia ID %s';
+$GLOBALS['TL_LANG']['tl_iso_orderstatus']['name_legend'] = 'Nazwa';
+$GLOBALS['TL_LANG']['tl_iso_orderstatus']['email_legend'] = 'Powiadomienie e-mail';

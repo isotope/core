@@ -17,7 +17,7 @@
 $GLOBALS['TL_LANG']['tl_iso_related_products']['category'][0] = 'Kategoria';
 $GLOBALS['TL_LANG']['tl_iso_related_products']['category'][1] = 'Wybierz kategorię.';
 $GLOBALS['TL_LANG']['tl_iso_related_products']['products'][0] = 'Produkty';
-$GLOBALS['TL_LANG']['tl_iso_related_products']['products'][1] = 'Wyszukaj produkty używając słów kluczowych (w nazwie, aliasie, sku lub opisie) i dodaj je zaznaczając checkboxy.';
+$GLOBALS['TL_LANG']['tl_iso_related_products']['products'][1] = 'Wprowadź listę produktów po przecinku lub ID wariantów, które pokażą się jako produkty powiązane.';
 $GLOBALS['TL_LANG']['tl_iso_related_products']['new'][0] = 'Nowa kategoria';
 $GLOBALS['TL_LANG']['tl_iso_related_products']['new'][1] = 'Dodaj nową kategorią';
 $GLOBALS['TL_LANG']['tl_iso_related_products']['edit'][0] = 'Edytuj kategorię';

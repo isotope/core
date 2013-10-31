@@ -17,7 +17,6 @@
 $GLOBALS['TL_LANG']['tl_iso_related_products']['category'][0] = 'Categorie';
 $GLOBALS['TL_LANG']['tl_iso_related_products']['category'][1] = 'Selecteer een categorie.';
 $GLOBALS['TL_LANG']['tl_iso_related_products']['products'][0] = 'Producten';
-$GLOBALS['TL_LANG']['tl_iso_related_products']['products'][1] = 'Zoek naar uw producten op trefwoorden (te vinden in de naam, alias, SKU of beschrijving) en voeg producten toe door de het vinkje aan zetten.';
 $GLOBALS['TL_LANG']['tl_iso_related_products']['new'][0] = 'Categorie toevoegen';
 $GLOBALS['TL_LANG']['tl_iso_related_products']['new'][1] = 'Voeg een nieuwe categorie met producten';
 $GLOBALS['TL_LANG']['tl_iso_related_products']['edit'][0] = 'Bewerk categorie';

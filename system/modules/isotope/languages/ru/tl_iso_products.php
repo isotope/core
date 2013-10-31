@@ -21,6 +21,4 @@ $GLOBALS['TL_LANG']['tl_iso_products']['alias'][0] = 'Синоним';
 $GLOBALS['TL_LANG']['tl_iso_products']['name'][0] = 'Название';
 $GLOBALS['TL_LANG']['tl_iso_products']['shipping_weight'][0] = 'Масса груза';
 $GLOBALS['TL_LANG']['tl_iso_products']['description'][0] = 'Описание';
-$GLOBALS['TL_LANG']['tl_iso_products']['description_meta'][0] = 'Meta-описание';
-$GLOBALS['TL_LANG']['tl_iso_products']['keywords_meta'][0] = 'Meta-ключевые слова';
 $GLOBALS['TL_LANG']['tl_iso_products']['price'][0] = 'Цена';
