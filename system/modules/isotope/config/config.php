@@ -36,7 +36,7 @@ array_insert($GLOBALS['BE_MOD']['isotope'], 0, array
 (
     'iso_products' => array
     (
-        'tables'                    => array(\Isotope\Model\Product::getTable(), \Isotope\Model\Group::getTable(), 'tl_iso_product_categories', 'tl_iso_downloads', \Isotope\Model\RelatedProduct::getTable(), \Isotope\Model\ProductPrice::getTable(), 'tl_iso_price_tiers'),
+        'tables'                    => array(\Isotope\Model\Product::getTable(), \Isotope\Model\Group::getTable(), 'tl_iso_product_categories', \Isotope\Model\Download::getTable(), \Isotope\Model\RelatedProduct::getTable(), \Isotope\Model\ProductPrice::getTable(), 'tl_iso_price_tiers'),
         'icon'                        => 'system/modules/isotope/assets/store-open.png',
         'javascript'                => 'system/modules/isotope/assets/backend'.(ISO_DEBUG ? '' : '.min').'.js',
         'generate'                    => array('Isotope\tl_iso_products', 'generateVariants'),

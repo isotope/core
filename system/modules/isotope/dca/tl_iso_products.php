@@ -31,7 +31,7 @@ $GLOBALS['TL_DCA']['tl_iso_products'] = array
         'enableVersioning'          => true,
         'switchToEdit'              => true,
         'gtable'                    => 'tl_iso_groups',
-        'ctable'                    => array('tl_iso_downloads', 'tl_iso_product_categories', 'tl_iso_prices'),
+        'ctable'                    => array(\Isotope\Model\Download::getTable(), 'tl_iso_product_categories', 'tl_iso_prices'),
         'onload_callback' => array
         (
             array('Isotope\ProductCallbacks', 'applyAdvancedFilters'),
@@ -184,14 +184,14 @@ $GLOBALS['TL_DCA']['tl_iso_products'] = array
             'related' => array
             (
                 'label'             => &$GLOBALS['TL_LANG']['tl_iso_products']['related'],
-                'href'              => 'table=tl_iso_related_products',
+                'href'              => 'table='.\Isotope\Model\RelatedProduct::getTable(),
                 'icon'              => 'system/modules/isotope/assets/sitemap.png',
                 'button_callback'   => array('Isotope\ProductCallbacks', 'relatedButton'),
             ),
             'downloads' => array
             (
                 'label'             => &$GLOBALS['TL_LANG']['tl_iso_products']['downloads'],
-                'href'              => 'table=tl_iso_downloads',
+                'href'              => 'table='.\Isotope\Model\Download::getTable(),
                 'icon'              => 'system/modules/isotope/assets/paper-clip.png',
                 'button_callback'   => array('Isotope\ProductCallbacks', 'downloadsButton'),
             ),

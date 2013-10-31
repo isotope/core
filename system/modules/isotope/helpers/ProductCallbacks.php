@@ -17,6 +17,7 @@ use Isotope\Model\Group;
 use Isotope\Model\Product;
 use Isotope\Model\ProductPrice;
 use Isotope\Model\ProductType;
+use Isotope\Model\RelatedCategory;
 use Isotope\Model\TaxClass;
 
 
@@ -125,7 +126,7 @@ class ProductCallbacks extends \Backend
                 // Cache number of downloads
                 static::$objInstance->arrDownloads = array();
 
-                $objDownloads = static::$objInstance->Database->query("SELECT pid, COUNT(id) AS total FROM tl_iso_downloads GROUP BY pid");
+                $objDownloads = static::$objInstance->Database->query("SELECT pid, COUNT(id) AS total FROM " . \Isotope\Model\Download::getTable() . " GROUP BY pid");
 
                 while ($objDownloads->next()) {
                     static::$objInstance->arrDownloads[$objDownloads->pid] = $objDownloads->total;
@@ -152,7 +153,7 @@ class ProductCallbacks extends \Backend
             }
 
             // Disable related categories if none are defined
-            if (static::$objInstance->Database->query("SELECT COUNT(id) AS total FROM tl_iso_related_categories")->total == 0) {
+            if (RelatedCategory::countAll() == 0) {
                 unset($GLOBALS['TL_DCA']['tl_iso_products']['list']['operations']['related']);
             }
         }

@@ -15,6 +15,8 @@
 
 namespace Isotope;
 
+use Isotope\Model\RelatedCategory;
+
 
 /**
  * Class tl_iso_related_products
@@ -31,7 +33,7 @@ class tl_iso_related_products extends \Backend
      */
     public function listRows($row)
     {
-        $strCategory = \Database::getInstance()->prepare("SELECT * FROM tl_iso_related_categories WHERE id=?")->execute($row['category'])->name;
+        $strCategory = RelatedCategory::findByPk($row['category'])->name;
 
         $strBuffer = '
 <div class="cte_type" style="color:#666966"><strong>' . $GLOBALS['TL_LANG']['tl_iso_related_products']['category'][0] . ':</strong> ' . $strCategory . '</div>';
@@ -63,7 +65,7 @@ class tl_iso_related_products extends \Backend
     public function initDCA($dc)
     {
         $arrCategories = array();
-        $objCategories = \Database::getInstance()->prepare("SELECT * FROM tl_iso_related_categories WHERE id NOT IN (SELECT category FROM tl_iso_related_products WHERE pid=" . (strlen(\Input::get('act')) ? "(SELECT pid FROM tl_iso_related_products WHERE id=?) AND id!=?" : '?') . ")")->execute($dc->id, $dc->id);
+        $objCategories = \Database::getInstance()->prepare("SELECT * FROM " . \Isotope\Model\RelatedCategory::getTable() . " WHERE id NOT IN (SELECT category FROM " . $dc->table . " WHERE pid=" . (strlen(\Input::get('act')) ? "(SELECT pid FROM " . $dc->table . " WHERE id=?) AND id!=?" : '?') . ")")->execute($dc->id, $dc->id);
 
         while ($objCategories->next())
         {

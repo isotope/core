@@ -126,7 +126,7 @@ $GLOBALS['TL_DCA']['tl_iso_related_products'] = array
             'exclude'               => true,
             'filter'                => true,
             'inputType'             => 'select',
-            'foreignKey'            => 'tl_iso_related_categories.name',
+            'foreignKey'            => \Isotope\Model\RelatedCategory::getTable().'.name',
             'eval'                  => array('mandatory'=>true, 'includeBlankOption'=>true, 'chosen'=>true),
             'sql'                   => "int(10) unsigned NOT NULL default '0'",
             'relation'              => array('type'=>'hasOne', 'load'=>'lazy'),
