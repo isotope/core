@@ -473,9 +473,8 @@ class Order extends ProductCollection implements IsotopeProductCollection
 
 
         // !HOOK: add custom email tokens
-        // @todo might want to rename because there could be tokens for other things?
-        if (isset($GLOBALS['ISO_HOOKS']['getNotificationTokens']) && is_array($GLOBALS['ISO_HOOKS']['getNotificationTokens'])) {
-            foreach ($GLOBALS['ISO_HOOKS']['getNotificationTokens'] as $callback) {
+        if (isset($GLOBALS['ISO_HOOKS']['getOrderNotificationTokens']) && is_array($GLOBALS['ISO_HOOKS']['getOrderNotificationTokens'])) {
+            foreach ($GLOBALS['ISO_HOOKS']['getOrderNotificationTokens'] as $callback) {
                 $objCallback = \System::importStatic($callback[0]);
                 $arrTokens = $objCallback->$callback[1]($this, $arrTokens);
             }
