@@ -181,7 +181,7 @@ $GLOBALS['TL_DCA']['tl_iso_rules'] = array
             'exclude'                       => true,
             'filter'                        => true,
             'inputType'                     => 'select',
-            'foreignKey'                    => 'tl_iso_tax_class.name',
+            'foreignKey'                    => \Isotope\Model\TaxClass::getTable().'.name',
             'options_callback'              => array('\Isotope\Model\TaxClass', 'getOptionsWithSplit'),
             'eval'                          => array('includeBlankOption'=>true, 'tl_class'=>'w50'),
             'sql'                           => "int(10) NOT NULL default '0'",
@@ -330,7 +330,7 @@ $GLOBALS['TL_DCA']['tl_iso_rules'] = array
             'label'                         => &$GLOBALS['TL_LANG']['tl_iso_rules']['configs'],
             'exclude'                       => true,
             'inputType'                     => 'checkbox',
-            'foreignKey'                    => 'tl_iso_config.name',
+            'foreignKey'                    => \Isotope\Model\Config::getTable().'.name',
             'eval'                          => array('mandatory'=>true, 'multiple'=>true, 'doNotSaveEmpty'=>true, 'tl_class'=>'clr w50 w50h'),
             'load_callback' => array
             (
@@ -430,7 +430,7 @@ $GLOBALS['TL_DCA']['tl_iso_rules'] = array
             'label'                         => &$GLOBALS['TL_LANG']['tl_iso_rules']['producttypes'],
             'exclude'                       => true,
             'inputType'                     => 'checkbox',
-            'foreignKey'                    => 'tl_iso_producttypes.name',
+            'foreignKey'                    => \Isotope\Model\ProductType::getTable().'.name',
             'eval'                          => array('mandatory'=>true, 'multiple'=>true, 'doNotSaveEmpty'=>true, 'tl_class'=>'clr'),
             'load_callback' => array
             (
@@ -469,7 +469,7 @@ $GLOBALS['TL_DCA']['tl_iso_rules'] = array
                 'tl_class'                  => 'clr',
                 'foreignTable'              => 'tl_iso_products',
                 'fieldType'                 => 'checkbox',
-                'listFields'                => array('type'=>'(SELECT name FROM tl_iso_producttypes WHERE tl_iso_products.type=tl_iso_producttypes.id)', 'name', 'sku'),
+                'listFields'                => array('type'=>"(SELECT name FROM " . \Isotope\Model\ProductType::getTable() . " WHERE " . \Isotope\Model\Product::getTable() . ".type=" . \Isotope\Model\ProductType::getTable() . ".id)", 'name', 'sku'),
                 'searchFields'              => array('name', 'alias', 'sku', 'description'),
                 'sqlWhere'                  => 'pid=0',
                 'searchLabel'               => 'Search products',

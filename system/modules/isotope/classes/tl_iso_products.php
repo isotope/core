@@ -19,6 +19,7 @@ namespace Isotope;
 
 use Isotope\Model\Attribute;
 use Isotope\Model\Product;
+use Isotope\Model\ProductType;
 use Isotope\Model\ProductCollectionItem;
 
 
@@ -378,7 +379,7 @@ class tl_iso_products extends \Backend
         if ($row['pid'] > 0) {
             return '<a href="'.preg_replace('/&(amp;)?id=[^& ]*/i', '', ampersand(\Environment::get('request'))).'&amp;act=paste&amp;mode=cut&amp;table=tl_iso_products&amp;id='.$row['id'].'&amp;pid='.\Input::get('id').'" title="'.specialchars($title).'"'.$attributes.' onclick="Backend.getScrollOffset();">'.\Image::getHtml($icon, $label).'</a> ';
         } else {
-            return '<a href="system/modules/isotope/group.php?do='.\Input::get('do').'&amp;table=tl_iso_groups&amp;field=gid&amp;value='.$row['gid'].'" title="'.specialchars($title).'"'.$attributes.' onclick="Backend.getScrollOffset();Isotope.openModalGroupSelector({\'width\':765,\'title\':\''.specialchars($GLOBALS['TL_LANG']['tl_iso_products']['product_groups'][0]).'\',\'url\':this.href,\'action\':\'moveProduct\',\'redirect\':\''.$this->addToUrl($href . '&pid=' . intval(\Input::get('pid')) . '&id=' . $row['id']).'\'});return false">'.\Image::getHtml($icon, $label).'</a> ';
+            return '<a href="system/modules/isotope/group.php?do='.\Input::get('do').'&amp;table='.\Isotope\Model\Group::getTable().'&amp;field=gid&amp;value='.$row['gid'].'" title="'.specialchars($title).'"'.$attributes.' onclick="Backend.getScrollOffset();Isotope.openModalGroupSelector({\'width\':765,\'title\':\''.specialchars($GLOBALS['TL_LANG']['tl_iso_products']['product_groups'][0]).'\',\'url\':this.href,\'action\':\'moveProduct\',\'redirect\':\''.$this->addToUrl($href . '&pid=' . intval(\Input::get('pid')) . '&id=' . $row['id']).'\'});return false">'.\Image::getHtml($icon, $label).'</a> ';
         }
     }
 
@@ -428,9 +429,12 @@ class tl_iso_products extends \Backend
             return '';
         }
 
-        $objProductType = \Database::getInstance()->execute("SELECT * FROM tl_iso_producttypes WHERE id=" . (int) $row['type']);
-        $arrAttributes = $row['pid'] ? deserialize($objProductType->variant_attributes, true) : deserialize($objProductType->attributes, true);
         $time = time();
+        $arrAttributes = array();
+
+        if (($objProductType = ProductType::findByPk($row['type'])) !== null) {
+            $arrAttributes = $row['pid'] ? $objProductType->getVariantAttributes() : $objProductType->getAttributes();
+        }
 
         if (($arrAttributes['start']['enabled'] && $row['start'] != '' && $row['start'] > $time) || ($arrAttributes['stop']['enabled'] && $row['stop'] != '' && $row['stop'] < $time))
         {
@@ -494,7 +498,7 @@ class tl_iso_products extends \Backend
      */
     public function loadProductsDCA($strTable)
     {
-        if ($strTable != 'tl_iso_products' || !\Database::getInstance()->tableExists('tl_iso_attributes')) {
+        if ($strTable != \Isotope\Model\Product::getTable() || !\Database::getInstance()->tableExists(\Isotope\Model\Attribute::getTable())) {
             return;
         }
 

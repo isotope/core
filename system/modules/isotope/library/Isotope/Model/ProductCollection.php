@@ -487,8 +487,8 @@ abstract class ProductCollection extends TypeAgent
         $intAffectedRows = parent::delete();
 
         if ($intAffectedRows > 0 && $intPid > 0) {
-            \Database::getInstance()->query("DELETE FROM tl_iso_product_collection_item WHERE pid=$intPid");
-            \Database::getInstance()->query("DELETE FROM tl_iso_addresses WHERE ptable='" . static::$strTable . "' AND pid=$intPid");
+            \Database::getInstance()->query("DELETE FROM " . \Isotope\Model\ProductCollectionItem::getTable() . " WHERE pid=$intPid");
+            \Database::getInstance()->query("DELETE FROM " . \Isotope\Model\Address::getTable() . " WHERE ptable='" . static::$strTable . "' AND pid=$intPid");
         }
 
         $this->arrCache = array();

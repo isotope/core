@@ -11,6 +11,8 @@
 
 namespace Isotope\Report;
 
+use Isotope\Model\Config;
+
 
 abstract class Report extends \Backend
 {
@@ -223,12 +225,13 @@ abstract class Report extends \Backend
 	protected function getFilterByConfigPanel()
 	{
 		$arrConfigs = array(''=>&$GLOBALS['ISO_LANG']['REPORT']['all']);
-		$objConfigs = \Database::getInstance()->execute("SELECT id, name FROM tl_iso_config ORDER BY name");
+		$objConfigs = Config::findAll(array('order'=>'name'));
 
-		while ($objConfigs->next())
-		{
-			$arrConfigs[$objConfigs->id] = $objConfigs->name;
-		}
+        if (null !== $objConfigs) {
+    		while ($objConfigs->next()) {
+    			$arrConfigs[$objConfigs->id] = $objConfigs->name;
+    		}
+        }
 
 		$arrSession = \Session::getInstance()->get('iso_reports');
 		$varValue = (string) $arrSession[$this->name]['iso_config'];

@@ -14,6 +14,7 @@ namespace Isotope;
 
 use \Contao\Backend as Contao_Backend;
 use Isotope\Model\Config;
+use Isotope\Model\Group;
 use Isotope\Model\OrderStatus;
 
 
@@ -238,7 +239,7 @@ class Backend extends Contao_Backend
      */
     public function getOrderMessages()
     {
-        if (!\Database::getInstance()->tableExists('tl_iso_orderstatus') || !\BackendUser::getInstance()->hasAccess('iso_orders', 'modules')) {
+        if (!\Database::getInstance()->tableExists(\Isotope\Model\OrderStatus::getTable()) || !\BackendUser::getInstance()->hasAccess('iso_orders', 'modules')) {
             return '';
         }
 
@@ -255,7 +256,7 @@ class Backend extends Contao_Backend
         }
 
         $arrMessages = array();
-        $objOrders = \Database::getInstance()->query("SELECT COUNT(*) AS total, s.name FROM tl_iso_product_collection c LEFT JOIN tl_iso_orderstatus s ON c.order_status=s.id WHERE c.type='Order' AND s.welcomescreen='1' $strConfig GROUP BY s.id");
+        $objOrders = \Database::getInstance()->query("SELECT COUNT(*) AS total, s.name FROM " . \Isotope\Model\ProductCollection::getTable() . " c LEFT JOIN " . \Isotope\Model\OrderStatus::getTable() . " s ON c.order_status=s.id WHERE c.type='Order' AND s.welcomescreen='1' $strConfig GROUP BY s.id");
 
         while ($objOrders->next())
         {
@@ -291,7 +292,7 @@ class Backend extends Contao_Backend
 
             // Find the user groups
             if (is_array($objUser->iso_groups) && count($objUser->iso_groups) > 0) {
-                $arrGroups = array_merge($arrGroups, $objUser->iso_groups, \Database::getInstance()->getChildRecords($objUser->iso_groups, 'tl_iso_groups'));
+                $arrGroups = array_merge($arrGroups, $objUser->iso_groups, \Database::getInstance()->getChildRecords($objUser->iso_groups, \Isotope\Model\Group::getTable()));
             }
 
             $objProducts = \Database::getInstance()->execute("
@@ -398,11 +399,9 @@ class Backend extends Contao_Backend
         // Generate groups
         do
         {
-            $objGroup = $objDatabase->prepare("SELECT id, pid, name FROM tl_iso_groups WHERE id=?")
-                                    ->limit(1)
-                                    ->execute($intPid);
+            $objGroup = Group::findByPk($intPid);
 
-            if ($objGroup->numRows)
+            if (null !== $objGroup)
             {
                 $arrGroups[] = array('id'=>$objGroup->id, 'name'=>$objGroup->name);
 

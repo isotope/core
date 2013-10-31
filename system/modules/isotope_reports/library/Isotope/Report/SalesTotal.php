@@ -48,10 +48,10 @@ class SalesTotal extends Sales
 												SUM(i.quantity) AS total_items,
 												SUM(i.tax_free_price * i.quantity) AS total_sales,
 												DATE_FORMAT(FROM_UNIXTIME(o.{$this->strDateField}), ?) AS dateGroup
-											FROM tl_iso_product_collection o
-											LEFT JOIN tl_iso_product_collection_item i ON o.id=i.pid
-											LEFT JOIN tl_iso_orderstatus os ON os.id=o.order_status
-											LEFT OUTER JOIN tl_iso_config c ON o.config_id=c.id
+											FROM " . \Isotope\Model\ProductCollection::getTable() . " o
+											LEFT JOIN " . \Isotope\Model\ProductCollectionItem::getTable() . " i ON o.id=i.pid
+											LEFT JOIN " . \Isotope\Model\OrderStatus::getTable() . " os ON os.id=o.order_status
+											LEFT OUTER JOIN " . \Isotope\Model\Config::getTable() . " c ON o.config_id=c.id
 											WHERE o.type='Order'
 											" . ($intStatus > 0 ? " AND o.order_status=".$intStatus : '') . "
 											" . $this->getProductProcedure('i', 'product_id') . "
@@ -193,7 +193,7 @@ class SalesTotal extends Sales
 
 		$arrData = array();
 		$arrCurrencies = \Database::getInstance()->execute("
-		    SELECT DISTINCT currency FROM tl_iso_config WHERE currency!=''
+		    SELECT DISTINCT currency FROM " . \Isotope\Model\Config::getTable() . " WHERE currency!=''
 		    " . $this->getConfigProcedure() . "
 		    " . ($intConfig > 0 ? ' AND id='.$intConfig : '') . "
         ")->fetchEach('currency');

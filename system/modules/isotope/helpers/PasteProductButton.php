@@ -12,6 +12,8 @@
 
 namespace Isotope;
 
+use Isotope\Model\ProductType;
+
 
 /**
  * Class PastProductButton
@@ -41,7 +43,7 @@ class PasteProductButton extends \Backend
             return '';
         }
 
-        $objProduct = \Database::getInstance()->prepare("SELECT p.*, t.variants FROM tl_iso_products p LEFT JOIN tl_iso_producttypes t ON p.type=t.id WHERE p.id=?")->execute($arrClipboard['id']);
+        $objProduct = \Database::getInstance()->prepare("SELECT p.*, t.variants FROM " . \Isotope\Model\Product::getTable() . " p LEFT JOIN " . ProductType::getTable() . " t ON p.type=t.id WHERE p.id=?")->execute($arrClipboard['id']);
 
         // Copy or cut a single product or variant
         if ($arrClipboard['mode'] == 'cut' || $arrClipboard['mode'] == 'copy')
@@ -75,9 +77,9 @@ class PasteProductButton extends \Backend
         // Disable paste button for products without variant data
         elseif ($table == 'tl_iso_products' && $row['id'] > 0)
         {
-            $objType = \Database::getInstance()->prepare("SELECT * FROM tl_iso_producttypes WHERE id=?")->execute($row['type']);
+            $objType = ProductType::findByPk($row['type']);
 
-            if (!$objType->variants)
+            if (null === $objType || !$objType->hasVariants())
             {
                 return $this->getPasteButton(false);
             }

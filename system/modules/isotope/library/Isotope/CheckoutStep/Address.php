@@ -32,15 +32,15 @@ abstract class Address extends CheckoutStep
 
 
     /**
-     * Load tl_iso_addresses data container and create template
+     * Load data container and create template
      * @param   object
      */
     public function __construct($objModule)
     {
         parent::__construct($objModule);
 
-        \System::loadLanguageFile('tl_iso_addresses');
-        $this->loadDataContainer('tl_iso_addresses');
+        \System::loadLanguageFile(\Isotope\Model\Address::getTable());
+        $this->loadDataContainer(\Isotope\Model\Address::getTable());
 
         $this->Template = new \Isotope\Template('iso_checkout_address');
     }

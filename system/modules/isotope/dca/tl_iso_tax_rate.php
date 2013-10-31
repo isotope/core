@@ -135,7 +135,7 @@ $GLOBALS['TL_DCA']['tl_iso_tax_rate'] = array
         ),
         'pid' => array
         (
-            'foreignKey'            => 'tl_iso_tax_class.name',
+            'foreignKey'            => \Isotope\Model\TaxClass::getTable().'.name',
             'relation'              => array('type'=>'belongsTo', 'load'=>'lazy')
         ),
         'tstamp' => array
@@ -221,7 +221,7 @@ $GLOBALS['TL_DCA']['tl_iso_tax_rate'] = array
             'exclude'               => true,
             'filter'                => true,
             'inputType'             => 'select',
-            'foreignKey'            => 'tl_iso_config.name',
+            'foreignKey'            => \Isotope\Model\Config::getTable().'.name',
             'eval'                  => array('includeBlankOption'=>true, 'submitOnChange'=>true, 'tl_class'=>'w50'),
             'sql'                   => "int(10) unsigned NOT NULL default '0'",
             'relation'              => array('type'=>'hasOne', 'load'=>'lazy')

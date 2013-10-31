@@ -14,7 +14,7 @@
  */
 
 
-\System::loadLanguageFile('tl_iso_groups');
+\System::loadLanguageFile(\Isotope\Model\Group::getTable());
 
 /**
  * Extend tl_user palettes
@@ -42,7 +42,7 @@ $GLOBALS['TL_DCA']['tl_user']['fields']['iso_product_types'] = array
     'label'                 => &$GLOBALS['TL_LANG']['tl_user']['iso_product_types'],
     'exclude'               => true,
     'inputType'             => 'checkbox',
-    'foreignKey'            => 'tl_iso_producttypes.name',
+    'foreignKey'            => \Isotope\Model\ProductType::getTable().'.name',
     'eval'                  => array('multiple'=>true, 'helpwizard'=>true, 'tl_class'=>'clr w50 w50h'),
     'sql'                   => 'blob NULL',
 );
@@ -63,7 +63,7 @@ $GLOBALS['TL_DCA']['tl_user']['fields']['iso_payment_modules'] = array
     'label'                 => &$GLOBALS['TL_LANG']['tl_user']['iso_payment_modules'],
     'exclude'               => true,
     'inputType'             => 'checkbox',
-    'foreignKey'            => 'tl_iso_payment_modules.name',
+    'foreignKey'            => \Isotope\Model\Payment::getTable().'.name',
     'eval'                  => array('multiple'=>true, 'tl_class'=>'clr w50 w50h'),
     'sql'                   => 'blob NULL',
 );
@@ -84,7 +84,7 @@ $GLOBALS['TL_DCA']['tl_user']['fields']['iso_shipping_modules'] = array
     'label'                 => &$GLOBALS['TL_LANG']['tl_user']['iso_shipping_modules'],
     'exclude'               => true,
     'inputType'             => 'checkbox',
-    'foreignKey'            => 'tl_iso_shipping_modules.name',
+    'foreignKey'            => \Isotope\Model\Shipping::getTable().'.name',
     'eval'                  => array('multiple'=>true, 'tl_class'=>'clr w50 w50h'),
     'sql'                   => 'blob NULL',
 );
@@ -105,7 +105,7 @@ $GLOBALS['TL_DCA']['tl_user']['fields']['iso_tax_classes'] = array
     'label'                 => &$GLOBALS['TL_LANG']['tl_user']['iso_tax_classes'],
     'exclude'               => true,
     'inputType'             => 'checkbox',
-    'foreignKey'            => 'tl_iso_tax_class.name',
+    'foreignKey'            => \Isotope\Model\TaxClass::getTable().'.name',
     'eval'                  => array('multiple'=>true, 'tl_class'=>'clr w50 w50h'),
     'sql'                   => 'blob NULL',
 );
@@ -126,7 +126,7 @@ $GLOBALS['TL_DCA']['tl_user']['fields']['iso_tax_rates'] = array
     'label'                 => &$GLOBALS['TL_LANG']['tl_user']['iso_tax_rates'],
     'exclude'               => true,
     'inputType'             => 'checkbox',
-    'foreignKey'            => 'tl_iso_tax_rate.name',
+    'foreignKey'            => \Isotope\Model\TaxRate::getTable().'.name',
     'eval'                  => array('multiple'=>true, 'tl_class'=>'clr w50 w50h'),
     'sql'                   => 'blob NULL',
 );
@@ -147,7 +147,7 @@ $GLOBALS['TL_DCA']['tl_user']['fields']['iso_configs'] = array
     'label'                 => &$GLOBALS['TL_LANG']['tl_user']['iso_configs'],
     'exclude'               => true,
     'inputType'             => 'checkbox',
-    'foreignKey'            => 'tl_iso_config.name',
+    'foreignKey'            => \Isotope\Model\Config::getTable().'.name',
     'eval'                  => array('multiple'=>true, 'tl_class'=>'clr w50 w50h'),
     'sql'                   => 'blob NULL',
 );

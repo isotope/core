@@ -15,6 +15,9 @@
 
 namespace Isotope;
 
+use Isotope\Model\Payment;
+use Isotope\Model\Shipping;
+
 
 /**
  * Class tl_module_isotope
@@ -121,15 +124,13 @@ class tl_module extends \Backend
      */
     public function getPaymentModules()
     {
-        $arrPaymentModules = array();
-        $objPaymentModules = \Database::getInstance()->execute("SELECT * FROM tl_iso_payment_modules");
+        $objPayment = Payment::findAll();
 
-        while ($objPaymentModules->next())
-        {
-            $arrPaymentModules[$objPaymentModules->id] = $objPaymentModules->name;
+        if (null === $objPayment) {
+            return array();
         }
 
-        return $arrPaymentModules;
+        return $objPayment->fetchEach('name');
     }
 
 
@@ -139,15 +140,13 @@ class tl_module extends \Backend
      */
     public function getShippingModules()
     {
-        $arrModules = array();
-        $objModules = \Database::getInstance()->execute("SELECT * FROM tl_iso_shipping_modules WHERE enabled=1");
+        $objShipping = Shipping::findAll();
 
-        while ($objModules->next())
-        {
-            $arrModules[$objModules->id] = $objModules->name;
+        if (null === $objShipping) {
+            return array();
         }
 
-        return $arrModules;
+        return $objShipping->fetchEach('name');
     }
 
 

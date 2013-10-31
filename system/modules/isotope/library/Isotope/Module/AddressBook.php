@@ -86,12 +86,14 @@ class AddressBook extends Module
      */
     protected function compile()
     {
-        \System::loadLanguageFile('tl_iso_addresses');
-        $this->loadDataContainer('tl_iso_addresses');
+        $table = \Isotope\Model\Address::getTable();
+
+        \System::loadLanguageFile($table);
+        $this->loadDataContainer($table);
 
         // Call onload_callback (e.g. to check permissions)
-        if (is_array($GLOBALS['TL_DCA']['tl_iso_addresses']['config']['onload_callback'])) {
-            foreach ($GLOBALS['TL_DCA']['tl_iso_addresses']['config']['onload_callback'] as $callback) {
+        if (is_array($GLOBALS['TL_DCA'][$table]['config']['onload_callback'])) {
+            foreach ($GLOBALS['TL_DCA'][$table]['config']['onload_callback'] as $callback) {
                 $objCallback = \System::importStatic($callback[0]);
                 $objCallback->$callback[1]();
             }
@@ -168,7 +170,8 @@ class AddressBook extends Module
      */
     protected function edit($intAddressId=0)
     {
-        \System::loadLanguageFile('tl_member');
+        $table = \Isotope\Model\Address::getTable();
+        \System::loadLanguageFile(\MemberModel::getTable());
 
         if (!strlen($this->memberTpl)) {
             $this->memberTpl = 'member_default';
@@ -196,7 +199,7 @@ class AddressBook extends Module
             $objAddress->field = $field;
 
             // Reference DCA, it's faster to lookup than a deep array
-            $arrData = &$GLOBALS['TL_DCA']['tl_iso_addresses']['fields'][$field];
+            $arrData = &$GLOBALS['TL_DCA'][$table]['fields'][$field];
 
             // Map checkboxWizard to regular checkbox widget
             if ($arrData['inputType'] == 'checkboxWizard') {
@@ -234,7 +237,7 @@ class AddressBook extends Module
             $objWidget->rowClass = 'row_'.$row . (($row == 0) ? ' row_first' : '') . ((($row % 2) == 0) ? ' even' : ' odd');
 
             // Validate input
-            if (\Input::post('FORM_SUBMIT') == 'tl_iso_addresses_' . $this->id) {
+            if (\Input::post('FORM_SUBMIT') == $table . '_' . $this->id) {
 
                 $objWidget->validate();
                 $varValue = $objWidget->value;
@@ -286,13 +289,13 @@ class AddressBook extends Module
         $this->Template->hasError = $doNotSubmit;
 
         // Redirect or reload if there was no error
-        if (\Input::post('FORM_SUBMIT') == 'tl_iso_addresses_' . $this->id && !$doNotSubmit) {
+        if (\Input::post('FORM_SUBMIT') == $table . '_' . $this->id && !$doNotSubmit) {
 
             $objAddress->save();
 
             // Call onsubmit_callback
-            if (is_array($GLOBALS['TL_DCA']['tl_iso_addresses']['config']['onsubmit_callback'])) {
-                foreach ($GLOBALS['TL_DCA']['tl_iso_addresses']['config']['onsubmit_callback'] as $callback) {
+            if (is_array($GLOBALS['TL_DCA'][$table]['config']['onsubmit_callback'])) {
+                foreach ($GLOBALS['TL_DCA'][$table]['config']['onsubmit_callback'] as $callback) {
                     $objCallback = \System::importStatic($callback[0]);
                     $objCallback->$callback[1]($objAddress);
                 }
@@ -302,17 +305,17 @@ class AddressBook extends Module
             \Controller::redirect(\Controller::generateFrontendUrl($objPage->row()));
         }
 
-        $this->Template->addressDetails = $GLOBALS['TL_LANG']['tl_iso_addresses']['addressDetails'];
-        $this->Template->contactDetails = $GLOBALS['TL_LANG']['tl_iso_addresses']['contactDetails'];
-        $this->Template->personalData = $GLOBALS['TL_LANG']['tl_iso_addresses']['personalData'];
-        $this->Template->loginDetails = $GLOBALS['TL_LANG']['tl_iso_addresses']['loginDetails'];
+        $this->Template->addressDetails = $GLOBALS['TL_LANG'][$table]['addressDetails'];
+        $this->Template->contactDetails = $GLOBALS['TL_LANG'][$table]['contactDetails'];
+        $this->Template->personalData = $GLOBALS['TL_LANG'][$table]['personalData'];
+        $this->Template->loginDetails = $GLOBALS['TL_LANG'][$table]['loginDetails'];
 
         // Add groups
         foreach ($arrFields as $k=>$v) {
             $this->Template->$k = $v;
         }
 
-        $this->Template->formId = 'tl_iso_addresses_' . $this->id;
+        $this->Template->formId = $table . '_' . $this->id;
         $this->Template->slabel = specialchars($GLOBALS['TL_LANG']['MSC']['saveData']);
         $this->Template->action = ampersand(\Environment::get('request'), true);
         $this->Template->enctype = $hasUpload ? 'multipart/form-data' : 'application/x-www-form-urlencoded';

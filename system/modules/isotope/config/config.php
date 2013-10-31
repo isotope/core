@@ -36,7 +36,7 @@ array_insert($GLOBALS['BE_MOD']['isotope'], 0, array
 (
     'iso_products' => array
     (
-        'tables'                    => array('tl_iso_products', 'tl_iso_groups', 'tl_iso_product_categories', 'tl_iso_downloads', 'tl_iso_related_products', 'tl_iso_prices', 'tl_iso_price_tiers'),
+        'tables'                    => array(\Isotope\Model\Product::getTable(), \Isotope\Model\Group::getTable(), 'tl_iso_product_categories', 'tl_iso_downloads', \Isotope\Model\RelatedProduct::getTable(), \Isotope\Model\ProductPrice::getTable(), 'tl_iso_price_tiers'),
         'icon'                        => 'system/modules/isotope/assets/store-open.png',
         'javascript'                => 'system/modules/isotope/assets/backend'.(ISO_DEBUG ? '' : '.min').'.js',
         'generate'                    => array('Isotope\tl_iso_products', 'generateVariants'),
@@ -44,7 +44,7 @@ array_insert($GLOBALS['BE_MOD']['isotope'], 0, array
     ),
     'iso_orders' => array
     (
-        'tables'                    => array('tl_iso_product_collection', 'tl_iso_product_collection_item', 'tl_iso_product_collection_surcharge', 'tl_iso_product_collection_download', 'tl_iso_addresses'),
+        'tables'                    => array(\Isotope\Model\ProductCollection::getTable(), \Isotope\Model\ProductCollectionItem::getTable(), \Isotope\Model\ProductCollectionSurcharge::getTable(), \Isotope\Model\ProductCollectionDownload::getTable(), \Isotope\Model\Address::getTable()),
         'icon'                        => 'system/modules/isotope/assets/shopping-basket.png',
         'javascript'                => 'system/modules/isotope/assets/backend'.(ISO_DEBUG ? '' : '.min').'.js',
         'print_document'                => array('Isotope\tl_iso_product_collection', 'printDocument'),
@@ -60,7 +60,7 @@ array_insert($GLOBALS['BE_MOD']['isotope'], 0, array
     ),
 ));
 
-$GLOBALS['BE_MOD']['accounts']['member']['tables'][] = 'tl_iso_addresses';
+$GLOBALS['BE_MOD']['accounts']['member']['tables'][] = \Isotope\Model\Address::getTable();
 
 if (TL_MODE == 'BE')
 {
@@ -77,27 +77,27 @@ $GLOBALS['ISO_MOD'] = array
     (
         'producttypes' => array
         (
-            'tables'            => array('tl_iso_producttypes'),
+            'tables'            => array(\Isotope\Model\ProductType::getTable()),
             'icon'              => 'system/modules/isotope/assets/setup-producttypes.png'
         ),
         'attributes' => array
         (
-            'tables'            => array('tl_iso_attributes'),
+            'tables'            => array(\Isotope\Model\Attribute::getTable()),
             'icon'              => 'system/modules/isotope/assets/setup-attributes.png',
         ),
         'related_categories' => array
         (
-            'tables'            => array('tl_iso_related_categories'),
+            'tables'            => array(\Isotope\Model\RelatedCategory::getTable()),
             'icon'              => 'system/modules/isotope/assets/setup-related_categories.png',
         ),
         'gallery' => array
         (
-            'tables'            => array('tl_iso_gallery'),
+            'tables'            => array(\Isotope\Model\Gallery::getTable()),
             'icon'              => 'system/modules/isotope/assets/setup-gallery.png',
         ),
         'baseprice' => array
         (
-            'tables'            => array('tl_iso_baseprice'),
+            'tables'            => array(\Isotope\Model\BasePrice::getTable()),
             'icon'              => 'system/modules/isotope/assets/setup-baseprice.png',
         ),
     ),
@@ -105,22 +105,22 @@ $GLOBALS['ISO_MOD'] = array
     (
         'payment' => array
         (
-            'tables'            => array('tl_iso_payment_modules'),
+            'tables'            => array(\Isotope\Model\Payment::getTable()),
             'icon'              => 'system/modules/isotope/assets/setup-payment.png',
         ),
         'shipping' => array
         (
-                'tables'        => array('tl_iso_shipping_modules'),
+                'tables'        => array(\Isotope\Model\Shipping::getTable()),
                 'icon'          => 'system/modules/isotope/assets/setup-shipping.png',
         ),
         'tax_class' => array
         (
-            'tables'            => array('tl_iso_tax_class'),
+            'tables'            => array(\Isotope\Model\TaxClass::getTable()),
             'icon'              => 'system/modules/isotope/assets/setup-tax_class.png',
         ),
         'tax_rate' => array
         (
-            'tables'            => array('tl_iso_tax_rate'),
+            'tables'            => array(\Isotope\Model\TaxRate::getTable()),
             'icon'              => 'system/modules/isotope/assets/setup-tax_rate.png',
         ),
     ),
@@ -128,12 +128,12 @@ $GLOBALS['ISO_MOD'] = array
     (
         'configs' => array
         (
-            'tables'            => array('tl_iso_config'),
+            'tables'            => array(\Isotope\Model\Config::getTable()),
             'icon'              => 'system/modules/isotope/assets/setup-config.png',
         ),
         'orderstatus' => array
         (
-            'tables'            => array('tl_iso_orderstatus'),
+            'tables'            => array(\Isotope\Model\OrderStatus::getTable()),
             'icon'              => 'system/modules/isotope/assets/setup-orderstatus.png',
         ),
         'notifications' => array
@@ -143,12 +143,12 @@ $GLOBALS['ISO_MOD'] = array
         ),
         'documents' => array
         (
-            'tables'            => array('tl_iso_document'),
+            'tables'            => array(\Isotope\Model\Document::getTable()),
             'icon'              => 'system/modules/isotope/assets/setup-documents.png'
         ),
         'labels' => array
         (
-            'tables'            => array('tl_iso_labels'),
+            'tables'            => array(\Isotope\Model\Label::getTable()),
             'icon'              => 'system/modules/isotope/assets/setup-labels.png'
         ),
     )
@@ -303,29 +303,29 @@ $GLOBALS['NOTIFICATION_CENTER']['NOTIFICATION_TYPE']['isotope']['iso_order_statu
 /**
  * Models
  */
-$GLOBALS['TL_MODELS']['tl_iso_config']                          = 'Isotope\Model\Config';
-$GLOBALS['TL_MODELS']['tl_iso_addresses']                       = 'Isotope\Model\Address';
-$GLOBALS['TL_MODELS']['tl_iso_baseprice']                       = 'Isotope\Model\BasePrice';
-$GLOBALS['TL_MODELS']['tl_iso_document']                        = 'Isotope\Model\Document';
-$GLOBALS['TL_MODELS']['tl_iso_downloads']                       = 'Isotope\Model\Download';
-$GLOBALS['TL_MODELS']['tl_iso_groups']                          = 'Isotope\Model\Group';
-$GLOBALS['TL_MODELS']['tl_iso_labels']                          = 'Isotope\Model\Label';
-$GLOBALS['TL_MODELS']['tl_iso_orderstatus']                     = 'Isotope\Model\OrderStatus';
-$GLOBALS['TL_MODELS']['tl_iso_prices']                          = 'Isotope\Model\ProductPrice';
-$GLOBALS['TL_MODELS']['tl_iso_product_collection']              = 'Isotope\Model\ProductCollection';
-$GLOBALS['TL_MODELS']['tl_iso_product_collection_item']         = 'Isotope\Model\ProductCollectionItem';
-$GLOBALS['TL_MODELS']['tl_iso_product_collection_surcharge']    = 'Isotope\Model\ProductCollectionSurcharge';
-$GLOBALS['TL_MODELS']['tl_iso_product_collection_download']     = 'Isotope\Model\ProductCollectionDownload';
-$GLOBALS['TL_MODELS']['tl_iso_productcache']                    = 'Isotope\Model\ProductCache';
-$GLOBALS['TL_MODELS']['tl_iso_products']                        = 'Isotope\Model\Product';
-$GLOBALS['TL_MODELS']['tl_iso_producttypes']                    = 'Isotope\Model\ProductType';
-$GLOBALS['TL_MODELS']['tl_iso_related_categories']              = 'Isotope\Model\RelatedCategory';
-$GLOBALS['TL_MODELS']['tl_iso_related_products']                = 'Isotope\Model\RelatedProduct';
-$GLOBALS['TL_MODELS']['tl_iso_requestcache']                    = 'Isotope\Model\RequestCache';
-$GLOBALS['TL_MODELS']['tl_iso_tax_class']                       = 'Isotope\Model\TaxClass';
-$GLOBALS['TL_MODELS']['tl_iso_tax_rate']                        = 'Isotope\Model\TaxRate';
-$GLOBALS['TL_MODELS']['tl_iso_payment_modules']                 = 'Isotope\Model\Payment';
-$GLOBALS['TL_MODELS']['tl_iso_shipping_modules']                = 'Isotope\Model\Shipping';
+$GLOBALS['TL_MODELS'][\Isotope\Model\Config::getTable()]                        = 'Isotope\Model\Config';
+$GLOBALS['TL_MODELS'][\Isotope\Model\Address::getTable()]                       = 'Isotope\Model\Address';
+$GLOBALS['TL_MODELS'][\Isotope\Model\BasePrice::getTable()]                     = 'Isotope\Model\BasePrice';
+$GLOBALS['TL_MODELS'][\Isotope\Model\Document::getTable()]                      = 'Isotope\Model\Document';
+$GLOBALS['TL_MODELS'][\Isotope\Model\Download::getTable()]                      = 'Isotope\Model\Download';
+$GLOBALS['TL_MODELS'][\Isotope\Model\Group::getTable()]                         = 'Isotope\Model\Group';
+$GLOBALS['TL_MODELS'][\Isotope\Model\Label::getTable()]                         = 'Isotope\Model\Label';
+$GLOBALS['TL_MODELS'][\Isotope\Model\OrderStatus::getTable()]                   = 'Isotope\Model\OrderStatus';
+$GLOBALS['TL_MODELS'][\Isotope\Model\ProductPrice::getTable()]                  = 'Isotope\Model\ProductPrice';
+$GLOBALS['TL_MODELS'][\Isotope\Model\ProductCollection::getTable()]             = 'Isotope\Model\ProductCollection';
+$GLOBALS['TL_MODELS'][\Isotope\Model\ProductCollectionItem::getTable()]         = 'Isotope\Model\ProductCollectionItem';
+$GLOBALS['TL_MODELS'][\Isotope\Model\ProductCollectionSurcharge::getTable()]    = 'Isotope\Model\ProductCollectionSurcharge';
+$GLOBALS['TL_MODELS'][\Isotope\Model\ProductCollectionDownload::getTable()]     = 'Isotope\Model\ProductCollectionDownload';
+$GLOBALS['TL_MODELS'][\Isotope\Model\ProductCache::getTable()]                  = 'Isotope\Model\ProductCache';
+$GLOBALS['TL_MODELS'][\Isotope\Model\Product::getTable()]                       = 'Isotope\Model\Product';
+$GLOBALS['TL_MODELS'][\Isotope\Model\ProductType::getTable()]                   = 'Isotope\Model\ProductType';
+$GLOBALS['TL_MODELS'][\Isotope\Model\RelatedCategory::getTable()]               = 'Isotope\Model\RelatedCategory';
+$GLOBALS['TL_MODELS'][\Isotope\Model\RelatedProduct::getTable()]                = 'Isotope\Model\RelatedProduct';
+$GLOBALS['TL_MODELS'][\Isotope\Model\RequestCache::getTable()]                  = 'Isotope\Model\RequestCache';
+$GLOBALS['TL_MODELS'][\Isotope\Model\TaxClass::getTable()]                      = 'Isotope\Model\TaxClass';
+$GLOBALS['TL_MODELS'][\Isotope\Model\TaxRate::getTable()]                       = 'Isotope\Model\TaxRate';
+$GLOBALS['TL_MODELS'][\Isotope\Model\Payment::getTable()]                       = 'Isotope\Model\Payment';
+$GLOBALS['TL_MODELS'][\Isotope\Model\Shipping::getTable()]                      = 'Isotope\Model\Shipping';
 
 /**
  * Checkout steps

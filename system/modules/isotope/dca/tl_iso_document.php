@@ -193,7 +193,7 @@ $GLOBALS['TL_DCA']['tl_iso_document'] = array
             'label'                 => &$GLOBALS['TL_LANG']['tl_iso_document']['gallery'],
             'exclude'               => true,
             'inputType'             => 'select',
-            'foreignKey'            => 'tl_iso_gallery.name',
+            'foreignKey'            => \Isotope\Model\Gallery::getTable().'.name',
             'eval'                  => array('includeBlankOption'=>true, 'chosen'=>true, 'tl_class'=>'w50'),
             'sql'                   => "int(10) unsigned NOT NULL default '0'",
         ),

@@ -15,7 +15,7 @@
  * @author     Kamil Kuzminski <kamil.kuzminski@codefog.pl>
  */
 
-\System::loadLanguageFile('tl_iso_producttypes');
+\System::loadLanguageFile(\Isotope\Model\ProductType::getTable());
 
 /**
  * Table tl_iso_products
@@ -259,7 +259,7 @@ $GLOBALS['TL_DCA']['tl_iso_products'] = array
             'filter'                => true,
             'inputType'             => 'select',
             'options_callback'      => array('Isotope\ProductCallbacks', 'getProductTypes'),
-            'foreignKey'            => 'tl_iso_producttypes.name',
+            'foreignKey'            => \Isotope\Model\ProductType::getTable().'.name',
             'eval'                  => array('mandatory'=>true, 'submitOnChange'=>true, 'includeBlankOption'=>true, 'tl_class'=>'clr'),
             'attributes'            => array('legend'=>'general_legend', 'fixed'=>true, 'inherit'=>true, 'systemColumn'=>true),
             'sql'                   => "int(10) unsigned NOT NULL default '0'",
@@ -389,7 +389,7 @@ $GLOBALS['TL_DCA']['tl_iso_products'] = array
             'label'                 => &$GLOBALS['TL_LANG']['tl_iso_products']['price'],
             'exclude'               => true,
             'inputType'             => 'timePeriod',
-            'foreignKey'            => 'tl_iso_tax_class.name',
+            'foreignKey'            => \Isotope\Model\TaxClass::getTable().'.name',
             'eval'                  => array('mandatory'=>true, 'maxlength'=>13, 'rgxp'=>'price', 'includeBlankOption'=>true, 'doNotSaveEmpty'=>true, 'tl_class'=>'w50'),
             'attributes'            => array('legend'=>'pricing_legend', 'fe_sorting'=>true, 'dynamic'=>true, 'systemColumn'=>true, 'type'=>'\Isotope\Model\Attribute\Price'),
             'load_callback' => array
@@ -551,7 +551,7 @@ $GLOBALS['TL_DCA']['tl_iso_products'] = array
         ),
         'variantFields' => array
         (
-            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_producttypes']['variant_attributes'],
+            'label'                 => &$GLOBALS['TL_LANG'][\Isotope\Model\ProductType::getTable()]['variant_attributes'],
         ),
         'source' => array
         (

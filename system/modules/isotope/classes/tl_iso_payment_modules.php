@@ -195,16 +195,17 @@ class tl_iso_payment_modules extends \Backend
      */
     public function loadShippingModules($dc)
     {
-        $arrModules = array(-1=>$GLOBALS['TL_LANG']['tl_iso_payment_modules']['no_shipping']);
-        $objShippings = \Database::getInstance()->execute("SELECT * FROM tl_iso_shipping_modules ORDER BY name");
+        $arrModules = array(-1=>$GLOBALS['TL_LANG'][$dc->table]['no_shipping']);
+        $objShippings = Shipping::findAll(array('order'=>'name'));
 
-        while ($objShippings->next())
-        {
-            $arrModules[$objShippings->id] = $objShippings->name;
+        if (null !== $objShippings) {
+            foreach ($objShippings as $objShipping) {
+                $arrModules[$objShipping->id] = $objShipping->name;
+            }
         }
 
-        $GLOBALS['TL_DCA']['tl_iso_payment_modules']['fields']['shipping_modules']['options'] = array_keys($arrModules);
-        $GLOBALS['TL_DCA']['tl_iso_payment_modules']['fields']['shipping_modules']['reference'] = $arrModules;
+        $GLOBALS['TL_DCA'][$dc->table]['fields']['shipping_modules']['options'] = array_keys($arrModules);
+        $GLOBALS['TL_DCA'][$dc->table]['fields']['shipping_modules']['reference'] = $arrModules;
     }
 
 

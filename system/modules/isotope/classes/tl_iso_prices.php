@@ -30,7 +30,7 @@ class tl_iso_prices extends \Backend
     public function initializeDCA()
     {
         // Set default tax class
-        $GLOBALS['TL_DCA']['tl_iso_prices']['fields']['tax_class']['default'] = (int) \Database::getInstance()->execute("SELECT id FROM tl_iso_tax_class WHERE fallback='1'")->id;
+        $GLOBALS['TL_DCA']['tl_iso_prices']['fields']['tax_class']['default'] = (int) \Isotope\Model\TaxClass::findFallback()->id;
     }
 
 

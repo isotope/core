@@ -307,8 +307,8 @@ class tl_iso_producttypes extends \Backend
      */
     public function getLegends($objWidget)
     {
-        $arrLegends = $GLOBALS['TL_DCA']['tl_iso_attributes']['fields']['legend']['options'];
-        $arrLegends = array_intersect_key($GLOBALS['TL_LANG']['tl_iso_products'], array_flip($arrLegends));
+        $arrLegends = $GLOBALS['TL_DCA'][\Isotope\Model\Attribute::getTable()]['fields']['legend']['options'];
+        $arrLegends = array_intersect_key($GLOBALS['TL_LANG'][\Isotope\Model\Product::getTable()], array_flip($arrLegends));
 
         $varValue = $objWidget->value;
 

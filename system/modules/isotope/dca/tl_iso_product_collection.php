@@ -33,7 +33,7 @@ $GLOBALS['TL_DCA']['tl_iso_product_collection'] = array
     (
         'dataContainer'             => 'Table',
         'enableVersioning'          => false,
-        'ctable'                    => array('tl_iso_product_collection_item', 'tl_iso_product_collection_surcharge', 'tl_iso_addresses'),
+        'ctable'                    => array(\Isotope\Model\ProductCollectionItem::getTable(), \Isotope\Model\ProductCollectionSurcharge::getTable(), \Isotope\Model\Address::getTable()),
         'closed'                    => true,
         'notDeletable'              => (\Input::get('act') == 'select'),
         'onload_callback' => array
@@ -216,7 +216,7 @@ $GLOBALS['TL_DCA']['tl_iso_product_collection'] = array
             'filter'                => true,
             'sorting'               => true,
             'inputType'             => 'select',
-            'foreignKey'            => 'tl_iso_orderstatus.name',
+            'foreignKey'            => \Isotope\Model\OrderStatus::getTable().'.name',
             'options_callback'      => array('\Isotope\Backend', 'getOrderStatus'),
             'sql'                   => "int(10) unsigned NOT NULL default '0'",
             'relation'              => array('type'=>'hasOne', 'load'=>'lazy'),
@@ -244,7 +244,7 @@ $GLOBALS['TL_DCA']['tl_iso_product_collection'] = array
         'config_id' => array
         (
             'label'                 => &$GLOBALS['TL_LANG']['tl_iso_product_collection']['config_id'],
-            'foreignKey'            => 'tl_iso_config.name',
+            'foreignKey'            => \Isotope\Model\Config::getTable().'.name',
             'sql'                   => "int(10) unsigned NOT NULL default '0'",
             'relation'              => array('type'=>'hasOne', 'load'=>'lazy'),
         ),
@@ -252,7 +252,7 @@ $GLOBALS['TL_DCA']['tl_iso_product_collection'] = array
         (
             'label'                 => &$GLOBALS['TL_LANG']['tl_iso_product_collection']['payment_id'],
             'filter'                => true,
-            'foreignKey'            => 'tl_iso_payment_modules.name',
+            'foreignKey'            => \Isotope\Model\Payment::getTable().'.name',
             'sql'                   => "int(10) unsigned NOT NULL default '0'",
             'relation'              => array('type'=>'hasOne', 'load'=>'lazy'),
         ),
@@ -260,7 +260,7 @@ $GLOBALS['TL_DCA']['tl_iso_product_collection'] = array
         (
             'label'                 => &$GLOBALS['TL_LANG']['tl_iso_product_collection']['shipping_id'],
             'filter'                => true,
-            'foreignKey'            => 'tl_iso_shipping_modules.name',
+            'foreignKey'            => \Isotope\Model\Shipping::getTable().'.name',
             'sql'                   => "int(10) unsigned NOT NULL default '0'",
             'relation'              => array('type'=>'hasOne', 'load'=>'lazy'),
         ),

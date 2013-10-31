@@ -68,12 +68,12 @@ class SalesProduct extends Sales
 				t.variant_attributes,
 				SUM(i.tax_free_price * i.quantity) AS total,
 				DATE_FORMAT(FROM_UNIXTIME(o.{$this->strDateField}), '$sqlDate') AS dateGroup
-			FROM tl_iso_product_collection_item i
-			LEFT JOIN tl_iso_product_collection o ON i.pid=o.id
-			LEFT JOIN tl_iso_orderstatus os ON os.id=o.order_status
-			LEFT OUTER JOIN tl_iso_products p1 ON i.product_id=p1.id
-			LEFT OUTER JOIN tl_iso_products p2 ON p1.pid=p2.id
-			LEFT OUTER JOIN tl_iso_producttypes t ON p1.type=t.id
+			FROM " . \Isotope\Model\ProductCollectionItem::getTable() . " i
+			LEFT JOIN " . \Isotope\Model\ProductCollection::getTable() . " o ON i.pid=o.id
+			LEFT JOIN " . \Isotope\Model\OrderStatus::getTable() . " os ON os.id=o.order_status
+			LEFT OUTER JOIN " . \Isotope\Model\Product::getTable() . " p1 ON i.product_id=p1.id
+			LEFT OUTER JOIN " . \Isotope\Model\Product::getTable() . " p2 ON p1.pid=p2.id
+			LEFT OUTER JOIN " . \Isotope\Model\ProductType::getTable() . " t ON p1.type=t.id
 			WHERE o.type='Order'
 				" . ($intStatus > 0 ? " AND o.order_status=".$intStatus : '') . "
 				" . $this->getProductProcedure('p1') . "

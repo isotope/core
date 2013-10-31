@@ -27,8 +27,8 @@
  * @license    http://opensource.org/licenses/lgpl-3.0.html
  */
 
-$this->loadLanguageFile('tl_iso_groups');
-$this->loadDataContainer('tl_user');
+$this->loadLanguageFile(\Isotope\Model\Group::getTable());
+$this->loadDataContainer(\UserModel::getTable());
 
 /**
  * Extend a tl_user_group palette

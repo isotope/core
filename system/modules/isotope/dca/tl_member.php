@@ -17,7 +17,7 @@
 /**
  * Add a child table to tl_member
  */
-$GLOBALS['TL_DCA']['tl_member']['config']['ctable'][] = 'tl_iso_addresses';
+$GLOBALS['TL_DCA']['tl_member']['config']['ctable'][] = \Isotope\Model\Address::getTable();
 
 
 /**
@@ -26,7 +26,7 @@ $GLOBALS['TL_DCA']['tl_member']['config']['ctable'][] = 'tl_iso_addresses';
 $GLOBALS['TL_DCA']['tl_member']['list']['operations']['address_book'] = array
 (
     'label'               => &$GLOBALS['TL_LANG']['tl_member']['address_book'],
-    'href'                => 'table=tl_iso_addresses',
+    'href'                => 'table='.\Isotope\Model\Address::getTable(),
     'icon'                => 'system/modules/isotope/assets/cards-address.png',
 );
 
