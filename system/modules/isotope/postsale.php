@@ -72,6 +72,8 @@ class PostSale extends \Frontend
      */
     public function run()
     {
+        $objMethod = null;
+
         try {
             $strMod = strlen(\Input::post('mod')) ? \Input::post('mod') : \Input::get('mod');
             $strId = strlen(\Input::post('id')) ? \Input::post('id') : \Input::get('id');

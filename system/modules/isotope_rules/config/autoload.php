@@ -23,7 +23,7 @@ NamespaceClassLoader::add('Isotope', 'system/modules/isotope_rules/library');
 NamespaceClassLoader::addClassMap(array
 (
     // DCA Helpers
-    'Isotope\tl_iso_rules'  => 'system/modules/isotope_rules/classes/tl_iso_rules.php',
+    'Isotope\tl_iso_rule'  => 'system/modules/isotope_rules/classes/tl_iso_rule.php',
 ));
 
 

@@ -33,7 +33,7 @@ abstract class Shipping extends TypeAgent
      * Table name
      * @var string
      */
-    protected static $strTable = 'tl_iso_shipping_modules';
+    protected static $strTable = 'tl_iso_shipping';
 
     /**
      * Interface to validate shipping method

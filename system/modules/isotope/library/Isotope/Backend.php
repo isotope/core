@@ -14,6 +14,7 @@ namespace Isotope;
 
 use \Contao\Backend as Contao_Backend;
 use Isotope\Model\Config;
+use Isotope\Model\Group;
 use Isotope\Model\OrderStatus;
 
 
@@ -216,27 +217,6 @@ class Backend extends Contao_Backend
 
 
     /**
-     * Get all tax classes, including a "split amonst products" option
-     * @param DataContainer
-     * @return array
-     */
-    public static function getTaxClassesWithSplit()
-    {
-        $arrTaxes = array();
-        $objTaxes = \Database::getInstance()->execute("SELECT * FROM tl_iso_tax_class ORDER BY name");
-
-        while ($objTaxes->next())
-        {
-            $arrTaxes[$objTaxes->id] = $objTaxes->name;
-        }
-
-        $arrTaxes[-1] = $GLOBALS['TL_LANG']['MSC']['splittedTaxRate'];
-
-        return $arrTaxes;
-    }
-
-
-    /**
      * Get order status and return it as array
      * @return array
      */
@@ -259,12 +239,24 @@ class Backend extends Contao_Backend
      */
     public function getOrderMessages()
     {
-        if (!\Database::getInstance()->tableExists('tl_iso_orderstatus')) {
+        if (!\Database::getInstance()->tableExists(\Isotope\Model\OrderStatus::getTable()) || !\BackendUser::getInstance()->hasAccess('iso_orders', 'modules')) {
             return '';
         }
 
+        // Can't see any orders if user does not have access to any shop config
+        $strConfig = '';
+        if (!\BackendUser::getInstance()->isAdmin) {
+            $arrConfigs = \BackendUser::getInstance()->iso_configs;
+
+            if (empty($arrConfigs) || !is_array($arrConfigs)) {
+                return '';
+            }
+
+            $strConfig = "AND o.config_id IN (" . implode(',', $arrConfigs) . ")";
+        }
+
         $arrMessages = array();
-        $objOrders = \Database::getInstance()->query("SELECT COUNT(*) AS total, s.name FROM tl_iso_product_collection c LEFT JOIN tl_iso_orderstatus s ON c.order_status=s.id WHERE c.type='Order' AND s.welcomescreen='1' GROUP BY s.id");
+        $objOrders = \Database::getInstance()->query("SELECT COUNT(*) AS total, s.name FROM " . \Isotope\Model\ProductCollection::getTable() . " c LEFT JOIN " . \Isotope\Model\OrderStatus::getTable() . " s ON c.order_status=s.id WHERE c.type='Order' AND s.welcomescreen='1' $strConfig GROUP BY s.id");
 
         while ($objOrders->next())
         {
@@ -289,7 +281,7 @@ class Backend extends Contao_Backend
         }
         else
         {
-            $arrNewRecords = $_SESSION['BE_DATA']['new_records']['tl_iso_products'];
+            $arrNewRecords = $_SESSION['BE_DATA']['new_records']['tl_iso_product'];
             $arrProductTypes = $objUser->iso_product_types;
             $arrGroups = array();
 
@@ -300,19 +292,14 @@ class Backend extends Contao_Backend
 
             // Find the user groups
             if (is_array($objUser->iso_groups) && count($objUser->iso_groups) > 0) {
-                $arrGroups = array_merge($arrGroups, $objUser->iso_groups, \Database::getInstance()->getChildRecords($objUser->iso_groups, 'tl_iso_groups'));
-            }
-
-            // Return false if there are no groups
-            if (empty($arrGroups)) {
-                return false;
+                $arrGroups = array_merge($arrGroups, $objUser->iso_groups, \Database::getInstance()->getChildRecords($objUser->iso_groups, \Isotope\Model\Group::getTable()));
             }
 
             $objProducts = \Database::getInstance()->execute("
-                SELECT id FROM tl_iso_products
+                SELECT id FROM tl_iso_product
                 WHERE pid=0
                     AND language=''
-                    AND gid IN (" . implode(',', $arrGroups) . ")
+                    " . (empty($arrGroups) ? '' : "AND gid IN (" . implode(',', $arrGroups) . ")") . "
                     AND (
                         type IN (" . implode(',', $arrProductTypes) . ")" .
                         ((is_array($arrNewRecords) && !empty($arrNewRecords)) ? " OR id IN (".implode(',', $arrNewRecords).")" : '') .
@@ -325,7 +312,7 @@ class Backend extends Contao_Backend
             }
 
             $arrProducts = $objProducts->fetchEach('id');
-            $arrProducts = array_merge($arrProducts, \Database::getInstance()->getChildRecords($arrProducts, 'tl_iso_products'));
+            $arrProducts = array_merge($arrProducts, \Database::getInstance()->getChildRecords($arrProducts, 'tl_iso_product'));
         }
 
         // HOOK: allow extensions to define allowed products
@@ -355,7 +342,7 @@ class Backend extends Contao_Backend
         }
 
         // If all product are allowed, we don't need to filter
-        if ($arrProducts === true || count($arrProducts) == \Database::getInstance()->execute("SELECT COUNT(id) as total FROM tl_iso_products")->total)
+        if ($arrProducts === true || count($arrProducts) == \Database::getInstance()->execute("SELECT COUNT(id) as total FROM tl_iso_product")->total)
         {
             return true;
         }
@@ -394,7 +381,7 @@ class Backend extends Contao_Backend
         // Include the product in variants view
         if ($intProductId)
         {
-            $objProduct = $objDatabase->prepare("SELECT gid, name FROM tl_iso_products WHERE id=?")
+            $objProduct = $objDatabase->prepare("SELECT gid, name FROM tl_iso_product WHERE id=?")
                                       ->limit(1)
                                       ->execute($intProductId);
 
@@ -412,11 +399,9 @@ class Backend extends Contao_Backend
         // Generate groups
         do
         {
-            $objGroup = $objDatabase->prepare("SELECT id, pid, name FROM tl_iso_groups WHERE id=?")
-                                    ->limit(1)
-                                    ->execute($intPid);
+            $objGroup = Group::findByPk($intPid);
 
-            if ($objGroup->numRows)
+            if (null !== $objGroup)
             {
                 $arrGroups[] = array('id'=>$objGroup->id, 'name'=>$objGroup->name);
 
@@ -485,73 +470,6 @@ class Backend extends Contao_Backend
     {
         switch ($action)
         {
-            // Toggle nodes of the product tree
-            case 'toggleProductTree':
-                $this->strAjaxId = preg_replace('/.*_([0-9a-zA-Z]+)$/i', '$1', \Input::post('id'));
-                $this->strAjaxKey = str_replace('_' . $this->strAjaxId, '', \Input::post('id'));
-
-                if (\Input::get('act') == 'editAll')
-                {
-                    $this->strAjaxKey = preg_replace('/(.*)_[0-9a-zA-Z]+$/i', '$1', $this->strAjaxKey);
-                    $this->strAjaxName = preg_replace('/.*_([0-9a-zA-Z]+)$/i', '$1', \Input::post('name'));
-                }
-
-                $nodes = $this->Session->get($this->strAjaxKey);
-                $nodes[$this->strAjaxId] = intval(\Input::post('state'));
-
-                $this->Session->set($this->strAjaxKey, $nodes);
-                echo json_encode(array('token'=>REQUEST_TOKEN));
-                exit; break;
-
-            // Load nodes of the product tree
-            case 'loadProductTree':
-                $this->strAjaxId = preg_replace('/.*_([0-9a-zA-Z]+)$/i', '$1', \Input::post('id'));
-                $this->strAjaxKey = str_replace('_' . $this->strAjaxId, '', \Input::post('id'));
-
-                if (\Input::get('act') == 'editAll')
-                {
-                    $this->strAjaxKey = preg_replace('/(.*)_[0-9a-zA-Z]+$/i', '$1', $this->strAjaxKey);
-                    $this->strAjaxName = preg_replace('/.*_([0-9a-zA-Z]+)$/i', '$1', \Input::post('name'));
-                }
-
-                $nodes = $this->Session->get($this->strAjaxKey);
-                $nodes[$this->strAjaxId] = intval(\Input::post('state'));
-
-                $this->Session->set($this->strAjaxKey, $nodes);
-                break;
-
-            // Toggle nodes of the group tree
-            case 'toggleProductGroupTree':
-                $this->strAjaxId = preg_replace('/.*_([0-9a-zA-Z]+)$/', '$1', \Input::post('id'));
-                $this->strAjaxKey = str_replace('_' . $this->strAjaxId, '', \Input::post('id'));
-
-                if (\Input::get('act') == 'editAll')
-                {
-                    $this->strAjaxKey = preg_replace('/(.*)_[0-9a-zA-Z]+$/', '$1', $this->strAjaxKey);
-                    $this->strAjaxName = preg_replace('/.*_([0-9a-zA-Z]+)$/', '$1', \Input::post('name'));
-                }
-
-                $nodes = $this->Session->get($this->strAjaxKey);
-                $nodes[$this->strAjaxId] = intval(\Input::post('state'));
-                $this->Session->set($this->strAjaxKey, $nodes);
-                exit; break;
-
-            // Load nodes of the group tree
-            case 'loadProductGroupTree':
-                $this->strAjaxId = preg_replace('/.*_([0-9a-zA-Z]+)$/', '$1', \Input::post('id'));
-                $this->strAjaxKey = str_replace('_' . $this->strAjaxId, '', \Input::post('id'));
-
-                if (\Input::get('act') == 'editAll')
-                {
-                    $this->strAjaxKey = preg_replace('/(.*)_[0-9a-zA-Z]+$/', '$1', $this->strAjaxKey);
-                    $this->strAjaxName = preg_replace('/.*_([0-9a-zA-Z]+)$/', '$1', \Input::post('name'));
-                }
-
-                $nodes = $this->Session->get($this->strAjaxKey);
-                $nodes[$this->strAjaxId] = intval(\Input::post('state'));
-                $this->Session->set($this->strAjaxKey, $nodes);
-                break;
-
             // Move the product
             case 'moveProduct':
                 $this->Session->set('iso_products_gid', intval(\Input::post('value')));
@@ -572,7 +490,7 @@ class Backend extends Contao_Backend
             // Filter the pages
             case 'filterPages':
                 $filter = $this->Session->get('filter');
-                $filter['tl_iso_products']['iso_pages'] = array_map('intval', (array) \Input::post('value'));
+                $filter['tl_iso_product']['iso_pages'] = array_map('intval', (array) \Input::post('value'));
                 $this->Session->set('filter', $filter);
                 $this->reload();
                 break;
@@ -658,7 +576,7 @@ class Backend extends Contao_Backend
      */
     public function adjustGroupsManager($objTemplate)
     {
-        if (\Input::get('popup') && \Input::get('do') == 'iso_products' && \Input::get('table') == 'tl_iso_groups' && $objTemplate->getName() == 'be_main') {
+        if (\Input::get('popup') && \Input::get('do') == 'iso_products' && \Input::get('table') == Group::getTable() && $objTemplate->getName() == 'be_main') {
             $objTemplate->managerHref = ampersand($this->Session->get('groupPickerRef'));
             $objTemplate->manager = $GLOBALS['TL_LANG']['MSC']['groupPickerHome'];
         }

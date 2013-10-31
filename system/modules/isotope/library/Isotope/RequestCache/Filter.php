@@ -205,12 +205,11 @@ class Filter implements \ArrayAccess
      * @param   IsotopeProduct
      * @return  bool
      */
-    public static function matches(IsotopeProduct $objProduct)
+    public function matches(IsotopeProduct $objProduct)
     {
         if ($this->arrConfig['operator'] == '') {
             throw new \BadMethodCallException('Filter operator is not yet configured');
         }
-
         $varValues = $objProduct->{$this->arrConfig['attribute']};
 
         // If the attribute is not set for this product, we will ignore this attribute
@@ -224,7 +223,7 @@ class Filter implements \ArrayAccess
         {
             switch ($this->arrConfig['operator']) {
                 case 'like':
-                    if (stripos($varValue, $filter['value']) !== false) {
+                    if (stripos($varValue, $this->arrConfig['value']) !== false) {
                         return true;
                     }
                     break;

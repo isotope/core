@@ -43,7 +43,7 @@ Version 0.2.10 (2011-07-06)
 
 ### Improved
 - billing & shipping country is no longer mandatory in store config
-- Changed tl_iso_products::getCategoryList from private to protected function (Ticket #477)
+- Changed tl_iso_product::getCategoryList from private to protected function (Ticket #477)
 
 ### Fixed
 - error message when editing page category (Ticket #469)
@@ -308,7 +308,7 @@ Version 0.2.rc1 (2010-10-31)
 - tax total was not rounded according to store config
 - PayPal Standard payment charges included taxes twice
 - Missing argument 2 for IsotopeRules::findCoupon()
-- Incorrect default value for tl_iso_products.shipping_weight
+- Incorrect default value for tl_iso_product.shipping_weight
 - various issues with PayPal sandbox processing
 - address validation in checkout module
 

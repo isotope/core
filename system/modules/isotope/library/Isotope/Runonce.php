@@ -30,10 +30,6 @@ class Runonce extends \Controller
     public function __construct()
     {
         parent::__construct();
-
-        // Fix potential Exception on line 0 because of __destruct method (see http://dev.contao.org/issues/2236)
-        $this->import((TL_MODE=='BE' ? 'BackendUser' : 'FrontendUser'), 'User');
-        $this->import('Database');
     }
 
 
@@ -42,22 +38,20 @@ class Runonce extends \Controller
      */
     public function run()
     {
-        $this->upgradeSystemConfiguration();
-
-        // Check if shop has been installed (tl_store is the name for config table in version < 0.2)
-        $blnInstalled = (\Database::getInstance()->tableExists('tl_iso_config') || \Database::getInstance()->tableExists('tl_store'));
+        // Check if shop has been installed
+        $blnInstalled = \Database::getInstance()->tableExists(\Isotope\Model\Config::getTable());
 
         foreach (scan(TL_ROOT . '/system/modules/isotope/library/Isotope/Upgrade') as $strFile) {
             $strVersion = pathinfo($strFile, PATHINFO_FILENAME);
             $strClass = 'Isotope\Upgrade\\' . $strVersion;
+            $strStep = 'Version ' . \Repository::formatVersion(substr($strVersion, 2));
 
             if (preg_match('/To[0-9]{10}/', $strVersion)) {
                 try {
-                    $step = 'Version ' . \Repository::formatVersion(substr($strVersion, 2));
                     $objUpgrade = new $strClass();
                     $objUpgrade->run($blnInstalled);
                 } catch (\Exception $e) {
-                    $this->handleException($step, $e);
+                    $this->handleException($strStep, $e);
                 }
             }
         }
@@ -71,7 +65,7 @@ class Runonce extends \Controller
             }
         }
 
-        \System::log('Upgraded Isotope eCommerce to ' . $step, TL_INFO, __METHOD__);
+        \System::log('Upgraded Isotope eCommerce to ' . $strStep, TL_INFO, __METHOD__);
     }
 
 
@@ -105,19 +99,10 @@ h1 { font-size:18px; font-weight:normal; margin:0 0 18px; }
     }
 
 
-    private function upgradeSystemConfiguration()
-    {
-        // Make sure file extension .imt (Isotope Mail Template) is allowed for up- and download
-        if (!in_array('imt', trimsplit(',', $GLOBALS['TL_CONFIG']['uploadTypes']))) {
-            $this->Config->update('$GLOBALS[\'TL_CONFIG\'][\'uploadTypes\']', $GLOBALS['TL_CONFIG']['uploadTypes'].',imt');
-        }
-    }
-
-
     private function verifySystemIntegrity()
     {
         // Just make sure no variant or translation has any categories assigned
-        \Database::getInstance()->query("DELETE FROM tl_iso_product_categories WHERE pid IN (SELECT id FROM tl_iso_products WHERE pid>0)");
+        \Database::getInstance()->query("DELETE FROM " . \Isotope\Model\ProductCategory::getTable() . " WHERE pid IN (SELECT id FROM " . \Isotope\Model\Product::getTable() . " WHERE pid>0)");
     }
 
 

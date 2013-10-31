@@ -18,6 +18,13 @@ use Isotope\Model\Config;
 class SalesTotal extends Sales
 {
 
+    /**
+     * Template
+     * @var string
+     */
+    protected $strTemplate = 'iso_report_sales_total';
+
+
 	protected function compile()
 	{
 		$arrSession = \Session::getInstance()->get('iso_reports');
@@ -32,7 +39,6 @@ class SalesTotal extends Sales
 
 		$dateFrom = date($privateDate, $intStart);
 		$dateTo = date($privateDate, $intStop);
-		$arrAllowedProducts = \Isotope\Backend::getAllowedProductIds();
 
 		$objData = \Database::getInstance()->prepare("SELECT
 												c.id AS config_id,
@@ -42,20 +48,19 @@ class SalesTotal extends Sales
 												SUM(i.quantity) AS total_items,
 												SUM(i.tax_free_price * i.quantity) AS total_sales,
 												DATE_FORMAT(FROM_UNIXTIME(o.{$this->strDateField}), ?) AS dateGroup
-											FROM tl_iso_product_collection o
-											LEFT JOIN tl_iso_product_collection_item i ON o.id=i.pid
-											LEFT JOIN tl_iso_orderstatus os ON os.id=o.order_status
-											LEFT OUTER JOIN tl_iso_config c ON o.config_id=c.id
+											FROM " . \Isotope\Model\ProductCollection::getTable() . " o
+											LEFT JOIN " . \Isotope\Model\ProductCollectionItem::getTable() . " i ON o.id=i.pid
+											LEFT JOIN " . \Isotope\Model\OrderStatus::getTable() . " os ON os.id=o.order_status
+											LEFT OUTER JOIN " . \Isotope\Model\Config::getTable() . " c ON o.config_id=c.id
 											WHERE o.type='Order'
 											" . ($intStatus > 0 ? " AND o.order_status=".$intStatus : '') . "
-											" . ($arrAllowedProducts === true ? '' : (" AND i.product_id IN (" . (empty($arrAllowedProducts) ? '0' : implode(',', $arrAllowedProducts)) . ")")) . "
+											" . $this->getProductProcedure('i', 'product_id') . "
 											" . ($intConfig > 0 ? " AND c.id=".$intConfig : '') . "
+											" . $this->getConfigProcedure('c') . "
 											GROUP BY config_id, dateGroup
 											HAVING dateGroup>=$dateFrom AND dateGroup<=$dateTo")
 									->execute($sqlDate);
 
-
-		$i = -1;
 		$arrCurrencies = array();
 		$arrData = $this->initializeData($strPeriod, $intStart, $intStop, $privateDate, $publicDate);
 		$arrChart = $this->initializeChart($strPeriod, $intStart, $intStop, $privateDate, $publicDate);
@@ -80,7 +85,7 @@ class SalesTotal extends Sales
 			$arrData['footer'][3]['value'][$objData->currency] = ((float) $arrData['footer'][3]['value'][$objData->currency] + $objData->total_sales);
 
 			// Generate chart data
-			$arrChart['rows'][$objData->dateGroup]['columns'][$objData->currency]['value'] = ((float) $arrChart['rows'][$objData->dateGroup]['columns'][$objData->currency]['value'] + $objData->total_sales);
+			$arrChart[$objData->currency]['data'][$objData->dateGroup]['y'] = ((float) $arrChart['rows'][$objData->dateGroup]['columns'][$objData->currency]['value'] + $objData->total_sales);
 
 		}
 
@@ -88,7 +93,6 @@ class SalesTotal extends Sales
 		$arrData = $this->formatValues($arrData, $arrCurrencies);
 
 		$this->Template->data = $arrData;
-		$this->Template->addChart = true;
 		$this->Template->chart = $arrChart;
 	}
 
@@ -148,7 +152,6 @@ class SalesTotal extends Sales
 		{
 			$arrData['rows'][date($privateDate, $intStart)] = array
 			(
-				'class' => (++$i%2 ? 'odd' : 'even'),
 				'columns' => array
 				(
 					array
@@ -176,6 +179,8 @@ class SalesTotal extends Sales
 			$intStart = strtotime('+ 1 '.$strPeriod, $intStart);
 		}
 
+        $arrData['rows'] = \Isotope\Frontend::generateRowClass($arrData['rows'], '', 'class', 0, ISO_CLASS_EVENODD);
+
 		return $arrData;
 	}
 
@@ -185,21 +190,26 @@ class SalesTotal extends Sales
 		$arrSession = \Session::getInstance()->get('iso_reports');
 		$intConfig = (int) $arrSession[$this->name]['iso_config'];
 
-		$arrData = array('header'=>array(), 'rows'=>array(), 'footer'=>array());
-		$arrCurrencies = \Database::getInstance()->execute("SELECT DISTINCT currency FROM tl_iso_config WHERE currency!=''" . ($intConfig > 0 ? ' AND id='.$intConfig : ''))->fetchEach('currency');
+
+		$arrData = array();
+		$arrCurrencies = \Database::getInstance()->execute("
+		    SELECT DISTINCT currency FROM " . \Isotope\Model\Config::getTable() . " WHERE currency!=''
+		    " . $this->getConfigProcedure() . "
+		    " . ($intConfig > 0 ? ' AND id='.$intConfig : '') . "
+        ")->fetchEach('currency');
 
 		foreach ($arrCurrencies as $currency)
 		{
-			$arrData['header'][$currency]['value'] = $currency;
+			$arrData[$currency]['label'] = $currency;
+			$arrData[$currency]['className'] = '.'.strtolower($currency);
 		}
 
 		while ($intStart <= $intStop)
 		{
-			$arrData['footer'][date($privateDate, $intStart)]['value'] = $this->parseDate($publicDate, $intStart);
-
 			foreach ($arrCurrencies as $currency)
 			{
-				$arrData['rows'][date($privateDate, $intStart)]['columns'][$currency]['value'] = 0;
+                $arrData[$currency]['data'][date($privateDate, $intStart)]['x'] = $this->parseDate($publicDate, $intStart);
+				$arrData[$currency]['data'][date($privateDate, $intStart)]['y'] = 0;
 			}
 
 			$intStart = strtotime('+ 1 '.$strPeriod, $intStart);

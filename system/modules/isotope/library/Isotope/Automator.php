@@ -12,6 +12,7 @@
 
 namespace Isotope;
 
+use Isotope\Model\Config;
 use Isotope\Model\ProductCollection\Cart;
 use Isotope\Model\ProductCollection\Order;
 
@@ -35,19 +36,16 @@ class Automator extends \Controller
         $intPurged = 0;
         $objCarts = Cart::findBy(array('member=0', 'tstamp<?'), array(time() - $GLOBALS['TL_CONFIG']['iso_cartTimeout']));
 
-        while ($objCarts->next())
-        {
-            if (($objOrder = Order::findOneBy('source_collection_id', $objCart->id)) !== null && $objOrder->status == 0)
-            {
+        while ($objCarts->next()) {
+            if (($objOrder = Order::findOneBy('source_collection_id', $objCarts->current()->id)) !== null && $objOrder->status == 0) {
                 $objOrder->delete();
             }
 
-            $objCart->delete();
+            $objCarts->current()->delete();
             $intPurged += 1;
         }
 
-        if ($intPurged > 0)
-        {
+        if ($intPurged > 0) {
             \System::log('Purged ' . $intPurged . ' old guest carts', __METHOD__, TL_CRON);
         }
     }
@@ -59,7 +57,11 @@ class Automator extends \Controller
      */
     public function convertCurrencies()
     {
-        $objConfigs = \Database::getInstance()->execute("SELECT * FROM tl_iso_config WHERE currencyAutomator='1'");
+        $objConfigs = Config::findBy('currencyAutomator', '1');
+
+        if (null === $objConfigs) {
+            return;
+        }
 
         while ($objConfigs->next())
         {
@@ -102,8 +104,8 @@ class Automator extends \Controller
                         return;
                     }
 
-                    $fltFactor = $fltCourse / $fltCourseOrigin;
-                    \Database::getInstance()->prepare("UPDATE tl_iso_config SET priceCalculateFactor=? WHERE id=?")->execute($fltFactor, $objConfigs->id);
+                    $objConfigs->priceCalculateFactor = ($fltCourse / $fltCourseOrigin);
+                    $objConfigs->save();
                     break;
 
                 case 'admin.ch':
@@ -143,19 +145,18 @@ class Automator extends \Controller
                         return;
                     }
 
-                    $fltFactor = $fltCourse / $fltCourseOrigin;
-                    \Database::getInstance()->prepare("UPDATE tl_iso_config SET priceCalculateFactor=? WHERE id=?")->execute($fltFactor, $objConfigs->id);
+                    $objConfigs->priceCalculateFactor = ($fltCourse / $fltCourseOrigin);
+                    $objConfigs->save();
                     break;
 
                 default:
                     // !HOOK: other currency providers
-                    // function myCurrencyConverter($strProvider, $strSourceCurrency, $strTargetCurrency, $arrConfig)
                     if (isset($GLOBALS['ISO_HOOKS']['convertCurrency']) && is_array($GLOBALS['ISO_HOOKS']['convertCurrency']))
                     {
                         foreach ($GLOBALS['ISO_HOOKS']['convertCurrency'] as $callback)
                         {
                             $objCallback = \System::importStatic($callback[0]);
-                            $objCallback->$callback[1]($objConfigs->currencyProvider, $objConfigs->currencyOrigin, $objConfigs->currency, $objConfigs-row());
+                            $objCallback->$callback[1]($objConfigs->current());
                         }
                     }
             }

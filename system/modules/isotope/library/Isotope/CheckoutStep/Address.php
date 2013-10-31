@@ -13,9 +13,7 @@
 
 namespace Isotope\CheckoutStep;
 
-use Isotope\Isotope;
 use Isotope\Model\Address as AddressModel;
-use Isotope\Translation;
 
 abstract class Address extends CheckoutStep
 {
@@ -34,15 +32,15 @@ abstract class Address extends CheckoutStep
 
 
     /**
-     * Load tl_iso_addresses data container and create template
+     * Load data container and create template
      * @param   object
      */
     public function __construct($objModule)
     {
         parent::__construct($objModule);
 
-        \System::loadLanguageFile('tl_iso_addresses');
-        $this->loadDataContainer('tl_iso_addresses');
+        \System::loadLanguageFile(\Isotope\Model\Address::getTable());
+        $this->loadDataContainer(\Isotope\Model\Address::getTable());
 
         $this->Template = new \Isotope\Template('iso_checkout_address');
     }
@@ -157,6 +155,8 @@ abstract class Address extends CheckoutStep
         $arrWidgets = $this->getWidgets();
 
         foreach ($arrWidgets as $strName => $objWidget) {
+            $arrData = &$GLOBALS['TL_DCA'][\Isotope\Model\Address::getTable()]['fields'][$strName];
+
             // Validate input
             if ($blnValidate) {
 
@@ -207,7 +207,7 @@ abstract class Address extends CheckoutStep
 
             foreach ($this->getAddressFields() as $field) {
 
-                $arrData = $GLOBALS['TL_DCA']['tl_iso_addresses']['fields'][$field['value']];
+                $arrData = &$GLOBALS['TL_DCA'][\Isotope\Model\Address::getTable()]['fields'][$field['value']];
 
                 if (!is_array($arrData) || !$arrData['eval']['feEditable'] || !$field['enabled'] || ($arrData['eval']['membersOnly'] && FE_USER_LOGGED_IN !== true)) {
                     continue;

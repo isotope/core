@@ -12,6 +12,7 @@
 
 namespace Isotope\Model\Payment;
 
+use Isotope\Interfaces\IsotopeProductCollection;
 use Isotope\Isotope;
 use Isotope\Interfaces\IsotopePayment;
 use Isotope\Model\ProductCollection\Order;
@@ -138,6 +139,7 @@ class Paypal extends Postsale implements IsotopePayment
 
         $arrData = array();
         $fltDiscount = 0;
+        $i = 0;
 
         foreach (Isotope::getCart()->getItems() as $objItem) {
 

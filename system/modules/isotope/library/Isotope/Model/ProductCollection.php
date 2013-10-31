@@ -17,7 +17,6 @@ use Isotope\Interfaces\IsotopePayment;
 use Isotope\Interfaces\IsotopeProduct;
 use Isotope\Interfaces\IsotopeProductCollection;
 use Isotope\Interfaces\IsotopeShipping;
-use Isotope\Model\Config;
 use Isotope\Model\Payment;
 use Isotope\Model\ProductCollectionItem;
 use Isotope\Model\Shipping;
@@ -488,8 +487,8 @@ abstract class ProductCollection extends TypeAgent
         $intAffectedRows = parent::delete();
 
         if ($intAffectedRows > 0 && $intPid > 0) {
-            \Database::getInstance()->query("DELETE FROM tl_iso_product_collection_item WHERE pid=$intPid");
-            \Database::getInstance()->query("DELETE FROM tl_iso_addresses WHERE ptable='" . static::$strTable . "' AND pid=$intPid");
+            \Database::getInstance()->query("DELETE FROM " . \Isotope\Model\ProductCollectionItem::getTable() . " WHERE pid=$intPid");
+            \Database::getInstance()->query("DELETE FROM " . \Isotope\Model\Address::getTable() . " WHERE ptable='" . static::$strTable . "' AND pid=$intPid");
         }
 
         $this->arrCache = array();
@@ -732,7 +731,7 @@ abstract class ProductCollection extends TypeAgent
     {
         $strClass = array_search(get_class($objProduct), Product::getModelTypes());
 
-        $objItem = ProductCollectionItem::findOneBy(array('pid=?', 'type=?', 'product_id=?', 'options=?'), array($this->id, $strClass, $objProduct->id, serialize($objProduct->getOptions())));
+        $objItem = ProductCollectionItem::findOneBy(array('pid=?', 'type=?', 'product_id=?', 'options=?'), array($this->id, $strClass, $objProduct->{$objProduct->getPk()}, serialize($objProduct->getOptions())));
 
         return $objItem;
     }
@@ -825,7 +824,7 @@ abstract class ProductCollection extends TypeAgent
             $objItem->pid               = $this->id;
             $objItem->tstamp            = $time;
             $objItem->type              = array_search(get_class($objProduct), Product::getModelTypes());
-            $objItem->product_id        = (int) $objProduct->id;
+            $objItem->product_id        = $objProduct->{$objProduct->getPk()};
             $objItem->sku               = (string) $objProduct->sku;
             $objItem->name              = (string) $objProduct->name;
             $objItem->options           = $objProduct->getOptions();
@@ -1163,7 +1162,7 @@ abstract class ProductCollection extends TypeAgent
                 return '';
             }
 
-            $objAttribute = $GLOBALS['TL_DCA']['tl_iso_products']['attributes'][$strAttribute];
+            $objAttribute = $GLOBALS['TL_DCA']['tl_iso_product']['attributes'][$strAttribute];
 
             if (!($objAttribute instanceof IsotopeAttribute)) {
                 throw new \InvalidArgumentException($strAttribute . ' is not a valid attribute');
@@ -1291,7 +1290,6 @@ abstract class ProductCollection extends TypeAgent
             'tax_free_total'    => Isotope::formatPriceWithCurrency($objItem->getTaxFreeTotalPrice() * $objItem->quantity),
             'tax_id'            => $objItem->tax_id,
             'hasProduct'        => $blnHasProduct,
-            'downloads'         => $arrDownloads,
             'product'           => $objProduct,
             'item'              => $objItem,
             'raw'               => $objItem->row(),
@@ -1387,5 +1385,47 @@ abstract class ProductCollection extends TypeAgent
         if ($this->isLocked()) {
             throw new \BadMethodCallException('Product collection is locked');
         }
+    }
+
+
+    /**
+     * Method that returns a closure to sort product collection items
+     * @param   string
+     * @return  Closure
+     */
+    public static function getItemsSortingCallable($strOrderBy='asc_id')
+    {
+        list($direction, $attribute) = explode('_', $strOrderBy, 2);
+
+        if ($direction == 'asc') {
+
+            return function($arrItems) use ($attribute) {
+                uasort($arrItems, function($objItem1, $objItem2) use ($attribute) {
+                    if ($objItem1->$attribute == $objItem2->$attribute) {
+                        return 0;
+                    }
+
+                    return $objItem1->$attribute < $objItem2->$attribute ? -1 : 1;
+                });
+
+                return $arrItems;
+            };
+
+        } elseif ($direction == 'desc') {
+
+            return function($arrItems) use ($attribute) {
+                uasort($arrItems, function($objItem1, $objItem2) use ($attribute) {
+                    if ($objItem1->$attribute == $objItem2->$attribute) {
+                        return 0;
+                    }
+
+                    return $objItem1->$attribute > $objItem2->$attribute ? -1 : 1;
+                });
+
+                return $arrItems;
+            };
+        }
+
+        return null;
     }
 }

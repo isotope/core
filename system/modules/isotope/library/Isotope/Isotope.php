@@ -110,8 +110,8 @@ class Isotope extends \Controller
             static::$blnInitialized = true;
 
             // Make sure field data is available
-            static::getInstance()->call('loadDataContainer', 'tl_iso_products');
-            \System::loadLanguageFile('tl_iso_products');
+            static::getInstance()->call('loadDataContainer', 'tl_iso_product');
+            \System::loadLanguageFile('tl_iso_product');
 
             // Initialize request cache for product list filters
             if (\Input::get('isorc') != '') {
@@ -369,21 +369,6 @@ class Isotope extends \Controller
 
             return sprintf($GLOBALS['TL_LANG']['ISO']['productMultiple'], $intItems);
         }
-    }
-
-
-    /**
-     * Update ConditionalSelect to include the product ID in conditionField
-     * @param string
-     * @param array
-     * @param object
-     * @return array
-     */
-    public static function mergeConditionalOptionData($strField, $arrData, &$objProduct=null)
-    {
-        $arrData['eval']['conditionField'] = $arrData['attributes']['conditionField'] . (is_object($objProduct) ? '_' . $objProduct->getFormId() : '');
-
-        return $arrData;
     }
 
 
@@ -662,7 +647,7 @@ class Isotope extends \Controller
      * @param   array
      * @param   string
      */
-    public static function formatOptions(array $arrData, $strTable='tl_iso_products', $blnSkipEmpty=true)
+    public static function formatOptions(array $arrData, $strTable='tl_iso_product', $blnSkipEmpty=true)
     {
         $arrOptions = array();
 

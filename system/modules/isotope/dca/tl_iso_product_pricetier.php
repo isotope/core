@@ -1,0 +1,59 @@
+<?php
+
+/**
+ * Isotope eCommerce for Contao Open Source CMS
+ *
+ * Copyright (C) 2009-2012 Isotope eCommerce Workgroup
+ *
+ * @package    Isotope
+ * @link       http://www.isotopeecommerce.com
+ * @license    http://opensource.org/licenses/lgpl-3.0.html LGPL
+ *
+ * @author     Jan Reuteler <jan.reuteler@terminal42.ch>
+ */
+
+
+/**
+ * Table tl_iso_product_pricetier
+ */
+$GLOBALS['TL_DCA']['tl_iso_product_pricetier'] = array
+(
+
+    // Config
+    'config' => array
+    (
+        'sql' => array
+        (
+            'keys' => array
+            (
+                'id' => 'primary',
+                'pid' => 'index',
+            )
+        ),
+    ),
+
+    // Fields
+    'fields' => array
+    (
+        'id' => array
+        (
+            'sql'                 =>  "int(10) unsigned NOT NULL auto_increment",
+        ),
+        'pid' => array
+        (
+            'sql'                 =>  "int(10) unsigned NOT NULL default '0'",
+        ),
+        'tstamp' => array
+        (
+            'sql'                 =>  "int(10) unsigned NOT NULL default '0'",
+        ),
+        'min' => array
+        (
+            'sql'                 =>  "int(10) unsigned NOT NULL default '0'",
+        ),
+        'price' => array
+        (
+            'sql'                 =>  "decimal(12,2) NOT NULL default '0.00'",
+        ),
+    )
+);

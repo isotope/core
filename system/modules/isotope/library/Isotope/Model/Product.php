@@ -12,7 +12,6 @@
 
 namespace Isotope\Model;
 
-use Isotope\Isotope;
 use Isotope\Interfaces\IsotopeProduct;
 use Isotope\Model\Attribute;
 
@@ -30,7 +29,7 @@ abstract class Product extends TypeAgent
      * Table name
      * @var string
      */
-    protected static $strTable = 'tl_iso_products';
+    protected static $strTable = 'tl_iso_product';
 
     /**
      * Interface to validate attribute
@@ -52,6 +51,7 @@ abstract class Product extends TypeAgent
     public static function findPublished(array $arrOptions=array())
     {
         $t = static::$strTable;
+        $arrColumns = array();
 
         if (BE_USER_LOGGED_IN !== true) {
             $time = time();
@@ -154,8 +154,12 @@ abstract class Product extends TypeAgent
      * @param   array
      * @return  \Collection
      */
-    public static function findPublishedById(array $arrIds, array $arrOptions=array())
+    public static function findPublishedByIds(array $arrIds, array $arrOptions=array())
     {
+        if (empty($arrIds) || !is_array($arrIds)) {
+            return null;
+        }
+
         $t = static::$strTable;
 
         $arrColumns = array("$t.id IN (" . implode(',', array_map('intval', $arrIds)) . ")");
@@ -234,6 +238,97 @@ abstract class Product extends TypeAgent
     }
 
     /**
+     * Find a single frontend-available product by primary key
+     * @param   int
+     * @param   array
+     * @return  \Collection
+     */
+    public static function findAvailableByPk($intId, array $arrOptions=array())
+    {
+        $objProduct = static::findPublishedByPk($intId, $arrOptions);
+
+        if (null === $objProduct || !$objProduct->isAvailableInFrontend()) {
+            return null;
+        }
+
+        return $objProduct;
+    }
+
+    /**
+	 * Find a single frontend-available product by its ID or alias
+	 * @param   mixed       The ID or alias
+	 * @param   array       An optional options array
+	 * @return \Product|null  The model or null if the result is empty
+	 */
+	public static function findAvailableByIdOrAlias($varId, array $arrOptions=array())
+	{
+        $objProduct = static::findPublishedByIdOrAlias($varId, $arrOptions);
+
+        if (null === $objProduct || !$objProduct->isAvailableInFrontend()) {
+            return null;
+        }
+
+        return $objProduct;
+	}
+
+    /**
+     * Find frontend-available products by IDs
+     * @param   array
+     * @param   array
+     * @return  \Collection
+     */
+    public static function findAvailableByIds(array $arrIds, array $arrOptions=array())
+    {
+        $objProducts = static::findPublishedByIds($arrIds, $arrOptions);
+
+        if (null === $objProducts) {
+            return null;
+        }
+
+        $arrProducts = array();
+        foreach ($objProducts as $objProduct) {
+            if ($objProduct->isAvailableInFrontend()) {
+                $arrProducts[] = $objProduct;
+            }
+        }
+
+        if (empty($arrProducts)) {
+            return null;
+        }
+
+        return new \Model\Collection($arrProducts, static::$strTable);
+    }
+
+	/**
+     * Find frontend-available products by condition
+     * @param   mixed
+     * @param   mixed
+     * @param   array
+     * @return  \Model\Collection
+     */
+    public static function findAvailableBy($arrColumns, $arrValues, array $arrOptions=array())
+    {
+        $objProducts = static::findPublishedBy($arrColumns, $arrValues, $arrOptions);
+
+        if (null === $objProducts) {
+            return null;
+        }
+
+        $arrProducts = array();
+        foreach ($objProducts as $objProduct) {
+            if ($objProduct->isAvailableInFrontend()) {
+                $arrProducts[] = $objProduct;
+            }
+        }
+
+        if (empty($arrProducts)) {
+            return null;
+        }
+
+        return new \Model\Collection($arrProducts, static::$strTable);
+    }
+
+    /**
      * Find variant of a product
      * @param   IsotopeProduct
      * @param   array
@@ -262,11 +357,76 @@ abstract class Product extends TypeAgent
     }
 
     /**
+     * Return a model or collection based on the database result type
+     */
+    protected static function find(array $arrOptions)
+    {
+        $objProducts = parent::find($arrOptions);
+
+        $arrFilters = $arrOptions['filters'];
+        $arrSorting = $arrOptions['sorting'];
+
+        if (!empty($arrFilters) || !empty($arrSorting)) {
+
+            $arrProducts = $objProducts->getIterator()->getArrayCopy();
+
+            if (!empty($arrFilters)) {
+                $arrProducts = array_filter($arrProducts, function ($objProduct) use ($arrFilters) {
+                    $arrGroups = array();
+
+                    foreach ($arrFilters as $objFilter) {
+                        $blnMatch = $objFilter->matches($objProduct);
+
+                        if ($objFilter->hasGroup()) {
+                            $arrGroups[$objFilter->getGroup()] = $arrGroups[$objFilter->getGroup()] ?: $blnMatch;
+                        } elseif (!$blnMatch) {
+                            return false;
+                        }
+                    }
+
+                    if (!empty($arrGroups) && in_array(false, $arrGroups)) {
+                        return false;
+                    }
+
+                    return true;
+                });
+            }
+
+            // $arrProducts can be empty if the filter removed all records
+            if (!empty($arrSorting) && !empty($arrProducts)) {
+                $arrParam = array();
+                $arrData = array();
+
+                foreach ($arrSorting as $strField => $arrConfig) {
+                    foreach ($arrProducts as $objProduct) {
+
+                        // Both SORT_STRING and SORT_REGULAR are case sensitive, strings starting with a capital letter will come before strings starting with a lowercase letter.
+                        // To perform a case insensitive search, force the sorting order to be determined by a lowercase copy of the original value.
+                        $arrData[$strField][$objProduct->id] = strtolower(str_replace('"', '', $objProduct->$strField));
+                    }
+
+                    $arrParam[] = &$arrData[$strField];
+                    $arrParam[] = $arrConfig[0];
+                    $arrParam[] = $arrConfig[1];
+                }
+
+                // Add product array as the last item. This will sort the products array based on the sorting of the passed in arguments.
+                $arrParam[] = &$arrProducts;
+                call_user_func_array('array_multisort', $arrParam);
+            }
+
+            $objProducts = new \Model\Collection($arrProducts);
+        }
+
+        return $objProducts;
+    }
+
+    /**
      * Return select statement to load product data including multilingual fields
      * @param array an array of columns
      * @return string
      */
-    protected static function buildQueryString($arrOptions, $arrJoinAliases=array('t'=>'tl_iso_producttypes'))
+    protected static function buildQueryString($arrOptions, $arrJoinAliases=array('t'=>'tl_iso_producttype'))
     {
         $objBase = new \DcaExtractor($arrOptions['table']);
 
@@ -285,7 +445,7 @@ abstract class Product extends TypeAgent
 
         $arrFields[] = "c.sorting";
 
-        $arrJoins[] = " LEFT OUTER JOIN tl_iso_product_categories c ON {$arrOptions['table']}.id=c.pid";
+        $arrJoins[] = " LEFT OUTER JOIN " . \Isotope\Model\ProductCategory::getTable() . " c ON {$arrOptions['table']}.id=c.pid";
         $arrJoins[] = " LEFT OUTER JOIN " . $arrOptions['table'] . " translation ON " . $arrOptions['table'] . ".id=translation.pid AND translation.language='" . str_replace('-', '_', $GLOBALS['TL_LANGUAGE']) . "'";
 
 

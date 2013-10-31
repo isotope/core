@@ -46,7 +46,7 @@ $GLOBALS['TL_DCA']['tl_page']['fields']['iso_config'] = array
     'label'                   => &$GLOBALS['TL_LANG']['tl_page']['iso_config'],
     'exclude'                 => true,
     'inputType'               => 'select',
-    'foreignKey'              => 'tl_iso_config.name',
+    'foreignKey'              => \Isotope\Model\Config::getTable().'.name',
     'eval'                    => array('includeBlankOption'=>true, 'tl_class'=>'w50'),
     'sql'                     => "int(10) unsigned NOT NULL default '0'",
     'relation'                => array('type'=>'hasOne', 'load'=>'lazy'),
@@ -86,7 +86,7 @@ $GLOBALS['TL_DCA']['tl_page']['fields']['iso_readerJumpTo'] = array
 /**
  * Disable header edit button
  */
-if ($_GET['table'] == 'tl_iso_product_categories')
+if ($_GET['table'] == \Isotope\Model\ProductCategory::getTable())
 {
     $GLOBALS['TL_DCA']['tl_page']['config']['notEditable'] = true;
 }

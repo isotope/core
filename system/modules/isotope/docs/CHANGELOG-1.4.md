@@ -1,6 +1,20 @@
 Isotope eCommerce Changelog
 ===========================
 
+Version 1.4.7 (2013-??-??)
+--------------------------
+
+### Improved
+- Added composer-related files to GIT repo
+
+### Fixed
+- Potential error message in SQL queries (#747)
+- Check user permission for "new orders" message on welcome screen (#720)
+- Time-restricted rules were not working if timezone was not correct (#718)
+- Incorrect URL when there was no query strings (#757)
+- Advanced prices did not work for product with variants but without variant prices
+
+
 Version 1.4.6 (2013-09-02)
 --------------------------
 

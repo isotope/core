@@ -12,7 +12,6 @@
 
 namespace Isotope\Model;
 
-use Isotope\Isotope;
 use Isotope\Interfaces\IsotopeProductCollection;
 
 
@@ -60,6 +59,7 @@ class ProductCollectionDownload extends \Model
      */
     public function getForTemplate($blnOrderPaid=false)
     {
+        global $objPage;
         $objDownload = $this->getRelated('download_id');
 
         if (null === $objDownload) {

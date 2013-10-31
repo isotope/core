@@ -91,7 +91,7 @@ class OrderDetails extends Module
             $objTemplate,
             array(
                 'gallery'   => $this->iso_gallery,
-                'sorting'   => $this->getProductCollectionItemsSortingCallable(),
+                'sorting'   => $objOrder->getItemsSortingCallable($this->iso_orderCollectionBy),
             )
         );
 

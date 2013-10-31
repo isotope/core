@@ -13,14 +13,11 @@
 namespace Isotope\Model\ProductCollection;
 
 use Isotope\Isotope;
-use Isotope\Interfaces\IsotopeProduct;
 use Isotope\Interfaces\IsotopeProductCollection;
-use Isotope\Model\Config;
 use Isotope\Model\Document;
 use Isotope\Model\OrderStatus;
 use Isotope\Model\Payment;
 use Isotope\Model\ProductCollection;
-use Isotope\Model\ProductCollectionItem;
 use Isotope\Model\ProductCollectionDownload;
 use Isotope\Model\Shipping;
 use NotificationCenter\Model\Notification;
@@ -182,7 +179,6 @@ class Order extends ProductCollection implements IsotopeProductCollection
 
         // Store address in address book
         if ($this->iso_addToAddressbook && $this->member > 0) {
-            $time = time();
 
             if ($objCart->getBillingAddress()->ptable != \MemberModel::getTable()) {
                 $objAddress = clone $objCart->getBillingAddress();
@@ -212,11 +208,6 @@ class Order extends ProductCollection implements IsotopeProductCollection
 
         $this->checkout_complete = true;
 
-        // Set order status only if a payment module has not already set it
-        if ($this->order_status == 0) {
-            $this->order_status = Isotope::getConfig()->orderstatus_new;
-        }
-
         $this->generateDocumentNumber(Isotope::getConfig()->orderPrefix, (int) Isotope::getConfig()->orderDigits);
         $arrTokens = $this->getNotificationTokens($this->nc_notification);
 
@@ -239,6 +230,11 @@ class Order extends ProductCollection implements IsotopeProductCollection
             }
         } else {
             \System::log('No notification for order ID '.$this->id, __METHOD__, TL_ERROR);
+        }
+
+        // Set order status only if a payment module has not already set it
+        if ($this->order_status == 0) {
+            $this->updateOrderStatus(Isotope::getConfig()->orderstatus_new);
         }
 
         // !HOOK: post-process checkout
@@ -310,9 +306,11 @@ class Order extends ProductCollection implements IsotopeProductCollection
             }
         }
 
+        $arrSet = array();
+
         // Add the payment date if there is none
         if ($objNewStatus->isPaid() && $this->date_paid == '') {
-            $this->date_paid = time();
+            $arrSet['date_paid'] = time();
         }
 
         // Trigger notification
@@ -351,8 +349,11 @@ class Order extends ProductCollection implements IsotopeProductCollection
 
         // Store old status and set the new one
         $intOldStatus = $this->order_status;
-        $this->order_status = $objNewStatus->id;
-        $this->save();
+        $arrSet['order_status'] = $objNewStatus->id;
+
+        // Do not use Model, it could be locked
+        \Database::getInstance()->prepare("UPDATE " . static::$strTable . " %s WHERE id=?")->set($arrSet)->execute($this->id);
+        $this->mergeRow($arrSet);
 
         // !HOOK: order status has been updated
         if (isset($GLOBALS['ISO_HOOKS']['postOrderStatusUpdate']) && is_array($GLOBALS['ISO_HOOKS']['postOrderStatusUpdate']))
@@ -454,8 +455,7 @@ class Order extends ProductCollection implements IsotopeProductCollection
                 $objTemplate,
                 array(
                     'gallery'   => $objNotification->iso_gallery,
-                    // @todo implement sorting option
-//                    'sorting'   => $this->objModule->getProductCollectionItemsSortingCallable(),
+                    'sorting'   => $this->getItemsSortingCallable($objNotification->iso_orderCollectionBy),
                 )
             );
 
@@ -472,9 +472,8 @@ class Order extends ProductCollection implements IsotopeProductCollection
 
 
         // !HOOK: add custom email tokens
-        // @todo might want to rename because there could be tokens for other things?
-        if (isset($GLOBALS['ISO_HOOKS']['getNotificationTokens']) && is_array($GLOBALS['ISO_HOOKS']['getNotificationTokens'])) {
-            foreach ($GLOBALS['ISO_HOOKS']['getNotificationTokens'] as $callback) {
+        if (isset($GLOBALS['ISO_HOOKS']['getOrderNotificationTokens']) && is_array($GLOBALS['ISO_HOOKS']['getOrderNotificationTokens'])) {
+            foreach ($GLOBALS['ISO_HOOKS']['getOrderNotificationTokens'] as $callback) {
                 $objCallback = \System::importStatic($callback[0]);
                 $arrTokens = $objCallback->$callback[1]($this, $arrTokens);
             }
@@ -497,13 +496,16 @@ class Order extends ProductCollection implements IsotopeProductCollection
         foreach ($this->getItems($varCallable) as $objItem) {
 
             $arrDownloads = array();
-            $arrItems[] = $this->generateItem($objItem);
+            $arrItem = $this->generateItem($objItem);
 
             foreach ($objItem->getDownloads() as $objDownload) {
                 $arrDownloads = array_merge($arrDownloads, $objDownload->getForTemplate($this->isPaid()));
             }
 
+            $arrItem['downloads'] = $arrDownloads;
             $arrAllDownloads = array_merge($arrAllDownloads, $arrDownloads);
+
+            $arrItems[] = $arrItem;
         }
 
         $objTemplate->items = \Isotope\Frontend::generateRowClass($arrItems, 'row', 'rowClass', 0, ISO_CLASS_COUNT|ISO_CLASS_FIRSTLAST|ISO_CLASS_EVENODD);

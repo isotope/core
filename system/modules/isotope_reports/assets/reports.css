@@ -1,18 +1,3 @@
-.iso_reports .item a {
-	display: block;
-	width:100px;
-	height: 70px;
-	margin-right: 8px;
-	margin-bottom: 5px;
-	margin-top: 15px;
-	padding: 5px;
-	border-radius: 5px;
-	float:left;
-	text-align: center;
-}
-.iso_reports .item span {
-	display: block;
-}
 .mod_iso_reports {
 	overflow: auto;
 }
@@ -67,4 +52,46 @@ table.iso_report tfoot .fix-height {
 .iso_report .tl_help, .iso_report .tl_help a {
 	font-size: 11px;
 	color: #666966;
+}
+.mod_iso_reports .currencies {
+    margin-top: 10px;
+    margin-bottom: 30px;
+}
+.mod_iso_reports .currencies li {
+    display: inline-block;
+    margin-right: 10px;
+}
+.mod_iso_reports .currencies label {
+    color: #fff;
+    padding: 2px 5px;
+}
+.mod_iso_reports .currencies .color0 label {
+    background: #3880aa;
+}
+.mod_iso_reports .currencies .color1 label {
+    background: #4da944;
+}
+.mod_iso_reports .currencies .color2 label {
+    background: #f26522;
+}
+.mod_iso_reports .currencies .color3 label {
+    background: #c6080d;
+}
+.mod_iso_reports .currencies .color4 label {
+    background: #672d8b;
+}
+.mod_iso_reports .currencies .color5 label {
+    background: #ce1797;
+}
+.mod_iso_reports .currencies .color6 label {
+    background: #d9ce00;
+}
+.mod_iso_reports .currencies .color7 label {
+    background: #754c24;
+}
+.mod_iso_reports .currencies .color8 label {
+    background: #2eb9b4;
+}
+.mod_iso_reports .currencies .color9 label {
+    background: #0e2e42;
 }

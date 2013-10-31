@@ -14,7 +14,7 @@
 /**
  * Palettes
  */
-$GLOBALS['TL_DCA']['tl_nc_notification']['palettes']['iso_order_status_change'] = '{title_legend},title,type;{config_legend},iso_collectionTpl,iso_gallery,iso_document';
+$GLOBALS['TL_DCA']['tl_nc_notification']['palettes']['iso_order_status_change'] = '{title_legend},title,type;{config_legend},iso_collectionTpl,iso_orderCollectionBy,iso_gallery,iso_document';
 
 
 /**
@@ -30,12 +30,24 @@ $GLOBALS['TL_DCA']['tl_nc_notification']['fields']['iso_collectionTpl'] = array
     'sql'                   => "varchar(64) NOT NULL default ''",
 );
 
+
+$GLOBALS['TL_DCA']['tl_nc_notification']['fields']['iso_orderCollectionBy'] = array
+(
+    'label'                 => &$GLOBALS['TL_LANG']['tl_nc_notification']['iso_orderCollectionBy'],
+    'exclude'               => true,
+    'default'               => 'asc_id',
+    'inputType'             => 'select',
+    'options'               => $GLOBALS['TL_LANG']['MSC']['iso_orderCollectionBy'],
+    'eval'                  => array('mandatory'=>true, 'tl_class'=>'w50'),
+    'sql'                   => "varchar(16) NOT NULL default ''",
+);
+
 $GLOBALS['TL_DCA']['tl_nc_notification']['fields']['iso_gallery'] = array
 (
     'label'                 => &$GLOBALS['TL_LANG']['tl_nc_notification']['iso_gallery'],
     'exclude'               => true,
     'inputType'             => 'select',
-    'foreignKey'            => 'tl_iso_gallery.name',
+    'foreignKey'            => \Isotope\Model\Gallery::getTable().'.name',
     'eval'                  => array('includeBlankOption'=>true, 'chosen'=>true, 'tl_class'=>'w50'),
     'sql'                   => "int(10) unsigned NOT NULL default '0'",
 );

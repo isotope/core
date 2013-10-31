@@ -38,7 +38,7 @@ $GLOBALS['TL_DCA']['tl_iso_rule_usage'] = array
         ),
         'pid' => array
         (
-            'foreignKey'            => 'tl_iso_rules.name',
+            'foreignKey'            => \Isotope\Model\Rule::getTable().'.name',
             'sql'                   => "int(10) unsigned NOT NULL default '0'",
             'relation'              => array('type'=>'belongsTo', 'load'=>'lazy'),
         ),
@@ -48,19 +48,19 @@ $GLOBALS['TL_DCA']['tl_iso_rule_usage'] = array
         ),
         'order_id' => array
         (
-            'foreignKey'            => 'tl_iso_product_collection.document_number',
+            'foreignKey'            => \Isotope\Model\ProductCollection::getTable().'.document_number',
             'sql'                   => "int(10) unsigned NOT NULL default '0'",
             'relation'              => array('type'=>'hasOne', 'load'=>'lazy'),
         ),
         'config_id' => array
         (
-            'foreignKey'            => 'tl_iso_config.name',
+            'foreignKey'            => \Isotope\Model\Config::getTable().'.name',
             'sql'                   => "int(10) unsigned NOT NULL default '0'",
             'relation'              => array('type'=>'hasOne', 'load'=>'lazy'),
         ),
         'member_id' => array
         (
-            'foreignKey'            => 'tl_member.username',
+            'foreignKey'            => \MemberModel::getTable().'.username',
             'sql'                   => "int(10) unsigned NOT NULL default '0'",
             'relation'              => array('type'=>'hasOne', 'load'=>'lazy'),
         ),

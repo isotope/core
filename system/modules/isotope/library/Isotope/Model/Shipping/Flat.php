@@ -44,16 +44,12 @@ class Flat extends Shipping implements IsotopeShipping
             $fltPrice = (float) $this->arrData['price'];
         }
 
-        switch ($this->flatCalculation)
-        {
+        switch ($this->flatCalculation) {
             case 'perProduct':
-                $fltPrice = (($fltPrice * $objCollection->countItems()) + $intSurcharge);
+                $fltPrice = ($fltPrice * $objCollection->countItems());
 
             case 'perItem':
-                $fltPrice = (($fltPrice * $objCollection->sumItemsQuantity()) + $intSurcharge);
-
-            default:
-                $fltPrice = ($fltPrice + $intSurcharge);
+                $fltPrice = ($fltPrice * $objCollection->sumItemsQuantity());
         }
 
         return Isotope::calculatePrice($fltPrice, $this, 'price', $this->arrData['tax_class']);

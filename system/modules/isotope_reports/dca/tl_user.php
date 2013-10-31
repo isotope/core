@@ -27,7 +27,7 @@
  * @license    http://opensource.org/licenses/lgpl-3.0.html
  */
 
-$this->loadLanguageFile('tl_iso_groups');
+$this->loadLanguageFile(\Isotope\Model\Group::getTable());
 
 /**
  * Add the Isotope style sheet

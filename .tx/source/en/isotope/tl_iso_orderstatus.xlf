@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.1">
+  <file datatype="php" original="system/modules/isotope/languages/en/tl_iso_orderstatus.php" source-language="en">
+    <body>
+      <trans-unit id="tl_iso_orderstatus.name.0">
+        <source>Name</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_orderstatus.name.1">
+        <source>Please enter a name for this status.</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_orderstatus.paid.0">
+        <source>Order is paid</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_orderstatus.paid.1">
+        <source>Assume the order is paid when it has this status. This will for example allow files to be downloaded.</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_orderstatus.welcomescreen.0">
+        <source>Show on welcome screen</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_orderstatus.welcomescreen.1">
+        <source>Show number of orders with this status on the backend welcome screen.</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_orderstatus.notification.0">
+        <source>Notification</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_orderstatus.notification.1">
+        <source>Please select a notification.</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_orderstatus.new.0">
+        <source>New order status</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_orderstatus.new.1">
+        <source>Create a new order status</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_orderstatus.edit.0">
+        <source>Edit order status</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_orderstatus.edit.1">
+        <source>Edit order status ID %s</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_orderstatus.copy.0">
+        <source>Duplicate order status</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_orderstatus.copy.1">
+        <source>Duplicate order status ID %s</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_orderstatus.cut.0">
+        <source>Move order status</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_orderstatus.cut.1">
+        <source>Move order status ID %s</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_orderstatus.delete.0">
+        <source>Delete order status</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_orderstatus.delete.1">
+        <source>Delete order status ID %s</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_orderstatus.show.0">
+        <source>Order status details</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_orderstatus.show.1">
+        <source>Show details of order status ID %s</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_orderstatus.pasteafter.0">
+        <source>Paste after</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_orderstatus.pasteafter.1">
+        <source>Paste after order status ID %s</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_orderstatus.pasteinto.0">
+        <source>Paste into</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_orderstatus.pasteinto.1">
+        <source>Paste into order status ID %s</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_orderstatus.name_legend">
+        <source>Name</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_orderstatus.email_legend">
+        <source>E-Mail Notification</source>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

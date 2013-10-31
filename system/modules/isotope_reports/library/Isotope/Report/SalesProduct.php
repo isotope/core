@@ -21,8 +21,8 @@ class SalesProduct extends Sales
 	{
 		$this->initializeDefaultValues();
 
-		$this->loadLanguageFile('tl_iso_products');
-		$this->loadDataContainer('tl_iso_products');
+		$this->loadLanguageFile('tl_iso_product');
+		$this->loadDataContainer('tl_iso_product');
 
 		return parent::generate();
 	}
@@ -53,7 +53,6 @@ class SalesProduct extends Sales
 		$dateFrom = date($privateDate, $intStart);
 		$dateTo = date($privateDate, strtotime('+ ' . ($intColumns-1) . ' ' . $strPeriod, $intStart));
 		$groupVariants = $blnVariants ? 'p1.id' : 'IF(p1.pid=0, p1.id, p1.pid)';
-		$arrAllowedProducts = \Isotope\Backend::getAllowedProductIds();
 
 		$objProducts = \Database::getInstance()->query("
 			SELECT
@@ -69,15 +68,16 @@ class SalesProduct extends Sales
 				t.variant_attributes,
 				SUM(i.tax_free_price * i.quantity) AS total,
 				DATE_FORMAT(FROM_UNIXTIME(o.{$this->strDateField}), '$sqlDate') AS dateGroup
-			FROM tl_iso_product_collection_item i
-			LEFT JOIN tl_iso_product_collection o ON i.pid=o.id
-			LEFT JOIN tl_iso_orderstatus os ON os.id=o.order_status
-			LEFT OUTER JOIN tl_iso_products p1 ON i.product_id=p1.id
-			LEFT OUTER JOIN tl_iso_products p2 ON p1.pid=p2.id
-			LEFT OUTER JOIN tl_iso_producttypes t ON p1.type=t.id
+			FROM " . \Isotope\Model\ProductCollectionItem::getTable() . " i
+			LEFT JOIN " . \Isotope\Model\ProductCollection::getTable() . " o ON i.pid=o.id
+			LEFT JOIN " . \Isotope\Model\OrderStatus::getTable() . " os ON os.id=o.order_status
+			LEFT OUTER JOIN " . \Isotope\Model\Product::getTable() . " p1 ON i.product_id=p1.id
+			LEFT OUTER JOIN " . \Isotope\Model\Product::getTable() . " p2 ON p1.pid=p2.id
+			LEFT OUTER JOIN " . \Isotope\Model\ProductType::getTable() . " t ON p1.type=t.id
 			WHERE o.type='Order'
 				" . ($intStatus > 0 ? " AND o.order_status=".$intStatus : '') . "
-				" . ($arrAllowedProducts === true ? '' : (" AND p1.id IN (" . (empty($arrAllowedProducts) ? '0' : implode(',', $arrAllowedProducts)) . ")")) . "
+				" . $this->getProductProcedure('p1') . "
+				" . $this->getConfigProcedure('o', 'config_id') . "
 			GROUP BY dateGroup, product_id
 			HAVING dateGroup>=$dateFrom AND dateGroup<=$dateTo");
 
@@ -110,10 +110,10 @@ class SalesProduct extends Sales
 
 				foreach (deserialize($objProducts->product_options, true) as $strName => $strValue)
 				{
-					if (isset($GLOBALS['TL_DCA']['tl_iso_products']['fields'][$strName]))
+					if (isset($GLOBALS['TL_DCA']['tl_iso_product']['fields'][$strName]))
 					{
-						$strValue = $GLOBALS['TL_DCA']['tl_iso_products']['fields'][$strName]['options'][$strValue] ? $GLOBALS['TL_DCA']['tl_iso_products']['fields'][$strName]['options'][$strValue] : $strValue;
-						$strName = $GLOBALS['TL_DCA']['tl_iso_products']['fields'][$strName]['label'][0] ? $GLOBALS['TL_DCA']['tl_iso_products']['fields'][$strName]['label'][0] : $strName;
+						$strValue = $GLOBALS['TL_DCA']['tl_iso_product']['fields'][$strName]['options'][$strValue] ? $GLOBALS['TL_DCA']['tl_iso_product']['fields'][$strName]['options'][$strValue] : $strValue;
+						$strName = $GLOBALS['TL_DCA']['tl_iso_product']['fields'][$strName]['label'][0] ? $GLOBALS['TL_DCA']['tl_iso_product']['fields'][$strName]['label'][0] : $strName;
 					}
 
 					$arrOptions[] = '<span class="variant">' . $strName . ': ' . $strValue . '</span>';

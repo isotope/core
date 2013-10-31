@@ -11,10 +11,6 @@
 
 namespace Isotope\Report;
 
-use Isotope\Isotope;
-use Isotope\Translation;
-
-
 abstract class Sales extends Report
 {
 
@@ -58,7 +54,7 @@ abstract class Sales extends Report
 
 		if (!isset($arrSession[$this->name]['iso_status']))
 		{
-			$objStatus = \Database::getInstance()->query("SELECT id FROM tl_iso_orderstatus WHERE paid=1 ORDER BY sorting");
+			$objStatus = \Database::getInstance()->query("SELECT id FROM " . \Isotope\Model\OrderStatus::getTable() . " WHERE paid=1 ORDER BY sorting");
 			$arrSession[$this->name]['iso_status'] = $objStatus->id;
 		}
 
@@ -136,12 +132,13 @@ abstract class Sales extends Report
 	protected function getStatusPanel()
 	{
 		$arrStatus = array(''=>&$GLOBALS['ISO_LANG']['REPORT']['all']);
-		$objStatus = \Database::getInstance()->execute("SELECT id, name, paid FROM tl_iso_orderstatus ORDER BY sorting");
+		$objStatus = \Isotope\Model\OrderStatus::findAll(array('order'=>'sorting'));
 
-		while ($objStatus->next())
-		{
-			$arrStatus[$objStatus->id] = Translation::get($objStatus->name);
-		}
+        if (null !== $objStatus) {
+    		while ($objStatus->next()) {
+    			$arrStatus[$objStatus->id] = $objStatus->getName();
+    		}
+        }
 
 		$arrSession = \Session::getInstance()->get('iso_reports');
 		$varValue = (int) $arrSession[$this->name]['iso_status'];

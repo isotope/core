@@ -51,11 +51,11 @@ class Rule extends ProductCollectionSurcharge implements IsotopeProductCollectio
         // Product or producttype restrictions
         if ($objRule->productRestrictions != '' && $objRule->productRestrictions != 'none')
         {
-            $arrLimit = \Database::getInstance()->execute("SELECT object_id FROM tl_iso_rule_restrictions WHERE pid={$objRule->id} AND type='{$objRule->productRestrictions}'")->fetchEach('object_id');
+            $arrLimit = \Database::getInstance()->execute("SELECT object_id FROM tl_iso_rule_restriction WHERE pid={$objRule->id} AND type='{$objRule->productRestrictions}'")->fetchEach('object_id');
 
             if ($objRule->productRestrictions == 'pages' && !empty($arrLimit))
             {
-                $arrLimit = \Database::getInstance()->execute("SELECT pid FROM tl_iso_product_categories WHERE page_id IN (" . implode(',', $arrLimit) . ")")->fetchEach('pid');
+                $arrLimit = \Database::getInstance()->execute("SELECT pid FROM " . \Isotope\Model\ProductCategory::getTable() . " WHERE page_id IN (" . implode(',', $arrLimit) . ")")->fetchEach('pid');
             }
 
             if ($objRule->quantityMode == 'cart_products' || $objRule->quantityMode == 'cart_items')
@@ -166,7 +166,7 @@ class Rule extends ProductCollectionSurcharge implements IsotopeProductCollectio
                         break;
 
                     default:
-                        throw new Exception('Unknown rule condition "' . $objRule->attributeCondition . '"');
+                        throw new \Exception('Unknown rule condition "' . $objRule->attributeCondition . '"');
                 }
             }
 
@@ -240,49 +240,5 @@ class Rule extends ProductCollectionSurcharge implements IsotopeProductCollectio
         }
 
         return $objSurcharge->total_price == 0 ? null : $objSurcharge;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        $intTaxClass = $objSource->tax_class;
-
-        $objSurcharge = new static();
-        $objSurcharge->label = ($strLabel . ' (' . $objSource->getLabel() . ')');
-        $objSurcharge->price = ($objSource->isPercentage() ? $objSource->getPercentage().'%' : '&nbsp;');
-        $objSurcharge->total_price = $objSource->getPrice();
-        $objSurcharge->tax_class = $intTaxClass;
-        $objSurcharge->before_tax = ($intTaxClass ? true : false);
-
-        if ($intTaxClass == -1)
-        {
-            $objSurcharge->applySplittedTax($objCollection);
-        }
-
-        return $objSurcharge;
     }
 }

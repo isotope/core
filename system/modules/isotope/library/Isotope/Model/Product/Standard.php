@@ -21,7 +21,6 @@ use Isotope\Model\Gallery;
 use Isotope\Model\Product;
 use Isotope\Model\ProductPrice;
 use Isotope\Model\ProductType;
-use Isotope\Model\TaxClass;
 
 
 /**
@@ -361,9 +360,14 @@ class Standard extends Product implements IsotopeProduct
 
             $this->arrVariantIds = array();
 
+            // Nothing to do if we have no variants
+            if (!$this->hasVariants()) {
+                return $this->arrVariantIds;
+            }
+
             $time = time();
             $blnHasProtected = false;
-            $strQuery = "SELECT id, protected, groups FROM tl_iso_products WHERE pid=" . $this->getProductId() . " AND language='' AND published='1' AND (start='' OR start<$time) AND (stop='' OR stop>$time)";
+            $strQuery = "SELECT id, protected, groups FROM tl_iso_product WHERE pid=" . $this->getProductId() . " AND language='' AND published='1' AND (start='' OR start<$time) AND (stop='' OR stop>$time)";
 
             if (BE_USER_LOGGED_IN !== true) {
                 $arrAttributes = $this->getVariantAttributes();
@@ -395,7 +399,20 @@ class Standard extends Product implements IsotopeProduct
                 $this->arrVariantIds[] = $objVariants->id;
             }
 
-            // @todo check if each variant has a price
+            // Only show variants where a price is available
+            if ($this->hasVariantPrices()) {
+                if ($this->hasAdvancedPrices()) {
+                    $objPrices = ProductPrice::findAdvancedByProductIdsAndCollection($this->arrVariantIds, Isotope::getCart());
+                } else {
+                    $objPrices = ProductPrice::findPrimaryByProductIds($this->arrVariantIds);
+                }
+
+                if (null === $objPrices) {
+                    $this->arrVariantIds = array();
+                } else {
+                    $this->arrVariantIds = $objPrices->fetchEach('pid');
+                }
+            }
         }
 
         return $this->arrVariantIds;
@@ -408,7 +425,8 @@ class Standard extends Product implements IsotopeProduct
     public function getCategories()
     {
         if (null === $this->arrCategories) {
-            $this->arrCategories = \Database::getInstance()->execute("SELECT page_id FROM tl_iso_product_categories WHERE pid=" . $this->getProductId())->fetchEach('page_id');
+            $objCategories = ProductCategory::findBy('pid', $this->getProductId());
+            $this->arrCategories = (null === $objCategories ? array() : $objCategories->fetchEach('page_id'));
 
             // Sort categories by the backend drag&drop
             $arrOrder = deserialize($this->orderPages);
@@ -467,7 +485,7 @@ class Standard extends Product implements IsotopeProduct
 
         $objTemplate->generateAttribute = function($strAttribute, array $arrOptions=array()) use ($objProduct) {
 
-            $objAttribute = $GLOBALS['TL_DCA']['tl_iso_products']['attributes'][$strAttribute];
+            $objAttribute = $GLOBALS['TL_DCA']['tl_iso_product']['attributes'][$strAttribute];
 
             if (!($objAttribute instanceof IsotopeAttribute)) {
                 throw new \InvalidArgumentException($strAttribute . ' is not a valid attribute');
@@ -507,7 +525,7 @@ class Standard extends Product implements IsotopeProduct
 
         foreach (array_unique(array_merge($this->getAttributes(), $this->getVariantAttributes())) as $attribute)
         {
-            $arrData = $GLOBALS['TL_DCA']['tl_iso_products']['fields'][$attribute];
+            $arrData = $GLOBALS['TL_DCA']['tl_iso_product']['fields'][$attribute];
 
             if ($arrData['attributes']['customer_defined'] || $arrData['attributes']['variant_option']) {
 
@@ -600,8 +618,8 @@ class Standard extends Product implements IsotopeProduct
      */
     protected function generateProductOptionWidget($strField, &$arrVariantOptions)
     {
-        $objAttribute = $GLOBALS['TL_DCA']['tl_iso_products']['attributes'][$strField];
-        $arrData = $GLOBALS['TL_DCA']['tl_iso_products']['fields'][$strField];
+        $objAttribute = $GLOBALS['TL_DCA']['tl_iso_product']['attributes'][$strField];
+        $arrData = $GLOBALS['TL_DCA']['tl_iso_product']['fields'][$strField];
 
         $strClass = $objAttribute->getFrontendWidget();
 
@@ -688,7 +706,7 @@ class Standard extends Product implements IsotopeProduct
                     }
                 }
 
-                if (!$objWidget->hasErrors()) {
+                if (!$objWidget->hasErrors() && $varValue != '') {
                     $arrVariantOptions[$strField] = $varValue;
                 }
             }
@@ -765,7 +783,7 @@ class Standard extends Product implements IsotopeProduct
 
         foreach (array_intersect($this->getVariantAttributes(), Attribute::getVariantOptionFields()) as $attribute) {
 
-            $objAttribute = $GLOBALS['TL_DCA']['tl_iso_products']['attributes'][$attribute];
+            $objAttribute = $GLOBALS['TL_DCA']['tl_iso_product']['attributes'][$attribute];
             $arrValues = $objAttribute->getOptionsForVariants($this->getVariantIds(), $arrOptions);
 
             if (\Input::post('FORM_SUBMIT') == $this->getFormId() && in_array(\Input::post($attribute), $arrValues)) {
@@ -829,15 +847,11 @@ class Standard extends Product implements IsotopeProduct
         $this->arrVariantAttributes = null;
         $this->arrVariantIds = null;
         $this->arrCategories = null;
+        $this->arrRelated = array();
 
         // Must initialize product type to have attributes etc.
-        if (!isset($this->arrRelated['type']))
-        {
-            $this->arrRelated['type'] = ProductType::findByPk($arrData['type']);
-
-            if (null === $this->arrRelated['type']) {
-                throw new \UnderflowException('Product type for product ID ' . $arrData['id'] . ' not found');
-            }
+        if (($this->arrRelated['type'] = ProductType::findByPk($arrData['type'])) === null) {
+            throw new \UnderflowException('Product type for product ID ' . $arrData['id'] . ' not found');
         }
 
         $this->strFormId = 'iso_product_' . $arrData['id'];
@@ -847,7 +861,7 @@ class Standard extends Product implements IsotopeProduct
             if ((
                     !in_array($attribute, $this->getAttributes())
                     && !in_array($attribute, $this->getVariantAttributes())
-                    && $GLOBALS['TL_DCA']['tl_iso_products']['fields'][$attribute]['attributes']['legend'] != ''
+                    && $GLOBALS['TL_DCA']['tl_iso_product']['fields'][$attribute]['attributes']['legend'] != ''
                 )
                 || in_array($attribute, Attribute::getVariantOptionFields())
                 || in_array($attribute, Attribute::getCustomerDefinedFields())

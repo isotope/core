@@ -14,6 +14,7 @@ namespace Isotope\Module;
 
 use \Module as Contao_Module;
 use Isotope\Isotope;
+use Isotope\Model\Product;
 
 
 /**
@@ -90,54 +91,14 @@ abstract class Module extends Contao_Module
 
 
     /**
-     * Method that returns a closure to sort product collection items
-     * @return  Closure
-     */
-    public function getProductCollectionItemsSortingCallable()
-    {
-        $arrSortingSettings = explode('_', $this->iso_orderCollectionBy, 2);
-        $strSortingAttribute = $arrSortingSettings[1];
-
-        if ($arrSortingSettings[0] == 'asc') {
-
-            return function($arrItems) use ($strSortingAttribute) {
-                uasort($arrItems, function($objItem1, $objItem2) use ($strSortingAttribute) {
-                    if ($objItem1->$strSortingAttribute == $objItem2->$strSortingAttribute) {
-                        return 0;
-                    }
-
-                    return $objItem1->$strSortingAttribute < $objItem2->$strSortingAttribute ? -1 : 1;
-                });
-
-                return $arrItems;
-            };
-
-        } elseif ($arrSortingSettings[0] == 'desc') {
-
-            return function($arrItems) use ($strSortingAttribute) {
-                uasort($arrItems, function($objItem1, $objItem2) use ($strSortingAttribute) {
-                    if ($objItem1->$strSortingAttribute == $objItem2->$strSortingAttribute) {
-                        return 0;
-                    }
-
-                    return $objItem1->$strSortingAttribute > $objItem2->$strSortingAttribute ? -1 : 1;
-                });
-
-                return $arrItems;
-            };
-        }
-
-        return null;
-    }
-
-
-    /**
      * The ids of all pages we take care of. This is what should later be used eg. for filter data.
      * @return array
      */
     protected function findCategories()
     {
         if (null === $this->arrCategories) {
+
+            $arrCategories = null;
 
             if ($this->defineRoot && $this->rootPage > 0) {
                 $objPage = $this->getPageDetails($this->rootPage);
@@ -167,7 +128,7 @@ abstract class Module extends Contao_Module
                     break;
 
                 case 'product':
-                    $objProduct = \Isotope\Frontend::getProductByAlias(\Isotope\Frontend::getAutoItem('product'));
+                    $objProduct = Product::findAvailableByIdOrAlias(\Isotope\Frontend::getAutoItem('product'));
 
                     if ($objProduct !== null) {
                         $arrCategories = $objProduct->getCategories();
@@ -186,8 +147,16 @@ abstract class Module extends Contao_Module
                     break;
 
                 default:
-                    // @todo change this to a hook to allow custom category scope
-                    $arrCategories = array($objPage->id);
+                    if (isset($GLOBALS['ISO_HOOKS']['findCategories']) && is_array($GLOBALS['ISO_HOOKS']['findCategories'])) {
+                        foreach ($GLOBALS['ISO_HOOKS']['findCategories'] as $callback) {
+                            $objCallback = \System::importStatic($callback[0]);
+                            $arrCategories = $objCallback->$callback[1]($this);
+
+                            if ($arrCategories !== false) {
+                                break;
+                            }
+                        }
+                    }
                     break;
             }
 

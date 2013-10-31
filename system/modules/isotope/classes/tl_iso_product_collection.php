@@ -18,7 +18,6 @@ namespace Isotope;
 
 use Isotope\Model\Address;
 use Isotope\Model\Document;
-use Isotope\Model\Config;
 use Isotope\Model\ProductCollection\Order;
 
 
@@ -182,8 +181,8 @@ class tl_iso_product_collection extends \Backend
             return '<div class="tl_gerror">No address data available.</div>';
         }
 
-        \System::loadLanguageFile('tl_iso_addresses');
-        $this->loadDataContainer('tl_iso_addresses');
+        \System::loadLanguageFile($objAddress->getTable());
+        $this->loadDataContainer($objAddress->getTable());
 
         $strBuffer = '
 <div>
@@ -192,7 +191,7 @@ class tl_iso_product_collection extends \Backend
 
         $i=0;
 
-        foreach ($GLOBALS['TL_DCA']['tl_iso_addresses']['fields'] as $k => $v)
+        foreach ($GLOBALS['TL_DCA'][$objAddress->getTable()]['fields'] as $k => $v)
         {
             if (!isset($objAddress->$k))
             {
@@ -204,8 +203,8 @@ class tl_iso_product_collection extends \Backend
 
             $strBuffer .= '
   <tr>
-    <td' . $strClass . ' style="vertical-align:top"><span class="tl_label">'.Isotope::formatLabel('tl_iso_addresses', $k).': </span></td>
-    <td' . $strClass . '>'.Isotope::formatValue('tl_iso_addresses', $k, $v).'</td>
+    <td' . $strClass . ' style="vertical-align:top"><span class="tl_label">'.Isotope::formatLabel($objAddress->getTable(), $k).': </span></td>
+    <td' . $strClass . '>'.Isotope::formatValue($objAddress->getTable(), $k, $v).'</td>
   </tr>';
         }
 
@@ -381,7 +380,7 @@ class tl_iso_product_collection extends \Backend
 
 <h2 class="sub_headline">'.sprintf($GLOBALS['TL_LANG']['tl_iso_product_collection']['print_document'][1], $dc->id).'</h2>'. $strMessages .'
 
-<form action="'.ampersand(\Environment::get('request'), true).'" id="tl_iso_products_import" class="tl_form" method="post">
+<form action="'.ampersand(\Environment::get('request'), true).'" id="tl_iso_product_import" class="tl_form" method="post">
 <div class="tl_formbody_edit">
 <input type="hidden" name="FORM_SUBMIT" value="tl_iso_print_document">
 <input type="hidden" name="REQUEST_TOKEN" value="'.REQUEST_TOKEN.'">

@@ -26,7 +26,7 @@ class Download extends \Model
      * Name of the current table
      * @var string
      */
-    protected static $strTable = 'tl_iso_downloads';
+    protected static $strTable = 'tl_iso_download';
 
 
     /**

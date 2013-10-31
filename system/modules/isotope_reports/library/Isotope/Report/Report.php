@@ -11,6 +11,8 @@
 
 namespace Isotope\Report;
 
+use Isotope\Model\Config;
+
 
 abstract class Report extends \Backend
 {
@@ -223,12 +225,13 @@ abstract class Report extends \Backend
 	protected function getFilterByConfigPanel()
 	{
 		$arrConfigs = array(''=>&$GLOBALS['ISO_LANG']['REPORT']['all']);
-		$objConfigs = \Database::getInstance()->execute("SELECT id, name FROM tl_iso_config ORDER BY name");
+		$objConfigs = Config::findAll(array('order'=>'name'));
 
-		while ($objConfigs->next())
-		{
-			$arrConfigs[$objConfigs->id] = $objConfigs->name;
-		}
+        if (null !== $objConfigs) {
+    		while ($objConfigs->next()) {
+    			$arrConfigs[$objConfigs->id] = $objConfigs->name;
+    		}
+        }
 
 		$arrSession = \Session::getInstance()->get('iso_reports');
 		$varValue = (string) $arrSession[$this->name]['iso_config'];
@@ -297,6 +300,50 @@ abstract class Report extends \Backend
 			'value'			=> $this->parseDate($GLOBALS['TL_CONFIG']['dateFormat'], (int) $arrSession[$this->name]['stop']),
 			'class'			=> 'tl_stop',
 		);
+	}
+
+    /**
+     * Return string to filter database query by user allowed products
+     * @param   string  Table name or alias (optional)
+     * @param   string  Table field or alias (optional)
+     * @param   string  Prefix for query (e.g. AND)
+     * @return  string
+     */
+	protected function getProductProcedure($strTable='tl_iso_product', $strField='id', $strPrefix=' AND ')
+	{
+    	$arrAllowedProducts = \Isotope\Backend::getAllowedProductIds();
+
+    	if (true === $arrAllowedProducts) {
+        	return '';
+    	}
+
+    	if (false === $arrAllowedProducts || empty($arrAllowedProducts)) {
+        	$arrAllowedProducts = array(0);
+    	}
+
+    	return $strPrefix . $strTable . '.' . $strField . ' IN (' . implode(',', $arrAllowedProducts) . ')';
+	}
+
+    /**
+     * Return string to filter database query by user allowed shop configs
+     * @param   string  Table name or alias (optional)
+     * @param   string  Table field or alias (optional)
+     * @param   string  Prefix for query (e.g. AND)
+     * @return  string
+     */
+	protected function getConfigProcedure($strTable='tl_iso_config', $strField='id', $strPrefix=' AND ')
+	{
+    	if (\BackendUser::getInstance()->isAdmin) {
+        	return '';
+    	}
+
+    	$arrConfig = deserialize(\BackendUser::getInstance()->iso_configs);
+
+    	if (empty($arrConfig) || !is_array($arrConfig)) {
+        	$arrConfig = array(0);
+    	}
+
+    	return $strPrefix . $strTable . '.' . $strField . ' IN (' . implode(',', $arrConfig) . ')';
 	}
 }
 

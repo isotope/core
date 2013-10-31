@@ -272,7 +272,13 @@ class Frontend extends \Frontend
             // {{product::attribute}}                - gets the data of the current product ($GLOBALS['ACTIVE_PRODUCT'] or GET parameter "product")
             // {{product::attribute::product_id}}    - gets the data of the specified product ID
 
-            $objProduct = (count($arrTag) == 3) ? static::getProduct($arrTag[2]) : ($GLOBALS['ACTIVE_PRODUCT'] ? $GLOBALS['ACTIVE_PRODUCT'] : static::getProductByAlias(static::getAutoItem('product')));
+            if (count($arrTag) == 3) {
+                $objProduct = Product::findAvailableByPk($arrTag[2]);
+            } elseif ($GLOBALS['ACTIVE_PRODUCT']) {
+                $objProduct = $GLOBALS['ACTIVE_PRODUCT'];
+            } else {
+                $objProduct = Product::findAvailableByIdOrAlias(static::getAutoItem('product'));
+            }
 
             return ($objProduct !== null) ? $objProduct->{$arrTag[1]} : '';
         }
@@ -533,7 +539,6 @@ window.addEvent('domready', function()
         }
     }
 
-
     /**
      * Return all error, confirmation and info messages as HTML string
      * @return string
@@ -573,135 +578,6 @@ window.addEvent('domready', function()
 
         return $strMessages;
     }
-
-
-    /**
-     * Shortcut for a single product by ID or from database result
-     * @param IsotopeProduct|int
-     * @param boolean
-     * @return IsotopeProduct|null
-     * @todo    should use the model instead of this method
-     */
-    public static function getProduct($objProduct, $blnCheckAvailability=true)
-    {
-        if (is_numeric($objProduct))
-        {
-            $objProduct = Product::findPublishedByPk($objProduct);
-        }
-
-        if (null === $objProduct || !($objProduct instanceof IsotopeProduct))
-        {
-            return null;
-        }
-
-        if ($blnCheckAvailability && !$objProduct->isAvailableInFrontend())
-        {
-            return null;
-        }
-
-        return $objProduct;
-    }
-
-
-    /**
-     * Shortcut for a single product by alias (from url?)
-     * @param string
-     * @param boolean
-     * @return IsotopeProduct|null
-     */
-    public static function getProductByAlias($strAlias, $blnCheckAvailability=true)
-    {
-        return static::getProduct(Product::findPublishedByIdOrAlias($strAlias), $blnCheckAvailability);
-    }
-
-
-    /**
-     * Generate products from database result or array of IDs
-     * @param \Database\Result|array
-     * @param boolean
-     * @param array
-     * @param array
-     * @return array
-     */
-    public static function getProducts($objProducts, $blnCheckAvailability=true, array $arrFilters=array(), array $arrSorting=array())
-    {
-        // Could be an empty array
-        if (empty($objProducts)) {
-            return array();
-        }
-
-        // $objProducts can also be an array of product ids
-        if (is_array($objProducts)) {
-            $objProducts = Product::findPublishedById($objProducts, array(
-                'group' => Product::getTable().'.id',
-                'order' => \Database::getInstance()->findInSet(Product::getTable().'.id', $objProducts)
-            ));
-        }
-
-        if (null === $objProducts) {
-            return array();
-        }
-
-        $arrProducts = array();
-
-        // Reset DB iterator (see #22)
-        $objProducts->reset();
-
-        while ($objProducts->next()) {
-            $objProduct = \Isotope\Frontend::getProduct($objProducts->current(), $blnCheckAvailability);
-
-            if ($objProduct !== null) {
-                $arrProducts[$objProducts->id] = $objProduct;
-            }
-        }
-
-        if (!empty($arrFilters)) {
-            $arrProducts = array_filter($arrProducts, function ($objProduct) use ($arrFilters) {
-                $arrGroups = array();
-
-                foreach ($arrFilters as $objFilter) {
-                    $blnMatch = $objFilter->matches($objProduct);
-
-                    if ($objFilter->hasGroup()) {
-                        $arrGroups[$objFilter->getGroup()] = $arrGroups[$objFilter->getGroup()] ?: $blnMatch;
-                    } elseif (!$blnMatch) {
-                        return false;
-                    }
-                }
-
-                if (!empty($arrGroups) && in_array(false, $arrGroups)) {
-                    return false;
-                }
-
-                return true;
-            });
-        }
-
-        // $arrProducts can be empty if the filter removed all records
-        if (!empty($arrSorting) && !empty($arrProducts)) {
-            $arrParam = array();
-            $arrData = array();
-
-            foreach ($arrSorting as $strField => $arrConfig) {
-                foreach ($arrProducts as $id => $objProduct) {
-
-                    // Both SORT_STRING and SORT_REGULAR are case sensitive, strings starting with a capital letter will come before strings starting with a lowercase letter.
-                    // To perform a case insensitive search, force the sorting order to be determined by a lowercase copy of the original value.
-                    $arrData[$strField][$id] = strtolower(str_replace('"', '', $objProduct->$strField));
-                }
-
-                $arrParam[] = &$arrData[$strField];
-                $arrParam[] = $arrConfig[0];
-                $arrParam[] = $arrConfig[1];
-            }
-
-            // Add product array as the last item. This will sort the products array based on the sorting of the passed in arguments.
-            eval('array_multisort($arrParam[' . implode('], $arrParam[', array_keys($arrParam)) . '], $arrProducts);');
-        }
-
-        return $arrProducts;
-    }
-
 
     /**
      * Generate row class for an array
@@ -826,59 +702,61 @@ window.addEvent('domready', function()
      */
     public function addProductsToSearchIndex($arrPages, $intRoot=0, $blnSitemap=false, $strLanguage=null)
     {
-        $arrRoots = array();
+        $t = \PageModel::getTable();
+        $arrColumn = array("$t.type='root'");
+        $arrValue = array();
 
-        // If we have a root page id (sitemap.xml e.g.) we have to make sure we only consider categories in this tree
         if ($intRoot > 0) {
-            $arrPageIds = \Database::getInstance()->getChildRecords($intRoot, \PageModel::getTable(), false);
-            $arrPageIds[] = $intRoot;
-
-            $objProducts = Product::findPublishedByCategories($arrPageIds);
-            $objRoot = \PageModel::findByPk($intRoot);
-        } else {
-            $objProducts = Product::findPublished();
+            $arrColumn[] = "$t.id=?";
+            $arrValue[] = $intRoot;
         }
 
-        while ($objProducts->next()) {
+        $objRoots = \PageModel::findBy($arrColumn, $arrValue);
 
-            // Do the fun for all categories
-            $arrCategories = $objProducts->current()->getCategories();
+        if (null !== $objRoots) {
+            foreach ($objRoots as $objRoot) {
 
-            foreach ($arrCategories as $intPage) {
+                $arrPageIds = \Database::getInstance()->getChildRecords($objRoot->id, $t, false);
+                $arrPageIds[] = $intRoot;
 
-                $objPage = \PageModel::findWithDetails($intPage);
+                $objProducts = Product::findPublishedByCategories($arrPageIds);
 
-                // No need to get the root page model of the page if it's restricted to one only anyway
-                // Otherwise we need to get the root page model of the current page and for performance
-                // reasons we cache that in an array
-                if ($intRoot === 0) {
-                    if (!isset($arrRoots[$intPage])) {
-                        $arrRoots[$intPage] = \PageModel::findByPk($objPage->rootId);
-                        $arrPageIds = \Database::getInstance()->getChildRecords($objPage->rootId, \PageModel::getTable(), false);
-                        $arrPageIds[] = $objPage->rootId;
+                if (null !== $objProducts) {
+                    foreach ($objProducts as $objProduct) {
+
+                        // Find the categories in the current root
+                        $arrCategories = array_intersect($objProduct->getCategories(), $arrPageIds);
+
+                        foreach ($arrCategories as $intPage) {
+                            $objPage = \PageModel::findByPk($intPage);
+
+                            // Do not generate a reader for the index page, except if it is the only one
+                            if ($objPage->alias == 'index' && count($arrCategories) > 1) {
+                                continue;
+                            }
+
+                            // Generate the absolute URL
+                            $strDomain = \Environment::get('base');
+
+                            // Overwrite the domain
+                            if ($objRoot->dns != '') {
+                                $strDomain = ($objRoot->useSSL ? 'https://' : 'http://') . $objRoot->dns . TL_PATH . '/';
+                            }
+
+                            // Pass root language to page object
+                            $objPage->language = $objRoot->language;
+
+                            $arrPages[] = $strDomain . $objProduct->generateUrl($objPage);
+
+                            // Only take the first category because this is our primary one
+                            // Having multiple reader pages in the sitemap XML would mean duplicate content
+                            break;
+                        }
                     }
-
-                    $objRoot = $arrRoots[$intPage];
                 }
-
-                // Do not generate a reader for the index page, except if it is the only one
-                if ($objPage->alias == 'index' && count(array_intersect($arrCategories, $arrPageIds)) > 1) {
-                    continue;
-                }
-
-                // Generate the absolute URL
-                $strDomain = \Environment::get('base');
-
-                // Overwrite the domain
-                if ($objRoot->dns != '') {
-                    $strDomain = ($objRoot->useSSL ? 'https://' : 'http://') . $objRoot->dns . TL_PATH . '/';
-                }
-
-                $arrPages[] = $strDomain . $objProducts->current()->generateUrl($objPage);
             }
         }
 
-        // The reader page id can be the same for several categories so we have to make sure we only index the product once
         return array_unique($arrPages);
     }
 
@@ -955,7 +833,7 @@ window.addEvent('domready', function()
         list($strScript, $strQueryString) = explode('?', $varUrl, 2);
 
         $strRequest = preg_replace('/^&(amp;)?/i', '', $strRequest);
-        $queries = preg_split('/&(amp;)?/i', $strQueryString);
+        $queries = preg_split('/&(amp;)?/i', $strQueryString, PREG_SPLIT_NO_EMPTY);
 
         // Overwrite existing parameters and ignore "language", see #64
         foreach ($queries as $k=>$v) {
@@ -1104,7 +982,7 @@ window.addEvent('domready', function()
     public function addProductToBreadcrumb($arrItems, $objModule)
     {
         if (static::getAutoItem('product') != '') {
-            $objProduct = static::getProductByAlias(static::getAutoItem('product'));
+            $objProduct = Product::findAvailableByIdOrAlias(static::getAutoItem('product'));
 
             if (null !== $objProduct) {
 

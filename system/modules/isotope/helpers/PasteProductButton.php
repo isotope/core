@@ -12,6 +12,8 @@
 
 namespace Isotope;
 
+use Isotope\Model\ProductType;
+
 
 /**
  * Class PastProductButton
@@ -24,7 +26,7 @@ class PasteProductButton extends \Backend
 {
 
     /**
-     * Handle the paste button callback for tl_iso_products
+     * Handle the paste button callback for tl_iso_product
      * @param DataContainer
      * @param array
      * @param string
@@ -41,7 +43,7 @@ class PasteProductButton extends \Backend
             return '';
         }
 
-        $objProduct = \Database::getInstance()->prepare("SELECT p.*, t.variants FROM tl_iso_products p LEFT JOIN tl_iso_producttypes t ON p.type=t.id WHERE p.id=?")->execute($arrClipboard['id']);
+        $objProduct = \Database::getInstance()->prepare("SELECT p.*, t.variants FROM " . \Isotope\Model\Product::getTable() . " p LEFT JOIN " . ProductType::getTable() . " t ON p.type=t.id WHERE p.id=?")->execute($arrClipboard['id']);
 
         // Copy or cut a single product or variant
         if ($arrClipboard['mode'] == 'cut' || $arrClipboard['mode'] == 'copy')
@@ -67,17 +69,17 @@ class PasteProductButton extends \Backend
     protected function pasteVariant($objProduct, $table, $row, $arrClipboard)
     {
         // Can't copy variant into it's current product
-        if ($table == 'tl_iso_products' && $objProduct->pid == $row['id'] && $arrClipboard['mode'] == 'copy')
+        if ($table == 'tl_iso_product' && $objProduct->pid == $row['id'] && $arrClipboard['mode'] == 'copy')
         {
             return $this->getPasteButton(false);
         }
 
         // Disable paste button for products without variant data
-        elseif ($table == 'tl_iso_products' && $row['id'] > 0)
+        elseif ($table == 'tl_iso_product' && $row['id'] > 0)
         {
-            $objType = \Database::getInstance()->prepare("SELECT * FROM tl_iso_producttypes WHERE id=?")->execute($row['type']);
+            $objType = ProductType::findByPk($row['type']);
 
-            if (!$objType->variants)
+            if (null === $objType || !$objType->hasVariants())
             {
                 return $this->getPasteButton(false);
             }
@@ -94,7 +96,7 @@ class PasteProductButton extends \Backend
     protected function pasteAll($objProduct, $table, $row, $arrClipboard)
     {
         // Can't paste products in product or variant
-        if ($table == 'tl_iso_products' && $row['id'] > 0)
+        if ($table == 'tl_iso_product' && $row['id'] > 0)
         {
             return '';
         }

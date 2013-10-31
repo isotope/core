@@ -66,7 +66,7 @@ class ProductVariantList extends ProductList
             $arrValues = array();
         }
 
-        $arrColumns[] = "(" . Product::getTable() . ".id IN (SELECT pid FROM tl_iso_product_categories WHERE page_id IN (" . implode(',', $arrCategories) . ")) OR " . Product::getTable() . ".pid IN (SELECT pid FROM tl_iso_product_categories WHERE page_id IN (" . implode(',', $arrCategories) . ")))";
+        $arrColumns[] = "(" . Product::getTable() . ".id IN (SELECT pid FROM " . \Isotope\Model\ProductCategory::getTable() . " WHERE page_id IN (" . implode(',', $arrCategories) . ")) OR " . Product::getTable() . ".pid IN (SELECT pid FROM " . \Isotope\Model\ProductCategory::getTable() . " WHERE page_id IN (" . implode(',', $arrCategories) . ")))";
 
         if (!empty($arrCacheIds) && is_array($arrCacheIds)) {
             $arrColumns[] = "(" . Product::getTable() . ".id IN (" . implode(',', $arrCacheIds) . ") OR " . Product::getTable() . ".pid IN (" . implode(',', $arrCacheIds) . "))";
@@ -87,8 +87,14 @@ class ProductVariantList extends ProductList
             $arrColumns[] = $strWhere;
         }
 
-        $objProducts = Product::findPublishedBy($arrColumns, $arrValues, array('group'=>Product::getTable() . '.id', 'order'=>'c.sorting'));
-
-        return \Isotope\Frontend::getProducts($objProducts, true, $arrFilters, $arrSorting);
+        return Product::findAvailableBy(
+            $arrColumns,
+            $arrValues,
+            array(
+                'group' => Product::getTable() . '.id', 'order'=>'c.sorting',
+                'filters' => $arrFilters,
+                'sorting' => $arrSorting,
+            )
+        );
     }
 }

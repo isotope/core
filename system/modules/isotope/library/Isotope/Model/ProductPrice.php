@@ -31,7 +31,7 @@ class ProductPrice extends \Model implements IsotopePrice
      * Name of the current table
      * @var string
      */
-    protected static $strTable = 'tl_iso_prices';
+    protected static $strTable = 'tl_iso_product_price';
 
     /**
      * Tiers for this price
@@ -49,7 +49,7 @@ class ProductPrice extends \Model implements IsotopePrice
     {
         parent::__construct($objResult);
 
-        $objTiers = \Database::getInstance()->prepare("SELECT * FROM tl_iso_price_tiers WHERE pid=? ORDER BY min")->execute($objResult->id);
+        $objTiers = \Database::getInstance()->prepare("SELECT * FROM tl_iso_product_pricetier WHERE pid=? ORDER BY min")->execute($objResult->id);
 
         while ($objTiers->next()) {
             $this->arrTiers[$objTiers->min] = $objTiers->price;
@@ -270,41 +270,9 @@ class ProductPrice extends \Model implements IsotopePrice
         }
 
         if ($objProduct->hasAdvancedPrices()) {
-
-            $time = time();
-            $arrGroups = static::getMemberGroups($objCollection->getRelated('member'));
-            $objPrices = null;
-
-            $objResult = \Database::getInstance()->query("
-                SELECT * FROM (
-                    SELECT *
-                    FROM " . static::$strTable . "
-                    WHERE
-                        pid IN (" . implode(',', $objProduct->getVariantIds()) . ") AND
-                        config_id IN (". (int) $objCollection->config_id . ",0) AND
-                        member_group IN(" . implode(',', $arrGroups) . ") AND
-                        (start='' OR start<$time) AND
-                        (stop='' OR stop>$time)
-                    ORDER BY config_id DESC, " . \Database::getInstance()->findInSet('member_group', $arrGroups) . ", start DESC, stop DESC
-                ) AS prices
-                GROUP BY pid
-            ");
-
-            if ($objResult->numRows) {
-                $objPrices = \Model\Collection::createFromDbResult($objResult, static::$strTable);
-            }
-
+            $objPrices = static::findAdvancedByProductIdsAndCollection($objProduct->getVariantIds(), $objCollection);
         } else {
-
-            $arrOptions['column'] = array(
-                "pid IN (" . implode(',', $objProduct->getVariantIds()) . ")",
-                "config_id=0",
-                "member_group=0",
-                "start=''",
-                "stop=''"
-            );
-
-            $objPrices = static::find($arrOptions);
+            $objPrices = static::findPrimaryByProductIds($objProduct->getVariantIds());
         }
 
         if (null === $objPrices){
@@ -353,6 +321,66 @@ class ProductPrice extends \Model implements IsotopePrice
         );
 
         return static::find($arrOptions);
+    }
+
+    /**
+     * Find primary price for multiple product/variant IDs
+     * @param   array
+     * @param   array
+     * @return  Model\Collection|null
+     */
+    public static function findPrimaryByProductIds(array $arrIds, array $arrOptions=array())
+    {
+        $t = static::$strTable;
+
+        $arrOptions = array_merge(
+            array(
+                'column' => array(
+                    "$t.pid IN (" . implode(',', $arrIds) . ")",
+                    "$t.config_id=0",
+                    "$t.member_group=0",
+                    "$t.start=''",
+                    "$t.stop=''"
+                ),
+                'return'    => 'Collection'
+            ),
+            $arrOptions
+        );
+
+        return static::find($arrOptions);
+    }
+
+    /**
+     * Find advanced price for multiple product/variant IDs
+     * @param   array
+     * @param   IsotopeProductCollection
+     * @return  Model\Collection|null
+     */
+    public static function findAdvancedByProductIdsAndCollection(array $arrIds, IsotopeProductCollection $objCollection)
+    {
+        $time = time();
+        $arrGroups = static::getMemberGroups($objCollection->getRelated('member'));
+
+        $objResult = \Database::getInstance()->query("
+            SELECT * FROM (
+                SELECT *
+                FROM " . static::$strTable . "
+                WHERE
+                    pid IN (" . implode(',', $arrIds) . ") AND
+                    config_id IN (". (int) $objCollection->config_id . ",0) AND
+                    member_group IN(" . implode(',', $arrGroups) . ") AND
+                    (start='' OR start<$time) AND
+                    (stop='' OR stop>$time)
+                ORDER BY config_id DESC, " . \Database::getInstance()->findInSet('member_group', $arrGroups) . ", start DESC, stop DESC
+            ) AS prices
+            GROUP BY pid
+        ");
+
+        if ($objResult->numRows) {
+            return \Model\Collection::createFromDbResult($objResult, static::$strTable);
+        }
+
+        return null;
     }
 
     /**

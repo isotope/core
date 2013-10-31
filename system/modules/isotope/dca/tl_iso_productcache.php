@@ -67,7 +67,7 @@ $GLOBALS['TL_DCA']['tl_iso_productcache'] = array
         ),
         'products' => array
         (
-            'foreignKey'            => 'tl_iso_products.name',
+            'foreignKey'            => 'tl_iso_product.name',
             'eval'                  => array('csv'=>','),
             'sql'                   =>  "blob NULL",
             'relation'              => array('type'=>'hasMany', 'load'=>'lazy'),

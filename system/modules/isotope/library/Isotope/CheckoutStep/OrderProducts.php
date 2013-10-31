@@ -42,7 +42,7 @@ class OrderProducts extends CheckoutStep implements IsotopeCheckoutStep
             $objTemplate,
             array(
                 'gallery'   => $this->objModule->iso_gallery,
-                'sorting'   => $this->objModule->getProductCollectionItemsSortingCallable(),
+                'sorting'   => Isotope::getCart()->getItemsSortingCallable($this->objModule->iso_orderCollectionBy),
             )
         );
 

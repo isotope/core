@@ -12,7 +12,6 @@
 
 namespace Isotope\Model\Gallery;
 
-use Isotope\Isotope;
 use Isotope\Interfaces\IsotopeGallery;
 use Isotope\Model\Gallery;
 

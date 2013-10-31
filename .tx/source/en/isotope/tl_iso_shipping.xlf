@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.1">
+  <file datatype="php" original="system/modules/isotope/languages/en/tl_iso_shipping.php" source-language="en">
+    <body>
+      <trans-unit id="tl_iso_shipping.name.0">
+        <source>Shipping Method Name</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_shipping.type.0">
+        <source>Shipping Method Type</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_shipping.price.0">
+        <source>Price</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_shipping.note.0">
+        <source>Shipping Method Notes</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_shipping.note.1">
+        <source>These will be displayed on the front end in association with this shipping option.</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_shipping.tax_class.0">
+        <source>Tax Class</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_shipping.label.0">
+        <source>Label</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_shipping.label.1">
+        <source>This is displayed on the front end in association with the shipping option.</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_shipping.flatCalculation.0">
+        <source>Flat calculation</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_shipping.countries.0">
+        <source>Countries</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_shipping.countries.1">
+        <source>Select the countries this shipping method applies to. If you don't select anything, the shipping method will be applied to all countries.</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_shipping.subdivisions.0">
+        <source>State/Regions</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_shipping.subdivisions.1">
+        <source>Select the states/regions this shipping method applies to. If you don't select anything, the shipping method will be applied to all states/regions.</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_shipping.postalCodes.0">
+        <source>Postal codes</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_shipping.postalCodes.1">
+        <source>Limit this shipping module to postal codes. You can enter a comma separated list and ranges (e.g. 1234,1235,1236-1239,1100-1200).</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_shipping.minimum_total.0">
+        <source>Minimum total</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_shipping.maximum_total.0">
+        <source>Maximum total</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_shipping.product_types.0">
+        <source>Product types</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_shipping.product_types.1">
+        <source>You can restrict this shipping method to certain product types. If the cart contains a product type you have not selected, the shipping module is not available.</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_shipping.groups.0">
+        <source>Member Groups</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_shipping.groups.1">
+        <source>Restrict this shipping option to certain member groups.</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_shipping.protected.0">
+        <source>Protect module</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_shipping.protected.1">
+        <source>Show the module to certain member groups only.</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_shipping.guests.0">
+        <source>Show to guests only</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_shipping.guests.1">
+        <source>Hide the module if a member is logged in.</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_shipping.enabled.0">
+        <source>Enabled</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_shipping.enabled.1">
+        <source>Is the module available for use in the store?</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_shipping.title_legend">
+        <source>Title and type</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_shipping.note_legend">
+        <source>Shipping note</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_shipping.config_legend">
+        <source>Configuration</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_shipping.price_legend">
+        <source>Pricing threshold and tax class applicability</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_shipping.expert_legend">
+        <source>Expert settings</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_shipping.enabled_legend">
+        <source>Enabled settings</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_shipping.new.0">
+        <source>New shipping method</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_shipping.new.1">
+        <source>Create a New shipping method</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_shipping.edit.0">
+        <source>Edit shipping method</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_shipping.edit.1">
+        <source>Edit shipping method ID %s</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_shipping.copy.0">
+        <source>Copy shipping method</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_shipping.copy.1">
+        <source>Copy shipping method ID %s</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_shipping.delete.0">
+        <source>Delete shipping method</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_shipping.delete.1">
+        <source>Delete shipping method ID %s</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_shipping.toggle.0">
+        <source>Enable/disable shipping method</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_shipping.toggle.1">
+        <source>Enable/disable shipping method ID %s</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_shipping.show.0">
+        <source>Shipping method details</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_shipping.show.1">
+        <source>Show details of shipping method ID %s</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_shipping.flat">
+        <source>Flat</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_shipping.perProduct">
+        <source>Per Product</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_shipping.perItem">
+        <source>Per Item</source>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

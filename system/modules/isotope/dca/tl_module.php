@@ -35,7 +35,7 @@ $GLOBALS['TL_DCA']['tl_module']['palettes']['iso_configswitcher']       = '{titl
 $GLOBALS['TL_DCA']['tl_module']['palettes']['iso_productfilter']        = '{title_legend},name,headline,type;{config_legend},iso_category_scope,iso_list_where,iso_enableLimit,iso_filterFields,iso_filterHideSingle,iso_searchFields,iso_searchAutocomplete,iso_sortingFields,iso_listingSortField,iso_listingSortDirection;{template_legend},iso_filterTpl,iso_includeMessages,iso_hide_list;{protected_legend:hide},protected;{expert_legend:hide},guests,cssID,space';
 $GLOBALS['TL_DCA']['tl_module']['palettes']['iso_cumulativefilter']     = '{title_legend},name,headline,type;{config_legend},iso_filterFields,iso_filterHideSingle;{template_legend},navigationTpl;{protected_legend:hide},protected;{expert_legend:hide},guests,cssID,space';
 $GLOBALS['TL_DCA']['tl_module']['palettes']['iso_addressbook']          = '{title_legend},name,headline,type;{template_legend},iso_includeMessages,memberTpl,tableless;{protected_legend:hide},protected;{expert_legend:hide},guests,cssID,space';
-$GLOBALS['TL_DCA']['tl_module']['palettes']['iso_relatedproducts']      = '{title_legend},name,headline,type;{config_legend},iso_related_categories,numberOfItems,perPage,iso_list_where;{redirect_legend},iso_addProductJumpTo;{template_legend:hide},iso_list_layout,iso_cols,iso_use_quantity,iso_includeMessages,iso_emptyMessage,iso_buttons;{protected_legend:hide},protected;{expert_legend:hide},guests,cssID,space';
+$GLOBALS['TL_DCA']['tl_module']['palettes']['iso_relatedproducts']      = '{title_legend},name,headline,type;{config_legend},iso_related_categories,numberOfItems,perPage;{redirect_legend},iso_addProductJumpTo;{template_legend:hide},iso_list_layout,iso_cols,iso_use_quantity,iso_includeMessages,iso_emptyMessage,iso_buttons;{protected_legend:hide},protected;{expert_legend:hide},guests,cssID,space';
 $GLOBALS['TL_DCA']['tl_module']['palettes']['iso_message']              = '{title_legend},name,headline,type;{protected_legend:hide},protected;{expert_legend:hide},guests,cssID,space';
 
 
@@ -75,7 +75,7 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['iso_gallery'] = array
     'label'                     => &$GLOBALS['TL_LANG']['tl_module']['iso_gallery'],
     'exclude'                   => true,
     'inputType'                 => 'select',
-    'foreignKey'                => 'tl_iso_gallery.name',
+    'foreignKey'                => \Isotope\Model\Gallery::getTable().'.name',
     'eval'                      => array('includeBlankOption'=>true, 'chosen'=>true, 'tl_class'=>'w50'),
     'sql'                       => "int(10) unsigned NOT NULL default '0'",
 );
@@ -179,7 +179,7 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['iso_config_id'] = array
     'label'                     => &$GLOBALS['TL_LANG']['tl_module']['iso_config_id'],
     'exclude'                   => true,
     'inputType'                 => 'select',
-    'foreignKey'                => 'tl_iso_config.name',
+    'foreignKey'                => \Isotope\Model\Config::getTable().'.name',
     'eval'                      => array('includeBlankOption'=>true, 'mandatory'=>true, 'tl_class'=>'w50'),
     'sql'                       => "int(10) unsigned NOT NULL default '0'",
     'relation'                  => array('type'=>'hasOne', 'load'=>'lazy'),
@@ -190,7 +190,7 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['iso_config_ids'] = array
     'label'                     => &$GLOBALS['TL_LANG']['tl_module']['iso_config_ids'],
     'exclude'                   => true,
     'inputType'                 => 'checkboxWizard',
-    'foreignKey'                => 'tl_iso_config.name',
+    'foreignKey'                => \Isotope\Model\Config::getTable().'.name',
     'eval'                      => array('multiple'=>true, 'mandatory'=>true, 'tl_class'=>'clr'),
     'sql'                       => "blob NULL",
     'relation'                  => array('type'=>'hasMany', 'load'=>'lazy'),
@@ -201,7 +201,7 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['iso_payment_modules'] = array
     'label'                     => &$GLOBALS['TL_LANG']['tl_module']['iso_payment_modules'],
     'exclude'                   => true,
     'inputType'                 => 'checkboxWizard',
-    'foreignKey'                => 'tl_iso_payment_modules.name',
+    'foreignKey'                => \Isotope\Model\Payment::getTable().'.name',
     'options_callback'          => array('Isotope\tl_module', 'getPaymentModules'),
     'eval'                      => array('multiple'=>true),
     'sql'                       => "blob NULL",
@@ -213,7 +213,7 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['iso_shipping_modules'] = array
     'label'                     => &$GLOBALS['TL_LANG']['tl_module']['iso_shipping_modules'],
     'exclude'                   => true,
     'inputType'                 => 'checkboxWizard',
-    'foreignKey'                => 'tl_iso_shipping_modules.name',
+    'foreignKey'                => \Isotope\Model\Shipping::getTable().'.name',
     'options_callback'          => array('Isotope\tl_module','getShippingModules'),
     'eval'                      => array('multiple'=>true),
     'sql'                       => "blob NULL",
@@ -277,8 +277,7 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['iso_orderCollectionBy'] = array
     'exclude'                   => true,
     'default'                   => 'asc_id',
     'inputType'                 => 'select',
-    'options'                   => array('asc_id', 'desc_id', 'asc_tstamp', 'desc_tstamp', 'asc_name', 'desc_name', 'asc_price', 'desc_price'),
-    'reference'                 => &$GLOBALS['TL_LANG']['tl_module']['iso_orderCollectionBy'],
+    'options'                   => $GLOBALS['TL_LANG']['MSC']['iso_orderCollectionBy'],
     'eval'                      => array('mandatory'=>true, 'tl_class'=>'w50'),
     'sql'                       => "varchar(16) NOT NULL default ''",
 );
@@ -498,7 +497,7 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['iso_related_categories'] = array
     'label'                     => &$GLOBALS['TL_LANG']['tl_module']['iso_related_categories'],
     'exclude'                   => true,
     'inputType'                 => 'checkboxWizard',
-    'foreignKey'                => 'tl_iso_related_categories.name',
+    'foreignKey'                => \Isotope\Model\RelatedCategory::getTable().'.name',
     'eval'                      => array('mandatory'=>true, 'multiple'=>true, 'tl_class'=>'clr'),
     'sql'                       => "blob NULL",
     'relation'                  => array('type'=>'hasMany', 'load'=>'lazy'),

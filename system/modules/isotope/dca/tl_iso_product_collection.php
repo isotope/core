@@ -16,10 +16,10 @@
 
 
 /**
- * Load tl_iso_products data container and language files
+ * Load tl_iso_product data container and language files
  */
-$this->loadDataContainer('tl_iso_products');
-\System::loadLanguageFile('tl_iso_products');
+$this->loadDataContainer('tl_iso_product');
+\System::loadLanguageFile('tl_iso_product');
 
 
 /**
@@ -33,8 +33,9 @@ $GLOBALS['TL_DCA']['tl_iso_product_collection'] = array
     (
         'dataContainer'             => 'Table',
         'enableVersioning'          => false,
-        'ctable'                    => array('tl_iso_product_collection_item', 'tl_iso_product_collection_surcharge', 'tl_iso_addresses'),
+        'ctable'                    => array(\Isotope\Model\ProductCollectionItem::getTable(), \Isotope\Model\ProductCollectionSurcharge::getTable(), \Isotope\Model\Address::getTable()),
         'closed'                    => true,
+        'notDeletable'              => (\Input::get('act') == 'select'),
         'onload_callback' => array
         (
             array('Isotope\tl_iso_product_collection', 'checkPermission'),
@@ -70,6 +71,16 @@ $GLOBALS['TL_DCA']['tl_iso_product_collection'] = array
             'fields'                => array('document_number', 'locked', 'address1_id', 'grandTotal', 'order_status'),
             'showColumns'           => true,
             'label_callback'        => array('Isotope\tl_iso_product_collection', 'getOrderLabel')
+        ),
+        'global_operations' => array
+        (
+            'all' => array
+            (
+                'label'             => &$GLOBALS['TL_LANG']['MSC']['all'],
+                'href'              => 'act=select',
+                'class'             => 'header_edit_all',
+                'attributes'        => 'onclick="Backend.getScrollOffset();" accesskey="e"'
+            ),
         ),
         'operations' => array
         (
@@ -205,7 +216,7 @@ $GLOBALS['TL_DCA']['tl_iso_product_collection'] = array
             'filter'                => true,
             'sorting'               => true,
             'inputType'             => 'select',
-            'foreignKey'            => 'tl_iso_orderstatus.name',
+            'foreignKey'            => \Isotope\Model\OrderStatus::getTable().'.name',
             'options_callback'      => array('\Isotope\Backend', 'getOrderStatus'),
             'sql'                   => "int(10) unsigned NOT NULL default '0'",
             'relation'              => array('type'=>'hasOne', 'load'=>'lazy'),
@@ -233,7 +244,7 @@ $GLOBALS['TL_DCA']['tl_iso_product_collection'] = array
         'config_id' => array
         (
             'label'                 => &$GLOBALS['TL_LANG']['tl_iso_product_collection']['config_id'],
-            'foreignKey'            => 'tl_iso_config.name',
+            'foreignKey'            => \Isotope\Model\Config::getTable().'.name',
             'sql'                   => "int(10) unsigned NOT NULL default '0'",
             'relation'              => array('type'=>'hasOne', 'load'=>'lazy'),
         ),
@@ -241,7 +252,7 @@ $GLOBALS['TL_DCA']['tl_iso_product_collection'] = array
         (
             'label'                 => &$GLOBALS['TL_LANG']['tl_iso_product_collection']['payment_id'],
             'filter'                => true,
-            'foreignKey'            => 'tl_iso_payment_modules.name',
+            'foreignKey'            => \Isotope\Model\Payment::getTable().'.name',
             'sql'                   => "int(10) unsigned NOT NULL default '0'",
             'relation'              => array('type'=>'hasOne', 'load'=>'lazy'),
         ),
@@ -249,21 +260,21 @@ $GLOBALS['TL_DCA']['tl_iso_product_collection'] = array
         (
             'label'                 => &$GLOBALS['TL_LANG']['tl_iso_product_collection']['shipping_id'],
             'filter'                => true,
-            'foreignKey'            => 'tl_iso_shipping_modules.name',
+            'foreignKey'            => \Isotope\Model\Shipping::getTable().'.name',
             'sql'                   => "int(10) unsigned NOT NULL default '0'",
             'relation'              => array('type'=>'hasOne', 'load'=>'lazy'),
         ),
         'address1_id' => array
         (
             'label'                 => &$GLOBALS['TL_LANG']['tl_iso_product_collection']['address1_id'],
-            'foreignKey'            => 'tl_iso_addresses.label',
+            'foreignKey'            => \Isotope\Model\Address::getTable().'.label',
             'eval'                  => array('doNotShow'=>true),
             'sql'                   => "int(10) unsigned NOT NULL default '0'",
             'relation'              => array('type'=>'hasOne', 'load'=>'lazy'),
         ),
         'address2_id' => array
         (
-            'foreignKey'            => 'tl_iso_addresses.label',
+            'foreignKey'            => \Isotope\Model\Address::getTable().'.label',
             'eval'                  => array('doNotShow'=>true),
             'sql'                   => "int(10) unsigned NOT NULL default '0'",
             'relation'              => array('type'=>'hasOne', 'load'=>'lazy'),

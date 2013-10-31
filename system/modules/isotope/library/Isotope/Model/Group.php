@@ -26,6 +26,6 @@ class Group extends \Model
      * Name of the current table
      * @var string
      */
-    protected static $strTable = 'tl_iso_groups';
+    protected static $strTable = 'tl_iso_group';
 
 }

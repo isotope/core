@@ -37,7 +37,7 @@ class Translation
     protected static $arrLoaded = array();
 
     /**
-     * Get a translation of a value using the tl_iso_label table
+     * Get a translation of a value using the translation tabel
      * @param   mixed
      * @param   boolean
      * @return  mixed
@@ -75,7 +75,7 @@ class Translation
     }
 
     /**
-     * Add a translation that is not stored in tl_iso_label
+     * Add a translation that is not stored in translation table
      * @param   string The label
      * @param   string The replacement
      * @param   string The language
@@ -93,7 +93,7 @@ class Translation
 
 
     /**
-     * Initialize the data in tl_iso_label
+     * Initialize the data in translation table
      * @param string The language
      */
     protected static function initialize($strLanguage=null)

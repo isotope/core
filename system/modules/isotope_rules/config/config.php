@@ -21,8 +21,8 @@ array_insert($GLOBALS['BE_MOD']['isotope'], 2, array
 (
     'iso_rules' => array
     (
-        'tables'        => array('tl_iso_rules'),
-        'javsacript'    => 'system/modules/isotope/assets/backend'.(ISO_DEBUG ? '' : '.min').'.js',
+        'tables'        => array(\Isotope\Model\Rule::getTable()),
+        'javascript'    => 'system/modules/isotope/assets/backend'.(ISO_DEBUG ? '' : '.min').'.js',
         'icon'          => 'system/modules/isotope_rules/assets/auction-hammer-gavel.png'
     ),
 ));
@@ -30,7 +30,7 @@ array_insert($GLOBALS['BE_MOD']['isotope'], 2, array
 /**
  * Models
  */
-$GLOBALS['TL_MODELS']['tl_iso_rules'] = 'Isotope\Model\Rule';
+$GLOBALS['TL_MODELS'][\Isotope\Model\Rule::getTable()] = 'Isotope\Model\Rule';
 
 /**
  * Checkout Steps

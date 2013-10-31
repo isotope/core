@@ -45,6 +45,7 @@ class Setup extends BackendOverview
                         'label'         => specialchars($GLOBALS['TL_LANG']['IMD'][$strModule][0] ?: $strModule),
                         'description'   => specialchars(strip_tags($GLOBALS['TL_LANG']['IMD'][$strModule][1])),
                         'href'          => \Environment::get('script') . '?do=iso_setup&mod=' . $strModule,
+                        'class'         => $arrConfig['class'],
                     ));
                     $return[$strGroup]['label'] = $GLOBALS['TL_LANG']['IMD'][$strGroup];
                 }

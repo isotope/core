@@ -103,6 +103,7 @@ class ProductList extends Module
         global $objPage;
         $intPage = ($this->iso_category_scope == 'article' ? $GLOBALS['ISO_CONFIG']['current_article']['pid'] : $objPage->id);
         $arrProducts = null;
+        $arrCacheIds = null;
 
 		// Try to load the products from cache
         if ($this->blnCacheProducts && ($objCache = ProductCache::findForPageAndModule($intPage, $this->id)) !== null) {
@@ -111,7 +112,10 @@ class ProductList extends Module
             // Use the cache if keywords match. Otherwise we will use the product IDs as a "limit" for findProducts()
             if ($objCache->keywords == \Input::get('keywords')) {
             	$arrCacheIds = $this->generatePagination($arrCacheIds);
-                $arrProducts = \Isotope\Frontend::getProducts($arrCacheIds);
+
+                $arrProducts = Product::findAvailableByIds($arrCacheIds, array(
+                    'order' => \Database::getInstance()->findInSet(Product::getTable().'.id', $arrCacheIds)
+                ));
 
                 // Cache is wrong, drop everything and run findProducts()
                 if (count($arrProducts) != count($arrCacheIds)) {
@@ -159,7 +163,7 @@ class ProductList extends Module
                 // Do not write cache if table is locked. That's the case if another process is already writing cache
                 if (ProductCache::isWritable()) {
 
-                    \Database::getInstance()->lockTables(array(ProductCache::getTable()=>'WRITE', 'tl_iso_products'=>'READ'));
+                    \Database::getInstance()->lockTables(array(ProductCache::getTable()=>'WRITE', 'tl_iso_product'=>'READ'));
 
                     $arrIds = array();
                     foreach ($arrProducts as $objProduct) {
@@ -282,9 +286,15 @@ class ProductList extends Module
             $arrColumns[] = $strWhere;
         }
 
-        $objProducts = Product::findPublishedBy($arrColumns, $arrValues, array('group'=>Product::getTable() . '.id', 'order'=>'c.sorting'));
-
-        return \Isotope\Frontend::getProducts($objProducts, true, $arrFilters, $arrSorting);
+        return Product::findAvailableBy(
+            $arrColumns,
+            $arrValues,
+            array(
+                'group' => Product::getTable() . '.id', 'order'=>'c.sorting',
+                'filters' => $arrFilters,
+                'sorting' => $arrSorting,
+            )
+        );
     }
 
 
@@ -400,11 +410,11 @@ class ProductList extends Module
         $time = time();
 
         // Find timestamp when the next product becomes available
-        $expires = (int) \Database::getInstance()->execute("SELECT MIN(start) AS expires FROM tl_iso_products WHERE start>$time")->expires;
+        $expires = (int) \Database::getInstance()->execute("SELECT MIN(start) AS expires FROM tl_iso_product WHERE start>$time")->expires;
 
         // Find
         if ($this->iso_newFilter == 'show_new' || $this->iso_newFilter == 'show_old') {
-            $added = \Database::getInstance()->execute("SELECT MIN(dateAdded) FROM tl_iso_products WHERE dateAdded>" . Isotope::getConfig()->getNewProductLimit());
+            $added = \Database::getInstance()->execute("SELECT MIN(dateAdded) FROM tl_iso_product WHERE dateAdded>" . Isotope::getConfig()->getNewProductLimit());
 
             if ($added < $expires) {
                 $expires = $added;

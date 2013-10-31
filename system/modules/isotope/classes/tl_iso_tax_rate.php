@@ -16,6 +16,7 @@
 namespace Isotope;
 
 use Isotope\Model\Config;
+use Isotope\Model\TaxRate;
 
 /**
  * Class tl_iso_tax_rate
@@ -181,11 +182,11 @@ class tl_iso_tax_rate extends \Backend
      */
     public function addCurrencyRate($dc)
     {
-        $objConfig = \Database::getInstance()->prepare("SELECT tl_iso_config.* FROM tl_iso_tax_rate LEFT OUTER JOIN tl_iso_config ON tl_iso_config.id=tl_iso_tax_rate.config WHERE tl_iso_tax_rate.id=?")->execute($dc->id);
+        $objTaxRate = TaxRate::findByPk($dc->id);
 
-        if ($objConfig->currency)
+        if ($objTaxRate->config > 0 && null !== $objTaxRate->getRelated('config'))
         {
-            $GLOBALS['TL_DCA']['tl_iso_tax_rate']['fields']['rate']['options'][''] = $objConfig->currency;
+            $GLOBALS['TL_DCA']['tl_iso_tax_rate']['fields']['rate']['options'][''] = $objTaxRate->getRelated('config')->currency;
         }
     }
 
