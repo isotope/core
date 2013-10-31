@@ -32,15 +32,15 @@ source_file = .tx/source/en/isotope/subdivisions.xlf
 source_lang = en
 file_filter = .tx/source/<lang>/isotope/subdivisions.xlf
 
-[isotope.develop-isotope-tl_iso_addresses]
-source_file = .tx/source/en/isotope/tl_iso_addresses.xlf
+[isotope.develop-isotope-tl_iso_address]
+source_file = .tx/source/en/isotope/tl_iso_address.xlf
 source_lang = en
-file_filter = .tx/source/<lang>/isotope/tl_iso_addresses.xlf
+file_filter = .tx/source/<lang>/isotope/tl_iso_address.xlf
 
-[isotope.develop-isotope-tl_iso_attributes]
-source_file = .tx/source/en/isotope/tl_iso_attributes.xlf
+[isotope.develop-isotope-tl_iso_attribute]
+source_file = .tx/source/en/isotope/tl_iso_attribute.xlf
 source_lang = en
-file_filter = .tx/source/<lang>/isotope/tl_iso_attributes.xlf
+file_filter = .tx/source/<lang>/isotope/tl_iso_attribute.xlf
 
 [isotope.develop-isotope-tl_iso_baseprice]
 source_file = .tx/source/en/isotope/tl_iso_baseprice.xlf
@@ -57,75 +57,75 @@ source_file = .tx/source/en/isotope/tl_iso_document.xlf
 source_lang = en
 file_filter = .tx/source/<lang>/isotope/tl_iso_document.xlf
 
-[isotope.develop-isotope-tl_iso_downloads]
-source_file = .tx/source/en/isotope/tl_iso_downloads.xlf
+[isotope.develop-isotope-tl_iso_download]
+source_file = .tx/source/en/isotope/tl_iso_download.xlf
 source_lang = en
-file_filter = .tx/source/<lang>/isotope/tl_iso_downloads.xlf
+file_filter = .tx/source/<lang>/isotope/tl_iso_download.xlf
 
 [isotope.develop-isotope-tl_iso_gallery]
 source_file = .tx/source/en/isotope/tl_iso_gallery.xlf
 source_lang = en
 file_filter = .tx/source/<lang>/isotope/tl_iso_gallery.xlf
 
-[isotope.develop-isotope-tl_iso_groups]
-source_file = .tx/source/en/isotope/tl_iso_groups.xlf
+[isotope.develop-isotope-tl_iso_group]
+source_file = .tx/source/en/isotope/tl_iso_group.xlf
 source_lang = en
-file_filter = .tx/source/<lang>/isotope/tl_iso_groups.xlf
+file_filter = .tx/source/<lang>/isotope/tl_iso_group.xlf
 
-[isotope.develop-isotope-tl_iso_labels]
-source_file = .tx/source/en/isotope/tl_iso_labels.xlf
+[isotope.develop-isotope-tl_iso_label]
+source_file = .tx/source/en/isotope/tl_iso_label.xlf
 source_lang = en
-file_filter = .tx/source/<lang>/isotope/tl_iso_labels.xlf
+file_filter = .tx/source/<lang>/isotope/tl_iso_label.xlf
 
 [isotope.develop-isotope-tl_iso_orderstatus]
 source_file = .tx/source/en/isotope/tl_iso_orderstatus.xlf
 source_lang = en
 file_filter = .tx/source/<lang>/isotope/tl_iso_orderstatus.xlf
 
-[isotope.develop-isotope-tl_iso_payment_modules]
-source_file = .tx/source/en/isotope/tl_iso_payment_modules.xlf
+[isotope.develop-isotope-tl_iso_payment]
+source_file = .tx/source/en/isotope/tl_iso_payment.xlf
 source_lang = en
-file_filter = .tx/source/<lang>/isotope/tl_iso_payment_modules.xlf
+file_filter = .tx/source/<lang>/isotope/tl_iso_payment.xlf
 
-[isotope.develop-isotope-tl_iso_prices]
-source_file = .tx/source/en/isotope/tl_iso_prices.xlf
+[isotope.develop-isotope-tl_iso_product]
+source_file = .tx/source/en/isotope/tl_iso_product.xlf
 source_lang = en
-file_filter = .tx/source/<lang>/isotope/tl_iso_prices.xlf
+file_filter = .tx/source/<lang>/isotope/tl_iso_product.xlf
 
-[isotope.develop-isotope-tl_iso_product_categories]
-source_file = .tx/source/en/isotope/tl_iso_product_categories.xlf
+[isotope.develop-isotope-tl_iso_product_category]
+source_file = .tx/source/en/isotope/tl_iso_product_category.xlf
 source_lang = en
-file_filter = .tx/source/<lang>/isotope/tl_iso_product_categories.xlf
+file_filter = .tx/source/<lang>/isotope/tl_iso_product_category.xlf
 
 [isotope.develop-isotope-tl_iso_product_collection]
 source_file = .tx/source/en/isotope/tl_iso_product_collection.xlf
 source_lang = en
 file_filter = .tx/source/<lang>/isotope/tl_iso_product_collection.xlf
 
-[isotope.develop-isotope-tl_iso_products]
-source_file = .tx/source/en/isotope/tl_iso_products.xlf
+[isotope.develop-isotope-tl_iso_product_price]
+source_file = .tx/source/en/isotope/tl_iso_product_price.xlf
 source_lang = en
-file_filter = .tx/source/<lang>/isotope/tl_iso_products.xlf
+file_filter = .tx/source/<lang>/isotope/tl_iso_product_price.xlf
 
-[isotope.develop-isotope-tl_iso_producttypes]
-source_file = .tx/source/en/isotope/tl_iso_producttypes.xlf
+[isotope.develop-isotope-tl_iso_producttype]
+source_file = .tx/source/en/isotope/tl_iso_producttype.xlf
 source_lang = en
-file_filter = .tx/source/<lang>/isotope/tl_iso_producttypes.xlf
+file_filter = .tx/source/<lang>/isotope/tl_iso_producttype.xlf
 
-[isotope.develop-isotope-tl_iso_related_categories]
-source_file = .tx/source/en/isotope/tl_iso_related_categories.xlf
+[isotope.develop-isotope-tl_iso_related_category]
+source_file = .tx/source/en/isotope/tl_iso_related_category.xlf
 source_lang = en
-file_filter = .tx/source/<lang>/isotope/tl_iso_related_categories.xlf
+file_filter = .tx/source/<lang>/isotope/tl_iso_related_category.xlf
 
-[isotope.develop-isotope-tl_iso_related_products]
-source_file = .tx/source/en/isotope/tl_iso_related_products.xlf
+[isotope.develop-isotope-tl_iso_related_product]
+source_file = .tx/source/en/isotope/tl_iso_related_product.xlf
 source_lang = en
-file_filter = .tx/source/<lang>/isotope/tl_iso_related_products.xlf
+file_filter = .tx/source/<lang>/isotope/tl_iso_related_product.xlf
 
-[isotope.develop-isotope-tl_iso_shipping_modules]
-source_file = .tx/source/en/isotope/tl_iso_shipping_modules.xlf
+[isotope.develop-isotope-tl_iso_shipping]
+source_file = .tx/source/en/isotope/tl_iso_shipping.xlf
 source_lang = en
-file_filter = .tx/source/<lang>/isotope/tl_iso_shipping_modules.xlf
+file_filter = .tx/source/<lang>/isotope/tl_iso_shipping.xlf
 
 [isotope.develop-isotope-tl_iso_tax_class]
 source_file = .tx/source/en/isotope/tl_iso_tax_class.xlf
@@ -212,7 +212,7 @@ source_file = .tx/source/en/isotope_rules/modules.xlf
 source_lang = en
 file_filter = .tx/source/<lang>/isotope_rules/modules.xlf
 
-[isotope.develop-isotope_rules-tl_iso_rules]
-source_file = .tx/source/en/isotope_rules/tl_iso_rules.xlf
+[isotope.develop-isotope_rules-tl_iso_rule]
+source_file = .tx/source/en/isotope_rules/tl_iso_rule.xlf
 source_lang = en
-file_filter = .tx/source/<lang>/isotope_rules/tl_iso_rules.xlf
+file_filter = .tx/source/<lang>/isotope_rules/tl_iso_rule.xlf

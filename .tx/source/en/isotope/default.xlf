@@ -488,55 +488,55 @@
       <trans-unit id="CTE.isotope">
         <source>Isotope eCommerce</source>
       </trans-unit>
-      <trans-unit id="MODEL.tl_iso_shipping_modules.flat.0">
+      <trans-unit id="MODEL.tl_iso_shipping.flat.0">
         <source>Flat-price shipping</source>
       </trans-unit>
-      <trans-unit id="MODEL.tl_iso_payment_modules.cash.0">
+      <trans-unit id="MODEL.tl_iso_payment.cash.0">
         <source>Cash</source>
       </trans-unit>
-      <trans-unit id="MODEL.tl_iso_payment_modules.cash.1">
+      <trans-unit id="MODEL.tl_iso_payment.cash.1">
         <source>Use this for all offline processed payment.</source>
       </trans-unit>
-      <trans-unit id="MODEL.tl_iso_payment_modules.paypal.0">
+      <trans-unit id="MODEL.tl_iso_payment.paypal.0">
         <source>PayPal Standard Checkout</source>
       </trans-unit>
-      <trans-unit id="MODEL.tl_iso_payment_modules.paypal.1">
+      <trans-unit id="MODEL.tl_iso_payment.paypal.1">
         <source>This PayPal module supports IPN (Instant Payment Notifications).</source>
       </trans-unit>
-      <trans-unit id="MODEL.tl_iso_payment_modules.postfinance.0">
+      <trans-unit id="MODEL.tl_iso_payment.postfinance.0">
         <source>Postfinance</source>
       </trans-unit>
-      <trans-unit id="MODEL.tl_iso_payment_modules.postfinance.1">
+      <trans-unit id="MODEL.tl_iso_payment.postfinance.1">
         <source>Payment gateway for the swiss post payment system that supports various card types. The store will be instantly notified about successfull transactions.</source>
       </trans-unit>
-      <trans-unit id="MODEL.tl_iso_payment_modules.viveum.0">
+      <trans-unit id="MODEL.tl_iso_payment.viveum.0">
         <source>VIVEUM</source>
       </trans-unit>
-      <trans-unit id="MODEL.tl_iso_payment_modules.viveum.1">
+      <trans-unit id="MODEL.tl_iso_payment.viveum.1">
         <source>Payment gateway for VIVEUM Zahlungssysteme GmbH.</source>
       </trans-unit>
-      <trans-unit id="MODEL.tl_iso_payment_modules.datatrans.0">
+      <trans-unit id="MODEL.tl_iso_payment.datatrans.0">
         <source>Datatrans</source>
       </trans-unit>
-      <trans-unit id="MODEL.tl_iso_payment_modules.datatrans.1">
+      <trans-unit id="MODEL.tl_iso_payment.datatrans.1">
         <source>A payment module for the swiss payment gateway "Datatrans".</source>
       </trans-unit>
-      <trans-unit id="MODEL.tl_iso_payment_modules.sparkasse.0">
+      <trans-unit id="MODEL.tl_iso_payment.sparkasse.0">
         <source>Sparkasse</source>
       </trans-unit>
-      <trans-unit id="MODEL.tl_iso_payment_modules.saferpay.0">
+      <trans-unit id="MODEL.tl_iso_payment.saferpay.0">
         <source>Saferpay</source>
       </trans-unit>
-      <trans-unit id="MODEL.tl_iso_payment_modules.sofortueberweisung.0">
+      <trans-unit id="MODEL.tl_iso_payment.sofortueberweisung.0">
         <source>sofortüberweisung.de</source>
       </trans-unit>
-      <trans-unit id="MODEL.tl_iso_payment_modules.expercash.0">
+      <trans-unit id="MODEL.tl_iso_payment.expercash.0">
         <source>ExperCash</source>
       </trans-unit>
-      <trans-unit id="MODEL.tl_iso_payment_modules.payone.0">
+      <trans-unit id="MODEL.tl_iso_payment.payone.0">
         <source>PayOne</source>
       </trans-unit>
-      <trans-unit id="MODEL.tl_iso_payment_modules.worldpay.0">
+      <trans-unit id="MODEL.tl_iso_payment.worldpay.0">
         <source>WorldPay</source>
       </trans-unit>
       <trans-unit id="MODEL.tl_iso_document.standard.0">
@@ -554,10 +554,10 @@
       <trans-unit id="MODEL.tl_iso_gallery.inline.1">
         <source>Clicking on a gallery image will replace the main image.</source>
       </trans-unit>
-      <trans-unit id="MODEL.tl_iso_products.standard.0">
+      <trans-unit id="MODEL.tl_iso_product.standard.0">
         <source>Standard product</source>
       </trans-unit>
-      <trans-unit id="MODEL.tl_iso_products.standard.1">
+      <trans-unit id="MODEL.tl_iso_product.standard.1">
         <source>A default product. Select this if nothing else matches.</source>
       </trans-unit>
       <trans-unit id="CCT.mc">
