@@ -110,7 +110,7 @@ $GLOBALS['ISO_MOD'] = array
         ),
         'shipping' => array
         (
-                'tables'        => array('tl_iso_shipping_modules','tl_iso_shipping_options'),
+                'tables'        => array('tl_iso_shipping_modules'),
                 'icon'          => 'system/modules/isotope/assets/setup-shipping.png',
         ),
         'tax_class' => array
