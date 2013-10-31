@@ -20,10 +20,10 @@ use Isotope\Model\Group;
 
 
 /**
- * Class tl_iso_groups
+ * Class tl_iso_group
  * Provide miscellaneous methods that are used by the data configuration array.
  */
-class tl_iso_groups extends \Backend
+class tl_iso_group extends \Backend
 {
 
     public function __construct()
@@ -50,11 +50,11 @@ class tl_iso_groups extends \Backend
 
             if (!is_array($arrGroups) || empty($arrGroups))
             {
-                $GLOBALS['TL_DCA']['tl_iso_groups']['list']['sorting']['filter'][] = array('id=?', 0);
+                $GLOBALS['TL_DCA']['tl_iso_group']['list']['sorting']['filter'][] = array('id=?', 0);
             }
             else
             {
-                $GLOBALS['TL_DCA']['tl_iso_groups']['list']['sorting']['root'] = $arrGroups;
+                $GLOBALS['TL_DCA']['tl_iso_group']['list']['sorting']['root'] = $arrGroups;
             }
 
             return;
@@ -74,24 +74,24 @@ class tl_iso_groups extends \Backend
         else
         {
             try {
-                $root = $this->eliminateNestedPages($this->User->iso_groups, 'tl_iso_groups');
+                $root = $this->eliminateNestedPages($this->User->iso_groups, 'tl_iso_group');
             }
             catch (\Exception $e) {
                 $root = array();
             }
         }
 
-        $GLOBALS['TL_DCA']['tl_iso_groups']['list']['sorting']['root'] = (empty($root) ? true : $root);
+        $GLOBALS['TL_DCA']['tl_iso_group']['list']['sorting']['root'] = (empty($root) ? true : $root);
 
         if (in_array('rootPaste', $this->User->iso_groupp))
         {
-            $GLOBALS['TL_DCA']['tl_iso_groups']['list']['sorting']['rootPaste'] = true;
+            $GLOBALS['TL_DCA']['tl_iso_group']['list']['sorting']['rootPaste'] = true;
         }
 
         // Check permissions to add product group
         if (!in_array('create', $this->User->iso_groupp))
         {
-            $GLOBALS['TL_DCA']['tl_iso_groups']['config']['closed'] = true;
+            $GLOBALS['TL_DCA']['tl_iso_group']['config']['closed'] = true;
         }
 
         // Check current action
@@ -109,7 +109,7 @@ class tl_iso_groups extends \Backend
                 {
                     $arrNew = $this->Session->get('new_records');
 
-                    if (is_array($arrNew['tl_iso_groups']) && in_array(\Input::get('id'), $arrNew['tl_iso_groups']))
+                    if (is_array($arrNew['tl_iso_group']) && in_array(\Input::get('id'), $arrNew['tl_iso_group']))
                     {
                         // Add permissions on user level
                         if ($this->User->inherit == 'custom' || !$this->User->groups[0])
@@ -197,10 +197,10 @@ class tl_iso_groups extends \Backend
      */
     public function addBreadcrumb()
     {
-        $GLOBALS['TL_DCA']['tl_iso_groups']['list']['sorting']['breadcrumb'] = \Isotope\Backend::generateGroupsBreadcrumb($this->Session->get('iso_products_gid'));
+        $GLOBALS['TL_DCA']['tl_iso_group']['list']['sorting']['breadcrumb'] = \Isotope\Backend::generateGroupsBreadcrumb($this->Session->get('iso_products_gid'));
 
         if ($this->Session->get('iso_products_gid') > 0) {
-            $GLOBALS['TL_DCA']['tl_iso_groups']['list']['sorting']['root'] = array($this->Session->get('iso_products_gid'));
+            $GLOBALS['TL_DCA']['tl_iso_group']['list']['sorting']['root'] = array($this->Session->get('iso_products_gid'));
         }
     }
 
@@ -243,7 +243,7 @@ class tl_iso_groups extends \Backend
      */
     public function deleteGroup($dc)
     {
-        $arrGroups = \Database::getInstance()->getChildRecords($dc->id, 'tl_iso_groups');
+        $arrGroups = \Database::getInstance()->getChildRecords($dc->id, 'tl_iso_group');
         $arrGroups[] = $dc->id;
 
         \Database::getInstance()->query("UPDATE tl_iso_products SET gid=0 WHERE gid IN (" . implode(',', $arrGroups) . ")");

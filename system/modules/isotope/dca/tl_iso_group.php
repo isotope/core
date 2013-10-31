@@ -15,26 +15,26 @@
  */
 
 /**
- * Table tl_iso_groups
+ * Table tl_iso_group
  */
-$GLOBALS['TL_DCA']['tl_iso_groups'] = array
+$GLOBALS['TL_DCA']['tl_iso_group'] = array
 (
 
     // Config
     'config' => array
     (
         'dataContainer'             => 'Table',
-        'label'                     => &$GLOBALS['TL_LANG']['tl_iso_groups']['label'],
+        'label'                     => &$GLOBALS['TL_LANG']['tl_iso_group']['label'],
         'backlink'                  => \Input::get('popup') ? null : 'do=iso_products',
         'enableVersioning'          => true,
         'onload_callback' => array
         (
-            array('Isotope\tl_iso_groups', 'checkPermission'),
-            array('Isotope\tl_iso_groups', 'addBreadcrumb'),
+            array('Isotope\tl_iso_group', 'checkPermission'),
+            array('Isotope\tl_iso_group', 'addBreadcrumb'),
         ),
         'ondelete_callback' => array
         (
-            array('Isotope\tl_iso_groups', 'deleteGroup'),
+            array('Isotope\tl_iso_group', 'deleteGroup'),
         ),
         'sql' => array
         (
@@ -60,7 +60,7 @@ $GLOBALS['TL_DCA']['tl_iso_groups'] = array
         (
             'fields'                => array('name'),
             'format'                => '%s',
-            'label_callback'        => array('Isotope\tl_iso_groups', 'addIcon')
+            'label_callback'        => array('Isotope\tl_iso_group', 'addIcon')
         ),
         'global_operations' => array
         (
@@ -76,44 +76,44 @@ $GLOBALS['TL_DCA']['tl_iso_groups'] = array
         (
             'edit' => array
             (
-                'label'             => &$GLOBALS['TL_LANG']['tl_iso_groups']['edit'],
-                'href'              => 'table=tl_iso_groups&amp;act=edit',
+                'label'             => &$GLOBALS['TL_LANG']['tl_iso_group']['edit'],
+                'href'              => 'table=tl_iso_group&amp;act=edit',
                 'icon'              => 'edit.gif'
             ),
             'copy' => array
             (
-                'label'             => &$GLOBALS['TL_LANG']['tl_iso_groups']['copy'],
-                'href'              => 'table=tl_iso_groups&amp;act=paste&amp;mode=copy',
+                'label'             => &$GLOBALS['TL_LANG']['tl_iso_group']['copy'],
+                'href'              => 'table=tl_iso_group&amp;act=paste&amp;mode=copy',
                 'icon'              => 'copy.gif',
                 'attributes'        => 'onclick="Backend.getScrollOffset()"',
-                'button_callback'   => array('Isotope\tl_iso_groups', 'copyButton'),
+                'button_callback'   => array('Isotope\tl_iso_group', 'copyButton'),
             ),
             'copyChilds' => array
             (
-                'label'             => &$GLOBALS['TL_LANG']['tl_iso_groups']['copyChilds'],
-                'href'              => 'table=tl_iso_groups&amp;act=paste&amp;mode=copy&amp;childs=1',
+                'label'             => &$GLOBALS['TL_LANG']['tl_iso_group']['copyChilds'],
+                'href'              => 'table=tl_iso_group&amp;act=paste&amp;mode=copy&amp;childs=1',
                 'icon'              => 'copychilds.gif',
                 'attributes'        => 'onclick="Backend.getScrollOffset()"',
-                'button_callback'   => array('Isotope\tl_iso_groups', 'copyButton'),
+                'button_callback'   => array('Isotope\tl_iso_group', 'copyButton'),
             ),
             'cut' => array
             (
-                'label'             => &$GLOBALS['TL_LANG']['tl_iso_groups']['cut'],
-                'href'              => 'table=tl_iso_groups&amp;act=paste&amp;mode=cut',
+                'label'             => &$GLOBALS['TL_LANG']['tl_iso_group']['cut'],
+                'href'              => 'table=tl_iso_group&amp;act=paste&amp;mode=cut',
                 'icon'              => 'cut.gif',
                 'attributes'        => 'onclick="Backend.getScrollOffset();"'
             ),
             'delete' => array
             (
-                'label'             => &$GLOBALS['TL_LANG']['tl_iso_groups']['delete'],
-                'href'              => 'table=tl_iso_groups&amp;act=delete',
+                'label'             => &$GLOBALS['TL_LANG']['tl_iso_group']['delete'],
+                'href'              => 'table=tl_iso_group&amp;act=delete',
                 'icon'              => 'delete.gif',
                 'attributes'        => 'onclick="if (!confirm(\'' . $GLOBALS['TL_LANG']['MSC']['deleteConfirm'] . '\')) return false; Backend.getScrollOffset();"',
-                'button_callback'   => array('Isotope\tl_iso_groups', 'deleteButton'),
+                'button_callback'   => array('Isotope\tl_iso_group', 'deleteButton'),
             ),
             'show' => array
             (
-                'label'             => &$GLOBALS['TL_LANG']['tl_iso_groups']['show'],
+                'label'             => &$GLOBALS['TL_LANG']['tl_iso_group']['show'],
                 'href'              => 'act=show',
                 'icon'              => 'show.gif'
             ),
@@ -135,7 +135,7 @@ $GLOBALS['TL_DCA']['tl_iso_groups'] = array
         ),
         'pid' => array
         (
-            'foreignKey'            => 'tl_iso_groups.name',
+            'foreignKey'            => 'tl_iso_group.name',
             'sql'                   => "int(10) unsigned NOT NULL default '0'",
             'relation'              => array('type'=>'belongsTo', 'load'=>'lazy'),
         ),
@@ -149,7 +149,7 @@ $GLOBALS['TL_DCA']['tl_iso_groups'] = array
         ),
         'name' => array
         (
-            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_groups']['name'],
+            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_group']['name'],
             'exclude'               => true,
             'inputType'             => 'text',
             'eval'                  => array('mandatory'=>true, 'maxlength'=>255, 'tl_class'=>'w50'),
@@ -157,7 +157,7 @@ $GLOBALS['TL_DCA']['tl_iso_groups'] = array
         ),
         'product_type' => array
         (
-            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_groups']['product_type'],
+            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_group']['product_type'],
             'exclude'               => true,
             'inputType'             => 'select',
             'foreignKey'            => \Isotope\Model\ProductType::getTable().'.name',
