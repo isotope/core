@@ -217,10 +217,10 @@ class tl_iso_producttype extends \Backend
      */
     public function prepareAttributeWizard($objWidget)
     {
-        $this->loadDataContainer('tl_iso_products');
+        $this->loadDataContainer('tl_iso_product');
 
         $arrValues = $objWidget->value;
-        $arrDCA = &$GLOBALS['TL_DCA']['tl_iso_products']['fields'];
+        $arrDCA = &$GLOBALS['TL_DCA']['tl_iso_product']['fields'];
         $blnVariants = ($objWidget->name != 'attributes');
 
         if (!empty($arrValues) && is_array($arrValues)) {
@@ -295,7 +295,7 @@ class tl_iso_producttype extends \Backend
             $objWidget->name,
             $i++,
             $strName,
-            $GLOBALS['TL_DCA']['tl_iso_products']['fields'][$strName]['label'][0] ?: $strName,
+            $GLOBALS['TL_DCA']['tl_iso_product']['fields'][$strName]['label'][0] ?: $strName,
             $strName
         );
     }
@@ -331,9 +331,9 @@ class tl_iso_producttype extends \Backend
      */
     public function loadAttributeWizard($varValue, $dc)
     {
-        $this->loadDataContainer('tl_iso_products');
+        $this->loadDataContainer('tl_iso_product');
 
-        $arrDCA = &$GLOBALS['TL_DCA']['tl_iso_products']['fields'];
+        $arrDCA = &$GLOBALS['TL_DCA']['tl_iso_product']['fields'];
         $arrFields = array();
         $arrValues = deserialize($varValue);
         $blnVariants = ($dc->field != 'attributes');
@@ -381,7 +381,7 @@ class tl_iso_producttype extends \Backend
      */
     public function saveAttributeWizard($varValue, $dc)
     {
-        $arrDCA = &$GLOBALS['TL_DCA']['tl_iso_products']['fields'];
+        $arrDCA = &$GLOBALS['TL_DCA']['tl_iso_product']['fields'];
 
         $arrLegends = array();
         $arrFields = deserialize($varValue);

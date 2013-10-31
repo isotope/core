@@ -26,7 +26,7 @@ $GLOBALS['TL_DCA']['tl_iso_product_price'] = array
     (
         'dataContainer'             => 'Table',
         'enableVersioning'          => true,
-        'ptable'                    => 'tl_iso_products',
+        'ptable'                    => 'tl_iso_product',
         'ctable'                    => array('tl_iso_product_pricetier'),
         'onload_callback' => array
         (
@@ -111,7 +111,7 @@ $GLOBALS['TL_DCA']['tl_iso_product_price'] = array
         ),
         'pid' => array
         (
-            'foreignKey'            => 'tl_iso_products.name',
+            'foreignKey'            => 'tl_iso_product.name',
             'sql'                   =>  "int(10) unsigned NOT NULL default '0'",
             'relation'              => array('type'=>'belongsTo', 'load'=>'lazy'),
         ),

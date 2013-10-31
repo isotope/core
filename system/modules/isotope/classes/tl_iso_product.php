@@ -24,10 +24,10 @@ use Isotope\Model\ProductCollectionItem;
 
 
 /**
- * Class tl_iso_products
+ * Class tl_iso_product
  * Provide miscellaneous methods that are used by the data configuration array.
  */
-class tl_iso_products extends \Backend
+class tl_iso_product extends \Backend
 {
 
 
@@ -150,7 +150,7 @@ class tl_iso_products extends \Backend
 <div class="tl_formbody_submit">
 
 <div class="tl_submit_container">
-  <input type="submit" name="save" id="save" class="tl_submit" accesskey="s" value="'.specialchars($GLOBALS['TL_LANG']['tl_iso_products']['generate'][0]).'">
+  <input type="submit" name="save" id="save" class="tl_submit" accesskey="s" value="'.specialchars($GLOBALS['TL_LANG']['tl_iso_product']['generate'][0]).'">
 </div>
 
 </div>
@@ -166,10 +166,10 @@ class tl_iso_products extends \Backend
      */
     public function importAssets($dc, $arrNewImages=array())
     {
-        $objTree = new \FileTree(\FileTree::getAttributesFromDca($GLOBALS['TL_DCA']['tl_iso_products']['fields']['source'], 'source', null, 'source', 'tl_iso_products'));
+        $objTree = new \FileTree(\FileTree::getAttributesFromDca($GLOBALS['TL_DCA']['tl_iso_product']['fields']['source'], 'source', null, 'source', 'tl_iso_product'));
 
         // Import assets
-        if (\Input::post('FORM_SUBMIT') == 'tl_iso_products_import' && \Input::post('source') != '')
+        if (\Input::post('FORM_SUBMIT') == 'tl_iso_product_import' && \Input::post('source') != '')
         {
             $this->import('Files');
 
@@ -183,7 +183,7 @@ class tl_iso_products extends \Backend
             }
 
             $arrDelete = array();
-            $objProducts = \Database::getInstance()->prepare("SELECT * FROM tl_iso_products WHERE pid=0")->execute();
+            $objProducts = \Database::getInstance()->prepare("SELECT * FROM tl_iso_product WHERE pid=0")->execute();
 
             while ($objProducts->next())
             {
@@ -280,7 +280,7 @@ class tl_iso_products extends \Backend
 
                         }
 
-                        \Database::getInstance()->prepare("UPDATE tl_iso_products SET images=? WHERE id=?")->execute(serialize($arrImages), $objProducts->id);
+                        \Database::getInstance()->prepare("UPDATE tl_iso_product SET images=? WHERE id=?")->execute(serialize($arrImages), $objProducts->id);
                     }
                 }
             }
@@ -304,19 +304,19 @@ class tl_iso_products extends \Backend
 <a href="'.ampersand(str_replace('&key=import', '', \Environment::get('request'))).'" class="header_back" title="'.specialchars($GLOBALS['TL_LANG']['MSC']['backBT']).'">'.$GLOBALS['TL_LANG']['MSC']['backBT'].'</a>
 </div>
 
-<h2 class="sub_headline">'.$GLOBALS['TL_LANG']['tl_iso_products']['import'][1].'</h2>'.$this->getMessages().'
+<h2 class="sub_headline">'.$GLOBALS['TL_LANG']['tl_iso_product']['import'][1].'</h2>'.$this->getMessages().'
 
-<form action="'.ampersand(\Environment::get('request'), true).'" id="tl_iso_products_import" class="tl_form" method="post">
+<form action="'.ampersand(\Environment::get('request'), true).'" id="tl_iso_product_import" class="tl_form" method="post">
 <div class="tl_formbody_edit iso_importassets">
-<input type="hidden" name="FORM_SUBMIT" value="tl_iso_products_import">
+<input type="hidden" name="FORM_SUBMIT" value="tl_iso_product_import">
 <input type="hidden" name="REQUEST_TOKEN" value="'.REQUEST_TOKEN.'">
 
-<div class="tl_info">' . $GLOBALS['TL_LANG']['tl_iso_products']['importAssetsDescr'] . '</div>
+<div class="tl_info">' . $GLOBALS['TL_LANG']['tl_iso_product']['importAssetsDescr'] . '</div>
 
 <div class="tl_tbox block">
-  <h3><label for="source">'.$GLOBALS['TL_LANG']['tl_iso_products']['source'][0].'</label> <a href="typolight/files.php" title="' . specialchars($GLOBALS['TL_LANG']['MSC']['fileManager']) . '" onclick="Backend.getScrollOffset(); this.blur(); Backend.openWindow(this, 750, 500); return false;">' . \Image::getHtml('filemanager.gif', $GLOBALS['TL_LANG']['MSC']['fileManager'], 'style="vertical-align:text-bottom;"') . '</a></h3>
-  '.$objTree->generate().(strlen($GLOBALS['TL_LANG']['tl_iso_products']['source'][1]) ? '
-  <p class="tl_help">'.$GLOBALS['TL_LANG']['tl_iso_products']['source'][1].'</p>' : '').'
+  <h3><label for="source">'.$GLOBALS['TL_LANG']['tl_iso_product']['source'][0].'</label> <a href="typolight/files.php" title="' . specialchars($GLOBALS['TL_LANG']['MSC']['fileManager']) . '" onclick="Backend.getScrollOffset(); this.blur(); Backend.openWindow(this, 750, 500); return false;">' . \Image::getHtml('filemanager.gif', $GLOBALS['TL_LANG']['MSC']['fileManager'], 'style="vertical-align:text-bottom;"') . '</a></h3>
+  '.$objTree->generate().(strlen($GLOBALS['TL_LANG']['tl_iso_product']['source'][1]) ? '
+  <p class="tl_help">'.$GLOBALS['TL_LANG']['tl_iso_product']['source'][1].'</p>' : '').'
 </div>
 
 </div>
@@ -324,7 +324,7 @@ class tl_iso_products extends \Backend
 <div class="tl_formbody_submit">
 
 <div class="tl_submit_container">
-<input type="submit" name="save" id="save" class="tl_submit" alt="import product assets" accesskey="s" value="'.specialchars($GLOBALS['TL_LANG']['tl_iso_products']['import'][0]).'">
+<input type="submit" name="save" id="save" class="tl_submit" alt="import product assets" accesskey="s" value="'.specialchars($GLOBALS['TL_LANG']['tl_iso_product']['import'][0]).'">
 </div>
 
 </div>
@@ -347,7 +347,7 @@ class tl_iso_products extends \Backend
     {
         if ($row['pid'] > 0)
         {
-            return '<a href="'.preg_replace('/&(amp;)?id=[^& ]*/i', '', ampersand(\Environment::get('request'))).'&amp;act=paste&amp;mode=copy&amp;table=tl_iso_products&amp;id='.$row['id'].'&amp;pid='.\Input::get('id').'" title="'.specialchars($title).'"'.$attributes.' onclick="Backend.getScrollOffset();">'.\Image::getHtml($icon, $label).'</a> ';
+            return '<a href="'.preg_replace('/&(amp;)?id=[^& ]*/i', '', ampersand(\Environment::get('request'))).'&amp;act=paste&amp;mode=copy&amp;table=tl_iso_product&amp;id='.$row['id'].'&amp;pid='.\Input::get('id').'" title="'.specialchars($title).'"'.$attributes.' onclick="Backend.getScrollOffset();">'.\Image::getHtml($icon, $label).'</a> ';
         }
 
         return '<a href="'.$this->addToUrl($href.'&amp;id='.$row['id']).'" title="'.specialchars($title).'"'.$attributes.'>'.\Image::getHtml($icon, $label).'</a> ';
@@ -377,9 +377,9 @@ class tl_iso_products extends \Backend
         }
 
         if ($row['pid'] > 0) {
-            return '<a href="'.preg_replace('/&(amp;)?id=[^& ]*/i', '', ampersand(\Environment::get('request'))).'&amp;act=paste&amp;mode=cut&amp;table=tl_iso_products&amp;id='.$row['id'].'&amp;pid='.\Input::get('id').'" title="'.specialchars($title).'"'.$attributes.' onclick="Backend.getScrollOffset();">'.\Image::getHtml($icon, $label).'</a> ';
+            return '<a href="'.preg_replace('/&(amp;)?id=[^& ]*/i', '', ampersand(\Environment::get('request'))).'&amp;act=paste&amp;mode=cut&amp;table=tl_iso_product&amp;id='.$row['id'].'&amp;pid='.\Input::get('id').'" title="'.specialchars($title).'"'.$attributes.' onclick="Backend.getScrollOffset();">'.\Image::getHtml($icon, $label).'</a> ';
         } else {
-            return '<a href="system/modules/isotope/group.php?do='.\Input::get('do').'&amp;table='.\Isotope\Model\Group::getTable().'&amp;field=gid&amp;value='.$row['gid'].'" title="'.specialchars($title).'"'.$attributes.' onclick="Backend.getScrollOffset();Isotope.openModalGroupSelector({\'width\':765,\'title\':\''.specialchars($GLOBALS['TL_LANG']['tl_iso_products']['product_groups'][0]).'\',\'url\':this.href,\'action\':\'moveProduct\',\'redirect\':\''.$this->addToUrl($href . '&pid=' . intval(\Input::get('pid')) . '&id=' . $row['id']).'\'});return false">'.\Image::getHtml($icon, $label).'</a> ';
+            return '<a href="system/modules/isotope/group.php?do='.\Input::get('do').'&amp;table='.\Isotope\Model\Group::getTable().'&amp;field=gid&amp;value='.$row['gid'].'" title="'.specialchars($title).'"'.$attributes.' onclick="Backend.getScrollOffset();Isotope.openModalGroupSelector({\'width\':765,\'title\':\''.specialchars($GLOBALS['TL_LANG']['tl_iso_product']['product_groups'][0]).'\',\'url\':this.href,\'action\':\'moveProduct\',\'redirect\':\''.$this->addToUrl($href . '&pid=' . intval(\Input::get('pid')) . '&id=' . $row['id']).'\'});return false">'.\Image::getHtml($icon, $label).'</a> ';
         }
     }
 
@@ -397,7 +397,7 @@ class tl_iso_products extends \Backend
     {
         $t = ProductCollectionItem::getTable();
 
-        if (ProductCollectionItem::countBy(array("$t.pid IN (SELECT id FROM tl_iso_product_collection WHERE type='order')", "$t.product_id IN (SELECT id FROM tl_iso_products WHERE id=? OR (pid=? AND language=''))"), array($row['id'], $row['id'])) > 0) {
+        if (ProductCollectionItem::countBy(array("$t.pid IN (SELECT id FROM tl_iso_product_collection WHERE type='order')", "$t.product_id IN (SELECT id FROM tl_iso_product WHERE id=? OR (pid=? AND language=''))"), array($row['id'], $row['id'])) > 0) {
             return \Image::getHtml(preg_replace('/\.gif$/i', '_.gif', $icon)).' ';
         }
 
@@ -424,7 +424,7 @@ class tl_iso_products extends \Backend
         }
 
         // Check permissions AFTER checking the tid, so hacking attempts are logged
-        if (!$this->User->isAdmin && !$this->User->hasAccess('tl_iso_products::published', 'alexf'))
+        if (!$this->User->isAdmin && !$this->User->hasAccess('tl_iso_product::published', 'alexf'))
         {
             return '';
         }
@@ -467,18 +467,18 @@ class tl_iso_products extends \Backend
         $this->ProductCallbacks->checkPermission();
 
         // Check permissions to publish
-        if (!$this->User->isAdmin && !$this->User->hasAccess('tl_iso_products::published', 'alexf'))
+        if (!$this->User->isAdmin && !$this->User->hasAccess('tl_iso_product::published', 'alexf'))
         {
-            \System::log('Not enough permissions to publish/unpublish product ID "'.$intId.'"', 'tl_iso_products toggleVisibility', TL_ERROR);
+            \System::log('Not enough permissions to publish/unpublish product ID "'.$intId.'"', 'tl_iso_product toggleVisibility', TL_ERROR);
             \Controller::redirect('contao/main.php?act=error');
         }
 
-        $this->createInitialVersion('tl_iso_products', $intId);
+        $this->createInitialVersion('tl_iso_product', $intId);
 
         // Trigger the save_callback
-        if (is_array($GLOBALS['TL_DCA']['tl_iso_products']['fields']['published']['save_callback']))
+        if (is_array($GLOBALS['TL_DCA']['tl_iso_product']['fields']['published']['save_callback']))
         {
-            foreach ($GLOBALS['TL_DCA']['tl_iso_products']['fields']['published']['save_callback'] as $callback)
+            foreach ($GLOBALS['TL_DCA']['tl_iso_product']['fields']['published']['save_callback'] as $callback)
             {
                 $objCallback = \System::importStatic($callback[0]);
                 $blnVisible = $objCallback->$callback[1]($blnVisible, $this);
@@ -486,14 +486,14 @@ class tl_iso_products extends \Backend
         }
 
         // Update the database
-        \Database::getInstance()->prepare("UPDATE tl_iso_products SET published='" . ($blnVisible ? 1 : '') . "' WHERE id=?")->execute($intId);
+        \Database::getInstance()->prepare("UPDATE tl_iso_product SET published='" . ($blnVisible ? 1 : '') . "' WHERE id=?")->execute($intId);
 
-        $this->createNewVersion('tl_iso_products', $intId);
+        $this->createNewVersion('tl_iso_product', $intId);
     }
 
 
     /**
-     * Initialize the tl_iso_products DCA
+     * Initialize the tl_iso_product DCA
      * @return void
      */
     public function loadProductsDCA($strTable)

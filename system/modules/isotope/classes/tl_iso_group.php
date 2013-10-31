@@ -43,8 +43,8 @@ class tl_iso_group extends \Backend
             return;
         }
 
-        // Load permissions in tl_iso_products
-        if ($dc->table == 'tl_iso_products' || stripos(\Environment::get('request'), 'group.php') !== false)
+        // Load permissions in tl_iso_product
+        if ($dc->table == 'tl_iso_product' || stripos(\Environment::get('request'), 'group.php') !== false)
         {
             $arrGroups = $this->User->iso_groups;
 
@@ -218,7 +218,7 @@ class tl_iso_group extends \Backend
     {
     	$image = \Image::getHtml('system/modules/isotope/assets/folder-network.png', '', $imageAttribute);
 
-        if ($dc->table == 'tl_iso_products')
+        if ($dc->table == 'tl_iso_product')
         {
             return $image . ' <span style="font-weight:bold">' . $label . '</span>';
         }
@@ -246,7 +246,7 @@ class tl_iso_group extends \Backend
         $arrGroups = \Database::getInstance()->getChildRecords($dc->id, 'tl_iso_group');
         $arrGroups[] = $dc->id;
 
-        \Database::getInstance()->query("UPDATE tl_iso_products SET gid=0 WHERE gid IN (" . implode(',', $arrGroups) . ")");
+        \Database::getInstance()->query("UPDATE tl_iso_product SET gid=0 WHERE gid IN (" . implode(',', $arrGroups) . ")");
     }
 
 

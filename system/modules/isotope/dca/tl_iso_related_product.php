@@ -25,7 +25,7 @@ $GLOBALS['TL_DCA']['tl_iso_related_product'] = array
     (
         'dataContainer'             => 'Table',
         'enableVersioning'          => true,
-        'ptable'                    => 'tl_iso_products',
+        'ptable'                    => 'tl_iso_product',
         'onload_callback'           => array
         (
             array('Isotope\tl_iso_related_product', 'initDCA')
@@ -108,7 +108,7 @@ $GLOBALS['TL_DCA']['tl_iso_related_product'] = array
         ),
         'pid' => array
         (
-            'foreignKey'            => 'tl_iso_products.name',
+            'foreignKey'            => 'tl_iso_product.name',
             'sql'                   => "int(10) unsigned NOT NULL default '0'",
             'relation'              => array('type'=>'belongsTo', 'load'=>'lazy'),
         ),

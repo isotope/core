@@ -75,11 +75,11 @@ class tl_iso_attribute extends \Backend
      */
     public function validateFieldName($varValue, $dc)
     {
-        $this->loadDataContainer('tl_iso_products');
+        $this->loadDataContainer('tl_iso_product');
 
         $varValue = standardize($varValue);
 
-        if (isset($GLOBALS['TL_DCA']['tl_iso_products']['fields'][$varValue]) && $GLOBALS['TL_DCA']['tl_iso_products']['fields'][$varValue]['attributes']['systemColumn'])
+        if (isset($GLOBALS['TL_DCA']['tl_iso_product']['fields'][$varValue]) && $GLOBALS['TL_DCA']['tl_iso_product']['fields'][$varValue]['attributes']['systemColumn'])
         {
             throw new \InvalidArgumentException(sprintf($GLOBALS['TL_LANG']['ERR']['systemColumn'], $varValue));
         }
@@ -89,7 +89,7 @@ class tl_iso_attribute extends \Backend
 
 
     /**
-     * Alter attribtue columns in tl_iso_products table
+     * Alter attribtue columns in tl_iso_product table
      * @param object
      * @return void
      */
@@ -101,10 +101,10 @@ class tl_iso_attribute extends \Backend
 
         // Make sure the latest SQL definitions are written to the DCA
         $GLOBALS['TL_CONFIG']['bypassCache'] = true;
-        $this->loadDataContainer('tl_iso_products', true);
+        $this->loadDataContainer('tl_iso_product', true);
 
         $objUpdater = new \Isotope\DatabaseUpdater();
-        $objUpdater->autoUpdateTables(array('tl_iso_products'));
+        $objUpdater->autoUpdateTables(array('tl_iso_product'));
     }
 
 
@@ -115,10 +115,10 @@ class tl_iso_attribute extends \Backend
      */
     public function getConditionFields($dc)
     {
-        $this->loadDataContainer('tl_iso_products');
+        $this->loadDataContainer('tl_iso_product');
         $arrFields = array();
 
-        foreach ($GLOBALS['TL_DCA']['tl_iso_products']['fields'] as $field => $arrData)
+        foreach ($GLOBALS['TL_DCA']['tl_iso_product']['fields'] as $field => $arrData)
         {
             if ($arrData['inputType'] == 'select' || ($arrData['inputType'] == 'conditionalselect' && $field != $dc->activeRecord->field_name))
             {

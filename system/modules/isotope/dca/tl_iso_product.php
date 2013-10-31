@@ -18,9 +18,9 @@
 \System::loadLanguageFile(\Isotope\Model\ProductType::getTable());
 
 /**
- * Table tl_iso_products
+ * Table tl_iso_product
  */
-$GLOBALS['TL_DCA']['tl_iso_products'] = array
+$GLOBALS['TL_DCA']['tl_iso_product'] = array
 (
 
     // Config
@@ -104,13 +104,13 @@ $GLOBALS['TL_DCA']['tl_iso_products'] = array
         (
             'generate' => array
             (
-                'label'             => &$GLOBALS['TL_LANG']['tl_iso_products']['generate'],
+                'label'             => &$GLOBALS['TL_LANG']['tl_iso_product']['generate'],
                 'href'              => 'key=generate',
                 'icon'              => 'new.gif',
             ),
             'groups' => array
             (
-                'label'             => &$GLOBALS['TL_LANG']['tl_iso_products']['product_groups'],
+                'label'             => &$GLOBALS['TL_LANG']['tl_iso_product']['product_groups'],
                 'href'              => 'table='.\Isotope\Model\Group::getTable(),
                 'icon'              => 'system/modules/isotope/assets/folders.png',
                 'attributes'        => 'onclick="Backend.getScrollOffset();"',
@@ -118,7 +118,7 @@ $GLOBALS['TL_DCA']['tl_iso_products'] = array
             ),
             'import' => array
             (
-                'label'             => &$GLOBALS['TL_LANG']['tl_iso_products']['import'],
+                'label'             => &$GLOBALS['TL_LANG']['tl_iso_product']['import'],
                 'href'              => 'key=import',
                 'icon'              => 'system/modules/isotope/assets/image--plus.png',
                 'attributes'        => 'onclick="Backend.getScrollOffset();"',
@@ -135,62 +135,62 @@ $GLOBALS['TL_DCA']['tl_iso_products'] = array
         (
             'edit' => array
             (
-                'label'             => &$GLOBALS['TL_LANG']['tl_iso_products']['edit'],
+                'label'             => &$GLOBALS['TL_LANG']['tl_iso_product']['edit'],
                 'href'              => 'act=edit',
                 'icon'              => 'edit.gif',
             ),
             'copy' => array
             (
-                'label'             => &$GLOBALS['TL_LANG']['tl_iso_products']['copy'],
+                'label'             => &$GLOBALS['TL_LANG']['tl_iso_product']['copy'],
                 'href'              => 'act=copy&amp;childs=1',
                 'icon'              => 'copy.gif',
-                'button_callback'   => array('Isotope\tl_iso_products', 'copyIcon')
+                'button_callback'   => array('Isotope\tl_iso_product', 'copyIcon')
             ),
             'cut' => array
             (
-                'label'             => &$GLOBALS['TL_LANG']['tl_iso_products']['cut'],
+                'label'             => &$GLOBALS['TL_LANG']['tl_iso_product']['cut'],
                 'href'              => 'act=cut',
                 'icon'              => 'cut.gif',
-                'button_callback'   => array('Isotope\tl_iso_products', 'cutIcon')
+                'button_callback'   => array('Isotope\tl_iso_product', 'cutIcon')
             ),
             'delete' => array
             (
-                'label'             => &$GLOBALS['TL_LANG']['tl_iso_products']['delete'],
+                'label'             => &$GLOBALS['TL_LANG']['tl_iso_product']['delete'],
                 'href'              => 'act=delete',
                 'icon'              => 'delete.gif',
                 'attributes'        => 'onclick="if (!confirm(\'' . $GLOBALS['TL_LANG']['MSC']['deleteConfirm'] . '\')) return false; Backend.getScrollOffset();"',
-                'button_callback'   => array('Isotope\tl_iso_products', 'deleteButton')
+                'button_callback'   => array('Isotope\tl_iso_product', 'deleteButton')
             ),
             'toggle' => array
             (
-                'label'             => &$GLOBALS['TL_LANG']['tl_iso_products']['toggle'],
+                'label'             => &$GLOBALS['TL_LANG']['tl_iso_product']['toggle'],
                 'icon'              => 'visible.gif',
                 'attributes'        => 'onclick="Backend.getScrollOffset(); return AjaxRequest.toggleVisibility(this, %s);"',
-                'button_callback'   => array('Isotope\tl_iso_products', 'toggleIcon')
+                'button_callback'   => array('Isotope\tl_iso_product', 'toggleIcon')
             ),
             'show' => array
             (
-                'label'             => &$GLOBALS['TL_LANG']['tl_iso_products']['show'],
+                'label'             => &$GLOBALS['TL_LANG']['tl_iso_product']['show'],
                 'href'              => 'act=show',
                 'icon'              => 'show.gif'
             ),
             'variants' => array
             (
-                'label'             => &$GLOBALS['TL_LANG']['tl_iso_products']['variants'],
+                'label'             => &$GLOBALS['TL_LANG']['tl_iso_product']['variants'],
                 'href'              => '',
                 'icon'              => 'system/modules/isotope/assets/table--pencil.png',
                 'button_callback'   => array('Isotope\ProductCallbacks', 'variantsButton'),
             ),
             'related' => array
             (
-                'label'             => &$GLOBALS['TL_LANG']['tl_iso_products']['related'],
+                'label'             => &$GLOBALS['TL_LANG']['tl_iso_product']['related'],
                 'href'              => 'table='.\Isotope\Model\RelatedProduct::getTable(),
                 'icon'              => 'system/modules/isotope/assets/sitemap.png',
                 'button_callback'   => array('Isotope\ProductCallbacks', 'relatedButton'),
             ),
             'downloads' => array
             (
-                'label'             => &$GLOBALS['TL_LANG']['tl_iso_products']['downloads'],
+                'label'             => &$GLOBALS['TL_LANG']['tl_iso_product']['downloads'],
                 'href'              => 'table='.\Isotope\Model\Download::getTable(),
                 'icon'              => 'system/modules/isotope/assets/paper-clip.png',
                 'button_callback'   => array('Isotope\ProductCallbacks', 'downloadsButton'),
@@ -254,7 +254,7 @@ $GLOBALS['TL_DCA']['tl_iso_products'] = array
         ),
         'type' => array
         (
-            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_products']['type'],
+            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_product']['type'],
             'exclude'               => true,
             'filter'                => true,
             'inputType'             => 'select',
@@ -267,7 +267,7 @@ $GLOBALS['TL_DCA']['tl_iso_products'] = array
         ),
         'pages' => array
         (
-            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_products']['pages'],
+            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_product']['pages'],
             'exclude'               => true,
             'inputType'             => 'pageTree',
             'foreignKey'            => 'tl_page.title',
@@ -290,7 +290,7 @@ $GLOBALS['TL_DCA']['tl_iso_products'] = array
         ),
         'inherit' => array
         (
-            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_products']['inherit'],
+            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_product']['inherit'],
             'exclude'               => true,
             'inputType'             => 'inheritCheckbox',
             'eval'                  => array('multiple'=>true, 'doNotShow'=>true),
@@ -299,7 +299,7 @@ $GLOBALS['TL_DCA']['tl_iso_products'] = array
         ),
         'alias' => array
         (
-            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_products']['alias'],
+            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_product']['alias'],
             'exclude'               => true,
             'search'                => true,
             'sorting'               => true,
@@ -314,7 +314,7 @@ $GLOBALS['TL_DCA']['tl_iso_products'] = array
         ),
         'sku' => array
         (
-            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_products']['sku'],
+            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_product']['sku'],
             'exclude'               => true,
             'search'                => true,
             'sorting'               => true,
@@ -325,7 +325,7 @@ $GLOBALS['TL_DCA']['tl_iso_products'] = array
         ),
         'name' => array
         (
-            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_products']['name'],
+            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_product']['name'],
             'exclude'               => true,
             'search'                => true,
             'sorting'               => true,
@@ -336,7 +336,7 @@ $GLOBALS['TL_DCA']['tl_iso_products'] = array
         ),
         'teaser' => array
         (
-            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_products']['teaser'],
+            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_product']['teaser'],
             'exclude'               => true,
             'search'                => true,
             'inputType'             => 'textarea',
@@ -346,7 +346,7 @@ $GLOBALS['TL_DCA']['tl_iso_products'] = array
         ),
         'description' => array
         (
-            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_products']['description'],
+            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_product']['description'],
             'exclude'               => true,
             'search'                => true,
             'inputType'             => 'textarea',
@@ -356,7 +356,7 @@ $GLOBALS['TL_DCA']['tl_iso_products'] = array
         ),
         'meta_title' => array
         (
-            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_products']['meta_title'],
+            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_product']['meta_title'],
             'exclude'               => true,
             'search'                => true,
             'inputType'             => 'text',
@@ -366,7 +366,7 @@ $GLOBALS['TL_DCA']['tl_iso_products'] = array
         ),
         'meta_description' => array
         (
-            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_products']['meta_description'],
+            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_product']['meta_description'],
             'exclude'               => true,
             'search'                => true,
             'inputType'             => 'textarea',
@@ -376,7 +376,7 @@ $GLOBALS['TL_DCA']['tl_iso_products'] = array
         ),
         'meta_keywords' => array
         (
-            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_products']['meta_keywords'],
+            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_product']['meta_keywords'],
             'exclude'               => true,
             'search'                => true,
             'inputType'             => 'textarea',
@@ -386,7 +386,7 @@ $GLOBALS['TL_DCA']['tl_iso_products'] = array
         ),
         'price' => array
         (
-            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_products']['price'],
+            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_product']['price'],
             'exclude'               => true,
             'inputType'             => 'timePeriod',
             'foreignKey'            => \Isotope\Model\TaxClass::getTable().'.name',
@@ -403,14 +403,14 @@ $GLOBALS['TL_DCA']['tl_iso_products'] = array
         ),
         'prices' => array
         (
-            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_products']['prices'],
+            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_product']['prices'],
             'inputType'             => 'dcaWizard',
             'foreignTable'          => \Isotope\Model\ProductPrice::getTable(),
             'attributes'            => array('systemColumn'=>true),
             'eval'                  => array
             (
                 'listCallback'      => array('Isotope\tl_iso_product_price', 'generateWizardList'),
-                'applyButtonLabel'  => &$GLOBALS['TL_LANG']['tl_iso_products']['prices']['apply_and_close'],
+                'applyButtonLabel'  => &$GLOBALS['TL_LANG']['tl_iso_product']['prices']['apply_and_close'],
                 'tl_class'          =>'clr'
             ),
         ),
@@ -423,12 +423,12 @@ $GLOBALS['TL_DCA']['tl_iso_products'] = array
             (
                 'min' => array
                 (
-                    'label'         => &$GLOBALS['TL_LANG']['tl_iso_products']['price_tiers']['min'],
-                    'format'        => &$GLOBALS['TL_LANG']['tl_iso_products']['price_tiers']['min_format'],
+                    'label'         => &$GLOBALS['TL_LANG']['tl_iso_product']['price_tiers']['min'],
+                    'format'        => &$GLOBALS['TL_LANG']['tl_iso_product']['price_tiers']['min_format'],
                 ),
                 'price' => array
                 (
-                    'label'         => &$GLOBALS['TL_LANG']['tl_iso_products']['price_tiers']['price'],
+                    'label'         => &$GLOBALS['TL_LANG']['tl_iso_product']['price_tiers']['price'],
                     'rgxp'          => 'price'
                 ),
                 'tax_class' => array
@@ -439,7 +439,7 @@ $GLOBALS['TL_DCA']['tl_iso_products'] = array
         ),
         'baseprice' => array
         (
-            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_products']['baseprice'],
+            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_product']['baseprice'],
             'exclude'               => true,
             'inputType'             => 'timePeriod',
             'foreignKey'            => 'tl_iso_baseprice.name',
@@ -449,7 +449,7 @@ $GLOBALS['TL_DCA']['tl_iso_products'] = array
         ),
         'shipping_weight' => array
         (
-            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_products']['shipping_weight'],
+            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_product']['shipping_weight'],
             'exclude'               => true,
             'inputType'             => 'timePeriod',
             'default'               => array('', 'kg'),
@@ -461,7 +461,7 @@ $GLOBALS['TL_DCA']['tl_iso_products'] = array
         ),
         'shipping_exempt' => array
         (
-            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_products']['shipping_exempt'],
+            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_product']['shipping_exempt'],
             'exclude'               => true,
             'inputType'             => 'checkbox',
             'eval'                  => array('tl_class'=>'w50'),
@@ -470,7 +470,7 @@ $GLOBALS['TL_DCA']['tl_iso_products'] = array
         ),
         'images' => array
         (
-            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_products']['images'],
+            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_product']['images'],
             'exclude'               => true,
             'inputType'             => 'mediaManager',
             'explanation'           => 'mediaManager',
@@ -480,7 +480,7 @@ $GLOBALS['TL_DCA']['tl_iso_products'] = array
         ),
         'protected' => array
         (
-            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_products']['protected'],
+            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_product']['protected'],
             'exclude'               => true,
             'filter'                => true,
             'inputType'             => 'checkbox',
@@ -490,7 +490,7 @@ $GLOBALS['TL_DCA']['tl_iso_products'] = array
         ),
         'groups' => array
         (
-            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_products']['groups'],
+            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_product']['groups'],
             'exclude'               => true,
             'filter'                => true,
             'inputType'             => 'checkbox',
@@ -501,7 +501,7 @@ $GLOBALS['TL_DCA']['tl_iso_products'] = array
         ),
         'guests' => array
         (
-            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_products']['guests'],
+            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_product']['guests'],
             'exclude'               => true,
             'inputType'             => 'checkbox',
             'eval'                  => array('tl_class'=>'w50'),
@@ -510,7 +510,7 @@ $GLOBALS['TL_DCA']['tl_iso_products'] = array
         ),
         'cssID' => array
         (
-            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_products']['cssID'],
+            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_product']['cssID'],
             'exclude'               => true,
             'inputType'             => 'text',
             'eval'                  => array('multiple'=>true, 'size'=>2, 'tl_class'=>'w50'),
@@ -519,7 +519,7 @@ $GLOBALS['TL_DCA']['tl_iso_products'] = array
         ),
         'published' => array
         (
-            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_products']['published'],
+            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_product']['published'],
             'exclude'               => true,
             'filter'                => true,
             'inputType'             => 'checkbox',
@@ -533,7 +533,7 @@ $GLOBALS['TL_DCA']['tl_iso_products'] = array
         ),
         'start' => array
         (
-            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_products']['start'],
+            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_product']['start'],
             'exclude'               => true,
             'inputType'             => 'text',
             'eval'                  => array('rgxp'=>'date', 'datepicker'=>true, 'tl_class'=>'w50 wizard'),
@@ -542,7 +542,7 @@ $GLOBALS['TL_DCA']['tl_iso_products'] = array
         ),
         'stop' => array
         (
-            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_products']['stop'],
+            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_product']['stop'],
             'exclude'               => true,
             'inputType'             => 'text',
             'eval'                  => array('rgxp'=>'date', 'datepicker'=>true, 'tl_class'=>'w50 wizard'),
@@ -555,7 +555,7 @@ $GLOBALS['TL_DCA']['tl_iso_products'] = array
         ),
         'source' => array
         (
-            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_products']['source'],
+            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_product']['source'],
             'eval'                  => array('mandatory'=>true, 'required'=>true, 'fieldType'=>'radio'),
         ),
     ),
@@ -566,10 +566,10 @@ $GLOBALS['TL_DCA']['tl_iso_products'] = array
  * Adjust the data configuration array in variants view
  */
 if (\Input::get('id')) {
-    $GLOBALS['TL_LANG']['tl_iso_products']['new'] = $GLOBALS['TL_LANG']['tl_iso_products']['new_variant'];
-    $GLOBALS['TL_DCA']['tl_iso_products']['config']['switchToEdit'] = false;
-    unset($GLOBALS['TL_DCA']['tl_iso_products']['list']['global_operations']['import']);
-    unset($GLOBALS['TL_DCA']['tl_iso_products']['list']['global_operations']['groups']);
+    $GLOBALS['TL_LANG']['tl_iso_product']['new'] = $GLOBALS['TL_LANG']['tl_iso_product']['new_variant'];
+    $GLOBALS['TL_DCA']['tl_iso_product']['config']['switchToEdit'] = false;
+    unset($GLOBALS['TL_DCA']['tl_iso_product']['list']['global_operations']['import']);
+    unset($GLOBALS['TL_DCA']['tl_iso_product']['list']['global_operations']['groups']);
 } else {
-    unset($GLOBALS['TL_DCA']['tl_iso_products']['list']['global_operations']['generate']);
+    unset($GLOBALS['TL_DCA']['tl_iso_product']['list']['global_operations']['generate']);
 }

@@ -1162,7 +1162,7 @@ abstract class ProductCollection extends TypeAgent
                 return '';
             }
 
-            $objAttribute = $GLOBALS['TL_DCA']['tl_iso_products']['attributes'][$strAttribute];
+            $objAttribute = $GLOBALS['TL_DCA']['tl_iso_product']['attributes'][$strAttribute];
 
             if (!($objAttribute instanceof IsotopeAttribute)) {
                 throw new \InvalidArgumentException($strAttribute . ' is not a valid attribute');

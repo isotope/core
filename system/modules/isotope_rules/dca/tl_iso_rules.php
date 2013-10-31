@@ -467,7 +467,7 @@ $GLOBALS['TL_DCA']['tl_iso_rules'] = array
                 'mandatory'                 => true,
                 'doNotSaveEmpty'            => true,
                 'tl_class'                  => 'clr',
-                'foreignTable'              => 'tl_iso_products',
+                'foreignTable'              => 'tl_iso_product',
                 'fieldType'                 => 'checkbox',
                 'listFields'                => array('type'=>"(SELECT name FROM " . \Isotope\Model\ProductType::getTable() . " WHERE " . \Isotope\Model\Product::getTable() . ".type=" . \Isotope\Model\ProductType::getTable() . ".id)", 'name', 'sku'),
                 'searchFields'              => array('name', 'alias', 'sku', 'description'),

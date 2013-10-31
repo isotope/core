@@ -36,7 +36,7 @@ class InheritCheckBox extends \CheckBox
         {
             foreach ($this->varValue as $field)
             {
-                $GLOBALS['TL_DCA']['tl_iso_products']['fields'][$field]['eval']['mandatory'] = false;
+                $GLOBALS['TL_DCA']['tl_iso_product']['fields'][$field]['eval']['mandatory'] = false;
             }
         }
     }

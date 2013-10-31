@@ -43,7 +43,7 @@ class tl_iso_related_product extends \Backend
         if (is_array($arrProducts) && !empty($arrProducts))
         {
             $strBuffer .= '<div class="limit_height' . (!$GLOBALS['TL_CONFIG']['doNotCollapse'] ? ' h0' : '') . ' block"><ul>';
-            $objProducts = \Database::getInstance()->execute("SELECT * FROM tl_iso_products WHERE id IN (" . implode(',', $arrProducts) . ") ORDER BY name");
+            $objProducts = \Database::getInstance()->execute("SELECT * FROM tl_iso_product WHERE id IN (" . implode(',', $arrProducts) . ") ORDER BY name");
 
             while ($objProducts->next())
             {
@@ -81,7 +81,7 @@ class tl_iso_related_product extends \Backend
         {
             unset($GLOBALS['TL_DCA']['tl_iso_related_product']['fields']['category']['foreignKey']);
             $GLOBALS['TL_DCA']['tl_iso_related_product']['fields']['category']['options'] = $arrCategories;
-            $GLOBALS['TL_DCA']['tl_iso_related_product']['fields']['products']['eval']['allowedIds'] = \Database::getInstance()->prepare("SELECT id FROM tl_iso_products WHERE pid=0 AND id!=(SELECT pid FROM tl_iso_related_product WHERE id=?)")->execute($dc->id)->fetchEach('id');
+            $GLOBALS['TL_DCA']['tl_iso_related_product']['fields']['products']['eval']['allowedIds'] = \Database::getInstance()->prepare("SELECT id FROM tl_iso_product WHERE pid=0 AND id!=(SELECT pid FROM tl_iso_related_product WHERE id=?)")->execute($dc->id)->fetchEach('id');
         }
     }
 }

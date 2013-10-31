@@ -309,7 +309,7 @@ abstract class Report extends \Backend
      * @param   string  Prefix for query (e.g. AND)
      * @return  string
      */
-	protected function getProductProcedure($strTable='tl_iso_products', $strField='id', $strPrefix=' AND ')
+	protected function getProductProcedure($strTable='tl_iso_product', $strField='id', $strPrefix=' AND ')
 	{
     	$arrAllowedProducts = \Isotope\Backend::getAllowedProductIds();
 

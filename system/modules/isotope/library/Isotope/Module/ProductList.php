@@ -162,7 +162,7 @@ class ProductList extends Module
                 // Do not write cache if table is locked. That's the case if another process is already writing cache
                 if (ProductCache::isWritable()) {
 
-                    \Database::getInstance()->lockTables(array(ProductCache::getTable()=>'WRITE', 'tl_iso_products'=>'READ'));
+                    \Database::getInstance()->lockTables(array(ProductCache::getTable()=>'WRITE', 'tl_iso_product'=>'READ'));
 
                     $arrIds = array();
                     foreach ($arrProducts as $objProduct) {
@@ -408,11 +408,11 @@ class ProductList extends Module
         $time = time();
 
         // Find timestamp when the next product becomes available
-        $expires = (int) \Database::getInstance()->execute("SELECT MIN(start) AS expires FROM tl_iso_products WHERE start>$time")->expires;
+        $expires = (int) \Database::getInstance()->execute("SELECT MIN(start) AS expires FROM tl_iso_product WHERE start>$time")->expires;
 
         // Find
         if ($this->iso_newFilter == 'show_new' || $this->iso_newFilter == 'show_old') {
-            $added = \Database::getInstance()->execute("SELECT MIN(dateAdded) FROM tl_iso_products WHERE dateAdded>" . Isotope::getConfig()->getNewProductLimit());
+            $added = \Database::getInstance()->execute("SELECT MIN(dateAdded) FROM tl_iso_product WHERE dateAdded>" . Isotope::getConfig()->getNewProductLimit());
 
             if ($added < $expires) {
                 $expires = $added;

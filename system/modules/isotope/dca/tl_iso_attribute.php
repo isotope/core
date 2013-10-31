@@ -16,9 +16,9 @@
 
 
 /**
- * Load tl_iso_products language file for field legends
+ * Load tl_iso_product language file for field legends
  */
-\System::loadLanguageFile('tl_iso_products');
+\System::loadLanguageFile('tl_iso_product');
 
 
 /**
@@ -195,7 +195,7 @@ $GLOBALS['TL_DCA']['tl_iso_attribute'] = array
             'default'               => 'options_legend',
             'inputType'             => 'select',
             'options'               => array('general_legend', 'meta_legend', 'pricing_legend', 'inventory_legend', 'shipping_legend', 'options_legend', 'media_legend', 'expert_legend', 'publish_legend'),
-            'reference'             => &$GLOBALS['TL_LANG']['tl_iso_products'],
+            'reference'             => &$GLOBALS['TL_LANG']['tl_iso_product'],
             'eval'                  => array('mandatory'=>true, 'tl_class'=>'w50', 'chosen'=>true),
             'sql'                   => "varchar(255) NOT NULL default ''",
         ),

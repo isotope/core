@@ -110,8 +110,8 @@ class Isotope extends \Controller
             static::$blnInitialized = true;
 
             // Make sure field data is available
-            static::getInstance()->call('loadDataContainer', 'tl_iso_products');
-            \System::loadLanguageFile('tl_iso_products');
+            static::getInstance()->call('loadDataContainer', 'tl_iso_product');
+            \System::loadLanguageFile('tl_iso_product');
 
             // Initialize request cache for product list filters
             if (\Input::get('isorc') != '') {
@@ -647,7 +647,7 @@ class Isotope extends \Controller
      * @param   array
      * @param   string
      */
-    public static function formatOptions(array $arrData, $strTable='tl_iso_products', $blnSkipEmpty=true)
+    public static function formatOptions(array $arrData, $strTable='tl_iso_product', $blnSkipEmpty=true)
     {
         $arrOptions = array();
 

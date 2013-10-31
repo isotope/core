@@ -173,9 +173,9 @@ class tl_iso_rules extends \Backend
     {
         $arrAttributes = array();
 
-        foreach ($GLOBALS['TL_DCA']['tl_iso_products']['fields'] as $attribute => $config) {
+        foreach ($GLOBALS['TL_DCA']['tl_iso_product']['fields'] as $attribute => $config) {
             if ($config['attributes']['legend'] != '' && $attribute != 'pages' && $config['inputType'] != 'mediaManager') {
-                $arrAttributes[$attribute] = Isotope::formatLabel('tl_iso_products', $attribute);
+                $arrAttributes[$attribute] = Isotope::formatLabel('tl_iso_product', $attribute);
             }
         }
 
@@ -195,14 +195,14 @@ class tl_iso_rules extends \Backend
     {
         if (\Input::get('act') == 'edit')
         {
-            $this->loadDataContainer('tl_iso_products');
-            \System::loadLanguageFile('tl_iso_products');
+            $this->loadDataContainer('tl_iso_product');
+            \System::loadLanguageFile('tl_iso_product');
 
             $objRule = \Database::getInstance()->execute("SELECT * FROM tl_iso_rules WHERE id=".(int) $dc->id);
 
             if ($objRule->productRestrictions == 'attribute' && $objRule->attributeName != '')
             {
-                $GLOBALS['TL_DCA']['tl_iso_rules']['fields']['attributeValue'] = array_merge($GLOBALS['TL_DCA']['tl_iso_products']['fields'][$objRule->attributeName], $GLOBALS['TL_DCA']['tl_iso_rules']['fields']['attributeValue']);
+                $GLOBALS['TL_DCA']['tl_iso_rules']['fields']['attributeValue'] = array_merge($GLOBALS['TL_DCA']['tl_iso_product']['fields'][$objRule->attributeName], $GLOBALS['TL_DCA']['tl_iso_rules']['fields']['attributeValue']);
             }
         }
     }

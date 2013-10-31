@@ -15,10 +15,10 @@
 
 
 /**
- * Load tl_iso_products data container and language files
+ * Load tl_iso_product data container and language files
  */
-$this->loadDataContainer('tl_iso_products');
-\System::loadLanguageFile('tl_iso_products');
+$this->loadDataContainer('tl_iso_product');
+\System::loadLanguageFile('tl_iso_product');
 
 
 /**

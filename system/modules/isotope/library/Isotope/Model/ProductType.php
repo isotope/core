@@ -106,7 +106,7 @@ class ProductType extends \Model
      */
     protected function getEnabledAttributesByPosition($varValue)
     {
-        $arrFields = &$GLOBALS['TL_DCA']['tl_iso_products']['fields'];
+        $arrFields = &$GLOBALS['TL_DCA']['tl_iso_product']['fields'];
         $arrAttributes = deserialize($varValue, true);
 
         $arrAttributes = array_filter($arrAttributes, function($a) use ($arrFields) {
@@ -133,7 +133,7 @@ class ProductType extends \Model
     {
         $t = static::$strTable;
 
-        return static::findBy(array("$t.id IN (SELECT type FROM tl_iso_products WHERE pid=0)"), null, $arrOptions);
+        return static::findBy(array("$t.id IN (SELECT type FROM tl_iso_product WHERE pid=0)"), null, $arrOptions);
     }
 
     /**

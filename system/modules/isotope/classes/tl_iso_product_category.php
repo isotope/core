@@ -31,10 +31,10 @@ class tl_iso_product_category extends \Backend
      */
     public function listRows($row)
     {
-        $this->loadDataContainer('tl_iso_products');
-        \System::loadLanguageFile('tl_iso_products');
+        $this->loadDataContainer('tl_iso_product');
+        \System::loadLanguageFile('tl_iso_product');
 
-        $objProduct = \Database::getInstance()->prepare("SELECT * FROM tl_iso_products WHERE id=?")->limit(1)->execute($row['pid']);
+        $objProduct = \Database::getInstance()->prepare("SELECT * FROM tl_iso_product WHERE id=?")->limit(1)->execute($row['pid']);
 
         $this->import('Isotope\ProductCallbacks', 'ProductCallbacks');
 
@@ -44,7 +44,7 @@ class tl_iso_product_category extends \Backend
 
     /**
      * Repair associations between products and categories.
-     * We only need tl_iso_products.pages to filter for categories in the backend.
+     * We only need tl_iso_product.pages to filter for categories in the backend.
      * @param DataContainer
      * @return void
      */
@@ -53,7 +53,7 @@ class tl_iso_product_category extends \Backend
         if (\Input::get('act') == '')
         {
             $arrCategories = \Database::getInstance()->execute("SELECT page_id FROM tl_iso_product_category WHERE pid={$dc->id}");
-            \Database::getInstance()->query("UPDATE tl_iso_products SET pages='" . serialize($arrCategories) . "' WHERE id={$dc->id}");
+            \Database::getInstance()->query("UPDATE tl_iso_product SET pages='" . serialize($arrCategories) . "' WHERE id={$dc->id}");
         }
     }
 
