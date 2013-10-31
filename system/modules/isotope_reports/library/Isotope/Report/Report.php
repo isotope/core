@@ -320,5 +320,27 @@ abstract class Report extends \Backend
 
     	return $strPrefix . $strTable . '.' . $strField . ' IN (' . implode(',', $arrAllowedProducts) . ')';
 	}
+
+    /**
+     * Return string to filter database query by user allowed shop configs
+     * @param   string  Table name or alias (optional)
+     * @param   string  Table field or alias (optional)
+     * @param   string  Prefix for query (e.g. AND)
+     * @return  string
+     */
+	protected function getConfigProcedure($strTable='tl_iso_config', $strField='id', $strPrefix=' AND ')
+	{
+    	if (\BackendUser::getInstance()->isAdmin) {
+        	return '';
+    	}
+
+    	$arrConfig = deserialize(\BackendUser::getInstance()->iso_configs);
+
+    	if (empty($arrConfig) || !is_array($arrConfig)) {
+        	$arrConfig = array(0);
+    	}
+
+    	return $strPrefix . $strTable . '.' . $strField . ' IN (' . implode(',', $arrConfig) . ')';
+	}
 }
 

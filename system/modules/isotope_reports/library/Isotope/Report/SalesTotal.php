@@ -56,6 +56,7 @@ class SalesTotal extends Sales
 											" . ($intStatus > 0 ? " AND o.order_status=".$intStatus : '') . "
 											" . $this->getProductProcedure('i', 'product_id') . "
 											" . ($intConfig > 0 ? " AND c.id=".$intConfig : '') . "
+											" . $this->getConfigProcedure('c') . "
 											GROUP BY config_id, dateGroup
 											HAVING dateGroup>=$dateFrom AND dateGroup<=$dateTo")
 									->execute($sqlDate);
@@ -191,7 +192,11 @@ class SalesTotal extends Sales
 
 
 		$arrData = array();
-		$arrCurrencies = \Database::getInstance()->execute("SELECT DISTINCT currency FROM tl_iso_config WHERE currency!=''" . ($intConfig > 0 ? ' AND id='.$intConfig : ''))->fetchEach('currency');
+		$arrCurrencies = \Database::getInstance()->execute("
+		    SELECT DISTINCT currency FROM tl_iso_config WHERE currency!=''
+		    " . $this->getConfigProcedure() . "
+		    " . ($intConfig > 0 ? ' AND id='.$intConfig : '') . "
+        ")->fetchEach('currency');
 
 		foreach ($arrCurrencies as $currency)
 		{
