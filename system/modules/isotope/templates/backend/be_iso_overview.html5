@@ -10,7 +10,7 @@
         <?php else: ?>
         <?php foreach ($arrGroup['modules'] as $strModule => $arrModule): ?>
         <div class="item">
-            <a href="<?php echo $arrModule['href']; ?>" title="<?php echo $arrModule['description']; ?>">
+            <a href="<?php echo $arrModule['href']; ?>" title="<?php echo $arrModule['description']; ?>"<?php if ($arrModule['class']): ?> class="<?php echo $arrModule['class']; ?>"<?php endif; ?>>
                 <img src="<?php echo $arrModule['icon']; ?>" alt="">
                 <span><?php echo $arrModule['label']; ?></span>
             </a>

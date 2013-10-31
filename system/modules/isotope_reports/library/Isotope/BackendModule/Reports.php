@@ -42,6 +42,7 @@ class Reports extends BackendOverview
                         'label'         => specialchars(($arrConfig['label'][0] ?: $strModule)),
                         'description'   => specialchars(strip_tags($arrConfig['label'][1])),
                         'href'          => $this->addToUrl('mod=' . $strModule),
+                        'class'         => $arrConfig['class'],
                     ));
 
                     $arrReturn[$strGroup]['label'] = $strLegend = $GLOBALS['ISO_LANG']['REPORT'][$strGroup] ?: $strGroup;;
