@@ -206,6 +206,34 @@ abstract class Product extends TypeAgent
     }
 
     /**
+     * Return collection of published products by categories
+     * @param   array
+     * @param   array
+     * @return  \Collection
+     */
+    public static function findPublishedByCategories(array $arrCategories, array $arrOptions=array())
+    {
+        $t = static::$strTable;
+
+        $arrColumns = array("c.page_id IN (" . implode(',', array_map('intval', $arrCategories)) . ")");
+
+        if (BE_USER_LOGGED_IN !== true) {
+            $time = time();
+            $arrColumns[] = "$t.published='1' AND ($t.start='' OR $t.start<$time) AND ($t.stop='' OR $t.stop>$time)";
+        }
+
+		$arrOptions = array_merge(
+			array(
+				'column' => $arrColumns,
+				'return' => 'Collection'
+			),
+			$arrOptions
+		);
+
+		return static::find($arrOptions);
+    }
+
+    /**
      * Find a single frontend-available product by primary key
      * @param   int
      * @param   array
@@ -238,34 +266,6 @@ abstract class Product extends TypeAgent
 
         return $objProduct;
 	}
-
-    /**
-     * Return collection of published products by categories
-     * @param   array
-     * @param   array
-     * @return  \Collection
-     */
-    public static function findPublishedByCategories(array $arrCategories, array $arrOptions=array())
-    {
-        $t = static::$strTable;
-
-        $arrColumns = array("c.page_id IN (" . implode(',', array_map('intval', $arrCategories)) . ")");
-
-        if (BE_USER_LOGGED_IN !== true) {
-            $time = time();
-            $arrColumns[] = "$t.published='1' AND ($t.start='' OR $t.start<$time) AND ($t.stop='' OR $t.stop>$time)";
-        }
-
-		$arrOptions = array_merge(
-			array(
-				'column' => $arrColumns,
-				'return' => 'Collection'
-			),
-			$arrOptions
-		);
-
-		return static::find($arrOptions);
-    }
 
     /**
      * Find variant of a product
