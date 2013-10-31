@@ -632,7 +632,7 @@ window.addEvent('domready', function()
 
         // $objProducts can also be an array of product ids
         if (is_array($objProducts)) {
-            $objProducts = Product::findPublishedById($objProducts, array(
+            $objProducts = Product::findPublishedByIds($objProducts, array(
                 'group' => Product::getTable().'.id',
                 'order' => \Database::getInstance()->findInSet(Product::getTable().'.id', $objProducts)
             ));

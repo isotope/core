@@ -154,7 +154,7 @@ abstract class Product extends TypeAgent
      * @param   array
      * @return  \Collection
      */
-    public static function findPublishedById(array $arrIds, array $arrOptions=array())
+    public static function findPublishedByIds(array $arrIds, array $arrOptions=array())
     {
         $t = static::$strTable;
 
