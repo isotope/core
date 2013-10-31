@@ -15,9 +15,9 @@
 
 
 /**
- * Table tl_iso_related_categories
+ * Table tl_iso_related_category
  */
-$GLOBALS['TL_DCA']['tl_iso_related_categories'] = array
+$GLOBALS['TL_DCA']['tl_iso_related_category'] = array
 (
 
     // Config
@@ -64,7 +64,7 @@ $GLOBALS['TL_DCA']['tl_iso_related_categories'] = array
             ),
             'new' => array
             (
-                'label'         => &$GLOBALS['TL_LANG']['tl_iso_related_categories']['new'],
+                'label'         => &$GLOBALS['TL_LANG']['tl_iso_related_category']['new'],
                 'href'          => 'act=create',
                 'class'         => 'header_new',
                 'attributes'    => 'onclick="Backend.getScrollOffset();"',
@@ -81,26 +81,26 @@ $GLOBALS['TL_DCA']['tl_iso_related_categories'] = array
         (
             'edit' => array
             (
-                'label'         => &$GLOBALS['TL_LANG']['tl_iso_related_categories']['edit'],
+                'label'         => &$GLOBALS['TL_LANG']['tl_iso_related_category']['edit'],
                 'href'          => 'act=edit',
                 'icon'          => 'edit.gif'
             ),
             'copy' => array
             (
-                'label'         => &$GLOBALS['TL_LANG']['tl_iso_related_categories']['copy'],
+                'label'         => &$GLOBALS['TL_LANG']['tl_iso_related_category']['copy'],
                 'href'          => 'act=copy',
                 'icon'          => 'copy.gif'
             ),
             'delete' => array
             (
-                'label'         => &$GLOBALS['TL_LANG']['tl_iso_related_categories']['delete'],
+                'label'         => &$GLOBALS['TL_LANG']['tl_iso_related_category']['delete'],
                 'href'          => 'act=delete',
                 'icon'          => 'delete.gif',
                 'attributes'    => 'onclick="if (!confirm(\'' . $GLOBALS['TL_LANG']['MSC']['deleteConfirm'] . '\')) return false; Backend.getScrollOffset();"'
             ),
             'show' => array
             (
-                'label'         => &$GLOBALS['TL_LANG']['tl_iso_related_categories']['show'],
+                'label'         => &$GLOBALS['TL_LANG']['tl_iso_related_category']['show'],
                 'href'          => 'act=show',
                 'icon'          => 'show.gif'
             ),
@@ -126,7 +126,7 @@ $GLOBALS['TL_DCA']['tl_iso_related_categories'] = array
         ),
         'name' => array
         (
-            'label'             => &$GLOBALS['TL_LANG']['tl_iso_related_categories']['name'],
+            'label'             => &$GLOBALS['TL_LANG']['tl_iso_related_category']['name'],
             'exclude'           => true,
             'inputType'         => 'text',
             'eval'              => array('mandatory'=>true, 'maxlength'=>255, 'tl_class'=>'long'),
