@@ -16,6 +16,7 @@
 namespace Isotope;
 
 use Isotope\Model\Payment;
+use Isotope\Model\Shipping;
 
 
 /**
