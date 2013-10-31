@@ -539,7 +539,6 @@ window.addEvent('domready', function()
         }
     }
 
-
     /**
      * Return all error, confirmation and info messages as HTML string
      * @return string
@@ -579,94 +578,6 @@ window.addEvent('domready', function()
 
         return $strMessages;
     }
-
-    /**
-     * Generate products from database result or array of IDs
-     * @param \Database\Result|array
-     * @param boolean
-     * @param array
-     * @param array
-     * @return array
-     */
-    public static function getProducts($objProducts, $blnCheckAvailability=true, array $arrFilters=array(), array $arrSorting=array())
-    {
-        // Could be an empty array
-        if (empty($objProducts)) {
-            return array();
-        }
-
-        // $objProducts can also be an array of product ids
-        if (is_array($objProducts)) {
-            $objProducts = Product::findPublishedByIds($objProducts, array(
-                'group' => Product::getTable().'.id',
-                'order' => \Database::getInstance()->findInSet(Product::getTable().'.id', $objProducts)
-            ));
-        }
-
-        if (null === $objProducts) {
-            return array();
-        }
-
-        $arrProducts = array();
-
-        // Reset DB iterator (see #22)
-        $objProducts->reset();
-
-        while ($objProducts->next()) {
-            if ($blnCheckAvailability && !$objProducts->current()->isAvailableInFrontend()) {
-                continue;
-            }
-
-            $arrProducts[$objProducts->id] = $objProduct;
-        }
-
-        if (!empty($arrFilters)) {
-            $arrProducts = array_filter($arrProducts, function ($objProduct) use ($arrFilters) {
-                $arrGroups = array();
-
-                foreach ($arrFilters as $objFilter) {
-                    $blnMatch = $objFilter->matches($objProduct);
-
-                    if ($objFilter->hasGroup()) {
-                        $arrGroups[$objFilter->getGroup()] = $arrGroups[$objFilter->getGroup()] ?: $blnMatch;
-                    } elseif (!$blnMatch) {
-                        return false;
-                    }
-                }
-
-                if (!empty($arrGroups) && in_array(false, $arrGroups)) {
-                    return false;
-                }
-
-                return true;
-            });
-        }
-
-        // $arrProducts can be empty if the filter removed all records
-        if (!empty($arrSorting) && !empty($arrProducts)) {
-            $arrParam = array();
-            $arrData = array();
-
-            foreach ($arrSorting as $strField => $arrConfig) {
-                foreach ($arrProducts as $id => $objProduct) {
-
-                    // Both SORT_STRING and SORT_REGULAR are case sensitive, strings starting with a capital letter will come before strings starting with a lowercase letter.
-                    // To perform a case insensitive search, force the sorting order to be determined by a lowercase copy of the original value.
-                    $arrData[$strField][$id] = strtolower(str_replace('"', '', $objProduct->$strField));
-                }
-
-                $arrParam[] = &$arrData[$strField];
-                $arrParam[] = $arrConfig[0];
-                $arrParam[] = $arrConfig[1];
-            }
-
-            // Add product array as the last item. This will sort the products array based on the sorting of the passed in arguments.
-            eval('array_multisort($arrParam[' . implode('], $arrParam[', array_keys($arrParam)) . '], $arrProducts);');
-        }
-
-        return $arrProducts;
-    }
-
 
     /**
      * Generate row class for an array

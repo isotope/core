@@ -87,8 +87,14 @@ class ProductVariantList extends ProductList
             $arrColumns[] = $strWhere;
         }
 
-        $objProducts = Product::findPublishedBy($arrColumns, $arrValues, array('group'=>Product::getTable() . '.id', 'order'=>'c.sorting'));
-
-        return \Isotope\Frontend::getProducts($objProducts, true, $arrFilters, $arrSorting);
+        return Product::findAvailableBy(
+            $arrColumns,
+            $arrValues,
+            array(
+                'group' => Product::getTable() . '.id', 'order'=>'c.sorting',
+                'filters' => $arrFilters,
+                'sorting' => $arrSorting,
+            )
+        );
     }
 }
