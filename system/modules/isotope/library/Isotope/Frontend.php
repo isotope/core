@@ -272,7 +272,13 @@ class Frontend extends \Frontend
             // {{product::attribute}}                - gets the data of the current product ($GLOBALS['ACTIVE_PRODUCT'] or GET parameter "product")
             // {{product::attribute::product_id}}    - gets the data of the specified product ID
 
-            $objProduct = (count($arrTag) == 3) ? static::getProduct($arrTag[2]) : ($GLOBALS['ACTIVE_PRODUCT'] ? $GLOBALS['ACTIVE_PRODUCT'] : static::getProductByAlias(static::getAutoItem('product')));
+            if (count($arrTag) == 3) {
+                $objProduct = static::getProduct($arrTag[2]);
+            } elseif ($GLOBALS['ACTIVE_PRODUCT']) {
+                $objProduct = $GLOBALS['ACTIVE_PRODUCT'];
+            } else {
+                $objProduct = Product::findAvailableByIdOrAlias(static::getAutoItem('product'));
+            }
 
             return ($objProduct !== null) ? $objProduct->{$arrTag[1]} : '';
         }
@@ -601,19 +607,6 @@ window.addEvent('domready', function()
 
         return $objProduct;
     }
-
-
-    /**
-     * Shortcut for a single product by alias (from url?)
-     * @param string
-     * @param boolean
-     * @return IsotopeProduct|null
-     */
-    public static function getProductByAlias($strAlias, $blnCheckAvailability=true)
-    {
-        return static::getProduct(Product::findPublishedByIdOrAlias($strAlias), $blnCheckAvailability);
-    }
-
 
     /**
      * Generate products from database result or array of IDs
@@ -1106,7 +1099,7 @@ window.addEvent('domready', function()
     public function addProductToBreadcrumb($arrItems, $objModule)
     {
         if (static::getAutoItem('product') != '') {
-            $objProduct = static::getProductByAlias(static::getAutoItem('product'));
+            $objProduct = Product::findAvailableByIdOrAlias(static::getAutoItem('product'));
 
             if (null !== $objProduct) {
 

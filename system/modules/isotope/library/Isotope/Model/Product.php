@@ -206,6 +206,23 @@ abstract class Product extends TypeAgent
     }
 
     /**
+	 * Find a single frontend-available product by its ID or alias
+	 * @param   mixed       The ID or alias
+	 * @param   array       An optional options array
+	 * @return \Product|null  The model or null if the result is empty
+	 */
+	public static function findAvailableByIdOrAlias($varId, array $arrOptions=array())
+	{
+        $objProduct = static::findPublishedByIdOrAlias($varId, $arrOptions);
+
+        if (null === $objProduct || !$objProduct->isAvailableInFrontend()) {
+            return null;
+        }
+
+        return $objProduct;
+	}
+
+    /**
      * Return collection of published products by categories
      * @param   array
      * @param   array

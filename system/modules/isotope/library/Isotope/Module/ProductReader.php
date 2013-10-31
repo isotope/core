@@ -13,6 +13,7 @@
 namespace Isotope\Module;
 
 use Isotope\Interfaces\IsotopeProduct;
+use Isotope\Model\Product;
 
 
 /**
@@ -77,10 +78,9 @@ class ProductReader extends Module
         global $objPage;
         global $objIsotopeListPage;
 
-        $objProduct = \Isotope\Frontend::getProductByAlias(\Isotope\Frontend::getAutoItem('product'));
+        $objProduct = Product::findAvailableByIdOrAlias(\Isotope\Frontend::getAutoItem('product'));
 
-        if (!$objProduct)
-        {
+        if (null === $objProduct) {
             // Do not index or cache the page
             $objPage->noSearch = 1;
             $objPage->cache = 0;

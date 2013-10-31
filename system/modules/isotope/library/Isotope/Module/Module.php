@@ -14,6 +14,7 @@ namespace Isotope\Module;
 
 use \Module as Contao_Module;
 use Isotope\Isotope;
+use Isotope\Model\Product;
 
 
 /**
@@ -167,7 +168,7 @@ abstract class Module extends Contao_Module
                     break;
 
                 case 'product':
-                    $objProduct = \Isotope\Frontend::getProductByAlias(\Isotope\Frontend::getAutoItem('product'));
+                    $objProduct = Product::findAvailableByIdOrAlias(\Isotope\Frontend::getAutoItem('product'));
 
                     if ($objProduct !== null) {
                         $arrCategories = $objProduct->getCategories();

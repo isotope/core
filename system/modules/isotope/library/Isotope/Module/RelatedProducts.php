@@ -12,6 +12,7 @@
 
 namespace Isotope\Module;
 
+use Isotope\Model\Product;
 use Isotope\Model\RelatedProduct;
 
 /**
@@ -73,7 +74,7 @@ class RelatedProducts extends ProductList
     {
         $arrIds = array(0);
 
-        $objProduct = \Isotope\Frontend::getProductByAlias(\Isotope\Frontend::getAutoItem('product'));
+        $objProduct = Product::findAvailableByIdOrAlias(\Isotope\Frontend::getAutoItem('product'));
 
         if (null === $objProduct) {
             return array();
