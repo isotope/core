@@ -31,7 +31,7 @@ class Address extends \Model
      * Table
      * @var string
      */
-    protected static $strTable = 'tl_iso_addresses';
+    protected static $strTable = 'tl_iso_address';
 
 
     public function __construct(\Database\Result $objResult=null)

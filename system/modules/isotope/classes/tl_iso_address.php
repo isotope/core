@@ -17,11 +17,11 @@ namespace Isotope;
 
 
 /**
- * Class tl_iso_addresses
+ * Class tl_iso_address
  *
  * Provide miscellaneous methods that are used by the data configuration array.
  */
-class tl_iso_addresses extends \Backend
+class tl_iso_address extends \Backend
 {
 
     /**
@@ -35,16 +35,16 @@ class tl_iso_addresses extends \Backend
         $objAddress->setRow($arrAddress);
         $strBuffer = $objAddress->generateHtml();
 
-        $strBuffer .= '<div style="color:#b3b3b3;margin-top:8px">' . $GLOBALS['TL_LANG']['tl_iso_addresses']['store_id'][0] . ' ' . $arrAddress['store_id'];
+        $strBuffer .= '<div style="color:#b3b3b3;margin-top:8px">' . $GLOBALS['TL_LANG']['tl_iso_address']['store_id'][0] . ' ' . $arrAddress['store_id'];
 
         if ($arrAddress['isDefaultBilling'])
         {
-            $strBuffer .= ', ' . $GLOBALS['TL_LANG']['tl_iso_addresses']['isDefaultBilling'][0];
+            $strBuffer .= ', ' . $GLOBALS['TL_LANG']['tl_iso_address']['isDefaultBilling'][0];
         }
 
         if ($arrAddress['isDefaultShipping'])
         {
-            $strBuffer .= ', ' . $GLOBALS['TL_LANG']['tl_iso_addresses']['isDefaultShipping'][0];
+            $strBuffer .= ', ' . $GLOBALS['TL_LANG']['tl_iso_address']['isDefaultShipping'][0];
         }
 
         $strBuffer .= '</div>';
@@ -66,7 +66,7 @@ class tl_iso_addresses extends \Backend
 
         if ($varValue == '1' && $objAddress->{$dc->field} != $varValue)
         {
-            \Database::getInstance()->execute("UPDATE tl_iso_addresses SET {$dc->field}='' WHERE pid={$objAddress->pid} AND ptable={$objAddress->ptable} AND store_id={$objAddress->store_id}");
+            \Database::getInstance()->execute("UPDATE tl_iso_address SET {$dc->field}='' WHERE pid={$objAddress->pid} AND ptable={$objAddress->ptable} AND store_id={$objAddress->store_id}");
         }
 
         return $varValue;
