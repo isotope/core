@@ -156,6 +156,10 @@ abstract class Product extends TypeAgent
      */
     public static function findPublishedByIds(array $arrIds, array $arrOptions=array())
     {
+        if (empty($arrIds) || !is_array($arrIds)) {
+            return null;
+        }
+
         $t = static::$strTable;
 
         $arrColumns = array("$t.id IN (" . implode(',', array_map('intval', $arrIds)) . ")");
