@@ -39,7 +39,6 @@ class SalesTotal extends Sales
 
 		$dateFrom = date($privateDate, $intStart);
 		$dateTo = date($privateDate, $intStop);
-		$arrAllowedProducts = \Isotope\Backend::getAllowedProductIds();
 
 		$objData = \Database::getInstance()->prepare("SELECT
 												c.id AS config_id,
@@ -55,7 +54,7 @@ class SalesTotal extends Sales
 											LEFT OUTER JOIN tl_iso_config c ON o.config_id=c.id
 											WHERE o.type='Order'
 											" . ($intStatus > 0 ? " AND o.order_status=".$intStatus : '') . "
-											" . ($arrAllowedProducts === true ? '' : (" AND i.product_id IN (" . (empty($arrAllowedProducts) ? '0' : implode(',', $arrAllowedProducts)) . ")")) . "
+											" . $this->getProductProcedure('i', 'product_id') . "
 											" . ($intConfig > 0 ? " AND c.id=".$intConfig : '') . "
 											GROUP BY config_id, dateGroup
 											HAVING dateGroup>=$dateFrom AND dateGroup<=$dateTo")

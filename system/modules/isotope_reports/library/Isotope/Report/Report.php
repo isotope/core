@@ -298,5 +298,27 @@ abstract class Report extends \Backend
 			'class'			=> 'tl_stop',
 		);
 	}
+
+    /**
+     * Return string to filter database query by user allowed products
+     * @param   string  Table name or alias (optional)
+     * @param   string  Table field or alias (optional)
+     * @param   string  Prefix for query (e.g. AND)
+     * @return  string
+     */
+	protected function getProductProcedure($strTable='tl_iso_products', $strField='id', $strPrefix=' AND ')
+	{
+    	$arrAllowedProducts = \Isotope\Backend::getAllowedProductIds();
+
+    	if (true === $arrAllowedProducts) {
+        	return '';
+    	}
+
+    	if (false === $arrAllowedProducts || empty($arrAllowedProducts)) {
+        	$arrAllowedProducts = array(0);
+    	}
+
+    	return $strPrefix . $strTable . '.' . $strField . ' IN (' . implode(',', $arrAllowedProducts) . ')';
+	}
 }
 
