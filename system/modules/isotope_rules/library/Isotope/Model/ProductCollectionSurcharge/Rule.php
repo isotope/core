@@ -55,7 +55,7 @@ class Rule extends ProductCollectionSurcharge implements IsotopeProductCollectio
 
             if ($objRule->productRestrictions == 'pages' && !empty($arrLimit))
             {
-                $arrLimit = \Database::getInstance()->execute("SELECT pid FROM tl_iso_product_categories WHERE page_id IN (" . implode(',', $arrLimit) . ")")->fetchEach('pid');
+                $arrLimit = \Database::getInstance()->execute("SELECT pid FROM " . \Isotope\Model\ProductCategory::getTable() . " WHERE page_id IN (" . implode(',', $arrLimit) . ")")->fetchEach('pid');
             }
 
             if ($objRule->quantityMode == 'cart_products' || $objRule->quantityMode == 'cart_items')

@@ -15,6 +15,7 @@ namespace Isotope;
 use Isotope\Model\Attribute;
 use Isotope\Model\Group;
 use Isotope\Model\Product;
+use Isotope\Model\ProductCategory;
 use Isotope\Model\ProductPrice;
 use Isotope\Model\ProductType;
 use Isotope\Model\RelatedCategory;
@@ -223,7 +224,7 @@ class ProductCallbacks extends \Backend
 
                 // Show products with or without category
                 case 'iso_nocategory':
-                    $objProducts = \Database::getInstance()->execute("SELECT id FROM tl_iso_products p WHERE pid=0 AND language='' AND (SELECT COUNT(*) FROM tl_iso_product_categories c WHERE c.pid=p.id)" . ($v ? "=0" : ">0"));
+                    $objProducts = \Database::getInstance()->execute("SELECT id FROM tl_iso_products p WHERE pid=0 AND language='' AND (SELECT COUNT(*) FROM " . ProductCategory::getTable() . " c WHERE c.pid=p.id)" . ($v ? "=0" : ">0"));
                     $arrProducts = is_array($arrProducts) ? array_intersect($arrProducts, $objProducts->fetchEach('id')) : $objProducts->fetchEach('id');
                     break;
 
@@ -254,7 +255,7 @@ class ProductCallbacks extends \Backend
                     // Filter the products by pages
                     if (!empty($v) && is_array($v))
                     {
-                        $objProducts = \Database::getInstance()->execute("SELECT id FROM tl_iso_products p WHERE pid=0 AND language='' AND id IN (SELECT pid FROM tl_iso_product_categories c WHERE c.pid=p.id AND c.page_id IN (" . implode(array_map('intval', $v)) . "))");
+                        $objProducts = \Database::getInstance()->execute("SELECT id FROM tl_iso_products p WHERE pid=0 AND language='' AND id IN (SELECT pid FROM " . ProductCategory::getTable() . " c WHERE c.pid=p.id AND c.page_id IN (" . implode(array_map('intval', $v)) . "))");
                         $arrProducts = is_array($arrProducts) ? array_intersect($arrProducts, $objProducts->fetchEach('id')) : $objProducts->fetchEach('id');
                     }
 
@@ -639,11 +640,13 @@ window.addEvent('domready', function() {
      */
     public function updateCategorySorting($insertId, $dc)
     {
-        $objCategories = \Database::getInstance()->query("SELECT c1.*, MAX(c2.sorting) AS max_sorting FROM tl_iso_product_categories c1 LEFT JOIN tl_iso_product_categories c2 ON c1.page_id=c2.page_id WHERE c1.pid=" . (int) $insertId . " GROUP BY c1.page_id");
+        $table = ProductCategory::getTable();
+
+        $objCategories = \Database::getInstance()->query("SELECT c1.*, MAX(c2.sorting) AS max_sorting FROM $table c1 LEFT JOIN $table c2 ON c1.page_id=c2.page_id WHERE c1.pid=" . (int) $insertId . " GROUP BY c1.page_id");
 
         while ($objCategories->next())
         {
-            \Database::getInstance()->query("UPDATE tl_iso_product_categories SET sorting=" . ($objCategories->max_sorting + 128) . " WHERE id=" . $objCategories->id);
+            \Database::getInstance()->query("UPDATE $table SET sorting=" . ($objCategories->max_sorting + 128) . " WHERE id=" . $objCategories->id);
         }
     }
 
@@ -687,13 +690,14 @@ window.addEvent('domready', function() {
      */
     public function versionProductCategories($strTable, $intId, $dc)
     {
-        if ($strTable != 'tl_iso_products') {
+        if ($strTable != \Isotope\Model\Product::getTable()) {
             return;
         }
 
-        $arrCategories = \Database::getInstance()->query("SELECT * FROM tl_iso_product_categories WHERE pid=$intId")->fetchAllAssoc();
+        $objCategories = ProductCategory::findBy('pid', $intId);
+        $arrCategories = (null === $objCategories ? array() : $objCategories->fetchAll());
 
-        $this->createSubtableVersion($strTable, $intId, 'tl_iso_product_categories', $arrCategories);
+        $this->createSubtableVersion($strTable, $intId, ProductCategory::getTable(), $arrCategories);
     }
 
     /**
@@ -740,13 +744,13 @@ window.addEvent('domready', function() {
             return;
         }
 
-        $arrData = $this->findSubtableVersion('tl_iso_product_categories', $intId, $intVersion);
+        $arrData = $this->findSubtableVersion(ProductCategory::getTable(), $intId, $intVersion);
 
         if (null !== $arrData) {
-            \Database::getInstance()->query("DELETE FROM tl_iso_product_categories WHERE pid=$intId");
+            \Database::getInstance()->query("DELETE FROM " . ProductCategory::getTable() . " WHERE pid=$intId");
 
             foreach ($arrData as $arrRow) {
-                \Database::getInstance()->prepare("INSERT INTO tl_iso_product_categories %s")->set($arrRow)->executeUncached();
+                \Database::getInstance()->prepare("INSERT INTO " . ProductCategory::getTable() . " %s")->set($arrRow)->executeUncached();
             }
         }
     }
@@ -1101,18 +1105,18 @@ window.addEvent('domready', function() {
 
 
     /**
-     * Load page IDs from tl_iso_product_categories table
+     * Load page IDs from product categories table
      * @param   mixed
      * @param   DataContainer
      * @return  mixed
      */
     public function loadProductCategories($varValue, \DataContainer $dc)
     {
-        $objCategories = \Database::getInstance()->execute("SELECT * FROM tl_iso_product_categories WHERE pid={$dc->id}");
+        $objCategories = ProductCategory::findBy('pid', $dc->id);
 
-        $this->initializeSubtableVersion($dc->table, $dc->id, 'tl_iso_product_categories', $objCategories->fetchAllAssoc());
+        $this->initializeSubtableVersion($dc->table, $dc->id, ProductCategory::getTable(), (null === $objCategories ? array() : $objCategories->fetchAll()));
 
-        return $objCategories->fetchEach('page_id');
+        return (null === $objCategories ? array() : $objCategories->fetchEach('page_id'));
     }
 
     /**
@@ -1146,7 +1150,7 @@ window.addEvent('domready', function() {
 
 
     /**
-     * Save page ids to tl_iso_product_categories table. This allows to retrieve all products associated to a page.
+     * Save page ids to product category table. This allows to retrieve all products associated to a page.
      * @param   mixed
      * @param   DataContainer
      * @return  mixed
@@ -1154,22 +1158,23 @@ window.addEvent('domready', function() {
     public function saveProductCategories($varValue, \DataContainer $dc)
     {
         $arrIds = deserialize($varValue);
+        $table = ProductCategory::getTable();
 
         if (is_array($arrIds) && !empty($arrIds))
         {
             $time = time();
 
-            if (\Database::getInstance()->query("DELETE FROM tl_iso_product_categories WHERE pid={$dc->id} AND page_id NOT IN (" . implode(',', $arrIds) . ")")->affectedRows > 0) {
+            if (\Database::getInstance()->query("DELETE FROM $table WHERE pid={$dc->id} AND page_id NOT IN (" . implode(',', $arrIds) . ")")->affectedRows > 0) {
                 $dc->createNewVersion = true;
             }
 
-            $objPages = \Database::getInstance()->execute("SELECT page_id FROM tl_iso_product_categories WHERE pid={$dc->id}");
+            $objPages = \Database::getInstance()->execute("SELECT page_id FROM $table WHERE pid={$dc->id}");
             $arrIds = array_diff($arrIds, $objPages->fetchEach('page_id'));
 
             if (!empty($arrIds)) {
                 foreach ($arrIds as $id) {
-                    $sorting = (int) \Database::getInstance()->executeUncached("SELECT MAX(sorting) AS sorting FROM tl_iso_product_categories WHERE page_id=$id")->sorting + 128;
-                    \Database::getInstance()->query("INSERT INTO tl_iso_product_categories (pid,tstamp,page_id,sorting) VALUES ({$dc->id}, $time, $id, $sorting)");
+                    $sorting = (int) \Database::getInstance()->executeUncached("SELECT MAX(sorting) AS sorting FROM $table WHERE page_id=$id")->sorting + 128;
+                    \Database::getInstance()->query("INSERT INTO $table (pid,tstamp,page_id,sorting) VALUES ({$dc->id}, $time, $id, $sorting)");
                 }
 
                 $dc->createNewVersion = true;
@@ -1177,7 +1182,7 @@ window.addEvent('domready', function() {
         }
         else
         {
-            if (\Database::getInstance()->query("DELETE FROM tl_iso_product_categories WHERE pid={$dc->id}")->affectedRows > 0) {
+            if (\Database::getInstance()->query("DELETE FROM $table WHERE pid={$dc->id}")->affectedRows > 0) {
                 $dc->createNewVersion = true;
             }
         }

@@ -31,7 +31,7 @@ $GLOBALS['TL_DCA']['tl_iso_products'] = array
         'enableVersioning'          => true,
         'switchToEdit'              => true,
         'gtable'                    => 'tl_iso_groups',
-        'ctable'                    => array(\Isotope\Model\Download::getTable(), 'tl_iso_product_categories', 'tl_iso_prices'),
+        'ctable'                    => array(\Isotope\Model\Download::getTable(), \Isotope\Model\ProductCategory::getTable(), 'tl_iso_prices'),
         'onload_callback' => array
         (
             array('Isotope\ProductCallbacks', 'applyAdvancedFilters'),

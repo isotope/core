@@ -425,7 +425,8 @@ class Standard extends Product implements IsotopeProduct
     public function getCategories()
     {
         if (null === $this->arrCategories) {
-            $this->arrCategories = \Database::getInstance()->execute("SELECT page_id FROM tl_iso_product_categories WHERE pid=" . $this->getProductId())->fetchEach('page_id');
+            $objCategories = ProductCategory::findBy('pid', $this->getProductId());
+            $this->arrCategories = (null === $objCategories ? array() : $objCategories->fetchEach('page_id'));
 
             // Sort categories by the backend drag&drop
             $arrOrder = deserialize($this->orderPages);

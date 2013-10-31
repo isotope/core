@@ -445,7 +445,7 @@ abstract class Product extends TypeAgent
 
         $arrFields[] = "c.sorting";
 
-        $arrJoins[] = " LEFT OUTER JOIN tl_iso_product_categories c ON {$arrOptions['table']}.id=c.pid";
+        $arrJoins[] = " LEFT OUTER JOIN " . \Isotope\Model\ProductCategory::getTable() . " c ON {$arrOptions['table']}.id=c.pid";
         $arrJoins[] = " LEFT OUTER JOIN " . $arrOptions['table'] . " translation ON " . $arrOptions['table'] . ".id=translation.pid AND translation.language='" . str_replace('-', '_', $GLOBALS['TL_LANGUAGE']) . "'";
 
 

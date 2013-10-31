@@ -36,7 +36,7 @@ array_insert($GLOBALS['BE_MOD']['isotope'], 0, array
 (
     'iso_products' => array
     (
-        'tables'                    => array(\Isotope\Model\Product::getTable(), \Isotope\Model\Group::getTable(), 'tl_iso_product_categories', \Isotope\Model\Download::getTable(), \Isotope\Model\RelatedProduct::getTable(), \Isotope\Model\ProductPrice::getTable(), 'tl_iso_price_tiers'),
+        'tables'                    => array(\Isotope\Model\Product::getTable(), \Isotope\Model\Group::getTable(), \Isotope\Model\ProductCategory::getTable(), \Isotope\Model\Download::getTable(), \Isotope\Model\RelatedProduct::getTable(), \Isotope\Model\ProductPrice::getTable(), 'tl_iso_price_tiers'),
         'icon'                        => 'system/modules/isotope/assets/store-open.png',
         'javascript'                => 'system/modules/isotope/assets/backend'.(ISO_DEBUG ? '' : '.min').'.js',
         'generate'                    => array('Isotope\tl_iso_products', 'generateVariants'),
@@ -312,6 +312,7 @@ $GLOBALS['TL_MODELS'][\Isotope\Model\Group::getTable()]                         
 $GLOBALS['TL_MODELS'][\Isotope\Model\Label::getTable()]                         = 'Isotope\Model\Label';
 $GLOBALS['TL_MODELS'][\Isotope\Model\OrderStatus::getTable()]                   = 'Isotope\Model\OrderStatus';
 $GLOBALS['TL_MODELS'][\Isotope\Model\ProductPrice::getTable()]                  = 'Isotope\Model\ProductPrice';
+$GLOBALS['TL_MODELS'][\Isotope\Model\ProductCategory::getTable()]               = 'Isotope\Model\ProductCategory';
 $GLOBALS['TL_MODELS'][\Isotope\Model\ProductCollection::getTable()]             = 'Isotope\Model\ProductCollection';
 $GLOBALS['TL_MODELS'][\Isotope\Model\ProductCollectionItem::getTable()]         = 'Isotope\Model\ProductCollectionItem';
 $GLOBALS['TL_MODELS'][\Isotope\Model\ProductCollectionSurcharge::getTable()]    = 'Isotope\Model\ProductCollectionSurcharge';
