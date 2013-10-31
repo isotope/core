@@ -277,8 +277,7 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['iso_orderCollectionBy'] = array
     'exclude'                   => true,
     'default'                   => 'asc_id',
     'inputType'                 => 'select',
-    'options'                   => array('asc_id', 'desc_id', 'asc_tstamp', 'desc_tstamp', 'asc_name', 'desc_name', 'asc_price', 'desc_price'),
-    'reference'                 => &$GLOBALS['TL_LANG']['tl_module']['iso_orderCollectionBy'],
+    'options'                   => $GLOBALS['TL_LANG']['MSC']['iso_orderCollectionBy'],
     'eval'                      => array('mandatory'=>true, 'tl_class'=>'w50'),
     'sql'                       => "varchar(16) NOT NULL default ''",
 );

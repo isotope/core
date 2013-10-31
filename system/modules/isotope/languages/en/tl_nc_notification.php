@@ -18,9 +18,10 @@
 /**
  * Fields
  */
-$GLOBALS['TL_LANG']['tl_nc_notification']['iso_collectionTpl'] = array('Product collection template', 'Please choose a template to render the products for the notification content.');
-$GLOBALS['TL_LANG']['tl_nc_notification']['iso_gallery']       = array('Gallery', 'Select a gallery to render images.');
-$GLOBALS['TL_LANG']['tl_nc_notification']['iso_document']      = array('Document', 'If you would like to attach a document to the notification, choose one here and use the simple token in the notification center.');
+$GLOBALS['TL_LANG']['tl_nc_notification']['iso_collectionTpl']      = array('Product collection template', 'Please choose a template to render the products for the notification content.');
+$GLOBALS['TL_LANG']['tl_nc_notification']['iso_orderCollectionBy']  = array('Sorting', 'Define in what order the collection items should be listed.');
+$GLOBALS['TL_LANG']['tl_nc_notification']['iso_gallery']            = array('Gallery', 'Select a gallery to render images.');
+$GLOBALS['TL_LANG']['tl_nc_notification']['iso_document']           = array('Document', 'If you would like to attach a document to the notification, choose one here and use the simple token in the notification center.');
 
 
 /**

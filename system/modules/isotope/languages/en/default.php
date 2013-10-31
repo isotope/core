@@ -175,6 +175,15 @@ $GLOBALS['TL_LANG']['MSC']['isotopeIntroduction'][3]            = 'Visit the off
 $GLOBALS['TL_LANG']['MSC']['isotopeIntroduction'][4]            = 'The Isotope eCommerce Team';
 $GLOBALS['TL_LANG']['MSC']['isotopeIntroduction'][5]            = 'Isotope is a product of %s in association with <a href="http://isotopeecommerce.org/de/team.html" target="_blank">the Isotope eCommerce Team</a>.';
 
+$GLOBALS['TL_LANG']['MSC']['iso_orderCollectionBy']['asc_id']       = 'by date added (ascending)';
+$GLOBALS['TL_LANG']['MSC']['iso_orderCollectionBy']['desc_id']      = 'by date added (descending)';
+$GLOBALS['TL_LANG']['MSC']['iso_orderCollectionBy']['asc_tstamp']   = 'by date updated (ascending)';
+$GLOBALS['TL_LANG']['MSC']['iso_orderCollectionBy']['desc_tstamp']  = 'by date updated (descending)';
+$GLOBALS['TL_LANG']['MSC']['iso_orderCollectionBy']['asc_name']     = 'by product name (ascending)';
+$GLOBALS['TL_LANG']['MSC']['iso_orderCollectionBy']['desc_name']    = 'by product name (descending)';
+$GLOBALS['TL_LANG']['MSC']['iso_orderCollectionBy']['asc_price']    = 'by price (ascending)';
+$GLOBALS['TL_LANG']['MSC']['iso_orderCollectionBy']['desc_price']   = 'by price (descending)';
+
 
 /**
  * Content elements

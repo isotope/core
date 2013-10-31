@@ -128,12 +128,11 @@ class Standard extends Document implements IsotopeDocument
         // Render the collection
         $objCollectionTemplate = new \Isotope\Template($this->collectionTpl);
 
-        // @todo add sorting configuration to document
         $objCollection->addToTemplate(
             $objCollectionTemplate,
             array(
                 'gallery'   => $this->gallery,
-//                'sorting'   => $this->objModule->getProductCollectionItemsSortingCallable(),
+                'sorting'   => $objCollection->getItemsSortingCallable($this->orderCollectionBy),
             )
         );
 

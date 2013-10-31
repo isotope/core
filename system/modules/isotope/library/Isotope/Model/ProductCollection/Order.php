@@ -455,8 +455,7 @@ class Order extends ProductCollection implements IsotopeProductCollection
                 $objTemplate,
                 array(
                     'gallery'   => $objNotification->iso_gallery,
-                    // @todo implement sorting option
-//                    'sorting'   => $this->objModule->getProductCollectionItemsSortingCallable(),
+                    'sorting'   => $this->getItemsSortingCallable($objNotification->iso_orderCollectionBy),
                 )
             );
 
