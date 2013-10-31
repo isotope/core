@@ -426,7 +426,7 @@ abstract class Product extends TypeAgent
      * @param array an array of columns
      * @return string
      */
-    protected static function buildQueryString($arrOptions, $arrJoinAliases=array('t'=>'tl_iso_producttypes'))
+    protected static function buildQueryString($arrOptions, $arrJoinAliases=array('t'=>'tl_iso_producttype'))
     {
         $objBase = new \DcaExtractor($arrOptions['table']);
 

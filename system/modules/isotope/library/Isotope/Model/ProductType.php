@@ -26,7 +26,7 @@ class ProductType extends \Model
      * Name of the current table
      * @var string
      */
-    protected static $strTable = 'tl_iso_producttypes';
+    protected static $strTable = 'tl_iso_producttype';
 
     /**
      * Product attributes

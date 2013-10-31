@@ -18,14 +18,14 @@ use Isotope\Model\Product;
 
 
 /**
- * Class tl_iso_producttypes
+ * Class tl_iso_producttype
  * Provide miscellaneous methods that are used by the data configuration array.
  */
-class tl_iso_producttypes extends \Backend
+class tl_iso_producttype extends \Backend
 {
 
     /**
-     * Check permissions to edit table tl_iso_producttypes
+     * Check permissions to edit table tl_iso_producttype
      * @return void
      */
     public function checkPermission()
@@ -53,13 +53,13 @@ class tl_iso_producttypes extends \Backend
             $root = $this->User->iso_product_types;
         }
 
-        $GLOBALS['TL_DCA']['tl_iso_producttypes']['list']['sorting']['root'] = $root;
+        $GLOBALS['TL_DCA']['tl_iso_producttype']['list']['sorting']['root'] = $root;
 
         // Check permissions to add product types
         if (!$this->User->hasAccess('create', 'iso_product_typep'))
         {
-            $GLOBALS['TL_DCA']['tl_iso_producttypes']['config']['closed'] = true;
-            unset($GLOBALS['TL_DCA']['tl_iso_producttypes']['list']['global_operations']['new']);
+            $GLOBALS['TL_DCA']['tl_iso_producttype']['config']['closed'] = true;
+            unset($GLOBALS['TL_DCA']['tl_iso_producttype']['list']['global_operations']['new']);
         }
 
         // Check current action
@@ -76,7 +76,7 @@ class tl_iso_producttypes extends \Backend
                 {
                     $arrNew = $this->Session->get('new_records');
 
-                    if (is_array($arrNew['tl_iso_producttypes']) && in_array(\Input::get('id'), $arrNew['tl_iso_producttypes']))
+                    if (is_array($arrNew['tl_iso_producttype']) && in_array(\Input::get('id'), $arrNew['tl_iso_producttype']))
                     {
                         // Add permissions on user level
                         if ($this->User->inherit == 'custom' || !$this->User->groups[0])
@@ -240,29 +240,29 @@ class tl_iso_producttypes extends \Backend
             ),
             'name' => array
             (
-                'input_field_callback'  => array('Isotope\tl_iso_producttypes', 'getAttributeName'),
+                'input_field_callback'  => array('Isotope\tl_iso_producttype', 'getAttributeName'),
                 'eval'                  => array('hideHead'=>true, 'tl_class'=>'mcwUpdateFields'),
             ),
             'legend' => array
             (
-                'label'                 => &$GLOBALS['TL_LANG']['tl_iso_producttypes']['attributes']['legend'],
+                'label'                 => &$GLOBALS['TL_LANG']['tl_iso_producttype']['attributes']['legend'],
                 'inputType'             => 'select',
-                'options_callback'      => array('Isotope\tl_iso_producttypes', 'getLegends'),
+                'options_callback'      => array('Isotope\tl_iso_producttype', 'getLegends'),
                 'eval'                  => array('style'=>'width:150px', 'class'=>'extendable'),
             ),
             'tl_class' => array
             (
-                'label'                 => &$GLOBALS['TL_LANG']['tl_iso_producttypes']['attributes']['tl_class'],
+                'label'                 => &$GLOBALS['TL_LANG']['tl_iso_producttype']['attributes']['tl_class'],
                 'inputType'             => 'text',
                 'eval'                  => array('style'=>'width:80px'),
             ),
             'mandatory' => array
             (
-                'label'                 => &$GLOBALS['TL_LANG']['tl_iso_producttypes']['attributes']['mandatory'],
+                'label'                 => &$GLOBALS['TL_LANG']['tl_iso_producttype']['attributes']['mandatory'],
                 'inputType'             => 'select',
                 'options'               => array('yes', 'no'),
                 'reference'             => &$GLOBALS['TL_LANG']['MSC'],
-                'eval'                  => array('style'=>'width:80px', 'includeBlankOption'=>true, 'blankOptionLabel'=>&$GLOBALS['TL_LANG']['tl_iso_producttypes']['attributes']['default']),
+                'eval'                  => array('style'=>'width:80px', 'includeBlankOption'=>true, 'blankOptionLabel'=>&$GLOBALS['TL_LANG']['tl_iso_producttype']['attributes']['default']),
             ),
         );
     }
