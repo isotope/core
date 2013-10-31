@@ -31,7 +31,7 @@ $GLOBALS['TL_DCA']['tl_iso_products'] = array
         'enableVersioning'          => true,
         'switchToEdit'              => true,
         'gtable'                    => 'tl_iso_groups',
-        'ctable'                    => array(\Isotope\Model\Download::getTable(), \Isotope\Model\ProductCategory::getTable(), 'tl_iso_prices'),
+        'ctable'                    => array(\Isotope\Model\Download::getTable(), \Isotope\Model\ProductCategory::getTable(), \Isotope\Model\ProductPrice::getTable()),
         'onload_callback' => array
         (
             array('Isotope\ProductCallbacks', 'applyAdvancedFilters'),
@@ -405,7 +405,7 @@ $GLOBALS['TL_DCA']['tl_iso_products'] = array
         (
             'label'                 => &$GLOBALS['TL_LANG']['tl_iso_products']['prices'],
             'inputType'             => 'dcaWizard',
-            'foreignTable'          => 'tl_iso_prices',
+            'foreignTable'          => \Isotope\Model\ProductPrice::getTable(),
             'attributes'            => array('systemColumn'=>true),
             'eval'                  => array
             (
