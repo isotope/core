@@ -44,7 +44,7 @@ class tl_iso_rules extends \Backend
      */
     public function loadRestrictions($varValue, $dc)
     {
-        $varValue = \Database::getInstance()->execute("SELECT object_id FROM tl_iso_rule_restrictions WHERE pid={$dc->activeRecord->id} AND type='{$dc->field}'")->fetchEach('object_id');
+        $varValue = \Database::getInstance()->execute("SELECT object_id FROM tl_iso_rule_restriction WHERE pid={$dc->activeRecord->id} AND type='{$dc->field}'")->fetchEach('object_id');
 
         if ($GLOBALS['TL_DCA'][$dc->table]['fields'][$dc->field]['eval']['csv'] != '') {
             $varValue = implode($GLOBALS['TL_DCA'][$dc->table]['fields'][$dc->field]['eval']['csv'], $varValue);
@@ -66,23 +66,23 @@ class tl_iso_rules extends \Backend
         }
 
         if (!is_array($arrNew) || empty($arrNew)) {
-            \Database::getInstance()->query("DELETE FROM tl_iso_rule_restrictions WHERE pid={$dc->activeRecord->id} AND type='{$dc->field}'");
+            \Database::getInstance()->query("DELETE FROM tl_iso_rule_restriction WHERE pid={$dc->activeRecord->id} AND type='{$dc->field}'");
 
         } else {
-            $arrOld = \Database::getInstance()->execute("SELECT object_id FROM tl_iso_rule_restrictions WHERE pid={$dc->activeRecord->id} AND type='{$dc->field}'")->fetchEach('object_id');
+            $arrOld = \Database::getInstance()->execute("SELECT object_id FROM tl_iso_rule_restriction WHERE pid={$dc->activeRecord->id} AND type='{$dc->field}'")->fetchEach('object_id');
 
             $arrInsert = array_diff($arrNew, $arrOld);
             $arrDelete = array_diff($arrOld, $arrNew);
 
             if (!empty($arrDelete))
             {
-                \Database::getInstance()->query("DELETE FROM tl_iso_rule_restrictions WHERE pid={$dc->activeRecord->id} AND type='{$dc->field}' AND object_id IN (" . implode(',', $arrDelete) . ")");
+                \Database::getInstance()->query("DELETE FROM tl_iso_rule_restriction WHERE pid={$dc->activeRecord->id} AND type='{$dc->field}' AND object_id IN (" . implode(',', $arrDelete) . ")");
             }
 
             if (!empty($arrInsert))
             {
                 $time = time();
-                \Database::getInstance()->query("INSERT INTO tl_iso_rule_restrictions (pid,tstamp,type,object_id) VALUES ({$dc->id}, $time, '{$dc->field}', " . implode("), ({$dc->id}, $time, '{$dc->field}', ", $arrInsert) . ")");
+                \Database::getInstance()->query("INSERT INTO tl_iso_rule_restriction (pid,tstamp,type,object_id) VALUES ({$dc->id}, $time, '{$dc->field}', " . implode("), ({$dc->id}, $time, '{$dc->field}', ", $arrInsert) . ")");
             }
         }
 

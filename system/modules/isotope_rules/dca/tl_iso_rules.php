@@ -24,7 +24,7 @@ $GLOBALS['TL_DCA']['tl_iso_rules'] = array
     'config' => array
     (
         'dataContainer'                     => 'Table',
-        'ctable'                            => array('tl_iso_rule_restrictions'),
+        'ctable'                            => array('tl_iso_rule_restriction'),
         'enableVersioning'                  => false,
         'onload_callback' => array
         (

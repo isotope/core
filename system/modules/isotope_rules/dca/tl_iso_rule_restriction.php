@@ -12,9 +12,9 @@
 
 
 /**
- * Table tl_iso_rule_restrictions
+ * Table tl_iso_rule_restriction
  */
-$GLOBALS['TL_DCA']['tl_iso_rule_restrictions'] = array
+$GLOBALS['TL_DCA']['tl_iso_rule_restriction'] = array
 (
 
     // Config
