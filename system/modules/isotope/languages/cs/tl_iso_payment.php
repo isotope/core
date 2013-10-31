@@ -14,4 +14,4 @@
  * @license http://www.gnu.org/licenses/lgpl-3.0.html LGPL
  */
 
-$GLOBALS['TL_LANG']['tl_iso_payment_modules']['name'][0] = 'Způsob platby';
+$GLOBALS['TL_LANG']['tl_iso_payment']['name'][0] = 'Způsob platby';

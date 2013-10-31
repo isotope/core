@@ -33,7 +33,7 @@ abstract class Payment extends TypeAgent
      * Table name
      * @var string
      */
-    protected static $strTable = 'tl_iso_payment_modules';
+    protected static $strTable = 'tl_iso_payment';
 
     /**
      * Interface to validate payment method

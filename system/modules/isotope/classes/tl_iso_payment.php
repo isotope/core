@@ -19,14 +19,14 @@ use Isotope\Model\Payment;
 
 
 /**
- * Class tl_iso_payment_modules
+ * Class tl_iso_payment
  * Provide miscellaneous methods that are used by the data configuration array.
  */
-class tl_iso_payment_modules extends \Backend
+class tl_iso_payment extends \Backend
 {
 
     /**
-     * Check permissions to edit table tl_iso_payment_modules
+     * Check permissions to edit table tl_iso_payment
      * @return void
      */
     public function checkPermission()
@@ -55,13 +55,13 @@ class tl_iso_payment_modules extends \Backend
             $root = $this->User->iso_payment_modules;
         }
 
-        $GLOBALS['TL_DCA']['tl_iso_payment_modules']['list']['sorting']['root'] = $root;
+        $GLOBALS['TL_DCA']['tl_iso_payment']['list']['sorting']['root'] = $root;
 
         // Check permissions to add payment modules
         if (!$this->User->hasAccess('create', 'iso_payment_modulep'))
         {
-            $GLOBALS['TL_DCA']['tl_iso_payment_modules']['config']['closed'] = true;
-            unset($GLOBALS['TL_DCA']['tl_iso_payment_modules']['list']['global_operations']['new']);
+            $GLOBALS['TL_DCA']['tl_iso_payment']['config']['closed'] = true;
+            unset($GLOBALS['TL_DCA']['tl_iso_payment']['list']['global_operations']['new']);
         }
 
         // Check current action
@@ -79,7 +79,7 @@ class tl_iso_payment_modules extends \Backend
                 {
                     $arrNew = $this->Session->get('new_records');
 
-                    if (is_array($arrNew['tl_iso_payment_modules']) && in_array(\Input::get('id'), $arrNew['tl_iso_payment_modules']))
+                    if (is_array($arrNew['tl_iso_payment']) && in_array(\Input::get('id'), $arrNew['tl_iso_payment']))
                     {
                         // Add permissions on user level
                         if ($this->User->inherit == 'custom' || !$this->User->groups[0])
@@ -262,7 +262,7 @@ class tl_iso_payment_modules extends \Backend
             $icon = 'invisible.gif';
         }
 
-        if (!\BackendUser::getInstance()->isAdmin && !\BackendUser::getInstance()->hasAccess('tl_iso_payment_modules::enabled', 'alexf')) {
+        if (!\BackendUser::getInstance()->isAdmin && !\BackendUser::getInstance()->hasAccess('tl_iso_payment::enabled', 'alexf')) {
             return \Image::getHtml($icon) . ' ';
         }
 
@@ -285,27 +285,27 @@ class tl_iso_payment_modules extends \Backend
         $this->checkPermission();
 
         // Check permissions to publish
-        if (!\BackendUser::getInstance()->isAdmin && !\BackendUser::getInstance()->hasAccess('tl_iso_payment_modules::enabled', 'alexf')) {
+        if (!\BackendUser::getInstance()->isAdmin && !\BackendUser::getInstance()->hasAccess('tl_iso_payment::enabled', 'alexf')) {
             \System::log('Not enough permissions to enable/disable payment method ID "'.$intId.'"', __METHOD__, TL_ERROR);
             \Controller::redirect('contao/main.php?act=error');
         }
 
-        $objVersions = new \Versions('tl_iso_payment_modules', $intId);
+        $objVersions = new \Versions('tl_iso_payment', $intId);
         $objVersions->initialize();
 
         // Trigger the save_callback
-        if (is_array($GLOBALS['TL_DCA']['tl_iso_payment_modules']['fields']['enabled']['save_callback'])) {
-            foreach ($GLOBALS['TL_DCA']['tl_iso_payment_modules']['fields']['enabled']['save_callback'] as $callback) {
+        if (is_array($GLOBALS['TL_DCA']['tl_iso_payment']['fields']['enabled']['save_callback'])) {
+            foreach ($GLOBALS['TL_DCA']['tl_iso_payment']['fields']['enabled']['save_callback'] as $callback) {
                 $objCallback = \System::importStatic($callback[0]);
                 $blnVisible = $objCallback->$callback[1]($blnVisible, $this);
             }
         }
 
         // Update the database
-        \Database::getInstance()->prepare("UPDATE tl_iso_payment_modules SET tstamp=". time() .", enabled='" . ($blnVisible ? 1 : '') . "' WHERE id=?")
+        \Database::getInstance()->prepare("UPDATE tl_iso_payment SET tstamp=". time() .", enabled='" . ($blnVisible ? 1 : '') . "' WHERE id=?")
                                 ->execute($intId);
 
         $objVersions->create();
-        \System::log('A new version of record "tl_iso_payment_modules.id='.$intId.'" has been created'.$this->getParentEntries('tl_iso_payment_modules', $intId), __METHOD__, TL_GENERAL);
+        \System::log('A new version of record "tl_iso_payment.id='.$intId.'" has been created'.$this->getParentEntries('tl_iso_payment', $intId), __METHOD__, TL_GENERAL);
     }
 }
