@@ -2,15 +2,15 @@
 
 /**
  * Isotope eCommerce for Contao Open Source CMS
- *
+ * 
  * Copyright (C) 2009-2013 Isotope eCommerce Workgroup
- *
+ * 
  * Core translations are managed using Transifex. To create a new translation
  * or to help to maintain an existing one, please register at transifex.com.
- *
+ * 
  * @link http://help.transifex.com/intro/translating.html
  * @link https://www.transifex.com/projects/i/isotope/language/de/
- *
+ * 
  * @license http://www.gnu.org/licenses/lgpl-3.0.html LGPL
  */
 
@@ -167,6 +167,14 @@ $GLOBALS['TL_LANG']['MSC']['isotopeIntroduction'][2] = 'Auf dieser Seite werden 
 $GLOBALS['TL_LANG']['MSC']['isotopeIntroduction'][3] = 'Besuchen Sie die offizielle <a href="http://isotopeecommerce.org" target="_blank">Isotope eCommerce Website</a> für aktuelle News, Konfigurationsanleitungen und unsere Spendenkampagnen. Vielen Dank dass Sie uns etwas zurückgeben!';
 $GLOBALS['TL_LANG']['MSC']['isotopeIntroduction'][4] = 'Das Isotope eCommerce Team';
 $GLOBALS['TL_LANG']['MSC']['isotopeIntroduction'][5] = 'Isotope ist ein Produkt von %s in Zusammenarbeit mit <a href="http://isotopeecommerce.org/de/team.html" target="_blank">dem Isotope eCommerce Team</a>.';
+$GLOBALS['TL_LANG']['MSC']['iso_orderCollectionBy']['asc_id'] = 'nach Datum hinzugefügt (aufsteigend)';
+$GLOBALS['TL_LANG']['MSC']['iso_orderCollectionBy']['desc_id'] = 'nach Datum hinzugefügt (absteigend)';
+$GLOBALS['TL_LANG']['MSC']['iso_orderCollectionBy']['asc_tstamp'] = 'nach Datum aktualisiert (aufsteigend)';
+$GLOBALS['TL_LANG']['MSC']['iso_orderCollectionBy']['desc_tstamp'] = 'nach Datum aktualisiert (absteigend)';
+$GLOBALS['TL_LANG']['MSC']['iso_orderCollectionBy']['asc_name'] = 'nach Produktnamen (aufsteigend)';
+$GLOBALS['TL_LANG']['MSC']['iso_orderCollectionBy']['desc_name'] = 'nach Produktnamen (absteigend)';
+$GLOBALS['TL_LANG']['MSC']['iso_orderCollectionBy']['asc_price'] = 'nach Preis (aufsteigend)';
+$GLOBALS['TL_LANG']['MSC']['iso_orderCollectionBy']['desc_price'] = 'nach Preis (absteigend)';
 $GLOBALS['TL_LANG']['CTE']['isotope'] = 'Isotope eCommerce';
 $GLOBALS['TL_LANG']['MODEL']['tl_iso_shipping']['flat'][0] = 'Einheitspreis-Versand';
 $GLOBALS['TL_LANG']['MODEL']['tl_iso_payment']['cash'][0] = 'Barzahlung';
@@ -249,14 +257,6 @@ $GLOBALS['TL_LANG']['ATTR']['downloads'][0] = 'Downloads';
 $GLOBALS['TL_LANG']['ATTR']['downloads'][1] = 'Dateien zu einem Produkt herunterladen, z.B. Handbücher, Datenblätter, etc.';
 $GLOBALS['TL_LANG']['ATTR']['upload'][0] = 'Datei-Upload';
 $GLOBALS['TL_LANG']['ATTR']['upload'][1] = 'Ein einzeiliges Eingabefeld um lokale Dateien auf den Server hochzuladen.';
-$GLOBALS['TL_LANG']['MSC']['iso_orderCollectionBy']['asc_id'] = 'nach Datum hinzugefügt (aufsteigend)';
-$GLOBALS['TL_LANG']['MSC']['iso_orderCollectionBy']['desc_id'] = 'nach Datum hinzugefügt (absteigend)';
-$GLOBALS['TL_LANG']['MSC']['iso_orderCollectionBy']['asc_tstamp'] = 'nach Datum aktualisiert (aufsteigend)';
-$GLOBALS['TL_LANG']['MSC']['iso_orderCollectionBy']['desc_tstamp'] = 'nach Datum aktualisiert (absteigend)';
-$GLOBALS['TL_LANG']['MSC']['iso_orderCollectionBy']['asc_name'] = 'nach Produktnamen (aufsteigend)';
-$GLOBALS['TL_LANG']['MSC']['iso_orderCollectionBy']['desc_name'] = 'nach Produktnamen (absteigend)';
-$GLOBALS['TL_LANG']['MSC']['iso_orderCollectionBy']['asc_price'] = 'nach Preis (aufsteigend)';
-$GLOBALS['TL_LANG']['MSC']['iso_orderCollectionBy']['desc_price'] = 'nach Preis (absteigend)';
 $GLOBALS['TL_LANG']['CUR']['AED'] = 'AED - United Arab Emirates Dirham';
 $GLOBALS['TL_LANG']['CUR']['AFN'] = 'AFN - Afghani';
 $GLOBALS['TL_LANG']['CUR']['ALL'] = 'ALL - Lek';
