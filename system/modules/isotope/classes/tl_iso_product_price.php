@@ -47,7 +47,7 @@ class tl_iso_product_price extends \Backend
         }
 
         $arrTiers = array();
-        $objTiers = \Database::getInstance()->execute("SELECT * FROM tl_iso_price_tiers WHERE pid={$row['id']} ORDER BY min");
+        $objTiers = \Database::getInstance()->execute("SELECT * FROM tl_iso_product_pricetier WHERE pid={$row['id']} ORDER BY min");
 
         while ($objTiers->next())
         {
@@ -101,7 +101,7 @@ class tl_iso_product_price extends \Backend
     	while ($objRecords->next()) {
 
     	    $arrTiers = array();
-            $objTiers = \Database::getInstance()->execute("SELECT * FROM tl_iso_price_tiers WHERE pid={$objRecords->id} ORDER BY min");
+            $objTiers = \Database::getInstance()->execute("SELECT * FROM tl_iso_product_pricetier WHERE pid={$objRecords->id} ORDER BY min");
 
             while ($objTiers->next()) {
                 $arrTiers[] = "{$objTiers->min}={$objTiers->price}";
@@ -140,7 +140,7 @@ class tl_iso_product_price extends \Backend
             return array();
         }
 
-        $arrTiers = \Database::getInstance()->execute("SELECT min, price FROM tl_iso_price_tiers WHERE pid={$dc->id} ORDER BY min")
+        $arrTiers = \Database::getInstance()->execute("SELECT min, price FROM tl_iso_product_pricetier WHERE pid={$dc->id} ORDER BY min")
                                             ->fetchAllAssoc();
 
         if (empty($arrTiers))
@@ -164,14 +164,14 @@ class tl_iso_product_price extends \Backend
 
         if (!is_array($arrNew) || empty($arrNew))
         {
-            \Database::getInstance()->query("DELETE FROM tl_iso_price_tiers WHERE pid={$dc->id}");
+            \Database::getInstance()->query("DELETE FROM tl_iso_product_pricetier WHERE pid={$dc->id}");
         }
         else
         {
             $time = time();
             $arrInsert = array();
             $arrUpdate = array();
-            $arrDelete = \Database::getInstance()->execute("SELECT min FROM tl_iso_price_tiers WHERE pid={$dc->id}")->fetchEach('min');
+            $arrDelete = \Database::getInstance()->execute("SELECT min FROM tl_iso_product_pricetier WHERE pid={$dc->id}")->fetchEach('min');
 
             foreach ($arrNew as $new)
             {
@@ -190,14 +190,14 @@ class tl_iso_product_price extends \Backend
 
             if (!empty($arrDelete))
             {
-                \Database::getInstance()->query("DELETE FROM tl_iso_price_tiers WHERE pid={$dc->id} AND min IN (" . implode(',', $arrDelete) . ")");
+                \Database::getInstance()->query("DELETE FROM tl_iso_product_pricetier WHERE pid={$dc->id} AND min IN (" . implode(',', $arrDelete) . ")");
             }
 
             if (!empty($arrUpdate))
             {
                 foreach ($arrUpdate as $min => $price)
                 {
-                    \Database::getInstance()->prepare("UPDATE tl_iso_price_tiers SET tstamp=$time, price=? WHERE pid={$dc->id} AND min=?")->executeUncached($price, $min);
+                    \Database::getInstance()->prepare("UPDATE tl_iso_product_pricetier SET tstamp=$time, price=? WHERE pid={$dc->id} AND min=?")->executeUncached($price, $min);
                 }
             }
 
@@ -205,7 +205,7 @@ class tl_iso_product_price extends \Backend
             {
                 foreach ($arrInsert as $min => $price)
                 {
-                    \Database::getInstance()->prepare("INSERT INTO tl_iso_price_tiers (pid,tstamp,min,price) VALUES ({$dc->id}, $time, ?, ?)")->executeUncached($min, $price);
+                    \Database::getInstance()->prepare("INSERT INTO tl_iso_product_pricetier (pid,tstamp,min,price) VALUES ({$dc->id}, $time, ?, ?)")->executeUncached($min, $price);
                 }
             }
         }

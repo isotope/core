@@ -14,9 +14,9 @@
 
 
 /**
- * Table tl_iso_price_tiers
+ * Table tl_iso_product_pricetier
  */
-$GLOBALS['TL_DCA']['tl_iso_price_tiers'] = array
+$GLOBALS['TL_DCA']['tl_iso_product_pricetier'] = array
 (
 
     // Config

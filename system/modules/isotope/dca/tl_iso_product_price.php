@@ -27,7 +27,7 @@ $GLOBALS['TL_DCA']['tl_iso_product_price'] = array
         'dataContainer'             => 'Table',
         'enableVersioning'          => true,
         'ptable'                    => 'tl_iso_products',
-        'ctable'                    => array('tl_iso_price_tiers'),
+        'ctable'                    => array('tl_iso_product_pricetier'),
         'onload_callback' => array
         (
             array('Isotope\tl_iso_product_price', 'initializeDCA'),

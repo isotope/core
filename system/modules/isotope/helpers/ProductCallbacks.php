@@ -717,7 +717,7 @@ window.addEvent('domready', function() {
         $objPrices = ProductPrice::findBy('pid', $intId);
 
         if (null !== $objPrices) {
-            $objTiers = \Database::getInstance()->query("SELECT * FROM tl_iso_price_tiers WHERE pid IN (" . implode(',', $objPrices->fetchEach('id')) . ")");
+            $objTiers = \Database::getInstance()->query("SELECT * FROM tl_iso_product_pricetier WHERE pid IN (" . implode(',', $objPrices->fetchEach('id')) . ")");
 
             $arrData['prices'] = $objPrices->fetchAllAssoc();
             $arrData['tiers'] = $objTiers->fetchAllAssoc();
@@ -771,7 +771,7 @@ window.addEvent('domready', function() {
         $arrData = $this->findSubtableVersion(ProductPrice::getTable(), $intId, $intVersion);
 
         if (null !== $arrData) {
-            \Database::getInstance()->query("DELETE FROM tl_iso_price_tiers WHERE pid IN (SELECT id FROM " . ProductPrice::getTable() . " WHERE pid=$intId)");
+            \Database::getInstance()->query("DELETE FROM tl_iso_product_pricetier WHERE pid IN (SELECT id FROM " . ProductPrice::getTable() . " WHERE pid=$intId)");
             \Database::getInstance()->query("DELETE FROM " . ProductPrice::getTable() . " WHERE pid=$intId");
 
             foreach ($arrData['prices'] as $arrRow) {
@@ -779,7 +779,7 @@ window.addEvent('domready', function() {
             }
 
             foreach ($arrData['tiers'] as $arrRow) {
-                \Database::getInstance()->prepare("INSERT INTO tl_iso_price_tiers %s")->set($arrRow)->executeUncached();
+                \Database::getInstance()->prepare("INSERT INTO tl_iso_product_pricetier %s")->set($arrRow)->executeUncached();
             }
         }
     }
@@ -1127,7 +1127,7 @@ window.addEvent('domready', function() {
      */
     public function loadPrice($varValue, \DataContainer $dc)
     {
-        $objPrice = \Database::getInstance()->query("SELECT t.id, p.id AS pid, p.tax_class, t.price FROM " . ProductPrice::getTable() . " p LEFT JOIN tl_iso_price_tiers t ON p.id=t.pid AND t.min=1 WHERE p.pid={$dc->id} AND p.config_id=0 AND p.member_group=0 AND p.start='' AND p.stop=''");
+        $objPrice = \Database::getInstance()->query("SELECT t.id, p.id AS pid, p.tax_class, t.price FROM " . ProductPrice::getTable() . " p LEFT JOIN tl_iso_product_pricetier t ON p.id=t.pid AND t.min=1 WHERE p.pid={$dc->id} AND p.config_id=0 AND p.member_group=0 AND p.start='' AND p.stop=''");
 
         if (!$objPrice->numRows) {
 
@@ -1205,13 +1205,13 @@ window.addEvent('domready', function() {
         $strPrice = (string) $arrValue['value'];
         $intTax = (int) $arrValue['unit'];
 
-        $objPrice = \Database::getInstance()->query("SELECT t.id, p.id AS pid, p.tax_class, t.price FROM " . ProductPrice::getTable() . " p LEFT JOIN tl_iso_price_tiers t ON p.id=t.pid AND t.min=1 WHERE p.pid={$dc->id} AND p.config_id=0 AND p.member_group=0 AND p.start='' AND p.stop=''");
+        $objPrice = \Database::getInstance()->query("SELECT t.id, p.id AS pid, p.tax_class, t.price FROM " . ProductPrice::getTable() . " p LEFT JOIN tl_iso_product_pricetier t ON p.id=t.pid AND t.min=1 WHERE p.pid={$dc->id} AND p.config_id=0 AND p.member_group=0 AND p.start='' AND p.stop=''");
 
         // Price tier record already exists, update it
         if ($objPrice->numRows && $objPrice->id > 0) {
 
             if ($objPrice->price != $strPrice) {
-                \Database::getInstance()->prepare("UPDATE tl_iso_price_tiers SET tstamp=$time, price=? WHERE id=?")->executeUncached($strPrice, $objPrice->id);
+                \Database::getInstance()->prepare("UPDATE tl_iso_product_pricetier SET tstamp=$time, price=? WHERE id=?")->executeUncached($strPrice, $objPrice->id);
 
                 $dc->createNewVersion = true;
             }
@@ -1233,7 +1233,7 @@ window.addEvent('domready', function() {
                 \Database::getInstance()->prepare("UPDATE " . ProductPrice::getTable() . " SET tstamp=?, tax_class=? WHERE id=?")->execute($time, $intTax, $intPrice);
             }
 
-            \Database::getInstance()->prepare("INSERT INTO tl_iso_price_tiers (pid,tstamp,min,price) VALUES (?,?,1,?)")->executeUncached($intPrice, $time, $strPrice);
+            \Database::getInstance()->prepare("INSERT INTO tl_iso_product_pricetier (pid,tstamp,min,price) VALUES (?,?,1,?)")->executeUncached($intPrice, $time, $strPrice);
 
             $dc->createNewVersion = true;
         }
