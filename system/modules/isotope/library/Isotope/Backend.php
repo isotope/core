@@ -315,16 +315,11 @@ class Backend extends Contao_Backend
                 $arrGroups = array_merge($arrGroups, $objUser->iso_groups, \Database::getInstance()->getChildRecords($objUser->iso_groups, 'tl_iso_groups'));
             }
 
-            // Return false if there are no groups
-            if (empty($arrGroups)) {
-                return false;
-            }
-
             $objProducts = \Database::getInstance()->execute("
                 SELECT id FROM tl_iso_products
                 WHERE pid=0
                     AND language=''
-                    AND gid IN (" . implode(',', $arrGroups) . ")
+                    " . (empty($arrGroups) ? '' : "AND gid IN (" . implode(',', $arrGroups) . ")") . "
                     AND (
                         type IN (" . implode(',', $arrProductTypes) . ")" .
                         ((is_array($arrNewRecords) && !empty($arrNewRecords)) ? " OR id IN (".implode(',', $arrNewRecords).")" : '') .
