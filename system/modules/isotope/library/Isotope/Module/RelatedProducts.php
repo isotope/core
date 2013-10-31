@@ -92,6 +92,8 @@ class RelatedProducts extends ProductList
             }
         }
 
-        return \Isotope\Frontend::getProducts($arrIds);
+        return Product::findAvailableByIds($arrIds, array(
+            'order' => \Database::getInstance()->findInSet(Product::getTable().'.id', $arrIds)
+        ));
     }
 }

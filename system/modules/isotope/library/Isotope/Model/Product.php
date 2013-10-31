@@ -272,6 +272,34 @@ abstract class Product extends TypeAgent
 	}
 
     /**
+     * Find frontend-available products by IDs
+     * @param   array
+     * @param   array
+     * @return  \Collection
+     */
+    public static function findAvailableByIds(array $arrIds, array $arrOptions=array())
+    {
+        $objProducts = static::findPublishedByIds($arrIds, $arrOptions);
+
+        if (null === $objProducts) {
+            return null;
+        }
+
+        $arrProducts = array();
+        foreach ($objProducts as $objProduct) {
+            if ($objProduct->isAvailableInFrontend()) {
+                $arrProducts[] = $objProduct;
+            }
+        }
+
+        if (empty($arrProducts)) {
+            return null;
+        }
+
+        return new \Model\Collection($arrProducts, static::$strTable);
+    }
+
+	/**
      * Find variant of a product
      * @param   IsotopeProduct
      * @param   array

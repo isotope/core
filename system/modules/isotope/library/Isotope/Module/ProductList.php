@@ -111,7 +111,10 @@ class ProductList extends Module
             // Use the cache if keywords match. Otherwise we will use the product IDs as a "limit" for findProducts()
             if ($objCache->keywords == \Input::get('keywords')) {
             	$arrCacheIds = $this->generatePagination($arrCacheIds);
-                $arrProducts = \Isotope\Frontend::getProducts($arrCacheIds);
+
+                $arrProducts = Product::findAvailableByIds($arrIds, array(
+                    'order' => \Database::getInstance()->findInSet(Product::getTable().'.id', $arrCacheIds)
+                ));
 
                 // Cache is wrong, drop everything and run findProducts()
                 if (count($arrProducts) != count($arrCacheIds)) {
