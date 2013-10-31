@@ -20,10 +20,10 @@ use Isotope\Model\ProductCollectionDownload;
 
 
 /**
- * Class tl_iso_downloads
+ * Class tl_iso_download
  * Provide miscellaneous methods that are used by the data configuration array.
  */
-class tl_iso_downloads extends \Backend
+class tl_iso_download extends \Backend
 {
 
     /**
@@ -115,7 +115,7 @@ class tl_iso_downloads extends \Backend
 		}
 
         // Check permissions AFTER checking the tid, so hacking attempts are logged
-        if (!\BackendUser::getInstance()->isAdmin && !\BackendUser::getInstance()->hasAccess('tl_iso_downloads::published', 'alexf'))
+        if (!\BackendUser::getInstance()->isAdmin && !\BackendUser::getInstance()->hasAccess('tl_iso_download::published', 'alexf'))
         {
             return '';
         }
@@ -144,18 +144,18 @@ class tl_iso_downloads extends \Backend
         \Input::setGet('act', 'toggle');
 
         // Check permissions to publish
-        if (!\BackendUser::getInstance()->isAdmin && !\BackendUser::getInstance()->hasAccess('tl_iso_downloads::published', 'alexf'))
+        if (!\BackendUser::getInstance()->isAdmin && !\BackendUser::getInstance()->hasAccess('tl_iso_download::published', 'alexf'))
         {
             \System::log('Not enough permissions to publish/unpublish download ID "'.$intId.'"', __METHOD__, TL_ERROR);
             \Controller::redirect('contao/main.php?act=error');
         }
 
-        $this->createInitialVersion('tl_iso_downloads', $intId);
+        $this->createInitialVersion('tl_iso_download', $intId);
 
         // Trigger the save_callback
-        if (is_array($GLOBALS['TL_DCA']['tl_iso_downloads']['fields']['published']['save_callback']))
+        if (is_array($GLOBALS['TL_DCA']['tl_iso_download']['fields']['published']['save_callback']))
         {
-            foreach ($GLOBALS['TL_DCA']['tl_iso_downloads']['fields']['published']['save_callback'] as $callback)
+            foreach ($GLOBALS['TL_DCA']['tl_iso_download']['fields']['published']['save_callback'] as $callback)
             {
                 $objCallback = \System::importStatic($callback[0]);
                 $blnVisible = $objCallback->$callback[1]($blnVisible, $this);
@@ -163,8 +163,8 @@ class tl_iso_downloads extends \Backend
         }
 
         // Update the database
-        \Database::getInstance()->prepare("UPDATE tl_iso_downloads SET published='" . ($blnVisible ? 1 : '') . "' WHERE id=?")->execute($intId);
+        \Database::getInstance()->prepare("UPDATE tl_iso_download SET published='" . ($blnVisible ? 1 : '') . "' WHERE id=?")->execute($intId);
 
-        $this->createNewVersion('tl_iso_downloads', $intId);
+        $this->createNewVersion('tl_iso_download', $intId);
     }
 }

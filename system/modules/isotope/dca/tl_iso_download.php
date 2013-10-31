@@ -15,9 +15,9 @@
 
 
 /**
- * Table tl_iso_downloads
+ * Table tl_iso_download
  */
-$GLOBALS['TL_DCA']['tl_iso_downloads'] = array
+$GLOBALS['TL_DCA']['tl_iso_download'] = array
 (
 
     // Config
@@ -46,7 +46,7 @@ $GLOBALS['TL_DCA']['tl_iso_downloads'] = array
             'flag'                  => 1,
             'panelLayout'           => 'filter;search,limit',
             'headerFields'          => array('name', 'alias', 'sku'),
-            'child_record_callback' => array('Isotope\tl_iso_downloads', 'listRows'),
+            'child_record_callback' => array('Isotope\tl_iso_download', 'listRows'),
             'disableGrouping'       => true,
         ),
         'label' => array
@@ -68,42 +68,42 @@ $GLOBALS['TL_DCA']['tl_iso_downloads'] = array
         (
             'edit' => array
             (
-                'label'             => &$GLOBALS['TL_LANG']['tl_iso_downloads']['edit'],
+                'label'             => &$GLOBALS['TL_LANG']['tl_iso_download']['edit'],
                 'href'              => 'act=edit',
                 'icon'              => 'edit.gif'
             ),
             'copy' => array
             (
-                'label'             => &$GLOBALS['TL_LANG']['tl_iso_downloads']['copy'],
+                'label'             => &$GLOBALS['TL_LANG']['tl_iso_download']['copy'],
                 'href'              => 'act=paste&amp;mode=copy',
                 'icon'              => 'copy.gif',
                 'attributes'        => 'onclick="Backend.getScrollOffset();"'
             ),
             'cut' => array
             (
-                'label'             => &$GLOBALS['TL_LANG']['tl_iso_downloads']['cut'],
+                'label'             => &$GLOBALS['TL_LANG']['tl_iso_download']['cut'],
                 'href'              => 'act=paste&amp;mode=cut',
                 'icon'              => 'cut.gif',
                 'attributes'        => 'onclick="Backend.getScrollOffset();"'
             ),
             'delete' => array
             (
-                'label'             => &$GLOBALS['TL_LANG']['tl_iso_downloads']['delete'],
+                'label'             => &$GLOBALS['TL_LANG']['tl_iso_download']['delete'],
                 'href'              => 'act=delete',
                 'icon'              => 'delete.gif',
                 'attributes'        => 'onclick="if (!confirm(\'' . $GLOBALS['TL_LANG']['MSC']['deleteConfirm'] . '\')) return false; Backend.getScrollOffset();"',
-                'button_callback'   => array('Isotope\tl_iso_downloads', 'deleteButton'),
+                'button_callback'   => array('Isotope\tl_iso_download', 'deleteButton'),
             ),
             'toggle' => array
             (
-                'label'             => &$GLOBALS['TL_LANG']['tl_iso_downloads']['toggle'],
+                'label'             => &$GLOBALS['TL_LANG']['tl_iso_download']['toggle'],
                 'icon'              => 'visible.gif',
                 'attributes'        => 'onclick="Backend.getScrollOffset(); return AjaxRequest.toggleVisibility(this, %s);"',
-                'button_callback'   => array('Isotope\tl_iso_downloads', 'toggleIcon')
+                'button_callback'   => array('Isotope\tl_iso_download', 'toggleIcon')
             ),
             'show' => array
             (
-                'label'             => &$GLOBALS['TL_LANG']['tl_iso_downloads']['show'],
+                'label'             => &$GLOBALS['TL_LANG']['tl_iso_download']['show'],
                 'href'              => 'act=show',
                 'icon'              => 'show.gif'
             ),
@@ -139,7 +139,7 @@ $GLOBALS['TL_DCA']['tl_iso_downloads'] = array
         ),
         'singleSRC' => array
         (
-            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_downloads']['singleSRC'],
+            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_download']['singleSRC'],
             'exclude'               => true,
             'inputType'             => 'fileTree',
             'foreignKey'            => 'tl_files.path',
@@ -149,7 +149,7 @@ $GLOBALS['TL_DCA']['tl_iso_downloads'] = array
         ),
         'downloads_allowed' => array
         (
-            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_downloads']['downloads_allowed'],
+            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_download']['downloads_allowed'],
             'exclude'               => true,
             'inputType'             => 'text',
             'eval'                  => array('mandatory'=>true, 'maxlength'=>5, 'rgxp'=>'digit', 'tl_class'=>'w50'),
@@ -157,7 +157,7 @@ $GLOBALS['TL_DCA']['tl_iso_downloads'] = array
         ),
         'expires' => array
         (
-            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_downloads']['expires'],
+            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_download']['expires'],
             'exclude'               => true,
             'inputType'             => 'timePeriod',
             'options'               => array('minutes', 'hours', 'days', 'weeks', 'months', 'years'),
@@ -167,7 +167,7 @@ $GLOBALS['TL_DCA']['tl_iso_downloads'] = array
         ),
         'published' => array
         (
-            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_downloads']['published'],
+            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_download']['published'],
             'exclude'               => true,
             'inputType'             => 'checkbox',
             'eval'                  => array('doNotCopy'=>true),
