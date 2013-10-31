@@ -24,7 +24,7 @@ NamespaceClassLoader::addClassMap(array
 (
     // DCA Helpers
     'Isotope\tl_iso_addresses'          => 'system/modules/isotope/classes/tl_iso_addresses.php',
-    'Isotope\tl_iso_attributes'         => 'system/modules/isotope/classes/tl_iso_attributes.php',
+    'Isotope\tl_iso_attribute'          => 'system/modules/isotope/classes/tl_iso_attribute.php',
     'Isotope\tl_iso_config'             => 'system/modules/isotope/classes/tl_iso_config.php',
     'Isotope\tl_iso_document'           => 'system/modules/isotope/classes/tl_iso_document.php',
     'Isotope\tl_iso_downloads'          => 'system/modules/isotope/classes/tl_iso_downloads.php',
@@ -37,7 +37,7 @@ NamespaceClassLoader::addClassMap(array
     'Isotope\tl_iso_products'           => 'system/modules/isotope/classes/tl_iso_products.php',
     'Isotope\tl_iso_producttypes'       => 'system/modules/isotope/classes/tl_iso_producttypes.php',
     'Isotope\tl_iso_related_products'   => 'system/modules/isotope/classes/tl_iso_related_products.php',
-    'Isotope\tl_iso_shipping'   => 'system/modules/isotope/classes/tl_iso_shipping.php',
+    'Isotope\tl_iso_shipping'           => 'system/modules/isotope/classes/tl_iso_shipping.php',
     'Isotope\tl_iso_tax_class'          => 'system/modules/isotope/classes/tl_iso_tax_class.php',
     'Isotope\tl_iso_tax_rate'           => 'system/modules/isotope/classes/tl_iso_tax_rate.php',
     'Isotope\tl_member'                 => 'system/modules/isotope/classes/tl_member.php',

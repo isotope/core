@@ -30,7 +30,7 @@ abstract class Attribute extends TypeAgent
      * Table name
      * @var string
      */
-    protected static $strTable = 'tl_iso_attributes';
+    protected static $strTable = 'tl_iso_attribute';
 
     /**
      * Interface to validate attribute

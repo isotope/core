@@ -22,7 +22,7 @@ namespace Isotope;
  *
  * Provide miscellaneous methods that are used by the data configuration array.
  */
-class tl_iso_attributes extends \Backend
+class tl_iso_attribute extends \Backend
 {
 
     /**
@@ -35,16 +35,16 @@ class tl_iso_attributes extends \Backend
         // Hide the field in editAll & overrideAll mode (Thanks to Yanick Witschi)
         if (\Input::get('act') == 'editAll' || \Input::get('act') == 'overrideAll')
         {
-            $GLOBALS['TL_DCA']['tl_iso_attributes']['fields']['field_name']['eval']['doNotShow'] = true;
+            $GLOBALS['TL_DCA']['tl_iso_attribute']['fields']['field_name']['eval']['doNotShow'] = true;
         }
         elseif ($dc->id)
         {
-            $objAttribute = \Database::getInstance()->execute("SELECT * FROM tl_iso_attributes WHERE id={$dc->id}");
+            $objAttribute = \Database::getInstance()->execute("SELECT * FROM tl_iso_attribute WHERE id={$dc->id}");
 
             if ($objAttribute->field_name != '')
             {
-                $GLOBALS['TL_DCA']['tl_iso_attributes']['fields']['field_name']['eval']['disabled'] = true;
-                $GLOBALS['TL_DCA']['tl_iso_attributes']['fields']['field_name']['eval']['mandatory'] = false;
+                $GLOBALS['TL_DCA']['tl_iso_attribute']['fields']['field_name']['eval']['disabled'] = true;
+                $GLOBALS['TL_DCA']['tl_iso_attribute']['fields']['field_name']['eval']['mandatory'] = false;
             }
         }
     }
@@ -56,12 +56,12 @@ class tl_iso_attributes extends \Backend
      */
     public function prepareForVariantOptions($dc)
     {
-        $objAttribute = \Database::getInstance()->prepare("SELECT * FROM tl_iso_attributes WHERE id=?")->execute($dc->id);
+        $objAttribute = \Database::getInstance()->prepare("SELECT * FROM tl_iso_attribute WHERE id=?")->execute($dc->id);
 
         if ($objAttribute->variant_option)
         {
-            unset($GLOBALS['TL_DCA']['tl_iso_attributes']['fields']['options']['eval']['columnFields']['default']);
-            unset($GLOBALS['TL_DCA']['tl_iso_attributes']['fields']['options']['eval']['columnFields']['group']);
+            unset($GLOBALS['TL_DCA']['tl_iso_attribute']['fields']['options']['eval']['columnFields']['default']);
+            unset($GLOBALS['TL_DCA']['tl_iso_attribute']['fields']['options']['eval']['columnFields']['group']);
         }
     }
 
