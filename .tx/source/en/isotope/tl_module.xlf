@@ -143,30 +143,6 @@
       <trans-unit id="tl_module.iso_orderCollectionBy.1">
         <source>Define in what order the collection items should be listed.</source>
       </trans-unit>
-      <trans-unit id="tl_module.iso_orderCollectionBy.asc_id">
-        <source>by date added (ascending)</source>
-      </trans-unit>
-      <trans-unit id="tl_module.iso_orderCollectionBy.desc_id">
-        <source>by date added (descending)</source>
-      </trans-unit>
-      <trans-unit id="tl_module.iso_orderCollectionBy.asc_tstamp">
-        <source>by date updated (ascending)</source>
-      </trans-unit>
-      <trans-unit id="tl_module.iso_orderCollectionBy.desc_tstamp">
-        <source>by date updated (descending)</source>
-      </trans-unit>
-      <trans-unit id="tl_module.iso_orderCollectionBy.asc_name">
-        <source>by product name (ascending)</source>
-      </trans-unit>
-      <trans-unit id="tl_module.iso_orderCollectionBy.desc_name">
-        <source>by product name (descending)</source>
-      </trans-unit>
-      <trans-unit id="tl_module.iso_orderCollectionBy.asc_price">
-        <source>by price (ascending)</source>
-      </trans-unit>
-      <trans-unit id="tl_module.iso_orderCollectionBy.desc_price">
-        <source>by price (descending)</source>
-      </trans-unit>
       <trans-unit id="tl_module.iso_emptyMessage.0">
         <source>Define empty message</source>
       </trans-unit>

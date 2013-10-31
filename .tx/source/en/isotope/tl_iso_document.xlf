@@ -38,17 +38,23 @@
       <trans-unit id="tl_iso_document.documentTpl.1">
         <source>Choose a template you want to render this document with.</source>
       </trans-unit>
+      <trans-unit id="tl_iso_document.gallery.0">
+        <source>Gallery</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_document.gallery.1">
+        <source>Select a gallery to render images.</source>
+      </trans-unit>
       <trans-unit id="tl_iso_document.collectionTpl.0">
         <source>Collection template</source>
       </trans-unit>
       <trans-unit id="tl_iso_document.collectionTpl.1">
         <source>Choose a collection template you want to render the products with.</source>
       </trans-unit>
-      <trans-unit id="tl_iso_document.gallery.0">
-        <source>Gallery</source>
+      <trans-unit id="tl_iso_document.orderCollectionBy.0">
+        <source>Sorting</source>
       </trans-unit>
-      <trans-unit id="tl_iso_document.gallery.1">
-        <source>Select a gallery to render images.</source>
+      <trans-unit id="tl_iso_document.orderCollectionBy.1">
+        <source>Define in what order the collection items should be listed.</source>
       </trans-unit>
       <trans-unit id="tl_iso_document.new.0">
         <source>New document</source>

@@ -12,6 +12,11 @@ source_file = .tx/source/en/isotope/default.xlf
 source_lang = en
 file_filter = .tx/source/<lang>/isotope/default.xlf
 
+[isotope.develop-isotope-exception]
+source_file = .tx/source/en/isotope/exception.xlf
+source_lang = en
+file_filter = .tx/source/<lang>/isotope/exception.xlf
+
 [isotope.develop-isotope-explain]
 source_file = .tx/source/en/isotope/explain.xlf
 source_lang = en
