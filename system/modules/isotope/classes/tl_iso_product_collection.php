@@ -181,8 +181,8 @@ class tl_iso_product_collection extends \Backend
             return '<div class="tl_gerror">No address data available.</div>';
         }
 
-        \System::loadLanguageFile('tl_iso_addresses');
-        $this->loadDataContainer('tl_iso_addresses');
+        \System::loadLanguageFile($objAddress->getTable());
+        $this->loadDataContainer($objAddress->getTable());
 
         $strBuffer = '
 <div>
@@ -191,7 +191,7 @@ class tl_iso_product_collection extends \Backend
 
         $i=0;
 
-        foreach ($GLOBALS['TL_DCA']['tl_iso_addresses']['fields'] as $k => $v)
+        foreach ($GLOBALS['TL_DCA'][$objAddress->getTable()]['fields'] as $k => $v)
         {
             if (!isset($objAddress->$k))
             {
@@ -203,8 +203,8 @@ class tl_iso_product_collection extends \Backend
 
             $strBuffer .= '
   <tr>
-    <td' . $strClass . ' style="vertical-align:top"><span class="tl_label">'.Isotope::formatLabel('tl_iso_addresses', $k).': </span></td>
-    <td' . $strClass . '>'.Isotope::formatValue('tl_iso_addresses', $k, $v).'</td>
+    <td' . $strClass . ' style="vertical-align:top"><span class="tl_label">'.Isotope::formatLabel($objAddress->getTable(), $k).': </span></td>
+    <td' . $strClass . '>'.Isotope::formatValue($objAddress->getTable(), $k, $v).'</td>
   </tr>';
         }
 

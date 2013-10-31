@@ -336,7 +336,7 @@ class tl_iso_config extends \Backend
         static $i = 0;
 
         if (null === $arrValues) {
-            \System::loadLanguageFile('tl_iso_addresses');
+            \System::loadLanguageFile(\Isotope\Model\Address::getTable());
             $arrValues = $objWidget->value;
             $i = 0;
         }
@@ -351,7 +351,7 @@ class tl_iso_config extends \Backend
             $objWidget->name,
             $i++,
             $strName,
-            $GLOBALS['TL_DCA']['tl_iso_addresses']['fields'][$strName]['label'][0] ?: $strName,
+            $GLOBALS['TL_DCA'][\Isotope\Model\Address::getTable()]['fields'][$strName]['label'][0] ?: $strName,
             $strName
         );
     }
@@ -364,9 +364,9 @@ class tl_iso_config extends \Backend
      */
     public function loadAddressFieldsWizard($varValue, $dc)
     {
-        $this->loadDataContainer('tl_iso_addresses');
+        $this->loadDataContainer(\Isotope\Model\Address::getTable());
 
-        $arrDCA = &$GLOBALS['TL_DCA']['tl_iso_addresses']['fields'];
+        $arrDCA = &$GLOBALS['TL_DCA'][\Isotope\Model\Address::getTable()]['fields'];
         $arrFields = array();
         $arrValues = deserialize($varValue);
 
@@ -409,7 +409,7 @@ class tl_iso_config extends \Backend
      */
     public function saveAddressFieldsWizard($varValue, $dc)
     {
-        $this->loadDataContainer('tl_iso_addresses');
+        $this->loadDataContainer(\Isotope\Model\Address::getTable());
 
         $arrFields = deserialize($varValue);
 

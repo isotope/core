@@ -267,14 +267,14 @@ $GLOBALS['TL_DCA']['tl_iso_product_collection'] = array
         'address1_id' => array
         (
             'label'                 => &$GLOBALS['TL_LANG']['tl_iso_product_collection']['address1_id'],
-            'foreignKey'            => 'tl_iso_addresses.label',
+            'foreignKey'            => \Isotope\Model\Address::getTable().'.label',
             'eval'                  => array('doNotShow'=>true),
             'sql'                   => "int(10) unsigned NOT NULL default '0'",
             'relation'              => array('type'=>'hasOne', 'load'=>'lazy'),
         ),
         'address2_id' => array
         (
-            'foreignKey'            => 'tl_iso_addresses.label',
+            'foreignKey'            => \Isotope\Model\Address::getTable().'.label',
             'eval'                  => array('doNotShow'=>true),
             'sql'                   => "int(10) unsigned NOT NULL default '0'",
             'relation'              => array('type'=>'hasOne', 'load'=>'lazy'),
