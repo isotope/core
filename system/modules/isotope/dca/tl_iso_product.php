@@ -172,6 +172,12 @@ $GLOBALS['TL_DCA']['tl_iso_product'] = array
                 'href'              => 'act=show',
                 'icon'              => 'show.gif'
             ),
+            'break' => array
+            (
+                'button_callback'   => function() {
+                    return '<br>';
+                }
+            ),
             'variants' => array
             (
                 'label'             => &$GLOBALS['TL_LANG']['tl_iso_product']['variants'],
