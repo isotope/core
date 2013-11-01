@@ -54,7 +54,7 @@ class AddressFieldsWizard extends \Backend
      * @param   DataContainer
      * @return array
      */
-    public function loadAddressFieldsWizard($varValue, $dc)
+    public function load($varValue, $dc)
     {
         $this->loadDataContainer(\Isotope\Model\Address::getTable());
 
@@ -99,7 +99,7 @@ class AddressFieldsWizard extends \Backend
      * @param   DataContainer
      * @return  string
      */
-    public function saveAddressFieldsWizard($varValue, $dc)
+    public function save($varValue, $dc)
     {
         $this->loadDataContainer(\Isotope\Model\Address::getTable());
 
