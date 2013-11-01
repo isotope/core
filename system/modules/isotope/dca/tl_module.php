@@ -55,7 +55,9 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['iso_list_layout'] = array
     'label'                     => &$GLOBALS['TL_LANG']['tl_module']['iso_list_layout'],
     'exclude'                   => true,
     'inputType'                 => 'select',
-    'options_callback'          => array('Isotope\Backend\Module\Callback', 'getListTemplates'),
+    'options_callback'          => function(\DataContainer $dc) {
+        return \Isotope\Backend::getTemplates('iso_list_');
+    },
     'eval'                      => array('includeBlankOption'=>true, 'tl_class'=>'w50', 'chosen'=>true),
     'sql'                       => "varchar(64) NOT NULL default ''",
 );
@@ -65,7 +67,9 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['iso_reader_layout'] = array
     'label'                     => &$GLOBALS['TL_LANG']['tl_module']['iso_reader_layout'],
     'exclude'                   => true,
     'inputType'                 => 'select',
-    'options_callback'          => array('Isotope\Backend\Module\Callback', 'getReaderTemplates'),
+    'options_callback'          => function(\DataContainer $dc) {
+        return \Isotope\Backend::getTemplates('iso_reader_');
+    },
     'eval'                      => array('includeBlankOption'=>true, 'chosen'=>true, 'tl_class'=>'w50'),
     'sql'                       => "varchar(64) NOT NULL default ''"
 );
@@ -85,7 +89,9 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['iso_collectionTpl'] = array
     'label'                     => &$GLOBALS['TL_LANG']['tl_module']['iso_collectionTpl'],
     'exclude'                   => true,
     'inputType'                 => 'select',
-    'options_callback'          => array('Isotope\Backend\Module\Callback', 'getCollectionTemplates'),
+    'options_callback'          => function(\DataContainer $dc) {
+        return \Isotope\Backend::getTemplates('iso_collection_');
+    },
     'eval'                      => array('mandatory'=>true, 'chosen'=>true, 'tl_class'=>'w50'),
     'sql'                       => "varchar(64) NOT NULL default ''",
 );

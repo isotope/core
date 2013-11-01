@@ -193,39 +193,6 @@ class Callback extends \Backend
 
 
     /**
-     * Return list templates as array
-     * @param DataContainer
-     * @return array
-     */
-    public function getListTemplates(\DataContainer $dc)
-    {
-        return \Isotope\Backend::getTemplates('iso_list_');
-    }
-
-
-    /**
-     * Return reader templates as array
-     * @param DataContainer
-     * @return array
-     */
-    public function getReaderTemplates(\DataContainer $dc)
-    {
-        return \Isotope\Backend::getTemplates('iso_reader_');
-    }
-
-
-    /**
-     * Return product collection templates as array
-     * @param DataContainer
-     * @return array
-     */
-    public function getCollectionTemplates(\DataContainer $dc)
-    {
-        return \Isotope\Backend::getTemplates('iso_collection_');
-    }
-
-
-    /**
      * Return filter templates as array
      * @param DataContainer
      * @return array
