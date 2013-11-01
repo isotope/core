@@ -12,6 +12,7 @@
 
 namespace Isotope\Backend\Product;
 
+use Isotope\Isotope;
 use Isotope\Model\Attribute;
 use Isotope\Model\Product;
 use Isotope\Model\ProductType;
@@ -79,7 +80,7 @@ class DcaManager extends \Backend
      */
     protected function addAttributes()
     {
-        $arrData = &$GLOBALS['TL_DCA'][$strTable];
+        $arrData = &$GLOBALS['TL_DCA'][Product::getTable()];
         $arrData['attributes'] = array();
 
         // Write attributes from database to DCA
