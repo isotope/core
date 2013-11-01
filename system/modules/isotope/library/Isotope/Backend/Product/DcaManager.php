@@ -40,6 +40,7 @@ class DcaManager extends \Backend
     public function load()
     {
         $this->checkFeatures();
+        $this->addBreadcrumb();
         $this->buildPaletteString();
         $this->addMoveAllFeature();
         $this->changeVariantColumns();
@@ -179,6 +180,18 @@ class DcaManager extends \Backend
         // Disable related categories if none are defined
         if (RelatedCategory::countAll() == 0) {
             unset($GLOBALS['TL_DCA'][Product::getTable()]['list']['operations']['related']);
+        }
+    }
+
+    /**
+     * Add the breadcrumb menu
+     */
+    public function addBreadcrumb()
+    {
+        $GLOBALS['TL_DCA']['tl_iso_product']['list']['sorting']['breadcrumb'] = \Isotope\Backend::generateGroupsBreadcrumb($this->Session->get('iso_products_gid'));
+
+        if ($this->Session->get('iso_products_gid') > 0) {
+            $GLOBALS['TL_DCA']['tl_iso_group']['list']['sorting']['root'] = array($this->Session->get('iso_products_gid'));
         }
     }
 
