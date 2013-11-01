@@ -29,7 +29,7 @@ $GLOBALS['TL_DCA']['tl_iso_tax_class'] = array
         'onload_callback' => array
         (
             array('Isotope\Backend', 'initializeSetupModule'),
-            array('Isotope\tl_iso_tax_class', 'checkPermission'),
+            array('Isotope\Backend\DCA\tl_iso_tax_class', 'checkPermission'),
         ),
         'sql' => array
         (
@@ -93,7 +93,7 @@ $GLOBALS['TL_DCA']['tl_iso_tax_class'] = array
                 'label'             => &$GLOBALS['TL_LANG']['tl_iso_tax_class']['copy'],
                 'href'              => 'act=copy',
                 'icon'              => 'copy.gif',
-                'button_callback'   => array('Isotope\tl_iso_tax_class', 'copyTaxClass'),
+                'button_callback'   => array('Isotope\Backend\DCA\tl_iso_tax_class', 'copyTaxClass'),
             ),
             'delete' => array
             (
@@ -101,7 +101,7 @@ $GLOBALS['TL_DCA']['tl_iso_tax_class'] = array
                 'href'              => 'act=delete',
                 'icon'              => 'delete.gif',
                 'attributes'        => 'onclick="if (!confirm(\'' . $GLOBALS['TL_LANG']['MSC']['deleteConfirm'] . '\')) return false; Backend.getScrollOffset();"',
-                'button_callback'   => array('Isotope\tl_iso_tax_class', 'deleteTaxClass'),
+                'button_callback'   => array('Isotope\Backend\DCA\tl_iso_tax_class', 'deleteTaxClass'),
             ),
             'show' => array
             (

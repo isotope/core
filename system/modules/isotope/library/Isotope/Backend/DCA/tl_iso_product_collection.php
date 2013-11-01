@@ -14,8 +14,9 @@
  * @author     Christian de la Haye <service@delahaye.de>
  */
 
-namespace Isotope;
+namespace Isotope\Backend\DCA;
 
+use Isotope\Isotope;
 use Isotope\Model\Address;
 use Isotope\Model\Document;
 use Isotope\Model\ProductCollection\Order;

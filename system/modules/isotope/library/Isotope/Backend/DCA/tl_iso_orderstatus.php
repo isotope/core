@@ -12,7 +12,7 @@
  * @author     Andreas Schempp <andreas.schempp@terminal42.ch>
  */
 
-namespace Isotope;
+namespace Isotope\Backend\DCA;
 
 
 class tl_iso_orderstatus extends \Backend

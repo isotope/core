@@ -17,7 +17,7 @@
 /**
  * Callbacks
  */
-$GLOBALS['TL_DCA']['tl_page']['config']['onload_callback'][] = array('Isotope\tl_page', 'limitReaderPageChoice');
+$GLOBALS['TL_DCA']['tl_page']['config']['onload_callback'][] = array('Isotope\Backend\DCA\tl_page', 'limitReaderPageChoice');
 
 /**
  * Extend tl_page palettes

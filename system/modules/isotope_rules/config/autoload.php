@@ -18,16 +18,6 @@ NamespaceClassLoader::add('Isotope', 'system/modules/isotope_rules/library');
 
 
 /**
- * Register classes outside the namespace folder
- */
-NamespaceClassLoader::addClassMap(array
-(
-    // DCA Helpers
-    'Isotope\tl_iso_rule'  => 'system/modules/isotope_rules/classes/tl_iso_rule.php',
-));
-
-
-/**
  * Register the templates
  */
 TemplateLoader::addFiles(array

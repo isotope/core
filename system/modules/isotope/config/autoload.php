@@ -22,29 +22,6 @@ NamespaceClassLoader::add('Isotope', 'system/modules/isotope/library');
  */
 NamespaceClassLoader::addClassMap(array
 (
-    // DCA Helpers
-    'Isotope\tl_iso_address'            => 'system/modules/isotope/classes/tl_iso_address.php',
-    'Isotope\tl_iso_attribute'          => 'system/modules/isotope/classes/tl_iso_attribute.php',
-    'Isotope\tl_iso_config'             => 'system/modules/isotope/classes/tl_iso_config.php',
-    'Isotope\tl_iso_document'           => 'system/modules/isotope/classes/tl_iso_document.php',
-    'Isotope\tl_iso_download'           => 'system/modules/isotope/classes/tl_iso_download.php',
-    'Isotope\tl_iso_group'              => 'system/modules/isotope/classes/tl_iso_group.php',
-    'Isotope\tl_iso_orderstatus'        => 'system/modules/isotope/classes/tl_iso_orderstatus.php',
-    'Isotope\tl_iso_payment'            => 'system/modules/isotope/classes/tl_iso_payment.php',
-    'Isotope\tl_iso_product_price'      => 'system/modules/isotope/classes/tl_iso_product_price.php',
-    'Isotope\tl_iso_product_category'   => 'system/modules/isotope/classes/tl_iso_product_category.php',
-    'Isotope\tl_iso_product_collection' => 'system/modules/isotope/classes/tl_iso_product_collection.php',
-    'Isotope\tl_iso_product'            => 'system/modules/isotope/classes/tl_iso_product.php',
-    'Isotope\tl_iso_producttype'        => 'system/modules/isotope/classes/tl_iso_producttype.php',
-    'Isotope\tl_iso_related_product'    => 'system/modules/isotope/classes/tl_iso_related_product.php',
-    'Isotope\tl_iso_shipping'           => 'system/modules/isotope/classes/tl_iso_shipping.php',
-    'Isotope\tl_iso_tax_class'          => 'system/modules/isotope/classes/tl_iso_tax_class.php',
-    'Isotope\tl_iso_tax_rate'           => 'system/modules/isotope/classes/tl_iso_tax_rate.php',
-    'Isotope\tl_member'                 => 'system/modules/isotope/classes/tl_member.php',
-    'Isotope\tl_module'                 => 'system/modules/isotope/classes/tl_module.php',
-    'Isotope\tl_page'                   => 'system/modules/isotope/classes/tl_page.php',
-    'Isotope\tl_user'                   => 'system/modules/isotope/classes/tl_user.php',
-
     // Drivers
     'DC_ProductData'                    => 'system/modules/isotope/drivers/DC_ProductData.php',
     'DC_TablePageId'                    => 'system/modules/isotope/drivers/DC_TablePageId.php',

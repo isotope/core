@@ -48,7 +48,7 @@ $GLOBALS['TL_DCA']['tl_iso_orderstatus'] = array
             'mode'                  => 5,
             'fields'                => array('name'),
             'panelLayout'           => 'filter;search,limit',
-            'paste_button_callback' => array('Isotope\tl_iso_orderstatus', 'pasteButton'),
+            'paste_button_callback' => array('Isotope\Backend\DCA\tl_iso_orderstatus', 'pasteButton'),
             'icon'                  => 'system/modules/isotope/assets/traffic-light.png',
         ),
         'label' => array

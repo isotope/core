@@ -13,7 +13,9 @@
  * @author     Fred Bliss <fred.bliss@intelligentspark.com>
  */
 
-namespace Isotope;
+namespace Isotope\Backend\DCA;
+
+use Isotope\Isotope;
 
 
 /**

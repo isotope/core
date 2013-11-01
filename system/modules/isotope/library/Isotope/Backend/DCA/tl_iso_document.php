@@ -13,7 +13,7 @@
  * @author     Fred Bliss <fred.bliss@intelligentspark.com>
  */
 
-namespace Isotope;
+namespace Isotope\Backend\DCA;
 
 
 class tl_iso_document extends \Backend

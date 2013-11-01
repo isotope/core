@@ -37,7 +37,7 @@ $GLOBALS['TL_DCA']['tl_iso_shipping'] = array
         'onload_callback' => array
         (
             array('Isotope\Backend', 'initializeSetupModule'),
-            array('Isotope\tl_iso_shipping', 'checkPermission'),
+            array('Isotope\Backend\DCA\tl_iso_shipping', 'checkPermission'),
         ),
         'sql' => array
         (
@@ -100,7 +100,7 @@ $GLOBALS['TL_DCA']['tl_iso_shipping'] = array
                 'label'             => &$GLOBALS['TL_LANG']['tl_iso_shipping']['copy'],
                 'href'              => 'act=copy',
                 'icon'              => 'copy.gif',
-                'button_callback'   => array('Isotope\tl_iso_shipping', 'copyShippingModule'),
+                'button_callback'   => array('Isotope\Backend\DCA\tl_iso_shipping', 'copyShippingModule'),
             ),
             'delete' => array
             (
@@ -108,14 +108,14 @@ $GLOBALS['TL_DCA']['tl_iso_shipping'] = array
                 'href'              => 'act=delete',
                 'icon'              => 'delete.gif',
                 'attributes'        => 'onclick="if (!confirm(\'' . $GLOBALS['TL_LANG']['MSC']['deleteConfirm'] . '\')) return false; Backend.getScrollOffset();"',
-                'button_callback'   => array('Isotope\tl_iso_shipping', 'deleteShippingModule'),
+                'button_callback'   => array('Isotope\Backend\DCA\tl_iso_shipping', 'deleteShippingModule'),
             ),
 			'toggle' => array
 			(
 				'label'               => &$GLOBALS['TL_LANG']['tl_iso_shipping']['toggle'],
 				'icon'                => 'visible.gif',
 				'attributes'          => 'onclick="Backend.getScrollOffset();return AjaxRequest.toggleVisibility(this,%s)"',
-				'button_callback'     => array('Isotope\tl_iso_shipping', 'toggleIcon')
+				'button_callback'     => array('Isotope\Backend\DCA\tl_iso_shipping', 'toggleIcon')
 			),
             'show' => array
             (

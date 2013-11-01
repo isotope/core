@@ -14,7 +14,7 @@
  * @author     Kamil Kuzminski <kamil.kuzminski@codefog.pl>
  */
 
-namespace Isotope;
+namespace Isotope\Backend\DCA;
 
 use Isotope\Model\Group;
 

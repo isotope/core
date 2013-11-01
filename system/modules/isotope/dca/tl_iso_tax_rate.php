@@ -29,8 +29,8 @@ $GLOBALS['TL_DCA']['tl_iso_tax_rate'] = array
         'onload_callback' => array
         (
             array('Isotope\Backend', 'initializeSetupModule'),
-            array('Isotope\tl_iso_tax_rate', 'checkPermission'),
-            array('Isotope\tl_iso_tax_rate', 'addCurrencyRate'),
+            array('Isotope\Backend\DCA\tl_iso_tax_rate', 'checkPermission'),
+            array('Isotope\Backend\DCA\tl_iso_tax_rate', 'addCurrencyRate'),
         ),
         'sql' => array
         (
@@ -55,7 +55,7 @@ $GLOBALS['TL_DCA']['tl_iso_tax_rate'] = array
         (
             'fields'                => array('name'),
             'format'                => '%s',
-            'label_callback'        => array('Isotope\tl_iso_tax_rate', 'listRow'),
+            'label_callback'        => array('Isotope\Backend\DCA\tl_iso_tax_rate', 'listRow'),
         ),
         'global_operations' => array
         (
@@ -94,7 +94,7 @@ $GLOBALS['TL_DCA']['tl_iso_tax_rate'] = array
                 'label'             => &$GLOBALS['TL_LANG']['tl_iso_tax_rate']['copy'],
                 'href'              => 'act=copy',
                 'icon'              => 'copy.gif',
-                'button_callback'   => array('Isotope\tl_iso_tax_rate', 'copyTaxRate'),
+                'button_callback'   => array('Isotope\Backend\DCA\tl_iso_tax_rate', 'copyTaxRate'),
             ),
             'delete' => array
             (
@@ -102,7 +102,7 @@ $GLOBALS['TL_DCA']['tl_iso_tax_rate'] = array
                 'href'              => 'act=delete',
                 'icon'              => 'delete.gif',
                 'attributes'        => 'onclick="if (!confirm(\'' . $GLOBALS['TL_LANG']['MSC']['deleteConfirm'] . '\')) return false; Backend.getScrollOffset();"',
-                'button_callback'   => array('Isotope\tl_iso_tax_rate', 'deleteTaxRate'),
+                'button_callback'   => array('Isotope\Backend\DCA\tl_iso_tax_rate', 'deleteTaxRate'),
             ),
             'show' => array
             (

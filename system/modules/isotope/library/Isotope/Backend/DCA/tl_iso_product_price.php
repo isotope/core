@@ -14,7 +14,9 @@
  * @author     Christian de la Haye <service@delahaye.de>
  */
 
-namespace Isotope;
+namespace Isotope\Backend\DCA;
+
+use Isotope\Isotope;
 
 
 /**

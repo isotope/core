@@ -30,7 +30,7 @@ $GLOBALS['TL_DCA']['tl_iso_product_price'] = array
         'ctable'                    => array('tl_iso_product_pricetier'),
         'onload_callback' => array
         (
-            array('Isotope\tl_iso_product_price', 'initializeDCA'),
+            array('Isotope\Backend\DCA\tl_iso_product_price', 'initializeDCA'),
         ),
         'sql' => array
         (
@@ -53,7 +53,7 @@ $GLOBALS['TL_DCA']['tl_iso_product_price'] = array
             'panelLayout'           => 'filter;search,limit',
             'headerFields'          => array('id', 'name', 'alias', 'sku'),
             'disableGrouping'       => true,
-            'child_record_callback' => array('Isotope\tl_iso_product_price', 'listRows')
+            'child_record_callback' => array('Isotope\Backend\DCA\tl_iso_product_price', 'listRows')
         ),
         'global_operations' => array
         (
@@ -147,11 +147,11 @@ $GLOBALS['TL_DCA']['tl_iso_product_price'] = array
             ),
             'load_callback' => array
             (
-                array('Isotope\tl_iso_product_price', 'loadTiers'),
+                array('Isotope\Backend\DCA\tl_iso_product_price', 'loadTiers'),
             ),
             'save_callback' => array
             (
-                array('Isotope\tl_iso_product_price', 'saveTiers'),
+                array('Isotope\Backend\DCA\tl_iso_product_price', 'saveTiers'),
             ),
         ),
         'tax_class' => array

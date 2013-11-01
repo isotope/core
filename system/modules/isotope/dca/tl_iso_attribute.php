@@ -36,12 +36,12 @@ $GLOBALS['TL_DCA']['tl_iso_attribute'] = array
         'onload_callback' => array
         (
             array('Isotope\Backend', 'initializeSetupModule'),
-            array('Isotope\tl_iso_attribute', 'disableFieldName'),
-            array('Isotope\tl_iso_attribute', 'prepareForVariantOptions'),
+            array('Isotope\Backend\DCA\tl_iso_attribute', 'disableFieldName'),
+            array('Isotope\Backend\DCA\tl_iso_attribute', 'prepareForVariantOptions'),
         ),
         'onsubmit_callback' => array
         (
-            array('Isotope\tl_iso_attribute', 'updateDatabase'),
+            array('Isotope\Backend\DCA\tl_iso_attribute', 'updateDatabase'),
         ),
         'sql' => array
         (
@@ -175,7 +175,7 @@ $GLOBALS['TL_DCA']['tl_iso_attribute'] = array
             'sql'                   => "varchar(30) NOT NULL default ''",
             'save_callback' => array
             (
-                array('Isotope\tl_iso_attribute', 'validateFieldName'),
+                array('Isotope\Backend\DCA\tl_iso_attribute', 'validateFieldName'),
             ),
         ),
         'type' => array
@@ -254,7 +254,7 @@ $GLOBALS['TL_DCA']['tl_iso_attribute'] = array
             'sql'                   => "text NULL",
             'save_callback' => array
             (
-                array('Isotope\tl_iso_attribute', 'validateForeignKey'),
+                array('Isotope\Backend\DCA\tl_iso_attribute', 'validateForeignKey'),
             ),
         ),
         'variant_option' => array
@@ -347,7 +347,7 @@ $GLOBALS['TL_DCA']['tl_iso_attribute'] = array
             'label'                 => &$GLOBALS['TL_LANG']['tl_iso_attribute']['rte'],
             'exclude'               => true,
             'inputType'             => 'select',
-            'options_callback'      => array('Isotope\tl_iso_attribute', 'getRTE'),
+            'options_callback'      => array('Isotope\Backend\DCA\tl_iso_attribute', 'getRTE'),
             'eval'                  => array('includeBlankOption'=>true, 'tl_class'=>'w50', 'chosen'=>true),
             'sql'                   => "varchar(255) NOT NULL default ''",
         ),
@@ -382,7 +382,7 @@ $GLOBALS['TL_DCA']['tl_iso_attribute'] = array
             'label'                 => &$GLOBALS['TL_LANG']['tl_iso_attribute']['conditionField'],
             'exclude'               => true,
             'inputType'             => 'select',
-            'options_callback'      => array('Isotope\tl_iso_attribute', 'getConditionFields'),
+            'options_callback'      => array('Isotope\Backend\DCA\tl_iso_attribute', 'getConditionFields'),
             'eval'                  => array('includeBlankOption'=>true, 'mandatory'=>true, 'tl_class'=>'w50', 'chosen'=>true),
             'sql'                   => "varchar(30) NOT NULL default ''",
         ),
@@ -471,7 +471,7 @@ $GLOBALS['TL_DCA']['tl_iso_attribute'] = array
             'sql'                   => "char(1) NOT NULL default ''",
             'save_callback' => array
             (
-                array('Isotope\tl_iso_attribute', 'validateDatepicker'),
+                array('Isotope\Backend\DCA\tl_iso_attribute', 'validateDatepicker'),
             ),
         ),
     ),
