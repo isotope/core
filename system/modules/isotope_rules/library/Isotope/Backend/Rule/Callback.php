@@ -10,10 +10,10 @@
  * @license    http://opensource.org/licenses/lgpl-3.0.html LGPL
  */
 
-namespace Isotope\Backend\DCA;
+namespace Isotope\Backend\Rule;
 
 
-class tl_iso_rule extends \Backend
+class Callback extends \Backend
 {
 
     public function __construct()

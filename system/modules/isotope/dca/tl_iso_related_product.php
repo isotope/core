@@ -28,7 +28,7 @@ $GLOBALS['TL_DCA']['tl_iso_related_product'] = array
         'ptable'                    => 'tl_iso_product',
         'onload_callback'           => array
         (
-            array('Isotope\Backend\DCA\tl_iso_related_product', 'initDCA')
+            array('Isotope\Backend\RelatedProduct\Callback', 'initDCA')
         ),
         'sql' => array
         (
@@ -51,7 +51,7 @@ $GLOBALS['TL_DCA']['tl_iso_related_product'] = array
             'panelLayout'           => 'filter,limit',
             'headerFields'          => array('type', 'name', 'alias', 'sku'),
             'disableGrouping'       => true,
-            'child_record_callback' => array('Isotope\Backend\DCA\tl_iso_related_product', 'listRows')
+            'child_record_callback' => array('Isotope\Backend\RelatedProduct\Callback', 'listRows')
         ),
         'global_operations' => array
         (

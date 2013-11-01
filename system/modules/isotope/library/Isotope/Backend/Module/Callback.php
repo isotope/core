@@ -13,17 +13,13 @@
  * @author     Fred Bliss <fred.bliss@intelligentspark.com>
  */
 
-namespace Isotope\Backend\DCA;
+namespace Isotope\Backend\Module;
 
 use Isotope\Model\Payment;
 use Isotope\Model\Shipping;
 
 
-/**
- * Class tl_module_isotope
- * Provide miscellaneous methods that are used by the data configuration array.
- */
-class tl_module extends \Backend
+class Callback extends \Backend
 {
 
     /**

@@ -28,7 +28,7 @@ $GLOBALS['TL_DCA']['tl_iso_rule'] = array
         'enableVersioning'                  => false,
         'onload_callback' => array
         (
-            array('\Isotope\Backend\DCA\tl_iso_rule', 'loadAttributeValues'),
+            array('\Isotope\Backend\Rule\Callback', 'loadAttributeValues'),
         ),
         'sql' => array
         (
@@ -89,7 +89,7 @@ $GLOBALS['TL_DCA']['tl_iso_rule'] = array
                 'label'                     => &$GLOBALS['TL_LANG']['tl_iso_rule']['toggle'],
                 'icon'                      => 'visible.gif',
                 'attributes'                => 'onclick="Backend.getScrollOffset(); return AjaxRequest.toggleVisibility(this, %s);"',
-                'button_callback'           => array('\Isotope\Backend\DCA\tl_iso_rule', 'toggleIcon'),
+                'button_callback'           => array('\Isotope\Backend\Rule\Callback', 'toggleIcon'),
             ),
             'show' => array
             (
@@ -334,11 +334,11 @@ $GLOBALS['TL_DCA']['tl_iso_rule'] = array
             'eval'                          => array('mandatory'=>true, 'multiple'=>true, 'doNotSaveEmpty'=>true, 'tl_class'=>'clr w50 w50h'),
             'load_callback' => array
             (
-                array('\Isotope\Backend\DCA\tl_iso_rule', 'loadRestrictions'),
+                array('\Isotope\Backend\Rule\Callback', 'loadRestrictions'),
             ),
             'save_callback' => array
             (
-                array('\Isotope\Backend\DCA\tl_iso_rule', 'saveRestrictions'),
+                array('\Isotope\Backend\Rule\Callback', 'saveRestrictions'),
             ),
         ),
         'memberRestrictions' => array
@@ -371,11 +371,11 @@ $GLOBALS['TL_DCA']['tl_iso_rule'] = array
             'eval'                          => array('mandatory'=>true, 'multiple'=>true, 'doNotSaveEmpty'=>true, 'tl_class'=>'clr'),
             'load_callback' => array
             (
-                array('\Isotope\Backend\DCA\tl_iso_rule', 'loadRestrictions'),
+                array('\Isotope\Backend\Rule\Callback', 'loadRestrictions'),
             ),
             'save_callback' => array
             (
-                array('\Isotope\Backend\DCA\tl_iso_rule', 'saveRestrictions'),
+                array('\Isotope\Backend\Rule\Callback', 'saveRestrictions'),
             ),
         ),
         'members' => array
@@ -397,11 +397,11 @@ $GLOBALS['TL_DCA']['tl_iso_rule'] = array
             ),
             'load_callback' => array
             (
-                array('\Isotope\Backend\DCA\tl_iso_rule', 'loadRestrictions'),
+                array('\Isotope\Backend\Rule\Callback', 'loadRestrictions'),
             ),
             'save_callback' => array
             (
-                array('\Isotope\Backend\DCA\tl_iso_rule', 'saveRestrictions'),
+                array('\Isotope\Backend\Rule\Callback', 'saveRestrictions'),
             ),
         ),
         'productRestrictions' => array
@@ -434,11 +434,11 @@ $GLOBALS['TL_DCA']['tl_iso_rule'] = array
             'eval'                          => array('mandatory'=>true, 'multiple'=>true, 'doNotSaveEmpty'=>true, 'tl_class'=>'clr'),
             'load_callback' => array
             (
-                array('\Isotope\Backend\DCA\tl_iso_rule', 'loadRestrictions'),
+                array('\Isotope\Backend\Rule\Callback', 'loadRestrictions'),
             ),
             'save_callback' => array
             (
-                array('\Isotope\Backend\DCA\tl_iso_rule', 'saveRestrictions'),
+                array('\Isotope\Backend\Rule\Callback', 'saveRestrictions'),
             ),
         ),
         'pages' => array
@@ -450,11 +450,11 @@ $GLOBALS['TL_DCA']['tl_iso_rule'] = array
             'eval'                          => array('mandatory'=>true, 'multiple'=>true, 'fieldType'=>'checkbox', 'doNotSaveEmpty'=>true, 'tl_class'=>'clr'),
             'load_callback' => array
             (
-                array('\Isotope\Backend\DCA\tl_iso_rule', 'loadRestrictions'),
+                array('\Isotope\Backend\Rule\Callback', 'loadRestrictions'),
             ),
             'save_callback' => array
             (
-                array('\Isotope\Backend\DCA\tl_iso_rule', 'saveRestrictions'),
+                array('\Isotope\Backend\Rule\Callback', 'saveRestrictions'),
             ),
         ),
         'products'     => array
@@ -476,11 +476,11 @@ $GLOBALS['TL_DCA']['tl_iso_rule'] = array
             ),
             'load_callback' => array
             (
-                array('\Isotope\Backend\DCA\tl_iso_rule', 'loadRestrictions'),
+                array('\Isotope\Backend\Rule\Callback', 'loadRestrictions'),
             ),
             'save_callback' => array
             (
-                array('\Isotope\Backend\DCA\tl_iso_rule', 'saveRestrictions'),
+                array('\Isotope\Backend\Rule\Callback', 'saveRestrictions'),
             ),
         ),
         'variants' => array
@@ -491,11 +491,11 @@ $GLOBALS['TL_DCA']['tl_iso_rule'] = array
             'eval'                          => array('mandatory'=>true, 'doNotSaveEmpty'=>true, 'csv'=>',', 'tl_class'=>'clr long'),
             'load_callback' => array
             (
-                array('\Isotope\Backend\DCA\tl_iso_rule', 'loadRestrictions'),
+                array('\Isotope\Backend\Rule\Callback', 'loadRestrictions'),
             ),
             'save_callback' => array
             (
-                array('\Isotope\Backend\DCA\tl_iso_rule', 'saveRestrictions'),
+                array('\Isotope\Backend\Rule\Callback', 'saveRestrictions'),
             ),
         ),
         'attributeName' => array
@@ -503,7 +503,7 @@ $GLOBALS['TL_DCA']['tl_iso_rule'] = array
             'label'                         => &$GLOBALS['TL_LANG']['tl_iso_rule']['attributeName'],
             'exclude'                       => true,
             'inputType'                     => 'select',
-            'options_callback'              => array('\Isotope\Backend\DCA\tl_iso_rule', 'getAttributeNames'),
+            'options_callback'              => array('\Isotope\Backend\Rule\Callback', 'getAttributeNames'),
             'eval'                          => array('mandatory'=>true, 'includeBlankOption'=>true, 'submitOnChange'=>true, 'tl_class'=>'clr w50'),
             'sql'                           => "varchar(32) NOT NULL default ''",
         ),

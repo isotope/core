@@ -13,14 +13,10 @@
  * @author     Fred Bliss <fred.bliss@intelligentspark.com>
  */
 
-namespace Isotope\Backend\DCA;
+namespace Isotope\Backend\Page;
 
 
-/**
- * Class tl_page
- * Provide miscellaneous methods that are used by the data configuration array.
- */
-class tl_page extends \Backend
+class Callback extends \Backend
 {
 
     /**

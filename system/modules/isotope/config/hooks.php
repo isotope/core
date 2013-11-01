@@ -31,7 +31,7 @@ $GLOBALS['ISO_HOOKS']['findSurchargesForCollection'][]  = array('Isotope\Fronten
 
 if (TL_MODE == 'FE') {
     // Only limit countries in FE
-    $GLOBALS['TL_HOOKS']['loadDataContainer'][]        = array('Isotope\Backend\DCA\tl_member', 'limitCountries');
+    $GLOBALS['TL_HOOKS']['loadDataContainer'][]        = array('Isotope\Backend\Member\Callback', 'limitCountries');
 }
 
 if (TL_MODE == 'BE') {

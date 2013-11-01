@@ -12,10 +12,10 @@
  * @author     Andreas Schempp <andreas.schempp@terminal42.ch>
  */
 
-namespace Isotope\Backend\DCA;
+namespace Isotope\Backend\OrderStatus;
 
 
-class tl_iso_orderstatus extends \Backend
+class Callback extends \Backend
 {
 
     /**

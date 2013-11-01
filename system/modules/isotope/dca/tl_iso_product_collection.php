@@ -38,11 +38,11 @@ $GLOBALS['TL_DCA']['tl_iso_product_collection'] = array
         'notDeletable'              => (\Input::get('act') == 'select'),
         'onload_callback' => array
         (
-            array('Isotope\Backend\DCA\tl_iso_product_collection', 'checkPermission'),
+            array('Isotope\Backend\ProductCollection\Callback', 'checkPermission'),
         ),
         'onsubmit_callback' => array
         (
-            array('Isotope\Backend\DCA\tl_iso_product_collection', 'executeSaveHook'),
+            array('Isotope\Backend\ProductCollection\Callback', 'executeSaveHook'),
         ),
         'sql' => array
         (
@@ -70,7 +70,7 @@ $GLOBALS['TL_DCA']['tl_iso_product_collection'] = array
         (
             'fields'                => array('document_number', 'locked', 'address1_id', 'grandTotal', 'order_status'),
             'showColumns'           => true,
-            'label_callback'        => array('Isotope\Backend\DCA\tl_iso_product_collection', 'getOrderLabel')
+            'label_callback'        => array('Isotope\Backend\ProductCollection\Callback', 'getOrderLabel')
         ),
         'global_operations' => array
         (
@@ -108,14 +108,14 @@ $GLOBALS['TL_DCA']['tl_iso_product_collection'] = array
                 'label'             => &$GLOBALS['TL_LANG']['tl_iso_product_collection']['payment'],
                 'href'              => 'key=payment',
                 'icon'              => 'system/modules/isotope/assets/money-coin.png',
-                'button_callback'   => array('\Isotope\Backend\DCA\tl_iso_product_collection', 'paymentButton'),
+                'button_callback'   => array('\Isotope\Backend\ProductCollection\Callback', 'paymentButton'),
             ),
             'shipping' => array
             (
                 'label'             => &$GLOBALS['TL_LANG']['tl_iso_product_collection']['shipping'],
                 'href'              => 'key=shipping',
                 'icon'              => 'system/modules/isotope/assets/box-label.png',
-                'button_callback'   => array('\Isotope\Backend\DCA\tl_iso_product_collection', 'shippingButton'),
+                'button_callback'   => array('\Isotope\Backend\ProductCollection\Callback', 'shippingButton'),
             ),
             'print_document' => array
             (
@@ -222,7 +222,7 @@ $GLOBALS['TL_DCA']['tl_iso_product_collection'] = array
             'relation'              => array('type'=>'hasOne', 'load'=>'lazy'),
             'save_callback' => array
             (
-                array('Isotope\Backend\DCA\tl_iso_product_collection', 'updateOrderStatus'),
+                array('Isotope\Backend\ProductCollection\Callback', 'updateOrderStatus'),
             ),
         ),
         'date_paid' => array
@@ -281,7 +281,7 @@ $GLOBALS['TL_DCA']['tl_iso_product_collection'] = array
         ),
         'details' => array
         (
-            'input_field_callback'  => array('Isotope\Backend\DCA\tl_iso_product_collection', 'generateOrderDetails'),
+            'input_field_callback'  => array('Isotope\Backend\ProductCollection\Callback', 'generateOrderDetails'),
             'eval'                  => array('doNotShow'=>true),
         ),
         'subtotal' => array
@@ -324,17 +324,17 @@ $GLOBALS['TL_DCA']['tl_iso_product_collection'] = array
         ),
         'email_data' => array
         (
-            'input_field_callback'  => array('Isotope\Backend\DCA\tl_iso_product_collection', 'generateEmailData'),
+            'input_field_callback'  => array('Isotope\Backend\ProductCollection\Callback', 'generateEmailData'),
             'eval'                  => array('doNotShow'=>true),
         ),
         'billing_address_data' => array
         (
-            'input_field_callback'  => array('Isotope\Backend\DCA\tl_iso_product_collection', 'generateBillingAddressData'),
+            'input_field_callback'  => array('Isotope\Backend\ProductCollection\Callback', 'generateBillingAddressData'),
             'eval'                  => array('doNotShow'=>true),
         ),
         'shipping_address_data' => array
         (
-            'input_field_callback'  => array('Isotope\Backend\DCA\tl_iso_product_collection', 'generateShippingAddressData'),
+            'input_field_callback'  => array('Isotope\Backend\ProductCollection\Callback', 'generateShippingAddressData'),
             'eval'                  => array('doNotShow'=>true),
         ),
     )

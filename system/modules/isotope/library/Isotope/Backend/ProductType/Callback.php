@@ -12,16 +12,12 @@
  * @author     Fred Bliss <fred.bliss@intelligentspark.com>
  */
 
-namespace Isotope\Backend\DCA;
+namespace Isotope\Backend\ProductType;
 
 use Isotope\Model\Product;
 
 
-/**
- * Class tl_iso_producttype
- * Provide miscellaneous methods that are used by the data configuration array.
- */
-class tl_iso_producttype extends \Backend
+class Callback extends \Backend
 {
 
     /**
@@ -240,14 +236,14 @@ class tl_iso_producttype extends \Backend
             ),
             'name' => array
             (
-                'input_field_callback'  => array('Isotope\Backend\DCA\tl_iso_producttype', 'getAttributeName'),
+                'input_field_callback'  => array('Isotope\Backend\ProductType\Callback', 'getAttributeName'),
                 'eval'                  => array('hideHead'=>true, 'tl_class'=>'mcwUpdateFields'),
             ),
             'legend' => array
             (
                 'label'                 => &$GLOBALS['TL_LANG']['tl_iso_producttype']['attributes']['legend'],
                 'inputType'             => 'select',
-                'options_callback'      => array('Isotope\Backend\DCA\tl_iso_producttype', 'getLegends'),
+                'options_callback'      => array('Isotope\Backend\ProductType\Callback', 'getLegends'),
                 'eval'                  => array('style'=>'width:150px', 'class'=>'extendable'),
             ),
             'tl_class' => array

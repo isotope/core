@@ -29,8 +29,8 @@ $GLOBALS['TL_DCA']['tl_iso_payment'] = array
         'onload_callback' => array
         (
             array('Isotope\Backend', 'initializeSetupModule'),
-            array('Isotope\Backend\DCA\tl_iso_payment', 'checkPermission'),
-            array('Isotope\Backend\DCA\tl_iso_payment', 'loadShippingModules'),
+            array('Isotope\Backend\Payment\Callback', 'checkPermission'),
+            array('Isotope\Backend\Payment\Callback', 'loadShippingModules'),
         ),
         'sql' => array
         (
@@ -93,7 +93,7 @@ $GLOBALS['TL_DCA']['tl_iso_payment'] = array
                 'label'             => &$GLOBALS['TL_LANG']['tl_iso_payment']['copy'],
                 'href'              => 'act=copy',
                 'icon'              => 'copy.gif',
-                'button_callback'   => array('Isotope\Backend\DCA\tl_iso_payment', 'copyPaymentModule'),
+                'button_callback'   => array('Isotope\Backend\Payment\Callback', 'copyPaymentModule'),
             ),
             'delete' => array
             (
@@ -101,14 +101,14 @@ $GLOBALS['TL_DCA']['tl_iso_payment'] = array
                 'href'              => 'act=delete',
                 'icon'              => 'delete.gif',
                 'attributes'        => 'onclick="if (!confirm(\'' . $GLOBALS['TL_LANG']['MSC']['deleteConfirm'] . '\')) return false; Backend.getScrollOffset();"',
-                'button_callback'   => array('Isotope\Backend\DCA\tl_iso_payment', 'deletePaymentModule'),
+                'button_callback'   => array('Isotope\Backend\Payment\Callback', 'deletePaymentModule'),
             ),
             'toggle' => array
             (
                 'label'             => &$GLOBALS['TL_LANG']['tl_iso_payment']['toggle'],
                 'icon'              => 'visible.gif',
                 'attributes'        => 'onclick="Backend.getScrollOffset();return AjaxRequest.toggleVisibility(this,%s)"',
-                'button_callback'   => array('Isotope\Backend\DCA\tl_iso_payment', 'toggleIcon')
+                'button_callback'   => array('Isotope\Backend\Payment\Callback', 'toggleIcon')
             ),
             'show' => array
             (
@@ -227,7 +227,7 @@ $GLOBALS['TL_DCA']['tl_iso_payment'] = array
             'exclude'               => true,
             'filter'                => true,
             'inputType'             => 'checkbox',
-            'options_callback'      => array('Isotope\Backend\DCA\tl_iso_payment', 'getAllowedCCTypes'),
+            'options_callback'      => array('Isotope\Backend\Payment\Callback', 'getAllowedCCTypes'),
             'eval'                  => array('multiple'=>true, 'tl_class'=>'clr'),
             'sql'                   => "text NULL",
         ),

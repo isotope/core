@@ -29,12 +29,12 @@ $GLOBALS['TL_DCA']['tl_iso_group'] = array
         'enableVersioning'          => true,
         'onload_callback' => array
         (
-            array('Isotope\Backend\DCA\tl_iso_group', 'checkPermission'),
-            array('Isotope\Backend\DCA\tl_iso_group', 'addBreadcrumb'),
+            array('Isotope\Backend\Group\Callback', 'checkPermission'),
+            array('Isotope\Backend\Group\Callback', 'addBreadcrumb'),
         ),
         'ondelete_callback' => array
         (
-            array('Isotope\Backend\DCA\tl_iso_group', 'deleteGroup'),
+            array('Isotope\Backend\Group\Callback', 'deleteGroup'),
         ),
         'sql' => array
         (
@@ -60,7 +60,7 @@ $GLOBALS['TL_DCA']['tl_iso_group'] = array
         (
             'fields'                => array('name'),
             'format'                => '%s',
-            'label_callback'        => array('Isotope\Backend\DCA\tl_iso_group', 'addIcon')
+            'label_callback'        => array('Isotope\Backend\Group\Callback', 'addIcon')
         ),
         'global_operations' => array
         (
@@ -86,7 +86,7 @@ $GLOBALS['TL_DCA']['tl_iso_group'] = array
                 'href'              => 'table=tl_iso_group&amp;act=paste&amp;mode=copy',
                 'icon'              => 'copy.gif',
                 'attributes'        => 'onclick="Backend.getScrollOffset()"',
-                'button_callback'   => array('Isotope\Backend\DCA\tl_iso_group', 'copyButton'),
+                'button_callback'   => array('Isotope\Backend\Group\Callback', 'copyButton'),
             ),
             'copyChilds' => array
             (
@@ -94,7 +94,7 @@ $GLOBALS['TL_DCA']['tl_iso_group'] = array
                 'href'              => 'table=tl_iso_group&amp;act=paste&amp;mode=copy&amp;childs=1',
                 'icon'              => 'copychilds.gif',
                 'attributes'        => 'onclick="Backend.getScrollOffset()"',
-                'button_callback'   => array('Isotope\Backend\DCA\tl_iso_group', 'copyButton'),
+                'button_callback'   => array('Isotope\Backend\Group\Callback', 'copyButton'),
             ),
             'cut' => array
             (
@@ -109,7 +109,7 @@ $GLOBALS['TL_DCA']['tl_iso_group'] = array
                 'href'              => 'table=tl_iso_group&amp;act=delete',
                 'icon'              => 'delete.gif',
                 'attributes'        => 'onclick="if (!confirm(\'' . $GLOBALS['TL_LANG']['MSC']['deleteConfirm'] . '\')) return false; Backend.getScrollOffset();"',
-                'button_callback'   => array('Isotope\Backend\DCA\tl_iso_group', 'deleteButton'),
+                'button_callback'   => array('Isotope\Backend\Group\Callback', 'deleteButton'),
             ),
             'show' => array
             (

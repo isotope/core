@@ -168,7 +168,7 @@ $GLOBALS['TL_DCA']['tl_user_group']['fields']['iso_groups'] = array
     'label'                 => &$GLOBALS['TL_LANG']['tl_user']['iso_groups'],
     'exclude'               => true,
     'inputType'             => 'checkbox',
-    'options_callback'      => array('\Isotope\Backend\DCA\tl_user', 'getGroups'),
+    'options_callback'      => array('\Isotope\Backend\User\Callback', 'getGroups'),
     'eval'                  => array('multiple'=>true, 'tl_class'=>'clr w50 w50h'),
     'sql'                   => 'blob NULL',
 );

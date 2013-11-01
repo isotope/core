@@ -14,15 +14,10 @@
  * @author     Christian de la Haye <service@delahaye.de>
  */
 
-namespace Isotope\Backend\DCA;
+namespace Isotope\Backend\Attribute;
 
 
-/**
- * Class tl_iso_attribuets
- *
- * Provide miscellaneous methods that are used by the data configuration array.
- */
-class tl_iso_attribute extends \Backend
+class Callback extends \Backend
 {
 
     /**

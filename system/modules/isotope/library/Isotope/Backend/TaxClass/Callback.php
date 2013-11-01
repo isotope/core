@@ -13,14 +13,10 @@
  * @author     Fred Bliss <fred.bliss@intelligentspark.com>
  */
 
-namespace Isotope\Backend\DCA;
+namespace Isotope\Backend\TaxClass;
 
 
-/**
- * Class tl_iso_tax_class
- * Provide miscellaneous methods that are used by the data configuration array.
- */
-class tl_iso_tax_class extends \Backend
+class Callback extends \Backend
 {
 
     /**

@@ -13,15 +13,10 @@
  * @author     Fred Bliss <fred.bliss@intelligentspark.com>
  */
 
-namespace Isotope\Backend\DCA;
+namespace Isotope\Backend\Address;
 
 
-/**
- * Class tl_iso_address
- *
- * Provide miscellaneous methods that are used by the data configuration array.
- */
-class tl_iso_address extends \Backend
+class Callback extends \Backend
 {
 
     /**

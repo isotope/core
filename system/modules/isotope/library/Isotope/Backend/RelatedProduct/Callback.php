@@ -13,16 +13,12 @@
  * @author     Fred Bliss <fred.bliss@intelligentspark.com>
  */
 
-namespace Isotope\Backend\DCA;
+namespace Isotope\Backend\RelatedProduct;
 
 use Isotope\Model\RelatedCategory;
 
 
-/**
- * Class tl_iso_related_product
- * Provide miscellaneous methods that are used by the data configuration array.
- */
-class tl_iso_related_product extends \Backend
+class Callback extends \Backend
 {
 
     /**

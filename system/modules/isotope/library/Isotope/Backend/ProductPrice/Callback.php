@@ -14,16 +14,12 @@
  * @author     Christian de la Haye <service@delahaye.de>
  */
 
-namespace Isotope\Backend\DCA;
+namespace Isotope\Backend\ProductPrice;
 
 use Isotope\Isotope;
 
 
-/**
- * Class tl_iso_product_price
- * Provide miscellaneous methods that are used by the data configuration array.
- */
-class tl_iso_product_price extends \Backend
+class Callback extends \Backend
 {
 
     /**

@@ -13,16 +13,12 @@
  * @author     Fred Bliss <fred.bliss@intelligentspark.com>
  */
 
-namespace Isotope\Backend\DCA;
+namespace Isotope\Backend\Member;
 
 use Isotope\Isotope;
 
 
-/**
- * Class tl_module
- * Provide miscellaneous methods that are used by the data configuration array.
- */
-class tl_member extends \Backend
+class Callback extends \Backend
 {
 
     /**

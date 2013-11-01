@@ -13,17 +13,13 @@
  * @author     Fred Bliss <fred.bliss@intelligentspark.com>
  */
 
-namespace Isotope\Backend\DCA;
+namespace Isotope\Backend\Download;
 
 use Isotope\Model\Download;
 use Isotope\Model\ProductCollectionDownload;
 
 
-/**
- * Class tl_iso_download
- * Provide miscellaneous methods that are used by the data configuration array.
- */
-class tl_iso_download extends \Backend
+class Callback extends \Backend
 {
 
     /**

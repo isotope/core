@@ -14,7 +14,7 @@
  * @author     Christian de la Haye <service@delahaye.de>
  */
 
-namespace Isotope\Backend\DCA;
+namespace Isotope\Backend\ProductCollection;
 
 use Isotope\Isotope;
 use Isotope\Model\Address;
@@ -22,11 +22,7 @@ use Isotope\Model\Document;
 use Isotope\Model\ProductCollection\Order;
 
 
-/**
- * Class tl_iso_product_collection
- * Provide miscellaneous methods that are used by the data configuration array.
- */
-class tl_iso_product_collection extends \Backend
+class Callback extends \Backend
 {
 
     /**

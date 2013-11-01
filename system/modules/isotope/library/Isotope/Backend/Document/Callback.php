@@ -13,10 +13,10 @@
  * @author     Fred Bliss <fred.bliss@intelligentspark.com>
  */
 
-namespace Isotope\Backend\DCA;
+namespace Isotope\Backend\Document;
 
 
-class tl_iso_document extends \Backend
+class Callback extends \Backend
 {
     /**
      * Return list templates as array

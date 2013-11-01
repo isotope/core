@@ -13,17 +13,14 @@
  * @author     Fred Bliss <fred.bliss@intelligentspark.com>
  */
 
-namespace Isotope\Backend\DCA;
+namespace Isotope\Backend\TaxRate;
 
 use Isotope\Isotope;
 use Isotope\Model\Config;
 use Isotope\Model\TaxRate;
 
-/**
- * Class tl_iso_tax_rate
- * Provide miscellaneous methods that are used by the data configuration array.
- */
-class tl_iso_tax_rate extends \Backend
+
+class Callback extends \Backend
 {
 
     /**

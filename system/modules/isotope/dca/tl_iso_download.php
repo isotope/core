@@ -46,7 +46,7 @@ $GLOBALS['TL_DCA']['tl_iso_download'] = array
             'flag'                  => 1,
             'panelLayout'           => 'filter;search,limit',
             'headerFields'          => array('name', 'alias', 'sku'),
-            'child_record_callback' => array('Isotope\Backend\DCA\tl_iso_download', 'listRows'),
+            'child_record_callback' => array('Isotope\Backend\Download\Callback', 'listRows'),
             'disableGrouping'       => true,
         ),
         'label' => array
@@ -92,14 +92,14 @@ $GLOBALS['TL_DCA']['tl_iso_download'] = array
                 'href'              => 'act=delete',
                 'icon'              => 'delete.gif',
                 'attributes'        => 'onclick="if (!confirm(\'' . $GLOBALS['TL_LANG']['MSC']['deleteConfirm'] . '\')) return false; Backend.getScrollOffset();"',
-                'button_callback'   => array('Isotope\Backend\DCA\tl_iso_download', 'deleteButton'),
+                'button_callback'   => array('Isotope\Backend\Download\Callback', 'deleteButton'),
             ),
             'toggle' => array
             (
                 'label'             => &$GLOBALS['TL_LANG']['tl_iso_download']['toggle'],
                 'icon'              => 'visible.gif',
                 'attributes'        => 'onclick="Backend.getScrollOffset(); return AjaxRequest.toggleVisibility(this, %s);"',
-                'button_callback'   => array('Isotope\Backend\DCA\tl_iso_download', 'toggleIcon')
+                'button_callback'   => array('Isotope\Backend\Download\Callback', 'toggleIcon')
             ),
             'show' => array
             (

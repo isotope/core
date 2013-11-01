@@ -48,7 +48,7 @@ $GLOBALS['TL_DCA']['tl_iso_address'] = array
             'disableGrouping'       => true,
             'flag'                  => 1,
             'panelLayout'           => 'filter;sort,search,limit',
-            'child_record_callback' => array('Isotope\Backend\DCA\tl_iso_address','renderLabel')
+            'child_record_callback' => array('Isotope\Backend\Address\Callback','renderLabel')
         ),
         'global_operations' => array
         (
@@ -297,7 +297,7 @@ $GLOBALS['TL_DCA']['tl_iso_address'] = array
             'sql'                   => "char(1) NOT NULL default ''",
             'save_callback' => array
             (
-                array('Isotope\Backend\DCA\tl_iso_address', 'updateDefault'),
+                array('Isotope\Backend\Address\Callback', 'updateDefault'),
             ),
         ),
         'isDefaultShipping' => array
@@ -310,7 +310,7 @@ $GLOBALS['TL_DCA']['tl_iso_address'] = array
             'sql'                   => "char(1) NOT NULL default ''",
             'save_callback' => array
             (
-                array('Isotope\Backend\DCA\tl_iso_address', 'updateDefault'),
+                array('Isotope\Backend\Address\Callback', 'updateDefault'),
             ),
         ),
     )

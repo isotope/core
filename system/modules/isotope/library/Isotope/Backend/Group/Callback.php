@@ -14,16 +14,12 @@
  * @author     Kamil Kuzminski <kamil.kuzminski@codefog.pl>
  */
 
-namespace Isotope\Backend\DCA;
+namespace Isotope\Backend\Group;
 
 use Isotope\Model\Group;
 
 
-/**
- * Class tl_iso_group
- * Provide miscellaneous methods that are used by the data configuration array.
- */
-class tl_iso_group extends \Backend
+class Callback extends \Backend
 {
 
     public function __construct()

@@ -13,16 +13,12 @@
  * @author     Fred Bliss <fred.bliss@intelligentspark.com>
  */
 
-namespace Isotope\Backend\DCA;
+namespace Isotope\Backend\User;
 
 use Isotope\Model\Group;
 
 
-/**
- * Class tl_user
- * Provide miscellaneous methods that are used by the data configuration array.
- */
-class tl_user extends \Backend
+class Callback extends \Backend
 {
 
     /**

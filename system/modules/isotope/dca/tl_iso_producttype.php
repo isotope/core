@@ -27,7 +27,7 @@ $GLOBALS['TL_DCA']['tl_iso_producttype'] = array
         'onload_callback' => array
         (
             array('Isotope\Backend', 'initializeSetupModule'),
-            array('Isotope\Backend\DCA\tl_iso_producttype', 'checkPermission'),
+            array('Isotope\Backend\ProductType\Callback', 'checkPermission'),
         ),
         'sql' => array
         (
@@ -90,7 +90,7 @@ $GLOBALS['TL_DCA']['tl_iso_producttype'] = array
                 'label'             => &$GLOBALS['TL_LANG']['tl_iso_producttype']['copy'],
                 'href'              => 'act=copy',
                 'icon'              => 'copy.gif',
-                'button_callback'   => array('Isotope\Backend\DCA\tl_iso_producttype', 'copyProductType')
+                'button_callback'   => array('Isotope\Backend\ProductType\Callback', 'copyProductType')
             ),
             'delete' => array
             (
@@ -98,7 +98,7 @@ $GLOBALS['TL_DCA']['tl_iso_producttype'] = array
                 'href'              => 'act=delete',
                 'icon'              => 'delete.gif',
                 'attributes'        => 'onclick="if (!confirm(\'' . $GLOBALS['TL_LANG']['MSC']['deleteConfirm'] . '\')) return false; Backend.getScrollOffset();"',
-                'button_callback'   => array('Isotope\Backend\DCA\tl_iso_producttype', 'deleteProductType')
+                'button_callback'   => array('Isotope\Backend\ProductType\Callback', 'deleteProductType')
             ),
             'show' => array
             (
@@ -192,7 +192,7 @@ $GLOBALS['TL_DCA']['tl_iso_producttype'] = array
             'exclude'               => true,
             'inputType'             => 'select',
             'default'               => 'iso_list_default',
-            'options_callback'      => array('Isotope\Backend\DCA\tl_iso_producttype', 'getListTemplates'),
+            'options_callback'      => array('Isotope\Backend\ProductType\Callback', 'getListTemplates'),
             'eval'                  => array('mandatory'=>true, 'tl_class'=>'w50', 'chosen'=>true),
             'sql'                   => "varchar(255) NOT NULL default ''",
         ),
@@ -202,7 +202,7 @@ $GLOBALS['TL_DCA']['tl_iso_producttype'] = array
             'exclude'               => true,
             'inputType'             => 'select',
             'default'               => 'iso_reader_default',
-            'options_callback'      => array('Isotope\Backend\DCA\tl_iso_producttype', 'getReaderTemplates'),
+            'options_callback'      => array('Isotope\Backend\ProductType\Callback', 'getReaderTemplates'),
             'eval'                  => array('mandatory'=>true, 'tl_class'=>'w50', 'chosen'=>true),
             'sql'                   => "varchar(255) NOT NULL default ''",
         ),
@@ -247,17 +247,17 @@ $GLOBALS['TL_DCA']['tl_iso_producttype'] = array
             'eval'                  => array
             (
                 'tl_class'          =>'clr',
-                'columnsCallback'   => array('Isotope\Backend\DCA\tl_iso_producttype', 'prepareAttributeWizard'),
+                'columnsCallback'   => array('Isotope\Backend\ProductType\Callback', 'prepareAttributeWizard'),
                 'buttons'           => array('copy'=>false, 'delete'=>false),
             ),
             'sql'                   => 'blob NULL',
             'load_callback'         => array
             (
-                array('Isotope\Backend\DCA\tl_iso_producttype', 'loadAttributeWizard'),
+                array('Isotope\Backend\ProductType\Callback', 'loadAttributeWizard'),
             ),
             'save_callback'         => array
             (
-                array('Isotope\Backend\DCA\tl_iso_producttype', 'saveAttributeWizard'),
+                array('Isotope\Backend\ProductType\Callback', 'saveAttributeWizard'),
             ),
         ),
         'variants' => array
@@ -276,17 +276,17 @@ $GLOBALS['TL_DCA']['tl_iso_producttype'] = array
             'eval'                  => array
             (
                 'tl_class'          =>'clr',
-                'columnsCallback'   => array('Isotope\Backend\DCA\tl_iso_producttype', 'prepareAttributeWizard'),
+                'columnsCallback'   => array('Isotope\Backend\ProductType\Callback', 'prepareAttributeWizard'),
                 'buttons'           => array('copy'=>false, 'delete'=>false),
             ),
             'sql'                   => 'blob NULL',
             'load_callback'         => array
             (
-                array('Isotope\Backend\DCA\tl_iso_producttype', 'loadAttributeWizard'),
+                array('Isotope\Backend\ProductType\Callback', 'loadAttributeWizard'),
             ),
             'save_callback'         => array
             (
-                array('Isotope\Backend\DCA\tl_iso_producttype', 'saveAttributeWizard'),
+                array('Isotope\Backend\ProductType\Callback', 'saveAttributeWizard'),
             ),
         ),
         'force_variant_options' => array

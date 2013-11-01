@@ -25,7 +25,7 @@ $GLOBALS['TL_DCA']['tl_nc_notification']['fields']['iso_collectionTpl'] = array
     'label'                 => &$GLOBALS['TL_LANG']['tl_nc_notification']['iso_collectionTpl'],
     'exclude'               => true,
     'inputType'             => 'select',
-    'options_callback'      => array('Isotope\Backend\DCA\tl_module', 'getCollectionTemplates'),
+    'options_callback'      => array('Isotope\Backend\Module\Callback', 'getCollectionTemplates'),
     'eval'                  => array('mandatory'=>true, 'chosen'=>true, 'tl_class'=>'w50'),
     'sql'                   => "varchar(64) NOT NULL default ''",
 );
