@@ -172,7 +172,10 @@ class Frontend extends \Frontend
     }
 
     /**
-     *
+     * Overrides the reader page
+     * @param   \PageModel
+     * @param   \LayoutModel
+     * @param   \PageRegular
      */
     public function overrideReaderPage($objPage, $objLayout, $objRegularPage)
     {
