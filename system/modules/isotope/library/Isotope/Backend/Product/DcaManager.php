@@ -14,6 +14,7 @@ namespace Isotope\Backend\Product;
 
 use Isotope\Isotope;
 use Isotope\Model\Attribute;
+use Isotope\Model\Group;
 use Isotope\Model\Product;
 use Isotope\Model\ProductType;
 use Isotope\Model\RelatedCategory;
@@ -175,6 +176,11 @@ class DcaManager extends \Backend
         // Hide price column if not enabled in any product type
         if (!$blnShowPrice) {
             unset($GLOBALS['TL_DCA'][Product::getTable()]['list']['label']['fields'][3]);
+        }
+
+        // Disable sort-into-group if no groups are defined
+        if (Group::countAll() == 0) {
+            unset($GLOBALS['TL_DCA'][Product::getTable()]['list']['operations']['group']);
         }
 
         // Disable related categories if none are defined
