@@ -113,7 +113,7 @@ class ProductGroupPicker extends \Backend
         $this->Template->action = ampersand(\Environment::get('request'));
         $this->Template->value = $this->Session->get('product_group_selector_search');
         $this->Template->addSearch = true;
-        $this->Template->breadcrumb = \Isotope\Backend::generateGroupsBreadcrumb($this->Session->get('iso_products_gid'));
+        $this->Template->breadcrumb = \Isotope\Backend\Group\Breadcrumb::generate($this->Session->get('iso_products_gid'));
 
         if ($this->User->isAdmin || (is_array($this->User->iso_groupp) && !empty($this->User->iso_groupp))) {
             $this->Template->manager = $GLOBALS['TL_LANG']['tl_iso_group']['manager'];

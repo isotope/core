@@ -193,9 +193,8 @@ class Callback extends \Backend
      */
     public function addBreadcrumb()
     {
-        $GLOBALS['TL_DCA']['tl_iso_group']['list']['sorting']['breadcrumb'] = \Isotope\Backend::generateGroupsBreadcrumb($this->Session->get('iso_products_gid'));
-
         if ($this->Session->get('iso_products_gid') > 0) {
+            $GLOBALS['TL_DCA']['tl_iso_group']['list']['sorting']['breadcrumb'] = \Isotope\Backend\Group\Breadcrumb::generate($this->Session->get('iso_products_gid'));
             $GLOBALS['TL_DCA']['tl_iso_group']['list']['sorting']['root'] = array($this->Session->get('iso_products_gid'));
         }
     }
