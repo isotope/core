@@ -25,10 +25,6 @@ NamespaceClassLoader::addClassMap(array
     // Drivers
     'DC_ProductData'                    => 'system/modules/isotope/drivers/DC_ProductData.php',
     'DC_TablePageId'                    => 'system/modules/isotope/drivers/DC_TablePageId.php',
-
-    // Helpers
-    'Isotope\PasteProductButton'        => 'system/modules/isotope/helpers/PasteProductButton.php',
-    'Isotope\ProductCallbacks'          => 'system/modules/isotope/helpers/ProductCallbacks.php',
 ));
 
 

@@ -463,7 +463,7 @@ class tl_iso_product extends \Backend
         \Input::setGet('id', $intId);
         \Input::setGet('act', 'toggle');
 
-        $this->import('Isotope\ProductCallbacks', 'ProductCallbacks');
+        $this->import('Isotope\Backend\ProductCallbacks', 'ProductCallbacks');
         $this->ProductCallbacks->checkPermission();
 
         // Check permissions to publish

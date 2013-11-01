@@ -10,8 +10,9 @@
  * @license    http://opensource.org/licenses/lgpl-3.0.html LGPL
  */
 
-namespace Isotope;
+namespace Isotope\Backend;
 
+use Isotope\Isotope;
 use Isotope\Model\Attribute;
 use Isotope\Model\Group;
 use Isotope\Model\Product;
@@ -401,8 +402,8 @@ class ProductCallbacks extends \Backend
 
             // Register callback to version/restore a price
             else {
-                $GLOBALS['TL_DCA']['tl_iso_product']['config']['onversion_callback'][] = array('Isotope\ProductCallbacks', 'versionPriceAndTaxClass');
-                $GLOBALS['TL_DCA']['tl_iso_product']['config']['onrestore_callback'][] = array('Isotope\ProductCallbacks', 'restorePriceAndTaxClass');
+                $GLOBALS['TL_DCA']['tl_iso_product']['config']['onversion_callback'][] = array('Isotope\Backend\ProductCallbacks', 'versionPriceAndTaxClass');
+                $GLOBALS['TL_DCA']['tl_iso_product']['config']['onrestore_callback'][] = array('Isotope\Backend\ProductCallbacks', 'restorePriceAndTaxClass');
             }
 
             $arrInherit = array();
