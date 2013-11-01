@@ -12,6 +12,8 @@
 
 namespace Isotope\Backend\Product;
 
+use Isotope\Model\ProductCategory;
+
 
 class Panel extends \Backend
 {
@@ -27,7 +29,7 @@ class Panel extends \Backend
         }
 
         $session = \Session::getInstance()->getData();
-        $arrPages = (array) $session['filter']['tl_iso_product']['iso_pages'];
+        $intPage = $session['filter']['tl_iso_product']['iso_page'];
         $blnGroups = true;
 
         // Check permission
@@ -48,7 +50,7 @@ class Panel extends \Backend
         return '
 <div class="tl_filter iso_filter tl_subpanel">
 ' . ($blnGroups ? '<input type="button" id="groupFilter" class="tl_submit' . (\Session::getInstance()->get('iso_products_gid') ? ' active' : '') . '" onclick="Backend.getScrollOffset();Isotope.openModalGroupSelector({\'width\':765,\'title\':\''.specialchars($GLOBALS['TL_LANG']['tl_iso_product']['product_groups'][0]).'\',\'url\':\'system/modules/isotope/group.php?do='.\Input::get('do').'&amp;table='.\Isotope\Model\Group::getTable().'&amp;field=gid&amp;value='.\Session::getInstance()->get('iso_products_gid').'\',\'action\':\'filterGroups\'});return false" value="'.specialchars($GLOBALS['TL_LANG']['MSC']['filterByGroups']).'">' : '') . '
-<input type="button" id="pageFilter" class="tl_submit' . (!empty($arrPages) ? ' active' : '') . '" onclick="Backend.getScrollOffset();Isotope.openModalPageSelector({\'width\':765,\'title\':\''.specialchars($GLOBALS['TL_LANG']['MOD']['page'][0]).'\',\'url\':\'contao/page.php?do='.\Input::get('do').'&amp;table=tl_iso_product&amp;field=pages&amp;value='.implode(',', $arrPages).'\',\'action\':\'filterPages\'});return false" value="'.specialchars($GLOBALS['TL_LANG']['MSC']['filterByPages']).'">
+<input type="button" id="pageFilter" class="tl_submit' . ($intPage > 0 ? ' active' : '') . '" onclick="Backend.getScrollOffset();Isotope.openModalPageSelector({\'width\':765,\'title\':\''.specialchars($GLOBALS['TL_LANG']['MOD']['page'][0]).'\',\'url\':\'contao/page.php?do='.\Input::get('do').'&amp;table=tl_iso_product_category&amp;field=page_id&amp;value='.$intPage.'\',\'action\':\'filterPages\'});return false" value="'.specialchars($GLOBALS['TL_LANG']['MSC']['filterByPages']).'">
 </div>';
     }
 
@@ -194,11 +196,11 @@ class Panel extends \Backend
                     $arrProducts = is_array($arrProducts) ? array_intersect($arrProducts, $objProducts->fetchEach('id')) : $objProducts->fetchEach('id');
                     break;
 
-                case 'iso_pages':
+                case 'iso_page':
                     // Filter the products by pages
-                    if (!empty($v) && is_array($v))
+                    if ($v > 0)
                     {
-                        $objProducts = \Database::getInstance()->execute("SELECT id FROM tl_iso_product p WHERE pid=0 AND language='' AND id IN (SELECT pid FROM " . ProductCategory::getTable() . " c WHERE c.pid=p.id AND c.page_id IN (" . implode(array_map('intval', $v)) . "))");
+                        $objProducts = \Database::getInstance()->execute("SELECT id FROM tl_iso_product p WHERE pid=0 AND language='' AND id IN (SELECT pid FROM " . ProductCategory::getTable() . " c WHERE c.pid=p.id AND c.page_id=" . (int) $v . ")");
                         $arrProducts = is_array($arrProducts) ? array_intersect($arrProducts, $objProducts->fetchEach('id')) : $objProducts->fetchEach('id');
                     }
 

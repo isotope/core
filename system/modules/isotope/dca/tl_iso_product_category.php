@@ -23,6 +23,8 @@ $GLOBALS['TL_DCA']['tl_iso_product_category'] = array
     // Config
     'config' => array
     (
+        'dataContainer'             => 'Table',
+        'ptable'                    => 'tl_iso_product',
         'sql' => array
         (
             'keys' => array
