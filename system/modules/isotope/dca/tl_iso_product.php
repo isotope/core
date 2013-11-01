@@ -83,13 +83,14 @@ $GLOBALS['TL_DCA']['tl_iso_product'] = array
             'headerFields'          => array('name', 'sku', 'price', 'published'),
             'headerOperations'      => array('edit', 'copy', 'cut', 'delete', 'toggle', 'show', 'related', 'downloads'),
             'flag'                  => 1,
-            'panelLayout'           => 'iso_buttons,iso_filter;filter;sort,search,limit',
+            'panelLayout'           => 'iso_buttons,iso_filter;filter;sort,iso_sorting,search,limit',
             'icon'                  => 'system/modules/isotope/assets/store-open.png',
             'paste_button_callback' => array('Isotope\Backend\Product\PasteButton', 'generate'),
             'panel_callback'        => array
             (
                 'iso_buttons' => array('Isotope\Backend\Product\Panel', 'generateFilterButtons'),
-                'iso_filter'  => array('Isotope\Backend\Product\Panel', 'generateAdvancedFilters')
+                'iso_filter'  => array('Isotope\Backend\Product\Panel', 'generateAdvancedFilters'),
+                'iso_sorting'  => array('Isotope\Backend\Product\Panel', 'generateSortingIcon'),
             )
         ),
         'label' => array

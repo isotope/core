@@ -115,6 +115,17 @@ class Panel extends \Backend
     }
 
     /**
+     * Generate icon to open the page picker for manual sorting
+     */
+    public function generateSortingIcon()
+    {
+        return '
+<div class="tl_sorting tl_subpanel" style="padding:3px 0 0 8px">
+<a href="#" onclick="Backend.getScrollOffset();Isotope.openModalPageSelector({\'width\':765,\'title\':\''.specialchars($GLOBALS['TL_LANG']['MOD']['page'][0]).'\',\'url\':\'contao/page.php?do='.\Input::get('do').'&amp;table=tl_iso_product_category&amp;field=page_id&amp;value='.$intPage.'\',\'action\':\'sortByPage\'});return false" title="' . $GLOBALS['TL_LANG']['tl_iso_product']['sorting'] . '">' . \Image::getHtml('page.gif', $GLOBALS['TL_LANG']['tl_iso_product']['sorting']) . '</a>
+</div>';
+    }
+
+    /**
      * Apply advanced filters to product list view
      * @return void
      */
