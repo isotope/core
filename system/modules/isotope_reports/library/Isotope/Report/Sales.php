@@ -136,7 +136,7 @@ abstract class Sales extends Report
 
         if (null !== $objStatus) {
     		while ($objStatus->next()) {
-    			$arrStatus[$objStatus->id] = $objStatus->getName();
+    			$arrStatus[$objStatus->id] = $objStatus->current()->getName();
     		}
         }
 
