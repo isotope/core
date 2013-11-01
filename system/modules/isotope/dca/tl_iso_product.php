@@ -193,6 +193,13 @@ $GLOBALS['TL_DCA']['tl_iso_product'] = array
                 'icon'              => 'system/modules/isotope/assets/paper-clip.png',
                 'button_callback'   => array('Isotope\Backend\Product\Button', 'forDownloads'),
             ),
+            'group' => array
+            (
+                'label'             => &$GLOBALS['TL_LANG']['tl_iso_product']['group'],
+                'href'              => 'act=cut',
+                'icon'              => 'system/modules/isotope/assets/folder-network.png',
+                'button_callback'   => array('Isotope\Backend\Product\Button', 'forGroup'),
+            ),
         ),
     ),
 

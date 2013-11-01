@@ -218,6 +218,34 @@ class Button extends \Backend
     }
 
     /**
+     * Return the "cut" button
+     * @param array
+     * @param string
+     * @param string
+     * @param string
+     * @param string
+     * @param string
+     * @return string
+     */
+    public function forGroup($row, $href, $label, $title, $icon, $attributes)
+    {
+        if ($row['pid'] > 0) {
+            return '';
+        }
+
+        // Check permission
+        if (!\BackendUser::getInstance()->isAdmin) {
+            $groups = deserialize(\BackendUser::getInstance()->iso_groups);
+
+            if (!is_array($groups) || empty($groups)) {
+                return \Image::getHtml(preg_replace('/\.gif$/i', '_.gif', $icon)).' ';
+            }
+        }
+
+        return '<a href="system/modules/isotope/group.php?do='.\Input::get('do').'&amp;table='.\Isotope\Model\Group::getTable().'&amp;field=gid&amp;value='.$row['gid'].'" title="'.specialchars($title).'"'.$attributes.' onclick="Backend.getScrollOffset();Isotope.openModalGroupSelector({\'width\':765,\'title\':\''.specialchars($GLOBALS['TL_LANG']['tl_iso_product']['product_groups'][0]).'\',\'url\':this.href,\'action\':\'moveProduct\',\'redirect\':\''.\Backend::addToUrl($href . '&pid=' . intval(\Input::get('pid')) . '&id=' . $row['id']).'\'});return false">'.\Image::getHtml($icon, $label).'</a> ';
+    }
+
+    /**
      * Publish/unpublish a product
      * @param integer
      * @param boolean
