@@ -161,7 +161,7 @@ $GLOBALS['TL_DCA']['tl_iso_group'] = array
             'exclude'               => true,
             'inputType'             => 'select',
             'foreignKey'            => \Isotope\Model\ProductType::getTable().'.name',
-            'options_callback'      => array('Isotope\Backend\ProductCallbacks', 'getProductTypes'),
+            'options_callback'      => array('Isotope\Backend\ProductType\Callback', 'getOptions'),
             'eval'                  => array('includeBlankOption'=>true, 'tl_class'=>'w50'),
             'sql'                   => "int(10) unsigned NOT NULL default '0'",
             'relation'              => array('type'=>'hasOne', 'load'=>'eager'),

@@ -34,34 +34,32 @@ $GLOBALS['TL_DCA']['tl_iso_product'] = array
         'ctable'                    => array(\Isotope\Model\Download::getTable(), \Isotope\Model\ProductCategory::getTable(), \Isotope\Model\ProductPrice::getTable()),
         'onload_callback' => array
         (
-            array('Isotope\Backend\ProductCallbacks', 'applyAdvancedFilters'),
-            array('Isotope\Backend\ProductCallbacks', 'checkPermission'),
-            array('Isotope\Backend\ProductCallbacks', 'buildPaletteString'),
-            array('Isotope\Backend\ProductCallbacks', 'addMoveAllFeature'),
-            array('Isotope\Backend\ProductCallbacks', 'changeVariantColumns'),
-            array('Isotope\Backend\ProductCallbacks', 'generateSitemap'),
+            array('Isotope\Backend\Product\DcaManager', 'load'),
+            array('Isotope\Backend\Product\Permission', 'check'),
+            array('Isotope\Backend\Product\Panel', 'applyAdvancedFilters'),
+            array('Isotope\Backend\Product\XmlSitemap', 'generate'),
         ),
         'oncreate_callback' => array
         (
-            array('Isotope\Backend\ProductCallbacks', 'storeInitialValues'),
+            array('Isotope\Backend\Product\DcaManager', 'updateNewRecord'),
         ),
         'oncopy_callback' => array
         (
-            array('Isotope\Backend\ProductCallbacks', 'updateCategorySorting'),
+            array('Isotope\Backend\Product\Category', 'updateSorting'),
         ),
         'onsubmit_callback' => array
         (
             array('Isotope\Backend', 'truncateProductCache'),
-            array('Isotope\Backend\ProductCallbacks', 'scheduleUpdate'),
+            array('Isotope\Backend\Product\XmlSitemap', 'scheduleUpdate'),
         ),
         'onversion_callback' => array
         (
-            array('Isotope\Backend\ProductCallbacks', 'versionProductCategories'),
+            array('Isotope\Backend\Product\Category', 'createVersion'),
             // price version callbacks are added in the onload_callback (buildPaletteString)
         ),
         'onrestore_callback' => array
         (
-            array('Isotope\Backend\ProductCallbacks', 'restoreProductCategories'),
+            array('Isotope\Backend\Product\Category', 'restoreVersion'),
             // price version callbacks are added in the onload_callback (buildPaletteString)
         ),
         'sql' => array
@@ -87,18 +85,18 @@ $GLOBALS['TL_DCA']['tl_iso_product'] = array
             'flag'                  => 1,
             'panelLayout'           => 'iso_buttons,iso_filter;filter;sort,search,limit',
             'icon'                  => 'system/modules/isotope/assets/store-open.png',
-            'paste_button_callback' => array('Isotope\Backend\PasteProductButton', 'generate'),
+            'paste_button_callback' => array('Isotope\Backend\Product\PasteButton', 'generate'),
             'panel_callback'        => array
             (
-                'iso_buttons' => array('Isotope\Backend\ProductCallbacks', 'generateFilterButtons'),
-                'iso_filter'  => array('Isotope\Backend\ProductCallbacks', 'generateAdvancedFilters')
+                'iso_buttons' => array('Isotope\Backend\Product\Panel', 'generateFilterButtons'),
+                'iso_filter'  => array('Isotope\Backend\Product\Panel', 'generateAdvancedFilters')
             )
         ),
         'label' => array
         (
             'fields'                => array('images', 'name', 'sku', 'price'),
             'showColumns'           => true,
-            'label_callback'        => array('Isotope\Backend\ProductCallbacks', 'getRowLabel'),
+            'label_callback'        => array('Isotope\Backend\Product\Label', 'generate'),
         ),
         'global_operations' => array
         (
@@ -114,7 +112,7 @@ $GLOBALS['TL_DCA']['tl_iso_product'] = array
                 'href'              => 'table='.\Isotope\Model\Group::getTable(),
                 'icon'              => 'system/modules/isotope/assets/folders.png',
                 'attributes'        => 'onclick="Backend.getScrollOffset();"',
-                'button_callback'   => array('Isotope\Backend\ProductCallbacks', 'groupsButton')
+                'button_callback'   => array('Isotope\Backend\Product\Button', 'forGroups')
             ),
             'import' => array
             (
@@ -144,14 +142,14 @@ $GLOBALS['TL_DCA']['tl_iso_product'] = array
                 'label'             => &$GLOBALS['TL_LANG']['tl_iso_product']['copy'],
                 'href'              => 'act=copy&amp;childs=1',
                 'icon'              => 'copy.gif',
-                'button_callback'   => array('Isotope\Backend\DCA\tl_iso_product', 'copyIcon')
+                'button_callback'   => array('Isotope\Backend\Product\Button', 'forCopy')
             ),
             'cut' => array
             (
                 'label'             => &$GLOBALS['TL_LANG']['tl_iso_product']['cut'],
                 'href'              => 'act=cut',
                 'icon'              => 'cut.gif',
-                'button_callback'   => array('Isotope\Backend\DCA\tl_iso_product', 'cutIcon')
+                'button_callback'   => array('Isotope\Backend\Product\Button', 'forCut')
             ),
             'delete' => array
             (
@@ -159,14 +157,14 @@ $GLOBALS['TL_DCA']['tl_iso_product'] = array
                 'href'              => 'act=delete',
                 'icon'              => 'delete.gif',
                 'attributes'        => 'onclick="if (!confirm(\'' . $GLOBALS['TL_LANG']['MSC']['deleteConfirm'] . '\')) return false; Backend.getScrollOffset();"',
-                'button_callback'   => array('Isotope\Backend\DCA\tl_iso_product', 'deleteButton')
+                'button_callback'   => array('Isotope\Backend\Product\Button', 'forDelete')
             ),
             'toggle' => array
             (
                 'label'             => &$GLOBALS['TL_LANG']['tl_iso_product']['toggle'],
                 'icon'              => 'visible.gif',
                 'attributes'        => 'onclick="Backend.getScrollOffset(); return AjaxRequest.toggleVisibility(this, %s);"',
-                'button_callback'   => array('Isotope\Backend\DCA\tl_iso_product', 'toggleIcon')
+                'button_callback'   => array('Isotope\Backend\Product\Button', 'forVisibilityToggle')
             ),
             'show' => array
             (
@@ -179,21 +177,21 @@ $GLOBALS['TL_DCA']['tl_iso_product'] = array
                 'label'             => &$GLOBALS['TL_LANG']['tl_iso_product']['variants'],
                 'href'              => '',
                 'icon'              => 'system/modules/isotope/assets/table--pencil.png',
-                'button_callback'   => array('Isotope\Backend\ProductCallbacks', 'variantsButton'),
+                'button_callback'   => array('Isotope\Backend\Product\Button', 'forVariants'),
             ),
             'related' => array
             (
                 'label'             => &$GLOBALS['TL_LANG']['tl_iso_product']['related'],
                 'href'              => 'table='.\Isotope\Model\RelatedProduct::getTable(),
                 'icon'              => 'system/modules/isotope/assets/sitemap.png',
-                'button_callback'   => array('Isotope\Backend\ProductCallbacks', 'relatedButton'),
+                'button_callback'   => array('Isotope\Backend\Product\Button', 'forRelated'),
             ),
             'downloads' => array
             (
                 'label'             => &$GLOBALS['TL_LANG']['tl_iso_product']['downloads'],
                 'href'              => 'table='.\Isotope\Model\Download::getTable(),
                 'icon'              => 'system/modules/isotope/assets/paper-clip.png',
-                'button_callback'   => array('Isotope\Backend\ProductCallbacks', 'downloadsButton'),
+                'button_callback'   => array('Isotope\Backend\Product\Button', 'forDownloads'),
             ),
         ),
     ),
@@ -258,7 +256,7 @@ $GLOBALS['TL_DCA']['tl_iso_product'] = array
             'exclude'               => true,
             'filter'                => true,
             'inputType'             => 'select',
-            'options_callback'      => array('Isotope\Backend\ProductCallbacks', 'getProductTypes'),
+            'options_callback'      => array('Isotope\Backend\ProductType\Callback', 'getOptions'),
             'foreignKey'            => \Isotope\Model\ProductType::getTable().'.name',
             'eval'                  => array('mandatory'=>true, 'submitOnChange'=>true, 'includeBlankOption'=>true, 'tl_class'=>'clr'),
             'attributes'            => array('legend'=>'general_legend', 'fixed'=>true, 'inherit'=>true, 'systemColumn'=>true),
@@ -276,11 +274,11 @@ $GLOBALS['TL_DCA']['tl_iso_product'] = array
             'attributes'            => array('legend'=>'general_legend', 'fixed'=>true, 'inherit'=>true, 'systemColumn'=>true),
             'load_callback'         => array
             (
-                array('Isotope\Backend\ProductCallbacks', 'loadProductCategories'),
+                array('Isotope\Backend\Product\Category', 'load'),
             ),
             'save_callback' => array
             (
-                array('Isotope\Backend\ProductCallbacks', 'saveProductCategories'),
+                array('Isotope\Backend\Product\Category', 'save'),
             ),
         ),
         'orderPages' => array
@@ -309,7 +307,7 @@ $GLOBALS['TL_DCA']['tl_iso_product'] = array
             'sql'                   => "varchar(128) NOT NULL default ''",
             'save_callback' => array
             (
-                array('Isotope\Backend\ProductCallbacks', 'generateAlias'),
+                array('Isotope\Backend\Product\Alias', 'save'),
             ),
         ),
         'sku' => array
@@ -394,11 +392,11 @@ $GLOBALS['TL_DCA']['tl_iso_product'] = array
             'attributes'            => array('legend'=>'pricing_legend', 'fe_sorting'=>true, 'dynamic'=>true, 'systemColumn'=>true, 'type'=>'\Isotope\Model\Attribute\Price'),
             'load_callback' => array
             (
-                array('\Isotope\Backend\ProductCallbacks', 'loadPrice'),
+                array('\Isotope\Backend\Product\Price', 'load'),
             ),
             'save_callback' => array
             (
-                array('\Isotope\Backend\ProductCallbacks', 'savePrice'),
+                array('\Isotope\Backend\Product\Price', 'save'),
             ),
         ),
         'prices' => array

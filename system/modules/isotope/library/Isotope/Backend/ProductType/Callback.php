@@ -15,6 +15,7 @@
 namespace Isotope\Backend\ProductType;
 
 use Isotope\Model\Product;
+use Isotope\Model\ProductType;
 
 
 class Callback extends \Backend
@@ -182,5 +183,34 @@ class Callback extends \Backend
         }
 
         return ($this->User->isAdmin || $this->User->hasAccess('delete', 'iso_product_typep')) ? '<a href="'.$this->addToUrl($href.'&amp;id='.$row['id']).'" title="'.specialchars($title).'"'.$attributes.'>'.\Image::getHtml($icon, $label).'</a> ' : \Image::getHtml(preg_replace('/\.gif$/i', '_.gif', $icon)).' ';
+    }
+
+    /**
+     * Returns all allowed product types as array
+     * @param DataContainer
+     * @return array
+     */
+    public function getOptions(\DataContainer $dc)
+    {
+        $arrTypes = \BackendUser::getInstance()->iso_product_types;
+
+        if (!\BackendUser::getInstance()->isAdmin && (!is_array($arrTypes) || empty($arrTypes)))
+        {
+            $arrTypes = array(0);
+        }
+
+        $arrProductTypes = array();
+        $objProductTypes = \Database::getInstance()->execute("
+            SELECT id,name FROM " . ProductType::getTable() . "
+            WHERE tstamp>0" . (\BackendUser::getInstance()->isAdmin ? '' : (" AND id IN (" . implode(',', $arrTypes) . ")")) . "
+            ORDER BY name
+        ");
+
+        while ($objProductTypes->next())
+        {
+            $arrProductTypes[$objProductTypes->id] = $objProductTypes->name;
+        }
+
+        return $arrProductTypes;
     }
 }

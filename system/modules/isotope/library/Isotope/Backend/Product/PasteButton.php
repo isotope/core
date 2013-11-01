@@ -22,7 +22,7 @@ use Isotope\Model\ProductType;
  * @author     Andreas Schempp <andreas.schempp@terminal42.ch>
  * @author     Kamil Kuzminski <kamil.kuzminski@codefog.pl>
  */
-class PasteProductButton extends \Backend
+class PasteButton extends \Backend
 {
 
     /**

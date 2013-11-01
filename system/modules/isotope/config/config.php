@@ -39,8 +39,8 @@ array_insert($GLOBALS['BE_MOD']['isotope'], 0, array
         'tables'            => array(\Isotope\Model\Product::getTable(), \Isotope\Model\Group::getTable(), \Isotope\Model\ProductCategory::getTable(), \Isotope\Model\Download::getTable(), \Isotope\Model\RelatedProduct::getTable(), \Isotope\Model\ProductPrice::getTable(), 'tl_iso_product_pricetier'),
         'icon'              => 'system/modules/isotope/assets/store-open.png',
         'javascript'        => 'system/modules/isotope/assets/backend'.(ISO_DEBUG ? '' : '.min').'.js',
-        'generate'          => array('Isotope\Backend\DCA\tl_iso_product', 'generateVariants'),
-        'import'            => array('Isotope\Backend\DCA\tl_iso_product', 'importAssets'),
+        'generate'          => array('Isotope\Backend\Product\VariantGenerator', 'generate'),
+        'import'            => array('Isotope\Backend\Product\AssetImport', 'generate'),
     ),
     'iso_orders' => array
     (
