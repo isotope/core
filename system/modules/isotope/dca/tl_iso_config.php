@@ -315,7 +315,7 @@ $GLOBALS['TL_DCA']['tl_iso_config'] = array
                     'name' => array
                     (
                         'label'                 => &$GLOBALS['TL_LANG']['tl_iso_config']['address_fields']['name'],
-                        'input_field_callback'  => array('Isotope\Backend\Config\Callback', 'getAddressFieldName'),
+                        'input_field_callback'  => array('Isotope\Backend\Config\AddressFieldsWizard', 'getNextName'),
                         'eval'                  => array('hideHead'=>true, 'tl_class'=>'mcwUpdateFields'),
                     ),
                     'billing' => array
@@ -338,11 +338,11 @@ $GLOBALS['TL_DCA']['tl_iso_config'] = array
             ),
             'load_callback' => array
             (
-                array('Isotope\Backend\Config\Callback', 'loadAddressFieldsWizard'),
+                array('Isotope\Backend\Config\AddressFieldsWizard', 'load'),
             ),
             'save_callback' => array
             (
-                array('Isotope\Backend\Config\Callback', 'saveAddressFieldsWizard'),
+                array('Isotope\Backend\Config\AddressFieldsWizard', 'save'),
             ),
             'sql'                   => "blob NULL",
         ),

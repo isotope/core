@@ -251,17 +251,17 @@ $GLOBALS['TL_DCA']['tl_iso_producttype'] = array
             'eval'                  => array
             (
                 'tl_class'          =>'clr',
-                'columnsCallback'   => array('Isotope\Backend\ProductType\Callback', 'prepareAttributeWizard'),
+                'columnsCallback'   => array('Isotope\Backend\ProductType\AttributeWizard', 'getColumns'),
                 'buttons'           => array('copy'=>false, 'delete'=>false),
             ),
             'sql'                   => 'blob NULL',
             'load_callback'         => array
             (
-                array('Isotope\Backend\ProductType\Callback', 'loadAttributeWizard'),
+                array('Isotope\Backend\ProductType\AttributeWizard', 'load'),
             ),
             'save_callback'         => array
             (
-                array('Isotope\Backend\ProductType\Callback', 'saveAttributeWizard'),
+                array('Isotope\Backend\ProductType\AttributeWizard', 'save'),
             ),
         ),
         'variants' => array
