@@ -112,11 +112,11 @@ class Breadcrumb extends \Backend
             // No link for the active group
             if ((!$intProductId && $intId == $arrGroup['id']) || ($intProductId && $intProductId == $arrGroup['id']))
             {
-                $buffer .= $arrGroup['name'];
+                $buffer .= '<img src="system/modules/isotope/assets/folder-network.png" width="16" height="16" alt="" style="margin-right:6px;">' . $arrGroup['name'];
             }
             else
             {
-                $buffer .= '<a href="' . ampersand($strUrl) . '&amp;gid='.$arrGroup['id'] . '" title="'.specialchars($GLOBALS['TL_LANG']['MSC']['selectGroup']).'">' . $arrGroup['name'] . '</a>';
+                $buffer .= '<img src="system/modules/isotope/assets/folder-network.png" width="16" height="16" alt="" style="margin-right:6px;"><a href="' . ampersand($strUrl) . '&amp;gid='.$arrGroup['id'] . '" title="'.specialchars($GLOBALS['TL_LANG']['MSC']['selectGroup']).'">' . $arrGroup['name'] . '</a>';
             }
 
             $arrLinks[] = $buffer;
