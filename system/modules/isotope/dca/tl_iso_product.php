@@ -83,13 +83,14 @@ $GLOBALS['TL_DCA']['tl_iso_product'] = array
             'headerFields'          => array('name', 'sku', 'price', 'published'),
             'headerOperations'      => array('edit', 'copy', 'cut', 'delete', 'toggle', 'show', 'related', 'downloads'),
             'flag'                  => 1,
-            'panelLayout'           => 'iso_buttons,iso_filter;filter;sort,search,limit',
+            'panelLayout'           => 'iso_buttons,iso_filter;filter;sort,iso_sorting,search,limit',
             'icon'                  => 'system/modules/isotope/assets/store-open.png',
             'paste_button_callback' => array('Isotope\Backend\Product\PasteButton', 'generate'),
             'panel_callback'        => array
             (
                 'iso_buttons' => array('Isotope\Backend\Product\Panel', 'generateFilterButtons'),
-                'iso_filter'  => array('Isotope\Backend\Product\Panel', 'generateAdvancedFilters')
+                'iso_filter'  => array('Isotope\Backend\Product\Panel', 'generateAdvancedFilters'),
+                'iso_sorting'  => array('Isotope\Backend\Product\Panel', 'generateSortingIcon'),
             )
         ),
         'label' => array
@@ -172,6 +173,12 @@ $GLOBALS['TL_DCA']['tl_iso_product'] = array
                 'href'              => 'act=show',
                 'icon'              => 'show.gif'
             ),
+            'break' => array
+            (
+                'button_callback'   => function() {
+                    return '<br>';
+                }
+            ),
             'variants' => array
             (
                 'label'             => &$GLOBALS['TL_LANG']['tl_iso_product']['variants'],
@@ -192,6 +199,13 @@ $GLOBALS['TL_DCA']['tl_iso_product'] = array
                 'href'              => 'table='.\Isotope\Model\Download::getTable(),
                 'icon'              => 'system/modules/isotope/assets/paper-clip.png',
                 'button_callback'   => array('Isotope\Backend\Product\Button', 'forDownloads'),
+            ),
+            'group' => array
+            (
+                'label'             => &$GLOBALS['TL_LANG']['tl_iso_product']['group'],
+                'href'              => 'act=cut',
+                'icon'              => 'system/modules/isotope/assets/folder-network.png',
+                'button_callback'   => array('Isotope\Backend\Product\Button', 'forGroup'),
             ),
         ),
     ),

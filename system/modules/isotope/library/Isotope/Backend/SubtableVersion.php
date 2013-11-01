@@ -30,7 +30,7 @@ class SubtableVersion extends \Backend
                                      ->executeUncached($strSubtable, $intId);
 
         if ($objVersion->count < 1) {
-            static::createSubtableVersion($strTable, $intId, $strSubtable, $arrData);
+            static::create($strTable, $intId, $strSubtable, $arrData);
         }
     }
 

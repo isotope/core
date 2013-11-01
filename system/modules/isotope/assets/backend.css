@@ -151,11 +151,6 @@ body.popup .header_back {
     display: none;
 }
 
-.breadcrumb_container {
-    padding: 2px 0;
-    margin: 24px 18px 0 18px;
-}
-
 .iso_filter {
     line-height: 28px;
 }

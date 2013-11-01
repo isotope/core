@@ -215,7 +215,7 @@ var Isotope =
         });
         M.addButton(Contao.lang.apply, 'btn primary', function()
         {
-            var val = [],
+            var val = 0,
                 frm = null,
                 frms = window.frames;
             for (var i=0; i<frms.length; i++)
@@ -235,7 +235,7 @@ var Isotope =
             for (var i=0; i<inp.length; i++)
             {
                 if (!inp[i].checked || inp[i].id.match(/^check_all_/)) continue;
-                if (!inp[i].id.match(/^reset_/)) val.push(inp[i].get('value'));
+                if (!inp[i].id.match(/^reset_/)) val = inp[i].get('value');
             }
             new Request.Contao(
             {

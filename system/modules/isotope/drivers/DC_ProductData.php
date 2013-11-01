@@ -1496,9 +1496,6 @@ window.addEvent(\'domready\', function() {
 </div>' . \Message::generate(true);
         }
 
-        // Show breadcrumb
-        $return .= '<div class="breadcrumb_container">' . \Isotope\Backend::generateGroupsBreadcrumb($this->intGroupId, $this->Session->get('iso_products_id')) . '</div>';
-
         // Return "no records found" message
         if ($objRow->numRows < 1) {
             $return .= '
@@ -1513,7 +1510,7 @@ window.addEvent(\'domready\', function() {
 <input type="hidden" name="FORM_SUBMIT" value="tl_select">
 <input type="hidden" name="REQUEST_TOKEN" value="' . REQUEST_TOKEN . '">' : '') . '
 
-<div class="tl_listing_container iso_listing_container list_view">' . ((\Input::get('act') == 'select') ? '
+<div class="tl_listing_container iso_listing_container list_view">' . (isset($GLOBALS['TL_DCA'][$table]['list']['sorting']['breadcrumb']) ? $GLOBALS['TL_DCA'][$table]['list']['sorting']['breadcrumb'] : '') . ((\Input::get('act') == 'select') ? '
 
 <div class="tl_select_trigger">
 <label for="tl_select_trigger" class="tl_select_label">' . $GLOBALS['TL_LANG']['MSC']['selectAll'] . '</label> <input type="checkbox" id="tl_select_trigger" onclick="Backend.toggleCheckboxes(this)" class="tl_tree_checkbox">

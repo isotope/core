@@ -27,11 +27,8 @@ $GLOBALS['TL_DCA']['tl_iso_product_category'] = array
         'ptable'                    => 'tl_page',
         'closed'                    => true,
         'notEditable'               => true,
-        'onload_callback' => array
-        (
-
-            array('Isotope\tl_iso_product_category', 'updateFilterData'),
-        ),
+        'notCopyable'               => true,
+        'notDeletable'              => true,
         'oncut_callback' => array
         (
             array('Isotope\Backend', 'truncateProductCache'),
@@ -55,7 +52,7 @@ $GLOBALS['TL_DCA']['tl_iso_product_category'] = array
             'fields'                => array('sorting'),
             'panelLayout'           => 'limit',
             'headerFields'          => array('title', 'type'),
-            'child_record_callback' => array('Isotope\tl_iso_product_category', 'listRows')
+            'child_record_callback' => array('Isotope\Backend\ProductCategory\Callback', 'listRows')
         ),
         'global_operations' => array
         (
@@ -63,7 +60,7 @@ $GLOBALS['TL_DCA']['tl_iso_product_category'] = array
             (
                 'label'             => &$GLOBALS['TL_LANG']['MSC']['fePreview'],
                 'class'             => 'header_preview',
-                'button_callback'   => array('Isotope\tl_iso_product_category', 'getPageViewButton'),
+                'button_callback'   => array('Isotope\Backend\ProductCategory\Callback', 'getPageViewButton'),
             ),
             'all' => array
             (

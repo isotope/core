@@ -75,6 +75,7 @@ $GLOBALS['TL_LANG']['tl_iso_product']['filter_new']                = 'New produc
 $GLOBALS['TL_LANG']['tl_iso_product']['filter_new_today']          = 'Added today';
 $GLOBALS['TL_LANG']['tl_iso_product']['filter_new_week']           = 'Added this week';
 $GLOBALS['TL_LANG']['tl_iso_product']['filter_new_month']          = 'Added this month';
+$GLOBALS['TL_LANG']['tl_iso_product']['sorting']                   = 'Manually sort products in a page';
 $GLOBALS['TL_LANG']['tl_iso_product']['product_groups']            = array('Product groups', 'Manage product groups');
 $GLOBALS['TL_LANG']['tl_iso_product']['import']                    = array('Import assets', 'Import images and other media from a folder');
 $GLOBALS['TL_LANG']['tl_iso_product']['prices']                    = array('Manage prices', 'Click the button to manage advanced prices for this product.');
@@ -83,6 +84,7 @@ $GLOBALS['TL_LANG']['tl_iso_product']['variants']                  = array('Prod
 $GLOBALS['TL_LANG']['tl_iso_product']['generate']                  = array('Generate variants', 'Generate variants for product ID %s');
 $GLOBALS['TL_LANG']['tl_iso_product']['related']                   = array('Related products', 'Manage related products for product ID %s');
 $GLOBALS['TL_LANG']['tl_iso_product']['downloads']                 = array('Downloads', 'Edit downloads for product ID %s', 'Downloads: %s. ');
+$GLOBALS['TL_LANG']['tl_iso_product']['group']                     = array('Move to group', 'Move product ID %s to a group');
 
 /**
  * Legends

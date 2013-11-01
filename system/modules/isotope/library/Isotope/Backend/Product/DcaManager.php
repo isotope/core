@@ -14,6 +14,7 @@ namespace Isotope\Backend\Product;
 
 use Isotope\Isotope;
 use Isotope\Model\Attribute;
+use Isotope\Model\Group;
 use Isotope\Model\Product;
 use Isotope\Model\ProductType;
 use Isotope\Model\RelatedCategory;
@@ -40,6 +41,7 @@ class DcaManager extends \Backend
     public function load()
     {
         $this->checkFeatures();
+        $this->addBreadcrumb();
         $this->buildPaletteString();
         $this->addMoveAllFeature();
         $this->changeVariantColumns();
@@ -176,10 +178,26 @@ class DcaManager extends \Backend
             unset($GLOBALS['TL_DCA'][Product::getTable()]['list']['label']['fields'][3]);
         }
 
+        // Disable sort-into-group if no groups are defined
+        if (Group::countAll() == 0) {
+            unset($GLOBALS['TL_DCA'][Product::getTable()]['list']['operations']['group']);
+        }
+
         // Disable related categories if none are defined
         if (RelatedCategory::countAll() == 0) {
             unset($GLOBALS['TL_DCA'][Product::getTable()]['list']['operations']['related']);
         }
+    }
+
+    /**
+     * Add the breadcrumb menu
+     */
+    public function addBreadcrumb()
+    {
+        $strBreadcrumb = \Isotope\Backend\Group\Breadcrumb::generate($this->Session->get('iso_products_gid'));
+        $strBreadcrumb .= static::getPagesBreadcrumb();
+
+        $GLOBALS['TL_DCA']['tl_iso_product']['list']['sorting']['breadcrumb'] = $strBreadcrumb;
     }
 
     /**
@@ -393,4 +411,105 @@ window.addEvent('domready', function() {
             $GLOBALS['TL_DCA']['tl_iso_product']['fields'][$name]['sorting'] = ($name != 'price' && in_array($name, $arrFields));
         }
     }
+
+
+    /**
+	 * Add a breadcrumb menu to the page tree
+	 *
+	 * @param string
+	 */
+	protected static function getPagesBreadcrumb()
+	{
+		$session = \Session::getInstance()->getData();
+
+		// Set a new gid
+        if (isset($_GET['page'])) {
+            $session['filter']['tl_iso_product']['iso_page'] = (int) \Input::get('page');
+            \Session::getInstance()->setData($session);
+            \Controller::redirect(preg_replace('/&page=[^&]*/', '', \Environment::get('request')));
+        }
+
+		$intNode = $session['filter']['tl_iso_product']['iso_page'];
+
+		if ($intNode < 1)
+		{
+			return '';
+		}
+
+		$arrIds   = array();
+		$arrLinks = array();
+		$objUser  = \BackendUser::getInstance();
+
+		// Generate breadcrumb trail
+		if ($intNode)
+		{
+			$intId = $intNode;
+			$objDatabase = \Database::getInstance();
+
+			do
+			{
+				$objPage = $objDatabase->prepare("SELECT * FROM tl_page WHERE id=?")
+									   ->limit(1)
+									   ->execute($intId);
+
+				if ($objPage->numRows < 1)
+				{
+					// Currently selected page does not exits
+					if ($intId == $intNode)
+					{
+					    $session['filter']['tl_iso_product']['iso_page'] = 0;
+						\Session::getInstance()->setData($session);
+						return '';
+					}
+
+					break;
+				}
+
+				$arrIds[] = $intId;
+
+				// No link for the active page
+				if ($objPage->id == $intNode)
+				{
+					$arrLinks[] = \Backend::addPageIcon($objPage->row(), '', null, '', true) . ' ' . $objPage->title;
+				}
+				else
+				{
+					$arrLinks[] = \Backend::addPageIcon($objPage->row(), '', null, '', true) . ' <a href="' . \Controller::addToUrl('page='.$objPage->id) . '" title="'.specialchars($GLOBALS['TL_LANG']['MSC']['selectNode']).'">' . $objPage->title . '</a>';
+				}
+
+				// Do not show the mounted pages
+				if (!$objUser->isAdmin && $objUser->hasAccess($objPage->id, 'pagemounts'))
+				{
+					break;
+				}
+
+				$intId = $objPage->pid;
+			}
+			while ($intId > 0 && $objPage->type != 'root');
+		}
+
+		// Check whether the node is mounted
+		if (!$objUser->isAdmin && !$objUser->hasAccess($arrIds, 'pagemounts'))
+		{
+		    $session['filter']['tl_iso_product']['iso_page'] = 0;
+			\Session::getInstance()->setData($session);
+
+			\System::log('Page ID '.$intNode.' was not mounted', __METHOD__, TL_ERROR);
+			\Controller::redirect('contao/main.php?act=error');
+		}
+
+		// Limit tree
+		$GLOBALS['TL_DCA']['tl_page']['list']['sorting']['root'] = array($intNode);
+
+		// Add root link
+		$arrLinks[] = '<img src="' . TL_FILES_URL . 'system/themes/' . \Backend::getTheme() . '/images/pagemounts.gif" width="18" height="18" alt=""> <a href="' . \Controller::addToUrl('page=0') . '" title="'.specialchars($GLOBALS['TL_LANG']['MSC']['selectAllNodes']).'">' . $GLOBALS['TL_LANG']['MSC']['filterAll'] . '</a>';
+		$arrLinks = array_reverse($arrLinks);
+
+		// Insert breadcrumb menu
+		return '
+
+<ul id="tl_breadcrumb">
+  <li>' . implode(' &gt; </li><li>', $arrLinks) . '</li>
+</ul>';
+	}
 }

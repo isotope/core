@@ -292,7 +292,7 @@ class Backend extends Contao_Backend
 
             // Find the user groups
             if (is_array($objUser->iso_groups) && count($objUser->iso_groups) > 0) {
-                $arrGroups = array_merge($arrGroups, $objUser->iso_groups, \Database::getInstance()->getChildRecords($objUser->iso_groups, \Isotope\Model\Group::getTable()));
+                $arrGroups = array_merge($arrGroups, $objUser->iso_groups, \Database::getInstance()->getChildRecords($objUser->iso_groups, Group::getTable()));
             }
 
             $objProducts = \Database::getInstance()->execute("
@@ -352,115 +352,6 @@ class Backend extends Contao_Backend
 
 
     /**
-     * Generate groups breadcrumb and return it as HTML string
-     * @param integer
-     * @param integer
-     * @return string
-     */
-    public static function generateGroupsBreadcrumb($intId, $intProductId=null)
-    {
-        $arrGroups = array();
-        $objSession = \Session::getInstance();
-
-        // Set a new gid
-        if (isset($_GET['gid']))
-        {
-            $objSession->set('iso_products_gid', \Input::get('gid'));
-            \Controller::redirect(preg_replace('/&gid=[^&]*/', '', \Environment::get('request')));
-        }
-
-        // Return if there is no trail
-        if (!$objSession->get('iso_products_gid') && !$intProductId)
-        {
-            return '';
-        }
-
-        $objUser = \BackendUser::getInstance();
-        $objDatabase = \Database::getInstance();
-
-        // Include the product in variants view
-        if ($intProductId)
-        {
-            $objProduct = $objDatabase->prepare("SELECT gid, name FROM tl_iso_product WHERE id=?")
-                                      ->limit(1)
-                                      ->execute($intProductId);
-
-            if ($objProduct->numRows)
-            {
-                $arrGroups[] = array('id'=>$intProductId, 'name'=>$objProduct->name);
-
-                // Override the group ID
-                $intId = $objProduct->gid;
-            }
-        }
-
-        $intPid = $intId;
-
-        // Generate groups
-        do
-        {
-            $objGroup = Group::findByPk($intPid);
-
-            if (null !== $objGroup)
-            {
-                $arrGroups[] = array('id'=>$objGroup->id, 'name'=>$objGroup->name);
-
-                if ($objGroup->pid)
-                {
-                    // Do not show the mounted groups
-                    if (!$objUser->isAdmin && $objUser->hasAccess($objGroup->id, 'iso_groups'))
-                    {
-                        break;
-                    }
-
-                    $intPid = $objGroup->pid;
-                }
-            }
-        }
-        while ($objGroup->pid);
-
-        $arrLinks = array();
-        $strUrl = \Environment::get('request');
-
-        // Remove the product ID from URL
-        if ($intProductId)
-        {
-            $strUrl = preg_replace('/&id=[^&]*/', '', $strUrl);
-        }
-
-        // Generate breadcrumb trail
-        foreach ($arrGroups as $arrGroup)
-        {
-            if (!$arrGroup['id'])
-            {
-                continue;
-            }
-
-            $buffer = '';
-
-            // No link for the active group
-            if ((!$intProductId && $intId == $arrGroup['id']) || ($intProductId && $intProductId == $arrGroup['id']))
-            {
-                $buffer .= $arrGroup['name'];
-            }
-            else
-            {
-                $buffer .= '<a href="' . ampersand($strUrl) . '&amp;gid='.$arrGroup['id'] . '" title="'.specialchars($GLOBALS['TL_LANG']['MSC']['selectGroup']).'">' . $arrGroup['name'] . '</a>';
-            }
-
-            $arrLinks[] = $buffer;
-        }
-
-        $arrLinks[] = sprintf('<a href="%s" title="'.specialchars($GLOBALS['TL_LANG']['MSC']['allGroups']).'"><img src="system/modules/isotope/assets/folders.png" width="16" height="16" alt="" style="margin-right:6px;"> %s</a>', ampersand($strUrl) . '&amp;gid=0', $GLOBALS['TL_LANG']['MSC']['filterAll']);
-
-        return '
-<ul id="tl_breadcrumb">
-  <li>' . implode(' &gt; </li><li>', array_reverse($arrLinks)) . '</li>
-</ul>';
-    }
-
-
-    /**
      * Check the Ajax pre actions
      * @param string
      * @param object
@@ -490,10 +381,14 @@ class Backend extends Contao_Backend
             // Filter the pages
             case 'filterPages':
                 $filter = $this->Session->get('filter');
-                $filter['tl_iso_product']['iso_pages'] = array_map('intval', (array) \Input::post('value'));
+                $filter['tl_iso_product']['iso_page'] = (int) \Input::post('value');
                 $this->Session->set('filter', $filter);
                 $this->reload();
                 break;
+
+            // Sorty products by page
+            case 'sortByPage':
+                \Controller::redirect(\Backend::addToUrl('table=tl_iso_product_category&amp;id=&amp;page_id=' . (int) \Input::post('value')));
         }
     }
 
