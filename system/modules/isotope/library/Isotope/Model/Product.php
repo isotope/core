@@ -431,7 +431,11 @@ abstract class Product extends TypeAgent
         $objBase = new \DcaExtractor($arrOptions['table']);
 
         $arrJoins = array();
-        $arrFields = array($arrOptions['table'] . ".*", "'". str_replace('-', '_', $GLOBALS['TL_LANGUAGE']) . "' AS language");
+        $arrFields = array(
+            $arrOptions['table'] . ".*",
+            "IF(" . $arrOptions['table'] . ".pid>0, (SELECT type FROM " . $arrOptions['table'] . " parent WHERE parent.id=" . $arrOptions['table'] . ".pid), " . $arrOptions['table'] . ".type) AS type",
+            "'". str_replace('-', '_', $GLOBALS['TL_LANGUAGE']) . "' AS language",
+        );
 
         foreach (Attribute::getMultilingualFields() as $attribute)
         {
