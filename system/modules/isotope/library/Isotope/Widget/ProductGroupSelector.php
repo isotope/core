@@ -75,7 +75,6 @@ class ProductGroupSelector extends \Widget
 
         $this->import('Database');
         $this->import('BackendUser', 'User');
-        $this->import('Isotope\Backend\DCA\tl_iso_group', 'tl_iso_group');
     }
 
 
