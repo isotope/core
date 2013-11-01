@@ -14,6 +14,7 @@ namespace Isotope\Backend\Product;
 
 use Isotope\Model\Product;
 use Isotope\Model\ProductPrice;
+use Isotope\Model\ProductType;
 
 
 class Label extends \Backend
@@ -60,7 +61,7 @@ class Label extends \Backend
                 case 'name':
                     $args[$i] = $objProduct->name;
 
-                    if ($row['pid'] == 0 && $this->arrProductTypes[$row['type']] && $this->arrProductTypes[$row['type']]->hasVariants()) {
+                    if ($row['pid'] == 0 && ($objProductType = ProductType::findByPk($row['type'])) !== null && $objProductType->hasVariants()) {
                         // Add a variants link
                         $args[$i] = sprintf('<a href="%s" title="%s">%s</a>', ampersand(\Environment::get('request')) . '&amp;id=' . $row['id'], specialchars($GLOBALS['TL_LANG'][$dc->table]['showVariants']), $args[$i]);
                     }
