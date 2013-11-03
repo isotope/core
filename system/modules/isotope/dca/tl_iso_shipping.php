@@ -31,7 +31,6 @@ $GLOBALS['TL_DCA']['tl_iso_shipping'] = array
     'config' => array
     (
         'dataContainer'             => 'Table',
-        'switchToEdit'              => true,
         'enableVersioning'          => true,
         'closed'                    => true,
         'onload_callback' => array
@@ -219,7 +218,7 @@ $GLOBALS['TL_DCA']['tl_iso_shipping'] = array
             'label'                 => &$GLOBALS['TL_LANG']['tl_iso_shipping']['minimum_total'],
             'exclude'               => true,
             'inputType'             => 'text',
-            'eval'                  => array('maxlength'=>255, 'rgxp'=>'price', 'tl_class'=>'w50'),
+            'eval'                  => array('maxlength'=>13, 'rgxp'=>'price', 'tl_class'=>'w50'),
             'sql'                   => "decimal(12,2) NOT NULL default '0.00'",
         ),
         'maximum_total' => array
@@ -227,7 +226,7 @@ $GLOBALS['TL_DCA']['tl_iso_shipping'] = array
             'label'                 => &$GLOBALS['TL_LANG']['tl_iso_shipping']['maximum_total'],
             'exclude'               => true,
             'inputType'             => 'text',
-            'eval'                  => array('maxlength'=>255, 'rgxp'=>'price', 'tl_class'=>'w50'),
+            'eval'                  => array('maxlength'=>13, 'rgxp'=>'price', 'tl_class'=>'w50'),
             'sql'                   => "decimal(12,2) NOT NULL default '0.00'",
         ),
         'product_types' => array
