@@ -16,6 +16,8 @@ use Isotope\Isotope;
 use Isotope\Translation;
 use Isotope\Interfaces\IsotopeProductCollection;
 use Isotope\Model\ProductCollectionSurcharge;
+use Haste\Weight\Weight;
+use Haste\Weight\Scale;
 
 
 /**
@@ -77,6 +79,16 @@ abstract class Shipping extends TypeAgent
         }
 
         if (($this->minimum_total > 0 && $this->minimum_total > Isotope::getCart()->getSubtotal()) || ($this->maximum_total > 0 && $this->maximum_total < Isotope::getCart()->getSubtotal())) {
+            return false;
+        }
+
+        $objScale = Isotope::getCart()->addToScale();
+
+        if (($minWeight = Weight::createFromTimePeriod($this->minimum_weight)) !== null && $objScale->isLessThan($minWeight)) {
+            return false;
+        }
+
+        if (($maxWeight = Weight::createFromTimePeriod($this->maximum_weight)) !== null && $objScale->isMoreThan($maxWeight)) {
             return false;
         }
 

@@ -130,7 +130,7 @@ $GLOBALS['TL_DCA']['tl_iso_shipping'] = array
     (
         '__selector__'              => array('type', 'protected'),
         'default'                   => '{title_legend},name,label,type',
-        'flat'                      => '{title_legend},name,label,type;{note_legend:hide},note;{price_legend},price,tax_class,flatCalculation;{config_legend},countries,subdivisions,postalCodes,minimum_total,maximum_total,product_types;{expert_legend:hide},guests,protected;{enabled_legend},enabled',
+        'flat'                      => '{title_legend},name,label,type;{note_legend:hide},note;{price_legend},price,tax_class,flatCalculation;{config_legend},countries,subdivisions,postalCodes,minimum_total,maximum_total,minimum_weight,maximum_weight,weight_unit,product_types;{expert_legend:hide},guests,protected;{enabled_legend},enabled',
     ),
 
     // Subpalettes
@@ -228,6 +228,28 @@ $GLOBALS['TL_DCA']['tl_iso_shipping'] = array
             'inputType'             => 'text',
             'eval'                  => array('maxlength'=>13, 'rgxp'=>'price', 'tl_class'=>'w50'),
             'sql'                   => "decimal(12,2) NOT NULL default '0.00'",
+        ),
+        'minimum_weight' => array
+        (
+            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_shipping']['minimum_weight'],
+            'exclude'               => true,
+			'default'				=> array('unit'=>'kg'),
+            'inputType'             => 'timePeriod',
+			'options'				=> array('mg', 'g', 'kg', 't', 'ct', 'oz', 'lb', 'st', 'grain'),
+			'reference'				=> &$GLOBALS['TL_LANG']['WGT'],
+            'eval'                  => array('rgxp'=>'digit', 'tl_class'=>'w50'),
+            'sql'                   => "varchar(255) NOT NULL default ''",
+        ),
+        'maximum_weight' => array
+        (
+            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_shipping']['maximum_weight'],
+            'exclude'               => true,
+			'default'				=> array('unit'=>'kg'),
+            'inputType'             => 'timePeriod',
+			'options'				=> array('mg', 'g', 'kg', 't', 'ct', 'oz', 'lb', 'st', 'grain'),
+			'reference'				=> &$GLOBALS['TL_LANG']['WGT'],
+            'eval'                  => array('rgxp'=>'digit', 'tl_class'=>'w50'),
+            'sql'                   => "varchar(255) NOT NULL default ''",
         ),
         'product_types' => array
         (
