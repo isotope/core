@@ -21,6 +21,8 @@ use Isotope\Model\Gallery;
 use Isotope\Model\Product;
 use Isotope\Model\ProductPrice;
 use Isotope\Model\ProductType;
+use Haste\Weight\WeightAggregate;
+use Haste\Weight\Weight;
 
 
 /**
@@ -32,7 +34,7 @@ use Isotope\Model\ProductType;
  * @author     Fred Bliss <fred.bliss@intelligentspark.com>
  * @author     Christian de la Haye <service@delahaye.de>
  */
-class Standard extends Product implements IsotopeProduct
+class Standard extends Product implements IsotopeProduct, WeightAggregate
 {
 
     /**
@@ -438,6 +440,18 @@ class Standard extends Product implements IsotopeProduct
         return $this->arrCategories;
     }
 
+    /**
+     * Get the weight of the product (as object)
+     * @return  Weight
+     */
+    public function getWeight()
+    {
+        if (!isset($this->arrData['shipping_weight'])) {
+            return null;
+        }
+
+        return Weight::createFromTimePeriod($this->arrData['shipping_weight']);
+    }
 
     /**
      * Return all product options
