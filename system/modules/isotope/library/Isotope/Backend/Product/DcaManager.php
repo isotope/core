@@ -216,6 +216,7 @@ class DcaManager extends \Backend
         $arrFields = &$GLOBALS['TL_DCA']['tl_iso_product']['fields'];
         $arrAttributes = &$GLOBALS['TL_DCA']['tl_iso_product']['attributes'];
 
+		$arrTypes = array();
         $blnVariants = false;
         $act = \Input::get('act');
         $blnSingleRecord = $act === 'edit' || $act === 'show';
@@ -225,14 +226,23 @@ class DcaManager extends \Backend
 
             if ($objProduct->numRows) {
                 $objType = ProductType::findByPk(($objProduct->pid > 0 ? $objProduct->parent_type : $objProduct->type));
-                $arrTypes = null === $objType ? array() : array($objType);
+
+                if ($objType !== null) {
+	                $arrTypes[] = $objType;
+                }
 
                 if ($objProduct->pid > 0 || ($act != 'edit' && $act != 'show')) {
                     $blnVariants = true;
                 }
             }
         } else {
-            $arrTypes = ProductType::findAllUsed();
+            $objTypes = ProductType::findAllUsed();
+
+            if ($objTypes !== null) {
+				while ($objTypes->next()) {
+					$arrTypes[] = $objTypes->current();
+				}
+            }
         }
 
         foreach ($arrTypes as $objType)

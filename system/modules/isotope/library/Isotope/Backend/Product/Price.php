@@ -15,6 +15,7 @@ namespace Isotope\Backend\Product;
 use Isotope\Backend\SubtableVersion;
 use Isotope\Model\Product;
 use Isotope\Model\ProductPrice;
+use Isotope\Model\TaxClass;
 
 
 class Price extends \Backend
@@ -39,7 +40,7 @@ class Price extends \Backend
         if (null !== $objPrices) {
             $objTiers = \Database::getInstance()->query("SELECT * FROM tl_iso_product_pricetier WHERE pid IN (" . implode(',', $objPrices->fetchEach('id')) . ")");
 
-            $arrData['prices'] = $objPrices->fetchAllAssoc();
+            $arrData['prices'] = $objPrices->fetchAll();
             $arrData['tiers'] = $objTiers->fetchAllAssoc();
         }
 
@@ -86,7 +87,6 @@ class Price extends \Backend
         $objPrice = \Database::getInstance()->query("SELECT t.id, p.id AS pid, p.tax_class, t.price FROM " . ProductPrice::getTable() . " p LEFT JOIN tl_iso_product_pricetier t ON p.id=t.pid AND t.min=1 WHERE p.pid={$dc->id} AND p.config_id=0 AND p.member_group=0 AND p.start='' AND p.stop=''");
 
         if (!$objPrice->numRows) {
-
             $objTax = TaxClass::findFallback();
 
             return array(
