@@ -56,7 +56,7 @@ interface IsotopeProduct
     public function isExemptFromShipping();
 
     /**
-     * Returns true if variants are enabled in the product type, otherwise returns false
+     * Returns true if variants are enabled in the product, otherwise returns false
      * @return bool
      */
     public function hasVariants();
