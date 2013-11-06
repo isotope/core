@@ -37,16 +37,16 @@ array_insert($GLOBALS['BE_MOD']['isotope'], 0, array
     'iso_products' => array
     (
         'tables'            => array(\Isotope\Model\Product::getTable(), \Isotope\Model\Group::getTable(), \Isotope\Model\ProductCategory::getTable(), \Isotope\Model\Download::getTable(), \Isotope\Model\RelatedProduct::getTable(), \Isotope\Model\ProductPrice::getTable(), 'tl_iso_product_pricetier'),
-        'icon'              => 'system/modules/isotope/assets/store-open.png',
-        'javascript'        => 'system/modules/isotope/assets/backend'.(ISO_DEBUG ? '' : '.min').'.js',
+        'icon'              => 'system/modules/isotope/assets/images/store-open.png',
+        'javascript'        => 'system/modules/isotope/assets/js/backend'.(ISO_DEBUG ? '' : '.min').'.js',
         'generate'          => array('Isotope\Backend\Product\VariantGenerator', 'generate'),
         'import'            => array('Isotope\Backend\Product\AssetImport', 'generate'),
     ),
     'iso_orders' => array
     (
         'tables'            => array(\Isotope\Model\ProductCollection::getTable(), \Isotope\Model\ProductCollectionItem::getTable(), \Isotope\Model\ProductCollectionSurcharge::getTable(), \Isotope\Model\ProductCollectionDownload::getTable(), \Isotope\Model\Address::getTable()),
-        'icon'              => 'system/modules/isotope/assets/shopping-basket.png',
-        'javascript'        => 'system/modules/isotope/assets/backend'.(ISO_DEBUG ? '' : '.min').'.js',
+        'icon'              => 'system/modules/isotope/assets/images/shopping-basket.png',
+        'javascript'        => 'system/modules/isotope/assets/js/backend'.(ISO_DEBUG ? '' : '.min').'.js',
         'print_document'    => array('Isotope\Backend\ProductCollection\Callback', 'printDocument'),
         'payment'           => array('Isotope\Backend\ProductCollection\Callback', 'paymentInterface'),
         'shipping'          => array('Isotope\Backend\ProductCollection\Callback', 'shippingInterface'),
@@ -55,8 +55,8 @@ array_insert($GLOBALS['BE_MOD']['isotope'], 0, array
     (
         'callback'          => 'Isotope\BackendModule\Setup',
         'tables'            => array(),
-        'icon'              => 'system/modules/isotope/assets/application-monitor.png',
-        'javascript'        => 'system/modules/isotope/assets/backend'.(ISO_DEBUG ? '' : '.min').'.js',
+        'icon'              => 'system/modules/isotope/assets/images/application-monitor.png',
+        'javascript'        => 'system/modules/isotope/assets/js/backend'.(ISO_DEBUG ? '' : '.min').'.js',
     ),
 ));
 
@@ -64,7 +64,7 @@ $GLOBALS['BE_MOD']['accounts']['member']['tables'][] = \Isotope\Model\Address::g
 
 if (TL_MODE == 'BE')
 {
-    $GLOBALS['TL_CSS'][] = 'system/modules/isotope/assets/backend'.(ISO_DEBUG ? '' : '.min').'.css';
+    $GLOBALS['TL_CSS'][] = 'system/modules/isotope/assets/css/backend'.(ISO_DEBUG ? '' : '.min').'.css';
 }
 
 
@@ -78,27 +78,27 @@ $GLOBALS['ISO_MOD'] = array
         'producttypes' => array
         (
             'tables'            => array(\Isotope\Model\ProductType::getTable()),
-            'icon'              => 'system/modules/isotope/assets/setup-producttypes.png'
+            'icon'              => 'system/modules/isotope/assets/images/setup-producttypes.png'
         ),
         'attributes' => array
         (
             'tables'            => array(\Isotope\Model\Attribute::getTable()),
-            'icon'              => 'system/modules/isotope/assets/setup-attributes.png',
+            'icon'              => 'system/modules/isotope/assets/images/setup-attributes.png',
         ),
         'related_categories' => array
         (
             'tables'            => array(\Isotope\Model\RelatedCategory::getTable()),
-            'icon'              => 'system/modules/isotope/assets/setup-related_categories.png',
+            'icon'              => 'system/modules/isotope/assets/images/setup-related_categories.png',
         ),
         'gallery' => array
         (
             'tables'            => array(\Isotope\Model\Gallery::getTable()),
-            'icon'              => 'system/modules/isotope/assets/setup-gallery.png',
+            'icon'              => 'system/modules/isotope/assets/images/setup-gallery.png',
         ),
         'baseprice' => array
         (
             'tables'            => array(\Isotope\Model\BasePrice::getTable()),
-            'icon'              => 'system/modules/isotope/assets/setup-baseprice.png',
+            'icon'              => 'system/modules/isotope/assets/images/setup-baseprice.png',
         ),
     ),
     'checkout' => array
@@ -106,22 +106,22 @@ $GLOBALS['ISO_MOD'] = array
         'payment' => array
         (
             'tables'            => array(\Isotope\Model\Payment::getTable()),
-            'icon'              => 'system/modules/isotope/assets/setup-payment.png',
+            'icon'              => 'system/modules/isotope/assets/images/setup-payment.png',
         ),
         'shipping' => array
         (
                 'tables'        => array(\Isotope\Model\Shipping::getTable()),
-                'icon'          => 'system/modules/isotope/assets/setup-shipping.png',
+                'icon'          => 'system/modules/isotope/assets/images/setup-shipping.png',
         ),
         'tax_class' => array
         (
             'tables'            => array(\Isotope\Model\TaxClass::getTable()),
-            'icon'              => 'system/modules/isotope/assets/setup-tax_class.png',
+            'icon'              => 'system/modules/isotope/assets/images/setup-tax_class.png',
         ),
         'tax_rate' => array
         (
             'tables'            => array(\Isotope\Model\TaxRate::getTable()),
-            'icon'              => 'system/modules/isotope/assets/setup-tax_rate.png',
+            'icon'              => 'system/modules/isotope/assets/images/setup-tax_rate.png',
         ),
     ),
     'config' => array
@@ -129,27 +129,27 @@ $GLOBALS['ISO_MOD'] = array
         'configs' => array
         (
             'tables'            => array(\Isotope\Model\Config::getTable()),
-            'icon'              => 'system/modules/isotope/assets/setup-config.png',
+            'icon'              => 'system/modules/isotope/assets/images/setup-config.png',
         ),
         'orderstatus' => array
         (
             'tables'            => array(\Isotope\Model\OrderStatus::getTable()),
-            'icon'              => 'system/modules/isotope/assets/setup-orderstatus.png',
+            'icon'              => 'system/modules/isotope/assets/images/setup-orderstatus.png',
         ),
         'notifications' => array
         (
-            'icon'              => 'system/modules/isotope/assets/setup-notifications.png',
+            'icon'              => 'system/modules/isotope/assets/images/setup-notifications.png',
             'redirect'          => 'contao/main.php?do=nc_notifications',
         ),
         'documents' => array
         (
             'tables'            => array(\Isotope\Model\Document::getTable()),
-            'icon'              => 'system/modules/isotope/assets/setup-documents.png'
+            'icon'              => 'system/modules/isotope/assets/images/setup-documents.png'
         ),
         'labels' => array
         (
             'tables'            => array(\Isotope\Model\Label::getTable()),
-            'icon'              => 'system/modules/isotope/assets/setup-labels.png'
+            'icon'              => 'system/modules/isotope/assets/images/setup-labels.png'
         ),
     )
 );

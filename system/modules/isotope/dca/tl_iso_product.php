@@ -84,7 +84,7 @@ $GLOBALS['TL_DCA']['tl_iso_product'] = array
             'headerOperations'      => array('edit', 'copy', 'cut', 'delete', 'toggle', 'show', 'related', 'downloads'),
             'flag'                  => 1,
             'panelLayout'           => 'iso_buttons,iso_filter;filter;sort,iso_sorting,search,limit',
-            'icon'                  => 'system/modules/isotope/assets/store-open.png',
+            'icon'                  => 'system/modules/isotope/assets/images/store-open.png',
             'paste_button_callback' => array('Isotope\Backend\Product\PasteButton', 'generate'),
             'panel_callback'        => array
             (
@@ -111,7 +111,7 @@ $GLOBALS['TL_DCA']['tl_iso_product'] = array
             (
                 'label'             => &$GLOBALS['TL_LANG']['tl_iso_product']['product_groups'],
                 'href'              => 'table='.\Isotope\Model\Group::getTable(),
-                'icon'              => 'system/modules/isotope/assets/folders.png',
+                'icon'              => 'system/modules/isotope/assets/images/folders.png',
                 'attributes'        => 'onclick="Backend.getScrollOffset();"',
                 'button_callback'   => array('Isotope\Backend\Product\Button', 'forGroups')
             ),
@@ -119,7 +119,7 @@ $GLOBALS['TL_DCA']['tl_iso_product'] = array
             (
                 'label'             => &$GLOBALS['TL_LANG']['tl_iso_product']['import'],
                 'href'              => 'key=import',
-                'icon'              => 'system/modules/isotope/assets/image--plus.png',
+                'icon'              => 'system/modules/isotope/assets/images/image--plus.png',
                 'attributes'        => 'onclick="Backend.getScrollOffset();"',
             ),
             'all' => array
@@ -183,28 +183,28 @@ $GLOBALS['TL_DCA']['tl_iso_product'] = array
             (
                 'label'             => &$GLOBALS['TL_LANG']['tl_iso_product']['variants'],
                 'href'              => '',
-                'icon'              => 'system/modules/isotope/assets/table--pencil.png',
+                'icon'              => 'system/modules/isotope/assets/images/table--pencil.png',
                 'button_callback'   => array('Isotope\Backend\Product\Button', 'forVariants'),
             ),
             'related' => array
             (
                 'label'             => &$GLOBALS['TL_LANG']['tl_iso_product']['related'],
                 'href'              => 'table='.\Isotope\Model\RelatedProduct::getTable(),
-                'icon'              => 'system/modules/isotope/assets/sitemap.png',
+                'icon'              => 'system/modules/isotope/assets/images/sitemap.png',
                 'button_callback'   => array('Isotope\Backend\Product\Button', 'forRelated'),
             ),
             'downloads' => array
             (
                 'label'             => &$GLOBALS['TL_LANG']['tl_iso_product']['downloads'],
                 'href'              => 'table='.\Isotope\Model\Download::getTable(),
-                'icon'              => 'system/modules/isotope/assets/paper-clip.png',
+                'icon'              => 'system/modules/isotope/assets/images/paper-clip.png',
                 'button_callback'   => array('Isotope\Backend\Product\Button', 'forDownloads'),
             ),
             'group' => array
             (
                 'label'             => &$GLOBALS['TL_LANG']['tl_iso_product']['group'],
                 'href'              => 'act=cut',
-                'icon'              => 'system/modules/isotope/assets/folder-network.png',
+                'icon'              => 'system/modules/isotope/assets/images/folder-network.png',
                 'button_callback'   => array('Isotope\Backend\Product\Button', 'forGroup'),
             ),
         ),

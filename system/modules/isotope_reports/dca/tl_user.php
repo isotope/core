@@ -33,7 +33,7 @@ $this->loadLanguageFile(\Isotope\Model\Group::getTable());
  * Add the Isotope style sheet
  */
 if (TL_MODE == 'BE') {
-    $GLOBALS['TL_CSS'][] = 'system/modules/isotope/html/backend.css';
+    $GLOBALS['TL_CSS'][] = 'system/modules/isotope/assets/css/backend.css';
 }
 
 /**

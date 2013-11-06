@@ -239,7 +239,7 @@ class Callback extends \Backend
                 $image = 'money';
         }
 
-        return sprintf('<div class="list_icon" style="background-image:url(\'system/modules/isotope/assets/%s.png\');line-height:16px" title="%s">%s</div>', $image, $GLOBALS['TL_LANG']['CUR'][$row['currency']], $label);
+        return sprintf('<div class="list_icon" style="background-image:url(\'system/modules/isotope/assets/images/%s.png\');line-height:16px" title="%s">%s</div>', $image, $GLOBALS['TL_LANG']['CUR'][$row['currency']], $label);
     }
 
 

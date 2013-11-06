@@ -16,7 +16,7 @@
 .header_import_assets
 {
     padding:2px 0px 3px 20px;
-    background-image:url("image--plus.png");
+    background-image:url("../images/image--plus.png");
     background-position:left center;
     background-repeat:no-repeat;
 }
@@ -24,7 +24,7 @@
 .header_import_mail
 {
     padding:2px 0px 3px 20px;
-    background-image:url("inbox-download.png");
+    background-image:url("../images/inbox-download.png");
     background-position:left center;
     background-repeat:no-repeat;
 }
@@ -40,7 +40,7 @@
 .header_iso_groups
 {
     padding:2px 0px 3px 20px;
-    background-image:url("folders.png");
+    background-image:url("../images/folders.png");
     background-position:left center;
     background-repeat:no-repeat;
 }
