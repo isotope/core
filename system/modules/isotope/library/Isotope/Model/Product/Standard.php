@@ -19,6 +19,7 @@ use Isotope\Interfaces\IsotopeProductCollection;
 use Isotope\Model\Attribute;
 use Isotope\Model\Gallery;
 use Isotope\Model\Product;
+use Isotope\Model\ProductCategory;
 use Isotope\Model\ProductPrice;
 use Isotope\Model\ProductType;
 use Haste\Units\Mass\WeightAggregate;
