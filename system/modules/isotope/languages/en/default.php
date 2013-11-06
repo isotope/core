@@ -194,6 +194,7 @@ $GLOBALS['TL_LANG']['CTE']['isotope']                           = 'Isotope eComm
  * Shipping methods
  */
 $GLOBALS['TL_LANG']['MODEL']['tl_iso_shipping.flat']    = array('Flat-price shipping', 'This is the default shipping method for regular shipping.');
+$GLOBALS['TL_LANG']['MODEL']['tl_iso_shipping.group']   = array('Shipping group', 'With this method, you can group multiple shipping methods into one and calculate the price based on them.');
 
 /**
  * Payment methods
@@ -213,7 +214,7 @@ $GLOBALS['TL_LANG']['MODEL']['tl_iso_payment.worldpay']             = array('Wor
 /**
  * Documents
  */
-$GLOBALS['TL_LANG']['MODEL']['tl_iso_document.standard']                = array('Standard');
+$GLOBALS['TL_LANG']['MODEL']['tl_iso_document.standard']            = array('Standard');
 
 /**
  * Galleries

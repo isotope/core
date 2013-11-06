@@ -131,6 +131,7 @@ $GLOBALS['TL_DCA']['tl_iso_shipping'] = array
         '__selector__'              => array('type', 'protected'),
         'default'                   => '{title_legend},name,label,type',
         'flat'                      => '{title_legend},name,label,type;{note_legend:hide},note;{price_legend},price,tax_class,flatCalculation;{config_legend},countries,subdivisions,postalCodes,minimum_total,maximum_total,minimum_weight,maximum_weight,weight_unit,product_types;{expert_legend:hide},guests,protected;{enabled_legend},enabled',
+        'group'                     => '{title_legend},name,label,type;{note_legend:hide},note;{config_legend},group_methods,group_calculation;{expert_legend:hide},guests,protected;{enabled_legend},enabled',
     ),
 
     // Subpalettes
@@ -287,6 +288,28 @@ $GLOBALS['TL_DCA']['tl_iso_shipping'] = array
             'exclude'               => true,
             'inputType'             => 'select',
             'options'               => array('flat', 'perProduct', 'perItem'),
+            'reference'             => &$GLOBALS['TL_LANG']['tl_iso_shipping'],
+            'eval'                  => array('tl_class'=>'w50'),
+            'sql'                   => "varchar(10) NOT NULL default ''",
+        ),
+        'group_methods' => array
+        (
+            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_shipping']['group_methods'],
+            'exclude'               => true,
+            'inputType'             => 'checkboxWizard',
+            'options_callback'      => function($dc) {
+                $objShipping = \Isotope\Model\Shipping::findBy(array($dc->table.'.id!=?'), $dc->id);
+                return null === $objShipping ? array() : $objShipping->fetchEach('name');
+            },
+            'eval'                  => array('mandatory'=>true, 'multiple'=>true, 'tl_class'=>'clr w50 w50h'),
+            'sql'                   => "blob NULL",
+        ),
+        'group_calculation' => array
+        (
+            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_shipping']['group_calculation'],
+            'exclude'               => true,
+            'inputType'             => 'select',
+            'options'               => array('first', 'lowest', 'highest', 'summarize'),
             'reference'             => &$GLOBALS['TL_LANG']['tl_iso_shipping'],
             'eval'                  => array('tl_class'=>'w50'),
             'sql'                   => "varchar(10) NOT NULL default ''",
