@@ -40,16 +40,14 @@ class MediaManager extends \Widget implements \uploadable
      */
     protected $strTemplate = 'be_widget';
 
-
     /**
      * Instantiate widget and initialize uploader
      */
     public function __construct($arrAttributes=false)
     {
         parent::__construct($arrAttributes);
-	    $GLOBALS['TL_JAVASCRIPT']['fineuploader'] = 'system/modules/isotope/assets/fineuploader/fineuploader-4.0.1' . (ISO_DEBUG ? '' : '.min') . '.js';
+        $GLOBALS['TL_JAVASCRIPT']['fineuploader'] = 'system/modules/isotope/assets/fineuploader/fineuploader-4.0.1' . (ISO_DEBUG ? '' : '.min') . '.js';
     }
-
 
     /**
      * Add specific attributes
@@ -73,7 +71,6 @@ class MediaManager extends \Widget implements \uploadable
         }
     }
 
-
     /**
      * Validate the upload
      * @return string
@@ -86,7 +83,7 @@ class MediaManager extends \Widget implements \uploadable
         // Convert the $_FILES array to Contao format
         if (!empty($_FILES[$this->strName])) {
             $arrFile = array(
-                'name' => array($this->getFileName($_FILES[$this->strName]['name'], 'system/tmp')),
+                'name' => array($this->getFileName($_FILES[$this->strName]['name'])),
                 'type' => array($_FILES[$this->strName]['type']),
                 'tmp_name' => array($_FILES[$this->strName]['tmp_name']),
                 'error' => array($_FILES[$this->strName]['error']),
@@ -99,7 +96,7 @@ class MediaManager extends \Widget implements \uploadable
         $varInput = '';
 
         try {
-            $varInput = $objUploader->uploadTo('system/tmp');
+            $varInput = $objUploader->uploadTo($this->getFilePath($_FILES[$this->strName]['name'][0], true));
             \Message::reset();
         } catch (\Exception $e) {
             $this->addError($e->getMessage());
@@ -109,9 +106,8 @@ class MediaManager extends \Widget implements \uploadable
             $this->addError($GLOBALS['TL_LANG']['MSC']['mmUnknownError']);
         }
 
-        return $varInput[0];
+        return basename($varInput[0]);
     }
-
 
     /**
      * Validate input and set value
@@ -137,40 +133,18 @@ class MediaManager extends \Widget implements \uploadable
 
         $this->import('Files');
 
-        // Save file in the isotope folder
+        // Check that image is not assigned in fallback language
         foreach ($this->varValue as $k => $v) {
-            $strFile = $v['src'];
-
-            // Skip the files that are not temporary
-            if (stripos($strFile, 'system/tmp') === false || !is_file(TL_ROOT . '/' . $strFile)) {
-                continue;
-            }
-
-            $pathinfo = pathinfo(strtolower($strFile));
-            $strCacheName = standardize($pathinfo['filename']) . '.' . $pathinfo['extension'];
-            $uploadFolder = 'isotope/' . substr($strCacheName, 0, 1);
-
-            if (is_file(TL_ROOT . '/' . $uploadFolder . '/' . $strCacheName) && md5_file(TL_ROOT . '/' . $strFile) != md5_file(TL_ROOT . '/' . $uploadFolder . '/' . $strCacheName)) {
-                $strCacheName = standardize($pathinfo['filename']) . '-' . substr(md5_file(TL_ROOT . '/' . $strFile), 0, 8) . '.' . $pathinfo['extension'];
-                $uploadFolder = 'isotope/' . substr($strCacheName, 0, 1);
-            }
-
-            // Check that image is not assigned in fallback language
-            if (is_array($arrFallback) && in_array($strCacheName, $arrFallback)) {
+            if (is_array($arrFallback) && in_array($v, $arrFallback)) {
                 $this->addError($GLOBALS['TL_LANG']['ERR']['imageInFallback']);
             } else {
-                // Make sure directory exists
-                $this->Files->mkdir($uploadFolder);
-                $this->Files->rename($strFile, $uploadFolder . '/' . $strCacheName);
-
-                $this->varValue[$k]['src'] = $strCacheName;
                 $this->varValue[$k]['translate'] = ($arrFallback === false) ? '' : 'all';
             }
         }
 
         if ($this->mandatory) {
             foreach ($this->varValue as $file) {
-                if (is_file(TL_ROOT . '/isotope/' . substr($file['src'], 0, 1) . '/' . $file['src'])) {
+                if (is_file(TL_ROOT . '/' . $this->getFilePath($file['src']))) {
                     return;
                 }
             }
@@ -185,7 +159,6 @@ class MediaManager extends \Widget implements \uploadable
         }
     }
 
-
     /**
      * Generate the widget and return it as string
      * @return string
@@ -197,21 +170,20 @@ class MediaManager extends \Widget implements \uploadable
         // Adapt the temporary files
         if (is_array($this->varValue['files']) && !empty($this->varValue['files'])) {
             foreach ($this->varValue['files'] as $k => $v) {
-                if (!is_file(TL_ROOT . '/' . $v)) {
+                if (!is_file(TL_ROOT . '/' . $this->getFilePath($v))) {
                     continue;
                 }
 
-                $this->varValue[] = array
-                (
+                $this->varValue[] = array(
                     'src' => $v,
                     'alt' => '',
                     'desc' => '',
                     'link' => '',
                     'translate' => ''
                 );
-
-                unset($this->varValue['files'][$k]);
             }
+
+            unset($this->varValue['files']);
         }
 
         // Merge parent record data
@@ -372,53 +344,45 @@ class MediaManager extends \Widget implements \uploadable
   </div>' . $upload . ($blnIsAjax ? '</div>' : '');
     }
 
-
     /**
-     * Get the new file name if it already exists in the folder
-     * @param string
+     * Get the file name and return it as string
      * @param string
      * @return string
      */
-    protected function getFileName($strFile, $strFolder)
+    protected function getFileName($strFile)
     {
-        if (!file_exists(TL_ROOT . '/' . $strFolder . '/' . $strFile)) {
-            return $strFile;
+        $this->import('Files');
+        $pathinfo = pathinfo(strtolower($strFile));
+        $strCacheName = standardize($pathinfo['filename']) . '.' . $pathinfo['extension'];
+        $uploadFolder = $this->getFilePath($strCacheName, true);
+
+        if (is_file(TL_ROOT . '/' . $uploadFolder . '/' . $strCacheName) && md5_file(TL_ROOT . '/' .  $uploadFolder . '/' . $strFile) != md5_file(TL_ROOT . '/' . $uploadFolder . '/' . $strCacheName)) {
+            $strCacheName = standardize($pathinfo['filename']) . '-' . substr(md5_file(TL_ROOT . '/' .  $uploadFolder . '/' . $strFile), 0, 8) . '.' . $pathinfo['extension'];
+            $uploadFolder = $this->getFilePath($strCacheName, true);
         }
 
-        $offset = 1;
-        $pathinfo = pathinfo($strFile);
-        $name = $pathinfo['filename'];
-
-        $arrAll = scan(TL_ROOT . '/' . $strFolder);
-        $arrFiles = preg_grep('/^' . preg_quote($name, '/') . '.*\.' . preg_quote($pathinfo['extension'], '/') . '/', $arrAll);
-
-        foreach ($arrFiles as $file) {
-            if (preg_match('/__[0-9]+\.' . preg_quote($pathinfo['extension'], '/') . '$/', $file)) {
-                $file = str_replace('.' . $pathinfo['extension'], '', $file);
-                $intValue = intval(substr($file, (strrpos($file, '_') + 1)));
-
-                $offset = max($offset, $intValue);
-            }
+        // Check that image is not assigned in fallback language
+        if (is_array($arrFallback) && in_array($strCacheName, $arrFallback)) {
+            $this->addError($GLOBALS['TL_LANG']['ERR']['imageInFallback']);
+        } else {
+            // Make sure directory exists
+            $this->Files->mkdir($uploadFolder);
+            $this->Files->rename($strFile, $uploadFolder . '/' . $strCacheName);
         }
 
-        return str_replace($name, $name . '__' . ++$offset, $strFile);
+        return $strCacheName;
     }
-
 
     /**
-     * Get the correct file path and return it as string
+     * Get the file path or folder only
      * @param string
+     * @param boolean
      * @return string
      */
-    protected function getFilePath($strFile)
+    protected function getFilePath($strFile, $blnFolder=false)
     {
-        if (stripos($strFile, 'system/tmp') !== false) {
-            return $strFile;
-        }
-
-        return 'isotope/' . strtolower(substr($strFile, 0, 1)) . '/' . $strFile;
+        return 'isotope/' . substr($strFile, 0, 1) . (!$blnFolder ? ('/' . $strFile) : '');
     }
-
 
     /**
      * Retrieve image data from fallback language
