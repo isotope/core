@@ -217,6 +217,7 @@ $GLOBALS['BE_FFL']['productGroupSelector']   = 'Isotope\Widget\ProductGroupSelec
  * Shipping methods
  */
 \Isotope\Model\Shipping::registerModelType('flat', 'Isotope\Model\Shipping\Flat');
+\Isotope\Model\Shipping::registerModelType('group', 'Isotope\Model\Shipping\Group');
 
 /**
  * Documents

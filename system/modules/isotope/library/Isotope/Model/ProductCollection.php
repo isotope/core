@@ -20,6 +20,9 @@ use Isotope\Interfaces\IsotopeShipping;
 use Isotope\Model\Payment;
 use Isotope\Model\ProductCollectionItem;
 use Isotope\Model\Shipping;
+use Haste\Units\Mass\Scale;
+use Haste\Units\Mass\Weighable;
+use Haste\Units\Mass\WeightAggregate;
 
 /**
  * Class ProductCollection
@@ -1115,28 +1118,40 @@ abstract class ProductCollection extends TypeAgent
 
 
     /**
-     * Calculate the weight of all products in the cart in a specific weight unit
-     * @param string
-     * @return mixed
+     * Add all products in the collection to the given scale
+     * @param   Scale
+     * @return  Scale
      */
-    public function getShippingWeight($unit)
+    public function addToScale(Scale $objScale=null)
     {
-        $arrWeights = array();
-        $arrItems = $this->getItems();
+        if (null === $objScale) {
+            $objScale = new Scale();
+        }
 
-        foreach ($arrItems as $objItem)
-        {
+        foreach ($this->getItems() as $objItem) {
             if (!$objItem->hasProduct()) {
                 continue;
             }
 
-            $arrWeight = deserialize($objItem->getProduct()->shipping_weight, true);
-            $arrWeight['value'] = $objItem->quantity * floatval($arrWeight['value']);
+            $objProduct = $objItem->getProduct();
 
-            $arrWeights[] = $arrWeight;
+            if ($objProduct instanceof WeightAggregate) {
+                $objWeight = $objProduct->getWeight();
+
+                if (null !== $objWeight) {
+                    for ($i=0; $i<$objItem->quantity; $i++) {
+                        $objScale->add($objWeight);
+                    }
+                }
+
+            } elseif ($objProduct instanceof Weigthable) {
+                for ($i=0; $i<$objItem->quantity; $i++) {
+                    $objScale->add($objProduct);
+                }
+            }
         }
 
-        return Isotope::calculateWeight($arrWeights, $unit);
+        return $objScale;
     }
 
 
