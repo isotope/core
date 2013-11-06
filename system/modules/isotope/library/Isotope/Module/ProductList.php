@@ -183,6 +183,11 @@ class ProductList extends Module
                 $arrProducts = $this->findProducts();
             }
 
+            // Make sure $arrItems is an array, because array_slice and other methods would not work
+            if ($arrProducts instanceof \Model\Collection) {
+                $arrProducts = $arrProducts->getIterator()->getArrayCopy();
+            }
+
             $arrProducts = $this->generatePagination($arrProducts);
         }
 
