@@ -245,7 +245,7 @@ class Standard extends Gallery implements IsotopeGallery
 
                     if ($this->{$name.'_watermark_image'} != '' && $blnWatermark)
                     {
-                        $strImage = \Isotope\Frontend::watermarkImage($strImage, $this->{$name.'_watermark_image'}, $this->{$name.'_watermark_position'});
+                        $strImage = \Haste\Image\Image::addWatermark($strImage, $this->{$name.'_watermark_image'}, $this->{$name.'_watermark_position'});
                     }
 
                     $arrSize = @getimagesize(TL_ROOT . '/' . $strImage);
