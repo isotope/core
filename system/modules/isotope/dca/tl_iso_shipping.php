@@ -111,10 +111,10 @@ $GLOBALS['TL_DCA']['tl_iso_shipping'] = array
             ),
 			'toggle' => array
 			(
-				'label'               => &$GLOBALS['TL_LANG']['tl_iso_shipping']['toggle'],
-				'icon'                => 'visible.gif',
-				'attributes'          => 'onclick="Backend.getScrollOffset();return AjaxRequest.toggleVisibility(this,%s)"',
-				'button_callback'     => array('Isotope\Backend\Shipping\Callback', 'toggleIcon')
+				'label'             => &$GLOBALS['TL_LANG']['tl_iso_shipping']['toggle'],
+				'icon'              => 'visible.gif',
+				'attributes'        => 'onclick="Backend.getScrollOffset();return AjaxRequest.toggleVisibility(this,%s)"',
+				'button_callback'   => array('Isotope\Backend\Shipping\Callback', 'toggleIcon')
 			),
             'show' => array
             (
@@ -145,11 +145,11 @@ $GLOBALS['TL_DCA']['tl_iso_shipping'] = array
     (
         'id' => array
         (
-            'sql'                 =>  "int(10) unsigned NOT NULL auto_increment",
+            'sql'                   => "int(10) unsigned NOT NULL auto_increment",
         ),
         'tstamp' => array
         (
-            'sql'                 =>  "int(10) unsigned NOT NULL default '0'",
+            'sql'                   => "int(10) unsigned NOT NULL default '0'",
         ),
         'name' => array
         (
@@ -258,7 +258,7 @@ $GLOBALS['TL_DCA']['tl_iso_shipping'] = array
             'exclude'               => true,
             'inputType'             => 'select',
             'foreignKey'            => \Isotope\Model\ProductType::getTable().'.name',
-            'eval'                  => array('multiple'=>true, 'size'=>8, 'tl_class'=>'clr'),
+            'eval'                  => array('multiple'=>true, 'size'=>8, 'chosen'=>true, 'tl_class'=>'clr'),
             'sql'                   => "blob NULL",
             'relation'              => array('type'=>'hasMany', 'load'=>'lazy'),
         ),
