@@ -82,6 +82,77 @@ body.popup .header_back {
     top: 1px;
 }
 
+.tl_mediamanager .upload_container {
+    margin-top: 8px;
+}
+
+.tl_mediamanager .qq-hide {
+    display: none;
+}
+
+.tl_mediamanager .qq-upload-drop-area {
+	width: 700px;
+    padding: 56px 0;
+    margin-bottom: 12px;
+    text-align: center;
+    border: 3px dashed #dbdbdb;
+    border-left: none;
+    border-right: none;
+    background-color: #f7f7f7;
+}
+
+.tl_mediamanager .qq-upload-drop-area span {
+    font-size: 16px;
+    color: grey;
+}
+
+.tl_mediamanager .qq-upload-button {
+    display: inline-block;
+    padding: 5px 12px 5px 13px;
+    border: 1px solid #b8b8b8;
+    border-radius: 3px;
+    color: #666966;
+    cursor: pointer;
+    line-height: 1;
+    text-shadow: 1px 1px 0 #eee;
+    background: #eee;
+    background-image: -moz-linear-gradient(bottom,#ccc 0,#eee 60%);
+    background-image: -webkit-linear-gradient(bottom,#ccc 0,#eee 60%);
+    background-image: -o-linear-gradient(bottom,#ccc 0,#eee 60%);
+    background-image: -ms-linear-gradient(bottom,#ccc 0,#eee 60%);
+    background-image: linear-gradient(bottom,#ccc 0,#eee 60%);
+}
+
+.tl_mediamanager .qq-upload-button:focus,
+.tl_mediamanager .qq-upload-button:hover {
+    box-shadow: 0 0 3px #aaa;
+}
+
+.tl_mediamanager .qq-edit-filename {
+    display: none;
+}
+
+.tl_mediamanager .qq-upload-size {
+    color: #b3b3b3;
+}
+
+.tl_mediamanager .qq-upload-list {
+    margin: 8px 0 8px 16px;
+}
+
+.tl_mediamanager .qq-upload-list li {
+    line-height: 14px;
+    list-style-type: square;
+}
+
+.tl_mediamanager .qq-upload-success {
+    color: #8ab858;
+}
+
+.tl_mediamanager .qq-upload-fail {
+    color: #c55;
+}
+
 #ctrl_attributes tr:hover td,
 #ctrl_variant_attributes tr:hover td,
 #ctrl_address_fields tr:hover td {

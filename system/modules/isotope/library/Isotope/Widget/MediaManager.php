@@ -14,6 +14,7 @@ namespace Isotope\Widget;
 
 use Isotope\Model\Gallery;
 
+
 /**
  * Class MediaManager
  *
@@ -39,12 +40,6 @@ class MediaManager extends \Widget implements \uploadable
      */
     protected $strTemplate = 'be_widget';
 
-    /**
-     * Instance of the file uploader
-     * @var object
-     */
-    protected $objUploader;
-
 
     /**
      * Instantiate widget and initialize uploader
@@ -52,8 +47,7 @@ class MediaManager extends \Widget implements \uploadable
     public function __construct($arrAttributes=false)
     {
         parent::__construct($arrAttributes);
-
-        $this->objUploader = new \FileUpload();
+	    $GLOBALS['TL_JAVASCRIPT']['fineuploader'] = 'system/modules/isotope/assets/fineuploader/fineuploader-4.0.1' . (ISO_DEBUG ? '' : '.min') . '.js';
     }
 
 
@@ -64,8 +58,7 @@ class MediaManager extends \Widget implements \uploadable
      */
     public function __set($strKey, $varValue)
     {
-        switch ($strKey)
-        {
+        switch ($strKey) {
             case 'mandatory':
                 $this->arrConfiguration['mandatory'] = $varValue ? true : false;
                 break;
@@ -82,99 +75,112 @@ class MediaManager extends \Widget implements \uploadable
 
 
     /**
+     * Validate the upload
+     * @return string
+     */
+    public function validateUpload()
+    {
+        $objUploader = new \FileUpload();
+        $objUploader->setName($this->strName);
+
+        // Convert the $_FILES array to Contao format
+        if (!empty($_FILES[$this->strName])) {
+            $arrFile = array(
+                'name' => array($this->getFileName($_FILES[$this->strName]['name'], 'system/tmp')),
+                'type' => array($_FILES[$this->strName]['type']),
+                'tmp_name' => array($_FILES[$this->strName]['tmp_name']),
+                'error' => array($_FILES[$this->strName]['error']),
+                'size' => array($_FILES[$this->strName]['size']),
+            );
+
+            $_FILES[$this->strName] = $arrFile;
+        }
+
+        $varInput = '';
+
+        try {
+            $varInput = $objUploader->uploadTo('system/tmp');
+            \Message::reset();
+        } catch (\Exception $e) {
+            $this->addError($e->getMessage());
+        }
+
+        if (!is_array($varInput) || empty($varInput)) {
+            $this->addError($GLOBALS['TL_LANG']['MSC']['mmUnknownError']);
+        }
+
+        return $varInput[0];
+    }
+
+
+    /**
      * Validate input and set value
-     * @return void
      */
     public function validate()
     {
         $this->varValue = $this->getPost($this->strName);
 
-        if (!is_array($this->varValue))
-        {
+        if (!is_array($this->varValue)) {
             $this->varValue = array();
         }
-
-        // Prepare system for the upload
-        $arrAllowedTypes = $GLOBALS['TL_CONFIG']['uploadTypes'];
-
-        if ($this->extensions != '')
-        {
-            $GLOBALS['TL_CONFIG']['uploadTypes'] = $this->extensions;
-        }
-
-        $this->objUploader->setName($this->strName);
-
-        // Process the uploaded files
-        $arrUploaded = $this->objUploader->uploadTo('isotope');
-
-        // Reset system configuration
-        $GLOBALS['TL_CONFIG']['uploadTypes'] = $arrAllowedTypes;
 
         // Fetch fallback language record
         $arrFallback = $this->getFallbackData();
 
-        if (is_array($arrFallback))
-        {
-            foreach ($arrFallback as $k => $arrImage)
-            {
-                if ($arrImage['translate'] == 'all')
-                {
+        if (is_array($arrFallback)) {
+            foreach ($arrFallback as $k => $arrImage) {
+                if ($arrImage['translate'] == 'all') {
                     unset($arrFallback[$k]);
                 }
             }
         }
 
+        $this->import('Files');
+
         // Save file in the isotope folder
-        if (!empty($arrUploaded))
-        {
-            $this->import('Files');
+        foreach ($this->varValue as $k => $v) {
+            $strFile = $v['src'];
 
-            foreach ($arrUploaded as $strFile)
-            {
-                $pathinfo = pathinfo(strtolower($strFile));
-                $strCacheName = standardize($pathinfo['filename']) . '.' . $pathinfo['extension'];
+            // Skip the files that are not temporary
+            if (stripos($strFile, 'system/tmp') === false || !is_file(TL_ROOT . '/' . $strFile)) {
+                continue;
+            }
+
+            $pathinfo = pathinfo(strtolower($strFile));
+            $strCacheName = standardize($pathinfo['filename']) . '.' . $pathinfo['extension'];
+            $uploadFolder = 'isotope/' . substr($strCacheName, 0, 1);
+
+            if (is_file(TL_ROOT . '/' . $uploadFolder . '/' . $strCacheName) && md5_file(TL_ROOT . '/' . $strFile) != md5_file(TL_ROOT . '/' . $uploadFolder . '/' . $strCacheName)) {
+                $strCacheName = standardize($pathinfo['filename']) . '-' . substr(md5_file(TL_ROOT . '/' . $strFile), 0, 8) . '.' . $pathinfo['extension'];
                 $uploadFolder = 'isotope/' . substr($strCacheName, 0, 1);
+            }
 
-                if (is_file(TL_ROOT . '/' . $uploadFolder . '/' . $strCacheName) && md5_file(TL_ROOT . '/' . $strFile) != md5_file(TL_ROOT . '/' . $uploadFolder . '/' . $strCacheName))
-                {
-                    $strCacheName = standardize($pathinfo['filename']) . '-' . substr(md5_file(TL_ROOT . '/' . $strFile), 0, 8) . '.' . $pathinfo['extension'];
-                    $uploadFolder = 'isotope/' . substr($strCacheName, 0, 1);
-                }
+            // Check that image is not assigned in fallback language
+            if (is_array($arrFallback) && in_array($strCacheName, $arrFallback)) {
+                $this->addError($GLOBALS['TL_LANG']['ERR']['imageInFallback']);
+            } else {
+                // Make sure directory exists
+                $this->Files->mkdir($uploadFolder);
+                $this->Files->rename($strFile, $uploadFolder . '/' . $strCacheName);
 
-                // Check that image is not assigned in fallback language
-                if (is_array($arrFallback) && in_array($strCacheName, $arrFallback))
-                {
-                    $this->addError($GLOBALS['TL_LANG']['ERR']['imageInFallback']);
-                }
-                else
-                {
-                    // Make sure directory exists
-                    $this->Files->mkdir($uploadFolder);
-                    $this->Files->rename($strFile, $uploadFolder . '/' . $strCacheName);
-
-                    $this->varValue[] = array('src'=>$strCacheName, 'translate'=>($arrFallback === false ? '' : 'all'));
-                }
+                $this->varValue[$k]['src'] = $strCacheName;
+                $this->varValue[$k]['translate'] = ($arrFallback === false) ? '' : 'all';
             }
         }
 
-        if ($this->mandatory)
-        {
-            foreach ($this->varValue as $file)
-            {
-                if (is_file(TL_ROOT . '/isotope/' . substr($file['src'], 0, 1) . '/' . $file['src']))
-                {
+        if ($this->mandatory) {
+            foreach ($this->varValue as $file) {
+                if (is_file(TL_ROOT . '/isotope/' . substr($file['src'], 0, 1) . '/' . $file['src'])) {
                     return;
                 }
             }
 
-            if (!is_array($arrFallback) || empty($arrFallback))
-            {
+            if (!is_array($arrFallback) || empty($arrFallback)) {
                 $this->addError(sprintf($GLOBALS['TL_LANG']['ERR']['mandatory'], $this->strLabel));
             }
         }
 
-        if (empty($this->varValue))
-        {
+        if (empty($this->varValue)) {
             $this->varValue = null;
         }
     }
@@ -188,9 +194,28 @@ class MediaManager extends \Widget implements \uploadable
     {
         $arrFallback = $this->getFallbackData();
 
+        // Adapt the temporary files
+        if (is_array($this->varValue['files']) && !empty($this->varValue['files'])) {
+            foreach ($this->varValue['files'] as $k => $v) {
+                if (!is_file(TL_ROOT . '/' . $v)) {
+                    continue;
+                }
+
+                $this->varValue[] = array
+                (
+                    'src' => $v,
+                    'alt' => '',
+                    'desc' => '',
+                    'link' => '',
+                    'translate' => ''
+                );
+
+                unset($this->varValue['files'][$k]);
+            }
+        }
+
         // Merge parent record data
-        if ($arrFallback !== false)
-        {
+        if ($arrFallback !== false) {
             $blnLanguage = true;
             $this->varValue = Gallery::mergeMediaData($this->varValue, $arrFallback);
         }
@@ -199,10 +224,8 @@ class MediaManager extends \Widget implements \uploadable
         $strCommand = 'cmd_' . $this->strField;
 
         // Change the order
-        if (\Input::get($strCommand) && is_numeric(\Input::get('cid')) && \Input::get('id') == $this->currentRecord)
-        {
-            switch (\Input::get($strCommand))
-            {
+        if (\Input::get($strCommand) && is_numeric(\Input::get('cid')) && \Input::get('id') == $this->currentRecord) {
+            switch (\Input::get($strCommand)) {
                 case 'up':
                     $this->varValue = array_move_up($this->varValue, \Input::get('cid'));
                     break;
@@ -222,22 +245,57 @@ class MediaManager extends \Widget implements \uploadable
             \Controller::redirect(preg_replace('/&(amp;)?cid=[^&]*/i', '', preg_replace('/&(amp;)?' . preg_quote($strCommand, '/') . '=[^&]*/i', '', \Environment::get('request'))));
         }
 
-        $upload = sprintf('<h3><label for="ctrl_%s_upload">%s</label></h3>' . $this->generateMarkup(),
-                        $this->strId,
-                        $GLOBALS['TL_LANG']['MSC']['mmUpload'],
-                        $this->strName,
-                        $this->strId,
-                        (strlen($this->strClass) ? ' ' . $this->strClass : ''));
+        $blnIsAjax = \Environment::get('isAjaxRequest');
+        $return = '';
+        $upload = '';
 
-        $return = '<div id="ctrl_' . $this->strId . '">';
+        if (!$blnIsAjax) {
+            $return .= '<div id="ctrl_' . $this->strId . '" class="tl_mediamanager">';
+            $extensions = trimsplit(',', $GLOBALS['TL_CONFIG']['validImageTypes']);
 
-        if (!is_array($this->varValue) || empty($this->varValue))
-        {
-            return $return . $GLOBALS['TL_LANG']['MSC']['mmNoUploads'] . $upload . '</div>';
+            $upload .= '<div id="fineuploader_'.$this->strId.'" class="upload_container"></div>
+  <script>
+    window.addEvent("domready", function() {
+      Isotope.MediaManager.init($("fineuploader_'.$this->strId.'"), "'.$this->strId.'", '.json_encode($extensions).');
+    });
+  </script>
+  <script type="text/template" id="qq-template">
+    <div class="qq-uploader-selector qq-uploader">
+        <div class="qq-upload-drop-area-selector qq-upload-drop-area" qq-hide-dropzone>
+            <span>'.$GLOBALS['TL_LANG']['MSC']['mmDrop'].'</span>
+        </div>
+        <div class="qq-upload-button-selector qq-upload-button">
+            <div>'.$GLOBALS['TL_LANG']['MSC']['mmUpload'].'</div>
+        </div>
+        <span class="qq-drop-processing-selector qq-drop-processing">
+            <span>'.$GLOBALS['TL_LANG']['MSC']['mmProcessing'].'</span>
+            <span class="qq-drop-processing-spinner-selector qq-drop-processing-spinner"></span>
+        </span>
+        <ul class="qq-upload-list-selector qq-upload-list">
+            <li>
+                <div class="qq-progress-bar-container-selector">
+                    <div class="qq-progress-bar-selector qq-progress-bar"></div>
+                </div>
+                <span class="qq-upload-spinner-selector qq-upload-spinner"></span>
+                <span class="qq-edit-filename-icon-selector qq-edit-filename-icon"></span>
+                <span class="qq-upload-file-selector qq-upload-file"></span>
+                <input class="qq-edit-filename-selector qq-edit-filename" tabindex="0" type="text">
+                <span class="qq-upload-size-selector qq-upload-size"></span>
+                <span class="qq-upload-status-text-selector qq-upload-status-text"></span>
+            </li>
+        </ul>
+    </div>
+  </script>';
+        }
+
+        $return .= '<div>';
+
+        if (!is_array($this->varValue) || empty($this->varValue)) {
+            return $return . $GLOBALS['TL_LANG']['MSC']['mmNoUploads'] . '</div>' . $upload . (!$blnIsAjax ? '</div>' : '');
         }
 
         // Add label and return wizard
-        $return .= '<table class="tl_mediamanager">
+        $return .= '<table>
   <thead>
   <tr>
     <td class="col_0 col_first">'.$GLOBALS['TL_LANG'][$this->strTable]['mmSrc'].'</td>
@@ -250,23 +308,18 @@ class MediaManager extends \Widget implements \uploadable
   <tbody class="sortable">';
 
         // Add input fields
-        for ($i=0, $count=count($this->varValue); $i<$count; $i++)
-        {
-            $strFile = 'isotope/' . strtolower(substr($this->varValue[$i]['src'], 0, 1)) . '/' . $this->varValue[$i]['src'];
+        for ($i=0, $count=count($this->varValue); $i<$count; $i++) {
+            $strFile = $this->getFilePath($this->varValue[$i]['src']);
 
-            if (!is_file(TL_ROOT . '/' . $strFile))
-            {
+            if (!is_file(TL_ROOT . '/' . $strFile)) {
                 continue;
             }
 
             $objFile = new \File($strFile);
 
-            if ($objFile->isGdImage)
-            {
+            if ($objFile->isGdImage) {
                 $strPreview = \Image::get($strFile, 50, 50, 'box');
-            }
-            else
-            {
+            } else {
                 $strPreview = 'system/themes/' . $this->getTheme() . '/images/' . $objFile->icon;
             }
 
@@ -295,10 +348,8 @@ class MediaManager extends \Widget implements \uploadable
     <td class="col_4 col_last">';
 
             // Add buttons
-            foreach ($arrButtons as $button)
-            {
-                if ($button == 'delete' && $blnLanguage && $this->varValue[$i]['translate'] != 'all')
-                {
+            foreach ($arrButtons as $button) {
+                if ($button == 'delete' && $blnLanguage && $this->varValue[$i]['translate'] != 'all') {
                     continue;
                 }
 
@@ -307,7 +358,7 @@ class MediaManager extends \Widget implements \uploadable
                 if ($button == 'drag') {
                     $return .= \Image::getHtml('drag.gif', '', 'class="drag-handle" title="' . sprintf($GLOBALS['TL_LANG']['MSC']['move']) . '"');
                 } else {
-                    $return .= '<a href="'.$this->addToUrl('&amp;'.$strCommand.'='.$button.'&amp;cid='.$i.'&amp;id='.$this->currentRecord).'"' . $class . ' title="'.specialchars($GLOBALS['TL_LANG'][$this->strTable]['wz_'.$button]).'" onclick="Isotope.mediaManager(this, \''.$button.'\',  \'ctrl_'.$this->strId.'\'); return false;">'.\Image::getHtml($button.'.gif', $GLOBALS['TL_LANG'][$this->strTable]['wz_'.$button], 'class="tl_listwizard_img"').'</a> ';
+                    $return .= '<a href="'.$this->addToUrl('&amp;'.$strCommand.'='.$button.'&amp;cid='.$i.'&amp;id='.$this->currentRecord).'"' . $class . ' title="'.specialchars($GLOBALS['TL_LANG'][$this->strTable]['wz_'.$button]).'" onclick="Isotope.MediaManager.act(this, \''.$button.'\',  \'ctrl_'.$this->strId.'\'); return false;">'.\Image::getHtml($button.'.gif', $GLOBALS['TL_LANG'][$this->strTable]['wz_'.$button], 'class="tl_listwizard_img"').'</a> ';
                 }
             }
 
@@ -317,7 +368,55 @@ class MediaManager extends \Widget implements \uploadable
 
         return $return.'
   </tbody>
-  </table>' . $upload . '</div>';
+  </table>
+  </div>' . $upload . ($blnIsAjax ? '</div>' : '');
+    }
+
+
+    /**
+     * Get the new file name if it already exists in the folder
+     * @param string
+     * @param string
+     * @return string
+     */
+    protected function getFileName($strFile, $strFolder)
+    {
+        if (!file_exists(TL_ROOT . '/' . $strFolder . '/' . $strFile)) {
+            return $strFile;
+        }
+
+        $offset = 1;
+        $pathinfo = pathinfo($strFile);
+        $name = $pathinfo['filename'];
+
+        $arrAll = scan(TL_ROOT . '/' . $strFolder);
+        $arrFiles = preg_grep('/^' . preg_quote($name, '/') . '.*\.' . preg_quote($pathinfo['extension'], '/') . '/', $arrAll);
+
+        foreach ($arrFiles as $file) {
+            if (preg_match('/__[0-9]+\.' . preg_quote($pathinfo['extension'], '/') . '$/', $file)) {
+                $file = str_replace('.' . $pathinfo['extension'], '', $file);
+                $intValue = intval(substr($file, (strrpos($file, '_') + 1)));
+
+                $offset = max($offset, $intValue);
+            }
+        }
+
+        return str_replace($name, $name . '__' . ++$offset, $strFile);
+    }
+
+
+    /**
+     * Get the correct file path and return it as string
+     * @param string
+     * @return string
+     */
+    protected function getFilePath($strFile)
+    {
+        if (stripos($strFile, 'system/tmp') !== false) {
+            return $strFile;
+        }
+
+        return 'isotope/' . strtolower(substr($strFile, 0, 1)) . '/' . $strFile;
     }
 
 
@@ -328,42 +427,10 @@ class MediaManager extends \Widget implements \uploadable
     protected function getFallbackData()
     {
         // Fetch fallback language record
-        if ($_SESSION['BE_DATA']['language'][$this->strTable][$this->currentRecord] != '')
-        {
-            return deserialize(\Database::getInstance()->execute("SELECT * FROM {$this->strTable} WHERE id={$this->currentRecord}")->{$this->strField});
+        if ($_SESSION['BE_DATA']['language'][$this->strTable][$this->currentRecord] != '') {
+            return deserialize(\Database::getInstance()->execute("SELECT {$this->strField} FROM {$this->strTable} WHERE id={$this->currentRecord}")->{$this->strField});
         }
 
         return false;
-    }
-
-
-    /**
-     * Generate file upload markup.
-     * Can't use FileUpload::generateMarkup() because it does not support multiple widgets on the same page.
-     */
-    public function generateMarkup()
-    {
-        $fields = '';
-
-        for ($i=0; $i<$GLOBALS['TL_CONFIG']['uploadFields']; $i++)
-        {
-            $fields .= '
-  <input type="file" name="' . $this->strName . '[]" class="tl_upload_field" onfocus="Backend.getScrollOffset()"><br>';
-        }
-
-        return '
-  <div id="' . $this->strName . '_upload-fields">'.$fields.'
-  </div>
-  <script>
-  window.addEvent("domready", function() {
-    if ("multiple" in document.createElement("input")) {
-      var div = $("' . $this->strName . '_upload-fields");
-      var input = div.getElement("input");
-      div.empty();
-      input.set("multiple", true);
-      input.inject(div);
-    }
-  });
-  </script>';
     }
 }

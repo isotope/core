@@ -17,77 +17,6 @@ var Isotope =
 {
 
     /**
-     * Make the wizards sortable
-     */
-    makeWizardsSortable: function() {
-        $$('.tl_mediamanager .sortable').each(function(el) {
-            new Sortables(el, {
-                contstrain: true,
-                opacity: 0.6,
-                handle: '.drag-handle',
-                onComplete: function() {
-                    Isotope.wizardResort(el);
-                }
-            });
-        });
-    },
-
-    /**
-     * Media Manager
-     * @param object
-     * @param string
-     * @param string
-     */
-    mediaManager: function(el, command, id) {
-        var table = document.id(id).getFirst('table');
-        var tbody = table.getFirst('tbody');
-        var parent = document.id(el).getParent('tr');
-        var rows = tbody.getChildren();
-
-        Backend.getScrollOffset();
-
-        switch (command) {
-            case 'up':
-                parent.getPrevious() ? parent.injectBefore(parent.getPrevious()) : parent.injectInside(tbody);
-                break;
-            case 'down':
-                parent.getNext() ? parent.injectAfter(parent.getNext()) : parent.injectBefore(tbody.getFirst());
-                break;
-            case 'delete':
-                parent.destroy();
-                break;
-        }
-
-        Isotope.wizardResort(tbody);
-    },
-
-    /**
-     * Resort the media manager fields
-     * @param object
-     */
-    wizardResort: function(tbody) {
-        var rows = tbody.getChildren(),
-            textarea, inputs, labels, i, j;
-
-        for (i=0; i<rows.length; i++) {
-            inputs = rows[i].getElements('[name]');
-
-            // Update the inputs
-            for (j=0; j<inputs.length; j++) {
-                inputs[j].name = inputs[j].name.replace(/\[[0-9]+\]/g, '[' + i + ']');
-                inputs[j].id = inputs[j].id.replace(/_[0-9]+/g, '_' + i);
-            }
-
-            labels = rows[i].getElements('label');
-
-            // Update the labels
-            for (j=0; j<labels.length; j++) {
-                labels[j].set('for', labels[j].get('for').replace(/_[0-9]+/g, '_' + i));
-            }
-        }
-    },
-
-    /**
      * Toggle checkbox group
      * @param object
      * @param string
@@ -427,12 +356,190 @@ var Isotope =
     }
 };
 
+Isotope.MediaManager = {};
+
+(function() {
+    "use strict";
+
+    /**
+     * Initialize the MediaManager
+     * @param object
+     * @param string
+     * @param string
+     * @return object
+     */
+    Isotope.MediaManager.init = function(el, field, extensions) {
+        var container = $('ctrl_' + field);
+        var files = [];
+        var chunks, i, input_index, inputs, input_name, value;
+
+        var params = {
+            element: document.id(el),
+            request: {
+                endpoint: window.location.href,
+                inputName: field,
+                params: {
+                    action: 'uploadMediaManager',
+                    name: field,
+                    REQUEST_TOKEN: Contao.request_token
+                }
+            },
+		    failedUploadTextDisplay: {
+		        mode: 'custom',
+		        maxChars: 50,
+		        responseProperty: 'error'
+		    },
+            validation: {
+                allowedExtensions: extensions
+            },
+            callbacks: {
+                onUpload: function() {
+                    AjaxRequest.displayBox(Contao.lang.loading + ' …');
+                },
+                onComplete: function(id, name, result) {
+                    if (!result.success) {
+                        AjaxRequest.hideBox();
+                        return;
+                    }
+
+                    // Add the uploaded file to value
+                    if (result.file) {
+                        files.push(result.file);
+                    }
+
+                    if (this.getInProgress() > 0) {
+                        return;
+                    }
+
+                    value = {};
+                    inputs = container.getElements('[name^="' + field + '"]');
+
+                    // Collect the values
+                    for (i=0; i<inputs.length; i++) {
+                        chunks = inputs[i].get('name').split('[');
+
+                        if (chunks.length != 3) {
+                            continue;
+                        }
+
+                        input_index = chunks[1].replace(']', '');
+
+                        if (!value[input_index]) {
+                            value[input_index] = {};
+                        }
+
+                        input_name = chunks[2].replace(']', '');
+
+                        if (inputs[i].get('type') == 'radio') {
+                            if (!value[input_index][input_name]) {
+                                value[input_index][input_name] = '';
+                            }
+
+                            if (inputs[i].get('checked')) {
+                                value[input_index][input_name] = inputs[i].get('value');
+                            }
+                        } else {
+                            value[input_index][input_name] = inputs[i].get('value');
+                        }
+                    }
+
+                    new Request.Contao({
+                        evalScripts: false,
+                        onSuccess: function(txt, json) {
+                            container.getElement('div').set('html', json.content);
+                            json.javascript && Browser.exec(json.javascript);
+                            AjaxRequest.hideBox();
+                            window.fireEvent('ajax_change');
+                        }
+                    }).post({'action':'reloadMediaManager', 'name':field, 'value':value, 'files':files, 'REQUEST_TOKEN':Contao.request_token});
+
+                    // Empty the files
+                    files = [];
+                }
+            }
+        };
+
+        return new qq.FineUploader(params);
+    };
+
+    /**
+     * Make the wizards sortable
+     */
+    Isotope.MediaManager.makeSortable = function() {
+        $$('.tl_mediamanager .sortable').each(function(el) {
+            new Sortables(el, {
+                contstrain: true,
+                opacity: 0.6,
+                handle: '.drag-handle',
+                onComplete: function() {
+                    Isotope.MediaManager.resort(el);
+                }
+            });
+        });
+    };
+
+    /**
+     * Perform a MediaManager action (button handler)
+     * @param object
+     * @param string
+     * @param string
+     */
+    Isotope.MediaManager.act = function(el, command, id) {
+        var table = document.id(id).getElement('table');
+        var tbody = table.getFirst('tbody');
+        var parent = document.id(el).getParent('tr');
+        var rows = tbody.getChildren();
+
+        Backend.getScrollOffset();
+
+        switch (command) {
+            case 'up':
+                parent.getPrevious() ? parent.injectBefore(parent.getPrevious()) : parent.injectInside(tbody);
+                break;
+            case 'down':
+                parent.getNext() ? parent.injectAfter(parent.getNext()) : parent.injectBefore(tbody.getFirst());
+                break;
+            case 'delete':
+                parent.destroy();
+                break;
+        }
+
+        Isotope.MediaManager.resort(tbody);
+    };
+
+    /**
+     * Resort the media manager fields
+     * @param object
+     */
+    Isotope.MediaManager.resort = function(tbody) {
+        var rows = tbody.getChildren(),
+            textarea, inputs, labels, i, j;
+
+        for (i=0; i<rows.length; i++) {
+            inputs = rows[i].getElements('[name]');
+
+            // Update the inputs
+            for (j=0; j<inputs.length; j++) {
+                inputs[j].name = inputs[j].name.replace(/\[[0-9]+\]/g, '[' + i + ']');
+                inputs[j].id = inputs[j].id.replace(/_[0-9]+/g, '_' + i);
+            }
+
+            labels = rows[i].getElements('label');
+
+            // Update the labels
+            for (j=0; j<labels.length; j++) {
+                labels[j].set('for', labels[j].get('for').replace(/_[0-9]+/g, '_' + i));
+            }
+        }
+    };
+})();
+
 // Initialize the back end script
 window.addEvent('domready', function()
 {
     Isotope.addInteractiveHelp();
     Isotope.makeSelectExtendable();
-    Isotope.makeWizardsSortable();
+    Isotope.MediaManager.makeSortable();
 }).addEvent('structure', function()
 {
     Isotope.addInteractiveHelp();
@@ -441,5 +548,5 @@ window.addEvent('domready', function()
 // Re-apply certain changes upon ajax_change
 window.addEvent('ajax_change', function() {
     Isotope.addInteractiveHelp();
-    Isotope.makeWizardsSortable();
+    Isotope.MediaManager.makeSortable();
 });
