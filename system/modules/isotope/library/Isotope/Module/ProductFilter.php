@@ -18,7 +18,7 @@ use Isotope\Model\RequestCache;
 use Isotope\RequestCache\Filter;
 use Isotope\RequestCache\Limit;
 use Isotope\RequestCache\Sort;
-use Isotope\Response\JsonResponse;
+use Haste\Http\Response\JsonResponse;
 
 
 /**

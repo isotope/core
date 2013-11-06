@@ -13,7 +13,7 @@
 namespace Isotope\Module;
 
 use Isotope\Interfaces\IsotopeProduct;
-use Isotope\Response\HtmlResponse;
+use Haste\Http\Response\HtmlResponse;
 use Isotope\Model\Product;
 
 

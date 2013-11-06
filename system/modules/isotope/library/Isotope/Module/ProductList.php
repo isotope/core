@@ -17,7 +17,7 @@ use Isotope\Model\Product;
 use Isotope\Model\ProductCache;
 use Isotope\Model\RequestCache;
 use Isotope\RequestCache\Sort;
-use Isotope\Response\HtmlResponse;
+use Haste\Http\Response\HtmlResponse;
 
 
 /**

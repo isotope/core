@@ -16,7 +16,7 @@ use Isotope\Interfaces\IsotopeProductCollection;
 use Isotope\Isotope;
 use Isotope\Interfaces\IsotopePayment;
 use Isotope\Model\ProductCollection\Order;
-use Isotope\Response\Response;
+use Haste\Http\Response\Response;
 
 
 /**
