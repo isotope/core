@@ -1315,6 +1315,8 @@ abstract class ProductCollection extends TypeAgent
             $arrItem['href'] = $objProduct->generateUrl($objItem->getRelated('jumpTo'));
         }
 
+        Product::unsetActive();
+
         return $arrItem;
     }
 

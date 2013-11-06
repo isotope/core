@@ -18,6 +18,7 @@ namespace Isotope\Interfaces;
  */
 interface IsotopeProduct
 {
+
     /**
      * Get the product id (variant INDEPENDENT id)
      * @return  int

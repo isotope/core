@@ -147,6 +147,8 @@ class Paypal extends Postsale implements IsotopePayment
             $strOptions = '';
             $arrOptions = Isotope::formatOptions($objItem->getOptions());
 
+            Product::unsetActive();
+
             if (!empty($arrOptions)) {
 
                 array_walk(

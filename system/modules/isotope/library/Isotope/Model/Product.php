@@ -47,7 +47,7 @@ abstract class Product extends TypeAgent
      * Currently active product
      * @var IsotopeProduct
      */
-    protected static $objProduct = null;
+    protected static $objActive = null;
 
     /**
      * Get product that is currently active (needed e.g. for insert tag replacement)
@@ -55,7 +55,7 @@ abstract class Product extends TypeAgent
      */
     public static function getActive()
     {
-        return static::$objProduct;
+        return static::$objActive;
     }
 
     /**
@@ -64,7 +64,16 @@ abstract class Product extends TypeAgent
      */
     public static function setActive(IsotopeProduct $objProduct)
     {
-        static::$objProduct = $objProduct;
+        static::$objActive = $objProduct;
+    }
+
+    /**
+     * Unset product that is currently active (prevent later use of it)
+     * @param   IsotopeProduct
+     */
+    public static function unsetActive()
+    {
+        static::$objActive = null;
     }
 
     /**
