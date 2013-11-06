@@ -88,7 +88,7 @@ class Checkout extends Module
             return $objTemplate->parse();
         }
 
-        $this->strCurrentStep = \Isotope\Frontend::getAutoItem('step');
+        $this->strCurrentStep = \Haste\Input\Input::getAutoItem('step');
 
         return parent::generate();
     }
@@ -139,7 +139,7 @@ class Checkout extends Module
             return;
         }
 
-        if (\Isotope\Frontend::getAutoItem('step') == '') {
+        if (\Haste\Input\Input::getAutoItem('step') == '') {
             if ($this->iso_forward_review) {
                 static::redirectToStep('review');
             }

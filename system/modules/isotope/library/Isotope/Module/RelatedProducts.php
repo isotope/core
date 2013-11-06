@@ -52,7 +52,7 @@ class RelatedProducts extends ProductList
             return $objTemplate->parse();
         }
 
-        if (!\Isotope\Frontend::getAutoItem('product')) {
+        if (!\Haste\Input\Input::getAutoItem('product')) {
             return '';
         }
 
@@ -74,7 +74,7 @@ class RelatedProducts extends ProductList
     {
         $arrIds = array(0);
 
-        $objProduct = Product::findAvailableByIdOrAlias(\Isotope\Frontend::getAutoItem('product'));
+        $objProduct = Product::findAvailableByIdOrAlias(\Haste\Input\Input::getAutoItem('product'));
 
         if (null === $objProduct) {
             return array();

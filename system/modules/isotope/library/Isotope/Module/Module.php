@@ -128,7 +128,7 @@ abstract class Module extends Contao_Module
                     break;
 
                 case 'product':
-                    $objProduct = Product::findAvailableByIdOrAlias(\Isotope\Frontend::getAutoItem('product'));
+                    $objProduct = Product::findAvailableByIdOrAlias(\Haste\Input\Input::getAutoItem('product'));
 
                     if ($objProduct !== null) {
                         $arrCategories = $objProduct->getCategories();

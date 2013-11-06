@@ -64,7 +64,7 @@ class ProductList extends Module
         }
 
         // Hide product list in reader mode if the respective setting is enabled
-        if ($this->iso_hide_list && \Isotope\Frontend::getAutoItem('product') != '') {
+        if ($this->iso_hide_list && \Haste\Input\Input::getAutoItem('product') != '') {
             return '';
         }
 
@@ -227,7 +227,7 @@ class ProductList extends Module
             $objProduct->mergeRow($arrDefaultOptions);
 
             // Must be done after setting options to generate the variant config into the URL
-            if ($this->iso_jump_first && \Isotope\Frontend::getAutoItem('product') == '') {
+            if ($this->iso_jump_first && \Haste\Input\Input::getAutoItem('product') == '') {
                 \Controller::redirect($objProduct->generateUrl($arrConfig['jumpTo']));
             }
 

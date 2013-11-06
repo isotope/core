@@ -279,7 +279,7 @@ class Frontend extends \Frontend
                 $objProduct = Product::findAvailableByPk($arrTag[2]);
             } else {
                 if (($objProduct = Product::getActive()) === null) {
-                    $objProduct = Product::findAvailableByIdOrAlias(static::getAutoItem('product'));
+                    $objProduct = Product::findAvailableByIdOrAlias(\Haste\Input\Input::getAutoItem('product'));
                 }
             }
 
@@ -496,13 +496,13 @@ class Frontend extends \Frontend
      */
     public function translateProductUrls($arrGet, $strLanguage, $arrRootPage)
     {
-        if (static::getAutoItem('product') != '')
+        if (\Haste\Input\Input::getAutoItem('product') != '')
         {
-            $arrGet['url']['product'] = static::getAutoItem('product');
+            $arrGet['url']['product'] = \Haste\Input\Input::getAutoItem('product');
         }
-        elseif (static::getAutoItem('step') != '')
+        elseif (\Haste\Input\Input::getAutoItem('step') != '')
         {
-            $arrGet['url']['step'] = static::getAutoItem('step');
+            $arrGet['url']['step'] = \Haste\Input\Input::getAutoItem('step');
         }
         elseif (\Input::get('uid') != '')
         {
@@ -984,8 +984,8 @@ window.addEvent('domready', function()
      */
     public function addProductToBreadcrumb($arrItems, $objModule)
     {
-        if (static::getAutoItem('product') != '') {
-            $objProduct = Product::findAvailableByIdOrAlias(static::getAutoItem('product'));
+        if (\Haste\Input\Input::getAutoItem('product') != '') {
+            $objProduct = Product::findAvailableByIdOrAlias(\Haste\Input\Input::getAutoItem('product'));
 
             if (null !== $objProduct) {
 
@@ -1094,21 +1094,6 @@ window.addEvent('domready', function()
 
         echo $varValue;
         exit;
-    }
-
-    /**
-     * Get value of an auto_item parameter
-     * @param   string Key
-     * @return  string
-     */
-    public static function getAutoItem($strKey)
-    {
-        if ($GLOBALS['TL_CONFIG']['useAutoItem'] && in_array($strKey, $GLOBALS['TL_AUTO_ITEM'])) {
-
-            return \Input::get('auto_item');
-        }
-
-        return \Input::get($strKey);
     }
 
     /**

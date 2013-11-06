@@ -60,7 +60,7 @@ class ProductReader extends Module
         }
 
         // Return if no product has been specified
-        if (\Isotope\Frontend::getAutoItem('product') == '')
+        if (\Haste\Input\Input::getAutoItem('product') == '')
         {
             return '';
         }
@@ -78,7 +78,7 @@ class ProductReader extends Module
         global $objPage;
         global $objIsotopeListPage;
 
-        $objProduct = Product::findAvailableByIdOrAlias(\Isotope\Frontend::getAutoItem('product'));
+        $objProduct = Product::findAvailableByIdOrAlias(\Haste\Input\Input::getAutoItem('product'));
 
         if (null === $objProduct) {
             // Display a 404 page
