@@ -20,9 +20,9 @@ use Isotope\Interfaces\IsotopeShipping;
 use Isotope\Model\Payment;
 use Isotope\Model\ProductCollectionItem;
 use Isotope\Model\Shipping;
-use Haste\Weight\Scale;
-use Haste\Weight\Weighable;
-use Haste\Weight\WeightAggregate;
+use Haste\Units\Mass\Scale;
+use Haste\Units\Mass\Weighable;
+use Haste\Units\Mass\WeightAggregate;
 
 /**
  * Class ProductCollection

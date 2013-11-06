@@ -21,8 +21,8 @@ use Isotope\Model\Gallery;
 use Isotope\Model\Product;
 use Isotope\Model\ProductPrice;
 use Isotope\Model\ProductType;
-use Haste\Weight\WeightAggregate;
-use Haste\Weight\Weight;
+use Haste\Units\Mass\WeightAggregate;
+use Haste\Units\Mass\Weight;
 
 
 /**
