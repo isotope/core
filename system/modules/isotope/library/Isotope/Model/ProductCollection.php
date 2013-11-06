@@ -1291,7 +1291,7 @@ abstract class ProductCollection extends TypeAgent
         $objProduct = $objItem->getProduct();
 
         // Set the active product for insert tags replacement
-        $GLOBALS['ACTIVE_PRODUCT'] = $objProduct;
+        Product::setActive($objProduct);
 
         $arrItem = array(
             'id'                => $objItem->id,
@@ -1314,8 +1314,6 @@ abstract class ProductCollection extends TypeAgent
         if (null !== $objItem->getRelated('jumpTo') && $blnHasProduct) {
             $arrItem['href'] = $objProduct->generateUrl($objItem->getRelated('jumpTo'));
         }
-
-        unset($GLOBALS['ACTIVE_PRODUCT']);
 
         return $arrItem;
     }

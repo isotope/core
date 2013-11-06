@@ -44,6 +44,30 @@ abstract class Product extends TypeAgent
     protected static $arrModelTypes = array();
 
     /**
+     * Currently active product
+     * @var IsotopeProduct
+     */
+    protected static $objProduct = null;
+
+    /**
+     * Get product that is currently active (needed e.g. for insert tag replacement)
+     * @return   IsotopeProduct
+     */
+    public static function getActive()
+    {
+        return static::$objProduct;
+    }
+
+    /**
+     * Set product that is currently active (needed e.g. for insert tag replacement)
+     * @param   IsotopeProduct
+     */
+    public static function setActive(IsotopeProduct $objProduct)
+    {
+        static::$objProduct = $objProduct;
+    }
+
+    /**
      * Find all published products
      * @param   array
      * @return  \Collection

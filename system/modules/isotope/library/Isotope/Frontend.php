@@ -272,15 +272,15 @@ class Frontend extends \Frontend
         elseif ($arrTag[0] == 'product')
         {
             // 2 possible use cases:
-            // {{product::attribute}}                - gets the data of the current product ($GLOBALS['ACTIVE_PRODUCT'] or GET parameter "product")
+            // {{product::attribute}}                - gets the data of the current product (Product::getActive() or GET parameter "product")
             // {{product::attribute::product_id}}    - gets the data of the specified product ID
 
             if (count($arrTag) == 3) {
                 $objProduct = Product::findAvailableByPk($arrTag[2]);
-            } elseif ($GLOBALS['ACTIVE_PRODUCT']) {
-                $objProduct = $GLOBALS['ACTIVE_PRODUCT'];
             } else {
-                $objProduct = Product::findAvailableByIdOrAlias(static::getAutoItem('product'));
+                if (($objProduct = Product::getActive()) === null) {
+                    $objProduct = Product::findAvailableByIdOrAlias(static::getAutoItem('product'));
+                }
             }
 
             return ($objProduct !== null) ? $objProduct->{$arrTag[1]} : '';
