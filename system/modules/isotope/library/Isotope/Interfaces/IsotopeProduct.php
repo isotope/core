@@ -18,6 +18,11 @@ namespace Isotope\Interfaces;
  */
 interface IsotopeProduct
 {
+    /**
+     * Get the product id (variant INDEPENDENT id)
+     * @return  int
+     */
+    public function getProductId();
 
     /**
      * Return the unique form ID for the product
