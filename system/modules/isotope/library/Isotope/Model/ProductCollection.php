@@ -1149,10 +1149,6 @@ abstract class ProductCollection extends TypeAgent
                     $objScale->add($objProduct);
                 }
             }
-
-            for ($i=0; $i<$objItem->quantity; $i++) {
-                $objScale->add($objItem->getProduct());
-            }
         }
 
         return $objScale;
