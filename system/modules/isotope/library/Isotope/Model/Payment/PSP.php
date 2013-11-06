@@ -180,7 +180,7 @@ abstract class PSP extends Payment
             'OWNERCTY'      => strtoupper($objBillingAddress->country),
             'OWNERTOWN'     => $objBillingAddress->city,
             'OWNERTELNO'    => $objBillingAddress->phone,
-            'ACCEPTURL'     => \Environment::get('base') . \Isotope\Frontend::addQueryStringToUrl('uid=' . $objOrder->uniqid, \Isotope\Module\Checkout::generateUrlForStep('complete')),
+            'ACCEPTURL'     => \Environment::get('base') . \Haste\Util\Url::addQueryString('uid=' . $objOrder->uniqid, \Isotope\Module\Checkout::generateUrlForStep('complete')),
             'DECLINEURL'    => $strFailedUrl,
             'EXCEPTIONURL'  => $strFailedUrl,
             'PARAMPLUS'     => 'mod=pay&amp;id=' . $this->id,

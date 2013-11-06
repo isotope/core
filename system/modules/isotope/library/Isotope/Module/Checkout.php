@@ -120,7 +120,7 @@ class Checkout extends Module
                 {
                     \Isotope\Frontend::clearTimeout();
 
-                    \Controller::redirect(\Isotope\Frontend::addQueryStringToUrl('uid=' . $objOrder->uniqid, $this->orderCompleteJumpTo));
+                    \Controller::redirect(\Haste\Util\Url::addQueryString('uid=' . $objOrder->uniqid, $this->orderCompleteJumpTo));
                 }
 
                 // Order is not complete, wait for it
@@ -217,7 +217,7 @@ class Checkout extends Module
             if ($strBuffer === true) {
                 // If checkout is successful, complete order and redirect to confirmation page
                 if (($objOrder = Order::findOneBy('source_collection_id', Isotope::getCart()->id)) !== null && $objOrder->checkout() && $objOrder->complete()) {
-                    \Controller::redirect(\Isotope\Frontend::addQueryStringToUrl('uid=' . $objOrder->uniqid, $this->orderCompleteJumpTo));
+                    \Controller::redirect(\Haste\Util\Url::addQueryString('uid=' . $objOrder->uniqid, $this->orderCompleteJumpTo));
                 }
 
                 // Checkout failed, show error message

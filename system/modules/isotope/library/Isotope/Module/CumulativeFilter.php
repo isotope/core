@@ -125,7 +125,7 @@ class CumulativeFilter extends Module
 
                 $arrItems[] = array
                 (
-                    'href'  => \Isotope\Frontend::addQueryStringToUrl('cumulativefilter=' . base64_encode($this->id . ';' . ($blnActive ? 'del' : 'add') . ';' . $strField . ';' . $varValue)),
+                    'href'  => \Haste\Util\Url::addQueryString('cumulativefilter=' . base64_encode($this->id . ';' . ($blnActive ? 'del' : 'add') . ';' . $strField . ';' . $varValue)),
                     'class' => ($blnActive ? 'active' : ''),
                     'title' => specialchars($option['label']),
                     'link'  => $option['label'],

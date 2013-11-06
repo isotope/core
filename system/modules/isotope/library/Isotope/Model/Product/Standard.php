@@ -943,7 +943,7 @@ class Standard extends Product implements IsotopeProduct, WeightAggregate
             $strUrl = '/product' . $strUrl;
         }
 
-        return \Isotope\Frontend::addQueryStringToUrl(
+        return \Haste\Util\Url::addQueryString(
             http_build_query($this->getOptions()),
             \Controller::generateFrontendUrl($objJumpTo->row(), $strUrl, $objJumpTo->language)
         );

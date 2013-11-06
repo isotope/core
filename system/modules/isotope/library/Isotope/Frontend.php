@@ -77,7 +77,7 @@ class Frontend extends \Frontend
                 $this->reload();
             }
 
-            \Controller::redirect(static::addQueryStringToUrl('continue='.base64_encode($this->Environment->request), $objModule->iso_addProductJumpTo));
+            \Controller::redirect(\Haste\Util\Url::addQueryString('continue='.base64_encode($this->Environment->request), $objModule->iso_addProductJumpTo));
         }
     }
 
@@ -807,53 +807,6 @@ window.addEvent('domready', function()
         }
 
         return $arrCodes;
-    }
-
-
-    /**
-     * Add a request string to the given URI string or page ID
-     * @param   string
-     * @param   mixed
-     * @return  string
-     * @throws  \InvalidArgumentException
-     */
-    public static function addQueryStringToUrl($strRequest, $varUrl=null)
-    {
-        if ($varUrl === null) {
-            $varUrl = \Environment::getInstance()->request;
-
-        } elseif (is_numeric($varUrl)) {
-            if (($objJump = \PageModel::findByPk($varUrl)) === null) {
-                throw new \InvalidArgumentException('Given page id does not exist.');
-            }
-            $varUrl = \Controller::generateFrontendUrl($objJump->row());
-        }
-
-        if ($strRequest === '') {
-            return $varUrl;
-        }
-
-        list($strScript, $strQueryString) = explode('?', $varUrl, 2);
-
-        $strRequest = preg_replace('/^&(amp;)?/i', '', $strRequest);
-        $queries = preg_split('/&(amp;)?/i', $strQueryString, PREG_SPLIT_NO_EMPTY);
-
-        // Overwrite existing parameters and ignore "language", see #64
-        foreach ($queries as $k=>$v) {
-            $explode = explode('=', $v, 2);
-
-            if ($v === '' || $k === 'language' || preg_match('/(^|&(amp;)?)' . preg_quote($explode[0], '/') . '=/i', $strRequest)) {
-                unset($queries[$k]);
-            }
-        }
-
-        $href = '?';
-
-        if (!empty($queries)) {
-            $href .= implode('&amp;', $queries) . '&amp;';
-        }
-
-        return $strScript . $href . str_replace(' ', '%20', $strRequest);
     }
 
 

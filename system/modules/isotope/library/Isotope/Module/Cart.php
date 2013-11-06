@@ -117,7 +117,7 @@ class Cart extends Module
             }
 
 
-            $arrItem['remove_href'] = \Isotope\Frontend::addQueryStringToUrl('remove='.$arrItem['id']);
+            $arrItem['remove_href'] = \Haste\Util\Url::addQueryString('remove='.$arrItem['id']);
             $arrItem['remove_title'] = specialchars(sprintf($GLOBALS['TL_LANG']['MSC']['removeProductLinkTitle'], $arrItem['name']));
             $arrItem['remove_link'] = $GLOBALS['TL_LANG']['MSC']['removeProductLinkText'];
 

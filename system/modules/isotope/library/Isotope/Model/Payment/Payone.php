@@ -90,7 +90,7 @@ class Payone extends Postsale implements IsotopePayment
             'reference'         => $objOrder->id,
             'display_name'      => 'no',
             'display_address'   => 'no',
-            'successurl'        => \Environment::get('base') . \Isotope\Frontend::addQueryStringToUrl('uid=' . $objOrder->uniqid, \Isotope\Module\Checkout::generateUrlForStep('complete')),
+            'successurl'        => \Environment::get('base') . \Haste\Util\Url::addQueryString('uid=' . $objOrder->uniqid, \Isotope\Module\Checkout::generateUrlForStep('complete')),
             'backurl'           => \Environment::get('base') . \Isotope\Module\Checkout::generateUrlForStep('failed'),
             'amount'            => (Isotope::getCart()->getTotal() * 100),
             'currency'          => Isotope::getConfig()->currency,

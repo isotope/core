@@ -103,7 +103,7 @@ class OrderHistory extends Module
                 'datime'     => Isotope::formatDatim($objOrders->locked),
                 'grandTotal' => Isotope::formatPriceWithCurrency($objOrders->getTotal()),
                 'status'     => $objOrders->getStatusLabel(),
-                'link'       => ($this->jumpTo ? (\Isotope\Frontend::addQueryStringToUrl('uid=' . $objOrders->uniqid, $this->jumpTo)) : ''),
+                'link'       => ($this->jumpTo ? (\Haste\Util\Url::addQueryString('uid=' . $objOrders->uniqid, $this->jumpTo)) : ''),
                 'class'      => $objOrders->getStatusAlias(),
             );
         }

@@ -97,7 +97,7 @@ class ProductCollectionDownload extends \Model
 
             $strHref = '';
             if (TL_MODE == 'FE') {
-                $strHref = \Isotope\Frontend::addQueryStringToUrl('download=' . $objDownload->id . '&amp;file=' . $objFileModel->path);
+                $strHref = \Haste\Util\Url::addQueryString('download=' . $objDownload->id . '&amp;file=' . $objFileModel->path);
             }
 
             // Add the image
