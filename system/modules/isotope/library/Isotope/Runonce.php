@@ -30,6 +30,8 @@ class Runonce extends \Controller
     public function __construct()
     {
         parent::__construct();
+
+        $GLOBALS['TL_CONFIG']['debugMode'] = false;
     }
 
 
