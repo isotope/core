@@ -189,7 +189,9 @@ class ProductList extends Module
                 $arrProducts = $arrProducts->getIterator()->getArrayCopy();
             }
 
-            $arrProducts = $this->generatePagination($arrProducts);
+            if (!empty($arrProducts)) {
+                $arrProducts = $this->generatePagination($arrProducts);
+            }
         }
 
         // No products found
