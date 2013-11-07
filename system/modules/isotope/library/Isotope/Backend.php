@@ -12,7 +12,7 @@
 
 namespace Isotope;
 
-use \Contao\Backend as Contao_Backend;
+use \Backend as Contao_Backend;
 use Isotope\Model\Config;
 use Isotope\Model\Group;
 use Isotope\Model\OrderStatus;
