@@ -14,6 +14,7 @@ namespace Isotope\Model;
 
 use Isotope\Isotope;
 use Haste\Haste;
+use Haste\Util\Format;
 
 
 /**
@@ -116,7 +117,7 @@ class Address extends \Model
                 continue;
             }
 
-            $arrTokens[$strField] = Isotope::formatValue(static::$strTable, $strField, $this->$strField);
+            $arrTokens[$strField] = Format::dcaValue(static::$strTable, $strField, $this->$strField);
         }
 
 

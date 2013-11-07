@@ -23,6 +23,7 @@ use Isotope\Model\Shipping;
 use NotificationCenter\Model\Notification;
 use Haste\Haste;
 use Haste\Generator\RowClass;
+use Haste\Util\Format;
 
 
 /**
@@ -396,7 +397,7 @@ class Order extends ProductCollection implements IsotopeProductCollection
         // Add billing/customer address fields
         if (($objAddress = $this->getBillingAddress()) !== null) {
             foreach ($objAddress->row() as $k => $v) {
-                $arrTokens['billing_' . $k] = Isotope::formatValue($objAddress->getTable(), $k, $v);
+                $arrTokens['billing_' . $k] = Format::dcaValue($objAddress->getTable(), $k, $v);
             }
 
             $arrTokens['billing_address'] = $objAddress->generateHtml($this->getRelated('config_id')->getBillingFieldsConfig());
@@ -406,7 +407,7 @@ class Order extends ProductCollection implements IsotopeProductCollection
         // Add shipping address fields
         if (($objAddress = $this->getShippingAddress()) !== null) {
             foreach ($objAddress->row() as $k => $v) {
-                $arrTokens['shipping_' . $k] = Isotope::formatValue($objAddress->getTable(), $k, $v);
+                $arrTokens['shipping_' . $k] = Format::dcaValue($objAddress->getTable(), $k, $v);
             }
 
             // Shipping address equals billing address
@@ -438,14 +439,14 @@ class Order extends ProductCollection implements IsotopeProductCollection
         // Add config fields
         if ($this->getRelated('config_id') !== null) {
             foreach ($this->getRelated('config_id')->row() as $k => $v) {
-                $arrTokens['config_' . $k] = Isotope::formatValue($this->getRelated('config_id')->getTable(), $k, $v);
+                $arrTokens['config_' . $k] = Format::dcaValue($this->getRelated('config_id')->getTable(), $k, $v);
             }
         }
 
         // Add member fields
         if ($this->pid > 0 && $this->getRelated('pid') !== null) {
             foreach ($this->getRelated('pid')->row() as $k => $v) {
-                $arrTokens['member_' . $k] = Isotope::formatValue($this->getRelated('pid')->getTable(), $k, $v);
+                $arrTokens['member_' . $k] = Format::dcaValue($this->getRelated('pid')->getTable(), $k, $v);
             }
         }
 

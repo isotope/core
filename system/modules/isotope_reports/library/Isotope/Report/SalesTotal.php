@@ -14,6 +14,7 @@ namespace Isotope\Report;
 use Isotope\Isotope;
 use Isotope\Model\Config;
 use Haste\Generator\RowClass;
+use Haste\Util\Format;
 
 
 class SalesTotal extends Sales

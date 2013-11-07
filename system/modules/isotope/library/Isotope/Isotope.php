@@ -17,6 +17,7 @@ use Isotope\Model\RequestCache;
 use Isotope\Model\TaxClass;
 use Isotope\Model\ProductCollection\Cart;
 use Haste\Haste;
+use Haste\Util\Format;
 
 
 /**
@@ -384,111 +385,6 @@ class Isotope extends \Controller
 
 
     /**
-     * Format value (based on DC_Table::show(), Contao 2.9.0)
-     * @param string
-     * @param string
-     * @param mixed
-     * @return string
-     */
-    public static function formatValue($strTable, $strField, $varValue)
-    {
-        $varValue = deserialize($varValue);
-
-        if (!is_array($GLOBALS['TL_DCA'][$strTable]))
-        {
-            Haste::getInstance()->call('loadDataContainer', $strTable);
-            \System::loadLanguageFile($strTable);
-        }
-
-        // Get field value
-        if (strlen($GLOBALS['TL_DCA'][$strTable]['fields'][$strField]['foreignKey']))
-        {
-            $chunks = explode('.', $GLOBALS['TL_DCA'][$strTable]['fields'][$strField]['foreignKey']);
-            $varValue = empty($varValue) ? array(0) : $varValue;
-            $objKey = \Database::getInstance()->execute("SELECT " . $chunks[1] . " AS value FROM " . $chunks[0] . " WHERE id IN (" . implode(',', array_map('intval', (array) $varValue)) . ")");
-
-            return implode(', ', $objKey->fetchEach('value'));
-        }
-
-        elseif (is_array($varValue))
-        {
-            foreach ($varValue as $kk => $vv)
-            {
-                $varValue[$kk] = static::formatValue($strTable, $strField, $vv);
-            }
-
-            return implode(', ', $varValue);
-        }
-
-        elseif ($GLOBALS['TL_DCA'][$strTable]['fields'][$strField]['eval']['rgxp'] == 'date')
-        {
-            return static::formatDate($varValue);
-        }
-
-        elseif ($GLOBALS['TL_DCA'][$strTable]['fields'][$strField]['eval']['rgxp'] == 'time')
-        {
-            return static::formatTime($varValue);
-        }
-
-        elseif ($GLOBALS['TL_DCA'][$strTable]['fields'][$strField]['eval']['rgxp'] == 'datim' || in_array($GLOBALS['TL_DCA'][$strTable]['fields'][$strField]['flag'], array(5, 6, 7, 8, 9, 10)) || $strField == 'tstamp')
-        {
-            return static::formatDatim($varValue);
-        }
-
-        elseif ($GLOBALS['TL_DCA'][$strTable]['fields'][$strField]['inputType'] == 'checkbox' && !$GLOBALS['TL_DCA'][$strTable]['fields'][$strField]['eval']['multiple'])
-        {
-            return strlen($varValue) ? $GLOBALS['TL_LANG']['MSC']['yes'] : $GLOBALS['TL_LANG']['MSC']['no'];
-        }
-
-        elseif ($GLOBALS['TL_DCA'][$strTable]['fields'][$strField]['inputType'] == 'textarea' && ($GLOBALS['TL_DCA'][$strTable]['fields'][$strField]['eval']['allowHtml'] || $GLOBALS['TL_DCA'][$strTable]['fields'][$strField]['eval']['preserveTags']))
-        {
-            return specialchars($varValue);
-        }
-
-        elseif (is_array($GLOBALS['TL_DCA'][$strTable]['fields'][$strField]['reference']))
-        {
-            return isset($GLOBALS['TL_DCA'][$strTable]['fields'][$strField]['reference'][$varValue]) ? ((is_array($GLOBALS['TL_DCA'][$strTable]['fields'][$strField]['reference'][$varValue])) ? $GLOBALS['TL_DCA'][$strTable]['fields'][$strField]['reference'][$varValue][0] : $GLOBALS['TL_DCA'][$strTable]['fields'][$strField]['reference'][$varValue]) : $varValue;
-        }
-
-        return $varValue;
-    }
-
-
-    /**
-     * Format label (based on DC_Table::show(), Contao 2.9.0)
-     * @param string
-     * @param string
-     * @return string
-     */
-    public static function formatLabel($strTable, $strField)
-    {
-        if (!is_array($GLOBALS['TL_DCA'][$strTable]))
-        {
-            Haste::getInstance()->call('loadDataContainer', $strTable);
-            \System::loadLanguageFile($strTable);
-        }
-
-        // Label
-        if (!empty($GLOBALS['TL_DCA'][$strTable]['fields'][$strField]['label']))
-        {
-            $strLabel = is_array($GLOBALS['TL_DCA'][$strTable]['fields'][$strField]['label']) ? $GLOBALS['TL_DCA'][$strTable]['fields'][$strField]['label'][0] : $GLOBALS['TL_DCA'][$strTable]['fields'][$strField]['label'];
-        }
-
-        else
-        {
-            $strLabel = is_array($GLOBALS['TL_LANG']['MSC'][$strField]) ? $GLOBALS['TL_LANG']['MSC'][$strField][0] : $GLOBALS['TL_LANG']['MSC'][$strField];
-        }
-
-        if ($strLabel == '')
-        {
-            $strLabel = $strField;
-        }
-
-        return $strLabel;
-    }
-
-
-    /**
      * Format options label and value
      * @param   array
      * @param   string
@@ -504,8 +400,8 @@ class Isotope extends \Controller
 
             $arrOptions[$field] = array
             (
-                'label'    => static::formatLabel($strTable, $field),
-                'value'    => Haste::getInstance()->call('replaceInsertTags', static::formatValue($strTable, $field, $value)),
+                'label'    => Format::dcaLabel($strTable, $field),
+                'value'    => Haste::getInstance()->call('replaceInsertTags', Format::dcaValue($strTable, $field, $value)),
             );
         }
 

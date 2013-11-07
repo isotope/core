@@ -15,6 +15,7 @@ namespace Isotope\Backend\Product;
 use Isotope\Model\Product;
 use Isotope\Model\ProductPrice;
 use Isotope\Model\ProductType;
+use Haste\Util\Format;
 
 
 class Label extends \Backend
@@ -82,7 +83,7 @@ class Label extends \Backend
                     $attributes = array();
 
                     foreach ($GLOBALS['TL_DCA'][$dc->table]['list']['label']['variantFields'] as $variantField) {
-                        $attributes[] = '<strong>' . Isotope::formatLabel($dc->table, $variantField) . ':</strong>&nbsp;' . Isotope::formatValue($dc->table, $variantField, $objProduct->$variantField);
+                        $attributes[] = '<strong>' . Format::dcaLabel($dc->table, $variantField) . ':</strong>&nbsp;' . Format::dcaValue($dc->table, $variantField, $objProduct->$variantField);
                     }
 
                     $args[$i] = ($args[$i] ? $args[$i].'<br>' : '') . implode(', ', $attributes);

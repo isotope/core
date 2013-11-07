@@ -20,6 +20,7 @@ use Isotope\Isotope;
 use Isotope\Model\Address;
 use Isotope\Model\Document;
 use Isotope\Model\ProductCollection\Order;
+use Haste\Util\Format;
 
 
 class Callback extends \Backend
@@ -200,8 +201,8 @@ class Callback extends \Backend
 
             $strBuffer .= '
   <tr>
-    <td' . $strClass . ' style="vertical-align:top"><span class="tl_label">'.Isotope::formatLabel($objAddress->getTable(), $k).': </span></td>
-    <td' . $strClass . '>'.Isotope::formatValue($objAddress->getTable(), $k, $v).'</td>
+    <td' . $strClass . ' style="vertical-align:top"><span class="tl_label">'.Format::dcaLabel($objAddress->getTable(), $k).': </span></td>
+    <td' . $strClass . '>'.Format::dcaValue($objAddress->getTable(), $k, $v).'</td>
   </tr>';
         }
 

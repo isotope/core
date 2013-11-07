@@ -12,6 +12,8 @@
 
 namespace Isotope\Backend\Rule;
 
+use Haste\Util\Format;
+
 
 class Callback extends \Backend
 {
@@ -175,7 +177,7 @@ class Callback extends \Backend
 
         foreach ($GLOBALS['TL_DCA']['tl_iso_product']['fields'] as $attribute => $config) {
             if ($config['attributes']['legend'] != '' && $attribute != 'pages' && $config['inputType'] != 'mediaManager') {
-                $arrAttributes[$attribute] = Isotope::formatLabel('tl_iso_product', $attribute);
+                $arrAttributes[$attribute] = Format::dcaLabel('tl_iso_product', $attribute);
             }
         }
 

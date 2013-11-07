@@ -16,6 +16,7 @@ use Isotope\Isotope;
 use Isotope\Interfaces\IsotopeProduct;
 use Isotope\Translation;
 use Haste\Haste;
+use Haste\Util\Format;
 
 
 /**
@@ -265,7 +266,7 @@ abstract class Attribute extends TypeAgent
         }
         else
         {
-            $strBuffer = Isotope::formatValue('tl_iso_product', $this->field_name, $varValue);
+            $strBuffer = Format::dcaValue('tl_iso_product', $this->field_name, $varValue);
         }
 
         return $strBuffer;

@@ -18,6 +18,7 @@ use Isotope\Model\RequestCache;
 use Isotope\RequestCache\Filter;
 use Isotope\RequestCache\Limit;
 use Isotope\RequestCache\Sort;
+use Haste\Util\Format;
 
 
 /**
@@ -378,14 +379,14 @@ class ProductFilter extends Module
 
                     $arrOptions[] = array
                     (
-                        'label'     => (Isotope::formatLabel('tl_iso_product', $field) . ', ' . $asc),
+                        'label'     => (Format::dcaLabel('tl_iso_product', $field) . ', ' . $asc),
                         'value'     => $field.':ASC',
                         'default'   => ((null !== $objSorting && $objSorting->isAscending()) ? '1' : ''),
                     );
 
                     $arrOptions[] = array
                     (
-                        'label'     => (Isotope::formatLabel('tl_iso_product', $field) . ', ' . $desc),
+                        'label'     => (Format::dcaLabel('tl_iso_product', $field) . ', ' . $desc),
                         'value'     => $field.':DESC',
                         'default'   => ((null !== $objSorting && $objSorting->isDescending()) ? '1' : ''),
                     );

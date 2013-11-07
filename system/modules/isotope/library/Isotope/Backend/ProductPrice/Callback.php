@@ -17,6 +17,7 @@
 namespace Isotope\Backend\ProductPrice;
 
 use Isotope\Isotope;
+use Haste\Util\Format;
 
 
 class Callback extends \Backend
@@ -66,7 +67,7 @@ class Callback extends \Backend
                 default:
                     if ($value != '' && $value > 0)
                     {
-                        $arrInfo[] = '<tr><td><span class="tl_label">' . Isotope::formatLabel('tl_iso_product_price', $name) . ':</span></td><td>' . Isotope::formatValue('tl_iso_product_price', $name, $value) . '</td></tr>';
+                        $arrInfo[] = '<tr><td><span class="tl_label">' . Format::dcaLabel('tl_iso_product_price', $name) . ':</span></td><td>' . Format::dcaValue('tl_iso_product_price', $name, $value) . '</td></tr>';
                     }
                     break;
             }
@@ -87,12 +88,12 @@ class Callback extends \Backend
     	$strReturn = '
 <table class="tl_listing showColumns">
 <thead>
-    <td class="tl_folder_tlist">' . Isotope::formatLabel('tl_iso_product_price', 'price_tiers') . '</td>
-    <td class="tl_folder_tlist">' . Isotope::formatLabel('tl_iso_product_price', 'tax_class') . '</td>
-    <td class="tl_folder_tlist">' . Isotope::formatLabel('tl_iso_product_price', 'config_id') . '</td>
-    <td class="tl_folder_tlist">' . Isotope::formatLabel('tl_iso_product_price', 'member_group') . '</td>
-    <td class="tl_folder_tlist">' . Isotope::formatLabel('tl_iso_product_price', 'start') . '</td>
-    <td class="tl_folder_tlist">' . Isotope::formatLabel('tl_iso_product_price', 'stop') . '</td>
+    <td class="tl_folder_tlist">' . Format::dcaLabel('tl_iso_product_price', 'price_tiers') . '</td>
+    <td class="tl_folder_tlist">' . Format::dcaLabel('tl_iso_product_price', 'tax_class') . '</td>
+    <td class="tl_folder_tlist">' . Format::dcaLabel('tl_iso_product_price', 'config_id') . '</td>
+    <td class="tl_folder_tlist">' . Format::dcaLabel('tl_iso_product_price', 'member_group') . '</td>
+    <td class="tl_folder_tlist">' . Format::dcaLabel('tl_iso_product_price', 'start') . '</td>
+    <td class="tl_folder_tlist">' . Format::dcaLabel('tl_iso_product_price', 'stop') . '</td>
 </thead>
 <tbody>';
 
@@ -108,11 +109,11 @@ class Callback extends \Backend
 	    	$strReturn .= '
 <tr>
     <td class="tl_file_list">' . implode(', ', $arrTiers) . '</td>
-    <td class="tl_file_list">' . (Isotope::formatValue('tl_iso_product_price', 'tax_class', $objRecords->tax_class) ?: '-') . '</td>
-    <td class="tl_file_list">' . (Isotope::formatValue('tl_iso_product_price', 'config_id', $objRecords->config_id) ?: '-') . '</td>
-    <td class="tl_file_list">' . (Isotope::formatValue('tl_iso_product_price', 'member_group', $objRecords->member_group) ?: '-') . '</td>
-    <td class="tl_file_list">' . (Isotope::formatValue('tl_iso_product_price', 'member_group', $objRecords->start) ?: '-') . '</td>
-    <td class="tl_file_list">' . (Isotope::formatValue('tl_iso_product_price', 'member_group', $objRecords->stop) ?: '-') . '</td>
+    <td class="tl_file_list">' . (Format::dcaValue('tl_iso_product_price', 'tax_class', $objRecords->tax_class) ?: '-') . '</td>
+    <td class="tl_file_list">' . (Format::dcaValue('tl_iso_product_price', 'config_id', $objRecords->config_id) ?: '-') . '</td>
+    <td class="tl_file_list">' . (Format::dcaValue('tl_iso_product_price', 'member_group', $objRecords->member_group) ?: '-') . '</td>
+    <td class="tl_file_list">' . (Format::dcaValue('tl_iso_product_price', 'member_group', $objRecords->start) ?: '-') . '</td>
+    <td class="tl_file_list">' . (Format::dcaValue('tl_iso_product_price', 'member_group', $objRecords->stop) ?: '-') . '</td>
 </tr>
 ';
     	}

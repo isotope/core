@@ -18,6 +18,8 @@ use Isotope\Model\Group;
 use Isotope\Model\Product;
 use Isotope\Model\ProductType;
 use Isotope\Model\RelatedCategory;
+use Haste\Util\Format;
+
 
 class DcaManager extends \Backend
 {
@@ -293,7 +295,7 @@ class DcaManager extends \Backend
                     }
 
                     if ($blnVariants && in_array($name, $arrCanInherit) && !$arrAttributes[$name]->isVariantOption() && !in_array($name, array('price', 'published', 'start', 'stop'))) {
-                        $arrInherit[$name] = Isotope::formatLabel('tl_iso_product', $name);
+                        $arrInherit[$name] = Format::dcaLabel('tl_iso_product', $name);
                     }
 
                 } else {
