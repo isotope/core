@@ -21,6 +21,7 @@ use Isotope\Model\ProductCollection;
 use Isotope\Model\ProductCollectionDownload;
 use Isotope\Model\Shipping;
 use NotificationCenter\Model\Notification;
+use Haste\Generator\RowClass;
 
 
 /**
@@ -508,7 +509,9 @@ class Order extends ProductCollection implements IsotopeProductCollection
             $arrItems[] = $arrItem;
         }
 
-        $objTemplate->items = \Isotope\Frontend::generateRowClass($arrItems, 'row', 'rowClass', 0, ISO_CLASS_COUNT|ISO_CLASS_FIRSTLAST|ISO_CLASS_EVENODD);
+        RowClass::withKey('rowClass')->addCount('row_')->addFirstLast('row_')->addEvenOdd('row_')->applyTo($arrItems);
+
+        $objTemplate->items = $arrItems;
         $objTemplate->downloads = $arrAllDownloads;
 
         return $arrItems;

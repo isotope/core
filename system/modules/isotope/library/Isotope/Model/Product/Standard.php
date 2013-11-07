@@ -24,6 +24,7 @@ use Isotope\Model\ProductPrice;
 use Isotope\Model\ProductType;
 use Haste\Units\Mass\WeightAggregate;
 use Haste\Units\Mass\Weight;
+use Haste\Generator\RowClass;
 
 
 /**
@@ -593,6 +594,8 @@ class Standard extends Product implements IsotopeProduct, WeightAggregate
             }
         }
 
+        RowClass::withKey('rowClass')->addCustom('product_option')->addFirstLast()->addEvenOdd()->applyTo($arrProductOptions);
+
         $objTemplate->buttons = $arrButtons;
         $objTemplate->useQuantity = $arrConfig['useQuantity'];
         $objTemplate->minimum_quantity = $this->getMinimumQuantity();
@@ -600,7 +603,7 @@ class Standard extends Product implements IsotopeProduct, WeightAggregate
         $objTemplate->raw_options = $this->getOptions();
         $objTemplate->href = $this->generateUrl($arrConfig['jumpTo']);
         $objTemplate->label_detail = $GLOBALS['TL_LANG']['MSC']['detailLabel'];
-        $objTemplate->options = \Isotope\Frontend::generateRowClass($arrProductOptions, 'product_option');
+        $objTemplate->options = $arrProductOptions;
         $objTemplate->hasOptions = !empty($arrProductOptions);
         $objTemplate->enctype = $this->hasUpload ? 'multipart/form-data' : 'application/x-www-form-urlencoded';
         $objTemplate->formId = $this->getFormId();

@@ -18,6 +18,7 @@ use Isotope\Interfaces\IsotopeProductCollection;
 use Isotope\Model\Payment;
 use Isotope\Model\Shipping;
 use Isotope\Model\ProductCollection\Order;
+use Haste\Generator\RowClass;
 
 
 /**
@@ -231,7 +232,9 @@ class Checkout extends Module
             }
         }
 
-        $this->Template->fields = \Isotope\Frontend::generateRowClass($arrBuffer, '', 'class', 0, ISO_CLASS_FIRSTLAST);
+        RowClass::withKey('class')->addFirstLast()->applyTo($arrBuffer);
+
+        $this->Template->fields = $arrBuffer;
 
         if (!strlen($this->strCurrentStep))
         {

@@ -14,6 +14,7 @@ namespace Isotope\Module;
 
 use Isotope\Isotope;
 use Isotope\Model\ProductCollection\Order;
+use Haste\Generator\RowClass;
 
 
 /**
@@ -108,6 +109,8 @@ class OrderHistory extends Module
             );
         }
 
-        $this->Template->orders = \Isotope\Frontend::generateRowClass($arrOrders, '', 'class', 0, ISO_CLASS_FIRSTLAST|ISO_CLASS_EVENODD);
+        RowClass::withKey('class')->addFirstLast()->addEvenOdd()->applyTo($arrOrders);
+
+        $this->Template->orders = $arrOrders;
     }
 }

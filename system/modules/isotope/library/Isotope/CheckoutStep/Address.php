@@ -14,6 +14,7 @@
 namespace Isotope\CheckoutStep;
 
 use Isotope\Model\Address as AddressModel;
+use Haste\Generator\RowClass;
 
 abstract class Address extends CheckoutStep
 {
@@ -136,7 +137,9 @@ abstract class Address extends CheckoutStep
     protected function generateFields($blnValidate=false)
     {
         $strBuffer = '';
-        $arrWidgets = \Isotope\Frontend::generateRowClass($this->getWidgets(), 'row', 'rowClass', 0, ISO_CLASS_COUNT|ISO_CLASS_FIRSTLAST|ISO_CLASS_EVENODD);
+        $arrWidgets = $this->getWidgets();
+
+        RowClass::withKey('rowClass')->addCount()->addFirstLast()->addEventOdd()->applyTo($arrWidgets);
 
         foreach ($arrWidgets as $objWidget) {
             $strBuffer .= $objWidget->parse();

@@ -20,6 +20,7 @@ use Isotope\Interfaces\IsotopeShipping;
 use Isotope\Model\Payment;
 use Isotope\Model\ProductCollectionItem;
 use Isotope\Model\Shipping;
+use Haste\Generator\RowClass;
 use Haste\Units\Mass\Scale;
 use Haste\Units\Mass\Weighable;
 use Haste\Units\Mass\WeightAggregate;
@@ -1275,7 +1276,9 @@ abstract class ProductCollection extends TypeAgent
             $arrItems[] = $this->generateItem($objItem);
         }
 
-        $objTemplate->items = \Isotope\Frontend::generateRowClass($arrItems, 'row', 'rowClass', 0, ISO_CLASS_COUNT|ISO_CLASS_FIRSTLAST|ISO_CLASS_EVENODD);
+        RowClass::withKey('rowClass')->addCount('row_')->addFirstLast('row_')->addEvenOdd('row_')->applyTo($arrItems);
+
+        $objTemplate->items = $arrItems;
 
         return $arrItems;
     }

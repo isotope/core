@@ -17,6 +17,7 @@ use Isotope\Model\Product;
 use Isotope\Model\ProductCache;
 use Isotope\Model\RequestCache;
 use Isotope\RequestCache\Sort;
+use Haste\Generator\RowClass;
 
 
 /**
@@ -249,7 +250,9 @@ class ProductList extends Module
             }
         }
 
-        $this->Template->products = \Isotope\Frontend::generateRowClass($arrBuffer, 'product', 'class', $this->iso_cols);
+        RowClass::withKey('class')->addCount('product_')->addEvenOdd('product_')->addFirstLast('product_')->addGridRows($this->iso_cols)->addGridCols($this->iso_cols)->applyTo($arrBuffer);
+
+        $this->Template->products = $arrBuffer;
     }
 
 

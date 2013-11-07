@@ -13,6 +13,7 @@ namespace Isotope\Report;
 
 use Isotope\Isotope;
 use Isotope\Model\Config;
+use Haste\Generator\RowClass;
 
 
 class SalesTotal extends Sales
@@ -179,7 +180,7 @@ class SalesTotal extends Sales
 			$intStart = strtotime('+ 1 '.$strPeriod, $intStart);
 		}
 
-        $arrData['rows'] = \Isotope\Frontend::generateRowClass($arrData['rows'], '', 'class', 0, ISO_CLASS_EVENODD);
+        RowClass::withKey('class')->addEvenOdd()->applyTo($arrData['rows']);
 
 		return $arrData;
 	}

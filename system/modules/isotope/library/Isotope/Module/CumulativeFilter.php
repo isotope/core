@@ -13,6 +13,7 @@
 namespace Isotope\Module;
 
 use Isotope\RequestCache\Filter;
+use Haste\Generator\RowClass;
 
 
 /**
@@ -134,10 +135,18 @@ class CumulativeFilter extends Module
 
             if (!empty($arrItems) || ($this->iso_iso_filterHideSingle && count($arrItems) < 2))
             {
+                $objClass = RowClass::withKey('class')->addFirstLast();
+
+                if ($blnTrail) {
+                    $objClass->addCustom('sibling');
+                }
+
+                $objClass->applyTo($arrItems);
+
                 $objTemplate = new \Isotope\Template($this->navigationTpl);
 
                 $objTemplate->level = 'level_2';
-                $objTemplate->items = \Isotope\Frontend::generateRowClass($arrItems, ($blnTrail ? 'sibling' : ''), 'class', 0, ISO_CLASS_NAME & ISO_CLASS_FIRSTLAST);
+                $objTemplate->items = $arrItems;
 
                 $arrFilters[$strField] = array
                 (

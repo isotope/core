@@ -15,6 +15,7 @@ namespace Isotope\Module;
 use Isotope\Isotope;
 use Isotope\Model\Address;
 use Isotope\Model\Config;
+use Haste\Generator\RowClass;
 
 /**
  * Class ModuleIsotopeAddressBook
@@ -154,11 +155,13 @@ class AddressBook extends Module
             $this->Template->message = $GLOBALS['TL_LANG']['ERR']['noAddressBookEntries'];
         }
 
+        RowClass::withKey('class')->addFirstLast()->addEvenOdd()->applyTo($arrAddresses);
+
         $this->Template->addNewAddressLabel= $GLOBALS['TL_LANG']['MSC']['createNewAddressLabel'];
         $this->Template->editAddressLabel = $GLOBALS['TL_LANG']['MSC']['editAddressLabel'];
         $this->Template->deleteAddressLabel = $GLOBALS['TL_LANG']['MSC']['deleteAddressLabel'];
         $this->Template->deleteAddressConfirm = specialchars($GLOBALS['TL_LANG']['MSC']['deleteAddressConfirm']);
-        $this->Template->addresses = \Isotope\Frontend::generateRowClass($arrAddresses, '', 'class', 0, ISO_CLASS_FIRSTLAST|ISO_CLASS_EVENODD);
+        $this->Template->addresses = $arrAddresses;
         $this->Template->addNewAddress = ampersand($strUrl . 'act=create');
     }
 
