@@ -15,6 +15,7 @@ namespace Isotope\Module;
 use Isotope\Isotope;
 use Isotope\Model\ProductCollection\Order;
 use Haste\Generator\RowClass;
+use Haste\Util\Format;
 
 
 /**
@@ -99,9 +100,9 @@ class OrderHistory extends Module
             (
                 'collection' => $objOrders->current(),
                 'raw'        => $objOrders->row(),
-                'date'       => Isotope::formatDate($objOrders->locked),
-                'time'       => Isotope::formatTime($objOrders->locked),
-                'datime'     => Isotope::formatDatim($objOrders->locked),
+                'date'       => Format::date($objOrders->locked),
+                'time'       => Format::time($objOrders->locked),
+                'datime'     => Format::datim($objOrders->locked),
                 'grandTotal' => Isotope::formatPriceWithCurrency($objOrders->getTotal()),
                 'status'     => $objOrders->getStatusLabel(),
                 'link'       => ($this->jumpTo ? (\Haste\Util\Url::addQueryString('uid=' . $objOrders->uniqid, $this->jumpTo)) : ''),

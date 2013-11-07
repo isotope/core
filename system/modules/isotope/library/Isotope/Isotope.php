@@ -511,43 +511,4 @@ class Isotope extends \Controller
 
         return $arrOptions;
     }
-
-
-    /**
-     * Format date according to the system config
-     * @param   int
-     * @return  string
-     */
-    public static function formatDate($intTstamp)
-    {
-        $strFormat = isset($GLOBALS['objPage']) ? $GLOBALS['objPage']->dateFormat : $GLOBALS['TL_CONFIG']['dateFormat'];
-
-        return \System::parseDate($strFormat, $intTstamp);
-    }
-
-
-    /**
-     * Format time according to the system config
-     * @param   int
-     * @return  string
-     */
-    public static function formatTime($intTstamp)
-    {
-        $strFormat = isset($GLOBALS['objPage']) ? $GLOBALS['objPage']->timeFormat : $GLOBALS['TL_CONFIG']['timeFormat'];
-
-        return \System::parseDate($strFormat, $intTstamp);
-    }
-
-
-    /**
-     * Format date & time according to the system config
-     * @param   int
-     * @return  string
-     */
-    public static function formatDatim($intTstamp)
-    {
-        $strFormat = isset($GLOBALS['objPage']) ? $GLOBALS['objPage']->datimFormat : $GLOBALS['TL_CONFIG']['datimFormat'];
-
-        return \System::parseDate($strFormat, $intTstamp);
-    }
 }
