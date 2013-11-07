@@ -8,10 +8,13 @@ It is built for flexibility, extendability and is international-friendly, much l
 
 ## Dependencies
 
-The following Contao extensions are required to run Isotope eCommerce:
+The following Contao extensions are required to run Isotope eCommerce Core:
 - https://github.com/terminal42/contao-NamespaceClassLoader
 - https://github.com/terminal42/contao-notification_center
 - https://github.com/terminal42/contao-conditionalselectmenu
 - https://github.com/terminal42/contao-dcawizard
 - https://github.com/codefog/contao-haste
 - https://github.com/menatwork/MultiColumnWizard
+
+The following Contao extensions are required to run Isotope eCommerce Rules:
+- https://github.com/terminal42/contao-tablelookupwizard
