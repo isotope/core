@@ -33,12 +33,6 @@ class Isotope extends \Controller
 {
 
     /**
-     * Current object instance (Singleton)
-     * @var object
-     */
-    protected static $objInstance;
-
-    /**
      * True if the system has been initialized
      * @var bool
      */
@@ -61,47 +55,6 @@ class Isotope extends \Controller
      * @var Isotope\Model\RequestCache
      */
     protected static $objRequestCache;
-
-
-    /**
-     * Prevent cloning of the object (Singleton)
-     */
-    final private function __clone() {}
-
-
-    /**
-     * Prevent direct instantiation (Singleton)
-     */
-    protected function __construct()
-    {
-        parent::__construct();
-    }
-
-
-    /**
-     * Allow access to all protected parent methods
-     */
-    public function call($name, $arguments=null)
-    {
-        $arguments = $arguments === null ? array() : (is_array($arguments) ? $arguments : array($arguments));
-
-        return call_user_func_array(array($this, $name), $arguments);
-    }
-
-
-    /**
-     * Instantiate the Isotope object
-     * @return object
-     */
-    public static function getInstance()
-    {
-        if (null === static::$objInstance) {
-            static::initialize();
-            static::$objInstance = new static();
-        }
-
-        return static::$objInstance;
-    }
 
 
     public static function initialize()
