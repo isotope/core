@@ -21,6 +21,7 @@ use Isotope\Model\ProductCollection;
 use Isotope\Model\ProductCollectionDownload;
 use Isotope\Model\Shipping;
 use NotificationCenter\Model\Notification;
+use Haste\Haste;
 use Haste\Generator\RowClass;
 
 
@@ -460,9 +461,9 @@ class Order extends ProductCollection implements IsotopeProductCollection
                 )
             );
 
-            $arrTokens['cart_html'] = Isotope::getInstance()->call('replaceInsertTags', $objTemplate->parse());
+            $arrTokens['cart_html'] = Haste::getInstance()->call('replaceInsertTags', $objTemplate->parse());
             $objTemplate->textOnly = true;
-            $arrTokens['cart_text'] = strip_tags(Isotope::getInstance()->call('replaceInsertTags', $objTemplate->parse()));
+            $arrTokens['cart_text'] = strip_tags(Haste::getInstance()->call('replaceInsertTags', $objTemplate->parse()));
 
             // Generate and "attach" document
             if ($objNotification->iso_document > 0 && (($objDocument = Document::findByPk($objNotification->iso_document)) !== null)) {

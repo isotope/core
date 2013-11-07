@@ -16,6 +16,7 @@ use Isotope\Interfaces\IsotopeProduct;
 use Isotope\Interfaces\IsotopeProductCollection;
 use Isotope\Model\Product;
 use Isotope\Model\ProductCollection\Order;
+use Haste\Haste;
 
 
 /**
@@ -782,6 +783,6 @@ window.addEvent('domready', function()
             return $varValue;
         }
 
-        return Isotope::getInstance()->call('replaceInsertTags', array($varValue, false));
+        return Haste::getInstance()->call('replaceInsertTags', array($varValue, false));
     }
 }

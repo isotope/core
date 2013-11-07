@@ -20,6 +20,7 @@ use Isotope\Interfaces\IsotopeShipping;
 use Isotope\Model\Payment;
 use Isotope\Model\ProductCollectionItem;
 use Isotope\Model\Shipping;
+use Haste\Haste;
 use Haste\Generator\RowClass;
 use Haste\Units\Mass\Scale;
 use Haste\Units\Mass\Weighable;
@@ -1017,7 +1018,7 @@ abstract class ProductCollection extends TypeAgent
 
         // Do not change the unique ID
         if ($this->uniqid == '') {
-            $this->uniqid = uniqid(Isotope::getInstance()->call('replaceInsertTags', $objConfig->orderPrefix), true);
+            $this->uniqid = uniqid(Haste::getInstance()->call('replaceInsertTags', $objConfig->orderPrefix), true);
         }
     }
 
@@ -1360,7 +1361,7 @@ abstract class ProductCollection extends TypeAgent
         }
 
         if ($this->arrData['document_number'] == '') {
-            $strPrefix = Isotope::getInstance()->call('replaceInsertTags', $strPrefix);
+            $strPrefix = Haste::getInstance()->call('replaceInsertTags', $strPrefix);
             $intPrefix = utf8_strlen($strPrefix);
 
             // Lock tables so no other order can get the same ID

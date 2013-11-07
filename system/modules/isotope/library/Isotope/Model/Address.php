@@ -13,6 +13,7 @@
 namespace Isotope\Model;
 
 use Isotope\Isotope;
+use Haste\Haste;
 
 
 /**
@@ -40,7 +41,7 @@ class Address extends \Model
 
         if (!is_array($GLOBALS['ISO_ADR']))
         {
-            Isotope::getInstance()->call('loadDataContainer', static::$strTable);
+            Haste::getInstance()->call('loadDataContainer', static::$strTable);
             \System::loadLanguageFile('addresses');
         }
     }

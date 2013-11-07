@@ -15,6 +15,7 @@ namespace Isotope\Model;
 use Isotope\Isotope;
 use Isotope\Interfaces\IsotopeProduct;
 use Isotope\Translation;
+use Haste\Haste;
 
 
 /**
@@ -427,7 +428,7 @@ abstract class Attribute extends TypeAgent
     {
         static $arrFields;
 
-        Isotope::getInstance()->call('loadDataContainer', 'tl_iso_product');
+        Haste::getInstance()->call('loadDataContainer', 'tl_iso_product');
 
         if (null === $arrFields) {
             $arrFields = array();
@@ -451,7 +452,7 @@ abstract class Attribute extends TypeAgent
     {
         static $arrFields;
 
-        Isotope::getInstance()->call('loadDataContainer', 'tl_iso_product');
+        Haste::getInstance()->call('loadDataContainer', 'tl_iso_product');
 
         if (null === $arrFields) {
             $arrFields = array();
@@ -475,7 +476,7 @@ abstract class Attribute extends TypeAgent
     {
         static $arrFields;
 
-        Isotope::getInstance()->call('loadDataContainer', 'tl_iso_product');
+        Haste::getInstance()->call('loadDataContainer', 'tl_iso_product');
 
         if (null === $arrFields) {
             $arrFields = array();
@@ -499,7 +500,7 @@ abstract class Attribute extends TypeAgent
     {
         static $arrFields;
 
-        Isotope::getInstance()->call('loadDataContainer', 'tl_iso_product');
+        Haste::getInstance()->call('loadDataContainer', 'tl_iso_product');
 
         if (null === $arrFields) {
             $arrFields = array();
@@ -523,7 +524,7 @@ abstract class Attribute extends TypeAgent
     {
         static $arrFields;
 
-        Isotope::getInstance()->call('loadDataContainer', 'tl_iso_product');
+        Haste::getInstance()->call('loadDataContainer', 'tl_iso_product');
 
         if (null === $arrFields) {
             $arrFields = array();
@@ -548,7 +549,7 @@ abstract class Attribute extends TypeAgent
     {
         static $arrFields;
 
-        Isotope::getInstance()->call('loadDataContainer', 'tl_iso_product');
+        Haste::getInstance()->call('loadDataContainer', 'tl_iso_product');
 
         if (null === $arrFields) {
             $arrFields = array();
@@ -573,7 +574,7 @@ abstract class Attribute extends TypeAgent
     {
         static $arrFields;
 
-        Isotope::getInstance()->call('loadDataContainer', 'tl_iso_product');
+        Haste::getInstance()->call('loadDataContainer', 'tl_iso_product');
 
         if (null === $arrFields) {
             $arrFields = array();
@@ -598,7 +599,7 @@ abstract class Attribute extends TypeAgent
     {
         static $arrFields;
 
-        Isotope::getInstance()->call('loadDataContainer', 'tl_iso_product');
+        Haste::getInstance()->call('loadDataContainer', 'tl_iso_product');
 
         if (null === $arrFields) {
             $arrFields = array();
@@ -622,7 +623,7 @@ abstract class Attribute extends TypeAgent
     {
         static $arrFields;
 
-        Isotope::getInstance()->call('loadDataContainer', 'tl_iso_product');
+        Haste::getInstance()->call('loadDataContainer', 'tl_iso_product');
 
         if (null === $arrFields) {
             $arrFields = array();

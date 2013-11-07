@@ -16,6 +16,7 @@ use Isotope\Isotope;
 use Isotope\Interfaces\IsotopeDocument;
 use Isotope\Interfaces\IsotopeProductCollection;
 use Isotope\Model\Document;
+use Haste\Haste;
 
 /**
  * Class Standard
@@ -139,7 +140,7 @@ class Standard extends Document implements IsotopeDocument
         $objTemplate->products = $objCollectionTemplate->parse();
 
 		// Generate template and fix PDF issues, see Contao's ModuleArticle
-		$strBuffer = Isotope::getInstance()->call('replaceInsertTags', array($objTemplate->parse(), false));
+		$strBuffer = Haste::getInstance()->call('replaceInsertTags', array($objTemplate->parse(), false));
 		$strBuffer = html_entity_decode($strBuffer, ENT_QUOTES, $GLOBALS['TL_CONFIG']['characterSet']);
 		$strBuffer = \Controller::convertRelativeUrls($strBuffer, '');
 

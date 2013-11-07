@@ -16,6 +16,7 @@ use Isotope\Model\Config;
 use Isotope\Model\RequestCache;
 use Isotope\Model\TaxClass;
 use Isotope\Model\ProductCollection\Cart;
+use Haste\Haste;
 
 
 /**
@@ -110,7 +111,7 @@ class Isotope extends \Controller
             static::$blnInitialized = true;
 
             // Make sure field data is available
-            static::getInstance()->call('loadDataContainer', 'tl_iso_product');
+            Haste::getInstance()->call('loadDataContainer', 'tl_iso_product');
             \System::loadLanguageFile('tl_iso_product');
 
             // Initialize request cache for product list filters
@@ -442,7 +443,7 @@ class Isotope extends \Controller
 
         if (!is_array($GLOBALS['TL_DCA'][$strTable]))
         {
-            Isotope::getInstance()->call('loadDataContainer', $strTable);
+            Haste::getInstance()->call('loadDataContainer', $strTable);
             \System::loadLanguageFile($strTable);
         }
 
@@ -510,7 +511,7 @@ class Isotope extends \Controller
     {
         if (!is_array($GLOBALS['TL_DCA'][$strTable]))
         {
-            Isotope::getInstance()->call('loadDataContainer', $strTable);
+            Haste::getInstance()->call('loadDataContainer', $strTable);
             \System::loadLanguageFile($strTable);
         }
 
@@ -551,7 +552,7 @@ class Isotope extends \Controller
             $arrOptions[$field] = array
             (
                 'label'    => static::formatLabel($strTable, $field),
-                'value'    => Isotope::getInstance()->call('replaceInsertTags', static::formatValue($strTable, $field, $value)),
+                'value'    => Haste::getInstance()->call('replaceInsertTags', static::formatValue($strTable, $field, $value)),
             );
         }
 
