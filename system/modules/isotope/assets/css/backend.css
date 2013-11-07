@@ -106,25 +106,20 @@ body.popup .header_back {
     color: grey;
 }
 
+/* allow the box shadow of the submit button to be visible */
 .tl_mediamanager .qq-upload-button {
-    display: inline-block;
-    padding: 5px 12px 5px 13px;
-    border: 1px solid #b8b8b8;
-    border-radius: 3px;
-    color: #666966;
-    cursor: pointer;
-    line-height: 1;
-    text-shadow: 1px 1px 0 #eee;
-    background: #eee;
-    background-image: -moz-linear-gradient(bottom,#ccc 0,#eee 60%);
-    background-image: -webkit-linear-gradient(bottom,#ccc 0,#eee 60%);
-    background-image: -o-linear-gradient(bottom,#ccc 0,#eee 60%);
-    background-image: -ms-linear-gradient(bottom,#ccc 0,#eee 60%);
-    background-image: linear-gradient(bottom,#ccc 0,#eee 60%);
+    padding: 3px;
+    margin: -3px;
 }
 
-.tl_mediamanager .qq-upload-button:focus,
-.tl_mediamanager .qq-upload-button:hover {
+.tl_mediamanager .qq-upload-button .tl_submit {
+    display: inline-block;
+    font-family: "Trebuchet MS",Verdana,sans-serif;
+    font-size: 12px;
+}
+
+.tl_mediamanager .qq-upload-button:focus .tl_submit,
+.tl_mediamanager .qq-upload-button:hover .tl_submit {
     box-shadow: 0 0 3px #aaa;
 }
 

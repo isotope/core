@@ -237,7 +237,7 @@ class MediaManager extends \Widget implements \uploadable
             <span>'.$GLOBALS['TL_LANG']['MSC']['mmDrop'].'</span>
         </div>
         <div class="qq-upload-button-selector qq-upload-button">
-            <div>'.$GLOBALS['TL_LANG']['MSC']['mmUpload'].'</div>
+            <div class="tl_submit">'.$GLOBALS['TL_LANG']['MSC']['mmUpload'].'</div>
         </div>
         <span class="qq-drop-processing-selector qq-drop-processing">
             <span>'.$GLOBALS['TL_LANG']['MSC']['mmProcessing'].'</span>
