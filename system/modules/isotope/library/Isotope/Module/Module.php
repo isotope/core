@@ -57,8 +57,8 @@ abstract class Module extends Contao_Module
         if (TL_MODE == 'FE')
         {
             // Load Isotope javascript and css
-            $GLOBALS['TL_JAVASCRIPT'][] = 'system/modules/isotope/assets/isotope' . (ISO_DEBUG ? '' : '.min') . '.js';
-            $GLOBALS['TL_CSS'][] = 'system/modules/isotope/assets/isotope' . (ISO_DEBUG ? '' : '.min') . '.css';
+            $GLOBALS['TL_JAVASCRIPT'][] = 'system/modules/isotope/assets/js/isotope' . (ISO_DEBUG ? '' : '.min') . '.js';
+            $GLOBALS['TL_CSS'][] = 'system/modules/isotope/assets/css/isotope' . (ISO_DEBUG ? '' : '.min') . '.css';
 
             // Disable caching for pages with certain modules (eg. Cart)
             if ($this->blnDisableCache)

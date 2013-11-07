@@ -40,17 +40,17 @@
 
 #iso_ajaxBox .iso_error {
     padding-left: 34px;
-    background: url("cross-24.png") left center no-repeat;
+    background: url("../images/cross-24.png") left center no-repeat;
 }
 
 #iso_ajaxBox .iso_confirm {
     padding-left: 34px;
-    background: url("tick-24.png") left center no-repeat;
+    background: url("../images/tick-24.png") left center no-repeat;
 }
 
 #iso_ajaxBox .iso_info {
     padding-left: 34px;
-    background: url("information-24.png") left center no-repeat;
+    background: url("../images/information-24.png") left center no-repeat;
 }
 
 #iso_ajaxOverlay {

@@ -138,7 +138,7 @@ class Button extends \Backend
 
         if (($arrAttributes['start']['enabled'] && $row['start'] != '' && $row['start'] > $time) || ($arrAttributes['stop']['enabled'] && $row['stop'] != '' && $row['stop'] < $time))
         {
-            return \Image::getHtml('system/modules/isotope/assets/invisible-startstop.png', $label).' ';
+            return \Image::getHtml('system/modules/isotope/assets/images/invisible-startstop.png', $label).' ';
         }
         elseif ($row['published'] != '1')
         {

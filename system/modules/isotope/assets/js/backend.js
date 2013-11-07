@@ -12,87 +12,17 @@
  * @author     Kamil Kuzminski <kamil.kuzminski@codefog.pl>
  */
 
+var Isotope = {};
 
-var Isotope =
-{
-
-    /**
-     * Make the wizards sortable
-     */
-    makeWizardsSortable: function() {
-        $$('.tl_mediamanager .sortable').each(function(el) {
-            new Sortables(el, {
-                contstrain: true,
-                opacity: 0.6,
-                handle: '.drag-handle',
-                onComplete: function() {
-                    Isotope.wizardResort(el);
-                }
-            });
-        });
-    },
-
-    /**
-     * Media Manager
-     * @param object
-     * @param string
-     * @param string
-     */
-    mediaManager: function(el, command, id) {
-        var table = document.id(id).getFirst('table');
-        var tbody = table.getFirst('tbody');
-        var parent = document.id(el).getParent('tr');
-        var rows = tbody.getChildren();
-
-        Backend.getScrollOffset();
-
-        switch (command) {
-            case 'up':
-                parent.getPrevious() ? parent.injectBefore(parent.getPrevious()) : parent.injectInside(tbody);
-                break;
-            case 'down':
-                parent.getNext() ? parent.injectAfter(parent.getNext()) : parent.injectBefore(tbody.getFirst());
-                break;
-            case 'delete':
-                parent.destroy();
-                break;
-        }
-
-        Isotope.wizardResort(tbody);
-    },
-
-    /**
-     * Resort the media manager fields
-     * @param object
-     */
-    wizardResort: function(tbody) {
-        var rows = tbody.getChildren(),
-            textarea, inputs, labels, i, j;
-
-        for (i=0; i<rows.length; i++) {
-            inputs = rows[i].getElements('[name]');
-
-            // Update the inputs
-            for (j=0; j<inputs.length; j++) {
-                inputs[j].name = inputs[j].name.replace(/\[[0-9]+\]/g, '[' + i + ']');
-                inputs[j].id = inputs[j].id.replace(/_[0-9]+/g, '_' + i);
-            }
-
-            labels = rows[i].getElements('label');
-
-            // Update the labels
-            for (j=0; j<labels.length; j++) {
-                labels[j].set('for', labels[j].get('for').replace(/_[0-9]+/g, '_' + i));
-            }
-        }
-    },
+(function() {
+	"use strict";
 
     /**
      * Toggle checkbox group
      * @param object
      * @param string
      */
-    toggleCheckboxGroup: function(el, id)
+    Isotope.toggleCheckboxGroup = function(el, id)
     {
         var cls = document.id(el).className;
         var status = document.id(el).checked ? 'checked' : '';
@@ -115,14 +45,14 @@ var Isotope =
         }
 
         Backend.getScrollOffset();
-    },
+    };
 
     /**
      * Open a group selector in a modal window
      * @param object
      * @return object
      */
-    openModalGroupSelector: function(options)
+    Isotope.openModalGroupSelector = function(options)
     {
         var opt = options || {};
         var max = (window.getSize().y-180).toInt();
@@ -188,14 +118,14 @@ var Isotope =
             'model': 'modal'
         });
         return M;
-    },
+    };
 
     /**
      * Open a page selector in a modal window
      * @param object
      * @return object
      */
-    openModalPageSelector: function(options)
+    Isotope.openModalPageSelector = function(options)
     {
         var opt = options || {};
         var max = (window.getSize().y-180).toInt();
@@ -257,40 +187,40 @@ var Isotope =
             'model': 'modal'
         });
         return M;
-    },
+    };
 
     /**
      * Add the interactive help
      */
-    addInteractiveHelp: function() {
+    Isotope.addInteractiveHelp = function() {
         new Tips.Contao('a.tl_tip', {
             offset: {x:9, y:21},
             text: function(e) {
                 return e.get('longdesc');
             }
         });
-    },
+    };
 
-
-    inheritFields: function(fields, label)
+	/**
+	 * Inherit the fields
+	 * @param array
+	 * @param string
+	 */
+    Isotope.inheritFields = function(fields, label)
     {
         var injectError = false;
 
-        fields.each(function(name, i)
-        {
+        fields.each(function(name, i) {
             var el = document.id(('ctrl_'+name));
 
-            if (el)
-            {
+            if (el) {
                 var parent = el.getParent('div').getFirst('h3');
 
-                if (!parent && el.match('.tl_checkbox_single_container'))
-                {
+                if (!parent && el.match('.tl_checkbox_single_container')) {
                     parent = el;
                 }
 
-                if (!parent)
-                {
+                if (!parent) {
                     injectError = true;
                     return;
                 }
@@ -302,20 +232,15 @@ var Isotope =
                 check.setStyle('float', 'right').inject(parent);
                 document.id('ctrl_inherit').getFirst(('label[for='+check.get('id')+']')).setStyles({'float':'right','padding-right':'5px', 'font-weight':'normal'}).set('text', label).inject(parent);
 
-                check.addEvent('change', function(event)
-                {
+                check.addEvent('change', function(event) {
                     var element = document.id(('ctrl_'+event.target.get('value')));
 
                     // Single checkbox
-                    if (element.match('.tl_checkbox_single_container'))
-                    {
+                    if (element.match('.tl_checkbox_single_container')) {
                         element.getFirst('input[type=checkbox]').disabled = event.target.checked;
-                    }
-                    else
-                    {
+                    } else {
                         // textarea with TinyMCE
-                        if (!element.getNext() || !element.getNext().get('id') || !element.getNext().get('id').test(/_parent$/))
-                        {
+                        if (!element.getNext() || !element.getNext().get('id') || !element.getNext().get('id').test(/_parent$/)) {
                             element.setStyle('display', (event.target.checked ? 'none' : 'inherit'));
                         }
 
@@ -324,12 +249,9 @@ var Isotope =
                     }
                 });
 
-                if (el.match('.tl_checkbox_single_container'))
-                {
+                if (el.match('.tl_checkbox_single_container')) {
                     el.getFirst('input[type=checkbox]').disabled = check.checked;
-                }
-                else
-                {
+                } else {
                     el.setStyle('display', (check.checked ? 'none' : 'inherit'));
 
                     // Query would fail if there is no tooltip
@@ -338,16 +260,15 @@ var Isotope =
             }
         });
 
-        if (!injectError)
-        {
+        if (!injectError) {
             document.id('ctrl_inherit').getParent('div').setStyle('display', 'none');
         }
-    },
+    };
 
     /**
      * Enable blank select option
      */
-    makeSelectExtendable: function()
+    Isotope.makeSelectExtendable = function()
     {
         var collections = {};
         document.getElements('select.extendable').forEach(function(select) {
@@ -381,58 +302,229 @@ var Isotope =
                 }
             });
         });
-    },
+    };
 
     /**
      * Make parent view items sortable
      * @param object
      */
-    makePageViewSortable: function(ul)
+    Isotope.makePageViewSortable = function(ul)
     {
-        var list = new Sortables(ul,
-        {
+        var list = new Sortables(ul, {
             contstrain: true,
             opacity: 0.6
         });
 
         list.active = false;
 
-        list.addEvent('start', function()
-        {
+        list.addEvent('start', function() {
             list.active = true;
         });
 
-        list.addEvent('complete', function(el)
-        {
-            if (!list.active)
-            {
+        list.addEvent('complete', function(el) {
+            if (!list.active) {
                 return;
             }
 
-            if (el.getPrevious())
-            {
+            if (el.getPrevious()) {
                 var id = el.get('id').replace(/li_/, '');
                 var pid = el.getPrevious().get('id').replace(/li_/, '');
                 var req = window.location.search.replace(/id=[0-9]*/, 'id=' + id) + '&act=cut&mode=1&page_id=' + pid;
                 new Request({url: window.location.href, method: 'get', data: req}).send();
-            }
-            else if (el.getParent())
-            {
+            } else if (el.getParent()) {
                 var id = el.get('id').replace(/li_/, '');
                 var pid = el.getParent().get('id').replace(/ul_/, '');
                 var req = window.location.search.replace(/id=[0-9]*/, 'id=' + id) + '&act=cut&mode=2&page_id=' + pid;
                 new Request({url: window.location.href, method: 'get', data: req}).send();
             }
         });
-    }
-};
+    };
+})();
+
+Isotope.MediaManager = {};
+
+(function() {
+    "use strict";
+
+    /**
+     * Initialize the MediaManager
+     * @param object
+     * @param string
+     * @param string
+     * @return object
+     */
+    Isotope.MediaManager.init = function(el, field, extensions) {
+        var container = $('ctrl_' + field);
+        var files = [];
+        var chunks, i, input_index, inputs, input_name, value;
+
+        var params = {
+            element: document.id(el),
+            request: {
+                endpoint: window.location.href,
+                inputName: field,
+                params: {
+                    action: 'uploadMediaManager',
+                    name: field,
+                    REQUEST_TOKEN: Contao.request_token
+                }
+            },
+		    failedUploadTextDisplay: {
+		        mode: 'custom',
+		        maxChars: 50,
+		        responseProperty: 'error'
+		    },
+            validation: {
+                allowedExtensions: extensions
+            },
+            callbacks: {
+                onUpload: function() {
+                    AjaxRequest.displayBox(Contao.lang.loading + ' …');
+                },
+                onComplete: function(id, name, result) {
+                    if (!result.success) {
+                        AjaxRequest.hideBox();
+                        return;
+                    }
+
+                    // Add the uploaded file to value
+                    if (result.file) {
+                        files.push(result.file);
+                    }
+
+                    if (this.getInProgress() > 0) {
+                        return;
+                    }
+
+                    value = {};
+                    inputs = container.getElements('[name^="' + field + '"]');
+
+                    // Collect the values
+                    for (i=0; i<inputs.length; i++) {
+                        chunks = inputs[i].get('name').split('[');
+
+                        if (chunks.length != 3) {
+                            continue;
+                        }
+
+                        input_index = chunks[1].replace(']', '');
+
+                        if (!value[input_index]) {
+                            value[input_index] = {};
+                        }
+
+                        input_name = chunks[2].replace(']', '');
+
+                        if (inputs[i].get('type') == 'radio') {
+                            if (!value[input_index][input_name]) {
+                                value[input_index][input_name] = '';
+                            }
+
+                            if (inputs[i].get('checked')) {
+                                value[input_index][input_name] = inputs[i].get('value');
+                            }
+                        } else {
+                            value[input_index][input_name] = inputs[i].get('value');
+                        }
+                    }
+
+                    new Request.Contao({
+                        evalScripts: false,
+                        onSuccess: function(txt, json) {
+                            container.getElement('div').set('html', json.content);
+                            json.javascript && Browser.exec(json.javascript);
+                            AjaxRequest.hideBox();
+                            window.fireEvent('ajax_change');
+                        }
+                    }).post({'action':'reloadMediaManager', 'name':field, 'value':value, 'files':files, 'REQUEST_TOKEN':Contao.request_token});
+
+                    // Empty the files
+                    files = [];
+                }
+            }
+        };
+
+        return new qq.FineUploader(params);
+    };
+
+    /**
+     * Make the wizards sortable
+     */
+    Isotope.MediaManager.makeSortable = function() {
+        $$('.tl_mediamanager .sortable').each(function(el) {
+            new Sortables(el, {
+                contstrain: true,
+                opacity: 0.6,
+                handle: '.drag-handle',
+                onComplete: function() {
+                    Isotope.MediaManager.resort(el);
+                }
+            });
+        });
+    };
+
+    /**
+     * Perform a MediaManager action (button handler)
+     * @param object
+     * @param string
+     * @param string
+     */
+    Isotope.MediaManager.act = function(el, command, id) {
+        var table = document.id(id).getElement('table');
+        var tbody = table.getFirst('tbody');
+        var parent = document.id(el).getParent('tr');
+        var rows = tbody.getChildren();
+
+        Backend.getScrollOffset();
+
+        switch (command) {
+            case 'up':
+                parent.getPrevious() ? parent.injectBefore(parent.getPrevious()) : parent.injectInside(tbody);
+                break;
+            case 'down':
+                parent.getNext() ? parent.injectAfter(parent.getNext()) : parent.injectBefore(tbody.getFirst());
+                break;
+            case 'delete':
+                parent.destroy();
+                break;
+        }
+
+        Isotope.MediaManager.resort(tbody);
+    };
+
+    /**
+     * Resort the media manager fields
+     * @param object
+     */
+    Isotope.MediaManager.resort = function(tbody) {
+        var rows = tbody.getChildren(),
+            textarea, inputs, labels, i, j;
+
+        for (i=0; i<rows.length; i++) {
+            inputs = rows[i].getElements('[name]');
+
+            // Update the inputs
+            for (j=0; j<inputs.length; j++) {
+                inputs[j].name = inputs[j].name.replace(/\[[0-9]+\]/g, '[' + i + ']');
+                inputs[j].id = inputs[j].id.replace(/_[0-9]+/g, '_' + i);
+            }
+
+            labels = rows[i].getElements('label');
+
+            // Update the labels
+            for (j=0; j<labels.length; j++) {
+                labels[j].set('for', labels[j].get('for').replace(/_[0-9]+/g, '_' + i));
+            }
+        }
+    };
+})();
 
 // Initialize the back end script
 window.addEvent('domready', function()
 {
     Isotope.addInteractiveHelp();
     Isotope.makeSelectExtendable();
-    Isotope.makeWizardsSortable();
+    Isotope.MediaManager.makeSortable();
 }).addEvent('structure', function()
 {
     Isotope.addInteractiveHelp();
@@ -441,5 +533,5 @@ window.addEvent('domready', function()
 // Re-apply certain changes upon ajax_change
 window.addEvent('ajax_change', function() {
     Isotope.addInteractiveHelp();
-    Isotope.makeWizardsSortable();
+    Isotope.MediaManager.makeSortable();
 });

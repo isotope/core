@@ -140,7 +140,7 @@ class ProductGroupSelector extends \Widget
      */
     public function generate()
     {
-        $GLOBALS['TL_JAVASCRIPT'][] = 'system/modules/isotope/assets/backend'.(ISO_DEBUG ? '' : '.min').'.js';
+        $GLOBALS['TL_JAVASCRIPT'][] = 'system/modules/isotope/assets/js/backend'.(ISO_DEBUG ? '' : '.min').'.js';
 
         // Open the tree if there is an error
         if ($this->hasErrors())

@@ -54,7 +54,7 @@ $GLOBALS['TL_DCA']['tl_iso_group'] = array
             'mode'                  => 5,
             'fields'                => array('sorting'),
             'flag'                  => 1,
-            'icon'                  => 'system/modules/isotope/assets/folders.png',
+            'icon'                  => 'system/modules/isotope/assets/images/folders.png',
         ),
         'label' => array
         (

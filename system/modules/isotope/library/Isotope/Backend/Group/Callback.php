@@ -211,7 +211,7 @@ class Callback extends \Backend
      */
     public function addIcon($row, $label, \DataContainer $dc=null, $imageAttribute='', $blnReturnImage=false)
     {
-    	$image = \Image::getHtml('system/modules/isotope/assets/folder-network.png', '', $imageAttribute);
+    	$image = \Image::getHtml('system/modules/isotope/assets/images/folder-network.png', '', $imageAttribute);
 
         if ($dc->table == 'tl_iso_product')
         {

@@ -7,7 +7,7 @@
         <p><?php echo $GLOBALS['TL_LANG']['MSC']['isotopeIntroduction'][4]; ?></p>
     </div>
     <div class="right">
-        <a href="http://isotopeecommerce.org/" target="_blank"><img src="system/modules/isotope/assets/isotope-logo.250x71.png" alt="" width="250" height="71"></a>
+        <a href="http://isotopeecommerce.org/" target="_blank"><img src="system/modules/isotope/assets/images/isotope-logo.250x71.png" alt="" width="250" height="71"></a>
         <br><br><br>
         <p><?php echo sprintf($GLOBALS['TL_LANG']['MSC']['isotopeIntroduction'][5], '<a href="http://www.terminal42.ch/" target="_blank">terminal42&nbsp;gmbh</a>'); ?></p>
         <p><u><a href="http://isotopeecommerce.org" target="_blank">http://isotopeecommerce.org</a></u></p>

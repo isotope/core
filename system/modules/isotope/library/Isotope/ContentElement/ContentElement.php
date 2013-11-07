@@ -37,8 +37,8 @@ abstract class ContentElement extends Contao_ContentElement
         if (TL_MODE == 'FE')
         {
             // Load Isotope javascript and css
-            $GLOBALS['TL_JAVASCRIPT'][] = 'system/modules/isotope/assets/isotope' . (ISO_DEBUG ? '' : '.min') . '.js';
-            $GLOBALS['TL_CSS'][] = 'system/modules/isotope/assets/isotope' . (ISO_DEBUG ? '' : '.min') . '.css';
+            $GLOBALS['TL_JAVASCRIPT'][] = 'system/modules/isotope/assets/js/isotope' . (ISO_DEBUG ? '' : '.min') . '.js';
+            $GLOBALS['TL_CSS'][] = 'system/modules/isotope/assets/css/isotope' . (ISO_DEBUG ? '' : '.min') . '.css';
         }
     }
 }

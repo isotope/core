@@ -16,7 +16,7 @@
 .header_import_assets
 {
     padding:2px 0px 3px 20px;
-    background-image:url("image--plus.png");
+    background-image:url("../images/image--plus.png");
     background-position:left center;
     background-repeat:no-repeat;
 }
@@ -24,7 +24,7 @@
 .header_import_mail
 {
     padding:2px 0px 3px 20px;
-    background-image:url("inbox-download.png");
+    background-image:url("../images/inbox-download.png");
     background-position:left center;
     background-repeat:no-repeat;
 }
@@ -40,7 +40,7 @@
 .header_iso_groups
 {
     padding:2px 0px 3px 20px;
-    background-image:url("folders.png");
+    background-image:url("../images/folders.png");
     background-position:left center;
     background-repeat:no-repeat;
 }
@@ -80,6 +80,72 @@ body.popup .header_back {
 .tl_mediamanager img {
     position: relative;
     top: 1px;
+}
+
+.tl_mediamanager .upload_container {
+    margin-top: 8px;
+}
+
+.tl_mediamanager .qq-hide {
+    display: none;
+}
+
+.tl_mediamanager .qq-upload-drop-area {
+	width: 700px;
+    padding: 56px 0;
+    margin-bottom: 12px;
+    text-align: center;
+    border: 3px dashed #dbdbdb;
+    border-left: none;
+    border-right: none;
+    background-color: #f7f7f7;
+}
+
+.tl_mediamanager .qq-upload-drop-area span {
+    font-size: 16px;
+    color: grey;
+}
+
+/* allow the box shadow of the submit button to be visible */
+.tl_mediamanager .qq-upload-button {
+    padding: 3px;
+    margin: -3px;
+}
+
+.tl_mediamanager .qq-upload-button .tl_submit {
+    display: inline-block;
+    font-family: "Trebuchet MS",Verdana,sans-serif;
+    font-size: 12px;
+}
+
+.tl_mediamanager .qq-upload-button:focus .tl_submit,
+.tl_mediamanager .qq-upload-button:hover .tl_submit {
+    box-shadow: 0 0 3px #aaa;
+}
+
+.tl_mediamanager .qq-edit-filename {
+    display: none;
+}
+
+.tl_mediamanager .qq-upload-size {
+    color: #b3b3b3;
+}
+
+.tl_mediamanager .qq-upload-list {
+    margin: 8px 0 8px 16px;
+}
+
+.tl_mediamanager .qq-upload-list li {
+    line-height: 14px;
+    list-style-type: square;
+}
+
+.tl_mediamanager .qq-upload-success {
+    color: #8ab858;
+}
+
+.tl_mediamanager .qq-upload-fail {
+    color: #c55;
 }
 
 #ctrl_attributes tr:hover td,
