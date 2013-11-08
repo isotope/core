@@ -14,3 +14,7 @@
  * @license http://www.gnu.org/licenses/lgpl-3.0.html LGPL
  */
 
+$GLOBALS['TL_LANG']['tl_maintenance_jobs']['iso_productcache'][0] = 'Wyczyść cache produktów Isotope';
+$GLOBALS['TL_LANG']['tl_maintenance_jobs']['iso_productcache'][1] = 'Czyści tabelę <em>tl_iso_productcache</em>, która cacheuje produkty wyświetlone na każdej liście produktów w serwisie.';
+$GLOBALS['TL_LANG']['tl_maintenance_jobs']['iso_requestcache'][0] = 'Wyczyść cache zapytań Isotope';
+$GLOBALS['TL_LANG']['tl_maintenance_jobs']['iso_requestcache'][1] = 'Czyści tabelę <em> tl_iso_requestcache </em>, która cacheuje informacje z modułów filtrów dla krótkich URLi.';

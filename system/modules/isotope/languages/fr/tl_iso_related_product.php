@@ -17,6 +17,7 @@
 $GLOBALS['TL_LANG']['tl_iso_related_product']['category'][0] = 'Catégorie';
 $GLOBALS['TL_LANG']['tl_iso_related_product']['category'][1] = 'Sélectionnez une catégorie';
 $GLOBALS['TL_LANG']['tl_iso_related_product']['products'][0] = 'Produits';
+$GLOBALS['TL_LANG']['tl_iso_related_product']['products'][1] = ' Saisir une liste séparée par des virgules des ID de produits ou variantes à afficher en tant que produits connexes.';
 $GLOBALS['TL_LANG']['tl_iso_related_product']['new'][0] = 'Ajouter une catégorie';
 $GLOBALS['TL_LANG']['tl_iso_related_product']['new'][1] = 'Ajouter une nouvelle catégorie avec des produits';
 $GLOBALS['TL_LANG']['tl_iso_related_product']['edit'][0] = 'Éditer une catégorie';

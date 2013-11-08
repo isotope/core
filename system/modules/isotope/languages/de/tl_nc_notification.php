@@ -16,6 +16,8 @@
 
 $GLOBALS['TL_LANG']['tl_nc_notification']['iso_collectionTpl'][0] = 'Produktsammlung-Template';
 $GLOBALS['TL_LANG']['tl_nc_notification']['iso_collectionTpl'][1] = 'Bitte wählen Sie ein Template aus, um die Produkte für die Benachrichtigung zu rendern.';
+$GLOBALS['TL_LANG']['tl_nc_notification']['iso_orderCollectionBy'][0] = 'Sortierung';
+$GLOBALS['TL_LANG']['tl_nc_notification']['iso_orderCollectionBy'][1] = 'Definieren Sie, in welcher Reihenfolge die Einträge einer Sammlung aufgelistet werden sollen.';
 $GLOBALS['TL_LANG']['tl_nc_notification']['iso_gallery'][0] = 'Galerie';
 $GLOBALS['TL_LANG']['tl_nc_notification']['iso_gallery'][1] = 'Wählen Sie eine Galerie, um die Bilder zu rendern.';
 $GLOBALS['TL_LANG']['tl_nc_notification']['iso_document'][0] = 'Dokument';
