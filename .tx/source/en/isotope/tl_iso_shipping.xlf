@@ -5,11 +5,20 @@
       <trans-unit id="tl_iso_shipping.name.0">
         <source>Shipping Method Name</source>
       </trans-unit>
+      <trans-unit id="tl_iso_shipping.name.1">
+        <source>Please enter a name for this shipping method.</source>
+      </trans-unit>
       <trans-unit id="tl_iso_shipping.type.0">
         <source>Shipping Method Type</source>
       </trans-unit>
+      <trans-unit id="tl_iso_shipping.type.1">
+        <source>Please select the type of this shipping method</source>
+      </trans-unit>
       <trans-unit id="tl_iso_shipping.price.0">
         <source>Price</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_shipping.price.1">
+        <source>Optionally enter a price for this shipping method.</source>
       </trans-unit>
       <trans-unit id="tl_iso_shipping.note.0">
         <source>Shipping Method Notes</source>
@@ -20,6 +29,9 @@
       <trans-unit id="tl_iso_shipping.tax_class.0">
         <source>Tax Class</source>
       </trans-unit>
+      <trans-unit id="tl_iso_shipping.tax_class.1">
+        <source>Select a tax class that applies to the shipping price.</source>
+      </trans-unit>
       <trans-unit id="tl_iso_shipping.label.0">
         <source>Label</source>
       </trans-unit>
@@ -28,6 +40,9 @@
       </trans-unit>
       <trans-unit id="tl_iso_shipping.flatCalculation.0">
         <source>Flat calculation</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_shipping.flatCalculation.1">
+        <source>Select the mode of price calculation.</source>
       </trans-unit>
       <trans-unit id="tl_iso_shipping.countries.0">
         <source>Countries</source>
@@ -48,16 +63,46 @@
         <source>Limit this shipping module to postal codes. You can enter a comma separated list and ranges (e.g. 1234,1235,1236-1239,1100-1200).</source>
       </trans-unit>
       <trans-unit id="tl_iso_shipping.minimum_total.0">
-        <source>Minimum total</source>
+        <source>Minimum subtotal</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_shipping.minimum_total.1">
+        <source>Enter a minimum amount to control availability based on the cart subtotal.</source>
       </trans-unit>
       <trans-unit id="tl_iso_shipping.maximum_total.0">
-        <source>Maximum total</source>
+        <source>Maximum subtotal</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_shipping.maximum_total.1">
+        <source>Enter a maximum amount to control availability based on the cart subtotal.</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_shipping.minimum_weight.0">
+        <source>Minimum weight</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_shipping.minimum_weight.1">
+        <source>Enter a minimum weight to control availability based on the products in cart.</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_shipping.maximum_weight.0">
+        <source>Maximum weight</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_shipping.maximum_weight.1">
+        <source>Enter a maximum weight to control availability based on the products in cart.</source>
       </trans-unit>
       <trans-unit id="tl_iso_shipping.product_types.0">
         <source>Product types</source>
       </trans-unit>
       <trans-unit id="tl_iso_shipping.product_types.1">
         <source>You can restrict this shipping method to certain product types. If the cart contains a product type you have not selected, the shipping module is not available.</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_shipping.group_methods.0">
+        <source>Shipping methods</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_shipping.group_methods.1">
+        <source>Select the shipping methods to group in this method.</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_shipping.group_calculation.0">
+        <source>Group calculation</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_shipping.group_calculation.1">
+        <source>Select how the price of this shipping method should be calculated.</source>
       </trans-unit>
       <trans-unit id="tl_iso_shipping.groups.0">
         <source>Member Groups</source>
@@ -145,6 +190,18 @@
       </trans-unit>
       <trans-unit id="tl_iso_shipping.perItem">
         <source>Per Item</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_shipping.first">
+        <source>Price of the first available method</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_shipping.lowest">
+        <source>Lowest price of available methods</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_shipping.highest">
+        <source>Highest price of available methods</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_shipping.summarize">
+        <source>Summed price of available methods</source>
       </trans-unit>
     </body>
   </file>

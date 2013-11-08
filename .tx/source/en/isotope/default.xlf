@@ -110,8 +110,17 @@
       <trans-unit id="MSC.mmNoUploads">
         <source>No files uploaded.</source>
       </trans-unit>
+      <trans-unit id="MSC.mmUnknownError">
+        <source>The file could not be uploaded for unknown reason. Please check the system log.</source>
+      </trans-unit>
+      <trans-unit id="MSC.mmDrop">
+        <source>Drop files here to upload</source>
+      </trans-unit>
       <trans-unit id="MSC.mmUpload">
-        <source>Upload new file</source>
+        <source>Upload files</source>
+      </trans-unit>
+      <trans-unit id="MSC.mmProcessing">
+        <source>Processing dropped files...</source>
       </trans-unit>
       <trans-unit id="MSC.quantity">
         <source>Quantity</source>
@@ -491,6 +500,15 @@
       <trans-unit id="MODEL.tl_iso_shipping.flat.0">
         <source>Flat-price shipping</source>
       </trans-unit>
+      <trans-unit id="MODEL.tl_iso_shipping.flat.1">
+        <source>This is the default shipping method for regular shipping.</source>
+      </trans-unit>
+      <trans-unit id="MODEL.tl_iso_shipping.group.0">
+        <source>Shipping group</source>
+      </trans-unit>
+      <trans-unit id="MODEL.tl_iso_shipping.group.1">
+        <source>With this method, you can group multiple shipping methods into one and calculate the price based on them.</source>
+      </trans-unit>
       <trans-unit id="MODEL.tl_iso_payment.cash.0">
         <source>Cash</source>
       </trans-unit>
@@ -622,60 +640,6 @@
       </trans-unit>
       <trans-unit id="CCT.ge_money_uk">
         <source>GE Money UK</source>
-      </trans-unit>
-      <trans-unit id="WGT.mg.0">
-        <source>Milligram (mg)</source>
-      </trans-unit>
-      <trans-unit id="WGT.mg.1">
-        <source>A unit of mass equal to one-thousandth of a gram.</source>
-      </trans-unit>
-      <trans-unit id="WGT.g.0">
-        <source>Gram (g)</source>
-      </trans-unit>
-      <trans-unit id="WGT.g.1">
-        <source>A metric unit of weight equal to one thousandth of a kilogram.</source>
-      </trans-unit>
-      <trans-unit id="WGT.kg.0">
-        <source>Kilogram (kg)</source>
-      </trans-unit>
-      <trans-unit id="WGT.kg.1">
-        <source>One kilogram is equivalent to 1,000 grams or 2.2 pounds; the mass of a liter of water.</source>
-      </trans-unit>
-      <trans-unit id="WGT.t.0">
-        <source>Metric Ton (t)</source>
-      </trans-unit>
-      <trans-unit id="WGT.t.1">
-        <source>A unit of weight equal to 1,000 kilograms, or 2,204.6 pounds.</source>
-      </trans-unit>
-      <trans-unit id="WGT.ct.0">
-        <source>Carats (ct)</source>
-      </trans-unit>
-      <trans-unit id="WGT.ct.1">
-        <source>A measure of weight used for gemstones. One carat is equal to 1/5 of a gram (200 milligrams). Note that karat with a "K" is a measure of the purity of a gold alloy.</source>
-      </trans-unit>
-      <trans-unit id="WGT.oz.0">
-        <source>Ounce (oz)</source>
-      </trans-unit>
-      <trans-unit id="WGT.oz.1">
-        <source>A unit of weight equal to one sixteenth of a pound or 28.35 grams.</source>
-      </trans-unit>
-      <trans-unit id="WGT.lb.0">
-        <source>Pound (lb)</source>
-      </trans-unit>
-      <trans-unit id="WGT.lb.1">
-        <source>A unit of mass equal to 16 ounces</source>
-      </trans-unit>
-      <trans-unit id="WGT.st.0">
-        <source>Stone (st)</source>
-      </trans-unit>
-      <trans-unit id="WGT.st.1">
-        <source>A British measurement of mass that equals fourteen pounds.</source>
-      </trans-unit>
-      <trans-unit id="WGT.grain.0">
-        <source>Grain</source>
-      </trans-unit>
-      <trans-unit id="WGT.grain.1">
-        <source>1/7000 pound; equals a troy grain or 64.799 milligrams.</source>
       </trans-unit>
       <trans-unit id="ATTR.text.0">
         <source>Text field</source>

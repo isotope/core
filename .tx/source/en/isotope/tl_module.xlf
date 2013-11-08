@@ -50,6 +50,12 @@
       <trans-unit id="tl_module.iso_use_quantity.1">
         <source>Allow users to specify 1 or more of a product to be purchased.</source>
       </trans-unit>
+      <trans-unit id="tl_module.iso_display404Page.0">
+        <source>Display a 404 page</source>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_display404Page.1">
+        <source>Display a 404 not found page if the product is not found. Use with caution if the product list is on the same page!</source>
+      </trans-unit>
       <trans-unit id="tl_module.iso_checkout_method.0">
         <source>Checkout method</source>
       </trans-unit>

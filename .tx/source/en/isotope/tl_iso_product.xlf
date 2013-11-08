@@ -257,6 +257,9 @@
       <trans-unit id="tl_iso_product.filter_new_month">
         <source>Added this month</source>
       </trans-unit>
+      <trans-unit id="tl_iso_product.sorting">
+        <source>Manually sort products in a page</source>
+      </trans-unit>
       <trans-unit id="tl_iso_product.product_groups.0">
         <source>Product groups</source>
       </trans-unit>
@@ -304,6 +307,12 @@
       </trans-unit>
       <trans-unit id="tl_iso_product.downloads.2">
         <source>Downloads: %s. </source>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.group.0">
+        <source>Move to group</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.group.1">
+        <source>Move product ID %s to a group</source>
       </trans-unit>
       <trans-unit id="tl_iso_product.general_legend">
         <source>General Settings</source>

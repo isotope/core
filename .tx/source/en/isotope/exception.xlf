@@ -15,7 +15,7 @@
         <source>Create a backup, then completely uninstall Isotope and remove all it's database tables and related extensions. Afterwards you can install Isotope eCommerce 2.0 again.</source>
       </trans-unit>
       <trans-unit id="XPT.isotopeOldFix2">
-        <source>We are currently running a fundraising to develop an update tool. The more people help, the sooner you will be able to update your old installation. &lt;a href="http://isotopeecommerce.com/en/" target="_blank"&gt;Please consider participating&lt;/a&gt;.</source>
+        <source>We are currently running a fundraising to develop an update tool. The more people that help, the sooner you will be able to update your old installation. &lt;a href="http://isotopeecommerce.com/en/" target="_blank"&gt;Please consider participating&lt;/a&gt;.</source>
       </trans-unit>
       <trans-unit id="XPT.isotopeOldFix3">
         <source>Get an experienced Contao developer to migrate your data manually. We suggest to take a look at &lt;a href="http://contao.org/en/" target="_blank"&gt;the Contao partner listing&lt;/a&gt;.</source>
