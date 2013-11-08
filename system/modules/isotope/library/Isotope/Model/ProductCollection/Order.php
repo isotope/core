@@ -321,7 +321,10 @@ class Order extends ProductCollection implements IsotopeProductCollection
         if ($objNewStatus->notification > 0) {
 
             $arrTokens = $this->getNotificationTokens($objNewStatus->notification);
-            $arrTokens['new_status'] = $objNewStatus->getName();
+
+            // Override order status and save the old one to the tokens too
+            $arrTokens['order_status']      = $objNewStatus->getName();
+            $arrTokens['order_status_old']  = $this->getStatusLabel();
 
             $blnNotificationError = true;
 
@@ -383,7 +386,6 @@ class Order extends ProductCollection implements IsotopeProductCollection
         $arrTokens['recipient_email']     = $this->getEmailRecipient();
         $arrTokens['order_id']            = $this->id;
         $arrTokens['order_status']        = $this->getStatusLabel();
-        $arrTokens['order_status_new']    = '';
         $arrTokens['order_items']         = $this->sumItemsQuantity();
         $arrTokens['order_products']      = $this->countItems();
         $arrTokens['order_subtotal']      = Isotope::formatPriceWithCurrency($this->getSubtotal(), false);
