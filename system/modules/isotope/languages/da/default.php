@@ -36,7 +36,6 @@ $GLOBALS['TL_LANG']['MSC']['noVariants'] = 'Ingen varianter fundet.';
 $GLOBALS['TL_LANG']['MSC']['orderDetailsHeadline'] = 'Ordre nr. %s / %s';
 $GLOBALS['TL_LANG']['MSC']['payment_processing'] = 'Din betaling bliver behandlet. Vent venligst...';
 $GLOBALS['TL_LANG']['MSC']['mmNoUploads'] = 'Ingen filer blev uploaded';
-$GLOBALS['TL_LANG']['MSC']['mmUpload'] = 'Upload ny fil';
 $GLOBALS['TL_LANG']['MSC']['quantity'] = 'Antal';
 $GLOBALS['TL_LANG']['MSC']['defaultSearchText'] = 'Søg produkter';
 $GLOBALS['TL_LANG']['MSC']['downloadsLabel'] = 'Dine produkter til download';

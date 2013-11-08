@@ -37,7 +37,6 @@ $GLOBALS['TL_LANG']['MSC']['copyFallback'] = 'Удвоенный запас';
 $GLOBALS['TL_LANG']['MSC']['orderDetailsHeadline'] = 'Заказ № %s / %s';
 $GLOBALS['TL_LANG']['MSC']['payment_processing'] = 'Ваш платеж обрабатывается. Пожалуйста, подождите...';
 $GLOBALS['TL_LANG']['MSC']['mmNoUploads'] = 'Файлы не загружены.';
-$GLOBALS['TL_LANG']['MSC']['mmUpload'] = 'Загрузить новый файл';
 $GLOBALS['TL_LANG']['MSC']['quantity'] = 'Количество';
 $GLOBALS['TL_LANG']['MSC']['defaultSearchText'] = 'Найти товары';
 $GLOBALS['TL_LANG']['MSC']['downloadsLabel'] = 'Ваши товары доступные для загрузки';

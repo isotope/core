@@ -37,7 +37,6 @@ $GLOBALS['TL_LANG']['MSC']['copyFallback'] = 'Kopie reservepagina';
 $GLOBALS['TL_LANG']['MSC']['orderDetailsHeadline'] = 'Ordernummer %s / %s';
 $GLOBALS['TL_LANG']['MSC']['payment_processing'] = 'Uw betaling wordt voltooid, een moment geduld alstublieft...';
 $GLOBALS['TL_LANG']['MSC']['mmNoUploads'] = 'Geen bestanden geüpload.';
-$GLOBALS['TL_LANG']['MSC']['mmUpload'] = 'Nieuw bestand uploaden';
 $GLOBALS['TL_LANG']['MSC']['quantity'] = 'Aantal';
 $GLOBALS['TL_LANG']['MSC']['defaultSearchText'] = 'zoek producten';
 $GLOBALS['TL_LANG']['MSC']['downloadsLabel'] = 'Uw te downloaden producten';

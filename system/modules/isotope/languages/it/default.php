@@ -36,7 +36,6 @@ $GLOBALS['TL_LANG']['MSC']['copyFallback'] = 'Duplica la lingua preimpostata';
 $GLOBALS['TL_LANG']['MSC']['orderDetailsHeadline'] = 'Ordine no %s / %s';
 $GLOBALS['TL_LANG']['MSC']['payment_processing'] = 'Stiamo processando il suo pagamento. Si prega di avere un attimo di pazienza...';
 $GLOBALS['TL_LANG']['MSC']['mmNoUploads'] = 'Nessun file caricato.';
-$GLOBALS['TL_LANG']['MSC']['mmUpload'] = 'Caricare un nuovo file.';
 $GLOBALS['TL_LANG']['MSC']['quantity'] = 'Quantità';
 $GLOBALS['TL_LANG']['MSC']['defaultSearchText'] = 'cercare prodotti';
 $GLOBALS['TL_LANG']['MSC']['downloadsLabel'] = 'I suoi prodotti scaricabili';
