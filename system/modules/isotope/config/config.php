@@ -268,11 +268,12 @@ $GLOBALS['NOTIFICATION_CENTER']['NOTIFICATION_TYPE']['isotope']['iso_order_statu
 $GLOBALS['NOTIFICATION_CENTER']['NOTIFICATION_TYPE']['isotope']['iso_order_status_change']['attachment_tokens'] = array('form_*', 'document');
 $GLOBALS['NOTIFICATION_CENTER']['NOTIFICATION_TYPE']['isotope']['iso_order_status_change']['email_text'] = array(
     'uniqid',
-    'status_id',
+    'order_status',
+    'order_status_old',
+    'order_status_id',
+    'order_status_id_old',
     'recipient_email',
     'order_id',
-    'order_status',
-    'order_status_new',
     'order_items',
     'order_products',
     'order_subtotal',
@@ -296,6 +297,8 @@ $GLOBALS['NOTIFICATION_CENTER']['NOTIFICATION_TYPE']['isotope']['iso_order_statu
     'shipping_label', // Shipping method label
     'shipping_note', // Shipping method note
     'shipping_note_text', // Shipping method note without HTML tags
+    'config_*', // Store configuration model fields
+    'member_*', // Member model fields
 );
 $GLOBALS['NOTIFICATION_CENTER']['NOTIFICATION_TYPE']['isotope']['iso_order_status_change']['email_subject'] = &$GLOBALS['NOTIFICATION_CENTER']['NOTIFICATION_TYPE']['isotope']['iso_order_status_change']['email_text'];
 $GLOBALS['NOTIFICATION_CENTER']['NOTIFICATION_TYPE']['isotope']['iso_order_status_change']['email_html'] = &$GLOBALS['NOTIFICATION_CENTER']['NOTIFICATION_TYPE']['isotope']['iso_order_status_change']['email_text'];
