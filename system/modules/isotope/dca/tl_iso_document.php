@@ -176,7 +176,9 @@ $GLOBALS['TL_DCA']['tl_iso_document'] = array
             'label'                 => &$GLOBALS['TL_LANG']['tl_iso_document']['collectionTpl'],
             'exclude'               => true,
             'inputType'             => 'select',
-            'options_callback'      => array('Isotope\Backend\Module\Callback', 'getCollectionTemplates'),
+            'options_callback'      => function(\DataContainer $dc) {
+                return \Isotope\Backend::getTemplates('iso_collection_');
+            },
             'eval'                  => array('includeBlankOption'=>true, 'chosen'=>true, 'tl_class'=>'w50', 'mandatory'=>true),
             'sql'                   => "varchar(64) NOT NULL default ''",
         ),
