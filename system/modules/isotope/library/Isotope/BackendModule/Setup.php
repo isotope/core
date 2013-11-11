@@ -12,6 +12,8 @@
 
 namespace Isotope\BackendModule;
 
+use Isotope\Isotope;
+
 
 /**
  * Class ModuleIsotopeSetup
@@ -69,7 +71,7 @@ class Setup extends BackendOverview
      */
     protected function compile()
     {
-        $this->Template->before = '<h1 id="tl_welcome">' . sprintf($GLOBALS['TL_LANG']['IMD']['config_module'], ISO_VERSION . '.' . ISO_BUILD) . '</h1>';
+        $this->Template->before = '<h1 id="tl_welcome">' . sprintf($GLOBALS['TL_LANG']['IMD']['config_module'], Isotope::VERSION) . '</h1>';
 
         parent::compile();
     }
