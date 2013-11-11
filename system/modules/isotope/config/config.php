@@ -17,12 +17,6 @@
 
 
 /**
- * Isotope constants
- */
-@define('ISO_DEBUG', (bool) $GLOBALS['TL_CONFIG']['debugMode']);
-
-
-/**
  * Backend modules
  */
 if (!is_array($GLOBALS['BE_MOD']['isotope']))
@@ -36,7 +30,7 @@ array_insert($GLOBALS['BE_MOD']['isotope'], 0, array
     (
         'tables'            => array(\Isotope\Model\Product::getTable(), \Isotope\Model\Group::getTable(), \Isotope\Model\ProductCategory::getTable(), \Isotope\Model\Download::getTable(), \Isotope\Model\RelatedProduct::getTable(), \Isotope\Model\ProductPrice::getTable(), 'tl_iso_product_pricetier'),
         'icon'              => 'system/modules/isotope/assets/images/store-open.png',
-        'javascript'        => 'system/modules/isotope/assets/js/backend'.(ISO_DEBUG ? '' : '.min').'.js',
+        'javascript'        => \Haste\Util\Debug::uncompressedFile('system/modules/isotope/assets/js/backend.min.js'),
         'generate'          => array('Isotope\Backend\Product\VariantGenerator', 'generate'),
         'import'            => array('Isotope\Backend\Product\AssetImport', 'generate'),
     ),
@@ -44,7 +38,7 @@ array_insert($GLOBALS['BE_MOD']['isotope'], 0, array
     (
         'tables'            => array(\Isotope\Model\ProductCollection::getTable(), \Isotope\Model\ProductCollectionItem::getTable(), \Isotope\Model\ProductCollectionSurcharge::getTable(), \Isotope\Model\ProductCollectionDownload::getTable(), \Isotope\Model\Address::getTable()),
         'icon'              => 'system/modules/isotope/assets/images/shopping-basket.png',
-        'javascript'        => 'system/modules/isotope/assets/js/backend'.(ISO_DEBUG ? '' : '.min').'.js',
+        'javascript'        => \Haste\Util\Debug::uncompressedFile('system/modules/isotope/assets/js/backend.min.js'),
         'print_document'    => array('Isotope\Backend\ProductCollection\Callback', 'printDocument'),
         'payment'           => array('Isotope\Backend\ProductCollection\Callback', 'paymentInterface'),
         'shipping'          => array('Isotope\Backend\ProductCollection\Callback', 'shippingInterface'),
@@ -54,7 +48,7 @@ array_insert($GLOBALS['BE_MOD']['isotope'], 0, array
         'callback'          => 'Isotope\BackendModule\Setup',
         'tables'            => array(),
         'icon'              => 'system/modules/isotope/assets/images/application-monitor.png',
-        'javascript'        => 'system/modules/isotope/assets/js/backend'.(ISO_DEBUG ? '' : '.min').'.js',
+        'javascript'        => \Haste\Util\Debug::uncompressedFile('system/modules/isotope/assets/js/backend.min.js'),
     ),
 ));
 
@@ -62,7 +56,7 @@ $GLOBALS['BE_MOD']['accounts']['member']['tables'][] = \Isotope\Model\Address::g
 
 if (TL_MODE == 'BE')
 {
-    $GLOBALS['TL_CSS'][] = 'system/modules/isotope/assets/css/backend'.(ISO_DEBUG ? '' : '.min').'.css';
+    $GLOBALS['TL_CSS'][] = \Haste\Util\Debug::uncompressedFile('system/modules/isotope/assets/css/backend.min.css');
 }
 
 

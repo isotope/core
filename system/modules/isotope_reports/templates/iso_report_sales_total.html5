@@ -78,10 +78,10 @@ window.addEvent("domready", function() {
 <div class="tl_listing_container list_view mod_iso_reports">
 
 
-<?php $GLOBALS['TL_CSS'][] = 'system/modules/isotope_reports/assets/xcharts/xcharts' . (ISO_DEBUG ? '' : '.min') . '.css'; ?>
+<?php $GLOBALS['TL_CSS'][] = \Haste\Util\Debug::uncompressedFile('system/modules/isotope_reports/assets/xcharts/xcharts.min.css'); ?>
 <figure style="width:690px; height:300px" id="report-data"></figure>
-<script src="system/modules/isotope_reports/assets/d3.v3/d3.v3<?php echo (ISO_DEBUG ? '' : '.min'); ?>.js"></script>
-<script src="system/modules/isotope_reports/assets/xcharts/xcharts<?php echo (ISO_DEBUG ? '' : '.min'); ?>.js"></script>
+<script src="<?php echo \Haste\Util\Debug::uncompressedFile('system/modules/isotope_reports/assets/d3.v3/d3.v3.min.js'); ?>"></script>
+<script src="<?php echo \Haste\Util\Debug::uncompressedFile('system/modules/isotope_reports/assets/xcharts/xcharts.min.js'); ?>"></script>
 <script>
 window.addEvent('domready', function() {
     window.xchart_report = new xChart('line-dotted', {

@@ -72,7 +72,7 @@ class Callback extends \Backend
             \Controller::redirect('contao/main.php?act=error');
         }
 
-        $GLOBALS['TL_CSS'][] = 'system/modules/isotope/assets/css/print' . (ISO_DEBUG ? '' : '.min') . '.css|print';
+        $GLOBALS['TL_CSS'][] = \Haste\Util\Debug::uncompressedFile('system/modules/isotope/assets/css/print.min.css|print');
 
         // Generate a regular order details module
         \Input::setGet('uid', $objOrder->uniqid);
