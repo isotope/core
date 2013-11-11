@@ -88,11 +88,6 @@ $GLOBALS['ISO_MOD'] = array
             'tables'            => array(\Isotope\Model\RelatedCategory::getTable()),
             'icon'              => 'system/modules/isotope/assets/images/setup-related_categories.png',
         ),
-        'gallery' => array
-        (
-            'tables'            => array(\Isotope\Model\Gallery::getTable()),
-            'icon'              => 'system/modules/isotope/assets/images/setup-gallery.png',
-        ),
         'baseprice' => array
         (
             'tables'            => array(\Isotope\Model\BasePrice::getTable()),
@@ -144,6 +139,12 @@ $GLOBALS['ISO_MOD'] = array
             'tables'            => array(\Isotope\Model\Document::getTable()),
             'icon'              => 'system/modules/isotope/assets/images/setup-documents.png'
         ),
+        'gallery' => array
+        (
+            'tables'            => array(\Isotope\Model\Gallery::getTable()),
+            'icon'              => 'system/modules/isotope/assets/images/setup-gallery.png',
+        ),
+    ),
     'miscellaneous:hide' => array
     (
         'labels' => array
