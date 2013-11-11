@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.1">
+  <file datatype="php" original="system/modules/isotope_rules/languages/en/default.php" source-language="en">
+    <body>
+      <trans-unit id="ERR.couponCodeDropped">
+        <source>Your coupon code "%s" could not be applied. Please review your order again.</source>
+      </trans-unit>
+      <trans-unit id="MSC.couponHeadline">
+        <source>Apply Promotional Codes</source>
+      </trans-unit>
+      <trans-unit id="MSC.couponLabel">
+        <source>Promotional code</source>
+      </trans-unit>
+      <trans-unit id="MSC.couponApply">
+        <source>Apply</source>
+      </trans-unit>
+      <trans-unit id="MSC.couponInvalid">
+        <source>Your coupon %s is not valid.</source>
+      </trans-unit>
+      <trans-unit id="MSC.couponApplied">
+        <source>Your coupon %s has been applied.</source>
+      </trans-unit>
+      <trans-unit id="MSC.couponDuplicate">
+        <source>Your coupon %s has already been applied.</source>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

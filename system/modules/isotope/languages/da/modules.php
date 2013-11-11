@@ -1,34 +1,24 @@
-<?php if (!defined('TL_ROOT')) die('You can not access this file directly!');
+<?php
 
 /**
- * Contao Open Source CMS
- * Copyright (C) 2005-2010 Leo Feyer
- *
- * Formerly known as TYPOlight Open Source CMS.
- *
- * This program is free software: you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation, either
- * version 3 of the License, or (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
- * Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public
- * License along with this program. If not, please visit the Free
- * Software Foundation website at <http://www.gnu.org/licenses/>.
- *
- * PHP version 5
- * @copyright  Isotope eCommerce Workgroup 2009-2012
- * @author     Stefan Johannsen <stefan@reklamehuset.dk>
- * @license    http://opensource.org/licenses/lgpl-3.0.html
+ * Isotope eCommerce for Contao Open Source CMS
+ * 
+ * Copyright (C) 2009-2013 Isotope eCommerce Workgroup
+ * 
+ * Core translations are managed using Transifex. To create a new translation
+ * or to help to maintain an existing one, please register at transifex.com.
+ * 
+ * @link http://help.transifex.com/intro/translating.html
+ * @link https://www.transifex.com/projects/i/isotope/language/da/
+ * 
+ * @license http://www.gnu.org/licenses/lgpl-3.0.html LGPL
  */
 
 $GLOBALS['TL_LANG']['MOD']['isotope'] = 'Isotope eCommerce';
 $GLOBALS['TL_LANG']['MOD']['iso_products'][0] = 'Produkter';
+$GLOBALS['TL_LANG']['MOD']['iso_products'][1] = 'Håndter produkter';
 $GLOBALS['TL_LANG']['MOD']['iso_orders'][0] = 'Ordre';
+$GLOBALS['TL_LANG']['MOD']['iso_orders'][1] = 'Se og håndter ordrer';
 $GLOBALS['TL_LANG']['MOD']['iso_setup'][0] = 'Butiksindstilling';
 $GLOBALS['TL_LANG']['FMD']['isotope'] = 'Isotope eCommerce';
 $GLOBALS['TL_LANG']['FMD']['iso_productfilter'][0] = 'Produkt filter';
@@ -53,10 +43,14 @@ $GLOBALS['TL_LANG']['FMD']['iso_configswitcher'][0] = 'Skift butiksindstilling';
 $GLOBALS['TL_LANG']['FMD']['iso_configswitcher'][1] = 'Gør det muligt at skifte mellem forskellige butiksindstillinger for at ændre valuta og andre indstillinger.';
 $GLOBALS['TL_LANG']['FMD']['iso_relatedproducts'][0] = 'Relaterede produkter';
 $GLOBALS['TL_LANG']['FMD']['iso_relatedproducts'][1] = 'Lister produkter der relaterer til det valgte produkt';
-$GLOBALS['TL_LANG']['ISO']['config_module'] = 'Isotope eCommerce indstillinger';
-$GLOBALS['TL_LANG']['IMD']['checkout'] = 'Betalingsforløb';
 $GLOBALS['TL_LANG']['IMD']['product'] = 'Produkter';
-$GLOBALS['TL_LANG']['IMD']['config'] = 'Generelle indstillinger';
+$GLOBALS['TL_LANG']['IMD']['attributes'][0] = 'Egenskaber';
+$GLOBALS['TL_LANG']['IMD']['attributes'][1] = 'Opret og rediger egenskaber for dine produkter, som f.eks. størrelse, farver m.m.';
+$GLOBALS['TL_LANG']['IMD']['producttypes'][0] = 'Produkttyper';
+$GLOBALS['TL_LANG']['IMD']['producttypes'][1] = 'Opret og rediger produkttyper baseret på egenskaber.';
+$GLOBALS['TL_LANG']['IMD']['related_categories'][0] = 'Relaterede kattegorier';
+$GLOBALS['TL_LANG']['IMD']['related_categories'][1] = 'Definer kattegorier for relaterede produkter.';
+$GLOBALS['TL_LANG']['IMD']['checkout'] = 'Betalingsforløb';
 $GLOBALS['TL_LANG']['IMD']['shipping'][0] = 'Forsendelsesmetoder';
 $GLOBALS['TL_LANG']['IMD']['shipping'][1] = 'Indstil forsendelsesmetoder, som f.eks. POST, UPS, DHL.';
 $GLOBALS['TL_LANG']['IMD']['payment'][0] = 'Betalingsmetoder';
@@ -65,14 +59,6 @@ $GLOBALS['TL_LANG']['IMD']['tax_class'][0] = 'Moms klasser';
 $GLOBALS['TL_LANG']['IMD']['tax_class'][1] = 'Indstil moms klasser, som indeholder forskellige momssatser.';
 $GLOBALS['TL_LANG']['IMD']['tax_rate'][0] = 'Moms satser';
 $GLOBALS['TL_LANG']['IMD']['tax_rate'][1] = 'Indstil momssatser baseret på leverings-/faktureringsadresse m.m.';
-$GLOBALS['TL_LANG']['IMD']['attributes'][0] = 'Egenskaber';
-$GLOBALS['TL_LANG']['IMD']['attributes'][1] = 'Opret og rediger egenskaber for dine produkter, som f.eks. størrelse, farver m.m.';
-$GLOBALS['TL_LANG']['IMD']['producttypes'][0] = 'Produkttyper';
-$GLOBALS['TL_LANG']['IMD']['producttypes'][1] = 'Opret og rediger produkttyper baseret på egenskaber.';
-$GLOBALS['TL_LANG']['IMD']['related_categories'][0] = 'Relaterede kattegorier';
-$GLOBALS['TL_LANG']['IMD']['related_categories'][1] = 'Definer kattegorier for relaterede produkter.';
-$GLOBALS['TL_LANG']['IMD']['iso_mail'][0] = 'E-mail indstillinger';
-$GLOBALS['TL_LANG']['IMD']['iso_mail'][1] = 'Definer e-mail beskeder for administrator og kunder';
+$GLOBALS['TL_LANG']['IMD']['config'] = 'Generelle indstillinger';
 $GLOBALS['TL_LANG']['IMD']['configs'][0] = 'Butiksindstillinger';
 $GLOBALS['TL_LANG']['IMD']['configs'][1] = 'Konfigurer indstillinger for denne butik';
-

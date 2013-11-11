@@ -1,28 +1,17 @@
-<?php if (!defined('TL_ROOT')) die('You can not access this file directly!');
+<?php
 
 /**
- * TYPOlight Open Source CMS
- * Copyright (C) 2005-2010 Leo Feyer
- *
- * This program is free software: you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation, either
- * version 3 of the License, or (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
- * Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public
- * License along with this program. If not, please visit the Free
- * Software Foundation website at <http://www.gnu.org/licenses/>.
- *
- * PHP version 5
- * @copyright  Isotope eCommerce Workgroup 2009-2012
- * @author     Paolo B. <paolob@contaocms.it>
- * @author     Dan N <dan@dss.uniud.it>
- * @license    http://opensource.org/licenses/lgpl-3.0.html
+ * Isotope eCommerce for Contao Open Source CMS
+ * 
+ * Copyright (C) 2009-2013 Isotope eCommerce Workgroup
+ * 
+ * Core translations are managed using Transifex. To create a new translation
+ * or to help to maintain an existing one, please register at transifex.com.
+ * 
+ * @link http://help.transifex.com/intro/translating.html
+ * @link https://www.transifex.com/projects/i/isotope/language/it/
+ * 
+ * @license http://www.gnu.org/licenses/lgpl-3.0.html LGPL
  */
 
 $GLOBALS['TL_LANG']['MOD']['isotope'] = 'Isotope eCommerce';
@@ -52,10 +41,14 @@ $GLOBALS['TL_LANG']['FMD']['iso_configswitcher'][0] = 'Cambio Configurazione Neg
 $GLOBALS['TL_LANG']['FMD']['iso_configswitcher'][1] = 'Cambio tra due configurazioni di negozio per scegliere una valuta diversa e altre impostazioni.';
 $GLOBALS['TL_LANG']['FMD']['iso_relatedproducts'][0] = 'Prodotti correlati';
 $GLOBALS['TL_LANG']['FMD']['iso_relatedproducts'][1] = 'Elenco dei prodotti correlati al presente.';
-$GLOBALS['TL_LANG']['ISO']['config_module'] = 'Configurazione Isotope eCommerce';
-$GLOBALS['TL_LANG']['IMD']['checkout'] = 'Flusso Checkout';
 $GLOBALS['TL_LANG']['IMD']['product'] = 'Prodotti';
-$GLOBALS['TL_LANG']['IMD']['config'] = 'Impostazioni generali';
+$GLOBALS['TL_LANG']['IMD']['attributes'][0] = 'Attributi';
+$GLOBALS['TL_LANG']['IMD']['attributes'][1] = 'Gestisca e crei attributi prodotto come misura, colore, ecc.';
+$GLOBALS['TL_LANG']['IMD']['producttypes'][0] = 'Tipo prodotto';
+$GLOBALS['TL_LANG']['IMD']['producttypes'][1] = 'Gestisca e crei tipi di prodotti da insieme di attributi.';
+$GLOBALS['TL_LANG']['IMD']['related_categories'][0] = 'Categorie correlate';
+$GLOBALS['TL_LANG']['IMD']['related_categories'][1] = 'Definisca le categorie in base a relazioni prodotto.';
+$GLOBALS['TL_LANG']['IMD']['checkout'] = 'Flusso Checkout';
 $GLOBALS['TL_LANG']['IMD']['shipping'][0] = 'Metodi spedizione';
 $GLOBALS['TL_LANG']['IMD']['shipping'][1] = 'Imposti lo spedizioniere ad esempio UPS, USPS, DHL, etc.';
 $GLOBALS['TL_LANG']['IMD']['payment'][0] = 'Metodo di pagamento';
@@ -64,14 +57,6 @@ $GLOBALS['TL_LANG']['IMD']['tax_class'][0] = 'Classe imposta';
 $GLOBALS['TL_LANG']['IMD']['tax_class'][1] = 'Imposti la classe di tassazione che contiene l\'insieme  delle aliquote d\'imposta';
 $GLOBALS['TL_LANG']['IMD']['tax_rate'][0] = 'Aliquote imposta';
 $GLOBALS['TL_LANG']['IMD']['tax_rate'][1] = 'Imposti le aliquote di imposta in base alla desitnazione di spedizione/fattura e ordine totale.';
-$GLOBALS['TL_LANG']['IMD']['attributes'][0] = 'Attributi';
-$GLOBALS['TL_LANG']['IMD']['attributes'][1] = 'Gestisca e crei attributi prodotto come misura, colore, ecc.';
-$GLOBALS['TL_LANG']['IMD']['producttypes'][0] = 'Tipo prodotto';
-$GLOBALS['TL_LANG']['IMD']['producttypes'][1] = 'Gestisca e crei tipi di prodotti da insieme di attributi.';
-$GLOBALS['TL_LANG']['IMD']['related_categories'][0] = 'Categorie correlate';
-$GLOBALS['TL_LANG']['IMD']['related_categories'][1] = 'Definisca le categorie in base a relazioni prodotto.';
-$GLOBALS['TL_LANG']['IMD']['iso_mail'][0] = 'E-mail manager';
-$GLOBALS['TL_LANG']['IMD']['iso_mail'][1] = 'Email cliente e amministratore (English Language error?)';
+$GLOBALS['TL_LANG']['IMD']['config'] = 'Impostazioni generali';
 $GLOBALS['TL_LANG']['IMD']['configs'][0] = 'Configurazioni negozio';
 $GLOBALS['TL_LANG']['IMD']['configs'][1] = 'Configura le impostazioni generali per questo negozio.';
-

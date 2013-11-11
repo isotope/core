@@ -1,0 +1,117 @@
+<?php
+
+/**
+ * Isotope eCommerce for Contao Open Source CMS
+ *
+ * Copyright (C) 2009-2012 Isotope eCommerce Workgroup
+ *
+ * @package    Isotope
+ * @link       http://www.isotopeecommerce.com
+ * @license    http://opensource.org/licenses/lgpl-3.0.html LGPL
+ */
+
+namespace Isotope\Module;
+
+use Isotope\Isotope;
+use Isotope\Model\ProductCollection\Order;
+use Haste\Generator\RowClass;
+use Haste\Util\Format;
+
+
+/**
+ * Class OrderHistory
+ *
+ * Front end module Isotope "order history".
+ * @copyright  Isotope eCommerce Workgroup 2009-2012
+ * @author     Andreas Schempp <andreas.schempp@terminal42.ch>
+ * @author     Fred Bliss <fred.bliss@intelligentspark.com>
+ */
+class OrderHistory extends Module
+{
+
+    /**
+     * Template
+     * @var string
+     */
+    protected $strTemplate = 'mod_iso_orderhistory';
+
+    /**
+     * Disable caching of the frontend page if this module is in use
+     * @var boolean
+     */
+    protected $blnDisableCache = true;
+
+
+    /**
+     * Display a wildcard in the back end
+     * @return string
+     */
+    public function generate()
+    {
+        if (TL_MODE == 'BE')
+        {
+            $objTemplate = new \BackendTemplate('be_wildcard');
+
+            $objTemplate->wildcard = '### ISOTOPE ECOMMERCE: ORDER HISTORY ###';
+
+            $objTemplate->title = $this->headline;
+            $objTemplate->id = $this->id;
+            $objTemplate->link = $this->name;
+            $objTemplate->href = 'contao/main.php?do=themes&amp;table=tl_module&amp;act=edit&amp;id=' . $this->id;
+
+            return $objTemplate->parse();
+        }
+
+        $this->iso_config_ids = deserialize($this->iso_config_ids);
+
+        if (FE_USER_LOGGED_IN !== true || !is_array($this->iso_config_ids) || !count($this->iso_config_ids)) // Can't use empty() because its an object property (using __get)
+        {
+            return '';
+        }
+
+        return parent::generate();
+    }
+
+
+    /**
+     * Generate the module
+     * @return void
+     */
+    protected function compile()
+    {
+        $arrOrders = array();
+        $objOrders = Order::findBy(array('order_status>0', 'pid=?', 'config_id IN (?)'), array(\FrontendUser::getInstance()->id, implode("','", $this->iso_config_ids)), array('order'=>'date DESC'));
+
+        // No orders found, just display an "empty" message
+        if ($objOrders->count() == 0)
+        {
+            $this->Template = new \Isotope\Template('mod_message');
+            $this->Template->type = 'empty';
+            $this->Template->message = $GLOBALS['TL_LANG']['ERR']['emptyOrderHistory'];
+
+            return;
+        }
+
+        while ($objOrders->next())
+        {
+            Isotope::setConfig($objOrders->current()->getRelated('config_id'));
+
+            $arrOrders[] = array
+            (
+                'collection' => $objOrders->current(),
+                'raw'        => $objOrders->row(),
+                'date'       => Format::date($objOrders->locked),
+                'time'       => Format::time($objOrders->locked),
+                'datime'     => Format::datim($objOrders->locked),
+                'grandTotal' => Isotope::formatPriceWithCurrency($objOrders->getTotal()),
+                'status'     => $objOrders->getStatusLabel(),
+                'link'       => ($this->jumpTo ? (\Haste\Util\Url::addQueryString('uid=' . $objOrders->uniqid, $this->jumpTo)) : ''),
+                'class'      => $objOrders->getStatusAlias(),
+            );
+        }
+
+        RowClass::withKey('class')->addFirstLast()->addEvenOdd()->applyTo($arrOrders);
+
+        $this->Template->orders = $arrOrders;
+    }
+}

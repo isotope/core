@@ -1,58 +1,42 @@
-<?php if (!defined('TL_ROOT')) die('You can not access this file directly!');
+<?php
 
 /**
- * Contao Open Source CMS
- * Copyright (C) 2005-2010 Leo Feyer
- *
- * Formerly known as TYPOlight Open Source CMS.
- *
- * This program is free software: you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation, either
- * version 3 of the License, or (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
- * Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public
- * License along with this program. If not, please visit the Free
- * Software Foundation website at <http://www.gnu.org/licenses/>.
- *
- * PHP version 5
- * @copyright  Isotope eCommerce Workgroup 2009-2012
- * @author     Andreas Schempp <andreas@schempp.ch>
- * @license    http://opensource.org/licenses/lgpl-3.0.html
+ * Isotope eCommerce for Contao Open Source CMS
+ * 
+ * Copyright (C) 2009-2013 Isotope eCommerce Workgroup
+ * 
+ * Core translations are managed using Transifex. To create a new translation
+ * or to help to maintain an existing one, please register at transifex.com.
+ * 
+ * @link http://help.transifex.com/intro/translating.html
+ * @link https://www.transifex.com/projects/i/isotope/language/de/
+ * 
+ * @license http://www.gnu.org/licenses/lgpl-3.0.html LGPL
  */
 
-
-/**
- * Fields
- */
-$GLOBALS['TL_LANG']['tl_iso_orderstatus']['name']           = array('Name', 'Bitte geben Sie den Namen für den Status ein.');
-$GLOBALS['TL_LANG']['tl_iso_orderstatus']['paid']           = array('Die Bestellung wurde bezahlt', 'Bei diesem Status wurde die Bestellung bezahlt, daß ermöglicht das herunterladen von Dateien.');
-$GLOBALS['TL_LANG']['tl_iso_orderstatus']['welcomescreen']  = array('Auf der Willkommensseite anzeigen', 'Zeigt die Anzahl von Bestellungen mit diesem Status auf der Willkommensseite im Backend an');
-$GLOBALS['TL_LANG']['tl_iso_orderstatus']['mail_customer']  = array('E-Mail an die Kunden', 'Wählen Sie eine E-Mail-Vorlage aus um den Kunden zu informieren, wenn die Bestellung den Status erreicht hat.');
-$GLOBALS['TL_LANG']['tl_iso_orderstatus']['mail_admin']     = array('E-Mail an den Administrator', 'Wählen Sie eine E-Mail-Vorlage aus um den Administrator zu informieren, wenn die Bestellung den Status erreicht hat.');
-$GLOBALS['TL_LANG']['tl_iso_orderstatus']['sales_email']    = array('Die E-Mail-Adresse des Verkaufsadministrators', 'Geben Sie eine E-Mail-Adresse an, an welche Mitteilungen gesendet werden sollen. Wenn Sie kein angeben, wird die Nachricht an die Adresse des Systemadministrators gesendet.');
-
-
-/**
- * Buttons
- */
-$GLOBALS['TL_LANG']['tl_iso_orderstatus']['new']            = array('Neuer Bestellstatus', 'Einen neuen Bestellstatus hinzufügen');
-$GLOBALS['TL_LANG']['tl_iso_orderstatus']['edit']           = array('Bestellstatus bearbeiten', 'Bestellstatus ID %s bearbeiten');
-$GLOBALS['TL_LANG']['tl_iso_orderstatus']['copy']           = array('Bestellstatus duplizieren', 'Bestellstatus ID %s duplizieren');
-$GLOBALS['TL_LANG']['tl_iso_orderstatus']['cut']            = array('Bestellstatus verschieben', 'Bestellstatus ID %s verschieben');
-$GLOBALS['TL_LANG']['tl_iso_orderstatus']['delete']         = array('Bestellstatus löschen', 'Bestellstatus ID %s löschen');
-$GLOBALS['TL_LANG']['tl_iso_orderstatus']['show']           = array('Bestellstatusdetails', 'Details des Bestellstatus ID %s anzeigen');
-$GLOBALS['TL_LANG']['tl_iso_orderstatus']['pasteafter']     = array('Danach einfügen', 'Nach dem Bestellstatus ID %s einfügen');
-$GLOBALS['TL_LANG']['tl_iso_orderstatus']['pasteinto']      = array('Am Anfang einfügen', 'Am Anfang einfügen');
-
-
-/**
- * Legends
- */
-$GLOBALS['TL_LANG']['tl_iso_orderstatus']['name_legend']    = 'Name';
-$GLOBALS['TL_LANG']['tl_iso_orderstatus']['email_legend']   = 'E-Mail-Mitteilung';
+$GLOBALS['TL_LANG']['tl_iso_orderstatus']['name'][0] = 'Name';
+$GLOBALS['TL_LANG']['tl_iso_orderstatus']['name'][1] = 'Bitte geben Sie den Namen für den Status ein.';
+$GLOBALS['TL_LANG']['tl_iso_orderstatus']['paid'][0] = 'Die Bestellung wurde bezahlt';
+$GLOBALS['TL_LANG']['tl_iso_orderstatus']['paid'][1] = 'Bei diesem Status wurde die Bestellung bezahlt, daß ermöglicht das herunterladen von Dateien.';
+$GLOBALS['TL_LANG']['tl_iso_orderstatus']['welcomescreen'][0] = 'Auf der Willkommensseite anzeigen';
+$GLOBALS['TL_LANG']['tl_iso_orderstatus']['welcomescreen'][1] = 'Zeigt die Anzahl von Bestellungen mit diesem Status auf der Willkommensseite im Backend an';
+$GLOBALS['TL_LANG']['tl_iso_orderstatus']['notification'][0] = 'Benachrichtigung';
+$GLOBALS['TL_LANG']['tl_iso_orderstatus']['notification'][1] = 'Bitte wählen Sie eine Benachrichtigung.';
+$GLOBALS['TL_LANG']['tl_iso_orderstatus']['new'][0] = 'Neuer Bestellstatus';
+$GLOBALS['TL_LANG']['tl_iso_orderstatus']['new'][1] = 'Einen neuen Bestellstatus hinzufügen';
+$GLOBALS['TL_LANG']['tl_iso_orderstatus']['edit'][0] = 'Bestellstatus bearbeiten';
+$GLOBALS['TL_LANG']['tl_iso_orderstatus']['edit'][1] = 'Bestellstatus ID %s bearbeiten';
+$GLOBALS['TL_LANG']['tl_iso_orderstatus']['copy'][0] = 'Bestellstatus duplizieren';
+$GLOBALS['TL_LANG']['tl_iso_orderstatus']['copy'][1] = 'Bestellstatus ID %s duplizieren';
+$GLOBALS['TL_LANG']['tl_iso_orderstatus']['cut'][0] = 'Bestellstatus verschieben';
+$GLOBALS['TL_LANG']['tl_iso_orderstatus']['cut'][1] = 'Bestellstatus ID %s verschieben';
+$GLOBALS['TL_LANG']['tl_iso_orderstatus']['delete'][0] = 'Bestellstatus löschen';
+$GLOBALS['TL_LANG']['tl_iso_orderstatus']['delete'][1] = 'Bestellstatus ID %s löschen';
+$GLOBALS['TL_LANG']['tl_iso_orderstatus']['show'][0] = 'Bestellstatusdetails';
+$GLOBALS['TL_LANG']['tl_iso_orderstatus']['show'][1] = 'Details des Bestellstatus ID %s anzeigen';
+$GLOBALS['TL_LANG']['tl_iso_orderstatus']['pasteafter'][0] = 'Danach einfügen';
+$GLOBALS['TL_LANG']['tl_iso_orderstatus']['pasteafter'][1] = 'Nach dem Bestellstatus ID %s einfügen';
+$GLOBALS['TL_LANG']['tl_iso_orderstatus']['pasteinto'][0] = 'Am Anfang einfügen';
+$GLOBALS['TL_LANG']['tl_iso_orderstatus']['pasteinto'][1] = 'Am Anfang einfügen';
+$GLOBALS['TL_LANG']['tl_iso_orderstatus']['name_legend'] = 'Name';
+$GLOBALS['TL_LANG']['tl_iso_orderstatus']['email_legend'] = 'E-Mail-Mitteilung';

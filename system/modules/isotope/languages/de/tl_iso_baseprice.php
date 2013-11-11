@@ -1,51 +1,33 @@
-<?php if (!defined('TL_ROOT')) die('You can not access this file directly!');
+<?php
 
 /**
- * Contao Open Source CMS
- * Copyright (C) 2005-2010 Leo Feyer
- *
- * Formerly known as TYPOlight Open Source CMS.
- *
- * This program is free software: you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation, either
- * version 3 of the License, or (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
- * Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public
- * License along with this program. If not, please visit the Free
- * Software Foundation website at <http://www.gnu.org/licenses/>.
- *
- * PHP version 5
- * @copyright  Isotope eCommerce Workgroup 2009-2012
- * @author     Andreas Schempp <andreas@schempp.ch>
- * @license    http://opensource.org/licenses/lgpl-3.0.html
+ * Isotope eCommerce for Contao Open Source CMS
+ * 
+ * Copyright (C) 2009-2013 Isotope eCommerce Workgroup
+ * 
+ * Core translations are managed using Transifex. To create a new translation
+ * or to help to maintain an existing one, please register at transifex.com.
+ * 
+ * @link http://help.transifex.com/intro/translating.html
+ * @link https://www.transifex.com/projects/i/isotope/language/de/
+ * 
+ * @license http://www.gnu.org/licenses/lgpl-3.0.html LGPL
  */
 
-
-/**
- * Fields
- */
-$GLOBALS['TL_LANG']['tl_iso_baseprice']['name']         = array('Name', 'Bitte geben Sie den Namen für den Grundpreis ein.');
-$GLOBALS['TL_LANG']['tl_iso_baseprice']['amount']       = array('Basisbetrag', 'Basisbetrag eingeben (z.B. "100").');
-$GLOBALS['TL_LANG']['tl_iso_baseprice']['label']        = array('Beschriftung', 'Beschriftung für den Grundpreis eingeben (z.B. "%s pro 100g").');
-
-
-/**
- * Buttons
- */
-$GLOBALS['TL_LANG']['tl_iso_baseprice']['new']          = array('Neuer Grundpreis', 'Einen neuen Grundpreis hinzufügen');
-$GLOBALS['TL_LANG']['tl_iso_baseprice']['edit']         = array('Grundpreis bearbeiten', 'Grundpreis ID %s bearbeiten');
-$GLOBALS['TL_LANG']['tl_iso_baseprice']['copy']         = array('Grundpreis duplizieren', 'Grundpreis ID %s duplizieren');
-$GLOBALS['TL_LANG']['tl_iso_baseprice']['delete']       = array('Grundpreis löschen', 'Grundpreis ID %s löschen');
-$GLOBALS['TL_LANG']['tl_iso_baseprice']['show']         = array('Grundpreisdetails', 'Details des Grundpreises ID %s anzeigen');
-
-
-/**
- * Legends
- */
-$GLOBALS['TL_LANG']['tl_iso_baseprice']['name_legend']  = 'Grundpreis';
+$GLOBALS['TL_LANG']['tl_iso_baseprice']['name'][0] = 'Name';
+$GLOBALS['TL_LANG']['tl_iso_baseprice']['name'][1] = 'Bitte geben Sie den Namen für den Grundpreis ein.';
+$GLOBALS['TL_LANG']['tl_iso_baseprice']['amount'][0] = 'Basisbetrag';
+$GLOBALS['TL_LANG']['tl_iso_baseprice']['amount'][1] = 'Basisbetrag eingeben (z.B. "100").';
+$GLOBALS['TL_LANG']['tl_iso_baseprice']['label'][0] = 'Beschriftung';
+$GLOBALS['TL_LANG']['tl_iso_baseprice']['label'][1] = 'Beschriftung für den Grundpreis eingeben (z.B. "%s pro 100g").';
+$GLOBALS['TL_LANG']['tl_iso_baseprice']['new'][0] = 'Neuer Grundpreis';
+$GLOBALS['TL_LANG']['tl_iso_baseprice']['new'][1] = 'Einen neuen Grundpreis hinzufügen';
+$GLOBALS['TL_LANG']['tl_iso_baseprice']['edit'][0] = 'Grundpreis bearbeiten';
+$GLOBALS['TL_LANG']['tl_iso_baseprice']['edit'][1] = 'Grundpreis ID %s bearbeiten';
+$GLOBALS['TL_LANG']['tl_iso_baseprice']['copy'][0] = 'Grundpreis duplizieren';
+$GLOBALS['TL_LANG']['tl_iso_baseprice']['copy'][1] = 'Grundpreis ID %s duplizieren';
+$GLOBALS['TL_LANG']['tl_iso_baseprice']['delete'][0] = 'Grundpreis löschen';
+$GLOBALS['TL_LANG']['tl_iso_baseprice']['delete'][1] = 'Grundpreis ID %s löschen';
+$GLOBALS['TL_LANG']['tl_iso_baseprice']['show'][0] = 'Grundpreisdetails';
+$GLOBALS['TL_LANG']['tl_iso_baseprice']['show'][1] = 'Details des Grundpreises ID %s anzeigen';
+$GLOBALS['TL_LANG']['tl_iso_baseprice']['name_legend'] = 'Grundpreis';
