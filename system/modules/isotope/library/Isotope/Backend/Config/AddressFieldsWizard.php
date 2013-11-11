@@ -27,7 +27,7 @@ class AddressFieldsWizard extends \Backend
         static $arrValues;
         static $i = 0;
 
-        if (null === $arrValues) {
+        if (empty($arrValues)) {
             \System::loadLanguageFile(\Isotope\Model\Address::getTable());
             $arrValues = $objWidget->value;
             $i = 0;
