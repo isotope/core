@@ -194,6 +194,9 @@
       <trans-unit id="IMD.documents.1">
         <source>Define documents.</source>
       </trans-unit>
+      <trans-unit id="IMD.miscellaneous">
+        <source>Miscellaneous</source>
+      </trans-unit>
       <trans-unit id="IMD.labels.0">
         <source>Translations</source>
       </trans-unit>

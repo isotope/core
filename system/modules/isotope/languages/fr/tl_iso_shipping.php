@@ -15,7 +15,9 @@
  */
 
 $GLOBALS['TL_LANG']['tl_iso_shipping']['name'][0] = 'Nom du mode de livraison';
+$GLOBALS['TL_LANG']['tl_iso_shipping']['name'][1] = 'Saisir un nom pour ce mode d\'expédition.';
 $GLOBALS['TL_LANG']['tl_iso_shipping']['type'][0] = 'Type de mode de livraison';
+$GLOBALS['TL_LANG']['tl_iso_shipping']['type'][1] = 'Sélectionner le type de ce mode de livraison.';
 $GLOBALS['TL_LANG']['tl_iso_shipping']['price'][0] = 'Prix';
 $GLOBALS['TL_LANG']['tl_iso_shipping']['note'][0] = 'Notes relatives au mode de livraison';
 $GLOBALS['TL_LANG']['tl_iso_shipping']['note'][1] = 'Elles seront affichées en front office en liaison avec les options de livraison.';
@@ -29,8 +31,13 @@ $GLOBALS['TL_LANG']['tl_iso_shipping']['subdivisions'][0] = 'État / Régions';
 $GLOBALS['TL_LANG']['tl_iso_shipping']['subdivisions'][1] = 'Sélectionnez les états/régions auxquels ce mode de livraison s\'applique. Si vous ne sélectionnez rien, le mode de livraison sera appliqué à tous les états/régions.';
 $GLOBALS['TL_LANG']['tl_iso_shipping']['postalCodes'][0] = 'Codes postaux';
 $GLOBALS['TL_LANG']['tl_iso_shipping']['postalCodes'][1] = 'Limiter ce module d\'expédition aux codes postaux. Saisir une liste et plages séparées par des virgules (ex 1234,1235,1236-1239,1100-1200).';
+$GLOBALS['TL_LANG']['tl_iso_shipping']['minimum_total'][0] = 'Sous-total minimum';
+$GLOBALS['TL_LANG']['tl_iso_shipping']['maximum_total'][0] = 'Sous-total maximum';
+$GLOBALS['TL_LANG']['tl_iso_shipping']['minimum_weight'][0] = 'Poids minimum';
+$GLOBALS['TL_LANG']['tl_iso_shipping']['maximum_weight'][0] = 'Poids maximum';
 $GLOBALS['TL_LANG']['tl_iso_shipping']['product_types'][0] = 'Types de produits';
 $GLOBALS['TL_LANG']['tl_iso_shipping']['product_types'][1] = 'Limiter le mode de livraison pour certains types de produits. Si le panier contient un type de produit non sélectionné, le module d\'expédition n\'est pas disponible.';
+$GLOBALS['TL_LANG']['tl_iso_shipping']['group_methods'][0] = 'Modes de livraison';
 $GLOBALS['TL_LANG']['tl_iso_shipping']['groups'][0] = 'Groupes de membres';
 $GLOBALS['TL_LANG']['tl_iso_shipping']['groups'][1] = 'Restreindre l\'option de livraison à certains groupes de membres.';
 $GLOBALS['TL_LANG']['tl_iso_shipping']['protected'][0] = 'Proteger le module';

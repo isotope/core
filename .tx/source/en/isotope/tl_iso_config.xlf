@@ -108,10 +108,10 @@
         <source>Address field</source>
       </trans-unit>
       <trans-unit id="tl_iso_config.address_fields.billing.0">
-        <source>Show in billing address</source>
+        <source>For billing address</source>
       </trans-unit>
       <trans-unit id="tl_iso_config.address_fields.shipping.0">
-        <source>Show in shipping address</source>
+        <source>For shipping address</source>
       </trans-unit>
       <trans-unit id="tl_iso_config.address_fields.disabled">
         <source>Disabled</source>
