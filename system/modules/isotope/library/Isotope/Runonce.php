@@ -46,7 +46,7 @@ class Runonce extends \Controller
         foreach (scan(TL_ROOT . '/system/modules/isotope/library/Isotope/Upgrade') as $strFile) {
             $strVersion = pathinfo($strFile, PATHINFO_FILENAME);
             $strClass = 'Isotope\Upgrade\\' . $strVersion;
-            $strStep = 'Version ' . \Repository::formatVersion(substr($strVersion, 2));
+            $strStep = 'Version ' . \Haste\Util\Format::repositoryVersion(substr($strVersion, 2));
 
             if (preg_match('/To[0-9]{10}/', $strVersion)) {
                 try {
