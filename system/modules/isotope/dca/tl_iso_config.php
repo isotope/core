@@ -310,7 +310,7 @@ $GLOBALS['TL_DCA']['tl_iso_config'] = array
             'eval' => array
             (
                 'tl_class'          => 'clr',
-                'buttons'           => array('up'=>'up.gif', 'down'=>'down.gif'),
+                'buttons'           => array('copy'=>false, 'delete'=>false),
                 'columnFields'      => array
                 (
                     'name' => array
