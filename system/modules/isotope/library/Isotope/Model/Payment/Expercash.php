@@ -18,6 +18,7 @@ use Isotope\Interfaces\IsotopePayment;
 use Isotope\Interfaces\IsotopePostsale;
 use Isotope\Model\Payment;
 use Isotope\Model\ProductCollection\Order;
+use Haste\Http\Response\Response;
 
 
 /**
@@ -69,8 +70,9 @@ class Expercash extends Payment implements IsotopePayment, IsotopePostsale
 
         $objOrder->save();
 
-        header('HTTP/1.1 200 OK');
-        exit;
+        // 200 OK
+        $objResponse = new Response();
+        $objResponse->send();
     }
 
     public function getPostsaleOrder()

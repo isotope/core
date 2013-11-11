@@ -16,6 +16,7 @@ use Isotope\Interfaces\IsotopePostsale;
 use Isotope\Interfaces\IsotopeProductCollection;
 use Isotope\Model\Payment;
 use Isotope\Model\Shipping;
+use Haste\Http\Response\Response;
 
 
 /**
@@ -80,8 +81,8 @@ class PostSale extends \Frontend
             if ($strMod == '' || $strId == '') {
                 \System::log('Invalid post-sale request (param error): '.\Environment::get('request'), __METHOD__, TL_ERROR);
 
-                header('HTTP/1.1 400 Bad Request');
-                die('Bad Request');
+                $objResponse = new Response('Bad Request', 400);
+                $objResponse->send();
             }
 
             switch (strtolower($strMod)) {
@@ -97,8 +98,8 @@ class PostSale extends \Frontend
             if (null === $objMethod) {
                 \System::log('Invalid post-sale request (model not found): '.\Environment::get('request'), __METHOD__, TL_ERROR);
 
-                header('HTTP/1.1 404 Not Found');
-                die('Not Found');
+                $objResponse = new Response('Not Found', 404);
+                $objResponse->send();
             }
 
             \System::log('New post-sale request: '.\Environment::get('request'), __METHOD__, TL_ACCESS);
@@ -106,8 +107,8 @@ class PostSale extends \Frontend
             if (!($objMethod instanceof IsotopePostsale)) {
                 \System::log('Invalid post-sale request (interface not implemented): '.\Environment::get('request'), __METHOD__, TL_ERROR);
 
-                header('HTTP/1.1 501 Not Implemented');
-                die('Not Implemented');
+                $objResponse = new Response('Not Implemented', 501);
+                $objResponse->send();
             }
 
             $objOrder = $objMethod->getPostsaleOrder();
@@ -115,8 +116,8 @@ class PostSale extends \Frontend
             if (null === $objOrder || !($objOrder instanceof IsotopeProductCollection)) {
                 \System::log(get_class($objMethod) . ' did not return a valid order', __METHOD__, TL_ERROR);
 
-                header('HTTP/1.1 424 Failed Dependency');
-                die('Failed Dependency');
+                $objResponse = new Response('Failed Dependency', 424);
+                $objResponse->send();
             }
 
             $objCart = $objOrder->getRelated('source_collection_id');
@@ -133,8 +134,8 @@ class PostSale extends \Frontend
                     $e->getMessage()
                 ), __METHOD__, TL_ERROR);
 
-            header('HTTP/1.1 500 Internal Server Error');
-            die('Internal Server Error');
+            $objResponse = new Response('Internal Server Error', 500);
+            $objResponse->send();
         }
     }
 }

@@ -18,6 +18,7 @@ use Isotope\Model\ProductCache;
 use Isotope\Model\RequestCache;
 use Isotope\RequestCache\Sort;
 use Haste\Generator\RowClass;
+use Haste\Http\Response\HtmlResponse;
 
 
 /**
@@ -224,7 +225,8 @@ class ProductList extends Module
             );
 
             if (\Environment::get('isAjaxRequest') && \Input::post('AJAX_MODULE') == $this->id && \Input::post('AJAX_PRODUCT') == $objProduct->getProductId()) {
-                \Isotope\Frontend::ajaxResponse($objProduct->generate($arrConfig));
+                $objResponse = new HtmlResponse($objProduct->generate($arrConfig));
+                $objResponse->send();
             }
 
             $objProduct->mergeRow($arrDefaultOptions);
