@@ -448,7 +448,7 @@ abstract class Product extends TypeAgent
                 call_user_func_array('array_multisort', $arrParam);
             }
 
-            $objProducts = new \Model\Collection($arrProducts);
+            $objProducts = new \Model\Collection($arrProducts, static::$strTable);
         }
 
         return $objProducts;
