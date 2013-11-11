@@ -29,6 +29,7 @@ $GLOBALS['TL_DCA']['tl_iso_orderstatus'] = array
         'onload_callback' => array
         (
             array('Isotope\Backend', 'initializeSetupModule'),
+            array('Isotope\Backend\OrderStatus\Callback', 'addDefault'),
         ),
         'sql' => array
         (

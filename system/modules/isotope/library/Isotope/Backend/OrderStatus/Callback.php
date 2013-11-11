@@ -14,6 +14,8 @@
 
 namespace Isotope\Backend\OrderStatus;
 
+use Isotope\Model\OrderStatus;
+
 
 class Callback extends \Backend
 {
@@ -58,5 +60,46 @@ class Callback extends \Backend
         $imagePasteAfter = \Image::getHtml('pasteafter.gif', sprintf($GLOBALS['TL_LANG'][$dc->table]['pasteafter'][1], $row['id']));
 
         return (($arrClipboard['mode'] == 'cut' && $arrClipboard['id'] == $row['id']) || $cr) ? \Image::getHtml('pasteafter_.gif').' ' : '<a href="'.$this->addToUrl('act='.$arrClipboard['mode'].'&mode=1&pid='.$row['id'].'&id='.$arrClipboard['id']).'" title="'.specialchars(sprintf($GLOBALS['TL_LANG'][$dc->table]['pasteafter'][1], $row['id'])).'" onclick="Backend.getScrollOffset();">'.$imagePasteAfter.'</a> ';
+    }
+
+    /**
+     * Add default order status options if none are set
+     */
+    public function addDefault()
+    {
+        if (\Input::get('act') != '' || OrderStatus::countAll() > 0) {
+            return;
+        }
+
+        $arrStatus = array(
+            array(
+                'name'          => 'Pending',
+                'welcomescreen' => '1',
+            ),
+            array(
+                'name'          => 'Processing',
+            ),
+            array(
+                'name'          => 'Complete',
+                'paid'          => '1',
+            ),
+            array(
+                'name'          => 'On Hold',
+            ),
+            array(
+                'name'          => 'Cancelled',
+            )
+        );
+
+        $sorting = 0;
+
+        foreach ($arrStatus as $arrData) {
+            $objStatus = new OrderStatus();
+            $objStatus->setRow($arrData);
+            $objStatus->sorting = $sorting;
+            $objStatus->save();
+
+            $sorting += 128;
+        }
     }
 }

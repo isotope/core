@@ -30,6 +30,7 @@ $GLOBALS['TL_DCA']['tl_iso_config'] = array
         (
             array('Isotope\Backend', 'initializeSetupModule'),
             array('Isotope\Backend\Config\Callback', 'checkPermission'),
+            array('Isotope\Backend\OrderStatus\Callback', 'addDefault'),
         ),
         'onsubmit_callback' => array
         (
