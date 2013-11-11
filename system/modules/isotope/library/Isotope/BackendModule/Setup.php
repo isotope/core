@@ -50,7 +50,8 @@ class Setup extends BackendOverview
                         'class'         => $arrConfig['class'],
                     ));
 
-                    $return[$strGroup]['label'] = $GLOBALS['TL_LANG']['IMD'][$strGroup] ?: $strGroup;
+                    $strLabel = str_replace(':hide', '', $strGroup);
+                    $return[$strGroup]['label'] = $GLOBALS['TL_LANG']['IMD'][$strLabel] ?: $strLabel;
                 }
             }
         }

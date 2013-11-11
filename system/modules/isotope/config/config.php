@@ -144,6 +144,8 @@ $GLOBALS['ISO_MOD'] = array
             'tables'            => array(\Isotope\Model\Document::getTable()),
             'icon'              => 'system/modules/isotope/assets/images/setup-documents.png'
         ),
+    'miscellaneous:hide' => array
+    (
         'labels' => array
         (
             'tables'            => array(\Isotope\Model\Label::getTable()),

@@ -58,4 +58,5 @@ $GLOBALS['TL_LANG']['IMD']['configs']                   = array('Store configura
 $GLOBALS['TL_LANG']['IMD']['orderstatus']               = array('Order status', 'Define order status.');
 $GLOBALS['TL_LANG']['IMD']['notifications']             = array('Notifications', 'Use the Notification Center to manage emails etc. for Isotope eCommerce.');
 $GLOBALS['TL_LANG']['IMD']['documents']                 = array('Documents', 'Define documents.');
+$GLOBALS['TL_LANG']['IMD']['miscellaneous']             = 'Miscellaneous';
 $GLOBALS['TL_LANG']['IMD']['labels']                    = array('Translations', 'Replace given labels for certain languages.');
