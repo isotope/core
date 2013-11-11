@@ -47,14 +47,20 @@ abstract class BackendOverview extends \BackendModule
      */
     public function generate()
     {
-        $this->arrModules = $this->getModules();
+        $this->arrModules = array();
 
         // enable collapsing legends
         $session = \Session::getInstance()->get('fieldset_states');
-        foreach ($this->arrModules as $k => $arrGroup) {
+        foreach ($this->getModules() as $k => $arrGroup) {
+            list($k, $hide) = explode(':', $k, 2);
+
             if (isset($session['iso_be_overview_legend'][$k])) {
-                $this->arrModules[$k]['collapse'] = !$session['iso_be_overview_legend'][$k];
+                $arrGroup['collapse'] = !$session['iso_be_overview_legend'][$k];
+            } elseif ($hide == 'hide') {
+                $arrGroup['collapse'] = true;
             }
+
+            $this->arrModules[$k] = $arrGroup;
         }
 
         // Open module
