@@ -68,6 +68,12 @@ interface IsotopeProduct
     public function hasVariants();
 
     /**
+     * Returns true if this product is a variant
+     * @return bool
+     */
+    public function isVariant();
+
+    /**
      * Returns true if product has variants, and the price is a variant attribute
      * @return bool
      */
