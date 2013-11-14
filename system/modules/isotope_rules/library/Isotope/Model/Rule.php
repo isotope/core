@@ -197,7 +197,7 @@ class Rule extends \Model
                 }
 
                 $arrProductIds[] = $objProduct->getProductId();
-                $arrVariantIds[] = $objProduct->id;
+                $arrVariantIds[] = $objProduct->{$objProduct->getPk()};
                 $arrTypes[] = $objProduct->type;
 
                 if ($objProduct->pid > 0)
