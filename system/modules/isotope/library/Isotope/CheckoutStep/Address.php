@@ -139,7 +139,7 @@ abstract class Address extends CheckoutStep
         $strBuffer = '';
         $arrWidgets = $this->getWidgets();
 
-        RowClass::withKey('rowClass')->addCount()->addFirstLast()->addEventOdd()->applyTo($arrWidgets);
+        RowClass::withKey('rowClass')->addCount('row_')->addFirstLast('row_')->addEvenOdd('row_')->applyTo($arrWidgets);
 
         foreach ($arrWidgets as $objWidget) {
             $strBuffer .= $objWidget->parse();
