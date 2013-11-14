@@ -5,6 +5,7 @@ Version 2.0.rc2 (????-??-??)
 ----------------------------
 
 ### Fixed
+- Fixed missing payment templates for PSP payment methods
 - Fixed row class in checkout step address (#791)
 
 
