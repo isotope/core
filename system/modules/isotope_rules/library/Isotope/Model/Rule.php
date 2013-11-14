@@ -200,13 +200,11 @@ class Rule extends \Model
                 $arrVariantIds[] = $objProduct->{$objProduct->getPk()};
                 $arrTypes[] = $objProduct->type;
 
-                if ($objProduct->pid > 0)
-                {
+                if ($objProduct->isVariant()) {
                     $arrVariantIds[] = $objProduct->pid;
                 }
 
-                if ($blnIncludeVariants)
-                {
+                if ($blnIncludeVariants && $objProduct->hasVariants()) {
                     $arrVariantIds = array_merge($arrVariantIds, $objProduct->getVariantIds());
                 }
 
