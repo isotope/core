@@ -12,7 +12,6 @@
 
 namespace Isotope\Backend\Product;
 
-use Isotope\Isotope;
 use Isotope\Model\Attribute;
 use Isotope\Model\Group;
 use Isotope\Model\Product;
