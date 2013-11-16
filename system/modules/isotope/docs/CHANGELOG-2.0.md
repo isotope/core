@@ -5,6 +5,7 @@ Version 2.0.rc2 (????-??-??)
 ----------------------------
 
 ### Fixed
+- Fixed variant generation did not work
 - Fixed missing payment templates for PSP payment methods
 - Fixed row class in checkout step address (#791)
 
