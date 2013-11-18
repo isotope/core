@@ -90,7 +90,7 @@ class Callback extends \Backend
      */
     public function updateDatabase($dc)
     {
-        if (!$dc->activeRecord->fieldName) {
+        if (!$dc->activeRecord->field_name) {
             return;
         }
 
