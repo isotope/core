@@ -41,6 +41,9 @@
             "runonce": [
                 "system/runonce.php"
             ]
+        },
+        "branch-alias": {
+            "dev-release/2.0.0": "2.0.x-dev"
         }
     }
 }
