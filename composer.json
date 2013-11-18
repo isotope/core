@@ -16,7 +16,7 @@
     ],
     "require":{
         "php":">=5.2.7",
-        "contao":">=2.11",
+        "contao/core":">=2.11",
         "contao-community-alliance/composer-installer":"*",
         "menatwork/contao-multicolumnwizard": "3.1.*",
         "contao-legacy/ajax":">=1.1.4",
