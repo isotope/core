@@ -29,7 +29,7 @@
         "classmap":["system/"]
     },
     "replace": {
-        "contao-legacy/isotope": "*"
+        "contao-legacy/isotope": "self.version"
     },
     "extra":{
         "contao": {
