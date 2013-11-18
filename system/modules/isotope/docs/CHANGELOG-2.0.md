@@ -5,9 +5,11 @@ Version 2.0.rc2 (????-??-??)
 ----------------------------
 
 ### Fixed
-- Fixed variant generation did not work
-- Fixed missing payment templates for PSP payment methods
-- Fixed row class in checkout step address (#791)
+- Variant generation did not work
+- Missing payment templates for PSP payment methods
+- Row class in checkout step address generated an exception (#791)
+- Database was not updated when creating a new attribute (#800)
+- Exception when attribute has no type (#792)
 
 
 Version 2.0.rc1 (2013-11-11)
