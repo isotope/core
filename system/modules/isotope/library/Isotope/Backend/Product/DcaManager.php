@@ -87,7 +87,7 @@ class DcaManager extends \Backend
         $arrData['attributes'] = array();
 
         // Write attributes from database to DCA
-        if (($objAttributes = Attribute::findAll()) !== null) {
+        if (($objAttributes = Attribute::findAll(array('column'=>array(Attribute::getTable().".type!=''")))) !== null) {
             while ($objAttributes->next()) {
                 $objAttribute = $objAttributes->current();
 
