@@ -396,6 +396,10 @@ abstract class Product extends TypeAgent
     {
         $objProducts = parent::find($arrOptions);
 
+        if (null === $objProducts) {
+            return null;
+        }
+
         $arrFilters = $arrOptions['filters'];
         $arrSorting = $arrOptions['sorting'];
 
