@@ -48,9 +48,6 @@ abstract class OrderConditions extends CheckoutStep
         // Don't catch the exception here because we want it to be shown to the user
         $this->objForm->addFieldsFromFormGenerator($this->objModule->iso_order_conditions);
 
-        // Manually create widgets because we need to know if there are uploadable widgets
-        $this->objForm->createWidgets();
-
         // Change enctype if there are uploads
         if ($this->objForm->hasUploads()) {
             $this->objModule->Template->enctype = 'multipart/form-data';
