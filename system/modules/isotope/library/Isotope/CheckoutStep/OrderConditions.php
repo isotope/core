@@ -46,7 +46,11 @@ abstract class OrderConditions extends CheckoutStep
         }, (boolean) $this->objModule->tableless);
 
         // Don't catch the exception here because we want it to be shown to the user
-        $this->objForm->addFieldsFromFormGenerator($this->objModule->iso_order_conditions);
+        $this->objForm->addFieldsFromFormGenerator($this->objModule->iso_order_conditions, function($strName, &$arrDca) {
+            $arrDca['value'] = $_SESSION['FORM_DATA'][$strName] ?: $arrDca['value'];
+
+            return true;
+        });
 
         // Change enctype if there are uploads
         if ($this->objForm->hasUploads()) {
@@ -54,13 +58,29 @@ abstract class OrderConditions extends CheckoutStep
         }
 
         if ($this->objForm->isSubmitted()) {
-            $this->blnError = $this->objForm->validate();
+            $this->blnError = !$this->objForm->validate();
+
+            $_SESSION['FORM_DATA'][$strField] = array();
+            foreach (array_keys($this->objForm->getFormFields()) as $strField) {
+                if ($this->objForm->getWidget($strField) instanceof \uploadable) {
+                    $arrFile = $_SESSION['FILES'][$strField];
+                    $varValue = str_replace(TL_ROOT . '/', '', dirname($arrFile['tmp_name'])) . '/' . rawurlencode($arrFile['name']);
+                } else {
+                    $varValue = $this->objForm->fetch($strField);
+                }
+
+                $_SESSION['FORM_DATA'][$strField] = $varValue;
+            }
+
         } else {
             $blnError = false;
             foreach (array_keys($this->objForm->getFormFields()) as $strField) {
+
                 // Clone widget because otherwise we add errors to the original widget instance
                 $objClone = clone $this->objForm->getWidget($strField);
-                if (!$objClone->validate()) {
+                $objClone->validate();
+
+                if ($objClone->hasErrors()) {
                     $blnError = true;
                     break;
                 }
@@ -94,20 +114,8 @@ abstract class OrderConditions extends CheckoutStep
         $arrTokens = array();
 
         foreach (array_keys($this->objForm->getFormFields()) as $strField) {
-            if ($this->objForm->isSubmitted()) {
-                if ($this->objForm->getWidget($strField) instanceof \uploadable) {
-                    $arrFile = $_SESSION['FILES'][$strField];
-                    $varValue = str_replace(TL_ROOT . '/', '', dirname($arrFile['tmp_name'])) . '/' . rawurlencode($arrFile['name']);
-                } else {
-                    $varValue = $this->objForm->fetch($strField);
-                }
-
-                $_SESSION['FORM_DATA'][$strField] = $varValue;
-                $arrTokens['form_' . $strField]   = $varValue;
-            } else {
-                if (isset($_SESSION['FORM_DATA'][$strField])) {
-                    $arrTokens['form_' . $strField]   = $_SESSION['FORM_DATA'][$strField];
-                }
+            if (isset($_SESSION['FORM_DATA'][$strField])) {
+                $arrTokens['form_' . $strField] = $_SESSION['FORM_DATA'][$strField];
             }
         }
 
