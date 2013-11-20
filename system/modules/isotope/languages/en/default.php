@@ -160,6 +160,8 @@ $GLOBALS['TL_LANG']['MSC']['activeStep']                        = 'active step: 
 $GLOBALS['TL_LANG']['MSC']['productcacheLoading']               = 'Loading products...';
 $GLOBALS['TL_LANG']['MSC']['productcacheNoscript']              = 'Your browser does not support JavaScript. Please <a href="%s">click here</a> to load the product list.';
 $GLOBALS['TL_LANG']['MSC']['noFilesInFolder']                   = 'No files in this folder';
+$GLOBALS['TL_LANG']['MSC']['assetImportConfirmation']           = 'Imported file %s for product "%s"';
+$GLOBALS['TL_LANG']['MSC']['assetImportNoFilesFound']           = 'The folder did not contain any files to be imported.';
 $GLOBALS['TL_LANG']['MSC']['loadingProductData']                = 'Loading product data …';
 $GLOBALS['TL_LANG']['MSC']['templatesConfig']                   = 'Store Config "%s"';
 $GLOBALS['TL_LANG']['MSC']['splittedTaxRate']                   = 'Splitted';

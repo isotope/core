@@ -33,7 +33,12 @@ class AssetImport extends \Backend
 
         // Import assets
         if (\Input::post('FORM_SUBMIT') == 'tl_iso_product_import' && \Input::post('source') != '') {
-            $this->import(\Input::post('source'));
+
+            $objFolder = \FilesModel::findByUuid(\String::uuidToBin(\Input::post('source')));
+
+            if (null !== $objFolder) {
+                $this->importFromPath($objFolder->path);
+            }
         }
 
         // Return form
@@ -42,14 +47,15 @@ class AssetImport extends \Backend
 <a href="'.ampersand(str_replace('&key=import', '', \Environment::get('request'))).'" class="header_back" title="'.specialchars($GLOBALS['TL_LANG']['MSC']['backBT']).'">'.$GLOBALS['TL_LANG']['MSC']['backBT'].'</a>
 </div>
 
-<h2 class="sub_headline">'.$GLOBALS['TL_LANG']['tl_iso_product']['import'][1].'</h2>'.\Message::generate().'
+<h2 class="sub_headline">'.$GLOBALS['TL_LANG']['tl_iso_product']['import'][1].'</h2>
+
+<div class="tl_message"><div class="tl_info">' . $GLOBALS['TL_LANG']['tl_iso_product']['importAssetsDescr'] . '</div></div>
+'.\Message::generate().'
 
 <form action="'.ampersand(\Environment::get('request'), true).'" id="tl_iso_product_import" class="tl_form" method="post">
 <div class="tl_formbody_edit iso_importassets">
 <input type="hidden" name="FORM_SUBMIT" value="tl_iso_product_import">
 <input type="hidden" name="REQUEST_TOKEN" value="'.REQUEST_TOKEN.'">
-
-<div class="tl_info">' . $GLOBALS['TL_LANG']['tl_iso_product']['importAssetsDescr'] . '</div>
 
 <div class="tl_tbox block">
   <h3><label for="source">'.$GLOBALS['TL_LANG']['tl_iso_product']['source'][0].'</label> <a href="typolight/files.php" title="' . specialchars($GLOBALS['TL_LANG']['MSC']['fileManager']) . '" onclick="Backend.getScrollOffset(); this.blur(); Backend.openWindow(this, 750, 500); return false;">' . \Image::getHtml('filemanager.gif', $GLOBALS['TL_LANG']['MSC']['fileManager'], 'style="vertical-align:text-bottom;"') . '</a></h3>
@@ -72,16 +78,17 @@ class AssetImport extends \Backend
     /**
      * Import files from selected folder
      */
-    protected function import($strPath)
+    protected function importFromPath($strPath)
     {
         $arrFiles = scan(TL_ROOT . '/' . $strPath);
 
         if (empty($arrFiles))
         {
-            $_SESSION['TL_ERROR'][] = $GLOBALS['TL_LANG']['MSC']['noFilesInFolder'];
+            \Message::addError($GLOBALS['TL_LANG']['MSC']['noFilesInFolder']);
             \Controller::reload();
         }
 
+        $blnEmpty = true;
         $arrDelete = array();
         $objProducts = \Database::getInstance()->prepare("SELECT * FROM tl_iso_product WHERE pid=0")->execute();
 
@@ -177,8 +184,8 @@ class AssetImport extends \Backend
                         $arrImages[] = array('src'=>$strCacheName);
                         $arrDelete[] = $strFile;
 
-                        $_SESSION['TL_CONFIRM'][] = sprintf('Imported file %s for product "%s"', $pathinfo['filename'] . '.' . $pathinfo['extension'], $objProducts->name);
-
+                        \Message::addConfirmation(sprintf($GLOBALS['TL_LANG']['MSC']['assetImportConfirmation'], $pathinfo['filename'] . '.' . $pathinfo['extension'], $objProducts->name));
+                        $blnEmpty = false;
                     }
 
                     \Database::getInstance()->prepare("UPDATE tl_iso_product SET images=? WHERE id=?")->execute(serialize($arrImages), $objProducts->id);
@@ -194,6 +201,10 @@ class AssetImport extends \Backend
             {
                 \Files::getInstance()->delete($file);
             }
+        }
+
+        if ($blnEmpty) {
+            \Message::addInfo($GLOBALS['TL_LANG']['MSC']['assetImportNoFilesFound']);
         }
 
         \Controller::reload();
