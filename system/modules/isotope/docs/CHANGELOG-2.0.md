@@ -21,6 +21,7 @@ Version 2.0.rc2 (????-??-??)
 - Order condition form caused checkout to fail (#793)
 - Invalid SQL query in order history module
 - Spinner icon did not show in "loading data" message
+- The shipping address was not hidden by default (#814)
 
 
 Version 2.0.rc1 (2013-11-11)

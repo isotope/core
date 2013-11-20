@@ -43,6 +43,15 @@ class ShippingAddress extends Address implements IsotopeCheckoutStep
         $this->Template->headline = $GLOBALS['TL_LANG']['MSC']['shipping_address'];
         $this->Template->message = $GLOBALS['TL_LANG']['MSC']['shipping_address_message'];
 
+        $objAddress = Isotope::getCart()->getShippingAddress();
+
+        if ($objAddress === null
+            || $objAddress->id == Isotope::getCart()->getBillingAddress()->id
+            || $objAddress->ptable != 'tl_iso_product_collection'
+        ) {
+            $this->Template->style = 'display:none;';
+        }
+
         return parent::generate();
     }
 
@@ -54,8 +63,7 @@ class ShippingAddress extends Address implements IsotopeCheckoutStep
     {
         $objAddress = Isotope::getCart()->getShippingAddress();
 
-        if ($objAddress->id == Isotope::getCart()->getBillingAddress()->id)
-        {
+        if ($objAddress->id == Isotope::getCart()->getBillingAddress()->id) {
             return false;
         }
 
