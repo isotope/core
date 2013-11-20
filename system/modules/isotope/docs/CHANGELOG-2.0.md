@@ -17,7 +17,7 @@ Version 2.0.rc2 (????-??-??)
 - Asset import did not work at all (#801)
 - PDF images with whitespace did not work (#798)
 - Do not redirect if no sorting page is selected (#789)
-- Exception in checout module config when using group shipping method
+- Exception in checkout module config when using group shipping method
 - Order condition form caused checkout to fail (#793)
 - Invalid SQL query in order history module
 - Spinner icon did not show in "loading data" message
