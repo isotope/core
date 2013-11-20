@@ -214,6 +214,7 @@ class DcaManager extends \Backend
             return;
         }
 
+        $arrTypes = array();
         $arrFields = &$GLOBALS['TL_DCA']['tl_iso_product']['fields'];
         $arrAttributes = &$GLOBALS['TL_DCA']['tl_iso_product']['attributes'];
 
@@ -233,7 +234,7 @@ class DcaManager extends \Backend
                 }
             }
         } else {
-            $arrTypes = ProductType::findAllUsed();
+            $arrTypes = ProductType::findAllUsed() ?: array();
         }
 
         foreach ($arrTypes as $objType)
