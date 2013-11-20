@@ -80,10 +80,10 @@ class OrderHistory extends Module
     protected function compile()
     {
         $arrOrders = array();
-        $objOrders = Order::findBy(array('order_status>0', 'pid=?', 'config_id IN (?)'), array(\FrontendUser::getInstance()->id, implode("','", $this->iso_config_ids)), array('order'=>'date DESC'));
+        $objOrders = Order::findBy(array('order_status>0', 'member=?', 'config_id IN (?)'), array(\FrontendUser::getInstance()->id, implode("','", $this->iso_config_ids)), array('order'=>'locked DESC'));
 
         // No orders found, just display an "empty" message
-        if ($objOrders->count() == 0)
+        if (null === $objOrders)
         {
             $this->Template = new \Isotope\Template('mod_message');
             $this->Template->type = 'empty';

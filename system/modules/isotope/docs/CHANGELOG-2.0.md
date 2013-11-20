@@ -19,6 +19,7 @@ Version 2.0.rc2 (????-??-??)
 - Do not redirect if no sorting page is selected (#789)
 - Exception in checout module config when using group shipping method
 - Order condition form caused checkout to fail (#793)
+- Invalid SQL query in order history module
 
 
 Version 2.0.rc1 (2013-11-11)
