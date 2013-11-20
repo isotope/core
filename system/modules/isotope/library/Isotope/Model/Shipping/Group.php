@@ -36,13 +36,16 @@ class Group extends Shipping implements IsotopeShipping
     {
         parent::setRow($arrData);
 
-        // Reset existing array
-        $this->arrMethods = array();
+        if (TL_MODE != 'BE') {
 
-        if (($objMethods = Shipping::findMultipleByIds(deserialize($this->group_methods, true))) !== null) {
-            foreach ($objMethods as $objMethod) {
-                if ($objMethod->isAvailable()) {
-                    $this->arrMethods[] = $objMethod;
+            // Reset existing array
+            $this->arrMethods = array();
+
+            if (($objMethods = Shipping::findMultipleByIds(deserialize($this->group_methods, true))) !== null) {
+                foreach ($objMethods as $objMethod) {
+                    if ($objMethod->isAvailable()) {
+                        $this->arrMethods[] = $objMethod;
+                    }
                 }
             }
         }

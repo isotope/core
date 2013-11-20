@@ -17,6 +17,7 @@ Version 2.0.rc2 (????-??-??)
 - Asset import did not work at all (#801)
 - PDF images with whitespace did not work (#798)
 - Do not redirect if no sorting page is selected (#789)
+- Exception in checout module config when using group shipping method
 
 
 Version 2.0.rc1 (2013-11-11)
