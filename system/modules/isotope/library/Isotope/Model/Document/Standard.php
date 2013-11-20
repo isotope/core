@@ -139,50 +139,50 @@ class Standard extends Document implements IsotopeDocument
 
         $objTemplate->products = $objCollectionTemplate->parse();
 
-		// Generate template and fix PDF issues, see Contao's ModuleArticle
-		$strBuffer = Haste::getInstance()->call('replaceInsertTags', array($objTemplate->parse(), false));
-		$strBuffer = html_entity_decode($strBuffer, ENT_QUOTES, $GLOBALS['TL_CONFIG']['characterSet']);
-		$strBuffer = \Controller::convertRelativeUrls($strBuffer, '');
+        // Generate template and fix PDF issues, see Contao's ModuleArticle
+        $strBuffer = Haste::getInstance()->call('replaceInsertTags', array($objTemplate->parse(), false));
+        $strBuffer = html_entity_decode($strBuffer, ENT_QUOTES, $GLOBALS['TL_CONFIG']['characterSet']);
+        $strBuffer = \Controller::convertRelativeUrls($strBuffer, '');
 
-		// Remove form elements and JavaScript links
-		$arrSearch = array
-		(
-			'@<form.*</form>@Us',
-			'@<a [^>]*href="[^"]*javascript:[^>]+>.*</a>@Us'
-		);
+        // Remove form elements and JavaScript links
+        $arrSearch = array
+        (
+            '@<form.*</form>@Us',
+            '@<a [^>]*href="[^"]*javascript:[^>]+>.*</a>@Us'
+        );
 
-		$strBuffer = preg_replace($arrSearch, '', $strBuffer);
+        $strBuffer = preg_replace($arrSearch, '', $strBuffer);
 
-		// URL decode image paths (see contao/core#6411)
+        // URL decode image paths (see contao/core#6411)
         $strArticle = preg_replace_callback('@(src="[^"]+")@', function($arg) {
             return rawurldecode($arg[0]);
         }, $strArticle);
 
-		// Handle line breaks in preformatted text
-		$strBuffer = preg_replace_callback('@(<pre.*</pre>)@Us', 'nl2br_callback', $strBuffer);
+        // Handle line breaks in preformatted text
+        $strBuffer = preg_replace_callback('@(<pre.*</pre>)@Us', 'nl2br_callback', $strBuffer);
 
-		// Default PDF export using TCPDF
-		$arrSearch = array
-		(
-			'@<span style="text-decoration: ?underline;?">(.*)</span>@Us',
-			'@(<img[^>]+>)@',
-			'@(<div[^>]+block[^>]+>)@',
-			'@[\n\r\t]+@',
-			'@<br( /)?><div class="mod_article@',
-			'@href="([^"]+)(pdf=[0-9]*(&|&amp;)?)([^"]*)"@'
-		);
+        // Default PDF export using TCPDF
+        $arrSearch = array
+        (
+            '@<span style="text-decoration: ?underline;?">(.*)</span>@Us',
+            '@(<img[^>]+>)@',
+            '@(<div[^>]+block[^>]+>)@',
+            '@[\n\r\t]+@',
+            '@<br( /)?><div class="mod_article@',
+            '@href="([^"]+)(pdf=[0-9]*(&|&amp;)?)([^"]*)"@'
+        );
 
-		$arrReplace = array
-		(
-			'<u>$1</u>',
-			'<br>$1',
-			'<br>$1',
-			' ',
-			'<div class="mod_article',
-			'href="$1$4"'
-		);
+        $arrReplace = array
+        (
+            '<u>$1</u>',
+            '<br>$1',
+            '<br>$1',
+            ' ',
+            '<div class="mod_article',
+            'href="$1$4"'
+        );
 
-		$strBuffer = preg_replace($arrSearch, $arrReplace, $strBuffer);
+        $strBuffer = preg_replace($arrSearch, $arrReplace, $strBuffer);
 
         return $strBuffer;
     }
