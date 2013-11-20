@@ -20,6 +20,7 @@ Version 2.0.rc2 (????-??-??)
 - Exception in checout module config when using group shipping method
 - Order condition form caused checkout to fail (#793)
 - Invalid SQL query in order history module
+- Spinner icon did not show in "loading data" message
 
 
 Version 2.0.rc1 (2013-11-11)
