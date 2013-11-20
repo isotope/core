@@ -404,7 +404,7 @@ class Standard extends Product implements IsotopeProduct, WeightAggregate
             }
 
             // Only show variants where a price is available
-            if ($this->hasVariantPrices()) {
+            if (!empty($this->arrVariantIds) && $this->hasVariantPrices()) {
                 if ($this->hasAdvancedPrices()) {
                     $objPrices = ProductPrice::findAdvancedByProductIdsAndCollection($this->arrVariantIds, Isotope::getCart());
                 } else {

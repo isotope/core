@@ -13,6 +13,7 @@ Version 2.0.rc2 (????-??-??)
 - Warning when creating a product before having any product types (#804)
 - Using base price calculation caused an exception (#808)
 - Fatal error when using filters/sorting but no products were found (#797)
+- Fatal error when product has variant prices but no variants (#811)
 
 
 Version 2.0.rc1 (2013-11-11)
