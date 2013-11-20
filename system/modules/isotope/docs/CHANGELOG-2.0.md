@@ -11,6 +11,7 @@ Version 2.0.rc2 (????-??-??)
 - Database was not updated when creating a new attribute (#800)
 - Exception when attribute has no type (#792)
 - Warning when creating a product before having any product types (#804)
+- Using base price calculation caused an exception (#808)
 
 
 Version 2.0.rc1 (2013-11-11)

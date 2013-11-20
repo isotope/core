@@ -12,6 +12,8 @@
 
 namespace Isotope\Model;
 
+use Isotope\Translation;
+
 
 /**
  * ProductType defines a product configuration
