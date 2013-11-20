@@ -148,7 +148,7 @@ class Frontend extends \Frontend
     				$objNewPage = current($arrLangs);
     			}
     			// Try to find a page matching the language parameter
-    			elseif (($lang = Input::get('language')) != '' && isset($arrLangs[$lang]))
+    			elseif (($lang = \Input::get('language')) != '' && isset($arrLangs[$lang]))
     			{
     				$objNewPage = $arrLangs[$lang];
     			}
