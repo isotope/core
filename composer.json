@@ -22,7 +22,8 @@
         "contao-legacy/dcawizard":">=2.0.0",
         "contao-legacy/haste":">=3.0.0",
         "menatwork/contao-multicolumnwizard": "3.1.*",
-        "contao-legacy/tablelookupwizard":">=2.0.1"
+        "contao-legacy/tablelookupwizard":">=2.0.1",
+        "contao-legacy/notification_center":">=1.0.1"
     },
     "replace": {
         "contao-legacy/isotope": "self.version"
