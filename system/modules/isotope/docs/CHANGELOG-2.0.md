@@ -16,6 +16,7 @@ Version 2.0.rc2 (????-??-??)
 - Fatal error when product has variant prices but no variants (#811)
 - Asset import did not work at all (#801)
 - PDF images with whitespace did not work (#798)
+- Do not redirect if no sorting page is selected (#789)
 
 
 Version 2.0.rc1 (2013-11-11)

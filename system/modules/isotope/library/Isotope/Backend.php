@@ -388,7 +388,11 @@ class Backend extends Contao_Backend
 
             // Sorty products by page
             case 'sortByPage':
-                \Controller::redirect(\Backend::addToUrl('table=tl_iso_product_category&amp;id=' . (int) \Input::post('value') . '&amp;page_id=' . (int) \Input::post('value')));
+                if (\Input::post('value') > 0) {
+                    \Controller::redirect(\Backend::addToUrl('table=tl_iso_product_category&amp;id=' . (int) \Input::post('value') . '&amp;page_id=' . (int) \Input::post('value')));
+                } else {
+                    \Controller::reload();
+                }
         }
     }
 
