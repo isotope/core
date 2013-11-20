@@ -164,7 +164,7 @@ $GLOBALS['TL_DCA']['tl_iso_gallery'] = array
             'exclude'               => true,
             'inputType'             => 'fileTree',
             'eval'                  => array('fieldType'=>'radio', 'files'=>true, 'filesOnly'=>true, 'extensions'=>$GLOBALS['TL_CONFIG']['validImageTypes'], 'tl_class'=>'w50 w50h'),
-            'sql'                   => "varchar(255) NOT NULL default ''",
+            'sql'                   => "blob NULL",
         ),
         'main_size' => array
         (
@@ -202,7 +202,7 @@ $GLOBALS['TL_DCA']['tl_iso_gallery'] = array
             'exclude'               => true,
             'inputType'             => 'fileTree',
             'eval'                  => array('fieldType'=>'radio', 'files'=>true, 'filesOnly'=>true, 'extensions'=>$GLOBALS['TL_CONFIG']['validImageTypes'], 'tl_class'=>'clr w50 w50h'),
-            'sql'                   => "varchar(255) NOT NULL default ''",
+            'sql'                   => "blob NULL",
         ),
         'main_watermark_position' => array
         (
@@ -220,7 +220,7 @@ $GLOBALS['TL_DCA']['tl_iso_gallery'] = array
             'exclude'               => true,
             'inputType'             => 'fileTree',
             'eval'                  => array('fieldType'=>'radio', 'files'=>true, 'filesOnly'=>true, 'extensions'=>$GLOBALS['TL_CONFIG']['validImageTypes'], 'tl_class'=>'clr w50 w50h'),
-            'sql'                   => "varchar(255) NOT NULL default ''",
+            'sql'                   => "blob NULL",
         ),
         'gallery_watermark_position' => array
         (
@@ -238,7 +238,7 @@ $GLOBALS['TL_DCA']['tl_iso_gallery'] = array
             'exclude'               => true,
             'inputType'             => 'fileTree',
             'eval'                  => array('fieldType'=>'radio', 'files'=>true, 'filesOnly'=>true, 'extensions'=>$GLOBALS['TL_CONFIG']['validImageTypes'], 'tl_class'=>'clr w50 w50h'),
-            'sql'                   => "varchar(255) NOT NULL default ''",
+            'sql'                   => "blob NULL",
         ),
         'lightbox_watermark_position' => array
         (
