@@ -4,8 +4,8 @@ Isotope eCommerce Changelog
 Version 1.4.8 (2013-??-??)
 --------------------------
 
-### Improved
 ### Fixed
+- Edge case SQL error in rules module (#771)
 
 
 Version 1.4.7 (2013-10-30)

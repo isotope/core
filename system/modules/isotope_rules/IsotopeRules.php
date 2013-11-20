@@ -396,10 +396,10 @@ class IsotopeRules extends Controller
 
 		if (!empty($arrProducts))
 		{
-			$arrProductIds = array();
-			$arrVariantIds = array();
-			$arrAttributes = array();
-			$arrTypes = array();
+			$arrProductIds = array(0);
+			$arrVariantIds = array(0);
+			$arrAttributes = array(0);
+			$arrTypes = array(0);
 
 			// Prepare product attribute condition
 			$objAttributeRules = $this->Database->execute("SELECT * FROM tl_iso_rules WHERE enabled='1' AND productRestrictions='attribute' AND attributeName!='' GROUP BY attributeName, attributeCondition");
@@ -415,13 +415,13 @@ class IsotopeRules extends Controller
 
 			foreach( $arrProducts as $objProduct )
 			{
-				$arrProductIds[] = $objProduct->pid ? $objProduct->pid : $objProduct->id;
-				$arrVariantIds[] = $objProduct->id;
-				$arrTypes[] = $objProduct->type;
+				$arrProductIds[] = (int) ($objProduct->pid ? $objProduct->pid : $objProduct->id);
+				$arrVariantIds[] = (int) $objProduct->id;
+				$arrTypes[] = (int) $objProduct->type;
 
 				if ($objProduct->pid > 0)
 				{
-					$arrVariantIds[] = $objProduct->pid;
+					$arrVariantIds[] = (int) $objProduct->pid;
 				}
 
 				if ($blnIncludeVariants)
