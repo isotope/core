@@ -190,11 +190,20 @@ abstract class TypeAgent extends \Model
             $arrRelations = $objRelations->getRelations();
 
             if (isset($arrRelations['type'])) {
-                $arrOptions['column'][] = static::$strTable . '.type IN (SELECT ' . $arrRelations['type']['field'] . ' FROM ' . $arrRelations['type']['table'] . ' WHERE class=?)';
+                $arrOptions['having'][] = 'type IN (SELECT ' . $arrRelations['type']['field'] . ' FROM ' . $arrRelations['type']['table'] . ' WHERE class=?)';
                 $arrOptions['value'][] = $strType;
             } elseif ($GLOBALS['TL_DCA'][static::$strTable]['fields']['type']) {
-                $arrOptions['column'][] = static::$strTable . '.type=?';
+                $arrOptions['having'][] = 'type=?';
                 $arrOptions['value'][] = $strType;
+            }
+
+            // @todo change this when core models support HAVING
+            if (!empty($arrOptions['having']) && is_array($arrOptions['having'])) {
+                if ($arrOptions['group'] !== null) {
+                    $arrOptions['group'] .= ' HAVING ' . implode(' AND ', $arrOptions['having']);
+                } else {
+                    $arrOptions['column'][] = '1=1 HAVING ' . implode(' AND ', $arrOptions['having']);
+                }
             }
         }
 
