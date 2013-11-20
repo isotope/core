@@ -19,14 +19,11 @@
         "contao/core":">=3.2-RC1",
         "contao-community-alliance/composer-installer":"*",
         "contao-legacy/NamespaceClassLoader":">=1.0.1",
-        "contao-legacy/conditionalselectmenu":">=1.1.3",
-        "contao-legacy/dcawizard":"2.0.*",
-        "contao-legacy/haste":"2.0.*",
+        "contao-legacy/conditionalselectmenu":">=2.0.0",
+        "contao-legacy/dcawizard":">=2.0.0",
+        "contao-legacy/haste":">=3.0.0",
         "menatwork/contao-multicolumnwizard": "3.1.*",
-        "contao-legacy/tablelookupwizard":"2.0.*"
-    },
-    "autoload":{
-        "classmap":["system/"]
+        "contao-legacy/tablelookupwizard":">=2.0.1"
     },
     "replace": {
         "contao-legacy/isotope": "self.version"
