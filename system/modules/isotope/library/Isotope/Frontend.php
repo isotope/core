@@ -78,7 +78,7 @@ class Frontend extends \Frontend
                 $this->reload();
             }
 
-            \Controller::redirect(\Haste\Util\Url::addQueryString('continue='.base64_encode($this->Environment->request), $objModule->iso_addProductJumpTo));
+            \Controller::redirect(\Haste\Util\Url::addQueryString('continue='.base64_encode(\Environment::get('request')), $objModule->iso_addProductJumpTo));
         }
     }
 
@@ -130,7 +130,7 @@ class Frontend extends \Frontend
     				}
     			}
 
-    			$strHost = Environment::get('host');
+    			$strHost = \Environment::get('host');
 
     			// Look for a root page whose domain name matches the host name
     			if (isset($arrPages[$strHost]))
