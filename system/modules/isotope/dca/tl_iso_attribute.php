@@ -152,11 +152,11 @@ $GLOBALS['TL_DCA']['tl_iso_attribute'] = array
     (
         'id' => array
         (
-            'sql'                 =>  "int(10) unsigned NOT NULL auto_increment",
+            'sql'                   => "int(10) unsigned NOT NULL auto_increment",
         ),
         'tstamp' => array
         (
-            'sql'                 =>  "int(10) unsigned NOT NULL default '0'",
+            'sql'                   => "int(10) unsigned NOT NULL default '0'",
         ),
         'name' => array
         (
@@ -243,7 +243,7 @@ $GLOBALS['TL_DCA']['tl_iso_attribute'] = array
                     ),
                 ),
             ),
-            'sql'   => "blob NULL",
+            'sql'                   => "blob NULL",
         ),
         'foreignKey' => array
         (
