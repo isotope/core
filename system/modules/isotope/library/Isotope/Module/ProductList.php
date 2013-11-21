@@ -185,11 +185,6 @@ class ProductList extends Module
                 $arrProducts = $this->findProducts();
             }
 
-            // Make sure $arrItems is an array, because array_slice and other methods would not work
-            if ($arrProducts instanceof \Model\Collection) {
-                $arrProducts = $arrProducts->getIterator()->getArrayCopy();
-            }
-
             if (!empty($arrProducts)) {
                 $arrProducts = $this->generatePagination($arrProducts);
             }
@@ -262,7 +257,8 @@ class ProductList extends Module
 
     /**
      * Find all products we need to list.
-     * @return array
+     * @param   array|null
+     * @return  array
      */
     protected function findProducts($arrCacheIds=null)
     {
@@ -296,7 +292,7 @@ class ProductList extends Module
             $arrColumns[] = $strWhere;
         }
 
-        return Product::findAvailableBy(
+        $objProducts = Product::findAvailableBy(
             $arrColumns,
             $arrValues,
             array(
@@ -305,6 +301,8 @@ class ProductList extends Module
                 'sorting' => $arrSorting,
             )
         );
+        
+        return (null === $objProducts) ? array() : $objProducts->getModels();
     }
 
 

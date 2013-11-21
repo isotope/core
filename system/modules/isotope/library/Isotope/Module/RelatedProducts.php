@@ -68,7 +68,8 @@ class RelatedProducts extends ProductList
 
     /**
      * Find all products we need to list.
-     * @return array
+     * @param   array|null
+     * @return  array
      */
     protected function findProducts($arrCacheIds=null)
     {
@@ -92,8 +93,10 @@ class RelatedProducts extends ProductList
             }
         }
 
-        return Product::findAvailableByIds($arrIds, array(
+        $objProducts = Product::findAvailableByIds($arrIds, array(
             'order' => \Database::getInstance()->findInSet(Product::getTable().'.id', $arrIds)
         ));
+        
+        return (null === $objProducts) ? array() : $objProducts->getModels();
     }
 }

@@ -52,8 +52,8 @@ class ProductVariantList extends ProductList
 
     /**
      * Fill the object's arrProducts array
-     * @param array|null
-     * @return array
+     * @param   array|null
+     * @return  array
      */
     protected function findProducts($arrCacheIds=null)
     {
@@ -87,7 +87,7 @@ class ProductVariantList extends ProductList
             $arrColumns[] = $strWhere;
         }
 
-        return Product::findAvailableBy(
+        $objProducts = Product::findAvailableBy(
             $arrColumns,
             $arrValues,
             array(
@@ -96,5 +96,7 @@ class ProductVariantList extends ProductList
                 'sorting' => $arrSorting,
             )
         );
+        
+        return (null === $objProducts) ? array() : $objProducts->getModels();
     }
 }
