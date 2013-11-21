@@ -160,6 +160,13 @@ body.popup .header_back {
     background-color: #EBFDD7;
 }
 
+table.multicolumnwizard {
+    width: 663px;
+}
+table.multicolumnwizard .operations {
+    white-space: nowrap;
+}
+
 .mod_iso_orderdetails .info_container
 {
     float:left;

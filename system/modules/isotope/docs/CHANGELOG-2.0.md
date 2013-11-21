@@ -25,6 +25,7 @@ Version 2.0.rc2 (????-??-??)
 - Warning if no products were found for the current page (#816)
 - Exception in frontend if no config was available
 - Do not add sitemap-excluded sites to XML (#794)
+- Prevent line break for sorting arrows in address field configuration (#790)
 
 
 Version 2.0.rc1 (2013-11-11)
