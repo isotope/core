@@ -61,6 +61,6 @@ class PriceTiers extends Attribute implements IsotopeAttribute
             });
         }
 
-        return $this->generateTable($arrTiers);
+        return $this->generateTable($arrTiers, $objProduct);
 	}
 }
