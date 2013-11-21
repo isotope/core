@@ -445,12 +445,16 @@ window.addEvent('domready', function()
 
                         // Find the categories in the current root
                         $arrCategories = array_intersect($objProduct->getCategories(), $arrPageIds);
+                        $intRemaining = count($arrCategories);
 
                         foreach ($arrCategories as $intPage) {
                             $objPage = \PageModel::findByPk($intPage);
+                            --$intRemaining;
 
                             // Do not generate a reader for the index page, except if it is the only one
-                            if ($objPage->alias == 'index' && count($arrCategories) > 1) {
+                            if ($objPage->alias == 'index' && $intRemaining > 0) {
+                                continue;
+                            } elseif ($objPage->sitemap == 'map_never') {
                                 continue;
                             }
 
