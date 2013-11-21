@@ -143,6 +143,12 @@ class Isotope extends \Controller
 
                 static::$objConfig = (TL_MODE == 'FE' ? Config::findByRootPageOrFallback($objPage->rootId) : Config::findByFallback());
             }
+            
+            // No config at all, create empty model as fallback
+            if (null === static::$objConfig) {
+                static::$objConfig = new Config();
+                trigger_error($GLOBALS['TL_LANG']['ERR']['noDefaultStoreConfiguration']);
+            }
         }
 
         return static::$objConfig;

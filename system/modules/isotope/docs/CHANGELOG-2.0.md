@@ -23,6 +23,7 @@ Version 2.0.rc2 (????-??-??)
 - Spinner icon did not show in "loading data" message
 - The shipping address was not hidden by default (#814)
 - Warning if no products were found for the current page (#816)
+- Exception in frontend if no config was available
 
 
 Version 2.0.rc1 (2013-11-11)
