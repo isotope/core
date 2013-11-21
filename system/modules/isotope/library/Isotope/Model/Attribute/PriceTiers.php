@@ -45,7 +45,7 @@ class PriceTiers extends Attribute implements IsotopeAttribute
 
         $arrTiers = array();
 
-        foreach ($objPrice->getTiers() as $min => $price) {
+        foreach ($objPrice->current()->getTiers() as $min => $price) {
             $arrTiers[] = array(
                 'min'       => $min,
                 'price'     => $price,

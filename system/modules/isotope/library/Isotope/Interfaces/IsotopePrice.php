@@ -53,4 +53,9 @@ interface IsotopePrice
      */
     public function getGrossAmount($intQuantity=1);
 
+    /**
+     * Generate price for HTML rendering
+     * @return  string
+     */
+    public function generate();
 }

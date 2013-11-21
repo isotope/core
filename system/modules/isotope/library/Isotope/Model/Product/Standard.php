@@ -295,12 +295,8 @@ class Standard extends Product implements IsotopeProduct, WeightAggregate
             if (null === $objCollection) {
                 $objCollection = Isotope::getCart();
             }
-
-            if ($this->hasVariantPrices() && $this->pid == 0) {
-                $this->objPrice = ProductPrice::findLowestActiveByVariantsAndCollection($this, $objCollection);
-            } else {
-                $this->objPrice = ProductPrice::findActiveByProductAndCollection($this, $objCollection);
-            }
+            
+            $this->objPrice = ProductPrice::findByProductAndCollection($this, $objCollection);
         }
 
         return $this->objPrice;
@@ -517,7 +513,7 @@ class Standard extends Product implements IsotopeProduct, WeightAggregate
                 return '';
             }
 
-            return $objPrice->generate(($objProduct->pid == 0));
+            return $objPrice->generate();
         };
 
         $objTemplate->getGallery = function($strAttribute) use ($objProduct, $arrConfig, &$arrGalleries) {

@@ -58,6 +58,15 @@ class ProductType extends \Model
     {
         return (bool) $this->prices;
     }
+    
+    /**
+     * Returns true if show price tiers is enabled in the product type, otherwise returns false
+     * @return  bool
+     */
+    public function showPriceTiers()
+    {
+        return (bool) $this->show_price_tiers;
+    }
 
     /**
      * Returns true if downloads are enabled in the product type, otherwise returns false
