@@ -428,7 +428,7 @@ $GLOBALS['TL_DCA']['tl_iso_attribute'] = array
             'exclude'               => true,
             'inputType'             => 'fileTree',
             'eval'                  => array('fieldType'=>'radio', 'tl_class'=>'clr'),
-            'sql'                 =>  "int(10) unsigned NOT NULL default '0'",
+            'sql'                   =>  "binary(16) NULL",
         ),
         'storeFile' => array
         (
@@ -444,7 +444,7 @@ $GLOBALS['TL_DCA']['tl_iso_attribute'] = array
             'exclude'               => true,
             'inputType'             => 'fileTree',
             'eval'                  => array('fieldType'=>'radio', 'tl_class'=>'clr'),
-            'sql'                   => "varchar(255) NOT NULL default ''",
+            'sql'                   => "binary(16) NULL",
         ),
         'useHomeDir' => array
         (

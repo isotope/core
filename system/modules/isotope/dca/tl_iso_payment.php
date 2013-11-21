@@ -480,7 +480,7 @@ $GLOBALS['TL_DCA']['tl_iso_payment'] = array
             'exclude'               => true,
             'inputType'             => 'fileTree',
             'eval'                  => array('fieldType'=>'radio', 'files'=>true, 'filesOnly'=>true, 'extensions'=>'css', 'tl_class'=>'clr'),
-            'sql'                   => "varchar(255) NOT NULL default ''"
+            'sql'                   => "binary(16) NULL"
         ),
         'payone_clearingtype' => array
         (
