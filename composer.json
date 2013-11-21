@@ -16,7 +16,7 @@
     ],
     "require":{
         "php":">=5.3.2",
-        "contao/core":">=3.2-RC1",
+        "contao/core":">=3.2.0",
         "contao-community-alliance/composer-installer":"*",
         "contao-legacy/conditionalselectmenu":">=2.0.0",
         "contao-legacy/dcawizard":">=2.0.0",
