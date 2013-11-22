@@ -26,7 +26,7 @@ class ProductPrice extends \Model\Collection implements IsotopePrice
     {
         return $this->current()->hasTiers();
     }
-    
+
     /**
      * Return lowest tier (= minimum quantity)
      * @return  int
@@ -75,7 +75,7 @@ class ProductPrice extends \Model\Collection implements IsotopePrice
     {
         return $this->current()->getGrossAmount($intQuantity);
     }
-    
+
     /**
      * Generate price for HTML rendering
      * @return  string
@@ -83,14 +83,14 @@ class ProductPrice extends \Model\Collection implements IsotopePrice
     public function generate()
     {
         if (count($this->arrModels) > 1) {
-        
+
             $fltPrice = null;
             $blnShowFrom = false;
-        
+
             foreach ($this->arrModels as $objPrice) {
                 $blnShowTiers = $objPrice->getRelated('pid')->getRelated('type')->showPriceTiers();
                 $fltNew = $blnShowTiers ? $objPrice->getLowestAmount() : $objPrice->getAmount();
-                
+
                 if (null === $fltPrice || $fltNew < $fltPrice) {
                     $blnShowFrom = (null !== $fltPrice);
                     $fltPrice = $fltNew;

@@ -192,7 +192,7 @@ class ProductPrice extends \Model implements IsotopePrice
 
         return $strPrice;
     }
-    
+
     /**
      * Find prices for a given product and collection
      * @param   IsotopeProduct
@@ -203,8 +203,8 @@ class ProductPrice extends \Model implements IsotopePrice
     {
         $arrOptions['column'] = array();
         $arrOptions['value'] = array();
-        
-        
+
+
         if ($objProduct->hasAdvancedPrices()) {
 
             $time = $objCollection->getLastModification();
@@ -224,7 +224,7 @@ class ProductPrice extends \Model implements IsotopePrice
             $arrOptions['column'][] = "start=''";
             $arrOptions['column'][] = "stop=''";
         }
-        
+
         if ($objProduct->hasVariantPrices() && !$objProduct->isVariant()) {
             $arrIds = $objProduct->getVariantIds() ?: array(0);
             $arrOptions['column'][] = "pid IN (" . implode(',', $arrIds) . ")";
@@ -319,7 +319,7 @@ class ProductPrice extends \Model implements IsotopePrice
 
         return null;
     }
-    
+
     /**
 	 * Find records and return the model or model collection
 	 *

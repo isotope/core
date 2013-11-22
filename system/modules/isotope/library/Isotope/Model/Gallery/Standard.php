@@ -242,7 +242,8 @@ class Standard extends Gallery implements IsotopeGallery
 
                     if ($this->{$name.'_watermark_image'} != ''
                         && $blnWatermark
-                        && ($objWatermark = \FilesModel::findByUuid($this->{$name.'_watermark_image'})) !==null) {
+                        && ($objWatermark = \FilesModel::findByUuid($this->{$name.'_watermark_image'})) !==null
+                    ) {
                         $strImage = \Haste\Image\Image::addWatermark($strImage, $objWatermark->path, $this->{$name.'_watermark_position'});
                     }
 
