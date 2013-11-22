@@ -1,1 +1,1 @@
-system/modules/isotope/README.md
+system/modules/isotope/docs/README.md

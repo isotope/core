@@ -1,31 +1,17 @@
-<?php if (!defined('TL_ROOT')) die('You can not access this file directly!');
+<?php
 
 /**
- * Contao Open Source CMS
- * Copyright (C) 2005-2010 Leo Feyer
- *
- * Formerly known as TYPOlight Open Source CMS.
- *
- * This program is free software: you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation, either
- * version 3 of the License, or (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
- * Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public
- * License along with this program. If not, please visit the Free
- * Software Foundation website at <http://www.gnu.org/licenses/>.
- *
- * PHP version 5
- * @copyright  Isotope eCommerce Workgroup 2009-2012
- * @author     Blair Winans <blair@winanscreative.com>
- * @author     Paolo B. <paolob@contaocms.it>
- * @author     Dan N <dan@dss.uniud.it>
- * @license    http://opensource.org/licenses/lgpl-3.0.html
+ * Isotope eCommerce for Contao Open Source CMS
+ * 
+ * Copyright (C) 2009-2013 Isotope eCommerce Workgroup
+ * 
+ * Core translations are managed using Transifex. To create a new translation
+ * or to help to maintain an existing one, please register at transifex.com.
+ * 
+ * @link http://help.transifex.com/intro/translating.html
+ * @link https://www.transifex.com/projects/i/isotope/language/it/
+ * 
+ * @license http://www.gnu.org/licenses/lgpl-3.0.html LGPL
  */
 
 $GLOBALS['TL_LANG']['tl_iso_tax_rate']['name'][0] = 'Nome aliquota';
@@ -34,8 +20,6 @@ $GLOBALS['TL_LANG']['tl_iso_tax_rate']['label'][0] = 'Etichetta Aliquota';
 $GLOBALS['TL_LANG']['tl_iso_tax_rate']['label'][1] = 'Quest\'etichetta sarà usata nel frontend nel processo di checkout.';
 $GLOBALS['TL_LANG']['tl_iso_tax_rate']['address'][0] = 'Indirizzo usato per il Calcolo';
 $GLOBALS['TL_LANG']['tl_iso_tax_rate']['address'][1] = 'Selezioni in base a quale indirizzo sarà calcolata l\'aliquota.';
-$GLOBALS['TL_LANG']['tl_iso_tax_rate']['postal'][0] = 'Intervallo CAP';
-$GLOBALS['TL_LANG']['tl_iso_tax_rate']['postal'][1] = 'Specifichi un intervallo CAP al quale questa classe di aliquota è applicabile. (Es. 10000 - 20000)';
 $GLOBALS['TL_LANG']['tl_iso_tax_rate']['amount'][0] = 'Quantità limite subtotale';
 $GLOBALS['TL_LANG']['tl_iso_tax_rate']['amount'][1] = 'Opzionale: Limiti questa aliquota d\'imposta alla quantità subtotale specifica (ad esempio tassa beni di lusso).';
 $GLOBALS['TL_LANG']['tl_iso_tax_rate']['rate'][0] = 'Aliquota d\'imposta';
@@ -61,4 +45,3 @@ $GLOBALS['TL_LANG']['tl_iso_tax_rate']['rate_legend'] = 'Legenda Tariffa';
 $GLOBALS['TL_LANG']['tl_iso_tax_rate']['location_legend'] = 'Legenda Collocazione';
 $GLOBALS['TL_LANG']['tl_iso_tax_rate']['condition_legend'] = 'Legenda Condizioni';
 $GLOBALS['TL_LANG']['tl_iso_tax_rate']['config_legend'] = 'Legenda Configurazioni';
-

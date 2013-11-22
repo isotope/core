@@ -1,41 +1,25 @@
-<?php if (!defined('TL_ROOT')) die('You can not access this file directly!');
+<?php
 
 /**
- * TYPOlight Open Source CMS
- * Copyright (C) 2005-2010 Leo Feyer
- *
- * This program is free software: you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation, either
- * version 3 of the License, or (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
- * Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public
- * License along with this program. If not, please visit the Free
- * Software Foundation website at <http://www.gnu.org/licenses/>.
- *
- * PHP version 5
- * @copyright  Isotope eCommerce Workgroup 2009-2012
- * @author     Radosław Maślanek <radek@dziupla.pl>
- * @author     Kamil Kuźmiński <kamil.kuzminski@gmail.com>
- * @license    http://opensource.org/licenses/lgpl-3.0.html
+ * Isotope eCommerce for Contao Open Source CMS
+ * 
+ * Copyright (C) 2009-2013 Isotope eCommerce Workgroup
+ * 
+ * Core translations are managed using Transifex. To create a new translation
+ * or to help to maintain an existing one, please register at transifex.com.
+ * 
+ * @link http://help.transifex.com/intro/translating.html
+ * @link https://www.transifex.com/projects/i/isotope/language/pl/
+ * 
+ * @license http://www.gnu.org/licenses/lgpl-3.0.html LGPL
  */
 
-
-/**
- * Fields
- */
-$GLOBALS['TL_LANG']['tl_page']['iso_config'] 			= array('Konfiguracja sklepu', 'Wybierz konfigurację sklepu dla tej struktury stron.');
-$GLOBALS['TL_LANG']['tl_page']['iso_setReaderJumpTo']	= array('Skonfiguruj stronę czytnika dla tej kategorii Isotope', 'Każda strona zawierająca listę produktów musi mieć przypisaną stronę z czytnikiem (dziedziczne).');
-$GLOBALS['TL_LANG']['tl_page']['iso_readerJumpTo']		= array('Wybierz stronę czytnika', 'Wybierz stronę docelową, do której będą prowadzić produkty z tej stronie.');
-
-
-/**
- * Legends
- */
+$GLOBALS['TL_LANG']['tl_page']['iso_config'][0] = 'Konfiguracja sklepu';
+$GLOBALS['TL_LANG']['tl_page']['iso_config'][1] = 'Wybierz konfigurację sklepu dla tej struktury stron.';
+$GLOBALS['TL_LANG']['tl_page']['iso_setReaderJumpTo'][0] = 'Skonfiguruj stronę czytnika dla tej kategorii Isotope';
+$GLOBALS['TL_LANG']['tl_page']['iso_setReaderJumpTo'][1] = 'Każda strona zawierająca listę produktów musi mieć przypisaną stronę z czytnikiem (dziedziczne).';
+$GLOBALS['TL_LANG']['tl_page']['iso_readerJumpTo'][0] = 'Wybierz stronę czytnika';
+$GLOBALS['TL_LANG']['tl_page']['iso_readerJumpTo'][1] = 'Wybierz stronę docelową, do której będą prowadzić produkty z tej stronie.';
+$GLOBALS['TL_LANG']['tl_page']['iso_store_id'][0] = 'ID sklepu';
+$GLOBALS['TL_LANG']['tl_page']['iso_store_id'][1] = 'Używaj różnych ID sklepów do grupowania zestawów konfiguracji. Koszyk użytkownika i adres będzie współdzielony w obrębie tego samego ID sklepu.';
 $GLOBALS['TL_LANG']['tl_page']['isotope_legend'] = 'Isotope eCommerce';
-
