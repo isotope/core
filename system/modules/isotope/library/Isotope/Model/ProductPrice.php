@@ -175,19 +175,31 @@ class ProductPrice extends \Model implements IsotopePrice
      */
     public function generate()
     {
-        if ($this->getRelated('pid')->getRelated('type')->showPriceTiers()) {
-            $fltPrice = $this->getLowestAmount();
-            $fltOriginalPrice = $this->getLowestAmount();
-        } else {
-            $fltPrice = $this->getAmount();
-            $fltOriginalPrice = $this->getAmount();
+        $blnShowFrom = false;
+        $blnShowTiers = $this->getRelated('pid')->getRelated('type')->showPriceTiers();
+
+        $fltPrice = $this->getAmount();
+
+        if ($blnShowTiers) {
+            $fltLowest = $this->getLowestAmount();
+
+            if ($fltPrice != $fltLowest) {
+                $blnShowFrom = true;
+                $fltPrice = $fltLowest;
+            }
         }
 
         $strPrice = Isotope::formatPriceWithCurrency($fltPrice);
-        $strOriginalPrice = Isotope::formatPriceWithCurrency($fltOriginalPrice);
+
+        if ($blnShowFrom) {
+            return sprintf($GLOBALS['TL_LANG']['MSC']['priceRangeLabel'], $strPrice);
+        }
+
+        $fltOriginalPrice = $this->getOriginalAmount();
 
         if ($fltPrice != $fltOriginalPrice) {
-            $strPrice = '<div class="original_price"><strike>' . $strOriginalPrice . '</strike></div><div class="price">' . $strPrice . '</div>';
+            $strOriginalPrice = Isotope::formatPriceWithCurrency($fltOriginalPrice);
+            return '<div class="original_price"><strike>' . $strOriginalPrice . '</strike></div><div class="price">' . $strPrice . '</div>';
         }
 
         return $strPrice;

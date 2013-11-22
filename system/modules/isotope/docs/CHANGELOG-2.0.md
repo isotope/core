@@ -27,6 +27,7 @@ Version 2.0.rc2 (????-??-??)
 - Do not add sitemap-excluded sites to XML (#794)
 - Prevent line break for sorting arrows in address field configuration (#790)
 - Watermarking for galleries did not work
+- From price was not correctly determined (#772)
 
 
 Version 2.0.rc1 (2013-11-11)
