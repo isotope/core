@@ -240,9 +240,10 @@ class Standard extends Gallery implements IsotopeGallery
                     $size = deserialize($this->{$name.'_size'});
                     $strImage = \Image::get($strFile, $size[0], $size[1], $size[2]);
 
-                    if ($this->{$name.'_watermark_image'} != '' && $blnWatermark)
-                    {
-                        $strImage = \Haste\Image\Image::addWatermark($strImage, $this->{$name.'_watermark_image'}, $this->{$name.'_watermark_position'});
+                    if ($this->{$name.'_watermark_image'} != ''
+                        && $blnWatermark
+                        && ($objWatermark = \FilesModel::findByUuid($this->{$name.'_watermark_image'})) !==null) {
+                        $strImage = \Haste\Image\Image::addWatermark($strImage, $objWatermark->path, $this->{$name.'_watermark_position'});
                     }
 
                     $arrSize = @getimagesize(TL_ROOT . '/' . $strImage);
