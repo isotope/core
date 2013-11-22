@@ -197,7 +197,7 @@ class ProductPrice extends \Model implements IsotopePrice
 
         $fltOriginalPrice = $this->getOriginalAmount();
 
-        if ($fltPrice != $fltOriginalPrice) {
+        if ($fltPrice < $fltOriginalPrice) {
             $strOriginalPrice = Isotope::formatPriceWithCurrency($fltOriginalPrice);
             return '<div class="original_price"><strike>' . $strOriginalPrice . '</strike></div><div class="price">' . $strPrice . '</div>';
         }

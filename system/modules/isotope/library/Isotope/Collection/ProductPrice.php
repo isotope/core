@@ -100,7 +100,7 @@ class ProductPrice extends \Model\Collection implements IsotopePrice
 
             if ($blnShowFrom) {
                 return sprintf($GLOBALS['TL_LANG']['MSC']['priceRangeLabel'], Isotope::formatPriceWithCurrency($fltPrice));
-            } elseif ($fltPrice != $fltOriginalPrice) {
+            } elseif ($fltPrice < $fltOriginalPrice) {
                 $strPrice = Isotope::formatPriceWithCurrency($fltPrice);
                 $strOriginalPrice = Isotope::formatPriceWithCurrency($fltOriginalPrice);
                 return '<div class="original_price"><strike>' . $strOriginalPrice . '</strike></div><div class="price">' . $strPrice . '</div>';
