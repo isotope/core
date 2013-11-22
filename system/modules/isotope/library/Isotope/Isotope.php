@@ -36,7 +36,7 @@ class Isotope extends \Controller
     /**
      * Isotope version
      */
-    const VERSION = '2.0.rc1';
+    const VERSION = '2.0.rc2';
 
     /**
      * True if the system has been initialized
@@ -143,7 +143,7 @@ class Isotope extends \Controller
 
                 static::$objConfig = (TL_MODE == 'FE' ? Config::findByRootPageOrFallback($objPage->rootId) : Config::findByFallback());
             }
-            
+
             // No config at all, create empty model as fallback
             if (null === static::$objConfig) {
                 static::$objConfig = new Config();

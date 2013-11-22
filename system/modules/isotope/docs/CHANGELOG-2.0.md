@@ -1,7 +1,7 @@
 Isotope eCommerce Changelog
 ===========================
 
-Version 2.0.rc2 (????-??-??)
+Version 2.0.rc2 (2013-11-22)
 ----------------------------
 
 ### Fixed
