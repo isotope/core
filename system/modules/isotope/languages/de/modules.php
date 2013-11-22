@@ -3,15 +3,15 @@
 /**
  * Isotope eCommerce for Contao Open Source CMS
  * 
- * Copyright (C) 2009-2013 Isotope eCommerce Workgroup
+ * Copyright (C) 2009-2013 terminal42 gmbh & Isotope eCommerce Workgroup
  * 
- * Core translations are managed using Transifex. To create a new translation
+ * Translations are managed using Transifex. To create a new translation
  * or to help to maintain an existing one, please register at transifex.com.
  * 
  * @link http://help.transifex.com/intro/translating.html
  * @link https://www.transifex.com/projects/i/isotope/language/de/
  * 
- * @license http://www.gnu.org/licenses/lgpl-3.0.html LGPL
+ * @license http://www.gnu.org/licenses/lgpl-3.0.html
  */
 
 $GLOBALS['TL_LANG']['MOD']['isotope'] = 'Isotope eCommerce';
@@ -24,7 +24,7 @@ $GLOBALS['TL_LANG']['MOD']['iso_setup'][1] = 'Hier können Sie Isotope eCommerce
 $GLOBALS['TL_LANG']['FMD']['isotope'] = 'Isotope eCommerce';
 $GLOBALS['TL_LANG']['FMD']['iso_productfilter'][0] = 'Produkt-Filter';
 $GLOBALS['TL_LANG']['FMD']['iso_productfilter'][1] = 'Erstellt individuelle Filter für Isotope wie einen Kategorienbaum oder Produktattribut-Filter.';
-$GLOBALS['TL_LANG']['FMD']['iso_cumulativefilter'][0] = 'Anwachsender Filter';
+$GLOBALS['TL_LANG']['FMD']['iso_cumulativefilter'][0] = 'Einschränkender Filter';
 $GLOBALS['TL_LANG']['FMD']['iso_cumulativefilter'][1] = 'Bietet einen anwachsenden Filter an. So können Benutzer die Produktauswahl mit mehrfachen Bedingungen eingrenzen.';
 $GLOBALS['TL_LANG']['FMD']['iso_productlist'][0] = 'Produktliste';
 $GLOBALS['TL_LANG']['FMD']['iso_productlist'][1] = 'Allgemeines Listen-Modul. Zeigt Produkte oder Werte von Attributen an. Kann mit anderen Modulen (z.B. Filter-Modul) kombiniert werden um die Funktionen zu erweitern.';
@@ -78,5 +78,6 @@ $GLOBALS['TL_LANG']['IMD']['notifications'][0] = 'Benachrichtigungen';
 $GLOBALS['TL_LANG']['IMD']['notifications'][1] = 'Nutzen Sie das Benachrichtigungs-Center um alle E-Mail\'s für Isotope eCommerce zu verwalten.';
 $GLOBALS['TL_LANG']['IMD']['documents'][0] = 'Dokumente';
 $GLOBALS['TL_LANG']['IMD']['documents'][1] = 'Dokumente definieren.';
+$GLOBALS['TL_LANG']['IMD']['miscellaneous'] = 'Verschiedenes';
 $GLOBALS['TL_LANG']['IMD']['labels'][0] = 'Übersetzungen';
 $GLOBALS['TL_LANG']['IMD']['labels'][1] = 'Bezeichnungen für gewisse Sprachen ersetzen.';

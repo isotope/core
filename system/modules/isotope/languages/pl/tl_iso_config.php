@@ -3,15 +3,15 @@
 /**
  * Isotope eCommerce for Contao Open Source CMS
  * 
- * Copyright (C) 2009-2013 Isotope eCommerce Workgroup
+ * Copyright (C) 2009-2013 terminal42 gmbh & Isotope eCommerce Workgroup
  * 
- * Core translations are managed using Transifex. To create a new translation
+ * Translations are managed using Transifex. To create a new translation
  * or to help to maintain an existing one, please register at transifex.com.
  * 
  * @link http://help.transifex.com/intro/translating.html
  * @link https://www.transifex.com/projects/i/isotope/language/pl/
  * 
- * @license http://www.gnu.org/licenses/lgpl-3.0.html LGPL
+ * @license http://www.gnu.org/licenses/lgpl-3.0.html
  */
 
 $GLOBALS['TL_LANG']['tl_iso_config']['name'][0] = 'Nazwa konfiguracji';
@@ -49,8 +49,8 @@ $GLOBALS['TL_LANG']['tl_iso_config']['email'][1] = 'Proszę wprowadzić adres e-
 $GLOBALS['TL_LANG']['tl_iso_config']['address_fields'][0] = 'Pola adresowe';
 $GLOBALS['TL_LANG']['tl_iso_config']['address_fields'][1] = 'Proszę wybrać pola dla adresu wysyłki i rozliczeniowego podczas robienia zakupów.';
 $GLOBALS['TL_LANG']['tl_iso_config']['address_fields']['name'][0] = 'Pole adresu';
-$GLOBALS['TL_LANG']['tl_iso_config']['address_fields']['billing'][0] = 'Pokaż w adresie rozliczeniowym';
-$GLOBALS['TL_LANG']['tl_iso_config']['address_fields']['shipping'][0] = 'Pokaż w adresie wysyłki';
+$GLOBALS['TL_LANG']['tl_iso_config']['address_fields']['billing'][0] = 'Dla adresu rozliczeniowego';
+$GLOBALS['TL_LANG']['tl_iso_config']['address_fields']['shipping'][0] = 'Dla adresu wysyłki';
 $GLOBALS['TL_LANG']['tl_iso_config']['address_fields']['disabled'] = 'Wyłączony';
 $GLOBALS['TL_LANG']['tl_iso_config']['address_fields']['enabled'] = 'Włączony (nieobowiązkowy)';
 $GLOBALS['TL_LANG']['tl_iso_config']['address_fields']['mandatory'] = 'Włączony (obowiązkowy)';

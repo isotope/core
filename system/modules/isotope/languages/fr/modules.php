@@ -3,15 +3,15 @@
 /**
  * Isotope eCommerce for Contao Open Source CMS
  * 
- * Copyright (C) 2009-2013 Isotope eCommerce Workgroup
+ * Copyright (C) 2009-2013 terminal42 gmbh & Isotope eCommerce Workgroup
  * 
- * Core translations are managed using Transifex. To create a new translation
+ * Translations are managed using Transifex. To create a new translation
  * or to help to maintain an existing one, please register at transifex.com.
  * 
  * @link http://help.transifex.com/intro/translating.html
  * @link https://www.transifex.com/projects/i/isotope/language/fr/
  * 
- * @license http://www.gnu.org/licenses/lgpl-3.0.html LGPL
+ * @license http://www.gnu.org/licenses/lgpl-3.0.html
  */
 
 $GLOBALS['TL_LANG']['MOD']['isotope'] = '<a href="http://www.isotopeecommerce.com/"LINK_NEW_WINDOW class="isotope-logo" style="display:none"><img src="system/modules/isotope/html/isotope-logo.png" alt="Isotope eCommerce Logo" /></a><span class="isotope-title">Isotope eCommerce</span>';
@@ -78,5 +78,6 @@ $GLOBALS['TL_LANG']['IMD']['notifications'][0] = 'Notifications';
 $GLOBALS['TL_LANG']['IMD']['notifications'][1] = 'Utiliser le Centre de Notification pour gérer les emails, etc. pour Isotope eCommerce.';
 $GLOBALS['TL_LANG']['IMD']['documents'][0] = 'Documents';
 $GLOBALS['TL_LANG']['IMD']['documents'][1] = 'Définir des documents.';
+$GLOBALS['TL_LANG']['IMD']['miscellaneous'] = 'Divers';
 $GLOBALS['TL_LANG']['IMD']['labels'][0] = 'Traductions';
 $GLOBALS['TL_LANG']['IMD']['labels'][1] = 'Remplacez les libellés fournis pour certaines langues.';

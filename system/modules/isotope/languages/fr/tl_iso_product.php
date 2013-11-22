@@ -3,15 +3,15 @@
 /**
  * Isotope eCommerce for Contao Open Source CMS
  * 
- * Copyright (C) 2009-2013 Isotope eCommerce Workgroup
+ * Copyright (C) 2009-2013 terminal42 gmbh & Isotope eCommerce Workgroup
  * 
- * Core translations are managed using Transifex. To create a new translation
+ * Translations are managed using Transifex. To create a new translation
  * or to help to maintain an existing one, please register at transifex.com.
  * 
  * @link http://help.transifex.com/intro/translating.html
  * @link https://www.transifex.com/projects/i/isotope/language/fr/
  * 
- * @license http://www.gnu.org/licenses/lgpl-3.0.html LGPL
+ * @license http://www.gnu.org/licenses/lgpl-3.0.html
  */
 
 $GLOBALS['TL_LANG']['tl_iso_product']['id'][0] = 'ID du produit';
@@ -97,6 +97,7 @@ $GLOBALS['TL_LANG']['tl_iso_product']['filter_new'] = 'Nouveau produit';
 $GLOBALS['TL_LANG']['tl_iso_product']['filter_new_today'] = 'Ajouté aujourd\'hui';
 $GLOBALS['TL_LANG']['tl_iso_product']['filter_new_week'] = 'Ajouté cette semaine';
 $GLOBALS['TL_LANG']['tl_iso_product']['filter_new_month'] = 'Ajouté ce mois';
+$GLOBALS['TL_LANG']['tl_iso_product']['sorting'] = 'Trier manuellement les produits dans une page';
 $GLOBALS['TL_LANG']['tl_iso_product']['product_groups'][0] = 'Groupes de produits';
 $GLOBALS['TL_LANG']['tl_iso_product']['product_groups'][1] = 'Gérer les groupes de produits';
 $GLOBALS['TL_LANG']['tl_iso_product']['import'][0] = 'Importer des éléments';
@@ -113,6 +114,8 @@ $GLOBALS['TL_LANG']['tl_iso_product']['related'][1] = 'Gérer les produits simil
 $GLOBALS['TL_LANG']['tl_iso_product']['downloads'][0] = 'Téléchargements';
 $GLOBALS['TL_LANG']['tl_iso_product']['downloads'][1] = 'Éditer les téléchargements du produit ID %s';
 $GLOBALS['TL_LANG']['tl_iso_product']['downloads'][2] = 'Téléchargements : %s.';
+$GLOBALS['TL_LANG']['tl_iso_product']['group'][0] = 'Déplacer dans un groupe';
+$GLOBALS['TL_LANG']['tl_iso_product']['group'][1] = 'Déplacer le produit ID %s dans un groupe';
 $GLOBALS['TL_LANG']['tl_iso_product']['general_legend'] = 'Paramètres généraux';
 $GLOBALS['TL_LANG']['tl_iso_product']['meta_legend'] = 'Méta informations';
 $GLOBALS['TL_LANG']['tl_iso_product']['pricing_legend'] = 'Paramètres du prix';

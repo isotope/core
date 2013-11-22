@@ -3,15 +3,15 @@
 /**
  * Isotope eCommerce for Contao Open Source CMS
  * 
- * Copyright (C) 2009-2013 Isotope eCommerce Workgroup
+ * Copyright (C) 2009-2013 terminal42 gmbh & Isotope eCommerce Workgroup
  * 
- * Core translations are managed using Transifex. To create a new translation
+ * Translations are managed using Transifex. To create a new translation
  * or to help to maintain an existing one, please register at transifex.com.
  * 
  * @link http://help.transifex.com/intro/translating.html
  * @link https://www.transifex.com/projects/i/isotope/language/de/
  * 
- * @license http://www.gnu.org/licenses/lgpl-3.0.html LGPL
+ * @license http://www.gnu.org/licenses/lgpl-3.0.html
  */
 
 $GLOBALS['TL_LANG']['ERR']['systemColumn'] = 'Der Name `%s` ist vom System reserviert. Bitte wählen Sie einen anderen Namen.';
@@ -50,6 +50,10 @@ $GLOBALS['TL_LANG']['MSC']['copyFallback'] = 'Fallback kopieren';
 $GLOBALS['TL_LANG']['MSC']['orderDetailsHeadline'] = 'Bestellung Nr. %s vom %s';
 $GLOBALS['TL_LANG']['MSC']['payment_processing'] = 'Ihre Zahlung wird durchgeführt. Bitte haben Sie Geduld...';
 $GLOBALS['TL_LANG']['MSC']['mmNoUploads'] = 'Keine Dateien hochgeladen.';
+$GLOBALS['TL_LANG']['MSC']['mmUnknownError'] = 'Die Datei konnte aus einem unerfindlichen Grund nicht hochgeladen werden. Bitte sehen Sie im System-Log nach.';
+$GLOBALS['TL_LANG']['MSC']['mmDrop'] = 'Verschieben Sie die Dateien hier hin';
+$GLOBALS['TL_LANG']['MSC']['mmUpload'] = 'Dateien hochladen';
+$GLOBALS['TL_LANG']['MSC']['mmProcessing'] = 'Die Dateien werden hochgeladen...';
 $GLOBALS['TL_LANG']['MSC']['quantity'] = 'Anzahl';
 $GLOBALS['TL_LANG']['MSC']['defaultSearchText'] = 'Produkte suchen';
 $GLOBALS['TL_LANG']['MSC']['downloadsLabel'] = 'Ihre Produkte zum Herunterladen';
@@ -149,6 +153,8 @@ $GLOBALS['TL_LANG']['MSC']['activeStep'] = 'Aktiver Schritt:';
 $GLOBALS['TL_LANG']['MSC']['productcacheLoading'] = 'Lade Produkte...';
 $GLOBALS['TL_LANG']['MSC']['productcacheNoscript'] = 'Ihr Browser unterstützt kein JavaScript. Bitte <a href="%s">hier klicken</a> um die Produktliste zu laden.';
 $GLOBALS['TL_LANG']['MSC']['noFilesInFolder'] = 'Keine Dateien in diesem Ordner';
+$GLOBALS['TL_LANG']['MSC']['assetImportConfirmation'] = 'Datei %s für Product "%s" importiert';
+$GLOBALS['TL_LANG']['MSC']['assetImportNoFilesFound'] = 'Der Order enthält keine Dateien passenden Dateien.';
 $GLOBALS['TL_LANG']['MSC']['loadingProductData'] = 'Lade Produktdaten ...';
 $GLOBALS['TL_LANG']['MSC']['templatesConfig'] = 'Shop-Konfiguration "%s"';
 $GLOBALS['TL_LANG']['MSC']['splittedTaxRate'] = 'Aufgeteilt';
@@ -162,10 +168,10 @@ $GLOBALS['TL_LANG']['MSC']['timePeriod']['months'] = 'Monate';
 $GLOBALS['TL_LANG']['MSC']['timePeriod']['years'] = 'Jahre';
 $GLOBALS['TL_LANG']['MSC']['isotopeIntroduction'][0] = 'Willkommen zu Isotope eCommerce';
 $GLOBALS['TL_LANG']['MSC']['isotopeIntroduction'][1] = 'Isotope ist die prämierte Open Source eCommerce Lösung für Contao.';
-$GLOBALS['TL_LANG']['MSC']['isotopeIntroduction'][2] = 'Auf dieser Seite werden die meisten Einstellungen vorgenommen. <u>Sie sollten am Ende der Seite starten und sich Schritt für Schritt nach oben arbeiten.</u>';
+$GLOBALS['TL_LANG']['MSC']['isotopeIntroduction'][2] = 'Auf dieser Seite werden die meisten Einstellungen vorgenommen. <strong>Sie sollten am Ende der Seite starten und sich Schritt für Schritt von rechts unten nach links oben arbeiten.</strong>';
 $GLOBALS['TL_LANG']['MSC']['isotopeIntroduction'][3] = 'Besuchen Sie die offizielle <a href="http://isotopeecommerce.org" target="_blank">Isotope eCommerce Website</a> für aktuelle News, Konfigurationsanleitungen und unsere Spendenkampagnen. Vielen Dank dass Sie uns etwas zurückgeben!';
 $GLOBALS['TL_LANG']['MSC']['isotopeIntroduction'][4] = 'Das Isotope eCommerce Team';
-$GLOBALS['TL_LANG']['MSC']['isotopeIntroduction'][5] = 'Isotope ist ein Produkt von %s in Zusammenarbeit mit <a href="http://isotopeecommerce.org/de/team.html" target="_blank">dem Isotope eCommerce Team</a>.';
+$GLOBALS['TL_LANG']['MSC']['isotopeIntroduction'][5] = 'Isotope ist ein Produkt der %s in Zusammenarbeit mit <a href="http://isotopeecommerce.org/de/team.html" target="_blank">dem Isotope eCommerce Team</a>.';
 $GLOBALS['TL_LANG']['MSC']['iso_orderCollectionBy']['asc_id'] = 'nach Datum hinzugefügt (aufsteigend)';
 $GLOBALS['TL_LANG']['MSC']['iso_orderCollectionBy']['desc_id'] = 'nach Datum hinzugefügt (absteigend)';
 $GLOBALS['TL_LANG']['MSC']['iso_orderCollectionBy']['asc_tstamp'] = 'nach Datum aktualisiert (aufsteigend)';
@@ -176,6 +182,9 @@ $GLOBALS['TL_LANG']['MSC']['iso_orderCollectionBy']['asc_price'] = 'nach Preis (
 $GLOBALS['TL_LANG']['MSC']['iso_orderCollectionBy']['desc_price'] = 'nach Preis (absteigend)';
 $GLOBALS['TL_LANG']['CTE']['isotope'] = 'Isotope eCommerce';
 $GLOBALS['TL_LANG']['MODEL']['tl_iso_shipping']['flat'][0] = 'Einheitspreis-Versand';
+$GLOBALS['TL_LANG']['MODEL']['tl_iso_shipping']['flat'][1] = 'Dies ist die Standard Versandmethode für den aktiven Versand.';
+$GLOBALS['TL_LANG']['MODEL']['tl_iso_shipping']['group'][0] = 'Versandgruppe';
+$GLOBALS['TL_LANG']['MODEL']['tl_iso_shipping']['group'][1] = 'In dieser Methode können verschiedene Versandmethoden zu einer gruppiert werden und anhand von ihnen wird der Preis berechnet.';
 $GLOBALS['TL_LANG']['MODEL']['tl_iso_payment']['cash'][0] = 'Barzahlung';
 $GLOBALS['TL_LANG']['MODEL']['tl_iso_payment']['cash'][1] = 'Benutzen Sie dies für alle persönlich-abgewickelten Bezahlungen.';
 $GLOBALS['TL_LANG']['MODEL']['tl_iso_payment']['paypal'][0] = 'PayPal Standard Checkout';

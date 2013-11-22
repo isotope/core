@@ -3,15 +3,15 @@
 /**
  * Isotope eCommerce for Contao Open Source CMS
  * 
- * Copyright (C) 2009-2013 Isotope eCommerce Workgroup
+ * Copyright (C) 2009-2013 terminal42 gmbh & Isotope eCommerce Workgroup
  * 
- * Core translations are managed using Transifex. To create a new translation
+ * Translations are managed using Transifex. To create a new translation
  * or to help to maintain an existing one, please register at transifex.com.
  * 
  * @link http://help.transifex.com/intro/translating.html
  * @link https://www.transifex.com/projects/i/isotope/language/de/
  * 
- * @license http://www.gnu.org/licenses/lgpl-3.0.html LGPL
+ * @license http://www.gnu.org/licenses/lgpl-3.0.html
  */
 
 $GLOBALS['TL_LANG']['tl_iso_payment']['name'][0] = 'Name';
@@ -65,7 +65,7 @@ $GLOBALS['TL_LANG']['tl_iso_payment']['psp_hash_in'][1] = 'Dies wird zum validie
 $GLOBALS['TL_LANG']['tl_iso_payment']['psp_hash_out'][0] = 'SHA-OUT Signatur';
 $GLOBALS['TL_LANG']['tl_iso_payment']['psp_hash_out'][1] = 'Dies wird zum validieren der Server-zu-Server-Verbindung genutzt.';
 $GLOBALS['TL_LANG']['tl_iso_payment']['psp_dynamic_template'][0] = 'Dynamische Template URL';
-$GLOBALS['TL_LANG']['tl_iso_payment']['psp_dynamic_template'][1] = 'Geben Sie eine <strong>absolute</string> URL zu einem dynamischen Template ein.';
+$GLOBALS['TL_LANG']['tl_iso_payment']['psp_dynamic_template'][1] = 'Geben Sie eine <strong>absolute</strong> URL zu einem dynamischen Template ein.';
 $GLOBALS['TL_LANG']['tl_iso_payment']['requireCCV'][0] = 'Benötigt den Prüfcode (Card Code Verification - CCV)';
 $GLOBALS['TL_LANG']['tl_iso_payment']['requireCCV'][1] = 'Wählen Sie diese Option wenn sie die Transaktionssicherheit durch die Abfrage des Prüfcodes erhöhen möchten.';
 $GLOBALS['TL_LANG']['tl_iso_payment']['allowed_cc_types'][0] = 'Erlaubte Kreditkarten-Typen';
