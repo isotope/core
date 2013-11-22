@@ -374,6 +374,9 @@ body.iso_be_overview .tip-wrap{
     padding: 0 10px;
     background: #eff5fa;
 }
+.be_iso_introduction .left strong {
+    color: #1899ad;
+}
 .be_iso_introduction .right {
     width: 250px;
     margin-left: 441px;
