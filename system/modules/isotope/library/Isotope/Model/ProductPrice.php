@@ -231,55 +231,8 @@ class ProductPrice extends \Model implements IsotopePrice
         } else {
             $arrOptions['column'][] = "pid=" . $objProduct->id;
         }
-        
+
         return static::find($arrOptions);
-    }
-
-    /**
-     * Find lowest price for a list of variants
-     * @param   IsotopeProduct
-     * @param   IsotopeProductCollection
-     * @return  IsotopePrice
-     */
-    public static function findLowestActiveByVariantsAndCollection(IsotopeProduct $objProduct, IsotopeProductCollection $objCollection, array $arrOptions=array())
-    {
-        if (!$objProduct->hasVariantPrices()) {
-            throw new \LogicException('Cannot find low price, product ID ' . ($objProduct->pid ?: $objProduct->id) . ' has no variant prices');
-        }
-
-        $arrIds = $objProduct->getVariantIds();
-
-        if (empty($arrIds)) {
-            return null;
-        }
-
-        if ($objProduct->hasAdvancedPrices()) {
-            $objPrices = static::findAdvancedByProductIdsAndCollection($objProduct->getVariantIds(), $objCollection);
-        } else {
-            $objPrices = static::findPrimaryByProductIds($objProduct->getVariantIds());
-        }
-
-        if (null === $objPrices){
-            return null;
-        }
-
-        $blnTiers = $objProduct->canSeePriceTiers();
-        $objLowest = $objPrices->current();
-        $fltLowest = $blnTiers ? min($objLowest->getTiers()) : $objLowest->getAmount($objLowest->getLowestTier());
-
-        // Iterate through models and find the lowest price
-        while ($objPrices->next()) {
-
-            $objCurrent = $objPrices->current();
-            $fltCurrent = $blnTiers ? min($objCurrent->getTiers()) : $objCurrent->getAmount($objLowest->getLowestTier());
-
-            if ($fltCurrent < $fltLowest) {
-                $fltLowest = $fltCurrent;
-                $objLowest = $objCurrent;
-            }
-        }
-
-        return $objLowest;
     }
 
     /**
