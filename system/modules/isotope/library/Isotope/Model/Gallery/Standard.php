@@ -227,19 +227,16 @@ class Standard extends Gallery implements IsotopeGallery
         $strFile = $file['src'];
 
         // File without path must be located in the isotope root folder
-        if (strpos($strFile, '/') === false)
-        {
+        if (strpos($strFile, '/') === false) {
             $strFile = 'isotope/' . strtolower(substr($strFile, 0, 1)) . '/' . $strFile;
         }
 
-        if (is_file(TL_ROOT . '/' . $strFile))
-        {
+        if (is_file(TL_ROOT . '/' . $strFile)) {
             $objFile = new \File($strFile);
 
-            if ($objFile->isGdImage)
-            {
-                foreach (array('main','gallery','lightbox') as $name)
-                {
+            if ($objFile->isGdImage) {
+                foreach (array('main','gallery','lightbox') as $name) {
+
                     $size = deserialize($this->{$name.'_size'});
                     $strImage = \Image::get($strFile, $size[0], $size[1], $size[2]);
 
@@ -250,8 +247,7 @@ class Standard extends Gallery implements IsotopeGallery
 
                     $arrSize = @getimagesize(TL_ROOT . '/' . $strImage);
 
-                    if (is_array($arrSize) && strlen($arrSize[3]))
-                    {
+                    if (is_array($arrSize) && strlen($arrSize[3])) {
                         $file[$name . '_size'] = $arrSize[3];
                         $file[$name . '_imageSize'] = $arrSize;
                     }
@@ -263,12 +259,10 @@ class Standard extends Gallery implements IsotopeGallery
                 }
 
                 // Main image is first in the array
-                if ($blnMain)
-                {
+                if ($blnMain) {
                     array_unshift($this->arrFiles, $file);
                 }
-                else
-                {
+                else {
                     $this->arrFiles[] = $file;
                 }
 
