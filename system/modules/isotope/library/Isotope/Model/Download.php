@@ -67,7 +67,7 @@ class Download extends \Model
      * @param   int|null
      * @return  int|null
      */
-    public function getExpirationTimestamp($intFrom=null)
+    public function getExpirationTimestamp($intFrom = null)
     {
         if ($this->expires == '') {
             return null;

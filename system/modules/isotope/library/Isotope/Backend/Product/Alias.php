@@ -30,7 +30,7 @@ class Alias extends \Backend
         // Generate alias if there is none
         if ($varValue == '') {
             $autoAlias = true;
-            $varValue = standardize(\Input::post('name'));
+            $varValue  = standardize(\Input::post('name'));
 
             if ($varValue == '') {
                 $varValue = standardize(\Input::post('sku'));

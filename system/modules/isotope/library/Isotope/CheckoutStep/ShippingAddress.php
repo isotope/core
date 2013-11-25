@@ -41,7 +41,7 @@ class ShippingAddress extends Address implements IsotopeCheckoutStep
     public function generate()
     {
         $this->Template->headline = $GLOBALS['TL_LANG']['MSC']['shipping_address'];
-        $this->Template->message = $GLOBALS['TL_LANG']['MSC']['shipping_address_message'];
+        $this->Template->message  = $GLOBALS['TL_LANG']['MSC']['shipping_address_message'];
 
         $objAddress = Isotope::getCart()->getShippingAddress();
 
@@ -69,9 +69,9 @@ class ShippingAddress extends Address implements IsotopeCheckoutStep
 
         return array('shipping_address' => array
         (
-            'headline'    => $GLOBALS['TL_LANG']['MSC']['shipping_address'],
-            'info'        => $objAddress->generateHtml(Isotope::getConfig()->getShippingFieldsConfig()),
-            'edit'        => \Isotope\Module\Checkout::generateUrlForStep('address'),
+            'headline' => $GLOBALS['TL_LANG']['MSC']['shipping_address'],
+            'info'     => $objAddress->generateHtml(Isotope::getConfig()->getShippingFieldsConfig()),
+            'edit'     => \Isotope\Module\Checkout::generateUrlForStep('address'),
         ));
     }
 
@@ -118,8 +118,7 @@ class ShippingAddress extends Address implements IsotopeCheckoutStep
     {
         if ($varValue === '-1') {
             return Isotope::getCart()->getBillingAddress();
-        }
-        elseif ($varValue === '0') {
+        } elseif ($varValue === '0') {
             $objAddress = $this->getDefaultAddress();
             $arrAddress = $this->validateFields($blnValidate);
 
@@ -154,10 +153,10 @@ class ShippingAddress extends Address implements IsotopeCheckoutStep
                 $objAddress = clone $objShippingAddress;
             }
 
-            $objAddress->ptable = 'tl_iso_product_collection';
-            $objAddress->pid = Isotope::getCart()->id;
+            $objAddress->ptable            = 'tl_iso_product_collection';
+            $objAddress->pid               = Isotope::getCart()->id;
             $objAddress->isDefaultShipping = '1';
-            $objAddress->isDefaultBilling = '';
+            $objAddress->isDefaultBilling  = '';
 
             if ($objAddress->country == '') {
                 $objAddress->country = Isotope::getConfig()->shipping_country;

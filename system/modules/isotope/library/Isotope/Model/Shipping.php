@@ -144,8 +144,7 @@ abstract class Shipping extends TypeAgent
      */
     public function getPercentage()
     {
-        if (!$this->isPercentage())
-        {
+        if (!$this->isPercentage()) {
             throw new \UnexpectedValueException('Shipping method does not have a percentage amount.');
         }
 
@@ -166,7 +165,7 @@ abstract class Shipping extends TypeAgent
      * Return calculated price for this shipping method
      * @return float
      */
-    public function getPrice(IsotopeProductCollection $objCollection=null)
+    public function getPrice(IsotopeProductCollection $objCollection = null)
     {
         if (null === $objCollection) {
             $objCollection = Isotope::getCart();
@@ -188,7 +187,7 @@ abstract class Shipping extends TypeAgent
      */
     public function getLabel()
     {
-        return Translation::get($this->label ?: $this->name);
+        return Translation::get($this->label ? : $this->name);
     }
 
 
@@ -233,8 +232,7 @@ abstract class Shipping extends TypeAgent
      */
     public function getSurcharge(IsotopeProductCollection $objCollection)
     {
-        if ($this->getPrice() == 0)
-        {
+        if ($this->getPrice() == 0) {
             return null;
         }
 

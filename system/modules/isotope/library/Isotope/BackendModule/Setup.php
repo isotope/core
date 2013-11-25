@@ -88,7 +88,7 @@ class Setup extends BackendOverview
             $objTemplate = new \BackendTemplate('be_iso_introduction');
 
             $return['introduction']['label'] = 'Introduction';
-            $return['introduction']['html'] = $objTemplate->parse();
+            $return['introduction']['html']  = $objTemplate->parse();
         }
     }
 }

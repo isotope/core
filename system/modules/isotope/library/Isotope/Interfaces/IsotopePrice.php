@@ -30,28 +30,28 @@ interface IsotopePrice
      * @param   int
      * @return  float
      */
-    public function getAmount($intQuantity=1);
+    public function getAmount($intQuantity = 1);
 
     /**
      * Return original price
      * @param   int
      * @return  float
      */
-    public function getOriginalAmount($intQuantity=1);
+    public function getOriginalAmount($intQuantity = 1);
 
     /**
      * Return net price (without taxes)
      * @param   int
      * @return  float
      */
-    public function getNetAmount($intQuantity=1);
+    public function getNetAmount($intQuantity = 1);
 
     /**
      * Return gross price (with all taxes)
      * @param   int
      * @return  float
      */
-    public function getGrossAmount($intQuantity=1);
+    public function getGrossAmount($intQuantity = 1);
 
     /**
      * Generate price for HTML rendering

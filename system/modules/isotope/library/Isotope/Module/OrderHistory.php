@@ -48,16 +48,15 @@ class OrderHistory extends Module
      */
     public function generate()
     {
-        if (TL_MODE == 'BE')
-        {
+        if (TL_MODE == 'BE') {
             $objTemplate = new \BackendTemplate('be_wildcard');
 
             $objTemplate->wildcard = '### ISOTOPE ECOMMERCE: ORDER HISTORY ###';
 
             $objTemplate->title = $this->headline;
-            $objTemplate->id = $this->id;
-            $objTemplate->link = $this->name;
-            $objTemplate->href = 'contao/main.php?do=themes&amp;table=tl_module&amp;act=edit&amp;id=' . $this->id;
+            $objTemplate->id    = $this->id;
+            $objTemplate->link  = $this->name;
+            $objTemplate->href  = 'contao/main.php?do=themes&amp;table=tl_module&amp;act=edit&amp;id=' . $this->id;
 
             return $objTemplate->parse();
         }
@@ -80,20 +79,18 @@ class OrderHistory extends Module
     protected function compile()
     {
         $arrOrders = array();
-        $objOrders = Order::findBy(array('order_status>0', 'member=?', 'config_id IN (?)'), array(\FrontendUser::getInstance()->id, implode("','", $this->iso_config_ids)), array('order'=>'locked DESC'));
+        $objOrders = Order::findBy(array('order_status>0', 'member=?', 'config_id IN (?)'), array(\FrontendUser::getInstance()->id, implode("','", $this->iso_config_ids)), array('order' => 'locked DESC'));
 
         // No orders found, just display an "empty" message
-        if (null === $objOrders)
-        {
-            $this->Template = new \Isotope\Template('mod_message');
-            $this->Template->type = 'empty';
+        if (null === $objOrders) {
+            $this->Template          = new \Isotope\Template('mod_message');
+            $this->Template->type    = 'empty';
             $this->Template->message = $GLOBALS['TL_LANG']['ERR']['emptyOrderHistory'];
 
             return;
         }
 
-        while ($objOrders->next())
-        {
+        while ($objOrders->next()) {
             Isotope::setConfig($objOrders->current()->getRelated('config_id'));
 
             $arrOrders[] = array

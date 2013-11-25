@@ -39,7 +39,7 @@ class Label extends \Backend
                 // Add an image
                 case 'images':
                     $arrImages = deserialize($objProduct->images);
-                    $args[$i] = '&nbsp;';
+                    $args[$i]  = '&nbsp;';
 
                     if (is_array($arrImages) && !empty($arrImages)) {
                         foreach ($arrImages as $image) {
@@ -52,8 +52,8 @@ class Label extends \Backend
                             $size = @getimagesize(TL_ROOT . '/' . $strImage);
 
                             $args[$i] = sprintf('<a href="%s" onclick="Backend.openModalImage({\'width\':%s,\'title\':\'%s\',\'url\':\'%s\'});return false"><img src="%s" alt="%s" align="left"></a>',
-                                                $strImage, $size[0], str_replace("'", "\\'", $objProduct->name), $strImage,
-                                                \Image::get($strImage, 50, 50, 'crop'), $image['alt']);
+                                $strImage, $size[0], str_replace("'", "\\'", $objProduct->name), $strImage,
+                                \Image::get($strImage, 50, 50, 'crop'), $image['alt']);
                             break;
                         }
                     }
@@ -73,7 +73,7 @@ class Label extends \Backend
 
                     if (null !== $objPrice) {
                         $objTax = $objPrice->getRelated('tax_class');
-                        $strTax = (null === $objTax ? '' : ' ('.$objTax->getLabel().')');
+                        $strTax = (null === $objTax ? '' : ' (' . $objTax->getLabel() . ')');
 
                         $args[$i] = $objPrice->getValueForTier(1) . $strTax;
                     }
@@ -86,7 +86,7 @@ class Label extends \Backend
                         $attributes[] = '<strong>' . Format::dcaLabel($dc->table, $variantField) . ':</strong>&nbsp;' . Format::dcaValue($dc->table, $variantField, $objProduct->$variantField);
                     }
 
-                    $args[$i] = ($args[$i] ? $args[$i].'<br>' : '') . implode(', ', $attributes);
+                    $args[$i] = ($args[$i] ? $args[$i] . '<br>' : '') . implode(', ', $attributes);
                     break;
             }
         }

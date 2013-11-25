@@ -47,7 +47,7 @@ class Standard extends Document implements IsotopeDocument
     {
         $arrTokens = $this->prepareCollectionTokens($objCollection);
 
-        $pdf = $this->generatePDF($objCollection, $arrTokens);
+        $pdf     = $this->generatePDF($objCollection, $arrTokens);
         $strFile = sprintf('/%s/%s.pdf', $strDirectoryPath, \String::parseSimpleTokens($this->fileTitle, $arrTokens));
         $pdf->Output($strFile, 'F');
 
@@ -63,11 +63,11 @@ class Standard extends Document implements IsotopeDocument
     protected function generatePDF(IsotopeProductCollection $objCollection, array $arrTokens)
     {
         // TCPDF configuration
-        $l = array();
-        $l['a_meta_dir']        = 'ltr';
-        $l['a_meta_charset']    = $GLOBALS['TL_CONFIG']['characterSet'];
-        $l['a_meta_language']   = substr($GLOBALS['TL_LANGUAGE'], 0, 2);
-        $l['w_page']            = 'page';
+        $l                    = array();
+        $l['a_meta_dir']      = 'ltr';
+        $l['a_meta_charset']  = $GLOBALS['TL_CONFIG']['characterSet'];
+        $l['a_meta_language'] = substr($GLOBALS['TL_LANGUAGE'], 0, 2);
+        $l['w_page']          = 'page';
 
         // Include library
         require_once TL_ROOT . '/system/config/tcpdf.php';
@@ -123,7 +123,7 @@ class Standard extends Document implements IsotopeDocument
         $objTemplate = new \Isotope\Template($this->documentTpl);
         $objTemplate->setData($this->arrData);
 
-        $objTemplate->title = \String::parseSimpleTokens($this->documentTitle, $arrTokens);
+        $objTemplate->title      = \String::parseSimpleTokens($this->documentTitle, $arrTokens);
         $objTemplate->collection = $objCollection;
 
         // Render the collection
@@ -132,8 +132,8 @@ class Standard extends Document implements IsotopeDocument
         $objCollection->addToTemplate(
             $objCollectionTemplate,
             array(
-                'gallery'   => $this->gallery,
-                'sorting'   => $objCollection->getItemsSortingCallable($this->orderCollectionBy),
+                 'gallery' => $this->gallery,
+                 'sorting' => $objCollection->getItemsSortingCallable($this->orderCollectionBy),
             )
         );
 
@@ -154,7 +154,7 @@ class Standard extends Document implements IsotopeDocument
         $strBuffer = preg_replace($arrSearch, '', $strBuffer);
 
         // URL decode image paths (see contao/core#6411)
-        $strArticle = preg_replace_callback('@(src="[^"]+")@', function($arg) {
+        $strArticle = preg_replace_callback('@(src="[^"]+")@', function ($arg) {
             return rawurldecode($arg[0]);
         }, $strArticle);
 

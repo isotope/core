@@ -26,18 +26,18 @@ class VariantGenerator extends \Backend
      */
     public function generate($dc)
     {
-        $table = Product::getTable();
+        $table      = Product::getTable();
         $objProduct = Product::findByPk($dc->id);
 
         $doNotSubmit = false;
-        $strBuffer = '';
-        $arrOptions = array();
+        $strBuffer   = '';
+        $arrOptions  = array();
 
         foreach ($objProduct->getRelated('type')->getVariantAttributes() as $attribute) {
             if ($GLOBALS['TL_DCA'][$table]['fields'][$attribute]['attributes']['variant_option']) {
 
                 $GLOBALS['TL_DCA'][$table]['fields'][$attribute]['eval']['mandatory'] = true;
-                $GLOBALS['TL_DCA'][$table]['fields'][$attribute]['eval']['multiple'] = true;
+                $GLOBALS['TL_DCA'][$table]['fields'][$attribute]['eval']['multiple']  = true;
 
                 $arrField = \CheckBox::getAttributesFromDca($GLOBALS['TL_DCA'][$table]['fields'][$attribute], $attribute);
 
@@ -49,7 +49,7 @@ class VariantGenerator extends \Backend
 
                 $objWidget = new \CheckBox($arrField);
 
-                if (\Input::post('FORM_SUBMIT') == ($table.'_generate')) {
+                if (\Input::post('FORM_SUBMIT') == ($table . '_generate')) {
                     $objWidget->validate();
 
                     if ($objWidget->hasErrors()) {
@@ -63,12 +63,12 @@ class VariantGenerator extends \Backend
             }
         }
 
-        if (\Input::post('FORM_SUBMIT') == $table.'_generate' && !$doNotSubmit) {
-            $time = time();
+        if (\Input::post('FORM_SUBMIT') == $table . '_generate' && !$doNotSubmit) {
+            $time            = time();
             $arrCombinations = array();
 
             foreach ($arrOptions as $name => $options) {
-                $arrTemp = $arrCombinations;
+                $arrTemp         = $arrCombinations;
                 $arrCombinations = array();
 
                 foreach ($options as $option) {
@@ -78,7 +78,7 @@ class VariantGenerator extends \Backend
                     }
 
                     foreach ($arrTemp as $temp) {
-                        $temp[$name] = $option;
+                        $temp[$name]       = $option;
                         $arrCombinations[] = $temp;
                     }
                 }
@@ -108,15 +108,15 @@ class VariantGenerator extends \Backend
         // Return form
         return '
 <div id="tl_buttons">
-<a href="'.ampersand(str_replace('&key=generate', '', \Environment::get('request'))).'" class="header_back" title="'.specialchars($GLOBALS['TL_LANG']['MSC']['backBT']).'">'.$GLOBALS['TL_LANG']['MSC']['backBT'].'</a>
+<a href="' . ampersand(str_replace('&key=generate', '', \Environment::get('request'))) . '" class="header_back" title="' . specialchars($GLOBALS['TL_LANG']['MSC']['backBT']) . '">' . $GLOBALS['TL_LANG']['MSC']['backBT'] . '</a>
 </div>
 
-<h2 class="sub_headline">'.sprintf($GLOBALS['TL_LANG'][$table]['generate'][1], $dc->id).'</h2>'.\Message::generate().'
+<h2 class="sub_headline">' . sprintf($GLOBALS['TL_LANG'][$table]['generate'][1], $dc->id) . '</h2>' . \Message::generate() . '
 
-<form action="'.ampersand(\Environment::get('request'), true).'" id="'.$table.'_generate" class="tl_form" method="post">
+<form action="' . ampersand(\Environment::get('request'), true) . '" id="' . $table . '_generate" class="tl_form" method="post">
 <div class="tl_formbody_edit">
-<input type="hidden" name="FORM_SUBMIT" value="'.$table.'_generate">
-<input type="hidden" name="REQUEST_TOKEN" value="'.REQUEST_TOKEN.'">
+<input type="hidden" name="FORM_SUBMIT" value="' . $table . '_generate">
+<input type="hidden" name="REQUEST_TOKEN" value="' . REQUEST_TOKEN . '">
 
 <div class="tl_tbox block">
 ' . $strBuffer . '
@@ -127,7 +127,7 @@ class VariantGenerator extends \Backend
 <div class="tl_formbody_submit">
 
 <div class="tl_submit_container">
-  <input type="submit" name="save" id="save" class="tl_submit" accesskey="s" value="'.specialchars($GLOBALS['TL_LANG']['tl_iso_product']['generate'][0]).'">
+  <input type="submit" name="save" id="save" class="tl_submit" accesskey="s" value="' . specialchars($GLOBALS['TL_LANG']['tl_iso_product']['generate'][0]) . '">
 </div>
 
 </div>

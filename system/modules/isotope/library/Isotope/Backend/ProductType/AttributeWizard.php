@@ -27,50 +27,50 @@ class AttributeWizard extends \Backend
     {
         $this->loadDataContainer('tl_iso_product');
 
-        $arrValues = $objWidget->value;
-        $arrDCA = &$GLOBALS['TL_DCA']['tl_iso_product']['fields'];
+        $arrValues   = $objWidget->value;
+        $arrDCA      = &$GLOBALS['TL_DCA']['tl_iso_product']['fields'];
         $blnVariants = ($objWidget->name != 'attributes');
 
         if (!empty($arrValues) && is_array($arrValues)) {
             foreach ($arrValues as $i => $attribute) {
-                if ($arrDCA[$attribute['name']]['attributes'][($blnVariants ? 'variant_' : '').'fixed']) {
-                    $objWidget->addDataToFieldAtIndex($i, 'enabled', array('eval'=>array('disabled'=>true)));
+                if ($arrDCA[$attribute['name']]['attributes'][($blnVariants ? 'variant_' : '') . 'fixed']) {
+                    $objWidget->addDataToFieldAtIndex($i, 'enabled', array('eval' => array('disabled' => true)));
                 }
             }
         }
 
         return array
         (
-            'enabled' => array
+            'enabled'   => array
             (
-                'inputType'             => 'checkbox',
-                'eval'                  => array('hideHead'=>true),
+                'inputType' => 'checkbox',
+                'eval'      => array('hideHead' => true),
             ),
-            'name' => array
+            'name'      => array
             (
-                'input_field_callback'  => array('Isotope\Backend\ProductType\AttributeWizard', 'getNextName'),
-                'eval'                  => array('hideHead'=>true, 'tl_class'=>'mcwUpdateFields'),
+                'input_field_callback' => array('Isotope\Backend\ProductType\AttributeWizard', 'getNextName'),
+                'eval'                 => array('hideHead' => true, 'tl_class' => 'mcwUpdateFields'),
             ),
-            'legend' => array
+            'legend'    => array
             (
-                'label'                 => &$GLOBALS['TL_LANG']['tl_iso_producttype']['attributes']['legend'],
-                'inputType'             => 'select',
-                'options_callback'      => array('Isotope\Backend\ProductType\AttributeWizard', 'getLegends'),
-                'eval'                  => array('style'=>'width:150px', 'class'=>'extendable'),
+                'label'            => &$GLOBALS['TL_LANG']['tl_iso_producttype']['attributes']['legend'],
+                'inputType'        => 'select',
+                'options_callback' => array('Isotope\Backend\ProductType\AttributeWizard', 'getLegends'),
+                'eval'             => array('style' => 'width:150px', 'class' => 'extendable'),
             ),
-            'tl_class' => array
+            'tl_class'  => array
             (
-                'label'                 => &$GLOBALS['TL_LANG']['tl_iso_producttype']['attributes']['tl_class'],
-                'inputType'             => 'text',
-                'eval'                  => array('style'=>'width:80px'),
+                'label'     => &$GLOBALS['TL_LANG']['tl_iso_producttype']['attributes']['tl_class'],
+                'inputType' => 'text',
+                'eval'      => array('style' => 'width:80px'),
             ),
             'mandatory' => array
             (
-                'label'                 => &$GLOBALS['TL_LANG']['tl_iso_producttype']['attributes']['mandatory'],
-                'inputType'             => 'select',
-                'options'               => array('yes', 'no'),
-                'reference'             => &$GLOBALS['TL_LANG']['MSC'],
-                'eval'                  => array('style'=>'width:80px', 'includeBlankOption'=>true, 'blankOptionLabel'=>&$GLOBALS['TL_LANG']['tl_iso_producttype']['attributes']['default']),
+                'label'     => &$GLOBALS['TL_LANG']['tl_iso_producttype']['attributes']['mandatory'],
+                'inputType' => 'select',
+                'options'   => array('yes', 'no'),
+                'reference' => &$GLOBALS['TL_LANG']['MSC'],
+                'eval'      => array('style' => 'width:80px', 'includeBlankOption' => true, 'blankOptionLabel' => &$GLOBALS['TL_LANG']['tl_iso_producttype']['attributes']['default']),
             ),
         );
     }
@@ -90,11 +90,11 @@ class AttributeWizard extends \Backend
         if ($strWidget != $objWidget->name) {
             $strWidget = $objWidget->name;
             $arrValues = $objWidget->value;
-            $i = 0;
+            $i         = 0;
         }
 
         $arrField = array_shift($arrValues);
-        $strName = $arrField['name'];
+        $strName  = $arrField['name'];
 
         return sprintf(
             '<input type="hidden" name="%s[%s][name]" id="ctrl_%s_row%s_name" value="%s"><div style="width:300px">%s <span style="color:#b3b3b3; padding-left:3px;">[%s]</span></div>',
@@ -103,7 +103,7 @@ class AttributeWizard extends \Backend
             $objWidget->name,
             $i++,
             $strName,
-            $GLOBALS['TL_DCA']['tl_iso_product']['fields'][$strName]['label'][0] ?: $strName,
+            $GLOBALS['TL_DCA']['tl_iso_product']['fields'][$strName]['label'][0] ? : $strName,
             $strName
         );
     }
@@ -141,9 +141,9 @@ class AttributeWizard extends \Backend
     {
         $this->loadDataContainer('tl_iso_product');
 
-        $arrDCA = &$GLOBALS['TL_DCA']['tl_iso_product']['fields'];
-        $arrFields = array();
-        $arrValues = deserialize($varValue);
+        $arrDCA      = &$GLOBALS['TL_DCA']['tl_iso_product']['fields'];
+        $arrFields   = array();
+        $arrValues   = deserialize($varValue);
         $blnVariants = ($dc->field != 'attributes');
 
         if (!is_array($arrValues)) {
@@ -172,9 +172,9 @@ class AttributeWizard extends \Backend
             }
 
             $arrFields[$strName] = array(
-                'enabled'   => ($arrField['attributes'][($blnVariants ? 'variant_' : '').'fixed'] ? '1' : ''),
-                'name'      => $strName,
-                'legend'    => $arrField['attributes']['legend'],
+                'enabled' => ($arrField['attributes'][($blnVariants ? 'variant_' : '') . 'fixed'] ? '1' : ''),
+                'name'    => $strName,
+                'legend'  => $arrField['attributes']['legend'],
             );
         }
 
@@ -191,8 +191,8 @@ class AttributeWizard extends \Backend
     {
         $arrDCA = &$GLOBALS['TL_DCA']['tl_iso_product']['fields'];
 
-        $arrLegends = array();
-        $arrFields = deserialize($varValue);
+        $arrLegends  = array();
+        $arrFields   = deserialize($varValue);
         $blnVariants = ($dc->field != 'attributes');
 
         if (empty($arrFields) || !is_array($arrFields)) {
@@ -200,7 +200,7 @@ class AttributeWizard extends \Backend
         }
 
         foreach ($arrFields as $k => $arrField) {
-            if ($arrDCA[$arrField['name']]['attributes'][($blnVariants ? 'variant_' : '').'fixed']) {
+            if ($arrDCA[$arrField['name']]['attributes'][($blnVariants ? 'variant_' : '') . 'fixed']) {
                 $arrFields[$k]['enabled'] = '1';
             }
 
@@ -223,7 +223,7 @@ class AttributeWizard extends \Backend
 
         $arrValues = array();
         foreach (array_values($arrFields) as $pos => $arrConfig) {
-            $arrConfig['position'] = $pos;
+            $arrConfig['position']         = $pos;
             $arrValues[$arrConfig['name']] = $arrConfig;
         }
 

@@ -60,8 +60,8 @@ class Cart extends ProductCollection implements IsotopeProductCollection
         }
 
         if (null === $objAddress) {
-            $objAddress = new Address();
-            $objAddress->country = (Isotope::getConfig()->billing_country ?: Isotope::getConfig()->country);
+            $objAddress          = new Address();
+            $objAddress->country = (Isotope::getConfig()->billing_country ? : Isotope::getConfig()->country);
         }
 
         return $objAddress;
@@ -84,7 +84,7 @@ class Cart extends ProductCollection implements IsotopeProductCollection
         }
 
         if (null === $objAddress) {
-            $objAddress = new Address();
+            $objAddress          = new Address();
             $objAddress->country = Isotope::getConfig()->shipping_country;
         }
 
@@ -101,12 +101,10 @@ class Cart extends ProductCollection implements IsotopeProductCollection
         $strHash = \Input::cookie(static::$strCookie);
 
         // Temporary cart available, move to this cart. Must be after creating a new cart!
-        if (FE_USER_LOGGED_IN === true && $strHash != '' && $this->member > 0)
-        {
+        if (FE_USER_LOGGED_IN === true && $strHash != '' && $this->member > 0) {
             $blnMerge = $this->countItems() > 0 ? true : false;
 
-            if (($objTemp = static::findOneBy(array('uniqid=?', 'store_id=?'), array($strHash, $this->store_id))) !== null)
-            {
+            if (($objTemp = static::findOneBy(array('uniqid=?', 'store_id=?'), array($strHash, $this->store_id))) !== null) {
                 $arrIds = $this->copyItemsFrom($objTemp);
 
                 if ($blnMerge && !empty($arrIds)) {
@@ -119,7 +117,7 @@ class Cart extends ProductCollection implements IsotopeProductCollection
             // Delete cookie
             \System::setCookie(static::$strCookie, '', (time() - 3600), $GLOBALS['TL_CONFIG']['websitePath']);
             \System::reload();
-         }
+        }
     }
 
     /**
@@ -172,23 +170,19 @@ class Cart extends ProductCollection implements IsotopeProductCollection
             return null;
         }
 
-        $time = time();
-        $strHash = \Input::cookie(static::$strCookie);
+        $time     = time();
+        $strHash  = \Input::cookie(static::$strCookie);
         $intStore = (int) \PageModel::findByPk($objPage->rootId)->iso_store_id;
 
         //  Check to see if the user is logged in.
-        if (FE_USER_LOGGED_IN !== true)
-        {
-            if ($strHash == '')
-            {
+        if (FE_USER_LOGGED_IN !== true) {
+            if ($strHash == '') {
                 $strHash = sha1(session_id() . (!$GLOBALS['TL_CONFIG']['disableIpCheck'] ? \Environment::get('ip') : '') . $intStore . static::$strCookie);
-                \System::setCookie(static::$strCookie, $strHash, $time+$GLOBALS['TL_CONFIG']['iso_cartTimeout'], $GLOBALS['TL_CONFIG']['websitePath']);
+                \System::setCookie(static::$strCookie, $strHash, $time + $GLOBALS['TL_CONFIG']['iso_cartTimeout'], $GLOBALS['TL_CONFIG']['websitePath']);
             }
 
             $objCart = static::findOneBy(array('uniqid=?', 'store_id=?'), array($strHash, $intStore));
-        }
-        else
-        {
+        } else {
             $objCart = static::findOneBy(array('member=?', 'store_id=?'), array(\FrontendUser::getInstance()->id, $intStore));
         }
 
@@ -196,7 +190,7 @@ class Cart extends ProductCollection implements IsotopeProductCollection
         if ($objCart === null) {
 
             $objConfig = Config::findByRootPageOrFallback($objPage->rootId);
-            $objCart = new static();
+            $objCart   = new static();
 
             // Can't call the individual rows here, it would trigger markModified and a save()
             $objCart->setRow(array_merge($objCart->row(), array(

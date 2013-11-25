@@ -58,14 +58,13 @@ abstract class Payment extends TypeAgent
      * Initialize the object
      * @param array
      */
-    public function __construct(\Database\Result $objResult=null)
+    public function __construct(\Database\Result $objResult = null)
     {
         parent::__construct($objResult);
 
         $this->arrData['allowed_cc_types'] = deserialize($this->arrData['allowed_cc_types']);
 
-        if (is_array($this->arrData['allowed_cc_types']))
-        {
+        if (is_array($this->arrData['allowed_cc_types'])) {
             $this->arrData['allowed_cc_types'] = array_intersect(static::getAllowedCCTypes(), $this->arrData['allowed_cc_types']);
         }
     }
@@ -77,18 +76,15 @@ abstract class Payment extends TypeAgent
      */
     public function isAvailable()
     {
-        if (!$this->enabled && BE_USER_LOGGED_IN !== true)
-        {
+        if (!$this->enabled && BE_USER_LOGGED_IN !== true) {
             return false;
         }
 
-        if (($this->guests && FE_USER_LOGGED_IN === true) || ($this->protected && FE_USER_LOGGED_IN !== true))
-        {
+        if (($this->guests && FE_USER_LOGGED_IN === true) || ($this->protected && FE_USER_LOGGED_IN !== true)) {
             return false;
         }
 
-        if ($this->protected)
-        {
+        if ($this->protected) {
             $arrGroups = deserialize($this->groups);
 
             if (!is_array($arrGroups) || empty($arrGroups) || !count(array_intersect($arrGroups, \FrontendUser::getInstance()->groups))) // Can't use empty() because its an object property (using __get)
@@ -97,29 +93,25 @@ abstract class Payment extends TypeAgent
             }
         }
 
-        if (($this->minimum_total > 0 && $this->minimum_total > Isotope::getCart()->getSubtotal()) || ($this->maximum_total > 0 && $this->maximum_total < Isotope::getCart()->getSubtotal()))
-        {
+        if (($this->minimum_total > 0 && $this->minimum_total > Isotope::getCart()->getSubtotal()) || ($this->maximum_total > 0 && $this->maximum_total < Isotope::getCart()->getSubtotal())) {
             return false;
         }
 
         $arrCountries = deserialize($this->countries);
 
-        if (is_array($arrCountries) && !empty($arrCountries) && !in_array(Isotope::getCart()->getBillingAddress()->country, $arrCountries))
-        {
+        if (is_array($arrCountries) && !empty($arrCountries) && !in_array(Isotope::getCart()->getBillingAddress()->country, $arrCountries)) {
             return false;
         }
 
         $arrShippings = deserialize($this->shipping_modules);
 
-        if (is_array($arrShippings) && !empty($arrShippings) && ((!Isotope::getCart()->hasShipping() && !in_array(-1, $arrShippings)) || (Isotope::getCart()->hasShipping() && !in_array(Isotope::getCart()->getShippingMethod()->id, $arrShippings))))
-        {
+        if (is_array($arrShippings) && !empty($arrShippings) && ((!Isotope::getCart()->hasShipping() && !in_array(-1, $arrShippings)) || (Isotope::getCart()->hasShipping() && !in_array(Isotope::getCart()->getShippingMethod()->id, $arrShippings)))) {
             return false;
         }
 
         $arrTypes = deserialize($this->product_types);
 
-        if (is_array($arrTypes) && !empty($arrTypes))
-        {
+        if (is_array($arrTypes) && !empty($arrTypes)) {
             $arrItems = Isotope::getCart()->getItems();
 
             foreach ($arrItems as $objItem) {
@@ -148,8 +140,7 @@ abstract class Payment extends TypeAgent
      */
     public function getPercentage()
     {
-        if (!$this->isPercentage())
-        {
+        if (!$this->isPercentage()) {
             throw new \UnexpectedValueException('Payment method does not have a percentage amount.');
         }
 
@@ -169,7 +160,7 @@ abstract class Payment extends TypeAgent
      * Return calculated price for this payment method
      * @return float
      */
-    public function getPrice(IsotopeProductCollection $objCollection=null)
+    public function getPrice(IsotopeProductCollection $objCollection = null)
     {
         if (null === $objCollection) {
             $objCollection = Isotope::getCart();
@@ -191,7 +182,7 @@ abstract class Payment extends TypeAgent
      */
     public function getLabel()
     {
-        return Translation::get($this->label ?: $this->name);
+        return Translation::get($this->label ? : $this->name);
     }
 
 
@@ -216,7 +207,7 @@ abstract class Payment extends TypeAgent
     {
         return '
 <div id="tl_buttons">
-<a href="'.ampersand(str_replace('&key=payment', '', \Environment::get('request'))).'" class="header_back" title="'.specialchars($GLOBALS['TL_LANG']['MSC']['backBT']).'">'.$GLOBALS['TL_LANG']['MSC']['backBT'].'</a>
+<a href="' . ampersand(str_replace('&key=payment', '', \Environment::get('request'))) . '" class="header_back" title="' . specialchars($GLOBALS['TL_LANG']['MSC']['backBT']) . '">' . $GLOBALS['TL_LANG']['MSC']['backBT'] . '</a>
 </div>
 
 <h2 class="sub_headline">' . $this->name . ' (' . $GLOBALS['TL_LANG']['PAY'][$this->type][0] . ')' . '</h2>
@@ -249,8 +240,7 @@ abstract class Payment extends TypeAgent
      */
     public function getSurcharge($objCollection)
     {
-        if ($this->getPrice() == 0)
-        {
+        if ($this->getPrice() == 0) {
             return null;
         }
 
@@ -269,52 +259,29 @@ abstract class Payment extends TypeAgent
     {
         $strNumber = preg_replace('@[^0-9]+@', '', $strNumber);
 
-        if (preg_match('@(^4\d{12}$)|(^4[0-8]\d{14}$)|(^(49)[^013]\d{13}$)|(^(49030)[0-1]\d{10}$)|(^(49033)[0-4]\d{10}$)|(^(49110)[^12]\d{10}$)|(^(49117)[0-3]\d{10}$)|(^(49118)[^0-2]\d{10}$)|(^(493)[^6]\d{12}$)@', $strNumber))
-        {
+        if (preg_match('@(^4\d{12}$)|(^4[0-8]\d{14}$)|(^(49)[^013]\d{13}$)|(^(49030)[0-1]\d{10}$)|(^(49033)[0-4]\d{10}$)|(^(49110)[^12]\d{10}$)|(^(49117)[0-3]\d{10}$)|(^(49118)[^0-2]\d{10}$)|(^(493)[^6]\d{12}$)@', $strNumber)) {
             return 'visa';
-        }
-        elseif (preg_match('@(^(5[0678])\d{11,18}$) |(^(6[^0357])\d{11,18}$) |(^(601)[^1]\d{9,16}$) |(^(6011)\d{9,11}$) |(^(6011)\d{13,16}$) |(^(65)\d{11,13}$) |(^(65)\d{15,18}$) |(^(633)[^34](\d{9,16}$)) |(^(6333)[0-4](\d{8,10}$)) |(^(6333)[0-4](\d{12}$)) |(^(6333)[0-4](\d{15}$)) |(^(6333)[5-9](\d{8,10}$)) |(^(6333)[5-9](\d{12}$)) |(^(6333)[5-9](\d{15}$)) |(^(6334)[0-4](\d{8,10}$)) |(^(6334)[0-4](\d{12}$)) |(^(6334)[0-4](\d{15}$)) |(^(67)[^(59)](\d{9,16}$)) |(^(6759)](\d{9,11}$)) |(^(6759)](\d{13}$)) |(^(6759)](\d{16}$)) |(^(67)[^(67)](\d{9,16}$)) |(^(6767)](\d{9,11}$)) |(^(6767)](\d{13}$)) |(^(6767)](\d{16}$))@', $strNumber))
-        {
+        } elseif (preg_match('@(^(5[0678])\d{11,18}$) |(^(6[^0357])\d{11,18}$) |(^(601)[^1]\d{9,16}$) |(^(6011)\d{9,11}$) |(^(6011)\d{13,16}$) |(^(65)\d{11,13}$) |(^(65)\d{15,18}$) |(^(633)[^34](\d{9,16}$)) |(^(6333)[0-4](\d{8,10}$)) |(^(6333)[0-4](\d{12}$)) |(^(6333)[0-4](\d{15}$)) |(^(6333)[5-9](\d{8,10}$)) |(^(6333)[5-9](\d{12}$)) |(^(6333)[5-9](\d{15}$)) |(^(6334)[0-4](\d{8,10}$)) |(^(6334)[0-4](\d{12}$)) |(^(6334)[0-4](\d{15}$)) |(^(67)[^(59)](\d{9,16}$)) |(^(6759)](\d{9,11}$)) |(^(6759)](\d{13}$)) |(^(6759)](\d{16}$)) |(^(67)[^(67)](\d{9,16}$)) |(^(6767)](\d{9,11}$)) |(^(6767)](\d{13}$)) |(^(6767)](\d{16}$))@', $strNumber)) {
             return 'maestro';
-        }
-        elseif (preg_match('@^5[1-5]\d{14}$@', $strNumber))
-        {
+        } elseif (preg_match('@^5[1-5]\d{14}$@', $strNumber)) {
             return 'mc';
-        }
-        elseif (preg_match('@(^(6011)\d{12}$)|(^(65)\d{14}$)@', $strNumber))
-        {
+        } elseif (preg_match('@(^(6011)\d{12}$)|(^(65)\d{14}$)@', $strNumber)) {
             return 'discover';
-        }
-        elseif (preg_match('@(^3[47])((\d{11}$)|(\d{13}$))@', $strNumber))
-        {
+        } elseif (preg_match('@(^3[47])((\d{11}$)|(\d{13}$))@', $strNumber)) {
             return 'amex';
-        }
-        elseif (preg_match('@(^(6334)[5-9](\d{11}$|\d{13,14}$)) |(^(6767)(\d{12}$|\d{14,15}$))@', $strNumber))
-        {
+        } elseif (preg_match('@(^(6334)[5-9](\d{11}$|\d{13,14}$)) |(^(6767)(\d{12}$|\d{14,15}$))@', $strNumber)) {
             return 'solo';
-        }
-        elseif (preg_match('@(^(49030)[2-9](\d{10}$|\d{12,13}$)) |(^(49033)[5-9](\d{10}$|\d{12,13}$)) |(^(49110)[1-2](\d{10}$|\d{12,13}$)) |(^(49117)[4-9](\d{10}$|\d{12,13}$)) |(^(49118)[0-2](\d{10}$|\d{12,13}$)) |(^(4936)(\d{12}$|\d{14,15}$)) |(^(564182)(\d{11}$|\d{13,14}$)) |(^(6333)[0-4](\d{11}$|\d{13,14}$)) |(^(6759)(\d{12}$|\d{14,15}$))@', $strNumber))
-        {
+        } elseif (preg_match('@(^(49030)[2-9](\d{10}$|\d{12,13}$)) |(^(49033)[5-9](\d{10}$|\d{12,13}$)) |(^(49110)[1-2](\d{10}$|\d{12,13}$)) |(^(49117)[4-9](\d{10}$|\d{12,13}$)) |(^(49118)[0-2](\d{10}$|\d{12,13}$)) |(^(4936)(\d{12}$|\d{14,15}$)) |(^(564182)(\d{11}$|\d{13,14}$)) |(^(6333)[0-4](\d{11}$|\d{13,14}$)) |(^(6759)(\d{12}$|\d{14,15}$))@', $strNumber)) {
             return 'switch';
-        }
-        elseif (preg_match('@(^(352)[8-9](\d{11}$|\d{12}$))|(^(35)[3-8](\d{12}$|\d{13}$))@', $strNumber))
-        {
+        } elseif (preg_match('@(^(352)[8-9](\d{11}$|\d{12}$))|(^(35)[3-8](\d{12}$|\d{13}$))@', $strNumber)) {
             return 'jcb';
-        }
-        elseif (preg_match('@(^(30)[0-5]\d{11}$)|(^(36)\d{12}$)|(^(38[0-8])\d{11}$)@', $strNumber))
-        {
+        } elseif (preg_match('@(^(30)[0-5]\d{11}$)|(^(36)\d{12}$)|(^(38[0-8])\d{11}$)@', $strNumber)) {
             return 'diners';
-        }
-        elseif (preg_match('@^(389)[0-9]{11}$@', $strNumber))
-        {
+        } elseif (preg_match('@^(389)[0-9]{11}$@', $strNumber)) {
             return 'cartblanche';
-        }
-        elseif (preg_match('@(^(2014)|^(2149))\d{11}$@', $strNumber))
-        {
+        } elseif (preg_match('@(^(2014)|^(2149))\d{11}$@', $strNumber)) {
             return 'enroute';
-        }
-        elseif (preg_match('@(^(5[0678])\d{11,18}$)|(^(6[^05])\d{11,18}$)|(^(601)[^1]\d{9,16}$)|(^(6011)\d{9,11}$)|(^(6011)\d{13,16}$)|(^(65)\d{11,13}$)|(^(65)\d{15,18}$)|(^(49030)[2-9](\d{10}$|\d{12,13}$))|(^(49033)[5-9](\d{10}$|\d{12,13}$))|(^(49110)[1-2](\d{10}$|\d{12,13}$))|(^(49117)[4-9](\d{10}$|\d{12,13}$))|(^(49118)[0-2](\d{10}$|\d{12,13}$))|(^(4936)(\d{12}$|\d{14,15}$))@', $strNumber))
-        {
+        } elseif (preg_match('@(^(5[0678])\d{11,18}$)|(^(6[^05])\d{11,18}$)|(^(601)[^1]\d{9,16}$)|(^(6011)\d{9,11}$)|(^(6011)\d{13,16}$)|(^(65)\d{11,13}$)|(^(65)\d{15,18}$)|(^(49030)[2-9](\d{10}$|\d{12,13}$))|(^(49033)[5-9](\d{10}$|\d{12,13}$))|(^(49110)[1-2](\d{10}$|\d{12,13}$))|(^(49117)[4-9](\d{10}$|\d{12,13}$))|(^(49118)[0-2](\d{10}$|\d{12,13}$))|(^(4936)(\d{12}$|\d{14,15}$))@', $strNumber)) {
             return 'ukdebit';
         }
 

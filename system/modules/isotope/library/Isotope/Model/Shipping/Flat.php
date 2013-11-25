@@ -32,7 +32,7 @@ class Flat extends Shipping implements IsotopeShipping
      * Return calculated price for this shipping method
      * @return float
      */
-    public function getPrice(IsotopeProductCollection $objCollection=null)
+    public function getPrice(IsotopeProductCollection $objCollection = null)
     {
         if (null === $objCollection) {
             $objCollection = Isotope::getCart();

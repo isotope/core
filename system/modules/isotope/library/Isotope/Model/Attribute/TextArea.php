@@ -26,24 +26,24 @@ use Isotope\Model\Attribute;
 class TextArea extends Attribute implements IsotopeAttribute
 {
 
-	public function saveToDCA(array &$arrData)
-	{
-		parent::saveToDCA($arrData);
+    public function saveToDCA(array &$arrData)
+    {
+        parent::saveToDCA($arrData);
 
-		$arrData['fields'][$this->field_name]['sql'] = "text NULL";
+        $arrData['fields'][$this->field_name]['sql'] = "text NULL";
 
-		// Textarea cannot be w50
+        // Textarea cannot be w50
         if ($this->rte != '') {
             $arrData['fields'][$this->field_name]['eval']['tl_class'] = 'clr';
         }
-	}
+    }
 
-	public function generate(IsotopeProduct $objProduct, array $arrOptions=array())
-	{
-	    if ($this->rte == '') {
-        	return nl2br($objProduct->{$this->field_name});
+    public function generate(IsotopeProduct $objProduct, array $arrOptions = array())
+    {
+        if ($this->rte == '') {
+            return nl2br($objProduct->{$this->field_name});
         } else {
             return parent::generate($objProduct);
         }
-	}
+    }
 }

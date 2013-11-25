@@ -33,8 +33,7 @@ class Button extends \Backend
      */
     public function forGroups($href, $label, $title, $class, $attributes, $table, $root)
     {
-        if (!\BackendUser::getInstance()->isAdmin && (!is_array(\BackendUser::getInstance()->iso_groupp) || empty(\BackendUser::getInstance()->iso_groupp)))
-        {
+        if (!\BackendUser::getInstance()->isAdmin && (!is_array(\BackendUser::getInstance()->iso_groupp) || empty(\BackendUser::getInstance()->iso_groupp))) {
             return '';
         }
 
@@ -53,12 +52,11 @@ class Button extends \Backend
      */
     public function forCopy($row, $href, $label, $title, $icon, $attributes)
     {
-        if ($row['pid'] > 0)
-        {
-            return '<a href="'.preg_replace('/&(amp;)?id=[^& ]*/i', '', ampersand(\Environment::get('request'))).'&amp;act=paste&amp;mode=copy&amp;table=tl_iso_product&amp;id='.$row['id'].'&amp;pid='.\Input::get('id').'" title="'.specialchars($title).'"'.$attributes.' onclick="Backend.getScrollOffset();">'.\Image::getHtml($icon, $label).'</a> ';
+        if ($row['pid'] > 0) {
+            return '<a href="' . preg_replace('/&(amp;)?id=[^& ]*/i', '', ampersand(\Environment::get('request'))) . '&amp;act=paste&amp;mode=copy&amp;table=tl_iso_product&amp;id=' . $row['id'] . '&amp;pid=' . \Input::get('id') . '" title="' . specialchars($title) . '"' . $attributes . ' onclick="Backend.getScrollOffset();">' . \Image::getHtml($icon, $label) . '</a> ';
         }
 
-        return '<a href="'.\Backend::addToUrl($href.'&amp;id='.$row['id']).'" title="'.specialchars($title).'"'.$attributes.'>'.\Image::getHtml($icon, $label).'</a> ';
+        return '<a href="' . \Backend::addToUrl($href . '&amp;id=' . $row['id']) . '" title="' . specialchars($title) . '"' . $attributes . '>' . \Image::getHtml($icon, $label) . '</a> ';
     }
 
     /**
@@ -77,7 +75,7 @@ class Button extends \Backend
             return '';
         }
 
-        return '<a href="'.preg_replace('/&(amp;)?id=[^& ]*/i', '', ampersand(\Environment::get('request'))).'&amp;act=paste&amp;mode=cut&amp;table=tl_iso_product&amp;id='.$row['id'].'&amp;pid='.\Input::get('id').'&rt='.\Input::get('rt').'" title="'.specialchars($title).'"'.$attributes.' onclick="Backend.getScrollOffset();">'.\Image::getHtml($icon, $label).'</a> ';
+        return '<a href="' . preg_replace('/&(amp;)?id=[^& ]*/i', '', ampersand(\Environment::get('request'))) . '&amp;act=paste&amp;mode=cut&amp;table=tl_iso_product&amp;id=' . $row['id'] . '&amp;pid=' . \Input::get('id') . '&rt=' . \Input::get('rt') . '" title="' . specialchars($title) . '"' . $attributes . ' onclick="Backend.getScrollOffset();">' . \Image::getHtml($icon, $label) . '</a> ';
     }
 
     /**
@@ -95,10 +93,10 @@ class Button extends \Backend
         $t = ProductCollectionItem::getTable();
 
         if (ProductCollectionItem::countBy(array("$t.pid IN (SELECT id FROM tl_iso_product_collection WHERE type='order')", "$t.product_id IN (SELECT id FROM tl_iso_product WHERE id=? OR (pid=? AND language=''))"), array($row['id'], $row['id'])) > 0) {
-            return \Image::getHtml(preg_replace('/\.gif$/i', '_.gif', $icon)).' ';
+            return \Image::getHtml(preg_replace('/\.gif$/i', '_.gif', $icon)) . ' ';
         }
 
-        return '<a href="'.\Backend::addToUrl($href.'&amp;id='.$row['id']).'" title="'.specialchars($title).'"'.$attributes.'>'.\Image::getHtml($icon, $label).'</a> ';
+        return '<a href="' . \Backend::addToUrl($href . '&amp;id=' . $row['id']) . '" title="' . specialchars($title) . '"' . $attributes . '>' . \Image::getHtml($icon, $label) . '</a> ';
     }
 
     /**
@@ -113,8 +111,7 @@ class Button extends \Backend
      */
     public function forVisibilityToggle($row, $href, $label, $title, $icon, $attributes)
     {
-        if (strlen(\Input::get('tid')))
-        {
+        if (strlen(\Input::get('tid'))) {
             $this->toggleVisibility(\Input::get('tid'), (\Input::get('state') == 1));
             \Controller::redirect(\System::getReferer());
         }
@@ -124,25 +121,22 @@ class Button extends \Backend
             return '';
         }
 
-        $time = time();
+        $time          = time();
         $arrAttributes = array();
 
         if (($objProductType = ProductType::findByPk($row['type'])) !== null) {
             $arrAttributes = $row['pid'] ? $objProductType->getVariantAttributes() : $objProductType->getAttributes();
         }
 
-        if (($arrAttributes['start']['enabled'] && $row['start'] != '' && $row['start'] > $time) || ($arrAttributes['stop']['enabled'] && $row['stop'] != '' && $row['stop'] < $time))
-        {
-            return \Image::getHtml('system/modules/isotope/assets/images/invisible-startstop.png', $label).' ';
-        }
-        elseif ($row['published'] != '1')
-        {
+        if (($arrAttributes['start']['enabled'] && $row['start'] != '' && $row['start'] > $time) || ($arrAttributes['stop']['enabled'] && $row['stop'] != '' && $row['stop'] < $time)) {
+            return \Image::getHtml('system/modules/isotope/assets/images/invisible-startstop.png', $label) . ' ';
+        } elseif ($row['published'] != '1') {
             $icon = 'invisible.gif';
         }
 
-        $href .= '&amp;tid='.$row['id'].'&amp;state='.($row['published'] ? '' : 1);
+        $href .= '&amp;tid=' . $row['id'] . '&amp;state=' . ($row['published'] ? '' : 1);
 
-        return '<a href="'.\Backend::addToUrl($href).'" title="'.specialchars($title).'"'.$attributes.'>'.\Image::getHtml($icon, $label).'</a> ';
+        return '<a href="' . \Backend::addToUrl($href) . '" title="' . specialchars($title) . '"' . $attributes . '>' . \Image::getHtml($icon, $label) . '</a> ';
     }
 
     /**
@@ -161,7 +155,7 @@ class Button extends \Backend
             return '';
         }
 
-        return '<a href="'.\Backend::addToUrl($href.'&amp;id='.$row['id']).'" title="'.specialchars($title).'"'.$attributes.'>'.\Image::getHtml($icon, $label).'</a> ';
+        return '<a href="' . \Backend::addToUrl($href . '&amp;id=' . $row['id']) . '" title="' . specialchars($title) . '"' . $attributes . '>' . \Image::getHtml($icon, $label) . '</a> ';
     }
 
     /**
@@ -176,12 +170,11 @@ class Button extends \Backend
      */
     public function forRelated($row, $href, $label, $title, $icon, $attributes)
     {
-        if ($row['pid'] > 0)
-        {
+        if ($row['pid'] > 0) {
             return '';
         }
 
-        return '<a href="'.\Backend::addToUrl($href.'&amp;id='.$row['id']).'" title="'.specialchars($title).'"'.$attributes.'>'.\Image::getHtml($icon, $label).'</a> ';
+        return '<a href="' . \Backend::addToUrl($href . '&amp;id=' . $row['id']) . '" title="' . specialchars($title) . '"' . $attributes . '>' . \Image::getHtml($icon, $label) . '</a> ';
     }
 
     /**
@@ -200,7 +193,7 @@ class Button extends \Backend
             return '';
         }
 
-        return '<a href="'.\Backend::addToUrl($href.'&amp;id='.$row['id']).'" title="'.specialchars(sprintf($GLOBALS['TL_DCA']['tl_iso_product']['list']['operations']['downloads']['label'][2], $this->getNumberOfDownloadsForProduct($row['id'])) . $title).'"'.$attributes.'>'.\Image::getHtml($icon, $label) .'</a> ';
+        return '<a href="' . \Backend::addToUrl($href . '&amp;id=' . $row['id']) . '" title="' . specialchars(sprintf($GLOBALS['TL_DCA']['tl_iso_product']['list']['operations']['downloads']['label'][2], $this->getNumberOfDownloadsForProduct($row['id'])) . $title) . '"' . $attributes . '>' . \Image::getHtml($icon, $label) . '</a> ';
     }
 
     /**
@@ -224,11 +217,11 @@ class Button extends \Backend
             $groups = deserialize(\BackendUser::getInstance()->iso_groups);
 
             if (!is_array($groups) || empty($groups)) {
-                return \Image::getHtml(preg_replace('/\.gif$/i', '_.gif', $icon)).' ';
+                return \Image::getHtml(preg_replace('/\.gif$/i', '_.gif', $icon)) . ' ';
             }
         }
 
-        return '<a href="system/modules/isotope/group.php?do='.\Input::get('do').'&amp;table='.\Isotope\Model\Group::getTable().'&amp;field=gid&amp;value='.$row['gid'].'" title="'.specialchars($title).'"'.$attributes.' onclick="Backend.getScrollOffset();Isotope.openModalGroupSelector({\'width\':765,\'title\':\''.specialchars($GLOBALS['TL_LANG']['tl_iso_product']['product_groups'][0]).'\',\'url\':this.href,\'action\':\'moveProduct\',\'redirect\':\''.\Backend::addToUrl($href . '&pid=' . intval(\Input::get('pid')) . '&id=' . $row['id']).'\'});return false">'.\Image::getHtml($icon, $label).'</a> ';
+        return '<a href="system/modules/isotope/group.php?do=' . \Input::get('do') . '&amp;table=' . \Isotope\Model\Group::getTable() . '&amp;field=gid&amp;value=' . $row['gid'] . '" title="' . specialchars($title) . '"' . $attributes . ' onclick="Backend.getScrollOffset();Isotope.openModalGroupSelector({\'width\':765,\'title\':\'' . specialchars($GLOBALS['TL_LANG']['tl_iso_product']['product_groups'][0]) . '\',\'url\':this.href,\'action\':\'moveProduct\',\'redirect\':\'' . \Backend::addToUrl($href . '&pid=' . intval(\Input::get('pid')) . '&id=' . $row['id']) . '\'});return false">' . \Image::getHtml($icon, $label) . '</a> ';
     }
 
     /**
@@ -246,22 +239,19 @@ class Button extends \Backend
         Permission::check();
 
         // Check permissions to publish
-        if (!\BackendUser::getInstance()->isAdmin && !\BackendUser::getInstance()->hasAccess('tl_iso_product::published', 'alexf'))
-        {
-            \System::log('Not enough permissions to publish/unpublish product ID "'.$intId.'"', __METHOD__, TL_ERROR);
+        if (!\BackendUser::getInstance()->isAdmin && !\BackendUser::getInstance()->hasAccess('tl_iso_product::published', 'alexf')) {
+            \System::log('Not enough permissions to publish/unpublish product ID "' . $intId . '"', __METHOD__, TL_ERROR);
             \Controller::redirect('contao/main.php?act=error');
         }
 
         $objVersions = new \Versions('tl_iso_product', $intId);
-		$objVersions->initialize();
+        $objVersions->initialize();
 
         // Trigger the save_callback
-        if (is_array($GLOBALS['TL_DCA']['tl_iso_product']['fields']['published']['save_callback']))
-        {
-            foreach ($GLOBALS['TL_DCA']['tl_iso_product']['fields']['published']['save_callback'] as $callback)
-            {
+        if (is_array($GLOBALS['TL_DCA']['tl_iso_product']['fields']['published']['save_callback'])) {
+            foreach ($GLOBALS['TL_DCA']['tl_iso_product']['fields']['published']['save_callback'] as $callback) {
                 $objCallback = \System::importStatic($callback[0]);
-                $blnVisible = $objCallback->$callback[1]($blnVisible, $this);
+                $blnVisible  = $objCallback->$callback[1]($blnVisible, $this);
             }
         }
 

@@ -25,10 +25,10 @@ use Isotope\Model\Attribute;
 class TextField extends Attribute implements IsotopeAttribute
 {
 
-	public function saveToDCA(array &$arrData)
-	{
-		parent::saveToDCA($arrData);
+    public function saveToDCA(array &$arrData)
+    {
+        parent::saveToDCA($arrData);
 
-		$arrData['fields'][$this->field_name]['sql'] = "varchar(255) NOT NULL default ''";
-	}
+        $arrData['fields'][$this->field_name]['sql'] = "varchar(255) NOT NULL default ''";
+    }
 }

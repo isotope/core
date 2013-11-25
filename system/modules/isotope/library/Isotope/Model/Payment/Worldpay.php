@@ -65,9 +65,9 @@ class Worldpay extends Postsale implements IsotopePayment
         }
 
         // Store request data in order for future references
-        $arrPayment = deserialize($objOrder->payment_data, true);
+        $arrPayment               = deserialize($objOrder->payment_data, true);
         $arrPayment['POSTSALE'][] = $_POST;
-        $objOrder->payment_data = $arrPayment;
+        $objOrder->payment_data   = $arrPayment;
 
         $objOrder->save();
 
@@ -95,12 +95,12 @@ class Worldpay extends Postsale implements IsotopePayment
         global $objPage;
         $objAddress = Isotope::getCart()->getBillingAddress();
 
-        $arrData['instId'] = $this->worldpay_instId;
-        $arrData['cartId'] = Isotope::getCart()->id;
-        $arrData['amount'] = number_format(Isotope::getCart()->getTotal(), 2);
-        $arrData['currency'] = Isotope::getConfig()->currency;
+        $arrData['instId']      = $this->worldpay_instId;
+        $arrData['cartId']      = Isotope::getCart()->id;
+        $arrData['amount']      = number_format(Isotope::getCart()->getTotal(), 2);
+        $arrData['currency']    = Isotope::getConfig()->currency;
         $arrData['description'] = Translation::get($this->worldpay_description);
-        $arrData['name'] = substr($objAddress->firstname . ' ' . $objAddress->lastname, 0, 40);
+        $arrData['name']        = substr($objAddress->firstname . ' ' . $objAddress->lastname, 0, 40);
 
         if ($objAddress->company != '') {
             $arrData['address1'] = substr($objAddress->company, 0, 84);
@@ -112,12 +112,12 @@ class Worldpay extends Postsale implements IsotopePayment
             $arrData['address3'] = substr($objAddress->street_3, 0, 84);
         }
 
-        $arrData['town'] = substr($objAddress->city, 0, 30);
-        $arrData['region'] = substr($objAddress->subdivision, 0, 30);
+        $arrData['town']     = substr($objAddress->city, 0, 30);
+        $arrData['region']   = substr($objAddress->subdivision, 0, 30);
         $arrData['postcode'] = substr($objAddress->postal, 0, 12);
-        $arrData['country'] = strtoupper($objAddress->country);
-        $arrData['tel'] = substr($objAddress->phone, 0, 30);
-        $arrData['email'] = substr($objAddress->email, 0, 80);
+        $arrData['country']  = strtoupper($objAddress->country);
+        $arrData['tel']      = substr($objAddress->phone, 0, 30);
+        $arrData['email']    = substr($objAddress->email, 0, 80);
 
         // Generate MD5 secret hash
         $arrData['signature'] = md5($this->worldpay_md5secret . ':' . implode(':', array_intersect_key($arrData, array_flip(trimsplit(':', $this->worldpay_signatureFields)))));
@@ -125,9 +125,9 @@ class Worldpay extends Postsale implements IsotopePayment
         $objTemplate = new \Isotope\Template('iso_payment_worldpay');
 
         $objTemplate->setData($arrData);
-        $objTemplate->id = $this->id;
+        $objTemplate->id     = $this->id;
         $objTemplate->pageId = $objPage->id;
-        $objTemplate->debug = $this->debug;
+        $objTemplate->debug  = $this->debug;
         $objTemplate->action = ($this->debug ? 'https://secure-test.worldpay.com/wcc/purchase' : 'https://secure.worldpay.com/wcc/purchase');
 
         return $objTemplate->parse();
@@ -139,7 +139,7 @@ class Worldpay extends Postsale implements IsotopePayment
     protected function postsaleError()
     {
         $objPage = \PageModel::findWithDetails((int) \Input::post('M_pageId'));
-        $strUrl = \Environment::get('base') . \Controller::generateFrontendUrl($objPage->row(), '/step/failed', $objPage->language);
+        $strUrl  = \Environment::get('base') . \Controller::generateFrontendUrl($objPage->row(), '/step/failed', $objPage->language);
 
         // Output a HTML page to redirect the client from WorldPay back to the shop
         echo '
@@ -165,7 +165,7 @@ Redirecting back to shop...
     protected function postsaleSuccess($objOrder)
     {
         $objPage = \PageModel::findWithDetails((int) \Input::post('M_pageId'));
-        $strUrl = \Environment::get('base') . \Controller::generateFrontendUrl($objPage->row(), '/step/complete', $objPage->language) . '?uid=' . $objOrder->uniqid;
+        $strUrl  = \Environment::get('base') . \Controller::generateFrontendUrl($objPage->row(), '/step/complete', $objPage->language) . '?uid=' . $objOrder->uniqid;
 
         // Output a HTML page to redirect the client from WorldPay back to the shop
         echo '

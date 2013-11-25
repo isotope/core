@@ -43,7 +43,7 @@ class MediaManager extends \Widget implements \uploadable
     /**
      * Instantiate widget and initialize uploader
      */
-    public function __construct($arrAttributes=false)
+    public function __construct($arrAttributes = false)
     {
         parent::__construct($arrAttributes);
         $GLOBALS['TL_JAVASCRIPT']['fineuploader'] = \Haste\Util\Debug::uncompressedFile('system/modules/isotope/assets/plugins/fineuploader/fineuploader-4.0.1.min.js');
@@ -83,11 +83,11 @@ class MediaManager extends \Widget implements \uploadable
         // Convert the $_FILES array to Contao format
         if (!empty($_FILES[$this->strName])) {
             $arrFile = array(
-                'name' => array($this->getFileName($_FILES[$this->strName]['name'])),
-                'type' => array($_FILES[$this->strName]['type']),
+                'name'     => array($this->getFileName($_FILES[$this->strName]['name'])),
+                'type'     => array($_FILES[$this->strName]['type']),
                 'tmp_name' => array($_FILES[$this->strName]['tmp_name']),
-                'error' => array($_FILES[$this->strName]['error']),
-                'size' => array($_FILES[$this->strName]['size']),
+                'error'    => array($_FILES[$this->strName]['error']),
+                'size'     => array($_FILES[$this->strName]['size']),
             );
 
             $_FILES[$this->strName] = $arrFile;
@@ -175,10 +175,10 @@ class MediaManager extends \Widget implements \uploadable
                 }
 
                 $this->varValue[] = array(
-                    'src' => $v,
-                    'alt' => '',
-                    'desc' => '',
-                    'link' => '',
+                    'src'       => $v,
+                    'alt'       => '',
+                    'desc'      => '',
+                    'link'      => '',
                     'translate' => ''
                 );
             }
@@ -188,7 +188,7 @@ class MediaManager extends \Widget implements \uploadable
 
         // Merge parent record data
         if ($arrFallback !== false) {
-            $blnLanguage = true;
+            $blnLanguage    = true;
             $this->varValue = Gallery::mergeMediaData($this->varValue, $arrFallback);
         }
 

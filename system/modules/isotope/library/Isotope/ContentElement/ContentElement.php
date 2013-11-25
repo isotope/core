@@ -34,11 +34,10 @@ abstract class ContentElement extends Contao_ContentElement
     {
         parent::__construct($objElement);
 
-        if (TL_MODE == 'FE')
-        {
+        if (TL_MODE == 'FE') {
             // Load Isotope javascript and css
             $GLOBALS['TL_JAVASCRIPT'][] = \Haste\Util\Debug::uncompressedFile('system/modules/isotope/assets/js/isotope.min.js');
-            $GLOBALS['TL_CSS'][] = \Haste\Util\Debug::uncompressedFile('system/modules/isotope/assets/css/isotope.min.css');
+            $GLOBALS['TL_CSS'][]        = \Haste\Util\Debug::uncompressedFile('system/modules/isotope/assets/css/isotope.min.css');
         }
     }
 }

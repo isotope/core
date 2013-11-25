@@ -32,16 +32,15 @@ class ProductVariantList extends ProductList
      */
     public function generate()
     {
-        if (TL_MODE == 'BE')
-        {
+        if (TL_MODE == 'BE') {
             $objTemplate = new \BackendTemplate('be_wildcard');
 
             $objTemplate->wildcard = '### ISOTOPE ECOMMERCE: PRODUCT VARIANT LIST ###';
 
             $objTemplate->title = $this->headline;
-            $objTemplate->id = $this->id;
-            $objTemplate->link = $this->name;
-            $objTemplate->href = 'contao/main.php?do=themes&amp;table=tl_module&amp;act=edit&amp;id=' . $this->id;
+            $objTemplate->id    = $this->id;
+            $objTemplate->link  = $this->name;
+            $objTemplate->href  = 'contao/main.php?do=themes&amp;table=tl_module&amp;act=edit&amp;id=' . $this->id;
 
             return $objTemplate->parse();
         }
@@ -55,9 +54,9 @@ class ProductVariantList extends ProductList
      * @param   array|null
      * @return  array
      */
-    protected function findProducts($arrCacheIds=null)
+    protected function findProducts($arrCacheIds = null)
     {
-        $arrColumns = array();
+        $arrColumns    = array();
         $arrCategories = $this->findCategories();
 
         list($arrFilters, $arrSorting, $strWhere, $arrValues) = $this->getFiltersAndSorting();
@@ -91,12 +90,12 @@ class ProductVariantList extends ProductList
             $arrColumns,
             $arrValues,
             array(
-                'group' => Product::getTable() . '.id', 'order'=>'c.sorting',
-                'filters' => $arrFilters,
-                'sorting' => $arrSorting,
+                 'group'   => Product::getTable() . '.id', 'order' => 'c.sorting',
+                 'filters' => $arrFilters,
+                 'sorting' => $arrSorting,
             )
         );
-        
+
         return (null === $objProducts) ? array() : $objProducts->getModels();
     }
 }

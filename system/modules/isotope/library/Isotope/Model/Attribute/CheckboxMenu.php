@@ -25,10 +25,10 @@ use Isotope\Model\Attribute;
 class CheckboxMenu extends Attribute implements IsotopeAttribute
 {
 
-	public function saveToDCA(array &$arrData)
-	{
-		parent::saveToDCA($arrData);
+    public function saveToDCA(array &$arrData)
+    {
+        parent::saveToDCA($arrData);
 
-		$arrData['fields'][$this->field_name]['sql'] = "blob NULL";
-	}
+        $arrData['fields'][$this->field_name]['sql'] = "blob NULL";
+    }
 }

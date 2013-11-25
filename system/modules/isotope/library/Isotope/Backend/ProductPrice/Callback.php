@@ -36,33 +36,28 @@ class Callback extends \Backend
      */
     public function listRows($row)
     {
-        if (!$row['id'])
-        {
+        if (!$row['id']) {
             return '';
         }
 
         $arrTiers = array();
         $objTiers = \Database::getInstance()->execute("SELECT * FROM tl_iso_product_pricetier WHERE pid={$row['id']} ORDER BY min");
 
-        while ($objTiers->next())
-        {
+        while ($objTiers->next()) {
             $arrTiers[] = "{$objTiers->min}={$objTiers->price}";
         }
 
-        $arrInfo = array('<tr><td><span class="tl_label">'.$GLOBALS['TL_LANG']['tl_iso_product_price']['price_tiers'][0].':</span></td><td>' . implode(', ', $arrTiers) . '</td></tr>');
+        $arrInfo = array('<tr><td><span class="tl_label">' . $GLOBALS['TL_LANG']['tl_iso_product_price']['price_tiers'][0] . ':</span></td><td>' . implode(', ', $arrTiers) . '</td></tr>');
 
-        foreach ($row as $name => $value)
-        {
-            switch ($name)
-            {
+        foreach ($row as $name => $value) {
+            switch ($name) {
                 case 'id':
                 case 'pid':
                 case 'tstamp':
                     break;
 
                 default:
-                    if ($value != '' && $value > 0)
-                    {
+                    if ($value != '' && $value > 0) {
                         $arrInfo[] = '<tr><td><span class="tl_label">' . Format::dcaLabel('tl_iso_product_price', $name) . ':</span></td><td>' . Format::dcaValue('tl_iso_product_price', $name, $value) . '</td></tr>';
                     }
                     break;
@@ -81,7 +76,7 @@ class Callback extends \Backend
      */
     public function generateWizardList($objRecords, $strId)
     {
-    	$strReturn = '
+        $strReturn = '
 <table class="tl_listing showColumns">
 <thead>
     <td class="tl_folder_tlist">' . Format::dcaLabel('tl_iso_product_price', 'price_tiers') . '</td>
@@ -93,26 +88,26 @@ class Callback extends \Backend
 </thead>
 <tbody>';
 
-    	while ($objRecords->next()) {
+        while ($objRecords->next()) {
 
-    	    $arrTiers = array();
+            $arrTiers = array();
             $objTiers = \Database::getInstance()->execute("SELECT * FROM tl_iso_product_pricetier WHERE pid={$objRecords->id} ORDER BY min");
 
             while ($objTiers->next()) {
                 $arrTiers[] = "{$objTiers->min}={$objTiers->price}";
             }
 
-	    	$strReturn .= '
+            $strReturn .= '
 <tr>
     <td class="tl_file_list">' . implode(', ', $arrTiers) . '</td>
-    <td class="tl_file_list">' . (Format::dcaValue('tl_iso_product_price', 'tax_class', $objRecords->tax_class) ?: '-') . '</td>
-    <td class="tl_file_list">' . (Format::dcaValue('tl_iso_product_price', 'config_id', $objRecords->config_id) ?: '-') . '</td>
-    <td class="tl_file_list">' . (Format::dcaValue('tl_iso_product_price', 'member_group', $objRecords->member_group) ?: '-') . '</td>
-    <td class="tl_file_list">' . (Format::dcaValue('tl_iso_product_price', 'member_group', $objRecords->start) ?: '-') . '</td>
-    <td class="tl_file_list">' . (Format::dcaValue('tl_iso_product_price', 'member_group', $objRecords->stop) ?: '-') . '</td>
+    <td class="tl_file_list">' . (Format::dcaValue('tl_iso_product_price', 'tax_class', $objRecords->tax_class) ? : '-') . '</td>
+    <td class="tl_file_list">' . (Format::dcaValue('tl_iso_product_price', 'config_id', $objRecords->config_id) ? : '-') . '</td>
+    <td class="tl_file_list">' . (Format::dcaValue('tl_iso_product_price', 'member_group', $objRecords->member_group) ? : '-') . '</td>
+    <td class="tl_file_list">' . (Format::dcaValue('tl_iso_product_price', 'member_group', $objRecords->start) ? : '-') . '</td>
+    <td class="tl_file_list">' . (Format::dcaValue('tl_iso_product_price', 'member_group', $objRecords->stop) ? : '-') . '</td>
 </tr>
 ';
-    	}
+        }
 
         $strReturn .= '
 </tbody>
@@ -130,17 +125,15 @@ class Callback extends \Backend
      */
     public function loadTiers($varValue, $dc)
     {
-        if (!$dc->id)
-        {
+        if (!$dc->id) {
             return array();
         }
 
         $arrTiers = \Database::getInstance()->execute("SELECT min, price FROM tl_iso_product_pricetier WHERE pid={$dc->id} ORDER BY min")
-                                            ->fetchAllAssoc();
+            ->fetchAllAssoc();
 
-        if (empty($arrTiers))
-        {
-            return array(array('min'=>1));
+        if (empty($arrTiers)) {
+            return array(array('min' => 1));
         }
 
         return $arrTiers;
@@ -157,49 +150,37 @@ class Callback extends \Backend
     {
         $arrNew = deserialize($varValue);
 
-        if (!is_array($arrNew) || empty($arrNew))
-        {
+        if (!is_array($arrNew) || empty($arrNew)) {
             \Database::getInstance()->query("DELETE FROM tl_iso_product_pricetier WHERE pid={$dc->id}");
-        }
-        else
-        {
-            $time = time();
+        } else {
+            $time      = time();
             $arrInsert = array();
             $arrUpdate = array();
             $arrDelete = \Database::getInstance()->execute("SELECT min FROM tl_iso_product_pricetier WHERE pid={$dc->id}")->fetchEach('min');
 
-            foreach ($arrNew as $new)
-            {
+            foreach ($arrNew as $new) {
                 $pos = array_search($new['min'], $arrDelete);
 
-                if ($pos === false)
-                {
+                if ($pos === false) {
                     $arrInsert[$new['min']] = $new['price'];
-                }
-                else
-                {
+                } else {
                     $arrUpdate[$new['min']] = $new['price'];
                     unset($arrDelete[$pos]);
                 }
             }
 
-            if (!empty($arrDelete))
-            {
+            if (!empty($arrDelete)) {
                 \Database::getInstance()->query("DELETE FROM tl_iso_product_pricetier WHERE pid={$dc->id} AND min IN (" . implode(',', $arrDelete) . ")");
             }
 
-            if (!empty($arrUpdate))
-            {
-                foreach ($arrUpdate as $min => $price)
-                {
+            if (!empty($arrUpdate)) {
+                foreach ($arrUpdate as $min => $price) {
                     \Database::getInstance()->prepare("UPDATE tl_iso_product_pricetier SET tstamp=$time, price=? WHERE pid={$dc->id} AND min=?")->executeUncached($price, $min);
                 }
             }
 
-            if (!empty($arrInsert))
-            {
-                foreach ($arrInsert as $min => $price)
-                {
+            if (!empty($arrInsert)) {
+                foreach ($arrInsert as $min => $price) {
                     \Database::getInstance()->prepare("INSERT INTO tl_iso_product_pricetier (pid,tstamp,min,price) VALUES ({$dc->id}, $time, ?, ?)")->executeUncached($min, $price);
                 }
             }

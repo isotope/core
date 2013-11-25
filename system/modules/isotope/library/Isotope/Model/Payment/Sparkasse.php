@@ -35,20 +35,17 @@ class Sparkasse extends Postsale implements IsotopePayment
     {
         $arrData = array();
 
-        foreach (array('aid', 'amount', 'basketid', 'currency', 'directPosErrorCode', 'directPosErrorMessage', 'orderid', 'rc', 'retrefnum', 'sessionid', 'trefnum') as $strKey)
-        {
+        foreach (array('aid', 'amount', 'basketid', 'currency', 'directPosErrorCode', 'directPosErrorMessage', 'orderid', 'rc', 'retrefnum', 'sessionid', 'trefnum') as $strKey) {
             $arrData[$strKey] = \Input::post($strKey);
         }
 
         // Sparkasse system sent error message
-        if ($arrData['directPosErrorCode'] > 0)
-        {
+        if ($arrData['directPosErrorCode'] > 0) {
             $this->redirectError($arrData);
         }
 
         // Check the data hash to prevent manipulations
-        if (\Input::post('mac') != $this->calculateHash($arrData))
-        {
+        if (\Input::post('mac') != $this->calculateHash($arrData)) {
             \System::log('Security hash mismatch in Sparkasse payment!', __METHOD__, TL_ERROR);
             $this->redirectError($arrData);
         }
@@ -57,27 +54,23 @@ class Sparkasse extends Postsale implements IsotopePayment
         $arrData['amount'] = str_replace(',', '.', preg_replace('/[^0-9,]/', '', $arrData['amount']));
 
         // Validate payment data
-        if ($objOrder->currency != $arrData['currency'])
-        {
+        if ($objOrder->currency != $arrData['currency']) {
             \System::log(sprintf('Data manipulation: currency mismatch ("%s" != "%s")', $objOrder->currency, $arrData['currency']), __METHOD__, TL_ERROR);
             $this->redirectError($arrData);
-        }
-        elseif ($objOrder->getTotal() != $arrData['amount'])
-        {
+        } elseif ($objOrder->getTotal() != $arrData['amount']) {
             \System::log(sprintf('Data manipulation: amount mismatch ("%s" != "%s")', $objOrder->getTotal(), $arrData['amount']), __METHOD__, TL_ERROR);
             $this->redirectError($arrData);
         }
 
-        if (!$objOrder->checkout())
-        {
+        if (!$objOrder->checkout()) {
             \System::log('Postsale checkout for order ID "' . $objOrder->id . '" failed', __METHOD__, TL_ERROR);
             $this->redirectError($arrData);
         }
 
         // Store request data in order for future references
-        $arrPayment = deserialize($objOrder->payment_data, true);
+        $arrPayment               = deserialize($objOrder->payment_data, true);
         $arrPayment['POSTSALE'][] = $_POST;
-        $objOrder->payment_data = $arrPayment;
+        $objOrder->payment_data   = $arrPayment;
 
         $objOrder->date_paid = time();
         $objOrder->updateOrderStatus($this->new_order_status);

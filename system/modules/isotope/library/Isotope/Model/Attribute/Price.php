@@ -26,33 +26,33 @@ use Isotope\Model\Attribute;
 class Price extends Attribute implements IsotopeAttribute
 {
 
-    public function __construct(\Database\Result $objResult=null)
+    public function __construct(\Database\Result $objResult = null)
     {
         // This class should not be registered
-    	// Set type or ModelType would throw an exception
-    	$this->arrData['type'] = 'price';
+        // Set type or ModelType would throw an exception
+        $this->arrData['type'] = 'price';
 
-    	parent::__construct($objResult);
+        parent::__construct($objResult);
     }
 
-	public function getBackendWidget()
-	{
-		return $GLOBALS['BE_FFL']['timePeriod'];
-	}
+    public function getBackendWidget()
+    {
+        return $GLOBALS['BE_FFL']['timePeriod'];
+    }
 
-	public function getFrontendWidget()
-	{
-		return false;
-	}
+    public function getFrontendWidget()
+    {
+        return false;
+    }
 
-	public function generate(IsotopeProduct $objProduct, array $arrOptions=array())
-	{
-	    $objPrice = $objProduct->getPrice();
+    public function generate(IsotopeProduct $objProduct, array $arrOptions = array())
+    {
+        $objPrice = $objProduct->getPrice();
 
         if (null === $objPrice) {
             return '';
         }
 
         return $objPrice->generate();
-	}
+    }
 }

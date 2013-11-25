@@ -28,7 +28,7 @@ use Isotope\Model\ProductCollection\Order;
 abstract class PSP extends Payment
 {
 
-     /**
+    /**
      * Process payment on confirmation page
      * @return  boolean
      */
@@ -135,7 +135,7 @@ abstract class PSP extends Payment
         uksort($arrParams, 'strnatcasecmp');
 
         $strSHASign = '';
-        foreach($arrParams as $k => $v) {
+        foreach ($arrParams as $k => $v) {
             if ($v == '')
                 continue;
 
@@ -147,10 +147,10 @@ abstract class PSP extends Payment
         $objTemplate = new \Isotope\Template($this->strTemplate);
         $objTemplate->setData($this->arrData);
 
-        $objTemplate->params    = $arrParams;
-        $objTemplate->headline  = $GLOBALS['TL_LANG']['MSC']['pay_with_redirect'][0];
-        $objTemplate->message   = $GLOBALS['TL_LANG']['MSC']['pay_with_redirect'][1];
-        $objTemplate->slabel    = $GLOBALS['TL_LANG']['MSC']['pay_with_redirect'][2];
+        $objTemplate->params   = $arrParams;
+        $objTemplate->headline = $GLOBALS['TL_LANG']['MSC']['pay_with_redirect'][0];
+        $objTemplate->message  = $GLOBALS['TL_LANG']['MSC']['pay_with_redirect'][1];
+        $objTemplate->slabel   = $GLOBALS['TL_LANG']['MSC']['pay_with_redirect'][2];
 
         return $objTemplate->parse();
     }
@@ -162,7 +162,7 @@ abstract class PSP extends Payment
      */
     protected function preparePSPParams($objOrder)
     {
-        $strFailedUrl = \Environment::get('base') . \Isotope\Module\Checkout::generateUrlForStep('failed');
+        $strFailedUrl      = \Environment::get('base') . \Isotope\Module\Checkout::generateUrlForStep('failed');
         $objBillingAddress = $objOrder->getBillingAddress();
 
         return array
@@ -184,7 +184,7 @@ abstract class PSP extends Payment
             'DECLINEURL'    => $strFailedUrl,
             'EXCEPTIONURL'  => $strFailedUrl,
             'PARAMPLUS'     => 'mod=pay&amp;id=' . $this->id,
-            'TP'            => $this->psp_dynamic_template ?: ''
+            'TP'            => $this->psp_dynamic_template ? : ''
         );
     }
 
@@ -210,7 +210,7 @@ abstract class PSP extends Payment
     private function validateSHASign()
     {
         $strSHASign = '';
-        $arrParams = array();
+        $arrParams  = array();
 
         foreach (array_keys(($this->psp_http_method == 'GET' ? $_GET : $_POST)) as $key) {
             if (in_array(strtoupper($key), static::$arrShaOut)) {
@@ -223,7 +223,7 @@ abstract class PSP extends Payment
         // We can only use ksort($arrParams, SORT_NATURAL) as of PHP 5.4
         uksort($arrParams, 'strnatcasecmp');
 
-        foreach($arrParams as $k => $v ) {
+        foreach ($arrParams as $k => $v) {
             if ($v == '') {
                 continue;
             }

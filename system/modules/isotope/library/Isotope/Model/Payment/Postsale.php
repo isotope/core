@@ -31,27 +31,24 @@ abstract class Postsale extends Payment implements IsotopePostsale
      */
     public function processPayment()
     {
-        if (($objOrder = Order::findOneBy('source_collection_id', Isotope::getCart()->id)) === null)
-        {
+        if (($objOrder = Order::findOneBy('source_collection_id', Isotope::getCart()->id)) === null) {
             return false;
         }
 
-        if ($objOrder->date_paid > 0 && $objOrder->date_paid <= time())
-        {
+        if ($objOrder->date_paid > 0 && $objOrder->date_paid <= time()) {
             \Isotope\Frontend::clearTimeout();
 
             return true;
         }
 
-        if (\Isotope\Frontend::setTimeout())
-        {
+        if (\Isotope\Frontend::setTimeout()) {
             // Do not index or cache the page
             global $objPage;
             $objPage->noSearch = 1;
-            $objPage->cache = 0;
+            $objPage->cache    = 0;
 
-            $objTemplate = new \Isotope\Template('mod_message');
-            $objTemplate->type = 'processing';
+            $objTemplate          = new \Isotope\Template('mod_message');
+            $objTemplate->type    = 'processing';
             $objTemplate->message = $GLOBALS['TL_LANG']['MSC']['payment_processing'];
 
             return $objTemplate->parse();

@@ -75,7 +75,7 @@ class ProductCollectionItem extends \Model
      * Get the product related to this item
      * @return  IsotopeProduct|null
      */
-    public function getProduct($blnNoCache=false)
+    public function getProduct($blnNoCache = false)
     {
         if (false === $this->objProduct || true === $blnNoCache) {
 
@@ -242,7 +242,7 @@ class ProductCollectionItem extends \Model
 
         \Database::getInstance()->query("UPDATE " . static::$strTable . " SET tstamp=$time, quantity=(quantity+" . (int) $intQuantity . ") WHERE " . static::$strPk . "=" . $this->{static::$strPk});
 
-        $this->tstamp = $time;
+        $this->tstamp   = $time;
         $this->quantity = \Database::getInstance()->query("SELECT quantity FROM " . static::$strTable . " WHERE " . static::$strPk . "=" . $this->{static::$strPk})->quantity;
 
         return $this;
@@ -263,7 +263,7 @@ class ProductCollectionItem extends \Model
 
         \Database::getInstance()->query("UPDATE " . static::$strTable . " SET tstamp=$time, quantity=(quantity-" . (int) $intQuantity . ") WHERE " . static::$strPk . "=" . $this->{static::$strPk});
 
-        $this->tstamp = $time;
+        $this->tstamp   = $time;
         $this->quantity = \Database::getInstance()->query("SELECT quantity FROM " . static::$strTable . " WHERE " . static::$strPk . "=" . $this->{static::$strPk})->quantity;
 
         return $this;
@@ -276,17 +276,15 @@ class ProductCollectionItem extends \Model
      * @param   mixed
      * @return  int
      */
-    public static function sumBy($strField, $strColumn=null, $varValue=null)
+    public static function sumBy($strField, $strColumn = null, $varValue = null)
     {
-        if (static::$strTable == '')
-        {
+        if (static::$strTable == '') {
             return 0;
         }
 
         $strQuery = "SELECT SUM(" . $strField . ") AS sum FROM " . static::$strTable;
 
-        if ($strColumn !== null)
-        {
+        if ($strColumn !== null) {
             $strQuery .= " WHERE " . (is_array($strColumn) ? implode(" AND ", $strColumn) : static::$strTable . '.' . $strColumn . "=?");
         }
 

@@ -66,7 +66,7 @@ class Group extends Shipping implements IsotopeShipping
      * Return calculated price for this shipping method
      * @return float
      */
-    public function getPrice(IsotopeProductCollection $objCollection=null)
+    public function getPrice(IsotopeProductCollection $objCollection = null)
     {
         if (empty($this->arrMethods)) {
             return 0;
@@ -86,6 +86,7 @@ class Group extends Shipping implements IsotopeShipping
                         $fltReturn = $fltPrice;
                     }
                 }
+
                 return ($fltReturn === null) ? 0 : $fltReturn;
 
             case 'highest':
@@ -96,6 +97,7 @@ class Group extends Shipping implements IsotopeShipping
                         $fltReturn = $fltPrice;
                     }
                 }
+
                 return ($fltReturn === null) ? 0 : $fltReturn;
 
             case 'summarize':
@@ -103,6 +105,7 @@ class Group extends Shipping implements IsotopeShipping
                 foreach ($this->arrMethods as $objMethod) {
                     $fltTotal += $objMethod->getPrice();
                 }
+
                 return $fltTotal;
         }
     }

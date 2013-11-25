@@ -59,16 +59,16 @@ class ProductCache extends \Model
      * @param   int
      * @return  ProductCache|null
      */
-    public static function findForPageAndModule($intPage, $intModule, array $arrOptions=array())
+    public static function findForPageAndModule($intPage, $intModule, array $arrOptions = array())
     {
         return static::findOneBy(
             array(
-                'page_id=?',
-                'module_id=?',
-                'requestcache_id=?',
-                'groups=?',
-                "(keywords=? OR keywords='')",
-                '(expires>? OR expires=0)'
+                 'page_id=?',
+                 'module_id=?',
+                 'requestcache_id=?',
+                 'groups=?',
+                 "(keywords=? OR keywords='')",
+                 '(expires>? OR expires=0)'
             ),
             array($intPage, $intModule, (int) \Input::get('isorc'), static::getCacheableGroups(), (string) \Input::get('keywords'), time()),
             $arrOptions
@@ -130,12 +130,10 @@ class ProductCache extends \Model
         if (null === $groups) {
             $groups = '';
 
-            if (FE_USER_LOGGED_IN === true)
-            {
+            if (FE_USER_LOGGED_IN === true) {
                 $arrGroups = \FrontendUser::getInstance()->groups;
 
-                if (!empty($arrGroups) && is_array($arrGroups))
-                {
+                if (!empty($arrGroups) && is_array($arrGroups)) {
                     // Make sure groups array always looks the same to find it in the database
                     $arrGroups = array_unique($arrGroups);
                     sort($arrGroups, SORT_NUMERIC);

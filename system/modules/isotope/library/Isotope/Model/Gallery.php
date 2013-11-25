@@ -59,9 +59,9 @@ abstract class Gallery extends TypeAgent
         }
 
         $objGallery->setName($objProduct->getFormId() . '_' . $strAttribute);
-        $objGallery->setFiles(static::mergeMediaData($objProduct->$strAttribute, deserialize($objProduct->{$strAttribute.'_fallback'})));
+        $objGallery->setFiles(static::mergeMediaData($objProduct->$strAttribute, deserialize($objProduct->{$strAttribute . '_fallback'})));
         $objGallery->product_id = ($objProduct->pid ? $objProduct->pid : $objProduct->id);
-        $objGallery->href = $objProduct->generateUrl($arrConfig['jumpTo']);
+        $objGallery->href       = $objProduct->generateUrl($arrConfig['jumpTo']);
 
         return $objGallery;
     }
@@ -93,7 +93,7 @@ abstract class Gallery extends TypeAgent
                     if ($arrTranslate[$image['src']]['translate'] == '') {
                         $arrCurrent[$i] = $arrTranslate[$image['src']];
                     } else {
-                        $arrCurrent[$i]['link'] = $arrTranslate[$image['src']]['link'];
+                        $arrCurrent[$i]['link']      = $arrTranslate[$image['src']]['link'];
                         $arrCurrent[$i]['translate'] = $arrTranslate[$image['src']]['translate'];
                     }
 

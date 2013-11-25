@@ -41,13 +41,13 @@ abstract class OrderConditions extends CheckoutStep
      */
     public function generate()
     {
-        $this->objForm = new Form($this->objModule->getFormId(), 'POST', function($haste) {
+        $this->objForm = new Form($this->objModule->getFormId(), 'POST', function ($haste) {
             return \Input::post('FORM_SUBMIT') === $haste->getFormId();
         }, (boolean) $this->objModule->tableless);
 
         // Don't catch the exception here because we want it to be shown to the user
-        $this->objForm->addFieldsFromFormGenerator($this->objModule->iso_order_conditions, function($strName, &$arrDca) {
-            $arrDca['value'] = $_SESSION['FORM_DATA'][$strName] ?: $arrDca['value'];
+        $this->objForm->addFieldsFromFormGenerator($this->objModule->iso_order_conditions, function ($strName, &$arrDca) {
+            $arrDca['value'] = $_SESSION['FORM_DATA'][$strName] ? : $arrDca['value'];
 
             return true;
         });
@@ -63,7 +63,7 @@ abstract class OrderConditions extends CheckoutStep
             $_SESSION['FORM_DATA'][$strField] = array();
             foreach (array_keys($this->objForm->getFormFields()) as $strField) {
                 if ($this->objForm->getWidget($strField) instanceof \uploadable) {
-                    $arrFile = $_SESSION['FILES'][$strField];
+                    $arrFile  = $_SESSION['FILES'][$strField];
                     $varValue = str_replace(TL_ROOT . '/', '', dirname($arrFile['tmp_name'])) . '/' . rawurlencode($arrFile['name']);
                 } else {
                     $varValue = $this->objForm->fetch($strField);

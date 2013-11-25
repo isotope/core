@@ -13,26 +13,25 @@
 namespace Isotope\Backend\Product;
 
 
-
 class XmlSitemap extends \Backend
 {
 
     /**
-	 * Schedule an XML sitemap update
-	 * @param \DataContainer
-	 */
-	public function scheduleUpdate($dc)
-	{
-		// Return if there is no ID
-		if (!$dc->id) {
-			return;
-		}
+     * Schedule an XML sitemap update
+     * @param \DataContainer
+     */
+    public function scheduleUpdate($dc)
+    {
+        // Return if there is no ID
+        if (!$dc->id) {
+            return;
+        }
 
-		// Store the ID in the session
-		$session = \Session::getInstance()->get('iso_product_updater');
-		$session[] = $dc->id;
-		\Session::getInstance()->set('iso_product_updater', array_unique($session));
-	}
+        // Store the ID in the session
+        $session   = \Session::getInstance()->get('iso_product_updater');
+        $session[] = $dc->id;
+        \Session::getInstance()->set('iso_product_updater', array_unique($session));
+    }
 
     /**
      * Check for modified products and update the XML files if necessary

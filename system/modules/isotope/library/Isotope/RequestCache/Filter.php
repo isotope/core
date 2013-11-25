@@ -102,7 +102,7 @@ class Filter implements \ArrayAccess
         $this->preventModification();
 
         $this->arrConfig['operator'] = 'like';
-        $this->arrConfig['value'] = $value;
+        $this->arrConfig['value']    = $value;
 
         return $this;
     }
@@ -112,7 +112,7 @@ class Filter implements \ArrayAccess
         $this->preventModification();
 
         $this->arrConfig['operator'] = 'eq';
-        $this->arrConfig['value'] = $value;
+        $this->arrConfig['value']    = $value;
 
         return $this;
     }
@@ -122,7 +122,7 @@ class Filter implements \ArrayAccess
         $this->preventModification();
 
         $this->arrConfig['operator'] = 'neq';
-        $this->arrConfig['value'] = $value;
+        $this->arrConfig['value']    = $value;
 
         return $this;
     }
@@ -132,7 +132,7 @@ class Filter implements \ArrayAccess
         $this->preventModification();
 
         $this->arrConfig['operator'] = 'lt';
-        $this->arrConfig['value'] = $value;
+        $this->arrConfig['value']    = $value;
 
         return $this;
     }
@@ -142,7 +142,7 @@ class Filter implements \ArrayAccess
         $this->preventModification();
 
         $this->arrConfig['operator'] = 'lte';
-        $this->arrConfig['value'] = $value;
+        $this->arrConfig['value']    = $value;
 
         return $this;
     }
@@ -152,7 +152,7 @@ class Filter implements \ArrayAccess
         $this->preventModification();
 
         $this->arrConfig['operator'] = 'gt';
-        $this->arrConfig['value'] = $value;
+        $this->arrConfig['value']    = $value;
 
         return $this;
     }
@@ -162,7 +162,7 @@ class Filter implements \ArrayAccess
         $this->preventModification();
 
         $this->arrConfig['operator'] = 'gte';
-        $this->arrConfig['value'] = $value;
+        $this->arrConfig['value']    = $value;
 
         return $this;
     }
@@ -219,8 +219,7 @@ class Filter implements \ArrayAccess
             $varValues = array($varValues);
         }
 
-        foreach ($varValues as $varValue)
-        {
+        foreach ($varValues as $varValue) {
             switch ($this->arrConfig['operator']) {
                 case 'like':
                     if (stripos($varValue, $this->arrConfig['value']) !== false) {
@@ -348,7 +347,7 @@ class Filter implements \ArrayAccess
      */
     public function sqlValue()
     {
-        return ($this->arrConfig['operator'] == 'like' ? ('%'.$this->arrConfig['value'].'%') : $this->arrConfig['value']);
+        return ($this->arrConfig['operator'] == 'like' ? ('%' . $this->arrConfig['value'] . '%') : $this->arrConfig['value']);
     }
 
     /**
@@ -361,8 +360,7 @@ class Filter implements \ArrayAccess
             throw new \BadMethodCallException('Filter operator is not yet configured');
         }
 
-        switch ($this->arrConfig['operator'])
-        {
+        switch ($this->arrConfig['operator']) {
             case 'like':
                 return 'LIKE';
 

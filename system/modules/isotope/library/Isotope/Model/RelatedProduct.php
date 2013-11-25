@@ -38,7 +38,7 @@ class RelatedProduct extends \Model
      * @param   array
      * @return  Model\Collection|null
      */
-    public static function findByProductAndCategories(IsotopeProduct $objProduct, array $arrCategories, array $arrOptions=array())
+    public static function findByProductAndCategories(IsotopeProduct $objProduct, array $arrCategories, array $arrOptions = array())
     {
         $t = static::$strTable;
 

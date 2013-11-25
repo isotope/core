@@ -24,17 +24,13 @@ class Callback extends \Backend
     public function disableFieldName($dc)
     {
         // Hide the field in editAll & overrideAll mode (Thanks to Yanick Witschi)
-        if (\Input::get('act') == 'editAll' || \Input::get('act') == 'overrideAll')
-        {
+        if (\Input::get('act') == 'editAll' || \Input::get('act') == 'overrideAll') {
             $GLOBALS['TL_DCA']['tl_iso_attribute']['fields']['field_name']['eval']['doNotShow'] = true;
-        }
-        elseif ($dc->id)
-        {
+        } elseif ($dc->id) {
             $objAttribute = \Database::getInstance()->execute("SELECT * FROM tl_iso_attribute WHERE id={$dc->id}");
 
-            if ($objAttribute->field_name != '')
-            {
-                $GLOBALS['TL_DCA']['tl_iso_attribute']['fields']['field_name']['eval']['disabled'] = true;
+            if ($objAttribute->field_name != '') {
+                $GLOBALS['TL_DCA']['tl_iso_attribute']['fields']['field_name']['eval']['disabled']  = true;
                 $GLOBALS['TL_DCA']['tl_iso_attribute']['fields']['field_name']['eval']['mandatory'] = false;
             }
         }
@@ -49,8 +45,7 @@ class Callback extends \Backend
     {
         $objAttribute = \Database::getInstance()->prepare("SELECT * FROM tl_iso_attribute WHERE id=?")->execute($dc->id);
 
-        if ($objAttribute->variant_option)
-        {
+        if ($objAttribute->variant_option) {
             unset($GLOBALS['TL_DCA']['tl_iso_attribute']['fields']['options']['eval']['columnFields']['default']);
             unset($GLOBALS['TL_DCA']['tl_iso_attribute']['fields']['options']['eval']['columnFields']['group']);
         }
@@ -70,8 +65,7 @@ class Callback extends \Backend
 
         $varValue = standardize($varValue);
 
-        if (isset($GLOBALS['TL_DCA']['tl_iso_product']['fields'][$varValue]) && $GLOBALS['TL_DCA']['tl_iso_product']['fields'][$varValue]['attributes']['systemColumn'])
-        {
+        if (isset($GLOBALS['TL_DCA']['tl_iso_product']['fields'][$varValue]) && $GLOBALS['TL_DCA']['tl_iso_product']['fields'][$varValue]['attributes']['systemColumn']) {
             throw new \InvalidArgumentException(sprintf($GLOBALS['TL_LANG']['ERR']['systemColumn'], $varValue));
         }
 
@@ -109,10 +103,8 @@ class Callback extends \Backend
         $this->loadDataContainer('tl_iso_product');
         $arrFields = array();
 
-        foreach ($GLOBALS['TL_DCA']['tl_iso_product']['fields'] as $field => $arrData)
-        {
-            if ($arrData['inputType'] == 'select' || ($arrData['inputType'] == 'conditionalselect' && $field != $dc->activeRecord->field_name))
-            {
+        foreach ($GLOBALS['TL_DCA']['tl_iso_product']['fields'] as $field => $arrData) {
+            if ($arrData['inputType'] == 'select' || ($arrData['inputType'] == 'conditionalselect' && $field != $dc->activeRecord->field_name)) {
                 $arrFields[$field] = strlen($arrData['label'][0]) ? $arrData['label'][0] : $field;
             }
         }
@@ -130,10 +122,8 @@ class Callback extends \Backend
     {
         $arrOptions = array();
 
-        foreach (scan(TL_ROOT . '/system/config') as $file)
-        {
-            if (is_file(TL_ROOT . '/system/config/' . $file) && strpos($file, 'tiny') === 0)
-            {
+        foreach (scan(TL_ROOT . '/system/config') as $file) {
+            if (is_file(TL_ROOT . '/system/config/' . $file) && strpos($file, 'tiny') === 0) {
                 $arrOptions[] = basename($file, '.php');
             }
         }
@@ -150,19 +140,15 @@ class Callback extends \Backend
      */
     public function validateForeignKey($varValue, $dc)
     {
-        if ($varValue != '')
-        {
+        if ($varValue != '') {
             $arrLines = trimsplit('@\r\n|\n|\r@', $varValue);
 
-            foreach ($arrLines as $foreignKey)
-            {
-                if ($foreignKey == '' || strpos($foreignKey, '#') === 0)
-                {
+            foreach ($arrLines as $foreignKey) {
+                if ($foreignKey == '' || strpos($foreignKey, '#') === 0) {
                     continue;
                 }
 
-                if (strpos($foreignKey, '=') === 2)
-                {
+                if (strpos($foreignKey, '=') === 2) {
                     $foreignKey = substr($foreignKey, 3);
                 }
 
@@ -183,8 +169,7 @@ class Callback extends \Backend
      */
     public function validateDatepicker($varValue, $dc)
     {
-        if ($varValue && !in_array($dc->activeRecord->rgxp, array('date', 'time', 'datim')))
-        {
+        if ($varValue && !in_array($dc->activeRecord->rgxp, array('date', 'time', 'datim'))) {
             throw new UnexpectedValueException($GLOBALS['TL_LANG']['ERR']['datepickerRgxp']);
         }
 

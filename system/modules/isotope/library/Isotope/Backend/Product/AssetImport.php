@@ -22,7 +22,7 @@ class AssetImport extends \Backend
      * @param array
      * @return string
      */
-    public function generate($dc, $arrNewImages=array())
+    public function generate($dc, $arrNewImages = array())
     {
         $objTree = new \FileTree(\FileTree::getAttributesFromDca($GLOBALS['TL_DCA']['tl_iso_product']['fields']['source'], 'source', null, 'source', 'tl_iso_product'));
 
@@ -39,23 +39,23 @@ class AssetImport extends \Backend
         // Return form
         return '
 <div id="tl_buttons">
-<a href="'.ampersand(str_replace('&key=import', '', \Environment::get('request'))).'" class="header_back" title="'.specialchars($GLOBALS['TL_LANG']['MSC']['backBT']).'">'.$GLOBALS['TL_LANG']['MSC']['backBT'].'</a>
+<a href="' . ampersand(str_replace('&key=import', '', \Environment::get('request'))) . '" class="header_back" title="' . specialchars($GLOBALS['TL_LANG']['MSC']['backBT']) . '">' . $GLOBALS['TL_LANG']['MSC']['backBT'] . '</a>
 </div>
 
-<h2 class="sub_headline">'.$GLOBALS['TL_LANG']['tl_iso_product']['import'][1].'</h2>
+<h2 class="sub_headline">' . $GLOBALS['TL_LANG']['tl_iso_product']['import'][1] . '</h2>
 
 <div class="tl_message"><div class="tl_info">' . $GLOBALS['TL_LANG']['tl_iso_product']['importAssetsDescr'] . '</div></div>
-'.\Message::generate().'
+' . \Message::generate() . '
 
-<form action="'.ampersand(\Environment::get('request'), true).'" id="tl_iso_product_import" class="tl_form" method="post">
+<form action="' . ampersand(\Environment::get('request'), true) . '" id="tl_iso_product_import" class="tl_form" method="post">
 <div class="tl_formbody_edit iso_importassets">
 <input type="hidden" name="FORM_SUBMIT" value="tl_iso_product_import">
-<input type="hidden" name="REQUEST_TOKEN" value="'.REQUEST_TOKEN.'">
+<input type="hidden" name="REQUEST_TOKEN" value="' . REQUEST_TOKEN . '">
 
 <div class="tl_tbox block">
-  <h3><label for="source">'.$GLOBALS['TL_LANG']['tl_iso_product']['source'][0].'</label> <a href="typolight/files.php" title="' . specialchars($GLOBALS['TL_LANG']['MSC']['fileManager']) . '" onclick="Backend.getScrollOffset(); this.blur(); Backend.openWindow(this, 750, 500); return false;">' . \Image::getHtml('filemanager.gif', $GLOBALS['TL_LANG']['MSC']['fileManager'], 'style="vertical-align:text-bottom;"') . '</a></h3>
-  '.$objTree->generate().(strlen($GLOBALS['TL_LANG']['tl_iso_product']['source'][1]) ? '
-  <p class="tl_help">'.$GLOBALS['TL_LANG']['tl_iso_product']['source'][1].'</p>' : '').'
+  <h3><label for="source">' . $GLOBALS['TL_LANG']['tl_iso_product']['source'][0] . '</label> <a href="typolight/files.php" title="' . specialchars($GLOBALS['TL_LANG']['MSC']['fileManager']) . '" onclick="Backend.getScrollOffset(); this.blur(); Backend.openWindow(this, 750, 500); return false;">' . \Image::getHtml('filemanager.gif', $GLOBALS['TL_LANG']['MSC']['fileManager'], 'style="vertical-align:text-bottom;"') . '</a></h3>
+  ' . $objTree->generate() . (strlen($GLOBALS['TL_LANG']['tl_iso_product']['source'][1]) ? '
+  <p class="tl_help">' . $GLOBALS['TL_LANG']['tl_iso_product']['source'][1] . '</p>' : '') . '
 </div>
 
 </div>
@@ -63,7 +63,7 @@ class AssetImport extends \Backend
 <div class="tl_formbody_submit">
 
 <div class="tl_submit_container">
-<input type="submit" name="save" id="save" class="tl_submit" alt="import product assets" accesskey="s" value="'.specialchars($GLOBALS['TL_LANG']['tl_iso_product']['import'][0]).'">
+<input type="submit" name="save" id="save" class="tl_submit" alt="import product assets" accesskey="s" value="' . specialchars($GLOBALS['TL_LANG']['tl_iso_product']['import'][0]) . '">
 </div>
 
 </div>
@@ -77,49 +77,40 @@ class AssetImport extends \Backend
     {
         $arrFiles = scan(TL_ROOT . '/' . $strPath);
 
-        if (empty($arrFiles))
-        {
+        if (empty($arrFiles)) {
             \Message::addError($GLOBALS['TL_LANG']['MSC']['noFilesInFolder']);
             \Controller::reload();
         }
 
-        $blnEmpty = true;
-        $arrDelete = array();
+        $blnEmpty    = true;
+        $arrDelete   = array();
         $objProducts = \Database::getInstance()->prepare("SELECT * FROM tl_iso_product WHERE pid=0")->execute();
 
-        while ($objProducts->next())
-        {
-            $arrImageNames  = array();
-            $arrImages = deserialize($objProducts->images);
+        while ($objProducts->next()) {
+            $arrImageNames = array();
+            $arrImages     = deserialize($objProducts->images);
 
-            if (!is_array($arrImages))
-            {
+            if (!is_array($arrImages)) {
                 $arrImages = array();
-            }
-            else
-            {
-                foreach ($arrImages as $row)
-                {
-                    if ($row['src'])
-                    {
+            } else {
+                foreach ($arrImages as $row) {
+                    if ($row['src']) {
                         $arrImageNames[] = $row['src'];
                     }
                 }
             }
 
-            $arrPattern = array();
-            $arrPattern[] = $objProducts->alias ?  standardize($objProducts->alias) : null;
+            $arrPattern   = array();
+            $arrPattern[] = $objProducts->alias ? standardize($objProducts->alias) : null;
             $arrPattern[] = $objProducts->sku ? $objProducts->sku : null;
             $arrPattern[] = $objProducts->sku ? standardize($objProducts->sku) : null;
             $arrPattern[] = !empty($arrImageNames) ? implode('|', $arrImageNames) : null;
 
             // !HOOK: add custom import regex patterns
-            if (isset($GLOBALS['ISO_HOOKS']['addAssetImportRegexp']) && is_array($GLOBALS['ISO_HOOKS']['addAssetImportRegexp']))
-            {
-                foreach ($GLOBALS['ISO_HOOKS']['addAssetImportRegexp'] as $callback)
-                {
+            if (isset($GLOBALS['ISO_HOOKS']['addAssetImportRegexp']) && is_array($GLOBALS['ISO_HOOKS']['addAssetImportRegexp'])) {
+                foreach ($GLOBALS['ISO_HOOKS']['addAssetImportRegexp'] as $callback) {
                     $objCallback = \System::importStatic($callback[0]);
-                    $arrPattern = $objCallback->$callback[1]($arrPattern,$objProducts);
+                    $arrPattern  = $objCallback->$callback[1]($arrPattern, $objProducts);
                 }
             }
 
@@ -127,47 +118,35 @@ class AssetImport extends \Backend
 
             $arrMatches = preg_grep($strPattern, $arrFiles);
 
-            if (!empty($arrMatches))
-            {
+            if (!empty($arrMatches)) {
                 $arrNewImages = array();
 
-                foreach ($arrMatches as $file)
-                {
-                    if (is_dir(TL_ROOT . '/' . $strPath . '/' . $file))
-                    {
+                foreach ($arrMatches as $file) {
+                    if (is_dir(TL_ROOT . '/' . $strPath . '/' . $file)) {
                         $arrSubfiles = scan(TL_ROOT . '/' . $strPath . '/' . $file);
 
-                        if (!empty($arrSubfiles))
-                        {
-                            foreach ($arrSubfiles as $subfile)
-                            {
-                                if (is_file($strPath . '/' . $file . '/' . $subfile))
-                                {
+                        if (!empty($arrSubfiles)) {
+                            foreach ($arrSubfiles as $subfile) {
+                                if (is_file($strPath . '/' . $file . '/' . $subfile)) {
                                     $objFile = new File($strPath . '/' . $file . '/' . $subfile);
 
-                                    if ($objFile->isGdImage)
-                                    {
+                                    if ($objFile->isGdImage) {
                                         $arrNewImages[] = $strPath . '/' . $file . '/' . $subfile;
                                     }
                                 }
                             }
                         }
-                    }
-                    elseif (is_file(TL_ROOT . '/' . $strPath . '/' . $file))
-                    {
+                    } elseif (is_file(TL_ROOT . '/' . $strPath . '/' . $file)) {
                         $objFile = new File($strPath . '/' . $file);
 
-                        if ($objFile->isGdImage)
-                        {
+                        if ($objFile->isGdImage) {
                             $arrNewImages[] = $strPath . '/' . $file;
                         }
                     }
                 }
 
-                if (!empty($arrNewImages))
-                {
-                    foreach ($arrNewImages as $strFile)
-                    {
+                if (!empty($arrNewImages)) {
+                    foreach ($arrNewImages as $strFile) {
                         $pathinfo = pathinfo(TL_ROOT . '/' . $strFile);
 
                         // Make sure directory exists
@@ -176,7 +155,7 @@ class AssetImport extends \Backend
                         $strCacheName = $pathinfo['filename'] . '-' . substr(md5_file(TL_ROOT . '/' . $strFile), 0, 8) . '.' . $pathinfo['extension'];
 
                         \Files::getInstance()->copy($strFile, 'isotope/' . substr($pathinfo['filename'], 0, 1) . '/' . $strCacheName);
-                        $arrImages[] = array('src'=>$strCacheName);
+                        $arrImages[] = array('src' => $strCacheName);
                         $arrDelete[] = $strFile;
 
                         \Message::addConfirmation(sprintf($GLOBALS['TL_LANG']['MSC']['assetImportConfirmation'], $pathinfo['filename'] . '.' . $pathinfo['extension'], $objProducts->name));
@@ -188,12 +167,10 @@ class AssetImport extends \Backend
             }
         }
 
-        if (!empty($arrDelete))
-        {
+        if (!empty($arrDelete)) {
             $arrDelete = array_unique($arrDelete);
 
-            foreach ($arrDelete as $file)
-            {
+            foreach ($arrDelete as $file) {
                 \Files::getInstance()->delete($file);
             }
         }

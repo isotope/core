@@ -39,16 +39,15 @@ class CumulativeFilter extends Module
      */
     public function generate()
     {
-        if (TL_MODE == 'BE')
-        {
+        if (TL_MODE == 'BE') {
             $objTemplate = new \BackendTemplate('be_wildcard');
 
             $objTemplate->wildcard = '### ISOTOPE ECOMMERCE: CUMULATIVE FILTER ###';
 
             $objTemplate->title = $this->headline;
-            $objTemplate->id = $this->id;
-            $objTemplate->link = $this->name;
-            $objTemplate->href = 'contao/main.php?do=themes&amp;act=edit&amp;id=' . $this->id;
+            $objTemplate->id    = $this->id;
+            $objTemplate->link  = $this->name;
+            $objTemplate->href  = 'contao/main.php?do=themes&amp;act=edit&amp;id=' . $this->id;
 
             return $objTemplate->parse();
         }
@@ -73,7 +72,7 @@ class CumulativeFilter extends Module
             $this->blnUpdateCache = true;
 
             // Unique filter key is necessary to unset the filter
-            $strFilterKey = $arrFilter[2].'='.$arrFilter[3];
+            $strFilterKey = $arrFilter[2] . '=' . $arrFilter[3];
 
             if ($arrFilter[1] == 'add') {
                 Isotope::getRequestCache()->setFilterForModule(
@@ -91,7 +90,7 @@ class CumulativeFilter extends Module
         } else {
             $this->generateFilter();
 
-            $this->Template->linkClearAll = ampersand(preg_replace('/\?.*/', '', \Environment::get('request')));
+            $this->Template->linkClearAll  = ampersand(preg_replace('/\?.*/', '', \Environment::get('request')));
             $this->Template->labelClearAll = $GLOBALS['TL_LANG']['MSC']['clearFiltersLabel'];
         }
     }
@@ -103,16 +102,14 @@ class CumulativeFilter extends Module
     protected function generateFilter()
     {
         $blnShowClear = false;
-        $arrFilters = array();
+        $arrFilters   = array();
 
-        foreach ($this->iso_filterFields as $strField)
-        {
-            $blnTrail = false;
-            $arrItems = array();
+        foreach ($this->iso_filterFields as $strField) {
+            $blnTrail  = false;
+            $arrItems  = array();
             $arrWidget = \Widget::getAttributesFromDca($GLOBALS['TL_DCA']['tl_iso_product']['fields'][$strField], $strField); // Use the default routine to initialize options data
 
-            foreach ($arrWidget['options'] as $option)
-            {
+            foreach ($arrWidget['options'] as $option) {
                 $varValue = $option['value'];
 
                 // skip zero values (includeBlankOption)
@@ -121,8 +118,8 @@ class CumulativeFilter extends Module
                 }
 
                 $strFilterKey = $strField . '=' . $varValue;
-                $blnActive = (Isotope::getRequestCache()->getFilterForModule($strFilterKey, $this->id) !== null);
-                $blnTrail = $blnActive ? true : $blnTrail;
+                $blnActive    = (Isotope::getRequestCache()->getFilterForModule($strFilterKey, $this->id) !== null);
+                $blnTrail     = $blnActive ? true : $blnTrail;
 
                 $arrItems[] = array
                 (
@@ -133,8 +130,7 @@ class CumulativeFilter extends Module
                 );
             }
 
-            if (!empty($arrItems) || ($this->iso_iso_filterHideSingle && count($arrItems) < 2))
-            {
+            if (!empty($arrItems) || ($this->iso_iso_filterHideSingle && count($arrItems) < 2)) {
                 $objClass = RowClass::withKey('class')->addFirstLast();
 
                 if ($blnTrail) {
@@ -150,16 +146,16 @@ class CumulativeFilter extends Module
 
                 $arrFilters[$strField] = array
                 (
-                    'label'     => $arrWidget['label'],
-                    'subitems'  => $objTemplate->parse(),
-                    'isActive'  => $blnTrail,
+                    'label'    => $arrWidget['label'],
+                    'subitems' => $objTemplate->parse(),
+                    'isActive' => $blnTrail,
                 );
 
                 $blnShowClear = $blnTrail ? true : $blnShowClear;
             }
         }
 
-        $this->Template->filters = $arrFilters;
+        $this->Template->filters   = $arrFilters;
         $this->Template->showClear = $blnShowClear;
     }
 }

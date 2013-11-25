@@ -33,7 +33,7 @@ class Price extends \Backend
             return;
         }
 
-        $arrData = array('prices'=>array(), 'tiers'=>array());
+        $arrData = array('prices' => array(), 'tiers' => array());
 
         $objPrices = ProductPrice::findBy('pid', $intId);
 
@@ -41,7 +41,7 @@ class Price extends \Backend
             $objTiers = \Database::getInstance()->query("SELECT * FROM tl_iso_product_pricetier WHERE pid IN (" . implode(',', $objPrices->fetchEach('id')) . ")");
 
             $arrData['prices'] = $objPrices->fetchAll();
-            $arrData['tiers'] = $objTiers->fetchAllAssoc();
+            $arrData['tiers']  = $objTiers->fetchAllAssoc();
         }
 
         SubtableVersion::create($strTable, $intId, ProductPrice::getTable(), $arrData);
@@ -95,7 +95,7 @@ class Price extends \Backend
             );
         }
 
-        return array('value'=>$objPrice->price, 'unit'=>$objPrice->tax_class);
+        return array('value' => $objPrice->price, 'unit' => $objPrice->tax_class);
     }
 
     /**
@@ -111,7 +111,7 @@ class Price extends \Backend
         // Parse the timePeriod widget
         $arrValue = deserialize($varValue, true);
         $strPrice = (string) $arrValue['value'];
-        $intTax = (int) $arrValue['unit'];
+        $intTax   = (int) $arrValue['unit'];
 
         $objPrice = \Database::getInstance()->query("SELECT t.id, p.id AS pid, p.tax_class, t.price FROM " . ProductPrice::getTable() . " p LEFT JOIN tl_iso_product_pricetier t ON p.id=t.pid AND t.min=1 WHERE p.pid={$dc->id} AND p.config_id=0 AND p.member_group=0 AND p.start='' AND p.stop=''");
 

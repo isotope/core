@@ -42,7 +42,7 @@ class PaymentMethod extends CheckoutStep implements IsotopeCheckoutStep
         $arrIds = deserialize($this->objModule->iso_payment_modules);
 
         if (!empty($arrIds) && is_array($arrIds)) {
-            $objModules = Payment::findBy(array('id IN (' . implode(',', $arrIds) . ')', (BE_USER_LOGGED_IN === true ? '' : "enabled='1'")), null, array('order'=>\Database::getInstance()->findInSet('id', $arrIds)));
+            $objModules = Payment::findBy(array('id IN (' . implode(',', $arrIds) . ')', (BE_USER_LOGGED_IN === true ? '' : "enabled='1'")), null, array('order' => \Database::getInstance()->findInSet('id', $arrIds)));
 
             if (null !== $objModules) {
                 while ($objModules->next()) {
@@ -83,17 +83,17 @@ class PaymentMethod extends CheckoutStep implements IsotopeCheckoutStep
 
             \System::log('No payment methods available for cart ID ' . Isotope::getCart()->id, __METHOD__, TL_ERROR);
 
-            $objTemplate = new \Isotope\Template('mod_message');
-            $objTemplate->class = 'payment_method';
-            $objTemplate->hl = 'h2';
+            $objTemplate           = new \Isotope\Template('mod_message');
+            $objTemplate->class    = 'payment_method';
+            $objTemplate->hl       = 'h2';
             $objTemplate->headline = $GLOBALS['TL_LANG']['MSC']['payment_method'];
-            $objTemplate->type = 'error';
-            $objTemplate->message = $GLOBALS['TL_LANG']['MSC']['noPaymentModules'];
+            $objTemplate->type     = 'error';
+            $objTemplate->message  = $GLOBALS['TL_LANG']['MSC']['noPaymentModules'];
 
             return $objTemplate->parse();
         }
 
-        $strClass = $GLOBALS['TL_FFL']['radio'];
+        $strClass  = $GLOBALS['TL_FFL']['radio'];
         $objWidget = new $strClass(array(
             'id'            => $this->getStepClass(),
             'name'          => $this->getStepClass(),
@@ -106,7 +106,7 @@ class PaymentMethod extends CheckoutStep implements IsotopeCheckoutStep
 
         // If there is only one payment method, mark it as selected by default
         if (count($arrModules) == 1) {
-            $objModule = reset($arrModules);
+            $objModule        = reset($arrModules);
             $objWidget->value = $objModule->id;
             Isotope::getCart()->setPaymentMethod($objModule);
         }
@@ -121,9 +121,9 @@ class PaymentMethod extends CheckoutStep implements IsotopeCheckoutStep
 
         $objTemplate = new \Isotope\Template('iso_checkout_payment_method');
 
-        $objTemplate->headline = $GLOBALS['TL_LANG']['MSC']['payment_method'];
-        $objTemplate->message = $GLOBALS['TL_LANG']['MSC']['payment_method_message'];
-        $objTemplate->options = $objWidget->parse();
+        $objTemplate->headline       = $GLOBALS['TL_LANG']['MSC']['payment_method'];
+        $objTemplate->message        = $GLOBALS['TL_LANG']['MSC']['payment_method_message'];
+        $objTemplate->options        = $objWidget->parse();
         $objTemplate->paymentMethods = $arrModules;
 
         return $objTemplate->parse();
@@ -137,10 +137,10 @@ class PaymentMethod extends CheckoutStep implements IsotopeCheckoutStep
     {
         return array(
             'payment_method' => array(
-                'headline'    => $GLOBALS['TL_LANG']['MSC']['payment_method'],
-                'info'        => Isotope::getCart()->getPaymentMethod()->checkoutReview(),
-                'note'        => Isotope::getCart()->getPaymentMethod()->note,
-                'edit'        => \Isotope\Module\Checkout::generateUrlForStep('payment'),
+                'headline' => $GLOBALS['TL_LANG']['MSC']['payment_method'],
+                'info'     => Isotope::getCart()->getPaymentMethod()->checkoutReview(),
+                'note'     => Isotope::getCart()->getPaymentMethod()->note,
+                'edit'     => \Isotope\Module\Checkout::generateUrlForStep('payment'),
             ),
         );
     }

@@ -41,23 +41,18 @@ class Paypal extends Postsale implements IsotopePayment
         $objRequest = new \Request();
         $objRequest->send(('https://www.' . ($this->debug ? 'sandbox.' : '') . 'paypal.com/cgi-bin/webscr?cmd=_notify-validate'), file_get_contents("php://input"), 'post');
 
-        if ($objRequest->hasError())
-        {
+        if ($objRequest->hasError()) {
             \System::log('Request Error: ' . $objRequest->error, __METHOD__, TL_ERROR);
             exit;
-        }
-        elseif ($objRequest->response == 'VERIFIED' && (\Input::post('receiver_email', true) == $this->paypal_account || $this->debug))
-        {
+        } elseif ($objRequest->response == 'VERIFIED' && (\Input::post('receiver_email', true) == $this->paypal_account || $this->debug)) {
             // Validate payment data (see #2221)
-            if ($objOrder->currency != \Input::post('mc_currency') || $objOrder->getTotal() != \Input::post('mc_gross'))
-            {
+            if ($objOrder->currency != \Input::post('mc_currency') || $objOrder->getTotal() != \Input::post('mc_gross')) {
                 \System::log('IPN manipulation in payment from "' . \Input::post('payer_email') . '" !', __METHOD__, TL_ERROR);
 
                 return;
             }
 
-            if (!$objOrder->checkout())
-            {
+            if (!$objOrder->checkout()) {
                 \System::log('IPN checkout for Order ID "' . \Input::post('invoice') . '" failed', __METHOD__, TL_ERROR);
 
                 return;
@@ -70,15 +65,14 @@ class Paypal extends Postsale implements IsotopePayment
             $arrPayment['POSTSALE'][] = $_POST;
 
 
-            $arrData = $objOrder->getData();
+            $arrData                       = $objOrder->getData();
             $arrData['old_payment_status'] = $arrPayment['status'];
 
-            $arrPayment['status'] = \Input::post('payment_status');
+            $arrPayment['status']          = \Input::post('payment_status');
             $arrData['new_payment_status'] = $arrPayment['status'];
 
             // array('pending','processing','complete','on_hold', 'cancelled'),
-            switch ($arrPayment['status'])
-            {
+            switch ($arrPayment['status']) {
                 case 'Completed':
                     $objOrder->date_paid = time();
                     $objOrder->updateOrderStatus($this->new_order_status);
@@ -109,9 +103,7 @@ class Paypal extends Postsale implements IsotopePayment
             $objOrder->save();
 
             \System::log('PayPal IPN: data accepted', __METHOD__, TL_GENERAL);
-        }
-        else
-        {
+        } else {
             \System::log('PayPal IPN: data rejected (' . $objRequest->response . ')', __METHOD__, TL_ERROR);
         }
 
@@ -138,9 +130,9 @@ class Paypal extends Postsale implements IsotopePayment
             \Isotope\Module\Checkout::redirectToStep('failed');
         }
 
-        $arrData = array();
+        $arrData     = array();
         $fltDiscount = 0;
-        $i = 0;
+        $i           = 0;
 
         foreach (Isotope::getCart()->getItems() as $objItem) {
 
@@ -164,10 +156,10 @@ class Paypal extends Postsale implements IsotopePayment
                 $strOptions = ' (' . implode(', ', $arrOptions) . ')';
             }
 
-            $arrData['item_number_'.++$i]   = $objItem->getSku();
-            $arrData['item_name_'.$i]       = $objItem->getName() . $strOptions;
-            $arrData['amount_'.$i]          = $objItem->getPrice();
-            $arrData['quantity_'.$i]        = $objItem->quantity;
+            $arrData['item_number_' . ++$i] = $objItem->getSku();
+            $arrData['item_name_' . $i]     = $objItem->getName() . $strOptions;
+            $arrData['amount_' . $i]        = $objItem->getPrice();
+            $arrData['quantity_' . $i]      = $objItem->quantity;
         }
 
         foreach (Isotope::getCart()->getSurcharges() as $objSurcharge) {
@@ -182,26 +174,26 @@ class Paypal extends Postsale implements IsotopePayment
                 continue;
             }
 
-            $arrData['item_name_'.++$i] = $objSurcharge->getLabel();
-            $arrData['amount_'.$i] = $objSurcharge->total_price;
+            $arrData['item_name_' . ++$i] = $objSurcharge->getLabel();
+            $arrData['amount_' . $i]      = $objSurcharge->total_price;
         }
 
         $objTemplate = new \Isotope\Template('iso_payment_paypal');
         $objTemplate->setData($this->arrData);
 
-        $objTemplate->id = $this->id;
-        $objTemplate->action = ('https://www.' . ($this->debug ? 'sandbox.' : '') . 'paypal.com/cgi-bin/webscr');
-        $objTemplate->invoice = $objOrder->id;
-        $objTemplate->data = $arrData;
-        $objTemplate->discount = $fltDiscount;
-        $objTemplate->address = Isotope::getCart()->getBillingAddress();
-        $objTemplate->currency = Isotope::getConfig()->currency;
-        $objTemplate->return = \Environment::get('base') . \Haste\Util\Url::addQueryString('uid=' . $objOrder->uniqid, \Isotope\Module\Checkout::generateUrlForStep('complete'));
+        $objTemplate->id            = $this->id;
+        $objTemplate->action        = ('https://www.' . ($this->debug ? 'sandbox.' : '') . 'paypal.com/cgi-bin/webscr');
+        $objTemplate->invoice       = $objOrder->id;
+        $objTemplate->data          = $arrData;
+        $objTemplate->discount      = $fltDiscount;
+        $objTemplate->address       = Isotope::getCart()->getBillingAddress();
+        $objTemplate->currency      = Isotope::getConfig()->currency;
+        $objTemplate->return        = \Environment::get('base') . \Haste\Util\Url::addQueryString('uid=' . $objOrder->uniqid, \Isotope\Module\Checkout::generateUrlForStep('complete'));
         $objTemplate->cancel_return = \Environment::get('base') . \Isotope\Module\Checkout::generateUrlForStep('failed');
-        $objTemplate->notify_url = \Environment::get('base') . 'system/modules/isotope/postsale.php?mod=pay&id=' . $this->id;
-        $objTemplate->headline = $GLOBALS['TL_LANG']['MSC']['pay_with_redirect'][0];
-        $objTemplate->message = $GLOBALS['TL_LANG']['MSC']['pay_with_redirect'][1];
-        $objTemplate->slabel = specialchars($GLOBALS['TL_LANG']['MSC']['pay_with_redirect'][2]);
+        $objTemplate->notify_url    = \Environment::get('base') . 'system/modules/isotope/postsale.php?mod=pay&id=' . $this->id;
+        $objTemplate->headline      = $GLOBALS['TL_LANG']['MSC']['pay_with_redirect'][0];
+        $objTemplate->message       = $GLOBALS['TL_LANG']['MSC']['pay_with_redirect'][1];
+        $objTemplate->slabel        = specialchars($GLOBALS['TL_LANG']['MSC']['pay_with_redirect'][2]);
 
         return $objTemplate->parse();
     }
@@ -215,15 +207,13 @@ class Paypal extends Postsale implements IsotopePayment
      */
     public function backendInterface($orderId)
     {
-        if (($objOrder = Order::findByPk($orderId)) === null)
-        {
+        if (($objOrder = Order::findByPk($orderId)) === null) {
             return parent::backendInterface($orderId);
         }
 
         $arrPayment = $objOrder->payment_data;
 
-        if (!is_array($arrPayment['POSTSALE']) || empty($arrPayment['POSTSALE']))
-        {
+        if (!is_array($arrPayment['POSTSALE']) || empty($arrPayment['POSTSALE'])) {
             return parent::backendInterface($orderId);
         }
 
@@ -233,7 +223,7 @@ class Paypal extends Postsale implements IsotopePayment
 
         $strBuffer = '
 <div id="tl_buttons">
-<a href="'.ampersand(str_replace('&key=payment', '', \Environment::get('request'))).'" class="header_back" title="'.specialchars($GLOBALS['TL_LANG']['MSC']['backBT']).'">'.$GLOBALS['TL_LANG']['MSC']['backBT'].'</a>
+<a href="' . ampersand(str_replace('&key=payment', '', \Environment::get('request'))) . '" class="header_back" title="' . specialchars($GLOBALS['TL_LANG']['MSC']['backBT']) . '">' . $GLOBALS['TL_LANG']['MSC']['backBT'] . '</a>
 </div>
 
 <h2 class="sub_headline">' . $this->name . ' (' . $GLOBALS['TL_LANG']['PAY'][$this->type][0] . ')' . '</h2>
@@ -247,15 +237,14 @@ class Paypal extends Postsale implements IsotopePayment
 <table class="tl_show">
   <tbody>';
 
-        foreach ($arrPayment as $k => $v)
-        {
+        foreach ($arrPayment as $k => $v) {
             if (is_array($v))
                 continue;
 
             $strBuffer .= '
   <tr>
-    <td' . ($i%2 ? '' : ' class="tl_bg"') . '><span class="tl_label">' . $k . ': </span></td>
-    <td' . ($i%2 ? '' : ' class="tl_bg"') . '>' . $v . '</td>
+    <td' . ($i % 2 ? '' : ' class="tl_bg"') . '><span class="tl_label">' . $k . ': </span></td>
+    <td' . ($i % 2 ? '' : ' class="tl_bg"') . '>' . $v . '</td>
   </tr>';
 
             ++$i;

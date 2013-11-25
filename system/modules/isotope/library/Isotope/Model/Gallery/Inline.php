@@ -37,7 +37,7 @@ class Inline extends Standard
      * @param   bool
      * @return  string
      */
-    public function generateGallery($intSkip=0, $blnForce=false)
+    public function generateGallery($intSkip = 0, $blnForce = false)
     {
         // Do not render gallery if there are no additional image
         $total = count($this->arrFiles);

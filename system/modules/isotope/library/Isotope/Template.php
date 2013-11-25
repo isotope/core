@@ -30,38 +30,33 @@ class Template extends \FrontendTemplate
      * @return string
      * @throws Exception
      */
-    public static function getTemplate($strTemplate, $strFormat='html5')
+    public static function getTemplate($strTemplate, $strFormat = 'html5')
     {
         $arrAllowed = trimsplit(',', $GLOBALS['TL_CONFIG']['templateFiles']);
 
-        if (is_array($GLOBALS['TL_CONFIG']['templateFiles']) && !in_array($strFormat, $arrAllowed))
-        {
+        if (is_array($GLOBALS['TL_CONFIG']['templateFiles']) && !in_array($strFormat, $arrAllowed)) {
             throw new \InvalidArgumentException("Invalid output format $strFormat");
         }
 
-        $strKey = $strTemplate . '.' . $strFormat;
-        $strPath = TL_ROOT . '/templates';
+        $strKey      = $strTemplate . '.' . $strFormat;
+        $strPath     = TL_ROOT . '/templates';
         $strTemplate = basename($strTemplate);
 
         // Check the templates subfolder
-        if (TL_MODE == 'FE')
-        {
+        if (TL_MODE == 'FE') {
             $strTemplateGroup = str_replace(array('../', 'templates/'), '', Isotope::getConfig()->templateGroup);
 
-            if ($strTemplateGroup != '')
-            {
+            if ($strTemplateGroup != '') {
                 $strFile = $strPath . '/' . $strTemplateGroup . '/' . $strKey;
 
-                if (file_exists($strFile))
-                {
+                if (file_exists($strFile)) {
                     return $strFile;
                 }
 
                 // Also check for .tpl files (backwards compatibility)
                 $strFile = $strPath . '/' . $strTemplateGroup . '/' . $strTemplate . '.tpl';
 
-                if (file_exists($strFile))
-                {
+                if (file_exists($strFile)) {
                     return $strFile;
                 }
             }

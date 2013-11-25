@@ -32,5 +32,5 @@ interface IsotopeGallery
      * @param integer
      * @return string
      */
-    public function generateGallery($intSkip=1);
+    public function generateGallery($intSkip = 1);
 }

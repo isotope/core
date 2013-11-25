@@ -29,13 +29,11 @@ class Callback extends \Backend
 
         $strBuffer .= '<div style="color:#b3b3b3;margin-top:8px">' . $GLOBALS['TL_LANG']['tl_iso_address']['store_id'][0] . ' ' . $arrAddress['store_id'];
 
-        if ($arrAddress['isDefaultBilling'])
-        {
+        if ($arrAddress['isDefaultBilling']) {
             $strBuffer .= ', ' . $GLOBALS['TL_LANG']['tl_iso_address']['isDefaultBilling'][0];
         }
 
-        if ($arrAddress['isDefaultShipping'])
-        {
+        if ($arrAddress['isDefaultShipping']) {
             $strBuffer .= ', ' . $GLOBALS['TL_LANG']['tl_iso_address']['isDefaultShipping'][0];
         }
 
@@ -56,8 +54,7 @@ class Callback extends \Backend
     {
         $objAddress = ($dc instanceof \DataContainer) ? $dc->activeRecord : $dc;
 
-        if ($varValue == '1' && $objAddress->{$dc->field} != $varValue)
-        {
+        if ($varValue == '1' && $objAddress->{$dc->field} != $varValue) {
             \Database::getInstance()->execute("UPDATE tl_iso_address SET {$dc->field}='' WHERE pid={$objAddress->pid} AND ptable={$objAddress->ptable} AND store_id={$objAddress->store_id}");
         }
 

@@ -25,14 +25,14 @@ use Isotope\Model\Attribute;
 class RadioButton extends Attribute implements IsotopeAttribute
 {
 
-	public function saveToDCA(array &$arrData)
-	{
-		parent::saveToDCA($arrData);
+    public function saveToDCA(array &$arrData)
+    {
+        parent::saveToDCA($arrData);
 
-		$arrData['fields'][$this->field_name]['sql'] = "varchar(255) NOT NULL default ''";
+        $arrData['fields'][$this->field_name]['sql'] = "varchar(255) NOT NULL default ''";
 
-		if ($this->fe_filter) {
-			$arrData['config']['sql']['keys'][$this->field_name] = 'index';
-		}
-	}
+        if ($this->fe_filter) {
+            $arrData['config']['sql']['keys'][$this->field_name] = 'index';
+        }
+    }
 }

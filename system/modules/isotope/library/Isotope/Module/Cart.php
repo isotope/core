@@ -52,15 +52,14 @@ class Cart extends Module
      */
     public function generate()
     {
-        if (TL_MODE == 'BE')
-        {
+        if (TL_MODE == 'BE') {
             $objTemplate = new \BackendTemplate('be_wildcard');
 
             $objTemplate->wildcard = '### ISOTOPE ECOMMERCE: CART ###';
-            $objTemplate->title = $this->headline;
-            $objTemplate->id = $this->id;
-            $objTemplate->link = $this->name;
-            $objTemplate->href = 'contao/main.php?do=themes&amp;table=tl_module&amp;act=edit&amp;id=' . $this->id;
+            $objTemplate->title    = $this->headline;
+            $objTemplate->id       = $this->id;
+            $objTemplate->link     = $this->name;
+            $objTemplate->href     = 'contao/main.php?do=themes&amp;table=tl_module&amp;act=edit&amp;id=' . $this->id;
 
             return $objTemplate->parse();
         }
@@ -77,18 +76,16 @@ class Cart extends Module
      */
     protected function compile()
     {
-        if (Isotope::getCart()->isEmpty())
-        {
-            $this->Template->empty = true;
-            $this->Template->type = 'empty';
+        if (Isotope::getCart()->isEmpty()) {
+            $this->Template->empty   = true;
+            $this->Template->type    = 'empty';
             $this->Template->message = $this->iso_emptyMessage ? $this->iso_noProducts : $GLOBALS['TL_LANG']['MSC']['noItemsInCart'];
 
             return;
         }
 
         // Remove from cart
-        if (\Input::get('remove') > 0 && Isotope::getCart()->deleteItemById((int) \Input::get('remove')))
-        {
+        if (\Input::get('remove') > 0 && Isotope::getCart()->deleteItemById((int) \Input::get('remove'))) {
             \Controller::redirect(preg_replace('/([?&])remove=[^&]*(&|$)/', '$1', \Environment::get('request')));
         }
 
@@ -97,29 +94,28 @@ class Cart extends Module
         Isotope::getCart()->addToTemplate(
             $objTemplate,
             array(
-                'gallery'   => $this->iso_gallery,
-                'sorting'   => Isotope::getCart()->getItemsSortingCallable($this->iso_orderCollectionBy),
+                 'gallery' => $this->iso_gallery,
+                 'sorting' => Isotope::getCart()->getItemsSortingCallable($this->iso_orderCollectionBy),
             )
         );
 
-        $blnReload = false;
+        $blnReload   = false;
         $arrQuantity = \Input::post('quantity');
-        $arrItems = $objTemplate->items;
+        $arrItems    = $objTemplate->items;
 
         foreach ($arrItems as $k => $arrItem) {
 
             // Update cart data if form has been submitted
-            if (\Input::post('FORM_SUBMIT') == $this->strFormId && is_array($arrQuantity) && isset($arrQuantity[$arrItem['id']]))
-            {
+            if (\Input::post('FORM_SUBMIT') == $this->strFormId && is_array($arrQuantity) && isset($arrQuantity[$arrItem['id']])) {
                 $blnReload = true;
-                Isotope::getCart()->updateItemById($arrItem['id'], array('quantity'=>$arrQuantity[$arrItem['id']]));
+                Isotope::getCart()->updateItemById($arrItem['id'], array('quantity' => $arrQuantity[$arrItem['id']]));
                 continue; // no need to generate $arrProductData, we reload anyway
             }
 
 
-            $arrItem['remove_href'] = \Haste\Util\Url::addQueryString('remove='.$arrItem['id']);
+            $arrItem['remove_href']  = \Haste\Util\Url::addQueryString('remove=' . $arrItem['id']);
             $arrItem['remove_title'] = specialchars(sprintf($GLOBALS['TL_LANG']['MSC']['removeProductLinkTitle'], $arrItem['name']));
-            $arrItem['remove_link'] = $GLOBALS['TL_LANG']['MSC']['removeProductLinkText'];
+            $arrItem['remove_link']  = $GLOBALS['TL_LANG']['MSC']['removeProductLinkText'];
 
             $arrItems[$k] = $arrItem;
         }
@@ -127,23 +123,21 @@ class Cart extends Module
         $arrButtons = $this->generateButtons();
 
         // Reload the page if no button has handled it
-        if ($blnReload)
-        {
+        if ($blnReload) {
             \Controller::reload();
         }
 
-        $objTemplate->items = $arrItems;
-        $objTemplate->isEditable = true;
-        $objTemplate->linkProducts = true;
+        $objTemplate->items         = $arrItems;
+        $objTemplate->isEditable    = true;
+        $objTemplate->linkProducts  = true;
+        $objTemplate->formId        = $this->strFormId;
+        $objTemplate->formSubmit    = $this->strFormId;
+        $objTemplate->action        = \Environment::get('request');
+        $objTemplate->buttons       = $arrButtons;
 
-        $objTemplate->formId = $this->strFormId;
-        $objTemplate->formSubmit = $this->strFormId;
-        $objTemplate->action = \Environment::get('request');
-        $objTemplate->buttons = $arrButtons;
-
-        $this->Template->empty = false;
+        $this->Template->empty      = false;
         $this->Template->collection = Isotope::getCart();
-        $this->Template->products = $objTemplate->parse();
+        $this->Template->products   = $objTemplate->parse();
     }
 
     /**

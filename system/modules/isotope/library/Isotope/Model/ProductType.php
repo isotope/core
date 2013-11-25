@@ -58,7 +58,7 @@ class ProductType extends \Model
     {
         return (bool) $this->prices;
     }
-    
+
     /**
      * Returns true if show price tiers is enabled in the product type, otherwise returns false
      * @return  bool
@@ -115,10 +115,10 @@ class ProductType extends \Model
      */
     protected function getEnabledAttributesByPosition($varValue)
     {
-        $arrFields = &$GLOBALS['TL_DCA']['tl_iso_product']['fields'];
+        $arrFields     = &$GLOBALS['TL_DCA']['tl_iso_product']['fields'];
         $arrAttributes = deserialize($varValue, true);
 
-        $arrAttributes = array_filter($arrAttributes, function($a) use ($arrFields) {
+        $arrAttributes = array_filter($arrAttributes, function ($a) use ($arrFields) {
             if ($a['enabled'] && is_array($arrFields[$a['name']]) && $arrFields[$a['name']]['attributes']['legend'] != '') {
                 return true;
             }
@@ -138,7 +138,7 @@ class ProductType extends \Model
      * @param   array
      * @return  Collection|null
      */
-    public static function findAllUsed(array $arrOptions=array())
+    public static function findAllUsed(array $arrOptions = array())
     {
         $t = static::$strTable;
 
@@ -150,7 +150,7 @@ class ProductType extends \Model
      * @param   array
      * @return  ProductType|null
      */
-    public static function findFallback(array $arrOptions=array())
+    public static function findFallback(array $arrOptions = array())
     {
         return static::findOneBy('fallback', '1', $arrOptions);
     }

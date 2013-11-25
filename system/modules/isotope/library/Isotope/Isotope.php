@@ -159,7 +159,7 @@ class Isotope extends \Controller
      * Set the currently active Isotope configuration
      * @param Isotope\Model\Config|null
      */
-    public static function setConfig(Config $objConfig=null)
+    public static function setConfig(Config $objConfig = null)
     {
         static::$objConfig = $objConfig;
     }
@@ -190,29 +190,24 @@ class Isotope extends \Controller
      * @param integer
      * @return float
      */
-    public static function calculatePrice($fltPrice, $objSource, $strField, $intTaxClass=0)
+    public static function calculatePrice($fltPrice, $objSource, $strField, $intTaxClass = 0)
     {
-        if (!is_numeric($fltPrice))
-        {
+        if (!is_numeric($fltPrice)) {
             return $fltPrice;
         }
 
         // !HOOK: calculate price
-        if (isset($GLOBALS['ISO_HOOKS']['calculatePrice']) && is_array($GLOBALS['ISO_HOOKS']['calculatePrice']))
-        {
-            foreach ($GLOBALS['ISO_HOOKS']['calculatePrice'] as $callback)
-            {
+        if (isset($GLOBALS['ISO_HOOKS']['calculatePrice']) && is_array($GLOBALS['ISO_HOOKS']['calculatePrice'])) {
+            foreach ($GLOBALS['ISO_HOOKS']['calculatePrice'] as $callback) {
                 $objCallback = \System::importStatic($callback[0]);
-                $fltPrice = $objCallback->$callback[1]($fltPrice, $objSource, $strField, $intTaxClass);
+                $fltPrice    = $objCallback->$callback[1]($fltPrice, $objSource, $strField, $intTaxClass);
             }
         }
 
         $objConfig = static::getConfig();
 
-        if ($objConfig->priceMultiplier != 1)
-        {
-            switch ($objConfig->priceCalculateMode)
-            {
+        if ($objConfig->priceMultiplier != 1) {
+            switch ($objConfig->priceCalculateMode) {
                 case 'mul':
                     $fltPrice = $fltPrice * $objConfig->priceCalculateFactor;
                     break;
@@ -224,8 +219,7 @@ class Isotope extends \Controller
         }
 
         // Possibly add/subtract tax
-        if (($objTaxClass = TaxClass::findByPk($intTaxClass)) !== null)
-        {
+        if (($objTaxClass = TaxClass::findByPk($intTaxClass)) !== null) {
             $fltPrice = $objTaxClass->calculatePrice($fltPrice);
         }
 
@@ -239,12 +233,11 @@ class Isotope extends \Controller
      * @param bool apply rounding increment
      * @return float rounded value
      */
-    public static function roundPrice($fltValue, $blnApplyRoundingIncrement=true)
+    public static function roundPrice($fltValue, $blnApplyRoundingIncrement = true)
     {
         $objConfig = static::getConfig();
 
-        if ($blnApplyRoundingIncrement && $objConfig->priceRoundIncrement == '0.05')
-        {
+        if ($blnApplyRoundingIncrement && $objConfig->priceRoundIncrement == '0.05') {
             $fltValue = (round(20 * $fltValue)) / 20;
         }
 
@@ -260,15 +253,13 @@ class Isotope extends \Controller
     public static function formatPrice($fltPrice)
     {
         // If price or override price is a string
-        if (!is_numeric($fltPrice))
-        {
+        if (!is_numeric($fltPrice)) {
             return $fltPrice;
         }
 
         $arrFormat = $GLOBALS['ISO_NUM'][static::getConfig()->currencyFormat];
 
-        if (!is_array($arrFormat))
-        {
+        if (!is_array($arrFormat)) {
             return $fltPrice;
         }
 
@@ -283,29 +274,24 @@ class Isotope extends \Controller
      * @param string
      * @return string
      */
-    public static function formatPriceWithCurrency($fltPrice, $blnHtml=true, $strCurrencyCode=null)
+    public static function formatPriceWithCurrency($fltPrice, $blnHtml = true, $strCurrencyCode = null)
     {
         // If price or override price is a string
-        if (!is_numeric($fltPrice))
-        {
+        if (!is_numeric($fltPrice)) {
             return $fltPrice;
         }
 
-        $objConfig = static::getConfig();
+        $objConfig   = static::getConfig();
         $strCurrency = ($strCurrencyCode != '' ? $strCurrencyCode : $objConfig->currency);
-        $strPrice = static::formatPrice($fltPrice);
+        $strPrice    = static::formatPrice($fltPrice);
 
-        if ($objConfig->currencySymbol && $GLOBALS['TL_LANG']['CUR_SYMBOL'][$strCurrency] != '')
-        {
+        if ($objConfig->currencySymbol && $GLOBALS['TL_LANG']['CUR_SYMBOL'][$strCurrency] != '') {
             $strCurrency = (($objConfig->currencyPosition == 'right' && $objConfig->currencySpace) ? ' ' : '') . ($blnHtml ? '<span class="currency">' : '') . $GLOBALS['TL_LANG']['CUR_SYMBOL'][$strCurrency] . ($blnHtml ? '</span>' : '') . (($objConfig->currencyPosition == 'left' && $objConfig->currencySpace) ? ' ' : '');
-        }
-        else
-        {
+        } else {
             $strCurrency = ($objConfig->currencyPosition == 'right' ? ' ' : '') . ($blnHtml ? '<span class="currency">' : '') . $strCurrency . ($blnHtml ? '</span>' : '') . ($objConfig->currencyPosition == 'left' ? ' ' : '');
         }
 
-        if ($objConfig->currencyPosition == 'right')
-        {
+        if ($objConfig->currencyPosition == 'right') {
             return $strPrice . $strCurrency;
         }
 
@@ -320,16 +306,12 @@ class Isotope extends \Controller
      */
     public static function formatItemsString($intItems)
     {
-        if ($intItems == 1)
-        {
+        if ($intItems == 1) {
             return $GLOBALS['TL_LANG']['ISO']['productSingle'];
-        }
-        else
-        {
+        } else {
             $arrFormat = $GLOBALS['ISO_NUM'][static::getConfig()->currencyFormat];
 
-            if (is_array($arrFormat))
-            {
+            if (is_array($arrFormat)) {
                 $intItems = number_format($intItems, 0, $arrFormat[1], $arrFormat[2]);
             }
 
@@ -345,8 +327,8 @@ class Isotope extends \Controller
      */
     public static function defaultButtons($arrButtons)
     {
-        $arrButtons['update'] = array('label'=>$GLOBALS['TL_LANG']['MSC']['buttonLabel']['update']);
-        $arrButtons['add_to_cart'] = array('label'=>$GLOBALS['TL_LANG']['MSC']['buttonLabel']['add_to_cart'], 'callback'=>array('\Isotope\Frontend', 'addToCart'));
+        $arrButtons['update']      = array('label' => $GLOBALS['TL_LANG']['MSC']['buttonLabel']['update']);
+        $arrButtons['add_to_cart'] = array('label' => $GLOBALS['TL_LANG']['MSC']['buttonLabel']['add_to_cart'], 'callback' => array('\Isotope\Frontend', 'addToCart'));
 
         return $arrButtons;
     }
@@ -361,11 +343,9 @@ class Isotope extends \Controller
      */
     public static function validateRegexp($strRegexp, $varValue, \Widget $objWidget)
     {
-        switch ($strRegexp)
-        {
+        switch ($strRegexp) {
             case 'price':
-                if (!preg_match('/^[\d \.-]*$/', $varValue))
-                {
+                if (!preg_match('/^[\d \.-]*$/', $varValue)) {
                     $objWidget->addError(sprintf($GLOBALS['TL_LANG']['ERR']['digit'], $objWidget->label));
                 }
 
@@ -373,8 +353,7 @@ class Isotope extends \Controller
                 break;
 
             case 'discount':
-                if (!preg_match('/^[-+]\d+(\.\d{1,2})?%?$/', $varValue))
-                {
+                if (!preg_match('/^[-+]\d+(\.\d{1,2})?%?$/', $varValue)) {
                     $objWidget->addError(sprintf($GLOBALS['TL_LANG']['ERR']['discount'], $objWidget->label));
                 }
 
@@ -382,8 +361,7 @@ class Isotope extends \Controller
                 break;
 
             case 'surcharge':
-                if (!preg_match('/^-?\d+(\.\d{1,2})?%?$/', $varValue))
-                {
+                if (!preg_match('/^-?\d+(\.\d{1,2})?%?$/', $varValue)) {
                     $objWidget->addError(sprintf($GLOBALS['TL_LANG']['ERR']['surcharge'], $objWidget->label));
                 }
 
@@ -400,19 +378,18 @@ class Isotope extends \Controller
      * @param   array
      * @param   string
      */
-    public static function formatOptions(array $arrData, $strTable='tl_iso_product', $blnSkipEmpty=true)
+    public static function formatOptions(array $arrData, $strTable = 'tl_iso_product', $blnSkipEmpty = true)
     {
         $arrOptions = array();
 
-        foreach ($arrData as $field => $value)
-        {
+        foreach ($arrData as $field => $value) {
             if ($blnSkipEmpty && ($value == '' || $value == '-'))
                 continue;
 
             $arrOptions[$field] = array
             (
-                'label'    => Format::dcaLabel($strTable, $field),
-                'value'    => Haste::getInstance()->call('replaceInsertTags', Format::dcaValue($strTable, $field, $value)),
+                'label' => Format::dcaLabel($strTable, $field),
+                'value' => Haste::getInstance()->call('replaceInsertTags', Format::dcaValue($strTable, $field, $value)),
             );
         }
 

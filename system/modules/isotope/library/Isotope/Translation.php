@@ -42,7 +42,7 @@ class Translation
      * @param   boolean
      * @return  mixed
      */
-    public static function get($varLabel, $strLanguage=null)
+    public static function get($varLabel, $strLanguage = null)
     {
         if (!\Database::getInstance()->tableExists(Label::getTable())) {
             return $varLabel;
@@ -80,7 +80,7 @@ class Translation
      * @param   string The replacement
      * @param   string The language
      */
-    public static function add($strLabel, $strReplacement, $strLanguage=null)
+    public static function add($strLabel, $strReplacement, $strLanguage = null)
     {
         if (null === $strLanguage) {
             $strLanguage = $GLOBALS['TL_LANGUAGE'];
@@ -96,7 +96,7 @@ class Translation
      * Initialize the data in translation table
      * @param string The language
      */
-    protected static function initialize($strLanguage=null)
+    protected static function initialize($strLanguage = null)
     {
         if (null === $strLanguage) {
             $strLanguage = $GLOBALS['TL_LANGUAGE'];

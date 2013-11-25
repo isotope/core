@@ -37,12 +37,14 @@ class Datatrans extends Postsale implements IsotopePayment
         // Verify payment status
         if (\Input::post('status') != 'success') {
             \System::log('Payment for order ID "' . \Input::post('refno') . '" failed.', __METHOD__, TL_ERROR);
+
             return false;
         }
 
         // Validate HMAC sign
-        if (\Input::post('sign2') != hash_hmac('md5', $this->datatrans_id.\Input::post('amount').\Input::post('currency').\Input::post('uppTransactionId'), $this->datatrans_sign)) {
+        if (\Input::post('sign2') != hash_hmac('md5', $this->datatrans_id . \Input::post('amount') . \Input::post('currency') . \Input::post('uppTransactionId'), $this->datatrans_sign)) {
             \System::log('Invalid HMAC signature for Order ID ' . \Input::post('refno'), __METHOD__, TL_ERROR);
+
             return false;
         }
 
@@ -59,6 +61,7 @@ class Datatrans extends Postsale implements IsotopePayment
 
         if (!$objOrder->checkout()) {
             \System::log('Postsale checkout for Order ID "' . \Input::post('refno') . '" failed', __METHOD__, TL_ERROR);
+
             return false;
         }
 
@@ -80,8 +83,7 @@ class Datatrans extends Postsale implements IsotopePayment
      */
     public function checkoutForm()
     {
-        if (($objOrder = Order::findOneBy('source_collection_id', Isotope::getCart()->id)) === null)
-        {
+        if (($objOrder = Order::findOneBy('source_collection_id', Isotope::getCart()->id)) === null) {
             \Isotope\Module\Checkout::redirectToStep('failed');
         }
 
@@ -114,15 +116,15 @@ class Datatrans extends Postsale implements IsotopePayment
         );
 
         // Security signature (see Security Level 2)
-        $arrParams['sign'] = hash_hmac('md5', $arrParams['merchantId'].$arrParams['amount'].$arrParams['currency'].$arrParams['refno'], $this->datatrans_sign);
+        $arrParams['sign'] = hash_hmac('md5', $arrParams['merchantId'] . $arrParams['amount'] . $arrParams['currency'] . $arrParams['refno'], $this->datatrans_sign);
 
-        $objTemplate = new \Isotope\Template('iso_payment_datatrans');
-        $objTemplate->id = $this->id;
-        $objTemplate->action = ('https://' . ($this->debug ? 'pilot' : 'payment') . '.datatrans.biz/upp/jsp/upStart.jsp');
-        $objTemplate->params = $arrParams;
+        $objTemplate           = new \Isotope\Template('iso_payment_datatrans');
+        $objTemplate->id       = $this->id;
+        $objTemplate->action   = ('https://' . ($this->debug ? 'pilot' : 'payment') . '.datatrans.biz/upp/jsp/upStart.jsp');
+        $objTemplate->params   = $arrParams;
         $objTemplate->headline = $GLOBALS['TL_LANG']['MSC']['pay_with_redirect'][0];
-        $objTemplate->message = $GLOBALS['TL_LANG']['MSC']['pay_with_redirect'][1];
-        $objTemplate->slabel = specialchars($GLOBALS['TL_LANG']['MSC']['pay_with_redirect'][2]);
+        $objTemplate->message  = $GLOBALS['TL_LANG']['MSC']['pay_with_redirect'][1];
+        $objTemplate->slabel   = specialchars($GLOBALS['TL_LANG']['MSC']['pay_with_redirect'][2]);
 
         return $objTemplate->parse();
     }
@@ -135,10 +137,8 @@ class Datatrans extends Postsale implements IsotopePayment
      */
     private function validateParameters(array $arrData)
     {
-        foreach ($arrData as $key => $value)
-        {
-            if (\Input::post($key) != $value)
-            {
+        foreach ($arrData as $key => $value) {
+            if (\Input::post($key) != $value) {
                 \System::log('Wrong data for parameter "' . $key . '" (Order ID "' . \Input::post('refno') . ').', __METHOD__, TL_ERROR);
 
                 return false;

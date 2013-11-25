@@ -37,7 +37,7 @@ class Backend extends Contao_Backend
      * @param mixed
      * @return mixed
      */
-    public static function truncateProductCache($varValue=null)
+    public static function truncateProductCache($varValue = null)
     {
         \Isotope\Model\ProductCache::purge();
 
@@ -67,12 +67,9 @@ class Backend extends Contao_Backend
 
             \System::loadLanguageFile('subdivisions');
 
-            foreach ($GLOBALS['TL_LANG']['DIV'] as $strCountry => $arrSubdivision)
-            {
-                foreach ($arrSubdivision as $strCode => $varValue)
-                {
-                    if (is_array($varValue))
-                    {
+            foreach ($GLOBALS['TL_LANG']['DIV'] as $strCountry => $arrSubdivision) {
+                foreach ($arrSubdivision as $strCode => $varValue) {
+                    if (is_array($varValue)) {
                         $strGroup = $varValue[''];
                         unset($varValue['']);
 
@@ -96,8 +93,7 @@ class Backend extends Contao_Backend
      */
     public function initializeSetupModule($dc)
     {
-        if (\Input::get('act') != '')
-        {
+        if (\Input::get('act') != '') {
             $GLOBALS['TL_DCA'][$dc->table]['config']['closed'] = false;
         }
     }
@@ -111,8 +107,7 @@ class Backend extends Contao_Backend
     {
         $arrModules = array();
 
-        foreach ($GLOBALS['ISO_MOD'] as $k=>$v)
-        {
+        foreach ($GLOBALS['ISO_MOD'] as $k => $v) {
             $arrModules[$k] = array_keys($v);
         }
 
@@ -156,7 +151,7 @@ class Backend extends Contao_Backend
 
         // Try to select the shop configs
         try {
-            $objConfig = Config::findAll(array('order'=>'name'));
+            $objConfig = Config::findAll(array('order' => 'name'));
         } catch (\Exception $e) {
             $objConfig = null;
         }
@@ -166,7 +161,7 @@ class Backend extends Contao_Backend
             while ($objConfig->next()) {
                 if ($objConfig->templateGroup != '') {
 
-                    $strFolder = sprintf($GLOBALS['TL_LANG']['MSC']['templatesConfig'], $objConfig->name);
+                    $strFolder          = sprintf($GLOBALS['TL_LANG']['MSC']['templatesConfig'], $objConfig->name);
                     $arrConfigTemplates = glob(TL_ROOT . '/' . $objConfig->templateGroup . '/' . $strPrefix . '*');
 
                     if (is_array($arrConfigTemplates)) {
@@ -185,7 +180,7 @@ class Backend extends Contao_Backend
 
         // Try to select the themes (see #5210)
         try {
-            $objTheme = \ThemeModel::findAll(array('order'=>'name'));
+            $objTheme = \ThemeModel::findAll(array('order' => 'name'));
         } catch (\Exception $e) {
             $objTheme = null;
         }
@@ -195,7 +190,7 @@ class Backend extends Contao_Backend
             while ($objTheme->next()) {
                 if ($objTheme->templates != '') {
 
-                    $strFolder = sprintf($GLOBALS['TL_LANG']['MSC']['templatesTheme'], $objTheme->name);
+                    $strFolder         = sprintf($GLOBALS['TL_LANG']['MSC']['templatesTheme'], $objTheme->name);
                     $arrThemeTemplates = glob(TL_ROOT . '/' . $objTheme->templates . '/' . $strPrefix . '*');
 
                     if (is_array($arrThemeTemplates)) {
@@ -223,7 +218,7 @@ class Backend extends Contao_Backend
     public static function getOrderStatus()
     {
         $arrStatus = array();
-        if (($objStatus = OrderStatus::findAll(array('order'=>'sorting'))) !== null) {
+        if (($objStatus = OrderStatus::findAll(array('order' => 'sorting'))) !== null) {
             while ($objStatus->next()) {
                 $arrStatus[$objStatus->id] = $objStatus->current()->getName();
             }
@@ -256,10 +251,9 @@ class Backend extends Contao_Backend
         }
 
         $arrMessages = array();
-        $objOrders = \Database::getInstance()->query("SELECT COUNT(*) AS total, s.name FROM " . \Isotope\Model\ProductCollection::getTable() . " c LEFT JOIN " . \Isotope\Model\OrderStatus::getTable() . " s ON c.order_status=s.id WHERE c.type='Order' AND s.welcomescreen='1' $strConfig GROUP BY s.id");
+        $objOrders   = \Database::getInstance()->query("SELECT COUNT(*) AS total, s.name FROM " . \Isotope\Model\ProductCollection::getTable() . " c LEFT JOIN " . \Isotope\Model\OrderStatus::getTable() . " s ON c.order_status=s.id WHERE c.type='Order' AND s.welcomescreen='1' $strConfig GROUP BY s.id");
 
-        while ($objOrders->next())
-        {
+        while ($objOrders->next()) {
             $arrMessages[] = '<p class="tl_new">' . sprintf($GLOBALS['TL_LANG']['MSC']['newOrders'], $objOrders->total, $objOrders->name) . '</p>';
         }
 
@@ -275,15 +269,12 @@ class Backend extends Contao_Backend
     {
         $objUser = \BackendUser::getInstance();
 
-        if ($objUser->isAdmin)
-        {
+        if ($objUser->isAdmin) {
             $arrProducts = true;
-        }
-        else
-        {
-            $arrNewRecords = $_SESSION['BE_DATA']['new_records']['tl_iso_product'];
+        } else {
+            $arrNewRecords   = $_SESSION['BE_DATA']['new_records']['tl_iso_product'];
             $arrProductTypes = $objUser->iso_product_types;
-            $arrGroups = array();
+            $arrGroups       = array();
 
             // Return false if there are no product types
             if (!is_array($arrProductTypes) || empty($arrProductTypes)) {
@@ -306,8 +297,7 @@ class Backend extends Contao_Backend
                     ")
             ");
 
-            if ($objProducts->numRows == 0)
-            {
+            if ($objProducts->numRows == 0) {
                 return array();
             }
 
@@ -316,25 +306,17 @@ class Backend extends Contao_Backend
         }
 
         // HOOK: allow extensions to define allowed products
-        if (isset($GLOBALS['ISO_HOOKS']['getAllowedProductIds']) && is_array($GLOBALS['ISO_HOOKS']['getAllowedProductIds']))
-        {
-            foreach ($GLOBALS['ISO_HOOKS']['getAllowedProductIds'] as $callback)
-            {
+        if (isset($GLOBALS['ISO_HOOKS']['getAllowedProductIds']) && is_array($GLOBALS['ISO_HOOKS']['getAllowedProductIds'])) {
+            foreach ($GLOBALS['ISO_HOOKS']['getAllowedProductIds'] as $callback) {
                 $objCallback = \System::importStatic($callback[0]);
-                $arrAllowed = $objCallback->$callback[1]();
+                $arrAllowed  = $objCallback->$callback[1]();
 
-                if ($arrAllowed === false)
-                {
+                if ($arrAllowed === false) {
                     return false;
-                }
-                elseif (is_array($arrAllowed))
-                {
-                    if ($arrProducts === true)
-                    {
+                } elseif (is_array($arrAllowed)) {
+                    if ($arrProducts === true) {
                         $arrProducts = $arrAllowed;
-                    }
-                    else
-                    {
+                    } else {
                         $arrProducts = array_intersect($arrProducts, $arrAllowed);
                     }
                 }
@@ -342,8 +324,7 @@ class Backend extends Contao_Backend
         }
 
         // If all product are allowed, we don't need to filter
-        if ($arrProducts === true || count($arrProducts) == \Database::getInstance()->execute("SELECT COUNT(id) as total FROM tl_iso_product")->total)
-        {
+        if ($arrProducts === true || count($arrProducts) == \Database::getInstance()->execute("SELECT COUNT(id) as total FROM tl_iso_product")->total) {
             return true;
         }
 
@@ -359,8 +340,7 @@ class Backend extends Contao_Backend
      */
     public function executePreActions($action)
     {
-        switch ($action)
-        {
+        switch ($action) {
             // Move the product
             case 'moveProduct':
                 $this->Session->set('iso_products_gid', intval(\Input::post('value')));
@@ -370,7 +350,8 @@ class Backend extends Contao_Backend
             // Move multiple products
             case 'moveProducts':
                 $this->Session->set('iso_products_gid', intval(\Input::post('value')));
-                exit; break;
+                exit;
+                break;
 
             // Filter the groups
             case 'filterGroups':
@@ -405,12 +386,11 @@ class Backend extends Contao_Backend
      */
     public function executePostActions($action, $dc)
     {
-        switch ($action)
-        {
+        switch ($action) {
             case 'loadProductTree':
                 $arrData['strTable'] = $dc->table;
-                $arrData['id'] = strlen($this->strAjaxName) ? $this->strAjaxName : $dc->id;
-                $arrData['name'] = \Input::post('name');
+                $arrData['id']       = strlen($this->strAjaxName) ? $this->strAjaxName : $dc->id;
+                $arrData['name']     = \Input::post('name');
 
                 $this->loadDataContainer($dc->table);
                 $arrData = array_merge($GLOBALS['TL_DCA'][$dc->table]['fields'][$arrData['name']]['eval'], $arrData);
@@ -418,16 +398,16 @@ class Backend extends Contao_Backend
                 $objWidget = new $GLOBALS['BE_FFL']['productTree']($arrData, $dc);
 
                 echo json_encode(array
-                (
-                    'content' => $objWidget->generateAjax($this->strAjaxId, \Input::post('field'), intval(\Input::post('level'))),
-                    'token'   => REQUEST_TOKEN
-                ));
+                                 (
+                                 'content' => $objWidget->generateAjax($this->strAjaxId, \Input::post('field'), intval(\Input::post('level'))),
+                                 'token'   => REQUEST_TOKEN
+                                 ));
                 exit;
 
             case 'loadProductGroupTree':
                 $arrData['strTable'] = $dc->table;
-                $arrData['id'] = strlen($this->strAjaxName) ? $this->strAjaxName : $dc->id;
-                $arrData['name'] = \Input::post('name');
+                $arrData['id']       = strlen($this->strAjaxName) ? $this->strAjaxName : $dc->id;
+                $arrData['name']     = \Input::post('name');
 
                 $objWidget = new $GLOBALS['BE_FFL']['productGroupSelector']($arrData, $dc);
                 echo $objWidget->generateAjax($this->strAjaxId, \Input::post('field'), intval(\Input::post('level')));
@@ -435,29 +415,29 @@ class Backend extends Contao_Backend
 
             case 'uploadMediaManager':
                 $arrData['strTable'] = $dc->table;
-                $arrData['id'] = strlen($this->strAjaxName) ? $this->strAjaxName : $dc->id;
-                $arrData['name'] = \Input::post('name');
+                $arrData['id']       = strlen($this->strAjaxName) ? $this->strAjaxName : $dc->id;
+                $arrData['name']     = \Input::post('name');
 
                 $objWidget = new $GLOBALS['BE_FFL']['mediaManager']($arrData, $dc);
-                $strFile = $objWidget->validateUpload();
+                $strFile   = $objWidget->validateUpload();
 
                 if ($objWidget->hasErrors()) {
-                    $arrResponse = array('success'=>false, 'error'=>$objWidget->getErrorsAsString(), 'preventRetry'=>true);
+                    $arrResponse = array('success' => false, 'error' => $objWidget->getErrorsAsString(), 'preventRetry' => true);
                 } else {
-                    $arrResponse = array('success'=>true, 'file'=>$strFile);
+                    $arrResponse = array('success' => true, 'file' => $strFile);
                 }
 
                 echo json_encode($arrResponse);
                 exit;
 
             case 'reloadMediaManager':
-                $intId = \Input::get('id');
+                $intId    = \Input::get('id');
                 $strField = $dc->field = \Input::post('name');
                 $this->import('Database');
 
                 // Handle the keys in "edit multiple" mode
                 if (\Input::get('act') == 'editAll') {
-                    $intId = preg_replace('/.*_([0-9a-zA-Z]+)$/', '$1', $strField);
+                    $intId    = preg_replace('/.*_([0-9a-zA-Z]+)$/', '$1', $strField);
                     $strField = preg_replace('/(.*)_[0-9a-zA-Z]+$/', '$1', $strField);
                 }
 
@@ -468,7 +448,7 @@ class Backend extends Contao_Backend
                     die('Bad Request');
                 }
 
-                $objRow = null;
+                $objRow   = null;
                 $varValue = null;
 
                 // Load the value
@@ -485,7 +465,7 @@ class Backend extends Contao_Backend
                         die('Bad Request');
                     }
 
-                    $varValue = $objRow->$strField;
+                    $varValue         = $objRow->$strField;
                     $dc->activeRecord = $objRow;
                 }
 
@@ -499,11 +479,11 @@ class Backend extends Contao_Backend
                 // Build the attributes based on the "eval" array
                 $arrAttribs = $GLOBALS['TL_DCA'][$dc->table]['fields'][$strField]['eval'];
 
-                $arrAttribs['id'] = $dc->field;
-                $arrAttribs['name'] = $dc->field;
-                $arrAttribs['value'] = $varValue;
-                $arrAttribs['strTable'] = $dc->table;
-                $arrAttribs['strField'] = $strField;
+                $arrAttribs['id']           = $dc->field;
+                $arrAttribs['name']         = $dc->field;
+                $arrAttribs['value']        = $varValue;
+                $arrAttribs['strTable']     = $dc->table;
+                $arrAttribs['strField']     = $strField;
                 $arrAttribs['activeRecord'] = $dc->activeRecord;
 
                 $objWidget = new $GLOBALS['BE_FFL']['mediaManager']($arrAttribs);
@@ -554,7 +534,7 @@ class Backend extends Contao_Backend
     {
         if (\Input::get('popup') && \Input::get('do') == 'iso_products' && \Input::get('table') == Group::getTable() && $objTemplate->getName() == 'be_main') {
             $objTemplate->managerHref = ampersand($this->Session->get('groupPickerRef'));
-            $objTemplate->manager = $GLOBALS['TL_LANG']['MSC']['groupPickerHome'];
+            $objTemplate->manager     = $GLOBALS['TL_LANG']['MSC']['groupPickerHome'];
         }
     }
 }

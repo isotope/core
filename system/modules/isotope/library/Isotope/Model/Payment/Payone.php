@@ -75,8 +75,7 @@ class Payone extends Postsale implements IsotopePayment
     {
         $i = 0;
 
-        if (($objOrder = Order::findOneBy('source_collection_id', Isotope::getCart()->id)) === null)
-        {
+        if (($objOrder = Order::findOneBy('source_collection_id', Isotope::getCart()->id)) === null) {
             \Isotope\Module\Checkout::redirectToStep('failed');
         }
 
@@ -119,10 +118,10 @@ class Payone extends Postsale implements IsotopePayment
                 $strOptions = ' (' . implode(', ', $arrOptions) . ')';
             }
 
-            $arrData['id['.++$i.']']    = $objItem->getSku();
-            $arrData['pr['.$i.']']      = round($objItem->getPrice(), 2) * 100;
-            $arrData['no['.$i.']']      = $objItem->quantity;
-            $arrData['de['.$i.']']      = specialchars($objItem->getName() . $strOptions);
+            $arrData['id[' . ++$i . ']'] = $objItem->getSku();
+            $arrData['pr[' . $i . ']']   = round($objItem->getPrice(), 2) * 100;
+            $arrData['no[' . $i . ']']   = $objItem->quantity;
+            $arrData['de[' . $i . ']']   = specialchars($objItem->getName() . $strOptions);
         }
 
         foreach (Isotope::getCart()->getSurcharges() as $k => $objSurcharge) {
@@ -130,10 +129,10 @@ class Payone extends Postsale implements IsotopePayment
             if (!$objSurcharge->add)
                 continue;
 
-            $arrData['id['.++$i.']']    = 'surcharge'.$k;
-            $arrData['pr['.$i.']']      = $objSurcharge->total_price * 100;
-            $arrData['no['.$i.']']      = '1';
-            $arrData['de['.$i.']']      = $objSurcharge->getLabel();
+            $arrData['id[' . ++$i . ']'] = 'surcharge' . $k;
+            $arrData['pr[' . $i . ']']   = $objSurcharge->total_price * 100;
+            $arrData['no[' . $i . ']']   = '1';
+            $arrData['de[' . $i . ']']   = $objSurcharge->getLabel();
         }
 
 
@@ -141,14 +140,14 @@ class Payone extends Postsale implements IsotopePayment
         $arrData = array_map('urlencode', $arrData);
         $strHash = md5(implode('', $arrData) . $this->payone_key);
 
-        $objTemplate = new \Isotope\Template('iso_payment_payone');
-        $objTemplate->id = $this->id;
-        $objTemplate->data = $arrData;
-        $objTemplate->hash = $strHash;
+        $objTemplate                  = new \Isotope\Template('iso_payment_payone');
+        $objTemplate->id              = $this->id;
+        $objTemplate->data            = $arrData;
+        $objTemplate->hash            = $strHash;
         $objTemplate->billing_address = Isotope::getCart()->getBillingAddress()->row();
-        $objTemplate->headline = $GLOBALS['TL_LANG']['MSC']['pay_with_redirect'][0];
-        $objTemplate->message = $GLOBALS['TL_LANG']['MSC']['pay_with_redirect'][1];
-        $objTemplate->slabel = specialchars($GLOBALS['TL_LANG']['MSC']['pay_with_redirect'][2]);
+        $objTemplate->headline        = $GLOBALS['TL_LANG']['MSC']['pay_with_redirect'][0];
+        $objTemplate->message         = $GLOBALS['TL_LANG']['MSC']['pay_with_redirect'][1];
+        $objTemplate->slabel          = specialchars($GLOBALS['TL_LANG']['MSC']['pay_with_redirect'][2]);
 
         return $objTemplate->parse();
     }

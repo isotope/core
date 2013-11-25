@@ -25,27 +25,27 @@ use Isotope\Model\Attribute;
 class Upload extends Attribute implements IsotopeAttribute
 {
 
-	/**
-	 * Upload widget is always customer defined
-	 * @return	bool
-	 */
-	public function isCustomerDefined()
-	{
-		return true;
-	}
+    /**
+     * Upload widget is always customer defined
+     * @return    bool
+     */
+    public function isCustomerDefined()
+    {
+        return true;
+    }
 
-	public function getBackendWidget()
-	{
-		return false;
-	}
+    public function getBackendWidget()
+    {
+        return false;
+    }
 
-	public function saveToDCA(array &$arrData)
-	{
-		parent::saveToDCA($arrData);
+    public function saveToDCA(array &$arrData)
+    {
+        parent::saveToDCA($arrData);
 
-		$arrData['fields'][$this->field_name]['sql'] = "varchar(255) NOT NULL default ''";
+        $arrData['fields'][$this->field_name]['sql'] = "varchar(255) NOT NULL default ''";
 
-		// Install save_callback for upload widgets
+        // Install save_callback for upload widgets
         $arrData['fields'][$this->field_name]['save_callback'][] = array('Isotope\Frontend', 'saveUpload');
-	}
+    }
 }

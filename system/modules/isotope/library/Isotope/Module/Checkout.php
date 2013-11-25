@@ -76,15 +76,14 @@ class Checkout extends Module
      */
     public function generate()
     {
-        if (TL_MODE == 'BE')
-        {
+        if (TL_MODE == 'BE') {
             $objTemplate = new \BackendTemplate('be_wildcard');
 
             $objTemplate->wildcard = '### ISOTOPE CHECKOUT ###';
-            $objTemplate->title = $this->headline;
-            $objTemplate->id = $this->id;
-            $objTemplate->link = $this->name;
-            $objTemplate->href = 'contao/main.php?do=themes&amp;table=tl_module&amp;act=edit&amp;id=' . $this->id;
+            $objTemplate->title    = $this->headline;
+            $objTemplate->id       = $this->id;
+            $objTemplate->link     = $this->name;
+            $objTemplate->href     = 'contao/main.php?do=themes&amp;table=tl_module&amp;act=edit&amp;id=' . $this->id;
 
             return $objTemplate->parse();
         }
@@ -112,23 +111,19 @@ class Checkout extends Module
     protected function compile()
     {
         // Order has been completed (postsale request)
-        if ($this->strCurrentStep == 'complete' && \Input::get('uid') != '')
-        {
-            if (($objOrder = Order::findOneByUniqid(\Input::get('uid'))) !== null)
-            {
+        if ($this->strCurrentStep == 'complete' && \Input::get('uid') != '') {
+            if (($objOrder = Order::findOneByUniqid(\Input::get('uid'))) !== null) {
                 // Order is complete, forward to confirmation page
-                if ($objOrder->complete())
-                {
+                if ($objOrder->complete()) {
                     \Isotope\Frontend::clearTimeout();
 
                     \Controller::redirect(\Haste\Util\Url::addQueryString('uid=' . $objOrder->uniqid, $this->orderCompleteJumpTo));
                 }
 
                 // Order is not complete, wait for it
-                if (\Isotope\Frontend::setTimeout())
-                {
-                    $this->Template = new \Isotope\Template('mod_message');
-                    $this->Template->type = 'processing';
+                if (\Isotope\Frontend::setTimeout()) {
+                    $this->Template          = new \Isotope\Template('mod_message');
+                    $this->Template->type    = 'processing';
                     $this->Template->message = $GLOBALS['TL_LANG']['MSC']['payment_processing'];
 
                     return;
@@ -149,29 +144,29 @@ class Checkout extends Module
         }
 
         // Default template settings. Must be set at beginning so they can be overwritten later (eg. trough callback)
-        $this->Template->action = ampersand(\Environment::get('request'), ENCODE_AMPERSANDS);
-        $this->Template->formId = $this->strFormId;
-        $this->Template->formSubmit = $this->strFormId;
-        $this->Template->enctype = 'application/x-www-form-urlencoded';
+        $this->Template->action        = ampersand(\Environment::get('request'), ENCODE_AMPERSANDS);
+        $this->Template->formId        = $this->strFormId;
+        $this->Template->formSubmit    = $this->strFormId;
+        $this->Template->enctype       = 'application/x-www-form-urlencoded';
         $this->Template->previousLabel = specialchars($GLOBALS['TL_LANG']['MSC']['previousStep']);
-        $this->Template->nextLabel = specialchars($GLOBALS['TL_LANG']['MSC']['nextStep']);
-        $this->Template->nextClass = 'next';
-        $this->Template->showPrevious = true;
-        $this->Template->showNext = true;
-        $this->Template->showForm = true;
+        $this->Template->nextLabel     = specialchars($GLOBALS['TL_LANG']['MSC']['nextStep']);
+        $this->Template->nextClass     = 'next';
+        $this->Template->showPrevious  = true;
+        $this->Template->showNext      = true;
+        $this->Template->showForm      = true;
 
         if ($this->strCurrentStep == 'failed') {
-            $this->Template->mtype = 'error';
+            $this->Template->mtype   = 'error';
             $this->Template->message = strlen(\Input::get('reason')) ? \Input::get('reason') : $GLOBALS['TL_LANG']['ERR']['orderFailed'];
-            $this->strCurrentStep = 'review';
+            $this->strCurrentStep    = 'review';
         }
 
         // Run trough all steps until we find the current one or one reports failure
         $intCurrentStep = 0;
-        $intTotalSteps = count($this->getSteps());
+        $intTotalSteps  = count($this->getSteps());
         foreach ($this->getSteps() as $step => $arrModules) {
-            $this->strFormId = 'iso_mod_checkout_' . $step;
-            $this->Template->formId = $this->strFormId;
+            $this->strFormId            = 'iso_mod_checkout_' . $step;
+            $this->Template->formId     = $this->strFormId;
             $this->Template->formSubmit = $this->strFormId;
 
             $intCurrentStep += 1;
@@ -210,8 +205,8 @@ class Checkout extends Module
             }
 
             $this->Template->showForm = false;
-            $this->doNotSubmit = true;
-            $arrBuffer = array(array('html'=>$strBuffer, 'class'=>$this->strCurrentStep));
+            $this->doNotSubmit        = true;
+            $arrBuffer                = array(array('html' => $strBuffer, 'class' => $this->strCurrentStep));
         } else if ($this->strCurrentStep == 'complete') {
             $strBuffer = Isotope::getCart()->hasPayment() ? Isotope::getCart()->getPaymentMethod()->processPayment() : true;
 
@@ -226,9 +221,9 @@ class Checkout extends Module
             } elseif ($strBuffer === false) {
                 static::redirectToStep('failed');
             } else {
-                $this->Template->showNext = false;
+                $this->Template->showNext     = false;
                 $this->Template->showPrevious = false;
-                $arrBuffer = array(array('html'=>$strBuffer, 'class'=>$this->strCurrentStep));
+                $arrBuffer                    = array(array('html' => $strBuffer, 'class' => $this->strCurrentStep));
             }
         }
 
@@ -236,39 +231,30 @@ class Checkout extends Module
 
         $this->Template->fields = $arrBuffer;
 
-        if (!strlen($this->strCurrentStep))
-        {
+        if (!strlen($this->strCurrentStep)) {
             $this->strCurrentStep = $step;
         }
 
         // Show checkout steps
-        $this->Template->steps = $this->generateSteps();
+        $this->Template->steps      = $this->generateSteps();
         $this->Template->activeStep = $GLOBALS['TL_LANG']['MSC']['activeStep'];
 
         $arrStepKeys = array_keys($this->getSteps());
 
         // Hide back buttons it this is the first step
-        if (array_search($this->strCurrentStep, $arrStepKeys) === 0)
-        {
+        if (array_search($this->strCurrentStep, $arrStepKeys) === 0) {
             $this->Template->showPrevious = false;
-        }
-
-        // Show "confirm order" button if this is the last step
-        elseif (array_search($this->strCurrentStep, $arrStepKeys) === (count($arrStepKeys) - 1))
-        {
+        } // Show "confirm order" button if this is the last step
+        elseif (array_search($this->strCurrentStep, $arrStepKeys) === (count($arrStepKeys) - 1)) {
             $this->Template->nextClass = 'confirm';
             $this->Template->nextLabel = specialchars($GLOBALS['TL_LANG']['MSC']['confirmOrder']);
         }
 
         // User pressed "back" button
-        if (strlen(\Input::post('previousStep')))
-        {
+        if (strlen(\Input::post('previousStep'))) {
             $this->redirectToPreviousStep();
-        }
-
-        // Valid input data, redirect to next step
-        elseif (\Input::post('FORM_SUBMIT') == $this->strFormId && !$this->doNotSubmit)
-        {
+        } // Valid input data, redirect to next step
+        elseif (\Input::post('FORM_SUBMIT') == $this->strFormId && !$this->doNotSubmit) {
             $this->redirectToNextStep();
         }
     }
@@ -280,18 +266,16 @@ class Checkout extends Module
     protected function redirectToNextStep()
     {
         $arrSteps = array_keys($this->getSteps());
-        $intKey = array_search($this->strCurrentStep, $arrSteps);
+        $intKey   = array_search($this->strCurrentStep, $arrSteps);
 
         if (false === $intKey) {
             $intKey = -1;
-        }
-
-        // redirect to step "process" if the next step is the last one
-        elseif (($intKey+1) == count($arrSteps)) {
+        } // redirect to step "process" if the next step is the last one
+        elseif (($intKey + 1) == count($arrSteps)) {
             static::redirectToStep('process');
         }
 
-        static::redirectToStep($arrSteps[$intKey+1]);
+        static::redirectToStep($arrSteps[$intKey + 1]);
     }
 
 
@@ -301,13 +285,13 @@ class Checkout extends Module
     protected function redirectToPreviousStep()
     {
         $arrSteps = array_keys($this->getSteps());
-        $intKey = array_search($this->strCurrentStep, $arrSteps);
+        $intKey   = array_search($this->strCurrentStep, $arrSteps);
 
         if (false === $intKey || 0 === $intKey) {
             $intKey = 1;
         }
 
-        static::redirectToStep($arrSteps[($intKey-1)]);
+        static::redirectToStep($arrSteps[($intKey - 1)]);
     }
 
 
@@ -395,25 +379,21 @@ class Checkout extends Module
     protected function canCheckout()
     {
         // Redirect to login page if not logged in
-        if ($this->iso_checkout_method == 'member' && FE_USER_LOGGED_IN !== true)
-        {
+        if ($this->iso_checkout_method == 'member' && FE_USER_LOGGED_IN !== true) {
             $objPage = \Database::getInstance()->prepare("SELECT id,alias FROM tl_page WHERE id=?")->limit(1)->execute($this->iso_login_jumpTo);
 
-            if (!$objPage->numRows)
-            {
-                $this->Template = new \Isotope\Template('mod_message');
-                $this->Template->type = 'error';
+            if (!$objPage->numRows) {
+                $this->Template          = new \Isotope\Template('mod_message');
+                $this->Template->type    = 'error';
                 $this->Template->message = $GLOBALS['TL_LANG']['ERR']['isoLoginRequired'];
 
                 return false;
             }
 
             \Controller::redirect(\Controller::generateFrontendUrl($objPage->row()));
-        }
-        elseif ($this->iso_checkout_method == 'guest' && FE_USER_LOGGED_IN === true)
-        {
-            $this->Template = new \Isotope\Template('mod_message');
-            $this->Template->type = 'error';
+        } elseif ($this->iso_checkout_method == 'guest' && FE_USER_LOGGED_IN === true) {
+            $this->Template          = new \Isotope\Template('mod_message');
+            $this->Template->type    = 'error';
             $this->Template->message = $GLOBALS['TL_LANG']['ERR']['checkoutNotAllowed'];
 
             return false;
@@ -421,16 +401,15 @@ class Checkout extends Module
 
         // Return error message if cart is empty
         if (Isotope::getCart()->isEmpty()) {
-            $this->Template = new \Isotope\Template('mod_message');
-            $this->Template->type = 'empty';
+            $this->Template          = new \Isotope\Template('mod_message');
+            $this->Template->type    = 'empty';
             $this->Template->message = $GLOBALS['TL_LANG']['MSC']['noItemsInCart'];
 
             return false;
         }
 
         // Insufficient cart subtotal
-        if (Isotope::getCart()->hasErrors())
-        {
+        if (Isotope::getCart()->hasErrors()) {
             if ($this->iso_cart_jumpTo > 0) {
                 $objJump = \PageModel::findWithDetails($this->iso_cart_jumpTo);
 
@@ -439,8 +418,8 @@ class Checkout extends Module
                 }
             }
 
-            $this->Template = new \Isotope\Template('mod_message');
-            $this->Template->type = 'error';
+            $this->Template          = new \Isotope\Template('mod_message');
+            $this->Template->type    = 'error';
             $this->Template->message = implode("</p>\n<p class=\"error message\">", Isotope::getCart()->getErrors());
 
             return false;
@@ -491,32 +470,31 @@ class Checkout extends Module
             return array();
         }
 
-        $arrItems = array();
+        $arrItems  = array();
         $blnPassed = true;
 
         foreach (array_keys($this->getSteps()) as $step) {
 
             $blnActive = false;
-            $href = '';
-            $class = standardize($step);
+            $href      = '';
+            $class     = standardize($step);
 
             if ($this->strCurrentStep == $step) {
                 $blnPassed = false;
                 $blnActive = true;
                 $class .= ' active';
-            }
-            elseif ($blnPassed) {
+            } elseif ($blnPassed) {
                 $href = static::generateUrlForStep($step);
                 $class .= ' passed';
             }
 
             $arrItems[] = array
             (
-                'isActive'  => $blnActive,
-                'class'     => $class,
-                'link'      => ($GLOBALS['TL_LANG']['MSC']['checkout_' . $step] ?: $step),
-                'href'      => $href,
-                'title'     => specialchars(sprintf($GLOBALS['TL_LANG']['MSC']['checkboutStepBack'], ($GLOBALS['TL_LANG']['MSC']['checkout_' . $step] ?: $step))),
+                'isActive' => $blnActive,
+                'class'    => $class,
+                'link'     => ($GLOBALS['TL_LANG']['MSC']['checkout_' . $step] ? : $step),
+                'href'     => $href,
+                'title'    => specialchars(sprintf($GLOBALS['TL_LANG']['MSC']['checkboutStepBack'], ($GLOBALS['TL_LANG']['MSC']['checkout_' . $step] ? : $step))),
             );
         }
 
@@ -526,7 +504,7 @@ class Checkout extends Module
 
         // Add first/last classes
         $arrItems[0]['class'] .= ' first';
-        $arrItems[count($arrItems)-1]['class'] .= ' last';
+        $arrItems[count($arrItems) - 1]['class'] .= ' last';
 
         return $arrItems;
     }

@@ -27,18 +27,18 @@ use Isotope\Model\Gallery;
 class MediaManager extends Attribute implements IsotopeAttribute
 {
 
-	public function saveToDCA(array &$arrData)
-	{
-		parent::saveToDCA($arrData);
+    public function saveToDCA(array &$arrData)
+    {
+        parent::saveToDCA($arrData);
 
-		$arrData['fields'][$this->field_name]['sql'] = "blob NULL";
+        $arrData['fields'][$this->field_name]['sql'] = "blob NULL";
 
-		// Media Manager must fetch fallback
+        // Media Manager must fetch fallback
         $arrData['fields'][$this->field_name]['attributes']['fetch_fallback'] = true;
-	}
+    }
 
-	public function generate(IsotopeProduct $objProduct, array $arrOptions=array())
-	{
+    public function generate(IsotopeProduct $objProduct, array $arrOptions = array())
+    {
         throw new \BadMethodCallException('MediaManager attribute cannot be generated');
-	}
+    }
 }

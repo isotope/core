@@ -33,13 +33,11 @@ class Callback extends \Backend
 
         $arrProducts = deserialize($row['products']);
 
-        if (is_array($arrProducts) && !empty($arrProducts))
-        {
+        if (is_array($arrProducts) && !empty($arrProducts)) {
             $strBuffer .= '<div class="limit_height' . (!$GLOBALS['TL_CONFIG']['doNotCollapse'] ? ' h0' : '') . ' block"><ul>';
             $objProducts = \Database::getInstance()->execute("SELECT * FROM tl_iso_product WHERE id IN (" . implode(',', $arrProducts) . ") ORDER BY name");
 
-            while ($objProducts->next())
-            {
+            while ($objProducts->next()) {
                 $strBuffer .= '<li>' . $objProducts->name . '</li>';
             }
 
@@ -60,20 +58,17 @@ class Callback extends \Backend
         $arrCategories = array();
         $objCategories = \Database::getInstance()->prepare("SELECT * FROM " . \Isotope\Model\RelatedCategory::getTable() . " WHERE id NOT IN (SELECT category FROM " . $dc->table . " WHERE pid=" . (strlen(\Input::get('act')) ? "(SELECT pid FROM " . $dc->table . " WHERE id=?) AND id!=?" : '?') . ")")->execute($dc->id, $dc->id);
 
-        while ($objCategories->next())
-        {
+        while ($objCategories->next()) {
             $arrCategories[$objCategories->id] = $objCategories->name;
         }
 
-        if (empty($arrCategories))
-        {
+        if (empty($arrCategories)) {
             $GLOBALS['TL_DCA']['tl_iso_related_product']['config']['closed'] = true;
         }
 
-        if (\Input::get('act') == 'edit')
-        {
+        if (\Input::get('act') == 'edit') {
             unset($GLOBALS['TL_DCA']['tl_iso_related_product']['fields']['category']['foreignKey']);
-            $GLOBALS['TL_DCA']['tl_iso_related_product']['fields']['category']['options'] = $arrCategories;
+            $GLOBALS['TL_DCA']['tl_iso_related_product']['fields']['category']['options']            = $arrCategories;
             $GLOBALS['TL_DCA']['tl_iso_related_product']['fields']['products']['eval']['allowedIds'] = \Database::getInstance()->prepare("SELECT id FROM tl_iso_product WHERE pid=0 AND id!=(SELECT pid FROM tl_iso_related_product WHERE id=?)")->execute($dc->id)->fetchEach('id');
         }
     }

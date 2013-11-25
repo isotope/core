@@ -41,7 +41,7 @@ class ProductPrice extends \Model\Collection implements IsotopePrice
      * @param   int
      * @return  float
      */
-    public function getAmount($intQuantity=1)
+    public function getAmount($intQuantity = 1)
     {
         return $this->current()->getAmount($intQuantity);
     }
@@ -51,7 +51,7 @@ class ProductPrice extends \Model\Collection implements IsotopePrice
      * @param   int
      * @return  float
      */
-    public function getOriginalAmount($intQuantity=1)
+    public function getOriginalAmount($intQuantity = 1)
     {
         return $this->current()->getOriginalAmount($intQuantity);
     }
@@ -61,7 +61,7 @@ class ProductPrice extends \Model\Collection implements IsotopePrice
      * @param   int
      * @return  float
      */
-    public function getNetAmount($intQuantity=1)
+    public function getNetAmount($intQuantity = 1)
     {
         return $this->current()->getNetAmount($intQuantity);
     }
@@ -71,7 +71,7 @@ class ProductPrice extends \Model\Collection implements IsotopePrice
      * @param   int
      * @return  float
      */
-    public function getGrossAmount($intQuantity=1)
+    public function getGrossAmount($intQuantity = 1)
     {
         return $this->current()->getGrossAmount($intQuantity);
     }
@@ -84,16 +84,16 @@ class ProductPrice extends \Model\Collection implements IsotopePrice
     {
         if (count($this->arrModels) > 1) {
 
-            $fltPrice = null;
+            $fltPrice    = null;
             $blnShowFrom = false;
 
             foreach ($this->arrModels as $objPrice) {
                 $blnShowTiers = $objPrice->getRelated('pid')->getRelated('type')->showPriceTiers();
-                $fltNew = $blnShowTiers ? $objPrice->getLowestAmount() : $objPrice->getAmount();
+                $fltNew       = $blnShowTiers ? $objPrice->getLowestAmount() : $objPrice->getAmount();
 
                 if (null === $fltPrice || $fltNew < $fltPrice) {
-                    $blnShowFrom = (null !== $fltPrice);
-                    $fltPrice = $fltNew;
+                    $blnShowFrom      = (null !== $fltPrice);
+                    $fltPrice         = $fltNew;
                     $fltOriginalPrice = $objPrice->getOriginalAmount();
                 }
             }
@@ -101,8 +101,9 @@ class ProductPrice extends \Model\Collection implements IsotopePrice
             if ($blnShowFrom) {
                 return sprintf($GLOBALS['TL_LANG']['MSC']['priceRangeLabel'], Isotope::formatPriceWithCurrency($fltPrice));
             } elseif ($fltPrice < $fltOriginalPrice) {
-                $strPrice = Isotope::formatPriceWithCurrency($fltPrice);
+                $strPrice         = Isotope::formatPriceWithCurrency($fltPrice);
                 $strOriginalPrice = Isotope::formatPriceWithCurrency($fltOriginalPrice);
+
                 return '<div class="original_price"><strike>' . $strOriginalPrice . '</strike></div><div class="price">' . $strPrice . '</div>';
             } else {
                 return Isotope::formatPriceWithCurrency($fltPrice);

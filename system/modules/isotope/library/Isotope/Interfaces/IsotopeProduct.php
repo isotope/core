@@ -90,7 +90,7 @@ interface IsotopeProduct
      * @param   IsotopeProductCollection
      * @return  IsotopePrice
      */
-    public function getPrice(IsotopeProductCollection $objCollection=null);
+    public function getPrice(IsotopeProductCollection $objCollection = null);
 
     /**
      * Return minimum quantity for the product (from advanced price tiers)
@@ -116,5 +116,5 @@ interface IsotopeProduct
      * @param  \PageModel
      * @return string
      */
-    public function generateUrl(\PageModel $objJumpTo=null);
+    public function generateUrl(\PageModel $objJumpTo = null);
 }

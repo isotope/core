@@ -35,25 +35,20 @@ class PasteButton extends \Backend
      * @return string
      * @link http://www.contao.org/callbacks.html#paste_button_callback
      */
-    public function generate(\DataContainer $dc, $row, $table, $cr, $arrClipboard=false)
+    public function generate(\DataContainer $dc, $row, $table, $cr, $arrClipboard = false)
     {
         // Disable all buttons if there is a circular reference
-        if ($arrClipboard !== false && ($arrClipboard['mode'] == 'cut' && ($cr == 1 || $arrClipboard['id'] == $row['id']) || $arrClipboard['mode'] == 'cutAll' && ($cr == 1 || in_array($row['id'], $arrClipboard['id']))))
-        {
+        if ($arrClipboard !== false && ($arrClipboard['mode'] == 'cut' && ($cr == 1 || $arrClipboard['id'] == $row['id']) || $arrClipboard['mode'] == 'cutAll' && ($cr == 1 || in_array($row['id'], $arrClipboard['id'])))) {
             return '';
         }
 
         $objProduct = \Database::getInstance()->prepare("SELECT p.*, t.variants FROM " . \Isotope\Model\Product::getTable() . " p LEFT JOIN " . ProductType::getTable() . " t ON p.type=t.id WHERE p.id=?")->execute($arrClipboard['id']);
 
         // Copy or cut a single product or variant
-        if ($arrClipboard['mode'] == 'cut' || $arrClipboard['mode'] == 'copy')
-        {
+        if ($arrClipboard['mode'] == 'cut' || $arrClipboard['mode'] == 'copy') {
             return $this->pasteVariant($objProduct, $table, $row, $arrClipboard);
-        }
-
-        // Cut or copy multiple variants
-        elseif ($arrClipboard['mode'] == 'cutAll' || $arrClipboard['mode'] == 'copyAll')
-        {
+        } // Cut or copy multiple variants
+        elseif ($arrClipboard['mode'] == 'cutAll' || $arrClipboard['mode'] == 'copyAll') {
             return $this->pasteAll($objProduct, $table, $row, $arrClipboard);
         }
 
@@ -69,23 +64,18 @@ class PasteButton extends \Backend
     protected function pasteVariant($objProduct, $table, $row, $arrClipboard)
     {
         // Can't copy variant into it's current product
-        if ($table == 'tl_iso_product' && $objProduct->pid == $row['id'] && $arrClipboard['mode'] == 'copy')
-        {
+        if ($table == 'tl_iso_product' && $objProduct->pid == $row['id'] && $arrClipboard['mode'] == 'copy') {
             return $this->getPasteButton(false);
-        }
-
-        // Disable paste button for products without variant data
-        elseif ($table == 'tl_iso_product' && $row['id'] > 0)
-        {
+        } // Disable paste button for products without variant data
+        elseif ($table == 'tl_iso_product' && $row['id'] > 0) {
             $objType = ProductType::findByPk($row['type']);
 
-            if (null === $objType || !$objType->hasVariants())
-            {
+            if (null === $objType || !$objType->hasVariants()) {
                 return $this->getPasteButton(false);
             }
         }
 
-        return $this->getPasteButton(true, $this->addToUrl('act='.$arrClipboard['mode'].'&amp;mode=2&amp;pid='.$row['id']), $table, $row['id']);
+        return $this->getPasteButton(true, $this->addToUrl('act=' . $arrClipboard['mode'] . '&amp;mode=2&amp;pid=' . $row['id']), $table, $row['id']);
     }
 
 
@@ -96,12 +86,11 @@ class PasteButton extends \Backend
     protected function pasteAll($objProduct, $table, $row, $arrClipboard)
     {
         // Can't paste products in product or variant
-        if ($table == 'tl_iso_product' && $row['id'] > 0)
-        {
+        if ($table == 'tl_iso_product' && $row['id'] > 0) {
             return '';
         }
 
-        return $this->getPasteButton(true, $this->addToUrl('act='.$arrClipboard['mode'].'&amp;mode=1&amp;childs=1&amp;gid='.$row['id']), $table, $row['id']);
+        return $this->getPasteButton(true, $this->addToUrl('act=' . $arrClipboard['mode'] . '&amp;mode=1&amp;childs=1&amp;gid=' . $row['id']), $table, $row['id']);
     }
 
 
@@ -112,13 +101,12 @@ class PasteButton extends \Backend
      * @param string
      * @return string
      */
-    protected function getPasteButton($blnActive, $url='#', $table='', $id='')
+    protected function getPasteButton($blnActive, $url = '#', $table = '', $id = '')
     {
-        if (!$blnActive)
-        {
+        if (!$blnActive) {
             return \Image::getHtml('pasteinto_.gif', '', 'class="blink"');
         }
 
-        return '<a href="'.$url.'" title="'.specialchars(sprintf($GLOBALS['TL_LANG'][$table]['pasteinto'][1], $id)).'" onclick="Backend.getScrollOffset();">'.\Image::getHtml('pasteinto.gif', sprintf($GLOBALS['TL_LANG'][$table]['pasteinto'][1], $id), 'class="blink"').'</a> ';
+        return '<a href="' . $url . '" title="' . specialchars(sprintf($GLOBALS['TL_LANG'][$table]['pasteinto'][1], $id)) . '" onclick="Backend.getScrollOffset();">' . \Image::getHtml('pasteinto.gif', sprintf($GLOBALS['TL_LANG'][$table]['pasteinto'][1], $id), 'class="blink"') . '</a> ';
     }
 }

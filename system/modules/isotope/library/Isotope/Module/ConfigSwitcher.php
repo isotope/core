@@ -40,16 +40,15 @@ class ConfigSwitcher extends Module
      */
     public function generate()
     {
-        if (TL_MODE == 'BE')
-        {
+        if (TL_MODE == 'BE') {
             $objTemplate = new \BackendTemplate('be_wildcard');
 
             $objTemplate->wildcard = '### ISOTOPE ECOMMERCE: STORE CONFIG SWICHER ###';
 
             $objTemplate->title = $this->headline;
-            $objTemplate->id = $this->id;
-            $objTemplate->link = $this->name;
-            $objTemplate->href = 'contao/main.php?do=themes&amp;table=tl_module&amp;act=edit&amp;id=' . $this->id;
+            $objTemplate->id    = $this->id;
+            $objTemplate->link  = $this->name;
+            $objTemplate->href  = 'contao/main.php?do=themes&amp;table=tl_module&amp;act=edit&amp;id=' . $this->id;
 
             return $objTemplate->parse();
         }
@@ -61,14 +60,12 @@ class ConfigSwitcher extends Module
             return '';
         }
 
-        if (\Input::get('config') != '')
-        {
-            if (in_array(\Input::get('config'), $this->iso_config_ids))
-            {
+        if (\Input::get('config') != '') {
+            if (in_array(\Input::get('config'), $this->iso_config_ids)) {
                 Isotope::getCart()->config_id = \Input::get('config');
             }
 
-            \Controller::redirect(preg_replace(('@[?|&]config='.\Input::get('config').'@'), '', \Environment::get('request')));
+            \Controller::redirect(preg_replace(('@[?|&]config=' . \Input::get('config') . '@'), '', \Environment::get('request')));
         }
 
         return parent::generate();
@@ -101,8 +98,8 @@ class ConfigSwitcher extends Module
             }
         }
 
-        $last = count($arrConfigs)-1;
+        $last                       = count($arrConfigs) - 1;
         $arrConfigs[$last]['class'] = trim($arrConfigs[$last]['class'] . ' last');
-        $this->Template->configs = $arrConfigs;
+        $this->Template->configs    = $arrConfigs;
     }
 }
