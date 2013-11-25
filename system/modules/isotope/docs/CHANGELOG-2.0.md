@@ -1,6 +1,13 @@
 Isotope eCommerce Changelog
 ===========================
 
+Version 2.0.0 (????-??-??)
+----------------------------
+
+### Fixed
+- Two missing `use` statements (#829)
+
+
 Version 2.0.rc2 (2013-11-22)
 ----------------------------
 
