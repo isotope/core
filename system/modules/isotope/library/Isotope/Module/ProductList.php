@@ -12,13 +12,13 @@
 
 namespace Isotope\Module;
 
+use Haste\Generator\RowClass;
+use Haste\Http\Response\HtmlResponse;
 use Isotope\Isotope;
 use Isotope\Model\Product;
 use Isotope\Model\ProductCache;
 use Isotope\Model\RequestCache;
 use Isotope\RequestCache\Sort;
-use Haste\Generator\RowClass;
-use Haste\Http\Response\HtmlResponse;
 
 
 /**

@@ -12,19 +12,18 @@
 
 namespace Isotope\Model;
 
-use Isotope\Isotope;
+use Haste\Generator\RowClass;
+use Haste\Haste;
+use Haste\Units\Mass\Scale;
+use Haste\Units\Mass\Weighable;
+use Haste\Units\Mass\WeightAggregate;
 use Isotope\Interfaces\IsotopePayment;
 use Isotope\Interfaces\IsotopeProduct;
 use Isotope\Interfaces\IsotopeProductCollection;
 use Isotope\Interfaces\IsotopeShipping;
+use Isotope\Isotope;
 use Isotope\Model\Payment;
-use Isotope\Model\ProductCollectionItem;
 use Isotope\Model\Shipping;
-use Haste\Haste;
-use Haste\Generator\RowClass;
-use Haste\Units\Mass\Scale;
-use Haste\Units\Mass\Weighable;
-use Haste\Units\Mass\WeightAggregate;
 
 /**
  * Class ProductCollection

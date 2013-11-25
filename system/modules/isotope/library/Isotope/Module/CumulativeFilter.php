@@ -12,8 +12,8 @@
 
 namespace Isotope\Module;
 
-use Isotope\RequestCache\Filter;
 use Haste\Generator\RowClass;
+use Isotope\RequestCache\Filter;
 
 
 /**

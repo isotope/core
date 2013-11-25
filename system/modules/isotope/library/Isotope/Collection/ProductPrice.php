@@ -12,8 +12,8 @@
 
 namespace Isotope\Collection;
 
-use Isotope\Isotope;
 use Isotope\Interfaces\IsotopePrice;
+use Isotope\Isotope;
 
 class ProductPrice extends \Model\Collection implements IsotopePrice
 {

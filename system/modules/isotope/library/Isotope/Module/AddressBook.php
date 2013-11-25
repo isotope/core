@@ -12,10 +12,10 @@
 
 namespace Isotope\Module;
 
+use Haste\Generator\RowClass;
 use Isotope\Isotope;
 use Isotope\Model\Address;
 use Isotope\Model\Config;
-use Haste\Generator\RowClass;
 
 /**
  * Class ModuleIsotopeAddressBook

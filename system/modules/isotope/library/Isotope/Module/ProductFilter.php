@@ -12,14 +12,14 @@
 
 namespace Isotope\Module;
 
+use Haste\Http\Response\JsonResponse;
+use Haste\Util\Format;
 use Isotope\Isotope;
 use Isotope\Model\Product;
 use Isotope\Model\RequestCache;
 use Isotope\RequestCache\Filter;
 use Isotope\RequestCache\Limit;
 use Isotope\RequestCache\Sort;
-use Haste\Util\Format;
-use Haste\Http\Response\JsonResponse;
 
 
 /**

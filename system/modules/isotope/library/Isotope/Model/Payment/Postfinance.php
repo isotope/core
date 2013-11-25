@@ -12,9 +12,9 @@
 
 namespace Isotope\Model\Payment;
 
-use Isotope\Isotope;
 use Isotope\Interfaces\IsotopePayment;
 use Isotope\Interfaces\IsotopePostsale;
+use Isotope\Isotope;
 use Isotope\Model\Payment;
 
 

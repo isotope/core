@@ -12,8 +12,6 @@
 
 namespace Isotope\Interfaces;
 
-use Isotope\Interfaces\IsotopeProductCollection;
-
 
 /**
  * Checkout steps handle individual steps in the Isotope checkout module

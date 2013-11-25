@@ -13,8 +13,8 @@
 
 namespace Isotope\CheckoutStep;
 
-use Isotope\Model\Address as AddressModel;
 use Haste\Generator\RowClass;
+use Isotope\Model\Address as AddressModel;
 
 abstract class Address extends CheckoutStep
 {

@@ -12,11 +12,11 @@
 
 namespace Isotope;
 
+use Haste\Haste;
 use Isotope\Interfaces\IsotopeProduct;
 use Isotope\Interfaces\IsotopeProductCollection;
 use Isotope\Model\Product;
 use Isotope\Model\ProductCollection\Order;
-use Haste\Haste;
 
 
 /**

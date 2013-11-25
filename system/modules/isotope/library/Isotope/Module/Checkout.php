@@ -12,13 +12,13 @@
 
 namespace Isotope\Module;
 
-use Isotope\Isotope;
+use Haste\Generator\RowClass;
 use Isotope\Interfaces\IsotopeCheckoutStep;
 use Isotope\Interfaces\IsotopeProductCollection;
+use Isotope\Isotope;
 use Isotope\Model\Payment;
-use Isotope\Model\Shipping;
 use Isotope\Model\ProductCollection\Order;
-use Haste\Generator\RowClass;
+use Isotope\Model\Shipping;
 
 
 /**

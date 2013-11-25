@@ -12,7 +12,6 @@
 
 namespace Isotope\Interfaces;
 
-use Isotope\Interfaces\IsotopeProduct;
 use Isotope\Model\ProductCollectionItem;
 
 

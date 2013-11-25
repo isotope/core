@@ -12,11 +12,11 @@
 
 namespace Isotope\Backend\ProductCollection;
 
+use Haste\Util\Format;
 use Isotope\Isotope;
 use Isotope\Model\Address;
 use Isotope\Model\Document;
 use Isotope\Model\ProductCollection\Order;
-use Haste\Util\Format;
 
 
 class Callback extends \Backend

@@ -12,8 +12,6 @@
 
 namespace Isotope\Backend\Shipping;
 
-use Isotope\Isotope;
-
 
 class Callback extends \Backend
 {

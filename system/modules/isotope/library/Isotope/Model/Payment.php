@@ -12,10 +12,10 @@
 
 namespace Isotope\Model;
 
-use Isotope\Isotope;
-use Isotope\Translation;
 use Isotope\Interfaces\IsotopeProductCollection;
+use Isotope\Isotope;
 use Isotope\Model\ProductCollectionSurcharge;
+use Isotope\Translation;
 
 
 /**

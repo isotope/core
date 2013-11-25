@@ -12,7 +12,7 @@
 
 namespace Isotope\ContentElement;
 
-use \ContentElement as Contao_ContentElement;
+use ContentElement as Contao_ContentElement;
 
 
 /**

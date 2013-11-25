@@ -13,8 +13,8 @@
 
 namespace Isotope\CheckoutStep;
 
-use Isotope\Interfaces\IsotopeProductCollection;
 use Haste\Form\Form;
+use Isotope\Interfaces\IsotopeProductCollection;
 
 
 abstract class OrderConditions extends CheckoutStep

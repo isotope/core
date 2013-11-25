@@ -12,10 +12,10 @@
 
 namespace Isotope\Backend\Product;
 
+use Haste\Util\Format;
 use Isotope\Model\Product;
 use Isotope\Model\ProductPrice;
 use Isotope\Model\ProductType;
-use Haste\Util\Format;
 
 
 class Label extends \Backend

@@ -12,8 +12,6 @@
 
 namespace Isotope\Interfaces;
 
-use Isotope\Interfaces\IsotopeProductCollection;
-
 
 /**
  * IsotopeShipping interface defines an Isotope shipping method

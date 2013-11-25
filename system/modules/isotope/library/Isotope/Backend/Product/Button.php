@@ -13,8 +13,8 @@
 namespace Isotope\Backend\Product;
 
 use Isotope\Model\Download;
-use Isotope\Model\ProductType;
 use Isotope\Model\ProductCollectionItem;
+use Isotope\Model\ProductType;
 
 
 class Button extends \Backend

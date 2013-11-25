@@ -12,12 +12,12 @@
 
 namespace Isotope\Backend\Product;
 
+use Haste\Util\Format;
 use Isotope\Model\Attribute;
 use Isotope\Model\Group;
 use Isotope\Model\Product;
 use Isotope\Model\ProductType;
 use Isotope\Model\RelatedCategory;
-use Haste\Util\Format;
 
 
 class DcaManager extends \Backend

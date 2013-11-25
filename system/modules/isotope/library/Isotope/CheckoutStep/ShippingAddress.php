@@ -12,9 +12,9 @@
 
 namespace Isotope\CheckoutStep;
 
-use Isotope\Isotope;
 use Isotope\Interfaces\IsotopeCheckoutStep;
 use Isotope\Interfaces\IsotopeProductCollection;
+use Isotope\Isotope;
 use Isotope\Model\Address as AddressModel;
 
 

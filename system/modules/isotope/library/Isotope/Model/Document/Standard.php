@@ -12,11 +12,10 @@
 
 namespace Isotope\Model\Document;
 
-use Isotope\Isotope;
+use Haste\Haste;
 use Isotope\Interfaces\IsotopeDocument;
 use Isotope\Interfaces\IsotopeProductCollection;
 use Isotope\Model\Document;
-use Haste\Haste;
 
 /**
  * Class Standard

@@ -12,19 +12,19 @@
 
 namespace Isotope\Model\Product;
 
-use Isotope\Isotope;
+use Haste\Generator\RowClass;
+use Haste\Units\Mass\Weight;
+use Haste\Units\Mass\WeightAggregate;
 use Isotope\Interfaces\IsotopeAttribute;
 use Isotope\Interfaces\IsotopeProduct;
 use Isotope\Interfaces\IsotopeProductCollection;
+use Isotope\Isotope;
 use Isotope\Model\Attribute;
 use Isotope\Model\Gallery;
 use Isotope\Model\Product;
 use Isotope\Model\ProductCategory;
 use Isotope\Model\ProductPrice;
 use Isotope\Model\ProductType;
-use Haste\Units\Mass\WeightAggregate;
-use Haste\Units\Mass\Weight;
-use Haste\Generator\RowClass;
 
 
 /**

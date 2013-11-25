@@ -12,9 +12,9 @@
 
 namespace Isotope\Module;
 
+use Haste\Util\Format;
 use Isotope\Isotope;
 use Isotope\Model\ProductCollection\Order;
-use Haste\Util\Format;
 
 
 /**

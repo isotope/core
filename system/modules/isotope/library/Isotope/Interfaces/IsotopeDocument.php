@@ -12,8 +12,6 @@
 
 namespace Isotope\Interfaces;
 
-use Isotope\Interfaces\IsotopeProductCollection;
-
 /**
  * Documents print a collection
  */

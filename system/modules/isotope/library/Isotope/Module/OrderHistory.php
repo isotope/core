@@ -12,10 +12,10 @@
 
 namespace Isotope\Module;
 
-use Isotope\Isotope;
-use Isotope\Model\ProductCollection\Order;
 use Haste\Generator\RowClass;
 use Haste\Util\Format;
+use Isotope\Isotope;
+use Isotope\Model\ProductCollection\Order;
 
 
 /**

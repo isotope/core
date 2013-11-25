@@ -12,9 +12,9 @@
 
 namespace Isotope\Model\Shipping;
 
-use Isotope\Isotope;
 use Isotope\Interfaces\IsotopeProductCollection;
 use Isotope\Interfaces\IsotopeShipping;
+use Isotope\Isotope;
 use Isotope\Model\Shipping;
 
 

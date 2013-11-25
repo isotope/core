@@ -12,8 +12,11 @@
 
 namespace Isotope\Model\ProductCollection;
 
-use Isotope\Isotope;
+use Haste\Generator\RowClass;
+use Haste\Haste;
+use Haste\Util\Format;
 use Isotope\Interfaces\IsotopeProductCollection;
+use Isotope\Isotope;
 use Isotope\Model\Document;
 use Isotope\Model\OrderStatus;
 use Isotope\Model\Payment;
@@ -21,9 +24,6 @@ use Isotope\Model\ProductCollection;
 use Isotope\Model\ProductCollectionDownload;
 use Isotope\Model\Shipping;
 use NotificationCenter\Model\Notification;
-use Haste\Haste;
-use Haste\Generator\RowClass;
-use Haste\Util\Format;
 
 
 /**

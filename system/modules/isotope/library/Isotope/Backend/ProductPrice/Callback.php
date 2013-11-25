@@ -12,7 +12,6 @@
 
 namespace Isotope\Backend\ProductPrice;
 
-use Isotope\Isotope;
 use Haste\Util\Format;
 
 

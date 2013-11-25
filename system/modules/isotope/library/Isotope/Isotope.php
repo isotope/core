@@ -12,12 +12,12 @@
 
 namespace Isotope;
 
-use Isotope\Model\Config;
-use Isotope\Model\RequestCache;
-use Isotope\Model\TaxClass;
-use Isotope\Model\ProductCollection\Cart;
 use Haste\Haste;
 use Haste\Util\Format;
+use Isotope\Model\Config;
+use Isotope\Model\ProductCollection\Cart;
+use Isotope\Model\RequestCache;
+use Isotope\Model\TaxClass;
 
 
 /**

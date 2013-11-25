@@ -12,9 +12,9 @@
 
 namespace Isotope\Model;
 
-use Isotope\Isotope;
 use Haste\Haste;
 use Haste\Util\Format;
+use Isotope\Isotope;
 
 
 /**

@@ -12,11 +12,11 @@
 
 namespace Isotope\Model;
 
-use Isotope\Isotope;
-use Isotope\Interfaces\IsotopeProduct;
-use Isotope\Translation;
 use Haste\Haste;
 use Haste\Util\Format;
+use Isotope\Interfaces\IsotopeProduct;
+use Isotope\Isotope;
+use Isotope\Translation;
 
 
 /**

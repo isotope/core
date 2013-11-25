@@ -12,8 +12,8 @@
 
 namespace Isotope\Module;
 
-use Isotope\Interfaces\IsotopeProduct;
 use Haste\Http\Response\HtmlResponse;
+use Isotope\Interfaces\IsotopeProduct;
 use Isotope\Model\Product;
 
 

@@ -12,9 +12,9 @@
 
 namespace Isotope\Module;
 
-use \Module as Contao_Module;
 use Isotope\Isotope;
 use Isotope\Model\Product;
+use Module as Contao_Module;
 
 
 /**
