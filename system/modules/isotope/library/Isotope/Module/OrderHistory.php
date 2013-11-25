@@ -99,14 +99,14 @@ class OrderHistory extends Module
             $arrOrders[] = array
             (
                 'collection' => $objOrders->current(),
-                'raw'        => $objOrders->row(),
-                'date'       => Format::date($objOrders->locked),
-                'time'       => Format::time($objOrders->locked),
-                'datime'     => Format::datim($objOrders->locked),
-                'grandTotal' => Isotope::formatPriceWithCurrency($objOrders->getTotal()),
-                'status'     => $objOrders->getStatusLabel(),
-                'link'       => ($this->jumpTo ? (\Haste\Util\Url::addQueryString('uid=' . $objOrders->uniqid, $this->jumpTo)) : ''),
-                'class'      => $objOrders->getStatusAlias(),
+                'raw'        => $objOrders->current()->row(),
+                'date'       => Format::date($objOrders->current()->locked),
+                'time'       => Format::time($objOrders->current()->locked),
+                'datime'     => Format::datim($objOrders->current()->locked),
+                'grandTotal' => Isotope::formatPriceWithCurrency($objOrders->current()->getTotal()),
+                'status'     => $objOrders->current()->getStatusLabel(),
+                'link'       => ($this->jumpTo ? (\Haste\Util\Url::addQueryString('uid=' . $objOrders->current()->uniqid, $this->jumpTo)) : ''),
+                'class'      => $objOrders->current()->getStatusAlias(),
             );
         }
 
