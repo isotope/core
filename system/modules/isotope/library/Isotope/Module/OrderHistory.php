@@ -95,8 +95,6 @@ class OrderHistory extends Module
         while ($objOrders->next())
         {
             Isotope::setConfig($objOrders->current()->getRelated('config_id'));
-            
-            $objOrder = Order::findOneBy('uniqid', $objOrders->uniqid);
 
             $arrOrders[] = array
             (
@@ -105,10 +103,10 @@ class OrderHistory extends Module
                 'date'       => Format::date($objOrders->locked),
                 'time'       => Format::time($objOrders->locked),
                 'datime'     => Format::datim($objOrders->locked),
-                'grandTotal' => Isotope::formatPriceWithCurrency($objOrder->getTotal()),
-                'status'     => $objOrder->getStatusLabel(),
+                'grandTotal' => Isotope::formatPriceWithCurrency($objOrders->current()->getTotal()),
+                'status'     => $objOrders->current()->getStatusLabel(),
                 'link'       => ($this->jumpTo ? (\Haste\Util\Url::addQueryString('uid=' . $objOrders->uniqid, $this->jumpTo)) : ''),
-                'class'      => $objOrder->getStatusAlias(),
+                'class'      => $objOrders->current()->getStatusAlias(),
             );
         }
 
