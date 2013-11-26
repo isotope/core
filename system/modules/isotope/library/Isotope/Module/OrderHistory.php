@@ -3,11 +3,11 @@
 /**
  * Isotope eCommerce for Contao Open Source CMS
  *
- * Copyright (C) 2009-2012 Isotope eCommerce Workgroup
+ * Copyright (C) 2009-2013 terminal42 gmbh & Isotope eCommerce Workgroup
  *
  * @package    Isotope
- * @link       http://www.isotopeecommerce.com
- * @license    http://opensource.org/licenses/lgpl-3.0.html LGPL
+ * @link       http://isotopeecommerce.org
+ * @license    http://opensource.org/licenses/lgpl-3.0.html
  */
 
 namespace Isotope\Module;
@@ -95,6 +95,8 @@ class OrderHistory extends Module
         while ($objOrders->next())
         {
             Isotope::setConfig($objOrders->current()->getRelated('config_id'));
+            
+            $objOrder = Order::findOneBy('uniqid', $objOrders->uniqid);
 
             $arrOrders[] = array
             (
@@ -103,10 +105,10 @@ class OrderHistory extends Module
                 'date'       => Format::date($objOrders->locked),
                 'time'       => Format::time($objOrders->locked),
                 'datime'     => Format::datim($objOrders->locked),
-                'grandTotal' => Isotope::formatPriceWithCurrency($objOrders->getTotal()),
-                'status'     => $objOrders->getStatusLabel(),
+                'grandTotal' => Isotope::formatPriceWithCurrency($objOrder->getTotal()),
+                'status'     => $objOrder->getStatusLabel(),
                 'link'       => ($this->jumpTo ? (\Haste\Util\Url::addQueryString('uid=' . $objOrders->uniqid, $this->jumpTo)) : ''),
-                'class'      => $objOrders->getStatusAlias(),
+                'class'      => $objOrder->getStatusAlias(),
             );
         }
 
