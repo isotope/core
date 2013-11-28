@@ -53,21 +53,22 @@ abstract class PSP extends Payment
      */
     public function processPostsale(IsotopeProductCollection $objOrder)
     {
-        if ($this->getRequestData('NCERROR') > 0) {
-            \System::log('Order ID "' . $this->getRequestData('orderID') . '" has NCERROR ' . $this->getRequestData('NCERROR'), __METHOD__, TL_ERROR);
-
-            return false;
-        }
-
-        $objCart = $objOrder->getRelated('source_collection_id');
-
         if (!$this->validateSHASign()) {
             \System::log('Received invalid postsale data for order ID "' . $objOrder->id . '"', __METHOD__, TL_ERROR);
             return false;
         }
 
+        // If order status is set, we check order total instead of cart total
+        if ($objOrder->order_status > 0) {
+            $objCart = $objOrder;
+
+        } elseif (($objCart = $objOrder->getRelated('source_collection_id')) === null) {
+            \System::log('Cart ID ' . $objOrder->source_collection_id . ' for Order ID ' . $objOrder->id . ' not found', __METHOD__, TL_ERROR);
+            return false;
+        }
+
         // Validate payment data
-        if ($objOrder->currency != $this->getRequestData('currency') || $objCart->getTotal() != $this->getRequestData('amount')) {
+        if ($objCart->currency != $this->getRequestData('currency') || $objCart->getTotal() != $this->getRequestData('amount')) {
             \System::log('Postsale checkout manipulation in payment for Order ID ' . $objOrder->id . '!', __METHOD__, TL_ERROR);
             return false;
         }
@@ -77,8 +78,39 @@ abstract class PSP extends Payment
             return false;
         }
 
-        $objOrder->date_paid = time();
-        $objOrder->updateOrderStatus($this->new_order_status);
+        // Validate payment status
+        switch ($this->getRequestData('STATUS')) {
+
+            case 9:  // Zahlung beantragt (Authorize & Capture)
+                $objOrder->date_paid = time();
+                // no break
+
+            case 5:  // Genehmigt (Authorize ohne Capture)
+                $objOrder->updateOrderStatus($this->new_order_status);
+                break;
+
+            case 41: // Unbekannter Wartezustand
+            case 51: // Genehmigung im Wartezustand
+            case 91: // Zahlung im Wartezustand
+            case 52: // Genehmigung nicht bekannt
+            case 92: // Zahlung unsicher
+                if (($objConfig = $objOrder->getRelated('config_id')) === null) {
+                    $this->log('Config for Order ID ' . $objOrder->id . ' not found', __METHOD__, TL_ERROR);
+                    return false;
+                }
+
+                $objOrder->updateOrderStatus($objConfig->orderstatus_error);
+                break;
+
+            case 0:  // Ungültig / Unvollständig
+            case 1:  // Zahlungsvorgang abgebrochen
+            case 2:  // Genehmigung verweigert
+            case 4:  // Gespeichert
+            case 93: // Bezahlung verweigert
+            default:
+                return false;
+        }
+
         $objOrder->save();
 
         return true;
@@ -139,7 +171,6 @@ abstract class PSP extends Payment
      */
     protected function preparePSPParams($objOrder)
     {
-        $strFailedUrl      = \Environment::get('base') . \Isotope\Module\Checkout::generateUrlForStep('failed');
         $objBillingAddress = $objOrder->getBillingAddress();
 
         return array
@@ -158,8 +189,7 @@ abstract class PSP extends Payment
             'OWNERTOWN'     => $objBillingAddress->city,
             'OWNERTELNO'    => $objBillingAddress->phone,
             'ACCEPTURL'     => \Environment::get('base') . \Haste\Util\Url::addQueryString('uid=' . $objOrder->uniqid, \Isotope\Module\Checkout::generateUrlForStep('complete')),
-            'DECLINEURL'    => $strFailedUrl,
-            'EXCEPTIONURL'  => $strFailedUrl,
+            'DECLINEURL'    => \Environment::get('base') . \Isotope\Module\Checkout::generateUrlForStep('failed'),
             'BACKURL'       => \Environment::get('base') . \Isotope\Module\Checkout::generateUrlForStep('review'),
             'PARAMPLUS'     => 'mod=pay&amp;id=' . $this->id,
             'TP'            => $this->psp_dynamic_template ? : ''
