@@ -160,6 +160,7 @@ abstract class PSP extends Payment
             'ACCEPTURL'     => \Environment::get('base') . \Haste\Util\Url::addQueryString('uid=' . $objOrder->uniqid, \Isotope\Module\Checkout::generateUrlForStep('complete')),
             'DECLINEURL'    => $strFailedUrl,
             'EXCEPTIONURL'  => $strFailedUrl,
+            'BACKURL'       => \Environment::get('base') . \Isotope\Module\Checkout::generateUrlForStep('review'),
             'PARAMPLUS'     => 'mod=pay&amp;id=' . $this->id,
             'TP'            => $this->psp_dynamic_template ? : ''
         );
