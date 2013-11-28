@@ -34,38 +34,16 @@ abstract class PSP extends Payment
      */
     public function processPayment()
     {
-        if (\Input::get('NCERROR') > 0) {
-            \System::log('Order ID "' . \Input::get('orderID') . '" has NCERROR ' . \Input::get('NCERROR'), __METHOD__, TL_ERROR);
-
-            return false;
-        }
-
         if (($objOrder = Order::findByPk((int) \Input::get('orderID'))) === null) {
             \System::log('Order ID "' . \Input::get('orderID') . '" not found', __METHOD__, TL_ERROR);
 
             return false;
         }
 
+        // in processPayment, the parameters are always in GET
         $this->psp_http_method = 'GET';
 
-        if (!$this->validateSHASign()) {
-            \System::log('Received invalid postsale data for order ID "' . $objOrder->id . '"', __METHOD__, TL_ERROR);
-
-            return false;
-        }
-
-        // Validate payment data
-        if ($objOrder->currency != $this->getRequestData('currency') || $objOrder->getTotal() != $this->getRequestData('amount')) {
-            \System::log('Postsale checkout manipulation in payment for Order ID ' . $objOrder->id . '!', __METHOD__, TL_ERROR);
-            \Isotope\Module\Checkout::redirectToStep('failed');
-        }
-
-        $objOrder->date_paid = time();
-        $objOrder->updateOrderStatus($this->new_order_status);
-
-        $objOrder->save();
-
-        return true;
+        return $this->processPostsale($objOrder);
     }
 
 
@@ -78,33 +56,32 @@ abstract class PSP extends Payment
         if ($this->getRequestData('NCERROR') > 0) {
             \System::log('Order ID "' . $this->getRequestData('orderID') . '" has NCERROR ' . $this->getRequestData('NCERROR'), __METHOD__, TL_ERROR);
 
-            return;
+            return false;
         }
 
         $objCart = $objOrder->getRelated('source_collection_id');
 
         if (!$this->validateSHASign()) {
             \System::log('Received invalid postsale data for order ID "' . $objOrder->id . '"', __METHOD__, TL_ERROR);
-
-            return;
+            return false;
         }
 
         // Validate payment data
         if ($objOrder->currency != $this->getRequestData('currency') || $objCart->getTotal() != $this->getRequestData('amount')) {
             \System::log('Postsale checkout manipulation in payment for Order ID ' . $objOrder->id . '!', __METHOD__, TL_ERROR);
-
-            return;
+            return false;
         }
 
         if (!$objOrder->checkout()) {
             \System::log('Post-Sale checkout for Order ID "' . $objOrder->id . '" failed', __METHOD__, TL_ERROR);
-
-            return;
+            return false;
         }
 
         $objOrder->date_paid = time();
         $objOrder->updateOrderStatus($this->new_order_status);
         $objOrder->save();
+
+        return true;
     }
 
 
