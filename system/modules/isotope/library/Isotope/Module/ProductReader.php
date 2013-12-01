@@ -112,9 +112,11 @@ class ProductReader extends Module
             $objResponse->send();
         }
 
+        $arrCSS = deserialize($objProduct->cssID, true);
+
         $this->Template->product       = $objProduct->generate($arrConfig);
-        $this->Template->product_id    = ($objProduct->cssID[0] != '') ? ' id="' . $objProduct->cssID[0] . '"' : '';
-        $this->Template->product_class = trim('product ' . ($objProduct->isNew() ? 'new ' : '') . $objProduct->cssID[1]);
+        $this->Template->product_id    = ($arrCSS[0] != '') ? ' id="' . $arrCSS[0] . '"' : '';
+        $this->Template->product_class = trim('product ' . ($objProduct->isNew() ? 'new ' : '') . $arrCSS[1]);
         $this->Template->referer       = 'javascript:history.go(-1)';
         $this->Template->back          = $GLOBALS['TL_LANG']['MSC']['goBack'];
 

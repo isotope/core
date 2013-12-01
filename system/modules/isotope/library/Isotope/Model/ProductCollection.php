@@ -1289,6 +1289,8 @@ abstract class ProductCollection extends TypeAgent
         // Set the active product for insert tags replacement
         Product::setActive($objProduct);
 
+        $arrCSS = ($blnHasProduct ? deserialize($objProduct->cssID, true) : array());
+
         $arrItem = array(
             'id'                => $objItem->id,
             'sku'               => $objItem->getSku(),
@@ -1304,7 +1306,7 @@ abstract class ProductCollection extends TypeAgent
             'product'           => $objProduct,
             'item'              => $objItem,
             'raw'               => $objItem->row(),
-            'rowClass'          => trim('product ' . (($blnHasProduct && $objProduct->isNew()) ? 'new ' : '') . $objProduct->cssID[1]),
+            'rowClass'          => trim('product ' . (($blnHasProduct && $objProduct->isNew()) ? 'new ' : '') . $arrCSS[1]),
         );
 
         if (null !== $objItem->getRelated('jumpTo') && $blnHasProduct) {
