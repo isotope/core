@@ -1367,7 +1367,7 @@ abstract class ProductCollection extends TypeAgent
                 FROM " . static::$strTable . "
                 WHERE
                     type=?
-                    " . ($strPrefix != '' ? " AND document_number LIKE '$strPrefix%' AND " : '') . "
+                    " . ($strPrefix != '' ? " AND document_number LIKE '$strPrefix%'" : '') . "
                     AND store_id=?
                 ORDER BY CAST(" . ($strPrefix != '' ? "SUBSTRING(document_number, " . ($intPrefix+1) . ")" : 'document_number') . " AS UNSIGNED) DESC
             ")->limit(1)->execute(
