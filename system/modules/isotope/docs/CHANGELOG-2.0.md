@@ -9,6 +9,7 @@ Version 2.0.0 (????-??-??)
 - Wrong Model reference in order history module
 - Incorrect CSS ID in product list (#854)
 - Order ID could not be generated when using prefix (#828)
+- Filter did not auto-submit when using jQuery (#842)
 
 
 Version 2.0.rc2 (2013-11-22)
