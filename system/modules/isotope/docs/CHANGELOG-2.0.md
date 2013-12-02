@@ -10,6 +10,7 @@ Version 2.0.0 (????-??-??)
 - Incorrect CSS ID in product list (#854)
 - Order ID could not be generated when using prefix (#828)
 - Filter did not auto-submit when using jQuery (#842)
+- PostFinance requires customer ID to be only 17 chars
 
 
 Version 2.0.rc2 (2013-11-22)

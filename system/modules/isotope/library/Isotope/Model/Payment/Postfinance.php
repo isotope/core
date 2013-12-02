@@ -130,8 +130,8 @@ class Postfinance extends PSP implements IsotopePayment, IsotopePostsale
             'ECOM_SHIPTO_POSTAL_COUNTRYCODE'    => strtoupper($objShippingAddress->country),
 
             'ECOM_SHIPTO_DOB'                   => date('d/m/Y', $objShippingAddress->dateOfBirth),
-            // This key is mandatory and just has to be unique (20 chars)
-            'REF_CUSTOMERID'                    => substr('psp_' . $this->id . '_' . $objOrder->id . '_' . $objOrder->uniqid, 0, 20)
+            // This key is mandatory and just has to be unique (17 chars)
+            'REF_CUSTOMERID'                    => substr('psp_' . $this->id . '_' . $objOrder->id . '_' . $objOrder->uniqid, 0, 17)
 
             // We do not add "ECOM_SHIPTO_COMPANY" here because B2B sometimes may require up to 24 hours
             // to check solvency which is not acceptable for an online shop
