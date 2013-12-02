@@ -110,7 +110,7 @@ class ProductPrice extends \Model\Collection implements IsotopePrice
             }
 
         } else {
-            return $this->current()->generate($blnShowTiers);
+            return $this->current()->generate();
         }
 
         return $strPrice;
