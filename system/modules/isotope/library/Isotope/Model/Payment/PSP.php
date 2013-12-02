@@ -34,14 +34,14 @@ abstract class PSP extends Payment
      */
     public function processPayment()
     {
-        if (($objOrder = Order::findByPk((int) \Input::get('orderID'))) === null) {
+        // In processPayment, the parameters are always in GET
+        $this->psp_http_method = 'GET';
+
+        if (($objOrder = $this->getPostsaleOrder()) === null) {
             \System::log('Order ID "' . \Input::get('orderID') . '" not found', __METHOD__, TL_ERROR);
 
             return false;
         }
-
-        // in processPayment, the parameters are always in GET
-        $this->psp_http_method = 'GET';
 
         return $this->processPostsale($objOrder);
     }
