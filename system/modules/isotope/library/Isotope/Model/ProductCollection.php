@@ -1287,7 +1287,9 @@ abstract class ProductCollection extends TypeAgent
         $objProduct    = $objItem->getProduct();
 
         // Set the active product for insert tags replacement
-        Product::setActive($objProduct);
+        if ($blnHasProduct) {
+            Product::setActive($objProduct);
+        }
 
         $arrCSS = ($blnHasProduct ? deserialize($objProduct->cssID, true) : array());
 

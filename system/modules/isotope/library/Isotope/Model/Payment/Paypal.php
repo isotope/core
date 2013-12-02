@@ -137,7 +137,9 @@ class Paypal extends Postsale implements IsotopePayment
         foreach (Isotope::getCart()->getItems() as $objItem) {
 
             // Set the active product for insert tags replacement
-            Product::setActive($objItem->getProduct());
+            if ($objItem->hasProduct()) {
+                Product::setActive($objItem->getProduct());
+            }
 
             $strOptions = '';
             $arrOptions = Isotope::formatOptions($objItem->getOptions());
