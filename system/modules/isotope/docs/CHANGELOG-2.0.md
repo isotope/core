@@ -12,6 +12,7 @@ Version 2.0.0 (????-??-??)
 - Filter did not auto-submit when using jQuery (#842)
 - PostFinance requires customer ID to be only 17 chars
 - Calling Product::setActive() when there's no product available
+- Surcharges were not available in notifications
 
 
 Version 2.0.rc2 (2013-11-22)

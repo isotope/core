@@ -206,17 +206,19 @@ class Order extends ProductCollection implements IsotopeProductCollection
             $objDownload->save();
         }
 
+        // Finish and lock the order (do this now, because otherwise surcharges etc. will not be loaded form the database)
+        $this->checkout_complete = true;
+        $this->generateDocumentNumber(Isotope::getConfig()->orderPrefix, (int) Isotope::getConfig()->orderDigits);
+        $this->lock();
+        \System::log('New order ID ' . $this->id . ' has been placed', __METHOD__, TL_ACCESS);
+
         // Delete cart after migrating to order
         $objCart->delete();
 
-        $this->checkout_complete = true;
-
-        $this->generateDocumentNumber(Isotope::getConfig()->orderPrefix, (int) Isotope::getConfig()->orderDigits);
+        // Generate tokens
         $arrTokens = $this->getNotificationTokens($this->nc_notification);
 
-        \System::log('New order ID ' . $this->id . ' has been placed', __METHOD__, TL_ACCESS);
-
-        // Trigger notification
+        // Send notification
         if ($this->nc_notification) {
             $blnNotificationError = true;
 
@@ -247,9 +249,6 @@ class Order extends ProductCollection implements IsotopeProductCollection
                 $objCallback->$callback[1]($this, $arrItemIds, $arrTokens);
             }
         }
-
-        // Lock will trigger save() of the model
-        $this->lock();
 
         return true;
     }
