@@ -1074,6 +1074,11 @@ abstract class ProductCollection extends TypeAgent
             }
         }
 
+
+        // Empty cache
+        $this->arrItems = null;
+        $this->arrCache = null;
+
         return $arrIds;
     }
 
@@ -1106,6 +1111,10 @@ abstract class ProductCollection extends TypeAgent
 
             $sorting += 128;
         }
+
+        // Empty cache
+        $this->arrSurcharges = null;
+        $this->arrCache = null;
 
         return $arrIds;
     }
