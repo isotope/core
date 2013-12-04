@@ -1024,10 +1024,10 @@ abstract class ProductCollection extends TypeAgent
     {
         $this->ensureNotLocked();
 
-        $this->save();
+        $this->updateDatabase();
 
         // Make sure database table has the latest prices
-        $objSource->save();
+        $objSource->updateDatabase();
 
         $time        = time();
         $arrIds      = array();
