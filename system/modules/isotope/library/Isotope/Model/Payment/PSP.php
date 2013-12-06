@@ -68,7 +68,7 @@ abstract class PSP extends Payment
         }
 
         // Validate payment data
-        if ($objCart->currency != $this->getRequestData('currency') || $objCart->getTotal() != $this->getRequestData('amount')) {
+        if ($objOrder->currency != $this->getRequestData('currency') || $objCart->getTotal() != $this->getRequestData('amount')) {
             \System::log('Postsale checkout manipulation in payment for Order ID ' . $objOrder->id . '!', __METHOD__, TL_ERROR);
             return false;
         }

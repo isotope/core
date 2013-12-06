@@ -13,6 +13,7 @@ Version 2.0.0 (????-??-??)
 - PostFinance requires customer ID to be only 17 chars
 - Calling Product::setActive() when there's no product available
 - Surcharges were not available in notifications
+- PSP did not take order to check currency
 
 
 Version 2.0.rc2 (2013-11-22)
