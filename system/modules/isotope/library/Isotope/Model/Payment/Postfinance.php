@@ -103,7 +103,9 @@ class Postfinance extends PSP implements IsotopePayment, IsotopePostsale
     protected function preparePSPParams($objOrder)
     {
         $arrParams = parent::preparePSPParams($objOrder);
-        $arrParams = array_merge($arrParams, $this->prepareFISParams($objOrder));
+        // @todo: Activate this as soon as PostFinance has fixed the issues with FIS
+        // integration on their side
+        //$arrParams = array_merge($arrParams, $this->prepareFISParams($objOrder));
 
         return $arrParams;
     }
