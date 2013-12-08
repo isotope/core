@@ -135,19 +135,20 @@ class ShippingMethod extends CheckoutStep implements IsotopeCheckoutStep
 
     /**
      * Return review information for last page of checkout
-     * @return  string
+     * @return  array
      */
     public function review()
     {
         return array(
             'shipping_method' => array(
                 'headline' => $GLOBALS['TL_LANG']['MSC']['shipping_method'],
-                'info'     => Isotope::getCart()->getShippingMethod()->checkoutReview(),
-                'note'     => Isotope::getCart()->getShippingMethod()->note,
+                'info'     => (Isotope::getCart()->hasShippingMethod()) ? Isotope::getCart()->getShippingMethod()->checkoutReview() : null,
+                'note'     => (Isotope::getCart()->hasShippingMethod()) ? Isotope::getCart()->getShippingMethod()->note() : null,
                 'edit'     => \Isotope\Module\Checkout::generateUrlForStep('shipping'),
             ),
         );
     }
+    
 
     /**
      * Return array of tokens for notification
