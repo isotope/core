@@ -78,8 +78,7 @@ class ConfigSwitcher extends Module
     protected function compile()
     {
         $arrConfigs = array();
-        $objConfigs = Config::findBy('id IN (' . implode(',', $this->iso_config_ids) . ')', null);
-        $c=0;
+        $objConfigs = Config::findMultipleByIds($this->iso_config_ids);
 
         if (null !== $objConfigs) {
             while ($objConfigs->next()) {
@@ -87,17 +86,14 @@ class ConfigSwitcher extends Module
                 $arrConfigs[] = array (
                     'config'    => $objConfigs->current(),
                     'label'     => $objConfigs->current()->getLabel(),
-                    'class'     => (($c == 0) ? 'first' : ''),
                     'active'    => (Isotope::getConfig()->id == $objConfigs->id ? true : false),
                     'href'      => (\Environment::get('request') . ((strpos(\Environment::get('request'), '?') === false) ? '?' : '&amp;') . 'config=' . $objConfigs->id),
                 );
-
-                $c++;
             }
         }
 
-        $last                       = count($arrConfigs) - 1;
-        $arrConfigs[$last]['class'] = trim($arrConfigs[$last]['class'] . ' last');
+        \Haste\Generator\RowClass::withKey('class')->addFirstLast()->applyTo($arrConfigs);
+
         $this->Template->configs    = $arrConfigs;
     }
 }

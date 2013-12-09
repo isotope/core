@@ -20,6 +20,7 @@ Version 2.0.0 (????-??-??)
 - Several exceptions did not use global namespace (#871)
 - Several places did not support UUID for files (#852)
 - Label translation for config model threw exception
+- Store config selector did not work (#835)
 
 
 Version 2.0.rc2 (2013-11-22)
