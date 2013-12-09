@@ -139,10 +139,9 @@ $GLOBALS['TL_DCA']['tl_iso_download'] = array
             'label'                 => &$GLOBALS['TL_LANG']['tl_iso_download']['singleSRC'],
             'exclude'               => true,
             'inputType'             => 'fileTree',
-            'foreignKey'            => 'tl_files.path',
             'eval'                  => array('mandatory'=>true, 'fieldType'=>'radio', 'files'=>true, 'extensions'=>$GLOBALS['TL_CONFIG']['allowedDownloads']),
             'sql'                   => "binary(16) NULL",
-            'relation'              => array('type'=>'hasOne', 'load'=>'eager'),
+            'relation'              => array('type'=>'hasOne', 'load'=>'lazy', 'table'=>'tl_files', 'field'=>'uuid'),
         ),
         'downloads_allowed' => array
         (
