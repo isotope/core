@@ -170,7 +170,7 @@ class Callback extends \Backend
     public function validateDatepicker($varValue, $dc)
     {
         if ($varValue && !in_array($dc->activeRecord->rgxp, array('date', 'time', 'datim'))) {
-            throw new UnexpectedValueException($GLOBALS['TL_LANG']['ERR']['datepickerRgxp']);
+            throw new \UnexpectedValueException($GLOBALS['TL_LANG']['ERR']['datepickerRgxp']);
         }
 
         return $varValue;

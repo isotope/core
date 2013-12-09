@@ -256,7 +256,7 @@ class ProductCollectionItem extends \Model
     public function decreaseQuantityBy($intQuantity)
     {
         if (($this->quantity - $intQuantity) < 1) {
-            throw new UnderflowException('Quantity of product collection item cannot be less than 1.');
+            throw new \UnderflowException('Quantity of product collection item cannot be less than 1.');
         }
 
         $time = time();

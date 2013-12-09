@@ -51,7 +51,7 @@ class Alias extends \Backend
         // Check whether the product alias exists
         if ($objAlias->numRows > 1) {
             if (!$autoAlias) {
-                throw new OverflowException(sprintf($GLOBALS['TL_LANG']['ERR']['aliasExists'], $varValue));
+                throw new \OverflowException(sprintf($GLOBALS['TL_LANG']['ERR']['aliasExists'], $varValue));
             }
 
             $varValue .= '.' . $dc->id;

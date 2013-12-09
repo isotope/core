@@ -17,6 +17,7 @@ Version 2.0.0 (????-??-??)
 - Potential foreach warning in Cumulative Filter
 - mod_iso_messages template could not be loaded (#857)
 - Percentage price in payment method did not work (#865)
+- Several exceptions did not use global namespace (#871)
 
 
 Version 2.0.rc2 (2013-11-22)
