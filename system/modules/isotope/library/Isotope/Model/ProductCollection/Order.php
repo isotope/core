@@ -129,31 +129,6 @@ class Order extends ProductCollection implements IsotopeProductCollection
             return true;
         }
 
-        global $objPage;
-
-        // Load page configuration
-        if (!is_object($objPage) && $this->pageId > 0) {
-            $objPage = \Controller::getPageDetails($this->pageId);
-            $objPage = \Isotope\Frontend::loadPageConfig($objPage);
-        }
-
-        if (($objCart = Cart::findByPk($this->source_collection_id)) === null) {
-            \System::log('Could not find Cart ID ' . $this->source_collection_id . ' for Order ID ' . $this->id, __METHOD__, TL_ERROR);
-
-            return false;
-        }
-
-        // Set the current system to the language when the user placed the order.
-        // This will result in correct e-mails and payment description.
-        if ($GLOBALS['TL_LANGUAGE'] != $this->language) {
-            $GLOBALS['TL_LANGUAGE'] = $this->language;
-            \System::loadLanguageFile('default', $this->language, true);
-        }
-
-        // Initialize system
-        Isotope::setConfig($this->getRelated('config_id'));
-        Isotope::setCart($objCart);
-
         $this->shipping_id  = $objCart->shipping_id;
         $this->payment_id   = $objCart->payment_id;
         $this->currency     = Isotope::getConfig()->currency;

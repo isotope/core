@@ -120,9 +120,22 @@ class PostSale extends \Frontend
                 $objResponse->send();
             }
 
-            $objCart = $objOrder->getRelated('source_collection_id');
-            Isotope::setCart($objCart);
-            Isotope::setConfig($objCart->getRelated('config_id'));
+            global $objPage;
+
+            // Load page configuration
+            if (!is_object($objPage) && $objOrder->pageId > 0) {
+                $objPage = \PageModel::loadWithDetails($objOrder->pageId);
+                $objPage = \Isotope\Frontend::loadPageConfig($objPage);
+            }
+
+            // Set the current system to the language when the user placed the order.
+            // This will result in correct e-mails and payment description.
+            if ($GLOBALS['TL_LANGUAGE'] != $objOrder->language) {
+                $GLOBALS['TL_LANGUAGE'] = $objOrder->language;
+                \System::loadLanguageFile('default', $objOrder->language, true);
+            }
+
+            Isotope::setConfig($objOrder->getRelated('config_id'));
 
             return $objMethod->processPostsale($objOrder);
 
