@@ -72,11 +72,6 @@ class Downloads extends Attribute implements IsotopeAttribute
             return '';
         }
 
-        // Check for version 3 format
-        if (!is_numeric($arrFiles[0])) {
-            return '<p class="error">' . $GLOBALS['TL_LANG']['ERR']['version2format'] . '</p>';
-        }
-
         // Get the file entries from the database
         $objFiles = \FilesModel::findMultipleByIds($arrFiles);
 

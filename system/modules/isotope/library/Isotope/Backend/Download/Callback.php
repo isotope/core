@@ -27,15 +27,10 @@ class Callback extends \Backend
      */
     public function listRows($row)
     {
-        // Check for version 3 format
-        if (!is_numeric($row['singleSRC'])) {
-            return '<p class="error">' . $GLOBALS['TL_LANG']['ERR']['version2format'] . '</p>';
-        }
-
         $objDownload = Download::findByPk($row['id']);
         $icon        = '';
 
-        if (null === $objDownload) {
+        if (null === $objDownload || null === $objDownload->getRelated('singleSRC')) {
             return '<p class="error">' . $GLOBALS['TL_LANG']['ERR']['invalidName'] . '</p>';
         }
 
