@@ -15,6 +15,7 @@ Version 2.0.0 (????-??-??)
 - Surcharges were not available in notifications
 - PSP did not take order to check currency
 - Potential foreach warning in Cumulative Filter
+- mod_iso_messages template could not be loaded (#857)
 
 
 Version 2.0.rc2 (2013-11-22)
