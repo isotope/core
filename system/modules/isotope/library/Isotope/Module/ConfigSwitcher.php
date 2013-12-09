@@ -55,8 +55,7 @@ class ConfigSwitcher extends Module
 
         $this->iso_config_ids = deserialize($this->iso_config_ids);
 
-        if (!is_array($this->iso_config_ids) || !count($this->iso_config_ids)) // Can't use empty() because its an object property (using __get)
-        {
+        if (!is_array($this->iso_config_ids) || !count($this->iso_config_ids)) { // Can't use empty() because its an object property (using __get)
             return '';
         }
 
@@ -78,7 +77,6 @@ class ConfigSwitcher extends Module
      */
     protected function compile()
     {
-        $this->import('Isotope\Isotope', 'Isotope');
         $arrConfigs = array();
         $objConfigs = Config::findBy('id IN (' . implode(',', $this->iso_config_ids) . ')', null);
         $c=0;
