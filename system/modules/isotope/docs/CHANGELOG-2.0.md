@@ -18,6 +18,7 @@ Version 2.0.0 (????-??-??)
 - mod_iso_messages template could not be loaded (#857)
 - Percentage price in payment method did not work (#865)
 - Several exceptions did not use global namespace (#871)
+- Several places did not support UUID for files (#852)
 
 
 Version 2.0.rc2 (2013-11-22)

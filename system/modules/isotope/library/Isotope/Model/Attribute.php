@@ -130,10 +130,8 @@ abstract class Attribute extends TypeAgent
 
         // Support numeric paths (fileTree)
         unset($arrField['eval']['path']);
-        if ($this->path && is_numeric($this->path)) {
-            if (($objFile = \FilesModel::findByPk($this->path)) !== null) {
-                $arrField['eval']['path'] = $objFile->path;
-            }
+        if ($this->path != '' && ($objFile = \FilesModel::findByPk($this->path)) !== null) {
+            $arrField['eval']['path'] = $objFile->path;
         }
 
         if ($this->be_filter) {
