@@ -14,6 +14,7 @@ Version 2.0.0 (????-??-??)
 - Calling Product::setActive() when there's no product available
 - Surcharges were not available in notifications
 - PSP did not take order to check currency
+- Potential foreach warning in Cumulative Filter
 
 
 Version 2.0.rc2 (2013-11-22)
