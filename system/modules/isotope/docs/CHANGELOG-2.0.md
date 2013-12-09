@@ -16,6 +16,7 @@ Version 2.0.0 (????-??-??)
 - PSP did not take order to check currency
 - Potential foreach warning in Cumulative Filter
 - mod_iso_messages template could not be loaded (#857)
+- Percentage price in payment method did not work (#865)
 
 
 Version 2.0.rc2 (2013-11-22)

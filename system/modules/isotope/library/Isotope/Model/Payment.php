@@ -130,7 +130,7 @@ abstract class Payment extends TypeAgent
      */
     public function isPercentage()
     {
-        substr($this->arrData['price'], -1) == '%' ? true : false;
+        return substr($this->arrData['price'], -1) == '%' ? true : false;
     }
 
     /**
