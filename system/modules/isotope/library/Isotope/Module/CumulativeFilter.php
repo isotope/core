@@ -55,6 +55,11 @@ class CumulativeFilter extends Module
         // Remove setting to prevent override of the module template
         $this->iso_filterTpl = '';
         $this->navigationTpl = $this->navigationTpl ? $this->navigationTpl : 'nav_default';
+        $this->iso_filterFields  = deserialize($this->iso_filterFields);
+
+        if (!is_array($this->iso_filterFields) || count($this->iso_filterFields) == 0) { // Can't use empty() because its an object property (using __get)
+            return '';
+        }
 
         return parent::generate();
     }
@@ -104,58 +109,54 @@ class CumulativeFilter extends Module
         $blnShowClear = false;
         $arrFilters   = array();
 
-        $this->iso_filterFields  = deserialize($this->iso_filterFields);
+        foreach ($this->iso_filterFields as $strField) {
+            $blnTrail  = false;
+            $arrItems  = array();
+            $arrWidget = \Widget::getAttributesFromDca($GLOBALS['TL_DCA']['tl_iso_product']['fields'][$strField], $strField); // Use the default routine to initialize options data
 
-        if (is_array($this->iso_filterFields) && count($this->iso_filterFields)) { // Can't use empty() because its an object property (using __get)
-            foreach ($this->iso_filterFields as $strField) {
-                $blnTrail  = false;
-                $arrItems  = array();
-                $arrWidget = \Widget::getAttributesFromDca($GLOBALS['TL_DCA']['tl_iso_product']['fields'][$strField], $strField); // Use the default routine to initialize options data
+            foreach ($arrWidget['options'] as $option) {
+                $varValue = $option['value'];
 
-                foreach ($arrWidget['options'] as $option) {
-                    $varValue = $option['value'];
-
-                    // skip zero values (includeBlankOption)
-                    if ($varValue === '' || $varValue === '-') {
-                        continue;
-                    }
-
-                    $strFilterKey = $strField . '=' . $varValue;
-                    $blnActive    = (Isotope::getRequestCache()->getFilterForModule($strFilterKey, $this->id) !== null);
-                    $blnTrail     = $blnActive ? true : $blnTrail;
-
-                    $arrItems[] = array
-                    (
-                        'href'  => \Haste\Util\Url::addQueryString('cumulativefilter=' . base64_encode($this->id . ';' . ($blnActive ? 'del' : 'add') . ';' . $strField . ';' . $varValue)),
-                        'class' => ($blnActive ? 'active' : ''),
-                        'title' => specialchars($option['label']),
-                        'link'  => $option['label'],
-                    );
+                // skip zero values (includeBlankOption)
+                if ($varValue === '' || $varValue === '-') {
+                    continue;
                 }
 
-                if (!empty($arrItems) || ($this->iso_iso_filterHideSingle && count($arrItems) < 2)) {
-                    $objClass = RowClass::withKey('class')->addFirstLast();
+                $strFilterKey = $strField . '=' . $varValue;
+                $blnActive    = (Isotope::getRequestCache()->getFilterForModule($strFilterKey, $this->id) !== null);
+                $blnTrail     = $blnActive ? true : $blnTrail;
 
-                    if ($blnTrail) {
-                        $objClass->addCustom('sibling');
-                    }
+                $arrItems[] = array
+                (
+                    'href'  => \Haste\Util\Url::addQueryString('cumulativefilter=' . base64_encode($this->id . ';' . ($blnActive ? 'del' : 'add') . ';' . $strField . ';' . $varValue)),
+                    'class' => ($blnActive ? 'active' : ''),
+                    'title' => specialchars($option['label']),
+                    'link'  => $option['label'],
+                );
+            }
 
-                    $objClass->applyTo($arrItems);
+            if (!empty($arrItems) || ($this->iso_iso_filterHideSingle && count($arrItems) < 2)) {
+                $objClass = RowClass::withKey('class')->addFirstLast();
 
-                    $objTemplate = new \Isotope\Template($this->navigationTpl);
-
-                    $objTemplate->level = 'level_2';
-                    $objTemplate->items = $arrItems;
-
-                    $arrFilters[$strField] = array
-                    (
-                        'label'    => $arrWidget['label'],
-                        'subitems' => $objTemplate->parse(),
-                        'isActive' => $blnTrail,
-                    );
-
-                    $blnShowClear = $blnTrail ? true : $blnShowClear;
+                if ($blnTrail) {
+                    $objClass->addCustom('sibling');
                 }
+
+                $objClass->applyTo($arrItems);
+
+                $objTemplate = new \Isotope\Template($this->navigationTpl);
+
+                $objTemplate->level = 'level_2';
+                $objTemplate->items = $arrItems;
+
+                $arrFilters[$strField] = array
+                (
+                    'label'    => $arrWidget['label'],
+                    'subitems' => $objTemplate->parse(),
+                    'isActive' => $blnTrail,
+                );
+
+                $blnShowClear = $blnTrail ? true : $blnShowClear;
             }
         }
 
