@@ -12,7 +12,7 @@
 
 namespace Isotope\Model;
 
-use Isotope\Isotope;
+use Isotope\Translation;
 
 /**
  * Isotope\Model\Config represents an Isotope config model
@@ -41,7 +41,7 @@ class Config extends \Model
      */
     public function getLabel()
     {
-        return Isotope::translate(($this->label ? : $this->name));
+        return Translation::get(($this->label ? : $this->name));
     }
 
     /**
