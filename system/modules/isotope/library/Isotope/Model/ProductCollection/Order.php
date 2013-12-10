@@ -332,7 +332,7 @@ class Order extends ProductCollection implements IsotopeProductCollection
         $arrSet['order_status'] = $objNewStatus->id;
 
         // Do not use Model, it could be locked
-        \Database::getInstance()->prepare("UPDATE " . static::$strTable . " %s WHERE id=?")->set($arrSet)->execute($this->id);
+        \Database::getInstance()->prepare("UPDATE " . static::getTable() . " %s WHERE " . static::getPk() . "=?")->set($arrSet)->execute($this->{static::getPk()});
         $this->mergeRow($arrSet);
 
         // !HOOK: order status has been updated
