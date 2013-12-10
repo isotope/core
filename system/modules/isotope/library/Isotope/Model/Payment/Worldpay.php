@@ -14,7 +14,6 @@ namespace Isotope\Model\Payment;
 
 use Isotope\Interfaces\IsotopePayment;
 use Isotope\Interfaces\IsotopeProductCollection;
-use Isotope\Isotope;
 use Isotope\Model\ProductCollection\Order;
 use Isotope\Translation;
 
