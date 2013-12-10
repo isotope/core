@@ -110,39 +110,6 @@ class Checkout extends Module
      */
     protected function compile()
     {
-        // Order has been completed (postsale request)
-        if ($this->strCurrentStep == 'complete' && \Input::get('uid') != '') {
-            if (($objOrder = Order::findOneByUniqid(\Input::get('uid'))) !== null) {
-                // Order is complete, forward to confirmation page
-                if ($objOrder->complete()) {
-                    \Isotope\Frontend::clearTimeout();
-
-                    \Controller::redirect(\Haste\Util\Url::addQueryString('uid=' . $objOrder->uniqid, $this->orderCompleteJumpTo));
-                }
-
-                // Order is not complete, wait for it
-                if (\Isotope\Frontend::setTimeout()) {
-                    $this->Template          = new \Isotope\Template('mod_message');
-                    $this->Template->type    = 'processing';
-                    $this->Template->message = $GLOBALS['TL_LANG']['MSC']['payment_processing'];
-
-                    return;
-                }
-            }
-        }
-
-        if (!$this->canCheckout()) {
-            return;
-        }
-
-        if (\Haste\Input\Input::getAutoItem('step') == '') {
-            if ($this->iso_forward_review) {
-                static::redirectToStep('review');
-            }
-
-            $this->redirectToNextStep();
-        }
-
         // Default template settings. Must be set at beginning so they can be overwritten later (eg. trough callback)
         $this->Template->action        = ampersand(\Environment::get('request'), ENCODE_AMPERSANDS);
         $this->Template->formId        = $this->strFormId;
@@ -154,6 +121,93 @@ class Checkout extends Module
         $this->Template->showPrevious  = true;
         $this->Template->showNext      = true;
         $this->Template->showForm      = true;
+
+        // Complete the order
+        if ($this->strCurrentStep == 'complete') {
+
+            if (($objOrder = Order::findOneByUniqid(\Input::get('uid'))) === null) {
+                static::redirectToStep('failed');
+            }
+
+            $strBuffer = $objOrder->hasPayment() ? $objOrder->getPaymentMethod()->processPayment($objOrder, $this) : true;
+
+            // true means the payment is successful and order should be completed
+            if ($strBuffer === true) {
+                // If checkout is successful, complete order and redirect to confirmation page
+                if ($objOrder->checkout() && $objOrder->complete()) {
+                    \Controller::redirect(\Haste\Util\Url::addQueryString('uid=' . $objOrder->uniqid, $this->orderCompleteJumpTo));
+                }
+
+                // Checkout failed, show error message
+                static::redirectToStep('failed');
+            }
+
+            // False means payment has failed
+            elseif ($strBuffer === false) {
+                static::redirectToStep('failed');
+            }
+
+            // Otherwise we assume a string that shows a message to customer
+            else {
+                $this->Template->showNext     = false;
+                $this->Template->showPrevious = false;
+                $arrBuffer                    = array(array('html' => $strBuffer, 'class' => $this->strCurrentStep));
+            }
+
+        } else {
+
+            // canCheckout will override the template and show a message
+            if (!$this->canCheckout()) {
+                return;
+            }
+
+            $arrBuffer = $this->compileCurrentStep();
+        }
+
+        RowClass::withKey('class')->addFirstLast()->applyTo($arrBuffer);
+
+        $this->Template->fields = $arrBuffer;
+
+        if (!strlen($this->strCurrentStep)) {
+            $this->strCurrentStep = $step;
+        }
+
+        // Show checkout steps
+        $this->Template->steps      = $this->generateSteps();
+        $this->Template->activeStep = $GLOBALS['TL_LANG']['MSC']['activeStep'];
+
+        $arrStepKeys = array_keys($this->getSteps());
+
+        // Hide back buttons it this is the first step
+        if (array_search($this->strCurrentStep, $arrStepKeys) === 0) {
+            $this->Template->showPrevious = false;
+        } // Show "confirm order" button if this is the last step
+        elseif (array_search($this->strCurrentStep, $arrStepKeys) === (count($arrStepKeys) - 1)) {
+            $this->Template->nextClass = 'confirm';
+            $this->Template->nextLabel = specialchars($GLOBALS['TL_LANG']['MSC']['confirmOrder']);
+        }
+
+        // User pressed "back" button
+        if (strlen(\Input::post('previousStep'))) {
+            $this->redirectToPreviousStep();
+        } // Valid input data, redirect to next step
+        elseif (\Input::post('FORM_SUBMIT') == $this->strFormId && !$this->doNotSubmit) {
+            $this->redirectToNextStep();
+        }
+    }
+
+    /**
+     * Run through all steps until we find the current one or one reports failure
+     */
+    protected function compileCurrentStep()
+    {
+        if (\Haste\Input\Input::getAutoItem('step') == '') {
+            if ($this->iso_forward_review) {
+                static::redirectToStep('review');
+            }
+
+            $this->redirectToNextStep();
+        }
 
         if ($this->strCurrentStep == 'failed') {
             $this->Template->mtype   = 'error';
@@ -196,6 +250,7 @@ class Checkout extends Module
             }
         }
 
+        // Run after all steps have passed successfully
         if ($this->strCurrentStep == 'process') {
 
             $objOrder = Order::createFromCollection(Isotope::getCart());
@@ -216,58 +271,9 @@ class Checkout extends Module
             $this->Template->showForm = false;
             $this->doNotSubmit        = true;
             $arrBuffer                = array(array('html' => $strBuffer, 'class' => $this->strCurrentStep));
-
-        } elseif ($this->strCurrentStep == 'complete') {
-
-            $strBuffer = Isotope::getCart()->hasPayment() ? Isotope::getCart()->getPaymentMethod()->processPayment() : true;
-
-            if ($strBuffer === true) {
-                // If checkout is successful, complete order and redirect to confirmation page
-                if (($objOrder = Order::findOneBy('source_collection_id', Isotope::getCart()->id)) !== null && $objOrder->checkout() && $objOrder->complete()) {
-                    \Controller::redirect(\Haste\Util\Url::addQueryString('uid=' . $objOrder->uniqid, $this->orderCompleteJumpTo));
-                }
-
-                // Checkout failed, show error message
-                static::redirectToStep('failed');
-            } elseif ($strBuffer === false) {
-                static::redirectToStep('failed');
-            } else {
-                $this->Template->showNext     = false;
-                $this->Template->showPrevious = false;
-                $arrBuffer                    = array(array('html' => $strBuffer, 'class' => $this->strCurrentStep));
-            }
         }
 
-        RowClass::withKey('class')->addFirstLast()->applyTo($arrBuffer);
-
-        $this->Template->fields = $arrBuffer;
-
-        if (!strlen($this->strCurrentStep)) {
-            $this->strCurrentStep = $step;
-        }
-
-        // Show checkout steps
-        $this->Template->steps      = $this->generateSteps();
-        $this->Template->activeStep = $GLOBALS['TL_LANG']['MSC']['activeStep'];
-
-        $arrStepKeys = array_keys($this->getSteps());
-
-        // Hide back buttons it this is the first step
-        if (array_search($this->strCurrentStep, $arrStepKeys) === 0) {
-            $this->Template->showPrevious = false;
-        } // Show "confirm order" button if this is the last step
-        elseif (array_search($this->strCurrentStep, $arrStepKeys) === (count($arrStepKeys) - 1)) {
-            $this->Template->nextClass = 'confirm';
-            $this->Template->nextLabel = specialchars($GLOBALS['TL_LANG']['MSC']['confirmOrder']);
-        }
-
-        // User pressed "back" button
-        if (strlen(\Input::post('previousStep'))) {
-            $this->redirectToPreviousStep();
-        } // Valid input data, redirect to next step
-        elseif (\Input::post('FORM_SUBMIT') == $this->strFormId && !$this->doNotSubmit) {
-            $this->redirectToNextStep();
-        }
+        return $arrBuffer;
     }
 
 
