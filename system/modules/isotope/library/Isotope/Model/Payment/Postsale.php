@@ -35,12 +35,22 @@ abstract class Postsale extends Payment implements IsotopePostsale
     public function processPayment(IsotopeProductCollection $objOrder, \Module $objModule)
     {
         if ($objOrder->order_status > 0) {
-            \Isotope\Frontend::clearTimeout();
+            unset($_SESSION['POSTSALE_TIMEOUT']);
 
             return true;
         }
 
-        if (\Isotope\Frontend::setTimeout()) {
+        if (!isset($_SESSION['POSTSALE_TIMEOUT'])) {
+            $_SESSION['POSTSALE_TIMEOUT'] = 12;
+        } else {
+            $_SESSION['POSTSALE_TIMEOUT'] = $_SESSION['POSTSALE_TIMEOUT'] - 1;
+        }
+
+        if ($_SESSION['POSTSALE_TIMEOUT'] > 0) {
+
+            // Reload page every 5 seconds
+            $GLOBALS['TL_HEAD'][] = '<meta http-equiv="refresh" content="5,' . \Environment::get('base') . \Environment::get('request') . '">';
+
             // Do not index or cache the page
             global $objPage;
             $objPage->noSearch = 1;
@@ -53,6 +63,7 @@ abstract class Postsale extends Payment implements IsotopePostsale
             return $objTemplate->parse();
         }
 
+        unset($_SESSION['POSTSALE_TIMEOUT']);
         \System::log('Payment could not be processed.', __METHOD__, TL_ERROR);
 
         return false;

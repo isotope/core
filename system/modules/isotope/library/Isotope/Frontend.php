@@ -496,38 +496,6 @@ window.addEvent('domready', function()
 
 
     /**
-     * Wait for it
-     * @return bool
-     */
-    public static function setTimeout($intSeconds = 5, $intRepeat = 12)
-    {
-        if (!isset($_SESSION['ISO_TIMEOUT'])) {
-            $_SESSION['ISO_TIMEOUT'] = $intRepeat;
-        } else {
-            $_SESSION['ISO_TIMEOUT'] = $_SESSION['ISO_TIMEOUT'] - 1;
-        }
-
-        if ($_SESSION['ISO_TIMEOUT'] > 0) {
-            // Reload page every 5 seconds
-            $GLOBALS['TL_HEAD'][] = '<meta http-equiv="refresh" content="' . $intSeconds . ',' . \Environment::get('base') . \Environment::get('request') . '">';
-
-            return true;
-        }
-
-        return false;
-    }
-
-
-    /**
-     * Cancel the timeout (clear session)
-     */
-    public static function clearTimeout()
-    {
-        unset($_SESSION['ISO_TIMEOUT']);
-    }
-
-
-    /**
      * Store the current article ID so we know it for the product list
      * @param \Database\Result
      */
