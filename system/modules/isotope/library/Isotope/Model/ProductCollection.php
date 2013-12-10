@@ -982,40 +982,6 @@ abstract class ProductCollection extends TypeAgent
 
 
     /**
-     * Initialize a new collection from given collection
-     * @param   IsotopeProductCollection
-     * @return  IsotopeProductCollection
-     */
-    public function setSourceCollection(IsotopeProductCollection $objSource)
-    {
-        global $objPage;
-
-        $objConfig = $objSource->getRelated('config_id');
-
-        if (null === $objConfig) {
-            $objConfig = Isotope::getConfig();
-        }
-
-        $this->source_collection_id = $objSource->id;
-        $this->config_id            = $objSource->config_id;
-        $this->store_id             = $objSource->store_id;
-        $this->address1_id          = $objSource->address1_id;
-        $this->address2_id          = $objSource->address2_id;
-        $this->payment_id           = $objSource->payment_id;
-        $this->shipping_id          = $objSource->shipping_id;
-        $this->member               = $objSource->member;
-        $this->language             = $GLOBALS['TL_LANGUAGE'];
-        $this->currency             = $objConfig->currency;
-        $this->pageId               = (int) $objPage->id;
-
-        // Do not change the unique ID
-        if ($this->uniqid == '') {
-            $this->uniqid = uniqid(Haste::getInstance()->call('replaceInsertTags', $objConfig->orderPrefix), true);
-        }
-    }
-
-
-    /**
      * Copy product collection items from another collection to this one (e.g. Cart to Order)
      * @param   IsotopeProductCollection
      * @return  array
@@ -1409,6 +1375,44 @@ abstract class ProductCollection extends TypeAgent
         if ($this->isLocked()) {
             throw new \BadMethodCallException('Product collection is locked');
         }
+    }
+
+    /**
+     * Initialize a new collection and duplicate everything from the source
+     * @param   IsotopeProductCollection
+     */
+    public static function createFromCollection(IsotopeProductCollection $objSource)
+    {
+        global $objPage;
+
+        $objCollection = new static();
+        $objConfig = $objSource->getRelated('config_id');
+
+        if (null === $objConfig) {
+            $objConfig = Isotope::getConfig();
+        }
+
+        $objCollection->uniqid               = uniqid(Haste::getInstance()->call('replaceInsertTags', (string) $objConfig->orderPrefix), true);
+        $objCollection->source_collection_id = (int) $objSource->id;
+        $objCollection->config_id            = (int) $objConfig->id;
+        $objCollection->store_id             = (int) $objSource->store_id;
+        $objCollection->member               = (int) $objSource->member;
+        $objCollection->language             = (string) $GLOBALS['TL_LANGUAGE'];
+        $objCollection->currency             = (string) $objConfig->currency;
+        $objCollection->pageId               = (int) $objPage->id;
+
+        $objCollection->setPaymentMethod($objSource->getPaymentMethod());
+        $objCollection->setShippingMethod($objSource->getShippingMethod());
+
+        $objCollection->setBillingAddress($objSource->getBillingAddress());
+        $objCollection->setShippingAddress($objSource->getShippingAddress());
+
+        $arrItemIds = $objCollection->copyItemsFrom($objSource);
+        $objCollection->copySurchargesFrom($objSource, $arrItemIds);
+
+        $objCollection->updateDatabase();
+
+        return $objCollection;
     }
 
 

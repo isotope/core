@@ -197,8 +197,17 @@ class Checkout extends Module
         }
 
         if ($this->strCurrentStep == 'process') {
-            $this->writeOrder();
-            $strBuffer = Isotope::getCart()->hasPayment() ? Isotope::getCart()->getPaymentMethod()->checkoutForm($this) : false;
+
+            $objOrder = Order::createFromCollection(Isotope::getCart());
+
+            $objOrder->checkout_info        = $this->getCheckoutInfo();
+            $objOrder->nc_notification      = $this->nc_notification;
+            $objOrder->iso_addToAddressbook = $this->iso_addToAddressbook;
+            $objOrder->email_data           = $this->getNotificationTokensFromSteps($objOrder);
+
+            $objOrder->save();
+
+            $strBuffer = Isotope::getCart()->hasPayment() ? Isotope::getCart()->getPaymentMethod()->checkoutForm($objOrder, $this) : false;
 
             if ($strBuffer === false) {
                 static::redirectToStep('complete');
@@ -207,7 +216,9 @@ class Checkout extends Module
             $this->Template->showForm = false;
             $this->doNotSubmit        = true;
             $arrBuffer                = array(array('html' => $strBuffer, 'class' => $this->strCurrentStep));
-        } else if ($this->strCurrentStep == 'complete') {
+
+        } elseif ($this->strCurrentStep == 'complete') {
+
             $strBuffer = Isotope::getCart()->hasPayment() ? Isotope::getCart()->getPaymentMethod()->processPayment() : true;
 
             if ($strBuffer === true) {
@@ -292,29 +303,6 @@ class Checkout extends Module
         }
 
         static::redirectToStep($arrSteps[($intKey - 1)]);
-    }
-
-
-    /**
-     * Save the order
-     * @return void
-     */
-    protected function writeOrder()
-    {
-        $objOrder = Order::findOneBy('source_collection_id', Isotope::getCart()->id);
-
-        if (null === $objOrder) {
-            $objOrder = new Order();
-        }
-
-        $objOrder->setSourceCollection(Isotope::getCart());
-
-        $objOrder->checkout_info        = $this->getCheckoutInfo();
-        $objOrder->nc_notification      = $this->nc_notification;
-        $objOrder->iso_addToAddressbook = $this->iso_addToAddressbook;
-        $objOrder->email_data           = $this->getNotificationTokensFromSteps($objOrder);
-
-        $objOrder->save();
     }
 
 
