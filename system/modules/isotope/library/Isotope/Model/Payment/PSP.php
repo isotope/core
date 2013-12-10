@@ -178,7 +178,7 @@ abstract class PSP extends Payment
             'OWNERCTY'      => strtoupper($objBillingAddress->country),
             'OWNERTOWN'     => $objBillingAddress->city,
             'OWNERTELNO'    => $objBillingAddress->phone,
-            'ACCEPTURL'     => \Environment::get('base') . \Haste\Util\Url::addQueryString('uid=' . $objOrder->uniqid, $objModule->generateUrlForStep('complete')),
+            'ACCEPTURL'     => \Environment::get('base') . $objModule->generateUrlForStep('complete', $objOrder),
             'DECLINEURL'    => \Environment::get('base') . $objModule->generateUrlForStep('failed'),
             'BACKURL'       => \Environment::get('base') . $objModule->generateUrlForStep('review'),
             'PARAMPLUS'     => 'mod=pay&amp;id=' . $this->id,

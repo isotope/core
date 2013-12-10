@@ -210,7 +210,7 @@ class Checkout extends Module
             $strBuffer = Isotope::getCart()->hasPayment() ? Isotope::getCart()->getPaymentMethod()->checkoutForm($objOrder, $this) : false;
 
             if ($strBuffer === false) {
-                static::redirectToStep('complete');
+                static::redirectToStep('complete', $objOrder);
             }
 
             $this->Template->showForm = false;
@@ -501,18 +501,20 @@ class Checkout extends Module
     /**
      * Redirect to given checkout step
      * @param   string
+     * @param   IsotopeProductCollection
      */
-    public static function redirectToStep($strStep)
+    public static function redirectToStep($strStep, IsotopeProductCollection $objCollection=null)
     {
-        \Controller::redirect(static::generateUrlForStep($strStep));
+        \Controller::redirect(static::generateUrlForStep($strStep, $objCollection));
     }
 
     /**
      * Generate frontend URL for current page including the given checkout step
      * @param   string
+     * @param   IsotopeProductCollection
      * @return  string
      */
-    public static function generateUrlForStep($strStep)
+    public static function generateUrlForStep($strStep, IsotopeProductCollection $objCollection=null)
     {
         global $objPage;
 
@@ -520,6 +522,12 @@ class Checkout extends Module
             $strStep = 'step/' . $strStep;
         }
 
-        return \Controller::generateFrontendUrl($objPage->row(), '/' . $strStep);
+        $strUrl = \Controller::generateFrontendUrl($objPage->row(), '/' . $strStep);
+
+        if (null !== $objCollection) {
+            $strUrl = \Haste\Util\Url::addQueryString('uid=' . $objCollection->uniqid, $strUrl);
+        }
+
+        return $strUrl;
     }
 }

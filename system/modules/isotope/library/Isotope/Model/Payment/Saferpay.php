@@ -221,7 +221,7 @@ class Saferpay extends Postsale implements IsotopePayment
      */
     private function createPaymentURI(IsotopeProductCollection $objOrder, \Module $objModule)
     {
-        $strComplete = \Environment::get('base') . $objModule->generateUrlForStep('complete') . '?uid=' . $objOrder->uniqid;
+        $strComplete = \Environment::get('base') . $objModule->generateUrlForStep('complete', $objOrder);
         $strFailed   = \Environment::get('base') . $objModule->generateUrlForStep('failed');
 
         $strUrl = static::createPayInitURI;

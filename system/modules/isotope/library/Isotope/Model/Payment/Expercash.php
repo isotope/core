@@ -102,7 +102,7 @@ class Expercash extends Payment implements IsotopePayment, IsotopePostsale
             'amount'        => (round($objOrder->getTotal(), 2) * 100),
             'currency'      => $objOrder->currency,
             'paymentMethod' => $this->expercash_paymentMethod,
-            'returnUrl'     => \Environment::get('base') . \Haste\Util\Url::addQueryString('uid=' . $objOrder->uniqid, $objModule->generateUrlForStep('complete')),
+            'returnUrl'     => \Environment::get('base') . $objModule->generateUrlForStep('complete', $objOrder),
             'errorUrl'      => \Environment::get('base') . $objModule->generateUrlForStep('failed'),
             'notifyUrl'     => \Environment::get('base') . 'system/modules/isotope/postsale.php?mod=pay&id=' . $this->id,
             'profile'       => $this->expercash_profile,

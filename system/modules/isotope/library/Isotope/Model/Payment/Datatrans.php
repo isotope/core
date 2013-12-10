@@ -109,7 +109,7 @@ class Datatrans extends Postsale implements IsotopePayment
             'uppCustomerZipCode'    => $objAddress->postal,
             'uppCustomerPhone'      => $objAddress->phone,
             'uppCustomerEmail'      => $objAddress->email,
-            'successUrl'            => ampersand(\Environment::get('base') . $objModule->generateUrlForStep('complete')),
+            'successUrl'            => ampersand(\Environment::get('base') . $objModule->generateUrlForStep('complete', $objOrder)),
             'errorUrl'              => ampersand(\Environment::get('base') . $objModule->generateUrlForStep('failed')),
             'cancelUrl'             => ampersand(\Environment::get('base') . $objModule->generateUrlForStep('failed')),
             'mod'                   => 'pay',
