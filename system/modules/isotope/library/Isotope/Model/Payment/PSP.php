@@ -125,7 +125,7 @@ abstract class PSP extends Payment
      */
     public function checkoutForm(IsotopeProductCollection $objOrder, \Module $objModule)
     {
-        $arrParams = $this->preparePSPParams($objOrder);
+        $arrParams = $this->preparePSPParams($objOrder, $objModule);
 
         // SHA-1 must be generated on alphabetically sorted keys.
         // Use the natural order algorithm so ITEM10 gets listed after ITEM2
@@ -156,9 +156,10 @@ abstract class PSP extends Payment
     /**
      * Prepare PSP params
      * @param   Order
+     * @param   Module
      * @return  array
      */
-    protected function preparePSPParams($objOrder)
+    protected function preparePSPParams($objOrder, $objModule)
     {
         $objBillingAddress = $objOrder->getBillingAddress();
 
@@ -177,9 +178,9 @@ abstract class PSP extends Payment
             'OWNERCTY'      => strtoupper($objBillingAddress->country),
             'OWNERTOWN'     => $objBillingAddress->city,
             'OWNERTELNO'    => $objBillingAddress->phone,
-            'ACCEPTURL'     => \Environment::get('base') . \Haste\Util\Url::addQueryString('uid=' . $objOrder->uniqid, \Isotope\Module\Checkout::generateUrlForStep('complete')),
-            'DECLINEURL'    => \Environment::get('base') . \Isotope\Module\Checkout::generateUrlForStep('failed'),
-            'BACKURL'       => \Environment::get('base') . \Isotope\Module\Checkout::generateUrlForStep('review'),
+            'ACCEPTURL'     => \Environment::get('base') . \Haste\Util\Url::addQueryString('uid=' . $objOrder->uniqid, $objModule->generateUrlForStep('complete')),
+            'DECLINEURL'    => \Environment::get('base') . $objModule->generateUrlForStep('failed'),
+            'BACKURL'       => \Environment::get('base') . $objModule->generateUrlForStep('review'),
             'PARAMPLUS'     => 'mod=pay&amp;id=' . $this->id,
             'TP'            => $this->psp_dynamic_template ? : ''
         );
