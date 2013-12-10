@@ -169,7 +169,7 @@ class MediaManager extends \Widget implements \uploadable
 
         // Adapt the temporary files
         if (is_array($this->varValue['files']) && !empty($this->varValue['files'])) {
-            foreach ($this->varValue['files'] as $k => $v) {
+            foreach ($this->varValue['files'] as $v) {
                 if (!is_file(TL_ROOT . '/' . $this->getFilePath($v))) {
                     continue;
                 }

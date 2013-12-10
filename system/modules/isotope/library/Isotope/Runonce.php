@@ -42,6 +42,7 @@ class Runonce extends \Controller
     {
         // Check if shop has been installed
         $blnInstalled = \Database::getInstance()->tableExists(\Isotope\Model\Config::getTable());
+        $strStep = '';
 
         foreach (scan(TL_ROOT . '/system/modules/isotope/library/Isotope/Upgrade') as $strFile) {
             $strVersion = pathinfo($strFile, PATHINFO_FILENAME);

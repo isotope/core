@@ -84,8 +84,9 @@ class ProductPrice extends \Model\Collection implements IsotopePrice
     {
         if (count($this->arrModels) > 1) {
 
-            $fltPrice    = null;
-            $blnShowFrom = false;
+            $fltPrice           = null;
+            $fltOriginalPrice   = null;
+            $blnShowFrom        = false;
 
             foreach ($this->arrModels as $objPrice) {
                 $blnShowTiers = $objPrice->getRelated('pid')->getRelated('type')->showPriceTiers();
@@ -112,7 +113,5 @@ class ProductPrice extends \Model\Collection implements IsotopePrice
         } else {
             return $this->current()->generate();
         }
-
-        return $strPrice;
     }
 }

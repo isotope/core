@@ -125,6 +125,7 @@ abstract class ProductCollectionSurcharge extends TypeAgent
     {
         $this->tax_class  = 0;
         $this->before_tax = true;
+        $fltTotal = 0;
 
         if (!$objSource->isPercentage()) {
             $fltTotal = $objCollection->getTaxFreeSubtotal();

@@ -34,7 +34,7 @@ class Expercash extends Payment implements IsotopePayment, IsotopePostsale
      * Process payment on checkout page.
      * @param   IsotopeProductCollection    The order being places
      * @param   Module                      The checkout module instance
-     * @return  mixed
+     * @return  boolean
      */
     public function processPayment(IsotopeProductCollection $objOrder, \Module $objModule)
     {

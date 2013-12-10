@@ -25,7 +25,7 @@ class Panel extends \Backend
     public static function generateFilterButtons()
     {
         if (\Input::get('id') > 0) {
-            return;
+            return '';
         }
 
         $session   = \Session::getInstance()->getData();
@@ -60,7 +60,7 @@ class Panel extends \Backend
     public static function generateAdvancedFilters()
     {
         if (\Input::get('id') > 0) {
-            return;
+            return '';
         }
 
         $session = \Session::getInstance()->getData();
@@ -118,7 +118,7 @@ class Panel extends \Backend
     {
         return '
 <div class="tl_sorting tl_subpanel" style="padding:3px 0 0 8px">
-<a href="#" onclick="Backend.getScrollOffset();Isotope.openModalPageSelector({\'width\':765,\'title\':\'' . specialchars($GLOBALS['TL_LANG']['MOD']['page'][0]) . '\',\'url\':\'contao/page.php?do=' . \Input::get('do') . '&amp;table=tl_iso_product_category&amp;field=page_id&amp;value=' . $intPage . '\',\'action\':\'sortByPage\'});return false" title="' . $GLOBALS['TL_LANG']['tl_iso_product']['sorting'] . '">' . \Image::getHtml('page.gif', $GLOBALS['TL_LANG']['tl_iso_product']['sorting']) . '</a>
+<a href="#" onclick="Backend.getScrollOffset();Isotope.openModalPageSelector({\'width\':765,\'title\':\'' . specialchars($GLOBALS['TL_LANG']['MOD']['page'][0]) . '\',\'url\':\'contao/page.php?do=' . \Input::get('do') . '&amp;table=tl_iso_product_category&amp;field=page_id&amp;value=0\',\'action\':\'sortByPage\'});return false" title="' . $GLOBALS['TL_LANG']['tl_iso_product']['sorting'] . '">' . \Image::getHtml('page.gif', $GLOBALS['TL_LANG']['tl_iso_product']['sorting']) . '</a>
 </div>';
     }
 
