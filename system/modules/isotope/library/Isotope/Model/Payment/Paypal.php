@@ -112,6 +112,7 @@ class Paypal extends Postsale implements IsotopePayment
         $objResponse->send();
     }
 
+
     public function getPostsaleOrder()
     {
         return Order::findByPk(\Input::post('invoice'));
@@ -120,16 +121,12 @@ class Paypal extends Postsale implements IsotopePayment
 
     /**
      * Return the PayPal form.
-     *
-     * @access public
-     * @return string
+     * @param   IsotopeProductCollection    The order being places
+     * @param   Module                      The checkout module instance
+     * @return  string
      */
-    public function checkoutForm()
+    public function checkoutForm(IsotopeProductCollection $objOrder, \Module $objModule)
     {
-        if (($objOrder = Order::findOneBy('source_collection_id', Isotope::getCart()->id)) === null) {
-            \Isotope\Module\Checkout::redirectToStep('failed');
-        }
-
         $arrData     = array();
         $fltDiscount = 0;
         $i           = 0;

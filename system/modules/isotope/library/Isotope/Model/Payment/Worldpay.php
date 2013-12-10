@@ -74,6 +74,7 @@ class Worldpay extends Postsale implements IsotopePayment
         $this->postsaleSuccess($objOrder);
     }
 
+
     public function getPostsaleOrder()
     {
         return Order::findOneBy('source_collection_id', \Input::post('cartId'));
@@ -82,16 +83,12 @@ class Worldpay extends Postsale implements IsotopePayment
 
     /**
      * Return the checkout form.
-     *
-     * @access public
+     * @param   IsotopeProductCollection    The order being places
+     * @param   Module                      The checkout module instance
      * @return string
      */
-    public function checkoutForm()
+    public function checkoutForm(IsotopeProductCollection $objOrder, \Module $objModule)
     {
-        if (($objOrder = Order::findOneBy('source_collection_id', Isotope::getCart()->id)) === null) {
-            $this->redirect($this->addToUrl('step=failed', true));
-        }
-
         global $objPage;
         $objAddress = Isotope::getCart()->getBillingAddress();
 

@@ -188,9 +188,11 @@ abstract class Payment extends TypeAgent
 
     /**
      * Return a html form for checkout or false
-     * @return mixed
+     * @param   IsotopeProductCollection    The order being places
+     * @param   Module                      The checkout module instance
+     * @return  bool
      */
-    public function checkoutForm()
+    public function checkoutForm(IsotopeProductCollection $objOrder, \Module $objModule)
     {
         return false;
     }

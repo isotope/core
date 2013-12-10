@@ -121,15 +121,15 @@ class Saferpay extends Postsale implements IsotopePayment
 
     /**
      * HTML form for checkout
-     *
-     * @access public
-     * @return mixed
+     * @param   IsotopeProductCollection    The order being places
+     * @param   Module                      The checkout module instance
+     * @return  mixed
      */
-    public function checkoutForm()
+    public function checkoutForm(IsotopeProductCollection $objOrder, \Module $objModule)
     {
         // Get redirect url
         $objRequest = new \Request();
-        $objRequest->send($this->createPaymentURI());
+        $objRequest->send($this->createPaymentURI($objOrder));
 
         if ((int) $objRequest->code !== 200 || substr($objRequest->response, 0, 6) === 'ERROR:') {
             \System::log(sprintf('Could not get the redirect URI from Saferpay. See log files for further details.'), __METHOD__, TL_ERROR);
@@ -216,12 +216,8 @@ class Saferpay extends Postsale implements IsotopePayment
      * Create payment URI
      * @return string
      */
-    private function createPaymentURI()
+    private function createPaymentURI(IsotopeProductCollection $objOrder)
     {
-        if (($objOrder = Order::findOneBy('source_collection_id', Isotope::getCart()->id)) === null) {
-            \Isotope\Module\Checkout::redirectToStep('failed');
-        }
-
         $strComplete = \Environment::get('base') . \Isotope\Module\Checkout::generateUrlForStep('complete') . '?uid=' . $objOrder->uniqid;
         $strFailed   = \Environment::get('base') . \Isotope\Module\Checkout::generateUrlForStep('failed');
 

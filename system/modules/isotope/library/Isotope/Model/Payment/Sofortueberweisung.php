@@ -102,14 +102,12 @@ class Sofortueberweisung extends Postsale implements IsotopePayment
 
     /**
      * Return the payment form
-     * @return string
+     * @param   IsotopeProductCollection    The order being places
+     * @param   Module                      The checkout module instance
+     * @return  string
      */
-    public function checkoutForm()
+    public function checkoutForm(IsotopeProductCollection $objOrder, \Module $objModule)
     {
-        if (($objOrder = Order::findOneBy('source_collection_id', Isotope::getCart()->id)) === null) {
-            \Isotope\Module\Checkout::redirectToStep('failed');
-        }
-
         $strCountry = in_array(Isotope::getCart()->getBillingAddress()->country, array('de', 'ch', 'at')) ? Isotope::getCart()->getBillingAddress()->country : 'de';
         $strUrl     = 'https://www.sofortueberweisung.' . $strCountry . '/payment/start';
 

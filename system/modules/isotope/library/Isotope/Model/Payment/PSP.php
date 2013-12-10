@@ -128,14 +128,12 @@ abstract class PSP extends Payment
 
     /**
      * Return the payment form
+     * @param   IsotopeProductCollection    The order being places
+     * @param   Module                      The checkout module instance
      * @return  string
      */
-    public function checkoutForm()
+    public function checkoutForm(IsotopeProductCollection $objOrder, \Module $objModule)
     {
-        if (($objOrder = Order::findOneBy('source_collection_id', Isotope::getCart()->id)) === null) {
-            \Isotope\Module\Checkout::redirectToStep('failed');
-        }
-
         $arrParams = $this->preparePSPParams($objOrder);
 
         // SHA-1 must be generated on alphabetically sorted keys.

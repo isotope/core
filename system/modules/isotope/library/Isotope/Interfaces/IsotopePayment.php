@@ -27,9 +27,11 @@ interface IsotopePayment
 
     /**
      * Return a html form for checkout or false
-     * @return mixed
+     * @param   IsotopeProductCollection    The order being places
+     * @param   Module                      The checkout module instance
+     * @return  mixed
      */
-    public function checkoutForm();
+    public function checkoutForm(IsotopeProductCollection $objOrder, \Module $objModule);
 
     /**
      * Return information or advanced features in the backend.

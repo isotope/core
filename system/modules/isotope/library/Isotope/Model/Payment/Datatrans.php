@@ -79,14 +79,12 @@ class Datatrans extends Postsale implements IsotopePayment
 
     /**
      * Generate the submit form for datatrans and if javascript is enabled redirect automaticly
-     * @return string
+     * @param   IsotopeProductCollection    The order being places
+     * @param   Module                      The checkout module instance
+     * @return  string
      */
-    public function checkoutForm()
+    public function checkoutForm(IsotopeProductCollection $objOrder, \Module $objModule)
     {
-        if (($objOrder = Order::findOneBy('source_collection_id', Isotope::getCart()->id)) === null) {
-            \Isotope\Module\Checkout::redirectToStep('failed');
-        }
-
         $objAddress = Isotope::getCart()->getBillingAddress();
 
         $arrParams = array

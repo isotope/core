@@ -84,6 +84,7 @@ class Sparkasse extends Postsale implements IsotopePayment
         $objResponse->send();
     }
 
+
     public function getPostsaleOrder()
     {
         return Order::findByPk(\Input::post('orderid'));
@@ -92,18 +93,13 @@ class Sparkasse extends Postsale implements IsotopePayment
 
     /**
      * Return the payment form.
-     *
-     * @access public
+     * @param   IsotopeProductCollection    The order being places
+     * @param   Module                      The checkout module instance
      * @return string
      */
-    public function checkoutForm()
+    public function checkoutForm(IsotopeProductCollection $objOrder, \Module $objModule)
     {
         global $objPage;
-
-        if (($objOrder = Order::findOneBy('source_collection_id', Isotope::getCart()->id)) === null) {
-            \Isotope\Module\Checkout::redirectToStep('failed');
-        }
-
 
         $arrUrl = array();
         $strUrl = 'https://' . ($this->debug ? 'test' : '') . 'system.sparkassen-internetkasse.de/vbv/mpi_legacy?';

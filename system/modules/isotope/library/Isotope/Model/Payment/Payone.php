@@ -67,17 +67,13 @@ class Payone extends Postsale implements IsotopePayment
 
     /**
      * HTML form for checkout
-     *
-     * @access public
-     * @return mixed
+     * @param   IsotopeProductCollection    The order being places
+     * @param   Module                      The checkout module instance
+     * @return  mixed
      */
-    public function checkoutForm()
+    public function checkoutForm(IsotopeProductCollection $objOrder, \Module $objModule)
     {
         $i = 0;
-
-        if (($objOrder = Order::findOneBy('source_collection_id', Isotope::getCart()->id)) === null) {
-            \Isotope\Module\Checkout::redirectToStep('failed');
-        }
 
         $arrData = array
         (
