@@ -31,20 +31,19 @@ class Expercash extends Payment implements IsotopePayment, IsotopePostsale
 {
 
     /**
-     * processPayment function.
-     *
-     * @access  public
-     * @return  mixed|
+     * Process payment on checkout page.
+     * @param   IsotopeProductCollection    The order being places
+     * @param   Module                      The checkout module instance
+     * @return  mixed
      */
-    public function processPayment()
+    public function processPayment(IsotopeProductCollection $objOrder, \Module $objModule)
     {
-        $objOrder = Order::findOneBy('source_collection_id', Isotope::getCart()->id);
-
+        // @todo this can't be the only validation
         if ($this->validateUrlParams($objOrder)) {
             return true;
         }
 
-        \Isotope\Module\Checkout::redirectToStep('failed');
+        return false;
     }
 
 
@@ -60,7 +59,7 @@ class Expercash extends Payment implements IsotopePayment, IsotopePostsale
         }
 
         if (!$objOrder->checkout()) {
-            \System::log('Postsale checkout for Order ID "' . \Input::post('invoice') . '" failed', __METHOD__, TL_ERROR);
+            \System::log('Postsale checkout for Order ID "' . $objOrder->id . '" failed', __METHOD__, TL_ERROR);
 
             return;
         }

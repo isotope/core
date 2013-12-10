@@ -19,11 +19,12 @@ namespace Isotope\Interfaces;
 interface IsotopePayment
 {
     /**
-     * Process checkout payment. Must be implemented in each payment module
-     * @access public
-     * @return mixed
+     * Process payment on checkout confirmation page.
+     * @param   IsotopeProductCollection    The order being places
+     * @param   Module                      The checkout module instance
+     * @return  mixed
      */
-    public function processPayment();
+    public function processPayment(IsotopeProductCollection $objOrder, \Module $objModule);
 
     /**
      * Return a html form for checkout or false

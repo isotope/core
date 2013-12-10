@@ -29,19 +29,15 @@ abstract class PSP extends Payment
 {
 
     /**
-     * Process payment on confirmation page
-     * @return  boolean
+     * Process payment on checkout page.
+     * @param   IsotopeProductCollection    The order being places
+     * @param   Module                      The checkout module instance
+     * @return  mixed
      */
-    public function processPayment()
+    public function processPayment(IsotopeProductCollection $objOrder, \Module $objModule)
     {
         // In processPayment, the parameters are always in GET
         $this->psp_http_method = 'GET';
-
-        if (($objOrder = $this->getPostsaleOrder()) === null) {
-            \System::log('Order ID "' . \Input::get('orderID') . '" not found', __METHOD__, TL_ERROR);
-
-            return false;
-        }
 
         return $this->processPostsale($objOrder);
     }

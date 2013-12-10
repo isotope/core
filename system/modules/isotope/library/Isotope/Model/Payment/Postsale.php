@@ -28,14 +28,13 @@ abstract class Postsale extends Payment implements IsotopePostsale
 
     /**
      * Show message while we are waiting for server-to-server order confirmation
+     * @param   IsotopeProductCollection    The order being places
+     * @param   Module                      The checkout module instance
+     * @return  mixed
      */
-    public function processPayment()
+    public function processPayment(IsotopeProductCollection $objOrder, \Module $objModule)
     {
-        if (($objOrder = Order::findOneBy('source_collection_id', Isotope::getCart()->id)) === null) {
-            return false;
-        }
-
-        if ($objOrder->date_paid > 0 && $objOrder->date_paid <= time()) {
+        if ($objOrder->order_status > 0) {
             \Isotope\Frontend::clearTimeout();
 
             return true;
@@ -55,6 +54,7 @@ abstract class Postsale extends Payment implements IsotopePostsale
         }
 
         \System::log('Payment could not be processed.', __METHOD__, TL_ERROR);
-        \Isotope\Module\Checkout::redirectToStep('failed');
+
+        return false;
     }
 }

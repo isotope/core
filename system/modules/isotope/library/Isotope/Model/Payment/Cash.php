@@ -30,17 +30,13 @@ class Cash extends Payment implements IsotopePayment
 {
 
     /**
-     * processPayment function.
-     *
-     * @access public
-     * @return boolean
+     * Process payment on checkout page.
+     * @param   IsotopeProductCollection    The order being places
+     * @param   Module                      The checkout module instance
+     * @return  mixed
      */
-    public function processPayment()
+    public function processPayment(IsotopeProductCollection $objOrder, \Module $objModule)
     {
-        if (($objOrder = Order::findOneBy('source_collection_id', Isotope::getCart()->id)) === null) {
-            return false;
-        }
-
         $objOrder->updateOrderStatus($this->new_order_status);
 
         return true;
