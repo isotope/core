@@ -1408,9 +1408,18 @@ abstract class ProductCollection extends TypeAgent
         $objCollection->setShippingAddress($objSource->getShippingAddress());
 
         $arrItemIds = $objCollection->copyItemsFrom($objSource);
-        $objCollection->copySurchargesFrom($objSource, $arrItemIds);
+        $arrSurchargeIds = $objCollection->copySurchargesFrom($objSource, $arrItemIds);
 
         $objCollection->updateDatabase();
+
+        // HOOK: order status has been updated
+        if (isset($GLOBALS['ISO_HOOKS']['createFromProductCollection']) && is_array($GLOBALS['ISO_HOOKS']['createFromProductCollection'])) {
+        	foreach ($GLOBALS['ISO_HOOKS']['createFromProductCollection'] as $callback) {
+        		$objCallback = \System::importStatic($callback[0]);
+        		$objCallback->$callback[1]($objCollection, $objSource, $arrItemIds, $arrSurchargeIds);
+        	}
+        }
+
 
         return $objCollection;
     }
