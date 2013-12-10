@@ -88,15 +88,15 @@ class Datatrans extends Postsale implements IsotopePayment
      */
     public function checkoutForm(IsotopeProductCollection $objOrder, \Module $objModule)
     {
-        $objAddress = Isotope::getCart()->getBillingAddress();
+        $objAddress = $objOrder->getBillingAddress();
 
         $arrParams = array
         (
             'merchantId'            => $this->datatrans_id,
-            'amount'                => round(Isotope::getCart()->getTotal() * 100),
-            'currency'              => Isotope::getConfig()->currency,
+            'amount'                => round($objOrder->getTotal() * 100),
+            'currency'              => $objOrder->currency,
             'refno'                 => $objOrder->id,
-            'language'              => $GLOBALS['TL_LANGUAGE'],
+            'language'              => $objOrder->language,
             'reqtype'               => ($this->trans_type == 'auth' ? 'NOA' : 'CAA'),
             'uppCustomerDetails'    => 'yes',
             'uppCustomerTitle'      => $objAddress->salutation,

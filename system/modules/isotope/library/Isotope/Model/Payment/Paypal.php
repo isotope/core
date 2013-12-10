@@ -133,7 +133,7 @@ class Paypal extends Postsale implements IsotopePayment
         $fltDiscount = 0;
         $i           = 0;
 
-        foreach (Isotope::getCart()->getItems() as $objItem) {
+        foreach ($objOrder->getItems() as $objItem) {
 
             // Set the active product for insert tags replacement
             if ($objItem->hasProduct()) {
@@ -163,7 +163,7 @@ class Paypal extends Postsale implements IsotopePayment
             $arrData['quantity_' . $i]      = $objItem->quantity;
         }
 
-        foreach (Isotope::getCart()->getSurcharges() as $objSurcharge) {
+        foreach ($objOrder->getSurcharges() as $objSurcharge) {
 
             if (!$objSurcharge->add) {
                 continue;
@@ -187,8 +187,8 @@ class Paypal extends Postsale implements IsotopePayment
         $objTemplate->invoice       = $objOrder->id;
         $objTemplate->data          = $arrData;
         $objTemplate->discount      = $fltDiscount;
-        $objTemplate->address       = Isotope::getCart()->getBillingAddress();
-        $objTemplate->currency      = Isotope::getConfig()->currency;
+        $objTemplate->address       = $objOrder->getBillingAddress();
+        $objTemplate->currency      = $objOrder->currency;
         $objTemplate->return        = \Environment::get('base') . \Haste\Util\Url::addQueryString('uid=' . $objOrder->uniqid, \Isotope\Module\Checkout::generateUrlForStep('complete'));
         $objTemplate->cancel_return = \Environment::get('base') . \Isotope\Module\Checkout::generateUrlForStep('failed');
         $objTemplate->notify_url    = \Environment::get('base') . 'system/modules/isotope/postsale.php?mod=pay&id=' . $this->id;

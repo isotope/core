@@ -111,7 +111,7 @@ class Sofortueberweisung extends Postsale implements IsotopePayment
      */
     public function checkoutForm(IsotopeProductCollection $objOrder, \Module $objModule)
     {
-        $strCountry = in_array(Isotope::getCart()->getBillingAddress()->country, array('de', 'ch', 'at')) ? Isotope::getCart()->getBillingAddress()->country : 'de';
+        $strCountry = in_array($objOrder->getBillingAddress()->country, array('de', 'ch', 'at')) ? $objOrder->getBillingAddress()->country : 'de';
         $strUrl     = 'https://www.sofortueberweisung.' . $strCountry . '/payment/start';
 
         $arrParams = array
@@ -121,9 +121,9 @@ class Sofortueberweisung extends Postsale implements IsotopePayment
             'sender_holder'         => '',
             'sender_account_number' => '',
             'sender_bank_code'      => '',
-            'sender_country_id'     => Isotope::getCart()->getBillingAddress()->country,
-            'amount'                => number_format(Isotope::getCart()->getTotal(), 2, '.', ''),
-            'currency_id'           => Isotope::getConfig()->currency,
+            'sender_country_id'     => $objOrder->getBillingAddress()->country,
+            'amount'                => number_format($objOrder->getTotal(), 2, '.', ''),
+            'currency_id'           => $objOrder->currency,
             'reason_1'              => \Environment::get('host'),
             'reason_2'              => '',
             'user_variable_0'       => $objOrder->id,

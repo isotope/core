@@ -91,11 +91,11 @@ class Payone extends Postsale implements IsotopePayment
             'display_address'   => 'no',
             'successurl'        => \Environment::get('base') . \Haste\Util\Url::addQueryString('uid=' . $objOrder->uniqid, \Isotope\Module\Checkout::generateUrlForStep('complete')),
             'backurl'           => \Environment::get('base') . \Isotope\Module\Checkout::generateUrlForStep('failed'),
-            'amount'            => (Isotope::getCart()->getTotal() * 100),
-            'currency'          => Isotope::getConfig()->currency,
+            'amount'            => ($objOrder->getTotal() * 100),
+            'currency'          => $objOrder->currency,
         );
 
-        foreach (Isotope::getCart()->getItems() as $objItem) {
+        foreach ($objOrder->getItems() as $objItem) {
 
             // Set the active product for insert tags replacement
             if ($objItem->hasProduct()) {
@@ -125,7 +125,7 @@ class Payone extends Postsale implements IsotopePayment
             $arrData['de[' . $i . ']']   = specialchars($objItem->getName() . $strOptions);
         }
 
-        foreach (Isotope::getCart()->getSurcharges() as $k => $objSurcharge) {
+        foreach ($objOrder->getSurcharges() as $k => $objSurcharge) {
 
             if (!$objSurcharge->add)
                 continue;
@@ -145,7 +145,7 @@ class Payone extends Postsale implements IsotopePayment
         $objTemplate->id              = $this->id;
         $objTemplate->data            = $arrData;
         $objTemplate->hash            = $strHash;
-        $objTemplate->billing_address = Isotope::getCart()->getBillingAddress()->row();
+        $objTemplate->billing_address = $objOrder->getBillingAddress()->row();
         $objTemplate->headline        = $GLOBALS['TL_LANG']['MSC']['pay_with_redirect'][0];
         $objTemplate->message         = $GLOBALS['TL_LANG']['MSC']['pay_with_redirect'][1];
         $objTemplate->slabel          = specialchars($GLOBALS['TL_LANG']['MSC']['pay_with_redirect'][2]);

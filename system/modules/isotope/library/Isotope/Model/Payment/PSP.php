@@ -58,17 +58,8 @@ abstract class PSP extends Payment
             return false;
         }
 
-        // If order status is set, we check order total instead of cart total
-        if ($objOrder->order_status > 0) {
-            $objCart = $objOrder;
-
-        } elseif (($objCart = $objOrder->getRelated('source_collection_id')) === null) {
-            \System::log('Cart ID ' . $objOrder->source_collection_id . ' for Order ID ' . $objOrder->id . ' not found', __METHOD__, TL_ERROR);
-            return false;
-        }
-
         // Validate payment data
-        if ($objOrder->currency != $this->getRequestData('currency') || $objCart->getTotal() != $this->getRequestData('amount')) {
+        if ($objOrder->currency != $this->getRequestData('currency') || $objOrder->getTotal() != $this->getRequestData('amount')) {
             \System::log('Postsale checkout manipulation in payment for Order ID ' . $objOrder->id . '!', __METHOD__, TL_ERROR);
             return false;
         }
@@ -175,8 +166,8 @@ abstract class PSP extends Payment
         (
             'PSPID'         => $this->psp_pspid,
             'ORDERID'       => $objOrder->id,
-            'AMOUNT'        => round((Isotope::getCart()->getTotal() * 100)),
-            'CURRENCY'      => Isotope::getConfig()->currency,
+            'AMOUNT'        => round(($objOrder->getTotal() * 100)),
+            'CURRENCY'      => $objOrder->currency,
             'LANGUAGE'      => $GLOBALS['TL_LANGUAGE'] . '_' . strtoupper($GLOBALS['TL_LANGUAGE']),
             'CN'            => $objBillingAddress->firstname . ' ' . $objBillingAddress->lastname,
             'EMAIL'         => $objBillingAddress->email,

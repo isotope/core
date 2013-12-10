@@ -226,8 +226,8 @@ class Saferpay extends Postsale implements IsotopePayment
 
         $strUrl = static::createPayInitURI;
         $strUrl .= "?ACCOUNTID=" . $this->saferpay_accountid;
-        $strUrl .= "&AMOUNT=" . (round((Isotope::getCart()->getTotal() * 100), 0));
-        $strUrl .= "&CURRENCY=" . Isotope::getConfig()->currency;
+        $strUrl .= "&AMOUNT=" . (round(($objOrder->getTotal() * 100), 0));
+        $strUrl .= "&CURRENCY=" . $objOrder->currency;
         $strUrl .= "&SUCCESSLINK=" . urlencode($strComplete);
         $strUrl .= "&FAILLINK=" . urlencode($strFailed);
         $strUrl .= "&BACKLINK=" . urlencode($strFailed);

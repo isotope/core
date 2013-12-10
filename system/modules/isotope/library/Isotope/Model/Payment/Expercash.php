@@ -97,10 +97,10 @@ class Expercash extends Payment implements IsotopePayment, IsotopePostsale
         (
             'popupId'       => $this->expercash_popupId,
             'jobId'         => microtime(),
-            'functionId'    => (FE_USER_LOGGED_IN ? \FrontendUser::getInstance()->id : Isotope::getCart()->session),
+            'functionId'    => ($objOrder->member ?: $objOrder->uniqid),
             'transactionId' => $objOrder->id,
-            'amount'        => (round(Isotope::getCart()->getTotal(), 2) * 100),
-            'currency'      => Isotope::getConfig()->currency,
+            'amount'        => (round($objOrder->getTotal(), 2) * 100),
+            'currency'      => $objOrder->currency,
             'paymentMethod' => $this->expercash_paymentMethod,
             'returnUrl'     => \Environment::get('base') . \Haste\Util\Url::addQueryString('uid=' . $objOrder->uniqid, \Isotope\Module\Checkout::generateUrlForStep('complete')),
             'errorUrl'      => \Environment::get('base') . \Isotope\Module\Checkout::generateUrlForStep('failed'),
@@ -150,13 +150,13 @@ class Expercash extends Payment implements IsotopePayment, IsotopePostsale
             return false;
         }
 
-        if (\Input::get('amount') != (round(Isotope::getCart()->getTotal(), 2) * 100)) {
+        if (\Input::get('amount') != (round($objOrder->getTotal(), 2) * 100)) {
             \System::log('ExperCash: amount is incorrect. Possible data manipulation!', __METHOD__, TL_ERROR);
 
             return false;
         }
 
-        if (\Input::get('currency') != Isotope::getConfig()->currency) {
+        if (\Input::get('currency') != $objOrder->currency) {
             \System::log('ExperCash: currency is incorrect. Possible data manipulation!', __METHOD__, TL_ERROR);
 
             return false;

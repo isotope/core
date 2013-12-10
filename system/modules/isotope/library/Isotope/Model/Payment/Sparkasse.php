@@ -107,11 +107,11 @@ class Sparkasse extends Postsale implements IsotopePayment
         $strUrl = 'https://' . ($this->debug ? 'test' : '') . 'system.sparkassen-internetkasse.de/vbv/mpi_legacy?';
 
         $arrParam = array(
-            'amount'            => number_format(Isotope::getCart()->getTotal(), 2, ',', ''),
-            'basketid'          => Isotope::getCart()->id,
+            'amount'            => number_format($objOrder->getTotal(), 2, ',', ''),
+            'basketid'          => $objOrder->source_collection_id,
             'command'           => 'sslform',
-            'currency'          => Isotope::getConfig()->currency,
-            'locale'            => $GLOBALS['TL_LANGUAGE'],
+            'currency'          => $objOrder->currency,
+            'locale'            => $objOrder->language,
             'orderid'           => $objOrder->id,
             'paymentmethod'     => $this->sparkasse_paymentmethod,
             'sessionid'         => $objPage->id,

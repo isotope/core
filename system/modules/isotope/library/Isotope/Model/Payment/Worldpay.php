@@ -80,7 +80,7 @@ class Worldpay extends Postsale implements IsotopePayment
      */
     public function getPostsaleOrder()
     {
-        return Order::findOneBy('source_collection_id', \Input::post('cartId'));
+        return Order::findByPk(\Input::post('cartId'));
     }
 
     /**
@@ -92,12 +92,12 @@ class Worldpay extends Postsale implements IsotopePayment
     public function checkoutForm(IsotopeProductCollection $objOrder, \Module $objModule)
     {
         global $objPage;
-        $objAddress = Isotope::getCart()->getBillingAddress();
+        $objAddress = $objOrder->getBillingAddress();
 
         $arrData['instId']      = $this->worldpay_instId;
-        $arrData['cartId']      = Isotope::getCart()->id;
-        $arrData['amount']      = number_format(Isotope::getCart()->getTotal(), 2);
-        $arrData['currency']    = Isotope::getConfig()->currency;
+        $arrData['cartId']      = $objOrder->id;
+        $arrData['amount']      = number_format($objOrder->getTotal(), 2);
+        $arrData['currency']    = $objOrder->currency;
         $arrData['description'] = Translation::get($this->worldpay_description);
         $arrData['name']        = substr($objAddress->firstname . ' ' . $objAddress->lastname, 0, 40);
 
