@@ -129,16 +129,12 @@ class Order extends ProductCollection implements IsotopeProductCollection
             return true;
         }
 
-        $this->shipping_id  = $objCart->shipping_id;
-        $this->payment_id   = $objCart->payment_id;
-        $this->currency     = Isotope::getConfig()->currency;
-
         // !HOOK: pre-process checkout
         if (isset($GLOBALS['ISO_HOOKS']['preCheckout']) && is_array($GLOBALS['ISO_HOOKS']['preCheckout'])) {
             foreach ($GLOBALS['ISO_HOOKS']['preCheckout'] as $callback) {
                 $objCallback = \System::importStatic($callback[0]);
 
-                if ($objCallback->$callback[1]($this, $objCart) === false) {
+                if ($objCallback->$callback[1]($this) === false) {
                     \System::log('Callback ' . $callback[0] . '::' . $callback[1] . '() cancelled checkout for Order ID ' . $this->id, __METHOD__, TL_ERROR);
 
                     return false;
@@ -146,34 +142,27 @@ class Order extends ProductCollection implements IsotopeProductCollection
             }
         }
 
-        // Copy all items from cart to oder
-        $arrItemIds = $this->copyItemsFrom($objCart);
-        $this->copySurchargesFrom($objCart, $arrItemIds);
-
-        // Set billing and shipping address and create private records
-        $this->setBillingAddress($objCart->getBillingAddress());
-        $this->setShippingAddress($objCart->getShippingAddress());
-        $this->createPrivateAddresses();
-
         // Store address in address book
         if ($this->iso_addToAddressbook && $this->member > 0) {
 
-            if ($objCart->getBillingAddress()->ptable != \MemberModel::getTable()) {
-                $objAddress         = clone $objCart->getBillingAddress();
+            if ($this->getBillingAddress()->ptable != \MemberModel::getTable()) {
+                $objAddress         = clone $this->getBillingAddress();
                 $objAddress->pid    = $this->member;
                 $objAddress->tstamp = time();
                 $objAddress->ptable = \MemberModel::getTable();
                 $objAddress->save();
             }
 
-            if ($objCart->getBillingAddress()->id != $objCart->getShippingAddress()->id && $objCart->getShippingAddress()->ptable != \MemberModel::getTable()) {
-                $objAddress         = clone $objCart->getShippingAddress();
+            if ($this->getBillingAddress()->id != $this->getShippingAddress()->id && $this->getShippingAddress()->ptable != \MemberModel::getTable()) {
+                $objAddress         = clone $this->getShippingAddress();
                 $objAddress->pid    = $this->member;
                 $objAddress->tstamp = time();
                 $objAddress->ptable = \MemberModel::getTable();
                 $objAddress->save();
             }
         }
+
+        $this->createPrivateAddresses();
 
         // Add downloads from products to the collection
         $arrDownloads = ProductCollectionDownload::createForProductsInCollection($this);
@@ -183,12 +172,21 @@ class Order extends ProductCollection implements IsotopeProductCollection
 
         // Finish and lock the order (do this now, because otherwise surcharges etc. will not be loaded form the database)
         $this->checkout_complete = true;
-        $this->generateDocumentNumber(Isotope::getConfig()->orderPrefix, (int) Isotope::getConfig()->orderDigits);
+        $this->generateDocumentNumber($this->getRelated('config_id')->orderPrefix, (int) $this->getRelated('config_id')->orderDigits);
         $this->lock();
         \System::log('New order ID ' . $this->id . ' has been placed', __METHOD__, TL_ACCESS);
 
         // Delete cart after migrating to order
-        $objCart->delete();
+        if (($objCart = Cart::findByPk($this->source_collection_id)) !== null) {
+            $objCart->delete();
+        }
+
+        // Delete all other orders that relate to the current cart
+        if (($objOrders = static::findSiblingsBy('source_collection_id', $this)) !== null) {
+            foreach ($objOrders as $objOrder) {
+                $objOrder->delete();
+            }
+        }
 
         // Generate tokens
         $arrTokens = $this->getNotificationTokens($this->nc_notification);
@@ -214,7 +212,7 @@ class Order extends ProductCollection implements IsotopeProductCollection
 
         // Set order status only if a payment module has not already set it
         if ($this->order_status == 0) {
-            $this->updateOrderStatus(Isotope::getConfig()->orderstatus_new);
+            $this->updateOrderStatus($this->getRelated('config_id')->orderstatus_new);
         }
 
         // !HOOK: post-process checkout

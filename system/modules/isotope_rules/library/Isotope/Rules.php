@@ -258,8 +258,10 @@ class Rules extends \Controller
     /**
      * Callback for checkout Hook. Transfer active rules to usage table.
      */
-    public function writeRuleUsages($objOrder, $objCart)
+    public function writeRuleUsages($objOrder)
     {
+        $objCart = Cart::findByPk($objOrder->source_collection_id);
+
         $objRules = Rule::findActiveWitoutCoupons();
         $arrRules = (null === $objRules) ? array() : $objRules->fetchEach('id');
         $arrCoupons = deserialize($objCart->coupons);
