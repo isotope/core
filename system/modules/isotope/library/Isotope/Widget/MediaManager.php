@@ -361,6 +361,8 @@ class MediaManager extends \Widget implements \uploadable
             $uploadFolder = $this->getFilePath($strCacheName, true);
         }
 
+        $arrFallback = $this->getFallbackData();
+
         // Check that image is not assigned in fallback language
         if (is_array($arrFallback) && in_array($strCacheName, $arrFallback)) {
             $this->addError($GLOBALS['TL_LANG']['ERR']['imageInFallback']);
