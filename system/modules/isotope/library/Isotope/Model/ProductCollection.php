@@ -139,8 +139,6 @@ abstract class ProductCollection extends TypeAgent
      */
     public function markModified($strKey)
     {
-        $this->ensureNotLocked();
-
         if ($strKey == 'locked') {
             throw new \InvalidArgumentException('Cannot change lock status of collection');
         }
@@ -438,8 +436,6 @@ abstract class ProductCollection extends TypeAgent
      */
     public function save()
     {
-        $this->ensureNotLocked();
-
         // !HOOK: additional functionality when saving a collection
         if (isset($GLOBALS['ISO_HOOKS']['saveCollection']) && is_array($GLOBALS['ISO_HOOKS']['saveCollection'])) {
             foreach ($GLOBALS['ISO_HOOKS']['saveCollection'] as $callback) {
