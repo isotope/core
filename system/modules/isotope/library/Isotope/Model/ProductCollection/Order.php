@@ -184,7 +184,9 @@ class Order extends ProductCollection implements IsotopeProductCollection
         // Delete all other orders that relate to the current cart
         if (($objOrders = static::findSiblingsBy('source_collection_id', $this)) !== null) {
             foreach ($objOrders as $objOrder) {
-                $objOrder->delete();
+                if (!$objOrder->isLocked()) {
+                    $objOrder->delete();
+                }
             }
         }
 
