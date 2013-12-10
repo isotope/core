@@ -167,6 +167,36 @@ abstract class TypeAgent extends \Model
     }
 
     /**
+     * Find sibling records by a column value
+     * @param   string
+     * @param   \Model
+     * @param   array
+     */
+    public static function findSiblingsBy($strColumn, \Model $objModel, array $arrOptions=array())
+    {
+        $t = static::getTable();
+
+        $arrOptions = array_merge(
+            array(
+                'column'    => array(
+                    "$t.type=?",
+                    "$t.$strColumn=?",
+                    "$t.id!=?"
+                ),
+                'value'     => array(
+                    $objModel->type,
+                    $objModel->{$strColumn},
+                    $objModel->id
+                ),
+                'return'    => 'Collection'
+            ),
+            $arrOptions
+        );
+
+        return static::find($arrOptions);
+    }
+
+    /**
      * Return a model or collection based on the database result type
      */
     protected static function find(array $arrOptions)
