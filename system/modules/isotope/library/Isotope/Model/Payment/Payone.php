@@ -59,11 +59,14 @@ class Payone extends Postsale implements IsotopePayment
         die('TSOK');
     }
 
+    /**
+     * Get the order object in a postsale request
+     * @return  IsotopeProductCollection
+     */
     public function getPostsaleOrder()
     {
         return Order::findByPk(\Input::post('reference'));
     }
-
 
     /**
      * HTML form for checkout

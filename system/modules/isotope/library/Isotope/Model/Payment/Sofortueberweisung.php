@@ -94,11 +94,14 @@ class Sofortueberweisung extends Postsale implements IsotopePayment
         $objOrder->save();
     }
 
+    /**
+     * Get the order object in a postsale request
+     * @return  IsotopeProductCollection
+     */
     public function getPostsaleOrder()
     {
         return Order::findByPk(\Input::post('user_variable_0'));
     }
-
 
     /**
      * Return the payment form

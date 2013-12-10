@@ -74,12 +74,14 @@ class Worldpay extends Postsale implements IsotopePayment
         $this->postsaleSuccess($objOrder);
     }
 
-
+    /**
+     * Get the order object in a postsale request
+     * @return  IsotopeProductCollection
+     */
     public function getPostsaleOrder()
     {
         return Order::findOneBy('source_collection_id', \Input::post('cartId'));
     }
-
 
     /**
      * Return the checkout form.

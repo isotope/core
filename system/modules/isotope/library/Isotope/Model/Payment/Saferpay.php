@@ -113,11 +113,14 @@ class Saferpay extends Postsale implements IsotopePayment
         }
     }
 
+    /**
+     * Get the order object in a postsale request
+     * @return  IsotopeProductCollection
+     */
     public function getPostsaleOrder()
     {
         return Order::findByPk($this->getPostValue('ORDERID'));
     }
-
 
     /**
      * HTML form for checkout

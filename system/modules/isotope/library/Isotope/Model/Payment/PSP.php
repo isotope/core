@@ -118,13 +118,13 @@ abstract class PSP extends Payment
 
 
     /**
-     * {@inheritdoc}
+     * Get the order object in a postsale request
+     * @return  IsotopeProductCollection
      */
     public function getPostsaleOrder()
     {
         return Order::findByPk($this->getRequestData('orderID'));
     }
-
 
     /**
      * Return the payment form

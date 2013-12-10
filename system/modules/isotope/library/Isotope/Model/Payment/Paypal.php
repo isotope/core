@@ -112,12 +112,14 @@ class Paypal extends Postsale implements IsotopePayment
         $objResponse->send();
     }
 
-
+    /**
+     * Get the order object in a postsale request
+     * @return  IsotopeProductCollection
+     */
     public function getPostsaleOrder()
     {
         return Order::findByPk(\Input::post('invoice'));
     }
-
 
     /**
      * Return the PayPal form.

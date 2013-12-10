@@ -75,12 +75,14 @@ class Expercash extends Payment implements IsotopePayment, IsotopePostsale
         $objResponse->send();
     }
 
-
+    /**
+     * Get the order object in a postsale request
+     * @return  IsotopeProductCollection
+     */
     public function getPostsaleOrder()
     {
         return Order::findByPk(\Input::get('transactionId'));
     }
-
 
     /**
      * Return the PayPal form.

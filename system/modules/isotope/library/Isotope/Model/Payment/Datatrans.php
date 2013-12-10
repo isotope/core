@@ -71,11 +71,14 @@ class Datatrans extends Postsale implements IsotopePayment
         $objOrder->save();
     }
 
+    /**
+     * Get the order object in a postsale request
+     * @return  IsotopeProductCollection
+     */
     public function getPostsaleOrder()
     {
         return Order::findByPk(\Input::post('refno'));
     }
-
 
     /**
      * Generate the submit form for datatrans and if javascript is enabled redirect automaticly
