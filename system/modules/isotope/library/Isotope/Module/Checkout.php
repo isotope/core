@@ -168,10 +168,6 @@ class Checkout extends Module
 
         $this->Template->fields = $arrBuffer;
 
-        if (!strlen($this->strCurrentStep)) {
-            $this->strCurrentStep = $step;
-        }
-
         // Show checkout steps
         $this->Template->steps      = $this->generateSteps();
         $this->Template->activeStep = $GLOBALS['TL_LANG']['MSC']['activeStep'];
@@ -248,6 +244,10 @@ class Checkout extends Module
                 $objPage->pageTitle = sprintf($GLOBALS['TL_LANG']['MSC']['checkoutStep'], $intCurrentStep, $intTotalSteps, ($GLOBALS['TL_LANG']['MSC']['checkout_' . $step] ?: $step)) . ($objPage->pageTitle ?: $objPage->title);
                 break;
             }
+        }
+
+        if (!strlen($this->strCurrentStep)) {
+            $this->strCurrentStep = $step;
         }
 
         // Run after all steps have passed successfully
