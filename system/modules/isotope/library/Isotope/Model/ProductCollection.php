@@ -505,11 +505,16 @@ abstract class ProductCollection extends TypeAgent
     {
         $this->ensureNotLocked();
 
-        $arrItems = $this->getItems();
-
-        foreach ($arrItems as $objItem) {
+        foreach ($this->getItems() as $objItem) {
             $this->deleteItem($objItem);
         }
+
+        foreach ($this->getSurcharges() as $objSurcharge) {
+            $objSurcharge->delete();
+        }
+
+        $this->arrItems = null;
+        $this->arrSurcharges = null;
     }
 
 
