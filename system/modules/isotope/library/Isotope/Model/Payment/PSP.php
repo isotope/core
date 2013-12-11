@@ -114,6 +114,10 @@ abstract class PSP extends Payment
      */
     public function getPostsaleOrder()
     {
+        if (!$this->getRequestData('orderID')) {
+            return null;
+        }
+
         return Order::findByPk($this->getRequestData('orderID'));
     }
 
