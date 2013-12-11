@@ -216,7 +216,7 @@ abstract class ProductCollection extends TypeAgent
     }
 
     /**
-     * Return boolean wether collection requires payment
+     * Return boolean whether collection requires payment
      * @return bool
      */
     public function requiresPayment()
