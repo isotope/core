@@ -137,7 +137,10 @@ class PostSale extends \Frontend
 
             Isotope::setConfig($objOrder->getRelated('config_id'));
 
-            return $objMethod->processPostsale($objOrder);
+            $objMethod->processPostsale($objOrder);
+
+            $objResponse = new Response();
+            $objResponse->send();
 
         } catch (\Exception $e) {
             \System::log(
