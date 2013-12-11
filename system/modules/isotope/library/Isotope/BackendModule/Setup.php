@@ -3,11 +3,11 @@
 /**
  * Isotope eCommerce for Contao Open Source CMS
  *
- * Copyright (C) 2009-2012 Isotope eCommerce Workgroup
+ * Copyright (C) 2009-2013 terminal42 gmbh & Isotope eCommerce Workgroup
  *
  * @package    Isotope
- * @link       http://www.isotopeecommerce.com
- * @license    http://opensource.org/licenses/lgpl-3.0.html LGPL
+ * @link       http://isotopeecommerce.org
+ * @license    http://opensource.org/licenses/lgpl-3.0.html
  */
 
 namespace Isotope\BackendModule;
@@ -88,7 +88,7 @@ class Setup extends BackendOverview
             $objTemplate = new \BackendTemplate('be_iso_introduction');
 
             $return['introduction']['label'] = 'Introduction';
-            $return['introduction']['html'] = $objTemplate->parse();
+            $return['introduction']['html']  = $objTemplate->parse();
         }
     }
 }

@@ -3,11 +3,11 @@
 /**
  * Isotope eCommerce for Contao Open Source CMS
  *
- * Copyright (C) 2009-2012 Isotope eCommerce Workgroup
+ * Copyright (C) 2009-2013 terminal42 gmbh & Isotope eCommerce Workgroup
  *
  * @package    Isotope
- * @link       http://www.isotopeecommerce.com
- * @license    http://opensource.org/licenses/lgpl-3.0.html LGPL
+ * @link       http://isotopeecommerce.org
+ * @license    http://opensource.org/licenses/lgpl-3.0.html
  */
 
 namespace Isotope\Model;
@@ -38,7 +38,7 @@ abstract class TypeAgent extends \Model
     protected static $strInterface;
 
 
-    public function __construct(\Database\Result $objResult=null)
+    public function __construct(\Database\Result $objResult = null)
     {
         parent::__construct($objResult);
 
@@ -112,7 +112,7 @@ abstract class TypeAgent extends \Model
         $arrOptions = array();
 
         foreach (static::getModelTypes() as $strName => $strClass) {
-            $arrOptions[$strName] = $GLOBALS['TL_LANG']['MODEL'][static::$strTable . '.' . $strName][0] ?: $strName;
+            $arrOptions[$strName] = $GLOBALS['TL_LANG']['MODEL'][static::$strTable . '.' . $strName][0] ? : $strName;
         }
 
         return $arrOptions;
@@ -122,7 +122,7 @@ abstract class TypeAgent extends \Model
      * Build model based on database result
      * @param   Database_Result
      */
-    public static function buildModelType(\Database_Result $objResult=null)
+    public static function buildModelType(\Database_Result $objResult = null)
     {
         $strClass = '';
 
@@ -132,7 +132,7 @@ abstract class TypeAgent extends \Model
 
             if (isset($arrRelations['type'])) {
                 $strTypeClass = static::getClassFromTable($arrRelations['type']['table']);
-                $objType = $strTypeClass::findOneBy($arrRelations['type']['field'], $objResult->type);
+                $objType      = $strTypeClass::findOneBy($arrRelations['type']['field'], $objResult->type);
 
                 if (null !== $objType) {
                     $strClass = static::$arrModelTypes[$objType->class];
@@ -167,6 +167,36 @@ abstract class TypeAgent extends \Model
     }
 
     /**
+     * Find sibling records by a column value
+     * @param   string
+     * @param   \Model
+     * @param   array
+     */
+    public static function findSiblingsBy($strColumn, \Model $objModel, array $arrOptions=array())
+    {
+        $t = static::getTable();
+
+        $arrOptions = array_merge(
+            array(
+                'column'    => array(
+                    "$t.type=?",
+                    "$t.$strColumn=?",
+                    "$t.id!=?"
+                ),
+                'value'     => array(
+                    $objModel->type,
+                    $objModel->{$strColumn},
+                    $objModel->id
+                ),
+                'return'    => 'Collection'
+            ),
+            $arrOptions
+        );
+
+        return static::find($arrOptions);
+    }
+
+    /**
      * Return a model or collection based on the database result type
      */
     protected static function find(array $arrOptions)
@@ -181,49 +211,53 @@ abstract class TypeAgent extends \Model
             // Convert to array if necessary
             $arrOptions['value'] = (array) $arrOptions['value'];
 
-            if (!is_array($arrOptions['column']))
-            {
-                $arrOptions['column'] = array(static::$strTable . '.' . $arrOptions['column'].'=?');
+            if (!is_array($arrOptions['column'])) {
+                $arrOptions['column'] = array(static::$strTable . '.' . $arrOptions['column'] . '=?');
             }
 
             $objRelations = new \DcaExtractor(static::$strTable);
             $arrRelations = $objRelations->getRelations();
 
             if (isset($arrRelations['type'])) {
-                $arrOptions['column'][] = static::$strTable . '.type IN (SELECT ' . $arrRelations['type']['field'] . ' FROM ' . $arrRelations['type']['table'] . ' WHERE class=?)';
-                $arrOptions['value'][] = $strType;
+                $arrOptions['having'][] = 'type IN (SELECT ' . $arrRelations['type']['field'] . ' FROM ' . $arrRelations['type']['table'] . ' WHERE class=?)';
+                $arrOptions['value'][]  = $strType;
             } elseif ($GLOBALS['TL_DCA'][static::$strTable]['fields']['type']) {
-                $arrOptions['column'][] = static::$strTable . '.type=?';
-                $arrOptions['value'][] = $strType;
+                $arrOptions['having'][] = 'type=?';
+                $arrOptions['value'][]  = $strType;
+            }
+
+            // @todo change this when core models support HAVING
+            if (!empty($arrOptions['having']) && is_array($arrOptions['having'])) {
+                if ($arrOptions['group'] !== null) {
+                    $arrOptions['group'] .= ' HAVING ' . implode(' AND ', $arrOptions['having']);
+                } else {
+                    $arrOptions['column'][] = '1=1 HAVING ' . implode(' AND ', $arrOptions['having']);
+                }
             }
         }
 
         $arrOptions['table'] = static::$strTable;
-        $strQuery = static::buildQueryString($arrOptions);
+        $strQuery            = static::buildQueryString($arrOptions);
 
         $objStatement = \Database::getInstance()->prepare($strQuery);
 
         // Defaults for limit and offset
-        if (!isset($arrOptions['limit']))
-        {
+        if (!isset($arrOptions['limit'])) {
             $arrOptions['limit'] = 0;
         }
-        if (!isset($arrOptions['offset']))
-        {
+        if (!isset($arrOptions['offset'])) {
             $arrOptions['offset'] = 0;
         }
 
         // Limit
-        if ($arrOptions['limit'] > 0 || $arrOptions['offset'] > 0)
-        {
+        if ($arrOptions['limit'] > 0 || $arrOptions['offset'] > 0) {
             $objStatement->limit($arrOptions['limit'], $arrOptions['offset']);
         }
 
         $objStatement = static::preFind($objStatement);
-        $objResult = $objStatement->execute($arrOptions['value']);
+        $objResult    = $objStatement->execute($arrOptions['value']);
 
-        if ($objResult->numRows < 1)
-        {
+        if ($objResult->numRows < 1) {
             return null;
         }
 
@@ -231,11 +265,11 @@ abstract class TypeAgent extends \Model
 
         if ($arrOptions['return'] == 'Model') {
 
-			return static::buildModelType($objResult);
-		} else {
+            return static::buildModelType($objResult);
+        } else {
 
-			return static::createCollectionFromDbResult($objResult);
-		}
+            return static::createCollectionFromDbResult($objResult);
+        }
     }
 
     /**
@@ -257,15 +291,14 @@ abstract class TypeAgent extends \Model
     {
         $arrModels = array();
 
-		while ($objResult->next())
-		{
-		    $objModel = static::buildModelType($objResult);
+        while ($objResult->next()) {
+            $objModel = static::buildModelType($objResult);
 
-		    if (null !== $objModel) {
-    		    $arrModels[] = $objModel;
-		    }
-		}
+            if (null !== $objModel) {
+                $arrModels[] = $objModel;
+            }
+        }
 
-		return new \Model\Collection($arrModels, static::$strTable);
+        return new \Model\Collection($arrModels, static::$strTable);
     }
 }

@@ -3,11 +3,11 @@
 /**
  * Isotope eCommerce for Contao Open Source CMS
  *
- * Copyright (C) 2009-2012 Isotope eCommerce Workgroup
+ * Copyright (C) 2009-2013 terminal42 gmbh & Isotope eCommerce Workgroup
  *
  * @package    Isotope
- * @link       http://www.isotopeecommerce.com
- * @license    http://opensource.org/licenses/lgpl-3.0.html LGPL
+ * @link       http://isotopeecommerce.org
+ * @license    http://opensource.org/licenses/lgpl-3.0.html
  */
 
 namespace Isotope\Widget;
@@ -43,7 +43,7 @@ class MediaManager extends \Widget implements \uploadable
     /**
      * Instantiate widget and initialize uploader
      */
-    public function __construct($arrAttributes=false)
+    public function __construct($arrAttributes = false)
     {
         parent::__construct($arrAttributes);
         $GLOBALS['TL_JAVASCRIPT']['fineuploader'] = \Haste\Util\Debug::uncompressedFile('system/modules/isotope/assets/plugins/fineuploader/fineuploader-4.0.1.min.js');
@@ -83,11 +83,11 @@ class MediaManager extends \Widget implements \uploadable
         // Convert the $_FILES array to Contao format
         if (!empty($_FILES[$this->strName])) {
             $arrFile = array(
-                'name' => array($this->getFileName($_FILES[$this->strName]['name'])),
-                'type' => array($_FILES[$this->strName]['type']),
+                'name'     => array($this->getFileName($_FILES[$this->strName]['name'])),
+                'type'     => array($_FILES[$this->strName]['type']),
                 'tmp_name' => array($_FILES[$this->strName]['tmp_name']),
-                'error' => array($_FILES[$this->strName]['error']),
-                'size' => array($_FILES[$this->strName]['size']),
+                'error'    => array($_FILES[$this->strName]['error']),
+                'size'     => array($_FILES[$this->strName]['size']),
             );
 
             $_FILES[$this->strName] = $arrFile;
@@ -169,16 +169,16 @@ class MediaManager extends \Widget implements \uploadable
 
         // Adapt the temporary files
         if (is_array($this->varValue['files']) && !empty($this->varValue['files'])) {
-            foreach ($this->varValue['files'] as $k => $v) {
+            foreach ($this->varValue['files'] as $v) {
                 if (!is_file(TL_ROOT . '/' . $this->getFilePath($v))) {
                     continue;
                 }
 
                 $this->varValue[] = array(
-                    'src' => $v,
-                    'alt' => '',
-                    'desc' => '',
-                    'link' => '',
+                    'src'       => $v,
+                    'alt'       => '',
+                    'desc'      => '',
+                    'link'      => '',
                     'translate' => ''
                 );
             }
@@ -188,7 +188,7 @@ class MediaManager extends \Widget implements \uploadable
 
         // Merge parent record data
         if ($arrFallback !== false) {
-            $blnLanguage = true;
+            $blnLanguage    = true;
             $this->varValue = Gallery::mergeMediaData($this->varValue, $arrFallback);
         }
 
@@ -360,6 +360,8 @@ class MediaManager extends \Widget implements \uploadable
             $strCacheName = standardize($pathinfo['filename']) . '-' . substr(md5_file(TL_ROOT . '/' .  $uploadFolder . '/' . $strFile), 0, 8) . '.' . $pathinfo['extension'];
             $uploadFolder = $this->getFilePath($strCacheName, true);
         }
+
+        $arrFallback = $this->getFallbackData();
 
         // Check that image is not assigned in fallback language
         if (is_array($arrFallback) && in_array($strCacheName, $arrFallback)) {

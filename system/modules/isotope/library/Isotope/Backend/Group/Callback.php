@@ -3,15 +3,11 @@
 /**
  * Isotope eCommerce for Contao Open Source CMS
  *
- * Copyright (C) 2009-2012 Isotope eCommerce Workgroup
+ * Copyright (C) 2009-2013 terminal42 gmbh & Isotope eCommerce Workgroup
  *
  * @package    Isotope
- * @link       http://www.isotopeecommerce.com
- * @license    http://opensource.org/licenses/lgpl-3.0.html LGPL
- *
- * @author     Andreas Schempp <andreas.schempp@terminal42.ch>
- * @author     Fred Bliss <fred.bliss@intelligentspark.com>
- * @author     Kamil Kuzminski <kamil.kuzminski@codefog.pl>
+ * @link       http://isotopeecommerce.org
+ * @license    http://opensource.org/licenses/lgpl-3.0.html
  */
 
 namespace Isotope\Backend\Group;
@@ -34,65 +30,52 @@ class Callback extends \Backend
      */
     public function checkPermission($dc)
     {
-        if ($this->User->isAdmin)
-        {
+        if ($this->User->isAdmin) {
             return;
         }
 
         // Load permissions in tl_iso_product
-        if ($dc->table == 'tl_iso_product' || stripos(\Environment::get('request'), 'group.php') !== false)
-        {
+        if ($dc->table == 'tl_iso_product' || stripos(\Environment::get('request'), 'group.php') !== false) {
             $arrGroups = $this->User->iso_groups;
 
-            if (!is_array($arrGroups) || empty($arrGroups))
-            {
+            if (!is_array($arrGroups) || empty($arrGroups)) {
                 $GLOBALS['TL_DCA']['tl_iso_group']['list']['sorting']['filter'][] = array('id=?', 0);
-            }
-            else
-            {
+            } else {
                 $GLOBALS['TL_DCA']['tl_iso_group']['list']['sorting']['root'] = $arrGroups;
             }
 
             return;
         }
 
-        if (!is_array($this->User->iso_groupp) || empty($this->User->iso_groupp))
-        {
+        if (!is_array($this->User->iso_groupp) || empty($this->User->iso_groupp)) {
             \System::log('Unallowed access to product groups!', __METHOD__, TL_ERROR);
             \Controller::redirect('contao/main.php?act=error');
         }
 
         // Set root IDs
-        if (!is_array($this->User->iso_groups) || empty($this->User->iso_groups))
-        {
+        if (!is_array($this->User->iso_groups) || empty($this->User->iso_groups)) {
             $root = array();
-        }
-        else
-        {
+        } else {
             try {
                 $root = $this->eliminateNestedPages($this->User->iso_groups, 'tl_iso_group');
-            }
-            catch (\Exception $e) {
+            } catch (\Exception $e) {
                 $root = array();
             }
         }
 
         $GLOBALS['TL_DCA']['tl_iso_group']['list']['sorting']['root'] = (empty($root) ? true : $root);
 
-        if (in_array('rootPaste', $this->User->iso_groupp))
-        {
+        if (in_array('rootPaste', $this->User->iso_groupp)) {
             $GLOBALS['TL_DCA']['tl_iso_group']['list']['sorting']['rootPaste'] = true;
         }
 
         // Check permissions to add product group
-        if (!in_array('create', $this->User->iso_groupp))
-        {
+        if (!in_array('create', $this->User->iso_groupp)) {
             $GLOBALS['TL_DCA']['tl_iso_group']['config']['closed'] = true;
         }
 
         // Check current action
-        switch (\Input::get('act'))
-        {
+        switch (\Input::get('act')) {
             case 'create':
             case 'select':
             case 'paste':
@@ -101,63 +84,54 @@ class Callback extends \Backend
 
             case 'edit':
                 // Dynamically add the record to the user profile
-                if (!in_array(\Input::get('id'), $root))
-                {
+                if (!in_array(\Input::get('id'), $root)) {
                     $arrNew = $this->Session->get('new_records');
 
-                    if (is_array($arrNew['tl_iso_group']) && in_array(\Input::get('id'), $arrNew['tl_iso_group']))
-                    {
+                    if (is_array($arrNew['tl_iso_group']) && in_array(\Input::get('id'), $arrNew['tl_iso_group'])) {
                         // Add permissions on user level
-                        if ($this->User->inherit == 'custom' || !$this->User->groups[0])
-                        {
+                        if ($this->User->inherit == 'custom' || !$this->User->groups[0]) {
                             $objUser = \Database::getInstance()->prepare("SELECT iso_groups, iso_groupp FROM tl_user WHERE id=?")
-                                                               ->limit(1)
-                                                               ->executeUncached($this->User->id);
+                                ->limit(1)
+                                ->executeUncached($this->User->id);
 
                             $arrPermissions = deserialize($objUser->iso_groupp);
 
-                            if (is_array($arrPermissions) && in_array('create', $arrPermissions))
-                            {
-                                $arrAccess = deserialize($objUser->iso_groups);
+                            if (is_array($arrPermissions) && in_array('create', $arrPermissions)) {
+                                $arrAccess   = deserialize($objUser->iso_groups);
                                 $arrAccess[] = \Input::get('id');
 
                                 \Database::getInstance()->prepare("UPDATE tl_user SET iso_groups=? WHERE id=?")
-                                                        ->execute(serialize($arrAccess), $this->User->id);
+                                    ->execute(serialize($arrAccess), $this->User->id);
                             }
-                        }
-
-                        // Add permissions on group level
-                        elseif ($this->User->groups[0] > 0)
-                        {
+                        } // Add permissions on group level
+                        elseif ($this->User->groups[0] > 0) {
                             $objGroup = \Database::getInstance()->prepare("SELECT iso_groups, iso_groupp FROM tl_user_group WHERE id=?")
-                                                                ->limit(1)
-                                                                ->executeUncached($this->User->groups[0]);
+                                ->limit(1)
+                                ->executeUncached($this->User->groups[0]);
 
                             $arrPermissions = deserialize($objGroup->iso_groupp);
 
-                            if (is_array($arrPermissions) && in_array('create', $arrPermissions))
-                            {
-                                $arrAccess = deserialize($objGroup->iso_groups);
+                            if (is_array($arrPermissions) && in_array('create', $arrPermissions)) {
+                                $arrAccess   = deserialize($objGroup->iso_groups);
                                 $arrAccess[] = \Input::get('id');
 
                                 \Database::getInstance()->prepare("UPDATE tl_user_group SET iso_groups=? WHERE id=?")
-                                                        ->execute(serialize($arrAccess), $this->User->groups[0]);
+                                    ->execute(serialize($arrAccess), $this->User->groups[0]);
                             }
                         }
 
                         // Add new element to the user object
-                        $root[] = \Input::get('id');
+                        $root[]                 = \Input::get('id');
                         $this->User->iso_groups = $root;
                     }
                 }
-                // No break;
+            // No break;
 
             case 'copy':
             case 'delete':
             case 'show':
-                if (!in_array(\Input::get('id'), $root) || (\Input::get('act') == 'delete' && !$this->User->hasAccess('delete', 'iso_groupp')))
-                {
-                    \System::log('Not enough permissions to '.\Input::get('act').' group ID "'.\Input::get('id').'"', __METHOD__, TL_ERROR);
+                if (!in_array(\Input::get('id'), $root) || (\Input::get('act') == 'delete' && !$this->User->hasAccess('delete', 'iso_groupp'))) {
+                    \System::log('Not enough permissions to ' . \Input::get('act') . ' group ID "' . \Input::get('id') . '"', __METHOD__, TL_ERROR);
                     \Controller::redirect('contao/main.php?act=error');
                 }
                 break;
@@ -166,21 +140,17 @@ class Callback extends \Backend
             case 'deleteAll':
             case 'overrideAll':
                 $session = $this->Session->getData();
-                if (\Input::get('act') == 'deleteAll' && !$this->User->hasAccess('delete', 'iso_groupp'))
-                {
+                if (\Input::get('act') == 'deleteAll' && !$this->User->hasAccess('delete', 'iso_groupp')) {
                     $session['CURRENT']['IDS'] = array();
-                }
-                else
-                {
+                } else {
                     $session['CURRENT']['IDS'] = array_intersect($session['CURRENT']['IDS'], $root);
                 }
                 $this->Session->setData($session);
                 break;
 
             default:
-                if (strlen(\Input::get('act')))
-                {
-                    \System::log('Not enough permissions to '.\Input::get('act').' groups', __METHOD__, TL_ERROR);
+                if (strlen(\Input::get('act'))) {
+                    \System::log('Not enough permissions to ' . \Input::get('act') . ' groups', __METHOD__, TL_ERROR);
                     \Controller::redirect('contao/main.php?act=error');
                 }
                 break;
@@ -195,7 +165,7 @@ class Callback extends \Backend
     {
         if ($this->Session->get('iso_products_gid') > 0) {
             $GLOBALS['TL_DCA']['tl_iso_group']['list']['sorting']['breadcrumb'] = \Isotope\Backend\Group\Breadcrumb::generate($this->Session->get('iso_products_gid'));
-            $GLOBALS['TL_DCA']['tl_iso_group']['list']['sorting']['root'] = array($this->Session->get('iso_products_gid'));
+            $GLOBALS['TL_DCA']['tl_iso_group']['list']['sorting']['root']       = array($this->Session->get('iso_products_gid'));
         }
     }
 
@@ -209,20 +179,16 @@ class Callback extends \Backend
      * @param boolean
      * @return string
      */
-    public function addIcon($row, $label, \DataContainer $dc=null, $imageAttribute='', $blnReturnImage=false)
+    public function addIcon($row, $label, \DataContainer $dc = null, $imageAttribute = '', $blnReturnImage = false)
     {
-    	$image = \Image::getHtml('system/modules/isotope/assets/images/folder-network.png', '', $imageAttribute);
+        $image = \Image::getHtml('system/modules/isotope/assets/images/folder-network.png', '', $imageAttribute);
 
-        if ($dc->table == 'tl_iso_product')
-        {
+        if ($dc->table == 'tl_iso_product') {
             return $image . ' <span style="font-weight:bold">' . $label . '</span>';
-        }
-        else
-        {
+        } else {
             $strProductType = '';
 
-            if (($objProductType = Group::findByPk($row['id'])->getRelated('product_type')) !== null)
-            {
+            if (($objProductType = Group::findByPk($row['id'])->getRelated('product_type')) !== null) {
                 $strProductType = ' <span style="color:#b3b3b3; padding-left:3px;">[' . $objProductType->name . ']</span>';
             }
 
@@ -238,7 +204,7 @@ class Callback extends \Backend
      */
     public function deleteGroup($dc)
     {
-        $arrGroups = \Database::getInstance()->getChildRecords($dc->id, 'tl_iso_group');
+        $arrGroups   = \Database::getInstance()->getChildRecords($dc->id, 'tl_iso_group');
         $arrGroups[] = $dc->id;
 
         \Database::getInstance()->query("UPDATE tl_iso_product SET gid=0 WHERE gid IN (" . implode(',', $arrGroups) . ")");
@@ -257,12 +223,11 @@ class Callback extends \Backend
      */
     public function copyButton($row, $href, $label, $title, $icon, $attributes)
     {
-        if (!$this->User->isAdmin && (!is_array($this->User->iso_groupp) || !in_array('create', $this->User->iso_groupp)))
-        {
+        if (!$this->User->isAdmin && (!is_array($this->User->iso_groupp) || !in_array('create', $this->User->iso_groupp))) {
             return \Image::getHtml(preg_replace('/\.gif$/i', '_.gif', $icon)) . ' ';
         }
 
-        return '<a href="'.$this->addToUrl($href.'&amp;id='.$row['id']).'" title="'.specialchars($title).'"'.$attributes.'>'.\Image::getHtml($icon, $label).'</a> ';
+        return '<a href="' . $this->addToUrl($href . '&amp;id=' . $row['id']) . '" title="' . specialchars($title) . '"' . $attributes . '>' . \Image::getHtml($icon, $label) . '</a> ';
     }
 
 
@@ -278,11 +243,10 @@ class Callback extends \Backend
      */
     public function deleteButton($row, $href, $label, $title, $icon, $attributes)
     {
-        if (!$this->User->isAdmin && (!is_array($this->User->iso_groupp) || !in_array('delete', $this->User->iso_groupp)))
-        {
+        if (!$this->User->isAdmin && (!is_array($this->User->iso_groupp) || !in_array('delete', $this->User->iso_groupp))) {
             return \Image::getHtml(preg_replace('/\.gif$/i', '_.gif', $icon)) . ' ';
         }
 
-        return '<a href="'.$this->addToUrl($href.'&amp;id='.$row['id']).'" title="'.specialchars($title).'"'.$attributes.'>'.\Image::getHtml($icon, $label).'</a> ';
+        return '<a href="' . $this->addToUrl($href . '&amp;id=' . $row['id']) . '" title="' . specialchars($title) . '"' . $attributes . '>' . \Image::getHtml($icon, $label) . '</a> ';
     }
 }

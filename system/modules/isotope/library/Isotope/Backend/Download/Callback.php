@@ -3,14 +3,11 @@
 /**
  * Isotope eCommerce for Contao Open Source CMS
  *
- * Copyright (C) 2009-2012 Isotope eCommerce Workgroup
+ * Copyright (C) 2009-2013 terminal42 gmbh & Isotope eCommerce Workgroup
  *
  * @package    Isotope
- * @link       http://www.isotopeecommerce.com
- * @license    http://opensource.org/licenses/lgpl-3.0.html LGPL
- *
- * @author     Andreas Schempp <andreas.schempp@terminal42.ch>
- * @author     Fred Bliss <fred.bliss@intelligentspark.com>
+ * @link       http://isotopeecommerce.org
+ * @license    http://opensource.org/licenses/lgpl-3.0.html
  */
 
 namespace Isotope\Backend\Download;
@@ -30,16 +27,11 @@ class Callback extends \Backend
      */
     public function listRows($row)
     {
-        // Check for version 3 format
-        if (!is_numeric($row['singleSRC'])) {
-            return '<p class="error">'.$GLOBALS['TL_LANG']['ERR']['version2format'].'</p>';
-        }
-
         $objDownload = Download::findByPk($row['id']);
-        $icon = '';
+        $icon        = '';
 
-        if (null === $objDownload) {
-            return '<p class="error">'.$GLOBALS['TL_LANG']['ERR']['invalidName'].'</p>';
+        if (null === $objDownload || null === $objDownload->getRelated('singleSRC')) {
+            return '<p class="error">' . $GLOBALS['TL_LANG']['ERR']['invalidName'] . '</p>';
         }
 
         $path = $objDownload->getRelated('singleSRC')->path;
@@ -49,8 +41,8 @@ class Callback extends \Backend
 
             foreach (scan(TL_ROOT . '/' . $path) as $file) {
                 if (is_file(TL_ROOT . '/' . $path . '/' . $file)) {
-                    $objFile = new \File($path . '/' . $file);
-                    $icon = 'background:url(' . TL_ASSETS_URL . 'assets/contao/images/' . $objFile->icon . ') left center no-repeat; padding-left: 22px';
+                    $objFile        = new \File($path . '/' . $file);
+                    $icon           = 'background:url(' . TL_ASSETS_URL . 'assets/contao/images/' . $objFile->icon . ') left center no-repeat; padding-left: 22px';
                     $arrDownloads[] = sprintf('<div style="margin-bottom:5px;height:16px;%s">%s</div>', $icon, $path . '/' . $file);
                 }
             }
@@ -62,10 +54,9 @@ class Callback extends \Backend
             return '<div style="margin-bottom:5px;height:16px;font-weight:bold">' . $path . '</div>' . implode("\n", $arrDownloads);
         }
 
-        if (is_file(TL_ROOT . '/' . $path))
-        {
+        if (is_file(TL_ROOT . '/' . $path)) {
             $objFile = new \File($path);
-            $icon = 'background: url(' . TL_ASSETS_URL . 'assets/contao/images/' . $objFile->icon . ') left center no-repeat; padding-left: 22px';
+            $icon    = 'background: url(' . TL_ASSETS_URL . 'assets/contao/images/' . $objFile->icon . ') left center no-repeat; padding-left: 22px';
         }
 
         return sprintf('<div style="height: 16px;%s">%s</div>', $icon, $path);
@@ -85,10 +76,10 @@ class Callback extends \Backend
     public function deleteButton($row, $href, $label, $title, $icon, $attributes)
     {
         if (ProductCollectionDownload::countBy('download_id', $row['id']) > 0) {
-            return \Image::getHtml(preg_replace('/\.gif$/i', '_.gif', $icon)).' ';
+            return \Image::getHtml(preg_replace('/\.gif$/i', '_.gif', $icon)) . ' ';
         }
 
-        return '<a href="'.$this->addToUrl($href.'&amp;id='.$row['id']).'" title="'.specialchars($title).'"'.$attributes.'>'.\Image::getHtml($icon, $label).'</a> ';
+        return '<a href="' . $this->addToUrl($href . '&amp;id=' . $row['id']) . '" title="' . specialchars($title) . '"' . $attributes . '>' . \Image::getHtml($icon, $label) . '</a> ';
     }
 
 
@@ -104,26 +95,23 @@ class Callback extends \Backend
      */
     public function toggleIcon($row, $href, $label, $title, $icon, $attributes)
     {
-		if (strlen(\Input::get('tid')))
-		{
-			$this->toggleVisibility(\Input::get('tid'), (\Input::get('state') == 1));
-			\Controller::redirect($this->getReferer());
-		}
+        if (strlen(\Input::get('tid'))) {
+            $this->toggleVisibility(\Input::get('tid'), (\Input::get('state') == 1));
+            \Controller::redirect($this->getReferer());
+        }
 
         // Check permissions AFTER checking the tid, so hacking attempts are logged
-        if (!\BackendUser::getInstance()->isAdmin && !\BackendUser::getInstance()->hasAccess('tl_iso_download::published', 'alexf'))
-        {
+        if (!\BackendUser::getInstance()->isAdmin && !\BackendUser::getInstance()->hasAccess('tl_iso_download::published', 'alexf')) {
             return '';
         }
 
-        if ($row['published'] != '1')
-        {
+        if ($row['published'] != '1') {
             $icon = 'invisible.gif';
         }
 
-        $href .= '&amp;tid='.$row['id'].'&amp;state='.($row['published'] ? '' : 1);
+        $href .= '&amp;tid=' . $row['id'] . '&amp;state=' . ($row['published'] ? '' : 1);
 
-        return '<a href="'.$this->addToUrl($href).'" title="'.specialchars($title).'"'.$attributes.'>'.\Image::getHtml($icon, $label).'</a> ';
+        return '<a href="' . $this->addToUrl($href) . '" title="' . specialchars($title) . '"' . $attributes . '>' . \Image::getHtml($icon, $label) . '</a> ';
     }
 
 
@@ -140,21 +128,18 @@ class Callback extends \Backend
         \Input::setGet('act', 'toggle');
 
         // Check permissions to publish
-        if (!\BackendUser::getInstance()->isAdmin && !\BackendUser::getInstance()->hasAccess('tl_iso_download::published', 'alexf'))
-        {
-            \System::log('Not enough permissions to publish/unpublish download ID "'.$intId.'"', __METHOD__, TL_ERROR);
+        if (!\BackendUser::getInstance()->isAdmin && !\BackendUser::getInstance()->hasAccess('tl_iso_download::published', 'alexf')) {
+            \System::log('Not enough permissions to publish/unpublish download ID "' . $intId . '"', __METHOD__, TL_ERROR);
             \Controller::redirect('contao/main.php?act=error');
         }
 
         $this->createInitialVersion('tl_iso_download', $intId);
 
         // Trigger the save_callback
-        if (is_array($GLOBALS['TL_DCA']['tl_iso_download']['fields']['published']['save_callback']))
-        {
-            foreach ($GLOBALS['TL_DCA']['tl_iso_download']['fields']['published']['save_callback'] as $callback)
-            {
+        if (is_array($GLOBALS['TL_DCA']['tl_iso_download']['fields']['published']['save_callback'])) {
+            foreach ($GLOBALS['TL_DCA']['tl_iso_download']['fields']['published']['save_callback'] as $callback) {
                 $objCallback = \System::importStatic($callback[0]);
-                $blnVisible = $objCallback->$callback[1]($blnVisible, $this);
+                $blnVisible  = $objCallback->$callback[1]($blnVisible, $this);
             }
         }
 

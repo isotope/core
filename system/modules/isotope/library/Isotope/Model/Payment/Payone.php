@@ -3,18 +3,19 @@
 /**
  * Isotope eCommerce for Contao Open Source CMS
  *
- * Copyright (C) 2009-2012 Isotope eCommerce Workgroup
+ * Copyright (C) 2009-2013 terminal42 gmbh & Isotope eCommerce Workgroup
  *
  * @package    Isotope
- * @link       http://www.isotopeecommerce.com
- * @license    http://opensource.org/licenses/lgpl-3.0.html LGPL
+ * @link       http://isotopeecommerce.org
+ * @license    http://opensource.org/licenses/lgpl-3.0.html
  */
 
 namespace Isotope\Model\Payment;
 
+use Isotope\Interfaces\IsotopePayment;
 use Isotope\Interfaces\IsotopeProductCollection;
 use Isotope\Isotope;
-use Isotope\Interfaces\IsotopePayment;
+use Isotope\Model\Product;
 use Isotope\Model\ProductCollection\Order;
 
 
@@ -58,26 +59,24 @@ class Payone extends Postsale implements IsotopePayment
         die('TSOK');
     }
 
+    /**
+     * Get the order object in a postsale request
+     * @return  IsotopeProductCollection
+     */
     public function getPostsaleOrder()
     {
         return Order::findByPk(\Input::post('reference'));
     }
 
-
     /**
      * HTML form for checkout
-     *
-     * @access public
-     * @return mixed
+     * @param   IsotopeProductCollection    The order being places
+     * @param   Module                      The checkout module instance
+     * @return  mixed
      */
-    public function checkoutForm()
+    public function checkoutForm(IsotopeProductCollection $objOrder, \Module $objModule)
     {
         $i = 0;
-
-        if (($objOrder = Order::findOneBy('source_collection_id', Isotope::getCart()->id)) === null)
-        {
-            \Isotope\Module\Checkout::redirectToStep('failed');
-        }
 
         $arrData = array
         (
@@ -90,16 +89,18 @@ class Payone extends Postsale implements IsotopePayment
             'reference'         => $objOrder->id,
             'display_name'      => 'no',
             'display_address'   => 'no',
-            'successurl'        => \Environment::get('base') . \Haste\Util\Url::addQueryString('uid=' . $objOrder->uniqid, \Isotope\Module\Checkout::generateUrlForStep('complete')),
-            'backurl'           => \Environment::get('base') . \Isotope\Module\Checkout::generateUrlForStep('failed'),
-            'amount'            => (Isotope::getCart()->getTotal() * 100),
-            'currency'          => Isotope::getConfig()->currency,
+            'successurl'        => \Environment::get('base') . $objModule->generateUrlForStep('complete', $objOrder),
+            'backurl'           => \Environment::get('base') . $objModule->generateUrlForStep('failed'),
+            'amount'            => ($objOrder->getTotal() * 100),
+            'currency'          => $objOrder->currency,
         );
 
-        foreach (Isotope::getCart()->getItems() as $objItem) {
+        foreach ($objOrder->getItems() as $objItem) {
 
             // Set the active product for insert tags replacement
-            Product::setActive($objItem->getProduct());
+            if ($objItem->hasProduct()) {
+                Product::setActive($objItem->getProduct());
+            }
 
             $strOptions = '';
             $arrOptions = Isotope::formatOptions($objItem->getOptions());
@@ -118,21 +119,21 @@ class Payone extends Postsale implements IsotopePayment
                 $strOptions = ' (' . implode(', ', $arrOptions) . ')';
             }
 
-            $arrData['id['.++$i.']']    = $objItem->getSku();
-            $arrData['pr['.$i.']']      = round($objItem->getPrice(), 2) * 100;
-            $arrData['no['.$i.']']      = $objItem->quantity;
-            $arrData['de['.$i.']']      = specialchars($objItem->getName() . $strOptions);
+            $arrData['id[' . ++$i . ']'] = $objItem->getSku();
+            $arrData['pr[' . $i . ']']   = round($objItem->getPrice(), 2) * 100;
+            $arrData['no[' . $i . ']']   = $objItem->quantity;
+            $arrData['de[' . $i . ']']   = specialchars($objItem->getName() . $strOptions);
         }
 
-        foreach (Isotope::getCart()->getSurcharges() as $k => $objSurcharge) {
+        foreach ($objOrder->getSurcharges() as $k => $objSurcharge) {
 
             if (!$objSurcharge->add)
                 continue;
 
-            $arrData['id['.++$i.']']    = 'surcharge'.$k;
-            $arrData['pr['.$i.']']      = $objSurcharge->total_price * 100;
-            $arrData['no['.$i.']']      = '1';
-            $arrData['de['.$i.']']      = $objSurcharge->getLabel();
+            $arrData['id[' . ++$i . ']'] = 'surcharge' . $k;
+            $arrData['pr[' . $i . ']']   = $objSurcharge->total_price * 100;
+            $arrData['no[' . $i . ']']   = '1';
+            $arrData['de[' . $i . ']']   = $objSurcharge->getLabel();
         }
 
 
@@ -140,14 +141,14 @@ class Payone extends Postsale implements IsotopePayment
         $arrData = array_map('urlencode', $arrData);
         $strHash = md5(implode('', $arrData) . $this->payone_key);
 
-        $objTemplate = new \Isotope\Template('iso_payment_payone');
-        $objTemplate->id = $this->id;
-        $objTemplate->data = $arrData;
-        $objTemplate->hash = $strHash;
-        $objTemplate->billing_address = Isotope::getCart()->getBillingAddress()->row();
-        $objTemplate->headline = $GLOBALS['TL_LANG']['MSC']['pay_with_redirect'][0];
-        $objTemplate->message = $GLOBALS['TL_LANG']['MSC']['pay_with_redirect'][1];
-        $objTemplate->slabel = specialchars($GLOBALS['TL_LANG']['MSC']['pay_with_redirect'][2]);
+        $objTemplate                  = new \Isotope\Template('iso_payment_payone');
+        $objTemplate->id              = $this->id;
+        $objTemplate->data            = $arrData;
+        $objTemplate->hash            = $strHash;
+        $objTemplate->billing_address = $objOrder->getBillingAddress()->row();
+        $objTemplate->headline        = $GLOBALS['TL_LANG']['MSC']['pay_with_redirect'][0];
+        $objTemplate->message         = $GLOBALS['TL_LANG']['MSC']['pay_with_redirect'][1];
+        $objTemplate->slabel          = specialchars($GLOBALS['TL_LANG']['MSC']['pay_with_redirect'][2]);
 
         return $objTemplate->parse();
     }

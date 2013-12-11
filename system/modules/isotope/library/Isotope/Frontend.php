@@ -3,20 +3,20 @@
 /**
  * Isotope eCommerce for Contao Open Source CMS
  *
- * Copyright (C) 2009-2012 Isotope eCommerce Workgroup
+ * Copyright (C) 2009-2013 terminal42 gmbh & Isotope eCommerce Workgroup
  *
  * @package    Isotope
- * @link       http://www.isotopeecommerce.com
- * @license    http://opensource.org/licenses/lgpl-3.0.html LGPL
+ * @link       http://isotopeecommerce.org
+ * @license    http://opensource.org/licenses/lgpl-3.0.html
  */
 
 namespace Isotope;
 
+use Haste\Haste;
 use Isotope\Interfaces\IsotopeProduct;
 use Isotope\Interfaces\IsotopeProductCollection;
 use Isotope\Model\Product;
 use Isotope\Model\ProductCollection\Order;
-use Haste\Haste;
 
 
 /**
@@ -65,20 +65,19 @@ class Frontend extends \Frontend
      * @param object
      * @param array
      */
-    public function addToCart($objProduct, array $arrConfig=array())
+    public function addToCart($objProduct, array $arrConfig = array())
     {
-        $objModule = $arrConfig['module'];
+        $objModule   = $arrConfig['module'];
         $intQuantity = ($objModule->iso_use_quantity && intval(\Input::post('quantity_requested')) > 0) ? intval(\Input::post('quantity_requested')) : 1;
 
-        if (Isotope::getCart()->addProduct($objProduct, $intQuantity, $arrConfig) !== false)
-        {
+        if (Isotope::getCart()->addProduct($objProduct, $intQuantity, $arrConfig) !== false) {
             $_SESSION['ISO_CONFIRM'][] = $GLOBALS['TL_LANG']['MSC']['addedToCart'];
 
             if (!$objModule->iso_addProductJumpTo) {
                 $this->reload();
             }
 
-            \Controller::redirect(\Haste\Util\Url::addQueryString('continue='.base64_encode($this->Environment->request), $objModule->iso_addProductJumpTo));
+            \Controller::redirect(\Haste\Util\Url::addQueryString('continue=' . base64_encode(\Environment::get('request')), $objModule->iso_addProductJumpTo));
         }
     }
 
@@ -89,7 +88,7 @@ class Frontend extends \Frontend
      */
     public function loadReaderPageFromUrl($arrFragments)
     {
-        $strKey = 'product';
+        $strKey   = 'product';
         $strAlias = '';
 
         // Find products alias. Can't use Input because they're not yet initialized
@@ -97,9 +96,9 @@ class Frontend extends \Frontend
             $strKey = 'auto_item';
         }
 
-        for ($i=1, $c=count($arrFragments); $i<$c; $i+=2) {
+        for ($i = 1, $c = count($arrFragments); $i < $c; $i += 2) {
             if ($arrFragments[$i] == $strKey) {
-                $strAlias = $arrFragments[$i+1];
+                $strAlias = $arrFragments[$i + 1];
             }
         }
 
@@ -110,55 +109,45 @@ class Frontend extends \Frontend
 
             // Check the URL and language of each page if there are multiple results
             // see Contao's index.php
-    		if ($objPage !== null && $objPage->count() > 1)
-    		{
-    			$objNewPage = null;
-    			$arrPages = array();
+            if ($objPage !== null && $objPage->count() > 1) {
+                $objNewPage = null;
+                $arrPages   = array();
 
-    			// Order by domain and language
-    			while ($objPage->next())
-    			{
-    				$objCurrentPage = $objPage->current()->loadDetails();
+                // Order by domain and language
+                while ($objPage->next()) {
+                    $objCurrentPage = $objPage->current()->loadDetails();
 
-    				$domain = $objCurrentPage->domain ?: '*';
-    				$arrPages[$domain][$objCurrentPage->rootLanguage] = $objCurrentPage;
+                    $domain                                           = $objCurrentPage->domain ? : '*';
+                    $arrPages[$domain][$objCurrentPage->rootLanguage] = $objCurrentPage;
 
-    				// Also store the fallback language
-    				if ($objCurrentPage->rootIsFallback)
-    				{
-    					$arrPages[$domain]['*'] = $objCurrentPage;
-    				}
-    			}
+                    // Also store the fallback language
+                    if ($objCurrentPage->rootIsFallback) {
+                        $arrPages[$domain]['*'] = $objCurrentPage;
+                    }
+                }
 
-    			$strHost = Environment::get('host');
+                $strHost = \Environment::get('host');
 
-    			// Look for a root page whose domain name matches the host name
-    			if (isset($arrPages[$strHost]))
-    			{
-    				$arrLangs = $arrPages[$strHost];
-    			}
-    			else
-    			{
-    				$arrLangs = $arrPages['*']; // Empty domain
-    			}
+                // Look for a root page whose domain name matches the host name
+                if (isset($arrPages[$strHost])) {
+                    $arrLangs = $arrPages[$strHost];
+                } else {
+                    $arrLangs = $arrPages['*']; // Empty domain
+                }
 
-    			// Use the first result (see #4872)
-    			if (!$GLOBALS['TL_CONFIG']['addLanguageToUrl'])
-    			{
-    				$objNewPage = current($arrLangs);
-    			}
-    			// Try to find a page matching the language parameter
-    			elseif (($lang = Input::get('language')) != '' && isset($arrLangs[$lang]))
-    			{
-    				$objNewPage = $arrLangs[$lang];
-    			}
+                // Use the first result (see #4872)
+                if (!$GLOBALS['TL_CONFIG']['addLanguageToUrl']) {
+                    $objNewPage = current($arrLangs);
+                } // Try to find a page matching the language parameter
+                elseif (($lang = \Input::get('language')) != '' && isset($arrLangs[$lang])) {
+                    $objNewPage = $arrLangs[$lang];
+                }
 
-    			// Store the page object
-    			if (is_object($objNewPage))
-    			{
-    				$objPage = $objNewPage;
-    			}
-    		}
+                // Store the page object
+                if (is_object($objNewPage)) {
+                    $objPage = $objNewPage;
+                }
+            }
 
             if ($objPage->iso_setReaderJumpTo && ($objReader = $objPage->getRelated('iso_readerJumpTo')) !== null) {
 
@@ -184,10 +173,10 @@ class Frontend extends \Frontend
         global $objIsotopeListPage;
 
         if (null !== $objIsotopeListPage) {
-            $arrTrail = $objIsotopeListPage->trail;
+            $arrTrail   = $objIsotopeListPage->trail;
             $arrTrail[] = $objPage->id;
 
-            $objPage->pid = $objIsotopeListPage->id;
+            $objPage->pid   = $objIsotopeListPage->id;
             $objPage->alias = $objIsotopeListPage->alias;
             $objPage->trail = $arrTrail;
         }
@@ -202,10 +191,8 @@ class Frontend extends \Frontend
     {
         $arrTag = trimsplit('::', $strTag);
 
-        if ($arrTag[0] == 'isotope' || $arrTag[0] == 'cache_isotope')
-        {
-            switch ($arrTag[1])
-            {
+        if ($arrTag[0] == 'isotope' || $arrTag[0] == 'cache_isotope') {
+            switch ($arrTag[1]) {
                 case 'cart_items';
 
                     return Isotope::getCart()->countItems();
@@ -219,23 +206,21 @@ class Frontend extends \Frontend
                 case 'cart_items_label';
                     $intCount = Isotope::getCart()->countItems();
 
-                    if (!$intCount)
-                    {
+                    if (!$intCount) {
                         return '';
                     }
 
-                    return $intCount == 1 ? ('('.$GLOBALS['TL_LANG']['MSC']['productSingle'].')') : sprintf(('('.$GLOBALS['TL_LANG']['MSC']['productMultiple'].')'), $intCount);
+                    return $intCount == 1 ? ('(' . $GLOBALS['TL_LANG']['MSC']['productSingle'] . ')') : sprintf(('(' . $GLOBALS['TL_LANG']['MSC']['productMultiple'] . ')'), $intCount);
                     break;
 
                 case 'cart_quantity_label';
                     $intCount = Isotope::getCart()->sumItemsQuantity();
 
-                    if (!$intCount)
-                    {
+                    if (!$intCount) {
                         return '';
                     }
 
-                    return $intCount == 1 ? ('('.$GLOBALS['TL_LANG']['MSC']['productSingle'].')') : sprintf(('('.$GLOBALS['TL_LANG']['MSC']['productMultiple'].')'), $intCount);
+                    return $intCount == 1 ? ('(' . $GLOBALS['TL_LANG']['MSC']['productSingle'] . ')') : sprintf(('(' . $GLOBALS['TL_LANG']['MSC']['productMultiple'] . ')'), $intCount);
                     break;
 
                 case 'cart_subtotal':
@@ -256,22 +241,15 @@ class Frontend extends \Frontend
             }
 
             return '';
-        }
-        elseif ($arrTag[0] == 'isolabel')
-        {
+        } elseif ($arrTag[0] == 'isolabel') {
             return Translation::get($arrTag[1], $arrTag[2]);
-        }
-        elseif ($arrTag[0] == 'order')
-        {
-            if (($objOrder = Order::findOneByUniqid(\Input::get('uid'))) !== null)
-            {
+        } elseif ($arrTag[0] == 'order') {
+            if (($objOrder = Order::findOneByUniqid(\Input::get('uid'))) !== null) {
                 return $objOrder->{$arrTag[1]};
             }
 
             return '';
-        }
-        elseif ($arrTag[0] == 'product')
-        {
+        } elseif ($arrTag[0] == 'product') {
             // 2 possible use cases:
             // {{product::attribute}}                - gets the data of the current product (Product::getActive() or GET parameter "product")
             // {{product::attribute::product_id}}    - gets the data of the specified product ID
@@ -300,16 +278,11 @@ class Frontend extends \Frontend
      */
     public function translateProductUrls($arrGet, $strLanguage, $arrRootPage)
     {
-        if (\Haste\Input\Input::getAutoItem('product') != '')
-        {
+        if (\Haste\Input\Input::getAutoItem('product') != '') {
             $arrGet['url']['product'] = \Haste\Input\Input::getAutoItem('product');
-        }
-        elseif (\Haste\Input\Input::getAutoItem('step') != '')
-        {
+        } elseif (\Haste\Input\Input::getAutoItem('step') != '') {
             $arrGet['url']['step'] = \Haste\Input\Input::getAutoItem('step');
-        }
-        elseif (\Input::get('uid') != '')
-        {
+        } elseif (\Input::get('uid') != '') {
             $arrGet['get']['uid'] = \Input::get('uid');
         }
 
@@ -353,19 +326,16 @@ window.addEvent('domready', function()
     public static function getIsotopeMessages()
     {
         $strMessages = '';
-        $arrGroups = array('ISO_ERROR', 'ISO_CONFIRM', 'ISO_INFO');
+        $arrGroups   = array('ISO_ERROR', 'ISO_CONFIRM', 'ISO_INFO');
 
-        foreach ($arrGroups as $strGroup)
-        {
-            if (!is_array($_SESSION[$strGroup]))
-            {
+        foreach ($arrGroups as $strGroup) {
+            if (!is_array($_SESSION[$strGroup])) {
                 continue;
             }
 
             $strClass = strtolower($strGroup);
 
-            foreach ($_SESSION[$strGroup] as $strMessage)
-            {
+            foreach ($_SESSION[$strGroup] as $strMessage) {
                 $strMessages .= sprintf('<p class="%s">%s</p>', $strClass, $strMessage);
             }
 
@@ -374,8 +344,7 @@ window.addEvent('domready', function()
 
         $strMessages = trim($strMessages);
 
-        if (strlen($strMessages))
-        {
+        if (strlen($strMessages)) {
             // Automatically disable caching if a message is available
             global $objPage;
             $objPage->cache = 0;
@@ -394,16 +363,15 @@ window.addEvent('domready', function()
      */
     public static function formatSurcharges($arrSurcharges)
     {
-        $i = 0;
+        $i         = 0;
         $arrReturn = array();
 
-        foreach ($arrSurcharges as $k => $objSurcharge)
-        {
-            $arrReturn[$k] = $objSurcharge->row();
-            $arrReturn[$k]['price']          = Isotope::formatPriceWithCurrency($objSurcharge->price);
-            $arrReturn[$k]['total_price']    = Isotope::formatPriceWithCurrency($objSurcharge->total_price);
-            $arrReturn[$k]['rowClass']       = trim('foot_'.(++$i) . ' ' . $objSurcharge->rowClass);
-            $arrReturn[$k]['tax_id']         = $objSurcharge->getTaxNumbers();
+        foreach ($arrSurcharges as $k => $objSurcharge) {
+            $arrReturn[$k]                = $objSurcharge->row();
+            $arrReturn[$k]['price']       = Isotope::formatPriceWithCurrency($objSurcharge->price);
+            $arrReturn[$k]['total_price'] = Isotope::formatPriceWithCurrency($objSurcharge->total_price);
+            $arrReturn[$k]['rowClass']    = trim('foot_' . (++$i) . ' ' . $objSurcharge->rowClass);
+            $arrReturn[$k]['tax_id']      = $objSurcharge->getTaxNumbers();
 
         }
 
@@ -419,15 +387,15 @@ window.addEvent('domready', function()
      * @param   string  Language of the root page
      * @return  array   Extended array of absolute page urls
      */
-    public function addProductsToSearchIndex($arrPages, $intRoot=0, $blnSitemap=false, $strLanguage=null)
+    public function addProductsToSearchIndex($arrPages, $intRoot = 0, $blnSitemap = false, $strLanguage = null)
     {
-        $t = \PageModel::getTable();
+        $t         = \PageModel::getTable();
         $arrColumn = array("$t.type='root'");
-        $arrValue = array();
+        $arrValue  = array();
 
         if ($intRoot > 0) {
             $arrColumn[] = "$t.id=?";
-            $arrValue[] = $intRoot;
+            $arrValue[]  = $intRoot;
         }
 
         $objRoots = \PageModel::findBy($arrColumn, $arrValue);
@@ -435,7 +403,7 @@ window.addEvent('domready', function()
         if (null !== $objRoots) {
             foreach ($objRoots as $objRoot) {
 
-                $arrPageIds = \Database::getInstance()->getChildRecords($objRoot->id, $t, false);
+                $arrPageIds   = \Database::getInstance()->getChildRecords($objRoot->id, $t, false);
                 $arrPageIds[] = $intRoot;
 
                 $objProducts = Product::findPublishedByCategories($arrPageIds);
@@ -445,12 +413,16 @@ window.addEvent('domready', function()
 
                         // Find the categories in the current root
                         $arrCategories = array_intersect($objProduct->getCategories(), $arrPageIds);
+                        $intRemaining  = count($arrCategories);
 
                         foreach ($arrCategories as $intPage) {
                             $objPage = \PageModel::findByPk($intPage);
+                            --$intRemaining;
 
                             // Do not generate a reader for the index page, except if it is the only one
-                            if ($objPage->alias == 'index' && count($arrCategories) > 1) {
+                            if ($objPage->alias == 'index' && $intRemaining > 0) {
+                                continue;
+                            } elseif ($objPage->sitemap == 'map_never') {
                                 continue;
                             }
 
@@ -487,8 +459,7 @@ window.addEvent('domready', function()
      */
     public function saveUpload($varValue, IsotopeProduct $objProduct, Widget $objWidget)
     {
-        if (is_array($_SESSION['FILES'][$objWidget->name]) && $_SESSION['FILES'][$objWidget->name]['uploaded'] == '1' && $_SESSION['FILES'][$objWidget->name]['error'] == 0)
-        {
+        if (is_array($_SESSION['FILES'][$objWidget->name]) && $_SESSION['FILES'][$objWidget->name]['uploaded'] == '1' && $_SESSION['FILES'][$objWidget->name]['error'] == 0) {
             return $_SESSION['FILES'][$objWidget->name]['name'];
         }
 
@@ -505,13 +476,11 @@ window.addEvent('domready', function()
     {
         $arrCodes = array();
 
-        foreach (trimsplit(',', $strPostalCodes) as $strCode)
-        {
+        foreach (trimsplit(',', $strPostalCodes) as $strCode) {
             $arrCode = trimsplit('-', $strCode);
 
             // Ignore codes with more than 1 range
-            switch (count($arrCode))
-            {
+            switch (count($arrCode)) {
                 case 1:
                     $arrCodes[] = $arrCode[0];
                     break;
@@ -527,48 +496,12 @@ window.addEvent('domready', function()
 
 
     /**
-     * Wait for it
-     * @return bool
-     */
-    public static function setTimeout($intSeconds=5, $intRepeat=12)
-    {
-        if (!isset($_SESSION['ISO_TIMEOUT']))
-        {
-            $_SESSION['ISO_TIMEOUT'] = $intRepeat;
-        }
-        else
-        {
-            $_SESSION['ISO_TIMEOUT'] = $_SESSION['ISO_TIMEOUT'] - 1;
-        }
-
-        if ($_SESSION['ISO_TIMEOUT'] > 0)
-        {
-            // Reload page every 5 seconds
-            $GLOBALS['TL_HEAD'][] = '<meta http-equiv="refresh" content="' . $intSeconds . ',' . \Environment::get('base') . \Environment::get('request') . '">';
-
-            return true;
-        }
-
-        return false;
-    }
-
-
-    /**
-     * Cancel the timeout (clear session)
-     */
-    public static function clearTimeout()
-    {
-        unset($_SESSION['ISO_TIMEOUT']);
-    }
-
-
-    /**
      * Store the current article ID so we know it for the product list
      * @param \Database\Result
      */
     public function storeCurrentArticle($objRow)
     {
-        $GLOBALS['ISO_CONFIG']['current_article']['id'] = $objRow->id;
+        $GLOBALS['ISO_CONFIG']['current_article']['id']  = $objRow->id;
         $GLOBALS['ISO_CONFIG']['current_article']['pid'] = $objRow->pid;
     }
 
@@ -580,7 +513,7 @@ window.addEvent('domready', function()
      * @param   \MemberModel|\FrontendUser
      * @return  array
      */
-    public static function getPagesInCurrentRoot(array $arrPages, $objMember=null)
+    public static function getPagesInCurrentRoot(array $arrPages, $objMember = null)
     {
         global $objPage;
 
@@ -665,22 +598,20 @@ window.addEvent('domready', function()
 
                 // If we have a reader page, rename the last item (the reader) to the product title
                 if (null !== $objIsotopeListPage) {
-                    $arrItems[$last]['title'] = $this->prepareMetaDescription($objProduct->meta_title ?: $objProduct->name);
-                    $arrItems[$last]['link'] = $objProduct->name;
-                }
-
-                // Otherwise we add a new item for the product at the last position
+                    $arrItems[$last]['title'] = $this->prepareMetaDescription($objProduct->meta_title ? : $objProduct->name);
+                    $arrItems[$last]['link']  = $objProduct->name;
+                } // Otherwise we add a new item for the product at the last position
                 else {
                     $arrItems[$last]['isActive'] = false;
 
                     $arrItems[] = array
                     (
-                        'isRoot'    => false,
-                        'isActive'  => true,
-                        'href'      => $objProduct->generateUrl($objPage),
-                        'title'     => $this->prepareMetaDescription($objProduct->meta_title ?: $objProduct->name),
-                        'link'      => $objProduct->name,
-                        'data'      => $objPage->row(),
+                        'isRoot'   => false,
+                        'isActive' => true,
+                        'href'     => $objProduct->generateUrl($objPage),
+                        'title'    => $this->prepareMetaDescription($objProduct->meta_title ? : $objProduct->name),
+                        'link'     => $objProduct->name,
+                        'data'     => $objPage->row(),
                     );
                 }
             }
@@ -696,28 +627,22 @@ window.addEvent('domready', function()
     public static function loadPageConfig($objPage)
     {
         // Use the global date format if none is set
-        if ($objPage->dateFormat == '')
-        {
+        if ($objPage->dateFormat == '') {
             $objPage->dateFormat = $GLOBALS['TL_CONFIG']['dateFormat'];
         }
 
-        if ($objPage->timeFormat == '')
-        {
+        if ($objPage->timeFormat == '') {
             $objPage->timeFormat = $GLOBALS['TL_CONFIG']['timeFormat'];
         }
 
-        if ($objPage->datimFormat == '')
-        {
+        if ($objPage->datimFormat == '') {
             $objPage->datimFormat = $GLOBALS['TL_CONFIG']['datimFormat'];
         }
 
         // Set the admin e-mail address
-        if ($objPage->adminEmail != '')
-        {
+        if ($objPage->adminEmail != '') {
             list($GLOBALS['TL_ADMIN_NAME'], $GLOBALS['TL_ADMIN_EMAIL']) = \System::splitFriendlyName($objPage->adminEmail);
-        }
-        else
-        {
+        } else {
             list($GLOBALS['TL_ADMIN_NAME'], $GLOBALS['TL_ADMIN_EMAIL']) = \System::splitFriendlyName($GLOBALS['TL_CONFIG']['adminEmail']);
         }
 
@@ -727,18 +652,17 @@ window.addEvent('domready', function()
         define('TL_PLUGINS_URL', ($objPage->staticPlugins != '' && !$GLOBALS['TL_CONFIG']['debugMode']) ? $objPage->staticPlugins . TL_PATH . '/' : '');
 
         $objLayout = \Database::getInstance()->prepare("SELECT l.*, t.templates FROM tl_layout l LEFT JOIN tl_theme t ON l.pid=t.id WHERE l.id=? ORDER BY l.id=? DESC")
-                                            ->limit(1)
-                                            ->execute($objPage->layout, $objPage->layout);
+            ->limit(1)
+            ->execute($objPage->layout, $objPage->layout);
 
-        if ($objLayout->numRows)
-        {
+        if ($objLayout->numRows) {
             // Get the page layout
-            $objPage->template = strlen($objLayout->template) ? $objLayout->template : 'fe_page';
+            $objPage->template      = strlen($objLayout->template) ? $objLayout->template : 'fe_page';
             $objPage->templateGroup = $objLayout->templates;
 
             // Store the output format
             list($strFormat, $strVariant) = explode('_', $objLayout->doctype);
-            $objPage->outputFormat = $strFormat;
+            $objPage->outputFormat  = $strFormat;
             $objPage->outputVariant = $strVariant;
         }
 

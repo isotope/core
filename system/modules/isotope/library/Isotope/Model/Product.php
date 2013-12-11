@@ -3,11 +3,11 @@
 /**
  * Isotope eCommerce for Contao Open Source CMS
  *
- * Copyright (C) 2009-2012 Isotope eCommerce Workgroup
+ * Copyright (C) 2009-2013 terminal42 gmbh & Isotope eCommerce Workgroup
  *
  * @package    Isotope
- * @link       http://www.isotopeecommerce.com
- * @license    http://opensource.org/licenses/lgpl-3.0.html LGPL
+ * @link       http://isotopeecommerce.org
+ * @license    http://opensource.org/licenses/lgpl-3.0.html
  */
 
 namespace Isotope\Model;
@@ -81,13 +81,13 @@ abstract class Product extends TypeAgent
      * @param   array
      * @return  \Collection
      */
-    public static function findPublished(array $arrOptions=array())
+    public static function findPublished(array $arrOptions = array())
     {
-        $t = static::$strTable;
+        $t          = static::$strTable;
         $arrColumns = array();
 
         if (BE_USER_LOGGED_IN !== true) {
-            $time = time();
+            $time         = time();
             $arrColumns[] = "$t.published='1' AND ($t.start='' OR $t.start<$time) AND ($t.stop='' OR $t.stop>$time)";
         }
 
@@ -101,7 +101,7 @@ abstract class Product extends TypeAgent
      * @param   array
      * @return  \Collection
      */
-    public static function findPublishedBy($arrColumns, $arrValues, array $arrOptions=array())
+    public static function findPublishedBy($arrColumns, $arrValues, array $arrOptions = array())
     {
         $t = static::$strTable;
 
@@ -112,7 +112,7 @@ abstract class Product extends TypeAgent
         }
 
         if (BE_USER_LOGGED_IN !== true) {
-            $time = time();
+            $time         = time();
             $arrColumns[] = "$t.published='1' AND ($t.start='' OR $t.start<$time) AND ($t.stop='' OR $t.stop>$time)";
         }
 
@@ -125,15 +125,15 @@ abstract class Product extends TypeAgent
      * @param   array
      * @return  \Collection
      */
-    public static function findPublishedByPk($intId, array $arrOptions=array())
+    public static function findPublishedByPk($intId, array $arrOptions = array())
     {
         $t = static::$strTable;
 
         $arrColumns = array("$t." . static::$strPk . "=?");
-        $arrValues = array((int) $intId);
+        $arrValues  = array((int) $intId);
 
         if (BE_USER_LOGGED_IN !== true) {
-            $time = time();
+            $time         = time();
             $arrColumns[] = "$t.published='1' AND ($t.start='' OR $t.start<$time) AND ($t.stop='' OR $t.stop>$time)";
         }
 
@@ -151,43 +151,43 @@ abstract class Product extends TypeAgent
     }
 
     /**
-	 * Find a single product by its ID or alias
-	 * @param mixed $varId      The ID or alias
-	 * @param array $arrOptions An optional options array
-	 * @return \Model|null The model or null if the result is empty
-	 */
-	public static function findPublishedByIdOrAlias($varId, array $arrOptions=array())
-	{
-		$t = static::$strTable;
+     * Find a single product by its ID or alias
+     * @param mixed $varId The ID or alias
+     * @param array $arrOptions An optional options array
+     * @return \Model|null The model or null if the result is empty
+     */
+    public static function findPublishedByIdOrAlias($varId, array $arrOptions = array())
+    {
+        $t = static::$strTable;
 
-		$arrColumns = array("($t.id=? OR $t.alias=?)");
-        $arrValues = array((is_numeric($varId) ? $varId : 0), $varId);
+        $arrColumns = array("($t.id=? OR $t.alias=?)");
+        $arrValues  = array((is_numeric($varId) ? $varId : 0), $varId);
 
         if (BE_USER_LOGGED_IN !== true) {
-            $time = time();
+            $time         = time();
             $arrColumns[] = "$t.published='1' AND ($t.start='' OR $t.start<$time) AND ($t.stop='' OR $t.stop>$time)";
         }
 
-		$arrOptions = array_merge(
-			array(
-				'limit'  => 1,
-				'column' => $arrColumns,
-				'value'  => $arrValues,
-				'return' => 'Model'
-			),
-			$arrOptions
-		);
+        $arrOptions = array_merge(
+            array(
+                 'limit'  => 1,
+                 'column' => $arrColumns,
+                 'value'  => $arrValues,
+                 'return' => 'Model'
+            ),
+            $arrOptions
+        );
 
-		return static::find($arrOptions);
-	}
+        return static::find($arrOptions);
+    }
 
-	/**
+    /**
      * Find products by IDs
      * @param   array
      * @param   array
      * @return  \Collection
      */
-    public static function findPublishedByIds(array $arrIds, array $arrOptions=array())
+    public static function findPublishedByIds(array $arrIds, array $arrOptions = array())
     {
         if (empty($arrIds) || !is_array($arrIds)) {
             return null;
@@ -198,19 +198,19 @@ abstract class Product extends TypeAgent
         $arrColumns = array("$t.id IN (" . implode(',', array_map('intval', $arrIds)) . ")");
 
         if (BE_USER_LOGGED_IN !== true) {
-            $time = time();
+            $time         = time();
             $arrColumns[] = "$t.published='1' AND ($t.start='' OR $t.start<$time) AND ($t.stop='' OR $t.stop>$time)";
         }
 
-		$arrOptions = array_merge(
-			array(
-				'column' => $arrColumns,
-				'return' => 'Collection'
-			),
-			$arrOptions
-		);
+        $arrOptions = array_merge(
+            array(
+                 'column' => $arrColumns,
+                 'return' => 'Collection'
+            ),
+            $arrOptions
+        );
 
-		return static::find($arrOptions);
+        return static::find($arrOptions);
     }
 
     /**
@@ -219,27 +219,27 @@ abstract class Product extends TypeAgent
      * @param   array
      * @return  \Collection
      */
-    public static function findPublishedByPid($intPid, array $arrOptions=array())
+    public static function findPublishedByPid($intPid, array $arrOptions = array())
     {
         $t = static::$strTable;
 
         $arrColumns = array("$t.pid=?");
 
         if (BE_USER_LOGGED_IN !== true) {
-            $time = time();
+            $time         = time();
             $arrColumns[] = "$t.published='1' AND ($t.start='' OR $t.start<$time) AND ($t.stop='' OR $t.stop>$time)";
         }
 
-		$arrOptions = array_merge(
-			array(
-				'column' => $arrColumns,
-				'value'  => array((int) $intPid),
-				'return' => 'Collection'
-			),
-			$arrOptions
-		);
+        $arrOptions = array_merge(
+            array(
+                 'column' => $arrColumns,
+                 'value'  => array((int) $intPid),
+                 'return' => 'Collection'
+            ),
+            $arrOptions
+        );
 
-		return static::find($arrOptions);
+        return static::find($arrOptions);
     }
 
     /**
@@ -248,26 +248,26 @@ abstract class Product extends TypeAgent
      * @param   array
      * @return  \Collection
      */
-    public static function findPublishedByCategories(array $arrCategories, array $arrOptions=array())
+    public static function findPublishedByCategories(array $arrCategories, array $arrOptions = array())
     {
         $t = static::$strTable;
 
         $arrColumns = array("c.page_id IN (" . implode(',', array_map('intval', $arrCategories)) . ")");
 
         if (BE_USER_LOGGED_IN !== true) {
-            $time = time();
+            $time         = time();
             $arrColumns[] = "$t.published='1' AND ($t.start='' OR $t.start<$time) AND ($t.stop='' OR $t.stop>$time)";
         }
 
-		$arrOptions = array_merge(
-			array(
-				'column' => $arrColumns,
-				'return' => 'Collection'
-			),
-			$arrOptions
-		);
+        $arrOptions = array_merge(
+            array(
+                 'column' => $arrColumns,
+                 'return' => 'Collection'
+            ),
+            $arrOptions
+        );
 
-		return static::find($arrOptions);
+        return static::find($arrOptions);
     }
 
     /**
@@ -276,7 +276,7 @@ abstract class Product extends TypeAgent
      * @param   array
      * @return  \Collection
      */
-    public static function findAvailableByPk($intId, array $arrOptions=array())
+    public static function findAvailableByPk($intId, array $arrOptions = array())
     {
         $objProduct = static::findPublishedByPk($intId, $arrOptions);
 
@@ -288,13 +288,13 @@ abstract class Product extends TypeAgent
     }
 
     /**
-	 * Find a single frontend-available product by its ID or alias
-	 * @param   mixed       The ID or alias
-	 * @param   array       An optional options array
-	 * @return \Product|null  The model or null if the result is empty
-	 */
-	public static function findAvailableByIdOrAlias($varId, array $arrOptions=array())
-	{
+     * Find a single frontend-available product by its ID or alias
+     * @param   mixed       The ID or alias
+     * @param   array       An optional options array
+     * @return \Product|null  The model or null if the result is empty
+     */
+    public static function findAvailableByIdOrAlias($varId, array $arrOptions = array())
+    {
         $objProduct = static::findPublishedByIdOrAlias($varId, $arrOptions);
 
         if (null === $objProduct || !$objProduct->isAvailableInFrontend()) {
@@ -302,7 +302,7 @@ abstract class Product extends TypeAgent
         }
 
         return $objProduct;
-	}
+    }
 
     /**
      * Find frontend-available products by IDs
@@ -310,7 +310,7 @@ abstract class Product extends TypeAgent
      * @param   array
      * @return  \Collection
      */
-    public static function findAvailableByIds(array $arrIds, array $arrOptions=array())
+    public static function findAvailableByIds(array $arrIds, array $arrOptions = array())
     {
         $objProducts = static::findPublishedByIds($arrIds, $arrOptions);
 
@@ -332,14 +332,14 @@ abstract class Product extends TypeAgent
         return new \Model\Collection($arrProducts, static::$strTable);
     }
 
-	/**
+    /**
      * Find frontend-available products by condition
      * @param   mixed
      * @param   mixed
      * @param   array
      * @return  \Model\Collection
      */
-    public static function findAvailableBy($arrColumns, $arrValues, array $arrOptions=array())
+    public static function findAvailableBy($arrColumns, $arrValues, array $arrOptions = array())
     {
         $objProducts = static::findPublishedBy($arrColumns, $arrValues, $arrOptions);
 
@@ -367,7 +367,7 @@ abstract class Product extends TypeAgent
      * @param   array
      * @param   array
      */
-    public static function findVariantOfProduct(IsotopeProduct $objProduct, array $arrVariant, array $arrOptions=array())
+    public static function findVariantOfProduct(IsotopeProduct $objProduct, array $arrVariant, array $arrOptions = array())
     {
         $t = static::$strTable;
 
@@ -377,16 +377,16 @@ abstract class Product extends TypeAgent
         );
 
         $arrOptions = array_merge(
-			array(
-				'limit'  => 1,
-				'column' => $arrColumns,
-				'value'  => $arrVariant,
-				'return' => 'Model'
-			),
-			$arrOptions
-		);
+            array(
+                 'limit'  => 1,
+                 'column' => $arrColumns,
+                 'value'  => $arrVariant,
+                 'return' => 'Model'
+            ),
+            $arrOptions
+        );
 
-		return static::find($arrOptions);
+        return static::find($arrOptions);
     }
 
     /**
@@ -395,6 +395,10 @@ abstract class Product extends TypeAgent
     protected static function find(array $arrOptions)
     {
         $objProducts = parent::find($arrOptions);
+
+        if (null === $objProducts) {
+            return null;
+        }
 
         $arrFilters = $arrOptions['filters'];
         $arrSorting = $arrOptions['sorting'];
@@ -411,7 +415,7 @@ abstract class Product extends TypeAgent
                         $blnMatch = $objFilter->matches($objProduct);
 
                         if ($objFilter->hasGroup()) {
-                            $arrGroups[$objFilter->getGroup()] = $arrGroups[$objFilter->getGroup()] ?: $blnMatch;
+                            $arrGroups[$objFilter->getGroup()] = $arrGroups[$objFilter->getGroup()] ? : $blnMatch;
                         } elseif (!$blnMatch) {
                             return false;
                         }
@@ -428,7 +432,7 @@ abstract class Product extends TypeAgent
             // $arrProducts can be empty if the filter removed all records
             if (!empty($arrSorting) && !empty($arrProducts)) {
                 $arrParam = array();
-                $arrData = array();
+                $arrData  = array();
 
                 foreach ($arrSorting as $strField => $arrConfig) {
                     foreach ($arrProducts as $objProduct) {
@@ -459,24 +463,22 @@ abstract class Product extends TypeAgent
      * @param array an array of columns
      * @return string
      */
-    protected static function buildQueryString($arrOptions, $arrJoinAliases=array('t'=>'tl_iso_producttype'))
+    protected static function buildQueryString($arrOptions, $arrJoinAliases = array('t' => 'tl_iso_producttype'))
     {
         $objBase = new \DcaExtractor($arrOptions['table']);
 
-        $arrJoins = array();
+        $arrJoins  = array();
         $arrFields = array(
             $arrOptions['table'] . ".*",
             "IF(" . $arrOptions['table'] . ".pid>0, (SELECT type FROM " . $arrOptions['table'] . " parent WHERE parent.id=" . $arrOptions['table'] . ".pid), " . $arrOptions['table'] . ".type) AS type",
-            "'". str_replace('-', '_', $GLOBALS['TL_LANGUAGE']) . "' AS language",
+            "'" . str_replace('-', '_', $GLOBALS['TL_LANGUAGE']) . "' AS language",
         );
 
-        foreach (Attribute::getMultilingualFields() as $attribute)
-        {
+        foreach (Attribute::getMultilingualFields() as $attribute) {
             $arrFields[] = "IFNULL(translation.$attribute, " . $arrOptions['table'] . ".$attribute) AS $attribute";
         }
 
-        foreach (Attribute::getFetchFallbackFields() as $attribute)
-        {
+        foreach (Attribute::getFetchFallbackFields() as $attribute) {
             $arrFields[] = "{$arrOptions['table']}.$attribute AS {$attribute}_fallback";
         }
 
@@ -490,13 +492,10 @@ abstract class Product extends TypeAgent
 
             $intCount = 0;
 
-            foreach ($objBase->getRelations() as $strKey=>$arrConfig)
-            {
+            foreach ($objBase->getRelations() as $strKey => $arrConfig) {
                 // Automatically join the single-relation records
-                if ($arrConfig['load'] == 'eager' || $arrOptions['eager'])
-                {
-                    if ($arrConfig['type'] == 'hasOne' || $arrConfig['type'] == 'belongsTo')
-                    {
+                if ($arrConfig['load'] == 'eager' || $arrOptions['eager']) {
+                    if ($arrConfig['type'] == 'hasOne' || $arrConfig['type'] == 'belongsTo') {
                         $key = array_search($arrConfig['table'], $arrJoinAliases);
                         if (false !== $key) {
                             $strJoinAlias = $key;
@@ -508,8 +507,7 @@ abstract class Product extends TypeAgent
 
                         $objRelated = new \DcaExtractor($arrConfig['table']);
 
-                        foreach (array_keys($objRelated->getFields()) as $strField)
-                        {
+                        foreach (array_keys($objRelated->getFields()) as $strField) {
                             $arrFields[] = $strJoinAlias . '.' . $strField . ' AS ' . $strKey . '__' . $strField;
                         }
 
@@ -523,9 +521,8 @@ abstract class Product extends TypeAgent
         $strQuery = "SELECT " . implode(', ', $arrFields) . " FROM " . $arrOptions['table'] . implode("", $arrJoins);
 
         // Where condition
-        if (!is_array($arrOptions['column']))
-        {
-            $arrOptions['column'] = array($arrOptions['table'] . '.' . $arrOptions['column'].'=?');
+        if (!is_array($arrOptions['column'])) {
+            $arrOptions['column'] = array($arrOptions['table'] . '.' . $arrOptions['column'] . '=?');
         }
 
         // The model must never find a language record
@@ -534,14 +531,12 @@ abstract class Product extends TypeAgent
         $strQuery .= " WHERE " . implode(" AND ", $arrOptions['column']);
 
         // Group by
-        if ($arrOptions['group'] !== null)
-        {
+        if ($arrOptions['group'] !== null) {
             $strQuery .= " GROUP BY " . $arrOptions['group'];
         }
 
         // Order by
-        if ($arrOptions['order'] !== null)
-        {
+        if ($arrOptions['order'] !== null) {
             $strQuery .= " ORDER BY " . $arrOptions['order'];
         }
 

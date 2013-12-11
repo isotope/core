@@ -3,11 +3,11 @@
 /**
  * Isotope eCommerce for Contao Open Source CMS
  *
- * Copyright (C) 2009-2012 Isotope eCommerce Workgroup
+ * Copyright (C) 2009-2013 terminal42 gmbh & Isotope eCommerce Workgroup
  *
  * @package    Isotope
- * @link       http://www.isotopeecommerce.com
- * @license    http://opensource.org/licenses/lgpl-3.0.html LGPL
+ * @link       http://isotopeecommerce.org
+ * @license    http://opensource.org/licenses/lgpl-3.0.html
  */
 
 namespace Isotope\Model;
@@ -75,7 +75,7 @@ class ProductCollectionItem extends \Model
      * Get the product related to this item
      * @return  IsotopeProduct|null
      */
-    public function getProduct($blnNoCache=false)
+    public function getProduct($blnNoCache = false)
     {
         if (false === $this->objProduct || true === $blnNoCache) {
 
@@ -242,7 +242,7 @@ class ProductCollectionItem extends \Model
 
         \Database::getInstance()->query("UPDATE " . static::$strTable . " SET tstamp=$time, quantity=(quantity+" . (int) $intQuantity . ") WHERE " . static::$strPk . "=" . $this->{static::$strPk});
 
-        $this->tstamp = $time;
+        $this->tstamp   = $time;
         $this->quantity = \Database::getInstance()->query("SELECT quantity FROM " . static::$strTable . " WHERE " . static::$strPk . "=" . $this->{static::$strPk})->quantity;
 
         return $this;
@@ -256,14 +256,14 @@ class ProductCollectionItem extends \Model
     public function decreaseQuantityBy($intQuantity)
     {
         if (($this->quantity - $intQuantity) < 1) {
-            throw new UnderflowException('Quantity of product collection item cannot be less than 1.');
+            throw new \UnderflowException('Quantity of product collection item cannot be less than 1.');
         }
 
         $time = time();
 
         \Database::getInstance()->query("UPDATE " . static::$strTable . " SET tstamp=$time, quantity=(quantity-" . (int) $intQuantity . ") WHERE " . static::$strPk . "=" . $this->{static::$strPk});
 
-        $this->tstamp = $time;
+        $this->tstamp   = $time;
         $this->quantity = \Database::getInstance()->query("SELECT quantity FROM " . static::$strTable . " WHERE " . static::$strPk . "=" . $this->{static::$strPk})->quantity;
 
         return $this;
@@ -276,17 +276,15 @@ class ProductCollectionItem extends \Model
      * @param   mixed
      * @return  int
      */
-    public static function sumBy($strField, $strColumn=null, $varValue=null)
+    public static function sumBy($strField, $strColumn = null, $varValue = null)
     {
-        if (static::$strTable == '')
-        {
+        if (static::$strTable == '') {
             return 0;
         }
 
         $strQuery = "SELECT SUM(" . $strField . ") AS sum FROM " . static::$strTable;
 
-        if ($strColumn !== null)
-        {
+        if ($strColumn !== null) {
             $strQuery .= " WHERE " . (is_array($strColumn) ? implode(" AND ", $strColumn) : static::$strTable . '.' . $strColumn . "=?");
         }
 

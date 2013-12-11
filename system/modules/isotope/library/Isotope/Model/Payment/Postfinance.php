@@ -3,18 +3,18 @@
 /**
  * Isotope eCommerce for Contao Open Source CMS
  *
- * Copyright (C) 2009-2012 Isotope eCommerce Workgroup
+ * Copyright (C) 2009-2013 terminal42 gmbh & Isotope eCommerce Workgroup
  *
  * @package    Isotope
- * @link       http://www.isotopeecommerce.com
- * @license    http://opensource.org/licenses/lgpl-3.0.html LGPL
+ * @link       http://isotopeecommerce.org
+ * @license    http://opensource.org/licenses/lgpl-3.0.html
  */
 
 namespace Isotope\Model\Payment;
 
-use Isotope\Isotope;
 use Isotope\Interfaces\IsotopePayment;
 use Isotope\Interfaces\IsotopePostsale;
+use Isotope\Isotope;
 use Isotope\Model\Payment;
 
 
@@ -103,7 +103,9 @@ class Postfinance extends PSP implements IsotopePayment, IsotopePostsale
     protected function preparePSPParams($objOrder)
     {
         $arrParams = parent::preparePSPParams($objOrder);
-        $arrParams = array_merge($arrParams, $this->prepareFISParams($objOrder));
+        // @todo: Activate this as soon as PostFinance has fixed the issues with FIS
+        // integration on their side
+        //$arrParams = array_merge($arrParams, $this->prepareFISParams($objOrder));
 
         return $arrParams;
     }
@@ -130,8 +132,8 @@ class Postfinance extends PSP implements IsotopePayment, IsotopePostsale
             'ECOM_SHIPTO_POSTAL_COUNTRYCODE'    => strtoupper($objShippingAddress->country),
 
             'ECOM_SHIPTO_DOB'                   => date('d/m/Y', $objShippingAddress->dateOfBirth),
-            // This key is mandatory and just has to be unique (20 chars)
-            'REF_CUSTOMERID'                    => substr('psp_' . $this->id . '_' . $objOrder->id . '_' . $objOrder->uniqid, 0, 20)
+            // This key is mandatory and just has to be unique (17 chars)
+            'REF_CUSTOMERID'                    => substr('psp_' . $this->id . '_' . $objOrder->id . '_' . $objOrder->uniqid, 0, 17)
 
             // We do not add "ECOM_SHIPTO_COMPANY" here because B2B sometimes may require up to 24 hours
             // to check solvency which is not acceptable for an online shop

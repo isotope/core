@@ -3,17 +3,16 @@
 /**
  * Isotope eCommerce for Contao Open Source CMS
  *
- * Copyright (C) 2009-2012 Isotope eCommerce Workgroup
+ * Copyright (C) 2009-2013 terminal42 gmbh & Isotope eCommerce Workgroup
  *
  * @package    Isotope
- * @link       http://www.isotopeecommerce.com
- * @license    http://opensource.org/licenses/lgpl-3.0.html LGPL
+ * @link       http://isotopeecommerce.org
+ * @license    http://opensource.org/licenses/lgpl-3.0.html
  */
 
 namespace Isotope\Model\Payment;
 
 use Isotope\Interfaces\IsotopeProductCollection;
-use Isotope\Isotope;
 use Isotope\Model\Payment;
 use Isotope\Model\ProductCollection\Order;
 
@@ -28,44 +27,18 @@ use Isotope\Model\ProductCollection\Order;
 abstract class PSP extends Payment
 {
 
-     /**
-     * Process payment on confirmation page
-     * @return  boolean
+    /**
+     * Process payment on checkout page.
+     * @param   IsotopeProductCollection    The order being places
+     * @param   Module                      The checkout module instance
+     * @return  mixed
      */
-    public function processPayment()
+    public function processPayment(IsotopeProductCollection $objOrder, \Module $objModule)
     {
-        if (\Input::get('NCERROR') > 0) {
-            \System::log('Order ID "' . \Input::get('orderID') . '" has NCERROR ' . \Input::get('NCERROR'), __METHOD__, TL_ERROR);
-
-            return false;
-        }
-
-        if (($objOrder = Order::findByPk((int) \Input::get('orderID'))) === null) {
-            \System::log('Order ID "' . \Input::get('orderID') . '" not found', __METHOD__, TL_ERROR);
-
-            return false;
-        }
-
+        // In processPayment, the parameters are always in GET
         $this->psp_http_method = 'GET';
 
-        if (!$this->validateSHASign()) {
-            \System::log('Received invalid postsale data for order ID "' . $objOrder->id . '"', __METHOD__, TL_ERROR);
-
-            return false;
-        }
-
-        // Validate payment data
-        if ($objOrder->currency != $this->getRequestData('currency') || $objOrder->getTotal() != $this->getRequestData('amount')) {
-            \System::log('Postsale checkout manipulation in payment for Order ID ' . $objOrder->id . '!', __METHOD__, TL_ERROR);
-            \Isotope\Module\Checkout::redirectToStep('failed');
-        }
-
-        $objOrder->date_paid = time();
-        $objOrder->updateOrderStatus($this->new_order_status);
-
-        $objOrder->save();
-
-        return true;
+        return $this->processPostsale($objOrder);
     }
 
 
@@ -75,59 +48,79 @@ abstract class PSP extends Payment
      */
     public function processPostsale(IsotopeProductCollection $objOrder)
     {
-        if ($this->getRequestData('NCERROR') > 0) {
-            \System::log('Order ID "' . $this->getRequestData('orderID') . '" has NCERROR ' . $this->getRequestData('NCERROR'), __METHOD__, TL_ERROR);
-
-            return;
-        }
-
-        $objCart = $objOrder->getRelated('source_collection_id');
-
         if (!$this->validateSHASign()) {
             \System::log('Received invalid postsale data for order ID "' . $objOrder->id . '"', __METHOD__, TL_ERROR);
-
-            return;
+            return false;
         }
 
         // Validate payment data
-        if ($objOrder->currency != $this->getRequestData('currency') || $objCart->getTotal() != $this->getRequestData('amount')) {
+        if ($objOrder->currency != $this->getRequestData('currency') || $objOrder->getTotal() != $this->getRequestData('amount')) {
             \System::log('Postsale checkout manipulation in payment for Order ID ' . $objOrder->id . '!', __METHOD__, TL_ERROR);
-
-            return;
+            return false;
         }
 
         if (!$objOrder->checkout()) {
             \System::log('Post-Sale checkout for Order ID "' . $objOrder->id . '" failed', __METHOD__, TL_ERROR);
-
-            return;
+            return false;
         }
 
-        $objOrder->date_paid = time();
-        $objOrder->updateOrderStatus($this->new_order_status);
+        // Validate payment status
+        switch ($this->getRequestData('STATUS')) {
+
+            case 9:  // Zahlung beantragt (Authorize & Capture)
+                $objOrder->date_paid = time();
+                // no break
+
+            case 5:  // Genehmigt (Authorize ohne Capture)
+                $objOrder->updateOrderStatus($this->new_order_status);
+                break;
+
+            case 41: // Unbekannter Wartezustand
+            case 51: // Genehmigung im Wartezustand
+            case 91: // Zahlung im Wartezustand
+            case 52: // Genehmigung nicht bekannt
+            case 92: // Zahlung unsicher
+                if (($objConfig = $objOrder->getRelated('config_id')) === null) {
+                    $this->log('Config for Order ID ' . $objOrder->id . ' not found', __METHOD__, TL_ERROR);
+                    return false;
+                }
+
+                $objOrder->updateOrderStatus($objConfig->orderstatus_error);
+                break;
+
+            case 0:  // Ungültig / Unvollständig
+            case 1:  // Zahlungsvorgang abgebrochen
+            case 2:  // Genehmigung verweigert
+            case 4:  // Gespeichert
+            case 93: // Bezahlung verweigert
+            default:
+                return false;
+        }
+
         $objOrder->save();
+
+        return true;
     }
 
 
     /**
-     * {@inheritdoc}
+     * Get the order object in a postsale request
+     * @return  IsotopeProductCollection
      */
     public function getPostsaleOrder()
     {
         return Order::findByPk($this->getRequestData('orderID'));
     }
 
-
     /**
      * Return the payment form
+     * @param   IsotopeProductCollection    The order being places
+     * @param   Module                      The checkout module instance
      * @return  string
      */
-    public function checkoutForm()
+    public function checkoutForm(IsotopeProductCollection $objOrder, \Module $objModule)
     {
-        if (($objOrder = Order::findOneBy('source_collection_id', Isotope::getCart()->id)) === null) {
-            \Isotope\Module\Checkout::redirectToStep('failed');
-        }
-
-        $arrParams = $this->preparePSPParams($objOrder);
+        $arrParams = $this->preparePSPParams($objOrder, $objModule);
 
         // SHA-1 must be generated on alphabetically sorted keys.
         // Use the natural order algorithm so ITEM10 gets listed after ITEM2
@@ -135,7 +128,7 @@ abstract class PSP extends Payment
         uksort($arrParams, 'strnatcasecmp');
 
         $strSHASign = '';
-        foreach($arrParams as $k => $v) {
+        foreach ($arrParams as $k => $v) {
             if ($v == '')
                 continue;
 
@@ -147,10 +140,10 @@ abstract class PSP extends Payment
         $objTemplate = new \Isotope\Template($this->strTemplate);
         $objTemplate->setData($this->arrData);
 
-        $objTemplate->params    = $arrParams;
-        $objTemplate->headline  = $GLOBALS['TL_LANG']['MSC']['pay_with_redirect'][0];
-        $objTemplate->message   = $GLOBALS['TL_LANG']['MSC']['pay_with_redirect'][1];
-        $objTemplate->slabel    = $GLOBALS['TL_LANG']['MSC']['pay_with_redirect'][2];
+        $objTemplate->params   = $arrParams;
+        $objTemplate->headline = $GLOBALS['TL_LANG']['MSC']['pay_with_redirect'][0];
+        $objTemplate->message  = $GLOBALS['TL_LANG']['MSC']['pay_with_redirect'][1];
+        $objTemplate->slabel   = $GLOBALS['TL_LANG']['MSC']['pay_with_redirect'][2];
 
         return $objTemplate->parse();
     }
@@ -158,19 +151,19 @@ abstract class PSP extends Payment
     /**
      * Prepare PSP params
      * @param   Order
+     * @param   Module
      * @return  array
      */
-    protected function preparePSPParams($objOrder)
+    protected function preparePSPParams($objOrder, $objModule)
     {
-        $strFailedUrl = \Environment::get('base') . \Isotope\Module\Checkout::generateUrlForStep('failed');
         $objBillingAddress = $objOrder->getBillingAddress();
 
         return array
         (
             'PSPID'         => $this->psp_pspid,
             'ORDERID'       => $objOrder->id,
-            'AMOUNT'        => round((Isotope::getCart()->getTotal() * 100)),
-            'CURRENCY'      => Isotope::getConfig()->currency,
+            'AMOUNT'        => round(($objOrder->getTotal() * 100)),
+            'CURRENCY'      => $objOrder->currency,
             'LANGUAGE'      => $GLOBALS['TL_LANGUAGE'] . '_' . strtoupper($GLOBALS['TL_LANGUAGE']),
             'CN'            => $objBillingAddress->firstname . ' ' . $objBillingAddress->lastname,
             'EMAIL'         => $objBillingAddress->email,
@@ -180,11 +173,11 @@ abstract class PSP extends Payment
             'OWNERCTY'      => strtoupper($objBillingAddress->country),
             'OWNERTOWN'     => $objBillingAddress->city,
             'OWNERTELNO'    => $objBillingAddress->phone,
-            'ACCEPTURL'     => \Environment::get('base') . \Haste\Util\Url::addQueryString('uid=' . $objOrder->uniqid, \Isotope\Module\Checkout::generateUrlForStep('complete')),
-            'DECLINEURL'    => $strFailedUrl,
-            'EXCEPTIONURL'  => $strFailedUrl,
+            'ACCEPTURL'     => \Environment::get('base') . $objModule->generateUrlForStep('complete', $objOrder),
+            'DECLINEURL'    => \Environment::get('base') . $objModule->generateUrlForStep('failed'),
+            'BACKURL'       => \Environment::get('base') . $objModule->generateUrlForStep('review'),
             'PARAMPLUS'     => 'mod=pay&amp;id=' . $this->id,
-            'TP'            => $this->psp_dynamic_template ?: ''
+            'TP'            => $this->psp_dynamic_template ? : ''
         );
     }
 
@@ -210,7 +203,7 @@ abstract class PSP extends Payment
     private function validateSHASign()
     {
         $strSHASign = '';
-        $arrParams = array();
+        $arrParams  = array();
 
         foreach (array_keys(($this->psp_http_method == 'GET' ? $_GET : $_POST)) as $key) {
             if (in_array(strtoupper($key), static::$arrShaOut)) {
@@ -223,7 +216,7 @@ abstract class PSP extends Payment
         // We can only use ksort($arrParams, SORT_NATURAL) as of PHP 5.4
         uksort($arrParams, 'strnatcasecmp');
 
-        foreach($arrParams as $k => $v ) {
+        foreach ($arrParams as $k => $v) {
             if ($v == '') {
                 continue;
             }

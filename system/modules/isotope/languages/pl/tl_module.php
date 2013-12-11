@@ -3,15 +3,15 @@
 /**
  * Isotope eCommerce for Contao Open Source CMS
  * 
- * Copyright (C) 2009-2013 Isotope eCommerce Workgroup
+ * Copyright (C) 2009-2013 terminal42 gmbh & Isotope eCommerce Workgroup
  * 
- * Core translations are managed using Transifex. To create a new translation
+ * Translations are managed using Transifex. To create a new translation
  * or to help to maintain an existing one, please register at transifex.com.
  * 
  * @link http://help.transifex.com/intro/translating.html
  * @link https://www.transifex.com/projects/i/isotope/language/pl/
  * 
- * @license http://www.gnu.org/licenses/lgpl-3.0.html LGPL
+ * @license http://www.gnu.org/licenses/lgpl-3.0.html
  */
 
 $GLOBALS['TL_LANG']['tl_module']['iso_list_layout'][0] = 'Szablon listy produktów';
@@ -30,6 +30,8 @@ $GLOBALS['TL_LANG']['tl_module']['iso_hide_list'][0] = 'Ukryj w czytniku';
 $GLOBALS['TL_LANG']['tl_module']['iso_hide_list'][1] = 'Ukryj listę produktów jeśli alias produktu jest w adresie URL.';
 $GLOBALS['TL_LANG']['tl_module']['iso_use_quantity'][0] = 'Dowolna ilość';
 $GLOBALS['TL_LANG']['tl_module']['iso_use_quantity'][1] = 'Pozwala użytkownikowi na określenie ilości produktu, który chce kupić.';
+$GLOBALS['TL_LANG']['tl_module']['iso_display404Page'][0] = 'Wyświetl stronę 404';
+$GLOBALS['TL_LANG']['tl_module']['iso_display404Page'][1] = 'Wyświetl stronę "404 nie znaleziono", jeśli produkt nie został znaleziony. Używaj tego z rozwagą, jeśli lista produktów jest na tej samej stronie!';
 $GLOBALS['TL_LANG']['tl_module']['iso_checkout_method'][0] = 'Metody kasy';
 $GLOBALS['TL_LANG']['tl_module']['iso_checkout_method'][1] = 'Proszę wybrać metodę kasy.';
 $GLOBALS['TL_LANG']['tl_module']['iso_login_jumpTo'][0] = 'Strona logowania do kasy';

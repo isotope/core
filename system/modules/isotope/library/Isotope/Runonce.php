@@ -3,11 +3,11 @@
 /**
  * Isotope eCommerce for Contao Open Source CMS
  *
- * Copyright (C) 2009-2012 Isotope eCommerce Workgroup
+ * Copyright (C) 2009-2013 terminal42 gmbh & Isotope eCommerce Workgroup
  *
  * @package    Isotope
- * @link       http://www.isotopeecommerce.com
- * @license    http://opensource.org/licenses/lgpl-3.0.html LGPL
+ * @link       http://isotopeecommerce.org
+ * @license    http://opensource.org/licenses/lgpl-3.0.html
  */
 
 namespace Isotope;
@@ -42,11 +42,12 @@ class Runonce extends \Controller
     {
         // Check if shop has been installed
         $blnInstalled = \Database::getInstance()->tableExists(\Isotope\Model\Config::getTable());
+        $strStep = '';
 
         foreach (scan(TL_ROOT . '/system/modules/isotope/library/Isotope/Upgrade') as $strFile) {
             $strVersion = pathinfo($strFile, PATHINFO_FILENAME);
-            $strClass = 'Isotope\Upgrade\\' . $strVersion;
-            $strStep = 'Version ' . \Haste\Util\Format::repositoryVersion(substr($strVersion, 2));
+            $strClass   = 'Isotope\Upgrade\\' . $strVersion;
+            $strStep    = 'Version ' . \Haste\Util\Format::repositoryVersion(substr($strVersion, 2));
 
             if (preg_match('/To[0-9]{10}/', $strVersion)) {
                 try {

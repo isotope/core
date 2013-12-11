@@ -3,14 +3,11 @@
 /**
  * Isotope eCommerce for Contao Open Source CMS
  *
- * Copyright (C) 2009-2012 Isotope eCommerce Workgroup
+ * Copyright (C) 2009-2013 terminal42 gmbh & Isotope eCommerce Workgroup
  *
  * @package    Isotope
- * @link       http://www.isotopeecommerce.com
- * @license    http://opensource.org/licenses/lgpl-3.0.html LGPL
- *
- * @author     Andreas Schempp <andreas.schempp@terminal42.ch>
- * @author     Fred Bliss <fred.bliss@intelligentspark.com>
+ * @link       http://isotopeecommerce.org
+ * @license    http://opensource.org/licenses/lgpl-3.0.html
  */
 
 namespace Isotope\Backend\Module;
@@ -42,10 +39,8 @@ class Callback extends \Backend
     {
         $arrAttributes = array();
 
-        foreach ($GLOBALS['TL_DCA']['tl_iso_product']['fields'] as $field => $arrData)
-        {
-            if ($arrData['attributes']['fe_filter'])
-            {
+        foreach ($GLOBALS['TL_DCA']['tl_iso_product']['fields'] as $field => $arrData) {
+            if ($arrData['attributes']['fe_filter']) {
                 $arrAttributes[$field] = strlen($arrData['label'][0]) ? $arrData['label'][0] : $field;
             }
         }
@@ -62,10 +57,8 @@ class Callback extends \Backend
     {
         $arrAttributes = array();
 
-        foreach ($GLOBALS['TL_DCA']['tl_iso_product']['fields'] as $field => $arrData)
-        {
-            if ($arrData['attributes']['fe_sorting'])
-            {
+        foreach ($GLOBALS['TL_DCA']['tl_iso_product']['fields'] as $field => $arrData) {
+            if ($arrData['attributes']['fe_sorting']) {
                 $arrAttributes[$field] = strlen($arrData['label'][0]) ? $arrData['label'][0] : $field;
             }
         }
@@ -82,10 +75,8 @@ class Callback extends \Backend
     {
         $arrAttributes = array();
 
-        foreach ($GLOBALS['TL_DCA']['tl_iso_product']['fields'] as $field => $arrData)
-        {
-            if ($arrData['attributes']['fe_search'])
-            {
+        foreach ($GLOBALS['TL_DCA']['tl_iso_product']['fields'] as $field => $arrData) {
+            if ($arrData['attributes']['fe_search']) {
                 $arrAttributes[$field] = strlen($arrData['label'][0]) ? $arrData['label'][0] : $field;
             }
         }
@@ -102,10 +93,8 @@ class Callback extends \Backend
     {
         $arrAttributes = array();
 
-        foreach ($GLOBALS['TL_DCA']['tl_iso_product']['fields'] as $field => $arrData)
-        {
-            if ($arrData['attributes']['fe_search'] && !$arrData['attributes']['dynamic'])
-            {
+        foreach ($GLOBALS['TL_DCA']['tl_iso_product']['fields'] as $field => $arrData) {
+            if ($arrData['attributes']['fe_search'] && !$arrData['attributes']['dynamic']) {
                 $arrAttributes[$field] = strlen($arrData['label'][0]) ? $arrData['label'][0] : $field;
             }
         }
@@ -155,8 +144,7 @@ class Callback extends \Backend
         $arrModules = array();
         $objModules = \Database::getInstance()->execute("SELECT id, name FROM tl_module WHERE type='login'");
 
-        while ($objModules->next())
-        {
+        while ($objModules->next()) {
             $arrModules[$objModules->id] = $objModules->name;
         }
 
@@ -174,17 +162,14 @@ class Callback extends \Backend
         $arrButtons = array();
 
         // !HOOK: add product buttons
-        if (isset($GLOBALS['ISO_HOOKS']['buttons']) && is_array($GLOBALS['ISO_HOOKS']['buttons']))
-        {
-            foreach ($GLOBALS['ISO_HOOKS']['buttons'] as $callback)
-            {
+        if (isset($GLOBALS['ISO_HOOKS']['buttons']) && is_array($GLOBALS['ISO_HOOKS']['buttons'])) {
+            foreach ($GLOBALS['ISO_HOOKS']['buttons'] as $callback) {
                 $objCallback = \System::importStatic($callback[0]);
-                $arrButtons = $objCallback->$callback[1]($arrButtons);
+                $arrButtons  = $objCallback->$callback[1]($arrButtons);
             }
         }
 
-        foreach ($arrButtons as $button => $data)
-        {
+        foreach ($arrButtons as $button => $data) {
             $arrOptions[$button] = $data['label'];
         }
 
@@ -201,8 +186,7 @@ class Callback extends \Backend
     {
         $intPid = $dc->activeRecord->pid;
 
-        if (\Input::get('act') == 'overrideAll')
-        {
+        if (\Input::get('act') == 'overrideAll') {
             $intPid = \Input::get('id');
         }
 
@@ -219,17 +203,13 @@ class Callback extends \Backend
     {
         $arrClasses = array();
 
-        foreach ($GLOBALS['FE_MOD'] as $arrModules)
-        {
-            foreach ($arrModules as $strName => $strClass)
-            {
-                if ($strClass != '' && !class_exists($strClass))
-                {
+        foreach ($GLOBALS['FE_MOD'] as $arrModules) {
+            foreach ($arrModules as $strName => $strClass) {
+                if ($strClass != '' && !class_exists($strClass)) {
                     continue;
                 }
 
-                if ($strClass == 'Isotope\Module\ProductFilter' || is_subclass_of($strClass, 'Isotope\Module\ProductFilter'))
-                {
+                if ($strClass == 'Isotope\Module\ProductFilter' || is_subclass_of($strClass, 'Isotope\Module\ProductFilter')) {
                     $arrClasses[] = $strName;
                 }
             }
@@ -238,8 +218,7 @@ class Callback extends \Backend
         $arrModules = array();
         $objModules = \Database::getInstance()->execute("SELECT * FROM tl_module WHERE type IN ('" . implode("','", $arrClasses) . "')");
 
-        while ($objModules->next())
-        {
+        while ($objModules->next()) {
             $arrModules[$objModules->id] = $objModules->name;
         }
 

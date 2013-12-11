@@ -3,11 +3,11 @@
 /**
  * Isotope eCommerce for Contao Open Source CMS
  *
- * Copyright (C) 2008-2012 Isotope eCommerce Workgroup
+ * Copyright (C) 2009-2013 terminal42 gmbh & Isotope eCommerce Workgroup
  *
  * @package    Isotope
- * @link       http://www.isotopeecommerce.com
- * @license    http://opensource.org/licenses/lgpl-3.0.html LGPL
+ * @link       http://isotopeecommerce.org
+ * @license    http://opensource.org/licenses/lgpl-3.0.html
  */
 
 namespace Isotope\Model\Gallery;
@@ -37,7 +37,7 @@ class Inline extends Standard
      * @param   bool
      * @return  string
      */
-    public function generateGallery($intSkip=0, $blnForce=false)
+    public function generateGallery($intSkip = 0, $blnForce = false)
     {
         // Do not render gallery if there are no additional image
         $total = count($this->arrFiles);

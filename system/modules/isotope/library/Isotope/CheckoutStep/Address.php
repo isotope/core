@@ -3,18 +3,17 @@
 /**
  * Isotope eCommerce for Contao Open Source CMS
  *
- * Copyright (C) 2009-2012 Isotope eCommerce Workgroup
+ * Copyright (C) 2009-2013 terminal42 gmbh & Isotope eCommerce Workgroup
  *
  * @package    Isotope
- * @link       http://www.isotopeecommerce.com
- * @license    http://opensource.org/licenses/lgpl-3.0.html LGPL
+ * @link       http://isotopeecommerce.org
+ * @license    http://opensource.org/licenses/lgpl-3.0.html
  */
-
 
 namespace Isotope\CheckoutStep;
 
-use Isotope\Model\Address as AddressModel;
 use Haste\Generator\RowClass;
+use Isotope\Model\Address as AddressModel;
 
 abstract class Address extends CheckoutStep
 {
@@ -54,10 +53,10 @@ abstract class Address extends CheckoutStep
     {
         $blnValidate = \Input::post('FORM_SUBMIT') == $this->objModule->getFormId();
 
-        $this->Template->class = $this->getStepClass();
+        $this->Template->class     = $this->getStepClass();
         $this->Template->tableless = $this->objModule->tableless;
-        $this->Template->options = $this->generateOptions($blnValidate);
-        $this->Template->fields = $this->generateFields($blnValidate);
+        $this->Template->options   = $this->generateOptions($blnValidate);
+        $this->Template->fields    = $this->generateFields($blnValidate);
 
         return $this->Template->parse();
     }
@@ -67,10 +66,10 @@ abstract class Address extends CheckoutStep
      * @param string
      * @return string
      */
-    protected function generateOptions($blnValidate=false)
+    protected function generateOptions($blnValidate = false)
     {
-        $strBuffer = '';
-        $varValue = '0';
+        $strBuffer  = '';
+        $varValue   = '0';
         $arrOptions = $this->getAddressOptions();
 
         if (!empty($arrOptions)) {
@@ -81,7 +80,7 @@ abstract class Address extends CheckoutStep
                 }
             }
 
-            $strClass = $GLOBALS['TL_FFL']['radio'];
+            $strClass  = $GLOBALS['TL_FFL']['radio'];
             $objWidget = new $strClass(array(
                 'id'            => $this->getStepClass(),
                 'name'          => $this->getStepClass(),
@@ -134,12 +133,12 @@ abstract class Address extends CheckoutStep
      * @param   bool
      * @return  string|array
      */
-    protected function generateFields($blnValidate=false)
+    protected function generateFields($blnValidate = false)
     {
-        $strBuffer = '';
+        $strBuffer  = '';
         $arrWidgets = $this->getWidgets();
 
-        RowClass::withKey('rowClass')->addCount()->addFirstLast()->addEventOdd()->applyTo($arrWidgets);
+        RowClass::withKey('rowClass')->addCount('row_')->addFirstLast('row_')->addEvenOdd('row_')->applyTo($arrWidgets);
 
         foreach ($arrWidgets as $objWidget) {
             $strBuffer .= $objWidget->parse();
@@ -168,16 +167,14 @@ abstract class Address extends CheckoutStep
 
                 // Convert date formats into timestamps
                 if (strlen($varValue) && in_array($arrData['eval']['rgxp'], array('date', 'time', 'datim'))) {
-                    $objDate = new \Date($varValue, $GLOBALS['TL_CONFIG'][$arrData['eval']['rgxp'] . 'Format']);
+                    $objDate  = new \Date($varValue, $GLOBALS['TL_CONFIG'][$arrData['eval']['rgxp'] . 'Format']);
                     $varValue = $objDate->tstamp;
                 }
 
                 // Do not submit if there are errors
                 if ($objWidget->hasErrors()) {
                     $this->blnError = true;
-                }
-
-                // Store current value
+                } // Store current value
                 elseif ($objWidget->submitInput()) {
                     $arrAddress[$strName] = $varValue;
                 }
@@ -206,7 +203,7 @@ abstract class Address extends CheckoutStep
     {
         if (null === $this->arrWidgets) {
             $this->arrWidgets = array();
-            $objAddress = $this->getDefaultAddress();
+            $objAddress       = $this->getDefaultAddress();
 
             foreach ($this->getAddressFields() as $field) {
 
@@ -225,20 +222,18 @@ abstract class Address extends CheckoutStep
 
                 // Special field "country"
                 if ($field['value'] == 'country') {
-                    $arrCountries = $this->getAddressCountries();
+                    $arrCountries       = $this->getAddressCountries();
                     $arrData['options'] = array_values(array_intersect($arrData['options'], $arrCountries));
-                }
-
-                // Special field type "conditionalselect"
+                } // Special field type "conditionalselect"
                 elseif (strlen($arrData['eval']['conditionField'])) {
                     $arrData['eval']['conditionField'] = $this->getStepClass() . '_' . $arrData['eval']['conditionField'];
                 }
 
                 $objWidget = new $strClass($strClass::getAttributesFromDca($arrData, $this->getStepClass() . '_' . $field['value'], $objAddress->{$field['value']}));
 
-                $objWidget->mandatory = $field['mandatory'] ? true : false;
-                $objWidget->required = $objWidget->mandatory;
-                $objWidget->tableless = $this->objModule->tableless;
+                $objWidget->mandatory   = $field['mandatory'] ? true : false;
+                $objWidget->required    = $objWidget->mandatory;
+                $objWidget->tableless   = $this->objModule->tableless;
                 $objWidget->storeValues = true;
 
                 $this->arrWidgets[$field['value']] = $objWidget;
@@ -270,9 +265,9 @@ abstract class Address extends CheckoutStep
                     }
 
                     $arrOptions[] = array(
-                        'value'        => $objAddress->id,
-                        'label'        => $objAddress->generateHtml(),
-                        'default'      => ($objAddress->id == $objDefault->id ? '1' : ''),
+                        'value'   => $objAddress->id,
+                        'label'   => $objAddress->generateHtml(),
+                        'default' => ($objAddress->id == $objDefault->id ? '1' : ''),
                     );
                 }
             }
@@ -307,7 +302,7 @@ abstract class Address extends CheckoutStep
     protected function getAddresses()
     {
         $arrAddresses = array();
-        $objAddresses = AddressModel::findForMember(\FrontendUser::getInstance()->id, array('order'=>'isDefaultBilling DESC, isDefaultShipping DESC'));
+        $objAddresses = AddressModel::findForMember(\FrontendUser::getInstance()->id, array('order' => 'isDefaultBilling DESC, isDefaultShipping DESC'));
 
         if (null !== $objAddresses) {
             while ($objAddresses->next()) {

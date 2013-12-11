@@ -3,22 +3,22 @@
 /**
  * Isotope eCommerce for Contao Open Source CMS
  * 
- * Copyright (C) 2009-2013 Isotope eCommerce Workgroup
+ * Copyright (C) 2009-2013 terminal42 gmbh & Isotope eCommerce Workgroup
  * 
- * Core translations are managed using Transifex. To create a new translation
+ * Translations are managed using Transifex. To create a new translation
  * or to help to maintain an existing one, please register at transifex.com.
  * 
  * @link http://help.transifex.com/intro/translating.html
  * @link https://www.transifex.com/projects/i/isotope/language/de/
  * 
- * @license http://www.gnu.org/licenses/lgpl-3.0.html LGPL
+ * @license http://www.gnu.org/licenses/lgpl-3.0.html
  */
 
 $GLOBALS['TL_LANG']['tl_iso_gallery']['name'][0] = 'Name';
 $GLOBALS['TL_LANG']['tl_iso_gallery']['name'][1] = 'Geben Sie einen Namen für die Galerie ein.';
 $GLOBALS['TL_LANG']['tl_iso_gallery']['type'][0] = 'Typ';
 $GLOBALS['TL_LANG']['tl_iso_gallery']['type'][1] = 'Bitte wählen Sie einen Galerietyp.';
-$GLOBALS['TL_LANG']['tl_iso_gallery']['anchor'][0] = 'Bildankar';
+$GLOBALS['TL_LANG']['tl_iso_gallery']['anchor'][0] = 'Bildanker';
 $GLOBALS['TL_LANG']['tl_iso_gallery']['anchor'][1] = 'Wählen Sie den Typ des Bildankers, welcher generiert werden soll.';
 $GLOBALS['TL_LANG']['tl_iso_gallery']['placeholder'][0] = 'Platzhalter-Bild';
 $GLOBALS['TL_LANG']['tl_iso_gallery']['placeholder'][1] = 'Dieses Bild wird verwendet, wenn ein Bild nicht gefunden oder keines dem Produkt zugewiesen wurde.';

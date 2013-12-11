@@ -3,16 +3,16 @@
 /**
  * Isotope eCommerce for Contao Open Source CMS
  *
- * Copyright (C) 2008-2012 Isotope eCommerce Workgroup
+ * Copyright (C) 2009-2013 terminal42 gmbh & Isotope eCommerce Workgroup
  *
  * @package    Isotope
- * @link       http://www.isotopeecommerce.com
- * @license    http://opensource.org/licenses/lgpl-3.0.html LGPL
+ * @link       http://isotopeecommerce.org
+ * @license    http://opensource.org/licenses/lgpl-3.0.html
  */
 
 namespace Isotope\ContentElement;
 
-use \ContentElement as Contao_ContentElement;
+use ContentElement as Contao_ContentElement;
 
 
 /**
@@ -34,11 +34,10 @@ abstract class ContentElement extends Contao_ContentElement
     {
         parent::__construct($objElement);
 
-        if (TL_MODE == 'FE')
-        {
+        if (TL_MODE == 'FE') {
             // Load Isotope javascript and css
             $GLOBALS['TL_JAVASCRIPT'][] = \Haste\Util\Debug::uncompressedFile('system/modules/isotope/assets/js/isotope.min.js');
-            $GLOBALS['TL_CSS'][] = \Haste\Util\Debug::uncompressedFile('system/modules/isotope/assets/css/isotope.min.css');
+            $GLOBALS['TL_CSS'][]        = \Haste\Util\Debug::uncompressedFile('system/modules/isotope/assets/css/isotope.min.css');
         }
     }
 }

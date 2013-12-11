@@ -3,11 +3,11 @@
 /**
  * Isotope eCommerce for Contao Open Source CMS
  *
- * Copyright (C) 2008-2012 Isotope eCommerce Workgroup
+ * Copyright (C) 2009-2013 terminal42 gmbh & Isotope eCommerce Workgroup
  *
  * @package    Isotope
- * @link       http://www.isotopeecommerce.com
- * @license    http://opensource.org/licenses/lgpl-3.0.html LGPL
+ * @link       http://isotopeecommerce.org
+ * @license    http://opensource.org/licenses/lgpl-3.0.html
  */
 
 namespace Isotope\Model\Gallery;
@@ -73,24 +73,20 @@ class Standard extends Gallery implements IsotopeGallery
     public function setFiles($varValue)
     {
         $this->arrFiles = array();
-        $varValue = deserialize($varValue);
+        $varValue       = deserialize($varValue);
 
-        if (is_array($varValue) && !empty($varValue))
-        {
-            foreach ($varValue as $file)
-            {
+        if (is_array($varValue) && !empty($varValue)) {
+            foreach ($varValue as $file) {
                 $this->addImage($file);
             }
         }
 
         // No image available, add placeholder from store configuration
-        if (empty($this->arrFiles))
-        {
+        if (empty($this->arrFiles)) {
             $objPlaceholder = \FilesModel::findByPk($this->placeholder);
 
-            if (null !== $objPlaceholder && is_file(TL_ROOT . '/' . $objPlaceholder->path))
-            {
-                $this->addImage(array('src'=>$objPlaceholder->path), false);
+            if (null !== $objPlaceholder && is_file(TL_ROOT . '/' . $objPlaceholder->path)) {
+                $this->addImage(array('src' => $objPlaceholder->path), false);
             }
         }
     }
@@ -158,7 +154,7 @@ class Standard extends Gallery implements IsotopeGallery
      * @param   integer
      * @return  string
      */
-    public function generateGallery($intSkip=1)
+    public function generateGallery($intSkip = 1)
     {
         $strGallery = '';
 
@@ -187,26 +183,26 @@ class Standard extends Gallery implements IsotopeGallery
     protected function addImageToTemplate(\Isotope\Template $objTemplate, $strType, array $arrFile)
     {
         $objTemplate->setData($this->arrData);
-        $objTemplate->type = $strType;
+        $objTemplate->type       = $strType;
         $objTemplate->product_id = $this->product_id;
-        $objTemplate->file = $arrFile;
-        $objTemplate->src = $arrFile[$strType];
-        $objTemplate->size = $arrFile[$strType.'_size'];
-        $objTemplate->alt = $arrFile['alt'];
-        $objTemplate->title = $arrFile['desc'];
+        $objTemplate->file       = $arrFile;
+        $objTemplate->src        = $arrFile[$strType];
+        $objTemplate->size       = $arrFile[$strType . '_size'];
+        $objTemplate->alt        = $arrFile['alt'];
+        $objTemplate->title      = $arrFile['desc'];
 
         switch ($this->anchor) {
             case 'reader':
                 $objTemplate->hasLink = ($this->href != '');
-                $objTemplate->link = $this->href;
+                $objTemplate->link    = $this->href;
                 break;
 
             case 'lightbox':
                 list($link, $rel) = explode('|', $arrFile['link'], 2);
 
-                $objTemplate->hasLink = true;
-                $objTemplate->link = $link ?: $arrFile['lightbox'];
-                $objTemplate->attributes = ($link ? ($rel ? ' data-lightbox="'.$rel.'"' : ' target="_blank"') : ' data-lightbox="product'.$this->product_id.'"');
+                $objTemplate->hasLink    = true;
+                $objTemplate->link       = $link ? : $arrFile['lightbox'];
+                $objTemplate->attributes = ($link ? ($rel ? ' data-lightbox="' . $rel . '"' : ' target="_blank"') : ' data-lightbox="product' . $this->product_id . '"');
                 break;
 
             default:
@@ -222,53 +218,48 @@ class Standard extends Gallery implements IsotopeGallery
      * @param bool
      * @return bool
      */
-    private function addImage(array $file, $blnWatermark=true, $blnMain=false)
+    private function addImage(array $file, $blnWatermark = true, $blnMain = false)
     {
         $strFile = $file['src'];
 
         // File without path must be located in the isotope root folder
-        if (strpos($strFile, '/') === false)
-        {
+        if (strpos($strFile, '/') === false) {
             $strFile = 'isotope/' . strtolower(substr($strFile, 0, 1)) . '/' . $strFile;
         }
 
-        if (is_file(TL_ROOT . '/' . $strFile))
-        {
+        if (is_file(TL_ROOT . '/' . $strFile)) {
             $objFile = new \File($strFile);
 
-            if ($objFile->isGdImage)
-            {
-                foreach (array('main','gallery','lightbox') as $name)
-                {
-                    $size = deserialize($this->{$name.'_size'});
+            if ($objFile->isGdImage) {
+                foreach (array('main', 'gallery', 'lightbox') as $name) {
+
+                    $size     = deserialize($this->{$name . '_size'});
                     $strImage = \Image::get($strFile, $size[0], $size[1], $size[2]);
 
-                    if ($this->{$name.'_watermark_image'} != '' && $blnWatermark)
-                    {
-                        $strImage = \Haste\Image\Image::addWatermark($strImage, $this->{$name.'_watermark_image'}, $this->{$name.'_watermark_position'});
+                    if ($this->{$name . '_watermark_image'} != ''
+                        && $blnWatermark
+                        && ($objWatermark = \FilesModel::findByUuid($this->{$name . '_watermark_image'})) !== null
+                    ) {
+                        $strImage = \Haste\Image\Image::addWatermark($strImage, $objWatermark->path, $this->{$name . '_watermark_position'});
                     }
 
                     $arrSize = @getimagesize(TL_ROOT . '/' . $strImage);
 
-                    if (is_array($arrSize) && strlen($arrSize[3]))
-                    {
-                        $file[$name . '_size'] = $arrSize[3];
+                    if (is_array($arrSize) && strlen($arrSize[3])) {
+                        $file[$name . '_size']      = $arrSize[3];
                         $file[$name . '_imageSize'] = $arrSize;
                     }
 
-                    $file['alt'] = specialchars($file['alt'], true);
+                    $file['alt']  = specialchars($file['alt'], true);
                     $file['desc'] = specialchars($file['desc'], true);
 
                     $file[$name] = $strImage;
                 }
 
                 // Main image is first in the array
-                if ($blnMain)
-                {
+                if ($blnMain) {
                     array_unshift($this->arrFiles, $file);
-                }
-                else
-                {
+                } else {
                     $this->arrFiles[] = $file;
                 }
 

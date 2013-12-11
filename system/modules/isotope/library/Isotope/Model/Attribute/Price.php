@@ -3,11 +3,11 @@
 /**
  * Isotope eCommerce for Contao Open Source CMS
  *
- * Copyright (C) 2009-2012 Isotope eCommerce Workgroup
+ * Copyright (C) 2009-2013 terminal42 gmbh & Isotope eCommerce Workgroup
  *
  * @package    Isotope
- * @link       http://www.isotopeecommerce.com
- * @license    http://opensource.org/licenses/lgpl-3.0.html LGPL
+ * @link       http://isotopeecommerce.org
+ * @license    http://opensource.org/licenses/lgpl-3.0.html
  */
 
 namespace Isotope\Model\Attribute;
@@ -26,33 +26,33 @@ use Isotope\Model\Attribute;
 class Price extends Attribute implements IsotopeAttribute
 {
 
-    public function __construct(\Database\Result $objResult=null)
+    public function __construct(\Database\Result $objResult = null)
     {
         // This class should not be registered
-    	// Set type or ModelType would throw an exception
-    	$this->arrData['type'] = 'price';
+        // Set type or ModelType would throw an exception
+        $this->arrData['type'] = 'price';
 
-    	parent::__construct($objResult);
+        parent::__construct($objResult);
     }
 
-	public function getBackendWidget()
-	{
-		return $GLOBALS['BE_FFL']['timePeriod'];
-	}
+    public function getBackendWidget()
+    {
+        return $GLOBALS['BE_FFL']['timePeriod'];
+    }
 
-	public function getFrontendWidget()
-	{
-		return false;
-	}
+    public function getFrontendWidget()
+    {
+        return false;
+    }
 
-	public function generate(IsotopeProduct $objProduct, array $arrOptions=array())
-	{
-	    $objPrice = $objProduct->getPrice();
+    public function generate(IsotopeProduct $objProduct, array $arrOptions = array())
+    {
+        $objPrice = $objProduct->getPrice();
 
         if (null === $objPrice) {
             return '';
         }
 
         return $objPrice->generate();
-	}
+    }
 }

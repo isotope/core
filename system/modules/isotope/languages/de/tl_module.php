@@ -3,15 +3,15 @@
 /**
  * Isotope eCommerce for Contao Open Source CMS
  * 
- * Copyright (C) 2009-2013 Isotope eCommerce Workgroup
+ * Copyright (C) 2009-2013 terminal42 gmbh & Isotope eCommerce Workgroup
  * 
- * Core translations are managed using Transifex. To create a new translation
+ * Translations are managed using Transifex. To create a new translation
  * or to help to maintain an existing one, please register at transifex.com.
  * 
  * @link http://help.transifex.com/intro/translating.html
  * @link https://www.transifex.com/projects/i/isotope/language/de/
  * 
- * @license http://www.gnu.org/licenses/lgpl-3.0.html LGPL
+ * @license http://www.gnu.org/licenses/lgpl-3.0.html
  */
 
 $GLOBALS['TL_LANG']['tl_module']['iso_list_layout'][0] = 'Produktlisten-Template';
@@ -30,6 +30,8 @@ $GLOBALS['TL_LANG']['tl_module']['iso_hide_list'][0] = 'Ausblenden bei Produktan
 $GLOBALS['TL_LANG']['tl_module']['iso_hide_list'][1] = 'Blendet die Liste aus, wenn ein Produkt-Alias in der URL gefunden wird.';
 $GLOBALS['TL_LANG']['tl_module']['iso_use_quantity'][0] = 'Menge aktivieren';
 $GLOBALS['TL_LANG']['tl_module']['iso_use_quantity'][1] = 'Ermöglicht es den Nutzern anzugeben, dass 1 oder mehrere Stück eines Produkts gekauft werden sollen.';
+$GLOBALS['TL_LANG']['tl_module']['iso_display404Page'][0] = 'Eine 404 Fehlerseite anzeigen';
+$GLOBALS['TL_LANG']['tl_module']['iso_display404Page'][1] = 'Zeigt eine 404 Fehlerseite an, wenn das Produkt nicht gefunden wird. Mit Vorsicht zu geniessen, wenn sich die Produktliste auf der selben Seite befindet.';
 $GLOBALS['TL_LANG']['tl_module']['iso_checkout_method'][0] = 'Bestellvorgang-Art';
 $GLOBALS['TL_LANG']['tl_module']['iso_checkout_method'][1] = 'Wählen Sie eine Bestellvorgang-Art';
 $GLOBALS['TL_LANG']['tl_module']['iso_login_jumpTo'][0] = 'Kasse-Anmeldeseite';
@@ -50,7 +52,7 @@ $GLOBALS['TL_LANG']['tl_module']['orderCompleteJumpTo'][0] = 'Bestellbestätigun
 $GLOBALS['TL_LANG']['tl_module']['orderCompleteJumpTo'][1] = 'Wählen Sie eine Seite aus, zu der der Kunde weitergeleitet wird, wenn seine Bestellung abgeschlossen wurde.';
 $GLOBALS['TL_LANG']['tl_module']['iso_forward_review'][0] = 'Weiterleiten zur Bestätigungsseite';
 $GLOBALS['TL_LANG']['tl_module']['iso_forward_review'][1] = 'Den Nutzer zur Bestätigungsseite weiterleiten, wenn alle benötigten Daten vorhanden sind.';
-$GLOBALS['TL_LANG']['tl_module']['iso_order_conditions'][0] = 'Bestellbedingungen-Formular';
+$GLOBALS['TL_LANG']['tl_module']['iso_order_conditions'][0] = 'Bestellbedingungsformular';
 $GLOBALS['TL_LANG']['tl_module']['iso_order_conditions'][1] = 'Optional: Wählen Sie ein individuelles Formular das genutzt werden soll um Bestellbedingungen (z. B. AGB, Widerrufsbelehrung, etc.) anzuzeigen.';
 $GLOBALS['TL_LANG']['tl_module']['iso_order_conditions_position'][0] = 'Position des Formulars für die Bestellbedingungen';
 $GLOBALS['TL_LANG']['tl_module']['iso_order_conditions_position'][1] = 'Definieren Sie, ob die Bestellbedingungen vor oder nach der Produktliste angezeigt werden sollen.';

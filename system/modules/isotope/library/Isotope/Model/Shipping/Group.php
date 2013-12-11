@@ -3,11 +3,11 @@
 /**
  * Isotope eCommerce for Contao Open Source CMS
  *
- * Copyright (C) 2009-2012 Isotope eCommerce Workgroup
+ * Copyright (C) 2009-2013 terminal42 gmbh & Isotope eCommerce Workgroup
  *
  * @package    Isotope
- * @link       http://www.isotopeecommerce.com
- * @license    http://opensource.org/licenses/lgpl-3.0.html LGPL
+ * @link       http://isotopeecommerce.org
+ * @license    http://opensource.org/licenses/lgpl-3.0.html
  */
 
 namespace Isotope\Model\Shipping;
@@ -36,13 +36,16 @@ class Group extends Shipping implements IsotopeShipping
     {
         parent::setRow($arrData);
 
-        // Reset existing array
-        $this->arrMethods = array();
+        if (TL_MODE != 'BE') {
 
-        if (($objMethods = Shipping::findMultipleByIds(deserialize($this->group_methods, true))) !== null) {
-            foreach ($objMethods as $objMethod) {
-                if ($objMethod->isAvailable()) {
-                    $this->arrMethods[] = $objMethod;
+            // Reset existing array
+            $this->arrMethods = array();
+
+            if (($objMethods = Shipping::findMultipleByIds(deserialize($this->group_methods, true))) !== null) {
+                foreach ($objMethods as $objMethod) {
+                    if ($objMethod->isAvailable()) {
+                        $this->arrMethods[] = $objMethod;
+                    }
                 }
             }
         }
@@ -63,7 +66,7 @@ class Group extends Shipping implements IsotopeShipping
      * Return calculated price for this shipping method
      * @return float
      */
-    public function getPrice(IsotopeProductCollection $objCollection=null)
+    public function getPrice(IsotopeProductCollection $objCollection = null)
     {
         if (empty($this->arrMethods)) {
             return 0;
@@ -83,6 +86,7 @@ class Group extends Shipping implements IsotopeShipping
                         $fltReturn = $fltPrice;
                     }
                 }
+
                 return ($fltReturn === null) ? 0 : $fltReturn;
 
             case 'highest':
@@ -93,6 +97,7 @@ class Group extends Shipping implements IsotopeShipping
                         $fltReturn = $fltPrice;
                     }
                 }
+
                 return ($fltReturn === null) ? 0 : $fltReturn;
 
             case 'summarize':
@@ -100,6 +105,7 @@ class Group extends Shipping implements IsotopeShipping
                 foreach ($this->arrMethods as $objMethod) {
                     $fltTotal += $objMethod->getPrice();
                 }
+
                 return $fltTotal;
         }
     }

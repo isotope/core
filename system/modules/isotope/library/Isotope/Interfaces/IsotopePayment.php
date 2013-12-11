@@ -3,11 +3,11 @@
 /**
  * Isotope eCommerce for Contao Open Source CMS
  *
- * Copyright (C) 2008-2012 Isotope eCommerce Workgroup
+ * Copyright (C) 2009-2013 terminal42 gmbh & Isotope eCommerce Workgroup
  *
  * @package    Isotope
- * @link       http://www.isotopeecommerce.com
- * @license    http://opensource.org/licenses/lgpl-3.0.html LGPL
+ * @link       http://isotopeecommerce.org
+ * @license    http://opensource.org/licenses/lgpl-3.0.html
  */
 
 namespace Isotope\Interfaces;
@@ -19,17 +19,20 @@ namespace Isotope\Interfaces;
 interface IsotopePayment
 {
     /**
-     * Process checkout payment. Must be implemented in each payment module
-     * @access public
-     * @return mixed
+     * Process payment on checkout confirmation page.
+     * @param   IsotopeProductCollection    The order being places
+     * @param   Module                      The checkout module instance
+     * @return  mixed
      */
-    public function processPayment();
+    public function processPayment(IsotopeProductCollection $objOrder, \Module $objModule);
 
     /**
      * Return a html form for checkout or false
-     * @return mixed
+     * @param   IsotopeProductCollection    The order being places
+     * @param   Module                      The checkout module instance
+     * @return  mixed
      */
-    public function checkoutForm();
+    public function checkoutForm(IsotopeProductCollection $objOrder, \Module $objModule);
 
     /**
      * Return information or advanced features in the backend.

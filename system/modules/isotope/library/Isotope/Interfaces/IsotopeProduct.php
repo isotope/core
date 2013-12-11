@@ -3,11 +3,11 @@
 /**
  * Isotope eCommerce for Contao Open Source CMS
  *
- * Copyright (C) 2009-2012 Isotope eCommerce Workgroup
+ * Copyright (C) 2009-2013 terminal42 gmbh & Isotope eCommerce Workgroup
  *
  * @package    Isotope
- * @link       http://www.isotopeecommerce.com
- * @license    http://opensource.org/licenses/lgpl-3.0.html LGPL
+ * @link       http://isotopeecommerce.org
+ * @license    http://opensource.org/licenses/lgpl-3.0.html
  */
 
 namespace Isotope\Interfaces;
@@ -68,6 +68,12 @@ interface IsotopeProduct
     public function hasVariants();
 
     /**
+     * Returns true if this product is a variant
+     * @return bool
+     */
+    public function isVariant();
+
+    /**
      * Returns true if product has variants, and the price is a variant attribute
      * @return bool
      */
@@ -84,7 +90,7 @@ interface IsotopeProduct
      * @param   IsotopeProductCollection
      * @return  IsotopePrice
      */
-    public function getPrice(IsotopeProductCollection $objCollection=null);
+    public function getPrice(IsotopeProductCollection $objCollection = null);
 
     /**
      * Return minimum quantity for the product (from advanced price tiers)
@@ -110,5 +116,5 @@ interface IsotopeProduct
      * @param  \PageModel
      * @return string
      */
-    public function generateUrl(\PageModel $objJumpTo=null);
+    public function generateUrl(\PageModel $objJumpTo = null);
 }

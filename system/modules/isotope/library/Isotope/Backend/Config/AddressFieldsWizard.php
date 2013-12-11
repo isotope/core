@@ -3,11 +3,11 @@
 /**
  * Isotope eCommerce for Contao Open Source CMS
  *
- * Copyright (C) 2009-2012 Isotope eCommerce Workgroup
+ * Copyright (C) 2009-2013 terminal42 gmbh & Isotope eCommerce Workgroup
  *
  * @package    Isotope
- * @link       http://www.isotopeecommerce.com
- * @license    http://opensource.org/licenses/lgpl-3.0.html LGPL
+ * @link       http://isotopeecommerce.org
+ * @license    http://opensource.org/licenses/lgpl-3.0.html
  */
 
 namespace Isotope\Backend\Config;
@@ -16,7 +16,7 @@ namespace Isotope\Backend\Config;
 class AddressFieldsWizard extends \Backend
 {
 
-	/**
+    /**
      * For each call, return the name of the next address field in the wizard (for input_field_callback)
      * @param   Widget
      * @param   string
@@ -34,7 +34,7 @@ class AddressFieldsWizard extends \Backend
         }
 
         $arrField = array_shift($arrValues);
-        $strName = $arrField['name'];
+        $strName  = $arrField['name'];
 
         return sprintf(
             '<input type="hidden" name="%s[%s][name]" id="ctrl_%s_row%s_name" value="%s"><div style="width:344px">%s <span style="color:#b3b3b3; padding-left:3px;">[%s]</span></div>',
@@ -43,7 +43,7 @@ class AddressFieldsWizard extends \Backend
             $objWidget->name,
             $i++,
             $strName,
-            $GLOBALS['TL_DCA'][\Isotope\Model\Address::getTable()]['fields'][$strName]['label'][0] ?: $strName,
+            $GLOBALS['TL_DCA'][\Isotope\Model\Address::getTable()]['fields'][$strName]['label'][0] ? : $strName,
             $strName
         );
     }
@@ -111,7 +111,7 @@ class AddressFieldsWizard extends \Backend
 
         $arrValues = array();
         foreach (array_values($arrFields) as $pos => $arrConfig) {
-            $arrConfig['position'] = $pos;
+            $arrConfig['position']         = $pos;
             $arrValues[$arrConfig['name']] = $arrConfig;
         }
 

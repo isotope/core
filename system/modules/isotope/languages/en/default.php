@@ -3,15 +3,11 @@
 /**
  * Isotope eCommerce for Contao Open Source CMS
  *
- * Copyright (C) 2009-2012 Isotope eCommerce Workgroup
+ * Copyright (C) 2009-2013 terminal42 gmbh & Isotope eCommerce Workgroup
  *
  * @package    Isotope
- * @link       http://www.isotopeecommerce.com
- *
- * @author     Andreas Schempp <andreas.schempp@terminal42.ch>
- * @author     Fred Bliss <fred.bliss@intelligentspark.com>
- * @author     Christian de la Haye <service@delahaye.de>
- * @author     Kamil Kuzminski <kamil.kuzminski@codefog.pl>
+ * @link       http://isotopeecommerce.org
+ * @license    http://opensource.org/licenses/lgpl-3.0.html
  */
 
 /**
@@ -160,6 +156,8 @@ $GLOBALS['TL_LANG']['MSC']['activeStep']                        = 'active step: 
 $GLOBALS['TL_LANG']['MSC']['productcacheLoading']               = 'Loading products...';
 $GLOBALS['TL_LANG']['MSC']['productcacheNoscript']              = 'Your browser does not support JavaScript. Please <a href="%s">click here</a> to load the product list.';
 $GLOBALS['TL_LANG']['MSC']['noFilesInFolder']                   = 'No files in this folder';
+$GLOBALS['TL_LANG']['MSC']['assetImportConfirmation']           = 'Imported file %s for product "%s"';
+$GLOBALS['TL_LANG']['MSC']['assetImportNoFilesFound']           = 'The folder did not contain any files to be imported.';
 $GLOBALS['TL_LANG']['MSC']['loadingProductData']                = 'Loading product data …';
 $GLOBALS['TL_LANG']['MSC']['templatesConfig']                   = 'Store Config "%s"';
 $GLOBALS['TL_LANG']['MSC']['splittedTaxRate']                   = 'Splitted';
@@ -173,7 +171,7 @@ $GLOBALS['TL_LANG']['MSC']['timePeriod']['months']              = 'Months';
 $GLOBALS['TL_LANG']['MSC']['timePeriod']['years']               = 'Years';
 $GLOBALS['TL_LANG']['MSC']['isotopeIntroduction'][0]            = 'Welcome to Isotope eCommerce';
 $GLOBALS['TL_LANG']['MSC']['isotopeIntroduction'][1]            = 'Isotope is the premier open source eCommerce solution for Contao.';
-$GLOBALS['TL_LANG']['MSC']['isotopeIntroduction'][2]            = 'This is the page where most of the configuration will take place. <u>You should start from the bottom of this page and work your way upward</u>.';
+$GLOBALS['TL_LANG']['MSC']['isotopeIntroduction'][2]            = 'This is the page where most of the configuration will take place. <strong>You should start from the bottom of this page and work your way upward from right to left.</strong>';
 $GLOBALS['TL_LANG']['MSC']['isotopeIntroduction'][3]            = 'Visit the official <a href="http://isotopeecommerce.org" target="_blank">Isotope eCommerce website</a> for the latest news, configuration manuals and our fundraising campaigns. Thank you so much for considering giving something back!';
 $GLOBALS['TL_LANG']['MSC']['isotopeIntroduction'][4]            = 'The Isotope eCommerce Team';
 $GLOBALS['TL_LANG']['MSC']['isotopeIntroduction'][5]            = 'Isotope is a product of %s in association with <a href="http://isotopeecommerce.org/de/team.html" target="_blank">the Isotope eCommerce Team</a>.';

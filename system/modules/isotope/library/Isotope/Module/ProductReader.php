@@ -3,17 +3,17 @@
 /**
  * Isotope eCommerce for Contao Open Source CMS
  *
- * Copyright (C) 2009-2012 Isotope eCommerce Workgroup
+ * Copyright (C) 2009-2013 terminal42 gmbh & Isotope eCommerce Workgroup
  *
  * @package    Isotope
- * @link       http://www.isotopeecommerce.com
- * @license    http://opensource.org/licenses/lgpl-3.0.html LGPL
+ * @link       http://isotopeecommerce.org
+ * @license    http://opensource.org/licenses/lgpl-3.0.html
  */
 
 namespace Isotope\Module;
 
-use Isotope\Interfaces\IsotopeProduct;
 use Haste\Http\Response\HtmlResponse;
+use Isotope\Interfaces\IsotopeProduct;
 use Isotope\Model\Product;
 
 
@@ -46,23 +46,21 @@ class ProductReader extends Module
      */
     public function generate()
     {
-        if (TL_MODE == 'BE')
-        {
+        if (TL_MODE == 'BE') {
             $objTemplate = new \BackendTemplate('be_wildcard');
 
             $objTemplate->wildcard = '### ISOTOPE ECOMMERCE: PRODUCT READER ###';
 
             $objTemplate->title = $this->headline;
-            $objTemplate->id = $this->id;
-            $objTemplate->link = $this->name;
-            $objTemplate->href = 'contao/main.php?do=themes&amp;table=tl_module&amp;act=edit&amp;id=' . $this->id;
+            $objTemplate->id    = $this->id;
+            $objTemplate->link  = $this->name;
+            $objTemplate->href  = 'contao/main.php?do=themes&amp;table=tl_module&amp;act=edit&amp;id=' . $this->id;
 
             return $objTemplate->parse();
         }
 
         // Return if no product has been specified
-        if (\Haste\Input\Input::getAutoItem('product') == '')
-        {
+        if (\Haste\Input\Input::getAutoItem('product') == '') {
             return '';
         }
 
@@ -90,10 +88,10 @@ class ProductReader extends Module
             } else {
                 // Do not index or cache the page
                 $objPage->noSearch = 1;
-                $objPage->cache = 0;
+                $objPage->cache    = 0;
 
-                $this->Template = new \Isotope\Template('mod_message');
-                $this->Template->type = 'empty';
+                $this->Template          = new \Isotope\Template('mod_message');
+                $this->Template->type    = 'empty';
                 $this->Template->message = $GLOBALS['TL_LANG']['MSC']['invalidProductInformation'];
 
                 return;
@@ -101,12 +99,12 @@ class ProductReader extends Module
         }
 
         $arrConfig = array(
-            'module'        => $this,
-            'template'      => ($this->iso_reader_layout ?: $objProduct->getRelated('type')->reader_template),
-            'gallery'       => ($this->iso_gallery ?: $objProduct->getRelated('type')->reader_gallery),
-            'buttons'       => deserialize($this->iso_buttons, true),
-            'useQuantity'   => $this->iso_use_quantity,
-            'jumpTo'        => ($objIsotopeListPage ?: $objPage),
+            'module'      => $this,
+            'template'    => ($this->iso_reader_layout ? : $objProduct->getRelated('type')->reader_template),
+            'gallery'     => ($this->iso_gallery ? : $objProduct->getRelated('type')->reader_gallery),
+            'buttons'     => deserialize($this->iso_buttons, true),
+            'useQuantity' => $this->iso_use_quantity,
+            'jumpTo'      => ($objIsotopeListPage ? : $objPage),
         );
 
         if (\Environment::get('isAjaxRequest') && \Input::post('AJAX_MODULE') == $this->id && \Input::post('AJAX_PRODUCT') == $objProduct->getProductId()) {
@@ -114,11 +112,13 @@ class ProductReader extends Module
             $objResponse->send();
         }
 
-        $this->Template->product = $objProduct->generate($arrConfig);
-        $this->Template->product_id = ($objProduct->cssID[0] != '') ? ' id="' . $objProduct->cssID[0] . '"' : '';
-        $this->Template->product_class = trim('product ' . ($objProduct->isNew() ? 'new ' : '') . $objProduct->cssID[1]);
-        $this->Template->referer = 'javascript:history.go(-1)';
-        $this->Template->back = $GLOBALS['TL_LANG']['MSC']['goBack'];
+        $arrCSS = deserialize($objProduct->cssID, true);
+
+        $this->Template->product       = $objProduct->generate($arrConfig);
+        $this->Template->product_id    = ($arrCSS[0] != '') ? ' id="' . $arrCSS[0] . '"' : '';
+        $this->Template->product_class = trim('product ' . ($objProduct->isNew() ? 'new ' : '') . $arrCSS[1]);
+        $this->Template->referer       = 'javascript:history.go(-1)';
+        $this->Template->back          = $GLOBALS['TL_LANG']['MSC']['goBack'];
 
         $this->addMetaTags($objProduct);
         $this->addCanonicalProductUrls($objProduct);
@@ -132,8 +132,8 @@ class ProductReader extends Module
     {
         global $objPage;
 
-        $objPage->pageTitle = $this->prepareMetaDescription($objProduct->meta_title ?: $objProduct->name);
-        $objPage->description = $this->prepareMetaDescription($objProduct->meta_description ?: ($objProduct->teaser ?: $objProduct->description));
+        $objPage->pageTitle   = $this->prepareMetaDescription($objProduct->meta_title ? : $objProduct->name);
+        $objPage->description = $this->prepareMetaDescription($objProduct->meta_description ? : ($objProduct->teaser ? : $objProduct->description));
 
         if ($objProduct->meta_keywords) {
             $GLOBALS['TL_KEYWORDS'] .= ($GLOBALS['TL_KEYWORDS'] != '' ? ', ' : '') . $objProduct->meta_keywords;
@@ -147,7 +147,7 @@ class ProductReader extends Module
     protected function addCanonicalProductUrls(IsotopeProduct $objProduct)
     {
         global $objPage;
-        $arrPageIds = \Database::getInstance()->getChildRecords($objPage->rootId, \PageModel::getTable());
+        $arrPageIds   = \Database::getInstance()->getChildRecords($objPage->rootId, \PageModel::getTable());
         $arrPageIds[] = $objPage->rootId;
 
         // Find the categories in the current root

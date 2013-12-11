@@ -3,11 +3,11 @@
 /**
  * Isotope eCommerce for Contao Open Source CMS
  *
- * Copyright (C) 2009-2012 Isotope eCommerce Workgroup
+ * Copyright (C) 2009-2013 terminal42 gmbh & Isotope eCommerce Workgroup
  *
  * @package    Isotope
- * @link       http://www.isotopeecommerce.com
- * @license    http://opensource.org/licenses/lgpl-3.0.html LGPL
+ * @link       http://isotopeecommerce.org
+ * @license    http://opensource.org/licenses/lgpl-3.0.html
  */
 
 namespace Isotope\Model;
@@ -283,7 +283,7 @@ class RequestCache extends \Model
             unset($this->arrSortings[$intModule][$strName]);
         }
 
-        $this->arrSortings[$intModule] = array_merge(array($strName=>$objSort), $this->arrSortings[$intModule]);
+        $this->arrSortings[$intModule] = array_merge(array($strName => $objSort), $this->arrSortings[$intModule]);
 
         // Mark as modified
         $this->tstamp = time();
@@ -336,7 +336,7 @@ class RequestCache extends \Model
      * @param   int
      * @return  int
      */
-    public function getFirstLimitForModules(array $arrIds, $intDefault=0)
+    public function getFirstLimitForModules(array $arrIds, $intDefault = 0)
     {
         if (null !== $this->arrLimits) {
             foreach ($arrIds as $id) {
@@ -385,18 +385,18 @@ class RequestCache extends \Model
         return $objCache->save();
     }
 
-	/**
-	 * Set the current record from an array
-	 * @param   array
-	 * @return  \Model
-	 */
+    /**
+     * Set the current record from an array
+     * @param   array
+     * @return  \Model
+     */
     public function setRow(array $arrData)
     {
         $arrConfig = deserialize($arrData['config']);
 
-        $this->arrFilters = $arrConfig['filters'];
+        $this->arrFilters  = $arrConfig['filters'];
         $this->arrSortings = $arrConfig['sortings'];
-        $this->arrLimits = $arrConfig['limits'];
+        $this->arrLimits   = $arrConfig['limits'];
 
         return parent::setRow($arrData);
     }
@@ -423,7 +423,7 @@ class RequestCache extends \Model
      * @param   int
      * @return  RequestCache|null
      */
-    public static function findByIdAndStore($intId, $intStore, array $arrOptions=array())
+    public static function findByIdAndStore($intId, $intStore, array $arrOptions = array())
     {
         return static::findOneBy(array('id=?', 'store_id=?'), array($intId, $intStore), $arrOptions);
     }
@@ -447,13 +447,13 @@ class RequestCache extends \Model
 
     /**
      * Generate query string for native filters
-     * @param	array
-     * @return	array
+     * @param    array
+     * @return   array
      */
     public static function buildSqlFilters(array $arrFilters)
     {
-		$strWhere = '';
-        $arrWhere = array();
+        $strWhere  = '';
+        $arrWhere  = array();
         $arrValues = array();
         $arrGroups = array();
 
@@ -466,7 +466,7 @@ class RequestCache extends \Model
                     $arrGroups[$objFilter->getGroup()][] = $k;
                 }
             } elseif (!$objFilter->hasGroup() && !$objFilter->isDynamicAttribute()) {
-                $arrWhere[] = $objFilter->sqlWhere();
+                $arrWhere[]  = $objFilter->sqlWhere();
                 $arrValues[] = $objFilter->sqlValue();
                 unset($arrFilters[$k]);
             }
@@ -480,7 +480,7 @@ class RequestCache extends \Model
                     $objFilter = $arrFilters[$k];
 
                     $arrGroupWhere[] = $objFilter->sqlWhere();
-                    $arrValues[] = $objFilter->sqlValue();
+                    $arrValues[]     = $objFilter->sqlValue();
                     unset($arrFilters[$k]);
                 }
 
@@ -490,7 +490,7 @@ class RequestCache extends \Model
 
         if (!empty($arrWhere)) {
             $time = time();
-            $t = Product::getTable();
+            $t    = Product::getTable();
 
             $strWhere = "((" . implode(' AND ', $arrWhere) . ") OR $t.id IN (SELECT $t.pid FROM tl_iso_product AS $t WHERE $t.language='' AND " . implode(' AND ', $arrWhere)
                         . (BE_USER_LOGGED_IN === true ? '' : " AND $t.published='1' AND ($t.start='' OR $t.start<$time) AND ($t.stop='' OR $t.stop>$time)") . "))";

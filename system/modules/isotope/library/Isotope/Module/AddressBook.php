@@ -3,19 +3,19 @@
 /**
  * Isotope eCommerce for Contao Open Source CMS
  *
- * Copyright (C) 2009-2012 Isotope eCommerce Workgroup
+ * Copyright (C) 2009-2013 terminal42 gmbh & Isotope eCommerce Workgroup
  *
  * @package    Isotope
- * @link       http://www.isotopeecommerce.com
- * @license    http://opensource.org/licenses/lgpl-3.0.html LGPL
+ * @link       http://isotopeecommerce.org
+ * @license    http://opensource.org/licenses/lgpl-3.0.html
  */
 
 namespace Isotope\Module;
 
+use Haste\Generator\RowClass;
 use Isotope\Isotope;
 use Isotope\Model\Address;
 use Isotope\Model\Config;
-use Haste\Generator\RowClass;
 
 /**
  * Class ModuleIsotopeAddressBook
@@ -53,15 +53,14 @@ class AddressBook extends Module
      */
     public function generate()
     {
-        if (TL_MODE == 'BE')
-        {
+        if (TL_MODE == 'BE') {
             $objTemplate = new \BackendTemplate('be_wildcard');
 
             $objTemplate->wildcard = '### ISOTOPE ECOMMERCE: ADDRESS BOOK ###';
-            $objTemplate->title = $this->headline;
-            $objTemplate->id = $this->id;
-            $objTemplate->link = $this->name;
-            $objTemplate->href = 'contao/main.php?do=themes&amp;table=tl_module&amp;act=edit&amp;id=' . $this->id;
+            $objTemplate->title    = $this->headline;
+            $objTemplate->id       = $this->id;
+            $objTemplate->link     = $this->name;
+            $objTemplate->href     = 'contao/main.php?do=themes&amp;table=tl_module&amp;act=edit&amp;id=' . $this->id;
 
             return $objTemplate->parse();
         }
@@ -101,8 +100,7 @@ class AddressBook extends Module
         }
 
         // Do not add a break statement. If ID is not available, it will show all addresses.
-        switch (\Input::get('act'))
-        {
+        switch (\Input::get('act')) {
             case 'create':
                 return $this->edit();
 
@@ -131,7 +129,7 @@ class AddressBook extends Module
     {
         global $objPage;
         $arrAddresses = array();
-        $strUrl = \Controller::generateFrontendUrl($objPage->row()) . ($GLOBALS['TL_CONFIG']['disableAlias'] ? '&' : '?');
+        $strUrl       = \Controller::generateFrontendUrl($objPage->row()) . ($GLOBALS['TL_CONFIG']['disableAlias'] ? '&' : '?');
         $objAddresses = Address::findForMember(\FrontendUser::getInstance()->id);
 
         if (null !== $objAddresses) {
@@ -151,18 +149,18 @@ class AddressBook extends Module
         }
 
         if (empty($arrAddresses)) {
-            $this->Template->mtype = 'empty';
+            $this->Template->mtype   = 'empty';
             $this->Template->message = $GLOBALS['TL_LANG']['ERR']['noAddressBookEntries'];
         }
 
         RowClass::withKey('class')->addFirstLast()->addEvenOdd()->applyTo($arrAddresses);
 
-        $this->Template->addNewAddressLabel= $GLOBALS['TL_LANG']['MSC']['createNewAddressLabel'];
-        $this->Template->editAddressLabel = $GLOBALS['TL_LANG']['MSC']['editAddressLabel'];
-        $this->Template->deleteAddressLabel = $GLOBALS['TL_LANG']['MSC']['deleteAddressLabel'];
+        $this->Template->addNewAddressLabel   = $GLOBALS['TL_LANG']['MSC']['createNewAddressLabel'];
+        $this->Template->editAddressLabel     = $GLOBALS['TL_LANG']['MSC']['editAddressLabel'];
+        $this->Template->deleteAddressLabel   = $GLOBALS['TL_LANG']['MSC']['deleteAddressLabel'];
         $this->Template->deleteAddressConfirm = specialchars($GLOBALS['TL_LANG']['MSC']['deleteAddressConfirm']);
-        $this->Template->addresses = $arrAddresses;
-        $this->Template->addNewAddress = ampersand($strUrl . 'act=create');
+        $this->Template->addresses            = $arrAddresses;
+        $this->Template->addNewAddress        = ampersand($strUrl . 'act=create');
     }
 
 
@@ -171,7 +169,7 @@ class AddressBook extends Module
      * @param integer
      * @return void
      */
-    protected function edit($intAddressId=0)
+    protected function edit($intAddressId = 0)
     {
         $table = \Isotope\Model\Address::getTable();
         \System::loadLanguageFile(\MemberModel::getTable());
@@ -180,14 +178,14 @@ class AddressBook extends Module
             $this->memberTpl = 'member_default';
         }
 
-        $this->Template = new \Isotope\Template($this->memberTpl);
-        $this->Template->fields = '';
+        $this->Template            = new \Isotope\Template($this->memberTpl);
+        $this->Template->fields    = '';
         $this->Template->tableless = $this->tableless;
 
-        $arrFields = array();
+        $arrFields   = array();
         $doNotSubmit = false;
-        $hasUpload = false;
-        $row = 0;
+        $hasUpload   = false;
+        $row         = 0;
 
         $objAddress = Address::findOneForMember($intAddressId, \FrontendUser::getInstance()->id);
 
@@ -219,7 +217,7 @@ class AddressBook extends Module
             // Special field "country"
             if ($field == 'country') {
                 $arrCountries = array();
-                $objConfigs = Config::findBy('store_id', Isotope::getCart()->store_id);
+                $objConfigs   = Config::findBy('store_id', Isotope::getCart()->store_id);
 
                 while ($objConfigs->next()) {
                     $arrCountries = array_merge($arrCountries, $objConfigs->getBillingCountries(), $objConfigs->getShippingCountries());
@@ -232,12 +230,12 @@ class AddressBook extends Module
             $strGroup = $arrData['eval']['feGroup'];
 
             $arrData['eval']['tableless'] = $this->tableless;
-            $arrData['eval']['required'] = ($objAddress->$field == '' && $arrData['eval']['mandatory']) ? true : false;
+            $arrData['eval']['required']  = ($objAddress->$field == '' && $arrData['eval']['mandatory']) ? true : false;
 
             $objWidget = new $strClass($strClass::getAttributesFromDca($arrData, $field, ($objAddress->$field ? $objAddress->$field : $arrData['default'])));
 
             $objWidget->storeValues = true;
-            $objWidget->rowClass = 'row_'.$row . (($row == 0) ? ' row_first' : '') . ((($row % 2) == 0) ? ' even' : ' odd');
+            $objWidget->rowClass    = 'row_' . $row . (($row == 0) ? ' row_first' : '') . ((($row % 2) == 0) ? ' even' : ' odd');
 
             // Validate input
             if (\Input::post('FORM_SUBMIT') == $table . '_' . $this->id) {
@@ -247,7 +245,7 @@ class AddressBook extends Module
 
                 // Convert date formats into timestamps
                 if (strlen($varValue) && in_array($arrData['eval']['rgxp'], array('date', 'time', 'datim'))) {
-                    $objDate = new \Date($varValue, $GLOBALS['TL_CONFIG'][$arrData['eval']['rgxp'] . 'Format']);
+                    $objDate  = new \Date($varValue, $GLOBALS['TL_CONFIG'][$arrData['eval']['rgxp'] . 'Format']);
                     $varValue = $objDate->tstamp;
                 }
 
@@ -273,7 +271,7 @@ class AddressBook extends Module
                 // Store current value
                 elseif ($objWidget->submitInput()) {
                     // Set new value
-                    $varSave = is_array($varValue) ? serialize($varValue) : $varValue;
+                    $varSave            = is_array($varValue) ? serialize($varValue) : $varValue;
                     $objAddress->$field = $varSave;
                 }
             }
@@ -310,17 +308,17 @@ class AddressBook extends Module
 
         $this->Template->addressDetails = $GLOBALS['TL_LANG'][$table]['addressDetails'];
         $this->Template->contactDetails = $GLOBALS['TL_LANG'][$table]['contactDetails'];
-        $this->Template->personalData = $GLOBALS['TL_LANG'][$table]['personalData'];
-        $this->Template->loginDetails = $GLOBALS['TL_LANG'][$table]['loginDetails'];
+        $this->Template->personalData   = $GLOBALS['TL_LANG'][$table]['personalData'];
+        $this->Template->loginDetails   = $GLOBALS['TL_LANG'][$table]['loginDetails'];
 
         // Add groups
-        foreach ($arrFields as $k=>$v) {
+        foreach ($arrFields as $k => $v) {
             $this->Template->$k = $v;
         }
 
-        $this->Template->formId = $table . '_' . $this->id;
-        $this->Template->slabel = specialchars($GLOBALS['TL_LANG']['MSC']['saveData']);
-        $this->Template->action = ampersand(\Environment::get('request'), true);
+        $this->Template->formId  = $table . '_' . $this->id;
+        $this->Template->slabel  = specialchars($GLOBALS['TL_LANG']['MSC']['saveData']);
+        $this->Template->action  = ampersand(\Environment::get('request'), true);
         $this->Template->enctype = $hasUpload ? 'multipart/form-data' : 'application/x-www-form-urlencoded';
         $this->Template->rowLast = 'row_' . $row . ((($row % 2) == 0) ? ' even' : ' odd');
     }

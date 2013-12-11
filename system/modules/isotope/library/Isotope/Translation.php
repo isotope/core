@@ -3,11 +3,11 @@
 /**
  * Isotope eCommerce for Contao Open Source CMS
  *
- * Copyright (C) 2009-2012 Isotope eCommerce Workgroup
+ * Copyright (C) 2009-2013 terminal42 gmbh & Isotope eCommerce Workgroup
  *
  * @package    Isotope
- * @link       http://www.isotopeecommerce.com
- * @license    http://opensource.org/licenses/lgpl-3.0.html LGPL
+ * @link       http://isotopeecommerce.org
+ * @license    http://opensource.org/licenses/lgpl-3.0.html
  */
 
 namespace Isotope;
@@ -42,7 +42,7 @@ class Translation
      * @param   boolean
      * @return  mixed
      */
-    public static function get($varLabel, $strLanguage=null)
+    public static function get($varLabel, $strLanguage = null)
     {
         if (!\Database::getInstance()->tableExists(Label::getTable())) {
             return $varLabel;
@@ -80,7 +80,7 @@ class Translation
      * @param   string The replacement
      * @param   string The language
      */
-    public static function add($strLabel, $strReplacement, $strLanguage=null)
+    public static function add($strLabel, $strReplacement, $strLanguage = null)
     {
         if (null === $strLanguage) {
             $strLanguage = $GLOBALS['TL_LANGUAGE'];
@@ -96,7 +96,7 @@ class Translation
      * Initialize the data in translation table
      * @param string The language
      */
-    protected static function initialize($strLanguage=null)
+    protected static function initialize($strLanguage = null)
     {
         if (null === $strLanguage) {
             $strLanguage = $GLOBALS['TL_LANGUAGE'];

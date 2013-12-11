@@ -1,12 +1,13 @@
 <?php
+
 /**
  * Isotope eCommerce for Contao Open Source CMS
  *
- * Copyright (C) 2009-2012 Isotope eCommerce Workgroup
+ * Copyright (C) 2009-2013 terminal42 gmbh & Isotope eCommerce Workgroup
  *
  * @package    Isotope
- * @link       http://www.isotopeecommerce.com
- * @license    http://opensource.org/licenses/lgpl-3.0.html LGPL
+ * @link       http://isotopeecommerce.org
+ * @license    http://opensource.org/licenses/lgpl-3.0.html
  */
 
 namespace Isotope\BackendModule;
@@ -66,9 +67,7 @@ abstract class BackendOverview extends \BackendModule
         // Open module
         if (\Input::get('mod') != '') {
             return $this->getModule(\Input::get('mod'));
-        }
-
-        // Table set but module missing, fix the saveNcreate link
+        } // Table set but module missing, fix the saveNcreate link
         elseif (\Input::get('table') != '') {
             foreach ($this->arrModules as $arrGroup) {
                 if (isset($arrGroup['modules'])) {
@@ -123,7 +122,7 @@ abstract class BackendOverview extends \BackendModule
         $strTable = \Input::get('table');
 
         if ($strTable == '' && $arrModule['callback'] == '') {
-            \Controller::redirect($this->addToUrl('table='.$arrModule['tables'][0]));
+            \Controller::redirect($this->addToUrl('table=' . $arrModule['tables'][0]));
         }
 
         // Add module style sheet
@@ -149,9 +148,9 @@ abstract class BackendOverview extends \BackendModule
 
             // Include all excluded fields which are allowed for the current user
             if ($GLOBALS['TL_DCA'][$strTable]['fields']) {
-                foreach ($GLOBALS['TL_DCA'][$strTable]['fields'] as $k=>$v) {
+                foreach ($GLOBALS['TL_DCA'][$strTable]['fields'] as $k => $v) {
                     if ($v['exclude']) {
-                        if ($this->User->hasAccess($strTable.'::'.$k, 'alexf')) {
+                        if ($this->User->hasAccess($strTable . '::' . $k, 'alexf')) {
                             $GLOBALS['TL_DCA'][$strTable]['fields'][$k]['exclude'] = false;
                         }
                     }
@@ -165,29 +164,23 @@ abstract class BackendOverview extends \BackendModule
             }
 
             $dataContainer = 'DC_' . $GLOBALS['TL_DCA'][$strTable]['config']['dataContainer'];
-            $dc = new $dataContainer($strTable);
+            $dc            = new $dataContainer($strTable);
         }
 
         // AJAX request
         if ($_POST && \Environment::get('isAjaxRequest')) {
             $this->objAjax->executePostActions($dc);
-        }
-
-        // Call module callback
+        } // Call module callback
         elseif (class_exists($arrModule['callback'])) {
             $objCallback = new $arrModule['callback']($arrModule);
 
             return $objCallback->generate();
-        }
-
-        // Custom action (if key is not defined in config.php the default action will be called)
+        } // Custom action (if key is not defined in config.php the default action will be called)
         elseif (\Input::get('key') && isset($arrModule[\Input::get('key')])) {
             $objCallback = new $arrModule[\Input::get('key')][0]();
 
             return $objCallback->$arrModule[\Input::get('key')][1]($dc, $strTable, $arrModule);
-        }
-
-        // Default action
+        } // Default action
         elseif (is_object($dc)) {
             $act = \Input::get('act');
 
@@ -200,8 +193,7 @@ abstract class BackendOverview extends \BackendModule
                 case 'show':
                 case 'showAll':
                 case 'undo':
-                    if (!$dc instanceof \listable)
-                    {
+                    if (!$dc instanceof \listable) {
                         \System::log('Data container ' . $strTable . ' is not listable', __METHOD__, TL_ERROR);
                         trigger_error('The current data container is not listable', E_USER_ERROR);
                     }

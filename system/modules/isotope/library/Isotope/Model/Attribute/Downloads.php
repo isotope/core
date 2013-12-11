@@ -3,11 +3,11 @@
 /**
  * Isotope eCommerce for Contao Open Source CMS
  *
- * Copyright (C) 2009-2012 Isotope eCommerce Workgroup
+ * Copyright (C) 2009-2013 terminal42 gmbh & Isotope eCommerce Workgroup
  *
  * @package    Isotope
- * @link       http://www.isotopeecommerce.com
- * @license    http://opensource.org/licenses/lgpl-3.0.html LGPL
+ * @link       http://isotopeecommerce.org
+ * @license    http://opensource.org/licenses/lgpl-3.0.html
  */
 
 namespace Isotope\Model\Attribute;
@@ -32,17 +32,17 @@ class Downloads extends Attribute implements IsotopeAttribute
         $arrData['fields'][$this->field_name]['sql'] = "blob NULL";
 
         if ($this->fieldType == 'checkbox') {
-            $arrData['fields'][$this->field_name]['sql'] = "blob NULL";
+            $arrData['fields'][$this->field_name]['sql']              = "blob NULL";
             $arrData['fields'][$this->field_name]['eval']['multiple'] = true;
 
             // Custom sorting
             if ($this->sortBy == 'custom') {
-                $strOrderField = $this->field_name . '_order';
+                $strOrderField                                              = $this->field_name . '_order';
                 $arrData['fields'][$this->field_name]['eval']['orderField'] = $strOrderField;
-                $arrData['fields'][$strOrderField]['sql'] = "text NULL";
+                $arrData['fields'][$strOrderField]['sql']                   = "text NULL";
             }
         } else {
-            $arrData['fields'][$this->field_name]['sql'] = "int(10) unsigned NOT NULL default '0'";
+            $arrData['fields'][$this->field_name]['sql']              = "int(10) unsigned NOT NULL default '0'";
             $arrData['fields'][$this->field_name]['eval']['multiple'] = false;
         }
     }
@@ -62,7 +62,7 @@ class Downloads extends Attribute implements IsotopeAttribute
      * @param IsotopeProduct
      * @return string
      */
-    public function generate(IsotopeProduct $objProduct, array $arrOptions=array())
+    public function generate(IsotopeProduct $objProduct, array $arrOptions = array())
     {
         global $objPage;
         $arrFiles = $objProduct->{$this->field_name};
@@ -70,11 +70,6 @@ class Downloads extends Attribute implements IsotopeAttribute
         // Return if there are no files
         if (empty($arrFiles) || !is_array($arrFiles)) {
             return '';
-        }
-
-        // Check for version 3 format
-        if (!is_numeric($arrFiles[0])) {
-            return '<p class="error">'.$GLOBALS['TL_LANG']['ERR']['version2format'].'</p>';
         }
 
         // Get the file entries from the database
@@ -86,18 +81,18 @@ class Downloads extends Attribute implements IsotopeAttribute
 
         $file = \Input::get('file', true);
 
-		// Send the file to the browser and do not send a 404 header (see #4632)
-		if ($file != '' && !preg_match('/^meta(_[a-z]{2})?\.txt$/', basename($file))) {
-			while ($objFiles->next()) {
-				if ($file == $objFiles->path || dirname($file) == $objFiles->path) {
-					\Controller::sendFileToBrowser($file);
-				}
-			}
+        // Send the file to the browser and do not send a 404 header (see #4632)
+        if ($file != '' && !preg_match('/^meta(_[a-z]{2})?\.txt$/', basename($file))) {
+            while ($objFiles->next()) {
+                if ($file == $objFiles->path || dirname($file) == $objFiles->path) {
+                    \Controller::sendFileToBrowser($file);
+                }
+            }
 
-			$objFiles->reset();
-		}
+            $objFiles->reset();
+        }
 
-        $files = array();
+        $files   = array();
         $auxDate = array();
 
         $allowedDownload = trimsplit(',', strtolower($GLOBALS['TL_CONFIG']['allowedDownload']));
@@ -151,9 +146,7 @@ class Downloads extends Attribute implements IsotopeAttribute
                 );
 
                 $auxDate[] = $objFile->mtime;
-            }
-
-            // Folders
+            } // Folders
             else {
                 $objSubfiles = \FilesModel::findByPid($objFiles->id);
 
@@ -212,7 +205,7 @@ class Downloads extends Attribute implements IsotopeAttribute
         }
 
         // Sort array
-        $sortBy = $arrOptions['sortBy'] ?: $this->sortBy;
+        $sortBy = $arrOptions['sortBy'] ? : $this->sortBy;
         switch ($sortBy) {
             default:
             case 'name_asc':
@@ -236,10 +229,11 @@ class Downloads extends Attribute implements IsotopeAttribute
                     // Turn the order string into an array and remove all values
                     $arrOrder = explode(',', $this->{$this->field_name . '_order'});
                     $arrOrder = array_flip(array_map('intval', $arrOrder));
-                    $arrOrder = array_map(function(){}, $arrOrder);
+                    $arrOrder = array_map(function () {
+                    }, $arrOrder);
 
                     // Move the matching elements to their position in $arrOrder
-                    foreach ($files as $k=>$v) {
+                    foreach ($files as $k => $v) {
                         if (array_key_exists($v['id'], $arrOrder)) {
                             $arrOrder[$v['id']] = $v;
                             unset($files[$k]);
@@ -262,7 +256,7 @@ class Downloads extends Attribute implements IsotopeAttribute
                 break;
         }
 
-        $objTemplate = new \Isotope\Template('ce_downloads');
+        $objTemplate        = new \Isotope\Template('ce_downloads');
         $objTemplate->class = $this->field_name;
         $objTemplate->files = array_values($files);
 

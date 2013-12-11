@@ -3,19 +3,19 @@
 /**
  * Isotope eCommerce for Contao Open Source CMS
  *
- * Copyright (C) 2009-2012 Isotope eCommerce Workgroup
+ * Copyright (C) 2009-2013 terminal42 gmbh & Isotope eCommerce Workgroup
  *
  * @package    Isotope
- * @link       http://www.isotopeecommerce.com
- * @license    http://opensource.org/licenses/lgpl-3.0.html LGPL
+ * @link       http://isotopeecommerce.org
+ * @license    http://opensource.org/licenses/lgpl-3.0.html
  */
 
 namespace Isotope\Module;
 
-use Isotope\Isotope;
-use Isotope\Model\ProductCollection\Order;
 use Haste\Generator\RowClass;
 use Haste\Util\Format;
+use Isotope\Isotope;
+use Isotope\Model\ProductCollection\Order;
 
 
 /**
@@ -48,16 +48,15 @@ class OrderHistory extends Module
      */
     public function generate()
     {
-        if (TL_MODE == 'BE')
-        {
+        if (TL_MODE == 'BE') {
             $objTemplate = new \BackendTemplate('be_wildcard');
 
             $objTemplate->wildcard = '### ISOTOPE ECOMMERCE: ORDER HISTORY ###';
 
             $objTemplate->title = $this->headline;
-            $objTemplate->id = $this->id;
-            $objTemplate->link = $this->name;
-            $objTemplate->href = 'contao/main.php?do=themes&amp;table=tl_module&amp;act=edit&amp;id=' . $this->id;
+            $objTemplate->id    = $this->id;
+            $objTemplate->link  = $this->name;
+            $objTemplate->href  = 'contao/main.php?do=themes&amp;table=tl_module&amp;act=edit&amp;id=' . $this->id;
 
             return $objTemplate->parse();
         }
@@ -80,33 +79,31 @@ class OrderHistory extends Module
     protected function compile()
     {
         $arrOrders = array();
-        $objOrders = Order::findBy(array('order_status>0', 'pid=?', 'config_id IN (?)'), array(\FrontendUser::getInstance()->id, implode("','", $this->iso_config_ids)), array('order'=>'date DESC'));
+        $objOrders = Order::findBy(array('order_status>0', 'member=?', 'config_id IN (?)'), array(\FrontendUser::getInstance()->id, implode("','", $this->iso_config_ids)), array('order' => 'locked DESC'));
 
         // No orders found, just display an "empty" message
-        if ($objOrders->count() == 0)
-        {
-            $this->Template = new \Isotope\Template('mod_message');
-            $this->Template->type = 'empty';
+        if (null === $objOrders) {
+            $this->Template          = new \Isotope\Template('mod_message');
+            $this->Template->type    = 'empty';
             $this->Template->message = $GLOBALS['TL_LANG']['ERR']['emptyOrderHistory'];
 
             return;
         }
 
-        while ($objOrders->next())
-        {
+        while ($objOrders->next()) {
             Isotope::setConfig($objOrders->current()->getRelated('config_id'));
 
             $arrOrders[] = array
             (
                 'collection' => $objOrders->current(),
-                'raw'        => $objOrders->row(),
-                'date'       => Format::date($objOrders->locked),
-                'time'       => Format::time($objOrders->locked),
-                'datime'     => Format::datim($objOrders->locked),
-                'grandTotal' => Isotope::formatPriceWithCurrency($objOrders->getTotal()),
-                'status'     => $objOrders->getStatusLabel(),
-                'link'       => ($this->jumpTo ? (\Haste\Util\Url::addQueryString('uid=' . $objOrders->uniqid, $this->jumpTo)) : ''),
-                'class'      => $objOrders->getStatusAlias(),
+                'raw'        => $objOrders->current()->row(),
+                'date'       => Format::date($objOrders->current()->locked),
+                'time'       => Format::time($objOrders->current()->locked),
+                'datime'     => Format::datim($objOrders->current()->locked),
+                'grandTotal' => Isotope::formatPriceWithCurrency($objOrders->current()->getTotal()),
+                'status'     => $objOrders->current()->getStatusLabel(),
+                'link'       => ($this->jumpTo ? (\Haste\Util\Url::addQueryString('uid=' . $objOrders->current()->uniqid, $this->jumpTo)) : ''),
+                'class'      => $objOrders->current()->getStatusAlias(),
             );
         }
 

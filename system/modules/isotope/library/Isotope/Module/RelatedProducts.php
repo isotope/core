@@ -3,11 +3,11 @@
 /**
  * Isotope eCommerce for Contao Open Source CMS
  *
- * Copyright (C) 2009-2012 Isotope eCommerce Workgroup
+ * Copyright (C) 2009-2013 terminal42 gmbh & Isotope eCommerce Workgroup
  *
  * @package    Isotope
- * @link       http://www.isotopeecommerce.com
- * @license    http://opensource.org/licenses/lgpl-3.0.html LGPL
+ * @link       http://isotopeecommerce.org
+ * @license    http://opensource.org/licenses/lgpl-3.0.html
  */
 
 namespace Isotope\Module;
@@ -39,15 +39,14 @@ class RelatedProducts extends ProductList
      */
     public function generate()
     {
-        if (TL_MODE == 'BE')
-        {
+        if (TL_MODE == 'BE') {
             $objTemplate = new \BackendTemplate('be_wildcard');
 
             $objTemplate->wildcard = '### ISOTOPE ECOMMERCE: RELATED PRODUCTS ###';
-            $objTemplate->title = $this->headline;
-            $objTemplate->id = $this->id;
-            $objTemplate->link = $this->name;
-            $objTemplate->href = 'contao/main.php?do=themes&amp;table=tl_module&amp;act=edit&amp;id=' . $this->id;
+            $objTemplate->title    = $this->headline;
+            $objTemplate->id       = $this->id;
+            $objTemplate->link     = $this->name;
+            $objTemplate->href     = 'contao/main.php?do=themes&amp;table=tl_module&amp;act=edit&amp;id=' . $this->id;
 
             return $objTemplate->parse();
         }
@@ -68,9 +67,10 @@ class RelatedProducts extends ProductList
 
     /**
      * Find all products we need to list.
-     * @return array
+     * @param   array|null
+     * @return  array
      */
-    protected function findProducts($arrCacheIds=null)
+    protected function findProducts($arrCacheIds = null)
     {
         $arrIds = array(0);
 
@@ -92,8 +92,10 @@ class RelatedProducts extends ProductList
             }
         }
 
-        return Product::findAvailableByIds($arrIds, array(
+        $objProducts = Product::findAvailableByIds($arrIds, array(
             'order' => \Database::getInstance()->findInSet(Product::getTable().'.id', $arrIds)
         ));
+        
+        return (null === $objProducts) ? array() : $objProducts->getModels();
     }
 }

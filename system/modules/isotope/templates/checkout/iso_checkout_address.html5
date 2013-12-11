@@ -2,7 +2,7 @@
 <p><?php echo $this->message; ?></p>
 <?php echo $this->options; ?>
 
-<div id="<?php echo $this->class; ?>_new" class="address_new">
+<div id="<?php echo $this->class; ?>_new" class="address_new"<?php if($this->style): ?> style="<?php echo $this->style; ?>"<?php endif; ?>>
 <?php if($this->tableless): ?>
 <?php echo $this->fields; ?>
 <?php else: ?>

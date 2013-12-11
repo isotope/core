@@ -3,22 +3,21 @@
 /**
  * Isotope eCommerce for Contao Open Source CMS
  *
- * Copyright (C) 2008-2012 Isotope eCommerce Workgroup
+ * Copyright (C) 2009-2013 terminal42 gmbh & Isotope eCommerce Workgroup
  *
  * @package    Isotope
- * @link       http://www.isotopeecommerce.com
- * @license    http://opensource.org/licenses/lgpl-3.0.html LGPL
+ * @link       http://isotopeecommerce.org
+ * @license    http://opensource.org/licenses/lgpl-3.0.html
  */
 
 namespace Isotope\Backend\Product;
 
-use Isotope\Isotope;
+use Haste\Util\Format;
 use Isotope\Model\Attribute;
 use Isotope\Model\Group;
 use Isotope\Model\Product;
 use Isotope\Model\ProductType;
 use Isotope\Model\RelatedCategory;
-use Haste\Util\Format;
 
 
 class DcaManager extends \Backend
@@ -62,8 +61,8 @@ class DcaManager extends \Backend
             return;
         }
 
-        $intType = 0;
-        $intGroup = (int) \Session::getInstance()->get('iso_products_gid') ?: (\BackendUser::getInstance()->isAdmin ? 0 : intval(\BackendUser::getInstance()->iso_groups[0]));
+        $intType  = 0;
+        $intGroup = (int) \Session::getInstance()->get('iso_products_gid') ? : (\BackendUser::getInstance()->isAdmin ? 0 : intval(\BackendUser::getInstance()->iso_groups[0]));
         $objGroup = Group::findByPk($intGroup);
 
         if (null === $objGroup || null === $objGroup->getRelated('product_type')) {
@@ -84,11 +83,11 @@ class DcaManager extends \Backend
      */
     protected function addAttributes()
     {
-        $arrData = &$GLOBALS['TL_DCA'][Product::getTable()];
+        $arrData               = &$GLOBALS['TL_DCA'][Product::getTable()];
         $arrData['attributes'] = array();
 
         // Write attributes from database to DCA
-        if (($objAttributes = Attribute::findAll()) !== null) {
+        if (($objAttributes = Attribute::findAll(array('column' => array(Attribute::getTable() . ".type!=''")))) !== null) {
             while ($objAttributes->next()) {
                 $objAttribute = $objAttributes->current();
 
@@ -123,11 +122,11 @@ class DcaManager extends \Backend
      */
     protected function checkFeatures()
     {
-        $blnDownloads = false;
-        $blnVariants = false;
+        $blnDownloads      = false;
+        $blnVariants       = false;
         $blnAdvancedPrices = false;
-        $blnShowSku = false;
-        $blnShowPrice = false;
+        $blnShowSku        = false;
+        $blnShowPrice      = false;
 
         if (($objProductTypes = ProductType::findAllUsed()) !== null) {
             foreach ($objProductTypes as $objType) {
@@ -215,18 +214,19 @@ class DcaManager extends \Backend
             return;
         }
 
-        $arrFields = &$GLOBALS['TL_DCA']['tl_iso_product']['fields'];
+        $arrTypes      = array();
+        $arrFields     = &$GLOBALS['TL_DCA']['tl_iso_product']['fields'];
         $arrAttributes = &$GLOBALS['TL_DCA']['tl_iso_product']['attributes'];
 
-        $blnVariants = false;
-        $act = \Input::get('act');
+        $blnVariants     = false;
+        $act             = \Input::get('act');
         $blnSingleRecord = $act === 'edit' || $act === 'show';
 
         if (\Input::get('id') > 0) {
             $objProduct = \Database::getInstance()->prepare("SELECT p1.pid, p1.type, p2.type AS parent_type FROM tl_iso_product p1 LEFT JOIN tl_iso_product p2 ON p1.pid=p2.id WHERE p1.id=?")->execute(\Input::get('id'));
 
             if ($objProduct->numRows) {
-                $objType = ProductType::findByPk(($objProduct->pid > 0 ? $objProduct->parent_type : $objProduct->type));
+                $objType  = ProductType::findByPk(($objProduct->pid > 0 ? $objProduct->parent_type : $objProduct->type));
                 $arrTypes = null === $objType ? array() : array($objType);
 
                 if ($objProduct->pid > 0 || ($act != 'edit' && $act != 'show')) {
@@ -234,19 +234,16 @@ class DcaManager extends \Backend
                 }
             }
         } else {
-            $arrTypes = ProductType::findAllUsed();
+            $arrTypes = ProductType::findAllUsed() ? : array();
         }
 
-        foreach ($arrTypes as $objType)
-        {
+        foreach ($arrTypes as $objType) {
             // Enable advanced prices
             if ($blnSingleRecord && $objType->hasAdvancedPrices()) {
-                $arrFields['prices']['exclude'] = $arrFields['price']['exclude'];
+                $arrFields['prices']['exclude']    = $arrFields['price']['exclude'];
                 $arrFields['prices']['attributes'] = $arrFields['price']['attributes'];
-                $arrFields['price'] = $arrFields['prices'];
-            }
-
-            // Register callback to version/restore a price
+                $arrFields['price']                = $arrFields['prices'];
+            } // Register callback to version/restore a price
             else {
                 $GLOBALS['TL_DCA']['tl_iso_product']['config']['onversion_callback'][] = array('Isotope\Backend\Product\Price', 'createVersion');
                 $GLOBALS['TL_DCA']['tl_iso_product']['config']['onrestore_callback'][] = array('Isotope\Backend\Product\Price', 'restoreVersion');
@@ -256,11 +253,11 @@ class DcaManager extends \Backend
             $arrPalette = array();
 
             if ($blnVariants) {
-                $arrConfig = deserialize($objType->variant_attributes, true);
-                $arrEnabled = $objType->getVariantAttributes();
+                $arrConfig     = deserialize($objType->variant_attributes, true);
+                $arrEnabled    = $objType->getVariantAttributes();
                 $arrCanInherit = $objType->getAttributes();
             } else {
-                $arrConfig = deserialize($objType->attributes, true);
+                $arrConfig  = deserialize($objType->attributes, true);
                 $arrEnabled = $objType->getAttributes();
             }
 
@@ -310,7 +307,7 @@ class DcaManager extends \Backend
             $arrLegends = array();
 
             // Build
-            foreach ($arrPalette as $legend=>$fields) {
+            foreach ($arrPalette as $legend => $fields) {
                 $arrLegends[] = '{' . $legend . '},' . implode(',', $fields);
             }
 
@@ -323,7 +320,7 @@ class DcaManager extends \Backend
 
         if ($act !== 'edit') {
             $arrFields['inherit']['exclude'] = true;
-            $arrFields['prices']['exclude'] = true;
+            $arrFields['prices']['exclude']  = true;
         }
 
         // Remove non-active fields from multi-selection
@@ -343,15 +340,14 @@ class DcaManager extends \Backend
      */
     protected function addMoveAllFeature()
     {
-        if (\Input::get('act') == 'select' && !\Input::get('id'))
-        {
+        if (\Input::get('act') == 'select' && !\Input::get('id')) {
             $GLOBALS['TL_MOOTOOLS'][] = "
 <script>
 window.addEvent('domready', function() {
   $('cut').addEvents({
     'click': function(e) {
       e.preventDefault();
-      Isotope.openModalGroupSelector({'width':765,'title':'".specialchars($GLOBALS['TL_LANG']['tl_iso_product']['product_groups'][0])."','url':'system/modules/isotope/group.php?do=".\Input::get('do')."&amp;table=".\Isotope\Model\Group::getTable()."&amp;field=gid&amp;value=".\Session::getInstance()->get('iso_products_gid')."','action':'moveProducts','trigger':$(this)});
+      Isotope.openModalGroupSelector({'width':765,'title':'" . specialchars($GLOBALS['TL_LANG']['tl_iso_product']['product_groups'][0]) . "','url':'system/modules/isotope/group.php?do=" . \Input::get('do') . "&amp;table=" . \Isotope\Model\Group::getTable() . "&amp;field=gid&amp;value=" . \Session::getInstance()->get('iso_products_gid') . "','action':'moveProducts','trigger':$(this)});
     },
     'closeModal': function() {
       var form = $('tl_select'),
@@ -374,10 +370,10 @@ window.addEvent('domready', function() {
         }
 
         $GLOBALS['TL_DCA'][$objProduct->getTable()]['list']['sorting']['fields'] = array('id');
-        $GLOBALS['TL_DCA']['tl_iso_product']['fields']['alias']['sorting'] = false;
+        $GLOBALS['TL_DCA']['tl_iso_product']['fields']['alias']['sorting']       = false;
 
-        $arrFields = array();
-        $arrVariantFields = $objProduct->getRelated('type')->getVariantAttributes();
+        $arrFields         = array();
+        $arrVariantFields  = $objProduct->getRelated('type')->getVariantAttributes();
         $arrVariantOptions = array_intersect($arrVariantFields, Attribute::getVariantOptionFields());
 
         if (in_array('images', $arrVariantFields)) {
@@ -385,12 +381,12 @@ window.addEvent('domready', function() {
         }
 
         if (in_array('name', $arrVariantFields)) {
-            $arrFields[] = 'name';
+            $arrFields[]                                                             = 'name';
             $GLOBALS['TL_DCA'][$objProduct->getTable()]['list']['sorting']['fields'] = array('name');
         }
 
         if (in_array('sku', $arrVariantFields)) {
-            $arrFields[] = 'sku';
+            $arrFields[]                                                             = 'sku';
             $GLOBALS['TL_DCA'][$objProduct->getTable()]['list']['sorting']['fields'] = array('sku');
         }
 
@@ -400,7 +396,7 @@ window.addEvent('domready', function() {
 
         // Limit the number of columns if there are more than 2
         if (count($arrVariantOptions) > 2) {
-            $arrFields[] = 'variantFields';
+            $arrFields[]                                                                  = 'variantFields';
             $GLOBALS['TL_DCA'][$objProduct->getTable()]['list']['label']['variantFields'] = $arrVariantOptions;
         } else {
             $arrFields = array_merge($arrFields, $arrVariantOptions);
@@ -416,102 +412,92 @@ window.addEvent('domready', function() {
 
 
     /**
-	 * Add a breadcrumb menu to the page tree
-	 *
-	 * @param string
-	 */
-	protected static function getPagesBreadcrumb()
-	{
-		$session = \Session::getInstance()->getData();
+     * Add a breadcrumb menu to the page tree
+     *
+     * @param string
+     */
+    protected static function getPagesBreadcrumb()
+    {
+        $session = \Session::getInstance()->getData();
 
-		// Set a new gid
+        // Set a new gid
         if (isset($_GET['page'])) {
             $session['filter']['tl_iso_product']['iso_page'] = (int) \Input::get('page');
             \Session::getInstance()->setData($session);
             \Controller::redirect(preg_replace('/&page=[^&]*/', '', \Environment::get('request')));
         }
 
-		$intNode = $session['filter']['tl_iso_product']['iso_page'];
+        $intNode = $session['filter']['tl_iso_product']['iso_page'];
 
-		if ($intNode < 1)
-		{
-			return '';
-		}
+        if ($intNode < 1) {
+            return '';
+        }
 
-		$arrIds   = array();
-		$arrLinks = array();
-		$objUser  = \BackendUser::getInstance();
+        $arrIds   = array();
+        $arrLinks = array();
+        $objUser  = \BackendUser::getInstance();
 
-		// Generate breadcrumb trail
-		if ($intNode)
-		{
-			$intId = $intNode;
-			$objDatabase = \Database::getInstance();
+        // Generate breadcrumb trail
+        if ($intNode) {
+            $intId       = $intNode;
+            $objDatabase = \Database::getInstance();
 
-			do
-			{
-				$objPage = $objDatabase->prepare("SELECT * FROM tl_page WHERE id=?")
-									   ->limit(1)
-									   ->execute($intId);
+            do {
+                $objPage = $objDatabase->prepare("SELECT * FROM tl_page WHERE id=?")
+                    ->limit(1)
+                    ->execute($intId);
 
-				if ($objPage->numRows < 1)
-				{
-					// Currently selected page does not exits
-					if ($intId == $intNode)
-					{
-					    $session['filter']['tl_iso_product']['iso_page'] = 0;
-						\Session::getInstance()->setData($session);
-						return '';
-					}
+                if ($objPage->numRows < 1) {
+                    // Currently selected page does not exits
+                    if ($intId == $intNode) {
+                        $session['filter']['tl_iso_product']['iso_page'] = 0;
+                        \Session::getInstance()->setData($session);
 
-					break;
-				}
+                        return '';
+                    }
 
-				$arrIds[] = $intId;
+                    break;
+                }
 
-				// No link for the active page
-				if ($objPage->id == $intNode)
-				{
-					$arrLinks[] = \Backend::addPageIcon($objPage->row(), '', null, '', true) . ' ' . $objPage->title;
-				}
-				else
-				{
-					$arrLinks[] = \Backend::addPageIcon($objPage->row(), '', null, '', true) . ' <a href="' . \Controller::addToUrl('page='.$objPage->id) . '" title="'.specialchars($GLOBALS['TL_LANG']['MSC']['selectNode']).'">' . $objPage->title . '</a>';
-				}
+                $arrIds[] = $intId;
 
-				// Do not show the mounted pages
-				if (!$objUser->isAdmin && $objUser->hasAccess($objPage->id, 'pagemounts'))
-				{
-					break;
-				}
+                // No link for the active page
+                if ($objPage->id == $intNode) {
+                    $arrLinks[] = \Backend::addPageIcon($objPage->row(), '', null, '', true) . ' ' . $objPage->title;
+                } else {
+                    $arrLinks[] = \Backend::addPageIcon($objPage->row(), '', null, '', true) . ' <a href="' . \Controller::addToUrl('page=' . $objPage->id) . '" title="' . specialchars($GLOBALS['TL_LANG']['MSC']['selectNode']) . '">' . $objPage->title . '</a>';
+                }
 
-				$intId = $objPage->pid;
-			}
-			while ($intId > 0 && $objPage->type != 'root');
-		}
+                // Do not show the mounted pages
+                if (!$objUser->isAdmin && $objUser->hasAccess($objPage->id, 'pagemounts')) {
+                    break;
+                }
 
-		// Check whether the node is mounted
-		if (!$objUser->isAdmin && !$objUser->hasAccess($arrIds, 'pagemounts'))
-		{
-		    $session['filter']['tl_iso_product']['iso_page'] = 0;
-			\Session::getInstance()->setData($session);
+                $intId = $objPage->pid;
+            } while ($intId > 0 && $objPage->type != 'root');
+        }
 
-			\System::log('Page ID '.$intNode.' was not mounted', __METHOD__, TL_ERROR);
-			\Controller::redirect('contao/main.php?act=error');
-		}
+        // Check whether the node is mounted
+        if (!$objUser->isAdmin && !$objUser->hasAccess($arrIds, 'pagemounts')) {
+            $session['filter']['tl_iso_product']['iso_page'] = 0;
+            \Session::getInstance()->setData($session);
 
-		// Limit tree
-		$GLOBALS['TL_DCA']['tl_page']['list']['sorting']['root'] = array($intNode);
+            \System::log('Page ID ' . $intNode . ' was not mounted', __METHOD__, TL_ERROR);
+            \Controller::redirect('contao/main.php?act=error');
+        }
 
-		// Add root link
-		$arrLinks[] = '<img src="' . TL_FILES_URL . 'system/themes/' . \Backend::getTheme() . '/images/pagemounts.gif" width="18" height="18" alt=""> <a href="' . \Controller::addToUrl('page=0') . '" title="'.specialchars($GLOBALS['TL_LANG']['MSC']['selectAllNodes']).'">' . $GLOBALS['TL_LANG']['MSC']['filterAll'] . '</a>';
-		$arrLinks = array_reverse($arrLinks);
+        // Limit tree
+        $GLOBALS['TL_DCA']['tl_page']['list']['sorting']['root'] = array($intNode);
 
-		// Insert breadcrumb menu
-		return '
+        // Add root link
+        $arrLinks[] = '<img src="' . TL_FILES_URL . 'system/themes/' . \Backend::getTheme() . '/images/pagemounts.gif" width="18" height="18" alt=""> <a href="' . \Controller::addToUrl('page=0') . '" title="' . specialchars($GLOBALS['TL_LANG']['MSC']['selectAllNodes']) . '">' . $GLOBALS['TL_LANG']['MSC']['filterAll'] . '</a>';
+        $arrLinks   = array_reverse($arrLinks);
+
+        // Insert breadcrumb menu
+        return '
 
 <ul id="tl_breadcrumb">
   <li>' . implode(' &gt; </li><li>', $arrLinks) . '</li>
 </ul>';
-	}
+    }
 }

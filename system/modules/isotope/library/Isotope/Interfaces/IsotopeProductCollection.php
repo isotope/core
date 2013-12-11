@@ -3,16 +3,15 @@
 /**
  * Isotope eCommerce for Contao Open Source CMS
  *
- * Copyright (C) 2009-2012 Isotope eCommerce Workgroup
+ * Copyright (C) 2009-2013 terminal42 gmbh & Isotope eCommerce Workgroup
  *
  * @package    Isotope
- * @link       http://www.isotopeecommerce.com
- * @license    http://opensource.org/licenses/lgpl-3.0.html LGPL
+ * @link       http://isotopeecommerce.org
+ * @license    http://opensource.org/licenses/lgpl-3.0.html
  */
 
 namespace Isotope\Interfaces;
 
-use Isotope\Interfaces\IsotopeProduct;
 use Isotope\Model\ProductCollectionItem;
 
 
@@ -92,7 +91,7 @@ interface IsotopeProductCollection
      * @param  bool
      * @return array
      */
-    public function getItems($varCallable=null, $blnNoCache=false);
+    public function getItems($varCallable = null, $blnNoCache = false);
 
     /**
      * Search item for a specific product
@@ -107,7 +106,7 @@ interface IsotopeProductCollection
      * @param  bool
      * @return bool
      */
-    public function hasProduct(IsotopeProduct $objProduct, $blnIdentical=true);
+    public function hasProduct(IsotopeProduct $objProduct, $blnIdentical = true);
 
     /**
      * Add a product to the collection
@@ -116,7 +115,7 @@ interface IsotopeProductCollection
      * @param   array
      * @return  ProductCollectionItem
      */
-    public function addProduct(IsotopeProduct $objProduct, $intQuantity, array $arrConfig=array());
+    public function addProduct(IsotopeProduct $objProduct, $intQuantity, array $arrConfig = array());
 
     /**
      * Update a product collection item

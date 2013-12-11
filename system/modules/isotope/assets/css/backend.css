@@ -99,6 +99,12 @@ body.popup .header_back {
     border-left: none;
     border-right: none;
     background-color: #f7f7f7;
+    /** IE FIXES **/
+	width: 100%;
+    position: relative;
+    top: 0;
+    left: 0;
+    z-index: 2;
 }
 
 .tl_mediamanager .qq-upload-drop-area span {
@@ -152,6 +158,13 @@ body.popup .header_back {
 #ctrl_variant_attributes tr:hover td,
 #ctrl_address_fields tr:hover td {
     background-color: #EBFDD7;
+}
+
+table.multicolumnwizard {
+    width: 663px;
+}
+table.multicolumnwizard .operations {
+    white-space: nowrap;
 }
 
 .mod_iso_orderdetails .info_container
@@ -360,6 +373,9 @@ body.iso_be_overview .tip-wrap{
     width: 400px;
     padding: 0 10px;
     background: #eff5fa;
+}
+.be_iso_introduction .left strong {
+    color: #1899ad;
 }
 .be_iso_introduction .right {
     width: 250px;

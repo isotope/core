@@ -3,11 +3,11 @@
 /**
  * Isotope eCommerce for Contao Open Source CMS
  *
- * Copyright (C) 2009-2012 Isotope eCommerce Workgroup
+ * Copyright (C) 2009-2013 terminal42 gmbh & Isotope eCommerce Workgroup
  *
  * @package    Isotope
- * @link       http://www.isotopeecommerce.com
- * @license    http://opensource.org/licenses/lgpl-3.0.html LGPL
+ * @link       http://isotopeecommerce.org
+ * @license    http://opensource.org/licenses/lgpl-3.0.html
  */
 
 namespace Isotope\Model;
@@ -59,9 +59,9 @@ abstract class Gallery extends TypeAgent
         }
 
         $objGallery->setName($objProduct->getFormId() . '_' . $strAttribute);
-        $objGallery->setFiles(static::mergeMediaData($objProduct->$strAttribute, deserialize($objProduct->{$strAttribute.'_fallback'})));
+        $objGallery->setFiles(static::mergeMediaData($objProduct->$strAttribute, deserialize($objProduct->{$strAttribute . '_fallback'})));
         $objGallery->product_id = ($objProduct->pid ? $objProduct->pid : $objProduct->id);
-        $objGallery->href = $objProduct->generateUrl($arrConfig['jumpTo']);
+        $objGallery->href       = $objProduct->generateUrl($arrConfig['jumpTo']);
 
         return $objGallery;
     }
@@ -93,7 +93,7 @@ abstract class Gallery extends TypeAgent
                     if ($arrTranslate[$image['src']]['translate'] == '') {
                         $arrCurrent[$i] = $arrTranslate[$image['src']];
                     } else {
-                        $arrCurrent[$i]['link'] = $arrTranslate[$image['src']]['link'];
+                        $arrCurrent[$i]['link']      = $arrTranslate[$image['src']]['link'];
                         $arrCurrent[$i]['translate'] = $arrTranslate[$image['src']]['translate'];
                     }
 

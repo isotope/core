@@ -3,20 +3,19 @@
 /**
  * Isotope eCommerce for Contao Open Source CMS
  *
- * Copyright (C) 2008-2012 Isotope eCommerce Workgroup
+ * Copyright (C) 2009-2013 terminal42 gmbh & Isotope eCommerce Workgroup
  *
  * @package    Isotope
- * @link       http://www.isotopeecommerce.com
- * @license    http://opensource.org/licenses/lgpl-3.0.html LGPL
+ * @link       http://isotopeecommerce.org
+ * @license    http://opensource.org/licenses/lgpl-3.0.html
  */
 
 namespace Isotope\Model\Document;
 
-use Isotope\Isotope;
+use Haste\Haste;
 use Isotope\Interfaces\IsotopeDocument;
 use Isotope\Interfaces\IsotopeProductCollection;
 use Isotope\Model\Document;
-use Haste\Haste;
 
 /**
  * Class Standard
@@ -47,7 +46,7 @@ class Standard extends Document implements IsotopeDocument
     {
         $arrTokens = $this->prepareCollectionTokens($objCollection);
 
-        $pdf = $this->generatePDF($objCollection, $arrTokens);
+        $pdf     = $this->generatePDF($objCollection, $arrTokens);
         $strFile = sprintf('/%s/%s.pdf', $strDirectoryPath, \String::parseSimpleTokens($this->fileTitle, $arrTokens));
         $pdf->Output($strFile, 'F');
 
@@ -63,11 +62,11 @@ class Standard extends Document implements IsotopeDocument
     protected function generatePDF(IsotopeProductCollection $objCollection, array $arrTokens)
     {
         // TCPDF configuration
-        $l = array();
-        $l['a_meta_dir']        = 'ltr';
-        $l['a_meta_charset']    = $GLOBALS['TL_CONFIG']['characterSet'];
-        $l['a_meta_language']   = substr($GLOBALS['TL_LANGUAGE'], 0, 2);
-        $l['w_page']            = 'page';
+        $l                    = array();
+        $l['a_meta_dir']      = 'ltr';
+        $l['a_meta_charset']  = $GLOBALS['TL_CONFIG']['characterSet'];
+        $l['a_meta_language'] = substr($GLOBALS['TL_LANGUAGE'], 0, 2);
+        $l['w_page']          = 'page';
 
         // Include library
         require_once TL_ROOT . '/system/config/tcpdf.php';
@@ -123,7 +122,7 @@ class Standard extends Document implements IsotopeDocument
         $objTemplate = new \Isotope\Template($this->documentTpl);
         $objTemplate->setData($this->arrData);
 
-        $objTemplate->title = \String::parseSimpleTokens($this->documentTitle, $arrTokens);
+        $objTemplate->title      = \String::parseSimpleTokens($this->documentTitle, $arrTokens);
         $objTemplate->collection = $objCollection;
 
         // Render the collection
@@ -132,52 +131,57 @@ class Standard extends Document implements IsotopeDocument
         $objCollection->addToTemplate(
             $objCollectionTemplate,
             array(
-                'gallery'   => $this->gallery,
-                'sorting'   => $objCollection->getItemsSortingCallable($this->orderCollectionBy),
+                 'gallery' => $this->gallery,
+                 'sorting' => $objCollection->getItemsSortingCallable($this->orderCollectionBy),
             )
         );
 
         $objTemplate->products = $objCollectionTemplate->parse();
 
-		// Generate template and fix PDF issues, see Contao's ModuleArticle
-		$strBuffer = Haste::getInstance()->call('replaceInsertTags', array($objTemplate->parse(), false));
-		$strBuffer = html_entity_decode($strBuffer, ENT_QUOTES, $GLOBALS['TL_CONFIG']['characterSet']);
-		$strBuffer = \Controller::convertRelativeUrls($strBuffer, '');
+        // Generate template and fix PDF issues, see Contao's ModuleArticle
+        $strBuffer = Haste::getInstance()->call('replaceInsertTags', array($objTemplate->parse(), false));
+        $strBuffer = html_entity_decode($strBuffer, ENT_QUOTES, $GLOBALS['TL_CONFIG']['characterSet']);
+        $strBuffer = \Controller::convertRelativeUrls($strBuffer, '');
 
-		// Remove form elements and JavaScript links
-		$arrSearch = array
-		(
-			'@<form.*</form>@Us',
-			'@<a [^>]*href="[^"]*javascript:[^>]+>.*</a>@Us'
-		);
+        // Remove form elements and JavaScript links
+        $arrSearch = array
+        (
+            '@<form.*</form>@Us',
+            '@<a [^>]*href="[^"]*javascript:[^>]+>.*</a>@Us'
+        );
 
-		$strBuffer = preg_replace($arrSearch, '', $strBuffer);
+        $strBuffer = preg_replace($arrSearch, '', $strBuffer);
 
-		// Handle line breaks in preformatted text
-		$strBuffer = preg_replace_callback('@(<pre.*</pre>)@Us', 'nl2br_callback', $strBuffer);
+        // URL decode image paths (see contao/core#6411)
+        $strBuffer = preg_replace_callback('@(src="[^"]+")@', function ($arg) {
+            return rawurldecode($arg[0]);
+        }, $strBuffer);
 
-		// Default PDF export using TCPDF
-		$arrSearch = array
-		(
-			'@<span style="text-decoration: ?underline;?">(.*)</span>@Us',
-			'@(<img[^>]+>)@',
-			'@(<div[^>]+block[^>]+>)@',
-			'@[\n\r\t]+@',
-			'@<br( /)?><div class="mod_article@',
-			'@href="([^"]+)(pdf=[0-9]*(&|&amp;)?)([^"]*)"@'
-		);
+        // Handle line breaks in preformatted text
+        $strBuffer = preg_replace_callback('@(<pre.*</pre>)@Us', 'nl2br_callback', $strBuffer);
 
-		$arrReplace = array
-		(
-			'<u>$1</u>',
-			'<br>$1',
-			'<br>$1',
-			' ',
-			'<div class="mod_article',
-			'href="$1$4"'
-		);
+        // Default PDF export using TCPDF
+        $arrSearch = array
+        (
+            '@<span style="text-decoration: ?underline;?">(.*)</span>@Us',
+            '@(<img[^>]+>)@',
+            '@(<div[^>]+block[^>]+>)@',
+            '@[\n\r\t]+@',
+            '@<br( /)?><div class="mod_article@',
+            '@href="([^"]+)(pdf=[0-9]*(&|&amp;)?)([^"]*)"@'
+        );
 
-		$strBuffer = preg_replace($arrSearch, $arrReplace, $strBuffer);
+        $arrReplace = array
+        (
+            '<u>$1</u>',
+            '<br>$1',
+            '<br>$1',
+            ' ',
+            '<div class="mod_article',
+            'href="$1$4"'
+        );
+
+        $strBuffer = preg_replace($arrSearch, $arrReplace, $strBuffer);
 
         return $strBuffer;
     }

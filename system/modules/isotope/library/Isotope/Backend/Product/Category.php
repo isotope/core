@@ -3,11 +3,11 @@
 /**
  * Isotope eCommerce for Contao Open Source CMS
  *
- * Copyright (C) 2008-2012 Isotope eCommerce Workgroup
+ * Copyright (C) 2009-2013 terminal42 gmbh & Isotope eCommerce Workgroup
  *
  * @package    Isotope
- * @link       http://www.isotopeecommerce.com
- * @license    http://opensource.org/licenses/lgpl-3.0.html LGPL
+ * @link       http://isotopeecommerce.org
+ * @license    http://opensource.org/licenses/lgpl-3.0.html
  */
 
 namespace Isotope\Backend\Product;
@@ -32,8 +32,7 @@ class Category extends \Backend
 
         $objCategories = \Database::getInstance()->query("SELECT c1.*, MAX(c2.sorting) AS max_sorting FROM $table c1 LEFT JOIN $table c2 ON c1.page_id=c2.page_id WHERE c1.pid=" . (int) $insertId . " GROUP BY c1.page_id");
 
-        while ($objCategories->next())
-        {
+        while ($objCategories->next()) {
             \Database::getInstance()->query("UPDATE $table SET sorting=" . ($objCategories->max_sorting + 128) . " WHERE id=" . $objCategories->id);
         }
     }
@@ -104,10 +103,9 @@ class Category extends \Backend
     public function save($varValue, \DataContainer $dc)
     {
         $arrIds = deserialize($varValue);
-        $table = ProductCategory::getTable();
+        $table  = ProductCategory::getTable();
 
-        if (is_array($arrIds) && !empty($arrIds))
-        {
+        if (is_array($arrIds) && !empty($arrIds)) {
             $time = time();
 
             if (\Database::getInstance()->query("DELETE FROM $table WHERE pid={$dc->id} AND page_id NOT IN (" . implode(',', $arrIds) . ")")->affectedRows > 0) {
@@ -115,7 +113,7 @@ class Category extends \Backend
             }
 
             $objPages = \Database::getInstance()->execute("SELECT page_id FROM $table WHERE pid={$dc->id}");
-            $arrIds = array_diff($arrIds, $objPages->fetchEach('page_id'));
+            $arrIds   = array_diff($arrIds, $objPages->fetchEach('page_id'));
 
             if (!empty($arrIds)) {
                 foreach ($arrIds as $id) {
@@ -125,9 +123,7 @@ class Category extends \Backend
 
                 $dc->createNewVersion = true;
             }
-        }
-        else
-        {
+        } else {
             if (\Database::getInstance()->query("DELETE FROM $table WHERE pid={$dc->id}")->affectedRows > 0) {
                 $dc->createNewVersion = true;
             }

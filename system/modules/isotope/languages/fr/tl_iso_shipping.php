@@ -3,15 +3,15 @@
 /**
  * Isotope eCommerce for Contao Open Source CMS
  * 
- * Copyright (C) 2009-2013 Isotope eCommerce Workgroup
+ * Copyright (C) 2009-2013 terminal42 gmbh & Isotope eCommerce Workgroup
  * 
- * Core translations are managed using Transifex. To create a new translation
+ * Translations are managed using Transifex. To create a new translation
  * or to help to maintain an existing one, please register at transifex.com.
  * 
  * @link http://help.transifex.com/intro/translating.html
  * @link https://www.transifex.com/projects/i/isotope/language/fr/
  * 
- * @license http://www.gnu.org/licenses/lgpl-3.0.html LGPL
+ * @license http://www.gnu.org/licenses/lgpl-3.0.html
  */
 
 $GLOBALS['TL_LANG']['tl_iso_shipping']['name'][0] = 'Nom du mode de livraison';
@@ -19,9 +19,11 @@ $GLOBALS['TL_LANG']['tl_iso_shipping']['name'][1] = 'Saisir un nom pour ce mode 
 $GLOBALS['TL_LANG']['tl_iso_shipping']['type'][0] = 'Type de mode de livraison';
 $GLOBALS['TL_LANG']['tl_iso_shipping']['type'][1] = 'Sélectionner le type de ce mode de livraison.';
 $GLOBALS['TL_LANG']['tl_iso_shipping']['price'][0] = 'Prix';
+$GLOBALS['TL_LANG']['tl_iso_shipping']['price'][1] = 'Optionnel : saisir un prix pour ce mode d\'expédition.';
 $GLOBALS['TL_LANG']['tl_iso_shipping']['note'][0] = 'Notes relatives au mode de livraison';
 $GLOBALS['TL_LANG']['tl_iso_shipping']['note'][1] = 'Elles seront affichées en front office en liaison avec les options de livraison.';
 $GLOBALS['TL_LANG']['tl_iso_shipping']['tax_class'][0] = 'Catégorie fiscale';
+$GLOBALS['TL_LANG']['tl_iso_shipping']['tax_class'][1] = 'Sélectionner une taxe pour le prix du mode d\'expédition.';
 $GLOBALS['TL_LANG']['tl_iso_shipping']['label'][0] = 'Libellé';
 $GLOBALS['TL_LANG']['tl_iso_shipping']['label'][1] = 'Il est affiché en front office en liaison avec l\'option de livraison.';
 $GLOBALS['TL_LANG']['tl_iso_shipping']['flatCalculation'][0] = 'Calcul forfaitaire';

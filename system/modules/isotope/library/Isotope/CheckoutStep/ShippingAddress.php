@@ -3,18 +3,18 @@
 /**
  * Isotope eCommerce for Contao Open Source CMS
  *
- * Copyright (C) 2009-2012 Isotope eCommerce Workgroup
+ * Copyright (C) 2009-2013 terminal42 gmbh & Isotope eCommerce Workgroup
  *
  * @package    Isotope
- * @link       http://www.isotopeecommerce.com
- * @license    http://opensource.org/licenses/lgpl-3.0.html LGPL
+ * @link       http://isotopeecommerce.org
+ * @license    http://opensource.org/licenses/lgpl-3.0.html
  */
 
 namespace Isotope\CheckoutStep;
 
-use Isotope\Isotope;
 use Isotope\Interfaces\IsotopeCheckoutStep;
 use Isotope\Interfaces\IsotopeProductCollection;
+use Isotope\Isotope;
 use Isotope\Model\Address as AddressModel;
 
 
@@ -41,7 +41,16 @@ class ShippingAddress extends Address implements IsotopeCheckoutStep
     public function generate()
     {
         $this->Template->headline = $GLOBALS['TL_LANG']['MSC']['shipping_address'];
-        $this->Template->message = $GLOBALS['TL_LANG']['MSC']['shipping_address_message'];
+        $this->Template->message  = $GLOBALS['TL_LANG']['MSC']['shipping_address_message'];
+
+        $objAddress = Isotope::getCart()->getShippingAddress();
+
+        if ($objAddress === null
+            || $objAddress->id == Isotope::getCart()->getBillingAddress()->id
+            || $objAddress->ptable != 'tl_iso_product_collection'
+        ) {
+            $this->Template->style = 'display:none;';
+        }
 
         return parent::generate();
     }
@@ -54,16 +63,15 @@ class ShippingAddress extends Address implements IsotopeCheckoutStep
     {
         $objAddress = Isotope::getCart()->getShippingAddress();
 
-        if ($objAddress->id == Isotope::getCart()->getBillingAddress()->id)
-        {
+        if ($objAddress->id == Isotope::getCart()->getBillingAddress()->id) {
             return false;
         }
 
         return array('shipping_address' => array
         (
-            'headline'    => $GLOBALS['TL_LANG']['MSC']['shipping_address'],
-            'info'        => $objAddress->generateHtml(Isotope::getConfig()->getShippingFieldsConfig()),
-            'edit'        => \Isotope\Module\Checkout::generateUrlForStep('address'),
+            'headline' => $GLOBALS['TL_LANG']['MSC']['shipping_address'],
+            'info'     => $objAddress->generateHtml(Isotope::getConfig()->getShippingFieldsConfig()),
+            'edit'     => \Isotope\Module\Checkout::generateUrlForStep('address'),
         ));
     }
 
@@ -110,8 +118,7 @@ class ShippingAddress extends Address implements IsotopeCheckoutStep
     {
         if ($varValue === '-1') {
             return Isotope::getCart()->getBillingAddress();
-        }
-        elseif ($varValue === '0') {
+        } elseif ($varValue === '0') {
             $objAddress = $this->getDefaultAddress();
             $arrAddress = $this->validateFields($blnValidate);
 
@@ -146,10 +153,10 @@ class ShippingAddress extends Address implements IsotopeCheckoutStep
                 $objAddress = clone $objShippingAddress;
             }
 
-            $objAddress->ptable = 'tl_iso_product_collection';
-            $objAddress->pid = Isotope::getCart()->id;
+            $objAddress->ptable            = 'tl_iso_product_collection';
+            $objAddress->pid               = Isotope::getCart()->id;
             $objAddress->isDefaultShipping = '1';
-            $objAddress->isDefaultBilling = '';
+            $objAddress->isDefaultBilling  = '';
 
             if ($objAddress->country == '') {
                 $objAddress->country = Isotope::getConfig()->shipping_country;

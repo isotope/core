@@ -3,11 +3,11 @@
 /**
  * Isotope eCommerce for Contao Open Source CMS
  *
- * Copyright (C) 2009-2012 Isotope eCommerce Workgroup
+ * Copyright (C) 2009-2013 terminal42 gmbh & Isotope eCommerce Workgroup
  *
  * @package    Isotope
- * @link       http://www.isotopeecommerce.com
- * @license    http://opensource.org/licenses/lgpl-3.0.html LGPL
+ * @link       http://isotopeecommerce.org
+ * @license    http://opensource.org/licenses/lgpl-3.0.html
  */
 
 namespace Isotope\Model;
@@ -57,7 +57,7 @@ class ProductCollectionDownload extends \Model
      * Generate array representation for download
      * @return  array
      */
-    public function getForTemplate($blnOrderPaid=false)
+    public function getForTemplate($blnOrderPaid = false)
     {
         global $objPage;
         $objDownload = $this->getRelated('download_id');
@@ -66,7 +66,7 @@ class ProductCollectionDownload extends \Model
             return array();
         }
 
-        $arrDownloads = array();
+        $arrDownloads    = array();
         $allowedDownload = trimsplit(',', strtolower($GLOBALS['TL_CONFIG']['allowedDownload']));
 
         foreach ($objDownload->getFiles() as $objFileModel) {
@@ -128,7 +128,7 @@ class ProductCollectionDownload extends \Model
      * @param   array
      * @return  \Collection|null
      */
-    public static function findByCollection(IsotopeProductCollection $objCollection, array $arrOptions=array())
+    public static function findByCollection(IsotopeProductCollection $objCollection, array $arrOptions = array())
     {
         $arrOptions = array_merge(
 			array(
@@ -150,8 +150,8 @@ class ProductCollectionDownload extends \Model
     public static function createForProductsInCollection(IsotopeProductCollection $objCollection)
     {
         $arrDownloads = array();
-        $t = Download::getTable();
-        $time = time();
+        $t            = Download::getTable();
+        $time         = time();
 
         foreach ($objCollection->getItems() as $objItem) {
             if ($objItem->hasProduct()) {
@@ -160,9 +160,9 @@ class ProductCollectionDownload extends \Model
                 if (null !== $objDownloads) {
                     while ($objDownloads->next()) {
 
-                        $objItemDownload = new ProductCollectionDownload();
-                        $objItemDownload->pid = $objItem->id;
-                        $objItemDownload->tstamp = $time;
+                        $objItemDownload              = new ProductCollectionDownload();
+                        $objItemDownload->pid         = $objItem->id;
+                        $objItemDownload->tstamp      = $time;
                         $objItemDownload->download_id = $objDownloads->id;
 
                         if ($objDownloads->downloads_allowed > 0) {

@@ -3,16 +3,16 @@
 /**
  * Isotope eCommerce for Contao Open Source CMS
  *
- * Copyright (C) 2009-2012 Isotope eCommerce Workgroup
+ * Copyright (C) 2009-2013 terminal42 gmbh & Isotope eCommerce Workgroup
  *
  * @package    Isotope
- * @link       http://www.isotopeecommerce.com
- * @license    http://opensource.org/licenses/lgpl-3.0.html LGPL
+ * @link       http://isotopeecommerce.org
+ * @license    http://opensource.org/licenses/lgpl-3.0.html
  */
 
 namespace Isotope\Model;
 
-use Isotope\Isotope;
+use Isotope\Translation;
 
 /**
  * Isotope\Model\Config represents an Isotope config model
@@ -41,7 +41,7 @@ class Config extends \Model
      */
     public function getLabel()
     {
-        return Isotope::translate(($this->label ?: $this->name));
+        return Translation::get(($this->label ? : $this->name));
     }
 
     /**
@@ -73,7 +73,7 @@ class Config extends \Model
         if (!isset($this->arrCache['billingFieldsConfig'])) {
 
             $this->arrCache['billingFieldsConfig'] = array();
-            $arrFields = deserialize($this->address_fields);
+            $arrFields                             = deserialize($this->address_fields);
 
             if (is_array($arrFields)) {
                 foreach ($arrFields as $arrField) {
@@ -118,7 +118,7 @@ class Config extends \Model
         if (!isset($this->arrCache['shippingFieldsConfig'])) {
 
             $this->arrCache['shippingFieldsConfig'] = array();
-            $arrFields = deserialize($this->address_fields);
+            $arrFields                              = deserialize($this->address_fields);
 
             if (is_array($arrFields)) {
                 foreach ($arrFields as $arrField) {
@@ -200,16 +200,16 @@ class Config extends \Model
      * @param  int
      * @return object|null
      */
-    public static function findByRootPageOrFallback($intRoot, array $arrOptions=array())
+    public static function findByRootPageOrFallback($intRoot, array $arrOptions = array())
     {
         $t = static::$strTable;
 
         $arrOptions = array_merge(
             array(
-                'column' => array("($t.id=(SELECT iso_config FROM tl_page WHERE id=?) OR $t.fallback='1')"),
-                'value'  => $intRoot,
-                'order'  => 'fallback',
-                'return' => 'Model'
+                 'column' => array("($t.id=(SELECT iso_config FROM tl_page WHERE id=?) OR $t.fallback='1')"),
+                 'value'  => $intRoot,
+                 'order'  => 'fallback',
+                 'return' => 'Model'
             ),
             $arrOptions
         );
@@ -221,13 +221,13 @@ class Config extends \Model
      * Find the fallback config
      * @return object|null
      */
-    public static function findByFallback(array $arrOptions=array())
+    public static function findByFallback(array $arrOptions = array())
     {
         $arrOptions = array_merge(
             array(
-                'column' => 'fallback',
-                'value'  => '1',
-                'return' => 'Model'
+                 'column' => 'fallback',
+                 'value'  => '1',
+                 'return' => 'Model'
             ),
             $arrOptions
         );

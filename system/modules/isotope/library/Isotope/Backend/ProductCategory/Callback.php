@@ -3,14 +3,11 @@
 /**
  * Isotope eCommerce for Contao Open Source CMS
  *
- * Copyright (C) 2009-2012 Isotope eCommerce Workgroup
+ * Copyright (C) 2009-2013 terminal42 gmbh & Isotope eCommerce Workgroup
  *
  * @package    Isotope
- * @link       http://www.isotopeecommerce.com
- * @license    http://opensource.org/licenses/lgpl-3.0.html LGPL
- *
- * @author     Andreas Schempp <andreas.schempp@terminal42.ch>
- * @author     Fred Bliss <fred.bliss@intelligentspark.com>
+ * @link       http://isotopeecommerce.org
+ * @license    http://opensource.org/licenses/lgpl-3.0.html
  */
 
 namespace Isotope\Backend\ProductCategory;
@@ -53,6 +50,6 @@ class Callback extends \Backend
             return '';
         }
 
-        return '<a href="contao/main.php?do=feRedirect&page=' . $objPage->id . '" target="_blank" class="header_preview" title="'.specialchars($title).'"'.$attributes.'>'.$label.'</a>';
+        return '<a href="contao/main.php?do=feRedirect&page=' . $objPage->id . '" target="_blank" class="header_preview" title="' . specialchars($title) . '"' . $attributes . '>' . $label . '</a>';
     }
 }

@@ -3,18 +3,17 @@
 /**
  * Isotope eCommerce for Contao Open Source CMS
  *
- * Copyright (C) 2009-2012 Isotope eCommerce Workgroup
+ * Copyright (C) 2009-2013 terminal42 gmbh & Isotope eCommerce Workgroup
  *
  * @package    Isotope
- * @link       http://www.isotopeecommerce.com
- * @license    http://opensource.org/licenses/lgpl-3.0.html LGPL
+ * @link       http://isotopeecommerce.org
+ * @license    http://opensource.org/licenses/lgpl-3.0.html
  */
-
 
 namespace Isotope\CheckoutStep;
 
-use Isotope\Interfaces\IsotopeProductCollection;
 use Haste\Form\Form;
+use Isotope\Interfaces\IsotopeProductCollection;
 
 
 abstract class OrderConditions extends CheckoutStep
@@ -41,15 +40,16 @@ abstract class OrderConditions extends CheckoutStep
      */
     public function generate()
     {
-        $this->objForm = new Form($this->objModule->getFormId(), 'POST', function($haste) {
+        $this->objForm = new Form($this->objModule->getFormId(), 'POST', function ($haste) {
             return \Input::post('FORM_SUBMIT') === $haste->getFormId();
         }, (boolean) $this->objModule->tableless);
 
         // Don't catch the exception here because we want it to be shown to the user
-        $this->objForm->addFieldsFromFormGenerator($this->objModule->iso_order_conditions);
+        $this->objForm->addFieldsFromFormGenerator($this->objModule->iso_order_conditions, function ($strName, &$arrDca) {
+            $arrDca['value'] = $_SESSION['FORM_DATA'][$strName] ? : $arrDca['value'];
 
-        // Manually create widgets because we need to know if there are uploadable widgets
-        $this->objForm->createWidgets();
+            return true;
+        });
 
         // Change enctype if there are uploads
         if ($this->objForm->hasUploads()) {
@@ -57,13 +57,29 @@ abstract class OrderConditions extends CheckoutStep
         }
 
         if ($this->objForm->isSubmitted()) {
-            $this->blnError = $this->objForm->validate();
+            $this->blnError = !$this->objForm->validate();
+
+            $_SESSION['FORM_DATA'] = array();
+            foreach (array_keys($this->objForm->getFormFields()) as $strField) {
+                if ($this->objForm->getWidget($strField) instanceof \uploadable) {
+                    $arrFile  = $_SESSION['FILES'][$strField];
+                    $varValue = str_replace(TL_ROOT . '/', '', dirname($arrFile['tmp_name'])) . '/' . rawurlencode($arrFile['name']);
+                } else {
+                    $varValue = $this->objForm->fetch($strField);
+                }
+
+                $_SESSION['FORM_DATA'][$strField] = $varValue;
+            }
+
         } else {
             $blnError = false;
             foreach (array_keys($this->objForm->getFormFields()) as $strField) {
+
                 // Clone widget because otherwise we add errors to the original widget instance
                 $objClone = clone $this->objForm->getWidget($strField);
-                if (!$objClone->validate()) {
+                $objClone->validate();
+
+                if ($objClone->hasErrors()) {
                     $blnError = true;
                     break;
                 }
@@ -97,20 +113,8 @@ abstract class OrderConditions extends CheckoutStep
         $arrTokens = array();
 
         foreach (array_keys($this->objForm->getFormFields()) as $strField) {
-            if ($this->objForm->isSubmitted()) {
-                if ($this->objForm->getWidget($strField) instanceof \uploadable) {
-                    $arrFile = $_SESSION['FILES'][$strField];
-                    $varValue = str_replace(TL_ROOT . '/', '', dirname($arrFile['tmp_name'])) . '/' . rawurlencode($arrFile['name']);
-                } else {
-                    $varValue = $this->objForm->fetch($strField);
-                }
-
-                $_SESSION['FORM_DATA'][$strField] = $varValue;
-                $arrTokens['form_' . $strField]   = $varValue;
-            } else {
-                if (isset($_SESSION['FORM_DATA'][$strField])) {
-                    $arrTokens['form_' . $strField]   = $_SESSION['FORM_DATA'][$strField];
-                }
+            if (isset($_SESSION['FORM_DATA'][$strField])) {
+                $arrTokens['form_' . $strField] = $_SESSION['FORM_DATA'][$strField];
             }
         }
 

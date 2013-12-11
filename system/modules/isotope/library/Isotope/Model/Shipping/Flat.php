@@ -3,18 +3,18 @@
 /**
  * Isotope eCommerce for Contao Open Source CMS
  *
- * Copyright (C) 2009-2012 Isotope eCommerce Workgroup
+ * Copyright (C) 2009-2013 terminal42 gmbh & Isotope eCommerce Workgroup
  *
  * @package    Isotope
- * @link       http://www.isotopeecommerce.com
- * @license    http://opensource.org/licenses/lgpl-3.0.html LGPL
+ * @link       http://isotopeecommerce.org
+ * @license    http://opensource.org/licenses/lgpl-3.0.html
  */
 
 namespace Isotope\Model\Shipping;
 
-use Isotope\Isotope;
 use Isotope\Interfaces\IsotopeProductCollection;
 use Isotope\Interfaces\IsotopeShipping;
+use Isotope\Isotope;
 use Isotope\Model\Shipping;
 
 
@@ -32,7 +32,7 @@ class Flat extends Shipping implements IsotopeShipping
      * Return calculated price for this shipping method
      * @return float
      */
-    public function getPrice(IsotopeProductCollection $objCollection=null)
+    public function getPrice(IsotopeProductCollection $objCollection = null)
     {
         if (null === $objCollection) {
             $objCollection = Isotope::getCart();

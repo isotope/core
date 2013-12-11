@@ -3,21 +3,21 @@
 /**
  * Isotope eCommerce for Contao Open Source CMS
  *
- * Copyright (C) 2009-2012 Isotope eCommerce Workgroup
+ * Copyright (C) 2009-2013 terminal42 gmbh & Isotope eCommerce Workgroup
  *
  * @package    Isotope
- * @link       http://www.isotopeecommerce.com
- * @license    http://opensource.org/licenses/lgpl-3.0.html LGPL
+ * @link       http://isotopeecommerce.org
+ * @license    http://opensource.org/licenses/lgpl-3.0.html
  */
 
 namespace Isotope\Model;
 
-use Isotope\Isotope;
-use Isotope\Translation;
-use Isotope\Interfaces\IsotopeProductCollection;
-use Isotope\Model\ProductCollectionSurcharge;
-use Haste\Units\Mass\Weight;
 use Haste\Units\Mass\Scale;
+use Haste\Units\Mass\Weight;
+use Isotope\Interfaces\IsotopeProductCollection;
+use Isotope\Isotope;
+use Isotope\Model\ProductCollectionSurcharge;
+use Isotope\Translation;
 
 
 /**
@@ -144,8 +144,7 @@ abstract class Shipping extends TypeAgent
      */
     public function getPercentage()
     {
-        if (!$this->isPercentage())
-        {
+        if (!$this->isPercentage()) {
             throw new \UnexpectedValueException('Shipping method does not have a percentage amount.');
         }
 
@@ -166,7 +165,7 @@ abstract class Shipping extends TypeAgent
      * Return calculated price for this shipping method
      * @return float
      */
-    public function getPrice(IsotopeProductCollection $objCollection=null)
+    public function getPrice(IsotopeProductCollection $objCollection = null)
     {
         if (null === $objCollection) {
             $objCollection = Isotope::getCart();
@@ -188,7 +187,7 @@ abstract class Shipping extends TypeAgent
      */
     public function getLabel()
     {
-        return Translation::get($this->label ?: $this->name);
+        return Translation::get($this->label ? : $this->name);
     }
 
 
@@ -233,8 +232,7 @@ abstract class Shipping extends TypeAgent
      */
     public function getSurcharge(IsotopeProductCollection $objCollection)
     {
-        if ($this->getPrice() == 0)
-        {
+        if ($this->getPrice() == 0) {
             return null;
         }
 

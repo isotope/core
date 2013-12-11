@@ -3,18 +3,17 @@
 /**
  * Isotope eCommerce for Contao Open Source CMS
  *
- * Copyright (C) 2009-2012 Isotope eCommerce Workgroup
+ * Copyright (C) 2009-2013 terminal42 gmbh & Isotope eCommerce Workgroup
  *
  * @package    Isotope
- * @link       http://www.isotopeecommerce.com
- * @license    http://opensource.org/licenses/lgpl-3.0.html LGPL
+ * @link       http://isotopeecommerce.org
+ * @license    http://opensource.org/licenses/lgpl-3.0.html
  */
 
 namespace Isotope\Model\Payment;
 
-use Isotope\Interfaces\IsotopeProductCollection;
-use Isotope\Isotope;
 use Isotope\Interfaces\IsotopePayment;
+use Isotope\Interfaces\IsotopeProductCollection;
 use Isotope\Model\ProductCollection\Order;
 
 
@@ -67,8 +66,7 @@ class Saferpay extends Postsale implements IsotopePayment
         $objRequest->send(static::verifyPayConfirmURI . "?DATA=" . urlencode($this->getPostData()) . "&SIGNATURE=" . urlencode(\Input::post('SIGNATURE')));
 
         // Stop if verification is not working
-        if (strtoupper(substr($objRequest->response, 0, 3)) != 'OK:')
-        {
+        if (strtoupper(substr($objRequest->response, 0, 3)) != 'OK:') {
             \System::log(sprintf('Payment not successfull. See log files for further details.'), __METHOD__, TL_ERROR);
             log_message(sprintf('Payment not successfull. Message was: "%s".', $objRequest->response), 'error.log');
 
@@ -81,7 +79,7 @@ class Saferpay extends Postsale implements IsotopePayment
             $arrResponse = array();
             parse_str(substr($objRequest->response, 3), $arrResponse);
 
-            $strUrl  = static::payCompleteURI . '?ACCOUNTID=' . $this->saferpay_accountid . '&ID=' . urlencode($arrResponse['ID']) . '&TOKEN=' . urlencode($arrResponse['TOKEN']);
+            $strUrl = static::payCompleteURI . '?ACCOUNTID=' . $this->saferpay_accountid . '&ID=' . urlencode($arrResponse['ID']) . '&TOKEN=' . urlencode($arrResponse['TOKEN']);
 
             // This is only for the sandbox mode where a password is required
             if (substr($this->saferpay_accountid, 0, 6) == '99867-') {
@@ -103,6 +101,7 @@ class Saferpay extends Postsale implements IsotopePayment
             // otherwise checkout
             if (!$objOrder->checkout()) {
                 \System::log('Postsale checkout for Order ID "' . $objOrder->id . '" failed', __METHOD__, TL_ERROR);
+
                 return;
             }
 
@@ -113,29 +112,32 @@ class Saferpay extends Postsale implements IsotopePayment
         }
     }
 
+    /**
+     * Get the order object in a postsale request
+     * @return  IsotopeProductCollection
+     */
     public function getPostsaleOrder()
     {
         return Order::findByPk($this->getPostValue('ORDERID'));
     }
 
-
     /**
      * HTML form for checkout
-     *
-     * @access public
-     * @return mixed
+     * @param   IsotopeProductCollection    The order being places
+     * @param   Module                      The checkout module instance
+     * @return  mixed
      */
-    public function checkoutForm()
+    public function checkoutForm(IsotopeProductCollection $objOrder, \Module $objModule)
     {
         // Get redirect url
         $objRequest = new \Request();
-        $objRequest->send($this->createPaymentURI());
+        $objRequest->send($this->createPaymentURI($objOrder, $objModule));
 
         if ((int) $objRequest->code !== 200 || substr($objRequest->response, 0, 6) === 'ERROR:') {
             \System::log(sprintf('Could not get the redirect URI from Saferpay. See log files for further details.'), __METHOD__, TL_ERROR);
             log_message(sprintf('Could not get the redirect URI from Saferpay. Response was: "%s".', $objRequest->response), 'error.log');
 
-            \Isotope\Module\Checkout::redirectToStep('failed');
+            $objModule->redirectToStep('failed');
         }
 
         $GLOBALS['TL_HEAD'][] = '<meta http-equiv="refresh" content="1; URL=' . $objRequest->response . '">';
@@ -143,7 +145,7 @@ class Saferpay extends Postsale implements IsotopePayment
         return '
 <h2>' . $GLOBALS['TL_LANG']['MSC']['pay_with_redirect'][0] . '</h2>
 <p class="message">' . $GLOBALS['TL_LANG']['MSC']['pay_with_redirect'][1] . '</p>
-<p><a href="' . $objRequest->response . '">' . $GLOBALS['TL_LANG']['MSC']['pay_with_redirect'][2]. '</a></p>';
+<p><a href="' . $objRequest->response . '">' . $GLOBALS['TL_LANG']['MSC']['pay_with_redirect'][2] . '</a></p>';
     }
 
     /**
@@ -216,19 +218,15 @@ class Saferpay extends Postsale implements IsotopePayment
      * Create payment URI
      * @return string
      */
-    private function createPaymentURI()
+    private function createPaymentURI(IsotopeProductCollection $objOrder, \Module $objModule)
     {
-        if (($objOrder = Order::findOneBy('source_collection_id', Isotope::getCart()->id)) === null) {
-            \Isotope\Module\Checkout::redirectToStep('failed');
-        }
+        $strComplete = \Environment::get('base') . $objModule->generateUrlForStep('complete', $objOrder);
+        $strFailed   = \Environment::get('base') . $objModule->generateUrlForStep('failed');
 
-        $strComplete = \Environment::get('base') . \Isotope\Module\Checkout::generateUrlForStep('complete') . '?uid=' . $objOrder->uniqid;
-        $strFailed = \Environment::get('base') . \Isotope\Module\Checkout::generateUrlForStep('failed');
-
-        $strUrl  = static::createPayInitURI;
+        $strUrl = static::createPayInitURI;
         $strUrl .= "?ACCOUNTID=" . $this->saferpay_accountid;
-        $strUrl .= "&AMOUNT=" . (round((Isotope::getCart()->getTotal() * 100), 0));
-        $strUrl .= "&CURRENCY=" . Isotope::getConfig()->currency;
+        $strUrl .= "&AMOUNT=" . (round(($objOrder->getTotal() * 100), 0));
+        $strUrl .= "&CURRENCY=" . $objOrder->currency;
         $strUrl .= "&SUCCESSLINK=" . urlencode($strComplete);
         $strUrl .= "&FAILLINK=" . urlencode($strFailed);
         $strUrl .= "&BACKLINK=" . urlencode($strFailed);

@@ -3,11 +3,11 @@
 /**
  * Isotope eCommerce for Contao Open Source CMS
  *
- * Copyright (C) 2009-2012 Isotope eCommerce Workgroup
+ * Copyright (C) 2009-2013 terminal42 gmbh & Isotope eCommerce Workgroup
  *
  * @package    Isotope
- * @link       http://www.isotopeecommerce.com
- * @license    http://opensource.org/licenses/lgpl-3.0.html LGPL
+ * @link       http://isotopeecommerce.org
+ * @license    http://opensource.org/licenses/lgpl-3.0.html
  */
 
 namespace Isotope\Model;
@@ -60,6 +60,15 @@ class ProductType extends \Model
     }
 
     /**
+     * Returns true if show price tiers is enabled in the product type, otherwise returns false
+     * @return  bool
+     */
+    public function showPriceTiers()
+    {
+        return (bool) $this->show_price_tiers;
+    }
+
+    /**
      * Returns true if downloads are enabled in the product type, otherwise returns false
      * @return  bool
      */
@@ -106,10 +115,10 @@ class ProductType extends \Model
      */
     protected function getEnabledAttributesByPosition($varValue)
     {
-        $arrFields = &$GLOBALS['TL_DCA']['tl_iso_product']['fields'];
+        $arrFields     = &$GLOBALS['TL_DCA']['tl_iso_product']['fields'];
         $arrAttributes = deserialize($varValue, true);
 
-        $arrAttributes = array_filter($arrAttributes, function($a) use ($arrFields) {
+        $arrAttributes = array_filter($arrAttributes, function ($a) use ($arrFields) {
             if ($a['enabled'] && is_array($arrFields[$a['name']]) && $arrFields[$a['name']]['attributes']['legend'] != '') {
                 return true;
             }
@@ -129,7 +138,7 @@ class ProductType extends \Model
      * @param   array
      * @return  Collection|null
      */
-    public static function findAllUsed(array $arrOptions=array())
+    public static function findAllUsed(array $arrOptions = array())
     {
         $t = static::$strTable;
 
@@ -141,7 +150,7 @@ class ProductType extends \Model
      * @param   array
      * @return  ProductType|null
      */
-    public static function findFallback(array $arrOptions=array())
+    public static function findFallback(array $arrOptions = array())
     {
         return static::findOneBy('fallback', '1', $arrOptions);
     }

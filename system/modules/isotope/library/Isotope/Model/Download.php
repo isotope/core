@@ -3,11 +3,11 @@
 /**
  * Isotope eCommerce for Contao Open Source CMS
  *
- * Copyright (C) 2009-2012 Isotope eCommerce Workgroup
+ * Copyright (C) 2009-2013 terminal42 gmbh & Isotope eCommerce Workgroup
  *
  * @package    Isotope
- * @link       http://www.isotopeecommerce.com
- * @license    http://opensource.org/licenses/lgpl-3.0.html LGPL
+ * @link       http://isotopeecommerce.org
+ * @license    http://opensource.org/licenses/lgpl-3.0.html
  */
 
 namespace Isotope\Model;
@@ -35,14 +35,13 @@ class Download extends \Model
      */
     public function getFiles()
     {
-        // Check for version 3 format
-        if (!is_numeric($this->singleSRC)) {
-            throw new \UnexpectedValueException($GLOBALS['TL_LANG']['ERR']['version2format']);
-        }
-
         $objFile = $this->getRelated('singleSRC');
 
-        if (null !== $objFile && $objFile->type == 'folder') {
+        if (null === $objFile) {
+            return array();
+        }
+
+        if ($objFile->type == 'folder') {
             $arrFiles = array();
             $objFiles = \FilesModel::findBy(array("pid=?", "type='file'"), array($objFile->id));
 
@@ -54,7 +53,7 @@ class Download extends \Model
 
             return $arrFiles;
 
-        } elseif (null !== $objFile && is_file(TL_ROOT . '/' . $objFile->path)) {
+        } elseif (is_file(TL_ROOT . '/' . $objFile->path)) {
 
             return array($objFile);
         }
@@ -67,7 +66,7 @@ class Download extends \Model
      * @param   int|null
      * @return  int|null
      */
-    public function getExpirationTimestamp($intFrom=null)
+    public function getExpirationTimestamp($intFrom = null)
     {
         if ($this->expires == '') {
             return null;

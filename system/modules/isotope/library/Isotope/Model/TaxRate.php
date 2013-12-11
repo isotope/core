@@ -3,11 +3,11 @@
 /**
  * Isotope eCommerce for Contao Open Source CMS
  *
- * Copyright (C) 2009-2012 Isotope eCommerce Workgroup
+ * Copyright (C) 2009-2013 terminal42 gmbh & Isotope eCommerce Workgroup
  *
  * @package    Isotope
- * @link       http://www.isotopeecommerce.com
- * @license    http://opensource.org/licenses/lgpl-3.0.html LGPL
+ * @link       http://isotopeecommerce.org
+ * @license    http://opensource.org/licenses/lgpl-3.0.html
  */
 
 namespace Isotope\Model;
@@ -40,95 +40,70 @@ class TaxRate extends \Model
     public function isApplicable($fltPrice, $arrAddresses)
     {
         // Tax rate is limited to another store config
-        if ($this->config > 0 && $this->config != Isotope::getConfig()->id)
-        {
+        if ($this->config > 0 && $this->config != Isotope::getConfig()->id) {
             return false;
         }
 
         // Tax rate is for guests only
-        if ($this->guests && FE_USER_LOGGED_IN === true && !$this->protected)
-        {
+        if ($this->guests && FE_USER_LOGGED_IN === true && !$this->protected) {
             return false;
-        }
-
-        // Tax rate is protected but no member is logged in
-        elseif ($this->protected && FE_USER_LOGGED_IN !== true && !$this->guests)
-        {
+        } // Tax rate is protected but no member is logged in
+        elseif ($this->protected && FE_USER_LOGGED_IN !== true && !$this->guests) {
             return false;
-        }
-
-        // Tax rate is protected and member logged in, check member groups
-        elseif ($this->protected && FE_USER_LOGGED_IN === true)
-        {
+        } // Tax rate is protected and member logged in, check member groups
+        elseif ($this->protected && FE_USER_LOGGED_IN === true) {
             $groups = deserialize($this->groups);
 
-            if (!is_array($groups) || empty($groups) || !count(array_intersect($groups, \FrontendUser::getInstance()->groups)))
-            {
+            if (!is_array($groups) || empty($groups) || !count(array_intersect($groups, \FrontendUser::getInstance()->groups))) {
                 return false;
             }
         }
 
         // !HOOK: use tax rate
-        if (isset($GLOBALS['ISO_HOOKS']['useTaxRate']) && is_array($GLOBALS['ISO_HOOKS']['useTaxRate']))
-        {
-            foreach ($GLOBALS['ISO_HOOKS']['useTaxRate'] as $callback)
-            {
+        if (isset($GLOBALS['ISO_HOOKS']['useTaxRate']) && is_array($GLOBALS['ISO_HOOKS']['useTaxRate'])) {
+            foreach ($GLOBALS['ISO_HOOKS']['useTaxRate'] as $callback) {
                 $objCallback = \System::importStatic($callback[0]);
-                $varValue = $objCallback->$callback[1]($this, $fltPrice, $arrAddresses);
+                $varValue    = $objCallback->$callback[1]($this, $fltPrice, $arrAddresses);
 
-                if ($varValue !== true)
-                {
+                if ($varValue !== true) {
                     return false;
                 }
             }
         }
 
         $arrAddress = deserialize($this->address);
-        if (!empty($arrAddress) && is_array($arrAddress))
-        {
-            foreach ($arrAddresses as $name => $objAddress)
-            {
-                if (!in_array($name, $arrAddress))
-                {
+        if (!empty($arrAddress) && is_array($arrAddress)) {
+            foreach ($arrAddresses as $name => $objAddress) {
+                if (!in_array($name, $arrAddress)) {
                     continue;
                 }
 
-                if ($this->countries != '' && !in_array($objAddress->country, trimsplit(',', $this->countries)))
-                {
+                if ($this->countries != '' && !in_array($objAddress->country, trimsplit(',', $this->countries))) {
                     continue;
                 }
 
-                if ($this->subdivisions != '' && !in_array($objAddress->subdivision, trimsplit(',', $this->subdivisions)))
-                {
+                if ($this->subdivisions != '' && !in_array($objAddress->subdivision, trimsplit(',', $this->subdivisions))) {
                     continue;
                 }
 
                 // Check if address has a valid postal code
-                if ($this->postalCodes != '')
-                {
+                if ($this->postalCodes != '') {
                     $arrCodes = \Isotope\Frontend::parsePostalCodes($this->postalCodes);
 
-                    if (!in_array($objAddress->postal, $arrCodes))
-                    {
+                    if (!in_array($objAddress->postal, $arrCodes)) {
                         continue;
                     }
                 }
 
                 $arrPrice = deserialize($this->amount);
 
-                if (is_array($arrPrice) && !empty($arrPrice) && strlen($arrPrice[0]))
-                {
-                    if (strlen($arrPrice[1]))
-                    {
-                        if ($arrPrice[0] > $fltPrice || $arrPrice[1] < $fltPrice)
-                        {
+                if (is_array($arrPrice) && !empty($arrPrice) && strlen($arrPrice[0])) {
+                    if (strlen($arrPrice[1])) {
+                        if ($arrPrice[0] > $fltPrice || $arrPrice[1] < $fltPrice) {
                             continue;
                         }
-                    }
-                    else
-                    {
-                        if ($arrPrice[0] != $fltPrice)
-                        {
+                    } else {
+                        if ($arrPrice[0] != $fltPrice) {
                             continue;
                         }
                     }
@@ -164,7 +139,7 @@ class TaxRate extends \Model
      */
     public function getLabel()
     {
-        return Translation::get($this->label ?: $this->name);
+        return Translation::get($this->label ? : $this->name);
     }
 
     /**
@@ -187,14 +162,10 @@ class TaxRate extends \Model
     public function calculateAmountIncludedInPrice($fltPrice)
     {
         // Percentual amount. Final price / (1 + (tax / 100)
-        if ($this->isPercentage())
-        {
+        if ($this->isPercentage()) {
             return $fltPrice - ($fltPrice / (1 + ($this->getAmount() / 100)));
-        }
-
-        // Full amount
-        else
-        {
+        } // Full amount
+        else {
             return $this->getAmount();
         }
     }
@@ -208,14 +179,10 @@ class TaxRate extends \Model
     public function calculateAmountAddedToPrice($fltPrice)
     {
         // Final price * (1 + (tax / 100)
-        if ($this->isPercentage())
-        {
+        if ($this->isPercentage()) {
             return ($fltPrice * (1 + ($this->getAmount() / 100))) - $fltPrice;
-        }
-
-        // Full amount
-        else
-        {
+        } // Full amount
+        else {
             return $this->getAmount();
         }
     }

@@ -3,11 +3,11 @@
 /**
  * Isotope eCommerce for Contao Open Source CMS
  *
- * Copyright (C) 2009-2012 Isotope eCommerce Workgroup
+ * Copyright (C) 2009-2013 terminal42 gmbh & Isotope eCommerce Workgroup
  *
  * @package    Isotope
- * @link       http://www.isotopeecommerce.com
- * @license    http://opensource.org/licenses/lgpl-3.0.html LGPL
+ * @link       http://isotopeecommerce.org
+ * @license    http://opensource.org/licenses/lgpl-3.0.html
  */
 
 namespace Isotope;
@@ -258,8 +258,10 @@ class Rules extends \Controller
     /**
      * Callback for checkout Hook. Transfer active rules to usage table.
      */
-    public function writeRuleUsages($objOrder, $objCart)
+    public function writeRuleUsages($objOrder)
     {
+        $objCart = Cart::findByPk($objOrder->source_collection_id);
+
         $objRules = Rule::findActiveWitoutCoupons();
         $arrRules = (null === $objRules) ? array() : $objRules->fetchEach('id');
         $arrCoupons = deserialize($objCart->coupons);

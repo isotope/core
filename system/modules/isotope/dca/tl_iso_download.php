@@ -3,14 +3,11 @@
 /**
  * Isotope eCommerce for Contao Open Source CMS
  *
- * Copyright (C) 2009-2012 Isotope eCommerce Workgroup
+ * Copyright (C) 2009-2013 terminal42 gmbh & Isotope eCommerce Workgroup
  *
  * @package    Isotope
- * @link       http://www.isotopeecommerce.com
- * @license    http://opensource.org/licenses/lgpl-3.0.html LGPL
- *
- * @author     Andreas Schempp <andreas.schempp@terminal42.ch>
- * @author     Fred Bliss <fred.bliss@intelligentspark.com>
+ * @link       http://isotopeecommerce.org
+ * @license    http://opensource.org/licenses/lgpl-3.0.html
  */
 
 
@@ -142,10 +139,9 @@ $GLOBALS['TL_DCA']['tl_iso_download'] = array
             'label'                 => &$GLOBALS['TL_LANG']['tl_iso_download']['singleSRC'],
             'exclude'               => true,
             'inputType'             => 'fileTree',
-            'foreignKey'            => 'tl_files.path',
-            'eval'                  => array('mandatory'=>true, 'fieldType'=>'radio', 'files'=>true, 'extensions'=>$GLOBALS['TL_CONFIG']['allowedDownload']),
-            'sql'                   => "int(10) unsigned NOT NULL default '0'",
-            'relation'              => array('type'=>'hasOne', 'load'=>'eager'),
+            'eval'                  => array('mandatory'=>true, 'fieldType'=>'radio', 'files'=>true, 'extensions'=>$GLOBALS['TL_CONFIG']['allowedDownloads']),
+            'sql'                   => "binary(16) NULL",
+            'relation'              => array('type'=>'hasOne', 'load'=>'lazy', 'table'=>'tl_files', 'field'=>'uuid'),
         ),
         'downloads_allowed' => array
         (

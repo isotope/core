@@ -3,15 +3,11 @@
 /**
  * Isotope eCommerce for Contao Open Source CMS
  *
- * Copyright (C) 2009-2012 Isotope eCommerce Workgroup
+ * Copyright (C) 2009-2013 terminal42 gmbh & Isotope eCommerce Workgroup
  *
  * @package    Isotope
- * @link       http://www.isotopeecommerce.com
- * @license    http://opensource.org/licenses/lgpl-3.0.html LGPL
- *
- * @author     Andreas Schempp <andreas.schempp@terminal42.ch>
- * @author     Fred Bliss <fred.bliss@intelligentspark.com>
- * @author     Christian de la Haye <service@delahaye.de>
+ * @link       http://isotopeecommerce.org
+ * @license    http://opensource.org/licenses/lgpl-3.0.html
  */
 
 
@@ -152,11 +148,11 @@ $GLOBALS['TL_DCA']['tl_iso_attribute'] = array
     (
         'id' => array
         (
-            'sql'                 =>  "int(10) unsigned NOT NULL auto_increment",
+            'sql'                   => "int(10) unsigned NOT NULL auto_increment",
         ),
         'tstamp' => array
         (
-            'sql'                 =>  "int(10) unsigned NOT NULL default '0'",
+            'sql'                   => "int(10) unsigned NOT NULL default '0'",
         ),
         'name' => array
         (
@@ -243,7 +239,7 @@ $GLOBALS['TL_DCA']['tl_iso_attribute'] = array
                     ),
                 ),
             ),
-            'sql'   => "blob NULL",
+            'sql'                   => "blob NULL",
         ),
         'foreignKey' => array
         (
@@ -428,7 +424,7 @@ $GLOBALS['TL_DCA']['tl_iso_attribute'] = array
             'exclude'               => true,
             'inputType'             => 'fileTree',
             'eval'                  => array('fieldType'=>'radio', 'tl_class'=>'clr'),
-            'sql'                 =>  "int(10) unsigned NOT NULL default '0'",
+            'sql'                   =>  "binary(16) NULL",
         ),
         'storeFile' => array
         (
@@ -444,7 +440,7 @@ $GLOBALS['TL_DCA']['tl_iso_attribute'] = array
             'exclude'               => true,
             'inputType'             => 'fileTree',
             'eval'                  => array('fieldType'=>'radio', 'tl_class'=>'clr'),
-            'sql'                   => "varchar(255) NOT NULL default ''",
+            'sql'                   => "binary(16) NULL",
         ),
         'useHomeDir' => array
         (
