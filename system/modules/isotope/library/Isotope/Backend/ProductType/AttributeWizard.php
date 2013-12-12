@@ -26,6 +26,7 @@ class AttributeWizard extends \Backend
     public function getColumns($objWidget)
     {
         $this->loadDataContainer('tl_iso_product');
+        \System::loadLanguageFile('tl_iso_product');
 
         $arrValues   = $objWidget->value;
         $arrDCA      = &$GLOBALS['TL_DCA']['tl_iso_product']['fields'];
