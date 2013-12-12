@@ -67,14 +67,14 @@ class Paybyway extends Payment implements IsotopePayment, IsotopePostsale
         }
 
         $objTemplate->authcode = strtoupper(md5(
-            $this->paybyway_private_key . '|' .
-            $objTemplate->merchant_id . '|' .
-            $objTemplate->amount . '|' .
-            $objTemplate->currency . '|' .
-            $objTemplate->order_number . '|' .
-            $objTemplate->lang . '|' .
-            $objTemplate->return_address . '|' .
-            $objTemplate->cancel_address
+            $this->paybyway_private_key .
+            '|' . $objTemplate->merchant_id .
+            '|' . $objTemplate->amount .
+            '|' . $objTemplate->currency .
+            '|' . $objTemplate->order_number .
+            '|' . $objTemplate->lang .
+            '|' . $objTemplate->return_address .
+            '|' . $objTemplate->cancel_address
         ));
 
         return $objTemplate->parse();
@@ -102,7 +102,54 @@ class Paybyway extends Payment implements IsotopePayment, IsotopePostsale
      */
     public function processPostsale(IsotopeProductCollection $objOrder)
     {
-        var_dump($_POST);
+        if ($this->debug) {
+            $this->paybyway_private_key = 'private_key';
+        }
+
+        $strChecksum = strtoupper(md5(
+            $this->paybyway_private_key .
+            '|' . \Input::post('RETURN_CODE') .
+            '|' . \Input::post('ORDER_NUMBER') .
+            (\Input::post('SETTLED') ? ('|' . \Input::post('SETTLED')) : '') .
+            (\Input::post('INCIDENT_ID') ? ('|' . \Input::post('INCIDENT_ID')) : '')
+        ));
+
+        if (\Input::post('AUTHCODE') != $strChecksum) {
+            \System::log('Postsale manipulation for order ID ' . $objOrder->id, __METHOD__, TL_ERROR);
+            \Isotope\Module\Checkout::redirectToStep('failed');
+        }
+
+        switch (\Input::post('RETURN_CODE')) {
+
+            case 0: // Payment completed successfully.
+                if ($objOrder->checkout()) {
+                    $objOrder->date_paid = time();
+                    $objOrder->updateOrderStatus($this->new_order_status);
+                    \Isotope\Module\Checkout::redirectToStep('complete', $objOrder);
+                }
+                break;
+
+            case 4: // Transaction status could not be updated after customer returned from the web page of a bank. Please use the merchant UI to resolve the payment status.
+                if (($objConfig = $objOrder->getRelated('config_id')) === null) {
+                    \System::log('Config for Order ID ' . $objOrder->id . ' not found', __METHOD__, TL_ERROR);
+
+                } elseif ($objOrder->checkout()) {
+                    $objOrder->updateOrderStatus($objConfig->orderstatus_error);
+                    \Isotope\Module\Checkout::redirectToStep('complete', $objOrder);
+                }
+                break;
+
+            case 1: // Payment failed. Customer did not successfully finish the payment.
+            case 2: // Duplicate order number. You have reused an order number. Make sure that your order numbers are unique, and are not reused in any case.
+            case 3: // User disabled. Either your Paybyway account has been temporarily disabled for security reasons, or your sub-merchant is disabled.
+            case 10: // Maintenance break. The transaction is not created and the user has been notified and transferred back to the cancel address.
+                // Do nothing here, we redirect to "failed" by default
+                break;
+        }
+
+        \System::log('Paybyway checkout failed for order ID ' . $objOrder->id, __METHOD__, TL_ERROR);
+
+        \Isotope\Module\Checkout::redirectToStep('failed');
     }
 
 
