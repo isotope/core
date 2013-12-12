@@ -223,7 +223,7 @@ class SalesProduct extends Sales
 		return array
 		(
 			'name'			=> 'variants',
-			'label'			=> 'Varianten:',
+			'label'			=> &$GLOBALS['ISO_LANG']['REPORT']['variants'],
 			'type'			=> 'radio',
 			'value'			=> (string) $arrSession[$this->name]['variants'],
 			'class'			=> 'tl_variants',
@@ -241,13 +241,13 @@ class SalesProduct extends Sales
 	{
 		$this->arrSearchOptions = array
 		(
-			'product_name' => 'Produktname',
+			'product_name' => &$GLOBALS['ISO_LANG']['REPORT']['product_name'],
 		);
 
 		$this->arrSortingOptions = array
 		(
-			'product_name'	=> 'Produktname',
-			'total'			=> 'Gesamtumsatz',
+			'product_name'	=> &$GLOBALS['ISO_LANG']['REPORT']['product_name'],
+			'total'			=> &$GLOBALS['ISO_LANG']['REPORT']['total_sales'],
 		);
 
 		// Set default session data

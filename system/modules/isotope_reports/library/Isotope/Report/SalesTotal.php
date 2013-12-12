@@ -108,22 +108,22 @@ class SalesTotal extends Sales
 		(
 			array
 			(
-				'value'			=> 'Zeitraum',
+				'value'			=> &$GLOBALS['ISO_LANG']['REPORT']['period'],
 				'header'		=> true,
 			),
 			array
 			(
-				'value'			=> '# Bestellungen',
+				'value'			=> &$GLOBALS['ISO_LANG']['REPORT']['orders#'],
 				'attributes'	=> ' style="text-align:right"',
 			),
 			array
 			(
-				'value'			=> '# Artikel',
+				'value'			=> &$GLOBALS['ISO_LANG']['REPORT']['products#'],
 				'attributes'	=> ' style="text-align:right"',
 			),
 			array
 			(
-				'value'			=> 'Umsatz',
+				'value'			=> &$GLOBALS['ISO_LANG']['REPORT']['sales#'],
 				'attributes'	=> ' style="text-align:right"',
 			),
 		);

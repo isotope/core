@@ -169,7 +169,7 @@ abstract class Report extends \Backend
 		return array
 		(
 			'name'			=> 'tl_limit',
-			'label'			=> 'Anzeigen:',
+			'label'			=> &$GLOBALS['ISO_LANG']['REPORT']['show'],
 			'class'			=> 'tl_limit',
 			'type'			=> 'filter',
 			'value'			=> $arrSession[$this->name]['tl_limit'],
@@ -191,7 +191,7 @@ abstract class Report extends \Backend
 
 		return array
 		(
-			'label'			=> 'Suchen:',
+			'label'			=> &$GLOBALS['ISO_LANG']['REPORT']['search'],
 			'class'			=> 'tl_search',
 			'type'			=> 'search',
 			'value'			=> $varValue,
@@ -214,7 +214,7 @@ abstract class Report extends \Backend
 		return array
 		(
 			'name'			=> 'tl_sort',
-			'label'			=> 'Sortieren:',
+			'label'			=> &$GLOBALS['ISO_LANG']['REPORT']['sort'],
 			'type'			=> 'filter',
 			'value'			=> $varValue,
 			'class'			=> 'tl_sorting',
@@ -240,7 +240,7 @@ abstract class Report extends \Backend
 		return array
 		(
 			'name'			=> 'iso_config',
-			'label'			=> 'Konfiguration: ',
+			'label'			=> &$GLOBALS['ISO_LANG']['REPORT']['shop_config'],
 			'type'			=> 'filter',
 			'value'			=> $varValue,
 			'active'		=> ($varValue != ''),
@@ -257,17 +257,17 @@ abstract class Report extends \Backend
 		return array
 		(
 			'name'			=> 'period',
-			'label'			=> 'Zeitraum:',
+			'label'			=> &$GLOBALS['ISO_LANG']['REPORT']['period'],
 			'type'			=> 'filter',
 			'value'			=> (string) $arrSession[$this->name]['period'],
 			'class'			=> 'tl_period',
 			'options'		=> array
 			(
-				'day'		=> 'Tag',
-				'week'		=> 'Woche',
-				'month'		=> 'Monat',
-				'year'		=> 'Jahr',
-			),
+				'day'   => &$GLOBALS['ISO_LANG']['REPORT']['day'],
+				'week'  => &$GLOBALS['ISO_LANG']['REPORT']['week'],
+				'month' => &$GLOBALS['ISO_LANG']['REPORT']['month'],
+				'year'  => &$GLOBALS['ISO_LANG']['REPORT']['year']
+			)
 		);
 	}
 
@@ -279,7 +279,7 @@ abstract class Report extends \Backend
 		return array
 		(
 			'name'			=> 'start',
-			'label'			=> 'Von:',
+			'label'			=> &$GLOBALS['ISO_LANG']['REPORT']['from'],
 			'type'			=> 'date',
 			'format'		=> $GLOBALS['TL_CONFIG']['dateFormat'],
 			'value'			=> $this->parseDate($GLOBALS['TL_CONFIG']['dateFormat'], (int) $arrSession[$this->name]['start']),
@@ -295,7 +295,7 @@ abstract class Report extends \Backend
 		return array
 		(
 			'name'			=> 'stop',
-			'label'			=> 'Bis:',
+			'label'			=> &$GLOBALS['ISO_LANG']['REPORT']['to'],
 			'type'			=> 'date',
 			'format'		=> $GLOBALS['TL_CONFIG']['dateFormat'],
 			'value'			=> $this->parseDate($GLOBALS['TL_CONFIG']['dateFormat'], (int) $arrSession[$this->name]['stop']),

@@ -10,14 +10,14 @@
 
 <?php if($p==$lastPanel): ?>
 <div class="tl_submit_panel tl_subpanel">
-<input type="image" name="filter" id="filter" src="system/themes/default/images/reload.gif" class="tl_img_submit" title="Anwenden" alt="Anwenden">
+<input type="image" name="filter" id="filter" src="system/themes/default/images/reload.gif" class="tl_img_submit" title="<?php echo $GLOBALS['TL_LANG']['MSC']['apply']; ?>" alt="<?php echo $GLOBALS['TL_LANG']['MSC']['apply']; ?>">
 </div>
 <?php endif; ?>
 
 <?php foreach($panel as $subpanel): ?>
 <?php if(!$subpanel) continue; ?>
 <div class="<?php echo $subpanel['class']; ?> tl_subpanel">
-<strong><?php echo $subpanel['label']; ?></strong>
+<strong><?php echo $subpanel['label']; ?>: </strong>
 <?php if($subpanel['type'] == 'filter'): ?>
 <select name="<?php echo $subpanel['name']; ?>" class="tl_select<?php echo $subpanel['active'] ? ' active' : ''; ?>"<?php echo $subpanel['attributes']; ?>>
 <?php foreach($subpanel['options'] as $value => $label): ?>

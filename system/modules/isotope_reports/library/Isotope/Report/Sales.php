@@ -70,7 +70,7 @@ abstract class Sales extends Report
 		return array
 		(
 			'name'			=> 'from',
-			'label'			=> 'Ab:',
+			'label'			=> &$GLOBALS['ISO_LANG']['REPORT']['from'],
 			'type'			=> 'date',
 			'format'		=> $GLOBALS['TL_CONFIG']['dateFormat'],
 			'value'			=> ($arrSession[$this->name]['from'] ? $this->parseDate($GLOBALS['TL_CONFIG']['dateFormat'], (int) $arrSession[$this->name]['from']) : ''),
@@ -86,7 +86,7 @@ abstract class Sales extends Report
 		return array
 		(
 			'name'			=> 'columns',
-			'label'			=> 'Spalten:',
+			'label'			=> &$GLOBALS['ISO_LANG']['REPORT']['columns'],
 			'type'			=> 'text',
 			'value'			=> (int) $arrSession[$this->name]['columns'],
 			'class'			=> 'tl_columns',
@@ -147,7 +147,7 @@ abstract class Sales extends Report
 		return array
 		(
 			'name'			=> 'iso_status',
-			'label'			=> 'Status: ',
+			'label'			=> &$GLOBALS['ISO_LANG']['REPORT']['status'],
 			'type'			=> 'filter',
 			'value'			=> $varValue,
 			'active'		=> ($varValue != ''),
