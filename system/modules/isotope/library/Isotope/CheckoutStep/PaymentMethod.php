@@ -121,6 +121,10 @@ class PaymentMethod extends CheckoutStep implements IsotopeCheckoutStep
 
         $objTemplate = new \Isotope\Template('iso_checkout_payment_method');
 
+        if (!Isotope::getCart()->hasPayment() || !isset($arrModules[Isotope::getCart()->payment_id])) {
+            $this->blnError = true;
+        }
+
         $objTemplate->headline       = $GLOBALS['TL_LANG']['MSC']['payment_method'];
         $objTemplate->message        = $GLOBALS['TL_LANG']['MSC']['payment_method_message'];
         $objTemplate->options        = $objWidget->parse();
