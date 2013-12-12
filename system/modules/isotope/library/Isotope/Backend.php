@@ -422,7 +422,7 @@ class Backend extends Contao_Backend
                 $strFile   = $objWidget->validateUpload();
 
                 if ($objWidget->hasErrors()) {
-                    $arrResponse = array('success' => false, 'error' => $objWidget->getErrorsAsString(), 'preventRetry' => true);
+                    $arrResponse = array('success' => false, 'error' => $objWidget->getErrorAsString(), 'preventRetry' => true);
                 } else {
                     $arrResponse = array('success' => true, 'file' => $strFile);
                 }
