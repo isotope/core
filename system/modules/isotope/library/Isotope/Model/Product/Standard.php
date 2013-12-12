@@ -618,7 +618,6 @@ class Standard extends Product implements IsotopeProduct, WeightAggregate
 
         $strClass = $objAttribute->getFrontendWidget();
 
-        $arrData['eval']['mandatory'] = ($arrData['eval']['mandatory'] && !\Environment::get('isAjaxRequest')) ? true : false;
         $arrData['eval']['required']  = $arrData['eval']['mandatory'];
 
         // Value can be predefined in the URL, e.g. to preselect a variant

@@ -24,6 +24,7 @@ Version 2.0.0 (????-??-??)
 - Product cache broke the pagination (#843)
 - Recursively create upload directory if it does not exist (#837)
 - Missing translations for reports module (#873)
+- Mandatory asterisk hidden on ajax refresh (#846)
 
 
 Version 2.0.rc2 (2013-11-22)

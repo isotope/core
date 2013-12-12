@@ -139,6 +139,14 @@ var IsotopeProducts = (function() {
                 div.innerHTML = txt;
                 var newForm = div.firstChild;
 
+                // Remove all error messages
+                var errors = div.getElementsByTagName('p');
+                for(var i=0; i<errors.length; i++) {
+                    if (errors[i].className.test(/(^| )error( |$)/)) {
+                        error[i].parentNode.removeChild(error[i]);
+                    }
+                }
+
                 form.parentNode.replaceChild(newForm, form);
                 registerEvents(newForm, config);
             },
