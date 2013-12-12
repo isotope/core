@@ -135,15 +135,15 @@ class PaymentMethod extends CheckoutStep implements IsotopeCheckoutStep
 
     /**
      * Return review information for last page of checkout
-     * @return  string
+     * @return  array
      */
     public function review()
     {
         return array(
             'payment_method' => array(
                 'headline' => $GLOBALS['TL_LANG']['MSC']['payment_method'],
-                'info'     => Isotope::getCart()->getPaymentMethod()->checkoutReview(),
-                'note'     => Isotope::getCart()->getPaymentMethod()->note,
+                'info'     => (Isotope::getCart()->hasPayment()) ? Isotope::getCart()->getPaymentMethod()->checkoutReview() : null,
+                'note'     => (Isotope::getCart()->hasPayment()) ? Isotope::getCart()->getPaymentMethod()->note: null,
                 'edit'     => \Isotope\Module\Checkout::generateUrlForStep('payment'),
             ),
         );
