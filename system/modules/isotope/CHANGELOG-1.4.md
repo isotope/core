@@ -6,6 +6,7 @@ Version 1.4.8 (2013-??-??)
 
 ### Fixed
 - Edge case SQL error in rules module (#771)
+- Generated PDF did not search the shop config folder in the back end (#534)
 
 
 Version 1.4.7 (2013-10-30)
