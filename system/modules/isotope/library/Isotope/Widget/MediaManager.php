@@ -84,15 +84,13 @@ class MediaManager extends \Widget implements \uploadable
 
         // Convert the $_FILES array to Contao format
         if (!empty($_FILES[$this->strName])) {
-            $arrFile = array(
+            $_FILES[$this->strName] = array(
                 'name'     => array($this->getFileName($_FILES[$this->strName]['name'])),
                 'type'     => array($_FILES[$this->strName]['type']),
                 'tmp_name' => array($_FILES[$this->strName]['tmp_name']),
                 'error'    => array($_FILES[$this->strName]['error']),
                 'size'     => array($_FILES[$this->strName]['size']),
             );
-
-            $_FILES[$this->strName] = $arrFile;
         }
 
         $varInput = '';
