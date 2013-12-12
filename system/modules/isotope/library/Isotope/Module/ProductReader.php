@@ -80,22 +80,9 @@ class ProductReader extends Module
         $objProduct = Product::findAvailableByIdOrAlias(\Haste\Input\Input::getAutoItem('product'));
 
         if (null === $objProduct) {
-            // Display a 404 page
-            if ($this->iso_display404Page) {
-                $objHandler = new $GLOBALS['TL_PTY']['error_404']();
-                $objHandler->generate($objPage->id);
-                exit;
-            } else {
-                // Do not index or cache the page
-                $objPage->noSearch = 1;
-                $objPage->cache    = 0;
-
-                $this->Template          = new \Isotope\Template('mod_message');
-                $this->Template->type    = 'empty';
-                $this->Template->message = $GLOBALS['TL_LANG']['MSC']['invalidProductInformation'];
-
-                return;
-            }
+            $objHandler = new $GLOBALS['TL_PTY']['error_404']();
+            $objHandler->generate($objPage->id);
+            exit;
         }
 
         $arrConfig = array(

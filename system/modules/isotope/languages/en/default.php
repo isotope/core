@@ -70,7 +70,6 @@ $GLOBALS['TL_LANG']['MSC']['buttonLabel']['update']             = 'Update';
 $GLOBALS['TL_LANG']['MSC']['buttonLabel']['add_to_cart']        = 'Add To Cart';
 $GLOBALS['TL_LANG']['MSC']['orderByLabel']                      = 'Order By:';
 $GLOBALS['TL_LANG']['MSC']['noProducts']                        = 'No products have been found.';
-$GLOBALS['TL_LANG']['MSC']['invalidProductInformation']         = "We're sorry, the product information you have requested is not showing up in our store. For further assistance please contact us.";
 $GLOBALS['TL_LANG']['MSC']['previousStep']                      = 'Back';
 $GLOBALS['TL_LANG']['MSC']['nextStep']                          = 'Continue';
 $GLOBALS['TL_LANG']['MSC']['confirmOrder']                      = 'Order';
