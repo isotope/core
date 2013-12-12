@@ -131,8 +131,6 @@ class MediaManager extends \Widget implements \uploadable
             }
         }
 
-        $this->import('Files');
-
         // Check that image is not assigned in fallback language
         foreach ($this->varValue as $k => $v) {
             if (is_array($arrFallback) && in_array($v, $arrFallback)) {
@@ -351,7 +349,6 @@ class MediaManager extends \Widget implements \uploadable
      */
     protected function getFileName($strFile)
     {
-        $this->import('Files');
         $pathinfo = pathinfo(strtolower($strFile));
         $strCacheName = standardize($pathinfo['filename']) . '.' . $pathinfo['extension'];
         $uploadFolder = $this->getFilePath($strCacheName, true);
@@ -368,8 +365,8 @@ class MediaManager extends \Widget implements \uploadable
             $this->addError($GLOBALS['TL_LANG']['ERR']['imageInFallback']);
         } else {
             // Make sure directory exists
-            $this->Files->mkdir($uploadFolder);
-            $this->Files->rename($strFile, $uploadFolder . '/' . $strCacheName);
+            \Files::getInstance()->mkdir($uploadFolder);
+            \Files::getInstance()->rename($strFile, $uploadFolder . '/' . $strCacheName);
         }
 
         return $strCacheName;
