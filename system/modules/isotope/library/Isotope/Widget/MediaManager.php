@@ -365,7 +365,7 @@ class MediaManager extends \Widget implements \uploadable
             $this->addError($GLOBALS['TL_LANG']['ERR']['imageInFallback']);
         } else {
             // Make sure directory exists
-            \Files::getInstance()->mkdir($uploadFolder);
+            \Haste\Haste::mkdirr($uploadFolder);
             \Files::getInstance()->rename($strFile, $uploadFolder . '/' . $strCacheName);
         }
 

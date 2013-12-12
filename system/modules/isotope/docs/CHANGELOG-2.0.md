@@ -22,6 +22,7 @@ Version 2.0.0 (????-??-??)
 - Label translation for config model threw exception
 - Store config selector did not work (#835)
 - Product cache broke the pagination (#843)
+- Recursively create upload directory if it does not exist (#837)
 
 
 Version 2.0.rc2 (2013-11-22)
