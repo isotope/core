@@ -35,6 +35,11 @@ abstract class PSP extends Payment
      */
     public function processPayment(IsotopeProductCollection $objOrder, \Module $objModule)
     {
+        // If the order has already been placed through postsale
+        if ($objOrder->isLocked()) {
+            return true;
+        }
+        
         // In processPayment, the parameters are always in GET
         $this->psp_http_method = 'GET';
 
@@ -109,6 +114,10 @@ abstract class PSP extends Payment
      */
     public function getPostsaleOrder()
     {
+        if (!$this->getRequestData('orderID')) {
+            return null;
+        }
+
         return Order::findByPk($this->getRequestData('orderID'));
     }
 

@@ -216,7 +216,7 @@ abstract class ProductCollection extends TypeAgent
     }
 
     /**
-     * Return boolean wether collection requires payment
+     * Return boolean whether collection requires payment
      * @return bool
      */
     public function requiresPayment()
@@ -1402,11 +1402,11 @@ abstract class ProductCollection extends TypeAgent
         $objCollection->currency             = (string) $objConfig->currency;
         $objCollection->pageId               = (int) $objPage->id;
 
-        $objCollection->setPaymentMethod($objSource->getPaymentMethod());
         $objCollection->setShippingMethod($objSource->getShippingMethod());
+        $objCollection->setPaymentMethod($objSource->getPaymentMethod());
 
-        $objCollection->setBillingAddress($objSource->getBillingAddress());
         $objCollection->setShippingAddress($objSource->getShippingAddress());
+        $objCollection->setBillingAddress($objSource->getBillingAddress());
 
         $arrItemIds = $objCollection->copyItemsFrom($objSource);
         $arrSurchargeIds = $objCollection->copySurchargesFrom($objSource, $arrItemIds);

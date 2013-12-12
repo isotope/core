@@ -195,8 +195,8 @@ $GLOBALS['TL_DCA']['tl_iso_payment'] = array
             'foreignKey'            => \Isotope\Model\OrderStatus::getTable().'.name',
             'options_callback'      => array('\Isotope\Backend', 'getOrderStatus'),
             'eval'                  => array('mandatory'=>true, 'includeBlankOption'=>true, 'tl_class'=>'w50'),
-            'relation'              => array('type'=>'hasOne', 'load'=>'lazy'),
             'sql'                   => "int(10) NOT NULL default '0'",
+            'relation'              => array('type'=>'hasOne', 'load'=>'lazy'),
         ),
         'price' => array
         (
@@ -215,8 +215,8 @@ $GLOBALS['TL_DCA']['tl_iso_payment'] = array
             'foreignKey'            => \Isotope\Model\TaxClass::getTable().'.name',
             'options_callback'      => array('\Isotope\Model\TaxClass', 'getOptionsWithSplit'),
             'eval'                  => array('includeBlankOption'=>true, 'tl_class'=>'w50'),
-            'relation'              => array('type'=>'hasOne', 'load'=>'lazy'),
             'sql'                   => "int(10) NOT NULL default '0'",
+            'relation'              => array('type'=>'hasOne', 'load'=>'lazy'),
         ),
         'allowed_cc_types' => array
         (
@@ -281,8 +281,8 @@ $GLOBALS['TL_DCA']['tl_iso_payment'] = array
             'inputType'             => 'select',
             'foreignKey'            => \Isotope\Model\ProductType::getTable().'.name',
             'eval'                  => array('multiple'=>true, 'size'=>8, 'tl_class'=>'clr w50 w50h', 'chosen'=>true),
-            'relation'              => array('type'=>'hasMany', 'load'=>'lazy'),
             'sql'                   => "blob NULL",
+            'relation'              => array('type'=>'hasMany', 'load'=>'lazy'),
         ),
         'paypal_account' => array
         (
@@ -326,7 +326,7 @@ $GLOBALS['TL_DCA']['tl_iso_payment'] = array
             'label'                 => &$GLOBALS['TL_LANG']['tl_iso_payment']['psp_hash_in'],
             'exclude'               => true,
             'inputType'             => 'text',
-            'eval'                  => array('mandatory'=>true, 'maxlength'=>128, 'hideInput'=>true, 'tl_class'=>'w50'),
+            'eval'                  => array('mandatory'=>true, 'maxlength'=>128, 'hideInput'=>true, 'decodeEntities'=>true, 'tl_class'=>'w50'),
             'sql'                   => "varchar(128) NOT NULL default ''", // Max is 512 bit hash = 128 hex digits
         ),
         'psp_hash_out' => array
@@ -334,7 +334,7 @@ $GLOBALS['TL_DCA']['tl_iso_payment'] = array
             'label'                 => &$GLOBALS['TL_LANG']['tl_iso_payment']['psp_hash_out'],
             'exclude'               => true,
             'inputType'             => 'text',
-            'eval'                  => array('mandatory'=>true, 'maxlength'=>128, 'hideInput'=>true, 'tl_class'=>'w50'),
+            'eval'                  => array('mandatory'=>true, 'maxlength'=>128, 'hideInput'=>true, 'decodeEntities'=>true, 'tl_class'=>'w50'),
             'sql'                   => "varchar(128) NOT NULL default ''", // Max is 512 bit hash = 128 hex digits
         ),
         'psp_dynamic_template' => array
@@ -413,7 +413,7 @@ $GLOBALS['TL_DCA']['tl_iso_payment'] = array
         (
             'label'                 => &$GLOBALS['TL_LANG']['tl_iso_payment']['sofortueberweisung_project_password'],
             'inputType'             => 'text',
-            'eval'                  => array('mandatory'=>true, 'maxlength'=>255, 'hideInput'=>true, 'tl_class'=>'w50'),
+            'eval'                  => array('mandatory'=>true, 'maxlength'=>255, 'decodeEntities'=>true, 'hideInput'=>true, 'tl_class'=>'w50'),
             'sql'                   => "varchar(255) NOT NULL default ''",
         ),
         'saferpay_accountid' => array
@@ -510,7 +510,7 @@ $GLOBALS['TL_DCA']['tl_iso_payment'] = array
             'label'                 => &$GLOBALS['TL_LANG']['tl_iso_payment']['payone_key'],
             'exclude'               => true,
             'inputType'             => 'text',
-            'eval'                  => array('mandatory'=>true, 'maxlength'=>255, 'tl_class'=>'w50'),
+            'eval'                  => array('mandatory'=>true, 'maxlength'=>255, 'decodeEntities'=>true, 'hideInput'=>true, 'tl_class'=>'w50'),
             'sql'                   => "varchar(255) NOT NULL default ''"
         ),
         'worldpay_instId' => array
@@ -526,7 +526,7 @@ $GLOBALS['TL_DCA']['tl_iso_payment'] = array
             'label'                 => &$GLOBALS['TL_LANG']['tl_iso_payment']['worldpay_callbackPW'],
             'exclude'               => true,
             'inputType'             => 'text',
-            'eval'                  => array('mandatory'=>true, 'maxlength'=>64, 'hideInput'=>true, 'tl_class'=>'w50'),
+            'eval'                  => array('mandatory'=>true, 'maxlength'=>64, 'decodeEntities'=>true, 'hideInput'=>true, 'tl_class'=>'w50'),
             'sql'                   => "varchar(64) NOT NULL default ''",
         ),
         'worldpay_signatureFields' => array
@@ -543,7 +543,7 @@ $GLOBALS['TL_DCA']['tl_iso_payment'] = array
             'label'                 => &$GLOBALS['TL_LANG']['tl_iso_payment']['worldpay_md5secret'],
             'exclude'               => true,
             'inputType'             => 'text',
-            'eval'                  => array('mandatory'=>true, 'maxlength'=>64, 'hideInput'=>true, 'tl_class'=>'w50'),
+            'eval'                  => array('mandatory'=>true, 'maxlength'=>64, 'decodeEntities'=>true, 'hideInput'=>true, 'tl_class'=>'w50'),
             'sql'                   => "varchar(255) NOT NULL default ''",
         ),
         'worldpay_description' => array
@@ -583,8 +583,8 @@ $GLOBALS['TL_DCA']['tl_iso_payment'] = array
             'inputType'             => 'checkbox',
             'foreignKey'            => 'tl_member_group.name',
             'eval'                  => array('multiple'=>true),
+            'sql'                   => "blob NULL",
             'relation'              => array('type'=>'hasMany', 'load'=>'lazy'),
-            'sql'                   => "blob NULL"
         ),
         'debug' => array
         (

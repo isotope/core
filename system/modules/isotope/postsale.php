@@ -124,7 +124,7 @@ class PostSale extends \Frontend
 
             // Load page configuration
             if (!is_object($objPage) && $objOrder->pageId > 0) {
-                $objPage = \PageModel::loadWithDetails($objOrder->pageId);
+                $objPage = \PageModel::findWithDetails($objOrder->pageId);
                 $objPage = \Isotope\Frontend::loadPageConfig($objPage);
             }
 
@@ -137,7 +137,10 @@ class PostSale extends \Frontend
 
             Isotope::setConfig($objOrder->getRelated('config_id'));
 
-            return $objMethod->processPostsale($objOrder);
+            $objMethod->processPostsale($objOrder);
+
+            $objResponse = new Response();
+            $objResponse->send();
 
         } catch (\Exception $e) {
             \System::log(
