@@ -77,6 +77,8 @@ class MediaManager extends \Widget implements \uploadable
      */
     public function validateUpload()
     {
+        \Message::reset();
+
         $objUploader = new \FileUpload();
         $objUploader->setName($this->strName);
 
@@ -97,10 +99,17 @@ class MediaManager extends \Widget implements \uploadable
 
         try {
             $varInput = $objUploader->uploadTo($this->getFilePath($_FILES[$this->strName]['name'][0], true));
-            \Message::reset();
         } catch (\Exception $e) {
             $this->addError($e->getMessage());
         }
+
+        if ($objUploader->hasError()) {
+            foreach ($_SESSION['TL_ERROR'] as $strError) {
+                $this->addError($strError);
+            }
+        }
+
+		\Message::reset();
 
         if (!is_array($varInput) || empty($varInput)) {
             $this->addError($GLOBALS['TL_LANG']['MSC']['mmUnknownError']);
