@@ -20,3 +20,4 @@ system/modules/*
 !system/modules/isotope/
 !system/modules/isotope_reports/
 !system/modules/isotope_rules/
+!system/modules/isotope_paybyway/
