@@ -21,6 +21,7 @@ Version 2.0.0 (????-??-??)
 - Several places did not support UUID for files (#852)
 - Label translation for config model threw exception
 - Store config selector did not work (#835)
+- Product cache broke the pagination (#843)
 
 
 Version 2.0.rc2 (2013-11-22)
