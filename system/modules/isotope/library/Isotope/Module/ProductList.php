@@ -295,7 +295,7 @@ class ProductList extends Module
             $arrColumns,
             $arrValues,
             array(
-                 'group'   => Product::getTable() . '.id', 'order' => 'c.sorting',
+                 'order' => 'c.sorting',
                  'filters' => $arrFilters,
                  'sorting' => $arrSorting,
             )

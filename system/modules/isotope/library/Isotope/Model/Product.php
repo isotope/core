@@ -394,6 +394,8 @@ abstract class Product extends TypeAgent
      */
     protected static function find(array $arrOptions)
     {
+        $arrOptions['group'] = static::getTable() . '.id' . (null === $arrOptions['group'] ? '' : ', '.$arrOptions['group']);
+
         $objProducts = parent::find($arrOptions);
 
         if (null === $objProducts) {
