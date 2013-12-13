@@ -41,6 +41,12 @@ class MediaManager extends \Widget implements \uploadable
     protected $strTemplate = 'be_widget';
 
     /**
+     * Temporary folder for uploads
+     * @var string
+     */
+    protected $strTempFolder = 'assets/images';
+
+    /**
      * Instantiate widget and initialize uploader
      */
     public function __construct($arrAttributes = false)
@@ -81,11 +87,29 @@ class MediaManager extends \Widget implements \uploadable
 
         $objUploader = new \FileUpload();
         $objUploader->setName($this->strName);
+        $uploadFolder = $this->strTempFolder;
 
         // Convert the $_FILES array to Contao format
         if (!empty($_FILES[$this->strName])) {
+            $pathinfo = pathinfo(strtolower($_FILES[$this->strName]['name']));
+            $strCacheName = standardize($pathinfo['filename']) . '.' . $pathinfo['extension'];
+            $uploadFolder = $this->strTempFolder . '/' . substr($strCacheName, 0, 1);
+
+            if (is_file(TL_ROOT . '/' . $uploadFolder . '/' . $strCacheName) && md5_file(TL_ROOT . '/' .  $uploadFolder . '/' . $_FILES[$this->strName]['name']) != md5_file(TL_ROOT . '/' . $uploadFolder . '/' . $strCacheName)) {
+                $strCacheName = standardize($pathinfo['filename']) . '-' . substr(md5_file(TL_ROOT . '/' .  $uploadFolder . '/' . $_FILES[$this->strName]['name']), 0, 8) . '.' . $pathinfo['extension'];
+                $uploadFolder = $this->strTempFolder . '/' . substr($strCacheName, 0, 1);
+            }
+
+            \Haste\Haste::mkdirr($uploadFolder);
+            $arrFallback = $this->getFallbackData();
+
+            // Check that image is not assigned in fallback language
+            if (is_array($arrFallback) && in_array($strCacheName, $arrFallback)) {
+                $this->addError($GLOBALS['TL_LANG']['ERR']['imageInFallback']);
+            }
+
             $_FILES[$this->strName] = array(
-                'name'     => array($this->getFileName($_FILES[$this->strName]['name'])),
+                'name'     => array($strCacheName),
                 'type'     => array($_FILES[$this->strName]['type']),
                 'tmp_name' => array($_FILES[$this->strName]['tmp_name']),
                 'error'    => array($_FILES[$this->strName]['error']),
@@ -96,7 +120,7 @@ class MediaManager extends \Widget implements \uploadable
         $varInput = '';
 
         try {
-            $varInput = $objUploader->uploadTo($this->getFilePath($_FILES[$this->strName]['name'][0], true));
+            $varInput = $objUploader->uploadTo($uploadFolder);
         } catch (\Exception $e) {
             $this->addError($e->getMessage());
         }
@@ -113,7 +137,7 @@ class MediaManager extends \Widget implements \uploadable
             $this->addError($GLOBALS['TL_LANG']['MSC']['mmUnknownError']);
         }
 
-        return basename($varInput[0]);
+        return $varInput[0];
     }
 
     /**
@@ -147,6 +171,21 @@ class MediaManager extends \Widget implements \uploadable
             }
         }
 
+        // Move all temporary files
+        foreach ($this->varValue as $k => $v) {
+            if (stripos($v['src'], $this->strTempFolder) !== false) {
+                $strFile = $this->getFilePath(basename($v['src']));
+                \Haste\Haste::mkdirr(dirname($strFile));
+
+                if (\Files::getInstance()->rename($v['src'], $strFile)) {
+                    $this->varValue[$k]['src'] = basename($strFile);
+                } else {
+                    unset($this->varValue[$k]);
+                }
+            }
+        }
+
+        // Check if there are values
         if ($this->mandatory) {
             foreach ($this->varValue as $file) {
                 if (is_file(TL_ROOT . '/' . $this->getFilePath($file['src']))) {
@@ -350,36 +389,6 @@ class MediaManager extends \Widget implements \uploadable
     }
 
     /**
-     * Get the file name and return it as string
-     * @param string
-     * @return string
-     */
-    protected function getFileName($strFile)
-    {
-        $pathinfo = pathinfo(strtolower($strFile));
-        $strCacheName = standardize($pathinfo['filename']) . '.' . $pathinfo['extension'];
-        $uploadFolder = $this->getFilePath($strCacheName, true);
-
-        if (is_file(TL_ROOT . '/' . $uploadFolder . '/' . $strCacheName) && md5_file(TL_ROOT . '/' .  $uploadFolder . '/' . $strFile) != md5_file(TL_ROOT . '/' . $uploadFolder . '/' . $strCacheName)) {
-            $strCacheName = standardize($pathinfo['filename']) . '-' . substr(md5_file(TL_ROOT . '/' .  $uploadFolder . '/' . $strFile), 0, 8) . '.' . $pathinfo['extension'];
-            $uploadFolder = $this->getFilePath($strCacheName, true);
-        }
-
-        $arrFallback = $this->getFallbackData();
-
-        // Check that image is not assigned in fallback language
-        if (is_array($arrFallback) && in_array($strCacheName, $arrFallback)) {
-            $this->addError($GLOBALS['TL_LANG']['ERR']['imageInFallback']);
-        } else {
-            // Make sure directory exists
-            \Haste\Haste::mkdirr($uploadFolder);
-            \Files::getInstance()->rename($strFile, $uploadFolder . '/' . $strCacheName);
-        }
-
-        return $strCacheName;
-    }
-
-    /**
      * Get the file path or folder only
      * @param string
      * @param boolean
@@ -387,6 +396,10 @@ class MediaManager extends \Widget implements \uploadable
      */
     protected function getFilePath($strFile, $blnFolder=false)
     {
+        if (stripos($strFile, $this->strTempFolder) !== false) {
+            return $blnFolder ? dirname($blnFolder) : $strFile;
+        }
+
         return 'isotope/' . substr($strFile, 0, 1) . (!$blnFolder ? ('/' . $strFile) : '');
     }
 
