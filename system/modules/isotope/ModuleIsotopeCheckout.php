@@ -804,8 +804,8 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 		{
 			$this->arrOrderData['payment_method_id']	= $this->Isotope->Cart->Payment->id;
 			$this->arrOrderData['payment_method']		= $this->Isotope->Cart->Payment->label;
-			$this->arrOrderData['payment_note']			= $this->Isotope->Cart->Payment->note;
-			$this->arrOrderData['payment_note_text']	= strip_tags($this->Isotope->Cart->Payment->note);
+			$this->arrOrderData['payment_note']		= $this->Isotope->Cart->Payment->note;
+			$this->arrOrderData['payment_note_text']	= $this->html2text($this->Isotope->Cart->Payment->note);
 		}
 
 		return $objTemplate->parse();
@@ -1444,5 +1444,21 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 
 		return parent::addToUrl($strRequest, $blnIgnoreParams);
 	}
+	
+	
+	/**
+	 * Convert HTML to text
+         * <p>  -> \n\n
+         * <br> -> \n 
+	 *
+	 * @return string
+	 */
+	function html2text($html) {
+        	$html = preg_replace('#<br\s*/?>#i', "\n", $html);
+		// handle </p> with \n behind
+		$html = str_replace("</p>\n", "\n\n", $html);
+		$html = str_replace("</p>", "\n", $html);
+		return strip_tags($html);
+        }
 }
 
