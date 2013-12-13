@@ -48,6 +48,7 @@ class SalesTotal extends Sales
 												c.currency,
 												o.locked AS date,
 												COUNT(o.id) AS total_orders,
+												COUNT(i.id) AS total_products,
 												SUM(i.quantity) AS total_items,
 												SUM(i.tax_free_price * i.quantity) AS total_sales,
 												DATE_FORMAT(FROM_UNIXTIME(o.{$this->strDateField}), ?) AS dateGroup
@@ -73,19 +74,21 @@ class SalesTotal extends Sales
 			$arrCurrencies[$objData->currency] = $objData->config_id;
 
 			$arrData['rows'][$objData->dateGroup]['columns'][1]['value'] += $objData->total_orders;
-			$arrData['rows'][$objData->dateGroup]['columns'][2]['value'] += $objData->total_items;
+			$arrData['rows'][$objData->dateGroup]['columns'][2]['value'] += $objData->total_products;
+			$arrData['rows'][$objData->dateGroup]['columns'][3]['value'] += $objData->total_items;
 
-			if (!is_array($arrData['rows'][$objData->dateGroup]['columns'][3]['value']))
+			if (!is_array($arrData['rows'][$objData->dateGroup]['columns'][4]['value']))
 			{
-				$arrData['rows'][$objData->dateGroup]['columns'][3]['value'] = array();
+				$arrData['rows'][$objData->dateGroup]['columns'][4]['value'] = array();
 			}
 
-			$arrData['rows'][$objData->dateGroup]['columns'][3]['value'][$objData->currency] = $arrData['rows'][$objData->dateGroup]['columns'][3]['value'][$objData->currency] + $objData->total_sales;
+			$arrData['rows'][$objData->dateGroup]['columns'][4]['value'][$objData->currency] = $arrData['rows'][$objData->dateGroup]['columns'][3]['value'][$objData->currency] + $objData->total_sales;
 
 			// Summary in the footer
 			$arrData['footer'][1]['value'] += $objData->total_orders;
-			$arrData['footer'][2]['value'] += $objData->total_items;
-			$arrData['footer'][3]['value'][$objData->currency] = ((float) $arrData['footer'][3]['value'][$objData->currency] + $objData->total_sales);
+			$arrData['footer'][2]['value'] += $objData->total_products;
+			$arrData['footer'][3]['value'] += $objData->total_items;
+			$arrData['footer'][4]['value'][$objData->currency] = ((float) $arrData['footer'][3]['value'][$objData->currency] + $objData->total_sales);
 
 			// Generate chart data
 			$arrChart[$objData->currency]['data'][$objData->dateGroup]['y'] = ((float) $arrChart['rows'][$objData->dateGroup]['columns'][$objData->currency]['value'] + $objData->total_sales);
@@ -123,6 +126,11 @@ class SalesTotal extends Sales
 			),
 			array
 			(
+				'value'			=> &$GLOBALS['ISO_LANG']['REPORT']['items#'],
+				'attributes'	=> ' style="text-align:right"',
+			),
+			array
+			(
 				'value'			=> &$GLOBALS['ISO_LANG']['REPORT']['sales#'],
 				'attributes'	=> ' style="text-align:right"',
 			),
@@ -133,6 +141,11 @@ class SalesTotal extends Sales
 			array
 			(
 				'value'			=> $GLOBALS['ISO_LANG']['REPORT']['sums'],
+			),
+			array
+			(
+				'value'			=> 0,
+				'attributes'	=> ' style="text-align:right"',
 			),
 			array
 			(
@@ -160,6 +173,11 @@ class SalesTotal extends Sales
 					array
 					(
 						'value'			=> $this->parseDate($publicDate, $intStart),
+					),
+					array
+					(
+						'value'			=> 0,
+						'attributes'	=> ' style="text-align:right"',
 					),
 					array
 					(
@@ -227,28 +245,28 @@ class SalesTotal extends Sales
 		// Format row totals
 		foreach ($arrData['rows'] as $dateGroup => $arrRow)
 		{
-			if (is_array($arrRow['columns'][3]['value']))
+			if (is_array($arrRow['columns'][4]['value']))
 			{
-				foreach ($arrRow['columns'][3]['value'] as $currency => $varValue)
+				foreach ($arrRow['columns'][4]['value'] as $currency => $varValue)
 				{
 					Isotope::setConfig(Config::findByPk($arrCurrencies[$currency]));
 
-					$arrData['rows'][$dateGroup]['columns'][3]['value'][$currency] = Isotope::formatPriceWithCurrency($varValue);
+					$arrData['rows'][$dateGroup]['columns'][4]['value'][$currency] = Isotope::formatPriceWithCurrency($varValue);
 				}
 			}
 		}
 
 		// Format footer totals
-		foreach ($arrData['footer'][3]['value'] as $currency => $varValue)
+		foreach ($arrData['footer'][4]['value'] as $currency => $varValue)
 		{
 			Isotope::setConfig(Config::findByPk($arrCurrencies[$currency]));
 
-			$arrData['footer'][3]['value'][$currency] = Isotope::formatPriceWithCurrency($varValue);
+			$arrData['footer'][4]['value'][$currency] = Isotope::formatPriceWithCurrency($varValue);
 		}
 
-		if (empty($arrData['footer'][3]['value']))
+		if (empty($arrData['footer'][4]['value']))
 		{
-			$arrData['footer'][3]['value'] = 0;
+			$arrData['footer'][4]['value'] = 0;
 		}
 
 		return $arrData;

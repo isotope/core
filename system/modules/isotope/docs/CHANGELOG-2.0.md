@@ -28,6 +28,7 @@ Version 2.0.0 (????-??-??)
 - Checkout payment selection was not mandatory (#864)
 - Surcharges were ignored in PayPal payment (#831)
 - The media manager now uploads photos to the temporary folder first (#876)
+- Reports missed report about total products (#872)
 
 
 Version 2.0.rc2 (2013-11-22)
