@@ -296,10 +296,10 @@ abstract class ProductCollection extends TypeAgent
     }
 
     /**
-     * Set billing address for collectino
-     * @param   Address
+     * Set billing address for collection
+     * @param   Address|null
      */
-    public function setBillingAddress(Address $objAddress)
+    public function setBillingAddress(Address $objAddress = null)
     {
         if (null === $objAddress || $objAddress->id < 1) {
             $this->address1_id = 0;
@@ -323,9 +323,9 @@ abstract class ProductCollection extends TypeAgent
 
     /**
      * Set shipping address for collection
-     * @param   Address
+     * @param   Address|null
      */
-    public function setShippingAddress(Address $objAddress)
+    public function setShippingAddress(Address $objAddress = null)
     {
         if (null === $objAddress || $objAddress->id < 1) {
             $intId = 0;
