@@ -136,7 +136,7 @@ class AddressBook extends Module
             while ($objAddresses->next()) {
                 $objAddress = $objAddresses->current();
 
-                $arrAddresses[] = array_merge($objAddress->getData(), array(
+                $arrAddresses[] = array_merge($objAddress->row(), array(
                     'id'                => $objAddresses->id,
                     'class'             => (($objAddress->isDefaultBilling ? 'default_billing' : '') . ($objAddress->isDefaultShipping ? ' default_shipping' : '')),
                     'text'              => $objAddress->generateHtml(),
@@ -216,12 +216,7 @@ class AddressBook extends Module
 
             // Special field "country"
             if ($field == 'country') {
-                $arrCountries = array();
-                $objConfigs   = Config::findBy('store_id', Isotope::getCart()->store_id);
-
-                while ($objConfigs->next()) {
-                    $arrCountries = array_merge($arrCountries, $objConfigs->getBillingCountries(), $objConfigs->getShippingCountries());
-                }
+                $arrCountries = array_merge(Isotope::getConfig()->getBillingCountries(), Isotope::getConfig()->getShippingCountries());
 
                 $arrData['options'] = array_values(array_intersect($arrData['options'], array_unique($arrCountries)));
                 $arrData['default'] = Isotope::getConfig()->billing_country;
