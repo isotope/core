@@ -282,7 +282,7 @@ class Checkout extends Module
      */
     protected function redirectToNextStep()
     {
-        $arrSteps = array_keys($this->getSteps());
+        $arrSteps = array_keys($this->getSteps(true));
         $intKey   = array_search($this->strCurrentStep, $arrSteps);
 
         if (false === $intKey) {
@@ -301,7 +301,7 @@ class Checkout extends Module
      */
     protected function redirectToPreviousStep()
     {
-        $arrSteps = array_keys($this->getSteps());
+        $arrSteps = array_keys($this->getSteps(true));
         $intKey   = array_search($this->strCurrentStep, $arrSteps);
 
         if (false === $intKey || 0 === $intKey) {
@@ -425,13 +425,14 @@ class Checkout extends Module
 
     /**
      * Return array of instantiated checkout step modules
+     * @param   bool
      * @return  array
      */
-    protected function getSteps()
+    protected function getSteps($blnNoCache = false)
     {
         static $arrSteps;
 
-        if (null === $arrSteps) {
+        if (null === $arrSteps || $blnNoCache) {
 
             $arrSteps = array();
 
