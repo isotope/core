@@ -149,8 +149,8 @@ class Paypal extends Postsale implements IsotopePayment
 
                 array_walk(
                     $arrOptions,
-                    function($option) {
-                        return $option['label'] . ': ' . $option['value'];
+                    function(&$option) {
+                        $option = $option['label'] . ': ' . $option['value'];
                     }
                 );
 
