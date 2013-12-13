@@ -63,6 +63,10 @@ class Standard extends Product implements IsotopeProduct, WeightAggregate
      */
     protected $arrVariantIds;
 
+    /**
+     * Customer defined options
+     * @var array
+     */
     protected $arrOptions = array();
 
     /**
