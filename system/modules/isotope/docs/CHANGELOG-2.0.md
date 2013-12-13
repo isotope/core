@@ -32,6 +32,7 @@ Version 2.0.0 (????-??-??)
 - Documents did not have access to config when printing in back end (#862)
 - Skipping address step as member was possible
 - Address module did not work (#840)
+- Customer defined attributes did not work properly (#844)
 
 
 Version 2.0.rc2 (2013-11-22)

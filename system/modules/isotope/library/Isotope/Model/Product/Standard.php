@@ -63,6 +63,8 @@ class Standard extends Product implements IsotopeProduct, WeightAggregate
      */
     protected $arrVariantIds;
 
+    protected $arrOptions = array();
+
     /**
      * Assigned categories (pages)
      * @var array
@@ -461,7 +463,7 @@ class Standard extends Product implements IsotopeProduct, WeightAggregate
             $arrOptions[$attribute] = $this->arrData[$attribute];
         }
 
-        return $arrOptions;
+        return array_merge($arrOptions, $this->arrOptions);
     }
 
 
@@ -696,7 +698,11 @@ class Standard extends Product implements IsotopeProduct, WeightAggregate
                 }
 
                 if (!$objWidget->hasErrors() && $varValue != '') {
-                    $arrVariantOptions[$strField] = $varValue;
+                    if ($objAttribute->isVariantOption()) {
+                        $arrVariantOptions[$strField] = $varValue;
+                    } else {
+                        $this->arrOptions[$strField] = $varValue;
+                    }
                 }
             }
         }
