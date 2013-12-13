@@ -26,6 +26,7 @@ Version 2.0.0 (????-??-??)
 - Missing translations for reports module (#873)
 - Mandatory asterisk hidden on ajax refresh (#846)
 - Checkout payment selection was not mandatory (#864)
+- Surcharges were ignored in PayPal payment (#831)
 
 
 Version 2.0.rc2 (2013-11-22)

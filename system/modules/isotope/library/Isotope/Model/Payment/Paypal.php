@@ -165,7 +165,7 @@ class Paypal extends Postsale implements IsotopePayment
 
         foreach ($objOrder->getSurcharges() as $objSurcharge) {
 
-            if (!$objSurcharge->add) {
+            if (!$objSurcharge->addToTotal) {
                 continue;
             }
 
