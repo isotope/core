@@ -185,7 +185,7 @@ class Paypal extends Postsale implements IsotopePayment
         $objTemplate->id            = $this->id;
         $objTemplate->action        = ('https://www.' . ($this->debug ? 'sandbox.' : '') . 'paypal.com/cgi-bin/webscr');
         $objTemplate->invoice       = $objOrder->id;
-        $objTemplate->data          = $arrData;
+        $objTemplate->data          = array_map('specialchars', $arrData);
         $objTemplate->discount      = $fltDiscount;
         $objTemplate->address       = $objOrder->getBillingAddress();
         $objTemplate->currency      = $objOrder->currency;
