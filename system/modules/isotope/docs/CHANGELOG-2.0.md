@@ -29,6 +29,7 @@ Version 2.0.0 (????-??-??)
 - Surcharges were ignored in PayPal payment (#831)
 - The media manager now uploads photos to the temporary folder first (#876)
 - Reports missed report about total products (#872)
+- Fixed documents did not have access to config when printing in back end (#862)
 
 
 Version 2.0.rc2 (2013-11-22)
