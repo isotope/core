@@ -212,9 +212,10 @@ class Checkout extends Module
         }
 
         // Run trough all steps until we find the current one or one reports failure
+        $arrSteps = $this->getSteps();
         $intCurrentStep = 0;
-        $intTotalSteps  = count($this->getSteps());
-        foreach ($this->getSteps() as $step => $arrModules) {
+        $intTotalSteps  = count($arrSteps);
+        foreach ($arrSteps as $step => $arrModules) {
             $this->strFormId            = 'iso_mod_checkout_' . $step;
             $this->Template->formId     = $this->strFormId;
             $this->Template->formSubmit = $this->strFormId;
@@ -248,6 +249,8 @@ class Checkout extends Module
 
         if (!strlen($this->strCurrentStep)) {
             $this->strCurrentStep = $step;
+        } elseif (!isset($arrSteps[$this->strCurrentStep])) {
+            $this->redirectToStep($step);
         }
 
         // Run after all steps have passed successfully
