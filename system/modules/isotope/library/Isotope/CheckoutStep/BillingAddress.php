@@ -36,6 +36,11 @@ class BillingAddress extends Address implements IsotopeCheckoutStep
      */
     public function generate()
     {
+        // We always need a billing address (when logged in in later checkout step)
+        if (!\Model\Registry::getInstance()->isRegistered(Isotope::getCart()->getBillingAddress())) {
+            $this->blnError = true;
+        }
+
         $blnRequiresPayment = Isotope::getCart()->requiresPayment();
 
         $this->Template->headline = $blnRequiresPayment ? $GLOBALS['TL_LANG']['MSC']['billing_address'] : $GLOBALS['TL_LANG']['MSC']['customer_address'];

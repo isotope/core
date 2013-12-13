@@ -45,6 +45,11 @@ class ShippingAddress extends Address implements IsotopeCheckoutStep
 
         $objAddress = Isotope::getCart()->getShippingAddress();
 
+        // We always need a shipping address (when logged in in later checkout step)
+        if (!\Model\Registry::getInstance()->isRegistered($objAddress)) {
+            $this->blnError = true;
+        }
+
         if ($objAddress === null
             || $objAddress->id == Isotope::getCart()->getBillingAddress()->id
             || $objAddress->ptable != 'tl_iso_product_collection'
