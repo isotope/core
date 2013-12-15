@@ -90,6 +90,14 @@ class Checkout extends Module
 
         $this->strCurrentStep = \Haste\Input\Input::getAutoItem('step');
 
+        if ($this->strCurrentStep == '') {
+            if ($this->iso_forward_review) {
+                static::redirectToStep('review');
+            }
+
+            $this->redirectToNextStep();
+        }
+
         return parent::generate();
     }
 
@@ -234,14 +242,6 @@ class Checkout extends Module
      */
     protected function compileCurrentStep()
     {
-        if ($this->strCurrentStep == '') {
-            if ($this->iso_forward_review) {
-                static::redirectToStep('review');
-            }
-
-            $this->redirectToNextStep();
-        }
-
         // Run trough all steps until we find the current one or one reports failure
         $arrSteps = $this->getSteps();
         $intCurrentStep = 0;
