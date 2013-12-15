@@ -58,12 +58,6 @@ class Checkout extends Module
     protected $strCurrentStep;
 
     /**
-     * Checkout info. Contains an overview about each step to show on the review page (eg. address, payment & shipping method).
-     * @var array
-     */
-    protected $arrCheckoutInfo;
-
-    /**
      * Form ID
      * @var string
      */
@@ -330,30 +324,24 @@ class Checkout extends Module
      */
     public function getCheckoutInfo(array $arrSteps)
     {
-        if (!is_array($this->arrCheckoutInfo)) {
+        $arrCheckoutInfo = array();
 
-            $arrCheckoutInfo = array();
+        // Run trough all steps to collect checkout information
+        foreach ($arrSteps as $arrModules) {
+            foreach ($arrModules as $objModule) {
 
-            // Run trough all steps to collect checkout information
-            foreach ($arrSteps as $arrModules) {
-                foreach ($arrModules as $objModule) {
+                $arrInfo = $objModule->review();
 
-                    $arrInfo = $objModule->review();
-
-                    if (!empty($arrInfo) && is_array($arrInfo)) {
-                        $arrCheckoutInfo += $arrInfo;
-                    }
+                if (!empty($arrInfo) && is_array($arrInfo)) {
+                    $arrCheckoutInfo += $arrInfo;
                 }
             }
-
-            RowClass::withKey('class')->addFirstLast()->applyTo($arrCheckoutInfo);
-
-            $this->arrCheckoutInfo = $arrCheckoutInfo;
         }
 
-        return $this->arrCheckoutInfo;
-    }
+        RowClass::withKey('class')->addFirstLast()->applyTo($arrCheckoutInfo);
 
+        return $arrCheckoutInfo;
+    }
 
     /**
      * Retrieve the array of notification data for parsing simple tokens
