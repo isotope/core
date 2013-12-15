@@ -446,6 +446,7 @@ abstract class ProductCollectionSurcharge extends TypeAgent
         $objSurcharge->total_price = $objSource->getPrice();
         $objSurcharge->tax_class   = $intTaxClass;
         $objSurcharge->before_tax  = ($intTaxClass ? true : false);
+        $objSurcharge->addToTotal  = true;
 
         if ($intTaxClass == -1) {
             $objSurcharge->applySplittedTax($objCollection, $objSource);
