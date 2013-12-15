@@ -110,6 +110,8 @@ class Checkout extends Module
      */
     protected function compile()
     {
+        $arrBuffer = array();
+
         // Default template settings. Must be set at beginning so they can be overwritten later (eg. trough callback)
         $this->Template->action        = ampersand(\Environment::get('request'), ENCODE_AMPERSANDS);
         $this->Template->formId        = $this->strFormId;
@@ -122,46 +124,81 @@ class Checkout extends Module
         $this->Template->showNext      = true;
         $this->Template->showForm      = true;
 
-        // Complete the order
-        if ($this->strCurrentStep == 'complete') {
+        // These steps are handled internally by the checkout module and are not in the config array
+        switch ($this->strCurrentStep) {
 
-            if (($objOrder = Order::findOneByUniqid(\Input::get('uid'))) === null) {
-                static::redirectToStep('failed');
-            }
-
-            $strBuffer = $objOrder->hasPayment() ? $objOrder->getPaymentMethod()->processPayment($objOrder, $this) : true;
-
-            // true means the payment is successful and order should be completed
-            if ($strBuffer === true) {
-                // If checkout is successful, complete order and redirect to confirmation page
-                if ($objOrder->checkout() && $objOrder->complete()) {
-                    \Controller::redirect(\Haste\Util\Url::addQueryString('uid=' . $objOrder->uniqid, $this->orderCompleteJumpTo));
+            case 'complete':
+                if (($objOrder = Order::findOneByUniqid(\Input::get('uid'))) === null) {
+                    static::redirectToStep('failed');
                 }
 
-                // Checkout failed, show error message
-                static::redirectToStep('failed');
-            }
+                $strBuffer = $objOrder->hasPayment() ? $objOrder->getPaymentMethod()->processPayment($objOrder, $this) : true;
 
-            // False means payment has failed
-            elseif ($strBuffer === false) {
-                static::redirectToStep('failed');
-            }
+                // true means the payment is successful and order should be completed
+                if ($strBuffer === true) {
+                    // If checkout is successful, complete order and redirect to confirmation page
+                    if ($objOrder->checkout() && $objOrder->complete()) {
+                        \Controller::redirect(\Haste\Util\Url::addQueryString('uid=' . $objOrder->uniqid, $this->orderCompleteJumpTo));
+                    }
 
-            // Otherwise we assume a string that shows a message to customer
-            else {
-                $this->Template->showNext     = false;
-                $this->Template->showPrevious = false;
-                $arrBuffer                    = array(array('html' => $strBuffer, 'class' => $this->strCurrentStep));
-            }
+                    // Checkout failed, show error message
+                    static::redirectToStep('failed');
+                }
 
-        } else {
+                // False means payment has failed
+                elseif ($strBuffer === false) {
+                    static::redirectToStep('failed');
+                }
 
-            // canCheckout will override the template and show a message
-            if (!$this->canCheckout()) {
-                return;
-            }
+                // Otherwise we assume a string that shows a message to customer
+                else {
+                    $this->Template->showNext     = false;
+                    $this->Template->showPrevious = false;
+                    $arrBuffer                    = array(array('html' => $strBuffer, 'class' => $this->strCurrentStep));
+                }
+                break;
 
-            $arrBuffer = $this->compileCurrentStep();
+            case 'process':
+
+                // Make sure all steps have passed successfully
+                // A redirect will be issued if a step fails
+                $this->compileCurrentStep();
+
+                $objOrder = Order::createFromCollection(Isotope::getCart());
+
+                $objOrder->checkout_info        = $this->getCheckoutInfo();
+                $objOrder->nc_notification      = $this->nc_notification;
+                $objOrder->iso_addToAddressbook = $this->iso_addToAddressbook;
+                $objOrder->email_data           = $this->getNotificationTokensFromSteps($objOrder);
+
+                $objOrder->save();
+
+                $strBuffer = Isotope::getCart()->hasPayment() ? Isotope::getCart()->getPaymentMethod()->checkoutForm($objOrder, $this) : false;
+
+                if ($strBuffer === false) {
+                    static::redirectToStep('complete', $objOrder);
+                }
+
+                $this->Template->showForm = false;
+                $this->doNotSubmit        = true;
+                $arrBuffer                = array(array('html' => $strBuffer, 'class' => $this->strCurrentStep));
+                break;
+
+            case 'failed':
+                $this->Template->mtype   = 'error';
+                $this->Template->message = strlen(\Input::get('reason')) ? \Input::get('reason') : $GLOBALS['TL_LANG']['ERR']['orderFailed'];
+                $this->strCurrentStep    = 'review';
+                // no break
+
+            default:
+
+                // canCheckout will override the template and show a message
+                if (!$this->canCheckout()) {
+                    return;
+                }
+
+                $arrBuffer = $this->compileCurrentStep();
+                break;
         }
 
         RowClass::withKey('class')->addFirstLast()->applyTo($arrBuffer);
@@ -205,12 +242,6 @@ class Checkout extends Module
             $this->redirectToNextStep();
         }
 
-        if ($this->strCurrentStep == 'failed') {
-            $this->Template->mtype   = 'error';
-            $this->Template->message = strlen(\Input::get('reason')) ? \Input::get('reason') : $GLOBALS['TL_LANG']['ERR']['orderFailed'];
-            $this->strCurrentStep    = 'review';
-        }
-
         // Run trough all steps until we find the current one or one reports failure
         $arrSteps = $this->getSteps();
         $intCurrentStep = 0;
@@ -252,29 +283,6 @@ class Checkout extends Module
             $this->strCurrentStep = $step;
         } elseif (!isset($arrSteps[$this->strCurrentStep])) {
             $this->redirectToStep($step);
-        }
-
-        // Run after all steps have passed successfully
-        if ($this->strCurrentStep == 'process') {
-
-            $objOrder = Order::createFromCollection(Isotope::getCart());
-
-            $objOrder->checkout_info        = $this->getCheckoutInfo();
-            $objOrder->nc_notification      = $this->nc_notification;
-            $objOrder->iso_addToAddressbook = $this->iso_addToAddressbook;
-            $objOrder->email_data           = $this->getNotificationTokensFromSteps($objOrder);
-
-            $objOrder->save();
-
-            $strBuffer = Isotope::getCart()->hasPayment() ? Isotope::getCart()->getPaymentMethod()->checkoutForm($objOrder, $this) : false;
-
-            if ($strBuffer === false) {
-                static::redirectToStep('complete', $objOrder);
-            }
-
-            $this->Template->showForm = false;
-            $this->doNotSubmit        = true;
-            $arrBuffer                = array(array('html' => $strBuffer, 'class' => $this->strCurrentStep));
         }
 
         return $arrBuffer;
