@@ -345,10 +345,7 @@ class Checkout extends Module
                 }
             }
 
-            reset($arrCheckoutInfo);
-            $arrCheckoutInfo[key($arrCheckoutInfo)]['class'] .= ' first';
-            end($arrCheckoutInfo);
-            $arrCheckoutInfo[key($arrCheckoutInfo)]['class'] .= ' last';
+            RowClass::withKey('class')->addFirstLast()->applyTo($arrCheckoutInfo);
 
             $this->arrCheckoutInfo = $arrCheckoutInfo;
         }
@@ -504,13 +501,8 @@ class Checkout extends Module
             );
         }
 
-        if (empty($arrItems)) {
-            return array();
-        }
-
         // Add first/last classes
-        $arrItems[0]['class'] .= ' first';
-        $arrItems[count($arrItems) - 1]['class'] .= ' last';
+        RowClass::withKey('class')->addFirstLast()->applyTo($arrItems);
 
         return $arrItems;
     }
