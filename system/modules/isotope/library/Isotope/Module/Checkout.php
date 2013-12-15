@@ -165,16 +165,18 @@ class Checkout extends Module
 
             case 'process':
 
+                $arrSteps = $this->getSteps();
+
                 // Make sure all steps have passed successfully
                 // A redirect will be issued if a step fails
-                $this->compileCurrentStep();
+                $this->generateSteps($arrSteps);
 
                 $objOrder = Order::createFromCollection(Isotope::getCart());
 
-                $objOrder->checkout_info        = $this->getCheckoutInfo();
+                $objOrder->checkout_info        = $this->getCheckoutInfo($arrSteps);
                 $objOrder->nc_notification      = $this->nc_notification;
                 $objOrder->iso_addToAddressbook = $this->iso_addToAddressbook;
-                $objOrder->email_data           = $this->getNotificationTokensFromSteps($objOrder);
+                $objOrder->email_data           = $this->getNotificationTokensFromSteps($arrSteps, $objOrder);
 
                 $objOrder->save();
 
@@ -202,7 +204,7 @@ class Checkout extends Module
                     return;
                 }
 
-                $arrBuffer = $this->compileCurrentStep();
+                $arrBuffer = $this->generateSteps($this->getSteps());
                 break;
         }
 
@@ -213,10 +215,11 @@ class Checkout extends Module
 
     /**
      * Run through all steps until we find the current one or one reports failure
+     * @param   array
+     * @return  array
      */
-    protected function compileCurrentStep()
+    protected function generateSteps(array $arrSteps)
     {
-        $arrSteps = $this->getSteps();
         $intCurrentStep = 0;
         $intTotalSteps  = count($arrSteps);
 
@@ -257,7 +260,7 @@ class Checkout extends Module
             }
         }
 
-        $arrStepKeys = array_keys($this->getSteps());
+        $arrStepKeys = array_keys($arrSteps);
 
         $this->Template->steps      = $this->generateStepNavigation($arrStepKeys);
         $this->Template->activeStep = $GLOBALS['TL_LANG']['MSC']['activeStep'];
@@ -288,7 +291,7 @@ class Checkout extends Module
      */
     protected function redirectToNextStep()
     {
-        $arrSteps = array_keys($this->getSteps(true));
+        $arrSteps = array_keys($this->getSteps());
         $intKey   = array_search($this->strCurrentStep, $arrSteps);
 
         if (false === $intKey) {
@@ -311,7 +314,7 @@ class Checkout extends Module
      */
     protected function redirectToPreviousStep()
     {
-        $arrSteps = array_keys($this->getSteps(true));
+        $arrSteps = array_keys($this->getSteps());
         $intKey   = array_search($this->strCurrentStep, $arrSteps);
 
         if (false === $intKey || 0 === $intKey) {
@@ -324,16 +327,17 @@ class Checkout extends Module
 
     /**
      * Return the checkout information as array
-     * @return array
+     * @param   array
+     * @return  array
      */
-    public function getCheckoutInfo()
+    public function getCheckoutInfo(array $arrSteps)
     {
         if (!is_array($this->arrCheckoutInfo)) {
 
             $arrCheckoutInfo = array();
 
             // Run trough all steps to collect checkout information
-            foreach ($this->getSteps() as $arrModules) {
+            foreach ($arrSteps as $arrModules) {
                 foreach ($arrModules as $objModule) {
 
                     $arrInfo = $objModule->review();
@@ -355,15 +359,16 @@ class Checkout extends Module
 
     /**
      * Retrieve the array of notification data for parsing simple tokens
+     * @param   array
      * @param   IsotopeProductCollection
      * @return  array
      */
-    protected function getNotificationTokensFromSteps(IsotopeProductCollection $objOrder)
+    protected function getNotificationTokensFromSteps(array $arrSteps, IsotopeProductCollection $objOrder)
     {
         $arrTokens = array();
 
         // Run trough all steps to collect checkout information
-        foreach ($this->getSteps() as $arrModules) {
+        foreach ($arrSteps as $arrModules) {
             foreach ($arrModules as $objModule) {
                 $arrTokens = array_merge($arrTokens, $objModule->getNotificationTokens($objOrder));
             }
@@ -432,29 +437,23 @@ class Checkout extends Module
 
     /**
      * Return array of instantiated checkout step modules
-     * @param   bool
      * @return  array
      */
-    protected function getSteps($blnNoCache = false)
+    protected function getSteps()
     {
-        static $arrSteps;
+        $arrSteps = array();
 
-        if (null === $arrSteps || $blnNoCache) {
+        foreach ($GLOBALS['ISO_CHECKOUTSTEP'] as $strStep => $arrModules) {
+            foreach ($arrModules as $strClass) {
 
-            $arrSteps = array();
+                $objModule = new $strClass($this);
 
-            foreach ($GLOBALS['ISO_CHECKOUTSTEP'] as $strStep => $arrModules) {
-                foreach ($arrModules as $strClass) {
+                if (!$objModule instanceof IsotopeCheckoutStep) {
+                    throw new \RuntimeException("$strClass has to implement Isotope\Interfaces\IsotopeCheckoutStep");
+                }
 
-                    $objModule = new $strClass($this);
-
-                    if (!$objModule instanceof IsotopeCheckoutStep) {
-                        throw new \RuntimeException("$strClass has to implement Isotope\Interfaces\IsotopeCheckoutStep");
-                    }
-
-                    if ($objModule->isAvailable()) {
-                        $arrSteps[$strStep][] = $objModule;
-                    }
+                if ($objModule->isAvailable()) {
+                    $arrSteps[$strStep][] = $objModule;
                 }
             }
         }
