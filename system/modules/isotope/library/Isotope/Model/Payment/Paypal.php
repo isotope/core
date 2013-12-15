@@ -175,7 +175,7 @@ class Paypal extends Postsale implements IsotopePayment
                 continue;
             }
 
-            $arrData['item_name_' . ++$i] = $objSurcharge->getLabel();
+            $arrData['item_name_' . ++$i] = $objSurcharge->label;
             $arrData['amount_' . $i]      = $objSurcharge->total_price;
         }
 
