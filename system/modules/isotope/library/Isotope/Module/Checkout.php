@@ -127,6 +127,7 @@ class Checkout extends Module
         $this->Template->showPrevious  = true;
         $this->Template->showNext      = true;
         $this->Template->showForm      = true;
+        $this->Template->steps         = array();
 
         // These steps are handled internally by the checkout module and are not in the config array
         switch ($this->strCurrentStep) {
@@ -208,29 +209,6 @@ class Checkout extends Module
         RowClass::withKey('class')->addFirstLast()->applyTo($arrBuffer);
 
         $this->Template->fields = $arrBuffer;
-
-        // Show checkout steps
-        $this->Template->steps      = $this->generateSteps();
-        $this->Template->activeStep = $GLOBALS['TL_LANG']['MSC']['activeStep'];
-
-        $arrStepKeys = array_keys($this->getSteps());
-
-        // Hide back buttons it this is the first step
-        if (array_search($this->strCurrentStep, $arrStepKeys) === 0) {
-            $this->Template->showPrevious = false;
-        } // Show "confirm order" button if this is the last step
-        elseif (array_search($this->strCurrentStep, $arrStepKeys) === (count($arrStepKeys) - 1)) {
-            $this->Template->nextClass = 'confirm';
-            $this->Template->nextLabel = specialchars($GLOBALS['TL_LANG']['MSC']['confirmOrder']);
-        }
-
-        // User pressed "back" button
-        if (strlen(\Input::post('previousStep'))) {
-            $this->redirectToPreviousStep();
-        } // Valid input data, redirect to next step
-        elseif (\Input::post('FORM_SUBMIT') == $this->strFormId && !$this->doNotSubmit) {
-            $this->redirectToNextStep();
-        }
     }
 
     /**
@@ -279,6 +257,27 @@ class Checkout extends Module
             }
         }
 
+        $arrStepKeys = array_keys($this->getSteps());
+
+        $this->Template->steps      = $this->generateStepNavigation($arrStepKeys);
+        $this->Template->activeStep = $GLOBALS['TL_LANG']['MSC']['activeStep'];
+
+        // Hide back buttons it this is the first step
+        if (array_search($this->strCurrentStep, $arrStepKeys) === 0) {
+            $this->Template->showPrevious = false;
+        } // Show "confirm order" button if this is the last step
+        elseif (array_search($this->strCurrentStep, $arrStepKeys) === (count($arrStepKeys) - 1)) {
+            $this->Template->nextClass = 'confirm';
+            $this->Template->nextLabel = specialchars($GLOBALS['TL_LANG']['MSC']['confirmOrder']);
+        }
+
+        // User pressed "back" button
+        if (strlen(\Input::post('previousStep'))) {
+            $this->redirectToPreviousStep();
+        } // Valid input data, redirect to next step
+        elseif (\Input::post('FORM_SUBMIT') == $this->strFormId && !$this->doNotSubmit) {
+            $this->redirectToNextStep();
+        }
 
         return $arrBuffer;
     }
@@ -465,18 +464,15 @@ class Checkout extends Module
 
     /**
      * Generate checkout step navigation
+     * @param   array
      * @return  array
      */
-    protected function generateSteps()
+    protected function generateStepNavigation(array $arrStepKeys)
     {
-        if ($this->strCurrentStep == 'process' || $this->strCurrentStep == 'complete') {
-            return array();
-        }
-
         $arrItems  = array();
         $blnPassed = true;
 
-        foreach (array_keys($this->getSteps()) as $step) {
+        foreach ($arrStepKeys as $step) {
 
             $blnActive = false;
             $href      = '';
