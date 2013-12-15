@@ -197,7 +197,7 @@ class Checkout extends Module
      */
     protected function compileCurrentStep()
     {
-        if (\Haste\Input\Input::getAutoItem('step') == '') {
+        if ($this->strCurrentStep == '') {
             if ($this->iso_forward_review) {
                 static::redirectToStep('review');
             }
@@ -215,6 +215,7 @@ class Checkout extends Module
         $arrSteps = $this->getSteps();
         $intCurrentStep = 0;
         $intTotalSteps  = count($arrSteps);
+
         foreach ($arrSteps as $step => $arrModules) {
             $this->strFormId            = 'iso_mod_checkout_' . $step;
             $this->Template->formId     = $this->strFormId;
