@@ -319,11 +319,15 @@ class Checkout extends Module
 
     /**
      * Return the checkout information as array
-     * @param   array
+     * @param   array|null
      * @return  array
      */
-    public function getCheckoutInfo(array $arrSteps)
+    public function getCheckoutInfo(array $arrSteps = null)
     {
+        if (null === $arrSteps) {
+            $arrSteps = $this->getSteps();
+        }
+
         $arrCheckoutInfo = array();
 
         // Run trough all steps to collect checkout information
