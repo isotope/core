@@ -91,10 +91,6 @@ class Checkout extends Module
         $this->strCurrentStep = \Haste\Input\Input::getAutoItem('step');
 
         if ($this->strCurrentStep == '') {
-            if ($this->iso_forward_review) {
-                static::redirectToStep('review');
-            }
-
             $this->redirectToNextStep();
         }
 
@@ -242,11 +238,15 @@ class Checkout extends Module
      */
     protected function compileCurrentStep()
     {
-        // Run trough all steps until we find the current one or one reports failure
         $arrSteps = $this->getSteps();
         $intCurrentStep = 0;
         $intTotalSteps  = count($arrSteps);
 
+        if (!isset($arrSteps[$this->strCurrentStep])) {
+            $this->redirectToNextStep();
+        }
+
+        // Run trough all steps until we find the current one or one reports failure
         foreach ($arrSteps as $step => $arrModules) {
             $this->strFormId            = 'iso_mod_checkout_' . $step;
             $this->Template->formId     = $this->strFormId;
@@ -279,11 +279,6 @@ class Checkout extends Module
             }
         }
 
-        if (!strlen($this->strCurrentStep)) {
-            $this->strCurrentStep = $step;
-        } elseif (!isset($arrSteps[$this->strCurrentStep])) {
-            $this->redirectToStep($step);
-        }
 
         return $arrBuffer;
     }
@@ -298,6 +293,10 @@ class Checkout extends Module
         $intKey   = array_search($this->strCurrentStep, $arrSteps);
 
         if (false === $intKey) {
+            if ($this->iso_forward_review) {
+                static::redirectToStep('review');
+            }
+
             $intKey = -1;
         } // redirect to step "process" if the next step is the last one
         elseif (($intKey + 1) == count($arrSteps)) {
