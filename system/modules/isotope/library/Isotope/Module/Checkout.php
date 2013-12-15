@@ -34,16 +34,16 @@ class Checkout extends Module
 {
 
     /**
-     * Do not submit form
-     * @var boolean
-     */
-    public $doNotSubmit = false;
-
-    /**
      * Template
      * @var string
      */
     protected $strTemplate = 'mod_iso_checkout';
+
+    /**
+     * Do not continue to next step
+     * @var boolean
+     */
+    public $doNotSubmit = false;
 
     /**
      * Disable caching of the frontend page if this module is in use.
@@ -97,7 +97,6 @@ class Checkout extends Module
         return parent::generate();
     }
 
-
     /**
      * Returns the current form ID
      * @return string
@@ -107,10 +106,8 @@ class Checkout extends Module
         return $this->strFormId;
     }
 
-
     /**
      * Generate module
-     * @return void
      */
     protected function compile()
     {
@@ -132,6 +129,8 @@ class Checkout extends Module
         // These steps are handled internally by the checkout module and are not in the config array
         switch ($this->strCurrentStep) {
 
+            // Complete order after successful payment
+            // At this stage, we do no longer use the client's cart but the order through UID in URL
             case 'complete':
                 if (($objOrder = Order::findOneByUniqid(\Input::get('uid'))) === null) {
                     static::redirectToStep('failed');
@@ -163,6 +162,7 @@ class Checkout extends Module
                 }
                 break;
 
+            // Process order and initiate payment method if necessary
             case 'process':
 
                 $arrSteps = $this->getSteps();
@@ -191,6 +191,7 @@ class Checkout extends Module
                 $arrBuffer                = array(array('html' => $strBuffer, 'class' => $this->strCurrentStep));
                 break;
 
+            // Checkout/payment has failed, show the review page again with an error message
             case 'failed':
                 $this->Template->mtype   = 'error';
                 $this->Template->message = strlen(\Input::get('reason')) ? \Input::get('reason') : $GLOBALS['TL_LANG']['ERR']['orderFailed'];
@@ -285,7 +286,6 @@ class Checkout extends Module
         return $arrBuffer;
     }
 
-
     /**
      * Redirect visitor to the next step in ISO_CHECKOUTSTEP
      */
@@ -308,7 +308,6 @@ class Checkout extends Module
         static::redirectToStep($arrSteps[$intKey + 1]);
     }
 
-
     /**
      * Redirect visitor to the previous step in ISO_CHECKOUTSTEP
      */
@@ -323,7 +322,6 @@ class Checkout extends Module
 
         static::redirectToStep($arrSteps[($intKey - 1)]);
     }
-
 
     /**
      * Return the checkout information as array
@@ -377,7 +375,6 @@ class Checkout extends Module
         return $arrTokens;
     }
 
-
     /**
      * Check if the checkout can be executed
      * @return  bool
@@ -397,6 +394,7 @@ class Checkout extends Module
             }
 
             \Controller::redirect(\Controller::generateFrontendUrl($objPage->row()));
+
         } elseif ($this->iso_checkout_method == 'guest' && FE_USER_LOGGED_IN === true) {
             $this->Template          = new \Isotope\Template('mod_message');
             $this->Template->type    = 'error';
@@ -433,7 +431,6 @@ class Checkout extends Module
 
         return true;
     }
-
 
     /**
      * Return array of instantiated checkout step modules
@@ -501,7 +498,6 @@ class Checkout extends Module
 
         return $arrItems;
     }
-
 
     /**
      * Redirect to given checkout step
