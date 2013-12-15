@@ -39,7 +39,7 @@ abstract class PSP extends Payment
         if ($objOrder->isLocked()) {
             return true;
         }
-        
+
         // In processPayment, the parameters are always in GET
         $this->psp_http_method = 'GET';
 
@@ -64,11 +64,6 @@ abstract class PSP extends Payment
             return false;
         }
 
-        if (!$objOrder->checkout()) {
-            \System::log('Post-Sale checkout for Order ID "' . $objOrder->id . '" failed', __METHOD__, TL_ERROR);
-            return false;
-        }
-
         // Validate payment status
         switch ($this->getRequestData('STATUS')) {
 
@@ -77,7 +72,7 @@ abstract class PSP extends Payment
                 // no break
 
             case 5:  // Genehmigt (Authorize ohne Capture)
-                $objOrder->updateOrderStatus($this->new_order_status);
+                $intStatus = $this->new_order_status;
                 break;
 
             case 41: // Unbekannter Wartezustand
@@ -90,7 +85,7 @@ abstract class PSP extends Payment
                     return false;
                 }
 
-                $objOrder->updateOrderStatus($objConfig->orderstatus_error);
+                $intStatus = $objConfig->orderstatus_error;
                 break;
 
             case 0:  // Ungültig / Unvollständig
@@ -102,6 +97,12 @@ abstract class PSP extends Payment
                 return false;
         }
 
+        if (!$objOrder->checkout()) {
+            \System::log('Post-Sale checkout for Order ID "' . $objOrder->id . '" failed', __METHOD__, TL_ERROR);
+            return false;
+        }
+
+        $objOrder->updateOrderStatus($intStatus);
         $objOrder->save();
 
         return true;
