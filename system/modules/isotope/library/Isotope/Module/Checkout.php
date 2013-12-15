@@ -162,8 +162,15 @@ class Checkout extends Module
                 $arrSteps = $this->getSteps();
 
                 // Make sure all steps have passed successfully
-                // A redirect will be issued if a step fails
-                $this->generateSteps($arrSteps);
+                foreach ($arrSteps as $step => $arrModules) {
+                    foreach ($arrModules as $objModule) {
+                        $objModule->generate();
+
+                        if ($objModule->hasError()) {
+                            static::redirectToStep($step);
+                        }
+                    }
+                }
 
                 $objOrder = Order::createFromCollection(Isotope::getCart());
 
