@@ -54,7 +54,7 @@ var Isotope = {};
 	    if (btnClose) {
 	        overlay.addEventListener('click', Isotope.hideBox, false);
 	        box.addEventListener('click', Isotope.hideBox, false);
-	        if (!box.className.test(/btnClose/)) {
+	        if (!box.className.search(/btnClose/) != -1) {
 	            box.className = box.className + ' btnClose';
 	        }
 	    }
@@ -100,8 +100,8 @@ var Isotope = {};
 	    for (i=0; i<siblings.length; i++) {
 	        if (siblings[i].getAttribute('data-type') == 'gallery'
                 && siblings[i].getAttribute('data-uid') == elementId
-                && siblings[i].getAttribute('class').test(/active/))
-            {
+                && siblings[i].getAttribute('class').search(/(^| )active($| )/) != -1
+            ) {
 	            siblings[i].setAttribute('class', siblings[i].getAttribute('class').replace(/ ?active/, ''));
 	        }
 	    }
@@ -145,7 +145,7 @@ var IsotopeProducts = (function() {
                 // Remove all error messages
                 var errors = div.getElementsByTagName('p');
                 for(var i=0; i<errors.length; i++) {
-                    if (errors[i].className.test(/(^| )error( |$)/)) {
+                    if (errors[i].className.search(/(^| )error( |$)/) != -1) {
                         error[i].parentNode.removeChild(error[i]);
                     }
                 }
