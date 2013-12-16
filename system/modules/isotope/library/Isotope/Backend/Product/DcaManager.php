@@ -406,7 +406,7 @@ window.addEvent('domready', function() {
 
         // Make all column fields sortable
         foreach ($GLOBALS['TL_DCA'][$objProduct->getTable()]['fields'] as $name => $arrField) {
-            $GLOBALS['TL_DCA']['tl_iso_product']['fields'][$name]['sorting'] = ($name != 'price' && in_array($name, $arrFields));
+            $GLOBALS['TL_DCA']['tl_iso_product']['fields'][$name]['sorting'] = ($name != 'price' && $name != 'variantFields' && in_array($name, $arrFields));
         }
     }
 
