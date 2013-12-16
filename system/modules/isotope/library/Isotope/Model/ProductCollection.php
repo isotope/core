@@ -969,9 +969,7 @@ abstract class ProductCollection extends TypeAgent
                 $this->arrSurcharges = array();
 
                 if (($objSurcharges = ProductCollectionSurcharge::findBy('pid', $this->id)) !== null) {
-                    while ($objSurcharges->next()) {
-                        $this->arrSurcharges[] = $objSurcharges->current();
-                    }
+                    $this->arrSurcharges[] = $objSurcharges->getModels();
                 }
             } else {
                 $this->arrSurcharges = ProductCollectionSurcharge::findForCollection($this);
