@@ -47,6 +47,7 @@ class Rule extends ProductCollectionSurcharge implements IsotopeProductCollectio
         $objSurcharge->total_price = 0;
         $objSurcharge->tax_class = 0;
         $objSurcharge->before_tax = true;
+        $objSurcharge->addToTotal = true;
 
         // Product or producttype restrictions
         if ($objRule->productRestrictions != '' && $objRule->productRestrictions != 'none')
