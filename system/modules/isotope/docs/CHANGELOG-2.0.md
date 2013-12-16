@@ -34,6 +34,7 @@ Version 2.0.0 (????-??-??)
 - Address module did not work (#840)
 - Customer defined attributes did not work properly (#844)
 - PSP performed checkout on error-status (#881)
+- Order count in sales report was wrong (#872)
 
 
 Version 2.0.rc2 (2013-11-22)

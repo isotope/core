@@ -49,6 +49,8 @@ class SalesTotal extends Sales
 												o.locked AS date,
 												COUNT(o.id) AS total_orders,
 												COUNT(i.id) AS total_products,
+												COUNT(DISTINCT o.id) AS total_orders,
+												COUNT(DISTINCT i.id) AS total_products,
 												SUM(i.quantity) AS total_items,
 												SUM(i.tax_free_price * i.quantity) AS total_sales,
 												DATE_FORMAT(FROM_UNIXTIME(o.{$this->strDateField}), ?) AS dateGroup
@@ -56,7 +58,7 @@ class SalesTotal extends Sales
 											LEFT JOIN " . \Isotope\Model\ProductCollectionItem::getTable() . " i ON o.id=i.pid
 											LEFT JOIN " . \Isotope\Model\OrderStatus::getTable() . " os ON os.id=o.order_status
 											LEFT OUTER JOIN " . \Isotope\Model\Config::getTable() . " c ON o.config_id=c.id
-											WHERE o.type='order'
+											WHERE o.type='order' AND o.locked!=''
 											" . ($intStatus > 0 ? " AND o.order_status=".$intStatus : '') . "
 											" . $this->getProductProcedure('i', 'product_id') . "
 											" . ($intConfig > 0 ? " AND c.id=".$intConfig : '') . "
