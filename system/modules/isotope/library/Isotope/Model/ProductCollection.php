@@ -1059,7 +1059,7 @@ abstract class ProductCollection extends TypeAgent
 
         $arrIds  = array();
         $time    = time();
-        $sorting = 0;
+        $sorting = 128;
 
         foreach ($objSource->getSurcharges() as $objSourceSurcharge) {
             $objSurcharge          = clone $objSourceSurcharge;
@@ -1072,7 +1072,7 @@ abstract class ProductCollection extends TypeAgent
 
             $objSurcharge->save();
 
-            $arrIds[$objSourceSurcharge->id] = $objSurcharge->id;
+            $arrIds[$sorting] = $objSurcharge->id;
 
             $sorting += 128;
         }
