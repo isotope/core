@@ -263,9 +263,7 @@ abstract class ProductCollectionSurcharge extends TypeAgent
                 $fltPrice += $objSurcharge->getAmountForCollectionItem($objItem);
             }
 
-            $objIncludes = $objTaxClass->getRelated('includes');
-
-            if ($objIncludes->id > 0) {
+            if (($objIncludes = $objTaxClass->getRelated('includes')) !== null) {
                 if ($objIncludes->isApplicable($fltPrice, $arrAddresses)) {
                     $fltTax = $objIncludes->calculateAmountIncludedInPrice($fltPrice);
 
@@ -345,9 +343,7 @@ abstract class ProductCollectionSurcharge extends TypeAgent
 
             $fltPrice = $objSurcharge->total_price;
 
-            $objIncludes = $objTaxClass->getRelated('includes');
-
-            if ($objIncludes->id > 0) {
+            if (($objIncludes = $objTaxClass->getRelated('includes')) !== null) {
                 if ($objIncludes->isApplicable($fltPrice, $arrAddresses)) {
                     $fltTax = $objIncludes->calculateAmountIncludedInPrice($fltPrice);
 
