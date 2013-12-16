@@ -252,6 +252,9 @@ table.multicolumnwizard .operations {
     font-size: 0;
     width: 60px;
 }
+.iso_listing_container td.col_images {
+    height: 50px;
+}
 
 .iso_operations {
     width: 110px;
