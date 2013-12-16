@@ -56,7 +56,7 @@ class SalesTotal extends Sales
 											LEFT JOIN " . \Isotope\Model\ProductCollectionItem::getTable() . " i ON o.id=i.pid
 											LEFT JOIN " . \Isotope\Model\OrderStatus::getTable() . " os ON os.id=o.order_status
 											LEFT OUTER JOIN " . \Isotope\Model\Config::getTable() . " c ON o.config_id=c.id
-											WHERE o.type='Order'
+											WHERE o.type='order'
 											" . ($intStatus > 0 ? " AND o.order_status=".$intStatus : '') . "
 											" . $this->getProductProcedure('i', 'product_id') . "
 											" . ($intConfig > 0 ? " AND c.id=".$intConfig : '') . "

@@ -75,7 +75,7 @@ class SalesProduct extends Sales
 			LEFT OUTER JOIN " . \Isotope\Model\Product::getTable() . " p1 ON i.product_id=p1.id
 			LEFT OUTER JOIN " . \Isotope\Model\Product::getTable() . " p2 ON p1.pid=p2.id
 			LEFT OUTER JOIN " . \Isotope\Model\ProductType::getTable() . " t ON p1.type=t.id
-			WHERE o.type='Order'
+			WHERE o.type='order'
 				" . ($intStatus > 0 ? " AND o.order_status=".$intStatus : '') . "
 				" . $this->getProductProcedure('p1') . "
 				" . $this->getConfigProcedure('o', 'config_id') . "

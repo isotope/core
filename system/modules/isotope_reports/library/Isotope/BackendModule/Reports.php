@@ -86,7 +86,7 @@ class Reports extends BackendOverview
                                                 FROM " . \Isotope\Model\ProductCollection::getTable() . " o
                                                 LEFT JOIN " . \Isotope\Model\ProductCollectionItem::getTable() . " i ON o.id=i.pid
                                                 LEFT OUTER JOIN " . \Isotope\Model\Config::getTable() . " c ON o.config_id=c.id
-                                                WHERE o.type='Order' AND o.locked>?
+                                                WHERE o.type='order' AND o.locked>?
                                                 " . ($arrAllowedProducts === true ? '' : (" AND i.product_id IN (" . (empty($arrAllowedProducts) ? '0' : implode(',', $arrAllowedProducts)) . ")")) . "
                                                 GROUP BY config_id")
                                     ->execute(strtotime('-24 hours'));

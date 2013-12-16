@@ -251,7 +251,7 @@ class Backend extends Contao_Backend
         }
 
         $arrMessages = array();
-        $objOrders   = \Database::getInstance()->query("SELECT COUNT(*) AS total, s.name FROM " . \Isotope\Model\ProductCollection::getTable() . " c LEFT JOIN " . \Isotope\Model\OrderStatus::getTable() . " s ON c.order_status=s.id WHERE c.type='Order' AND s.welcomescreen='1' $strConfig GROUP BY s.id");
+        $objOrders   = \Database::getInstance()->query("SELECT COUNT(*) AS total, s.name FROM " . \Isotope\Model\ProductCollection::getTable() . " c LEFT JOIN " . \Isotope\Model\OrderStatus::getTable() . " s ON c.order_status=s.id WHERE c.type='order' AND s.welcomescreen='1' $strConfig GROUP BY s.id");
 
         while ($objOrders->next()) {
             $arrMessages[] = '<p class="tl_new">' . sprintf($GLOBALS['TL_LANG']['MSC']['newOrders'], $objOrders->total, $objOrders->name) . '</p>';
