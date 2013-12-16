@@ -98,12 +98,15 @@ var Isotope = {};
 	    var siblings = parent.parentNode.children;
 
 	    for (i=0; i<siblings.length; i++) {
-	        if (siblings[i].className.test(/image_container/) && siblings[i].className.test(/active/)) {
-	            siblings[i].className = siblings[i].className.replace(/ ?active/, '');
+	        if (siblings[i].getAttribute('data-type') == 'gallery'
+                && siblings[i].getAttribute('data-uid') == elementId
+                && siblings[i].getAttribute('class').test(/active/))
+            {
+	            siblings[i].setAttribute('class', siblings[i].getAttribute('class').replace(/ ?active/, ''));
 	        }
 	    }
 
-	    parent.className = parent.className + ' active';
+	    parent.setAttribute('class', parent.getAttribute('class') + ' active');
 	    document.getElementById(elementId).src = el.href;
 
 	    return false;
