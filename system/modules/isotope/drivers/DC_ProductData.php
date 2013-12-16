@@ -1649,37 +1649,61 @@ window.addEvent(\'domready\', function() {
 </div>';
 
             // Close the form
-            if (\Input::get('act') == 'select') {
-                $callbacks = '';
+            if (\Input::get('act') == 'select')
+    		{
+    			// Submit buttons
+    			$arrButtons = array();
 
-                // Call the buttons_callback
-                if (is_array($GLOBALS['TL_DCA'][$this->strTable]['edit']['buttons_callback'])) {
-                    foreach ($GLOBALS['TL_DCA'][$this->strTable]['edit']['buttons_callback'] as $callback) {
-                        if (is_array($callback)) {
-                            $this->import($callback[0]);
-                            $callbacks .= $this->$callback[0]->$callback[1]($this);
-                        } elseif (is_callable($callback)) {
-                            $callbacks .= call_user_func($callback, $this);
-                        }
-                    }
-                }
+    			if (!$GLOBALS['TL_DCA'][$this->strTable]['config']['notDeletable'])
+    			{
+    				$arrButtons['delete'] = '<input type="submit" name="delete" id="delete" class="tl_submit" accesskey="d" onclick="return confirm(\''.$GLOBALS['TL_LANG']['MSC']['delAllConfirm'].'\')" value="'.specialchars($GLOBALS['TL_LANG']['MSC']['deleteSelected']).'">';
+    			}
 
-                $return .= '
+    			if (!$GLOBALS['TL_DCA'][$this->strTable]['config']['notSortable'])
+    			{
+    				$arrButtons['cut'] = '<input type="submit" name="cut" id="cut" class="tl_submit" accesskey="x" value="'.specialchars($GLOBALS['TL_LANG']['MSC']['moveSelected']).'">';
+    			}
+
+    			if (!$GLOBALS['TL_DCA'][$this->strTable]['config']['notCopyable'])
+    			{
+    				$arrButtons['copy'] = '<input type="submit" name="copy" id="copy" class="tl_submit" accesskey="c" value="'.specialchars($GLOBALS['TL_LANG']['MSC']['copySelected']).'">';
+    			}
+
+    			if (!$GLOBALS['TL_DCA'][$this->strTable]['config']['notEditable'])
+    			{
+    				$arrButtons['override'] = '<input type="submit" name="override" id="override" class="tl_submit" accesskey="v" value="'.specialchars($GLOBALS['TL_LANG']['MSC']['overrideSelected']).'">';
+    				$arrButtons['edit'] = '<input type="submit" name="edit" id="edit" class="tl_submit" accesskey="s" value="'.specialchars($GLOBALS['TL_LANG']['MSC']['editSelected']).'">';
+    			}
+
+    			// Call the buttons_callback (see #4691)
+    			if (is_array($GLOBALS['TL_DCA'][$this->strTable]['select']['buttons_callback']))
+    			{
+    				foreach ($GLOBALS['TL_DCA'][$this->strTable]['select']['buttons_callback'] as $callback)
+    				{
+    					if (is_array($callback))
+    					{
+    						$this->import($callback[0]);
+    						$arrButtons = $this->$callback[0]->$callback[1]($arrButtons, $this);
+    					}
+    					elseif (is_callable($callback))
+    					{
+    						$arrButtons = $callback($arrButtons, $this);
+    					}
+    				}
+    			}
+
+    			$return .= '
 
 <div class="tl_formbody_submit" style="text-align:right">
 
-<div class="tl_submit_container">' . (!$GLOBALS['TL_DCA'][$this->strTable]['config']['notDeletable'] ? '
-  <input type="submit" name="delete" id="delete" class="tl_submit" accesskey="d" onclick="return confirm(\'' . $GLOBALS['TL_LANG']['MSC']['delAllConfirm'] . '\')" value="' . specialchars($GLOBALS['TL_LANG']['MSC']['deleteSelected']) . '"> ' : '') . (!$GLOBALS['TL_DCA'][$this->strTable]['config']['notEditable'] ? '
-  <input type="submit" name="cut" id="cut" class="tl_submit" accesskey="x" value="' . specialchars($GLOBALS['TL_LANG']['MSC']['moveSelected']) . '">
-  <input type="submit" name="copy" id="copy" class="tl_submit" accesskey="c" value="' . specialchars($GLOBALS['TL_LANG']['MSC']['copySelected']) . '">
-  <input type="submit" name="override" id="override" class="tl_submit" accesskey="v" value="' . specialchars($GLOBALS['TL_LANG']['MSC']['overrideSelected']) . '">
-  <input type="submit" name="edit" id="edit" class="tl_submit" accesskey="s" value="' . specialchars($GLOBALS['TL_LANG']['MSC']['editSelected']) . '"> ' : '') . $callbacks . '
+<div class="tl_submit_container">
+  ' . implode(' ', $arrButtons) . '
 </div>
 
 </div>
 </div>
 </form>';
-            }
+    		}
         }
 
         return $return;
@@ -2074,37 +2098,61 @@ window.addEvent(\'domready\', function() {
         }
 
         // Close form
-        if (\Input::get('act') == 'select') {
-            $callbacks = '';
+        if (\Input::get('act') == 'select')
+		{
+			// Submit buttons
+			$arrButtons = array();
 
-            // Call the buttons_callback
-            if (is_array($GLOBALS['TL_DCA'][$this->strTable]['edit']['buttons_callback'])) {
-                foreach ($GLOBALS['TL_DCA'][$this->strTable]['edit']['buttons_callback'] as $callback) {
-                    if (is_array($callback)) {
-                        $this->import($callback[0]);
-                        $callbacks .= $this->$callback[0]->$callback[1]($this);
-                    } elseif (is_callable($callback)) {
-                        $callbacks .= call_user_func($callback, $this);
-                    }
-                }
-            }
+			if (!$GLOBALS['TL_DCA'][$this->strTable]['config']['notDeletable'])
+			{
+				$arrButtons['delete'] = '<input type="submit" name="delete" id="delete" class="tl_submit" accesskey="d" onclick="return confirm(\''.$GLOBALS['TL_LANG']['MSC']['delAllConfirm'].'\')" value="'.specialchars($GLOBALS['TL_LANG']['MSC']['deleteSelected']).'">';
+			}
 
-            $return .= '
+			if (!$GLOBALS['TL_DCA'][$this->strTable]['config']['notSortable'])
+			{
+				$arrButtons['cut'] = '<input type="submit" name="cut" id="cut" class="tl_submit" accesskey="x" value="'.specialchars($GLOBALS['TL_LANG']['MSC']['moveSelected']).'">';
+			}
+
+			if (!$GLOBALS['TL_DCA'][$this->strTable]['config']['notCopyable'])
+			{
+				$arrButtons['copy'] = '<input type="submit" name="copy" id="copy" class="tl_submit" accesskey="c" value="'.specialchars($GLOBALS['TL_LANG']['MSC']['copySelected']).'">';
+			}
+
+			if (!$GLOBALS['TL_DCA'][$this->strTable]['config']['notEditable'])
+			{
+				$arrButtons['override'] = '<input type="submit" name="override" id="override" class="tl_submit" accesskey="v" value="'.specialchars($GLOBALS['TL_LANG']['MSC']['overrideSelected']).'">';
+				$arrButtons['edit'] = '<input type="submit" name="edit" id="edit" class="tl_submit" accesskey="s" value="'.specialchars($GLOBALS['TL_LANG']['MSC']['editSelected']).'">';
+			}
+
+			// Call the buttons_callback (see #4691)
+			if (is_array($GLOBALS['TL_DCA'][$this->strTable]['select']['buttons_callback']))
+			{
+				foreach ($GLOBALS['TL_DCA'][$this->strTable]['select']['buttons_callback'] as $callback)
+				{
+					if (is_array($callback))
+					{
+						$this->import($callback[0]);
+						$arrButtons = $this->$callback[0]->$callback[1]($arrButtons, $this);
+					}
+					elseif (is_callable($callback))
+					{
+						$arrButtons = $callback($arrButtons, $this);
+					}
+				}
+			}
+
+			$return .= '
 
 <div class="tl_formbody_submit" style="text-align:right">
 
-<div class="tl_submit_container">' . (!$GLOBALS['TL_DCA'][$this->strTable]['config']['notDeletable'] ? '
-  <input type="submit" name="delete" id="delete" class="tl_submit" accesskey="d" onclick="return confirm(\'' . $GLOBALS['TL_LANG']['MSC']['delAllConfirm'] . '\')" value="' . specialchars($GLOBALS['TL_LANG']['MSC']['deleteSelected']) . '"> ' : '') . '
-  <input type="submit" name="cut" id="cut" class="tl_submit" accesskey="x" value="' . specialchars($GLOBALS['TL_LANG']['MSC']['moveSelected']) . '">
-  <input type="submit" name="copy" id="copy" class="tl_submit" accesskey="c" value="' . specialchars($GLOBALS['TL_LANG']['MSC']['copySelected']) . '"> ' . (!$GLOBALS['TL_DCA'][$this->strTable]['config']['notEditable'] ? '
-  <input type="submit" name="override" id="override" class="tl_submit" accesskey="v" value="' . specialchars($GLOBALS['TL_LANG']['MSC']['overrideSelected']) . '">
-  <input type="submit" name="edit" id="edit" class="tl_submit" accesskey="s" value="' . specialchars($GLOBALS['TL_LANG']['MSC']['editSelected']) . '"> ' : '') . $callbacks . '
+<div class="tl_submit_container">
+  ' . implode(' ', $arrButtons) . '
 </div>
 
 </div>
 </div>
 </form>';
-        }
+		}
 
         return $return;
     }
