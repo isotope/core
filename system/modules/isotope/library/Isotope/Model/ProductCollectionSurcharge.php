@@ -289,11 +289,8 @@ abstract class ProductCollectionSurcharge extends TypeAgent
                 }
             }
 
-            $objRates = $objTaxClass->getRelated('rates');
-
-            if (null !== $objRates) {
-                while ($objRates->next()) {
-                    $objTaxRate = $objRates->current();
+            if (($objRates = $objTaxClass->getRelated('rates')) !== null) {
+                foreach ($objRates as $objTaxRate) {
 
                     if ($objTaxRate->isApplicable($fltPrice, $arrAddresses)) {
                         $fltTax = $objTaxRate->calculateAmountAddedToPrice($fltPrice);
@@ -378,11 +375,8 @@ abstract class ProductCollectionSurcharge extends TypeAgent
                 }
             }
 
-            $objRates = $objTaxClass->getRelated('rates');
-
-            if (null !== $objRates) {
-                while ($objRates->next()) {
-                    $objTaxRate = $objRates->current();
+            if (($objRates = $objTaxClass->getRelated('rates')) !== null) {
+                foreach ($objRates as $objTaxRate) {
 
                     if ($objTaxRate->isApplicable($fltPrice, $arrAddresses)) {
                         $fltTax = $objTaxRate->calculateAmountAddedToPrice($fltPrice);
