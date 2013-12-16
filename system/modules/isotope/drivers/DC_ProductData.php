@@ -54,11 +54,6 @@ class DC_ProductData extends \DC_Table
     {
         $this->import('Session');
 
-        // Reset the last product ID from session
-        if (isset($_GET['gid'])) {
-            $this->Session->set('iso_products_id', null);
-        }
-
         $this->intGroupId = (int)\Session::getInstance()->get('iso_products_gid') ? : (\BackendUser::getInstance()->isAdmin ? 0 : intval(\BackendUser::getInstance()->iso_groups[0]));
 
         // Check if the group exists
@@ -85,16 +80,6 @@ class DC_ProductData extends \DC_Table
             if (!$objProduct->numRows) {
                 \Controller::redirect(preg_replace('/(&amp;)?id=[^&]*/i', '', \Environment::get('request')));
             }
-
-            // Store the last product ID in session (e.g. for breadcrumb)
-            if (!isset($_GET['act']) && \Input::get('id', true) != $this->Session->get('iso_products_id')) {
-                $this->Session->set('iso_products_id', \Input::get('id', true));
-            }
-        }
-
-        // Display last product details
-        if (!isset($_GET['id']) && $this->Session->get('iso_products_id')) {
-            \Controller::redirect(\Backend::addToUrl('&id=' . $this->Session->get('iso_products_id')));
         }
 
         $arrClipboard = $this->Session->get('CLIPBOARD');
