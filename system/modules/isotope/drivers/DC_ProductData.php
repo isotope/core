@@ -78,7 +78,7 @@ class DC_ProductData extends \DC_Table
 
         // Redirect if the product was not found
         if (isset($_GET['id'])) {
-            $objProduct = \Database::getInstance()->prepare("SELECT id FROM tl_iso_product WHERE id=?")
+            $objProduct = \Database::getInstance()->prepare("SELECT id FROM " . $strTable . " WHERE id=?")
                 ->limit(1)
                 ->execute(\Input::get('id', true));
 
@@ -481,7 +481,7 @@ class DC_ProductData extends \DC_Table
                 $objRow = $this->Database->prepare("SELECT * FROM " . $this->strTable . " WHERE pid=? AND language=?")->execute($this->intId, $_SESSION['BE_DATA']['language'][$this->strTable][$this->intId]);
 
                 if (!$objRow->numRows) {
-                    $intId = $this->Database->prepare("INSERT INTO tl_iso_product (pid,tstamp,language) VALUES (?,?,?)")->execute($this->intId, time(), $_SESSION['BE_DATA']['language'][$this->strTable][$this->intId])->insertId;
+                    $intId = $this->Database->prepare("INSERT INTO " . $this->strTable . " (pid,tstamp,language) VALUES (?,?,?)")->execute($this->intId, time(), $_SESSION['BE_DATA']['language'][$this->strTable][$this->intId])->insertId;
 
                     $objRow = $this->Database->prepare("SELECT * FROM " . $this->strTable . " WHERE id=?")->execute($intId);
                 }
