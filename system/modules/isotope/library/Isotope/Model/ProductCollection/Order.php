@@ -22,6 +22,7 @@ use Isotope\Model\OrderStatus;
 use Isotope\Model\Payment;
 use Isotope\Model\ProductCollection;
 use Isotope\Model\ProductCollectionDownload;
+use Isotope\Model\ProductCollectionSurcharge;
 use Isotope\Model\Shipping;
 use NotificationCenter\Model\Notification;
 
@@ -116,6 +117,24 @@ class Order extends ProductCollection implements IsotopeProductCollection
         }
 
         return false;
+    }
+
+
+    /**
+     * Find surcharges for the current collection
+     * @return  array
+     */
+    public function getSurcharges()
+    {
+        if (null === $this->arrSurcharges) {
+            $this->arrSurcharges = array();
+
+            if (($objSurcharges = ProductCollectionSurcharge::findBy('pid', $this->id)) !== null) {
+                $this->arrSurcharges = $objSurcharges->getModels();
+            }
+        }
+
+        return $this->arrSurcharges;
     }
 
 
