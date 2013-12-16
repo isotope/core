@@ -134,6 +134,19 @@ class Cart extends Module
         $objTemplate->formSubmit    = $this->strFormId;
         $objTemplate->action        = \Environment::get('request');
         $objTemplate->buttons       = $arrButtons;
+        $objTemplate->custom        = '';
+
+        // HOOK: order status has been updated
+        if (isset($GLOBALS['ISO_HOOKS']['compileCart']) && is_array($GLOBALS['ISO_HOOKS']['compileCart'])) {
+            $strCustom = '';
+
+        	foreach ($GLOBALS['ISO_HOOKS']['compileCart'] as $callback) {
+        		$objCallback = \System::importStatic($callback[0]);
+        		$strCustom .= $objCallback->$callback[1]($this);
+        	}
+
+        	$objTemplate->custom = $strCustom;
+        }
 
         $this->Template->empty      = false;
         $this->Template->collection = Isotope::getCart();
