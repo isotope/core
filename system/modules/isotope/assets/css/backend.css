@@ -261,8 +261,6 @@ table.multicolumnwizard .operations {
     white-space: normal;
 }
 
-.iso_content_right .tl_select_all,
-.iso_content_right a,
 .iso_operations a {
     display: inline-block;
     margin-bottom: 4px;

@@ -85,7 +85,6 @@ $GLOBALS['TL_DCA']['tl_iso_product'] = array
             'mode'                  => 2,
             'fields'                => array('name'),
             'headerFields'          => array('name', 'sku', 'price', 'published'),
-            'headerOperations'      => array('edit', 'copy', 'cut', 'delete', 'toggle', 'show', 'related', 'downloads'),
             'flag'                  => 1,
             'panelLayout'           => 'iso_buttons,iso_filter;filter;sort,iso_sorting,search,limit',
             'icon'                  => 'system/modules/isotope/assets/images/store-open.png',

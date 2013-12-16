@@ -1752,22 +1752,14 @@ window.addEvent(\'domready\', function() {
         // List all records of the child table
         if (!\Input::get('act') || \Input::get('act') == 'paste' || \Input::get('act') == 'select') {
             $imagePasteAfter = \Image::getHtml('pasteafter.gif', $GLOBALS['TL_LANG'][$this->strTable]['pasteafter'][0]);
-
-            // Temporarily limit the header operations
-            $headerButtons = $GLOBALS['TL_DCA'][$this->strTable]['list']['operations'];
-            $GLOBALS['TL_DCA'][$this->strTable]['list']['operations'] = array_intersect_key($GLOBALS['TL_DCA'][$this->strTable]['list']['operations'], array_flip($GLOBALS['TL_DCA'][$this->strTable]['list']['sorting']['headerOperations']));
+            $imageEditHeader = \Image::getHtml('edit.gif', $GLOBALS['TL_LANG'][$this->strTable]['edit'][0]);
+			$strEditHeader = $GLOBALS['TL_LANG'][$this->strTable]['edit'][0];
 
             $return .= '
-<div class="tl_content_right iso_content_right">' . ((\Input::get('act') == 'select') ? '
-<div class="tl_select_all">
-<label for="tl_select_trigger" class="tl_select_label">' . $GLOBALS['TL_LANG']['MSC']['selectAll'] . '</label> <input type="checkbox" id="tl_select_trigger" onclick="Backend.toggleCheckboxes(this)" class="tl_tree_checkbox"></div>' : ($blnClipboard ? ' <a href="' . \Backend::addToUrl('act=' . $arrClipboard['mode'] . '&amp;mode=2&amp;pid=' . $objParent->id . (!$blnMultiboard ? '&amp;id=' . $arrClipboard['id'] : '') . '&amp;table=' . $this->strTable) . '" title="' . specialchars($GLOBALS['TL_LANG'][$this->strTable]['pasteafter'][0]) . '" onclick="Backend.getScrollOffset()">' . $imagePasteAfter . '</a>' : '')) . '
-<div class="iso_operations">' .
-                $this->generateButtons($objParent->row(), $this->strTable) . '
-</div>
+<div class="tl_content_right">'.((\Input::get('act') == 'select') ? '
+<label for="tl_select_trigger" class="tl_select_label">'.$GLOBALS['TL_LANG']['MSC']['selectAll'].'</label> <input type="checkbox" id="tl_select_trigger" onclick="Backend.toggleCheckboxes(this)" class="tl_tree_checkbox">' : (!$GLOBALS['TL_DCA'][$this->ptable]['config']['notEditable'] ? '
+<a href="'.preg_replace('/&(amp;)?table=[^& ]*/i', (($this->ptable != '') ? '&amp;table='.$this->ptable : ''), $this->addToUrl('act=edit')).'" class="edit" title="'.specialchars($strEditHeader).'">'.$imageEditHeader.'</a>' : '') . (($blnHasSorting && !$GLOBALS['TL_DCA'][$this->strTable]['config']['closed'] && !$GLOBALS['TL_DCA'][$this->strTable]['config']['notCreatable']) ? ' <a href="'.$this->addToUrl('act=create&amp;mode=2&amp;pid='.$objParent->id.'&amp;id='.$this->intId).'" title="'.specialchars($GLOBALS['TL_LANG'][$this->strTable]['pastenew'][0]).'">'.$imagePasteNew.'</a>' : '') . ($blnClipboard ? ' <a href="'.$this->addToUrl('act='.$arrClipboard['mode'].'&amp;mode=2&amp;pid='.$objParent->id . (!$blnMultiboard ? '&amp;id='.$arrClipboard['id'] : '')).'" title="'.specialchars($GLOBALS['TL_LANG'][$this->strTable]['pasteafter'][0]).'" onclick="Backend.getScrollOffset()">'.$imagePasteAfter.'</a>' : '')) . '
 </div>';
-
-            // Restore the available operations
-            $GLOBALS['TL_DCA'][$this->strTable]['list']['operations'] = $headerButtons;
 
             // Format header fields
             $add = array();
