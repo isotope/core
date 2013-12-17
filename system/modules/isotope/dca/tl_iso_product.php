@@ -61,9 +61,10 @@ $GLOBALS['TL_DCA']['tl_iso_product'] = array
         (
             'keys' => array
             (
-                'id' => 'primary',
-                'gid' => 'index',
-                'pid,language,published' => 'index',
+                'id'                                    => 'primary',
+                'gid'                                   => 'index',
+                'pid,language,published,start,stop'     => 'index',
+                'start'                                 => 'index'
             )
         ),
     ),

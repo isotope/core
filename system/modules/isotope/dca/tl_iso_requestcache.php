@@ -24,7 +24,8 @@ $GLOBALS['TL_DCA']['tl_iso_requestcache'] = array
         (
             'keys' => array
             (
-                'id' => 'primary',
+                'id'            => 'primary',
+                'id,store_id'   => 'index'
             )
         ),
     ),

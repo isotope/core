@@ -66,11 +66,11 @@ class ProductCache extends \Model
                  'page_id=?',
                  'module_id=?',
                  'requestcache_id=?',
-                 'groups=?',
                  "(keywords=? OR keywords='')",
-                 '(expires>? OR expires=0)'
+                 '(expires>? OR expires=0)',
+                 'groups=?'
             ),
-            array($intPage, $intModule, (int) \Input::get('isorc'), static::getCacheableGroups(), (string) \Input::get('keywords'), time()),
+            array($intPage, $intModule, (int) \Input::get('isorc'), (string) \Input::get('keywords'), time(), static::getCacheableGroups()),
             $arrOptions
         );
     }
@@ -107,8 +107,8 @@ class ProductCache extends \Model
 
         \Database::getInstance()->prepare("
             DELETE FROM " . static::$strTable . "
-            WHERE (page_id=? AND module_id=? AND requestcache_id=? AND groups=? AND keywords=?) OR (expires>0 AND expires<$time)
-        ")->executeUncached($intPage, $intModule, (int) \Input::get('isorc'), static::getCacheableGroups(), (string) \Input::get('keywords'));
+            WHERE (page_id=? AND module_id=? AND requestcache_id=? AND keywords=? AND groups=?) OR (expires>0 AND expires<$time)
+        ")->executeUncached($intPage, $intModule, (int) \Input::get('isorc'), (string) \Input::get('keywords'), static::getCacheableGroups());
     }
 
     /**
