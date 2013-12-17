@@ -43,7 +43,8 @@ $GLOBALS['TL_DCA']['tl_iso_attribute'] = array
         (
             'keys' => array
             (
-                'id' => 'primary',
+                'id'    => 'primary',
+                'type'  => 'index'
             )
         ),
     ),

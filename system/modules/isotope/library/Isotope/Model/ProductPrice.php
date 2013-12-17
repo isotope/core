@@ -217,6 +217,12 @@ class ProductPrice extends \Model implements IsotopePrice
         $arrOptions['column'] = array();
         $arrOptions['value']  = array();
 
+        if ($objProduct->hasVariantPrices() && !$objProduct->isVariant()) {
+            $arrIds                 = $objProduct->getVariantIds() ? : array(0);
+            $arrOptions['column'][] = "pid IN (" . implode(',', $arrIds) . ")";
+        } else {
+            $arrOptions['column'][] = "pid=" . $objProduct->id;
+        }
 
         if ($objProduct->hasAdvancedPrices()) {
 
@@ -236,13 +242,6 @@ class ProductPrice extends \Model implements IsotopePrice
             $arrOptions['column'][] = "member_group=0";
             $arrOptions['column'][] = "start=''";
             $arrOptions['column'][] = "stop=''";
-        }
-
-        if ($objProduct->hasVariantPrices() && !$objProduct->isVariant()) {
-            $arrIds                 = $objProduct->getVariantIds() ? : array(0);
-            $arrOptions['column'][] = "pid IN (" . implode(',', $arrIds) . ")";
-        } else {
-            $arrOptions['column'][] = "pid=" . $objProduct->id;
         }
 
         return static::find($arrOptions);

@@ -32,8 +32,9 @@ $GLOBALS['TL_DCA']['tl_iso_product_price'] = array
         (
             'keys' => array
             (
-                'id' => 'primary',
-                'pid' => 'index',
+                'id'                                                => 'primary',
+                'pid'                                               => 'index',
+                'pid,config_id,member_group,start,stop'             => 'index'
             )
         ),
     ),
