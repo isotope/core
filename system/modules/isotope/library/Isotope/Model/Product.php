@@ -113,7 +113,7 @@ abstract class Product extends TypeAgent
 
         if (BE_USER_LOGGED_IN !== true) {
             $time         = time();
-            $arrColumns[] = "$t.published='1' AND ($t.start='' OR $t.start<$time) AND ($t.stop='' OR $t.stop>$time)";
+            array_unshift($arrColumns, "$t.published='1' AND ($t.start='' OR $t.start<$time) AND ($t.stop='' OR $t.stop>$time)");
         }
 
         return static::findBy($arrColumns, $arrValues, $arrOptions);
@@ -195,12 +195,14 @@ abstract class Product extends TypeAgent
 
         $t = static::$strTable;
 
-        $arrColumns = array("$t.id IN (" . implode(',', array_map('intval', $arrIds)) . ")");
+        $arrColumns = array();
 
         if (BE_USER_LOGGED_IN !== true) {
             $time         = time();
             $arrColumns[] = "$t.published='1' AND ($t.start='' OR $t.start<$time) AND ($t.stop='' OR $t.stop>$time)";
         }
+
+        $arrColumns[] = "$t.id IN (" . implode(',', array_map('intval', $arrIds)) . ")";
 
         $arrOptions = array_merge(
             array(
@@ -252,12 +254,14 @@ abstract class Product extends TypeAgent
     {
         $t = static::$strTable;
 
-        $arrColumns = array("c.page_id IN (" . implode(',', array_map('intval', $arrCategories)) . ")");
+        $arrColumns = array();
 
         if (BE_USER_LOGGED_IN !== true) {
             $time         = time();
             $arrColumns[] = "$t.published='1' AND ($t.start='' OR $t.start<$time) AND ($t.stop='' OR $t.stop>$time)";
         }
+
+        $arrColumns[] = array("c.page_id IN (" . implode(',', array_map('intval', $arrCategories)) . ")");
 
         $arrOptions = array_merge(
             array(
@@ -529,9 +533,7 @@ abstract class Product extends TypeAgent
         }
 
         // The model must never find a language record
-        $arrOptions['column'][] = "{$arrOptions['table']}.language=''";
-
-        $strQuery .= " WHERE " . implode(" AND ", $arrOptions['column']);
+        $strQuery .= " WHERE {$arrOptions['table']}.language='' AND " . implode(" AND ", $arrOptions['column']);
 
         // Group by
         if ($arrOptions['group'] !== null) {
