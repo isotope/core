@@ -171,12 +171,12 @@ class ProductPrice extends \Model implements IsotopePrice
 
     /**
      * Generate price for HTML rendering
+     * @param   bool
      * @return  string
      */
-    public function generate()
+    public function generate($blnShowTiers=false)
     {
         $blnShowFrom  = false;
-        $blnShowTiers = $this->getRelated('pid')->getRelated('type')->showPriceTiers();
 
         $fltPrice = $this->getAmount();
 

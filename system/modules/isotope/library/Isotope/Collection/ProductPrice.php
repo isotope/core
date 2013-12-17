@@ -78,9 +78,10 @@ class ProductPrice extends \Model\Collection implements IsotopePrice
 
     /**
      * Generate price for HTML rendering
+     * @param   bool
      * @return  string
      */
-    public function generate()
+    public function generate($blnShowTiers=false)
     {
         if (count($this->arrModels) > 1) {
 
@@ -89,7 +90,6 @@ class ProductPrice extends \Model\Collection implements IsotopePrice
             $blnShowFrom        = false;
 
             foreach ($this->arrModels as $objPrice) {
-                $blnShowTiers = $objPrice->getRelated('pid')->getRelated('type')->showPriceTiers();
                 $fltNew       = $blnShowTiers ? $objPrice->getLowestAmount() : $objPrice->getAmount();
 
                 if (null === $fltPrice || $fltNew < $fltPrice) {
@@ -111,7 +111,7 @@ class ProductPrice extends \Model\Collection implements IsotopePrice
             }
 
         } else {
-            return $this->current()->generate();
+            return $this->current()->generate($blnShowTiers);
         }
     }
 }

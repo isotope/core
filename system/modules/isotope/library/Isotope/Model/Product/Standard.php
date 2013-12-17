@@ -511,7 +511,7 @@ class Standard extends Product implements IsotopeProduct, WeightAggregate
                 return '';
             }
 
-            return $objPrice->generate();
+            return $objPrice->generate($objProduct->getRelated('type')->showPriceTiers());
         };
 
         $objTemplate->getGallery = function($strAttribute) use ($objProduct, $arrConfig, &$arrGalleries) {

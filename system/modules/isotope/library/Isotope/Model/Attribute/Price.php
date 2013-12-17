@@ -53,6 +53,6 @@ class Price extends Attribute implements IsotopeAttribute
             return '';
         }
 
-        return $objPrice->generate();
+        return $objPrice->generate($objProduct->getRelated('type')->showPriceTiers());
     }
 }
