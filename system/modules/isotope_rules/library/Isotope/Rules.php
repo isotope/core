@@ -13,7 +13,7 @@
 namespace Isotope;
 
 use Isotope\Isotope;
-use Isotope\Interfaces\IsotopeProduct;
+use Isotope\Interfaces\IsotopePrice;
 use Isotope\Interfaces\IsotopeProductCollection;
 use Isotope\Model\Rule;
 use Isotope\Model\ProductCollection\Cart;
@@ -81,9 +81,10 @@ class Rules extends \Controller
      */
     public function calculatePrice($fltPrice, $objSource, $strField, $intTaxClass)
     {
-        if ($objSource instanceof IsotopeProduct && ($strField == 'price' || $strField == 'low_price'))
-        {
-            $objRules = Rule::findByProduct($objSource, $strField, $fltPrice);
+        if ($objSource instanceof IsotopePrice && ($strField == 'price' || $strField == 'low_price')) {
+
+            // @todo try not to use getRelated() because it loads variants
+            $objRules = Rule::findByProduct($objSource->getRelated('pid'), $strField, $fltPrice);
 
             if (null !== $objRules) {
                 while ($objRules->next())
@@ -96,7 +97,7 @@ class Rules extends \Controller
                         } elseif ($objRules->quantityMode == 'cart_items') {
                             $intTotal = Isotope::getCart()->sumItemsQuantity();
                         } else {
-                            $objItem = Isotope::getCart()->getItemForProduct($objSource);
+                            $objItem = Isotope::getCart()->getItemForProduct($objSource->getRelated('pid'));
                             $intTotal = (null === $objItem) ? 0 : $objItem->quantity;
                         }
 
