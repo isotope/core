@@ -472,7 +472,7 @@ abstract class Product extends TypeAgent
         $arrJoins  = array();
         $arrFields = array(
             $arrOptions['table'] . ".*",
-            "IF(" . $arrOptions['table'] . ".pid>0, (SELECT type FROM " . $arrOptions['table'] . " parent WHERE parent.id=" . $arrOptions['table'] . ".pid), " . $arrOptions['table'] . ".type) AS type",
+            "IF(" . $arrOptions['table'] . ".pid>0, parent.type, " . $arrOptions['table'] . ".type) AS type",
             "'" . str_replace('-', '_', $GLOBALS['TL_LANGUAGE']) . "' AS language",
         );
 
@@ -488,6 +488,7 @@ abstract class Product extends TypeAgent
 
         $arrJoins[] = " LEFT OUTER JOIN " . \Isotope\Model\ProductCategory::getTable() . " c ON {$arrOptions['table']}.id=c.pid";
         $arrJoins[] = " LEFT OUTER JOIN " . $arrOptions['table'] . " translation ON " . $arrOptions['table'] . ".id=translation.pid AND translation.language='" . str_replace('-', '_', $GLOBALS['TL_LANGUAGE']) . "'";
+        $arrJoins[] = " LEFT OUTER JOIN " . $arrOptions['table'] . " parent ON " . $arrOptions['table'] . ".id=parent.pid";
 
 
         if ($objBase->hasRelations()) {
