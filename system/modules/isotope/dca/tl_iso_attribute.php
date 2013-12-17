@@ -180,7 +180,9 @@ $GLOBALS['TL_DCA']['tl_iso_attribute'] = array
             'label'                 => &$GLOBALS['TL_LANG']['tl_iso_attribute']['type'],
             'exclude'               => true,
             'inputType'             => 'select',
-            'options'               => \Isotope\Model\Attribute::getModelTypeOptions(),
+            'options_callback'      => function() {
+                return \Isotope\Model\Attribute::getModelTypeOptions();
+            },
             'eval'                  => array('mandatory'=>true, 'includeBlankOption'=>true, 'submitOnChange'=>true, 'helpwizard'=>true, 'tl_class'=>'w50', 'chosen'=>true),
             'reference'             => &$GLOBALS['TL_LANG']['ATTR'],
             'sql'                   => "varchar(64) NOT NULL default ''",

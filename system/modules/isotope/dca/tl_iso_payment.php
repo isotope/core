@@ -175,7 +175,9 @@ $GLOBALS['TL_DCA']['tl_iso_payment'] = array
             'filter'                => true,
             'inputType'             => 'select',
             'default'               => 'cash',
-            'options'               => \Isotope\Model\Payment::getModelTypeOptions(),
+            'options_callback'      => function() {
+                return \Isotope\Model\Payment::getModelTypeOptions();
+            },
             'eval'                  => array('includeBlankOption'=>true, 'helpwizard'=>true, 'submitOnChange'=>true, 'chosen'=>true, 'tl_class'=>'w50'),
             'sql'                   => "varchar(64) NOT NULL default ''",
         ),
@@ -262,7 +264,9 @@ $GLOBALS['TL_DCA']['tl_iso_payment'] = array
             'label'                 => &$GLOBALS['TL_LANG']['tl_iso_payment']['countries'],
             'exclude'               => true,
             'inputType'             => 'select',
-            'options'               => \System::getCountries(),
+            'options_callback'      => function() {
+                return \System::getCountries();
+            },
             'eval'                  => array('multiple'=>true, 'size'=>8, 'tl_class'=>'w50 w50h', 'chosen'=>true),
             'sql'                   => "blob NULL",
         ),

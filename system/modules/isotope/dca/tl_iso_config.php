@@ -277,7 +277,9 @@ $GLOBALS['TL_DCA']['tl_iso_config'] = array
             'sorting'               => true,
             'inputType'             => 'select',
             'default'               => (string) BackendUser::getInstance()->country,
-            'options'               => \System::getCountries(),
+            'options_callback'      => function() {
+                return \System::getCountries();
+            },
             'eval'                  => array('mandatory'=>true, 'includeBlankOption'=>true, 'tl_class'=>'w50', 'chosen'=>true),
             'sql'                   => "varchar(2) NOT NULL default ''",
         ),
@@ -349,7 +351,9 @@ $GLOBALS['TL_DCA']['tl_iso_config'] = array
             'label'                 => &$GLOBALS['TL_LANG']['tl_iso_config']['billing_country'],
             'exclude'               => true,
             'inputType'             => 'select',
-            'options'               => \System::getCountries(),
+            'options_callback'      => function() {
+                return \System::getCountries();
+            },
             'eval'                  => array('includeBlankOption'=>true, 'tl_class'=>'w50', 'chosen'=>true),
             'sql'                   => "varchar(2) NOT NULL default ''",
         ),
@@ -358,7 +362,9 @@ $GLOBALS['TL_DCA']['tl_iso_config'] = array
             'label'                 => &$GLOBALS['TL_LANG']['tl_iso_config']['shipping_country'],
             'exclude'               => true,
             'inputType'             => 'select',
-            'options'               => \System::getCountries(),
+            'options_callback'      => function() {
+                return \System::getCountries();
+            },
             'eval'                  => array('includeBlankOption'=>true, 'tl_class'=>'w50', 'chosen'=>true),
             'sql'                   => "varchar(2) NOT NULL default ''",
         ),
@@ -367,7 +373,9 @@ $GLOBALS['TL_DCA']['tl_iso_config'] = array
             'label'                 => &$GLOBALS['TL_LANG']['tl_iso_config']['billing_countries'],
             'exclude'               => true,
             'inputType'             => 'select',
-            'options'               => \System::getCountries(),
+            'options_callback'      => function() {
+                return \System::getCountries();
+            },
             'eval'                  => array('multiple'=>true, 'size'=>8, 'tl_class'=>'w50 w50h', 'chosen'=>true),
             'sql'                   => "blob NULL"
         ),
@@ -376,7 +384,9 @@ $GLOBALS['TL_DCA']['tl_iso_config'] = array
             'label'                 => &$GLOBALS['TL_LANG']['tl_iso_config']['shipping_countries'],
             'exclude'               => true,
             'inputType'             => 'select',
-            'options'               => \System::getCountries(),
+            'options_callback'      => function() {
+                return \System::getCountries();
+            },
             'eval'                  => array('multiple'=>true, 'size'=>8, 'tl_class'=>'w50 w50h', 'chosen'=>true),
             'sql'                   => "blob NULL",
         ),

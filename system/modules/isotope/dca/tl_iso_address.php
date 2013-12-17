@@ -261,8 +261,9 @@ $GLOBALS['TL_DCA']['tl_iso_address'] = array
             'filter'                => true,
             'sorting'               => true,
             'inputType'             => 'select',
-            'options'               => array_keys(\System::getCountries()),
-            'reference'             => \System::getCountries(),
+            'options_callback'      => function() {
+                return \System::getCountries();
+            },
             'eval'                  => array('mandatory'=>true, 'feEditable'=>true, 'feGroup'=>'address', 'tl_class'=>'w50', 'chosen'=>true),
             'sql'                   => "varchar(32) NOT NULL default ''",
         ),

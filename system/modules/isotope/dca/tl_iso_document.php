@@ -138,7 +138,9 @@ $GLOBALS['TL_DCA']['tl_iso_document'] = array
             'filter'                => true,
             'inputType'             => 'select',
             'default'               => 'Standard',
-            'options'               => \Isotope\Model\Document::getModelTypeOptions(),
+            'options_callback'      => function() {
+                return \Isotope\Model\Document::getModelTypeOptions();
+            },
             'eval'                  => array('submitOnChange'=>true, 'tl_class'=>'w50', 'includeBlankOption'=>true),
             'sql'                   => "varchar(255) NOT NULL default ''"
         ),
