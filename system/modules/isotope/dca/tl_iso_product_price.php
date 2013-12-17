@@ -34,7 +34,9 @@ $GLOBALS['TL_DCA']['tl_iso_product_price'] = array
             (
                 'id'                                                => 'primary',
                 'pid'                                               => 'index',
-                'pid,config_id,member_group,start,stop'             => 'index'
+                'pid,config_id,member_group,start,stop'             => 'index',
+                // for advanced prices that do "pid IN(x,y)"
+                'config_id,member_group,start,stop,pid'             => 'index'
             )
         ),
     ),

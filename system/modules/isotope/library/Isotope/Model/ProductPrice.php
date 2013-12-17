@@ -217,10 +217,7 @@ class ProductPrice extends \Model implements IsotopePrice
         $arrOptions['column'] = array();
         $arrOptions['value']  = array();
 
-        if ($objProduct->hasVariantPrices() && !$objProduct->isVariant()) {
-            $arrIds                 = $objProduct->getVariantIds() ? : array(0);
-            $arrOptions['column'][] = "pid IN (" . implode(',', $arrIds) . ")";
-        } else {
+        if (!$objProduct->hasVariantPrices() || $objProduct->isVariant()) {
             $arrOptions['column'][] = "pid=" . $objProduct->id;
         }
 
@@ -242,6 +239,11 @@ class ProductPrice extends \Model implements IsotopePrice
             $arrOptions['column'][] = "member_group=0";
             $arrOptions['column'][] = "start=''";
             $arrOptions['column'][] = "stop=''";
+        }
+
+        if ($objProduct->hasVariantPrices() && !$objProduct->isVariant()) {
+            $arrIds                 = $objProduct->getVariantIds() ? : array(0);
+            $arrOptions['column'][] = "pid IN (" . implode(',', $arrIds) . ")";
         }
 
         return static::find($arrOptions);
@@ -285,11 +287,11 @@ class ProductPrice extends \Model implements IsotopePrice
         $arrOptions = array_merge(
             array(
                 'column' => array(
-                    "$t.pid IN (" . implode(',', $arrIds) . ")",
                     "$t.config_id=0",
                     "$t.member_group=0",
                     "$t.start=''",
-                    "$t.stop=''"
+                    "$t.stop=''",
+                    "$t.pid IN (" . implode(',', $arrIds) . ")",
                 ),
                 'return'    => 'Collection'
             ),
