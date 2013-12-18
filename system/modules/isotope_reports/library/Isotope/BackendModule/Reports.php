@@ -104,11 +104,11 @@ class Reports extends BackendOverview
 <br>
 <table class="tl_listing">
 <tr>
-	<th class="tl_folder_tlist">' . $GLOBALS['ISO_LANG']['REPORT']['shop_config'] . '</th>
-	<th class="tl_folder_tlist">' . $GLOBALS['ISO_LANG']['REPORT']['currency'] . '</th>
-	<th class="tl_folder_tlist">' . $GLOBALS['ISO_LANG']['REPORT']['orders#'] . '</th>
-	<th class="tl_folder_tlist">' . $GLOBALS['ISO_LANG']['REPORT']['products#'] . '</th>
-	<th class="tl_folder_tlist">' . $GLOBALS['ISO_LANG']['REPORT']['sales#'] . '</th>
+    <th class="tl_folder_tlist">' . $GLOBALS['ISO_LANG']['REPORT']['shop_config'] . '</th>
+    <th class="tl_folder_tlist">' . $GLOBALS['ISO_LANG']['REPORT']['currency'] . '</th>
+    <th class="tl_folder_tlist">' . $GLOBALS['ISO_LANG']['REPORT']['orders#'] . '</th>
+    <th class="tl_folder_tlist">' . $GLOBALS['ISO_LANG']['REPORT']['products#'] . '</th>
+    <th class="tl_folder_tlist">' . $GLOBALS['ISO_LANG']['REPORT']['sales#'] . '</th>
 </tr>';
 
 
@@ -116,11 +116,11 @@ class Reports extends BackendOverview
             {
                 $strBuffer .= '
 <tr class="row_' . ++$i . ($i%2 ? 'odd' : 'even') . '">
-	<td class="tl_file_list">' . $objOrders->config_name . '</td>
-	<td class="tl_file_list">' . $objOrders->currency . '</td>
-	<td class="tl_file_list">' . $objOrders->total_orders . '</td>
-	<td class="tl_file_list">' . $objOrders->total_items . '</td>
-	<td class="tl_file_list">' . Isotope::formatPrice($objOrders->total_sales) . '</td>
+    <td class="tl_file_list">' . $objOrders->config_name . '</td>
+    <td class="tl_file_list">' . $objOrders->currency . '</td>
+    <td class="tl_file_list">' . $objOrders->total_orders . '</td>
+    <td class="tl_file_list">' . $objOrders->total_items . '</td>
+    <td class="tl_file_list">' . Isotope::formatPrice($objOrders->total_sales) . '</td>
 </tr>';
             }
 

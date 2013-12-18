@@ -16,13 +16,13 @@ namespace Isotope\Report;
 class MembersRegistration extends Report
 {
 
-	public function generate()
-	{
-		return '<p class="tl_gerror">This report is not implemented yet. It will show statistics about member registrations.</p>';
-	}
+    public function generate()
+    {
+        return '<p class="tl_gerror">This report is not implemented yet. It will show statistics about member registrations.</p>';
+    }
 
-	protected function compile()
-	{
-	}
+    protected function compile()
+    {
+    }
 }
 
