@@ -50,20 +50,16 @@ class Rule extends ProductCollectionSurcharge implements IsotopeProductCollectio
         $objSurcharge->addToTotal = true;
 
         // Product or producttype restrictions
-        if ($objRule->productRestrictions != '' && $objRule->productRestrictions != 'none')
-        {
+        if ($objRule->productRestrictions != '' && $objRule->productRestrictions != 'none') {
             $arrLimit = \Database::getInstance()->execute("SELECT object_id FROM tl_iso_rule_restriction WHERE pid={$objRule->id} AND type='{$objRule->productRestrictions}'")->fetchEach('object_id');
 
-            if ($objRule->productRestrictions == 'pages' && !empty($arrLimit))
-            {
+            if ($objRule->productRestrictions == 'pages' && !empty($arrLimit)) {
                 $arrLimit = \Database::getInstance()->execute("SELECT pid FROM " . \Isotope\Model\ProductCategory::getTable() . " WHERE page_id IN (" . implode(',', $arrLimit) . ")")->fetchEach('pid');
             }
 
-            if ($objRule->quantityMode == 'cart_products' || $objRule->quantityMode == 'cart_items')
-            {
+            if ($objRule->quantityMode == 'cart_products' || $objRule->quantityMode == 'cart_items') {
                 $intTotal = 0;
-                foreach ($arrCollectionItems as $objItem)
-                {
+                foreach ($arrCollectionItems as $objItem) {
                     if (!$objItem->hasProduct()) {
                         continue;
                     }
@@ -71,18 +67,15 @@ class Rule extends ProductCollectionSurcharge implements IsotopeProductCollectio
                     $objProduct = $objItem->getProduct();
 
                     if ((($objRule->productRestrictions == 'products' || $objRule->productRestrictions == 'variants' || $objRule->productRestrictions == 'pages')
-                        && (in_array($objProduct->id, $arrLimit) || ($objProduct->pid > 0 && in_array($objProduct->pid, $arrLimit))))
+                            && (in_array($objProduct->id, $arrLimit) || ($objProduct->pid > 0 && in_array($objProduct->pid, $arrLimit))))
                         || ($objRule->productRestrictions == 'producttypes' && in_array($objProduct->type, $arrLimit))
                     ) {
                         $intTotal += $objRule->quantityMode == 'cart_items' ? $objItem->quantity : 1;
                     }
                 }
             }
-        }
-        else
-        {
-            switch ($objRule->quantityMode)
-            {
+        } else {
+            switch ($objRule->quantityMode) {
                 case 'cart_products':
                     $intTotal = $objCollection->countItems();
                     break;
@@ -93,8 +86,7 @@ class Rule extends ProductCollectionSurcharge implements IsotopeProductCollectio
             }
         }
 
-        foreach ($arrCollectionItems as $objItem)
-        {
+        foreach ($arrCollectionItems as $objItem) {
             if (!$objItem->hasProduct()) {
                 continue;
             }
@@ -103,15 +95,12 @@ class Rule extends ProductCollectionSurcharge implements IsotopeProductCollectio
 
             // Product restrictions
             if ((($objRule->productRestrictions == 'products' || $objRule->productRestrictions == 'variants' || $objRule->productRestrictions == 'pages')
-                && (!in_array($objProduct->id, $arrLimit) && ($objProduct->pid == 0 || !in_array($objProduct->pid, $arrLimit))))
+                    && (!in_array($objProduct->id, $arrLimit) && ($objProduct->pid == 0 || !in_array($objProduct->pid, $arrLimit))))
                 || ($objRule->productRestrictions == 'producttypes' && !in_array($objProduct->type, $arrLimit))
             ) {
                 continue;
-            }
-            elseif ($objRule->productRestrictions == 'attribute')
-            {
-                switch ($objRule->attributeCondition)
-                {
+            } elseif ($objRule->productRestrictions == 'attribute') {
+                switch ($objRule->attributeCondition) {
                     case 'eq':
                         if (!($objProduct->{$objRule->attributeName} == $objRule->attributeValue)) {
                             continue(2);
@@ -172,20 +161,17 @@ class Rule extends ProductCollectionSurcharge implements IsotopeProductCollectio
             }
 
             // Because we apply to the quantity of only this product, we override $intTotal in every foreach loop
-            if ($objRule->quantityMode != 'cart_products' && $objRule->quantityMode != 'cart_items')
-            {
+            if ($objRule->quantityMode != 'cart_products' && $objRule->quantityMode != 'cart_items') {
                 $intTotal = $objItem->quantity;
             }
 
             // Quantity does not match, do not apply to this product
-            if (($objRule->minItemQuantity > 0 && $objRule->minItemQuantity > $intTotal) || ($objRule->maxItemQuantity > 0 && $objRule->maxItemQuantity < $intTotal))
-            {
+            if (($objRule->minItemQuantity > 0 && $objRule->minItemQuantity > $intTotal) || ($objRule->maxItemQuantity > 0 && $objRule->maxItemQuantity < $intTotal)) {
                 continue;
             }
 
             // Apply To
-            switch ($objRule->applyTo)
-            {
+            switch ($objRule->applyTo) {
                 case 'products':
                     $fltPrice = $blnPercentage ? ($objItem->getTotalPrice() / 100 * $fltDiscount) : $objRule->discount;
                     $fltPrice = $fltPrice > 0 ? (floor($fltPrice * 100) / 100) : (ceil($fltPrice * 100) / 100);
@@ -204,15 +190,11 @@ class Rule extends ProductCollectionSurcharge implements IsotopeProductCollectio
                     $blnMatch = true;
                     $objSurcharge->total_price += $objItem->getTotalPrice();
 
-                    if ($objRule->tax_class == -1)
-                    {
-                        if ($blnPercentage)
-                        {
+                    if ($objRule->tax_class == -1) {
+                        if ($blnPercentage) {
                             $fltPrice = $objItem->getTotalPrice() / 100 * $fltDiscount;
                             $objSurcharge->setAmountForCollectionItem($fltPrice, $objItem);
-                        }
-                        else
-                        {
+                        } else {
                             $arrSubtract[] = $objItem;
                             $fltTotal += (float) $objItem->getTaxFreeTotalPrice();
                         }
@@ -221,8 +203,7 @@ class Rule extends ProductCollectionSurcharge implements IsotopeProductCollectio
             }
         }
 
-        if ($objRule->applyTo == 'subtotal' && $blnMatch)
-        {
+        if ($objRule->applyTo == 'subtotal' && $blnMatch) {
             // discount total! not related to tax subtraction
             $fltPrice = $blnPercentage ? ($objSurcharge->total_price / 100 * $fltDiscount) : $objRule->discount;
             $objSurcharge->total_price = $fltPrice > 0 ? (floor(round($fltPrice * 100, 4)) / 100) : (ceil(round($fltPrice * 100, 4)) / 100);
@@ -230,10 +211,8 @@ class Rule extends ProductCollectionSurcharge implements IsotopeProductCollectio
             $objSurcharge->tax_class = ($objRule->tax_class > 0 ? $objRule->tax_class : 0);
 
             // If fixed price discount with splitted taxes, calculate total amount of discount per taxed product
-            if ($objRule->tax_class == -1 && !$blnPercentage)
-            {
-                foreach ($arrSubtract as $objItem)
-                {
+            if ($objRule->tax_class == -1 && !$blnPercentage) {
+                foreach ($arrSubtract as $objItem) {
                     $fltPrice = $objRule->discount / 100 * (100 / $fltTotal * $objItem->getTaxFreeTotalPrice());
                     $objSurcharge->setAmountForCollectionItem($fltPrice, $objItem);
                 }
