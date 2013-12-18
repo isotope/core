@@ -217,10 +217,6 @@ class ProductPrice extends \Model implements IsotopePrice
         $arrOptions['column'] = array();
         $arrOptions['value']  = array();
 
-        if (!$objProduct->hasVariantPrices() || $objProduct->isVariant()) {
-            $arrOptions['column'][] = "pid=" . $objProduct->id;
-        }
-
         if ($objProduct->hasAdvancedPrices()) {
 
             $time      = $objCollection->getLastModification();
@@ -244,6 +240,8 @@ class ProductPrice extends \Model implements IsotopePrice
         if ($objProduct->hasVariantPrices() && !$objProduct->isVariant()) {
             $arrIds                 = $objProduct->getVariantIds() ? : array(0);
             $arrOptions['column'][] = "pid IN (" . implode(',', $arrIds) . ")";
+        } else {
+            $arrOptions['column'][] = "pid=" . $objProduct->id;
         }
 
         return static::find($arrOptions);
@@ -259,11 +257,11 @@ class ProductPrice extends \Model implements IsotopePrice
         $arrOptions = array_merge(
             array(
                 'column' => array(
-                    "pid=" . $intProduct,
                     "config_id=0",
                     "member_group=0",
                     "start=''",
-                    "stop=''"
+                    "stop=''",
+                    "pid=" . $intProduct
                 ),
     			'limit'  => 1,
     			'return' => 'Model'
@@ -317,11 +315,11 @@ class ProductPrice extends \Model implements IsotopePrice
                 SELECT *
                 FROM " . static::$strTable . "
                 WHERE
-                    pid IN (" . implode(',', $arrIds) . ") AND
                     config_id IN (" . (int) $objCollection->config_id . ",0) AND
                     member_group IN(" . implode(',', $arrGroups) . ") AND
                     (start='' OR start<$time) AND
-                    (stop='' OR stop>$time)
+                    (stop='' OR stop>$time) AND
+                    pid IN (" . implode(',', $arrIds) . ")
                 ORDER BY config_id DESC, " . \Database::getInstance()->findInSet('member_group', $arrGroups) . ", start DESC, stop DESC
             ) AS prices
             GROUP BY pid
