@@ -39,6 +39,7 @@ Version 2.0.0 (????-??-??)
 - Disabled sorting by invalid column "variantFields" (#838)
 - Restored coupon form to the cart template (#868)
 - Disabled Contao cache could result in error message in attribute wizard (#884)
+- Gallery could not be set for related products (#887)
 
 
 Version 2.0.rc2 (2013-11-22)
