@@ -130,7 +130,7 @@ class Rule extends \Model
         // Limits
         $arrProcedures[] = "(limitPerConfig=0 OR limitPerConfig>(SELECT COUNT(*) FROM tl_iso_rule_usage WHERE pid=r.id AND config_id=".(int) Isotope::getConfig()->id." AND order_id NOT IN (SELECT id FROM tl_iso_product_collection WHERE type='order' AND source_collection_id=".(int) Isotope::getCart()->id.")))";
 
-        if (Isotope::getCart()->pid > 0)
+        if (Isotope::getCart()->member > 0)
         {
             $arrProcedures[] = "(limitPerMember=0 OR limitPerMember>(SELECT COUNT(*) FROM tl_iso_rule_usage WHERE pid=r.id AND member_id=".(int) \FrontendUser::getInstance()->id." AND order_id NOT IN (SELECT id FROM tl_iso_product_collection WHERE type='order' AND source_collection_id=".(int) Isotope::getCart()->id.")))";
         }
@@ -142,8 +142,7 @@ class Rule extends \Model
 
 
         // Member restrictions
-        if (Isotope::getCart()->pid > 0)
-        {
+        if (Isotope::getCart()->member > 0) {
 
             $arrGroups = array_map('intval', deserialize(\FrontendUser::getInstance()->groups, true));
 
