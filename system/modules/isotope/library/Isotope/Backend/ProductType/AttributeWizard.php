@@ -25,8 +25,7 @@ class AttributeWizard extends \Backend
      */
     public function getColumns($objWidget)
     {
-        $this->loadDataContainer('tl_iso_product');
-        \System::loadLanguageFile('tl_iso_product');
+        $this->loadDataContainer(\Isotope\Model\Product::getTable());
 
         $arrValues   = $objWidget->value;
         $arrDCA      = &$GLOBALS['TL_DCA']['tl_iso_product']['fields'];
@@ -116,6 +115,9 @@ class AttributeWizard extends \Backend
      */
     public function getLegends($objWidget)
     {
+        $this->loadDataContainer(\Isotope\Model\Attribute::getTable());
+        \System::loadLanguageFile(\Isotope\Model\Product::getTable());
+
         $arrLegends = $GLOBALS['TL_DCA'][\Isotope\Model\Attribute::getTable()]['fields']['legend']['options'];
         $arrLegends = array_intersect_key($GLOBALS['TL_LANG'][\Isotope\Model\Product::getTable()], array_flip($arrLegends));
 
