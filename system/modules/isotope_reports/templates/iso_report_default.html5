@@ -75,7 +75,7 @@ window.addEvent("domready", function() {
 
 <h2 class="sub_headline"><?php echo $this->headline; ?></h2>
 
-<div class="tl_listing_container list_view mod_iso_reports">
+<div class="tl_listing_container list_view mod_iso_reports <?php echo $this->class; ?>">
 
 <div class="iso_report_container">
 <table class="iso_report tl_listing showColumns">

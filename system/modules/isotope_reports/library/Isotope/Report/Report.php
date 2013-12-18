@@ -103,10 +103,9 @@ abstract class Report extends \Backend
 		$this->Template->action = ampersand($this->Environment->request);
 		$this->Template->panels = $this->getPanels();
 
-		// Buttons
 		$this->Template->buttons = $this->getButtons();
-
 		$this->Template->headline = $this->arrData['description'];
+		$this->Template->class = $this->arrData['name'] . ($this->arrData['class'] ? ' '.$this->arrData['name'] : '');
 
 		$this->compile();
 
