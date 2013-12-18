@@ -13,6 +13,7 @@
 namespace Isotope\Report;
 
 use Isotope\Isotope;
+use Isotope\Model\ProductType;
 
 
 class SalesProduct extends Sales
@@ -62,11 +63,9 @@ class SalesProduct extends Sales
                 IFNULL(p2.name, i.name) AS product_name,
                 p1.sku AS product_sku,
                 p2.sku AS variant_sku,
+                IF(p1.pid=0, p1.type, p2.type) AS type,
                 i.options AS product_options,
                 SUM(i.quantity) AS quantity,
-                t.attributes,
-                t.variants,
-                t.variant_attributes,
                 SUM(i.tax_free_price * i.quantity) AS total,
                 DATE_FORMAT(FROM_UNIXTIME(o.{$this->strDateField}), '$sqlDate') AS dateGroup
             FROM " . \Isotope\Model\ProductCollectionItem::getTable() . " i
@@ -74,7 +73,6 @@ class SalesProduct extends Sales
             LEFT JOIN " . \Isotope\Model\OrderStatus::getTable() . " os ON os.id=o.order_status
             LEFT OUTER JOIN " . \Isotope\Model\Product::getTable() . " p1 ON i.product_id=p1.id
             LEFT OUTER JOIN " . \Isotope\Model\Product::getTable() . " p2 ON p1.pid=p2.id
-            LEFT OUTER JOIN " . \Isotope\Model\ProductType::getTable() . " t ON p1.type=t.id
             WHERE o.type='order' AND o.order_status>0 AND o.locked!=''
                 " . ($intStatus > 0 ? " AND o.order_status=".$intStatus : '') . "
                 " . $this->getProductProcedure('p1') . "
@@ -83,30 +81,40 @@ class SalesProduct extends Sales
             HAVING dateGroup>=$dateFrom AND dateGroup<=$dateTo
         ");
 
+        // Cache product types so call to findByPk() will trigger the registry
+		ProductType::findMultipleByIds($objProducts->fetchEach('type'));
+
         $arrRaw = array();
+        $objProducts->reset();
 
         // Prepare product data
         while ($objProducts->next())
         {
-            $arrAttributes = deserialize($objProducts->attributes, true);
-            $arrVariantAttributes = deserialize($objProducts->variant_attributes, true);
+            $arrAttributes = array();
+            $arrVariantAttributes = array();
+            $blnHasVariants = false;
+
+            // Can't use it without a type
+            if ($objProducts->type > 0 && ($objType = ProductType::findByPk($objProducts->type)) !== null) {
+                $arrAttributes = $objType->getAttributes();
+                $arrVariantAttributes = $objType->getVariantAttributes();
+                $blnHasVariants = $objType->hasVariants();
+            }
+
             $arrOptions = array('name'=>$objProducts->variant_name);
 
             // Use product title if name is not a variant attribute
-            if ($objProducts->variants && !$arrVariantAttributes['name']['enabled'])
-            {
+            if ($blnHasVariants && !in_array('name', $arrVariantAttributes)) {
                 $arrOptions['name'] = $objProducts->product_name;
             }
 
-            if ($arrAttributes['sku']['enabled'])
-            {
-                $arrOptions['name'] = sprintf('%s <span style="color:#b3b3b3; padding-left:3px;">[%s]</span>', $arrOptions['name'], ($objProducts->variants ? $objProducts->variant_sku : $objProducts->product_sku));
+            $strSku = ($blnHasVariants ? $objProducts->variant_sku : $objProducts->product_sku);
+            if (in_array('sku', $arrAttributes) && $strSku != '') {
+                $arrOptions['name'] = sprintf('%s <span style="color:#b3b3b3; padding-left:3px;">[%s]</span>', $arrOptions['name'], $strSku);
             }
 
-            if ($blnVariants && $objProducts->variants)
-            {
-                if ($arrVariantAttributes['sku']['enabled'])
-                {
+            if ($blnVariants && $blnHasVariants) {
+                if (in_array('sku', $arrVariantAttributes) && $objProducts->product_sku != '') {
                     $arrOptions['name'] = sprintf('%s <span style="color:#b3b3b3; padding-left:3px;">[%s]</span>', $arrOptions['name'], $objProducts->product_sku);
                 }
 
