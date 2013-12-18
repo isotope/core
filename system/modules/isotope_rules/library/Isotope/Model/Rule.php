@@ -12,9 +12,9 @@
 
 namespace Isotope\Model;
 
+use Isotope\Interfaces\IsotopeProduct;
 use Isotope\Isotope;
 use Isotope\Translation;
-use Isotope\Interfaces\IsotopeProduct;
 
 /**
  * Class Payment

@@ -12,12 +12,11 @@
 
 namespace Isotope;
 
-use Isotope\Isotope;
 use Isotope\Interfaces\IsotopePrice;
 use Isotope\Interfaces\IsotopeProductCollection;
-use Isotope\Model\Rule;
 use Isotope\Model\ProductCollection\Cart;
 use Isotope\Model\ProductCollectionSurcharge\Rule as RuleSurcharge;
+use Isotope\Model\Rule;
 
 
 /**
