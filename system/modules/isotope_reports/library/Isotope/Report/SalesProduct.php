@@ -158,14 +158,11 @@ class SalesProduct extends Sales
             $arrRow = array(array
             (
                 'value'      => $arrProduct['name'],
-                'attributes' => ' style="white-space:nowrap"',
-                'class'      => ($blnVariants ? '' : 'fix-height')
             ));
 
             $arrFooter[0] = array
             (
                 'value'      => $GLOBALS['ISO_LANG']['REPORT']['sums'],
-                'class'      => 'fix-height'
             );
 
             foreach ($arrColumns as $i=>$column)
@@ -173,28 +170,24 @@ class SalesProduct extends Sales
                 $arrRow[$i+1] = array
                 (
                     'value'         => Isotope::formatPriceWithCurrency($arrProduct[$column]) . (($arrProduct[$column.'_quantity'] !== null) ? '<br><span class="variant">' . Isotope::formatItemsString($arrProduct[$column.'_quantity']) . '</span>' : ''),
-                    'attributes'    => ' style="text-align:right;white-space:nowrap"',
                 );
 
                 $arrFooter[$i+1] = array
                 (
                     'total'         => $arrFooter[$i+1]['total'] + $arrProduct[$column],
                     'quantity'      => $arrFooter[$i+1]['quantity'] + $arrProduct[$column.'_quantity'],
-                    'attributes'    => ' style="text-align:right;white-space:nowrap"',
                 );
             }
 
             $arrRow[$i+2] = array
             (
                 'value'         => Isotope::formatPriceWithCurrency($arrProduct['total']) . (($arrProduct['quantity'] !== null) ? '<br><span class="variant">' . Isotope::formatItemsString($arrProduct['quantity']) . '</span>' : ''),
-                'attributes'    => ' style="text-align:right;white-space:nowrap"',
             );
 
             $arrFooter[$i+2] = array
             (
                 'total'         => $arrFooter[$i+2]['total'] + $arrProduct['total'],
                 'quantity'      => $arrFooter[$i+2]['quantity'] + $arrProduct['quantity'],
-                'attributes'    => ' style="text-align:right;white-space:nowrap"',
             );
 
             $arrData['rows'][] = array
@@ -270,7 +263,6 @@ class SalesProduct extends Sales
             $arrHeader[] = array
             (
                 'value'         => $this->parseDate($strFormat, $intStart),
-                'attributes'    => ' style="text-align:right"',
             );
 
             $intStart = strtotime('+ 1 ' . $strPeriod, $intStart);
@@ -279,7 +271,6 @@ class SalesProduct extends Sales
         $arrHeader[] = array
         (
             'value'         => 'Total',
-            'attributes'    => ' style="text-align:right"',
         );
 
         return $arrHeader;
