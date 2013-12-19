@@ -75,7 +75,7 @@ class Reports extends BackendOverview
 <fieldset class="tl_tbox">
 <legend style="cursor: default;">' . $GLOBALS['ISO_LANG']['REPORT']['24h_summary'] . '</legend>';
 
-        $arrAllowedProducts = \Isotope\Backend::getAllowedProductIds();
+        $arrAllowedProducts = \Isotope\Backend\Product\Permission::getAllowedIds();
 
         $objOrders = \Database::getInstance()->prepare("SELECT
                                                     c.id AS config_id,

@@ -311,7 +311,7 @@ abstract class Report extends \Backend
      */
     protected function getProductProcedure($strTable='tl_iso_product', $strField='id', $strPrefix=' AND ')
     {
-        $arrAllowedProducts = \Isotope\Backend::getAllowedProductIds();
+        $arrAllowedProducts = \Isotope\Backend\Product\Permission::getAllowedIds();
 
         if (true === $arrAllowedProducts) {
             return '';
