@@ -16,8 +16,10 @@
 
 $GLOBALS['TL_LANG']['tl_iso_baseprice']['name'][0] = 'Nom';
 $GLOBALS['TL_LANG']['tl_iso_baseprice']['name'][1] = 'Entrez un nom pour ce prix de base.';
+$GLOBALS['TL_LANG']['tl_iso_baseprice']['amount'][0] = 'Quantité';
+$GLOBALS['TL_LANG']['tl_iso_baseprice']['amount'][1] = 'Entrez la quantité (ex: "100").';
 $GLOBALS['TL_LANG']['tl_iso_baseprice']['label'][0] = 'Label';
-$GLOBALS['TL_LANG']['tl_iso_baseprice']['label'][1] = 'Entrez un label pour ce prix de base (par exemple : "%s par gramme".)';
+$GLOBALS['TL_LANG']['tl_iso_baseprice']['label'][1] = 'Entrez un label pour ce prix de base (par exemple : "%s par 100g".)';
 $GLOBALS['TL_LANG']['tl_iso_baseprice']['new'][0] = 'Nouveau prix de base';
 $GLOBALS['TL_LANG']['tl_iso_baseprice']['new'][1] = 'Créer un nouveau prix de base';
 $GLOBALS['TL_LANG']['tl_iso_baseprice']['edit'][0] = 'Éditer un prix de base';

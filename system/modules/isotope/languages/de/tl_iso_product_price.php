@@ -15,7 +15,7 @@
  */
 
 $GLOBALS['TL_LANG']['tl_iso_product_price']['price_tiers'][0] = 'Preisstaffelungen';
-$GLOBALS['TL_LANG']['tl_iso_product_price']['price_tiers'][1] = 'Legen Sie zumindest eine Preisstaffel für "1 Stück" (Quantity 1) an. Sie können ermäßigte Preise eingeben, wenn der Nutzer mehr als ein Produkt bestellt.';
+$GLOBALS['TL_LANG']['tl_iso_product_price']['price_tiers'][1] = 'Legen Sie zumindest eine Preisstaffel für "Menge 1" an. Sie können ermäßigte Preise eingeben, wenn der Nutzer mehr als ein Produkt bestellt.';
 $GLOBALS['TL_LANG']['tl_iso_product_price']['tax_class'][0] = 'Steuerklasse';
 $GLOBALS['TL_LANG']['tl_iso_product_price']['tax_class'][1] = 'Bitte wählen Sie eine Steuerklasse für diesen Preis.';
 $GLOBALS['TL_LANG']['tl_iso_product_price']['config_id'][0] = 'Shop-Konfiguration';

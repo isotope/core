@@ -14,12 +14,18 @@
  * @license http://www.gnu.org/licenses/lgpl-3.0.html
  */
 
+$GLOBALS['TL_LANG']['tl_iso_address']['store_id'][0] = 'Winkel ID';
+$GLOBALS['TL_LANG']['tl_iso_address']['gender'][0] = 'Geslacht';
 $GLOBALS['TL_LANG']['tl_iso_address']['firstname'][0] = 'Voornaam';
 $GLOBALS['TL_LANG']['tl_iso_address']['firstname'][1] = 'Voer alstublieft uw voornaam in.';
 $GLOBALS['TL_LANG']['tl_iso_address']['lastname'][0] = 'Achternaam';
 $GLOBALS['TL_LANG']['tl_iso_address']['lastname'][1] = 'Voer alstublieft uw achternaam in.';
+$GLOBALS['TL_LANG']['tl_iso_address']['dateOfBirth'][0] = 'Geboortedatum';
+$GLOBALS['TL_LANG']['tl_iso_address']['dateOfBirth'][1] = 'Voer alstublieft uw geboortedatum in.';
 $GLOBALS['TL_LANG']['tl_iso_address']['company'][0] = 'Bedrijfsnaam';
 $GLOBALS['TL_LANG']['tl_iso_address']['company'][1] = 'Hier kunt u uw bedrijfsnaam invoeren.';
+$GLOBALS['TL_LANG']['tl_iso_address']['vat_no'][0] = 'BTW nr.';
+$GLOBALS['TL_LANG']['tl_iso_address']['vat_no'][1] = 'Voer alstublieft uw BTW nr in.';
 $GLOBALS['TL_LANG']['tl_iso_address']['street_1'][0] = 'Straatnaam + nr.';
 $GLOBALS['TL_LANG']['tl_iso_address']['street_1'][1] = 'Voer alstublieft uw straatnaam en huisnummer in.';
 $GLOBALS['TL_LANG']['tl_iso_address']['street_2'][0] = 'Straatnaam 2';
@@ -29,7 +35,9 @@ $GLOBALS['TL_LANG']['tl_iso_address']['street_3'][1] = 'Voer hier een derde stra
 $GLOBALS['TL_LANG']['tl_iso_address']['postal'][0] = 'Postcode';
 $GLOBALS['TL_LANG']['tl_iso_address']['postal'][1] = 'Voer alstublieft uw postcode in.';
 $GLOBALS['TL_LANG']['tl_iso_address']['city'][0] = 'Plaats';
+$GLOBALS['TL_LANG']['tl_iso_address']['city'][1] = 'Voer alstublieft de plaatsnaam in.';
 $GLOBALS['TL_LANG']['tl_iso_address']['subdivision'][0] = 'Provincie';
+$GLOBALS['TL_LANG']['tl_iso_address']['subdivision'][1] = 'Voer alstublieft de naam van de provincie in.';
 $GLOBALS['TL_LANG']['tl_iso_address']['country'][0] = 'Land';
 $GLOBALS['TL_LANG']['tl_iso_address']['country'][1] = 'Selecteer uw land alstublieft.';
 $GLOBALS['TL_LANG']['tl_iso_address']['phone'][0] = 'Telefoonnummer';
@@ -40,6 +48,7 @@ $GLOBALS['TL_LANG']['tl_iso_address']['isDefaultBilling'][0] = 'Standaard factuu
 $GLOBALS['TL_LANG']['tl_iso_address']['isDefaultBilling'][1] = 'Is dit uw standaard factuuradres?';
 $GLOBALS['TL_LANG']['tl_iso_address']['isDefaultShipping'][0] = 'Standaard verzendadres';
 $GLOBALS['TL_LANG']['tl_iso_address']['isDefaultShipping'][1] = 'Is dit uw standaard verzendadres?';
+$GLOBALS['TL_LANG']['tl_iso_address']['store_legend'] = 'Winkel';
 $GLOBALS['TL_LANG']['tl_iso_address']['personal_legend'] = 'Persoonlijke gegevens';
 $GLOBALS['TL_LANG']['tl_iso_address']['address_legend'] = 'Adresinformatie';
 $GLOBALS['TL_LANG']['tl_iso_address']['contact_legend'] = 'Contactinformatie';
