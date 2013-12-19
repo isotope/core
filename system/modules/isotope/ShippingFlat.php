@@ -58,11 +58,6 @@ class ShippingFlat extends IsotopeShipping
 	{
 		$fltPrice = $this->getPrice();
 
-		if ($fltPrice == 0)
-		{
-			return false;
-		}
-
 		return $this->Isotope->calculateSurcharge(
 								$fltPrice,
 								($GLOBALS['TL_LANG']['MSC']['shippingLabel'] . ' (' . $this->label . ')'),
