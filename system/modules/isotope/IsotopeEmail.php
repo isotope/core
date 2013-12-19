@@ -39,6 +39,13 @@
 class IsotopeEmail extends Controller
 {
 
+    /**
+     * Text filter options
+     */
+    const NO_TAGS = 1;
+    const NO_BREAKS = 2;
+
+
 	/**
 	 * The unterlying Contao Email object
 	 * @var object
@@ -252,8 +259,8 @@ class IsotopeEmail extends Controller
 
 		$arrData = $this->arrSimpleTokens;
 
-		$this->objEmail->subject = strip_tags($this->recursiveReplaceTokensAndTags($objLanguage->subject, $arrData));
-		$this->objEmail->text = strip_tags($this->recursiveReplaceTokensAndTags($objLanguage->text, $arrData));
+		$this->objEmail->subject = $this->recursiveReplaceTokensAndTags($objLanguage->subject, $arrData, self::NO_TAGS|self::NO_BREAKS);
+		$this->objEmail->text = $this->recursiveReplaceTokensAndTags($objLanguage->text, $arrData, self::NO_TAGS);
 
 		// Generate HTML
 		if (!$objLanguage->textOnly && $objLanguage->html != '')
@@ -302,7 +309,7 @@ class IsotopeEmail extends Controller
 			// @todo the PDF name could contain user specific information if sent to multiple recipients
 			if ($this->strDocumentTitle != '')
 			{
-				$strTitle = strip_tags($this->parseSimpleTokens($this->replaceInsertTags($this->strDocumentTitle), $arrData));
+				$strTitle = $this->recursiveReplaceTokensAndTags($this->strDocumentTitle, $arrData, self::NO_TAGS|self::NO_BREAKS);
 				$this->objEmail->attachFileFromString($this->varDocumentData, $strTitle.'.pdf', 'application/pdf');
 			}
 
@@ -405,15 +412,26 @@ class IsotopeEmail extends Controller
 	 * Recursively replace the simple tokens and the insert tags
 	 * @param string
 	 * @param array tokens
+	 * @param int
 	 * @return string
 	 */
-	protected function recursiveReplaceTokensAndTags($strText, $arrTokens)
+	protected function recursiveReplaceTokensAndTags($strText, $arrTokens, $options=0)
 	{
 		// first parse the tokens as they might have if-else clauses
 		$strBuffer = $this->parseSimpleTokens($strText, $arrTokens);
 
 		// then replace the insert tags
 		$strBuffer = $this->replaceInsertTags($strBuffer);
+
+        // Remove HTML tags but keep line breaks for <br> and <p>
+		if ($options & self::NO_TAGS) {
+            $strBuffer = strip_tags(preg_replace('{(?!^)<(br|p|/p).*?/?>\n?(?!$)}is', "\n", $strBuffer));
+		}
+
+        // Remove line breaks (e.g. for subject)
+		if ($options & self::NO_BREAKS) {
+    		$strBuffer = str_replace(array("\r", "\n"), '', $strBuffer);
+		}
 
 		// check if the inserttags have returned a simple token or an insert tag to parse
 		if (strpos($strBuffer, '##') !== false || strpos($strBuffer, '{{') !== false)
@@ -424,7 +442,7 @@ class IsotopeEmail extends Controller
 				return $strBuffer;
 			}
 
-			$strBuffer = $this->recursiveReplaceTokensAndTags($strBuffer, $arrTokens);
+			$strBuffer = $this->recursiveReplaceTokensAndTags($strBuffer, $arrTokens, $options);
 		}
 
 		$strBuffer = $this->restoreBasicEntities($strBuffer);

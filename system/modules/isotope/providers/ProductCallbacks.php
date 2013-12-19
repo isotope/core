@@ -418,7 +418,7 @@ class ProductCallbacks extends Backend
 				}
 
 				// Do not show variant options & customer defined fields
-				if ($arrFields[$attribute]['attributes']['variant_option'] || $arrFields[$attribute]['attributes']['customer_defined'] || $GLOBLAS['ISO_ATTR'][$arrFields[$attribute]['attributes']['type']]['customer_defined'])
+				if ($arrFields[$attribute]['attributes']['variant_option'] || $arrFields[$attribute]['attributes']['customer_defined'] || $GLOBALS['ISO_ATTR'][$arrFields[$attribute]['attributes']['type']]['customer_defined'])
 				{
 					continue;
 				}

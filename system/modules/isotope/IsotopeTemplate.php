@@ -71,27 +71,23 @@ class IsotopeTemplate extends FrontendTemplate
 		$strTemplate = basename($strTemplate);
 
 		// Check the templates subfolder
-		if (TL_MODE == 'FE')
+		$strTemplateGroup = str_replace(array('../', 'templates/'), '', $this->Isotope->Config->templateGroup);
+
+		if ($strTemplateGroup != '')
 		{
-			global $objPage;
-			$strTemplateGroup = str_replace(array('../', 'templates/'), '', $this->Isotope->Config->templateGroup);
+			$strFile = $strPath . '/' . $strTemplateGroup . '/' . $strKey;
 
-			if ($strTemplateGroup != '')
+			if (file_exists($strFile))
 			{
-				$strFile = $strPath . '/' . $strTemplateGroup . '/' . $strKey;
+				return $strFile;
+			}
 
-				if (file_exists($strFile))
-				{
-					return $strFile;
-				}
+			// Also check for .tpl files (backwards compatibility)
+			$strFile = $strPath . '/' . $strTemplateGroup . '/' . $strTemplate . '.tpl';
 
-				// Also check for .tpl files (backwards compatibility)
-				$strFile = $strPath . '/' . $strTemplateGroup . '/' . $strTemplate . '.tpl';
-
-				if (file_exists($strFile))
-				{
-					return $strFile;
-				}
+			if (file_exists($strFile))
+			{
+				return $strFile;
 			}
 		}
 

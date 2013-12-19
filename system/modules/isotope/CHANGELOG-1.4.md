@@ -1,7 +1,20 @@
 Isotope eCommerce Changelog
 ===========================
 
-Version 1.4.7 (2013-??-??)
+Version 1.4.8 (2013-12-19)
+--------------------------
+
+### Improved
+- Retain line breaks when converting HTML to text (#880)
+- Updates to the composer.json (#803)
+
+### Fixed
+- Edge case SQL error in rules module (#771)
+- Generated PDF did not search the shop config folder in the back end (#534)
+- Customer defined fields were visible in the backend (#795)
+
+
+Version 1.4.7 (2013-10-30)
 --------------------------
 
 ### Improved

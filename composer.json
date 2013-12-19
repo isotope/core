@@ -1,22 +1,22 @@
 {
-    "name":"isotope/isotope-core",
+    "name":"terminal42/isotope",
     "description":"Core repository of Isotope eCommerce, an eCommerce extension for Contao Open Source CMS",
-    "keywords":["contao", "isotope"],
+    "keywords":["contao", "isotope", "ecommerce"],
     "type":"contao-module",
     "license":"LGPL-3.0+",
     "authors":[
         {
             "name":"terminal42 gmbh",
-            "homepage":"http://terminal42.ch"
+            "homepage":"http://www.terminal42.ch"
         },
         {
-            "name":"Isotope Workgroup",
+            "name":"Isotope eCommerce Workgroup",
             "homepage":"http://isotopeecommerce.org"
         }
     ],
     "require":{
         "php":">=5.2.7",
-        "contao":">=2.11",
+        "contao/core":">=2.11,<3.0",
         "contao-community-alliance/composer-installer":"*",
         "menatwork/contao-multicolumnwizard": "3.1.*",
         "contao-legacy/ajax":">=1.1.4",
@@ -29,7 +29,7 @@
         "classmap":["system/"]
     },
     "replace": {
-        "contao-legacy/isotope": "*"
+        "contao-legacy/isotope": "self.version"
 	},
     "extra":{
         "contao": {
@@ -39,7 +39,7 @@
                 "system/modules/isotope_rules":"system/modules/isotope_rules"
             },
             "runonce": [
-                "system/runonce.php"
+                "system/modules/isotope/config/runonce.php"
             ]
         }
     }
