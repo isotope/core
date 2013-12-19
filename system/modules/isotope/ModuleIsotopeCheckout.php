@@ -670,7 +670,7 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 			$this->arrOrderData['shipping_method_id']	= $this->Isotope->Cart->Shipping->id;
 			$this->arrOrderData['shipping_method']		= $this->Isotope->Cart->Shipping->label;
 			$this->arrOrderData['shipping_note']		= $this->Isotope->Cart->Shipping->note;
-			$this->arrOrderData['shipping_note_text']	= strip_tags($this->Isotope->Cart->Shipping->note);
+			$this->arrOrderData['shipping_note_text']	= $this->Isotope->Cart->Shipping->note;
 		}
 
 		// Remove payment step if items are free of charge
@@ -805,7 +805,7 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 			$this->arrOrderData['payment_method_id']	= $this->Isotope->Cart->Payment->id;
 			$this->arrOrderData['payment_method']		= $this->Isotope->Cart->Payment->label;
 			$this->arrOrderData['payment_note']			= $this->Isotope->Cart->Payment->note;
-			$this->arrOrderData['payment_note_text']	= strip_tags($this->Isotope->Cart->Payment->note);
+			$this->arrOrderData['payment_note_text']	= $this->Isotope->Cart->Payment->note;
 		}
 
 		return $objTemplate->parse();
