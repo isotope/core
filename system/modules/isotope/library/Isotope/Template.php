@@ -52,9 +52,6 @@ class Template extends \FrontendTemplate
                 return $strFile;
             }
 
-            // Also check for .tpl files (backwards compatibility)
-            $strFile = $strPath . '/' . $strTemplateGroup . '/' . $strTemplate . '.tpl';
-
             if (file_exists($strFile)) {
                 return $strFile;
             }
