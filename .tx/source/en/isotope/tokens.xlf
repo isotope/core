@@ -77,9 +77,6 @@
       <trans-unit id="NOTIFICATION_CENTER_TOKEN.iso_order_status_change.payment_note">
         <source>Payment method note.</source>
       </trans-unit>
-      <trans-unit id="NOTIFICATION_CENTER_TOKEN.iso_order_status_change.payment_note_text">
-        <source>Payment method note without HTML tags.</source>
-      </trans-unit>
       <trans-unit id="NOTIFICATION_CENTER_TOKEN.iso_order_status_change.shipping_id">
         <source>Shipping method ID.</source>
       </trans-unit>
@@ -88,9 +85,6 @@
       </trans-unit>
       <trans-unit id="NOTIFICATION_CENTER_TOKEN.iso_order_status_change.shipping_note">
         <source>Shipping method note.</source>
-      </trans-unit>
-      <trans-unit id="NOTIFICATION_CENTER_TOKEN.iso_order_status_change.shipping_note_text">
-        <source>Shipping method note without HTML tags.</source>
       </trans-unit>
       <trans-unit id="NOTIFICATION_CENTER_TOKEN.iso_order_status_change.config_*">
         <source>All the store configuration fields.</source>

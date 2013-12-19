@@ -122,6 +122,12 @@
       <trans-unit id="MSC.mmProcessing">
         <source>Processing dropped files...</source>
       </trans-unit>
+      <trans-unit id="MSC.undeletableRecords">
+        <source>Some records could not be deleted.</source>
+      </trans-unit>
+      <trans-unit id="MSC.undeletableUnpublished">
+        <source>Some records could not be deleted and have been unpublished instead.</source>
+      </trans-unit>
       <trans-unit id="MSC.quantity">
         <source>Quantity</source>
       </trans-unit>
@@ -160,9 +166,6 @@
       </trans-unit>
       <trans-unit id="MSC.noProducts">
         <source>No products have been found.</source>
-      </trans-unit>
-      <trans-unit id="MSC.invalidProductInformation">
-        <source>We're sorry, the product information you have requested is not showing up in our store. For further assistance please contact us.</source>
       </trans-unit>
       <trans-unit id="MSC.previousStep">
         <source>Back</source>
