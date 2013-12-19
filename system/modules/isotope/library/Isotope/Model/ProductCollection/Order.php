@@ -414,7 +414,6 @@ class Order extends ProductCollection implements IsotopeProductCollection
             $arrTokens['payment_id']        = $objPayment->id;
             $arrTokens['payment_label']     = $objPayment->getLabel();
             $arrTokens['payment_note']      = $objPayment->note;
-            $arrTokens['payment_note_text'] = strip_tags($objPayment->note);
         }
 
         // Add shipping method info
@@ -422,7 +421,6 @@ class Order extends ProductCollection implements IsotopeProductCollection
             $arrTokens['shipping_id']        = $objShipping->id;
             $arrTokens['shipping_label']     = $objShipping->getLabel();
             $arrTokens['shipping_note']      = $objShipping->note;
-            $arrTokens['shipping_note_text'] = strip_tags($objShipping->note);
         }
 
         // Add config fields

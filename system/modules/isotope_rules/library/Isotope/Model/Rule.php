@@ -162,10 +162,10 @@ class Rule extends \Model
         }
 
         if (!empty($arrProducts)) {
-            $arrProductIds = array();
-            $arrVariantIds = array();
-            $arrAttributes = array();
-            $arrTypes = array();
+            $arrProductIds = array(0);
+            $arrVariantIds = array(0);
+            $arrAttributes = array(0);
+            $arrTypes = array(0);
 
             // Prepare product attribute condition
             $objAttributeRules = \Database::getInstance()->execute("SELECT * FROM " . static::$strTable . " WHERE enabled='1' AND productRestrictions='attribute' AND attributeName!='' GROUP BY attributeName, attributeCondition");
@@ -187,12 +187,12 @@ class Rule extends \Model
                     $objProduct = $objProduct->getProduct();
                 }
 
-                $arrProductIds[] = $objProduct->getProductId();
-                $arrVariantIds[] = $objProduct->{$objProduct->getPk()};
-                $arrTypes[] = $objProduct->type;
+                $arrProductIds[] = (int) $objProduct->getProductId();
+                $arrVariantIds[] = (int) $objProduct->{$objProduct->getPk()};
+                $arrTypes[] = (int) $objProduct->type;
 
                 if ($objProduct->isVariant()) {
-                    $arrVariantIds[] = $objProduct->pid;
+                    $arrVariantIds[] = (int) $objProduct->pid;
                 }
 
                 if ($blnIncludeVariants && $objProduct->hasVariants()) {
