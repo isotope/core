@@ -26,7 +26,32 @@ class Permission extends \Backend
      */
     public static function check()
     {
-        $session     = \Session::getInstance()->getData();
+        $session = \Session::getInstance()->getData();
+
+        if (\Input::get('act') == 'delete' && in_array(\Input::get('id'), static::getUndeletableIds())) {
+            \System::log('Product ID '.\Input::get('id').' is used in an order and can\'t be deleted', __METHOD__, TL_ERROR);
+            \Controller::redirect('contao/main.php?act=error');
+
+        } elseif (\Input::get('act') == 'deleteAll' && is_array($session['CURRENT']['IDS'])) {
+            $arrDeletable = array_diff($session['CURRENT']['IDS'], static::getUndeletableIds());
+
+            if (count($arrDeletable) != count($session['CURRENT']['IDS'])) {
+
+                // Unpublish all undeletable records
+                \Database::getInstance()->query("
+                    UPDATE " . Product::getTable() . "
+                    SET published=''
+                    WHERE id IN (" . implode(',', array_intersect($session['CURRENT']['IDS'], static::getUndeletableIds())) . ")
+                ");
+
+                // Remove undeletable products from selection
+                $session['CURRENT']['IDS'] = array_values($arrDeletable);
+                \Session::getInstance()->setData($session);
+
+                \Message::addInfo($GLOBALS['TL_LANG']['MSC']['undeletableUnpublished']);
+            }
+        }
+
         $arrProducts = static::getAllowedIds();
 
         // Method will return true if no limits should be applied (e.g. user is admin)
