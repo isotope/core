@@ -12,6 +12,10 @@
 
 namespace Isotope\Backend\Product;
 
+use Isotope\Model\Product;
+use Isotope\Model\ProductCollection;
+use Isotope\Model\ProductCollectionItem;
+
 
 class Permission extends \Backend
 {
@@ -70,6 +74,31 @@ class Permission extends \Backend
                 \Controller::redirect('contao/main.php?act=error');
             }
         }
+    }
+
+    /**
+     * Check if a product can be deleted by the current backend user
+     * Deleting is prohibited if a product has been ordered
+     * @return  bool
+     */
+    public static function getUndeletableIds()
+    {
+        static $arrProducts;
+
+        if (null === $arrProducts) {
+            $arrProducts = \Database::getInstance()->query("
+                    SELECT i.product_id AS id FROM " . ProductCollectionItem::getTable() . " i
+                    INNER JOIN " . ProductCollection::getTable() . " c ON i.pid=c.id
+                    WHERE c.type='order'
+                UNION
+                    SELECT p.pid AS id FROM " . Product::getTable() . " p
+                    INNER JOIN " . ProductCollectionItem::getTable() . " i ON i.product_id=p.id
+                    INNER JOIN " . ProductCollection::getTable() . " c ON i.pid=c.id
+                    WHERE p.pid>0 AND c.type='order'
+            ")->fetchEach('id');
+        }
+
+        return $arrProducts;
     }
 
     /**

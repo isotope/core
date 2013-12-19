@@ -13,7 +13,6 @@
 namespace Isotope\Backend\Product;
 
 use Isotope\Model\Download;
-use Isotope\Model\ProductCollectionItem;
 use Isotope\Model\ProductType;
 
 
@@ -90,9 +89,7 @@ class Button extends \Backend
      */
     public function forDelete($row, $href, $label, $title, $icon, $attributes)
     {
-        $t = ProductCollectionItem::getTable();
-
-        if (ProductCollectionItem::countBy(array("$t.pid IN (SELECT id FROM tl_iso_product_collection WHERE type='order')", "$t.product_id IN (SELECT id FROM tl_iso_product WHERE id=? OR (pid=? AND language=''))"), array($row['id'], $row['id'])) > 0) {
+        if (in_array($row['id'], Permission::getUndeletableIds())) {
             return \Image::getHtml(preg_replace('/\.gif$/i', '_.gif', $icon)) . ' ';
         }
 
