@@ -26,6 +26,7 @@ $GLOBALS['TL_DCA']['tl_iso_producttype'] = array
         (
             array('Isotope\Backend', 'initializeSetupModule'),
             array('Isotope\Backend\ProductType\Callback', 'checkPermission'),
+            array('Isotope\Backend\ProductType\Permission', 'check'),
         ),
         'sql' => array
         (

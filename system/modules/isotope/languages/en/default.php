@@ -57,6 +57,7 @@ $GLOBALS['TL_LANG']['MSC']['mmUnknownError']                    = 'The file coul
 $GLOBALS['TL_LANG']['MSC']['mmDrop']                            = 'Drop files here to upload';
 $GLOBALS['TL_LANG']['MSC']['mmUpload']                          = 'Upload files';
 $GLOBALS['TL_LANG']['MSC']['mmProcessing']                      = 'Processing dropped files...';
+$GLOBALS['TL_LANG']['MSC']['undeletableRecords']                = 'Some records could not be deleted.';
 $GLOBALS['TL_LANG']['MSC']['undeletableUnpublished']            = 'Some records could not be deleted and have been unpublished instead.';
 $GLOBALS['TL_LANG']['MSC']['quantity']                          = 'Quantity';
 $GLOBALS['TL_LANG']['MSC']['defaultSearchText']                 = 'search products';
