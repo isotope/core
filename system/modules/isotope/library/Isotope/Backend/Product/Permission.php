@@ -135,7 +135,7 @@ class Permission extends \Backend
         }
 
         // If all product are allowed, we don't need to filter
-        if ($arrProducts === true || count($arrProducts) == \Database::getInstance()->execute("SELECT COUNT(id) as total FROM tl_iso_product")->total) {
+        if ($arrProducts === true || count($arrProducts) == Product::countAll()) {
             return true;
         }
 
