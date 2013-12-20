@@ -54,6 +54,23 @@ class ProductCollectionItem extends \Model
 
 
     /**
+     * Check if collection item is available
+     * @return  bool
+     */
+    public function isAvailable()
+    {
+        if ($this->isLocked()) {
+            return true;
+        }
+
+        if (!$this->hasProduct() || !$this->getProduct()->isAvailableForCollection($this->getRelated('pid'))) {
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
      * Return true if product collection item is locked
      */
     public function isLocked()

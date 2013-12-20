@@ -703,7 +703,7 @@ abstract class ProductCollection extends TypeAgent
                     }
 
                     // Add error message for items no longer available
-                    if (!$this->isLocked() && (!$objItem->hasProduct() || !$objItem->getProduct()->isAvailableForCollection($this))) {
+                    if (!$objItem->isAvailable()) {
                         $objItem->addError($GLOBALS['TL_LANG']['ERR']['collectionItemNotAvailable']);
                     }
 
