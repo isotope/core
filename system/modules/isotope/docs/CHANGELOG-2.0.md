@@ -41,6 +41,7 @@ Version 2.0.0 (????-??-??)
 - Disabled Contao cache could result in error message in attribute wizard (#884)
 - Gallery could not be set for related products (#887)
 - Used products and product types could be deleted in select mode (#882)
+- Customer defined attributes incorrectly showed up in cart (#888)
 
 
 Version 2.0.rc2 (2013-11-22)

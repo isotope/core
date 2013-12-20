@@ -149,17 +149,9 @@ class ProductCollectionItem extends \Model
      */
     public function getOptions()
     {
-        if ($this->isLocked() || !$this->hasProduct()) {
-            $arrOptions = deserialize($this->options);
+        $arrOptions = deserialize($this->options);
 
-            if (!is_array($arrOptions)) {
-                $arrOptions = array();
-            }
-        } else {
-            $arrOptions = $this->getProduct()->getOptions();
-        }
-
-        return $arrOptions;
+        return is_array($arrOptions) ? $arrOptions : array();
     }
 
 
