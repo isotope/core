@@ -67,6 +67,13 @@ class ProductCollectionItem extends \Model
             return false;
         }
 
+        $arrOptions = $this->getOptions();
+        foreach ($this->getProduct()->getOptions() as $k => $v) {
+            if ($arrOptions[$k] !== $v) {
+                return false;
+            }
+        }
+
         return true;
     }
 
