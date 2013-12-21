@@ -142,7 +142,7 @@ var IsotopeProducts = (function() {
                 var errors = div.getElementsByTagName('p');
                 for(var i=0; i<errors.length; i++) {
                     if (errors[i].className.search(/(^| )error( |$)/) != -1) {
-                        error[i].parentNode.removeChild(error[i]);
+                        errors[i].parentNode.removeChild(errors[i]);
                     }
                 }
 
