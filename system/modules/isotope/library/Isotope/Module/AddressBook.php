@@ -72,7 +72,7 @@ class AddressBook extends Module
         $this->arrFields = array_unique(array_merge(Isotope::getConfig()->getBillingFields(), Isotope::getConfig()->getShippingFields()));
 
         // Return if there are not editable fields
-        if (($count = count($this->arrFields)) == 0 || ($count == 1 && $this->arrFields[0] == '')) {
+        if (empty($this->arrFields)) {
             return '';
         }
 
