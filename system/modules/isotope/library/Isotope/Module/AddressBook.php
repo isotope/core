@@ -12,6 +12,7 @@
 
 namespace Isotope\Module;
 
+use Haste\Form\Form;
 use Haste\Generator\RowClass;
 use Isotope\Isotope;
 use Isotope\Model\Address;
@@ -174,18 +175,9 @@ class AddressBook extends Module
         $table = Address::getTable();
         \System::loadLanguageFile(\MemberModel::getTable());
 
-        if (!strlen($this->memberTpl)) {
-            $this->memberTpl = 'member_default';
-        }
-
         $this->Template            = new \Isotope\Template($this->memberTpl);
-        $this->Template->fields    = '';
-        $this->Template->tableless = $this->tableless;
-
-        $arrFields   = array();
-        $doNotSubmit = false;
-        $hasUpload   = false;
-        $row         = 0;
+        $this->Template->hasError  = false;
+        $this->Template->slabel    = specialchars($GLOBALS['TL_LANG']['MSC']['saveData']);
 
         if ($intAddressId === 0) {
             $objAddress = Address::createForMember(\FrontendUser::getInstance()->id);
@@ -218,110 +210,54 @@ class AddressBook extends Module
             }
 
             // Special field "country"
-            if ($field == 'country') {
+            if ($strName == 'country') {
                 $arrCountries = array_merge(Isotope::getConfig()->getBillingCountries(), Isotope::getConfig()->getShippingCountries());
-
-                $arrData['options'] = array_values(array_intersect($arrData['options'], array_unique($arrCountries)));
-                $arrData['default'] = Isotope::getConfig()->billing_country;
+                $arrDca['reference'] = $arrDca['options'];
+                $arrDca['options'] = array_values(array_intersect(array_keys($arrDca['options']), $arrCountries));
+                $arrDca['default'] = Isotope::getConfig()->billing_country;
             }
 
-            $strGroup = $arrData['eval']['feGroup'];
+            return true;
+        });
 
-            $arrData['eval']['tableless'] = $this->tableless;
-            $arrData['eval']['required']  = ($objAddress->$field == '' && $arrData['eval']['mandatory']) ? true : false;
+        $objForm->addToTemplate($this->Template);
 
-            $objWidget = new $strClass($strClass::getAttributesFromDca($arrData, $field, ($objAddress->$field ? $objAddress->$field : $arrData['default'])));
+        if ($objForm->isSubmitted()) {
+            if ($objForm->validate()) {
+                $objAddress->save();
 
-            $objWidget->storeValues = true;
-            $objWidget->rowClass    = 'row_' . $row . (($row == 0) ? ' row_first' : '') . ((($row % 2) == 0) ? ' even' : ' odd');
-
-            // Validate input
-            if (\Input::post('FORM_SUBMIT') == $table . '_' . $this->id) {
-
-                $objWidget->validate();
-                $varValue = $objWidget->value;
-
-                // Convert date formats into timestamps
-                if (strlen($varValue) && in_array($arrData['eval']['rgxp'], array('date', 'time', 'datim'))) {
-                    $objDate  = new \Date($varValue, $GLOBALS['TL_CONFIG'][$arrData['eval']['rgxp'] . 'Format']);
-                    $varValue = $objDate->tstamp;
-                }
-
-                // Save callback
-                if (is_array($arrData['save_callback'])) {
-
-                    $dc->field = $field;
-
-                    foreach ($arrData['save_callback'] as $callback) {
+                // Call onsubmit_callback
+                if (is_array($GLOBALS['TL_DCA'][$table]['config']['onsubmit_callback'])) {
+                    foreach ($GLOBALS['TL_DCA'][$table]['config']['onsubmit_callback'] as $callback) {
                         $objCallback = \System::importStatic($callback[0]);
-
-                        try {
-                            $varValue = $objCallback->$callback[0]->$callback[1]($varValue, $dc);
-                        } catch (\Exception $e) {
-                            $objWidget->class = 'error';
-                            $objWidget->addError($e->getMessage());
-                        }
+                        $objCallback->$callback[1]($objAddress);
                     }
                 }
 
-                // Do not submit if there are errors
-                if ($objWidget->hasErrors()) {
-                    $doNotSubmit = true;
-                }
+                global $objPage;
+                \Controller::redirect(\Controller::generateFrontendUrl($objPage->row()));
 
-                // Store current value
-                elseif ($objWidget->submitInput()) {
-                    // Set new value
-                    $varSave            = is_array($varValue) ? serialize($varValue) : $varValue;
-                    $objAddress->$field = $varSave;
-                }
+            } else {
+                $this->Template->hasError = true;
             }
-
-            if ($objWidget instanceof \uploadable) {
-                $hasUpload = true;
-            }
-
-            $temp = $objWidget->parse();
-
-            $this->Template->fields .= $temp;
-            $arrFields[$strGroup][$field] .= $temp;
-            ++$row;
         }
 
-        $this->Template->hasError = $doNotSubmit;
-
-        // Redirect or reload if there was no error
-        if (\Input::post('FORM_SUBMIT') == $table . '_' . $this->id && !$doNotSubmit) {
-
-            $objAddress->save();
-
-            // Call onsubmit_callback
-            if (is_array($GLOBALS['TL_DCA'][$table]['config']['onsubmit_callback'])) {
-                foreach ($GLOBALS['TL_DCA'][$table]['config']['onsubmit_callback'] as $callback) {
-                    $objCallback = \System::importStatic($callback[0]);
-                    $objCallback->$callback[1]($objAddress);
-                }
+        // Add groups
+        $arrGroups   = array();
+        foreach ($objForm->getFormFields() as $strName => $arrConfig) {
+            if ($arrConfig['feGroup'] != '') {
+                $arrGroups[$arrConfig['feGroup']][$strName] = $objForm->getWidget($strName)->parse();
             }
+        }
 
-            global $objPage;
-            \Controller::redirect(\Controller::generateFrontendUrl($objPage->row()));
+        foreach ($arrGroups as $k => $v) {
+            $this->Template->$k = $v;
         }
 
         $this->Template->addressDetails = $GLOBALS['TL_LANG'][$table]['addressDetails'];
         $this->Template->contactDetails = $GLOBALS['TL_LANG'][$table]['contactDetails'];
         $this->Template->personalData   = $GLOBALS['TL_LANG'][$table]['personalData'];
         $this->Template->loginDetails   = $GLOBALS['TL_LANG'][$table]['loginDetails'];
-
-        // Add groups
-        foreach ($arrFields as $k => $v) {
-            $this->Template->$k = $v;
-        }
-
-        $this->Template->formId  = $table . '_' . $this->id;
-        $this->Template->slabel  = specialchars($GLOBALS['TL_LANG']['MSC']['saveData']);
-        $this->Template->action  = ampersand(\Environment::get('request'), true);
-        $this->Template->enctype = $hasUpload ? 'multipart/form-data' : 'application/x-www-form-urlencoded';
-        $this->Template->rowLast = 'row_' . $row . ((($row % 2) == 0) ? ' even' : ' odd');
     }
 
 

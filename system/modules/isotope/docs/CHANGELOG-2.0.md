@@ -4,6 +4,9 @@ Isotope eCommerce Changelog
 Version 2.0.0 (????-??-??)
 ----------------------------
 
+### Improved
+- Use Haste Form to render address book fields
+
 ### Fixed
 - Two missing `use` statements (#829)
 - Wrong Model reference in order history module
