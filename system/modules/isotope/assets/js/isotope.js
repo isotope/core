@@ -1,4 +1,4 @@
- /**
+/**
  * Isotope eCommerce for Contao Open Source CMS
  *
  * Copyright (C) 2009-2012 Isotope eCommerce Workgroup
@@ -6,9 +6,6 @@
  * @package    Isotope
  * @link       http://www.isotopeecommerce.com
  * @license    http://opensource.org/licenses/lgpl-3.0.html LGPL
- *
- * @author     Andreas Schempp <andreas.schempp@terminal42.ch>
- * @author     Fred Bliss <fred.bliss@intelligentspark.com>
  */
 
 
@@ -117,7 +114,6 @@ var IsotopeProducts = (function() {
 	"use strict";
 
     var loadMessage = 'Loading product data …';
-    var callbacks = [];
 
     function initProduct(config) {
         var form = document.getElementById(config.formId);
@@ -178,13 +174,6 @@ var IsotopeProducts = (function() {
                     initProduct(products[i]);
                 }
             }
-        },
-
-        /**
-         * Callbacks are used to handle special products
-         */
-        'registerCallback': function(callback) {
-            callbacks.push(callback);
         },
 
         /**
