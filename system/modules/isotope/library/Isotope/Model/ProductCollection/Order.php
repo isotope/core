@@ -162,30 +162,6 @@ class Order extends ProductCollection implements IsotopeProductCollection
             }
         }
 
-        // Store address in address book
-        if ($this->iso_addToAddressbook && $this->member > 0) {
-
-            if ($this->getBillingAddress()->ptable != \MemberModel::getTable()) {
-                $objAddress         = clone $this->getBillingAddress();
-                $objAddress->pid    = $this->member;
-                $objAddress->tstamp = time();
-                $objAddress->ptable = \MemberModel::getTable();
-                $objAddress->save();
-
-                $this->updateDefaultAddress($objAddress);
-            }
-
-            if ($this->getBillingAddress()->id != $this->getShippingAddress()->id && $this->getShippingAddress()->ptable != \MemberModel::getTable()) {
-                $objAddress         = clone $this->getShippingAddress();
-                $objAddress->pid    = $this->member;
-                $objAddress->tstamp = time();
-                $objAddress->ptable = \MemberModel::getTable();
-                $objAddress->save();
-
-                $this->updateDefaultAddress($objAddress);
-            }
-        }
-
         $this->createPrivateAddresses();
 
         // Add downloads from products to the collection
@@ -525,6 +501,34 @@ class Order extends ProductCollection implements IsotopeProductCollection
 
         $objBillingAddress  = $this->getBillingAddress();
         $objShippingAddress = $this->getShippingAddress();
+
+        // Store address in address book
+        if ($this->iso_addToAddressbook && $this->member > 0) {
+
+            if (null !== $objBillingAddress && $objBillingAddress->ptable != \MemberModel::getTable()) {
+                $objAddress         = clone $objBillingAddress;
+                $objAddress->pid    = $this->member;
+                $objAddress->tstamp = time();
+                $objAddress->ptable = \MemberModel::getTable();
+                $objAddress->save();
+
+                $this->updateDefaultAddress($objAddress);
+            }
+
+            if (null !== $objBillingAddress
+                && null !== $objShippingAddress
+                && $objBillingAddress->id != $objShippingAddress->id
+                && $objShippingAddress->ptable != \MemberModel::getTable()
+            ) {
+                $objAddress         = clone $objShippingAddress;
+                $objAddress->pid    = $this->member;
+                $objAddress->tstamp = time();
+                $objAddress->ptable = \MemberModel::getTable();
+                $objAddress->save();
+
+                $this->updateDefaultAddress($objAddress);
+            }
+        }
 
         if (null !== $objBillingAddress && ($objBillingAddress->ptable != static::$strTable || $objBillingAddress->pid != $this->id)) {
 
