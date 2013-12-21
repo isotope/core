@@ -207,7 +207,8 @@ abstract class Address extends CheckoutStep
 
             foreach ($this->getAddressFields() as $field) {
 
-                $arrData = &$GLOBALS['TL_DCA'][\Isotope\Model\Address::getTable()]['fields'][$field['value']];
+                // Do not use reference, otherwise the billing address fields would affect shipping address fields
+                $arrData = $GLOBALS['TL_DCA'][\Isotope\Model\Address::getTable()]['fields'][$field['value']];
 
                 if (!is_array($arrData) || !$arrData['eval']['feEditable'] || !$field['enabled'] || ($arrData['eval']['membersOnly'] && FE_USER_LOGGED_IN !== true)) {
                     continue;
@@ -222,8 +223,9 @@ abstract class Address extends CheckoutStep
 
                 // Special field "country"
                 if ($field['value'] == 'country') {
-                    $arrCountries       = $this->getAddressCountries();
-                    $arrData['options'] = array_values(array_intersect($arrData['options'], $arrCountries));
+                    $arrCountries = $this->getAddressCountries();
+                    $arrData['reference'] = $arrData['options'];
+                    $arrData['options'] = array_values(array_intersect(array_keys($arrData['options']), $arrCountries));
                 } // Special field type "conditionalselect"
                 elseif (strlen($arrData['eval']['conditionField'])) {
                     $arrData['eval']['conditionField'] = $this->getStepClass() . '_' . $arrData['eval']['conditionField'];
