@@ -6,6 +6,7 @@ Version 2.0.0 (????-??-??)
 
 ### Improved
 - Use Haste Form to render address book fields
+- Orders are deleted after a timeout if they are not completed (#890)
 
 ### Fixed
 - Two missing `use` statements (#829)

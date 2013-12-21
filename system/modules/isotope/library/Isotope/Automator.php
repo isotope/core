@@ -29,27 +29,30 @@ class Automator extends \Controller
 {
 
     /**
-     * Remove carts that have not been accessed for a given number of days (depending on store config)
+     * Remove carts that have not been accessed for a given number of days
      */
     public function deleteOldCarts()
     {
-        $intPurged = 0;
-        $objCarts  = Cart::findBy(array('member=0', 'tstamp<?'), array(time() - $GLOBALS['TL_CONFIG']['iso_cartTimeout']));
+        $t = Cart::getTable();
+        $objCarts = Cart::findBy(array("$t.member=0", "$t.tstamp<?"), array(time() - $GLOBALS['TL_CONFIG']['iso_cartTimeout']));
 
-        while ($objCarts->next()) {
-            if (($objOrder = Order::findOneBy('source_collection_id', $objCarts->current()->id)) !== null && $objOrder->status == 0) {
-                $objOrder->delete();
-            }
-
-            $objCarts->current()->delete();
-            $intPurged += 1;
-        }
-
-        if ($intPurged > 0) {
-            \System::log('Purged ' . $intPurged . ' old guest carts', __METHOD__, TL_CRON);
+        if (($intPurged = $this->deleteOldCollections($objCarts)) > 0) {
+            \System::log('Deleted ' . $intPurged . ' old guest carts', __METHOD__, TL_CRON);
         }
     }
 
+    /**
+     * Remove orders that have not been completed for a given number of days
+     */
+    public function deleteOldOrders()
+    {
+        $t = Order::getTable();
+        $objOrders = Order::findBy(array("$t.order_status=0", "$t.tstamp<?"), array(time() - $GLOBALS['TL_CONFIG']['iso_orderTimeout']));
+
+        if (($intPurged = $this->deleteOldCollections($objOrders)) > 0) {
+            \System::log('Deleted ' . $intPurged . ' incomplete orders', __METHOD__, TL_CRON);
+        }
+    }
 
     /**
      * Update the store configs with latest currency conversion data
@@ -147,5 +150,27 @@ class Automator extends \Controller
                     }
             }
         }
+    }
+
+
+    /**
+     * Delete product collections if they are older than given seconds and not locked
+     * @param   string
+     * @return  int
+     */
+    protected function deleteOldCollections($objCollections)
+    {
+        $intPurged = 0;
+
+        if (null !== $objCollections) {
+            foreach ($objCollections as $objCollection) {
+                if (!$objCollection->isLocked()) {
+                    $objCollection->delete();
+                    $intPurged += 1;
+                }
+            }
+        }
+
+        return $intPurged;
     }
 }

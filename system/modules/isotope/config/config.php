@@ -386,6 +386,7 @@ if (\Config::getInstance()->isComplete()) {
  * Cron Jobs
  */
 $GLOBALS['TL_CRON']['daily'][] = array('Isotope\Automator', 'deleteOldCarts');
+$GLOBALS['TL_CRON']['daily'][] = array('Isotope\Automator', 'deleteOldOrders');
 $GLOBALS['TL_CRON']['daily'][] = array('Isotope\Automator', 'convertCurrencies');
 
 
@@ -400,4 +401,5 @@ $GLOBALS['TL_AUTO_ITEM'][] = 'step';
  * Default configuration
  */
 $GLOBALS['TL_CONFIG']['iso_cartTimeout'] = 2592000;
+$GLOBALS['TL_CONFIG']['iso_orderTimeout'] = 604800;
 
