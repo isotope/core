@@ -175,7 +175,7 @@ class Address extends \Model
      */
     public static function findOneForMember($intId, $intMember, array $arrOptions = array())
     {
-        return static::findBy(array('id=?', 'pid=?', 'ptable=?', 'store_id=?'), array($intId, $intMember, 'tl_member', Isotope::getCart()->store_id), $arrOptions);
+        return static::findOneBy(array('id=?', 'pid=?', 'ptable=?', 'store_id=?'), array($intId, $intMember, 'tl_member', Isotope::getCart()->store_id), $arrOptions);
     }
 
     /**
