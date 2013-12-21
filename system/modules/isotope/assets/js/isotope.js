@@ -124,13 +124,15 @@ var IsotopeProducts = (function() {
     }
 
     function registerEvents(form, config) {
-        var i, el;
+        var i, el, xhr;
 
-        document.id(form).set('send', {
-            url: window.location.href,
+        // @todo implement native XMLHttpRequest
+        xhr = new Request.HTML({
+            url: form.action,
             link: 'cancel',
+            evalScripts: false,
             onRequest: Isotope.displayBox.pass(loadMessage),
-            onSuccess: function(txt, xml)
+            onSuccess: function(responseTree, responseElements, txt, responseJavaScript)
             {
                 Isotope.hideBox();
 
@@ -148,6 +150,7 @@ var IsotopeProducts = (function() {
 
                 form.parentNode.replaceChild(newForm, form);
                 registerEvents(newForm, config);
+                Browser.exec(responseJavaScript);
             },
             onFailure: Isotope.hideBox
         });
@@ -157,7 +160,7 @@ var IsotopeProducts = (function() {
                 el = document.getElementById(('ctrl_'+config.attributes[i]+'_'+config.formId));
                 if (el) {
                     el.addEventListener('change', function() {
-                        form.send();
+                        xhr.send(form.toQueryString());
                     }, false);
                 }
             }
