@@ -86,7 +86,7 @@ class AddressBook extends Module
      */
     protected function compile()
     {
-        $table = \Isotope\Model\Address::getTable();
+        $table = Address::getTable();
 
         \System::loadLanguageFile($table);
         $this->loadDataContainer($table);
@@ -171,7 +171,7 @@ class AddressBook extends Module
      */
     protected function edit($intAddressId = 0)
     {
-        $table = \Isotope\Model\Address::getTable();
+        $table = Address::getTable();
         \System::loadLanguageFile(\MemberModel::getTable());
 
         if (!strlen($this->memberTpl)) {
