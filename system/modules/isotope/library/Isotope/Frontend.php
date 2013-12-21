@@ -602,6 +602,7 @@ window.addEvent('domready', function()
                     $arrItems[$last]['link']  = $objProduct->name;
                 } // Otherwise we add a new item for the product at the last position
                 else {
+                    $arrItems[$last]['href'] = \Controller::generateFrontendUrl($arrItems[$last]['data']);
                     $arrItems[$last]['isActive'] = false;
 
                     $arrItems[] = array

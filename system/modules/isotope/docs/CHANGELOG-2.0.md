@@ -47,6 +47,7 @@ Version 2.0.0 (????-??-??)
 - Used products and product types could be deleted in select mode (#882)
 - Customer defined attributes incorrectly showed up in cart (#888)
 - Error when setting new address as default (#895)
+- Breadcrumb was broken if no reader page was configured (#845)
 
 
 Version 2.0.rc2 (2013-11-22)
