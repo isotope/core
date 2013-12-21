@@ -193,11 +193,12 @@ class AddressBook extends Module
             $objAddress = Address::createForMember(\FrontendUser::getInstance()->id);
         }
 
+        // Used to pass as second parameter to save_callback
+        // Must not use model because we add "dc"-properties that should not be in the model
+        $dc = (object) $objAddress->row();
+
         // Build form
         foreach ($this->arrFields as $field) {
-
-            // Make the address object look like a Data Container (for the save_callback)
-            $objAddress->field = $field;
 
             // Reference DCA, it's faster to lookup than a deep array
             $arrData = &$GLOBALS['TL_DCA'][$table]['fields'][$field];
@@ -246,11 +247,14 @@ class AddressBook extends Module
 
                 // Save callback
                 if (is_array($arrData['save_callback'])) {
+
+                    $dc->field = $field;
+
                     foreach ($arrData['save_callback'] as $callback) {
                         $objCallback = \System::importStatic($callback[0]);
 
                         try {
-                            $varValue = $objCallback->$callback[0]->$callback[1]($varValue, $objAddress);
+                            $varValue = $objCallback->$callback[0]->$callback[1]($varValue, $dc);
                         } catch (\Exception $e) {
                             $objWidget->class = 'error';
                             $objWidget->addError($e->getMessage());
