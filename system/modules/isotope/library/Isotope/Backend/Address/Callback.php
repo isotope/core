@@ -55,7 +55,9 @@ class Callback extends \Backend
         $objAddress = ($dc instanceof \DataContainer) ? $dc->activeRecord : $dc;
 
         if ($varValue == '1' && $objAddress->{$dc->field} != $varValue) {
-            \Database::getInstance()->execute("UPDATE tl_iso_address SET {$dc->field}='' WHERE pid={$objAddress->pid} AND ptable={$objAddress->ptable} AND store_id={$objAddress->store_id}");
+            \Database::getInstance()->prepare("
+                UPDATE tl_iso_address SET {$dc->field}='' WHERE pid=? AND ptable=? AND store_id=?
+            ")->execute($objAddress->pid, $objAddress->ptable, $objAddress->store_id);
         }
 
         return $varValue;
