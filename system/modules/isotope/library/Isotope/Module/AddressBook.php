@@ -187,32 +187,34 @@ class AddressBook extends Module
         $hasUpload   = false;
         $row         = 0;
 
-        $objAddress = Address::findOneForMember($intAddressId, \FrontendUser::getInstance()->id);
-
-        if (null === $objAddress) {
+        if ($intAddressId === 0) {
             $objAddress = Address::createForMember(\FrontendUser::getInstance()->id);
+        } else {
+            $objAddress = Address::findOneForMember($intAddressId, \FrontendUser::getInstance()->id);
         }
 
-        // Used to pass as second parameter to save_callback
-        // Must not use model because we add "dc"-properties that should not be in the model
-        $dc = (object) $objAddress->row();
+        if (null === $objAddress) {
+            global $objPage;
+            \Controller::redirect(\Controller::generateFrontendUrl($objPage->row()));
+        }
 
-        // Build form
-        foreach ($this->arrFields as $field) {
+        $objForm = new Form($table . '_' . $this->id, 'POST', function($objForm) {
+            return \Input::post('FORM_SUBMIT') === $objForm->getFormId();
+        }, (boolean) $this->tableless);
 
-            // Reference DCA, it's faster to lookup than a deep array
-            $arrData = &$GLOBALS['TL_DCA'][$table]['fields'][$field];
+        $objForm->bindModel($objAddress);
 
-            // Map checkboxWizard to regular checkbox widget
-            if ($arrData['inputType'] == 'checkboxWizard') {
-                $arrData['inputType'] = 'checkbox';
+        // Add form fields and modify for the address book
+        $arrFields = $this->arrFields;
+        $objForm->addFieldsFromDca($table, function ($strName, &$arrDca) use ($arrFields) {
+
+            if (!in_array($strName, $arrFields) || !$arrDca['eval']['feEditable']) {
+                return false;
             }
 
-            $strClass = $GLOBALS['TL_FFL'][$arrData['inputType']];
-
-            // Continue if the class is not defined
-            if (!class_exists($strClass) || !$arrData['eval']['feEditable']) {
-                continue;
+            // Map checkboxWizard to regular checkbox widget
+            if ($arrDca['inputType'] == 'checkboxWizard') {
+                $arrDca['inputType'] = 'checkbox';
             }
 
             // Special field "country"
