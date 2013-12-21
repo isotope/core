@@ -17,6 +17,7 @@ use Haste\Haste;
 use Haste\Util\Format;
 use Isotope\Interfaces\IsotopeProductCollection;
 use Isotope\Isotope;
+use Isotope\Model\Address;
 use Isotope\Model\Document;
 use Isotope\Model\OrderStatus;
 use Isotope\Model\Payment;
@@ -170,6 +171,8 @@ class Order extends ProductCollection implements IsotopeProductCollection
                 $objAddress->tstamp = time();
                 $objAddress->ptable = \MemberModel::getTable();
                 $objAddress->save();
+
+                $this->updateDefaultAddress($objAddress);
             }
 
             if ($this->getBillingAddress()->id != $this->getShippingAddress()->id && $this->getShippingAddress()->ptable != \MemberModel::getTable()) {
@@ -178,6 +181,8 @@ class Order extends ProductCollection implements IsotopeProductCollection
                 $objAddress->tstamp = time();
                 $objAddress->ptable = \MemberModel::getTable();
                 $objAddress->save();
+
+                $this->updateDefaultAddress($objAddress);
             }
         }
 
@@ -548,6 +553,29 @@ class Order extends ProductCollection implements IsotopeProductCollection
             $objNew->save();
 
             $this->setShippingAddress($objNew);
+        }
+    }
+
+    /**
+     * Mark existing addresses as not default if the new address is default
+     * @param   Address
+     */
+    protected function updateDefaultAddress($objAddress)
+    {
+        $arrSet = array();
+
+        if ($objAddress->isDefaultBilling) {
+            $arrSet['isDefaultBilling'] = '';
+        }
+
+        if ($objAddress->isDefaultShipping) {
+            $arrSet['isDefaultShipping'] = '';
+        }
+
+        if (!empty($arrSet)) {
+            \Database::getInstance()->prepare("
+                UPDATE " . \MemberModel::getTable() . " %s WHERE pid=? AND ptable=? AND store_id=? AND id!=?
+            ")->set($arrSet)->execute($this->member, \MemberModel::getTable(), $this->store_id, $objAddress->id);
         }
     }
 }
