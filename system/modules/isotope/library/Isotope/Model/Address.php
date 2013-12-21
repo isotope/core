@@ -66,10 +66,10 @@ class Address extends \Model
     public function generateHtml($arrFields = null)
     {
         // We need a country to format the address, use default country if none is available
-        $strCountry = $this->country != '' ? $this->country : Isotope::getConfig()->country;
+        $strCountry = $this->country ?: Isotope::getConfig()->country;
 
         // Use generic format if no country specific format is available
-        $strFormat = $GLOBALS['ISO_ADR'][$strCountry] != '' ? $GLOBALS['ISO_ADR'][$strCountry] : $GLOBALS['ISO_ADR']['generic'];
+        $strFormat = $GLOBALS['ISO_ADR'][$strCountry] ?: $GLOBALS['ISO_ADR']['generic'];
 
         $arrTokens  = $this->getTokens($arrFields);
         $strAddress = \String::parseSimpleTokens($strFormat, $arrTokens);
