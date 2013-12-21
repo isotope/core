@@ -50,7 +50,6 @@ $GLOBALS['TL_LANG']['MSC']['buttonLabel']['update'] = 'Обновить';
 $GLOBALS['TL_LANG']['MSC']['buttonLabel']['add_to_cart'] = 'Добавить в корзину';
 $GLOBALS['TL_LANG']['MSC']['orderByLabel'] = 'Сортировать по:';
 $GLOBALS['TL_LANG']['MSC']['noProducts'] = 'Товаров не найдено.';
-$GLOBALS['TL_LANG']['MSC']['invalidProductInformation'] = 'К сожалению, информация по запрашиваемому товару не обнаружена в нашей базе. Для дальнейшей поддержки свяжитесь с нами.';
 $GLOBALS['TL_LANG']['MSC']['previousStep'] = 'Назад';
 $GLOBALS['TL_LANG']['MSC']['nextStep'] = 'Продолжить';
 $GLOBALS['TL_LANG']['MSC']['confirmOrder'] = 'Заказ';

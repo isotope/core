@@ -50,7 +50,6 @@ $GLOBALS['TL_LANG']['MSC']['buttonLabel']['update'] = 'Verversen';
 $GLOBALS['TL_LANG']['MSC']['buttonLabel']['add_to_cart'] = 'In Winkelwagen';
 $GLOBALS['TL_LANG']['MSC']['orderByLabel'] = 'Sorteren op:';
 $GLOBALS['TL_LANG']['MSC']['noProducts'] = 'Geen producten gevonden';
-$GLOBALS['TL_LANG']['MSC']['invalidProductInformation'] = 'Sorry, de product informatie die u gevraagd heeft is niet in onze winkel aanwezig. Heeft u hierover vragen, neem dan contact met ons op.';
 $GLOBALS['TL_LANG']['MSC']['previousStep'] = 'Terug';
 $GLOBALS['TL_LANG']['MSC']['nextStep'] = 'Verder';
 $GLOBALS['TL_LANG']['MSC']['confirmOrder'] = 'Bestellen';

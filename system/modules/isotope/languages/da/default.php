@@ -49,7 +49,6 @@ $GLOBALS['TL_LANG']['MSC']['buttonLabel']['update'] = 'Opdater';
 $GLOBALS['TL_LANG']['MSC']['buttonLabel']['add_to_cart'] = 'Læg i kurv';
 $GLOBALS['TL_LANG']['MSC']['orderByLabel'] = 'Sorter efter:';
 $GLOBALS['TL_LANG']['MSC']['noProducts'] = 'Ingen produkter blev fundet.';
-$GLOBALS['TL_LANG']['MSC']['invalidProductInformation'] = 'Beklager, men den ønskede produkt information kan ikke vises. Kontakt os for at få hjælp.';
 $GLOBALS['TL_LANG']['MSC']['previousStep'] = 'Tilbage';
 $GLOBALS['TL_LANG']['MSC']['nextStep'] = 'Fortsæt';
 $GLOBALS['TL_LANG']['MSC']['confirmOrder'] = 'Ordre';

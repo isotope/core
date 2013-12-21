@@ -67,7 +67,6 @@ $GLOBALS['TL_LANG']['MSC']['buttonLabel']['update'] = 'Aktualisieren';
 $GLOBALS['TL_LANG']['MSC']['buttonLabel']['add_to_cart'] = 'In den Warenkorb';
 $GLOBALS['TL_LANG']['MSC']['orderByLabel'] = 'Sortieren nach:';
 $GLOBALS['TL_LANG']['MSC']['noProducts'] = 'Zurzeit sind in dieser Kategorie keine Produkte vorhanden.';
-$GLOBALS['TL_LANG']['MSC']['invalidProductInformation'] = 'Das von Ihnen gewünschte Produkt ist leider nicht vorhanden oder wurde aus dem Shop entfernt. Für weitere Hilfe nehmen Sie bitte Kontakt mit uns auf.';
 $GLOBALS['TL_LANG']['MSC']['previousStep'] = 'Zurück';
 $GLOBALS['TL_LANG']['MSC']['nextStep'] = 'Weiter';
 $GLOBALS['TL_LANG']['MSC']['confirmOrder'] = 'Kaufen';

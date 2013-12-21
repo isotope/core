@@ -31,7 +31,6 @@ $GLOBALS['TL_LANG']['tl_module']['iso_hide_list'][1] = 'Ukryj listę produktów 
 $GLOBALS['TL_LANG']['tl_module']['iso_use_quantity'][0] = 'Dowolna ilość';
 $GLOBALS['TL_LANG']['tl_module']['iso_use_quantity'][1] = 'Pozwala użytkownikowi na określenie ilości produktu, który chce kupić.';
 $GLOBALS['TL_LANG']['tl_module']['iso_display404Page'][0] = 'Wyświetl stronę 404';
-$GLOBALS['TL_LANG']['tl_module']['iso_display404Page'][1] = 'Wyświetl stronę "404 nie znaleziono", jeśli produkt nie został znaleziony. Używaj tego z rozwagą, jeśli lista produktów jest na tej samej stronie!';
 $GLOBALS['TL_LANG']['tl_module']['iso_checkout_method'][0] = 'Metody kasy';
 $GLOBALS['TL_LANG']['tl_module']['iso_checkout_method'][1] = 'Proszę wybrać metodę kasy.';
 $GLOBALS['TL_LANG']['tl_module']['iso_login_jumpTo'][0] = 'Strona logowania do kasy';

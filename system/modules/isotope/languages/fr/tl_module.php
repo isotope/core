@@ -31,7 +31,6 @@ $GLOBALS['TL_LANG']['tl_module']['iso_hide_list'][1] = 'Hide product list when a
 $GLOBALS['TL_LANG']['tl_module']['iso_use_quantity'][0] = 'Activer la quantité';
 $GLOBALS['TL_LANG']['tl_module']['iso_use_quantity'][1] = 'Permet aux utilisateurs de spécifier un ou plusieurs produits à acheter.';
 $GLOBALS['TL_LANG']['tl_module']['iso_display404Page'][0] = 'Afficher une page 404';
-$GLOBALS['TL_LANG']['tl_module']['iso_display404Page'][1] = 'Afficher une page 404 si le produit n\'est pas trouvé. A utiliser avec précaution si la liste de produit est sur la même page!';
 $GLOBALS['TL_LANG']['tl_module']['iso_checkout_method'][0] = 'Mode de commande';
 $GLOBALS['TL_LANG']['tl_module']['iso_checkout_method'][1] = 'Choisissez votre mode de commande';
 $GLOBALS['TL_LANG']['tl_module']['iso_login_jumpTo'][0] = 'Page de connexion';
