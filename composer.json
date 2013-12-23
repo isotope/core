@@ -29,18 +29,26 @@
         "contao-legacy/isotope": "self.version"
     },
     "autoload": {
-        "psr-0": { "Isotope\\": ["system/modules/isotope/library/", "system/modules/isotope_reports/library/", "system/modules/isotope_rules/library/"] },
-        "classmap": ["system/modules/isotope/drivers"]
+        "psr-0": {
+            "Isotope\\": [
+                "system/modules/isotope/library/",
+                "system/modules/isotope_reports/library/",
+                "system/modules/isotope_rules/library/"
+            ]
+        },
+        "classmap": [
+            "system/modules/isotope/drivers"
+        ]
     },
     "extra":{
         "contao": {
             "sources":{
-                "system/modules/isotope":"system/modules/isotope",
-                "system/modules/isotope_reports":"system/modules/isotope_reports",
-                "system/modules/isotope_rules":"system/modules/isotope_rules"
+                "system/modules/isotope": "system/modules/isotope",
+                "system/modules/isotope_reports": "system/modules/isotope_reports",
+                "system/modules/isotope_rules": "system/modules/isotope_rules"
             },
             "runonce": [
-                "system/runonce.php"
+                "system/modules/isotope/runonce/runonce.php"
             ]
         },
         "branch-alias": {
