@@ -19,7 +19,7 @@
         "contao/core":">=3.2.0",
         "contao-community-alliance/composer-installer":"*",
         "contao-legacy/conditionalselectmenu":">=2.0.0",
-        "contao-legacy/NamespaceClassLoader": "1.0.1",
+        "contao-legacy/namespaceclassloader": "1.0.1",
         "contao-legacy/dcawizard":">=2.0.0",
         "contao-legacy/haste":">=3.0.0",
         "menatwork/contao-multicolumnwizard": "3.2.*",
