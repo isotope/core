@@ -299,7 +299,7 @@ $GLOBALS['TL_DCA']['tl_iso_shipping'] = array
             'exclude'               => true,
             'inputType'             => 'checkboxWizard',
             'options_callback'      => function($dc) {
-                $objShipping = \Isotope\Model\Shipping::findBy(array($dc->table.'.id!=?'), $dc->id);
+                $objShipping = \Isotope\Model\Shipping::findBy(array($dc->table.'.id!=?'), $dc->intId);
                 return null === $objShipping ? array() : $objShipping->fetchEach('name');
             },
             'eval'                  => array('mandatory'=>true, 'multiple'=>true, 'tl_class'=>'clr w50 w50h'),
