@@ -16,7 +16,6 @@ use Haste\Form\Form;
 use Haste\Generator\RowClass;
 use Isotope\Isotope;
 use Isotope\Model\Address;
-use Isotope\Model\Config;
 
 /**
  * Class ModuleIsotopeAddressBook

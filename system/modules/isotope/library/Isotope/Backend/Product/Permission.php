@@ -12,6 +12,7 @@
 
 namespace Isotope\Backend\Product;
 
+use Isotope\Model\Group;
 use Isotope\Model\Product;
 use Isotope\Model\ProductCollection;
 use Isotope\Model\ProductCollectionItem;
