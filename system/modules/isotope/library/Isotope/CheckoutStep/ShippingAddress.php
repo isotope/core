@@ -50,13 +50,6 @@ class ShippingAddress extends Address implements IsotopeCheckoutStep
             $this->blnError = true;
         }
 
-        if ($objAddress === null
-            || $objAddress->id == Isotope::getCart()->getBillingAddress()->id
-            || $objAddress->ptable != 'tl_iso_product_collection'
-        ) {
-            $this->Template->style = 'display:none;';
-        }
-
         return parent::generate();
     }
 

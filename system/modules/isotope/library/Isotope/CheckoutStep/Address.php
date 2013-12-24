@@ -115,6 +115,9 @@ abstract class Address extends CheckoutStep
             $strBuffer .= $objWidget->parse();
         }
 
+        if ($varValue !== '0') {
+            $this->Template->style = 'display:none;';
+        }
 
         $objAddress = $this->getAddressForOption($varValue, $blnValidate);
 
