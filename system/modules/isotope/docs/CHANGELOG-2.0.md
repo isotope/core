@@ -1,8 +1,8 @@
 Isotope eCommerce Changelog
 ===========================
 
-Version 2.0.0 (????-??-??)
-----------------------------
+Version 2.0.0 (2013-12-24)
+--------------------------
 
 ### Improved
 - Use Haste Form to render address book fields
