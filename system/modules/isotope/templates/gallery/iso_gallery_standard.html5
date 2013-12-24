@@ -7,7 +7,7 @@
 </a>
 <?php endif; ?>
 </figure>
-<?php if($this->type == 'gallery' && \Environment::get('isAjaxRequest')): ?>
+<?php if($this->type == 'main' && \Environment::get('isAjaxRequest')): ?>
 <script>
 if (window.Mediabox) {
   var links = $$('a').filter(function(el) {
