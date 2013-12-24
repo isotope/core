@@ -1,46 +1,59 @@
 {
-    "name":"terminal42/isotope",
+    "name":"isotope/isotope-core",
     "description":"Core repository of Isotope eCommerce, an eCommerce extension for Contao Open Source CMS",
-    "keywords":["contao", "isotope", "ecommerce"],
+    "keywords":["contao", "isotope"],
     "type":"contao-module",
     "license":"LGPL-3.0+",
     "authors":[
         {
             "name":"terminal42 gmbh",
-            "homepage":"http://www.terminal42.ch"
+            "homepage":"http://terminal42.ch"
         },
         {
-            "name":"Isotope eCommerce Workgroup",
+            "name":"Isotope Workgroup",
             "homepage":"http://isotopeecommerce.org"
         }
     ],
     "require":{
-        "php":">=5.2.7",
-        "contao/core":">=2.11,<3.0",
+        "php":">=5.3.2",
+        "contao/core":">=3.2.2",
         "contao-community-alliance/composer-installer":"*",
-        "menatwork/contao-multicolumnwizard": "3.1.*",
-        "contao-legacy/ajax":">=1.1.4",
-        "contao-legacy/backend_tabletree":">=0.1.3",
-        "contao-legacy/conditionalselectmenu":">=1.1.3",
-        "contao-legacy/dcawizard":">=1.2.1",
-        "contao-legacy/tablelookupwizard":">=1.3.4"
-    },
-    "autoload":{
-        "classmap":["system/"]
+        "contao-legacy/conditionalselectmenu":"2.0.*",
+        "contao-legacy/namespaceclassloader":">=1.0.1",
+        "terminal42/dcawizard":">=2.0.2",
+        "contao-legacy/haste":"4.0.*",
+        "menatwork/contao-multicolumnwizard": "3.2.*",
+        "contao-legacy/tablelookupwizard":">=2.0.1",
+        "terminal42/notification_center":">=1.0.4"
     },
     "replace": {
         "contao-legacy/isotope": "self.version"
-	},
+    },
+    "autoload": {
+        "psr-0": {
+            "Isotope\\": [
+                "system/modules/isotope/library/",
+                "system/modules/isotope_reports/library/",
+                "system/modules/isotope_rules/library/"
+            ]
+        },
+        "classmap": [
+            "system/modules/isotope/drivers"
+        ]
+    },
     "extra":{
         "contao": {
             "sources":{
-                "system/modules/isotope":"system/modules/isotope",
-                "system/modules/isotope_multilingual":"system/modules/isotope_multilingual",
-                "system/modules/isotope_rules":"system/modules/isotope_rules"
+                "system/modules/isotope": "system/modules/isotope",
+                "system/modules/isotope_reports": "system/modules/isotope_reports",
+                "system/modules/isotope_rules": "system/modules/isotope_rules"
             },
             "runonce": [
-                "system/modules/isotope/config/runonce.php"
+                "system/modules/isotope/config/upgrade.php"
             ]
+        },
+        "branch-alias": {
+            "dev-release/2.0.0": "2.0.x-dev"
         }
     }
 }

@@ -1,3 +1,4 @@
+<div class="coupon<?php echo $this->mclass ? ' ' . $this->mclass : ''; ?>">
 <h2><?php echo $this->headline; ?></h2>
 <?php if ($this->message != ''): ?>
 <p class="<?php echo $this->mclass; ?>"><?php echo $this->message; ?></p>
@@ -9,3 +10,4 @@
 <input type="text" name="coupon_<?php echo $this->id; ?>" id="ctrl_coupon_<?php echo $this->id; ?>" class="text"> <input class="submit" type="submit" value="<?php echo $this->sLabel; ?>">
 </div>
 </form>
+</div>

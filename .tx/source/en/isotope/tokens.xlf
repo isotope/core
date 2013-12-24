@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.1">
+  <file datatype="php" original="system/modules/isotope/languages/en/tokens.php" source-language="en">
+    <body>
+      <trans-unit id="NOTIFICATION_CENTER_TOKEN.iso_order_status_change.uniqid">
+        <source>The order's unique ID.</source>
+      </trans-unit>
+      <trans-unit id="NOTIFICATION_CENTER_TOKEN.iso_order_status_change.order_status">
+        <source>The label of the order's current status.</source>
+      </trans-unit>
+      <trans-unit id="NOTIFICATION_CENTER_TOKEN.iso_order_status_change.order_status_old">
+        <source>The label of the order's previous status. Useful for things like "order status changed from x to y".</source>
+      </trans-unit>
+      <trans-unit id="NOTIFICATION_CENTER_TOKEN.iso_order_status_change.order_status_id">
+        <source>The ID of the order's current status.</source>
+      </trans-unit>
+      <trans-unit id="NOTIFICATION_CENTER_TOKEN.iso_order_status_change.order_status_id_old">
+        <source>The ID of the order's previous status.</source>
+      </trans-unit>
+      <trans-unit id="NOTIFICATION_CENTER_TOKEN.iso_order_status_change.recipient_email">
+        <source>The email address of the recipient.</source>
+      </trans-unit>
+      <trans-unit id="NOTIFICATION_CENTER_TOKEN.iso_order_status_change.order_id">
+        <source>The ID of the order.</source>
+      </trans-unit>
+      <trans-unit id="NOTIFICATION_CENTER_TOKEN.iso_order_status_change.order_items">
+        <source>The number of items (quantities summed up) in the order.</source>
+      </trans-unit>
+      <trans-unit id="NOTIFICATION_CENTER_TOKEN.iso_order_status_change.order_products">
+        <source>The number of individual products in the order.</source>
+      </trans-unit>
+      <trans-unit id="NOTIFICATION_CENTER_TOKEN.iso_order_status_change.order_subtotal">
+        <source>The order's subtotal.</source>
+      </trans-unit>
+      <trans-unit id="NOTIFICATION_CENTER_TOKEN.iso_order_status_change.order_total">
+        <source>The order's total.</source>
+      </trans-unit>
+      <trans-unit id="NOTIFICATION_CENTER_TOKEN.iso_order_status_change.document_number">
+        <source>The order document number.</source>
+      </trans-unit>
+      <trans-unit id="NOTIFICATION_CENTER_TOKEN.iso_order_status_change.cart_text">
+        <source>Order/Cart as text.</source>
+      </trans-unit>
+      <trans-unit id="NOTIFICATION_CENTER_TOKEN.iso_order_status_change.cart_html">
+        <source>Order/Cart as HTML.</source>
+      </trans-unit>
+      <trans-unit id="NOTIFICATION_CENTER_TOKEN.iso_order_status_change.document">
+        <source>The document that should be attached (e.g. an invoice).</source>
+      </trans-unit>
+      <trans-unit id="NOTIFICATION_CENTER_TOKEN.iso_order_status_change.billing_*">
+        <source>All the billing address model fields.</source>
+      </trans-unit>
+      <trans-unit id="NOTIFICATION_CENTER_TOKEN.iso_order_status_change.billing_address">
+        <source>Billing address as HTML.</source>
+      </trans-unit>
+      <trans-unit id="NOTIFICATION_CENTER_TOKEN.iso_order_status_change.billing_address_text">
+        <source>Billing address as text.</source>
+      </trans-unit>
+      <trans-unit id="NOTIFICATION_CENTER_TOKEN.iso_order_status_change.shipping_*">
+        <source>All the shipping address model fields.</source>
+      </trans-unit>
+      <trans-unit id="NOTIFICATION_CENTER_TOKEN.iso_order_status_change.shipping_address">
+        <source>Shipping address as HTML.</source>
+      </trans-unit>
+      <trans-unit id="NOTIFICATION_CENTER_TOKEN.iso_order_status_change.shipping_address_text">
+        <source>Shipping address as text.</source>
+      </trans-unit>
+      <trans-unit id="NOTIFICATION_CENTER_TOKEN.iso_order_status_change.form_*">
+        <source>All the order condition form fields.</source>
+      </trans-unit>
+      <trans-unit id="NOTIFICATION_CENTER_TOKEN.iso_order_status_change.payment_id">
+        <source>Payment method ID.</source>
+      </trans-unit>
+      <trans-unit id="NOTIFICATION_CENTER_TOKEN.iso_order_status_change.payment_label">
+        <source>Payment method label.</source>
+      </trans-unit>
+      <trans-unit id="NOTIFICATION_CENTER_TOKEN.iso_order_status_change.payment_note">
+        <source>Payment method note.</source>
+      </trans-unit>
+      <trans-unit id="NOTIFICATION_CENTER_TOKEN.iso_order_status_change.shipping_id">
+        <source>Shipping method ID.</source>
+      </trans-unit>
+      <trans-unit id="NOTIFICATION_CENTER_TOKEN.iso_order_status_change.shipping_label">
+        <source>Shipping method label.</source>
+      </trans-unit>
+      <trans-unit id="NOTIFICATION_CENTER_TOKEN.iso_order_status_change.shipping_note">
+        <source>Shipping method note.</source>
+      </trans-unit>
+      <trans-unit id="NOTIFICATION_CENTER_TOKEN.iso_order_status_change.config_*">
+        <source>All the store configuration fields.</source>
+      </trans-unit>
+      <trans-unit id="NOTIFICATION_CENTER_TOKEN.iso_order_status_change.member_*">
+        <source>All the member fields if it was a member checkout.</source>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

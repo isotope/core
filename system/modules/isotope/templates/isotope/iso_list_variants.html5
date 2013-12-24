@@ -1,0 +1,37 @@
+<form action="<?php echo $this->action; ?>" id="<?php echo $this->formId; ?>" name="iso<?php echo rand(); ?>" method="post" enctype="<?php echo $this->enctype; ?>">
+<div class="formbody">
+<input type="hidden" name="FORM_SUBMIT" value="<?php echo $this->formSubmit; ?>">
+<input type="hidden" name="REQUEST_TOKEN" value="{{request_token}}">
+<input type="hidden" name="AJAX_PRODUCT" value="<?php echo $this->product_id; ?>">
+<input type="hidden" name="AJAX_MODULE" value="<?php echo $this->module_id; ?>">
+
+<?php if($this->hasOptions): foreach( $this->raw_options as $name => $value ): ?>
+<input type="hidden" name="<?php echo $name; ?>" value="<?php echo $value; ?>">
+<?php endforeach; endif; ?>
+<h3><a href="<?php echo $this->href; ?>" title="<?php echo $this->label_detail; ?>"><?php echo $this->generateAttribute('name'); ?></a></h3>
+
+<?php echo $this->getGallery('images')->generateMainImage(); ?>
+
+<?php if ($this->sku): ?>
+<div class="sku"><?php echo $this->generateAttribute('sku'); ?></div><?php endif; if ($this->teaser): ?>
+<div class="teaser"><?php echo $this->generateAttribute('teaser'); ?></div><?php endif; ?>
+
+<div class="price"><?php echo $this->generatePrice(); ?></div><?php if($this->baseprice): ?>
+<div class="baseprice"><?php echo $this->generateAttribute('baseprice'); ?></div><?php endif; ?>
+<div class="details"><a href="<?php echo $this->href; ?>" title="<?php echo $this->label_detail; ?>"><?php echo $this->label_detail; ?></a></div>
+
+<?php if($this->buttons): ?>
+<div class="submit_container">
+<?php if ($this->useQuantity): ?>
+<div class="quantity_container">
+<label for="quantity_requested_<?php echo $this->raw['id']; ?>"><?php echo $GLOBALS['TL_LANG']['MSC']['quantity']; ?>:</label> <input type="text" class="text" id="quantity_requested_<?php echo $this->raw['id']; ?>" name="quantity_requested" placeholder="<?php echo $this->minimum_quantity; ?>" maxlength="10">
+</div>
+<?php endif; ?>
+<?php foreach( $this->buttons as $name => $button ): ?>
+    <input type="submit" class="submit <?php echo $name; ?>" name="<?php echo $name; ?>" value="<?php echo $button['label']; ?>">
+<?php endforeach; ?>
+</div>
+<?php endif; ?>
+
+</div>
+</form>

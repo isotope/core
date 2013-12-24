@@ -1,43 +1,25 @@
-<?php if (!defined('TL_ROOT')) die('You can not access this file directly!');
+<?php
 
 /**
- * Contao Open Source CMS
- * Copyright (C) 2005-2010 Leo Feyer
+ * Isotope eCommerce for Contao Open Source CMS
  *
- * Formerly known as TYPOlight Open Source CMS.
+ * Copyright (C) 2009-2013 terminal42 gmbh & Isotope eCommerce Workgroup
  *
- * This program is free software: you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation, either
- * version 3 of the License, or (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
- * Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public
- * License along with this program. If not, please visit the Free
- * Software Foundation website at <http://www.gnu.org/licenses/>.
- *
- * PHP version 5
- * @copyright  Isotope eCommerce Workgroup 2009-2012
- * @author     Andreas Schempp <andreas@schempp.ch>
- * @author     Fred Bliss <fred.bliss@intelligentspark.com>
+ * @package    Isotope
+ * @link       http://isotopeecommerce.org
  * @license    http://opensource.org/licenses/lgpl-3.0.html
  */
-
 
 /**
  * Fields
  */
-$GLOBALS['TL_LANG']['tl_page']['iso_config']			= array('Store Configuration', 'Select a store configuration for this page structure.');
-$GLOBALS['TL_LANG']['tl_page']['iso_setReaderJumpTo']	= array('Configure a reader page for this Isotope category', 'Every page containing a product listing module must have a reader page assigned (gets inherited).');
-$GLOBALS['TL_LANG']['tl_page']['iso_readerJumpTo']		= array('Choose the reader page', 'Select the target page products from this page should forwarded to.');
+$GLOBALS['TL_LANG']['tl_page']['iso_config']            = array('Store Configuration', 'Select a store configuration for this page structure.');
+$GLOBALS['TL_LANG']['tl_page']['iso_setReaderJumpTo']   = array('Use reader page', 'Overwrite the configuration of this page if product details are shown. See help wizard of the page selection for more information.');
+$GLOBALS['TL_LANG']['tl_page']['iso_readerJumpTo']      = array('Reader page', 'Select a page for your page reader.');
+$GLOBALS['TL_LANG']['tl_page']['iso_store_id']          = array('Store ID', 'Use different store IDs to group a store on multiple root sites. A members\'s cart and addresses will be shared across the same store IDs.');
 
 
 /**
  * Legends
  */
-$GLOBALS['TL_LANG']['tl_page']['isotope_legend'] = 'Isotope eCommerce';
-
+$GLOBALS['TL_LANG']['tl_page']['isotope_legend']        = 'Isotope eCommerce';

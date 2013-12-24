@@ -1,90 +1,133 @@
-<?php if (!defined('TL_ROOT')) die('You can not access this file directly!');
+<?php
 
 /**
- * Contao Open Source CMS
- * Copyright (C) 2005-2010 Leo Feyer
- *
- * Formerly known as TYPOlight Open Source CMS.
- *
- * This program is free software: you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation, either
- * version 3 of the License, or (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
- * Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public
- * License along with this program. If not, please visit the Free
- * Software Foundation website at <http://www.gnu.org/licenses/>.
- *
- * PHP version 5
- * @copyright  Isotope eCommerce Workgroup 2009-2012
- * @author     Kamil Kuźmiński <kamil.kuzminski@gmail.com>
- * @license    http://opensource.org/licenses/lgpl-3.0.html
+ * Isotope eCommerce for Contao Open Source CMS
+ * 
+ * Copyright (C) 2009-2013 terminal42 gmbh & Isotope eCommerce Workgroup
+ * 
+ * Translations are managed using Transifex. To create a new translation
+ * or to help to maintain an existing one, please register at transifex.com.
+ * 
+ * @link http://help.transifex.com/intro/translating.html
+ * @link https://www.transifex.com/projects/i/isotope/language/pl/
+ * 
+ * @license http://www.gnu.org/licenses/lgpl-3.0.html
  */
 
-
-/**
- * Fields
- */
-$GLOBALS['TL_LANG']['tl_module']['iso_list_layout']				= array('Szablon listy produktów', 'Proszę wybrać szablon listy produktów.');
-$GLOBALS['TL_LANG']['tl_module']['iso_reader_layout']			= array('Szablon czytnika produktów', 'Proszę wybrać szablon czytnika produktów.');
-$GLOBALS['TL_LANG']['tl_module']['iso_reader_jumpTo']			= array('Strona czytnika produktów', 'To pole określa stronę, na którą zostanie przekierowany użytkownik kilkając link produktu (<strong>Uwaga:</strong> To pole nadpisuje ustawienie ze struktury stron!).');
-$GLOBALS['TL_LANG']['tl_module']['iso_cart_layout']				= array('Szablon koszyka produktów', 'Proszę wybrać szablon koszyka produktów.');
-$GLOBALS['TL_LANG']['tl_module']['iso_filterTpl']				= array('Szablon filtru', 'Proszę wybrać szablon filtru produktów.');
-$GLOBALS['TL_LANG']['tl_module']['iso_cols']					= array('Kolumny', 'Wprowadź liczbę kolumn do wyświetlenia w szablonie listy.');
-$GLOBALS['TL_LANG']['tl_module']['iso_config_id']				= array('Konfiguracja sklepu', 'Wybierz konfigurację sklepu, która będzie używana przez ten moduł.');
-$GLOBALS['TL_LANG']['tl_module']['iso_config_ids']				= array('Konfiguracje sklepu', 'Wybierz konfiguracje sklepu, które będą używane przez ten moduł.');
-$GLOBALS['TL_LANG']['tl_module']['iso_login_jumpTo']			= array('Strona logowania do kasy', 'Wybierz stronę, na której użytkownik powinien się zalogować by przejść do kasy.');
-$GLOBALS['TL_LANG']['tl_module']['iso_payment_modules']			= array('Metody płatności', 'Wybierz jedną lub więcej metod płatności dla tego modułu kasy.');
-$GLOBALS['TL_LANG']['tl_module']['iso_shipping_modules']		= array('Metody dostawy', 'Wybierz jedną lub więcej metod dostawy dla tego modułu kasy.');
-$GLOBALS['TL_LANG']['tl_module']['iso_checkout_method']			= array('Metody kasy', 'Proszę wybrać metodę kasy.');
-$GLOBALS['TL_LANG']['tl_module']['iso_order_conditions']		= array('Formularz warunków zakupu', 'Wybierz formularz, który zostanie użyty do wyświetlenia twojego regulaminu i warunków zakupu (opcjonalne).');
-$GLOBALS['TL_LANG']['tl_module']['iso_addToAddressbook']		= array('Dodaj do książki adresowej', 'Dodaj nowe adresy do książki adresowej zalogowanego użytkownika.');
-$GLOBALS['TL_LANG']['tl_module']['iso_noProducts']				= array('Wiadomość dla pustych modułów', 'Wprowadź wiadomość jeśli nie ma nic do wyświetlenia (pusta lista produktów, pusty koszyk, itp.).');
-$GLOBALS['TL_LANG']['tl_module']['iso_emptyMessage']			= array('Określ wiadomość dla pustych modułów', 'Ustaw wiadomość jeśli nie ma nic do wyświetlenia (pusta lista produktów, pusty koszyk, itp.).');
-$GLOBALS['TL_LANG']['tl_module']['orderCompleteJumpTo']			= array('Strona po zakończonym zamówieniu', 'Wybierz stronę, na którą zostanie przkierowany klient po zakończonym zamówieniu.');
-$GLOBALS['TL_LANG']['tl_module']['iso_jump_first']				= array('Przekieruj do pierwszego produktu', 'Zaznacz tutaj jeśli użytkownicy powinni być przekierowani do pierwszego produktu z listy.');
-$GLOBALS['TL_LANG']['tl_module']['iso_hide_list']				= array('Ukryj w czytniku', 'Ukryj listę produktów jeśli alias produktu jest w adresie URL.');
-$GLOBALS['TL_LANG']['tl_module']['iso_mail_customer']			= array('Powiadomienie klienta e-mailem', 'Wybierz Isotope Email, który będzie użyty do wysłania klientom, gdy złożą zamówienie.');
-$GLOBALS['TL_LANG']['tl_module']['iso_mail_admin']				= array('Powiadomienie kierownika sprzedaży e-mailem', 'Wybierz Isotope Email, który będzie użyty do wysłania kierownikowi sprzedaży, gdy kilenci złożą zamówienie.');
-$GLOBALS['TL_LANG']['tl_module']['iso_sales_email']				= array('Adres e-mail kierownika sprzedazī', 'Wprowadź inny niż systemowy adres e-mail, na który będą wysyłane powiadomienia.');
-$GLOBALS['TL_LANG']['tl_module']['iso_category_scope']			= array('Zakres kategorii', 'Określ zakres listy prodkutów.');
-$GLOBALS['TL_LANG']['tl_module']['iso_list_where']				= array('Warunek', 'Tutaj możesz wprowadzić warunek SQL do filtrowania produktów. Dla wszystkich pól musisz użyć prefiksu "p1." (np. <em>p1.featured=1</em> or <em>p1.color!=\'red\'</em>)!');
-$GLOBALS['TL_LANG']['tl_module']['iso_use_quantity'] 			= array('Dowolna ilość', 'Pozwala użytkownikowi na określenie ilości produktu, który chce kupić.');
-$GLOBALS['TL_LANG']['tl_module']['iso_filterModules']			= array('Moduły filtrów', 'Wybierz moduły filtrów, które chcesz uwzględnić dla tej listy produktów.');
-$GLOBALS['TL_LANG']['tl_module']['iso_filterFields']			= array('Włączone filtry', 'Wybierz filtry do włączenia.');
-$GLOBALS['TL_LANG']['tl_module']['iso_sortingFields']			= array('Włączone pola sortowania', 'Proszę wybrać pola sortowania do włączenia.');
-$GLOBALS['TL_LANG']['tl_module']['iso_searchFields']			= array('Włączone pola wyszukiwania', 'Proszę wybrać pola wyszukiwania do włączenia.');
-$GLOBALS['TL_LANG']['tl_module']['iso_enableLimit']				= array('Włącz limit rekordów na stronę', 'Pozwala użytkownikowi wybrać, ile rekordów zostanie pokazanych na jednej stronie.');
-$GLOBALS['TL_LANG']['tl_module']['iso_perPage']					= array('Opcje rekordów na stronę', 'Wprowadź listę wartości oddzieloną przecinkami, które będą użyte w menu dropdown. Pierwsza opcja zostanie użyta jako domyślna wartość. Wartości zostaną automatycznie posortowane wg. liczby.');
-$GLOBALS['TL_LANG']['tl_module']['iso_cart_jumpTo']				= array('Strona koszyka produktów', 'Wybierz stronę, na którą zostanie przekierowany użytkownik, gdy zażąda pełnego widoku koszyka.');
-$GLOBALS['TL_LANG']['tl_module']['iso_checkout_jumpTo']			= array('Strona kasy', 'Wybierz stronę, na którą zostanie przekierowany użytkownik, gdy zakończy transakcję.');
-$GLOBALS['TL_LANG']['tl_module']['iso_addProductJumpTo']		= array('Strona dodania produktu', 'Wybierz stronę, na którą zostanie przekierowany użytkownik, gdy doda nowy produkt do koszyka.');
-$GLOBALS['TL_LANG']['tl_module']['iso_listingSortField'] 		= array('Domyślne pole sortujące', 'Wybierz pole sortujące, które będzie użyte po pierwszym załadowaniu strony.');
-$GLOBALS['TL_LANG']['tl_module']['iso_listingSortDirection'] 	= array('Domyślny kierunek sortujący', 'Wybierz domyślne kierunek sortujący.');
-$GLOBALS['TL_LANG']['tl_module']['iso_buttons']					= array('Przyciski', 'Wybierz przyciski, które chcesz wyświetlić.');
-$GLOBALS['TL_LANG']['tl_module']['iso_forward_review']			= array('Przejdź do strony przeglądu', 'Przekieruj użytkownika do strony przeglądu, jeśli żadne informacje nie są wymagane w żadnym z kroków.');
-$GLOBALS['TL_LANG']['tl_module']['iso_related_categories']		= array('Powiązane kategorie', 'Wybierz kategorie z których będą pokazane produkty.');
-$GLOBALS['TL_LANG']['tl_module']['iso_includeMessages']			= array('Dołącz wiadomości', 'To ustawienie pozwala modułowi na dołączenie wszelakich błędów, powiadomień czy potwierdzeń, z którymi odwiedzający powinien się zapoznać.');
-$GLOBALS['TL_LANG']['tl_module']['iso_continueShopping']		= array('Włącz przycisk "Kontynuuj zakupy"', 'Dodaj link do właśnie dodanego produktu do koszyka.');
-
-
-/**
- * References
- */
-$GLOBALS['TL_LANG']['tl_module']['iso_checkout_method_ref']['member']	= 'Wymagane logowanie/rejestracja';
-$GLOBALS['TL_LANG']['tl_module']['iso_checkout_method_ref']['guest']	= 'Kasa tylko dla gości';
-$GLOBALS['TL_LANG']['tl_module']['iso_checkout_method_ref']['both']		= 'Oba dozwolone';
-$GLOBALS['TL_LANG']['tl_module']['iso_category_scope_ref']['global'][0]					= 'Wszystkie kategorie';
-$GLOBALS['TL_LANG']['tl_module']['iso_category_scope_ref']['current_and_first_child'][0]	= 'Aktywna kategoria i pierwsza podkategoria';
-$GLOBALS['TL_LANG']['tl_module']['iso_category_scope_ref']['current_and_all_children'][0]	= 'Aktywna kategoria i wszystkie podkategorie';
-$GLOBALS['TL_LANG']['tl_module']['iso_category_scope_ref']['current_category'][0]			= 'Aktywna kategoria';
-$GLOBALS['TL_LANG']['tl_module']['iso_category_scope_ref']['parent'][0]					= 'Nadrzędna kategoria';
-$GLOBALS['TL_LANG']['tl_module']['iso_category_scope_ref']['product'][0]					= 'Kategorie aktywnego produktu';
-$GLOBALS['TL_LANG']['tl_module']['sortingDirection']['ASC'] 	= "ASC";
-$GLOBALS['TL_LANG']['tl_module']['sortingDirection']['DESC'] 	= "DESC";
-
+$GLOBALS['TL_LANG']['tl_module']['iso_list_layout'][0] = 'Szablon listy produktów';
+$GLOBALS['TL_LANG']['tl_module']['iso_list_layout'][1] = 'Proszę wybrać szablon listy produktów.';
+$GLOBALS['TL_LANG']['tl_module']['iso_reader_layout'][0] = 'Szablon czytnika produktów';
+$GLOBALS['TL_LANG']['tl_module']['iso_reader_layout'][1] = 'Proszę wybrać szablon czytnika produktów.';
+$GLOBALS['TL_LANG']['tl_module']['iso_gallery'][0] = 'Galeria';
+$GLOBALS['TL_LANG']['tl_module']['iso_gallery'][1] = 'Wybierz galerię do wyświetlenia obrazków (nadpisuje ustawienia typu produktu).';
+$GLOBALS['TL_LANG']['tl_module']['iso_collectionTpl'][0] = 'Szablon kolekcji produktów';
+$GLOBALS['TL_LANG']['tl_module']['iso_collectionTpl'][1] = 'Proszę wybrać szablon do wyświetlenia produktów. Możesz dodać własne szablony kolekcji do katalogu <em>templates</em>. Pliki szablonów kolekcji zaczynają się z <em>iso_collection_</em>.';
+$GLOBALS['TL_LANG']['tl_module']['iso_filterTpl'][0] = 'Szablon filtru';
+$GLOBALS['TL_LANG']['tl_module']['iso_filterTpl'][1] = 'Proszę wybrać szablon filtru produktów.';
+$GLOBALS['TL_LANG']['tl_module']['iso_jump_first'][0] = 'Przekieruj do pierwszego produktu';
+$GLOBALS['TL_LANG']['tl_module']['iso_jump_first'][1] = 'Zaznacz tutaj jeśli użytkownicy powinni być przekierowani do pierwszego produktu z listy.';
+$GLOBALS['TL_LANG']['tl_module']['iso_hide_list'][0] = 'Ukryj w czytniku';
+$GLOBALS['TL_LANG']['tl_module']['iso_hide_list'][1] = 'Ukryj listę produktów jeśli alias produktu jest w adresie URL.';
+$GLOBALS['TL_LANG']['tl_module']['iso_use_quantity'][0] = 'Dowolna ilość';
+$GLOBALS['TL_LANG']['tl_module']['iso_use_quantity'][1] = 'Pozwala użytkownikowi na określenie ilości produktu, który chce kupić.';
+$GLOBALS['TL_LANG']['tl_module']['iso_display404Page'][0] = 'Wyświetl stronę 404';
+$GLOBALS['TL_LANG']['tl_module']['iso_display404Page'][1] = 'Wyświetl stronę 404, jeśli nie ma aliasu produktu w URL. Używaj tego jeśli moduł czytnika jest na osobnej stronie, która nie powinna być dostępna w żadnym innym przypadku.';
+$GLOBALS['TL_LANG']['tl_module']['iso_checkout_method'][0] = 'Metody kasy';
+$GLOBALS['TL_LANG']['tl_module']['iso_checkout_method'][1] = 'Proszę wybrać metodę kasy.';
+$GLOBALS['TL_LANG']['tl_module']['iso_login_jumpTo'][0] = 'Strona logowania do kasy';
+$GLOBALS['TL_LANG']['tl_module']['iso_login_jumpTo'][1] = 'Wybierz stronę, na której użytkownik powinien się zalogować by przejść do kasy.';
+$GLOBALS['TL_LANG']['tl_module']['iso_addProductJumpTo'][0] = 'Strona dodania produktu';
+$GLOBALS['TL_LANG']['tl_module']['iso_addProductJumpTo'][1] = 'Wybierz stronę, na którą zostanie przekierowany użytkownik, gdy doda nowy produkt do koszyka.';
+$GLOBALS['TL_LANG']['tl_module']['iso_cols'][0] = 'Kolumny';
+$GLOBALS['TL_LANG']['tl_module']['iso_cols'][1] = 'Wprowadź liczbę kolumn do wyświetlenia w szablonie listy.';
+$GLOBALS['TL_LANG']['tl_module']['iso_config_id'][0] = 'Konfiguracja sklepu';
+$GLOBALS['TL_LANG']['tl_module']['iso_config_id'][1] = 'Wybierz konfigurację sklepu, która będzie używana przez ten moduł.';
+$GLOBALS['TL_LANG']['tl_module']['iso_config_ids'][0] = 'Konfiguracje sklepu';
+$GLOBALS['TL_LANG']['tl_module']['iso_config_ids'][1] = 'Wybierz konfiguracje sklepu, które będą używane przez ten moduł.';
+$GLOBALS['TL_LANG']['tl_module']['iso_payment_modules'][0] = 'Metody płatności';
+$GLOBALS['TL_LANG']['tl_module']['iso_payment_modules'][1] = 'Wybierz jedną lub więcej metod płatności dla tego modułu kasy.';
+$GLOBALS['TL_LANG']['tl_module']['iso_shipping_modules'][0] = 'Metody dostawy';
+$GLOBALS['TL_LANG']['tl_module']['iso_shipping_modules'][1] = 'Wybierz jedną lub więcej metod dostawy dla tego modułu kasy.';
+$GLOBALS['TL_LANG']['tl_module']['orderCompleteJumpTo'][0] = 'Strona po zakończonym zamówieniu';
+$GLOBALS['TL_LANG']['tl_module']['orderCompleteJumpTo'][1] = 'Wybierz stronę, na którą zostanie przkierowany klient po zakończonym zamówieniu.';
+$GLOBALS['TL_LANG']['tl_module']['iso_forward_review'][0] = 'Przejdź do strony przeglądu';
+$GLOBALS['TL_LANG']['tl_module']['iso_forward_review'][1] = 'Przekieruj użytkownika do strony przeglądu, jeśli żadne informacje nie są wymagane w żadnym z kroków.';
+$GLOBALS['TL_LANG']['tl_module']['iso_order_conditions'][0] = 'Formularz warunków zakupu';
+$GLOBALS['TL_LANG']['tl_module']['iso_order_conditions'][1] = 'Wybierz formularz, który zostanie użyty do wyświetlenia twojego regulaminu i warunków zakupu (opcjonalne).';
+$GLOBALS['TL_LANG']['tl_module']['iso_order_conditions_position'][0] = 'Pozycja formularza warunków zakupu';
+$GLOBALS['TL_LANG']['tl_module']['iso_order_conditions_position'][1] = 'Proszę określić czy formularz warunków zakupu powinien być wyświetlony przed czy po liście produktów.';
+$GLOBALS['TL_LANG']['tl_module']['iso_order_conditions_position']['top'] = 'Na górze (przed adresem)';
+$GLOBALS['TL_LANG']['tl_module']['iso_order_conditions_position']['before'] = 'Przed listą produktów';
+$GLOBALS['TL_LANG']['tl_module']['iso_order_conditions_position']['after'] = 'Po liście produktów';
+$GLOBALS['TL_LANG']['tl_module']['iso_addToAddressbook'][0] = 'Dodaj do książki adresowej';
+$GLOBALS['TL_LANG']['tl_module']['iso_addToAddressbook'][1] = 'Dodaj nowe adresy do książki adresowej zalogowanego użytkownika.';
+$GLOBALS['TL_LANG']['tl_module']['iso_orderCollectionBy'][0] = 'Sortowanie';
+$GLOBALS['TL_LANG']['tl_module']['iso_orderCollectionBy'][1] = 'Proszę określić w jakiej kolejności mają zostać wyświetlone elementy kolekcji.';
+$GLOBALS['TL_LANG']['tl_module']['iso_emptyMessage'][0] = 'Określ wiadomość dla pustych modułów';
+$GLOBALS['TL_LANG']['tl_module']['iso_emptyMessage'][1] = 'Ustaw wiadomość jeśli nie ma nic do wyświetlenia (pusta lista produktów, pusty koszyk, itp.).';
+$GLOBALS['TL_LANG']['tl_module']['iso_noProducts'][0] = 'Wiadomość dla pustych modułów';
+$GLOBALS['TL_LANG']['tl_module']['iso_noProducts'][1] = 'Wprowadź wiadomość jeśli nie ma nic do wyświetlenia (pusta lista produktów, pusty koszyk, itp.).';
+$GLOBALS['TL_LANG']['tl_module']['iso_emptyFilter'][0] = 'Określi wiadomość, jeżeli nie jest ustawiony żaden filtr.';
+$GLOBALS['TL_LANG']['tl_module']['iso_emptyFilter'][1] = 'Ustaw własną wiadomość, jeżeli nie jest ustawiony żaden filtr.';
+$GLOBALS['TL_LANG']['tl_module']['iso_noFilter'][0] = 'Wiadomość, jeżeli nie jest ustawiony żaden filtr.';
+$GLOBALS['TL_LANG']['tl_module']['iso_noFilter'][1] = 'Proszę wprowadzić wiadomość, jeżeli nie jest ustawiony żaden filtr.';
+$GLOBALS['TL_LANG']['tl_module']['iso_category_scope'][0] = 'Zakres kategorii';
+$GLOBALS['TL_LANG']['tl_module']['iso_category_scope'][1] = 'Określ zakres listy prodkutów.';
+$GLOBALS['TL_LANG']['tl_module']['iso_list_where'][0] = 'Warunek';
+$GLOBALS['TL_LANG']['tl_module']['iso_list_where'][1] = 'Tutaj możesz wprowadzić warunek SQL do filtrowania produktów. Dla wszystkich pól musisz użyć prefiksu "p1." (np. <em>p1.featured=1</em> or <em>p1.color!=\'red\'</em>)!';
+$GLOBALS['TL_LANG']['tl_module']['iso_filterModules'][0] = 'Moduły filtrów';
+$GLOBALS['TL_LANG']['tl_module']['iso_filterModules'][1] = 'Wybierz moduły filtrów, które chcesz uwzględnić dla tej listy produktów.';
+$GLOBALS['TL_LANG']['tl_module']['iso_filterFields'][0] = 'Włączone filtry';
+$GLOBALS['TL_LANG']['tl_module']['iso_filterFields'][1] = 'Wybierz filtry do włączenia.';
+$GLOBALS['TL_LANG']['tl_module']['iso_filterHideSingle'][0] = 'Ukryj pojedyncze opcje';
+$GLOBALS['TL_LANG']['tl_module']['iso_filterHideSingle'][1] = 'Ukryj pole filtru, jeżeli jest tylko jedna opcja.';
+$GLOBALS['TL_LANG']['tl_module']['iso_searchFields'][0] = 'Włączone pola wyszukiwania';
+$GLOBALS['TL_LANG']['tl_module']['iso_searchFields'][1] = 'Proszę wybrać pola wyszukiwania do włączenia.';
+$GLOBALS['TL_LANG']['tl_module']['iso_searchAutocomplete'][0] = 'Autouzupełnianie pola wyszukiwania';
+$GLOBALS['TL_LANG']['tl_module']['iso_searchAutocomplete'][1] = 'Jeśli zaznaczysz to pole, wyszukiwarka będzie autouzupełniona przez wartości tego pola.';
+$GLOBALS['TL_LANG']['tl_module']['iso_sortingFields'][0] = 'Włączone pola sortowania';
+$GLOBALS['TL_LANG']['tl_module']['iso_sortingFields'][1] = 'Proszę wybrać pola sortowania do włączenia.';
+$GLOBALS['TL_LANG']['tl_module']['iso_newFilter'][0] = 'Filtrowanie dla nowych produktów';
+$GLOBALS['TL_LANG']['tl_module']['iso_newFilter'][1] = 'Jeśli skonfigurowałeś oznaczanie produktów jako "nowe" w konfiguracji sklepu, możesz wyświetlić stare, nowe lub wszystkie produkty.';
+$GLOBALS['TL_LANG']['tl_module']['iso_newFilter']['show_all'] = 'Pokaż wszystkie produkty';
+$GLOBALS['TL_LANG']['tl_module']['iso_newFilter']['show_new'] = 'Pokaż tylko nowe produkty';
+$GLOBALS['TL_LANG']['tl_module']['iso_newFilter']['show_old'] = 'Pokaż tylko stare produkty';
+$GLOBALS['TL_LANG']['tl_module']['iso_enableLimit'][0] = 'Włącz limit rekordów na stronę';
+$GLOBALS['TL_LANG']['tl_module']['iso_enableLimit'][1] = 'Pozwala użytkownikowi wybrać, ile rekordów zostanie pokazanych na jednej stronie.';
+$GLOBALS['TL_LANG']['tl_module']['iso_perPage'][0] = 'Opcje rekordów na stronę';
+$GLOBALS['TL_LANG']['tl_module']['iso_perPage'][1] = 'Wprowadź listę wartości oddzieloną przecinkami, które będą użyte w menu dropdown. Pierwsza opcja zostanie użyta jako domyślna wartość. Wartości zostaną automatycznie posortowane wg. liczby.';
+$GLOBALS['TL_LANG']['tl_module']['iso_cart_jumpTo'][0] = 'Strona koszyka produktów';
+$GLOBALS['TL_LANG']['tl_module']['iso_cart_jumpTo'][1] = 'Wybierz stronę, na którą zostanie przekierowany użytkownik, gdy zażąda pełnego widoku koszyka.';
+$GLOBALS['TL_LANG']['tl_module']['iso_checkout_jumpTo'][0] = 'Strona kasy';
+$GLOBALS['TL_LANG']['tl_module']['iso_checkout_jumpTo'][1] = 'Wybierz stronę, na którą zostanie przekierowany użytkownik, gdy zakończy transakcję.';
+$GLOBALS['TL_LANG']['tl_module']['iso_listingSortField'][0] = 'Domyślne pole sortujące';
+$GLOBALS['TL_LANG']['tl_module']['iso_listingSortField'][1] = 'Wybierz pole sortujące, które będzie użyte po pierwszym załadowaniu strony.';
+$GLOBALS['TL_LANG']['tl_module']['iso_listingSortDirection'][0] = 'Domyślny kierunek sortujący';
+$GLOBALS['TL_LANG']['tl_module']['iso_listingSortDirection'][1] = 'Wybierz domyślne kierunek sortujący.';
+$GLOBALS['TL_LANG']['tl_module']['iso_buttons'][0] = 'Przyciski';
+$GLOBALS['TL_LANG']['tl_module']['iso_buttons'][1] = 'Wybierz przyciski, które chcesz wyświetlić.';
+$GLOBALS['TL_LANG']['tl_module']['iso_related_categories'][0] = 'Powiązane kategorie';
+$GLOBALS['TL_LANG']['tl_module']['iso_related_categories'][1] = 'Wybierz kategorie z których będą pokazane produkty.';
+$GLOBALS['TL_LANG']['tl_module']['iso_includeMessages'][0] = 'Dołącz wiadomości';
+$GLOBALS['TL_LANG']['tl_module']['iso_includeMessages'][1] = 'To ustawienie pozwala modułowi na dołączenie wszelakich błędów, powiadomień czy potwierdzeń, z którymi odwiedzający powinien się zapoznać.';
+$GLOBALS['TL_LANG']['tl_module']['iso_continueShopping'][0] = 'Włącz przycisk "Kontynuuj zakupy"';
+$GLOBALS['TL_LANG']['tl_module']['iso_continueShopping'][1] = 'Dodaj link do właśnie dodanego produktu do koszyka.';
+$GLOBALS['TL_LANG']['tl_module']['iso_checkout_method_ref']['member'] = 'Wymagane logowanie/rejestracja';
+$GLOBALS['TL_LANG']['tl_module']['iso_checkout_method_ref']['guest'] = 'Kasa tylko dla gości';
+$GLOBALS['TL_LANG']['tl_module']['iso_checkout_method_ref']['both'] = 'Oba dozwolone';
+$GLOBALS['TL_LANG']['tl_module']['iso_category_scope_ref']['global'][0] = 'Wszystkie kategorie';
+$GLOBALS['TL_LANG']['tl_module']['iso_category_scope_ref']['global'][1] = 'Pokaż wszystkie produkty, które są przypisane do strony aktywnego drzewa stron (na podstawie punktu startowego).';
+$GLOBALS['TL_LANG']['tl_module']['iso_category_scope_ref']['current_and_first_child'][0] = 'Aktywna kategoria i pierwsza podkategoria';
+$GLOBALS['TL_LANG']['tl_module']['iso_category_scope_ref']['current_and_first_child'][1] = 'Pokaż wszystkie produkty, które są przypisane do aktywnej strony lub podstron pierwszego poziomu.';
+$GLOBALS['TL_LANG']['tl_module']['iso_category_scope_ref']['current_and_all_children'][0] = 'Aktywna kategoria i wszystkie podkategorie';
+$GLOBALS['TL_LANG']['tl_module']['iso_category_scope_ref']['current_and_all_children'][1] = 'Pokaż wszystkie produkty, które są przypisane do aktywnej strony lub jakiejkolwiek podstrony.';
+$GLOBALS['TL_LANG']['tl_module']['iso_category_scope_ref']['current_category'][0] = 'Aktywna kategoria';
+$GLOBALS['TL_LANG']['tl_module']['iso_category_scope_ref']['current_category'][1] = 'Pokaż wszystkie produkty, które są przypisane do aktywnej strony (domyślnie).';
+$GLOBALS['TL_LANG']['tl_module']['iso_category_scope_ref']['parent'][0] = 'Nadrzędna kategoria';
+$GLOBALS['TL_LANG']['tl_module']['iso_category_scope_ref']['parent'][1] = 'Pokaż wszystkie produkty, które są przypisane do strony nadrzędnej aktywnej strony.';
+$GLOBALS['TL_LANG']['tl_module']['iso_category_scope_ref']['product'][0] = 'Kategorie aktywnego produktu';
+$GLOBALS['TL_LANG']['tl_module']['iso_category_scope_ref']['product'][1] = 'Pokaż wszystkie produkty, które są przypisane do tych samych stron co aktywny produkt.';
+$GLOBALS['TL_LANG']['tl_module']['iso_category_scope_ref']['article'][0] = 'Kategoria artykułu';
+$GLOBALS['TL_LANG']['tl_module']['iso_category_scope_ref']['article'][1] = 'Jeśli umieścisz moduł w artykule, pokaże produkty przypisane do strony nadrzędnej tego artykułu, nawet jeśli umieścisz artykuł na innej stronie (np. poprzez insert tag).';
+$GLOBALS['TL_LANG']['tl_module']['sortingDirection']['ASC'] = 'ASC';
+$GLOBALS['TL_LANG']['tl_module']['sortingDirection']['DESC'] = 'DESC';

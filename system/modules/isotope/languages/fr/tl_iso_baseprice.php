@@ -1,51 +1,33 @@
-<?php if (!defined('TL_ROOT')) die('You can not access this file directly!');
+<?php
 
 /**
- * Contao Open Source CMS
- * Copyright (C) 2005-2010 Leo Feyer
- *
- * Formerly known as TYPOlight Open Source CMS.
- *
- * This program is free software: you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation, either
- * version 3 of the License, or (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
- * Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public
- * License along with this program. If not, please visit the Free
- * Software Foundation website at <http://www.gnu.org/licenses/>.
- *
- * PHP version 5
- * @copyright  Isotope eCommerce Workgroup 2009-2012
- * @author     Andreas Schempp <andreas@schempp.ch>
- * @license    http://opensource.org/licenses/lgpl-3.0.html
+ * Isotope eCommerce for Contao Open Source CMS
+ * 
+ * Copyright (C) 2009-2013 terminal42 gmbh & Isotope eCommerce Workgroup
+ * 
+ * Translations are managed using Transifex. To create a new translation
+ * or to help to maintain an existing one, please register at transifex.com.
+ * 
+ * @link http://help.transifex.com/intro/translating.html
+ * @link https://www.transifex.com/projects/i/isotope/language/fr/
+ * 
+ * @license http://www.gnu.org/licenses/lgpl-3.0.html
  */
 
-
-/**
- * Fields
- */
-$GLOBALS['TL_LANG']['tl_iso_baseprice']['name']  = array('Nom', 'Entrez un nom pour ce prix de base.');
-$GLOBALS['TL_LANG']['tl_iso_baseprice']['label'] = array('Label', 'Entrez un label pour ce prix de base (par exemple : "%s par gramme".)');
-
-
-/**
- * Buttons
- */
-$GLOBALS['TL_LANG']['tl_iso_baseprice']['new']    = array('Nouveau prix de base', 'Créer un nouveau prix de base');
-$GLOBALS['TL_LANG']['tl_iso_baseprice']['edit']   = array('Éditer un prix de base', 'Éditer le prix de base ID %s');
-$GLOBALS['TL_LANG']['tl_iso_baseprice']['copy']   = array('Dupliquer un prix de base', 'Dupliquer le prix de base ID %s');
-$GLOBALS['TL_LANG']['tl_iso_baseprice']['delete'] = array('Supprimer un prix de base', 'Supprimer le prix de base ID %s');
-$GLOBALS['TL_LANG']['tl_iso_baseprice']['show']   = array('Détails du prix de base', 'Afficher les détails du prix de base ID %s');
-
-
-/**
- * Legends
- */
+$GLOBALS['TL_LANG']['tl_iso_baseprice']['name'][0] = 'Nom';
+$GLOBALS['TL_LANG']['tl_iso_baseprice']['name'][1] = 'Entrez un nom pour ce prix de base.';
+$GLOBALS['TL_LANG']['tl_iso_baseprice']['amount'][0] = 'Quantité';
+$GLOBALS['TL_LANG']['tl_iso_baseprice']['amount'][1] = 'Entrez la quantité (ex: "100").';
+$GLOBALS['TL_LANG']['tl_iso_baseprice']['label'][0] = 'Label';
+$GLOBALS['TL_LANG']['tl_iso_baseprice']['label'][1] = 'Entrez un label pour ce prix de base (par exemple : "%s par 100g".)';
+$GLOBALS['TL_LANG']['tl_iso_baseprice']['new'][0] = 'Nouveau prix de base';
+$GLOBALS['TL_LANG']['tl_iso_baseprice']['new'][1] = 'Créer un nouveau prix de base';
+$GLOBALS['TL_LANG']['tl_iso_baseprice']['edit'][0] = 'Éditer un prix de base';
+$GLOBALS['TL_LANG']['tl_iso_baseprice']['edit'][1] = 'Éditer le prix de base ID %s';
+$GLOBALS['TL_LANG']['tl_iso_baseprice']['copy'][0] = 'Dupliquer un prix de base';
+$GLOBALS['TL_LANG']['tl_iso_baseprice']['copy'][1] = 'Dupliquer le prix de base ID %s';
+$GLOBALS['TL_LANG']['tl_iso_baseprice']['delete'][0] = 'Supprimer un prix de base';
+$GLOBALS['TL_LANG']['tl_iso_baseprice']['delete'][1] = 'Supprimer le prix de base ID %s';
+$GLOBALS['TL_LANG']['tl_iso_baseprice']['show'][0] = 'Détails du prix de base';
+$GLOBALS['TL_LANG']['tl_iso_baseprice']['show'][1] = 'Afficher les détails du prix de base ID %s';
 $GLOBALS['TL_LANG']['tl_iso_baseprice']['name_legend'] = 'Prix de base';
-

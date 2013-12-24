@@ -3,33 +3,39 @@
 /**
  * Isotope eCommerce for Contao Open Source CMS
  *
- * Copyright (C) 2009-2012 Isotope eCommerce Workgroup
+ * Copyright (C) 2009-2013 terminal42 gmbh & Isotope eCommerce Workgroup
  *
  * @package    Isotope
- * @link       http://www.isotopeecommerce.com
- * @license    http://opensource.org/licenses/lgpl-3.0.html LGPL
- *
- * @author     Andreas Schempp <andreas.schempp@terminal42.ch>
+ * @link       http://isotopeecommerce.org
+ * @license    http://opensource.org/licenses/lgpl-3.0.html
  */
 
 
-$GLOBALS['TL_HOOKS']['loadDataContainer'][]			= array('Isotope', 'loadProductsDataContainer');
-$GLOBALS['TL_HOOKS']['addCustomRegexp'][]			= array('Isotope', 'validateRegexp');
-$GLOBALS['TL_HOOKS']['getSearchablePages'][]		= array('IsotopeFrontend', 'addProductsToSearchIndex');
-$GLOBALS['TL_HOOKS']['replaceInsertTags'][]			= array('IsotopeFrontend', 'replaceIsotopeTags');
-$GLOBALS['TL_HOOKS']['generatePage'][]				= array('IsotopeFrontend', 'injectMessages');
-$GLOBALS['TL_HOOKS']['executePreActions'][]			= array('ProductTree', 'executePreActions');
-$GLOBALS['TL_HOOKS']['executePostActions'][]		= array('ProductTree', 'executePostActions');
-$GLOBALS['TL_HOOKS']['translateUrlParameters'][]	= array('IsotopeFrontend', 'translateProductUrls');
-$GLOBALS['TL_HOOKS']['getSystemMessages'][]			= array('IsotopeBackend', 'getOrderMessages');
-$GLOBALS['TL_HOOKS']['sqlGetFromFile'][]			= array('IsotopeBackend', 'addAttributesToDBUpdate');
-$GLOBALS['TL_HOOKS']['getArticle'][]				= array('IsotopeFrontend', 'storeCurrentArticle');
-$GLOBALS['TL_HOOKS']['generateBreadcrumb'][]		= array('IsotopeFrontend', 'generateBreadcrumb');
-$GLOBALS['ISO_HOOKS']['buttons'][]					= array('Isotope', 'defaultButtons');
-$GLOBALS['ISO_HOOKS']['checkoutSurcharge'][]		= array('IsotopeFrontend', 'getShippingAndPaymentSurcharges');
+$GLOBALS['TL_HOOKS']['loadDataContainer'][]             = array('Isotope\Backend\Product\DcaManager', 'initialize');
+$GLOBALS['TL_HOOKS']['addCustomRegexp'][]               = array('Isotope\Isotope', 'validateRegexp');
+$GLOBALS['TL_HOOKS']['getPageIdFromUrl'][]              = array('Isotope\Frontend', 'loadReaderPageFromUrl');
+$GLOBALS['TL_HOOKS']['getPageLayout'][]                 = array('Isotope\Frontend', 'overrideReaderPage');
+$GLOBALS['TL_HOOKS']['getSearchablePages'][]            = array('Isotope\Frontend', 'addProductsToSearchIndex');
+$GLOBALS['TL_HOOKS']['replaceInsertTags'][]             = array('Isotope\Frontend', 'replaceIsotopeTags');
+$GLOBALS['TL_HOOKS']['generatePage'][]                  = array('Isotope\Frontend', 'injectScripts');
+$GLOBALS['TL_HOOKS']['executePreActions'][]             = array('Isotope\Backend', 'executePreActions');
+$GLOBALS['TL_HOOKS']['executePostActions'][]            = array('Isotope\Backend', 'executePostActions');
+$GLOBALS['TL_HOOKS']['translateUrlParameters'][]        = array('Isotope\Frontend', 'translateProductUrls');
+$GLOBALS['TL_HOOKS']['getSystemMessages'][]             = array('Isotope\Backend', 'getOrderMessages');
+$GLOBALS['TL_HOOKS']['getArticle'][]                    = array('Isotope\Frontend', 'storeCurrentArticle');
+$GLOBALS['TL_HOOKS']['generateBreadcrumb'][]            = array('Isotope\Frontend', 'addProductToBreadcrumb');
+$GLOBALS['ISO_HOOKS']['buttons'][]                      = array('Isotope\Isotope', 'defaultButtons');
+$GLOBALS['ISO_HOOKS']['findSurchargesForCollection'][]  = array('Isotope\Frontend', 'findShippingAndPaymentSurcharges');
 
-if (TL_MODE == 'FE')
-{
-	// Do not parse backend templates
-	$GLOBALS['TL_HOOKS']['parseTemplate'][]			= array('IsotopeFrontend', 'addNavigationClass');
+if (TL_MODE == 'FE') {
+    // Only limit countries in FE
+    $GLOBALS['TL_HOOKS']['loadDataContainer'][]        = array('Isotope\Backend\Member\Callback', 'limitCountries');
+}
+
+if (TL_MODE == 'BE') {
+    // Type agent help is only needed in back end
+    $GLOBALS['TL_HOOKS']['loadDataContainer'][]        = array('Isotope\Backend', 'loadTypeAgentHelp');
+
+    // Adjust the product groups manager
+    $GLOBALS['TL_HOOKS']['parseTemplate'][]            = array('Isotope\Backend', 'adjustGroupsManager');
 }

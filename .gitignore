@@ -3,6 +3,9 @@
 
 # Do not ignore ".gitignore"
 !.gitignore
+!.tx
+.tx/source/*
+!.tx/source/en
 !README.md
 !composer.json
 
@@ -15,5 +18,5 @@ system/drivers/*
 !system/modules
 system/modules/*
 !system/modules/isotope/
-!system/modules/isotope_multilingual/
+!system/modules/isotope_reports/
 !system/modules/isotope_rules/
