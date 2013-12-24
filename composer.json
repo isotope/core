@@ -49,7 +49,7 @@
                 "system/modules/isotope_rules": "system/modules/isotope_rules"
             },
             "runonce": [
-                "system/modules/isotope/runonce/runonce.php"
+                "system/modules/isotope/config/upgrade.php"
             ]
         },
         "branch-alias": {
