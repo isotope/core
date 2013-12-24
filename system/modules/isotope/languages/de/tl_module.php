@@ -31,6 +31,7 @@ $GLOBALS['TL_LANG']['tl_module']['iso_hide_list'][1] = 'Blendet die Liste aus, w
 $GLOBALS['TL_LANG']['tl_module']['iso_use_quantity'][0] = 'Menge aktivieren';
 $GLOBALS['TL_LANG']['tl_module']['iso_use_quantity'][1] = 'Ermöglicht es den Nutzern anzugeben, dass 1 oder mehrere Stück eines Produkts gekauft werden sollen.';
 $GLOBALS['TL_LANG']['tl_module']['iso_display404Page'][0] = 'Eine 404 Fehlerseite anzeigen';
+$GLOBALS['TL_LANG']['tl_module']['iso_display404Page'][1] = 'Die 404-Fehlerseite anzeigen falls kein Produktalias in der URL vorhanden ist. Verwenden Sie diese Einstellung falls das Leser-Modul auf einer separaten Seite verwendet wird, die sonst nicht aufgerufen werden darf.';
 $GLOBALS['TL_LANG']['tl_module']['iso_checkout_method'][0] = 'Bestellvorgang-Art';
 $GLOBALS['TL_LANG']['tl_module']['iso_checkout_method'][1] = 'Wählen Sie eine Bestellvorgang-Art';
 $GLOBALS['TL_LANG']['tl_module']['iso_login_jumpTo'][0] = 'Kasse-Anmeldeseite';
