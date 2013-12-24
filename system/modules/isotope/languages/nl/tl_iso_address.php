@@ -15,7 +15,12 @@
  */
 
 $GLOBALS['TL_LANG']['tl_iso_address']['store_id'][0] = 'Winkel ID';
+$GLOBALS['TL_LANG']['tl_iso_address']['label'][0] = 'Label';
+$GLOBALS['TL_LANG']['tl_iso_address']['label'][1] = 'Voer alstublieft een eigen label in voor dit adres.';
 $GLOBALS['TL_LANG']['tl_iso_address']['gender'][0] = 'Geslacht';
+$GLOBALS['TL_LANG']['tl_iso_address']['gender'][1] = 'Voer alstublieft uw geslacht in.';
+$GLOBALS['TL_LANG']['tl_iso_address']['salutation'][0] = 'Aanhef';
+$GLOBALS['TL_LANG']['tl_iso_address']['salutation'][1] = 'Voer alstublieft uw titel in (Dhr., Mevr., Dr., Prof.). ';
 $GLOBALS['TL_LANG']['tl_iso_address']['firstname'][0] = 'Voornaam';
 $GLOBALS['TL_LANG']['tl_iso_address']['firstname'][1] = 'Voer alstublieft uw voornaam in.';
 $GLOBALS['TL_LANG']['tl_iso_address']['lastname'][0] = 'Achternaam';

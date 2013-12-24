@@ -41,8 +41,11 @@
       <trans-unit id="tl_iso_product_collection.shipping_id.0">
         <source>Shipping method</source>
       </trans-unit>
-      <trans-unit id="tl_iso_product_collection.address1_id.0">
-        <source>Primary address</source>
+      <trans-unit id="tl_iso_product_collection.billing_address_id.0">
+        <source>Billing address</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_product_collection.shipping_address_id.0">
+        <source>Shipping address</source>
       </trans-unit>
       <trans-unit id="tl_iso_product_collection.subtotal.0">
         <source>Subtotal</source>

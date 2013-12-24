@@ -15,3 +15,6 @@
  */
 
 $GLOBALS['TL_LANG']['tl_settings']['iso_cartTimeout'][0] = 'Okres ważności koszyka gości';
+$GLOBALS['TL_LANG']['tl_settings']['iso_cartTimeout'][1] = 'Wprowadź maksymalny czas wartości koszyka gości w sekundach  (30 dni = 2592000 sekund).';
+$GLOBALS['TL_LANG']['tl_settings']['iso_orderTimeout'][0] = 'Limit czasu zamówienia';
+$GLOBALS['TL_LANG']['tl_settings']['iso_orderTimeout'][1] = 'Wprowadź jak długo zamówienie zostanie w bazie danych, jeśli złożenie zamówienia nie zakończyło się sukcesem (7 dni = 604800 sekund).';

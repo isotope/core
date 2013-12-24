@@ -31,6 +31,7 @@ $GLOBALS['TL_LANG']['tl_module']['iso_hide_list'][1] = 'Ukryj listę produktów 
 $GLOBALS['TL_LANG']['tl_module']['iso_use_quantity'][0] = 'Dowolna ilość';
 $GLOBALS['TL_LANG']['tl_module']['iso_use_quantity'][1] = 'Pozwala użytkownikowi na określenie ilości produktu, który chce kupić.';
 $GLOBALS['TL_LANG']['tl_module']['iso_display404Page'][0] = 'Wyświetl stronę 404';
+$GLOBALS['TL_LANG']['tl_module']['iso_display404Page'][1] = 'Wyświetl stronę 404, jeśli nie ma aliasu produktu w URL. Używaj tego jeśli moduł czytnika jest na osobnej stronie, która nie powinna być dostępna w żadnym innym przypadku.';
 $GLOBALS['TL_LANG']['tl_module']['iso_checkout_method'][0] = 'Metody kasy';
 $GLOBALS['TL_LANG']['tl_module']['iso_checkout_method'][1] = 'Proszę wybrać metodę kasy.';
 $GLOBALS['TL_LANG']['tl_module']['iso_login_jumpTo'][0] = 'Strona logowania do kasy';

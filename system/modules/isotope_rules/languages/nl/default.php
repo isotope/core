@@ -14,3 +14,6 @@
  * @license http://www.gnu.org/licenses/lgpl-3.0.html
  */
 
+$GLOBALS['TL_LANG']['MSC']['couponHeadline'] = 'Actiecodes toepassen';
+$GLOBALS['TL_LANG']['MSC']['couponLabel'] = 'Actiecode';
+$GLOBALS['TL_LANG']['MSC']['couponApply'] = 'Toepassen';

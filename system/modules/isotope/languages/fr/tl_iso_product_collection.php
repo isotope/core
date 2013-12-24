@@ -27,7 +27,6 @@ $GLOBALS['TL_LANG']['tl_iso_product_collection']['date_shipped'][1] = 'Saisir la
 $GLOBALS['TL_LANG']['tl_iso_product_collection']['config_id'][0] = 'Configuration de boutique';
 $GLOBALS['TL_LANG']['tl_iso_product_collection']['payment_id'][0] = 'Mode de paiement';
 $GLOBALS['TL_LANG']['tl_iso_product_collection']['shipping_id'][0] = 'Mode de livraison';
-$GLOBALS['TL_LANG']['tl_iso_product_collection']['address1_id'][0] = 'Adresse primaire';
 $GLOBALS['TL_LANG']['tl_iso_product_collection']['subtotal'][0] = 'Sous-total';
 $GLOBALS['TL_LANG']['tl_iso_product_collection']['tax_free_subtotal'][0] = 'Sous-total sans taxe';
 $GLOBALS['TL_LANG']['tl_iso_product_collection']['total'][0] = 'Total général';

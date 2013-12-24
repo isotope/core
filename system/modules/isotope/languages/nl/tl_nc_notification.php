@@ -14,3 +14,6 @@
  * @license http://www.gnu.org/licenses/lgpl-3.0.html
  */
 
+$GLOBALS['TL_LANG']['tl_nc_notification']['iso_gallery'][0] = 'Gallerij';
+$GLOBALS['TL_LANG']['tl_nc_notification']['iso_document'][0] = 'Document';
+$GLOBALS['TL_LANG']['tl_nc_notification']['type']['isotope'] = 'Isotope eCommerce';
