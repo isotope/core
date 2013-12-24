@@ -314,10 +314,6 @@ abstract class ProductCollection extends TypeAgent
      */
     public function getShippingAddress()
     {
-        if (!$this->hasPayment()) {
-            return $this->getRelated('address1_id');
-        }
-
         return $this->hasShipping() ? $this->getRelated('address2_id') : null;
     }
 
@@ -328,16 +324,9 @@ abstract class ProductCollection extends TypeAgent
     public function setShippingAddress(Address $objAddress = null)
     {
         if (null === $objAddress || $objAddress->id < 1) {
-            $intId = 0;
+            $this->address2_id = 0;
         } else {
-            $intId = $objAddress->id;
-        }
-
-        // If the collection does not have a payment, the shipping address is the primary address for the collection
-        if (!$this->requiresPayment()) {
-            $this->address1_id = $intId;
-        } else {
-            $this->address2_id = $intId;
+            $this->address2_id = $objAddress->id;
         }
     }
 
