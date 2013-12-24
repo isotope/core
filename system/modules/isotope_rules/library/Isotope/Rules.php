@@ -12,12 +12,11 @@
 
 namespace Isotope;
 
-use Isotope\Isotope;
-use Isotope\Interfaces\IsotopeProduct;
+use Isotope\Interfaces\IsotopePrice;
 use Isotope\Interfaces\IsotopeProductCollection;
-use Isotope\Model\Rule;
 use Isotope\Model\ProductCollection\Cart;
 use Isotope\Model\ProductCollectionSurcharge\Rule as RuleSurcharge;
+use Isotope\Model\Rule;
 
 
 /**
@@ -81,22 +80,21 @@ class Rules extends \Controller
      */
     public function calculatePrice($fltPrice, $objSource, $strField, $intTaxClass)
     {
-        if ($objSource instanceof IsotopeProduct && ($strField == 'price' || $strField == 'low_price'))
-        {
-            $objRules = Rule::findByProduct($objSource, $strField, $fltPrice);
+        if ($objSource instanceof IsotopePrice && ($strField == 'price' || $strField == 'low_price')) {
+
+            // @todo try not to use getRelated() because it loads variants
+            $objRules = Rule::findByProduct($objSource->getRelated('pid'), $strField, $fltPrice);
 
             if (null !== $objRules) {
-                while ($objRules->next())
-                {
+                while ($objRules->next()) {
                     // Check cart quantity
-                    if ($objRules->minItemQuantity > 0 || $objRules->maxItemQuantity > 0)
-                    {
+                    if ($objRules->minItemQuantity > 0 || $objRules->maxItemQuantity > 0) {
                         if ($objRules->quantityMode == 'cart_products') {
                             $intTotal = Isotope::getCart()->countItems();
                         } elseif ($objRules->quantityMode == 'cart_items') {
                             $intTotal = Isotope::getCart()->sumItemsQuantity();
                         } else {
-                            $objItem = Isotope::getCart()->getItemForProduct($objSource);
+                            $objItem = Isotope::getCart()->getItemForProduct($objSource->getRelated('pid'));
                             $intTotal = (null === $objItem) ? 0 : $objItem->quantity;
                         }
 
@@ -172,7 +170,7 @@ class Rules extends \Controller
             if (!empty($arrDropped)) {
                 // @todo show dropped coupons
                 $arrCoupons = array_diff($arrCoupons, $arrDropped);
-                \Database::getInstance()->query("UPDATE tl_iso_cart SET coupons='" . serialize($arrCoupons) . "' WHERE id=".(int) Isotope::getCart()->id);
+                \Database::getInstance()->query("UPDATE tl_iso_cart SET coupons='" . serialize($arrCoupons) . "' WHERE id=" . (int) Isotope::getCart()->id);
             }
         }
 
@@ -194,7 +192,7 @@ class Rules extends \Controller
             $arrCoupons = array();
         }
 
-        $strCoupon = \Input::get('coupon_'.$objModule->id);
+        $strCoupon = \Input::get('coupon_' . $objModule->id);
 
         if ($strCoupon == '') {
             $strCoupon = \Input::get('coupon');
@@ -205,8 +203,7 @@ class Rules extends \Controller
 
             if (null === $objRule) {
                 $_SESSION['COUPON_FAILED'][$objModule->id] = sprintf($GLOBALS['TL_LANG']['MSC']['couponInvalid'], $strCoupon);
-            }
-            else {
+            } else {
 
                 if (in_array(strtolower($strCoupon), array_map('strtolower', $arrCoupons))) {
                     $_SESSION['COUPON_FAILED'][$objModule->id] = sprintf($GLOBALS['TL_LANG']['MSC']['couponDuplicate'], $strCoupon);
@@ -291,7 +288,7 @@ class Rules extends \Controller
         if (!empty($arrRules)) {
             $time = time();
 
-            \Database::getInstance()->query("INSERT INTO tl_iso_rule_usage (pid,tstamp,order_id,config_id,member_id) VALUES (" . implode(", $time, {$objOrder->id}, ".(int) Isotope::getConfig()->id.", {$objOrder->member}), (", $arrRules) . ", $time, {$objOrder->id}, ".(int) Isotope::getConfig()->id.", {$objOrder->member})");
+            \Database::getInstance()->query("INSERT INTO tl_iso_rule_usage (pid,tstamp,order_id,config_id,member_id) VALUES (" . implode(", $time, {$objOrder->id}, " . (int) Isotope::getConfig()->id . ", {$objOrder->member}), (", $arrRules) . ", $time, {$objOrder->id}, " . (int) Isotope::getConfig()->id . ", {$objOrder->member})");
         }
 
         return true;
@@ -303,7 +300,7 @@ class Rules extends \Controller
      */
     public function cleanRuleUsages(&$objModule)
     {
-        \Database::getInstance()->query("DELETE FROM tl_iso_rule_usage WHERE pid=(SELECT id FROM tl_iso_product_collection WHERE type='order' AND source_collection_id=".(int) Isotope::getCart()->id.")");
+        \Database::getInstance()->query("DELETE FROM tl_iso_rule_usage WHERE pid=(SELECT id FROM tl_iso_product_collection WHERE type='order' AND source_collection_id=" . (int) Isotope::getCart()->id . ")");
 
         return '';
     }

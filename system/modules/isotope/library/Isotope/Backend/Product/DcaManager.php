@@ -44,7 +44,6 @@ class DcaManager extends \Backend
         $this->checkFeatures();
         $this->addBreadcrumb();
         $this->buildPaletteString();
-        $this->addMoveAllFeature();
         $this->changeVariantColumns();
     }
 
@@ -336,31 +335,6 @@ class DcaManager extends \Backend
     }
 
     /**
-     * Add a script that will handle "move all" action
-     */
-    protected function addMoveAllFeature()
-    {
-        if (\Input::get('act') == 'select' && !\Input::get('id')) {
-            $GLOBALS['TL_MOOTOOLS'][] = "
-<script>
-window.addEvent('domready', function() {
-  $('cut').addEvents({
-    'click': function(e) {
-      e.preventDefault();
-      Isotope.openModalGroupSelector({'width':765,'title':'" . specialchars($GLOBALS['TL_LANG']['tl_iso_product']['product_groups'][0]) . "','url':'system/modules/isotope/group.php?do=" . \Input::get('do') . "&amp;table=" . \Isotope\Model\Group::getTable() . "&amp;field=gid&amp;value=" . \Session::getInstance()->get('iso_products_gid') . "','action':'moveProducts','trigger':$(this)});
-    },
-    'closeModal': function() {
-      var form = $('tl_select'),
-          hidden = new Element('input', { type:'hidden', name:'cut' }).inject(form.getElement('.tl_formbody'), 'top');
-      form.submit();
-    }
-  });
-});
-</script>";
-        }
-    }
-
-    /**
      * Change the displayed columns in the variants view
      */
     public function changeVariantColumns()
@@ -406,7 +380,7 @@ window.addEvent('domready', function() {
 
         // Make all column fields sortable
         foreach ($GLOBALS['TL_DCA'][$objProduct->getTable()]['fields'] as $name => $arrField) {
-            $GLOBALS['TL_DCA']['tl_iso_product']['fields'][$name]['sorting'] = ($name != 'price' && in_array($name, $arrFields));
+            $GLOBALS['TL_DCA']['tl_iso_product']['fields'][$name]['sorting'] = ($name != 'price' && $name != 'variantFields' && in_array($name, $arrFields));
         }
     }
 

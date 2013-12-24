@@ -54,6 +54,30 @@ class ProductCollectionItem extends \Model
 
 
     /**
+     * Check if collection item is available
+     * @return  bool
+     */
+    public function isAvailable()
+    {
+        if ($this->isLocked()) {
+            return true;
+        }
+
+        if (!$this->hasProduct() || !$this->getProduct()->isAvailableForCollection($this->getRelated('pid'))) {
+            return false;
+        }
+
+        $arrOptions = $this->getOptions();
+        foreach ($this->getProduct()->getOptions() as $k => $v) {
+            if ($arrOptions[$k] !== $v) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    /**
      * Return true if product collection item is locked
      */
     public function isLocked()
@@ -90,11 +114,6 @@ class ProductCollectionItem extends \Model
             }
 
             $this->objProduct = $strClass::findByPk($this->product_id);
-
-            $arrOptions = deserialize($this->options);
-            if (!empty($arrOptions) && is_array($arrOptions)) {
-                $this->objProduct->mergeRow($arrOptions);
-            }
         }
 
         return $this->objProduct;
@@ -137,17 +156,9 @@ class ProductCollectionItem extends \Model
      */
     public function getOptions()
     {
-        if ($this->isLocked() || !$this->hasProduct()) {
-            $arrOptions = deserialize($this->options);
+        $arrOptions = deserialize($this->options);
 
-            if (!is_array($arrOptions)) {
-                $arrOptions = array();
-            }
-        } else {
-            $arrOptions = $this->getProduct()->getOptions();
-        }
-
-        return $arrOptions;
+        return is_array($arrOptions) ? $arrOptions : array();
     }
 
 

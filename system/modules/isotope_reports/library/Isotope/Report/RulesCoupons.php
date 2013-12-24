@@ -16,13 +16,13 @@ namespace Isotope\Report;
 class RulesCoupons extends Report
 {
 
-	public function generate()
-	{
-		return '<p class="tl_gerror">This report is not implemented yet. It will show your statistics about coupon usage.</p>';
-	}
+    public function generate()
+    {
+        return '<p class="tl_gerror">This report is not implemented yet. It will show your statistics about coupon usage.</p>';
+    }
 
-	protected function compile()
-	{
-	}
+    protected function compile()
+    {
+    }
 }
 

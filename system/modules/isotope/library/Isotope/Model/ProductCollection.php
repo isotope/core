@@ -292,19 +292,19 @@ abstract class ProductCollection extends TypeAgent
      */
     public function getBillingAddress()
     {
-        return $this->getRelated('address1_id');
+        return $this->getRelated('billing_address_id');
     }
 
     /**
-     * Set billing address for collectino
-     * @param   Address
+     * Set billing address for collection
+     * @param   Address|null
      */
-    public function setBillingAddress(Address $objAddress)
+    public function setBillingAddress(Address $objAddress = null)
     {
         if (null === $objAddress || $objAddress->id < 1) {
-            $this->address1_id = 0;
+            $this->billing_address_id = 0;
         } else {
-            $this->address1_id = $objAddress->id;
+            $this->billing_address_id = $objAddress->id;
         }
     }
 
@@ -314,30 +314,19 @@ abstract class ProductCollection extends TypeAgent
      */
     public function getShippingAddress()
     {
-        if (!$this->hasPayment()) {
-            return $this->getRelated('address1_id');
-        }
-
-        return $this->hasShipping() ? $this->getRelated('address2_id') : null;
+        return $this->hasShipping() ? $this->getRelated('shipping_address_id') : null;
     }
 
     /**
      * Set shipping address for collection
-     * @param   Address
+     * @param   Address|null
      */
-    public function setShippingAddress(Address $objAddress)
+    public function setShippingAddress(Address $objAddress = null)
     {
         if (null === $objAddress || $objAddress->id < 1) {
-            $intId = 0;
+            $this->shipping_address_id = 0;
         } else {
-            $intId = $objAddress->id;
-        }
-
-        // If the collection does not have a payment, the shipping address is the primary address for the collection
-        if (!$this->requiresPayment()) {
-            $this->address1_id = $intId;
-        } else {
-            $this->address2_id = $intId;
+            $this->shipping_address_id = $objAddress->id;
         }
     }
 
@@ -607,7 +596,7 @@ abstract class ProductCollection extends TypeAgent
             $arrSurcharges = $this->getSurcharges();
 
             foreach ($arrSurcharges as $objSurcharge) {
-                if ($objSurcharge->addToTotal !== false) {
+                if ($objSurcharge->addToTotal) {
                     $fltAmount += $objSurcharge->total_price;
                 }
             }
@@ -634,7 +623,7 @@ abstract class ProductCollection extends TypeAgent
             $arrSurcharges = $this->getSurcharges();
 
             foreach ($arrSurcharges as $objSurcharge) {
-                if ($objSurcharge->addToTotal !== false) {
+                if ($objSurcharge->addToTotal) {
                     $fltAmount += $objSurcharge->tax_free_total_price;
                 }
             }
@@ -703,7 +692,7 @@ abstract class ProductCollection extends TypeAgent
                     }
 
                     // Add error message for items no longer available
-                    if (!$this->isLocked() && (!$objItem->hasProduct() || !$objItem->getProduct()->isAvailableForCollection($this))) {
+                    if (!$objItem->isAvailable()) {
                         $objItem->addError($GLOBALS['TL_LANG']['ERR']['collectionItemNotAvailable']);
                     }
 
@@ -969,9 +958,7 @@ abstract class ProductCollection extends TypeAgent
                 $this->arrSurcharges = array();
 
                 if (($objSurcharges = ProductCollectionSurcharge::findBy('pid', $this->id)) !== null) {
-                    while ($objSurcharges->next()) {
-                        $this->arrSurcharges[] = $objSurcharges->current();
-                    }
+                    $this->arrSurcharges[] = $objSurcharges->getModels();
                 }
             } else {
                 $this->arrSurcharges = ProductCollectionSurcharge::findForCollection($this);
@@ -1061,7 +1048,7 @@ abstract class ProductCollection extends TypeAgent
 
         $arrIds  = array();
         $time    = time();
-        $sorting = 0;
+        $sorting = 128;
 
         foreach ($objSource->getSurcharges() as $objSourceSurcharge) {
             $objSurcharge          = clone $objSourceSurcharge;
@@ -1074,7 +1061,7 @@ abstract class ProductCollection extends TypeAgent
 
             $objSurcharge->save();
 
-            $arrIds[$objSourceSurcharge->id] = $objSurcharge->id;
+            $arrIds[$sorting] = $objSurcharge->id;
 
             $sorting += 128;
         }

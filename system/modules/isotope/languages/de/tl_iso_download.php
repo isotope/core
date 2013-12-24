@@ -15,11 +15,11 @@
  */
 
 $GLOBALS['TL_LANG']['tl_iso_download']['singleSRC'][0] = 'Anhang';
-$GLOBALS['TL_LANG']['tl_iso_download']['singleSRC'][1] = 'Wählen Sie die Datei, die Sie verkaufen möchten.';
+$GLOBALS['TL_LANG']['tl_iso_download']['singleSRC'][1] = 'Wählen Sie die Datei oder den Ordnerinhalt, den Sie verkaufen möchten.';
 $GLOBALS['TL_LANG']['tl_iso_download']['downloads_allowed'][0] = 'Erlaubte Downloads';
-$GLOBALS['TL_LANG']['tl_iso_download']['downloads_allowed'][1] = 'Anzahl wie oft diese Datei pro Bestellung (multipliziert mit der verkauften Menge) heruntergeladen werden kann. Geben Sie eine 0 ein um unlimitierte Downloads zu gestatten.';
+$GLOBALS['TL_LANG']['tl_iso_download']['downloads_allowed'][1] = 'Anzahl wie oft diese Datei pro Bestellung (multipliziert mit der verkauften Menge) heruntergeladen werden kann. Geben Sie 0 ein um unlimitierte Downloads zu gestatten.';
 $GLOBALS['TL_LANG']['tl_iso_download']['expires'][0] = 'Ablauf';
-$GLOBALS['TL_LANG']['tl_iso_download']['expires'][1] = 'Definieren Sie, ob Downloads nach einer gewissen Dauer ablaufen sollen.';
+$GLOBALS['TL_LANG']['tl_iso_download']['expires'][1] = 'Legen Sie fest, ob Downloads nach einer gewissen Dauer ablaufen sollen.';
 $GLOBALS['TL_LANG']['tl_iso_download']['published'][0] = 'Download verfügbar';
 $GLOBALS['TL_LANG']['tl_iso_download']['published'][1] = 'Hier klicken um diesen Download in neuen Bestellungen einzubinden.';
 $GLOBALS['TL_LANG']['tl_iso_download']['new'][0] = 'Download hinzufügen';
@@ -32,8 +32,8 @@ $GLOBALS['TL_LANG']['tl_iso_download']['cut'][0] = 'Download verschieben';
 $GLOBALS['TL_LANG']['tl_iso_download']['cut'][1] = 'Download ID%s verschieben';
 $GLOBALS['TL_LANG']['tl_iso_download']['delete'][0] = 'Download löschen';
 $GLOBALS['TL_LANG']['tl_iso_download']['delete'][1] = 'Download mit der ID %s löschen.';
-$GLOBALS['TL_LANG']['tl_iso_download']['toggle'][0] = 'Download veröffentlichen/unveröffentlichten';
-$GLOBALS['TL_LANG']['tl_iso_download']['toggle'][1] = 'Download mit ID %s veröffentlichen/unveröffentlichten';
+$GLOBALS['TL_LANG']['tl_iso_download']['toggle'][0] = 'Download veröffentlichen/unveröffentlichen';
+$GLOBALS['TL_LANG']['tl_iso_download']['toggle'][1] = 'Download mit ID %s veröffentlichen/unveröffentlichen';
 $GLOBALS['TL_LANG']['tl_iso_download']['show'][0] = 'Download-Details';
 $GLOBALS['TL_LANG']['tl_iso_download']['show'][1] = 'Details vom Download mit der ID %s anzeigen.';
 $GLOBALS['TL_LANG']['tl_iso_download']['editheader'][0] = 'Produkt bearbeiten';

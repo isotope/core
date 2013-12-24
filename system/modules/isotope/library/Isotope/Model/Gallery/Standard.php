@@ -228,43 +228,39 @@ class Standard extends Gallery implements IsotopeGallery
         }
 
         if (is_file(TL_ROOT . '/' . $strFile)) {
-            $objFile = new \File($strFile);
+            foreach (array('main', 'gallery', 'lightbox') as $name) {
 
-            if ($objFile->isGdImage) {
-                foreach (array('main', 'gallery', 'lightbox') as $name) {
+                $size     = deserialize($this->{$name . '_size'});
+                $strImage = \Image::get($strFile, $size[0], $size[1], $size[2]);
 
-                    $size     = deserialize($this->{$name . '_size'});
-                    $strImage = \Image::get($strFile, $size[0], $size[1], $size[2]);
-
-                    if ($this->{$name . '_watermark_image'} != ''
-                        && $blnWatermark
-                        && ($objWatermark = \FilesModel::findByUuid($this->{$name . '_watermark_image'})) !== null
-                    ) {
-                        $strImage = \Haste\Image\Image::addWatermark($strImage, $objWatermark->path, $this->{$name . '_watermark_position'});
-                    }
-
-                    $arrSize = @getimagesize(TL_ROOT . '/' . $strImage);
-
-                    if (is_array($arrSize) && strlen($arrSize[3])) {
-                        $file[$name . '_size']      = $arrSize[3];
-                        $file[$name . '_imageSize'] = $arrSize;
-                    }
-
-                    $file['alt']  = specialchars($file['alt'], true);
-                    $file['desc'] = specialchars($file['desc'], true);
-
-                    $file[$name] = $strImage;
+                if ($this->{$name . '_watermark_image'} != ''
+                    && $blnWatermark
+                    && ($objWatermark = \FilesModel::findByUuid($this->{$name . '_watermark_image'})) !== null
+                ) {
+                    $strImage = \Haste\Image\Image::addWatermark($strImage, $objWatermark->path, $this->{$name . '_watermark_position'});
                 }
 
-                // Main image is first in the array
-                if ($blnMain) {
-                    array_unshift($this->arrFiles, $file);
-                } else {
-                    $this->arrFiles[] = $file;
+                $arrSize = @getimagesize(TL_ROOT . '/' . $strImage);
+
+                if (is_array($arrSize) && strlen($arrSize[3])) {
+                    $file[$name . '_size']      = $arrSize[3];
+                    $file[$name . '_imageSize'] = $arrSize;
                 }
 
-                return true;
+                $file['alt']  = specialchars($file['alt'], true);
+                $file['desc'] = specialchars($file['desc'], true);
+
+                $file[$name] = $strImage;
             }
+
+            // Main image is first in the array
+            if ($blnMain) {
+                array_unshift($this->arrFiles, $file);
+            } else {
+                $this->arrFiles[] = $file;
+            }
+
+            return true;
         }
 
         return false;

@@ -52,10 +52,10 @@ class Callback extends \Backend
      */
     public function updateDefault($varValue, $dc)
     {
-        $objAddress = ($dc instanceof \DataContainer) ? $dc->activeRecord : $dc;
-
-        if ($varValue == '1' && $objAddress->{$dc->field} != $varValue) {
-            \Database::getInstance()->execute("UPDATE tl_iso_address SET {$dc->field}='' WHERE pid={$objAddress->pid} AND ptable={$objAddress->ptable} AND store_id={$objAddress->store_id}");
+        if ($varValue == '1' && $dc->activeRecord->{$dc->field} != $varValue) {
+            \Database::getInstance()->prepare("
+                UPDATE " . \MemberModel::getTable() . " SET {$dc->field}='' WHERE pid=? AND ptable=? AND store_id=?
+            ")->execute($dc->activeRecord->pid, $dc->activeRecord->ptable, $dc->activeRecord->store_id);
         }
 
         return $varValue;

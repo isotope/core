@@ -12,10 +12,10 @@
 
 namespace Isotope\Module;
 
+use Haste\Form\Form;
 use Haste\Generator\RowClass;
 use Isotope\Isotope;
 use Isotope\Model\Address;
-use Isotope\Model\Config;
 
 /**
  * Class ModuleIsotopeAddressBook
@@ -72,7 +72,7 @@ class AddressBook extends Module
         $this->arrFields = array_unique(array_merge(Isotope::getConfig()->getBillingFields(), Isotope::getConfig()->getShippingFields()));
 
         // Return if there are not editable fields
-        if (($count = count($this->arrFields)) == 0 || ($count == 1 && $this->arrFields[0] == '')) {
+        if (empty($this->arrFields)) {
             return '';
         }
 
@@ -86,7 +86,7 @@ class AddressBook extends Module
      */
     protected function compile()
     {
-        $table = \Isotope\Model\Address::getTable();
+        $table = Address::getTable();
 
         \System::loadLanguageFile($table);
         $this->loadDataContainer($table);
@@ -136,7 +136,7 @@ class AddressBook extends Module
             while ($objAddresses->next()) {
                 $objAddress = $objAddresses->current();
 
-                $arrAddresses[] = array_merge($objAddress->getData(), array(
+                $arrAddresses[] = array_merge($objAddress->row(), array(
                     'id'                => $objAddresses->id,
                     'class'             => (($objAddress->isDefaultBilling ? 'default_billing' : '') . ($objAddress->isDefaultShipping ? ' default_shipping' : '')),
                     'text'              => $objAddress->generateHtml(),
@@ -171,156 +171,92 @@ class AddressBook extends Module
      */
     protected function edit($intAddressId = 0)
     {
-        $table = \Isotope\Model\Address::getTable();
+        $table = Address::getTable();
         \System::loadLanguageFile(\MemberModel::getTable());
 
-        if (!strlen($this->memberTpl)) {
-            $this->memberTpl = 'member_default';
-        }
-
         $this->Template            = new \Isotope\Template($this->memberTpl);
-        $this->Template->fields    = '';
-        $this->Template->tableless = $this->tableless;
+        $this->Template->hasError  = false;
+        $this->Template->slabel    = specialchars($GLOBALS['TL_LANG']['MSC']['saveData']);
 
-        $arrFields   = array();
-        $doNotSubmit = false;
-        $hasUpload   = false;
-        $row         = 0;
-
-        $objAddress = Address::findOneForMember($intAddressId, \FrontendUser::getInstance()->id);
+        if ($intAddressId === 0) {
+            $objAddress = Address::createForMember(\FrontendUser::getInstance()->id);
+        } else {
+            $objAddress = Address::findOneForMember($intAddressId, \FrontendUser::getInstance()->id);
+        }
 
         if (null === $objAddress) {
-            $objAddress = Address::createForMember(\FrontendUser::getInstance()->id);
+            global $objPage;
+            \Controller::redirect(\Controller::generateFrontendUrl($objPage->row()));
         }
 
-        // Build form
-        foreach ($this->arrFields as $field) {
+        $objForm = new Form($table . '_' . $this->id, 'POST', function($objForm) {
+            return \Input::post('FORM_SUBMIT') === $objForm->getFormId();
+        }, (boolean) $this->tableless);
 
-            // Make the address object look like a Data Container (for the save_callback)
-            $objAddress->field = $field;
+        $objForm->bindModel($objAddress);
 
-            // Reference DCA, it's faster to lookup than a deep array
-            $arrData = &$GLOBALS['TL_DCA'][$table]['fields'][$field];
+        // Add form fields and modify for the address book
+        $arrFields = $this->arrFields;
+        $objForm->addFieldsFromDca($table, function ($strName, &$arrDca) use ($arrFields) {
 
-            // Map checkboxWizard to regular checkbox widget
-            if ($arrData['inputType'] == 'checkboxWizard') {
-                $arrData['inputType'] = 'checkbox';
+            if (!in_array($strName, $arrFields) || !$arrDca['eval']['feEditable']) {
+                return false;
             }
 
-            $strClass = $GLOBALS['TL_FFL'][$arrData['inputType']];
-
-            // Continue if the class is not defined
-            if (!class_exists($strClass) || !$arrData['eval']['feEditable']) {
-                continue;
+            // Map checkboxWizard to regular checkbox widget
+            if ($arrDca['inputType'] == 'checkboxWizard') {
+                $arrDca['inputType'] = 'checkbox';
             }
 
             // Special field "country"
-            if ($field == 'country') {
-                $arrCountries = array();
-                $objConfigs   = Config::findBy('store_id', Isotope::getCart()->store_id);
-
-                while ($objConfigs->next()) {
-                    $arrCountries = array_merge($arrCountries, $objConfigs->getBillingCountries(), $objConfigs->getShippingCountries());
-                }
-
-                $arrData['options'] = array_values(array_intersect($arrData['options'], array_unique($arrCountries)));
-                $arrData['default'] = Isotope::getConfig()->billing_country;
+            if ($strName == 'country') {
+                $arrCountries = array_merge(Isotope::getConfig()->getBillingCountries(), Isotope::getConfig()->getShippingCountries());
+                $arrDca['reference'] = $arrDca['options'];
+                $arrDca['options'] = array_values(array_intersect(array_keys($arrDca['options']), $arrCountries));
+                $arrDca['default'] = Isotope::getConfig()->billing_country;
             }
 
-            $strGroup = $arrData['eval']['feGroup'];
+            return true;
+        });
 
-            $arrData['eval']['tableless'] = $this->tableless;
-            $arrData['eval']['required']  = ($objAddress->$field == '' && $arrData['eval']['mandatory']) ? true : false;
+        $objForm->addToTemplate($this->Template);
 
-            $objWidget = new $strClass($strClass::getAttributesFromDca($arrData, $field, ($objAddress->$field ? $objAddress->$field : $arrData['default'])));
+        if ($objForm->isSubmitted()) {
+            if ($objForm->validate()) {
+                $objAddress->save();
 
-            $objWidget->storeValues = true;
-            $objWidget->rowClass    = 'row_' . $row . (($row == 0) ? ' row_first' : '') . ((($row % 2) == 0) ? ' even' : ' odd');
-
-            // Validate input
-            if (\Input::post('FORM_SUBMIT') == $table . '_' . $this->id) {
-
-                $objWidget->validate();
-                $varValue = $objWidget->value;
-
-                // Convert date formats into timestamps
-                if (strlen($varValue) && in_array($arrData['eval']['rgxp'], array('date', 'time', 'datim'))) {
-                    $objDate  = new \Date($varValue, $GLOBALS['TL_CONFIG'][$arrData['eval']['rgxp'] . 'Format']);
-                    $varValue = $objDate->tstamp;
-                }
-
-                // Save callback
-                if (is_array($arrData['save_callback'])) {
-                    foreach ($arrData['save_callback'] as $callback) {
+                // Call onsubmit_callback
+                if (is_array($GLOBALS['TL_DCA'][$table]['config']['onsubmit_callback'])) {
+                    foreach ($GLOBALS['TL_DCA'][$table]['config']['onsubmit_callback'] as $callback) {
                         $objCallback = \System::importStatic($callback[0]);
-
-                        try {
-                            $varValue = $objCallback->$callback[0]->$callback[1]($varValue, $objAddress);
-                        } catch (\Exception $e) {
-                            $objWidget->class = 'error';
-                            $objWidget->addError($e->getMessage());
-                        }
+                        $objCallback->$callback[1]($objAddress);
                     }
                 }
 
-                // Do not submit if there are errors
-                if ($objWidget->hasErrors()) {
-                    $doNotSubmit = true;
-                }
+                global $objPage;
+                \Controller::redirect(\Controller::generateFrontendUrl($objPage->row()));
 
-                // Store current value
-                elseif ($objWidget->submitInput()) {
-                    // Set new value
-                    $varSave            = is_array($varValue) ? serialize($varValue) : $varValue;
-                    $objAddress->$field = $varSave;
-                }
+            } else {
+                $this->Template->hasError = true;
             }
-
-            if ($objWidget instanceof \uploadable) {
-                $hasUpload = true;
-            }
-
-            $temp = $objWidget->parse();
-
-            $this->Template->fields .= $temp;
-            $arrFields[$strGroup][$field] .= $temp;
-            ++$row;
         }
 
-        $this->Template->hasError = $doNotSubmit;
-
-        // Redirect or reload if there was no error
-        if (\Input::post('FORM_SUBMIT') == $table . '_' . $this->id && !$doNotSubmit) {
-
-            $objAddress->save();
-
-            // Call onsubmit_callback
-            if (is_array($GLOBALS['TL_DCA'][$table]['config']['onsubmit_callback'])) {
-                foreach ($GLOBALS['TL_DCA'][$table]['config']['onsubmit_callback'] as $callback) {
-                    $objCallback = \System::importStatic($callback[0]);
-                    $objCallback->$callback[1]($objAddress);
-                }
+        // Add groups
+        $arrGroups   = array();
+        foreach ($objForm->getFormFields() as $strName => $arrConfig) {
+            if ($arrConfig['feGroup'] != '') {
+                $arrGroups[$arrConfig['feGroup']][$strName] = $objForm->getWidget($strName)->parse();
             }
+        }
 
-            global $objPage;
-            \Controller::redirect(\Controller::generateFrontendUrl($objPage->row()));
+        foreach ($arrGroups as $k => $v) {
+            $this->Template->$k = $v;
         }
 
         $this->Template->addressDetails = $GLOBALS['TL_LANG'][$table]['addressDetails'];
         $this->Template->contactDetails = $GLOBALS['TL_LANG'][$table]['contactDetails'];
         $this->Template->personalData   = $GLOBALS['TL_LANG'][$table]['personalData'];
         $this->Template->loginDetails   = $GLOBALS['TL_LANG'][$table]['loginDetails'];
-
-        // Add groups
-        foreach ($arrFields as $k => $v) {
-            $this->Template->$k = $v;
-        }
-
-        $this->Template->formId  = $table . '_' . $this->id;
-        $this->Template->slabel  = specialchars($GLOBALS['TL_LANG']['MSC']['saveData']);
-        $this->Template->action  = ampersand(\Environment::get('request'), true);
-        $this->Template->enctype = $hasUpload ? 'multipart/form-data' : 'application/x-www-form-urlencoded';
-        $this->Template->rowLast = 'row_' . $row . ((($row % 2) == 0) ? ' even' : ' odd');
     }
 
 

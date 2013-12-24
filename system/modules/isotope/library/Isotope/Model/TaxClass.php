@@ -52,9 +52,7 @@ class TaxClass extends \Model
             $arrAddresses = array('billing' => Isotope::getCart()->getBillingAddress(), 'shipping' => Isotope::getCart()->getShippingAddress());
         }
 
-        $objIncludes = $this->getRelated('includes');
-
-        if ($objIncludes->id > 0 && !$objIncludes->isApplicable($fltPrice, $arrAddresses)) {
+        if (($objIncludes = $this->getRelated('includes')) !== null && !$objIncludes->isApplicable($fltPrice, $arrAddresses)) {
             $fltPrice -= $objIncludes->calculateAmountIncludedInPrice($fltPrice);
         }
 
@@ -70,9 +68,7 @@ class TaxClass extends \Model
      */
     public function calculateNetPrice($fltPrice)
     {
-        $objIncludes = $this->getRelated('includes');
-
-        if ($objIncludes->id > 0) {
+        if (($objIncludes = $this->getRelated('includes')) !== null) {
             $fltPrice -= $objIncludes->calculateAmountIncludedInPrice($fltPrice);
         }
 
@@ -92,18 +88,12 @@ class TaxClass extends \Model
             $arrAddresses = array('billing' => Isotope::getCart()->getBillingAddress(), 'shipping' => Isotope::getCart()->getShippingAddress());
         }
 
-        $objIncludes = $this->getRelated('includes');
-
-        if ($objIncludes !== null && !$objIncludes->isApplicable($fltPrice, $arrAddresses)) {
+        if (($objIncludes = $this->getRelated('includes')) !== null && !$objIncludes->isApplicable($fltPrice, $arrAddresses)) {
             $fltPrice -= $objIncludes->calculateAmountIncludedInPrice($fltPrice);
         }
 
-        $objRates = $this->getRelated('rates');
-
-        if ($objRates !== null) {
-            $objRates->reset();
-            while ($objRates->next()) {
-                $objTaxRate = $objRates->current();
+        if (($objRates = $this->getRelated('rates')) !== null) {
+            foreach ($objRates as $objTaxRate) {
                 if ($objTaxRate->isApplicable($fltPrice, $arrAddresses)) {
                     $fltPrice += $objTaxRate->calculateAmountAddedToPrice($fltPrice);
 

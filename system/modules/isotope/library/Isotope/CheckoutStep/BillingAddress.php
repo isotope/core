@@ -93,9 +93,9 @@ class BillingAddress extends Address implements IsotopeCheckoutStep
 
         if (!empty($arrOptions)) {
             $arrOptions[] = array(
-                'value'   => 0,
+                'value'   => '0',
                 'label'   => &$GLOBALS['TL_LANG']['MSC']['createNewAddressLabel'],
-                'default' => ($this->getDefaultAddress()->id == Isotope::getCart()->address1_id),
+                'default' => ($this->getDefaultAddress()->id == Isotope::getCart()->billing_address_id),
             );
         }
 
@@ -110,7 +110,7 @@ class BillingAddress extends Address implements IsotopeCheckoutStep
      */
     protected function getAddressForOption($varValue, $blnValidate)
     {
-        if ($varValue == 0) {
+        if ($varValue == '0') {
             $objAddress = $this->getDefaultAddress();
             $arrAddress = $this->validateFields($blnValidate);
 

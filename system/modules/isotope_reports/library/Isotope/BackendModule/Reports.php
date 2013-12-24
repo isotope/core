@@ -40,6 +40,7 @@ class Reports extends BackendOverview
 
                     $arrReturn[$strGroup]['modules'][$strModule] = array_merge($arrConfig, array
                     (
+                        'name'          => $strModule,
                         'label'         => specialchars(($arrConfig['label'][0] ?: $strModule)),
                         'description'   => specialchars(strip_tags($arrConfig['label'][1])),
                         'href'          => $this->addToUrl('mod=' . $strModule),
@@ -74,7 +75,7 @@ class Reports extends BackendOverview
 <fieldset class="tl_tbox">
 <legend style="cursor: default;">' . $GLOBALS['ISO_LANG']['REPORT']['24h_summary'] . '</legend>';
 
-        $arrAllowedProducts = \Isotope\Backend::getAllowedProductIds();
+        $arrAllowedProducts = \Isotope\Backend\Product\Permission::getAllowedIds();
 
         $objOrders = \Database::getInstance()->prepare("SELECT
                                                     c.id AS config_id,
@@ -86,7 +87,7 @@ class Reports extends BackendOverview
                                                 FROM " . \Isotope\Model\ProductCollection::getTable() . " o
                                                 LEFT JOIN " . \Isotope\Model\ProductCollectionItem::getTable() . " i ON o.id=i.pid
                                                 LEFT OUTER JOIN " . \Isotope\Model\Config::getTable() . " c ON o.config_id=c.id
-                                                WHERE o.type='Order' AND o.locked>?
+                                                WHERE o.type='order' AND o.order_status>0 AND o.locked>=?
                                                 " . ($arrAllowedProducts === true ? '' : (" AND i.product_id IN (" . (empty($arrAllowedProducts) ? '0' : implode(',', $arrAllowedProducts)) . ")")) . "
                                                 GROUP BY config_id")
                                     ->execute(strtotime('-24 hours'));
@@ -103,11 +104,11 @@ class Reports extends BackendOverview
 <br>
 <table class="tl_listing">
 <tr>
-	<th class="tl_folder_tlist">' . $GLOBALS['ISO_LANG']['REPORT']['shop_config'] . '</th>
-	<th class="tl_folder_tlist">' . $GLOBALS['ISO_LANG']['REPORT']['currency'] . '</th>
-	<th class="tl_folder_tlist">' . $GLOBALS['ISO_LANG']['REPORT']['orders#'] . '</th>
-	<th class="tl_folder_tlist">' . $GLOBALS['ISO_LANG']['REPORT']['products#'] . '</th>
-	<th class="tl_folder_tlist">' . $GLOBALS['ISO_LANG']['REPORT']['sales#'] . '</th>
+    <th class="tl_folder_tlist">' . $GLOBALS['ISO_LANG']['REPORT']['shop_config'] . '</th>
+    <th class="tl_folder_tlist">' . $GLOBALS['ISO_LANG']['REPORT']['currency'] . '</th>
+    <th class="tl_folder_tlist">' . $GLOBALS['ISO_LANG']['REPORT']['orders#'] . '</th>
+    <th class="tl_folder_tlist">' . $GLOBALS['ISO_LANG']['REPORT']['products#'] . '</th>
+    <th class="tl_folder_tlist">' . $GLOBALS['ISO_LANG']['REPORT']['sales#'] . '</th>
 </tr>';
 
 
@@ -115,11 +116,11 @@ class Reports extends BackendOverview
             {
                 $strBuffer .= '
 <tr class="row_' . ++$i . ($i%2 ? 'odd' : 'even') . '">
-	<td class="tl_file_list">' . $objOrders->config_name . '</td>
-	<td class="tl_file_list">' . $objOrders->currency . '</td>
-	<td class="tl_file_list">' . $objOrders->total_orders . '</td>
-	<td class="tl_file_list">' . $objOrders->total_items . '</td>
-	<td class="tl_file_list">' . Isotope::formatPrice($objOrders->total_sales) . '</td>
+    <td class="tl_file_list">' . $objOrders->config_name . '</td>
+    <td class="tl_file_list">' . $objOrders->currency . '</td>
+    <td class="tl_file_list">' . $objOrders->total_orders . '</td>
+    <td class="tl_file_list">' . $objOrders->total_items . '</td>
+    <td class="tl_file_list">' . Isotope::formatPrice($objOrders->total_sales) . '</td>
 </tr>';
             }
 

@@ -38,10 +38,8 @@ $GLOBALS['TL_LANG']['NOTIFICATION_CENTER_TOKEN']['iso_order_status_change']['for
 $GLOBALS['TL_LANG']['NOTIFICATION_CENTER_TOKEN']['iso_order_status_change']['payment_id']            = 'Payment method ID.';
 $GLOBALS['TL_LANG']['NOTIFICATION_CENTER_TOKEN']['iso_order_status_change']['payment_label']         = 'Payment method label.';
 $GLOBALS['TL_LANG']['NOTIFICATION_CENTER_TOKEN']['iso_order_status_change']['payment_note']          = 'Payment method note.';
-$GLOBALS['TL_LANG']['NOTIFICATION_CENTER_TOKEN']['iso_order_status_change']['payment_note_text']     = 'Payment method note without HTML tags.';
 $GLOBALS['TL_LANG']['NOTIFICATION_CENTER_TOKEN']['iso_order_status_change']['shipping_id']           = 'Shipping method ID.';
 $GLOBALS['TL_LANG']['NOTIFICATION_CENTER_TOKEN']['iso_order_status_change']['shipping_label']        = 'Shipping method label.';
 $GLOBALS['TL_LANG']['NOTIFICATION_CENTER_TOKEN']['iso_order_status_change']['shipping_note']         = 'Shipping method note.';
-$GLOBALS['TL_LANG']['NOTIFICATION_CENTER_TOKEN']['iso_order_status_change']['shipping_note_text']    = 'Shipping method note without HTML tags.';
 $GLOBALS['TL_LANG']['NOTIFICATION_CENTER_TOKEN']['iso_order_status_change']['config_*']              = 'All the store configuration fields.';
 $GLOBALS['TL_LANG']['NOTIFICATION_CENTER_TOKEN']['iso_order_status_change']['member_*']              = 'All the member fields if it was a member checkout.';

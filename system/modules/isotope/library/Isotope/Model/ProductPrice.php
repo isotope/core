@@ -72,7 +72,7 @@ class ProductPrice extends \Model implements IsotopePrice
      */
     public function getAmount($intQuantity = 1)
     {
-        return Isotope::calculatePrice($this->getValueForTier($intQuantity), $this->getRelated('pid'), 'price', $this->tax_class);
+        return Isotope::calculatePrice($this->getValueForTier($intQuantity), $this, 'price', $this->tax_class);
     }
 
     /**
@@ -82,7 +82,7 @@ class ProductPrice extends \Model implements IsotopePrice
      */
     public function getOriginalAmount($intQuantity = 1)
     {
-        return Isotope::calculatePrice($this->getValueForTier($intQuantity), $this->getRelated('pid'), 'original_price', $this->tax_class);
+        return Isotope::calculatePrice($this->getValueForTier($intQuantity), $this, 'original_price', $this->tax_class);
     }
 
     /**
@@ -98,7 +98,7 @@ class ProductPrice extends \Model implements IsotopePrice
             $fltAmount = $objTaxClass->calculateNetPrice($fltAmount);
         }
 
-        return Isotope::calculatePrice($fltAmount, $this->getRelated('pid'), 'net_price');
+        return Isotope::calculatePrice($fltAmount, $this, 'net_price');
     }
 
     /**
@@ -114,7 +114,7 @@ class ProductPrice extends \Model implements IsotopePrice
             $fltAmount = $objTaxClass->calculateGrossPrice($fltAmount);
         }
 
-        return Isotope::calculatePrice($fltAmount, $this->getRelated('pid'), 'gross_price');
+        return Isotope::calculatePrice($fltAmount, $this, 'gross_price');
     }
 
     /**
@@ -127,7 +127,7 @@ class ProductPrice extends \Model implements IsotopePrice
             return $this->getAmount();
         }
 
-        return Isotope::calculatePrice(min($this->arrTiers), $this->getRelated('pid'), 'price', $this->tax_class);
+        return Isotope::calculatePrice(min($this->arrTiers), $this, 'price', $this->tax_class);
     }
 
     /**
@@ -171,12 +171,12 @@ class ProductPrice extends \Model implements IsotopePrice
 
     /**
      * Generate price for HTML rendering
+     * @param   bool
      * @return  string
      */
-    public function generate()
+    public function generate($blnShowTiers=false)
     {
         $blnShowFrom  = false;
-        $blnShowTiers = $this->getRelated('pid')->getRelated('type')->showPriceTiers();
 
         $fltPrice = $this->getAmount();
 
@@ -216,7 +216,6 @@ class ProductPrice extends \Model implements IsotopePrice
     {
         $arrOptions['column'] = array();
         $arrOptions['value']  = array();
-
 
         if ($objProduct->hasAdvancedPrices()) {
 
@@ -258,11 +257,11 @@ class ProductPrice extends \Model implements IsotopePrice
         $arrOptions = array_merge(
             array(
                 'column' => array(
-                    "pid=" . $intProduct,
                     "config_id=0",
                     "member_group=0",
                     "start=''",
-                    "stop=''"
+                    "stop=''",
+                    "pid=" . $intProduct
                 ),
     			'limit'  => 1,
     			'return' => 'Model'
@@ -286,11 +285,11 @@ class ProductPrice extends \Model implements IsotopePrice
         $arrOptions = array_merge(
             array(
                 'column' => array(
-                    "$t.pid IN (" . implode(',', $arrIds) . ")",
                     "$t.config_id=0",
                     "$t.member_group=0",
                     "$t.start=''",
-                    "$t.stop=''"
+                    "$t.stop=''",
+                    "$t.pid IN (" . implode(',', $arrIds) . ")",
                 ),
                 'return'    => 'Collection'
             ),
@@ -316,11 +315,11 @@ class ProductPrice extends \Model implements IsotopePrice
                 SELECT *
                 FROM " . static::$strTable . "
                 WHERE
-                    pid IN (" . implode(',', $arrIds) . ") AND
                     config_id IN (" . (int) $objCollection->config_id . ",0) AND
                     member_group IN(" . implode(',', $arrGroups) . ") AND
                     (start='' OR start<$time) AND
-                    (stop='' OR stop>$time)
+                    (stop='' OR stop>$time) AND
+                    pid IN (" . implode(',', $arrIds) . ")
                 ORDER BY config_id DESC, " . \Database::getInstance()->findInSet('member_group', $arrGroups) . ", start DESC, stop DESC
             ) AS prices
             GROUP BY pid

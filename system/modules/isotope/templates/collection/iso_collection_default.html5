@@ -118,4 +118,6 @@
 </div>
 <?php endif; ?>
 
+<?php echo $this->custom; ?>
+
 <?php endif; ?>

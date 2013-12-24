@@ -137,9 +137,9 @@ abstract class ProductCollectionSurcharge extends TypeAgent
 
         foreach ($objCollection->getItems() as $objItem) {
             if ($objSource->isPercentage()) {
-                $fltProductPrice = $objItem->getTotal() / 100 * $objSource->getPercentage();
+                $fltProductPrice = $objItem->getTotalPrice() / 100 * $objSource->getPercentage();
             } else {
-                $fltProductPrice = $this->total_price / 100 * (100 / $fltTotal * $objItem->getTaxFreeTotal());
+                $fltProductPrice = $this->total_price / 100 * (100 / $fltTotal * $objItem->getTaxFreeTotalPrice());
             }
 
             $fltProductPrice = $fltProductPrice > 0 ? (floor($fltProductPrice * 100) / 100) : (ceil($fltProductPrice * 100) / 100);
@@ -263,9 +263,7 @@ abstract class ProductCollectionSurcharge extends TypeAgent
                 $fltPrice += $objSurcharge->getAmountForCollectionItem($objItem);
             }
 
-            $objIncludes = $objTaxClass->getRelated('includes');
-
-            if ($objIncludes->id > 0) {
+            if (($objIncludes = $objTaxClass->getRelated('includes')) !== null) {
                 if ($objIncludes->isApplicable($fltPrice, $arrAddresses)) {
                     $fltTax = $objIncludes->calculateAmountIncludedInPrice($fltPrice);
 
@@ -289,11 +287,8 @@ abstract class ProductCollectionSurcharge extends TypeAgent
                 }
             }
 
-            $objRates = $objTaxClass->getRelated('rates');
-
-            if (null !== $objRates) {
-                while ($objRates->next()) {
-                    $objTaxRate = $objRates->current();
+            if (($objRates = $objTaxClass->getRelated('rates')) !== null) {
+                foreach ($objRates as $objTaxRate) {
 
                     if ($objTaxRate->isApplicable($fltPrice, $arrAddresses)) {
                         $fltTax = $objTaxRate->calculateAmountAddedToPrice($fltPrice);
@@ -348,9 +343,7 @@ abstract class ProductCollectionSurcharge extends TypeAgent
 
             $fltPrice = $objSurcharge->total_price;
 
-            $objIncludes = $objTaxClass->getRelated('includes');
-
-            if ($objIncludes->id > 0) {
+            if (($objIncludes = $objTaxClass->getRelated('includes')) !== null) {
                 if ($objIncludes->isApplicable($fltPrice, $arrAddresses)) {
                     $fltTax = $objIncludes->calculateAmountIncludedInPrice($fltPrice);
 
@@ -378,11 +371,8 @@ abstract class ProductCollectionSurcharge extends TypeAgent
                 }
             }
 
-            $objRates = $objTaxClass->getRelated('rates');
-
-            if (null !== $objRates) {
-                while ($objRates->next()) {
-                    $objTaxRate = $objRates->current();
+            if (($objRates = $objTaxClass->getRelated('rates')) !== null) {
+                foreach ($objRates as $objTaxRate) {
 
                     if ($objTaxRate->isApplicable($fltPrice, $arrAddresses)) {
                         $fltTax = $objTaxRate->calculateAmountAddedToPrice($fltPrice);
@@ -446,6 +436,7 @@ abstract class ProductCollectionSurcharge extends TypeAgent
         $objSurcharge->total_price = $objSource->getPrice();
         $objSurcharge->tax_class   = $intTaxClass;
         $objSurcharge->before_tax  = ($intTaxClass ? true : false);
+        $objSurcharge->addToTotal  = true;
 
         if ($intTaxClass == -1) {
             $objSurcharge->applySplittedTax($objCollection, $objSource);

@@ -9,7 +9,7 @@
 <?php foreach ($this->data as $k => $v): ?>
 <input type="hidden" name="<?php echo $k; ?>" value="<?php echo $v; ?>">
 <?php endforeach; ?>
-<?php if ($fltDiscount > 0): ?>
+<?php if ($this->discount > 0): ?>
 <input type="hidden" name="discount_amount_cart" value="<?php echo $this->discount; ?>">
 <?php endif; ?>
 

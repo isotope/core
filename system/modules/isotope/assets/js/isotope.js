@@ -1,4 +1,4 @@
- /**
+/**
  * Isotope eCommerce for Contao Open Source CMS
  *
  * Copyright (C) 2009-2012 Isotope eCommerce Workgroup
@@ -6,115 +6,114 @@
  * @package    Isotope
  * @link       http://www.isotopeecommerce.com
  * @license    http://opensource.org/licenses/lgpl-3.0.html LGPL
- *
- * @author     Andreas Schempp <andreas.schempp@terminal42.ch>
- * @author     Fred Bliss <fred.bliss@intelligentspark.com>
  */
 
 
 var Isotope = {};
 
 (function() {
-	"use strict";
+    "use strict";
 
-	/**
-	 * Toggle the address fields
-	 * @param object
-	 * @param string
-	 */
-	Isotope.toggleAddressFields = function(el, id) {
-	    if (el.value == '0' && el.checked) {
-	        document.getElementById(id).style.display = 'block';
-	    } else {
-	        document.getElementById(id).style.display = 'none';
-	    }
-	};
+    /**
+     * Toggle the address fields
+     * @param object
+     * @param string
+     */
+    Isotope.toggleAddressFields = function(el, id) {
+        if (el.value == '0' && el.checked) {
+            document.getElementById(id).style.display = 'block';
+        } else {
+            document.getElementById(id).style.display = 'none';
+        }
+    };
 
-	/**
-	 * Display a "loading data" message
-	 * @param string
-	 * @param boolean
-	 */
-	Isotope.displayBox = function(message, btnClose) {
-	    var box = document.getElementById('iso_ajaxBox');
-	    var overlay = document.getElementById('iso_ajaxOverlay');
+    /**
+     * Display a "loading data" message
+     * @param string
+     * @param boolean
+     */
+    Isotope.displayBox = function(message, btnClose) {
+        var box = document.getElementById('iso_ajaxBox');
+        var overlay = document.getElementById('iso_ajaxOverlay');
 
-	    if (!overlay) {
-	        overlay = document.createElement('div');
-	        overlay.setAttribute('id', 'iso_ajaxOverlay');
-	        document.body.appendChild(overlay);
-	    }
+        if (!overlay) {
+            overlay = document.createElement('div');
+            overlay.setAttribute('id', 'iso_ajaxOverlay');
+            document.body.appendChild(overlay);
+        }
 
-	    if (!box) {
-	        box = document.createElement('div');
-	        box.setAttribute('id', 'iso_ajaxBox');
-	        document.body.appendChild(box);
-	    }
+        if (!box) {
+            box = document.createElement('div');
+            box.setAttribute('id', 'iso_ajaxBox');
+            document.body.appendChild(box);
+        }
 
-	    if (btnClose) {
-	        overlay.addEventListener('click', Isotope.hideBox, false);
-	        box.addEventListener('click', Isotope.hideBox, false);
-	        if (!box.className.test(/btnClose/)) {
-	            box.className = box.className + ' btnClose';
-	        }
-	    }
+        if (btnClose) {
+            overlay.addEventListener('click', Isotope.hideBox, false);
+            box.addEventListener('click', Isotope.hideBox, false);
+            if (!box.className.search(/btnClose/) != -1) {
+                box.className = box.className + ' btnClose';
+            }
+        }
 
-	    var scroll = window.getScroll().y;
+        var scroll = window.getScroll().y;
 
-	    overlay.style.display = 'block';
+        overlay.style.display = 'block';
 
-	    box.innerHTML = message;
-	    box.style.display = 'block';
-	    box.style.top = ((scroll + 100) + 'px');
-	};
+        box.innerHTML = message;
+        box.style.display = 'block';
+        box.style.top = ((scroll + 100) + 'px');
+    };
 
-	/**
-	 * Hide the "loading data" message
-	 */
-	Isotope.hideBox = function() {
-	    var box = document.getElementById('iso_ajaxBox');
-	    var overlay = document.getElementById('iso_ajaxOverlay');
+    /**
+     * Hide the "loading data" message
+     */
+    Isotope.hideBox = function() {
+        var box = document.getElementById('iso_ajaxBox');
+        var overlay = document.getElementById('iso_ajaxOverlay');
 
-	    if (overlay) {
-	        overlay.style.display = 'none';
-	        overlay.removeEventListener('click', Isotope.hideBox, false);
-	    }
+        if (overlay) {
+            overlay.style.display = 'none';
+            overlay.removeEventListener('click', Isotope.hideBox, false);
+        }
 
-	    if (box) {
-	        box.style.display = 'none';
-	        box.removeEventListener('click', Isotope.hideBox, false);
-	        box.className = box.className.replace(/ ?btnClose/, '');
-	    }
-	};
+        if (box) {
+            box.style.display = 'none';
+            box.removeEventListener('click', Isotope.hideBox, false);
+            box.className = box.className.replace(/ ?btnClose/, '');
+        }
+    };
 
-	/**
-	 * Initialize the inline gallery
-	 * @param object
-	 * @param string
-	 */
-	Isotope.inlineGallery = function(el, elementId) {
-	    var i;
-	    var parent = el.parentNode;
-	    var siblings = parent.parentNode.children;
+    /**
+     * Initialize the inline gallery
+     * @param object
+     * @param string
+     */
+    Isotope.inlineGallery = function(el, elementId) {
+        var i;
+        var parent = el.parentNode;
+        var siblings = parent.parentNode.children;
 
-	    for (i=0; i<siblings.length; i++) {
-	        if (siblings[i].className.test(/image_container/) && siblings[i].className.test(/active/)) {
-	            siblings[i].className = siblings[i].className.replace(/ ?active/, '');
-	        }
-	    }
+        for (i=0; i<siblings.length; i++) {
+            if (siblings[i].getAttribute('data-type') == 'gallery'
+                && siblings[i].getAttribute('data-uid') == elementId
+                && siblings[i].getAttribute('class').search(/(^| )active($| )/) != -1
+            ) {
+                siblings[i].setAttribute('class', siblings[i].getAttribute('class').replace(/ ?active/, ''));
+            }
+        }
 
-	    parent.className = parent.className + ' active';
-	    document.getElementById(elementId).src = el.href;
+        parent.setAttribute('class', parent.getAttribute('class') + ' active');
+        document.getElementById(elementId).src = el.href;
 
-	    return false;
-	};
+        return false;
+    };
 })();
 
 var IsotopeProducts = (function() {
-	"use strict";
+    "use strict";
 
     var loadMessage = 'Loading product data …';
-    var callbacks = [];
 
     function initProduct(config) {
         var form = document.getElementById(config.formId);
@@ -125,13 +124,15 @@ var IsotopeProducts = (function() {
     }
 
     function registerEvents(form, config) {
-        var i, el;
+        var i, el, xhr;
 
-        document.id(form).set('send', {
-            url: window.location.href,
+        // @todo implement native XMLHttpRequest
+        xhr = new Request.HTML({
+            url: form.action,
             link: 'cancel',
+            evalScripts: false,
             onRequest: Isotope.displayBox.pass(loadMessage),
-            onSuccess: function(txt, xml)
+            onSuccess: function(responseTree, responseElements, txt, responseJavaScript)
             {
                 Isotope.hideBox();
 
@@ -139,8 +140,17 @@ var IsotopeProducts = (function() {
                 div.innerHTML = txt;
                 var newForm = div.firstChild;
 
+                // Remove all error messages
+                var errors = div.getElementsByTagName('p');
+                for(var i=0; i<errors.length; i++) {
+                    if (errors[i].className.search(/(^| )error( |$)/) != -1) {
+                        errors[i].parentNode.removeChild(errors[i]);
+                    }
+                }
+
                 form.parentNode.replaceChild(newForm, form);
                 registerEvents(newForm, config);
+                Browser.exec(responseJavaScript);
             },
             onFailure: Isotope.hideBox
         });
@@ -150,7 +160,7 @@ var IsotopeProducts = (function() {
                 el = document.getElementById(('ctrl_'+config.attributes[i]+'_'+config.formId));
                 if (el) {
                     el.addEventListener('change', function() {
-                        form.send();
+                        xhr.send(form.toQueryString());
                     }, false);
                 }
             }
@@ -167,13 +177,6 @@ var IsotopeProducts = (function() {
                     initProduct(products[i]);
                 }
             }
-        },
-
-        /**
-         * Callbacks are used to handle special products
-         */
-        'registerCallback': function(callback) {
-            callbacks.push(callback);
         },
 
         /**

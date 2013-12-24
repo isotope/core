@@ -81,6 +81,7 @@ $GLOBALS['TL_LANG']['tl_iso_product']['generate']                  = array('Gene
 $GLOBALS['TL_LANG']['tl_iso_product']['related']                   = array('Related products', 'Manage related products for product ID %s');
 $GLOBALS['TL_LANG']['tl_iso_product']['downloads']                 = array('Downloads', 'Edit downloads for product ID %s', 'Downloads: %s. ');
 $GLOBALS['TL_LANG']['tl_iso_product']['group']                     = array('Move to group', 'Move product ID %s to a group');
+$GLOBALS['TL_LANG']['tl_iso_product']['groupSelected']             = 'Group';
 
 /**
  * Legends

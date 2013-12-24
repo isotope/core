@@ -118,6 +118,7 @@ $GLOBALS['TL_LANG']['tl_iso_product']['downloads'][1] = 'Downloads für das Prod
 $GLOBALS['TL_LANG']['tl_iso_product']['downloads'][2] = 'Downloads: %s.';
 $GLOBALS['TL_LANG']['tl_iso_product']['group'][0] = 'In eine Gruppe verschieben';
 $GLOBALS['TL_LANG']['tl_iso_product']['group'][1] = 'Produkt ID %s in eine Gruppe verschieben';
+$GLOBALS['TL_LANG']['tl_iso_product']['groupSelected'] = 'Gruppe';
 $GLOBALS['TL_LANG']['tl_iso_product']['general_legend'] = 'Allgemeine Einstellungen';
 $GLOBALS['TL_LANG']['tl_iso_product']['meta_legend'] = 'Meta-Angaben';
 $GLOBALS['TL_LANG']['tl_iso_product']['pricing_legend'] = 'Preis-Einstellungen';

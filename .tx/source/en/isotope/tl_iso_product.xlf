@@ -314,6 +314,9 @@
       <trans-unit id="tl_iso_product.group.1">
         <source>Move product ID %s to a group</source>
       </trans-unit>
+      <trans-unit id="tl_iso_product.groupSelected">
+        <source>Group</source>
+      </trans-unit>
       <trans-unit id="tl_iso_product.general_legend">
         <source>General Settings</source>
       </trans-unit>

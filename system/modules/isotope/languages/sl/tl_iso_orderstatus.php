@@ -14,3 +14,8 @@
  * @license http://www.gnu.org/licenses/lgpl-3.0.html
  */
 
+$GLOBALS['TL_LANG']['tl_iso_orderstatus']['name'][0] = 'Naziv';
+$GLOBALS['TL_LANG']['tl_iso_orderstatus']['paid'][0] = 'Naročilo je plačano';
+$GLOBALS['TL_LANG']['tl_iso_orderstatus']['notification'][0] = 'Obvestilo';
+$GLOBALS['TL_LANG']['tl_iso_orderstatus']['pasteafter'][0] = 'Vstavi za';
+$GLOBALS['TL_LANG']['tl_iso_orderstatus']['pasteinto'][0] = 'Vstavi v';

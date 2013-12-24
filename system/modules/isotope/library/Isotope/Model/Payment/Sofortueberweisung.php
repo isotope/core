@@ -69,7 +69,7 @@ class Sofortueberweisung extends Postsale implements IsotopePayment
             'user_variable_1'           => \Input::post('user_variable_1'),
             'user_variable_2'           => \Input::post('user_variable_2'),
             'user_variable_3'           => \Input::post('user_variable_3'),
-            'user_variable_4'           => \Input::post('user_variable_2'),
+            'user_variable_4'           => \Input::post('user_variable_4'),
             'user_variable_5'           => \Input::post('user_variable_5'),
             'created'                   => \Input::post('created'),
             'notification_password'     => $this->sofortueberweisung_project_password,

@@ -142,7 +142,9 @@ $GLOBALS['TL_DCA']['tl_iso_gallery'] = array
             'filter'                => true,
             'default'               => 'standard',
             'inputType'             => 'select',
-            'options'               => \Isotope\Model\Gallery::getModelTypeOptions(),
+            'options_callback'      => function() {
+                return \Isotope\Model\Gallery::getModelTypeOptions();
+            },
             'eval'                  => array('helpwizard'=>true, 'submitOnChange'=>true, 'chosen'=>true, 'tl_class'=>'w50'),
             'sql'                   => "varchar(64) NOT NULL default ''",
         ),

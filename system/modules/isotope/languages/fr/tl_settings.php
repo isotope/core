@@ -15,4 +15,6 @@
  */
 
 $GLOBALS['TL_LANG']['tl_settings']['iso_cartTimeout'][0] = 'Délai d\'expiration du panier d\'un invité';
-$GLOBALS['TL_LANG']['tl_settings']['iso_cartTimeout'][1] = 'Saisir la durée de vie du panier d\'un invité en secondes (30 jours = 2592000 secondes).';
+$GLOBALS['TL_LANG']['tl_settings']['iso_cartTimeout'][1] = 'Saisir la durée de vie maximale du panier d\'un invité en secondes (30 jours = 2592000 secondes).';
+$GLOBALS['TL_LANG']['tl_settings']['iso_orderTimeout'][0] = 'Délai d\'expiration d\'une commande';
+$GLOBALS['TL_LANG']['tl_settings']['iso_orderTimeout'][1] = 'Saisir la durée que restera une commande dans la base de données si le paiement n\'a pas réussi (7 jours = 604800 secondes).';

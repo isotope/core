@@ -49,7 +49,6 @@ $GLOBALS['TL_LANG']['MSC']['buttonLabel']['update'] = 'Aggiornamento';
 $GLOBALS['TL_LANG']['MSC']['buttonLabel']['add_to_cart'] = 'Aggiungere al carello';
 $GLOBALS['TL_LANG']['MSC']['orderByLabel'] = 'Ordina per:';
 $GLOBALS['TL_LANG']['MSC']['noProducts'] = 'Nessun prodotto trovato.';
-$GLOBALS['TL_LANG']['MSC']['invalidProductInformation'] = 'Spiacenti, l\'informazione sul prodotto riechiesto non puo\' essere visualizzata. Si prega di contattarci per ulteriore assistenza.';
 $GLOBALS['TL_LANG']['MSC']['previousStep'] = 'Indietro';
 $GLOBALS['TL_LANG']['MSC']['nextStep'] = 'Continuare';
 $GLOBALS['TL_LANG']['MSC']['confirmOrder'] = 'Ordine';

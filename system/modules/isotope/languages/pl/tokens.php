@@ -39,10 +39,8 @@ $GLOBALS['TL_LANG']['NOTIFICATION_CENTER_TOKEN']['iso_order_status_change']['for
 $GLOBALS['TL_LANG']['NOTIFICATION_CENTER_TOKEN']['iso_order_status_change']['payment_id'] = 'ID metody płatności.';
 $GLOBALS['TL_LANG']['NOTIFICATION_CENTER_TOKEN']['iso_order_status_change']['payment_label'] = 'Etykieta metody płatności.';
 $GLOBALS['TL_LANG']['NOTIFICATION_CENTER_TOKEN']['iso_order_status_change']['payment_note'] = 'Notatka metody płatności.';
-$GLOBALS['TL_LANG']['NOTIFICATION_CENTER_TOKEN']['iso_order_status_change']['payment_note_text'] = 'Notatka metody płatności bez tagów HTML.';
 $GLOBALS['TL_LANG']['NOTIFICATION_CENTER_TOKEN']['iso_order_status_change']['shipping_id'] = 'ID metody wysyłki.';
 $GLOBALS['TL_LANG']['NOTIFICATION_CENTER_TOKEN']['iso_order_status_change']['shipping_label'] = 'Etykieta metody wysyłki.';
 $GLOBALS['TL_LANG']['NOTIFICATION_CENTER_TOKEN']['iso_order_status_change']['shipping_note'] = 'Notatka metody wysyłki.';
-$GLOBALS['TL_LANG']['NOTIFICATION_CENTER_TOKEN']['iso_order_status_change']['shipping_note_text'] = 'Notatka metody wysyłki bez tagów HTML.';
 $GLOBALS['TL_LANG']['NOTIFICATION_CENTER_TOKEN']['iso_order_status_change']['config_*'] = 'Wszystkie pola konfiguracji sklepu.';
 $GLOBALS['TL_LANG']['NOTIFICATION_CENTER_TOKEN']['iso_order_status_change']['member_*'] = 'Wszystkie pola użytkownika, który złożył zamówienie.';

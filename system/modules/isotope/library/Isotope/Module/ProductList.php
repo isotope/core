@@ -114,9 +114,11 @@ class ProductList extends Module
             if ($objCache->keywords == \Input::get('keywords')) {
                 $arrCacheIds = $this->generatePagination($arrCacheIds);
 
-                $arrProducts = Product::findAvailableByIds($arrCacheIds, array(
+                $objProducts = Product::findAvailableByIds($arrCacheIds, array(
                     'order' => \Database::getInstance()->findInSet(Product::getTable().'.id', $arrCacheIds)
                 ));
+
+                $arrProducts = (null === $objProducts) ? array() : $objProducts->getModels();
 
                 // Cache is wrong, drop everything and run findProducts()
                 if (count($arrProducts) != count($arrCacheIds)) {
@@ -295,7 +297,7 @@ class ProductList extends Module
             $arrColumns,
             $arrValues,
             array(
-                 'group'   => Product::getTable() . '.id', 'order' => 'c.sorting',
+                 'order' => 'c.sorting',
                  'filters' => $arrFilters,
                  'sorting' => $arrSorting,
             )

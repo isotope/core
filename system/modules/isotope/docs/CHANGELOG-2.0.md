@@ -1,8 +1,12 @@
 Isotope eCommerce Changelog
 ===========================
 
-Version 2.0.0 (????-??-??)
-----------------------------
+Version 2.0.0 (2013-12-24)
+--------------------------
+
+### Improved
+- Use Haste Form to render address book fields
+- Orders are deleted after a timeout if they are not completed (#890)
 
 ### Fixed
 - Two missing `use` statements (#829)
@@ -21,6 +25,31 @@ Version 2.0.0 (????-??-??)
 - Several places did not support UUID for files (#852)
 - Label translation for config model threw exception
 - Store config selector did not work (#835)
+- Product cache broke the pagination (#843)
+- Recursively create upload directory if it does not exist (#837)
+- Missing translations for reports module (#873)
+- Mandatory asterisk hidden on ajax refresh (#846)
+- Checkout payment selection was not mandatory (#864)
+- Surcharges were ignored in PayPal payment (#831)
+- The media manager now uploads photos to the temporary folder first (#876)
+- Reports missed report about total products (#872)
+- Documents did not have access to config when printing in back end (#862)
+- Skipping address step as member was possible
+- Address module did not work (#840)
+- Customer defined attributes did not work properly (#844)
+- PSP performed checkout on error-status (#881)
+- Order count in sales report was wrong (#872)
+- JavaScript error in inline gallery (#859)
+- Disabled sorting by invalid column "variantFields" (#838)
+- Restored coupon form to the cart template (#868)
+- Disabled Contao cache could result in error message in attribute wizard (#884)
+- Gallery could not be set for related products (#887)
+- Used products and product types could be deleted in select mode (#882)
+- Customer defined attributes incorrectly showed up in cart (#888)
+- Error when setting new address as default (#895)
+- Breadcrumb was broken if no reader page was configured (#845)
+- Mediabox/Slimbox/Colorbox were not reinitialized after product option selection (#886)
+- Custom addresses in checkout were not correctly shown/hidden (#906)
 
 
 Version 2.0.rc2 (2013-11-22)

@@ -13,7 +13,6 @@
 namespace Isotope\Backend\Product;
 
 use Isotope\Model\Download;
-use Isotope\Model\ProductCollectionItem;
 use Isotope\Model\ProductType;
 
 
@@ -90,9 +89,7 @@ class Button extends \Backend
      */
     public function forDelete($row, $href, $label, $title, $icon, $attributes)
     {
-        $t = ProductCollectionItem::getTable();
-
-        if (ProductCollectionItem::countBy(array("$t.pid IN (SELECT id FROM tl_iso_product_collection WHERE type='order')", "$t.product_id IN (SELECT id FROM tl_iso_product WHERE id=? OR (pid=? AND language=''))"), array($row['id'], $row['id'])) > 0) {
+        if (in_array($row['id'], Permission::getUndeletableIds())) {
             return \Image::getHtml(preg_replace('/\.gif$/i', '_.gif', $icon)) . ' ';
         }
 
@@ -222,6 +219,48 @@ class Button extends \Backend
         }
 
         return '<a href="system/modules/isotope/group.php?do=' . \Input::get('do') . '&amp;table=' . \Isotope\Model\Group::getTable() . '&amp;field=gid&amp;value=' . $row['gid'] . '" title="' . specialchars($title) . '"' . $attributes . ' onclick="Backend.getScrollOffset();Isotope.openModalGroupSelector({\'width\':765,\'title\':\'' . specialchars($GLOBALS['TL_LANG']['tl_iso_product']['product_groups'][0]) . '\',\'url\':this.href,\'action\':\'moveProduct\',\'redirect\':\'' . \Backend::addToUrl($href . '&pid=' . intval(\Input::get('pid')) . '&id=' . $row['id']) . '\'});return false">' . \Image::getHtml($icon, $label) . '</a> ';
+    }
+
+    /**
+     * Manage act=select buttons
+     * @param   array
+     * @param   DataContainer
+     * @return  array
+     */
+    public function forSelect($arrButtons, $dc)
+    {
+        if (\Input::get('act') == 'select' && !\Input::get('id')) {
+
+            unset($arrButtons['copy']);
+            unset($arrButtons['cut']);
+
+            array_insert($arrButtons, 0, array('group'=>'<input type="submit" name="group" id="group" class="tl_submit" value="'.specialchars($GLOBALS['TL_LANG']['tl_iso_product']['groupSelected']).'">'));
+
+            $GLOBALS['TL_MOOTOOLS'][] = "
+<script>
+window.addEvent('domready', function() {
+    document.id('group').addEvents({
+        'click': function(e) {
+            e.preventDefault();
+            Isotope.openModalGroupSelector({
+                'width':    765,
+                'title':    '" . specialchars($GLOBALS['TL_LANG']['tl_iso_product']['product_groups'][0]) . "',
+                'url':      'system/modules/isotope/group.php?do=" . \Input::get('do') . "&amp;table=" . \Isotope\Model\Group::getTable() . "&amp;field=gid&amp;value=" . \Session::getInstance()->get('iso_products_gid') . "',
+                'action':   'moveProducts',
+                'trigger':  $(this)
+            });
+        },
+        'closeModal': function() {
+            var form = $('tl_select'),
+            hidden = new Element('input', { type:'hidden', name:'cut' }).inject(form.getElement('.tl_formbody'), 'top');
+            form.submit();
+        }
+    });
+});
+</script>";
+        }
+
+        return $arrButtons;
     }
 
     /**

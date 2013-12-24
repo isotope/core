@@ -252,14 +252,15 @@ table.multicolumnwizard .operations {
     font-size: 0;
     width: 60px;
 }
+.iso_listing_container td.col_images {
+    height: 50px;
+}
 
 .iso_operations {
     width: 110px;
     white-space: normal;
 }
 
-.iso_content_right .tl_select_all,
-.iso_content_right a,
 .iso_operations a {
     display: inline-block;
     margin-bottom: 4px;

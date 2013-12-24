@@ -127,13 +127,13 @@ class Payone extends Postsale implements IsotopePayment
 
         foreach ($objOrder->getSurcharges() as $k => $objSurcharge) {
 
-            if (!$objSurcharge->add)
+            if (!$objSurcharge->addToTotal)
                 continue;
 
             $arrData['id[' . ++$i . ']'] = 'surcharge' . $k;
             $arrData['pr[' . $i . ']']   = $objSurcharge->total_price * 100;
             $arrData['no[' . $i . ']']   = '1';
-            $arrData['de[' . $i . ']']   = $objSurcharge->getLabel();
+            $arrData['de[' . $i . ']']   = $objSurcharge->label;
         }
 
 

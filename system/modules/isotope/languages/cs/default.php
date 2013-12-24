@@ -54,7 +54,6 @@ $GLOBALS['TL_LANG']['MSC']['buttonLabel']['update'] = 'Aktualizovat';
 $GLOBALS['TL_LANG']['MSC']['buttonLabel']['add_to_cart'] = 'Přidat do košíku';
 $GLOBALS['TL_LANG']['MSC']['orderByLabel'] = 'Seřadit podle:';
 $GLOBALS['TL_LANG']['MSC']['noProducts'] = 'Žádné produkty nenalezeny';
-$GLOBALS['TL_LANG']['MSC']['invalidProductInformation'] = 'Omlouváme se, ale informace o produktu, které jste si vyžádali nezobrazujeme v našem obchodě. Pro dalš informace nás můžete kontaktovat';
 $GLOBALS['TL_LANG']['MSC']['previousStep'] = 'Zpět';
 $GLOBALS['TL_LANG']['MSC']['nextStep'] = 'Pokračovat';
 $GLOBALS['TL_LANG']['MSC']['confirmOrder'] = 'Objednávka';

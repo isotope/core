@@ -172,7 +172,9 @@ $GLOBALS['TL_DCA']['tl_iso_shipping'] = array
             'filter'                => true,
             'inputType'             => 'select',
             'default'               => 'flat',
-            'options'               => \Isotope\Model\Shipping::getModelTypeOptions(),
+            'options_callback'      => function() {
+                return \Isotope\Model\Shipping::getModelTypeOptions();
+            },
             'eval'                  => array('helpwizard'=>true, 'submitOnChange'=>true, 'chosen'=>true, 'tl_class'=>'w50'),
             'sql'                   => "varchar(64) NOT NULL default ''",
         ),
@@ -189,7 +191,9 @@ $GLOBALS['TL_DCA']['tl_iso_shipping'] = array
             'label'                 => &$GLOBALS['TL_LANG']['tl_iso_shipping']['countries'],
             'exclude'               => true,
             'inputType'             => 'select',
-            'options'               => \System::getCountries(),
+            'options_callback'      => function() {
+                return \System::getCountries();
+            },
             'eval'                  => array('multiple'=>true, 'size'=>8, 'tl_class'=>'w50 w50h', 'chosen'=>true),
             'sql'                   => "blob NULL",
         ),
@@ -295,7 +299,7 @@ $GLOBALS['TL_DCA']['tl_iso_shipping'] = array
             'exclude'               => true,
             'inputType'             => 'checkboxWizard',
             'options_callback'      => function($dc) {
-                $objShipping = \Isotope\Model\Shipping::findBy(array($dc->table.'.id!=?'), $dc->id);
+                $objShipping = \Isotope\Model\Shipping::findBy(array($dc->table.'.id!=?'), $dc->intId);
                 return null === $objShipping ? array() : $objShipping->fetchEach('name');
             },
             'eval'                  => array('mandatory'=>true, 'multiple'=>true, 'tl_class'=>'clr w50 w50h'),

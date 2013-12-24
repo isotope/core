@@ -26,6 +26,7 @@ $GLOBALS['TL_DCA']['tl_iso_producttype'] = array
         (
             array('Isotope\Backend', 'initializeSetupModule'),
             array('Isotope\Backend\ProductType\Callback', 'checkPermission'),
+            array('Isotope\Backend\ProductType\Permission', 'check'),
         ),
         'sql' => array
         (
@@ -147,7 +148,9 @@ $GLOBALS['TL_DCA']['tl_iso_producttype'] = array
             'exclude'               => true,
             'inputType'             => 'select',
             'default'               => 'standard',
-            'options'               => \Isotope\Model\Product::getModelTypeOptions(),
+            'options_callback'      => function() {
+                return \Isotope\Model\Product::getModelTypeOptions();
+            },
             'reference'             => &$GLOBALS['TL_LANG']['PRODUCT'],
             'eval'                  => array('mandatory'=>true, 'submitOnChange'=>true, 'helpwizard'=>true, 'tl_class'=>'w50'),
             'sql'                   => "varchar(64) NOT NULL default ''"

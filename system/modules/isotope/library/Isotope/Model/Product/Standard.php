@@ -64,6 +64,12 @@ class Standard extends Product implements IsotopeProduct, WeightAggregate
     protected $arrVariantIds;
 
     /**
+     * Customer defined options
+     * @var array
+     */
+    protected $arrOptions = array();
+
+    /**
      * Assigned categories (pages)
      * @var array
      */
@@ -449,19 +455,18 @@ class Standard extends Product implements IsotopeProduct, WeightAggregate
      */
     public function getOptions()
     {
-        if ($this->hasVariants()) {
-            $arrAttributes = array_intersect(array_merge($this->getAttributes(), $this->getVariantAttributes()), array_merge(Attribute::getVariantOptionFields(), Attribute::getCustomerDefinedFields()));
-        } else {
-            $arrAttributes = array_intersect($this->getAttributes(), Attribute::getCustomerDefinedFields());
+        if (!$this->hasVariants()) {
+            return array();
         }
 
+        $arrAttributes = array_intersect(array_merge($this->getAttributes(), $this->getVariantAttributes()), Attribute::getVariantOptionFields());
         $arrOptions = array();
 
         foreach (array_unique($arrAttributes) as $attribute) {
             $arrOptions[$attribute] = $this->arrData[$attribute];
         }
 
-        return $arrOptions;
+        return array_merge($arrOptions, $this->arrOptions);
     }
 
 
@@ -505,7 +510,7 @@ class Standard extends Product implements IsotopeProduct, WeightAggregate
                 return '';
             }
 
-            return $objPrice->generate();
+            return $objPrice->generate($objProduct->getRelated('type')->showPriceTiers());
         };
 
         $objTemplate->getGallery = function($strAttribute) use ($objProduct, $arrConfig, &$arrGalleries) {
@@ -618,7 +623,6 @@ class Standard extends Product implements IsotopeProduct, WeightAggregate
 
         $strClass = $objAttribute->getFrontendWidget();
 
-        $arrData['eval']['mandatory'] = ($arrData['eval']['mandatory'] && !\Environment::get('isAjaxRequest')) ? true : false;
         $arrData['eval']['required']  = $arrData['eval']['mandatory'];
 
         // Value can be predefined in the URL, e.g. to preselect a variant
@@ -697,7 +701,11 @@ class Standard extends Product implements IsotopeProduct, WeightAggregate
                 }
 
                 if (!$objWidget->hasErrors() && $varValue != '') {
-                    $arrVariantOptions[$strField] = $varValue;
+                    if ($objAttribute->isVariantOption()) {
+                        $arrVariantOptions[$strField] = $varValue;
+                    } else {
+                        $this->arrOptions[$strField] = $varValue;
+                    }
                 }
             }
         }

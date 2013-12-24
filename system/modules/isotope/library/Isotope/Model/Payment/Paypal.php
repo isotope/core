@@ -149,8 +149,8 @@ class Paypal extends Postsale implements IsotopePayment
 
                 array_walk(
                     $arrOptions,
-                    function($option) {
-                        return $option['label'] . ': ' . $option['value'];
+                    function(&$option) {
+                        $option = $option['label'] . ': ' . $option['value'];
                     }
                 );
 
@@ -165,7 +165,7 @@ class Paypal extends Postsale implements IsotopePayment
 
         foreach ($objOrder->getSurcharges() as $objSurcharge) {
 
-            if (!$objSurcharge->add) {
+            if (!$objSurcharge->addToTotal) {
                 continue;
             }
 
@@ -175,7 +175,7 @@ class Paypal extends Postsale implements IsotopePayment
                 continue;
             }
 
-            $arrData['item_name_' . ++$i] = $objSurcharge->getLabel();
+            $arrData['item_name_' . ++$i] = $objSurcharge->label;
             $arrData['amount_' . $i]      = $objSurcharge->total_price;
         }
 
@@ -185,7 +185,7 @@ class Paypal extends Postsale implements IsotopePayment
         $objTemplate->id            = $this->id;
         $objTemplate->action        = ('https://www.' . ($this->debug ? 'sandbox.' : '') . 'paypal.com/cgi-bin/webscr');
         $objTemplate->invoice       = $objOrder->id;
-        $objTemplate->data          = $arrData;
+        $objTemplate->data          = array_map('specialchars', $arrData);
         $objTemplate->discount      = $fltDiscount;
         $objTemplate->address       = $objOrder->getBillingAddress();
         $objTemplate->currency      = $objOrder->currency;

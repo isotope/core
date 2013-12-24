@@ -217,11 +217,12 @@ abstract class TypeAgent extends \Model
 
             $objRelations = new \DcaExtractor(static::$strTable);
             $arrRelations = $objRelations->getRelations();
+            $arrFields = $objRelations->getFields();
 
             if (isset($arrRelations['type'])) {
                 $arrOptions['having'][] = 'type IN (SELECT ' . $arrRelations['type']['field'] . ' FROM ' . $arrRelations['type']['table'] . ' WHERE class=?)';
                 $arrOptions['value'][]  = $strType;
-            } elseif ($GLOBALS['TL_DCA'][static::$strTable]['fields']['type']) {
+            } elseif (isset($arrFields['type'])) {
                 $arrOptions['having'][] = 'type=?';
                 $arrOptions['value'][]  = $strType;
             }

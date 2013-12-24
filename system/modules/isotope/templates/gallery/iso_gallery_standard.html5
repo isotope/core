@@ -7,3 +7,47 @@
 </a>
 <?php endif; ?>
 </figure>
+<?php if($this->type == 'main' && \Environment::get('isAjaxRequest')): ?>
+<script>
+if (window.Mediabox) {
+  var links = $$('a').filter(function(el) {
+    return el.getAttribute('data-lightbox') != null;
+  });
+  $$(links).mediabox({
+    // Put custom options here
+  }, function(el) {
+	  return [el.href, el.title, el.getAttribute('data-lightbox')];
+  }, function(el) {
+    var data = this.getAttribute('data-lightbox').split(' ');
+    return (this == el) || (data[0] && el.getAttribute('data-lightbox').match(data[0]));
+  });
+  $('mbImage').addEvent('swipe', function(e) {
+    (e.direction == 'left') ? $('mbNextLink').fireEvent('click') : $('mbPrevLink').fireEvent('click');
+  });
+} else if (window.Slimbox) {
+  $$(document.links).filter(function(el) {
+    return el.getAttribute('data-lightbox') != null;
+  }).slimbox({
+    // Put custom options here
+  }, null, function(el) {
+    var attr = this.getAttribute('data-lightbox');
+    return (this == el) || (attr && el.getAttribute('data-lightbox').match(attr));
+  });
+  $('lbImage').addEvent('swipe', function(e) {
+    (e.direction == 'left') ? $('lbNextLink').fireEvent('click') : $('lbPrevLink').fireEvent('click');
+  });
+} else if (document.getElementById('colorbox')) {
+  (function($) {
+    $('a[data-lightbox]').map(function() {
+      $(this).colorbox({
+        // Put custom options here
+        loop: false,
+        rel: $(this).attr('data-lightbox'),
+        maxWidth: '95%',
+        maxHeight: '95%'
+      });
+    });
+  })(jQuery);
+}
+</script>
+<?php endif; ?>

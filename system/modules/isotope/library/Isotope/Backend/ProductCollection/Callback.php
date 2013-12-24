@@ -324,10 +324,13 @@ class Callback extends \Backend
                 \Controller::redirect($strRedirectUrl);
             }
 
-            if ($objOrder->getRelated('config_id') === null) {
+            if (($objConfig = $objOrder->getRelated('config_id')) === null) {
                 \Message::addError('Could not find config id.');
                 \Controller::redirect($strRedirectUrl);
             }
+
+            // Set current config
+            Isotope::setConfig($objConfig);
 
             if (($objDocument = Document::findByPk(\Input::post('document'))) === null) {
                 \Message::addError('Could not find document id.');

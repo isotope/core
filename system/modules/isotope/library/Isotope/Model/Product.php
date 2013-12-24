@@ -83,15 +83,7 @@ abstract class Product extends TypeAgent
      */
     public static function findPublished(array $arrOptions = array())
     {
-        $t          = static::$strTable;
-        $arrColumns = array();
-
-        if (BE_USER_LOGGED_IN !== true) {
-            $time         = time();
-            $arrColumns[] = "$t.published='1' AND ($t.start='' OR $t.start<$time) AND ($t.stop='' OR $t.stop>$time)";
-        }
-
-        return static::findBy($arrColumns, array(), $arrOptions);
+        return static::findPublishedBy(array(), array(), $arrOptions);
     }
 
     /**
@@ -111,9 +103,10 @@ abstract class Product extends TypeAgent
             $arrColumns = array(static::$strTable . '.' . $arrColumns . '=?');
         }
 
+        // Add publish check to $arrColumns as the first item to enable SQL keys
         if (BE_USER_LOGGED_IN !== true) {
-            $time         = time();
-            $arrColumns[] = "$t.published='1' AND ($t.start='' OR $t.start<$time) AND ($t.stop='' OR $t.stop>$time)";
+            $time = time();
+            array_unshift($arrColumns, "$t.published='1' AND ($t.start='' OR $t.start<$time) AND ($t.stop='' OR $t.stop>$time)");
         }
 
         return static::findBy($arrColumns, $arrValues, $arrOptions);
@@ -127,27 +120,7 @@ abstract class Product extends TypeAgent
      */
     public static function findPublishedByPk($intId, array $arrOptions = array())
     {
-        $t = static::$strTable;
-
-        $arrColumns = array("$t." . static::$strPk . "=?");
-        $arrValues  = array((int) $intId);
-
-        if (BE_USER_LOGGED_IN !== true) {
-            $time         = time();
-            $arrColumns[] = "$t.published='1' AND ($t.start='' OR $t.start<$time) AND ($t.stop='' OR $t.stop>$time)";
-        }
-
-		$arrOptions = array_merge(
-			array(
-				'limit'  => 1,
-				'column' => $arrColumns,
-				'value'  => $arrValues,
-				'return' => 'Model'
-			),
-			$arrOptions
-		);
-
-		return static::find($arrOptions);
+        return static::findPublishedBy(static::$strPk, (int) $intId, array('return'=>'Model'));
     }
 
     /**
@@ -163,22 +136,7 @@ abstract class Product extends TypeAgent
         $arrColumns = array("($t.id=? OR $t.alias=?)");
         $arrValues  = array((is_numeric($varId) ? $varId : 0), $varId);
 
-        if (BE_USER_LOGGED_IN !== true) {
-            $time         = time();
-            $arrColumns[] = "$t.published='1' AND ($t.start='' OR $t.start<$time) AND ($t.stop='' OR $t.stop>$time)";
-        }
-
-        $arrOptions = array_merge(
-            array(
-                 'limit'  => 1,
-                 'column' => $arrColumns,
-                 'value'  => $arrValues,
-                 'return' => 'Model'
-            ),
-            $arrOptions
-        );
-
-        return static::find($arrOptions);
+        return static::findPublishedBy($arrColumns, $arrValues, array('limit'=>1, 'return'=>'Model'));
     }
 
     /**
@@ -193,24 +151,7 @@ abstract class Product extends TypeAgent
             return null;
         }
 
-        $t = static::$strTable;
-
-        $arrColumns = array("$t.id IN (" . implode(',', array_map('intval', $arrIds)) . ")");
-
-        if (BE_USER_LOGGED_IN !== true) {
-            $time         = time();
-            $arrColumns[] = "$t.published='1' AND ($t.start='' OR $t.start<$time) AND ($t.stop='' OR $t.stop>$time)";
-        }
-
-        $arrOptions = array_merge(
-            array(
-                 'column' => $arrColumns,
-                 'return' => 'Collection'
-            ),
-            $arrOptions
-        );
-
-        return static::find($arrOptions);
+        return static::findPublishedBy(array(static::$strTable . '.id IN (' . implode(',', array_map('intval', $arrIds)) . ')'), null);
     }
 
     /**
@@ -221,25 +162,7 @@ abstract class Product extends TypeAgent
      */
     public static function findPublishedByPid($intPid, array $arrOptions = array())
     {
-        $t = static::$strTable;
-
-        $arrColumns = array("$t.pid=?");
-
-        if (BE_USER_LOGGED_IN !== true) {
-            $time         = time();
-            $arrColumns[] = "$t.published='1' AND ($t.start='' OR $t.start<$time) AND ($t.stop='' OR $t.stop>$time)";
-        }
-
-        $arrOptions = array_merge(
-            array(
-                 'column' => $arrColumns,
-                 'value'  => array((int) $intPid),
-                 'return' => 'Collection'
-            ),
-            $arrOptions
-        );
-
-        return static::find($arrOptions);
+        return static::findPublishedBy('pid', (int) $intPid);
     }
 
     /**
@@ -250,24 +173,7 @@ abstract class Product extends TypeAgent
      */
     public static function findPublishedByCategories(array $arrCategories, array $arrOptions = array())
     {
-        $t = static::$strTable;
-
-        $arrColumns = array("c.page_id IN (" . implode(',', array_map('intval', $arrCategories)) . ")");
-
-        if (BE_USER_LOGGED_IN !== true) {
-            $time         = time();
-            $arrColumns[] = "$t.published='1' AND ($t.start='' OR $t.start<$time) AND ($t.stop='' OR $t.stop>$time)";
-        }
-
-        $arrOptions = array_merge(
-            array(
-                 'column' => $arrColumns,
-                 'return' => 'Collection'
-            ),
-            $arrOptions
-        );
-
-        return static::find($arrOptions);
+        return static::findPublishedBy(array("c.page_id IN (" . implode(',', array_map('intval', $arrCategories)) . ")"), null);
     }
 
     /**
@@ -394,6 +300,8 @@ abstract class Product extends TypeAgent
      */
     protected static function find(array $arrOptions)
     {
+        $arrOptions['group'] = static::getTable() . '.id' . (null === $arrOptions['group'] ? '' : ', '.$arrOptions['group']);
+
         $objProducts = parent::find($arrOptions);
 
         if (null === $objProducts) {
@@ -470,7 +378,7 @@ abstract class Product extends TypeAgent
         $arrJoins  = array();
         $arrFields = array(
             $arrOptions['table'] . ".*",
-            "IF(" . $arrOptions['table'] . ".pid>0, (SELECT type FROM " . $arrOptions['table'] . " parent WHERE parent.id=" . $arrOptions['table'] . ".pid), " . $arrOptions['table'] . ".type) AS type",
+            "IF(" . $arrOptions['table'] . ".pid>0, parent.type, " . $arrOptions['table'] . ".type) AS type",
             "'" . str_replace('-', '_', $GLOBALS['TL_LANGUAGE']) . "' AS language",
         );
 
@@ -486,6 +394,7 @@ abstract class Product extends TypeAgent
 
         $arrJoins[] = " LEFT OUTER JOIN " . \Isotope\Model\ProductCategory::getTable() . " c ON {$arrOptions['table']}.id=c.pid";
         $arrJoins[] = " LEFT OUTER JOIN " . $arrOptions['table'] . " translation ON " . $arrOptions['table'] . ".id=translation.pid AND translation.language='" . str_replace('-', '_', $GLOBALS['TL_LANGUAGE']) . "'";
+        $arrJoins[] = " LEFT OUTER JOIN " . $arrOptions['table'] . " parent ON " . $arrOptions['table'] . ".pid=parent.id";
 
 
         if ($objBase->hasRelations()) {
@@ -526,9 +435,7 @@ abstract class Product extends TypeAgent
         }
 
         // The model must never find a language record
-        $arrOptions['column'][] = "{$arrOptions['table']}.language=''";
-
-        $strQuery .= " WHERE " . implode(" AND ", $arrOptions['column']);
+        $strQuery .= " WHERE {$arrOptions['table']}.language='' AND " . implode(" AND ", $arrOptions['column']);
 
         // Group by
         if ($arrOptions['group'] !== null) {

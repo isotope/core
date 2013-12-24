@@ -15,4 +15,4 @@
  */
 
 $GLOBALS['TL_LANG']['tl_member']['address_book'][0] = 'Adressenboek';
-$GLOBALS['TL_LANG']['tl_member']['address_book'][1] = 'Beheer dit adressenboek';
+$GLOBALS['TL_LANG']['tl_member']['address_book'][1] = 'Beheer het adressenboek van lid ID %s.';

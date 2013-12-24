@@ -22,6 +22,7 @@ use Isotope\Model\OrderStatus;
 use Isotope\Model\Payment;
 use Isotope\Model\ProductCollection;
 use Isotope\Model\ProductCollectionDownload;
+use Isotope\Model\ProductCollectionSurcharge;
 use Isotope\Model\Shipping;
 use NotificationCenter\Model\Notification;
 
@@ -120,6 +121,24 @@ class Order extends ProductCollection implements IsotopeProductCollection
 
 
     /**
+     * Find surcharges for the current collection
+     * @return  array
+     */
+    public function getSurcharges()
+    {
+        if (null === $this->arrSurcharges) {
+            $this->arrSurcharges = array();
+
+            if (($objSurcharges = ProductCollectionSurcharge::findBy('pid', $this->id)) !== null) {
+                $this->arrSurcharges = $objSurcharges->getModels();
+            }
+        }
+
+        return $this->arrSurcharges;
+    }
+
+
+    /**
      * Process the order checkout
      * @return boolean
      */
@@ -139,26 +158,6 @@ class Order extends ProductCollection implements IsotopeProductCollection
 
                     return false;
                 }
-            }
-        }
-
-        // Store address in address book
-        if ($this->iso_addToAddressbook && $this->member > 0) {
-
-            if ($this->getBillingAddress()->ptable != \MemberModel::getTable()) {
-                $objAddress         = clone $this->getBillingAddress();
-                $objAddress->pid    = $this->member;
-                $objAddress->tstamp = time();
-                $objAddress->ptable = \MemberModel::getTable();
-                $objAddress->save();
-            }
-
-            if ($this->getBillingAddress()->id != $this->getShippingAddress()->id && $this->getShippingAddress()->ptable != \MemberModel::getTable()) {
-                $objAddress         = clone $this->getShippingAddress();
-                $objAddress->pid    = $this->member;
-                $objAddress->tstamp = time();
-                $objAddress->ptable = \MemberModel::getTable();
-                $objAddress->save();
             }
         }
 
@@ -395,7 +394,6 @@ class Order extends ProductCollection implements IsotopeProductCollection
             $arrTokens['payment_id']        = $objPayment->id;
             $arrTokens['payment_label']     = $objPayment->getLabel();
             $arrTokens['payment_note']      = $objPayment->note;
-            $arrTokens['payment_note_text'] = strip_tags($objPayment->note);
         }
 
         // Add shipping method info
@@ -403,7 +401,6 @@ class Order extends ProductCollection implements IsotopeProductCollection
             $arrTokens['shipping_id']        = $objShipping->id;
             $arrTokens['shipping_label']     = $objShipping->getLabel();
             $arrTokens['shipping_note']      = $objShipping->note;
-            $arrTokens['shipping_note_text'] = strip_tags($objShipping->note);
         }
 
         // Add config fields
@@ -504,6 +501,34 @@ class Order extends ProductCollection implements IsotopeProductCollection
         $objBillingAddress  = $this->getBillingAddress();
         $objShippingAddress = $this->getShippingAddress();
 
+        // Store address in address book
+        if ($this->iso_addToAddressbook && $this->member > 0) {
+
+            if (null !== $objBillingAddress && $objBillingAddress->ptable != \MemberModel::getTable()) {
+                $objAddress         = clone $objBillingAddress;
+                $objAddress->pid    = $this->member;
+                $objAddress->tstamp = time();
+                $objAddress->ptable = \MemberModel::getTable();
+                $objAddress->save();
+
+                $this->updateDefaultAddress($objAddress);
+            }
+
+            if (null !== $objBillingAddress
+                && null !== $objShippingAddress
+                && $objBillingAddress->id != $objShippingAddress->id
+                && $objShippingAddress->ptable != \MemberModel::getTable()
+            ) {
+                $objAddress         = clone $objShippingAddress;
+                $objAddress->pid    = $this->member;
+                $objAddress->tstamp = time();
+                $objAddress->ptable = \MemberModel::getTable();
+                $objAddress->save();
+
+                $this->updateDefaultAddress($objAddress);
+            }
+        }
+
         if (null !== $objBillingAddress && ($objBillingAddress->ptable != static::$strTable || $objBillingAddress->pid != $this->id)) {
 
             $objNew         = clone $objBillingAddress;
@@ -531,6 +556,29 @@ class Order extends ProductCollection implements IsotopeProductCollection
             $objNew->save();
 
             $this->setShippingAddress($objNew);
+        }
+    }
+
+    /**
+     * Mark existing addresses as not default if the new address is default
+     * @param   Address
+     */
+    protected function updateDefaultAddress($objAddress)
+    {
+        $arrSet = array();
+
+        if ($objAddress->isDefaultBilling) {
+            $arrSet['isDefaultBilling'] = '';
+        }
+
+        if ($objAddress->isDefaultShipping) {
+            $arrSet['isDefaultShipping'] = '';
+        }
+
+        if (!empty($arrSet)) {
+            \Database::getInstance()->prepare("
+                UPDATE " . \MemberModel::getTable() . " %s WHERE pid=? AND ptable=? AND store_id=? AND id!=?
+            ")->set($arrSet)->execute($this->member, \MemberModel::getTable(), $this->store_id, $objAddress->id);
         }
     }
 }

@@ -14,5 +14,5 @@
 /**
  * Instantiate controller
  */
-$objIsotopeRunonce = new \Isotope\Runonce();
-$objIsotopeRunonce->run();
+$objIsotopeUpgrade = new \Isotope\Upgrade();
+$objIsotopeUpgrade->run();

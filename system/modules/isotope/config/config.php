@@ -282,11 +282,9 @@ $GLOBALS['NOTIFICATION_CENTER']['NOTIFICATION_TYPE']['isotope']['iso_order_statu
     'payment_id', // Payment method ID
     'payment_label', // Payment method label
     'payment_note', // Payment method note
-    'payment_note_text', // Payment method note without HTML tags
     'shipping_id', // Shipping method ID
     'shipping_label', // Shipping method label
     'shipping_note', // Shipping method note
-    'shipping_note_text', // Shipping method note without HTML tags
     'config_*', // Store configuration model fields
     'member_*', // Member model fields
 );
@@ -388,6 +386,7 @@ if (\Config::getInstance()->isComplete()) {
  * Cron Jobs
  */
 $GLOBALS['TL_CRON']['daily'][] = array('Isotope\Automator', 'deleteOldCarts');
+$GLOBALS['TL_CRON']['daily'][] = array('Isotope\Automator', 'deleteOldOrders');
 $GLOBALS['TL_CRON']['daily'][] = array('Isotope\Automator', 'convertCurrencies');
 
 
@@ -402,4 +401,5 @@ $GLOBALS['TL_AUTO_ITEM'][] = 'step';
  * Default configuration
  */
 $GLOBALS['TL_CONFIG']['iso_cartTimeout'] = 2592000;
+$GLOBALS['TL_CONFIG']['iso_orderTimeout'] = 604800;
 

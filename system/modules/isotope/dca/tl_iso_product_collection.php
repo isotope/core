@@ -60,11 +60,11 @@ $GLOBALS['TL_DCA']['tl_iso_product_collection'] = array
             'mode'                  => 2,
             'fields'                => array('locked DESC'),
             'panelLayout'           => 'filter;sort,search,limit',
-            'filter'                => array(array('type=?', 'Order'), array('order_status>?', '0')),
+            'filter'                => array(array('type=?', 'order'), array('order_status>?', '0'), array("locked!=''")),
         ),
         'label' => array
         (
-            'fields'                => array('document_number', 'locked', 'address1_id', 'grandTotal', 'order_status'),
+            'fields'                => array('document_number', 'locked', 'billing_address_id', 'grandTotal', 'order_status'),
             'showColumns'           => true,
             'label_callback'        => array('Isotope\Backend\ProductCollection\Callback', 'getOrderLabel')
         ),
@@ -260,18 +260,18 @@ $GLOBALS['TL_DCA']['tl_iso_product_collection'] = array
             'sql'                   => "int(10) unsigned NOT NULL default '0'",
             'relation'              => array('type'=>'hasOne', 'load'=>'lazy'),
         ),
-        'address1_id' => array
+        'billing_address_id' => array
         (
-            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_product_collection']['address1_id'],
+            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_product_collection']['billing_address_id'],
             'foreignKey'            => \Isotope\Model\Address::getTable().'.label',
             'eval'                  => array('doNotShow'=>true),
             'sql'                   => "int(10) unsigned NOT NULL default '0'",
             'relation'              => array('type'=>'hasOne', 'load'=>'lazy'),
         ),
-        'address2_id' => array
+        'shipping_address_id' => array
         (
+            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_product_collection']['shipping_address_id'],
             'foreignKey'            => \Isotope\Model\Address::getTable().'.label',
-            'eval'                  => array('doNotShow'=>true),
             'sql'                   => "int(10) unsigned NOT NULL default '0'",
             'relation'              => array('type'=>'hasOne', 'load'=>'lazy'),
         ),

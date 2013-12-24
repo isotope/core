@@ -14,5 +14,7 @@
  * @license http://www.gnu.org/licenses/lgpl-3.0.html
  */
 
-$GLOBALS['TL_LANG']['tl_settings']['iso_cartTimeout'][0] = 'Gäste-Warenkorb Time-Out';
-$GLOBALS['TL_LANG']['tl_settings']['iso_cartTimeout'][1] = 'Hier können Sie die maximale Dauer eines Gäste-Warenkorbs in Sekunden angeben (30 Tage = 2592000 Sekunden).';
+$GLOBALS['TL_LANG']['tl_settings']['iso_cartTimeout'][0] = 'Zeitlimit für Gäste-Warenkorb';
+$GLOBALS['TL_LANG']['tl_settings']['iso_cartTimeout'][1] = 'Geben Sie die Lebensdauer für einen Gäste-Warenkorb in Sekunden ein (30 Tage = 2592000 Sekunden).';
+$GLOBALS['TL_LANG']['tl_settings']['iso_orderTimeout'][0] = 'Zeitlimit für Bestellungen';
+$GLOBALS['TL_LANG']['tl_settings']['iso_orderTimeout'][1] = 'Geben Sie an wie lange unvollständige Bestellungen gespeichert werden (in Sekunden; 7 Tage = 604800 Sekunden).';
