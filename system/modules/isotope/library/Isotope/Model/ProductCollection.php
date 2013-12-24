@@ -292,7 +292,7 @@ abstract class ProductCollection extends TypeAgent
      */
     public function getBillingAddress()
     {
-        return $this->getRelated('address1_id');
+        return $this->getRelated('billing_address_id');
     }
 
     /**
@@ -302,9 +302,9 @@ abstract class ProductCollection extends TypeAgent
     public function setBillingAddress(Address $objAddress = null)
     {
         if (null === $objAddress || $objAddress->id < 1) {
-            $this->address1_id = 0;
+            $this->billing_address_id = 0;
         } else {
-            $this->address1_id = $objAddress->id;
+            $this->billing_address_id = $objAddress->id;
         }
     }
 
@@ -314,7 +314,7 @@ abstract class ProductCollection extends TypeAgent
      */
     public function getShippingAddress()
     {
-        return $this->hasShipping() ? $this->getRelated('address2_id') : null;
+        return $this->hasShipping() ? $this->getRelated('shipping_address_id') : null;
     }
 
     /**
@@ -324,9 +324,9 @@ abstract class ProductCollection extends TypeAgent
     public function setShippingAddress(Address $objAddress = null)
     {
         if (null === $objAddress || $objAddress->id < 1) {
-            $this->address2_id = 0;
+            $this->shipping_address_id = 0;
         } else {
-            $this->address2_id = $objAddress->id;
+            $this->shipping_address_id = $objAddress->id;
         }
     }
 

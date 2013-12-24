@@ -107,7 +107,7 @@ class ShippingAddress extends Address implements IsotopeCheckoutStep
         $arrOptions[] = array(
             'value'     => '0',
             'label'     => $GLOBALS['TL_LANG']['MSC']['differentShippingAddress'],
-            'default'   => ($this->getDefaultAddress()->id == Isotope::getCart()->address2_id),
+            'default'   => ($this->getDefaultAddress()->id == Isotope::getCart()->shipping_address_id),
         );
 
         return $arrOptions;

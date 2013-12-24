@@ -100,7 +100,7 @@ class BillingAddress extends Address implements IsotopeCheckoutStep
             $arrOptions[] = array(
                 'value'   => 0,
                 'label'   => &$GLOBALS['TL_LANG']['MSC']['createNewAddressLabel'],
-                'default' => ($this->getDefaultAddress()->id == Isotope::getCart()->address1_id),
+                'default' => ($this->getDefaultAddress()->id == Isotope::getCart()->billing_address_id),
             );
         }
 
