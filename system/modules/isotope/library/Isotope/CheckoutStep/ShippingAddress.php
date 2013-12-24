@@ -43,13 +43,6 @@ class ShippingAddress extends Address implements IsotopeCheckoutStep
         $this->Template->headline = $GLOBALS['TL_LANG']['MSC']['shipping_address'];
         $this->Template->message  = $GLOBALS['TL_LANG']['MSC']['shipping_address_message'];
 
-        $objAddress = Isotope::getCart()->getShippingAddress();
-
-        // We always need a shipping address (when logged in in later checkout step)
-        if (!\Model\Registry::getInstance()->isRegistered($objAddress)) {
-            $this->blnError = true;
-        }
-
         return parent::generate();
     }
 

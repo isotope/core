@@ -121,7 +121,7 @@ abstract class Address extends CheckoutStep
 
         $objAddress = $this->getAddressForOption($varValue, $blnValidate);
 
-        if (null === $objAddress) {
+        if (null === $objAddress || !\Model\Registry::getInstance()->isRegistered($objAddress)) {
             $this->blnError = true;
         } elseif ($blnValidate) {
             $this->setAddress($objAddress);
