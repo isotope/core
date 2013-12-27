@@ -119,7 +119,7 @@ $GLOBALS['TL_DCA']['tl_iso_orderstatus'] = array
     // Palettes
     'palettes' => array
     (
-        'default'                   => '{name_legend},name,paid,welcomescreen;{email_legend},notification',
+        'default'                   => '{name_legend},name,color,paid,welcomescreen;{email_legend},notification',
     ),
 
     // Fields
@@ -146,8 +146,16 @@ $GLOBALS['TL_DCA']['tl_iso_orderstatus'] = array
             'label'                 => &$GLOBALS['TL_LANG']['tl_iso_orderstatus']['name'],
             'exclude'               => true,
             'inputType'             => 'text',
-            'eval'                  => array('mandatory'=>true, 'maxlength'=>255, 'tl_class'=>'clr'),
+            'eval'                  => array('mandatory'=>true, 'maxlength'=>255, 'tl_class'=>'w50'),
             'sql'                   => "varchar(255) NOT NULL default ''",
+        ),
+        'color' => array
+        (
+            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_orderstatus']['color'],
+            'exclude'               => true,
+            'inputType'             => 'text',
+            'eval'                  => array('maxlength'=>6, 'colorpicker'=>true, 'isHexColor'=>true, 'decodeEntities'=>true, 'tl_class'=>'w50 wizard'),
+            'sql'                   => "varchar(6) NOT NULL default ''"
         ),
         'paid' => array
         (

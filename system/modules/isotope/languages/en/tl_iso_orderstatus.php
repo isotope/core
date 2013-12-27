@@ -14,6 +14,7 @@
  * Fields
  */
 $GLOBALS['TL_LANG']['tl_iso_orderstatus']['name']                       = array('Name', 'Please enter a name for this status.');
+$GLOBALS['TL_LANG']['tl_iso_orderstatus']['color']                      = array('Color', 'Here you can set a custom color for this status. The color will appear on the order list in back end.');
 $GLOBALS['TL_LANG']['tl_iso_orderstatus']['paid']                       = array('Order is paid', 'Assume the order is paid when it has this status. This will for example allow files to be downloaded.');
 $GLOBALS['TL_LANG']['tl_iso_orderstatus']['welcomescreen']              = array('Show on welcome screen', 'Show number of orders with this status on the backend welcome screen.');
 $GLOBALS['TL_LANG']['tl_iso_orderstatus']['notification']               = array('Notification', 'Please select a notification.');

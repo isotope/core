@@ -36,6 +36,10 @@ class Callback extends \Backend
             return $args;
         }
 
+        // Add the status color if any
+        $strColor = $objOrder->getRelated('order_status')->color;
+        $args[0] = '<span style="border-left:5px solid ' . (strlen($strColor) ? ('#' . $strColor) : 'transparent') . ';padding-right:8px;"></span>' . $args[0];
+
         // Override system to correctly format currencies etc
         Isotope::setConfig($objOrder->getRelated('config_id'));
 
