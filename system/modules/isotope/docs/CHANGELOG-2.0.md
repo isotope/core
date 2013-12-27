@@ -1,6 +1,13 @@
 Isotope eCommerce Changelog
 ===========================
 
+Version 2.0.1 (2013-??-??)
+--------------------------
+
+### Fixed
+- Back end interface for PayPal payment method
+
+
 Version 2.0.0 (2013-12-24)
 --------------------------
 
