@@ -4,6 +4,9 @@ Isotope eCommerce Changelog
 Version 2.0.1 (2013-??-??)
 --------------------------
 
+### Improved
+- Payment method templates are using pure JavaScript now
+
 ### Fixed
 - Back end interface for PayPal payment method
 
