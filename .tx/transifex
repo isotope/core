@@ -4,7 +4,7 @@
 /**
  * Isotope eCommerce for Contao Open Source CMS
  *
- * Copyright (C) 2009-2013 terminal42 gmbh & Isotope eCommerce Workgroup
+ * Copyright (C) 2009-2014 terminal42 gmbh & Isotope eCommerce Workgroup
  *
  * @package    Isotope
  * @link       http://isotopeecommerce.org
@@ -252,7 +252,7 @@ class Transifex
 					fputs($fh, "/**\n");
 					fputs($fh, " * Isotope eCommerce for Contao Open Source CMS\n");
 					fputs($fh, " * \n");
-					fputs($fh, " * Copyright (C) 2009-2013 terminal42 gmbh & Isotope eCommerce Workgroup\n");
+					fputs($fh, " * Copyright (C) 2009-2014 terminal42 gmbh & Isotope eCommerce Workgroup\n");
 					fputs($fh, " * \n");
 					fputs($fh, " * Translations are managed using Transifex. To create a new translation\n");
 					fputs($fh, " * or to help to maintain an existing one, please register at transifex.com.\n");
