@@ -12,6 +12,7 @@ Version 2.0.1 (2013-??-??)
 - Missing payment template for Sofortueberweisung
 - Prevent warning when no filter modules were activated (#922)
 - Radio option for rule condition was not active (#913)
+- Workaround for SQL error due to Contao bug #6623 (fixes #912)
 
 
 Version 2.0.0 (2013-12-24)
