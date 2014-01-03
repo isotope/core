@@ -11,6 +11,7 @@ Version 2.0.1 (2013-??-??)
 - Back end interface for PayPal payment method
 - Missing payment template for Sofortueberweisung
 - Prevent warning when no filter modules were activated (#922)
+- Radio option for rule condition was not active (#913)
 
 
 Version 2.0.0 (2013-12-24)

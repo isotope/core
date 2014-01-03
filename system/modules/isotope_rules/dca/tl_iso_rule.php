@@ -316,10 +316,11 @@ $GLOBALS['TL_DCA']['tl_iso_rule'] = array
         (
             'label'                         => &$GLOBALS['TL_LANG']['tl_iso_rule']['configCondition'],
             'exclude'                       => true,
+            'default'                       => '1',
             'inputType'                     => 'radio',
-            'options'                       => array('' => $GLOBALS['TL_LANG']['tl_iso_rule']['condition_true'], '1' => $GLOBALS['TL_LANG']['tl_iso_rule']['condition_false']),
-            'eval'                          => array('tl_class'=>'w50'),
-            'sql'                           => "char(1) NOT NULL default ''",
+            'options'                       => array('1'=>$GLOBALS['TL_LANG']['tl_iso_rule']['condition_true'], '0'=>$GLOBALS['TL_LANG']['tl_iso_rule']['condition_false']),
+            'eval'                          => array('isAssociative'=>true, 'tl_class'=>'w50'),
+            'sql'                           => "tinyint(1) NOT NULL default '0'",
         ),
         'configs' => array
         (
@@ -353,10 +354,11 @@ $GLOBALS['TL_DCA']['tl_iso_rule'] = array
         (
             'label'                         => &$GLOBALS['TL_LANG']['tl_iso_rule']['memberCondition'],
             'exclude'                       => true,
+            'default'                       => '1',
             'inputType'                     => 'radio',
-            'options'                       => array('' => $GLOBALS['TL_LANG']['tl_iso_rule']['condition_true'], '1' => $GLOBALS['TL_LANG']['tl_iso_rule']['condition_false']),
-            'eval'                          => array('tl_class'=>'w50'),
-            'sql'                           => "char(1) NOT NULL default ''",
+            'options'                       => array('1'=>$GLOBALS['TL_LANG']['tl_iso_rule']['condition_true'], '0'=>$GLOBALS['TL_LANG']['tl_iso_rule']['condition_false']),
+            'eval'                          => array('isAssociative'=>true, 'tl_class'=>'w50'),
+            'sql'                           => "tinyint(1) NOT NULL default '0'",
         ),
         'groups' => array
         (
@@ -416,10 +418,11 @@ $GLOBALS['TL_DCA']['tl_iso_rule'] = array
         (
             'label'                         => &$GLOBALS['TL_LANG']['tl_iso_rule']['productCondition'],
             'exclude'                       => true,
+            'default'                       => '1',
             'inputType'                     => 'radio',
-            'options'                       => array('' => $GLOBALS['TL_LANG']['tl_iso_rule']['condition_true'], '1' => $GLOBALS['TL_LANG']['tl_iso_rule']['condition_false']),
-            'eval'                          => array('tl_class'=>'w50'),
-            'sql'                           => "char(1) NOT NULL default ''",
+            'options'                       => array('1'=>$GLOBALS['TL_LANG']['tl_iso_rule']['condition_true'], '0'=>$GLOBALS['TL_LANG']['tl_iso_rule']['condition_false']),
+            'eval'                          => array('isAssociative'=>true, 'tl_class'=>'w50'),
+            'sql'                           => "tinyint(1) NOT NULL default '0'",
         ),
         'producttypes' => array
         (
