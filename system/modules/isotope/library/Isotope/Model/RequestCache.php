@@ -75,7 +75,7 @@ class RequestCache extends \Model
      */
     public function getFiltersForModules(array $arrIds)
     {
-        if ($this->arrFilters === null) {
+        if ($this->arrFilters === null || empty($arrIds)) {
             return array();
         }
 
@@ -185,7 +185,7 @@ class RequestCache extends \Model
      */
     public function getSortingsForModules(array $arrIds)
     {
-        if (null === $this->arrSortings) {
+        if (null === $this->arrSortings || empty($arrIds)) {
             return array();
         }
 
