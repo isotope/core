@@ -9,6 +9,7 @@ Version 2.0.1 (2013-??-??)
 
 ### Fixed
 - Back end interface for PayPal payment method
+- Missing payment template for Sofortueberweisung
 
 
 Version 2.0.0 (2013-12-24)
