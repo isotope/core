@@ -36,7 +36,7 @@ class Isotope extends \Controller
     /**
      * Isotope version
      */
-    const VERSION = '2.0.0';
+    const VERSION = '2.0.1';
 
     /**
      * True if the system has been initialized
