@@ -63,7 +63,7 @@ class Callback extends \Backend
     {
         $this->loadDataContainer('tl_iso_product');
 
-        $varValue = standardize($varValue);
+        $varValue = str_replace('-', '_', standardize($varValue));
 
         if (isset($GLOBALS['TL_DCA']['tl_iso_product']['fields'][$varValue]) && $GLOBALS['TL_DCA']['tl_iso_product']['fields'][$varValue]['attributes']['systemColumn']) {
             throw new \InvalidArgumentException(sprintf($GLOBALS['TL_LANG']['ERR']['systemColumn'], $varValue));
