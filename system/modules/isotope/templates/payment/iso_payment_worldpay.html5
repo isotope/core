@@ -27,7 +27,5 @@
 </noscript>
 </form>
 <script>
-window.addEvent('domready' , function() {
-  $('worldpay<?php echo $this->id; ?>').submit();
-});
+document.getElementById('worldpay<?php echo $this->id; ?>').submit();
 </script>

@@ -3,7 +3,7 @@
 /**
  * Isotope eCommerce for Contao Open Source CMS
  * 
- * Copyright (C) 2009-2013 terminal42 gmbh & Isotope eCommerce Workgroup
+ * Copyright (C) 2009-2014 terminal42 gmbh & Isotope eCommerce Workgroup
  * 
  * Translations are managed using Transifex. To create a new translation
  * or to help to maintain an existing one, please register at transifex.com.
@@ -17,7 +17,7 @@
 $GLOBALS['TL_LANG']['tl_iso_related_product']['category'][0] = 'Categorie';
 $GLOBALS['TL_LANG']['tl_iso_related_product']['category'][1] = 'Selecteer een categorie.';
 $GLOBALS['TL_LANG']['tl_iso_related_product']['products'][0] = 'Producten';
-$GLOBALS['TL_LANG']['tl_iso_related_product']['products'][1] = 'Voer een met komma\'s gescheiden lijst in met product of variant ID\'s om weer te geven als gerelateerde producten.';
+$GLOBALS['TL_LANG']['tl_iso_related_product']['products'][1] = 'Vul een met komma\'s gescheiden lijst in met product of variant ID\'s om weer te geven als gerelateerde producten.';
 $GLOBALS['TL_LANG']['tl_iso_related_product']['new'][0] = 'Categorie toevoegen';
 $GLOBALS['TL_LANG']['tl_iso_related_product']['new'][1] = 'Voeg een nieuwe categorie met producten';
 $GLOBALS['TL_LANG']['tl_iso_related_product']['edit'][0] = 'Bewerk categorie';

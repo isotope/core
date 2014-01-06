@@ -75,7 +75,7 @@
         <source>Copy document ID %s</source>
       </trans-unit>
       <trans-unit id="tl_iso_document.delete.0">
-        <source>Deletedocument</source>
+        <source>Delete document</source>
       </trans-unit>
       <trans-unit id="tl_iso_document.delete.1">
         <source>Delete document ID %s</source>

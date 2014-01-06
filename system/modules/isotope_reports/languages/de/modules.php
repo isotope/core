@@ -3,7 +3,7 @@
 /**
  * Isotope eCommerce for Contao Open Source CMS
  * 
- * Copyright (C) 2009-2013 terminal42 gmbh & Isotope eCommerce Workgroup
+ * Copyright (C) 2009-2014 terminal42 gmbh & Isotope eCommerce Workgroup
  * 
  * Translations are managed using Transifex. To create a new translation
  * or to help to maintain an existing one, please register at transifex.com.
@@ -15,4 +15,4 @@
  */
 
 $GLOBALS['TL_LANG']['MOD']['isotope_reports'][0] = 'Isotope eCommerce: Auswertungen &amp; Statistik';
-$GLOBALS['TL_LANG']['MOD']['reports'][0] = 'Auswertung &amp; Statistik';
+$GLOBALS['TL_LANG']['MOD']['reports'][0] = 'Auswertungen &amp; Statistik';

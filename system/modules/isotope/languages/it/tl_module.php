@@ -3,7 +3,7 @@
 /**
  * Isotope eCommerce for Contao Open Source CMS
  * 
- * Copyright (C) 2009-2013 terminal42 gmbh & Isotope eCommerce Workgroup
+ * Copyright (C) 2009-2014 terminal42 gmbh & Isotope eCommerce Workgroup
  * 
  * Translations are managed using Transifex. To create a new translation
  * or to help to maintain an existing one, please register at transifex.com.
@@ -15,9 +15,7 @@
  */
 
 $GLOBALS['TL_LANG']['tl_module']['iso_list_layout'][0] = 'Template elenco prodotti';
-$GLOBALS['TL_LANG']['tl_module']['iso_list_layout'][1] = 'Per cortesia scelga un layout elenco. Può aggiungere i suoi layout elenco personalizzati nella cartella <em>templates<em>. I file template elenco hanno il prefisso <em>iso_list_</em> e hanno l\'estensione <em>.tpl<em>.';
 $GLOBALS['TL_LANG']['tl_module']['iso_reader_layout'][0] = 'Template lettore prodotto';
-$GLOBALS['TL_LANG']['tl_module']['iso_reader_layout'][1] = 'Per cortesia scelga il template lettore. Può aggiungere le sue template lettore personalizzate nella cartella <em>templates<em>. I file template lettore cominciano con <em>iso_reader_</em> e hanno l\'estensione <em>.tpl</em>.';
 $GLOBALS['TL_LANG']['tl_module']['iso_jump_first'][0] = 'Reindirizza verso il primo prodotto';
 $GLOBALS['TL_LANG']['tl_module']['iso_jump_first'][1] = 'Spunti qui se gli utenti saranno reindirizzati al primo prodotto nell\'elenco.';
 $GLOBALS['TL_LANG']['tl_module']['iso_use_quantity'][0] = 'Abiliti la quantità';

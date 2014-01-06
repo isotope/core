@@ -3,7 +3,7 @@
 /**
  * Isotope eCommerce for Contao Open Source CMS
  * 
- * Copyright (C) 2009-2013 terminal42 gmbh & Isotope eCommerce Workgroup
+ * Copyright (C) 2009-2014 terminal42 gmbh & Isotope eCommerce Workgroup
  * 
  * Translations are managed using Transifex. To create a new translation
  * or to help to maintain an existing one, please register at transifex.com.
@@ -15,13 +15,14 @@
  */
 
 $GLOBALS['TL_LANG']['tl_module']['iso_list_layout'][0] = 'Productlijst template';
-$GLOBALS['TL_LANG']['tl_module']['iso_list_layout'][1] = 'Selecteer een lijst layout. Je kan eigen lijst layouts toevoegen in folder <em>templates</em>. Lijst template bestanden beginnen met <em>iso_list_</em> en gebruiken de extensie <em>.tpl</em>.';
 $GLOBALS['TL_LANG']['tl_module']['iso_reader_layout'][0] = 'Product weergave template';
-$GLOBALS['TL_LANG']['tl_module']['iso_reader_layout'][1] = 'Selecteer een weergave template. Je kan eigen weergave templates toevoegen in folder <em>templates</em>. Weergave template bestanden beginnen met <em>iso_reader_</em> en gebruiken de extensie <em>.tpl</em>.';
+$GLOBALS['TL_LANG']['tl_module']['iso_gallery'][0] = 'Gallerij';
+$GLOBALS['TL_LANG']['tl_module']['iso_collectionTpl'][0] = 'Productverzameling template';
+$GLOBALS['TL_LANG']['tl_module']['iso_collectionTpl'][1] = 'Selecteer een template om producten mee weer te geven. U kunt aangepaste verzameling-templates toevoegen aan de map <em>templates</em>. Collectie-templatebestanden beginnen met <em>iso_collection</em>.';
 $GLOBALS['TL_LANG']['tl_module']['iso_filterTpl'][0] = 'Filter template';
-$GLOBALS['TL_LANG']['tl_module']['iso_filterTpl'][1] = 'Selecteer een filter template. Je kan eigen filter templates toevoegen in folder <em>templates</em>. Filter template bestanden beginnen met <em>iso_filter_</em> en gebruiken de extensie <em>.tpl</em>.';
 $GLOBALS['TL_LANG']['tl_module']['iso_jump_first'][0] = 'Doorsturen naar eerste product';
 $GLOBALS['TL_LANG']['tl_module']['iso_jump_first'][1] = 'Check hier zodat gebruikers doorgestuurd zullen worden naar het eerste product van de lijst.';
+$GLOBALS['TL_LANG']['tl_module']['iso_hide_list'][0] = 'Verbergen in productlezermodus';
 $GLOBALS['TL_LANG']['tl_module']['iso_use_quantity'][0] = 'Hoeveelheid mogelijk maken';
 $GLOBALS['TL_LANG']['tl_module']['iso_use_quantity'][1] = 'Sta gebruikers toe aan te geven 1 of meerdere van een product aan te schaffen.';
 $GLOBALS['TL_LANG']['tl_module']['iso_checkout_method'][0] = 'Checkout methode';
@@ -31,7 +32,7 @@ $GLOBALS['TL_LANG']['tl_module']['iso_login_jumpTo'][1] = 'Selecteer de pagina w
 $GLOBALS['TL_LANG']['tl_module']['iso_addProductJumpTo'][0] = 'Product "ga naar pagina" toevoegen';
 $GLOBALS['TL_LANG']['tl_module']['iso_addProductJumpTo'][1] = 'Deze instelling definieert naar welke pagina de gebruiker wordt doorverwezen wanneer deze een product aan de winkelwagen heeft toevoegd, anders dan de huidige pagina.';
 $GLOBALS['TL_LANG']['tl_module']['iso_cols'][0] = 'Kolommen';
-$GLOBALS['TL_LANG']['tl_module']['iso_cols'][1] = 'Geef het aantal kolommen op voor de breedte weergave in te productlijst template.';
+$GLOBALS['TL_LANG']['tl_module']['iso_cols'][1] = 'Vul het aantal kolommen in voor de breedteweergave in de productlijst template.';
 $GLOBALS['TL_LANG']['tl_module']['iso_config_id'][0] = 'Winkel configuratie';
 $GLOBALS['TL_LANG']['tl_module']['iso_config_id'][1] = 'Selecteer de winkel configuratie waar deze module voor gebruikt wordt.';
 $GLOBALS['TL_LANG']['tl_module']['iso_config_ids'][0] = 'Winkel configuraties';
@@ -48,12 +49,15 @@ $GLOBALS['TL_LANG']['tl_module']['iso_order_conditions'][0] = 'Bestelvoorwaarden
 $GLOBALS['TL_LANG']['tl_module']['iso_order_conditions'][1] = 'Selecteer een eigen formulier dat gebruikt wordt om je algemene voorwaarden weer te geven.';
 $GLOBALS['TL_LANG']['tl_module']['iso_addToAddressbook'][0] = 'Voeg toe aan adresboek';
 $GLOBALS['TL_LANG']['tl_module']['iso_addToAddressbook'][1] = 'Voeg nieuw adres toe aan leden adresboek (wanneer ingelogd).';
+$GLOBALS['TL_LANG']['tl_module']['iso_orderCollectionBy'][1] = 'Geef aan in welke volgorde de items in deze verzameling weergegeven moeten worden.';
 $GLOBALS['TL_LANG']['tl_module']['iso_emptyMessage'][0] = 'Bepaal een lege melding';
 $GLOBALS['TL_LANG']['tl_module']['iso_emptyMessage'][1] = 'Plaats een eigen melding wanneer de productlijst leeg is.';
 $GLOBALS['TL_LANG']['tl_module']['iso_noProducts'][0] = 'Melding voor lege lijst';
-$GLOBALS['TL_LANG']['tl_module']['iso_noProducts'][1] = 'Geef een eigen melding wanneer de productlijst leeg is.';
+$GLOBALS['TL_LANG']['tl_module']['iso_noProducts'][1] = 'Vul een eigen melding in weer te geven als er niks weergegeven kan worden (lege productlijst, winkelwagen, enz.).';
+$GLOBALS['TL_LANG']['tl_module']['iso_noFilter'][1] = 'Vul een eigen melding in voor als er geen filter ingesteld is.';
 $GLOBALS['TL_LANG']['tl_module']['iso_category_scope'][0] = 'Categorie omvang';
 $GLOBALS['TL_LANG']['tl_module']['iso_category_scope'][1] = 'Geef de omvang van een productlijst op.';
+$GLOBALS['TL_LANG']['tl_module']['iso_list_where'][1] = 'Vul hier een eigen SQL voorwaarde in om producten mee te filteren. Ieder veld moet met "p1." beginnen (bijv. <em>p1.featured=1</em> of <em>p1.color!=\'rood\'</em>)!';
 $GLOBALS['TL_LANG']['tl_module']['iso_filterModules'][0] = 'Filter modules';
 $GLOBALS['TL_LANG']['tl_module']['iso_filterModules'][1] = 'Selecteer de filter modules voor deze productlijst.';
 $GLOBALS['TL_LANG']['tl_module']['iso_filterFields'][0] = 'Filters mogelijk maken';
@@ -65,7 +69,7 @@ $GLOBALS['TL_LANG']['tl_module']['iso_sortingFields'][1] = 'Selecteer de velden 
 $GLOBALS['TL_LANG']['tl_module']['iso_enableLimit'][0] = 'Aantallen per pagina mogelijk maken';
 $GLOBALS['TL_LANG']['tl_module']['iso_enableLimit'][1] = 'Stel de gebruiker in staat het aantal records per pagina te selecteren.';
 $GLOBALS['TL_LANG']['tl_module']['iso_perPage'][0] = 'Opties per pagina';
-$GLOBALS['TL_LANG']['tl_module']['iso_perPage'][1] = 'Geef een comma gescheiden lijst voor het limiteren van de dropdown op. De eerste optie is de standaard waarde. Waarden worden automatisch gesorteerd op nummer.';
+$GLOBALS['TL_LANG']['tl_module']['iso_perPage'][1] = 'Vul een, met komma\'s gescheiden, lijst in voor het limiteren van de dropdown. De eerste optie is de standaard waarde. Waarden worden automatisch gesorteerd op nummer.';
 $GLOBALS['TL_LANG']['tl_module']['iso_cart_jumpTo'][0] = 'Winkelwagen "ga naar pagina"';
 $GLOBALS['TL_LANG']['tl_module']['iso_cart_jumpTo'][1] = 'Deze instelling definieert naar welke pagina de gebruiker wordt doorverwezen wanneer deze de volledige winkelwagen wil bekijken.';
 $GLOBALS['TL_LANG']['tl_module']['iso_checkout_jumpTo'][0] = 'Checkout "ga naar pagina"';

@@ -3,7 +3,7 @@
 /**
  * Isotope eCommerce for Contao Open Source CMS
  *
- * Copyright (C) 2009-2013 terminal42 gmbh & Isotope eCommerce Workgroup
+ * Copyright (C) 2009-2014 terminal42 gmbh & Isotope eCommerce Workgroup
  *
  * @package    Isotope
  * @link       http://isotopeecommerce.org
@@ -576,9 +576,10 @@ class Order extends ProductCollection implements IsotopeProductCollection
         }
 
         if (!empty($arrSet)) {
-            \Database::getInstance()->prepare("
-                UPDATE " . \MemberModel::getTable() . " %s WHERE pid=? AND ptable=? AND store_id=? AND id!=?
-            ")->set($arrSet)->execute($this->member, \MemberModel::getTable(), $this->store_id, $objAddress->id);
+            // @todo restore foratting when #6623 is fixed in Contao core
+            \Database::getInstance()->prepare("UPDATE " . $objAddress->getTable() . " %s WHERE pid=? AND ptable=? AND store_id=? AND id!=?")
+                                    ->set($arrSet)
+                                    ->execute($this->member, \MemberModel::getTable(), $this->store_id, $objAddress->id);
         }
     }
 }

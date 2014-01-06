@@ -31,7 +31,7 @@
     <tr class="<?php echo $item['rowClass']; ?>"><?php if(!$this->isNotification): ?>
         <td class="col_<?php echo $i++; ?> col_first image"><?php echo $this->getGallery('images', $item['item'])->generateMainImage(); ?></td><?php endif; ?>
         <td class="col_<?php echo $i++; ?><?php if($this->isNotification) echo ' col_first'; ?> name">
-            <?php if($this->linkProducts && $item['hasProduct']): ?><a href="<?php echo $item['href']; ?>"><?php echo $item['name']; ?></a><?php else: ?><?php echo $item['name']; ?><?php endif; ?>
+            <?php if($this->linkProducts && $item['href']): ?><a href="<?php echo $item['href']; ?>"><?php echo $item['name']; ?></a><?php else: ?><?php echo $item['name']; ?><?php endif; ?>
             <?php if(!empty($item['options'])): ?>
             <ul>
                 <?php foreach($item['options'] as $option): ?>

@@ -3,7 +3,7 @@
 /**
  * Isotope eCommerce for Contao Open Source CMS
  * 
- * Copyright (C) 2009-2013 terminal42 gmbh & Isotope eCommerce Workgroup
+ * Copyright (C) 2009-2014 terminal42 gmbh & Isotope eCommerce Workgroup
  * 
  * Translations are managed using Transifex. To create a new translation
  * or to help to maintain an existing one, please register at transifex.com.
@@ -54,6 +54,8 @@ $GLOBALS['TL_LANG']['MSC']['mmUnknownError'] = 'Le fichier ne peut être chargé
 $GLOBALS['TL_LANG']['MSC']['mmDrop'] = 'Lâcher les fichiers à charger ici';
 $GLOBALS['TL_LANG']['MSC']['mmUpload'] = 'Charger les fichiers';
 $GLOBALS['TL_LANG']['MSC']['mmProcessing'] = 'Traitement des fichiers déposés...';
+$GLOBALS['TL_LANG']['MSC']['undeletableRecords'] = 'Certains enregistrements ne peuvent pas être supprimés.';
+$GLOBALS['TL_LANG']['MSC']['undeletableUnpublished'] = 'Certains enregistrements ne peuvent pas être supprimés et n\'ont pas été dé-publier.';
 $GLOBALS['TL_LANG']['MSC']['quantity'] = 'Quantité';
 $GLOBALS['TL_LANG']['MSC']['defaultSearchText'] = 'Produits à rechercher';
 $GLOBALS['TL_LANG']['MSC']['downloadsLabel'] = 'Vos produits téléchargeables';
@@ -276,10 +278,12 @@ $GLOBALS['TL_LANG']['CUR']['BZD'] = 'BZD - Dollar de Belize';
 $GLOBALS['TL_LANG']['CUR']['CAD'] = 'CAD - Dollar canadien';
 $GLOBALS['TL_LANG']['CUR']['CDF'] = 'CDF - Franc du Congo démocratique';
 $GLOBALS['TL_LANG']['CUR']['CHF'] = 'CHF - Franc suisse';
+$GLOBALS['TL_LANG']['CUR']['CLF'] = 'CLF - Unidad de Fomento chilien';
 $GLOBALS['TL_LANG']['CUR']['CLP'] = 'CLP - Peso chilien';
 $GLOBALS['TL_LANG']['CUR']['CNY'] = 'CNY - Yuan Ren-Min-Bi';
 $GLOBALS['TL_LANG']['CUR']['COP'] = 'COP - Peso colombien';
 $GLOBALS['TL_LANG']['CUR']['CRC'] = 'CRC - Colon de Costa Rica';
+$GLOBALS['TL_LANG']['CUR']['CUC'] = 'CUC - Peso cubain convertible';
 $GLOBALS['TL_LANG']['CUR']['CUP'] = 'CUP - Peso cubain';
 $GLOBALS['TL_LANG']['CUR']['CVE'] = 'CVE - Escudo du Cap-Vert';
 $GLOBALS['TL_LANG']['CUR']['CZK'] = 'CZK - Couronne Tchèque';
