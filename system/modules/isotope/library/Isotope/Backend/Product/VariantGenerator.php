@@ -3,7 +3,7 @@
 /**
  * Isotope eCommerce for Contao Open Source CMS
  *
- * Copyright (C) 2009-2013 terminal42 gmbh & Isotope eCommerce Workgroup
+ * Copyright (C) 2009-2014 terminal42 gmbh & Isotope eCommerce Workgroup
  *
  * @package    Isotope
  * @link       http://isotopeecommerce.org
@@ -92,10 +92,17 @@ class VariantGenerator extends \Backend
 
                 if (!$objVariant->numRows) {
 
+                    $arrInherit = array_diff(
+                        $objProduct->getRelated('type')->getVariantAttributes(),
+                        Attribute::getVariantOptionFields(),
+                        Attribute::getCustomerDefinedFields(),
+                        Attribute::getSystemColumnsFields()
+                    );
+
                     $arrSet = array_merge($combination, array(
                         'tstamp'    => $time,
                         'pid'       => $objProduct->id,
-                        'inherit'   => array_diff($objProduct->getRelated('type')->getVariantAttributes(), Attribute::getSystemColumnsFields()),
+                        'inherit'   => $arrInherit ?: null,
                     ));
 
                     \Database::getInstance()->prepare("INSERT INTO $table %s")->set($arrSet)->execute();

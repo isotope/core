@@ -20,7 +20,5 @@
 </noscript>
 </form>
 <script>
-window.addEvent('domready' , function() {
-  document.id('payone<?php echo $this->id; ?>').submit();
-});
+document.getElementById('payone<?php echo $this->id; ?>').submit();
 </script>

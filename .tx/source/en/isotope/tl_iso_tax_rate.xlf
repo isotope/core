@@ -24,7 +24,7 @@
         <source>Countries</source>
       </trans-unit>
       <trans-unit id="tl_iso_tax_rate.countries.1">
-        <source>Select the countriees this tax class applies to.</source>
+        <source>Select the countries this tax class applies to.</source>
       </trans-unit>
       <trans-unit id="tl_iso_tax_rate.subdivisions.0">
         <source>States/Regions</source>

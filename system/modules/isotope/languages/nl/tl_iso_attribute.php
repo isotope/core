@@ -3,7 +3,7 @@
 /**
  * Isotope eCommerce for Contao Open Source CMS
  * 
- * Copyright (C) 2009-2013 terminal42 gmbh & Isotope eCommerce Workgroup
+ * Copyright (C) 2009-2014 terminal42 gmbh & Isotope eCommerce Workgroup
  * 
  * Translations are managed using Transifex. To create a new translation
  * or to help to maintain an existing one, please register at transifex.com.
@@ -15,7 +15,7 @@
  */
 
 $GLOBALS['TL_LANG']['tl_iso_attribute']['name'][0] = 'Naam';
-$GLOBALS['TL_LANG']['tl_iso_attribute']['name'][1] = 'Voer alstublieft een naam in voor dit attribuut';
+$GLOBALS['TL_LANG']['tl_iso_attribute']['name'][1] = 'Vul een naam in voor dit attribuut.';
 $GLOBALS['TL_LANG']['tl_iso_attribute']['field_name'][0] = 'Naam intern';
 $GLOBALS['TL_LANG']['tl_iso_attribute']['field_name'][1] = 'De interne naam is de naam van de database tabel en moet uniek zijn';
 $GLOBALS['TL_LANG']['tl_iso_attribute']['type'][0] = 'Soort';
@@ -29,7 +29,7 @@ $GLOBALS['TL_LANG']['tl_iso_attribute']['customer_defined'][1] = 'Selecteer dit 
 $GLOBALS['TL_LANG']['tl_iso_attribute']['description'][0] = 'Omschrijving';
 $GLOBALS['TL_LANG']['tl_iso_attribute']['description'][1] = 'De omschrijving wordt getoond als hint aan de CMS gebruikers';
 $GLOBALS['TL_LANG']['tl_iso_attribute']['options'][0] = 'Opties';
-$GLOBALS['TL_LANG']['tl_iso_attribute']['options'][1] = 'Voer een of meer opties in. Gebruik de knoppen om toe te voegen, te verplaatsen of een optie te verwijderen. Als je zonder JavaScript werkt, moet je eerst opslaan voordat de volgorde kan worden aangepast.';
+$GLOBALS['TL_LANG']['tl_iso_attribute']['options'][1] = 'Vul één of meer opties in. Gebruik de knoppen om toe te voegen, te verplaatsen of een optie te verwijderen. Als je zonder JavaScript werkt, moet je eerst opslaan voordat de volgorde kan worden aangepast!';
 $GLOBALS['TL_LANG']['tl_iso_attribute']['options']['value'][0] = 'Waarde';
 $GLOBALS['TL_LANG']['tl_iso_attribute']['options']['label'][0] = 'Label';
 $GLOBALS['TL_LANG']['tl_iso_attribute']['options']['default'][0] = 'Standaard';
@@ -39,7 +39,7 @@ $GLOBALS['TL_LANG']['tl_iso_attribute']['mandatory'][1] = 'Als dit geselecteerd 
 $GLOBALS['TL_LANG']['tl_iso_attribute']['multiple'][0] = 'Meervoudige selectie';
 $GLOBALS['TL_LANG']['tl_iso_attribute']['multiple'][1] = 'Sta bezoekers toe meer dan één optie te selecteren.';
 $GLOBALS['TL_LANG']['tl_iso_attribute']['size'][0] = 'Grootte lijst';
-$GLOBALS['TL_LANG']['tl_iso_attribute']['size'][1] = 'Hier kunt u de grootte van de selectielijst invoeren';
+$GLOBALS['TL_LANG']['tl_iso_attribute']['size'][1] = 'Hier kunt u de grootte van de selectielijst invoeren.';
 $GLOBALS['TL_LANG']['tl_iso_attribute']['extensions'][0] = 'Toegestane bestandtypen';
 $GLOBALS['TL_LANG']['tl_iso_attribute']['extensions'][1] = 'Een door komma\'s gescheiden lijst van geldige extensies.';
 $GLOBALS['TL_LANG']['tl_iso_attribute']['rte'][0] = 'Gebruik HTML editor';
@@ -51,7 +51,7 @@ $GLOBALS['TL_LANG']['tl_iso_attribute']['rgxp'][1] = 'Controleren van de input t
 $GLOBALS['TL_LANG']['tl_iso_attribute']['maxlength'][0] = 'Maximale lengte';
 $GLOBALS['TL_LANG']['tl_iso_attribute']['maxlength'][1] = 'Beperk het veld de lengte van een bepaald aantal karakters (tekst) of bytes (bestand upload';
 $GLOBALS['TL_LANG']['tl_iso_attribute']['foreignKey'][0] = 'Aparte Tabel & Veld';
-$GLOBALS['TL_LANG']['tl_iso_attribute']['foreignKey'][1] = 'In plaats van het toevoegen van opties kunt u een table.field combinatie te selecteren uit de database.';
+$GLOBALS['TL_LANG']['tl_iso_attribute']['foreignKey'][1] = 'In plaats van het toevoegen van opties kunt u een table.field combinatie te selecteren uit de database. Om meertalige foreign keys te gebruiken voer er één in per regel en geef de taal aan (voorbeeld: nl=tl_table.field)';
 $GLOBALS['TL_LANG']['tl_iso_attribute']['conditionField'][0] = 'Moederveld';
 $GLOBALS['TL_LANG']['tl_iso_attribute']['conditionField'][1] = 'Selecteer het bovenliggende veld, dat moet van het type "Select-Menu". Voor ouder-kind relatie te werken, definiëren elke optie van deze ouder gebied als groep van de voorwaardelijke select-menu.';
 $GLOBALS['TL_LANG']['tl_iso_attribute']['files'][0] = 'Toon bestanden';

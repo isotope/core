@@ -3,7 +3,7 @@
 /**
  * Isotope eCommerce for Contao Open Source CMS
  * 
- * Copyright (C) 2009-2013 terminal42 gmbh & Isotope eCommerce Workgroup
+ * Copyright (C) 2009-2014 terminal42 gmbh & Isotope eCommerce Workgroup
  * 
  * Translations are managed using Transifex. To create a new translation
  * or to help to maintain an existing one, please register at transifex.com.
@@ -27,6 +27,8 @@ $GLOBALS['TL_LANG']['tl_iso_product_collection']['date_shipped'][1] = 'Saisir la
 $GLOBALS['TL_LANG']['tl_iso_product_collection']['config_id'][0] = 'Configuration de boutique';
 $GLOBALS['TL_LANG']['tl_iso_product_collection']['payment_id'][0] = 'Mode de paiement';
 $GLOBALS['TL_LANG']['tl_iso_product_collection']['shipping_id'][0] = 'Mode de livraison';
+$GLOBALS['TL_LANG']['tl_iso_product_collection']['billing_address_id'][0] = 'Adresse de facturation';
+$GLOBALS['TL_LANG']['tl_iso_product_collection']['shipping_address_id'][0] = 'Adresse de livraison';
 $GLOBALS['TL_LANG']['tl_iso_product_collection']['subtotal'][0] = 'Sous-total';
 $GLOBALS['TL_LANG']['tl_iso_product_collection']['tax_free_subtotal'][0] = 'Sous-total sans taxe';
 $GLOBALS['TL_LANG']['tl_iso_product_collection']['total'][0] = 'Total général';

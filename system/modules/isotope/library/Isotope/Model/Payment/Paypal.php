@@ -3,7 +3,7 @@
 /**
  * Isotope eCommerce for Contao Open Source CMS
  *
- * Copyright (C) 2009-2013 terminal42 gmbh & Isotope eCommerce Workgroup
+ * Copyright (C) 2009-2014 terminal42 gmbh & Isotope eCommerce Workgroup
  *
  * @package    Isotope
  * @link       http://isotopeecommerce.org
@@ -212,7 +212,7 @@ class Paypal extends Postsale implements IsotopePayment
             return parent::backendInterface($orderId);
         }
 
-        $arrPayment = $objOrder->payment_data;
+        $arrPayment = deserialize($objOrder->payment_data, true);
 
         if (!is_array($arrPayment['POSTSALE']) || empty($arrPayment['POSTSALE'])) {
             return parent::backendInterface($orderId);
@@ -227,7 +227,7 @@ class Paypal extends Postsale implements IsotopePayment
 <a href="' . ampersand(str_replace('&key=payment', '', \Environment::get('request'))) . '" class="header_back" title="' . specialchars($GLOBALS['TL_LANG']['MSC']['backBT']) . '">' . $GLOBALS['TL_LANG']['MSC']['backBT'] . '</a>
 </div>
 
-<h2 class="sub_headline">' . $this->name . ' (' . $GLOBALS['TL_LANG']['PAY'][$this->type][0] . ')' . '</h2>
+<h2 class="sub_headline">' . $this->name . ' (' . $GLOBALS['TL_LANG']['MODEL']['tl_iso_payment.paypal'][0] . ')' . '</h2>
 
 <div id="tl_soverview">
 <div id="tl_messages">

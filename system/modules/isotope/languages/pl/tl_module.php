@@ -3,7 +3,7 @@
 /**
  * Isotope eCommerce for Contao Open Source CMS
  * 
- * Copyright (C) 2009-2013 terminal42 gmbh & Isotope eCommerce Workgroup
+ * Copyright (C) 2009-2014 terminal42 gmbh & Isotope eCommerce Workgroup
  * 
  * Translations are managed using Transifex. To create a new translation
  * or to help to maintain an existing one, please register at transifex.com.
@@ -15,15 +15,12 @@
  */
 
 $GLOBALS['TL_LANG']['tl_module']['iso_list_layout'][0] = 'Szablon listy produktów';
-$GLOBALS['TL_LANG']['tl_module']['iso_list_layout'][1] = 'Proszę wybrać szablon listy produktów.';
 $GLOBALS['TL_LANG']['tl_module']['iso_reader_layout'][0] = 'Szablon czytnika produktów';
-$GLOBALS['TL_LANG']['tl_module']['iso_reader_layout'][1] = 'Proszę wybrać szablon czytnika produktów.';
 $GLOBALS['TL_LANG']['tl_module']['iso_gallery'][0] = 'Galeria';
 $GLOBALS['TL_LANG']['tl_module']['iso_gallery'][1] = 'Wybierz galerię do wyświetlenia obrazków (nadpisuje ustawienia typu produktu).';
 $GLOBALS['TL_LANG']['tl_module']['iso_collectionTpl'][0] = 'Szablon kolekcji produktów';
 $GLOBALS['TL_LANG']['tl_module']['iso_collectionTpl'][1] = 'Proszę wybrać szablon do wyświetlenia produktów. Możesz dodać własne szablony kolekcji do katalogu <em>templates</em>. Pliki szablonów kolekcji zaczynają się z <em>iso_collection_</em>.';
 $GLOBALS['TL_LANG']['tl_module']['iso_filterTpl'][0] = 'Szablon filtru';
-$GLOBALS['TL_LANG']['tl_module']['iso_filterTpl'][1] = 'Proszę wybrać szablon filtru produktów.';
 $GLOBALS['TL_LANG']['tl_module']['iso_jump_first'][0] = 'Przekieruj do pierwszego produktu';
 $GLOBALS['TL_LANG']['tl_module']['iso_jump_first'][1] = 'Zaznacz tutaj jeśli użytkownicy powinni być przekierowani do pierwszego produktu z listy.';
 $GLOBALS['TL_LANG']['tl_module']['iso_hide_list'][0] = 'Ukryj w czytniku';

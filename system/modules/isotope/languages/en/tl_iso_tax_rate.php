@@ -3,7 +3,7 @@
 /**
  * Isotope eCommerce for Contao Open Source CMS
  *
- * Copyright (C) 2009-2013 terminal42 gmbh & Isotope eCommerce Workgroup
+ * Copyright (C) 2009-2014 terminal42 gmbh & Isotope eCommerce Workgroup
  *
  * @package    Isotope
  * @link       http://isotopeecommerce.org
@@ -16,7 +16,7 @@
 $GLOBALS['TL_LANG']['tl_iso_tax_rate']['name']              = array('Name', 'Enter a name for this tax rate.');
 $GLOBALS['TL_LANG']['tl_iso_tax_rate']['label']             = array('Label', 'This label will be used on the front end in the checkout process.');
 $GLOBALS['TL_LANG']['tl_iso_tax_rate']['address']           = array('Address to use for calculation', 'Select to which address this rate should use to apply its calculation.');
-$GLOBALS['TL_LANG']['tl_iso_tax_rate']['countries']         = array('Countries', 'Select the countriees this tax class applies to.');
+$GLOBALS['TL_LANG']['tl_iso_tax_rate']['countries']         = array('Countries', 'Select the countries this tax class applies to.');
 $GLOBALS['TL_LANG']['tl_iso_tax_rate']['subdivisions']      = array('States/Regions', 'Select the states or regions this tax class applies to.');
 $GLOBALS['TL_LANG']['tl_iso_tax_rate']['postalCodes']       = array('Postal codes', 'Limit the tax rate to postal codes. You can enter a comma separated list and ranges (e.g. 1234,1235,1236-1239,1100-1200).');
 $GLOBALS['TL_LANG']['tl_iso_tax_rate']['amount']            = array('Subtotal amount restriction', 'Optional: Restrict this tax rate to specific subtotal amount (such as for a luxury tax.)');

@@ -3,7 +3,7 @@
 /**
  * Isotope eCommerce for Contao Open Source CMS
  *
- * Copyright (C) 2009-2013 terminal42 gmbh & Isotope eCommerce Workgroup
+ * Copyright (C) 2009-2014 terminal42 gmbh & Isotope eCommerce Workgroup
  *
  * @package    Isotope
  * @link       http://isotopeecommerce.org
@@ -29,7 +29,7 @@ $GLOBALS['TL_LANG']['tl_iso_document']['orderCollectionBy']         = array('Sor
 $GLOBALS['TL_LANG']['tl_iso_document']['new']                       = array('New document', 'Create a new document');
 $GLOBALS['TL_LANG']['tl_iso_document']['edit']                      = array('Edit document', 'Edit document ID %s');
 $GLOBALS['TL_LANG']['tl_iso_document']['copy']                      = array('Copy document', 'Copy document ID %s');
-$GLOBALS['TL_LANG']['tl_iso_document']['delete']                    = array('Deletedocument', 'Delete document ID %s');
+$GLOBALS['TL_LANG']['tl_iso_document']['delete']                    = array('Delete document', 'Delete document ID %s');
 $GLOBALS['TL_LANG']['tl_iso_document']['show']                      = array('Document details', 'Show details of document ID %s');
 
 /**

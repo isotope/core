@@ -3,7 +3,7 @@
 /**
  * Isotope eCommerce for Contao Open Source CMS
  * 
- * Copyright (C) 2009-2013 terminal42 gmbh & Isotope eCommerce Workgroup
+ * Copyright (C) 2009-2014 terminal42 gmbh & Isotope eCommerce Workgroup
  * 
  * Translations are managed using Transifex. To create a new translation
  * or to help to maintain an existing one, please register at transifex.com.
@@ -15,15 +15,12 @@
  */
 
 $GLOBALS['TL_LANG']['tl_module']['iso_list_layout'][0] = 'Produktlisten-Template';
-$GLOBALS['TL_LANG']['tl_module']['iso_list_layout'][1] = 'Bitte wählen Sie ein Listen-Layout. Sie können individuelle Listen-Layouts zum <em>templates</em>-Ordner hinzufügen. Listen-Templates beginnen mit <em>iso_list_</em> und benötigen eine Dateiendung <em>.html5, .xhtml oder .tpl (veraltet)</em>.';
 $GLOBALS['TL_LANG']['tl_module']['iso_reader_layout'][0] = 'Produktleser-Template';
-$GLOBALS['TL_LANG']['tl_module']['iso_reader_layout'][1] = 'Bitte wählen Sie ein Leser-Template. Sie können individuelle Leser-Templates zum <em>templates</em>-Ordner hinzufügen. Leser-Templates beginnen mit <em>iso_reader_</em>.';
 $GLOBALS['TL_LANG']['tl_module']['iso_gallery'][0] = 'Galerie';
 $GLOBALS['TL_LANG']['tl_module']['iso_gallery'][1] = 'Wählen Sie eine Galerie, um die Bilder zu rendern (Überschreibt die Produkttyp-Einstellung).';
 $GLOBALS['TL_LANG']['tl_module']['iso_collectionTpl'][0] = 'Produktsammlung-Template';
 $GLOBALS['TL_LANG']['tl_module']['iso_collectionTpl'][1] = 'Bitte wählen Sie ein Template aus, um die Produkte zu rendern. Sie können eigene Templates in den Ordner <em>templates</em> hinzufügen. Templates für Sammlungen beginnen mit <em>iso_collection_</em>.';
 $GLOBALS['TL_LANG']['tl_module']['iso_filterTpl'][0] = 'Filter-Template';
-$GLOBALS['TL_LANG']['tl_module']['iso_filterTpl'][1] = 'Bitte wählen Sie ein Filter-Template. Sie können individuelle Filter-Templates zum <em>templates</em>-Ordner hinzufügen. Filter-Templates beginnen mit <em>iso_filter_</em>.';
 $GLOBALS['TL_LANG']['tl_module']['iso_jump_first'][0] = 'Zum ersten Produkt weiterleiten';
 $GLOBALS['TL_LANG']['tl_module']['iso_jump_first'][1] = 'Klicken Sie hier wenn Nutzer zum ersten Produkt der Liste weitergeleitet werden sollen.';
 $GLOBALS['TL_LANG']['tl_module']['iso_hide_list'][0] = 'Ausblenden bei Produktansicht';

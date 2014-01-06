@@ -3,7 +3,7 @@
 /**
  * Isotope eCommerce for Contao Open Source CMS
  *
- * Copyright (C) 2009-2013 terminal42 gmbh & Isotope eCommerce Workgroup
+ * Copyright (C) 2009-2014 terminal42 gmbh & Isotope eCommerce Workgroup
  *
  * @package    Isotope
  * @link       http://isotopeecommerce.org
@@ -917,6 +917,10 @@ class Standard extends Product implements IsotopeProduct, WeightAggregate
             global $objIsotopeListPage;
 
             $objJumpTo = $objIsotopeListPage ? : $objPage;
+
+            if (null === $objJumpTo) {
+                return '';
+            }
         }
 
         $strUrl = '/' . $this->arrData['alias'] ? : $this->getProductId();

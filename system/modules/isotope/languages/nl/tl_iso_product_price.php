@@ -3,7 +3,7 @@
 /**
  * Isotope eCommerce for Contao Open Source CMS
  * 
- * Copyright (C) 2009-2013 terminal42 gmbh & Isotope eCommerce Workgroup
+ * Copyright (C) 2009-2014 terminal42 gmbh & Isotope eCommerce Workgroup
  * 
  * Translations are managed using Transifex. To create a new translation
  * or to help to maintain an existing one, please register at transifex.com.
@@ -15,9 +15,9 @@
  */
 
 $GLOBALS['TL_LANG']['tl_iso_product_price']['price_tiers'][0] = 'Prijsstelling';
-$GLOBALS['TL_LANG']['tl_iso_product_price']['price_tiers'][1] = 'Stel op zn minst een prijsstelling voor "1 stuks". U kunt kortingen instellen als de klant meer dan 1 product koopt.';
-$GLOBALS['TL_LANG']['tl_iso_product_price']['tax_class'][0] = 'Belasting Klasse';
-$GLOBALS['TL_LANG']['tl_iso_product_price']['tax_class'][1] = 'Selecteer een belasting klasse voor deze prijs.';
+$GLOBALS['TL_LANG']['tl_iso_product_price']['price_tiers'][1] = 'Stel op z\'n minst een prijsstelling voor "1 stuks" in. U kunt kortingen instellen als de klant meer dan 1 product koopt.';
+$GLOBALS['TL_LANG']['tl_iso_product_price']['tax_class'][0] = 'Belastingklasse';
+$GLOBALS['TL_LANG']['tl_iso_product_price']['tax_class'][1] = 'Selecteer een belastingklasse voor deze prijs.';
 $GLOBALS['TL_LANG']['tl_iso_product_price']['config_id'][0] = 'Winkelinstellingen';
 $GLOBALS['TL_LANG']['tl_iso_product_price']['config_id'][1] = 'Selecteer een winkelinstelling voor deze prijs.';
 $GLOBALS['TL_LANG']['tl_iso_product_price']['member_group'][0] = 'Prijsgroep';

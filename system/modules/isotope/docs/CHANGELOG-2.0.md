@@ -1,6 +1,23 @@
 Isotope eCommerce Changelog
 ===========================
 
+Version 2.0.1 (2014-01-06)
+--------------------------
+
+### Improved
+- Payment method templates are using pure JavaScript now
+
+### Fixed
+- Back end interface for PayPal payment method
+- Missing payment template for Sofortueberweisung
+- Prevent warning when no filter modules were activated (#922)
+- Radio option for rule condition was not active (#913)
+- Workaround for SQL error due to Contao bug #6623 (#912)
+- Variant generator set wrong inherit values (#914)
+- Attributes allowed having "-" in internal names (#929)
+- Product collection template could link to home page
+
+
 Version 2.0.0 (2013-12-24)
 --------------------------
 

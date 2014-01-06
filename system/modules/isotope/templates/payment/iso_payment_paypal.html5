@@ -40,7 +40,5 @@
 </noscript>
 </form>
 <script>
-window.addEvent('domready' , function() {
-  document.id('paypal<?php echo $this->id; ?>').submit();
-});
+document.getElementById('paypal<?php echo $this->id; ?>').submit();
 </script>

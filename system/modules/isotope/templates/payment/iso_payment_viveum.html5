@@ -9,7 +9,5 @@
 </noscript>
 </form>
 <script>
-window.addEvent('domready' , function() {
-  document.id('psp<?php echo $this->id; ?>').submit();
-});
+document.getElementById('psp<?php echo $this->id; ?>').submit();
 </script>

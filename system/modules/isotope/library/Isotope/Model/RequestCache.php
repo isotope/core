@@ -3,7 +3,7 @@
 /**
  * Isotope eCommerce for Contao Open Source CMS
  *
- * Copyright (C) 2009-2013 terminal42 gmbh & Isotope eCommerce Workgroup
+ * Copyright (C) 2009-2014 terminal42 gmbh & Isotope eCommerce Workgroup
  *
  * @package    Isotope
  * @link       http://isotopeecommerce.org
@@ -75,7 +75,7 @@ class RequestCache extends \Model
      */
     public function getFiltersForModules(array $arrIds)
     {
-        if ($this->arrFilters === null) {
+        if ($this->arrFilters === null || empty($arrIds)) {
             return array();
         }
 
@@ -185,7 +185,7 @@ class RequestCache extends \Model
      */
     public function getSortingsForModules(array $arrIds)
     {
-        if (null === $this->arrSortings) {
+        if (null === $this->arrSortings || empty($arrIds)) {
             return array();
         }
 

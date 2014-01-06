@@ -3,7 +3,7 @@
 /**
  * Isotope eCommerce for Contao Open Source CMS
  * 
- * Copyright (C) 2009-2013 terminal42 gmbh & Isotope eCommerce Workgroup
+ * Copyright (C) 2009-2014 terminal42 gmbh & Isotope eCommerce Workgroup
  * 
  * Translations are managed using Transifex. To create a new translation
  * or to help to maintain an existing one, please register at transifex.com.
@@ -21,7 +21,6 @@ $GLOBALS['TL_LANG']['tl_iso_tax_rate']['label'][1] = 'Ta etykieta zostanie używ
 $GLOBALS['TL_LANG']['tl_iso_tax_rate']['address'][0] = 'Adres do użycia w kalkulacji';
 $GLOBALS['TL_LANG']['tl_iso_tax_rate']['address'][1] = 'Wybierz, który adres powinien zostać użyty do kalkulacji.';
 $GLOBALS['TL_LANG']['tl_iso_tax_rate']['countries'][0] = 'Kraje';
-$GLOBALS['TL_LANG']['tl_iso_tax_rate']['countries'][1] = 'Wybierz kraje dla tej stawki podatku.';
 $GLOBALS['TL_LANG']['tl_iso_tax_rate']['subdivisions'][0] = 'Stany/regiony';
 $GLOBALS['TL_LANG']['tl_iso_tax_rate']['subdivisions'][1] = 'Wybierz stany lub regiony, których dotyczy ta stawka podatku.';
 $GLOBALS['TL_LANG']['tl_iso_tax_rate']['postalCodes'][0] = 'Kody pocztowe';

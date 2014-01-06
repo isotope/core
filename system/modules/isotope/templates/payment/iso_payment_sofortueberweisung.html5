@@ -9,7 +9,5 @@
 </noscript>
 </form>
 <script>
-window.addEvent('domready' , function() {
-  document.id('sofortueberweisung<?php echo $this->id; ?>').submit();
-});
+document.getElementById('sofortueberweisung<?php echo $this->id; ?>').submit();
 </script>
