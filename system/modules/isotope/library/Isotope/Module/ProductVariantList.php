@@ -12,6 +12,7 @@
 
 namespace Isotope\Module;
 
+use Haste\Haste;
 use Isotope\Model\Product;
 
 
@@ -79,7 +80,7 @@ class ProductVariantList extends ProductList
         }
 
         if ($this->iso_list_where != '') {
-            $arrColumns[] = $this->iso_list_where;
+            $arrColumns[] = Haste::getInstance()->call('replaceInsertTags', $this->iso_list_where);
         }
 
         if ($strWhere != '') {
