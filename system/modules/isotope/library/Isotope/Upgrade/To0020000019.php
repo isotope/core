@@ -13,7 +13,7 @@
 namespace Isotope\Upgrade;
 
 
-class To0020000009 extends \System
+class To0020000019 extends \System
 {
 
     public function run($blnInstalled)
