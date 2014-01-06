@@ -1,6 +1,12 @@
 Isotope eCommerce Changelog
 ===========================
 
+Version 2.0.2 (2014-??-??)
+--------------------------
+
+### Fixed
+- Automated currency converting did not work
+
 Version 2.0.1 (2014-01-06)
 --------------------------
 

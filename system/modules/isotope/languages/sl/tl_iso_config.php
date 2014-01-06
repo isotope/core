@@ -32,6 +32,7 @@ $GLOBALS['TL_LANG']['tl_iso_config']['mul'] = 'Množi';
 $GLOBALS['TL_LANG']['tl_iso_config']['iwName'][0] = 'Naziv';
 $GLOBALS['TL_LANG']['tl_iso_config']['iwWidth'][0] = 'Širina';
 $GLOBALS['TL_LANG']['tl_iso_config']['iwHeight'][0] = 'Višina';
+$GLOBALS['TL_LANG']['tl_iso_config']['name_legend'] = 'Naziv';
 $GLOBALS['TL_LANG']['tl_iso_config']['order_legend'] = 'Naročila';
 $GLOBALS['TL_LANG']['tl_iso_config']['images_legend'] = 'Slike';
 $GLOBALS['TL_LANG']['tl_iso_config']['products_legend'] = 'Izdelki';

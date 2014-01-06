@@ -14,3 +14,9 @@
  * @license http://www.gnu.org/licenses/lgpl-3.0.html
  */
 
+$GLOBALS['TL_LANG']['tl_iso_document']['gallery'][0] = 'Galleria ';
+$GLOBALS['TL_LANG']['tl_iso_document']['gallery'][1] = 'Seleziona una galleria per renderizzare immagini.';
+$GLOBALS['TL_LANG']['tl_iso_document']['orderCollectionBy'][0] = 'Ordinamento ';
+$GLOBALS['TL_LANG']['tl_iso_document']['orderCollectionBy'][1] = 'Definisci in quale ordine gli elementi della raccolta dovrebbero essere elencati.';
+$GLOBALS['TL_LANG']['tl_iso_document']['config_legend'] = 'Configurazione Generale';
+$GLOBALS['TL_LANG']['tl_iso_document']['template_legend'] = 'Template';

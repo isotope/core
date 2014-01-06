@@ -16,6 +16,8 @@
 
 $GLOBALS['TL_LANG']['tl_module']['iso_list_layout'][0] = 'Template elenco prodotti';
 $GLOBALS['TL_LANG']['tl_module']['iso_reader_layout'][0] = 'Template lettore prodotto';
+$GLOBALS['TL_LANG']['tl_module']['iso_gallery'][0] = 'Galleria ';
+$GLOBALS['TL_LANG']['tl_module']['iso_collectionTpl'][0] = 'Modulo per la raccolta del prodotto ';
 $GLOBALS['TL_LANG']['tl_module']['iso_jump_first'][0] = 'Reindirizza verso il primo prodotto';
 $GLOBALS['TL_LANG']['tl_module']['iso_jump_first'][1] = 'Spunti qui se gli utenti saranno reindirizzati al primo prodotto nell\'elenco.';
 $GLOBALS['TL_LANG']['tl_module']['iso_use_quantity'][0] = 'Abiliti la quantità';
@@ -44,6 +46,8 @@ $GLOBALS['TL_LANG']['tl_module']['iso_order_conditions'][0] = 'Form condizioni o
 $GLOBALS['TL_LANG']['tl_module']['iso_order_conditions'][1] = 'Scelga un form personalizzato per visualizzare i termini e le condizioni di ventita (opzionale).';
 $GLOBALS['TL_LANG']['tl_module']['iso_addToAddressbook'][0] = 'Aggiunga alla rubrica';
 $GLOBALS['TL_LANG']['tl_module']['iso_addToAddressbook'][1] = 'Aggiunga nuovi indirizzi alla rubrica membri (se loggati).';
+$GLOBALS['TL_LANG']['tl_module']['iso_orderCollectionBy'][0] = 'Ordinamento ';
+$GLOBALS['TL_LANG']['tl_module']['iso_orderCollectionBy'][1] = 'Definisci in quale ordine gli elementi della raccolta dovrebbero essere elencati.';
 $GLOBALS['TL_LANG']['tl_module']['iso_noProducts'][0] = 'Messaggio per elenco vuoto';
 $GLOBALS['TL_LANG']['tl_module']['iso_noProducts'][1] = 'Lasci non compilato per il messaggio preimpostato.';
 $GLOBALS['TL_LANG']['tl_module']['iso_category_scope'][0] = 'Ambito categoria';

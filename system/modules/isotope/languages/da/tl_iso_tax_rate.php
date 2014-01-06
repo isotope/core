@@ -14,3 +14,9 @@
  * @license http://www.gnu.org/licenses/lgpl-3.0.html
  */
 
+$GLOBALS['TL_LANG']['tl_iso_tax_rate']['name'][0] = 'Navn';
+$GLOBALS['TL_LANG']['tl_iso_tax_rate']['label'][0] = 'Mærkat';
+$GLOBALS['TL_LANG']['tl_iso_tax_rate']['config'][0] = 'Butiksindstilling';
+$GLOBALS['TL_LANG']['tl_iso_tax_rate']['billing'] = 'Betalingsadresse';
+$GLOBALS['TL_LANG']['tl_iso_tax_rate']['shipping'] = 'Forsendelsesadresse';
+$GLOBALS['TL_LANG']['tl_iso_tax_rate']['name_legend'] = 'Navn';

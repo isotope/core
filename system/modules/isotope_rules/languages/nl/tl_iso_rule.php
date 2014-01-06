@@ -14,7 +14,7 @@
  * @license http://www.gnu.org/licenses/lgpl-3.0.html
  */
 
-$GLOBALS['TL_LANG']['tl_iso_rule']['type'][0] = 'Type';
+$GLOBALS['TL_LANG']['tl_iso_rule']['type'][0] = 'Soort';
 $GLOBALS['TL_LANG']['tl_iso_rule']['type'][1] = 'Kies het type van de regel';
 $GLOBALS['TL_LANG']['tl_iso_rule']['type']['product'] = 'Product';
 $GLOBALS['TL_LANG']['tl_iso_rule']['type']['cart'] = 'Winkelwagen';
@@ -49,12 +49,16 @@ $GLOBALS['TL_LANG']['tl_iso_rule']['startDate'][0] = 'Startdatum';
 $GLOBALS['TL_LANG']['tl_iso_rule']['endDate'][0] = 'Einddatum';
 $GLOBALS['TL_LANG']['tl_iso_rule']['startTime'][0] = 'Starttijd';
 $GLOBALS['TL_LANG']['tl_iso_rule']['endTime'][0] = 'Eindtijd';
+$GLOBALS['TL_LANG']['tl_iso_rule']['groups'][0] = 'Groepen';
 $GLOBALS['TL_LANG']['tl_iso_rule']['productRestrictions'][1] = 'Beperk deze regel tot bepaalde productsoorten, categoriën, of individuele producten.';
 $GLOBALS['TL_LANG']['tl_iso_rule']['productRestrictions']['producttypes'] = 'Productsoorten';
 $GLOBALS['TL_LANG']['tl_iso_rule']['productRestrictions']['pages'] = 'Categoriën';
 $GLOBALS['TL_LANG']['tl_iso_rule']['productRestrictions']['products'] = 'Producten';
 $GLOBALS['TL_LANG']['tl_iso_rule']['producttypes'][0] = 'Productsoorten';
 $GLOBALS['TL_LANG']['tl_iso_rule']['producttypes'][1] = 'Kies de productsoorten waarop deze regel van toepassing is. Kies er geen voor "alle".';
+$GLOBALS['TL_LANG']['tl_iso_rule']['products'][0] = 'Producten';
+$GLOBALS['TL_LANG']['tl_iso_rule']['pages'][0] = 'Categoriën';
+$GLOBALS['TL_LANG']['tl_iso_rule']['enabled'][0] = 'Ingeschakeld';
 $GLOBALS['TL_LANG']['tl_iso_rule']['coupon_legend'] = 'Kortingscode';
 $GLOBALS['TL_LANG']['tl_iso_rule']['new'][0] = 'Voeg regel toe';
 $GLOBALS['TL_LANG']['tl_iso_rule']['new'][1] = 'Maak een nieuwe regel aan';

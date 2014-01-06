@@ -14,3 +14,5 @@
  * @license http://www.gnu.org/licenses/lgpl-3.0.html
  */
 
+$GLOBALS['TL_LANG']['tl_iso_config']['iwName'][0] = 'Jméno';
+$GLOBALS['TL_LANG']['tl_iso_config']['name_legend'] = 'Jméno';

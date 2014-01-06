@@ -14,7 +14,7 @@
  * @license http://www.gnu.org/licenses/lgpl-3.0.html
  */
 
-$GLOBALS['TL_LANG']['tl_iso_label']['language'][0] = 'Langage';
+$GLOBALS['TL_LANG']['tl_iso_label']['language'][0] = 'Langue';
 $GLOBALS['TL_LANG']['tl_iso_label']['language'][1] = 'Sélectionnez une langue';
 $GLOBALS['TL_LANG']['tl_iso_label']['label'][0] = 'Libellé';
 $GLOBALS['TL_LANG']['tl_iso_label']['label'][1] = 'Modifier le libellé de la source';

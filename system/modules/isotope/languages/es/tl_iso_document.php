@@ -14,3 +14,7 @@
  * @license http://www.gnu.org/licenses/lgpl-3.0.html
  */
 
+$GLOBALS['TL_LANG']['tl_iso_document']['documentTitle'][0] = 'Título del documento.';
+$GLOBALS['TL_LANG']['tl_iso_document']['documentTpl'][0] = 'Plantilla de documento';
+$GLOBALS['TL_LANG']['tl_iso_document']['config_legend'] = 'Configuración general';
+$GLOBALS['TL_LANG']['tl_iso_document']['template_legend'] = 'Plantilla';

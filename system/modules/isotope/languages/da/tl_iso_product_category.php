@@ -14,3 +14,6 @@
  * @license http://www.gnu.org/licenses/lgpl-3.0.html
  */
 
+$GLOBALS['TL_LANG']['tl_iso_product_category']['cut'][0] = 'Flyt produkt';
+$GLOBALS['TL_LANG']['tl_iso_product_category']['cut'][1] = 'Flyt produktet ID %s';
+$GLOBALS['TL_LANG']['tl_iso_product_category']['pasteafter'][0] = 'Indsæt i toppen';

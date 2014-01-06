@@ -14,3 +14,5 @@
  * @license http://www.gnu.org/licenses/lgpl-3.0.html
  */
 
+$GLOBALS['TL_LANG']['tl_iso_payment']['product_types'][0] = 'Vrste izdelkov';
+$GLOBALS['TL_LANG']['tl_iso_payment']['payone']['rec'] = 'Račun';

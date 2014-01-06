@@ -14,3 +14,8 @@
  * @license http://www.gnu.org/licenses/lgpl-3.0.html
  */
 
+$GLOBALS['TL_LANG']['tl_iso_producttype']['name'][0] = 'Navn';
+$GLOBALS['TL_LANG']['tl_iso_producttype']['description'][0] = 'Beskrivelse';
+$GLOBALS['TL_LANG']['tl_iso_producttype']['attributes'][0] = 'Egenskaber';
+$GLOBALS['TL_LANG']['tl_iso_producttype']['shipping_exempt'][0] = 'Udelad fra forsendelse';
+$GLOBALS['TL_LANG']['tl_iso_producttype']['description_legend'] = 'Beskrivelse';

@@ -69,4 +69,3 @@ $GLOBALS['TL_LANG']['tl_iso_payment']['gateway_legend'] = 'Configuratie betaling
 $GLOBALS['TL_LANG']['tl_iso_payment']['price_legend'] = 'Prijs';
 $GLOBALS['TL_LANG']['tl_iso_payment']['template_legend'] = 'Template';
 $GLOBALS['TL_LANG']['tl_iso_payment']['expert_legend'] = 'Expert instellingen';
-$GLOBALS['TL_LANG']['tl_iso_payment']['enabled_legend'] = 'Beschikbaarheid instellingen';

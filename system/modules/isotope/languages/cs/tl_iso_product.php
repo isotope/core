@@ -14,3 +14,8 @@
  * @license http://www.gnu.org/licenses/lgpl-3.0.html
  */
 
+$GLOBALS['TL_LANG']['tl_iso_product']['name'][0] = 'Jméno';
+$GLOBALS['TL_LANG']['tl_iso_product']['description'][0] = 'Popis';
+$GLOBALS['TL_LANG']['tl_iso_product']['mmDesc'] = 'Popis';
+$GLOBALS['TL_LANG']['tl_iso_product']['downloads'][0] = 'Stáhnout';
+$GLOBALS['TL_LANG']['tl_iso_product']['price_tiers']['min'] = 'Množství';

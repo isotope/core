@@ -16,5 +16,5 @@
 
 $GLOBALS['TL_LANG']['tl_iso_product_category']['cut'][0] = 'Verplaats product';
 $GLOBALS['TL_LANG']['tl_iso_product_category']['cut'][1] = 'Verplaats product ID %s';
-$GLOBALS['TL_LANG']['tl_iso_product_category']['pasteafter'][0] = 'Bovenaan invoegen';
+$GLOBALS['TL_LANG']['tl_iso_product_category']['pasteafter'][0] = 'Boven invoegen';
 $GLOBALS['TL_LANG']['tl_iso_product_category']['pasteafter'][1] = 'Invoegen na product ID %s';

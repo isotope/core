@@ -14,12 +14,13 @@
  * @license http://www.gnu.org/licenses/lgpl-3.0.html
  */
 
-$GLOBALS['TL_LANG']['tl_iso_tax_rate']['name'][0] = 'Nome aliquota';
+$GLOBALS['TL_LANG']['tl_iso_tax_rate']['name'][0] = 'Nome';
 $GLOBALS['TL_LANG']['tl_iso_tax_rate']['name'][1] = 'Inserisca un nome per l\'aliquota';
-$GLOBALS['TL_LANG']['tl_iso_tax_rate']['label'][0] = 'Etichetta Aliquota';
+$GLOBALS['TL_LANG']['tl_iso_tax_rate']['label'][0] = 'Etichetta';
 $GLOBALS['TL_LANG']['tl_iso_tax_rate']['label'][1] = 'Quest\'etichetta sarà usata nel frontend nel processo di checkout.';
 $GLOBALS['TL_LANG']['tl_iso_tax_rate']['address'][0] = 'Indirizzo usato per il Calcolo';
 $GLOBALS['TL_LANG']['tl_iso_tax_rate']['address'][1] = 'Selezioni in base a quale indirizzo sarà calcolata l\'aliquota.';
+$GLOBALS['TL_LANG']['tl_iso_tax_rate']['countries'][0] = 'Paesi';
 $GLOBALS['TL_LANG']['tl_iso_tax_rate']['amount'][0] = 'Quantità limite subtotale';
 $GLOBALS['TL_LANG']['tl_iso_tax_rate']['amount'][1] = 'Opzionale: Limiti questa aliquota d\'imposta alla quantità subtotale specifica (ad esempio tassa beni di lusso).';
 $GLOBALS['TL_LANG']['tl_iso_tax_rate']['rate'][0] = 'Aliquota d\'imposta';
@@ -28,6 +29,7 @@ $GLOBALS['TL_LANG']['tl_iso_tax_rate']['config'][0] = 'Configurazione negozio';
 $GLOBALS['TL_LANG']['tl_iso_tax_rate']['config'][1] = 'Selezioni la configurazione negozio al quale la classe di aliquota si applica.';
 $GLOBALS['TL_LANG']['tl_iso_tax_rate']['stop'][0] = 'Ferma calcolo al verificarsi di un Evento?';
 $GLOBALS['TL_LANG']['tl_iso_tax_rate']['stop'][1] = 'Ferma altri calcoli se questa aliquota di imposto si presenta.';
+$GLOBALS['TL_LANG']['tl_iso_tax_rate']['groups'][0] = 'Gruppi Membri';
 $GLOBALS['TL_LANG']['tl_iso_tax_rate']['new'][0] = 'Nuova aliquota d\'imposta';
 $GLOBALS['TL_LANG']['tl_iso_tax_rate']['new'][1] = 'Crea una nuova aliquota d\'imposta';
 $GLOBALS['TL_LANG']['tl_iso_tax_rate']['edit'][0] = 'Modifica aliquota d\'imposta';
@@ -40,8 +42,8 @@ $GLOBALS['TL_LANG']['tl_iso_tax_rate']['show'][0] = 'Dettagli Ordine';
 $GLOBALS['TL_LANG']['tl_iso_tax_rate']['show'][1] = 'Visualizza i dettagli dell\'aliquota d\'imposta ID %s';
 $GLOBALS['TL_LANG']['tl_iso_tax_rate']['billing'] = 'Indirizzo Fattura';
 $GLOBALS['TL_LANG']['tl_iso_tax_rate']['shipping'] = 'Indirizzo Spedizione';
-$GLOBALS['TL_LANG']['tl_iso_tax_rate']['name_legend'] = 'Legenda Nome';
+$GLOBALS['TL_LANG']['tl_iso_tax_rate']['name_legend'] = 'Nome';
 $GLOBALS['TL_LANG']['tl_iso_tax_rate']['rate_legend'] = 'Legenda Tariffa';
 $GLOBALS['TL_LANG']['tl_iso_tax_rate']['location_legend'] = 'Legenda Collocazione';
 $GLOBALS['TL_LANG']['tl_iso_tax_rate']['condition_legend'] = 'Legenda Condizioni';
-$GLOBALS['TL_LANG']['tl_iso_tax_rate']['config_legend'] = 'Legenda Configurazioni';
+$GLOBALS['TL_LANG']['tl_iso_tax_rate']['config_legend'] = 'Configurazione';

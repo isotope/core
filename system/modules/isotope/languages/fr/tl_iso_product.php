@@ -15,7 +15,7 @@
  */
 
 $GLOBALS['TL_LANG']['tl_iso_product']['id'][0] = 'ID du produit';
-$GLOBALS['TL_LANG']['tl_iso_product']['pages'][0] = 'Catégories';
+$GLOBALS['TL_LANG']['tl_iso_product']['pages'][0] = 'Categories';
 $GLOBALS['TL_LANG']['tl_iso_product']['pages'][1] = 'Sélectionner une catégorie (les catégories sont basées sur les pages afin de profiter des fonctionnalités de Contao telles que la création automatique de la navigation, la protection, les modèles, et l\'intégration complète avec les éléments de contenu).';
 $GLOBALS['TL_LANG']['tl_iso_product']['type'][0] = 'Type de produit';
 $GLOBALS['TL_LANG']['tl_iso_product']['type'][1] = 'Les types de produit sont définis dans le gestionnaire de types de produits';
@@ -80,7 +80,7 @@ $GLOBALS['TL_LANG']['tl_iso_product']['new'][0] = 'Nouveau produit';
 $GLOBALS['TL_LANG']['tl_iso_product']['new'][1] = 'Créer un nouveau produit';
 $GLOBALS['TL_LANG']['tl_iso_product']['new_variant'][0] = 'Ajouter une variante';
 $GLOBALS['TL_LANG']['tl_iso_product']['new_variant'][1] = 'Ajouter une variante d\'un produit.';
-$GLOBALS['TL_LANG']['tl_iso_product']['edit'][0] = 'Éditer le produit';
+$GLOBALS['TL_LANG']['tl_iso_product']['edit'][0] = 'Éditer un produit';
 $GLOBALS['TL_LANG']['tl_iso_product']['edit'][1] = 'Éditer le produit ID %s';
 $GLOBALS['TL_LANG']['tl_iso_product']['copy'][0] = 'Dupliquer le produit';
 $GLOBALS['TL_LANG']['tl_iso_product']['copy'][1] = 'Dupliquer le produit ID %s';

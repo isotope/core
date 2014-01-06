@@ -15,3 +15,5 @@
  */
 
 $GLOBALS['TL_LANG']['tl_iso_payment']['name'][0] = 'Způsob platby';
+$GLOBALS['TL_LANG']['tl_iso_payment']['worldpay_description'][0] = 'Popis';
+$GLOBALS['TL_LANG']['tl_iso_payment']['payone']['rec'] = 'Faktura';

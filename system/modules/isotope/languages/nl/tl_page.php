@@ -22,4 +22,4 @@ $GLOBALS['TL_LANG']['tl_page']['iso_readerJumpTo'][0] = 'Pagina productlezer';
 $GLOBALS['TL_LANG']['tl_page']['iso_readerJumpTo'][1] = 'Selecteer een pagina voor de productlezer.';
 $GLOBALS['TL_LANG']['tl_page']['iso_store_id'][0] = 'Winkel ID';
 $GLOBALS['TL_LANG']['tl_page']['iso_store_id'][1] = 'Gebruik verschillende winkel ID\'s om een set van configuraties te groeperen. Een gebruikers winkelwagen en adressen worden gedeeld tussen de gezamenlijke winkel ID\'s. ';
-$GLOBALS['TL_LANG']['tl_page']['isotope_legend'] = 'Isotope Webwinkel';
+$GLOBALS['TL_LANG']['tl_page']['isotope_legend'] = 'Isotope eCommerce';

@@ -16,4 +16,5 @@
 
 $GLOBALS['TL_LANG']['tl_page']['iso_config'][0] = 'Конфигурация магазина';
 $GLOBALS['TL_LANG']['tl_page']['iso_config'][1] = 'Выберите конфигурацию магазина для этой структуры страниц.';
+$GLOBALS['TL_LANG']['tl_page']['iso_store_id'][0] = 'ID Магазина';
 $GLOBALS['TL_LANG']['tl_page']['isotope_legend'] = 'Isotope eCommerce';
