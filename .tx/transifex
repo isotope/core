@@ -84,6 +84,13 @@ class Transifex
     protected function setup($quiet=false)
     {
         global $argv;
+        static $done = false;
+
+        if ($done) {
+            return;
+        }
+
+        $done = true;
 
         if (!in_array($argv[2], array('develop', 'master')))
         {
@@ -552,6 +559,8 @@ class Transifex
      */
     protected function pull()
     {
+        $this->setup(true);
+
         // Pull translations from transifex.com
         passthru('tx pull --all --skip');
 
