@@ -208,9 +208,12 @@ class Transifex
         // Determine which languages to import
         if (isset($argv[2]))
         {
-            if (is_dir(TL_ROOT . '/.tx/source/' . $argv[2]))
+            for ($i=2; $i<count($argv); $i++)
             {
-                $languages[] = $argv[2];
+                if (is_dir(TL_ROOT . '/.tx/source/' . $argv[$i]))
+                {
+                    $languages[] = $argv[$i];
+                }
             }
         }
         else
