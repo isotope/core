@@ -15,13 +15,12 @@
  */
 
 $GLOBALS['TL_LANG']['tl_iso_tax_rate']['name'][0] = 'Belastingtarief naam';
-$GLOBALS['TL_LANG']['tl_iso_tax_rate']['name'][1] = 'Geef een naam op voor uw belatingtarief.';
+$GLOBALS['TL_LANG']['tl_iso_tax_rate']['name'][1] = 'Vul de naam in voor dit belatingtarief.';
 $GLOBALS['TL_LANG']['tl_iso_tax_rate']['label'][0] = 'Belastingtarief label';
 $GLOBALS['TL_LANG']['tl_iso_tax_rate']['label'][1] = 'Dit label wordt gebruikt in de front-end bij het checkout proces.';
 $GLOBALS['TL_LANG']['tl_iso_tax_rate']['address'][0] = 'Adres dat wordt gebruikt voor berekening';
 $GLOBALS['TL_LANG']['tl_iso_tax_rate']['address'][1] = 'Selecteer het adres waarop de berekening van toepassing moet zijn.';
 $GLOBALS['TL_LANG']['tl_iso_tax_rate']['countries'][0] = 'Landen';
-$GLOBALS['TL_LANG']['tl_iso_tax_rate']['countries'][1] = 'Selecteer de landen waarop deze belasting van teopassing is.';
 $GLOBALS['TL_LANG']['tl_iso_tax_rate']['subdivisions'][0] = 'Provincies/Regio\'s';
 $GLOBALS['TL_LANG']['tl_iso_tax_rate']['subdivisions'][1] = 'Selecteer de provincies of regio\'s waarop deze belasting van teopassing is.';
 $GLOBALS['TL_LANG']['tl_iso_tax_rate']['postalCodes'][0] = 'Postcodes';
@@ -36,6 +35,7 @@ $GLOBALS['TL_LANG']['tl_iso_tax_rate']['stop'][0] = 'Stop berekeningen bij het i
 $GLOBALS['TL_LANG']['tl_iso_tax_rate']['stop'][1] = 'Stop andere berekeningen als dit belastingtarief in gang wordt gezet.';
 $GLOBALS['TL_LANG']['tl_iso_tax_rate']['groups'][0] = 'Ledengroepen';
 $GLOBALS['TL_LANG']['tl_iso_tax_rate']['groups'][1] = 'Beperk dit belastingtarief tot bepaalde ledengroepen.';
+$GLOBALS['TL_LANG']['tl_iso_tax_rate']['protected'][0] = 'Bescherm belastingtrief';
 $GLOBALS['TL_LANG']['tl_iso_tax_rate']['protected'][1] = 'Pas dit belastingtarief alleen toe op bepaalde ledengroepen.';
 $GLOBALS['TL_LANG']['tl_iso_tax_rate']['guests'][1] = 'Pas belastingtarief niet toe als een lid is ingelogd.';
 $GLOBALS['TL_LANG']['tl_iso_tax_rate']['new'][0] = 'Nieuw belastingtarief';

@@ -14,3 +14,8 @@
  * @license http://www.gnu.org/licenses/lgpl-3.0.html
  */
 
+$GLOBALS['TL_LANG']['tl_user']['iso_product_types'][0] = 'Dovoljene vrste izdelkov';
+$GLOBALS['TL_LANG']['tl_user']['iso_payment_modules'][0] = 'Dovoljeni plačilni moduli';
+$GLOBALS['TL_LANG']['tl_user']['iso_shipping_modules'][0] = 'Dovoljeni moduli dostave';
+$GLOBALS['TL_LANG']['tl_user']['iso_groups'][0] = 'Dovoljene skupine izdelkov';
+$GLOBALS['TL_LANG']['tl_user']['isotope_legend'] = 'Isotope eCommerce';

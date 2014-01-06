@@ -15,15 +15,12 @@
  */
 
 $GLOBALS['TL_LANG']['tl_module']['iso_list_layout'][0] = 'Modèle de liste de produits';
-$GLOBALS['TL_LANG']['tl_module']['iso_list_layout'][1] = 'Choisir une disposition la liste. Vous pouvez ajouter dispositions de liste personnalisées à <em>dossier templates</em>. La liste des fichiers modèle commence par <em>iso_list_</em> et nécessite l\'extension de fichier <em>.tpl</em>.';
 $GLOBALS['TL_LANG']['tl_module']['iso_reader_layout'][0] = 'Modèle de fiche produit';
-$GLOBALS['TL_LANG']['tl_module']['iso_reader_layout'][1] = 'Choisir un modèle de fiche. Vous pouvez ajouter des modèles personnalisés dans <em>dossier templates</em>. Les modèles commencent par <em>iso_reader_</em> et nécessitent l\'extension de fichier <em>.tpl</em>.';
 $GLOBALS['TL_LANG']['tl_module']['iso_gallery'][0] = 'Gallerie';
 $GLOBALS['TL_LANG']['tl_module']['iso_gallery'][1] = 'Sélectionner une galerie pour rendre les images (remplace la configuration type du produit).';
 $GLOBALS['TL_LANG']['tl_module']['iso_collectionTpl'][0] = 'Modèle collection produit';
 $GLOBALS['TL_LANG']['tl_module']['iso_collectionTpl'][1] = 'Veuillez choisir un modèle pour générer les produits. Vous pouvez ajouter des modèles de collection personnalisés au répertoire<em>templates</em>. Les fichiers de modèles de collection commencent avec <em>iso_collection_</em>.';
 $GLOBALS['TL_LANG']['tl_module']['iso_filterTpl'][0] = 'Filter template';
-$GLOBALS['TL_LANG']['tl_module']['iso_filterTpl'][1] = 'Please choose a filter template. You can add custom filter templates to folder <em>templates</em>. Filter template files start with <em>iso_filter_</em>.';
 $GLOBALS['TL_LANG']['tl_module']['iso_jump_first'][0] = 'Redirection vers le premier produit';
 $GLOBALS['TL_LANG']['tl_module']['iso_jump_first'][1] = 'Cocher cette case si les utilisateurs sont redirigés vers le premier produit de la liste.';
 $GLOBALS['TL_LANG']['tl_module']['iso_hide_list'][0] = 'Hide in reader mode';
@@ -31,6 +28,7 @@ $GLOBALS['TL_LANG']['tl_module']['iso_hide_list'][1] = 'Hide product list when a
 $GLOBALS['TL_LANG']['tl_module']['iso_use_quantity'][0] = 'Activer la quantité';
 $GLOBALS['TL_LANG']['tl_module']['iso_use_quantity'][1] = 'Permet aux utilisateurs de spécifier un ou plusieurs produits à acheter.';
 $GLOBALS['TL_LANG']['tl_module']['iso_display404Page'][0] = 'Afficher une page 404';
+$GLOBALS['TL_LANG']['tl_module']['iso_display404Page'][1] = 'Afficher la page non trouvée 404 si aucun alias de produit est dans l\'URL. Utiliser cette option si le module de lecture est sur ​​une page séparée qui n\'est pas être disponible.';
 $GLOBALS['TL_LANG']['tl_module']['iso_checkout_method'][0] = 'Mode de commande';
 $GLOBALS['TL_LANG']['tl_module']['iso_checkout_method'][1] = 'Choisissez votre mode de commande';
 $GLOBALS['TL_LANG']['tl_module']['iso_login_jumpTo'][0] = 'Page de connexion';

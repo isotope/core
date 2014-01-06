@@ -38,7 +38,6 @@ $GLOBALS['TL_LANG']['tl_iso_document']['edit'][0] = 'Edytuj dokument';
 $GLOBALS['TL_LANG']['tl_iso_document']['edit'][1] = 'Edytuj dokument ID %s';
 $GLOBALS['TL_LANG']['tl_iso_document']['copy'][0] = 'Kopiuj dokument';
 $GLOBALS['TL_LANG']['tl_iso_document']['copy'][1] = 'Kopiuj dokument ID %s';
-$GLOBALS['TL_LANG']['tl_iso_document']['delete'][0] = 'Usuń dokument';
 $GLOBALS['TL_LANG']['tl_iso_document']['delete'][1] = 'Usuń dokument ID %s';
 $GLOBALS['TL_LANG']['tl_iso_document']['show'][0] = 'Szczegóły dokumentu';
 $GLOBALS['TL_LANG']['tl_iso_document']['show'][1] = 'Pokaż szczegóły dokumentu ID %s';

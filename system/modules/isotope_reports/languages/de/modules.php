@@ -15,4 +15,4 @@
  */
 
 $GLOBALS['TL_LANG']['MOD']['isotope_reports'][0] = 'Isotope eCommerce: Auswertungen &amp; Statistik';
-$GLOBALS['TL_LANG']['MOD']['reports'][0] = 'Auswertung &amp; Statistik';
+$GLOBALS['TL_LANG']['MOD']['reports'][0] = 'Auswertungen &amp; Statistik';

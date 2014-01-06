@@ -14,3 +14,5 @@
  * @license http://www.gnu.org/licenses/lgpl-3.0.html
  */
 
+$GLOBALS['TL_LANG']['tl_user']['iso_reports'][0] = 'Rapporti Isotope';
+$GLOBALS['TL_LANG']['tl_user']['iso_reports'][1] = 'Seleziona quale Rapporto dovrebbe essere visibile per l\'utente ';

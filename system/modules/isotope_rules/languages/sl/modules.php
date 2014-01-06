@@ -14,3 +14,5 @@
  * @license http://www.gnu.org/licenses/lgpl-3.0.html
  */
 
+$GLOBALS['TL_LANG']['MOD']['isotope_rules'][0] = 'Isotope eCommerce: Pravila &amp; Kuponi';
+$GLOBALS['TL_LANG']['MOD']['iso_rules'][0] = 'Pravila &amp; Kuponi';

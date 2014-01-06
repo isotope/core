@@ -14,3 +14,9 @@
  * @license http://www.gnu.org/licenses/lgpl-3.0.html
  */
 
+$GLOBALS['TL_LANG']['tl_iso_rule']['type'][0] = 'Tip';
+$GLOBALS['TL_LANG']['tl_iso_rule']['type']['product'] = 'Izdelek';
+$GLOBALS['TL_LANG']['tl_iso_rule']['type']['cart'] = 'Nakupovalna košarica';
+$GLOBALS['TL_LANG']['tl_iso_rule']['name'][0] = 'Naziv';
+$GLOBALS['TL_LANG']['tl_iso_rule']['label'][0] = 'Oznaka';
+$GLOBALS['TL_LANG']['tl_iso_rule']['discount'][0] = 'Popust';

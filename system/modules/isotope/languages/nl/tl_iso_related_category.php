@@ -15,7 +15,7 @@
  */
 
 $GLOBALS['TL_LANG']['tl_iso_related_category']['name'][0] = 'Categorie naam';
-$GLOBALS['TL_LANG']['tl_iso_related_category']['name'][1] = 'Voer een naam voor deze categorie.';
+$GLOBALS['TL_LANG']['tl_iso_related_category']['name'][1] = 'Vul een naam in voor deze categorie.';
 $GLOBALS['TL_LANG']['tl_iso_related_category']['new'][0] = 'Nieuwe categorie';
 $GLOBALS['TL_LANG']['tl_iso_related_category']['new'][1] = 'Maak een nieuwe categorie';
 $GLOBALS['TL_LANG']['tl_iso_related_category']['edit'][0] = 'Bewerk categorie';

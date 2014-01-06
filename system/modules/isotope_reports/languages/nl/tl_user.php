@@ -14,3 +14,5 @@
  * @license http://www.gnu.org/licenses/lgpl-3.0.html
  */
 
+$GLOBALS['TL_LANG']['tl_user']['iso_reports'][0] = 'Isotope rapporten';
+$GLOBALS['TL_LANG']['tl_user']['iso_reports'][1] = 'Kies welke rapporten zichtbaar zijn voor de gebruiker.';
