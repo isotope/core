@@ -214,6 +214,10 @@ class Transifex
 		{
 			foreach ($this->scandir(TL_ROOT . '/.tx/source') as $language)
 			{
+			    if ($language == 'en') {
+    			    continue;
+			    }
+
 				$languages[] = $language;
 			}
 		}
