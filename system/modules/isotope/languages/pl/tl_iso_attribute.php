@@ -77,7 +77,6 @@ $GLOBALS['TL_LANG']['tl_iso_attribute']['fe_sorting'][1] = 'To pole będzie moż
 $GLOBALS['TL_LANG']['tl_iso_attribute']['be_filter'][0] = 'Filtrowanie backend';
 $GLOBALS['TL_LANG']['tl_iso_attribute']['be_filter'][1] = 'Czy ten atrybut może być filtrowany a backendzie?';
 $GLOBALS['TL_LANG']['tl_iso_attribute']['be_search'][0] = 'Wyszukiwanie backend';
-$GLOBALS['TL_LANG']['tl_iso_attribute']['be_search'][1] = 'Czy wyszukiwarka powinna uwzględniać to pole przy wyszukiawniu?';
 $GLOBALS['TL_LANG']['tl_iso_attribute']['fe_filter'][0] = 'Filtrowanie frontend';
 $GLOBALS['TL_LANG']['tl_iso_attribute']['fe_filter'][1] = 'Czy ten atrybut może zostać użyty w filtrze frontend?';
 $GLOBALS['TL_LANG']['tl_iso_attribute']['fe_search'][0] = 'Wyszukiwanie frontend';

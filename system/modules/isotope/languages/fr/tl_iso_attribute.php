@@ -77,7 +77,6 @@ $GLOBALS['TL_LANG']['tl_iso_attribute']['fe_sorting'][1] = 'This field will be s
 $GLOBALS['TL_LANG']['tl_iso_attribute']['be_filter'][0] = 'Peut être filtré en back office';
 $GLOBALS['TL_LANG']['tl_iso_attribute']['be_filter'][1] = 'Cet attribut peut-il être filtré en back office ?';
 $GLOBALS['TL_LANG']['tl_iso_attribute']['be_search'][0] = 'Peut être recherché en back office';
-$GLOBALS['TL_LANG']['tl_iso_attribute']['be_search'][1] = 'Le moteur de recherche doit-il inclure ce champ ?';
 $GLOBALS['TL_LANG']['tl_iso_attribute']['fe_filter'][0] = 'Peut être filtré en front office';
 $GLOBALS['TL_LANG']['tl_iso_attribute']['fe_filter'][1] = 'Cet attribut peut-il être filtré en front office ?';
 $GLOBALS['TL_LANG']['tl_iso_attribute']['fe_search'][0] = 'Peut être recherché en front office';

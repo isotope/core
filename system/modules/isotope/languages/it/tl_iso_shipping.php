@@ -43,7 +43,6 @@ $GLOBALS['TL_LANG']['tl_iso_shipping']['note_legend'] = 'Nota spedizione';
 $GLOBALS['TL_LANG']['tl_iso_shipping']['config_legend'] = 'Configurazione';
 $GLOBALS['TL_LANG']['tl_iso_shipping']['price_legend'] = 'Soglia prezzo e classe aliquota applicabile';
 $GLOBALS['TL_LANG']['tl_iso_shipping']['expert_legend'] = 'Impostazioni esperto';
-$GLOBALS['TL_LANG']['tl_iso_shipping']['enabled_legend'] = 'Impostazioni attivate';
 $GLOBALS['TL_LANG']['tl_iso_shipping']['new'][0] = 'Nuovo metodo spedizione';
 $GLOBALS['TL_LANG']['tl_iso_shipping']['new'][1] = 'Crei un nuovo metodo di spedizione';
 $GLOBALS['TL_LANG']['tl_iso_shipping']['edit'][0] = 'Modifica spedizione';

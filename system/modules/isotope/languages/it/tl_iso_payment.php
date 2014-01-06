@@ -83,4 +83,3 @@ $GLOBALS['TL_LANG']['tl_iso_payment']['gateway_legend'] = 'Configurazione Gatewa
 $GLOBALS['TL_LANG']['tl_iso_payment']['price_legend'] = 'Prezzo';
 $GLOBALS['TL_LANG']['tl_iso_payment']['template_legend'] = 'Template';
 $GLOBALS['TL_LANG']['tl_iso_payment']['expert_legend'] = 'Impostazioni esperto';
-$GLOBALS['TL_LANG']['tl_iso_payment']['enabled_legend'] = 'Impostazioni attivate';

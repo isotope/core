@@ -124,4 +124,3 @@ $GLOBALS['TL_LANG']['tl_iso_payment']['gateway_legend'] = 'Configuración de la 
 $GLOBALS['TL_LANG']['tl_iso_payment']['price_legend'] = 'Precio';
 $GLOBALS['TL_LANG']['tl_iso_payment']['template_legend'] = 'Plantilla';
 $GLOBALS['TL_LANG']['tl_iso_payment']['expert_legend'] = 'Configuración avanzada';
-$GLOBALS['TL_LANG']['tl_iso_payment']['enabled_legend'] = 'Configuración Activada';

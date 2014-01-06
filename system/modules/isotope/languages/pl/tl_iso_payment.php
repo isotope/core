@@ -173,4 +173,3 @@ $GLOBALS['TL_LANG']['tl_iso_payment']['gateway_legend'] = 'Konfiguracja metody p
 $GLOBALS['TL_LANG']['tl_iso_payment']['price_legend'] = 'Cena';
 $GLOBALS['TL_LANG']['tl_iso_payment']['template_legend'] = 'Szablon';
 $GLOBALS['TL_LANG']['tl_iso_payment']['expert_legend'] = 'Zaawansowane ustawienia';
-$GLOBALS['TL_LANG']['tl_iso_payment']['enabled_legend'] = 'Ustawienia dostępności';

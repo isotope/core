@@ -61,7 +61,6 @@ $GLOBALS['TL_LANG']['tl_iso_shipping']['note_legend'] = 'Opmerking bij verzendin
 $GLOBALS['TL_LANG']['tl_iso_shipping']['config_legend'] = 'Configuratie';
 $GLOBALS['TL_LANG']['tl_iso_shipping']['price_legend'] = 'Prijsdrempel en tariefgroep toepasselijkheid';
 $GLOBALS['TL_LANG']['tl_iso_shipping']['expert_legend'] = 'Expert instellingen';
-$GLOBALS['TL_LANG']['tl_iso_shipping']['enabled_legend'] = 'Beschikbaarheid instellingen';
 $GLOBALS['TL_LANG']['tl_iso_shipping']['new'][0] = 'Nieuwe verzendmethode';
 $GLOBALS['TL_LANG']['tl_iso_shipping']['new'][1] = 'Voeg een verzendmethode toe';
 $GLOBALS['TL_LANG']['tl_iso_shipping']['edit'][0] = 'Bewerk verzendmethode';
