@@ -16,7 +16,7 @@
 
 $GLOBALS['TL_LANG']['tl_iso_label']['language'][0] = 'Sprache';
 $GLOBALS['TL_LANG']['tl_iso_label']['language'][1] = 'Bitte wählen Sie eine Sprache';
-$GLOBALS['TL_LANG']['tl_iso_label']['label'][0] = 'Beschriftung';
+$GLOBALS['TL_LANG']['tl_iso_label']['label'][0] = 'Bezeichnung';
 $GLOBALS['TL_LANG']['tl_iso_label']['label'][1] = 'Geben Sie die ursprüngliche Beschriftung ein.';
 $GLOBALS['TL_LANG']['tl_iso_label']['replacement'][0] = 'Ersatz';
 $GLOBALS['TL_LANG']['tl_iso_label']['replacement'][1] = 'Geben Sie den Ersatz in der vorgegebenen Sprache ein.';

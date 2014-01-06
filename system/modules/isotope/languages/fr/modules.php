@@ -14,7 +14,7 @@
  * @license http://www.gnu.org/licenses/lgpl-3.0.html
  */
 
-$GLOBALS['TL_LANG']['MOD']['isotope'] = '<a href="http://www.isotopeecommerce.com/"LINK_NEW_WINDOW class="isotope-logo" style="display:none"><img src="system/modules/isotope/html/isotope-logo.png" alt="Isotope eCommerce Logo" /></a><span class="isotope-title">Isotope eCommerce</span>';
+$GLOBALS['TL_LANG']['MOD']['isotope'] = 'Isotope eCommerce';
 $GLOBALS['TL_LANG']['MOD']['iso_products'][0] = 'Produits';
 $GLOBALS['TL_LANG']['MOD']['iso_products'][1] = 'Gérer les produits de votre boutique eCommerce Isotope';
 $GLOBALS['TL_LANG']['MOD']['iso_orders'][0] = 'Commandes';
@@ -36,7 +36,7 @@ $GLOBALS['TL_LANG']['FMD']['iso_cart'][0] = 'Panier d\'achat';
 $GLOBALS['TL_LANG']['FMD']['iso_cart'][1] = 'Module panier d\'achat. En box ou un plein affichage peut être réglé par la sélection de modèle.';
 $GLOBALS['TL_LANG']['FMD']['iso_checkout'][0] = 'Commander';
 $GLOBALS['TL_LANG']['FMD']['iso_checkout'][1] = 'Permet aux clients de finaliser leur commande.';
-$GLOBALS['TL_LANG']['FMD']['iso_addressbook'][0] = 'Carnet d\'adresses';
+$GLOBALS['TL_LANG']['FMD']['iso_addressbook'][0] = 'Carnet d\'adresse';
 $GLOBALS['TL_LANG']['FMD']['iso_addressbook'][1] = 'Permet aux clients de gérer leur carnet d\'adresses.';
 $GLOBALS['TL_LANG']['FMD']['iso_orderhistory'][0] = 'Historique des commandes';
 $GLOBALS['TL_LANG']['FMD']['iso_orderhistory'][1] = 'Permet aux clients de consulter l\'historique de leurs commandes.';
@@ -70,7 +70,7 @@ $GLOBALS['TL_LANG']['IMD']['tax_class'][1] = 'Mise en place de taxes, qui contie
 $GLOBALS['TL_LANG']['IMD']['tax_rate'][0] = 'Taux de taxe';
 $GLOBALS['TL_LANG']['IMD']['tax_rate'][1] = 'Mise en place des taux de taxe basés sur des choses comme le lieu de livraison/facturation et le total de la commande.';
 $GLOBALS['TL_LANG']['IMD']['config'] = 'Paramètres généraux';
-$GLOBALS['TL_LANG']['IMD']['configs'][0] = 'Configuration de boutique';
+$GLOBALS['TL_LANG']['IMD']['configs'][0] = 'Configurations de boutique';
 $GLOBALS['TL_LANG']['IMD']['configs'][1] = 'Configurer les paramètres généraux de la boutique.';
 $GLOBALS['TL_LANG']['IMD']['orderstatus'][0] = 'État des commandes';
 $GLOBALS['TL_LANG']['IMD']['orderstatus'][1] = 'Définir l\'état des commandes.';

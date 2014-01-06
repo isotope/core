@@ -14,7 +14,7 @@
  * @license http://www.gnu.org/licenses/lgpl-3.0.html
  */
 
-$GLOBALS['TL_LANG']['tl_iso_rule']['type'][0] = 'Type';
+$GLOBALS['TL_LANG']['tl_iso_rule']['type'][0] = 'Soort';
 $GLOBALS['TL_LANG']['tl_iso_rule']['type'][1] = 'Kies het type van de regel';
 $GLOBALS['TL_LANG']['tl_iso_rule']['type']['product'] = 'Product';
 $GLOBALS['TL_LANG']['tl_iso_rule']['type']['cart'] = 'Winkelwagen';

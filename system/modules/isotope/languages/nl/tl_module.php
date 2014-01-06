@@ -14,7 +14,7 @@
  * @license http://www.gnu.org/licenses/lgpl-3.0.html
  */
 
-$GLOBALS['TL_LANG']['tl_module']['iso_list_layout'][0] = 'Productlijst template';
+$GLOBALS['TL_LANG']['tl_module']['iso_list_layout'][0] = 'Productlijsttemplate';
 $GLOBALS['TL_LANG']['tl_module']['iso_reader_layout'][0] = 'Product weergave template';
 $GLOBALS['TL_LANG']['tl_module']['iso_gallery'][0] = 'Gallerij';
 $GLOBALS['TL_LANG']['tl_module']['iso_collectionTpl'][0] = 'Productverzameling template';
@@ -33,7 +33,7 @@ $GLOBALS['TL_LANG']['tl_module']['iso_addProductJumpTo'][0] = 'Product "ga naar 
 $GLOBALS['TL_LANG']['tl_module']['iso_addProductJumpTo'][1] = 'Deze instelling definieert naar welke pagina de gebruiker wordt doorverwezen wanneer deze een product aan de winkelwagen heeft toevoegd, anders dan de huidige pagina.';
 $GLOBALS['TL_LANG']['tl_module']['iso_cols'][0] = 'Kolommen';
 $GLOBALS['TL_LANG']['tl_module']['iso_cols'][1] = 'Vul het aantal kolommen in voor de breedteweergave in de productlijst template.';
-$GLOBALS['TL_LANG']['tl_module']['iso_config_id'][0] = 'Winkel configuratie';
+$GLOBALS['TL_LANG']['tl_module']['iso_config_id'][0] = 'Winkelinstellingen';
 $GLOBALS['TL_LANG']['tl_module']['iso_config_id'][1] = 'Selecteer de winkel configuratie waar deze module voor gebruikt wordt.';
 $GLOBALS['TL_LANG']['tl_module']['iso_config_ids'][0] = 'Winkel configuraties';
 $GLOBALS['TL_LANG']['tl_module']['iso_config_ids'][1] = 'Selecteer de winkel configuraties waar deze module voor gebruikt wordt.';

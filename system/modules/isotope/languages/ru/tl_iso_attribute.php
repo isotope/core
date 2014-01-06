@@ -14,7 +14,7 @@
  * @license http://www.gnu.org/licenses/lgpl-3.0.html
  */
 
-$GLOBALS['TL_LANG']['tl_iso_attribute']['name'][0] = 'Имя';
+$GLOBALS['TL_LANG']['tl_iso_attribute']['name'][0] = 'Название';
 $GLOBALS['TL_LANG']['tl_iso_attribute']['name'][1] = 'Пожалуйста, введите имя для этого атрибута.';
 $GLOBALS['TL_LANG']['tl_iso_attribute']['field_name'][0] = 'Внутреннее имя';
 $GLOBALS['TL_LANG']['tl_iso_attribute']['field_name'][1] = 'Внутреннее имя представляет собой имя поля базы данных и должно быть уникальным.';

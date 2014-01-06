@@ -14,14 +14,14 @@
  * @license http://www.gnu.org/licenses/lgpl-3.0.html
  */
 
-$GLOBALS['TL_LANG']['MOD']['isotope'] = 'Isotope Webwinkel';
+$GLOBALS['TL_LANG']['MOD']['isotope'] = 'Isotope eCommerce';
 $GLOBALS['TL_LANG']['MOD']['iso_products'][0] = 'Productbeheer';
 $GLOBALS['TL_LANG']['MOD']['iso_products'][1] = 'Beheer producten in uw winkel';
 $GLOBALS['TL_LANG']['MOD']['iso_orders'][0] = 'Bestellingen';
 $GLOBALS['TL_LANG']['MOD']['iso_orders'][1] = 'Bekijk en beheer bestellingen in uw winkel';
-$GLOBALS['TL_LANG']['MOD']['iso_setup'][0] = 'Instellingen';
+$GLOBALS['TL_LANG']['MOD']['iso_setup'][0] = 'Winkelinstellingen';
 $GLOBALS['TL_LANG']['MOD']['iso_setup'][1] = 'Stel Isotope eCommerce in naar wens.';
-$GLOBALS['TL_LANG']['FMD']['isotope'] = 'Isotope Webwinkel';
+$GLOBALS['TL_LANG']['FMD']['isotope'] = 'Isotope eCommerce';
 $GLOBALS['TL_LANG']['FMD']['iso_productfilter'][0] = 'Product filter';
 $GLOBALS['TL_LANG']['FMD']['iso_productfilter'][1] = 'Omschrijving van de individuele filters voor Webwinkel zoals categorieen en product attribuut filters.';
 $GLOBALS['TL_LANG']['FMD']['iso_cumulativefilter'][0] = 'Gecombineerd filter';
@@ -50,11 +50,11 @@ $GLOBALS['TL_LANG']['FMD']['iso_messages'][0] = 'Berichten';
 $GLOBALS['TL_LANG']['FMD']['iso_messages'][1] = 'Toon alle Isotope berichten als deze niet al elders getoond worden.';
 $GLOBALS['TL_LANG']['IMD']['config_module'] = 'Isotope eCommerce configuratie (versie: %s)';
 $GLOBALS['TL_LANG']['IMD']['product'] = 'Producten';
-$GLOBALS['TL_LANG']['IMD']['attributes'][0] = 'Opties';
+$GLOBALS['TL_LANG']['IMD']['attributes'][0] = 'Attributen';
 $GLOBALS['TL_LANG']['IMD']['attributes'][1] = 'Maak en beheer productattributen zoals maat, kleur, etc.';
 $GLOBALS['TL_LANG']['IMD']['producttypes'][0] = 'Productsoorten';
 $GLOBALS['TL_LANG']['IMD']['producttypes'][1] = 'Maak en beheer productsoorten uit sets van attributen.';
-$GLOBALS['TL_LANG']['IMD']['related_categories'][0] = 'Gerelateerde categorieën';
+$GLOBALS['TL_LANG']['IMD']['related_categories'][0] = 'Gerelateerde categoriën';
 $GLOBALS['TL_LANG']['IMD']['related_categories'][1] = 'Definieer categorieën voor gerelateerde producten.';
 $GLOBALS['TL_LANG']['IMD']['gallery'][0] = 'Gallerijen';
 $GLOBALS['TL_LANG']['IMD']['gallery'][1] = 'Geef aan hoe u de afbeeldingen van uw product weergegeven wilt hebben.';
@@ -67,10 +67,10 @@ $GLOBALS['TL_LANG']['IMD']['payment'][0] = 'Betaalmethoden';
 $GLOBALS['TL_LANG']['IMD']['payment'][1] = 'Stel betaalmethoden zoals overschrijving, Paypal en iDeal in.';
 $GLOBALS['TL_LANG']['IMD']['tax_class'][0] = 'Belastingklassen';
 $GLOBALS['TL_LANG']['IMD']['tax_class'][1] = 'Stel belastingklassen in die zijn samengesteld o.b.v. belastingtarieven';
-$GLOBALS['TL_LANG']['IMD']['tax_rate'][0] = 'Belastingtarieven';
+$GLOBALS['TL_LANG']['IMD']['tax_rate'][0] = 'Belastingtarief';
 $GLOBALS['TL_LANG']['IMD']['tax_rate'][1] = 'Stel belastingtarieven in gebaseerd op verzend/factuurlocatie of bestellingtotaal.';
 $GLOBALS['TL_LANG']['IMD']['config'] = 'Algemene instellingen';
-$GLOBALS['TL_LANG']['IMD']['configs'][0] = 'Winkelinstellingen';
+$GLOBALS['TL_LANG']['IMD']['configs'][0] = 'Winkel configuraties';
 $GLOBALS['TL_LANG']['IMD']['configs'][1] = 'Stel hier de algemene instellingen voor deze webwinkel in';
 $GLOBALS['TL_LANG']['IMD']['orderstatus'][0] = 'Bestelstatus';
 $GLOBALS['TL_LANG']['IMD']['orderstatus'][1] = 'Bestelstatus definiëren ';

@@ -119,4 +119,4 @@ $GLOBALS['TL_LANG']['tl_iso_payment']['gateway_legend']     = 'Payment gateway c
 $GLOBALS['TL_LANG']['tl_iso_payment']['price_legend']       = 'Price';
 $GLOBALS['TL_LANG']['tl_iso_payment']['template_legend']    = 'Template';
 $GLOBALS['TL_LANG']['tl_iso_payment']['expert_legend']      = 'Expert settings';
-$GLOBALS['TL_LANG']['tl_iso_payment']['enabled_legend']     = 'Enabled settings';
+$GLOBALS['TL_LANG']['tl_iso_payment']['enabled_legend']     = 'Approval';

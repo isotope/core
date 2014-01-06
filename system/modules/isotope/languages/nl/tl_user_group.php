@@ -14,4 +14,4 @@
  * @license http://www.gnu.org/licenses/lgpl-3.0.html
  */
 
-$GLOBALS['TL_LANG']['tl_user_group']['isotope_legend'] = 'Isotope Webwinkel';
+$GLOBALS['TL_LANG']['tl_user_group']['isotope_legend'] = 'Isotope eCommerce';
