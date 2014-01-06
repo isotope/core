@@ -41,6 +41,12 @@ class Transifex
         }
         else
         {
+            // Make sure "source" directory exists
+            if (!is_dir(TL_ROOT . '/.tx/source'))
+            {
+                mkdir(TL_ROOT . '/.tx/source');
+            }
+
             $this->$argv[1]();
         }
     }
