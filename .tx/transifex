@@ -333,11 +333,34 @@ class Transifex
     protected function export()
     {
         global $argv;
+        $languages = array();
 
-		// The language code is required
-		if (!isset($argv[2]))
+        // Determine which languages to export
+        if (isset($argv[2]))
+        {
+            for ($i=2; $i<count($argv); $i++)
             {
-			die("  Please provide the language code as argument\n");
+                $languages[] = $argv[$i];
+            }
+        }
+        else
+        {
+            foreach ($this->scandir(TL_ROOT . '/system/modules') as $module)
+            {
+                if (!is_dir(TL_ROOT . '/system/modules/' . $module . '/languages'))
+                {
+                    continue;
+                }
+
+                foreach ($this->scandir(TL_ROOT . '/system/modules/' . $module . '/languages') as $language)
+                {
+                    if ($language == 'en') {
+                        continue;
+                    }
+
+                    $languages[] = $language;
+                }
+            }
         }
 
         $this->setup(true);
