@@ -41,12 +41,6 @@ class Transifex
         }
         else
         {
-            // Make sure "source" directory exists
-            if (!is_dir(TL_ROOT . '/.tx/source'))
-            {
-                mkdir(TL_ROOT . '/.tx/source');
-            }
-
             $this->$argv[1]();
         }
     }
@@ -98,6 +92,12 @@ class Transifex
             echo "  \033[1;31m<branch> must be develop or master\n";
             $this->help();
             exit;
+        }
+
+        // Make sure "source" directory exists
+        if (!is_dir(TL_ROOT . '/.tx/source'))
+        {
+            mkdir(TL_ROOT . '/.tx/source');
         }
 
         // Purge the target folder
@@ -559,6 +559,7 @@ class Transifex
      */
     protected function pull()
     {
+        $this->rrdir(TL_ROOT . '/.tx/source');
         $this->setup(true);
 
         // Pull translations from transifex.com
