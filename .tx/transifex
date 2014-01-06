@@ -59,6 +59,9 @@ class Transifex
         echo "  \033[0;36msetup\033[0m         Create the source translation files\n";
         echo "  \033[0;36mimport\033[0m        Convert the Transifex files into Contao files\n";
         echo "  \033[0;36mexport\033[0m        Export and push an existing translation\n";
+        echo "  \033[0;36mpush\033[0m          Export and push latest source files\n";
+        echo "  \033[0;36mpull\033[0m          Pull and import all translations\n";
+        echo "  \033[0;36msync\033[0m          Sync with transifex (push & pull)\n";
         echo "  \033[0;36mhelp\033[0m          Show this help text\n";
         echo "\n";
         echo "  The \"push\" command will execute \"setup\" and the \"pull\" command will execute \"import\" automatically.\n";
@@ -488,6 +491,37 @@ class Transifex
                 }
             }
         }
+    }
+
+    /**
+     * Push latest source files to Transifex
+     */
+    protected function push()
+    {
+        $this->setup(true);
+
+        // Push source language to transifex.com
+        passthru('tx push --skip --source --language=en');
+    }
+
+    /**
+     * Pull and import translations
+     */
+    protected function pull()
+    {
+        // Pull translations from transifex.com
+        passthru('tx pull --all --skip');
+
+        $this->import();
+    }
+
+    /**
+     * Sync with transifex (push & pull)
+     */
+    protected function sync()
+    {
+        $this->push();
+        $this->pull();
     }
 
 
