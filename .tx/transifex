@@ -253,7 +253,7 @@ class Transifex
         }
 
         // Process the selected languages
-        foreach ($languages as $language)
+        foreach (array_unique($languages) as $language)
         {
             foreach ($this->scandir(TL_ROOT . '/.tx/source/' . $language) as $module)
             {
@@ -389,7 +389,7 @@ class Transifex
 
         $this->setup(true);
 
-        foreach ($languages as $language)
+        foreach (array_unique($languages) as $language)
         {
             // Purge the target folder
             $this->rrdir(TL_ROOT . '/.tx/source/' . $language);
