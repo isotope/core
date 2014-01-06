@@ -13,6 +13,9 @@
 namespace Isotope\Backend\Config;
 
 
+use Isotope\Automator;
+use Isotope\Model\Config;
+
 class Callback extends \Backend
 {
 
@@ -292,5 +295,32 @@ class Callback extends \Backend
         }
 
         return $return;
+    }
+
+    /**
+     * Store if we need to update the currencies
+     * @param   mixed
+     * @param   \DataContainer
+     */
+    public function checkNeedToConvertCurrencies($varValue, \DataContainer $dc)
+    {
+        $objConfig = Config::findByPk($dc->id);
+        if ($objConfig !== null && $varValue != $objConfig->{$dc->field}) {
+            $GLOBALS['ISOTOPE_CONFIG_UPDATE_CURRENCIES'] = true;
+        }
+
+        return $varValue;
+    }
+
+    /**
+     * Convert currencies if the settings have changed
+     * @param   \DataContainer
+     */
+    public function convertCurrencies(\DataContainer $dc)
+    {
+        if ($GLOBALS['ISOTOPE_CONFIG_UPDATE_CURRENCIES']) {
+            $objAutomator = new Automator();
+            $objAutomator->convertCurrencies($dc->id);
+        }
     }
 }

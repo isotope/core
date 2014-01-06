@@ -32,6 +32,7 @@ $GLOBALS['TL_DCA']['tl_iso_config'] = array
         'onsubmit_callback' => array
         (
             array('Isotope\Backend', 'truncateProductCache'),
+            array('Isotope\Backend\Config\Callback', 'convertCurrencies'),
         ),
         'sql' => array
         (
@@ -496,6 +497,9 @@ $GLOBALS['TL_DCA']['tl_iso_config'] = array
             'exclude'               => true,
             'inputType'             => 'checkbox',
             'eval'                  => array('submitOnChange'=>true, 'tl_class'=>'clr', 'helpwizard'=>true),
+            'save_callback'         => array(
+                array('Isotope\Backend\Config\Callback', 'checkNeedToConvertCurrencies')
+            ),
             'sql'                   => "char(1) NOT NULL default ''",
         ),
         'currencyOrigin' => array
@@ -505,6 +509,9 @@ $GLOBALS['TL_DCA']['tl_iso_config'] = array
             'inputType'             => 'select',
             'options'               => &$GLOBALS['TL_LANG']['CUR'],
             'eval'                  => array('includeBlankOption'=>true, 'mandatory'=>true, 'tl_class'=>'w50'),
+            'save_callback'         => array(
+                array('Isotope\Backend\Config\Callback', 'checkNeedToConvertCurrencies')
+            ),
             'sql'                   => "varchar(3) NOT NULL default ''",
         ),
         'currencyProvider' => array
@@ -515,6 +522,9 @@ $GLOBALS['TL_DCA']['tl_iso_config'] = array
             'options'               => array('ecb.int', 'admin.ch'),
             'reference'             => &$GLOBALS['TL_LANG']['tl_iso_config'],
             'eval'                  => array('mandatory'=>true, 'tl_class'=>'w50'),
+            'save_callback'         => array(
+                array('Isotope\Backend\Config\Callback', 'checkNeedToConvertCurrencies')
+            ),
             'sql'                   => "varchar(32) NOT NULL default ''",
         ),
         'orderPrefix' => array

@@ -56,11 +56,19 @@ class Automator extends \Controller
 
     /**
      * Update the store configs with latest currency conversion data
-     * @return void
+     * @param   int Config id (optional, if none given, all will be taken)
      */
-    public function convertCurrencies()
+    public function convertCurrencies($intId = 0)
     {
-        $objConfigs = Config::findBy('currencyAutomator', '1');
+        $arrColumns     = array('currencyAutomator');
+        $arrValues      = array('1');
+
+        if ($intId > 0) {
+            $arrColumns[]   = 'id';
+            $arrValues[]    = $intId;
+        }
+
+        $objConfigs = Config::findBy($arrColumns, $arrValues);
 
         if (null === $objConfigs) {
             return;
