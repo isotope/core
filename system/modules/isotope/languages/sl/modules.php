@@ -23,6 +23,7 @@ $GLOBALS['TL_LANG']['FMD']['isotope'] = 'Isotope eCommerce';
 $GLOBALS['TL_LANG']['FMD']['iso_productfilter'][0] = 'Filter izdelkov';
 $GLOBALS['TL_LANG']['FMD']['iso_productlist'][0] = 'Seznam izdelkov';
 $GLOBALS['TL_LANG']['FMD']['iso_cart'][0] = 'Nakupovalna košarica';
+$GLOBALS['TL_LANG']['FMD']['iso_addressbook'][0] = 'Adresar';
 $GLOBALS['TL_LANG']['FMD']['iso_orderhistory'][0] = 'Zgodovina naročil';
 $GLOBALS['TL_LANG']['FMD']['iso_orderdetails'][0] = 'Podrobnosti naročila';
 $GLOBALS['TL_LANG']['FMD']['iso_relatedproducts'][0] = 'Sorodni izdelki';

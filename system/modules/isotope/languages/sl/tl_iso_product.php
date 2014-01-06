@@ -14,3 +14,8 @@
  * @license http://www.gnu.org/licenses/lgpl-3.0.html
  */
 
+$GLOBALS['TL_LANG']['tl_iso_product']['name'][0] = 'Naziv';
+$GLOBALS['TL_LANG']['tl_iso_product']['images'][0] = 'Slike';
+$GLOBALS['TL_LANG']['tl_iso_product']['related'][0] = 'Sorodni izdelki';
+$GLOBALS['TL_LANG']['tl_iso_product']['downloads'][0] = 'Prenosi';
+$GLOBALS['TL_LANG']['tl_iso_product']['price_tiers']['min'] = 'Količina';

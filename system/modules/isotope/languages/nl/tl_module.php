@@ -49,6 +49,7 @@ $GLOBALS['TL_LANG']['tl_module']['iso_order_conditions'][0] = 'Bestelvoorwaarden
 $GLOBALS['TL_LANG']['tl_module']['iso_order_conditions'][1] = 'Selecteer een eigen formulier dat gebruikt wordt om je algemene voorwaarden weer te geven.';
 $GLOBALS['TL_LANG']['tl_module']['iso_addToAddressbook'][0] = 'Voeg toe aan adresboek';
 $GLOBALS['TL_LANG']['tl_module']['iso_addToAddressbook'][1] = 'Voeg nieuw adres toe aan leden adresboek (wanneer ingelogd).';
+$GLOBALS['TL_LANG']['tl_module']['iso_orderCollectionBy'][0] = 'Volgorde';
 $GLOBALS['TL_LANG']['tl_module']['iso_orderCollectionBy'][1] = 'Geef aan in welke volgorde de items in deze verzameling weergegeven moeten worden.';
 $GLOBALS['TL_LANG']['tl_module']['iso_emptyMessage'][0] = 'Bepaal een lege melding';
 $GLOBALS['TL_LANG']['tl_module']['iso_emptyMessage'][1] = 'Plaats een eigen melding wanneer de productlijst leeg is.';

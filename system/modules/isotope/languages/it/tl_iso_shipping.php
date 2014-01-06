@@ -29,6 +29,7 @@ $GLOBALS['TL_LANG']['tl_iso_shipping']['subdivisions'][0] = 'Stato/Regione';
 $GLOBALS['TL_LANG']['tl_iso_shipping']['subdivisions'][1] = 'Selezionare lo stato/regione ai quali questo metodo di spedizione sarà applicato. Se non seleziona niente, questo metodo di spedizione sarà applicato a tutti gli stati/regioni.';
 $GLOBALS['TL_LANG']['tl_iso_shipping']['product_types'][0] = 'Tipi prodotto';
 $GLOBALS['TL_LANG']['tl_iso_shipping']['product_types'][1] = 'Può limitare questo metodo di spedizione a certi prodotti. Se il carrello contiene un prodotto non selezionat, il modulo di spedizione non sarà disponibile.';
+$GLOBALS['TL_LANG']['tl_iso_shipping']['group_methods'][0] = 'Metodi di spedizione';
 $GLOBALS['TL_LANG']['tl_iso_shipping']['groups'][0] = 'Gruppi membri';
 $GLOBALS['TL_LANG']['tl_iso_shipping']['groups'][1] = 'Limiti quest\'opzione di spedizione a certi gruppi di membri';
 $GLOBALS['TL_LANG']['tl_iso_shipping']['protected'][0] = 'Modulo protetto';

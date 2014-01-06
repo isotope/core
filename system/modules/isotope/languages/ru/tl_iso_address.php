@@ -16,6 +16,7 @@
 
 $GLOBALS['TL_LANG']['tl_iso_address']['store_id'][0] = 'ID Магазина';
 $GLOBALS['TL_LANG']['tl_iso_address']['store_id'][1] = 'Используйте разные идентификаторы магазина, чтобы группировать набор конфигураций магазина. Корзина пользователя и адреса будут совместно использоваться в одинаковых ID магазина.';
+$GLOBALS['TL_LANG']['tl_iso_address']['label'][0] = 'Метка';
 $GLOBALS['TL_LANG']['tl_iso_address']['salutation'][0] = 'Обращение';
 $GLOBALS['TL_LANG']['tl_iso_address']['salutation'][1] = 'Пожалуйста, введите обращение (г-н, г-жа, д-р, профессор).';
 $GLOBALS['TL_LANG']['tl_iso_address']['firstname'][0] = 'Имя';

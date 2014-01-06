@@ -104,6 +104,7 @@ $GLOBALS['TL_LANG']['CCT']['visa'] = 'Visa';
 $GLOBALS['TL_LANG']['CCT']['amex'] = 'American Express';
 $GLOBALS['TL_LANG']['CCT']['diners'] = 'Diner\'s Club';
 $GLOBALS['TL_LANG']['CCT']['maestro'] = 'Maestro UK';
+$GLOBALS['TL_LANG']['CCT']['delta'] = 'Delta';
 $GLOBALS['TL_LANG']['CCT']['visa_electron'] = 'Visa Electron';
 $GLOBALS['TL_LANG']['ATTR']['text'][1] = 'Vnosno polje za kratko besedilo (ena vrstica).';
 $GLOBALS['TL_LANG']['ATTR']['textarea'][0] = 'Polje z besedilom';

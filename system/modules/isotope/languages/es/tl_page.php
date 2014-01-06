@@ -14,3 +14,7 @@
  * @license http://www.gnu.org/licenses/lgpl-3.0.html
  */
 
+$GLOBALS['TL_LANG']['tl_page']['iso_config'][0] = 'Configuración de la tienda';
+$GLOBALS['TL_LANG']['tl_page']['iso_config'][1] = 'Seleccione una configuración de tienda para la estructura de la página.';
+$GLOBALS['TL_LANG']['tl_page']['iso_store_id'][0] = 'ID Tienda';
+$GLOBALS['TL_LANG']['tl_page']['isotope_legend'] = 'Isotope eCommerce';

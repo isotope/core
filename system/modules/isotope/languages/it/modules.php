@@ -60,3 +60,4 @@ $GLOBALS['TL_LANG']['IMD']['tax_rate'][1] = 'Imposti le aliquote di imposta in b
 $GLOBALS['TL_LANG']['IMD']['config'] = 'Impostazioni generali';
 $GLOBALS['TL_LANG']['IMD']['configs'][0] = 'Configurazioni negozio';
 $GLOBALS['TL_LANG']['IMD']['configs'][1] = 'Configura le impostazioni generali per questo negozio.';
+$GLOBALS['TL_LANG']['IMD']['orderstatus'][0] = 'Stato ordine';

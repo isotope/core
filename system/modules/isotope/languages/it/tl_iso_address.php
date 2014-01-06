@@ -14,6 +14,7 @@
  * @license http://www.gnu.org/licenses/lgpl-3.0.html
  */
 
+$GLOBALS['TL_LANG']['tl_iso_address']['label'][0] = 'Etichetta';
 $GLOBALS['TL_LANG']['tl_iso_address']['firstname'][0] = 'Nome';
 $GLOBALS['TL_LANG']['tl_iso_address']['firstname'][1] = 'Per cortesia inserisca il nome';
 $GLOBALS['TL_LANG']['tl_iso_address']['lastname'][0] = 'Cognome';

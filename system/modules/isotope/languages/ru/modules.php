@@ -14,6 +14,7 @@
  * @license http://www.gnu.org/licenses/lgpl-3.0.html
  */
 
+$GLOBALS['TL_LANG']['MOD']['isotope'] = 'Isotope eCommerce';
 $GLOBALS['TL_LANG']['MOD']['iso_products'][0] = 'Управление товарами';
 $GLOBALS['TL_LANG']['MOD']['iso_orders'][0] = 'Заказы';
 $GLOBALS['TL_LANG']['MOD']['iso_setup'][0] = 'Конфигурация магазина';

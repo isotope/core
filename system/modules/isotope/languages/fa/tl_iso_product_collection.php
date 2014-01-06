@@ -14,3 +14,4 @@
  * @license http://www.gnu.org/licenses/lgpl-3.0.html
  */
 
+$GLOBALS['TL_LANG']['tl_iso_product_collection']['total'][0] = 'کل';

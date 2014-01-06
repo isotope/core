@@ -20,3 +20,7 @@ $GLOBALS['TL_LANG']['tl_iso_rule']['type']['cart'] = 'Nakupovalna košarica';
 $GLOBALS['TL_LANG']['tl_iso_rule']['name'][0] = 'Naziv';
 $GLOBALS['TL_LANG']['tl_iso_rule']['label'][0] = 'Oznaka';
 $GLOBALS['TL_LANG']['tl_iso_rule']['discount'][0] = 'Popust';
+$GLOBALS['TL_LANG']['tl_iso_rule']['groups'][0] = 'Skupine';
+$GLOBALS['TL_LANG']['tl_iso_rule']['productRestrictions']['producttypes'] = 'Vrste izdelkov';
+$GLOBALS['TL_LANG']['tl_iso_rule']['productRestrictions']['products'] = 'Izdelki';
+$GLOBALS['TL_LANG']['tl_iso_rule']['products'][0] = 'Izdelki';

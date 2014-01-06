@@ -195,6 +195,7 @@ $GLOBALS['TL_LANG']['CCT']['amex'] = 'American Express';
 $GLOBALS['TL_LANG']['CCT']['discover'] = 'Discover';
 $GLOBALS['TL_LANG']['CCT']['jcb'] = 'JCB';
 $GLOBALS['TL_LANG']['CCT']['diners'] = 'Diner\'s Club';
+$GLOBALS['TL_LANG']['CCT']['delta'] = 'Delta';
 $GLOBALS['TL_LANG']['ATTR']['text'][0] = 'Tekstveld';
 $GLOBALS['TL_LANG']['ATTR']['text'][1] = 'Veld van één regel voor een korte of middellange tekst.';
 $GLOBALS['TL_LANG']['ATTR']['textarea'][0] = 'Tekstgebied';
