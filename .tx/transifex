@@ -333,90 +333,113 @@ class Transifex
 
 		// The language code is required
 		if (!isset($argv[2]))
-                {
+            {
 			die("  Please provide the language code as argument\n");
         }
 
         $this->setup(true);
 
-        // Purge the target folder
-        $this->rrdir(TL_ROOT . '/.tx/source/' . $argv[2]);
-        mkdir(TL_ROOT . '/.tx/source/' . $argv[2]);
-
-        // Scan the modules folder
-        foreach ($this->scandir(TL_ROOT . '/system/modules') as $module)
+        foreach ($languages as $language)
         {
-            // Skip if the source language does not exist
-            if (!is_dir(TL_ROOT . '/system/modules/' . $module . '/languages/en'))
-            {
-                continue;
-            }
+            // Purge the target folder
+            $this->rrdir(TL_ROOT . '/.tx/source/' . $language);
+            mkdir(TL_ROOT . '/.tx/source/' . $language);
 
-            // Create the subdirectory
-            if (!is_dir(TL_ROOT . '/.tx/source/' . $argv[2] . '/' . $module))
+            // Scan the modules folder
+            foreach ($this->scandir(TL_ROOT . '/system/modules') as $module)
             {
-                mkdir(TL_ROOT . '/.tx/source/' . $argv[2] . '/' . $module);
-            }
-
-            // Scan the source language files
-            foreach ($this->scandir(TL_ROOT . '/system/modules/' . $module . '/languages/en') as $file)
-            {
-                if (substr($file, -4) != '.php')
+                // Skip if the source language does not exist
+                if (!is_dir(TL_ROOT . '/system/modules/' . $module . '/languages/en'))
                 {
                     continue;
                 }
 
-                // The file has not been translated yet
-                if (!file_exists(TL_ROOT . '/system/modules/' . $module . '/languages/' . $argv[2] . '/' . $file))
+                // Create the subdirectory
+                if (!is_dir(TL_ROOT . '/.tx/source/' . $language . '/' . $module))
                 {
-                    continue;
+                    mkdir(TL_ROOT . '/.tx/source/' . $language . '/' . $module);
                 }
 
-                $file = basename($file, '.php');
-
-                // Read the source file
-                $english = new DOMDocument();
-                $english->preserveWhiteSpace = false;
-                $english->load(TL_ROOT . '/.tx/source/en/' . $module . '/' . $file . '.xlf');
-
-                // Prepare for XPath
-                $xpath = new DOMXPath($english);
-
-                // Create the XML document
-                $xml = new DOMDocument('1.0', 'UTF-8');
-                $xml->formatOutput = true;
-
-                $xliff = $xml->createElement('xliff');
-                $xliff->setAttribute('version', '1.1');
-                $xml->appendChild($xliff);
-
-                $xfile = $xml->createElement('file');
-                $xfile->setAttribute('datatype', 'php');
-                $xfile->setAttribute('original', 'system/modules/' . $module . '/languages/en/' . $file . '.php');
-                $xfile->setAttribute('source-language', 'en');
-                $xliff->appendChild($xfile);
-
-                $xbody = $xml->createElement('body');
-                $xfile->appendChild($xbody);
-
-                // Reset the TL_LANG array before the include
-                $GLOBALS['TL_LANG'] = array();
-                include TL_ROOT . '/system/modules/' . $module . '/languages/' . $argv[2] . '/' . $file . '.php';
-
-                // Add the labels
-                foreach ($GLOBALS['TL_LANG'] as $category=>$labels)
+                // Scan the source language files
+                foreach ($this->scandir(TL_ROOT . '/system/modules/' . $module . '/languages/en') as $file)
                 {
-                    foreach ($labels as $key=>$label)
+                    if (substr($file, -4) != '.php')
                     {
-                        if (is_array($label)) // headline and explanation
+                        continue;
+                    }
+
+                    // The file has not been translated yet
+                    if (!file_exists(TL_ROOT . '/system/modules/' . $module . '/languages/' . $language . '/' . $file))
+                    {
+                        continue;
+                    }
+
+                    $file = basename($file, '.php');
+
+                    // Read the source file
+                    $english = new DOMDocument();
+                    $english->preserveWhiteSpace = false;
+                    $english->load(TL_ROOT . '/.tx/source/en/' . $module . '/' . $file . '.xlf');
+
+                    // Prepare for XPath
+                    $xpath = new DOMXPath($english);
+
+                    // Create the XML document
+                    $xml = new DOMDocument('1.0', 'UTF-8');
+                    $xml->formatOutput = true;
+
+                    $xliff = $xml->createElement('xliff');
+                    $xliff->setAttribute('version', '1.1');
+                    $xml->appendChild($xliff);
+
+                    $xfile = $xml->createElement('file');
+                    $xfile->setAttribute('datatype', 'php');
+                    $xfile->setAttribute('original', 'system/modules/' . $module . '/languages/en/' . $file . '.php');
+                    $xfile->setAttribute('source-language', 'en');
+                    $xliff->appendChild($xfile);
+
+                    $xbody = $xml->createElement('body');
+                    $xfile->appendChild($xbody);
+
+                    // Reset the TL_LANG array before the include
+                    $GLOBALS['TL_LANG'] = array();
+                    include TL_ROOT . '/system/modules/' . $module . '/languages/' . $language . '/' . $file . '.php';
+
+                    // Add the labels
+                    foreach ($GLOBALS['TL_LANG'] as $category=>$labels)
+                    {
+                        foreach ($labels as $key=>$label)
                         {
-                            foreach ($label as $i=>$text)
+                            if (is_array($label)) // headline and explanation
                             {
-                                if (is_array($text)) // multiple explanations
+                                foreach ($label as $i=>$text)
                                 {
-                                    foreach ($text as $j=>$subtext)
+                                    if (is_array($text)) // multiple explanations
                                     {
-                                        $id = "$category.$key.$i.$j";
+                                        foreach ($text as $j=>$subtext)
+                                        {
+                                            $id = "$category.$key.$i.$j";
+
+                                            // Check whether the string exists in the source translation
+                                            if (($original = $xpath->query("//*[@id='$id']")->item(0)) !== null)
+                                            {
+                                                $trans = $xml->createElement('trans-unit');
+                                                $trans->setAttribute('id', $id);
+                                                $xbody->appendChild($trans);
+
+                                                $source = $xml->createElement('source');
+                                                $source->appendChild($xml->createTextNode($original->nodeValue));
+                                                $trans->appendChild($source);
+
+                                                $target = $xml->createElement('target');
+                                                $target->appendChild($xml->createTextNode($subtext));
+                                                $trans->appendChild($target);
+                                            }
+                                        }
+                                    }
+                                    else
+                                    {
+                                        $id = "$category.$key.$i";
 
                                         // Check whether the string exists in the source translation
                                         if (($original = $xpath->query("//*[@id='$id']")->item(0)) !== null)
@@ -430,62 +453,39 @@ class Transifex
                                             $trans->appendChild($source);
 
                                             $target = $xml->createElement('target');
-                                            $target->appendChild($xml->createTextNode($subtext));
+                                            $target->appendChild($xml->createTextNode($text));
                                             $trans->appendChild($target);
                                         }
                                     }
                                 }
-                                else
+                            }
+                            else
+                            {
+                                $id = "$category.$key";
+
+                                // Check whether the string exists in the source translation
+                                if (($original = $xpath->query("//*[@id='$id']")->item(0)) !== null)
                                 {
-                                    $id = "$category.$key.$i";
+                                    $trans = $xml->createElement('trans-unit');
+                                    $trans->setAttribute('id', $id);
+                                    $xbody->appendChild($trans);
 
-                                    // Check whether the string exists in the source translation
-                                    if (($original = $xpath->query("//*[@id='$id']")->item(0)) !== null)
-                                    {
-                                        $trans = $xml->createElement('trans-unit');
-                                        $trans->setAttribute('id', $id);
-                                        $xbody->appendChild($trans);
+                                    $source = $xml->createElement('source');
+                                    $source->appendChild($xml->createTextNode($original->nodeValue));
+                                    $trans->appendChild($source);
 
-                                        $source = $xml->createElement('source');
-                                        $source->appendChild($xml->createTextNode($original->nodeValue));
-                                        $trans->appendChild($source);
-
-                                        $target = $xml->createElement('target');
-                                        $target->appendChild($xml->createTextNode($text));
-                                        $trans->appendChild($target);
-                                    }
+                                    $target = $xml->createElement('target');
+                                    $target->appendChild($xml->createTextNode($label));
+                                    $trans->appendChild($target);
                                 }
                             }
                         }
-                        else
-                        {
-                            $id = "$category.$key";
-
-                            // Check whether the string exists in the source translation
-                            if (($original = $xpath->query("//*[@id='$id']")->item(0)) !== null)
-                            {
-                                $trans = $xml->createElement('trans-unit');
-                                $trans->setAttribute('id', $id);
-                                $xbody->appendChild($trans);
-
-                                $source = $xml->createElement('source');
-                                $source->appendChild($xml->createTextNode($original->nodeValue));
-                                $trans->appendChild($source);
-
-                                $target = $xml->createElement('target');
-                                $target->appendChild($xml->createTextNode($label));
-                                $trans->appendChild($target);
-                            }
-                        }
                     }
+
+                    // Save the XML document
+                    $xml->save(TL_ROOT . '/.tx/source/' . $language . '/' . $module . '/' . $file . '.xlf');
+                    echo "  Created .tx/source/{$language}/$module/$file.xlf\n";
                 }
-
-                // Save the XML document
-                $xml->save(TL_ROOT . '/.tx/source/' . $argv[2] . '/' . $module . '/' . $file . '.xlf');
-                echo "  Created .tx/source/{$argv[2]}/$module/$file.xlf\n";
-
-                // Push the resouce to transifex.com
-                passthru('tx push --translations --language=' . $argv[2] . ' --resource=isotope.develop-' . $module . '-' . $file);
             }
         }
     }
