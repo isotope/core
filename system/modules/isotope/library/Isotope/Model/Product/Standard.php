@@ -917,6 +917,10 @@ class Standard extends Product implements IsotopeProduct, WeightAggregate
             global $objIsotopeListPage;
 
             $objJumpTo = $objIsotopeListPage ? : $objPage;
+
+            if (null === $objJumpTo) {
+                return '';
+            }
         }
 
         $strUrl = '/' . $this->arrData['alias'] ? : $this->getProductId();
