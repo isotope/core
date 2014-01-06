@@ -60,11 +60,11 @@ class Automator extends \Controller
      */
     public function convertCurrencies($intId = 0)
     {
-        $arrColumns     = array('currencyAutomator');
+        $arrColumns     = array(Config::getTable() . '.currencyAutomator=?');
         $arrValues      = array('1');
 
         if ($intId > 0) {
-            $arrColumns[]   = 'id';
+            $arrColumns[]   = Config::getTable() . '.id=?';
             $arrValues[]    = $intId;
         }
 
