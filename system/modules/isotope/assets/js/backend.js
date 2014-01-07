@@ -305,6 +305,26 @@ var Isotope = {};
     };
 
     /**
+     * Add the order colors
+     */
+    Isotope.addOrderColors = function()
+    {
+        var style = document.createElement('style');
+
+        // Webkit hack
+        style.appendChild(document.createTextNode(''));
+
+        // Add the <style> element to the page
+        document.head.appendChild(style);
+
+        // Add rules
+        document.getElements('[data-orderstatus]').forEach(function(el) {
+            el.getParent('tr').addClass('iso_order_status_' + el.get('data-orderstatus'));
+            style.sheet.addRule('.iso_order_status_' + el.get('data-orderstatus') + ' td', 'background-color: ' + el.get('data-ordercolor') + ' !important;');
+        });
+    };
+
+    /**
      * Make parent view items sortable
      * @param object
      */
@@ -524,6 +544,7 @@ window.addEvent('domready', function()
 {
     Isotope.addInteractiveHelp();
     Isotope.makeSelectExtendable();
+    Isotope.addOrderColors();
     Isotope.MediaManager.makeSortable();
 }).addEvent('structure', function()
 {
