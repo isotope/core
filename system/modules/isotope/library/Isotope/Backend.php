@@ -438,11 +438,13 @@ class Backend extends Contao_Backend
      */
     public function loadTypeAgentHelp($strTable)
     {
-        if (!isset($GLOBALS['TL_DCA'][$strTable]['fields']['type'])) {
+        if (
+            \Environment::get('script') !== 'contao/help.php' ||
+            !isset($GLOBALS['TL_DCA'][$strTable]['fields']['type'])
+        ) {
             return;
         }
 
-        $strScript = \Environment::get('script');
         $arrField = &$GLOBALS['TL_DCA'][$strTable]['fields']['type'];
 
         // Get the field type
@@ -456,7 +458,6 @@ class Backend extends Contao_Backend
         $arrFieldComplete = $strClass::getAttributesFromDca($arrField, 'type');
 
         if (
-            $strScript != 'contao/help.php' ||
             !$arrFieldComplete ||
             !$arrFieldComplete['helpwizard'] ||
             !is_array($arrFieldComplete['options']) ||
