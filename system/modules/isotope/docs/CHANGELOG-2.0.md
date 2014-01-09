@@ -6,6 +6,7 @@ Version 2.0.2 (2014-??-??)
 
 ### Fixed
 - Automated currency converting did not work
+- Help wizard for type agents did not work (#937)
 
 Version 2.0.1 (2014-01-06)
 --------------------------

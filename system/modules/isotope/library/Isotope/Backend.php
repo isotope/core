@@ -445,11 +445,21 @@ class Backend extends Contao_Backend
         $strScript = \Environment::get('script');
         $arrField = &$GLOBALS['TL_DCA'][$strTable]['fields']['type'];
 
+        // Get the field type
+        $strClass = $GLOBALS['BE_FFL'][$arrField['inputType']];
+
+        // Abort if the class is not defined
+        if (!class_exists($strClass)) {
+            return;
+        }
+
+        $arrFieldComplete = $strClass::getAttributesFromDca($arrField, 'type');
+
         if (
             $strScript != 'contao/help.php' ||
-            !$arrField ||
-            !$arrField['eval']['helpwizard'] ||
-            !is_array($arrField['options']) ||
+            !$arrFieldComplete ||
+            !$arrFieldComplete['helpwizard'] ||
+            !is_array($arrFieldComplete['options']) ||
             isset($GLOBALS['TL_LANG']['XPL']['type'])
         ) {
             return;
@@ -457,8 +467,8 @@ class Backend extends Contao_Backend
 
         // try to load a type agent model help description
         $arrField['explanation'] = 'type';
-        foreach (array_keys($arrField['options']) as $strKey) {
-            $arrLabel = $GLOBALS['TL_LANG']['MODEL'][$strTable . '.' . $strKey];
+        foreach ($arrFieldComplete['options'] as $arrOption) {
+            $arrLabel = $GLOBALS['TL_LANG']['MODEL'][$strTable . '.' . $arrOption['value']];
             if ($arrLabel) {
                 $GLOBALS['TL_LANG']['XPL']['type'][] = $arrLabel;
             }
