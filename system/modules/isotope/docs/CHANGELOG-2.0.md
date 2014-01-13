@@ -11,6 +11,7 @@ Version 2.0.2 (2014-??-??)
 - Automated currency converting did not work
 - Help wizard for type agents did not work (#937)
 - Multi-Edit view in variants did not show correct columns
+- Advanced filters were applied to product variant view (#931)
 
 Version 2.0.1 (2014-01-06)
 --------------------------
