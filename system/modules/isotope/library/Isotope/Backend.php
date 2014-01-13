@@ -283,27 +283,27 @@ class Backend extends Contao_Backend
         switch ($action) {
             // Move the product
             case 'moveProduct':
-                $this->Session->set('iso_products_gid', intval(\Input::post('value')));
+                \Session::getInstance()->set('iso_products_gid', intval(\Input::post('value')));
                 \Controller::redirect(html_entity_decode(\Input::post('redirect')));
                 break;
 
             // Move multiple products
             case 'moveProducts':
-                $this->Session->set('iso_products_gid', intval(\Input::post('value')));
+                \Session::getInstance()->set('iso_products_gid', intval(\Input::post('value')));
                 exit;
                 break;
 
             // Filter the groups
             case 'filterGroups':
-                $this->Session->set('iso_products_gid', intval(\Input::post('value')));
+                \Session::getInstance()->set('iso_products_gid', intval(\Input::post('value')));
                 $this->reload();
                 break;
 
             // Filter the pages
             case 'filterPages':
-                $filter = $this->Session->get('filter');
+                $filter = \Session::getInstance()->get('filter');
                 $filter['tl_iso_product']['iso_page'] = (int) \Input::post('value');
-                $this->Session->set('filter', $filter);
+                \Session::getInstance()->set('filter', $filter);
                 $this->reload();
                 break;
 
