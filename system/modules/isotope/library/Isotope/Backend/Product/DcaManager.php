@@ -339,7 +339,7 @@ class DcaManager extends \Backend
      */
     public function changeVariantColumns()
     {
-        if (\Input::get('act') != '' || \Input::get('id') == '' || ($objProduct = Product::findByPk(\Input::get('id'))) === null) {
+        if ((\Input::get('act') != '' && \Input::get('act') != 'select') || \Input::get('id') == '' || ($objProduct = Product::findByPk(\Input::get('id'))) === null) {
             return;
         }
 
