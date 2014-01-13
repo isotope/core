@@ -4,6 +4,9 @@ Isotope eCommerce Changelog
 Version 2.0.2 (2014-??-??)
 --------------------------
 
+### Improved
+- Filter and sorting fields were available even if disabled in all product types
+
 ### Fixed
 - Automated currency converting did not work
 - Help wizard for type agents did not work (#937)
