@@ -354,7 +354,7 @@ class Filter implements \ArrayAccess
      * Get filter operator suitable for SQL query
      * @return string
      */
-    public static function getOperatorForSQL()
+    public function getOperatorForSQL()
     {
         if ($this->arrConfig['operator'] == '') {
             throw new \BadMethodCallException('Filter operator is not yet configured');
