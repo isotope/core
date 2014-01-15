@@ -13,6 +13,7 @@ Version 2.0.2 (2014-??-??)
 - Multi-Edit view in variants did not show correct columns
 - Advanced filters were applied to product variant view (#931)
 - Missing import statement in cumulative filter (#943)
+- Missing request token on "saveN"-buttons
 
 Version 2.0.1 (2014-01-06)
 --------------------------

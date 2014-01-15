@@ -850,7 +850,7 @@ window.addEvent(\'domready\', function() {
                     $strUrl .= $this->ptable != '' ? '&amp;act=create&amp;mode=2&amp;pid=' . CURRENT_ID : '&amp;act=create';
                 }
 
-                \Controller::redirect($strUrl);
+                \Controller::redirect($strUrl . '&amp;rt=' . REQUEST_TOKEN);
             }
 
             \Controller::reload();
