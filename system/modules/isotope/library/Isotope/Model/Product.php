@@ -347,7 +347,13 @@ abstract class Product extends TypeAgent
 
                         // Both SORT_STRING and SORT_REGULAR are case sensitive, strings starting with a capital letter will come before strings starting with a lowercase letter.
                         // To perform a case insensitive search, force the sorting order to be determined by a lowercase copy of the original value.
-                        $arrData[$strField][$objProduct->id] = strtolower(str_replace('"', '', $objProduct->$strField));
+
+                        // Temporary fix for price attribute (see #945)
+                        if ($strField == 'price') {
+                            $arrData[$strField][$objProduct->id] = ($objProduct->getPrice() !==  null) ? $objProduct->getPrice()->getAmount() : 0;
+                        } else {
+                            $arrData[$strField][$objProduct->id] = strtolower(str_replace('"', '', $objProduct->$strField));
+                        }
                     }
 
                     $arrParam[] = &$arrData[$strField];
