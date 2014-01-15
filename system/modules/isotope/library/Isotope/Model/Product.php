@@ -313,7 +313,7 @@ abstract class Product extends TypeAgent
 
         if (!empty($arrFilters) || !empty($arrSorting)) {
 
-            $arrProducts = $objProducts->getIterator()->getArrayCopy();
+            $arrProducts = $objProducts->getModels();
 
             if (!empty($arrFilters)) {
                 $arrProducts = array_filter($arrProducts, function ($objProduct) use ($arrFilters) {
