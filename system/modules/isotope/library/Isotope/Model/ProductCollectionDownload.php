@@ -151,7 +151,7 @@ class ProductCollectionDownload extends \Model
     {
         $arrDownloads = array();
         $t            = Download::getTable();
-        $time         = time();
+        $time         = ($objCollection->locked ?: ($objCollection->tstamp ?: time()));
 
         foreach ($objCollection->getItems() as $objItem) {
             if ($objItem->hasProduct()) {
@@ -169,7 +169,7 @@ class ProductCollectionDownload extends \Model
                             $objItemDownload->downloads_remaining = ($objDownloads->downloads_allowed * $objItem->quantity);
                         }
 
-                        $expires = $objDownloads->current()->getExpirationTimestamp();
+                        $expires = $objDownloads->current()->getExpirationTimestamp($time);
                         if (null !== $expires) {
                             $objItemDownload->expires = $expires;
                         }
