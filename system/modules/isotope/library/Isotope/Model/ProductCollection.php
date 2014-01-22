@@ -112,6 +112,7 @@ abstract class ProductCollection extends TypeAgent
     public function updateDatabase($blnCreate=true)
     {
         if (!$this->isLocked()
+            && !$this->blnPreventSaving
             && (\Model\Registry::getInstance()->isRegistered($this) || $blnCreate)
         ) {
 
@@ -428,6 +429,11 @@ abstract class ProductCollection extends TypeAgent
      */
     public function save()
     {
+        // The instance cannot be saved
+        if ($this->blnPreventSaving) {
+            throw new \LogicException('The model instance has been detached and cannot be saved');
+        }
+
         // !HOOK: additional functionality when saving a collection
         if (isset($GLOBALS['ISO_HOOKS']['saveCollection']) && is_array($GLOBALS['ISO_HOOKS']['saveCollection'])) {
             foreach ($GLOBALS['ISO_HOOKS']['saveCollection'] as $callback) {
