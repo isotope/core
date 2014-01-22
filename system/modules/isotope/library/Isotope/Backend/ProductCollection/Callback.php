@@ -36,13 +36,6 @@ class Callback extends \Backend
             return $args;
         }
 
-        $strColor = $objOrder->getRelated('order_status')->color;
-
-        // Add the status color if any
-        if ($strColor != '') {
-            $args[0] = '<span data-orderstatus="' . $objOrder->getRelated('order_status')->id . '" data-ordercolor="#' . $strColor . '"></span>' . $args[0];
-        }
-
         // Override system to correctly format currencies etc
         Isotope::setConfig($objOrder->getRelated('config_id'));
 
@@ -54,7 +47,12 @@ class Callback extends \Backend
         }
 
         $args[3] = Isotope::formatPriceWithCurrency($row['grandTotal']);
-        $args[4] = $objOrder->getStatusLabel();
+
+        if (null !== $objOrder->getRelated('order_status')) {
+            $args[4] = '<span style="' . $objOrder->getRelated('order_status')->getColorStyles() . '">' . $objOrder->getStatusLabel() . '</span>';
+        } else {
+            $args[4] = '<span>' . $objOrder->getStatusLabel() . '</span>';
+        }
 
         return $args;
     }
