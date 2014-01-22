@@ -20,6 +20,8 @@ Version 2.0.2 (2014-??-??)
 - Old collections were not deleted
 - New order messages caused error on the home screen for non-admins (#955)
 - Customer defined options were only shown for products with variants (#936)
+- Product list sorting was bypassed by the cache (#952)
+
 
 Version 2.0.1 (2014-01-06)
 --------------------------

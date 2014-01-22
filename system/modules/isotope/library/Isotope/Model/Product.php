@@ -120,7 +120,14 @@ abstract class Product extends TypeAgent
      */
     public static function findPublishedByPk($intId, array $arrOptions = array())
     {
-        return static::findPublishedBy(static::$strPk, (int) $intId, array('return'=>'Model'));
+        $arrOptions = array_merge(
+            array(
+                'return'    => 'Model'
+            ),
+            $arrOptions
+        );
+
+        return static::findPublishedBy(static::$strPk, (int) $intId, $arrOptions);
     }
 
     /**
@@ -136,7 +143,15 @@ abstract class Product extends TypeAgent
         $arrColumns = array("($t.id=? OR $t.alias=?)");
         $arrValues  = array((is_numeric($varId) ? $varId : 0), $varId);
 
-        return static::findPublishedBy($arrColumns, $arrValues, array('limit'=>1, 'return'=>'Model'));
+        $arrOptions = array_merge(
+            array(
+                'limit'     => 1,
+                'return'    => 'Model'
+            ),
+            $arrOptions
+        );
+
+        return static::findPublishedBy($arrColumns, $arrValues, $arrOptions);
     }
 
     /**
@@ -151,7 +166,7 @@ abstract class Product extends TypeAgent
             return null;
         }
 
-        return static::findPublishedBy(array(static::$strTable . '.id IN (' . implode(',', array_map('intval', $arrIds)) . ')'), null);
+        return static::findPublishedBy(array(static::$strTable . '.id IN (' . implode(',', array_map('intval', $arrIds)) . ')'), null, $arrOptions);
     }
 
     /**
@@ -162,7 +177,7 @@ abstract class Product extends TypeAgent
      */
     public static function findPublishedByPid($intPid, array $arrOptions = array())
     {
-        return static::findPublishedBy('pid', (int) $intPid);
+        return static::findPublishedBy('pid', (int) $intPid, $arrOptions);
     }
 
     /**
@@ -173,7 +188,7 @@ abstract class Product extends TypeAgent
      */
     public static function findPublishedByCategories(array $arrCategories, array $arrOptions = array())
     {
-        return static::findPublishedBy(array("c.page_id IN (" . implode(',', array_map('intval', $arrCategories)) . ")"), null);
+        return static::findPublishedBy(array("c.page_id IN (" . implode(',', array_map('intval', $arrCategories)) . ")"), null, $arrOptions);
     }
 
     /**
