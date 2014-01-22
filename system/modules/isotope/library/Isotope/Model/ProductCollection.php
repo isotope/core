@@ -110,7 +110,7 @@ abstract class ProductCollection extends TypeAgent
      */
     public function updateDatabase()
     {
-        if (!$this->isLocked()) {
+        if (\Model\Registry::getInstance()->isRegistered($this) && !$this->isLocked()) {
 
             foreach ($this->getItems() as $objItem) {
                 if (!$objItem->hasProduct() || null === $objItem->getProduct()->getPrice($this)) {

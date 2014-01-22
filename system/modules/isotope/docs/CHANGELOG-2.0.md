@@ -17,6 +17,7 @@ Version 2.0.2 (2014-??-??)
 - Cumulative filter template was not found (#944)
 - Sorting on price attribute did not work (#945)
 - Download expiration was calculated incorrectly (#932)
+- Old collections were not deleted
 
 Version 2.0.1 (2014-01-06)
 --------------------------
