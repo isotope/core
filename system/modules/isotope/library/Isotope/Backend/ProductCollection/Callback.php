@@ -39,8 +39,7 @@ class Callback extends \Backend
         $strColor = $objOrder->getRelated('order_status')->color;
 
         // Add the status color if any
-        if ($strColor != '')
-        {
+        if ($strColor != '') {
             $args[0] = '<span data-orderstatus="' . $objOrder->getRelated('order_status')->id . '" data-ordercolor="#' . $strColor . '"></span>' . $args[0];
         }
 
