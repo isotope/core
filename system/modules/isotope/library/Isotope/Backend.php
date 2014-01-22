@@ -247,7 +247,7 @@ class Backend extends Contao_Backend
                 return '';
             }
 
-            $strConfig = "AND o.config_id IN (" . implode(',', $arrConfigs) . ")";
+            $strConfig = "AND c.config_id IN (" . implode(',', $arrConfigs) . ")";
         }
 
         $arrMessages = array();

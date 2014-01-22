@@ -18,6 +18,7 @@ Version 2.0.2 (2014-??-??)
 - Sorting on price attribute did not work (#945)
 - Download expiration was calculated incorrectly (#932)
 - Old collections were not deleted
+- New order messages caused error on the home screen for non-admins (#955)
 
 Version 2.0.1 (2014-01-06)
 --------------------------
