@@ -154,7 +154,7 @@ $GLOBALS['TL_DCA']['tl_iso_orderstatus'] = array
             'label'                 => &$GLOBALS['TL_LANG']['tl_iso_orderstatus']['color'],
             'exclude'               => true,
             'inputType'             => 'text',
-            'eval'                  => array('maxlength'=>6, 'colorpicker'=>true, 'isHexColor'=>true, 'decodeEntities'=>true, 'tl_class'=>'w50 wizard'),
+            'eval'                  => array('minlength'=>6, 'maxlength'=>6, 'colorpicker'=>true, 'isHexColor'=>true, 'decodeEntities'=>true, 'tl_class'=>'w50 wizard'),
             'sql'                   => "varchar(6) NOT NULL default ''"
         ),
         'paid' => array
