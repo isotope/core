@@ -263,6 +263,7 @@ table.multicolumnwizard .operations {
 .tl_listing_container .col_order_status span {
     display: block;
     padding: 2px 5px 3px;
+    border-radius: 2px;
 }
 
 .iso_operations {
