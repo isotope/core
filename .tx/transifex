@@ -548,7 +548,12 @@ class Transifex
         $this->setup(true);
 
         // Pull translations from transifex.com
-        passthru('tx pull --all --skip');
+        $languages = $this->languages();
+        if (empty($languages)) {
+            passthru('tx pull --skip --all');
+        } else {
+            passthru('tx pull --skip --language=' . implode(',', $languages));
+        }
 
         $this->import();
     }
