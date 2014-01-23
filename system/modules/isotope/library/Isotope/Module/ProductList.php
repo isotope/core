@@ -157,7 +157,7 @@ class ProductList extends Module
                 $end = microtime(true) - $start;
                 $this->blnCacheProducts = $end > 1 ? true : false;
 
-                    $arrCacheMessage = $this->iso_productcache;
+                $arrCacheMessage = $this->iso_productcache;
                 if ($blnCacheMessage != $this->blnCacheProducts) {
                     $arrCacheMessage[$intPage][(int) \Input::get('isorc')] = $this->blnCacheProducts;
                     \Database::getInstance()->prepare("UPDATE tl_module SET iso_productcache=? WHERE id=?")->execute(serialize($arrCacheMessage), $this->id);

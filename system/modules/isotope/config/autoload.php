@@ -61,6 +61,7 @@ TemplateLoader::addFiles(array
     'mod_iso_cart'                      => 'system/modules/isotope/templates/modules',
     'mod_iso_checkout'                  => 'system/modules/isotope/templates/modules',
     'mod_iso_configswitcher'            => 'system/modules/isotope/templates/modules',
+    'mod_iso_cumulativefilter'          => 'system/modules/isotope/templates/modules',
     'mod_iso_orderdetails'              => 'system/modules/isotope/templates/modules',
     'mod_iso_orderhistory'              => 'system/modules/isotope/templates/modules',
     'mod_iso_messages'                  => 'system/modules/isotope/templates/modules',

@@ -34,6 +34,7 @@ $GLOBALS['TL_LANG']['tl_iso_config']['phone'][1] = 'Per cortesia inserisca il nu
 $GLOBALS['TL_LANG']['tl_iso_config']['email'][1] = 'Per cortesia inserisca un indirizzo di mail valido.';
 $GLOBALS['TL_LANG']['tl_iso_config']['currency'][0] = 'Valuta';
 $GLOBALS['TL_LANG']['tl_iso_config']['orderstatus_new'][0] = 'Stato nuovi ordini';
+$GLOBALS['TL_LANG']['tl_iso_config']['cartMinSubtotal'][0] = 'Subtotale minimo ';
 $GLOBALS['TL_LANG']['tl_iso_config']['iwName'][0] = 'Nome';
 $GLOBALS['TL_LANG']['tl_iso_config']['name_legend'] = 'Nome';
 $GLOBALS['TL_LANG']['tl_iso_config']['config_legend'] = 'Configurazione';

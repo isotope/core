@@ -45,4 +45,5 @@ $GLOBALS['TL_LANG']['MSC']['a_to_z'] = 'الف تا ی';
 $GLOBALS['TL_LANG']['MSC']['z_to_a'] = 'ی تا الف';
 $GLOBALS['TL_LANG']['MSC']['checkout_shipping'] = 'حمل';
 $GLOBALS['TL_LANG']['MSC']['checkout_payment'] = 'پرداخت';
+$GLOBALS['TL_LANG']['CTE']['isotope'] = 'Isotope eCommerce';
 $GLOBALS['TL_LANG']['CCT']['delta'] = 'Delta';

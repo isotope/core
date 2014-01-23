@@ -226,21 +226,9 @@ class Transifex
      */
     protected function import()
     {
-        global $argv;
-        $languages = array();
+        $languages = $this->languages();
 
-        // Determine which languages to import
-        if (isset($argv[3]) || (isset($argv[2]) && !in_array($argv[2], array('develop', 'master'))))
-        {
-            foreach (explode(',', ($argv[3] ?: $argv[2])) as $language)
-            {
-                if (is_dir(TL_ROOT . '/.tx/source/' . $language))
-                {
-                    $languages[] = $language;
-                }
-            }
-        }
-        else
+        if (empty($languages))
         {
             foreach ($this->scandir(TL_ROOT . '/.tx/source') as $language)
             {
@@ -255,6 +243,11 @@ class Transifex
         // Process the selected languages
         foreach (array_unique($languages) as $language)
         {
+            if (!is_dir(TL_ROOT . '/.tx/source/' . $language)) {
+                echo "  Source files for \"$language\" not found\n";
+                continue;
+            }
+
             foreach ($this->scandir(TL_ROOT . '/.tx/source/' . $language) as $module)
             {
                 // Create the language folder
@@ -359,15 +352,10 @@ class Transifex
      */
     protected function export()
     {
-        global $argv;
-        $languages = array();
+        $languages = $this->languages();
 
         // Determine which languages to export
-        if (isset($argv[3]) || (isset($argv[2]) && !in_array($argv[2], array('develop', 'master'))))
-        {
-            $languages = explode(',', ($argv[3] ?: $argv[2]));
-        }
-        else
+        if (empty($languages))
         {
             foreach ($this->scandir(TL_ROOT . '/system/modules') as $module)
             {
@@ -560,7 +548,12 @@ class Transifex
         $this->setup(true);
 
         // Pull translations from transifex.com
-        passthru('tx pull --all --skip');
+        $languages = $this->languages();
+        if (empty($languages)) {
+            passthru('tx pull --skip --all');
+        } else {
+            passthru('tx pull --skip --language=' . implode(',', $languages));
+        }
 
         $this->import();
     }
@@ -572,6 +565,24 @@ class Transifex
     {
         $this->push();
         $this->pull();
+    }
+
+    /**
+     * Get languages from console parameters
+     * @return  array
+     */
+    protected function languages()
+    {
+        global $argv;
+        $languages = array();
+
+        // Determine which languages to export
+        if (isset($argv[3]) || (isset($argv[2]) && !in_array($argv[2], array('develop', 'master'))))
+        {
+            $languages = explode(',', ($argv[3] ?: $argv[2]));
+        }
+
+        return $languages;
     }
 
 

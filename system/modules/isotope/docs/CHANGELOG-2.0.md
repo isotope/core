@@ -1,11 +1,27 @@
 Isotope eCommerce Changelog
 ===========================
 
-Version 2.0.2 (2014-??-??)
+Version 2.0.2 (2014-01-23)
 --------------------------
+
+### Improved
+- Filter and sorting fields were available even if disabled in all product types
 
 ### Fixed
 - Automated currency converting did not work
+- Help wizard for type agents did not work (#937)
+- Multi-Edit view in variants did not show correct columns
+- Advanced filters were applied to product variant view (#931)
+- Missing import statement in cumulative filter (#943)
+- Missing request token on "saveN"-buttons
+- Cumulative filter template was not found (#944)
+- Sorting on price attribute did not work (#945)
+- Download expiration was calculated incorrectly (#932)
+- Old collections were not deleted
+- New order messages caused error on the home screen for non-admins (#955)
+- Customer defined options were only shown for products with variants (#936)
+- Product list sorting was bypassed by the cache (#952)
+
 
 Version 2.0.1 (2014-01-06)
 --------------------------

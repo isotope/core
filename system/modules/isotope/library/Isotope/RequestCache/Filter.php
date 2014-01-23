@@ -295,48 +295,13 @@ class Filter implements \ArrayAccess
      */
     public function sqlWhere()
     {
-        if ($this->arrConfig['operator'] == '') {
-            throw new \BadMethodCallException('Filter operator is not yet configured');
-        }
-
         if ($this->isMultilingualAttribute()) {
             $strWhere = 'IFNULL(translation.' . $this->arrConfig['attribute'] . ', ' . Product::getTable() . '.' . $this->arrConfig['attribute'] . ')';
         } else {
             $strWhere = Product::getTable() . '.' . $this->arrConfig['attribute'];
         }
 
-        switch ($this->arrConfig['operator']) {
-            case 'like':
-                $strWhere .= ' LIKE ?';
-                break;
-
-            case 'gt':
-                $strWhere .= ' > ?';
-                break;
-
-            case 'lt':
-                $strWhere .= ' < ?';
-                break;
-
-            case 'gte':
-                $strWhere .= ' >= ?';
-                break;
-
-            case 'lte':
-                $strWhere .= ' <= ?';
-                break;
-
-            case 'neq':
-                $strWhere .= ' != ?';
-                break;
-
-            case 'eq':
-                $strWhere .= ' = ?';
-                break;
-
-            default:
-                throw new \UnexpectedValueException('Unknown filter operator "' . $this->arrConfig['operator'] . '"');
-        }
+        $strWhere .= ' ' . $this->getOperatorForSQL() . ' ?';
 
         return $strWhere;
     }
@@ -354,7 +319,7 @@ class Filter implements \ArrayAccess
      * Get filter operator suitable for SQL query
      * @return string
      */
-    public static function getOperatorForSQL()
+    public function getOperatorForSQL()
     {
         if ($this->arrConfig['operator'] == '') {
             throw new \BadMethodCallException('Filter operator is not yet configured');

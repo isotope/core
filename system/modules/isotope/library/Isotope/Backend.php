@@ -247,7 +247,7 @@ class Backend extends Contao_Backend
                 return '';
             }
 
-            $strConfig = "AND o.config_id IN (" . implode(',', $arrConfigs) . ")";
+            $strConfig = "AND c.config_id IN (" . implode(',', $arrConfigs) . ")";
         }
 
         $arrMessages = array();
@@ -283,27 +283,27 @@ class Backend extends Contao_Backend
         switch ($action) {
             // Move the product
             case 'moveProduct':
-                $this->Session->set('iso_products_gid', intval(\Input::post('value')));
+                \Session::getInstance()->set('iso_products_gid', intval(\Input::post('value')));
                 \Controller::redirect(html_entity_decode(\Input::post('redirect')));
                 break;
 
             // Move multiple products
             case 'moveProducts':
-                $this->Session->set('iso_products_gid', intval(\Input::post('value')));
+                \Session::getInstance()->set('iso_products_gid', intval(\Input::post('value')));
                 exit;
                 break;
 
             // Filter the groups
             case 'filterGroups':
-                $this->Session->set('iso_products_gid', intval(\Input::post('value')));
+                \Session::getInstance()->set('iso_products_gid', intval(\Input::post('value')));
                 $this->reload();
                 break;
 
             // Filter the pages
             case 'filterPages':
-                $filter = $this->Session->get('filter');
+                $filter = \Session::getInstance()->get('filter');
                 $filter['tl_iso_product']['iso_page'] = (int) \Input::post('value');
-                $this->Session->set('filter', $filter);
+                \Session::getInstance()->set('filter', $filter);
                 $this->reload();
                 break;
 
@@ -438,18 +438,29 @@ class Backend extends Contao_Backend
      */
     public function loadTypeAgentHelp($strTable)
     {
-        if (!isset($GLOBALS['TL_DCA'][$strTable]['fields']['type'])) {
+        if (
+            \Environment::get('script') !== 'contao/help.php' ||
+            !isset($GLOBALS['TL_DCA'][$strTable]['fields']['type'])
+        ) {
             return;
         }
 
-        $strScript = \Environment::get('script');
         $arrField = &$GLOBALS['TL_DCA'][$strTable]['fields']['type'];
 
+        // Get the field type
+        $strClass = $GLOBALS['BE_FFL'][$arrField['inputType']];
+
+        // Abort if the class is not defined
+        if (!class_exists($strClass)) {
+            return;
+        }
+
+        $arrFieldComplete = $strClass::getAttributesFromDca($arrField, 'type');
+
         if (
-            $strScript != 'contao/help.php' ||
-            !$arrField ||
-            !$arrField['eval']['helpwizard'] ||
-            !is_array($arrField['options']) ||
+            !$arrFieldComplete ||
+            !$arrFieldComplete['helpwizard'] ||
+            !is_array($arrFieldComplete['options']) ||
             isset($GLOBALS['TL_LANG']['XPL']['type'])
         ) {
             return;
@@ -457,8 +468,8 @@ class Backend extends Contao_Backend
 
         // try to load a type agent model help description
         $arrField['explanation'] = 'type';
-        foreach (array_keys($arrField['options']) as $strKey) {
-            $arrLabel = $GLOBALS['TL_LANG']['MODEL'][$strTable . '.' . $strKey];
+        foreach ($arrFieldComplete['options'] as $arrOption) {
+            $arrLabel = $GLOBALS['TL_LANG']['MODEL'][$strTable . '.' . $arrOption['value']];
             if ($arrLabel) {
                 $GLOBALS['TL_LANG']['XPL']['type'][] = $arrLabel;
             }

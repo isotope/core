@@ -126,6 +126,7 @@ class DcaManager extends \Backend
         $blnAdvancedPrices = false;
         $blnShowSku        = false;
         $blnShowPrice      = false;
+        $arrAttributes     = array();
 
         if (($objProductTypes = ProductType::findAllUsed()) !== null) {
             foreach ($objProductTypes as $objType) {
@@ -149,6 +150,8 @@ class DcaManager extends \Backend
                 if (in_array('price', $objType->getAttributes())) {
                     $blnShowPrice = true;
                 }
+
+                $arrAttributes = array_merge($arrAttributes, $objType->getAttributes());
             }
         }
 
@@ -186,6 +189,12 @@ class DcaManager extends \Backend
         // Disable related categories if none are defined
         if (RelatedCategory::countAll() == 0) {
             unset($GLOBALS['TL_DCA'][Product::getTable()]['list']['operations']['related']);
+        }
+
+        foreach (array_diff(array_keys($GLOBALS['TL_DCA'][Product::getTable()]['fields']), array_unique($arrAttributes)) as $field) {
+            $GLOBALS['TL_DCA'][Product::getTable()]['fields'][$field]['filter'] = false;
+            $GLOBALS['TL_DCA'][Product::getTable()]['fields'][$field]['sorting'] = false;
+            $GLOBALS['TL_DCA'][Product::getTable()]['fields'][$field]['search'] = false;
         }
     }
 
@@ -339,12 +348,14 @@ class DcaManager extends \Backend
      */
     public function changeVariantColumns()
     {
-        if (\Input::get('act') != '' || \Input::get('id') == '' || ($objProduct = Product::findByPk(\Input::get('id'))) === null) {
+        if ((\Input::get('act') != '' && \Input::get('act') != 'select') || \Input::get('id') == '' || ($objProduct = Product::findByPk(\Input::get('id'))) === null) {
             return;
         }
 
-        $GLOBALS['TL_DCA'][$objProduct->getTable()]['list']['sorting']['fields'] = array('id');
-        $GLOBALS['TL_DCA']['tl_iso_product']['fields']['alias']['sorting']       = false;
+
+        $GLOBALS['TL_DCA'][$objProduct->getTable()]['list']['sorting']['mode']      = 4;
+        $GLOBALS['TL_DCA'][$objProduct->getTable()]['list']['sorting']['fields']    = array('id');
+        $GLOBALS['TL_DCA'][$objProduct->getTable()]['fields']['alias']['sorting']   = false;
 
         $arrFields         = array();
         $arrVariantFields  = $objProduct->getRelated('type')->getVariantAttributes();
@@ -381,6 +392,10 @@ class DcaManager extends \Backend
         // Make all column fields sortable
         foreach ($GLOBALS['TL_DCA'][$objProduct->getTable()]['fields'] as $name => $arrField) {
             $GLOBALS['TL_DCA']['tl_iso_product']['fields'][$name]['sorting'] = ($name != 'price' && $name != 'variantFields' && in_array($name, $arrFields));
+
+            $objAttribute = $GLOBALS['TL_DCA']['tl_iso_product']['attributes'][$name];
+            $GLOBALS['TL_DCA']['tl_iso_product']['fields'][$name]['filter'] = $objAttribute->be_filter ? in_array($name, $arrVariantFields) : false;
+            $GLOBALS['TL_DCA']['tl_iso_product']['fields'][$name]['search'] = $objAttribute->be_search ? in_array($name, $arrVariantFields) : false;
         }
     }
 

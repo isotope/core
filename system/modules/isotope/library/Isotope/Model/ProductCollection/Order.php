@@ -163,17 +163,17 @@ class Order extends ProductCollection implements IsotopeProductCollection
 
         $this->createPrivateAddresses();
 
-        // Add downloads from products to the collection
-        $arrDownloads = ProductCollectionDownload::createForProductsInCollection($this);
-        foreach ($arrDownloads as $objDownload) {
-            $objDownload->save();
-        }
-
         // Finish and lock the order (do this now, because otherwise surcharges etc. will not be loaded form the database)
         $this->checkout_complete = true;
         $this->generateDocumentNumber($this->getRelated('config_id')->orderPrefix, (int) $this->getRelated('config_id')->orderDigits);
         $this->lock();
         \System::log('New order ID ' . $this->id . ' has been placed', __METHOD__, TL_ACCESS);
+
+        // Add downloads from products to the collection
+        $arrDownloads = ProductCollectionDownload::createForProductsInCollection($this);
+        foreach ($arrDownloads as $objDownload) {
+            $objDownload->save();
+        }
 
         // Delete cart after migrating to order
         if (($objCart = Cart::findByPk($this->source_collection_id)) !== null) {

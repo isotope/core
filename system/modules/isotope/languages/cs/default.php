@@ -132,6 +132,7 @@ $GLOBALS['TL_LANG']['MSC']['timePeriod']['days'] = 'Dny';
 $GLOBALS['TL_LANG']['MSC']['timePeriod']['weeks'] = 'Týdny';
 $GLOBALS['TL_LANG']['MSC']['timePeriod']['months'] = 'Měsíce';
 $GLOBALS['TL_LANG']['MSC']['timePeriod']['years'] = 'Roky';
+$GLOBALS['TL_LANG']['CTE']['isotope'] = 'Isotope eCommerce';
 $GLOBALS['TL_LANG']['CCT']['mc'] = 'MasterCard';
 $GLOBALS['TL_LANG']['CCT']['visa'] = 'Visa';
 $GLOBALS['TL_LANG']['CCT']['amex'] = 'AmericanExpress';

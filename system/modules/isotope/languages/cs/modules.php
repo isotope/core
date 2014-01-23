@@ -14,4 +14,6 @@
  * @license http://www.gnu.org/licenses/lgpl-3.0.html
  */
 
+$GLOBALS['TL_LANG']['MOD']['isotope'] = 'Isotope eCommerce';
+$GLOBALS['TL_LANG']['FMD']['isotope'] = 'Isotope eCommerce';
 $GLOBALS['TL_LANG']['FMD']['iso_cart'][0] = 'Nákupní košík';
