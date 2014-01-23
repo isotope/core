@@ -47,7 +47,12 @@ class Callback extends \Backend
         }
 
         $args[3] = Isotope::formatPriceWithCurrency($row['grandTotal']);
-        $args[4] = $objOrder->getStatusLabel();
+
+        if (null !== $objOrder->getRelated('order_status')) {
+            $args[4] = '<span style="' . $objOrder->getRelated('order_status')->getColorStyles() . '">' . $objOrder->getStatusLabel() . '</span>';
+        } else {
+            $args[4] = '<span>' . $objOrder->getStatusLabel() . '</span>';
+        }
 
         return $args;
     }
