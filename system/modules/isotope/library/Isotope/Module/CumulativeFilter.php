@@ -13,6 +13,7 @@
 namespace Isotope\Module;
 
 use Haste\Generator\RowClass;
+use Isotope\Isotope;
 use Isotope\RequestCache\Filter;
 
 

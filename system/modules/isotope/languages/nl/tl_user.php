@@ -44,5 +44,5 @@ $GLOBALS['TL_LANG']['tl_user']['iso_groups'][0] = 'Toegestane productgroepen';
 $GLOBALS['TL_LANG']['tl_user']['iso_groups'][1] = 'Beperk toegang tot productgroepen voor deze gebruikersgroep. Wordt geërfd.';
 $GLOBALS['TL_LANG']['tl_user']['iso_groupp'][0] = 'Productgroep permissies';
 $GLOBALS['TL_LANG']['tl_user']['iso_groupp'][1] = 'Hier kunt u permissies voor productgroepen instellen.';
-$GLOBALS['TL_LANG']['tl_user']['isotope_legend'] = 'Isotope webwinkel';
+$GLOBALS['TL_LANG']['tl_user']['isotope_legend'] = 'Isotope eCommerce';
 $GLOBALS['TL_LANG']['MSC']['rootPaste'] = 'Toegang tot startpunt';

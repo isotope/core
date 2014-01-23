@@ -17,6 +17,7 @@
 $GLOBALS['TL_LANG']['MSC']['editLanguage'] = 'ویرایش';
 $GLOBALS['TL_LANG']['MSC']['deleteLanguage'] = 'حذف';
 $GLOBALS['TL_LANG']['MSC']['defaultLanguage'] = 'زبان جانشین';
+$GLOBALS['TL_LANG']['MSC']['undefinedLanguage'] = 'تعریف نشده';
 $GLOBALS['TL_LANG']['MSC']['filterByGroups'] = 'گروه‌ها';
 $GLOBALS['TL_LANG']['MSC']['filterByPages'] = 'صفحه‌ها';
 $GLOBALS['TL_LANG']['MSC']['quantity'] = 'تعداد';
@@ -42,3 +43,7 @@ $GLOBALS['TL_LANG']['MSC']['low_to_high'] = 'کم به زیاد';
 $GLOBALS['TL_LANG']['MSC']['high_to_low'] = 'زیاد به کم';
 $GLOBALS['TL_LANG']['MSC']['a_to_z'] = 'الف تا ی';
 $GLOBALS['TL_LANG']['MSC']['z_to_a'] = 'ی تا الف';
+$GLOBALS['TL_LANG']['MSC']['checkout_shipping'] = 'حمل';
+$GLOBALS['TL_LANG']['MSC']['checkout_payment'] = 'پرداخت';
+$GLOBALS['TL_LANG']['CTE']['isotope'] = 'Isotope eCommerce';
+$GLOBALS['TL_LANG']['CCT']['delta'] = 'Delta';

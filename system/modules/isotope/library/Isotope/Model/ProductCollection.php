@@ -101,16 +101,20 @@ abstract class ProductCollection extends TypeAgent
 
         // Do not use __destruct, because Database object might be destructed first (see http://github.com/contao/core/issues/2236)
         if (TL_MODE == 'FE') {
-            register_shutdown_function(array($this, 'updateDatabase'));
+            register_shutdown_function(array($this, 'updateDatabase'), false);
         }
     }
 
     /**
      * Shutdown function to update prices of items and collection
+     * @param   boolean If true create Model even if not in registry or not saved at all
      */
-    public function updateDatabase()
+    public function updateDatabase($blnCreate=true)
     {
-        if (!$this->isLocked()) {
+        if (!$this->isLocked()
+            && !$this->blnPreventSaving
+            && (\Model\Registry::getInstance()->isRegistered($this) || $blnCreate)
+        ) {
 
             foreach ($this->getItems() as $objItem) {
                 if (!$objItem->hasProduct() || null === $objItem->getProduct()->getPrice($this)) {
@@ -425,6 +429,11 @@ abstract class ProductCollection extends TypeAgent
      */
     public function save()
     {
+        // The instance cannot be saved
+        if ($this->blnPreventSaving) {
+            throw new \LogicException('The model instance has been detached and cannot be saved');
+        }
+
         // !HOOK: additional functionality when saving a collection
         if (isset($GLOBALS['ISO_HOOKS']['saveCollection']) && is_array($GLOBALS['ISO_HOOKS']['saveCollection'])) {
             foreach ($GLOBALS['ISO_HOOKS']['saveCollection'] as $callback) {

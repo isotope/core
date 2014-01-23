@@ -14,3 +14,9 @@
  * @license http://www.gnu.org/licenses/lgpl-3.0.html
  */
 
+$GLOBALS['TL_LANG']['tl_iso_payment']['shipping_modules'][0] = 'Методы доставки';
+$GLOBALS['TL_LANG']['tl_iso_payment']['product_types'][0] = 'Типы товаров';
+$GLOBALS['TL_LANG']['tl_iso_payment']['price'][0] = 'Цена';
+$GLOBALS['TL_LANG']['tl_iso_payment']['worldpay_description'][0] = 'Описание';
+$GLOBALS['TL_LANG']['tl_iso_payment']['payone']['rec'] = 'Счет';
+$GLOBALS['TL_LANG']['tl_iso_payment']['price_legend'] = 'Цена';

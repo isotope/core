@@ -43,7 +43,7 @@ $GLOBALS['TL_LANG']['tl_iso_shipping']['note_legend']       = 'Shipping note';
 $GLOBALS['TL_LANG']['tl_iso_shipping']['config_legend']     = 'Configuration';
 $GLOBALS['TL_LANG']['tl_iso_shipping']['price_legend']      = 'Pricing threshold and tax class applicability';
 $GLOBALS['TL_LANG']['tl_iso_shipping']['expert_legend']     = 'Expert settings';
-$GLOBALS['TL_LANG']['tl_iso_shipping']['enabled_legend']    = 'Enabled settings';
+$GLOBALS['TL_LANG']['tl_iso_shipping']['enabled_legend']    = 'Approval';
 
 /**
  * Buttons

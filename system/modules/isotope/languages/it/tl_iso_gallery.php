@@ -14,3 +14,6 @@
  * @license http://www.gnu.org/licenses/lgpl-3.0.html
  */
 
+$GLOBALS['TL_LANG']['tl_iso_gallery']['name'][0] = 'Nome';
+$GLOBALS['TL_LANG']['tl_iso_gallery']['type'][0] = 'Tipo';
+$GLOBALS['TL_LANG']['tl_iso_gallery']['name_legend'] = 'Nome & Tipo';

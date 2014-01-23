@@ -14,3 +14,6 @@
  * @license http://www.gnu.org/licenses/lgpl-3.0.html
  */
 
+$GLOBALS['TL_LANG']['tl_iso_tax_class']['name'][0] = 'Название';
+$GLOBALS['TL_LANG']['tl_iso_tax_class']['name_legend'] = 'Название';
+$GLOBALS['TL_LANG']['tl_iso_tax_class']['rate_legend'] = 'Ставки налогов';

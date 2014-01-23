@@ -14,3 +14,6 @@
  * @license http://www.gnu.org/licenses/lgpl-3.0.html
  */
 
+$GLOBALS['TL_LANG']['tl_iso_tax_class']['name'][0] = 'Navn';
+$GLOBALS['TL_LANG']['tl_iso_tax_class']['name_legend'] = 'Navn';
+$GLOBALS['TL_LANG']['tl_iso_tax_class']['rate_legend'] = 'Moms satser';

@@ -14,3 +14,6 @@
  * @license http://www.gnu.org/licenses/lgpl-3.0.html
  */
 
+$GLOBALS['TL_LANG']['tl_iso_tax_rate']['name'][0] = 'Naziv';
+$GLOBALS['TL_LANG']['tl_iso_tax_rate']['label'][0] = 'Oznaka';
+$GLOBALS['TL_LANG']['tl_iso_tax_rate']['name_legend'] = 'Naziv';

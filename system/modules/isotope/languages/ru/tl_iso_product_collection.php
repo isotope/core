@@ -14,3 +14,6 @@
  * @license http://www.gnu.org/licenses/lgpl-3.0.html
  */
 
+$GLOBALS['TL_LANG']['tl_iso_product_collection']['subtotal'][0] = 'Предварительный итог';
+$GLOBALS['TL_LANG']['tl_iso_product_collection']['currency'][0] = 'Валюта';
+$GLOBALS['TL_LANG']['tl_iso_product_collection']['language'][0] = 'Язык';

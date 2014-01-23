@@ -14,3 +14,5 @@
  * @license http://www.gnu.org/licenses/lgpl-3.0.html
  */
 
+$GLOBALS['TL_LANG']['tl_iso_group']['pasteafter'][0] = 'Vstavi za';
+$GLOBALS['TL_LANG']['tl_iso_group']['pasteinto'][0] = 'Vstavi v';

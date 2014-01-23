@@ -14,3 +14,4 @@
  * @license http://www.gnu.org/licenses/lgpl-3.0.html
  */
 
+$GLOBALS['TL_LANG']['tl_settings']['iso_cartTimeout'][0] = 'Terminado el plazo de tiempo de la cesta invitado';

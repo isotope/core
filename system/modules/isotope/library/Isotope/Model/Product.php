@@ -120,7 +120,14 @@ abstract class Product extends TypeAgent
      */
     public static function findPublishedByPk($intId, array $arrOptions = array())
     {
-        return static::findPublishedBy(static::$strPk, (int) $intId, array('return'=>'Model'));
+        $arrOptions = array_merge(
+            array(
+                'return'    => 'Model'
+            ),
+            $arrOptions
+        );
+
+        return static::findPublishedBy(static::$strPk, (int) $intId, $arrOptions);
     }
 
     /**
@@ -136,7 +143,15 @@ abstract class Product extends TypeAgent
         $arrColumns = array("($t.id=? OR $t.alias=?)");
         $arrValues  = array((is_numeric($varId) ? $varId : 0), $varId);
 
-        return static::findPublishedBy($arrColumns, $arrValues, array('limit'=>1, 'return'=>'Model'));
+        $arrOptions = array_merge(
+            array(
+                'limit'     => 1,
+                'return'    => 'Model'
+            ),
+            $arrOptions
+        );
+
+        return static::findPublishedBy($arrColumns, $arrValues, $arrOptions);
     }
 
     /**
@@ -151,7 +166,7 @@ abstract class Product extends TypeAgent
             return null;
         }
 
-        return static::findPublishedBy(array(static::$strTable . '.id IN (' . implode(',', array_map('intval', $arrIds)) . ')'), null);
+        return static::findPublishedBy(array(static::$strTable . '.id IN (' . implode(',', array_map('intval', $arrIds)) . ')'), null, $arrOptions);
     }
 
     /**
@@ -162,7 +177,7 @@ abstract class Product extends TypeAgent
      */
     public static function findPublishedByPid($intPid, array $arrOptions = array())
     {
-        return static::findPublishedBy('pid', (int) $intPid);
+        return static::findPublishedBy('pid', (int) $intPid, $arrOptions);
     }
 
     /**
@@ -173,7 +188,7 @@ abstract class Product extends TypeAgent
      */
     public static function findPublishedByCategories(array $arrCategories, array $arrOptions = array())
     {
-        return static::findPublishedBy(array("c.page_id IN (" . implode(',', array_map('intval', $arrCategories)) . ")"), null);
+        return static::findPublishedBy(array("c.page_id IN (" . implode(',', array_map('intval', $arrCategories)) . ")"), null, $arrOptions);
     }
 
     /**
@@ -313,7 +328,7 @@ abstract class Product extends TypeAgent
 
         if (!empty($arrFilters) || !empty($arrSorting)) {
 
-            $arrProducts = $objProducts->getIterator()->getArrayCopy();
+            $arrProducts = $objProducts->getModels();
 
             if (!empty($arrFilters)) {
                 $arrProducts = array_filter($arrProducts, function ($objProduct) use ($arrFilters) {
@@ -347,7 +362,13 @@ abstract class Product extends TypeAgent
 
                         // Both SORT_STRING and SORT_REGULAR are case sensitive, strings starting with a capital letter will come before strings starting with a lowercase letter.
                         // To perform a case insensitive search, force the sorting order to be determined by a lowercase copy of the original value.
-                        $arrData[$strField][$objProduct->id] = strtolower(str_replace('"', '', $objProduct->$strField));
+
+                        // Temporary fix for price attribute (see #945)
+                        if ($strField == 'price') {
+                            $arrData[$strField][$objProduct->id] = ($objProduct->getPrice() !==  null) ? $objProduct->getPrice()->getAmount() : 0;
+                        } else {
+                            $arrData[$strField][$objProduct->id] = strtolower(str_replace('"', '', $objProduct->$strField));
+                        }
                     }
 
                     $arrParam[] = &$arrData[$strField];

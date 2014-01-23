@@ -16,7 +16,7 @@
 
 $GLOBALS['TL_LANG']['tl_module']['iso_list_layout'][0] = 'Modèle de liste de produits';
 $GLOBALS['TL_LANG']['tl_module']['iso_reader_layout'][0] = 'Modèle de fiche produit';
-$GLOBALS['TL_LANG']['tl_module']['iso_gallery'][0] = 'Gallerie';
+$GLOBALS['TL_LANG']['tl_module']['iso_gallery'][0] = 'Galerie';
 $GLOBALS['TL_LANG']['tl_module']['iso_gallery'][1] = 'Sélectionner une galerie pour rendre les images (remplace la configuration type du produit).';
 $GLOBALS['TL_LANG']['tl_module']['iso_collectionTpl'][0] = 'Modèle collection produit';
 $GLOBALS['TL_LANG']['tl_module']['iso_collectionTpl'][1] = 'Veuillez choisir un modèle pour générer les produits. Vous pouvez ajouter des modèles de collection personnalisés au répertoire<em>templates</em>. Les fichiers de modèles de collection commencent avec <em>iso_collection_</em>.';
@@ -37,7 +37,7 @@ $GLOBALS['TL_LANG']['tl_module']['iso_addProductJumpTo'][0] = 'Aller à la page 
 $GLOBALS['TL_LANG']['tl_module']['iso_addProductJumpTo'][1] = 'Ce paramètre définit la page vers laquelle l\'utilisateur sera redirigé lorsqu\'il ajoute un article au panier, si autre que la page en cours.';
 $GLOBALS['TL_LANG']['tl_module']['iso_cols'][0] = 'Colonnes';
 $GLOBALS['TL_LANG']['tl_module']['iso_cols'][1] = 'Entrez un nombre de colonnes à afficher en largeur dans la liste des modèles';
-$GLOBALS['TL_LANG']['tl_module']['iso_config_id'][0] = 'Configuration de boutique';
+$GLOBALS['TL_LANG']['tl_module']['iso_config_id'][0] = 'Configuration de la boutique';
 $GLOBALS['TL_LANG']['tl_module']['iso_config_id'][1] = 'Sélectionner la configuration de boutique pour laquelle ce module sera utilisé.';
 $GLOBALS['TL_LANG']['tl_module']['iso_config_ids'][0] = 'Configurations de boutique';
 $GLOBALS['TL_LANG']['tl_module']['iso_config_ids'][1] = 'Sélectionner les configurations de boutique pour laquelle ce module sera utilisé.';

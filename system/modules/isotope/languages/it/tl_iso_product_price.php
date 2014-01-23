@@ -16,7 +16,7 @@
 
 $GLOBALS['TL_LANG']['tl_iso_product_price']['price_tiers'][0] = 'Gruppi prezzo';
 $GLOBALS['TL_LANG']['tl_iso_product_price']['price_tiers'][1] = 'Fissi almeno un gruppo di prezzo per la "Quantità 1". Può inserire prezzi scontati se il cliente ordina più di un prodotto.';
-$GLOBALS['TL_LANG']['tl_iso_product_price']['tax_class'][0] = 'Classe Aliquota';
+$GLOBALS['TL_LANG']['tl_iso_product_price']['tax_class'][0] = 'Classe aliquota';
 $GLOBALS['TL_LANG']['tl_iso_product_price']['tax_class'][1] = 'Per cortesia selezioni una classe aliquota per questo prezzo.';
 $GLOBALS['TL_LANG']['tl_iso_product_price']['config_id'][0] = 'Configurazione negozio';
 $GLOBALS['TL_LANG']['tl_iso_product_price']['config_id'][1] = 'Selezioni una configurazione negozio per questo prezzo.';

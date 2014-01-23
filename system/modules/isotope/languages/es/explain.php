@@ -14,3 +14,4 @@
  * @license http://www.gnu.org/licenses/lgpl-3.0.html
  */
 
+$GLOBALS['TL_LANG']['XPL']['mediaManager'] = '<p class="tl_help_table">Para subir una nueva imagen, selecciona el archivo y guardar el producto. Tras la subida con éxito, se muestra una vista previa de la imagen y junto a ella se puede acceder a su texto alternativo y una descripción. Por varias imágenes, puedes hacer clic en las flechas a la derecha y cambiar sus ordenes, la imagen superior se utiliza como la imagen principal de cada producto.</p>';

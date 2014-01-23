@@ -456,7 +456,7 @@ class Standard extends Product implements IsotopeProduct, WeightAggregate
     public function getOptions()
     {
         if (!$this->hasVariants()) {
-            return array();
+            return $this->arrOptions;
         }
 
         $arrAttributes = array_intersect(array_merge($this->getAttributes(), $this->getVariantAttributes()), Attribute::getVariantOptionFields());

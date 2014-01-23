@@ -81,7 +81,7 @@ class Automator extends \Controller
                         return;
                     }
 
-                    $objXml = new SimpleXMLElement($objRequest->response);
+                    $objXml = new \SimpleXMLElement($objRequest->response);
 
                     foreach ($objXml->Cube->Cube->Cube as $currency) {
                         if (!$fltCourse && strtolower($currency['currency']) == strtolower($objConfigs->currency)) {
@@ -117,7 +117,7 @@ class Automator extends \Controller
                         return;
                     }
 
-                    $objXml = new SimpleXMLElement($objRequest->response);
+                    $objXml = new \SimpleXMLElement($objRequest->response);
 
                     foreach ($objXml->devise as $currency) {
                         if (!$fltCourse && $currency['code'] == strtolower($objConfigs->currency)) {

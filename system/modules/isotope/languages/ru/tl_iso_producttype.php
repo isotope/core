@@ -14,3 +14,7 @@
  * @license http://www.gnu.org/licenses/lgpl-3.0.html
  */
 
+$GLOBALS['TL_LANG']['tl_iso_producttype']['name'][0] = 'Название';
+$GLOBALS['TL_LANG']['tl_iso_producttype']['description'][0] = 'Описание';
+$GLOBALS['TL_LANG']['tl_iso_producttype']['attributes'][0] = 'Атрибуты';
+$GLOBALS['TL_LANG']['tl_iso_producttype']['description_legend'] = 'Описание';

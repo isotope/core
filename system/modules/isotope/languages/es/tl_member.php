@@ -14,3 +14,5 @@
  * @license http://www.gnu.org/licenses/lgpl-3.0.html
  */
 
+$GLOBALS['TL_LANG']['tl_member']['address_book'][0] = 'Libreta de direcciones';
+$GLOBALS['TL_LANG']['tl_member']['address_book'][1] = 'Gestione la libreta de direcciones para el miembro ID %s.';
