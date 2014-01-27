@@ -86,10 +86,11 @@ abstract class Document extends TypeAgent
     /**
      * Sanitize file name
      * @param   string File name
+     * @param   boolean Preserve uppercase (true by default)
      * @return  string Sanitized file name
      */
-    protected function sanitizeFileName($strName)
+    protected function sanitizeFileName($strName, $blnPreserveUppercase = true)
     {
-        return standardize(ampersand($strName, false));
+        return standardize(ampersand($strName, false), $blnPreserveUppercase);
     }
 }
