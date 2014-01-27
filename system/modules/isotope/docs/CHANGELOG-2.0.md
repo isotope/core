@@ -4,6 +4,8 @@ Isotope eCommerce Changelog
 Version 2.0.3 (2014-??-??)
 --------------------------
 
+### Fixed
+- Type agent help wizard was not restricted to type agent models only (#962)
 
 Version 2.0.2 (2014-01-23)
 --------------------------
