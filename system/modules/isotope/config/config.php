@@ -295,30 +295,32 @@ $GLOBALS['NOTIFICATION_CENTER']['NOTIFICATION_TYPE']['isotope']['iso_order_statu
 /**
  * Models
  */
-$GLOBALS['TL_MODELS'][\Isotope\Model\Config::getTable()]                        = 'Isotope\Model\Config';
 $GLOBALS['TL_MODELS'][\Isotope\Model\Address::getTable()]                       = 'Isotope\Model\Address';
+$GLOBALS['TL_MODELS'][\Isotope\Model\Attribute::getTable()]                     = 'Isotope\Model\Attribute';
 $GLOBALS['TL_MODELS'][\Isotope\Model\BasePrice::getTable()]                     = 'Isotope\Model\BasePrice';
+$GLOBALS['TL_MODELS'][\Isotope\Model\Config::getTable()]                        = 'Isotope\Model\Config';
 $GLOBALS['TL_MODELS'][\Isotope\Model\Document::getTable()]                      = 'Isotope\Model\Document';
 $GLOBALS['TL_MODELS'][\Isotope\Model\Download::getTable()]                      = 'Isotope\Model\Download';
+$GLOBALS['TL_MODELS'][\Isotope\Model\Gallery::getTable()]                       = 'Isotope\Model\Gallery';
 $GLOBALS['TL_MODELS'][\Isotope\Model\Group::getTable()]                         = 'Isotope\Model\Group';
 $GLOBALS['TL_MODELS'][\Isotope\Model\Label::getTable()]                         = 'Isotope\Model\Label';
 $GLOBALS['TL_MODELS'][\Isotope\Model\OrderStatus::getTable()]                   = 'Isotope\Model\OrderStatus';
-$GLOBALS['TL_MODELS'][\Isotope\Model\ProductPrice::getTable()]                  = 'Isotope\Model\ProductPrice';
+$GLOBALS['TL_MODELS'][\Isotope\Model\Payment::getTable()]                       = 'Isotope\Model\Payment';
+$GLOBALS['TL_MODELS'][\Isotope\Model\Product::getTable()]                       = 'Isotope\Model\Product';
 $GLOBALS['TL_MODELS'][\Isotope\Model\ProductCategory::getTable()]               = 'Isotope\Model\ProductCategory';
 $GLOBALS['TL_MODELS'][\Isotope\Model\ProductCollection::getTable()]             = 'Isotope\Model\ProductCollection';
+$GLOBALS['TL_MODELS'][\Isotope\Model\ProductCollectionDownload::getTable()]     = 'Isotope\Model\ProductCollectionDownload';
 $GLOBALS['TL_MODELS'][\Isotope\Model\ProductCollectionItem::getTable()]         = 'Isotope\Model\ProductCollectionItem';
 $GLOBALS['TL_MODELS'][\Isotope\Model\ProductCollectionSurcharge::getTable()]    = 'Isotope\Model\ProductCollectionSurcharge';
-$GLOBALS['TL_MODELS'][\Isotope\Model\ProductCollectionDownload::getTable()]     = 'Isotope\Model\ProductCollectionDownload';
+$GLOBALS['TL_MODELS'][\Isotope\Model\ProductPrice::getTable()]                  = 'Isotope\Model\ProductPrice';
 $GLOBALS['TL_MODELS'][\Isotope\Model\ProductCache::getTable()]                  = 'Isotope\Model\ProductCache';
-$GLOBALS['TL_MODELS'][\Isotope\Model\Product::getTable()]                       = 'Isotope\Model\Product';
 $GLOBALS['TL_MODELS'][\Isotope\Model\ProductType::getTable()]                   = 'Isotope\Model\ProductType';
 $GLOBALS['TL_MODELS'][\Isotope\Model\RelatedCategory::getTable()]               = 'Isotope\Model\RelatedCategory';
 $GLOBALS['TL_MODELS'][\Isotope\Model\RelatedProduct::getTable()]                = 'Isotope\Model\RelatedProduct';
 $GLOBALS['TL_MODELS'][\Isotope\Model\RequestCache::getTable()]                  = 'Isotope\Model\RequestCache';
+$GLOBALS['TL_MODELS'][\Isotope\Model\Shipping::getTable()]                      = 'Isotope\Model\Shipping';
 $GLOBALS['TL_MODELS'][\Isotope\Model\TaxClass::getTable()]                      = 'Isotope\Model\TaxClass';
 $GLOBALS['TL_MODELS'][\Isotope\Model\TaxRate::getTable()]                       = 'Isotope\Model\TaxRate';
-$GLOBALS['TL_MODELS'][\Isotope\Model\Payment::getTable()]                       = 'Isotope\Model\Payment';
-$GLOBALS['TL_MODELS'][\Isotope\Model\Shipping::getTable()]                      = 'Isotope\Model\Shipping';
 
 /**
  * Checkout steps
