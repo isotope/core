@@ -7,6 +7,7 @@ Version 2.0.3 (2014-??-??)
 ### Fixed
 - Type agent help wizard was not restricted to type agent models only (#962)
 - Back button in variant list did not return to product overview (#883)
+- Wrong directory path in document file output (#957)
 
 Version 2.0.2 (2014-01-23)
 --------------------------

@@ -47,7 +47,7 @@ class Standard extends Document implements IsotopeDocument
         $arrTokens = $this->prepareCollectionTokens($objCollection);
 
         $pdf     = $this->generatePDF($objCollection, $arrTokens);
-        $strFile = sprintf('/%s/%s.pdf', $strDirectoryPath, \String::parseSimpleTokens($this->fileTitle, $arrTokens));
+        $strFile = sprintf('%s/%s.pdf', $strDirectoryPath, \String::parseSimpleTokens($this->fileTitle, $arrTokens));
         $pdf->Output($strFile, 'F');
 
         return $strFile;
