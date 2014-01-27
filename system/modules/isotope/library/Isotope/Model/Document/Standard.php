@@ -33,10 +33,13 @@ class Standard extends Document implements IsotopeDocument
      */
     public function outputToBrowser(IsotopeProductCollection $objCollection)
     {
-        $arrTokens = $this->prepareCollectionTokens($objCollection);
+        $arrTokens  = $this->prepareCollectionTokens($objCollection);
+        $pdf        = $this->generatePDF($objCollection, $arrTokens);
 
-        $pdf = $this->generatePDF($objCollection, $arrTokens);
-        $pdf->Output(sprintf('%s.pdf', \String::parseSimpleTokens($this->fileTitle, $arrTokens)), 'D');
+        $pdf->Output(
+            $this->prepareFileName($this->fileTitle, $arrTokens) . '.pdf',
+            'D'
+        );
     }
 
     /**
@@ -44,11 +47,14 @@ class Standard extends Document implements IsotopeDocument
      */
     public function outputToFile(IsotopeProductCollection $objCollection, $strDirectoryPath)
     {
-        $arrTokens = $this->prepareCollectionTokens($objCollection);
+        $arrTokens  = $this->prepareCollectionTokens($objCollection);
+        $pdf        = $this->generatePDF($objCollection, $arrTokens);
+        $strFile    = $this->prepareFileName($this->fileTitle, $arrTokens, $strDirectoryPath) . '.pdf';
 
-        $pdf     = $this->generatePDF($objCollection, $arrTokens);
-        $strFile = sprintf('%s/%s.pdf', $strDirectoryPath, \String::parseSimpleTokens($this->fileTitle, $arrTokens));
-        $pdf->Output($strFile, 'F');
+        $pdf->Output(
+            $strFile,
+            'F'
+        );
 
         return $strFile;
     }
