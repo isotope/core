@@ -27,7 +27,7 @@ $GLOBALS['TL_DCA']['tl_module']['palettes']['iso_checkoutmember']       = '{titl
 $GLOBALS['TL_DCA']['tl_module']['palettes']['iso_checkoutguest']        = '{title_legend},name,headline,type;{config_legend},iso_checkout_method,iso_payment_modules,iso_shipping_modules,nc_notification;{redirect_legend},iso_forward_review,orderCompleteJumpTo,iso_cart_jumpTo;{template_legend},iso_collectionTpl,iso_orderCollectionBy,iso_gallery,tableless,iso_includeMessages,iso_order_conditions,iso_order_conditions_position;{protected_legend:hide},protected;{expert_legend:hide},guests,cssID,space';
 $GLOBALS['TL_DCA']['tl_module']['palettes']['iso_checkoutboth']         = '{title_legend},name,headline,type;{config_legend},iso_checkout_method,iso_payment_modules,iso_shipping_modules,iso_addToAddressbook,nc_notification;{redirect_legend},iso_forward_review,orderCompleteJumpTo,iso_login_jumpTo,iso_cart_jumpTo;{template_legend},iso_collectionTpl,iso_orderCollectionBy,iso_gallery,tableless,iso_includeMessages,iso_order_conditions,iso_order_conditions_position;{protected_legend:hide},protected;{expert_legend:hide},guests,cssID,space';
 $GLOBALS['TL_DCA']['tl_module']['palettes']['iso_orderhistory']         = '{title_legend},name,headline,type;{config_legend},iso_config_ids;{redirect_legend},jumpTo;{template_legend},iso_includeMessages;{protected_legend:hide},protected;{expert_legend:hide},guests,cssID,space';
-$GLOBALS['TL_DCA']['tl_module']['palettes']['iso_orderdetails']         = '{title_legend},name,headline,type;{template_legend},iso_collectionTpl,iso_orderCollectionBy,iso_gallery,iso_includeMessages;{protected_legend:hide},protected;{expert_legend:hide},guests,cssID,space';
+$GLOBALS['TL_DCA']['tl_module']['palettes']['iso_orderdetails']         = '{title_legend},name,headline,type;{config_legend},iso_loginRequired;{template_legend},iso_collectionTpl,iso_orderCollectionBy,iso_gallery,iso_includeMessages;{protected_legend:hide},protected;{expert_legend:hide},guests,cssID,space';
 $GLOBALS['TL_DCA']['tl_module']['palettes']['iso_configswitcher']       = '{title_legend},name,headline,type;{config_legend},iso_config_ids;{template_legend},iso_includeMessages;{protected_legend:hide},protected;{expert_legend:hide},guests,cssID,space';
 $GLOBALS['TL_DCA']['tl_module']['palettes']['iso_productfilter']        = '{title_legend},name,headline,type;{config_legend},iso_category_scope,iso_list_where,iso_enableLimit,iso_filterFields,iso_filterHideSingle,iso_searchFields,iso_searchAutocomplete,iso_sortingFields,iso_listingSortField,iso_listingSortDirection;{template_legend},iso_filterTpl,iso_includeMessages,iso_hide_list;{protected_legend:hide},protected;{expert_legend:hide},guests,cssID,space';
 $GLOBALS['TL_DCA']['tl_module']['palettes']['iso_cumulativefilter']     = '{title_legend},name,headline,type;{config_legend},iso_filterFields,iso_filterHideSingle;{template_legend},navigationTpl;{protected_legend:hide},protected;{expert_legend:hide},guests,cssID,space';
@@ -162,6 +162,15 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['iso_login_jumpTo'] = array
     'explanation'               => 'jumpTo',
     'sql'                       => "int(10) unsigned NOT NULL default '0'",
     'relation'                  => array('type'=>'hasOne', 'load'=>'lazy'),
+);
+
+$GLOBALS['TL_DCA']['tl_module']['fields']['iso_loginRequired'] = array
+(
+    'label'                     => &$GLOBALS['TL_LANG']['tl_module']['iso_loginRequired'],
+    'exclude'                   => true,
+    'inputType'                 => 'checkbox',
+    'eval'                      => array('tl_class'=>'w50'),
+    'sql'                       => "char(1) NOT NULL default ''",
 );
 
 $GLOBALS['TL_DCA']['tl_module']['fields']['iso_addProductJumpTo'] = array
