@@ -223,6 +223,10 @@ abstract class Attribute extends TypeAgent
      */
     public function getOptionsForVariants(array $arrIds, array $arrOptions = array())
     {
+        if (empty($arrIds)) {
+            return array();
+        }
+
         $strWhere = '';
 
         foreach ($arrOptions as $field => $value) {
