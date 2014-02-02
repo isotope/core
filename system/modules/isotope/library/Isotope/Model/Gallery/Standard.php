@@ -145,6 +145,21 @@ class Standard extends Gallery implements IsotopeGallery
         $objTemplate = new \Isotope\Template($this->strTemplate);
 
         $this->addImageToTemplate($objTemplate, 'main', $arrFile);
+        $objTemplate->javascript = '';
+
+        if (\Environment::get('isAjaxRequest')) {
+            $strScripts = '';
+            $arrTemplates = deserialize($this->lightbox_template);
+
+            if (!empty($arrTemplates) && is_array($arrTemplates)) {
+                foreach ($arrTemplates as $strTemplate) {
+                    $objScript = new \Isotope\Template($strTemplate);
+                    $strScripts = $objScript->parse();
+                }
+            }
+
+            $objTemplate->javascript = $strScripts;
+        }
 
         return $objTemplate->parse();
     }
