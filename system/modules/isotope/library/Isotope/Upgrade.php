@@ -46,10 +46,11 @@ class Upgrade extends \Controller
 
         foreach (scan(TL_ROOT . '/system/modules/isotope/library/Isotope/Upgrade') as $strFile) {
             $strVersion = pathinfo($strFile, PATHINFO_FILENAME);
-            $strClass   = 'Isotope\Upgrade\\' . $strVersion;
-            $strStep    = 'Version ' . \Haste\Util\Format::repositoryVersion(substr($strVersion, 2));
 
             if (preg_match('/To[0-9]{10}/', $strVersion)) {
+                $strClass   = 'Isotope\Upgrade\\' . $strVersion;
+                $strStep    = 'Version ' . \Haste\Util\Format::repositoryVersion(substr($strVersion, 2));
+
                 try {
                     $objUpgrade = new $strClass();
                     $objUpgrade->run($blnInstalled);
@@ -68,7 +69,9 @@ class Upgrade extends \Controller
             }
         }
 
-        \System::log('Upgraded Isotope eCommerce to ' . $strStep, TL_INFO, __METHOD__);
+        if ($strStep != '') {
+            \System::log('Upgraded Isotope eCommerce to ' . $strStep, TL_INFO, __METHOD__);
+        }
     }
 
 
