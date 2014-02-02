@@ -8,8 +8,8 @@
 <h2 class="<?php echo $this->orderStatusKey; ?>"><?php echo $this->orderStatus; ?></h2>
 <h2><?php echo $this->orderDetailsHeadline; ?></h2>
 
-<?php foreach( $this->info as $type => $data ): ?>
-<div class="info_container <?php echo $type . $data['class']; ?>">
+<?php foreach ($this->info as $type => $data): ?>
+<div class="info_container <?php echo $type . ' ' . $data['class']; ?>">
     <h3><?php echo $data['headline']; ?></h3>
     <div class="info"><?php echo $data['info']; ?></div>
 </div>

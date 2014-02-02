@@ -9,6 +9,7 @@ Version 2.0.3 (2014-??-??)
 - Back button in variant list did not return to product overview (#883)
 - Wrong directory path in document file output (#957)
 - Document file names were not sanitized (#959)
+- CSS class was missing a space (#966)
 
 Version 2.0.2 (2014-01-23)
 --------------------------
