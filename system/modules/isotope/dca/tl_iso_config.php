@@ -382,15 +382,6 @@ $GLOBALS['TL_DCA']['tl_iso_config'] = array
             'eval'                  => array('multiple'=>true, 'size'=>8, 'tl_class'=>'w50 w50h', 'chosen'=>true),
             'sql'                   => "blob NULL"
         ),
-        'billing_fields' => array
-        (
-            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_config']['billing_fields'],
-            'exclude'               => true,
-            'inputType'             => 'fieldWizard',
-            'eval'                  => array('mandatory'=>true, 'multiple'=>true, 'table'=>'tl_iso_addresses', 'tl_class'=>'clr w50 w50h', 'helpwizard'=>true),
-            'explanation'           => 'isoFieldWizard',
-            'sql'                   => "blob NULL",
-        ),
         'shipping_countries' => array
         (
             'label'                 => &$GLOBALS['TL_LANG']['tl_iso_config']['shipping_countries'],
