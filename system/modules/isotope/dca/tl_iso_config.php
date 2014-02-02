@@ -126,7 +126,7 @@ $GLOBALS['TL_DCA']['tl_iso_config'] = array
             {converter_legend:hide},priceCalculateFactor,priceCalculateMode,currencyAutomator;
             {order_legend:hide},orderPrefix,orderDigits,orderstatus_new,orderstatus_error;
             {config_legend},templateGroup,cartMinSubtotal;
-            {products_legend},newProductPeriod
+            {products_legend},newProductPeriod;
             {analytics_legend},ga_enable',
     ),
 

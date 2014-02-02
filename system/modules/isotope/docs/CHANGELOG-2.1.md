@@ -9,6 +9,7 @@ Version 2.1.0-beta1 (2014-??-??)
 - Set colors for order status to highlight them in the backend view (#781)
 - Optionally require login to see member order details (#930)
 - Automatically update currencies when changing store config settings (#625)
+- Track orders using Google Analytics (#927)
 
 ### Improved
 - Select moo_ or j_ template to reload gallery on ajax update (#909)
