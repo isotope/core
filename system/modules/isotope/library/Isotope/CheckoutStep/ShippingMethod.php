@@ -42,7 +42,13 @@ class ShippingMethod extends CheckoutStep implements IsotopeCheckoutStep
         $arrIds = deserialize($this->objModule->iso_shipping_modules);
 
         if (!empty($arrIds) && is_array($arrIds)) {
-            $objModules = Shipping::findBy(array('id IN (' . implode(',', $arrIds) . ')', (BE_USER_LOGGED_IN === true ? '' : "enabled='1'")), null, array('order' => \Database::getInstance()->findInSet('id', $arrIds)));
+            $arrColumns = array('id IN (' . implode(',', $arrIds) . ')');
+
+            if (BE_USER_LOGGED_IN) {
+                $arrColumns[] = "enabled='1'";
+            }
+
+            $objModules = Shipping::findBy($arrColumns, null, array('order' => \Database::getInstance()->findInSet('id', $arrIds)));
 
             if (null !== $objModules) {
                 while ($objModules->next()) {
