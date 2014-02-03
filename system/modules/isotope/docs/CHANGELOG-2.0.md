@@ -13,7 +13,8 @@ Version 2.0.3 (2014-??-??)
 - Wrong directory path in document file output (#957)
 - Document file names were not sanitized (#959)
 - CSS class was missing a space (#966)
-- Shipping module exception when using frontend preview
+- Exception in shipping and payment checkout step when using frontend preview
+- Product variant list showed base product
 
 Version 2.0.2 (2014-01-23)
 --------------------------
