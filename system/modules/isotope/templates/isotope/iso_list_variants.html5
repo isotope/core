@@ -5,7 +5,7 @@
 <input type="hidden" name="AJAX_PRODUCT" value="<?php echo $this->product_id; ?>">
 <input type="hidden" name="AJAX_MODULE" value="<?php echo $this->module_id; ?>">
 
-<?php if($this->hasOptions): foreach( $this->raw_options as $name => $value ): ?>
+<?php if($this->hasOptions): foreach($this->raw_options as $name => $value): ?>
 <input type="hidden" name="<?php echo $name; ?>" value="<?php echo $value; ?>">
 <?php endforeach; endif; ?>
 <h3><a href="<?php echo $this->href; ?>" title="<?php echo $this->label_detail; ?>"><?php echo $this->generateAttribute('name'); ?></a></h3>
