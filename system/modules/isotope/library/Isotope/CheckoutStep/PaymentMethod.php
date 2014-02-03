@@ -51,9 +51,7 @@ class PaymentMethod extends CheckoutStep implements IsotopeCheckoutStep
             $objModules = Payment::findBy($arrColumns, null, array('order' => \Database::getInstance()->findInSet('id', $arrIds)));
 
             if (null !== $objModules) {
-                while ($objModules->next()) {
-
-                    $objModule = $objModules->current();
+                foreach ($objModules as $objModule) {
 
                     if (!$objModule->isAvailable()) {
                         continue;

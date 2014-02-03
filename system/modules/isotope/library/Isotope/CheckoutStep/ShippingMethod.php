@@ -51,9 +51,7 @@ class ShippingMethod extends CheckoutStep implements IsotopeCheckoutStep
             $objModules = Shipping::findBy($arrColumns, null, array('order' => \Database::getInstance()->findInSet('id', $arrIds)));
 
             if (null !== $objModules) {
-                while ($objModules->next()) {
-
-                    $objModule = $objModules->current();
+                foreach ($objModules as $objModule) {
 
                     if (!$objModule->isAvailable()) {
                         continue;
