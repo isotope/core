@@ -85,7 +85,7 @@ class Analytics extends Frontend
             $item->setQuantity($objItem->quantity);
 
             $arrOptionValues = array();
-            foreach (Isotope::formatOptions($objProduct->getOptions()) as $option) {
+            foreach (Isotope::formatOptions($objItem->getOptions()) as $option) {
                 $arrOptionValues[] = $option['value'];
             }
 
