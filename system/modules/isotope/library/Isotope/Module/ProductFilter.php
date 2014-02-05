@@ -225,8 +225,8 @@ class ProductFilter extends Module
                     . "AND (p1.id IN (SELECT pid FROM " . \Isotope\Model\ProductCategory::getTable() . " WHERE page_id IN (" . implode(',', $arrCategories) . "))
                        OR p1.pid IN (SELECT pid FROM " . \Isotope\Model\ProductCategory::getTable() . " WHERE page_id IN (" . implode(',', $arrCategories) . ")))"
                     . (BE_USER_LOGGED_IN === true ? '' : " AND (p1.pid=0 OR (p2.published='1' AND (p2.start='' OR p2.start<$time) AND (p2.stop='' OR p2.stop>$time)))")
-                    . ($this->iso_list_where == '' ? '' : " AND " . Haste::getInstance()->call('replaceInsertTags', $this->iso_list_where) . ")
-                );
+                    . ($this->iso_list_where == '' ? '' : " AND " . Haste::getInstance()->call('replaceInsertTags', $this->iso_list_where)) . ")
+                ");
 
                 while ($objValues->next()) {
                     $arrValues = array_merge($arrValues, deserialize($objValues->$strField, true));
