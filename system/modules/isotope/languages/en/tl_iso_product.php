@@ -54,6 +54,11 @@ $GLOBALS['TL_LANG']['tl_iso_product']['variantValuesLabel']        = 'Variant';
 $GLOBALS['TL_LANG']['tl_iso_product']['showVariants']              = 'Show product variants';
 
 /**
+ * Blank option labels
+ */
+$GLOBALS['TL_LANG']['tl_iso_product']['priceBlankOptionLabel']     = 'Tax-free';
+
+/**
  * Buttons
  */
 $GLOBALS['TL_LANG']['tl_iso_product']['new']                       = array('New product', 'Create new product');

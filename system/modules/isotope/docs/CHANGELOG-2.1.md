@@ -13,3 +13,4 @@ Version 2.1.0-beta1 (2014-??-??)
 
 ### Improved
 - Select moo_ or j_ template to reload gallery on ajax update (#909)
+- Added a tax-free label to the price dropdown (#971)
