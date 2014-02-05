@@ -368,7 +368,7 @@ class RequestCache extends \Model
      * Return cache matching the current config, create or update if necessary
      * @return  RequestCache
      */
-    public function saveNewConfiguartion()
+    public function saveNewConfiguration()
     {
         if (!$this->isModified()) {
             return $this;
@@ -383,6 +383,14 @@ class RequestCache extends \Model
         }
 
         return $objCache->save();
+    }
+
+    /**
+     * @deprecated
+     */
+    public function saveNewConfiguartion()
+    {
+        return $this->saveNewConfiguration();
     }
 
     /**
