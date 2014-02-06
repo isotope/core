@@ -14,5 +14,3 @@
  * @license http://www.gnu.org/licenses/lgpl-3.0.html
  */
 
-$GLOBALS['TL_LANG']['MOD']['isotope_rules'][0] = 'Isotope eCommerce: Regole &amp; Buono spesa';
-$GLOBALS['TL_LANG']['MOD']['iso_rules'][0] = 'Regole &amp; Buono spesa';
