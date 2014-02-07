@@ -81,7 +81,7 @@ class ProductFilter extends Module
 
         // Cache request in the database and redirect to the unique requestcache ID
         if ($this->blnUpdateCache) {
-            $objCache = Isotope::getRequestCache()->saveNewConfiguartion();
+            $objCache = Isotope::getRequestCache()->saveNewConfiguration();
 
             \Input::setGet('isorc', $objCache->id);
 

@@ -241,7 +241,7 @@ class ProductPrice extends \Model implements IsotopePrice
             $arrIds                 = $objProduct->getVariantIds() ? : array(0);
             $arrOptions['column'][] = "pid IN (" . implode(',', $arrIds) . ")";
         } else {
-            $arrOptions['column'][] = "pid=" . $objProduct->id;
+            $arrOptions['column'][] = "pid=" . ($objProduct->hasVariantPrices() ? $objProduct->id : $objProduct->getProductId());
         }
 
         return static::find($arrOptions);

@@ -145,6 +145,9 @@ abstract class Attribute extends TypeAgent
         // Variant selection is always mandatory
         if ($this->isVariantOption()) {
             $arrField['eval']['mandatory'] = true;
+
+            $this->customer_defined = false;
+            $arrField['attributes']['customer_defined'] = false;
         }
 
         // Parse multiline/multilingual foreignKey
@@ -220,6 +223,10 @@ abstract class Attribute extends TypeAgent
      */
     public function getOptionsForVariants(array $arrIds, array $arrOptions = array())
     {
+        if (empty($arrIds)) {
+            return array();
+        }
+
         $strWhere = '';
 
         foreach ($arrOptions as $field => $value) {

@@ -175,6 +175,7 @@ class Isotope extends \Controller
 
             if (null === static::$objRequestCache) {
                 static::$objRequestCache = new RequestCache();
+                static::$objRequestCache->store_id = static::getCart()->store_id;
             }
         }
 
