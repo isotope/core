@@ -32,17 +32,17 @@ class Downloads extends Attribute implements IsotopeAttribute
         $arrData['fields'][$this->field_name]['sql'] = "blob NULL";
 
         if ($this->fieldType == 'checkbox') {
-            $arrData['fields'][$this->field_name]['sql']              = "blob NULL";
+            $arrData['fields'][$this->field_name]['sql'] = "blob NULL";
             $arrData['fields'][$this->field_name]['eval']['multiple'] = true;
 
             // Custom sorting
             if ($this->sortBy == 'custom') {
-                $strOrderField                                              = $this->field_name . '_order';
+                $strOrderField = $this->field_name . '_order';
                 $arrData['fields'][$this->field_name]['eval']['orderField'] = $strOrderField;
-                $arrData['fields'][$strOrderField]['sql']                   = "text NULL";
+                $arrData['fields'][$strOrderField]['sql'] = "text NULL";
             }
         } else {
-            $arrData['fields'][$this->field_name]['sql']              = "int(10) unsigned NOT NULL default '0'";
+            $arrData['fields'][$this->field_name]['sql'] = "binary(16) NULL";
             $arrData['fields'][$this->field_name]['eval']['multiple'] = false;
         }
     }

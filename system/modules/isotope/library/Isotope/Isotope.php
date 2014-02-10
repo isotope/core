@@ -36,7 +36,7 @@ class Isotope extends \Controller
     /**
      * Isotope version
      */
-    const VERSION = '2.0.2';
+    const VERSION = '2.0.3';
 
     /**
      * True if the system has been initialized
@@ -175,6 +175,7 @@ class Isotope extends \Controller
 
             if (null === static::$objRequestCache) {
                 static::$objRequestCache = new RequestCache();
+                static::$objRequestCache->store_id = static::getCart()->store_id;
             }
         }
 

@@ -13,6 +13,8 @@
 namespace Isotope\Module;
 
 use Isotope\Model\Product;
+use Isotope\Model\ProductCategory;
+use Isotope\Model\ProductType;
 
 
 /**
@@ -56,8 +58,15 @@ class ProductVariantList extends ProductList
      */
     protected function findProducts($arrCacheIds = null)
     {
+        $t             = Product::getTable();
         $arrColumns    = array();
         $arrCategories = $this->findCategories();
+        $arrProductIds = \Database::getInstance()->query("SELECT pid FROM " . ProductCategory::getTable() . " WHERE page_id IN (" . implode(',', $arrCategories) . ")")->fetchEach('pid');
+        $arrTypes = \Database::getInstance()->query("SELECT id FROM " . ProductType::getTable() . " WHERE variants='1'")->fetchEach('id');
+
+        if (empty($arrProductIds)) {
+            return array();
+        }
 
         list($arrFilters, $arrSorting, $strWhere, $arrValues) = $this->getFiltersAndSorting();
 
@@ -65,10 +74,13 @@ class ProductVariantList extends ProductList
             $arrValues = array();
         }
 
-        $arrColumns[] = "(" . Product::getTable() . ".id IN (SELECT pid FROM " . \Isotope\Model\ProductCategory::getTable() . " WHERE page_id IN (" . implode(',', $arrCategories) . ")) OR " . Product::getTable() . ".pid IN (SELECT pid FROM " . \Isotope\Model\ProductCategory::getTable() . " WHERE page_id IN (" . implode(',', $arrCategories) . ")))";
+        $arrColumns[] = "(
+            ($t.id IN (" . implode(',', $arrProductIds) . ") AND $t.type NOT IN (" . implode(',', $arrTypes) . "))
+            OR $t.pid IN (" . implode(',', $arrProductIds) . ")
+        )";
 
         if (!empty($arrCacheIds) && is_array($arrCacheIds)) {
-            $arrColumns[] = "(" . Product::getTable() . ".id IN (" . implode(',', $arrCacheIds) . ") OR " . Product::getTable() . ".pid IN (" . implode(',', $arrCacheIds) . "))";
+            $arrColumns[] = Product::getTable() . ".id IN (" . implode(',', $arrCacheIds) . ")";
         }
 
         // Apply new/old product filter
@@ -90,7 +102,7 @@ class ProductVariantList extends ProductList
             $arrColumns,
             $arrValues,
             array(
-                 'group'   => Product::getTable() . '.id', 'order' => 'c.sorting',
+                 'order'   => 'c.sorting',
                  'filters' => $arrFilters,
                  'sorting' => $arrSorting,
             )

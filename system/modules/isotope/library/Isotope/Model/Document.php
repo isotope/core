@@ -59,4 +59,38 @@ abstract class Document extends TypeAgent
 
         return $arrTokens;
     }
+
+    /**
+     * Prepare file name
+     * @param   string File name
+     * @param   array Simple tokens (optional)
+     * @param   string Path (optional)
+     * @return  string Sanitized file name
+     */
+    protected function prepareFileName($strName, $arrTokens = array(), $strPath = '')
+    {
+        // Replace simple tokens
+        $strName = \String::parseSimpleTokens($strName, $arrTokens);
+        $strName = $this->sanitizeFileName($strName);
+
+        if ($strPath) {
+            // Make sure the path contains a trailing slash
+            $strPath = preg_replace('/([^\/]+)$/', '$1/', $strPath);
+
+            $strName = $strPath . $strName;
+        }
+
+        return $strName;
+    }
+
+    /**
+     * Sanitize file name
+     * @param   string File name
+     * @param   boolean Preserve uppercase (true by default)
+     * @return  string Sanitized file name
+     */
+    protected function sanitizeFileName($strName, $blnPreserveUppercase = true)
+    {
+        return standardize(ampersand($strName, false), $blnPreserveUppercase);
+    }
 }
