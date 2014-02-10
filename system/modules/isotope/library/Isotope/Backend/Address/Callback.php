@@ -12,6 +12,7 @@
 
 namespace Isotope\Backend\Address;
 
+use Isotope\Model\Address;
 
 class Callback extends \Backend
 {
@@ -54,7 +55,7 @@ class Callback extends \Backend
     {
         if ($varValue == '1' && $dc->activeRecord->{$dc->field} != $varValue) {
             \Database::getInstance()->prepare("
-                UPDATE " . \MemberModel::getTable() . " SET {$dc->field}='' WHERE pid=? AND ptable=? AND store_id=?
+                UPDATE " . Address::getTable() . " SET {$dc->field}='' WHERE pid=? AND ptable=? AND store_id=?
             ")->execute($dc->activeRecord->pid, $dc->activeRecord->ptable, $dc->activeRecord->store_id);
         }
 

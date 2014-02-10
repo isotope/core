@@ -19,6 +19,7 @@ Version 2.0.3 (2014-??-??)
 - Product was unavailable in cart if it had variants but not variant prices
 - Spelling mistake in method call (#977)
 - Incorrect database field type for Downloads attribute (#983)
+- Could not set billing or shipping default for address in backend (#967)
 
 Version 2.0.2 (2014-01-23)
 --------------------------
