@@ -1,7 +1,7 @@
 Isotope eCommerce Changelog
 ===========================
 
-Version 2.0.3 (2014-??-??)
+Version 2.0.3 (2014-02-10)
 --------------------------
 
 ### Improved
@@ -17,6 +17,10 @@ Version 2.0.3 (2014-??-??)
 - Product variant list showed base product
 - Request cache generated duplicate entries for identical configurations
 - Product was unavailable in cart if it had variants but not variant prices
+- Spelling mistake in method call (#977)
+- Incorrect database field type for Downloads attribute (#983)
+- Could not set billing or shipping default for address in backend (#967)
+- Cache redirect was not applied for cumulative filter (#974)
 
 Version 2.0.2 (2014-01-23)
 --------------------------

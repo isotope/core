@@ -904,7 +904,7 @@ class Standard extends Product implements IsotopeProduct, WeightAggregate
             return false;
         }
 
-        return parent::marModified($strKey);
+        return parent::markModified($strKey);
     }
 
     /**

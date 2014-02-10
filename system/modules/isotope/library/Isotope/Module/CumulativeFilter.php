@@ -75,8 +75,6 @@ class CumulativeFilter extends Module
 
         if ($arrFilter[0] == $this->id && in_array($arrFilter[2], $this->iso_filterFields)) {
 
-            $this->blnUpdateCache = true;
-
             // Unique filter key is necessary to unset the filter
             $strFilterKey = $arrFilter[2] . '=' . $arrFilter[3];
 
@@ -90,8 +88,14 @@ class CumulativeFilter extends Module
                 Isotope::getRequestCache()->removeFilterForModule($strFilterKey, $this->id);
             }
 
+            $objCache = Isotope::getRequestCache()->saveNewConfiguration();
+
             // unset GET parameter or it would be included in the redirect URL
             \Input::setGet('cumulativefilter', null);
+            \Input::setGet('isorc', $objCache->id);
+
+            // Include \Environment::base or the URL would not work on the index page
+            \Controller::redirect(\Environment::get('base') . $this->generateRequestUrl());
 
         } else {
             $this->generateFilter();
