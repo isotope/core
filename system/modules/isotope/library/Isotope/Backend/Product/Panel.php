@@ -204,6 +204,7 @@ class Panel extends \Backend
                         $objProducts = \Database::getInstance()->execute("SELECT id FROM tl_iso_product p WHERE pid=0 AND language='' AND id IN (SELECT pid FROM " . ProductCategory::getTable() . " c WHERE c.pid=p.id AND c.page_id=" . (int) $v . ")");
                         $arrProducts = is_array($arrProducts) ? array_intersect($arrProducts, $objProducts->fetchEach('id')) : $objProducts->fetchEach('id');
                     }
+                    break;
 
                 default:
                     // !HOOK: add custom advanced filters
