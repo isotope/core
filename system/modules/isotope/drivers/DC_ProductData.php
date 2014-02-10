@@ -897,7 +897,7 @@ window.addEvent(\'domready\', function() {
 
         // Save field selection in session
         if (\Input::post('FORM_SUBMIT') == $this->strTable . '_all' && \Input::get('fields')) {
-            $session['CURRENT'][$this->strTable] = deserialize(\Input::post('all_fields'));
+            $session['CURRENT'][$this->strTable] = \Input::post('all_fields');
             $this->Session->setData($session);
         }
 
@@ -1162,7 +1162,7 @@ window.addEvent(\'domready\', function() {
 
         // Save field selection in session
         if (\Input::post('FORM_SUBMIT') == $this->strTable . '_all' && \Input::get('fields')) {
-            $session['CURRENT'][$this->strTable] = deserialize(\Input::post('all_fields'));
+            $session['CURRENT'][$this->strTable] = \Input::post('all_fields');
             $this->Session->setData($session);
         }
 
