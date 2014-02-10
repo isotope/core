@@ -17,6 +17,7 @@ use Haste\Haste;
 use Haste\Util\Format;
 use Isotope\Interfaces\IsotopeProductCollection;
 use Isotope\Isotope;
+use Isotope\Model\Address;
 use Isotope\Model\Document;
 use Isotope\Model\OrderStatus;
 use Isotope\Model\Payment;
@@ -563,7 +564,7 @@ class Order extends ProductCollection implements IsotopeProductCollection
      * Mark existing addresses as not default if the new address is default
      * @param   Address
      */
-    protected function updateDefaultAddress($objAddress)
+    protected function updateDefaultAddress(Address $objAddress)
     {
         $arrSet = array();
 
