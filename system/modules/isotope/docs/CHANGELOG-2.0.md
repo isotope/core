@@ -17,6 +17,7 @@ Version 2.0.3 (2014-??-??)
 - Product variant list showed base product
 - Request cache generated duplicate entries for identical configurations
 - Product was unavailable in cart if it had variants but not variant prices
+- Spelling mistake in method call (#977)
 
 Version 2.0.2 (2014-01-23)
 --------------------------
