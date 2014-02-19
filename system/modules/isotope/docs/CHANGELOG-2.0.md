@@ -4,6 +4,8 @@ Isotope eCommerce Changelog
 Version 2.0.4 (2014-??-??)
 --------------------------
 
+### Improved
+- Clarified Payone merchant id label
 
 
 Version 2.0.3 (2014-02-10)

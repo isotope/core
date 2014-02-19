@@ -58,8 +58,8 @@ $GLOBALS['TL_LANG']['tl_iso_payment']['expercash_popupKey']                     
 $GLOBALS['TL_LANG']['tl_iso_payment']['expercash_paymentMethod']                = array('Transaktionsart', 'Sie können eine Transaktionsart vordefinieren oder den Kunden wählen lassen.');
 $GLOBALS['TL_LANG']['tl_iso_payment']['expercash_css']                          = array('CSS-Vorlage', 'Wählen Sie eine CSS-Datei für die Übergabe an ExperCash.');
 $GLOBALS['TL_LANG']['tl_iso_payment']['payone_clearingtype']                    = array('Clearing type', 'Please choose a clearing type.');
-$GLOBALS['TL_LANG']['tl_iso_payment']['payone_aid']                             = array('PAYONE Account-ID', 'Please enter your unique PAYONE account ID.');
-$GLOBALS['TL_LANG']['tl_iso_payment']['payone_portalid']                        = array('PAYONE Portal-ID', 'Please enter your unique PAYONE portal ID.');
+$GLOBALS['TL_LANG']['tl_iso_payment']['payone_aid']                             = array('PAYONE subaccount ID (aid)', 'Please enter your unique PAYONE subaccount ID (aid).');
+$GLOBALS['TL_LANG']['tl_iso_payment']['payone_portalid']                        = array('PAYONE Portal ID', 'Please enter your unique PAYONE portal ID.');
 $GLOBALS['TL_LANG']['tl_iso_payment']['payone_key']                             = array('Secret key', 'Enter the secret key you specified for this portal.');
 $GLOBALS['TL_LANG']['tl_iso_payment']['worldpay_instId']                        = array('Installation ID', 'Please enter your WorldPay Installation ID');
 $GLOBALS['TL_LANG']['tl_iso_payment']['worldpay_callbackPW']                    = array('Transaction Password', 'Enter the same transaction password as in your WorldPay configuration.');
