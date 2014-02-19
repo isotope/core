@@ -264,7 +264,13 @@ class ProductList extends Module
     protected function findProducts($arrCacheIds = null)
     {
         $arrColumns    = array();
-        $arrCategories = $this->findCategories();
+        $arrCategories = $this->findCategories();      
+        $limit         = null;
+        
+        // Set the limit
+        if ($this->numberOfItems > 0) {
+            $limit = $this->numberOfItems;
+        }
 
         list($arrFilters, $arrSorting, $strWhere, $arrValues) = $this->getFiltersAndSorting();
 
@@ -298,6 +304,7 @@ class ProductList extends Module
             $arrValues,
             array(
                  'order'   => 'c.sorting',
+                 'limit'   => $limit,
                  'filters' => $arrFilters,
                  'sorting' => $arrSorting,
             )
