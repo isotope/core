@@ -30,5 +30,9 @@ class FileTree extends Attribute implements IsotopeAttribute
         parent::saveToDCA($arrData);
 
         $arrData['fields'][$this->field_name]['sql'] = "blob NULL";
+
+        if ($this->fieldType == 'checkbox') {
+            $arrData['fields'][$this->field_name]['eval']['multiple'] = true;
+        }
     }
 }

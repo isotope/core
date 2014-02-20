@@ -7,6 +7,9 @@ Version 2.0.4 (2014-??-??)
 ### Improved
 - Clarified Payone merchant id label
 
+## Fixed
+- Attribute FileTree did not correctly save checkbox values (#990)
+
 
 Version 2.0.3 (2014-02-10)
 --------------------------
