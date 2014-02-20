@@ -39,7 +39,7 @@ class Downloads extends Attribute implements IsotopeAttribute
             if ($this->sortBy == 'custom') {
                 $strOrderField = $this->field_name . '_order';
                 $arrData['fields'][$this->field_name]['eval']['orderField'] = $strOrderField;
-                $arrData['fields'][$strOrderField]['sql'] = "text NULL";
+                $arrData['fields'][$strOrderField]['sql'] = "blob NULL";
             }
         } else {
             $arrData['fields'][$this->field_name]['sql'] = "binary(16) NULL";
