@@ -1,4 +1,3 @@
-
 <!-- indexer::stop -->
 <div class="<?php echo $this->class; ?> block"<?php echo $this->cssID; ?><?php if ($this->style): ?> style="<?php echo $this->style; ?>"<?php endif; ?>>
 <?php if ($this->headline): ?>
@@ -7,13 +6,15 @@
 <?php endif; ?>
 
 <table>
-    <tr>
-        <th class="col_0 col_first order_date"><?php echo $GLOBALS['TL_LANG']['MSC']['iso_order_date']; ?></th>
-        <th class="col_1 document_number"><?php echo $GLOBALS['TL_LANG']['MSC']['iso_order_document_number']; ?></th>
-        <th class="col_2 order_total"><?php echo $GLOBALS['TL_LANG']['MSC']['iso_order_total']; ?></th>
-        <th class="col_3 oder_status"><?php echo $GLOBALS['TL_LANG']['MSC']['iso_order_status']; ?></th>
-        <th class="col_4 col_last link">&nbsp;</th>
-    </tr>
+    <thead>
+        <tr>
+            <th class="col_0 col_first order_date"><?php echo $GLOBALS['TL_LANG']['MSC']['iso_order_date']; ?></th>
+            <th class="col_1 document_number"><?php echo $GLOBALS['TL_LANG']['MSC']['iso_order_document_number']; ?></th>
+            <th class="col_2 order_total"><?php echo $GLOBALS['TL_LANG']['MSC']['iso_order_total']; ?></th>
+            <th class="col_3 oder_status"><?php echo $GLOBALS['TL_LANG']['MSC']['iso_order_status']; ?></th>
+            <th class="col_4 col_last link">&nbsp;</th>
+        </tr>
+    </thead>
 <?php foreach ($this->orders as $order): ?>
     <tr class="<?php echo $order['class']; ?>">
         <td class="col_0 col_first order_date"><?php echo $order['date']; ?></td>
