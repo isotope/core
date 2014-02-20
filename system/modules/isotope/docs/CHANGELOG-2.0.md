@@ -9,6 +9,7 @@ Version 2.0.4 (2014-??-??)
 
 ## Fixed
 - Attribute FileTree did not correctly save checkbox values (#990)
+- Attribute Downloads did not work (#993)
 
 
 Version 2.0.3 (2014-02-10)
