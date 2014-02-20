@@ -41,7 +41,7 @@ $GLOBALS['TL_LANG']['tl_module']['iso_noProducts']                  = array('Mes
 $GLOBALS['TL_LANG']['tl_module']['iso_emptyFilter']                 = array('Define a message if no filter is set', 'Set a custom message when there is no filter set.');
 $GLOBALS['TL_LANG']['tl_module']['iso_noFilter']                    = array('Message when no filter is set', 'Enter a custom message if there is no filter set.');
 $GLOBALS['TL_LANG']['tl_module']['iso_category_scope']              = array('Category Scope', 'Specify the scope of a product lister.');
-$GLOBALS['TL_LANG']['tl_module']['iso_list_where']                  = array('Condition', 'Here you can enter a SQL condition to filter the products. You must prefix the fields with "p1." (e.g. <em>p1.featured=1</em> or <em>p1.color!=\'red\'</em>)!');
+$GLOBALS['TL_LANG']['tl_module']['iso_list_where']                  = array('Condition', 'Here you can enter a SQL condition to filter the products. You must prefix the fields with "tl_iso_product." (e.g. <em>tl_iso_product.featured=1</em> or <em>tl_iso_product.color!=\'red\'</em>)!');
 $GLOBALS['TL_LANG']['tl_module']['iso_filterModules']               = array('Filter modules', 'Select the filter modules you want to consider for this product list.');
 $GLOBALS['TL_LANG']['tl_module']['iso_filterFields']                = array('Enabled filters', 'Please select filters to enable.');
 $GLOBALS['TL_LANG']['tl_module']['iso_filterHideSingle']            = array('Hide single options', 'Hide filter field if there is just one option.');
