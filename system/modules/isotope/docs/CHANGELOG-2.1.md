@@ -7,6 +7,9 @@ Version 2.1.0-rc1 (2014-??-??)
 ### Fixed
 - Missing argument in new Google Tracking code (#992)
 
+### Improved
+- Added missing <thead> and <tbody> tags to mod_iso_history template (#997)
+
 Version 2.1.0-beta1 (2014-02-07)
 --------------------------------
 
