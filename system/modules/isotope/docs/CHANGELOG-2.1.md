@@ -9,6 +9,7 @@ Version 2.1.0-rc1 (2014-??-??)
 
 ### Improved
 - Added missing <thead> and <tbody> tags to mod_iso_history template (#997)
+- Added filter and search panel to product type back end (#987)
 
 Version 2.1.0-beta1 (2014-02-07)
 --------------------------------
