@@ -22,7 +22,7 @@ class Analytics extends Frontend
     /**
      * Process checkout
      */
-    public function trackOrder(Order $objOrder, $arrItemIds, $arrData)
+    public function trackOrder(Order $objOrder, $arrTokens)
     {
         $objConfig = Config::findByPk($objOrder->config_id);
 
@@ -44,13 +44,13 @@ class Analytics extends Frontend
     protected function trackGATransaction($objConfig, $objOrder)
     {
         // Initilize GA Tracker
-        $tracker = new \UnitedPrototype\GoogleAnalytics\Tracker($objConfig->ga_account, $this->Environment->base);
+        $tracker = new \UnitedPrototype\GoogleAnalytics\Tracker($objConfig->ga_account, \Environment::get('base'));
 
         // Assemble Visitor information
         // (could also get unserialized from database)
         $visitor = new \UnitedPrototype\GoogleAnalytics\Visitor();
-        $visitor->setIpAddress($this->Environment->ip);
-        $visitor->setUserAgent($this->Environment->httpUserAgent);
+        $visitor->setIpAddress(\Environment::get('ip'));
+        $visitor->setUserAgent(\Environment::get('httpUserAgent'));
 
         $transaction = new \UnitedPrototype\GoogleAnalytics\Transaction();
 
