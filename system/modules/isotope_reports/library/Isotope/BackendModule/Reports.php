@@ -47,7 +47,8 @@ class Reports extends BackendOverview
                         'class'         => $arrConfig['class'],
                     ));
 
-                    $arrReturn[$strGroup]['label'] = $strLegend = $GLOBALS['ISO_LANG']['REPORT'][$strGroup] ?: $strGroup;;
+                    // @todo remove ISO_LANG in Isotope 3.0
+                    $arrReturn[$strGroup]['label'] = $strLegend = ($GLOBALS['TL_LANG']['ISO_REPORT'][$strGroup] ?: ($GLOBALS['ISO_LANG']['REPORT'][$strGroup] ?: $strGroup));
                 }
             }
         }
@@ -73,7 +74,7 @@ class Reports extends BackendOverview
         $strBuffer = '
 <div class="tl_formbody_edit be_iso_overview">
 <fieldset class="tl_tbox">
-<legend style="cursor: default;">' . $GLOBALS['ISO_LANG']['REPORT']['24h_summary'] . '</legend>';
+<legend style="cursor: default;">' . $GLOBALS['TL_LANG']['ISO_REPORT']['24h_summary'] . '</legend>';
 
         $arrAllowedProducts = \Isotope\Backend\Product\Permission::getAllowedIds();
 
@@ -95,7 +96,7 @@ class Reports extends BackendOverview
         if (!$objOrders->numRows) {
 
             $strBuffer .= '
-<p class="tl_info" style="margin-top:10px">' . $GLOBALS['ISO_LANG']['REPORT']['24h_empty'] . '</p>';
+<p class="tl_info" style="margin-top:10px">' . $GLOBALS['TL_LANG']['ISO_REPORT']['24h_empty'] . '</p>';
 
         } else {
 
@@ -104,11 +105,11 @@ class Reports extends BackendOverview
 <br>
 <table class="tl_listing">
 <tr>
-    <th class="tl_folder_tlist">' . $GLOBALS['ISO_LANG']['REPORT']['shop_config'] . '</th>
-    <th class="tl_folder_tlist">' . $GLOBALS['ISO_LANG']['REPORT']['currency'] . '</th>
-    <th class="tl_folder_tlist">' . $GLOBALS['ISO_LANG']['REPORT']['orders#'] . '</th>
-    <th class="tl_folder_tlist">' . $GLOBALS['ISO_LANG']['REPORT']['products#'] . '</th>
-    <th class="tl_folder_tlist">' . $GLOBALS['ISO_LANG']['REPORT']['sales#'] . '</th>
+    <th class="tl_folder_tlist">' . $GLOBALS['TL_LANG']['ISO_REPORT']['shop_config'] . '</th>
+    <th class="tl_folder_tlist">' . $GLOBALS['TL_LANG']['ISO_REPORT']['currency'] . '</th>
+    <th class="tl_folder_tlist">' . $GLOBALS['TL_LANG']['ISO_REPORT']['orders#'] . '</th>
+    <th class="tl_folder_tlist">' . $GLOBALS['TL_LANG']['ISO_REPORT']['products#'] . '</th>
+    <th class="tl_folder_tlist">' . $GLOBALS['TL_LANG']['ISO_REPORT']['sales#'] . '</th>
 </tr>';
 
 

@@ -114,27 +114,27 @@ class SalesTotal extends Sales
         (
             array
             (
-                'value'            => &$GLOBALS['ISO_LANG']['REPORT']['period'],
+                'value'            => &$GLOBALS['TL_LANG']['ISO_REPORT']['period'],
                 'header'        => true,
             ),
             array
             (
-                'value'            => &$GLOBALS['ISO_LANG']['REPORT']['orders#'],
+                'value'            => &$GLOBALS['TL_LANG']['ISO_REPORT']['orders#'],
                 'attributes'    => ' style="text-align:right"',
             ),
             array
             (
-                'value'            => &$GLOBALS['ISO_LANG']['REPORT']['products#'],
+                'value'            => &$GLOBALS['TL_LANG']['ISO_REPORT']['products#'],
                 'attributes'    => ' style="text-align:right"',
             ),
             array
             (
-                'value'            => &$GLOBALS['ISO_LANG']['REPORT']['items#'],
+                'value'            => &$GLOBALS['TL_LANG']['ISO_REPORT']['items#'],
                 'attributes'    => ' style="text-align:right"',
             ),
             array
             (
-                'value'            => &$GLOBALS['ISO_LANG']['REPORT']['sales#'],
+                'value'            => &$GLOBALS['TL_LANG']['ISO_REPORT']['sales#'],
                 'attributes'    => ' style="text-align:right"',
             ),
         );
@@ -143,7 +143,7 @@ class SalesTotal extends Sales
         (
             array
             (
-                'value'            => $GLOBALS['ISO_LANG']['REPORT']['sums'],
+                'value'            => $GLOBALS['TL_LANG']['ISO_REPORT']['sums'],
             ),
             array
             (

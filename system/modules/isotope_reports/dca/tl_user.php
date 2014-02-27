@@ -48,7 +48,8 @@ class tl_iso_reports extends Backend
 
 		foreach ($arrGroups as $strGroup => $arrGroup)
 		{
-			$strLegend = $GLOBALS['ISO_LANG']['REPORT'][$strGroup] ? $GLOBALS['ISO_LANG']['REPORT'][$strGroup] : $strGroup;
+		    // @todo remove ISO_LANG in Isotope 3.0
+			$strLegend = $GLOBALS['TL_LANG']['ISO_REPORT'][$strGroup] ?: ($GLOBALS['ISO_LANG']['REPORT'][$strGroup] ?: $strGroup);
 
 			foreach ($arrGroup as $strName => $arrConfig)
 			{
