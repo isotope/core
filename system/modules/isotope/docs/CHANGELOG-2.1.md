@@ -4,12 +4,16 @@ Isotope eCommerce Changelog
 Version 2.1.0-rc1 (2014-??-??)
 --------------------------------
 
-### Fixed
-- Missing argument in new Google Tracking code (#992)
+### New
+- Do not allow to setup variant products if no such attributes are defined (#975)
 
 ### Improved
 - Added missing <thead> and <tbody> tags to mod_iso_history template (#997)
 - Added filter and search panel to product type back end (#987)
+
+### Fixed
+- Missing argument in new Google Tracking code (#992)
+
 
 Version 2.1.0-beta1 (2014-02-07)
 --------------------------------

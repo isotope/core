@@ -30,3 +30,5 @@ $GLOBALS['TL_LANG']['XPL']['isoReaderJumpTo']       = '
 </p>';
 
 $GLOBALS['TL_LANG']['XPL']['mediaManager']          = '<p class="tl_help_table">To upload a new picture, select the file and save the product. After successfully uploading, a preview of the image is displayed and next to it you can enter its alternative text and a description. For multiple pictures, you can click on the arrows to the right and change their order, the top image is used as the main image of each product.</p>';
+
+$GLOBALS['TL_LANG']['XPL']['noVariantAttributes']   = 'To use product variants with Isotope eCommerce, you must first configure the attributes.<br>Please refer to <a href="http://isotopeecommerce.org/en/manual.html" target="_blank" style="text-decoration:underline">the manual</a> for more information about attribute setup.';

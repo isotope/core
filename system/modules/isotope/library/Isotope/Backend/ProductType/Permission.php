@@ -42,6 +42,27 @@ class Permission extends \Backend
                 \Message::addInfo($GLOBALS['TL_LANG']['MSC']['undeletableRecords']);
             }
         }
+
+        // Disable variants if no such attributes are available
+        \Haste\Haste::getInstance()->call('loadDataContainer', 'tl_iso_product');
+        $blnVariants = false;
+        foreach ($GLOBALS['TL_DCA']['tl_iso_product']['fields'] as $strName => $arrConfig) {
+            $objAttribute = $GLOBALS['TL_DCA']['tl_iso_product']['attributes'][$strName];
+
+            if (null !== $objAttribute && $objAttribute->isVariantOption()) {
+                $blnVariants = true;
+                break;
+            }
+        }
+
+        if (!$blnVariants) {
+            \System::loadLanguageFile('explain');
+
+            unset($GLOBALS['TL_DCA']['tl_iso_producttype']['subpalettes']['variants']);
+            $GLOBALS['TL_DCA']['tl_iso_producttype']['fields']['variants']['input_field_callback'] = function() {
+                return '<br><p class="tl_info">'.$GLOBALS['TL_LANG']['XPL']['noVariantAttributes'].'</p>';
+            };
+        }
     }
 
     /**
