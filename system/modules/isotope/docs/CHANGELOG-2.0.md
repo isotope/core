@@ -12,6 +12,7 @@ Version 2.0.4 (2014-??-??)
 - Attribute Downloads did not work (#993)
 - Exception when using shipping weight as variant attribute (#940)
 - Missing user instance in back end overview (#998)
+- Orders were not filterable in the backend (#973)
 
 
 Version 2.0.3 (2014-02-10)
