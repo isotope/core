@@ -114,55 +114,55 @@ class SalesTotal extends Sales
         (
             array
             (
-                'value'            => &$GLOBALS['TL_LANG']['ISO_REPORT']['period'],
+                'value'         => &$GLOBALS['TL_LANG']['ISO_REPORT']['period'],
                 'header'        => true,
             ),
             array
             (
-                'value'            => &$GLOBALS['TL_LANG']['ISO_REPORT']['orders#'],
+                'value'         => &$GLOBALS['TL_LANG']['ISO_REPORT']['orders#'],
                 'attributes'    => ' style="text-align:right"',
             ),
             array
             (
-                'value'            => &$GLOBALS['TL_LANG']['ISO_REPORT']['products#'],
+                'value'         => &$GLOBALS['TL_LANG']['ISO_REPORT']['products#'],
                 'attributes'    => ' style="text-align:right"',
             ),
             array
             (
-                'value'            => &$GLOBALS['TL_LANG']['ISO_REPORT']['items#'],
+                'value'         => &$GLOBALS['TL_LANG']['ISO_REPORT']['items#'],
                 'attributes'    => ' style="text-align:right"',
             ),
             array
             (
-                'value'            => &$GLOBALS['TL_LANG']['ISO_REPORT']['sales#'],
+                'value'         => &$GLOBALS['TL_LANG']['ISO_REPORT']['sales#'],
                 'attributes'    => ' style="text-align:right"',
             ),
         );
 
-        $arrData['footer'] = array
+        $arrData['footer']      = array
         (
             array
             (
-                'value'            => $GLOBALS['TL_LANG']['ISO_REPORT']['sums'],
+                'value'         => $GLOBALS['TL_LANG']['ISO_REPORT']['sums'],
             ),
             array
             (
-                'value'            => 0,
+                'value'         => 0,
                 'attributes'    => ' style="text-align:right"',
             ),
             array
             (
-                'value'            => 0,
+                'value'         => 0,
                 'attributes'    => ' style="text-align:right"',
             ),
             array
             (
-                'value'            => 0,
+                'value'         => 0,
                 'attributes'    => ' style="text-align:right"',
             ),
             array
             (
-                'value'            => array(),
+                'value'         => array(),
                 'attributes'    => ' style="text-align:right"',
             ),
         );
@@ -175,26 +175,26 @@ class SalesTotal extends Sales
                 (
                     array
                     (
-                        'value'            => $this->parseDate($publicDate, $intStart),
+                        'value'         => $this->parseDate($publicDate, $intStart),
                     ),
                     array
                     (
-                        'value'            => 0,
+                        'value'         => 0,
                         'attributes'    => ' style="text-align:right"',
                     ),
                     array
                     (
-                        'value'            => 0,
+                        'value'         => 0,
                         'attributes'    => ' style="text-align:right"',
                     ),
                     array
                     (
-                        'value'            => 0,
+                        'value'         => 0,
                         'attributes'    => ' style="text-align:right"',
                     ),
                     array
                     (
-                        'value'            => 0,
+                        'value'         => 0,
                         'attributes'    => ' style="text-align:right"',
                     ),
                 ),

@@ -243,8 +243,8 @@ class SalesProduct extends Sales
 
         $this->arrSortingOptions = array
         (
-            'product_name'    => &$GLOBALS['TL_LANG']['ISO_REPORT']['product_name'],
-            'total'            => &$GLOBALS['TL_LANG']['ISO_REPORT']['total_sales'],
+            'product_name' => &$GLOBALS['TL_LANG']['ISO_REPORT']['product_name'],
+            'total' => &$GLOBALS['TL_LANG']['ISO_REPORT']['total_sales'],
         );
 
         // Set default session data
@@ -270,7 +270,7 @@ class SalesProduct extends Sales
         {
             $arrHeader[] = array
             (
-                'value'         => $this->parseDate($strFormat, $intStart),
+                'value' => $this->parseDate($strFormat, $intStart),
             );
 
             $intStart = strtotime('+ 1 ' . $strPeriod, $intStart);
@@ -278,7 +278,7 @@ class SalesProduct extends Sales
 
         $arrHeader[] = array
         (
-            'value'         => 'Total',
+            'value' => 'Total',
         );
 
         return $arrHeader;
