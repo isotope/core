@@ -61,7 +61,6 @@ $GLOBALS['TL_LANG']['tl_module']['iso_noFilter'][1] = 'Escriba un mensaje person
 $GLOBALS['TL_LANG']['tl_module']['iso_category_scope'][0] = 'Categoría Scope';
 $GLOBALS['TL_LANG']['tl_module']['iso_category_scope'][1] = 'Especifique el alcance de un lister de producto.';
 $GLOBALS['TL_LANG']['tl_module']['iso_list_where'][0] = 'Condición';
-$GLOBALS['TL_LANG']['tl_module']['iso_list_where'][1] = 'Aquí puede introducir una condición SQL para filtrar los productos. Debe anteponer los campos con "p1". (por ejemplo <em>p1.featured = 1</em> o <em>p1.color! = "rojo"</em>)!';
 $GLOBALS['TL_LANG']['tl_module']['iso_filterModules'][0] = 'Modulos filtro';
 $GLOBALS['TL_LANG']['tl_module']['iso_filterModules'][1] = 'Seleccionar los módulos de filtro que desee tener en cuenta para esta lista de productos.';
 $GLOBALS['TL_LANG']['tl_module']['iso_filterFields'][0] = 'Habilitar los filtros';

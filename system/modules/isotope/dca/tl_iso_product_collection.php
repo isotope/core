@@ -60,7 +60,7 @@ $GLOBALS['TL_DCA']['tl_iso_product_collection'] = array
             'mode'                  => 2,
             'fields'                => array('locked DESC'),
             'panelLayout'           => 'filter;sort,search,limit',
-            'filter'                => array(array('type=?', 'order'), array('order_status>?', '0'), array("locked!=''")),
+            'filter'                => array(array('type=?', 'order'), array('order_status>?', '0'), array("locked!=?", '')),
         ),
         'label' => array
         (

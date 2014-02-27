@@ -299,7 +299,7 @@ class DcaManager extends \Backend
                         $arrFields[$name]['eval']['mandatory'] = $arrConfig[$name]['mandatory'] == 1 ? false : true;
                     }
 
-                    if ($blnVariants && in_array($name, $arrCanInherit) && !$arrAttributes[$name]->isVariantOption() && !in_array($name, array('price', 'published', 'start', 'stop'))) {
+                    if ($blnVariants && in_array($name, $arrCanInherit) && null !== $arrAttributes[$name] && !$arrAttributes[$name]->isVariantOption() && !in_array($name, array('price', 'published', 'start', 'stop'))) {
                         $arrInherit[$name] = Format::dcaLabel('tl_iso_product', $name);
                     }
 

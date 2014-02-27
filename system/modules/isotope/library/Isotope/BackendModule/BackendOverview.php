@@ -150,7 +150,7 @@ abstract class BackendOverview extends \BackendModule
             if ($GLOBALS['TL_DCA'][$strTable]['fields']) {
                 foreach ($GLOBALS['TL_DCA'][$strTable]['fields'] as $k => $v) {
                     if ($v['exclude']) {
-                        if ($this->User->hasAccess($strTable . '::' . $k, 'alexf')) {
+                        if (\BackendUser::getInstance()->hasAccess($strTable . '::' . $k, 'alexf')) {
                             $GLOBALS['TL_DCA'][$strTable]['fields'][$k]['exclude'] = false;
                         }
                     }

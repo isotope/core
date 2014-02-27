@@ -69,7 +69,6 @@ $GLOBALS['TL_LANG']['tl_module']['iso_noFilter'][1] = 'Proszę wprowadzić wiado
 $GLOBALS['TL_LANG']['tl_module']['iso_category_scope'][0] = 'Zakres kategorii';
 $GLOBALS['TL_LANG']['tl_module']['iso_category_scope'][1] = 'Określ zakres listy prodkutów.';
 $GLOBALS['TL_LANG']['tl_module']['iso_list_where'][0] = 'Warunek';
-$GLOBALS['TL_LANG']['tl_module']['iso_list_where'][1] = 'Tutaj możesz wprowadzić warunek SQL do filtrowania produktów. Dla wszystkich pól musisz użyć prefiksu "p1." (np. <em>p1.featured=1</em> or <em>p1.color!=\'red\'</em>)!';
 $GLOBALS['TL_LANG']['tl_module']['iso_filterModules'][0] = 'Moduły filtrów';
 $GLOBALS['TL_LANG']['tl_module']['iso_filterModules'][1] = 'Wybierz moduły filtrów, które chcesz uwzględnić dla tej listy produktów.';
 $GLOBALS['TL_LANG']['tl_module']['iso_filterFields'][0] = 'Włączone filtry';

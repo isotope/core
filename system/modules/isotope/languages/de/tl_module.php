@@ -69,7 +69,6 @@ $GLOBALS['TL_LANG']['tl_module']['iso_noFilter'][1] = 'Geben Sie eine eigene Nac
 $GLOBALS['TL_LANG']['tl_module']['iso_category_scope'][0] = 'Kategorie-Anwendungsbereich';
 $GLOBALS['TL_LANG']['tl_module']['iso_category_scope'][1] = 'Spezifizieren Sie den Anwendungsbereich diese Produktliste.';
 $GLOBALS['TL_LANG']['tl_module']['iso_list_where'][0] = 'Bedingung';
-$GLOBALS['TL_LANG']['tl_module']['iso_list_where'][1] = 'Geben Sie eine SQL-Bedingung zum filtern der Liste ein. Sie müssen die Felder mit "p1." beginnen (z.B. <em>p1.featured=1</em> oder <em>p1.color!=\'red\'</em>)!';
 $GLOBALS['TL_LANG']['tl_module']['iso_filterModules'][0] = 'Filter-Module';
 $GLOBALS['TL_LANG']['tl_module']['iso_filterModules'][1] = 'Wählen Sie die Filter-Module die Sie für diese Produkt-Liste in Betracht ziehen wollen.';
 $GLOBALS['TL_LANG']['tl_module']['iso_filterFields'][0] = 'Aktivierte Filter';

@@ -39,7 +39,7 @@ class Downloads extends Attribute implements IsotopeAttribute
             if ($this->sortBy == 'custom') {
                 $strOrderField = $this->field_name . '_order';
                 $arrData['fields'][$this->field_name]['eval']['orderField'] = $strOrderField;
-                $arrData['fields'][$strOrderField]['sql'] = "text NULL";
+                $arrData['fields'][$strOrderField]['sql'] = "blob NULL";
             }
         } else {
             $arrData['fields'][$this->field_name]['sql'] = "binary(16) NULL";
@@ -65,7 +65,7 @@ class Downloads extends Attribute implements IsotopeAttribute
     public function generate(IsotopeProduct $objProduct, array $arrOptions = array())
     {
         global $objPage;
-        $arrFiles = $objProduct->{$this->field_name};
+        $arrFiles = deserialize($objProduct->{$this->field_name});
 
         // Return if there are no files
         if (empty($arrFiles) || !is_array($arrFiles)) {
@@ -131,18 +131,19 @@ class Downloads extends Attribute implements IsotopeAttribute
 
                 // Add the image
                 $files[$objFiles->path] = array(
-                    'id'        => $objFiles->id,
-                    'name'      => $objFile->basename,
-                    'title'     => $arrMeta['title'],
-                    'link'      => $arrMeta['title'],
-                    'caption'   => $arrMeta['caption'],
-                    'href'      => $strHref,
+					'id'        => $objFiles->id,
+					'uuid'      => $objFiles->uuid,
+					'name'      => $objFile->basename,
+					'title'     => $arrMeta['title'],
+					'link'      => $arrMeta['title'],
+					'caption'   => $arrMeta['caption'],
+					'href'      => $strHref,
                     'filesize'  => \System::getReadableSize($objFile->filesize, 1),
-                    'icon'      => TL_ASSETS_URL . 'assets/contao/images/' . $objFile->icon,
-                    'mime'      => $objFile->mime,
-                    'meta'      => $arrMeta,
-                    'extension' => $objFile->extension,
-                    'path'      => $objFile->dirname
+					'icon'      => TL_ASSETS_URL . 'assets/contao/images/' . $objFile->icon,
+					'mime'      => $objFile->mime,
+					'meta'      => $arrMeta,
+					'extension' => $objFile->extension,
+					'path'      => $objFile->dirname
                 );
 
                 $auxDate[] = $objFile->mtime;
@@ -185,18 +186,19 @@ class Downloads extends Attribute implements IsotopeAttribute
 
                     // Add the image
                     $files[$objSubfiles->path] = array(
-                        'id'        => $objSubfiles->id,
-                        'name'      => $objFile->basename,
-                        'title'     => $arrMeta['title'],
-                        'link'      => $arrMeta['title'],
-                        'caption'   => $arrMeta['caption'],
-                        'href'      => $strHref,
-                        'filesize'  => $this->getReadableSize($objFile->filesize, 1),
-                        'icon'      => TL_ASSETS_URL . 'assets/contao/images/' . $objFile->icon,
-                        'mime'      => $objFile->mime,
-                        'meta'      => $arrMeta,
-                        'extension' => $objFile->extension,
-                        'path'      => $objFile->dirname
+						'id'        => $objSubfiles->id,
+						'uuid'      => $objSubfiles->uuid,
+						'name'      => $objFile->basename,
+						'title'     => $arrMeta['title'],
+						'link'      => $arrMeta['title'],
+						'caption'   => $arrMeta['caption'],
+						'href'      => $strHref,
+						'filesize'  => \System::getReadableSize($objFile->filesize, 1),
+						'icon'      => TL_ASSETS_URL . 'assets/contao/images/' . $objFile->icon,
+						'mime'      => $objFile->mime,
+						'meta'      => $arrMeta,
+						'extension' => $objFile->extension,
+						'path'      => $objFile->dirname
                     );
 
                     $auxDate[] = $objFile->mtime;
@@ -225,30 +227,31 @@ class Downloads extends Attribute implements IsotopeAttribute
                 break;
 
             case 'custom':
-                if ($this->{$this->field_name . '_order'} != '') {
-                    // Turn the order string into an array and remove all values
-                    $arrOrder = explode(',', $this->{$this->field_name . '_order'});
-                    $arrOrder = array_flip(array_map('intval', $arrOrder));
-                    $arrOrder = array_map(function () {
-                    }, $arrOrder);
+                if ($objProduct->{$this->field_name . '_order'} != '') {
+					$tmp = deserialize($objProduct->{$this->field_name . '_order'});
 
-                    // Move the matching elements to their position in $arrOrder
-                    foreach ($files as $k => $v) {
-                        if (array_key_exists($v['id'], $arrOrder)) {
-                            $arrOrder[$v['id']] = $v;
-                            unset($files[$k]);
-                        }
-                    }
+					if (!empty($tmp) && is_array($tmp)) {
+						// Remove all values
+						$arrOrder = array_map(function(){}, array_flip($tmp));
 
-                    // Append the left-over files at the end
-                    if (!empty($files)) {
-                        $arrOrder = array_merge($arrOrder, array_values($files));
-                    }
+						// Move the matching elements to their position in $arrOrder
+						foreach ($files as $k=>$v) {
+							if (array_key_exists($v['uuid'], $arrOrder)) {
+								$arrOrder[$v['uuid']] = $v;
+								unset($files[$k]);
+							}
+						}
 
-                    // Remove empty (unreplaced) entries
-                    $files = array_filter($arrOrder);
-                    unset($arrOrder);
-                }
+						// Append the left-over files at the end
+						if (!empty($files)) {
+							$arrOrder = array_merge($arrOrder, array_values($files));
+						}
+
+						// Remove empty (unreplaced) entries
+						$files = array_values(array_filter($arrOrder));
+						unset($arrOrder);
+					}
+				}
                 break;
 
             case 'random':
