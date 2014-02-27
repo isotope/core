@@ -82,7 +82,7 @@ class SalesProduct extends Sales
         ");
 
         // Cache product types so call to findByPk() will trigger the registry
-		ProductType::findMultipleByIds($objProducts->fetchEach('type'));
+        ProductType::findMultipleByIds($objProducts->fetchEach('type'));
 
         $arrRaw = array();
         $objProducts->reset();
