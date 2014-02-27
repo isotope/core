@@ -71,7 +71,6 @@ $GLOBALS['TL_LANG']['tl_module']['iso_noFilter'][1] = 'Enter a custom message if
 $GLOBALS['TL_LANG']['tl_module']['iso_category_scope'][0] = 'Portée de la catégorie';
 $GLOBALS['TL_LANG']['tl_module']['iso_category_scope'][1] = 'Définir le champ d\'application d\'un listeur de produits.';
 $GLOBALS['TL_LANG']['tl_module']['iso_list_where'][0] = 'Condition';
-$GLOBALS['TL_LANG']['tl_module']['iso_list_where'][1] = 'Ici, vous pouvez entrer une condition SQL pour filtrer les produits. Vous devez préfixer les champs avec "p1." (par ex. : <em>p1.featured=1</em> ou <em>p1.color!=\'red\'</em>)!';
 $GLOBALS['TL_LANG']['tl_module']['iso_filterModules'][0] = 'Filter modules';
 $GLOBALS['TL_LANG']['tl_module']['iso_filterModules'][1] = 'Select the filter modules you want to consider for this product list.';
 $GLOBALS['TL_LANG']['tl_module']['iso_filterFields'][0] = 'Activer les filtres';

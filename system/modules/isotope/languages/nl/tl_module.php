@@ -61,7 +61,6 @@ $GLOBALS['TL_LANG']['tl_module']['iso_noFilter'][1] = 'Vul een eigen melding in 
 $GLOBALS['TL_LANG']['tl_module']['iso_category_scope'][0] = 'Categorie omvang';
 $GLOBALS['TL_LANG']['tl_module']['iso_category_scope'][1] = 'Geef de omvang van een productlijst op.';
 $GLOBALS['TL_LANG']['tl_module']['iso_list_where'][0] = 'Voorwaarde';
-$GLOBALS['TL_LANG']['tl_module']['iso_list_where'][1] = 'Vul hier een eigen SQL voorwaarde in om producten mee te filteren. Ieder veld moet met "p1." beginnen (bijv. <em>p1.featured=1</em> of <em>p1.color!=\'rood\'</em>)!';
 $GLOBALS['TL_LANG']['tl_module']['iso_filterModules'][0] = 'Filter modules';
 $GLOBALS['TL_LANG']['tl_module']['iso_filterModules'][1] = 'Selecteer de filter modules voor deze productlijst.';
 $GLOBALS['TL_LANG']['tl_module']['iso_filterFields'][0] = 'Filters mogelijk maken';
