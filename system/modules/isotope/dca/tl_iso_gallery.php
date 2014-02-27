@@ -193,8 +193,8 @@ $GLOBALS['TL_DCA']['tl_iso_gallery'] = array
             'inputType'             => 'checkboxWizard',
             'options_callback'      => function() {
                 return array_merge(
-                    $this->getTemplateGroup('moo_'),
-                    $this->getTemplateGroup('j_')
+                    \Controller::getTemplateGroup('moo_'),
+                    \Controller::getTemplateGroup('j_')
                 );
             },
             'eval'                  => array('mandatory'=>true, 'multiple'=>true, 'tl_class'=>'w50 w50h'),
