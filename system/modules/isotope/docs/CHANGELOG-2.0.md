@@ -1,7 +1,7 @@
 Isotope eCommerce Changelog
 ===========================
 
-Version 2.0.4 (2014-??-??)
+Version 2.0.4 (2014-03-03)
 --------------------------
 
 ### Improved
@@ -14,6 +14,9 @@ Version 2.0.4 (2014-??-??)
 - Missing user instance in back end overview (#998)
 - Orders were not filterable in the backend (#973)
 - Filter module did not work with latest Contao due to security fixes (#991)
+- Skip incomplete payment and shipping methods (#1004)
+- Downloads were not available for variants (#1005)
+- Date picker did not work in the frontend (#1013)
 
 
 Version 2.0.3 (2014-02-10)
