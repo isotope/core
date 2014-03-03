@@ -24,9 +24,9 @@ class Callback extends \Backend
 
     /**
      * Generate the order label and return it as string
-     * @param array
-     * @param string
-     * @return string
+     * @param   array
+     * @param   string
+     * @return  string
      */
     public function getOrderLabel($row, $label, \DataContainer $dc, $args)
     {
@@ -60,9 +60,9 @@ class Callback extends \Backend
 
     /**
      * Generate the order details view when editing an order
-     * @param object
-     * @param string
-     * @return string
+     * @param   object
+     * @param   string
+     * @return  string
      */
     public function generateOrderDetails($dc, $xlabel)
     {
@@ -84,9 +84,10 @@ class Callback extends \Backend
 
     /**
      * Generate the order details view when editing an order
-     * @param object
-     * @param string
-     * @return string
+     * @param       object
+     * @param       string
+     * @return      string
+     * @deprecated  we should probably remove this in 3.0 as it does no longer make sense
      */
     public function generateEmailData($dc, $xlabel)
     {
@@ -135,9 +136,9 @@ class Callback extends \Backend
 
     /**
      * Generate the billing address details
-     * @param object
-     * @param string
-     * @return string
+     * @param   object
+     * @param   string
+     * @return  string
      */
     public function generateBillingAddressData($dc, $xlabel)
     {
@@ -149,9 +150,9 @@ class Callback extends \Backend
 
     /**
      * Generate the shipping address details
-     * @param object
-     * @param string
-     * @return string
+     * @param   object
+     * @param   string
+     * @return  string
      */
     public function generateShippingAddressData($dc, $xlabel)
     {
@@ -207,8 +208,8 @@ class Callback extends \Backend
 
     /**
      * Review order page stores temporary information in this table to know it when user is redirected to a payment provider. We do not show this data in backend.
-     * @param object
-     * @return void
+     * @param   object
+     * @return  void
      */
     public function checkPermission($dc)
     {
@@ -246,13 +247,13 @@ class Callback extends \Backend
 
     /**
      * Return the paymnet button if a payment method is available
-     * @param array
-     * @param string
-     * @param string
-     * @param string
-     * @param string
-     * @param string
-     * @return string
+     * @param   array
+     * @param   string
+     * @param   string
+     * @param   string
+     * @param   string
+     * @param   string
+     * @return  string
      */
     public function paymentButton($row, $href, $label, $title, $icon, $attributes)
     {
@@ -261,8 +262,8 @@ class Callback extends \Backend
 
     /**
      * Generate a payment interface and return it as HTML string
-     * @param object
-     * @return string
+     * @param   object
+     * @return  string
      */
     public function paymentInterface($dc)
     {
@@ -281,13 +282,13 @@ class Callback extends \Backend
 
     /**
      * Return the shipping button if a shipping method is available
-     * @param array
-     * @param string
-     * @param string
-     * @param string
-     * @param string
-     * @param string
-     * @return string
+     * @param   array
+     * @param   string
+     * @param   string
+     * @param   string
+     * @param   string
+     * @param   string
+     * @return  string
      */
     public function shippingButton($row, $href, $label, $title, $icon, $attributes)
     {
@@ -296,8 +297,8 @@ class Callback extends \Backend
 
     /**
      * Generate a shipping interface and return it as HTML string
-     * @param object
-     * @return string
+     * @param   object
+     * @return  string
      */
     public function shippingInterface($dc)
     {
@@ -317,7 +318,7 @@ class Callback extends \Backend
 
     /**
      * Pass an order to the document
-     * @param DataContainer
+     * @param   DataContainer
      */
     public function printDocument(\DataContainer $dc)
     {
@@ -392,10 +393,10 @@ class Callback extends \Backend
 
     /**
      * Trigger order status update when changing the status in the backend
-     * @param string
-     * @param DataContainer
-     * @return string
-     * @link http://www.contao.org/callbacks.html#save_callback
+     * @param   string
+     * @param   DataContainer
+     * @return  string
+     * @link    http://www.contao.org/callbacks.html#save_callback
      */
     public function updateOrderStatus($varValue, $dc)
     {
@@ -414,8 +415,8 @@ class Callback extends \Backend
 
     /**
      * Execute the saveCollection hook when a collection is saved
-     * @param object
-     * @return void
+     * @param   object
+     * @return  void
      */
     public function executeSaveHook($dc)
     {
