@@ -190,7 +190,7 @@ class Button extends \Backend
             return '';
         }
 
-        return '<a href="' . \Backend::addToUrl($href . '&amp;id=' . $row['id']) . '" title="' . specialchars(sprintf($GLOBALS['TL_DCA']['tl_iso_product']['list']['operations']['downloads']['label'][2], $this->getNumberOfDownloadsForProduct($row['id'])) . $title) . '"' . $attributes . '>' . \Image::getHtml($icon, $label) . '</a> ';
+        return '<a href="' . \Backend::addToUrl($href . '&amp;id=' . $row['id']) . '" title="' . specialchars($title . '<br>'.sprintf($GLOBALS['TL_DCA']['tl_iso_product']['list']['operations']['downloads']['label'][2], $this->getNumberOfDownloadsForProduct($row['id']))) . '"' . $attributes . '>' . \Image::getHtml($icon, $label) . '</a> ';
     }
 
     /**
