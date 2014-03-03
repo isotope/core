@@ -109,7 +109,8 @@ class Callback extends \Backend
      */
     public function getPaymentModules()
     {
-        $objPayment = Payment::findAll();
+        $t = Payment::getTable();
+        $objPayment = Payment::findBy(array("$t.tstamp>0"), null);
 
         if (null === $objPayment) {
             return array();
@@ -125,7 +126,8 @@ class Callback extends \Backend
      */
     public function getShippingModules()
     {
-        $objShipping = Shipping::findAll();
+        $t = Shipping::getTable();
+        $objShipping = Shipping::findBy(array("$t.tstamp>0"), null);
 
         if (null === $objShipping) {
             return array();
