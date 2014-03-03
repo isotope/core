@@ -32,7 +32,7 @@ class ProductCollectionDownload extends \Model
 
 
     /**
-     * Check if downloadds are remaining and is not expired
+     * Check if downloads are remaining and is not expired
      * @return  bool
      */
     public function canDownload()
