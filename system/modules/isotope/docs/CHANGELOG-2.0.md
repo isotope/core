@@ -1,6 +1,24 @@
 Isotope eCommerce Changelog
 ===========================
 
+Version 2.0.4 (2014-03-03)
+--------------------------
+
+### Improved
+- Clarified Payone merchant id label
+
+## Fixed
+- Attribute FileTree did not correctly save checkbox values (#990)
+- Attribute Downloads did not work (#993)
+- Exception when using shipping weight as variant attribute (#940)
+- Missing user instance in back end overview (#998)
+- Orders were not filterable in the backend (#973)
+- Filter module did not work with latest Contao due to security fixes (#991)
+- Skip incomplete payment and shipping methods (#1004)
+- Downloads were not available for variants (#1005)
+- Date picker did not work in the frontend (#1013)
+
+
 Version 2.0.3 (2014-02-10)
 --------------------------
 
@@ -21,6 +39,7 @@ Version 2.0.3 (2014-02-10)
 - Incorrect database field type for Downloads attribute (#983)
 - Could not set billing or shipping default for address in backend (#967)
 - Cache redirect was not applied for cumulative filter (#974)
+
 
 Version 2.0.2 (2014-01-23)
 --------------------------

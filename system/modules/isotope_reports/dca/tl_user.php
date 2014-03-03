@@ -30,11 +30,11 @@ $GLOBALS['TL_DCA']['tl_user']['palettes']['custom'] = str_replace(',iso_modules,
  */
 $GLOBALS['TL_DCA']['tl_user']['fields']['iso_reports'] = array
 (
-	'label'                   => &$GLOBALS['TL_LANG']['tl_user']['iso_reports'],
-	'exclude'                 => true,
-	'inputType'               => 'checkbox',
-	'options_callback'        => array('tl_iso_reports', 'getReports'),
-	'eval'                    => array('multiple'=>true, 'tl_class'=>'w50 w50h'),
+    'label'                   => &$GLOBALS['TL_LANG']['tl_user']['iso_reports'],
+    'exclude'                 => true,
+    'inputType'               => 'checkbox',
+    'options_callback'        => array('tl_iso_reports', 'getReports'),
+    'eval'                    => array('multiple'=>true, 'tl_class'=>'w50 w50h'),
 );
 
 
@@ -44,17 +44,18 @@ class tl_iso_reports extends Backend
     public function getReports()
     {
         $arrReports = array();
-		$arrGroups = &$GLOBALS['BE_MOD']['isotope']['reports']['modules'];
+        $arrGroups = &$GLOBALS['BE_MOD']['isotope']['reports']['modules'];
 
-		foreach ($arrGroups as $strGroup => $arrGroup)
-		{
-			$strLegend = $GLOBALS['ISO_LANG']['REPORT'][$strGroup] ? $GLOBALS['ISO_LANG']['REPORT'][$strGroup] : $strGroup;
+        foreach ($arrGroups as $strGroup => $arrGroup)
+        {
+            // @todo remove ISO_LANG in Isotope 3.0
+            $strLegend = $GLOBALS['TL_LANG']['ISO_REPORT'][$strGroup] ?: ($GLOBALS['ISO_LANG']['REPORT'][$strGroup] ?: $strGroup);
 
-			foreach ($arrGroup as $strName => $arrConfig)
-			{
-				$arrReports[$strLegend][$strName] = ($arrConfig['label'][0] ? $arrConfig['label'][0] : $strName);
-			}
-		}
+            foreach ($arrGroup as $strName => $arrConfig)
+            {
+                $arrReports[$strLegend][$strName] = ($arrConfig['label'][0] ? $arrConfig['label'][0] : $strName);
+            }
+        }
 
         return $arrReports;
     }

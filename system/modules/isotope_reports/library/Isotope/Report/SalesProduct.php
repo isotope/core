@@ -82,7 +82,7 @@ class SalesProduct extends Sales
         ");
 
         // Cache product types so call to findByPk() will trigger the registry
-		ProductType::findMultipleByIds($objProducts->fetchEach('type'));
+        ProductType::findMultipleByIds($objProducts->fetchEach('type'));
 
         $arrRaw = array();
         $objProducts->reset();
@@ -170,7 +170,7 @@ class SalesProduct extends Sales
 
             $arrFooter[0] = array
             (
-                'value'      => $GLOBALS['ISO_LANG']['REPORT']['sums'],
+                'value'      => $GLOBALS['TL_LANG']['ISO_REPORT']['sums'],
             );
 
             foreach ($arrColumns as $i=>$column)
@@ -221,7 +221,7 @@ class SalesProduct extends Sales
 
         return array (
             'name'          => 'variants',
-            'label'         => &$GLOBALS['ISO_LANG']['REPORT']['variants'],
+            'label'         => &$GLOBALS['TL_LANG']['ISO_REPORT']['variants'],
             'type'          => 'radio',
             'value'         => (string) $arrSession[$this->name]['variants'],
             'class'         => 'tl_variants',
@@ -238,13 +238,13 @@ class SalesProduct extends Sales
     {
         $this->arrSearchOptions = array
         (
-            'product_name' => &$GLOBALS['ISO_LANG']['REPORT']['product_name'],
+            'product_name' => &$GLOBALS['TL_LANG']['ISO_REPORT']['product_name'],
         );
 
         $this->arrSortingOptions = array
         (
-            'product_name'    => &$GLOBALS['ISO_LANG']['REPORT']['product_name'],
-            'total'            => &$GLOBALS['ISO_LANG']['REPORT']['total_sales'],
+            'product_name' => &$GLOBALS['TL_LANG']['ISO_REPORT']['product_name'],
+            'total' => &$GLOBALS['TL_LANG']['ISO_REPORT']['total_sales'],
         );
 
         // Set default session data
@@ -270,7 +270,7 @@ class SalesProduct extends Sales
         {
             $arrHeader[] = array
             (
-                'value'         => $this->parseDate($strFormat, $intStart),
+                'value' => $this->parseDate($strFormat, $intStart),
             );
 
             $intStart = strtotime('+ 1 ' . $strPeriod, $intStart);
@@ -278,7 +278,7 @@ class SalesProduct extends Sales
 
         $arrHeader[] = array
         (
-            'value'         => 'Total',
+            'value' => 'Total',
         );
 
         return $arrHeader;

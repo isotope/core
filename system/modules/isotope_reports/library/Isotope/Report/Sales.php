@@ -70,7 +70,7 @@ abstract class Sales extends Report
         return array
         (
             'name'      => 'from',
-            'label'     => &$GLOBALS['ISO_LANG']['REPORT']['from'],
+            'label'     => &$GLOBALS['TL_LANG']['ISO_REPORT']['from'],
             'type'      => 'date',
             'format'    => $GLOBALS['TL_CONFIG']['dateFormat'],
             'value'     => ($arrSession[$this->name]['from'] ? $this->parseDate($GLOBALS['TL_CONFIG']['dateFormat'], (int) $arrSession[$this->name]['from']) : ''),
@@ -86,7 +86,7 @@ abstract class Sales extends Report
         return array
         (
             'name'  => 'columns',
-            'label' => &$GLOBALS['ISO_LANG']['REPORT']['columns'],
+            'label' => &$GLOBALS['TL_LANG']['ISO_REPORT']['columns'],
             'type'  => 'text',
             'value' => (int) $arrSession[$this->name]['columns'],
             'class' => 'tl_columns',
@@ -132,7 +132,7 @@ abstract class Sales extends Report
 
     protected function getStatusPanel()
     {
-        $arrStatus = array(''=>&$GLOBALS['ISO_LANG']['REPORT']['all']);
+        $arrStatus = array(''=>&$GLOBALS['TL_LANG']['ISO_REPORT']['all']);
         $objStatus = \Isotope\Model\OrderStatus::findAll(array('order'=>'sorting'));
 
         if (null !== $objStatus) {
@@ -147,7 +147,7 @@ abstract class Sales extends Report
         return array
         (
             'name'      => 'iso_status',
-            'label'     => &$GLOBALS['ISO_LANG']['REPORT']['status'],
+            'label'     => &$GLOBALS['TL_LANG']['ISO_REPORT']['status'],
             'type'      => 'filter',
             'value'     => $varValue,
             'active'    => ($varValue != ''),

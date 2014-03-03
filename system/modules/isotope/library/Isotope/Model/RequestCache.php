@@ -400,7 +400,8 @@ class RequestCache extends \Model
      */
     public function setRow(array $arrData)
     {
-        $arrConfig = deserialize($arrData['config']);
+        // Do not use deserialize() because we have objects (see https://github.com/contao/core/issues/6695)
+        $arrConfig = unserialize($arrData['config']);
 
         $this->arrFilters  = $arrConfig['filters'];
         $this->arrSortings = $arrConfig['sortings'];
