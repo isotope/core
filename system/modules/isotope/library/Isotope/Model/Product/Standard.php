@@ -721,7 +721,7 @@ class Standard extends Product implements IsotopeProduct, WeightAggregate
             $GLOBALS['TL_CSS'][]        = 'plugins/datepicker/dashboard.css';
 
             $rgxp   = $arrData['eval']['rgxp'];
-            $format = Date::formatToJs($GLOBALS['TL_CONFIG'][$rgxp . 'Format']);
+            $format = \Date::formatToJs($GLOBALS['TL_CONFIG'][$rgxp . 'Format']);
 
             switch ($rgxp) {
                 case 'datim':
