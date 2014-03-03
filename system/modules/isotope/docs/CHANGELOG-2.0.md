@@ -16,6 +16,7 @@ Version 2.0.4 (2014-??-??)
 - Filter module did not work with latest Contao due to security fixes (#991)
 - Skip incomplete payment and shipping methods (#1004)
 - Downloads were not available for variants (#1005)
+- Date picker did not work in the frontend (#1013)
 
 
 Version 2.0.3 (2014-02-10)

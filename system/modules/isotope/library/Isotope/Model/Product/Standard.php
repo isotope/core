@@ -717,8 +717,8 @@ class Standard extends Product implements IsotopeProduct, WeightAggregate
         // Datepicker
         if ($arrData['eval']['datepicker']) {
 
-            $GLOBALS['TL_JAVASCRIPT'][] = 'plugins/datepicker/datepicker.js';
-            $GLOBALS['TL_CSS'][]        = 'plugins/datepicker/dashboard.css';
+            $GLOBALS['TL_JAVASCRIPT'][] = 'assets/mootools/datepicker/' . DATEPICKER . '/datepicker.js';
+            $GLOBALS['TL_CSS'][]        = 'assets/mootools/datepicker/' . DATEPICKER . '/dashboard.css';
 
             $rgxp   = $arrData['eval']['rgxp'];
             $format = \Date::formatToJs($GLOBALS['TL_CONFIG'][$rgxp . 'Format']);
@@ -737,7 +737,7 @@ class Standard extends Product implements IsotopeProduct, WeightAggregate
                     break;
             }
 
-            $wizard .= ' <img src="plugins/datepicker/icon.gif" width="20" height="20" alt="" id="toggle_' . $objWidget->id . '" style="vertical-align:-6px">
+            $wizard .= ' <img src="assets/mootools/datepicker/' . DATEPICKER . '/icon.gif" width="20" height="20" alt="" id="toggle_' . $objWidget->id . '" style="vertical-align:-6px">
   <script>
   window.addEvent("domready", function() {
     new Picker.Date($$("#ctrl_' . $objWidget->id . '"), {
