@@ -11,6 +11,7 @@ Version 2.1.0-rc1 (2014-??-??)
 - Added missing <thead> and <tbody> tags to mod_iso_history template (#997)
 - Added filter and search panel to product type back end (#987)
 - Show error if no variant option is selected in product type (#975)
+- Display of the order conditions form in the back end
 
 ### Fixed
 - Missing argument in new Google Tracking code (#992)

@@ -62,6 +62,11 @@ $GLOBALS['TL_LANG']['tl_module']['iso_includeMessages']             = array('Inc
 $GLOBALS['TL_LANG']['tl_module']['iso_continueShopping']            = array('Enable "Continue shopping" button', 'Add a link to the currently added product to the cart.');
 
 /**
+ * Legends
+ */
+$GLOBALS['TL_LANG']['tl_module']['iso_order_conditions_legend']     = 'Order conditions form';
+
+/**
  * References
  */
 $GLOBALS['TL_LANG']['tl_module']['iso_checkout_method_ref']['member']                   = 'Login/Registration required';
