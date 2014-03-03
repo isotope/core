@@ -154,4 +154,19 @@ class ProductType extends \Model
     {
         return static::findOneBy('fallback', '1', $arrOptions);
     }
+
+    /**
+     * Find product type for product data (as array)
+     * @param   array
+     * @param   array
+     * @return  ProductType|null
+     */
+    public static function findByProductData(array $row, array $arrOptions = array())
+    {
+        if ($row['pid'] > 0 && ($objProduct = Product::findByPk($row['pid'])) !== null) {
+            return $objProduct->getRelated('type');
+        }
+
+        return static::findByPk($row['type']);
+    }
 }

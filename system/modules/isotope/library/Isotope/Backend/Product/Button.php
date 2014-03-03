@@ -121,7 +121,7 @@ class Button extends \Backend
         $time          = time();
         $arrAttributes = array();
 
-        if (($objProductType = ProductType::findByPk($row['type'])) !== null) {
+        if (($objProductType = ProductType::findByProductData($row)) !== null) {
             $arrAttributes = $row['pid'] ? $objProductType->getVariantAttributes() : $objProductType->getAttributes();
         }
 
@@ -148,7 +148,7 @@ class Button extends \Backend
      */
     public function forVariants($row, $href, $label, $title, $icon, $attributes)
     {
-        if ($row['pid'] > 0 || ($objProductType = ProductType::findByPk($row['type'])) === null || !$objProductType->hasVariants()) {
+        if ($row['pid'] > 0 || ($objProductType = ProductType::findByProductData($row)) === null || !$objProductType->hasVariants()) {
             return '';
         }
 
@@ -186,7 +186,7 @@ class Button extends \Backend
      */
     public function forDownloads($row, $href, $label, $title, $icon, $attributes)
     {
-        if (($objProductType = ProductType::findByPk($row['type'])) === null || !$objProductType->hasDownloads()) {
+        if (($objProductType = ProductType::findByProductData($row)) === null || !$objProductType->hasDownloads()) {
             return '';
         }
 
