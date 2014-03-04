@@ -210,7 +210,6 @@ class Callback extends \Backend
                 $objAttribute = $GLOBALS['TL_DCA']['tl_iso_product']['attributes'][$arrAttribute['name']];
 
                 if (null !== $objAttribute && $objAttribute->isVariantOption()) {
-                    var_dump($objAttribute);
                     $arrVariantAttributeLabels[] = $objAttribute->name;
 
                     if ($arrAttribute['enabled']) {
