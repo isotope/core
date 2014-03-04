@@ -203,7 +203,8 @@ abstract class Module extends Contao_Module
     /**
      * Generate the URL from existing $_GET parameters.
      * Use \Input::setGet('var', null) to remove a parameter from the final URL.
-     * @return string
+     * @return      string
+     * @deprecated  use \Haste\Util\Url::addQueryString instead
      */
     protected function generateRequestUrl()
     {
