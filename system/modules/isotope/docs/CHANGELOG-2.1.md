@@ -6,6 +6,7 @@ Version 2.1.0-rc1 (2014-??-??)
 
 ### New
 - Do not allow to setup variant products if no such attributes are defined (#975)
+- Product filter can redirect to a list page (#963)
 
 ### Improved
 - Added missing <thead> and <tbody> tags to mod_iso_history template (#997)

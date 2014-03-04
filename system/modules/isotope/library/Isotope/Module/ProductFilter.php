@@ -15,6 +15,7 @@ namespace Isotope\Module;
 use Haste\Haste;
 use Haste\Http\Response\JsonResponse;
 use Haste\Util\Format;
+use Haste\Util\Url;
 use Isotope\Isotope;
 use Isotope\Model\Product;
 use Isotope\Model\RequestCache;
@@ -83,10 +84,11 @@ class ProductFilter extends Module
         if ($this->blnUpdateCache) {
             $objCache = Isotope::getRequestCache()->saveNewConfiguration();
 
-            \Input::setGet('isorc', $objCache->id);
-
             // Include \Environment::base or the URL would not work on the index page
-            \Controller::redirect(\Environment::get('base') . $this->generateRequestUrl());
+            \Controller::redirect(
+                \Environment::get('base') .
+                Url::addQueryString('isorc='.$objCache->id, ($this->jumpTo > 0 ? $this->jumpTo : null))
+            );
         }
 
         return $strBuffer;
