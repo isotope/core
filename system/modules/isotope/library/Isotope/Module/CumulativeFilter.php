@@ -13,6 +13,7 @@
 namespace Isotope\Module;
 
 use Haste\Generator\RowClass;
+use Haste\Util\Url;
 use Isotope\Isotope;
 use Isotope\RequestCache\Filter;
 
@@ -90,12 +91,14 @@ class CumulativeFilter extends Module
 
             $objCache = Isotope::getRequestCache()->saveNewConfiguration();
 
-            // unset GET parameter or it would be included in the redirect URL
-            \Input::setGet('cumulativefilter', null);
-            \Input::setGet('isorc', $objCache->id);
-
             // Include \Environment::base or the URL would not work on the index page
-            \Controller::redirect(\Environment::get('base') . $this->generateRequestUrl());
+            \Controller::redirect(
+                \Environment::get('base') .
+                Url::addQueryString(
+                    'isorc='.$objCache->id,
+                    Url::removeQueryString(array('cumulativefilter'))
+                )
+            );
 
         } else {
             $this->generateFilter();
