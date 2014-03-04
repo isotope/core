@@ -12,6 +12,7 @@ Version 2.1.0-rc1 (2014-??-??)
 - Added filter and search panel to product type back end (#987)
 - Show error if no variant option is selected in product type (#975)
 - Display of the order conditions form in the back end
+- Improved variant option usability in product type
 
 ### Fixed
 - Missing argument in new Google Tracking code (#992)
