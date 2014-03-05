@@ -1,6 +1,13 @@
 Isotope eCommerce Changelog
 ===========================
 
+Version 2.0.5 (2014-??-??)
+--------------------------
+
+## Fixed
+- Possible recursion in group shipping method
+
+
 Version 2.0.4 (2014-03-03)
 --------------------------
 
