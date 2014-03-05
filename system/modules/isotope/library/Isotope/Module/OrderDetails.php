@@ -88,8 +88,8 @@ class OrderDetails extends Module
             global $objPage;
 
             $objHandler = new $GLOBALS['TL_PTY']['error_403']();
-			$objHandler->generate($objPage->id);
-			exit;
+            $objHandler->generate($objPage->id);
+            exit;
         }
 
         Isotope::setConfig($objOrder->getRelated('config_id'));
