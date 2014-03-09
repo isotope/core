@@ -14,6 +14,7 @@ Version 2.1.0-rc1 (2014-??-??)
 - Show error if no variant option is selected in product type (#975)
 - Display of the order conditions form in the back end
 - Improved variant option usability in product type
+- Changed tokens for shipping and billing address (#958)
 
 ### Fixed
 - Missing argument in new Google Tracking code (#992)
