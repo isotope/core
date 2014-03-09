@@ -15,6 +15,7 @@ Version 2.1.0-rc1 (2014-??-??)
 - Display of the order conditions form in the back end
 - Improved variant option usability in product type
 - Changed tokens for shipping and billing address (#958)
+- Tableless condition form is now configured in the form generator (#978)
 
 ### Fixed
 - Missing argument in new Google Tracking code (#992)
