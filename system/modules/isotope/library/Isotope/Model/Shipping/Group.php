@@ -24,7 +24,7 @@ class Group extends Shipping implements IsotopeShipping
      * Shipping methods we're using
      * @var array
      */
-    protected $arrMethods = array();
+    protected $arrMethods = false;
 
 
     /**
@@ -36,19 +36,8 @@ class Group extends Shipping implements IsotopeShipping
     {
         parent::setRow($arrData);
 
-        if (TL_MODE != 'BE') {
-
-            // Reset existing array
-            $this->arrMethods = array();
-
-            if (($objMethods = Shipping::findMultipleByIds(deserialize($this->group_methods, true))) !== null) {
-                foreach ($objMethods as $objMethod) {
-                    if ($objMethod->isAvailable()) {
-                        $this->arrMethods[] = $objMethod;
-                    }
-                }
-            }
-        }
+        // Reset existing array
+        $this->arrMethods = false;
 
         return $this;
     }
@@ -59,6 +48,8 @@ class Group extends Shipping implements IsotopeShipping
      */
     public function isAvailable()
     {
+        $this->getGroupMethods();
+
         return !empty($this->arrMethods);
     }
 
@@ -68,6 +59,8 @@ class Group extends Shipping implements IsotopeShipping
      */
     public function getPrice(IsotopeProductCollection $objCollection = null)
     {
+        $this->getGroupMethods();
+
         if (empty($this->arrMethods)) {
             return 0;
         }
@@ -108,5 +101,33 @@ class Group extends Shipping implements IsotopeShipping
 
                 return $fltTotal;
         }
+    }
+
+    /**
+     * Get shipping methods for this group
+     * Must be lazy-loaded to prevent recursion
+     * @return  array
+     */
+    protected function getGroupMethods()
+    {
+        if (false === $this->arrMethods) {
+            $this->arrMethods = array();
+            $arrMethods = deserialize($this->group_methods, true);
+
+            // Prevent recursion if we should load ourselves
+            if (($key = array_search($this->id, $arrMethods)) !== false) {
+                unset($arrMethods[$key]);
+            }
+
+            if (($objMethods = Shipping::findMultipleByIds($arrMethods)) !== null) {
+                foreach ($objMethods as $objMethod) {
+                    if ($objMethod->isAvailable()) {
+                        $this->arrMethods[] = $objMethod;
+                    }
+                }
+            }
+        }
+
+        return $this->arrMethods;
     }
 }

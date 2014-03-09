@@ -247,7 +247,7 @@ abstract class Attribute extends TypeAgent
         // Generate a HTML table for associative arrays
         if (is_array($varValue) && !array_is_assoc($varValue) && is_array($varValue[0])) {
             $strBuffer = $this->generateTable($varValue, $objProduct);
-        } // Generate ul/li listing for simpley arrays
+        } // Generate ul/li listing for simple arrays
         elseif (is_array($varValue)) {
             $strBuffer = $this->generateList($varValue);
         } else {

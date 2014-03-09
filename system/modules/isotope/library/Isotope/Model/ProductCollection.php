@@ -261,7 +261,7 @@ abstract class ProductCollection extends TypeAgent
     }
 
     /**
-     * Return boolean wether collection has shipping
+     * Return boolean whether collection has shipping
      * @return bool
      */
     public function hasShipping()
@@ -270,7 +270,7 @@ abstract class ProductCollection extends TypeAgent
     }
 
     /**
-     * Return boolean wether collection requires shipping
+     * Return boolean whether collection requires shipping
      * @return bool
      */
     public function requiresShipping()

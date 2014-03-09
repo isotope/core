@@ -1,6 +1,15 @@
 Isotope eCommerce Changelog
 ===========================
 
+Version 2.0.5 (2014-??-??)
+--------------------------
+
+## Fixed
+- Possible recursion in group shipping method
+- Missing return value in load_callback in DC_ProductData driver
+- Missing palette for messages module
+
+
 Version 2.0.4 (2014-03-03)
 --------------------------
 

@@ -47,7 +47,7 @@ class RelatedProduct extends \Model
                 'column'    => array("$t.pid=?", "$t.category IN (" . implode(',', $arrCategories) . ")"),
                 'value'     => array($objProduct->getProductId()),
                 'order'     => \Database::getInstance()->findInSet("$t.category", $arrCategories),
-				'return'    => 'Collection'
+                'return'    => 'Collection'
             ),
             $arrOptions
         );
