@@ -40,11 +40,11 @@ abstract class OrderConditions extends CheckoutStep
      */
     public function generate()
     {
-        $obJFormConfig = \FormModel::findByPk($this->objModule->iso_order_conditions);
+        $objFormConfig = \FormModel::findByPk($this->objModule->iso_order_conditions);
 
         $this->objForm = new Form($this->objModule->getFormId(), 'POST', function ($haste) {
             return \Input::post('FORM_SUBMIT') === $haste->getFormId();
-        }, (boolean) $obJFormConfig->tableless);
+        }, (boolean) $objFormConfig->tableless);
 
         // Don't catch the exception here because we want it to be shown to the user
         $this->objForm->addFieldsFromFormGenerator($this->objModule->iso_order_conditions, function ($strName, &$arrDca) {
