@@ -8,6 +8,7 @@ Version 2.0.5 (2014-??-??)
 - Possible recursion in group shipping method
 - Missing return value in load_callback in DC_ProductData driver
 - Missing palette for messages module
+- Product names were not listed in related categories
 
 
 Version 2.0.4 (2014-03-03)
