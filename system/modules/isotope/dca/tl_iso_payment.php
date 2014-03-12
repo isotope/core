@@ -122,6 +122,7 @@ $GLOBALS['TL_DCA']['tl_iso_payment'] = array
         '__selector__'              => array('type', 'protected'),
         'default'                   => '{type_legend},name,label,type',
         'cash'                      => '{type_legend},name,label,type;{note_legend:hide},note;{config_legend},new_order_status,minimum_total,maximum_total,countries,shipping_modules,product_types;{price_legend:hide},price,tax_class;{expert_legend:hide},guests,protected;{enabled_legend},enabled',
+        'paybyway'                  => '{type_legend},name,label,type;{note_legend:hide},note;{config_legend},new_order_status,minimum_total,maximum_total,countries,shipping_modules,product_types;{gateway_legend},paybyway_merchant_id,paybyway_private_key;{price_legend:hide},price,tax_class;{expert_legend:hide},guests,protected;{enabled_legend},debug,enabled',
         'paypal'                    => '{type_legend},name,label,type;{note_legend:hide},note;{config_legend},new_order_status,minimum_total,maximum_total,countries,shipping_modules,product_types;{gateway_legend},paypal_account;{price_legend:hide},price,tax_class;{expert_legend:hide},guests,protected;{enabled_legend},debug,enabled',
         'postfinance'               => '{type_legend},name,label,type;{note_legend:hide},note;{config_legend},new_order_status,minimum_total,maximum_total,countries,shipping_modules,product_types;{gateway_legend},psp_pspid,psp_http_method,psp_hash_method,psp_hash_in,psp_hash_out,psp_dynamic_template;{price_legend:hide},price,tax_class;{expert_legend:hide},guests,protected;{enabled_legend},debug,enabled',
         'viveum'                    => '{type_legend},name,label,type;{note_legend:hide},note;{config_legend},new_order_status,minimum_total,maximum_total,countries,shipping_modules,product_types;{gateway_legend},psp_pspid,psp_http_method,psp_hash_method,psp_hash_in,psp_hash_out,psp_dynamic_template;{price_legend:hide},price,tax_class;{expert_legend:hide},guests,protected;{enabled_legend},debug,enabled',
@@ -287,6 +288,22 @@ $GLOBALS['TL_DCA']['tl_iso_payment'] = array
             'eval'                  => array('multiple'=>true, 'size'=>8, 'tl_class'=>'clr w50 w50h', 'chosen'=>true),
             'sql'                   => "blob NULL",
             'relation'              => array('type'=>'hasMany', 'load'=>'lazy'),
+        ),
+        'paybyway_merchant_id' => array
+        (
+            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_payment']['paybyway_merchant_id'],
+            'exclude'               => true,
+            'inputType'             => 'text',
+            'eval'                  => array('mandatory'=>true, 'maxlength'=>10, 'rgxp'=>'digit', 'tl_class'=>'w50'),
+            'sql'                   => "int(10) NOT NULL default '0'",
+        ),
+        'paybyway_private_key' => array
+        (
+            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_payment']['paybyway_private_key'],
+            'exclude'               => true,
+            'inputType'             => 'text',
+            'eval'                  => array('mandatory'=>true, 'maxlength'=>255, 'decodeEntities'=>true, 'hideInput'=>true, 'tl_class'=>'w50'),
+            'sql'                   => "varchar(255) NOT NULL default ''",
         ),
         'paypal_account' => array
         (

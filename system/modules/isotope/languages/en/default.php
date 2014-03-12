@@ -202,6 +202,7 @@ $GLOBALS['TL_LANG']['MODEL']['tl_iso_shipping.group']   = array('Shipping group'
  * Payment methods
  */
 $GLOBALS['TL_LANG']['MODEL']['tl_iso_payment.cash']                 = array('Cash', 'Use this for all offline processed payment.');
+$GLOBALS['TL_LANG']['MODEL']['tl_iso_payment.paybyway']             = array('Paybyway', 'Implements payment provider <a href="https://www.paybyway.com/en/" target="_blank">Paybyway</a>.');
 $GLOBALS['TL_LANG']['MODEL']['tl_iso_payment.paypal']               = array('PayPal Standard Checkout', 'This PayPal module supports IPN (Instant Payment Notifications).');
 $GLOBALS['TL_LANG']['MODEL']['tl_iso_payment.postfinance']          = array('Postfinance', 'Payment gateway for the swiss post payment system that supports various card types. The store will be instantly notified about successfull transactions.');
 $GLOBALS['TL_LANG']['MODEL']['tl_iso_payment.viveum']               = array('VIVEUM', 'Payment gateway for VIVEUM Zahlungssysteme GmbH.');

@@ -26,6 +26,8 @@ $GLOBALS['TL_LANG']['tl_iso_payment']['product_types']                          
 $GLOBALS['TL_LANG']['tl_iso_payment']['price']                                  = array('Price', 'Enter a price or percent value (e.g. "10" or "10%").');
 $GLOBALS['TL_LANG']['tl_iso_payment']['tax_class']                              = array('Tax Class', 'Please select a tax class for the price.');
 $GLOBALS['TL_LANG']['tl_iso_payment']['trans_type']                             = array('Transaction type', 'Select if you want to instantly capture the money or authorize (and hold) for a later transaction (e.g. when shipping).');
+$GLOBALS['TL_LANG']['tl_iso_payment']['paybyway_merchant_id']                   = array('Merchant ID', 'Please enter your Paybyway merchant ID. The sub-merchant ID is listed in the sub-merchants page in the merchant UI.');
+$GLOBALS['TL_LANG']['tl_iso_payment']['paybyway_private_key']                   = array('Private Key', 'Please enter your Paybyway private key.');
 $GLOBALS['TL_LANG']['tl_iso_payment']['paypal_account']                         = array('PayPal Account', 'Enter the default email address from your PayPal-Account. Note: Check the correct spelling, and case-sensitive.');
 $GLOBALS['TL_LANG']['tl_iso_payment']['payflowpro_user']                        = array('Paypal Payflow Pro username', '');
 $GLOBALS['TL_LANG']['tl_iso_payment']['payflowpro_vendor']                      = array('Paypal Payflow Pro vendor', 'An alphanumeric string of about 10 characters.');
