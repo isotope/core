@@ -9,6 +9,7 @@ Version 2.0.5 (2014-??-??)
 - Missing return value in load_callback in DC_ProductData driver
 - Missing palette for messages module
 - Product names were not listed in related categories
+- PayPal payment method did not work at all
 
 
 Version 2.0.4 (2014-03-03)
