@@ -1389,7 +1389,7 @@ abstract class ProductCollection extends TypeAgent
             $objConfig = Isotope::getConfig();
         }
 
-        $objCollection->uniqid               = uniqid(Haste::getInstance()->call('replaceInsertTags', (string) $objConfig->orderPrefix), true);
+        $objCollection->uniqid               = uniqid(Haste::getInstance()->call('replaceInsertTags', array((string) $objConfig->orderPrefix, false)), true);
         $objCollection->source_collection_id = (int) $objSource->id;
         $objCollection->config_id            = (int) $objConfig->id;
         $objCollection->store_id             = (int) $objSource->store_id;
@@ -1416,7 +1416,6 @@ abstract class ProductCollection extends TypeAgent
         		$objCallback->$callback[1]($objCollection, $objSource, $arrItemIds, $arrSurchargeIds);
         	}
         }
-
 
         return $objCollection;
     }

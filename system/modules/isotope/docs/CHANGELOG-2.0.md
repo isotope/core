@@ -10,6 +10,7 @@ Version 2.0.5 (2014-??-??)
 - Missing palette for messages module
 - Product names were not listed in related categories
 - PayPal payment method did not work at all
+- Cache-enabled insert tags were not replaced in order prefix
 
 
 Version 2.0.4 (2014-03-03)
