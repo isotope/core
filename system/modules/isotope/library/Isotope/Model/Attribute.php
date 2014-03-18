@@ -159,6 +159,7 @@ abstract class Attribute extends TypeAgent
             $arrField['eval']['includeBlankOption'] = true;
             unset($arrField['options']);
         } else {
+            $arrField['default'] = array();
             $arrField['options'] = array();
             $arrField['eval']['isAssociative'] = true;
             unset($arrField['reference']);
@@ -189,6 +190,9 @@ abstract class Attribute extends TypeAgent
                         $arrField['options'][$option['value']] = Translation::get($option['label']);
                     }
 
+                    if ($option['default']) {
+                        $arrField['default'][] = $option['value'];
+                    }
                 }
             }
         }

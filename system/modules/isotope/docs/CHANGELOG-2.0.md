@@ -11,6 +11,7 @@ Version 2.0.5 (2014-??-??)
 - Product names were not listed in related categories
 - PayPal payment method did not work at all
 - Cache-enabled insert tags were not replaced in order prefix
+- "Default" checkbox for custom attributes had no effect (#1017)
 
 
 Version 2.0.4 (2014-03-03)
