@@ -141,9 +141,11 @@ class Skrill extends Postsale implements IsotopePayment
 
         $objRequest->send('https://www.moneybookers.com/app/payment.pl', http_build_query($arrData), 'POST');
         $arrHeaders = $objRequest->headers;
-        $arrCookies = http_parse_cookie($arrHeaders['Set-Cookie']);
 
-        $GLOBALS['TL_HEAD'][] = '<meta http-equiv="refresh" content="1; URL=https://www.moneybookers.com/app/payment.pl?sid=' . urlencode($arrCookies['cookies']['SESSION_ID']) . '">';
+        preg_match('/SESSION_ID=([^;]+)/', $arrHeaders['Set-Cookie'], $arrMatches);
+        $strSession = $arrMatches[1];
+
+        $GLOBALS['TL_HEAD'][] = '<meta http-equiv="refresh" content="1; URL=https://www.moneybookers.com/app/payment.pl?sid=' . urlencode($strSession) . '">';
     }
 
 
