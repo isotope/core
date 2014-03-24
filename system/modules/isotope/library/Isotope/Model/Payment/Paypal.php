@@ -58,21 +58,14 @@ class Paypal extends Postsale implements IsotopePayment
                 return;
             }
 
-            // Load / initialize data
-            $arrPayment = deserialize($objOrder->payment_data, true);
-
             // Store request data in order for future references
+            $arrPayment = deserialize($objOrder->payment_data, true);
             $arrPayment['POSTSALE'][] = $_POST;
+            $objOrder->payment_data = $arrPayment;
+            $objOrder->save();
 
-
-            $arrData                       = $objOrder->getData();
-            $arrData['old_payment_status'] = $arrPayment['status'];
-
-            $arrPayment['status']          = \Input::post('payment_status');
-            $arrData['new_payment_status'] = $arrPayment['status'];
-
-            // array('pending','processing','complete','on_hold', 'cancelled'),
-            switch ($arrPayment['status']) {
+            // @see https://www.paypalobjects.com/webstatic/en_US/developer/docs/pdf/ipnguide.pdf
+            switch (\Input::post('payment_status')) {
                 case 'Completed':
                     $objOrder->date_paid = time();
                     $objOrder->updateOrderStatus($this->new_order_status);
