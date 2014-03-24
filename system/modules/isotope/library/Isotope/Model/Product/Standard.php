@@ -664,6 +664,30 @@ class Standard extends Product implements IsotopeProduct, WeightAggregate
             $arrField = $strClass::getAttributesFromDca($arrData, $strField, $arrData['default']);
         }
 
+        // Convert optgroups so they work with FormSelectMenu
+        // @todo Copied from Haste\Form\Form
+        if (is_array($arrField['options']) && array_is_assoc($arrField['options'])) {
+            $arrOptions = $arrField['options'];
+            $arrField['options'] = array();
+
+            foreach ($arrOptions as $k => $v) {
+                if (isset($v['label'])) {
+                    $arrField['options'][] = $v;
+                } else {
+                    $arrField['options'][] = array(
+                        'label'     => $k,
+                        'value'     => $k,
+                        'group'     => '1',
+                    );
+
+                    foreach ($v as $vv) {
+                        $arrField['options'][] = $vv;
+                    }
+                }
+            }
+        }
+
+
         $objWidget = new $strClass($arrField);
 
         $objWidget->storeValues = true;

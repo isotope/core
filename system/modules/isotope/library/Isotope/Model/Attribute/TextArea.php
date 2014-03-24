@@ -18,7 +18,7 @@ use Isotope\Model\Attribute;
 
 
 /**
- * Attribute to impelement TextArea widget
+ * Attribute to implement TextArea widget
  *
  * @copyright  Isotope eCommerce Workgroup 2009-2012
  * @author     Andreas Schempp <andreas.schempp@terminal42.ch>

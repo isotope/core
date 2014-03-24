@@ -622,7 +622,7 @@ class DC_ProductData extends \DC_Table
                                 $this->import($callback[0]);
                                 $this->varValue = $this->$callback[0]->$callback[1]($this->varValue, $this);
                             } elseif (is_callable($callback)) {
-                                call_user_func($callback, $this->varValue, $this);
+                                $this->varValue = call_user_func($callback, $this->varValue, $this);
                             }
                         }
 

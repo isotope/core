@@ -31,7 +31,7 @@ class Callback extends \Backend
         $strBuffer = '
 <div class="cte_type" style="color:#666966"><strong>' . $GLOBALS['TL_LANG']['tl_iso_related_product']['category'][0] . ':</strong> ' . $strCategory . '</div>';
 
-        $arrProducts = deserialize($row['products']);
+        $arrProducts = trimsplit(',', $row['products']);
 
         if (is_array($arrProducts) && !empty($arrProducts)) {
             $strBuffer .= '<div class="limit_height' . (!$GLOBALS['TL_CONFIG']['doNotCollapse'] ? ' h0' : '') . ' block"><ul>';

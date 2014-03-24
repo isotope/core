@@ -1,13 +1,27 @@
 Isotope eCommerce Changelog
 ===========================
 
+Version 2.0.5 (2014-03-24)
+--------------------------
+
+### Fixed
+- Possible recursion in group shipping method
+- Missing return value in load_callback in DC_ProductData driver
+- Missing palette for messages module
+- Product names were not listed in related categories
+- PayPal payment method did not work at all
+- Cache-enabled insert tags were not replaced in order prefix
+- "Default" checkbox for custom attributes had no effect (#1017)
+- "Group" checkbox for custom attributes destroyed select menus (#1017)
+
+
 Version 2.0.4 (2014-03-03)
 --------------------------
 
 ### Improved
 - Clarified Payone merchant id label
 
-## Fixed
+### Fixed
 - Attribute FileTree did not correctly save checkbox values (#990)
 - Attribute Downloads did not work (#993)
 - Exception when using shipping weight as variant attribute (#940)

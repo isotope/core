@@ -159,8 +159,10 @@ abstract class Attribute extends TypeAgent
             $arrField['eval']['includeBlankOption'] = true;
             unset($arrField['options']);
         } else {
-            $arrField['options']   = array();
-            $arrField['reference'] = array();
+            $arrField['default'] = array();
+            $arrField['options'] = array();
+            $arrField['eval']['isAssociative'] = true;
+            unset($arrField['reference']);
 
             if ($this->foreignKey) {
                 $arrKey     = explode('.', $this->foreignKey, 2);
@@ -173,7 +175,7 @@ abstract class Attribute extends TypeAgent
                 $strGroup = '';
 
                 foreach ($arrOptions as $option) {
-                    if (!strlen($option['value'])) {
+                    if ($option['value'] == '') {
                         $arrField['eval']['includeBlankOption'] = true;
                         $arrField['eval']['blankOptionLabel']   = Translation::get($option['label']);
                         continue;
@@ -188,7 +190,9 @@ abstract class Attribute extends TypeAgent
                         $arrField['options'][$option['value']] = Translation::get($option['label']);
                     }
 
-                    $arrField['reference'][$option['value']] = Translation::get($option['label']);
+                    if ($option['default']) {
+                        $arrField['default'][] = $option['value'];
+                    }
                 }
             }
         }
@@ -247,7 +251,7 @@ abstract class Attribute extends TypeAgent
         // Generate a HTML table for associative arrays
         if (is_array($varValue) && !array_is_assoc($varValue) && is_array($varValue[0])) {
             $strBuffer = $this->generateTable($varValue, $objProduct);
-        } // Generate ul/li listing for simpley arrays
+        } // Generate ul/li listing for simple arrays
         elseif (is_array($varValue)) {
             $strBuffer = $this->generateList($varValue);
         } else {

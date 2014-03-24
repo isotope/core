@@ -344,7 +344,7 @@ window.addEvent('domready', function()
 
         $strMessages = trim($strMessages);
 
-        if (strlen($strMessages)) {
+        if ($strMessages) {
             // Automatically disable caching if a message is available
             global $objPage;
             $objPage->cache = 0;
