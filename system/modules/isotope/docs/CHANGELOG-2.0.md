@@ -6,7 +6,8 @@ Version 2.0.6 (2014-??-??)
 --------------------------
 
 ### Fixed
-- Fixed more InsertTag caching issues
+- Saferpay payment method did not work if magic_quotes_gpc is enabled
+- More InsertTag caching issues
 
 
 Version 2.0.5 (2014-03-24)
