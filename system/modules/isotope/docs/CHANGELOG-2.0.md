@@ -6,7 +6,7 @@ Version 2.0.6 (2014-??-??)
 --------------------------
 
 ### Fixed
-
+- Fixed more InsertTag caching issues
 
 
 Version 2.0.5 (2014-03-24)

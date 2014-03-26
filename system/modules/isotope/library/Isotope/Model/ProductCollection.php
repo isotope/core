@@ -1329,7 +1329,7 @@ abstract class ProductCollection extends TypeAgent
         }
 
         if ($this->arrData['document_number'] == '') {
-            $strPrefix = Haste::getInstance()->call('replaceInsertTags', $strPrefix);
+            $strPrefix = Haste::getInstance()->call('replaceInsertTags', array($strPrefix, true));
             $intPrefix = utf8_strlen($strPrefix);
 
             // Lock tables so no other order can get the same ID
