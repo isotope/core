@@ -129,7 +129,7 @@ class tl_iso_product_categories extends Backend
 	{
 		if ($this->Input->get('act') == '')
 		{
-			$arrCategories = $this->Database->execute("SELECT page_id FROM tl_iso_product_categories WHERE pid={$dc->id}");
+			$arrCategories = $this->Database->execute("SELECT page_id FROM tl_iso_product_categories WHERE pid={$dc->id}")->fetchEach();
 			$this->Database->query("UPDATE tl_iso_products SET pages='" . serialize($arrCategories) . "' WHERE id={$dc->id}");
 		}
 	}
