@@ -166,10 +166,9 @@ class Callback extends \Backend
 
     /**
      * Returns all allowed product types as array
-     * @param DataContainer
      * @return array
      */
-    public function getOptions(\DataContainer $dc)
+    public function getOptions()
     {
         $arrTypes = \BackendUser::getInstance()->iso_product_types;
 
