@@ -73,6 +73,7 @@ abstract class Payment extends TypeAgent
     /**
      * Return true or false depending on availability of the payment method
      * @return bool
+     * @todo must check availability for a specific product collection (and not hardcoded to the current cart)
      */
     public function isAvailable()
     {

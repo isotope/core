@@ -10,6 +10,7 @@ Version 2.0.6 (2014-??-??)
 - More InsertTag caching issues
 - Store config switcher only worked if a product was in the cart (#1008)
 - Filetree attribute did not generate frontend output (#1023)
+- Shipping or payment method could be invalid when cart changes (#1002)
 
 
 Version 2.0.5 (2014-03-24)
