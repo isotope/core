@@ -11,6 +11,7 @@ Version 2.0.6 (2014-??-??)
 - Store config switcher only worked if a product was in the cart (#1008)
 - Filetree attribute did not generate frontend output (#1023)
 - Shipping or payment method could be invalid when cart changes (#1002)
+- Shipping address was unavailable when no shipping method was set (#985)
 
 
 Version 2.0.5 (2014-03-24)

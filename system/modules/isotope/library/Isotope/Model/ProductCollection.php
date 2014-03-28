@@ -318,7 +318,7 @@ abstract class ProductCollection extends TypeAgent
      */
     public function getShippingAddress()
     {
-        return $this->hasShipping() ? $this->getRelated('shipping_address_id') : null;
+        return $this->requiresShipping() ? $this->getRelated('shipping_address_id') : null;
     }
 
     /**
