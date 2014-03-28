@@ -8,6 +8,7 @@ Version 2.0.6 (2014-??-??)
 ### Fixed
 - Saferpay payment method did not work if magic_quotes_gpc is enabled
 - More InsertTag caching issues
+- Store config switcher only worked if a product was in the cart (#1008)
 
 
 Version 2.0.5 (2014-03-24)
