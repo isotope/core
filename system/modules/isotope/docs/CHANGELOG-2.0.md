@@ -14,6 +14,7 @@ Version 2.0.6 (2014-??-??)
 - Shipping address was unavailable when no shipping method was set (#985)
 - Potential error message when no filter modules were found (#974)
 - in_array error message when editing product as regular user
+- Regular users could not filter by product group
 
 
 Version 2.0.5 (2014-03-24)
