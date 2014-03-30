@@ -95,7 +95,12 @@ class Permission extends \Backend
             \Session::getInstance()->setData($session);
 
             // Check if the product is accessible by user
-            if (\Input::get('id') > 0 && !in_array(\Input::get('id'), $GLOBALS['TL_DCA']['tl_iso_product']['list']['sorting']['root']) && !in_array(\Input::get('id'), $session['new_records']['tl_iso_product'])) {
+            if (\Input::get('id') > 0
+                && !in_array(\Input::get('id'), $GLOBALS['TL_DCA']['tl_iso_product']['list']['sorting']['root'])
+                && (!is_array($session['new_records']['tl_iso_product'])
+                    || !in_array(\Input::get('id'), $session['new_records']['tl_iso_product'])
+                )
+            ) {
                 \System::log('Cannot access product ID ' . \Input::get('id'), __METHOD__, TL_ERROR);
                 \Controller::redirect('contao/main.php?act=error');
             }

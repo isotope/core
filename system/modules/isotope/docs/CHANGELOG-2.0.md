@@ -13,6 +13,7 @@ Version 2.0.6 (2014-??-??)
 - Shipping or payment method could be invalid when cart changes (#1002)
 - Shipping address was unavailable when no shipping method was set (#985)
 - Potential error message when no filter modules were found (#974)
+- in_array error message when editing product as regular user
 
 
 Version 2.0.5 (2014-03-24)
