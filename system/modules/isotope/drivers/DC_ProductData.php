@@ -54,7 +54,7 @@ class DC_ProductData extends \DC_Table
     {
         $this->import('Session');
 
-        $this->intGroupId = (int)\Session::getInstance()->get('iso_products_gid') ? : (\BackendUser::getInstance()->isAdmin ? 0 : intval(\BackendUser::getInstance()->iso_groups[0]));
+        $this->intGroupId = (int)\Session::getInstance()->get('iso_products_gid');
 
         // Check if the group exists
         if ($this->intGroupId > 0) {
