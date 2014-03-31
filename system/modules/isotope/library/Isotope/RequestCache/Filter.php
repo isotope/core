@@ -215,7 +215,7 @@ class Filter implements \ArrayAccess
 
         // If the attribute is not set for this product, we will ignore this attribute
         if ($varValues === null) {
-            return true;
+            return false;
         } elseif (!is_array($varValues)) {
             $varValues = deserialize($varValues, true);
         }
