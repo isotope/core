@@ -439,9 +439,9 @@ class Order extends ProductCollection implements IsotopeProductCollection
                 )
             );
 
-            $arrTokens['cart_html'] = Haste::getInstance()->call('replaceInsertTags', $objTemplate->parse());
+            $arrTokens['cart_html'] = Haste::getInstance()->call('replaceInsertTags', array($objTemplate->parse(), false));
             $objTemplate->textOnly  = true;
-            $arrTokens['cart_text'] = strip_tags(Haste::getInstance()->call('replaceInsertTags', $objTemplate->parse()));
+            $arrTokens['cart_text'] = strip_tags(Haste::getInstance()->call('replaceInsertTags', array($objTemplate->parse(), true)));
 
             // Generate and "attach" document
             if ($objNotification->iso_document > 0 && (($objDocument = Document::findByPk($objNotification->iso_document)) !== null)) {

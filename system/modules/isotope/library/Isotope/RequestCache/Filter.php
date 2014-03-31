@@ -210,13 +210,14 @@ class Filter implements \ArrayAccess
         if ($this->arrConfig['operator'] == '') {
             throw new \BadMethodCallException('Filter operator is not yet configured');
         }
+
         $varValues = $objProduct->{$this->arrConfig['attribute']};
 
         // If the attribute is not set for this product, we will ignore this attribute
         if ($varValues === null) {
-            return true;
+            return false;
         } elseif (!is_array($varValues)) {
-            $varValues = array($varValues);
+            $varValues = deserialize($varValues, true);
         }
 
         foreach ($varValues as $varValue) {

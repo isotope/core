@@ -170,7 +170,7 @@ class Rules extends \Controller
             if (!empty($arrDropped)) {
                 // @todo show dropped coupons
                 $arrCoupons = array_diff($arrCoupons, $arrDropped);
-                \Database::getInstance()->query("UPDATE tl_iso_cart SET coupons='" . serialize($arrCoupons) . "' WHERE id=" . (int) Isotope::getCart()->id);
+                \Database::getInstance()->query("UPDATE tl_iso_product_collection SET coupons='" . serialize($arrCoupons) . "' WHERE id=" . (int) Isotope::getCart()->id);
             }
         }
 

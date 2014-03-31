@@ -457,7 +457,7 @@ window.addEvent('domready', function()
      * @param mixed
      * @param IsotopeProduct
      */
-    public function saveUpload($varValue, IsotopeProduct $objProduct, Widget $objWidget)
+    public function saveUpload($varValue, IsotopeProduct $objProduct, \Widget $objWidget)
     {
         if (is_array($_SESSION['FILES'][$objWidget->name]) && $_SESSION['FILES'][$objWidget->name]['uploaded'] == '1' && $_SESSION['FILES'][$objWidget->name]['error'] == 0) {
             return $_SESSION['FILES'][$objWidget->name]['name'];

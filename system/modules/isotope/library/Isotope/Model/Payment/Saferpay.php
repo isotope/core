@@ -158,7 +158,7 @@ class Saferpay extends Postsale implements IsotopePayment
         $strData = $_POST['DATA'];
 
         // catch magic_quotes_gpc is set to yes in php.ini (can be removed when PHP 5.4 is compulsory)
-        if (substr($strData, 0, 15) == '<IDP MSGTYPE=\\') {
+        if (substr($strData, 0, 15) == '<IDP MSGTYPE=\"') {
             $strData = stripslashes($strData);
         }
 

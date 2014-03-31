@@ -91,16 +91,16 @@ class Callback extends \Backend
      */
     public function generateEmailData($dc, $xlabel)
     {
-        $objOrder = \Database::getInstance()->execute("SELECT * FROM tl_iso_product_collection WHERE id=" . $dc->id);
+        $objOrder = Order::findByPk($dc->id);
 
-        if (!$objOrder->numRows) {
+        if (null === $objOrder) {
             \Controller::redirect('contao/main.php?act=error');
         }
 
-        $arrSettings = deserialize($objOrder->settings, true);
+        $arrEmail = deserialize($objOrder->email_data, true);
 
-        if (!is_array($arrSettings['email_data'])) {
-            return '<div class="tl_gerror">No email data available.</div>';
+        if (empty($arrEmail) || !is_array($arrEmail)) {
+            return '<div class="tl_info">' . $GLOBALS['TL_LANG']['tl_iso_product_collection']['noEmailData'] . '</div>';
         }
 
         $strBuffer = '
@@ -110,7 +110,7 @@ class Callback extends \Backend
 
         $i = 0;
 
-        foreach ($arrSettings['email_data'] as $k => $v) {
+        foreach ($arrEmail as $k => $v) {
             $strClass = ++$i % 2 ? '' : ' class="tl_bg"';
 
             if (is_array($v)) {

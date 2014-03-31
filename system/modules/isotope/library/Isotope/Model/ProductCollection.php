@@ -318,7 +318,7 @@ abstract class ProductCollection extends TypeAgent
      */
     public function getShippingAddress()
     {
-        return $this->hasShipping() ? $this->getRelated('shipping_address_id') : null;
+        return $this->requiresShipping() ? $this->getRelated('shipping_address_id') : null;
     }
 
     /**
@@ -967,7 +967,7 @@ abstract class ProductCollection extends TypeAgent
                 $this->arrSurcharges = array();
 
                 if (($objSurcharges = ProductCollectionSurcharge::findBy('pid', $this->id)) !== null) {
-                    $this->arrSurcharges[] = $objSurcharges->getModels();
+                    $this->arrSurcharges = $objSurcharges->getModels();
                 }
             } else {
                 $this->arrSurcharges = ProductCollectionSurcharge::findForCollection($this);
@@ -1329,7 +1329,7 @@ abstract class ProductCollection extends TypeAgent
         }
 
         if ($this->arrData['document_number'] == '') {
-            $strPrefix = Haste::getInstance()->call('replaceInsertTags', $strPrefix);
+            $strPrefix = Haste::getInstance()->call('replaceInsertTags', array($strPrefix, true));
             $intPrefix = utf8_strlen($strPrefix);
 
             // Lock tables so no other order can get the same ID

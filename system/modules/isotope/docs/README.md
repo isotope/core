@@ -20,3 +20,6 @@ The following Contao extensions are required to run Isotope eCommerce Rules:
 
 If you aren't using Composer for installation, you will also need:
 - https://github.com/terminal42/contao-NamespaceClassLoader
+
+
+Backend icons are courtesy of http://flaticons.net
