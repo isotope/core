@@ -15,12 +15,15 @@
  */
 
 $GLOBALS['TL_LANG']['tl_module']['iso_list_layout'][0] = 'Produktlisten-Template';
+$GLOBALS['TL_LANG']['tl_module']['iso_list_layout'][1] = 'Bitte wählen Sie ein Listen-Layout. Listen-Templates beginnen mit <em>iso_list_</em>.';
 $GLOBALS['TL_LANG']['tl_module']['iso_reader_layout'][0] = 'Produktleser-Template';
+$GLOBALS['TL_LANG']['tl_module']['iso_reader_layout'][1] = 'Bitte wählen Sie ein Leser-Template. Leser-Templates beginnen mit <em>iso_reader_</em>.';
 $GLOBALS['TL_LANG']['tl_module']['iso_gallery'][0] = 'Galerie';
 $GLOBALS['TL_LANG']['tl_module']['iso_gallery'][1] = 'Wählen Sie eine Galerie, um die Bilder zu rendern (Überschreibt die Produkttyp-Einstellung).';
 $GLOBALS['TL_LANG']['tl_module']['iso_collectionTpl'][0] = 'Produktsammlung-Template';
 $GLOBALS['TL_LANG']['tl_module']['iso_collectionTpl'][1] = 'Bitte wählen Sie ein Template aus, um die Produkte zu rendern. Sie können eigene Templates in den Ordner <em>templates</em> hinzufügen. Templates für Sammlungen beginnen mit <em>iso_collection_</em>.';
 $GLOBALS['TL_LANG']['tl_module']['iso_filterTpl'][0] = 'Filter-Template';
+$GLOBALS['TL_LANG']['tl_module']['iso_filterTpl'][1] = 'Bitte wählen Sie ein Filter-Template. Filter-Templates beginnen mit <em>iso_filter_</em>.';
 $GLOBALS['TL_LANG']['tl_module']['iso_jump_first'][0] = 'Zum ersten Produkt weiterleiten';
 $GLOBALS['TL_LANG']['tl_module']['iso_jump_first'][1] = 'Klicken Sie hier wenn Nutzer zum ersten Produkt der Liste weitergeleitet werden sollen.';
 $GLOBALS['TL_LANG']['tl_module']['iso_hide_list'][0] = 'Ausblenden bei Produktansicht';
@@ -69,6 +72,7 @@ $GLOBALS['TL_LANG']['tl_module']['iso_noFilter'][1] = 'Geben Sie eine eigene Nac
 $GLOBALS['TL_LANG']['tl_module']['iso_category_scope'][0] = 'Kategorie-Anwendungsbereich';
 $GLOBALS['TL_LANG']['tl_module']['iso_category_scope'][1] = 'Spezifizieren Sie den Anwendungsbereich diese Produktliste.';
 $GLOBALS['TL_LANG']['tl_module']['iso_list_where'][0] = 'Bedingung';
+$GLOBALS['TL_LANG']['tl_module']['iso_list_where'][1] = 'Geben Sie eine SQL-Bedingung zum filtern der Produkte ein. Sie müssen die Felder mit "tl_iso_product." beginnen (z. B. <em>tl_iso_product.featured=1</em> oder <em>tl_iso_product.color!=\'red\'</em>)!';
 $GLOBALS['TL_LANG']['tl_module']['iso_filterModules'][0] = 'Filter-Module';
 $GLOBALS['TL_LANG']['tl_module']['iso_filterModules'][1] = 'Wählen Sie die Filter-Module die Sie für diese Produkt-Liste in Betracht ziehen wollen.';
 $GLOBALS['TL_LANG']['tl_module']['iso_filterFields'][0] = 'Aktivierte Filter';

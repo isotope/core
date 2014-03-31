@@ -190,7 +190,6 @@ $GLOBALS['TL_LANG']['MODEL']['tl_iso_payment']['cash'][0] = 'Gotówka';
 $GLOBALS['TL_LANG']['MODEL']['tl_iso_payment']['cash'][1] = 'Użyj tego dla wszystkich procesów płatności offline.';
 $GLOBALS['TL_LANG']['MODEL']['tl_iso_payment']['paypal'][0] = 'PayPal Standard Checkout';
 $GLOBALS['TL_LANG']['MODEL']['tl_iso_payment']['paypal'][1] = 'Ten moduł PayPal wspiera IPN (Instant Payment Notifications).';
-$GLOBALS['TL_LANG']['MODEL']['tl_iso_payment']['postfinance'][0] = 'Postfinance';
 $GLOBALS['TL_LANG']['MODEL']['tl_iso_payment']['postfinance'][1] = 'Metoda płatności dla szwajcarskiego systemu płatności, która wspiera różne typy kart. Sklep zostanie natychmiastowo powiadomiony o pomyślnych transakcjach.';
 $GLOBALS['TL_LANG']['MODEL']['tl_iso_payment']['viveum'][0] = 'VIVEUM';
 $GLOBALS['TL_LANG']['MODEL']['tl_iso_payment']['viveum'][1] = 'Metoda płatności dla VIVEUM Zahlungssysteme GmbH.';

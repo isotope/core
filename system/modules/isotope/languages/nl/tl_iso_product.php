@@ -115,7 +115,6 @@ $GLOBALS['TL_LANG']['tl_iso_product']['related'][0] = 'Gerelateerde producten';
 $GLOBALS['TL_LANG']['tl_iso_product']['related'][1] = 'Beheer gerelateerde producten voor product ID %s';
 $GLOBALS['TL_LANG']['tl_iso_product']['downloads'][0] = 'Downloads';
 $GLOBALS['TL_LANG']['tl_iso_product']['downloads'][1] = 'Wijzig downloads voor product ID %s';
-$GLOBALS['TL_LANG']['tl_iso_product']['downloads'][2] = 'Downloads: %s.';
 $GLOBALS['TL_LANG']['tl_iso_product']['group'][0] = 'Verplaats naar groep';
 $GLOBALS['TL_LANG']['tl_iso_product']['group'][1] = 'Verplaats product ID %s naar een groep';
 $GLOBALS['TL_LANG']['tl_iso_product']['groupSelected'] = 'Groep';
