@@ -35,6 +35,7 @@ if (TL_MODE == 'FE') {
 if (TL_MODE == 'BE') {
     // Type agent help is only needed in back end
     $GLOBALS['TL_HOOKS']['loadDataContainer'][]         = array('Isotope\Backend', 'loadTypeAgentHelp');
+    $GLOBALS['TL_HOOKS']['loadLanguageFile'][]          = array('Isotope\Backend\ProductType\Help', 'initializeWizard');
 
     // Adjust the product groups manager
     $GLOBALS['TL_HOOKS']['parseTemplate'][]             = array('Isotope\Backend', 'adjustGroupsManager');
