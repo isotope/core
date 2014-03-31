@@ -34,6 +34,7 @@ NamespaceClassLoader::addClassMap(array
  */
 TemplateLoader::addFiles(array
 (
+    'be_iso_integrity'                  => 'system/modules/isotope/templates/backend',
     'be_iso_introduction'               => 'system/modules/isotope/templates/backend',
     'be_iso_overview'                   => 'system/modules/isotope/templates/backend',
     'be_iso_old'                        => 'system/modules/isotope/templates/backend',

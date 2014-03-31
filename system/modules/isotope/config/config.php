@@ -141,6 +141,11 @@ $GLOBALS['ISO_MOD'] = array
             'tables'            => array(\Isotope\Model\Label::getTable()),
             'icon'              => 'system/modules/isotope/assets/images/setup-labels.png'
         ),
+        'integrity' => array
+        (
+            'callback'          => 'Isotope\BackendModule\Integrity',
+            'icon'              => 'system/modules/isotope/assets/images/setup-integrity.png'
+        ),
     )
 );
 
