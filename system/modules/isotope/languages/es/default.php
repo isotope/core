@@ -152,7 +152,6 @@ $GLOBALS['TL_LANG']['MODEL']['tl_iso_payment']['cash'][0] = 'Efectivo';
 $GLOBALS['TL_LANG']['MODEL']['tl_iso_payment']['cash'][1] = 'Usar esto para todos los pagos desconectados.';
 $GLOBALS['TL_LANG']['MODEL']['tl_iso_payment']['paypal'][0] = 'Pago PayPal estándar';
 $GLOBALS['TL_LANG']['MODEL']['tl_iso_payment']['paypal'][1] = 'Este módulo soporta PayPal IPN (notificaciones de pago instantáneas).';
-$GLOBALS['TL_LANG']['MODEL']['tl_iso_payment']['postfinance'][0] = 'Postfinance';
 $GLOBALS['TL_LANG']['MODEL']['tl_iso_payment']['postfinance'][1] = 'Pasarela de pago para el sistema de pago del correo suizo que soporta varios tipos de tarjetas. La tienda estará inmediatamente notificado de las transacciones con éxito.';
 $GLOBALS['TL_LANG']['MODEL']['tl_iso_payment']['datatrans'][0] = 'Datatrans';
 $GLOBALS['TL_LANG']['MODEL']['tl_iso_payment']['datatrans'][1] = 'Pasarela de pago para el sistema de pago suizo "Datatrans".';

@@ -43,7 +43,7 @@ class Upload extends Attribute implements IsotopeAttribute
     {
         parent::saveToDCA($arrData);
 
-        $arrData['fields'][$this->field_name]['sql'] = "varchar(255) NOT NULL default ''";
+        unset($arrData['fields'][$this->field_name]['sql']);
 
         // Install save_callback for upload widgets
         $arrData['fields'][$this->field_name]['save_callback'][] = array('Isotope\Frontend', 'saveUpload');

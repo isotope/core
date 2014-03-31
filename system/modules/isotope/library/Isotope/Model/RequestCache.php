@@ -79,7 +79,13 @@ class RequestCache extends \Model
             return array();
         }
 
-        return call_user_func_array('array_merge', array_intersect_key($this->arrFilters, array_flip(array_reverse($arrIds))));
+        $arrMatches = array_intersect_key($this->arrFilters, array_flip(array_reverse($arrIds)));
+
+        if (empty($arrMatches)) {
+            return array();
+        }
+
+        return call_user_func_array('array_merge', $arrMatches);
     }
 
     /**
@@ -189,7 +195,13 @@ class RequestCache extends \Model
             return array();
         }
 
-        return call_user_func_array('array_merge', array_intersect_key($this->arrSortings, array_flip(array_reverse($arrIds))));
+        $arrMatches = array_intersect_key($this->arrSortings, array_flip(array_reverse($arrIds)));
+
+        if (empty($arrMatches)) {
+            return array();
+        }
+
+        return call_user_func_array('array_merge', $arrMatches);
     }
 
     /**

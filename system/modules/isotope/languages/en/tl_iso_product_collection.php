@@ -56,6 +56,7 @@ $GLOBALS['TL_LANG']['tl_iso_product_collection']['print']                   = 'P
 $GLOBALS['TL_LANG']['tl_iso_product_collection']['orderStatusUpdate']               = 'The status of your order has been updated.';
 $GLOBALS['TL_LANG']['tl_iso_product_collection']['orderStatusNotificationSuccess']  = 'Notifications (e.g. email to client) have been sent.';
 $GLOBALS['TL_LANG']['tl_iso_product_collection']['orderStatusNotificationError']    = 'Notifications (e.g. email to client) clould not be sent. Check the system log.';
+$GLOBALS['TL_LANG']['tl_iso_product_collection']['noEmailData']                     = 'No additional email data available.';
 
 /**
  * Legends

@@ -438,15 +438,27 @@ class Backend extends Contao_Backend
      */
     public function loadTypeAgentHelp($strTable)
     {
+        switch ($strTable) {
+            case 'tl_iso_producttype':
+                $strField = 'class';
+                $strKey = 'tl_iso_product';
+                break;
+
+            default:
+                $strField = 'type';
+                $strKey = $strTable;
+                break;
+        }
+
         if (
             \Environment::get('script') !== 'contao/help.php' ||
-            !isset($GLOBALS['TL_DCA'][$strTable]['fields']['type']) ||
-            !is_subclass_of(\Model::getClassFromTable($strTable), 'Isotope\Model\TypeAgent')
+            !isset($GLOBALS['TL_DCA'][$strTable]['fields'][$strField]) ||
+            !is_subclass_of(\Model::getClassFromTable($strKey), 'Isotope\Model\TypeAgent')
         ) {
             return;
         }
 
-        $arrField = &$GLOBALS['TL_DCA'][$strTable]['fields']['type'];
+        $arrField = &$GLOBALS['TL_DCA'][$strTable]['fields'][$strField];
 
         // Get the field type
         $strClass = $GLOBALS['BE_FFL'][$arrField['inputType']];
@@ -456,12 +468,13 @@ class Backend extends Contao_Backend
             return;
         }
 
-        $arrFieldComplete = $strClass::getAttributesFromDca($arrField, 'type');
+        $arrFieldComplete = $strClass::getAttributesFromDca($arrField, $strField);
 
         if (
             !$arrFieldComplete ||
             !$arrFieldComplete['helpwizard'] ||
             !is_array($arrFieldComplete['options']) ||
+            $arrField['explanation'] != '' ||
             isset($GLOBALS['TL_LANG']['XPL']['type'])
         ) {
             return;
@@ -470,7 +483,7 @@ class Backend extends Contao_Backend
         // try to load a type agent model help description
         $arrField['explanation'] = 'type';
         foreach ($arrFieldComplete['options'] as $arrOption) {
-            $arrLabel = $GLOBALS['TL_LANG']['MODEL'][$strTable . '.' . $arrOption['value']];
+            $arrLabel = $GLOBALS['TL_LANG']['MODEL'][$strKey . '.' . $arrOption['value']];
             if ($arrLabel) {
                 $GLOBALS['TL_LANG']['XPL']['type'][] = $arrLabel;
             }

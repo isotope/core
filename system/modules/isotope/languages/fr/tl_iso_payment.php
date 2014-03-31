@@ -133,3 +133,4 @@ $GLOBALS['TL_LANG']['tl_iso_payment']['gateway_legend'] = 'Configuration de la p
 $GLOBALS['TL_LANG']['tl_iso_payment']['price_legend'] = 'Prix';
 $GLOBALS['TL_LANG']['tl_iso_payment']['template_legend'] = 'Modèle';
 $GLOBALS['TL_LANG']['tl_iso_payment']['expert_legend'] = 'Paramètres avancés';
+$GLOBALS['TL_LANG']['tl_iso_payment']['enabled_legend'] = 'Approbation';

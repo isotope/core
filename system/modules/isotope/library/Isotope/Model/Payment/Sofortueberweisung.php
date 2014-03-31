@@ -121,7 +121,7 @@ class Sofortueberweisung extends Postsale implements IsotopePayment
             'sender_holder'         => '',
             'sender_account_number' => '',
             'sender_bank_code'      => '',
-            'sender_country_id'     => $objOrder->getBillingAddress()->country,
+            'sender_country_id'     => strtoupper($objOrder->getBillingAddress()->country),
             'amount'                => number_format($objOrder->getTotal(), 2, '.', ''),
             'currency_id'           => $objOrder->currency,
             'reason_1'              => \Environment::get('host'),

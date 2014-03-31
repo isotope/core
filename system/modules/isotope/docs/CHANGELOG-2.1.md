@@ -1,6 +1,13 @@
 Isotope eCommerce Changelog
 ===========================
 
+Version 2.1.0-stable (2014-04-01)
+---------------------------------
+
+### Fixed
+- SQL error in product filter module (#1028)
+
+
 Version 2.1.0-rc1 (2014-03-10)
 --------------------------------
 

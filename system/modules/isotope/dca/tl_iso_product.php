@@ -275,10 +275,11 @@ $GLOBALS['TL_DCA']['tl_iso_product'] = array
             'inputType'             => 'select',
             'options_callback'      => array('Isotope\Backend\ProductType\Callback', 'getOptions'),
             'foreignKey'            => \Isotope\Model\ProductType::getTable().'.name',
-            'eval'                  => array('mandatory'=>true, 'submitOnChange'=>true, 'includeBlankOption'=>true, 'tl_class'=>'clr'),
+            'eval'                  => array('mandatory'=>true, 'submitOnChange'=>true, 'includeBlankOption'=>true, 'tl_class'=>'clr', 'helpwizard'=>true),
             'attributes'            => array('legend'=>'general_legend', 'fixed'=>true, 'inherit'=>true, 'systemColumn'=>true),
             'sql'                   => "int(10) unsigned NOT NULL default '0'",
             'relation'              => array('type'=>'hasOne', 'load'=>'eager'),
+            'explanation'           => 'tl_iso_product.type',
         ),
         'pages' => array
         (
@@ -470,7 +471,7 @@ $GLOBALS['TL_DCA']['tl_iso_product'] = array
             'default'               => array('', 'kg'),
             'options'               => array('mg', 'g', 'kg', 't', 'ct', 'oz', 'lb', 'st', 'grain'),
             'reference'             => &$GLOBALS['TL_LANG']['WGT'],
-            'eval'                  => array('rgxp'=>'digit', 'tl_class'=>'w50 wizard', 'helpwizard'=>true),
+            'eval'                  => array('rgxp'=>'digit', 'tl_class'=>'w50', 'helpwizard'=>true),
             'attributes'            => array('legend'=>'shipping_legend'),
             'sql'                   => "varchar(255) NOT NULL default ''",
         ),

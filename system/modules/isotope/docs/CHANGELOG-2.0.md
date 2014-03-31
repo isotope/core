@@ -1,6 +1,32 @@
 Isotope eCommerce Changelog
 ===========================
 
+
+Version 2.0.6 (2014-03-31)
+--------------------------
+
+### Fixed
+- Saferpay payment method did not work if magic_quotes_gpc is enabled
+- More InsertTag caching issues
+- Store config switcher only worked if a product was in the cart (#1008)
+- Filetree attribute did not generate frontend output (#1023)
+- Shipping or payment method could be invalid when cart changes (#1002)
+- Shipping address was unavailable when no shipping method was set (#985)
+- Potential error message when no filter modules were found (#974)
+- in_array error message when editing product as regular user
+- Regular users could not filter by product group
+- Product group filter was always applied for regular users
+- SQL exception when coupon code was dropped (#1043)
+- Help wizard for product type class was not available
+- Help wizard for product type was not available (#1045)
+- Document number not available in notification for cash payment (#1044)
+- Additional email data in order backend got no message if empty (#1050)
+- PDF with images did not work without fopen (#999)
+- Upload field was not visible in the frontend (#1039)
+- Product filter did not work for checkbox fields (#1032)
+- Filter should hide product without the filtered attribute
+
+
 Version 2.0.5 (2014-03-24)
 --------------------------
 

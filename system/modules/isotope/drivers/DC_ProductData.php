@@ -54,7 +54,7 @@ class DC_ProductData extends \DC_Table
     {
         $this->import('Session');
 
-        $this->intGroupId = (int)\Session::getInstance()->get('iso_products_gid') ? : (\BackendUser::getInstance()->isAdmin ? 0 : intval(\BackendUser::getInstance()->iso_groups[0]));
+        $this->intGroupId = (int)\Session::getInstance()->get('iso_products_gid');
 
         // Check if the group exists
         if ($this->intGroupId > 0) {
@@ -64,10 +64,11 @@ class DC_ProductData extends \DC_Table
                 if (\BackendUser::getInstance()->isAdmin || !is_array(\BackendUser::getInstance()->iso_groups)) {
                     $this->intGroupId = 0;
                 }
-            } elseif (!\BackendUser::getInstance()->isAdmin) {
-                $this->intGroupId = (int) \Database::getInstance()->prepare(
-                    "SELECT id FROM " . \Isotope\Model\Group::getTable() . " WHERE id IN ('" . implode("','", \BackendUser::getInstance()->iso_groups) . "') ORDER BY " . \Database::getInstance()->findInSet('id', \BackendUser::getInstance()->iso_groups)
-                )->limit(1)->execute()->id;
+                elseif (!\BackendUser::getInstance()->isAdmin) {
+                    $this->intGroupId = (int) \Database::getInstance()->prepare(
+                        "SELECT id FROM " . \Isotope\Model\Group::getTable() . " WHERE id IN ('" . implode("','", \BackendUser::getInstance()->iso_groups) . "') ORDER BY " . \Database::getInstance()->findInSet('id', \BackendUser::getInstance()->iso_groups)
+                    )->limit(1)->execute()->id;
+                }
             }
         }
 

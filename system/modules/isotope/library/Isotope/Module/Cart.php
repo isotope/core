@@ -124,6 +124,17 @@ class Cart extends Module
 
         // Reload the page if no button has handled it
         if ($blnReload) {
+
+            // Unset payment and shipping method because they could get invalid due to the change
+            // @todo change this to check availability, but that's an API/BC break
+            if (($objShipping = Isotope::getCart()->getShippingMethod()) !== null && !$objShipping->isAvailable()) {
+                Isotope::getCart()->setShippingMethod(null);
+            }
+
+            if (($objPayment = Isotope::getCart()->getPaymentMethod()) !== null && !$objPayment->isAvailable()) {
+                Isotope::getCart()->setPaymentMethod(null);
+            }
+
             \Controller::reload();
         }
 

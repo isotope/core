@@ -190,7 +190,6 @@ $GLOBALS['TL_LANG']['MODEL']['tl_iso_payment']['cash'][0] = 'Espèces';
 $GLOBALS['TL_LANG']['MODEL']['tl_iso_payment']['cash'][1] = 'A utiliser pour le traitement de tout paiement hors ligne.';
 $GLOBALS['TL_LANG']['MODEL']['tl_iso_payment']['paypal'][0] = 'PayPal Standard Checkout';
 $GLOBALS['TL_LANG']['MODEL']['tl_iso_payment']['paypal'][1] = 'Ce module PayPal supporte IPN (Notification instantanée de paiement).';
-$GLOBALS['TL_LANG']['MODEL']['tl_iso_payment']['postfinance'][0] = 'Postfinance';
 $GLOBALS['TL_LANG']['MODEL']['tl_iso_payment']['postfinance'][1] = 'Passerelle pour le système de paiement de la Poste Suisse qui prend en charge différents types de cartes. Le magasin sera immédiatement informé des transactions réussies.';
 $GLOBALS['TL_LANG']['MODEL']['tl_iso_payment']['viveum'][0] = 'VIVEUM';
 $GLOBALS['TL_LANG']['MODEL']['tl_iso_payment']['viveum'][1] = 'Un module de paiement pour la passerelle VIVEUM Zahlungssysteme GmbH.';

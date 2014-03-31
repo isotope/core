@@ -13,6 +13,7 @@
 namespace Isotope\Model\Attribute;
 
 use Isotope\Interfaces\IsotopeAttribute;
+use Isotope\Interfaces\IsotopeProduct;
 use Isotope\Model\Attribute;
 
 
@@ -29,10 +30,28 @@ class FileTree extends Attribute implements IsotopeAttribute
     {
         parent::saveToDCA($arrData);
 
-        $arrData['fields'][$this->field_name]['sql'] = "blob NULL";
+        $arrData['fields'][$this->field_name]['sql'] = "binary(16) NULL";
 
         if ($this->fieldType == 'checkbox') {
             $arrData['fields'][$this->field_name]['eval']['multiple'] = true;
+            $arrData['fields'][$this->field_name]['sql'] = "blob NULL";
         }
+    }
+
+    public function generate(IsotopeProduct $objProduct, array $arrOptions = array())
+    {
+        $varValue = $objProduct->{$this->field_name};
+
+        if ($this->fieldType == 'checkbox') {
+            $varValue = deserialize($varValue, true);
+        }
+
+        $objFiles = \FilesModel::findMultipleByIds((array) $varValue);
+
+        if (null !== $objFiles) {
+            return $this->generateList($objFiles->fetchEach('path'));
+        }
+
+        return '';
     }
 }
