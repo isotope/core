@@ -20,6 +20,7 @@ Version 2.0.6 (2014-??-??)
 - Help wizard for product type class was not available
 - Help wizard for product type was not available (#1045)
 - Document number not available in notification for cash payment (#1044)
+- Additional email data in order backend got no message if empty (#1050)
 
 
 Version 2.0.5 (2014-03-24)
