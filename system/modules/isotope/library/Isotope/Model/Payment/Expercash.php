@@ -39,6 +39,9 @@ class Expercash extends Payment implements IsotopePayment, IsotopePostsale
     {
         // @todo this can't be the only validation
         if ($this->validateUrlParams($objOrder)) {
+            $objOrder->checkout();
+            $objOrder->updateOrderStatus($this->new_order_status);
+
             return true;
         }
 

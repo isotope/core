@@ -115,7 +115,6 @@ $GLOBALS['TL_LANG']['tl_iso_product']['related'][0] = 'Powiązane produkty';
 $GLOBALS['TL_LANG']['tl_iso_product']['related'][1] = 'Zarządzaj powiązanymi produktami dla tego produktu ID %s';
 $GLOBALS['TL_LANG']['tl_iso_product']['downloads'][0] = 'Pliki do pobrania';
 $GLOBALS['TL_LANG']['tl_iso_product']['downloads'][1] = 'Edytuj pliki do pobrania dla produktu ID %s';
-$GLOBALS['TL_LANG']['tl_iso_product']['downloads'][2] = 'Pobrania: %s.';
 $GLOBALS['TL_LANG']['tl_iso_product']['group'][0] = 'Przenieś do grupy';
 $GLOBALS['TL_LANG']['tl_iso_product']['group'][1] = 'Przenieś produkt ID %s do grupy';
 $GLOBALS['TL_LANG']['tl_iso_product']['groupSelected'] = 'Grupa';

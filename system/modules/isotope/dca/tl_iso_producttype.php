@@ -151,7 +151,6 @@ $GLOBALS['TL_DCA']['tl_iso_producttype'] = array
             'options_callback'      => function() {
                 return \Isotope\Model\Product::getModelTypeOptions();
             },
-            'reference'             => &$GLOBALS['TL_LANG']['PRODUCT'],
             'eval'                  => array('mandatory'=>true, 'submitOnChange'=>true, 'helpwizard'=>true, 'tl_class'=>'w50'),
             'sql'                   => "varchar(64) NOT NULL default ''"
         ),

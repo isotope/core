@@ -29,13 +29,14 @@ $GLOBALS['ISO_HOOKS']['findSurchargesForCollection'][]  = array('Isotope\Fronten
 
 if (TL_MODE == 'FE') {
     // Only limit countries in FE
-    $GLOBALS['TL_HOOKS']['loadDataContainer'][]        = array('Isotope\Backend\Member\Callback', 'limitCountries');
+    $GLOBALS['TL_HOOKS']['loadDataContainer'][]         = array('Isotope\Backend\Member\Callback', 'limitCountries');
 }
 
 if (TL_MODE == 'BE') {
     // Type agent help is only needed in back end
-    $GLOBALS['TL_HOOKS']['loadDataContainer'][]        = array('Isotope\Backend', 'loadTypeAgentHelp');
+    $GLOBALS['TL_HOOKS']['loadDataContainer'][]         = array('Isotope\Backend', 'loadTypeAgentHelp');
+    $GLOBALS['TL_HOOKS']['loadLanguageFile'][]          = array('Isotope\Backend\ProductType\Help', 'initializeWizard');
 
     // Adjust the product groups manager
-    $GLOBALS['TL_HOOKS']['parseTemplate'][]            = array('Isotope\Backend', 'adjustGroupsManager');
+    $GLOBALS['TL_HOOKS']['parseTemplate'][]             = array('Isotope\Backend', 'adjustGroupsManager');
 }

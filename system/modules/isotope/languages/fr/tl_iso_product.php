@@ -115,7 +115,6 @@ $GLOBALS['TL_LANG']['tl_iso_product']['related'][0] = 'Produits similaires';
 $GLOBALS['TL_LANG']['tl_iso_product']['related'][1] = 'Gérer les produits similaires pour le produit ID %s';
 $GLOBALS['TL_LANG']['tl_iso_product']['downloads'][0] = 'Téléchargements';
 $GLOBALS['TL_LANG']['tl_iso_product']['downloads'][1] = 'Éditer les téléchargements du produit ID %s';
-$GLOBALS['TL_LANG']['tl_iso_product']['downloads'][2] = 'Téléchargements : %s.';
 $GLOBALS['TL_LANG']['tl_iso_product']['group'][0] = 'Déplacer dans un groupe';
 $GLOBALS['TL_LANG']['tl_iso_product']['group'][1] = 'Déplacer le produit ID %s dans un groupe';
 $GLOBALS['TL_LANG']['tl_iso_product']['groupSelected'] = 'Groupe';

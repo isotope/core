@@ -21,6 +21,7 @@ $GLOBALS['TL_LANG']['tl_iso_tax_rate']['label'][1] = 'Diese Beschriftung wird im
 $GLOBALS['TL_LANG']['tl_iso_tax_rate']['address'][0] = 'Adressbasis für die Berechnung';
 $GLOBALS['TL_LANG']['tl_iso_tax_rate']['address'][1] = 'Wählen Sie auf Basis welcher Adresse dieser Steuersatz  berechnet werden soll.';
 $GLOBALS['TL_LANG']['tl_iso_tax_rate']['countries'][0] = 'Länder';
+$GLOBALS['TL_LANG']['tl_iso_tax_rate']['countries'][1] = 'Wählen Sie die Länder, auf welche diese Steuerklasse zutrifft.';
 $GLOBALS['TL_LANG']['tl_iso_tax_rate']['subdivisions'][0] = 'Staaten/Regionen';
 $GLOBALS['TL_LANG']['tl_iso_tax_rate']['subdivisions'][1] = 'Wählen Sie die Staaten/Regionen, auf welche diese Steuerklasse zutrifft.';
 $GLOBALS['TL_LANG']['tl_iso_tax_rate']['postalCodes'][0] = 'Postleitzahlen';

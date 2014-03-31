@@ -190,7 +190,6 @@ $GLOBALS['TL_LANG']['MODEL']['tl_iso_payment']['cash'][0] = 'Barzahlung';
 $GLOBALS['TL_LANG']['MODEL']['tl_iso_payment']['cash'][1] = 'Benutzen Sie dies für alle persönlich-abgewickelten Bezahlungen.';
 $GLOBALS['TL_LANG']['MODEL']['tl_iso_payment']['paypal'][0] = 'PayPal Standard Checkout';
 $GLOBALS['TL_LANG']['MODEL']['tl_iso_payment']['paypal'][1] = 'Dieses PayPal-Modul unterstützt IPN (Instant Payment Notifications).';
-$GLOBALS['TL_LANG']['MODEL']['tl_iso_payment']['postfinance'][0] = 'PostFinance';
 $GLOBALS['TL_LANG']['MODEL']['tl_iso_payment']['postfinance'][1] = 'Bezahlschnittstelle für das schweizer Post-Bezahlsystem welches verschiedene Kartentypen unterstützt. Der Shop wird sofort über alle erfolgreichen Transaktionen informiert.';
 $GLOBALS['TL_LANG']['MODEL']['tl_iso_payment']['viveum'][0] = 'VIVEUM';
 $GLOBALS['TL_LANG']['MODEL']['tl_iso_payment']['viveum'][1] = 'Bezahlschnittstelle für VIVEUM Zahlungssysteme GmbH.';

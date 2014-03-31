@@ -122,11 +122,13 @@ abstract class Attribute extends TypeAgent
         // Keep field settings made through DCA code
         $arrField = is_array($arrData['fields'][$this->field_name]) ? $arrData['fields'][$this->field_name] : array();
 
-        $arrField['label']      = Translation::get(array($this->name, $this->description));
-        $arrField['exclude']    = true;
-        $arrField['inputType']  = array_search($this->getBackendWidget(), $GLOBALS['BE_FFL']);
-        $arrField['attributes'] = $this->row();
-        $arrField['eval']       = is_array($arrField['eval']) ? array_merge($arrField['eval'], $arrField['attributes']) : $arrField['attributes'];
+        $arrField['label']                          = Translation::get(array($this->name, $this->description));
+        $arrField['exclude']                        = true;
+        $arrField['inputType']                      = array_search($this->getBackendWidget(), $GLOBALS['BE_FFL']);
+        $arrField['attributes']                     = $this->row();
+        $arrField['attributes']['variant_option']   = $this->isVariantOption();
+        $arrField['attributes']['customer_defined'] = $this->isCustomerDefined();
+        $arrField['eval']                           = is_array($arrField['eval']) ? array_merge($arrField['eval'], $arrField['attributes']) : $arrField['attributes'];
 
         // Support numeric paths (fileTree)
         unset($arrField['eval']['path']);

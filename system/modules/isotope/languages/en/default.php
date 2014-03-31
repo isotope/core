@@ -203,7 +203,7 @@ $GLOBALS['TL_LANG']['MODEL']['tl_iso_shipping.group']   = array('Shipping group'
  */
 $GLOBALS['TL_LANG']['MODEL']['tl_iso_payment.cash']                 = array('Cash', 'Use this for all offline processed payment.');
 $GLOBALS['TL_LANG']['MODEL']['tl_iso_payment.paypal']               = array('PayPal Standard Checkout', 'This PayPal module supports IPN (Instant Payment Notifications).');
-$GLOBALS['TL_LANG']['MODEL']['tl_iso_payment.postfinance']          = array('Postfinance', 'Payment gateway for the swiss post payment system that supports various card types. The store will be instantly notified about successfull transactions.');
+$GLOBALS['TL_LANG']['MODEL']['tl_iso_payment.postfinance']          = array('PostFinance', 'Payment gateway for the swiss post payment system that supports various card types. The store will be instantly notified about successfull transactions.');
 $GLOBALS['TL_LANG']['MODEL']['tl_iso_payment.viveum']               = array('VIVEUM', 'Payment gateway for VIVEUM Zahlungssysteme GmbH.');
 $GLOBALS['TL_LANG']['MODEL']['tl_iso_payment.datatrans']            = array('Datatrans', 'A payment module for the swiss payment gateway "Datatrans".');
 $GLOBALS['TL_LANG']['MODEL']['tl_iso_payment.sparkasse']            = array('Sparkasse');
