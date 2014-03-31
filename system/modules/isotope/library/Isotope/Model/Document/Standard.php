@@ -147,7 +147,7 @@ class Standard extends Document implements IsotopeDocument
         // Generate template and fix PDF issues, see Contao's ModuleArticle
         $strBuffer = Haste::getInstance()->call('replaceInsertTags', array($objTemplate->parse(), false));
         $strBuffer = html_entity_decode($strBuffer, ENT_QUOTES, $GLOBALS['TL_CONFIG']['characterSet']);
-        $strBuffer = \Controller::convertRelativeUrls($strBuffer, '');
+        $strBuffer = \Controller::convertRelativeUrls($strBuffer, '', true);
 
         // Remove form elements and JavaScript links
         $arrSearch = array
