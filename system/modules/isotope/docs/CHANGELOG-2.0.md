@@ -19,6 +19,7 @@ Version 2.0.6 (2014-??-??)
 - SQL exception when coupon code was dropped (#1043)
 - Help wizard for product type class was not available
 - Help wizard for product type was not available (#1045)
+- Document number not available in notification for cash payment (#1044)
 
 
 Version 2.0.5 (2014-03-24)
