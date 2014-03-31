@@ -272,12 +272,10 @@ $GLOBALS['NOTIFICATION_CENTER']['NOTIFICATION_TYPE']['isotope']['iso_order_statu
     'cart_html',
     'cart_text',
     'document',
-    'billing_*', // All the billing address model fields
-    'billing_address', // Billing address as HTML
-    'billing_address_text', // Billing address as text
-    'shipping_*', // All the shipping address model fields
-    'shipping_address', // Shipping address as HTML
-    'shipping_address_text', // Shipping address as text
+    'billing_address', // Formatted billing address
+    'billing_address_*', // All the billing address model fields
+    'shipping_address', // Formatted shipping address
+    'shipping_address_*', // All the shipping address model fields
     'form_*', // All the order condition form fields
     'payment_id', // Payment method ID
     'payment_label', // Payment method label
@@ -290,7 +288,7 @@ $GLOBALS['NOTIFICATION_CENTER']['NOTIFICATION_TYPE']['isotope']['iso_order_statu
 );
 $GLOBALS['NOTIFICATION_CENTER']['NOTIFICATION_TYPE']['isotope']['iso_order_status_change']['email_subject'] = &$GLOBALS['NOTIFICATION_CENTER']['NOTIFICATION_TYPE']['isotope']['iso_order_status_change']['email_text'];
 $GLOBALS['NOTIFICATION_CENTER']['NOTIFICATION_TYPE']['isotope']['iso_order_status_change']['email_html'] = &$GLOBALS['NOTIFICATION_CENTER']['NOTIFICATION_TYPE']['isotope']['iso_order_status_change']['email_text'];
-
+$GLOBALS['NOTIFICATION_CENTER']['NOTIFICATION_TYPE']['isotope']['iso_order_status_change']['email_replyTo'] = &$GLOBALS['NOTIFICATION_CENTER']['NOTIFICATION_TYPE']['isotope']['iso_order_status_change']['recipients'];
 
 /**
  * Models

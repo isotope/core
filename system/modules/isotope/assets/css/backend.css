@@ -256,6 +256,16 @@ table.multicolumnwizard .operations {
     height: 50px;
 }
 
+.tl_listing_container .col_order_status {
+    padding: 0;
+}
+
+.tl_listing_container .col_order_status span {
+    display: block;
+    padding: 2px 5px 3px;
+    border-radius: 2px;
+}
+
 .iso_operations {
     width: 110px;
     white-space: normal;

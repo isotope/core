@@ -47,23 +47,17 @@ class Address extends \Model
     }
 
 
-    /**
-     * Return this address formatted as text
-     * @param array
-     * @return string
-     */
-    public function generateText($arrFields = null)
+    public function __toString()
     {
-        return strip_tags($this->generateHtml($arrFields));
+        return $this->generate();
     }
 
-
     /**
-     * Return an address formatted with HTML (hCard)
+     * Return formatted address (hCard)
      * @param array
      * @return string
      */
-    public function generateHtml($arrFields = null)
+    public function generate($arrFields = null)
     {
         // We need a country to format the address, use default country if none is available
         $strCountry = $this->country ?: Isotope::getConfig()->country;
@@ -77,6 +71,27 @@ class Address extends \Model
         return $strAddress;
     }
 
+    /**
+     * Return this address formatted as text
+     * @param array
+     * @return string
+     * @deprecated
+     */
+    public function generateText($arrFields = null)
+    {
+        return strip_tags($this->generate($arrFields));
+    }
+
+    /**
+     * Return an address formatted with HTML (hCard)
+     * @param array
+     * @return string
+     * @deprecated
+     */
+    public function generateHtml($arrFields = null)
+    {
+        return $this->generate($arrFields);
+    }
 
     /**
      * Compile the list of hCard tokens for this address

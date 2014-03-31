@@ -15,6 +15,7 @@
  * Register PSR-0 namespace
  */
 NamespaceClassLoader::add('Isotope', 'system/modules/isotope/library');
+NamespaceClassLoader::add('UnitedPrototype', 'system/modules/isotope/library');
 
 
 /**
@@ -36,6 +37,7 @@ TemplateLoader::addFiles(array
     'be_iso_introduction'               => 'system/modules/isotope/templates/backend',
     'be_iso_overview'                   => 'system/modules/isotope/templates/backend',
     'be_iso_old'                        => 'system/modules/isotope/templates/backend',
+    'be_iso_upgrade'                    => 'system/modules/isotope/templates/backend',
     'iso_checkout_address'              => 'system/modules/isotope/templates/checkout',
     'iso_checkout_order_conditions'     => 'system/modules/isotope/templates/checkout',
     'iso_checkout_order_info'           => 'system/modules/isotope/templates/checkout',

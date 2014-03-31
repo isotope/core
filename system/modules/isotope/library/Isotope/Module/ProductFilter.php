@@ -12,8 +12,10 @@
 
 namespace Isotope\Module;
 
+use Haste\Haste;
 use Haste\Http\Response\JsonResponse;
 use Haste\Util\Format;
+use Haste\Util\Url;
 use Isotope\Isotope;
 use Isotope\Model\Product;
 use Isotope\Model\RequestCache;
@@ -82,10 +84,11 @@ class ProductFilter extends Module
         if ($this->blnUpdateCache) {
             $objCache = Isotope::getRequestCache()->saveNewConfiguration();
 
-            \Input::setGet('isorc', $objCache->id);
-
             // Include \Environment::base or the URL would not work on the index page
-            \Controller::redirect(\Environment::get('base') . $this->generateRequestUrl());
+            \Controller::redirect(
+                \Environment::get('base') .
+                Url::addQueryString('isorc='.$objCache->id, ($this->jumpTo > 0 ? $this->jumpTo : null))
+            );
         }
 
         return $strBuffer;
@@ -224,7 +227,7 @@ class ProductFilter extends Module
                     . "AND (p1.id IN (SELECT pid FROM " . \Isotope\Model\ProductCategory::getTable() . " WHERE page_id IN (" . implode(',', $arrCategories) . "))
                        OR p1.pid IN (SELECT pid FROM " . \Isotope\Model\ProductCategory::getTable() . " WHERE page_id IN (" . implode(',', $arrCategories) . ")))"
                     . (BE_USER_LOGGED_IN === true ? '' : " AND (p1.pid=0 OR (p2.published='1' AND (p2.start='' OR p2.start<$time) AND (p2.stop='' OR p2.stop>$time)))")
-                    . ($this->iso_list_where == '' ? '' : " AND {$this->iso_list_where}")
+                    . ($this->iso_list_where == '' ? '' : " AND " . Haste::getInstance()->call('replaceInsertTags', $this->iso_list_where))
                 );
 
                 while ($objValues->next()) {

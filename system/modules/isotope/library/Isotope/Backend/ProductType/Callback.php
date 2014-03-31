@@ -189,4 +189,44 @@ class Callback extends \Backend
 
         return $arrProductTypes;
     }
+
+    /**
+     * Make sure at least one variant attribute is enabled
+     * @param   mixed
+     * @return  mixed
+     * @throws  UnderflowException
+     */
+    public function validateVariantAttributes($varValue)
+    {
+        \Haste\Haste::getInstance()->call('loadDataContainer', 'tl_iso_product');
+
+        $blnError = true;
+        $arrAttributes = deserialize($varValue);
+        $arrVariantAttributeLabels = array();
+
+        if (!empty($arrAttributes) && is_array($arrAttributes)) {
+            foreach ($arrAttributes as $arrAttribute) {
+                $objAttribute = $GLOBALS['TL_DCA']['tl_iso_product']['attributes'][$arrAttribute['name']];
+
+                if (null !== $objAttribute && $objAttribute->isVariantOption()) {
+                    $arrVariantAttributeLabels[] = $objAttribute->name;
+
+                    if ($arrAttribute['enabled']) {
+                        $blnError = false;
+                    }
+                }
+            }
+        }
+
+        if ($blnError) {
+            \System::loadLanguageFile('explain');
+            throw new \UnderflowException(
+                sprintf($GLOBALS['TL_LANG']['tl_iso_producttype']['noVariantAttributes'],
+                    implode(', ', $arrVariantAttributeLabels)
+                )
+            );
+        }
+
+        return $varValue;
+    }
 }

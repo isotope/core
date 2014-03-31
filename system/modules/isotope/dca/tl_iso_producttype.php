@@ -138,6 +138,7 @@ $GLOBALS['TL_DCA']['tl_iso_producttype'] = array
         (
             'label'                 => &$GLOBALS['TL_LANG']['tl_iso_producttype']['name'],
             'exclude'               => true,
+            'search'                => true,
             'inputType'             => 'text',
             'eval'                  => array('mandatory'=>true, 'maxlength'=>255, 'tl_class'=>'w50'),
             'sql'                   => "varchar(255) NOT NULL default ''",
@@ -146,6 +147,7 @@ $GLOBALS['TL_DCA']['tl_iso_producttype'] = array
         (
             'label'                 => &$GLOBALS['TL_LANG']['tl_iso_producttype']['class'],
             'exclude'               => true,
+            'filter'                => true,
             'inputType'             => 'select',
             'default'               => 'standard',
             'options_callback'      => function() {
@@ -158,6 +160,7 @@ $GLOBALS['TL_DCA']['tl_iso_producttype'] = array
         (
             'label'                 => &$GLOBALS['TL_LANG']['tl_iso_producttype']['fallback'],
             'exclude'               => true,
+            'filter'                => true,
             'inputType'             => 'checkbox',
             'eval'                  => array('fallback'=>true, 'tl_class'=>'w50'),
             'sql'                   => "char(1) NOT NULL default ''",
@@ -268,6 +271,7 @@ $GLOBALS['TL_DCA']['tl_iso_producttype'] = array
         (
             'label'                 => &$GLOBALS['TL_LANG']['tl_iso_producttype']['variants'],
             'exclude'               => true,
+            'filter'                => true,
             'inputType'             => 'checkbox',
             'eval'                  => array('tl_class'=>'clr', 'submitOnChange'=>true),
             'sql'                   => "char(1) NOT NULL default ''",
@@ -290,6 +294,7 @@ $GLOBALS['TL_DCA']['tl_iso_producttype'] = array
             ),
             'save_callback'         => array
             (
+                array('Isotope\Backend\ProductType\Callback', 'validateVariantAttributes'),
                 array('Isotope\Backend\ProductType\AttributeWizard', 'save'),
             ),
         ),
@@ -305,6 +310,7 @@ $GLOBALS['TL_DCA']['tl_iso_producttype'] = array
         (
             'label'                 => &$GLOBALS['TL_LANG']['tl_iso_producttype']['shipping_exempt'],
             'exclude'               => true,
+            'filter'                => true,
             'inputType'             => 'checkbox',
             'eval'                  => array('tl_class'=>'w50'),
             'sql'                   => "char(1) NOT NULL default ''",
@@ -313,6 +319,7 @@ $GLOBALS['TL_DCA']['tl_iso_producttype'] = array
         (
             'label'                 => &$GLOBALS['TL_LANG']['tl_iso_producttype']['downloads'],
             'exclude'               => true,
+            'filter'                => true,
             'inputType'             => 'checkbox',
             'eval'                  => array('tl_class'=>'w50'),
             'sql'                   => "char(1) NOT NULL default ''"

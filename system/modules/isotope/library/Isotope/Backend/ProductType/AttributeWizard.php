@@ -12,6 +12,7 @@
 
 namespace Isotope\Backend\ProductType;
 
+use Isotope\Model\Attribute;
 use Isotope\Model\Product;
 
 
@@ -28,13 +29,21 @@ class AttributeWizard extends \Backend
         $this->loadDataContainer(\Isotope\Model\Product::getTable());
 
         $arrValues   = $objWidget->value;
-        $arrDCA      = &$GLOBALS['TL_DCA']['tl_iso_product']['fields'];
         $blnVariants = ($objWidget->name != 'attributes');
 
         if (!empty($arrValues) && is_array($arrValues)) {
+            $arrFixed = $blnVariants ? Attribute::getVariantFixedFields() : Attribute::getFixedFields();
+
             foreach ($arrValues as $i => $attribute) {
-                if ($arrDCA[$attribute['name']]['attributes'][($blnVariants ? 'variant_' : '') . 'fixed']) {
+
+                if (in_array($attribute['name'], $arrFixed)) {
                     $objWidget->addDataToFieldAtIndex($i, 'enabled', array('eval' => array('disabled' => true)));
+                }
+
+                $objAttribute = $GLOBALS['TL_DCA']['tl_iso_product']['attributes'][$attribute['name']];
+                if (null !== $objAttribute && $objAttribute->isVariantOption()) {
+                    $objWidget->addDataToFieldAtIndex($i, 'name', array('eval' => array('tl_class' => '" style="font-style:italic;"')));
+                    $objWidget->addDataToFieldAtIndex($i, 'mandatory', array('eval' => array('hideBody' => true)));
                 }
             }
         }
@@ -49,7 +58,7 @@ class AttributeWizard extends \Backend
             'name'      => array
             (
                 'input_field_callback' => array('Isotope\Backend\ProductType\AttributeWizard', 'getNextName'),
-                'eval'                 => array('hideHead' => true, 'tl_class' => 'mcwUpdateFields'),
+                'eval'                 => array('hideHead' => true),
             ),
             'legend'    => array
             (

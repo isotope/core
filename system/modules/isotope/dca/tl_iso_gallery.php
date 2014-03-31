@@ -111,7 +111,7 @@ $GLOBALS['TL_DCA']['tl_iso_gallery'] = array
         '__selector__'              => array('type', 'anchor'),
         'default'                   => '{name_legend},name,type',
         'standard'                  => '{name_legend},name,type,anchor,placeholder;{size_legend},main_size,gallery_size;{watermark_legend:hide},main_watermark_image,main_watermark_position,gallery_watermark_image,gallery_watermark_position',
-        'standardlightbox'          => '{name_legend},name,type,anchor,placeholder;{size_legend},main_size,gallery_size,lightbox_size;{watermark_legend:hide},main_watermark_image,main_watermark_position,gallery_watermark_image,gallery_watermark_position,lightbox_watermark_image,lightbox_watermark_position',
+        'standardlightbox'          => '{name_legend},name,type,anchor,placeholder;{size_legend},main_size,gallery_size;{lightbox_legend},lightbox_template,lightbox_size;{watermark_legend:hide},main_watermark_image,main_watermark_position,gallery_watermark_image,gallery_watermark_position,lightbox_watermark_image,lightbox_watermark_position',
         'inline'                    => '{name_legend},name,type,placeholder;{size_legend},main_size,gallery_size;{watermark_legend:hide},main_watermark_image,main_watermark_position,gallery_watermark_image,gallery_watermark_position',
     ),
 
@@ -185,6 +185,20 @@ $GLOBALS['TL_DCA']['tl_iso_gallery'] = array
             'reference'             => &$GLOBALS['TL_LANG']['MSC'],
             'eval'                  => array('rgxp'=>'digit', 'nospace'=>true, 'helpwizard'=>true, 'tl_class'=>'w50'),
             'sql'                   => "varchar(64) NOT NULL default ''"
+        ),
+        'lightbox_template' => array
+        (
+            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_gallery']['lightbox_template'],
+            'exclude'               => true,
+            'inputType'             => 'checkboxWizard',
+            'options_callback'      => function() {
+                return array_merge(
+                    \Controller::getTemplateGroup('moo_'),
+                    \Controller::getTemplateGroup('j_')
+                );
+            },
+            'eval'                  => array('mandatory'=>true, 'multiple'=>true, 'tl_class'=>'w50 w50h'),
+            'sql'                   => "blob NULL",
         ),
         'lightbox_size' => array
         (

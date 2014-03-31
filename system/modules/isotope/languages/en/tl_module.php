@@ -23,7 +23,8 @@ $GLOBALS['TL_LANG']['tl_module']['iso_hide_list']                   = array('Hid
 $GLOBALS['TL_LANG']['tl_module']['iso_use_quantity']                = array('Enable quantity', 'Allow users to specify 1 or more of a product to be purchased.');
 $GLOBALS['TL_LANG']['tl_module']['iso_display404Page']              = array('Display a 404 page', 'Display the 404 not found page if no product alias is in the URL. Use this if your reader module is on a separate page that should not be available otherwise.');
 $GLOBALS['TL_LANG']['tl_module']['iso_checkout_method']             = array('Checkout method', 'Choose your checkout method.');
-$GLOBALS['TL_LANG']['tl_module']['iso_login_jumpTo']                = array('Checkout login page', 'Select the page where a user should login to checkout.');
+$GLOBALS['TL_LANG']['tl_module']['iso_loginRequired']               = array('Require login', 'A member login is required to view this page (e.g. if the order belongs to a member).');
+$GLOBALS['TL_LANG']['tl_module']['iso_login_jumpTo']                = array('Login page', 'Select the page where a member can login.');
 $GLOBALS['TL_LANG']['tl_module']['iso_addProductJumpTo']            = array('Add product jump to page', 'This setting defines to which page a user will be redirected when adding a product to the cart, if other than the current page.');
 $GLOBALS['TL_LANG']['tl_module']['iso_cols']                        = array('Columns', 'Enter a number of columns to display width-wise in the listing template.');
 $GLOBALS['TL_LANG']['tl_module']['iso_config_id']                   = array('Store configuration', 'Select the store configuration that this module will be used for.');
@@ -59,6 +60,11 @@ $GLOBALS['TL_LANG']['tl_module']['iso_buttons']                     = array('But
 $GLOBALS['TL_LANG']['tl_module']['iso_related_categories']          = array('Related categories', 'Select the categories to show products of.');
 $GLOBALS['TL_LANG']['tl_module']['iso_includeMessages']             = array('Include messaging', 'This setting allows the module to include any errors, notifications, or confirmations the visitor should be aware of.');
 $GLOBALS['TL_LANG']['tl_module']['iso_continueShopping']            = array('Enable "Continue shopping" button', 'Add a link to the currently added product to the cart.');
+
+/**
+ * Legends
+ */
+$GLOBALS['TL_LANG']['tl_module']['iso_order_conditions_legend']     = 'Order conditions form';
 
 /**
  * References

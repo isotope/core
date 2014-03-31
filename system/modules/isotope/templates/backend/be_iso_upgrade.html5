@@ -1,0 +1,55 @@
+<?php
+
+System::loadLanguageFile('exception');
+$lang = (object) $GLOBALS['TL_LANG']['XPT'];
+
+?>
+<!DOCTYPE html>
+<html>
+<head>
+
+  <meta charset="utf-8">
+  <title><?php echo $lang->iso_old; ?></title>
+  <base href="<?php echo $this->base; ?>">
+  <meta name="generator" content="Contao Open Source CMS">
+
+  <style><?php
+    include TL_ROOT . '/system/themes/default/basic.css';
+    include TL_ROOT . '/system/themes/default/error.css';
+  ?></style>
+
+</head>
+<body class="<?php echo Environment::get('agent')->class; ?>">
+
+  <div id="header">
+    <h1>Contao Open Source CMS</h1>
+  </div>
+
+  <div id="container">
+
+    <div id="main">
+
+      <h2>Isotope eCommerce – <?php echo sprintf($GLOBALS['TL_LANG']['UPG']['headline'], Isotope\Isotope::VERSION); ?></h2>
+
+      <h3><?php echo $lang->matter; ?></h3>
+      <p><?php echo $this->matter; ?></p>
+
+      <form action="<?php echo $this->action; ?>" method="post">
+      <div class="formbody">
+      <input type="hidden" name="FORM_SUBMIT" value="<?php echo $this->formSubmit; ?>" />
+      <input type="hidden" name="REQUEST_TOKEN" value="<?php echo REQUEST_TOKEN; ?>">
+      <?php echo $this->fields; ?>
+      </div>
+      <br>
+      <div class="tl_submit_container"><input type="submit" class="tl_submit" value="<?php echo $this->slabel; ?>"></div>
+      </form>
+
+      <h3><?php echo $lang->more; ?></h3>
+      <p><?php echo $lang->isotopeOldExplain; ?></p>
+
+    </div>
+
+  </div>
+
+</body>
+</html>

@@ -16,7 +16,7 @@
 
 $GLOBALS['TL_LANG']['tl_iso_tax_class']['name'][0] = 'Nazwa';
 $GLOBALS['TL_LANG']['tl_iso_tax_class']['name'][1] = 'Wprowadź nazwę podatku, która wyjaśnia do czego jest użyty.';
-$GLOBALS['TL_LANG']['tl_iso_tax_class']['fallback'][0] = 'Domyślny';
+$GLOBALS['TL_LANG']['tl_iso_tax_class']['fallback'][0] = 'Domyślna';
 $GLOBALS['TL_LANG']['tl_iso_tax_class']['fallback'][1] = 'Zaznacz, jeśli to domyślna stawka podatku.';
 $GLOBALS['TL_LANG']['tl_iso_tax_class']['includes'][0] = 'Stawka podatkowa zawarta w cenie produktu';
 $GLOBALS['TL_LANG']['tl_iso_tax_class']['includes'][1] = 'Zaznacz, jeśli ceny produktu z tą klasą podatkową już zawierają w sobie stawkę podatkową. Ta stawka podatkowa będzie odjęta od ceny produktu, jesli nie pasuje.';

@@ -367,26 +367,35 @@ class Order extends ProductCollection implements IsotopeProductCollection
         // Add billing/customer address fields
         if (($objAddress = $this->getBillingAddress()) !== null) {
             foreach ($objAddress->row() as $k => $v) {
-                $arrTokens['billing_' . $k] = Format::dcaValue($objAddress->getTable(), $k, $v);
+                $arrTokens['billing_address_' . $k] = Format::dcaValue($objAddress->getTable(), $k, $v);
+
+                // @deprecated (use ##billing_address_*##)
+                $arrTokens['billing_' . $k] = $arrTokens['billing_address_' . $k];
             }
 
-            $arrTokens['billing_address']      = $objAddress->generateHtml($this->getRelated('config_id')->getBillingFieldsConfig());
-            $arrTokens['billing_address_text'] = $objAddress->generateText($this->getRelated('config_id')->getBillingFieldsConfig());
+            $arrTokens['billing_address'] = $objAddress->generate($this->getRelated('config_id')->getBillingFieldsConfig());
+
+            // @deprecated (use ##billing_address##)
+            $arrTokens['billing_address_text'] = $arrTokens['billing_address'];
         }
 
         // Add shipping address fields
         if (($objAddress = $this->getShippingAddress()) !== null) {
             foreach ($objAddress->row() as $k => $v) {
-                $arrTokens['shipping_' . $k] = Format::dcaValue($objAddress->getTable(), $k, $v);
+                $arrTokens['shipping_address_' . $k] = Format::dcaValue($objAddress->getTable(), $k, $v);
+
+                // @deprecated (use ##billing_address_*##)
+                $arrTokens['shipping_' . $k] = $arrTokens['shipping_address_' . $k];
             }
 
+            $arrTokens['shipping_address'] = $objAddress->generate($this->getRelated('config_id')->getShippingFieldsConfig());
+
             // Shipping address equals billing address
+            // @deprecated (use ##shipping_address##)
             if ($objAddress->id == $this->getBillingAddress()->id) {
-                $arrTokens['shipping_address']      = ($this->requiresPayment() ? $GLOBALS['TL_LANG']['MSC']['useBillingAddress'] : $GLOBALS['TL_LANG']['MSC']['useCustomerAddress']);
-                $arrTokens['shipping_address_text'] = $arrTokens['shipping_address'];
+                $arrTokens['shipping_address_text'] = ($this->requiresPayment() ? $GLOBALS['TL_LANG']['MSC']['useBillingAddress'] : $GLOBALS['TL_LANG']['MSC']['useCustomerAddress']);
             } else {
-                $arrTokens['shipping_address']      = $objAddress->generateHtml($this->getRelated('config_id')->getShippingFieldsConfig());
-                $arrTokens['shipping_address_text'] = $objAddress->generateText($this->getRelated('config_id')->getShippingFieldsConfig());
+                $arrTokens['shipping_address_text'] = $arrTokens['shipping_address'];
             }
         }
 

@@ -55,6 +55,9 @@ $GLOBALS['TL_LANG']['tl_iso_config']['invoiceLogo']                 = array('Inv
 $GLOBALS['TL_LANG']['tl_iso_config']['templateGroup']               = array('Templates folder', 'Here you can select a templates folder to search before every other template folder.');
 $GLOBALS['TL_LANG']['tl_iso_config']['cartMinSubtotal']             = array('Minimum subtotal', 'The minimum cart subtotal required to order. Enter 0 to disable.');
 $GLOBALS['TL_LANG']['tl_iso_config']['newProductPeriod']            = array('Duration to mark a product as "new"', 'If you would like to highlight new products, you can enter a time period here. It will automatically add a CSS class "new" to every product everywhere within Isotope eCommerce.');
+$GLOBALS['TL_LANG']['tl_iso_config']['ga_enable']						= array('Enable Google Analytics', 'Enable e-commerce tracking with Google Analytics.');
+$GLOBALS['TL_LANG']['tl_iso_config']['ga_account']						= array('Account', 'Please provde the account key (UA-XXXXXXX-X).');
+$GLOBALS['TL_LANG']['tl_iso_config']['ga_member']						= array('Track member', 'Enter simple tokens to track a member (e.g. ##firstname## ##lastname##). ATTENTION: make sure you\'re allowed to do this!');
 
 /**
  * Reference
@@ -100,3 +103,4 @@ $GLOBALS['TL_LANG']['tl_iso_config']['order_legend']                = 'Orders';
 $GLOBALS['TL_LANG']['tl_iso_config']['images_legend']               = 'Images';
 $GLOBALS['TL_LANG']['tl_iso_config']['url_legend']                  = 'URL settings';
 $GLOBALS['TL_LANG']['tl_iso_config']['products_legend']             = 'Products';
+$GLOBALS['TL_LANG']['tl_iso_config']['analytics_legend']            = 'Analytics';

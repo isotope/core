@@ -31,6 +31,12 @@ class OrderStatus extends \Model
     protected static $strTable = 'tl_iso_orderstatus';
 
     /**
+     * Color style cache
+     * @var string
+     */
+    protected $colorStyles;
+
+    /**
      * Return if the order status means a collection has been paid (configuration flag)
      * @return  bool
      */
@@ -56,5 +62,29 @@ class OrderStatus extends \Model
     public function getAlias()
     {
         return standardize($this->name);
+    }
+
+    /**
+     * Generate background and font color for order status color
+     * @return  string
+     */
+    public function getColorStyles()
+    {
+        if (null === $this->colorStyles) {
+            $this->colorStyles = '';
+
+            if ($this->color != '') {
+                $this->colorStyles = 'background-color:#' . $this->color;
+
+                $arrRGB = array_map('hexdec', str_split($this->color, 2));
+                $hue = 1 - (0.299 * $arrRGB[0] + 0.587 * $arrRGB[1] + 0.114 * $arrRGB[2]) / 255;
+
+                if ($hue > 0.5) {
+                    $this->colorStyles .= ';color:#fff';
+                }
+            }
+        }
+
+        return $this->colorStyles;
     }
 }

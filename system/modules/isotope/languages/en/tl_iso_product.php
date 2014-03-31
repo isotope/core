@@ -52,6 +52,7 @@ $GLOBALS['TL_LANG']['tl_iso_product']['mmTranslateText']           = array('Text
 $GLOBALS['TL_LANG']['tl_iso_product']['mmTranslateAll']            = array('All', 'Do not include this image in translated version.');
 $GLOBALS['TL_LANG']['tl_iso_product']['variantValuesLabel']        = 'Variant';
 $GLOBALS['TL_LANG']['tl_iso_product']['showVariants']              = 'Show product variants';
+$GLOBALS['TL_LANG']['tl_iso_product']['priceBlankOptionLabel']     = 'Tax-free';
 
 /**
  * Buttons
