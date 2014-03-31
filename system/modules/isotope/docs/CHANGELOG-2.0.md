@@ -16,6 +16,7 @@ Version 2.0.6 (2014-??-??)
 - in_array error message when editing product as regular user
 - Regular users could not filter by product group
 - Product group filter was always applied for regular users
+- SQL exception when coupon code was dropped (#1043)
 
 
 Version 2.0.5 (2014-03-24)
