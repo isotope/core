@@ -23,6 +23,7 @@ Version 2.0.6 (2014-??-??)
 - Additional email data in order backend got no message if empty (#1050)
 - PDF with images did not work without fopen (#999)
 - Upload field was not visible in the frontend (#1039)
+- Product filter did not work for checkbox fields (#1032)
 
 
 Version 2.0.5 (2014-03-24)
