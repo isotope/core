@@ -21,6 +21,7 @@ Version 2.1.0-rc1 (2014-03-10)
 - Missing argument in new Google Tracking code (#992)
 - Missing argument in new Google Tracking code (#992)
 - Using $this in closure for lightbox choice (#988)
+- SQL error in product filter module (#1028)
 
 
 Version 2.1.0-beta1 (2014-02-07)
