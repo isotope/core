@@ -17,6 +17,7 @@ Version 2.0.6 (2014-??-??)
 - Regular users could not filter by product group
 - Product group filter was always applied for regular users
 - SQL exception when coupon code was dropped (#1043)
+- Help wizard for product type class was not available
 
 
 Version 2.0.5 (2014-03-24)
