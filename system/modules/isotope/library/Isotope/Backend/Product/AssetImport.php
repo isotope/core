@@ -53,7 +53,7 @@ class AssetImport extends \Backend
 <input type="hidden" name="REQUEST_TOKEN" value="' . REQUEST_TOKEN . '">
 
 <div class="tl_tbox block">
-  <h3><label for="source">' . $GLOBALS['TL_LANG']['tl_iso_product']['source'][0] . '</label> <a href="typolight/files.php" title="' . specialchars($GLOBALS['TL_LANG']['MSC']['fileManager']) . '" onclick="Backend.getScrollOffset(); this.blur(); Backend.openWindow(this, 750, 500); return false;">' . \Image::getHtml('filemanager.gif', $GLOBALS['TL_LANG']['MSC']['fileManager'], 'style="vertical-align:text-bottom;"') . '</a></h3>
+  <h3><label for="source">' . $GLOBALS['TL_LANG']['tl_iso_product']['source'][0] . '</label></h3>
   ' . $objTree->generate() . (strlen($GLOBALS['TL_LANG']['tl_iso_product']['source'][1]) ? '
   <p class="tl_help">' . $GLOBALS['TL_LANG']['tl_iso_product']['source'][1] . '</p>' : '') . '
 </div>
