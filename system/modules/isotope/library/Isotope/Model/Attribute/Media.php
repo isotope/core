@@ -18,7 +18,7 @@ use Isotope\Model\Attribute;
 
 
 /**
- * Attribute to provide downloads in the product details
+ * Attribute to provide an audio/video player in the product details
  *
  * @copyright  Isotope eCommerce Workgroup 2009-2014
  * @author     Christoph Wiechert <cw@4wardmedia.de>
@@ -30,7 +30,7 @@ class Media extends Attribute implements IsotopeAttribute
         parent::saveToDCA($arrData);
 
         $arrData['fields'][$this->field_name]['sql'] = "blob NULL";
-        $arrData['fields'][$this->field_name]['eval']['fieldType'] = "checkbox";
+        $arrData['fields'][$this->field_name]['eval']['fieldType'] = 'checkbox';
         $arrData['fields'][$this->field_name]['eval']['multiple'] = true;
     }
 
@@ -45,7 +45,7 @@ class Media extends Attribute implements IsotopeAttribute
 
 
     /**
-     * Generate download attributes
+     * Generate media attribute
      *
      * @param \Isotope\Interfaces\IsotopeProduct $objProduct
      * @param array $arrOptions
@@ -53,8 +53,8 @@ class Media extends Attribute implements IsotopeAttribute
      */
     public function generate(IsotopeProduct $objProduct, array $arrOptions = array())
     {
+        $strPoster = null;
         $arrFiles = deserialize($objProduct->{$this->field_name}, true);
-        $poster = null;
 
         // Return if there are no files
         if (empty($arrFiles) || !is_array($arrFiles)) {
@@ -70,8 +70,8 @@ class Media extends Attribute implements IsotopeAttribute
 
         // Find poster
         while ($objFiles->next()) {
-            if (in_array($objFiles->extension, explode(',', $GLOBALS['TL_CONFIG']['validImageTypes']))) {
-                $poster = $objFiles->uuid;
+            if (in_array($objFiles->extension, trimsplit(',', $GLOBALS['TL_CONFIG']['validImageTypes']))) {
+                $strPoster = $objFiles->uuid;
                 $arrFiles = array_diff($arrFiles, array($objFiles->uuid));
             }
         }
@@ -80,7 +80,7 @@ class Media extends Attribute implements IsotopeAttribute
         $objContentModel->type = 'media';
         $objContentModel->cssID = serialize(array('', $this->field_name));
         $objContentModel->playerSRC = serialize($arrFiles);
-        $objContentModel->posterSRC = $poster;
+        $objContentModel->posterSRC = $strPoster;
 
         if ($arrOptions['autoplay']) {
             $objContentModel->autoplay = '1';
