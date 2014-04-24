@@ -32,6 +32,7 @@ class Media extends Attribute implements IsotopeAttribute
         $arrData['fields'][$this->field_name]['sql'] = "blob NULL";
         $arrData['fields'][$this->field_name]['eval']['fieldType'] = 'checkbox';
         $arrData['fields'][$this->field_name]['eval']['multiple'] = true;
+        $arrData['fields'][$this->field_name]['eval']['extensions'] = 'mp4,m4v,mov,wmv,webm,ogv,m4a,mp3,wma,mpeg,wav,ogg,'.$GLOBALS['TL_CONFIG']['validImageTypes'];
     }
 
     /**
