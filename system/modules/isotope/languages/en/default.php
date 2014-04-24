@@ -267,6 +267,7 @@ $GLOBALS['TL_LANG']['ATTR']['conditionalselect']    = array('Conditional Select-
 $GLOBALS['TL_LANG']['ATTR']['fileTree']             = array('File tree', 'A file tree for single or multiple files and folders.');
 $GLOBALS['TL_LANG']['ATTR']['downloads']            = array('Downloads', 'Download files from the product, e.g. manuals, data sheets etc.');
 $GLOBALS['TL_LANG']['ATTR']['upload']               = array('File upload', 'A single-line input field to upload a local file to the server.');
+$GLOBALS['TL_LANG']['ATTR']['media']                = array('Video/Audio', 'Generates a video or audio player.');
 
 /**
  * Currencies
