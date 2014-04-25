@@ -172,7 +172,7 @@ abstract class BackendOverview extends \BackendModule
             $this->objAjax->executePostActions($dc);
         } // Call module callback
         elseif (class_exists($arrModule['callback'])) {
-            $objCallback = new $arrModule['callback']($dc);
+            $objCallback = new $arrModule['callback']($arrModule);
 
             return $objCallback->generate();
         } // Custom action (if key is not defined in config.php the default action will be called)
