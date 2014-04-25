@@ -4,6 +4,9 @@ Isotope eCommerce Changelog
 Version 2.1.1-stable (2014-??-??)
 ---------------------------------
 
+### Fixed
+- Payment and shipping method name was not shown in product collection (#1052)
+
 
 Version 2.1.0-stable (2014-04-01)
 ---------------------------------
