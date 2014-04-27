@@ -13,6 +13,7 @@
 namespace Isotope\BackendModule;
 
 use Isotope\Isotope;
+use Isotope\Model\Rule;
 
 class Integrity extends \BackendModule
 {
@@ -44,6 +45,7 @@ class Integrity extends \BackendModule
         $arrChecks = array();
 
         $arrChecks[] = $this->validatePriceTable();
+        $arrChecks[] = $this->validateRulesEnabled();
 
         $this->Template->checks = $arrChecks;
         $this->Template->back = str_replace('&mod=integrity', '', \Environment::get('request'));
@@ -87,6 +89,28 @@ class Integrity extends \BackendModule
             'name'      => 'Erweiterte Preise',
             'result'    => 'Es wurden keine ungültigen Erweiterten Preise gefunden.',
             'action'    => false,
+        );
+    }
+
+    /**
+     * Rules module should be disabled if not in use
+     * @return  array
+     */
+    protected function validateRulesEnabled()
+    {
+        $blnAction = false;
+
+        if (in_array('isotope_rules', \Config::getInstance()->getActiveModules())) {
+            if (Rule::countAll() == 0) {
+                $blnAction = true;
+            }
+        }
+
+        return array(
+            'id'        => 'rules',
+            'name'      => 'Regeln',
+            'result'    => ($blnAction ? 'Das Regel-Modul sollte deaktiviert werden, wenn es nicht verwendet wird.' : 'Sie haben das Regel-Modul deaktiviert oder verwenden es aktiv.'),
+            'action'    => $blnAction,
         );
     }
 }
