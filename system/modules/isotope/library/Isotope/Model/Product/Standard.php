@@ -638,7 +638,7 @@ class Standard extends Product implements IsotopeProduct, WeightAggregate
             $arrOptions = $objAttribute->getOptionsForVariants($this->getVariantIds(), $arrVariantOptions);
 
             // Hide selection if only one option is available (and "force_variant_options" is not set in product type)
-            if (\Input::post('FORM_SUBMIT') != $this->getFormId() && count($arrOptions) == 1 && !$this->getRelated('type')->force_variant_options) {
+            if (count($arrOptions) == 1 && !$this->getRelated('type')->force_variant_options) {
                 $arrVariantOptions[$strField] = $arrOptions[0];
 
                 return '';
