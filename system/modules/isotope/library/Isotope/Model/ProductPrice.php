@@ -166,7 +166,7 @@ class ProductPrice extends \Model implements IsotopePrice
 
         } while ($intTier > 0);
 
-        return 0;
+        return $this->arrTiers[min(array_keys($this->arrTiers))];
     }
 
     /**
