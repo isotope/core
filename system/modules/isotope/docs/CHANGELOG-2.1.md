@@ -9,6 +9,7 @@ Version 2.1.1-stable (2014-??-??)
 - Reports did not show headline and panels (#1051)
 - Single variant option was shown on ajax load (#1066)
 - Price was zero if minimum quantity is more than one (#1058)
+- Show tax class option in group price shipping method (#1064)
 
 
 Version 2.1.0-stable (2014-04-01)
