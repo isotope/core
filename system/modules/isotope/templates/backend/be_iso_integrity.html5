@@ -12,7 +12,7 @@
           <table style="width:100%">
           <thead>
             <tr>
-              <th><input type="checkbox" id="check_all" class="tl_checkbox" onclick="Backend.toggleCheckboxes(this, 'purge')"></th>
+              <th><input type="checkbox" id="check_all" class="tl_checkbox" onclick="Backend.toggleCheckboxes(this, 'integrity')"></th>
               <th>Problem</th>
               <th>Prüfungsresultat</th>
             </tr>
@@ -27,7 +27,7 @@
 -->
               <?php foreach ($this->checks as $check): ?>
                 <tr>
-                  <td><?php if ($check['action']): ?><input type="checkbox" name="integrity[]" id="integrity_prices" class="tl_checkbox" value="prices" onfocus="Backend.getScrollOffset()"><?php endif; ?></td>
+                  <td><?php if ($check['action']): ?><input type="checkbox" name="integrity[]" id="integrity_<?php echo $check['id']; ?>" class="tl_checkbox" value="<?php echo $check['id']; ?>" onfocus="Backend.getScrollOffset()"><?php endif; ?></td>
                   <td><label for="purge_index"><?php echo $check['name']; ?></label></td>
                   <td style="color:#<?php echo $check['action'] ? 'c33' : '77ac45'; ?>"><?php echo $check['result']; ?></td>
                 </tr>
