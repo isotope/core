@@ -36,33 +36,23 @@ class Integrity extends \BackendModule
         return parent::generate();
     }
 
-
     /**
      * Generate the module
      */
     protected function compile()
     {
-        $arrChecks = array(array(
-            'id'        => 'prices',
-            'name'      => 'Sonstiges',
-            'result'    => 'hier ist alles in Ordnung',
-            'action'    => false,
-        ));
+        $arrChecks = array();
 
         $arrChecks[] = $this->validatePriceTable();
-
-        $arrChecks[] = array(
-            'id'        => 'prices',
-            'name'      => 'Foobar',
-            'result'    => 'hier auch',
-            'action'    => false,
-        );
 
         $this->Template->checks = $arrChecks;
         $this->Template->back = str_replace('&mod=integrity', '', \Environment::get('request'));
     }
 
-
+    /**
+     * Check for invalid information in the prices table
+     * @return array
+     */
     protected function validatePriceTable()
     {
         $arrProducts = \Database::getInstance()->query("
