@@ -123,18 +123,19 @@ class Postfinance extends PSP implements IsotopePayment, IsotopePostsale
 
         $arrInvoice = array
         (
-            'ECOM_BILLTO_POSTAL_NAME_FIRST'     => $objBillingAddress->firstname,
-            'ECOM_BILLTO_POSTAL_NAME_LAST'      => $objBillingAddress->lastname,
-            'ECOM_CONSUMER_GENDER'              => $objBillingAddress->gender == 'male' ? 'M' : 'F',
-            // This is mandatory if no P.O. Box and we don't have any
+            // Mandatory fields
+            'ECOM_BILLTO_POSTAL_NAME_FIRST'     => substr($objBillingAddress->firstname, 0, 50),
+            'ECOM_BILLTO_POSTAL_NAME_LAST'      => substr($objBillingAddress->lastname, 0, 50),
             'ECOM_SHIPTO_POSTAL_STREET_LINE1'   => $objShippingAddress->street_1,
             'ECOM_SHIPTO_POSTAL_POSTALCODE'     => $objShippingAddress->postal,
             'ECOM_SHIPTO_POSTAL_CITY'           => $objShippingAddress->city,
             'ECOM_SHIPTO_POSTAL_COUNTRYCODE'    => strtoupper($objShippingAddress->country),
-
             'ECOM_SHIPTO_DOB'                   => date('d/m/Y', $objShippingAddress->dateOfBirth),
             // This key is mandatory and just has to be unique (17 chars)
-            'REF_CUSTOMERID'                    => substr('psp_' . $this->id . '_' . $objOrder->id . '_' . $objOrder->uniqid, 0, 17)
+            'REF_CUSTOMERID'                    => substr('psp_' . $this->id . '_' . $objOrder->id . '_' . $objOrder->uniqid, 0, 17),
+
+            // Additional fields, not mandatory
+            'ECOM_CONSUMER_GENDER'              => $objBillingAddress->gender == 'male' ? 'M' : 'F',
 
             // We do not add "ECOM_SHIPTO_COMPANY" here because B2B sometimes may require up to 24 hours
             // to check solvency which is not acceptable for an online shop
@@ -150,7 +151,7 @@ class Postfinance extends PSP implements IsotopePayment, IsotopePostsale
             $fltVat = Isotope::roundPrice((100 / $objPrice->getNetAmount() * $objPrice->getGrossAmount()) - 100, false);
 
             $arrOrder['ITEMID' . $i]        = $objItem->id;
-            $arrOrder['ITEMNAME' . $i]      = $objItem->getName();
+            $arrOrder['ITEMNAME' . $i]      = substr($objItem->getName(), 40);
             $arrOrder['ITEMPRICE' . $i]     = $objPrice->getNetAmount();
             $arrOrder['ITEMQUANT' . $i]     = $objItem->quantity;
             $arrOrder['ITEMVATCODE' . $i]   = $fltVat . '%';
