@@ -16,6 +16,7 @@ use Haste\Haste;
 use Haste\Http\Response\JsonResponse;
 use Haste\Util\Format;
 use Haste\Util\Url;
+use Isotope\Interfaces\IsotopeFilterModuleInterface;
 use Isotope\Isotope;
 use Isotope\Model\Product;
 use Isotope\Model\RequestCache;
@@ -32,7 +33,7 @@ use Isotope\RequestCache\Sort;
  * @author     Andreas Schempp <andreas.schempp@terminal42.ch>
  * @author     Fred Bliss <fred.bliss@intelligentspark.com>
  */
-class ProductFilter extends Module
+class ProductFilter extends Module implements IsotopeFilterModuleInterface
 {
 
     /**

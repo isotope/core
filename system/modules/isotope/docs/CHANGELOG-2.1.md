@@ -11,6 +11,7 @@ Version 2.1.1-stable (2014-??-??)
 - Price was zero if minimum quantity is more than one (#1058)
 - Show tax class option in group price shipping method (#1064)
 - Issue with weight calculation (#1074)
+- Could not assign cumulative filters to product list module
 
 
 Version 2.1.0-stable (2014-04-01)
