@@ -14,8 +14,8 @@ namespace Isotope\Interfaces;
 
 
 /**
- * IsotopeFilterModuleInterface must be implemented by any filter front end module
+ * IsotopeFilterModule must be implemented by any filter front end module
  */
-interface IsotopeFilterModuleInterface
+interface IsotopeFilterModule
 {
 }

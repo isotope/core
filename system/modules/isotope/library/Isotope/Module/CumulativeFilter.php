@@ -14,7 +14,7 @@ namespace Isotope\Module;
 
 use Haste\Generator\RowClass;
 use Haste\Util\Url;
-use Isotope\Interfaces\IsotopeFilterModuleInterface;
+use Isotope\Interfaces\IsotopeFilterModule;
 use Isotope\Isotope;
 use Isotope\RequestCache\Filter;
 
@@ -26,7 +26,7 @@ use Isotope\RequestCache\Filter;
  * @copyright  Isotope eCommerce Workgroup 2009-2011
  * @author     Yanick Witschi <yanick.witschi@terminal42.ch>
  */
-class CumulativeFilter extends Module implements IsotopeFilterModuleInterface
+class CumulativeFilter extends Module implements IsotopeFilterModule
 {
 
     /**

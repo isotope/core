@@ -212,7 +212,7 @@ class Callback extends \Backend
                 }
 
                 $objReflection = new \ReflectionClass($strClass);
-                if ($objReflection->implementsInterface('Isotope\Interfaces\IsotopeFilterModuleInterface')) {
+                if ($objReflection->implementsInterface('Isotope\Interfaces\IsotopeFilterModule')) {
                     $arrClasses[] = $strName;
                 }
             }
