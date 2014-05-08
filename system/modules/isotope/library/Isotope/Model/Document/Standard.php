@@ -159,8 +159,12 @@ class Standard extends Document implements IsotopeDocument
         $strBuffer = preg_replace($arrSearch, '', $strBuffer);
 
         // URL decode image paths (see contao/core#6411)
-        $strBuffer = preg_replace_callback('@(src="[^"]+")@', function ($arg) {
-            return rawurldecode($arg[0]);
+        // Make image paths absolute
+        $strBuffer = preg_replace_callback('@(src=")([^"]+)(")@', function ($args) {
+            if (preg_match('@^(http://|https://)@', $args[2])) {
+                return $args[2];
+            }
+            return $args[1] . TL_ROOT . '/' . rawurldecode($args[2]) . $args[3];
         }, $strBuffer);
 
         // Handle line breaks in preformatted text
