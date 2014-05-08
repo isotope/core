@@ -41,7 +41,7 @@ class Standard extends Product implements IsotopeProduct, WeightAggregate
 
     /**
      * Price model for the current product
-     * @var Isotope\Model\ProductPrice
+     * @var \Isotope\Model\ProductPrice
      */
     protected $objPrice = false;
 
@@ -847,17 +847,18 @@ class Standard extends Product implements IsotopeProduct, WeightAggregate
 
             $this->setRow($objParent->row());
 
-            $this->arrData['id']      = $arrData['id'];
-            $this->arrData['pid']     = $arrData['pid'];
-            $this->arrData['inherit'] = $arrData['inherit'];
-
             // Set all variant attributes, except if they are inherited
-            foreach (array_diff($this->getVariantAttributes(), $this->getInheritedFields()) as $attribute) {
+            $arrVariantFields = array_diff($this->getVariantAttributes(), $this->getInheritedFields());
+            foreach ($arrData as $attribute => $value) {
+                if (
+                    in_array($attribute, $arrVariantFields)
+                    || $GLOBALS['TL_DCA']['tl_iso_product']['fields'][$attribute]['attributes']['legend'] != ''
+                ) {
+                    $this->arrData[$attribute] = $arrData[$attribute];
 
-                $this->arrData[$attribute] = $arrData[$attribute];
-
-                if (in_array($attribute, Attribute::getFetchFallbackFields())) {
-                    $this->arrData[$attribute . '_fallback'] = $arrData[$attribute . '_fallback'];
+                    if (in_array($attribute, Attribute::getFetchFallbackFields())) {
+                        $this->arrData[$attribute . '_fallback'] = $arrData[$attribute . '_fallback'];
+                    }
                 }
             }
 
