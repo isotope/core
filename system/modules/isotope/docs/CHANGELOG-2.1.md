@@ -15,6 +15,7 @@ Version 2.1.1-stable (2014-??-??)
 - Images were not included in back end document generation (#1053)
 - Attribute sorting was ignored in product type (#1083)
 - Product filter did not redirect for search results (#1068)
+- Dynamically generate header fields for downloads (#1088)
 
 
 Version 2.1.0-stable (2014-04-01)
