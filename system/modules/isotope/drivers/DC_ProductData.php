@@ -844,7 +844,7 @@ window.addEvent(\'domready\', function() {
                 if ($this->treeView) {
                     $strUrl .= '&amp;act=create&amp;mode=1&amp;pid=' . $this->intId;
                 } // Parent view
-                elseif ($GLOBALS['TL_DCA'][$this->strTable]['list']['sorting']['mode'] == 4) {
+                elseif ($GLOBALS['TL_DCA'][$this->strTable]['list']['sorting']['mode'] == 4 || $this->activeRecord->pid > 0) {
                     $strUrl .= $this->Database->fieldExists('sorting', $this->strTable) ? '&amp;act=create&amp;mode=1&amp;pid=' . $this->intId . '&amp;id=' . $this->activeRecord->pid : '&amp;act=create&amp;mode=2&amp;pid=' . $this->activeRecord->pid;
                 } // List view
                 else {
