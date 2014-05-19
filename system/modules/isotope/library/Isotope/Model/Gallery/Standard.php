@@ -246,7 +246,7 @@ class Standard extends Gallery implements IsotopeGallery
             foreach (array('main', 'gallery', 'lightbox') as $name) {
 
                 $size     = deserialize($this->{$name . '_size'});
-                $strImage = \Image::get($strFile, $size[0], $size[1], $size[2]);
+                $strImage = \Image::get($strFile, $size[0], $size[1], $size[2], true);
 
                 if ($this->{$name . '_watermark_image'} != ''
                     && $blnWatermark
