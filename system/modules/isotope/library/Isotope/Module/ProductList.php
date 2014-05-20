@@ -265,6 +265,11 @@ class ProductList extends Module
     protected function findProducts($arrCacheIds = null)
     {
         $arrColumns    = array();
+        
+        /*
+        * Für findCategories eine andere funktion erstellen damit die Varianten die DB-Abfragen nicht exponenziell in die Höhe trieben
+        *
+        */
         $arrCategories = $this->findCategories();
 
         list($arrFilters, $arrSorting, $strWhere, $arrValues) = $this->getFiltersAndSorting();
