@@ -4,7 +4,8 @@ Isotope eCommerce Changelog
 Version 2.1.2-stable (2014-??-??)
 ---------------------------------
 
-
+### Fixed
+- Request cache did not consider variant filtering (#1100)
 
 Version 2.1.1-stable (2014-05-20)
 ---------------------------------
