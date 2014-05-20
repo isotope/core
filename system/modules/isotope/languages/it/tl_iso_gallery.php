@@ -16,4 +16,8 @@
 
 $GLOBALS['TL_LANG']['tl_iso_gallery']['name'][0] = 'Nome';
 $GLOBALS['TL_LANG']['tl_iso_gallery']['type'][0] = 'Tipo';
+$GLOBALS['TL_LANG']['tl_iso_gallery']['new'][0] = 'Nuova galleria';
+$GLOBALS['TL_LANG']['tl_iso_gallery']['new'][1] = 'Crea una nuova galleria';
+$GLOBALS['TL_LANG']['tl_iso_gallery']['edit'][0] = 'Modifica galleria';
+$GLOBALS['TL_LANG']['tl_iso_gallery']['delete'][0] = 'Elimina galleria';
 $GLOBALS['TL_LANG']['tl_iso_gallery']['name_legend'] = 'Nome & Tipo';

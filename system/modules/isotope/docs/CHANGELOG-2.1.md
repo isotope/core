@@ -1,7 +1,7 @@
 Isotope eCommerce Changelog
 ===========================
 
-Version 2.1.1-stable (2014-??-??)
+Version 2.1.1-stable (2014-05-20)
 ---------------------------------
 
 ### Fixed
@@ -14,6 +14,13 @@ Version 2.1.1-stable (2014-??-??)
 - Could not assign cumulative filters to product list module
 - Images were not included in back end document generation (#1053)
 - Attribute sorting was ignored in product type (#1083)
+- Product filter did not redirect for search results (#1068)
+- Dynamically generate header fields for downloads (#1088)
+- "Save & New" created a new product instead of variant (#1080)
+- Namespace issue in Saferpay payment module (#1089)
+- Do not generate sitemap links for unpublished pages (#1092)
+- Wrong column count in collection template (#1091)
+- Remove page parameter on product filter action (#1098)
 
 
 Version 2.1.0-stable (2014-04-01)

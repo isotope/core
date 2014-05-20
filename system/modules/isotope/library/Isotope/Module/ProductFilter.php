@@ -159,10 +159,14 @@ class ProductFilter extends Module implements IsotopeFilterModule
             // Search does not affect request cache
             $this->generateSearch();
 
+            $arrParams = array_filter(array_keys($_GET), function($key) {
+                return (strpos($key, 'page_iso') !== 0);
+            });
+
             $this->Template->id          = $this->id;
             $this->Template->formId      = 'iso_filter_' . $this->id;
-            $this->Template->action      = ampersand(\Environment::get('request'));
-            $this->Template->actionClear = ampersand(preg_replace('/\?.*/', '', \Environment::get('request')));
+            $this->Template->action      = ampersand(Url::removeQueryString($arrParams));
+            $this->Template->actionClear = ampersand(strtok(\Environment::get('request'), '?'));
             $this->Template->clearLabel  = $GLOBALS['TL_LANG']['MSC']['clearFiltersLabel'];
             $this->Template->slabel      = $GLOBALS['TL_LANG']['MSC']['submitLabel'];
         }
@@ -175,12 +179,26 @@ class ProductFilter extends Module implements IsotopeFilterModule
      */
     protected function generateSearch()
     {
+        global $objPage;
+
         $this->Template->hasSearch       = false;
         $this->Template->hasAutocomplete = ($this->iso_searchAutocomplete) ? true : false;
 
         if (is_array($this->iso_searchFields) && count($this->iso_searchFields)) // Can't use empty() because its an object property (using __get)
         {
             if (\Input::get('keywords') != '' && \Input::get('keywords') != $GLOBALS['TL_LANG']['MSC']['defaultSearchText']) {
+
+                // Redirect to search result page if one is set (see #1068)
+                if (!$this->blnUpdateCache && $this->jumpTo != $objPage->id && null !== $this->getRelated('jumpTo')) {
+
+                    // Include \Environment::base or the URL would not work on the index page
+                    \Controller::redirect(
+                        \Environment::get('base') .
+                        $this->getRelated('jumpTo')->getFrontendUrl() .
+                        '?' . $_SERVER['QUERY_STRING']
+                    );
+                }
+
                 $arrKeywords = trimsplit(' |-', \Input::get('keywords'));
                 $arrKeywords = array_filter(array_unique($arrKeywords));
 

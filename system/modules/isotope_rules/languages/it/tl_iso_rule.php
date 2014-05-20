@@ -60,6 +60,7 @@ $GLOBALS['TL_LANG']['tl_iso_rule']['startTime'][1] = 'Se lo si desidera, specifi
 $GLOBALS['TL_LANG']['tl_iso_rule']['endTime'][0] = 'Fine tempo';
 $GLOBALS['TL_LANG']['tl_iso_rule']['endTime'][1] = 'Se lo si desidera, prego specificare il tempo in cui questa regola non sarà più ammissibile a.';
 $GLOBALS['TL_LANG']['tl_iso_rule']['configRestrictions'][0] = 'Restrizioni configurazione negozio';
+$GLOBALS['TL_LANG']['tl_iso_rule']['groups'][0] = 'Gruppi';
 $GLOBALS['TL_LANG']['tl_iso_rule']['productRestrictions']['producttypes'] = 'Tipi prodotto';
 $GLOBALS['TL_LANG']['tl_iso_rule']['productRestrictions']['pages'] = 'Categorie';
 $GLOBALS['TL_LANG']['tl_iso_rule']['productRestrictions']['products'] = 'Prodotti';

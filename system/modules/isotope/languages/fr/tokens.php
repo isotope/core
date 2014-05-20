@@ -17,10 +17,6 @@
 $GLOBALS['TL_LANG']['NOTIFICATION_CENTER_TOKEN']['iso_order_status_change']['order_subtotal'] = 'Sous-total de la commande.';
 $GLOBALS['TL_LANG']['NOTIFICATION_CENTER_TOKEN']['iso_order_status_change']['cart_text'] = 'Commande/Panier en texte.';
 $GLOBALS['TL_LANG']['NOTIFICATION_CENTER_TOKEN']['iso_order_status_change']['cart_html'] = 'Commande/Panier en HTML.';
-$GLOBALS['TL_LANG']['NOTIFICATION_CENTER_TOKEN']['iso_order_status_change']['billing_address'] = 'Adresse de facturation en HTML.';
-$GLOBALS['TL_LANG']['NOTIFICATION_CENTER_TOKEN']['iso_order_status_change']['billing_address_text'] = 'Adresse de facturation en texte.';
-$GLOBALS['TL_LANG']['NOTIFICATION_CENTER_TOKEN']['iso_order_status_change']['shipping_address'] = 'Adresse de livraison en HTML.';
-$GLOBALS['TL_LANG']['NOTIFICATION_CENTER_TOKEN']['iso_order_status_change']['shipping_address_text'] = 'Adresse de livraison en texte.';
 $GLOBALS['TL_LANG']['NOTIFICATION_CENTER_TOKEN']['iso_order_status_change']['payment_id'] = 'ID du mode de paiement.';
 $GLOBALS['TL_LANG']['NOTIFICATION_CENTER_TOKEN']['iso_order_status_change']['payment_label'] = 'Libellé du mode de paiement.';
 $GLOBALS['TL_LANG']['NOTIFICATION_CENTER_TOKEN']['iso_order_status_change']['shipping_id'] = 'ID du mode de livraison.';
