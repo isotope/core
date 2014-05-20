@@ -391,7 +391,7 @@ window.addEvent('domready', function()
     {
         $t         = \PageModel::getTable();
         $time      = time();
-        $arrColumn = array("$t.type='root'");
+        $arrColumn = array("$t.type='root'", "$t.published='1'", "($t.start='' OR $t.start<$time)", "($t.stop='' OR $t.stop>$time())");
         $arrValue  = array();
 
         if ($intRoot > 0) {
