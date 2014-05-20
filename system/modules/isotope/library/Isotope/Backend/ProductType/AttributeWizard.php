@@ -58,7 +58,7 @@ class AttributeWizard extends \Backend
             'name'      => array
             (
                 'input_field_callback' => array('Isotope\Backend\ProductType\AttributeWizard', 'getNextName'),
-                'eval'                 => array('hideHead' => true),
+                'eval'                 => array('hideHead' => true, 'tl_class' => 'mcwUpdateFields'),
             ),
             'legend'    => array
             (

@@ -421,9 +421,9 @@ class Order extends ProductCollection implements IsotopeProductCollection
         }
 
         // Add member fields
-        if ($this->pid > 0 && $this->getRelated('pid') !== null) {
-            foreach ($this->getRelated('pid')->row() as $k => $v) {
-                $arrTokens['member_' . $k] = Format::dcaValue($this->getRelated('pid')->getTable(), $k, $v);
+        if ($this->member > 0 && $this->getRelated('member') !== null) {
+            foreach ($this->getRelated('member')->row() as $k => $v) {
+                $arrTokens['member_' . $k] = Format::dcaValue($this->getRelated('member')->getTable(), $k, $v);
             }
         }
 

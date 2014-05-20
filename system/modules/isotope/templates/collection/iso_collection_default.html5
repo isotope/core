@@ -76,7 +76,7 @@
     <tr class="<?php echo $surcharge['rowClass']; ?>">
         <?php if(!$this->isNotification): ?>
         <td class="col_<?php echo $i++; ?> col_first">&nbsp;</td><?php endif; ?>
-        <td class="col_<?php echo $i++; ?><?php if($this->isNotification) echo ' col_first'; ?> name" colspan="2"><?php echo $surcharge['label']; ?></td>
+        <td class="col_<?php echo $i++; $i++; ?><?php if($this->isNotification) echo ' col_first'; ?> name" colspan="2"><?php echo $surcharge['label']; ?></td>
         <td class="col_<?php echo $i++; ?> price"><?php echo $surcharge['price']; ?></td>
         <td class="col_<?php echo $i++; ?> price total"><?php echo $surcharge['total_price']; ?></td>
         <td class="col_<?php echo $i++; ?> <?php if(!$this->isEditable) echo 'col_last '; ?>tax"><?php echo $surcharge['tax_id']; ?></td><?php if($this->isEditable): ?>

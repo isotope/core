@@ -12,8 +12,11 @@
 
 namespace Isotope\Backend\Download;
 
+use Isotope\Model\Attribute;
 use Isotope\Model\Download;
+use Isotope\Model\Product;
 use Isotope\Model\ProductCollectionDownload;
+use Haste\Util\Format;
 
 
 class Callback extends \Backend
@@ -60,6 +63,45 @@ class Callback extends \Backend
         }
 
         return sprintf('<div style="height: 16px;%s">%s</div>', $icon, $path);
+    }
+
+    /**
+     * Generate header fields for product or variant
+     * @param   array
+     * @param   \Contao\DataContainer
+     */
+    public function headerFields($arrFields, $dc)
+    {
+        $t = Product::getTable();
+        $arrNew = array();
+        $objProduct = Product::findByPk($dc->id);
+
+        if (null === $objProduct) {
+            return $arrFields;
+        }
+
+        $arrAttributes = array('name', 'alias', 'sku');
+
+        if ($objProduct->isVariant()) {
+            $arrAttributes = array_merge(
+                $arrAttributes,
+                array_intersect(
+                    array_merge($objProduct->getAttributes(), $objProduct->getVariantAttributes()),
+                    Attribute::getVariantOptionFields()
+                )
+            );
+        }
+
+        foreach ($arrAttributes as $field) {
+            $v = $objProduct->$field;
+
+            if ($v != '') {
+                $arrNew[Format::dcaLabel($t, $field)] = Format::dcaValue($t, $field, $v);
+            }
+        }
+
+        // Add fields that have potentially been added through the DCA, but do not allow to override the core fields
+        return array_merge($arrNew, array_diff_key($arrFields, $arrNew));
     }
 
     /**

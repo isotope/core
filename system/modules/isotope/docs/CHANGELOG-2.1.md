@@ -1,6 +1,28 @@
 Isotope eCommerce Changelog
 ===========================
 
+Version 2.1.1-stable (2014-05-20)
+---------------------------------
+
+### Fixed
+- Payment and shipping method name was not shown in product collection (#1052)
+- Reports did not show headline and panels (#1051)
+- Single variant option was shown on ajax load (#1066)
+- Price was zero if minimum quantity is more than one (#1058)
+- Show tax class option in group price shipping method (#1064)
+- Issue with weight calculation (#1074)
+- Could not assign cumulative filters to product list module
+- Images were not included in back end document generation (#1053)
+- Attribute sorting was ignored in product type (#1083)
+- Product filter did not redirect for search results (#1068)
+- Dynamically generate header fields for downloads (#1088)
+- "Save & New" created a new product instead of variant (#1080)
+- Namespace issue in Saferpay payment module (#1089)
+- Do not generate sitemap links for unpublished pages (#1092)
+- Wrong column count in collection template (#1091)
+- Remove page parameter on product filter action (#1098)
+
+
 Version 2.1.0-stable (2014-04-01)
 ---------------------------------
 

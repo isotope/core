@@ -1110,7 +1110,7 @@ abstract class ProductCollection extends TypeAgent
                     }
                 }
 
-            } elseif ($objProduct instanceof Weigthable) {
+            } elseif ($objProduct instanceof Weighable) {
                 for ($i = 0; $i < $objItem->quantity; $i++) {
                     $objScale->add($objProduct);
                 }

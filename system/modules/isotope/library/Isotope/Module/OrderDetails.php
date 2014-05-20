@@ -84,7 +84,7 @@ class OrderDetails extends Module
         }
 
         // Order belongs to a member but not logged in
-        if ($this->iso_loginRequired && $objOrder->member > 0 && FE_USER_LOGGED_IN !== true) {
+        if (TL_MODE == 'FE' && $this->iso_loginRequired && $objOrder->member > 0 && FE_USER_LOGGED_IN !== true) {
             global $objPage;
 
             $objHandler = new $GLOBALS['TL_PTY']['error_403']();

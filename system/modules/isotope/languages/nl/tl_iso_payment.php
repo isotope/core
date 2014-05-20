@@ -50,6 +50,7 @@ $GLOBALS['TL_LANG']['tl_iso_payment']['psp_hash_method'][1] = 'Hashing methode v
 $GLOBALS['TL_LANG']['tl_iso_payment']['psp_hash_method']['sha1'] = 'SHA-1';
 $GLOBALS['TL_LANG']['tl_iso_payment']['psp_hash_method']['sha256'] = 'SHA-256';
 $GLOBALS['TL_LANG']['tl_iso_payment']['psp_hash_method']['sha512'] = 'SHA-512';
+$GLOBALS['TL_LANG']['tl_iso_payment']['sparkasse_paymentmethod'][0] = 'Betaalmethode';
 $GLOBALS['TL_LANG']['tl_iso_payment']['sparkasse_paymentmethod']['creditcard'] = 'Creditcard';
 $GLOBALS['TL_LANG']['tl_iso_payment']['sparkasse_paymentmethod']['maestro'] = 'Debitcard';
 $GLOBALS['TL_LANG']['tl_iso_payment']['sparkasse_sslpassword'][0] = 'Wachtwoord';
