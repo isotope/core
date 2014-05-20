@@ -18,6 +18,7 @@ Version 2.1.1-stable (2014-??-??)
 - Dynamically generate header fields for downloads (#1088)
 - "Save & New" created a new product instead of variant (#1080)
 - Namespace issue in Saferpay payment module (#1089)
+- Do not generate sitemap links for unpublished pages (#1092)
 
 
 Version 2.1.0-stable (2014-04-01)

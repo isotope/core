@@ -387,9 +387,10 @@ window.addEvent('domready', function()
      * @param   string  Language of the root page
      * @return  array   Extended array of absolute page urls
      */
-    public function addProductsToSearchIndex($arrPages, $intRoot = 0, $blnSitemap = false, $strLanguage = null)
+    public function addProductsToSearchIndex($arrPages, $intRoot = 0, $blnIsSitemap = false, $strLanguage = null)
     {
         $t         = \PageModel::getTable();
+        $time      = time();
         $arrColumn = array("$t.type='root'");
         $arrValue  = array();
 
@@ -419,20 +420,28 @@ window.addEvent('domready', function()
                             $objPage = \PageModel::findByPk($intPage);
                             --$intRemaining;
 
+                            // The target page does not exist
+                            if ($objPage === null) {
+                                continue;
+                            }
+
+                            // The target page has not been published
+                            if (!$objPage->published || ($objPage->start != '' && $objPage->start > $time) || ($objPage->stop != '' && $objPage->stop < $time)) {
+                                continue;
+                            }
+
+                            // The target page is exempt from the sitemap
+                            if ($blnIsSitemap && $objPage->sitemap == 'map_never') {
+                                continue;
+                            }
+
                             // Do not generate a reader for the index page, except if it is the only one
-                            if ($objPage->alias == 'index' && $intRemaining > 0) {
-                                continue;
-                            } elseif ($objPage->sitemap == 'map_never') {
+                            if ($intRemaining > 0 && $objPage->alias == 'index') {
                                 continue;
                             }
 
-                            // Generate the absolute URL
-                            $strDomain = \Environment::get('base');
-
-                            // Overwrite the domain
-                            if ($objRoot->dns != '') {
-                                $strDomain = ($objRoot->useSSL ? 'https://' : 'http://') . $objRoot->dns . TL_PATH . '/';
-                            }
+                            // Generate the domain
+                            $strDomain = ($objRoot->useSSL ? 'https://' : 'http://') . ($objRoot->dns ?: \Environment::get('host')) . TL_PATH . '/';
 
                             // Pass root language to page object
                             $objPage->language = $objRoot->language;
