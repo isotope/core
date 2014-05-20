@@ -9,10 +9,8 @@
  * or to help to maintain an existing one, please register at transifex.com.
  * 
  * @link http://help.transifex.com/intro/translating.html
- * @link https://www.transifex.com/projects/i/isotope/language/it/
+ * @link https://www.transifex.com/projects/i/isotope/language/pt_BR/
  * 
  * @license http://www.gnu.org/licenses/lgpl-3.0.html
  */
 
-$GLOBALS['TL_LANG']['MOD']['isotope_rules'][0] = 'Isotope eCommerce: Regole &amp; Buoni spesa ';
-$GLOBALS['TL_LANG']['MOD']['iso_rules'][0] = 'Regole &amp; Buoni spesa';

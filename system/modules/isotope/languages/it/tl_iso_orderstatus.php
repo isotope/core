@@ -15,4 +15,5 @@
  */
 
 $GLOBALS['TL_LANG']['tl_iso_orderstatus']['name'][0] = 'Nome';
+$GLOBALS['TL_LANG']['tl_iso_orderstatus']['notification'][0] = 'Notifica';
 $GLOBALS['TL_LANG']['tl_iso_orderstatus']['name_legend'] = 'Nome';

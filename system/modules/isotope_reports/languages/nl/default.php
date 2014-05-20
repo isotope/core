@@ -16,6 +16,7 @@
 
 $GLOBALS['TL_LANG']['ISO_REPORT']['sales_total'][0] = 'Totaal';
 $GLOBALS['TL_LANG']['ISO_REPORT']['members_total'][0] = 'Totaal';
+$GLOBALS['TL_LANG']['ISO_REPORT']['shop_config'] = 'Winkelconfiguratie';
 $GLOBALS['TL_LANG']['ISO_REPORT']['currency'] = 'Valuta';
 $GLOBALS['TL_LANG']['ISO_REPORT']['all'] = 'Alle';
 $GLOBALS['TL_LANG']['ISO_REPORT']['status'] = 'Status';
