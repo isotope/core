@@ -269,7 +269,7 @@ abstract class TypeAgent extends \Model
             return static::buildModelType($objResult);
         } else {
 
-            return static::createCollectionFromDbResult($objResult);
+            return static::createCollectionFromDbResult($objResult, static::$strTable);
         }
     }
 
@@ -286,9 +286,10 @@ abstract class TypeAgent extends \Model
     /**
      * Create array of models and return a collection of them
      * @param   Database\Result
+     * @param   string
      * @return  Model\Collection
      */
-    protected static function createCollectionFromDbResult($objResult)
+    protected static function createCollectionFromDbResult(\Database\Result $objResult, $strTable)
     {
         $arrModels = array();
 
