@@ -9,6 +9,7 @@ Version 2.1.2-stable (2014-??-??)
 - Wrong column count in collection template again (#1091)
 - Assets import calling to classes in wrong namespace (#1113)
 - TypeAgent not being compatible with Contao 3.3 changes
+- Product translations not being compatible with Contao 3.3 changes (#1109)
 
 
 Version 2.1.1-stable (2014-05-20)
