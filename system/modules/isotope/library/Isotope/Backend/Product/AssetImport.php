@@ -137,7 +137,7 @@ class AssetImport extends \Backend
                             }
                         }
                     } elseif (is_file(TL_ROOT . '/' . $strPath . '/' . $file)) {
-                        $objFile = new File($strPath . '/' . $file);
+                        $objFile = new \File($strPath . '/' . $file);
 
                         if ($objFile->isGdImage) {
                             $arrNewImages[] = $strPath . '/' . $file;
