@@ -7,6 +7,7 @@ Version 2.1.2-stable (2014-??-??)
 ### Fixed
 - Request cache did not consider variant filtering (#1100)
 - Wrong column count in collection template again (#1091)
+- Assets import calling to classes in wrong namespace (#1113)
 
 
 Version 2.1.1-stable (2014-05-20)
