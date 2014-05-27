@@ -160,7 +160,7 @@ class ProductFilter extends Module implements IsotopeFilterModule
             $this->generateSearch();
 
             $arrParams = array_filter(array_keys($_GET), function($key) {
-                return (strpos($key, 'page_iso') !== 0);
+                return (strpos($key, 'page_iso') === 0);
             });
 
             $this->Template->id          = $this->id;
