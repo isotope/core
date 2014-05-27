@@ -172,20 +172,25 @@ abstract class TypeAgent extends \Model
             $arrRelations = $objRelations->getRelations();
             $arrFields = $objRelations->getFields();
 
+            // @deprecated use string instead of array for HAVING (introduced in Contao 3.3)
+            if (!empty($arrOptions['having']) && is_array($arrOptions['having'])) {
+                $arrOptions['having'] = implode(' AND ', $arrOptions['having']);
+            }
+
             if (isset($arrRelations['type'])) {
-                $arrOptions['having'][] = 'type IN (SELECT ' . $arrRelations['type']['field'] . ' FROM ' . $arrRelations['type']['table'] . ' WHERE class=?)';
+                $arrOptions['having'] = (empty($arrOptions['having']) ? '' : ' AND ') . 'type IN (SELECT ' . $arrRelations['type']['field'] . ' FROM ' . $arrRelations['type']['table'] . ' WHERE class=?)';
                 $arrOptions['value'][]  = $strType;
             } elseif (isset($arrFields['type'])) {
-                $arrOptions['having'][] = 'type=?';
+                $arrOptions['having'] = (empty($arrOptions['having']) ? '' : ' AND ') . 'type=?';
                 $arrOptions['value'][]  = $strType;
             }
 
-            // @todo change this when core models support HAVING
-            if (!empty($arrOptions['having']) && is_array($arrOptions['having'])) {
+            // @deprecated remove when we drop support for Contao 3.2
+            if (version_compare(VERSION, '3.3', '<')) {
                 if ($arrOptions['group'] !== null) {
-                    $arrOptions['group'] .= ' HAVING ' . implode(' AND ', $arrOptions['having']);
+                    $arrOptions['group'] .= ' HAVING ' . $arrOptions['having'];
                 } else {
-                    $arrOptions['column'][] = '1=1 HAVING ' . implode(' AND ', $arrOptions['having']);
+                    $arrOptions['column'][] = '1=1 HAVING ' . $arrOptions['having'];
                 }
             }
         }

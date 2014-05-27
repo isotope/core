@@ -10,6 +10,7 @@ Version 2.1.2-stable (2014-??-??)
 - Assets import calling to classes in wrong namespace (#1113)
 - TypeAgent not being compatible with Contao 3.3 changes
 - Product translations not being compatible with Contao 3.3 changes (#1109)
+- HAVING support was incompatible with Contao 3.3 (#1112)
 
 
 Version 2.1.1-stable (2014-05-20)
