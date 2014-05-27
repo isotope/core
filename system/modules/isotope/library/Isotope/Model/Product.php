@@ -392,7 +392,7 @@ abstract class Product extends TypeAgent
      * @param array an array of columns
      * @return string
      */
-    protected static function buildQueryString($arrOptions, $arrJoinAliases = array('t' => 'tl_iso_producttype'))
+    protected static function buildFindQuery(array $arrOptions)
     {
         $objBase = new \DcaExtractor($arrOptions['table']);
 
@@ -426,8 +426,8 @@ abstract class Product extends TypeAgent
                 // Automatically join the single-relation records
                 if ($arrConfig['load'] == 'eager' || $arrOptions['eager']) {
                     if ($arrConfig['type'] == 'hasOne' || $arrConfig['type'] == 'belongsTo') {
-                        $key = array_search($arrConfig['table'], $arrJoinAliases);
-                        if (false !== $key) {
+
+                        if (is_array($arrOptions['joinAliases']) && ($key = array_search($arrConfig['table'], $arrOptions['joinAliases'])) !== false) {
                             $strJoinAlias = $key;
                             unset($arrJoinAliases[$key]);
                         } else {
@@ -469,5 +469,19 @@ abstract class Product extends TypeAgent
         }
 
         return $strQuery;
+    }
+
+    /**
+     * Return select statement to load product data including multilingual fields
+     * @param   array   an array of columns
+     * @param   array   an array of table join aliases
+     * @return  string
+     * @deprecated  use buildFindQuery introduced in Contao 3.3
+     */
+    protected static function buildQueryString($arrOptions, $arrJoinAliases = array('t' => 'tl_iso_producttype'))
+    {
+        $arrOptions['joinAliases'] = $arrJoinAliases;
+
+        return static::buildFindQuery((array) $arrOptions);
     }
 }

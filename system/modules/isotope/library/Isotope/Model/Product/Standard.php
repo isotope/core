@@ -839,6 +839,7 @@ class Standard extends Product implements IsotopeProduct, WeightAggregate
     {
         if ($arrData['pid'] > 0) {
             // Do not use the model, it would trigger setRow and generate too much
+            // @deprecated use static::buildFindQuery once we drop BC support for buildQueryString
             $objParent = \Database::getInstance()->prepare(static::buildQueryString(array('table' => static::$strTable, 'column' => 'id')))->execute($arrData['pid']);
 
             if (null === $objParent) {

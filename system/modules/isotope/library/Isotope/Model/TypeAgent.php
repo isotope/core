@@ -238,6 +238,7 @@ abstract class TypeAgent extends \Model
         }
 
         $arrOptions['table'] = static::$strTable;
+        // @deprecated use static::buildFindQuery once we drop BC support for buildQueryString
         $strQuery            = static::buildQueryString($arrOptions);
 
         $objStatement = \Database::getInstance()->prepare($strQuery);
@@ -274,16 +275,6 @@ abstract class TypeAgent extends \Model
     }
 
     /**
-     * Allow to override the query builder
-     * @param   array
-     * @return  string
-     */
-    protected static function buildQueryString($arrOptions)
-    {
-        return \Model\QueryBuilder::find($arrOptions);
-    }
-
-    /**
      * Create array of models and return a collection of them
      * @param   Database\Result
      * @param   string
@@ -307,5 +298,31 @@ abstract class TypeAgent extends \Model
         }
 
         return new \Model\Collection($arrModels, $strTable);
+    }
+
+    /**
+     * Build a query based on the given options
+     * @param array $arrOptions The options array
+     * @return string The query string
+     * @deprecated this is only for BC with Contao 3.2
+     */
+    protected static function buildFindQuery(array $arrOptions)
+    {
+        if (version_compare(VERSION, '3.3', '<')) {
+            return \Model\QueryBuilder::find($arrOptions);
+        }
+
+        return parent::buildFindQuery($arrOptions);
+    }
+
+    /**
+     * Allow to override the query builder
+     * @param       array
+     * @return      string
+     * @deprecated  use buildFindQuery introduced in Contao 3.3
+     */
+    protected static function buildQueryString($arrOptions)
+    {
+        return static::buildFindQuery($arrOptions);
     }
 }
