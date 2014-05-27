@@ -118,53 +118,6 @@ abstract class TypeAgent extends \Model
         return $arrOptions;
     }
 
-    /**
-     * Build model based on database result
-     * @param   Database_Result
-     */
-    public static function buildModelType(\Database_Result $objResult = null)
-    {
-        $strClass = '';
-
-        if (is_numeric($objResult->type)) {
-            $objRelations = new \DcaExtractor(static::$strTable);
-            $arrRelations = $objRelations->getRelations();
-
-            if (isset($arrRelations['type'])) {
-                $strTypeClass = static::getClassFromTable($arrRelations['type']['table']);
-                $objType      = $strTypeClass::findOneBy($arrRelations['type']['field'], $objResult->type);
-
-                if (null !== $objType) {
-                    $strClass = static::$arrModelTypes[$objType->class];
-                }
-            }
-        } else {
-            $strClass = static::$arrModelTypes[$objResult->type];
-        }
-
-        // Try to use the current class as fallback
-        if ($strClass == '') {
-            $strClass = get_called_class();
-        }
-
-        $strPk = static::$strPk;
-        $intPk = $objResult->$strPk;
-
-        // Try to load from the registry
-        $objModel = \Model\Registry::getInstance()->fetch(static::$strTable, $intPk);
-
-        if ($objModel !== null) {
-            $objModel->mergeRow($objResult->row());
-        } else {
-            $objModel = new $strClass($objResult);
-        }
-
-        if (null !== static::$strInterface && !is_a($objModel, static::$strInterface)) {
-            throw new \RuntimeException(get_class($objModel) . ' must implement interface ' . static::$strInterface);
-        }
-
-        return $objModel;
-    }
 
     /**
      * Find sibling records by a column value
@@ -267,11 +220,50 @@ abstract class TypeAgent extends \Model
 
         if ($arrOptions['return'] == 'Model') {
 
+            // @deprecated use static::createModelFromDbResult once we drop BC support for buildModelType
             return static::buildModelType($objResult);
         } else {
 
             return static::createCollectionFromDbResult($objResult, static::$strTable);
         }
+    }
+
+    /**
+     * Build model based on database result
+     * @param   Database_Result
+     */
+    public static function createModelFromDbResult(\Database\Result $objResult)
+    {
+        $strClass = '';
+
+        if (is_numeric($objResult->type)) {
+            $objRelations = new \DcaExtractor(static::$strTable);
+            $arrRelations = $objRelations->getRelations();
+
+            if (isset($arrRelations['type'])) {
+                $strTypeClass = static::getClassFromTable($arrRelations['type']['table']);
+                $objType      = $strTypeClass::findOneBy($arrRelations['type']['field'], $objResult->type);
+
+                if (null !== $objType) {
+                    $strClass = static::getClassForModelType($objType->class);
+                }
+            }
+        } else {
+            $strClass = static::getClassForModelType($objResult->type);
+        }
+
+        // Try to use the current class as fallback
+        if ($strClass == '') {
+            $strClass = get_called_class();
+        }
+
+        $objModel = new $strClass($objResult);
+
+        if (null !== static::$strInterface && !is_a($objModel, static::$strInterface)) {
+            throw new \RuntimeException(get_class($objModel) . ' must implement interface ' . static::$strInterface);
+        }
+
+        return $objModel;
     }
 
     /**
@@ -290,6 +282,8 @@ abstract class TypeAgent extends \Model
         $arrModels = array();
 
         while ($objResult->next()) {
+
+            // @deprecated use static::createModelFromDbResult once we drop BC support for buildModelType
             $objModel = static::buildModelType($objResult);
 
             if (null !== $objModel) {
@@ -298,6 +292,31 @@ abstract class TypeAgent extends \Model
         }
 
         return new \Model\Collection($arrModels, $strTable);
+    }
+
+    /**
+     * Build model based on database result
+     * @param   Database_Result
+     * @deprecated  use createModelFromDbResult in Contao 3.3
+     */
+    public static function buildModelType(\Database_Result $objResult = null)
+    {
+        if (null === $objResult) {
+            return null;
+        }
+
+        $strPk = static::$strPk;
+        $intPk = $objResult->$strPk;
+
+        // Try to load from the registry
+        $objModel = \Model\Registry::getInstance()->fetch(static::$strTable, $intPk);
+
+        if ($objModel !== null) {
+            $objModel->mergeRow($objResult->row());
+            return $objModel;
+        }
+
+        return static::createModelFromDbResult($objResult);
     }
 
     /**
