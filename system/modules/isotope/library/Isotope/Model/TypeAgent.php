@@ -289,8 +289,13 @@ abstract class TypeAgent extends \Model
      * @param   string
      * @return  Model\Collection
      */
-    protected static function createCollectionFromDbResult(\Database\Result $objResult, $strTable)
+    protected static function createCollectionFromDbResult(\Database\Result $objResult, $strTable = null)
     {
+        // @deprecated only for backward compatibility with Contao 3.2/Isotope < 2.1.2
+        if (null === $strTable) {
+            $strTable = static::$strTable;
+        }
+
         $arrModels = array();
 
         while ($objResult->next()) {
@@ -301,6 +306,6 @@ abstract class TypeAgent extends \Model
             }
         }
 
-        return new \Model\Collection($arrModels, static::$strTable);
+        return new \Model\Collection($arrModels, $strTable);
     }
 }
