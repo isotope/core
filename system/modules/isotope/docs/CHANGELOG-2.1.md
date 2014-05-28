@@ -12,6 +12,7 @@ Version 2.1.2-stable (2014-??-??)
 - Product translations not being compatible with Contao 3.3 changes (#1109)
 - HAVING support was incompatible with Contao 3.3 (#1112)
 - Product filter removed all parameters except page instead of the opposite (#1098)
+- DatePicker was not compatible with changes introduced in Contao 3.3 (#1119)
 
 
 Version 2.1.1-stable (2014-05-20)
