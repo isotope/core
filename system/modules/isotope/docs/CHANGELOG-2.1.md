@@ -17,6 +17,7 @@ Version 2.1.2-stable (2014-??-??)
 - Fatal error when setting a redirect page for product search (#1068)
 - Prevent Contao from trying to load an empty tinyMCE config (#1111)
 - Variants were not shown if product group filter was applied (#1097)
+- Attributes were always initialized with array default value (#1021)
 
 
 Version 2.1.1-stable (2014-05-20)
