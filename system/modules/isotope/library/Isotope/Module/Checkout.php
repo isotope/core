@@ -126,7 +126,7 @@ class Checkout extends Module
             // Complete order after successful payment
             // At this stage, we do no longer use the client's cart but the order through UID in URL
             case 'complete':
-                if (($objOrder = Order::findOneByUniqid(\Input::get('uid'))) === null) {
+                if (($objOrder = Order::findOneByUniqid((string) \Input::get('uid'))) === null) {
                     static::redirectToStep('failed');
                 }
 
