@@ -136,6 +136,11 @@ abstract class Attribute extends TypeAgent
             $arrField['eval']['path'] = $objFile->path;
         }
 
+        // Contao tries to load an empty tinyMCE config otherwise (see #1111)
+        if ($this->rte == '') {
+            unset($arrField['eval']['rte']);
+        }
+
         if ($this->be_filter) {
             $arrField['filter'] = true;
         }
