@@ -136,7 +136,9 @@ class DC_ProductData extends \DC_Table
         $this->procedure[] = "language=''";
 
         // Display products filtered by group
-        $this->procedure[] = "gid IN(" . implode(',', array_map('intval', \Database::getInstance()->getChildRecords(array($this->intGroupId), \Isotope\Model\Group::getTable(), false, array($this->intGroupId)))) . ")";
+        if (!$this->intId) {
+            $this->procedure[] = "gid IN(" . implode(',', array_map('intval', \Database::getInstance()->getChildRecords(array($this->intGroupId), \Isotope\Model\Group::getTable(), false, array($this->intGroupId)))) . ")";
+        }
 
         // Custom filter
         if (is_array($GLOBALS['TL_DCA'][$this->strTable]['list']['sorting']['filter']) && !empty($GLOBALS['TL_DCA'][$this->strTable]['list']['sorting']['filter'])) {
