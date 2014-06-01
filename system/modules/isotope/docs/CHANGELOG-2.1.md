@@ -14,6 +14,7 @@ Version 2.1.2-stable (2014-??-??)
 - Product filter removed all parameters except page instead of the opposite (#1098)
 - DatePicker was not compatible with changes introduced in Contao 3.3 (#1119)
 - Related products module could get hidden in edge case (#1090)
+- Fatal error when setting a redirect page for product search (#1068)
 
 
 Version 2.1.1-stable (2014-05-20)

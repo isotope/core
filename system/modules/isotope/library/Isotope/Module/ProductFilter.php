@@ -189,7 +189,7 @@ class ProductFilter extends Module implements IsotopeFilterModule
             if (\Input::get('keywords') != '' && \Input::get('keywords') != $GLOBALS['TL_LANG']['MSC']['defaultSearchText']) {
 
                 // Redirect to search result page if one is set (see #1068)
-                if (!$this->blnUpdateCache && $this->jumpTo != $objPage->id && null !== $this->getRelated('jumpTo')) {
+                if (!$this->blnUpdateCache && $this->jumpTo != $objPage->id && null !== $this->objModel->getRelated('jumpTo')) {
 
                     // Include \Environment::base or the URL would not work on the index page
                     \Controller::redirect(
