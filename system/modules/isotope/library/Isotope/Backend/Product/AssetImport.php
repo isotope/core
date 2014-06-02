@@ -128,7 +128,7 @@ class AssetImport extends \Backend
                         if (!empty($arrSubfiles)) {
                             foreach ($arrSubfiles as $subfile) {
                                 if (is_file($strPath . '/' . $file . '/' . $subfile)) {
-                                    $objFile = new File($strPath . '/' . $file . '/' . $subfile);
+                                    $objFile = new \File($strPath . '/' . $file . '/' . $subfile);
 
                                     if ($objFile->isGdImage) {
                                         $arrNewImages[] = $strPath . '/' . $file . '/' . $subfile;
@@ -137,7 +137,7 @@ class AssetImport extends \Backend
                             }
                         }
                     } elseif (is_file(TL_ROOT . '/' . $strPath . '/' . $file)) {
-                        $objFile = new File($strPath . '/' . $file);
+                        $objFile = new \File($strPath . '/' . $file);
 
                         if ($objFile->isGdImage) {
                             $arrNewImages[] = $strPath . '/' . $file;

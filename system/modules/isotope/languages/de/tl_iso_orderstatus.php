@@ -16,6 +16,8 @@
 
 $GLOBALS['TL_LANG']['tl_iso_orderstatus']['name'][0] = 'Name';
 $GLOBALS['TL_LANG']['tl_iso_orderstatus']['name'][1] = 'Bitte geben Sie den Namen für den Status ein.';
+$GLOBALS['TL_LANG']['tl_iso_orderstatus']['color'][0] = 'Farbe';
+$GLOBALS['TL_LANG']['tl_iso_orderstatus']['color'][1] = 'Hier können Sie eine Farbe für den Bestellstatus festlegen. Die Farbe wird in der Bestellliste im Backend ausgegeben.';
 $GLOBALS['TL_LANG']['tl_iso_orderstatus']['paid'][0] = 'Die Bestellung wurde bezahlt';
 $GLOBALS['TL_LANG']['tl_iso_orderstatus']['paid'][1] = 'Bei diesem Status wurde die Bestellung bezahlt. Beispielsweise ist das herunterladen von Dateien möglich.';
 $GLOBALS['TL_LANG']['tl_iso_orderstatus']['welcomescreen'][0] = 'Auf der Willkommensseite anzeigen';

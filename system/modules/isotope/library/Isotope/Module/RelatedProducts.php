@@ -61,6 +61,9 @@ class RelatedProducts extends ProductList
             return '';
         }
 
+        // Prevent hiding the list which is not supported in this module (see ProductList::generate())
+        $this->iso_hide_list = false;
+
         return parent::generate();
     }
 

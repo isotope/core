@@ -1,6 +1,25 @@
 Isotope eCommerce Changelog
 ===========================
 
+Version 2.1.2-stable (2014-06-02)
+---------------------------------
+
+### Fixed
+- Request cache did not consider variant filtering (#1100)
+- Wrong column count in collection template again (#1091)
+- Assets import calling to classes in wrong namespace (#1113)
+- TypeAgent not being compatible with Contao 3.3 changes
+- Product translations not being compatible with Contao 3.3 changes (#1109)
+- HAVING support was incompatible with Contao 3.3 (#1112)
+- Product filter removed all parameters except page instead of the opposite (#1098)
+- DatePicker was not compatible with changes introduced in Contao 3.3 (#1119)
+- Related products module could get hidden in edge case (#1090)
+- Fatal error when setting a redirect page for product search (#1068)
+- Prevent Contao from trying to load an empty tinyMCE config (#1111)
+- Variants were not shown if product group filter was applied (#1097)
+- Attributes were always initialized with array default value (#1021)
+
+
 Version 2.1.1-stable (2014-05-20)
 ---------------------------------
 
