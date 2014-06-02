@@ -76,6 +76,7 @@ $GLOBALS['TL_LANG']['tl_iso_product']['mmTranslateAll'][0] = 'Alle';
 $GLOBALS['TL_LANG']['tl_iso_product']['mmTranslateAll'][1] = 'Dieses Bild nicht in die übersetzte Version übernehmen.';
 $GLOBALS['TL_LANG']['tl_iso_product']['variantValuesLabel'] = 'Variante';
 $GLOBALS['TL_LANG']['tl_iso_product']['showVariants'] = 'Zeige Produktvarianten';
+$GLOBALS['TL_LANG']['tl_iso_product']['priceBlankOptionLabel'] = 'Steuerfrei';
 $GLOBALS['TL_LANG']['tl_iso_product']['new'][0] = 'Neues Produkt';
 $GLOBALS['TL_LANG']['tl_iso_product']['new'][1] = 'Neues Produkt erstellen';
 $GLOBALS['TL_LANG']['tl_iso_product']['new_variant'][0] = 'Variante hinzufügen';

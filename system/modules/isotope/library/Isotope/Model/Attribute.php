@@ -136,6 +136,11 @@ abstract class Attribute extends TypeAgent
             $arrField['eval']['path'] = $objFile->path;
         }
 
+        // Contao tries to load an empty tinyMCE config otherwise (see #1111)
+        if ($this->rte == '') {
+            unset($arrField['eval']['rte']);
+        }
+
         if ($this->be_filter) {
             $arrField['filter'] = true;
         }
@@ -161,11 +166,6 @@ abstract class Attribute extends TypeAgent
             $arrField['eval']['includeBlankOption'] = true;
             unset($arrField['options']);
         } else {
-            $arrField['default'] = array();
-            $arrField['options'] = array();
-            $arrField['eval']['isAssociative'] = true;
-            unset($arrField['reference']);
-
             if ($this->foreignKey) {
                 $arrKey     = explode('.', $this->foreignKey, 2);
                 $arrOptions = \Database::getInstance()->execute("SELECT id AS value, {$arrKey[1]} AS label FROM {$arrKey[0]} ORDER BY label")->fetchAllAssoc();
@@ -174,6 +174,10 @@ abstract class Attribute extends TypeAgent
             }
 
             if (is_array($arrOptions) && !empty($arrOptions)) {
+                $arrField['default'] = array();
+                $arrField['options'] = array();
+                $arrField['eval']['isAssociative'] = true;
+                unset($arrField['reference']);
                 $strGroup = '';
 
                 foreach ($arrOptions as $option) {

@@ -28,10 +28,10 @@ class DC_ProductData extends \DC_Table
     protected $blnEditLanguage;
 
     /**
-     * Array of languages for this product's type
+     * Array of translations for this product's type
      * @var array
      */
-    protected $arrLanguages;
+    protected $arrTranslations;
 
     /**
      * Array of language labels
@@ -136,7 +136,9 @@ class DC_ProductData extends \DC_Table
         $this->procedure[] = "language=''";
 
         // Display products filtered by group
-        $this->procedure[] = "gid IN(" . implode(',', array_map('intval', \Database::getInstance()->getChildRecords(array($this->intGroupId), \Isotope\Model\Group::getTable(), false, array($this->intGroupId)))) . ")";
+        if (!$this->intId) {
+            $this->procedure[] = "gid IN(" . implode(',', array_map('intval', \Database::getInstance()->getChildRecords(array($this->intGroupId), \Isotope\Model\Group::getTable(), false, array($this->intGroupId)))) . ")";
+        }
 
         // Custom filter
         if (is_array($GLOBALS['TL_DCA'][$this->strTable]['list']['sorting']['filter']) && !empty($GLOBALS['TL_DCA'][$this->strTable]['list']['sorting']['filter'])) {
@@ -441,13 +443,13 @@ class DC_ProductData extends \DC_Table
         }
 
         if (count($arrPageLanguages) > 1) {
-            $this->arrLanguageLabels = \System::getLanguages();
-            $this->arrLanguages = array_intersect(array_keys($this->arrLanguageLabels), $arrPageLanguages);
+            $this->arrTranslationLabels = \System::getLanguages();
+            $this->arrTranslations = array_intersect(array_keys($this->arrTranslationLabels), $arrPageLanguages);
 
             if (\Input::post('FORM_SUBMIT') == 'tl_language') {
                 $session = $this->Session->getData();
 
-                if (in_array(\Input::post('language'), $this->arrLanguages)) {
+                if (in_array(\Input::post('language'), $this->arrTranslations)) {
                     $session['language'][$this->strTable][$this->intId] = \Input::post('language');
 
                     if (\Input::post('deleteLanguage') != '') {
@@ -463,7 +465,7 @@ class DC_ProductData extends \DC_Table
                 \Controller::reload();
             }
 
-            if ($_SESSION['BE_DATA']['language'][$this->strTable][$this->intId] != '' && in_array($_SESSION['BE_DATA']['language'][$this->strTable][$this->intId], $this->arrLanguages)) {
+            if ($_SESSION['BE_DATA']['language'][$this->strTable][$this->intId] != '' && in_array($_SESSION['BE_DATA']['language'][$this->strTable][$this->intId], $this->arrTranslations)) {
                 $objRow = $this->Database->prepare("SELECT * FROM " . $this->strTable . " WHERE pid=? AND language=?")->execute($this->intId, $_SESSION['BE_DATA']['language'][$this->strTable][$this->intId]);
 
                 if (!$objRow->numRows) {
@@ -672,21 +674,21 @@ class DC_ProductData extends \DC_Table
         }
 
         // Check languages
-        if (is_array($this->arrLanguages) && !empty($this->arrLanguages)) {
+        if (is_array($this->arrTranslations) && !empty($this->arrTranslations)) {
             $arrAvailableLanguages = $this->Database->prepare("SELECT language FROM " . $this->strTable . " WHERE pid=?")->execute($this->intId)->fetchEach('language');
             $available = '';
             $undefined = '';
 
-            foreach ($this->arrLanguages as $language) {
+            foreach ($this->arrTranslations as $language) {
                 if (in_array($language, $arrAvailableLanguages)) {
                     if ($_SESSION['BE_DATA']['language'][$this->strTable][$this->intId] == $language) {
-                        $available .= '<option value="' . $language . '" selected="selected">' . $this->arrLanguageLabels[$language] . '</option>';
+                        $available .= '<option value="' . $language . '" selected="selected">' . $this->arrTranslationLabels[$language] . '</option>';
                         $_SESSION['TL_INFO'] = array($GLOBALS['TL_LANG']['MSC']['editingLanguage']);
                     } else {
-                        $available .= '<option value="' . $language . '">' . $this->arrLanguageLabels[$language] . '</option>';
+                        $available .= '<option value="' . $language . '">' . $this->arrTranslationLabels[$language] . '</option>';
                     }
                 } else {
-                    $undefined .= '<option value="' . $language . '">' . $this->arrLanguageLabels[$language] . ' (' . $GLOBALS['TL_LANG']['MSC']['undefinedLanguage'] . ')' . '</option>';
+                    $undefined .= '<option value="' . $language . '">' . $this->arrTranslationLabels[$language] . ' (' . $GLOBALS['TL_LANG']['MSC']['undefinedLanguage'] . ')' . '</option>';
                 }
             }
 

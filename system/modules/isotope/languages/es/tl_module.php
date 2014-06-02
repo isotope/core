@@ -93,6 +93,7 @@ $GLOBALS['TL_LANG']['tl_module']['iso_includeMessages'][0] = 'Incluir mensajes';
 $GLOBALS['TL_LANG']['tl_module']['iso_includeMessages'][1] = 'Esta configuración permite que el módulo incluya los errores, notificaciones o confirmaciones que el visitante debe tener en cuenta.';
 $GLOBALS['TL_LANG']['tl_module']['iso_continueShopping'][0] = 'Habilitar el botón "Seguir comprando"';
 $GLOBALS['TL_LANG']['tl_module']['iso_continueShopping'][1] = 'Añadir un enlace al producto agregado actualmente a la cesta.';
+$GLOBALS['TL_LANG']['tl_module']['iso_order_conditions_legend'] = 'Condiciones del formulario de pedido';
 $GLOBALS['TL_LANG']['tl_module']['iso_checkout_method_ref']['member'] = 'Login / Registro requerido';
 $GLOBALS['TL_LANG']['tl_module']['iso_checkout_method_ref']['guest'] = 'Proceso de pago sólo para Invitado';
 $GLOBALS['TL_LANG']['tl_module']['iso_checkout_method_ref']['both'] = 'Ambos permitido';

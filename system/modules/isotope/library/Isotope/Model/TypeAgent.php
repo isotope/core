@@ -118,53 +118,6 @@ abstract class TypeAgent extends \Model
         return $arrOptions;
     }
 
-    /**
-     * Build model based on database result
-     * @param   Database_Result
-     */
-    public static function buildModelType(\Database_Result $objResult = null)
-    {
-        $strClass = '';
-
-        if (is_numeric($objResult->type)) {
-            $objRelations = new \DcaExtractor(static::$strTable);
-            $arrRelations = $objRelations->getRelations();
-
-            if (isset($arrRelations['type'])) {
-                $strTypeClass = static::getClassFromTable($arrRelations['type']['table']);
-                $objType      = $strTypeClass::findOneBy($arrRelations['type']['field'], $objResult->type);
-
-                if (null !== $objType) {
-                    $strClass = static::$arrModelTypes[$objType->class];
-                }
-            }
-        } else {
-            $strClass = static::$arrModelTypes[$objResult->type];
-        }
-
-        // Try to use the current class as fallback
-        if ($strClass == '') {
-            $strClass = get_called_class();
-        }
-
-        $strPk = static::$strPk;
-        $intPk = $objResult->$strPk;
-
-        // Try to load from the registry
-        $objModel = \Model\Registry::getInstance()->fetch(static::$strTable, $intPk);
-
-        if ($objModel !== null) {
-            $objModel->mergeRow($objResult->row());
-        } else {
-            $objModel = new $strClass($objResult);
-        }
-
-        if (null !== static::$strInterface && !is_a($objModel, static::$strInterface)) {
-            throw new \RuntimeException(get_class($objModel) . ' must implement interface ' . static::$strInterface);
-        }
-
-        return $objModel;
-    }
 
     /**
      * Find sibling records by a column value
@@ -219,25 +172,31 @@ abstract class TypeAgent extends \Model
             $arrRelations = $objRelations->getRelations();
             $arrFields = $objRelations->getFields();
 
+            // @deprecated use string instead of array for HAVING (introduced in Contao 3.3)
+            if (!empty($arrOptions['having']) && is_array($arrOptions['having'])) {
+                $arrOptions['having'] = implode(' AND ', $arrOptions['having']);
+            }
+
             if (isset($arrRelations['type'])) {
-                $arrOptions['having'][] = 'type IN (SELECT ' . $arrRelations['type']['field'] . ' FROM ' . $arrRelations['type']['table'] . ' WHERE class=?)';
+                $arrOptions['having'] = (empty($arrOptions['having']) ? '' : ' AND ') . 'type IN (SELECT ' . $arrRelations['type']['field'] . ' FROM ' . $arrRelations['type']['table'] . ' WHERE class=?)';
                 $arrOptions['value'][]  = $strType;
             } elseif (isset($arrFields['type'])) {
-                $arrOptions['having'][] = 'type=?';
+                $arrOptions['having'] = (empty($arrOptions['having']) ? '' : ' AND ') . 'type=?';
                 $arrOptions['value'][]  = $strType;
             }
 
-            // @todo change this when core models support HAVING
-            if (!empty($arrOptions['having']) && is_array($arrOptions['having'])) {
+            // @deprecated remove when we drop support for Contao 3.2
+            if (version_compare(VERSION, '3.3', '<')) {
                 if ($arrOptions['group'] !== null) {
-                    $arrOptions['group'] .= ' HAVING ' . implode(' AND ', $arrOptions['having']);
+                    $arrOptions['group'] .= ' HAVING ' . $arrOptions['having'];
                 } else {
-                    $arrOptions['column'][] = '1=1 HAVING ' . implode(' AND ', $arrOptions['having']);
+                    $arrOptions['column'][] = '1=1 HAVING ' . $arrOptions['having'];
                 }
             }
         }
 
         $arrOptions['table'] = static::$strTable;
+        // @deprecated use static::buildFindQuery once we drop BC support for buildQueryString
         $strQuery            = static::buildQueryString($arrOptions);
 
         $objStatement = \Database::getInstance()->prepare($strQuery);
@@ -266,33 +225,70 @@ abstract class TypeAgent extends \Model
 
         if ($arrOptions['return'] == 'Model') {
 
+            // @deprecated use static::createModelFromDbResult once we drop BC support for buildModelType
             return static::buildModelType($objResult);
         } else {
 
-            return static::createCollectionFromDbResult($objResult);
+            return static::createCollectionFromDbResult($objResult, static::$strTable);
         }
     }
 
     /**
-     * Allow to override the query builder
-     * @param   array
-     * @return  string
+     * Build model based on database result
+     * @param   Database_Result
      */
-    protected static function buildQueryString($arrOptions)
+    public static function createModelFromDbResult(\Database\Result $objResult)
     {
-        return \Model\QueryBuilder::find($arrOptions);
+        $strClass = '';
+
+        if (is_numeric($objResult->type)) {
+            $objRelations = new \DcaExtractor(static::$strTable);
+            $arrRelations = $objRelations->getRelations();
+
+            if (isset($arrRelations['type'])) {
+                $strTypeClass = static::getClassFromTable($arrRelations['type']['table']);
+                $objType      = $strTypeClass::findOneBy($arrRelations['type']['field'], $objResult->type);
+
+                if (null !== $objType) {
+                    $strClass = static::getClassForModelType($objType->class);
+                }
+            }
+        } else {
+            $strClass = static::getClassForModelType($objResult->type);
+        }
+
+        // Try to use the current class as fallback
+        if ($strClass == '') {
+            $strClass = get_called_class();
+        }
+
+        $objModel = new $strClass($objResult);
+
+        if (null !== static::$strInterface && !is_a($objModel, static::$strInterface)) {
+            throw new \RuntimeException(get_class($objModel) . ' must implement interface ' . static::$strInterface);
+        }
+
+        return $objModel;
     }
 
     /**
      * Create array of models and return a collection of them
      * @param   Database\Result
+     * @param   string
      * @return  Model\Collection
      */
-    protected static function createCollectionFromDbResult($objResult)
+    protected static function createCollectionFromDbResult(\Database\Result $objResult, $strTable = null)
     {
+        // @deprecated only for backward compatibility with Contao 3.2/Isotope < 2.1.2
+        if (null === $strTable) {
+            $strTable = static::$strTable;
+        }
+
         $arrModels = array();
 
         while ($objResult->next()) {
+
+            // @deprecated use static::createModelFromDbResult once we drop BC support for buildModelType
             $objModel = static::buildModelType($objResult);
 
             if (null !== $objModel) {
@@ -300,6 +296,57 @@ abstract class TypeAgent extends \Model
             }
         }
 
-        return new \Model\Collection($arrModels, static::$strTable);
+        return new \Model\Collection($arrModels, $strTable);
+    }
+
+    /**
+     * Build model based on database result
+     * @param   Database_Result
+     * @deprecated  use createModelFromDbResult in Contao 3.3
+     */
+    public static function buildModelType(\Database_Result $objResult = null)
+    {
+        if (null === $objResult) {
+            return null;
+        }
+
+        $strPk = static::$strPk;
+        $intPk = $objResult->$strPk;
+
+        // Try to load from the registry
+        $objModel = \Model\Registry::getInstance()->fetch(static::$strTable, $intPk);
+
+        if ($objModel !== null) {
+            $objModel->mergeRow($objResult->row());
+            return $objModel;
+        }
+
+        return static::createModelFromDbResult($objResult);
+    }
+
+    /**
+     * Build a query based on the given options
+     * @param array $arrOptions The options array
+     * @return string The query string
+     * @deprecated this is only for BC with Contao 3.2
+     */
+    protected static function buildFindQuery(array $arrOptions)
+    {
+        if (version_compare(VERSION, '3.3', '<')) {
+            return \Model\QueryBuilder::find($arrOptions);
+        }
+
+        return parent::buildFindQuery($arrOptions);
+    }
+
+    /**
+     * Allow to override the query builder
+     * @param       array
+     * @return      string
+     * @deprecated  use buildFindQuery introduced in Contao 3.3
+     */
+    protected static function buildQueryString($arrOptions)
+    {
+        return static::buildFindQuery($arrOptions);
     }
 }

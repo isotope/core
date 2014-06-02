@@ -761,6 +761,7 @@ class Standard extends Product implements IsotopeProduct, WeightAggregate
                     break;
             }
 
+            $datePickerClass = (version_compare(VERSION, '3.3', '<')) ? 'datepicker_dashboard' : 'datepicker_bootstrap';
             $wizard .= ' <img src="assets/mootools/datepicker/' . DATEPICKER . '/icon.gif" width="20" height="20" alt="" id="toggle_' . $objWidget->id . '" style="vertical-align:-6px">
   <script>
   window.addEvent("domready", function() {
@@ -769,7 +770,7 @@ class Standard extends Product implements IsotopeProduct, WeightAggregate
       toggle:$$("#toggle_' . $objWidget->id . '"),
       format:"' . $format . '",
       positionOffset:{x:-197,y:-182}' . $time . ',
-      pickerClass:"datepicker_dashboard",
+      pickerClass:"' . $datePickerClass . '",
       useFadeInOut:!Browser.ie,
       startDay:' . $GLOBALS['TL_LANG']['MSC']['weekOffset'] . ',
       titleFormat:"' . $GLOBALS['TL_LANG']['MSC']['titleFormat'] . '"
@@ -839,6 +840,7 @@ class Standard extends Product implements IsotopeProduct, WeightAggregate
     {
         if ($arrData['pid'] > 0) {
             // Do not use the model, it would trigger setRow and generate too much
+            // @deprecated use static::buildFindQuery once we drop BC support for buildQueryString
             $objParent = \Database::getInstance()->prepare(static::buildQueryString(array('table' => static::$strTable, 'column' => 'id')))->execute($arrData['pid']);
 
             if (null === $objParent) {
