@@ -106,6 +106,7 @@ $GLOBALS['TL_LANG']['tl_module']['iso_includeMessages'][0] = 'Dołącz wiadomoś
 $GLOBALS['TL_LANG']['tl_module']['iso_includeMessages'][1] = 'To ustawienie pozwala modułowi na dołączenie wszelakich błędów, powiadomień czy potwierdzeń, z którymi odwiedzający powinien się zapoznać.';
 $GLOBALS['TL_LANG']['tl_module']['iso_continueShopping'][0] = 'Włącz przycisk "Kontynuuj zakupy"';
 $GLOBALS['TL_LANG']['tl_module']['iso_continueShopping'][1] = 'Dodaj link do właśnie dodanego produktu do koszyka.';
+$GLOBALS['TL_LANG']['tl_module']['iso_order_conditions_legend'] = 'Formularz warunków zakupu';
 $GLOBALS['TL_LANG']['tl_module']['iso_checkout_method_ref']['member'] = 'Wymagane logowanie/rejestracja';
 $GLOBALS['TL_LANG']['tl_module']['iso_checkout_method_ref']['guest'] = 'Kasa tylko dla gości';
 $GLOBALS['TL_LANG']['tl_module']['iso_checkout_method_ref']['both'] = 'Oba dozwolone';
