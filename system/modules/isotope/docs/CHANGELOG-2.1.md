@@ -4,6 +4,8 @@ Isotope eCommerce Changelog
 Version 2.1.3-stable (2014-??-??)
 ---------------------------------
 
+### Fixed
+- Composer dependencies (#1124)
 
 Version 2.1.2-stable (2014-06-02)
 ---------------------------------
