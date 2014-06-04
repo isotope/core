@@ -6,6 +6,7 @@ Version 2.1.3-stable (2014-??-??)
 
 ### Fixed
 - Composer dependencies (#1124)
+- Date added was not updated when copying a product in the back end (#1126)
 
 Version 2.1.2-stable (2014-06-02)
 ---------------------------------

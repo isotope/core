@@ -78,6 +78,18 @@ class DcaManager extends \Backend
     }
 
     /**
+     * Update dateAdded on copy
+     * @param integer
+     * @param object
+     * @link http://www.contao.org/callbacks.html#oncopy_callback
+     */
+    public function updateDateAdded($insertId, $dc)
+    {
+        $strTable = Product::getTable();
+        \Database::getInstance()->prepare("UPDATE $strTable SET dateAdded=? WHERE id=?")->execute(time(), $insertId);
+    }
+
+    /**
      * Add custom attributes to tl_iso_product DCA
      */
     protected function addAttributes()

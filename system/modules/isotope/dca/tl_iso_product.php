@@ -40,6 +40,7 @@ $GLOBALS['TL_DCA']['tl_iso_product'] = array
         'oncopy_callback' => array
         (
             array('Isotope\Backend\Product\Category', 'updateSorting'),
+            array('Isotope\Backend\Product\DcaManager', 'updateDateAdded'),
         ),
         'onsubmit_callback' => array
         (
