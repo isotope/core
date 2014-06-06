@@ -144,10 +144,6 @@ class Standard extends Product implements IsotopeProduct, WeightAggregate
             return false;
         }
 
-        // Check if "advanced price" is available
-        if (null === $this->getPrice() && (in_array('price', $this->getAttributes()) || $this->hasVariantPrices())) {
-            return false;
-        }
 
         return true;
     }
