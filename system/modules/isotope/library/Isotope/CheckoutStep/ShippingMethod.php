@@ -14,6 +14,7 @@ namespace Isotope\CheckoutStep;
 
 use Isotope\Interfaces\IsotopeCheckoutStep;
 use Isotope\Interfaces\IsotopeProductCollection;
+use Isotope\Interfaces\IsotopeShippingOptions;
 use Isotope\Isotope;
 use Isotope\Model\Shipping;
 
@@ -70,6 +71,10 @@ class ShippingMethod extends CheckoutStep implements IsotopeCheckoutStep
 
                     if ($objModule->note != '') {
                         $strLabel .= '<span class="note">' . $objModule->note . '</span>';
+                    }
+
+                    if ($objModule instanceof IsotopeShippingOptions) {
+                        $strLabel .= '<span class="form">' . $objModule->getShippingOptions($this->objModule) . '</span>';
                     }
 
                     $arrOptions[] = array(
