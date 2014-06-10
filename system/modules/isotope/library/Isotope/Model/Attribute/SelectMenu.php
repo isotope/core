@@ -39,6 +39,10 @@ class SelectMenu extends Attribute implements IsotopeAttribute, IsotopeAttribute
         return $arrColumns;
     }
 
+    /**
+     * Adjust DCA field for this attribute
+     * @param   arary
+     */
     public function saveToDCA(array &$arrData)
     {
         // Varian select menu cannot have multiple option
