@@ -194,7 +194,7 @@ class ProductFilter extends Module implements IsotopeFilterModule
                     // Include \Environment::base or the URL would not work on the index page
                     \Controller::redirect(
                         \Environment::get('base') .
-                        $this->getRelated('jumpTo')->getFrontendUrl() .
+                        $this->objModel->getRelated('jumpTo')->getFrontendUrl() .
                         '?' . $_SERVER['QUERY_STRING']
                     );
                 }
