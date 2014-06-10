@@ -462,10 +462,10 @@ abstract class Attribute extends TypeAgent
 
         if (null === $arrFields) {
             $arrFields = array();
-            $arrDCA    = &$GLOBALS['TL_DCA']['tl_iso_product']['fields'];
+            $arrAttributes = &$GLOBALS['TL_DCA']['tl_iso_product']['attributes'];
 
-            foreach ($arrDCA as $field => $config) {
-                if ($config['attributes']['variant_option']) {
+            foreach ($arrAttributes as $field => $objAttribute) {
+                if (/* @todo in 3.0: $objAttribute instanceof IsotopeAttributeForVariants && */ $objAttribute->isVariantOption()) {
                     $arrFields[] = $field;
                 }
             }
