@@ -14,6 +14,7 @@ namespace Isotope\Model;
 
 use Haste\Haste;
 use Haste\Util\Format;
+use Isotope\Interfaces\IsotopeAttributeForVariants;
 use Isotope\Interfaces\IsotopeProduct;
 use Isotope\Isotope;
 use Isotope\Translation;
@@ -48,7 +49,8 @@ abstract class Attribute extends TypeAgent
 
     /**
      * Return true if attribute is a variant option
-     * @return    bool
+     * @return      bool
+     * @deprecated  will only be available when IsotopeAttributeForVariants interface is implemented
      */
     public function isVariantOption()
     {
@@ -62,34 +64,6 @@ abstract class Attribute extends TypeAgent
     public function isCustomerDefined()
     {
         return (bool) $this->customer_defined;
-    }
-
-    /**
-     * Return true if options default checkbox should be visible
-     * Applies to the MCW wizard in the backend DCA of tl_iso_attributes
-     * @return  bool
-     */
-    public function hasOptionsDefault()
-    {
-        if ($this->isVariantOption()) {
-            return false;
-        }
-
-        return true;
-    }
-
-    /**
-     * Return true if options default checkbox should be visible
-     * Applies to the MCW wizard in the backend DCA of tl_iso_attributes
-     * @return  bool
-     */
-    public function hasOptionsGroup()
-    {
-        if ($this->isVariantOption()) {
-            return false;
-        }
-
-        return true;
     }
 
     /**
@@ -154,7 +128,7 @@ abstract class Attribute extends TypeAgent
         $arrField['exclude']                        = true;
         $arrField['inputType']                      = array_search($this->getBackendWidget(), $GLOBALS['BE_FFL']);
         $arrField['attributes']                     = $this->row();
-        $arrField['attributes']['variant_option']   = $this->isVariantOption();
+        $arrField['attributes']['variant_option']   = (/* @todo in 3.0: $this instanceof IsotopeAttributeForVariants && */$this->isVariantOption());
         $arrField['attributes']['customer_defined'] = $this->isCustomerDefined();
         $arrField['eval']                           = is_array($arrField['eval']) ? array_merge($arrField['eval'], $arrField['attributes']) : $arrField['attributes'];
 
@@ -178,7 +152,7 @@ abstract class Attribute extends TypeAgent
         }
 
         // Variant selection is always mandatory
-        if ($this->isVariantOption()) {
+        if (/* @todo in 3.0: $this instanceof IsotopeAttributeForVariants && */$this->isVariantOption()) {
             $arrField['eval']['mandatory'] = true;
 
             $this->customer_defined = false;
@@ -189,7 +163,7 @@ abstract class Attribute extends TypeAgent
         $this->foreignKey = $this->parseForeignKey($this->foreignKey, $GLOBALS['TL_LANGUAGE']);
 
         // Prepare options
-        if ($this->foreignKey != '' && !$this->isVariantOption()) {
+        if ($this->foreignKey != '' && /* @todo in 3.0: !($this instanceof IsotopeAttributeForVariants) && */!$this->isVariantOption()) {
             $arrField['foreignKey']                 = $this->foreignKey;
             $arrField['eval']['includeBlankOption'] = true;
             unset($arrField['options']);
@@ -241,6 +215,7 @@ abstract class Attribute extends TypeAgent
     /**
      * Get field options
      * @return  array
+     * @deprecated  will only be available when IsotopeAttributeWithOptions interface is implemented
      */
     public function getOptions()
     {
@@ -258,6 +233,7 @@ abstract class Attribute extends TypeAgent
      * @param   array
      * @param   array
      * @return  array
+     * @deprecated  will only be available when IsotopeAttributeForVariants interface is implemented
      */
     public function getOptionsForVariants(array $arrIds, array $arrOptions = array())
     {
@@ -277,7 +253,11 @@ abstract class Attribute extends TypeAgent
         ")->fetchEach($this->field_name);
     }
 
-
+    /**
+     * Generate HTML markup of product data for this attribute
+     * @param   IsotopeProduct
+     * @param   array
+     */
     public function generate(IsotopeProduct $objProduct, array $arrOptions = array())
     {
         $varValue = $objProduct->{$this->field_name};
@@ -294,7 +274,6 @@ abstract class Attribute extends TypeAgent
 
         return $strBuffer;
     }
-
 
     /**
      * Returns the foreign key for a certain language with a fallback option
@@ -462,10 +441,10 @@ abstract class Attribute extends TypeAgent
 
         if (null === $arrFields) {
             $arrFields = array();
-            $arrDCA    = &$GLOBALS['TL_DCA']['tl_iso_product']['fields'];
+            $arrAttributes = &$GLOBALS['TL_DCA']['tl_iso_product']['attributes'];
 
-            foreach ($arrDCA as $field => $config) {
-                if ($config['attributes']['variant_option']) {
+            foreach ($arrAttributes as $field => $objAttribute) {
+                if (/* @todo in 3.0: $objAttribute instanceof IsotopeAttributeForVariants && */ $objAttribute->isVariantOption()) {
                     $arrFields[] = $field;
                 }
             }

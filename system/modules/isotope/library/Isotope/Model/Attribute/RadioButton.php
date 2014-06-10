@@ -13,6 +13,8 @@
 namespace Isotope\Model\Attribute;
 
 use Isotope\Interfaces\IsotopeAttribute;
+use Isotope\Interfaces\IsotopeAttributeWithOptions;
+use Isotope\Interfaces\IsotopeAttributeForVariants;
 use Isotope\Model\Attribute;
 
 
@@ -22,17 +24,22 @@ use Isotope\Model\Attribute;
  * @copyright  Isotope eCommerce Workgroup 2009-2012
  * @author     Andreas Schempp <andreas.schempp@terminal42.ch>
  */
-class RadioButton extends Attribute implements IsotopeAttribute
+class RadioButton extends Attribute implements IsotopeAttribute, IsotopeAttributeWithOptions, IsotopeAttributeForVariants
 {
 
     /**
-     * Return true if options default checkbox should be visible
-     * Applies to the MCW wizard in the backend DCA of tl_iso_attributes
-     * @return  bool
+     * Adjust the options wizard for this attribute
+     * @return  array
      */
-    public function hasOptionsGroup()
+    public function prepareOptionsWizard($objWidget, $arrColumns)
     {
-        return false;
+        unset($arrColumns['group']);
+
+        if ($this->isVariantOption()) {
+            unset($arrColumns['default']);
+        }
+
+        return $arrColumns;
     }
 
     /**
