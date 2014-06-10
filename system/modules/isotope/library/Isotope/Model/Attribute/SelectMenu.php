@@ -25,6 +25,20 @@ use Isotope\Model\Attribute;
 class SelectMenu extends Attribute implements IsotopeAttribute, IsotopeAttributeWithOptions, IsotopeAttributeForVariants
 {
 
+    /**
+     * Adjust the options wizard for this attribute
+     * @return  array
+     */
+    public function prepareOptionsWizard($objWidget, $arrColumns)
+    {
+        if ($this->isVariantOption()) {
+            unset($arrColumns['default']);
+            unset($arrColumns['group']);
+        }
+
+        return $arrColumns;
+    }
+
     public function saveToDCA(array &$arrData)
     {
         // Varian select menu cannot have multiple option

@@ -26,13 +26,14 @@ class CheckboxMenu extends Attribute implements IsotopeAttribute, IsotopeAttribu
 {
 
     /**
-     * Return true if options default checkbox should be visible
-     * Applies to the MCW wizard in the backend DCA of tl_iso_attributes
-     * @return  bool
+     * Adjust the options wizard for this attribute
+     * @return  array
      */
-    public function hasOptionsGroup()
+    public function prepareOptionsWizard($objWidget, $arrColumns)
     {
-        return false;
+        unset($arrColumns['group']);
+
+        return $arrColumns;
     }
 
     /**

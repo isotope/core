@@ -25,8 +25,6 @@ class OptionsWizard extends \Backend
      */
     public function getColumns($objWidget)
     {
-        $objAttribute = Attribute::findByPk($objWidget->activeRecord->id);
-
         $arrColumns = array
         (
             'value' => array
@@ -40,25 +38,26 @@ class OptionsWizard extends \Backend
                 'label'     => &$GLOBALS['TL_LANG']['tl_iso_attribute']['options']['label'],
                 'inputType' => 'text',
                 'eval'      => array('class'=>'tl_text_2'),
-            )
-        );
-
-        if (null === $objAttribute || $objAttribute->hasOptionsDefault()) {
-            $arrColumns['default'] = array
+            ),
+            'default' => array
             (
                 'label'     => &$GLOBALS['TL_LANG']['tl_iso_attribute']['options']['default'],
                 'inputType' => 'checkbox',
                 'eval'      => array('columnPos'=>2),
-            );
-        }
-
-        if (null === $objAttribute || $objAttribute->hasOptionsGroup()) {
-            $arrColumns['group'] = array
+            ),
+            'group' => array
             (
                 'label'     => &$GLOBALS['TL_LANG']['tl_iso_attribute']['options']['group'],
                 'inputType' => 'checkbox',
                 'eval'      => array('columnPos'=>3),
-            );
+            )
+        );
+
+
+        if (($objAttribute = Attribute::findByPk($objWidget->activeRecord->id)) !== null
+            && $objAttribute instanceof IsotopeAttributeWithOptions
+        ) {
+            $arrColumns = $objAttribute->prepareOptionsWizard($objWidget, $arrColumns);
         }
 
         return $arrColumns;
