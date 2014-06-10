@@ -48,7 +48,8 @@ abstract class Attribute extends TypeAgent
 
     /**
      * Return true if attribute is a variant option
-     * @return    bool
+     * @return      bool
+     * @deprecated  will only be available when IsotopeAttributeForVariants interface is implemented
      */
     public function isVariantOption()
     {
@@ -213,6 +214,7 @@ abstract class Attribute extends TypeAgent
     /**
      * Get field options
      * @return  array
+     * @deprecated  will only be available when IsotopeAttributeWithOptions interface is implemented
      */
     public function getOptions()
     {
@@ -230,6 +232,7 @@ abstract class Attribute extends TypeAgent
      * @param   array
      * @param   array
      * @return  array
+     * @deprecated  will only be available when IsotopeAttributeForVariants interface is implemented
      */
     public function getOptionsForVariants(array $arrIds, array $arrOptions = array())
     {
