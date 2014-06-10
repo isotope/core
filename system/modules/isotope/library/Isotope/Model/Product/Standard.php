@@ -851,10 +851,6 @@ class Standard extends Product implements IsotopeProduct, WeightAggregate
 
             $this->setRow($objParent->row());
 
-            $this->arrData['id']      = $arrData['id'];
-            $this->arrData['pid']     = $arrData['pid'];
-            $this->arrData['inherit'] = $arrData['inherit'];
-
             // Set all variant attributes, except if they are inherited
             foreach (array_diff($this->getVariantAttributes(), $this->getInheritedFields()) as $attribute) {
 
@@ -864,6 +860,15 @@ class Standard extends Product implements IsotopeProduct, WeightAggregate
                     $this->arrData[$attribute . '_fallback'] = $arrData[$attribute . '_fallback'];
                 }
             }
+
+            $this->arrData['id']      = $arrData['id'];
+            $this->arrData['pid']     = $arrData['pid'];
+            $this->arrData['inherit'] = $arrData['inherit'];
+
+            // Make sure publishing settings match product and variant
+            $this->arrData['published'] = $objParent->published ? $arrData['published'] : '';
+            $this->arrData['start'] = ($objParent->start != '' && ($arrData['start'] == '' || $objParent->start > $arrData['start'])) ? $objParent->start : $arrData['start'];
+            $this->arrData['stop'] = ($objParent->stop != '' && ($arrData['stop'] == '' || $objParent->stop < $arrData['stop'])) ? $objParent->stop : $arrData['stop'];
 
             return $this;
         }
