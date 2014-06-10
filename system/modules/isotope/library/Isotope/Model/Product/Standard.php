@@ -865,7 +865,7 @@ class Standard extends Product implements IsotopeProduct, WeightAggregate
                 }
             }
 
-            // Make sure publishing settings match product and variant
+            // Make sure publishing settings match product and variant (see #1120)
             $this->arrData['published'] = $objParent->published ? $arrData['published'] : '';
             $this->arrData['start'] = ($objParent->start != '' && ($arrData['start'] == '' || $objParent->start > $arrData['start'])) ? $objParent->start : $arrData['start'];
             $this->arrData['stop'] = ($objParent->stop != '' && ($arrData['stop'] == '' || $objParent->stop < $arrData['stop'])) ? $objParent->stop : $arrData['stop'];
