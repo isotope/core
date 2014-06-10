@@ -8,6 +8,8 @@ Version 2.1.3-stable (2014-??-??)
 - Composer dependencies (#1124)
 - Date added was not updated when copying a product in the back end (#1126)
 - Another error when setting a redirect page for product search (#1068)
+- Disable variant checkbox if no variant attributes are available in product type (#1114)
+
 
 Version 2.1.2-stable (2014-06-02)
 ---------------------------------
