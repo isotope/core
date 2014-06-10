@@ -16,6 +16,7 @@ use Haste\Generator\RowClass;
 use Haste\Units\Mass\Weight;
 use Haste\Units\Mass\WeightAggregate;
 use Isotope\Interfaces\IsotopeAttribute;
+use Isotope\Interfaces\IsotopeAttributeForVariants;
 use Isotope\Interfaces\IsotopeProduct;
 use Isotope\Interfaces\IsotopeProductCollection;
 use Isotope\Isotope;

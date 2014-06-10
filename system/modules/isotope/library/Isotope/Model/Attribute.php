@@ -14,6 +14,7 @@ namespace Isotope\Model;
 
 use Haste\Haste;
 use Haste\Util\Format;
+use Isotope\Interfaces\IsotopeAttributeForVariants;
 use Isotope\Interfaces\IsotopeProduct;
 use Isotope\Isotope;
 use Isotope\Translation;

@@ -13,6 +13,7 @@
 namespace Isotope\Backend\Product;
 
 use Haste\Util\Format;
+use Isotope\Interfaces\IsotopeAttributeForVariants;
 use Isotope\Model\Attribute;
 use Isotope\Model\Group;
 use Isotope\Model\Product;

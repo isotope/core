@@ -12,6 +12,7 @@
 
 namespace Isotope\Backend\Attribute;
 
+use Isotope\Interfaces\IsotopeAttributeWithOptions;
 use Isotope\Model\Attribute;
 
 

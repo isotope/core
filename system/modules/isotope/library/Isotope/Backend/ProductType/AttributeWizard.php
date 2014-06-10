@@ -12,6 +12,7 @@
 
 namespace Isotope\Backend\ProductType;
 
+use Isotope\Interfaces\IsotopeAttributeForVariants;
 use Isotope\Model\Attribute;
 use Isotope\Model\Product;
 
