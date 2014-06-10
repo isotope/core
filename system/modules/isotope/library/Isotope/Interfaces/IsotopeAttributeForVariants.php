@@ -12,7 +12,7 @@
 
 namespace Isotope\Interfaces;
 
-interface IsotopeAttributeForVariants extends IsotopeAttributeWithOptions
+interface IsotopeAttributeForVariants
 {
 
     /**
