@@ -65,6 +65,34 @@ abstract class Attribute extends TypeAgent
     }
 
     /**
+     * Return true if options default checkbox should be visible
+     * Applies to the MCW wizard in the backend DCA of tl_iso_attributes
+     * @return  bool
+     */
+    public function hasOptionsDefault()
+    {
+        if ($this->isVariantOption()) {
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
+     * Return true if options default checkbox should be visible
+     * Applies to the MCW wizard in the backend DCA of tl_iso_attributes
+     * @return  bool
+     */
+    public function hasOptionsGroup()
+    {
+        if ($this->isVariantOption()) {
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
      * Return class name for the backend widget or false if none should be available
      * @return    string
      */

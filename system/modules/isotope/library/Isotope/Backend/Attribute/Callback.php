@@ -12,6 +12,8 @@
 
 namespace Isotope\Backend\Attribute;
 
+use Isotope\Model\Attribute;
+
 
 class Callback extends \Backend
 {
@@ -33,21 +35,6 @@ class Callback extends \Backend
                 $GLOBALS['TL_DCA']['tl_iso_attribute']['fields']['field_name']['eval']['disabled']  = true;
                 $GLOBALS['TL_DCA']['tl_iso_attribute']['fields']['field_name']['eval']['mandatory'] = false;
             }
-        }
-    }
-
-
-    /**
-     * Hide certain options if this is a variant option
-     * @param DataContainer
-     */
-    public function prepareForVariantOptions($dc)
-    {
-        $objAttribute = \Database::getInstance()->prepare("SELECT * FROM tl_iso_attribute WHERE id=?")->execute($dc->id);
-
-        if ($objAttribute->variant_option) {
-            unset($GLOBALS['TL_DCA']['tl_iso_attribute']['fields']['options']['eval']['columnFields']['default']);
-            unset($GLOBALS['TL_DCA']['tl_iso_attribute']['fields']['options']['eval']['columnFields']['group']);
         }
     }
 

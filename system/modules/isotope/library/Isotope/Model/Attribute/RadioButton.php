@@ -25,6 +25,20 @@ use Isotope\Model\Attribute;
 class RadioButton extends Attribute implements IsotopeAttribute
 {
 
+    /**
+     * Return true if options default checkbox should be visible
+     * Applies to the MCW wizard in the backend DCA of tl_iso_attributes
+     * @return  bool
+     */
+    public function hasOptionsGroup()
+    {
+        return false;
+    }
+
+    /**
+     * Set SQL field for this attribute
+     * @param   arary
+     */
     public function saveToDCA(array &$arrData)
     {
         parent::saveToDCA($arrData);

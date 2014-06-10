@@ -33,7 +33,6 @@ $GLOBALS['TL_DCA']['tl_iso_attribute'] = array
         (
             array('Isotope\Backend', 'initializeSetupModule'),
             array('Isotope\Backend\Attribute\Callback', 'disableFieldName'),
-            array('Isotope\Backend\Attribute\Callback', 'prepareForVariantOptions'),
         ),
         'onsubmit_callback' => array
         (
@@ -215,33 +214,7 @@ $GLOBALS['TL_DCA']['tl_iso_attribute'] = array
             'eval' => array
             (
                 'tl_class'          => 'clr',
-                'columnFields' => array
-                (
-                    'value' => array
-                    (
-                        'label'     => &$GLOBALS['TL_LANG']['tl_iso_attribute']['options']['value'],
-                        'inputType' => 'text',
-                        'eval'      => array('class'=>'tl_text_2'),
-                    ),
-                    'label' => array
-                    (
-                        'label'     => &$GLOBALS['TL_LANG']['tl_iso_attribute']['options']['label'],
-                        'inputType' => 'text',
-                        'eval'      => array('class'=>'tl_text_2'),
-                    ),
-                    'default' => array
-                    (
-                        'label'     => &$GLOBALS['TL_LANG']['tl_iso_attribute']['options']['default'],
-                        'inputType' => 'checkbox',
-                        'eval'      => array('columnPos'=>2),
-                    ),
-                    'group' => array
-                    (
-                        'label'     => &$GLOBALS['TL_LANG']['tl_iso_attribute']['options']['group'],
-                        'inputType' => 'checkbox',
-                        'eval'      => array('columnPos'=>3),
-                    ),
-                ),
+                'columnsCallback'   => array('Isotope\Backend\Attribute\OptionsWizard', 'getColumns'),
             ),
             'sql'                   => "blob NULL",
         ),
