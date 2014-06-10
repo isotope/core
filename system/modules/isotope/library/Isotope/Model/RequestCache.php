@@ -522,6 +522,7 @@ class RequestCache extends \Model
                 . (BE_USER_LOGGED_IN === true ? '' : " AND $t.published='1' AND ($t.start='' OR $t.start<$time) AND ($t.stop='' OR $t.stop>$time)") . ")
                 )
             ";
+
             $arrValues = array_merge($arrValues, $arrValues, $arrValues);
         }
 
