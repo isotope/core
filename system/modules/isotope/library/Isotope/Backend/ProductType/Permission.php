@@ -49,7 +49,7 @@ class Permission extends \Backend
         foreach ($GLOBALS['TL_DCA']['tl_iso_product']['fields'] as $strName => $arrConfig) {
             $objAttribute = $GLOBALS['TL_DCA']['tl_iso_product']['attributes'][$strName];
 
-            if (null !== $objAttribute && $objAttribute->isVariantOption()) {
+            if (null !== $objAttribute && /* @todo in 3.0: $objAttribute instanceof IsotopeAttributeForVariants && */$objAttribute->isVariantOption()) {
                 $blnVariants = true;
                 break;
             }

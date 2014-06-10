@@ -208,7 +208,7 @@ class Callback extends \Backend
             foreach ($arrAttributes as $arrAttribute) {
                 $objAttribute = $GLOBALS['TL_DCA']['tl_iso_product']['attributes'][$arrAttribute['name']];
 
-                if (null !== $objAttribute && $objAttribute->isVariantOption()) {
+                if (null !== $objAttribute && /* @todo in 3.0: $objAttribute instanceof IsotopeAttributeForVariants && */$objAttribute->isVariantOption()) {
                     $arrVariantAttributeLabels[] = $objAttribute->name;
 
                     if ($arrAttribute['enabled']) {

@@ -633,7 +633,7 @@ class Standard extends Product implements IsotopeProduct, WeightAggregate
         }
 
         // Prepare variant selection field
-        if ($objAttribute->isVariantOption()) {
+        if (/* @todo in 3.0: $objAttribute instanceof IsotopeAttributeForVariants && */ $objAttribute->isVariantOption()) {
 
             $arrOptions = $objAttribute->getOptionsForVariants($this->getVariantIds(), $arrVariantOptions);
 
@@ -727,7 +727,7 @@ class Standard extends Product implements IsotopeProduct, WeightAggregate
                 }
 
                 if (!$objWidget->hasErrors() && $varValue != '') {
-                    if ($objAttribute->isVariantOption()) {
+                    if (/* @todo in 3.0: $objAttribute instanceof IsotopeAttributeForVariants && */$objAttribute->isVariantOption()) {
                         $arrVariantOptions[$strField] = $varValue;
                     } else {
                         $this->arrOptions[$strField] = $varValue;
@@ -806,6 +806,7 @@ class Standard extends Product implements IsotopeProduct, WeightAggregate
 
         $arrOptions = array();
 
+        // We don't need to validate IsotopeAttributeForVariants interface here, because Attribute::getVariantOptionFields will check it
         foreach (array_intersect($this->getVariantAttributes(), Attribute::getVariantOptionFields()) as $attribute) {
 
             $objAttribute = $GLOBALS['TL_DCA']['tl_iso_product']['attributes'][$attribute];

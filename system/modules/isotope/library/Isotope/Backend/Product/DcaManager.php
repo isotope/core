@@ -279,7 +279,11 @@ class DcaManager extends \Backend
                     }
 
                     // Variant fields can only be edited in variant mode
-                    if (null !== $arrAttributes[$name] && $arrAttributes[$name]->isVariantOption() && !$blnVariants) {
+                    if (null !== $arrAttributes[$name]
+                        && !$blnVariants
+                        && /* @todo in 3.0: $arrAttributes[$name] instanceof IsotopeAttributeForVariants
+                        && */$arrAttributes[$name]->isVariantOption()
+                    ) {
                         continue;
                     }
 
@@ -299,7 +303,13 @@ class DcaManager extends \Backend
                         $arrFields[$name]['eval']['mandatory'] = $arrConfig[$name]['mandatory'] == 1 ? false : true;
                     }
 
-                    if ($blnVariants && in_array($name, $arrCanInherit) && null !== $arrAttributes[$name] && !$arrAttributes[$name]->isVariantOption() && !in_array($name, array('price', 'published', 'start', 'stop'))) {
+                    if ($blnVariants
+                        && in_array($name, $arrCanInherit)
+                        && null !== $arrAttributes[$name]
+                        && /* @todo in 3.0: $arrAttributes[$name] instanceof IsotopeAttributeForVariants
+                        && */!$arrAttributes[$name]->isVariantOption()
+                        && !in_array($name, array('price', 'published', 'start', 'stop'))
+                    ) {
                         $arrInherit[$name] = Format::dcaLabel('tl_iso_product', $name);
                     }
 

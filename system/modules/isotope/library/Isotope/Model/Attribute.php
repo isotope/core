@@ -154,7 +154,7 @@ abstract class Attribute extends TypeAgent
         $arrField['exclude']                        = true;
         $arrField['inputType']                      = array_search($this->getBackendWidget(), $GLOBALS['BE_FFL']);
         $arrField['attributes']                     = $this->row();
-        $arrField['attributes']['variant_option']   = $this->isVariantOption();
+        $arrField['attributes']['variant_option']   = (/* @todo in 3.0: $this instanceof IsotopeAttributeForVariants && */$this->isVariantOption());
         $arrField['attributes']['customer_defined'] = $this->isCustomerDefined();
         $arrField['eval']                           = is_array($arrField['eval']) ? array_merge($arrField['eval'], $arrField['attributes']) : $arrField['attributes'];
 
@@ -178,7 +178,7 @@ abstract class Attribute extends TypeAgent
         }
 
         // Variant selection is always mandatory
-        if ($this->isVariantOption()) {
+        if (/* @todo in 3.0: $this instanceof IsotopeAttributeForVariants && */$this->isVariantOption()) {
             $arrField['eval']['mandatory'] = true;
 
             $this->customer_defined = false;
@@ -189,7 +189,7 @@ abstract class Attribute extends TypeAgent
         $this->foreignKey = $this->parseForeignKey($this->foreignKey, $GLOBALS['TL_LANGUAGE']);
 
         // Prepare options
-        if ($this->foreignKey != '' && !$this->isVariantOption()) {
+        if ($this->foreignKey != '' && /* @todo in 3.0: !($this instanceof IsotopeAttributeForVariants) && */!$this->isVariantOption()) {
             $arrField['foreignKey']                 = $this->foreignKey;
             $arrField['eval']['includeBlankOption'] = true;
             unset($arrField['options']);
