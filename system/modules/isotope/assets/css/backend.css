@@ -161,7 +161,7 @@ body.popup .header_back {
 }
 
 table.multicolumnwizard {
-    width: 663px;
+    max-width: 663px;
 }
 table.multicolumnwizard .operations {
     white-space: nowrap;
