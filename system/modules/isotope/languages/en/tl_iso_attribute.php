@@ -28,6 +28,8 @@ $GLOBALS['TL_LANG']['tl_iso_attribute']['extensions']              = array('Allo
 $GLOBALS['TL_LANG']['tl_iso_attribute']['rte']                     = array('Use HTML editor', 'Select a tinyMCE configuration file to enable the rich text editor.');
 $GLOBALS['TL_LANG']['tl_iso_attribute']['multilingual']            = array('Multilingual', 'Check here if this field should be translated.');
 $GLOBALS['TL_LANG']['tl_iso_attribute']['rgxp']                    = array('Input validation', 'Validate the input against a regular expression.');
+$GLOBALS['TL_LANG']['tl_iso_attribute']['placeholder']             = array('Placeholder', 'Show this text as long as the field is empty (requires HTML5).');
+$GLOBALS['TL_LANG']['tl_iso_attribute']['minlength']               = array('Minimum length', 'Require the field value to be a certain number of characters long.');
 $GLOBALS['TL_LANG']['tl_iso_attribute']['maxlength']               = array('Maximum length', 'Limit the field length to a certain number of characters (text) or bytes (file uploads).');
 $GLOBALS['TL_LANG']['tl_iso_attribute']['foreignKey']              = array('Foreign table & field', 'Instead of adding options you can enter a table.field combination to select from database. To use multilingual foreignKeys, enter one per line and specify the language (example: en=tl_table.field)');
 $GLOBALS['TL_LANG']['tl_iso_attribute']['conditionField']          = array('Parent field', 'Please select the parent field, which must be of type "Select-Menu". For parent-child relation to work, define each option of this parent field as group of the conditional select-menu.');
