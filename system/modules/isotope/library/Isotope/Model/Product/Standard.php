@@ -854,7 +854,7 @@ class Standard extends Product implements IsotopeProduct, WeightAggregate
             foreach ($arrData as $attribute => $value) {
                 if (
                     in_array($attribute, $arrVariantFields)
-                    || $GLOBALS['TL_DCA']['tl_iso_product']['fields'][$attribute]['attributes']['legend'] != ''
+                    || $GLOBALS['TL_DCA']['tl_iso_product']['fields'][$attribute]['attributes']['legend'] == ''
                 ) {
                     $this->arrData[$attribute] = $arrData[$attribute];
 
