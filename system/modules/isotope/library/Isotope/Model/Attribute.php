@@ -277,7 +277,11 @@ abstract class Attribute extends TypeAgent
         ")->fetchEach($this->field_name);
     }
 
-
+    /**
+     * Generate HTML markup of product data for this attribute
+     * @param   IsotopeProduct
+     * @param   array
+     */
     public function generate(IsotopeProduct $objProduct, array $arrOptions = array())
     {
         $varValue = $objProduct->{$this->field_name};
@@ -294,7 +298,6 @@ abstract class Attribute extends TypeAgent
 
         return $strBuffer;
     }
-
 
     /**
      * Returns the foreign key for a certain language with a fallback option
