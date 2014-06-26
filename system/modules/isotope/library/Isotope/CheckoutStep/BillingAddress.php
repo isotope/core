@@ -106,7 +106,7 @@ class BillingAddress extends Address implements IsotopeCheckoutStep
      * Get address object for a selected option
      * @param   string
      * @param   bool
-     * @return  Isotope\Model\Address
+     * @return  \Isotope\Model\Address
      */
     protected function getAddressForOption($varValue, $blnValidate)
     {
@@ -130,7 +130,7 @@ class BillingAddress extends Address implements IsotopeCheckoutStep
 
     /**
      * Get default address for this collection and address type
-     * @return  Isotope\Model\Address
+     * @return  \Isotope\Model\Address
      */
     protected function getDefaultAddress()
     {
@@ -178,7 +178,7 @@ class BillingAddress extends Address implements IsotopeCheckoutStep
 
     /**
      * Get the current address (from Cart) for this address type
-     * @return  Isotope\Model\Address
+     * @return  \Isotope\Model\Address
      */
     protected function getAddress()
     {
