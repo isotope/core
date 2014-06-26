@@ -133,10 +133,8 @@ class Sparkasse extends Postsale implements IsotopePayment
         $strUrl .= implode('&', $arrUrl);
 
         return "
-<script type=\"text/javascript\">
-<!--//--><![CDATA[//><!--
+<script>
 window.location.href = '" . $strUrl . "';
-//--><!]]>
 </script>
 <h3>" . $GLOBALS['TL_LANG']['MSC']['pay_with_redirect'][0] . "</h3>
 <p>" . $GLOBALS['TL_LANG']['MSC']['pay_with_redirect'][1] . "</p>
