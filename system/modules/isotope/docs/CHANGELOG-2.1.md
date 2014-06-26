@@ -13,6 +13,7 @@ Version 2.1.3-stable (2014-??-??)
 - URLs for Sparkasse and Worldpay payment methods were incorrectly generated (#1141 and #1142)
 - CDATA statement in javascript caused issue in Sparkasse payment method (#1140)
 - Front end javascript was not compatible with IE8 (#1155)
+- Order of fields in product type was not applied to palette (#1135)
 
 
 Version 2.1.2-stable (2014-06-02)

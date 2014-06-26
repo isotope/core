@@ -260,12 +260,15 @@ class DcaManager extends \Backend
 
         /** @var \Isotope\Model\ProductType $objType */
         foreach ($arrTypes as $objType) {
+
             // Enable advanced prices
             if ($blnSingleRecord && $objType->hasAdvancedPrices()) {
                 $arrFields['prices']['exclude']    = $arrFields['price']['exclude'];
                 $arrFields['prices']['attributes'] = $arrFields['price']['attributes'];
                 $arrFields['price']                = $arrFields['prices'];
-            } // Register callback to version/restore a price
+            }
+
+            // Register callback to version/restore a price
             else {
                 $GLOBALS['TL_DCA']['tl_iso_product']['config']['onversion_callback'][] = array('Isotope\Backend\Product\Price', 'createVersion');
                 $GLOBALS['TL_DCA']['tl_iso_product']['config']['onrestore_callback'][] = array('Isotope\Backend\Product\Price', 'restoreVersion');
@@ -273,6 +276,8 @@ class DcaManager extends \Backend
 
             $arrInherit = array();
             $arrPalette = array();
+            $arrLegends = array();
+            $arrLegendOrder = array();
 
             if ($blnVariants) {
                 $arrConfig     = deserialize($objType->variant_attributes, true);
@@ -302,7 +307,8 @@ class DcaManager extends \Backend
                         continue;
                     }
 
-                    $arrPalette[$arrConfig[$name]['legend']][] = $name;
+                    $arrLegendOrder[$arrConfig[$name]['position']] = $arrConfig[$name]['legend'];
+                    $arrPalette[$arrConfig[$name]['legend']][$arrConfig[$name]['position']] = $name;
 
                     // Apply product type attribute config
                     if ($arrConfig[$name]['tl_class'] != '') {
@@ -326,10 +332,13 @@ class DcaManager extends \Backend
                 }
             }
 
-            $arrLegends = array();
+            ksort($arrLegendOrder);
+            $arrLegendOrder = array_unique($arrLegendOrder);
 
             // Build
-            foreach ($arrPalette as $legend => $fields) {
+            foreach ($arrLegendOrder as $legend) {
+                $fields = $arrPalette[$legend];
+                ksort($fields);
                 $arrLegends[] = '{' . $legend . '},' . implode(',', $fields);
             }
 
