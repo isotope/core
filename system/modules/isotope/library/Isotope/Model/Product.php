@@ -429,7 +429,7 @@ abstract class Product extends TypeAgent
 
                         if (is_array($arrOptions['joinAliases']) && ($key = array_search($arrConfig['table'], $arrOptions['joinAliases'])) !== false) {
                             $strJoinAlias = $key;
-                            unset($arrJoinAliases[$key]);
+                            unset($arrOptions['joinAliases'][$key]);
                         } else {
                             ++$intCount;
                             $strJoinAlias = 'j' . $intCount;
