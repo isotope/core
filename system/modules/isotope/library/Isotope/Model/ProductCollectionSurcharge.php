@@ -333,7 +333,10 @@ abstract class ProductCollectionSurcharge extends TypeAgent
             }
         }
 
+        /** @var \Isotope\Model\ProductCollectionSurcharge $objSurcharge */
         foreach ($arrPreTax as $objSurcharge) {
+
+            /** @var \Isotope\Model\TaxClass $objTaxClass */
             $objTaxClass = TaxClass::findByPk($objSurcharge->tax_class);
 
             // Skip products without tax class
@@ -343,6 +346,7 @@ abstract class ProductCollectionSurcharge extends TypeAgent
 
             $fltPrice = $objSurcharge->total_price;
 
+            /** @var \Isotope\Model\TaxRate $objIncludes */
             if (($objIncludes = $objTaxClass->getRelated('includes')) !== null) {
                 if ($objIncludes->isApplicable($fltPrice, $arrAddresses)) {
                     $fltTax = $objIncludes->calculateAmountIncludedInPrice($fltPrice);
@@ -372,6 +376,8 @@ abstract class ProductCollectionSurcharge extends TypeAgent
             }
 
             if (($objRates = $objTaxClass->getRelated('rates')) !== null) {
+
+                /** @var \Isotope\Model\TaxRate $objTaxRate */
                 foreach ($objRates as $objTaxRate) {
 
                     if ($objTaxRate->isApplicable($fltPrice, $arrAddresses)) {
@@ -430,6 +436,7 @@ abstract class ProductCollectionSurcharge extends TypeAgent
     {
         $intTaxClass = $objSource->tax_class;
 
+        /** @var \Isotope\Model\ProductCollectionSurcharge $objSurcharge */
         $objSurcharge              = new $strClass();
         $objSurcharge->label       = ($strLabel . ' (' . $objSource->getLabel() . ')');
         $objSurcharge->price       = ($objSource->isPercentage() ? $objSource->getPercentage() . '%' : '&nbsp;');
