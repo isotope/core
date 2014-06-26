@@ -276,7 +276,7 @@ class ProductPrice extends \Model implements IsotopePrice
      * Find primary price for multiple product/variant IDs
      * @param   array
      * @param   array
-     * @return  Model\Collection|null
+     * @return  \Model\Collection|null
      */
     public static function findPrimaryByProductIds(array $arrIds, array $arrOptions = array())
     {
@@ -303,7 +303,7 @@ class ProductPrice extends \Model implements IsotopePrice
      * Find advanced price for multiple product/variant IDs
      * @param   array
      * @param   IsotopeProductCollection
-     * @return  Model\Collection|null
+     * @return  \Model\Collection|null
      */
     public static function findAdvancedByProductIdsAndCollection(array $arrIds, IsotopeProductCollection $objCollection)
     {
