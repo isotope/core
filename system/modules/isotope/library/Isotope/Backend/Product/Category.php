@@ -74,7 +74,7 @@ class Category extends \Backend
             \Database::getInstance()->query("DELETE FROM " . ProductCategory::getTable() . " WHERE pid=$intId");
 
             foreach ($arrData as $arrRow) {
-                \Database::getInstance()->prepare("INSERT INTO " . ProductCategory::getTable() . " %s")->set($arrRow)->executeUncached();
+                \Database::getInstance()->prepare("INSERT INTO " . ProductCategory::getTable() . " %s")->set($arrRow)->execute();
             }
         }
     }
@@ -117,7 +117,7 @@ class Category extends \Backend
 
             if (!empty($arrIds)) {
                 foreach ($arrIds as $id) {
-                    $sorting = (int) \Database::getInstance()->executeUncached("SELECT MAX(sorting) AS sorting FROM $table WHERE page_id=$id")->sorting + 128;
+                    $sorting = (int) \Database::getInstance()->execute("SELECT MAX(sorting) AS sorting FROM $table WHERE page_id=$id")->sorting + 128;
                     \Database::getInstance()->query("INSERT INTO $table (pid,tstamp,page_id,sorting) VALUES ({$dc->id}, $time, $id, $sorting)");
                 }
 

@@ -378,9 +378,9 @@ class DC_ProductData extends \DC_Table
                 $this->set['pid'] = $pid;
             } // Else insert the current record after the parent record
             elseif ($pid > 0) {
-                $objParentRecord = $this->Database->prepare("SELECT * FROM " . $this->strTable . " WHERE id=?")
+                $objParentRecord = \Database::getInstance()->prepare("SELECT * FROM " . $this->strTable . " WHERE id=?")
                     ->limit(1)
-                    ->executeUncached($pid);
+                    ->execute($pid);
 
                 if ($objParentRecord->numRows) {
                     $this->set['pid'] = $objParentRecord->pid;
@@ -414,9 +414,9 @@ class DC_ProductData extends \DC_Table
         $this->blnEditLanguage = false;
 
         // Get the current record
-        $objRow = $this->Database->prepare("SELECT * FROM " . $this->strTable . " WHERE id=?")
+        $objRow = \Database::getInstance()->prepare("SELECT * FROM " . $this->strTable . " WHERE id=?")
             ->limit(1)
-            ->executeUncached($this->intId);
+            ->execute($this->intId);
 
         // Redirect if there is no record with the given ID
         if ($objRow->numRows < 1) {
@@ -931,9 +931,9 @@ window.addEvent(\'domready\', function() {
                 $formFields = array();
 
                 // Get the field values
-                $objRow = $this->Database->prepare("SELECT * FROM " . $this->strTable . " WHERE id=?")
+                $objRow = \Database::getInstance()->prepare("SELECT * FROM " . $this->strTable . " WHERE id=?")
                     ->limit(1)
-                    ->executeUncached($this->intId);
+                    ->execute($this->intId);
 
                 // Store the active record
                 $this->objActiveRecord = $objRow;
@@ -2270,7 +2270,7 @@ window.addEvent(\'domready\', function() {
             $this->createInitialVersion($this->strTable, $intLanguageId);
 
             $arrRow = $this->Database->execute("SELECT " . implode(',', $arrDuplicate) . " FROM {$this->strTable} WHERE id={$this->intId}")->fetchAssoc();
-            $this->Database->prepare("UPDATE {$this->strTable} %s WHERE id=$intLanguageId")->set($arrRow)->executeUncached();
+            \Database::getInstance()->prepare("UPDATE {$this->strTable} %s WHERE id=$intLanguageId")->set($arrRow)->execute();
 
             $this->createNewVersion($this->strTable, $intLanguageId);
             \System::log(sprintf('A new version of record ID %s (table %s) has been created', $intLanguageId, $this->strTable), 'DC_ProductData copyFallback()', TL_GENERAL);
