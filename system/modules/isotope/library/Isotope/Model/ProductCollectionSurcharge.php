@@ -239,6 +239,8 @@ abstract class ProductCollectionSurcharge extends TypeAgent
             }
         }
 
+        /** @var \Isotope\Model\ProductCollection\Order $objCollection */
+        /** @var Tax[] $arrTaxes */
         $arrTaxes     = array();
         $arrAddresses = array('billing' => $objCollection->getBillingAddress(), 'shipping' => $objCollection->getShippingAddress());
 
@@ -249,6 +251,8 @@ abstract class ProductCollectionSurcharge extends TypeAgent
             }
 
             $objProduct  = $objItem->getProduct();
+
+            /** @var \Isotope\Model\TaxClass $objTaxClass */
             $objTaxClass = $objProduct->getPrice() ? $objProduct->getPrice()->getRelated('tax_class') : null;
 
             // Skip products without tax class
@@ -259,10 +263,12 @@ abstract class ProductCollectionSurcharge extends TypeAgent
             $arrTaxIds = array();
             $fltPrice  = $objItem->getTotalPrice();
 
+            /** @var \Isotope\Model\ProductCollectionSurcharge $objSurcharge */
             foreach ($arrPreTax as $objSurcharge) {
                 $fltPrice += $objSurcharge->getAmountForCollectionItem($objItem);
             }
 
+            /** @var \Isotope\Model\TaxRate $objIncludes */
             if (($objIncludes = $objTaxClass->getRelated('includes')) !== null) {
                 if ($objIncludes->isApplicable($fltPrice, $arrAddresses)) {
                     $fltTax = $objIncludes->calculateAmountIncludedInPrice($fltPrice);
@@ -288,6 +294,8 @@ abstract class ProductCollectionSurcharge extends TypeAgent
             }
 
             if (($objRates = $objTaxClass->getRelated('rates')) !== null) {
+
+                /** @var \Isotope\Model\TaxRate $objTaxRate */
                 foreach ($objRates as $objTaxRate) {
 
                     if ($objTaxRate->isApplicable($fltPrice, $arrAddresses)) {

@@ -220,6 +220,7 @@ class Isotope extends \Controller
         }
 
         // Possibly add/subtract tax
+        /** @var TaxClass $objTaxClass */
         if (($objTaxClass = TaxClass::findByPk($intTaxClass)) !== null) {
             $fltPrice = $objTaxClass->calculatePrice($fltPrice);
         }
@@ -230,8 +231,8 @@ class Isotope extends \Controller
 
     /**
      * Rounds a price according to store config settings
-     * @param float original value
-     * @param bool apply rounding increment
+     * @param float $fltValue original value
+     * @param bool $blnApplyRoundingIncrement apply rounding increment
      * @return float rounded value
      */
     public static function roundPrice($fltValue, $blnApplyRoundingIncrement = true)

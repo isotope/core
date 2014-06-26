@@ -479,6 +479,7 @@ class RequestCache extends \Model
         $arrGroups = array();
 
         // Initiate native SQL filtering
+        /** @var \Isotope\RequestCache\Filter $objFilter  */
         foreach ($arrFilters as $k => $objFilter) {
             if ($objFilter->hasGroup() && $arrGroups[$objFilter->getGroup()] !== false) {
                 if ($objFilter->isDynamicAttribute()) {
