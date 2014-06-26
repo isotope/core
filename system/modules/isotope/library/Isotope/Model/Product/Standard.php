@@ -288,7 +288,7 @@ class Standard extends Product implements IsotopeProduct, WeightAggregate
     /**
      * Get product price model
      * @param   IsotopeProductCollection
-     * @return  IsotopePrice
+     * @return  \Isotope\Interfaces\IsotopePrice
      */
     public function getPrice(IsotopeProductCollection $objCollection = null)
     {
