@@ -224,8 +224,6 @@ class DcaManager extends \Backend
 
     /**
      * Build palette for the current product type/variant
-     * @param object
-     * @return void
      */
     public function buildPaletteString()
     {
@@ -250,7 +248,7 @@ class DcaManager extends \Backend
                 $objType  = ProductType::findByPk(($objProduct->pid > 0 ? $objProduct->parent_type : $objProduct->type));
                 $arrTypes = null === $objType ? array() : array($objType);
 
-                if ($objProduct->pid > 0 || ($act != 'edit' && $act != 'show')) {
+                if ($objProduct->pid > 0 || ($act != 'edit' && $act != 'copyFallback' && $act != 'show')) {
                     $blnVariants = true;
                 }
             }

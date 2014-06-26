@@ -15,6 +15,7 @@ Version 2.1.3-stable (2014-??-??)
 - Front end javascript was not compatible with IE8 (#1155)
 - Order of fields in product type was not applied to palette (#1135)
 - Edit-multiple failed in Contao 3.3 (#1150)
+- Copy fallback language was not working (#1151)
 
 
 Version 2.1.2-stable (2014-06-02)
