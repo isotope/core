@@ -94,6 +94,7 @@ class ProductPrice extends \Model implements IsotopePrice
     {
         $fltAmount = $this->getValueForTier($intQuantity);
 
+        /** @var \Isotope\Model\TaxClass $objTaxClass */
         if (($objTaxClass = $this->getRelated('tax_class')) !== null) {
             $fltAmount = $objTaxClass->calculateNetPrice($fltAmount);
         }
@@ -110,6 +111,7 @@ class ProductPrice extends \Model implements IsotopePrice
     {
         $fltAmount = $this->getValueForTier($intQuantity);
 
+        /** @var \Isotope\Model\TaxClass $objTaxClass */
         if (($objTaxClass = $this->getRelated('tax_class')) !== null) {
             $fltAmount = $objTaxClass->calculateGrossPrice($fltAmount);
         }

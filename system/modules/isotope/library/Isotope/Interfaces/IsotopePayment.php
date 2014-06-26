@@ -20,16 +20,16 @@ interface IsotopePayment
 {
     /**
      * Process payment on checkout confirmation page.
-     * @param   IsotopeProductCollection    The order being places
-     * @param   Module                      The checkout module instance
+     * @param   IsotopeProductCollection    $objOrder   The order being places
+     * @param   \Module                     $objModule  The checkout module instance
      * @return  mixed
      */
     public function processPayment(IsotopeProductCollection $objOrder, \Module $objModule);
 
     /**
      * Return a html form for checkout or false
-     * @param   IsotopeProductCollection    The order being places
-     * @param   Module                      The checkout module instance
+     * @param   IsotopeProductCollection    $objOrder   The order being places
+     * @param   \Module                     $objModule  The checkout module instance
      * @return  mixed
      */
     public function checkoutForm(IsotopeProductCollection $objOrder, \Module $objModule);
@@ -38,7 +38,7 @@ interface IsotopePayment
      * Return information or advanced features in the backend.
      *
      * Use this function to present advanced features or basic payment information for an order in the backend.
-     * @param integer Order ID
+     * @param integer $orderId Order ID
      * @return string
      */
     public function backendInterface($orderId);

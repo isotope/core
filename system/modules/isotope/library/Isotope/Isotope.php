@@ -46,19 +46,19 @@ class Isotope extends \Controller
 
     /**
      * Current cart instance
-     * @var Isotope\Model\ProductCollection\Cart
+     * @var \Isotope\Model\ProductCollection\Cart
      */
     protected static $objCart;
 
     /**
      * Current config instance
-     * @var Isotope\Model\Config
+     * @var \Isotope\Model\Config
      */
     protected static $objConfig;
 
     /**
      * Current request cache instance
-     * @var Isotope\Model\RequestCache
+     * @var \Isotope\Model\RequestCache
      */
     protected static $objRequestCache;
 
@@ -99,7 +99,7 @@ class Isotope extends \Controller
 
     /**
      * Get the currently active Isotope cart
-     * @return Isotope\Model\ProductCollection\Cart|null
+     * @return \Isotope\Model\ProductCollection\Cart|null
      */
     public static function getCart()
     {
@@ -126,7 +126,7 @@ class Isotope extends \Controller
 
     /**
      * Get the currently active Isotope configuration
-     * @return Isotope\Model\Config
+     * @return \Isotope\Model\Config
      */
     public static function getConfig()
     {

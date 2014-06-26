@@ -30,7 +30,7 @@ class ProductCollectionItem extends \Model
 
     /**
      * Cache the current product
-     * @var IsotopeProduct|false
+     * @var \Isotope\Interfaces\IsotopeProduct|false
      */
     protected $objProduct = false;
 
@@ -97,7 +97,7 @@ class ProductCollectionItem extends \Model
 
     /**
      * Get the product related to this item
-     * @return  IsotopeProduct|null
+     * @return  \Isotope\Interfaces\IsotopeProduct|null
      */
     public function getProduct($blnNoCache = false)
     {

@@ -17,6 +17,7 @@ use Haste\Haste;
 use Haste\Units\Mass\Scale;
 use Haste\Units\Mass\Weighable;
 use Haste\Units\Mass\WeightAggregate;
+use Isotope\Interfaces\IsotopeAttribute;
 use Isotope\Interfaces\IsotopePayment;
 use Isotope\Interfaces\IsotopeProduct;
 use Isotope\Interfaces\IsotopeProductCollection;
@@ -63,7 +64,7 @@ abstract class ProductCollection extends TypeAgent
 
     /**
      * Cache product items in this collection
-     * @var array
+     * @var \Isotope\Model\ProductCollectionItem[]
      */
     protected $arrItems;
 
@@ -139,7 +140,7 @@ abstract class ProductCollection extends TypeAgent
 
     /**
      * Mark a field as modified
-     * @param $strKey The field key
+     * @param string $strKey The field key
      */
     public function markModified($strKey)
     {
@@ -155,7 +156,7 @@ abstract class ProductCollection extends TypeAgent
         $this->arrSurcharges = null;
         $this->arrCache      = array();
 
-        return parent::markModified($strKey);
+        parent::markModified($strKey);
     }
 
     /**
@@ -684,7 +685,7 @@ abstract class ProductCollection extends TypeAgent
      * Return all items in the collection
      * @param  callable
      * @param  bool
-     * @return array
+     * @return \Isotope\Model\ProductCollectionItem[]
      */
     public function getItems($varCallable = null, $blnNoCache = false)
     {
@@ -692,9 +693,9 @@ abstract class ProductCollection extends TypeAgent
             $this->arrItems = array();
 
             if (($objItems = ProductCollectionItem::findBy('pid', $this->id)) !== null) {
-                while ($objItems->next()) {
 
-                    $objItem = $objItems->current();
+                /** @var \Isotope\Model\ProductCollectionItem $objItem */
+                foreach ($objItems as $objItem) {
 
                     if ($this->isLocked()) {
                         $objItem->lock();
@@ -866,6 +867,7 @@ abstract class ProductCollection extends TypeAgent
             return false;
         }
 
+        /** @var \Isotope\Model\ProductCollectionItem $objItem */
         $objItem = $arrItems[$intId];
 
         // !HOOK: additional functionality when updating a product in the collection
@@ -958,7 +960,7 @@ abstract class ProductCollection extends TypeAgent
 
     /**
      * Find surcharges for the current collection
-     * @return  array
+     * @return  \Isotope\Model\ProductCollectionSurcharge[]
      */
     public function getSurcharges()
     {
@@ -1137,7 +1139,7 @@ abstract class ProductCollection extends TypeAgent
         $objTemplate->subtotal   = Isotope::formatPriceWithCurrency($this->getSubtotal());
         $objTemplate->total      = Isotope::formatPriceWithCurrency($this->getTotal());
 
-        $objTemplate->generateAttribute = function ($strAttribute, $objItem) {
+        $objTemplate->generateAttribute = function ($strAttribute, ProductCollectionItem $objItem) {
 
             if (!$objItem->hasProduct()) {
                 return '';
@@ -1152,7 +1154,7 @@ abstract class ProductCollection extends TypeAgent
             return $objAttribute->generate($objItem->getProduct());
         };
 
-        $objTemplate->getGallery = function ($strAttribute, $objItem) use ($arrConfig, &$arrGalleries) {
+        $objTemplate->getGallery = function ($strAttribute, ProductCollectionItem $objItem) use ($arrConfig, &$arrGalleries) {
 
             if (!$objItem->hasProduct()) {
                 return new \Isotope\Model\Gallery\Standard();
@@ -1365,7 +1367,7 @@ abstract class ProductCollection extends TypeAgent
 
     /**
      * Prevent modifying a locked collection
-     * @throws  BadMethodCallException
+     * @throws  \BadMethodCallException
      */
     protected function ensureNotLocked()
     {
@@ -1424,7 +1426,7 @@ abstract class ProductCollection extends TypeAgent
     /**
      * Method that returns a closure to sort product collection items
      * @param   string
-     * @return  Closure
+     * @return  \Closure|null
      */
     public static function getItemsSortingCallable($strOrderBy = 'asc_id')
     {
