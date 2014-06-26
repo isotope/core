@@ -624,7 +624,7 @@ abstract class ProductCollection extends TypeAgent
     public function getTaxFreeTotal()
     {
         if ($this->isLocked()) {
-            return $this->tax_free_subtotal;
+            return $this->tax_free_total;
         }
 
         if (!isset($this->arrCache['taxFreeTotal'])) {
