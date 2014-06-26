@@ -98,9 +98,9 @@ class DcaManager extends \Backend
         $arrData['attributes'] = array();
 
         // Write attributes from database to DCA
+        /** @var \Isotope\Model\Attribute[] $objAttributes */
         if (($objAttributes = Attribute::findAll(array('column' => array(Attribute::getTable() . ".type!=''")))) !== null) {
-            while ($objAttributes->next()) {
-                $objAttribute = $objAttributes->current();
+            foreach ($objAttributes as $objAttribute) {
 
                 if (null !== $objAttribute) {
                     $objAttribute->saveToDCA($arrData);
@@ -140,6 +140,7 @@ class DcaManager extends \Backend
         $blnShowPrice      = false;
         $arrAttributes     = array();
 
+        /** @var \Isotope\Model\ProductType[] $objProductTypes */
         if (($objProductTypes = ProductType::findAllUsed()) !== null) {
             foreach ($objProductTypes as $objType) {
 
@@ -257,6 +258,7 @@ class DcaManager extends \Backend
             $arrTypes = ProductType::findAllUsed() ? : array();
         }
 
+        /** @var \Isotope\Model\ProductType $objType */
         foreach ($arrTypes as $objType) {
             // Enable advanced prices
             if ($blnSingleRecord && $objType->hasAdvancedPrices()) {
@@ -436,6 +438,8 @@ class DcaManager extends \Backend
 
         $arrIds   = array();
         $arrLinks = array();
+
+        /** @var \BackendUser $objUser */
         $objUser  = \BackendUser::getInstance();
 
         // Generate breadcrumb trail
