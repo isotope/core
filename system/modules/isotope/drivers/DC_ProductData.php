@@ -909,7 +909,11 @@ window.addEvent(\'domready\', function() {
 
         if (is_array($fields) && !empty($fields) && \Input::get('fields')) {
             $class = 'tl_tbox block';
-            $this->checkForTinyMce();
+
+            // @deprecated Has been removed in Contao 3.3 with TinyMCE 4
+            if (version_compare(VERSION, '3.3', '<')) {
+                $this->checkForTinyMce();
+            }
 
             // Walk through each record
             foreach ($ids as $id) {
@@ -1175,7 +1179,11 @@ window.addEvent(\'domready\', function() {
         if (is_array($fields) && !empty($fields) && \Input::get('fields')) {
             $class = 'tl_tbox block';
             $formFields = array();
-            $this->checkForTinyMce();
+
+            // @deprecated Has been removed in Contao 3.3 with TinyMCE 4
+            if (version_compare(VERSION, '3.3', '<')) {
+                $this->checkForTinyMce();
+            }
 
             // Save record
             if (\Input::post('FORM_SUBMIT') == $this->strTable) {

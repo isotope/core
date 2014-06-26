@@ -14,6 +14,7 @@ Version 2.1.3-stable (2014-??-??)
 - CDATA statement in javascript caused issue in Sparkasse payment method (#1140)
 - Front end javascript was not compatible with IE8 (#1155)
 - Order of fields in product type was not applied to palette (#1135)
+- Edit-multiple failed in Contao 3.3 (#1150)
 
 
 Version 2.1.2-stable (2014-06-02)
