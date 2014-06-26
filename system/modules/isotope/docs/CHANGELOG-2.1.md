@@ -57,6 +57,7 @@ Version 2.1.1-stable (2014-05-20)
 - Do not generate sitemap links for unpublished pages (#1092)
 - Wrong column count in collection template (#1091)
 - Remove page parameter on product filter action (#1098)
+- From price was not shown for variants with price tiers (#1146)
 
 
 Version 2.1.0-stable (2014-04-01)
