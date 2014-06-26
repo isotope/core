@@ -19,6 +19,7 @@ Version 2.1.3-stable (2014-??-??)
 - From price was not shown for variants with price tiers (#1146)
 - Incorrect tax free total in product collection template
 - Tax free total for surcharge was always empty (#1149)
+- Tax free total for surcharge was not available in collection template
 
 
 Version 2.1.2-stable (2014-06-02)
