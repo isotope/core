@@ -222,7 +222,7 @@ class ProductCollectionItem extends \Model
 
     /**
      * Return downloads associated with this product collection item
-     * @return  array
+     * @return  ProductCollectionDownload[]
      */
     public function getDownloads()
     {
