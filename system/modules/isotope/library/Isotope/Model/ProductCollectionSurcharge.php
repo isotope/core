@@ -445,16 +445,34 @@ abstract class ProductCollectionSurcharge extends TypeAgent
         $intTaxClass = $objSource->tax_class;
 
         /** @var \Isotope\Model\ProductCollectionSurcharge $objSurcharge */
-        $objSurcharge              = new $strClass();
-        $objSurcharge->label       = ($strLabel . ' (' . $objSource->getLabel() . ')');
-        $objSurcharge->price       = ($objSource->isPercentage() ? $objSource->getPercentage() . '%' : '&nbsp;');
+        $objSurcharge = new $strClass();
+        $objSurcharge->label = ($strLabel . ' (' . $objSource->getLabel() . ')');
+        $objSurcharge->price = ($objSource->isPercentage() ? $objSource->getPercentage() . '%' : '&nbsp;');
         $objSurcharge->total_price = $objSource->getPrice();
-        $objSurcharge->tax_class   = $intTaxClass;
-        $objSurcharge->before_tax  = ($intTaxClass ? true : false);
-        $objSurcharge->addToTotal  = true;
+        $objSurcharge->tax_free_total_price = $objSource->total_price;
+        $objSurcharge->tax_class = $intTaxClass;
+        $objSurcharge->before_tax = ($intTaxClass ? true : false);
+        $objSurcharge->addToTotal = true;
 
         if ($intTaxClass == -1) {
             $objSurcharge->applySplittedTax($objCollection, $objSource);
+        } elseif ($objSurcharge->tax_class > 0) {
+
+            /** @var \Isotope\Model\TaxClass $objTaxClass */
+            if (($objTaxClass = TaxClass::findByPk($objSurcharge->tax_class)) !== null) {
+
+                /** @var \Isotope\Model\TaxRate $objIncludes */
+                if (($objIncludes = $objTaxClass->getRelated('includes')) !== null) {
+
+                    $fltPrice = $objSurcharge->total_price;
+                    $arrAddresses = array('billing' => $objCollection->getBillingAddress(), 'shipping' => $objCollection->getShippingAddress());
+
+                    if ($objIncludes->isApplicable($fltPrice, $arrAddresses)) {
+                        $fltTax = $objIncludes->calculateAmountIncludedInPrice($fltPrice);
+                        $objSurcharge->tax_free_total_price = $fltPrice - $fltTax;
+                    }
+                }
+            }
         }
 
         return $objSurcharge;

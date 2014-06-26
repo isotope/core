@@ -59,6 +59,7 @@ Version 2.1.1-stable (2014-05-20)
 - Remove page parameter on product filter action (#1098)
 - From price was not shown for variants with price tiers (#1146)
 - Incorrect tax free total in product collection template
+- Tax free total for surcharge was always empty (#1149)
 
 
 Version 2.1.0-stable (2014-04-01)
