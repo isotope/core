@@ -231,6 +231,9 @@ class AddressBook extends Module
                     }
                 }
 
+                // Send notifications
+                $this->triggerNotificationCenter($objAddress, \FrontendUser::getInstance(), Isotope::getConfig());
+
                 global $objPage;
                 \Controller::redirect(\Controller::generateFrontendUrl($objPage->row()));
 
@@ -257,6 +260,26 @@ class AddressBook extends Module
         $this->Template->contactDetails = $GLOBALS['TL_LANG'][$table]['contactDetails'];
         $this->Template->personalData   = $GLOBALS['TL_LANG'][$table]['personalData'];
         $this->Template->loginDetails   = $GLOBALS['TL_LANG'][$table]['loginDetails'];
+    }
+
+
+    protected function triggerNotificationCenter($objAdress, $objMember, $objConfig)
+    {
+        if(!in_array('notification_center', \Config::getInstance()->getActiveModules())) return;
+        if(!$this->nc_notification) return;
+        $objNotification = \NotificationCenter\Model\Notification::findByPk($this->nc_notification);
+        if(!$objNotification) return;
+
+        $arrTokens = array();
+        $arrTokens['admin_email'] = $GLOBALS['TL_ADMIN_EMAIL'];
+        $arrTokens['domain'] = \Environment::get('host');
+        $arrTokens['link'] = \Environment::get('base').\Environment::get('request');
+
+        foreach($objAdress->row() as $k => $v) $arrTokens['address_'.$k] = $v;
+        foreach($objMember->getData() as $k => $v) $arrTokens['member_'.$k] = $v;
+        foreach($objConfig->row() as $k => $v) $arrTokens['config_'.$k] = $v;
+
+        $objNotification->send($arrTokens);
     }
 
 
