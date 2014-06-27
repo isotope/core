@@ -220,6 +220,7 @@ class AddressBook extends Module
         });
 
         if ($objForm->isSubmitted()) {
+            $arrOldAddress = $objAddress->row();
             if ($objForm->validate()) {
                 $objAddress->save();
 
@@ -232,7 +233,7 @@ class AddressBook extends Module
                 }
 
                 // Send notifications
-                $this->triggerNotificationCenter($objAddress, \FrontendUser::getInstance(), Isotope::getConfig());
+                $this->triggerNotificationCenter($objAddress, $arrOldAddress, \FrontendUser::getInstance(), Isotope::getConfig());
 
                 global $objPage;
                 \Controller::redirect(\Controller::generateFrontendUrl($objPage->row()));
@@ -263,7 +264,7 @@ class AddressBook extends Module
     }
 
 
-    protected function triggerNotificationCenter($objAdress, $objMember, $objConfig)
+    protected function triggerNotificationCenter($objAddress, $objOldAddress, $objMember, $objConfig)
     {
         if(!in_array('notification_center', \Config::getInstance()->getActiveModules())) return;
         if(!$this->nc_notification) return;
@@ -275,7 +276,8 @@ class AddressBook extends Module
         $arrTokens['domain'] = \Environment::get('host');
         $arrTokens['link'] = \Environment::get('base').\Environment::get('request');
 
-        foreach($objAdress->row() as $k => $v) $arrTokens['address_'.$k] = $v;
+        foreach($objAddress->row() as $k => $v) $arrTokens['address_'.$k] = $v;
+        foreach($arrOldAddress as $k => $v) $arrTokens['address_old_'.$k] = $v;
         foreach($objMember->getData() as $k => $v) $arrTokens['member_'.$k] = $v;
         foreach($objConfig->row() as $k => $v) $arrTokens['config_'.$k] = $v;
 
