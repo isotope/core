@@ -1,7 +1,7 @@
 <?php if ($this->textOnly): ?>
 <?php ### THIS IS FOR TEXT ONLY EMAILS ### ?>
 <?php foreach ($this->items as $item ): ?>
-<?php echo $item['name']; ?><?php if (!empty($item['options'])): ?> (<?php foreach ($item['options'] as $i => $option): ?><?php echo ($i==0 ? '' : ',').$option['label']; ?>: <?php echo $option['value']; ?><?php endforeach; ?>)<?php endif; ?>: <?php echo $item['quantity']; ?> x <?php echo $item['price']; ?> = <?php echo $item['total']; ?>
+<?php echo $item['name']; ?><?php if (!empty($item['options'])): ?> (<?php $i=0; foreach ($item['options'] as $option): ?><?php echo ($i++==0 ? '' : ', ').$option['label']; ?>: <?php echo $option['value']; ?><?php endforeach; ?>)<?php endif; ?>: <?php echo $item['quantity']; ?> x <?php echo $item['price']; ?> = <?php echo $item['total']; ?>
 
 <?php endforeach; ?>
 --------------------

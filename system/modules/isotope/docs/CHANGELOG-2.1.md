@@ -20,7 +20,8 @@ Version 2.1.3-stable (2014-??-??)
 - Incorrect tax free total in product collection template
 - Tax free total for surcharge was always empty (#1149)
 - Tax free total for surcharge was not available in collection template
-- Tax free subtotal of order was shown as total in product collection template 
+- Tax free subtotal of order was shown as total in product collection template
+- Collection template did not correctly display variant attributes in text mode (#1125)
 
 
 Version 2.1.2-stable (2014-06-02)
