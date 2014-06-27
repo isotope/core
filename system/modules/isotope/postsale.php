@@ -86,7 +86,7 @@ class PostSale extends \Frontend
      */
     public function setModuleId($intModuleId)
     {
-        $this->intModuleId = $intModuleId;
+        $this->intModuleId = (int) $intModuleId;
     }
 
     /**
@@ -122,9 +122,9 @@ class PostSale extends \Frontend
 
         try {
             $strMod = $this->getModule();
-            $strId = $this->getModuleId();
+            $intId = $this->getModuleId();
 
-            if ($strMod == '' || $strId == '') {
+            if ($strMod == '' || $intId == 0) {
                 \System::log('Invalid post-sale request (param error): '.\Environment::get('request'), __METHOD__, TL_ERROR);
 
                 $objResponse = new Response('Bad Request', 400);
@@ -133,11 +133,11 @@ class PostSale extends \Frontend
 
             switch (strtolower($strMod)) {
                 case 'pay':
-                    $objMethod = Payment::findByPk($strId);
+                    $objMethod = Payment::findByPk($intId);
                     break;
 
                 case 'ship':
-                    $objMethod = Shipping::findByPk($strId);
+                    $objMethod = Shipping::findByPk($intId);
                     break;
             }
 
