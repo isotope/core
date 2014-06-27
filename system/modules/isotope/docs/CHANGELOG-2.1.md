@@ -23,6 +23,7 @@ Version 2.1.3-stable (2014-??-??)
 - Tax free subtotal of order was shown as total in product collection template
 - Collection template did not correctly display variant attributes in text mode (#1125)
 - Payone cannot handle correctly URL encoded URLs (#1137)
+- Allow payment modules to change postsale parameters "mod" and "id" (#1137)
 
 
 Version 2.1.2-stable (2014-06-02)

@@ -680,4 +680,20 @@ window.addEvent('domready', function()
 
         return $objPage;
     }
+
+    /**
+     * Adjust module and module id for certain payment and/or shipping modules
+     * @param \Isotope\PostSale
+     */
+    public function setPostsaleModuleSettings(PostSale $objPostsale)
+    {
+        // Payment method "Payone"
+        $strParam = \Input::post('param');
+
+        if (strpos('paymentMethodPayone', $strParam) !== false) {
+            $intId = (int) str_replace('paymentMethodPayone', '', $strParam);
+            $objPostsale->setModule('pay');
+            $objPostsale->setModuleId($intId);
+        }
+    }
 }

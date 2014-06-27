@@ -96,6 +96,9 @@ class Payone extends Postsale implements IsotopePayment
             'backurl'           => $strBackUrl,
             'amount'            => ($objOrder->getTotal() * 100),
             'currency'          => $objOrder->currency,
+
+            // Custom parameter to recognize payone in postsale request (only alphanumeric is allowed)
+            'param'             => 'paymentMethodPayone' . $this->id
         );
 
         foreach ($objOrder->getItems() as $objItem) {
