@@ -349,7 +349,6 @@ class DcaManager extends \Backend
 
         if ($act !== 'edit') {
             $arrFields['inherit']['exclude'] = true;
-            $arrFields['prices']['exclude']  = true;
         }
 
         // Remove non-active fields from multi-selection
