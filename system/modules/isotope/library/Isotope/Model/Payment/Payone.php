@@ -78,6 +78,9 @@ class Payone extends Postsale implements IsotopePayment
     {
         $i = 0;
 
+        $strSuccessUrl = \Environment::get('base') . $objModule->generateUrlForStep('complete', $objOrder);
+        $strBackUrl = \Environment::get('base') . $objModule->generateUrlForStep('failed');
+
         $arrData = array
         (
             'aid'               => $this->payone_aid,
@@ -89,8 +92,8 @@ class Payone extends Postsale implements IsotopePayment
             'reference'         => $objOrder->id,
             'display_name'      => 'no',
             'display_address'   => 'no',
-            'successurl'        => \Environment::get('base') . $objModule->generateUrlForStep('complete', $objOrder),
-            'backurl'           => \Environment::get('base') . $objModule->generateUrlForStep('failed'),
+            'successurl'        => $strSuccessUrl,
+            'backurl'           => $strBackUrl,
             'amount'            => ($objOrder->getTotal() * 100),
             'currency'          => $objOrder->currency,
         );
@@ -140,6 +143,11 @@ class Payone extends Postsale implements IsotopePayment
         ksort($arrData);
         $arrData = array_map('urlencode', $arrData);
         $strHash = md5(implode('', $arrData) . $this->payone_key);
+
+        // Do not encode URLs because Payone does not properly decode POST values (whatever...)
+        // Only do this at this point so the URL encoded version is used for the md5 hash
+        $arrData['successurl'] = $strSuccessUrl;
+        $arrData['backurl'] = $strBackUrl;
 
         $objTemplate                  = new \Isotope\Template('iso_payment_payone');
         $objTemplate->id              = $this->id;
