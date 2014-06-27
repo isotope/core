@@ -46,6 +46,8 @@ class InheritCheckBox extends \CheckBox
      */
     public function generate()
     {
+        $strJS = '';
+        $blnCheckAll = true;
         $arrFields  = array();
         $arrOptions = array();
 
@@ -57,23 +59,32 @@ class InheritCheckBox extends \CheckBox
         // Add a "no entries found" message if there are no options
         if (empty($arrOptions)) {
             $arrOptions[] = '<p class="tl_noopt">' . $GLOBALS['TL_LANG']['MSC']['noResult'] . '</p>';
+            $blnCheckAll = false;
         }
 
-        $strJS = "
+        if (\Input::get('act') == 'edit') {
+            $strJS = "
 <script>
 window.addEvent('domready', function() {
   Isotope.inheritFields(['" . implode("','", $arrFields) . "'], '" . str_replace("'", "\'", $GLOBALS['TL_LANG']['MSC']['useDefault']) . "');
 });
 </script>
 ";
+        }
 
-        return sprintf('<div id="ctrl_%s" class="%s%s">%s</div>%s%s',
+        return sprintf('<fieldset id="ctrl_%s" class="tl_checkbox_container%s"><legend>%s%s%s%s</legend><input type="hidden" name="%s" value="">%s%s</fieldset>%s%s',
             $this->strId,
-            'tl_checkbox_container',
-            (strlen($this->strClass) ? ' ' . $this->strClass : ''),
+            (($this->strClass != '') ? ' ' . $this->strClass : ''),
+            ($this->mandatory ? '<span class="invisible">'.$GLOBALS['TL_LANG']['MSC']['mandatory'].'</span> ' : ''),
+            $this->strLabel,
+            ($this->mandatory ? '<span class="mandatory">*</span>' : ''),
+            $this->xlabel,
+            $this->strName,
+            ($blnCheckAll ? '<input type="checkbox" id="check_all_' . $this->strId . '" class="tl_checkbox" onclick="Backend.toggleCheckboxGroup(this,\'ctrl_' . $this->strId . '\')' . ($this->onclick ? ';' . $this->onclick : '') . '"> <label for="check_all_' . $this->strId . '" style="color:#a6a6a6"><em>' . $GLOBALS['TL_LANG']['MSC']['selectAll'] . '</em></label><br>' : ''),
             str_replace('<br></div><br>', '</div>', implode('<br>', $arrOptions)),
             $this->wizard,
-            $strJS);
+            $strJS
+        );
     }
 
 

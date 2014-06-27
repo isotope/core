@@ -4,6 +4,9 @@ Isotope eCommerce Changelog
 Version 2.1.3-stable (2014-??-??)
 ---------------------------------
 
+### Improved
+- Inherited fields can now be multi-edited
+
 ### Fixed
 - Composer dependencies (#1124)
 - Date added was not updated when copying a product in the back end (#1126)

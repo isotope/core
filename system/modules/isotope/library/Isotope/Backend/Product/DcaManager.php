@@ -324,7 +324,7 @@ class DcaManager extends \Backend
                 } else {
 
                     // Hide field from "show" option
-                    if (!isset($arrField['attributes']) || $arrField['inputType'] != '') {
+                    if (!isset($arrField['attributes']) || $arrField['inputType'] != '' && $name != 'inherit') {
                         $arrFields[$name]['eval']['doNotShow'] = true;
                     }
                 }
@@ -345,10 +345,6 @@ class DcaManager extends \Backend
 
             // Add palettes
             $GLOBALS['TL_DCA']['tl_iso_product']['palettes'][($blnVariants ? 'default' : $objType->id)] = ($blnVariants ? 'inherit,' : '') . implode(';', $arrLegends);
-        }
-
-        if ($act !== 'edit') {
-            $arrFields['inherit']['exclude'] = true;
         }
 
         // Remove non-active fields from multi-selection
