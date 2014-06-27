@@ -138,7 +138,7 @@ class Payone extends Postsale implements IsotopePayment
 
 
         ksort($arrData);
-        $arrData = array_map('urlencode', $arrData);
+        // Do not urlencode values because Payone does not properly decode POST values (whatever...)
         $strHash = md5(implode('', $arrData) . $this->payone_key);
 
         $objTemplate                  = new \Isotope\Template('iso_payment_payone');
