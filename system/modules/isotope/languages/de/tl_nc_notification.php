@@ -25,5 +25,3 @@ $GLOBALS['TL_LANG']['tl_nc_notification']['iso_document'][1] = 'Wenn Sie der Ben
 $GLOBALS['TL_LANG']['tl_nc_notification']['type']['isotope'] = 'Isotope eCommerce';
 $GLOBALS['TL_LANG']['tl_nc_notification']['type']['iso_order_status_change'][0] = 'Änderung Bestellstatus';
 $GLOBALS['TL_LANG']['tl_nc_notification']['type']['iso_order_status_change'][1] = 'Dieser Benachrichtigungstyp kann gesendet werden, wenn sich der Status der Bestellung ändert.';
-$GLOBALS['TL_LANG']['tl_nc_notification']['type']['iso_memberaddress_change'][0] = 'Adressbuch-Änderung';
-$GLOBALS['TL_LANG']['tl_nc_notification']['type']['iso_memberaddress_change'][1] = 'Dieser Benachrichtigungstyp kann gesendet werden, wenn sich der Kunde Änderungen im Adressbuch durchführt.';
