@@ -479,6 +479,7 @@ class RequestCache extends \Model
         $arrGroups = array();
 
         // Initiate native SQL filtering
+        /** @var \Isotope\RequestCache\Filter $objFilter  */
         foreach ($arrFilters as $k => $objFilter) {
             if ($objFilter->hasGroup() && $arrGroups[$objFilter->getGroup()] !== false) {
                 if ($objFilter->isDynamicAttribute()) {
@@ -522,6 +523,7 @@ class RequestCache extends \Model
                 . (BE_USER_LOGGED_IN === true ? '' : " AND $t.published='1' AND ($t.start='' OR $t.start<$time) AND ($t.stop='' OR $t.stop>$time)") . ")
                 )
             ";
+
             $arrValues = array_merge($arrValues, $arrValues, $arrValues);
         }
 

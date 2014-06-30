@@ -275,7 +275,7 @@ abstract class TypeAgent extends \Model
      * Create array of models and return a collection of them
      * @param   Database\Result
      * @param   string
-     * @return  Model\Collection
+     * @return  \Model\Collection
      */
     protected static function createCollectionFromDbResult(\Database\Result $objResult, $strTable = null)
     {
@@ -301,10 +301,10 @@ abstract class TypeAgent extends \Model
 
     /**
      * Build model based on database result
-     * @param   Database_Result
+     * @param   \Database\Result
      * @deprecated  use createModelFromDbResult in Contao 3.3
      */
-    public static function buildModelType(\Database_Result $objResult = null)
+    public static function buildModelType(\Database\Result $objResult = null)
     {
         if (null === $objResult) {
             return null;
@@ -314,6 +314,7 @@ abstract class TypeAgent extends \Model
         $intPk = $objResult->$strPk;
 
         // Try to load from the registry
+        /** @var \Model $objModel */
         $objModel = \Model\Registry::getInstance()->fetch(static::$strTable, $intPk);
 
         if ($objModel !== null) {

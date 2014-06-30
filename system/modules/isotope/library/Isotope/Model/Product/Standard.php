@@ -101,11 +101,13 @@ class Standard extends Product implements IsotopeProduct, WeightAggregate
      */
     public function isPublished()
     {
+        $time = time();
+
         if (!$this->arrData['published']) {
             return false;
-        } elseif ($this->arrData['start'] > 0 && $this->arrData['start'] > time()) {
+        } elseif ($this->arrData['start'] != '' && $this->arrData['start'] > $time) {
             return false;
-        } elseif ($this->arrData['stop'] > 0 && $this->arrData['stop'] < time()) {
+        } elseif ($this->arrData['stop'] != '' && $this->arrData['stop'] < $time) {
             return false;
         }
 
@@ -287,7 +289,7 @@ class Standard extends Product implements IsotopeProduct, WeightAggregate
     /**
      * Get product price model
      * @param   IsotopeProductCollection
-     * @return  IsotopePrice
+     * @return  \Isotope\Interfaces\IsotopePrice
      */
     public function getPrice(IsotopeProductCollection $objCollection = null)
     {
@@ -865,6 +867,11 @@ class Standard extends Product implements IsotopeProduct, WeightAggregate
                     }
                 }
             }
+
+            // Make sure publishing settings match product and variant (see #1120)
+            $this->arrData['published'] = $objParent->published ? $arrData['published'] : '';
+            $this->arrData['start'] = ($objParent->start != '' && ($arrData['start'] == '' || $objParent->start > $arrData['start'])) ? $objParent->start : $arrData['start'];
+            $this->arrData['stop'] = ($objParent->stop != '' && ($arrData['stop'] == '' || $objParent->stop < $arrData['stop'])) ? $objParent->stop : $arrData['stop'];
 
             return $this;
         }

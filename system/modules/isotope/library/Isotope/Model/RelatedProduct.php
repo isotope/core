@@ -36,7 +36,7 @@ class RelatedProduct extends \Model
      * @param   IsotopeProduct
      * @param   array
      * @param   array
-     * @return  Model\Collection|null
+     * @return  \Model\Collection|null
      */
     public static function findByProductAndCategories(IsotopeProduct $objProduct, array $arrCategories, array $arrOptions = array())
     {

@@ -60,7 +60,11 @@ class Permission extends \Backend
             \System::loadLanguageFile('explain');
 
             unset($GLOBALS['TL_DCA']['tl_iso_producttype']['subpalettes']['variants']);
-            $GLOBALS['TL_DCA']['tl_iso_producttype']['fields']['variants']['input_field_callback'] = function() {
+            $GLOBALS['TL_DCA']['tl_iso_producttype']['fields']['variants']['input_field_callback'] = function($dc) {
+
+                // Make sure variants are disabled in this product type (see #1114)
+                \Database::getInstance()->prepare("UPDATE " . $dc->table . " SET variants='' WHERE id=?")->execute($dc->id);
+
                 return '<br><p class="tl_info">'.$GLOBALS['TL_LANG']['XPL']['noVariantAttributes'].'</p>';
             };
         }

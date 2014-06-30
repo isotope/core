@@ -40,6 +40,7 @@ $GLOBALS['TL_DCA']['tl_iso_product'] = array
         'oncopy_callback' => array
         (
             array('Isotope\Backend\Product\Category', 'updateSorting'),
+            array('Isotope\Backend\Product\DcaManager', 'updateDateAdded'),
         ),
         'onsubmit_callback' => array
         (
@@ -310,7 +311,7 @@ $GLOBALS['TL_DCA']['tl_iso_product'] = array
             'label'                 => &$GLOBALS['TL_LANG']['tl_iso_product']['inherit'],
             'exclude'               => true,
             'inputType'             => 'inheritCheckbox',
-            'eval'                  => array('multiple'=>true, 'doNotShow'=>true),
+            'eval'                  => array('multiple'=>true),
             'attributes'            => array('systemColumn'=>true),
             'sql'                   => "blob NULL",
         ),

@@ -75,7 +75,7 @@ class Callback extends \Backend
                                 $arrAccess   = deserialize($objUser->iso_product_types);
                                 $arrAccess[] = \Input::get('id');
 
-                                \Database::getInstance()->prepare("UPDATE tl_user SET iso_product_types=? WHERE id=?")->executeUncached(serialize($arrAccess), $this->User->id);
+                                \Database::getInstance()->prepare("UPDATE tl_user SET iso_product_types=? WHERE id=?")->execute(serialize($arrAccess), $this->User->id);
                             }
                         } // Add permissions on group level
                         elseif ($this->User->groups[0] > 0) {
@@ -86,7 +86,7 @@ class Callback extends \Backend
                                 $arrAccess   = deserialize($objGroup->iso_product_types);
                                 $arrAccess[] = \Input::get('id');
 
-                                \Database::getInstance()->prepare("UPDATE tl_user_group SET iso_product_types=? WHERE id=?")->executeUncached(serialize($arrAccess), $this->User->groups[0]);
+                                \Database::getInstance()->prepare("UPDATE tl_user_group SET iso_product_types=? WHERE id=?")->execute(serialize($arrAccess), $this->User->groups[0]);
                             }
                         }
 

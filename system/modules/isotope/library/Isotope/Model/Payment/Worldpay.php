@@ -15,6 +15,7 @@ namespace Isotope\Model\Payment;
 use Isotope\Interfaces\IsotopePayment;
 use Isotope\Interfaces\IsotopeProductCollection;
 use Isotope\Model\ProductCollection\Order;
+use Isotope\Module\Checkout;
 use Isotope\Translation;
 
 
@@ -137,7 +138,7 @@ class Worldpay extends Postsale implements IsotopePayment
     protected function postsaleError()
     {
         $objPage = \PageModel::findWithDetails((int) \Input::post('M_pageId'));
-        $strUrl  = \Environment::get('base') . \Controller::generateFrontendUrl($objPage->row(), '/step/failed', $objPage->language);
+        $strUrl  = \Environment::get('base') . Checkout::generateUrlForStep('failed', null, $objPage);
 
         // Output a HTML page to redirect the client from WorldPay back to the shop
         echo '
@@ -163,7 +164,7 @@ Redirecting back to shop...
     protected function postsaleSuccess($objOrder)
     {
         $objPage = \PageModel::findWithDetails((int) \Input::post('M_pageId'));
-        $strUrl  = \Environment::get('base') . \Controller::generateFrontendUrl($objPage->row(), '/step/complete', $objPage->language) . '?uid=' . $objOrder->uniqid;
+        $strUrl  = \Environment::get('base') . Checkout::generateUrlForStep('complete', $objOrder, $objPage);
 
         // Output a HTML page to redirect the client from WorldPay back to the shop
         echo '

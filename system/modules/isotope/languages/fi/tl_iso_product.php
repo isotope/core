@@ -9,10 +9,9 @@
  * or to help to maintain an existing one, please register at transifex.com.
  * 
  * @link http://help.transifex.com/intro/translating.html
- * @link https://www.transifex.com/projects/i/isotope/language/fa/
+ * @link https://www.transifex.com/projects/i/isotope/language/fi/
  * 
  * @license http://www.gnu.org/licenses/lgpl-3.0.html
  */
 
-$GLOBALS['TL_LANG']['tl_iso_product']['downloads'][0] = 'بارگیری‌ها';
-$GLOBALS['TL_LANG']['tl_iso_product']['price_tiers']['min'] = 'تعداد';
+$GLOBALS['TL_LANG']['tl_iso_product']['price_tiers']['min'] = 'Määrä';

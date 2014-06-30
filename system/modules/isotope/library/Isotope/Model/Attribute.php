@@ -244,13 +244,13 @@ abstract class Attribute extends TypeAgent
         $strWhere = '';
 
         foreach ($arrOptions as $field => $value) {
-            $strWhere .= " AND $field='$value'";
+            $strWhere .= " AND $field=?";
         }
 
-        return \Database::getInstance()->execute("
+        return \Database::getInstance()->prepare("
             SELECT DISTINCT " . $this->field_name . " FROM tl_iso_product WHERE id IN (" . implode(',', $arrIds) . ")
             " . $strWhere . "
-        ")->fetchEach($this->field_name);
+        ")->execute($arrOptions)->fetchEach($this->field_name);
     }
 
     /**

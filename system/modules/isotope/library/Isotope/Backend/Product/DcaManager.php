@@ -79,6 +79,18 @@ class DcaManager extends \Backend
     }
 
     /**
+     * Update dateAdded on copy
+     * @param integer
+     * @param object
+     * @link http://www.contao.org/callbacks.html#oncopy_callback
+     */
+    public function updateDateAdded($insertId, $dc)
+    {
+        $strTable = Product::getTable();
+        \Database::getInstance()->prepare("UPDATE $strTable SET dateAdded=? WHERE id=?")->execute(time(), $insertId);
+    }
+
+    /**
      * Add custom attributes to tl_iso_product DCA
      */
     protected function addAttributes()
@@ -87,9 +99,9 @@ class DcaManager extends \Backend
         $arrData['attributes'] = array();
 
         // Write attributes from database to DCA
+        /** @var \Isotope\Model\Attribute[] $objAttributes */
         if (($objAttributes = Attribute::findAll(array('column' => array(Attribute::getTable() . ".type!=''")))) !== null) {
-            while ($objAttributes->next()) {
-                $objAttribute = $objAttributes->current();
+            foreach ($objAttributes as $objAttribute) {
 
                 if (null !== $objAttribute) {
                     $objAttribute->saveToDCA($arrData);
@@ -129,6 +141,7 @@ class DcaManager extends \Backend
         $blnShowPrice      = false;
         $arrAttributes     = array();
 
+        /** @var \Isotope\Model\ProductType[] $objProductTypes */
         if (($objProductTypes = ProductType::findAllUsed()) !== null) {
             foreach ($objProductTypes as $objType) {
 
@@ -212,8 +225,6 @@ class DcaManager extends \Backend
 
     /**
      * Build palette for the current product type/variant
-     * @param object
-     * @return void
      */
     public function buildPaletteString()
     {
@@ -238,7 +249,7 @@ class DcaManager extends \Backend
                 $objType  = ProductType::findByPk(($objProduct->pid > 0 ? $objProduct->parent_type : $objProduct->type));
                 $arrTypes = null === $objType ? array() : array($objType);
 
-                if ($objProduct->pid > 0 || ($act != 'edit' && $act != 'show')) {
+                if ($objProduct->pid > 0 || ($act != 'edit' && $act != 'copyFallback' && $act != 'show')) {
                     $blnVariants = true;
                 }
             }
@@ -246,13 +257,17 @@ class DcaManager extends \Backend
             $arrTypes = ProductType::findAllUsed() ? : array();
         }
 
+        /** @var \Isotope\Model\ProductType $objType */
         foreach ($arrTypes as $objType) {
+
             // Enable advanced prices
             if ($blnSingleRecord && $objType->hasAdvancedPrices()) {
                 $arrFields['prices']['exclude']    = $arrFields['price']['exclude'];
                 $arrFields['prices']['attributes'] = $arrFields['price']['attributes'];
                 $arrFields['price']                = $arrFields['prices'];
-            } // Register callback to version/restore a price
+            }
+
+            // Register callback to version/restore a price
             else {
                 $GLOBALS['TL_DCA']['tl_iso_product']['config']['onversion_callback'][] = array('Isotope\Backend\Product\Price', 'createVersion');
                 $GLOBALS['TL_DCA']['tl_iso_product']['config']['onrestore_callback'][] = array('Isotope\Backend\Product\Price', 'restoreVersion');
@@ -260,6 +275,8 @@ class DcaManager extends \Backend
 
             $arrInherit = array();
             $arrPalette = array();
+            $arrLegends = array();
+            $arrLegendOrder = array();
 
             if ($blnVariants) {
                 $arrConfig     = deserialize($objType->variant_attributes, true);
@@ -293,7 +310,8 @@ class DcaManager extends \Backend
                         continue;
                     }
 
-                    $arrPalette[$arrConfig[$name]['legend']][] = $name;
+                    $arrLegendOrder[$arrConfig[$name]['position']] = $arrConfig[$name]['legend'];
+                    $arrPalette[$arrConfig[$name]['legend']][$arrConfig[$name]['position']] = $name;
 
                     // Apply product type attribute config
                     if ($arrConfig[$name]['tl_class'] != '') {
@@ -317,16 +335,19 @@ class DcaManager extends \Backend
                 } else {
 
                     // Hide field from "show" option
-                    if (!isset($arrField['attributes']) || $arrField['inputType'] != '') {
+                    if (!isset($arrField['attributes']) || $arrField['inputType'] != '' && $name != 'inherit') {
                         $arrFields[$name]['eval']['doNotShow'] = true;
                     }
                 }
             }
 
-            $arrLegends = array();
+            ksort($arrLegendOrder);
+            $arrLegendOrder = array_unique($arrLegendOrder);
 
             // Build
-            foreach ($arrPalette as $legend => $fields) {
+            foreach ($arrLegendOrder as $legend) {
+                $fields = $arrPalette[$legend];
+                ksort($fields);
                 $arrLegends[] = '{' . $legend . '},' . implode(',', $fields);
             }
 
@@ -335,11 +356,6 @@ class DcaManager extends \Backend
 
             // Add palettes
             $GLOBALS['TL_DCA']['tl_iso_product']['palettes'][($blnVariants ? 'default' : $objType->id)] = ($blnVariants ? 'inherit,' : '') . implode(';', $arrLegends);
-        }
-
-        if ($act !== 'edit') {
-            $arrFields['inherit']['exclude'] = true;
-            $arrFields['prices']['exclude']  = true;
         }
 
         // Remove non-active fields from multi-selection
@@ -435,6 +451,8 @@ class DcaManager extends \Backend
 
         $arrIds   = array();
         $arrLinks = array();
+
+        /** @var \BackendUser $objUser */
         $objUser  = \BackendUser::getInstance();
 
         // Generate breadcrumb trail

@@ -1,6 +1,33 @@
 Isotope eCommerce Changelog
 ===========================
 
+Version 2.1.3-stable (2014-06-30)
+---------------------------------
+
+### Improved
+- Inherited fields can now be multi-edited
+
+### Fixed
+- Composer dependencies (#1124)
+- Date added was not updated when copying a product in the back end (#1126)
+- Another error when setting a redirect page for product search (#1068)
+- Disable variant checkbox if no variant attributes are available in product type (#1114)
+- Product variants did show up even if product was unpublished (#1120)
+- URLs for Sparkasse and Worldpay payment methods were incorrectly generated (#1141 and #1142)
+- CDATA statement in javascript caused issue in Sparkasse payment method (#1140)
+- Front end javascript was not compatible with IE8 (#1155)
+- Order of fields in product type was not applied to palette (#1135)
+- Edit-multiple failed in Contao 3.3 (#1150)
+- Copy fallback language was not working (#1151)
+- From price was not shown for variants with price tiers (#1146)
+- Incorrect tax free total in product collection template
+- Tax free total for surcharge was always empty (#1149)
+- Tax free total for surcharge was not available in collection template
+- Tax free subtotal of order was shown as total in product collection template
+- Collection template did not correctly display variant attributes in text mode (#1125)
+- Payone cannot handle correctly URL encoded values (#1137)
+
+
 Version 2.1.2-stable (2014-06-02)
 ---------------------------------
 

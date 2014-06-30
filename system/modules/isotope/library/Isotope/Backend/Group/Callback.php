@@ -92,7 +92,7 @@ class Callback extends \Backend
                         if ($this->User->inherit == 'custom' || !$this->User->groups[0]) {
                             $objUser = \Database::getInstance()->prepare("SELECT iso_groups, iso_groupp FROM tl_user WHERE id=?")
                                 ->limit(1)
-                                ->executeUncached($this->User->id);
+                                ->execute($this->User->id);
 
                             $arrPermissions = deserialize($objUser->iso_groupp);
 
@@ -107,7 +107,7 @@ class Callback extends \Backend
                         elseif ($this->User->groups[0] > 0) {
                             $objGroup = \Database::getInstance()->prepare("SELECT iso_groups, iso_groupp FROM tl_user_group WHERE id=?")
                                 ->limit(1)
-                                ->executeUncached($this->User->groups[0]);
+                                ->execute($this->User->groups[0]);
 
                             $arrPermissions = deserialize($objGroup->iso_groupp);
 
