@@ -19,9 +19,9 @@ class Alias extends \Backend
     /**
      * Autogenerate a product alias if it has not been set yet
      * @param mixed
-     * @param DataContainer
+     * @param \DataContainer
      * @return string
-     * @throws Exception
+     * @throws \Exception
      */
     public function save($varValue, \DataContainer $dc)
     {

@@ -108,7 +108,7 @@ class ProductCache extends \Model
         \Database::getInstance()->prepare("
             DELETE FROM " . static::$strTable . "
             WHERE (page_id=? AND module_id=? AND requestcache_id=? AND keywords=? AND groups=?) OR (expires>0 AND expires<$time)
-        ")->executeUncached($intPage, $intModule, (int) \Input::get('isorc'), (string) \Input::get('keywords'), static::getCacheableGroups());
+        ")->execute($intPage, $intModule, (int) \Input::get('isorc'), (string) \Input::get('keywords'), static::getCacheableGroups());
     }
 
     /**

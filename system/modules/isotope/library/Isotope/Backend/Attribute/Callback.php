@@ -12,6 +12,7 @@
 
 namespace Isotope\Backend\Attribute;
 
+use Isotope\DatabaseUpdater;
 
 class Callback extends \Backend
 {
@@ -39,7 +40,7 @@ class Callback extends \Backend
 
     /**
      * Hide certain options if this is a variant option
-     * @param DataContainer
+     * @param \DataContainer
      */
     public function prepareForVariantOptions($dc)
     {
@@ -57,7 +58,7 @@ class Callback extends \Backend
      * @param mixed
      * @param object
      * @return mixed
-     * @throws Exception
+     * @throws \Exception
      */
     public function validateFieldName($varValue, $dc)
     {
@@ -88,7 +89,7 @@ class Callback extends \Backend
         $GLOBALS['TL_CONFIG']['bypassCache'] = true;
         $this->loadDataContainer('tl_iso_product', true);
 
-        $objUpdater = new \Isotope\DatabaseUpdater();
+        $objUpdater = new DatabaseUpdater();
         $objUpdater->autoUpdateTables(array('tl_iso_product'));
     }
 

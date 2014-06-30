@@ -141,7 +141,7 @@ abstract class Shipping extends TypeAgent
     /**
      * Return percentage amount (if applicable)
      * @return float
-     * @throws UnexpectedValueException
+     * @throws \UnexpectedValueException
      */
     public function getPercentage()
     {

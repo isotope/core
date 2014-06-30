@@ -87,17 +87,20 @@ class ProductPrice extends \Model\Collection implements IsotopePrice
 
             $fltPrice           = null;
             $fltOriginalPrice   = null;
-            $blnShowFrom        = false;
+            $arrPrices          = array();
 
             foreach ($this->arrModels as $objPrice) {
                 $fltNew       = $blnShowTiers ? $objPrice->getLowestAmount() : $objPrice->getAmount();
+                $arrPrices[]  = $fltNew;
 
                 if (null === $fltPrice || $fltNew < $fltPrice) {
-                    $blnShowFrom      = (null !== $fltPrice);
                     $fltPrice         = $fltNew;
                     $fltOriginalPrice = $objPrice->getOriginalAmount();
                 }
             }
+
+            $arrPrices = array_unique($arrPrices);
+            $blnShowFrom = count($arrPrices) > 1;
 
             if ($blnShowFrom) {
                 return sprintf($GLOBALS['TL_LANG']['MSC']['priceRangeLabel'], Isotope::formatPriceWithCurrency($fltPrice));

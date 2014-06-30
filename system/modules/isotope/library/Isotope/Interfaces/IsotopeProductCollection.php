@@ -89,7 +89,7 @@ interface IsotopeProductCollection
      * Return all items in the collection
      * @param  callable
      * @param  bool
-     * @return array
+     * @return \Isotope\Model\ProductCollectionItem[]
      */
     public function getItems($varCallable = null, $blnNoCache = false);
 
@@ -119,8 +119,8 @@ interface IsotopeProductCollection
 
     /**
      * Update a product collection item
-     * @param   object  The product object
-     * @param   array   The property(ies) to adjust
+     * @param   object  $objItem The product object
+     * @param   array   $arrSet The property(ies) to adjust
      * @return  bool
      */
     public function updateItem(ProductCollectionItem $objItem, $arrSet);
@@ -149,7 +149,7 @@ interface IsotopeProductCollection
 
     /**
      * Find surcharges for the current collection
-     * @return  array
+     * @return  \Isotope\Model\ProductCollectionSurcharge[]
      */
     public function getSurcharges();
 }

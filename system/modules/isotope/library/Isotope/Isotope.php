@@ -36,7 +36,7 @@ class Isotope extends \Controller
     /**
      * Isotope version
      */
-    const VERSION = '2.1.2';
+    const VERSION = '2.1.3';
 
     /**
      * True if the system has been initialized
@@ -46,19 +46,19 @@ class Isotope extends \Controller
 
     /**
      * Current cart instance
-     * @var Isotope\Model\ProductCollection\Cart
+     * @var \Isotope\Model\ProductCollection\Cart
      */
     protected static $objCart;
 
     /**
      * Current config instance
-     * @var Isotope\Model\Config
+     * @var \Isotope\Model\Config
      */
     protected static $objConfig;
 
     /**
      * Current request cache instance
-     * @var Isotope\Model\RequestCache
+     * @var \Isotope\Model\RequestCache
      */
     protected static $objRequestCache;
 
@@ -99,7 +99,7 @@ class Isotope extends \Controller
 
     /**
      * Get the currently active Isotope cart
-     * @return Isotope\Model\ProductCollection\Cart|null
+     * @return \Isotope\Model\ProductCollection\Cart|null
      */
     public static function getCart()
     {
@@ -126,7 +126,7 @@ class Isotope extends \Controller
 
     /**
      * Get the currently active Isotope configuration
-     * @return Isotope\Model\Config
+     * @return \Isotope\Model\Config
      */
     public static function getConfig()
     {
@@ -220,6 +220,7 @@ class Isotope extends \Controller
         }
 
         // Possibly add/subtract tax
+        /** @var TaxClass $objTaxClass */
         if (($objTaxClass = TaxClass::findByPk($intTaxClass)) !== null) {
             $fltPrice = $objTaxClass->calculatePrice($fltPrice);
         }
@@ -230,8 +231,8 @@ class Isotope extends \Controller
 
     /**
      * Rounds a price according to store config settings
-     * @param float original value
-     * @param bool apply rounding increment
+     * @param float $fltValue original value
+     * @param bool $blnApplyRoundingIncrement apply rounding increment
      * @return float rounded value
      */
     public static function roundPrice($fltValue, $blnApplyRoundingIncrement = true)

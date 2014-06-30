@@ -67,11 +67,11 @@ class Price extends \Backend
             \Database::getInstance()->query("DELETE FROM " . ProductPrice::getTable() . " WHERE pid=$intId");
 
             foreach ($arrData['prices'] as $arrRow) {
-                \Database::getInstance()->prepare("INSERT INTO " . ProductPrice::getTable() . " %s")->set($arrRow)->executeUncached();
+                \Database::getInstance()->prepare("INSERT INTO " . ProductPrice::getTable() . " %s")->set($arrRow)->execute();
             }
 
             foreach ($arrData['tiers'] as $arrRow) {
-                \Database::getInstance()->prepare("INSERT INTO tl_iso_product_pricetier %s")->set($arrRow)->executeUncached();
+                \Database::getInstance()->prepare("INSERT INTO tl_iso_product_pricetier %s")->set($arrRow)->execute();
             }
         }
     }
@@ -119,7 +119,7 @@ class Price extends \Backend
         if ($objPrice->numRows && $objPrice->id > 0) {
 
             if ($objPrice->price != $strPrice) {
-                \Database::getInstance()->prepare("UPDATE tl_iso_product_pricetier SET tstamp=$time, price=? WHERE id=?")->executeUncached($strPrice, $objPrice->id);
+                \Database::getInstance()->prepare("UPDATE tl_iso_product_pricetier SET tstamp=$time, price=? WHERE id=?")->execute($strPrice, $objPrice->id);
 
                 $dc->createNewVersion = true;
             }
@@ -127,7 +127,7 @@ class Price extends \Backend
             if ($objPrice->tax_class != $intTax) {
                 \Database::getInstance()->prepare(
                     "UPDATE " . ProductPrice::getTable() . " SET tstamp=$time, tax_class=? WHERE id=?
-                ")->executeUncached($intTax, $objPrice->pid);
+                ")->execute($intTax, $objPrice->pid);
 
                 $dc->createNewVersion = true;
             }
@@ -150,7 +150,7 @@ class Price extends \Backend
 
             \Database::getInstance()->prepare("
                 INSERT INTO tl_iso_product_pricetier (pid,tstamp,min,price) VALUES (?,?,1,?)
-            ")->executeUncached($intPrice, $time, $strPrice);
+            ")->execute($intPrice, $time, $strPrice);
 
             $dc->createNewVersion = true;
         }

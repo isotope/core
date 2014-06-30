@@ -285,7 +285,7 @@ abstract class Address extends CheckoutStep
      * Get address object for a selected option
      * @param   string
      * @param   bool
-     * @return  Isotope\Model\Address
+     * @return  \Isotope\Model\Address
      */
     protected function getAddressForOption($varValue, $blnValidate)
     {
