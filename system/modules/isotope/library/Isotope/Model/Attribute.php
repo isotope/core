@@ -616,4 +616,28 @@ abstract class Attribute extends TypeAgent
 
         return $arrFields;
     }
+
+    /**
+     * Find all valid attributes
+     *
+     * @param array $arrOptions An optional options array
+     *
+     * @return \Isotope\Model\Attribute[]|null The model collection or null if the result is empty
+     */
+    public static function findValid(array $arrOptions=array())
+    {
+        $arrOptions = array_merge
+        (
+            array
+            (
+                'column' => array(
+                    static::getTable() . ".type!=''",
+                    static::getTable() . ".field_name!=''"
+                )
+            ),
+            $arrOptions
+        );
+
+        return static::findAll($arrOptions);
+    }
 }

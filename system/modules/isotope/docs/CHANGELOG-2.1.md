@@ -4,7 +4,8 @@ Isotope eCommerce Changelog
 Version 2.1.4-stable (2014-??-??)
 ---------------------------------
 
-
+### Fixed
+- Database update trying to add attributes with no internal field name to database
 
 Version 2.1.3-stable (2014-06-30)
 ---------------------------------

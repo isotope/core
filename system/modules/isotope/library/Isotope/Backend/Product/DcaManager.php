@@ -99,7 +99,7 @@ class DcaManager extends \Backend
 
         // Write attributes from database to DCA
         /** @var \Isotope\Model\Attribute[] $objAttributes */
-        if (($objAttributes = Attribute::findAll(array('column' => array(Attribute::getTable() . ".type!=''")))) !== null) {
+        if (($objAttributes = Attribute::findValid()) !== null) {
             foreach ($objAttributes as $objAttribute) {
 
                 if (null !== $objAttribute) {
