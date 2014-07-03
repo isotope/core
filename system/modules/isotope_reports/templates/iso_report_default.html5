@@ -42,7 +42,7 @@
 <input type="text" name="<?php echo $subpanel['name']; ?>" class="tl_text<?php echo $subpanel['active'] ? ' active' : ''; ?>" value="<?php echo $subpanel['value']; ?>">
 <?php elseif($subpanel['type'] == 'date'): ?>
 <input type="text" id="ctrl_<?php echo $subpanel['name']; ?>" name="<?php echo $subpanel['name']; ?>" class="tl_text datepicker<?php echo $subpanel['active'] ? ' active' : ''; ?>" value="<?php echo $subpanel['value']; ?>">
-<img src="assets/mootools/datepicker/2.0.0/icon.gif" width="20" height="20" alt="" id="toggle_<?php echo $subpanel['name']; ?>" style="vertical-align:-6px">
+<img src="assets/mootools/datepicker/<?php echo DATEPICKER; ?>/icon.gif" width="20" height="20" alt="" id="toggle_<?php echo $subpanel['name']; ?>" style="vertical-align:-6px">
 <script>
 window.addEvent("domready", function() {
   new Picker.Date($$("#ctrl_<?php echo $subpanel['name']; ?>"), {
