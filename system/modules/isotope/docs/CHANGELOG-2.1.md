@@ -11,6 +11,7 @@ Version 2.1.4-stable (2014-??-??)
 - Database update trying to add attributes with no internal field name to database
 - Toggle group in popup picker did not work in Contao 3.3 (#1148)
 - Datepicker icons were missing in reports module in Contao 3.2 (#1161)
+- Invalid date input caused exceptions (#1162)
 
 Version 2.1.3-stable (2014-06-30)
 ---------------------------------

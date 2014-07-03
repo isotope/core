@@ -170,8 +170,12 @@ abstract class Address extends CheckoutStep
 
                 // Convert date formats into timestamps
                 if (strlen($varValue) && in_array($arrData['eval']['rgxp'], array('date', 'time', 'datim'))) {
+                    try {
                         $objDate = new \Date($varValue, $GLOBALS['TL_CONFIG'][$arrData['eval']['rgxp'] . 'Format']);
                         $varValue = $objDate->tstamp;
+                    } catch (\OutOfBoundsException $e) {
+                        $objWidget->addError(sprintf($GLOBALS['TL_LANG']['ERR'][$arrData['eval']['rgxp']], $GLOBALS['TL_CONFIG'][$arrData['eval']['rgxp'] . 'Format']));
+                    }
                 }
 
                 // Do not submit if there are errors

@@ -75,6 +75,8 @@ window.addEvent("domready", function() {
 
 <h2 class="sub_headline"><?php echo $this->headline; ?></h2>
 
+<?php echo \Message::generate(true); ?>
+
 <div class="tl_listing_container list_view mod_iso_reports <?php echo $this->class; ?>">
 
 

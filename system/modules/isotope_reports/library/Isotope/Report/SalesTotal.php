@@ -293,8 +293,13 @@ class SalesTotal extends Sales
         elseif (!is_numeric($arrSession[$this->name]['stop']))
         {
             // Convert date formats into timestamps
-            $objDate = new \Date($arrSession[$this->name]['stop'], $GLOBALS['TL_CONFIG']['dateFormat']);
-            $arrSession[$this->name]['stop'] = $objDate->tstamp;
+            try {
+                $objDate = new \Date($arrSession[$this->name]['stop'], $GLOBALS['TL_CONFIG']['dateFormat']);
+                $arrSession[$this->name]['stop'] = $objDate->tstamp;
+            } catch (\OutOfBoundsException $e) {
+                \Message::addError(sprintf($GLOBALS['TL_LANG']['ERR']['date'], $GLOBALS['TL_CONFIG']['dateFormat']));
+                $arrSession[$this->name]['stop'] = time();
+            }
         }
 
         if ($arrSession[$this->name]['start'] == '')
@@ -304,8 +309,13 @@ class SalesTotal extends Sales
         elseif (!is_numeric($arrSession[$this->name]['start']))
         {
             // Convert date formats into timestamps
-            $objDate = new \Date($arrSession[$this->name]['start'], $GLOBALS['TL_CONFIG']['dateFormat']);
-            $arrSession[$this->name]['start'] = $objDate->tstamp;
+            try {
+                $objDate = new \Date($arrSession[$this->name]['start'], $GLOBALS['TL_CONFIG']['dateFormat']);
+                $arrSession[$this->name]['start'] = $objDate->tstamp;
+            } catch (\OutOfBoundsException $e) {
+                \Message::addError(sprintf($GLOBALS['TL_LANG']['ERR']['date'], $GLOBALS['TL_CONFIG']['dateFormat']));
+                $arrSession[$this->name]['start'] = strtotime('-6 months');
+            }
         }
 
         \Session::getInstance()->set('iso_reports', $arrSession);
