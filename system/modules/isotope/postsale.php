@@ -18,6 +18,10 @@ use Isotope\Model\Payment;
 use Isotope\Model\Shipping;
 use Haste\Http\Response\Response;
 
+/**
+ * Set the script name
+ */
+define('TL_SCRIPT', 'system/modules/isotope/postsale.php');
 
 /**
  * Initialize the system
