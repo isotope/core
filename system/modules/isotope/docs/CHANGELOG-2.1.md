@@ -4,6 +4,9 @@ Isotope eCommerce Changelog
 Version 2.1.4-stable (2014-??-??)
 ---------------------------------
 
+### Improved
+- Product group view breadcrumb was not working, removed because it does not provide any useful functionality
+
 ### Fixed
 - Database update trying to add attributes with no internal field name to database
 

@@ -26,7 +26,6 @@ $GLOBALS['TL_DCA']['tl_iso_group'] = array
         'onload_callback' => array
         (
             array('Isotope\Backend\Group\Callback', 'checkPermission'),
-            array('Isotope\Backend\Group\Callback', 'addBreadcrumb'),
         ),
         'ondelete_callback' => array
         (
