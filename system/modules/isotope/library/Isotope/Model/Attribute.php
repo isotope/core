@@ -626,17 +626,17 @@ abstract class Attribute extends TypeAgent
      */
     public static function findValid(array $arrOptions=array())
     {
-        $arrOptions = array_merge
-        (
-            array
-            (
-                'column' => array(
-                    static::getTable() . ".type!=''",
-                    static::getTable() . ".field_name!=''"
-                )
-            ),
-            $arrOptions
-        );
+        $t = static::getTable();
+
+        // Allow to set custom option conditions
+        if (!isset($arrOptions['column'])) {
+            $arrOptions['column'] = array();
+        } elseif (!is_array($arrOptions['column'])) {
+            $arrOptions['column'] = $t.'.'.$arrOptions['column'].'=?';
+        }
+
+        $arrOptions['column'][] = "$t.type!=''";
+        $arrOptions['column'][] = "$t.field_name!=''";
 
         return static::findAll($arrOptions);
     }
