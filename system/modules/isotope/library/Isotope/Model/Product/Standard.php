@@ -622,9 +622,11 @@ class Standard extends Product implements IsotopeProduct, WeightAggregate
      */
     protected function generateProductOptionWidget($strField, &$arrVariantOptions)
     {
+        /** @var \Isotope\Model\Attribute $objAttribute */
         $objAttribute = $GLOBALS['TL_DCA']['tl_iso_product']['attributes'][$strField];
         $arrData      = $GLOBALS['TL_DCA']['tl_iso_product']['fields'][$strField];
 
+        /** @var \Widget $strClass */
         $strClass = $objAttribute->getFrontendWidget();
 
         $arrData['eval']['required']  = $arrData['eval']['mandatory'];
@@ -689,7 +691,7 @@ class Standard extends Product implements IsotopeProduct, WeightAggregate
             }
         }
 
-
+        /** @var \Widget $objWidget */
         $objWidget = new $strClass($arrField);
 
         $objWidget->storeValues = true;
@@ -708,8 +710,8 @@ class Standard extends Product implements IsotopeProduct, WeightAggregate
 
                 // Convert date formats into timestamps
                 if ($varValue != '' && in_array($arrData['eval']['rgxp'], array('date', 'time', 'datim'))) {
-                    $objDate  = new \Date($varValue, $GLOBALS['TL_CONFIG'][$arrData['eval']['rgxp'] . 'Format']);
-                    $varValue = $objDate->tstamp;
+                        $objDate = new \Date($varValue, $GLOBALS['TL_CONFIG'][$arrData['eval']['rgxp'] . 'Format']);
+                        $varValue = $objDate->tstamp;
                 }
 
                 // Trigger the save_callback

@@ -170,8 +170,8 @@ abstract class Address extends CheckoutStep
 
                 // Convert date formats into timestamps
                 if (strlen($varValue) && in_array($arrData['eval']['rgxp'], array('date', 'time', 'datim'))) {
-                    $objDate  = new \Date($varValue, $GLOBALS['TL_CONFIG'][$arrData['eval']['rgxp'] . 'Format']);
-                    $varValue = $objDate->tstamp;
+                        $objDate = new \Date($varValue, $GLOBALS['TL_CONFIG'][$arrData['eval']['rgxp'] . 'Format']);
+                        $varValue = $objDate->tstamp;
                 }
 
                 // Do not submit if there are errors
@@ -200,7 +200,7 @@ abstract class Address extends CheckoutStep
 
     /**
      * Get widget objects for address fields
-     * @return  array
+     * @return  \Widget[]
      */
     protected function getWidgets()
     {
