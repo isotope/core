@@ -159,20 +159,25 @@ abstract class Attribute extends TypeAgent
             $arrField['attributes']['customer_defined'] = false;
         }
 
-        // Parse multiline/multilingual foreignKey
-        $this->foreignKey = $this->parseForeignKey($this->foreignKey, $GLOBALS['TL_LANGUAGE']);
-
         // Prepare options
-        if ($this->foreignKey != '' && /* @todo in 3.0: !($this instanceof IsotopeAttributeForVariants) && */!$this->isVariantOption()) {
-            $arrField['foreignKey']                 = $this->foreignKey;
+        if ($this->optionsSource == 'foreignKey' && /* @todo in 3.0: !($this instanceof IsotopeAttributeForVariants) && */!$this->isVariantOption()) {
+            $arrField['foreignKey'] = $this->parseForeignKey($this->foreignKey, $GLOBALS['TL_LANGUAGE']);
             $arrField['eval']['includeBlankOption'] = true;
             unset($arrField['options']);
+            
         } else {
-            if ($this->foreignKey) {
-                $arrKey     = explode('.', $this->foreignKey, 2);
-                $arrOptions = \Database::getInstance()->execute("SELECT id AS value, {$arrKey[1]} AS label FROM {$arrKey[0]} ORDER BY label")->fetchAllAssoc();
-            } else {
-                $arrOptions = deserialize($this->options);
+            switch ($this->optionsSource) {
+                case 'foreignKey':
+                    $arrKey = explode('.', $this->parseForeignKey($this->foreignKey, $GLOBALS['TL_LANGUAGE']), 2);
+                    $arrOptions = \Database::getInstance()->execute("SELECT id AS value, {$arrKey[1]} AS label FROM {$arrKey[0]} ORDER BY label")->fetchAllAssoc();
+                    break;
+
+                case 'attribute':
+                    $arrOptions = deserialize($this->options);
+                    break;
+
+                default:
+                    $arrOptions = array();
             }
 
             if (is_array($arrOptions) && !empty($arrOptions)) {
