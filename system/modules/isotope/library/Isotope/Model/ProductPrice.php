@@ -250,11 +250,22 @@ class ProductPrice extends \Model implements IsotopePrice
     }
 
     /**
+     * @param       $intProduct
+     * @param array $arrOptions
+     * @return ProductPrice|null
+     * @deprecated use findPrimaryByProductId
+     */
+    public static function findPrimaryByProduct($intProduct, array $arrOptions = array())
+    {
+        return static::findPrimaryByProductId($intProduct, $arrOptions);
+    }
+
+    /**
      * Find primary price for a product
      * @param   int
      * @return  ProductPrice|null
      */
-    public static function findPrimaryByProduct($intProduct, array $arrOptions = array())
+    public static function findPrimaryByProductId($intProduct, array $arrOptions = array())
     {
         $arrOptions = array_merge(
             array(

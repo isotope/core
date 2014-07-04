@@ -70,7 +70,7 @@ class Label extends \Backend
                     break;
 
                 case 'price':
-                    $objPrice = ProductPrice::findPrimaryByProduct($row['id']);
+                    $objPrice = ProductPrice::findPrimaryByProductId($row['id']);
 
                     if (null !== $objPrice) {
                         /** @var \Isotope\Model\TaxClass $objTax */
