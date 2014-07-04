@@ -178,7 +178,7 @@ class ProductCollectionItem extends \Model
             return '';
         }
 
-        return $objPrice->getAmount((int) $this->quantity);
+        return $objPrice->getAmount((int) $this->quantity, $this->getOptions());
     }
 
 
@@ -198,7 +198,7 @@ class ProductCollectionItem extends \Model
             return '';
         }
 
-        return $objPrice->getNetAmount((int) $this->quantity);
+        return $objPrice->getNetAmount((int) $this->quantity, $this->getOptions());
     }
 
     /**
