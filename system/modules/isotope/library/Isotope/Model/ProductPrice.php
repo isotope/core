@@ -202,6 +202,7 @@ class ProductPrice extends \Model implements IsotopePrice
         if ($fltPrice < $fltOriginalPrice) {
             $strOriginalPrice = Isotope::formatPriceWithCurrency($fltOriginalPrice);
 
+            // @deprecated remove <strike>, should be a CSS setting
             return '<div class="original_price"><strike>' . $strOriginalPrice . '</strike></div><div class="price">' . $strPrice . '</div>';
         }
 
