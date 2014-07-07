@@ -105,7 +105,7 @@ abstract class Attribute extends TypeAgent
         }
 
         $this->field_name  = $strName;
-        $this->type        = $this->getClassForModelType(get_called_class());
+        $this->type        = array_search(get_called_class(), static::getModelTypes());
         $this->name        = is_array($arrField['label']) ? $arrField['label'][0] : ($arrField['label'] ? : $strName);
         $this->description = is_array($arrField['label']) ? $arrField['label'][1] : '';
         $this->be_filter   = $arrField['filter'] ? '1' : '';
