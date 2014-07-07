@@ -13,6 +13,7 @@ Version 2.1.4-stable (2014-??-??)
 - Datepicker icons were missing in reports module in Contao 3.2 (#1161)
 - Invalid date input caused exceptions (#1162)
 - Creating attributes in DCA caused fatal error (#1166)
+- Invalid input in related products field caused database exception (#1158)
 
 
 Version 2.1.3-stable (2014-06-30)
