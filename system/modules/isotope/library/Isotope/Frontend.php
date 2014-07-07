@@ -690,7 +690,7 @@ window.addEvent('domready', function()
         // Payment method "Payone"
         $strParam = \Input::post('param');
 
-        if (strpos('paymentMethodPayone', $strParam) !== false) {
+        if (strpos($strParam, 'paymentMethodPayone') !== false) {
             $intId = (int) str_replace('paymentMethodPayone', '', $strParam);
             $objPostsale->setModule('pay');
             $objPostsale->setModuleId($intId);
