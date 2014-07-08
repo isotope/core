@@ -651,7 +651,7 @@ class Standard extends Product implements IsotopeProduct, WeightAggregate
             $arrField = $strClass::getAttributesFromDca($arrData, $strField, $arrData['default']);
 
             // Remove options not available in any product variant
-            if (is_array($arrData['options'])) {
+            if (is_array($arrField['options'])) {
                 foreach ($arrField['options'] as $k => $option) {
 
                     // Keep groups and blankOptionLabels
