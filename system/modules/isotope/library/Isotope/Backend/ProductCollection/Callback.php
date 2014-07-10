@@ -409,7 +409,7 @@ class Callback extends \Backend
      */
     public function updateOrderStatus($varValue, $dc)
     {
-        if ($dc->activeRecord && $dc->activeRecord->status != $varValue) {
+        if ($dc->activeRecord && $dc->activeRecord->order_status != $varValue) {
 
             /** @var Order $objOrder */
             if (($objOrder = Order::findByPk($dc->id)) !== null) {

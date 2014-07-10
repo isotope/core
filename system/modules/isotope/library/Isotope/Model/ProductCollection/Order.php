@@ -345,6 +345,8 @@ class Order extends ProductCollection implements IsotopeProductCollection
                 $objCallback->$callback[1]($this, $intOldStatus, $objNewStatus);
             }
         }
+
+        return true;
     }
 
 
