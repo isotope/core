@@ -51,7 +51,7 @@ class RelatedProducts extends ProductList
             return $objTemplate->parse();
         }
 
-        if (!\Haste\Input\Input::getAutoItem('product')) {
+        if (!\Haste\Input\Input::getAutoItem('product', false, true)) {
             return '';
         }
 

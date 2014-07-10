@@ -15,6 +15,7 @@ Version 2.1.4-stable (2014-??-??)
 - Creating attributes in DCA caused fatal error (#1166)
 - Invalid input in related products field caused database exception (#1158)
 - Allow payment modules to change postsale parameters "mod" and "id" (#1137)
+- Improved URL input handling to generate 404 pages when using folder URLs (#1131)
 
 
 Version 2.1.3-stable (2014-06-30)
