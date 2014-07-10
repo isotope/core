@@ -258,8 +258,7 @@ class Order extends ProductCollection implements IsotopeProductCollection
 
     /**
      * Update the status of this order and trigger actions (email & hook)
-     * @param int
-     * @param bool
+     * @param int $intNewStatus
      * @return bool
      */
     public function updateOrderStatus($intNewStatus)
@@ -269,6 +268,7 @@ class Order extends ProductCollection implements IsotopeProductCollection
             return true;
         }
 
+        /** @var OrderStatus $objNewStatus */
         $objNewStatus = OrderStatus::findByPk($intNewStatus);
 
         if (null === $objNewStatus) {
@@ -307,6 +307,7 @@ class Order extends ProductCollection implements IsotopeProductCollection
 
             $blnNotificationError = true;
 
+            /** @var Notification $objNotification */
             if (($objNotification = Notification::findByPk($objNewStatus->notification)) !== null) {
                 $arrResult = $objNotification->send($arrTokens, $this->language);
 

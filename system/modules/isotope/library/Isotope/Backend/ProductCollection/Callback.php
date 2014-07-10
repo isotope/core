@@ -30,6 +30,7 @@ class Callback extends \Backend
      */
     public function getOrderLabel($row, $label, \DataContainer $dc, $args)
     {
+        /** @var Order $objOrder */
         $objOrder = Order::findByPk($row['id']);
 
         if (null === $objOrder) {
@@ -48,8 +49,9 @@ class Callback extends \Backend
 
         $args[3] = Isotope::formatPriceWithCurrency($row['grandTotal']);
 
-        if (null !== $objOrder->getRelated('order_status')) {
-            $args[4] = '<span style="' . $objOrder->getRelated('order_status')->getColorStyles() . '">' . $objOrder->getStatusLabel() . '</span>';
+        /** @var \Isotope\Model\OrderStatus $objStatus */
+        if (($objStatus = $objOrder->getRelated('order_status')) !== null) {
+            $args[4] = '<span style="' . $objStatus->getColorStyles() . '">' . $objOrder->getStatusLabel() . '</span>';
         } else {
             $args[4] = '<span>' . $objOrder->getStatusLabel() . '</span>';
         }
@@ -64,7 +66,7 @@ class Callback extends \Backend
      * @param   string
      * @return  string
      */
-    public function generateOrderDetails($dc, $xlabel)
+    public function generateOrderDetails($dc)
     {
         $objOrder = \Database::getInstance()->execute("SELECT * FROM tl_iso_product_collection WHERE id=" . $dc->id);
 
@@ -89,7 +91,7 @@ class Callback extends \Backend
      * @return      string
      * @deprecated  we should probably remove this in 3.0 as it does no longer make sense
      */
-    public function generateEmailData($dc, $xlabel)
+    public function generateEmailData($dc)
     {
         $objOrder = Order::findByPk($dc->id);
 
@@ -140,8 +142,9 @@ class Callback extends \Backend
      * @param   string
      * @return  string
      */
-    public function generateBillingAddressData($dc, $xlabel)
+    public function generateBillingAddressData($dc)
     {
+        /** @var Order $objOrder */
         $objOrder = Order::findByPk($dc->id);
 
         return $this->generateAddressData((null === $objOrder) ? null : $objOrder->getBillingAddress());
@@ -154,8 +157,9 @@ class Callback extends \Backend
      * @param   string
      * @return  string
      */
-    public function generateShippingAddressData($dc, $xlabel)
+    public function generateShippingAddressData($dc)
     {
+        /** @var Order $objOrder */
         $objOrder = Order::findByPk($dc->id);
 
         return $this->generateAddressData((null === $objOrder) ? null : $objOrder->getShippingAddress());
@@ -211,7 +215,7 @@ class Callback extends \Backend
      * @param   object
      * @return  void
      */
-    public function checkPermission($dc)
+    public function checkPermission()
     {
         $this->import('BackendUser', 'User');
 
@@ -270,6 +274,8 @@ class Callback extends \Backend
         $objOrder = Order::findByPk($dc->id);
 
         if (null !== $objOrder) {
+
+            /** @var \Isotope\Interfaces\IsotopePayment $objPayment */
             $objPayment = $objOrder->getRelated('payment_id');
 
             if (null !== $objPayment) {
@@ -305,6 +311,8 @@ class Callback extends \Backend
         $objOrder = Order::findByPk($dc->id);
 
         if (null !== $objOrder) {
+
+            /** @var \Isotope\Interfaces\IsotopeShipping $objShipping */
             $objShipping = $objOrder->getRelated('shipping_id');
 
             if (null !== $objShipping) {
@@ -338,6 +346,7 @@ class Callback extends \Backend
             // Set current config
             Isotope::setConfig($objConfig);
 
+            /** @var \Isotope\Interfaces\IsotopeDocument $objDocument */
             if (($objDocument = Document::findByPk(\Input::post('document'))) === null) {
                 \Message::addError('Could not find document id.');
                 \Controller::redirect($strRedirectUrl);
@@ -401,6 +410,8 @@ class Callback extends \Backend
     public function updateOrderStatus($varValue, $dc)
     {
         if ($dc->activeRecord && $dc->activeRecord->status != $varValue) {
+
+            /** @var Order $objOrder */
             if (($objOrder = Order::findByPk($dc->id)) !== null) {
                 // Status update has been cancelled, do not update
                 if (!$objOrder->updateOrderStatus($varValue)) {
