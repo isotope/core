@@ -18,6 +18,7 @@ Version 2.1.4-stable (2014-??-??)
 - Improved URL input handling to generate 404 pages when using folder URLs (#1131)
 - Order status was not always updated correctly in the backend (#1172)
 - Product downloads were not counted so the limit was not applied (#1164)
+- Total sales summary was always the last value in the column (#1163)
 
 
 Version 2.1.3-stable (2014-06-30)
