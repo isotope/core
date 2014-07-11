@@ -89,7 +89,7 @@ window.addEvent('domready', function() {
     window.xchart_report = new xChart('line-dotted', {
         'xScale':'ordinal',
         'yScale':'linear',
-        'main': JSON.decode('<?php echo json_encode(array_values($this->chart)); ?>'),
+        'main': <?php echo json_encode(array_values($this->chart)); ?>
     }, '#report-data');
 });
 </script>
