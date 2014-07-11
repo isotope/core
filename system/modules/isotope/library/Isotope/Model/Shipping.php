@@ -12,7 +12,6 @@
 
 namespace Isotope\Model;
 
-use Haste\Units\Mass\Scale;
 use Haste\Units\Mass\Weight;
 use Isotope\Interfaces\IsotopeProductCollection;
 use Isotope\Isotope;
