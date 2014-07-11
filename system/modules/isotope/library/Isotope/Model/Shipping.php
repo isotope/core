@@ -93,6 +93,11 @@ abstract class Shipping extends TypeAgent
             return false;
         }
 
+        $arrConfigs = deserialize($this->config_ids);
+        if (is_array($arrConfigs) && !empty($arrConfigs) && !in_array(Isotope::getConfig()->id, $arrConfigs)) {
+            return false;
+        }
+
         $objAddress = Isotope::getCart()->getShippingAddress();
 
         $arrCountries = deserialize($this->countries);
