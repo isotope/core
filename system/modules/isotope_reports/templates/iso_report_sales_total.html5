@@ -90,7 +90,16 @@ window.addEvent('domready', function() {
         'xScale':'ordinal',
         'yScale':'linear',
         'main': <?php echo json_encode(array_values($this->chart)); ?>
-    }, '#report-data');
+    }, '#report-data', {
+        tickFormatX: function(x) {
+            // Timestamp, convert to day to fix sorting
+            if (x == parseInt(x, 10)) {
+                return new Date(x*1000).format('%d.%m.%y');
+            }
+
+            return x;
+        }
+    });
 });
 </script>
 <ul class="currencies">

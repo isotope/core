@@ -232,7 +232,7 @@ class SalesTotal extends Sales
         {
             foreach ($arrCurrencies as $currency)
             {
-                $arrData[$currency]['data'][date($privateDate, $intStart)]['x'] = $this->parseDate($publicDate, $intStart);
+                $arrData[$currency]['data'][date($privateDate, $intStart)]['x'] = ($strPeriod == 'day' ? $intStart : $this->parseDate($publicDate, $intStart));
                 $arrData[$currency]['data'][date($privateDate, $intStart)]['y'] = 0;
             }
 
