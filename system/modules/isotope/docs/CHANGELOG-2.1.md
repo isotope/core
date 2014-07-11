@@ -17,6 +17,7 @@ Version 2.1.4-stable (2014-??-??)
 - Allow payment modules to change postsale parameters "mod" and "id" (#1137)
 - Improved URL input handling to generate 404 pages when using folder URLs (#1131)
 - Order status was not always updated correctly in the backend (#1172)
+- Product downloads were not counted so the limit was not applied (#1164)
 
 
 Version 2.1.3-stable (2014-06-30)

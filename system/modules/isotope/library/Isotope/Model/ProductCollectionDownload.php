@@ -46,7 +46,7 @@ class ProductCollectionDownload extends \Model
      */
     protected function download($strFile)
     {
-        if (TL_MODE != 'FE' && $this->downloads_remaining !== '') {
+        if (TL_MODE == 'FE' && $this->downloads_remaining !== '') {
             \Database::getInstance()->prepare("UPDATE " . static::$strTable . " SET downloads_remaining=(downloads_remaining-1) WHERE id=?")->execute($this->id);
         }
 
@@ -114,7 +114,7 @@ class ProductCollectionDownload extends \Model
                 'meta'          => $arrMeta,
                 'extension'     => $objFile->extension,
                 'path'          => $objFile->dirname,
-                'remaining'     => ($objDownload->downloads_allowed > 0 ? sprintf($GLOBALS['TL_LANG']['MSC']['downloadsRemaining'], intval($objDownload->downloads_remaining)) : ''),
+                'remaining'     => ($objDownload->downloads_allowed > 0 ? sprintf($GLOBALS['TL_LANG']['MSC']['downloadsRemaining'], intval($this->downloads_remaining)) : ''),
                 'downloadable'  => ($blnOrderPaid && $this->canDownload()),
             );
         }
