@@ -20,6 +20,7 @@ Version 2.1.4-stable (2014-??-??)
 - Product downloads were not counted so the limit was not applied (#1164)
 - Total sales summary was always the last value in the column (#1163)
 - Sales total chart was broken when reporting days within multiple months (#1163)
+- Address book module did not display widget errors (#1176)
 
 
 Version 2.1.3-stable (2014-06-30)

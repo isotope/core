@@ -219,8 +219,6 @@ class AddressBook extends Module
             return true;
         });
 
-        $objForm->addToTemplate($this->Template);
-
         if ($objForm->isSubmitted()) {
             if ($objForm->validate()) {
                 $objAddress->save();
@@ -240,6 +238,8 @@ class AddressBook extends Module
                 $this->Template->hasError = true;
             }
         }
+
+        $objForm->addToTemplate($this->Template);
 
         // Add groups
         $arrGroups   = array();
