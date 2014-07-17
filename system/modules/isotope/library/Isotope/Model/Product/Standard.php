@@ -623,12 +623,14 @@ class Standard extends Product implements IsotopeProduct, WeightAggregate
      */
     protected function generateProductOptionWidget($strField, &$arrVariantOptions)
     {
+        /** @var IsotopeAttribute $objAttribute */
         $objAttribute = $GLOBALS['TL_DCA']['tl_iso_product']['attributes'][$strField];
         $arrData      = $GLOBALS['TL_DCA']['tl_iso_product']['fields'][$strField];
 
+        /** @var \Widget $strClass */
         $strClass = $objAttribute->getFrontendWidget();
 
-        $arrData['eval']['required']  = $arrData['eval']['mandatory'];
+        $arrData['eval']['required'] = $arrData['eval']['mandatory'];
 
         // Value can be predefined in the URL, e.g. to preselect a variant
         if (\Input::get($strField) != '') {

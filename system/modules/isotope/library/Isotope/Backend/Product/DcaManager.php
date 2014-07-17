@@ -13,6 +13,7 @@
 namespace Isotope\Backend\Product;
 
 use Haste\Util\Format;
+use Isotope\Interfaces\IsotopeAttribute;
 use Isotope\Interfaces\IsotopeAttributeForVariants;
 use Isotope\Model\Attribute;
 use Isotope\Model\Group;
@@ -236,6 +237,7 @@ class DcaManager extends \Backend
 
         $arrTypes      = array();
         $arrFields     = &$GLOBALS['TL_DCA']['tl_iso_product']['fields'];
+        /** @var IsotopeAttribute[] $arrAttributes */
         $arrAttributes = &$GLOBALS['TL_DCA']['tl_iso_product']['attributes'];
 
         $blnVariants     = false;

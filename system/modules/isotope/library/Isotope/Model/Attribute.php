@@ -164,7 +164,7 @@ abstract class Attribute extends TypeAgent
             $arrField['foreignKey'] = $this->parseForeignKey($this->foreignKey, $GLOBALS['TL_LANGUAGE']);
             $arrField['eval']['includeBlankOption'] = true;
             unset($arrField['options']);
-            
+
         } else {
             switch ($this->optionsSource) {
                 case 'foreignKey':

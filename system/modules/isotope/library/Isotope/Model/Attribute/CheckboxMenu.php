@@ -39,7 +39,7 @@ class CheckboxMenu extends Attribute implements IsotopeAttribute, IsotopeAttribu
 
     /**
      * Set SQL field for this attribute
-     * @param   arary
+     * @param   array
      */
     public function saveToDCA(array &$arrData)
     {
