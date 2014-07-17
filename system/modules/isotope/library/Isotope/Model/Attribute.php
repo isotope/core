@@ -23,8 +23,22 @@ use Isotope\Translation;
 /**
  * Attribute represents a product attribute in Isotope eCommerce
  *
- * @copyright  Isotope eCommerce Workgroup 2009-2012
- * @author     Andreas Schempp <andreas.schempp@terminal42.ch>
+ * @property int           id
+ * @property int           tstamp
+ * @property string        name
+ * @property string        field_name
+ * @property string        type
+ * @property string        description
+ * @property bool          variant_option
+ * @property bool          customer_defined
+ * @property string        optionsSource
+ * @property string|array  options
+ * @property string        foreignKey
+ * @property bool          be_search
+ * @property bool          be_filter
+ * @property bool          multiple
+ * @property int           size
+ * @property bool          includeBlankOption
  */
 abstract class Attribute extends TypeAgent
 {
@@ -264,8 +278,11 @@ abstract class Attribute extends TypeAgent
 
     /**
      * Generate HTML markup of product data for this attribute
-     * @param   IsotopeProduct
-     * @param   array
+     *
+     * @param   IsotopeProduct $objProduct
+     * @param   array          $arrOptions
+     *
+     * @return string
      */
     public function generate(IsotopeProduct $objProduct, array $arrOptions = array())
     {
