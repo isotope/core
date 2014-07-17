@@ -126,11 +126,15 @@ abstract class Attribute extends TypeAgent
 
         $arrField['label']                          = Translation::get(array($this->name, $this->description));
         $arrField['exclude']                        = true;
-        $arrField['inputType']                      = array_search($this->getBackendWidget(), $GLOBALS['BE_FFL']);
+        $arrField['inputType']                      = '';
         $arrField['attributes']                     = $this->row();
         $arrField['attributes']['variant_option']   = (/* @todo in 3.0: $this instanceof IsotopeAttributeForVariants && */$this->isVariantOption());
         $arrField['attributes']['customer_defined'] = $this->isCustomerDefined();
         $arrField['eval']                           = is_array($arrField['eval']) ? array_merge($arrField['eval'], $arrField['attributes']) : $arrField['attributes'];
+
+        if (!$this->isCustomerDefined()) {
+            $arrField['inputType'] = (string) array_search($this->getBackendWidget(), $GLOBALS['BE_FFL']);
+        }
 
         // Support numeric paths (fileTree)
         unset($arrField['eval']['path']);

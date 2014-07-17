@@ -293,8 +293,7 @@ class DcaManager extends \Backend
             foreach ($arrFields as $name => $arrField) {
                 if (in_array($name, $arrEnabled)) {
 
-                    // Do not show customer defined fields
-                    if (null !== $arrAttributes[$name] && $arrAttributes[$name]->isCustomerDefined()) {
+                    if ($arrField['inputType'] == '') {
                         continue;
                     }
 
