@@ -297,7 +297,7 @@ abstract class ProductCollection extends TypeAgent
 
     /**
      * Get billing address for collection
-     * @return  Address|null
+     * @return  \Isotope\Model\Address|null
      */
     public function getBillingAddress()
     {
