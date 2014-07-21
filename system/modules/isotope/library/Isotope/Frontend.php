@@ -258,7 +258,7 @@ class Frontend extends \Frontend
                 $objProduct = Product::findAvailableByPk($arrTag[2]);
             } else {
                 if (($objProduct = Product::getActive()) === null) {
-                    $objProduct = Product::findAvailableByIdOrAlias(\Haste\Input\Input::getAutoItem('product'));
+                    $objProduct = Product::findAvailableByIdOrAlias(\Haste\Input\Input::getAutoItem('product', false, true));
                 }
             }
 
@@ -278,12 +278,12 @@ class Frontend extends \Frontend
      */
     public function translateProductUrls($arrGet, $strLanguage, $arrRootPage)
     {
-        if (\Haste\Input\Input::getAutoItem('product') != '') {
-            $arrGet['url']['product'] = \Haste\Input\Input::getAutoItem('product');
-        } elseif (\Haste\Input\Input::getAutoItem('step') != '') {
-            $arrGet['url']['step'] = \Haste\Input\Input::getAutoItem('step');
-        } elseif (\Input::get('uid') != '') {
-            $arrGet['get']['uid'] = \Input::get('uid');
+        if (\Haste\Input\Input::getAutoItem('product', false, true) != '') {
+            $arrGet['url']['product'] = \Haste\Input\Input::getAutoItem('product', false, true);
+        } elseif (\Haste\Input\Input::getAutoItem('step', false, true) != '') {
+            $arrGet['url']['step'] = \Haste\Input\Input::getAutoItem('step', false, true);
+        } elseif (\Input::get('uid', false, true) != '') {
+            $arrGet['get']['uid'] = \Input::get('uid', false, true);
         }
 
         return $arrGet;
@@ -595,8 +595,8 @@ window.addEvent('domready', function()
      */
     public function addProductToBreadcrumb($arrItems, $objModule)
     {
-        if (\Haste\Input\Input::getAutoItem('product') != '') {
-            $objProduct = Product::findAvailableByIdOrAlias(\Haste\Input\Input::getAutoItem('product'));
+        if (\Haste\Input\Input::getAutoItem('product', false, true) != '') {
+            $objProduct = Product::findAvailableByIdOrAlias(\Haste\Input\Input::getAutoItem('product', false, true));
 
             if (null !== $objProduct) {
 
@@ -679,5 +679,21 @@ window.addEvent('domready', function()
         $GLOBALS['TL_LANGUAGE'] = $objPage->language;
 
         return $objPage;
+    }
+
+    /**
+     * Adjust module and module id for certain payment and/or shipping modules
+     * @param \Isotope\PostSale
+     */
+    public function setPostsaleModuleSettings(PostSale $objPostsale)
+    {
+        // Payment method "Payone"
+        $strParam = \Input::post('param');
+
+        if (strpos($strParam, 'paymentMethodPayone') !== false) {
+            $intId = (int) str_replace('paymentMethodPayone', '', $strParam);
+            $objPostsale->setModule('pay');
+            $objPostsale->setModuleId($intId);
+        }
     }
 }

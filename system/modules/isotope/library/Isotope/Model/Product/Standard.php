@@ -622,9 +622,11 @@ class Standard extends Product implements IsotopeProduct, WeightAggregate
      */
     protected function generateProductOptionWidget($strField, &$arrVariantOptions)
     {
+        /** @var \Isotope\Model\Attribute $objAttribute */
         $objAttribute = $GLOBALS['TL_DCA']['tl_iso_product']['attributes'][$strField];
         $arrData      = $GLOBALS['TL_DCA']['tl_iso_product']['fields'][$strField];
 
+        /** @var \Widget $strClass */
         $strClass = $objAttribute->getFrontendWidget();
 
         $arrData['eval']['required']  = $arrData['eval']['mandatory'];
@@ -649,7 +651,7 @@ class Standard extends Product implements IsotopeProduct, WeightAggregate
             $arrField = $strClass::getAttributesFromDca($arrData, $strField, $arrData['default']);
 
             // Remove options not available in any product variant
-            if (is_array($arrData['options'])) {
+            if (is_array($arrField['options'])) {
                 foreach ($arrField['options'] as $k => $option) {
 
                     // Keep groups and blankOptionLabels
@@ -689,7 +691,7 @@ class Standard extends Product implements IsotopeProduct, WeightAggregate
             }
         }
 
-
+        /** @var \Widget $objWidget */
         $objWidget = new $strClass($arrField);
 
         $objWidget->storeValues = true;
@@ -708,8 +710,13 @@ class Standard extends Product implements IsotopeProduct, WeightAggregate
 
                 // Convert date formats into timestamps
                 if ($varValue != '' && in_array($arrData['eval']['rgxp'], array('date', 'time', 'datim'))) {
-                    $objDate  = new \Date($varValue, $GLOBALS['TL_CONFIG'][$arrData['eval']['rgxp'] . 'Format']);
-                    $varValue = $objDate->tstamp;
+                    try {
+                        $objDate = new \Date($varValue, $GLOBALS['TL_CONFIG'][$arrData['eval']['rgxp'] . 'Format']);
+                        $varValue = $objDate->tstamp;
+                    } catch (\OutOfBoundsException $e) {
+                        $objWidget->addError(sprintf($GLOBALS['TL_LANG']['ERR'][$arrData['eval']['rgxp']], $GLOBALS['TL_CONFIG'][$arrData['eval']['rgxp'] . 'Format']));
+                    }
+
                 }
 
                 // Trigger the save_callback

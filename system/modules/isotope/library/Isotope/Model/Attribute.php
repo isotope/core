@@ -105,7 +105,7 @@ abstract class Attribute extends TypeAgent
         }
 
         $this->field_name  = $strName;
-        $this->type        = $this->getClassForModelType(get_called_class());
+        $this->type        = array_search(get_called_class(), static::getModelTypes());
         $this->name        = is_array($arrField['label']) ? $arrField['label'][0] : ($arrField['label'] ? : $strName);
         $this->description = is_array($arrField['label']) ? $arrField['label'][1] : '';
         $this->be_filter   = $arrField['filter'] ? '1' : '';
@@ -615,5 +615,29 @@ abstract class Attribute extends TypeAgent
         }
 
         return $arrFields;
+    }
+
+    /**
+     * Find all valid attributes
+     *
+     * @param array $arrOptions An optional options array
+     *
+     * @return \Isotope\Model\Attribute[]|null The model collection or null if the result is empty
+     */
+    public static function findValid(array $arrOptions=array())
+    {
+        $t = static::getTable();
+
+        // Allow to set custom option conditions
+        if (!isset($arrOptions['column'])) {
+            $arrOptions['column'] = array();
+        } elseif (!is_array($arrOptions['column'])) {
+            $arrOptions['column'] = $t.'.'.$arrOptions['column'].'=?';
+        }
+
+        $arrOptions['column'][] = "$t.type!=''";
+        $arrOptions['column'][] = "$t.field_name!=''";
+
+        return static::findAll($arrOptions);
     }
 }
