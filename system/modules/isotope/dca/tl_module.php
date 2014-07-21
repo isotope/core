@@ -34,6 +34,7 @@ $GLOBALS['TL_DCA']['tl_module']['palettes']['iso_cumulativefilter']     = '{titl
 $GLOBALS['TL_DCA']['tl_module']['palettes']['iso_addressbook']          = '{title_legend},name,headline,type;{template_legend},customTpl,memberTpl,tableless,iso_includeMessages;{protected_legend:hide},protected;{expert_legend:hide},guests,cssID,space';
 $GLOBALS['TL_DCA']['tl_module']['palettes']['iso_relatedproducts']      = '{title_legend},name,headline,type;{config_legend},iso_related_categories,numberOfItems,perPage;{redirect_legend},iso_addProductJumpTo;{template_legend:hide},customTpl,iso_list_layout,iso_gallery,iso_cols,iso_use_quantity,iso_includeMessages,iso_emptyMessage,iso_buttons;{protected_legend:hide},protected;{expert_legend:hide},guests,cssID,space';
 $GLOBALS['TL_DCA']['tl_module']['palettes']['iso_messages']             = '{title_legend},name,headline,type;{protected_legend:hide},protected;{expert_legend:hide},guests,cssID,space';
+$GLOBALS['TL_DCA']['tl_module']['palettes']['iso_shipping_calculator']  = '{title_legend},name,headline,type;{config_legend},iso_shipping_modules,iso_shippingAddressFields;{protected_legend:hide},protected;{expert_legend:hide},guests,cssID,space';
 
 
 /**
@@ -540,6 +541,31 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['iso_continueShopping'] = array
     'inputType'                 => 'checkbox',
     'eval'                      => array('tl_class'=>'w50'),
     'sql'                       => "char(1) NOT NULL default ''",
+);
+
+$GLOBALS['TL_DCA']['tl_module']['fields']['iso_shippingAddressFields'] = array
+(
+    'label'                     => &$GLOBALS['TL_LANG']['tl_module']['iso_shippingAddressFields'],
+    'exclude'                   => true,
+    'inputType'                 => 'checkbox',
+    'options_callback'          => function() {
+            $arrOptions = array();
+            $this->loadDataContainer(\Isotope\Model\Address::getTable());
+            \System::loadLanguageFile(\Isotope\Model\Address::getTable());
+            $arrDCA = &$GLOBALS['TL_DCA'][\Isotope\Model\Address::getTable()]['fields'];
+
+            foreach ($arrDCA as $k => $arrField) {
+                if (!$arrField['eval']['feEditable']) {
+                    continue;
+                }
+
+                $arrOptions[$k] = $arrField['label'][0];
+            }
+
+            return $arrOptions;
+        },
+    'eval'                      => array('multiple'=>true, 'tl_class'=>'clr'),
+    'sql'                       => "blob NULL"
 );
 
 $GLOBALS['TL_DCA']['tl_module']['fields']['iso_productcache'] = array
