@@ -54,7 +54,7 @@ abstract class Base extends \System
         ) {
             \Database::getInstance()->query("
                 ALTER TABLE $strTable
-                CHANGE COLUMN `$strOldField` `$strNewField` " . $this->getSqlForField($strField, $strTable)
+                CHANGE COLUMN `$strOldField` `$strNewField` " . $this->getSqlForField($strNewField, $strTable)
             );
 
             return true;
@@ -74,7 +74,7 @@ abstract class Base extends \System
     private function getSqlForField($strField, $strTable)
     {
         \Controller::loadDataContainer($strTable);
-        $strSql = (string) $GLOBALS['TL_DCA'][$strTable][$strField]['sql'];
+        $strSql = (string) $GLOBALS['TL_DCA'][$strTable]['fields'][$strField]['sql'];
 
         if ($strSql == '') {
             throw new \LogicException('Field "'.$strField.'" is not defined in "'.$strTable.'"');

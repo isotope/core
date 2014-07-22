@@ -19,7 +19,7 @@ class To0020020000 extends Base
     public function run($blnInstalled)
     {
         if ($blnInstalled) {
-            $this->createDatabaseField('optionsSource', 'tl_iso_attributes');
+            $this->createDatabaseField('optionsSource', 'tl_iso_attribute');
 
             \Database::getInstance()->query("UPDATE tl_iso_attribute SET optionsSource='foreignKey' WHERE foreignKey!=''");
             \Database::getInstance()->query("UPDATE tl_iso_attribute SET optionsSource='attribute' WHERE optionsSource=''");
