@@ -17,13 +17,20 @@ interface IsotopeAttributeWithOptions extends IsotopeAttribute
 
     /**
      * Adjust the attribute option wizard for this widget
+     *
+     * @param \Widget $objWidget
+     * @param array   $arrColumns
+     *
      * @return  array
      */
     public function prepareOptionsWizard($objWidget, $arrColumns);
 
     /**
      * Get field options
+     *
+     * @param   IsotopeProduct|null $objProduct
+     *
      * @return  array
      */
-    public function getOptions();
+    public function getOptions(IsotopeProduct $objProduct = null);
 }
