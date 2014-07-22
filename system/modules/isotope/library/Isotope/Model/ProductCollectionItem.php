@@ -78,9 +78,10 @@ class ProductCollectionItem extends \Model
             return false;
         }
 
-        $arrOptions = $this->getOptions();
+        $arrConfig = $this->getConfiguration();
+        // @todo change to ->getConfiguration() in Isotope 3.0
         foreach ($this->getProduct()->getOptions() as $k => $v) {
-            if ($arrOptions[$k] !== $v) {
+            if ($arrConfig[$k] !== $v) {
                 return false;
             }
         }
@@ -108,6 +109,9 @@ class ProductCollectionItem extends \Model
 
     /**
      * Get the product related to this item
+     *
+     * @param bool $blnNoCache
+     *
      * @return  \Isotope\Interfaces\IsotopeProduct|null
      */
     public function getProduct($blnNoCache = false)
