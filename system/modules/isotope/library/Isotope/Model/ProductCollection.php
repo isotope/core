@@ -837,7 +837,7 @@ abstract class ProductCollection extends TypeAgent
             $objItem->product_id     = $objProduct->{$objProduct->getPk()};
             $objItem->sku            = (string) $objProduct->sku;
             $objItem->name           = (string) $objProduct->name;
-            $objItem->options        = $objProduct->getOptions();
+            $objItem->configuration  = $objProduct->getOptions(); // @todo use getConfiguration or similar in Isotope 3.0
             $objItem->quantity       = (int) $intQuantity;
             $objItem->price          = (float) ($objProduct->getPrice($this) ? $objProduct->getPrice($this)->getAmount((int) $intQuantity) : 0);
             $objItem->tax_free_price = (float) ($objProduct->getPrice($this) ? $objProduct->getPrice($this)->getNetAmount((int) $intQuantity) : 0);
