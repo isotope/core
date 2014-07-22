@@ -89,40 +89,37 @@ class ShippingCalculator extends Module
      */
     protected function compile()
     {
-        $this->Template->formSubmitted = false;
         $this->Template->requiresShipping = true;
-        $this->Template->freeShippingMsg = 'You will get free shipping!'; // @todo translate label
+        $this->Template->showResults = false;
 
         $this->createForm();
 
         if (!$this->objForm->validate()) {
-            // Form
             $this->Template->form = $this->objForm->generate();
             return;
         }
 
-        $this->Template->formSubmitted = true;
+        $this->Template->showResults = true;
 
         $this->createTemporaryShippingAddress();
         Isotope::getCart()->setShippingAddress($this->objTempAddress);
 
         if (!Isotope::getCart()->requiresShipping()) {
             $this->Template->requiresShipping = false;
+            $this->Template->noShippingRequiredMsg = 'You will get free shipping for the shipping address details you provided!'; // @todo translate label
+            $this->Template->form = $this->objForm->generate();
+            Isotope::getCart()->setShippingAddress(null);
             return;
         }
 
         $arrMethods = array();
-        $fltTotal = 0;
         $objShippingMethods = Shipping::findMultipleByIds($this->arrShippingMethods);
 
         /* @var $objShipping Shipping */
         foreach ($objShippingMethods as $objShipping) {
             if ($objShipping->isAvailable()) {
 
-                // @todo this is wrong because it will list single shipping methods
-                // instead of e.g. grouping them together for the group method
-                // check the routine in the order
-                $fltTotal += $fltPrice = $objShipping->getPrice();
+                $fltPrice = $objShipping->getPrice();
 
                 // @todo shall we skip if 0?
                 $arrMethods[] = array(
@@ -135,15 +132,14 @@ class ShippingCalculator extends Module
         }
 
         if (empty($arrMethods)) {
-            $this->Template->requiresShipping = false;
+            $this->Template->msg = $GLOBALS['TL_LANG']['MSC']['noShippingModules'];
         }
 
         RowClass::withKey('rowClass')->addCount('row_')->addFirstLast('row_')->addEvenOdd('row_')->applyTo($arrMethods);
-        $this->Template->shippingMethods = $arrMethods;
 
-        // Totals
-        $this->Template->total = $fltTotal;
-        $this->Template->formatted_total = Isotope::formatPriceWithCurrency($fltTotal);
+        $this->Template->showResults = true;
+        $this->Template->availableShippingMethodsMsg = 'The following shipping methods are available for the shipping address details you provided:'; // @todo translate label
+        $this->Template->shippingMethods = $arrMethods;
 
         // Form
         $this->Template->form = $this->objForm->generate();

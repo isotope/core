@@ -6,18 +6,13 @@
 <<?php echo $this->hl; ?>><?php echo $this->headline; ?></<?php echo $this->hl; ?>>
 <?php endif; ?>
 
+<?php echo $this->form; ?>
+
 <?php if ($this->requiresShipping): ?>
 
-    <?php echo $this->form; ?>
-
-    <?php if ($this->formSubmitted): ?>
+    <?php if ($this->showResults): ?>
+    <p class="info available_shipping_methods"><?php echo $this->availableShippingMethodsMsg; ?></p>
     <table>
-        <tfoot>
-        <tr class="foot_0 foot_first foot_last total">
-            <td class="col_first">Total</td>
-            <td class="col_last"><?php echo $this->formatted_total; ?></td>
-        </tr>
-        </tfoot>
         <tbody>
         <?php foreach ($this->shippingMethods as $method): $i=0; ?>
         <tr class="<?php echo $method['rowClass']; ?>">
@@ -31,7 +26,7 @@
 
 <?php else: ?>
 
-<p class="info free_shipping"><?php echo $this->freeShippingMsg; ?></p>
+<p class="info no_shipping_required"><?php echo $this->noShippingRequiredMsg; ?></p>
 
 <?php endif; ?>
 </div>
