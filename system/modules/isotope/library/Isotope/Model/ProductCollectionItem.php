@@ -12,6 +12,10 @@
 
 namespace Isotope\Model;
 
+use Haste\Data\Plain;
+use Haste\Haste;
+use Haste\Util\Format;
+
 
 /**
  * ProductCollectionItem represents an item in a product collection.
@@ -173,7 +177,9 @@ class ProductCollectionItem extends \Model
      */
     public function getOptions()
     {
-        return $this->getConfiguration();
+        $arrConfig = deserialize($this->configuration);
+
+        return is_array($arrConfig) ? $arrConfig : array();
     }
 
     /**
@@ -185,7 +191,31 @@ class ProductCollectionItem extends \Model
     {
         $arrConfig = deserialize($this->configuration);
 
-        return is_array($arrConfig) ? $arrConfig : array();
+        if (!is_array($arrConfig)) {
+            return array();
+        }
+
+        if ($this->hasProduct()) {
+            Product::setActive($this->getProduct());
+        }
+
+        foreach ($arrConfig as $k => $v) {
+            $arrConfig[$k] = new Plain($v, $k);
+
+            if ($this->hasProduct()) {
+                $arrConfig[$k]['label'] = Format::dcaLabel($this->getProduct()->getTable(), $k);
+                $arrConfig[$k]['formatted'] = Haste::getInstance()->call(
+                    'replaceInsertTags',
+                    Format::dcaValue($this->getProduct()->getTable(), $k, $v)
+                );
+            }
+        }
+
+        if ($this->hasProduct()) {
+            Product::unsetActive();
+        }
+
+        return $arrConfig;
     }
 
     /**
