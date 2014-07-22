@@ -16,9 +16,20 @@ namespace Isotope\Model;
 /**
  * ProductCollectionItem represents an item in a product collection.
  *
- * @copyright  Isotope eCommerce Workgroup 2009-2012
- * @author     Andreas Schempp <andreas.schempp@terminal42.ch>
- */
+ * @property int    id
+ * @property int    pid
+ * @property int    tstamp
+ * @property int    product_id
+ * @property string type
+ * @property string sku
+ * @property string name
+ * @property mixed  configuration
+ * @property int    quantity
+ * @property float  price
+ * @property float  tax_free_price
+ * @property string tax_id
+ * @property int    jumpTo
+*/
 class ProductCollectionItem extends \Model
 {
 
@@ -154,14 +165,24 @@ class ProductCollectionItem extends \Model
     /**
      * Get product options
      * @return  array
+     * @deprecated use getConfiguration
      */
     public function getOptions()
     {
-        $arrOptions = deserialize($this->options);
-
-        return is_array($arrOptions) ? $arrOptions : array();
+        return $this->getConfiguration();
     }
 
+    /**
+     * Get product configuration
+     *
+     * @return array
+     */
+    public function getConfiguration()
+    {
+        $arrConfig = deserialize($this->configuration);
+
+        return is_array($arrConfig) ? $arrConfig : array();
+    }
 
     /**
      * Get product price. Automatically falls back to the collection item table if product is not found.
