@@ -101,12 +101,13 @@ class ShippingCalculator extends Module
 
         $this->Template->showResults = true;
 
+        // @todo can we somehow create a temporary address without adding it to the database?
         $this->createTemporaryShippingAddress();
         Isotope::getCart()->setShippingAddress($this->objTempAddress);
 
         if (!Isotope::getCart()->requiresShipping()) {
             $this->Template->requiresShipping = false;
-            $this->Template->noShippingRequiredMsg = 'You will get free shipping for the shipping address details you provided!'; // @todo translate label
+            $this->Template->noShippingRequiredMsg = $GLOBALS['TL_LANG']['MSC']['noShippingRequiredMsg'];
             $this->Template->form = $this->objForm->generate();
             Isotope::getCart()->setShippingAddress(null);
             return;
@@ -121,7 +122,6 @@ class ShippingCalculator extends Module
 
                 $fltPrice = $objShipping->getPrice();
 
-                // @todo shall we skip if 0?
                 $arrMethods[] = array(
                     'label'             => $objShipping->getLabel(),
                     'price'             => $fltPrice,
@@ -138,7 +138,7 @@ class ShippingCalculator extends Module
         RowClass::withKey('rowClass')->addCount('row_')->addFirstLast('row_')->addEvenOdd('row_')->applyTo($arrMethods);
 
         $this->Template->showResults = true;
-        $this->Template->availableShippingMethodsMsg = 'The following shipping methods are available for the shipping address details you provided:'; // @todo translate label
+        $this->Template->availableShippingMethodsMsg = $GLOBALS['TL_LANG']['MSC']['availableShippingMethodsMsg'];
         $this->Template->shippingMethods = $arrMethods;
 
         // Form
@@ -173,7 +173,7 @@ class ShippingCalculator extends Module
         }
 
         $this->objForm->addFormField('submit', array(
-            'label'     => 'Check shipping costs', // @todo translate label
+            'label'     => $GLOBALS['TL_LANG']['MSC']['checkShippingCostsButton'],
             'inputType' => 'submit'
         ));
     }

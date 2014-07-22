@@ -187,6 +187,11 @@ $GLOBALS['TL_LANG']['MSC']['iso_orderCollectionBy']['desc_name']    = 'by produc
 $GLOBALS['TL_LANG']['MSC']['iso_orderCollectionBy']['asc_price']    = 'by price (ascending)';
 $GLOBALS['TL_LANG']['MSC']['iso_orderCollectionBy']['desc_price']   = 'by price (descending)';
 
+$GLOBALS['TL_LANG']['MSC']['noShippingRequiredMsg']             = 'None of the products in your cart require shipping!';
+$GLOBALS['TL_LANG']['MSC']['availableShippingMethodsMsg']       = 'The following shipping methods are available for the shipping address details you provided:';
+$GLOBALS['TL_LANG']['MSC']['checkShippingCostsButton']          = 'Check shipping costs';
+
+
 
 /**
  * Content elements
