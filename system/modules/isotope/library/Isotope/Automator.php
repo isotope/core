@@ -171,6 +171,8 @@ class Automator extends \Controller
         $intPurged = 0;
 
         if (null !== $objCollections) {
+
+            /** @var \Isotope\Model\ProductCollection $objCollection */
             foreach ($objCollections as $objCollection) {
                 if (!$objCollection->isLocked()) {
                     $objCollection->delete();

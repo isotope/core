@@ -127,7 +127,7 @@ $GLOBALS['TL_DCA']['tl_iso_shipping'] = array
     (
         '__selector__'              => array('type', 'protected'),
         'default'                   => '{title_legend},name,label,type',
-        'flat'                      => '{title_legend},name,label,type;{note_legend:hide},note;{price_legend},price,tax_class,flatCalculation;{config_legend},countries,subdivisions,postalCodes,minimum_total,maximum_total,minimum_weight,maximum_weight,weight_unit,product_types;{expert_legend:hide},guests,protected;{enabled_legend},enabled',
+        'flat'                      => '{title_legend},name,label,type;{note_legend:hide},note;{price_legend},price,tax_class,flatCalculation;{config_legend},countries,subdivisions,postalCodes,minimum_total,maximum_total,minimum_weight,maximum_weight,weight_unit,product_types,config_ids;{expert_legend:hide},guests,protected;{enabled_legend},enabled',
         'group'                     => '{title_legend},name,label,type;{note_legend:hide},note;{config_legend},group_methods;{price_legend},group_calculation,tax_class;{expert_legend:hide},guests,protected;{enabled_legend},enabled',
     ),
 
@@ -259,7 +259,17 @@ $GLOBALS['TL_DCA']['tl_iso_shipping'] = array
             'exclude'               => true,
             'inputType'             => 'select',
             'foreignKey'            => \Isotope\Model\ProductType::getTable().'.name',
-            'eval'                  => array('multiple'=>true, 'size'=>8, 'chosen'=>true, 'tl_class'=>'clr'),
+            'eval'                  => array('multiple'=>true, 'size'=>8, 'chosen'=>true, 'tl_class'=>'clr w50 w50h'),
+            'sql'                   => "blob NULL",
+            'relation'              => array('type'=>'hasMany', 'load'=>'lazy'),
+        ),
+        'config_ids' => array
+        (
+            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_shipping']['config_ids'],
+            'exclude'               => true,
+            'inputType'             => 'select',
+            'foreignKey'            => \Isotope\Model\Config::getTable().'.name',
+            'eval'                  => array('multiple'=>true, 'size'=>8, 'tl_class'=>'w50 w50h', 'chosen'=>true),
             'sql'                   => "blob NULL",
             'relation'              => array('type'=>'hasMany', 'load'=>'lazy'),
         ),

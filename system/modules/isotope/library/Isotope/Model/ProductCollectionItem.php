@@ -105,6 +105,7 @@ class ProductCollectionItem extends \Model
 
             $this->objProduct = null;
 
+            /** @var \Isotope\Model\Product $strClass */
             $strClass = Product::getClassForModelType($this->type);
 
             if ($strClass == '' || !class_exists($strClass)) {
@@ -151,7 +152,7 @@ class ProductCollectionItem extends \Model
 
 
     /**
-     * Get product options. Automatically falls back to the collection item table if product is not found.
+     * Get product options
      * @return  array
      */
     public function getOptions()

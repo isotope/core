@@ -64,6 +64,10 @@ class Cart extends ProductCollection implements IsotopeProductCollection
             $objAddress->country = (Isotope::getConfig()->billing_country ? : Isotope::getConfig()->country);
         }
 
+        $objAddress->pid = (int) $this->id;
+        $objAddress->ptable = 'tl_iso_product_collection';
+        $objAddress->isDefaultBilling = '1';
+
         return $objAddress;
     }
 
@@ -87,6 +91,10 @@ class Cart extends ProductCollection implements IsotopeProductCollection
             $objAddress          = new Address();
             $objAddress->country = Isotope::getConfig()->shipping_country;
         }
+
+        $objAddress->pid = (int) $this->id;
+        $objAddress->ptable = 'tl_iso_product_collection';
+        $objAddress->isDefaultShipping = '1';
 
         return $objAddress;
     }

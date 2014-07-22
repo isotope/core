@@ -75,7 +75,7 @@ class ProductFilter extends Module implements IsotopeFilterModule
         }
 
         // Hide product list in reader mode if the respective setting is enabled
-        if ($this->iso_hide_list && \Haste\Input\Input::getAutoItem('product') != '') {
+        if ($this->iso_hide_list && \Haste\Input\Input::getAutoItem('product', false, true) != '') {
             return '';
         }
 

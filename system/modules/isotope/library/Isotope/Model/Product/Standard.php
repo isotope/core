@@ -515,7 +515,7 @@ class Standard extends Product implements IsotopeProduct, WeightAggregate
                 return '';
             }
 
-            return $objPrice->generate($objProduct->getRelated('type')->showPriceTiers(), 1, $this->getOptions());
+            return $objPrice->generate($objProduct->getRelated('type')->showPriceTiers(), 1, $objProduct->getOptions());
         };
 
         $objTemplate->getGallery = function($strAttribute) use ($objProduct, $arrConfig, &$arrGalleries) {
@@ -652,7 +652,7 @@ class Standard extends Product implements IsotopeProduct, WeightAggregate
             $arrField = $strClass::getAttributesFromDca($arrData, $strField, $arrData['default']);
 
             // Remove options not available in any product variant
-            if (is_array($arrData['options'])) {
+            if (is_array($arrField['options'])) {
                 foreach ($arrField['options'] as $k => $option) {
 
                     // Keep groups and blankOptionLabels
@@ -693,7 +693,7 @@ class Standard extends Product implements IsotopeProduct, WeightAggregate
             }
         }
 
-
+        /** @var \Widget $objWidget */
         $objWidget = new $strClass($arrField);
 
         $objWidget->storeValues = true;
@@ -712,8 +712,13 @@ class Standard extends Product implements IsotopeProduct, WeightAggregate
 
                 // Convert date formats into timestamps
                 if ($varValue != '' && in_array($arrData['eval']['rgxp'], array('date', 'time', 'datim'))) {
-                    $objDate  = new \Date($varValue, $GLOBALS['TL_CONFIG'][$arrData['eval']['rgxp'] . 'Format']);
-                    $varValue = $objDate->tstamp;
+                    try {
+                        $objDate = new \Date($varValue, $GLOBALS['TL_CONFIG'][$arrData['eval']['rgxp'] . 'Format']);
+                        $varValue = $objDate->tstamp;
+                    } catch (\OutOfBoundsException $e) {
+                        $objWidget->addError(sprintf($GLOBALS['TL_LANG']['ERR'][$arrData['eval']['rgxp']], $GLOBALS['TL_CONFIG'][$arrData['eval']['rgxp'] . 'Format']));
+                    }
+
                 }
 
                 // Trigger the save_callback

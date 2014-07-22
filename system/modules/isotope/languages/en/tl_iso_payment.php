@@ -23,6 +23,7 @@ $GLOBALS['TL_LANG']['tl_iso_payment']['maximum_total']                          
 $GLOBALS['TL_LANG']['tl_iso_payment']['countries']                              = array('Available countries', 'Select the countries where this payment method may be used (customer\'s billing address).');
 $GLOBALS['TL_LANG']['tl_iso_payment']['shipping_modules']                       = array('Shipping methods', 'You can restrict this payment method to certain shipping methods (e.g. Cash only when picking up).');
 $GLOBALS['TL_LANG']['tl_iso_payment']['product_types']                          = array('Product types', 'You can restrict this payment method to certain product types. If the cart contains a product type you have not selected, the payment method is not available.');
+$GLOBALS['TL_LANG']['tl_iso_payment']['config_ids']                             = array('Store configurations', 'You can restrict this payment method to certain shop configurations.');
 $GLOBALS['TL_LANG']['tl_iso_payment']['price']                                  = array('Price', 'Enter a price or percent value (e.g. "10" or "10%").');
 $GLOBALS['TL_LANG']['tl_iso_payment']['tax_class']                              = array('Tax Class', 'Please select a tax class for the price.');
 $GLOBALS['TL_LANG']['tl_iso_payment']['trans_type']                             = array('Transaction type', 'Select if you want to instantly capture the money or authorize (and hold) for a later transaction (e.g. when shipping).');

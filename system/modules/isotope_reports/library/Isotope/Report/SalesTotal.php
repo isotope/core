@@ -85,13 +85,13 @@ class SalesTotal extends Sales
                 $arrData['rows'][$objData->dateGroup]['columns'][4]['value'] = array();
             }
 
-            $arrData['rows'][$objData->dateGroup]['columns'][4]['value'][$objData->currency] = $arrData['rows'][$objData->dateGroup]['columns'][3]['value'][$objData->currency] + $objData->total_sales;
+            $arrData['rows'][$objData->dateGroup]['columns'][4]['value'][$objData->currency] = $arrData['rows'][$objData->dateGroup]['columns'][4]['value'][$objData->currency] + $objData->total_sales;
 
             // Summary in the footer
             $arrData['footer'][1]['value'] += $objData->total_orders;
             $arrData['footer'][2]['value'] += $objData->total_products;
             $arrData['footer'][3]['value'] += $objData->total_items;
-            $arrData['footer'][4]['value'][$objData->currency] = ((float) $arrData['footer'][3]['value'][$objData->currency] + $objData->total_sales);
+            $arrData['footer'][4]['value'][$objData->currency] = ((float) $arrData['footer'][4]['value'][$objData->currency] + $objData->total_sales);
 
             // Generate chart data
             $arrChart[$objData->currency]['data'][$objData->dateGroup]['y'] = ((float) $arrChart['rows'][$objData->dateGroup]['columns'][$objData->currency]['value'] + $objData->total_sales);
@@ -232,7 +232,7 @@ class SalesTotal extends Sales
         {
             foreach ($arrCurrencies as $currency)
             {
-                $arrData[$currency]['data'][date($privateDate, $intStart)]['x'] = $this->parseDate($publicDate, $intStart);
+                $arrData[$currency]['data'][date($privateDate, $intStart)]['x'] = ($strPeriod == 'day' ? $intStart : $this->parseDate($publicDate, $intStart));
                 $arrData[$currency]['data'][date($privateDate, $intStart)]['y'] = 0;
             }
 
@@ -293,8 +293,13 @@ class SalesTotal extends Sales
         elseif (!is_numeric($arrSession[$this->name]['stop']))
         {
             // Convert date formats into timestamps
-            $objDate = new \Date($arrSession[$this->name]['stop'], $GLOBALS['TL_CONFIG']['dateFormat']);
-            $arrSession[$this->name]['stop'] = $objDate->tstamp;
+            try {
+                $objDate = new \Date($arrSession[$this->name]['stop'], $GLOBALS['TL_CONFIG']['dateFormat']);
+                $arrSession[$this->name]['stop'] = $objDate->tstamp;
+            } catch (\OutOfBoundsException $e) {
+                \Message::addError(sprintf($GLOBALS['TL_LANG']['ERR']['date'], $GLOBALS['TL_CONFIG']['dateFormat']));
+                $arrSession[$this->name]['stop'] = time();
+            }
         }
 
         if ($arrSession[$this->name]['start'] == '')
@@ -304,8 +309,13 @@ class SalesTotal extends Sales
         elseif (!is_numeric($arrSession[$this->name]['start']))
         {
             // Convert date formats into timestamps
-            $objDate = new \Date($arrSession[$this->name]['start'], $GLOBALS['TL_CONFIG']['dateFormat']);
-            $arrSession[$this->name]['start'] = $objDate->tstamp;
+            try {
+                $objDate = new \Date($arrSession[$this->name]['start'], $GLOBALS['TL_CONFIG']['dateFormat']);
+                $arrSession[$this->name]['start'] = $objDate->tstamp;
+            } catch (\OutOfBoundsException $e) {
+                \Message::addError(sprintf($GLOBALS['TL_LANG']['ERR']['date'], $GLOBALS['TL_CONFIG']['dateFormat']));
+                $arrSession[$this->name]['start'] = strtotime('-6 months');
+            }
         }
 
         \Session::getInstance()->set('iso_reports', $arrSession);

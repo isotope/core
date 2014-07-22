@@ -12,7 +12,6 @@
 
 namespace Isotope\Model;
 
-use Haste\Units\Mass\Scale;
 use Haste\Units\Mass\Weight;
 use Isotope\Interfaces\IsotopeProductCollection;
 use Isotope\Isotope;
@@ -90,6 +89,11 @@ abstract class Shipping extends TypeAgent
         }
 
         if (($maxWeight = Weight::createFromTimePeriod($this->maximum_weight)) !== null && $objScale->isMoreThan($maxWeight)) {
+            return false;
+        }
+
+        $arrConfigs = deserialize($this->config_ids);
+        if (is_array($arrConfigs) && !empty($arrConfigs) && !in_array(Isotope::getConfig()->id, $arrConfigs)) {
             return false;
         }
 

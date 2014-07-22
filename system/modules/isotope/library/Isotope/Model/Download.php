@@ -15,9 +15,6 @@ namespace Isotope\Model;
 
 /**
  * Download model represents a file or folder download for a product
- *
- * @copyright  Isotope eCommerce Workgroup 2009-2012
- * @author     Andreas Schempp <andreas.schempp@terminal42.ch>
  */
 class Download extends \Model
 {

@@ -98,6 +98,11 @@ abstract class Payment extends TypeAgent
             return false;
         }
 
+        $arrConfigs = deserialize($this->config_ids);
+        if (is_array($arrConfigs) && !empty($arrConfigs) && !in_array(Isotope::getConfig()->id, $arrConfigs)) {
+            return false;
+        }
+
         $arrCountries = deserialize($this->countries);
 
         if (is_array($arrCountries) && !empty($arrCountries) && !in_array(Isotope::getCart()->getBillingAddress()->country, $arrCountries)) {

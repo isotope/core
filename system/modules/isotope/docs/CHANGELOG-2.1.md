@@ -1,6 +1,28 @@
 Isotope eCommerce Changelog
 ===========================
 
+Version 2.1.4-stable (2014-07-21)
+---------------------------------
+
+### Improved
+- Product group view breadcrumb was not working, removed because it does not provide any useful functionality
+
+### Fixed
+- Database update trying to add attributes with no internal field name to database
+- Toggle group in popup picker did not work in Contao 3.3 (#1148)
+- Datepicker icons were missing in reports module in Contao 3.2 (#1161)
+- Invalid date input caused exceptions (#1162)
+- Creating attributes in DCA caused fatal error (#1166)
+- Invalid input in related products field caused database exception (#1158)
+- Allow payment modules to change postsale parameters "mod" and "id" (#1137)
+- Improved URL input handling to generate 404 pages when using folder URLs (#1131)
+- Order status was not always updated correctly in the backend (#1172)
+- Product downloads were not counted so the limit was not applied (#1164)
+- Total sales summary was always the last value in the column (#1163)
+- Sales total chart was broken when reporting days within multiple months (#1163)
+- Address book module did not display widget errors (#1176)
+
+
 Version 2.1.3-stable (2014-06-30)
 ---------------------------------
 
