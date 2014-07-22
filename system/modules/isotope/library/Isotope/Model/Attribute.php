@@ -190,15 +190,16 @@ abstract class Attribute extends TypeAgent
                     $arrOptions = \Database::getInstance()->execute("SELECT id AS value, {$arrKey[1]} AS label FROM {$arrKey[0]} ORDER BY label")->fetchAllAssoc();
                     break;
 
+                case '':
                 case 'attribute':
                     $arrOptions = deserialize($this->options);
                     break;
 
                 default:
-                    $arrOptions = array();
+                    throw new \UnexpectedValueException('Unknown options source "'.$this->optionsSource.'" for '.static::$strTable.'.'.$this->field_name);
             }
 
-            if (is_array($arrOptions) && !empty($arrOptions)) {
+            if (!empty($arrOptions) && is_array($arrOptions)) {
                 $arrField['default'] = array();
                 $arrField['options'] = array();
                 $arrField['eval']['isAssociative'] = true;
