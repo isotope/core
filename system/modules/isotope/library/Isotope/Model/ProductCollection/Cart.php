@@ -21,11 +21,10 @@ use Isotope\Model\ProductCollection;
 
 /**
  * Class Cart
- *
+
  * Provide methods to handle Isotope cart.
- * @copyright  Isotope eCommerce Workgroup 2009-2012
- * @author     Andreas Schempp <andreas.schempp@terminal42.ch>
- * @author     Fred Bliss <fred.bliss@intelligentspark.com>
+ *
+ * @property mixed id
  */
 class Cart extends ProductCollection implements IsotopeProductCollection
 {
