@@ -4,10 +4,10 @@
     <div class="remove"><a href="<?php echo $item['remove_href']; ?>" title="<?php echo $item['remove_title']; ?>"><?php echo $item['remove_link']; ?></a></div><?php endif; ?>
     <div class="name"><?php if($this->linkProducts && $item['href']): ?><a href="<?php echo $item['href']; ?>"><?php echo $item['name']; ?></a><?php else: ?><?php echo $item['name']; ?><?php endif; ?></div>
     <div class="info">
-        <?php if(!empty($item['options'])): ?>
+        <?php if(!empty($item['configuration'])): ?>
         <ul>
-        <?php foreach($item['options'] as $option): ?>
-            <li><strong><?php echo $option['label']; ?>:</strong> <?php echo $option['value']; ?></li>
+        <?php foreach($item['configuration'] as $value): ?>
+            <li><strong><?php echo $value['label']; ?>:</strong> <?php echo (string) $value; ?></li>
         <?php endforeach; ?>
         </ul>
         <?php endif; ?>

@@ -1306,6 +1306,7 @@ abstract class ProductCollection extends TypeAgent
             'sku'               => $objItem->getSku(),
             'name'              => $objItem->getName(),
             'options'           => Isotope::formatOptions($objItem->getOptions()),
+            'configuration'     => $objItem->getConfiguration(),
             'quantity'          => $objItem->quantity,
             'price'             => Isotope::formatPriceWithCurrency($objItem->getPrice()),
             'tax_free_price'    => Isotope::formatPriceWithCurrency($objItem->getTaxFreePrice()),
