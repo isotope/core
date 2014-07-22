@@ -92,6 +92,18 @@ abstract class ProductCollection extends TypeAgent
      */
     protected $objPayment = false;
 
+    /**
+     * Shipping address model
+     * @var \Isotope\Model\Address
+     */
+    protected $objShippingAddress = null;
+
+    /**
+     * Billing address model
+     * @var \Isotope\Model\Address
+     */
+    protected $objBillingAddress = null;
+
 
     /**
      * Constructor
@@ -322,6 +334,10 @@ abstract class ProductCollection extends TypeAgent
      */
     public function getBillingAddress()
     {
+        if ($this->objBillingAddress !== null) {
+            return $this->objBillingAddress;
+        }
+
         return $this->getRelated('billing_address_id');
     }
 
@@ -332,6 +348,8 @@ abstract class ProductCollection extends TypeAgent
      */
     public function setBillingAddress(Address $objAddress = null)
     {
+        $this->objBillingAddress = $objAddress;
+
         if (null === $objAddress || $objAddress->id < 1) {
             $this->billing_address_id = 0;
         } else {
@@ -346,7 +364,11 @@ abstract class ProductCollection extends TypeAgent
      */
     public function getShippingAddress()
     {
-        return $this->requiresShipping() ? $this->getRelated('shipping_address_id') : null;
+        if (!$this->requiresShipping()) {
+            return null;
+        }
+
+        return $this->objShippingAddress ?: $this->getRelated('shipping_address_id');
     }
 
     /**
@@ -356,6 +378,8 @@ abstract class ProductCollection extends TypeAgent
      */
     public function setShippingAddress(Address $objAddress = null)
     {
+        $this->objShippingAddress = $objAddress;
+
         if (null === $objAddress || $objAddress->id < 1) {
             $this->shipping_address_id = 0;
         } else {

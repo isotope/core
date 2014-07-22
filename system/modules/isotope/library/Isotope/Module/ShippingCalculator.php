@@ -41,19 +41,6 @@ class ShippingCalculator extends Module
     protected $arrShippingAddressFields = array();
 
     /**
-     * Form
-     * @var \Haste\Form\Form
-     */
-    protected $objForm = null;
-
-    /**
-     * Temporary address
-     * @var \Isotope\Model\Address
-     */
-    protected $objTempAddress = null;
-
-
-    /**
      * Display a wildcard in the back end
      * @return string
      */
@@ -92,23 +79,31 @@ class ShippingCalculator extends Module
         $this->Template->requiresShipping = true;
         $this->Template->showResults = false;
 
-        $this->createForm();
+        $objForm = $this->createForm();
 
-        if (!$this->objForm->validate()) {
-            $this->Template->form = $this->objForm->generate();
+        // Temporary address
+        $objAddress = new Address();
+        $objAddress->pid = Isotope::getCart()->id;
+        $objAddress->tstamp = time();
+        $objAddress->ptable = ProductCollection::getTable();
+
+        // Bind it to the form
+        $objForm->bindModel($objAddress);
+
+        if (!$objForm->validate()) {
+            $this->Template->form = $objForm->generate();
             return;
         }
 
         $this->Template->showResults = true;
 
-        // @todo can we somehow create a temporary address without adding it to the database?
-        $this->createTemporaryShippingAddress();
-        Isotope::getCart()->setShippingAddress($this->objTempAddress);
+        // Ad it to the cart
+        Isotope::getCart()->setShippingAddress($objAddress);
 
         if (!Isotope::getCart()->requiresShipping()) {
             $this->Template->requiresShipping = false;
             $this->Template->noShippingRequiredMsg = $GLOBALS['TL_LANG']['MSC']['noShippingRequiredMsg'];
-            $this->Template->form = $this->objForm->generate();
+            $this->Template->form = $objForm->generate();
             Isotope::getCart()->setShippingAddress(null);
             return;
         }
@@ -142,9 +137,9 @@ class ShippingCalculator extends Module
         $this->Template->shippingMethods = $arrMethods;
 
         // Form
-        $this->Template->form = $this->objForm->generate();
+        $this->Template->form = $objForm->generate();
 
-        $this->objTempAddress->delete();
+        // Reset shipping address
         Isotope::getCart()->setShippingAddress(null);
     }
 
@@ -156,7 +151,7 @@ class ShippingCalculator extends Module
         \System::loadLanguageFile(Address::getTable());
         $this->loadDataContainer(Address::getTable());
 
-        $this->objForm = new \Haste\Form\Form('iso_shipping_calculator_' . $this->id, 'POST', function($objHaste) {
+        $objForm = new \Haste\Form\Form('iso_shipping_calculator_' . $this->id, 'POST', function($objHaste) {
             return \Input::post('FORM_SUBMIT') === $objHaste->getFormId();
         });
 
@@ -169,35 +164,14 @@ class ShippingCalculator extends Module
             // override mandatory settings
             $arrDca['eval']['mandatory'] = $field['mandatory'];
 
-            $this->objForm->addFormField($field['value'], $arrDca);
+            $objForm->addFormField($field['value'], $arrDca);
         }
 
-        $this->objForm->addFormField('submit', array(
+        $objForm->addFormField('submit', array(
             'label'     => $GLOBALS['TL_LANG']['MSC']['checkShippingCostsButton'],
             'inputType' => 'submit'
         ));
-    }
 
-    /**
-     * Create a temptorary shipping address model so shipping methods can check
-     * if they are available or not
-     */
-    protected function createTemporaryShippingAddress()
-    {
-        if (!$this->objForm->validate()) {
-            return;
-        }
-
-        $objAddress = new Address();
-        $objAddress->pid = Isotope::getCart()->id;
-        $objAddress->tstamp = time();
-        $objAddress->ptable = ProductCollection::getTable();
-
-        foreach ($this->objForm->fetchAll() as $k => $v) {
-            $objAddress->{$k} = $v;
-        }
-
-        $objAddress->save();
-        $this->objTempAddress = $objAddress;
+        return $objForm;
     }
 }
