@@ -65,10 +65,10 @@ class Standard extends Product implements IsotopeProduct, WeightAggregate
     protected $arrVariantIds;
 
     /**
-     * Customer defined options
+     * Customer defined configuration
      * @var array
      */
-    protected $arrOptions = array();
+    protected $arrCustomerConfig = array();
 
     /**
      * Assigned categories (pages)
@@ -457,23 +457,54 @@ class Standard extends Product implements IsotopeProduct, WeightAggregate
     /**
      * Return all product options
      * @return  array
+     * @deprecated use getConfiguration
      */
     public function getOptions()
     {
-        if (!$this->hasVariants()) {
-            return $this->arrOptions;
-        }
-
-        $arrAttributes = array_intersect(array_merge($this->getAttributes(), $this->getVariantAttributes()), Attribute::getVariantOptionFields());
-        $arrOptions = array();
-
-        foreach (array_unique($arrAttributes) as $attribute) {
-            $arrOptions[$attribute] = $this->arrData[$attribute];
-        }
-
-        return array_merge($arrOptions, $this->arrOptions);
+        return $this->getConfiguration();
     }
 
+    /**
+     * Get the product configuration
+     * This includes customer defined fields and variant options
+     *
+     * @return array
+     */
+    public function getConfiguration()
+    {
+        return array_merge($this->getVariantConfig(), $this->getCustomerConfig());
+    }
+
+    /**
+     * Get customer defined field values
+     *
+     * @return array
+     */
+    public function getCustomerConfig()
+    {
+        return $this->arrCustomerConfig;
+    }
+
+    /**
+     * Get variant option field values
+     *
+     * @return array
+     */
+    public function getVariantConfig()
+    {
+        if (!$this->hasVariants()) {
+            return array();
+        }
+
+        $arrVariantConfig = array();
+        $arrAttributes = array_intersect($this->getVariantAttributes(), Attribute::getVariantOptionFields());
+
+        foreach (array_unique($arrAttributes) as $attribute) {
+            $arrVariantConfig[$attribute] = $this->arrData[$attribute];
+        }
+
+        return $arrVariantConfig;
+    }
 
     /**
      * Generate a product template
@@ -515,7 +546,7 @@ class Standard extends Product implements IsotopeProduct, WeightAggregate
                 return '';
             }
 
-            return $objPrice->generate($objProduct->getRelated('type')->showPriceTiers(), 1, $objProduct->getOptions());
+            return $objPrice->generate($objProduct->getRelated('type')->showPriceTiers(), 1, $objProduct->getConfiguration());
         };
 
         $objTemplate->getGallery = function($strAttribute) use ($objProduct, $arrConfig, &$arrGalleries) {
@@ -544,7 +575,6 @@ class Standard extends Product implements IsotopeProduct, WeightAggregate
                 $strWidget = $this->generateProductOptionWidget($attribute, $arrVariantOptions);
 
                 if ($strWidget != '') {
-                    $objTemplate->hasOptions       = true;
                     $arrProductOptions[$attribute] = array_merge($arrData, array
                     (
                         'name'    => $attribute,
@@ -589,7 +619,8 @@ class Standard extends Product implements IsotopeProduct, WeightAggregate
         $objTemplate->useQuantity      = $arrConfig['useQuantity'];
         $objTemplate->minimum_quantity = $this->getMinimumQuantity();
         $objTemplate->raw              = $this->arrData;
-        $objTemplate->raw_options      = $this->getOptions();
+        $objTemplate->raw_options      = $this->getConfiguration();
+        $objTemplate->configuration    = $this->getConfiguration();
         $objTemplate->href             = $this->generateUrl($arrConfig['jumpTo']);
         $objTemplate->label_detail     = $GLOBALS['TL_LANG']['MSC']['detailLabel'];
         $objTemplate->options          = $arrProductOptions;
@@ -741,7 +772,7 @@ class Standard extends Product implements IsotopeProduct, WeightAggregate
                     if (/* @todo in 3.0: $objAttribute instanceof IsotopeAttributeForVariants && */$objAttribute->isVariantOption()) {
                         $arrVariantOptions[$strField] = $varValue;
                     } else {
-                        $this->arrOptions[$strField] = $varValue;
+                        $this->arrCustomerConfig[$strField] = $varValue;
                     }
                 }
             }
@@ -975,7 +1006,7 @@ class Standard extends Product implements IsotopeProduct, WeightAggregate
         }
 
         return \Haste\Util\Url::addQueryString(
-            http_build_query($this->getOptions()),
+            http_build_query($this->getConfiguration()),
             \Controller::generateFrontendUrl($objJumpTo->row(), $strUrl, $objJumpTo->language)
         );
     }

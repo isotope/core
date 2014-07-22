@@ -101,8 +101,16 @@ interface IsotopeProduct
     /**
      * Return the product's options
      * @return  array
+     * @deprecated implement getConfiguration
      */
     public function getOptions();
+
+    /**
+     * Return the product's options
+     * @return  array
+     * @todo add in Isotope 3.0
+     */
+    //public function getConfiguration();
 
     /**
      * Generate a product template
