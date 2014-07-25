@@ -12,6 +12,7 @@
 
 namespace Isotope\Backend\ProductCollection;
 
+use \Haste\Haste;
 use Haste\Util\Format;
 use Isotope\Isotope;
 use Isotope\Model\Address;
@@ -80,7 +81,7 @@ class Callback extends \Backend
         \Input::setGet('uid', $objOrder->uniqid);
         $objModule = new \Isotope\Module\OrderDetails(\Database::getInstance()->execute("SELECT * FROM tl_module WHERE type='iso_orderdetails'"));
 
-        return $objModule->generate(true);
+        return Haste::getInstance()->call('replaceInsertTags', $objModule->generate(true));
     }
 
 

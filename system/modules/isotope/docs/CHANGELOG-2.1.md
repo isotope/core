@@ -4,6 +4,9 @@ Isotope eCommerce Changelog
 Version 2.1.5-stable (2014-??-??)
 ---------------------------------
 
+### Improved
+- Replace inserttags in backend order view to support 3th-party extensions (#1186)
+
 ### Fixed
 - Orders were tracked twice in Google Analytics (#1184)
 - Google Analytics eCommerce must have a product SKU (#1181)
