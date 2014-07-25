@@ -380,7 +380,12 @@ $GLOBALS['ISO_NUM']["10'000.00"]    = array(2, '.', "'");
  * Hooks
  */
 if (\Config::getInstance()->isComplete()) {
+    // Contao core hooks are in external file to fix postsale script
     include(TL_ROOT . '/system/modules/isotope/config/hooks.php');
+
+    $GLOBALS['ISO_HOOKS']['buttons'][]                      = array('Isotope\Isotope', 'defaultButtons');
+    $GLOBALS['ISO_HOOKS']['findSurchargesForCollection'][]  = array('Isotope\Frontend', 'findShippingAndPaymentSurcharges');
+    $GLOBALS['ISO_HOOKS']['postCheckout'][]                 = array('Isotope\Analytics', 'trackOrder');
 }
 
 

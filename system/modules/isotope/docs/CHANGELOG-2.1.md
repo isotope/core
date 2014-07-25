@@ -5,6 +5,7 @@ Version 2.1.5-stable (2014-??-??)
 ---------------------------------
 
 ### Fixed
+- Orders were tracked twice in Google Analytics (#1184)
 - New product collections were reported as locked (#1190)
 
 
