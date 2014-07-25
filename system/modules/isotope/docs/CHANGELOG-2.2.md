@@ -13,3 +13,4 @@ Version 2.2.0-beta1 (2014-??-??)
 
 ### Improved
 - Product options are now available in calculatePrice hook (#1000)
+- Show a hint about module configuration when manually sorting products (#1178)
