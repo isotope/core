@@ -28,6 +28,7 @@ $GLOBALS['TL_LANG']['tl_iso_gallery']['gallery_watermark_image']        = array(
 $GLOBALS['TL_LANG']['tl_iso_gallery']['gallery_watermark_position']     = array('Gallery watermark position', 'Select the position where to apply the watermark to.');
 $GLOBALS['TL_LANG']['tl_iso_gallery']['lightbox_watermark_image']       = array('Lightbox watermark image', 'Select an image if you want to add a watermark to the lightbox images.');
 $GLOBALS['TL_LANG']['tl_iso_gallery']['lightbox_watermark_position']    = array('Lightbox watermark position', 'Select the position where to apply the watermark to.');
+$GLOBALS['TL_LANG']['tl_iso_gallery']['customTpl']                      = array('Custom gallery template', 'Here you can overwrite the default gallery template.');
 
 
 /**
@@ -47,6 +48,7 @@ $GLOBALS['TL_LANG']['tl_iso_gallery']['name_legend']        = 'Name &amp; Type';
 $GLOBALS['TL_LANG']['tl_iso_gallery']['size_legend']        = 'Image sizes';
 $GLOBALS['TL_LANG']['tl_iso_gallery']['watermark_legend']   = 'Watermark';
 $GLOBALS['TL_LANG']['tl_iso_gallery']['lightbox_legend']    = 'Lightbox/Mediabox';
+$GLOBALS['TL_LANG']['tl_iso_gallery']['template_legend']    = 'Template settings';
 
 
 /**
