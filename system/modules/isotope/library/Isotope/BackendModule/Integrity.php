@@ -12,6 +12,7 @@
 
 namespace Isotope\BackendModule;
 
+use Isotope\Interfaces\IsotopeIntegrityCheck;
 use Isotope\Isotope;
 use Isotope\Model\Rule;
 
@@ -42,75 +43,47 @@ class Integrity extends \BackendModule
      */
     protected function compile()
     {
+        /** @var IsotopeIntegrityCheck[] $arrChecks */
         $arrChecks = array();
+        $arrTasks = array();
+        $blnReload = false;
 
-        $arrChecks[] = $this->validatePriceTable();
-        $arrChecks[] = $this->validateRulesEnabled();
+        if (\Input::post('FORM_SUBMIT') == 'tl_iso_integrity') {
+            $arrTasks = (array) \Input::post('tasks');
+        }
 
-        $this->Template->checks = $arrChecks;
-        $this->Template->back = str_replace('&mod=integrity', '', \Environment::get('request'));
-    }
+        foreach ($GLOBALS['ISO_INTEGRITY'] as $strClass) {
 
-    /**
-     * Check for invalid information in the prices table
-     * @return array
-     */
-    protected function validatePriceTable()
-    {
-        $arrProducts = \Database::getInstance()->query("
-            SELECT id FROM tl_iso_product
-            WHERE (
-                    pid=0
-                    AND type IN (SELECT id FROM tl_iso_producttype WHERE prices='')
-                )
-                OR (
-                    pid>0 AND language=''
-                    AND pid IN (SELECT id FROM tl_iso_product WHERE type IN (SELECT id FROM tl_iso_producttype WHERE prices=''))
-                )
-        ")->fetchEach('id');
+            /** @var IsotopeIntegrityCheck $objCheck */
+            $objCheck = new $strClass();
 
-        if (!empty($arrProducts)) {
-            $objPrices = \Database::getInstance()->query("
-                SELECT id, pid, COUNT(*) AS total FROM tl_iso_product_price WHERE " . \Database::getInstance()->findInSet('pid', implode(',', $arrProducts)) . " GROUP BY pid HAVING total>1"
-            );
+            if (!($objCheck instanceof IsotopeIntegrityCheck)) {
+                throw new \LogicException('Class "' . $strClass . '" must implement IsotopeIntegrityCheck interface');
+            }
 
-            if ($objPrices->numRows) {
-                return array(
-                    'id'        => 'prices',
-                    'name'      => 'Erweiterte Preise',
-                    'result'    => sprintf('Es wurde %s ungültige erweiterte Preise gefunden (PIDs: %s).', $objPrices->numRows, implode(', ', $objPrices->fetchEach('pid'))),
-                    'action'    => true,
+            if (in_array($objCheck->getId(), $arrTasks) && $objCheck->hasError() && $objCheck->canRepair()) {
+
+                $objCheck->repair();
+                $blnReload = true;
+
+            } else {
+
+                $arrChecks[] = array(
+                    'id' => $objCheck->getId(),
+                    'name' => $objCheck->getName(),
+                    'description' => $objCheck->getDescription(),
+                    'error' => $objCheck->hasError(),
+                    'repair' => ($objCheck->hasError() && $objCheck->canRepair()),
                 );
             }
         }
 
-        return array(
-            'id'        => 'prices',
-            'name'      => 'Erweiterte Preise',
-            'result'    => 'Es wurden keine ungültigen Erweiterten Preise gefunden.',
-            'action'    => false,
-        );
-    }
-
-    /**
-     * Rules module should be disabled if not in use
-     * @return  array
-     */
-    protected function validateRulesEnabled()
-    {
-        $blnAction = false;
-
-        if (in_array('isotope_rules', \Config::getInstance()->getActiveModules())) {
-            if (Rule::countAll() == 0) {
-                $blnAction = true;
-            }
+        if ($blnReload) {
+            \Controller::reload();
         }
 
-        return array(
-            'id'        => 'rules',
-            'name'      => 'Regeln',
-            'result'    => ($blnAction ? 'Das Regel-Modul sollte deaktiviert werden, wenn es nicht verwendet wird.' : 'Sie haben das Regel-Modul deaktiviert oder verwenden es aktiv.'),
-            'action'    => $blnAction,
-        );
+        $this->Template->checks = $arrChecks;
+        $this->Template->action = \Environment::get('request');
+        $this->Template->back = str_replace('&mod=integrity', '', \Environment::get('request'));
     }
 }

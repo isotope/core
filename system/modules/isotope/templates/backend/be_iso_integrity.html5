@@ -3,9 +3,9 @@
 </div>
 <div id="tl_maintenance_cache">
   <h2 class="sub_headline">Integritäts-Prüfung</h2>
-  <form action="contao/main.php?do=maintenance&amp;ref=08e2e2b5" class="tl_form" method="post">
+  <form action="<?php echo $this->action; ?>" class="tl_form" method="post">
     <div class="tl_formbody_edit">
-      <input type="hidden" name="FORM_SUBMIT" value="tl_purge">
+      <input type="hidden" name="FORM_SUBMIT" value="tl_iso_integrity">
       <input type="hidden" name="REQUEST_TOKEN" value="4da9935715b2a1f0831b1dc0a9cafba6">
       <div class="tl_tbox">
         <fieldset class="tl_checkbox_container">
@@ -18,18 +18,11 @@
             </tr>
           </thead>
           <tbody>
-<!--
-              <tr>
-                <td><input type="checkbox" name="purge[tables][]" id="purge_index" class="tl_checkbox" value="index" onfocus="Backend.getScrollOffset()"></td>
-                <td class="nw"><label for="purge_index">Suchindex löschen</label><br>tl_search: <span>197 Einträge, 538 KiB</span><br>tl_search_index: <span>18698 Einträge, 1 MiB</span></td>
-                <td>Leert die Tabellen <em>tl_search</em> und <em>tl_search_index</em>. Anschließend muss der Suchindex neu aufgebaut werden (siehe oben).</td>
-              </tr>
--->
               <?php foreach ($this->checks as $check): ?>
                 <tr>
-                  <td><?php if ($check['action']): ?><input type="checkbox" name="integrity[]" id="integrity_<?php echo $check['id']; ?>" class="tl_checkbox" value="<?php echo $check['id']; ?>" onfocus="Backend.getScrollOffset()"><?php endif; ?></td>
-                  <td><label for="purge_index"><?php echo $check['name']; ?></label></td>
-                  <td style="color:#<?php echo $check['action'] ? 'c33' : '77ac45'; ?>"><?php echo $check['result']; ?></td>
+                  <td><?php if ($check['repair']): ?><input type="checkbox" name="tasks[]" id="integrity_<?php echo $check['id']; ?>" class="tl_checkbox" value="<?php echo $check['id']; ?>" onfocus="Backend.getScrollOffset()"><?php endif; ?></td>
+                  <td><label for="integrity_<?php echo $check['id']; ?>"><?php echo $check['name']; ?></label></td>
+                  <td style="color:#<?php echo $check['error'] ? 'c33' : '77ac45'; ?>"><?php echo $check['description']; ?></td>
                 </tr>
               <?php endforeach; ?>
             </tbody>

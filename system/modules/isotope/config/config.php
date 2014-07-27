@@ -338,6 +338,15 @@ $GLOBALS['ISO_CHECKOUTSTEP'] = array
 );
 
 /**
+ * Integrity checks
+ */
+$GLOBALS['ISO_INTEGRITY'] = array
+(
+    '\Isotope\IntegrityCheck\PriceTable',
+    '\Isotope\IntegrityCheck\UnusedRules'
+);
+
+/**
  * Permissions are access settings for user and groups (fields in tl_user and tl_user_group)
  */
 $GLOBALS['TL_PERMISSIONS'][] = 'iso_modules';

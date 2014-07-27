@@ -231,6 +231,16 @@ $GLOBALS['TL_LANG']['MODEL']['tl_iso_gallery.inline']   = array('Inline gallery'
 $GLOBALS['TL_LANG']['MODEL']['tl_iso_product.standard'] = array('Standard product', 'A default product. Select this if nothing else matches.');
 
 /**
+ * Integrity checks
+ */
+$GLOBALS['TL_LANG']['ISO_INTEGRITY']['pricetable'][0] = 'Erweiterte Preise';
+$GLOBALS['TL_LANG']['ISO_INTEGRITY']['pricetable'][1] = 'Es wurde %s ungültige erweiterte Preise gefunden (PIDs: %s).';
+$GLOBALS['TL_LANG']['ISO_INTEGRITY']['pricetable'][2] = 'Es wurden keine ungültigen erweiterten Preise gefunden.';
+$GLOBALS['TL_LANG']['ISO_INTEGRITY']['unusedrules'][0] = 'Regel-Modul';
+$GLOBALS['TL_LANG']['ISO_INTEGRITY']['unusedrules'][1] = 'Das Regel-Modul sollte deaktiviert werden, wenn es nicht verwendet wird.';
+$GLOBALS['TL_LANG']['ISO_INTEGRITY']['unusedrules'][2] = 'Das Regel-Modul ist deaktiviert oder wird aktiv verwendet.';
+
+/**
  * Credit card types
  */
 $GLOBALS['TL_LANG']['CCT']['mc']                    = 'MasterCard';
