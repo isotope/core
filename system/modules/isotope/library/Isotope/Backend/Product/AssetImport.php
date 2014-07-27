@@ -150,11 +150,11 @@ class AssetImport extends \Backend
                         $pathinfo = pathinfo(TL_ROOT . '/' . $strFile);
 
                         // Make sure directory exists
-                        \Haste\Haste::mkdirr('isotope/' . substr($pathinfo['filename'], 0, 1) . '/');
+                        \Haste\Haste::mkdirr('isotope/' . strtolower(substr($pathinfo['filename'], 0, 1)) . '/');
 
                         $strCacheName = $pathinfo['filename'] . '-' . substr(md5_file(TL_ROOT . '/' . $strFile), 0, 8) . '.' . $pathinfo['extension'];
 
-                        \Files::getInstance()->copy($strFile, 'isotope/' . substr($pathinfo['filename'], 0, 1) . '/' . $strCacheName);
+                        \Files::getInstance()->copy($strFile, 'isotope/' . strtolower(substr($pathinfo['filename'], 0, 1)) . '/' . $strCacheName);
                         $arrImages[] = array('src' => $strCacheName);
                         $arrDelete[] = $strFile;
 
