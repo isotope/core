@@ -77,10 +77,10 @@ class ShippingCalculator extends Module
      */
     protected function compile()
     {
-        $this->Template->requiresShipping = true;
-        $this->Template->showResults = false;
+        $arrMethods = array();
 
-        $objForm = $this->createForm();
+        $this->Template->showResults = false;
+        $this->Template->requiresShipping = false;
 
         // Temporary address
         $objAddress = new Address();
@@ -88,56 +88,43 @@ class ShippingCalculator extends Module
         $objAddress->tstamp = time();
         $objAddress->ptable = ProductCollection::getTable();
 
-        // Bind it to the form
+        // Create form and bind address to it
+        $objForm = $this->createForm();
         $objForm->bindModel($objAddress);
 
-        if (!$objForm->validate()) {
-            $this->Template->form = $objForm->generate();
-            return;
-        }
+        if ($objForm->validate()) {
+            $this->Template->showResults = true;
 
-        $this->Template->showResults = true;
+            // Add it to the cart
+            Isotope::getCart()->setShippingAddress($objAddress);
 
-        // Ad it to the cart
-        Isotope::getCart()->setShippingAddress($objAddress);
+            if (Isotope::getCart()->requiresShipping()) {
+                $this->Template->requiresShipping = true;
 
-        if (!Isotope::getCart()->requiresShipping()) {
-            $this->Template->requiresShipping = false;
-            $this->Template->noShippingRequiredMsg = $GLOBALS['TL_LANG']['MSC']['noShippingRequiredMsg'];
-            $this->Template->form = $objForm->generate();
-            Isotope::getCart()->setShippingAddress(null);
-            return;
-        }
+                $objShippingMethods = Shipping::findMultipleByIds($this->arrShippingMethods);
 
-        $arrMethods = array();
-        $objShippingMethods = Shipping::findMultipleByIds($this->arrShippingMethods);
+                /* @var Shipping $objShipping */
+                foreach ($objShippingMethods as $objShipping) {
+                    if ($objShipping->isAvailable()) {
 
-        /* @var $objShipping Shipping */
-        foreach ($objShippingMethods as $objShipping) {
-            if ($objShipping->isAvailable()) {
+                        $fltPrice = $objShipping->getPrice();
 
-                $fltPrice = $objShipping->getPrice();
+                        $arrMethods[] = array(
+                            'label' => $objShipping->getLabel(),
+                            'price' => $fltPrice,
+                            'formatted_price' => Isotope::formatPriceWithCurrency($fltPrice),
+                            'shipping' => $objShipping
+                        );
+                    }
+                }
 
-                $arrMethods[] = array(
-                    'label'             => $objShipping->getLabel(),
-                    'price'             => $fltPrice,
-                    'formatted_price'   => Isotope::formatPriceWithCurrency($fltPrice),
-                    'shipping'          => $objShipping
+                RowClass::withKey('rowClass')->addCount('row_')->addFirstLast('row_')->addEvenOdd('row_')->applyTo(
+                    $arrMethods
                 );
             }
         }
 
-        if (empty($arrMethods)) {
-            $this->Template->msg = $GLOBALS['TL_LANG']['MSC']['noShippingModules'];
-        }
-
-        RowClass::withKey('rowClass')->addCount('row_')->addFirstLast('row_')->addEvenOdd('row_')->applyTo($arrMethods);
-
-        $this->Template->showResults = true;
-        $this->Template->availableShippingMethodsMsg = $GLOBALS['TL_LANG']['MSC']['availableShippingMethodsMsg'];
         $this->Template->shippingMethods = $arrMethods;
-
-        // Form
         $this->Template->form = $objForm->generate();
 
         // Reset shipping address

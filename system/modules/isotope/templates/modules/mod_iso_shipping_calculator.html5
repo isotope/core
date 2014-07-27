@@ -8,10 +8,18 @@
 
 <?php echo $this->form; ?>
 
-<?php if ($this->requiresShipping): ?>
+<?php if ($this->showResults): ?>
+<?php if (!$this->requiresShipping): ?>
 
-    <?php if ($this->showResults): ?>
-    <p class="info available_shipping_methods"><?php echo $this->availableShippingMethodsMsg; ?></p>
+    <p class="info no_shipping_required"><?php echo $GLOBALS['TL_LANG']['MSC']['noShippingRequiredMsg']; ?></p>
+
+<?php elseif (count($this->shippingMethods) == 0): ?>
+
+    <p class="info no_shipping_methods"><?php echo $GLOBALS['TL_LANG']['MSC']['noShippingModules']; ?></p>
+
+<?php else: ?>
+
+    <p class="info available_shipping_methods"><?php echo $GLOBALS['TL_LANG']['MSC']['availableShippingMethodsMsg']; ?></p>
     <table>
         <tbody>
         <?php foreach ($this->shippingMethods as $method): $i=0; ?>
@@ -22,12 +30,9 @@
         <?php endforeach; ?>
         </tbody>
     </table>
-    <?php endif; ?>
-
-<?php else: ?>
-
-<p class="info no_shipping_required"><?php echo $this->noShippingRequiredMsg; ?></p>
 
 <?php endif; ?>
+<?php endif; ?>
+
 </div>
 <!-- indexer::continue -->
