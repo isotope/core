@@ -12,6 +12,7 @@
 
 namespace Isotope\Module;
 
+use Haste\Form\Form;
 use Haste\Generator\RowClass;
 use Isotope\Isotope;
 use Isotope\Model\Address;
@@ -151,7 +152,7 @@ class ShippingCalculator extends Module
         \System::loadLanguageFile(Address::getTable());
         $this->loadDataContainer(Address::getTable());
 
-        $objForm = new \Haste\Form\Form('iso_shipping_calculator_' . $this->id, 'POST', function($objHaste) {
+        $objForm = new Form('iso_shipping_calculator_' . $this->id, 'POST', function($objHaste) {
             return \Input::post('FORM_SUBMIT') === $objHaste->getFormId();
         });
 
