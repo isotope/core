@@ -45,7 +45,7 @@ class PriceTable extends AbstractIntegrityCheck
     public function hasError()
     {
         if (null === $this->arrErrors) {
-            $this->arrErrors = 0;
+            $this->arrErrors = array();
 
             $arrProducts = \Database::getInstance()->query("
                 SELECT id FROM tl_iso_product
@@ -64,11 +64,11 @@ class PriceTable extends AbstractIntegrityCheck
 
             if (!empty($arrProducts)) {
                 $objPrices = \Database::getInstance()->query("
-                    SELECT id, pid, COUNT(*) AS total
+                    SELECT tl_iso_product_price.*, COUNT(*) AS total
                     FROM tl_iso_product_price
                     WHERE " . \Database::getInstance()->findInSet('pid', implode(',', $arrProducts)) . "
                     GROUP BY pid
-                    HAVING total>1
+                    HAVING total>1 OR config_id>0 OR member_group>0 OR start!='' OR stop!=''
                 ");
 
                 $this->arrErrors = $objPrices->fetchEach('pid');
@@ -95,6 +95,73 @@ class PriceTable extends AbstractIntegrityCheck
      */
     public function repair()
     {
+        if ($this->hasError()) {
 
+            foreach ($this->arrErrors as $productId) {
+                $objPrices = \Database::getInstance()->prepare("
+                    SELECT * FROM tl_iso_product_price
+                    WHERE pid=?
+                ")->execute($productId);
+
+                if ($objPrices->numRows > 0) {
+                    $keep = array();
+                    $delete = array();
+
+                    // Find prices that are valid as "non-advanced" and try to keep that price
+                    while ($objPrices->next()) {
+                        if ($objPrices->config_id == 0
+                            && $objPrices->member_group == 0
+                            && $objPrices->start == ''
+                            && $objPrices->stop == ''
+                        ) {
+                            $keep[] = $objPrices->id;
+                        } else {
+                            $delete[] = $objPrices->id;
+                        }
+                    }
+
+                    // If more than one price qualifies, we will keep the first (lowest ID) one
+                    if (count($keep) > 1) {
+                        $delete = array_merge($delete, array_diff($keep, array(min($keep))));
+                        $keep = min($keep);
+                    }
+
+                    // If there are no valid prices, we must take one of the unqualified and remote restrictions
+                    elseif (empty($keep)) {
+                        $keep = min($delete);
+                        unset($delete[array_search($keep, $delete)]);
+                    }
+
+                    // Make sure $keep only holds one item
+                    if (is_array($keep)) {
+                        $keep = $keep[0];
+                    }
+
+                    // Make sure the price we keep does not have config etc. assigned
+                    \Database::getInstance()->prepare("
+                        UPDATE tl_iso_product_price
+                        SET
+                          config_id=0,
+                          member_group=0,
+                          start='',
+                          stop=''
+                        WHERE id=?
+                    ")->execute($keep);
+
+                    // Now delete the additional prices and price tiers
+                    if (!empty($delete)) {
+                        \Database::getInstance()->prepare("
+                            DELETE FROM tl_iso_product_price
+                            WHERE id IN (" . implode(',', $delete) . ")
+                        ");
+
+                        \Database::getInstance()->prepare("
+                            DELETE FROM tl_iso_product_price_tier
+                            WHERE pid IN (" . implode(',', $delete) . ")
+                        ");
+                    }
+                }
+            }
+        }
     }
 }
