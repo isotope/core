@@ -234,10 +234,10 @@ $GLOBALS['TL_LANG']['MODEL']['tl_iso_product.standard'] = array('Standard produc
  * Integrity checks
  */
 $GLOBALS['TL_LANG']['ISO_INTEGRITY']['pricetable'][0] = 'Erweiterte Preise';
-$GLOBALS['TL_LANG']['ISO_INTEGRITY']['pricetable'][1] = 'Es wurde %s ungültige erweiterte Preise gefunden (PIDs: %s).';
+$GLOBALS['TL_LANG']['ISO_INTEGRITY']['pricetable'][1] = 'Es wurde %s ungültige erweiterte Preise gefunden<br>PIDs: %s.';
 $GLOBALS['TL_LANG']['ISO_INTEGRITY']['pricetable'][2] = 'Es wurden keine ungültigen erweiterten Preise gefunden.';
 $GLOBALS['TL_LANG']['ISO_INTEGRITY']['variantorphans'][0] = 'Verlorene Varianten';
-$GLOBALS['TL_LANG']['ISO_INTEGRITY']['variantorphans'][1] = 'Sie haben %s Varianten definiert, welche zu Produkten ohne Varianten gehören (IDs: %s)';
+$GLOBALS['TL_LANG']['ISO_INTEGRITY']['variantorphans'][1] = 'Sie haben %s Varianten definiert, welche zu Produkten ohne Varianten gehören<br>IDs: %s';
 $GLOBALS['TL_LANG']['ISO_INTEGRITY']['variantorphans'][2] = 'Es wurden keine verlorenen Varianten gefunden.';
 $GLOBALS['TL_LANG']['ISO_INTEGRITY']['unusedrules'][0] = 'Regel-Modul';
 $GLOBALS['TL_LANG']['ISO_INTEGRITY']['unusedrules'][1] = 'Das Regel-Modul sollte deaktiviert werden, wenn es nicht verwendet wird.';

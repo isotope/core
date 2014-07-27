@@ -54,7 +54,6 @@ class VariantOrphans extends AbstractIntegrityCheck
                       SELECT id FROM tl_iso_producttype WHERE variants=''
                     )
                   )
-                )
             ")->fetchEach('id');
         }
 
@@ -81,7 +80,7 @@ class VariantOrphans extends AbstractIntegrityCheck
         if ($this->hasError()) {
 
             // Delete the variants
-            \Database::getInstance()->prepare("
+            \Database::getInstance()->query("
                 DELETE FROM tl_iso_product
                 WHERE
                   id IN (" . implode(',', $this->arrErrors) . ")
