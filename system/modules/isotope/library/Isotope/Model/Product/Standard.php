@@ -720,8 +720,18 @@ class Standard extends Product implements IsotopeProduct, WeightAggregate
         }
 
         // Convert optgroups so they work with FormSelectMenu
-        // @todo Copied from Haste\Form\Form
-        if (is_array($arrField['options']) && array_is_assoc($arrField['options'])) {
+        // @deprecated Remove in Isotope 3.0, the options should match for frontend if attribute is customer defined
+        if (
+            is_array($arrField['options'])
+            && array_is_assoc($arrField['options'])
+            && count(
+                array_filter(
+                    $arrField['options'], function($v) {
+                        return !isset($v['label']);
+                    }
+                )
+            ) > 0
+        ) {
             $arrOptions = $arrField['options'];
             $arrField['options'] = array();
 
