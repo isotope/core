@@ -15,6 +15,7 @@ namespace Isotope\Model;
 use Haste\Haste;
 use Haste\Util\Format;
 use Isotope\Interfaces\IsotopeAttributeForVariants;
+use Isotope\Interfaces\IsotopeAttributeWithOptions;
 use Isotope\Interfaces\IsotopeProduct;
 use Isotope\Isotope;
 use Isotope\Translation;
@@ -188,6 +189,12 @@ abstract class Attribute extends TypeAgent
             unset($arrField['options']);
             unset($arrField['reference']);
 
+        } elseif ($this->optionsSource != '' && $this instanceof IsotopeAttributeWithOptions) {
+            unset($arrField['options']);
+            unset($arrField['reference']);
+        }
+
+        // @deprecated remove in Isotope 3.0
         else {
             $arrOptions = deserialize($this->options);
 

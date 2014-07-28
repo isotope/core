@@ -15,6 +15,8 @@ namespace Isotope\Backend\Product;
 use Haste\Util\Format;
 use Isotope\Interfaces\IsotopeAttribute;
 use Isotope\Interfaces\IsotopeAttributeForVariants;
+use Isotope\Interfaces\IsotopeAttributeWithOptions;
+use Isotope\Interfaces\IsotopeProduct;
 use Isotope\Model\Attribute;
 use Isotope\Model\Group;
 use Isotope\Model\Product;
@@ -425,6 +427,38 @@ class DcaManager extends \Backend
             $GLOBALS['TL_DCA']['tl_iso_product']['fields'][$name]['filter'] = $objAttribute->be_filter ? in_array($name, $arrVariantFields) : false;
             $GLOBALS['TL_DCA']['tl_iso_product']['fields'][$name]['search'] = $objAttribute->be_search ? in_array($name, $arrVariantFields) : false;
         }
+    }
+
+
+    /**
+     * Add options from attribute to DCA
+     *
+     * @param array  $arrData
+     * @param object $objDca
+     *
+     * @return array
+     */
+    public function addOptionsFromAttribute($arrData, $objDca)
+    {
+        if ($arrData['strTable'] == Product::getTable()
+            && $arrData['optionsSource'] != ''
+            && $arrData['optionsSource'] != 'foreignKey'
+        ) {
+
+            /** @var IsotopeAttributeWithOptions $objAttribute */
+            $objAttribute = Attribute::findOneBy('field_name', $arrData['strField']);
+
+            if (null !== $objAttribute && $objAttribute instanceof IsotopeAttributeWithOptions) {
+
+                $arrOptions = ($objDca instanceof IsotopeProduct) ? $objAttribute->getOptionsForWidget($objDca) : $objAttribute->getOptionsForWidget();
+
+                if (!empty($arrOptions)) {
+                    $arrData['options'] = $arrOptions;
+                }
+            }
+        }
+
+        return $arrData;
     }
 
 
