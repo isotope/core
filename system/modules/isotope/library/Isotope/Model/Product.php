@@ -19,8 +19,13 @@ use Isotope\Model\Attribute;
 /**
  * The basic Isotope product model
  *
- * @copyright  Isotope eCommerce Workgroup 2009-2012
- * @author     Andreas Schempp <andreas.schempp@terminal42.ch>
+ * @property int    id
+ * @property int    pid
+ * @property int    gid
+ * @property int    tstamp
+ * @property string language
+ * @proeprty int    dateAdded
+ * @property int    type
  */
 abstract class Product extends TypeAgent
 {

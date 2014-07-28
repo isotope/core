@@ -13,6 +13,7 @@
 namespace Isotope\Backend\Product;
 
 use Haste\Util\Format;
+use Isotope\Backend\Group\Breadcrumb;
 use Isotope\Interfaces\IsotopeAttribute;
 use Isotope\Interfaces\IsotopeAttributeForVariants;
 use Isotope\Interfaces\IsotopeAttributeWithOptions;
@@ -29,7 +30,8 @@ class DcaManager extends \Backend
 
     /**
      * Initialize the tl_iso_product DCA
-     * @return void
+     *
+     * @param string $strTable
      */
     public function initialize($strTable)
     {
@@ -53,12 +55,12 @@ class DcaManager extends \Backend
 
     /**
      * Store initial values when creating a product
-     * @param   string
-     * @param   int
-     * @param   array
-     * @param   DataContainer
+     *
+     * @param   string $strTable
+     * @param   int    $insertID
+     * @param   array  $arrSet
      */
-    public function updateNewRecord($strTable, $insertID, $arrSet, $dc)
+    public function updateNewRecord($strTable, $insertID, $arrSet)
     {
         if ($arrSet['pid'] > 0) {
             return;
@@ -83,11 +85,12 @@ class DcaManager extends \Backend
 
     /**
      * Update dateAdded on copy
-     * @param integer
-     * @param object
+     *
+     * @param int $insertId
+     *
      * @link http://www.contao.org/callbacks.html#oncopy_callback
      */
-    public function updateDateAdded($insertId, $dc)
+    public function updateDateAdded($insertId)
     {
         $strTable = Product::getTable();
         \Database::getInstance()->prepare("UPDATE $strTable SET dateAdded=? WHERE id=?")->execute(time(), $insertId);
@@ -124,6 +127,8 @@ class DcaManager extends \Backend
                 }
 
                 if ($strClass != '') {
+
+                    /** @type Attribute $objAttribute */
                     $objAttribute = new $strClass();
                     $objAttribute->loadFromDCA($arrData, $strName);
                     $arrData['attributes'][$strName] = $objAttribute;
@@ -220,7 +225,7 @@ class DcaManager extends \Backend
      */
     public function addBreadcrumb()
     {
-        $strBreadcrumb = \Isotope\Backend\Group\Breadcrumb::generate($this->Session->get('iso_products_gid'));
+        $strBreadcrumb = Breadcrumb::generate(\Session::getInstance()->get('iso_products_gid'));
         $strBreadcrumb .= static::getPagesBreadcrumb();
 
         $GLOBALS['TL_DCA']['tl_iso_product']['list']['sorting']['breadcrumb'] = $strBreadcrumb;
@@ -247,6 +252,8 @@ class DcaManager extends \Backend
         $blnSingleRecord = $act === 'edit' || $act === 'show';
 
         if (\Input::get('id') > 0) {
+
+            /** @type object $objProduct */
             $objProduct = \Database::getInstance()->prepare("SELECT p1.pid, p1.type, p2.type AS parent_type FROM tl_iso_product p1 LEFT JOIN tl_iso_product p2 ON p1.pid=p2.id WHERE p1.id=?")->execute(\Input::get('id'));
 
             if ($objProduct->numRows) {
@@ -281,6 +288,7 @@ class DcaManager extends \Backend
             $arrPalette = array();
             $arrLegends = array();
             $arrLegendOrder = array();
+            $arrCanInherit = array();
 
             if ($blnVariants) {
                 $arrConfig     = deserialize($objType->variant_attributes, true);
@@ -388,7 +396,11 @@ class DcaManager extends \Backend
         $GLOBALS['TL_DCA'][$objProduct->getTable()]['fields']['alias']['sorting']   = false;
 
         $arrFields         = array();
-        $arrVariantFields  = $objProduct->getRelated('type')->getVariantAttributes();
+
+        /** @type ProductType $objType */
+        $objType           = $objProduct->getRelated('type');
+
+        $arrVariantFields  = $objType->getVariantAttributes();
         $arrVariantOptions = array_intersect($arrVariantFields, Attribute::getVariantOptionFields());
 
         if (in_array('images', $arrVariantFields)) {
@@ -465,7 +477,7 @@ class DcaManager extends \Backend
     /**
      * Add a breadcrumb menu to the page tree
      *
-     * @param string
+     * @return string
      */
     protected static function getPagesBreadcrumb()
     {

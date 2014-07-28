@@ -29,11 +29,13 @@ use Isotope\Model\Shipping;
 /**
  * Class ProductCollection
  *
- * Provide methods to handle Isotope product collections.
- * @copyright  Isotope eCommerce Workgroup 2009-2012
- * @author     Andreas Schempp <andreas.schempp@terminal42.ch>
- * @author     Fred Bliss <fred.bliss@intelligentspark.com>
- * @author     Yanick Witschi <yanick.witschi@terminal42.ch>
+ * @property int    id
+ * @property int    tstamp
+ * @property string type
+ * @property int    member
+ * @property int    locked
+ * @property int    store_id
+ * @property mixed  settings
  */
 abstract class ProductCollection extends TypeAgent
 {
