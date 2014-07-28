@@ -241,11 +241,10 @@ abstract class Attribute extends TypeAgent
 
     /**
      * Get field options
-     * @param IsotopeProduct $objProduct
      * @return  array
      * @deprecated  will only be available when IsotopeAttributeWithOptions interface is implemented
      */
-    public function getOptions(IsotopeProduct $objProduct = null)
+    public function getOptions()
     {
         $arrOptions = deserialize($this->options);
 

@@ -717,7 +717,6 @@ class Standard extends Product implements IsotopeProduct, WeightAggregate
         } // Not a variant widget, but customer editable
         else {
             $arrField = $strClass::getAttributesFromDca($arrData, $strField, $arrData['default']);
-            $arrField['options'] = $objAttribute->getOptions($this);
         }
 
         // Convert optgroups so they work with FormSelectMenu
