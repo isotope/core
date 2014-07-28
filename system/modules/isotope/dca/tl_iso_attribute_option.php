@@ -97,7 +97,11 @@ $GLOBALS['TL_DCA']['tl_iso_attribute_option'] = array
     // Palettes
     'palettes' => array
     (
-        'default'                   => '{label_legend},type,label;{publish_legend},published',
+        '__selector__'              => array('type'),
+        'default'                   => '{label_legend},type',
+        'blank'                     => '{label_legend},type,label;{publish_legend},published',
+        'option'                    => '{label_legend},type,default,label;{publish_legend},published',
+        'group'                     => '{label_legend},type,label;{publish_legend},published',
     ),
 
     // Fields
@@ -138,15 +142,24 @@ $GLOBALS['TL_DCA']['tl_iso_attribute_option'] = array
             'default'               => 'option',
             'inputType'             => 'select',
             'options'               => array('blank', 'option', 'group'),
-            'eval'                  => array('tl_class'=>'w50', 'doNotCopy'=>true),
+            'reference'             => &$GLOBALS['TL_LANG']['tl_iso_attribute_option']['type'],
+            'eval'                  => array('tl_class'=>'w50', 'doNotCopy'=>true, 'submitOnChange'=>true),
             'sql'                   => "varchar(8) NOT NULL default ''",
+        ),
+        'default' => array
+        (
+            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_attribute_option']['default'],
+            'exclude'               => true,
+            'inputType'             => 'checkbox',
+            'eval'                  => array('tl_class'=>'w50 m12', 'doNotCopy'=>true),
+            'sql'                   => "char(1) NOT NULL default ''",
         ),
         'label' => array
         (
             'label'                 => &$GLOBALS['TL_LANG']['tl_iso_attribute_option']['label'],
             'exclude'               => true,
             'inputType'             => 'text',
-            'eval'                  => array('mandatory'=>true, 'maxlength'=>255, 'tl_class'=>'long'),
+            'eval'                  => array('mandatory'=>true, 'maxlength'=>255, 'tl_class'=>'clr long'),
             'sql'                   => "varchar(255) NOT NULL default ''",
         ),
         'published' => array
