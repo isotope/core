@@ -69,7 +69,7 @@ $GLOBALS['ISO_MOD'] = array
         ),
         'attributes' => array
         (
-            'tables'            => array(\Isotope\Model\Attribute::getTable()),
+            'tables'            => array(\Isotope\Model\Attribute::getTable(), \Isotope\Model\AttributeOption::getTable()),
             'icon'              => 'system/modules/isotope/assets/images/setup-attributes.png',
         ),
         'related_categories' => array

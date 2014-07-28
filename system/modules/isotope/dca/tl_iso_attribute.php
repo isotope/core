@@ -143,6 +143,7 @@ $GLOBALS['TL_DCA']['tl_iso_attribute'] = array
         'storeFile'                 => 'uploadFolder,useHomeDir,doNotOverwrite',
         'files'                     => 'extensions,filesOnly',
         'optionsSource_attribute'   => 'options',
+        'optionsSource_table'       => 'optionsTable',
         'optionsSource_foreignKey'  => 'foreignKey',
     ),
 
@@ -214,7 +215,7 @@ $GLOBALS['TL_DCA']['tl_iso_attribute'] = array
             'exclude'               => true,
             'inputType'             => 'radio',
             'options_callback'      => function($dc) {
-                $arrOptions = array('attribute', 'foreignKey');
+                $arrOptions = array('attribute', 'table', 'foreignKey');
 
                 return $arrOptions;
             },
@@ -234,6 +235,18 @@ $GLOBALS['TL_DCA']['tl_iso_attribute'] = array
                 'columnsCallback'   => array('Isotope\Backend\Attribute\OptionsWizard', 'getColumns'),
             ),
             'sql'                   => "blob NULL",
+        ),
+        'optionsTable' => array
+        (
+            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_attribute']['optionsTable'],
+            'exclude'               => true,
+            'inputType'             => 'dcaWizard',
+            'foreignTable'          => \Isotope\Model\AttributeOption::getTable(),
+            'eval' => array
+            (
+                'fields'            => array('type', 'label', 'default', 'published'),
+                'tl_class'          => 'clr',
+            ),
         ),
         'foreignKey' => array
         (
@@ -274,7 +287,7 @@ $GLOBALS['TL_DCA']['tl_iso_attribute'] = array
             'label'                 => &$GLOBALS['TL_LANG']['tl_iso_attribute']['customer_defined'],
             'exclude'               => true,
             'inputType'             => 'checkbox',
-            'eval'                  => array('tl_class'=>'w50'),
+            'eval'                  => array('submitOnChange'=>true, 'tl_class'=>'w50'),
             'sql'                   => "char(1) NOT NULL default ''",
         ),
         'mandatory' => array
