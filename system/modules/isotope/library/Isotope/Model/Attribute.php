@@ -77,6 +77,10 @@ abstract class Attribute extends TypeAgent
      */
     public function isCustomerDefined()
     {
+        if (/* @todo in 3.0: $this instanceof IsotopeAttributeForVariants && */$this->isVariantOption()) {
+            return false;
+        }
+
         return (bool) $this->customer_defined;
     }
 
@@ -172,9 +176,6 @@ abstract class Attribute extends TypeAgent
         // Variant selection is always mandatory
         if (/* @todo in 3.0: $this instanceof IsotopeAttributeForVariants && */$this->isVariantOption()) {
             $arrField['eval']['mandatory'] = true;
-
-            $this->customer_defined = false;
-            $arrField['attributes']['customer_defined'] = false;
         }
 
         // Prepare options
