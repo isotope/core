@@ -299,6 +299,7 @@ $GLOBALS['NOTIFICATION_CENTER']['NOTIFICATION_TYPE']['isotope']['iso_order_statu
  */
 $GLOBALS['TL_MODELS'][\Isotope\Model\Address::getTable()]                       = 'Isotope\Model\Address';
 $GLOBALS['TL_MODELS'][\Isotope\Model\Attribute::getTable()]                     = 'Isotope\Model\Attribute';
+$GLOBALS['TL_MODELS'][\Isotope\Model\AttributeOption::getTable()]               = 'Isotope\Model\AttributeOption';
 $GLOBALS['TL_MODELS'][\Isotope\Model\BasePrice::getTable()]                     = 'Isotope\Model\BasePrice';
 $GLOBALS['TL_MODELS'][\Isotope\Model\Config::getTable()]                        = 'Isotope\Model\Config';
 $GLOBALS['TL_MODELS'][\Isotope\Model\Document::getTable()]                      = 'Isotope\Model\Document';
