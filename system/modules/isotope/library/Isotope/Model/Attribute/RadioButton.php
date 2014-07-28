@@ -13,9 +13,7 @@
 namespace Isotope\Model\Attribute;
 
 use Isotope\Interfaces\IsotopeAttribute;
-use Isotope\Interfaces\IsotopeAttributeWithOptions;
 use Isotope\Interfaces\IsotopeAttributeForVariants;
-use Isotope\Model\Attribute;
 
 
 /**
@@ -24,7 +22,7 @@ use Isotope\Model\Attribute;
  * @copyright  Isotope eCommerce Workgroup 2009-2012
  * @author     Andreas Schempp <andreas.schempp@terminal42.ch>
  */
-class RadioButton extends Attribute implements IsotopeAttribute, IsotopeAttributeWithOptions, IsotopeAttributeForVariants
+class RadioButton extends AbstractAttributeWithOptions implements IsotopeAttribute, IsotopeAttributeForVariants
 {
 
     /**
