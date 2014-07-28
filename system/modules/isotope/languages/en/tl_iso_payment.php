@@ -60,6 +60,9 @@ $GLOBALS['TL_LANG']['tl_iso_payment']['expercash_profile']                      
 $GLOBALS['TL_LANG']['tl_iso_payment']['expercash_popupKey']                     = array('ExperCash Popup-Key', 'Geben Sie den Popup-Key aus Ihrem ExperCash Portal ein.');
 $GLOBALS['TL_LANG']['tl_iso_payment']['expercash_paymentMethod']                = array('Transaktionsart', 'Sie können eine Transaktionsart vordefinieren oder den Kunden wählen lassen.');
 $GLOBALS['TL_LANG']['tl_iso_payment']['expercash_css']                          = array('CSS-Vorlage', 'Wählen Sie eine CSS-Datei für die Übergabe an ExperCash.');
+$GLOBALS['TL_LANG']['tl_iso_payment']['epay_merchantnumber']                    = array('Merchant number', 'The unique merchant number created in ePay. This merchant number is to be found in your contract with PBS.');
+$GLOBALS['TL_LANG']['tl_iso_payment']['epay_windowstate']                       = array('Integration type', 'Select on of the available integration options. Please note that when using the integrated payment form, you can only accept payment cards.');
+$GLOBALS['TL_LANG']['tl_iso_payment']['epay_secretkey']                         = array('Secret key', 'The secret key set up in your ePay configuration.');
 $GLOBALS['TL_LANG']['tl_iso_payment']['payone_clearingtype']                    = array('Clearing type', 'Please choose a clearing type.');
 $GLOBALS['TL_LANG']['tl_iso_payment']['payone_aid']                             = array('PAYONE subaccount ID (aid)', 'Please enter your unique PAYONE subaccount ID (aid).');
 $GLOBALS['TL_LANG']['tl_iso_payment']['payone_portalid']                        = array('PAYONE Portal ID', 'Please enter your unique PAYONE portal ID.');
@@ -111,6 +114,9 @@ $GLOBALS['TL_LANG']['tl_iso_payment']['expercash_paymentMethod']['sofortueberwei
 $GLOBALS['TL_LANG']['tl_iso_payment']['psp_hash_method']['sha1']                                = 'SHA-1';
 $GLOBALS['TL_LANG']['tl_iso_payment']['psp_hash_method']['sha256']                              = 'SHA-256';
 $GLOBALS['TL_LANG']['tl_iso_payment']['psp_hash_method']['sha512']                              = 'SHA-512';
+$GLOBALS['TL_LANG']['tl_iso_payment']['epay_windowstate_options'][1]                            = 'Overlay';
+$GLOBALS['TL_LANG']['tl_iso_payment']['epay_windowstate_options'][3]                            = 'Full screen';
+$GLOBALS['TL_LANG']['tl_iso_payment']['epay_windowstate_options'][4]                            = 'Integrated payment form';
 
 /**
  * Legends

@@ -131,6 +131,7 @@ $GLOBALS['TL_DCA']['tl_iso_payment'] = array
         'sofortueberweisung'        => '{type_legend},name,label,type;{note_legend:hide},note;{config_legend:hide},new_order_status,minimum_total,maximum_total,countries,shipping_modules,product_types,config_ids;{gateway_legend},trans_type,sofortueberweisung_user_id,sofortueberweisung_project_id,sofortueberweisung_project_password;{price_legend:hide},price,tax_class;{expert_legend:hide},guests,protected;{enabled_legend},enabled',
         'saferpay'                  => '{type_legend},name,label,type;{note_legend:hide},note;{config_legend},new_order_status,minimum_total,maximum_total,countries,shipping_modules,product_types,config_ids;{gateway_legend},saferpay_accountid,trans_type,saferpay_description,saferpay_vtconfig;{price_legend:hide},price,tax_class;{enabled_legend},enabled',
         'expercash'                 => '{type_legend},name,label,type;{note_legend:hide},note;{config_legend},new_order_status,minimum_total,maximum_total,countries,shipping_modules,product_types,config_ids;{gateway_legend},expercash_popupId,expercash_profile,expercash_popupKey,expercash_paymentMethod;{price_legend:hide},price,tax_class;{template_legend},expercash_css;{expert_legend:hide},guests,protected;{enabled_legend},enabled',
+        'epay'                      => '{type_legend},name,label,type;{note_legend:hide},note;{config_legend},new_order_status,minimum_total,maximum_total,countries,shipping_modules,product_types,config_ids;{gateway_legend},trans_type,epay_windowstate,epay_merchantnumber,epay_secretkey;{price_legend:hide},price,tax_class;{expert_legend:hide},guests,protected;{enabled_legend},enabled',
         'payone'                    => '{type_legend},name,label,type;{note_legend:hide},note;{config_legend},new_order_status,minimum_total,maximum_total,countries,shipping_modules,product_types,config_ids;{gateway_legend},trans_type,payone_clearingtype,payone_aid,payone_portalid,payone_key;{price_legend:hide},price,tax_class;{enabled_legend},debug,enabled',
         'worldpay'                  => '{type_legend},name,label,type;{note_legend:hide},note;{config_legend},new_order_status,minimum_total,maximum_total,countries,shipping_modules,product_types,config_ids;{gateway_legend},worldpay_instId,worldpay_callbackPW,worldpay_signatureFields,worldpay_md5secret,worldpay_description;{price_legend:hide},price,tax_class;{expert_legend:hide},guests,protected;{enabled_legend},debug,enabled',
     ),
@@ -509,6 +510,33 @@ $GLOBALS['TL_DCA']['tl_iso_payment'] = array
             'inputType'             => 'fileTree',
             'eval'                  => array('fieldType'=>'radio', 'files'=>true, 'filesOnly'=>true, 'extensions'=>'css', 'tl_class'=>'clr'),
             'sql'                   => "binary(16) NULL"
+        ),
+        'epay_windowstate' => array
+        (
+            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_payment']['epay_windowstate'],
+            'exclude'               => true,
+            'default'               => '1',
+            'inputType'             => 'select',
+            'options'               => array('1', '3', '4'),
+            'reference'             => &$GLOBALS['TL_LANG']['tl_iso_payment']['epay_windowstate_options'],
+            'eval'                  => array('mandatory'=>true, 'tl_class'=>'w50'),
+            'sql'                   => "char(1) NOT NULL default ''"
+        ),
+        'epay_merchantnumber' => array
+        (
+            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_payment']['epay_merchantnumber'],
+            'exclude'               => true,
+            'inputType'             => 'text',
+            'eval'                  => array('mandatory'=>true, 'maxlength'=>10, 'rgxp'=>'digit', 'tl_class'=>'w50'),
+            'sql'                   => "varchar(10) NOT NULL default ''",
+        ),
+        'epay_secretkey' => array
+        (
+            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_payment']['epay_secretkey'],
+            'exclude'               => true,
+            'inputType'             => 'text',
+            'eval'                  => array('mandatory'=>true, 'maxlength'=>64, 'tl_class'=>'w50'),
+            'sql'                   => "varchar(64) NOT NULL default ''",
         ),
         'payone_clearingtype' => array
         (
