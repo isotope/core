@@ -97,7 +97,7 @@ $GLOBALS['TL_DCA']['tl_iso_attribute_option'] = array
     // Palettes
     'palettes' => array
     (
-        'default'                   => '{label_legend},label,default,group,isBlankOption',
+        'default'                   => '{label_legend},type,label;{publish_legend},published',
     ),
 
     // Fields
@@ -131,6 +131,16 @@ $GLOBALS['TL_DCA']['tl_iso_attribute_option'] = array
         (
             'sql'                   =>  "varchar(5) NOT NULL default ''",
         ),
+        'type' => array
+        (
+            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_attribute_option']['type'],
+            'exclude'               => true,
+            'default'               => 'option',
+            'inputType'             => 'select',
+            'options'               => array('blank', 'option', 'group'),
+            'eval'                  => array('tl_class'=>'w50', 'doNotCopy'=>true),
+            'sql'                   => "varchar(8) NOT NULL default ''",
+        ),
         'label' => array
         (
             'label'                 => &$GLOBALS['TL_LANG']['tl_iso_attribute_option']['label'],
@@ -139,28 +149,12 @@ $GLOBALS['TL_DCA']['tl_iso_attribute_option'] = array
             'eval'                  => array('mandatory'=>true, 'maxlength'=>255, 'tl_class'=>'long'),
             'sql'                   => "varchar(255) NOT NULL default ''",
         ),
-        'default' => array
+        'published' => array
         (
-            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_attribute_option']['default'],
+            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_attribute_option']['published'],
             'exclude'               => true,
             'inputType'             => 'checkbox',
-            'eval'                  => array('tl_class'=>'w50'),
-            'sql'                   => "char(1) NOT NULL default ''",
-        ),
-        'group' => array
-        (
-            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_attribute_option']['group'],
-            'exclude'               => true,
-            'inputType'             => 'checkbox',
-            'eval'                  => array('tl_class'=>'w50'),
-            'sql'                   => "char(1) NOT NULL default ''",
-        ),
-        'isBlankOption' => array
-        (
-            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_attribute_option']['isBlankOption'],
-            'exclude'               => true,
-            'inputType'             => 'checkbox',
-            'eval'                  => array('tl_class'=>'w50'),
+            'eval'                  => array('tl_class'=>'w50', 'doNotCopy'=>true),
             'sql'                   => "char(1) NOT NULL default ''",
         )
     ),

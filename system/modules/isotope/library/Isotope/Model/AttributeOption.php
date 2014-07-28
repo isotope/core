@@ -24,9 +24,8 @@ namespace Isotope\Model;
  * @property int    langPid
  * @property string language
  * @property string label
- * @property bool   group
- * @property bool   default
- * @property bool   isBlankOption
+ * @property string type
+ * @property bool   published
  */
 class AttributeOption extends \MultilingualModel
 {
@@ -44,19 +43,22 @@ class AttributeOption extends \MultilingualModel
      */
     public function getAsArray()
     {
-        if ($this->isBlankOption) {
-            return array(
-                'value' => '',
-                'label' => $this->label
-            );
+        $option = array(
+            'value'     => $this->id,
+            'label'     => $this->label
+        );
+
+        switch ($this->type) {
+            case 'blank':
+                $option['value'] = '';
+                break;
+
+            case 'group':
+                $option['group'] = '1';
+                break;
         }
 
-        return array(
-            'value'     => $this->id,
-            'label'     => $this->label,
-            'group'     => $this->group,
-            'default'   => $this->default
-        );
+        return $option;
     }
 
     /**

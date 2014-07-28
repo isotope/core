@@ -32,7 +32,7 @@ class AttributeOption extends \Model\Collection
         $arrOptions = array();
 
         foreach ($this->getModels() as $objModel) {
-            $arrOptions[] = $objModel->getAsArray();;
+            $arrOptions[] = $objModel->getAsArray();
         }
 
         return $arrOptions;
