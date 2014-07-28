@@ -72,8 +72,6 @@ abstract class AbstractAttributeWithOptions extends Attribute implements Isotope
                 break;
 
             case 'table':
-
-                /** @type \Isotope\Collection\AttributeOption $objOptions */
                 $objOptions = AttributeOption::findByAttribute($this);
 
                 if (null === $objOptions) {

@@ -12,6 +12,7 @@
 
 namespace Isotope\Model;
 
+use Isotope\Interfaces\IsotopeAttributeWithOptions;
 
 /**
  * Class AttributeOption
@@ -66,12 +67,12 @@ class AttributeOption extends \MultilingualModel
      *
      * @param Attribute $objAttribute
      *
-     * @return \Model\Collection|null
+     * @return \Isotope\Collection\AttributeOption|null
      */
-    public static function findByAttribute(Attribute $objAttribute)
+    public static function findByAttribute(IsotopeAttributeWithOptions $objAttribute)
     {
         if ($objAttribute->optionsSource != 'table') {
-            throw new \LogicException('Options source for attribute "' . $objAttribute->field_name . '" is not the database table.');
+            throw new \LogicException('Options source for attribute "' . $objAttribute->field_name . '" is not the database table');
         }
 
         $t = static::getTable();
