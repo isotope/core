@@ -484,7 +484,7 @@ class Standard extends Product implements IsotopeProduct, WeightAggregate
                 $v,
                 Format::dcaLabel(static::getTable(), $k),
                 array (
-                    'formatted' => Haste::getInstance()->call('replaceInsertTags', Format::dcaValue(static::getTable(), $k, $v))
+                    'formatted' => Haste::getInstance()->call('replaceInsertTags', array(Format::dcaValue(static::getTable(), $k, $v)))
                 )
             );
         }
