@@ -30,6 +30,67 @@ abstract class AbstractAttributeWithOptions extends Attribute implements Isotope
      */
     public function getOptionsForWidget(IsotopeProduct $objProduct = null)
     {
-        // @todo implement this
+        $arrOptions = array();
+
+        switch ($this->optionsSource) {
+
+            // @deprecated remove in Isotope 3.0
+            case 'attribute':
+                $options = deserialize($this->options);
+
+                if (!empty($options) && is_array($options)) {
+
+                    // Build for a frontend widget
+                    if ($this->isCustomerDefined()) {
+                        foreach ($options as $option) {
+                            $option['label'] = Translation::get($option['label']);
+
+                            $arrOptions[] = $option;
+                        }
+                    }
+
+                    // Build for a backend widget
+                    else {
+                        $group = '';
+
+                        foreach ($options as $option) {
+                            $option['label'] = Translation::get($option['label']);
+
+                            if ($option['group']) {
+                                $group = $option['label'];
+                                continue;
+                            }
+
+                            if ($group != '') {
+                                $arrOptions[$group][] = $option;
+                            } else {
+                                $arrOptions[] = $option;
+                            }
+                        }
+                    }
+                }
+                break;
+
+            case 'table':
+
+                /** @type \Isotope\Collection\AttributeOption $objOptions */
+                $objOptions = AttributeOption::findByAttribute($this);
+
+                if (null === $objOptions) {
+                    return array();
+
+                } else if ($this->isCustomerDefined()) {
+                    return $objOptions->getArrayForFrontendWidget();
+
+                } else {
+                    return $objOptions->getArrayForBackendWidget();
+                }
+                break;
+
+            default:
+                throw new \UnexpectedValueException('Invalid options source "'.$this->optionsSource.'" for '.static::$strTable.'.'.$this->field_name);
+        }
+
+        return $arrOptions;
     }
 } 

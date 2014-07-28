@@ -62,6 +62,36 @@ class AttributeOption extends \MultilingualModel
     }
 
     /**
+     * Find all options by attribute
+     *
+     * @param Attribute $objAttribute
+     *
+     * @return \Model\Collection|null
+     */
+    public static function findByAttribute(Attribute $objAttribute)
+    {
+        if ($objAttribute->optionsSource != 'table') {
+            throw new \LogicException('Options source for attribute "' . $objAttribute->field_name . '" is not the database table.');
+        }
+
+        $t = static::getTable();
+
+        return static::findBy(
+            array(
+                "$t.pid=?",
+                "$t.ptable='tl_iso_attribute'",
+                "$t.published='1'"
+            ),
+            array(
+                $objAttribute->id
+            ),
+            array(
+                'order' => "$t.type='blank' DESC, $t.sorting"
+            )
+        );
+    }
+
+    /**
      * Create a Model\Collection object
      *
      * @param array  $arrModels An array of models

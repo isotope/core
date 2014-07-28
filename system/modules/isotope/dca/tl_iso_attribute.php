@@ -215,7 +215,7 @@ $GLOBALS['TL_DCA']['tl_iso_attribute'] = array
             'exclude'               => true,
             'inputType'             => 'radio',
             'options_callback'      => function($dc) {
-                $arrOptions = array('attribute', 'table', 'foreignKey');
+                $arrOptions = array('table', 'foreignKey', 'attribute');
 
                 return $arrOptions;
             },
