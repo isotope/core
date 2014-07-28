@@ -23,7 +23,7 @@ array_insert($GLOBALS['BE_MOD']['isotope'], 0, array
 (
     'iso_products' => array
     (
-        'tables'            => array(\Isotope\Model\Product::getTable(), \Isotope\Model\Group::getTable(), \Isotope\Model\ProductCategory::getTable(), \Isotope\Model\Download::getTable(), \Isotope\Model\RelatedProduct::getTable(), \Isotope\Model\ProductPrice::getTable(), 'tl_iso_product_pricetier'),
+        'tables'            => array(\Isotope\Model\Product::getTable(), \Isotope\Model\Group::getTable(), \Isotope\Model\ProductCategory::getTable(), \Isotope\Model\Download::getTable(), \Isotope\Model\RelatedProduct::getTable(), \Isotope\Model\ProductPrice::getTable(), 'tl_iso_product_pricetier', \Isotope\Model\AttributeOption::getTable()),
         'icon'              => 'system/modules/isotope/assets/images/store-open.png',
         'javascript'        => \Haste\Util\Debug::uncompressedFile('system/modules/isotope/assets/js/backend.min.js'),
         'generate'          => array('Isotope\Backend\Product\VariantGenerator', 'generate'),

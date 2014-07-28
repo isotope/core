@@ -58,6 +58,7 @@ $GLOBALS['TL_LANG']['tl_iso_attribute']['options']['label']        = array('Labe
 $GLOBALS['TL_LANG']['tl_iso_attribute']['options']['default']      = array('Default');
 $GLOBALS['TL_LANG']['tl_iso_attribute']['options']['group']        = array('Group');
 $GLOBALS['TL_LANG']['tl_iso_attribute']['optionsSource']['table'] = 'Options Manager';
+$GLOBALS['TL_LANG']['tl_iso_attribute']['optionsSource']['product'] = 'Product';
 $GLOBALS['TL_LANG']['tl_iso_attribute']['optionsSource']['foreignKey'] = 'Custom database table (foreignKey)';
 $GLOBALS['TL_LANG']['tl_iso_attribute']['optionsSource']['attribute'] = 'Options Wizard (deprecated)';
 $GLOBALS['TL_LANG']['tl_iso_attribute']['checkbox']                = 'Checkbox';

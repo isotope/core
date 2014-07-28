@@ -85,10 +85,45 @@ abstract class AbstractAttributeWithOptions extends Attribute implements Isotope
                 }
                 break;
 
+            case 'product':
+                if (TL_MODE == 'FE' && !($objProduct instanceof IsotopeProduct)) {
+                    throw new \InvalidArgumentException('Must pass IsotopeProduct to Attribute::getOptions if optionsSource is "product"');
+                }
+
+                $objOptions = AttributeOption::findByProductAndAttribute($objProduct, $this);
+
+                if (null === $objOptions) {
+                    return array();
+
+                } else {
+                    return $objOptions->getArrayForFrontendWidget();
+                }
+
+                break;
+
             default:
                 throw new \UnexpectedValueException('Invalid options source "'.$this->optionsSource.'" for '.static::$strTable.'.'.$this->field_name);
         }
 
         return $arrOptions;
+    }
+
+    /**
+     * Adjust DCA field for this attribute
+     *
+     * @param array $arrData
+     */
+    public function saveToDCA(array &$arrData)
+    {
+        parent::saveToDCA($arrData);
+
+        if (TL_MODE == 'BE' && $this->isCustomerDefined() && $this->optionsSource == 'product') {
+
+            \Haste\Haste::getInstance()->call('loadDataContainer', static::$strTable);
+            \System::loadLanguageFile(static::getTable());
+
+            $arrData['fields'][$this->field_name] = array_merge($arrData['fields'][$this->field_name], $GLOBALS['TL_DCA'][static::$strTable]['fields']['optionsTable']);
+            $arrData['fields'][$this->field_name]['attributes']['dynamic'] = true;
+        }
     }
 } 

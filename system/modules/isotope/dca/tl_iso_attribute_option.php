@@ -24,6 +24,18 @@ $GLOBALS['TL_DCA']['tl_iso_attribute_option'] = array
         'enableVersioning'          => true,
         'ptable'                    => 'tl_iso_attribute',
         'dynamicPtable'             => true,
+        'onsubmit_callback' => array
+        (
+            function($dc) {
+                if (\Input::get('do') == 'iso_products' && $dc->activeRecord->field_name == '') {
+                    \Database::getInstance()->prepare("
+                        UPDATE tl_iso_attribute_option
+                        SET field_name=?
+                        WHERE id=?
+                    ")->execute(\Input::get('field'), $dc->id);
+                }
+            }
+        ),
         'sql' => array
         (
             'keys' => array
@@ -135,6 +147,10 @@ $GLOBALS['TL_DCA']['tl_iso_attribute_option'] = array
         (
             'sql'                   =>  "varchar(5) NOT NULL default ''",
         ),
+        'field_name' => array
+        (
+            'sql'                   => "varchar(30) NOT NULL default ''",
+        ),
         'type' => array
         (
             'label'                 => &$GLOBALS['TL_LANG']['tl_iso_attribute_option']['type'],
@@ -172,3 +188,10 @@ $GLOBALS['TL_DCA']['tl_iso_attribute_option'] = array
         )
     ),
 );
+
+// Using onload_callback is too late
+if (\Input::get('do') == 'iso_products') {
+    $GLOBALS['TL_DCA']['tl_iso_attribute_option']['config']['ptable'] = 'tl_iso_product';
+    //$GLOBALS['TL_DCA']['tl_iso_attribute_option']['list']['sorting']['filter'] = array(array('field_name'=>\Input::get('field')));
+    $GLOBALS['TL_DCA']['tl_iso_attribute_option']['list']['sorting']['headerFields'] = array('name', 'type', 'alias', 'published');
+}

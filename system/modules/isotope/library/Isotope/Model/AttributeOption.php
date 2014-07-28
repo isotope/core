@@ -13,6 +13,8 @@
 namespace Isotope\Model;
 
 use Isotope\Interfaces\IsotopeAttributeWithOptions;
+use Isotope\Interfaces\IsotopeProduct;
+
 
 /**
  * Class AttributeOption
@@ -85,6 +87,39 @@ class AttributeOption extends \MultilingualModel
             ),
             array(
                 $objAttribute->id
+            ),
+            array(
+                'order' => "$t.type='blank' DESC, $t.sorting"
+            )
+        );
+    }
+
+    /**
+     * Find all options by attribute
+     *
+     * @param IsotopeProduct              $objProduct
+     * @param IsotopeAttributeWithOptions $objAttribute
+     *
+     * @return \Isotope\Collection\AttributeOption|null
+     */
+    public static function findByProductAndAttribute(IsotopeProduct $objProduct, IsotopeAttributeWithOptions $objAttribute)
+    {
+        if ($objAttribute->optionsSource != 'product') {
+            throw new \LogicException('Options source for attribute "' . $objAttribute->field_name . '" is not the product');
+        }
+
+        $t = static::getTable();
+
+        return static::findBy(
+            array(
+                "$t.pid=?",
+                "$t.ptable='tl_iso_product'",
+                "$t.field_name=?",
+                "$t.published='1'"
+            ),
+            array(
+                $objProduct->id,
+                $objAttribute->field_name
             ),
             array(
                 'order' => "$t.type='blank' DESC, $t.sorting"
