@@ -112,7 +112,9 @@ abstract class Attribute extends TypeAgent
 
     /**
      * Load attribute configuration from given DCA array
-     * @param   array
+     *
+     * @param array  $arrData
+     * @param string $strName
      */
     public function loadFromDCA(array &$arrData, $strName)
     {
