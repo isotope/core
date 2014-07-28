@@ -12,9 +12,13 @@
 
 namespace Isotope;
 
+use Haste\Data\Plain;
 use Haste\Haste;
 use Haste\Util\Format;
+use Isotope\Interfaces\IsotopeAttributeWithOptions;
+use Isotope\Interfaces\IsotopeProduct;
 use Isotope\Model\Config;
+use Isotope\Model\Product;
 use Isotope\Model\ProductCollection\Cart;
 use Isotope\Model\RequestCache;
 use Isotope\Model\TaxClass;
@@ -420,5 +424,84 @@ class Isotope extends \Controller
         }
 
         return $arrOptions;
+    }
+
+    /**
+     * Format product configuration using \Haste\Data
+     *
+     * @param array          $arrConfig
+     * @param IsotopeProduct $objProduct
+     *
+     * @return array
+     */
+    public static function formatProductConfiguration(array $arrConfig, IsotopeProduct $objProduct)
+    {
+        Product::setActive($objProduct);
+
+        $strTable = $objProduct->getTable();
+
+        foreach ($arrConfig as $k => $v) {
+
+            /** @type \Isotope\Model\Attribute $objAttribute */
+            if (($objAttribute = $GLOBALS['TL_DCA'][$strTable]['attributes'][$k]) !== null
+                && $objAttribute instanceof IsotopeAttributeWithOptions
+            ) {
+
+                /** @type \Widget $strClass */
+                $strClass = $objAttribute->getFrontendWidget();
+                $arrField = $strClass::getAttributesFromDca(
+                    $GLOBALS['TL_DCA'][$strTable]['fields'][$k],
+                    $k,
+                    $v,
+                    $k,
+                    $strTable,
+                    $objProduct
+                );
+
+                $arrOptions = array();
+
+                if (!empty($arrField['options']) && is_array($arrField['options'])) {
+
+                    if (!is_array($v)) {
+                        $v = array($v);
+                    }
+
+                    $arrOptions = array_filter(
+                        $arrField['options'],
+                        function(&$option) use (&$v) {
+                            if (($pos = array_search($option['value'], $v)) !== false) {
+                                $option = $option['label'];
+                                unset($v[$pos]);
+
+                                return true;
+                            }
+
+                            return false;
+                        }
+                    );
+
+                    if (!empty($v)) {
+                        $arrOptions = array_merge($arrOptions, $v);
+                    }
+                }
+
+                $formatted = implode(', ', $arrOptions);
+
+            } else {
+                $formatted = Format::dcaValue($strTable, $k, $v);
+            }
+
+            $arrConfig[$k] = new Plain(
+                $v,
+                Format::dcaLabel($strTable, $k),
+                array (
+                    'formatted' => Haste::getInstance()->call('replaceInsertTags', array($formatted))
+                )
+            );
+        }
+
+        Product::unsetActive();
+
+        return $arrConfig;
     }
 }

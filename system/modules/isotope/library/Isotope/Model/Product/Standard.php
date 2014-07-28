@@ -12,14 +12,10 @@
 
 namespace Isotope\Model\Product;
 
-use Haste\Data\Plain;
 use Haste\Generator\RowClass;
-use Haste\Haste;
 use Haste\Units\Mass\Weight;
 use Haste\Units\Mass\WeightAggregate;
-use Haste\Util\Format;
 use Isotope\Interfaces\IsotopeAttribute;
-use Isotope\Interfaces\IsotopeAttributeForVariants;
 use Isotope\Interfaces\IsotopeProduct;
 use Isotope\Interfaces\IsotopeProductCollection;
 use Isotope\Isotope;
@@ -475,23 +471,9 @@ class Standard extends Product implements IsotopeProduct, WeightAggregate
      */
     public function getConfiguration()
     {
-        Product::setActive($this);
-
         $arrConfig = array_merge($this->getVariantConfig(), $this->getCustomerConfig());
 
-        foreach ($arrConfig as $k => $v) {
-            $arrConfig[$k] = new Plain(
-                $v,
-                Format::dcaLabel(static::getTable(), $k),
-                array (
-                    'formatted' => Haste::getInstance()->call('replaceInsertTags', array(Format::dcaValue(static::getTable(), $k, $v)))
-                )
-            );
-        }
-
-        Product::unsetActive();
-
-        return $arrConfig;
+        return Isotope::formatProductConfiguration($arrConfig, $this);
     }
 
     /**

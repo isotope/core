@@ -13,8 +13,7 @@
 namespace Isotope\Model;
 
 use Haste\Data\Plain;
-use Haste\Haste;
-use Haste\Util\Format;
+use Isotope\Isotope;
 
 
 /**
@@ -191,31 +190,16 @@ class ProductCollectionItem extends \Model
     {
         $arrConfig = deserialize($this->configuration);
 
-        if (!is_array($arrConfig)) {
-            return array();
-        }
-
         if ($this->hasProduct()) {
-            Product::setActive($this->getProduct());
-        }
+            return Isotope::formatProductConfiguration($arrConfig, $this->getProduct());
 
-        foreach ($arrConfig as $k => $v) {
-            $arrConfig[$k] = new Plain($v, $k);
-
-            if ($this->hasProduct()) {
-                $arrConfig[$k]['label'] = Format::dcaLabel($this->getProduct()->getTable(), $k);
-                $arrConfig[$k]['formatted'] = Haste::getInstance()->call(
-                    'replaceInsertTags',
-                    array(Format::dcaValue($this->getProduct()->getTable(), $k, $v))
-                );
+        } else {
+            foreach ($arrConfig as $k => $v) {
+                $arrConfig[$k] = new Plain($v, $k);
             }
-        }
 
-        if ($this->hasProduct()) {
-            Product::unsetActive();
+            return $arrConfig;
         }
-
-        return $arrConfig;
     }
 
     /**
