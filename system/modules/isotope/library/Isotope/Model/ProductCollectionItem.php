@@ -206,7 +206,7 @@ class ProductCollectionItem extends \Model
                 $arrConfig[$k]['label'] = Format::dcaLabel($this->getProduct()->getTable(), $k);
                 $arrConfig[$k]['formatted'] = Haste::getInstance()->call(
                     'replaceInsertTags',
-                    Format::dcaValue($this->getProduct()->getTable(), $k, $v)
+                    array(Format::dcaValue($this->getProduct()->getTable(), $k, $v))
                 );
             }
         }
