@@ -165,7 +165,7 @@ abstract class ProductCollection extends TypeAgent
      */
     public function isLocked()
     {
-        return (string) $this->locked !== '';
+        return (isset($this->locked) && $this->locked !== '');
     }
 
     /**

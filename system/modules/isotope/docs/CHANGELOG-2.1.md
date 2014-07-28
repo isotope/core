@@ -4,6 +4,8 @@ Isotope eCommerce Changelog
 Version 2.1.5-stable (2014-??-??)
 ---------------------------------
 
+### Fixed
+- New product collections were reported as locked (#1190)
 
 
 Version 2.1.4-stable (2014-07-21)
