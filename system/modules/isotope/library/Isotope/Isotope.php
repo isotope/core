@@ -90,7 +90,7 @@ class Isotope extends \Controller
                     }
 
                     $strQuery = http_build_query($_GET);
-                    \System::redirect(preg_replace('/\?.*$/i', '', \Environment::get('request')) . (($strQuery) ? '?' . $strQuery : ''));
+                    \Controller::redirect(preg_replace('/\?.*$/i', '', \Environment::get('request')) . (($strQuery) ? '?' . $strQuery : ''));
                 }
             }
         }
