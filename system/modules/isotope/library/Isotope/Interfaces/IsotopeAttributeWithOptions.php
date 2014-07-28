@@ -28,9 +28,9 @@ interface IsotopeAttributeWithOptions extends IsotopeAttribute
     /**
      * Get field options
      *
-     * @param   IsotopeProduct|null $objProduct
+     * @param   IsotopeProduct $objProduct
      *
      * @return  array
      */
-    public function getOptions(IsotopeProduct $objProduct = null);
+    public function getOptionsForWidget(IsotopeProduct $objProduct = null);
 }
