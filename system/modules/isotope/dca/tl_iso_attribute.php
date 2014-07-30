@@ -251,6 +251,7 @@ $GLOBALS['TL_DCA']['tl_iso_attribute'] = array
             (
                 'fields'            => array('type', 'label', 'default', 'published'),
                 'tl_class'          => 'clr',
+                'editButtonLabel'   => &$GLOBALS['TL_LANG']['tl_iso_attribute']['optionsTable']['edit'],
             ),
         ),
         'foreignKey' => array
