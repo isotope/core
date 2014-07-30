@@ -58,3 +58,4 @@ $GLOBALS['TL_LANG']['IMD']['notifications']             = array('Notifications',
 $GLOBALS['TL_LANG']['IMD']['documents']                 = array('Documents', 'Define documents.');
 $GLOBALS['TL_LANG']['IMD']['miscellaneous']             = 'Miscellaneous';
 $GLOBALS['TL_LANG']['IMD']['labels']                    = array('Translations', 'Replace given labels for certain languages.');
+$GLOBALS['TL_LANG']['IMD']['integrity']                 = array('Integrity Check', 'Validate your shop configuration against common errors.');
