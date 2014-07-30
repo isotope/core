@@ -190,6 +190,10 @@ class ProductCollectionItem extends \Model
     {
         $arrConfig = deserialize($this->configuration);
 
+        if (empty($arrConfig) || !is_array($arrConfig)) {
+            return array();
+        }
+
         if ($this->hasProduct()) {
             return Isotope::formatProductConfiguration($arrConfig, $this->getProduct());
 
