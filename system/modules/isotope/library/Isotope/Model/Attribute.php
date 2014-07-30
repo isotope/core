@@ -195,7 +195,7 @@ abstract class Attribute extends TypeAgent
         }
 
         // @deprecated remove in Isotope 3.0
-        elseif ($this->optionsSource = 'attribute') {
+        elseif ($this->optionsSource == 'attribute') {
             $arrOptions = deserialize($this->options);
 
             if (!empty($arrOptions) && is_array($arrOptions)) {
