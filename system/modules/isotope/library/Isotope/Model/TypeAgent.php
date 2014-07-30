@@ -194,15 +194,6 @@ abstract class TypeAgent extends \Model
                 $arrOptions['having'] = (empty($arrOptions['having']) ? '' : ' AND ') . 'type=?';
                 $arrOptions['value'][]  = $strType;
             }
-
-            // @deprecated remove when we drop support for Contao 3.2
-            if (version_compare(VERSION, '3.3', '<')) {
-                if ($arrOptions['group'] !== null) {
-                    $arrOptions['group'] .= ' HAVING ' . $arrOptions['having'];
-                } else {
-                    $arrOptions['column'][] = '1=1 HAVING ' . $arrOptions['having'];
-                }
-            }
         }
 
         $arrOptions['table'] = static::$strTable;
@@ -299,7 +290,7 @@ abstract class TypeAgent extends \Model
      */
     protected static function createCollectionFromDbResult(\Database\Result $objResult, $strTable = null)
     {
-        // @deprecated only for backward compatibility with Contao 3.2/Isotope < 2.1.2
+        // @deprecated Remove in Isotope 3.0 (only for backward compatibility Isotope < 2.1.2)
         if (null === $strTable) {
             $strTable = static::$strTable;
         }
@@ -346,23 +337,6 @@ abstract class TypeAgent extends \Model
         }
 
         return static::createModelFromDbResult($objResult);
-    }
-
-    /**
-     * Build a query based on the given options
-     *
-     * @param array $arrOptions The options array
-     *
-     * @return string The query string
-     * @deprecated this is only for BC with Contao 3.2
-     */
-    protected static function buildFindQuery(array $arrOptions)
-    {
-        if (version_compare(VERSION, '3.3', '<')) {
-            return \Model\QueryBuilder::find($arrOptions);
-        }
-
-        return parent::buildFindQuery($arrOptions);
     }
 
     /**
