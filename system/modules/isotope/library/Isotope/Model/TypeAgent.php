@@ -260,6 +260,11 @@ abstract class TypeAgent extends \Model
         // Try to use the current class as fallback
         if ($strClass == '') {
             $strClass = get_called_class();
+
+            $objReflection = new \ReflectionClass($strClass);
+            if ($objReflection ->isAbstract()) {
+                return null;
+            }
         }
 
         $objModel = new $strClass($objResult);
