@@ -56,11 +56,11 @@ abstract class TypeAgent extends \Model
         }
     }
 
-
     /**
      * Register a model type
-     * @param   string
-     * @param   string
+     *
+     * @param   string $strName
+     * @param   string $strClass
      */
     public static function registerModelType($strName, $strClass)
     {
@@ -73,7 +73,8 @@ abstract class TypeAgent extends \Model
 
     /**
      * Unregister a model type
-     * @param   string
+     *
+     * @param   string $strName
      */
     public static function unregisterModelType($strName)
     {
@@ -95,7 +96,9 @@ abstract class TypeAgent extends \Model
 
     /**
      * Get class name for given model type
-     * @param   string
+     *
+     * @param   string $strName
+     *
      * @return  string
      */
     public static function getClassForModelType($strName)
@@ -105,6 +108,7 @@ abstract class TypeAgent extends \Model
 
     /**
      * Return options list of model types
+     *
      * @return  array
      */
     public static function getModelTypeOptions()
@@ -118,12 +122,14 @@ abstract class TypeAgent extends \Model
         return $arrOptions;
     }
 
-
     /**
      * Find sibling records by a column value
+     *
      * @param   string
      * @param   \Model
      * @param   array
+     *
+     * @return \Model|\Model\Collection|null
      */
     public static function findSiblingsBy($strColumn, \Model $objModel, array $arrOptions=array())
     {
@@ -151,6 +157,10 @@ abstract class TypeAgent extends \Model
 
     /**
      * Return a model or collection based on the database result type
+     *
+     * @param array $arrOptions
+     *
+     * @return \Model|\Model\Collection|null
      */
     protected static function find(array $arrOptions)
     {
@@ -235,7 +245,10 @@ abstract class TypeAgent extends \Model
 
     /**
      * Build model based on database result
-     * @param   Database_Result
+     *
+     * @param \Database\Result $objResult
+     *
+     * @return \Model
      */
     public static function createModelFromDbResult(\Database\Result $objResult)
     {
@@ -278,8 +291,10 @@ abstract class TypeAgent extends \Model
 
     /**
      * Create array of models and return a collection of them
-     * @param   Database\Result
-     * @param   string
+     *
+     * @param   \Database\Result $objResult
+     * @param   string           $strTable
+     *
      * @return  \Model\Collection
      */
     protected static function createCollectionFromDbResult(\Database\Result $objResult, $strTable = null)
@@ -306,7 +321,10 @@ abstract class TypeAgent extends \Model
 
     /**
      * Build model based on database result
-     * @param   \Database\Result
+     *
+     * @param \Database\Result $objResult
+     *
+     * @return \Model
      * @deprecated  use createModelFromDbResult in Contao 3.3
      */
     public static function buildModelType(\Database\Result $objResult = null)
@@ -332,7 +350,9 @@ abstract class TypeAgent extends \Model
 
     /**
      * Build a query based on the given options
+     *
      * @param array $arrOptions The options array
+     *
      * @return string The query string
      * @deprecated this is only for BC with Contao 3.2
      */
@@ -347,7 +367,9 @@ abstract class TypeAgent extends \Model
 
     /**
      * Allow to override the query builder
+     *
      * @param       array
+     *
      * @return      string
      * @deprecated  use buildFindQuery introduced in Contao 3.3
      */
