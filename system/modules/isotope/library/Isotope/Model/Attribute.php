@@ -182,6 +182,10 @@ abstract class Attribute extends TypeAgent
             $arrField['eval']['mandatory'] = true;
         }
 
+        if ($this->blankOptionLabel != '') {
+            $arrField['eval']['blankOptionLabel'] = Translation::get($this->blankOptionLabel);
+        }
+
         // Prepare options
         if ($this->optionsSource == 'foreignKey') {
             $arrField['foreignKey'] = $this->parseForeignKey($this->foreignKey, $GLOBALS['TL_LANGUAGE']);
