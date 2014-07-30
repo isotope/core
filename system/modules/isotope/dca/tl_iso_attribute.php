@@ -250,7 +250,7 @@ $GLOBALS['TL_DCA']['tl_iso_attribute'] = array
             'foreignTable'          => \Isotope\Model\AttributeOption::getTable(),
             'eval' => array
             (
-                'fields'            => array('type', 'label', 'default', 'published'),
+                'fields'            => array('type', 'label', 'isDefault', 'published'),
                 'tl_class'          => 'clr',
                 'editButtonLabel'   => &$GLOBALS['TL_LANG']['tl_iso_attribute']['optionsTable']['edit'],
             ),

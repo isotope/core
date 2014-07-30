@@ -111,7 +111,7 @@ $GLOBALS['TL_DCA']['tl_iso_attribute_option'] = array
     (
         '__selector__'              => array('type'),
         'default'                   => '{label_legend},type',
-        'option'                    => '{label_legend},type,default,label;{publish_legend},published',
+        'option'                    => '{label_legend},type,isDefault,label;{publish_legend},published',
         'group'                     => '{label_legend},type,label;{publish_legend},published',
     ),
 
@@ -161,9 +161,9 @@ $GLOBALS['TL_DCA']['tl_iso_attribute_option'] = array
             'eval'                  => array('tl_class'=>'w50', 'doNotCopy'=>true, 'submitOnChange'=>true),
             'sql'                   => "varchar(8) NOT NULL default ''",
         ),
-        'default' => array
+        'isDefault' => array
         (
-            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_attribute_option']['default'],
+            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_attribute_option']['isDefault'],
             'exclude'               => true,
             'inputType'             => 'checkbox',
             'eval'                  => array('tl_class'=>'w50 m12', 'doNotCopy'=>true),

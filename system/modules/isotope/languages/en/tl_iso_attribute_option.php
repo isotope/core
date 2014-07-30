@@ -14,7 +14,7 @@
  * Fields
  */
 $GLOBALS['TL_LANG']['tl_iso_attribute_option']['type']                  = array('Type', 'Select a type for this label.');
-$GLOBALS['TL_LANG']['tl_iso_attribute_option']['default']               = array('Default', 'Check here if this should be the default option.');
+$GLOBALS['TL_LANG']['tl_iso_attribute_option']['isDefault']             = array('Default', 'Check here if this should be the default option.');
 $GLOBALS['TL_LANG']['tl_iso_attribute_option']['label']                 = array('Label', 'Enter the label for this option.');
 $GLOBALS['TL_LANG']['tl_iso_attribute_option']['published']             = array('Published', 'Make this option available in the product.');
 
