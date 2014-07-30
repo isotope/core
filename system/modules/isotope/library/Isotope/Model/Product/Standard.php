@@ -16,6 +16,7 @@ use Haste\Generator\RowClass;
 use Haste\Units\Mass\Weight;
 use Haste\Units\Mass\WeightAggregate;
 use Isotope\Interfaces\IsotopeAttribute;
+use Isotope\Interfaces\IsotopeAttributeForVariants;
 use Isotope\Interfaces\IsotopeProduct;
 use Isotope\Interfaces\IsotopeProductCollection;
 use Isotope\Isotope;
@@ -41,7 +42,7 @@ class Standard extends Product implements IsotopeProduct, WeightAggregate
 
     /**
      * Price model for the current product
-     * @var Isotope\Model\ProductPrice
+     * @var \Isotope\Model\ProductPrice
      */
     protected $objPrice = false;
 
@@ -100,11 +101,13 @@ class Standard extends Product implements IsotopeProduct, WeightAggregate
      */
     public function isPublished()
     {
+        $time = time();
+
         if (!$this->arrData['published']) {
             return false;
-        } elseif ($this->arrData['start'] > 0 && $this->arrData['start'] > time()) {
+        } elseif ($this->arrData['start'] != '' && $this->arrData['start'] > $time) {
             return false;
-        } elseif ($this->arrData['stop'] > 0 && $this->arrData['stop'] < time()) {
+        } elseif ($this->arrData['stop'] != '' && $this->arrData['stop'] < $time) {
             return false;
         }
 
@@ -286,7 +289,7 @@ class Standard extends Product implements IsotopeProduct, WeightAggregate
     /**
      * Get product price model
      * @param   IsotopeProductCollection
-     * @return  IsotopePrice
+     * @return  \Isotope\Interfaces\IsotopePrice
      */
     public function getPrice(IsotopeProductCollection $objCollection = null)
     {
@@ -512,7 +515,7 @@ class Standard extends Product implements IsotopeProduct, WeightAggregate
                 return '';
             }
 
-            return $objPrice->generate($objProduct->getRelated('type')->showPriceTiers());
+            return $objPrice->generate($objProduct->getRelated('type')->showPriceTiers(), 1, $objProduct->getOptions());
         };
 
         $objTemplate->getGallery = function($strAttribute) use ($objProduct, $arrConfig, &$arrGalleries) {
@@ -620,9 +623,11 @@ class Standard extends Product implements IsotopeProduct, WeightAggregate
      */
     protected function generateProductOptionWidget($strField, &$arrVariantOptions)
     {
+        /** @var \Isotope\Model\Attribute $objAttribute */
         $objAttribute = $GLOBALS['TL_DCA']['tl_iso_product']['attributes'][$strField];
         $arrData      = $GLOBALS['TL_DCA']['tl_iso_product']['fields'][$strField];
 
+        /** @var \Widget $strClass */
         $strClass = $objAttribute->getFrontendWidget();
 
         $arrData['eval']['required']  = $arrData['eval']['mandatory'];
@@ -633,12 +638,12 @@ class Standard extends Product implements IsotopeProduct, WeightAggregate
         }
 
         // Prepare variant selection field
-        if ($objAttribute->isVariantOption()) {
+        if (/* @todo in 3.0: $objAttribute instanceof IsotopeAttributeForVariants && */ $objAttribute->isVariantOption()) {
 
             $arrOptions = $objAttribute->getOptionsForVariants($this->getVariantIds(), $arrVariantOptions);
 
             // Hide selection if only one option is available (and "force_variant_options" is not set in product type)
-            if (\Input::post('FORM_SUBMIT') != $this->getFormId() && count($arrOptions) == 1 && !$this->getRelated('type')->force_variant_options) {
+            if (count($arrOptions) == 1 && !$this->getRelated('type')->force_variant_options) {
                 $arrVariantOptions[$strField] = $arrOptions[0];
 
                 return '';
@@ -647,7 +652,7 @@ class Standard extends Product implements IsotopeProduct, WeightAggregate
             $arrField = $strClass::getAttributesFromDca($arrData, $strField, $arrData['default']);
 
             // Remove options not available in any product variant
-            if (is_array($arrData['options'])) {
+            if (is_array($arrField['options'])) {
                 foreach ($arrField['options'] as $k => $option) {
 
                     // Keep groups and blankOptionLabels
@@ -687,7 +692,7 @@ class Standard extends Product implements IsotopeProduct, WeightAggregate
             }
         }
 
-
+        /** @var \Widget $objWidget */
         $objWidget = new $strClass($arrField);
 
         $objWidget->storeValues = true;
@@ -706,8 +711,13 @@ class Standard extends Product implements IsotopeProduct, WeightAggregate
 
                 // Convert date formats into timestamps
                 if ($varValue != '' && in_array($arrData['eval']['rgxp'], array('date', 'time', 'datim'))) {
-                    $objDate  = new \Date($varValue, $GLOBALS['TL_CONFIG'][$arrData['eval']['rgxp'] . 'Format']);
-                    $varValue = $objDate->tstamp;
+                    try {
+                        $objDate = new \Date($varValue, $GLOBALS['TL_CONFIG'][$arrData['eval']['rgxp'] . 'Format']);
+                        $varValue = $objDate->tstamp;
+                    } catch (\OutOfBoundsException $e) {
+                        $objWidget->addError(sprintf($GLOBALS['TL_LANG']['ERR'][$arrData['eval']['rgxp']], $GLOBALS['TL_CONFIG'][$arrData['eval']['rgxp'] . 'Format']));
+                    }
+
                 }
 
                 // Trigger the save_callback
@@ -727,7 +737,7 @@ class Standard extends Product implements IsotopeProduct, WeightAggregate
                 }
 
                 if (!$objWidget->hasErrors() && $varValue != '') {
-                    if ($objAttribute->isVariantOption()) {
+                    if (/* @todo in 3.0: $objAttribute instanceof IsotopeAttributeForVariants && */$objAttribute->isVariantOption()) {
                         $arrVariantOptions[$strField] = $varValue;
                     } else {
                         $this->arrOptions[$strField] = $varValue;
@@ -769,7 +779,7 @@ class Standard extends Product implements IsotopeProduct, WeightAggregate
       toggle:$$("#toggle_' . $objWidget->id . '"),
       format:"' . $format . '",
       positionOffset:{x:-197,y:-182}' . $time . ',
-      pickerClass:"datepicker_dashboard",
+      pickerClass:"datepicker_bootstrap",
       useFadeInOut:!Browser.ie,
       startDay:' . $GLOBALS['TL_LANG']['MSC']['weekOffset'] . ',
       titleFormat:"' . $GLOBALS['TL_LANG']['MSC']['titleFormat'] . '"
@@ -805,6 +815,7 @@ class Standard extends Product implements IsotopeProduct, WeightAggregate
 
         $arrOptions = array();
 
+        // We don't need to validate IsotopeAttributeForVariants interface here, because Attribute::getVariantOptionFields will check it
         foreach (array_intersect($this->getVariantAttributes(), Attribute::getVariantOptionFields()) as $attribute) {
 
             $objAttribute = $GLOBALS['TL_DCA']['tl_iso_product']['attributes'][$attribute];
@@ -839,6 +850,7 @@ class Standard extends Product implements IsotopeProduct, WeightAggregate
     {
         if ($arrData['pid'] > 0) {
             // Do not use the model, it would trigger setRow and generate too much
+            // @deprecated use static::buildFindQuery once we drop BC support for buildQueryString
             $objParent = \Database::getInstance()->prepare(static::buildQueryString(array('table' => static::$strTable, 'column' => 'id')))->execute($arrData['pid']);
 
             if (null === $objParent) {
@@ -847,19 +859,25 @@ class Standard extends Product implements IsotopeProduct, WeightAggregate
 
             $this->setRow($objParent->row());
 
-            $this->arrData['id']      = $arrData['id'];
-            $this->arrData['pid']     = $arrData['pid'];
-            $this->arrData['inherit'] = $arrData['inherit'];
-
             // Set all variant attributes, except if they are inherited
-            foreach (array_diff($this->getVariantAttributes(), $this->getInheritedFields()) as $attribute) {
+            $arrVariantFields = array_diff($this->getVariantAttributes(), $this->getInheritedFields());
+            foreach ($arrData as $attribute => $value) {
+                if (
+                    in_array($attribute, $arrVariantFields)
+                    || $GLOBALS['TL_DCA']['tl_iso_product']['fields'][$attribute]['attributes']['legend'] == ''
+                ) {
+                    $this->arrData[$attribute] = $arrData[$attribute];
 
-                $this->arrData[$attribute] = $arrData[$attribute];
-
-                if (in_array($attribute, Attribute::getFetchFallbackFields())) {
-                    $this->arrData[$attribute . '_fallback'] = $arrData[$attribute . '_fallback'];
+                    if (in_array($attribute, Attribute::getFetchFallbackFields())) {
+                        $this->arrData[$attribute . '_fallback'] = $arrData[$attribute . '_fallback'];
+                    }
                 }
             }
+
+            // Make sure publishing settings match product and variant (see #1120)
+            $this->arrData['published'] = $objParent->published ? $arrData['published'] : '';
+            $this->arrData['start'] = ($objParent->start != '' && ($arrData['start'] == '' || $objParent->start > $arrData['start'])) ? $objParent->start : $arrData['start'];
+            $this->arrData['stop'] = ($objParent->stop != '' && ($arrData['stop'] == '' || $objParent->stop < $arrData['stop'])) ? $objParent->stop : $arrData['stop'];
 
             return $this;
         }

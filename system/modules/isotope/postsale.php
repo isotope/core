@@ -18,6 +18,10 @@ use Isotope\Model\Payment;
 use Isotope\Model\Shipping;
 use Haste\Http\Response\Response;
 
+/**
+ * Set the script name
+ */
+define('TL_SCRIPT', 'system/modules/isotope/postsale.php');
 
 /**
  * Initialize the system
@@ -38,6 +42,17 @@ require '../../initialize.php';
  */
 class PostSale extends \Frontend
 {
+    /**
+     * Postsale module
+     * @var string
+     */
+    protected $strModule = '';
+
+    /**
+     * Postsale module ID
+     * @var int
+     */
+    protected $intModuleId = 0;
 
     /**
      * Must be defined cause parent is protected.
@@ -55,17 +70,52 @@ class PostSale extends \Frontend
         // Need to load our own Hooks (e.g. loadDataContainer)
         include(TL_ROOT . '/system/modules/isotope/config/hooks.php');
 
+        // Default parameters
+        $this->setModule(strlen(\Input::post('mod')) ? \Input::post('mod') : \Input::get('mod'));
+        $this->setModuleId(strlen(\Input::post('id')) ? \Input::post('id') : \Input::get('id'));
+
         // HOOK: allow to add custom hooks for postsale script
         if (isset($GLOBALS['ISO_HOOKS']['initializePostsale']) && is_array($GLOBALS['ISO_HOOKS']['initializePostsale']))
         {
             foreach ($GLOBALS['ISO_HOOKS']['initializePostsale'] as $callback)
             {
                 $objCallback = \System::importStatic($callback[0]);
-                $objCallback->$callback[1]();
+                $objCallback->$callback[1]($this);
             }
         }
     }
 
+    /**
+     * @param int $intModuleId
+     */
+    public function setModuleId($intModuleId)
+    {
+        $this->intModuleId = (int) $intModuleId;
+    }
+
+    /**
+     * @return int
+     */
+    public function getModuleId()
+    {
+        return $this->intModuleId;
+    }
+
+    /**
+     * @param string $strModule
+     */
+    public function setModule($strModule)
+    {
+        $this->strModule = $strModule;
+    }
+
+    /**
+     * @return string
+     */
+    public function getModule()
+    {
+        return $this->strModule;
+    }
 
     /**
      * Run the controller
@@ -75,10 +125,10 @@ class PostSale extends \Frontend
         $objMethod = null;
 
         try {
-            $strMod = strlen(\Input::post('mod')) ? \Input::post('mod') : \Input::get('mod');
-            $strId = strlen(\Input::post('id')) ? \Input::post('id') : \Input::get('id');
+            $strMod = $this->getModule();
+            $intId = $this->getModuleId();
 
-            if ($strMod == '' || $strId == '') {
+            if ($strMod == '' || $intId == 0) {
                 \System::log('Invalid post-sale request (param error): '.\Environment::get('request'), __METHOD__, TL_ERROR);
 
                 $objResponse = new Response('Bad Request', 400);
@@ -87,11 +137,11 @@ class PostSale extends \Frontend
 
             switch (strtolower($strMod)) {
                 case 'pay':
-                    $objMethod = Payment::findByPk($strId);
+                    $objMethod = Payment::findByPk($intId);
                     break;
 
                 case 'ship':
-                    $objMethod = Shipping::findByPk($strId);
+                    $objMethod = Shipping::findByPk($intId);
                     break;
             }
 

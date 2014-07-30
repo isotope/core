@@ -12,6 +12,8 @@
 
 namespace Isotope\Module;
 
+use Isotope\Message;
+
 
 /**
  * Class \Isotope\Module\Messages
@@ -47,7 +49,13 @@ class Messages extends Module
         // Never prepend messages
         $this->iso_includeMessages = false;
 
-        return parent::generate();
+        $strBuffer = parent::generate();
+
+        if (count($this->Template->messages['value']) > 0) {
+            return $strBuffer;
+        }
+
+        return '';
     }
 
 
@@ -56,6 +64,6 @@ class Messages extends Module
      */
     protected function compile()
     {
-        $this->Template->messages = \Isotope\Frontend::getIsotopeMessages();
+        $this->Template->messages = Message::getAll();
     }
 }

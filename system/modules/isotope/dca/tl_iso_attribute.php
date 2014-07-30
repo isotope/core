@@ -33,7 +33,6 @@ $GLOBALS['TL_DCA']['tl_iso_attribute'] = array
         (
             array('Isotope\Backend', 'initializeSetupModule'),
             array('Isotope\Backend\Attribute\Callback', 'disableFieldName'),
-            array('Isotope\Backend\Attribute\Callback', 'prepareForVariantOptions'),
         ),
         'onsubmit_callback' => array
         (
@@ -123,8 +122,8 @@ $GLOBALS['TL_DCA']['tl_iso_attribute'] = array
     (
         '__selector__'              => array('type', 'variant_option', 'storeFile', 'files'),
         'default'                   => '{attribute_legend},name,field_name,type,legend',
-        'text'                      => '{attribute_legend},name,field_name,type,legend,customer_defined;{description_legend:hide},description;{config_legend},rgxp,maxlength,mandatory,multilingual,datepicker;{search_filters_legend},fe_search,fe_sorting,be_search',
-        'textarea'                  => '{attribute_legend},name,field_name,type,legend,customer_defined;{description_legend:hide},description;{config_legend},rgxp,rte,mandatory,multilingual;{search_filters_legend},fe_search,fe_sorting,be_search',
+        'text'                      => '{attribute_legend},name,field_name,type,legend,customer_defined;{description_legend:hide},description;{config_legend},minlength,maxlength,rgxp,placeholder,mandatory,multilingual,datepicker;{search_filters_legend},fe_search,fe_sorting,be_search',
+        'textarea'                  => '{attribute_legend},name,field_name,type,legend,customer_defined;{description_legend:hide},description;{config_legend},minlength,maxlength,rgxp,placeholder,rte,mandatory,multilingual;{search_filters_legend},fe_search,fe_sorting,be_search',
         'select'                    => '{attribute_legend},name,field_name,type,legend,variant_option,customer_defined;{description_legend:hide},description;{options_legend},options,foreignKey;{config_legend},mandatory,multiple,size;{search_filters_legend},fe_filter,fe_sorting,be_filter,fe_search',
         'selectvariant_option'      => '{attribute_legend},name,field_name,type,legend,variant_option;{description_legend:hide},description;{options_legend},options,foreignKey;{search_filters_legend},fe_filter,fe_sorting,be_filter',
         'radio'                     => '{attribute_legend},name,field_name,type,legend,variant_option,customer_defined;{description_legend:hide},description;{options_legend},options,foreignKey;{config_legend},mandatory;{search_filters_legend},fe_filter,fe_sorting',
@@ -135,6 +134,7 @@ $GLOBALS['TL_DCA']['tl_iso_attribute'] = array
         'fileTree'                  => '{attribute_legend},name,field_name,type,legend;{description_legend:hide},description;{config_legend},fieldType,path,mandatory,files',
         'downloads'                 => '{attribute_legend},name,field_name,type,legend;{description_legend:hide},description;{config_legend},fieldType,sortBy,path,mandatory,files',
         'upload'                    => '{attribute_legend},name,field_name,type,legend;{description_legend:hide},description;{config_legend},extensions,maxlength,mandatory;{store_legend:hide},storeFile',
+        'media'                     => '{attribute_legend},name,field_name,type,legend;{description_legend:hide},description;{config_legend},path,mandatory',
     ),
 
     // Subpalettes
@@ -214,33 +214,7 @@ $GLOBALS['TL_DCA']['tl_iso_attribute'] = array
             'eval' => array
             (
                 'tl_class'          => 'clr',
-                'columnFields' => array
-                (
-                    'value' => array
-                    (
-                        'label'     => &$GLOBALS['TL_LANG']['tl_iso_attribute']['options']['value'],
-                        'inputType' => 'text',
-                        'eval'      => array('class'=>'tl_text_2'),
-                    ),
-                    'label' => array
-                    (
-                        'label'     => &$GLOBALS['TL_LANG']['tl_iso_attribute']['options']['label'],
-                        'inputType' => 'text',
-                        'eval'      => array('class'=>'tl_text_2'),
-                    ),
-                    'default' => array
-                    (
-                        'label'     => &$GLOBALS['TL_LANG']['tl_iso_attribute']['options']['default'],
-                        'inputType' => 'checkbox',
-                        'eval'      => array('columnPos'=>2),
-                    ),
-                    'group' => array
-                    (
-                        'label'     => &$GLOBALS['TL_LANG']['tl_iso_attribute']['options']['group'],
-                        'inputType' => 'checkbox',
-                        'eval'      => array('columnPos'=>3),
-                    ),
-                ),
+                'columnsCallback'   => array('Isotope\Backend\Attribute\OptionsWizard', 'getColumns'),
             ),
             'sql'                   => "blob NULL",
         ),
@@ -367,6 +341,23 @@ $GLOBALS['TL_DCA']['tl_iso_attribute'] = array
             'reference'             => &$GLOBALS['TL_LANG']['tl_iso_attribute'],
             'eval'                  => array('helpwizard'=>true, 'includeBlankOption'=>true, 'tl_class'=>'w50', 'chosen'=>true),
             'sql'                   => "varchar(255) NOT NULL default ''",
+        ),
+        'placeholder' => array
+        (
+            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_attribute']['placeholder'],
+            'exclude'               => true,
+            'search'                => true,
+            'inputType'             => 'text',
+            'eval'                  => array('decodeEntities'=>true, 'maxlength'=>255, 'tl_class'=>'w50'),
+            'sql'                   => "varchar(255) NOT NULL default ''"
+        ),
+        'minlength' => array
+        (
+            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_attribute']['minlength'],
+            'exclude'               => true,
+            'inputType'             => 'text',
+            'eval'                  => array('rgxp'=>'digit', 'tl_class'=>'w50'),
+            'sql'                   => "int(10) unsigned NOT NULL default '0'"
         ),
         'maxlength' => array
         (

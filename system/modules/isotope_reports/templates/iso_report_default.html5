@@ -42,7 +42,7 @@
 <input type="text" name="<?php echo $subpanel['name']; ?>" class="tl_text<?php echo $subpanel['active'] ? ' active' : ''; ?>" value="<?php echo $subpanel['value']; ?>">
 <?php elseif($subpanel['type'] == 'date'): ?>
 <input type="text" id="ctrl_<?php echo $subpanel['name']; ?>" name="<?php echo $subpanel['name']; ?>" class="tl_text datepicker<?php echo $subpanel['active'] ? ' active' : ''; ?>" value="<?php echo $subpanel['value']; ?>">
-<img src="assets/mootools/datepicker/2.0.0/icon.gif" width="20" height="20" alt="" id="toggle_<?php echo $subpanel['name']; ?>" style="vertical-align:-6px">
+<img src="assets/mootools/datepicker/<?php echo DATEPICKER; ?>/icon.gif" width="20" height="20" alt="" id="toggle_<?php echo $subpanel['name']; ?>" style="vertical-align:-6px">
 <script>
 window.addEvent("domready", function() {
   new Picker.Date($$("#ctrl_<?php echo $subpanel['name']; ?>"), {
@@ -50,7 +50,7 @@ window.addEvent("domready", function() {
     toggle:$$("#toggle_<?php echo $subpanel['name']; ?>"),
     format:"<?php echo Date::formatToJs($subpanel['format']); ?>",
     positionOffset:{x:-197,y:-182},
-    pickerClass:"datepicker_dashboard",
+    pickerClass:"datepicker_bootstrap",
     useFadeInOut:!Browser.ie,
     startDay:<?php echo $GLOBALS['TL_LANG']['MSC']['weekOffset']; ?>,
     titleFormat:"<?php echo $GLOBALS['TL_LANG']['MSC']['titleFormat']; ?>"
@@ -74,6 +74,8 @@ window.addEvent("domready", function() {
 </div>
 
 <h2 class="sub_headline"><?php echo $this->headline; ?></h2>
+
+<?php echo \Message::generate(true); ?>
 
 <div class="tl_listing_container list_view mod_iso_reports <?php echo $this->class; ?>">
 

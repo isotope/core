@@ -12,6 +12,7 @@
 
 namespace Isotope\Backend\ProductType;
 
+use Isotope\Interfaces\IsotopeAttributeForVariants;
 use Isotope\Model\Product;
 use Isotope\Model\ProductType;
 
@@ -74,7 +75,7 @@ class Callback extends \Backend
                                 $arrAccess   = deserialize($objUser->iso_product_types);
                                 $arrAccess[] = \Input::get('id');
 
-                                \Database::getInstance()->prepare("UPDATE tl_user SET iso_product_types=? WHERE id=?")->executeUncached(serialize($arrAccess), $this->User->id);
+                                \Database::getInstance()->prepare("UPDATE tl_user SET iso_product_types=? WHERE id=?")->execute(serialize($arrAccess), $this->User->id);
                             }
                         } // Add permissions on group level
                         elseif ($this->User->groups[0] > 0) {
@@ -85,7 +86,7 @@ class Callback extends \Backend
                                 $arrAccess   = deserialize($objGroup->iso_product_types);
                                 $arrAccess[] = \Input::get('id');
 
-                                \Database::getInstance()->prepare("UPDATE tl_user_group SET iso_product_types=? WHERE id=?")->executeUncached(serialize($arrAccess), $this->User->groups[0]);
+                                \Database::getInstance()->prepare("UPDATE tl_user_group SET iso_product_types=? WHERE id=?")->execute(serialize($arrAccess), $this->User->groups[0]);
                             }
                         }
 
@@ -208,7 +209,7 @@ class Callback extends \Backend
             foreach ($arrAttributes as $arrAttribute) {
                 $objAttribute = $GLOBALS['TL_DCA']['tl_iso_product']['attributes'][$arrAttribute['name']];
 
-                if (null !== $objAttribute && $objAttribute->isVariantOption()) {
+                if (null !== $objAttribute && /* @todo in 3.0: $objAttribute instanceof IsotopeAttributeForVariants && */$objAttribute->isVariantOption()) {
                     $arrVariantAttributeLabels[] = $objAttribute->name;
 
                     if ($arrAttribute['enabled']) {

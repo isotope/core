@@ -27,7 +27,7 @@ class SubtableVersion extends \Backend
     {
         $objVersion = \Database::getInstance()->prepare("SELECT COUNT(*) AS count FROM tl_version WHERE fromTable=? AND pid=?")
                                      ->limit(1)
-                                     ->executeUncached($strSubtable, $intId);
+                                     ->execute($strSubtable, $intId);
 
         if ($objVersion->count < 1) {
             static::create($strTable, $intId, $strSubtable, $arrData);
@@ -45,7 +45,7 @@ class SubtableVersion extends \Backend
     {
         $objVersion = \Database::getInstance()->prepare("SELECT * FROM tl_version WHERE pid=? AND fromTable=? ORDER BY version DESC")
                                      ->limit(1)
-                                     ->executeUncached($intId, $strTable);
+                                     ->execute($intId, $strTable);
 
         // Parent table must have a version
         if ($objVersion->numRows == 0) {

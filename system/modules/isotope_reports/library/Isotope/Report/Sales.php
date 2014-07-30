@@ -49,8 +49,13 @@ abstract class Sales extends Report
         elseif (!is_numeric($arrSession[$this->name]['from']))
         {
             // Convert date formats into timestamps
-            $objDate = new \Date($arrSession[$this->name]['from'], $GLOBALS['TL_CONFIG']['dateFormat']);
-            $arrSession[$this->name]['from'] = $objDate->tstamp;
+            try {
+                $objDate = new \Date($arrSession[$this->name]['from'], $GLOBALS['TL_CONFIG']['dateFormat']);
+                $arrSession[$this->name]['from'] = $objDate->tstamp;
+            } catch (\OutOfBoundsException $e) {
+                \Message::addError(sprintf($GLOBALS['TL_LANG']['ERR']['date'], $GLOBALS['TL_CONFIG']['dateFormat']));
+                $arrSession[$this->name]['from'] = '';
+            }
         }
 
         if (!isset($arrSession[$this->name]['iso_status']))

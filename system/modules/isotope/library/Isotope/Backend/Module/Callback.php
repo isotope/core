@@ -211,7 +211,8 @@ class Callback extends \Backend
                     continue;
                 }
 
-                if ($strClass == 'Isotope\Module\ProductFilter' || is_subclass_of($strClass, 'Isotope\Module\ProductFilter')) {
+                $objReflection = new \ReflectionClass($strClass);
+                if ($objReflection->implementsInterface('Isotope\Interfaces\IsotopeFilterModule')) {
                     $arrClasses[] = $strName;
                 }
             }

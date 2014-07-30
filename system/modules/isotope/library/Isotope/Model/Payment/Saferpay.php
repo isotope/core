@@ -173,7 +173,7 @@ class Saferpay extends Postsale implements IsotopePayment
     private function getPostValue($strKey)
     {
         if (null === $this->objXML) {
-            $doc = new DOMDocument();
+            $doc = new \DOMDocument();
             $doc->loadXML($this->getPostData());
             $this->objXML = $doc->getElementsByTagName('IDP')->item(0)->attributes;
         }

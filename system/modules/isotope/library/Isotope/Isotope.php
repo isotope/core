@@ -46,19 +46,19 @@ class Isotope extends \Controller
 
     /**
      * Current cart instance
-     * @var Isotope\Model\ProductCollection\Cart
+     * @var \Isotope\Model\ProductCollection\Cart
      */
     protected static $objCart;
 
     /**
      * Current config instance
-     * @var Isotope\Model\Config
+     * @var \Isotope\Model\Config
      */
     protected static $objConfig;
 
     /**
      * Current request cache instance
-     * @var Isotope\Model\RequestCache
+     * @var \Isotope\Model\RequestCache
      */
     protected static $objRequestCache;
 
@@ -90,7 +90,7 @@ class Isotope extends \Controller
                     }
 
                     $strQuery = http_build_query($_GET);
-                    \System::redirect(preg_replace('/\?.*$/i', '', \Environment::get('request')) . (($strQuery) ? '?' . $strQuery : ''));
+                    \Controller::redirect(preg_replace('/\?.*$/i', '', \Environment::get('request')) . (($strQuery) ? '?' . $strQuery : ''));
                 }
             }
         }
@@ -99,7 +99,7 @@ class Isotope extends \Controller
 
     /**
      * Get the currently active Isotope cart
-     * @return Isotope\Model\ProductCollection\Cart|null
+     * @return \Isotope\Model\ProductCollection\Cart|null
      */
     public static function getCart()
     {
@@ -126,7 +126,7 @@ class Isotope extends \Controller
 
     /**
      * Get the currently active Isotope configuration
-     * @return Isotope\Model\Config
+     * @return \Isotope\Model\Config
      */
     public static function getConfig()
     {
@@ -191,7 +191,7 @@ class Isotope extends \Controller
      * @param integer
      * @return float
      */
-    public static function calculatePrice($fltPrice, $objSource, $strField, $intTaxClass = 0)
+    public static function calculatePrice($fltPrice, $objSource, $strField, $intTaxClass = 0, array $arrOptions = array())
     {
         if (!is_numeric($fltPrice)) {
             return $fltPrice;
@@ -201,7 +201,7 @@ class Isotope extends \Controller
         if (isset($GLOBALS['ISO_HOOKS']['calculatePrice']) && is_array($GLOBALS['ISO_HOOKS']['calculatePrice'])) {
             foreach ($GLOBALS['ISO_HOOKS']['calculatePrice'] as $callback) {
                 $objCallback = \System::importStatic($callback[0]);
-                $fltPrice    = $objCallback->$callback[1]($fltPrice, $objSource, $strField, $intTaxClass);
+                $fltPrice = $objCallback->$callback[1]($fltPrice, $objSource, $strField, $intTaxClass, $arrOptions);
             }
         }
 
@@ -220,6 +220,7 @@ class Isotope extends \Controller
         }
 
         // Possibly add/subtract tax
+        /** @var TaxClass $objTaxClass */
         if (($objTaxClass = TaxClass::findByPk($intTaxClass)) !== null) {
             $fltPrice = $objTaxClass->calculatePrice($fltPrice);
         }
@@ -230,8 +231,8 @@ class Isotope extends \Controller
 
     /**
      * Rounds a price according to store config settings
-     * @param float original value
-     * @param bool apply rounding increment
+     * @param float $fltValue original value
+     * @param bool $blnApplyRoundingIncrement apply rounding increment
      * @return float rounded value
      */
     public static function roundPrice($fltValue, $blnApplyRoundingIncrement = true)

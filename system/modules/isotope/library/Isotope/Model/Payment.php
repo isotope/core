@@ -98,6 +98,11 @@ abstract class Payment extends TypeAgent
             return false;
         }
 
+        $arrConfigs = deserialize($this->config_ids);
+        if (is_array($arrConfigs) && !empty($arrConfigs) && !in_array(Isotope::getConfig()->id, $arrConfigs)) {
+            return false;
+        }
+
         $arrCountries = deserialize($this->countries);
 
         if (is_array($arrCountries) && !empty($arrCountries) && !in_array(Isotope::getCart()->getBillingAddress()->country, $arrCountries)) {
@@ -137,7 +142,7 @@ abstract class Payment extends TypeAgent
     /**
      * Return percentage amount (if applicable)
      * @return float
-     * @throws UnexpectedValueException
+     * @throws \UnexpectedValueException
      */
     public function getPercentage()
     {
@@ -189,8 +194,8 @@ abstract class Payment extends TypeAgent
 
     /**
      * Return a html form for checkout or false
-     * @param   IsotopeProductCollection    The order being places
-     * @param   Module                      The checkout module instance
+     * @param   IsotopeProductCollection    $objOrder   The order being places
+     * @param   \Module                     $objModule  The checkout module instance
      * @return  bool
      */
     public function checkoutForm(IsotopeProductCollection $objOrder, \Module $objModule)
@@ -203,7 +208,7 @@ abstract class Payment extends TypeAgent
      * Return information or advanced features in the backend.
      *
      * Use this function to present advanced features or basic payment information for an order in the backend.
-     * @param integer Order ID
+     * @param integer $orderId Order ID
      * @return string
      */
     public function backendInterface($orderId)
@@ -213,7 +218,7 @@ abstract class Payment extends TypeAgent
 <a href="' . ampersand(str_replace('&key=payment', '', \Environment::get('request'))) . '" class="header_back" title="' . specialchars($GLOBALS['TL_LANG']['MSC']['backBT']) . '">' . $GLOBALS['TL_LANG']['MSC']['backBT'] . '</a>
 </div>
 
-<h2 class="sub_headline">' . $this->name . ' (' . $GLOBALS['TL_LANG']['PAY'][$this->type][0] . ')' . '</h2>
+<h2 class="sub_headline">' . $this->name . ' (' . $GLOBALS['TL_LANG']['MODEL']['tl_iso_payment.'.$this->type][0] . ')' . '</h2>
 
 <div class="tl_formbody_edit">
 <div class="tl_tbox block">
@@ -239,7 +244,7 @@ abstract class Payment extends TypeAgent
 
     /**
      * Get the checkout surcharge for this payment method
-     * @return  Isotope\Model\ProductCollectionSurcharge\Payment|null
+     * @return  \Isotope\Model\ProductCollectionSurcharge\Payment|null
      */
     public function getSurcharge($objCollection)
     {

@@ -174,13 +174,13 @@ class Callback extends \Backend
 
             if (!empty($arrUpdate)) {
                 foreach ($arrUpdate as $min => $price) {
-                    \Database::getInstance()->prepare("UPDATE tl_iso_product_pricetier SET tstamp=$time, price=? WHERE pid={$dc->id} AND min=?")->executeUncached($price, $min);
+                    \Database::getInstance()->prepare("UPDATE tl_iso_product_pricetier SET tstamp=$time, price=? WHERE pid={$dc->id} AND min=?")->execute($price, $min);
                 }
             }
 
             if (!empty($arrInsert)) {
                 foreach ($arrInsert as $min => $price) {
-                    \Database::getInstance()->prepare("INSERT INTO tl_iso_product_pricetier (pid,tstamp,min,price) VALUES ({$dc->id}, $time, ?, ?)")->executeUncached($min, $price);
+                    \Database::getInstance()->prepare("INSERT INTO tl_iso_product_pricetier (pid,tstamp,min,price) VALUES ({$dc->id}, $time, ?, ?)")->execute($min, $price);
                 }
             }
         }

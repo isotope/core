@@ -51,7 +51,7 @@ class RelatedProducts extends ProductList
             return $objTemplate->parse();
         }
 
-        if (!\Haste\Input\Input::getAutoItem('product')) {
+        if (!\Haste\Input\Input::getAutoItem('product', false, true)) {
             return '';
         }
 
@@ -60,6 +60,9 @@ class RelatedProducts extends ProductList
         if (!is_array($this->iso_related_categories) || !count($this->iso_related_categories)) { // Can't use empty() because its an object property (using __get)
             return '';
         }
+
+        // Prevent hiding the list which is not supported in this module (see ProductList::generate())
+        $this->iso_hide_list = false;
 
         return parent::generate();
     }

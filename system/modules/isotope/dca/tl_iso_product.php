@@ -40,6 +40,7 @@ $GLOBALS['TL_DCA']['tl_iso_product'] = array
         'oncopy_callback' => array
         (
             array('Isotope\Backend\Product\Category', 'updateSorting'),
+            array('Isotope\Backend\Product\DcaManager', 'updateDateAdded'),
         ),
         'onsubmit_callback' => array
         (
@@ -245,7 +246,7 @@ $GLOBALS['TL_DCA']['tl_iso_product'] = array
         (
             'foreignKey'            => \Isotope\Model\Group::getTable().'.name',
             'eval'                  => array('doNotShow'=>true),
-            'attributes'            => array('systemColumn'=>true),
+            'attributes'            => array('systemColumn'=>true, 'inherit'=>true),
             'sql'                   => "int(10) unsigned NOT NULL default '0'",
             'relation'              => array('type'=>'hasOne', 'load'=>'lazy'),
         ),
@@ -257,7 +258,7 @@ $GLOBALS['TL_DCA']['tl_iso_product'] = array
         'language' => array
         (
             'eval'                  => array('doNotShow'=>true),
-            'attributes'            => array('systemColumn'=>true),
+            'attributes'            => array('systemColumn'=>true, 'inherit'=>true),
             'sql'                   => "varchar(5) NOT NULL default ''",
         ),
         'dateAdded' => array
@@ -302,6 +303,7 @@ $GLOBALS['TL_DCA']['tl_iso_product'] = array
         'orderPages' => array
         (
             'eval'                  => array('doNotShow'=>true),
+            'attributes'            => array('systemColumn'=>true, 'inherit'=>true),
             'sql'                   => "text NULL"
         ),
         'inherit' => array
@@ -309,7 +311,7 @@ $GLOBALS['TL_DCA']['tl_iso_product'] = array
             'label'                 => &$GLOBALS['TL_LANG']['tl_iso_product']['inherit'],
             'exclude'               => true,
             'inputType'             => 'inheritCheckbox',
-            'eval'                  => array('multiple'=>true, 'doNotShow'=>true),
+            'eval'                  => array('multiple'=>true),
             'attributes'            => array('systemColumn'=>true),
             'sql'                   => "blob NULL",
         ),

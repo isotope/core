@@ -93,6 +93,9 @@ class Payone extends Postsale implements IsotopePayment
             'backurl'           => \Environment::get('base') . $objModule->generateUrlForStep('failed'),
             'amount'            => ($objOrder->getTotal() * 100),
             'currency'          => $objOrder->currency,
+
+            // Custom parameter to recognize payone in postsale request (only alphanumeric is allowed)
+            'param'             => 'paymentMethodPayone' . $this->id
         );
 
         foreach ($objOrder->getItems() as $objItem) {
@@ -111,8 +114,8 @@ class Payone extends Postsale implements IsotopePayment
 
                 array_walk(
                     $arrOptions,
-                    function($option) {
-                        return $option['label'] . ': ' . $option['value'];
+                    function(&$option) {
+                        $option = $option['label'] . ': ' . $option['value'];
                     }
                 );
 
@@ -138,7 +141,7 @@ class Payone extends Postsale implements IsotopePayment
 
 
         ksort($arrData);
-        $arrData = array_map('urlencode', $arrData);
+        // Do not urlencode values because Payone does not properly decode POST values (whatever...)
         $strHash = md5(implode('', $arrData) . $this->payone_key);
 
         $objTemplate                  = new \Isotope\Template('iso_payment_payone');

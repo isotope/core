@@ -1,6 +1,96 @@
 Isotope eCommerce Changelog
 ===========================
 
+Version 2.1.4-stable (2014-07-21)
+---------------------------------
+
+### Improved
+- Product group view breadcrumb was not working, removed because it does not provide any useful functionality
+
+### Fixed
+- Database update trying to add attributes with no internal field name to database
+- Toggle group in popup picker did not work in Contao 3.3 (#1148)
+- Datepicker icons were missing in reports module in Contao 3.2 (#1161)
+- Invalid date input caused exceptions (#1162)
+- Creating attributes in DCA caused fatal error (#1166)
+- Invalid input in related products field caused database exception (#1158)
+- Allow payment modules to change postsale parameters "mod" and "id" (#1137)
+- Improved URL input handling to generate 404 pages when using folder URLs (#1131)
+- Order status was not always updated correctly in the backend (#1172)
+- Product downloads were not counted so the limit was not applied (#1164)
+- Total sales summary was always the last value in the column (#1163)
+- Sales total chart was broken when reporting days within multiple months (#1163)
+- Address book module did not display widget errors (#1176)
+
+
+Version 2.1.3-stable (2014-06-30)
+---------------------------------
+
+### Improved
+- Inherited fields can now be multi-edited
+
+### Fixed
+- Composer dependencies (#1124)
+- Date added was not updated when copying a product in the back end (#1126)
+- Another error when setting a redirect page for product search (#1068)
+- Disable variant checkbox if no variant attributes are available in product type (#1114)
+- Product variants did show up even if product was unpublished (#1120)
+- URLs for Sparkasse and Worldpay payment methods were incorrectly generated (#1141 and #1142)
+- CDATA statement in javascript caused issue in Sparkasse payment method (#1140)
+- Front end javascript was not compatible with IE8 (#1155)
+- Order of fields in product type was not applied to palette (#1135)
+- Edit-multiple failed in Contao 3.3 (#1150)
+- Copy fallback language was not working (#1151)
+- From price was not shown for variants with price tiers (#1146)
+- Incorrect tax free total in product collection template
+- Tax free total for surcharge was always empty (#1149)
+- Tax free total for surcharge was not available in collection template
+- Tax free subtotal of order was shown as total in product collection template
+- Collection template did not correctly display variant attributes in text mode (#1125)
+- Payone cannot handle correctly URL encoded values (#1137)
+
+
+Version 2.1.2-stable (2014-06-02)
+---------------------------------
+
+### Fixed
+- Request cache did not consider variant filtering (#1100)
+- Wrong column count in collection template again (#1091)
+- Assets import calling to classes in wrong namespace (#1113)
+- TypeAgent not being compatible with Contao 3.3 changes
+- Product translations not being compatible with Contao 3.3 changes (#1109)
+- HAVING support was incompatible with Contao 3.3 (#1112)
+- Product filter removed all parameters except page instead of the opposite (#1098)
+- DatePicker was not compatible with changes introduced in Contao 3.3 (#1119)
+- Related products module could get hidden in edge case (#1090)
+- Fatal error when setting a redirect page for product search (#1068)
+- Prevent Contao from trying to load an empty tinyMCE config (#1111)
+- Variants were not shown if product group filter was applied (#1097)
+- Attributes were always initialized with array default value (#1021)
+
+
+Version 2.1.1-stable (2014-05-20)
+---------------------------------
+
+### Fixed
+- Payment and shipping method name was not shown in product collection (#1052)
+- Reports did not show headline and panels (#1051)
+- Single variant option was shown on ajax load (#1066)
+- Price was zero if minimum quantity is more than one (#1058)
+- Show tax class option in group price shipping method (#1064)
+- Issue with weight calculation (#1074)
+- Could not assign cumulative filters to product list module
+- Images were not included in back end document generation (#1053)
+- Attribute sorting was ignored in product type (#1083)
+- Product filter did not redirect for search results (#1068)
+- Dynamically generate header fields for downloads (#1088)
+- "Save & New" created a new product instead of variant (#1080)
+- Namespace issue in Saferpay payment module (#1089)
+- Do not generate sitemap links for unpublished pages (#1092)
+- Wrong column count in collection template (#1091)
+- Remove page parameter on product filter action (#1098)
+
+
 Version 2.1.0-stable (2014-04-01)
 ---------------------------------
 

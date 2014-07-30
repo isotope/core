@@ -12,6 +12,8 @@
 
 namespace Isotope\Backend\Attribute;
 
+use Isotope\Model\Attribute;
+use Isotope\DatabaseUpdater;
 
 class Callback extends \Backend
 {
@@ -38,26 +40,11 @@ class Callback extends \Backend
 
 
     /**
-     * Hide certain options if this is a variant option
-     * @param DataContainer
-     */
-    public function prepareForVariantOptions($dc)
-    {
-        $objAttribute = \Database::getInstance()->prepare("SELECT * FROM tl_iso_attribute WHERE id=?")->execute($dc->id);
-
-        if ($objAttribute->variant_option) {
-            unset($GLOBALS['TL_DCA']['tl_iso_attribute']['fields']['options']['eval']['columnFields']['default']);
-            unset($GLOBALS['TL_DCA']['tl_iso_attribute']['fields']['options']['eval']['columnFields']['group']);
-        }
-    }
-
-
-    /**
      * Make sure the system columns are not added as attribute
      * @param mixed
      * @param object
      * @return mixed
-     * @throws Exception
+     * @throws \Exception
      */
     public function validateFieldName($varValue, $dc)
     {
@@ -88,7 +75,7 @@ class Callback extends \Backend
         $GLOBALS['TL_CONFIG']['bypassCache'] = true;
         $this->loadDataContainer('tl_iso_product', true);
 
-        $objUpdater = new \Isotope\DatabaseUpdater();
+        $objUpdater = new DatabaseUpdater();
         $objUpdater->autoUpdateTables(array('tl_iso_product'));
     }
 

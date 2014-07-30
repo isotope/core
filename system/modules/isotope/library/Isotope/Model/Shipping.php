@@ -12,7 +12,6 @@
 
 namespace Isotope\Model;
 
-use Haste\Units\Mass\Scale;
 use Haste\Units\Mass\Weight;
 use Isotope\Interfaces\IsotopeProductCollection;
 use Isotope\Isotope;
@@ -93,6 +92,11 @@ abstract class Shipping extends TypeAgent
             return false;
         }
 
+        $arrConfigs = deserialize($this->config_ids);
+        if (is_array($arrConfigs) && !empty($arrConfigs) && !in_array(Isotope::getConfig()->id, $arrConfigs)) {
+            return false;
+        }
+
         $objAddress = Isotope::getCart()->getShippingAddress();
 
         $arrCountries = deserialize($this->countries);
@@ -141,7 +145,7 @@ abstract class Shipping extends TypeAgent
     /**
      * Return percentage amount (if applicable)
      * @return float
-     * @throws UnexpectedValueException
+     * @throws \UnexpectedValueException
      */
     public function getPercentage()
     {
@@ -205,7 +209,7 @@ abstract class Shipping extends TypeAgent
 <a href="' . ampersand(str_replace('&key=shipping', '', \Environment::get('request'))) . '" class="header_back" title="' . specialchars($GLOBALS['TL_LANG']['MSC']['backBT']) . '">' . $GLOBALS['TL_LANG']['MSC']['backBT'] . '</a>
 </div>
 
-<h2 class="sub_headline">' . $this->name . ' (' . $GLOBALS['TL_LANG']['SHIP'][$this->type][0] . ')' . '</h2>
+<h2 class="sub_headline">' . $this->name . ' (' . $GLOBALS['TL_LANG']['MODEL']['tl_iso_shipping.'.$this->type][0] . ')' . '</h2>
 
 <div class="tl_formbody_edit">
 <div class="tl_tbox block">

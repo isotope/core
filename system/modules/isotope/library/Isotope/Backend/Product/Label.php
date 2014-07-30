@@ -62,6 +62,7 @@ class Label extends \Backend
                 case 'name':
                     $args[$i] = $objProduct->name;
 
+                    /** @var \Isotope\Model\ProductType $objProductType */
                     if ($row['pid'] == 0 && ($objProductType = ProductType::findByPk($row['type'])) !== null && $objProductType->hasVariants()) {
                         // Add a variants link
                         $args[$i] = sprintf('<a href="%s" title="%s">%s</a>', ampersand(\Environment::get('request')) . '&amp;id=' . $row['id'], specialchars($GLOBALS['TL_LANG'][$dc->table]['showVariants']), $args[$i]);
@@ -69,9 +70,10 @@ class Label extends \Backend
                     break;
 
                 case 'price':
-                    $objPrice = ProductPrice::findPrimaryByProduct($row['id']);
+                    $objPrice = ProductPrice::findPrimaryByProductId($row['id']);
 
                     if (null !== $objPrice) {
+                        /** @var \Isotope\Model\TaxClass $objTax */
                         $objTax = $objPrice->getRelated('tax_class');
                         $strTax = (null === $objTax ? '' : ' (' . $objTax->getLabel() . ')');
 

@@ -28,10 +28,10 @@ class DC_ProductData extends \DC_Table
     protected $blnEditLanguage;
 
     /**
-     * Array of languages for this product's type
+     * Array of translations for this product's type
      * @var array
      */
-    protected $arrLanguages;
+    protected $arrTranslations;
 
     /**
      * Array of language labels
@@ -136,7 +136,9 @@ class DC_ProductData extends \DC_Table
         $this->procedure[] = "language=''";
 
         // Display products filtered by group
-        $this->procedure[] = "gid IN(" . implode(',', array_map('intval', \Database::getInstance()->getChildRecords(array($this->intGroupId), \Isotope\Model\Group::getTable(), false, array($this->intGroupId)))) . ")";
+        if (!$this->intId) {
+            $this->procedure[] = "gid IN(" . implode(',', array_map('intval', \Database::getInstance()->getChildRecords(array($this->intGroupId), \Isotope\Model\Group::getTable(), false, array($this->intGroupId)))) . ")";
+        }
 
         // Custom filter
         if (is_array($GLOBALS['TL_DCA'][$this->strTable]['list']['sorting']['filter']) && !empty($GLOBALS['TL_DCA'][$this->strTable]['list']['sorting']['filter'])) {
@@ -376,9 +378,9 @@ class DC_ProductData extends \DC_Table
                 $this->set['pid'] = $pid;
             } // Else insert the current record after the parent record
             elseif ($pid > 0) {
-                $objParentRecord = $this->Database->prepare("SELECT * FROM " . $this->strTable . " WHERE id=?")
+                $objParentRecord = \Database::getInstance()->prepare("SELECT * FROM " . $this->strTable . " WHERE id=?")
                     ->limit(1)
-                    ->executeUncached($pid);
+                    ->execute($pid);
 
                 if ($objParentRecord->numRows) {
                     $this->set['pid'] = $objParentRecord->pid;
@@ -412,9 +414,9 @@ class DC_ProductData extends \DC_Table
         $this->blnEditLanguage = false;
 
         // Get the current record
-        $objRow = $this->Database->prepare("SELECT * FROM " . $this->strTable . " WHERE id=?")
+        $objRow = \Database::getInstance()->prepare("SELECT * FROM " . $this->strTable . " WHERE id=?")
             ->limit(1)
-            ->executeUncached($this->intId);
+            ->execute($this->intId);
 
         // Redirect if there is no record with the given ID
         if ($objRow->numRows < 1) {
@@ -441,13 +443,13 @@ class DC_ProductData extends \DC_Table
         }
 
         if (count($arrPageLanguages) > 1) {
-            $this->arrLanguageLabels = \System::getLanguages();
-            $this->arrLanguages = array_intersect(array_keys($this->arrLanguageLabels), $arrPageLanguages);
+            $this->arrTranslationLabels = \System::getLanguages();
+            $this->arrTranslations = array_intersect(array_keys($this->arrTranslationLabels), $arrPageLanguages);
 
             if (\Input::post('FORM_SUBMIT') == 'tl_language') {
                 $session = $this->Session->getData();
 
-                if (in_array(\Input::post('language'), $this->arrLanguages)) {
+                if (in_array(\Input::post('language'), $this->arrTranslations)) {
                     $session['language'][$this->strTable][$this->intId] = \Input::post('language');
 
                     if (\Input::post('deleteLanguage') != '') {
@@ -463,7 +465,7 @@ class DC_ProductData extends \DC_Table
                 \Controller::reload();
             }
 
-            if ($_SESSION['BE_DATA']['language'][$this->strTable][$this->intId] != '' && in_array($_SESSION['BE_DATA']['language'][$this->strTable][$this->intId], $this->arrLanguages)) {
+            if ($_SESSION['BE_DATA']['language'][$this->strTable][$this->intId] != '' && in_array($_SESSION['BE_DATA']['language'][$this->strTable][$this->intId], $this->arrTranslations)) {
                 $objRow = $this->Database->prepare("SELECT * FROM " . $this->strTable . " WHERE pid=? AND language=?")->execute($this->intId, $_SESSION['BE_DATA']['language'][$this->strTable][$this->intId]);
 
                 if (!$objRow->numRows) {
@@ -672,21 +674,21 @@ class DC_ProductData extends \DC_Table
         }
 
         // Check languages
-        if (is_array($this->arrLanguages) && !empty($this->arrLanguages)) {
+        if (is_array($this->arrTranslations) && !empty($this->arrTranslations)) {
             $arrAvailableLanguages = $this->Database->prepare("SELECT language FROM " . $this->strTable . " WHERE pid=?")->execute($this->intId)->fetchEach('language');
             $available = '';
             $undefined = '';
 
-            foreach ($this->arrLanguages as $language) {
+            foreach ($this->arrTranslations as $language) {
                 if (in_array($language, $arrAvailableLanguages)) {
                     if ($_SESSION['BE_DATA']['language'][$this->strTable][$this->intId] == $language) {
-                        $available .= '<option value="' . $language . '" selected="selected">' . $this->arrLanguageLabels[$language] . '</option>';
+                        $available .= '<option value="' . $language . '" selected="selected">' . $this->arrTranslationLabels[$language] . '</option>';
                         $_SESSION['TL_INFO'] = array($GLOBALS['TL_LANG']['MSC']['editingLanguage']);
                     } else {
-                        $available .= '<option value="' . $language . '">' . $this->arrLanguageLabels[$language] . '</option>';
+                        $available .= '<option value="' . $language . '">' . $this->arrTranslationLabels[$language] . '</option>';
                     }
                 } else {
-                    $undefined .= '<option value="' . $language . '">' . $this->arrLanguageLabels[$language] . ' (' . $GLOBALS['TL_LANG']['MSC']['undefinedLanguage'] . ')' . '</option>';
+                    $undefined .= '<option value="' . $language . '">' . $this->arrTranslationLabels[$language] . ' (' . $GLOBALS['TL_LANG']['MSC']['undefinedLanguage'] . ')' . '</option>';
                 }
             }
 
@@ -844,7 +846,7 @@ window.addEvent(\'domready\', function() {
                 if ($this->treeView) {
                     $strUrl .= '&amp;act=create&amp;mode=1&amp;pid=' . $this->intId;
                 } // Parent view
-                elseif ($GLOBALS['TL_DCA'][$this->strTable]['list']['sorting']['mode'] == 4) {
+                elseif ($GLOBALS['TL_DCA'][$this->strTable]['list']['sorting']['mode'] == 4 || $this->activeRecord->pid > 0) {
                     $strUrl .= $this->Database->fieldExists('sorting', $this->strTable) ? '&amp;act=create&amp;mode=1&amp;pid=' . $this->intId . '&amp;id=' . $this->activeRecord->pid : '&amp;act=create&amp;mode=2&amp;pid=' . $this->activeRecord->pid;
                 } // List view
                 else {
@@ -907,7 +909,6 @@ window.addEvent(\'domready\', function() {
 
         if (is_array($fields) && !empty($fields) && \Input::get('fields')) {
             $class = 'tl_tbox block';
-            $this->checkForTinyMce();
 
             // Walk through each record
             foreach ($ids as $id) {
@@ -929,9 +930,9 @@ window.addEvent(\'domready\', function() {
                 $formFields = array();
 
                 // Get the field values
-                $objRow = $this->Database->prepare("SELECT * FROM " . $this->strTable . " WHERE id=?")
+                $objRow = \Database::getInstance()->prepare("SELECT * FROM " . $this->strTable . " WHERE id=?")
                     ->limit(1)
-                    ->executeUncached($this->intId);
+                    ->execute($this->intId);
 
                 // Store the active record
                 $this->objActiveRecord = $objRow;
@@ -1173,7 +1174,6 @@ window.addEvent(\'domready\', function() {
         if (is_array($fields) && !empty($fields) && \Input::get('fields')) {
             $class = 'tl_tbox block';
             $formFields = array();
-            $this->checkForTinyMce();
 
             // Save record
             if (\Input::post('FORM_SUBMIT') == $this->strTable) {
@@ -2268,7 +2268,7 @@ window.addEvent(\'domready\', function() {
             $this->createInitialVersion($this->strTable, $intLanguageId);
 
             $arrRow = $this->Database->execute("SELECT " . implode(',', $arrDuplicate) . " FROM {$this->strTable} WHERE id={$this->intId}")->fetchAssoc();
-            $this->Database->prepare("UPDATE {$this->strTable} %s WHERE id=$intLanguageId")->set($arrRow)->executeUncached();
+            \Database::getInstance()->prepare("UPDATE {$this->strTable} %s WHERE id=$intLanguageId")->set($arrRow)->execute();
 
             $this->createNewVersion($this->strTable, $intLanguageId);
             \System::log(sprintf('A new version of record ID %s (table %s) has been created', $intLanguageId, $this->strTable), 'DC_ProductData copyFallback()', TL_GENERAL);

@@ -60,7 +60,7 @@ class ProductReader extends Module
         }
 
         // Return if no product has been specified
-        if (\Haste\Input\Input::getAutoItem('product') == '') {
+        if (\Haste\Input\Input::getAutoItem('product', false, true) == '') {
             if ($this->iso_display404Page) {
                 global $objPage;
                 $objHandler = new $GLOBALS['TL_PTY']['error_404']();

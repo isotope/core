@@ -338,15 +338,14 @@ class ProductGroupSelector extends \Widget
             $folderAttribute = '';
             $img             = $blnIsOpen ? 'folMinus.gif' : 'folPlus.gif';
             $alt             = $blnIsOpen ? $GLOBALS['TL_LANG']['MSC']['collapseNode'] : $GLOBALS['TL_LANG']['MSC']['expandNode'];
-            $return .= '<a href="' . $this->addToUrl($flag . 'tg=' . $id) . '" title="' . specialchars($alt) . '" onclick="Backend.getScrollOffset(); return Isotope.toggleProductGroupTree(this, \'' . $xtnode . '_' . $id . '\', \'' . $this->strField . '\', \'' . $this->strName . '\', ' . $level . ');">' . \Image::getHtml($img, '', 'style="margin-right:2px;"') . '</a>';
+            $return .= '<a href="' . \Backend::addToUrl($flag . 'tg=' . $id) . '" title="' . specialchars($alt) . '" onclick="Backend.getScrollOffset(); return Isotope.toggleProductGroupTree(this, \'' . $xtnode . '_' . $id . '\', \'' . $this->strField . '\', \'' . $this->strName . '\', ' . $level . ');">' . \Image::getHtml($img, '', 'style="margin-right:2px;"') . '</a>';
         }
 
-        $href     = '<a href="' . $this->addToUrl('gid=' . $objGroup->id) . '" title="' . specialchars($objGroup->name . ' (ID ' . $objGroup->id . ')') . '">' . $objGroup->name . '</a>';
         $callback = $GLOBALS['TL_DCA']['tl_iso_group']['list']['label']['label_callback'];
 
         // Load the label_callback
         if (is_array($callback) && !empty($callback)) {
-            $return .= static::importStatic($callback[0])->$callback[1]($objGroup->row(), $href, null, $folderAttribute);
+            $return .= static::importStatic($callback[0])->$callback[1]($objGroup->row(), $objGroup->name, null, $folderAttribute);
         }
 
         $return .= '</div> <div class="tl_right">';

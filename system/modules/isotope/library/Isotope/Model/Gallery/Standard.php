@@ -49,6 +49,24 @@ class Standard extends Gallery implements IsotopeGallery
 
 
     /**
+     * Override template if available in record
+     *
+     * @param array $arrData The data record
+     *
+     * @return $this The model object
+     */
+    public function setRow(array $arrData)
+    {
+        if ($arrData['customTpl'] != '' && TL_MODE == 'FE')
+        {
+            $this->strTemplate = $this->customTpl;
+        }
+
+        return parent::setRow($arrData);
+    }
+
+
+    /**
      * Set gallery attribute name
      * @param   string
      */

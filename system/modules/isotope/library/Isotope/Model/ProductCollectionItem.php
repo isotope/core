@@ -30,7 +30,7 @@ class ProductCollectionItem extends \Model
 
     /**
      * Cache the current product
-     * @var IsotopeProduct|false
+     * @var \Isotope\Interfaces\IsotopeProduct|false
      */
     protected $objProduct = false;
 
@@ -97,7 +97,7 @@ class ProductCollectionItem extends \Model
 
     /**
      * Get the product related to this item
-     * @return  IsotopeProduct|null
+     * @return  \Isotope\Interfaces\IsotopeProduct|null
      */
     public function getProduct($blnNoCache = false)
     {
@@ -105,6 +105,7 @@ class ProductCollectionItem extends \Model
 
             $this->objProduct = null;
 
+            /** @var \Isotope\Model\Product $strClass */
             $strClass = Product::getClassForModelType($this->type);
 
             if ($strClass == '' || !class_exists($strClass)) {
@@ -151,7 +152,7 @@ class ProductCollectionItem extends \Model
 
 
     /**
-     * Get product options. Automatically falls back to the collection item table if product is not found.
+     * Get product options
      * @return  array
      */
     public function getOptions()
@@ -178,7 +179,7 @@ class ProductCollectionItem extends \Model
             return '';
         }
 
-        return $objPrice->getAmount((int) $this->quantity);
+        return $objPrice->getAmount((int) $this->quantity, $this->getOptions());
     }
 
 
@@ -198,7 +199,7 @@ class ProductCollectionItem extends \Model
             return '';
         }
 
-        return $objPrice->getNetAmount((int) $this->quantity);
+        return $objPrice->getNetAmount((int) $this->quantity, $this->getOptions());
     }
 
     /**
@@ -222,7 +223,7 @@ class ProductCollectionItem extends \Model
 
     /**
      * Return downloads associated with this product collection item
-     * @return  array
+     * @return  ProductCollectionDownload[]
      */
     public function getDownloads()
     {

@@ -17,6 +17,7 @@ use Haste\Haste;
 use Haste\Units\Mass\Scale;
 use Haste\Units\Mass\Weighable;
 use Haste\Units\Mass\WeightAggregate;
+use Isotope\Interfaces\IsotopeAttribute;
 use Isotope\Interfaces\IsotopePayment;
 use Isotope\Interfaces\IsotopeProduct;
 use Isotope\Interfaces\IsotopeProductCollection;
@@ -63,7 +64,7 @@ abstract class ProductCollection extends TypeAgent
 
     /**
      * Cache product items in this collection
-     * @var array
+     * @var \Isotope\Model\ProductCollectionItem[]
      */
     protected $arrItems;
 
@@ -107,7 +108,8 @@ abstract class ProductCollection extends TypeAgent
 
     /**
      * Shutdown function to update prices of items and collection
-     * @param   boolean If true create Model even if not in registry or not saved at all
+     *
+     * @param   boolean $blnCreate If true create Model even if not in registry or not saved at all
      */
     public function updateDatabase($blnCreate=true)
     {
@@ -139,7 +141,8 @@ abstract class ProductCollection extends TypeAgent
 
     /**
      * Mark a field as modified
-     * @param $strKey The field key
+     *
+     * @param string $strKey The field key
      */
     public function markModified($strKey)
     {
@@ -155,7 +158,7 @@ abstract class ProductCollection extends TypeAgent
         $this->arrSurcharges = null;
         $this->arrCache      = array();
 
-        return parent::markModified($strKey);
+        parent::markModified($strKey);
     }
 
     /**
@@ -164,7 +167,7 @@ abstract class ProductCollection extends TypeAgent
      */
     public function isLocked()
     {
-        return (string) $this->locked !== '';
+        return ($this->locked !== '');
     }
 
     /**
@@ -193,7 +196,8 @@ abstract class ProductCollection extends TypeAgent
 
     /**
      * Set payment method for this collection
-     * @param IsotopePayment|null
+     *
+     * @param IsotopePayment $objPayment
      */
     public function setPaymentMethod(IsotopePayment $objPayment = null)
     {
@@ -211,7 +215,7 @@ abstract class ProductCollection extends TypeAgent
     }
 
     /**
-     * Return boolean wether collection has payment
+     * Return boolean whether collection has payment
      * @return bool
      */
     public function hasPayment()
@@ -243,7 +247,8 @@ abstract class ProductCollection extends TypeAgent
 
     /**
      * Set shipping method for this collection
-     * @param IsotopeShipping|null
+     *
+     * @param IsotopeShipping $objShipping
      */
     public function setShippingMethod(IsotopeShipping $objShipping = null)
     {
@@ -292,7 +297,7 @@ abstract class ProductCollection extends TypeAgent
 
     /**
      * Get billing address for collection
-     * @return  Address|null
+     * @return  \Isotope\Model\Address|null
      */
     public function getBillingAddress()
     {
@@ -301,7 +306,8 @@ abstract class ProductCollection extends TypeAgent
 
     /**
      * Set billing address for collection
-     * @param   Address|null
+     *
+     * @param Address $objAddress
      */
     public function setBillingAddress(Address $objAddress = null)
     {
@@ -323,7 +329,8 @@ abstract class ProductCollection extends TypeAgent
 
     /**
      * Set shipping address for collection
-     * @param   Address|null
+     *
+     * @param Address $objAddress
      */
     public function setShippingAddress(Address $objAddress = null)
     {
@@ -407,9 +414,10 @@ abstract class ProductCollection extends TypeAgent
 
     /**
      * Load settings from database field
-     * @param object
-     * @param string
-     * @param string
+     *
+     * @param array $arrData
+     *
+     * @return $this
      */
     public function setRow(array $arrData)
     {
@@ -424,7 +432,6 @@ abstract class ProductCollection extends TypeAgent
 
     /**
      * Update database with latest product prices and store settings
-     * @param   boolean
      * @return  $this
      */
     public function save()
@@ -458,7 +465,7 @@ abstract class ProductCollection extends TypeAgent
 
     /**
      * Also delete child table records when dropping this collection
-     * @return integer
+     * @return int  Number of rows affected
      */
     public function delete()
     {
@@ -517,9 +524,7 @@ abstract class ProductCollection extends TypeAgent
      */
     public function lock()
     {
-        if ($this->isLocked()) {
-            throw new \LogicException('Product collection is already locked.');
-        }
+        $this->ensureNotLocked();
 
         $this->updateDatabase();
 
@@ -623,7 +628,7 @@ abstract class ProductCollection extends TypeAgent
     public function getTaxFreeTotal()
     {
         if ($this->isLocked()) {
-            return $this->tax_free_subtotal;
+            return $this->tax_free_total;
         }
 
         if (!isset($this->arrCache['taxFreeTotal'])) {
@@ -669,6 +674,7 @@ abstract class ProductCollection extends TypeAgent
     /**
      * Return timestamp when this collection was created
      * This is relevant for price calculation
+     *
      * @return  int
      */
     public function getLastModification()
@@ -682,9 +688,11 @@ abstract class ProductCollection extends TypeAgent
 
     /**
      * Return all items in the collection
-     * @param  callable
-     * @param  bool
-     * @return array
+     *
+     * @param  callable $varCallable
+     * @param  bool     $blnNoCache
+     *
+     * @return \Isotope\Model\ProductCollectionItem[]
      */
     public function getItems($varCallable = null, $blnNoCache = false)
     {
@@ -692,9 +700,9 @@ abstract class ProductCollection extends TypeAgent
             $this->arrItems = array();
 
             if (($objItems = ProductCollectionItem::findBy('pid', $this->id)) !== null) {
-                while ($objItems->next()) {
 
-                    $objItem = $objItems->current();
+                /** @var \Isotope\Model\ProductCollectionItem $objItem */
+                foreach ($objItems as $objItem) {
 
                     if ($this->isLocked()) {
                         $objItem->lock();
@@ -723,7 +731,9 @@ abstract class ProductCollection extends TypeAgent
 
     /**
      * Search item for a specific product
-     * @param  IsotopeProduct
+     *
+     * @param  IsotopeProduct $objProduct
+     *
      * @return ProductCollectionItem|null
      */
     public function getItemForProduct(IsotopeProduct $objProduct)
@@ -738,8 +748,10 @@ abstract class ProductCollection extends TypeAgent
 
     /**
      * Check if a given product is already in the collection
-     * @param  IsotopeProduct
-     * @param  bool
+     *
+     * @param  IsotopeProduct $objProduct
+     * @param  bool           $blnIdentical
+     *
      * @return bool
      */
     public function hasProduct(IsotopeProduct $objProduct, $blnIdentical = true)
@@ -768,9 +780,11 @@ abstract class ProductCollection extends TypeAgent
 
     /**
      * Add a product to the collection
-     * @param   object
-     * @param   integer
-     * @param   array
+     *
+     * @param   IsotopeProduct $objProduct
+     * @param   int            $intQuantity
+     * @param   array          $arrConfig
+     *
      * @return  ProductCollectionItem
      */
     public function addProduct(IsotopeProduct $objProduct, $intQuantity, array $arrConfig = array())
@@ -841,8 +855,10 @@ abstract class ProductCollection extends TypeAgent
 
     /**
      * Update a product collection item
-     * @param   object  The product object
-     * @param   array   The property(ies) to adjust
+     *
+     * @param   ProductCollectionItem $objItem The product object
+     * @param   array                 $arrSet  The property(ies) to adjust
+     *
      * @return  bool
      */
     public function updateItem(ProductCollectionItem $objItem, $arrSet)
@@ -852,8 +868,10 @@ abstract class ProductCollection extends TypeAgent
 
     /**
      * Update product collection item with given ID
-     * @param   int
-     * @param   array
+     *
+     * @param   int   $intId
+     * @param   array $arrSet
+     *
      * @return  bool
      */
     public function updateItemById($intId, $arrSet)
@@ -866,6 +884,7 @@ abstract class ProductCollection extends TypeAgent
             return false;
         }
 
+        /** @var \Isotope\Model\ProductCollectionItem $objItem */
         $objItem = $arrItems[$intId];
 
         // !HOOK: additional functionality when updating a product in the collection
@@ -912,7 +931,9 @@ abstract class ProductCollection extends TypeAgent
 
     /**
      * Remove item from collection
-     * @param   ProductCollectionItem
+     *
+     * @param   ProductCollectionItem $objItem
+     *
      * @return  bool
      */
     public function deleteItem(ProductCollectionItem $objItem)
@@ -922,7 +943,9 @@ abstract class ProductCollection extends TypeAgent
 
     /**
      * Remove item with given ID from collection
-     * @param   int
+     *
+     * @param   int $intId
+     *
      * @return  bool
      */
     public function deleteItemById($intId)
@@ -958,7 +981,7 @@ abstract class ProductCollection extends TypeAgent
 
     /**
      * Find surcharges for the current collection
-     * @return  array
+     * @return  ProductCollectionSurcharge[]
      */
     public function getSurcharges()
     {
@@ -980,8 +1003,10 @@ abstract class ProductCollection extends TypeAgent
 
     /**
      * Copy product collection items from another collection to this one (e.g. Cart to Order)
-     * @param   IsotopeProductCollection
-     * @return  array
+     *
+     * @param   IsotopeProductCollection $objSource
+     *
+     * @return  int[]
      */
     public function copyItemsFrom(IsotopeProductCollection $objSource)
     {
@@ -1048,8 +1073,11 @@ abstract class ProductCollection extends TypeAgent
 
     /**
      * Copy product collection surcharges from another collection to this one (e.g. Cart to Order)
-     * @param   IsotopeProductCollection
-     * @return  array
+     *
+     * @param   IsotopeProductCollection $objSource
+     * @param   array                    $arrItemMap
+     *
+     * @return  int[]
      */
     public function copySurchargesFrom(IsotopeProductCollection $objSource, array $arrItemMap = array())
     {
@@ -1085,7 +1113,9 @@ abstract class ProductCollection extends TypeAgent
 
     /**
      * Add all products in the collection to the given scale
+     *
      * @param   Scale
+     *
      * @return  Scale
      */
     public function addToScale(Scale $objScale = null)
@@ -1110,7 +1140,7 @@ abstract class ProductCollection extends TypeAgent
                     }
                 }
 
-            } elseif ($objProduct instanceof Weigthable) {
+            } elseif ($objProduct instanceof Weighable) {
                 for ($i = 0; $i < $objItem->quantity; $i++) {
                     $objScale->add($objProduct);
                 }
@@ -1123,10 +1153,11 @@ abstract class ProductCollection extends TypeAgent
 
     /**
      * Add the collection to a template
-     * @param   object
-     * @param   array
+     *
+     * @param   \Template $objTemplate
+     * @param   array     $arrConfig
      */
-    public function addToTemplate(\Isotope\Template $objTemplate, array $arrConfig = array())
+    public function addToTemplate(\Template $objTemplate, array $arrConfig = array())
     {
         $arrGalleries = array();
         $arrItems     = $this->addItemsToTemplate($objTemplate, $arrConfig['sorting']);
@@ -1137,7 +1168,7 @@ abstract class ProductCollection extends TypeAgent
         $objTemplate->subtotal   = Isotope::formatPriceWithCurrency($this->getSubtotal());
         $objTemplate->total      = Isotope::formatPriceWithCurrency($this->getTotal());
 
-        $objTemplate->generateAttribute = function ($strAttribute, $objItem) {
+        $objTemplate->generateAttribute = function ($strAttribute, ProductCollectionItem $objItem) {
 
             if (!$objItem->hasProduct()) {
                 return '';
@@ -1152,7 +1183,7 @@ abstract class ProductCollection extends TypeAgent
             return $objAttribute->generate($objItem->getProduct());
         };
 
-        $objTemplate->getGallery = function ($strAttribute, $objItem) use ($arrConfig, &$arrGalleries) {
+        $objTemplate->getGallery = function ($strAttribute, ProductCollectionItem $objItem) use ($arrConfig, &$arrGalleries) {
 
             if (!$objItem->hasProduct()) {
                 return new \Isotope\Model\Gallery\Standard();
@@ -1183,6 +1214,7 @@ abstract class ProductCollection extends TypeAgent
 
     /**
      * Add an error message
+     *
      * @param   string
      */
     public function addError($strError)
@@ -1229,11 +1261,13 @@ abstract class ProductCollection extends TypeAgent
 
     /**
      * Loop over items and add them to template
-     * @param   Isotope\Template
-     * @param   Callable
+     *
+     * @param   \Template $objTemplate
+     * @param   Callable  $varCallable
+     *
      * @return  array
      */
-    protected function addItemsToTemplate(\Isotope\Template $objTemplate, $varCallable = null)
+    protected function addItemsToTemplate(\Template $objTemplate, $varCallable = null)
     {
         $arrItems = array();
 
@@ -1250,7 +1284,9 @@ abstract class ProductCollection extends TypeAgent
 
     /**
      * Generate item array for template
-     * @param   ProductCollectionItem
+     *
+     * @param   ProductCollectionItem $objItem
+     *
      * @return  array
      */
     protected function generateItem(ProductCollectionItem $objItem)
@@ -1274,7 +1310,7 @@ abstract class ProductCollection extends TypeAgent
             'price'             => Isotope::formatPriceWithCurrency($objItem->getPrice()),
             'tax_free_price'    => Isotope::formatPriceWithCurrency($objItem->getTaxFreePrice()),
             'total'             => Isotope::formatPriceWithCurrency($objItem->getTotalPrice()),
-            'tax_free_total'    => Isotope::formatPriceWithCurrency($objItem->getTaxFreeTotalPrice() * $objItem->quantity),
+            'tax_free_total'    => Isotope::formatPriceWithCurrency($objItem->getTaxFreeTotalPrice()),
             'tax_id'            => $objItem->tax_id,
             'hasProduct'        => $blnHasProduct,
             'product'           => $objProduct,
@@ -1303,8 +1339,10 @@ abstract class ProductCollection extends TypeAgent
 
     /**
      * Generate the next higher Document Number based on existing records
-     * @param   string
-     * @param   int
+     *
+     * @param   string $strPrefix
+     * @param   int    $intDigits
+     *
      * @return  string
      */
     protected function generateDocumentNumber($strPrefix, $intDigits)
@@ -1365,7 +1403,8 @@ abstract class ProductCollection extends TypeAgent
 
     /**
      * Prevent modifying a locked collection
-     * @throws  BadMethodCallException
+     *
+     * @throws  \BadMethodCallException
      */
     protected function ensureNotLocked()
     {
@@ -1376,7 +1415,10 @@ abstract class ProductCollection extends TypeAgent
 
     /**
      * Initialize a new collection and duplicate everything from the source
-     * @param   IsotopeProductCollection
+     *
+     * @param   IsotopeProductCollection $objSource
+     *
+     * @return  IsotopeProductCollection
      */
     public static function createFromCollection(IsotopeProductCollection $objSource)
     {
@@ -1423,8 +1465,10 @@ abstract class ProductCollection extends TypeAgent
 
     /**
      * Method that returns a closure to sort product collection items
+     *
      * @param   string
-     * @return  Closure
+     *
+     * @return  \Closure|null
      */
     public static function getItemsSortingCallable($strOrderBy = 'asc_id')
     {

@@ -126,7 +126,7 @@ class Checkout extends Module
             // Complete order after successful payment
             // At this stage, we do no longer use the client's cart but the order through UID in URL
             case 'complete':
-                if (($objOrder = Order::findOneByUniqid(\Input::get('uid'))) === null) {
+                if (($objOrder = Order::findOneByUniqid((string) \Input::get('uid'))) === null) {
                     static::redirectToStep('failed');
                 }
 
@@ -503,7 +503,7 @@ class Checkout extends Module
      * @param   string
      * @param   IsotopeProductCollection
      */
-    public static function redirectToStep($strStep, IsotopeProductCollection $objCollection=null)
+    public static function redirectToStep($strStep, IsotopeProductCollection $objCollection = null)
     {
         \Controller::redirect(static::generateUrlForStep($strStep, $objCollection));
     }
@@ -512,17 +512,21 @@ class Checkout extends Module
      * Generate frontend URL for current page including the given checkout step
      * @param   string
      * @param   IsotopeProductCollection
+     * @param   \PageModel $objPage
      * @return  string
      */
-    public static function generateUrlForStep($strStep, IsotopeProductCollection $objCollection=null)
+    public static function generateUrlForStep($strStep, IsotopeProductCollection $objCollection = null, \PageModel $objTarget = null)
     {
-        global $objPage;
+        if (null === $objTarget) {
+            global $objPage;
+            $objTarget = $objPage;
+        }
 
         if (!$GLOBALS['TL_CONFIG']['useAutoItem'] || !in_array('step', $GLOBALS['TL_AUTO_ITEM'])) {
             $strStep = 'step/' . $strStep;
         }
 
-        $strUrl = \Controller::generateFrontendUrl($objPage->row(), '/' . $strStep);
+        $strUrl = \Controller::generateFrontendUrl($objTarget->row(), '/' . $strStep, $objTarget->language);
 
         if (null !== $objCollection) {
             $strUrl = \Haste\Util\Url::addQueryString('uid=' . $objCollection->uniqid, $strUrl);

@@ -479,6 +479,7 @@ class RequestCache extends \Model
         $arrGroups = array();
 
         // Initiate native SQL filtering
+        /** @var \Isotope\RequestCache\Filter $objFilter  */
         foreach ($arrFilters as $k => $objFilter) {
             if ($objFilter->hasGroup() && $arrGroups[$objFilter->getGroup()] !== false) {
                 if ($objFilter->isDynamicAttribute()) {
@@ -513,9 +514,17 @@ class RequestCache extends \Model
             $time = time();
             $t    = Product::getTable();
 
-            $strWhere = "((" . implode(' AND ', $arrWhere) . ") OR $t.id IN (SELECT $t.pid FROM tl_iso_product AS $t WHERE $t.language='' AND " . implode(' AND ', $arrWhere)
-                        . (BE_USER_LOGGED_IN === true ? '' : " AND $t.published='1' AND ($t.start='' OR $t.start<$time) AND ($t.stop='' OR $t.stop>$time)") . "))";
-            $arrValues = array_merge($arrValues, $arrValues);
+            $strWhere = "
+                (
+                    (" . implode(' AND ', $arrWhere) . ")
+                    OR $t.id IN (SELECT $t.pid FROM tl_iso_product AS $t WHERE $t.language='' AND " . implode(' AND ', $arrWhere)
+                . (BE_USER_LOGGED_IN === true ? '' : " AND $t.published='1' AND ($t.start='' OR $t.start<$time) AND ($t.stop='' OR $t.stop>$time)") . ")
+                    OR $t.pid IN (SELECT $t.id FROM tl_iso_product AS $t WHERE $t.language='' AND " . implode(' AND ', $arrWhere)
+                . (BE_USER_LOGGED_IN === true ? '' : " AND $t.published='1' AND ($t.start='' OR $t.start<$time) AND ($t.stop='' OR $t.stop>$time)") . ")
+                )
+            ";
+
+            $arrValues = array_merge($arrValues, $arrValues, $arrValues);
         }
 
         return array($arrFilters, $strWhere, $arrValues);

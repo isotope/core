@@ -385,7 +385,7 @@ class MediaManager extends \Widget implements \uploadable
         return $return.'
   </tbody>
   </table>
-  </div>' . $upload . ($blnIsAjax ? '</div>' : '');
+  </div>' . $upload . (!$blnIsAjax ? '</div>' : '');
     }
 
     /**

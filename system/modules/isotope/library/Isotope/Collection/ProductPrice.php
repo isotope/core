@@ -15,6 +15,9 @@ namespace Isotope\Collection;
 use Isotope\Interfaces\IsotopePrice;
 use Isotope\Isotope;
 
+/**
+ * @method \Isotope\Model\ProductPrice current()
+ */
 class ProductPrice extends \Model\Collection implements IsotopePrice
 {
 
@@ -41,9 +44,9 @@ class ProductPrice extends \Model\Collection implements IsotopePrice
      * @param   int
      * @return  float
      */
-    public function getAmount($intQuantity = 1)
+    public function getAmount($intQuantity = 1, array $arrOptions = array())
     {
-        return $this->current()->getAmount($intQuantity);
+        return $this->current()->getAmount($intQuantity, $arrOptions);
     }
 
     /**
@@ -51,9 +54,9 @@ class ProductPrice extends \Model\Collection implements IsotopePrice
      * @param   int
      * @return  float
      */
-    public function getOriginalAmount($intQuantity = 1)
+    public function getOriginalAmount($intQuantity = 1, array $arrOptions = array())
     {
-        return $this->current()->getOriginalAmount($intQuantity);
+        return $this->current()->getOriginalAmount($intQuantity, $arrOptions);
     }
 
     /**
@@ -61,9 +64,9 @@ class ProductPrice extends \Model\Collection implements IsotopePrice
      * @param   int
      * @return  float
      */
-    public function getNetAmount($intQuantity = 1)
+    public function getNetAmount($intQuantity = 1, array $arrOptions = array())
     {
-        return $this->current()->getNetAmount($intQuantity);
+        return $this->current()->getNetAmount($intQuantity, $arrOptions);
     }
 
     /**
@@ -71,9 +74,9 @@ class ProductPrice extends \Model\Collection implements IsotopePrice
      * @param   int
      * @return  float
      */
-    public function getGrossAmount($intQuantity = 1)
+    public function getGrossAmount($intQuantity = 1, array $arrOptions = array())
     {
-        return $this->current()->getGrossAmount($intQuantity);
+        return $this->current()->getGrossAmount($intQuantity, $arrOptions);
     }
 
     /**
@@ -87,17 +90,21 @@ class ProductPrice extends \Model\Collection implements IsotopePrice
 
             $fltPrice           = null;
             $fltOriginalPrice   = null;
-            $blnShowFrom        = false;
+            $arrPrices          = array();
 
+            /** @var \Isotope\Model\ProductPrice $objPrice */
             foreach ($this->arrModels as $objPrice) {
                 $fltNew       = $blnShowTiers ? $objPrice->getLowestAmount() : $objPrice->getAmount();
+                $arrPrices[]  = $fltNew;
 
                 if (null === $fltPrice || $fltNew < $fltPrice) {
-                    $blnShowFrom      = (null !== $fltPrice);
                     $fltPrice         = $fltNew;
                     $fltOriginalPrice = $objPrice->getOriginalAmount();
                 }
             }
+
+            $arrPrices = array_unique($arrPrices);
+            $blnShowFrom = count($arrPrices) > 1;
 
             if ($blnShowFrom) {
                 return sprintf($GLOBALS['TL_LANG']['MSC']['priceRangeLabel'], Isotope::formatPriceWithCurrency($fltPrice));

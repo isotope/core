@@ -29,12 +29,8 @@ $GLOBALS['TL_LANG']['NOTIFICATION_CENTER_TOKEN']['iso_order_status_change']['doc
 $GLOBALS['TL_LANG']['NOTIFICATION_CENTER_TOKEN']['iso_order_status_change']['cart_text'] = 'Zamówienie/Koszyk jako tekst.';
 $GLOBALS['TL_LANG']['NOTIFICATION_CENTER_TOKEN']['iso_order_status_change']['cart_html'] = 'Zamówienie/Koszyk jako HTML.';
 $GLOBALS['TL_LANG']['NOTIFICATION_CENTER_TOKEN']['iso_order_status_change']['document'] = 'Dokument, który powinien być załączony (np. faktura).';
-$GLOBALS['TL_LANG']['NOTIFICATION_CENTER_TOKEN']['iso_order_status_change']['billing_*'] = 'Wszystkie pola adresu rozliczeniowego.';
-$GLOBALS['TL_LANG']['NOTIFICATION_CENTER_TOKEN']['iso_order_status_change']['billing_address'] = 'Adres rozliczeniowy Jako HTML.';
-$GLOBALS['TL_LANG']['NOTIFICATION_CENTER_TOKEN']['iso_order_status_change']['billing_address_text'] = 'Adres rozliczeniowy jako tekst.';
-$GLOBALS['TL_LANG']['NOTIFICATION_CENTER_TOKEN']['iso_order_status_change']['shipping_*'] = 'Wszystkie pola adresu wysyłki.';
-$GLOBALS['TL_LANG']['NOTIFICATION_CENTER_TOKEN']['iso_order_status_change']['shipping_address'] = 'Adres wysyłki jako HTML.';
-$GLOBALS['TL_LANG']['NOTIFICATION_CENTER_TOKEN']['iso_order_status_change']['shipping_address_text'] = 'Adres wysyłki jako tekst.';
+$GLOBALS['TL_LANG']['NOTIFICATION_CENTER_TOKEN']['iso_order_status_change']['billing_address_*'] = 'Wszystkie pola adresu rozliczeniowego.';
+$GLOBALS['TL_LANG']['NOTIFICATION_CENTER_TOKEN']['iso_order_status_change']['shipping_address_*'] = 'Wszystkie pola adresu wysyłki.';
 $GLOBALS['TL_LANG']['NOTIFICATION_CENTER_TOKEN']['iso_order_status_change']['form_*'] = 'Wszystkie pola formularza warunków zakupu.';
 $GLOBALS['TL_LANG']['NOTIFICATION_CENTER_TOKEN']['iso_order_status_change']['payment_id'] = 'ID metody płatności.';
 $GLOBALS['TL_LANG']['NOTIFICATION_CENTER_TOKEN']['iso_order_status_change']['payment_label'] = 'Etykieta metody płatności.';

@@ -92,7 +92,7 @@ class Callback extends \Backend
                         if ($this->User->inherit == 'custom' || !$this->User->groups[0]) {
                             $objUser = \Database::getInstance()->prepare("SELECT iso_groups, iso_groupp FROM tl_user WHERE id=?")
                                 ->limit(1)
-                                ->executeUncached($this->User->id);
+                                ->execute($this->User->id);
 
                             $arrPermissions = deserialize($objUser->iso_groupp);
 
@@ -107,7 +107,7 @@ class Callback extends \Backend
                         elseif ($this->User->groups[0] > 0) {
                             $objGroup = \Database::getInstance()->prepare("SELECT iso_groups, iso_groupp FROM tl_user_group WHERE id=?")
                                 ->limit(1)
-                                ->executeUncached($this->User->groups[0]);
+                                ->execute($this->User->groups[0]);
 
                             $arrPermissions = deserialize($objGroup->iso_groupp);
 
@@ -159,18 +159,6 @@ class Callback extends \Backend
 
 
     /**
-     * Add the breadcrumb menu
-     */
-    public function addBreadcrumb()
-    {
-        if ($this->Session->get('iso_products_gid') > 0) {
-            $GLOBALS['TL_DCA']['tl_iso_group']['list']['sorting']['breadcrumb'] = \Isotope\Backend\Group\Breadcrumb::generate($this->Session->get('iso_products_gid'));
-            $GLOBALS['TL_DCA']['tl_iso_group']['list']['sorting']['root']       = array($this->Session->get('iso_products_gid'));
-        }
-    }
-
-
-    /**
      * Add an image to each group in the tree
      * @param array
      * @param string
@@ -192,7 +180,7 @@ class Callback extends \Backend
                 $strProductType = ' <span style="color:#b3b3b3; padding-left:3px;">[' . $objProductType->name . ']</span>';
             }
 
-            return '<a href="' . $this->addToUrl('gid=' . $row['id']) . '" title="' . specialchars($row['name'] . ' (ID ' . $row['id'] . ')') . '">' . $image . ' ' . $label . '</a>' . $strProductType;
+            return $image . ' ' . $label . $strProductType;
         }
     }
 

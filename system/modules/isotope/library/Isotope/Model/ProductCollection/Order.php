@@ -54,6 +54,7 @@ class Order extends ProductCollection implements IsotopeProductCollection
         }
 
         // Otherwise we check the orderstatus checkbox
+        /** @var OrderStatus $objStatus */
         $objStatus = $this->getRelated('order_status');
 
         return (null !== $objStatus && $objStatus->isPaid()) ? true : false;
@@ -65,6 +66,7 @@ class Order extends ProductCollection implements IsotopeProductCollection
      */
     public function getStatusLabel()
     {
+        /** @var OrderStatus $objStatus */
         $objStatus = $this->getRelated('order_status');
 
         return (null === $objStatus) ? '' : $objStatus->getName();
@@ -76,6 +78,7 @@ class Order extends ProductCollection implements IsotopeProductCollection
      */
     public function getStatusAlias()
     {
+        /** @var OrderStatus $objStatus */
         $objStatus = $this->getRelated('order_status');
 
         return (null === $objStatus) ? $this->order_status : $objStatus->getAlias();
@@ -171,6 +174,7 @@ class Order extends ProductCollection implements IsotopeProductCollection
         \System::log('New order ID ' . $this->id . ' has been placed', __METHOD__, TL_ACCESS);
 
         // Add downloads from products to the collection
+        /** @var ProductCollectionDownload[] $arrDownloads */
         $arrDownloads = ProductCollectionDownload::createForProductsInCollection($this);
         foreach ($arrDownloads as $objDownload) {
             $objDownload->save();
@@ -183,6 +187,8 @@ class Order extends ProductCollection implements IsotopeProductCollection
 
         // Delete all other orders that relate to the current cart
         if (($objOrders = static::findSiblingsBy('source_collection_id', $this)) !== null) {
+
+            /** @var Order $objOrder */
             foreach ($objOrders as $objOrder) {
                 if (!$objOrder->isLocked()) {
                     $objOrder->delete();
@@ -252,8 +258,7 @@ class Order extends ProductCollection implements IsotopeProductCollection
 
     /**
      * Update the status of this order and trigger actions (email & hook)
-     * @param int
-     * @param bool
+     * @param int $intNewStatus
      * @return bool
      */
     public function updateOrderStatus($intNewStatus)
@@ -263,6 +268,7 @@ class Order extends ProductCollection implements IsotopeProductCollection
             return true;
         }
 
+        /** @var OrderStatus $objNewStatus */
         $objNewStatus = OrderStatus::findByPk($intNewStatus);
 
         if (null === $objNewStatus) {
@@ -301,6 +307,7 @@ class Order extends ProductCollection implements IsotopeProductCollection
 
             $blnNotificationError = true;
 
+            /** @var Notification $objNotification */
             if (($objNotification = Notification::findByPk($objNewStatus->notification)) !== null) {
                 $arrResult = $objNotification->send($arrTokens, $this->language);
 
@@ -338,6 +345,8 @@ class Order extends ProductCollection implements IsotopeProductCollection
                 $objCallback->$callback[1]($this, $intOldStatus, $objNewStatus);
             }
         }
+
+        return true;
     }
 
 
@@ -421,9 +430,9 @@ class Order extends ProductCollection implements IsotopeProductCollection
         }
 
         // Add member fields
-        if ($this->pid > 0 && $this->getRelated('pid') !== null) {
-            foreach ($this->getRelated('pid')->row() as $k => $v) {
-                $arrTokens['member_' . $k] = Format::dcaValue($this->getRelated('pid')->getTable(), $k, $v);
+        if ($this->member > 0 && $this->getRelated('member') !== null) {
+            foreach ($this->getRelated('member')->row() as $k => $v) {
+                $arrTokens['member_' . $k] = Format::dcaValue($this->getRelated('member')->getTable(), $k, $v);
             }
         }
 
@@ -444,6 +453,7 @@ class Order extends ProductCollection implements IsotopeProductCollection
             $arrTokens['cart_text'] = strip_tags(Haste::getInstance()->call('replaceInsertTags', array($objTemplate->parse(), true)));
 
             // Generate and "attach" document
+            /** @var \Isotope\Interfaces\IsotopeDocument $objDocument */
             if ($objNotification->iso_document > 0 && (($objDocument = Document::findByPk($objNotification->iso_document)) !== null)) {
                 $strFilePath           = $objDocument->outputToFile($this, TL_ROOT . '/system/tmp');
                 $arrTokens['document'] = str_replace(TL_ROOT . '/', '', $strFilePath);

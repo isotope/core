@@ -45,6 +45,9 @@ class Upload extends Attribute implements IsotopeAttribute
 
         unset($arrData['fields'][$this->field_name]['sql']);
 
+        // An upload field is always customer defined
+        $arrData['fields'][$this->field_name]['attributes']['customer_defined'] = true;
+
         // Install save_callback for upload widgets
         $arrData['fields'][$this->field_name]['save_callback'][] = array('Isotope\Frontend', 'saveUpload');
     }

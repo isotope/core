@@ -79,7 +79,7 @@ abstract class Product extends TypeAgent
     /**
      * Find all published products
      * @param   array
-     * @return  \Collection
+     * @return  \Model\Collection
      */
     public static function findPublished(array $arrOptions = array())
     {
@@ -91,7 +91,7 @@ abstract class Product extends TypeAgent
      * @param   mixed
      * @param   mixed
      * @param   array
-     * @return  \Collection
+     * @return  \Model\Collection
      */
     public static function findPublishedBy($arrColumns, $arrValues, array $arrOptions = array())
     {
@@ -116,7 +116,7 @@ abstract class Product extends TypeAgent
      * Find a single product by primary key
      * @param   int
      * @param   array
-     * @return  \Collection
+     * @return  \Model\Collection
      */
     public static function findPublishedByPk($intId, array $arrOptions = array())
     {
@@ -158,7 +158,7 @@ abstract class Product extends TypeAgent
      * Find products by IDs
      * @param   array
      * @param   array
-     * @return  \Collection
+     * @return  \Model\Collection
      */
     public static function findPublishedByIds(array $arrIds, array $arrOptions = array())
     {
@@ -173,7 +173,7 @@ abstract class Product extends TypeAgent
      * Return collection of published product variants by product PID
      * @param   int
      * @param   array
-     * @return  \Collection
+     * @return  \Model\Collection
      */
     public static function findPublishedByPid($intPid, array $arrOptions = array())
     {
@@ -184,7 +184,7 @@ abstract class Product extends TypeAgent
      * Return collection of published products by categories
      * @param   array
      * @param   array
-     * @return  \Collection
+     * @return  \Model\Collection
      */
     public static function findPublishedByCategories(array $arrCategories, array $arrOptions = array())
     {
@@ -195,7 +195,7 @@ abstract class Product extends TypeAgent
      * Find a single frontend-available product by primary key
      * @param   int
      * @param   array
-     * @return  \Collection
+     * @return  \Model\Collection
      */
     public static function findAvailableByPk($intId, array $arrOptions = array())
     {
@@ -212,7 +212,7 @@ abstract class Product extends TypeAgent
      * Find a single frontend-available product by its ID or alias
      * @param   mixed       The ID or alias
      * @param   array       An optional options array
-     * @return \Product|null  The model or null if the result is empty
+     * @return Product|null  The model or null if the result is empty
      */
     public static function findAvailableByIdOrAlias($varId, array $arrOptions = array())
     {
@@ -229,7 +229,7 @@ abstract class Product extends TypeAgent
      * Find frontend-available products by IDs
      * @param   array
      * @param   array
-     * @return  \Collection
+     * @return  \Model\Collection
      */
     public static function findAvailableByIds(array $arrIds, array $arrOptions = array())
     {
@@ -392,7 +392,7 @@ abstract class Product extends TypeAgent
      * @param array an array of columns
      * @return string
      */
-    protected static function buildQueryString($arrOptions, $arrJoinAliases = array('t' => 'tl_iso_producttype'))
+    protected static function buildFindQuery(array $arrOptions)
     {
         $objBase = new \DcaExtractor($arrOptions['table']);
 
@@ -426,10 +426,10 @@ abstract class Product extends TypeAgent
                 // Automatically join the single-relation records
                 if ($arrConfig['load'] == 'eager' || $arrOptions['eager']) {
                     if ($arrConfig['type'] == 'hasOne' || $arrConfig['type'] == 'belongsTo') {
-                        $key = array_search($arrConfig['table'], $arrJoinAliases);
-                        if (false !== $key) {
+
+                        if (is_array($arrOptions['joinAliases']) && ($key = array_search($arrConfig['table'], $arrOptions['joinAliases'])) !== false) {
                             $strJoinAlias = $key;
-                            unset($arrJoinAliases[$key]);
+                            unset($arrOptions['joinAliases'][$key]);
                         } else {
                             ++$intCount;
                             $strJoinAlias = 'j' . $intCount;
@@ -469,5 +469,19 @@ abstract class Product extends TypeAgent
         }
 
         return $strQuery;
+    }
+
+    /**
+     * Return select statement to load product data including multilingual fields
+     * @param   array   an array of columns
+     * @param   array   an array of table join aliases
+     * @return  string
+     * @deprecated  use buildFindQuery introduced in Contao 3.3
+     */
+    protected static function buildQueryString($arrOptions, $arrJoinAliases = array('t' => 'tl_iso_producttype'))
+    {
+        $arrOptions['joinAliases'] = $arrJoinAliases;
+
+        return static::buildFindQuery((array) $arrOptions);
     }
 }

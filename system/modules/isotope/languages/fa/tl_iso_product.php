@@ -14,4 +14,5 @@
  * @license http://www.gnu.org/licenses/lgpl-3.0.html
  */
 
+$GLOBALS['TL_LANG']['tl_iso_product']['downloads'][0] = 'بارگیری‌ها';
 $GLOBALS['TL_LANG']['tl_iso_product']['price_tiers']['min'] = 'تعداد';

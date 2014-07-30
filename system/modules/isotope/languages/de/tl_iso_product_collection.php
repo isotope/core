@@ -57,6 +57,7 @@ $GLOBALS['TL_LANG']['tl_iso_product_collection']['print'] = 'Drucken';
 $GLOBALS['TL_LANG']['tl_iso_product_collection']['orderStatusUpdate'] = 'Der Status Ihrer Bestellung wurde aktualisiert.';
 $GLOBALS['TL_LANG']['tl_iso_product_collection']['orderStatusNotificationSuccess'] = 'Benachrichtigung (z.B. E-Mail zum Kunden) wurde gesendet.';
 $GLOBALS['TL_LANG']['tl_iso_product_collection']['orderStatusNotificationError'] = 'Benachrichtigung (z.B. E-Mail an Kunden) konnte nicht gesendet werden. Überprüfen Sie den System-Log.';
+$GLOBALS['TL_LANG']['tl_iso_product_collection']['noEmailData'] = 'Keine weiteren E-Mail-Daten vorhanden.';
 $GLOBALS['TL_LANG']['tl_iso_product_collection']['status_legend'] = 'Bestellstatus';
 $GLOBALS['TL_LANG']['tl_iso_product_collection']['details_legend'] = 'Bestelldetails';
 $GLOBALS['TL_LANG']['tl_iso_product_collection']['email_legend'] = 'E-Mail Daten';

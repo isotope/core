@@ -28,14 +28,13 @@ class Callback extends \Backend
     {
         $strCategory = RelatedCategory::findByPk($row['category'])->name;
 
-        $strBuffer = '
-<div class="cte_type" style="color:#666966"><strong>' . $GLOBALS['TL_LANG']['tl_iso_related_product']['category'][0] . ':</strong> ' . $strCategory . '</div>';
+        $strBuffer = '<div class="cte_type" style="color:#666966"><strong>' . $GLOBALS['TL_LANG']['tl_iso_related_product']['category'][0] . ':</strong> ' . $strCategory . '</div>';
 
         $arrProducts = trimsplit(',', $row['products']);
 
-        if (is_array($arrProducts) && !empty($arrProducts)) {
+        if (!empty($arrProducts) && is_array($arrProducts)) {
             $strBuffer .= '<div class="limit_height' . (!$GLOBALS['TL_CONFIG']['doNotCollapse'] ? ' h0' : '') . ' block"><ul>';
-            $objProducts = \Database::getInstance()->execute("SELECT * FROM tl_iso_product WHERE id IN (" . implode(',', $arrProducts) . ") ORDER BY name");
+            $objProducts = \Database::getInstance()->execute("SELECT * FROM tl_iso_product WHERE " . \Database::getInstance()->findInSet('id', $arrProducts) . " ORDER BY name");
 
             while ($objProducts->next()) {
                 $strBuffer .= '<li>' . $objProducts->name . '</li>';
