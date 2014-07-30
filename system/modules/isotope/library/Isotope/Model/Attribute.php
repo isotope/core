@@ -192,13 +192,10 @@ abstract class Attribute extends TypeAgent
             unset($arrField['options']);
             unset($arrField['reference']);
 
-        } elseif ($this->optionsSource != '' && $this instanceof IsotopeAttributeWithOptions) {
-            unset($arrField['options']);
-            unset($arrField['reference']);
         }
 
         // @deprecated remove in Isotope 3.0
-        else {
+        elseif ($this->optionsSource = 'attribute') {
             $arrOptions = deserialize($this->options);
 
             if (!empty($arrOptions) && is_array($arrOptions)) {
@@ -229,6 +226,10 @@ abstract class Attribute extends TypeAgent
                     }
                 }
             }
+
+        } elseif ($this->optionsSource != '' && $this instanceof IsotopeAttributeWithOptions) {
+            unset($arrField['options']);
+            unset($arrField['reference']);
         }
 
         unset($arrField['eval']['foreignKey']);
