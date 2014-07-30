@@ -24,6 +24,19 @@ $GLOBALS['TL_DCA']['tl_iso_attribute_option'] = array
         'enableVersioning'          => true,
         'ptable'                    => 'tl_iso_attribute',
         'dynamicPtable'             => true,
+        'onload_callback' => array
+        (
+            function($dc) {
+                if (\Input::get('act') == '' || \Input::get('act') == 'select') {
+                    $GLOBALS['TL_WRAPPERS'] = array(
+                        'start' => array('group'),
+                        'separator' => array(),
+                        'stop' => array(),
+                        'single' => array()
+                    );
+                }
+            }
+        ),
         'onsubmit_callback' => array
         (
             function($dc) {
@@ -56,8 +69,18 @@ $GLOBALS['TL_DCA']['tl_iso_attribute_option'] = array
             'flag'                  => 1,
             'panelLayout'           => 'filter,search,limit',
             'headerFields'          => array('name', 'field_name', 'type', 'customer_defined'),
-            'child_record_callback' => function() {
+            'child_record_callback' => function($row) {
+                if ($row['type'] == 'group') {
+                    $GLOBALS['TL_WRAPPERS']['stop'][] = 'group';
+                }
 
+                $label = $row['label'];
+
+                if ($row['isDefault']) {
+                    $label = '<strong>'.$label.'</strong>';
+                }
+
+                return $label;
             }
         ),
         'global_operations' => array
