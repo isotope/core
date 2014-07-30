@@ -13,9 +13,13 @@
 namespace Isotope\BackendModule;
 
 use Isotope\Interfaces\IsotopeIntegrityCheck;
-use Isotope\Isotope;
-use Isotope\Model\Rule;
 
+
+/**
+ * Class Integrity
+ *
+ * @property \Template|object Template
+ */
 class Integrity extends \BackendModule
 {
 
