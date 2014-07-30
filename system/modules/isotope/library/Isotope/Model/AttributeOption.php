@@ -46,22 +46,11 @@ class AttributeOption extends \MultilingualModel
      */
     public function getAsArray()
     {
-        $option = array(
+        return array(
             'value'     => $this->id,
-            'label'     => $this->label
+            'label'     => $this->label,
+            'group'     => ($this->type == 'group' ? '1' : '')
         );
-
-        switch ($this->type) {
-            case 'blank':
-                $option['value'] = '';
-                break;
-
-            case 'group':
-                $option['group'] = '1';
-                break;
-        }
-
-        return $option;
     }
 
     /**
@@ -89,7 +78,7 @@ class AttributeOption extends \MultilingualModel
                 $objAttribute->id
             ),
             array(
-                'order' => "$t.type='blank' DESC, $t.sorting"
+                'order' => "$t.sorting"
             )
         );
     }
@@ -122,7 +111,7 @@ class AttributeOption extends \MultilingualModel
                 $objAttribute->field_name
             ),
             array(
-                'order' => "$t.type='blank' DESC, $t.sorting"
+                'order' => "$t.sorting"
             )
         );
     }

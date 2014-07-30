@@ -36,6 +36,5 @@ $GLOBALS['TL_LANG']['tl_iso_attribute_option']['publish_legend']        = 'Publi
 /**
  * Reference
  */
-$GLOBALS['TL_LANG']['tl_iso_attribute_option']['type']['blank']         = 'Blank option label';
 $GLOBALS['TL_LANG']['tl_iso_attribute_option']['type']['option']        = 'Option';
-$GLOBALS['TL_LANG']['tl_iso_attribute_option']['type']['group']         = 'Option group';
+$GLOBALS['TL_LANG']['tl_iso_attribute_option']['type']['group']         = 'Group';
