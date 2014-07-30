@@ -189,7 +189,6 @@ abstract class Attribute extends TypeAgent
         // Prepare options
         if ($this->optionsSource == 'foreignKey') {
             $arrField['foreignKey'] = $this->parseForeignKey($this->foreignKey, $GLOBALS['TL_LANGUAGE']);
-            $arrField['eval']['includeBlankOption'] = true;
             unset($arrField['options']);
             unset($arrField['reference']);
 

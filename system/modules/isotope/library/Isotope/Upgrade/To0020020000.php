@@ -20,8 +20,9 @@ class To0020020000 extends Base
     {
         if ($blnInstalled) {
             $this->createDatabaseField('optionsSource', 'tl_iso_attribute');
+            $this->createDatabaseField('includeBlankOption', 'tl_iso_attribute');
 
-            \Database::getInstance()->query("UPDATE tl_iso_attribute SET optionsSource='foreignKey' WHERE foreignKey!=''");
+            \Database::getInstance()->query("UPDATE tl_iso_attribute SET optionsSource='foreignKey', includeBlankOption='1' WHERE foreignKey!=''");
             \Database::getInstance()->query("UPDATE tl_iso_attribute SET optionsSource='attribute' WHERE optionsSource=''");
 
             $this->renameDatabaseField('options', 'configuration', 'tl_iso_product_collection_item');
