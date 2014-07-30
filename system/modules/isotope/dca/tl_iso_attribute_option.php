@@ -155,11 +155,25 @@ $GLOBALS['TL_DCA']['tl_iso_attribute_option'] = array
             'label'                 => &$GLOBALS['TL_LANG']['tl_iso_attribute_option']['type'],
             'exclude'               => true,
             'default'               => 'option',
-            'inputType'             => 'select',
+            'inputType'             => 'radio',
             'options'               => array('option', 'group'),
             'reference'             => &$GLOBALS['TL_LANG']['tl_iso_attribute_option']['type'],
             'eval'                  => array('tl_class'=>'w50', 'doNotCopy'=>true, 'submitOnChange'=>true),
             'sql'                   => "varchar(8) NOT NULL default ''",
+            'save_callback' => array
+            (
+                function($varValue, $dc) {
+                    if ($varValue == 'group') {
+                        \Database::getInstance()->prepare("
+                            UPDATE tl_iso_attribute_option
+                            SET isDefault=''
+                            WHERE id=?
+                        ")->execute($dc->id);
+                    }
+
+                    return $varValue;
+                }
+            )
         ),
         'isDefault' => array
         (
