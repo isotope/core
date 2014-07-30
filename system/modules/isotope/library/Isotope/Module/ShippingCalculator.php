@@ -95,9 +95,6 @@ class ShippingCalculator extends Module
         if ($objForm->validate()) {
             $this->Template->showResults = true;
 
-            // Add it to the cart
-            Isotope::getCart()->setShippingAddress($objAddress);
-
             if (Isotope::getCart()->requiresShipping()) {
                 $this->Template->requiresShipping = true;
 
@@ -105,7 +102,7 @@ class ShippingCalculator extends Module
 
                 /* @var Shipping $objShipping */
                 foreach ($objShippingMethods as $objShipping) {
-                    if ($objShipping->isAvailable()) {
+                    if ($objShipping->isAvailable(Isotope::getCart(), $objAddress)) {
 
                         $fltPrice = $objShipping->getPrice();
 
@@ -126,9 +123,6 @@ class ShippingCalculator extends Module
 
         $this->Template->shippingMethods = $arrMethods;
         $this->Template->form = $objForm->generate();
-
-        // Reset shipping address
-        Isotope::getCart()->setShippingAddress(null);
     }
 
     /**
