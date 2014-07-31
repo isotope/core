@@ -408,12 +408,12 @@ class DcaManager extends \Backend
         }
 
         if (in_array('name', $arrVariantFields)) {
-            $arrFields[]                                                             = 'name';
+            $arrFields[] = 'name';
             $GLOBALS['TL_DCA'][$objProduct->getTable()]['list']['sorting']['fields'] = array('name');
         }
 
         if (in_array('sku', $arrVariantFields)) {
-            $arrFields[]                                                             = 'sku';
+            $arrFields[] = 'sku';
             $GLOBALS['TL_DCA'][$objProduct->getTable()]['list']['sorting']['fields'] = array('sku');
         }
 
@@ -423,7 +423,7 @@ class DcaManager extends \Backend
 
         // Limit the number of columns if there are more than 2
         if (count($arrVariantOptions) > 2) {
-            $arrFields[]                                                                  = 'variantFields';
+            $arrFields[] = 'variantFields';
             $GLOBALS['TL_DCA'][$objProduct->getTable()]['list']['label']['variantFields'] = $arrVariantOptions;
         } else {
             foreach (array_merge($arrVariantOptions) as $name) {

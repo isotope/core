@@ -694,7 +694,7 @@ class Standard extends Product implements IsotopeProduct, WeightAggregate
     {
         /** @var IsotopeAttribute|Attribute $objAttribute */
         $objAttribute = $GLOBALS['TL_DCA']['tl_iso_product']['attributes'][$strField];
-        $arrData      = $GLOBALS['TL_DCA']['tl_iso_product']['fields'][$strField];
+        $arrData = $GLOBALS['TL_DCA']['tl_iso_product']['fields'][$strField];
 
         /** @var \Widget $strClass */
         $strClass = $objAttribute->getFrontendWidget();

@@ -16,6 +16,11 @@ use Isotope\Interfaces\IsotopeAttributeWithOptions;
 use Isotope\Model\Attribute;
 
 
+/**
+ * Class OptionsWizard
+ *
+ * @deprecated only for optionsSource=attribute
+ */
 class OptionsWizard extends \Backend
 {
 
