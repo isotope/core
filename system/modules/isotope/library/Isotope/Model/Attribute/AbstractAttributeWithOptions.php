@@ -120,7 +120,7 @@ abstract class AbstractAttributeWithOptions extends Attribute implements Isotope
         if (TL_MODE == 'BE' && $this->isCustomerDefined() && $this->optionsSource == 'product') {
 
             \Haste\Haste::getInstance()->call('loadDataContainer', static::$strTable);
-            \System::loadLanguageFile(static::getTable());
+            \System::loadLanguageFile(static::$strTable);
 
             $arrData['fields'][$this->field_name] = array_merge($arrData['fields'][$this->field_name], $GLOBALS['TL_DCA'][static::$strTable]['fields']['optionsTable']);
             $arrData['fields'][$this->field_name]['attributes']['dynamic'] = true;
