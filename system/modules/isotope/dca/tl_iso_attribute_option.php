@@ -120,6 +120,13 @@ $GLOBALS['TL_DCA']['tl_iso_attribute_option'] = array
                 'icon'              => 'delete.gif',
                 'attributes'        => 'onclick="if (!confirm(\'' . $GLOBALS['TL_LANG']['tl_iso_attribute_option']['deleteConfirm'] . '\')) return false; Backend.getScrollOffset();"'
             ),
+            'toggle' => array
+            (
+                'label'             => &$GLOBALS['TL_LANG']['tl_article']['toggle'],
+                'icon'              => 'visible.gif',
+                'attributes'        => 'onclick="Backend.getScrollOffset();return AjaxRequest.toggleVisibility(this,%s)"',
+                'button_callback'   => array('\Isotope\Backend\AttributeOption\Callback', 'toggleIcon')
+            ),
             'show' => array
             (
                 'label'             => &$GLOBALS['TL_LANG']['tl_iso_attribute_option']['show'],

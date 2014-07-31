@@ -457,7 +457,7 @@ class DcaManager extends \Backend
             && $arrData['optionsSource'] != 'foreignKey'
         ) {
 
-            /** @var IsotopeAttributeWithOptions $objAttribute */
+            /** @var IsotopeAttributeWithOptions|Attribute $objAttribute */
             $objAttribute = Attribute::findOneBy('field_name', $arrData['strField']);
 
             if (null !== $objAttribute && $objAttribute instanceof IsotopeAttributeWithOptions) {
