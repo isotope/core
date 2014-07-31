@@ -718,8 +718,10 @@ class Standard extends Product implements IsotopeProduct, WeightAggregate
             if (count($arrOptions) == 1 && !$this->getRelated('type')->force_variant_options) {
                 $arrVariantOptions[$strField] = $arrOptions[0];
                 return '';
-            }
 
+            } elseif ($arrField['value'] != '' && in_array($arrField['value'], $arrOptions)) {
+                $arrVariantOptions[$strField] = $arrField['value'];
+            }
 
             // Remove options not available in any product variant
             if (is_array($arrField['options'])) {
