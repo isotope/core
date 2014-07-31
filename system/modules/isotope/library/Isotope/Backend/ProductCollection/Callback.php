@@ -17,6 +17,7 @@ use Isotope\Isotope;
 use Isotope\Model\Address;
 use Isotope\Model\Document;
 use Isotope\Model\ProductCollection\Order;
+use Isotope\Module\OrderDetails;
 
 
 class Callback extends \Backend
@@ -68,17 +69,22 @@ class Callback extends \Backend
      */
     public function generateOrderDetails($dc)
     {
-        $objOrder = \Database::getInstance()->execute("SELECT * FROM tl_iso_product_collection WHERE id=" . $dc->id);
+        $objOrder = Order::findByPk($dc->id);
 
-        if (!$objOrder->numRows) {
-            \Controller::redirect('contao/main.php?act=error');
+        if ($objOrder === null) {
+            return '';
         }
 
         $GLOBALS['TL_CSS'][] = \Haste\Util\Debug::uncompressedFile('system/modules/isotope/assets/css/print.min.css|print');
 
+        // Dummy FE module model
+        $objModuleModel = new \ModuleModel();
+        $objModuleModel->type = 'iso_orderdetails';
+        $objModuleModel->iso_collectionTpl = 'iso_collection_default';
+
         // Generate a regular order details module
         \Input::setGet('uid', $objOrder->uniqid);
-        $objModule = new \Isotope\Module\OrderDetails(\Database::getInstance()->execute("SELECT * FROM tl_module WHERE type='iso_orderdetails'"));
+        $objModule = new OrderDetails($objModuleModel);
 
         return $objModule->generate(true);
     }
