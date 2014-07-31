@@ -206,11 +206,7 @@ abstract class Attribute extends TypeAgent
                 $strGroup = '';
 
                 foreach ($arrOptions as $option) {
-                    if ($option['value'] == '') {
-                        $arrField['eval']['includeBlankOption'] = true;
-                        $arrField['eval']['blankOptionLabel']   = Translation::get($option['label']);
-                        continue;
-                    } elseif ($option['group']) {
+                    if ($option['group']) {
                         $strGroup = Translation::get($option['label']);
                         continue;
                     }

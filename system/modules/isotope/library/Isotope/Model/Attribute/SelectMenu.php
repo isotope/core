@@ -49,7 +49,6 @@ class SelectMenu extends AbstractAttributeWithOptions implements IsotopeAttribut
         if ($this->isVariantOption()) {
             $this->multiple           = false;
             $this->size               = 1;
-            $this->includeBlankOption = true; // @todo do we always need a blank option for variants?
         }
 
         parent::saveToDCA($arrData);
