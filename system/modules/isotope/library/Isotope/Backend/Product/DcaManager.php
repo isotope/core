@@ -474,6 +474,10 @@ class DcaManager extends \Backend
                 $arrOptions = ($objDca instanceof IsotopeProduct) ? $objAttribute->getOptionsForWidget($objDca) : $objAttribute->getOptionsForWidget();
 
                 if (!empty($arrOptions)) {
+                    if ($arrData['includeBlankOption']) {
+                        array_unshift($arrOptions, array('value'=>'', 'label'=>($arrData['blankOptionLabel'] ?: '-')));
+                    }
+
                     $arrData['options'] = $arrOptions;
                 }
             }
