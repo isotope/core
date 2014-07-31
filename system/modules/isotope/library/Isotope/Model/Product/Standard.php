@@ -706,6 +706,8 @@ class Standard extends Product implements IsotopeProduct, WeightAggregate
             $arrData['default'] = \Input::get($strField);
         }
 
+        $arrField = $strClass::getAttributesFromDca($arrData, $strField, $arrData['default'], $strField, static::$strTable, $this);
+
         // Prepare variant selection field
         // @todo in 3.0: $objAttribute instanceof IsotopeAttributeForVariants
         if ($objAttribute->isVariantOption()) {
@@ -715,11 +717,9 @@ class Standard extends Product implements IsotopeProduct, WeightAggregate
             // Hide selection if only one option is available (and "force_variant_options" is not set in product type)
             if (count($arrOptions) == 1 && !$this->getRelated('type')->force_variant_options) {
                 $arrVariantOptions[$strField] = $arrOptions[0];
-
                 return '';
             }
 
-            $arrField = $strClass::getAttributesFromDca($arrData, $strField, $arrData['default'], $strField, static::$strTable, $this);
 
             // Remove options not available in any product variant
             if (is_array($arrField['options'])) {
@@ -734,11 +734,6 @@ class Standard extends Product implements IsotopeProduct, WeightAggregate
 
             $arrField['options'] = array_values($arrField['options']);
             $arrField['value']   = $this->$strField;
-        }
-
-        // Not a variant widget, but customer editable
-        else {
-            $arrField = $strClass::getAttributesFromDca($arrData, $strField, $arrData['default'], $strField, static::$strTable, $this);
         }
 
         // Convert optgroups so they work with FormSelectMenu
