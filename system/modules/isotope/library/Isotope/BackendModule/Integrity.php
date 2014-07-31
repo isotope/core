@@ -58,6 +58,8 @@ class Integrity extends \BackendModule
             $arrTasks = (array) \Input::post('tasks');
         }
 
+        $this->Template->hasFixes = false;
+
         foreach ($GLOBALS['ISO_INTEGRITY'] as $strClass) {
 
             /** @var IsotopeIntegrityCheck $objCheck */
@@ -74,13 +76,20 @@ class Integrity extends \BackendModule
 
             } else {
 
+                $blnError = $objCheck->hasError();
+                $blnRepair = $objCheck->canRepair();
+
                 $arrChecks[] = array(
                     'id' => $objCheck->getId(),
                     'name' => $objCheck->getName(),
                     'description' => $objCheck->getDescription(),
-                    'error' => $objCheck->hasError(),
-                    'repair' => ($objCheck->hasError() && $objCheck->canRepair()),
+                    'error' => $blnError,
+                    'repair' => ($blnError && $blnRepair),
                 );
+
+                if ($blnError && $blnRepair) {
+                    $this->Template->hasFixes = true;
+                }
             }
         }
 

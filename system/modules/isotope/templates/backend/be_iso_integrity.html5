@@ -12,7 +12,7 @@
           <table style="width:100%">
           <thead>
             <tr>
-              <th><input type="checkbox" id="check_all" class="tl_checkbox" onclick="Backend.toggleCheckboxes(this, 'integrity')"></th>
+              <th><?php if ($this->hasFixes): ?><input type="checkbox" id="check_all" class="tl_checkbox" onclick="Backend.toggleCheckboxes(this, 'integrity')"><?php endif; ?></th>
               <th><?php echo $GLOBALS['TL_LANG']['tl_iso_integrity']['columns'][0]; ?></th>
               <th><?php echo $GLOBALS['TL_LANG']['tl_iso_integrity']['columns'][1]; ?></th>
             </tr>
@@ -20,7 +20,7 @@
           <tbody>
               <?php foreach ($this->checks as $check): ?>
                 <tr>
-                  <td><?php if ($check['repair']): ?><input type="checkbox" name="tasks[]" id="integrity_<?php echo $check['id']; ?>" class="tl_checkbox" value="<?php echo $check['id']; ?>" onfocus="Backend.getScrollOffset()"><?php endif; ?></td>
+                  <td><?php if ($check['repair']): ?><input type="checkbox" name="tasks[]" id="integrity_<?php echo $check['id']; ?>" class="tl_checkbox" value="<?php echo $check['id']; ?>"><?php endif; ?></td>
                   <td><label for="integrity_<?php echo $check['id']; ?>"><?php echo $check['name']; ?></label></td>
                   <td style="color:#<?php echo $check['error'] ? 'c33' : '77ac45'; ?>"><?php echo $check['description']; ?></td>
                 </tr>
