@@ -426,7 +426,17 @@ class DcaManager extends \Backend
             $arrFields[]                                                                  = 'variantFields';
             $GLOBALS['TL_DCA'][$objProduct->getTable()]['list']['label']['variantFields'] = $arrVariantOptions;
         } else {
-            $arrFields = array_merge($arrFields, $arrVariantOptions);
+            foreach (array_merge($arrVariantOptions) as $name) {
+
+                /** @type Attribute $objAttribute */
+                $objAttribute = $GLOBALS['TL_DCA']['tl_iso_product']['attributes'][$name];
+
+                if ($objAttribute instanceof IsotopeAttributeWithOptions && $objAttribute->optionsSource == 'table') {
+                    $name .= ':tl_iso_attribute_option.label';
+                }
+
+                $arrFields[] = $name;
+            }
         }
 
         $GLOBALS['TL_DCA'][$objProduct->getTable()]['list']['label']['fields'] = $arrFields;
