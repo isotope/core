@@ -479,6 +479,26 @@ class DcaManager extends \Backend
                     }
 
                     $arrData['options'] = $arrOptions;
+
+                    if (null !== $arrData['default']) {
+                        $arrDefault = array_filter(
+                            $arrOptions,
+                            function (&$option) {
+                                return (bool) $option['default'];
+                            }
+                        );
+
+                        if (!empty($arrDefault)) {
+                            array_walk(
+                                $arrDefault,
+                                function (&$value) {
+                                    $value = $value['value'];
+                                }
+                            );
+
+                            $arrData['value'] = ($objAttribute->multiple ? $arrDefault : $arrDefault[0]);
+                        }
+                    }
                 }
             }
         }
