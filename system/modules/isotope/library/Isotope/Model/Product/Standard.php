@@ -1061,7 +1061,7 @@ class Standard extends Product implements IsotopeProduct, WeightAggregate
         }
 
         return \Haste\Util\Url::addQueryString(
-            http_build_query($this->getConfiguration()),
+            http_build_query($this->getOptions()),
             \Controller::generateFrontendUrl($objJumpTo->row(), $strUrl, $objJumpTo->language)
         );
     }
