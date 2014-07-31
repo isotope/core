@@ -36,8 +36,10 @@ class Integrity extends \BackendModule
     public function generate()
     {
         if (!\BackendUser::getInstance()->isAdmin) {
-            return '<p class="tl_gerror">Only admin can perform integrity check.</p>';
+            return '<p class="tl_gerror">'.$GLOBALS['TL_LANG']['tl_iso_integrity']['permission'].'</p>';
         }
+
+        \System::loadLanguageFile('tl_iso_integrity');
 
         return parent::generate();
     }

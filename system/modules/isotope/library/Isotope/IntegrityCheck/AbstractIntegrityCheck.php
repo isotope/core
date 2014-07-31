@@ -25,15 +25,15 @@ abstract class AbstractIntegrityCheck implements IsotopeIntegrityCheck
 
     public function getName()
     {
-        return $GLOBALS['TL_LANG']['ISO_INTEGRITY'][$this->getId()][0];
+        return $GLOBALS['TL_LANG']['tl_iso_integrity'][$this->getId()][0];
     }
 
     public function getDescription()
     {
         if ($this->hasError()) {
-            return $GLOBALS['TL_LANG']['ISO_INTEGRITY'][$this->getId()][1];
+            return $GLOBALS['TL_LANG']['tl_iso_integrity'][$this->getId()][1];
         } else {
-            return $GLOBALS['TL_LANG']['ISO_INTEGRITY'][$this->getId()][2];
+            return $GLOBALS['TL_LANG']['tl_iso_integrity'][$this->getId()][2];
         }
     }
 }
