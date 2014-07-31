@@ -17,6 +17,7 @@ use Isotope\Interfaces\IsotopeProduct;
 use Isotope\Interfaces\IsotopeProductCollection;
 use Isotope\Model\Product;
 use Isotope\Model\ProductCollection\Order;
+use Isotope\Module\Messages;
 
 
 /**
@@ -183,7 +184,7 @@ class Frontend extends \Frontend
     }
 
     /**
-     * Replaces Isotope-specific InsertTags in Frontend
+     * Replaces Isotope specific InsertTags in Frontend
      * @param string
      * @return mixed
      */
@@ -191,6 +192,34 @@ class Frontend extends \Frontend
     {
         $arrTag = trimsplit('::', $strTag);
 
+        // {{formatted_datetime::*}} insert tag
+        // 4 possible use cases:
+        //
+        // {{formatted_datetime::timestamp}}
+        //      or
+        // {{formatted_datetime::timestamp::datim}}     - formats a given timestamp with the global date and time (datim) format
+        // {{formatted_datetime::timestamp::date        - formats a given timestamp with the global date format
+        // {{formatted_datetime::timestamp::time}}      - formats a given timestamp with the global time format
+        // {{formatted_datetime::timestamp::Y-m-d H:i}} - formats a given timestamp with the specified format
+        if ($arrTag[0] == 'formatted_datetime') {
+            $intTimestamp = $arrTag[1];
+            $strFormat = $arrTag[2];
+
+            // Fallback
+            if ($strFormat === null) {
+                $strFormat = 'datim';
+            }
+
+            // Custom format
+            if (!in_array($strFormat, array('datim', 'date', 'time'))) {
+                return \Date::parse($strFormat, $intTimestamp);
+            }
+
+            return \Haste\Util\Format::$strFormat($intTimestamp);
+        }
+
+
+        // {{isotope::*}} and {{cache_isotope::*}} insert tags
         if ($arrTag[0] == 'isotope' || $arrTag[0] == 'cache_isotope') {
             switch ($arrTag[1]) {
                 case 'cart_items';
@@ -306,14 +335,14 @@ window.addEvent('domready', function() {
 </script>";
         }
 
-        $strMessages = \Isotope\Frontend::getIsotopeMessages();
+        $strMessages = Message::generate();
 
         if ($strMessages != '') {
             $GLOBALS['TL_MOOTOOLS'][] = "
 <script>
 window.addEvent('domready', function()
 {
-    Isotope.displayBox('" . $strMessages . "', true);
+    Isotope.displayBox('" . str_replace(array("\n", "'"), array('', "\'"), $strMessages) . "', true);
 });
 </script>";
         }
@@ -321,40 +350,15 @@ window.addEvent('domready', function()
 
     /**
      * Return all error, confirmation and info messages as HTML string
+     *
      * @return string
+     *
+     * @deprecated use Isotope\Message::generate
      */
     public static function getIsotopeMessages()
     {
-        $strMessages = '';
-        $arrGroups   = array('ISO_ERROR', 'ISO_CONFIRM', 'ISO_INFO');
-
-        foreach ($arrGroups as $strGroup) {
-            if (!is_array($_SESSION[$strGroup])) {
-                continue;
-            }
-
-            $strClass = strtolower($strGroup);
-
-            foreach ($_SESSION[$strGroup] as $strMessage) {
-                $strMessages .= sprintf('<p class="%s">%s</p>', $strClass, $strMessage);
-            }
-
-            $_SESSION[$strGroup] = array();
-        }
-
-        $strMessages = trim($strMessages);
-
-        if ($strMessages) {
-            // Automatically disable caching if a message is available
-            global $objPage;
-            $objPage->cache = 0;
-
-            $strMessages = '<div class="iso_message">' . $strMessages . '</div>';
-        }
-
-        return $strMessages;
+        return Message::generate();
     }
-
 
     /**
      * Format surcharge prices

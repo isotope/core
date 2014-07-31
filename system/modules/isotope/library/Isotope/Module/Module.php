@@ -13,6 +13,7 @@
 namespace Isotope\Module;
 
 use Isotope\Isotope;
+use Isotope\Message;
 use Isotope\Model\Product;
 use Module as Contao_Module;
 
@@ -81,7 +82,7 @@ abstract class Module extends Contao_Module
 
         // Prepend any messages to the module output
         if ($this->iso_includeMessages) {
-            $strBuffer = \Isotope\Frontend::getIsotopeMessages() . $strBuffer;
+            $strBuffer = Message::generate() . $strBuffer;
         }
 
         return $strBuffer;

@@ -141,6 +141,11 @@ $GLOBALS['ISO_MOD'] = array
             'tables'            => array(\Isotope\Model\Label::getTable()),
             'icon'              => 'system/modules/isotope/assets/images/setup-labels.png'
         ),
+        'integrity' => array
+        (
+            'callback'          => 'Isotope\BackendModule\Integrity',
+            'icon'              => 'system/modules/isotope/assets/images/setup-integrity.png'
+        ),
     )
 );
 
@@ -334,6 +339,16 @@ $GLOBALS['ISO_CHECKOUTSTEP'] = array
     'shipping'  => array('\Isotope\CheckoutStep\ShippingMethod'),
     'payment'   => array('\Isotope\CheckoutStep\PaymentMethod'),
     'review'    => array('\Isotope\CheckoutStep\OrderConditionsOnTop', '\Isotope\CheckoutStep\OrderInfo', '\Isotope\CheckoutStep\OrderConditionsBeforeProducts', '\Isotope\CheckoutStep\OrderProducts', '\Isotope\CheckoutStep\OrderConditionsAfterProducts'),
+);
+
+/**
+ * Integrity checks
+ */
+$GLOBALS['ISO_INTEGRITY'] = array
+(
+    '\Isotope\IntegrityCheck\PriceTable',
+    '\Isotope\IntegrityCheck\VariantOrphans',
+    '\Isotope\IntegrityCheck\UnusedRules'
 );
 
 /**
