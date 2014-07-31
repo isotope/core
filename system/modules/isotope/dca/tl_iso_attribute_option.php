@@ -26,28 +26,11 @@ $GLOBALS['TL_DCA']['tl_iso_attribute_option'] = array
         'dynamicPtable'             => true,
         'onload_callback' => array
         (
-            function($dc) {
-                if (\Input::get('act') == '' || \Input::get('act') == 'select') {
-                    $GLOBALS['TL_WRAPPERS'] = array(
-                        'start' => array('group'),
-                        'separator' => array(),
-                        'stop' => array(),
-                        'single' => array()
-                    );
-                }
-            }
+            array('\Isotope\Backend\AttributeOption\Callback', 'initWrappers'),
         ),
         'onsubmit_callback' => array
         (
-            function($dc) {
-                if (\Input::get('do') == 'iso_products' && $dc->activeRecord->field_name == '') {
-                    \Database::getInstance()->prepare("
-                        UPDATE tl_iso_attribute_option
-                        SET field_name=?
-                        WHERE id=?
-                    ")->execute(\Input::get('field'), $dc->id);
-                }
-            }
+            array('\Isotope\Backend\AttributeOption\Callback', 'storeFieldName'),
         ),
         'sql' => array
         (
@@ -69,19 +52,7 @@ $GLOBALS['TL_DCA']['tl_iso_attribute_option'] = array
             'flag'                  => 1,
             'panelLayout'           => 'filter,search,limit',
             'headerFields'          => array('name', 'field_name', 'type', 'variant_option', 'customer_defined'),
-            'child_record_callback' => function($row) {
-                if ($row['type'] == 'group') {
-                    $GLOBALS['TL_WRAPPERS']['stop'][] = 'group';
-                }
-
-                $label = $row['label'];
-
-                if ($row['isDefault']) {
-                    $label = '<strong>'.$label.'</strong>';
-                }
-
-                return $label;
-            }
+            'child_record_callback' => array('\Isotope\Backend\AttributeOption\Callback', 'listRecords'),
         ),
         'global_operations' => array
         (
@@ -192,17 +163,7 @@ $GLOBALS['TL_DCA']['tl_iso_attribute_option'] = array
             'sql'                   => "varchar(8) NOT NULL default ''",
             'save_callback' => array
             (
-                function($varValue, $dc) {
-                    if ($varValue == 'group') {
-                        \Database::getInstance()->prepare("
-                            UPDATE tl_iso_attribute_option
-                            SET isDefault=''
-                            WHERE id=?
-                        ")->execute($dc->id);
-                    }
-
-                    return $varValue;
-                }
+                array('\Isotope\Backend\AttributeOption\Callback', 'saveType'),
             )
         ),
         'isDefault' => array

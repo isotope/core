@@ -16,6 +16,80 @@ class Callback extends \Backend
 {
 
     /**
+     * Initialize the group wrappers (fake tl_content)
+     */
+    public function initWrappers()
+    {
+        if (\Input::get('act') == '' || \Input::get('act') == 'select') {
+            $GLOBALS['TL_WRAPPERS'] = array(
+                'start' => array('group'),
+                'separator' => array(),
+                'stop' => array(),
+                'single' => array()
+            );
+        }
+    }
+
+    /**
+     * Store the attribute field name for product options
+     *
+     * @param $dc
+     */
+    public function storeFieldName($dc)
+    {
+        if (\Input::get('do') == 'iso_products' && $dc->activeRecord->field_name == '') {
+            \Database::getInstance()->prepare("
+                UPDATE tl_iso_attribute_option
+                SET field_name=?
+                WHERE id=?
+            ")->execute(\Input::get('field'), $dc->id);
+        }
+    }
+
+    /**
+     * List child records of the table
+     *
+     * @param $row
+     *
+     * @return string
+     */
+    public function listRecords($row)
+    {
+        if ($row['type'] == 'group') {
+            $GLOBALS['TL_WRAPPERS']['stop'][] = 'group';
+        }
+
+        $label = $row['label'];
+
+        if ($row['isDefault']) {
+            $label = '<strong>'.$label.'</strong>';
+        }
+
+        return $label;
+    }
+
+    /**
+     * Disable "isDefault" for option groups
+     *
+     * @param $varValue
+     * @param $dc
+     *
+     * @return mixed
+     */
+    public function saveType($varValue, $dc)
+    {
+        if ($varValue == 'group') {
+            \Database::getInstance()->prepare("
+                UPDATE tl_iso_attribute_option
+                SET isDefault=''
+                WHERE id=?
+            ")->execute($dc->id);
+        }
+
+        return $varValue;
+    }
+
+    /**
      * Return the "toggle visibility" button
      * @param array
      * @param string
