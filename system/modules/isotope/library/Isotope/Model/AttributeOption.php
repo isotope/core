@@ -28,6 +28,7 @@ use Isotope\Interfaces\IsotopeProduct;
  * @property string language
  * @property string label
  * @property string type
+ * @property bool   isDefault
  * @property bool   published
  */
 class AttributeOption extends \MultilingualModel
@@ -49,7 +50,8 @@ class AttributeOption extends \MultilingualModel
         return array(
             'value'     => $this->id,
             'label'     => $this->label,
-            'group'     => ($this->type == 'group' ? '1' : '')
+            'group'     => ($this->type == 'group' ? '1' : ''),
+            'default'   => ($this->isDefault ? '1' : ''),
         );
     }
 
