@@ -68,7 +68,7 @@ $GLOBALS['TL_DCA']['tl_iso_attribute_option'] = array
             'fields'                => array('sorting'),
             'flag'                  => 1,
             'panelLayout'           => 'filter,search,limit',
-            'headerFields'          => array('name', 'field_name', 'type', 'customer_defined'),
+            'headerFields'          => array('name', 'field_name', 'type', 'variant_option', 'customer_defined'),
             'child_record_callback' => function($row) {
                 if ($row['type'] == 'group') {
                     $GLOBALS['TL_WRAPPERS']['stop'][] = 'group';
