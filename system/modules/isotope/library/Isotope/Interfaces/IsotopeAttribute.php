@@ -60,11 +60,4 @@ interface IsotopeAttribute
      */
     public function generate(IsotopeProduct $objProduct, array $arrOptions = array());
 
-
-    /**
-     * Return true if attribute is a variant option
-     * @deprecated  Use IsotopeAttributeForVariants interface
-     * @return      bool
-     */
-    public function isVariantOption();
 }
