@@ -77,10 +77,12 @@ class Callback extends \Backend
 
         $GLOBALS['TL_CSS'][] = \Haste\Util\Debug::uncompressedFile('system/modules/isotope/assets/css/print.min.css|print');
 
-        // Dummy FE module model
-        $objModuleModel = new \ModuleModel();
-        $objModuleModel->type = 'iso_orderdetails';
-        $objModuleModel->iso_collectionTpl = 'iso_collection_default';
+        // Try to find a order details module or create a dummy FE module model
+        if (($objModuleModel = \ModuleModel::findOneBy('type', 'iso_orderdetails')) === null) {
+            $objModuleModel = new \ModuleModel();
+            $objModuleModel->type = 'iso_orderdetails';
+            $objModuleModel->iso_collectionTpl = 'iso_collection_default';
+        }
 
         // Generate a regular order details module
         \Input::setGet('uid', $objOrder->uniqid);
