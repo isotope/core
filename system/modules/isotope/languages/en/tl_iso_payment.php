@@ -114,7 +114,6 @@ $GLOBALS['TL_LANG']['tl_iso_payment']['expercash_paymentMethod']['sofortueberwei
 $GLOBALS['TL_LANG']['tl_iso_payment']['psp_hash_method']['sha1']                                = 'SHA-1';
 $GLOBALS['TL_LANG']['tl_iso_payment']['psp_hash_method']['sha256']                              = 'SHA-256';
 $GLOBALS['TL_LANG']['tl_iso_payment']['psp_hash_method']['sha512']                              = 'SHA-512';
-$GLOBALS['TL_LANG']['tl_iso_payment']['epay_windowstate_options'][1]                            = 'Overlay';
 $GLOBALS['TL_LANG']['tl_iso_payment']['epay_windowstate_options'][3]                            = 'Full screen';
 $GLOBALS['TL_LANG']['tl_iso_payment']['epay_windowstate_options'][4]                            = 'Integrated payment form';
 

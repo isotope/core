@@ -515,9 +515,9 @@ $GLOBALS['TL_DCA']['tl_iso_payment'] = array
         (
             'label'                 => &$GLOBALS['TL_LANG']['tl_iso_payment']['epay_windowstate'],
             'exclude'               => true,
-            'default'               => '1',
+            'default'               => '3',
             'inputType'             => 'select',
-            'options'               => array('1', '3', '4'),
+            'options'               => array('3', '4'),
             'reference'             => &$GLOBALS['TL_LANG']['tl_iso_payment']['epay_windowstate_options'],
             'eval'                  => array('mandatory'=>true, 'tl_class'=>'w50'),
             'sql'                   => "char(1) NOT NULL default ''"
@@ -535,7 +535,7 @@ $GLOBALS['TL_DCA']['tl_iso_payment'] = array
             'label'                 => &$GLOBALS['TL_LANG']['tl_iso_payment']['epay_secretkey'],
             'exclude'               => true,
             'inputType'             => 'text',
-            'eval'                  => array('mandatory'=>true, 'maxlength'=>64, 'tl_class'=>'w50'),
+            'eval'                  => array('mandatory'=>true, 'maxlength'=>64, 'hideInput'=>true, 'tl_class'=>'w50'),
             'sql'                   => "varchar(64) NOT NULL default ''",
         ),
         'payone_clearingtype' => array
