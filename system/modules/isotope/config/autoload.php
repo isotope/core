@@ -53,6 +53,7 @@ TemplateLoader::addFiles(array
     'iso_list_default'                  => 'system/modules/isotope/templates/isotope',
     'iso_list_variants'                 => 'system/modules/isotope/templates/isotope',
     'iso_payment_datatrans'             => 'system/modules/isotope/templates/payment',
+    'iso_payment_epay'                  => 'system/modules/isotope/templates/payment',
     'iso_payment_paybyway'              => 'system/modules/isotope/templates/payment',
     'iso_payment_paypal'                => 'system/modules/isotope/templates/payment',
     'iso_payment_payone'                => 'system/modules/isotope/templates/payment',
