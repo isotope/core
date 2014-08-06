@@ -18,6 +18,7 @@ $GLOBALS['TL_LANG']['tl_iso_product_collection']['member']                  = ar
 $GLOBALS['TL_LANG']['tl_iso_product_collection']['uniqid']                  = array('Unique ID');
 $GLOBALS['TL_LANG']['tl_iso_product_collection']['order_status']            = array('Order status', 'Select the status of this order.');
 $GLOBALS['TL_LANG']['tl_iso_product_collection']['locked']                  = array('Placed');
+$GLOBALS['TL_LANG']['tl_iso_product_collection']['source_collection_id']    = array('Source (Cart ID)');
 $GLOBALS['TL_LANG']['tl_iso_product_collection']['date_paid']               = array('Payment date', 'Enter a date when this order has been paid.');
 $GLOBALS['TL_LANG']['tl_iso_product_collection']['date_shipped']            = array('Shipped date', 'Enter a date when this order has been shipped.');
 $GLOBALS['TL_LANG']['tl_iso_product_collection']['config_id']               = array('Shop configuration');

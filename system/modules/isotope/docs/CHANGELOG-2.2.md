@@ -18,3 +18,4 @@ Version 2.2.0-beta1 (2014-??-??)
 - Product options are now available in calculatePrice hook (#1000)
 - Show a hint about module configuration when manually sorting products (#1178)
 - No need to add an order details front end module to see order details in back end anymore
+- Show source collection (cart) ID in the order backend view (#1208)

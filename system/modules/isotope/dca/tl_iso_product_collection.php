@@ -187,10 +187,10 @@ $GLOBALS['TL_DCA']['tl_iso_product_collection'] = array
         ),
         'source_collection_id' => array
         (
-            'foreignKey'            => 'tl_iso_product_collection.type',
-            'eval'                  => array('doNotShow'=>true),
+            // Not necessarily a cart (as the label says), but useful for the backend order view
+            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_product_collection']['source_collection_id'],
             'sql'                   => "int(10) unsigned NOT NULL default '0'",
-            'relation'              => array('type'=>'hasOne', 'load'=>'lazy'),
+            'relation'              => array('type'=>'hasOne', 'load'=>'lazy', 'table'=>'tl_iso_product_collection'),
         ),
         'document_number' => array
         (
