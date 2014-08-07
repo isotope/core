@@ -21,7 +21,7 @@ abstract class OrderConditions extends CheckoutStep
 
     /**
      * Haste form
-     * @var object
+     * @var \Haste\Form\Form
      */
     protected $objForm;
 
@@ -31,7 +31,7 @@ abstract class OrderConditions extends CheckoutStep
      */
     public function isAvailable()
     {
-        return (boolean) $this->objModule->iso_order_conditions;
+        return true;
     }
 
     /**
@@ -52,6 +52,10 @@ abstract class OrderConditions extends CheckoutStep
 
             return true;
         });
+        if (!$this->objForm->hasFields()) {
+            $this->blnError = false;
+            return '';
+        }
 
         // Change enctype if there are uploads
         if ($this->objForm->hasUploads()) {
