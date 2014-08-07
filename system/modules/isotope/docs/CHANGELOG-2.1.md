@@ -11,6 +11,7 @@ Version 2.1.5-stable (2014-??-??)
 - Orders were tracked twice in Google Analytics (#1184)
 - Google Analytics eCommerce must have a product SKU (#1181)
 - New product collections were reported as locked (#1190)
+- Asset import could result in uppercase folder names (#1204)
 
 
 Version 2.1.4-stable (2014-07-21)
