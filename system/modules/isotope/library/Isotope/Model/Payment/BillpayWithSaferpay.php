@@ -12,6 +12,7 @@
 
 namespace Isotope\Model\Payment;
 
+use Haste\Form\Form;
 use Isotope\Isotope;
 
 
@@ -27,5 +28,28 @@ class BillpayWithSaferpay extends Saferpay
         }
 
         return parent::isAvailable();
+    }
+
+    public static function addOrderCondition(Form $objForm, \Module $objModule)
+    {
+        $objPayment = Isotope::getCart()->getPaymentMethod();
+
+        if (null !== $objPayment && $objPayment instanceof BillpayWithSaferpay) {
+
+            $strLabel = $GLOBALS['TL_LANG']['MSC']['billpay_agb_'.Isotope::getCart()->getBillingAddress()->country];
+
+            if ($strLabel == '') {
+                throw new \LogicException('Missing BillPay AGB for country "' . Isotope::getCart()->getBillingAddress()->country . '" and language "' . $GLOBALS['TL_LANGUAGE'] . '"');
+            }
+
+            $objForm->addFormField(
+                'billpay_confirmation',
+                array(
+                    'label' => array('', $strLabel),
+                    'inputType' => 'checkbox',
+                    'eval' => array('mandatory'=>true)
+                )
+            );
+        }
     }
 }

@@ -187,6 +187,10 @@ $GLOBALS['TL_LANG']['MSC']['iso_orderCollectionBy']['desc_name']    = 'by produc
 $GLOBALS['TL_LANG']['MSC']['iso_orderCollectionBy']['asc_price']    = 'by price (ascending)';
 $GLOBALS['TL_LANG']['MSC']['iso_orderCollectionBy']['desc_price']   = 'by price (descending)';
 
+$GLOBALS['TL_LANG']['MSC']['billpay_agb_de'] = 'Mit der &Uuml;bermittlung der für die Abwicklung des Rechnungskaufs und einer Identitäts und Bonitätsprüfung erforderlichen Daten an die <a href="https://billpay.de/endkunden" target="_blank">Billpay GmbH</a> bin ich einverstanden. Es gelten die <a href="https://www.billpay.de/kunden/agb#datenschutz" target="_blank">Datenschutzbestimmungen</a> von Billpay.';
+$GLOBALS['TL_LANG']['MSC']['billpay_agb_ch'] = 'Mit der &Uuml;bermittlung der für die Abwicklung des Rechnungskaufs und einer Identitäts und Bonitätsprüfung erforderlichen Daten an die <a href="https://billpay.de/endkunden" target="_blank">Billpay GmbH</a> bin ich einverstanden. Es gelten die <a href="https://www.billpay.de/kunden/agb-ch#datenschutz" target="_blank">Datenschutzbestimmungen</a> von Billpay.';
+$GLOBALS['TL_LANG']['MSC']['billpay_agb_at'] = 'Mit der &Uuml;bermittlung der für die Abwicklung des Rechnungskaufs und einer Identitäts und Bonitätsprüfung erforderlichen Daten an die <a href="https://billpay.de/endkunden" target="_blank">Billpay GmbH</a> bin ich einverstanden. Es gelten die <a href="https://www.billpay.de/kunden/agb-at#datenschutz" target="_blank">Datenschutzbestimmungen</a> von Billpay.';
+
 
 /**
  * Content elements
