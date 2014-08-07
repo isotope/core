@@ -24,12 +24,6 @@ class Saferpay extends Postsale implements IsotopePayment
 {
 
     /**
-     * Version
-     * @var string
-     */
-    const version = '2.0.0';
-
-    /**
      * CreatePayInit URI
      * @var string
      */
