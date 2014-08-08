@@ -170,6 +170,7 @@ $GLOBALS['TL_LANG']['MSC']['timePeriod']['days']                = 'Days';
 $GLOBALS['TL_LANG']['MSC']['timePeriod']['weeks']               = 'Weeks';
 $GLOBALS['TL_LANG']['MSC']['timePeriod']['months']              = 'Months';
 $GLOBALS['TL_LANG']['MSC']['timePeriod']['years']               = 'Years';
+$GLOBALS['TL_LANG']['MSC']['isotopeIntroductionLegend']         = 'Introduction';
 $GLOBALS['TL_LANG']['MSC']['isotopeIntroduction'][0]            = 'Welcome to Isotope eCommerce';
 $GLOBALS['TL_LANG']['MSC']['isotopeIntroduction'][1]            = 'Isotope is the premier open source eCommerce solution for Contao.';
 $GLOBALS['TL_LANG']['MSC']['isotopeIntroduction'][2]            = 'This is the page where most of the configuration will take place. <strong>You should start from the bottom of this page and work your way upward from right to left.</strong>';

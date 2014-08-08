@@ -14,6 +14,7 @@ Version 2.1.5-stable (2014-??-??)
 - Google Analytics eCommerce must have a product SKU (#1181)
 - New product collections were reported as locked (#1190)
 - Asset import could result in uppercase folder names (#1204)
+- The backend setup welcome legend was not translatable
 
 
 Version 2.1.4-stable (2014-07-21)
