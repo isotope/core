@@ -249,7 +249,7 @@ class ProductPrice extends \Model implements IsotopePrice
             $arrOptions['column'][] = "pid=" . ($objProduct->hasVariantPrices() ? $objProduct->id : $objProduct->getProductId());
         }
 
-        return static::find($arrOptions);
+        return static::find($arrOptions)->filterDuplicatesBy('pid');
     }
 
     /**
@@ -274,7 +274,7 @@ class ProductPrice extends \Model implements IsotopePrice
             $arrOptions
         );
 
-        return static::find($arrOptions);
+        return static::find($arrOptions)->filterDuplicatesBy('pid');
     }
 
     /**
@@ -301,7 +301,7 @@ class ProductPrice extends \Model implements IsotopePrice
             $arrOptions
         );
 
-        return static::find($arrOptions);
+        return static::find($arrOptions)->filterDuplicatesBy('pid');
     }
 
     /**
