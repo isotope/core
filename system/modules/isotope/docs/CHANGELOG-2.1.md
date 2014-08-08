@@ -15,6 +15,7 @@ Version 2.1.5-stable (2014-??-??)
 - New product collections were reported as locked (#1190)
 - Asset import could result in uppercase folder names (#1204)
 - The backend setup welcome legend was not translatable
+- Minimum product quantity was not applied when only one price tier was set (#1183)
 
 
 Version 2.1.4-stable (2014-07-21)

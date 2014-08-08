@@ -147,7 +147,7 @@ class ProductPrice extends \Model implements IsotopePrice
      */
     public function getLowestTier()
     {
-        $intMin = $this->hasTiers() ? (int) min(array_keys($this->arrTiers)) : 0;
+        $intMin = (int) min(array_keys($this->arrTiers));
 
         return $intMin ? : 1;
     }
