@@ -213,6 +213,7 @@ $GLOBALS['TL_LANG']['MODEL']['tl_iso_payment.viveum']               = array('VIV
 $GLOBALS['TL_LANG']['MODEL']['tl_iso_payment.datatrans']            = array('Datatrans', 'A payment module for the swiss payment gateway "Datatrans".');
 $GLOBALS['TL_LANG']['MODEL']['tl_iso_payment.sparkasse']            = array('Sparkasse');
 $GLOBALS['TL_LANG']['MODEL']['tl_iso_payment.saferpay']             = array('Saferpay');
+$GLOBALS['TL_LANG']['MODEL']['tl_iso_payment.billpay_saferpay']     = array('BillPay (using Saferpay)');
 $GLOBALS['TL_LANG']['MODEL']['tl_iso_payment.sofortueberweisung']   = array('sofortüberweisung.de');
 $GLOBALS['TL_LANG']['MODEL']['tl_iso_payment.expercash']            = array('ExperCash');
 $GLOBALS['TL_LANG']['MODEL']['tl_iso_payment.payone']               = array('PayOne');
