@@ -210,9 +210,12 @@ class ProductPrice extends \Model implements IsotopePrice
 
     /**
      * Find prices for a given product and collection
-     * @param   IsotopeProduct
-     * @param   IsotopeProductCollection
-     * @return  IsotopePrice
+     *
+     * @param IsotopeProduct           $objProduct
+     * @param IsotopeProductCollection $objCollection
+     * @param array                    $arrOptions
+     *
+     * @return IsotopePrice
      */
     public static function findByProductAndCollection(IsotopeProduct $objProduct, IsotopeProductCollection $objCollection, array $arrOptions = array())
     {

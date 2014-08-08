@@ -41,7 +41,7 @@ class Standard extends Product implements IsotopeProduct, WeightAggregate
 
     /**
      * Price model for the current product
-     * @var Isotope\Model\ProductPrice
+     * @var \Isotope\Model\ProductPrice
      */
     protected $objPrice = false;
 
