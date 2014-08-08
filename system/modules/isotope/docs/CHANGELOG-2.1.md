@@ -6,6 +6,7 @@ Version 2.1.5-stable (2014-??-??)
 
 ### Improved
 - Replace inserttags in backend order view to support 3th-party extensions (#1186)
+- Cart was not available in postsale process (#1196)
 
 ### Fixed
 - Orders were tracked twice in Google Analytics (#1184)
