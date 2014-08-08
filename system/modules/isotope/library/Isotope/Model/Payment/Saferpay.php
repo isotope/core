@@ -117,15 +117,17 @@ class Saferpay extends Postsale implements IsotopePayment
 
     /**
      * HTML form for checkout
-     * @param   IsotopeProductCollection    The order being places
-     * @param   Module                      The checkout module instance
+     *
+     * @param   IsotopeProductCollection $objOrder  The order being places
+     * @param   \Module                  $objModule The checkout module instance
+     *
      * @return  mixed
      */
     public function checkoutForm(IsotopeProductCollection $objOrder, \Module $objModule)
     {
         // Get redirect url
         $objRequest = new \Request();
-        $objRequest->send($this->createPaymentURI($objOrder, $objModule));
+        $objRequest->send(static::createPayInitURI, http_build_query($this->generatePaymentPostData($objOrder, $objModule)), 'POST');
 
         if ((int) $objRequest->code !== 200 || substr($objRequest->response, 0, 6) === 'ERROR:') {
             \System::log(sprintf('Could not get the redirect URI from Saferpay. See log files for further details.'), __METHOD__, TL_ERROR);
@@ -140,6 +142,41 @@ class Saferpay extends Postsale implements IsotopePayment
 <h2>' . $GLOBALS['TL_LANG']['MSC']['pay_with_redirect'][0] . '</h2>
 <p class="message">' . $GLOBALS['TL_LANG']['MSC']['pay_with_redirect'][1] . '</p>
 <p><a href="' . $objRequest->response . '">' . $GLOBALS['TL_LANG']['MSC']['pay_with_redirect'][2] . '</a></p>';
+    }
+
+    /**
+     * Generate POST data to initialize payment
+     *
+     * @param IsotopeProductCollection $objOrder
+     * @param \Module                  $objModule
+     *
+     * @return array
+     */
+    protected function generatePaymentPostData(IsotopeProductCollection $objOrder, \Module $objModule)
+    {
+        $arrData = array();
+
+        $arrData['ACCOUNTID'] = $this->saferpay_accountid;
+        $arrData['AMOUNT'] = (round(($objOrder->getTotal() * 100), 0));
+        $arrData['CURRENCY'] = $objOrder->currency;
+        $arrData['SUCCESSLINK'] = \Environment::get('base') . $objModule->generateUrlForStep('complete', $objOrder);
+        $arrData['FAILLINK'] = \Environment::get('base') . $objModule->generateUrlForStep('failed');
+        $arrData['BACKLINK'] = $arrData['FAILLINK'];
+        $arrData['NOTIFYURL'] = \Environment::get('base') . '/system/modules/isotope/postsale.php?mod=pay&id=' . $this->id;
+        $arrData['DESCRIPTION'] = $this->saferpay_description;
+        $arrData['ORDERID'] = $objOrder->id; // order id
+
+        // Additional attributes
+        if ($this->saferpay_vtconfig) {
+            $arrData['VTCONFIG'] = urlencode($this->saferpay_vtconfig);
+        }
+
+        // Provider sets
+        if ($this->saferpay_providerset) {
+            $arrData['PROVIDERSET'] = urlencode($this->saferpay_providerset);
+        }
+
+        return $arrData;
     }
 
     /**
@@ -205,39 +242,5 @@ class Saferpay extends Postsale implements IsotopePayment
         }
 
         return true;
-    }
-
-
-    /**
-     * Create payment URI
-     * @return string
-     */
-    private function createPaymentURI(IsotopeProductCollection $objOrder, \Module $objModule)
-    {
-        $strComplete = \Environment::get('base') . $objModule->generateUrlForStep('complete', $objOrder);
-        $strFailed   = \Environment::get('base') . $objModule->generateUrlForStep('failed');
-
-        $strUrl = static::createPayInitURI;
-        $strUrl .= "?ACCOUNTID=" . $this->saferpay_accountid;
-        $strUrl .= "&AMOUNT=" . (round(($objOrder->getTotal() * 100), 0));
-        $strUrl .= "&CURRENCY=" . $objOrder->currency;
-        $strUrl .= "&SUCCESSLINK=" . urlencode($strComplete);
-        $strUrl .= "&FAILLINK=" . urlencode($strFailed);
-        $strUrl .= "&BACKLINK=" . urlencode($strFailed);
-        $strUrl .= "&NOTIFYURL=" . urlencode(\Environment::get('base') . '/system/modules/isotope/postsale.php?mod=pay&id=' . $this->id);
-        $strUrl .= "&DESCRIPTION=" . urlencode($this->saferpay_description);
-        $strUrl .= "&ORDERID=" . $objOrder->id; // order id
-
-        // Additional attributes
-        if ($this->saferpay_vtconfig) {
-            $strUrl .= '&VTCONFIG=' . urlencode($this->saferpay_vtconfig);
-        }
-
-        // Provider sets
-        if ($this->saferpay_providerset) {
-            $strUrl .= '&PROVIDERSET=' . urlencode($this->saferpay_providerset);
-        }
-
-        return $strUrl;
     }
 }
