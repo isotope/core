@@ -13,7 +13,10 @@
 namespace Isotope\Model\Payment;
 
 use Haste\Form\Form;
+use Isotope\Interfaces\IsotopeProductCollection;
 use Isotope\Isotope;
+use Isotope\Model\ProductCollectionSurcharge\Shipping;
+use Isotope\Model\ProductCollectionSurcharge\Tax;
 
 
 class BillpayWithSaferpay extends Saferpay
@@ -51,5 +54,190 @@ class BillpayWithSaferpay extends Saferpay
                 )
             );
         }
+    }
+
+
+    /**
+     * Add BillPay-specific data to POST values
+     *
+     * @param IsotopeProductCollection $objOrder
+     * @param \Module                  $objModule
+     *
+     * @return array
+     */
+    protected function generatePaymentPostData(IsotopeProductCollection $objOrder, \Module $objModule)
+    {
+        /** @type \Isotope\Model\ProductCollection\Order $objOrder */
+
+        $arrData = parent::generatePaymentPostData($objOrder, $objModule);
+
+        // Billing address
+        $objBillingAddress = $objOrder->getBillingAddress();
+        $arrData['GENDER'] = (string) substr((string) $objBillingAddress->gender, 0, 1);
+        $arrData['FIRSTNAME'] = (string) $objBillingAddress->firstname;
+        $arrData['LASTNAME'] = (string) $objBillingAddress->lastname;
+        $arrData['STREET'] = (string) $objBillingAddress->street_1;
+        $arrData['ADDRESSADDITION'] = (string) $objBillingAddress->street_2;
+        $arrData['ZIP'] = (string) $objBillingAddress->postal;
+        $arrData['CITY'] = (string) $objBillingAddress->city;
+        $arrData['COUNTRY'] = (string) $objBillingAddress->country;
+        $arrData['EMAIL'] = (string) $objBillingAddress->email;
+        $arrData['PHONE'] = (string) $objBillingAddress->phone;
+        $arrData['DATEOFBIRTH'] = ($objBillingAddress->dateOfBirth ? date('Ymd', $objBillingAddress->dateOfBirth) : '');
+        $arrData['COMPANY'] = (string) $objBillingAddress->company;
+
+        // Shipping address
+        $objShippingAddress = $objOrder->getShippingAddress();
+        $arrData['DELIVERY_GENDER'] = (string) substr((string) $objShippingAddress->gender, 0, 1);
+        $arrData['DELIVERY_FIRSTNAME'] = (string) $objShippingAddress->firstname;
+        $arrData['DELIVERY_LASTNAME'] = (string) $objShippingAddress->lastname;
+        $arrData['DELIVERY_STREET'] = (string) $objShippingAddress->street_1;
+        $arrData['DELIVERY_ADDRESSAD DITION'] = (string) $objShippingAddress->street_2;
+        $arrData['DELIVERY_ZIP'] = (string) $objShippingAddress->postal;
+        $arrData['DELIVERY_CITY'] = (string) $objShippingAddress->city;
+        $arrData['DELIVERY_COUNTRY'] = (string) $objShippingAddress->country;
+        $arrData['DELIVERY_PHONE'] = (string) $objShippingAddress->phone;
+
+        // Cart items and total
+        $arrData['BASKETDATA'] = $this->getCollectionItemsAsXML($objOrder);
+        $arrData['BASKETTOTAL'] = $this->getCollectionTotalAsXML($objOrder);
+
+        // Remove empty parameters
+        $arrData = array_filter($arrData);
+
+        return $arrData;
+    }
+
+    /**
+     * Generate XML data for collection items
+     *
+     * @param IsotopeProductCollection $objCollection
+     *
+     * @return string
+     */
+    private function getCollectionItemsAsXML(IsotopeProductCollection $objCollection)
+    {
+        $xml = new \DOMDocument();
+        $articleData = $xml->createElement('article_data');
+
+        foreach ($objCollection->getItems() as $objItem) {
+            $article = $xml->createElement('article');
+
+            $id = $xml->createAttribute('articleid');
+            $id->value = $objItem->getSku();
+            $article->appendChild($id);
+
+            $quantity = $xml->createAttribute('articlequantity');
+            $quantity->value = $objItem->quantity;
+            $article->appendChild($quantity);
+
+            $name = $xml->createAttribute('articlename');
+            $name->value = $objItem->getName();
+            $article->appendChild($name);
+
+            $price = $xml->createAttribute('articleprice');
+            $price->value = round($objItem->getTaxFreePrice() * 100);
+            $article->appendChild($price);
+
+            $grossPrice = $xml->createAttribute('articlepricegross');
+            $grossPrice->value = round($objItem->getPrice() * 100);
+            $article->appendChild($grossPrice);
+
+            $articleData->appendChild($article);
+        }
+
+        foreach ($objCollection->getSurcharges() as $objSurcharge) {
+            if ($objSurcharge->total_price > 0 && !($objSurcharge instanceof Shipping) && !($objSurcharge instanceof Tax)) {
+
+                $article = $xml->createElement('article');
+
+                // Quantity is always 1 because we only have a total price
+                $quantity = $xml->createAttribute('articlequantity');
+                $quantity->value = 1;
+                $article->appendChild($quantity);
+
+                $name = $xml->createAttribute('articlename');
+                $name->value = $objSurcharge->label;
+                $article->appendChild($name);
+
+                $price = $xml->createAttribute('articleprice');
+                $price->value = round($objSurcharge->tax_free_total_price * 100);
+                $article->appendChild($price);
+
+                $grossPrice = $xml->createAttribute('articlepricegross');
+                $grossPrice->value = round($objSurcharge->total_price * 100);
+                $article->appendChild($grossPrice);
+
+                $articleData->appendChild($article);
+            }
+        }
+
+        $xml->appendChild($articleData);
+
+        return $xml->saveXML($xml->documentElement);
+    }
+
+
+    private function getCollectionTotalAsXML(IsotopeProductCollection $objCollection)
+    {
+        $intRebate = 0;
+        $intRebateGross = 0;
+        $strShippingName = '';
+        $intShippingPrice = 0;
+        $intShippingPriceGross = 0;
+
+        foreach ($objCollection->getSurcharges() as $objSurcharge) {
+            if ($objSurcharge->total_price < 0) {
+                $intRebate += round($objSurcharge->tax_free_total_price * 100);
+                $intRebateGross += round($objSurcharge->total_price * 100);
+            } elseif ($objSurcharge instanceof Shipping) {
+                $strShippingName = $objSurcharge->label;
+                $intShippingPrice += round($objSurcharge->tax_free_total_price * 100);
+                $intShippingPriceGross += round($objSurcharge->total_price * 100);
+            }
+        }
+
+        $xml = new \DOMDocument();
+        $total = $xml->createElement('total');
+
+        if ($intShippingPrice != 0 || $intShippingPriceGross != 0) {
+            $shippingName = $xml->createAttribute('shippingname');
+            $shippingName->value = $strShippingName;
+            $total->appendChild($shippingName);
+
+            $shippingPrice = $xml->createAttribute('shippingprice');
+            $shippingPrice->value = $intShippingPrice;
+            $total->appendChild($shippingPrice);
+
+            $shippingPriceGross = $xml->createAttribute('shippingpricegross');
+            $shippingPriceGross->value = $intShippingPriceGross;
+            $total->appendChild($shippingPriceGross);
+        }
+
+        if ($intRebate != 0 || $intRebateGross != 0) {
+            $rebate = $xml->createAttribute('rebate');
+            $rebate->value = $intRebate;
+            $total->appendChild($rebate);
+
+            $rebateGross = $xml->createAttribute('rebategross');
+            $rebateGross->value = $intRebateGross;
+            $total->appendChild($rebateGross);
+        }
+
+        $cartTotalPrice = $xml->createAttribute('carttotalprice');
+        $cartTotalPrice->value = round($objCollection->getTaxFreeTotal() * 100);
+        $total->appendChild($cartTotalPrice);
+
+        $cartTotalPriceGross = $xml->createAttribute('carttotalpricegross');
+        $cartTotalPriceGross->value = round($objCollection->getTotal() * 100);
+        $total->appendChild($cartTotalPriceGross);
+
+        $currency = $xml->createAttribute('currency');
+        $currency->value = $objCollection->currency;
+        $total->appendChild($currency);
+
+        $xml->appendChild($total);
+
+        return $xml->saveXML($xml->documentElement);
     }
 }
