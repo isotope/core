@@ -127,7 +127,8 @@ class Saferpay extends Postsale implements IsotopePayment
     {
         // Get redirect url
         $objRequest = new \Request();
-        $objRequest->send(static::createPayInitURI, http_build_query($this->generatePaymentPostData($objOrder, $objModule)), 'POST');
+        $objRequest->setHeader('Content-Type', 'application/x-www-form-urlencoded');
+        $objRequest->send(static::createPayInitURI, http_build_query($this->generatePaymentPostData($objOrder, $objModule), null, '&'), 'POST');
 
         if ((int) $objRequest->code !== 200 || substr($objRequest->response, 0, 6) === 'ERROR:') {
             \System::log(sprintf('Could not get the redirect URI from Saferpay. See log files for further details.'), __METHOD__, TL_ERROR);
