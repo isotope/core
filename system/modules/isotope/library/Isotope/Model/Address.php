@@ -23,15 +23,24 @@ use Isotope\Isotope;
  * @property int    id
  * @property int    pid
  * @property string ptable
- * @property string company
+ * @property string label
+ * @property int    store_id
+ * @property string gender
+ * @property string salutation
  * @property string firstname
  * @property string lastname
+ * @property int    dateOfBirth
+ * @property string company
+ * @property string vat_no
  * @property string street_1
  * @property string street_2
  * @property string street_3
+ * @property string postal
+ * @property string city
  * @property string subdivision
  * @property string country
- * @property int    store_id
+ * @property string phone
+ * @property string email
  * @property bool   isDefaultShipping
  * @property bool   isDefaultBilling
  */
