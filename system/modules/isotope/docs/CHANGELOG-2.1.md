@@ -17,6 +17,7 @@ Version 2.1.5-stable (2014-??-??)
 - The backend setup welcome legend was not translatable
 - Minimum product quantity was not applied when only one price tier was set (#1183)
 - Multiple advanced prices could result in incorrect from price (related to #1183)
+- FORM_DATA session was overwritten by checkout condition form (#1211)
 
 
 Version 2.1.4-stable (2014-07-21)
