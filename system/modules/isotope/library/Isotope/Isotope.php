@@ -195,10 +195,11 @@ class Isotope extends \Controller
      * @param object $objSource
      * @param string $strField
      * @param int    $intTaxClass
+     * @param array  $arrAddresses
      *
      * @return float
      */
-    public static function calculatePrice($fltPrice, $objSource, $strField, $intTaxClass = 0)
+    public static function calculatePrice($fltPrice, $objSource, $strField, $intTaxClass = 0, array $arrAddresses = null)
     {
         if (!is_numeric($fltPrice)) {
             return $fltPrice;
@@ -229,7 +230,7 @@ class Isotope extends \Controller
         // Possibly add/subtract tax
         /** @var TaxClass $objTaxClass */
         if (($objTaxClass = TaxClass::findByPk($intTaxClass)) !== null) {
-            $fltPrice = $objTaxClass->calculatePrice($fltPrice);
+            $fltPrice = $objTaxClass->calculatePrice($fltPrice, $arrAddresses);
         }
 
         return static::roundPrice($fltPrice);
