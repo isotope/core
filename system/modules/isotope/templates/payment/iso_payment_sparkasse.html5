@@ -22,7 +22,7 @@ $arrQuery['mac'] = $this->calculateHash($arrQuery);
 
 $strUrl  = 'https://';
 $strUrl .= ($this->debug ? 'test' : '');
-$strUrl .= 'system.sparkassen-internetkasse.de/vbv/mpi_legacy?';
+$strUrl .= 'system.sparkassen-internetkasse.de/web-api/SSLPayment.po?';
 $strUrl .= http_build_query($arrQuery, null, '&');
 
 ?>

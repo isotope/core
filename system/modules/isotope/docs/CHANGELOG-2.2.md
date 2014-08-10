@@ -20,3 +20,4 @@ Version 2.2.0-beta1 (2014-??-??)
 - No need to add an order details front end module to see order details in back end anymore
 - Show source collection (cart) ID in the order backend view (#1208)
 - Use a template to generate Sparkasse payment URL (#1207)
+- Switched to the new Sparkasse payment URL (#1143)
