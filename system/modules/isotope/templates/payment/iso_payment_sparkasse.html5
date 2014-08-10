@@ -1,0 +1,32 @@
+<?php
+
+$arrQuery = array(
+    'amount'            => $this->amount,
+    'basketid'          => $this->basketid,
+    'command'           => 'sslform',
+    'currency'          => $this->currency,
+    'locale'            => $this->locale,
+    'orderid'           => $this->orderid,
+    'paymentmethod'     => $this->sparkasse_paymentmethod,
+    'sessionid'         => $this->sessionid,
+    'sslmerchant'       => $this->sparkasse_sslmerchant,
+    'transactiontype'   => $this->transactiontype,
+    'version'           => '1.5'
+);
+
+if ($this->merchantref != '') {
+    $arrQuery['merchantref'] = $this->merchantref;
+}
+
+$arrQuery['mac'] = $this->calculateHash($arrQuery);
+
+$strUrl  = 'https://';
+$strUrl .= ($this->debug ? 'test' : '');
+$strUrl .= 'system.sparkassen-internetkasse.de/vbv/mpi_legacy?';
+$strUrl .= http_build_query($arrQuery, null, '&');
+
+?>
+<h2><?php echo $this->headline; ?></h2>
+<p class="message"><?php echo $this->message; ?></p>
+<p><a href="<?php echo $strUrl; ?>"><?php echo $this->link; ?></a>
+<script>window.location.href = '<?php echo $strUrl; ?>';</script>

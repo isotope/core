@@ -17,6 +17,7 @@ use Isotope\Interfaces\IsotopePayment;
 use Isotope\Interfaces\IsotopeProductCollection;
 use Isotope\Model\ProductCollection\Order;
 use Isotope\Module\Checkout;
+use Isotope\Template;
 
 /**
  * Class Sparkasse
@@ -103,42 +104,34 @@ class Sparkasse extends Postsale implements IsotopePayment
     {
         global $objPage;
 
-        $arrUrl = array();
-        $strUrl = 'https://' . ($this->debug ? 'test' : '') . 'system.sparkassen-internetkasse.de/vbv/mpi_legacy?';
+        $objTemplate = new Template('iso_payment_sparkasse');
 
-        $arrParam = array(
-            'amount'            => number_format($objOrder->getTotal(), 2, ',', ''),
-            'basketid'          => $objOrder->source_collection_id,
-            'command'           => 'sslform',
-            'currency'          => $objOrder->currency,
-            'locale'            => $objOrder->language,
-            'orderid'           => $objOrder->id,
-            'paymentmethod'     => $this->sparkasse_paymentmethod,
-            'sessionid'         => $objPage->id,
-            'sslmerchant'       => $this->sparkasse_sslmerchant,
-            'transactiontype'   => ($this->trans_type == 'auth' ? 'preauthorization' : 'authorization'),
-            'version'           => '1.5',
-        );
+        $objTemplate->amount = number_format($objOrder->getTotal(), 2, ',', '');
+        $objTemplate->basketid = $objOrder->source_collection_id;
+        $objTemplate->currency = $objOrder->currency;
+        $objTemplate->locale = $objOrder->language;
+        $objTemplate->orderid = $objOrder->id;
+        $objTemplate->sessionid = $objPage->id;
+        $objTemplate->transactiontype = ($this->trans_type == 'auth' ? 'preauthorization' : 'authorization');
+        $objTemplate->merchantref = '';
 
         if ($this->sparkasse_merchantref != '') {
-            $arrParam['merchantref'] = substr($this->replaceInsertTags($this->sparkasse_merchantref), 0, 30);
+            $objTemplate->merchantref = substr($this->replaceInsertTags($this->sparkasse_merchantref), 0, 30);
         }
 
-        $arrParam['mac'] = $this->calculateHash($arrParam);
+        $objTemplate->headline = $GLOBALS['TL_LANG']['MSC']['pay_with_redirect'][0];
+        $objTemplate->message = $GLOBALS['TL_LANG']['MSC']['pay_with_redirect'][1];
+        $objTemplate->link = $GLOBALS['TL_LANG']['MSC']['pay_with_redirect'][2];
 
-        foreach ($arrParam as $k => $v) {
-            $arrUrl[] = $k . '=' . $v;
-        }
+        // Unfortunately we can't use the class method for this
+        // @todo change when PHP 5.4 is compulsory
+        $objTemplate->calculateHash = function($arrData) {
+            ksort($arrData);
 
-        $strUrl .= implode('&', $arrUrl);
+            return hash_hmac('sha1', implode('', $arrData), $this->sparkasse_sslpassword);
+        };
 
-        return "
-<script>
-window.location.href = '" . $strUrl . "';
-</script>
-<h3>" . $GLOBALS['TL_LANG']['MSC']['pay_with_redirect'][0] . "</h3>
-<p>" . $GLOBALS['TL_LANG']['MSC']['pay_with_redirect'][1] . "</p>
-<p><a href=\"" . $strUrl . "\">" . $GLOBALS['TL_LANG']['MSC']['pay_with_redirect'][2] . "</a>";
+        return $objTemplate->parse();
     }
 
 
