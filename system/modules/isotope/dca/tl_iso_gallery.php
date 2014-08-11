@@ -192,6 +192,7 @@ $GLOBALS['TL_DCA']['tl_iso_gallery'] = array
             'exclude'               => true,
             'inputType'             => 'checkboxWizard',
             'options_callback'      => function() {
+                // Do not use \Isotope\Backend::getTemplates() here, as they cannot be selected in a page layout!
                 return array_merge(
                     \Controller::getTemplateGroup('moo_'),
                     \Controller::getTemplateGroup('j_')
@@ -270,7 +271,7 @@ $GLOBALS['TL_DCA']['tl_iso_gallery'] = array
             'exclude'               => true,
             'inputType'             => 'select',
             'options_callback'      => function() {
-                return $this->getTemplateGroup('iso_gallery_');
+                return \Isotope\Backend::getTemplates('iso_gallery_');
             },
             'eval'                  => array('includeBlankOption'=>true, 'chosen'=>true, 'tl_class'=>'w50'),
             'sql'                   => "varchar(64) NOT NULL default ''"
