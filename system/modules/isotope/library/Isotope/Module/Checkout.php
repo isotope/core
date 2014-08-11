@@ -24,11 +24,6 @@ use Isotope\Model\Shipping;
 /**
  * Class ModuleIsotopeCheckout
  * Front end module Isotope "checkout".
- *
- * @copyright  Isotope eCommerce Workgroup 2009-2012
- * @author     Andreas Schempp <andreas.schempp@terminal42.ch>
- * @author     Fred Bliss <fred.bliss@intelligentspark.com>
- * @author     Yanick Witschi <yanick.witschi@terminal42.ch>
  */
 class Checkout extends Module
 {
@@ -169,6 +164,7 @@ class Checkout extends Module
 
                 // Make sure all steps have passed successfully
                 foreach ($arrSteps as $step => $arrModules) {
+                    /** @type IsotopeCheckoutStep $objModule */
                     foreach ($arrModules as $objModule) {
                         $objModule->generate();
 
@@ -199,6 +195,7 @@ class Checkout extends Module
                 break;
 
             // Checkout/payment has failed, show the review page again with an error message
+            /** @noinspection PhpMissingBreakStatementInspection */
             case 'failed':
                 $this->Template->mtype   = 'error';
                 $this->Template->message = strlen(\Input::get('reason')) ? \Input::get('reason') : $GLOBALS['TL_LANG']['ERR']['orderFailed'];
@@ -228,6 +225,7 @@ class Checkout extends Module
      */
     protected function generateSteps(array $arrSteps)
     {
+        $arrBuffer = array();
         $intCurrentStep = 0;
         $intTotalSteps  = count($arrSteps);
 
@@ -235,7 +233,11 @@ class Checkout extends Module
             $this->redirectToNextStep();
         }
 
-        // Run trough all steps until we find the current one or one reports failure
+        /**
+         * Run trough all steps until we find the current one or one reports failure
+         * @type string                $step
+         * @type IsotopeCheckoutStep[] $arrModules
+         */
         foreach ($arrSteps as $step => $arrModules) {
             $this->strFormId            = 'iso_mod_checkout_' . $step;
             $this->Template->formId     = $this->strFormId;
@@ -344,6 +346,7 @@ class Checkout extends Module
         $arrCheckoutInfo = array();
 
         // Run trough all steps to collect checkout information
+        /** @type IsotopeCheckoutStep[] $arrModules */
         foreach ($arrSteps as $arrModules) {
             foreach ($arrModules as $objModule) {
 
@@ -372,6 +375,8 @@ class Checkout extends Module
 
         // Run trough all steps to collect checkout information
         foreach ($arrSteps as $arrModules) {
+
+            /** @type IsotopeCheckoutStep $objModule */
             foreach ($arrModules as $objModule) {
                 $arrTokens = array_merge($arrTokens, $objModule->getNotificationTokens($objOrder));
             }

@@ -1416,9 +1416,9 @@ abstract class ProductCollection extends TypeAgent
     /**
      * Initialize a new collection and duplicate everything from the source
      *
-     * @param   IsotopeProductCollection $objSource
+     * @param IsotopeProductCollection $objSource
      *
-     * @return  IsotopeProductCollection
+     * @return static
      */
     public static function createFromCollection(IsotopeProductCollection $objSource)
     {

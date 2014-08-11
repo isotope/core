@@ -32,9 +32,8 @@ use NotificationCenter\Model\Notification;
  * Class Order
  *
  * Provide methods to handle Isotope orders.
- * @copyright  Isotope eCommerce Workgroup 2009-2012
- * @author     Andreas Schempp <andreas.schempp@terminal42.ch>
- * @author     Fred Bliss <fred.bliss@intelligentspark.com>
+ *
+ * @method static Order findOneBy(string $strColumn, $varValue, array $arrOptions=array())
  */
 class Order extends ProductCollection implements IsotopeProductCollection
 {
@@ -203,6 +202,7 @@ class Order extends ProductCollection implements IsotopeProductCollection
         if ($this->nc_notification) {
             $blnNotificationError = true;
 
+            /** @type Notification $objNotification */
             if (($objNotification = Notification::findByPk($this->nc_notification)) !== null) {
                 $arrResult = $objNotification->send($arrTokens, $this->language);
 
@@ -357,6 +357,9 @@ class Order extends ProductCollection implements IsotopeProductCollection
      */
     public function getNotificationTokens($intNotification)
     {
+        /** @type \Isotope\Model\Config $objConfig */
+        $objConfig = $this->getRelated('config_id');
+
         $arrTokens                    = deserialize($this->email_data, true);
         $arrTokens['uniqid']          = $this->uniqid;
         $arrTokens['order_status_id'] = $this->order_status;
@@ -382,7 +385,7 @@ class Order extends ProductCollection implements IsotopeProductCollection
                 $arrTokens['billing_' . $k] = $arrTokens['billing_address_' . $k];
             }
 
-            $arrTokens['billing_address'] = $objAddress->generate($this->getRelated('config_id')->getBillingFieldsConfig());
+            $arrTokens['billing_address'] = $objAddress->generate($objConfig->getBillingFieldsConfig());
 
             // @deprecated (use ##billing_address##)
             $arrTokens['billing_address_text'] = $arrTokens['billing_address'];
@@ -397,7 +400,7 @@ class Order extends ProductCollection implements IsotopeProductCollection
                 $arrTokens['shipping_' . $k] = $arrTokens['shipping_address_' . $k];
             }
 
-            $arrTokens['shipping_address'] = $objAddress->generate($this->getRelated('config_id')->getShippingFieldsConfig());
+            $arrTokens['shipping_address'] = $objAddress->generate($objConfig->getShippingFieldsConfig());
 
             // Shipping address equals billing address
             // @deprecated (use ##shipping_address##)
