@@ -18,7 +18,7 @@ abstract class CheckoutStep extends \Controller
 
     /**
      * Checkout module instance
-     * @var Module
+     * @var \Isotope\Module\Checkout
      */
     protected $objModule;
 
@@ -29,7 +29,7 @@ abstract class CheckoutStep extends \Controller
     protected $blnError = false;
 
 
-    public function __construct($objModule)
+    public function __construct(\Isotope\Module\Checkout $objModule)
     {
         parent::__construct();
 
