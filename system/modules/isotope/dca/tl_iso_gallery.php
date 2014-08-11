@@ -42,7 +42,7 @@ $GLOBALS['TL_DCA']['tl_iso_gallery'] = array
         'sorting' => array
         (
             'mode'                  => 1,
-            'flag'					=> 1,
+            'flag'                  => 1,
             'fields'                => array('name'),
             'panelLayout'           => 'filter;search,limit',
         ),
