@@ -14,9 +14,39 @@ namespace Isotope\Collection;
 
 use Isotope\Interfaces\IsotopePrice;
 use Isotope\Isotope;
+use Model\Collection;
 
-class ProductPrice extends \Model\Collection implements IsotopePrice
+class ProductPrice extends Collection implements IsotopePrice
 {
+
+    /**
+     * Remove duplicate models with the same column value (first model will be kept)
+     *
+     * @param string $strColumn
+     *
+     * @return $this
+     */
+    public function filterDuplicatesBy($strColumn)
+    {
+        $this->reset();
+
+        $arrFound = array();
+
+        $this->arrModels = array_filter(
+            $this->arrModels,
+            function($objModel) use (&$arrFound) {
+                if (isset($arrFound[$objModel->$strColumn])) {
+                    return false;
+                }
+
+                $arrFound[$objModel->$strColumn] = $objModel->id;
+
+                return true;
+            }
+        );
+
+        return $this;
+    }
 
     /**
      * Return true if more than one price is available

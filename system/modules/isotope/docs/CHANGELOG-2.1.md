@@ -1,6 +1,25 @@
 Isotope eCommerce Changelog
 ===========================
 
+Version 2.1.5-stable (2014-08-11)
+---------------------------------
+
+### Improved
+- Replace inserttags in backend order view to support 3th-party extensions (#1186)
+- Cart was not available in postsale process (#1196)
+- Allow to pass addresses to Isotope::calculatePrice for correct tax calculation (#1196)
+
+### Fixed
+- Orders were tracked twice in Google Analytics (#1184)
+- Google Analytics eCommerce must have a product SKU (#1181)
+- New product collections were reported as locked (#1190)
+- Asset import could result in uppercase folder names (#1204)
+- The backend setup welcome legend was not translatable
+- Minimum product quantity was not applied when only one price tier was set (#1183)
+- Multiple advanced prices could result in incorrect from price (related to #1183)
+- FORM_DATA session was overwritten by checkout condition form (#1211)
+
+
 Version 2.1.4-stable (2014-07-21)
 ---------------------------------
 

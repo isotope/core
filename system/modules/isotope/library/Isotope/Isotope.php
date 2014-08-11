@@ -36,7 +36,7 @@ class Isotope extends \Controller
     /**
      * Isotope version
      */
-    const VERSION = '2.1.4';
+    const VERSION = '2.1.5';
 
     /**
      * True if the system has been initialized
@@ -46,19 +46,19 @@ class Isotope extends \Controller
 
     /**
      * Current cart instance
-     * @var \Isotope\Model\ProductCollection\Cart
+     * @var Cart
      */
     protected static $objCart;
 
     /**
      * Current config instance
-     * @var \Isotope\Model\Config
+     * @var Config
      */
     protected static $objConfig;
 
     /**
      * Current request cache instance
-     * @var \Isotope\Model\RequestCache
+     * @var RequestCache
      */
     protected static $objRequestCache;
 
@@ -99,7 +99,8 @@ class Isotope extends \Controller
 
     /**
      * Get the currently active Isotope cart
-     * @return \Isotope\Model\ProductCollection\Cart|null
+     *
+     * @return Cart|null
      */
     public static function getCart()
     {
@@ -116,7 +117,8 @@ class Isotope extends \Controller
 
     /**
      * Set the currently active Isotope cart
-     * @param Isotope\Model\ProductCollection\Cart
+     *
+     * @param Cart $objCart
      */
     public static function setCart(Cart $objCart)
     {
@@ -126,7 +128,8 @@ class Isotope extends \Controller
 
     /**
      * Get the currently active Isotope configuration
-     * @return \Isotope\Model\Config
+     *
+     * @return Config
      */
     public static function getConfig()
     {
@@ -157,7 +160,8 @@ class Isotope extends \Controller
 
     /**
      * Set the currently active Isotope configuration
-     * @param Isotope\Model\Config|null
+     *
+     * @param Config $objConfig
      */
     public static function setConfig(Config $objConfig = null)
     {
@@ -166,7 +170,8 @@ class Isotope extends \Controller
 
     /**
      * Get active request cache
-     * @return  RequestCache
+     *
+     * @return RequestCache
      */
     public static function getRequestCache()
     {
@@ -185,13 +190,16 @@ class Isotope extends \Controller
 
     /**
      * Calculate price trough hook and foreign prices
-     * @param float
-     * @param object
-     * @param string
-     * @param integer
+     *
+     * @param float  $fltPrice
+     * @param object $objSource
+     * @param string $strField
+     * @param int    $intTaxClass
+     * @param array  $arrAddresses
+     *
      * @return float
      */
-    public static function calculatePrice($fltPrice, $objSource, $strField, $intTaxClass = 0)
+    public static function calculatePrice($fltPrice, $objSource, $strField, $intTaxClass = 0, array $arrAddresses = null)
     {
         if (!is_numeric($fltPrice)) {
             return $fltPrice;
@@ -222,7 +230,7 @@ class Isotope extends \Controller
         // Possibly add/subtract tax
         /** @var TaxClass $objTaxClass */
         if (($objTaxClass = TaxClass::findByPk($intTaxClass)) !== null) {
-            $fltPrice = $objTaxClass->calculatePrice($fltPrice);
+            $fltPrice = $objTaxClass->calculatePrice($fltPrice, $arrAddresses);
         }
 
         return static::roundPrice($fltPrice);
@@ -231,8 +239,10 @@ class Isotope extends \Controller
 
     /**
      * Rounds a price according to store config settings
-     * @param float $fltValue original value
-     * @param bool $blnApplyRoundingIncrement apply rounding increment
+     *
+     * @param float $fltValue                  original value
+     * @param bool  $blnApplyRoundingIncrement apply rounding increment
+     *
      * @return float rounded value
      */
     public static function roundPrice($fltValue, $blnApplyRoundingIncrement = true)
@@ -249,7 +259,9 @@ class Isotope extends \Controller
 
     /**
      * Format given price according to store config settings
-     * @param float
+     *
+     * @param float $fltPrice
+     *
      * @return float
      */
     public static function formatPrice($fltPrice)
@@ -271,9 +283,11 @@ class Isotope extends \Controller
 
     /**
      * Format given price according to store config settings, including currency representation
-     * @param float
-     * @param boolean
-     * @param string
+     *
+     * @param float  $fltPrice
+     * @param bool   $blnHtml
+     * @param string $strCurrencyCode
+     *
      * @return string
      */
     public static function formatPriceWithCurrency($fltPrice, $blnHtml = true, $strCurrencyCode = null)
@@ -303,7 +317,9 @@ class Isotope extends \Controller
 
     /**
      * Format the number of items and return the items string
-     * @param integer
+     *
+     * @param int $intItems
+     *
      * @return string
      */
     public static function formatItemsString($intItems)
@@ -324,7 +340,9 @@ class Isotope extends \Controller
 
     /**
      * Callback for isoButton Hook
-     * @param array
+     *
+     * @param array $arrButtons
+     *
      * @return array
      */
     public static function defaultButtons($arrButtons)
@@ -338,10 +356,12 @@ class Isotope extends \Controller
 
     /**
      * Validate a custom regular expression
-     * @param string
-     * @param mixed
-     * @param object
-     * @return boolean
+     *
+     * @param string  $strRegexp
+     * @param mixed   $varValue
+     * @param \Widget $objWidget
+     *
+     * @return bool
      */
     public static function validateRegexp($strRegexp, $varValue, \Widget $objWidget)
     {
@@ -377,8 +397,12 @@ class Isotope extends \Controller
 
     /**
      * Format options label and value
-     * @param   array
-     * @param   string
+     *
+     * @param array  $arrData
+     * @param string $strTable
+     * @param bool   $blnSkipEmpty
+     *
+     * @return array
      */
     public static function formatOptions(array $arrData, $strTable = 'tl_iso_product', $blnSkipEmpty = true)
     {

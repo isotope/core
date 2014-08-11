@@ -42,11 +42,13 @@ class TaxClass extends \Model
 
     /**
      * Calculate a price, removing tax if included but not applicable
-     * @param  float
-     * @param  array|null
+     *
+     * @param float $fltPrice
+     * @param array $arrAddresses
+     *
      * @return float
      */
-    public function calculatePrice($fltPrice, $arrAddresses = null)
+    public function calculatePrice($fltPrice, array $arrAddresses = null)
     {
         if (!is_array($arrAddresses)) {
             $arrAddresses = array('billing' => Isotope::getCart()->getBillingAddress(), 'shipping' => Isotope::getCart()->getShippingAddress());

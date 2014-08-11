@@ -71,13 +71,15 @@ class Analytics extends Frontend
 
         $transaction->setCountry($objAddress->country);
 
-
+        /** @var \Isotope\Model\ProductCollectionItem $objItem */
         foreach ($objOrder->getItems() as $objItem)
         {
             $item = new \UnitedPrototype\GoogleAnalytics\Item();
 
             if ($objItem->getSku()) {
                 $item->setSku($objItem->getSku());
+            } else {
+                $item->setSku('product'.$objItem->product_id);
             }
 
             $item->setName($objItem->getName());

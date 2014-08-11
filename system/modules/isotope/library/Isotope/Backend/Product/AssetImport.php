@@ -149,12 +149,12 @@ class AssetImport extends \Backend
                     foreach ($arrNewImages as $strFile) {
                         $pathinfo = pathinfo(TL_ROOT . '/' . $strFile);
 
-                        // Make sure directory exists
-                        \Haste\Haste::mkdirr('isotope/' . substr($pathinfo['filename'], 0, 1) . '/');
+                        // Will recursively create the folder
+                        $objFolder = new \Folder('isotope/' . strtolower(substr($pathinfo['filename'], 0, 1)));
 
                         $strCacheName = $pathinfo['filename'] . '-' . substr(md5_file(TL_ROOT . '/' . $strFile), 0, 8) . '.' . $pathinfo['extension'];
 
-                        \Files::getInstance()->copy($strFile, 'isotope/' . substr($pathinfo['filename'], 0, 1) . '/' . $strCacheName);
+                        \Files::getInstance()->copy($strFile, $objFolder->path . '/' . $strCacheName);
                         $arrImages[] = array('src' => $strCacheName);
                         $arrDelete[] = $strFile;
 
