@@ -6,7 +6,7 @@
   <form action="<?php echo $this->action; ?>" class="tl_form" method="post">
     <div class="tl_formbody_edit">
       <input type="hidden" name="FORM_SUBMIT" value="tl_iso_integrity">
-      <input type="hidden" name="REQUEST_TOKEN" value="4da9935715b2a1f0831b1dc0a9cafba6">
+      <input type="hidden" name="REQUEST_TOKEN" value="<?php echo REQUEST_TOKEN; ?>">
       <div class="tl_tbox">
         <fieldset class="tl_checkbox_container">
           <table style="width:100%">
