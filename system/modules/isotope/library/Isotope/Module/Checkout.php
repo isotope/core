@@ -126,7 +126,7 @@ class Checkout extends Module
             // Complete order after successful payment
             // At this stage, we do no longer use the client's cart but the order through UID in URL
             case 'complete':
-                if (($objOrder = Order::findOneByUniqid((string) \Input::get('uid'))) === null) {
+                if (($objOrder = Order::findOneBy('uniqid', (string) \Input::get('uid'))) === null) {
                     if (Isotope::getCart()->isEmpty()) {
                         /** @type \PageError404 $objHandler */
                         $objHandler = new $GLOBALS['TL_PTY']['error_404']();
