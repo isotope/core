@@ -20,11 +20,29 @@ use Isotope\Isotope;
 /**
  * Class Address
  *
- * @copyright  Isotope eCommerce Workgroup 2009-2012
- * @author     Andreas Schempp <andreas.schempp@terminal42.ch>
- * @author     Fred Bliss <fred.bliss@intelligentspark.com>
- * @author     Yanick Witschi <yanick.witschi@terminal42.ch>
- * @author     Christoph Wiechert <christoph.wiechert@4wardmedia.de>
+ * @property int    id
+ * @property int    pid
+ * @property string ptable
+ * @property string label
+ * @property int    store_id
+ * @property string gender
+ * @property string salutation
+ * @property string firstname
+ * @property string lastname
+ * @property int    dateOfBirth
+ * @property string company
+ * @property string vat_no
+ * @property string street_1
+ * @property string street_2
+ * @property string street_3
+ * @property string postal
+ * @property string city
+ * @property string subdivision
+ * @property string country
+ * @property string phone
+ * @property string email
+ * @property bool   isDefaultShipping
+ * @property bool   isDefaultBilling
  */
 class Address extends \Model
 {

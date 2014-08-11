@@ -103,7 +103,7 @@ class ShippingAddress extends Address implements IsotopeCheckoutStep
      * Get address object for a selected option
      * @param   string
      * @param   bool
-     * @return  Isotope\Model\Address
+     * @return  AddressModel
      */
     protected function getAddressForOption($varValue, $blnValidate)
     {
@@ -129,7 +129,7 @@ class ShippingAddress extends Address implements IsotopeCheckoutStep
 
     /**
      * Get default address for this collection and address type
-     * @return  Isotope\Model\Address
+     * @return  AddressModel
      */
     protected function getDefaultAddress()
     {
@@ -177,7 +177,7 @@ class ShippingAddress extends Address implements IsotopeCheckoutStep
 
     /**
      * Get the current address (from Cart) for this address type
-     * @return  Isotope\Model\Address
+     * @return  AddressModel
      */
     protected function getAddress()
     {

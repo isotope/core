@@ -165,7 +165,7 @@ class ProductPrice extends \Model implements IsotopePrice
      */
     public function getLowestTier()
     {
-        $intMin = $this->hasTiers() ? (int) min(array_keys($this->arrTiers)) : 0;
+        $intMin = (int) min(array_keys($this->arrTiers));
 
         return $intMin ?: 1;
     }
@@ -236,10 +236,11 @@ class ProductPrice extends \Model implements IsotopePrice
     /**
      * Find prices for a given product and collection
      *
-     * @param   IsotopeProduct
-     * @param   IsotopeProductCollection
+     * @param IsotopeProduct           $objProduct
+     * @param IsotopeProductCollection $objCollection
+     * @param array                    $arrOptions
      *
-     * @return  IsotopePrice
+     * @return IsotopePrice
      */
     public static function findByProductAndCollection(IsotopeProduct $objProduct, IsotopeProductCollection $objCollection, array $arrOptions = array())
     {
@@ -273,7 +274,9 @@ class ProductPrice extends \Model implements IsotopePrice
             $arrOptions['column'][] = "pid=" . ($objProduct->hasVariantPrices() ? $objProduct->id : $objProduct->getProductId());
         }
 
-        return static::find($arrOptions);
+        $objResult = static::find($arrOptions);
+
+        return (null === $objResult) ? null : $objResult->filterDuplicatesBy('pid');
     }
 
     /**
@@ -341,7 +344,9 @@ class ProductPrice extends \Model implements IsotopePrice
             $arrOptions
         );
 
-        return static::find($arrOptions);
+        $objResult = static::find($arrOptions);
+
+        return (null === $objResult) ? null : $objResult->filterDuplicatesBy('pid');
     }
 
     /**

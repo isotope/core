@@ -87,7 +87,7 @@ class Setup extends BackendOverview
         if (\BackendUser::getInstance()->isAdmin) {
             $objTemplate = new \BackendTemplate('be_iso_introduction');
 
-            $return['introduction']['label'] = 'Introduction';
+            $return['introduction']['label'] = &$GLOBALS['TL_LANG']['MSC']['isotopeIntroductionLegend'];
             $return['introduction']['html']  = $objTemplate->parse();
         }
     }

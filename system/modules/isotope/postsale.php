@@ -15,6 +15,7 @@ namespace Isotope;
 use Isotope\Interfaces\IsotopePostsale;
 use Isotope\Interfaces\IsotopeProductCollection;
 use Isotope\Model\Payment;
+use Isotope\Model\ProductCollection\Cart;
 use Isotope\Model\Shipping;
 use Haste\Http\Response\Response;
 
@@ -186,6 +187,10 @@ class PostSale extends \Frontend
             }
 
             Isotope::setConfig($objOrder->getRelated('config_id'));
+
+            if (($objCart = $objOrder->getRelated('source_collection_id')) !== null && $objCart instanceof Cart) {
+                Isotope::setCart($objCart);
+            }
 
             $objMethod->processPostsale($objOrder);
 

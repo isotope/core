@@ -61,7 +61,7 @@ abstract class OrderConditions extends CheckoutStep
         if ($this->objForm->isSubmitted()) {
             $this->blnError = !$this->objForm->validate();
 
-            $_SESSION['FORM_DATA'] = array();
+            $_SESSION['FORM_DATA'] = is_array($_SESSION['FORM_DATA']) ? $_SESSION['FORM_DATA'] : array();
             foreach (array_keys($this->objForm->getFormFields()) as $strField) {
                 if ($this->objForm->getWidget($strField) instanceof \uploadable) {
                     $arrFile  = $_SESSION['FILES'][$strField];
