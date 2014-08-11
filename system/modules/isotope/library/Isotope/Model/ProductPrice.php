@@ -76,7 +76,7 @@ class ProductPrice extends \Model implements IsotopePrice
      */
     public function getAmount($intQuantity = 1, array $arrOptions = array())
     {
-        return Isotope::calculatePrice($this->getValueForTier($intQuantity), $this, 'price', $this->tax_class, $arrOptions);
+        return Isotope::calculatePrice($this->getValueForTier($intQuantity), $this, 'price', $this->tax_class, null, $arrOptions);
     }
 
     /**
@@ -89,7 +89,7 @@ class ProductPrice extends \Model implements IsotopePrice
      */
     public function getOriginalAmount($intQuantity = 1, array $arrOptions = array())
     {
-        return Isotope::calculatePrice($this->getValueForTier($intQuantity), $this, 'original_price', $this->tax_class, $arrOptions);
+        return Isotope::calculatePrice($this->getValueForTier($intQuantity), $this, 'original_price', $this->tax_class, null, $arrOptions);
     }
 
     /**
@@ -109,7 +109,7 @@ class ProductPrice extends \Model implements IsotopePrice
             $fltAmount = $objTaxClass->calculateNetPrice($fltAmount);
         }
 
-        return Isotope::calculatePrice($fltAmount, $this, 'net_price', 0, $arrOptions);
+        return Isotope::calculatePrice($fltAmount, $this, 'net_price', 0, null, $arrOptions);
     }
 
     /**
@@ -129,7 +129,7 @@ class ProductPrice extends \Model implements IsotopePrice
             $fltAmount = $objTaxClass->calculateGrossPrice($fltAmount);
         }
 
-        return Isotope::calculatePrice($fltAmount, $this, 'gross_price', 0, $arrOptions);
+        return Isotope::calculatePrice($fltAmount, $this, 'gross_price', 0, null, $arrOptions);
     }
 
     /**
@@ -145,7 +145,7 @@ class ProductPrice extends \Model implements IsotopePrice
             return $this->getAmount();
         }
 
-        return Isotope::calculatePrice(min($this->arrTiers), $this, 'price', $this->tax_class, $arrOptions);
+        return Isotope::calculatePrice(min($this->arrTiers), $this, 'price', $this->tax_class, null, $arrOptions);
     }
 
     /**
