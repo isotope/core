@@ -18,6 +18,43 @@ namespace Isotope\Interfaces;
  */
 interface IsotopePayment
 {
+
+    /**
+     * Return boolean flag if the payment method is available
+     * @return bool
+     */
+    public function isAvailable();
+
+    /**
+     * Return true if payment price is not a fixed amount
+     * @return bool
+     */
+    public function isPercentage();
+
+    /**
+     * Get the percentage amount (if applicable)
+     * @return float
+     */
+    public function getPercentage();
+
+    /**
+     * Return label for the payment method
+     * @return string
+     */
+    public function getLabel();
+
+    /**
+     * Return the calculated total price for payment
+     * @return float
+     */
+    public function getPrice();
+
+    /**
+     * Return percentage label if price is percentage
+     * @return string
+     */
+    public function getPercentageLabel();
+
     /**
      * Process payment on checkout confirmation page.
      * @param   IsotopeProductCollection    $objOrder   The order being places

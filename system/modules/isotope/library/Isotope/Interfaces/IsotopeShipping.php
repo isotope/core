@@ -44,6 +44,12 @@ interface IsotopeShipping
     public function getLabel();
 
     /**
+     * Return percentage label if price is percentage
+     * @return  string
+     */
+    public function getPercentageLabel();
+
+    /**
      * Return the calculated total price for shipping
      * @return  float
      */
