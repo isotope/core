@@ -280,6 +280,7 @@ $GLOBALS['NOTIFICATION_CENTER']['NOTIFICATION_TYPE']['isotope']['iso_order_statu
     'cart_html',
     'cart_text',
     'document',
+    'collection_*', // All the collection fields
     'billing_address', // Formatted billing address
     'billing_address_*', // All the billing address model fields
     'shipping_address', // Formatted shipping address

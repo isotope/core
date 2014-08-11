@@ -375,6 +375,10 @@ class Order extends ProductCollection implements IsotopeProductCollection
         $arrTokens['cart_text']       = '';
         $arrTokens['document']        = '';
 
+        // Add all the collection fields
+        foreach ($this->row() as $k => $v) {
+            $arrTokens['collection_' . $k] = $v;
+        }
 
         // Add billing/customer address fields
         if (($objAddress = $this->getBillingAddress()) !== null) {
@@ -462,7 +466,6 @@ class Order extends ProductCollection implements IsotopeProductCollection
                 $arrTokens['document'] = str_replace(TL_ROOT . '/', '', $strFilePath);
             }
         }
-
 
         // !HOOK: add custom email tokens
         if (isset($GLOBALS['ISO_HOOKS']['getOrderNotificationTokens']) && is_array($GLOBALS['ISO_HOOKS']['getOrderNotificationTokens'])) {
