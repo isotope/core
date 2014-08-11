@@ -14,6 +14,7 @@ Version 2.2.0-beta1 (2014-??-??)
 - Dropped support for Contao 3.2 (#1206)
 - Added the {{formatted_datetime}} InsertTag to format timestamp values (#1195)
 - Isotope shop configuration template folders are now displayed the same way as in Contao core (#1191)
+- Support for custom template for every Isotope front end module (#1191)
 
 ### Improved
 - Product options are now available in calculatePrice hook (#1000)
