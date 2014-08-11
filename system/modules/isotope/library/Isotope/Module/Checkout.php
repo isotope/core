@@ -127,7 +127,13 @@ class Checkout extends Module
             // At this stage, we do no longer use the client's cart but the order through UID in URL
             case 'complete':
                 if (($objOrder = Order::findOneByUniqid((string) \Input::get('uid'))) === null) {
-                    static::redirectToStep('failed');
+                    if (Isotope::getCart()->isEmpty()) {
+                        /** @type \PageError404 $objHandler */
+                        $objHandler = new $GLOBALS['TL_PTY']['error_404']();
+                        $objHandler->generate((int) $GLOBALS['objPage']->id);
+                    } else {
+                        static::redirectToStep('failed');
+                    }
                 }
 
                 $strBuffer = $objOrder->hasPayment() ? $objOrder->getPaymentMethod()->processPayment($objOrder, $this) : true;
