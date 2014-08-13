@@ -24,9 +24,15 @@ class BillpayWithSaferpay extends Saferpay
 
     public function isAvailable()
     {
-        $objAddress = Isotope::getCart()->getBillingAddress();
+        $objBillingAddress = Isotope::getCart()->getBillingAddress();
+        $objShippingAddress = Isotope::getCart()->getShippingAddress();
 
-        if (null === $objAddress || !in_array($objAddress->country, array('de', 'ch', 'at'))) {
+        if (null === $objBillingAddress || !in_array($objBillingAddress->country, array('de', 'ch', 'at'))) {
+            return false;
+        }
+
+        // Billpay is not supported when billing and shipping address are not equal
+        if (Isotope::getCart()->hasShipping() && $objBillingAddress->id != $objShippingAddress->id) {
             return false;
         }
 
