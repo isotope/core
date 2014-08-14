@@ -4,6 +4,9 @@ Isotope eCommerce Changelog
 Version 2.1.6-stable (2014-??-??)
 ---------------------------------
 
+### Fixed
+- Shipping methods included products exempt from shipping in per product and per item calculation mode (#1218)
+
 
 Version 2.1.5-stable (2014-08-11)
 ---------------------------------
