@@ -547,12 +547,6 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['iso_productcache'] = array
     'sql'                       => "blob NULL",
 );
 
-/**
- * Override customTpl options so Isotope shop config templates get included
- */
-unset($GLOBALS['TL_DCA']['tl_module']['fields']['customTpl']['options_callback']);
-$GLOBALS['TL_DCA']['tl_module']['fields']['customTpl']['options'] = \Isotope\Backend::getTemplates('mod_');
-
 
 /**
  * Limit notification choices

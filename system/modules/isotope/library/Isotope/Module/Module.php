@@ -15,7 +15,6 @@ namespace Isotope\Module;
 use Isotope\Isotope;
 use Isotope\Message;
 use Isotope\Model\Product;
-use Isotope\Template;
 use Module as Contao_Module;
 
 
@@ -74,50 +73,19 @@ abstract class Module extends Contao_Module
 
 
     /**
-     * Include Isotope messages and support templates from shop configuration template folder
+     * Include messages if enabled
      * @return string
      */
     public function generate()
     {
-        if ($this->arrData['space'][0] != '') {
-            $this->arrStyle[] = 'margin-top:' . $this->arrData['space'][0] . 'px;';
-        }
-
-        if ($this->arrData['space'][1] != '') {
-            $this->arrStyle[] = 'margin-bottom:' . $this->arrData['space'][1] . 'px;';
-        }
-
-        $this->Template = new Template($this->strTemplate);
-        $this->Template->setData($this->arrData);
-
-        $this->compile();
-
-        // Do not change this order (see #6191)
-        $this->Template->style = !empty($this->arrStyle) ? implode(' ', $this->arrStyle) : '';
-        $this->Template->class = trim('mod_' . $this->type . ' ' . $this->cssID[1]);
-        $this->Template->cssID = ($this->cssID[0] != '') ? ' id="' . $this->cssID[0] . '"' : '';
-
-        $this->Template->inColumn = $this->strColumn;
-
-        if ($this->Template->headline == '') {
-            $this->Template->headline = $this->headline;
-        }
-
-        if ($this->Template->hl == '') {
-            $this->Template->hl = $this->hl;
-        }
-
-        if (!empty($this->objModel->classes) && is_array($this->objModel->classes)) {
-            $this->Template->class .= ' ' . implode(' ', $this->objModel->classes);
-        }
+        $strBuffer = parent::generate();
 
         // Prepend any messages to the module output
-        $strReturn = '';
         if ($this->iso_includeMessages) {
-            $strReturn = Message::generate();
+            $strBuffer = Message::generate() . $strBuffer;
         }
 
-        return $strReturn . $this->Template->parse();
+        return $strBuffer;
     }
 
 
