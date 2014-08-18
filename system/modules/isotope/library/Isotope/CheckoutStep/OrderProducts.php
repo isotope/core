@@ -16,6 +16,7 @@ use Isotope\Interfaces\IsotopeCheckoutStep;
 use Isotope\Interfaces\IsotopeProductCollection;
 use Isotope\Isotope;
 use Isotope\Model\Document;
+use Isotope\Template;
 
 
 class OrderProducts extends CheckoutStep implements IsotopeCheckoutStep
@@ -23,7 +24,8 @@ class OrderProducts extends CheckoutStep implements IsotopeCheckoutStep
 
     /**
      * Returns true to enable the module
-     * @return  bool
+     *
+     * @return bool
      */
     public function isAvailable()
     {
@@ -32,11 +34,12 @@ class OrderProducts extends CheckoutStep implements IsotopeCheckoutStep
 
     /**
      * Generate the checkout step
-     * @return  string
+     *
+     * @return string
      */
     public function generate()
     {
-        $objTemplate = new \Isotope\Template($this->objModule->iso_collectionTpl);
+        $objTemplate = new Template($this->objModule->iso_collectionTpl);
 
         Isotope::getCart()->addToTemplate(
             $objTemplate,
@@ -51,7 +54,8 @@ class OrderProducts extends CheckoutStep implements IsotopeCheckoutStep
 
     /**
      * Cart product view does not have review information
-     * @return  string
+     *
+     * @return string
      */
     public function review()
     {
@@ -60,8 +64,10 @@ class OrderProducts extends CheckoutStep implements IsotopeCheckoutStep
 
     /**
      * Return array of tokens for notification
-     * @param   IsotopeProductCollection
-     * @return  array
+     *
+     * @param IsotopeProductCollection $objCollection
+     *
+     * @return array
      */
     public function getNotificationTokens(IsotopeProductCollection $objCollection)
     {

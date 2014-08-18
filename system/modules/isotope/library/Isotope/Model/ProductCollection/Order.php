@@ -61,6 +61,16 @@ class Order extends ProductCollection implements IsotopeProductCollection
     }
 
     /**
+     * Returns true if checkout has been completed
+     *
+     * @return bool
+     */
+    public function isCheckoutComplete()
+    {
+        return (bool) $this->checkout_complete;
+    }
+
+    /**
      * Get label for current order status
      *
      * @return string
