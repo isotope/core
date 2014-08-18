@@ -123,31 +123,7 @@ class Backend extends Contao_Backend
      */
     public static function getTemplates($strPrefix)
     {
-        $arrTemplates = array();
-
-        // Get the default templates
-        foreach (\TemplateLoader::getPrefixedFiles($strPrefix) as $strTemplate) {
-            $arrTemplates[$strTemplate] = $strTemplate;
-        }
-
-        $arrCustomized = glob(TL_ROOT . '/templates/' . $strPrefix . '*');
-
-        // Add the customized templates
-        if (is_array($arrCustomized)) {
-            foreach ($arrCustomized as $strFile) {
-
-                $strTemplate = basename($strFile, strrchr($strFile, '.'));
-
-                if (!isset($arrTemplates[$strTemplate])) {
-                    $arrTemplates[''][$strTemplate] = $strTemplate;
-                }
-            }
-        }
-
-        // Do not look for back end templates in theme folders (see #5379)
-        if ($strPrefix == 'be_') {
-            return $arrTemplates;
-        }
+        $arrTemplates = \Controller::getTemplateGroup($strPrefix);
 
         // Try to select the shop configs
         try {
@@ -160,8 +136,6 @@ class Backend extends Contao_Backend
         if (null !== $objConfig) {
             while ($objConfig->next()) {
                 if ($objConfig->templateGroup != '') {
-
-                    $strFolder          = sprintf($GLOBALS['TL_LANG']['MSC']['templatesConfig'], $objConfig->name);
                     $arrConfigTemplates = glob(TL_ROOT . '/' . $objConfig->templateGroup . '/' . $strPrefix . '*');
 
                     if (is_array($arrConfigTemplates)) {
@@ -169,37 +143,10 @@ class Backend extends Contao_Backend
 
                             $strTemplate = basename($strFile, strrchr($strFile, '.'));
 
-                            if (!isset($arrTemplates[''][$strTemplate])) {
-                                $arrTemplates[$strFolder][$strTemplate] = $strTemplate;
-                            }
-                        }
-                    }
-                }
-            }
-        }
-
-        // Try to select the themes (see #5210)
-        try {
-            $objTheme = \ThemeModel::findAll(array('order' => 'name'));
-        } catch (\Exception $e) {
-            $objTheme = null;
-        }
-
-        // Add the theme templates
-        if (null !== $objTheme) {
-            while ($objTheme->next()) {
-                if ($objTheme->templates != '') {
-
-                    $strFolder         = sprintf($GLOBALS['TL_LANG']['MSC']['templatesTheme'], $objTheme->name);
-                    $arrThemeTemplates = glob(TL_ROOT . '/' . $objTheme->templates . '/' . $strPrefix . '*');
-
-                    if (is_array($arrThemeTemplates)) {
-                        foreach ($arrThemeTemplates as $strFile) {
-
-                            $strTemplate = basename($strFile, strrchr($strFile, '.'));
-
-                            if (!isset($arrTemplates[''][$strTemplate])) {
-                                $arrTemplates[$strFolder][$strTemplate] = $strTemplate;
+                            if (!isset($arrTemplates[$strTemplate])) {
+                                $arrTemplates[$strTemplate] = $strTemplate;
+                            } else {
+                                $arrTemplates[$strTemplate] = substr($arrTemplates[$strTemplate], 0, -1) . ', ' . sprintf($GLOBALS['TL_LANG']['MSC']['templatesConfig'], $objConfig->name) . ')';
                             }
                         }
                     }
