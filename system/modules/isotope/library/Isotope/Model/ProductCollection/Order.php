@@ -163,7 +163,7 @@ class Order extends ProductCollection implements IsotopeProductCollection
      */
     public function checkout()
     {
-        if ($this->checkout_complete) {
+        if ($this->isCheckoutComplete()) {
             return true;
         }
 
@@ -205,7 +205,7 @@ class Order extends ProductCollection implements IsotopeProductCollection
 
             /** @var static $objOrder */
             foreach ($objOrders as $objOrder) {
-                if (!$objOrder->isLocked()) {
+                if (!$objOrder->isCheckoutComplete()) {
                     $objOrder->delete();
                 }
             }
