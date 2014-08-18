@@ -41,7 +41,8 @@ class Order extends ProductCollection implements IsotopeProductCollection
     /**
      * Return true if order has been paid.
      * This is the case if either payment date is set or order status has the paid flag
-     * @return  bool
+     *
+     * @return bool
      */
     public function isPaid()
     {
@@ -61,7 +62,8 @@ class Order extends ProductCollection implements IsotopeProductCollection
 
     /**
      * Get label for current order status
-     * @return  string
+     *
+     * @return string
      */
     public function getStatusLabel()
     {
@@ -73,7 +75,8 @@ class Order extends ProductCollection implements IsotopeProductCollection
 
     /**
      * Get the alias for current order status
-     * @return  string
+     *
+     * @return string
      */
     public function getStatusAlias()
     {
@@ -105,7 +108,8 @@ class Order extends ProductCollection implements IsotopeProductCollection
 
     /**
      * Delete downloads when deleting this order
-     * @return integer
+     *
+     * @return int
      */
     public function delete()
     {
@@ -125,7 +129,8 @@ class Order extends ProductCollection implements IsotopeProductCollection
 
     /**
      * Find surcharges for the current collection
-     * @return  array
+     *
+     * @return array
      */
     public function getSurcharges()
     {
@@ -143,7 +148,8 @@ class Order extends ProductCollection implements IsotopeProductCollection
 
     /**
      * Process the order checkout
-     * @return boolean
+     *
+     * @return bool
      */
     public function checkout()
     {
@@ -187,7 +193,7 @@ class Order extends ProductCollection implements IsotopeProductCollection
         // Delete all other orders that relate to the current cart
         if (($objOrders = static::findSiblingsBy('source_collection_id', $this)) !== null) {
 
-            /** @var Order $objOrder */
+            /** @var static $objOrder */
             foreach ($objOrders as $objOrder) {
                 if (!$objOrder->isLocked()) {
                     $objOrder->delete();
@@ -237,7 +243,8 @@ class Order extends ProductCollection implements IsotopeProductCollection
 
     /**
      * Complete order if the checkout has been made. This will cleanup session data
-     * @return  bool
+     *
+     * @return bool
      */
     public function complete()
     {
@@ -258,7 +265,9 @@ class Order extends ProductCollection implements IsotopeProductCollection
 
     /**
      * Update the status of this order and trigger actions (email & hook)
+     *
      * @param int $intNewStatus
+     *
      * @return bool
      */
     public function updateOrderStatus($intNewStatus)
@@ -352,8 +361,10 @@ class Order extends ProductCollection implements IsotopeProductCollection
 
     /**
      * Retrieve the array of notification data for parsing simple tokens
-     * @param   int
-     * @return  array
+     *
+     * @param int $intNotification
+     *
+     * @return array
      */
     public function getNotificationTokens($intNotification)
     {
@@ -480,9 +491,11 @@ class Order extends ProductCollection implements IsotopeProductCollection
 
     /**
      * Include downloads when adding items to template
-     * @param   Isotope\Template
-     * @param   Callable
-     * @return  array
+     *
+     * @param \Isotope\Template $objTemplate
+     * @param Callable          $varCallable
+     *
+     * @return array
      */
     protected function addItemsToTemplate(\Isotope\Template $objTemplate, $varCallable = null)
     {
@@ -587,7 +600,8 @@ class Order extends ProductCollection implements IsotopeProductCollection
 
     /**
      * Mark existing addresses as not default if the new address is default
-     * @param   Address
+     *
+     * @param Address $objAddress
      */
     protected function updateDefaultAddress(Address $objAddress)
     {

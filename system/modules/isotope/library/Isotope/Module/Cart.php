@@ -94,8 +94,8 @@ class Cart extends Module
         Isotope::getCart()->addToTemplate(
             $objTemplate,
             array(
-                 'gallery' => $this->iso_gallery,
-                 'sorting' => Isotope::getCart()->getItemsSortingCallable($this->iso_orderCollectionBy),
+                'gallery' => $this->iso_gallery,
+                'sorting' => Isotope::getCart()->getItemsSortingCallable($this->iso_orderCollectionBy),
             )
         );
 

@@ -100,8 +100,8 @@ class OrderDetails extends Module
         $objOrder->addToTemplate(
             $objTemplate,
             array(
-                 'gallery' => $this->iso_gallery,
-                 'sorting' => $objOrder->getItemsSortingCallable($this->iso_orderCollectionBy),
+                'gallery' => $this->iso_gallery,
+                'sorting' => $objOrder->getItemsSortingCallable($this->iso_orderCollectionBy),
             )
         );
 

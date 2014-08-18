@@ -64,7 +64,7 @@ abstract class ProductCollection extends TypeAgent
 
     /**
      * Cache product items in this collection
-     * @var \Isotope\Model\ProductCollectionItem[]
+     * @var ProductCollectionItem[]
      */
     protected $arrItems;
 
@@ -109,9 +109,9 @@ abstract class ProductCollection extends TypeAgent
     /**
      * Shutdown function to update prices of items and collection
      *
-     * @param   boolean $blnCreate If true create Model even if not in registry or not saved at all
+     * @param boolean $blnCreate If true create Model even if not in registry or not saved at all
      */
-    public function updateDatabase($blnCreate=true)
+    public function updateDatabase($blnCreate = true)
     {
         if (!$this->isLocked()
             && !$this->blnPreventSaving
@@ -487,10 +487,10 @@ abstract class ProductCollection extends TypeAgent
         $intAffectedRows = parent::delete();
 
         if ($intAffectedRows > 0 && $intPid > 0) {
-            \Database::getInstance()->query("DELETE FROM " . \Isotope\Model\ProductCollectionItem::getTable() . " WHERE pid=$intPid");
-            \Database::getInstance()->query("DELETE FROM " . \Isotope\Model\ProductCollectionSurcharge::getTable() . " WHERE pid=$intPid");
-            \Database::getInstance()->query("DELETE FROM " . \Isotope\Model\ProductCollectionDownload::getTable() . " WHERE pid=$intPid");
-            \Database::getInstance()->query("DELETE FROM " . \Isotope\Model\Address::getTable() . " WHERE ptable='" . static::$strTable . "' AND pid=$intPid");
+            \Database::getInstance()->query("DELETE FROM " . ProductCollectionItem::getTable() . " WHERE pid=$intPid");
+            \Database::getInstance()->query("DELETE FROM " . ProductCollectionSurcharge::getTable() . " WHERE pid=$intPid");
+            \Database::getInstance()->query("DELETE FROM " . ProductCollectionDownload::getTable() . " WHERE pid=$intPid");
+            \Database::getInstance()->query("DELETE FROM " . Address::getTable() . " WHERE ptable='" . static::$strTable . "' AND pid=$intPid");
         }
 
         $this->arrCache      = array();
@@ -694,7 +694,7 @@ abstract class ProductCollection extends TypeAgent
      * @param  callable $varCallable
      * @param  bool     $blnNoCache
      *
-     * @return \Isotope\Model\ProductCollectionItem[]
+     * @return ProductCollectionItem[]
      */
     public function getItems($varCallable = null, $blnNoCache = false)
     {
@@ -703,7 +703,7 @@ abstract class ProductCollection extends TypeAgent
 
             if (($objItems = ProductCollectionItem::findBy('pid', $this->id)) !== null) {
 
-                /** @var \Isotope\Model\ProductCollectionItem $objItem */
+                /** @var ProductCollectionItem $objItem */
                 foreach ($objItems as $objItem) {
 
                     if ($this->isLocked()) {
@@ -886,7 +886,7 @@ abstract class ProductCollection extends TypeAgent
             return false;
         }
 
-        /** @var \Isotope\Model\ProductCollectionItem $objItem */
+        /** @var ProductCollectionItem $objItem */
         $objItem = $arrItems[$intId];
 
         // !HOOK: additional functionality when updating a product in the collection
@@ -983,6 +983,7 @@ abstract class ProductCollection extends TypeAgent
 
     /**
      * Find surcharges for the current collection
+     *
      * @return  ProductCollectionSurcharge[]
      */
     public function getSurcharges()
@@ -1006,9 +1007,9 @@ abstract class ProductCollection extends TypeAgent
     /**
      * Copy product collection items from another collection to this one (e.g. Cart to Order)
      *
-     * @param   IsotopeProductCollection $objSource
+     * @param IsotopeProductCollection $objSource
      *
-     * @return  int[]
+     * @return int[]
      */
     public function copyItemsFrom(IsotopeProductCollection $objSource)
     {
@@ -1076,10 +1077,10 @@ abstract class ProductCollection extends TypeAgent
     /**
      * Copy product collection surcharges from another collection to this one (e.g. Cart to Order)
      *
-     * @param   IsotopeProductCollection $objSource
-     * @param   array                    $arrItemMap
+     * @param IsotopeProductCollection $objSource
+     * @param array                    $arrItemMap
      *
-     * @return  int[]
+     * @return int[]
      */
     public function copySurchargesFrom(IsotopeProductCollection $objSource, array $arrItemMap = array())
     {
@@ -1116,9 +1117,9 @@ abstract class ProductCollection extends TypeAgent
     /**
      * Add all products in the collection to the given scale
      *
-     * @param   Scale
+     * @param Scale $objScale
      *
-     * @return  Scale
+     * @return Scale
      */
     public function addToScale(Scale $objScale = null)
     {
@@ -1156,8 +1157,8 @@ abstract class ProductCollection extends TypeAgent
     /**
      * Add the collection to a template
      *
-     * @param   \Template $objTemplate
-     * @param   array     $arrConfig
+     * @param \Template $objTemplate
+     * @param array     $arrConfig
      */
     public function addToTemplate(\Template $objTemplate, array $arrConfig = array())
     {
@@ -1217,7 +1218,7 @@ abstract class ProductCollection extends TypeAgent
     /**
      * Add an error message
      *
-     * @param   string
+     * @param string
      */
     public function addError($strError)
     {
@@ -1245,7 +1246,8 @@ abstract class ProductCollection extends TypeAgent
 
     /**
      * Return the errors array
-     * @return  array
+     *
+     * @return array
      */
     public function getErrors()
     {
@@ -1264,10 +1266,10 @@ abstract class ProductCollection extends TypeAgent
     /**
      * Loop over items and add them to template
      *
-     * @param   \Template $objTemplate
-     * @param   Callable  $varCallable
+     * @param \Template $objTemplate
+     * @param Callable  $varCallable
      *
-     * @return  array
+     * @return array
      */
     protected function addItemsToTemplate(\Template $objTemplate, $varCallable = null)
     {
@@ -1287,9 +1289,9 @@ abstract class ProductCollection extends TypeAgent
     /**
      * Generate item array for template
      *
-     * @param   ProductCollectionItem $objItem
+     * @param ProductCollectionItem $objItem
      *
-     * @return  array
+     * @return array
      */
     protected function generateItem(ProductCollectionItem $objItem)
     {
@@ -1332,7 +1334,8 @@ abstract class ProductCollection extends TypeAgent
 
     /**
      * Get a collection-specific error message for items with errors
-     * @return  string
+     *
+     * @return string
      */
     protected function getMessageIfErrorsInItems()
     {
@@ -1342,10 +1345,10 @@ abstract class ProductCollection extends TypeAgent
     /**
      * Generate the next higher Document Number based on existing records
      *
-     * @param   string $strPrefix
-     * @param   int    $intDigits
+     * @param string $strPrefix
+     * @param int    $intDigits
      *
-     * @return  string
+     * @return string
      */
     protected function generateDocumentNumber($strPrefix, $intDigits)
     {
@@ -1406,7 +1409,7 @@ abstract class ProductCollection extends TypeAgent
     /**
      * Prevent modifying a locked collection
      *
-     * @throws  \BadMethodCallException
+     * @throws \BadMethodCallException
      */
     protected function ensureNotLocked()
     {
@@ -1468,9 +1471,9 @@ abstract class ProductCollection extends TypeAgent
     /**
      * Method that returns a closure to sort product collection items
      *
-     * @param   string
+     * @param string
      *
-     * @return  \Closure|null
+     * @return \Closure|null
      */
     public static function getItemsSortingCallable($strOrderBy = 'asc_id')
     {
