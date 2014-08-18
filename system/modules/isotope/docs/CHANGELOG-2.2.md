@@ -13,7 +13,6 @@ Version 2.2.0-beta1 (2014-??-??)
 - Galleries can now have custom templates (#1194)
 - Dropped support for Contao 3.2 (#1206)
 - Added collection_* Simple Token for orders (#1195)
-- Isotope shop configuration template folders are now displayed the same way as in Contao core (#1191)
 - Support for custom template for every Isotope front end module (#1191)
 
 ### Improved
@@ -23,3 +22,4 @@ Version 2.2.0-beta1 (2014-??-??)
 - Show source collection (cart) ID in the order backend view (#1208)
 - Use a template to generate Sparkasse payment URL (#1207)
 - Switched to the new Sparkasse payment URL (#1143)
+- Isotope shop configuration template folders are now displayed the same way as in Contao core (#1191)
