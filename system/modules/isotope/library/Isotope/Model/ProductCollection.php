@@ -488,6 +488,8 @@ abstract class ProductCollection extends TypeAgent
 
         if ($intAffectedRows > 0 && $intPid > 0) {
             \Database::getInstance()->query("DELETE FROM " . \Isotope\Model\ProductCollectionItem::getTable() . " WHERE pid=$intPid");
+            \Database::getInstance()->query("DELETE FROM " . \Isotope\Model\ProductCollectionSurcharge::getTable() . " WHERE pid=$intPid");
+            \Database::getInstance()->query("DELETE FROM " . \Isotope\Model\ProductCollectionDownload::getTable() . " WHERE pid=$intPid");
             \Database::getInstance()->query("DELETE FROM " . \Isotope\Model\Address::getTable() . " WHERE ptable='" . static::$strTable . "' AND pid=$intPid");
         }
 
