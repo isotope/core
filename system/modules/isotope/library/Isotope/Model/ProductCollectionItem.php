@@ -95,6 +95,23 @@ class ProductCollectionItem extends \Model
     }
 
     /**
+     * Delete downloads when deleting product collection item
+     *
+     * @return int
+     */
+    public function delete()
+    {
+        $intId = $this->id;
+        $intAffected = parent::delete();
+
+        if ($intAffected) {
+            \Database::getInstance()->query("DELETE FROM tl_iso_product_collection_download WHERE pid=$intId");
+        }
+
+        return $intAffected;
+    }
+
+    /**
      * Get the product related to this item
      *
      * @param bool $blnNoCache

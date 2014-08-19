@@ -97,26 +97,6 @@ class Order extends ProductCollection implements IsotopeProductCollection
     }
 
     /**
-     * Remove downloads when deleting an item
-     *
-     * @param int $intId
-     *
-     * @return bool
-     */
-    public function deleteItemById($intId)
-    {
-        $this->ensureNotLocked();
-
-        if (parent::deleteItemById($intId) && $intId > 0) {
-            \Database::getInstance()->query("DELETE FROM tl_iso_product_collection_download WHERE pid=$intId");
-
-            return true;
-        }
-
-        return false;
-    }
-
-    /**
      * Delete downloads when deleting this order
      *
      * @param bool $blnForce Force to delete the collection even if it's locked
