@@ -61,6 +61,7 @@ class Checkout extends Module
 
     /**
      * Display a wildcard in the back end
+     * 
      * @return string
      */
     public function generate()
@@ -88,6 +89,7 @@ class Checkout extends Module
 
     /**
      * Returns the current form ID
+     *
      * @return string
      */
     public function getFormId()
@@ -220,8 +222,10 @@ class Checkout extends Module
 
     /**
      * Run through all steps until we find the current one or one reports failure
-     * @param   array
-     * @return  array
+     *
+     * @param array $arrSteps
+     *
+     * @return array
      */
     protected function generateSteps(array $arrSteps)
     {
@@ -334,8 +338,10 @@ class Checkout extends Module
 
     /**
      * Return the checkout information as array
-     * @param   array|null
-     * @return  array
+     *
+     * @param array $arrSteps
+     *
+     * @return array
      */
     public function getCheckoutInfo(array $arrSteps = null)
     {
@@ -365,9 +371,11 @@ class Checkout extends Module
 
     /**
      * Retrieve the array of notification data for parsing simple tokens
-     * @param   array
-     * @param   IsotopeProductCollection
-     * @return  array
+     *
+     * @param array                    $arrSteps
+     * @param IsotopeProductCollection $objOrder
+     *
+     * @return array
      */
     protected function getNotificationTokensFromSteps(array $arrSteps, IsotopeProductCollection $objOrder)
     {
@@ -387,7 +395,8 @@ class Checkout extends Module
 
     /**
      * Check if the checkout can be executed
-     * @return  bool
+     *
+     * @return bool
      */
     protected function canCheckout()
     {
@@ -444,7 +453,8 @@ class Checkout extends Module
 
     /**
      * Return array of instantiated checkout step modules
-     * @return  array
+     *
+     * @return array
      */
     protected function getSteps()
     {
@@ -470,8 +480,10 @@ class Checkout extends Module
 
     /**
      * Generate checkout step navigation
-     * @param   array
-     * @return  array
+     *
+     * @param array $arrStepKeys
+     *
+     * @return array
      */
     protected function generateStepNavigation(array $arrStepKeys)
     {
@@ -511,8 +523,9 @@ class Checkout extends Module
 
     /**
      * Redirect to given checkout step
-     * @param   string
-     * @param   IsotopeProductCollection
+     *
+     * @param string                   $strStep
+     * @param IsotopeProductCollection $objCollection
      */
     public static function redirectToStep($strStep, IsotopeProductCollection $objCollection = null)
     {
@@ -521,10 +534,12 @@ class Checkout extends Module
 
     /**
      * Generate frontend URL for current page including the given checkout step
-     * @param   string
-     * @param   IsotopeProductCollection
-     * @param   \PageModel $objPage
-     * @return  string
+     *
+     * @param string                   $strStep
+     * @param IsotopeProductCollection $objCollection
+     * @param \PageModel               $objTarget
+     *
+     * @return string
      */
     public static function generateUrlForStep($strStep, IsotopeProductCollection $objCollection = null, \PageModel $objTarget = null)
     {

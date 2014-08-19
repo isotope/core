@@ -62,6 +62,7 @@ abstract class ProductCollectionSurcharge extends TypeAgent
 
     /**
      * Return if the surcharge has tax
+     *
      * @return bool
      */
     public function hasTax()
@@ -71,7 +72,10 @@ abstract class ProductCollectionSurcharge extends TypeAgent
 
     /**
      * Get tax amount for an individual collection item
-     * @param IsotopeProduct
+     *
+     * @param ProductCollectionItem $objItem
+     *
+     * @return float
      */
     public function getAmountForCollectionItem(ProductCollectionItem $objItem)
     {
@@ -85,8 +89,9 @@ abstract class ProductCollectionSurcharge extends TypeAgent
 
     /**
      * Set tax amount for a collection item
-     * @param  float
-     * @param  IsotopeProduct
+     *
+     * @param float                 $fltAmount
+     * @param ProductCollectionItem $objItem
      */
     public function setAmountForCollectionItem($fltAmount, ProductCollectionItem $objItem)
     {
@@ -99,7 +104,8 @@ abstract class ProductCollectionSurcharge extends TypeAgent
 
     /**
      * Update IDs of tax per product config
-     * @param   array
+     *
+     * @param array $arrIdMap
      */
     public function convertCollectionItemIds($arrIdMap)
     {
@@ -117,9 +123,9 @@ abstract class ProductCollectionSurcharge extends TypeAgent
 
     /**
      * Split tax amount amongst collection products
-     * @param   IsotopeProductCollection
-     * @param   \Model
-     * @param   bool
+     *
+     * @param IsotopeProductCollection $objCollection
+     * @param \Model                   $objSource
      */
     public function applySplittedTax(IsotopeProductCollection $objCollection, $objSource)
     {
@@ -150,7 +156,8 @@ abstract class ProductCollectionSurcharge extends TypeAgent
 
     /**
      * Add a tax number
-     * @param int
+     *
+     * @param int $intId
      */
     public function addTaxNumber($intId)
     {
@@ -161,6 +168,7 @@ abstract class ProductCollectionSurcharge extends TypeAgent
 
     /**
      * Get comma separated list of tax ids
+     *
      * @return string
      */
     public function getTaxNumbers()
@@ -210,7 +218,9 @@ abstract class ProductCollectionSurcharge extends TypeAgent
 
     /**
      * Generate surhcharges for a collection
-     * @param  IsotopeProductCollection
+     *
+     * @param IsotopeProductCollection $objCollection
+     *
      * @return array
      */
     public static function findForCollection(IsotopeProductCollection $objCollection)
@@ -427,19 +437,41 @@ abstract class ProductCollectionSurcharge extends TypeAgent
 
     /**
      * Create a payment surcharge
+     *
+     * @param IsotopePayment           $objPayment
+     * @param IsotopeProductCollection $objCollection
+     *
+     * @return Payment
      */
     public static function createForPaymentInCollection(IsotopePayment $objPayment, IsotopeProductCollection $objCollection)
     {
         return static::buildSurcharge('Isotope\Model\ProductCollectionSurcharge\Payment', $GLOBALS['TL_LANG']['MSC']['paymentLabel'], $objPayment, $objCollection);
     }
 
-
+    /**
+     * Create a shipping surcharge
+     *
+     * @param IsotopeShipping          $objShipping
+     * @param IsotopeProductCollection $objCollection
+     *
+     * @return Shipping
+     */
     public static function createForShippingInCollection(IsotopeShipping $objShipping, IsotopeProductCollection $objCollection)
     {
         return static::buildSurcharge('Isotope\Model\ProductCollectionSurcharge\Shipping', $GLOBALS['TL_LANG']['MSC']['shippingLabel'], $objShipping, $objCollection);
     }
 
 
+    /**
+     * Build a product collection surcharge for given class type
+     *
+     * @param string                         $strClass
+     * @param string                         $strLabel
+     * @param IsotopePayment|IsotopeShipping $objSource
+     * @param IsotopeProductCollection       $objCollection
+     *
+     * @return ProductCollectionSurcharge
+     */
     protected static function buildSurcharge($strClass, $strLabel, $objSource, IsotopeProductCollection $objCollection)
     {
         $intTaxClass = $objSource->tax_class;

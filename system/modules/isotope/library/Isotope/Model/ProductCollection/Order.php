@@ -96,11 +96,12 @@ class Order extends ProductCollection implements IsotopeProductCollection
         return (null === $objStatus) ? $this->order_status : $objStatus->getAlias();
     }
 
-
     /**
      * Remove downloads when deleting an item
-     * @param   int
-     * @return  boolean
+     *
+     * @param int $intId
+     *
+     * @return bool
      */
     public function deleteItemById($intId)
     {
@@ -114,7 +115,6 @@ class Order extends ProductCollection implements IsotopeProductCollection
 
         return false;
     }
-
 
     /**
      * Delete downloads when deleting this order
@@ -169,7 +169,7 @@ class Order extends ProductCollection implements IsotopeProductCollection
             $objDownload->save();
         }
     }
-    
+
     /**
      * Process the order checkout
      *
@@ -255,7 +255,6 @@ class Order extends ProductCollection implements IsotopeProductCollection
 
         return true;
     }
-
 
     /**
      * Complete order if the checkout has been made. This will cleanup session data
@@ -373,7 +372,6 @@ class Order extends ProductCollection implements IsotopeProductCollection
 
         return true;
     }
-
 
     /**
      * Retrieve the array of notification data for parsing simple tokens

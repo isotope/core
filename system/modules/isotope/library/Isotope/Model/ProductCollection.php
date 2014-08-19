@@ -163,6 +163,7 @@ abstract class ProductCollection extends TypeAgent
 
     /**
      * Return true if collection is locked
+     *
      * @return bool
      */
     public function isLocked()
@@ -183,6 +184,7 @@ abstract class ProductCollection extends TypeAgent
 
     /**
      * Return payment method for this collection
+     *
      * @return IsotopePayment|null
      */
     public function getPaymentMethod()
@@ -207,6 +209,7 @@ abstract class ProductCollection extends TypeAgent
 
     /**
      * Return surcharge for current payment method
+     *
      * @return ProductCollectionSurcharge|null
      */
     public function getPaymentSurcharge()
@@ -216,6 +219,7 @@ abstract class ProductCollection extends TypeAgent
 
     /**
      * Return boolean whether collection has payment
+     *
      * @return bool
      */
     public function hasPayment()
@@ -225,6 +229,7 @@ abstract class ProductCollection extends TypeAgent
 
     /**
      * Return boolean whether collection requires payment
+     *
      * @return bool
      */
     public function requiresPayment()
@@ -234,6 +239,7 @@ abstract class ProductCollection extends TypeAgent
 
     /**
      * Return shipping method for this collection
+     *
      * @return IsotopeShipping|null
      */
     public function getShippingMethod()
@@ -258,6 +264,7 @@ abstract class ProductCollection extends TypeAgent
 
     /**
      * Return surcharge for current shipping method
+     *
      * @return ProductCollectionSurcharge|null
      */
     public function getShippingSurcharge()
@@ -267,6 +274,7 @@ abstract class ProductCollection extends TypeAgent
 
     /**
      * Return boolean whether collection has shipping
+     *
      * @return bool
      */
     public function hasShipping()
@@ -276,6 +284,7 @@ abstract class ProductCollection extends TypeAgent
 
     /**
      * Return boolean whether collection requires shipping
+     *
      * @return bool
      */
     public function requiresShipping()
@@ -297,6 +306,7 @@ abstract class ProductCollection extends TypeAgent
 
     /**
      * Get billing address for collection
+     *
      * @return  \Isotope\Model\Address|null
      */
     public function getBillingAddress()
@@ -320,6 +330,7 @@ abstract class ProductCollection extends TypeAgent
 
     /**
      * Get shipping address for collection
+     *
      * @return  Address|null
      */
     public function getShippingAddress()
@@ -343,7 +354,8 @@ abstract class ProductCollection extends TypeAgent
 
     /**
      * Return customer email address for the collection
-     * @return  string
+     *
+     * @return string
      */
     public function getEmailRecipient()
     {
@@ -387,7 +399,8 @@ abstract class ProductCollection extends TypeAgent
 
     /**
      * Return number of items in the collection
-     * @return  int
+     *
+     * @return int
      */
     public function countItems()
     {
@@ -400,7 +413,8 @@ abstract class ProductCollection extends TypeAgent
 
     /**
      * Return summary of item quantity in collection
-     * @return  int
+     *
+     * @return int
      */
     public function sumItemsQuantity()
     {
@@ -432,7 +446,8 @@ abstract class ProductCollection extends TypeAgent
 
     /**
      * Update database with latest product prices and store settings
-     * @return  $this
+     *
+     * @return $this
      */
     public function save()
     {
@@ -544,7 +559,8 @@ abstract class ProductCollection extends TypeAgent
 
     /**
      * Sum total price of all items in the collection
-     * @return  float
+     *
+     * @return float
      */
     public function getSubtotal()
     {
@@ -574,7 +590,8 @@ abstract class ProductCollection extends TypeAgent
 
     /**
      * Sum total tax free price of all items in the collection
-     * @return  float
+     *
+     * @return float
      */
     public function getTaxFreeSubtotal()
     {
@@ -604,7 +621,8 @@ abstract class ProductCollection extends TypeAgent
 
     /**
      * Sum total price of items and surcharges
-     * @return  float
+     *
+     * @return float
      */
     public function getTotal()
     {
@@ -631,7 +649,8 @@ abstract class ProductCollection extends TypeAgent
 
     /**
      * Sum tax free total of items and surcharges
-     * @return  float
+     *
+     * @return float
      */
     public function getTaxFreeTotal()
     {
@@ -659,6 +678,7 @@ abstract class ProductCollection extends TypeAgent
 
     /**
      * Return the item with the latest timestamp (e.g. the latest added item)
+     *
      * @return ProductCollectionItem|null
      */
     public function getLatestItem()
@@ -683,7 +703,7 @@ abstract class ProductCollection extends TypeAgent
      * Return timestamp when this collection was created
      * This is relevant for price calculation
      *
-     * @return  int
+     * @return int
      */
     public function getLastModification()
     {
@@ -697,8 +717,8 @@ abstract class ProductCollection extends TypeAgent
     /**
      * Return all items in the collection
      *
-     * @param  callable $varCallable
-     * @param  bool     $blnNoCache
+     * @param callable $varCallable
+     * @param bool     $blnNoCache
      *
      * @return ProductCollectionItem[]
      */
@@ -740,7 +760,7 @@ abstract class ProductCollection extends TypeAgent
     /**
      * Search item for a specific product
      *
-     * @param  IsotopeProduct $objProduct
+     * @param IsotopeProduct $objProduct
      *
      * @return ProductCollectionItem|null
      */
@@ -757,8 +777,8 @@ abstract class ProductCollection extends TypeAgent
     /**
      * Check if a given product is already in the collection
      *
-     * @param  IsotopeProduct $objProduct
-     * @param  bool           $blnIdentical
+     * @param IsotopeProduct $objProduct
+     * @param bool           $blnIdentical
      *
      * @return bool
      */
@@ -789,11 +809,11 @@ abstract class ProductCollection extends TypeAgent
     /**
      * Add a product to the collection
      *
-     * @param   IsotopeProduct $objProduct
-     * @param   int            $intQuantity
-     * @param   array          $arrConfig
+     * @param IsotopeProduct $objProduct
+     * @param int            $intQuantity
+     * @param array          $arrConfig
      *
-     * @return  ProductCollectionItem
+     * @return ProductCollectionItem
      */
     public function addProduct(IsotopeProduct $objProduct, $intQuantity, array $arrConfig = array())
     {
@@ -864,10 +884,10 @@ abstract class ProductCollection extends TypeAgent
     /**
      * Update a product collection item
      *
-     * @param   ProductCollectionItem $objItem The product object
-     * @param   array                 $arrSet  The property(ies) to adjust
+     * @param ProductCollectionItem $objItem The product object
+     * @param array                 $arrSet  The property(ies) to adjust
      *
-     * @return  bool
+     * @return bool
      */
     public function updateItem(ProductCollectionItem $objItem, $arrSet)
     {
@@ -877,10 +897,10 @@ abstract class ProductCollection extends TypeAgent
     /**
      * Update product collection item with given ID
      *
-     * @param   int   $intId
-     * @param   array $arrSet
+     * @param int   $intId
+     * @param array $arrSet
      *
-     * @return  bool
+     * @return bool
      */
     public function updateItemById($intId, $arrSet)
     {
@@ -940,9 +960,9 @@ abstract class ProductCollection extends TypeAgent
     /**
      * Remove item from collection
      *
-     * @param   ProductCollectionItem $objItem
+     * @param ProductCollectionItem $objItem
      *
-     * @return  bool
+     * @return bool
      */
     public function deleteItem(ProductCollectionItem $objItem)
     {
@@ -952,9 +972,9 @@ abstract class ProductCollection extends TypeAgent
     /**
      * Remove item with given ID from collection
      *
-     * @param   int $intId
+     * @param int $intId
      *
-     * @return  bool
+     * @return bool
      */
     public function deleteItemById($intId)
     {
@@ -990,7 +1010,7 @@ abstract class ProductCollection extends TypeAgent
     /**
      * Find surcharges for the current collection
      *
-     * @return  ProductCollectionSurcharge[]
+     * @return ProductCollectionSurcharge[]
      */
     public function getSurcharges()
     {
@@ -1008,7 +1028,6 @@ abstract class ProductCollection extends TypeAgent
 
         return $this->arrSurcharges;
     }
-
 
     /**
      * Copy product collection items from another collection to this one (e.g. Cart to Order)
@@ -1070,7 +1089,6 @@ abstract class ProductCollection extends TypeAgent
                 $objCallback->$callback[1]($objSource, $this, $arrIds);
             }
         }
-
 
         // Empty cache
         $this->arrItems = null;
@@ -1233,7 +1251,8 @@ abstract class ProductCollection extends TypeAgent
 
     /**
      * Check if collection or any item has errors
-     * @return  bool
+     *
+     * @return bool
      */
     public function hasErrors()
     {
@@ -1475,7 +1494,7 @@ abstract class ProductCollection extends TypeAgent
     /**
      * Method that returns a closure to sort product collection items
      *
-     * @param string
+     * @param string $strOrderBy
      *
      * @return \Closure|null
      */
