@@ -178,9 +178,12 @@ class Order extends ProductCollection implements IsotopeProductCollection
         // Finish and lock the order (do this now, because otherwise surcharges etc. will not be loaded form the database)
         $this->checkout_complete = true;
         $this->generateDocumentNumber($this->getRelated('config_id')->orderPrefix, (int) $this->getRelated('config_id')->orderDigits);
-        $this->lock();
-        \System::log('New order ID ' . $this->id . ' has been placed', __METHOD__, TL_ACCESS);
 
+        if (!$this->isLocked()) {
+            $this->lock();
+        }
+
+        \System::log('New order ID ' . $this->id . ' has been placed', __METHOD__, TL_ACCESS);
 
         // Delete cart after migrating to order
         if (($objCart = Cart::findByPk($this->source_collection_id)) !== null) {
@@ -193,7 +196,7 @@ class Order extends ProductCollection implements IsotopeProductCollection
             /** @var static $objOrder */
             foreach ($objOrders as $objOrder) {
                 if (!$objOrder->isCheckoutComplete()) {
-                    $objOrder->delete();
+                    $objOrder->delete(true);
                 }
             }
         }
@@ -244,7 +247,7 @@ class Order extends ProductCollection implements IsotopeProductCollection
      */
     public function complete()
     {
-        if ($this->checkout_complete) {
+        if ($this->isCheckoutComplete()) {
             unset($_SESSION['FORM_DATA']);
             unset($_SESSION['FILES']);
 
