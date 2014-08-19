@@ -119,15 +119,15 @@ class Order extends ProductCollection implements IsotopeProductCollection
     /**
      * Delete downloads when deleting this order
      *
+     * @param bool $blnForce Force to delete the collection even if it's locked
+     *
      * @return int
      */
-    public function delete()
+    public function delete($blnForce = false)
     {
-        $this->ensureNotLocked();
-
         $intPid = $this->id;
 
-        if (parent::delete() && $intPid > 0) {
+        if (parent::delete($blnForce) && $intPid > 0) {
             \Database::getInstance()->query("DELETE FROM tl_iso_product_collection_download WHERE pid IN (SELECT id FROM tl_iso_product_collection_item WHERE pid=$intPid)");
 
             return true;

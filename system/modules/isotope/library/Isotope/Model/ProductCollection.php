@@ -465,20 +465,25 @@ abstract class ProductCollection extends TypeAgent
 
     /**
      * Also delete child table records when dropping this collection
-     * @return int  Number of rows affected
+     *
+     * @param bool $blnForce Force to delete the collection even if it's locked
+     *
+     * @return int Number of rows affected
      */
-    public function delete()
+    public function delete($blnForce = false)
     {
-        $this->ensureNotLocked();
+        if (!$blnForce) {
+            $this->ensureNotLocked();
 
-        // !HOOK: additional functionality when deleting a collection
-        if (isset($GLOBALS['ISO_HOOKS']['deleteCollection']) && is_array($GLOBALS['ISO_HOOKS']['deleteCollection'])) {
-            foreach ($GLOBALS['ISO_HOOKS']['deleteCollection'] as $callback) {
-                $objCallback = \System::importStatic($callback[0]);
-                $blnRemove   = $objCallback->$callback[1]($this);
+            // !HOOK: additional functionality when deleting a collection
+            if (isset($GLOBALS['ISO_HOOKS']['deleteCollection']) && is_array($GLOBALS['ISO_HOOKS']['deleteCollection'])) {
+                foreach ($GLOBALS['ISO_HOOKS']['deleteCollection'] as $callback) {
+                    $objCallback = \System::importStatic($callback[0]);
+                    $blnRemove = $objCallback->$callback[1]($this);
 
-                if ($blnRemove === false) {
-                    return 0;
+                    if ($blnRemove === false) {
+                        return 0;
+                    }
                 }
             }
         }
