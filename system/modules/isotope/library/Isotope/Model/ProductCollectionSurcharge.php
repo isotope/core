@@ -106,6 +106,9 @@ abstract class ProductCollectionSurcharge extends TypeAgent
      * Update IDs of tax per product config
      *
      * @param array $arrIdMap
+     *
+     * @deprecated Deprecated since version 2.2, to be removed in 3.0.
+     *             Surcharges are generated on the fly, so it does not make sense to convert item IDs
      */
     public function convertCollectionItemIds($arrIdMap)
     {

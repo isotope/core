@@ -1126,6 +1126,9 @@ abstract class ProductCollection extends TypeAgent
      * @param array                    $arrItemMap
      *
      * @return int[]
+     *
+     * @deprecated Deprecated since version 2.2, to be removed in 3.0.
+     *             Surcharges are calculated on the fly, so it does not make sense to copy them from another one.
      */
     public function copySurchargesFrom(IsotopeProductCollection $objSource, array $arrItemMap = array())
     {
@@ -1496,7 +1499,6 @@ abstract class ProductCollection extends TypeAgent
         $objCollection->setBillingAddress($objSource->getBillingAddress());
 
         $arrItemIds = $objCollection->copyItemsFrom($objSource);
-        $arrSurchargeIds = $objCollection->copySurchargesFrom($objSource, $arrItemIds);
 
         $objCollection->updateDatabase();
 
@@ -1504,7 +1506,7 @@ abstract class ProductCollection extends TypeAgent
         if (isset($GLOBALS['ISO_HOOKS']['createFromProductCollection']) && is_array($GLOBALS['ISO_HOOKS']['createFromProductCollection'])) {
         	foreach ($GLOBALS['ISO_HOOKS']['createFromProductCollection'] as $callback) {
         		$objCallback = \System::importStatic($callback[0]);
-        		$objCallback->$callback[1]($objCollection, $objSource, $arrItemIds, $arrSurchargeIds);
+        		$objCallback->$callback[1]($objCollection, $objSource, $arrItemIds);
         	}
         }
 

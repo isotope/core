@@ -136,25 +136,6 @@ class Order extends ProductCollection implements IsotopeProductCollection
         return false;
     }
 
-
-    /**
-     * Find surcharges for the current collection
-     *
-     * @return array
-     */
-    public function getSurcharges()
-    {
-        if (null === $this->arrSurcharges) {
-            $this->arrSurcharges = array();
-
-            if (($objSurcharges = ProductCollectionSurcharge::findBy('pid', $this->id)) !== null) {
-                $this->arrSurcharges = $objSurcharges->getModels();
-            }
-        }
-
-        return $this->arrSurcharges;
-    }
-
     /**
      * Lock collection from begin modified
      */
