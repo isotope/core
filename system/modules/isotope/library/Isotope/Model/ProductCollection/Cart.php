@@ -165,6 +165,16 @@ class Cart extends ProductCollection implements IsotopeProductCollection
     }
 
     /**
+     * Clear all cache properties
+     */
+    protected function clearCache()
+    {
+        parent::clearCache();
+
+        $this->objDraftOrder = null;
+    }
+
+    /**
      * Load the current cart
      * @param   Config
      * @return  Cart

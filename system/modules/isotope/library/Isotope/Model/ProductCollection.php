@@ -154,9 +154,7 @@ abstract class ProductCollection extends TypeAgent
             throw new \InvalidArgumentException('Cannot change document number of a collection, must be generated using generateDocumentNumber()');
         }
 
-        $this->arrItems      = null;
-        $this->arrSurcharges = null;
-        $this->arrCache      = array();
+        $this->clearCache();
 
         parent::markModified($strKey);
     }
@@ -538,8 +536,7 @@ abstract class ProductCollection extends TypeAgent
             }
         }
 
-        $this->arrItems = null;
-        $this->arrSurcharges = null;
+        $this->clearCache();
     }
 
 
@@ -581,10 +578,7 @@ abstract class ProductCollection extends TypeAgent
             }
         }
 
-        // Empty cache
-        $this->arrItems = null;
-        $this->arrSurcharges = null;
-        $this->arrCache = null;
+        $this->clearCache();
     }
 
     /**
@@ -1120,9 +1114,7 @@ abstract class ProductCollection extends TypeAgent
             }
         }
 
-        // Empty cache
-        $this->arrItems = null;
-        $this->arrCache = null;
+        $this->clearCache();
 
         return $arrIds;
     }
@@ -1569,6 +1561,19 @@ abstract class ProductCollection extends TypeAgent
                      ->set($arrSet)
                      ->execute($this->member, \MemberModel::getTable(), $this->store_id, $objAddress->id);
         }
+    }
+
+    /**
+     * Clear all cache properties
+     */
+    protected function clearCache()
+    {
+        $this->arrItems = null;
+        $this->arrSurcharges = null;
+        $this->arrCache = null;
+        $this->arrErrors = array();
+        $this->objPayment = false;
+        $this->objShipping = false;
     }
 
     /**
