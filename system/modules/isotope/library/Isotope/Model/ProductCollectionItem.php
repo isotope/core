@@ -55,7 +55,8 @@ class ProductCollectionItem extends \Model
 
     /**
      * Check if collection item is available
-     * @return  bool
+     *
+     * @return bool
      */
     public function isAvailable()
     {
@@ -85,7 +86,6 @@ class ProductCollectionItem extends \Model
         return $this->blnLocked;
     }
 
-
     /**
      * Lock item, necessary if product collection is locked
      */
@@ -94,10 +94,12 @@ class ProductCollectionItem extends \Model
         $this->blnLocked = true;
     }
 
-
     /**
      * Get the product related to this item
-     * @return  \Isotope\Interfaces\IsotopeProduct|null
+     *
+     * @param bool $blnNoCache
+     *
+     * @return \Isotope\Interfaces\IsotopeProduct|null
      */
     public function getProduct($blnNoCache = false)
     {
@@ -120,36 +122,35 @@ class ProductCollectionItem extends \Model
         return $this->objProduct;
     }
 
-
     /**
      * Return boolean flag if product could be loaded
-     * @return  bool
+     *
+     * @return bool
      */
     public function hasProduct()
     {
         return (null !== $this->getProduct());
     }
 
-
     /**
      * Get product SKU. Automatically falls back to the collection item table if product is not found.
-     * @return  string
+     *
+     * @return string
      */
     public function getSku()
     {
         return (string) ($this->isLocked() || !$this->hasProduct()) ? $this->sku : $this->getProduct()->sku;
     }
 
-
     /**
      * Get product name. Automatically falls back to the collection item table if product is not found.
-     * @return  string
+     *
+     * @return string
      */
     public function getName()
     {
         return (string) ($this->isLocked() || !$this->hasProduct()) ? $this->name : $this->getProduct()->name;
     }
-
 
     /**
      * Get product options
@@ -162,10 +163,10 @@ class ProductCollectionItem extends \Model
         return is_array($arrOptions) ? $arrOptions : array();
     }
 
-
     /**
      * Get product price. Automatically falls back to the collection item table if product is not found.
-     * @return  string
+     *
+     * @return string
      */
     public function getPrice()
     {
@@ -182,10 +183,10 @@ class ProductCollectionItem extends \Model
         return $objPrice->getAmount((int) $this->quantity, $this->getOptions());
     }
 
-
     /**
      * Get tax free product price. Automatically falls back to the collection item table if product is not found.
-     * @return  string
+     *
+     * @return string
      */
     public function getTaxFreePrice()
     {
@@ -204,7 +205,8 @@ class ProductCollectionItem extends \Model
 
     /**
      * Get product price multiplied by the requested product quantity
-     * @return  string
+     *
+     * @return string
      */
     public function getTotalPrice()
     {
@@ -213,17 +215,18 @@ class ProductCollectionItem extends \Model
 
     /**
      * Get tax free product price multiplied by the requested product quantity
-     * @return  string
+     *
+     * @return string
      */
     public function getTaxFreeTotalPrice()
     {
         return (string) ($this->getTaxFreePrice() * (int) $this->quantity);
     }
 
-
     /**
      * Return downloads associated with this product collection item
-     * @return  ProductCollectionDownload[]
+     *
+     * @return ProductCollectionDownload[]
      */
     public function getDownloads()
     {
@@ -242,11 +245,12 @@ class ProductCollectionItem extends \Model
         return $this->arrDownloads;
     }
 
-
     /**
      * Increase quantity of product collection item
-     * @param   int
-     * @return  bool
+     *
+     * @param int $intQuantity
+     *
+     * @return bool
      */
     public function increaseQuantityBy($intQuantity)
     {
@@ -262,8 +266,10 @@ class ProductCollectionItem extends \Model
 
     /**
      * Decrease quantity of product collection item
-     * @param   int
-     * @return  bool
+     *
+     * @param int $intQuantity
+     *
+     * @return bool
      */
     public function decreaseQuantityBy($intQuantity)
     {
@@ -283,10 +289,12 @@ class ProductCollectionItem extends \Model
 
     /**
      * Calculate the sum of a database column
-     * @param   string
-     * @param   mixed
-     * @param   mixed
-     * @return  int
+     *
+     * @param string $strField
+     * @param mixed  $strColumn
+     * @param mixed  $varValue
+     *
+     * @return int
      */
     public static function sumBy($strField, $strColumn = null, $varValue = null)
     {
@@ -305,7 +313,8 @@ class ProductCollectionItem extends \Model
 
     /**
      * Add an error message
-     * @param   string
+     *
+     * @param string $strError
      */
     public function addError($strError)
     {
@@ -314,7 +323,8 @@ class ProductCollectionItem extends \Model
 
     /**
      * Return true if the collection item has errors
-     * @return  bool
+     *
+     * @return bool
      */
     public function hasErrors()
     {
@@ -323,7 +333,8 @@ class ProductCollectionItem extends \Model
 
     /**
      * Return the errors array
-     * @return  array
+     *
+     * @return array
      */
     public function getErrors()
     {
