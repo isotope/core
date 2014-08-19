@@ -131,12 +131,12 @@ abstract class ProductCollection extends TypeAgent
         ) {
 
             foreach ($this->getItems() as $objItem) {
-                if (!$objItem->hasProduct() || null === $objItem->getProduct()->getPrice($this)) {
+                if (!$objItem->hasProduct()) {
                     continue;
                 }
 
-                $objItem->price          = $objItem->getProduct()->getPrice($this)->getAmount($objItem->quantity);
-                $objItem->tax_free_price = $objItem->getProduct()->getPrice($this)->getNetAmount($objItem->quantity);
+                $objItem->price          = $objItem->getPrice();
+                $objItem->tax_free_price = $objItem->getTaxFreePrice();
                 $objItem->save();
             }
 
