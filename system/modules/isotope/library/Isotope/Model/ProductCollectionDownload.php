@@ -38,7 +38,8 @@ class ProductCollectionDownload extends \Model
 
     /**
      * Check if downloads are remaining and is not expired
-     * @return  bool
+     *
+     * @return bool
      */
     public function canDownload()
     {
@@ -47,7 +48,8 @@ class ProductCollectionDownload extends \Model
 
     /**
      * Send a file to browser and increase download counter
-     * @param   string
+     *
+     * @param string $strFile
      */
     protected function download($strFile)
     {
@@ -60,7 +62,10 @@ class ProductCollectionDownload extends \Model
 
     /**
      * Generate array representation for download
-     * @return  array
+     *
+     * @param bool $blnOrderPaid
+     *
+     * @return array
      */
     public function getForTemplate($blnOrderPaid = false)
     {
@@ -129,9 +134,11 @@ class ProductCollectionDownload extends \Model
 
     /**
      * Find all downloads that belong to items of a given collection
-     * @param   IsotopeProductCollection
-     * @param   array
-     * @return  \Model\Collection|null
+     *
+     * @param IsotopeProductCollection $objCollection
+     * @param array                    $arrOptions
+     *
+     * @return \Model\Collection|null
      */
     public static function findByCollection(IsotopeProductCollection $objCollection, array $arrOptions = array())
     {
@@ -149,8 +156,10 @@ class ProductCollectionDownload extends \Model
 
     /**
      * Create ProductCollectionDownload for all product downloads in the given collection
-     * @param   IsotopeProductCollection
-     * @return  array
+     *
+     * @param IsotopeProductCollection $objCollection
+     *
+     * @return static[]
      */
     public static function createForProductsInCollection(IsotopeProductCollection $objCollection)
     {

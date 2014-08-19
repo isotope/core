@@ -1475,98 +1475,6 @@ abstract class ProductCollection extends TypeAgent
     }
 
     /**
-     * Initialize a new collection and duplicate everything from the source
-     *
-     * @param IsotopeProductCollection $objSource
-     *
-     * @return static
-     */
-    public static function createFromCollection(IsotopeProductCollection $objSource)
-    {
-        global $objPage;
-
-        $objCollection = new static();
-        $objConfig = $objSource->getRelated('config_id');
-
-        if (null === $objConfig) {
-            $objConfig = Isotope::getConfig();
-        }
-
-        $objCollection->uniqid               = uniqid(Haste::getInstance()->call('replaceInsertTags', array((string) $objConfig->orderPrefix, false)), true);
-        $objCollection->source_collection_id = (int) $objSource->id;
-        $objCollection->config_id            = (int) $objConfig->id;
-        $objCollection->store_id             = (int) $objSource->store_id;
-        $objCollection->member               = (int) $objSource->member;
-        $objCollection->language             = (string) $GLOBALS['TL_LANGUAGE'];
-        $objCollection->currency             = (string) $objConfig->currency;
-        $objCollection->pageId               = (int) $objPage->id;
-
-        $objCollection->setShippingMethod($objSource->getShippingMethod());
-        $objCollection->setPaymentMethod($objSource->getPaymentMethod());
-
-        $objCollection->setShippingAddress($objSource->getShippingAddress());
-        $objCollection->setBillingAddress($objSource->getBillingAddress());
-
-        $arrItemIds = $objCollection->copyItemsFrom($objSource);
-
-        $objCollection->updateDatabase();
-
-        // HOOK: order status has been updated
-        if (isset($GLOBALS['ISO_HOOKS']['createFromProductCollection']) && is_array($GLOBALS['ISO_HOOKS']['createFromProductCollection'])) {
-        	foreach ($GLOBALS['ISO_HOOKS']['createFromProductCollection'] as $callback) {
-        		$objCallback = \System::importStatic($callback[0]);
-        		$objCallback->$callback[1]($objCollection, $objSource, $arrItemIds);
-        	}
-        }
-
-        return $objCollection;
-    }
-
-
-    /**
-     * Method that returns a closure to sort product collection items
-     *
-     * @param string $strOrderBy
-     *
-     * @return \Closure|null
-     */
-    public static function getItemsSortingCallable($strOrderBy = 'asc_id')
-    {
-        list($direction, $attribute) = explode('_', $strOrderBy, 2);
-
-        if ($direction == 'asc') {
-
-            return function ($arrItems) use ($attribute) {
-                uasort($arrItems, function ($objItem1, $objItem2) use ($attribute) {
-                    if ($objItem1->$attribute == $objItem2->$attribute) {
-                        return 0;
-                    }
-
-                    return $objItem1->$attribute < $objItem2->$attribute ? -1 : 1;
-                });
-
-                return $arrItems;
-            };
-
-        } elseif ($direction == 'desc') {
-
-            return function ($arrItems) use ($attribute) {
-                uasort($arrItems, function ($objItem1, $objItem2) use ($attribute) {
-                    if ($objItem1->$attribute == $objItem2->$attribute) {
-                        return 0;
-                    }
-
-                    return $objItem1->$attribute > $objItem2->$attribute ? -1 : 1;
-                });
-
-                return $arrItems;
-            };
-        }
-
-        return null;
-    }
-
-    /**
      * Make sure the addresses belong to this collection only, so they will never be modified
      */
     protected function createPrivateAddresses()
@@ -1661,5 +1569,95 @@ abstract class ProductCollection extends TypeAgent
                      ->set($arrSet)
                      ->execute($this->member, \MemberModel::getTable(), $this->store_id, $objAddress->id);
         }
+    }
+
+    /**
+     * Initialize a new collection and duplicate everything from the source
+     *
+     * @param IsotopeProductCollection $objSource
+     *
+     * @return static
+     */
+    public static function createFromCollection(IsotopeProductCollection $objSource)
+    {
+        global $objPage;
+
+        $objCollection = new static();
+        $objConfig = $objSource->getRelated('config_id');
+
+        if (null === $objConfig) {
+            $objConfig = Isotope::getConfig();
+        }
+
+        $objCollection->uniqid               = uniqid(Haste::getInstance()->call('replaceInsertTags', array((string) $objConfig->orderPrefix, false)), true);
+        $objCollection->source_collection_id = (int) $objSource->id;
+        $objCollection->config_id            = (int) $objConfig->id;
+        $objCollection->store_id             = (int) $objSource->store_id;
+        $objCollection->member               = (int) $objSource->member;
+        $objCollection->pageId               = (int) $objPage->id;
+
+        $objCollection->setShippingMethod($objSource->getShippingMethod());
+        $objCollection->setPaymentMethod($objSource->getPaymentMethod());
+
+        $objCollection->setShippingAddress($objSource->getShippingAddress());
+        $objCollection->setBillingAddress($objSource->getBillingAddress());
+
+        $arrItemIds = $objCollection->copyItemsFrom($objSource);
+
+        $objCollection->updateDatabase();
+
+        // HOOK: order status has been updated
+        if (isset($GLOBALS['ISO_HOOKS']['createFromProductCollection']) && is_array($GLOBALS['ISO_HOOKS']['createFromProductCollection'])) {
+        	foreach ($GLOBALS['ISO_HOOKS']['createFromProductCollection'] as $callback) {
+        		$objCallback = \System::importStatic($callback[0]);
+        		$objCallback->$callback[1]($objCollection, $objSource, $arrItemIds);
+        	}
+        }
+
+        return $objCollection;
+    }
+
+
+    /**
+     * Method that returns a closure to sort product collection items
+     *
+     * @param string $strOrderBy
+     *
+     * @return \Closure|null
+     */
+    public static function getItemsSortingCallable($strOrderBy = 'asc_id')
+    {
+        list($direction, $attribute) = explode('_', $strOrderBy, 2);
+
+        if ($direction == 'asc') {
+
+            return function ($arrItems) use ($attribute) {
+                uasort($arrItems, function ($objItem1, $objItem2) use ($attribute) {
+                    if ($objItem1->$attribute == $objItem2->$attribute) {
+                        return 0;
+                    }
+
+                    return $objItem1->$attribute < $objItem2->$attribute ? -1 : 1;
+                });
+
+                return $arrItems;
+            };
+
+        } elseif ($direction == 'desc') {
+
+            return function ($arrItems) use ($attribute) {
+                uasort($arrItems, function ($objItem1, $objItem2) use ($attribute) {
+                    if ($objItem1->$attribute == $objItem2->$attribute) {
+                        return 0;
+                    }
+
+                    return $objItem1->$attribute > $objItem2->$attribute ? -1 : 1;
+                });
+
+                return $arrItems;
+            };
+        }
+
+        return null;
     }
 }
