@@ -61,7 +61,7 @@ class Checkout extends Module
 
     /**
      * Display a wildcard in the back end
-     * 
+     *
      * @return string
      */
     public function generate()
@@ -184,6 +184,18 @@ class Checkout extends Module
                 $objOrder->email_data           = $this->getNotificationTokensFromSteps($arrSteps, $objOrder);
 
                 $objOrder->save();
+                // !HOOK: pre-process checkout
+                if (isset($GLOBALS['ISO_HOOKS']['preCheckout']) && is_array($GLOBALS['ISO_HOOKS']['preCheckout'])) {
+                    foreach ($GLOBALS['ISO_HOOKS']['preCheckout'] as $callback) {
+                        $objCallback = \System::importStatic($callback[0]);
+
+                        if ($objCallback->$callback[1]($objOrder) === false) {
+                            \System::log('Callback ' . $callback[0] . '::' . $callback[1] . '() cancelled checkout for Order ID ' . $this->id, __METHOD__, TL_ERROR);
+
+                            static::redirectToStep('failed');
+                        }
+                    }
+                }
 
                 $strBuffer = Isotope::getCart()->hasPayment() ? Isotope::getCart()->getPaymentMethod()->checkoutForm($objOrder, $this) : false;
 

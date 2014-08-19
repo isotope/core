@@ -162,19 +162,6 @@ class Order extends ProductCollection implements IsotopeProductCollection
             return true;
         }
 
-        // !HOOK: pre-process checkout
-        if (isset($GLOBALS['ISO_HOOKS']['preCheckout']) && is_array($GLOBALS['ISO_HOOKS']['preCheckout'])) {
-            foreach ($GLOBALS['ISO_HOOKS']['preCheckout'] as $callback) {
-                $objCallback = \System::importStatic($callback[0]);
-
-                if ($objCallback->$callback[1]($this) === false) {
-                    \System::log('Callback ' . $callback[0] . '::' . $callback[1] . '() cancelled checkout for Order ID ' . $this->id, __METHOD__, TL_ERROR);
-
-                    return false;
-                }
-            }
-        }
-
         // Finish and lock the order (do this now, because otherwise surcharges etc. will not be loaded form the database)
         $this->checkout_complete = true;
         $this->generateDocumentNumber($this->getRelated('config_id')->orderPrefix, (int) $this->getRelated('config_id')->orderDigits);
