@@ -546,15 +546,36 @@ abstract class ProductCollection extends TypeAgent
     public function lock()
     {
         $this->ensureNotLocked();
-
         $this->updateDatabase();
-
         $this->createPrivateAddresses();
 
-        // Can't use model, it would not save as soon as it's locked
         $time = time();
+        $sorting = 128;
+
+        foreach ($this->getSurcharges() as $objSurcharge) {
+            $objSurcharge->pid     = $this->id;
+            $objSurcharge->tstamp  = $time;
+            $objSurcharge->sorting = $sorting;
+            $objSurcharge->save();
+
+            $sorting += 128;
+        }
+
+        // Can't use model, it would not save as soon as it's locked
         \Database::getInstance()->query("UPDATE " . static::$strTable . " SET locked=" . $time . " WHERE id=" . $this->id);
         $this->arrData['locked'] = $time;
+
+        // !HOOK: pre-process checkout
+        if (isset($GLOBALS['ISO_HOOKS']['collectionLocked']) && is_array($GLOBALS['ISO_HOOKS']['collectionLocked'])) {
+            foreach ($GLOBALS['ISO_HOOKS']['collectionLocked'] as $callback) {
+                \System::importStatic($callback[0])->{$callback[1]}($this);
+            }
+        }
+
+        // Empty cache
+        $this->arrItems = null;
+        $this->arrSurcharges = null;
+        $this->arrCache = null;
     }
 
     /**
