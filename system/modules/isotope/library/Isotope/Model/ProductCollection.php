@@ -107,6 +107,14 @@ abstract class ProductCollection extends TypeAgent
     }
 
     /**
+     * Prevent cloning because we can't copy items etc.
+     */
+    public function __clone()
+    {
+        throw new \LogicException('Product collections can\'t be cloned, you should probably use ProductCollection::createFromCollection');
+    }
+
+    /**
      * Shutdown function to update prices of items and collection
      *
      * @param boolean $blnCreate If true create Model even if not in registry or not saved at all
