@@ -176,14 +176,12 @@ class Checkout extends Module
                     }
                 }
 
-                $objOrder = Order::createFromCollection(Isotope::getCart());
-
+                $objOrder = Isotope::getCart()->getDraftOrder();
                 $objOrder->checkout_info        = $this->getCheckoutInfo($arrSteps);
                 $objOrder->nc_notification      = $this->nc_notification;
                 $objOrder->iso_addToAddressbook = $this->iso_addToAddressbook;
                 $objOrder->email_data           = $this->getNotificationTokensFromSteps($arrSteps, $objOrder);
 
-                $objOrder->save();
                 // !HOOK: pre-process checkout
                 if (isset($GLOBALS['ISO_HOOKS']['preCheckout']) && is_array($GLOBALS['ISO_HOOKS']['preCheckout'])) {
                     foreach ($GLOBALS['ISO_HOOKS']['preCheckout'] as $callback) {
@@ -197,7 +195,9 @@ class Checkout extends Module
                     }
                 }
 
-                $strBuffer = Isotope::getCart()->hasPayment() ? Isotope::getCart()->getPaymentMethod()->checkoutForm($objOrder, $this) : false;
+                $objOrder->lock();
+
+                $strBuffer = $objOrder->hasPayment() ? $objOrder->getPaymentMethod()->checkoutForm($objOrder, $this) : false;
 
                 if ($strBuffer === false) {
                     static::redirectToStep('complete', $objOrder);

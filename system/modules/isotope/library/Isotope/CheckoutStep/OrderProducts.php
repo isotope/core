@@ -40,12 +40,13 @@ class OrderProducts extends CheckoutStep implements IsotopeCheckoutStep
     public function generate()
     {
         $objTemplate = new Template($this->objModule->iso_collectionTpl);
+        $objOrder = Isotope::getCart()->getDraftOrder();
 
-        Isotope::getCart()->addToTemplate(
+        $objOrder->addToTemplate(
             $objTemplate,
             array(
                 'gallery' => $this->objModule->iso_gallery,
-                'sorting' => Isotope::getCart()->getItemsSortingCallable($this->objModule->iso_orderCollectionBy),
+                'sorting' => $objOrder->getItemsSortingCallable($this->objModule->iso_orderCollectionBy),
             )
         );
 

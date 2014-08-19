@@ -16,6 +16,7 @@ use Haste\Haste;
 use Isotope\Interfaces\IsotopeProduct;
 use Isotope\Interfaces\IsotopeProductCollection;
 use Isotope\Model\Product;
+use Isotope\Model\ProductCollection\Cart;
 use Isotope\Model\ProductCollection\Order;
 use Isotope\Module\Messages;
 
@@ -47,6 +48,12 @@ class Frontend extends \Frontend
      */
     public function findShippingAndPaymentSurcharges(IsotopeProductCollection $objCollection)
     {
+        // Do not add shipping and payment surcharge to cart,
+        // they should only appear in the order review
+        if ($objCollection instanceof Cart) {
+            return array();
+        }
+
         $arrSurcharges = array();
 
         if (($objSurcharge = $objCollection->getShippingSurcharge()) !== null) {
