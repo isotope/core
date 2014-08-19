@@ -532,7 +532,9 @@ abstract class ProductCollection extends TypeAgent
         }
 
         foreach ($this->getSurcharges() as $objSurcharge) {
-            $objSurcharge->delete();
+            if ($objSurcharge->id) {
+                $objSurcharge->delete();
+            }
         }
 
         $this->arrItems = null;
