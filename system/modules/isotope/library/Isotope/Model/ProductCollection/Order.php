@@ -454,4 +454,24 @@ class Order extends ProductCollection implements IsotopeProductCollection
 
         return $arrItems;
     }
+
+    /**
+     * Generate unique order ID including the order prefix
+     *
+     * @return string
+     */
+    protected function generateUniqueId()
+    {
+        if ($this->arrData['uniqid'] != '') {
+            return $this->arrData['uniqid'];
+        }
+
+        $objConfig = $this->getRelated('config_id');
+
+        if (null === $objConfig) {
+            $objConfig = Isotope::getConfig();
+        }
+
+        return uniqid(Haste::getInstance()->call('replaceInsertTags', array((string) $objConfig->orderPrefix, false)), true);
+    }
 }

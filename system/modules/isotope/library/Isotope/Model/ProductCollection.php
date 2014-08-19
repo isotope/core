@@ -94,11 +94,15 @@ abstract class ProductCollection extends TypeAgent
 
 
     /**
-     * Initialize the object
+     * Constructor
+     *
+     * @param \Database\Result $objResult
      */
     public function __construct(\Database\Result $objResult = null)
     {
         parent::__construct($objResult);
+
+        $this->arrData['uniqid'] = $this->generateUniqueId();
 
         // Do not use __destruct, because Database object might be destructed first (see http://github.com/contao/core/issues/2236)
         if (TL_MODE == 'FE') {
@@ -1463,6 +1467,20 @@ abstract class ProductCollection extends TypeAgent
     }
 
     /**
+     * Generate a unique ID for this collection
+     *
+     * @return string
+     */
+    protected function generateUniqueId()
+    {
+        if ($this->arrData['uniqid'] != '') {
+            return $this->arrData['uniqid'];
+        }
+
+        return uniqid('', true);
+    }
+
+    /**
      * Prevent modifying a locked collection
      *
      * @throws \BadMethodCallException
@@ -1602,7 +1620,6 @@ abstract class ProductCollection extends TypeAgent
             $objConfig = Isotope::getConfig();
         }
 
-        $objCollection->uniqid               = uniqid(Haste::getInstance()->call('replaceInsertTags', array((string) $objConfig->orderPrefix, false)), true);
         $objCollection->source_collection_id = (int) $objSource->id;
         $objCollection->config_id            = (int) $objConfig->id;
         $objCollection->store_id             = (int) $objSource->store_id;
