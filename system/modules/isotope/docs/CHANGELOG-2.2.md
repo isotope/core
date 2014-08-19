@@ -14,6 +14,8 @@ Version 2.2.0-beta1 (2014-??-??)
 - Dropped support for Contao 3.2 (#1206)
 - Added collection_* Simple Token for orders (#1195)
 - Support for custom template for every Isotope front end module (#1191)
+- Cart does no longer show shipping and payment surcharges (#1055)
+- An order collection is created and locked when "buy now" button is pressed
 
 ### Improved
 - Product options are now available in calculatePrice hook (#1000)
@@ -23,3 +25,4 @@ Version 2.2.0-beta1 (2014-??-??)
 - Use a template to generate Sparkasse payment URL (#1207)
 - Switched to the new Sparkasse payment URL (#1143)
 - Isotope shop configuration template folders are now displayed the same way as in Contao core (#1191)
+- The backend shop config intro is now responsive (#1221)
