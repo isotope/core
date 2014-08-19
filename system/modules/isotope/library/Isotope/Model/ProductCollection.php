@@ -146,6 +146,7 @@ abstract class ProductCollection extends TypeAgent
             $this->tax_free_subtotal = $this->getTaxFreeSubtotal();
             $this->total             = $this->getTotal();
             $this->tax_free_total    = $this->getTaxFreeTotal();
+            $this->currency          = (string) $this->getRelated('config_id')->currency;
 
             $this->save();
         }
@@ -553,13 +554,18 @@ abstract class ProductCollection extends TypeAgent
     public function lock()
     {
         $this->ensureNotLocked();
+
+        global $objPage;
+        $time = time();
+
+        $this->pageId = (int) $objPage->id;
+        $this->language = (string) $GLOBALS['TL_LANGUAGE'];
+
         $this->updateDatabase();
         $this->createPrivateAddresses();
 
-        $time = time();
-        $sorting = 128;
-
         // Add surcharges to the collection
+        $sorting = 128;
         foreach ($this->getSurcharges() as $objSurcharge) {
             $objSurcharge->pid     = $this->id;
             $objSurcharge->tstamp  = $time;
@@ -1606,8 +1612,6 @@ abstract class ProductCollection extends TypeAgent
      */
     public static function createFromCollection(IsotopeProductCollection $objSource)
     {
-        global $objPage;
-
         $objCollection = new static();
         $objConfig = $objSource->getRelated('config_id');
 
@@ -1619,7 +1623,6 @@ abstract class ProductCollection extends TypeAgent
         $objCollection->config_id            = (int) $objConfig->id;
         $objCollection->store_id             = (int) $objSource->store_id;
         $objCollection->member               = (int) $objSource->member;
-        $objCollection->pageId               = (int) $objPage->id;
 
         $objCollection->setShippingMethod($objSource->getShippingMethod());
         $objCollection->setPaymentMethod($objSource->getPaymentMethod());
