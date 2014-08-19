@@ -435,7 +435,6 @@ abstract class ProductCollection extends TypeAgent
         return $this->arrCache['sumItemsQuantity'];
     }
 
-
     /**
      * Load settings from database field
      *
@@ -453,9 +452,8 @@ abstract class ProductCollection extends TypeAgent
         return $this;
     }
 
-
     /**
-     * Update database with latest product prices and store settings
+     * Save all non-database fields in the settings array
      *
      * @return $this
      */
@@ -486,7 +484,6 @@ abstract class ProductCollection extends TypeAgent
 
         return parent::save();
     }
-
 
     /**
      * Also delete child table records when dropping this collection
@@ -530,7 +527,6 @@ abstract class ProductCollection extends TypeAgent
         return $intAffectedRows;
     }
 
-
     /**
      * Delete all products in the collection
      */
@@ -550,7 +546,6 @@ abstract class ProductCollection extends TypeAgent
 
         $this->clearCache();
     }
-
 
     /**
      * Lock collection from begin modified
