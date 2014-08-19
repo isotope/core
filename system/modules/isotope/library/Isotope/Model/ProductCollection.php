@@ -534,6 +534,8 @@ abstract class ProductCollection extends TypeAgent
 
         $this->updateDatabase();
 
+        $this->createPrivateAddresses();
+
         // Can't use model, it would not save as soon as it's locked
         $time = time();
         \Database::getInstance()->query("UPDATE " . static::$strTable . " SET locked=" . $time . " WHERE id=" . $this->id);

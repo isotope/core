@@ -194,8 +194,6 @@ class Order extends ProductCollection implements IsotopeProductCollection
             }
         }
 
-        $this->createPrivateAddresses();
-
         // Finish and lock the order (do this now, because otherwise surcharges etc. will not be loaded form the database)
         $this->checkout_complete = true;
         $this->generateDocumentNumber($this->getRelated('config_id')->orderPrefix, (int) $this->getRelated('config_id')->orderDigits);
