@@ -1358,8 +1358,6 @@ abstract class ProductCollection extends TypeAgent
      */
     protected function generateDocumentNumber($strPrefix, $intDigits)
     {
-        $this->ensureNotLocked();
-
         if ($this->arrData['document_number'] != '') {
             return $this->arrData['document_number'];
         }
