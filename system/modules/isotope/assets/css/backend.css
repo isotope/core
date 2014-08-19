@@ -15,7 +15,7 @@
 
 .header_import_assets
 {
-    padding:2px 0px 3px 20px;
+    padding:2px 0 3px 20px;
     background-image:url("../images/image--plus.png");
     background-position:left center;
     background-repeat:no-repeat;
@@ -23,7 +23,7 @@
 
 .header_import_mail
 {
-    padding:2px 0px 3px 20px;
+    padding:2px 0 3px 20px;
     background-image:url("../images/inbox-download.png");
     background-position:left center;
     background-repeat:no-repeat;
@@ -39,7 +39,7 @@
 
 .header_iso_groups
 {
-    padding:2px 0px 3px 20px;
+    padding:2px 0 3px 20px;
     background-image:url("../images/folders.png");
     background-position:left center;
     background-repeat:no-repeat;
@@ -380,17 +380,27 @@ body.iso_be_overview .tip-wrap{
     -webkit-filter: grayscale(100%); /* Chrome 19+, Safari 6+, Safari 6+ iOS */
 }
 .be_iso_introduction .left {
-    float: left;
-    width: 400px;
     padding: 0 10px;
     background: #eff5fa;
+    overflow: hidden;
 }
 .be_iso_introduction .left strong {
     color: #1899ad;
 }
 .be_iso_introduction .right {
+    float: right;
     width: 250px;
-    margin-left: 441px;
+    padding-left: 20px;
+}
+.be_iso_introduction .right img {
+    display: block;
+    margin-bottom: 2em;
+}
+
+@media(max-width:991px) {
+    .be_iso_introduction .right {
+        display: none;
+    }
 }
 
 .iso_importassets li {
