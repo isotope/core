@@ -97,41 +97,6 @@ class Order extends ProductCollection implements IsotopeProductCollection
     }
 
     /**
-     * Delete downloads when deleting this order
-     *
-     * @param bool $blnForce Force to delete the collection even if it's locked
-     *
-     * @return int
-     */
-    public function delete($blnForce = false)
-    {
-        $intPid = $this->id;
-
-        if (parent::delete($blnForce) && $intPid > 0) {
-            \Database::getInstance()->query("DELETE FROM tl_iso_product_collection_download WHERE pid IN (SELECT id FROM tl_iso_product_collection_item WHERE pid=$intPid)");
-
-            return true;
-        }
-
-        return false;
-    }
-
-    /**
-     * Lock collection from begin modified
-     */
-    public function lock()
-    {
-        parent::lock();
-
-        // Add downloads from products to the collection
-        /** @var ProductCollectionDownload[] $arrDownloads */
-        $arrDownloads = ProductCollectionDownload::createForProductsInCollection($this);
-        foreach ($arrDownloads as $objDownload) {
-            $objDownload->save();
-        }
-    }
-
-    /**
      * Process the order checkout
      *
      * @return bool

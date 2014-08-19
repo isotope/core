@@ -507,6 +507,7 @@ abstract class ProductCollection extends TypeAgent
         $intAffectedRows = parent::delete();
 
         if ($intAffectedRows > 0 && $intPid > 0) {
+            \Database::getInstance()->query("DELETE FROM " . ProductCollectionDownload::getTable() . " WHERE pid IN (SELECT id FROM " . ProductCollectionItem::getTable() . " WHERE pid=$intPid)");
             \Database::getInstance()->query("DELETE FROM " . ProductCollectionItem::getTable() . " WHERE pid=$intPid");
             \Database::getInstance()->query("DELETE FROM " . ProductCollectionSurcharge::getTable() . " WHERE pid=$intPid");
             \Database::getInstance()->query("DELETE FROM " . Address::getTable() . " WHERE ptable='" . static::$strTable . "' AND pid=$intPid");
@@ -554,6 +555,7 @@ abstract class ProductCollection extends TypeAgent
         $time = time();
         $sorting = 128;
 
+        // Add surcharges to the collection
         foreach ($this->getSurcharges() as $objSurcharge) {
             $objSurcharge->pid     = $this->id;
             $objSurcharge->tstamp  = $time;
@@ -561,6 +563,11 @@ abstract class ProductCollection extends TypeAgent
             $objSurcharge->save();
 
             $sorting += 128;
+        }
+
+        // Add downloads from products to the collection
+        foreach (ProductCollectionDownload::createForProductsInCollection($this) as $objDownload) {
+            $objDownload->save();
         }
 
         // Can't use model, it would not save as soon as it's locked
