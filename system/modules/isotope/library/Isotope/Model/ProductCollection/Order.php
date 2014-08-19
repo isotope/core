@@ -155,7 +155,21 @@ class Order extends ProductCollection implements IsotopeProductCollection
         return $this->arrSurcharges;
     }
 
+    /**
+     * Lock collection from begin modified
+     */
+    public function lock()
+    {
+        parent::lock();
 
+        // Add downloads from products to the collection
+        /** @var ProductCollectionDownload[] $arrDownloads */
+        $arrDownloads = ProductCollectionDownload::createForProductsInCollection($this);
+        foreach ($arrDownloads as $objDownload) {
+            $objDownload->save();
+        }
+    }
+    
     /**
      * Process the order checkout
      *
@@ -188,12 +202,6 @@ class Order extends ProductCollection implements IsotopeProductCollection
         $this->lock();
         \System::log('New order ID ' . $this->id . ' has been placed', __METHOD__, TL_ACCESS);
 
-        // Add downloads from products to the collection
-        /** @var ProductCollectionDownload[] $arrDownloads */
-        $arrDownloads = ProductCollectionDownload::createForProductsInCollection($this);
-        foreach ($arrDownloads as $objDownload) {
-            $objDownload->save();
-        }
 
         // Delete cart after migrating to order
         if (($objCart = Cart::findByPk($this->source_collection_id)) !== null) {
