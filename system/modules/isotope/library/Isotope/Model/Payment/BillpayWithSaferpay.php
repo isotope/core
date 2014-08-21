@@ -86,7 +86,7 @@ class BillpayWithSaferpay extends Saferpay
         $arrData['ADDRESSADDITION'] = (string) $objBillingAddress->street_2;
         $arrData['ZIP'] = (string) $objBillingAddress->postal;
         $arrData['CITY'] = (string) $objBillingAddress->city;
-        $arrData['COUNTRY'] = (string) $objBillingAddress->country;
+        $arrData['COUNTRY'] = strtoupper((string) $objBillingAddress->country);
         $arrData['EMAIL'] = (string) $objBillingAddress->email;
         $arrData['PHONE'] = (string) $objBillingAddress->phone;
         $arrData['DATEOFBIRTH'] = ($objBillingAddress->dateOfBirth ? date('Ymd', $objBillingAddress->dateOfBirth) : '');
@@ -98,10 +98,10 @@ class BillpayWithSaferpay extends Saferpay
         $arrData['DELIVERY_FIRSTNAME'] = (string) $objShippingAddress->firstname;
         $arrData['DELIVERY_LASTNAME'] = (string) $objShippingAddress->lastname;
         $arrData['DELIVERY_STREET'] = (string) $objShippingAddress->street_1;
-        $arrData['DELIVERY_ADDRESSAD DITION'] = (string) $objShippingAddress->street_2;
+        $arrData['DELIVERY_ADDRESSADDITION'] = (string) $objShippingAddress->street_2;
         $arrData['DELIVERY_ZIP'] = (string) $objShippingAddress->postal;
         $arrData['DELIVERY_CITY'] = (string) $objShippingAddress->city;
-        $arrData['DELIVERY_COUNTRY'] = (string) $objShippingAddress->country;
+        $arrData['DELIVERY_COUNTRY'] = strtoupper((string) $objShippingAddress->country);
         $arrData['DELIVERY_PHONE'] = (string) $objShippingAddress->phone;
 
         // Cart items and total
