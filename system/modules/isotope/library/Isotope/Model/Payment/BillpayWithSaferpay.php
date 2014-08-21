@@ -39,6 +39,12 @@ class BillpayWithSaferpay extends Saferpay
         return parent::isAvailable();
     }
 
+    /**
+     * Automatically add Billpay conditions to checkout form
+     *
+     * @param Form    $objForm
+     * @param \Module $objModule
+     */
     public static function addOrderCondition(Form $objForm, \Module $objModule)
     {
         $objPayment = Isotope::getCart()->getPaymentMethod();
@@ -61,7 +67,6 @@ class BillpayWithSaferpay extends Saferpay
             );
         }
     }
-
 
     /**
      * Add BillPay-specific data to POST values
