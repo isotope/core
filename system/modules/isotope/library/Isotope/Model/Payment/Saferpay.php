@@ -62,7 +62,7 @@ class Saferpay extends Postsale implements IsotopePayment
         // Stop if verification is not working
         if (strtoupper(substr($objRequest->response, 0, 3)) != 'OK:') {
             \System::log(sprintf('Payment not successfull. See log files for further details.'), __METHOD__, TL_ERROR);
-            log_message(sprintf('Payment not successfull. Message was: "%s".', $objRequest->response), 'error.log');
+            log_message(sprintf('Payment not successfull. Message was: "%s".', $objRequest->response), 'isotope_saferpay.log');
 
             return;
         }
@@ -86,7 +86,7 @@ class Saferpay extends Postsale implements IsotopePayment
             // Stop if capture was not successful
             if (strtoupper($objRequest->response) != 'OK') {
                 \System::log(sprintf('Payment capture failed. See log files for further details.'), __METHOD__, TL_ERROR);
-                log_message(sprintf('Payment capture failed. Message was: "%s".', $objRequest->response), 'error.log');
+                log_message(sprintf('Payment capture failed. Message was: "%s".', $objRequest->response), 'isotope_saferpay.log');
 
                 return;
             }
