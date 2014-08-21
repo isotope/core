@@ -387,7 +387,8 @@ if (\Config::getInstance()->isComplete()) {
     $GLOBALS['ISO_HOOKS']['buttons'][]                      = array('Isotope\Isotope', 'defaultButtons');
     $GLOBALS['ISO_HOOKS']['findSurchargesForCollection'][]  = array('Isotope\Frontend', 'findShippingAndPaymentSurcharges');
     $GLOBALS['ISO_HOOKS']['postCheckout'][]                 = array('Isotope\Analytics', 'trackOrder');
-    $GLOBALS['ISO_HOOKS']['orderConditions'][] = array('Isotope\Model\Payment\BillpayWithSaferpay', 'addOrderCondition');
+    $GLOBALS['ISO_HOOKS']['orderConditions'][]              = array('Isotope\Model\Payment\BillpayWithSaferpay', 'addOrderCondition');
+    $GLOBALS['ISO_HOOKS']['generateDocumentTemplate'][]     = array('Isotope\Model\Payment\BillpayWithSaferpay', 'addToDocumentTemplate');
 }
 
 

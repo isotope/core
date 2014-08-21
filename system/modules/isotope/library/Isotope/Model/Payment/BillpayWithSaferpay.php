@@ -13,8 +13,10 @@
 namespace Isotope\Model\Payment;
 
 use Haste\Form\Form;
+use Isotope\Interfaces\IsotopeDocument;
 use Isotope\Interfaces\IsotopeProductCollection;
 use Isotope\Isotope;
+use Isotope\Model\ProductCollection\Order;
 use Isotope\Model\ProductCollectionSurcharge\Shipping;
 use Isotope\Model\ProductCollectionSurcharge\Tax;
 
@@ -47,9 +49,7 @@ class BillpayWithSaferpay extends Saferpay
      */
     public static function addOrderCondition(Form $objForm, \Module $objModule)
     {
-        $objPayment = Isotope::getCart()->getPaymentMethod();
-
-        if (null !== $objPayment && $objPayment instanceof BillpayWithSaferpay) {
+        if (Isotope::getCart()->hasPayment() && Isotope::getCart()->getPaymentMethod() instanceof BillpayWithSaferpay) {
 
             $strLabel = $GLOBALS['TL_LANG']['MSC']['billpay_agb_'.Isotope::getCart()->getBillingAddress()->country];
 
@@ -65,6 +65,39 @@ class BillpayWithSaferpay extends Saferpay
                     'eval' => array('mandatory'=>true)
                 )
             );
+        }
+    }
+
+    /**
+     * Add additional functionality for Billpay to document template
+     *
+     * @param \Template                $objTemplate
+     * @param IsotopeProductCollection $objCollection
+     * @param IsotopeDocument          $objDocument
+     */
+    public function addToDocumentTemplate(\Template $objTemplate, IsotopeProductCollection $objCollection, IsotopeDocument $objDocument)
+    {
+        $objTemplate->billpay = false;
+
+        /** @type Order $objCollection */
+        if ($objCollection instanceof Order
+            && $objCollection->hasPayment()
+            && $objCollection->getPaymentMethod() instanceof BillpayWithSaferpay
+        ) {
+            $arrPayment = deserialize($objCollection->payment_data);
+
+            if (!empty($arrPayment) && is_array($arrPayment)) {
+                $doc = new \DOMDocument();
+                $doc->loadXML(end($arrPayment));
+                $this->objXML = $doc->getElementsByTagName('IDP')->item(0)->attributes;
+
+                $objTemplate->billpay = true;
+                $objTemplate->billpay_accountholder = $this->getPostValue('POB_ACCOUNTHOLDER');
+                $objTemplate->billpay_accountnumber = $this->getPostValue('POB_ACCOUNTNUMBER');
+                $objTemplate->billpay_bankcode = $this->getPostValue('POB_BANKCODE');
+                $objTemplate->billpay_bankname = $this->getPostValue('POB_BANKNAME');
+                $objTemplate->billpay_payernote = $this->getPostValue('POB_PAYERNOTE');
+            }
         }
     }
 

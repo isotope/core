@@ -99,6 +99,11 @@ class Saferpay extends Postsale implements IsotopePayment
             return;
         }
 
+        // Store request data in order for future references
+        $arrPayment = deserialize($objOrder->payment_data, true);
+        $arrPayment['POSTSALE'][] = $this->getPostData();
+        $objOrder->payment_data = $arrPayment;
+
         $objOrder->date_paid = time();
         $objOrder->updateOrderStatus($this->new_order_status);
 
@@ -184,7 +189,7 @@ class Saferpay extends Postsale implements IsotopePayment
      * Get data from POST
      * @todo remove magic_quotes:gpc when PHP 5.4 is compulsory (it's also deprecated in PHP 5.3 so it might also be removed when PHP 5.3 is compulsory)
      */
-    private function getPostData()
+    protected function getPostData()
     {
         // Cannot use \Input::post() here because it would kill XML data
         $strData = $_POST['DATA'];
@@ -204,7 +209,7 @@ class Saferpay extends Postsale implements IsotopePayment
      *
      * @return string
      */
-    private function getPostValue($strKey)
+    protected function getPostValue($strKey)
     {
         if (null === $this->objXML) {
             $doc = new \DOMDocument();
