@@ -59,7 +59,7 @@ abstract class Gallery extends TypeAgent
         }
 
         $objGallery->setName($objProduct->getFormId() . '_' . $strAttribute);
-        $objGallery->setFiles(static::mergeMediaData($objProduct->$strAttribute, deserialize($objProduct->{$strAttribute . '_fallback'})));
+        $objGallery->setFiles(static::mergeMediaData(deserialize($objProduct->$strAttribute), deserialize($objProduct->{$strAttribute . '_fallback'})));
         $objGallery->product_id = ($objProduct->pid ? $objProduct->pid : $objProduct->id);
         $objGallery->href       = $objProduct->generateUrl($arrConfig['jumpTo']);
 
