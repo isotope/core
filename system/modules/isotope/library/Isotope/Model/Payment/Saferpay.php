@@ -90,20 +90,18 @@ class Saferpay extends Postsale implements IsotopePayment
 
                 return;
             }
-
-
-            // otherwise checkout
-            if (!$objOrder->checkout()) {
-                \System::log('Postsale checkout for Order ID "' . $objOrder->id . '" failed', __METHOD__, TL_ERROR);
-
-                return;
-            }
-
-            $objOrder->date_paid = time();
-            $objOrder->updateOrderStatus($this->new_order_status);
-
-            $objOrder->save();
         }
+
+        if (!$objOrder->checkout()) {
+            \System::log('Postsale checkout for Order ID "' . $objOrder->id . '" failed', __METHOD__, TL_ERROR);
+
+            return;
+        }
+
+        $objOrder->date_paid = time();
+        $objOrder->updateOrderStatus($this->new_order_status);
+
+        $objOrder->save();
     }
 
     /**
