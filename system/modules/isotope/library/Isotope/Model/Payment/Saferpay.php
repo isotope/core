@@ -47,7 +47,8 @@ class Saferpay extends Postsale implements IsotopePayment
 
     /**
      * Process Saferpay server to server notification
-     * @param   IsotopeProductCollection
+     *
+     * @param IsotopeProductCollection $objOrder
      */
     public function processPostsale(IsotopeProductCollection $objOrder)
     {
@@ -106,7 +107,8 @@ class Saferpay extends Postsale implements IsotopePayment
 
     /**
      * Get the order object in a postsale request
-     * @return  IsotopeProductCollection
+     *
+     * @return IsotopeProductCollection
      */
     public function getPostsaleOrder()
     {
@@ -116,10 +118,10 @@ class Saferpay extends Postsale implements IsotopePayment
     /**
      * HTML form for checkout
      *
-     * @param   IsotopeProductCollection $objOrder  The order being places
-     * @param   \Module                  $objModule The checkout module instance
+     * @param IsotopeProductCollection $objOrder  The order being places
+     * @param \Module                  $objModule The checkout module instance
      *
-     * @return  mixed
+     * @return mixed
      */
     public function checkoutForm(IsotopeProductCollection $objOrder, \Module $objModule)
     {
@@ -180,7 +182,7 @@ class Saferpay extends Postsale implements IsotopePayment
 
     /**
      * Get data from POST
-     * @todo    remove magic_quotes:gpc when PHP 5.4 is compulsory (it's also deprecated in PHP 5.3 so it might also be removed when PHP 5.3 is compulsory)
+     * @todo remove magic_quotes:gpc when PHP 5.4 is compulsory (it's also deprecated in PHP 5.3 so it might also be removed when PHP 5.3 is compulsory)
      */
     private function getPostData()
     {
@@ -197,8 +199,10 @@ class Saferpay extends Postsale implements IsotopePayment
 
     /**
      * Parse POST data XML and get attribute value
-     * @param   string
-     * @return  string
+     *
+     * @param string $strKey
+     *
+     * @return string
      */
     private function getPostValue($strKey)
     {
@@ -215,8 +219,8 @@ class Saferpay extends Postsale implements IsotopePayment
     /**
      * Check XML data, add to log if debugging is enabled
      *
-     * @param  DOMNamedNodeMap
-     * @param  Order
+     * @param Order $objOrder
+     *
      * @return bool
      */
     private function validateXML(Order $objOrder)
