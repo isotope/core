@@ -859,16 +859,23 @@ class Standard extends Product implements IsotopeProduct, WeightAggregate
 
             $this->setRow($objParent->row());
 
+            // Must be set before call to getInheritedFields()
+            $this->arrData['id'] = $arrData['id'];
+            $this->arrData['pid'] = $arrData['pid'];
+            $this->arrData['inherit'] = $arrData['inherit'];
+
             // Set all variant attributes, except if they are inherited
+            $arrFallbackFields = Attribute::getFetchFallbackFields();
             $arrVariantFields = array_diff($this->getVariantAttributes(), $this->getInheritedFields());
             foreach ($arrData as $attribute => $value) {
                 if (
                     in_array($attribute, $arrVariantFields)
-                    || $GLOBALS['TL_DCA']['tl_iso_product']['fields'][$attribute]['attributes']['legend'] == ''
+                    || ($GLOBALS['TL_DCA']['tl_iso_product']['fields'][$attribute]['attributes']['legend'] == ''
+                        && !in_array(str_replace('_fallback', '', $attribute), $arrFallbackFields))
                 ) {
                     $this->arrData[$attribute] = $arrData[$attribute];
 
-                    if (in_array($attribute, Attribute::getFetchFallbackFields())) {
+                    if (in_array($attribute, $arrFallbackFields)) {
                         $this->arrData[$attribute . '_fallback'] = $arrData[$attribute . '_fallback'];
                     }
                 }
@@ -986,7 +993,7 @@ class Standard extends Product implements IsotopeProduct, WeightAggregate
     protected function getInheritedFields()
     {
         // Not a variant, no inherited fields
-        if ($this->pid == 0) {
+        if (!$this->isVariant()) {
             return array();
         }
 
