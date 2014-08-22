@@ -8,6 +8,7 @@ Version 2.1.6-stable (2014-??-??)
 - Shipping methods included products exempt from shipping in per product and per item calculation mode (#1218)
 - Not all product variants were available (#1215)
 - New addresses were not added with the correct store ID after checkout (#1216)
+- It was not possible to translate product images
 
 
 Version 2.1.5-stable (2014-08-11)

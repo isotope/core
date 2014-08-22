@@ -90,7 +90,7 @@ abstract class Gallery extends TypeAgent
             foreach ($arrCurrent as $i => $image) {
 
                 if (isset($arrTranslate[$image['src']])) {
-                    if ($arrTranslate[$image['src']]['translate'] == '') {
+                    if ($arrTranslate[$image['src']]['translate'] == 'none') {
                         $arrCurrent[$i] = $arrTranslate[$image['src']];
                     } else {
                         $arrCurrent[$i]['link']      = $arrTranslate[$image['src']]['link'];
