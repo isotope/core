@@ -1386,7 +1386,7 @@ abstract class ProductCollection extends TypeAgent
             'rowClass'          => trim('product ' . (($blnHasProduct && $objProduct->isNew()) ? 'new ' : '') . $arrCSS[1]),
         );
 
-        if (null !== $objItem->getRelated('jumpTo') && $blnHasProduct) {
+        if (null !== $objItem->getRelated('jumpTo') && $blnHasProduct && $objProduct->isAvailableInFrontend()) {
             $arrItem['href'] = $objProduct->generateUrl($objItem->getRelated('jumpTo'));
         }
 
@@ -1515,6 +1515,7 @@ abstract class ProductCollection extends TypeAgent
                 $objAddress->pid    = $this->member;
                 $objAddress->tstamp = time();
                 $objAddress->ptable = \MemberModel::getTable();
+                $objAddress->store_id = $this->store_id;
                 $objAddress->save();
 
                 $this->updateDefaultAddress($objAddress);
@@ -1529,6 +1530,7 @@ abstract class ProductCollection extends TypeAgent
                 $objAddress->pid    = $this->member;
                 $objAddress->tstamp = time();
                 $objAddress->ptable = \MemberModel::getTable();
+                $objAddress->store_id = $this->store_id;
                 $objAddress->save();
 
                 $this->updateDefaultAddress($objAddress);
@@ -1541,6 +1543,7 @@ abstract class ProductCollection extends TypeAgent
             $objNew->pid    = $this->id;
             $objNew->tstamp = time();
             $objNew->ptable = static::$strTable;
+            $objNew->store_id = $this->store_id;
             $objNew->save();
 
             $this->setBillingAddress($objNew);
@@ -1559,6 +1562,7 @@ abstract class ProductCollection extends TypeAgent
             $objNew->pid    = $this->id;
             $objNew->tstamp = time();
             $objNew->ptable = static::$strTable;
+            $objNew->store_id = $this->store_id;
             $objNew->save();
 
             $this->setShippingAddress($objNew);

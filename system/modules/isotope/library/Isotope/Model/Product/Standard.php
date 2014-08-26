@@ -423,22 +423,32 @@ class Standard extends Product implements IsotopeProduct, WeightAggregate
 
     /**
      * Get categories (pages) assigned to this product
+     *
+     * @param bool $blnPublished Only return published categories (pages)
+     *
      * @return  array
      */
-    public function getCategories()
+    public function getCategories($blnPublished = false)
     {
-        if (null === $this->arrCategories) {
-            $objCategories       = ProductCategory::findBy('pid', $this->getProductId());
-            $this->arrCategories = (null === $objCategories ? array() : $objCategories->fetchEach('page_id'));
+        $key = ($blnPublished ? 'published' : 'all');
+
+        if (null === $this->arrCategories || !isset($this->arrCategories[$key])) {
+            if ($blnPublished) {
+                $objCategories = ProductCategory::findByPidForPublishedPages($this->getProductId());
+            } else {
+                $objCategories = ProductCategory::findBy('pid', $this->getProductId());
+            }
+
+            $this->arrCategories[$key] = (null === $objCategories ? array() : $objCategories->fetchEach('page_id'));
 
             // Sort categories by the backend drag&drop
             $arrOrder = deserialize($this->orderPages);
             if (!empty($arrOrder) && is_array($arrOrder)) {
-                $this->arrCategories = array_unique(array_merge(array_intersect($arrOrder, $this->arrCategories), $this->arrCategories));
+                $this->arrCategories[$key] = array_unique(array_merge(array_intersect($arrOrder, $this->arrCategories[$key]), $this->arrCategories[$key]));
             }
         }
 
-        return $this->arrCategories;
+        return $this->arrCategories[$key];
     }
 
     /**

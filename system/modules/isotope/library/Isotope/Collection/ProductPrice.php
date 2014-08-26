@@ -37,7 +37,7 @@ class ProductPrice extends Collection implements IsotopePrice
 
         $this->arrModels = array_filter(
             $this->arrModels,
-            function($objModel) use (&$arrFound) {
+            function($objModel) use (&$arrFound, $strColumn) {
                 if (isset($arrFound[$objModel->$strColumn])) {
                     return false;
                 }
